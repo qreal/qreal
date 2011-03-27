@@ -4,6 +4,7 @@
 #include <QThread>
 #include "adopter.h"
 #include <QtGui/QApplication>
+#include <QDebug>
 
 const QString pathToTestFile = "usersGestures.xml";
 
@@ -41,13 +42,17 @@ public:
         int checkedObjects = 0;
         foreach (QString object, usersGestures.keys())
         {
+
             foreach (QString pathStr, usersGestures[object].second)
             {
                 QApplication::processEvents();
                 allGestures ++;
                 QList<QPoint> path = Parser::stringToPath(pathStr);
-                if (object == recognizer->recognizeObject(path))
+                QString recognizedObject = recognizer->recognizeObject(path);
+                if (object == recognizedObject)
                     recognizedGestures ++;
+                else
+                    qDebug() << object << "recognized as" << recognizedObject;
             }
             checkedObjects ++;
             emit tested(100 * checkedObjects / objectsNum, allGestures,

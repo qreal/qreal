@@ -6,6 +6,7 @@
 #include "NeuralNetwork/neuralNetwork.h"
 #include <QFileDialog>
 #include "testThread.h"
+#include <QApplication>
 
 //const QString pathToTestFile = "usersGestures.xml";
 const QString pathToTrainingFile = "NeuralNetwork/learnGestures/learn_gestures1.xml";
@@ -33,11 +34,11 @@ TestWindow::TestWindow(QWidget *parent) :
 
 void TestWindow::test()
 {
-    ui->pbTested->setValue(0);
+    ui->pbTested->setValue(1);
     GesturesManager * gesturesManager = getGesturesManager();
     TestThread * thread = new TestThread(gesturesManager, this);
     connect(thread, SIGNAL(tested(int, int, int)), this, SLOT(printData(int,int,int)));
-    ui->pbTested->setValue(1);
+    ui->pbTested->setValue(5);
     thread->run();
 }
 
@@ -70,10 +71,16 @@ GesturesManager * TestWindow::getGesturesManager()
         foreach (QString object, gestures.keys())
         {
             UsersGestures paths = gestures[object];
+            trainingGesturesManager->learn(object, paths.first);
             foreach (QString path, paths.second)
             {
+                QApplication::processEvents();
                 qDebug() << "new gesture";
-                trainingGesturesManager->learn(object, Parser::stringToPath(path));
+                PointVector gesture = Parser::stringToPath(path);
+                PathVector paths;
+                paths.append(gesture);
+                if (!trainingGesturesManager->belong(object, paths))
+                    trainingGesturesManager->learn(object, paths);
             }
         }
         qDebug() << "learnt";

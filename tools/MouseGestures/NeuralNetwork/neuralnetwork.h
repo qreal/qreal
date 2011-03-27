@@ -103,8 +103,15 @@ private:
 public:
     TrainingGesturesManager()
     {
-        minR = gridSize * e / 2;
+        minR = gridSize * e / 5;
     }
+    bool belong(const QString & object, const PathVector & path)
+    {
+        Sphere<Classifier> sphere = this->mSphereObject[object];
+        Classifier point(path);
+        return point.getDistance(sphere.centre) < sphere.rad;
+    }
+
     void learn(const QString &object, const PointVector &path)
     {
         PathVector learnPath;
@@ -148,7 +155,7 @@ public:
     }
     double getMaxDistance(const QString & object)
     {
-        return this->mSphereObject[object].rad;
+        return std::max(this->mSphereObject[object].rad, gridSize * e);
     }
 
     double getDistance(const QString &object)

@@ -6,8 +6,8 @@
 
 static const double pi = 3.141592;
 const double mouseSpeed = 3;
-const int maxGeneratedAngle = 5;
-const int distance = 10;
+const int maxGeneratedAngle = 30;
+const int distance = 150;
 
 QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const & path)
 {
@@ -106,10 +106,10 @@ QList<QPoint> PathCorrector::increase(const QList<QPoint> &path, double k)
     return newPath;
 }
 
-PathVector PathCorrector::distortGesture(const PathVector &idealGesture)
+PathVector PathCorrector::distortGesture(const PathVector &idealGesture, double angleA, double angleB)
 {
-    double angleA = (rand() % (2 * maxGeneratedAngle) - maxGeneratedAngle) * pi / 180;
-    double angleB = (rand() % (2 * maxGeneratedAngle) - maxGeneratedAngle) * pi / 180;
+    angleA = angleA * pi / 180;
+    angleB = angleB * pi / 180;
     PathVector distortedGesture;
     foreach (PointVector path, idealGesture)
     {
@@ -118,10 +118,10 @@ PathVector PathCorrector::distortGesture(const PathVector &idealGesture)
         {
             double distortedX = point.x() * cos(angleB);
             double distortedY = point.y() * cos(angleA) - point.x() * sin(angleA) * sin(angleB);
-            double distortedZ = fabs(- point.y() * sin(angleA) - point.x() * sin(angleA) * sin(angleB) + distance);
+            double distortedZ = - point.y() * sin(angleA) - point.x() * sin(angleA) * sin(angleB) + distance;
             if (distortedZ != 0)
             {
-                qDebug() << distortedZ << cos(angleA) << cos(angleB) << angleA << angleB;
+                qDebug() << "distorted z" << distortedZ << "angle A" << angleA << "angle B" << angleB;
                 distortedX = distortedX * distance / distortedZ;
                 distortedY = distortedY * distance / distortedZ;
             }

@@ -37,14 +37,21 @@ void MouseGestures::generateGestures()
     QMap<QString, UsersGestures> generatedGestures;
     foreach (QString object, usersGestures.keys())
     {
+        const int maxAngle = 45;
+        const int angleDiff = 10;
         PathVector idealGesture;
         idealGesture.push_back(usersGestures[object].first);
         QList<QString> newGestures;
-        for (int i = 0; i < 5; i++)
+        qDebug() << object;
+        for (int i = - maxAngle; i <= maxAngle; i += angleDiff)
         {
-            PathVector gesture = PathCorrector::distortGesture(idealGesture);
-            //TODO:: change for incoherent gestures
-            newGestures.push_back(Parser::pathToString(gesture.first()));
+            int maxSecondAngle = maxAngle - abs(i);
+            for (int j = - maxSecondAngle; j <= maxSecondAngle; j += angleDiff)
+            {
+                PathVector gesture = PathCorrector::distortGesture(idealGesture, i, j);
+                //TODO:: change for incoherent gestures
+                newGestures.push_back(Parser::pathToString(gesture.first()));
+            }
         }
         UsersGestures generatedGesture(usersGestures[object].first, newGestures);
         generatedGestures.insert(object, generatedGesture);
