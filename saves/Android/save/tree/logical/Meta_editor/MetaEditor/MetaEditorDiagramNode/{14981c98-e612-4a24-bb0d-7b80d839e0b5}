@@ -33,9 +33,7 @@
     <incomingUsages type="qReal::IdList"/>
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
-    <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{3ba47bcf-5d7e-4e6f-9114-f565f427cad4}"/>
-    </links>
+    <links type="qReal::IdList"/>
     <QString key="name" value="Layout Diagram"/>
     <QString key="nodeName" value="Layout Diagram"/>
     <outgoingConnections type="qReal::IdList"/>

@@ -15,7 +15,7 @@
     <QString key="labels" value=""/>
     <QString key="lineType" value="solidLine"/>
     <links type="qReal::IdList"/>
-    <QString key="name" value="Contains"/>
+    <QString key="name" value="ContainsIn"/>
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>

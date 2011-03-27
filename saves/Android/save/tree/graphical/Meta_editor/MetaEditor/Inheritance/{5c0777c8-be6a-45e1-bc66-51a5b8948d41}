@@ -1,13 +1,13 @@
 <object logicalId="qrm:/Meta_editor/MetaEditor/Inheritance/{74324dbc-41ee-4286-9c03-ea6eb938ace6}" id="qrm:/Meta_editor/MetaEditor/Inheritance/{5c0777c8-be6a-45e1-bc66-51a5b8948d41}" parent="qrm:/Meta_editor/MetaEditor/MetamodelDiagram/{da3f466a-4306-4d6c-a0c0-1d9e8471a301}">
   <children/>
   <properties>
-    <QPolygon key="configuration" value="0, 0 : -173, 295 : "/>
+    <QPolygon key="configuration" value="0, 0 : -113, 186 : "/>
     <qReal::Id key="from" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{5650a60a-9457-43ba-bce5-aed51225f2b2}"/>
-    <double key="fromPort" value="0.666667"/>
+    <double key="fromPort" value="3.08333"/>
     <links type="qReal::IdList"/>
     <QString key="name" value="(Inheritance)"/>
-    <QPointF key="position" value="2787.26, 3.456"/>
+    <QPointF key="position" value="2844.55, 50.0128"/>
     <qReal::Id key="to" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{29fdded2-3d7d-4036-b1fd-ed8d0de8ed78}"/>
-    <double key="toPort" value="0.605461"/>
+    <double key="toPort" value="2.5"/>
   </properties>
 </object>

@@ -14,7 +14,7 @@
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{d738c545-5d48-47e2-a9ce-4fd7a9ddb6b2}"/>
     </links>
     <QString key="name" value="Grid View"/>
-    <QPointF key="position" value="68.123, 460.472"/>
+    <QPointF key="position" value="68.123, 461.936"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

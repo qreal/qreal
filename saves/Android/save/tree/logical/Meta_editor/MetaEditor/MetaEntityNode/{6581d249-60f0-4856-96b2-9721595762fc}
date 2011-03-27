@@ -12,7 +12,6 @@
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{f3b8a4b7-6dc0-45c5-9cf0-e51d70e01cf1}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{1767a249-53c7-4e96-b910-be7a0da4a784}"/>
     </links>
     <QString key="name" value="List View"/>

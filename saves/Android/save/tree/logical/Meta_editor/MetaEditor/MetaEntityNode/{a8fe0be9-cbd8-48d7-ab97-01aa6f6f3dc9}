@@ -15,7 +15,6 @@
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{2731f106-09af-4a72-b9f7-485d0895465f}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{914962b1-e953-4e70-94a0-3ba2e836d818}"/>
     </links>
     <QString key="name" value="Spinner"/>

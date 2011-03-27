@@ -8,6 +8,6 @@
     <QString key="name" value="(Inheritance)"/>
     <QPointF key="position" value="2829.09, 590.4"/>
     <qReal::Id key="to" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{5650a60a-9457-43ba-bce5-aed51225f2b2}"/>
-    <double key="toPort" value="0.144053"/>
+    <double key="toPort" value="0.1"/>
   </properties>
 </object>
