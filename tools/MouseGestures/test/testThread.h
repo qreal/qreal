@@ -32,8 +32,7 @@ public:
         int objectsNum = usersGestures.keys().size();
         foreach (QString key, usersGestures.keys())
         {
-            PathVector path;
-            path.push_back(usersGestures[key].first);
+            PathVector path = usersGestures[key].first;
             entities.push_back(QPair<QString, PathVector>(key, path));
         }
         AbstractRecognizer * recognizer = new AbstractRecognizer(mGesturesManager, entities);
@@ -47,7 +46,7 @@ public:
             {
                 QApplication::processEvents();
                 allGestures ++;
-                QList<QPoint> path = Parser::stringToPath(pathStr);
+                QList<QList<QPoint> > path = Parser::stringToPath(pathStr);
                 QString recognizedObject = recognizer->recognizeObject(path);
                 if (object == recognizedObject)
                     recognizedGestures ++;

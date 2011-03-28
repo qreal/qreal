@@ -36,9 +36,9 @@ private:
 	void mouseReleaseEvent(QMouseEvent *);
 	void mousePressEvent(QMouseEvent *);
 	void showTable();
+        void showObjectsMenu(QString const & object);
 	void paintEvent(QPaintEvent *);
 //	void addEntities(EntityVector const & entities);
-	QList<QPoint> mCorrectPath;
 	QString mFileName;
 	PaintManager * mPaintManager;
 	void increasePath(double koef);
@@ -56,4 +56,7 @@ private slots:
 	void save();
         void chooseTestAlgorithm();
         void generateGestures();
+        void saveTestGestures();
+        void openTestGestures();
+        void addTestGesture(QAction *);
 };

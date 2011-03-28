@@ -66,7 +66,7 @@ GesturesManager * TestWindow::getGesturesManager()
         TrainingGesturesManager<GridClassifier> * trainingGesturesManager
                 = new TrainingGesturesManager<GridClassifier>();
         QString trainingFile = QFileDialog::getOpenFileName(this, tr("Open Xml"), "",
-                                               tr("Xml files (*.xml)"));
+                                                            tr("Xml files (*.xml)"));
         QMap<QString, UsersGestures> gestures = XmlParser::parseXml(trainingFile);
         foreach (QString object, gestures.keys())
         {
@@ -76,11 +76,9 @@ GesturesManager * TestWindow::getGesturesManager()
             {
                 QApplication::processEvents();
                 qDebug() << "new gesture";
-                PointVector gesture = Parser::stringToPath(path);
-                PathVector paths;
-                paths.append(gesture);
-                if (!trainingGesturesManager->belong(object, paths))
-                    trainingGesturesManager->learn(object, paths);
+                PathVector gesture = Parser::stringToPath(path);
+                if (!trainingGesturesManager->belong(object, gesture))
+                    trainingGesturesManager->learn(object, gesture);
             }
         }
         qDebug() << "learnt";

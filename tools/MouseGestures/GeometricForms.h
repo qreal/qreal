@@ -22,6 +22,10 @@ typedef QPair<QString, Key> IdealGesture;
 
 typedef QList<IdealGesture> IdealGestures;
 
+typedef QPair<QString, QList<QPoint> > GestureObject;
+
+typedef QPair<PathVector, QStringList> UsersGestures;
+
 struct KeyObjectItem
 {
 public:
@@ -42,13 +46,13 @@ typedef QList<KeyObjectItem> KeyObjectItems;
 struct Object
 {
 public:
-	Object(QString const &name, QList<QPoint> const &path)
+        Object(QString const &name, QList<QList<QPoint> > const &path)
 	{
 		this->name = name;
 		this->path = path;
 	}
 	QString name;
-	QList<QPoint> path;
+        QList<QList<QPoint> > path;
 };
 
 typedef QList<Object> Objects;

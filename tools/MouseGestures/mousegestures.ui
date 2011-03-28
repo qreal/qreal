@@ -111,6 +111,8 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="separator"/>
+    <addaction name="actionOpen_test_gestures"/>
+    <addaction name="actionSave_test_gestures"/>
     <addaction name="actionTest"/>
    </widget>
    <widget class="QMenu" name="menuTraininng_algorithm">
@@ -160,6 +162,16 @@
   <action name="actionGenerate_gestures">
    <property name="text">
     <string>Generate gestures</string>
+   </property>
+  </action>
+  <action name="actionSave_test_gestures">
+   <property name="text">
+    <string>Save test gestures</string>
+   </property>
+  </action>
+  <action name="actionOpen_test_gestures">
+   <property name="text">
+    <string>Open test gestures</string>
    </property>
   </action>
  </widget>

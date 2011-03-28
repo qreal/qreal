@@ -7,6 +7,7 @@
 #include "validpathcreator.h"
 #include "pathcorrector.h"
 #include "paintmanager.h"
+#include "adopter.h"
 #include <QDebug>
 
 class GesturesManager
@@ -71,6 +72,12 @@ public:
         mGesturesManager = recognizer;
     }
 
+    AbstractRecognizer(GesturesManager * recognizer, const QMap<QString, UsersGestures> & objects)
+    {
+        mGesturesManager = recognizer;
+        this->mObjects = objects;
+    }
+
     void setIdealGestures(const QList<Entity> & objects)
     {
         mObjects.clear();
@@ -82,7 +89,8 @@ public:
                 paths.push_back(ValidPathCreator::createPath(entity.second));
             else
                 paths = entity.second;
-            mObjects.insert(entity.first, paths);
+            QPair<PathVector, QStringList> pair(paths, QStringList());
+            mObjects.insert(entity.first, pair);
             gestures.insert(entity.first, paths);
         }
         mGesturesManager->initIdealGestures(gestures);
@@ -90,10 +98,12 @@ public:
 
     QString recognizeObject()
     {
-        if (mObjects.empty())
-            return "";
         QString recognizedObject;
         mGesturesManager->setKey(mGesture);
+        mLastGesture = Parser::pathToString(mGesture);
+        mGesture.clear();
+        if (mObjects.empty())
+            return "";
         double minDist = mGesturesManager->getMaxDistance(mObjects.keys().at(0));
         foreach (QString object, mObjects.keys())
         {
@@ -105,7 +115,6 @@ public:
                 recognizedObject = object;
             }
         }
-        mGesture.clear();
         return recognizedObject;
     }
 
@@ -138,9 +147,9 @@ public:
     void drawGesture(QString const & object, PaintManager * paintManager)
     {
         if (mGesturesManager->isMultistroke())
-            paintManager->drawGesture(mObjects[object]);
+            paintManager->drawGesture(mObjects[object].first);
         else
-            paintManager->drawGesture(mObjects[object].back());
+            paintManager->drawGesture(mObjects[object].first.back());
     }
 
     PathVector getGesture()
@@ -148,15 +157,24 @@ public:
         return mGesture;
     }
 
-    QString recognizeObject(QList<QPoint> const & gesture)
+    QString recognizeObject(PathVector const & gesture)
     {
-        mGesture.clear();
-        mGesture.append(gesture);
+        mGesture = gesture;
         return recognizeObject();
+    }
+    void saveGesture(const QString & name)
+    {
+        mObjects[name].second.push_back(mLastGesture);
+    }
+
+    QMap<QString, QPair<PathVector, QStringList> > getAllGestures()
+    {
+        return mObjects;
     }
 
 private:
     GesturesManager * mGesturesManager;
-    QMap<QString, PathVector> mObjects;
+    QMap<QString, QPair<PathVector, QStringList> > mObjects;
+    QString mLastGesture;
     PathVector mGesture;
 };
