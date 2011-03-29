@@ -307,6 +307,19 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	emit elementCreated(id);
 }
 
+void EditorViewScene::copy()
+{
+	mCopiedNode = dynamic_cast<UML::NodeElement*>(selectedItems()[0]);
+}
+
+void EditorViewScene::paste()
+{
+	if (mCopiedNode)
+		mCopiedNode->clone();
+	else
+		qDebug() << "paste attempt on NULL";
+}
+
 UML::Element* EditorViewScene::getLastCreated()
 {
 	return lastCreatedWithEdge;
@@ -320,6 +333,10 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 	} else if (event->key() == Qt::Key_Delete) {
 		// Delete selected elements from scene
 		mainWindow()->deleteFromScene();
+	} else if (event->matches(QKeySequence::Paste)) {
+		paste();
+	} else if (event->matches(QKeySequence::Copy)) {
+		copy();
 	} else
 		QGraphicsScene::keyPressEvent(event);
 }
@@ -605,6 +622,8 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+	mCurrentMousePos = event->scenePos();
+
 	// button isn't recognized while mouse moves
 	if (mRightButtonPressed)
 	{
@@ -613,6 +632,11 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 	else
 		QGraphicsScene::mouseMoveEvent(event);
+}
+
+QPointF EditorViewScene::getMousePos()
+{
+	return mCurrentMousePos;
 }
 
 

@@ -78,7 +78,8 @@ NodeElement *NodeElement::clone()
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
 	
 	qReal::Id typeId = id().type();
-	qReal::Id *elemId = evscene->createElement(typeId.toString(), QPointF(qrand() % 1000, qrand() % 1000));
+	QPointF pos = evscene->getMousePos();
+	qReal::Id *elemId = evscene->createElement(typeId.toString(), pos);
 
 	NodeElement *result = dynamic_cast<NodeElement*>(evscene->getElem(*elemId));
 
@@ -98,7 +99,7 @@ void NodeElement::copyChildren(NodeElement *source)
 		NodeElement *element = dynamic_cast<NodeElement*>(child);
 		if (element) {
 			NodeElement *copyOfChild = element->clone();
-			mGraphicalAssistApi->changeParent(copyOfChild->id(), id(), mapFromScene(element->scenePos()));
+			mGraphicalAssistApi->changeParent(copyOfChild->id(), id(),element->pos());
 		}
 	}
 }
