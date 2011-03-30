@@ -33,22 +33,27 @@ QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const & path)
     return mousePath;
 }
 
-QList<QPoint> PathCorrector::correctPath(QList<QPoint> const & path)
+PathVector PathCorrector::correctPath(PathVector const & gesture)
 {
-    QList<QPoint> newPath;
-    if (path.isEmpty())
-        return newPath;
-    QPoint previousPoint = path[0];
-    for (int i = 1; i < path.size(); i++)
+    PathVector newGesture;
+    if (gesture.isEmpty())
+        return newGesture;
+    foreach (PointVector path, gesture)
     {
-        QPoint currentPoint = path[i];
-        double speed = (currentPoint - previousPoint).manhattanLength();
-        double b = sense * (1 - 1 / exp(speedKoef * speed));
-        previousPoint.setX((int) (b * currentPoint.x() + (1 - b) * previousPoint.x()));
-        previousPoint.setY((int) (b * currentPoint.y() + (1 - b) * previousPoint.y()));
-        newPath.push_back(previousPoint);
+        PointVector newPath;
+        QPoint previousPoint = path[0];
+        for (int i = 1; i < path.size(); i++)
+        {
+            QPoint currentPoint = path[i];
+            double speed = (currentPoint - previousPoint).manhattanLength();
+            double b = sense * (1 - 1 / exp(speedKoef * speed));
+            previousPoint.setX((int) (b * currentPoint.x() + (1 - b) * previousPoint.x()));
+            previousPoint.setY((int) (b * currentPoint.y() + (1 - b) * previousPoint.y()));
+            newPath.push_back(previousPoint);
+        }
+        newGesture.push_back(newPath);
     }
-    return newPath;
+    return newGesture;
 }
 
 bool PathCorrector::isLine(QList<QPoint> const & path)

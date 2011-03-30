@@ -55,8 +55,13 @@ public:
     }
     static double getSquaresCurveDistance(const Key & currentKey1, const Key & currentKey2)
     {
-        return std::max(getNearestSquaresDist(currentKey1, currentKey2),
-                        getNearestSquaresDist(currentKey2, currentKey1));
+        double dist1 = std::max(getNearestSquaresDistPInfinit(currentKey1, currentKey2),
+                                getNearestSquaresDistPInfinit(currentKey2, currentKey1));
+        double dist2 = getNearestSquaresDistP1(currentKey1, currentKey2);
+        double dist3 = getNearestSquaresDistP1(currentKey2, currentKey1);
+        //qDebug() << "max" << dist1 << "sums" << dist2 << dist3;
+        return dist1 + dist2 + dist3;
+
     }
     static double norm(const SquarePos &pos1, const SquarePos &pos2)
     {
@@ -74,11 +79,11 @@ private:
         return newKey;
     }
 
-    static double getNearestSquaresDist(const Key & key, const Key & figure)
+    static double getNearestSquaresDistPInfinit(const Key & key, const Key & figure)
     {
         double figureDist = 0;
         if (key.isEmpty())
-            return 0;
+            return figure.size();
         foreach (SquarePos position, figure)
         {
             double dist = norm(position, key.at(0));
@@ -90,5 +95,24 @@ private:
             figureDist = std::max(dist, figureDist);
         }
         return figureDist;
+    }
+    static double getNearestSquaresDistP1(const Key & key, const Key & figure)
+    {
+        double figureDist = 0;
+        if (key.isEmpty())
+            return figure.size();
+        if (figure.isEmpty())
+            return key.size();
+        foreach (SquarePos position, figure)
+        {
+            double dist = norm(position, key.at(0));
+            foreach (SquarePos pos, key)
+            {
+                if (norm(pos, position) < dist)
+                    dist = norm(pos, position);
+            }
+            figureDist += dist;
+        }
+        return figureDist / figure.size();
     }
 };

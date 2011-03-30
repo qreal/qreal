@@ -6,7 +6,7 @@
 class PathCorrector
 {
 public:
-    static QList<QPoint> correctPath(QList<QPoint> const & path);
+    static PathVector correctPath(PathVector const & path);
     static bool isLine(QList<QPoint> const & path);
     static QList<QPoint> getMousePath(QList<QPoint> const & path);
     static QList<QPoint> rotate(QList<QPoint> const & path);

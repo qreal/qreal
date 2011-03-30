@@ -12,8 +12,8 @@ public:
         {
             for (int j = 0; j < size - i - 1; j++)
             {
-                if (key.at(j).first < key.at(j + 1).first
-                    || (key.at(j).second < key.at(j + 1).second
+                if (key.at(j).first > key.at(j + 1).first
+                    || (key.at(j).second > key.at(j + 1).second
                         && key.at(j).first == key.at(j + 1).first))
                 {
                     key.insert(j, key.at(j+1));

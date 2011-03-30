@@ -7,7 +7,7 @@
 
 static const double keyDistance = 200;
 static const int size = 8;
-static const double e = 0.45;
+static const double e = 10;
 static const int gridSize = 80;//gridSize = 100 recognition = 833 gestures
 
 class LevenshteinHullGesturesManager : public GesturesRecognizer<Key>
@@ -137,5 +137,32 @@ protected:
     Key getKey(PathVector const & path)
     {
         return KeyBuilder::getKey(path, gridSize, gridSize);
+    }
+};
+
+class SimpleMultistrokeManager : public GesturesRecognizer<Key>
+{
+public:
+    SimpleMultistrokeManager() {}
+    double getMaxDistance(QString const &)
+    {
+        return keyDistance;
+    }
+
+    bool isMultistroke()
+    {
+        return true;
+    }
+
+protected:
+    double getDistance(Key const & key1, Key const & key2)
+    {
+        return Distance::getLevenshteinDistance(key1, key2);
+    }
+
+    Key getKey(PathVector const & path)
+    {
+        Key key = KeyBuilder::getKey(path, size, size);
+        return key;
     }
 };

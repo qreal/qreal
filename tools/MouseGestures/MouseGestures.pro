@@ -12,7 +12,10 @@ SOURCES += main.cpp \
 	adopter.cpp \
 	paintmanager.cpp \
     test/testwindow.cpp \
-    test/xmlparser.cpp
+    test/xmlparser.cpp \
+    multistrokeRecognizers/sumMultistrokeGesturesManager.cpp \
+    multistrokeRecognizers/rectanglegesturesmanager.cpp \
+    multistrokeRecognizers/nearestposgridgesturesmanager.cpp
 HEADERS += mousegestures.h \
 	pathcorrector.h \
 	serializer.h \
@@ -30,6 +33,10 @@ HEADERS += mousegestures.h \
     multistrokeRecognizers/multistrokeGesturesManagers.h \
     TrainingGesturesManager/TrainingGesturesManager.h \
     NeuralNetwork/neuralnetwork.h \
-    test/testThread.h
+    test/testThread.h \
+    multistrokeRecognizers/sumMultistrokeGesturesManager.h \
+    multistrokeRecognizers/gridKeyBuilder.h \
+    multistrokeRecognizers/rectanglegesturesmanager.h \
+    multistrokeRecognizers/nearestposgridgesturesmanager.h
 FORMS += mousegestures.ui \
     test/testwindow.ui
