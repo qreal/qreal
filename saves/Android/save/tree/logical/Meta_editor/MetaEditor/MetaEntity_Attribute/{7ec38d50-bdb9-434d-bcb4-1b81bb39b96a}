@@ -1,0 +1,16 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{7ec38d50-bdb9-434d-bcb4-1b81bb39b96a}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{96194a16-5a0a-4b84-a4d2-943bb2282624}">
+  <children/>
+  <properties>
+    <QString key="attributeType" value="String"/>
+    <QString key="defaultValue" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="text"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

@@ -1,0 +1,16 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{2321c84e-3d89-46ac-add9-8b6ab61926cd}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{e00e62b3-e1d6-473e-acdd-3e6da4bdda2e}">
+  <children/>
+  <properties>
+    <QString key="attributeType" value="Layout Diagram"/>
+    <QString key="defaultValue" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="layout"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

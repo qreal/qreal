@@ -1,0 +1,13 @@
+<object logicalId="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{ac16154f-9ba9-4702-bc78-f62b79b0765f}" id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{fae406ae-34c4-49ed-9aff-5e3d65c6ab72}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{2b3b1cfb-806a-4857-b116-047d0a5736fd}">
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 150, 0 : 150, 100 : 0, 100 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="Show Progress Wheel"/>
+    <QPointF key="position" value="368.594, 278.968"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>

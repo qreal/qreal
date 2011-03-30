@@ -1,0 +1,30 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{9fabc612-46a7-46c4-95bc-75ddddc953c6}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{14981c98-e612-4a24-bb0d-7b80d839e0b5}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{56a3380b-3fae-415e-973d-647ad1ce6284}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{6426d1d1-59f1-43af-81d1-c7496075847e}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{ce0bcc26-3d90-4f92-8ba1-5af9f71617f8}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{b79d9715-7542-42c8-a766-d39107b321d5}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{3d36a4ad-7e1d-4710-99b9-6ed57627e4a3}"/>
+  </children>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isResizeable" value=""/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{212926d8-f4b7-4d17-a4ab-97db320ada97}"/>
+    </links>
+    <QString key="name" value="Grid View"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value=""/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

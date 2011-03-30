@@ -1,0 +1,28 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{8afdb355-4f81-4bce-aeac-a366731da76a}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{14981c98-e612-4a24-bb0d-7b80d839e0b5}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{eaeab209-26be-4181-a101-0f768975c6ca}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{23876b53-5ad1-4ed2-9f83-e2e2325fee08}"/>
+  </children>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isResizeable" value=""/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{41fa87ad-1f83-4a80-91f1-9eb3834e3856}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{3fa4c9ac-6b70-4745-980a-5af0426a556a}"/>
+    </links>
+    <QString key="name" value="Button"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value=""/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

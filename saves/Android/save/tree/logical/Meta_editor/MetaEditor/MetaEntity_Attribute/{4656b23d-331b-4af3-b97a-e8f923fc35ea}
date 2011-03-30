@@ -1,0 +1,16 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{4656b23d-331b-4af3-b97a-e8f923fc35ea}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{394ae0ea-72e9-45b5-9fe5-cc83317f8928}">
+  <children/>
+  <properties>
+    <QString key="attributeType" value="Toast Duration Value"/>
+    <QString key="defaultValue" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="duration"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

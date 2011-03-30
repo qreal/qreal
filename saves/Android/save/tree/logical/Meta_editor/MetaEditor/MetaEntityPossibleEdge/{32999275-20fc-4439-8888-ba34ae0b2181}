@@ -1,0 +1,16 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{32999275-20fc-4439-8888-ba34ae0b2181}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{1795e6b0-f653-4c30-8d0a-0e4102590c94}">
+  <children/>
+  <properties>
+    <QString key="beginName" value="Text"/>
+    <QString key="directed" value="true"/>
+    <QString key="endName" value="Variable"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(Possible Edge)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

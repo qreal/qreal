@@ -1,0 +1,30 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{62874097-b4e0-4694-bb9e-286df64ee873}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{14981c98-e612-4a24-bb0d-7b80d839e0b5}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{f876186f-3c13-48b7-851b-d7ff4bbc55e9}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{6b64bacb-1c89-4093-9e9e-ca6749c855c1}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{5a4e3496-cb7a-4c93-b5a1-4c04f16f37a5}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{ab0764ba-4529-46fe-a142-e8f09bed367c}"/>
+  </children>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isResizeable" value=""/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{031f5d0a-1002-44a0-bda9-0bb967bb4900}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{815efd40-2a65-4916-83be-37fa8f2a74ed}"/>
+    </links>
+    <QString key="name" value="List of Text Views"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value=""/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

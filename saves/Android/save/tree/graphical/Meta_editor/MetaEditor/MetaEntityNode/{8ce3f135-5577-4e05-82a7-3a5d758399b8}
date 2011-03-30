@@ -1,0 +1,16 @@
+<object logicalId="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{1af23b25-5d2a-4fbf-839b-0399dc67f1da}" id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{8ce3f135-5577-4e05-82a7-3a5d758399b8}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{2b3b1cfb-806a-4857-b116-047d0a5736fd}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{8d95aad4-e121-44b0-9281-8772e6fd0219}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{c971ad04-51c0-4d69-9997-cc39c43397e5}"/>
+  </children>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 190, 0 : 190, 112 : 0, 112 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="Create Custom Toast Notification"/>
+    <QPointF key="position" value="351.43, 699.149"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>

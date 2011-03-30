@@ -1,0 +1,19 @@
+<object logicalId="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{8795f8fc-4afb-45b0-8706-f135b545ad22}" id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{c6ba283e-0688-4479-befb-5233cf57869d}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{2b3b1cfb-806a-4857-b116-047d0a5736fd}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{ae77f4bd-47f2-4c5b-a831-7f5052db6454}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{382cc024-53b0-44f3-bb7a-77de79556ba1}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{6537711d-55ff-48dd-8081-dbbb212a0253}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{39dd20c5-8eb1-4ca2-ac69-1a2c1597dddf}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{97233768-c2f5-408f-9433-27d6c776f167}"/>
+  </children>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 190, 0 : 190, 175 : 0, 175 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="Show Text Dialog"/>
+    <QPointF key="position" value="74.88, 780.376"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>
