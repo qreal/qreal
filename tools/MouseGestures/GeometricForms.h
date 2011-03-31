@@ -4,6 +4,10 @@
 #include <QPoint>
 #include <QPair>
 
+static const double e = 10;
+
+static const int gridSize = 80;//gridSize = 100 recognition = 833 gestures
+
 typedef QList<QPoint> PointVector;
 
 typedef QList<PointVector> PathVector;

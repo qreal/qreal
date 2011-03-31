@@ -9,6 +9,9 @@
 #include "multistrokeRecognizers/curveKeyBuilder.h"
 #include "multistrokeRecognizers/distance.h"
 
+//static const double e = 10;
+//static const int gridSize = 80;//gridSize = 100 recognition = 833 gestures
+
 class GridClassifier
 {
 public:

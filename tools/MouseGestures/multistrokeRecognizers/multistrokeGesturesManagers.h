@@ -7,8 +7,6 @@
 
 static const double keyDistance = 200;
 static const int size = 8;
-static const double e = 10;
-static const int gridSize = 80;//gridSize = 100 recognition = 833 gestures
 
 class LevenshteinHullGesturesManager : public GesturesRecognizer<Key>
 {

@@ -3,9 +3,6 @@
 #include "sorts.h"
 #include "QDebug"
 
-const int rectSize = 80;
-
-//TODO::kill copy past
 RectangleGesturesManager::RectangleGesturesManager()
 {
 }
@@ -23,19 +20,19 @@ double RectangleGesturesManager::getDistance(double * const & key1, double * con
 {
     double norm = 0;
     double sum = 0;
-    for (int i = 0; i < rectSize * rectSize; i ++)
+    for (int i = 0; i < gridSize * gridSize; i ++)
     {
         sum += std::abs(key1[i] - key2[i]);
         norm = std::max(norm, std::abs(key1[i] - key2[i]));
     }
-    return sum / (rectSize * rectSize);
+    return sum / (gridSize * gridSize);
 }
 
 double * RectangleGesturesManager::getKey(PathVector const & path)
 {
-    Key key = KeyBuilder::getKey(path, rectSize - 1, rectSize - 1);
-    double * finalKey = new double[rectSize * rectSize];
-    for (int i = 0; i < rectSize * rectSize; i ++)
+    Key key = KeyBuilder::getKey(path, gridSize - 1, gridSize - 1);
+    double * finalKey = new double[gridSize * gridSize];
+    for (int i = 0; i < gridSize * gridSize; i ++)
     {
         finalKey[i] = key.size();
     }
@@ -46,7 +43,7 @@ double * RectangleGesturesManager::getKey(PathVector const & path)
         {
             for (int j = 0; j < pos.second; j ++)
             {
-                finalKey[i * rectSize + j] --;
+                finalKey[i * gridSize + j] --;
             }
         }
     }

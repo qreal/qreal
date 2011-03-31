@@ -4,9 +4,9 @@
 #include "multistrokeRecognizers/rectanglegesturesmanager.h"
 #include "multistrokeRecognizers/sumMultistrokeGesturesManager.h"
 #include "multistrokeRecognizers/nearestposgridgesturesmanager.h"
+#include "multistrokeRecognizers/rectangleClassifier.h"
 #include "xmlparser.h"
 #include "adopter.h"
-#include "NeuralNetwork/neuralNetwork.h"
 #include "testThread.h"
 #include <QFileDialog>
 #include <QApplication>
@@ -22,6 +22,9 @@ const QString trainingGesturesManagerAlgorithm = "training algorithm";
 const QString sumGesturesRecognizeAlgorithm = "sum positions algorithm";
 const QString rectangleGesturesAlgorithm = "rectangle gestures algorithm";
 const QString nearestPosGridAlgorithm = "distance grid algorithm";
+const QString sumGesturesTrainingAlgorithm = "sum positions training algorithm";
+const QString rectangleGesturesTrainingAlgorithm = "rectangle gestures training algorithm";
+const QString nearestPosGridTrainingAlgorithm = "distance grid training algorithm";
 
 TestWindow::TestWindow(QWidget *parent) :
         QMainWindow(parent),
@@ -37,6 +40,9 @@ TestWindow::TestWindow(QWidget *parent) :
     ui->cbAlgorithm->addItem(sumGesturesRecognizeAlgorithm, QVariant());
     ui->cbAlgorithm->addItem(rectangleGesturesAlgorithm, QVariant());
     ui->cbAlgorithm->addItem(nearestPosGridAlgorithm, QVariant());
+    ui->cbAlgorithm->addItem(sumGesturesTrainingAlgorithm, QVariant());
+    ui->cbAlgorithm->addItem(rectangleGesturesTrainingAlgorithm, QVariant());
+    ui->cbAlgorithm->addItem(nearestPosGridTrainingAlgorithm, QVariant());
     connect(ui->bTest, SIGNAL(clicked()), this, SLOT(test()));
     ui->pbTested->setValue(0);
 }
@@ -74,24 +80,7 @@ GesturesManager * TestWindow::getGesturesManager()
     {
         TrainingGesturesManager<GridClassifier> * trainingGesturesManager
                 = new TrainingGesturesManager<GridClassifier>();
-        QString trainingFile = QFileDialog::getOpenFileName(this, tr("Open Xml"), "",
-                                                            tr("Xml files (*.xml)"));
-        QMap<QString, UsersGestures> gestures = XmlParser::parseXml(trainingFile);
-        foreach (QString object, gestures.keys())
-        {
-            UsersGestures paths = gestures[object];
-            trainingGesturesManager->learn(object, paths.first);
-            foreach (QString path, paths.second)
-            {
-                QApplication::processEvents();
-                qDebug() << "new gesture";
-                PathVector gesture = Parser::stringToPath(path);
-                if (!trainingGesturesManager->belong(object, gesture))
-                    trainingGesturesManager->learn(object, gesture);
-            }
-        }
-        qDebug() << "learnt";
-        return trainingGesturesManager;
+        return getTrainingGesturesManager(trainingGesturesManager);
     }
     else if (name == sumGesturesRecognizeAlgorithm)
     {
@@ -102,9 +91,49 @@ GesturesManager * TestWindow::getGesturesManager()
         return new RectangleGesturesManager();
     else if (name == nearestPosGridAlgorithm)
         return new NearestPosGridGesturesManager();
+    else if (name == sumGesturesTrainingAlgorithm)
+    {
+        TrainingGesturesManager<RectangleClassifier<SumGesturesManager> > * trainingGM =
+                new TrainingGesturesManager<RectangleClassifier<SumGesturesManager> >();
+        return getTrainingGesturesManager(trainingGM);
+    }
+    else if (name == rectangleGesturesTrainingAlgorithm)
+    {
+        TrainingGesturesManager<RectangleClassifier<RectangleGesturesManager> > * trainingGM =
+                new TrainingGesturesManager<RectangleClassifier<RectangleGesturesManager> >();
+        return getTrainingGesturesManager(trainingGM);
+    }
+    else if (name == nearestPosGridTrainingAlgorithm)
+    {
+        TrainingGesturesManager<RectangleClassifier<NearestPosGridGesturesManager> > * trainingGM =
+                new TrainingGesturesManager<RectangleClassifier<NearestPosGridGesturesManager> >();
+        return getTrainingGesturesManager(trainingGM);
+    }
     else return new OneSizeHullGesturesManager();
 }
-
+template <typename T>
+        GesturesManager * TestWindow::getTrainingGesturesManager
+        (TrainingGesturesManager<T> *const & trainingGesturesManager)
+{
+    QString trainingFile = QFileDialog::getOpenFileName(this, tr("Open Xml"), "",
+                                                        tr("Xml files (*.xml)"));
+    QMap<QString, UsersGestures> gestures = XmlParser::parseXml(trainingFile);
+    foreach (QString object, gestures.keys())
+    {
+        UsersGestures paths = gestures[object];
+        trainingGesturesManager->learn(object, paths.first);
+        foreach (QString path, paths.second)
+        {
+            QApplication::processEvents();
+            qDebug() << "new gesture";
+            PathVector gesture = Parser::stringToPath(path);
+            //if (!trainingGesturesManager->belong(object, gesture))
+            trainingGesturesManager->learn(object, gesture);
+        }
+    }
+    qDebug() << "learnt";
+    return trainingGesturesManager;
+}
 
 TestWindow::~TestWindow()
 {

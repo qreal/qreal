@@ -3,8 +3,6 @@
 #include "sorts.h"
 #include "QDebug"
 
-const int rectSize = 80;
-
 double SumGesturesManager::getMaxDistance(QString const &)
 {
     return 1000;
@@ -18,33 +16,33 @@ double SumGesturesManager::getDistance(double * const & key1, double * const & k
 {
     double norm = 0;
     double sum = 0;
-    for (int i = 0; i < rectSize * rectSize; i ++)
+    for (int i = 0; i < gridSize * gridSize; i ++)
     {
         sum += std::abs(key1[i] - key2[i]);
         norm = std::max(norm, std::abs(key1[i] - key2[i]));
     }
-    //return norm / (rectSize * rectSize);
-    return norm + sum / (rectSize * rectSize);
+    //return norm / (gridSize * gridSize);
+    return norm + sum / (gridSize * gridSize);
 }
 
 double * SumGesturesManager::getKey(PathVector const & path)
 {
-    Key key = KeyBuilder::getKey(path, rectSize - 1, rectSize - 1);
+    Key key = KeyBuilder::getKey(path, gridSize - 1, gridSize - 1);
     key = Sorting::sortPicture(key);
     int sum = 1;
-    double * finalKey = new double[rectSize * rectSize];
-    for (int i = 0; i < rectSize * rectSize; i ++)
+    double * finalKey = new double[gridSize * gridSize];
+    for (int i = 0; i < gridSize * gridSize; i ++)
     {
         finalKey[i] = 0;
     }
     for (int i = 0; i < key.size(); i ++)
     {
         SquarePos prevPos = key.at(i);
-        SquarePos nextPos(rectSize - 1, rectSize - 1);
+        SquarePos nextPos(gridSize - 1, gridSize - 1);
         if (i != key.size() - 1)
             nextPos = key.at(i + 1);
-        for (int j = prevPos.first * rectSize + prevPos.second;
-             j <= nextPos.first * rectSize + nextPos.second; j++)
+        for (int j = prevPos.first * gridSize + prevPos.second;
+             j <= nextPos.first * gridSize + nextPos.second; j++)
         {
             finalKey[j] = sum;
             //qDebug() << sum << nextPos;

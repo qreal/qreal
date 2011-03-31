@@ -37,6 +37,7 @@ HEADERS += mousegestures.h \
     multistrokeRecognizers/sumMultistrokeGesturesManager.h \
     multistrokeRecognizers/gridKeyBuilder.h \
     multistrokeRecognizers/rectanglegesturesmanager.h \
-    multistrokeRecognizers/nearestposgridgesturesmanager.h
+    multistrokeRecognizers/nearestposgridgesturesmanager.h \
+    multistrokeRecognizers/rectangleClassifier.h
 FORMS += mousegestures.ui \
     test/testwindow.ui
