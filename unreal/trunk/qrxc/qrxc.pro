@@ -1,6 +1,9 @@
 TEMPLATE = app
 QT += xml gui
 CONFIG += console
+macx {
+	CONFIG -= app_bundle
+}
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
 

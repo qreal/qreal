@@ -21,8 +21,10 @@ win32 {
 		DESTDIR = ../qrgui
 }
 
-CONFIG += rpath_libdirs
-QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD),-rpath,$(PWD)/../qrgui"
+!macx {
+	CONFIG += rpath_libdirs
+	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD),-rpath,$(PWD)/../qrgui"
+}
 
 # Input
 HEADERS += metaCompiler.h \
