@@ -96,20 +96,20 @@ void MouseGestures::contextMenuEvent(QContextMenuEvent *event)
 
 void MouseGestures::rotatePath()
 {
-//    QString pathStr = ui->twObjectPathTable->currentItem()->text();
-//    QList<QPoint> path = Parser::stringToPath(pathStr);
-//    path = PathCorrector::rotate(path);
-//    ui->twObjectPathTable->currentItem()->setText(Parser::pathToString(path));
-//    //TODO:: add changing path for single-stroke gestures
+    //    QString pathStr = ui->twObjectPathTable->currentItem()->text();
+    //    QList<QPoint> path = Parser::stringToPath(pathStr);
+    //    path = PathCorrector::rotate(path);
+    //    ui->twObjectPathTable->currentItem()->setText(Parser::pathToString(path));
+    //    //TODO:: add changing path for single-stroke gestures
 }
 
 void MouseGestures::increasePath(double koef)
 {
-//    QString pathStr = ui->twObjectPathTable->currentItem()->text();
-//    QList<QPoint> path = Parser::stringToPath(pathStr);
-//    path = PathCorrector::increase(path, koef);
-//    ui->twObjectPathTable->currentItem()->setText(Parser::pathToString(path));
-//    //TODO:: add changing path for single-stroke gestures
+    //    QString pathStr = ui->twObjectPathTable->currentItem()->text();
+    //    QList<QPoint> path = Parser::stringToPath(pathStr);
+    //    path = PathCorrector::increase(path, koef);
+    //    ui->twObjectPathTable->currentItem()->setText(Parser::pathToString(path));
+    //    //TODO:: add changing path for single-stroke gestures
 }
 
 void MouseGestures::increasePath()
@@ -196,7 +196,13 @@ void MouseGestures::keyPressEvent(QKeyEvent * event)
     if (event->key() != Qt::Key_Return)
         return;
     QString object = mRecognizer->recognizeObject();
-    showObjectsMenu(object);
+    if (ui->twObjectPathTable->rowCount() != 0)
+    {
+        QTableWidgetItem * currentItem = ui->twObjectPathTable->currentItem();
+        if (currentItem != NULL)
+            mRecognizer->saveGesture(currentItem->text());
+    }
+    //showObjectsMenu(object);
     //mCorrectPath = PathCorrector::correctPath(mMousePath);
     ui->teObject->setText(object);
     this->update();
