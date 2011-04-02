@@ -22,6 +22,30 @@ Object::Object(const Id &id) : mId(id)
 {
 }
 
+Object *Object::clone(QHash<Id, Object*> objHash) const
+{
+	Id resultId = id().sameTypeId();
+	Object *result = new Object(resultId);
+	objHash.insert(resultId, result);
+
+	foreach (Id childId, mChildren) {
+		Object *child = objHash[childId]->clone(id(), objHash);
+		result->addChild(child->id());
+	}
+
+	result->mProperties = mProperties;
+
+	return result;
+}
+
+Object *Object::clone(const Id &parent, QHash<Id, Object*> objHash) const
+{
+	Object *result = clone(objHash);
+	result->setParent(parent);
+	
+	return result;
+}
+
 void Object::setParent(const Id &parent)
 {
 	mParent = parent;
