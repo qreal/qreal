@@ -22,7 +22,7 @@ Object::Object(const Id &id) : mId(id)
 {
 }
 
-Object *Object::clone(QHash<Id, Object*> objHash) const
+Object *Object::clone(QHash<Id, Object*> &objHash) const
 {
 	Id resultId = id().sameTypeId();
 	Object *result = new Object(resultId);
@@ -38,11 +38,11 @@ Object *Object::clone(QHash<Id, Object*> objHash) const
 	return result;
 }
 
-Object *Object::clone(const Id &parent, QHash<Id, Object*> objHash) const
+Object *Object::clone(const Id &parent, QHash<Id, Object*> &objHash) const
 {
 	Object *result = clone(objHash);
 	result->setParent(parent);
-	
+
 	return result;
 }
 
