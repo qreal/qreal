@@ -77,15 +77,8 @@ NodeElement *NodeElement::clone()
 {
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
 	
-	qReal::Id typeId = id().type();
-	QPointF pos = evscene->getMousePos();
-	qReal::Id *elemId = evscene->createElement(typeId.toString(), pos);
-
-	NodeElement *result = dynamic_cast<NodeElement*>(evscene->getElem(*elemId));
-
-	result->copyChildren(this);
-
-	return result;
+	Id resultId = mGraphicalAssistApi->copyElement(id());
+	return dynamic_cast<NodeElement*>(evscene->getElem(resultId));
 }
 
 void NodeElement::copyAndPlaceOnDiagram()
@@ -106,7 +99,7 @@ void NodeElement::copyChildren(NodeElement *source)
 
 void NodeElement::copyEdges(NodeElement *source)
 {
-
+	Q_UNUSED(source);
 }
 
 void NodeElement::setName(QString value)
@@ -450,9 +443,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	// dirty hack, placed here because dblclick didn't seem to work
-	//clone();
-
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
@@ -525,6 +515,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
+	Q_UNUSED(event)
 	qDebug() << "dblclck";
 }
 

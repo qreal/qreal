@@ -18,7 +18,7 @@ namespace qrRepo {
 		explicit RepoApi(QString const &workingDirectory);
 		// Default destructor ok.
 
-		virtual qReal::Id copy(qReal::Id src);
+		qReal::Id copy(qReal::Id const &src);
 
 		QString name(qReal::Id const &id) const;
 		void setName(qReal::Id const &id, QString const &name);
