@@ -3,7 +3,6 @@
 #include <QPoint>
 #include <QMap>
 #include <QDomNodeList>
-#include <QFile>
 #include "GeometricForms.h"
 
 class XmlParser
@@ -15,6 +14,6 @@ public:
 
 private:
     static QList<QString> getUsersGestures(const QDomNodeList & list);
-    static void saveDocument(const QMap<QString, UsersGestures> &map, QDomDocument doc, QFile * file);
+    static void saveDocument(const QMap<QString, UsersGestures> &map, QDomDocument doc, QString const & file);
 };
 

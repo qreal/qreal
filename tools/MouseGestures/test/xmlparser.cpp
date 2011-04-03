@@ -4,6 +4,7 @@
 #include <QDomElement>
 #include <QStringList>
 #include <QTextStream>
+#include <QDebug>
 
 const QString gestureKeyWord = "gesture";
 const QString idealPathKeyWord = "idealPath";
@@ -62,7 +63,7 @@ void XmlParser::save(const QMap<QString, UsersGestures> &map,
     QDomDocument doc;
     QDomElement root = doc.createElement("usersGestures");
     doc.appendChild(root);
-    saveDocument(map, doc, &file);
+    saveDocument(map, doc, pathToFile);
 }
 
 void XmlParser::saveMore(const QMap<QString, UsersGestures> &mapGestures, const QString &fileName)
@@ -74,8 +75,11 @@ void XmlParser::saveMore(const QMap<QString, UsersGestures> &mapGestures, const 
         save(map, fileName);
         return;
     }
+    if (!file.open(QIODevice::ReadWrite))
+        return;
     QDomDocument doc("document");
     doc.setContent(&file);
+    file.close();
     QDomNodeList elements = doc.elementsByTagName(gestureKeyWord);
     for (int i = 0; i < elements.size(); i++)
     {
@@ -90,13 +94,16 @@ void XmlParser::saveMore(const QMap<QString, UsersGestures> &mapGestures, const 
         }
         map.remove(name);
     }
-    saveDocument(map, doc, &file);
+    saveDocument(map, doc, fileName);
 }
 
 void XmlParser::saveDocument(const QMap<QString, UsersGestures> &map, QDomDocument doc,
-                             QFile * file)
+                             QString const & fileName)
 {
-    QTextStream textStream(file);
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadWrite))
+        return;
+    QTextStream textStream(&file);
     foreach (QString name, map.keys())
     {
         QDomElement element = doc.createElement(gestureKeyWord);
@@ -110,6 +117,7 @@ void XmlParser::saveDocument(const QMap<QString, UsersGestures> &map, QDomDocume
         }
         doc.documentElement().appendChild(element);
     }
+    qDebug() << doc.elementsByTagName("usersGestures").size();
     doc.save(textStream, 2);
-    file->close();
+    file.close();
 }

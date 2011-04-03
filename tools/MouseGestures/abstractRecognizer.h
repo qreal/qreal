@@ -77,6 +77,7 @@ public:
     {
         mGesturesManager = recognizer;
         this->mObjects = objects;
+        clearUsersGestures();
     }
 
     void setIdealGestures(const QList<Entity> & objects)
@@ -171,6 +172,11 @@ public:
     QMap<QString, QPair<PathVector, QStringList> > getAllGestures()
     {
         return mObjects;
+    }
+    void clearUsersGestures()
+    {
+        foreach (QString object, mObjects.keys())
+            mObjects[object].second.clear();
     }
 
 private:
