@@ -91,6 +91,11 @@ Id Id::type() const
 	return Id(mEditor, mDiagram, mElement);
 }
 
+Id Id::sameTypeId() const
+{
+	return Id(mEditor, mDiagram, mElement, QUuid::createUuid().toString());
+}
+
 unsigned Id::idSize() const
 {
 	if (mId != "")

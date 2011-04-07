@@ -17,6 +17,7 @@ using namespace qReal;
 
 NodeElement::NodeElement(ElementImpl* impl)
 	: mSwitchGridAction("Switch on grid", this),
+		mCloneAction("Clone", this),
 		mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
 		mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)),
 		mSelectionNeeded(false), mConnectionInProgress(false)
@@ -42,6 +43,8 @@ NodeElement::NodeElement(ElementImpl* impl)
 
 	mSwitchGridAction.setCheckable(true);
 	connect(&mSwitchGridAction, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
+
+	connect(&mCloneAction, SIGNAL(triggered()), this, SLOT(copyAndPlaceOnDiagram()));
 
 	foreach (QString bonusField, mElementImpl->bonusContextMenuFields()) {
 		mBonusContextMenuActions.push_back(new ContextMenuAction(bonusField, this));
@@ -72,13 +75,15 @@ NodeElement::~NodeElement()
 
 NodeElement *NodeElement::clone()
 {
-	ElementImpl *impl = mElementImpl->clone();
-	NodeElement *result = new NodeElement(impl);
+	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
+	
+	Id resultId = mGraphicalAssistApi->copyElement(id());
+	return dynamic_cast<NodeElement*>(evscene->getElem(resultId));
+}
 
-	result->copyChildren(this);
-	result->copyEdges(this);
-
-	return result;
+void NodeElement::copyAndPlaceOnDiagram()
+{
+	clone();
 }
 
 void NodeElement::copyChildren(NodeElement *source)
@@ -86,14 +91,15 @@ void NodeElement::copyChildren(NodeElement *source)
 	foreach (QGraphicsItem *child, source->childItems()) {
 		NodeElement *element = dynamic_cast<NodeElement*>(child);
 		if (element) {
-
+			NodeElement *copyOfChild = element->clone();
+			mGraphicalAssistApi->changeParent(copyOfChild->id(), id(),element->pos());
 		}
 	}
 }
 
 void NodeElement::copyEdges(NodeElement *source)
 {
-
+	Q_UNUSED(source);
 }
 
 void NodeElement::setName(QString value)
@@ -300,6 +306,7 @@ QList<ContextMenuAction*> NodeElement::contextMenuActions()
 {
 	QList<ContextMenuAction*> result;
 	result.push_back(&mSwitchGridAction);
+	result.push_back(&mCloneAction);
 	foreach (ContextMenuAction* action, mBonusContextMenuActions) {
 		result.push_back(action);
 	}
@@ -504,6 +511,12 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	mDragState = None;
 	setZValue(0);
+}
+
+void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+	Q_UNUSED(event)
+	qDebug() << "dblclck";
 }
 
 void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)

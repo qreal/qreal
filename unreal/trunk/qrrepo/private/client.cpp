@@ -45,6 +45,12 @@ Id Client::parent(Id const &id) const
 	}
 }
 
+Id Client::cloneObject(const qReal::Id &id)
+{
+	Object *result = mObjects[id]->clone(mObjects);
+	return result->id();
+}
+
 void Client::setParent(Id const &id, Id const &parent)
 {
 	if (mObjects.contains(id)) {

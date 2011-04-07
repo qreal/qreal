@@ -37,6 +37,11 @@ void RepoApi::addChild(Id const &id, Id const &child, Id const &logicalId)
 	mClient.addChild(id, child, logicalId);
 }
 
+Id RepoApi::copy(qReal::Id const &src)
+{
+	return mClient.cloneObject(src);
+}
+
 void RepoApi::removeChild(Id const &id, Id const &child)
 {
 	mClient.removeChild(id, child);

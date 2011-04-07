@@ -56,6 +56,11 @@ Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id, bool i
 	return ModelsAssistApi::createElement(parent, id, isFromLogicalModel, name, position);
 }
 
+Id GraphicalModelAssistApi::copyElement(Id const &source)
+{
+	return mGraphicalModel.mutableApi().copy(source);
+}
+
 IdList GraphicalModelAssistApi::children(Id const &element) const
 {
 	return mGraphicalModel.api().children(element);

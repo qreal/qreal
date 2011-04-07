@@ -10,6 +10,8 @@ class GraphicalRepoApi : public CommonRepoApi
 public:
 	virtual ~GraphicalRepoApi(){}
 
+	virtual qReal::Id copy(qReal::Id const &src) = 0;
+
 	virtual void addChild(qReal::Id const &id, qReal::Id const &logicalId, qReal::Id const &child) = 0;
 
 	virtual double fromPort(qReal::Id const &id) const = 0;

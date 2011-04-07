@@ -99,6 +99,7 @@ namespace UML {
 
 	public slots:
 		void switchGrid(bool isChecked);
+		void copyAndPlaceOnDiagram();
 
 	private:
 		enum DragState {
@@ -119,6 +120,7 @@ namespace UML {
 		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 		virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 		virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+		virtual void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event);
 
 		virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
 		virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
@@ -153,6 +155,7 @@ namespace UML {
 		void connectTemporaryRemovedLinksToPort(qReal::IdList const &rtemporaryRemovedLinks, QString const &direction);
 
 		ContextMenuAction mSwitchGridAction;
+		ContextMenuAction mCloneAction;
 		static int const objectMinSize = 10;
 		//static int const sizeOfForestalling = 25;//TODO: must be used mElementImpl->sizeOfForestalling
 
