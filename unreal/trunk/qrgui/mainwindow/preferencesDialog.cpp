@@ -2,6 +2,7 @@
 #include "ui_preferencesDialog.h"
 
 #include <QSettings>
+#include <QFileDialog>
 
 PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * const showAlignmentAction
 		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
@@ -76,6 +77,10 @@ void PreferencesDialog::initPreferences()
 	int curColorIndex = ui->colorComboBox->findText(curColor);
 	ui->colorComboBox->setCurrentIndex(curColorIndex);
 	settings.value("debugColor", ui->colorComboBox->currentText());
+	ui->debuggerPathLineEdit->setText(settings.value("debuggerPath", "gdb.exe").toString());
+	ui->builderPathLineEdit->setText(settings.value("builderPath", "gcc.exe").toString());
+	ui->codeFileNameLineEdit->setText(settings.value("codeFileName", "code.c").toString());
+	ui->buildedFileNameLineEdit->setText(settings.value("buildedFileName", "builded.exe").toString());
 }
 
 void PreferencesDialog::applyChanges()
@@ -113,6 +118,10 @@ void PreferencesDialog::applyChanges()
 
 	settings.setValue("debuggerTimeout", ui->timeoutLineEdit->text());
 	settings.setValue("debugColor", ui->colorComboBox->currentText());
+	settings.setValue("debuggerPath", ui->debuggerPathLineEdit->text());
+	settings.setValue("builderPath", ui->builderPathLineEdit->text());
+	settings.setValue("codeFileName", ui->codeFileNameLineEdit->text());
+	settings.setValue("buildedFileName", ui->buildedFileNameLineEdit->text());
 
 	mShowGridAction->setChecked(ui->showGridCheckBox->isChecked());
 	mShowAlignmentAction->setChecked(ui->showAlignmentCheckBox->isChecked());
@@ -171,4 +180,20 @@ void PreferencesDialog::initCompilersSettings(const QString &pathToQmake,
 	ui->pluginExtension->setText(pluginExtension);
 	ui->prefix->setText(prefix);
 	ui->compilerSettingsWidget->setEnabled(false);
+}
+
+void PreferencesDialog::on_browseDebPathButton_clicked()
+{
+	QString path = QFileDialog::getOpenFileName(this, "Open File", QString(), "gdb.*");
+	if (path != NULL) {
+		ui->debuggerPathLineEdit->setText(path);
+	}
+}
+
+void PreferencesDialog::on_builderPathButton_clicked()
+{
+	QString path = QFileDialog::getOpenFileName(this, "Open File", QString(), "gcc.*");
+	if (path != NULL) {
+		ui->builderPathLineEdit->setText(path);
+	}
 }

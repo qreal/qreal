@@ -671,8 +671,8 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
 	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
-	connect(this, SIGNAL(elementCreated(qReal::Id)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::Id)));
-	connect(mActionSignalMapper, SIGNAL(mapped(QString)), mainWindow->listenerManager(), SIGNAL(contextMenuActionTriggered(QString)));
+//	connect(this, SIGNAL(elementCreated(qReal::Id)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::Id)));
+//	connect(mActionSignalMapper, SIGNAL(mapped(QString)), mainWindow->listenerManager(), SIGNAL(contextMenuActionTriggered(QString)));
 }
 
 qReal::MainWindow *EditorViewScene::mainWindow() const
@@ -794,4 +794,45 @@ void EditorViewScene::redraw()
 {
 	if (mNeedDrawGrid)
 		invalidate();
+}
+
+void EditorViewScene::highlight(Id const &graphicalId, bool exclusive)
+{
+	if (exclusive) {
+		foreach (UML::Element *element, mHighlightedElements) {
+			element->setGraphicsEffect(NULL);
+		}
+	}
+
+	UML::Element *elem = getElem(graphicalId);
+	if (!elem)
+		return;
+
+	QSettings settings("SPbSU", "QReal");
+	QColor color = QColor(settings.value("debugColor").toString());
+
+	QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
+	effect->setColor(color);
+	effect->setEnabled(true);
+
+	elem->setGraphicsEffect(effect);
+	mHighlightedElements.insert(elem);
+}
+
+void EditorViewScene::dehighlight(Id const &graphicalId)
+{
+	UML::Element *elem = getElem(graphicalId);
+	if (!elem)
+		return;
+
+	elem->setGraphicsEffect(NULL);
+	mHighlightedElements.remove(elem);
+}
+
+void EditorViewScene::dehighlight()
+{
+	foreach (UML::Element *element, mHighlightedElements) {
+		element->setGraphicsEffect(NULL);
+	}
+	mHighlightedElements.clear();
 }
