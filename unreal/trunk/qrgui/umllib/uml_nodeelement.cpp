@@ -93,7 +93,7 @@ void NodeElement::copyChildren(NodeElement *source)
 
 void NodeElement::copyEdges(NodeElement *source)
 {
-
+	Q_UNUSED(source);
 }
 
 void NodeElement::setName(QString value)
