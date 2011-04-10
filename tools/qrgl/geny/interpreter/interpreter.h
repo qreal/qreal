@@ -4,7 +4,8 @@
 #include <QString>
 #include <QFile>
 #include <QTextStream>
-#include "../../../qrrepo/repoApi.h"
+//#include "../../../qrrepo/repoApi.h" // когда в транке лежит
+#include "../../../../unreal/trunk/qrrepo/repoApi.h" // когда лежит в tools
 
 namespace Geny {
 	class Gemake;

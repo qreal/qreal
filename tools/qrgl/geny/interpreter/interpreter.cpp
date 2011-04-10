@@ -457,7 +457,9 @@ QString Interpreter::interpret(QTextStream& stream) {
 		QString curStr = stream.readLine();
 
 		if (!isControlString(curStr)) {
-			resultStr += notControlStringParse(curStr) + "\n";
+			//resultStr += notControlStringParse(curStr) + "\n";
+			QString str = notControlStringParse(curStr);
+			resultStr += str.isEmpty() ? str : str + "\n";
 		}
 		else {
 			resultStr += controlStringParse(curStr, stream);//может сдвигать stream! Это нужно для for'а

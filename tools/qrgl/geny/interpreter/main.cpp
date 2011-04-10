@@ -1,6 +1,7 @@
 #include "gemake.h"
 #include <QDebug>
-#include "../../../qrrepo/repoApi.h"
+//#include "../../../qrrepo/repoApi.h" // когда в транке лежит
+#include "../../../../unreal/trunk/qrrepo/repoApi.h" // когда лежит в tools
 
 using namespace Geny;
 
