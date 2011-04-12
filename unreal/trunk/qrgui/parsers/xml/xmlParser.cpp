@@ -644,8 +644,8 @@ void XmlParser::initInheritance(const Id &idFrom, const Id &idTo)
 	QString const name = mApi.name(idTo) + "_Inherits_" + mApi.name(idFrom);
 
 	setStandartConfigurations(inheritanceId, mMetamodel, name, name);
-	mApi.setProperty(inheritanceId, "from", idFrom.toVariant());
-	mApi.setProperty(inheritanceId, "to", idTo.toVariant());
+	mApi.setFrom(inheritanceId, idFrom);
+	mApi.setTo(inheritanceId, idTo);
 }
 
 Id XmlParser::getParentId(const QString &elementName)
@@ -680,8 +680,8 @@ void XmlParser::initContains(const Id &idFrom, const Id &idTo)
 	QString const name = mApi.name(idFrom) + "_Contains_" + mApi.name(idTo);
 
 	setStandartConfigurations(containerId, mMetamodel, name, name);
-	mApi.setProperty(containerId, "from", idFrom.toVariant());
-	mApi.setProperty(containerId, "to", idTo.toVariant());
+	mApi.setFrom(containerId, idFrom);
+	mApi.setTo(containerId, idTo);
 }
 
 void XmlParser::manageParents(const IdList &parents)
@@ -701,8 +701,8 @@ void XmlParser::setStandartConfigurations(Id const &id, Id const &parent,
 	mApi.setProperty(id, "name", name);
 	if (displayedName != "")
 		mApi.setProperty(id, "displayedName", displayedName);
-	mApi.setProperty(id, "from", Id::rootId().toVariant());
-	mApi.setProperty(id, "to", Id::rootId().toVariant());
+	mApi.setFrom(id, Id::rootId());
+	mApi.setTo(id, Id::rootId());
 	mApi.setProperty(id, "fromPort", 0.0);
 	mApi.setProperty(id, "toPort", 0.0);
 	mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));

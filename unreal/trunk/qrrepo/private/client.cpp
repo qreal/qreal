@@ -143,7 +143,7 @@ bool Client::hasProperty(const Id &id, const QString &name) const
 	if (mObjects.contains(id)) {
 		return mObjects[id]->hasProperty(name);
 	} else {
-		throw Exception("Client: Checking the existence of a property of nonexistent object " + id.toString());
+		throw Exception("Client: Checking the existence of a property '" + name + "' of nonexistent object " + id.toString());
 	}
 }
 
