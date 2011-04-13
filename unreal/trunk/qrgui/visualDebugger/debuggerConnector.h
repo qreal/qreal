@@ -34,11 +34,15 @@ namespace qReal {
 			QString mDebuggerPath;
 			QString mBuilderPath;
 			QString mBuildedFileName;
+			QString mCodeFileName;
+			QString mWorkDir;
 			bool mHasGccError;
 			
 			void setDebuggerPath(QString path);
 			void setBuilderPath(QString path);
 			void setBuildedFileName(QString name);
+			void setCodeFileName(QString name);
+			void setWorkDir(QString name);
 			
 		private slots:
 			void readOutput();

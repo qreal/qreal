@@ -110,6 +110,7 @@ public slots:
 		void configureDebugger();
 		void setBreakpointAtStart();
 		void startDebugging();
+	void checkEditorForDebug(int index);
 
 private slots:
 	void deleteFromDiagram();

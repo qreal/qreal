@@ -146,6 +146,7 @@ MainWindow::MainWindow()
 	connect(mUi->actionConfigure, SIGNAL(triggered()), this, SLOT(configureDebugger()));
 	connect(mUi->actionBreak_main, SIGNAL(triggered()), this, SLOT(setBreakpointAtStart()));
 	connect(mUi->actionStart_debugging, SIGNAL(triggered()), this, SLOT(startDebugging()));
+	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(checkEditorForDebug(int)));
 
 	connect(mUi->actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 
@@ -1405,13 +1406,6 @@ void MainWindow::initGridProperties()
 
 void MainWindow::debug()
 {
-	if (mUi->tabs->count() == 0) {
-		mErrorReporter->addCritical("Block Scheme diagram not found");
-		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-		mErrorReporter->clearErrors();
-		return;
-	}
-	
 	EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
 	mVisualDebugger->setEditor(editor);
 	if (mVisualDebugger->canDebug(VisualDebugger::fullDebug)) {
@@ -1423,13 +1417,6 @@ void MainWindow::debug()
 
 void MainWindow::debugSingleStep()
 {
-	if (mUi->tabs->count() == 0) {
-		mErrorReporter->addCritical("Block Scheme diagram not found");
-		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-		mErrorReporter->clearErrors();
-		return;
-	}
-	
 	EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
 	mVisualDebugger->setEditor(editor);
 	if (mVisualDebugger->canDebug(VisualDebugger::singleStepDebug)) {
@@ -1440,13 +1427,6 @@ void MainWindow::debugSingleStep()
 }
 
 void MainWindow::generateAndBuild() {
-	if (mUi->tabs->count() == 0) {
-		mErrorReporter->addCritical("Block Scheme diagram not found");
-		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-		mErrorReporter->clearErrors();
-		return;
-	}
-	
 	EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
 	mVisualDebugger->setEditor(editor);
 	
@@ -1457,7 +1437,8 @@ void MainWindow::generateAndBuild() {
 			mDebuggerConnector->run();
 			
 			QSettings settings("SPbSU", "QReal");
-			mDebuggerConnector->build(settings.value("codeFileName", "code.c").toString());
+			mDebuggerConnector->build(settings.value("debugWorkingDirectory", "").toString() + "/" +
+										settings.value("codeFileName", "code.c").toString());
 	
 			if (!mDebuggerConnector->hasBuildError()) {
 				mErrorReporter->addInformation("Code generated and builded successfully");
@@ -1482,18 +1463,13 @@ void MainWindow::startDebugger() {
 void MainWindow::configureDebugger() {
 	if (mDebuggerConnector->isDebuggerRunning()) {
 		QSettings settings("SPbSU", "QReal");
-		mDebuggerConnector->configure(settings.value("buildedFileName", "builded.exe").toString());
+		mDebuggerConnector->configure(settings.value("debugWorkingDirectory", "").toString() + "/" +
+										settings.value("buildedFileName", "builded.exe").toString());
 	}
 }
 
 void MainWindow::setBreakpointAtStart() {
 	if (mDebuggerConnector->isDebuggerRunning()) {
-		if (mUi->tabs->count() == 0) {
-			mErrorReporter->addCritical("Block Scheme diagram not found");
-			mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-			mErrorReporter->clearErrors();
-			return;
-		}
 		EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
 		mVisualDebugger->setEditor(editor);
 	
@@ -1517,13 +1493,6 @@ void MainWindow::killProgramWithDebugger() {
 
 void MainWindow::placeBreakpointsInDebugger() {
 	if (mDebuggerConnector->isDebuggerRunning()) {
-		if (mUi->tabs->count() == 0) {
-			mErrorReporter->addCritical("Block Scheme diagram not found");
-			mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-			mErrorReporter->clearErrors();
-			return;
-		}
-	
 		EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
 		mVisualDebugger->setEditor(editor);
 	
@@ -1605,6 +1574,42 @@ void MainWindow::drawDebuggerErrOutput(QString output) {
 	mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->clearErrors();
 }
+
+void MainWindow::checkEditorForDebug(int index) {
+	if (mUi->tabs->count() > 0 &&
+			mUi->tabs->tabText(mUi->tabs->currentIndex()).compare("(Block Diagram)") == 0) {
+		mUi->debuggerToolBar->setVisible(true);
+		mUi->actionDebug->setEnabled(true);
+		mUi->actionDebug_Single_step->setEnabled(true);
+		mUi->actionGenerate_and_build->setEnabled(true);
+		mUi->actionStart_debugger->setEnabled(true);
+		mUi->actionRun->setEnabled(true);
+		mUi->actionKill->setEnabled(true);
+		mUi->actionClose_all->setEnabled(true);
+		mUi->actionNext->setEnabled(true);
+		mUi->actionCont->setEnabled(true);
+		mUi->actionSet_Breakpoints->setEnabled(true);
+		mUi->actionConfigure->setEnabled(true);
+		mUi->actionBreak_main->setEnabled(true);
+		mUi->actionStart_debugging->setEnabled(true);
+	} else {
+		mUi->debuggerToolBar->hide();
+		mUi->actionDebug->setEnabled(false);
+		mUi->actionDebug_Single_step->setEnabled(false);
+		mUi->actionGenerate_and_build->setEnabled(false);
+		mUi->actionStart_debugger->setEnabled(false);
+		mUi->actionRun->setEnabled(false);
+		mUi->actionKill->setEnabled(false);
+		mUi->actionClose_all->setEnabled(false);
+		mUi->actionNext->setEnabled(false);
+		mUi->actionCont->setEnabled(false);
+		mUi->actionSet_Breakpoints->setEnabled(false);
+		mUi->actionConfigure->setEnabled(false);
+		mUi->actionBreak_main->setEnabled(false);
+		mUi->actionStart_debugging->setEnabled(false);
+	}
+}
+
 
 void MainWindow::setIndexesOfPropertyEditor(Id const &id)
 {

@@ -12,6 +12,8 @@ DebuggerConnector::DebuggerConnector():
 	mDebuggerPath("gdb.exe"),
 	mBuilderPath("gcc.exe"),
 	mBuildedFileName("builded.exe"),
+	mCodeFileName("code.c"),
+	mWorkDir(""),
 	mHasGccError(false)
 {
 	moveToThread(mThread);
@@ -50,6 +52,14 @@ void DebuggerConnector::setBuildedFileName(QString name) {
 	mBuildedFileName = name;
 }
 
+void DebuggerConnector::setCodeFileName(QString name) {
+	mCodeFileName = name;
+}
+
+void DebuggerConnector::setWorkDir(QString path) {
+	mWorkDir = path;
+}
+
 void DebuggerConnector::run() {
 	if (!mThread->isRunning()) {
 		mThread->start();
@@ -65,7 +75,7 @@ void DebuggerConnector::startDebugger() {
 		mDebuggerProcess->waitForStarted();
 		mDebuggerProcess->waitForReadyRead();
 	} else {
-		emit readyReadErrOutput("Debugger not found");
+		emit readyReadErrOutput("Debugger not found. " + mDebuggerPath + " was searched");
 	}
 }
 
@@ -120,14 +130,16 @@ void DebuggerConnector::build(QString filePath) {
 	QSettings settings("SPbSU", "QReal");
 	setBuilderPath(settings.value("builderPath", "gcc.exe").toString());
 	setBuildedFileName(settings.value("buildedFileName", "builded.exe").toString());
+	setCodeFileName(settings.value("codeFileName", "code.c").toString());
+	setWorkDir(settings.value("debugWorkingDirectory", "").toString());
 
 	QStringList args;
 	args.append("-g");
 	args.append("-o");
-	args.append(mBuildedFileName);
+	args.append(mWorkDir + "/" + mBuildedFileName);
 	args.append(filePath);
 	
-	if (QFile::exists(mBuildedFileName)) {
+	if (QFile::exists(mWorkDir + "/" + mCodeFileName)) {
 		if (QFile::exists(mBuilderPath)) {
 			mBuilderProcess->start(mBuilderPath, args);
 			mBuilderProcess->waitForStarted();
@@ -136,10 +148,10 @@ void DebuggerConnector::build(QString filePath) {
 				mHasGccError = true;
 			}
 		} else {
-			emit readyReadErrOutput("Builder not found");
+			emit readyReadErrOutput("Builder not found. " + mBuilderPath + " was searched");
 		}
 	} else {
-		emit readyReadErrOutput("Source code file not found");
+		emit readyReadErrOutput("Source code file not found. " + mWorkDir + "/" + mCodeFileName + " was searched");
 	}
 }
 

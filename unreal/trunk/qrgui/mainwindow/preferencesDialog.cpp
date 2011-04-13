@@ -81,6 +81,7 @@ void PreferencesDialog::initPreferences()
 	ui->builderPathLineEdit->setText(settings.value("builderPath", "gcc.exe").toString());
 	ui->codeFileNameLineEdit->setText(settings.value("codeFileName", "code.c").toString());
 	ui->buildedFileNameLineEdit->setText(settings.value("buildedFileName", "builded.exe").toString());
+	ui->workDirLineEdit->setText(settings.value("debugWorkingDirectory", "").toString());
 }
 
 void PreferencesDialog::applyChanges()
@@ -122,6 +123,7 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("builderPath", ui->builderPathLineEdit->text());
 	settings.setValue("codeFileName", ui->codeFileNameLineEdit->text());
 	settings.setValue("buildedFileName", ui->buildedFileNameLineEdit->text());
+	settings.setValue("debugWorkingDirectory", ui->workDirLineEdit->text());
 
 	mShowGridAction->setChecked(ui->showGridCheckBox->isChecked());
 	mShowAlignmentAction->setChecked(ui->showAlignmentCheckBox->isChecked());
@@ -196,4 +198,10 @@ void PreferencesDialog::on_builderPathButton_clicked()
 	if (path != NULL) {
 		ui->builderPathLineEdit->setText(path);
 	}
+}
+
+void PreferencesDialog::on_workDirPushButton_clicked()
+{
+	QString path = QFileDialog::getExistingDirectory(this, "Open Directory");
+	ui->workDirLineEdit->setText(path.replace("\\", "/"));
 }

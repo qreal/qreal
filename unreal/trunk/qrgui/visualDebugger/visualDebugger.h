@@ -48,7 +48,6 @@ namespace qReal {
 			missingEndOfLinkNode,
 			endWithNotEndNode,
 			missingValidLink,
-			wrongEditor,
 			someDiagramIsRunning,
 			codeGenerationError,
 			noErrors
@@ -68,9 +67,9 @@ namespace qReal {
 		bool mHasCodeGenerationError;
 		bool mHasNotEndWithFinalNode;
 		QString mCodeFileName;
+		QString mWorkDir;
 
 		void error(ErrorType e);
-		ErrorType checkEditor();
 		UML::Element* findBeginNode(QString name);
 		Id findValidLink();
 		void pause(int time);
@@ -85,5 +84,6 @@ namespace qReal {
 		QVariant getProperty(Id id, QString propertyName);
 		void createIdByLineCorrelation(UML::Element *elem, int& line);
 		void setCodeFileName(QString name);
+		void setWorkDir(QString path);
 	};
 }

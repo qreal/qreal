@@ -30,6 +30,7 @@ VisualDebugger::VisualDebugger(models::LogicalModelAssistApi const &logicalModel
 	, mHasCodeGenerationError(false)
 	, mHasNotEndWithFinalNode(false)
 	, mCodeFileName("code.c")
+	, mWorkDir("")
 {}
 
 VisualDebugger::~VisualDebugger() {
@@ -38,19 +39,10 @@ VisualDebugger::~VisualDebugger() {
 
 QVariant VisualDebugger::getProperty(Id id, QString propertyName) {
 	if (mLogicalModelApi.isLogicalId(id)) {
-		try {
-			return mLogicalModelApi.logicalRepoApi().property(id, propertyName);
-		} catch (qReal::Exception e) {
-			return mGraphicalModelApi.graphicalRepoApi().property(
-				mGraphicalModelApi.graphicalIdsByLogicalId(id).at(0), propertyName);
-		}
+		return mLogicalModelApi.logicalRepoApi().property(id, propertyName);
 	} else {
-		try {
-			return mGraphicalModelApi.graphicalRepoApi().property(id, propertyName);
-		} catch (qReal::Exception e) {
-			return mLogicalModelApi.logicalRepoApi().property(
-				mGraphicalModelApi.logicalId(mEditor->mvIface()->scene()->getElem(id)->id()), propertyName);
-		}
+		return mLogicalModelApi.logicalRepoApi().property(
+			mGraphicalModelApi.logicalId(mEditor->mvIface()->scene()->getElem(id)->id()), propertyName);
 	}
 }
 
@@ -87,20 +79,6 @@ void VisualDebugger::setEditor(EditorView *editor) {
 	}
 }
 
-VisualDebugger::ErrorType VisualDebugger::checkEditor() {
-	if (mError != VisualDebugger::noErrors) {
-		error(VisualDebugger::someDiagramIsRunning);
-		return VisualDebugger::someDiagramIsRunning;
-	}
-	Id idRootItem = mEditor->mvIface()->scene()->rootItemId();
-	QString editorName = mGraphicalModelApi.name(idRootItem);
-	if (editorName.compare("(Block Diagram)") != 0) {
-		error(VisualDebugger::wrongEditor);
-		return VisualDebugger::wrongEditor;
-	}
-	return VisualDebugger::noErrors;
-}
-
 void VisualDebugger::error(ErrorType e) {
 	switch (e) {
 	case missingBeginNode:
@@ -123,9 +101,6 @@ void VisualDebugger::error(ErrorType e) {
 		mInterpretersInterface.errorReporter()->addCritical("Some diagram is already under debug");
 		mError = VisualDebugger::noErrors;
 		return;
-		break;
-	case wrongEditor:
-		mInterpretersInterface.errorReporter()->addCritical("This is not Block Diagram editor");
 		break;
 	case codeGenerationError:
 		mInterpretersInterface.errorReporter()->addCritical("Code generation failed");
@@ -228,10 +203,6 @@ void VisualDebugger::processAction() {
 }
 
 void VisualDebugger::debug() {
-	if (VisualDebugger::noErrors != checkEditor()) {
-		return;
-	}
-
 	mDebugType = VisualDebugger::fullDebug;
 	QSettings settings("SPbSU", "QReal");
 	setTimeout(settings.value("debuggerTimeout", 750).toInt());
@@ -295,12 +266,7 @@ void VisualDebugger::debug() {
 }
 
 void VisualDebugger::debugSingleStep() {
-	if (VisualDebugger::noErrors != checkEditor()) {
-		return;
-	}
-
 	mDebugType = VisualDebugger::singleStepDebug;
-	QSettings settings("SPbSU", "QReal");
 
 	if (mCurrentElem == NULL && mCurrentId == Id::rootId()) {
 		if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
@@ -361,15 +327,11 @@ void VisualDebugger::debugSingleStep() {
 void VisualDebugger::generateCode() {
 	mHasCodeGenerationError = false;
 	
-	if (VisualDebugger::noErrors != checkEditor()) {
-		error(codeGenerationError);
-		return;
-	}
-	
 	QSettings settings("SPbSU", "QReal");
 	setCodeFileName(settings.value("codeFileName", "code.c").toString());
+	setWorkDir(settings.value("debugWorkingDirectory", "").toString());
 	
-	QFile codeFile(mCodeFileName);
+	QFile codeFile(mWorkDir + "/" + mCodeFileName);
 	codeFile.open(QIODevice::WriteOnly);
 	
 	codeFile.write("void main(int argc, char* argv[]) {\n");
@@ -549,4 +511,8 @@ void VisualDebugger::setCodeFileName(QString name) {
 
 bool VisualDebugger::canComputeBreakpoints() {
 	return !mHasNotEndWithFinalNode;
+}
+
+void VisualDebugger::setWorkDir(QString path) {
+	mWorkDir = path;
 }
