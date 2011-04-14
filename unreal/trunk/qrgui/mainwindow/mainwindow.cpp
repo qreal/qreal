@@ -1576,38 +1576,22 @@ void MainWindow::drawDebuggerErrOutput(QString output) {
 }
 
 void MainWindow::checkEditorForDebug(int index) {
-	if (mUi->tabs->count() > 0 &&
-			mUi->tabs->tabText(mUi->tabs->currentIndex()).compare("(Block Diagram)") == 0) {
-		mUi->debuggerToolBar->setVisible(true);
-		mUi->actionDebug->setEnabled(true);
-		mUi->actionDebug_Single_step->setEnabled(true);
-		mUi->actionGenerate_and_build->setEnabled(true);
-		mUi->actionStart_debugger->setEnabled(true);
-		mUi->actionRun->setEnabled(true);
-		mUi->actionKill->setEnabled(true);
-		mUi->actionClose_all->setEnabled(true);
-		mUi->actionNext->setEnabled(true);
-		mUi->actionCont->setEnabled(true);
-		mUi->actionSet_Breakpoints->setEnabled(true);
-		mUi->actionConfigure->setEnabled(true);
-		mUi->actionBreak_main->setEnabled(true);
-		mUi->actionStart_debugging->setEnabled(true);
-	} else {
-		mUi->debuggerToolBar->hide();
-		mUi->actionDebug->setEnabled(false);
-		mUi->actionDebug_Single_step->setEnabled(false);
-		mUi->actionGenerate_and_build->setEnabled(false);
-		mUi->actionStart_debugger->setEnabled(false);
-		mUi->actionRun->setEnabled(false);
-		mUi->actionKill->setEnabled(false);
-		mUi->actionClose_all->setEnabled(false);
-		mUi->actionNext->setEnabled(false);
-		mUi->actionCont->setEnabled(false);
-		mUi->actionSet_Breakpoints->setEnabled(false);
-		mUi->actionConfigure->setEnabled(false);
-		mUi->actionBreak_main->setEnabled(false);
-		mUi->actionStart_debugging->setEnabled(false);
-	}
+	bool enabled = mUi->tabs->count() > 0 && 
+		mUi->tabs->tabText(mUi->tabs->currentIndex()).compare("(Block Diagram)") == 0;
+	mUi->debuggerToolBar->setVisible(enabled);
+	mUi->actionDebug->setEnabled(enabled);
+	mUi->actionDebug_Single_step->setEnabled(enabled);
+	mUi->actionGenerate_and_build->setEnabled(enabled);
+	mUi->actionStart_debugger->setEnabled(enabled);
+	mUi->actionRun->setEnabled(enabled);
+	mUi->actionKill->setEnabled(enabled);
+	mUi->actionClose_all->setEnabled(enabled);
+	mUi->actionNext->setEnabled(enabled);
+	mUi->actionCont->setEnabled(enabled);
+	mUi->actionSet_Breakpoints->setEnabled(enabled);
+	mUi->actionConfigure->setEnabled(enabled);
+	mUi->actionBreak_main->setEnabled(enabled);
+	mUi->actionStart_debugging->setEnabled(enabled);
 }
 
 
