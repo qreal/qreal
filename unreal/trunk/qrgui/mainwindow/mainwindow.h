@@ -11,6 +11,8 @@
 #include "propertyeditordelegate.h"
 #include "igesturespainter.h"
 #include "gesturesShow/gestureswidget.h"
+#include "../visualDebugger/debuggerConnector.h"
+#include "mainWindowInterpretersInterface.h"
 
 namespace Ui{
 class MainWindowUi;
@@ -26,7 +28,7 @@ namespace models {
 class Models;
 }
 
-class MainWindow : public QMainWindow
+class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpretersInterface
 {
 	Q_OBJECT
 
@@ -41,11 +43,17 @@ public:
 	QModelIndex rootIndex() const;
 
 	QAction *actionDeleteFromDiagram() const;
+	
+	virtual void highlight(Id const &graphicalId, bool exclusive = true);
+	virtual void dehighlight(Id const &graphicalId);
+	virtual void dehighlight();
+	virtual gui::ErrorReporter *errorReporter();
 
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
 	void rootDiagramChanged();
+		
 
 public slots:
 	void adjustMinimapZoom(int zoom);
@@ -85,9 +93,24 @@ public slots:
 	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 	void propertyEditorScrollTo(QModelIndex const &index);
 	void selectItemWithError(Id const &id);
+	virtual void selectItem(Id const &id);
 
 	void debug();
 	void debugSingleStep();
+		void drawDebuggerStdOutput(QString output);
+		void drawDebuggerErrOutput(QString output);
+		void generateAndBuild();
+		void startDebugger();
+		void runProgramWithDebugger();
+		void killProgramWithDebugger();
+		void closeDebuggerProcessAndThread();
+		void placeBreakpointsInDebugger();
+		void goToNextBreakpoint();
+		void goToNextInstruction();
+		void configureDebugger();
+		void setBreakpointAtStart();
+		void startDebugging();
+	void checkEditorForDebug(int index);
 
 private slots:
 	void deleteFromDiagram();
@@ -138,6 +161,10 @@ private:
 
 	QStringList mDiagramsList;
 	QModelIndex mRootIndex;
+	
+	gui::ErrorReporter *mErrorReporter;
+	VisualDebugger *mVisualDebugger;
+	DebuggerConnector *mDebuggerConnector;
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
@@ -163,7 +190,6 @@ private:
 	void connectActionZoomTo(QWidget* widget);
 	void setConnectActionZoomTo(QWidget* widget);
 	void clickErrorListWidget();
-	VisualDebugger *mVisualDebugger;
 
 	void setShowGrid(bool isChecked);
 	void setShowAlignment(bool isChecked);

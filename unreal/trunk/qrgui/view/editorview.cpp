@@ -157,3 +157,14 @@ void EditorView::invalidateScene()
 	scene()->invalidate();
 }
 
+void EditorView::ensureElementVisible(UML::Element const * const element)
+{
+	if (element != NULL) {
+		float const widgetWidth = size().width();
+		float const widgetHeight = size().height();
+		float const elementWidth = element->boundingRect().width();
+		float const elementHeight = element->boundingRect().height();
+		ensureVisible(element, (widgetWidth - elementWidth) / 2, (widgetHeight - elementHeight) / 2);
+	}
+}
+

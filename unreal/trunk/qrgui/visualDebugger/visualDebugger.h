@@ -1,9 +1,11 @@
 #pragma once
 
+#include <QList>
 #include <QtGui/QGraphicsEffect>
 
 #include "../view/editorview.h"
 #include "../mainwindow/errorReporter.h"
+#include "../mainwindow/mainWindowInterpretersInterface.h"
 
 #include "blockParser.h"
 
@@ -16,42 +18,58 @@ namespace qReal {
 		enum DebugType {
 			noDebug,
 			singleStepDebug,
-			fullDebug
+			fullDebug,
+			debugWithDebugger
 		};
 	public:
-		VisualDebugger(models::GraphicalModelAssistApi const &modelApi);
+		VisualDebugger(models::LogicalModelAssistApi const &modelApi
+						, models::GraphicalModelAssistApi const &mGraphicalModelApi
+						, qReal::gui::MainWindowInterpretersInterface &interpretersInterface);
 		~VisualDebugger();
-		void clearErrorReporter();
 		void setEditor(EditorView *editor);
 		bool canDebug(VisualDebugger::DebugType type);
+		bool canBuild();
+		bool canComputeBreakpoints();
+		
+		void createIdByLineCorrelation();
+		QList<int>* computeBreakpoints();
+		Id getIdByLine(int line);
+		void highlight(Id id);
+		void dehighlight();
+		void setDebugType(VisualDebugger::DebugType type);
 	public slots:
-		gui::ErrorReporter& debug();
-		gui::ErrorReporter& debugSingleStep();
+		void generateCode();
+		void debug();
+		void debugSingleStep();
 	private:
 		enum ErrorType {
 			missingBeginNode,
+			missingEndNode,
 			missingEndOfLinkNode,
 			endWithNotEndNode,
 			missingValidLink,
-			wrongEditor,
 			someDiagramIsRunning,
+			codeGenerationError,
 			noErrors
 		};
 	private:
 		EditorView *mEditor;
-		models::GraphicalModelAssistApi const &mModelApi;
-		QGraphicsColorizeEffect *mEffect;
+		qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
+		models::LogicalModelAssistApi const &mLogicalModelApi;
+		models::GraphicalModelAssistApi const &mGraphicalModelApi;
 		UML::Element *mCurrentElem;
 		VisualDebugger::ErrorType mError;
 		Id mCurrentId;
-		gui::ErrorReporter *mErrorReporter;
 		BlockParser *mBlockParser;
 		int mTimeout;
 		DebugType mDebugType;
-		QColor mDebugColor;
+		QMap<int, Id> mIdByLineCorrelation;
+		bool mHasCodeGenerationError;
+		bool mHasNotEndWithFinalNode;
+		QString mCodeFileName;
+		QString mWorkDir;
 
 		void error(ErrorType e);
-		ErrorType checkEditor();
 		UML::Element* findBeginNode(QString name);
 		Id findValidLink();
 		void pause(int time);
@@ -62,6 +80,10 @@ namespace qReal {
 		void deinitialize();
 		void processAction();
 		void setTimeout(int timeout);
-		void setDebugColor(QString color);
+		void generateCode(UML::Element* elem, QFile &codeFile);
+		QVariant getProperty(Id id, QString propertyName);
+		void createIdByLineCorrelation(UML::Element *elem, int& line);
+		void setCodeFileName(QString name);
+		void setWorkDir(QString path);
 	};
 }

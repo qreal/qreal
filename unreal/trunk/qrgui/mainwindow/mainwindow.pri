@@ -29,7 +29,9 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/shapeEdit/path.h \
 	mainwindow/shapeEdit/image.h \
 	mainwindow/error.h \
-	mainwindow/errorlistwidget.h
+	mainwindow/errorlistwidget.h \
+	mainwindow/mainWindowInterpretersInterface.h \
+
 SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/paletteToolbox.cpp \
 	mainwindow/propertyeditorproxymodel.cpp \

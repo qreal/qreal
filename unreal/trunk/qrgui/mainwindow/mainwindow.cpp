@@ -135,6 +135,18 @@ MainWindow::MainWindow()
 
 	connect(mUi->actionDebug, SIGNAL(triggered()), this, SLOT(debug()));
 	connect(mUi->actionDebug_Single_step, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
+	connect(mUi->actionGenerate_and_build, SIGNAL(triggered()), this, SLOT(generateAndBuild()));
+	connect(mUi->actionStart_debugger, SIGNAL(triggered()), this, SLOT(startDebugger()));
+	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(runProgramWithDebugger()));
+	connect(mUi->actionKill, SIGNAL(triggered()), this, SLOT(killProgramWithDebugger()));
+	connect(mUi->actionClose_all, SIGNAL(triggered()), this, SLOT(closeDebuggerProcessAndThread()));
+	connect(mUi->actionCont, SIGNAL(triggered()), this, SLOT(goToNextBreakpoint()));
+	connect(mUi->actionNext, SIGNAL(triggered()), this, SLOT(goToNextInstruction()));
+	connect(mUi->actionSet_Breakpoints, SIGNAL(triggered()), this, SLOT(placeBreakpointsInDebugger()));
+	connect(mUi->actionConfigure, SIGNAL(triggered()), this, SLOT(configureDebugger()));
+	connect(mUi->actionBreak_main, SIGNAL(triggered()), this, SLOT(setBreakpointAtStart()));
+	connect(mUi->actionStart_debugging, SIGNAL(triggered()), this, SLOT(startDebugging()));
+	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(checkEditorForDebug(int)));
 
 	connect(mUi->actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 
@@ -184,8 +196,8 @@ MainWindow::MainWindow()
 	// Step 6: Save loaded, models initialized.
 	progress->setValue(80);
 
-	mListenerManager = new ListenerManager(mEditorManager.listeners()
-			, mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi());
+//	mListenerManager = new ListenerManager(mEditorManager.listeners()
+//			, mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi());
 
 	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 	if (!missingPlugins.isEmpty()) {
@@ -205,7 +217,11 @@ MainWindow::MainWindow()
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
 	mGesturesWidget = new GesturesWidget();
-	mVisualDebugger = new VisualDebugger(mModels->graphicalModelAssistApi());
+	mVisualDebugger = new VisualDebugger(mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi(), *this);
+	mDebuggerConnector = new DebuggerConnector();
+	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
+	connect(mDebuggerConnector, SIGNAL(readyReadStdOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
+	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerErrOutput(QString)));
 
 	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
@@ -241,7 +257,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 MainWindow::~MainWindow()
 {
 	saveAll();
-	delete mListenerManager;
+//	delete mListenerManager;
 }
 
 EditorManager* MainWindow::manager()
@@ -286,6 +302,15 @@ void MainWindow::adjustMinimapZoom(int zoom)
 }
 
 void MainWindow::selectItemWithError(Id const &id)
+{
+	if (id == Id::rootId())
+		return;
+
+	setIndexesOfPropertyEditor(id);
+	centerOn(id);
+}
+
+void MainWindow::selectItem(Id const &id)
 {
 	if (id == Id::rootId())
 		return;
@@ -1155,10 +1180,10 @@ void MainWindow::closeTab(QModelIndex const &graphicsIndex)
 	}
 }
 
-ListenerManager *MainWindow::listenerManager()
-{
-	return mListenerManager;
-}
+//ListenerManager *MainWindow::listenerManager()
+//{
+//	return mListenerManager;
+//}
 
 void MainWindow::showGrid(bool isChecked)
 {
@@ -1384,9 +1409,9 @@ void MainWindow::debug()
 	EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
 	mVisualDebugger->setEditor(editor);
 	if (mVisualDebugger->canDebug(VisualDebugger::fullDebug)) {
-		gui::ErrorReporter &errorReporter = mVisualDebugger->debug();
-		errorReporter.showErrors(mUi->errorListWidget, mUi->errorDock);
-		mVisualDebugger->clearErrorReporter();
+		mVisualDebugger->debug();
+		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+		mErrorReporter->clearErrors();
 	}
 }
 
@@ -1395,11 +1420,180 @@ void MainWindow::debugSingleStep()
 	EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
 	mVisualDebugger->setEditor(editor);
 	if (mVisualDebugger->canDebug(VisualDebugger::singleStepDebug)) {
-		gui::ErrorReporter &errorReporter = mVisualDebugger->debugSingleStep();
-		errorReporter.showErrors(mUi->errorListWidget, mUi->errorDock);
-		mVisualDebugger->clearErrorReporter();
+		mVisualDebugger->debugSingleStep();
+		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+		mErrorReporter->clearErrors();
 	}
 }
+
+void MainWindow::generateAndBuild() {
+	EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
+	mVisualDebugger->setEditor(editor);
+	
+	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)) {
+		mVisualDebugger->generateCode();
+		
+		if (mVisualDebugger->canBuild()) {
+			mDebuggerConnector->run();
+			
+			QSettings settings("SPbSU", "QReal");
+			mDebuggerConnector->build(settings.value("debugWorkingDirectory", "").toString() + "/" +
+										settings.value("codeFileName", "code.c").toString());
+	
+			if (!mDebuggerConnector->hasBuildError()) {
+				mErrorReporter->addInformation("Code generated and builded successfully");
+				mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+			}
+		} else {
+			mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+		}
+		mErrorReporter->clearErrors();
+	}
+}
+
+void MainWindow::startDebugger() {
+	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)
+			&& !mDebuggerConnector->isDebuggerRunning()) {
+		mVisualDebugger->setDebugType(VisualDebugger::debugWithDebugger);
+		mDebuggerConnector->run();
+		mDebuggerConnector->startDebugger();
+	}
+}
+
+void MainWindow::configureDebugger() {
+	if (mDebuggerConnector->isDebuggerRunning()) {
+		QSettings settings("SPbSU", "QReal");
+		mDebuggerConnector->configure(settings.value("debugWorkingDirectory", "").toString() + "/" +
+										settings.value("buildedFileName", "builded.exe").toString());
+	}
+}
+
+void MainWindow::setBreakpointAtStart() {
+	if (mDebuggerConnector->isDebuggerRunning()) {
+		EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
+		mVisualDebugger->setEditor(editor);
+	
+		mVisualDebugger->createIdByLineCorrelation();
+	
+		mDebuggerConnector->sendCommand("break main\n");
+	}
+}
+
+void MainWindow::runProgramWithDebugger() {
+	if (mDebuggerConnector->isDebuggerRunning()) {
+		mDebuggerConnector->sendCommand("run\n");
+	}
+}
+
+void MainWindow::killProgramWithDebugger() {
+	if (mDebuggerConnector->isDebuggerRunning()) {
+		mDebuggerConnector->sendCommand("kill\n");
+	}
+}
+
+void MainWindow::placeBreakpointsInDebugger() {
+	if (mDebuggerConnector->isDebuggerRunning()) {
+		EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
+		mVisualDebugger->setEditor(editor);
+	
+		mVisualDebugger->createIdByLineCorrelation();
+		if (mVisualDebugger->canComputeBreakpoints()) {
+			QList<int>* breakpoints = mVisualDebugger->computeBreakpoints();
+		
+			for (int i=0;i<breakpoints->size();i++) {
+				mDebuggerConnector->sendCommand("break " + QString::number(breakpoints->at(i)) + "\n");
+			}
+			
+			delete breakpoints;
+		} else {
+			mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+			mErrorReporter->clearErrors();
+		}
+	}
+}
+
+void MainWindow::goToNextBreakpoint() {
+	if (mDebuggerConnector->isDebuggerRunning()) {
+		mDebuggerConnector->sendCommand("cont\n");
+	}
+}
+
+void MainWindow::goToNextInstruction() {
+	if (mDebuggerConnector->isDebuggerRunning()) {
+		mDebuggerConnector->sendCommand("next\n");
+	}
+}
+
+void MainWindow::closeDebuggerProcessAndThread() {
+	if (mDebuggerConnector->isDebuggerRunning()) {
+		mVisualDebugger->dehighlight();
+		mVisualDebugger->setDebugType(VisualDebugger::noDebug);
+		mDebuggerConnector->finishProcess();
+	}
+}
+
+void MainWindow::startDebugging() {
+	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)) {
+		generateAndBuild();
+		startDebugger();
+		configureDebugger();
+		setBreakpointAtStart();
+		runProgramWithDebugger();
+	}
+}
+
+void MainWindow::drawDebuggerStdOutput(QString output) {
+	mErrorReporter->addInformation(output);
+	mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+	
+	if ('1' <= output.at(0) && output.at(0) <= '9') {
+		int index = output.indexOf("\t");
+		Id idToLigth = mVisualDebugger->getIdByLine(output.mid(0,index).toInt());
+		mVisualDebugger->highlight(idToLigth);
+	} else {
+		QSettings settings("SPbSU", "QReal");
+		QString fileName = settings.value("codeFileName", "code.c").toString();
+	
+		int index = output.indexOf(fileName + ":");
+		if (index > -1) {
+			index += (fileName.length() + 1);
+			int boundaryIndex = index;
+			while ('0' <= output.at(boundaryIndex) && output.at(boundaryIndex) <= '9') {
+				boundaryIndex++;
+			}
+			Id idToLigth = mVisualDebugger->getIdByLine(output.mid(index,boundaryIndex-index).toInt());
+			mVisualDebugger->highlight(idToLigth);
+		}
+	}
+}
+
+void MainWindow::drawDebuggerErrOutput(QString output) {
+	mVisualDebugger->dehighlight();
+	mVisualDebugger->setDebugType(VisualDebugger::noDebug);
+	mErrorReporter->addCritical(output);
+	mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+	mErrorReporter->clearErrors();
+}
+
+void MainWindow::checkEditorForDebug(int index) {
+	bool enabled = mUi->tabs->count() > 0 && 
+		mUi->tabs->tabText(mUi->tabs->currentIndex()).compare("(Block Diagram)") == 0;
+	mUi->debuggerToolBar->setVisible(enabled);
+	mUi->actionDebug->setEnabled(enabled);
+	mUi->actionDebug_Single_step->setEnabled(enabled);
+	mUi->actionGenerate_and_build->setEnabled(enabled);
+	mUi->actionStart_debugger->setEnabled(enabled);
+	mUi->actionRun->setEnabled(enabled);
+	mUi->actionKill->setEnabled(enabled);
+	mUi->actionClose_all->setEnabled(enabled);
+	mUi->actionNext->setEnabled(enabled);
+	mUi->actionCont->setEnabled(enabled);
+	mUi->actionSet_Breakpoints->setEnabled(enabled);
+	mUi->actionConfigure->setEnabled(enabled);
+	mUi->actionBreak_main->setEnabled(enabled);
+	mUi->actionStart_debugging->setEnabled(enabled);
+}
+
 
 void MainWindow::setIndexesOfPropertyEditor(Id const &id)
 {
@@ -1428,4 +1622,32 @@ void qReal::MainWindow::on_actionNew_Diagram_triggered()
 
 	Id const diagram = getCurrentTab()->mvIface()->rootId();  // Or some other way to find current diagram. For example, by current tab in palette.
 	createDiagram(diagram.type().toString());
+}
+
+void MainWindow::highlight(Id const &graphicalId, bool exclusive)
+{
+	EditorView* const view = getCurrentTab();
+	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
+	UML::Element* const element = scene->getElem(graphicalId);
+	scene->highlight(graphicalId, exclusive);
+	view->ensureElementVisible(element);
+}
+
+void MainWindow::dehighlight(Id const &graphicalId)
+{
+	EditorView* const view = getCurrentTab();
+	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
+	scene->dehighlight(graphicalId);
+}
+
+void MainWindow::dehighlight()
+{
+	EditorView* const view = getCurrentTab();
+	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
+	scene->dehighlight();
+}
+
+gui::ErrorReporter *MainWindow::errorReporter()
+{
+	return mErrorReporter;
 }

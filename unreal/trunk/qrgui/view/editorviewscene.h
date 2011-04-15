@@ -48,6 +48,10 @@ public:
 	UML::Element* getLastCreated();
 
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
+	
+	void highlight(qReal::Id const &graphicalId, bool exclusive = true);
+	void dehighlight(qReal::Id const &graphicalId);
+	void dehighlight();
 
 signals:
 	void elementCreated(qReal::Id const &id);
@@ -119,6 +123,8 @@ private:
 	MouseMovementManager * mouseMovementManager;
 
 	QSignalMapper *mActionSignalMapper;
+	
+	QSet<UML::Element *> mHighlightedElements;
 
 	friend class qReal::EditorViewMViface;
 
