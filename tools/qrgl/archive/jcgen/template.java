@@ -1,4 +1,0 @@
-class @@ClassName@@ {
-@@MethodPlace@@
-@@FieldPlace@@
-}
