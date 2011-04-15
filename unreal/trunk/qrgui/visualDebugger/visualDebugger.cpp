@@ -16,9 +16,9 @@
 using namespace qReal;
 
 VisualDebugger::VisualDebugger(models::LogicalModelAssistApi const &logicalModelApi
-								, models::GraphicalModelAssistApi const &graphicalModelApi
-								, qReal::gui::MainWindowInterpretersInterface &interpretersInterface)
-	: mInterpretersInterface(interpretersInterface) 
+							   , models::GraphicalModelAssistApi const &graphicalModelApi
+							   , qReal::gui::MainWindowInterpretersInterface &interpretersInterface)
+	: mInterpretersInterface(interpretersInterface)
 	, mLogicalModelApi(logicalModelApi)
 	, mGraphicalModelApi(graphicalModelApi)
 	, mCurrentElem(NULL)
@@ -33,53 +33,60 @@ VisualDebugger::VisualDebugger(models::LogicalModelAssistApi const &logicalModel
 	, mWorkDir("")
 {}
 
-VisualDebugger::~VisualDebugger() {
+VisualDebugger::~VisualDebugger()
+{
 	delete mBlockParser;
 }
 
-QVariant VisualDebugger::getProperty(Id id, QString propertyName) {
+QVariant VisualDebugger::getProperty(Id id, QString propertyName)
+{
 	if (mLogicalModelApi.isLogicalId(id)) {
 		return mLogicalModelApi.logicalRepoApi().property(id, propertyName);
 	} else {
 		return mLogicalModelApi.logicalRepoApi().property(
-			mGraphicalModelApi.logicalId(mEditor->mvIface()->scene()->getElem(id)->id()), propertyName);
+					mGraphicalModelApi.logicalId(mEditor->mvIface()->scene()->getElem(id)->id()), propertyName);
 	}
 }
 
-bool VisualDebugger::canDebug(DebugType type) {
+bool VisualDebugger::canDebug(DebugType type)
+{
 	switch (type) {
-		case VisualDebugger::singleStepDebug:
-			return mDebugType != VisualDebugger::fullDebug && mDebugType != VisualDebugger::debugWithDebugger;
-			break;
-		case VisualDebugger::fullDebug:
-			return mDebugType == VisualDebugger::noDebug;
-			break;
-		case VisualDebugger::debugWithDebugger:
-			return mDebugType != VisualDebugger::fullDebug && mDebugType != VisualDebugger::singleStepDebug;
-			break;
-		default:
-			return false;
-			break;
+	case VisualDebugger::singleStepDebug:
+		return mDebugType != VisualDebugger::fullDebug && mDebugType != VisualDebugger::debugWithDebugger;
+		break;
+	case VisualDebugger::fullDebug:
+		return mDebugType == VisualDebugger::noDebug;
+		break;
+	case VisualDebugger::debugWithDebugger:
+		return mDebugType != VisualDebugger::fullDebug && mDebugType != VisualDebugger::singleStepDebug;
+		break;
+	default:
+		return false;
+		break;
 	}
 }
 
-void VisualDebugger::setDebugType(VisualDebugger::DebugType type) {
+void VisualDebugger::setDebugType(VisualDebugger::DebugType type)
+{
 	mDebugType = type;
 }
 
-void VisualDebugger::setTimeout(int timeout) {
+void VisualDebugger::setTimeout(int timeout)
+{
 	mTimeout = timeout;
 }
 
 void VisualDebugger::setEditor(EditorView *editor) {
-	if (NULL == mEditor || mCurrentId == Id::rootId() || mEditor == editor) {
+	if (NULL == mEditor || mCurrentId == Id::rootId() || mEditor == editor)
+	{
 		mEditor = editor;
 	} else {
 		mError = VisualDebugger::someDiagramIsRunning;
 	}
 }
 
-void VisualDebugger::error(ErrorType e) {
+void VisualDebugger::error(ErrorType e)
+{
 	switch (e) {
 	case missingBeginNode:
 		mInterpretersInterface.errorReporter()->addCritical("The diagram doesn't have Initial Node");
@@ -91,8 +98,8 @@ void VisualDebugger::error(ErrorType e) {
 		mInterpretersInterface.errorReporter()->addCritical("The diagram cann't end with edge", mCurrentId);
 		break;
 	case endWithNotEndNode:
-		mInterpretersInterface.errorReporter()->addWarning("There are no links from this node and it mismatches Final Node",
-			mCurrentId);
+		mInterpretersInterface.errorReporter()->addWarning("There are no links from this node"
+														   " and it mismatches Final Node", mCurrentId);
 		break;
 	case missingValidLink:
 		mInterpretersInterface.errorReporter()->addCritical("The condition doesn't have valid link", mCurrentId);
@@ -111,7 +118,8 @@ void VisualDebugger::error(ErrorType e) {
 	deinitialize();
 }
 
-UML::Element* VisualDebugger::findBeginNode(QString name) {
+UML::Element* VisualDebugger::findBeginNode(QString name)
+{
 	int i = 0;
 	int count = mEditor->mvIface()->scene()->items().count();
 	UML::Element *elem = NULL;
@@ -129,7 +137,8 @@ UML::Element* VisualDebugger::findBeginNode(QString name) {
 	return elem;
 }
 
-Id VisualDebugger::findValidLink() {
+Id VisualDebugger::findValidLink()
+{
 	IdList outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(mCurrentId);
 	QString conditionStr = getProperty(mCurrentId, "condition").toString();
 	int pos = 0;
@@ -146,22 +155,26 @@ Id VisualDebugger::findValidLink() {
 	return Id::rootId();
 }
 
-void VisualDebugger::pause(int time) {
+void VisualDebugger::pause(int time)
+{
 	QEventLoop loop;
 	QTimer::singleShot(time, &loop, SLOT(quit()));
 	loop.exec();
 }
 
-bool VisualDebugger::isFinalNode(Id id) {
+bool VisualDebugger::isFinalNode(Id id)
+{
 	IdList outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(id);
 	return outLinks.count() == 0 && id.element().compare("BlockFinalNode") == 0;
 }
 
-bool VisualDebugger::hasEndOfLinkNode(Id id) {
+bool VisualDebugger::hasEndOfLinkNode(Id id)
+{
 	return mLogicalModelApi.logicalRepoApi().to(id) != Id::rootId();
 }
 
-VisualDebugger::ErrorType VisualDebugger::doFirstStep(UML::Element *elem) {
+VisualDebugger::ErrorType VisualDebugger::doFirstStep(UML::Element *elem)
+{
 	if (!elem) {
 		return VisualDebugger::missingBeginNode;
 	}
@@ -173,7 +186,8 @@ VisualDebugger::ErrorType VisualDebugger::doFirstStep(UML::Element *elem) {
 	return VisualDebugger::noErrors;
 }
 
-void VisualDebugger::doStep(Id id) {
+void VisualDebugger::doStep(Id id)
+{
 	mCurrentId = id;
 	mCurrentElem = mEditor->mvIface()->scene()->getElem(id);
 
@@ -187,7 +201,8 @@ void VisualDebugger::doStep(Id id) {
 	}
 }
 
-void VisualDebugger::deinitialize() {
+void VisualDebugger::deinitialize()
+{
 	dehighlight();
 	mCurrentId = Id::rootId();
 	mCurrentElem = NULL;
@@ -197,12 +212,14 @@ void VisualDebugger::deinitialize() {
 	mDebugType = VisualDebugger::noDebug;
 }
 
-void VisualDebugger::processAction() {
+void VisualDebugger::processAction()
+{
 	int pos = 0;
 	mBlockParser->parseProcess(getProperty(mCurrentId, "process").toString(), pos, mCurrentId);
 }
 
-void VisualDebugger::debug() {
+void VisualDebugger::debug()
+{
 	mDebugType = VisualDebugger::fullDebug;
 	QSettings settings("SPbSU", "QReal");
 	setTimeout(settings.value("debuggerTimeout", 750).toInt());
@@ -265,7 +282,8 @@ void VisualDebugger::debug() {
 	return;
 }
 
-void VisualDebugger::debugSingleStep() {
+void VisualDebugger::debugSingleStep()
+{
 	mDebugType = VisualDebugger::singleStepDebug;
 
 	if (mCurrentElem == NULL && mCurrentId == Id::rootId()) {
@@ -324,19 +342,20 @@ void VisualDebugger::debugSingleStep() {
 	return;
 }
 
-void VisualDebugger::generateCode() {
+void VisualDebugger::generateCode()
+{
 	mHasCodeGenerationError = false;
-	
+
 	QSettings settings("SPbSU", "QReal");
 	setCodeFileName(settings.value("codeFileName", "code.c").toString());
 	setWorkDir(settings.value("debugWorkingDirectory", "").toString());
-	
+
 	QFile codeFile(mWorkDir + "/" + mCodeFileName);
 	codeFile.open(QIODevice::WriteOnly);
-	
+
 	codeFile.write("void main(int argc, char* argv[]) {\n");
 	UML::Element *curElem = findBeginNode("InitialNode");
-	if (curElem != NULL) { 
+	if (curElem != NULL) {
 		generateCode(curElem, codeFile);
 		codeFile.write("}");
 		codeFile.close();
@@ -347,7 +366,8 @@ void VisualDebugger::generateCode() {
 	return;
 }
 
-void VisualDebugger::generateCode(UML::Element *elem, QFile &codeFile) {
+void VisualDebugger::generateCode(UML::Element *elem, QFile &codeFile)
+{
 	UML::Element *curElem = dynamic_cast<UML::NodeElement *>(elem);
 	if (curElem && elem->id().element().compare("InitialNode") != 0) {
 		if (elem->id().element().compare("Action") == 0) {
@@ -357,7 +377,7 @@ void VisualDebugger::generateCode(UML::Element *elem, QFile &codeFile) {
 			} else {
 				codeFile.write(code.toAscii());
 			}
-			
+
 			codeFile.write("\n");
 			if (mLogicalModelApi.logicalRepoApi().outgoingLinks(curElem->id()).count() != 0) {
 				Id nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(curElem->id()).at(0);
@@ -406,11 +426,12 @@ void VisualDebugger::generateCode(UML::Element *elem, QFile &codeFile) {
 			generateCode(mEditor->mvIface()->scene()->getElem(nextEdge), codeFile);
 		}
 	}
-	
+
 	return;
 }
 
-void VisualDebugger::createIdByLineCorrelation() {
+void VisualDebugger::createIdByLineCorrelation()
+{
 	mHasNotEndWithFinalNode = false;
 	int line = 2;
 	UML::Element *curElem = findBeginNode("InitialNode");
@@ -418,7 +439,8 @@ void VisualDebugger::createIdByLineCorrelation() {
 	createIdByLineCorrelation(curElem, line);
 }
 
-void VisualDebugger::createIdByLineCorrelation(UML::Element *elem, int& line) {
+void VisualDebugger::createIdByLineCorrelation(UML::Element *elem, int& line)
+{
 	UML::Element *curElem = dynamic_cast<UML::NodeElement *>(elem);
 	if (curElem && elem->id().element().compare("InitialNode") != 0) {
 		if (elem->id().element().compare("Action") == 0) {
@@ -456,7 +478,7 @@ void VisualDebugger::createIdByLineCorrelation(UML::Element *elem, int& line) {
 			} else {
 				mIdByLineCorrelation[line] = elem->id();
 			}
-		} 
+		}
 	} else {
 		if (elem->id().element().compare("InitialNode") != 0) {
 			Id nextNode  = mLogicalModelApi.logicalRepoApi().to(elem->id());
@@ -468,18 +490,19 @@ void VisualDebugger::createIdByLineCorrelation(UML::Element *elem, int& line) {
 	}
 }
 
-QList<int>* VisualDebugger::computeBreakpoints() {
+QList<int>* VisualDebugger::computeBreakpoints()
+{
 	QList<int> *breakpoints = new QList<int>();
 	int line=1;
 	Id curId = mIdByLineCorrelation[line];
 	while (mIdByLineCorrelation[line].element().compare("BlockFinalNode") != 0) {
-		
-		while (mIdByLineCorrelation.contains(line) && 
-				curId.toString().compare(mIdByLineCorrelation[line].toString()) == 0) {
+
+		while (mIdByLineCorrelation.contains(line) &&
+			   curId.toString().compare(mIdByLineCorrelation[line].toString()) == 0) {
 			line++;
 		}
 		breakpoints->append(line-1);
-		
+
 		while (!mIdByLineCorrelation.contains(line)) {
 			line++;
 		}
@@ -489,30 +512,37 @@ QList<int>* VisualDebugger::computeBreakpoints() {
 	return breakpoints;
 }
 
-Id VisualDebugger::getIdByLine(int line) {
+Id VisualDebugger::getIdByLine(int line)
+{
 	return mIdByLineCorrelation[line];
 }
 
-void VisualDebugger::highlight(Id id) {
+void VisualDebugger::highlight(Id id)
+{
 	mInterpretersInterface.highlight(id);
 }
 
-void VisualDebugger::dehighlight() {
+void VisualDebugger::dehighlight()
+{
 	mInterpretersInterface.dehighlight();
 }
 
-bool VisualDebugger::canBuild() {
+bool VisualDebugger::canBuild()
+{
 	return !mHasCodeGenerationError;
 }
 
-void VisualDebugger::setCodeFileName(QString name) {
+void VisualDebugger::setCodeFileName(QString name)
+{
 	mCodeFileName = name;
 }
 
-bool VisualDebugger::canComputeBreakpoints() {
+bool VisualDebugger::canComputeBreakpoints()
+{
 	return !mHasNotEndWithFinalNode;
 }
 
-void VisualDebugger::setWorkDir(QString path) {
+void VisualDebugger::setWorkDir(QString path)
+{
 	mWorkDir = path;
 }

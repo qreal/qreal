@@ -9,76 +9,92 @@ BlockParser::BlockParser(gui::ErrorReporter* errorReporter)
 {
 }
 
-BlockParser::~BlockParser() {
+BlockParser::~BlockParser()
+{
 	delete &mVariables;
 }
 
-QMap<QString, Number>* BlockParser::getVariables() {
+QMap<QString, Number>* BlockParser::getVariables()
+{
 	return &mVariables;
 }
 
-bool BlockParser::isDigit(QChar c) {
+bool BlockParser::isDigit(QChar c)
+{
 	char symbol = c.toAscii();
 	return '0' <= symbol && symbol <= '9';
 }
 
-bool BlockParser::isSign(QChar c) {
+bool BlockParser::isSign(QChar c)
+{
 	char symbol = c.toAscii();
 	return symbol == '-' || symbol == '+';
 }
 
-bool BlockParser::isLetter(QChar c) {
+bool BlockParser::isLetter(QChar c)
+{
 	char symbol = c.toAscii();
 	return ('A'<= symbol && symbol <= 'Z') || ('a'<= symbol && symbol <='z');
 }
 
-bool BlockParser::isExp(QChar c) {
+bool BlockParser::isExp(QChar c)
+{
 	char symbol = c.toAscii();
 	return symbol == 'e' || symbol == 'E';
 }
 
-bool BlockParser::isPoint(QChar c) {
+bool BlockParser::isPoint(QChar c)
+{
 	return c.toAscii() == '.';
 }
 
-bool BlockParser::isRoundBracket(QChar c) {
+bool BlockParser::isRoundBracket(QChar c)
+{
 	char symbol = c.toAscii();
 	return symbol == '(' || symbol == ')';
 }
 
-bool BlockParser::isDisjunction(QChar c) {
+bool BlockParser::isDisjunction(QChar c)
+{
 	return c.toAscii() == '|';
 }
 
-bool BlockParser::isConjunction(QChar c) {
+bool BlockParser::isConjunction(QChar c)
+{
 	return c.toAscii() == '&';
 }
 
-bool BlockParser::isComparison(QChar c) {
+bool BlockParser::isComparison(QChar c)
+{
 	char symbol = c.toAscii();
 	return symbol == '<' || symbol == '>';
 }
 
-bool BlockParser::isArithmeticalMinusOrPlus(QChar c) {
+bool BlockParser::isArithmeticalMinusOrPlus(QChar c)
+{
 	char symbol = c.toAscii();
 	return symbol == '-' || symbol == '+';
 }
 
-bool BlockParser::isMultiplicationOrDivision(QChar c) {
+bool BlockParser::isMultiplicationOrDivision(QChar c)
+{
 	char symbol = c.toAscii();
 	return symbol == '*' || symbol == '/';
 }
 
-bool BlockParser::isDelimiter(QChar c) {
+bool BlockParser::isDelimiter(QChar c)
+{
 	char symbol = c.toAscii();
 	return symbol == '\n' || symbol == '\r' || symbol == ' ' || symbol == '\t';
 }
 
-bool BlockParser::isAssignment(QChar c) {
+bool BlockParser::isAssignment(QChar c)
+{
 	return c.toAscii() == '=';
 }
 
-Number BlockParser::parseNumber(QString stream, int& pos) {
+Number BlockParser::parseNumber(QString stream, int& pos)
+{
 	int beginPos = pos;
 	bool isDouble = false;
 	if (pos < stream.length() && isSign(stream.at(pos))) {
@@ -131,7 +147,8 @@ Number BlockParser::parseNumber(QString stream, int& pos) {
 	}
 }
 
-QString BlockParser::parseIdentifier(QString stream, int& pos) {
+QString BlockParser::parseIdentifier(QString stream, int& pos)
+{
 	int beginPos = pos;
 	if (checkForLetter(stream, pos)) {
 		pos++;
@@ -143,7 +160,8 @@ QString BlockParser::parseIdentifier(QString stream, int& pos) {
 	return "";
 }
 
-void BlockParser::skip(QString stream, int& pos) {
+void BlockParser::skip(QString stream, int& pos)
+{
 	while (pos < stream.length() &&
 		(isDelimiter(stream.at(pos)) || stream.at(pos).toAscii() == '<'))
 	{
@@ -158,7 +176,8 @@ void BlockParser::skip(QString stream, int& pos) {
 	}
 }
 
-bool BlockParser::isHtmlBrTag(QString stream, int& pos) {
+bool BlockParser::isHtmlBrTag(QString stream, int& pos)
+{
 	if (pos + 3 < stream.length()) {
 		return stream.at(pos).toAscii() == '<' &&
 			stream.at(pos + 1).toAscii() == 'b' &&
@@ -169,7 +188,8 @@ bool BlockParser::isHtmlBrTag(QString stream, int& pos) {
 	}
 }
 
-Number BlockParser::parseTerm(QString stream, int& pos) {
+Number BlockParser::parseTerm(QString stream, int& pos)
+{
 	Number res;
 	skip(stream, pos);
 
@@ -219,7 +239,8 @@ Number BlockParser::parseTerm(QString stream, int& pos) {
 	return res;
 }
 
-Number BlockParser::parseMult(QString stream, int& pos) {
+Number BlockParser::parseMult(QString stream, int& pos)
+{
 	Number res = parseTerm(stream, pos);
 	while (pos < stream.length() && isMultiplicationOrDivision(stream.at(pos))) {
 		pos++;
@@ -235,7 +256,8 @@ Number BlockParser::parseMult(QString stream, int& pos) {
 	return res;
 }
 
-Number BlockParser::parseExpression(QString stream, int& pos) {
+Number BlockParser::parseExpression(QString stream, int& pos)
+{
 	Number res = parseMult(stream, pos);
 	while (pos < stream.length() && isArithmeticalMinusOrPlus(stream.at(pos))) {
 		pos++;
@@ -251,7 +273,8 @@ Number BlockParser::parseExpression(QString stream, int& pos) {
 	return res;
 }
 
-void BlockParser::parseVarPart(QString stream, int& pos) {
+void BlockParser::parseVarPart(QString stream, int& pos)
+{
 	skip(stream, pos);
 	if (stream.mid(pos, 4).compare("var ") == 0) {
 		pos += 4;
@@ -328,7 +351,8 @@ void BlockParser::parseVarPart(QString stream, int& pos) {
 	}
 }
 
-void BlockParser::parseCommand(QString stream, int& pos) {
+void BlockParser::parseCommand(QString stream, int& pos)
+{
 	int typesMismatchIndex = pos;
 	QString variable = parseIdentifier(stream, pos);
 	skip(stream, pos);
@@ -365,7 +389,8 @@ void BlockParser::parseCommand(QString stream, int& pos) {
 	}
 }
 
-void BlockParser::parseProcess(QString stream, int& pos, Id curId) {
+void BlockParser::parseProcess(QString stream, int& pos, Id curId)
+{
 	mCurrentId = curId;
 
 	if (isEmpty(stream, pos)) {
@@ -382,7 +407,8 @@ void BlockParser::parseProcess(QString stream, int& pos, Id curId) {
 	}
 }
 
-bool BlockParser::parseSingleComprasion(QString stream, int& pos) {
+bool BlockParser::parseSingleComprasion(QString stream, int& pos)
+{
 	Number left = parseExpression(stream, pos);
 	Number right;
 	if (hasErrors() || isEndOfStream(stream, pos)) {
@@ -438,7 +464,8 @@ bool BlockParser::parseSingleComprasion(QString stream, int& pos) {
 	return false;
 }
 
-bool BlockParser::parseDisjunction(QString stream, int& pos) {
+bool BlockParser::parseDisjunction(QString stream, int& pos)
+{
 	bool res = false;
 	skip(stream, pos);
 	int index = stream.indexOf(')', pos);
@@ -487,7 +514,8 @@ bool BlockParser::parseDisjunction(QString stream, int& pos) {
 	return res;
 }
 
-bool BlockParser::parseConjunction(QString stream, int& pos) {
+bool BlockParser::parseConjunction(QString stream, int& pos)
+{
 	bool res = parseDisjunction(stream, pos);
 	while (pos < (stream.length()-1) && isConjunction(stream.at(pos))) {
 		pos++;
@@ -502,7 +530,8 @@ bool BlockParser::parseConjunction(QString stream, int& pos) {
 	return res;
 }
 
-bool BlockParser::parseConditionHelper(QString stream, int& pos) {
+bool BlockParser::parseConditionHelper(QString stream, int& pos)
+{
 	bool res = parseConjunction(stream, pos);
 	while (pos < (stream.length()-1) && isDisjunction(stream.at(pos))) {
 		pos++;
@@ -517,7 +546,8 @@ bool BlockParser::parseConditionHelper(QString stream, int& pos) {
 	return res;
 }
 
-bool BlockParser::parseCondition(QString stream, int& pos, Id curId) {
+bool BlockParser::parseCondition(QString stream, int& pos, Id curId)
+{
 	mCurrentId = curId;
 	if (isEmpty(stream, pos)) {
 		error(emptyCondition);
@@ -532,15 +562,18 @@ bool BlockParser::parseCondition(QString stream, int& pos, Id curId) {
 	return res;
 }
 
-gui::ErrorReporter& BlockParser::getErrors() {
+gui::ErrorReporter& BlockParser::getErrors()
+{
 	return *mErrorReporter;
 }
 
-bool BlockParser::hasErrors() {
+bool BlockParser::hasErrors()
+{
 	return mHasParseErrors;
 }
 
-bool BlockParser::isEndOfStream(QString stream, int& pos) {
+bool BlockParser::isEndOfStream(QString stream, int& pos)
+{
 	if (pos == stream.length()) {
 		error(unexpectedEndOfStream, QString::number(pos + 1));
 		return true;
@@ -548,7 +581,8 @@ bool BlockParser::isEndOfStream(QString stream, int& pos) {
 	return false;
 }
 
-bool BlockParser::checkForLetter(QString stream, int &pos) {
+bool BlockParser::checkForLetter(QString stream, int &pos)
+{
 	if (isEndOfStream(stream, pos)) {
 		return false;
 	}
@@ -559,7 +593,8 @@ bool BlockParser::checkForLetter(QString stream, int &pos) {
 	return true;
 }
 
-bool BlockParser::checkForDigit(QString stream, int &pos) {
+bool BlockParser::checkForDigit(QString stream, int &pos)
+{
 	if (isEndOfStream(stream, pos)) {
 		return false;
 	}
@@ -570,7 +605,8 @@ bool BlockParser::checkForDigit(QString stream, int &pos) {
 	return true;
 }
 
-bool BlockParser::checkForOpeningBracket(QString stream, int &pos) {
+bool BlockParser::checkForOpeningBracket(QString stream, int &pos)
+{
 	if (isEndOfStream(stream, pos)) {
 		return false;
 	}
@@ -581,7 +617,8 @@ bool BlockParser::checkForOpeningBracket(QString stream, int &pos) {
 	return true;
 }
 
-bool BlockParser::checkForClosingBracket(QString stream, int &pos) {
+bool BlockParser::checkForClosingBracket(QString stream, int &pos)
+{
 	if (isEndOfStream(stream, pos)) {
 		return false;
 	}
@@ -592,7 +629,8 @@ bool BlockParser::checkForClosingBracket(QString stream, int &pos) {
 	return true;
 }
 
-bool BlockParser::checkForColon(QString stream, int &pos) {
+bool BlockParser::checkForColon(QString stream, int &pos)
+{
 	if (isEndOfStream(stream, pos)) {
 		return false;
 	}
@@ -603,7 +641,8 @@ bool BlockParser::checkForColon(QString stream, int &pos) {
 	return true;
 }
 
-bool BlockParser::checkForEqual(QString stream, int pos) {
+bool BlockParser::checkForEqual(QString stream, int pos)
+{
 	if (isEndOfStream(stream, pos)) {
 		return false;
 	}
@@ -614,12 +653,14 @@ bool BlockParser::checkForEqual(QString stream, int pos) {
 	return true;
 }
 
-bool BlockParser::isEmpty(QString stream, int &pos) {
+bool BlockParser::isEmpty(QString stream, int &pos)
+{
 	skip(stream, pos);
 	return pos == stream.length();
 }
 
-void BlockParser::error(ParseErrorType type, QString pos, QString expected, QString got) {
+void BlockParser::error(ParseErrorType type, QString pos, QString expected, QString got)
+{
 	switch (type) {
 		case unexpectedEndOfStream:
 			mHasParseErrors = true;
@@ -650,11 +691,13 @@ void BlockParser::error(ParseErrorType type, QString pos, QString expected, QStr
 	}
 }
 
-void BlockParser::setErrorReporter(gui::ErrorReporter *errorReporter) {
+void BlockParser::setErrorReporter(gui::ErrorReporter *errorReporter)
+{
 	mErrorReporter = errorReporter;
 }
 
-void BlockParser::clear() {
+void BlockParser::clear()
+{
 	mHasParseErrors = false;
 	mErrorReporter = NULL;
 	mVariables.clear();

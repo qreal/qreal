@@ -10,10 +10,12 @@ Number::Number() : mNumber(0), mType(Number::intType)
 {
 }
 
-Number::~Number() {
+Number::~Number()
+{
 }
 
-QVariant Number::property(QString name) {
+QVariant Number::property(QString name)
+{
 	if (name.compare("Number") == 0) {
 		return mNumber;
 	} else if (name.compare("Type") == 0) {
@@ -22,7 +24,8 @@ QVariant Number::property(QString name) {
 	return QVariant();
 }
 
-void Number::setProperty(QString name, QVariant value) {
+void Number::setProperty(QString name, QVariant value)
+{
 	if (name.compare("Number") == 0) {
 		mNumber = value;
 	} else if (name.compare("Type") == 0) {
@@ -30,7 +33,8 @@ void Number::setProperty(QString name, QVariant value) {
 	}
 }
 
-void Number::operator+=(Number add) {
+void Number::operator+=(Number add)
+{
 	Number::Type type = add.property("Type").toInt() ? Number::intType : Number::doubleType;
 	QVariant val = add.property("Number");
 	if (mType == type) {
@@ -48,7 +52,8 @@ void Number::operator+=(Number add) {
 	}
 }
 
-void Number::operator-=(Number sub) {
+void Number::operator-=(Number sub)
+{
 	Number::Type type = sub.property("Type").toInt() ? Number::intType : Number::doubleType;
 	QVariant val = sub.property("Number");
 	if (mType == type) {
@@ -66,7 +71,8 @@ void Number::operator-=(Number sub) {
 	}
 }
 
-void Number::operator*=(Number mult) {
+void Number::operator*=(Number mult)
+{
 	Number::Type type = mult.property("Type").toInt() ? Number::intType : Number::doubleType;
 	QVariant val = mult.property("Number");
 	if (mType == type) {
@@ -84,7 +90,8 @@ void Number::operator*=(Number mult) {
 	}
 }
 
-void Number::operator/=(Number div) {
+void Number::operator/=(Number div)
+{
 	Number::Type type = div.property("Type").toInt() ? Number::intType : Number::doubleType;
 	QVariant val = div.property("Number");
 	if (mType == type) {
@@ -102,7 +109,8 @@ void Number::operator/=(Number div) {
 	}
 }
 
-Number Number::operator-() {
+Number Number::operator-()
+{
 	switch (mType) {
 		case Number::intType:
 			mNumber = -mNumber.toInt();
@@ -114,7 +122,8 @@ Number Number::operator-() {
 	return *this;
 }
 
-bool Number::operator<(Number arg) {
+bool Number::operator<(Number arg)
+{
 	Number::Type type = arg.property("Type").toInt() ? Number::intType : Number::doubleType;
 	QVariant val = arg.property("Number");
 	if (mType == Number::intType && type == Number::intType) {
@@ -127,7 +136,8 @@ bool Number::operator<(Number arg) {
 		return mNumber.toDouble() < val.toDouble();
 	}
 }
-bool Number::operator==(Number arg) {
+bool Number::operator==(Number arg)
+{
 	Number::Type type = arg.property("Type").toInt() ? Number::intType : Number::doubleType;
 	QVariant val = arg.property("Number");
 	if (mType == Number::intType && type == Number::intType) {
@@ -141,18 +151,22 @@ bool Number::operator==(Number arg) {
 	}
 }
 
-bool Number::operator>(Number arg) {
+bool Number::operator>(Number arg)
+{
 	return !((*this) < arg || (*this) == arg);
 }
 
-bool Number::operator<=(Number arg) {
+bool Number::operator<=(Number arg)
+{
 	return (*this) < arg || (*this) == arg;
 }
 
-bool Number::operator>=(Number arg) {
+bool Number::operator>=(Number arg)
+{
 	return !((*this) < arg);
 }
 
-bool Number::operator!=(Number arg) {
+bool Number::operator!=(Number arg)
+{
 	return !((*this) == arg);
 }

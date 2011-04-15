@@ -23,7 +23,8 @@ DebuggerConnector::DebuggerConnector():
 	connect(mBuilderProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(readBuilderStdOutput()));
 }
 
-DebuggerConnector::~DebuggerConnector() {
+DebuggerConnector::~DebuggerConnector()
+{
 	mDebuggerProcess->closeWriteChannel();
 	mDebuggerProcess->terminate();
 	mThread->terminate();
@@ -32,41 +33,50 @@ DebuggerConnector::~DebuggerConnector() {
 	delete mThread;
 }
 
-bool DebuggerConnector::hasBuildError() {
+bool DebuggerConnector::hasBuildError()
+{
 	return mHasGccError;
 }
 
-bool DebuggerConnector::isDebuggerRunning() {
+bool DebuggerConnector::isDebuggerRunning()
+{
 	return mDebuggerProcess->state() == QProcess::Running;
 }
 
-void DebuggerConnector::setDebuggerPath(QString path) {
+void DebuggerConnector::setDebuggerPath(QString path)
+{
 	mDebuggerPath = path;
 }
 
-void DebuggerConnector::setBuilderPath(QString path) {
+void DebuggerConnector::setBuilderPath(QString path)
+{
 	mBuilderPath = path;
 }
 
-void DebuggerConnector::setBuildedFileName(QString name) {
+void DebuggerConnector::setBuildedFileName(QString name)
+{
 	mBuildedFileName = name;
 }
 
-void DebuggerConnector::setCodeFileName(QString name) {
+void DebuggerConnector::setCodeFileName(QString name)
+{
 	mCodeFileName = name;
 }
 
-void DebuggerConnector::setWorkDir(QString path) {
+void DebuggerConnector::setWorkDir(QString path)
+{
 	mWorkDir = path;
 }
 
-void DebuggerConnector::run() {
+void DebuggerConnector::run()
+{
 	if (!mThread->isRunning()) {
 		mThread->start();
 	}
 }
 
-void DebuggerConnector::startDebugger() {
+void DebuggerConnector::startDebugger()
+{
 	QSettings settings("SPbSU", "QReal");
 	setDebuggerPath(settings.value("debuggerPath", "gdb.exe").toString());
 
@@ -79,12 +89,14 @@ void DebuggerConnector::startDebugger() {
 	}
 }
 
-void DebuggerConnector::configure(QString programPath) {
+void DebuggerConnector::configure(QString programPath)
+{
 	QString command = "file " + programPath + "\n";
 	sendCommand(command);
 }
 
-void DebuggerConnector::readOutput() {
+void DebuggerConnector::readOutput()
+{
 	QByteArray out = mDebuggerProcess->readAllStandardOutput();
 	QString output = QString(out);
 	int index = output.indexOf("(gdb)");
@@ -98,7 +110,8 @@ void DebuggerConnector::readOutput() {
 	mDebuggerProcess->waitForReadyRead();
 }
 
-void DebuggerConnector::readErrOutput() {
+void DebuggerConnector::readErrOutput()
+{
 	QByteArray out = mDebuggerProcess->readAllStandardError();
 	QString output = QString(out);
 	int index = output.indexOf("(gdb)");
@@ -111,22 +124,26 @@ void DebuggerConnector::readErrOutput() {
 	}
 }
 
-void DebuggerConnector::readBuilderErrOutput() {
+void DebuggerConnector::readBuilderErrOutput()
+{
 	QByteArray out = mBuilderProcess->readAllStandardError();
 	emit readyReadErrOutput("gcc build error:\n" + QString(out));
 }
 
-void DebuggerConnector::readBuilderStdOutput() {
+void DebuggerConnector::readBuilderStdOutput()
+{
 	QByteArray out = mBuilderProcess->readAllStandardOutput();
 	emit readyReadErrOutput("gcc build error:\n" + QString(out));
 }
 
-void DebuggerConnector::sendCommand(QString command) {
-	mDebuggerProcess->write(command.toAscii());  
+void DebuggerConnector::sendCommand(QString command)
+{
+	mDebuggerProcess->write(command.toAscii());
 	mDebuggerProcess->waitForBytesWritten();
 }
 
-void DebuggerConnector::build(QString filePath) {
+void DebuggerConnector::build(QString filePath)
+{
 	QSettings settings("SPbSU", "QReal");
 	setBuilderPath(settings.value("builderPath", "gcc.exe").toString());
 	setBuildedFileName(settings.value("buildedFileName", "builded.exe").toString());
@@ -138,7 +155,7 @@ void DebuggerConnector::build(QString filePath) {
 	args.append("-o");
 	args.append(mWorkDir + "/" + mBuildedFileName);
 	args.append(filePath);
-	
+
 	if (QFile::exists(mWorkDir + "/" + mCodeFileName)) {
 		if (QFile::exists(mBuilderPath)) {
 			mBuilderProcess->start(mBuilderPath, args);
@@ -155,7 +172,8 @@ void DebuggerConnector::build(QString filePath) {
 	}
 }
 
-void DebuggerConnector::finishProcess() {
+void DebuggerConnector::finishProcess()
+{
 	mDebuggerProcess->terminate();
 	if (mDebuggerProcess->exitCode() != 0) {
 		emit readyReadErrOutput("Debugger closing error");
