@@ -34,10 +34,6 @@ namespace UML {
 		NodeElement(ElementImpl *impl);
 		virtual ~NodeElement();
 
-		NodeElement *clone();
-		void copyChildren(NodeElement *source);
-		void copyEdges(NodeElement *source);
-
 		virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w, SdfRenderer *portrenderer);
 		virtual void paint(QPainter *,  const QStyleOptionGraphicsItem *, QWidget *);
 
@@ -92,7 +88,6 @@ namespace UML {
 		void setConnectingState(bool arg);
 
 		void adjustLinks();
-		void arrangeLinearPorts();
 		void arrangeLinks();
 
 		virtual void checkConnectionsToPort();
@@ -114,6 +109,7 @@ namespace UML {
 		};
 
 		void delUnusedLines();
+		void arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<NodeElement*>& arranged);
 		PossibleEdge toPossibleEdge(const StringPossibleEdge & strPossibleEdge);
 
 		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);

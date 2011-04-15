@@ -26,6 +26,8 @@ bool Property::init(QDomElement const &element)
 		else
 			return false;
 	}
+
+	mDisplayedName = element.attribute("displayedName");
 	mDescription = element.firstChildElement("description").text();
 	mDefaultValue = element.firstChildElement("default").text();
 	return true;
@@ -44,6 +46,11 @@ bool Property::initReferenceType(QString typeName, QDomElement const &element)
 QString Property::name() const
 {
 	return mName;
+}
+
+QString Property::displayedName() const
+{
+	return mDisplayedName;
 }
 
 QString Property::type() const
@@ -65,6 +72,7 @@ Property * Property::clone()
 {
 	Property *result = new Property();
 	result->mName = mName;
+	result->mDisplayedName = mDisplayedName;
 	result->mType = mType;
 	result->mIsEnum = mIsEnum;
 	result->mIsReference = mIsReference;
@@ -76,6 +84,7 @@ Property * Property::clone()
 bool Property::operator == (Property const &other) const
 {
 	return other.mName == mName
+		&& other.mDisplayedName == mDisplayedName
 		&& other.mType == mType
 		&& other.mIsEnum == mIsEnum
 		&& other.mIsReference == mIsReference
@@ -92,6 +101,7 @@ bool Property::operator != (Property const &other) const
 void Property::dump() const
 {
 	qDebug() << mName;
+	qDebug() << mDisplayedName;
 	qDebug() << mType;
 	qDebug() << mIsEnum;
 	qDebug() << mIsReference;

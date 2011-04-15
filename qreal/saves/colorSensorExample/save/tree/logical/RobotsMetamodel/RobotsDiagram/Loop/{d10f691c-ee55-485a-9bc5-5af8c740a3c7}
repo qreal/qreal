@@ -1,0 +1,18 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/Loop/{d10f691c-ee55-485a-9bc5-5af8c740a3c7}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <QString key="Iterations" value="10"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{b021c013-2fb5-427b-8777-c5e67983023c}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{3451d3f9-ddc4-4563-ad19-048345f55610}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{b9be0f4c-f716-464d-8680-3d7dac57c759}"/>
+    </links>
+    <QString key="name" value="(Цикл)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

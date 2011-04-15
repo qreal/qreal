@@ -143,7 +143,7 @@ bool Client::hasProperty(const Id &id, const QString &name) const
 	if (mObjects.contains(id)) {
 		return mObjects[id]->hasProperty(name);
 	} else {
-		throw Exception("Client: Checking the existence of a property '" + name + "' of nonexistent object " + id.toString());
+		throw Exception("Client: Checking the existence of a property of nonexistent object " + id.toString());
 	}
 }
 
@@ -239,8 +239,8 @@ void Client::save(IdList list) const
 
 void Client::remove(IdList list) const
 {
-	foreach(Id id, list) {
-		qDebug() << id.toString();
+	foreach(Id const id, list) {
+		qDebug() << id;
 		serializer.removeFromDisk(id);
 	}
 }
@@ -264,12 +264,12 @@ void Client::printDebug() const
 {
 	qDebug() << mObjects.size() << " objects in repository";
 	foreach (Object *object, mObjects.values()) {
-		qDebug() << object->id().toString();
+		qDebug() << object->id();
 		qDebug() << "Children:";
-		foreach (Id id, object->children())
-			qDebug() << id.toString();
+		foreach (Id const id, object->children())
+			qDebug() << id;
 		qDebug() << "Parent:";
-		qDebug() << object->parent().toString();
+		qDebug() << object->parent();
 		qDebug() << "============";
 	}
 }

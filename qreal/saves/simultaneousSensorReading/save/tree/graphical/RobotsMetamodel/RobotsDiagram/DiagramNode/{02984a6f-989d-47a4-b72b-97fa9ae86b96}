@@ -1,0 +1,31 @@
+<object logicalId="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{2dc2ac02-5fc9-4037-a671-068f214eabba}" id="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{02984a6f-989d-47a4-b72b-97fa9ae86b96}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{b13667e0-14a6-406b-bd3b-2e0cc7b766d2}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward/{f2291881-5ae0-4633-b8e7-9268cb53193d}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Fork/{6776f36d-a9f3-4c49-b82e-8b70b67d15f1}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForTouchSensor/{d6ec2bba-6ab4-4551-a3f4-b2f6f7aec71c}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForSonarDistance/{143de81a-5166-4398-9574-541c4f86afbe}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{4afdf870-6c9e-4562-ba8d-3311dc19c3ce}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{d417f57d-7d7e-4166-acad-d542e7c46963}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{edea64ac-2183-440d-b48d-3fe2ab211f8e}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{34fede6d-24aa-41c3-9a13-e8f93659b9ed}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{6ba19a81-a6a1-479a-90ee-92e083ea8b32}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{ca843711-bc90-48ec-8f9a-c4b8b66aa4cb}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{0c1efdb2-713e-4659-b36c-4a44693f8744}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{548e3d26-fff2-4f9c-abcb-f9649726d694}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{e54205e9-5f05-48fe-8024-5ae04ffd565c}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesStop/{6e444773-4664-484b-8c0f-f311e61225ad}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{62684379-9865-4163-aad4-816d06f0edf0}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{724b7c13-f2eb-4802-8b3c-66711c4a0a95}"/>
+  </children>
+  <properties>
+    <QPolygon key="configuration" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(Диаграмма поведения робота)"/>
+    <QPointF key="position" value="0, 0"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>

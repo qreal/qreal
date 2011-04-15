@@ -181,9 +181,10 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QString elementName(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QString elementDescription(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QString propertyDescription(QString const &diagram, QString const &element, QString const &property) const;\n"
+		<< "\tvirtual QString propertyDisplayedName(QString const &diagram, QString const &element, QString const &property) const;\n"
 		<< "\tvirtual QString elementMouseGesture(QString const &digram, QString const &element) const;\n"
 		<< "\n"
-		<< "\tvirtual QList<qReal::ListenerInterface*> listeners() const;\n"
+		<< 	"\tvirtual QList<qReal::ListenerInterface*> listeners() const;\n"
 		<< "\n"
 		<< "\tvirtual bool isParentOf(QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const;\n"
 		<< "\n"
@@ -197,6 +198,7 @@ void XmlCompiler::generatePluginHeader()
 
 		<< "\tQMap<QString, QMap<QString, QString> > elementsDescriptionMap;\n"
 		<< "\tQMap<QString, QMap<QString, QMap<QString, QString> > > propertiesDescriptionMap;\n"
+		<< "\tQMap<QString, QMap<QString, QMap<QString, QString> > > propertiesDisplayedNamesMap;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > elementMouseGesturesMap;\n"
 		<< "\tQMap<QString, QMap<QString, QList<QPair<QString, QString> > > > parentsMap;  // Maps diagram and element to a list of diagram-element pairs of parents (generalization relation).\n"
 		<< "};\n"
@@ -278,7 +280,12 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 		foreach (Type *type, diagram->types().values())
 			type->generateNameMapping(out);
 
-	// property types
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+		foreach (Type *type, diagram->types().values()){
+			GraphicType *obj = dynamic_cast<GraphicType *>(type);
+			if (obj)
+				obj->generatePropertyDisplayedNamesMapping(out);
+		}
 
 	out() << "}\n\n";
 }
@@ -289,14 +296,14 @@ void XmlCompiler::generateDescriptionMappings(OutFile &out)
 	out() << "void " << mPluginName << "Plugin::initDescriptionMap()\n{\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values()) {
+		foreach (Type *type, diagram->types().values()){
 			GraphicType *obj = dynamic_cast<GraphicType *>(type);
 			if (obj)
 				obj->generateDescriptionMapping(out);
 		}
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values()) {
+		foreach (Type *type, diagram->types().values()){
 			GraphicType *obj = dynamic_cast<GraphicType *>(type);
 			if (obj)
 				obj->generatePropertyDescriptionMapping(out);
@@ -401,6 +408,10 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 
 		<< "QString " << mPluginName << "Plugin::propertyDescription(QString const &diagram, QString const &element, QString const &property) const\n{\n"
 		<< "\treturn propertiesDescriptionMap[diagram][element][property];\n"
+		<< "}\n\n"
+
+		<< "QString " << mPluginName << "Plugin::propertyDisplayedName(QString const &diagram, QString const &element, QString const &property) const\n{\n"
+		<< "\treturn propertiesDisplayedNamesMap[diagram][element][property];\n"
 		<< "}\n\n"
 
 		<< "QString " << mPluginName << "Plugin::elementMouseGesture(QString const &diagram, QString const &element) const\n{\n"

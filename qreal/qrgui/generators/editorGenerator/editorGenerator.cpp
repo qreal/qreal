@@ -76,8 +76,9 @@ gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const 
 	outpro() << "include (../editorsCommon.pri)";
 
 	OutFile outxml(pathToFile + ".xml");
-	outxml() << "<?xml version='1.0' encoding='utf-8'?>\n";
-	outxml() << mDocument.toString(4);
+	QDomNode header = mDocument.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"utf-8\"");
+	mDocument.insertBefore(header, mDocument.firstChild());
+	mDocument.save(outxml(), 4);
 	mDocument.clear();
 
 	copyImages(pathToFile);
@@ -303,6 +304,7 @@ void EditorGenerator::setProperties(QDomElement &parent,Id const &id)
 			QDomElement property = mDocument.createElement("property");
 			ensureCorrectness(idChild, property, "type", mApi.stringProperty(idChild, "attributeType"));
 			ensureCorrectness(idChild, property, "name", mApi.name(idChild));
+			ensureCorrectness(idChild, property, "displayedName", mApi.stringProperty(idChild, "displayedName"));
 			if (mApi.stringProperty(idChild, "defaultValue") != "") {
 				QDomElement defaultTag = mDocument.createElement("default");
 				QDomText value = mDocument.createTextNode(mApi.stringProperty(idChild, "defaultValue"));
@@ -517,7 +519,7 @@ void EditorGenerator::ensureCorrectness(const Id &id, QDomElement element, const
 		if (patten.exactMatch(value))
 			element.setAttribute(tagName, value);
 		else {
-			mErrorReporter.addWarning("wrong name\n", id);
+			mErrorReporter.addWarning("wrong name\n",id);
 			element.setAttribute(tagName, value);
 		}
 	}

@@ -50,7 +50,7 @@ Qt::ItemFlags PropertyEditorModel::flags(QModelIndex const &index) const
 QVariant PropertyEditorModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
-		return QString(section == 1 ? "value" : "name");
+		return QString(section == 1 ? tr("value") : tr("name"));
 	else
 		return QVariant();
 }
@@ -78,11 +78,20 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 		return QVariant();
 
 	if (index.column() == 0) {
-		return mFields[index.row()].fieldName;
+		Id const id = mTargetLogicalObject.data(roles::idRole).value<Id>();
+		QString const displayedName = mEditorManager.propertyDisplayedName(id, mFields[index.row()].fieldName);
+		return displayedName.isEmpty() ? mFields[index.row()].fieldName : displayedName;
 	} else if (index.column() == 1) {
 		switch (mFields[index.row()].attributeClass) {
 		case logicalAttribute:
+		{
+			QVariant data = mTargetLogicalObject.data(mFields[index.row()].role);
+			if (data.canConvert<QString>()){
+				data = data.toString().replace("&lt;", "<");
+				return data;
+			}
 			return mTargetLogicalObject.data(mFields[index.row()].role);
+		}
 		case graphicalAttribute:
 			return mTargetGraphicalObject.data(mFields[index.row()].role);
 		case graphicalIdPseudoattribute:
@@ -148,15 +157,6 @@ QStringList PropertyEditorModel::enumValues(const QModelIndex &index) const
 	return mEditorManager.getEnumValues(id, mFields[index.row()].fieldName);
 }
 
-//QString PropertyEditorModel::typeName(const QModelIndex &index) const
-//{
-//	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
-//	if (im){
-//		return im->getTypeName(targetObject, roleByIndex(index.row()));
-//	}
-//	return QString();
-//}
-
 void PropertyEditorModel::rereadData()
 {
 	reset();
@@ -199,19 +199,19 @@ void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 		QStringList const logicalProperties = mEditorManager.getPropertyNames(logicalId.type());
 		int role = roles::customPropertiesBeginRole;
 		foreach (QString property, logicalProperties) {
-			mFields << Field(property, logicalAttribute, role);
+			mFields << Field(property, property, logicalAttribute, role);
 			++role;
 		}
-		mFields << Field(tr("Logical Id"), logicalIdPseudoattribute);
+//		mFields << Field(tr("Logical Id"), logicalIdPseudoattribute);
 	}
 
 	// There are no custom attributes for graphical objects, but they shall be
 	// added soon.
-	if (graphicalModelIndex != QModelIndex()) {
-		mFields << Field(tr("Graphical Id"), graphicalIdPseudoattribute);
-	}
+//	if (graphicalModelIndex != QModelIndex()) {
+//		mFields << Field(tr("Graphical Id"), graphicalIdPseudoattribute);
+//	}
 
-	mFields << Field(tr("Metatype"), metatypePseudoattribute);
+//	mFields << Field(tr("Metatype"), metatypePseudoattribute);
 
 	reset();
 }

@@ -1,0 +1,18 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/Fork/{7a9835c4-2012-420f-b3b1-4b3ea4e85aec}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{32177e5a-3aea-41dd-9da1-21e056b75790}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{df1daa5b-fccc-4859-8e03-ca79bac9a7db}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{43f1d519-5539-43a0-94d0-922e2fdb2b0d}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{cc580992-8cfe-4005-b621-239c459cc7fe}"/>
+    </links>
+    <QString key="name" value="(Породить поток)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../qrgui.qrc">
-    <normaloff>:/icons/qreal.png</normaloff>:/icons/qreal.png</iconset>
+    <normaloff>:/icons/kroki.png</normaloff>:/icons/kroki.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout">
@@ -59,7 +59,6 @@
     <addaction name="actionZoom_Out"/>
     <addaction name="separator"/>
     <addaction name="actionAntialiasing"/>
-    <addaction name="actionOpenGL_Renderer"/>
     <addaction name="actionShowSplash"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -76,70 +75,26 @@
      <string>&amp;Settings</string>
     </property>
     <addaction name="actionPreferences"/>
+    <addaction name="actionRobot_Settings"/>
     <addaction name="actionPlugins"/>
     <addaction name="actionShow_grid"/>
     <addaction name="actionShow_alignment"/>
     <addaction name="actionSwitch_on_grid"/>
     <addaction name="actionSwitch_on_alignment"/>
    </widget>
-   <widget class="QMenu" name="menuMouse_gestures">
-    <property name="title">
-     <string>Mouse gestures</string>
-    </property>
-    <addaction name="actionShow"/>
-   </widget>
-   <widget class="QMenu" name="menuSvn">
-    <property name="title">
-     <string>Svn</string>
-    </property>
-    <addaction name="actionCommit"/>
-    <addaction name="actionCheckout"/>
-   </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
      <string>Tools</string>
     </property>
-    <widget class="QMenu" name="menuDebug_with_debugger">
-     <property name="title">
-      <string>Debug (with debugger)</string>
-     </property>
-     <widget class="QMenu" name="menuAdvanced_options">
-      <property name="title">
-       <string>Advanced options...</string>
-      </property>
-      <addaction name="actionStart_debugger"/>
-      <addaction name="actionConfigure"/>
-      <addaction name="actionSet_Breakpoints"/>
-      <addaction name="actionBreak_main"/>
-      <addaction name="actionRun"/>
-      <addaction name="actionCont"/>
-      <addaction name="actionKill"/>
-     </widget>
-     <addaction name="actionGenerate_and_build"/>
-     <addaction name="actionStart_debugging"/>
-     <addaction name="actionNext"/>
-     <addaction name="actionClose_all"/>
-     <addaction name="menuAdvanced_options"/>
-    </widget>
-    <addaction name="actionClear"/>
-    <addaction name="actionExport_to_XMI"/>
-    <addaction name="actionGenerate_to_Java"/>
-    <addaction name="actionGenerate_to_Hascol"/>
-    <addaction name="actionDebug"/>
-    <addaction name="actionDebug_Single_step"/>
-    <addaction name="menuDebug_with_debugger"/>
-    <addaction name="actionShape_Edit"/>
+    <addaction name="actionRun"/>
+    <addaction name="actionStop_Running"/>
+    <addaction name="actionStop_Robot"/>
     <addaction name="actionGenerate_Editor"/>
-    <addaction name="actionParse_Editor_xml"/>
-    <addaction name="separator"/>
-    <addaction name="actionGenerate_Editor_qrmc"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
    <addaction name="menuTools"/>
-   <addaction name="menuSvn"/>
    <addaction name="menuSettings"/>
-   <addaction name="menuMouse_gestures"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -158,6 +113,7 @@
    </attribute>
    <addaction name="actionPrint"/>
    <addaction name="actionNew_Diagram"/>
+   <addaction name="actionOpen"/>
    <addaction name="actionSave"/>
   </widget>
   <widget class="QDockWidget" name="minimapDock">
@@ -232,71 +188,6 @@
    <addaction name="actionZoom_In"/>
    <addaction name="actionZoom_Out"/>
   </widget>
-  <widget class="QDockWidget" name="logicalModelDock">
-   <property name="features">
-    <set>QDockWidget::AllDockWidgetFeatures</set>
-   </property>
-   <property name="windowTitle">
-    <string>Logical Model Explorer</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>1</number>
-   </attribute>
-   <widget class="QWidget" name="logicalModelDockWidgetContents">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QTreeView" name="logicalModelExplorer">
-       <property name="contextMenuPolicy">
-        <enum>Qt::ActionsContextMenu</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>true</bool>
-       </property>
-       <property name="dragEnabled">
-        <bool>false</bool>
-       </property>
-       <property name="dragDropOverwriteMode">
-        <bool>false</bool>
-       </property>
-       <property name="dragDropMode">
-        <enum>QAbstractItemView::DragDrop</enum>
-       </property>
-       <property name="defaultDropAction">
-        <enum>Qt::IgnoreAction</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-  </widget>
-  <widget class="QToolBar" name="generatorsToolbar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="actionGenerate_to_Hascol"/>
-   <addaction name="actionGenerate_to_Java"/>
-   <addaction name="actionExport_to_XMI"/>
-   <addaction name="actionShape_Edit"/>
-  </widget>
-  <widget class="QToolBar" name="parsersToolbar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="actionParse_Hascol_sources"/>
-   <addaction name="actionParse_Java_Libraries"/>
-  </widget>
   <widget class="QDockWidget" name="errorDock">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
@@ -365,7 +256,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="propertyDockWidgetContents">
+   <widget class="QWidget" name="propertyEditorDockWidgetContents">
     <layout class="QVBoxLayout">
      <property name="spacing">
       <number>6</number>
@@ -392,9 +283,9 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QToolBar" name="debuggerToolBar">
+  <widget class="QToolBar" name="interpreterToolBar">
    <property name="windowTitle">
-    <string>toolBar</string>
+    <string>Interpreter Toolbar</string>
    </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
@@ -402,9 +293,48 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionStart_debugging"/>
-   <addaction name="actionClose_all"/>
-   <addaction name="actionNext"/>
+   <addaction name="actionRun"/>
+   <addaction name="actionStop_Running"/>
+   <addaction name="actionStop_Robot"/>
+   <addaction name="separator"/>
+   <addaction name="actionRobot_Settings"/>
+  </widget>
+  <widget class="QDockWidget" name="logicalModelDock">
+   <property name="features">
+    <set>QDockWidget::AllDockWidgetFeatures</set>
+   </property>
+   <property name="windowTitle">
+    <string>Logical Model Explorer</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="logicalModelDockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QTreeView" name="logicalModelExplorer">
+       <property name="contextMenuPolicy">
+        <enum>Qt::ActionsContextMenu</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>true</bool>
+       </property>
+       <property name="dragEnabled">
+        <bool>false</bool>
+       </property>
+       <property name="dragDropOverwriteMode">
+        <bool>false</bool>
+       </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::DragDrop</enum>
+       </property>
+       <property name="defaultDropAction">
+        <enum>Qt::IgnoreAction</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <action name="actionQuit">
    <property name="checkable">
@@ -593,11 +523,6 @@
     <string>Save</string>
    </property>
   </action>
-  <action name="actionGenerate_editor">
-   <property name="text">
-    <string>Generate editor</string>
-   </property>
-  </action>
   <action name="actionGenerate_to_Hascol">
    <property name="text">
     <string>Generate to Hascol</string>
@@ -611,6 +536,9 @@
   <action name="actionOpen">
    <property name="text">
     <string>Open...</string>
+   </property>
+   <property name="toolTip">
+    <string>Open</string>
    </property>
   </action>
   <action name="actionParse_Hascol_sources">
@@ -648,6 +576,9 @@
   <action name="actionGenerate_Editor">
    <property name="text">
     <string>Generate Editor</string>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionParse_Editor_xml">
@@ -726,99 +657,36 @@
     <string>F10</string>
    </property>
   </action>
-  <action name="actionGenerate_and_build">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/build.png</normaloff>:/icons/build.png</iconset>
-   </property>
-   <property name="text">
-    <string>Generate and build</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F9</string>
-   </property>
-  </action>
-  <action name="actionStart_debugger">
-   <property name="text">
-    <string>Start debugger</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F1</string>
-   </property>
-  </action>
   <action name="actionRun">
    <property name="text">
     <string>Run</string>
    </property>
+   <property name="toolTip">
+    <string>Run current diagram on a robot using existing Bluetooth connection</string>
+   </property>
    <property name="shortcut">
-    <string>Ctrl+F5</string>
+    <string>F5</string>
    </property>
   </action>
-  <action name="actionKill">
+  <action name="actionRobot_Settings">
    <property name="text">
-    <string>Kill</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F7</string>
+    <string>Robot Settings...</string>
    </property>
   </action>
-  <action name="actionClose_all">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/stop.png</normaloff>:/icons/stop.png</iconset>
-   </property>
+  <action name="actionStop_Running">
    <property name="text">
-    <string>Stop debugging</string>
+    <string>Stop Running</string>
+   </property>
+   <property name="toolTip">
+    <string>Stop Running</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+F12</string>
+    <string>Shift+F5</string>
    </property>
   </action>
-  <action name="actionSet_Breakpoints">
+  <action name="actionStop_Robot">
    <property name="text">
-    <string>Set breakpoints</string>
-   </property>
-   <property name="iconText">
-    <string>Set breakpoints</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F3</string>
-   </property>
-  </action>
-  <action name="actionCont">
-   <property name="text">
-    <string>Cont</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F6</string>
-   </property>
-  </action>
-  <action name="actionNext">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/next.png</normaloff>:/icons/next.png</iconset>
-   </property>
-   <property name="text">
-    <string>Next</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F11</string>
-   </property>
-  </action>
-  <action name="actionConfigure">
-   <property name="text">
-    <string>Configure</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F2</string>
-   </property>
-  </action>
-  <action name="actionBreak_main">
-   <property name="text">
-    <string>Break main</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F4</string>
+    <string>Stop Robot</string>
    </property>
   </action>
   <action name="actionNew_Diagram">
@@ -827,18 +695,6 @@
    </property>
    <property name="toolTip">
     <string>Create new diagram in a current model</string>
-   </property>
-  </action>
-  <action name="actionStart_debugging">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/run.png</normaloff>:/icons/run.png</iconset>
-   </property>
-   <property name="text">
-    <string>Start debugging</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F10</string>
    </property>
   </action>
  </widget>

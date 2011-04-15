@@ -11,10 +11,12 @@
 #include "propertyeditordelegate.h"
 #include "igesturespainter.h"
 #include "gesturesShow/gestureswidget.h"
-#include "../visualDebugger/debuggerConnector.h"
 #include "mainWindowInterpretersInterface.h"
 
-namespace Ui{
+#include "../interpreters/robots/bluetoothRobotCommunication.h"
+#include "../interpreters/robots/details/d2RobotModel/d2RobotModel.h"
+
+namespace Ui {
 class MainWindowUi;
 }
 
@@ -26,6 +28,16 @@ class VisualDebugger;
 
 namespace models {
 class Models;
+}
+
+namespace interpreters {
+namespace robots {
+class Interpreter;
+}
+}
+
+namespace gui {
+class ErrorReporter;
 }
 
 class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpretersInterface
@@ -43,19 +55,26 @@ public:
 	QModelIndex rootIndex() const;
 
 	QAction *actionDeleteFromDiagram() const;
-	
+
 	virtual void highlight(Id const &graphicalId, bool exclusive = true);
 	virtual void dehighlight(Id const &graphicalId);
-	virtual void dehighlight();
 	virtual gui::ErrorReporter *errorReporter();
 
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
 	void rootDiagramChanged();
-		
 
 public slots:
+	void deleteFromScene();
+
+	void propertyEditorScrollTo(QModelIndex const &index);
+
+	void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
+	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
+	virtual void selectItem(Id const &id);
+
+private slots:
 	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);
 
@@ -66,8 +85,6 @@ public slots:
 	void showAbout();
 	void showHelp();
 
-	void checkoutDialogOk();
-	void checkoutDialogCancel();
 	void open();
 	void saveAs();
 	void saveAll();
@@ -80,49 +97,17 @@ public slots:
 
 	void sceneSelectionChanged();
 
-	void doCheckout();
-	void doCommit();
-	void exportToXmi();
-	void generateToJava();
-	void parseJavaLibraries();
-	void deleteFromScene();
 	void deleteFromScene(QGraphicsItem *target);
 
 	void activateSubdiagram(QModelIndex const &idx);
-	void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
-	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
-	void propertyEditorScrollTo(QModelIndex const &index);
-	void selectItemWithError(Id const &id);
-	virtual void selectItem(Id const &id);
 
-	void debug();
-	void debugSingleStep();
-		void drawDebuggerStdOutput(QString output);
-		void drawDebuggerErrOutput(QString output);
-		void generateAndBuild();
-		void startDebugger();
-		void runProgramWithDebugger();
-		void killProgramWithDebugger();
-		void closeDebuggerProcessAndThread();
-		void placeBreakpointsInDebugger();
-		void goToNextBreakpoint();
-		void goToNextInstruction();
-		void configureDebugger();
-		void setBreakpointAtStart();
-		void startDebugging();
-	void checkEditorForDebug(int index);
-
-private slots:
 	void deleteFromDiagram();
 	void changeMiniMapSource(int index);
 	void closeTab(int index);
-	void closeTab(QModelIndex const &graphicsIndex);
+	void closeTab(QModelIndex const &index);
 	void exterminate();
 	void generateEditor();
-	void generateEditorWithQRMC();
 	void parseEditorXml();
-	void generateToHascol();
-	void parseHascol();
 	void showPreferencesDialog();
 
 	void centerOn(Id const &id);
@@ -137,11 +122,16 @@ private slots:
 	void showAlignment(bool isChecked);
 	void switchGrid(bool isChecked);
 	void switchAlignment(bool isChecked);
-	void setShape( QString const &data, QPersistentModelIndex const &index, int const &role);
+	void setShape(QString const &data, QPersistentModelIndex const &index, int const &role);
 
 	void setDiagramCreateFlag();
 	void diagramInCreateListDeselect();
 	void diagramInCreateListSelected(int num);
+
+	void run();
+	void stop();
+	void stopRobot();
+	void showRobotSettingsDialog();
 
 	void on_actionNew_Diagram_triggered();
 
@@ -161,14 +151,16 @@ private:
 
 	QStringList mDiagramsList;
 	QModelIndex mRootIndex;
-	
-	gui::ErrorReporter *mErrorReporter;
+
 	VisualDebugger *mVisualDebugger;
-	DebuggerConnector *mDebuggerConnector;
+	interpreters::robots::Interpreter *mRobotInterpreter;  // Has ownership
+	interpreters::robots::BluetoothRobotCommunication *mBluetoothCommunication;  // Does not have ownership
+	interpreters::robots::details::d2Model::D2RobotModel *mD2Model;// Does not have ownership
+	gui::ErrorReporter *mErrorReporter;  // Has ownership
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
-					   QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
+			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
 
 	void loadPlugins();
 

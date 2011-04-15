@@ -2,7 +2,6 @@
 #include "../utils/outFile.h"
 
 #include <QDebug>
-
 using namespace utils;
 
 bool Label::init(QDomElement const &element, int index, bool nodeLabel, int width, int height)

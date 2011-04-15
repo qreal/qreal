@@ -25,8 +25,8 @@ const double pi = 3.14159265358979;
 EdgeElement::EdgeElement(ElementImpl *impl)
 	: mPenStyle(Qt::SolidLine), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW),
 	mSrc(NULL), mDst(NULL), mPortFrom(0), mPortTo(0),
-	mDragState(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL), mAddPointAction("Add point", this),
-	mDelPointAction("Delete point", this), mSquarizeAction("Squarize", this), mElementImpl(impl)
+	mDragState(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL), mAddPointAction(tr("Add point"), this),
+	mDelPointAction(tr("Delete point"), this), mSquarizeAction(tr("Squarize"), this), mElementImpl(impl)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	setZValue(100);
@@ -149,7 +149,7 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	QPen pen = painter->pen();
 	pen.setColor(mColor);
 	pen.setStyle(mPenStyle);
-	pen.setWidth(1);
+	pen.setWidth(3);
 	painter->setPen(pen);
 	painter->drawPolyline(mLine);
 	painter->restore();
@@ -158,6 +158,10 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	painter->translate(mLine[0]);
 	painter->drawText(QPointF(10, 20), mFromMult);
 	painter->rotate(90 - lineAngle(QLineF(mLine[1], mLine[0])));
+	pen = painter->pen();
+	pen.setColor(mColor);
+	pen.setWidth(3);
+	painter->setPen(pen);
 	drawStartArrow(painter);
 	painter->restore();
 
@@ -165,6 +169,10 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	painter->translate(mLine[mLine.size() - 1]);
 	painter->drawText(QPointF(10, 20), mToMult);
 	painter->rotate(90 - lineAngle(QLineF(mLine[mLine.size() - 2], mLine[mLine.size() - 1])));
+	pen = painter->pen();
+	pen.setColor(mColor);
+	pen.setWidth(3);
+	painter->setPen(pen);
 	drawEndArrow(painter);
 	painter->restore();
 
@@ -455,9 +463,9 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position)
 QList<ContextMenuAction*> EdgeElement::contextMenuActions()
 {
 	QList<ContextMenuAction*> result;
-	result.push_back(&mAddPointAction);
-	result.push_back(&mDelPointAction);
-	result.push_back(&mSquarizeAction);
+//	result.push_back(&mAddPointAction);
+//	result.push_back(&mDelPointAction);
+//	result.push_back(&mSquarizeAction);
 	return result;
 }
 
@@ -562,11 +570,11 @@ bool EdgeElement::shouldReconnect() const
 
 void EdgeElement::arrangeSrcAndDst()
 {
-	//if (mSrc) {
-		//mSrc->arrangeLinks();
-	//} else if (mDst) {
-		//mDst->arrangeLinks();
-	//}
+	if (mSrc) {
+		mSrc->arrangeLinks();
+	} else if (mDst) {
+		mDst->arrangeLinks();
+	}
 }
 
 UML::NodeElement *EdgeElement::src() const
@@ -627,31 +635,22 @@ UML::NodeElement* EdgeElement::otherSide(UML::NodeElement const *node) const
 	return 0;
 }
 
-bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst, bool jumpsOnly)
+bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
 {
-	bool reconnectedSrc = false;
-	bool reconnectedDst = false;
+	bool reconnected = false;
 	if (mSrc && reconnectSrc) {
 		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
-		reconnectedSrc = (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
-		if (!jumpsOnly || reconnectedSrc) {
-			mPortFrom = newFrom;
-			mGraphicalAssistApi->setFromPort(id(), mPortFrom);
-		}
-
+		reconnected |= (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
+		mPortFrom = newFrom;
+		mGraphicalAssistApi->setFromPort(id(), mPortFrom);
 	}
 	if (mDst && reconnectDst) {
 		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
-		reconnectedDst = (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
-		if (!jumpsOnly || reconnectedDst) {
-			mPortTo = newTo;
-			mGraphicalAssistApi->setToPort(id(), mPortTo);
-		}
+		reconnected |= (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
+		mPortTo = newTo;
+		mGraphicalAssistApi->setToPort(id(), mPortTo);
 	}
 
-	bool reconnected = reconnectedSrc || reconnectedDst;
-	if (reconnected)
-		qDebug() << id() <<"jumps! " << reconnectedSrc << " " << reconnectedDst;
 	return reconnected;
 }
 

@@ -167,4 +167,3 @@ void EditorView::ensureElementVisible(UML::Element const * const element)
 		ensureVisible(element, (widgetWidth - elementWidth) / 2, (widgetHeight - elementHeight) / 2);
 	}
 }
-

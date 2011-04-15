@@ -1,0 +1,18 @@
+<object logicalId="qrm:/RobotsMetamodel/RobotsDiagram/EnginesStop/{ecb6b015-cc36-4fa1-92e3-b39a00822782}" id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesStop/{6e444773-4664-484b-8c0f-f311e61225ad}" parent="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{02984a6f-989d-47a4-b72b-97fa9ae86b96}">
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 50, 0 : 50, 50 : 0, 50 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{6ba19a81-a6a1-479a-90ee-92e083ea8b32}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{724b7c13-f2eb-4802-8b3c-66711c4a0a95}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{62684379-9865-4163-aad4-816d06f0edf0}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{0c1efdb2-713e-4659-b36c-4a44693f8744}"/>
+    </links>
+    <QString key="name" value="(Моторы стоп)"/>
+    <QPointF key="position" value="200, -500"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>

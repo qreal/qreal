@@ -69,10 +69,6 @@ void ErrorReporter::clear()
 		mErrorList->setVisible(false);
 }
 
-void ErrorReporter::clearErrors() {
-	mErrors.clear();
-}
-
 void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorListWidget) const
 {
 	if (!errorListWidget)

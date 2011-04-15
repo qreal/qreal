@@ -2,7 +2,6 @@
 #include "ui_preferencesDialog.h"
 
 #include <QSettings>
-#include <QFileDialog>
 
 PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * const showAlignmentAction
 		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
@@ -44,7 +43,7 @@ void PreferencesDialog::initPreferences()
 	ui->embeddedLinkerIndentSlider->setValue(settings.value("EmbeddedLinkerIndent", 8).toInt());
 	ui->embeddedLinkerSizeSlider->setValue(settings.value("EmbeddedLinkerSize", 6).toInt());
 	ui->gridWidthSlider->setValue(settings.value("GridWidth", 10).toInt());
-	ui->indexGridSlider->setValue(settings.value("IndexGrid", 30).toInt());
+	ui->indexGridSlider->setValue(settings.value("IndexGrid", 50).toInt());
 	ui->zoomFactorSlider->setValue(settings.value("zoomFactor", 2).toInt());
 	mWithGrid = ui->gridWidthSlider->value();
 	mIndexGrid = ui->indexGridSlider->value();
@@ -52,11 +51,10 @@ void PreferencesDialog::initPreferences()
 	ui->chooseDiagramsToSaveCheckBox->setChecked(settings.value("ChooseDiagramsToSave", true).toBool());
 	ui->diagramCreateCheckBox->setChecked(settings.value("DiagramCreateSuggestion", true).toBool());
 	ui->paletteTabCheckBox->setChecked(settings.value("PaletteTabSwitching", true).toBool());
-	ui->chaoticEditionCheckBox->setChecked(settings.value("ChaoticEdition", false).toBool());
 	ui->saveExitCheckBox->setChecked(settings.value("SaveExitSuggestion", true).toBool());
 	ui->showGridCheckBox->setChecked(settings.value("ShowGrid", true).toBool());
 	ui->showAlignmentCheckBox->setChecked(settings.value("ShowAlignment", true).toBool());
-	ui->activateGridCheckBox->setChecked(settings.value("ActivateGrid", false).toBool());
+	ui->activateGridCheckBox->setChecked(settings.value("ActivateGrid", true).toBool());
 	ui->activateAlignmentCheckBox->setChecked(settings.value("ActivateAlignment", true).toBool());
 	ui->antialiasingCheckBox->setChecked(settings.value("Antialiasing", true).toBool());
 	ui->splashScreenCheckBox->setChecked(settings.value("Splashscreen", true).toBool());
@@ -77,11 +75,6 @@ void PreferencesDialog::initPreferences()
 	int curColorIndex = ui->colorComboBox->findText(curColor);
 	ui->colorComboBox->setCurrentIndex(curColorIndex);
 	settings.value("debugColor", ui->colorComboBox->currentText());
-	ui->debuggerPathLineEdit->setText(settings.value("debuggerPath", "gdb.exe").toString());
-	ui->builderPathLineEdit->setText(settings.value("builderPath", "gcc.exe").toString());
-	ui->codeFileNameLineEdit->setText(settings.value("codeFileName", "code.c").toString());
-	ui->buildedFileNameLineEdit->setText(settings.value("buildedFileName", "builded.exe").toString());
-	ui->workDirLineEdit->setText(settings.value("debugWorkingDirectory", "").toString());
 }
 
 void PreferencesDialog::applyChanges()
@@ -98,7 +91,6 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("ChooseDiagramsToSave", ui->chooseDiagramsToSaveCheckBox->isChecked());
 	settings.setValue("DiagramCreateSuggestion", ui->diagramCreateCheckBox->isChecked());
 	settings.setValue("PaletteTabSwitching", ui->paletteTabCheckBox->isChecked());
-	settings.setValue("ChaoticEdition", ui->chaoticEditionCheckBox->isChecked());
 	settings.setValue("SaveExitSuggestion", ui->saveExitCheckBox->isChecked());
 	settings.setValue("Splashscreen", ui->splashScreenCheckBox->isChecked());
 	settings.setValue("ShowGrid", ui->showGridCheckBox->isChecked());
@@ -119,11 +111,6 @@ void PreferencesDialog::applyChanges()
 
 	settings.setValue("debuggerTimeout", ui->timeoutLineEdit->text());
 	settings.setValue("debugColor", ui->colorComboBox->currentText());
-	settings.setValue("debuggerPath", ui->debuggerPathLineEdit->text());
-	settings.setValue("builderPath", ui->builderPathLineEdit->text());
-	settings.setValue("codeFileName", ui->codeFileNameLineEdit->text());
-	settings.setValue("buildedFileName", ui->buildedFileNameLineEdit->text());
-	settings.setValue("debugWorkingDirectory", ui->workDirLineEdit->text());
 
 	mShowGridAction->setChecked(ui->showGridCheckBox->isChecked());
 	mShowAlignmentAction->setChecked(ui->showAlignmentCheckBox->isChecked());
@@ -182,26 +169,4 @@ void PreferencesDialog::initCompilersSettings(const QString &pathToQmake,
 	ui->pluginExtension->setText(pluginExtension);
 	ui->prefix->setText(prefix);
 	ui->compilerSettingsWidget->setEnabled(false);
-}
-
-void PreferencesDialog::on_browseDebPathButton_clicked()
-{
-	QString path = QFileDialog::getOpenFileName(this, "Open File", QString(), "gdb.*");
-	if (path != NULL) {
-		ui->debuggerPathLineEdit->setText(path);
-	}
-}
-
-void PreferencesDialog::on_builderPathButton_clicked()
-{
-	QString path = QFileDialog::getOpenFileName(this, "Open File", QString(), "gcc.*");
-	if (path != NULL) {
-		ui->builderPathLineEdit->setText(path);
-	}
-}
-
-void PreferencesDialog::on_workDirPushButton_clicked()
-{
-	QString path = QFileDialog::getExistingDirectory(this, "Open Directory");
-	ui->workDirLineEdit->setText(path.replace("\\", "/"));
 }

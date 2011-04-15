@@ -1,0 +1,18 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForColor/{ffb1585c-743e-4257-b964-f0bd0197f7ab}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <QString key="Color" value="Синий"/>
+    <QString key="Port" value="1"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{746aeb08-4fb2-4780-8a37-ce788ae0711c}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{c2afe2e8-6d08-43b8-a020-86d5daa97e41}"/>
+    </links>
+    <QString key="name" value="(Ждать цвет)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

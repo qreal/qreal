@@ -43,6 +43,8 @@ public:
 	virtual bool generateEnumValues(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual void generatePropertyTypes(utils::OutFile &out) = 0;
 	virtual void generatePropertyDefaults(utils::OutFile &out) = 0;
+	virtual void generatePropertyDisplayedNamesMapping(utils::OutFile &out) = 0;
+	virtual void generatePropertyDescriptionMapping(utils::OutFile &out) = 0;
 	virtual void generateMouseGesturesMap(utils::OutFile &out) = 0;
 
 protected:
@@ -54,9 +56,9 @@ protected:
 	Diagram *mDiagram;
 
 private:
-	QString mName;  // РќРµРєРІР°Р»РёС„РёС†РёСЂРѕРІР°РЅРЅРѕРµ РёРјСЏ РјРµС‚Р°С‚РёРїР°
-	QString mContext;  // РљРѕРЅС‚РµРєСЃС‚ РєРІР°Р»РёС„РёРєР°С†РёРё. РќР°РїСЂРёРјРµСЂ, РґР»СЏ Kernel::Node: Node - РёРјСЏ, Kernel - РєРѕРЅС‚РµРєСЃС‚.
-	QString mNativeContext;  // "PРѕРґРЅРѕР№" РєРѕРЅС‚РµРєСЃС‚ РєРІР°Р»РёС„РёРєР°С†РёРё, РЅРµ РјРµРЅСЏРµС‚СЃСЏ РїСЂРё РёРјРїРѕСЂС‚Рµ С‚РёРїР° Рё РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ СЂРµСЃРѕР»РІР°.
+	QString mName;  // Неквалифицированное имя метатипа
+	QString mContext;  // Контекст квалификации. Например, для Kernel::Node: Node - имя, Kernel - контекст.
+	QString mNativeContext;  // "Pодной" контекст квалификации, не меняется при импорте типа и используется для ресолва.
 	QString mDisplayedName;
 	QString mPath;
 };

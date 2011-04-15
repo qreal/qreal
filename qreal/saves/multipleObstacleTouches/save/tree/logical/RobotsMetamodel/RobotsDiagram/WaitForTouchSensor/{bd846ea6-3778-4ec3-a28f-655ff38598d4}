@@ -1,0 +1,17 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForTouchSensor/{bd846ea6-3778-4ec3-a28f-655ff38598d4}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <QString key="Port" value="1"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{74298a29-36b3-4662-a216-f11148e23ac5}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{d0d51be8-9382-4453-a7f7-f3ced887037e}"/>
+    </links>
+    <QString key="name" value="(Ждать сенсор касания)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

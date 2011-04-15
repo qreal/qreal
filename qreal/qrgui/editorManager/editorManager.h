@@ -34,6 +34,7 @@ namespace qReal {
 		QString friendlyName(Id const &id) const;
 		QString description(Id const &id) const;
 		QString propertyDescription(Id const &id, QString const &propertyName) const;
+		QString propertyDisplayedName(Id const &id, QString const &propertyName) const;
 		QIcon icon(Id const &id) const;
 		UML::Element* graphicalObject(Id const &id) const;
 

@@ -1,8 +1,5 @@
 QT		+=	svg xml
 CONFIG += rpath_libdirs
-macx {
-	CONFIG -= app_bundle
-}
 
 INCLUDEPATH	+=	../qrmc\
 			../qrmc/plugins\
@@ -16,21 +13,25 @@ TRANSLATIONS = qrgui_ru.ts
 
 # workaround для http://bugreports.qt.nokia.com/browse/QTBUG-8110
 # как только поправят, можно будет юзать QMAKE_LFLAGS_RPATH
-!macx {
-	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)"
-}
+QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)"
 
 OBJECTS_DIR = .obj
 UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
-if (equals(QMAKE_CXX, "g++") : !macx) {
+if (equals(QMAKE_CXX, "g++")) {
 	QMAKE_LFLAGS += -Wl,-E
 }
 
 # Путь до библиотеки с АПИ. Где-нибудь она найдётся...Path to the API library
 LIBS += -Ldebug -lqrrepo -Lrelease -lqrrepo -L. -lqrrepo -lqrmc
+
+CONFIG(debug, debug|release):LIBS  += -lqextserialportd
+else:LIBS  += -lqextserialport
+
+unix:DEFINES   = _TTY_POSIX_
+win32:DEFINES  = _TTY_WIN_
 
 # Graphical elements
 include (umllib/umllib.pri)
@@ -69,5 +70,5 @@ include (models/models.pri)
 # Interfaces for plugins, used by qrxc and qrmc.
 include (pluginInterface/pluginInterface.pri)
 
-# Visual debugger
-include (visualDebugger/visualDebugger.pri)
+# Various interpreters (visual debugger, robot interpreters)
+include (interpreters/interpreters.pri)

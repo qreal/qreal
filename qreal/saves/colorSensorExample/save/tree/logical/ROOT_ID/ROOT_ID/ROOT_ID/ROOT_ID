@@ -1,0 +1,22 @@
+<object id="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" parent="qrm:/">
+  <children>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{0e40e0fa-39be-4916-9f30-525095bbe3c2}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{0c62f6a0-26ae-423b-9903-2875653e11da}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{6078e89a-0549-4676-8001-9375c896b8b8}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForColor/{bc004c0f-02a0-4043-88c7-bf9b6046be44}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{4df42876-9e3c-49b7-972c-92a0eeb0d281}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/PlayTone/{cbc5bfbf-5f4a-44bd-a9c3-19f7750709a8}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Beep/{6461fb89-8969-419f-9045-8ba566b1b918}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{86923218-0fd9-4852-acf9-a1663a51c64e}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{7bb0178c-aed5-4bd5-935a-b3dc9bc35929}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{1dd91e33-3aa5-49ab-9b61-81f95a9c0754}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForColorIntensity/{d80c949b-b53e-4411-b05b-76288db31479}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForColorIntensity/{a702f319-e821-43d8-8810-091dcc04021a}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForColor/{7fcc205a-fddc-4553-a903-eae8fa04457d}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward/{8af38558-eedb-45be-a718-dd994d42444c}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{737582a0-6e73-4d6c-b048-a8b9663fa448}"/>
+  </children>
+  <properties>
+    <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

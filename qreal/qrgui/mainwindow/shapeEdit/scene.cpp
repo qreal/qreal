@@ -6,6 +6,8 @@
 #include <QtCore/QSettings>
 #include <QtCore/QDir>
 
+#include <limits>
+
 Scene::Scene(View *view, QObject * parent)
 	:  QGraphicsScene(parent), mItemType(none), mWaitMove(false), mCount(0), mGraphicsItem(NULL), mSelectedTextPicture(NULL)
 {
@@ -21,16 +23,16 @@ Scene::Scene(View *view, QObject * parent)
 
 QRect Scene::realItemsBoundingRect() const
 {
-	QRectF rect = itemsBoundingRect();
-	int maxX = static_cast<int>(rect.left());
-	int maxY = static_cast<int>(rect.top());
-	int minY = static_cast<int>(rect.bottom());
-	int minX = static_cast<int>(rect.right());
+	int maxX = std::numeric_limits<int>::min();
+	int maxY = std::numeric_limits<int>::min();
+	int minY = std::numeric_limits<int>::max();
+	int minX = std::numeric_limits<int>::max();
 	QList<QGraphicsItem *> list = items();
 	foreach (QGraphicsItem *graphicsItem, list) {
-
 		Item* item = dynamic_cast<Item*>(graphicsItem);
 		if (item != NULL) {
+			if (dynamic_cast<Text*>(item))
+				continue;
 			QRectF itemRect = item->realBoundingRect();
 			maxX = qMax(static_cast<int>(itemRect.right()), maxX);
 			maxY = qMax(static_cast<int>(itemRect.bottom()), maxY);

@@ -158,6 +158,15 @@ QString EditorManager::propertyDescription(const Id &id, const QString &property
 	return mPluginIface[id.editor()]->propertyDescription(id.diagram(), id.element(), propertyName);
 }
 
+QString EditorManager::propertyDisplayedName(Id const &id, QString const &propertyName) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+
+	if (id.idSize() != 4)
+		return "";
+	return mPluginIface[id.editor()]->propertyDisplayedName(id.diagram(), id.element(), propertyName);
+}
+
 QString EditorManager::mouseGesture(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));

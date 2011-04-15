@@ -1,5 +1,7 @@
 #include "error.h"
 
+using namespace qReal::gui;
+
 Error::Error(QString const &message, Severity const &severity, qReal::Id const &position)
 	: mMessage(message), mSeverity(severity), mPosition(position)
 {

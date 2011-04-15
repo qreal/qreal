@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 
-#include "ui_mainwindow.h"
-
 #include <QtGui/QDialog>
 #include <QtGui/QPrinter>
 #include <QtGui/QVBoxLayout>
@@ -19,8 +17,11 @@
 #include <QtCore/QSettings>
 #include <QtCore/QPluginLoader>
 
+#include "ui_mainwindow.h"
 #include "errorReporter.h"
 
+#include "../interpreters/robots/details/robotImplementations/abstractRobotModelImplementation.h"
+#include "../interpreters/robots/details/robotParts/robotModel.h"
 #include "../pluginInterface/editorInterface.h"
 #include "preferencesDialog.h"
 #include "shapeEdit/shapeEdit.h"
@@ -32,24 +33,28 @@
 #include "../view/editorview.h"
 #include "../umllib/uml_element.h"
 #include "../dialogs/plugindialog.h"
+#include "../dialogs/robotSettingsDialog.h"
 #include "../parsers/xml/xmlParser.h"
-#include "../dialogs/checkoutdialog.h"
-#include "../generators/xmi/xmiHandler.h"
-#include "../generators/java/javaHandler.h"
-#include "../parsers/hascol/hascolParser.h"
 #include "../editorManager/listenerManager.h"
-#include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
-#include "../visualDebugger/visualDebugger.h"
+#include "../interpreters/visualDebugger/visualDebugger.h"
 
-#include "metaCompiler.h"
+#include "../interpreters/robots/interpreter.h"
 
 using namespace qReal;
+using namespace interpreters::robots;
 
 MainWindow::MainWindow()
-	: mUi(new Ui::MainWindowUi())
+	: mUi(new Ui::MainWindowUi)
+	, mCloseEvent(NULL)
+	, mModels(NULL)
 	, mListenerManager(NULL)
 	, mPropertyModel(mEditorManager)
+	, mGesturesWidget(NULL)
+	, mVisualDebugger(NULL)
+	, mRobotInterpreter(NULL)
+	, mBluetoothCommunication(NULL)
+	, mErrorReporter(NULL)
 {
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("Splashscreen", true).toBool();
@@ -57,7 +62,7 @@ MainWindow::MainWindow()
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
 	QProgressBar *progress = new QProgressBar((QWidget*) splash);
-	progress->move(20,270);
+	progress->move(20, 270);
 	progress->setFixedWidth(600);
 	progress->setFixedHeight(15);
 	progress->setRange(0, 100);
@@ -71,12 +76,9 @@ MainWindow::MainWindow()
 	}
 	mUi->setupUi(this);
 
-#if defined(Q_WS_WIN)
-	mUi->menuSvn->setEnabled(false);  // Doesn't work under Windows anyway.
-#endif
-
 	mUi->tabs->setTabsClosable(true);
 	mUi->tabs->setMovable(true);
+	mUi->logicalModelDock->setVisible(false);
 
 	if (!showSplash)
 		mUi->actionShowSplash->setChecked(false);
@@ -87,7 +89,7 @@ MainWindow::MainWindow()
 	progress->setValue(20);
 	mUi->actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
 	mUi->actionShow_alignment->setChecked(settings.value("ShowAlignment", true).toBool());
-	mUi->actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", false).toBool());
+	mUi->actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", true).toBool());
 	mUi->actionSwitch_on_alignment->setChecked(settings.value("ActivateAlignment", true).toBool());
 
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
@@ -105,19 +107,9 @@ MainWindow::MainWindow()
 	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(changeMiniMapSource(int)));
 	connect(mUi->tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 
-	connect(mUi->actionCheckout, SIGNAL(triggered()), this, SLOT(doCheckout()));
-	connect(mUi->actionCommit, SIGNAL(triggered()), this, SLOT(doCommit()));
-	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
-	connect(mUi->actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
-	connect(mUi->actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
-	connect(mUi->actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
 	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
-	connect(mUi->actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
 	connect(mUi->actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
-
-	connect(mUi->actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
-	connect(mUi->actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
 
 	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 	connect(mUi->actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
@@ -133,22 +125,12 @@ MainWindow::MainWindow()
 
 	connect(mUi->minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));
 
-	connect(mUi->actionDebug, SIGNAL(triggered()), this, SLOT(debug()));
-	connect(mUi->actionDebug_Single_step, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
-	connect(mUi->actionGenerate_and_build, SIGNAL(triggered()), this, SLOT(generateAndBuild()));
-	connect(mUi->actionStart_debugger, SIGNAL(triggered()), this, SLOT(startDebugger()));
-	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(runProgramWithDebugger()));
-	connect(mUi->actionKill, SIGNAL(triggered()), this, SLOT(killProgramWithDebugger()));
-	connect(mUi->actionClose_all, SIGNAL(triggered()), this, SLOT(closeDebuggerProcessAndThread()));
-	connect(mUi->actionCont, SIGNAL(triggered()), this, SLOT(goToNextBreakpoint()));
-	connect(mUi->actionNext, SIGNAL(triggered()), this, SLOT(goToNextInstruction()));
-	connect(mUi->actionSet_Breakpoints, SIGNAL(triggered()), this, SLOT(placeBreakpointsInDebugger()));
-	connect(mUi->actionConfigure, SIGNAL(triggered()), this, SLOT(configureDebugger()));
-	connect(mUi->actionBreak_main, SIGNAL(triggered()), this, SLOT(setBreakpointAtStart()));
-	connect(mUi->actionStart_debugging, SIGNAL(triggered()), this, SLOT(startDebugging()));
-	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(checkEditorForDebug(int)));
-
 	connect(mUi->actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
+
+	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(run()));
+	connect(mUi->actionStop_Running, SIGNAL(triggered()), this, SLOT(stop()));
+	connect(mUi->actionStop_Robot, SIGNAL(triggered()), this, SLOT(stopRobot()));
+	connect(mUi->actionRobot_Settings, SIGNAL(triggered()), this, SLOT(showRobotSettingsDialog()));
 
 	adjustMinimapZoom(mUi->minimapZoomSlider->value());
 	initGridProperties();
@@ -196,12 +178,12 @@ MainWindow::MainWindow()
 	// Step 6: Save loaded, models initialized.
 	progress->setValue(80);
 
-//	mListenerManager = new ListenerManager(mEditorManager.listeners()
-//			, mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi());
+	mListenerManager = new ListenerManager(mEditorManager.listeners()
+			, mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi());
 
 	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 	if (!missingPlugins.isEmpty()) {
-		QString text = "These plugins are not present, but needed to load the save:\n";
+		QString text = tr("These plugins are not present, but needed to load the save:\n");
 		foreach (Id const id, missingPlugins)
 			text += id.editor() + "\n";
 		QMessageBox::warning(this, tr("Some plugins are missing"), text);
@@ -217,13 +199,26 @@ MainWindow::MainWindow()
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
 	mGesturesWidget = new GesturesWidget();
-	mVisualDebugger = new VisualDebugger(mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi(), *this);
-	mDebuggerConnector = new DebuggerConnector();
-	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
-	connect(mDebuggerConnector, SIGNAL(readyReadStdOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
-	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerErrOutput(QString)));
+	mVisualDebugger = new VisualDebugger(mModels->graphicalModelAssistApi());
 
 	mDelegate.init(this, &mModels->logicalModelAssistApi());
+
+	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
+
+	QString const defaultBluetoothPortName = settings.value("bluetoothPortName", "").toString();
+	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
+	mD2Model = new interpreters::robots::details::d2Model::D2RobotModel();
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(settings.value("robotModel", "1").toInt());
+	interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation *robotImpl = interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation::robotModel(typeOfRobotModel, mBluetoothCommunication, mD2Model);
+	interpreters::robots::details::RobotModel *robotModel = new interpreters::robots::details::RobotModel();
+	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
+			, mModels->logicalModelAssistApi(), *this, robotModel);
+	mRobotInterpreter->setRobotImplementation(robotImpl);
+	sensorType::SensorTypeEnum port1 = static_cast<sensorType::SensorTypeEnum>(settings.value("port1SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port2 = static_cast<sensorType::SensorTypeEnum>(settings.value("port2SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port3 = static_cast<sensorType::SensorTypeEnum>(settings.value("port3SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port4 = static_cast<sensorType::SensorTypeEnum>(settings.value("port4SensorType", "0").toInt());
+	mRobotInterpreter->configureSensors(port1, port2, port3, port4);
 
 	// Step 7: Save consistency checked, interface is initialized with models.
 	progress->setValue(100);
@@ -257,7 +252,9 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 MainWindow::~MainWindow()
 {
 	saveAll();
-//	delete mListenerManager;
+	delete mListenerManager;
+	delete mRobotInterpreter;
+	delete mErrorReporter;
 }
 
 EditorManager* MainWindow::manager()
@@ -299,15 +296,6 @@ void MainWindow::adjustMinimapZoom(int zoom)
 {
 	mUi->minimapView->resetMatrix();
 	mUi->minimapView->scale(0.01*zoom,0.01*zoom);
-}
-
-void MainWindow::selectItemWithError(Id const &id)
-{
-	if (id == Id::rootId())
-		return;
-
-	setIndexesOfPropertyEditor(id);
-	centerOn(id);
 }
 
 void MainWindow::selectItem(Id const &id)
@@ -569,111 +557,6 @@ void MainWindow::toggleShowSplash(bool show)
 	settings.setValue("Splashscreen", show);
 }
 
-void MainWindow::checkoutDialogOk()
-{
-}
-
-void MainWindow::checkoutDialogCancel()
-{
-}
-
-void MainWindow::doCheckout()
-{
-	QString path;
-	QString url;
-	CheckoutDialog *dialog = new CheckoutDialog(this);
-	connect(dialog, SIGNAL(accepted()), this, SLOT(checkoutDialogOk()));
-	connect(dialog, SIGNAL(rejected()), this, SLOT(checkoutDialogCancel()));
-	dialog->show();
-	if (dialog->Accepted)
-	{
-		path = dialog->getDir();
-		url = dialog->getUrl();
-	}
-}
-
-void MainWindow::doCommit()
-{
-	QString select = tr("Select directory to commit");
-	QString path = QFileDialog::getExistingDirectory(this, select);
-
-	if (path.isEmpty())
-		return;
-	/*	char* p;
-	QByteArray p1 = path.toAscii();
-	p = p1.data();
-	SvnClient client(p, "", "");
-//	client.commit(path, )
-	QString *messag = new QString;
-	int revision = client.commit(*messag);
-	if (revision > 0)
-	{
-		QString success = tr("Committed successfully to revision ");
-		QMessageBox::information(this, tr("Success"), success.append(QString(revision)));
-	}
-	else
-		QMessageBox::information(this, tr("Error"), *messag);*/
-}
-
-void MainWindow::exportToXmi()
-{
-	generators::XmiHandler xmi(mModels->logicalRepoApi());
-
-	QString const fileName = QFileDialog::getSaveFileName(this);
-	if (fileName.isEmpty())
-		return;
-
-	QString const errors = xmi.exportToXmi(fileName);
-
-	if (!errors.isEmpty()) {
-		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
-	} else {
-		QMessageBox::information(this, tr("finished"), "Export is finished");
-	}
-}
-
-void MainWindow::generateToJava()
-{
-	generators::JavaHandler java(mModels->logicalRepoApi());
-
-	QString const dirName = QFileDialog::getExistingDirectory(this);
-	if (dirName.isEmpty())
-		return;
-
-	QString const errors = java.generateToJava(dirName);
-
-	if (!errors.isEmpty()) {
-		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
-	} else {
-		QMessageBox::information(this, tr("finished"), "Export is finished");
-	}
-}
-
-void MainWindow::parseJavaLibraries()
-{
-	generators::JavaHandler java(mModels->logicalRepoApi());
-
-	QString const dirName = QFileDialog::getExistingDirectory(this);
-	if (dirName.isEmpty())
-		return;
-
-	QString const errors = java.parseJavaLibraries(dirName);
-
-	if (!errors.isEmpty()) {
-		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
-	} else {
-		QMessageBox::information(this, tr("finished"), "Parsing is finished");
-	}
-}
-
-void MainWindow::generateToHascol()
-{
-	generators::HascolGenerator hascolGenerator(mModels->logicalRepoApi());
-
-	gui::ErrorReporter& errors = hascolGenerator.generate();
-	errors.showErrors(mUi->errorListWidget, mUi->errorDock);
-}
-
 void MainWindow::generateEditor()
 {
 	generators::EditorGenerator editorGenerator(mModels->logicalRepoApi());
@@ -694,7 +577,7 @@ void MainWindow::generateEditor()
 		}
 	}
 	if (!found) {
-		QMessageBox::warning(this, tr("error"), "Cannot find the directory for saving");
+		QMessageBox::warning(this, tr("error"), tr("Cannot find the directory for saving"));
 		return;
 	}
 	foreach (Id const key, metamodelList.keys()) {
@@ -702,7 +585,7 @@ void MainWindow::generateEditor()
 		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
 
 		if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)) {
-			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to load generated editor %1?").arg(metamodelList[key]),
+			if (QMessageBox::question(this, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelList[key]),
 					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 				return;
 			QSettings settings("SPbSU", "QReal");
@@ -712,100 +595,6 @@ void MainWindow::generateEditor()
 	}
 }
 
-void MainWindow::generateEditorWithQRMC()
-{
-	qrmc::MetaCompiler metaCompiler("../qrmc", "./save");
-
-	IdList const metamodels = mModels->logicalRepoApi().children(Id::rootId());
-
-	QSettings settings("SPbSU", "QReal");
-
-	QProgressBar *progress = new QProgressBar(this);
-	progress->show();
-	int const progressBarWidth = 240;
-	int const progressBarHeight = 20;
-
-	QApplication::processEvents();
-	QRect screenRect = qApp->desktop()->availableGeometry();
-	progress->move(screenRect.width() / 2 - progressBarWidth / 2, screenRect.height() / 2 - progressBarHeight / 2);
-	progress->setFixedWidth(progressBarWidth);
-	progress->setFixedHeight(progressBarHeight);
-	progress->setRange(0, 100);
-
-	int forEditor = 60 / metamodels.size();
-
-	foreach (Id const key, metamodels) {
-		QString const objectType = mModels->logicalRepoApi().typeName(key);
-		if (objectType == "MetamodelDiagram") {
-			QString name = mModels->logicalRepoApi().stringProperty(key, "name of the directory");
-			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to compile and load editor %1?").arg(name),
-									  QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
-			{
-				continue;
-			}
-
-			progress->setValue(5);
-
-			if (!metaCompiler.compile(name)) { // generating source code for all metamodels
-				QMessageBox::warning(this, "error", "cannot generate source code for editor " + name);
-				qDebug() << "compilation failed";
-				continue;
-			}
-			progress->setValue(20);
-
-			QProcess builder;
-			builder.setWorkingDirectory("../qrmc/plugins");
-			builder.start(settings.value("pathToQmake", "").toString());
-			qDebug()  << "qmake";
-			if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
-				progress->setValue(40);
-
-				builder.start(settings.value("pathToMake", "").toString());
-
-				bool finished = builder.waitForFinished(100000);
-				qDebug()  << "make";
-				if (finished && (builder.exitCode() == 0)) {
-					qDebug()  << "make ok";
-
-					progress->setValue(progress->value() + forEditor/2);
-
-					QString normalizedName = name.at(0).toUpper() + name.mid(1);
-					if (!name.isEmpty()) {
-						if (mEditorManager.editors().contains(Id(normalizedName))) {
-							foreach (Id const diagram, mEditorManager.diagrams(Id(normalizedName)))
-								mUi->paletteToolbox->deleteDiagramType(diagram);
-
-							if (!mEditorManager.unloadPlugin(normalizedName)) {
-								QMessageBox::warning(this, "error", "cannot unload plugin " + normalizedName);
-								progress->close();
-								delete progress;
-								continue;
-							}
-						}
-						if (mEditorManager.loadPlugin(settings.value("prefix", "").toString() + name + "." + settings.value("pluginExtension", "").toString())) {
-							foreach (Id const diagram, mEditorManager.diagrams(Id(normalizedName))) {
-								mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-
-								foreach (Id const element, mEditorManager.elements(diagram))
-									mUi->paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.description(element), mEditorManager.icon(element));
-							}
-						}
-					}
-					progress->setValue(progress->value() + forEditor/2);
-				}
-			}
-			mUi->paletteToolbox->initDone();
-			progress->setValue(100);
-
-		}
-	}
-	if (progress->value() != 100)
-		QMessageBox::warning(this, tr("error"), "cannot load new editor");
-	progress->setValue(100);
-	progress->close();
-	delete progress;
-}
-
 void MainWindow::loadNewEditor(const QString &directoryName, const QString &metamodelName,
 		const QString &commandFirst, const QString &commandSecond, const QString &extension, const QString &prefix)
 {
@@ -813,7 +602,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 	int const progressBarHeight = 20;
 
 	if ((commandFirst == "") || (commandSecond == "") || (extension == "")) {
-		QMessageBox::warning(this, tr("error"), "please, fill compiler settings");
+		QMessageBox::warning(this, tr("error"), tr("please, fill compiler settings"));
 		return;
 	}
 
@@ -836,7 +625,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 			mUi->paletteToolbox->deleteDiagramType(diagram);
 
 		if (!mEditorManager.unloadPlugin(normalizeDirName)) {
-			QMessageBox::warning(this, "error", "cannot unload plugin");
+			QMessageBox::warning(this, tr("error"), tr("cannot unload plugin"));
 			progress->close();
 			delete progress;
 			return;
@@ -865,7 +654,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 		}
 	}
 	if (progress->value() != 100)
-		QMessageBox::warning(this, tr("error"), "cannot load new editor");
+		QMessageBox::warning(this, tr("error"), tr("cannot load new editor"));
 	progress->setValue(100);
 	progress->close();
 	delete progress;
@@ -874,7 +663,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 void MainWindow::parseEditorXml()
 {
 	if (!mEditorManager.editors().contains(Id("Meta_editor"))) {
-		QMessageBox::warning(this, tr("error"), "required plugin is not loaded");
+		QMessageBox::warning(this, tr("error"), tr("required plugin is not loaded"));
 		return;
 	}
 	QDir dir(".");
@@ -947,20 +736,6 @@ void MainWindow::exterminate()
 	mUi->propertyEditor->setRootIndex(QModelIndex());
 }
 
-void MainWindow::parseHascol()
-{
-	QStringList const fileNames = QFileDialog::getOpenFileNames(this, tr("Select Hascol files to parse"), ".", "*.md;;*.*");
-	if (fileNames.empty())
-		return;
-
-	parsers::HascolParser parser(mModels->mutableLogicalRepoApi(), mEditorManager);
-	gui::ErrorReporter& errors = parser.parse(fileNames);
-
-	errors.showErrors(mUi->errorListWidget, mUi->errorDock);
-
-	mModels->reinit();
-}
-
 void MainWindow::showPreferencesDialog()
 {
 	PreferencesDialog preferencesDialog(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
@@ -974,7 +749,7 @@ void MainWindow::openShapeEditor()
 {
 	QObject const *object = sender();
 	OpenShapeEditorButton const *button = dynamic_cast<OpenShapeEditorButton const *>(object);
-	QString const text = "Shape Editor";
+	QString const text = tr("Shape Editor");
 	ShapeEdit *shapeEdit = NULL;
 	if (button != NULL) {
 		QPersistentModelIndex index = button->index();
@@ -1052,12 +827,7 @@ void MainWindow::centerOn(Id const &id)
 	scene->clearSelection();
 	if (element != NULL) {
 		element->setSelected(true);
-
-		float const widthTab = mUi->tabs->size().width();
-		float const heightTab = mUi->tabs->size().height();
-		float const widthEl = element->boundingRect().width();
-		float const heightEl = element->boundingRect().height();
-		view->ensureVisible(element, (widthTab - widthEl) / 2, (heightTab - heightEl) / 2);
+		view->ensureElementVisible(element);
 	}
 }
 
@@ -1180,10 +950,10 @@ void MainWindow::closeTab(QModelIndex const &graphicsIndex)
 	}
 }
 
-//ListenerManager *MainWindow::listenerManager()
-//{
-//	return mListenerManager;
-//}
+ListenerManager *MainWindow::listenerManager()
+{
+	return mListenerManager;
+}
 
 void MainWindow::showGrid(bool isChecked)
 {
@@ -1269,8 +1039,9 @@ void MainWindow::setSwitchAlignment(bool isChecked)
 
 void MainWindow::showGestures()
 {
+	QString text = tr("Gestures Show");
 	mGesturesWidget = new GesturesWidget();
-	mUi->tabs->addTab(mGesturesWidget, tr("Gestures Show"));
+	mUi->tabs->addTab(mGesturesWidget, text);
 	mUi->tabs->setCurrentWidget(mGesturesWidget);
 	connect(mGesturesWidget, SIGNAL(currentElementChanged()), this, SIGNAL(currentIdealGestureChanged()));
 	emit gesturesShowed();
@@ -1291,9 +1062,9 @@ void MainWindow::suggestToCreateDiagram()
 	dialog.setLayout(&vLayout);
 	dialog.setMinimumSize(320, 240);
 	dialog.setMaximumSize(320, 240);
-	dialog.setWindowTitle("Choose new diagram");
+	dialog.setWindowTitle(tr("Choose new diagram"));
 
-	QLabel label("There is no existing diagram,\n choose diagram you want work with:");
+	QLabel label(tr("There is no existing diagram,\n choose diagram you want work with:"));
 	QListWidget diagramsListWidget;
 	diagramsListWidget.setParent(&dialog);
 
@@ -1311,9 +1082,9 @@ void MainWindow::suggestToCreateDiagram()
 	}
 
 	QPushButton cancelButton;
-	cancelButton.setText("Cancel");
+	cancelButton.setText(tr("Cancel"));
 	QPushButton okButton;
-	okButton.setText("Done");
+	okButton.setText(tr("Done"));
 
 	QObject::connect(&diagramsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(diagramInCreateListSelected(int)));
 	QObject::connect(&diagramsListWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(setDiagramCreateFlag()));
@@ -1398,202 +1169,28 @@ void MainWindow::initGridProperties()
 {
 	QSettings settings("SPbSU", "QReal");
 	mUi->actionSwitch_on_grid->blockSignals(false);
-	mUi->actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", false).toBool());
+	mUi->actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", true).toBool());
 
 	mUi->actionShow_grid->blockSignals(false);
 	mUi->actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
 }
 
-void MainWindow::debug()
+void MainWindow::run()
 {
-	EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
-	mVisualDebugger->setEditor(editor);
-	if (mVisualDebugger->canDebug(VisualDebugger::fullDebug)) {
-		mVisualDebugger->debug();
-		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-		mErrorReporter->clearErrors();
-	}
+	mErrorReporter->clear();
+	Id const currentDiagramId = getCurrentTab()->mvIface()->rootId();
+	mRobotInterpreter->interpret(currentDiagramId);
 }
 
-void MainWindow::debugSingleStep()
+void MainWindow::stop()
 {
-	EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
-	mVisualDebugger->setEditor(editor);
-	if (mVisualDebugger->canDebug(VisualDebugger::singleStepDebug)) {
-		mVisualDebugger->debugSingleStep();
-		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-		mErrorReporter->clearErrors();
-	}
+	mRobotInterpreter->stop();
 }
 
-void MainWindow::generateAndBuild() {
-	EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
-	mVisualDebugger->setEditor(editor);
-	
-	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)) {
-		mVisualDebugger->generateCode();
-		
-		if (mVisualDebugger->canBuild()) {
-			mDebuggerConnector->run();
-			
-			QSettings settings("SPbSU", "QReal");
-			mDebuggerConnector->build(settings.value("debugWorkingDirectory", "").toString() + "/" +
-										settings.value("codeFileName", "code.c").toString());
-	
-			if (!mDebuggerConnector->hasBuildError()) {
-				mErrorReporter->addInformation("Code generated and builded successfully");
-				mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-			}
-		} else {
-			mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-		}
-		mErrorReporter->clearErrors();
-	}
+void MainWindow::stopRobot()
+{
+	mRobotInterpreter->stopRobot();
 }
-
-void MainWindow::startDebugger() {
-	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)
-			&& !mDebuggerConnector->isDebuggerRunning()) {
-		mVisualDebugger->setDebugType(VisualDebugger::debugWithDebugger);
-		mDebuggerConnector->run();
-		mDebuggerConnector->startDebugger();
-	}
-}
-
-void MainWindow::configureDebugger() {
-	if (mDebuggerConnector->isDebuggerRunning()) {
-		QSettings settings("SPbSU", "QReal");
-		mDebuggerConnector->configure(settings.value("debugWorkingDirectory", "").toString() + "/" +
-										settings.value("buildedFileName", "builded.exe").toString());
-	}
-}
-
-void MainWindow::setBreakpointAtStart() {
-	if (mDebuggerConnector->isDebuggerRunning()) {
-		EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
-		mVisualDebugger->setEditor(editor);
-	
-		mVisualDebugger->createIdByLineCorrelation();
-	
-		mDebuggerConnector->sendCommand("break main\n");
-	}
-}
-
-void MainWindow::runProgramWithDebugger() {
-	if (mDebuggerConnector->isDebuggerRunning()) {
-		mDebuggerConnector->sendCommand("run\n");
-	}
-}
-
-void MainWindow::killProgramWithDebugger() {
-	if (mDebuggerConnector->isDebuggerRunning()) {
-		mDebuggerConnector->sendCommand("kill\n");
-	}
-}
-
-void MainWindow::placeBreakpointsInDebugger() {
-	if (mDebuggerConnector->isDebuggerRunning()) {
-		EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
-		mVisualDebugger->setEditor(editor);
-	
-		mVisualDebugger->createIdByLineCorrelation();
-		if (mVisualDebugger->canComputeBreakpoints()) {
-			QList<int>* breakpoints = mVisualDebugger->computeBreakpoints();
-		
-			for (int i=0;i<breakpoints->size();i++) {
-				mDebuggerConnector->sendCommand("break " + QString::number(breakpoints->at(i)) + "\n");
-			}
-			
-			delete breakpoints;
-		} else {
-			mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-			mErrorReporter->clearErrors();
-		}
-	}
-}
-
-void MainWindow::goToNextBreakpoint() {
-	if (mDebuggerConnector->isDebuggerRunning()) {
-		mDebuggerConnector->sendCommand("cont\n");
-	}
-}
-
-void MainWindow::goToNextInstruction() {
-	if (mDebuggerConnector->isDebuggerRunning()) {
-		mDebuggerConnector->sendCommand("next\n");
-	}
-}
-
-void MainWindow::closeDebuggerProcessAndThread() {
-	if (mDebuggerConnector->isDebuggerRunning()) {
-		mVisualDebugger->dehighlight();
-		mVisualDebugger->setDebugType(VisualDebugger::noDebug);
-		mDebuggerConnector->finishProcess();
-	}
-}
-
-void MainWindow::startDebugging() {
-	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)) {
-		generateAndBuild();
-		startDebugger();
-		configureDebugger();
-		setBreakpointAtStart();
-		runProgramWithDebugger();
-	}
-}
-
-void MainWindow::drawDebuggerStdOutput(QString output) {
-	mErrorReporter->addInformation(output);
-	mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-	
-	if ('1' <= output.at(0) && output.at(0) <= '9') {
-		int index = output.indexOf("\t");
-		Id idToLigth = mVisualDebugger->getIdByLine(output.mid(0,index).toInt());
-		mVisualDebugger->highlight(idToLigth);
-	} else {
-		QSettings settings("SPbSU", "QReal");
-		QString fileName = settings.value("codeFileName", "code.c").toString();
-	
-		int index = output.indexOf(fileName + ":");
-		if (index > -1) {
-			index += (fileName.length() + 1);
-			int boundaryIndex = index;
-			while ('0' <= output.at(boundaryIndex) && output.at(boundaryIndex) <= '9') {
-				boundaryIndex++;
-			}
-			Id idToLigth = mVisualDebugger->getIdByLine(output.mid(index,boundaryIndex-index).toInt());
-			mVisualDebugger->highlight(idToLigth);
-		}
-	}
-}
-
-void MainWindow::drawDebuggerErrOutput(QString output) {
-	mVisualDebugger->dehighlight();
-	mVisualDebugger->setDebugType(VisualDebugger::noDebug);
-	mErrorReporter->addCritical(output);
-	mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-	mErrorReporter->clearErrors();
-}
-
-void MainWindow::checkEditorForDebug(int index) {
-	bool enabled = mUi->tabs->count() > 0 && 
-		mUi->tabs->tabText(mUi->tabs->currentIndex()).compare("(Block Diagram)") == 0;
-	mUi->debuggerToolBar->setVisible(enabled);
-	mUi->actionDebug->setEnabled(enabled);
-	mUi->actionDebug_Single_step->setEnabled(enabled);
-	mUi->actionGenerate_and_build->setEnabled(enabled);
-	mUi->actionStart_debugger->setEnabled(enabled);
-	mUi->actionRun->setEnabled(enabled);
-	mUi->actionKill->setEnabled(enabled);
-	mUi->actionClose_all->setEnabled(enabled);
-	mUi->actionNext->setEnabled(enabled);
-	mUi->actionCont->setEnabled(enabled);
-	mUi->actionSet_Breakpoints->setEnabled(enabled);
-	mUi->actionConfigure->setEnabled(enabled);
-	mUi->actionBreak_main->setEnabled(enabled);
-	mUi->actionStart_debugging->setEnabled(enabled);
-}
-
 
 void MainWindow::setIndexesOfPropertyEditor(Id const &id)
 {
@@ -1615,15 +1212,6 @@ QAction *MainWindow::actionDeleteFromDiagram() const
 	return mUi->actionDeleteFromDiagram;
 }
 
-void qReal::MainWindow::on_actionNew_Diagram_triggered()
-{
-	if (getCurrentTab() == NULL || getCurrentTab()->mvIface() == NULL)
-		return;
-
-	Id const diagram = getCurrentTab()->mvIface()->rootId();  // Or some other way to find current diagram. For example, by current tab in palette.
-	createDiagram(diagram.type().toString());
-}
-
 void MainWindow::highlight(Id const &graphicalId, bool exclusive)
 {
 	EditorView* const view = getCurrentTab();
@@ -1640,14 +1228,36 @@ void MainWindow::dehighlight(Id const &graphicalId)
 	scene->dehighlight(graphicalId);
 }
 
-void MainWindow::dehighlight()
+void MainWindow::showRobotSettingsDialog()
 {
-	EditorView* const view = getCurrentTab();
-	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
-	scene->dehighlight();
+	stopRobot();
+	gui::RobotSettingsDialog robotSettingsDialog;
+	int code = robotSettingsDialog.exec();
+	if (code == QDialog::Accepted) {
+		mBluetoothCommunication->setPortName(robotSettingsDialog.selectedPortName());
+		QSettings settings("SPbSU", "QReal");
+		robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(settings.value("robotModel", "1").toInt());
+		interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation *robotImpl = interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation::robotModel(typeOfRobotModel, mBluetoothCommunication, mD2Model);
+		mRobotInterpreter->setRobotImplementation(robotImpl);
+		mRobotInterpreter->configureSensors(
+				robotSettingsDialog.selectedPort1Sensor()
+				, robotSettingsDialog.selectedPort2Sensor()
+				, robotSettingsDialog.selectedPort3Sensor()
+				, robotSettingsDialog.selectedPort4Sensor()
+		);
+	}
 }
 
 gui::ErrorReporter *MainWindow::errorReporter()
 {
 	return mErrorReporter;
+}
+
+void qReal::MainWindow::on_actionNew_Diagram_triggered()
+{
+	if (getCurrentTab() == NULL || getCurrentTab()->mvIface() == NULL)
+		return;
+
+	Id const diagram = getCurrentTab()->mvIface()->rootId();  // Or some other way to find current diagram.
+	createDiagram(diagram.type().toString());
 }

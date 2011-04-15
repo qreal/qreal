@@ -8,6 +8,7 @@ class Property
 public:
 	bool init(QDomElement const &element);
 	QString name() const;
+	QString displayedName() const;
 	QString type() const;
 	QString defaultValue() const;
 	QString description() const;
@@ -18,8 +19,7 @@ public:
 
 private:
 	QString mName;
-// Ad kalendas graecas
-//	qRealType::QRealType *mRealType;
+	QString mDisplayedName;
 	QString mType;
 	bool mIsEnum;
 	bool mIsReference;
