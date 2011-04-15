@@ -30,6 +30,7 @@ private slots:
 	void ok();
 	void cancel();
 	void activatedUnrealModel(bool checked);
+	void manualComPortCheckboxChecked(bool state);
 
 private:
 	Ui::RobotSettingsDialog *mUi;

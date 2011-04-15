@@ -20,6 +20,7 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 	connect(mUi->cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
 	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedUnrealModel(bool)));
 	connect(mUi->d2ModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedUnrealModel(bool)));
+	connect(mUi->manualComPortCheckbox, SIGNAL(toggled(bool)), this, SLOT(manualComPortCheckboxChecked(bool)));
 
 	QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
 
@@ -134,6 +135,26 @@ void RobotSettingsDialog::activatedUnrealModel(bool checked)
 		mUi->bluetoothSettingsGroupBox->setEnabled(false);
 	else
 		mUi->bluetoothSettingsGroupBox->setEnabled(true);
+}
+
+void RobotSettingsDialog::manualComPortCheckboxChecked(bool state)
+{
+	QSettings settings("SPbSU", "QReal");
+	QString const defaultPortName = settings.value("bluetoothPortName", "").toString();
+
+	if (state) {
+		mUi->comPortComboBox->hide();
+		mUi->comPortLabel->hide();
+		mUi->directInputComPortLabel->show();
+		mUi->directInputComPortLineEdit->show();
+		mUi->directInputComPortLineEdit->setText(defaultPortName);
+	} else {
+		mUi->comPortComboBox->show();
+		mUi->comPortLabel->show();
+		mUi->directInputComPortLabel->hide();
+		mUi->directInputComPortLineEdit->hide();
+		mUi->noComPortsFoundLabel->hide();
+	}
 }
 
 QString RobotSettingsDialog::selectedPortName() const
