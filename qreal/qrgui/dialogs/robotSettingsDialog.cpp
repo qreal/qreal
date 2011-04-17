@@ -30,6 +30,7 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 	if (ports.isEmpty()) {
 		mUi->comPortComboBox->hide();
 		mUi->comPortLabel->hide();
+		mUi->manualComPortCheckbox->hide();
 		mUi->noComPortsFoundLabel->show();
 		mUi->directInputComPortLabel->show();
 		mUi->directInputComPortLineEdit->show();
@@ -37,6 +38,7 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 	} else {
 		mUi->comPortComboBox->show();
 		mUi->comPortLabel->show();
+		mUi->manualComPortCheckbox->show();
 		mUi->directInputComPortLabel->hide();
 		mUi->directInputComPortLineEdit->hide();
 		mUi->noComPortsFoundLabel->hide();

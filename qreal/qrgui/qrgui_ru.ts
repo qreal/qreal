@@ -879,22 +879,22 @@
         <translation>Настройки робота</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="111"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="118"/>
         <source>OK</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="114"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="121"/>
         <source>Return</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="124"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="131"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="127"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="134"/>
         <source>Esc</source>
         <translation></translation>
     </message>
@@ -915,47 +915,52 @@
         <translation>COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="59"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="56"/>
+        <source>Specify COM port manually</source>
+        <translation>Указать COM-порт вручную</translation>
+    </message>
+    <message>
+        <location filename="dialogs/robotSettingsDialog.ui" line="66"/>
         <source>Sensors Settings</source>
         <translation>Настройки сенсоров</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="68"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="75"/>
         <source>Port 1:</source>
         <translation>Порт 1:</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="78"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="85"/>
         <source>Port 2:</source>
         <translation>Порт 2:</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="88"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="95"/>
         <source>Port 3:</source>
         <translation>Порт 3:</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="98"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="105"/>
         <source>Port 4:</source>
         <translation>Порт 4:</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="137"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="144"/>
         <source>Type of Robot Model</source>
         <translation>Тип модели робота</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="146"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="153"/>
         <source>Null model</source>
         <translation>Пустая модель</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="153"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="160"/>
         <source>Real robot</source>
         <translation>Реальный робот</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="163"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="170"/>
         <source>2D robot model</source>
         <translation>Двухмерная модель</translation>
     </message>
@@ -1350,47 +1355,47 @@
         <translation type="obsolete">COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="56"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="59"/>
         <source>Unused</source>
         <translation>Не используется</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="57"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="60"/>
         <source>Touch sensor (boolean value)</source>
         <translation>Сенсор нажатия (булево значение)</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="58"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="61"/>
         <source>Touch sensor (raw value)</source>
         <translation>Сенсор нажатия (сырое значение)</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="59"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="62"/>
         <source>Sonar sensor</source>
         <translation>Ультразвуковой сенсор</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="60"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="63"/>
         <source>Color sensor (full colors)</source>
         <translation>Сенсор цвета (полные цвета)</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="61"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="64"/>
         <source>Color sensor (red)</source>
         <translation>Сенсор цвета (красный)</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="62"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="65"/>
         <source>Color sensor (green)</source>
         <translation>Сенсор цвета (зелёный)</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="63"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="66"/>
         <source>Color sensor (blue)</source>
         <translation>Сенсор цвета (синий)</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="64"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="67"/>
         <source>Color sensor (passive)</source>
         <translation>Сенсор цвета (пассивный)</translation>
     </message>
