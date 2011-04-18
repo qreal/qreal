@@ -53,9 +53,6 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 		int const defaultIndex = mUi->comPortComboBox->findText(defaultPortName);
 		if (defaultIndex != -1)
 			mUi->comPortComboBox->setCurrentIndex(defaultIndex);
-		else {
-			mUi->manualComPortCheckbox->setChecked(true);
-		}
 	}
 
 	if (settings.value("manualComPortCheckboxChecked", "false").toBool())
