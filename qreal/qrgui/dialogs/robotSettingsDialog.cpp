@@ -53,7 +53,13 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 		int const defaultIndex = mUi->comPortComboBox->findText(defaultPortName);
 		if (defaultIndex != -1)
 			mUi->comPortComboBox->setCurrentIndex(defaultIndex);
+		else {
+			mUi->manualComPortCheckbox->setChecked(true);
+		}
 	}
+
+	if (settings.value("manualComPortCheckboxChecked", "false").toBool())
+		mUi->manualComPortCheckbox->setChecked(true);
 
 	QStringList sensorNames;
 	sensorNames << tr("Unused")
@@ -142,6 +148,7 @@ void RobotSettingsDialog::activatedUnrealModel(bool checked)
 void RobotSettingsDialog::manualComPortCheckboxChecked(bool state)
 {
 	QSettings settings("SPbSU", "QReal");
+	settings.setValue("manualComPortCheckboxChecked", state);
 	QString const defaultPortName = settings.value("bluetoothPortName", "").toString();
 
 	if (state) {
