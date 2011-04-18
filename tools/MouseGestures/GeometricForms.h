@@ -6,7 +6,7 @@
 
 static const double e = 10;
 
-static const int gridSize = 80;//gridSize = 100 recognition = 833 gestures
+static const int gridSize = 81;//gridSize = 100 recognition = 833 gestures
 
 typedef QList<QPoint> PointVector;
 
