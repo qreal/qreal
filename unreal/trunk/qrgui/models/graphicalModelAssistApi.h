@@ -29,6 +29,7 @@ public:
 	virtual Id copyElement(Id const &source);
 	virtual IdList children(Id const &element) const;
 	virtual void changeParent(Id const &element, Id const &parent, QPointF const &position);
+	virtual void copyProperties(Id const &dest, Id const &src);
 	IdList temporaryRemovedLinksFrom(Id const &elem) const;
 	IdList temporaryRemovedLinksTo(Id const &elem) const;
 	IdList temporaryRemovedLinksNone(Id const &elem) const;

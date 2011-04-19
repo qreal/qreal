@@ -21,6 +21,7 @@ namespace qrRepo {
 			void removeParent();
 			void addChild(const qReal::Id &child);
 			void removeChild(const qReal::Id &child);
+			void copyPropertiesFrom(const Object &src);
 			qReal::IdList children() const;
 			qReal::Id parent() const;
 			void setProperty(const QString &name, const QVariant &value);

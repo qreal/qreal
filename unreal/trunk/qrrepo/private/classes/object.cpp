@@ -33,6 +33,7 @@ Object *Object::clone(QHash<Id, Object*> &objHash) const
 		result->addChild(child->id());
 	}
 
+	//using copy constructor
 	result->mProperties = mProperties;
 
 	return result;
@@ -72,6 +73,11 @@ void Object::removeChild(const Id &child)
 	} else {
 		throw Exception("Object " + mId.toString() + ": removing nonexistent child " + child.toString());
 	}
+}
+
+void Object::copyPropertiesFrom(const Object &src)
+{
+	mProperties = src.mProperties;
 }
 
 IdList Object::children() const

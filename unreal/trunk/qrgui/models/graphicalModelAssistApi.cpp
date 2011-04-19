@@ -71,6 +71,11 @@ void GraphicalModelAssistApi::changeParent(Id const &element, Id const &parent, 
 	mGraphicalModel.changeParent(mModel.indexById(element), mModel.indexById(parent), position);
 }
 
+void GraphicalModelAssistApi::copyProperties(Id const &dest, Id const &src)
+{
+	mGraphicalModel.mutableApi().copyProperties(dest, src);
+}
+
 void GraphicalModelAssistApi::setConfiguration(Id const &elem, QPolygon const &newValue)
 {
 	ModelsAssistApi::setProperty(elem, QVariant(newValue), roles::configurationRole);

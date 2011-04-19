@@ -218,6 +218,11 @@ void RepoApi::removeProperty(Id const &id, QString const &propertyName)
 	mClient.removeProperty(id, propertyName);
 }
 
+void RepoApi::copyProperties(const Id &dest, const Id &src)
+{
+	mClient.copyProperties(dest, src);
+}
+
 bool RepoApi::hasProperty(Id const &id, QString const &propertyName) const
 {
 	return mClient.hasProperty(id, propertyName);

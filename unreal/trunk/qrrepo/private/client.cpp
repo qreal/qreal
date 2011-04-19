@@ -47,7 +47,10 @@ Id Client::parent(Id const &id) const
 
 Id Client::cloneObject(const qReal::Id &id)
 {
+	qDebug() << "cloneObject() called";
+	// qDebug() << "before" << mObjects;
 	Object *result = mObjects[id]->clone(mObjects);
+	// qDebug() << "after" << mObjects << "\n\n";
 	return result->id();
 }
 
@@ -124,6 +127,11 @@ void Client::setProperty(const Id &id, const QString &name, const QVariant &valu
 	} else {
 		throw Exception("Client: Setting property of nonexistent object " + id.toString());
 	}
+}
+
+void Client::copyProperties(const Id &dest, const Id &src)
+{
+	mObjects[dest]->copyPropertiesFrom(*mObjects[src]);
 }
 
 QVariant Client::property( const Id &id, const QString &name ) const

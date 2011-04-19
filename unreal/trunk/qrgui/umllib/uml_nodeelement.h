@@ -37,6 +37,7 @@ namespace UML {
 		NodeElement *clone();
 		void copyChildren(NodeElement *source);
 		void copyEdges(NodeElement *source);
+		void copyProperties(NodeElement *source);
 
 		virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w, SdfRenderer *portrenderer);
 		virtual void paint(QPainter *,  const QStyleOptionGraphicsItem *, QWidget *);

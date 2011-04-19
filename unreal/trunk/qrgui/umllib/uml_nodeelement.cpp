@@ -77,8 +77,22 @@ NodeElement *NodeElement::clone()
 {
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
 	
+	/*
 	Id resultId = mGraphicalAssistApi->copyElement(id());
-	return dynamic_cast<NodeElement*>(evscene->getElem(resultId));
+	NodeElement *result = dynamic_cast<NodeElement*>(evscene->getElem(resultId));
+	qDebug() << (long)result;
+	*/
+
+	qReal::Id typeId = id().type();
+	QPointF pos = evscene->getMousePos();
+	qReal::Id *resultId = evscene->createElement(typeId.toString(), pos);
+
+	NodeElement *result = dynamic_cast<NodeElement*>(evscene->getElem(*resultId));
+
+	result->copyProperties(this);
+	result->copyChildren(this);
+
+	return result;
 }
 
 void NodeElement::copyAndPlaceOnDiagram()
@@ -95,6 +109,11 @@ void NodeElement::copyChildren(NodeElement *source)
 			mGraphicalAssistApi->changeParent(copyOfChild->id(), id(),element->pos());
 		}
 	}
+}
+
+void NodeElement::copyProperties(NodeElement *source)
+{
+	mGraphicalAssistApi->copyProperties(id(), source->id());
 }
 
 void NodeElement::copyEdges(NodeElement *source)
