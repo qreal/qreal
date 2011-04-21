@@ -5,6 +5,7 @@
 #include "classes/object.h"
 #include "qrRepoGlobal.h"
 #include "serializer.h"
+#include "externalClient.h"
 
 #include <QHash>
 
@@ -38,8 +39,9 @@ namespace qrRepo {
 			bool isLogicalId(qReal::Id const &elem) const;
 			qReal::Id logicalId(qReal::Id const &elem) const;
 
-			void svnUpdate();
-			void svnCommit();
+			void svnCheckout(QString const &from, QString const &to);
+			void svnUpdate(QString const &to);
+			void svnCommit(QString const &from);
 
 			void printDebug() const;
 
@@ -48,8 +50,8 @@ namespace qrRepo {
 
 			bool exist(qReal::Id const &id) const;
 
-			void saveAll() const;
-			void save(qReal::IdList list) const;
+			void saveAll();
+			void save(qReal::IdList list);
 			void remove(qReal::IdList list) const;
 			void setWorkingDir(QString const &workingDir);
 
@@ -63,6 +65,7 @@ namespace qrRepo {
 			QList<Object*> allChildrenOf(qReal::Id id) const;
 
 			QHash<qReal::Id, Object*> mObjects;
+			ExternalClient mExternalClient;
 			Serializer serializer;
 		};
 

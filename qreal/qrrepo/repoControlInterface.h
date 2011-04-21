@@ -11,11 +11,15 @@ public:
 
 	virtual void exterminate() = 0;
 
-	virtual void saveAll() const = 0;
-	virtual void save(qReal::IdList list) const = 0;
+	virtual void saveAll() = 0;
+	virtual void save(qReal::IdList list) = 0;
 	virtual void saveTo(QString const &workingDir) = 0;
 
 	virtual void open(QString const &workingDir) = 0;
+
+	virtual void doCheckout(QString const &from, QString const &to) = 0;
+	virtual void doCommit(QString const &from) = 0;
+	virtual void doUpdate(QString const &to) = 0;
 };
 
 }

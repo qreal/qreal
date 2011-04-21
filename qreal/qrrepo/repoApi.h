@@ -87,13 +87,17 @@ namespace qrRepo {
 
 		void exterminate();
 
-		void saveAll() const;
-		void save(qReal::IdList list) const;
+		void saveAll();
+		void save(qReal::IdList list);
 		void saveTo(QString const &workingDir);
 
 		void open(QString const &workingDir);
 
-		// "Р“Р»РѕР±Р°Р»СЊРЅС‹Рµ" РјРµС‚РѕРґС‹, РїРѕР·РІРѕР»СЏСЋС‰РёРµ РґРµР»Р°С‚СЊ Р·Р°РїСЂРѕСЃС‹ Рє РјРѕРґРµР»Рё РІ С†РµР»РѕРј.
+		void doCheckout(const QString &from, const QString &to);
+		void doCommit(const QString &from);
+		void doUpdate(const QString &to);
+
+		// "Глобальные" методы, позволяющие делать запросы к модели в целом.
 		//Returns all elements with .element() == type.element()
 		virtual qReal::IdList graphicalElements(qReal::Id const &type) const;
 		virtual qReal::IdList logicalElements(qReal::Id const &type) const;
@@ -107,8 +111,8 @@ namespace qrRepo {
 		bool exist(qReal::Id const &id) const;
 
 	private:
-		RepoApi(RepoApi const &other);  // РљРѕРїРёСЂРѕРІР°С‚СЊ РЅРµР»СЊР·СЏ.
-		RepoApi& operator =(RepoApi const &);  // РџСЂРёСЃРІР°РёРІР°С‚СЊ С‚РѕР¶Рµ.
+		RepoApi(RepoApi const &other);  // Копировать нельзя.
+		RepoApi& operator =(RepoApi const &);  // Присваивать тоже.
 
 		void addToIdList(qReal::Id const &target, QString const &listName, qReal::Id const &data, QString const &direction = QString());
 		void removeFromList(qReal::Id const &target, QString const &listName, qReal::Id const &data, QString const &direction = QString());

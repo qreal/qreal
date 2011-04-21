@@ -200,7 +200,7 @@ qReal::IdList RepoApi::outgoingConnectedElements(qReal::Id const &id) const
 	foreach (qReal::Id curLink, outgoingLinks(id)) {
 		result.append(to(curLink));
 	}
-	return result; 
+	return result;
 }
 
 qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
@@ -209,7 +209,7 @@ qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
 	foreach (qReal::Id curLink, incomingLinks(id)) {
 		result.append(from(curLink));
 	}
-	return result; 
+	return result;
 }
 
 QString RepoApi::typeName(Id const &id) const
@@ -342,7 +342,7 @@ void RepoApi::open(QString const &workingDir)
 	mClient.open(workingDir);
 }
 
-void RepoApi::saveAll() const
+void RepoApi::saveAll()
 {
 	mClient.saveAll();
 }
@@ -353,9 +353,24 @@ void RepoApi::saveTo(QString const &workingDir)
 	mClient.saveAll();
 }
 
-void RepoApi::save(qReal::IdList list) const
+void RepoApi::save(qReal::IdList list)
 {
 	mClient.save(list);
+}
+
+void RepoApi::doCheckout(const QString &from, const QString &to)
+{
+	mClient.svnCheckout(from, to);
+}
+
+void RepoApi::doCommit(const QString &from)
+{
+	mClient.svnCommit(from);
+}
+
+void RepoApi::doUpdate(const QString &to)
+{
+	mClient.svnUpdate(to);
 }
 
 void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data, QString const &direction)
@@ -365,7 +380,7 @@ void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &d
 
 	IdList list = mClient.property(target, listName).value<IdList>();
 
-	// Р—РЅР°С‡РµРЅРёСЏ РІ СЃРїРёСЃРєРµ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ СѓРЅРёРєР°Р»СЊРЅС‹.
+	// Значения в списке должны быть уникальны.
 	if (list.contains(data))
 		return;
 

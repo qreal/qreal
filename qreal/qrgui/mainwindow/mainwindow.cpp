@@ -590,6 +590,8 @@ void MainWindow::doCheckout()
 		path = dialog->getDir();
 		url = dialog->getUrl();
 	}
+
+	mModels->repoControlApi().doCheckout(url, path);
 }
 
 void MainWindow::doCommit()
@@ -613,6 +615,7 @@ void MainWindow::doCommit()
 	}
 	else
 		QMessageBox::information(this, tr("Error"), *messag);*/
+	mModels->repoControlApi().doCommit(path);
 }
 
 void MainWindow::exportToXmi()
@@ -1429,17 +1432,17 @@ void MainWindow::debugSingleStep()
 void MainWindow::generateAndBuild() {
 	EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
 	mVisualDebugger->setEditor(editor);
-	
+
 	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)) {
 		mVisualDebugger->generateCode();
-		
+
 		if (mVisualDebugger->canBuild()) {
 			mDebuggerConnector->run();
-			
+
 			QSettings settings("SPbSU", "QReal");
 			mDebuggerConnector->build(settings.value("debugWorkingDirectory", "").toString() + "/" +
 										settings.value("codeFileName", "code.c").toString());
-	
+
 			if (!mDebuggerConnector->hasBuildError()) {
 				mErrorReporter->addInformation("Code generated and builded successfully");
 				mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
@@ -1472,9 +1475,9 @@ void MainWindow::setBreakpointAtStart() {
 	if (mDebuggerConnector->isDebuggerRunning()) {
 		EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
 		mVisualDebugger->setEditor(editor);
-	
+
 		mVisualDebugger->createIdByLineCorrelation();
-	
+
 		mDebuggerConnector->sendCommand("break main\n");
 	}
 }
@@ -1495,15 +1498,15 @@ void MainWindow::placeBreakpointsInDebugger() {
 	if (mDebuggerConnector->isDebuggerRunning()) {
 		EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
 		mVisualDebugger->setEditor(editor);
-	
+
 		mVisualDebugger->createIdByLineCorrelation();
 		if (mVisualDebugger->canComputeBreakpoints()) {
 			QList<int>* breakpoints = mVisualDebugger->computeBreakpoints();
-		
+
 			for (int i=0;i<breakpoints->size();i++) {
 				mDebuggerConnector->sendCommand("break " + QString::number(breakpoints->at(i)) + "\n");
 			}
-			
+
 			delete breakpoints;
 		} else {
 			mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
@@ -1545,7 +1548,7 @@ void MainWindow::startDebugging() {
 void MainWindow::drawDebuggerStdOutput(QString output) {
 	mErrorReporter->addInformation(output);
 	mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-	
+
 	if ('1' <= output.at(0) && output.at(0) <= '9') {
 		int index = output.indexOf("\t");
 		Id idToLigth = mVisualDebugger->getIdByLine(output.mid(0,index).toInt());
@@ -1553,7 +1556,7 @@ void MainWindow::drawDebuggerStdOutput(QString output) {
 	} else {
 		QSettings settings("SPbSU", "QReal");
 		QString fileName = settings.value("codeFileName", "code.c").toString();
-	
+
 		int index = output.indexOf(fileName + ":");
 		if (index > -1) {
 			index += (fileName.length() + 1);
@@ -1576,7 +1579,7 @@ void MainWindow::drawDebuggerErrOutput(QString output) {
 }
 
 void MainWindow::checkEditorForDebug(int index) {
-	bool enabled = mUi->tabs->count() > 0 && 
+	bool enabled = mUi->tabs->count() > 0 &&
 		mUi->tabs->tabText(mUi->tabs->currentIndex()).compare("(Block Diagram)") == 0;
 	mUi->debuggerToolBar->setVisible(enabled);
 	mUi->actionDebug->setEnabled(enabled);

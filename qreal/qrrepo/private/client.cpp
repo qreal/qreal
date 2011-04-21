@@ -8,7 +8,7 @@ using namespace qrRepo;
 using namespace qrRepo::details;
 
 Client::Client(QString const &workingDirectory)
-	: serializer(workingDirectory)
+	: mExternalClient("D:/SlikSvn/bin/"), serializer(workingDirectory, mExternalClient)
 {
 	init();
 	loadFromDisk();
@@ -222,13 +222,12 @@ bool Client::exist(const Id &id) const
 	return (mObjects[id] != NULL);
 }
 
-void Client::saveAll() const
+void Client::saveAll()
 {
-	serializer.clearWorkingDir();
 	serializer.saveToDisk(mObjects.values());
 }
 
-void Client::save(IdList list) const
+void Client::save(IdList list)
 {
 	QList<Object*> toSave;
 	foreach(Id id, list)
@@ -258,6 +257,21 @@ void Client::remove(const qReal::Id &id)
 void Client::setWorkingDir(QString const &workingDir)
 {
 	serializer.setWorkingDir(workingDir);
+}
+
+void Client::svnCheckout(const QString &from, const QString &to)
+{
+	mExternalClient.doCheckout(from, to);
+}
+
+void Client::svnUpdate(const QString &to)
+{
+	mExternalClient.doUpdate(to);
+}
+
+void Client::svnCommit(const QString &from)
+{
+	mExternalClient.doCommit(from);
 }
 
 void Client::printDebug() const

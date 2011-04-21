@@ -25,12 +25,14 @@ HEADERS += \
 	private/client.h \
 	private/qrRepoGlobal.h \
 	private/serializer.h \
-    private/classes/object.h
+    private/classes/object.h \
+    private/externalClient.h
 
 SOURCES += \
 	private/client.cpp \
 	private/serializer.cpp \
-    private/classes/object.cpp
+    private/classes/object.cpp \
+    private/externalClient.cpp
 
 # API репозитория
 HEADERS += \

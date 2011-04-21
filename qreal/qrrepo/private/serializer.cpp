@@ -13,8 +13,9 @@ using namespace details;
 using namespace utils;
 using namespace qReal;
 
-Serializer::Serializer(QString const& saveDirName)
-	: mWorkingDir(saveDirName + "/save")
+Serializer::Serializer(QString const& saveDirName, ExternalClient client)
+	: mWorkingDir(saveDirName + "/save"), mExternalClient(client)
+
 {
 }
 
@@ -34,8 +35,10 @@ void Serializer::setWorkingDir(QString const &workingDir)
 	mWorkingDir = workingDir + "/save";
 }
 
-void Serializer::saveToDisk(QList<Object*> const &objects) const
+void Serializer::saveToDisk(QList<Object*> const &objects)
 {
+	mSavedDirectories.clear();
+	mSavedFiles.clear();
 	foreach (Object *object, objects) {
 		QString filePath = createDirectory(object->id(), object->logicalId());
 
@@ -51,9 +54,18 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 		root.appendChild(idListToXml("children", object->children(), doc));
 		root.appendChild(propertiesToXml(object, doc));
 
+		QFileInfo fileInfo(filePath);
+		bool fileExists = fileInfo.exists();
+		if (fileExists)
+		{
+			QDir().remove(filePath);
+		}
 		OutFile out(filePath);
 		doc.save(out(), 2);
+		mSavedFiles << fileInfo.filePath();
 	}
+	removeUnsaved(mWorkingDir);
+	mExternalClient.doAdd(mWorkingDir);
 }
 
 void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash)
@@ -127,8 +139,8 @@ bool Serializer::loadProperties(QDomElement const &elem, Object &object)
 	QDomElement property = properties.firstChildElement();
 	while (!property.isNull()) {
 		if (property.hasAttribute("type")) {
-			// РўРѕРіРґР° СЌС‚Рѕ СЃРїРёСЃРѕРє. РќРµРјРЅРѕРіРѕ РєСЂРёРІРѕРІР°С‚Рѕ, Р·Р°С‚Рѕ СѓРЅРёС„РёС†РёСЂРѕРІР°РЅРѕ СЃРѕ
-			// СЃРїРёСЃРєР°РјРё РґРµС‚РµР№/СЂРѕРґРёС‚РµР»РµР№.
+			// Тогда это список. Немного кривовато, зато унифицировано со
+			// списками детей/родителей.
 			if (property.attribute("type", "") == "qReal::IdList") {
 				QString key = property.tagName();
 				IdList value = loadIdList(properties, property.tagName());
@@ -256,7 +268,7 @@ QString Serializer::serializeQVariant(QVariant const &v)
 	case QVariant::UserType:
 		if (v.userType() == QMetaType::type("qReal::Id"))
 			return v.value<qReal::Id>().toString();
-		// Р•СЃР»Рё РЅРµС‚, РёРґС‘Рј РІ default Рё С‚Р°Рј СЂСѓРіР°РµРјСЃСЏ.
+		// Если нет, идём в default и там ругаемся.
 	default:
 		qDebug() << v;
 		Q_ASSERT(!"Unsupported QVariant type.");
@@ -291,25 +303,59 @@ QString Serializer::pathToElement(Id const &id) const
 	return dirName + "/" + partsList[partsList.size() - 1];
 }
 
-QString Serializer::createDirectory(Id const &id, Id const &logicalId) const
+QString Serializer::createDirectory(Id const &id, Id const &logicalId)
 {
+	mSavedDirectories << QFileInfo(mWorkingDir).filePath();
 	QString dirName = mWorkingDir + "/tree";
+	mSavedDirectories << QFileInfo(dirName).filePath();
 	if (logicalId == Id()) {
 		dirName += "/logical";
 	} else {
 		dirName += "/graphical";
 	}
+	mSavedDirectories << QFileInfo(dirName).filePath();
 	QStringList const partsList = id.toString().split('/');
 	Q_ASSERT(partsList.size() >= 1 && partsList.size() <= 5);
 	for (int i = 1; i < partsList.size() - 1; ++i) {
 		dirName += "/" + partsList[i];
+		QDir dir(dirName);
+		if (!dir.exists())
+		{
+			dir.mkpath(dirName);
+		}
+		mSavedDirectories << QFileInfo(dirName).filePath();
 	}
 
-	QDir dir;
-	dir.rmdir(mWorkingDir);
-	dir.mkpath(dirName);
-
 	return dirName + "/" + partsList[partsList.size() - 1];
+}
+
+void Serializer::removeUnsaved(const QString &path)
+{
+	QDir dir(path);
+	if (dir.exists())
+	{
+		foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot))
+		{
+			if (fileInfo.isDir())
+			{
+				if (mSavedDirectories.contains(fileInfo.filePath()))
+				{
+					removeUnsaved(fileInfo.filePath());
+				}
+				else
+				{
+					mExternalClient.doRemove(fileInfo.filePath());
+				}
+			}
+			else
+			{
+				if (!mSavedFiles.contains(fileInfo.filePath()))
+				{
+					mExternalClient.doRemove(fileInfo.filePath());
+				}
+			}
+		}
+	}
 }
 
 QDomElement Serializer::idListToXml(QString const &attributeName, IdList const &idList, QDomDocument &doc)

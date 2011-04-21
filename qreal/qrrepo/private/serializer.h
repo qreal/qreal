@@ -2,6 +2,7 @@
 
 #include "../../qrgui/kernel/roles.h"
 #include "classes/object.h"
+#include "externalClient.h"
 
 #include <QtXml/QDomDocument>
 #include <QtCore/QVariant>
@@ -15,19 +16,20 @@ namespace qrRepo {
 
 		class Serializer {
 		public:
-			Serializer(QString const& saveDirName);
+			Serializer(QString const& saveDirName, ExternalClient client);
 			void clearWorkingDir() const;
 			void setWorkingDir(QString const& workingDir);
 
 			void removeFromDisk(qReal::Id id) const;
-			void saveToDisk(QList<Object*> const &objects) const;
+			void saveToDisk(QList<Object*> const &objects);
 			void loadFromDisk(QHash<qReal::Id, Object*> &objectsHash);
 		private:
 			void loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object*> &objectsHash);
 			void loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHash);
 
 			QString pathToElement(qReal::Id const &id) const;
-			QString createDirectory(qReal::Id const &id, qReal::Id const &logicalId) const;
+			QString createDirectory(qReal::Id const &id, qReal::Id const &logicalId);
+			void removeUnsaved(QString const &path);
 
 			Object *parseObject(QDomElement const &elem);
 			static void clearDir(QString const &path);
@@ -45,6 +47,9 @@ namespace qrRepo {
 
 			QString mWorkingDir;
 
+			ExternalClient mExternalClient;
+			QSet<QString> mSavedFiles;
+			QSet<QString> mSavedDirectories;
 			QMap<QString, QFile*> files;
 		};
 
