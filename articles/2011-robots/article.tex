@@ -1,0 +1,75 @@
+\documentclass[a5paper]{article}
+\usepackage[a5paper, top=17mm, bottom=17mm, left=17mm, right=17mm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A,T1]{fontenc}
+\usepackage[colorlinks,filecolor=blue,citecolor=green,unicode,pdftex]{hyperref}
+\usepackage{cmap}
+\usepackage[english,russian]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb,amsfonts,textcomp}
+\usepackage{color}
+\usepackage{array}
+\usepackage{hhline}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=blue, urlcolor=blue, pdftitle=1, pdfauthor=, pdfsubject=, pdfkeywords=}
+% \usepackage[pdftex]{graphicx}
+\usepackage{graphicx}
+% \usepackage{epigraph}
+% Раскомментировать тем, у кого этот пакет есть. Шрифт станет заметно красивее.
+%\usepackage{literat}
+\usepackage{indentfirst}
+\usepackage{wrapfig}
+
+\sloppy
+\pagestyle{plain}
+
+\title{QReal:Robots. Графическая среда программирования роботов.}
+
+\author{А.С. Кузенкова \and А.О. Дерипаска \and А.И. Птахина}
+\date{}
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\begin{quote}
+\small\noindent
+Краткий абстракт, пара предложений о чём статья.
+\end{quote}
+
+\section*{Введение (2/3 - 1 стр)}
+\begin{enumerate}
+  \item О том, как хорошо использовать роботов в школьном образовании
+  \begin{enumerate}
+    \item Сослаться на Ершова, про LOGO
+    \item По мотивам https://docs.google.com/document/d/1ODzZQf_8NSRdAMJIlh_xYiAIPRMpSnCKz6ZBDv0Ehpg/edit?hl=en&authkey=CMGp2tYE#
+  \end{enumerate}
+  \item О том, как хорошо использовать средства визуального программирования для роботов. Опять же, по мотивам ссылки выше.
+  \item Однако же, просто так визуальный редактор не сделать, поэтому надо использовать Технологию (тут по мотивам докладов про метаредактор, например, https://github.com/qreal/qreal/blob/master/articles/2011-metamodelling/article.tex)
+\end{enumerate}
+
+\section{Средства метамоделирования QReal} (1 стр)
+\begin{enumerate}
+  \item Небольшой рассказ о QReal вообще ("На кафедре системного программирования СПбГУ в течение нескольких лет" и т.д.)
+  \item Метаредактор ("XML-описания редакторов можно генерировать по визуальным моделям" и в таком духе, без подробностей)
+  \item Редактор шейпов (в духе текста из политеховских тезисов, тоже без подробностей)
+\end{enumerate}
+
+\section{Язык программирования роботов} (2 стр)
+\begin{enumerate}
+  \item Возникла задача создания средства визуального программирования роботов, которая нас очень заинтересовала, поскольку это хороший пример визуального предметно-ориентированного языка
+  \item Робот управляется по Bluetooth, программа представляется в виде последовательности блоков, какие блоки бывают, и всё такое. По мотивам https://docs.google.com/document/d/1KkeTAJlu1zUeLv1_kdwXxkoKwIqS6VGb1OehdCLZDoY/edit?hl=en&authkey=CI6Zre4N#
+  \item А ещё у нас есть математические выражения, и тут немного подробнее, что можно писать и как оно работает (например, про переменные доступа к сенсорам, что среда опрашивает робот раз в N миллисекунд)
+  \item А ещё у нас есть 2д-модель робота. Тут поподробнее зачем она нужна, что умеет делать, и что хочется научить её делать в будущем.
+  \item И что в итоге получилось: кроссплатформенная опенсорсная среда, вполне годная ля школы (опять же, по мотивам доклада в 239, только не очень рекламно)
+  \item Картинка с примером диаграммы
+\end{enumerate}
+
+\section*{Заключение (1/3 стр)}
+Сделали, опробовали, доложились на конференциях, вызвали интерес, сейчас хотим внедрять в школы. (1 абзац)
+
+\begin{thebibliography}{9001}
+  \bibitem{qReal} А.Н. Терехов, Т.А. Брыксин, Ю.В. Литвинов и др., Архитектура среды визуального моделирования QReal. // Системное программирование. Вып. 4. СПб.: Изд-во СПбГУ. 2009, С. 171-196
+  \bibitem{theBook} Kelly, S., Tolvanen, J. Domain-Specific Modeling: Enabling Full Code Generation // Wiley-IEEE Computer Society Press. 2008. 448 pp.
+\end{thebibliography}
+
+\end{document}
