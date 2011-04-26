@@ -38,7 +38,7 @@ void ExternalClient::doUpdate(const QString &to) const
 void ExternalClient::doCommit(const QString &from) const
 {
 	QStringList arguments;
-	arguments << "commit" << from;
+	arguments << "commit" << from << "-m" << "no_message";
 	mClientProcess->start(mPathToClient, arguments);
 	mClientProcess->waitForReadyRead();
 }
