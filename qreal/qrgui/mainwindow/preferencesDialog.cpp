@@ -82,6 +82,8 @@ void PreferencesDialog::initPreferences()
 	ui->codeFileNameLineEdit->setText(settings.value("codeFileName", "code.c").toString());
 	ui->buildedFileNameLineEdit->setText(settings.value("buildedFileName", "builded.exe").toString());
 	ui->workDirLineEdit->setText(settings.value("debugWorkingDirectory", "").toString());
+
+	ui->pathToSvnClientLineEdit->setText(settings.value("pathToSvnClient", "").toString());
 }
 
 void PreferencesDialog::applyChanges()
@@ -124,6 +126,8 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("codeFileName", ui->codeFileNameLineEdit->text());
 	settings.setValue("buildedFileName", ui->buildedFileNameLineEdit->text());
 	settings.setValue("debugWorkingDirectory", ui->workDirLineEdit->text());
+
+	settings.setValue("pathToSvnClient", ui->pathToSvnClientLineEdit->text());
 
 	mShowGridAction->setChecked(ui->showGridCheckBox->isChecked());
 	mShowAlignmentAction->setChecked(ui->showAlignmentCheckBox->isChecked());
@@ -204,4 +208,13 @@ void PreferencesDialog::on_workDirPushButton_clicked()
 {
 	QString path = QFileDialog::getExistingDirectory(this, "Open Directory");
 	ui->workDirLineEdit->setText(path.replace("\\", "/"));
+}
+
+void PreferencesDialog::on_browseSvnClientPushButton_clicked()
+{
+	QString path = QFileDialog::getOpenFileName(this, "Open File", QString(), "svn.*");
+	if (path != NULL)
+	{
+		ui->pathToSvnClientLineEdit->setText(path);
+	}
 }

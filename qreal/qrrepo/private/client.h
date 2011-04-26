@@ -55,6 +55,8 @@ namespace qrRepo {
 			void remove(qReal::IdList list) const;
 			void setWorkingDir(QString const &workingDir);
 
+			QStringList getNewErrors();
+
 		private:
 			void init();
 
@@ -67,6 +69,7 @@ namespace qrRepo {
 			QHash<qReal::Id, Object*> mObjects;
 			ExternalClient mExternalClient;
 			Serializer serializer;
+			QStringList mErrors;
 		};
 
 	}

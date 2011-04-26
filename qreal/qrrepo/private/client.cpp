@@ -2,13 +2,15 @@
 #include "../../qrgui/kernel/exception/exception.h"
 
 #include <QtCore/QDebug>
+#include <QSettings>
 
 using namespace qReal;
 using namespace qrRepo;
 using namespace qrRepo::details;
 
 Client::Client(QString const &workingDirectory)
-	: mExternalClient("D:/SlikSvn/bin/"), serializer(workingDirectory, mExternalClient)
+	: mExternalClient(QSettings("SPbSU", "QReal").value("pathToSvnClient", "").toString()),
+	serializer(workingDirectory, mExternalClient)
 {
 	init();
 	loadFromDisk();
@@ -272,6 +274,12 @@ void Client::svnUpdate(const QString &to)
 void Client::svnCommit(const QString &from)
 {
 	mExternalClient.doCommit(from);
+}
+
+QStringList Client::getNewErrors()
+{
+	QStringList result(mErrors);
+	return result;
 }
 
 void Client::printDebug() const

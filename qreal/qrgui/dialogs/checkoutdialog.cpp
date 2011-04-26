@@ -17,11 +17,12 @@ QComboBox *CheckoutDialog::createComboBox(const QString &text)
 
 CheckoutDialog::CheckoutDialog(QWidget *parent) : QDialog(parent)
 {
+	QSettings settings("SPbSU", "QReal");
 	browseButton = createButton(tr("&Browse..."), SLOT(browse()));
 	urlLabel = new QLabel(tr("Subversion place"));
 	directoryLabel = new QLabel(tr("Checkout to directory:"));
-	directoryComboBox = createComboBox(QDir::currentPath());
-	urlComboBox = createComboBox();
+	directoryComboBox = createComboBox(settings.value("checkoutDirectory", QDir::currentPath()).toString());
+	urlComboBox = createComboBox(settings.value("checkoutUrl", "").toString());
 	QPushButton *ok = new QPushButton(tr("Ok"), this);
 	QPushButton *cancel = new QPushButton(tr("Cancel"), this);
 

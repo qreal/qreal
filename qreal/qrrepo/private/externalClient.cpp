@@ -6,8 +6,17 @@ ExternalClient::ExternalClient(const QString &pathToClient)
 	: mPathToClient(pathToClient)
 {
 	mClientProcess = new QProcess(NULL);
-	mClientProcess->setStandardOutputFile(mPathToClient+"qRealLog.log", QIODevice::Append);
-	mClientProcess->setStandardErrorFile(mPathToClient+"qRealLog.log", QIODevice::Append);
+//	connect(mClientProcess, SIGNAL(readyReadStandardError()), this, SLOT(processErrors()));
+	QStringList parts = pathToClient.split('/');
+	parts.removeLast();
+	QString pathToDir = parts.join("/");
+	mClientProcess->setStandardOutputFile(pathToDir+"/qRealLog.log", QIODevice::Append);
+	mClientProcess->setStandardErrorFile(pathToDir+"/qRealLog.log", QIODevice::Append);
+}
+
+ExternalClient::ExternalClient(const ExternalClient &other)
+{
+	this->mPathToClient = other.mPathToClient;
 }
 
 void ExternalClient::setPathToClient(const QString &pathToClient)
@@ -19,24 +28,24 @@ void ExternalClient::doCheckout(const QString &from, const QString &to) const
 {
 	QStringList arguments;
 	arguments << "checkout" << from << to;
-	mClientProcess->start(mPathToClient+"svn.exe", arguments);
-	mClientProcess->waitForFinished();
+	mClientProcess->start(mPathToClient, arguments);
+	mClientProcess->waitForReadyRead();
 }
 
 void ExternalClient::doUpdate(const QString &to) const
 {
 	QStringList arguments;
 	arguments << "update" << to;
-	mClientProcess->start(mPathToClient+"svn.exe", arguments);
-	mClientProcess->waitForFinished();
+	mClientProcess->start(mPathToClient, arguments);
+	mClientProcess->waitForReadyRead();
 }
 
 void ExternalClient::doCommit(const QString &from) const
 {
 	QStringList arguments;
 	arguments << "commit" << from;
-	mClientProcess->start(mPathToClient+"svn.exe", arguments);
-	mClientProcess->waitForFinished();
+	mClientProcess->start(mPathToClient, arguments);
+	mClientProcess->waitForReadyRead();
 }
 
 void ExternalClient::doAdd(const QString &what, bool force) const
@@ -47,8 +56,8 @@ void ExternalClient::doAdd(const QString &what, bool force) const
 	{
 		arguments << "--force";
 	}
-	mClientProcess->start(mPathToClient+"svn.exe", arguments);
-	mClientProcess->waitForFinished();
+	mClientProcess->start(mPathToClient, arguments);
+	mClientProcess->waitForReadyRead();
 }
 
 void ExternalClient::doRemove(const QString &what, bool force) const
@@ -59,6 +68,20 @@ void ExternalClient::doRemove(const QString &what, bool force) const
 	{
 		arguments << "--force";
 	}
-	mClientProcess->start(mPathToClient+"svn.exe", arguments);
-	mClientProcess->waitForFinished();
+	mClientProcess->start(mPathToClient, arguments);
+	mClientProcess->waitForReadyRead();
+}
+
+QStringList ExternalClient::getNewErrors()
+{
+	QStringList result(mErrors);
+	mErrors.clear();
+	return result;
+}
+
+void ExternalClient::processErrors()
+{
+	QByteArray error = mClientProcess->readAllStandardError();
+	if (error.size() > 0)
+		mErrors << QString(error);
 }

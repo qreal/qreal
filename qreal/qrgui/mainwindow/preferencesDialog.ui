@@ -57,7 +57,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="editorTab">
       <attribute name="title">
@@ -981,6 +981,47 @@
        </property>
        <property name="text">
         <string>Configuration</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="svnTab">
+      <attribute name="title">
+       <string>Subversion</string>
+      </attribute>
+      <widget class="QLabel" name="label_26">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>91</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Path to svn-client</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="pathToSvnClientLineEdit">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>20</y>
+         <width>141</width>
+         <height>20</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="browseSvnClientPushButton">
+       <property name="geometry">
+        <rect>
+         <x>250</x>
+         <y>20</y>
+         <width>71</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Browse...</string>
        </property>
       </widget>
      </widget>

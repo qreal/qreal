@@ -71,9 +71,9 @@ MainWindow::MainWindow()
 	}
 	mUi->setupUi(this);
 
-#if defined(Q_WS_WIN)
-	mUi->menuSvn->setEnabled(false);  // Doesn't work under Windows anyway.
-#endif
+//#if defined(Q_WS_WIN)
+//	mUi->menuSvn->setEnabled(false);  // Doesn't work under Windows anyway.
+//#endif
 
 	mUi->tabs->setTabsClosable(true);
 	mUi->tabs->setMovable(true);
@@ -107,6 +107,7 @@ MainWindow::MainWindow()
 
 	connect(mUi->actionCheckout, SIGNAL(triggered()), this, SLOT(doCheckout()));
 	connect(mUi->actionCommit, SIGNAL(triggered()), this, SLOT(doCommit()));
+	connect(mUi->actionUpdate, SIGNAL(triggered()), this, SLOT(doUpdate()));
 	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 	connect(mUi->actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
 	connect(mUi->actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
@@ -584,14 +585,19 @@ void MainWindow::doCheckout()
 	CheckoutDialog *dialog = new CheckoutDialog(this);
 	connect(dialog, SIGNAL(accepted()), this, SLOT(checkoutDialogOk()));
 	connect(dialog, SIGNAL(rejected()), this, SLOT(checkoutDialogCancel()));
-	dialog->show();
+	dialog->exec();
 	if (dialog->Accepted)
 	{
+		QSettings settings("SPbSU", "QReal");
 		path = dialog->getDir();
 		url = dialog->getUrl();
+		settings.setValue("checkoutDirectory", path);
+		settings.setValue("checkoutUrl", url);
+		mModels->repoControlApi().doCheckout(url, path);
+		mModels->repoControlApi().open(path);
+		mModels->reinit();
 	}
 
-	mModels->repoControlApi().doCheckout(url, path);
 }
 
 void MainWindow::doCommit()
@@ -616,6 +622,17 @@ void MainWindow::doCommit()
 	else
 		QMessageBox::information(this, tr("Error"), *messag);*/
 	mModels->repoControlApi().doCommit(path);
+}
+
+void MainWindow::doUpdate()
+{
+	QString select = tr("Select directory to be updated");
+	QString path = QFileDialog::getExistingDirectory(this, select);
+
+	if (path.isEmpty())
+		return;
+
+	mModels->repoControlApi().doUpdate(path);
 }
 
 void MainWindow::exportToXmi()

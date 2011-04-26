@@ -30,7 +30,8 @@ private:
 	void initCompilersSettings(QString const &pathToQmake,
 			QString const &pathToMake, QString const &pluginExtension, QString const &prefix);
 private slots:
-	void on_workDirPushButton_clicked();
+	void on_browseSvnClientPushButton_clicked();
+ void on_workDirPushButton_clicked();
  void on_builderPathButton_clicked();
 	void on_browseDebPathButton_clicked();
 	void on_cancelButton_clicked();
