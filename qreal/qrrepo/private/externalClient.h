@@ -29,6 +29,8 @@ namespace qrRepo
 			void processErrors();
 
 		private:
+			void initProcess();
+
 			QString mPathToClient;
 			QProcess *mClientProcess;
 			QStringList mErrors;

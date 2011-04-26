@@ -5,18 +5,13 @@ using namespace qrRepo::details;
 ExternalClient::ExternalClient(const QString &pathToClient)
 	: mPathToClient(pathToClient)
 {
-	mClientProcess = new QProcess(NULL);
-//	connect(mClientProcess, SIGNAL(readyReadStandardError()), this, SLOT(processErrors()));
-	QStringList parts = pathToClient.split('/');
-	parts.removeLast();
-	QString pathToDir = parts.join("/");
-	mClientProcess->setStandardOutputFile(pathToDir+"/qRealLog.log", QIODevice::Append);
-	mClientProcess->setStandardErrorFile(pathToDir+"/qRealLog.log", QIODevice::Append);
+	initProcess();
 }
 
 ExternalClient::ExternalClient(const ExternalClient &other)
+	: mPathToClient(other.mPathToClient)
 {
-	this->mPathToClient = other.mPathToClient;
+	initProcess();
 }
 
 void ExternalClient::setPathToClient(const QString &pathToClient)
@@ -84,4 +79,15 @@ void ExternalClient::processErrors()
 	QByteArray error = mClientProcess->readAllStandardError();
 	if (error.size() > 0)
 		mErrors << QString(error);
+}
+
+void ExternalClient::initProcess()
+{
+	mClientProcess = new QProcess(NULL);
+//	connect(mClientProcess, SIGNAL(readyReadStandardError()), this, SLOT(processErrors()));
+	QStringList parts = mPathToClient.split('/');
+	parts.removeLast();
+	QString pathToDir = parts.join("/");
+	mClientProcess->setStandardOutputFile(pathToDir+"/qRealLog.log", QIODevice::Append);
+	mClientProcess->setStandardErrorFile(pathToDir+"/qRealLog.log", QIODevice::Append);
 }
