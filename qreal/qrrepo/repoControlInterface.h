@@ -11,15 +11,19 @@ public:
 
 	virtual void exterminate() = 0;
 
-	virtual void saveAll() = 0;
-	virtual void save(qReal::IdList list) = 0;
-	virtual void saveTo(QString const &workingDir) = 0;
+	virtual bool saveAll() = 0;
+	virtual bool save(qReal::IdList list) = 0;
+	virtual bool saveTo(QString const &workingDir) = 0;
 
 	virtual void open(QString const &workingDir) = 0;
 
-	virtual void doCheckout(QString const &from, QString const &to) = 0;
-	virtual void doCommit(QString const &from) = 0;
-	virtual void doUpdate(QString const &to) = 0;
+	virtual bool doCheckout(QString const &from, QString const &to) = 0;
+	virtual bool doCommit(QString const &from) = 0;
+	virtual bool doUpdate(QString const &to) = 0;
+
+	virtual QStringList newErrors() = 0;
+
+	virtual void getDiff(QString const &workingCopy) = 0; //cap, for debug
 };
 
 }

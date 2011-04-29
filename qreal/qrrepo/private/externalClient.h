@@ -1,5 +1,7 @@
 #pragma once
 
+#include "diffProvider.h"
+
 #include <QProcess>
 #include <QObject>
 
@@ -9,31 +11,32 @@ namespace qrRepo
 	namespace details
 	{
 
-		class ExternalClient : public QObject
+		class ExternalClient
 		{
-			Q_OBJECT
 
 		public:
 			ExternalClient(QString const &pathToClient);
 			ExternalClient(ExternalClient const &other);
-
 			void setPathToClient(QString const &pathToClient);
-			void doCheckout(QString const &from, QString const &to) const;
-			void doUpdate(QString const &to) const;
-			void doCommit(QString const &from) const;
-			void doAdd(QString const &what, bool force = true) const;
-			void doRemove(QString const &what, bool force = true) const;
-			QStringList getNewErrors();
+			bool doCheckout(QString const &from, QString const &to);
+			bool doUpdate(QString const &to);
+			bool doCommit(QString const &from);
+			bool doAdd(QString const &what, bool force = true);
+			bool doRemove(QString const &what, bool force = true);
 
-		private slots:
-			void processErrors();
+			void getDiff(QString const &workingCopy);
+
+			QStringList newErrors();
+
 
 		private:
 			void initProcess();
+			bool processErrors();
 
 			QString mPathToClient;
 			QProcess *mClientProcess;
 			QStringList mErrors;
+			DiffProvider mDiffProvider;
 		};
 	}
 }

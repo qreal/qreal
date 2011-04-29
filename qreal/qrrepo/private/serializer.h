@@ -17,19 +17,19 @@ namespace qrRepo {
 		class Serializer {
 		public:
 			Serializer(QString const& saveDirName, ExternalClient client);
-			void clearWorkingDir() const;
 			void setWorkingDir(QString const& workingDir);
 
 			void removeFromDisk(qReal::Id id) const;
-			void saveToDisk(QList<Object*> const &objects);
+			bool saveToDisk(QList<Object*> const &objects);
 			void loadFromDisk(QHash<qReal::Id, Object*> &objectsHash);
+			QStringList newErrors();
 		private:
 			void loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object*> &objectsHash);
 			void loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHash);
 
 			QString pathToElement(qReal::Id const &id) const;
 			QString createDirectory(qReal::Id const &id, qReal::Id const &logicalId);
-			void removeUnsaved(QString const &path);
+			bool removeUnsaved(QString const &path);
 
 			Object *parseObject(QDomElement const &elem);
 			static void clearDir(QString const &path);
@@ -51,6 +51,8 @@ namespace qrRepo {
 			QSet<QString> mSavedFiles;
 			QSet<QString> mSavedDirectories;
 			QMap<QString, QFile*> files;
+
+			QStringList mErrors;
 		};
 
 	}

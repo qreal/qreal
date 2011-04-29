@@ -342,35 +342,52 @@ void RepoApi::open(QString const &workingDir)
 	mClient.open(workingDir);
 }
 
-void RepoApi::saveAll()
+bool RepoApi::saveAll()
 {
-	mClient.saveAll();
+	bool result = mClient.saveAll();
+	mErrors.append(mClient.newErrors());
+	return result;
 }
 
-void RepoApi::saveTo(QString const &workingDir)
+bool RepoApi::saveTo(QString const &workingDir)
 {
 	mClient.setWorkingDir(workingDir);
-	mClient.saveAll();
+	bool result = mClient.saveAll();
+	mErrors.append(mClient.newErrors());
+	return result;
 }
 
-void RepoApi::save(qReal::IdList list)
+bool RepoApi::save(qReal::IdList list)
 {
-	mClient.save(list);
+	bool result = mClient.save(list);
+	mErrors.append(mClient.newErrors());
+	return result;
 }
 
-void RepoApi::doCheckout(const QString &from, const QString &to)
+bool RepoApi::doCheckout(const QString &from, const QString &to)
 {
-	mClient.svnCheckout(from, to);
+	bool result = mClient.svnCheckout(from, to);
+	mErrors.append(mClient.newErrors());
+	return result;
 }
 
-void RepoApi::doCommit(const QString &from)
+bool RepoApi::doCommit(const QString &from)
 {
-	mClient.svnCommit(from);
+	bool result = mClient.svnCommit(from);
+	mErrors.append(mClient.newErrors());
+	return result;
 }
 
-void RepoApi::doUpdate(const QString &to)
+bool RepoApi::doUpdate(const QString &to)
 {
-	mClient.svnUpdate(to);
+	bool result = mClient.svnUpdate(to);
+	mErrors.append(mClient.newErrors());
+	return result;
+}
+
+void RepoApi::getDiff(QString const &workingCopy)
+{
+	mClient.getDiff(workingCopy);
 }
 
 void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data, QString const &direction)
@@ -461,6 +478,13 @@ int RepoApi::elementsCount() const
 bool RepoApi::exist(Id const &id) const
 {
 	return mClient.exist(id);
+}
+
+QStringList RepoApi::newErrors()
+{
+	QStringList result(mErrors);
+	mErrors.clear();
+	return result;
 }
 
 IdList RepoApi::temporaryRemovedLinksAt(Id const &id, QString const &direction) const

@@ -108,6 +108,8 @@ MainWindow::MainWindow()
 	connect(mUi->actionCheckout, SIGNAL(triggered()), this, SLOT(doCheckout()));
 	connect(mUi->actionCommit, SIGNAL(triggered()), this, SLOT(doCommit()));
 	connect(mUi->actionUpdate, SIGNAL(triggered()), this, SLOT(doUpdate()));
+	connect(mUi->actionDiff, SIGNAL(triggered()), this, SLOT(showDiff()));
+
 	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 	connect(mUi->actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
 	connect(mUi->actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
@@ -585,17 +587,29 @@ void MainWindow::doCheckout()
 	CheckoutDialog *dialog = new CheckoutDialog(this);
 	connect(dialog, SIGNAL(accepted()), this, SLOT(checkoutDialogOk()));
 	connect(dialog, SIGNAL(rejected()), this, SLOT(checkoutDialogCancel()));
-	dialog->exec();
-	if (dialog->Accepted)
+	if (QDialog::Accepted == dialog->exec())
 	{
 		QSettings settings("SPbSU", "QReal");
 		path = dialog->getDir();
 		url = dialog->getUrl();
-		settings.setValue("checkoutDirectory", path);
-		settings.setValue("checkoutUrl", url);
-		mModels->repoControlApi().doCheckout(url, path);
-		mModels->repoControlApi().open(path);
-		mModels->reinit();
+
+		if (!mModels->repoControlApi().doCheckout(url, path))
+		{
+			QStringList errors(mModels->repoControlApi().newErrors());
+			foreach (QString error, errors)
+			{
+				mErrorReporter->addError(error);
+			}
+			mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+		}
+		else
+		{
+			mModels->repoControlApi().open(path);
+			mModels->reinit();
+			settings.setValue("checkoutDirectory", path);
+			settings.setValue("checkoutUrl", url);
+			QMessageBox::information(this, tr("Success!"), tr("Checkout succeeded. Working dir was setted to ") + path);
+		}
 	}
 
 }
@@ -607,21 +621,19 @@ void MainWindow::doCommit()
 
 	if (path.isEmpty())
 		return;
-	/*	char* p;
-	QByteArray p1 = path.toAscii();
-	p = p1.data();
-	SvnClient client(p, "", "");
-//	client.commit(path, )
-	QString *messag = new QString;
-	int revision = client.commit(*messag);
-	if (revision > 0)
+	if (!mModels->repoControlApi().doCommit(path))
 	{
-		QString success = tr("Committed successfully to revision ");
-		QMessageBox::information(this, tr("Success"), success.append(QString(revision)));
+		QStringList errors(mModels->repoControlApi().newErrors());
+		foreach (QString error, errors)
+		{
+			mErrorReporter->addError(error);
+		}
+		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
 	}
 	else
-		QMessageBox::information(this, tr("Error"), *messag);*/
-	mModels->repoControlApi().doCommit(path);
+	{
+		QMessageBox::information(this, tr("Success!"), tr("Commited succcessfully."));
+	}
 }
 
 void MainWindow::doUpdate()
@@ -632,7 +644,24 @@ void MainWindow::doUpdate()
 	if (path.isEmpty())
 		return;
 
-	mModels->repoControlApi().doUpdate(path);
+	if (!mModels->repoControlApi().doUpdate(path))
+	{
+		QStringList errors(mModels->repoControlApi().newErrors());
+		foreach (QString error, errors)
+		{
+			mErrorReporter->addError(error);
+		}
+		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+	}
+	else
+	{
+		QMessageBox::information(this, tr("Success!"), tr("Updated successfully."));
+	}
+}
+
+void MainWindow::showDiff()
+{
+	mModels->repoControlApi().getDiff("D:/qrealsave");
 }
 
 void MainWindow::exportToXmi()
@@ -1390,7 +1419,15 @@ void MainWindow::createDiagram(QString const &idString)
 
 void MainWindow::saveAll()
 {
-	mModels->repoControlApi().saveAll();
+	if (!mModels->repoControlApi().saveAll())
+	{
+		QStringList errors(mModels->repoControlApi().newErrors());
+		foreach (QString error, errors)
+		{
+			mErrorReporter->addWarning(error);
+		}
+		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+	}
 }
 
 void MainWindow::saveAs()
@@ -1398,7 +1435,15 @@ void MainWindow::saveAs()
 	QString const dirName = getWorkingDir(tr("Select directory to save current model to"));
 	if (dirName.isEmpty())
 		return;
-	mModels->repoControlApi().saveTo(dirName);
+	if (!mModels->repoControlApi().saveTo(dirName))
+	{
+		QStringList errors(mModels->repoControlApi().newErrors());
+		foreach (QString error, errors)
+		{
+			mErrorReporter->addWarning(error);
+		}
+		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+	}
 }
 
 int MainWindow::getTabIndex(const QModelIndex &index)

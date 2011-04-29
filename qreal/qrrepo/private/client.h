@@ -39,23 +39,25 @@ namespace qrRepo {
 			bool isLogicalId(qReal::Id const &elem) const;
 			qReal::Id logicalId(qReal::Id const &elem) const;
 
-			void svnCheckout(QString const &from, QString const &to);
-			void svnUpdate(QString const &to);
-			void svnCommit(QString const &from);
+			bool svnCheckout(QString const &from, QString const &to);
+			bool svnUpdate(QString const &to);
+			bool svnCommit(QString const &from);
+
+			void getDiff(QString const &workingCopy);
 
 			void printDebug() const;
 
-			void exterminate();
+			bool exterminate();
 			void open(QString const &workingDir);
 
 			bool exist(qReal::Id const &id) const;
 
-			void saveAll();
-			void save(qReal::IdList list);
+			bool saveAll();
+			bool save(qReal::IdList list);
 			void remove(qReal::IdList list) const;
 			void setWorkingDir(QString const &workingDir);
 
-			QStringList getNewErrors();
+			QStringList newErrors();
 
 		private:
 			void init();

@@ -87,15 +87,17 @@ namespace qrRepo {
 
 		void exterminate();
 
-		void saveAll();
-		void save(qReal::IdList list);
-		void saveTo(QString const &workingDir);
+		bool saveAll();
+		bool save(qReal::IdList list);
+		bool saveTo(QString const &workingDir);
 
 		void open(QString const &workingDir);
 
-		void doCheckout(const QString &from, const QString &to);
-		void doCommit(const QString &from);
-		void doUpdate(const QString &to);
+		bool doCheckout(const QString &from, const QString &to);
+		bool doCommit(const QString &from);
+		bool doUpdate(const QString &to);
+
+		void getDiff(QString const &workingCopy);
 
 		// "Глобальные" методы, позволяющие делать запросы к модели в целом.
 		//Returns all elements with .element() == type.element()
@@ -110,6 +112,8 @@ namespace qrRepo {
 
 		bool exist(qReal::Id const &id) const;
 
+		QStringList newErrors();
+
 	private:
 		RepoApi(RepoApi const &other);  // Копировать нельзя.
 		RepoApi& operator =(RepoApi const &);  // Присваивать тоже.
@@ -121,6 +125,7 @@ namespace qrRepo {
 		void removeLinkEnds(QString const &endName, qReal::Id const &id);
 
 		details::Client mClient;
+		QStringList mErrors;
 	};
 
 }

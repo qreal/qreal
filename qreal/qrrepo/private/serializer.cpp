@@ -19,11 +19,6 @@ Serializer::Serializer(QString const& saveDirName, ExternalClient client)
 {
 }
 
-void Serializer::clearWorkingDir() const
-{
-	clearDir(mWorkingDir + "/tree");
-}
-
 void Serializer::removeFromDisk(Id id) const
 {
 	QDir dir;
@@ -35,8 +30,9 @@ void Serializer::setWorkingDir(QString const &workingDir)
 	mWorkingDir = workingDir + "/save";
 }
 
-void Serializer::saveToDisk(QList<Object*> const &objects)
+bool Serializer::saveToDisk(QList<Object*> const &objects)
 {
+	bool result = true;
 	mSavedDirectories.clear();
 	mSavedFiles.clear();
 	foreach (Object *object, objects) {
@@ -64,13 +60,24 @@ void Serializer::saveToDisk(QList<Object*> const &objects)
 		doc.save(out(), 2);
 		mSavedFiles << fileInfo.filePath();
 	}
-	removeUnsaved(mWorkingDir);
-	mExternalClient.doAdd(mWorkingDir);
+	if (!removeUnsaved(mWorkingDir))
+		result = false;
+	if (!mExternalClient.doAdd(mWorkingDir))
+		result = false;
+	mErrors.append(mExternalClient.newErrors());
+	return result;
 }
 
 void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash)
 {
 	loadFromDisk(mWorkingDir + "/tree", objectsHash);
+}
+
+QStringList Serializer::newErrors()
+{
+	QStringList result(mErrors);
+	mErrors.clear();
+	return result;
 }
 
 void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object*> &objectsHash)
@@ -329,8 +336,9 @@ QString Serializer::createDirectory(Id const &id, Id const &logicalId)
 	return dirName + "/" + partsList[partsList.size() - 1];
 }
 
-void Serializer::removeUnsaved(const QString &path)
+bool Serializer::removeUnsaved(const QString &path)
 {
+	bool result = true;
 	QDir dir(path);
 	if (dir.exists())
 	{
@@ -340,22 +348,26 @@ void Serializer::removeUnsaved(const QString &path)
 			{
 				if (mSavedDirectories.contains(fileInfo.filePath()))
 				{
-					removeUnsaved(fileInfo.filePath());
+					if (!removeUnsaved(fileInfo.filePath()))
+						result = false;
 				}
 				else
 				{
-					mExternalClient.doRemove(fileInfo.filePath());
+					if (!mExternalClient.doRemove(fileInfo.filePath()))
+						result = false;
 				}
 			}
 			else
 			{
 				if (!mSavedFiles.contains(fileInfo.filePath()))
 				{
-					mExternalClient.doRemove(fileInfo.filePath());
+					if (!mExternalClient.doRemove(fileInfo.filePath()))
+						result = false;
 				}
 			}
 		}
 	}
+	return result;
 }
 
 QDomElement Serializer::idListToXml(QString const &attributeName, IdList const &idList, QDomDocument &doc)

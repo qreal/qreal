@@ -3,13 +3,13 @@
 using namespace qrRepo::details;
 
 ExternalClient::ExternalClient(const QString &pathToClient)
-	: mPathToClient(pathToClient)
+	: mPathToClient(pathToClient), mDiffProvider(pathToClient)
 {
 	initProcess();
 }
 
 ExternalClient::ExternalClient(const ExternalClient &other)
-	: mPathToClient(other.mPathToClient)
+	: mPathToClient(other.mPathToClient), mDiffProvider(mPathToClient)
 {
 	initProcess();
 }
@@ -17,33 +17,37 @@ ExternalClient::ExternalClient(const ExternalClient &other)
 void ExternalClient::setPathToClient(const QString &pathToClient)
 {
 	mPathToClient = pathToClient;
+	mDiffProvider.setPathToClient(pathToClient);
 }
 
-void ExternalClient::doCheckout(const QString &from, const QString &to) const
+bool ExternalClient::doCheckout(const QString &from, const QString &to)
 {
 	QStringList arguments;
 	arguments << "checkout" << from << to;
 	mClientProcess->start(mPathToClient, arguments);
-	mClientProcess->waitForReadyRead();
+	mClientProcess->waitForFinished();
+	return processErrors();
 }
 
-void ExternalClient::doUpdate(const QString &to) const
+bool ExternalClient::doUpdate(const QString &to)
 {
 	QStringList arguments;
 	arguments << "update" << to;
 	mClientProcess->start(mPathToClient, arguments);
-	mClientProcess->waitForReadyRead();
+	mClientProcess->waitForFinished();
+	return processErrors();
 }
 
-void ExternalClient::doCommit(const QString &from) const
+bool ExternalClient::doCommit(const QString &from)
 {
 	QStringList arguments;
 	arguments << "commit" << from << "-m" << "no_message";
 	mClientProcess->start(mPathToClient, arguments);
-	mClientProcess->waitForReadyRead();
+	mClientProcess->waitForFinished();
+	return processErrors();
 }
 
-void ExternalClient::doAdd(const QString &what, bool force) const
+bool ExternalClient::doAdd(const QString &what, bool force)
 {
 	QStringList arguments;
 	arguments << "add" << what;
@@ -52,10 +56,11 @@ void ExternalClient::doAdd(const QString &what, bool force) const
 		arguments << "--force";
 	}
 	mClientProcess->start(mPathToClient, arguments);
-	mClientProcess->waitForReadyRead();
+	mClientProcess->waitForFinished();
+	return processErrors();
 }
 
-void ExternalClient::doRemove(const QString &what, bool force) const
+bool ExternalClient::doRemove(const QString &what, bool force)
 {
 	QStringList arguments;
 	arguments << "remove" << what;
@@ -64,30 +69,36 @@ void ExternalClient::doRemove(const QString &what, bool force) const
 		arguments << "--force";
 	}
 	mClientProcess->start(mPathToClient, arguments);
-	mClientProcess->waitForReadyRead();
+	mClientProcess->waitForFinished();
+	return processErrors();
 }
 
-QStringList ExternalClient::getNewErrors()
+void ExternalClient::getDiff(QString const &workingCopy)
+{
+	mDiffProvider.getDifference(workingCopy);
+}
+
+QStringList ExternalClient::newErrors()
 {
 	QStringList result(mErrors);
 	mErrors.clear();
 	return result;
 }
 
-void ExternalClient::processErrors()
+void ExternalClient::initProcess()
+{
+	mClientProcess = new QProcess(NULL);
+	QStringList parts = mPathToClient.split('/');
+	parts.removeLast();
+	QString pathToDir = parts.join("/");
+//	mClientProcess->setStandardOutputFile(pathToDir+"/qRealLog.log", QIODevice::Append);
+//	mClientProcess->setStandardErrorFile(pathToDir+"/qRealLog.log", QIODevice::Append);
+}
+
+bool ExternalClient::processErrors()
 {
 	QByteArray error = mClientProcess->readAllStandardError();
 	if (error.size() > 0)
 		mErrors << QString(error);
-}
-
-void ExternalClient::initProcess()
-{
-	mClientProcess = new QProcess(NULL);
-//	connect(mClientProcess, SIGNAL(readyReadStandardError()), this, SLOT(processErrors()));
-	QStringList parts = mPathToClient.split('/');
-	parts.removeLast();
-	QString pathToDir = parts.join("/");
-	mClientProcess->setStandardOutputFile(pathToDir+"/qRealLog.log", QIODevice::Append);
-	mClientProcess->setStandardErrorFile(pathToDir+"/qRealLog.log", QIODevice::Append);
+	return error.size() == 0;
 }

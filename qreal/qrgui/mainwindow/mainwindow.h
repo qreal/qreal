@@ -83,6 +83,8 @@ public slots:
 	void doCheckout();
 	void doCommit();
 	void doUpdate();
+	void showDiff();
+
 	void exportToXmi();
 	void generateToJava();
 	void parseJavaLibraries();

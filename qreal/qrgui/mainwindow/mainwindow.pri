@@ -31,6 +31,7 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/error.h \
 	mainwindow/errorlistwidget.h \
 	mainwindow/mainWindowInterpretersInterface.h \
+    mainwindow/diffViewer.h
 
 SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/paletteToolbox.cpp \
@@ -61,7 +62,8 @@ SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/shapeEdit/textPicture.cpp \
 	mainwindow/shapeEdit/image.cpp \
 	mainwindow/error.cpp \
-	mainwindow/errorlistwidget.cpp
+	mainwindow/errorlistwidget.cpp \
+    mainwindow/diffViewer.cpp
 FORMS += mainwindow/mainwindow.ui \
 	mainwindow/shapeEdit/shapeEdit.ui \
 	mainwindow/gesturesShow/gestureswidget.ui \

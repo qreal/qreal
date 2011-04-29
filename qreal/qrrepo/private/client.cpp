@@ -224,18 +224,22 @@ bool Client::exist(const Id &id) const
 	return (mObjects[id] != NULL);
 }
 
-void Client::saveAll()
+bool Client::saveAll()
 {
-	serializer.saveToDisk(mObjects.values());
+	bool result = serializer.saveToDisk(mObjects.values());
+	mErrors.append(serializer.newErrors());
+	return result;
 }
 
-void Client::save(IdList list)
+bool Client::save(IdList list)
 {
 	QList<Object*> toSave;
 	foreach(Id id, list)
 		toSave.append(allChildrenOf(id));
 
-	serializer.saveToDisk(toSave);
+	bool result = serializer.saveToDisk(toSave);
+	mErrors.append(serializer.newErrors());
+	return result;
 }
 
 void Client::remove(IdList list) const
@@ -261,24 +265,36 @@ void Client::setWorkingDir(QString const &workingDir)
 	serializer.setWorkingDir(workingDir);
 }
 
-void Client::svnCheckout(const QString &from, const QString &to)
+bool Client::svnCheckout(const QString &from, const QString &to)
 {
-	mExternalClient.doCheckout(from, to);
+	bool result = mExternalClient.doCheckout(from, to);
+	mErrors.append(mExternalClient.newErrors());
+	return result;
 }
 
-void Client::svnUpdate(const QString &to)
+bool Client::svnUpdate(const QString &to)
 {
-	mExternalClient.doUpdate(to);
+	bool result = mExternalClient.doUpdate(to);
+	mErrors.append(mExternalClient.newErrors());
+	return result;
 }
 
-void Client::svnCommit(const QString &from)
+bool Client::svnCommit(const QString &from)
 {
-	mExternalClient.doCommit(from);
+	bool result = mExternalClient.doCommit(from);
+	mErrors.append(mExternalClient.newErrors());
+	return result;
 }
 
-QStringList Client::getNewErrors()
+void Client::getDiff(QString const &workingCopy)
+{
+	mExternalClient.getDiff(workingCopy);
+}
+
+QStringList Client::newErrors()
 {
 	QStringList result(mErrors);
+	mErrors.clear();
 	return result;
 }
 
@@ -296,14 +312,14 @@ void Client::printDebug() const
 	}
 }
 
-void Client::exterminate()
+bool Client::exterminate()
 {
 	printDebug();
 	mObjects.clear();
-	serializer.clearWorkingDir();
-	serializer.saveToDisk(mObjects.values());
+	bool result = serializer.saveToDisk(mObjects.values());
 	init();
 	printDebug();
+	return result;
 }
 
 void Client::open(QString const &workingDir)
