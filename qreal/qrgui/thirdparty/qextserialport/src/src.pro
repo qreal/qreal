@@ -1,7 +1,7 @@
 PROJECT                 = qextserialport
 TEMPLATE                = lib
 VERSION                 = 1.2.0
-DESTDIR                 = build
+DESTDIR                 = ../../../
 CONFIG                 += qt warn_on debug_and_release
 CONFIG                  += dll
 DEFINES                 += QEXTSERIALPORT_LIB

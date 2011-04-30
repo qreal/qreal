@@ -7,7 +7,7 @@ PROJECT = enumerator
 TEMPLATE = app
 DEPENDPATH += .
 INCLUDEPATH  += ../../src
-QMAKE_LIBDIR += ../../src/build
+QMAKE_LIBDIR += ../../../../
 
 OBJECTS_DIR    = tmp
 MOC_DIR        = tmp

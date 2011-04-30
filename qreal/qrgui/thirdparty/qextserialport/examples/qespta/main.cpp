@@ -5,7 +5,7 @@
  */
 
 #include <QApplication>
-#include <qextserialport.h>
+#include <../../src/qextserialport.h>
 
 #include "defs.h"
 #include "MainWindow.h"

@@ -7,7 +7,7 @@ PROJECT = QESPTA
 TEMPLATE = app
 DEPENDPATH += .
 INCLUDEPATH += ../..
-QMAKE_LIBDIR += ../../build
+QMAKE_LIBDIR += ../../../../
 
 
 OBJECTS_DIR    = .obj

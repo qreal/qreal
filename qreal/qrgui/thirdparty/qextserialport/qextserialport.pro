@@ -5,3 +5,4 @@ SUBDIRS  = src \
            examples/enumerator \
            examples/event
 
+DESTDIR = ../../
