@@ -41,6 +41,7 @@
 #include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
 #include "../visualDebugger/visualDebugger.h"
+#include "executionIndicator.h"
 
 #include "metaCompiler.h"
 
@@ -589,6 +590,8 @@ void MainWindow::doCheckout()
 	connect(dialog, SIGNAL(rejected()), this, SLOT(checkoutDialogCancel()));
 	if (QDialog::Accepted == dialog->exec())
 	{
+		gui::ExecutionIndicator indicator(tr("Checking out, please wait..."));
+		indicator.show();
 		QSettings settings("SPbSU", "QReal");
 		path = dialog->getDir();
 		url = dialog->getUrl();
@@ -610,6 +613,7 @@ void MainWindow::doCheckout()
 			settings.setValue("checkoutUrl", url);
 			QMessageBox::information(this, tr("Success!"), tr("Checkout succeeded. Working dir was setted to ") + path);
 		}
+		indicator.hide();
 	}
 
 }
@@ -621,6 +625,8 @@ void MainWindow::doCommit()
 
 	if (path.isEmpty())
 		return;
+	gui::ExecutionIndicator indicator(tr("Commiting, please wait..."));
+	indicator.show();
 	if (!mModels->repoControlApi().doCommit(path))
 	{
 		QStringList errors(mModels->repoControlApi().newErrors());
@@ -634,6 +640,7 @@ void MainWindow::doCommit()
 	{
 		QMessageBox::information(this, tr("Success!"), tr("Commited succcessfully."));
 	}
+	indicator.hide();
 }
 
 void MainWindow::doUpdate()
@@ -643,6 +650,9 @@ void MainWindow::doUpdate()
 
 	if (path.isEmpty())
 		return;
+
+	gui::ExecutionIndicator indicator(tr("Updating, please wait..."));
+	indicator.show();
 
 	if (!mModels->repoControlApi().doUpdate(path))
 	{
@@ -657,6 +667,7 @@ void MainWindow::doUpdate()
 	{
 		QMessageBox::information(this, tr("Success!"), tr("Updated successfully."));
 	}
+	indicator.hide();
 }
 
 void MainWindow::showDiff()
