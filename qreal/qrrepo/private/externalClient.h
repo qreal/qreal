@@ -23,8 +23,11 @@ namespace qrRepo
 			bool doCommit(QString const &from);
 			bool doAdd(QString const &what, bool force = true);
 			bool doRemove(QString const &what, bool force = true);
+			QString info(QString const &workingDir);
 
-			void getDiff(QString const &workingCopy);
+			QString repoUrl(QString const &workingDir);
+
+			void getDiff(QHash<qReal::Id, Object*> const &repoObjects, QHash<qReal::Id, Object*> const &workingCopyObjects);
 
 			QStringList newErrors();
 

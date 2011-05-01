@@ -1,8 +1,5 @@
 #include "diffProvider.h"
 
-#include <QFile>
-#include <QDir>
-
 using namespace qrRepo::details;
 
 DiffProvider::DiffProvider(QString const &pathToClient)
@@ -16,28 +13,31 @@ void DiffProvider::setPathToClient(const QString &pathToClient)
 	mPathToClient = pathToClient;
 }
 
-QHash<Object*, Difference*> *DiffProvider::getDifference(QString const &workingCopy)
+QHash<qReal::Id, Difference*> *DiffProvider::getDifference(QHash<qReal::Id, Object*> const &repoObjects, QHash<qReal::Id, Object*> const &workingCopyObjects)
 {
-	QHash<Object*, Difference*> *result = new QHash<Object*, Difference*>();
-	QString diffFileName("textDiff");
+	QHash<qReal::Id, Difference*> *result = new QHash<qReal::Id, Difference*>();
 
-	QProcess *client = new QProcess(NULL);
-	client->setStandardOutputFile(diffFileName);
-	QStringList arguments;
-	arguments << "diff" << workingCopy << "-r" << "HEAD";
-	client->start(mPathToClient, arguments);
-	client->waitForFinished();
-
-
-	QFile textDiffFile(diffFileName);
-	if (!textDiffFile.open(QIODevice::ReadOnly | QIODevice::Text))
+	QHashIterator<qReal::Id, Object*> i(repoObjects);
+	while (i.hasNext())
 	{
-		return result;
+		i.next();
+		if (workingCopyObjects.contains(i.key()))
+		{
+			result->insert(i.key(), new Difference(i.value(), workingCopyObjects.value(i.key())));
+		}
+		else
+		{
+			result->insert(i.key(), new Difference(i.value(), Removed));
+		}
 	}
-	mDiffStream.setDevice(&textDiffFile);
-
-	mDiffStream.flush();
-//	QDir dir;
-//	dir.remove(diffFileName);
+	QHashIterator<qReal::Id, Object*> j(workingCopyObjects);
+	while (j.hasNext())
+	{
+		j.next();
+		if (!result->contains(j.key()))
+		{
+			result->insert(j.key(), new Difference(j.value(), Added));
+		}
+	}
 	return result;
 }

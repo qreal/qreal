@@ -385,6 +385,13 @@ bool RepoApi::doUpdate(const QString &to)
 	return result;
 }
 
+QString RepoApi::svnInfo(const QString &workingDir)
+{
+	QString result = mClient.svnInfo(workingDir);
+	mErrors.append(mClient.newErrors());
+	return result;
+}
+
 void RepoApi::getDiff(QString const &workingCopy)
 {
 	mClient.getDiff(workingCopy);

@@ -108,8 +108,9 @@ MainWindow::MainWindow()
 
 	connect(mUi->actionCheckout, SIGNAL(triggered()), this, SLOT(doCheckout()));
 	connect(mUi->actionCommit, SIGNAL(triggered()), this, SLOT(doCommit()));
-	connect(mUi->actionUpdate, SIGNAL(triggered()), this, SLOT(doUpdate()));
+	connect(mUi->actionUpdate, SIGNAL(triggered()), this, SLOT(doUpdate()));	
 	connect(mUi->actionDiff, SIGNAL(triggered()), this, SLOT(showDiff()));
+	connect(mUi->actionInfo, SIGNAL(triggered()), this, SLOT(showInfo()));
 
 	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 	connect(mUi->actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
@@ -592,7 +593,6 @@ void MainWindow::doCheckout()
 	{
 		gui::ExecutionIndicator indicator(tr("Checking out, please wait..."));
 		indicator.show();
-		QSettings settings("SPbSU", "QReal");
 		path = dialog->getDir();
 		url = dialog->getUrl();
 
@@ -609,6 +609,8 @@ void MainWindow::doCheckout()
 		{
 			mModels->repoControlApi().open(path);
 			mModels->reinit();
+			QSettings settings("SPbSU", "QReal");
+			settings.setValue("workingDir", path);
 			settings.setValue("checkoutDirectory", path);
 			settings.setValue("checkoutUrl", url);
 			QMessageBox::information(this, tr("Success!"), tr("Checkout succeeded. Working dir was setted to ") + path);
@@ -620,9 +622,11 @@ void MainWindow::doCheckout()
 
 void MainWindow::doCommit()
 {
-	QString select = tr("Select directory to commit");
-	QString path = QFileDialog::getExistingDirectory(this, select);
+//	QString select = tr("Select directory to commit");
+//	QString path = QFileDialog::getExistingDirectory(this, select);
 
+	QSettings settings("SPbSU", "QReal");
+	QString path = settings.value("workingDir", "").toString();
 	if (path.isEmpty())
 		return;
 	gui::ExecutionIndicator indicator(tr("Commiting, please wait..."));
@@ -645,9 +649,11 @@ void MainWindow::doCommit()
 
 void MainWindow::doUpdate()
 {
-	QString select = tr("Select directory to be updated");
-	QString path = QFileDialog::getExistingDirectory(this, select);
+//	QString select = tr("Select directory to be updated");
+//	QString path = QFileDialog::getExistingDirectory(this, select);
 
+	QSettings settings("SPbSU", "QReal");
+	QString path = settings.value("workingDir", "").toString();
 	if (path.isEmpty())
 		return;
 
@@ -673,6 +679,26 @@ void MainWindow::doUpdate()
 void MainWindow::showDiff()
 {
 	mModels->repoControlApi().getDiff("D:/qrealsave");
+}
+
+void MainWindow::showInfo()
+{
+	QSettings settings("SPbSU", "QReal");
+	QString workingDir = settings.value("workingDir", "").toString();
+	QString info = mModels->repoControlApi().svnInfo(workingDir);
+	if (info != "")
+	{
+		QMessageBox::information(this, "SVN Info", info);
+	}
+	else
+	{
+		QStringList errors(mModels->repoControlApi().newErrors());
+		foreach (QString error, errors)
+		{
+			mErrorReporter->addError(error);
+		}
+		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+	}
 }
 
 void MainWindow::exportToXmi()

@@ -18,6 +18,7 @@ namespace qrRepo {
 		public:
 			Serializer(QString const& saveDirName, ExternalClient client);
 			void setWorkingDir(QString const& workingDir);
+			void clearWorkingDir();
 
 			void removeFromDisk(qReal::Id id) const;
 			bool saveToDisk(QList<Object*> const &objects);

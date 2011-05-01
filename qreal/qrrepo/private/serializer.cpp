@@ -30,6 +30,11 @@ void Serializer::setWorkingDir(QString const &workingDir)
 	mWorkingDir = workingDir + "/save";
 }
 
+void Serializer::clearWorkingDir()
+{
+	clearDir(mWorkingDir+"/tree");
+}
+
 bool Serializer::saveToDisk(QList<Object*> const &objects)
 {
 	bool result = true;

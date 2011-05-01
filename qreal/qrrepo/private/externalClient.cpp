@@ -1,5 +1,8 @@
 #include "externalClient.h"
 
+#include <QMessageBox>
+#include <QTextCodec>
+
 using namespace qrRepo::details;
 
 ExternalClient::ExternalClient(const QString &pathToClient)
@@ -73,9 +76,40 @@ bool ExternalClient::doRemove(const QString &what, bool force)
 	return processErrors();
 }
 
-void ExternalClient::getDiff(QString const &workingCopy)
+QString ExternalClient::info(const QString &workingDir)
 {
-	mDiffProvider.getDifference(workingCopy);
+	QStringList arguments;
+	arguments << "info" << workingDir;
+	mClientProcess->start(mPathToClient, arguments);
+	mClientProcess->waitForFinished();
+	QString info(mClientProcess->readAllStandardOutput());
+	processErrors();
+	return QString::fromLocal8Bit(info.toStdString().c_str());
+}
+
+QString ExternalClient::repoUrl(const QString &workingDir)
+{
+	QString repoInfo = info(workingDir);
+	int ind = repoInfo.indexOf("Repository Root: ");
+	if (ind == -1)
+	{
+		mErrors << "Can`t find repository root";
+		return "";
+	}
+	repoInfo = repoInfo.mid(ind + QString("Repository Root: ").length());
+	ind = repoInfo.indexOf("Repository UUID: ");
+	if (ind == -1)
+	{
+		mErrors << "Can`t find repository UUID";
+		return "";
+	}
+	repoInfo = repoInfo.mid(0,  ind-2);
+	return repoInfo;
+}
+
+void ExternalClient::getDiff(QHash<qReal::Id, Object*> const &repoObjects, QHash<qReal::Id, Object*> const &workingCopyObjects)
+{
+	mDiffProvider.getDifference(repoObjects, workingCopyObjects);
 }
 
 QStringList ExternalClient::newErrors()

@@ -28,7 +28,9 @@ HEADERS += \
     private/classes/object.h \
     private/externalClient.h \
     private/diffProvider.h \
-    private/difference.h
+    private/difference.h \
+    private/modification.h \
+    private/diffState.h
 
 SOURCES += \
 	private/client.cpp \
@@ -36,7 +38,8 @@ SOURCES += \
     private/classes/object.cpp \
     private/externalClient.cpp \
     private/diffProvider.cpp \
-    private/difference.cpp
+    private/difference.cpp \
+    private/modification.cpp
 
 # API репозитория
 HEADERS += \

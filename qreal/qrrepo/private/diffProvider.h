@@ -11,25 +11,19 @@ namespace qrRepo
 	namespace details
 	{
 
-		enum DiffState
-		{
-			Added,
-			Removed,
-			Changed,
-			Same
-		};
-
 		class DiffProvider
 		{
 
 		public:
 			DiffProvider(QString const &pathToClient);
 			void setPathToClient(QString const &pathToClient);
-			QHash<Object*, Difference*> *getDifference(QString const &workingCopy);
+			QHash<qReal::Id, Difference*> *getDifference(QHash<qReal::Id, Object*> const &repoObjects,
+								  QHash<qReal::Id, Object*> const &workingCopyObjects);
 
 		private:
 			QString mPathToClient;
 			QTextStream mDiffStream;
+			QStringList mErrors;
 		};
 	}
 }

@@ -84,6 +84,7 @@ public slots:
 	void doCommit();
 	void doUpdate();
 	void showDiff();
+	void showInfo();
 
 	void exportToXmi();
 	void generateToJava();

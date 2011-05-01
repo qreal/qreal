@@ -96,6 +96,7 @@
     <addaction name="actionCheckout"/>
     <addaction name="actionUpdate"/>
     <addaction name="actionDiff"/>
+    <addaction name="actionInfo"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -851,6 +852,11 @@
   <action name="actionDiff">
    <property name="text">
     <string>Diff</string>
+   </property>
+  </action>
+  <action name="actionInfo">
+   <property name="text">
+    <string>Info</string>
    </property>
   </action>
  </widget>

@@ -96,6 +96,7 @@ namespace qrRepo {
 		bool doCheckout(const QString &from, const QString &to);
 		bool doCommit(const QString &from);
 		bool doUpdate(const QString &to);
+		QString svnInfo(const QString &workingDir);
 
 		void getDiff(QString const &workingCopy);
 
