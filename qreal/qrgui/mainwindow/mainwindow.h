@@ -43,7 +43,7 @@ public:
 	QModelIndex rootIndex() const;
 
 	QAction *actionDeleteFromDiagram() const;
-	
+
 	virtual void highlight(Id const &graphicalId, bool exclusive = true);
 	virtual void dehighlight(Id const &graphicalId);
 	virtual void dehighlight();
@@ -53,7 +53,7 @@ signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
 	void rootDiagramChanged();
-		
+
 
 public slots:
 	void adjustMinimapZoom(int zoom);
@@ -68,7 +68,7 @@ public slots:
 
 	void checkoutDialogOk();
 	void checkoutDialogCancel();
-	void open();
+	bool open();
 	void saveAs();
 	void saveAll();
 
@@ -161,7 +161,7 @@ private:
 
 	QStringList mDiagramsList;
 	QModelIndex mRootIndex;
-	
+
 	gui::ErrorReporter *mErrorReporter;
 	VisualDebugger *mVisualDebugger;
 	DebuggerConnector *mDebuggerConnector;
