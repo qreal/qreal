@@ -72,7 +72,7 @@ MainWindow::MainWindow()
 	mUi->setupUi(this);
 
 #if defined(Q_WS_WIN)
-	mUi->menuSvn->setEnabled(false);  // Doesn't work under Windows anyway.
+	mUi->menuSvn->setEnabled(false);  // Doesn't work on Windows anyway.
 #endif
 
 	mUi->tabs->setTabsClosable(true);
@@ -85,70 +85,12 @@ MainWindow::MainWindow()
 
 	// Step 2: Ui is ready, splash screen shown.
 	progress->setValue(20);
-	mUi->actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
-	mUi->actionShow_alignment->setChecked(settings.value("ShowAlignment", true).toBool());
-	mUi->actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", false).toBool());
-	mUi->actionSwitch_on_alignment->setChecked(settings.value("ActivateAlignment", true).toBool());
-
-	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
-
-	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
-
-	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(open()));
-	connect(mUi->actionSave, SIGNAL(triggered()), this, SLOT(saveAll()));
-	connect(mUi->actionSave_as, SIGNAL(triggered()), this, SLOT(saveAs()));
-	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
-	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
-
-	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
+	connectActions();
 
 	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(changeMiniMapSource(int)));
 	connect(mUi->tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 
-	connect(mUi->actionCheckout, SIGNAL(triggered()), this, SLOT(doCheckout()));
-	connect(mUi->actionCommit, SIGNAL(triggered()), this, SLOT(doCommit()));
-	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
-	connect(mUi->actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
-	connect(mUi->actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
-	connect(mUi->actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
-	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
-	connect(mUi->actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
-	connect(mUi->actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
-	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
-
-	connect(mUi->actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
-	connect(mUi->actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
-
-	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
-	connect(mUi->actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
-	connect(mUi->actionShow_alignment, SIGNAL(toggled(bool)), this, SLOT(showAlignment(bool)));
-	connect(mUi->actionSwitch_on_grid, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
-	connect(mUi->actionSwitch_on_alignment, SIGNAL(toggled(bool)), this, SLOT(switchAlignment(bool)));
-
-	connect(mUi->actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
-	connect(mUi->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
-	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
-
-	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
-
 	connect(mUi->minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));
-
-	connect(mUi->actionDebug, SIGNAL(triggered()), this, SLOT(debug()));
-	connect(mUi->actionDebug_Single_step, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
-	connect(mUi->actionGenerate_and_build, SIGNAL(triggered()), this, SLOT(generateAndBuild()));
-	connect(mUi->actionStart_debugger, SIGNAL(triggered()), this, SLOT(startDebugger()));
-	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(runProgramWithDebugger()));
-	connect(mUi->actionKill, SIGNAL(triggered()), this, SLOT(killProgramWithDebugger()));
-	connect(mUi->actionClose_all, SIGNAL(triggered()), this, SLOT(closeDebuggerProcessAndThread()));
-	connect(mUi->actionCont, SIGNAL(triggered()), this, SLOT(goToNextBreakpoint()));
-	connect(mUi->actionNext, SIGNAL(triggered()), this, SLOT(goToNextInstruction()));
-	connect(mUi->actionSet_Breakpoints, SIGNAL(triggered()), this, SLOT(placeBreakpointsInDebugger()));
-	connect(mUi->actionConfigure, SIGNAL(triggered()), this, SLOT(configureDebugger()));
-	connect(mUi->actionBreak_main, SIGNAL(triggered()), this, SLOT(setBreakpointAtStart()));
-	connect(mUi->actionStart_debugging, SIGNAL(triggered()), this, SLOT(startDebugging()));
-	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(checkEditorForDebug(int)));
-
-	connect(mUi->actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 
 	adjustMinimapZoom(mUi->minimapZoomSlider->value());
 	initGridProperties();
@@ -226,6 +168,75 @@ MainWindow::MainWindow()
 
 	if (settings.value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
+}
+
+void MainWindow::connectActions()
+{
+	QSettings settings("SPbSU", "QReal");
+	mUi->actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
+	mUi->actionShow_alignment->setChecked(settings.value("ShowAlignment", true).toBool());
+	mUi->actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", false).toBool());
+	mUi->actionSwitch_on_alignment->setChecked(settings.value("ActivateAlignment", true).toBool());
+
+	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
+
+	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
+
+	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(open()));
+	connect(mUi->actionSave, SIGNAL(triggered()), this, SLOT(saveAll()));
+	connect(mUi->actionSave_as, SIGNAL(triggered()), this, SLOT(saveAs()));
+	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
+	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
+
+	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
+
+	connect(mUi->actionCheckout, SIGNAL(triggered()), this, SLOT(doCheckout()));
+	connect(mUi->actionCommit, SIGNAL(triggered()), this, SLOT(doCommit()));
+	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
+	connect(mUi->actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
+	connect(mUi->actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
+	connect(mUi->actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
+	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
+	connect(mUi->actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
+	connect(mUi->actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
+	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
+
+	connect(mUi->actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
+	connect(mUi->actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
+
+	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
+	connect(mUi->actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
+	connect(mUi->actionShow_alignment, SIGNAL(toggled(bool)), this, SLOT(showAlignment(bool)));
+	connect(mUi->actionSwitch_on_grid, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
+	connect(mUi->actionSwitch_on_alignment, SIGNAL(toggled(bool)), this, SLOT(switchAlignment(bool)));
+
+	connect(mUi->actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
+	connect(mUi->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
+	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+
+	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
+
+	connect(mUi->actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
+
+	connectDebugActions();
+}
+
+void MainWindow::connectDebugActions()
+{
+	connect(mUi->actionDebug, SIGNAL(triggered()), this, SLOT(debug()));
+	connect(mUi->actionDebug_Single_step, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
+	connect(mUi->actionGenerate_and_build, SIGNAL(triggered()), this, SLOT(generateAndBuild()));
+	connect(mUi->actionStart_debugger, SIGNAL(triggered()), this, SLOT(startDebugger()));
+	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(runProgramWithDebugger()));
+	connect(mUi->actionKill, SIGNAL(triggered()), this, SLOT(killProgramWithDebugger()));
+	connect(mUi->actionClose_all, SIGNAL(triggered()), this, SLOT(closeDebuggerProcessAndThread()));
+	connect(mUi->actionCont, SIGNAL(triggered()), this, SLOT(goToNextBreakpoint()));
+	connect(mUi->actionNext, SIGNAL(triggered()), this, SLOT(goToNextInstruction()));
+	connect(mUi->actionSet_Breakpoints, SIGNAL(triggered()), this, SLOT(placeBreakpointsInDebugger()));
+	connect(mUi->actionConfigure, SIGNAL(triggered()), this, SLOT(configureDebugger()));
+	connect(mUi->actionBreak_main, SIGNAL(triggered()), this, SLOT(setBreakpointAtStart()));
+	connect(mUi->actionStart_debugging, SIGNAL(triggered()), this, SLOT(startDebugging()));
+	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(checkEditorForDebug(int)));
 }
 
 QModelIndex MainWindow::rootIndex() const

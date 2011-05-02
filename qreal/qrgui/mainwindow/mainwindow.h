@@ -128,6 +128,9 @@ private slots:
 	void parseHascol();
 	void showPreferencesDialog();
 
+	void connectActions();
+	void connectDebugActions();
+
 	void centerOn(Id const &id);
 	void graphicalModelExplorerClicked(const QModelIndex &index);
 	void logicalModelExplorerClicked(const QModelIndex &index);
