@@ -196,32 +196,8 @@ MainWindow::MainWindow()
 	// Step 6: Save loaded, models initialized.
 	progress->setValue(80);
 
-//	mListenerManager = new ListenerManager(mEditorManager.listeners()
-//			, mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi());
-
-	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
-	if (!missingPlugins.isEmpty()) {
-		QString text = "These plugins are not present, but needed to load the save:\n";
-		foreach (Id const id, missingPlugins)
-			text += id.editor() + "\n";
-		text += "Do you want to create new project?";
-
-		QMessageBox::StandardButton button = QMessageBox::question(this, tr("Some plugins are missing"), text, QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
-
-		if (button == QMessageBox::Yes)
-		{
-			if (!open())
-			{
-				close();
-				return;
-			}
-		}
-		else
-		{
-			close();
-			return;
-		}
-	}
+	if (!checkPluginsAndReopen())
+		return;
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 
@@ -262,7 +238,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 	if (keyEvent->modifiers() == Qt::AltModifier && keyEvent->key() == Qt::Key_X) {
 		close();
 	} else if (keyEvent->key() == Qt::Key_F2
-			|| (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
+			   || (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
 	{
 		saveAll();
 	}
@@ -271,7 +247,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 MainWindow::~MainWindow()
 {
 	saveAll();
-//	delete mListenerManager;
+	//	delete mListenerManager;
 }
 
 EditorManager* MainWindow::manager()
@@ -383,8 +359,8 @@ void MainWindow::activateSubdiagram(QModelIndex const &idx) {
 
 	QModelIndex diagramToActivate = idx;
 	while (diagramToActivate.isValid() && diagramToActivate.parent().isValid()
-		&& diagramToActivate.parent() != getCurrentTab()->mvIface()->rootIndex())
-		{
+		   && diagramToActivate.parent() != getCurrentTab()->mvIface()->rootIndex())
+	{
 		diagramToActivate = diagramToActivate.parent();
 	}
 
@@ -433,15 +409,52 @@ void MainWindow::sceneSelectionChanged()
 
 QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
 {
-	QString const dirName = QFileDialog::getExistingDirectory(this, dialogWindowTitle,".", QFileDialog::ShowDirsOnly);
+	QSettings settings("SPbSU", "QReal");
+
+	QString const dirName = QFileDialog::getExistingDirectory(this, dialogWindowTitle
+		, settings.value("workingDir", ".").toString(), QFileDialog::ShowDirsOnly);
 
 	if (dirName.isEmpty())
 		return "";
 
-	QSettings settings("SPbSU", "QReal");
 	settings.setValue("workingDir", dirName);
 
 	return dirName;
+}
+
+
+bool MainWindow::checkPluginsAndReopen()
+{
+	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
+	bool haveMissingPlugins = !missingPlugins.isEmpty();
+	bool loadingCancelled = false;
+
+	while (haveMissingPlugins && !loadingCancelled) {
+		QString text = "These plugins are not present, but needed to load the save:\n";
+		foreach (Id const id, missingPlugins)
+			text += id.editor() + "\n";
+		text += "Do you want to create new project?";
+
+		QMessageBox::StandardButton button = QMessageBox::question(this, tr("Some plugins are missing"), text, QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+
+		if (button == QMessageBox::Yes)
+		{
+			if (!open())
+				loadingCancelled = true;
+		}
+		else
+			loadingCancelled = true;
+		missingPlugins = mEditorManager.checkNeededPlugins(
+					mModels->logicalRepoApi(), mModels->graphicalRepoApi());
+		haveMissingPlugins = !missingPlugins.isEmpty();
+	}
+
+	if (loadingCancelled){
+		close();
+		return false;
+	}
+
+	return true;
 }
 
 bool MainWindow::open()
@@ -451,9 +464,31 @@ bool MainWindow::open()
 	if (dirName.isEmpty())
 		return false;
 
+	dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
+	mUi->graphicalModelExplorer->setModel(NULL);
+	mUi->logicalModelExplorer->setModel(NULL);
+	if (getCurrentTab())
+		static_cast<EditorViewScene*>(getCurrentTab()->scene())->clearScene();
+
+	closeAllTabs();
+
 	mModels->repoControlApi().open(dirName);
 	mModels->reinit();
+
+	if (!checkPluginsAndReopen())
+		return false;
+
+	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
+	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
+	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
+
 	return true;
+}
+
+void MainWindow::closeAllTabs(){
+	int tabCount = mUi->tabs->count();
+	for (int i = 0; i < tabCount; i++)
+		closeTab(i);
 }
 
 void MainWindow::setShape(const QString &data, const QPersistentModelIndex &index, const int &role)
@@ -498,7 +533,7 @@ void MainWindow::settingsPlugins()
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
 	QModelIndex index = isLogicalModel ? (mUi->logicalModelExplorer->currentIndex())
-			: (mUi->graphicalModelExplorer->currentIndex());
+									   : (mUi->graphicalModelExplorer->currentIndex());
 	if (isLogicalModel) {
 		Id logicalId = mModels->logicalModelAssistApi().idByIndex(index);
 		IdList graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
@@ -566,16 +601,16 @@ void MainWindow::deleteFromDiagram()
 void MainWindow::showAbout()
 {
 	QMessageBox::about(this, tr("About QReal"),
-			tr("<center>This is <b>QReal</b><br>"
-			"Just another CASE tool</center>"));
+					   tr("<center>This is <b>QReal</b><br>"
+						  "Just another CASE tool</center>"));
 }
 
 void MainWindow::showHelp()
 {
 	QMessageBox::about(this, tr("Help"),
-			tr("To begin:\n"
-			"1. To add items to diagrams, drag & drop them from Palette to editor\n"
-			"2. Get more help from author :)"));
+					   tr("To begin:\n"
+						  "1. To add items to diagrams, drag & drop them from Palette to editor\n"
+						  "2. Get more help from author :)"));
 }
 
 void MainWindow::toggleShowSplash(bool show)
@@ -615,19 +650,19 @@ void MainWindow::doCommit()
 	if (path.isEmpty())
 		return;
 	/*	char* p;
-	QByteArray p1 = path.toAscii();
-	p = p1.data();
-	SvnClient client(p, "", "");
+ QByteArray p1 = path.toAscii();
+ p = p1.data();
+ SvnClient client(p, "", "");
 //	client.commit(path, )
-	QString *messag = new QString;
-	int revision = client.commit(*messag);
-	if (revision > 0)
-	{
-		QString success = tr("Committed successfully to revision ");
-		QMessageBox::information(this, tr("Success"), success.append(QString(revision)));
-	}
-	else
-		QMessageBox::information(this, tr("Error"), *messag);*/
+ QString *messag = new QString;
+ int revision = client.commit(*messag);
+ if (revision > 0)
+ {
+  QString success = tr("Committed successfully to revision ");
+  QMessageBox::information(this, tr("Success"), success.append(QString(revision)));
+ }
+ else
+  QMessageBox::information(this, tr("Error"), *messag);*/
 }
 
 void MainWindow::exportToXmi()
@@ -718,11 +753,11 @@ void MainWindow::generateEditor()
 
 		if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)) {
 			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to load generated editor %1?").arg(metamodelList[key]),
-					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+									  QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 				return;
 			QSettings settings("SPbSU", "QReal");
 			loadNewEditor(directoryName + "/qrxml/", metamodelList[key], settings.value("pathToQmake", "").toString(),
-					settings.value("pathToMake", "").toString(), settings.value("pluginExtension", "").toString(), settings.value("prefix", "").toString());
+						  settings.value("pathToMake", "").toString(), settings.value("pluginExtension", "").toString(), settings.value("prefix", "").toString());
 		}
 	}
 }
@@ -822,7 +857,7 @@ void MainWindow::generateEditorWithQRMC()
 }
 
 void MainWindow::loadNewEditor(const QString &directoryName, const QString &metamodelName,
-		const QString &commandFirst, const QString &commandSecond, const QString &extension, const QString &prefix)
+							   const QString &commandFirst, const QString &commandSecond, const QString &extension, const QString &prefix)
 {
 	int const progressBarWidth = 240;
 	int const progressBarHeight = 20;
@@ -951,9 +986,7 @@ void qReal::MainWindow::closeTab(int index)
 
 void MainWindow::exterminate()
 {
-	int tabCount = mUi->tabs->count();
-	for (int i = 0; i < tabCount; i++)
-		closeTab(i);
+	closeAllTabs();
 	mModels->repoControlApi().exterminate();
 	mModels->reinit();
 
@@ -1453,7 +1486,7 @@ void MainWindow::generateAndBuild() {
 
 			QSettings settings("SPbSU", "QReal");
 			mDebuggerConnector->build(settings.value("debugWorkingDirectory", "").toString() + "/" +
-										settings.value("codeFileName", "code.c").toString());
+									  settings.value("codeFileName", "code.c").toString());
 
 			if (!mDebuggerConnector->hasBuildError()) {
 				mErrorReporter->addInformation("Code generated and builded successfully");
@@ -1479,7 +1512,7 @@ void MainWindow::configureDebugger() {
 	if (mDebuggerConnector->isDebuggerRunning()) {
 		QSettings settings("SPbSU", "QReal");
 		mDebuggerConnector->configure(settings.value("debugWorkingDirectory", "").toString() + "/" +
-										settings.value("buildedFileName", "builded.exe").toString());
+									  settings.value("buildedFileName", "builded.exe").toString());
 	}
 }
 
@@ -1591,8 +1624,10 @@ void MainWindow::drawDebuggerErrOutput(QString output) {
 }
 
 void MainWindow::checkEditorForDebug(int index) {
+	Q_UNUSED(index)
+
 	bool enabled = mUi->tabs->count() > 0 &&
-		mUi->tabs->tabText(mUi->tabs->currentIndex()).compare("(Block Diagram)") == 0;
+			mUi->tabs->tabText(mUi->tabs->currentIndex()).compare("(Block Diagram)") == 0;
 	mUi->debuggerToolBar->setVisible(enabled);
 	mUi->actionDebug->setEnabled(enabled);
 	mUi->actionDebug_Single_step->setEnabled(enabled);

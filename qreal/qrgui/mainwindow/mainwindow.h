@@ -68,7 +68,9 @@ public slots:
 
 	void checkoutDialogOk();
 	void checkoutDialogCancel();
+
 	bool open();
+	bool checkPluginsAndReopen();
 	void saveAs();
 	void saveAll();
 
@@ -77,6 +79,7 @@ public slots:
 	void showGrid(bool isChecked);
 
 	void finalClose();
+	void closeAllTabs();
 
 	void sceneSelectionChanged();
 
@@ -97,19 +100,19 @@ public slots:
 
 	void debug();
 	void debugSingleStep();
-		void drawDebuggerStdOutput(QString output);
-		void drawDebuggerErrOutput(QString output);
-		void generateAndBuild();
-		void startDebugger();
-		void runProgramWithDebugger();
-		void killProgramWithDebugger();
-		void closeDebuggerProcessAndThread();
-		void placeBreakpointsInDebugger();
-		void goToNextBreakpoint();
-		void goToNextInstruction();
-		void configureDebugger();
-		void setBreakpointAtStart();
-		void startDebugging();
+	void drawDebuggerStdOutput(QString output);
+	void drawDebuggerErrOutput(QString output);
+	void generateAndBuild();
+	void startDebugger();
+	void runProgramWithDebugger();
+	void killProgramWithDebugger();
+	void closeDebuggerProcessAndThread();
+	void placeBreakpointsInDebugger();
+	void goToNextBreakpoint();
+	void goToNextInstruction();
+	void configureDebugger();
+	void setBreakpointAtStart();
+	void startDebugging();
 	void checkEditorForDebug(int index);
 
 private slots:
