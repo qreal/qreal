@@ -41,7 +41,7 @@ namespace qrRepo {
 
 			bool svnCheckout(QString const &from, QString const &to);
 			bool svnUpdate(QString const &to);
-			bool svnCommit(QString const &from);
+			bool svnCommit(QString const &from, QString const &message);
 			QString svnInfo(QString const &workingDir);
 			void getDiff(QString const &workingCopy);
 

@@ -371,9 +371,9 @@ bool RepoApi::doCheckout(const QString &from, const QString &to)
 	return result;
 }
 
-bool RepoApi::doCommit(const QString &from)
+bool RepoApi::doCommit(const QString &from, const QString &message)
 {
-	bool result = mClient.svnCommit(from);
+	bool result = mClient.svnCommit(from, message);
 	mErrors.append(mClient.newErrors());
 	return result;
 }

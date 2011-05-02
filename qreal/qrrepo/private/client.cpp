@@ -279,9 +279,9 @@ bool Client::svnUpdate(const QString &to)
 	return result;
 }
 
-bool Client::svnCommit(const QString &from)
+bool Client::svnCommit(const QString &from, const QString &message)
 {
-	bool result = mExternalClient.doCommit(from);
+	bool result = mExternalClient.doCommit(from, message);
 	mErrors.append(mExternalClient.newErrors());
 	return result;
 }

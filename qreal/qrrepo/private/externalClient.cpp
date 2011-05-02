@@ -41,10 +41,10 @@ bool ExternalClient::doUpdate(const QString &to)
 	return processErrors();
 }
 
-bool ExternalClient::doCommit(const QString &from)
+bool ExternalClient::doCommit(const QString &from, const QString &message)
 {
 	QStringList arguments;
-	arguments << "commit" << from << "-m" << "no_message";
+	arguments << "commit" << from << "-m" << message;
 	mClientProcess->start(mPathToClient, arguments);
 	mClientProcess->waitForFinished();
 	return processErrors();

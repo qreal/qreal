@@ -34,6 +34,7 @@
 #include "../dialogs/plugindialog.h"
 #include "../parsers/xml/xmlParser.h"
 #include "../dialogs/checkoutdialog.h"
+#include "../dialogs/commitdialog.h"
 #include "../generators/xmi/xmiHandler.h"
 #include "../generators/java/javaHandler.h"
 #include "../parsers/hascol/hascolParser.h"
@@ -629,9 +630,21 @@ void MainWindow::doCommit()
 	QString path = settings.value("workingDir", "").toString();
 	if (path.isEmpty())
 		return;
+	CommitDialog dialog(this);
+	if (!QDialog::Accepted == dialog.exec())
+	{
+		return;
+	}
+	QString message = dialog.message();
+	if (message == "")
+	{
+		message = "no_message";
+	}
+	message = "\""+message+"\"";
+
 	gui::ExecutionIndicator indicator(tr("Commiting, please wait..."));
 	indicator.show();
-	if (!mModels->repoControlApi().doCommit(path))
+	if (!mModels->repoControlApi().doCommit(path, message))
 	{
 		QStringList errors(mModels->repoControlApi().newErrors());
 		foreach (QString error, errors)

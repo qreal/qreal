@@ -18,7 +18,7 @@ public:
 	virtual void open(QString const &workingDir) = 0;
 
 	virtual bool doCheckout(QString const &from, QString const &to) = 0;
-	virtual bool doCommit(QString const &from) = 0;
+	virtual bool doCommit(QString const &from, QString const &message) = 0;
 	virtual bool doUpdate(QString const &to) = 0;
 	virtual QString svnInfo(QString const &workingDir) = 0;
 
