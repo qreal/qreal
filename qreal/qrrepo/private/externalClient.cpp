@@ -6,13 +6,13 @@
 using namespace qrRepo::details;
 
 ExternalClient::ExternalClient(const QString &pathToClient)
-	: mPathToClient(pathToClient), mDiffProvider(pathToClient)
+	: mPathToClient(pathToClient)
 {
 	initProcess();
 }
 
 ExternalClient::ExternalClient(const ExternalClient &other)
-	: mPathToClient(other.mPathToClient), mDiffProvider(mPathToClient)
+	: mPathToClient(other.mPathToClient)
 {
 	initProcess();
 }
@@ -20,7 +20,6 @@ ExternalClient::ExternalClient(const ExternalClient &other)
 void ExternalClient::setPathToClient(const QString &pathToClient)
 {
 	mPathToClient = pathToClient;
-	mDiffProvider.setPathToClient(pathToClient);
 }
 
 bool ExternalClient::doCheckout(const QString &from, const QString &to)
@@ -105,11 +104,6 @@ QString ExternalClient::repoUrl(const QString &workingDir)
 	}
 	repoInfo = repoInfo.mid(0,  ind-2);
 	return repoInfo;
-}
-
-void ExternalClient::getDiff(QHash<qReal::Id, Object*> const &repoObjects, QHash<qReal::Id, Object*> const &workingCopyObjects)
-{
-	mDiffProvider.getDifference(repoObjects, workingCopyObjects);
 }
 
 QStringList ExternalClient::newErrors()

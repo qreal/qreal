@@ -293,25 +293,6 @@ QString Client::svnInfo(const QString &workingDir)
 	return result;
 }
 
-void Client::getDiff(QString const &workingCopy)
-{
-	QString repoUrl = mExternalClient.repoUrl(workingCopy);
-	QString checkoutDir = QDir::currentPath()+"/qRealCheckoutTemp";
-	if (!mExternalClient.doCheckout(repoUrl, checkoutDir))
-	{
-		mErrors.append(mExternalClient.newErrors());
-		return;
-	}
-	QHash<qReal::Id, Object*> objectsInRepo;
-	QHash<qReal::Id, Object*> objectsInWorkingCopy;
-	serializer.setWorkingDir(checkoutDir);
-	serializer.loadFromDisk(objectsInRepo);
-	serializer.clearWorkingDir();
-	serializer.setWorkingDir(workingCopy);
-	serializer.loadFromDisk(objectsInWorkingCopy);
-	mExternalClient.getDiff(objectsInRepo, objectsInWorkingCopy);
-}
-
 QStringList Client::newErrors()
 {
 	QStringList result(mErrors);

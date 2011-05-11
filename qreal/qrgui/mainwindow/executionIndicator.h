@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QWidget>
+#include <QDialog>
 #include <QLabel>
 #include <QGridLayout>
 
@@ -8,12 +8,12 @@ namespace qReal
 {
 	namespace gui
 	{
-		class ExecutionIndicator : public QWidget
+		class ExecutionIndicator : public QDialog
 		{
 			Q_OBJECT
 
 		public:
-			ExecutionIndicator(QString const &message);
+			ExecutionIndicator(QWidget *parent, QString const &message);
 
 		private:
 			QLabel *mLabel;

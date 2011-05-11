@@ -23,8 +23,6 @@ public:
 	virtual QString svnInfo(QString const &workingDir) = 0;
 
 	virtual QStringList newErrors() = 0;
-
-	virtual void getDiff(QString const &workingCopy) = 0; //cap, for debug
 };
 
 }

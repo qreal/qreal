@@ -1,7 +1,5 @@
 #pragma once
 
-#include "diffProvider.h"
-
 #include <QProcess>
 #include <QObject>
 
@@ -27,8 +25,6 @@ namespace qrRepo
 
 			QString repoUrl(QString const &workingDir);
 
-			void getDiff(QHash<qReal::Id, Object*> const &repoObjects, QHash<qReal::Id, Object*> const &workingCopyObjects);
-
 			QStringList newErrors();
 
 
@@ -39,7 +35,6 @@ namespace qrRepo
 			QString mPathToClient;
 			QProcess *mClientProcess;
 			QStringList mErrors;
-			DiffProvider mDiffProvider;
 		};
 	}
 }

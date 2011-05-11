@@ -23,6 +23,7 @@
 
 #include "../pluginInterface/editorInterface.h"
 #include "preferencesDialog.h"
+#include "executionIndicator.h"
 #include "shapeEdit/shapeEdit.h"
 #include "openShapeEditorButton.h"
 #include "propertyeditorproxymodel.h"
@@ -42,7 +43,6 @@
 #include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
 #include "../visualDebugger/visualDebugger.h"
-#include "executionIndicator.h"
 
 #include "metaCompiler.h"
 
@@ -110,7 +110,6 @@ MainWindow::MainWindow()
 	connect(mUi->actionCheckout, SIGNAL(triggered()), this, SLOT(doCheckout()));
 	connect(mUi->actionCommit, SIGNAL(triggered()), this, SLOT(doCommit()));
 	connect(mUi->actionUpdate, SIGNAL(triggered()), this, SLOT(doUpdate()));	
-	connect(mUi->actionDiff, SIGNAL(triggered()), this, SLOT(showDiff()));
 	connect(mUi->actionInfo, SIGNAL(triggered()), this, SLOT(showInfo()));
 
 	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
@@ -592,7 +591,7 @@ void MainWindow::doCheckout()
 	connect(dialog, SIGNAL(rejected()), this, SLOT(checkoutDialogCancel()));
 	if (QDialog::Accepted == dialog->exec())
 	{
-		gui::ExecutionIndicator indicator(tr("Checking out, please wait..."));
+		gui::ExecutionIndicator indicator(this, tr("Checking out, please wait..."));
 		indicator.show();
 		path = dialog->getDir();
 		url = dialog->getUrl();
@@ -642,7 +641,7 @@ void MainWindow::doCommit()
 	}
 	message = "\""+message+"\"";
 
-	gui::ExecutionIndicator indicator(tr("Commiting, please wait..."));
+	gui::ExecutionIndicator indicator(this, tr("Commiting, please wait..."));
 	indicator.show();
 	if (!mModels->repoControlApi().doCommit(path, message))
 	{
@@ -670,7 +669,7 @@ void MainWindow::doUpdate()
 	if (path.isEmpty())
 		return;
 
-	gui::ExecutionIndicator indicator(tr("Updating, please wait..."));
+	gui::ExecutionIndicator indicator(this, tr("Updating, please wait..."));
 	indicator.show();
 
 	if (!mModels->repoControlApi().doUpdate(path))
@@ -691,7 +690,6 @@ void MainWindow::doUpdate()
 
 void MainWindow::showDiff()
 {
-	mModels->repoControlApi().getDiff("D:/qrealsave");
 }
 
 void MainWindow::showInfo()

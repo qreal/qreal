@@ -98,8 +98,6 @@ namespace qrRepo {
 		bool doUpdate(const QString &to);
 		QString svnInfo(const QString &workingDir);
 
-		void getDiff(QString const &workingCopy);
-
 		// "√лобальные" методы, позвол€ющие делать запросы к модели в целом.
 		//Returns all elements with .element() == type.element()
 		virtual qReal::IdList graphicalElements(qReal::Id const &type) const;

@@ -392,11 +392,6 @@ QString RepoApi::svnInfo(const QString &workingDir)
 	return result;
 }
 
-void RepoApi::getDiff(QString const &workingCopy)
-{
-	mClient.getDiff(workingCopy);
-}
-
 void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data, QString const &direction)
 {
 	if (target == Id::rootId())
