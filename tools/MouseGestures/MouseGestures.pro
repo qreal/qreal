@@ -15,7 +15,8 @@ SOURCES += main.cpp \
     test/xmlparser.cpp \
     multistrokeRecognizers/sumMultistrokeGesturesManager.cpp \
     multistrokeRecognizers/rectanglegesturesmanager.cpp \
-    multistrokeRecognizers/nearestposgridgesturesmanager.cpp
+    multistrokeRecognizers/nearestposgridgesturesmanager.cpp \
+    multistrokeRecognizers/mixedgesturesmanager.cpp
 HEADERS += mousegestures.h \
 	pathcorrector.h \
 	serializer.h \
@@ -38,6 +39,7 @@ HEADERS += mousegestures.h \
     multistrokeRecognizers/gridKeyBuilder.h \
     multistrokeRecognizers/rectanglegesturesmanager.h \
     multistrokeRecognizers/nearestposgridgesturesmanager.h \
-    multistrokeRecognizers/rectangleClassifier.h
+    multistrokeRecognizers/rectangleClassifier.h \
+    multistrokeRecognizers/mixedgesturesmanager.h
 FORMS += mousegestures.ui \
     test/testwindow.ui

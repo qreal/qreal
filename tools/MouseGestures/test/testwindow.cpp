@@ -5,6 +5,7 @@
 #include "multistrokeRecognizers/sumMultistrokeGesturesManager.h"
 #include "multistrokeRecognizers/nearestposgridgesturesmanager.h"
 #include "multistrokeRecognizers/rectangleClassifier.h"
+#include "multistrokeRecognizers/mixedgesturesmanager.h"
 #include "xmlparser.h"
 #include "adopter.h"
 #include "testThread.h"
@@ -25,6 +26,8 @@ const QString nearestPosGridAlgorithm = "distance grid algorithm";
 const QString sumGesturesTrainingAlgorithm = "sum positions training algorithm";
 const QString rectangleGesturesTrainingAlgorithm = "rectangle gestures training algorithm";
 const QString nearestPosGridTrainingAlgorithm = "distance grid training algorithm";
+const QString mixedGridAlgorithm = "combination of rectangle and nesrest squares algorithm";
+const QString mixedTrainingAlgorithm = "mixed training algorithm";
 
 TestWindow::TestWindow(QWidget *parent) :
         QMainWindow(parent),
@@ -43,6 +46,8 @@ TestWindow::TestWindow(QWidget *parent) :
     ui->cbAlgorithm->addItem(sumGesturesTrainingAlgorithm, QVariant());
     ui->cbAlgorithm->addItem(rectangleGesturesTrainingAlgorithm, QVariant());
     ui->cbAlgorithm->addItem(nearestPosGridTrainingAlgorithm, QVariant());
+    ui->cbAlgorithm->addItem(mixedGridAlgorithm, QVariant());
+    ui->cbAlgorithm->addItem(mixedTrainingAlgorithm,  QVariant());
     connect(ui->bTest, SIGNAL(clicked()), this, SLOT(test()));
     ui->pbTested->setValue(0);
 }
@@ -91,6 +96,8 @@ GesturesManager * TestWindow::getGesturesManager()
         return new RectangleGesturesManager();
     else if (name == nearestPosGridAlgorithm)
         return new NearestPosGridGesturesManager();
+    else if (name == mixedGridAlgorithm)
+        return new MixedGesturesManager();
     else if (name == sumGesturesTrainingAlgorithm)
     {
         TrainingGesturesManager<RectangleClassifier<SumGesturesManager> > * trainingGM =
@@ -107,6 +114,12 @@ GesturesManager * TestWindow::getGesturesManager()
     {
         TrainingGesturesManager<RectangleClassifier<NearestPosGridGesturesManager> > * trainingGM =
                 new TrainingGesturesManager<RectangleClassifier<NearestPosGridGesturesManager> >();
+        return getTrainingGesturesManager(trainingGM);
+    }
+    else if (name == mixedTrainingAlgorithm)
+    {
+        TrainingGesturesManager<MixedClassifier> * trainingGM =
+                new TrainingGesturesManager<MixedClassifier>();
         return getTrainingGesturesManager(trainingGM);
     }
     else return new OneSizeHullGesturesManager();

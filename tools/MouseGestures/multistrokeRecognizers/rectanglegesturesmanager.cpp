@@ -30,7 +30,7 @@ double RectangleGesturesManager::getDistance(double * const & key1, double * con
 
 double * RectangleGesturesManager::getKey(PathVector const & path)
 {
-    Key key = KeyBuilder::getKey(path, gridSize - 1, gridSize - 1);
+    Key key = KeyBuilder::getKey(path, gridSize, gridSize);
     double * finalKey = new double[gridSize * gridSize];
     for (int i = 0; i < gridSize * gridSize; i ++)
     {

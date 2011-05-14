@@ -44,6 +44,10 @@ public:
                     last.first = (int)((point.x() - left) * widthSize / (right - left));
                     last.second = (int)((point.y() - upper) * heightSize / (lower - upper));
                 }
+                if (last.first == widthSize)
+                    last.first --;
+                if (last.second == heightSize)
+                    last.second --;
                 if (previous.first != minPoint || previous.second != minPoint)
                 {
                     rasterizeSegment(previous, last, &key);

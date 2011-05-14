@@ -27,7 +27,7 @@ double SumGesturesManager::getDistance(double * const & key1, double * const & k
 
 double * SumGesturesManager::getKey(PathVector const & path)
 {
-    Key key = KeyBuilder::getKey(path, gridSize - 1, gridSize - 1);
+    Key key = KeyBuilder::getKey(path, gridSize, gridSize);
     key = Sorting::sortPicture(key);
     int sum = 1;
     double * finalKey = new double[gridSize * gridSize];
