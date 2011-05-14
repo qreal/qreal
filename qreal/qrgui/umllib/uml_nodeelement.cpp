@@ -17,7 +17,6 @@ using namespace qReal;
 
 NodeElement::NodeElement(ElementImpl* impl)
 	: mSwitchGridAction("Switch on grid", this),
-		mCloneAction("Clone", this),
 		mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
 		mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)),
 		mSelectionNeeded(false), mConnectionInProgress(false)
@@ -43,8 +42,6 @@ NodeElement::NodeElement(ElementImpl* impl)
 
 	mSwitchGridAction.setCheckable(true);
 	connect(&mSwitchGridAction, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
-
-	connect(&mCloneAction, SIGNAL(triggered()), this, SLOT(copyAndPlaceOnDiagram()));
 
 	foreach (QString bonusField, mElementImpl->bonusContextMenuFields()) {
 		mBonusContextMenuActions.push_back(new ContextMenuAction(bonusField, this));
@@ -325,7 +322,6 @@ QList<ContextMenuAction*> NodeElement::contextMenuActions()
 {
 	QList<ContextMenuAction*> result;
 	result.push_back(&mSwitchGridAction);
-	result.push_back(&mCloneAction);
 	foreach (ContextMenuAction* action, mBonusContextMenuActions) {
 		result.push_back(action);
 	}

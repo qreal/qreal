@@ -156,7 +156,6 @@ namespace UML {
 		void connectTemporaryRemovedLinksToPort(qReal::IdList const &rtemporaryRemovedLinks, QString const &direction);
 
 		ContextMenuAction mSwitchGridAction;
-		ContextMenuAction mCloneAction;
 		static int const objectMinSize = 10;
 		//static int const sizeOfForestalling = 25;//TODO: must be used mElementImpl->sizeOfForestalling
 
