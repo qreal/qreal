@@ -70,7 +70,7 @@ NodeElement::~NodeElement()
 	delete mUmlPortHandler;
 }
 
-NodeElement *NodeElement::clone()
+NodeElement *NodeElement::clone(bool toCursorPos)
 {
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
 	
@@ -81,20 +81,27 @@ NodeElement *NodeElement::clone()
 	*/
 
 	qReal::Id typeId = id().type();
-	QPointF pos = evscene->getMousePos();
-	qReal::Id *resultId = evscene->createElement(typeId.toString(), pos);
+	qReal::Id *resultId = evscene->createElement(typeId.toString(), QPointF());
 
 	NodeElement *result = dynamic_cast<NodeElement*>(evscene->getElem(*resultId));
 
 	result->copyProperties(this);
 	result->copyChildren(this);
+	result->mContents = mContents;
+	if (toCursorPos) {
+		result->setPos(evscene->getMousePos());
+		result->storeGeometry();
+	}
+	else {
+		result->setPos(mPos);
+	}
 
 	return result;
 }
 
 void NodeElement::copyAndPlaceOnDiagram()
 {
-	clone();
+	clone(true);
 }
 
 void NodeElement::copyChildren(NodeElement *source)
@@ -103,7 +110,9 @@ void NodeElement::copyChildren(NodeElement *source)
 		NodeElement *element = dynamic_cast<NodeElement*>(child);
 		if (element) {
 			NodeElement *copyOfChild = element->clone();
-			mGraphicalAssistApi->changeParent(copyOfChild->id(), id(),element->pos());
+			mGraphicalAssistApi->changeParent(copyOfChild->id(), id(), element->pos());
+			//copyOfChild->resize(element->mContents);
+			//copyOfChild->storeGeometry();
 		}
 	}
 }
@@ -136,6 +145,17 @@ void NodeElement::setGeometry(QRectF const &geom)
 	foreach (ElementTitle * const title, mTitles) {
 		title->transform(geom);
 	}
+}
+
+void NodeElement::setPos(const QPointF &pos)
+{
+	mPos = pos;
+	QGraphicsItem::setPos(pos);
+}
+
+void NodeElement::setPos(qreal x, qreal y)
+{
+	setPos(QPointF(x, y));
 }
 
 void NodeElement::adjustLinks()
@@ -256,6 +276,9 @@ void NodeElement::moveChildren(QPointF const &moving)
 
 void NodeElement::resize(QRectF newContents)
 {
+	qDebug() << id().toString();
+	qDebug() << "initial contents: " << mContents;
+	qDebug() << "original newContents:" << newContents;
 	newContents.moveTo(0, 0);
 
 	if (mElementImpl->isSortingContainer())
@@ -311,6 +334,7 @@ void NodeElement::resize(QRectF newContents)
 		newContents = mFoldedContents;
 
 	newContents.moveTo(pos());
+	qDebug() << "setGeometry() newContents:" << newContents;
 	setGeometry(newContents);
 
 	NodeElement* parItem = dynamic_cast<NodeElement*>(parentItem());

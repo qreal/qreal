@@ -34,7 +34,7 @@ namespace UML {
 		NodeElement(ElementImpl *impl);
 		virtual ~NodeElement();
 
-		NodeElement *clone();
+		NodeElement *clone(bool toCursorPos = false);
 		void copyChildren(NodeElement *source);
 		void copyEdges(NodeElement *source);
 		void copyProperties(NodeElement *source);
@@ -47,6 +47,8 @@ namespace UML {
 
 		virtual void updateData();
 		void setGeometry(QRectF const &geom);
+		void setPos(const QPointF &pos);
+		void setPos(qreal x, qreal y);
 		void storeGeometry();
 		virtual void setName(QString name);
 
