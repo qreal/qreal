@@ -323,7 +323,6 @@ void NodeElement::resize(QRectF newContents)
 		newContents = mFoldedContents;
 
 	newContents.moveTo(pos());
-	qDebug() << "setGeometry() newContents:" << newContents;
 	setGeometry(newContents);
 
 	NodeElement* parItem = dynamic_cast<NodeElement*>(parentItem());

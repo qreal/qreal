@@ -315,7 +315,7 @@ void EditorViewScene::copy()
 void EditorViewScene::paste()
 {
 	if (mCopiedNode)
-		mCopiedNode->clone();
+		mCopiedNode->copyAndPlaceOnDiagram();
 	else
 		qDebug() << "paste attempt on NULL";
 }
