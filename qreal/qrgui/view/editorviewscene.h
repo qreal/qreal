@@ -77,7 +77,7 @@ protected:
 	virtual void drawBackground( QPainter *painter, const QRectF &rect);
 
 private:
-	UML::Element *lastCreatedWithEdge;
+	UML::Element* lastCreatedWithEdge;
 	UML::NodeElement *mCopiedNode;
 
 	bool mRightButtonPressed;

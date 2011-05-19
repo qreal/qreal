@@ -47,10 +47,7 @@ Id Client::parent(Id const &id) const
 
 Id Client::cloneObject(const qReal::Id &id)
 {
-	qDebug() << "cloneObject() called";
-	// qDebug() << "before" << mObjects;
 	Object *result = mObjects[id]->clone(mObjects);
-	// qDebug() << "after" << mObjects << "\n\n";
 	return result->id();
 }
 

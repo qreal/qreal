@@ -74,12 +74,6 @@ NodeElement *NodeElement::clone(bool toCursorPos)
 {
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
 	
-	/*
-	Id resultId = mGraphicalAssistApi->copyElement(id());
-	NodeElement *result = dynamic_cast<NodeElement*>(evscene->getElem(resultId));
-	qDebug() << (long)result;
-	*/
-
 	qReal::Id typeId = id().type();
 	qReal::Id *resultId = evscene->createElement(typeId.toString(), QPointF());
 
@@ -111,8 +105,6 @@ void NodeElement::copyChildren(NodeElement *source)
 		if (element) {
 			NodeElement *copyOfChild = element->clone();
 			mGraphicalAssistApi->changeParent(copyOfChild->id(), id(), element->pos());
-			//copyOfChild->resize(element->mContents);
-			//copyOfChild->storeGeometry();
 		}
 	}
 }
@@ -276,9 +268,6 @@ void NodeElement::moveChildren(QPointF const &moving)
 
 void NodeElement::resize(QRectF newContents)
 {
-	qDebug() << id().toString();
-	qDebug() << "initial contents: " << mContents;
-	qDebug() << "original newContents:" << newContents;
 	newContents.moveTo(0, 0);
 
 	if (mElementImpl->isSortingContainer())
