@@ -15,10 +15,13 @@ namespace qrRepo {
 			explicit Object(const qReal::Id &id);
 			Object(const qReal::Id &id, const qReal::Id &parent);
 			Object(const qReal::Id &id, const qReal::Id &parent, const qReal::Id &logicalId);
+			Object *clone(QHash<qReal::Id, Object*> &objHash) const;
+			Object *clone(const qReal::Id &parent, QHash<qReal::Id, Object*> &objHash) const;
 			void setParent(const qReal::Id &parent);
 			void removeParent();
 			void addChild(const qReal::Id &child);
 			void removeChild(const qReal::Id &child);
+			void copyPropertiesFrom(const Object &src);
 			qReal::IdList children() const;
 			qReal::Id parent() const;
 			void setProperty(const QString &name, const QVariant &value);

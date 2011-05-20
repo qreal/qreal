@@ -70,15 +70,32 @@ NodeElement::~NodeElement()
 	delete mUmlPortHandler;
 }
 
-NodeElement *NodeElement::clone()
+NodeElement *NodeElement::clone(bool toCursorPos)
 {
-	ElementImpl *impl = mElementImpl->clone();
-	NodeElement *result = new NodeElement(impl);
+	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
+	
+	qReal::Id typeId = id().type();
+	qReal::Id *resultId = evscene->createElement(typeId.toString(), QPointF());
 
+	NodeElement *result = dynamic_cast<NodeElement*>(evscene->getElem(*resultId));
+
+	result->copyProperties(this);
 	result->copyChildren(this);
-	result->copyEdges(this);
+	result->mContents = mContents;
+	if (toCursorPos) {
+		result->setPos(evscene->getMousePos());
+		result->storeGeometry();
+	}
+	else {
+		result->setPos(mPos);
+	}
 
 	return result;
+}
+
+void NodeElement::copyAndPlaceOnDiagram()
+{
+	clone(true);
 }
 
 void NodeElement::copyChildren(NodeElement *source)
@@ -86,9 +103,15 @@ void NodeElement::copyChildren(NodeElement *source)
 	foreach (QGraphicsItem *child, source->childItems()) {
 		NodeElement *element = dynamic_cast<NodeElement*>(child);
 		if (element) {
-
+			NodeElement *copyOfChild = element->clone();
+			mGraphicalAssistApi->changeParent(copyOfChild->id(), id(), element->pos());
 		}
 	}
+}
+
+void NodeElement::copyProperties(NodeElement *source)
+{
+	mGraphicalAssistApi->copyProperties(id(), source->id());
 }
 
 void NodeElement::copyEdges(NodeElement *source)
@@ -114,6 +137,17 @@ void NodeElement::setGeometry(QRectF const &geom)
 	foreach (ElementTitle * const title, mTitles) {
 		title->transform(geom);
 	}
+}
+
+void NodeElement::setPos(const QPointF &pos)
+{
+	mPos = pos;
+	QGraphicsItem::setPos(pos);
+}
+
+void NodeElement::setPos(qreal x, qreal y)
+{
+	setPos(QPointF(x, y));
 }
 
 void NodeElement::adjustLinks()
@@ -504,6 +538,12 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	mDragState = None;
 	setZValue(0);
+}
+
+void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+	Q_UNUSED(event)
+	qDebug() << "dblclck";
 }
 
 void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)

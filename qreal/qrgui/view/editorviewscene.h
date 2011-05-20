@@ -53,6 +53,8 @@ public:
 	void dehighlight(qReal::Id const &graphicalId);
 	void dehighlight();
 
+	QPointF getMousePos();
+
 signals:
 	void elementCreated(qReal::Id const &id);
 	void zoomIn();
@@ -76,6 +78,7 @@ protected:
 
 private:
 	UML::Element* lastCreatedWithEdge;
+	UML::NodeElement *mCopiedNode;
 
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
@@ -108,6 +111,7 @@ private:
 	void initContextMenu(UML::Element *e, QPointF const & pos);
 
 	QPointF newElementsPosition;
+
 	QList<QGraphicsItem*> mGesture;
 
 	qReal::EditorViewMViface *mv_iface;
@@ -116,6 +120,7 @@ private:
 	qReal::MainWindow *mWindow;
 
 	QPointF mPrevPosition;
+	QPointF mCurrentMousePos;
 	QGraphicsItem *mPrevParent;
 
 	QPointF mCreatePoint;
@@ -132,6 +137,8 @@ public slots:
 
 	qReal::Id *createElement(const QString &);
 	// TODO: get rid of it here
+	void copy();
+	void paste();
 private slots:
 
 	void connectActionTriggered();

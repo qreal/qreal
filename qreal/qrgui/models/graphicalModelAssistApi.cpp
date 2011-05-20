@@ -56,6 +56,11 @@ Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id, bool i
 	return ModelsAssistApi::createElement(parent, id, isFromLogicalModel, name, position);
 }
 
+Id GraphicalModelAssistApi::copyElement(Id const &source)
+{
+	return mGraphicalModel.mutableApi().copy(source);
+}
+
 IdList GraphicalModelAssistApi::children(Id const &element) const
 {
 	return mGraphicalModel.api().children(element);
@@ -64,6 +69,11 @@ IdList GraphicalModelAssistApi::children(Id const &element) const
 void GraphicalModelAssistApi::changeParent(Id const &element, Id const &parent, QPointF const &position)
 {
 	mGraphicalModel.changeParent(mModel.indexById(element), mModel.indexById(parent), position);
+}
+
+void GraphicalModelAssistApi::copyProperties(Id const &dest, Id const &src)
+{
+	mGraphicalModel.mutableApi().copyProperties(dest, src);
 }
 
 void GraphicalModelAssistApi::setConfiguration(Id const &elem, QPolygon const &newValue)
