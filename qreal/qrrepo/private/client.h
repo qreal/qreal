@@ -19,12 +19,18 @@ namespace qrRepo {
 			QRREPO_EXPORT ~Client();
 			qReal::IdList children(const qReal::Id &id) const;
 			qReal::Id parent(const qReal::Id &id) const;
+			/**
+			  Clones object recursively in internal structures.
+			  This doesn't mean it'll appear on your diagrams
+			  */
+			qReal::Id cloneObject(const qReal::Id &id);
 			void setParent(const qReal::Id &id, const qReal::Id &parent);
 			void addChild(const qReal::Id &id, const qReal::Id &child);
 			void addChild(const qReal::Id &id, const qReal::Id &child, qReal::Id const &logicalId);
 			void removeParent(const qReal::Id &id);
 			void removeChild(const qReal::Id &id, const qReal::Id &child);
 			void setProperty(const qReal::Id &id, const QString &name, const QVariant &value);
+			void copyProperties(const qReal::Id &dest, const qReal::Id &src);
 			QVariant property(const qReal::Id &id, const QString &name) const;
 			void removeProperty(const qReal::Id &id, const QString &name);
 			bool hasProperty(const qReal::Id &id, const QString &name) const;

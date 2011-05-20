@@ -34,9 +34,10 @@ namespace UML {
 		NodeElement(ElementImpl *impl);
 		virtual ~NodeElement();
 
-		NodeElement *clone();
+		NodeElement *clone(bool toCursorPos = false);
 		void copyChildren(NodeElement *source);
 		void copyEdges(NodeElement *source);
+		void copyProperties(NodeElement *source);
 
 		virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w, SdfRenderer *portrenderer);
 		virtual void paint(QPainter *,  const QStyleOptionGraphicsItem *, QWidget *);
@@ -46,6 +47,8 @@ namespace UML {
 
 		virtual void updateData();
 		void setGeometry(QRectF const &geom);
+		void setPos(const QPointF &pos);
+		void setPos(qreal x, qreal y);
 		void storeGeometry();
 		virtual void setName(QString name);
 
@@ -99,6 +102,7 @@ namespace UML {
 
 	public slots:
 		void switchGrid(bool isChecked);
+		void copyAndPlaceOnDiagram();
 
 	private:
 		enum DragState {
@@ -119,6 +123,7 @@ namespace UML {
 		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 		virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 		virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+		virtual void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event);
 
 		virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
 		virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);

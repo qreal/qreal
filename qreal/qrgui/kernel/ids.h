@@ -30,6 +30,8 @@ namespace qReal {
 		// applicable only to element's IDs. returnes type's ID
 		Id type() const;
 
+		Id sameTypeId() const;
+
 		// cast to QVariant. not an operator, to avoid problems with autocasts
 		QVariant toVariant() const;
 

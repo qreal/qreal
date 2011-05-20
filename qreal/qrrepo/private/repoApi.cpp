@@ -37,6 +37,11 @@ void RepoApi::addChild(Id const &id, Id const &child, Id const &logicalId)
 	mClient.addChild(id, child, logicalId);
 }
 
+Id RepoApi::copy(qReal::Id const &src)
+{
+	return mClient.cloneObject(src);
+}
+
 void RepoApi::removeChild(Id const &id, Id const &child)
 {
 	mClient.removeChild(id, child);
@@ -236,6 +241,11 @@ void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant co
 void RepoApi::removeProperty(Id const &id, QString const &propertyName)
 {
 	mClient.removeProperty(id, propertyName);
+}
+
+void RepoApi::copyProperties(const Id &dest, const Id &src)
+{
+	mClient.copyProperties(dest, src);
 }
 
 bool RepoApi::hasProperty(Id const &id, QString const &propertyName) const
