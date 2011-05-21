@@ -75,7 +75,7 @@ NodeElement *NodeElement::clone(bool toCursorPos)
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
 
 	qReal::Id typeId = id().type();
-	qReal::Id *resultId = evscene->createElement(typeId.toString(), QPointF());
+	qReal::Id *resultId = evscene->createElement(typeId.toString(), QPointF(), mGraphicalAssistApi->name(id()));
 
 	NodeElement *result = dynamic_cast<NodeElement*>(evscene->getElem(*resultId));
 

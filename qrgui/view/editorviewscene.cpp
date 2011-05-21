@@ -236,7 +236,7 @@ qReal::Id *EditorViewScene::createElement(const QString &str)
 	return result;
 }
 
-qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
+qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos, const QString &name)
 {
 	Id typeId = Id::loadFromString(str);
 	Id *objectId = new Id(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
@@ -247,7 +247,6 @@ qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
 	QString mimeType = QString("application/x-real-uml-data");
 	QString uuid = objectId->toString();
 	QString pathToItem = Id::rootId().toString();
-	QString name = "(anonymous something)";
 	QPointF pos = QPointF(0, 0);
 	bool isFromLogicalModel = false;
 	stream << uuid;
