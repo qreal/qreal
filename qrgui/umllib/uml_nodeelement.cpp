@@ -70,40 +70,67 @@ NodeElement::~NodeElement()
 	delete mUmlPortHandler;
 }
 
-NodeElement *NodeElement::clone(bool toCursorPos)
+NodeElement *NodeElement::clone(bool toCursorPos, bool viewOnly, NodeElement *parentNode)
 {
+	UML::NodeElement *result = NULL;
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
 
-	qReal::Id typeId = id().type();
-	qReal::Id *resultId = evscene->createElement(typeId.toString(), QPointF(), mGraphicalAssistApi->name(id()));
+	QPointF placePos = toCursorPos ? evscene->getMousePos() : mPos;
+	if (viewOnly) {
+		UML::Element *eresult = evscene->mainWindow()->manager()->graphicalObject(id());
+		result = dynamic_cast<NodeElement*>(eresult);
+		qDebug() << "y";
 
-	NodeElement *result = dynamic_cast<NodeElement*>(evscene->getElem(*resultId));
+		// inspired by EditorViewMViface::rowsInserted()
+		result->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
 
-	result->copyProperties(this);
-	result->copyChildren(this);
-	result->mContents = mContents;
+		if (result) {
+			result->setPos(placePos);
+			result->mId = id().sameTypeId();
+			if (parentNode != NULL)
+				result->setParentItem(parentNode);
+			else {
+				scene()->addItem(result);
+			}
+			result->updateData();
+			result->connectToPort();
+			//result->checkConnectionsToPort(); // unsafe now
+			result->initPossibleEdges();
+			result->initTitles();
+		}
+
+	} else {
+		qReal::Id typeId = id().type();
+		qReal::Id *resultId = evscene->createElement(typeId.toString(), QPointF(), mGraphicalAssistApi->name(id()));
+
+		result = dynamic_cast<NodeElement*>(evscene->getElem(*resultId));
+
+		result->copyProperties(this);
+		result->copyChildren(this);
+		result->mContents = mContents;
+	}
+
 	if (toCursorPos) {
 		result->setPos(evscene->getMousePos());
 		result->storeGeometry();
-	}
-	else {
+	} else {
 		result->setPos(mPos);
 	}
 
 	return result;
 }
 
-void NodeElement::copyAndPlaceOnDiagram()
+void NodeElement::copyAndPlaceOnDiagram(bool viewOnly)
 {
-	clone(true);
+	clone(true, viewOnly);
 }
 
-void NodeElement::copyChildren(NodeElement *source)
+void NodeElement::copyChildren(NodeElement *source, bool viewOnly)
 {
 	foreach (QGraphicsItem *child, source->childItems()) {
 		NodeElement *element = dynamic_cast<NodeElement*>(child);
 		if (element) {
-			NodeElement *copyOfChild = element->clone();
+			NodeElement *copyOfChild = element->clone(false, viewOnly);
 			mGraphicalAssistApi->changeParent(copyOfChild->id(), id(), element->pos());
 		}
 	}

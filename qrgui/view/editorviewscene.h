@@ -61,7 +61,7 @@ public slots:
 	qReal::Id *createElement(const QString &);
 	// TODO: get rid of it here
 	void copy();
-	void paste();
+	void paste(bool viewOnly = false);
 
 signals:
 	void elementCreated(qReal::Id const &id);

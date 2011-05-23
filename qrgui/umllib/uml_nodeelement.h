@@ -16,6 +16,7 @@
 #include "uml_element.h"
 #include "uml_edgeelement.h"
 #include "../pluginInterface/elementImpl.h"
+#include "../mainwindow/mainwindow.h"
 
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"
@@ -34,8 +35,8 @@ namespace UML {
 		NodeElement(ElementImpl *impl);
 		virtual ~NodeElement();
 
-		NodeElement *clone(bool toCursorPos = false);
-		void copyChildren(NodeElement *source);
+		NodeElement *clone(bool toCursorPos = false, bool viewOnly = false, NodeElement *parentNode = NULL);
+		void copyChildren(NodeElement *source, bool viewOnly = false);
 		void copyEdges(NodeElement *source);
 		void copyProperties(NodeElement *source);
 
@@ -102,7 +103,7 @@ namespace UML {
 
 	public slots:
 		void switchGrid(bool isChecked);
-		void copyAndPlaceOnDiagram();
+		void copyAndPlaceOnDiagram(bool viewOnly = false);
 
 	private:
 		enum DragState {

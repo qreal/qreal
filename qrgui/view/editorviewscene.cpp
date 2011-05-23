@@ -316,10 +316,10 @@ void EditorViewScene::copy()
 	mCopiedNode = dynamic_cast<UML::NodeElement*>(selectedItems()[0]);
 }
 
-void EditorViewScene::paste()
+void EditorViewScene::paste(bool viewOnly)
 {
 	if (mCopiedNode)
-		mCopiedNode->copyAndPlaceOnDiagram();
+		mCopiedNode->copyAndPlaceOnDiagram(viewOnly);
 	else
 		qDebug() << "paste attempt on NULL";
 }
@@ -337,10 +337,13 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 	} else if (event->key() == Qt::Key_Delete) {
 		// Delete selected elements from scene
 		mainWindow()->deleteFromScene();
-	} else if (event->matches(QKeySequence::Paste)) {
-		paste();
 	} else if (event->matches(QKeySequence::Copy)) {
 		copy();
+	} else if (event->matches(QKeySequence::Paste)) {
+		paste(false);
+	} else if (event->modifiers() == Qt::AltModifier && event->key() == Qt::Key_V) {
+		// viewOnly-paste
+		paste(true);
 	} else
 		QGraphicsScene::keyPressEvent(event);
 }
