@@ -71,3 +71,5 @@ include (pluginInterface/pluginInterface.pri)
 
 # Visual debugger
 include (visualDebugger/visualDebugger.pri)
+
+CONFIG += debug

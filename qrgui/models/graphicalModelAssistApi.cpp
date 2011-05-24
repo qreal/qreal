@@ -73,7 +73,9 @@ void GraphicalModelAssistApi::changeParent(Id const &element, Id const &parent, 
 
 void GraphicalModelAssistApi::copyProperties(Id const &dest, Id const &src)
 {
-	mGraphicalModel.mutableApi().copyProperties(dest, src);
+	//qDebug() << "cP(): mGrM =" << (long)mGraphicalModel;  //это не указатель, а ссылка
+	//qDebug() << "cP(): mApi =" << (long)mGraphicalModel.mutableApi();
+	mGraphicalModel.mutableApi().copyProperties(dest, src); //mutableApi();
 }
 
 void GraphicalModelAssistApi::setConfiguration(Id const &elem, QPolygon const &newValue)

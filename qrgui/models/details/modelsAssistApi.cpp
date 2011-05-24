@@ -18,6 +18,7 @@ EditorManager const &ModelsAssistApi::editorManager() const
 
 Id ModelsAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
 {
+	qDebug() << parent.toString();
 	Q_ASSERT(parent.idSize() == 4);
 	Id logicalId = Id::rootId();
 	Id newId = id;

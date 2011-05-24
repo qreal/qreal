@@ -70,34 +70,23 @@ NodeElement::~NodeElement()
 	delete mUmlPortHandler;
 }
 
-NodeElement *NodeElement::clone(bool toCursorPos, bool viewOnly, NodeElement *parentNode)
+NodeElement *NodeElement::clone(bool toCursorPos, bool viewOnly, Id parentId)
 {
 	UML::NodeElement *result = NULL;
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
 
 	QPointF placePos = toCursorPos ? evscene->getMousePos() : mPos;
 	if (viewOnly) {
-		UML::Element *eresult = evscene->mainWindow()->manager()->graphicalObject(id());
+		qReal::Id resultId = mGraphicalAssistApi->createElement(parentId, id().sameTypeId(), false, mGraphicalAssistApi->name(id()), placePos);
+		Element *eresult = evscene->mainWindow()->manager()->graphicalObject(resultId);
 		result = dynamic_cast<NodeElement*>(eresult);
-		qDebug() << "y";
 
-		// inspired by EditorViewMViface::rowsInserted()
 		result->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
-
-		if (result) {
-			result->setPos(placePos);
-			result->mId = id().sameTypeId();
-			if (parentNode != NULL)
-				result->setParentItem(parentNode);
-			else {
-				scene()->addItem(result);
-			}
-			result->updateData();
-			result->connectToPort();
-			//result->checkConnectionsToPort(); // unsafe now
-			result->initPossibleEdges();
-			result->initTitles();
-		}
+		result->setPos(placePos);
+		if (parentId == Id::rootId())
+			scene()->addItem(result);
+		else
+			result->setParent(evscene->getElem(parentId));
 
 	} else {
 		qReal::Id typeId = id().type();
@@ -105,16 +94,27 @@ NodeElement *NodeElement::clone(bool toCursorPos, bool viewOnly, NodeElement *pa
 
 		result = dynamic_cast<NodeElement*>(evscene->getElem(*resultId));
 
-		result->copyProperties(this);
-		result->copyChildren(this);
-		result->mContents = mContents;
+		//result->copyProperties(this);
+		//result->copyChildren(this);
+		//result->mContents = mContents;
 	}
 
+	Q_ASSERT(result != NULL);
+
+	//result->copyProperties(this); //fails here
+	qDebug() << "alive";
+	//result->copyChildren(this, viewOnly);
+	result->mContents = mContents;
+
 	if (toCursorPos) {
+		qDebug() << "tocp start";
 		result->setPos(evscene->getMousePos());
 		result->storeGeometry();
+		qDebug() << "tocp end";
 	} else {
+		qDebug() << "notocp start";
 		result->setPos(mPos);
+		qDebug() << "notocp end";
 	}
 
 	return result;
@@ -138,7 +138,8 @@ void NodeElement::copyChildren(NodeElement *source, bool viewOnly)
 
 void NodeElement::copyProperties(NodeElement *source)
 {
-	mGraphicalAssistApi->copyProperties(id(), source->id());
+	qDebug() << "cP(): mGr =" << (long)mGraphicalAssistApi;
+	mGraphicalAssistApi->copyProperties(id(), source->id()); //->copy...
 }
 
 void NodeElement::copyEdges(NodeElement *source)
