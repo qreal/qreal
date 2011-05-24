@@ -2,7 +2,7 @@
 TEMPLATE = subdirs
 CONFIG   += ordered
 SUBDIRS  = src \
-           examples/enumerator \
-           examples/event
+#           examples/enumerator \
+#           examples/event
 
 DESTDIR = ../../

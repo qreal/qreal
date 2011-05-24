@@ -135,7 +135,7 @@ struct PortSettings
 #include <windows.h>
 #include <QThread>
 #include <QReadWriteLock>
-#include <QtCore/private/qwineventnotifier_p.h>
+#include "qwineventnotifier_p.h"
 #endif
 
 /*!
