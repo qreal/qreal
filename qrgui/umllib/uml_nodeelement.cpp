@@ -77,7 +77,7 @@ NodeElement *NodeElement::clone(bool toCursorPos, bool viewOnly, Id parentId)
 
 	QPointF placePos = toCursorPos ? evscene->getMousePos() : mPos;
 	if (viewOnly) {
-		qReal::Id resultId = mGraphicalAssistApi->createElement(parentId, id().sameTypeId(), false, mGraphicalAssistApi->name(id()), placePos);
+		qReal::Id resultId = mGraphicalAssistApi->createElement(parentId, id().sameTypeId(), true, mGraphicalAssistApi->name(id()), placePos);
 		Element *eresult = evscene->mainWindow()->manager()->graphicalObject(resultId);
 		result = dynamic_cast<NodeElement*>(eresult);
 

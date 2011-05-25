@@ -278,6 +278,8 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	in_stream >> pos;
 	in_stream >> isFromLogicalModel;
 
+	qDebug() << uuid << pathToItem << name << pos << isFromLogicalModel;
+
 	UML::Element *newParent = NULL;
 
 	// TODO: make it simpler
@@ -344,6 +346,28 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 	} else if (event->modifiers() == Qt::AltModifier && event->key() == Qt::Key_V) {
 		// viewOnly-paste
 		paste(true);
+	} else if (event->matches(QKeySequence::Print)) {
+		Id typeId = mCopiedNode->logicalId();
+		Id *objectId = new Id(typeId);
+
+		QByteArray data;
+		QMimeData *mimeData = new QMimeData();
+		QDataStream stream(&data, QIODevice::WriteOnly);
+		QString mimeType = QString("application/x-real-uml-data");
+		QString uuid = objectId->toString();
+		QString pathToItem = Id::rootId().toString();
+		QPointF pos = QPointF(0, 0);
+		bool isFromLogicalModel = true;
+		stream << uuid;
+		stream << pathToItem;
+		stream << QString("abcdetest");
+		stream << pos;
+		stream << isFromLogicalModel;
+
+		mimeData->setData(mimeType, data);
+		createElement(mimeData, getMousePos());
+		delete mimeData;
+
 	} else
 		QGraphicsScene::keyPressEvent(event);
 }
