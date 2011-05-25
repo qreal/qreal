@@ -1,7 +1,7 @@
 <object logicalId="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{63ccf453-adfc-481d-815b-084894481b43}" id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{20df6a28-b9de-4cd5-8d72-7e10a17971e6}" parent="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{40150163-273d-48f6-a445-8ed785ed5a8a}">
   <children/>
   <properties>
-    <QPolygon key="configuration" value="0, 0 : 62, -25 : "/>
+    <QPolygon key="configuration" value="0, 0 : 48, 0 : "/>
     <qReal::Id key="from" value="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{45cb65a5-9a25-40ae-a38c-9409ba4a6c45}"/>
     <double key="fromPort" value="2.5"/>
     <links type="qReal::IdList"/>

@@ -538,9 +538,9 @@ void MainWindow::deleteFromDiagram()
 
 void MainWindow::showAbout()
 {
-	QMessageBox::about(this, tr("About QReal"),
-			tr("<center>This is <b>QReal</b><br>"
-			"Just another CASE tool</center>"));
+	QMessageBox::about(this, tr("About QReal:Robots"),
+			tr("Contacts:<br><br>"
+            "se.math.spbu.ru/SE/qreal"));            
 }
 
 void MainWindow::showHelp()
