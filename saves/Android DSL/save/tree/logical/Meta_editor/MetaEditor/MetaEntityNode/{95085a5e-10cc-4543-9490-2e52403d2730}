@@ -1,0 +1,22 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{95085a5e-10cc-4543-9490-2e52403d2730}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{097b9b24-3b5c-4736-9864-dd6dd186fb62}">
+  <children/>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isResizeable" value=""/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="Close Dialog"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;114&quot; sizey=&quot;30&quot;>&#xa;        &lt;rectangle fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;0&quot; stroke-width=&quot;0&quot; x1=&quot;0&quot; y2=&quot;29&quot; fill-style=&quot;none&quot; x2=&quot;113&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;12&quot; y=&quot;2&quot; text=&quot;Close Dialog&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;linePort>&#xa;            &lt;start startx=&quot;4&quot; starty=&quot;-1&quot;/>&#xa;            &lt;end endx=&quot;106&quot; endy=&quot;0&quot;/>&#xa;        &lt;/linePort>&#xa;        &lt;linePort>&#xa;            &lt;start startx=&quot;7&quot; starty=&quot;29&quot;/>&#xa;            &lt;end endx=&quot;108&quot; endy=&quot;30&quot;/>&#xa;        &lt;/linePort>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

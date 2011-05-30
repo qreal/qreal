@@ -1,0 +1,24 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{020d0254-5cb1-4105-8f80-90a89cd8dae1}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{14981c98-e612-4a24-bb0d-7b80d839e0b5}">
+  <children/>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isResizeable" value=""/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{45d595c1-c273-4094-b4f7-19d3301f825a}"/>
+    </links>
+    <QString key="name" value="Table Row"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;126&quot; sizey=&quot;50&quot;>&#xa;        &lt;rectangle fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;0&quot; stroke-width=&quot;0&quot; x1=&quot;0&quot; y2=&quot;49&quot; fill-style=&quot;none&quot; x2=&quot;125&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;24&quot; y=&quot;12&quot; text=&quot;Table Row&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;linePort>&#xa;            &lt;start startx=&quot;7&quot; starty=&quot;1&quot;/>&#xa;            &lt;end endx=&quot;117&quot; endy=&quot;2&quot;/>&#xa;        &lt;/linePort>&#xa;        &lt;linePort>&#xa;            &lt;start startx=&quot;12&quot; starty=&quot;49&quot;/>&#xa;            &lt;end endx=&quot;110&quot; endy=&quot;50&quot;/>&#xa;        &lt;/linePort>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

@@ -1,0 +1,9 @@
+<object id="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" parent="qrm:/">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetamodelDiagram/{da3f466a-4306-4d6c-a0c0-1d9e8471a301}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetamodelDiagram/{242d1b17-b293-4c65-ae3a-039539dbd5cb}"/>
+  </children>
+  <properties>
+    <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

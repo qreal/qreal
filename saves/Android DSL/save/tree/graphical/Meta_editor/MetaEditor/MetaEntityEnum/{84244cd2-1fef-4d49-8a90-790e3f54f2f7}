@@ -1,0 +1,16 @@
+<object logicalId="qrm:/Meta_editor/MetaEditor/MetaEntityEnum/{45c06b2b-5113-4059-a6fa-8faa022a7a06}" id="qrm:/Meta_editor/MetaEditor/MetaEntityEnum/{84244cd2-1fef-4d49-8a90-790e3f54f2f7}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{76979e24-978d-402c-9fba-28ec31f46c10}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{b3c9c7e1-a5df-428b-9d50-4b17e20954dc}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{50671508-7bdb-4316-986f-fa743ea4b026}"/>
+  </children>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 150, 0 : 150, 64 : 0, 64 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="Orientation Value"/>
+    <QPointF key="position" value="384.737, 960.533"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>

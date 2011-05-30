@@ -1,0 +1,25 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{1795e6b0-f653-4c30-8d0a-0e4102590c94}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{add9486d-e4db-4d09-9b34-77a451c68535}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{ebccb213-2dd9-4282-9fe5-a8142f2fcf75}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{7eb068d2-3e84-4341-a8e1-bcb30c338a7e}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{32999275-20fc-4439-8888-ba34ae0b2181}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityAssociation/{67b7672f-5b0e-464d-8b9e-0e8e63720189}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityAssociation/{534592cf-3722-47d8-9dce-3c9b2d8f4019}"/>
+  </children>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value="saveIn"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="labelText" value="saveIn"/>
+    <QString key="labelType" value="Static text"/>
+    <QString key="labels" value=""/>
+    <QString key="lineType" value="solidLine"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="saveIn"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

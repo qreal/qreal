@@ -1,0 +1,21 @@
+<object logicalId="qrm:/Meta_editor/MetaEditor/MetaEntityEnum/{1fc36989-407e-4860-aa36-48214c36e665}" id="qrm:/Meta_editor/MetaEditor/MetaEntityEnum/{426dc73b-8677-499b-b98a-52d8ad063407}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{76979e24-978d-402c-9fba-28ec31f46c10}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{7062bcd4-ae4f-400b-8bd4-51a69406c977}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{53857fb8-1353-4d4a-8ec5-544b78f457d0}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{88118c6a-be31-4954-a806-dd9a1e92fe3a}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{985dad0b-e47f-491f-970d-fd459c691b43}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{b89691e4-bb59-429d-aae2-4178d0b02889}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{60a7d8b7-d390-4175-afe8-2657a89b6f2a}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{d26d32c4-caed-4203-b59a-f53dacefba43}"/>
+  </children>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 150, 0 : 150, 149 : 0, 149 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="Scale Value"/>
+    <QPointF key="position" value="558.913, 928.261"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>

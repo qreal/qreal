@@ -1,0 +1,24 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{6ca14044-b64f-4d45-ba95-965f050fd8e4}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{14981c98-e612-4a24-bb0d-7b80d839e0b5}">
+  <children/>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isResizeable" value=""/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{fd734011-a07b-4c56-84ae-ae1d9e71a610}"/>
+    </links>
+    <QString key="name" value="Gallery"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;115&quot; sizey=&quot;46&quot;>&#xa;        &lt;rectangle fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;0&quot; stroke-width=&quot;0&quot; x1=&quot;0&quot; y2=&quot;45&quot; fill-style=&quot;none&quot; x2=&quot;114&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;32&quot; y=&quot;9&quot; text=&quot;Gallery&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;linePort>&#xa;            &lt;start startx=&quot;8&quot; starty=&quot;0&quot;/>&#xa;            &lt;end endx=&quot;109&quot; endy=&quot;1&quot;/>&#xa;        &lt;/linePort>&#xa;        &lt;linePort>&#xa;            &lt;start startx=&quot;8&quot; starty=&quot;45&quot;/>&#xa;            &lt;end endx=&quot;106&quot; endy=&quot;46&quot;/>&#xa;        &lt;/linePort>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

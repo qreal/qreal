@@ -1,0 +1,27 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{8afdb355-4f81-4bce-aeac-a366731da76a}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{14981c98-e612-4a24-bb0d-7b80d839e0b5}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{eaeab209-26be-4181-a101-0f768975c6ca}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{23876b53-5ad1-4ed2-9f83-e2e2325fee08}"/>
+  </children>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isResizeable" value=""/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{7bfbeedd-6953-4330-939d-ca509e947347}"/>
+    </links>
+    <QString key="name" value="Button"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;71&quot; sizey=&quot;32&quot;>&#xa;        &lt;rectangle fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;1&quot; stroke-width=&quot;0&quot; x1=&quot;0&quot; y2=&quot;30&quot; fill-style=&quot;none&quot; x2=&quot;70&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;9&quot; y=&quot;5&quot; text=&quot;Button&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;linePort>&#xa;            &lt;start startx=&quot;6&quot; starty=&quot;-1&quot;/>&#xa;            &lt;end endx=&quot;66&quot; endy=&quot;0&quot;/>&#xa;        &lt;/linePort>&#xa;        &lt;linePort>&#xa;            &lt;start startx=&quot;4&quot; starty=&quot;31&quot;/>&#xa;            &lt;end endx=&quot;67&quot; endy=&quot;32&quot;/>&#xa;        &lt;/linePort>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

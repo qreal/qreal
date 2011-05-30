@@ -1,0 +1,21 @@
+<object logicalId="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{9fabc612-46a7-46c4-95bc-75ddddc953c6}" id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{408a1701-ee7f-437a-bc02-4000542ca7cc}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{76979e24-978d-402c-9fba-28ec31f46c10}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{469a849d-f1d6-410e-b5a7-23bbb65a8c4e}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{35c11d1a-2dc9-4bff-9e75-314a30369eda}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{7ada2257-3377-4d20-a14d-496f79348c36}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{94157677-63ad-43dc-9926-b69092ba0430}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{980152e2-59e2-466d-8c32-087cb790363f}"/>
+  </children>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 190, 0 : 190, 175 : 0, 175 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0bdc8bdd-25ed-4b94-b277-59c0e7a9105f}"/>
+    </links>
+    <QString key="name" value="Grid View"/>
+    <QPointF key="position" value="193.763, 717.552"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>

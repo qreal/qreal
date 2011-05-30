@@ -1,0 +1,6 @@
+<picture sizex="161" sizey="30" >
+	<line x1="13" y1="1" x2="153" y2="2" stroke-width="7" stroke-style="solid" stroke="#c3dcc4" />
+	<line x1="13" y1="1" x2="153" y2="2" stroke-width="1" stroke-style="solid" stroke="#465945" />
+	<line x1="13" y1="29" x2="150" y2="30" stroke-width="7" stroke-style="solid" stroke="#c3dcc4" />
+	<line x1="13" y1="29" x2="150" y2="30" stroke-width="1" stroke-style="solid" stroke="#465945" />
+</picture>

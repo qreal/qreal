@@ -1,0 +1,44 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{097b9b24-3b5c-4736-9864-dd6dd186fb62}" parent="qrm:/Meta_editor/MetaEditor/MetamodelDiagram/{242d1b17-b293-4c65-ae3a-039539dbd5cb}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{e6a09b82-3665-465e-b66c-fac42c564bff}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{729b9d8b-c7f1-432a-af92-ae9397a845fc}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{e00e62b3-e1d6-473e-acdd-3e6da4bdda2e}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{feb6b4c2-b957-4415-8a30-72fff4265e27}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{8795f8fc-4afb-45b0-8706-f135b545ad22}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{d327726e-4b4a-40e4-820a-7c11d438af58}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{95085a5e-10cc-4543-9490-2e52403d2730}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{a6e7e293-61e3-4859-8650-60ab857ea04c}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{44526ad3-4d1d-4ce2-a416-dd1f2ec9f420}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{570aeb84-9707-452a-8023-109c53a2c961}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{82dcc632-0592-4329-b250-5e5516b5f8e0}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{2d2aa7a0-8c43-4b36-abd6-15bf1e7327aa}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{891ee2df-56b5-4333-bd99-ed8e79c38062}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{f63426fd-a52c-4adc-9f90-25d8c970d2fd}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{394ae0ea-72e9-45b5-9fe5-cc83317f8928}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEnum/{557c0013-ddf7-4d49-9922-c74201c0ca3f}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{6dbadcc0-4923-47a2-8996-f580f57d3169}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{f6eeab6d-cadc-4bd6-ab27-e463c7101ccf}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{9ab11e58-e877-40b6-a3c6-019ccaef3051}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{a1a2996e-957f-460d-8daf-17c0c9d3e1f0}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{97acd7d9-8c30-4200-945c-6d0dd7060f07}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{f86ecb9c-4195-4919-a81a-384667192324}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{97477f82-1afb-474b-9b7a-828c679c51d2}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{0176845c-77c5-44d4-924a-2b78d777a77e}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{6b272749-3a4d-4ba9-9405-f748a845105f}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{496e9ce4-8518-4cd6-ad66-0d92b07404bd}"/>
+  </children>
+  <properties>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="Main Diagram"/>
+    <QString key="nodeName" value="Main Diagram"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

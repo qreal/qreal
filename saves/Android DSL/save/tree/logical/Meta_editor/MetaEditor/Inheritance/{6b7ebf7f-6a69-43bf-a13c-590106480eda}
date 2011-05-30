@@ -1,0 +1,14 @@
+<object id="qrm:/Meta_editor/MetaEditor/Inheritance/{6b7ebf7f-6a69-43bf-a13c-590106480eda}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{14981c98-e612-4a24-bb0d-7b80d839e0b5}">
+  <children/>
+  <properties>
+    <qReal::Id key="from" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{7057ef66-9872-4d5f-a351-8ca0d2c1a810}"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(Inheritance)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="ownedComment" value=""/>
+    <qReal::Id key="to" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{9fabc612-46a7-46c4-95bc-75ddddc953c6}"/>
+  </properties>
+</object>

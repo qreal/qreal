@@ -1,0 +1,21 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{658345bd-7ad4-4699-8dbd-c9b91129ebc0}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{14981c98-e612-4a24-bb0d-7b80d839e0b5}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityAssociation/{f81121e8-cac5-4620-be52-c296cc910d16}"/>
+  </children>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value="contains"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="labelText" value="contains"/>
+    <QString key="labelType" value="Static text"/>
+    <QString key="labels" value=""/>
+    <QString key="lineType" value="solidLine"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="contains"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

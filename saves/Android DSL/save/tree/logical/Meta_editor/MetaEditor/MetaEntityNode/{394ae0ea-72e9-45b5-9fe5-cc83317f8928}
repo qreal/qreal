@@ -1,0 +1,25 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{394ae0ea-72e9-45b5-9fe5-cc83317f8928}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{097b9b24-3b5c-4736-9864-dd6dd186fb62}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{074321c6-2893-4d6c-bebe-7d1f529027d4}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{4656b23d-331b-4af3-b97a-e8f923fc35ea}"/>
+  </children>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isResizeable" value=""/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="Toast Notification"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;144&quot; sizey=&quot;34&quot;>&#xa;        &lt;rectangle fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;0&quot; stroke-width=&quot;0&quot; x1=&quot;0&quot; y2=&quot;32&quot; fill-style=&quot;none&quot; x2=&quot;143&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;7&quot; y=&quot;3&quot; text=&quot;Toast Notification&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;linePort>&#xa;            &lt;start startx=&quot;4&quot; starty=&quot;0&quot;/>&#xa;            &lt;end endx=&quot;137&quot; endy=&quot;1&quot;/>&#xa;        &lt;/linePort>&#xa;        &lt;linePort>&#xa;            &lt;start startx=&quot;10&quot; starty=&quot;33&quot;/>&#xa;            &lt;end endx=&quot;136&quot; endy=&quot;34&quot;/>&#xa;        &lt;/linePort>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

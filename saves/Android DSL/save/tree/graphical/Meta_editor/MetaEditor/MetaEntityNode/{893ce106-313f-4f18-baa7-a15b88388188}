@@ -1,0 +1,19 @@
+<object logicalId="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{290e5d36-6d8b-4eaa-b592-c80f01a0c9fd}" id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{893ce106-313f-4f18-baa7-a15b88388188}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{76979e24-978d-402c-9fba-28ec31f46c10}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{4f18cc4d-c19f-4495-bb5b-9b893d289c7f}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{60c8d91f-eb9d-4448-9816-361e037cefd9}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{0b830c9d-f718-438d-ac62-50214badb051}"/>
+  </children>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 190, 0 : 190, 133 : 0, 133 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{8e71cdc1-4814-4bcb-922c-c2754866a573}"/>
+    </links>
+    <QString key="name" value="Check Box"/>
+    <QPointF key="position" value="840.2, 730.085"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>

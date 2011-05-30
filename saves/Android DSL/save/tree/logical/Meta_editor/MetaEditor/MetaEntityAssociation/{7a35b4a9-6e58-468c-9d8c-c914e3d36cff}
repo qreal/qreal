@@ -1,0 +1,17 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityAssociation/{7a35b4a9-6e58-468c-9d8c-c914e3d36cff}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{44526ad3-4d1d-4ce2-a416-dd1f2ec9f420}">
+  <children/>
+  <properties>
+    <QString key="beginName" value="onClose1"/>
+    <QString key="beginType" value="no_arrow"/>
+    <QString key="endName" value="onClose2"/>
+    <QString key="endType" value="open_arrow"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="onClose"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

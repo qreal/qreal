@@ -1,0 +1,33 @@
+<object logicalId="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{7057ef66-9872-4d5f-a351-8ca0d2c1a810}" id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{5650a60a-9457-43ba-bce5-aed51225f2b2}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{76979e24-978d-402c-9fba-28ec31f46c10}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{4d77e863-fe30-4a22-a56f-d6c74c000588}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{cc1e1fd8-a732-43d1-96eb-d92e6c30f82d}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{e9cdee52-6c1d-4ca2-9a4b-5b4285f2b6de}"/>
+  </children>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 190, 0 : 190, 133 : 0, 133 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{f90801f2-ab79-4b76-ae66-f9912f583a5d}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{bf4ac8b7-34a7-43c6-9685-1e5f16ddeb51}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0bdc8bdd-25ed-4b94-b277-59c0e7a9105f}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{20d413d6-cf49-488e-b03e-dd4a71385c6a}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{8073dda9-b15d-4707-93c0-fa05a91e136b}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{cd50a1ac-263f-4006-aa6c-8223c97d83c8}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{c06f4823-99df-4cec-98e9-3a4ba401c196}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{4c1ed2a7-862b-4cb6-b647-5cdabe2c72d7}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{a3b5bd4b-c3ee-4ffb-8f50-4266b8cb308b}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{74af7b11-0679-4b5a-a7f6-724e616ddb5d}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{4df19b2b-4340-44c9-a40b-00bf68045e06}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{3cdd028a-adcd-4546-8504-78c78f262218}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{8e71cdc1-4814-4bcb-922c-c2754866a573}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{2b954152-e7f1-4757-9f34-61d4f1d9c7f1}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{f20b4db5-e4b9-4b50-8ffa-adac1cd1d2ec}"/>
+    </links>
+    <QString key="name" value="View"/>
+    <QPointF key="position" value="568.321, 394.578"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>
