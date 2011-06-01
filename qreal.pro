@@ -21,3 +21,5 @@ SUBDIRS		= qrmc qrxc qrgui qrxml qrrepo
 qrmc.depends = qrrepo
 qrgui.depends = qrxc qrxml qrrepo
 qrxml.depends = qrxc
+
+CONFIG += debug

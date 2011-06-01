@@ -245,6 +245,7 @@ void RepoApi::removeProperty(Id const &id, QString const &propertyName)
 
 void RepoApi::copyProperties(const Id &dest, const Id &src)
 {
+	//qDebug() << "alive @RepoApi::cP()";
 	mClient.copyProperties(dest, src);
 }
 

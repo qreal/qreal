@@ -128,6 +128,14 @@ void Client::setProperty(const Id &id, const QString &name, const QVariant &valu
 
 void Client::copyProperties(const Id &dest, const Id &src)
 {
+	if (!mObjects.contains(src)) {
+		throw Exception("Client: Copying properties from nonexistent object " + src.toString());
+	}
+
+	if (!mObjects.contains(dest)) {
+		throw Exception("Client: Copying properties to nonexistent object " + dest.toString());
+	}
+
 	mObjects[dest]->copyPropertiesFrom(*mObjects[src]);
 }
 

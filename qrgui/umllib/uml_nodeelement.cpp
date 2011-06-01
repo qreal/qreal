@@ -72,21 +72,39 @@ NodeElement::~NodeElement()
 
 NodeElement *NodeElement::clone(bool toCursorPos, bool viewOnly, Id parentId)
 {
+	qDebug() << "src:" << id() << "/" << logicalId();
 	UML::NodeElement *result = NULL;
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
 
 	QPointF placePos = toCursorPos ? evscene->getMousePos() : mPos;
 	if (viewOnly) {
-		qReal::Id resultId = mGraphicalAssistApi->createElement(parentId, id().sameTypeId(), true, mGraphicalAssistApi->name(id()), placePos);
+		qReal::Id resultId = mGraphicalAssistApi->createElement(parentId, logicalId(), true, mGraphicalAssistApi->name(id()), placePos);
+		qDebug() << "cln:" << resultId << "/" << mGraphicalAssistApi->logicalId(resultId);
 		Element *eresult = evscene->mainWindow()->manager()->graphicalObject(resultId);
 		result = dynamic_cast<NodeElement*>(eresult);
-
 		result->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
-		result->setPos(placePos);
-		if (parentId == Id::rootId())
-			scene()->addItem(result);
-		else
-			result->setParent(evscene->getElem(parentId));
+		result->setId(resultId);
+				result->setPos(placePos);
+				if (parentId == Id::rootId())
+					scene()->addItem(result);
+				else {
+					//scene()->addItem(result);
+					UML::Element *parent = evscene->getElem(parentId);
+					qDebug() << "pid:" << parentId;
+					qDebug() << "prt:" << parent->id() << "/" << parent->logicalId();
+					result->setParentItem(parent);
+				}
+
+				result->updateData();
+				result->connectToPort();
+				result->checkConnectionsToPort();
+				result->initPossibleEdges();
+				result->initTitles();
+				result->setPos(placePos);
+
+				scene()->clearSelection();
+				result->setSelected(true);
+
 
 	} else {
 		qReal::Id typeId = id().type();
@@ -101,22 +119,38 @@ NodeElement *NodeElement::clone(bool toCursorPos, bool viewOnly, Id parentId)
 
 	Q_ASSERT(result != NULL);
 
-	//result->copyProperties(this); //fails here
-	qDebug() << "alive";
-	//result->copyChildren(this, viewOnly);
+	result->copyProperties(this);
+	//qDebug() << "alive";
+
 	result->mContents = mContents;
 
 	if (toCursorPos) {
-		qDebug() << "tocp start";
+		//qDebug() << "tocp start";
 		result->setPos(evscene->getMousePos());
 		result->storeGeometry();
-		qDebug() << "tocp end";
+		//qDebug() << "tocp end";
 	} else {
-		qDebug() << "notocp start";
+		//qDebug() << "notocp start";
 		result->setPos(mPos);
-		qDebug() << "notocp end";
+		result->storeGeometry();
+		//qDebug() << "notocp end";
+	}
+	result->copyChildren(this, viewOnly);
+	qDebug() << "afterall: me" << id() << "@" << mPos << "and copy" << result->mPos;
+
+	if (toCursorPos) {
+		//qDebug() << "tocp start";
+		result->setPos(evscene->getMousePos());
+		result->storeGeometry();
+		//qDebug() << "tocp end";
+	} else {
+		//qDebug() << "notocp start";
+		result->setPos(mPos);
+		result->storeGeometry();
+		//qDebug() << "notocp end";
 	}
 
+	result->mContents = mContents;
 	return result;
 }
 
@@ -127,19 +161,26 @@ void NodeElement::copyAndPlaceOnDiagram(bool viewOnly)
 
 void NodeElement::copyChildren(NodeElement *source, bool viewOnly)
 {
+	qDebug() << "===<ccl>===";
+	qDebug() << "me:" << id();
+
 	foreach (QGraphicsItem *child, source->childItems()) {
 		NodeElement *element = dynamic_cast<NodeElement*>(child);
+
 		if (element) {
-			NodeElement *copyOfChild = element->clone(false, viewOnly);
+			qDebug() << "chld" << element->id();
+
+			NodeElement *copyOfChild = element->clone(false, viewOnly, id());
 			mGraphicalAssistApi->changeParent(copyOfChild->id(), id(), element->pos());
 		}
+
 	}
+	qDebug() << "===</ccl>===";
 }
 
 void NodeElement::copyProperties(NodeElement *source)
 {
-	qDebug() << "cP(): mGr =" << (long)mGraphicalAssistApi;
-	mGraphicalAssistApi->copyProperties(id(), source->id()); //->copy...
+	mGraphicalAssistApi->copyProperties(id(), source->id());
 }
 
 void NodeElement::copyEdges(NodeElement *source)
