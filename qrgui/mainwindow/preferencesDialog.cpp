@@ -16,6 +16,10 @@ PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * c
 	connect(ui->otherButton, SIGNAL(clicked()), this, SLOT(systemChoosingButtonClicked()));
 	connect(ui->gridWidthSlider, SIGNAL(sliderMoved(int)), this, SLOT(widthGridSliderMoved(int)));
 	connect(ui->indexGridSlider, SIGNAL(sliderMoved(int)), this, SLOT(indexGridSliderMoved(int)));
+
+	// fixing #105
+	ui->indexGridSlider->setVisible(false);
+	ui->label_20->setVisible(false);
 }
 
 void PreferencesDialog::widthGridSliderMoved(int value)

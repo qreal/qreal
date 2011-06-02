@@ -136,6 +136,9 @@
         </property>
        </widget>
        <widget class="QSlider" name="indexGridSlider">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>10</x>
