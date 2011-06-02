@@ -17,8 +17,8 @@ void InitialBlockWithPorts::run()
 QList<Block::SensorPortPair> InitialBlockWithPorts::sensorToPair(QString const port1Sensor, inputPort::InputPortEnum const &port) const
 {
 	QString ololo = QString::fromUtf8("Ультразвуковой сенсор");
-	int y = QString::compare(port1Sensor, QString::fromUtf8("Ультразвуковой сенсор"));
-	bool x = (port1Sensor == QString::fromUtf8("Ультразвуковой сенсор"));
+//	int y = QString::compare(port1Sensor, QString::fromUtf8("Ультразвуковой сенсор"));
+//	bool x = (port1Sensor == QString::fromUtf8("Ультразвуковой сенсор"));
 	QList<SensorPortPair> result;
 	if (port1Sensor == QString::fromUtf8("Сенсор нажатия (булево значение)"))
 		result << qMakePair(sensorType::touchBoolean, static_cast<int>(port));

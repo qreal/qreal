@@ -87,50 +87,12 @@ MainWindow::MainWindow()
 
 	// Step 2: Ui is ready, splash screen shown.
 	progress->setValue(20);
-	mUi->actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
-	mUi->actionShow_alignment->setChecked(settings.value("ShowAlignment", true).toBool());
-	mUi->actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", true).toBool());
-	mUi->actionSwitch_on_alignment->setChecked(settings.value("ActivateAlignment", true).toBool());
-
-	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
-
-	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
-
-	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(open()));
-	connect(mUi->actionSave, SIGNAL(triggered()), this, SLOT(saveAll()));
-	connect(mUi->actionSave_as, SIGNAL(triggered()), this, SLOT(saveAs()));
-	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
-	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
-
-	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
+	connectActions();
 
 	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(changeMiniMapSource(int)));
 	connect(mUi->tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 
-	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
-	connect(mUi->actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
-	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
-
-	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
-	connect(mUi->actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
-	connect(mUi->actionShow_alignment, SIGNAL(toggled(bool)), this, SLOT(showAlignment(bool)));
-	connect(mUi->actionSwitch_on_grid, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
-	connect(mUi->actionSwitch_on_alignment, SIGNAL(toggled(bool)), this, SLOT(switchAlignment(bool)));
-
-	connect(mUi->actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
-	connect(mUi->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
-	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
-
-	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
-
 	connect(mUi->minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));
-
-	connect(mUi->actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
-
-	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(run()));
-	connect(mUi->actionStop_Running, SIGNAL(triggered()), this, SLOT(stop()));
-	connect(mUi->actionStop_Robot, SIGNAL(triggered()), this, SLOT(stopRobot()));
-	connect(mUi->actionRobot_Settings, SIGNAL(triggered()), this, SLOT(showRobotSettingsDialog()));
 
 	adjustMinimapZoom(mUi->minimapZoomSlider->value());
 	initGridProperties();
@@ -178,18 +140,8 @@ MainWindow::MainWindow()
 	// Step 6: Save loaded, models initialized.
 	progress->setValue(80);
 
-	mListenerManager = new ListenerManager(mEditorManager.listeners()
-			, mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi());
-
-	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
-	if (!missingPlugins.isEmpty()) {
-		QString text = tr("These plugins are not present, but needed to load the save:\n");
-		foreach (Id const id, missingPlugins)
-			text += id.editor() + "\n";
-		QMessageBox::warning(this, tr("Some plugins are missing"), text);
-		close();
+	if (!checkPluginsAndReopen())
 		return;
-	}
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 
@@ -231,6 +183,46 @@ MainWindow::MainWindow()
 
 	if (settings.value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
+}
+
+void MainWindow::connectActions()
+{
+	QSettings settings("SPbSU", "QReal");
+	mUi->actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
+	mUi->actionShow_alignment->setChecked(settings.value("ShowAlignment", true).toBool());
+	mUi->actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", false).toBool());
+	mUi->actionSwitch_on_alignment->setChecked(settings.value("ActivateAlignment", true).toBool());
+
+	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
+
+	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
+
+	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(open()));
+	connect(mUi->actionSave, SIGNAL(triggered()), this, SLOT(saveAll()));
+	connect(mUi->actionSave_as, SIGNAL(triggered()), this, SLOT(saveAs()));
+	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
+	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
+
+	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
+
+	connect(mUi->actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
+	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
+	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
+
+	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
+	connect(mUi->actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
+	connect(mUi->actionShow_alignment, SIGNAL(toggled(bool)), this, SLOT(showAlignment(bool)));
+	connect(mUi->actionSwitch_on_grid, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
+	connect(mUi->actionSwitch_on_alignment, SIGNAL(toggled(bool)), this, SLOT(switchAlignment(bool)));
+
+	connect(mUi->actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
+	connect(mUi->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
+	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+
+	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
+
+	connect(mUi->actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
+
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -407,26 +399,85 @@ void MainWindow::sceneSelectionChanged()
 
 QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
 {
-	QString const dirName = QFileDialog::getExistingDirectory(this, dialogWindowTitle,".", QFileDialog::ShowDirsOnly);
+	QSettings settings("SPbSU", "QReal");
+
+	QString const dirName = QFileDialog::getExistingDirectory(this, dialogWindowTitle
+		, settings.value("workingDir", ".").toString(), QFileDialog::ShowDirsOnly);
 
 	if (dirName.isEmpty())
 		return "";
 
-	QSettings settings("SPbSU", "QReal");
 	settings.setValue("workingDir", dirName);
 
 	return dirName;
 }
 
-void MainWindow::open()
+bool MainWindow::checkPluginsAndReopen()
+{
+	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
+	bool haveMissingPlugins = !missingPlugins.isEmpty();
+	bool loadingCancelled = false;
+
+	while (haveMissingPlugins && !loadingCancelled) {
+		QString text = "These plugins are not present, but needed to load the save:\n";
+		foreach (Id const id, missingPlugins)
+			text += id.editor() + "\n";
+		text += "Do you want to create/open new project?";
+
+		QMessageBox::StandardButton button = QMessageBox::question(this, tr("Some plugins are missing"), text, QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+
+		if (button == QMessageBox::Yes)
+		{
+			if (!open())
+				loadingCancelled = true;
+		}
+		else
+			loadingCancelled = true;
+		missingPlugins = mEditorManager.checkNeededPlugins(
+					mModels->logicalRepoApi(), mModels->graphicalRepoApi());
+		haveMissingPlugins = !missingPlugins.isEmpty();
+	}
+
+	if (loadingCancelled){
+		close();
+		return false;
+	}
+
+	return true;
+}
+
+bool MainWindow::open()
 {
 	QString const dirName = getWorkingDir(tr("Select directory with a save to open"));
 
 	if (dirName.isEmpty())
-		return;
+		return false;
+
+	dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
+	mUi->graphicalModelExplorer->setModel(NULL);
+	mUi->logicalModelExplorer->setModel(NULL);
+	if (getCurrentTab())
+		static_cast<EditorViewScene*>(getCurrentTab()->scene())->clearScene();
+
+	closeAllTabs();
 
 	mModels->repoControlApi().open(dirName);
 	mModels->reinit();
+
+	if (!checkPluginsAndReopen())
+		return false;
+
+	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
+	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
+	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
+
+	return true;
+}
+
+void MainWindow::closeAllTabs(){
+	int tabCount = mUi->tabs->count();
+	for (int i = 0; i < tabCount; i++)
+		closeTab(i);
 }
 
 void MainWindow::setShape(const QString &data, const QPersistentModelIndex &index, const int &role)
@@ -540,7 +591,7 @@ void MainWindow::showAbout()
 {
 	QMessageBox::about(this, tr("About QReal:Robots"),
 			tr("Contacts:<br><br>"
-            "se.math.spbu.ru/SE/qreal"));            
+			"se.math.spbu.ru/SE/qreal"));
 }
 
 void MainWindow::showHelp()

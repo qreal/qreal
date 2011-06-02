@@ -85,7 +85,8 @@ private slots:
 	void showAbout();
 	void showHelp();
 
-	void open();
+	bool open();
+	bool checkPluginsAndReopen();
 	void saveAs();
 	void saveAll();
 
@@ -94,6 +95,7 @@ private slots:
 	void showGrid(bool isChecked);
 
 	void finalClose();
+	void closeAllTabs();
 
 	void sceneSelectionChanged();
 
@@ -109,6 +111,8 @@ private slots:
 	void generateEditor();
 	void parseEditorXml();
 	void showPreferencesDialog();
+
+	void connectActions();
 
 	void centerOn(Id const &id);
 	void graphicalModelExplorerClicked(const QModelIndex &index);
