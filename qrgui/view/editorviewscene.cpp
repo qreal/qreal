@@ -10,6 +10,7 @@
 #include "editorviewmviface.h"
 #include "editorview.h"
 #include "mainwindow.h"
+#include "copypaste.h"
 #include "../mainwindow/mainwindow.h"
 
 using namespace qReal;
@@ -244,7 +245,7 @@ qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos, 
 	QByteArray data;
 	QMimeData *mimeData = new QMimeData();
 	QDataStream stream(&data, QIODevice::WriteOnly);
-	QString mimeType = QString("application/x-real-uml-data");
+	QString mimeType = QString(DEFAULT_MIME_TYPE);
 	QString uuid = objectId->toString();
 	QString pathToItem = Id::rootId().toString();
 	QPointF pos = QPointF(0, 0);
@@ -264,7 +265,7 @@ qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos, 
 
 void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 {
-	QByteArray itemData = mimeData->data("application/x-real-uml-data");
+	QByteArray itemData = mimeData->data(DEFAULT_MIME_TYPE);
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
 
 	QString uuid = "";
@@ -314,6 +315,19 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 void EditorViewScene::copy()
 {
 	mCopiedNode = dynamic_cast<UML::NodeElement*>(selectedItems()[0]);
+	QList<NodeElementSerializationData> nodes;
+	QList<EdgeElementSerializationData> edges;
+	int nodeIndex = 0;
+	int edgeIndex = 0;
+	foreach (QGraphicsItem *item, selectedItems()) {
+		UML::Element *element = dynamic_cast<UML::NodeElement*>(item);
+		if (element) {
+			ElementSerializationData data;
+			data.mId = element->id();
+			data.mLogicalId = element->logicalId();
+			data.mProperties = mv_iface->graphicalAssistApi()->properties(element->id());
+		}
+	}
 }
 
 void EditorViewScene::paste(bool viewOnly)

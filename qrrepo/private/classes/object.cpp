@@ -109,6 +109,11 @@ QVariant Object::property(const QString &name) const
 	}
 }
 
+QMap<QString, QVariant> Object::properties() const
+{
+	return mProperties;
+}
+
 void Object::setTemporaryRemovedLinks(QString const &direction, qReal::IdList const &listValue)
 {
 	mTemporaryRemovedLinks.insert(direction, listValue);

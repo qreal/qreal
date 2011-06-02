@@ -71,6 +71,19 @@ namespace qReal {
 		return dbg.space();
 	}
 
+	inline QDataStream& operator<< (QDataStream &out, const Id &id)
+	{
+		return out << id.toString();
+	}
+
+	inline QDataStream& operator>> (QDataStream& in, Id &id)
+	{
+		QString str;
+		in >> str;
+		id = Id::loadFromString(str);
+		return in;
+	}
+
 	typedef QList<Id> IdList;
 
 	class IdListHelper {

@@ -139,6 +139,15 @@ void Client::copyProperties(const Id &dest, const Id &src)
 	mObjects[dest]->copyPropertiesFrom(*mObjects[src]);
 }
 
+QMap<QString, QVariant> Client::properties(const qReal::Id &id) const
+{
+	if (mObjects.contains(id)) {
+		return mObjects[id]->properties();
+	} else {
+		throw Exception("Client: Requesting properties of nonexistent object " + id.toString());
+	}
+}
+
 QVariant Client::property( const Id &id, const QString &name ) const
 {
 	if (mObjects.contains(id)) {
