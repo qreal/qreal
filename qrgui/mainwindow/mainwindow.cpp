@@ -222,7 +222,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(mUi->actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
-
+	connect(mUi->actionRobot_Settings, SIGNAL(triggered()), this, SLOT(showRobotSettingsDialog()));
 }
 
 QModelIndex MainWindow::rootIndex() const
