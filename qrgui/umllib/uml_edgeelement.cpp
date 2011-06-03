@@ -23,10 +23,15 @@ const double pi = 3.14159265358979;
 // static bool moving = false;
 
 EdgeElement::EdgeElement(ElementImpl *impl)
-	: mPenStyle(Qt::SolidLine), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW),
-	mSrc(NULL), mDst(NULL), mPortFrom(0), mPortTo(0),
-	mDragState(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL), mAddPointAction("Add point", this),
-	mDelPointAction("Delete point", this), mSquarizeAction("Squarize", this), mElementImpl(impl)
+	: mPenStyle(Qt::SolidLine), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
+	, mSrc(NULL), mDst(NULL)
+	, mPortFrom(0), mPortTo(0)
+	, mDragPoint(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL)
+	, mAddPointAction(tr("Add point"), this)
+	, mDelPointAction(tr("Delete point"), this)
+	, mSquarizeAction(tr("Squarize"), this)
+	, mElementImpl(impl)
+	, mLastDragPoint(-1)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	setZValue(100);
@@ -245,19 +250,6 @@ void EdgeElement::updateLongestPart()
 	}
 }
 
-void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-	mDragState = -1;
-	mDragState = getPoint(event->pos());
-
-	if (mDragState == -1) {
-		Element::mousePressEvent(event);
-		if ((mSrc != NULL) || (mDst != NULL))
-			if (event->buttons() != Qt::RightButton)
-				addPointHandler(event->pos());
-	}
-}
-
 void EdgeElement::connectToPort()
 {
 	setPos(pos() + mLine.first());
@@ -266,8 +258,26 @@ void EdgeElement::connectToPort()
 	mMoving = true;
 
 	// Now we check whether start or end have been connected
-	NodeElement *new_src = getNodeAt(mLine.first());
-	mPortFrom = new_src ? new_src->getPortId(mapToItem(new_src, mLine.first())) : -1.0;
+	NodeElement *newSrc = getNodeAt(mLine.first());
+	NodeElement *newDst = getNodeAt(mLine.last());
+
+	// fix for #4. otherwise we have 2 annoying situations when
+	// connecting both ends of an edge to the same node:
+	// if mLine.size() is 2, then an edge will become a point
+	// if mLine.size() is 3, then two parts of an edge will overlap
+	if (newSrc == newDst && newSrc && mLine.size() <= 3) {
+		mLine = mLastLine;
+
+		mGraphicalAssistApi->setPosition(id(), mLastPos);
+		mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
+
+		mMoving = false;
+		updateData();
+
+		return;
+	}
+
+	mPortFrom = newSrc ? newSrc->getPortId(mapToItem(newSrc, mLine.first())) : -1.0;
 
 	if (mSrc) {
 		mSrc->delEdge(this);
@@ -275,7 +285,7 @@ void EdgeElement::connectToPort()
 	}
 
 	if (mPortFrom >= 0.0) {
-		mSrc = new_src;
+		mSrc = newSrc;
 		mSrc->addEdge(this);
 	}
 
@@ -283,8 +293,7 @@ void EdgeElement::connectToPort()
 	mGraphicalAssistApi->setFrom(id(), (mSrc ? mSrc->id() : Id::rootId()));
 	mGraphicalAssistApi->setFromPort(id(), mPortFrom);
 
-	NodeElement *new_dst = getNodeAt(mLine.last());
-	mPortTo = new_dst ? new_dst->getPortId(mapToItem(new_dst, mLine.last())) : -1.0;
+	mPortTo = newDst ? newDst->getPortId(mapToItem(newDst, mLine.last())) : -1.0;
 
 	if (mDst) {
 		mDst->delEdge(this);
@@ -292,7 +301,7 @@ void EdgeElement::connectToPort()
 	}
 
 	if (mPortTo >= 0.0) {
-		mDst = new_dst;
+		mDst = newDst;
 		mDst->addEdge(this);
 	}
 
@@ -308,7 +317,6 @@ void EdgeElement::connectToPort()
 	mMoving = false;
 
 	adjustLink();
-
 	arrangeSrcAndDst();
 }
 
@@ -331,6 +339,24 @@ bool EdgeElement::initPossibleEdges()
 	}
 
 	return (!possibleEdges.isEmpty());
+}
+
+void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	mDragPoint = -1;
+	mDragPoint = getPoint(event->pos());
+
+	if (mDragPoint == -1) {
+		Element::mousePressEvent(event);
+		if ((mSrc != NULL) || (mDst != NULL))
+			if (event->buttons() != Qt::RightButton)
+				addPointHandler(event->pos());
+	} else {
+		// saving info in case we need to rollback (see #4)
+		mLastDragPoint = mDragPoint;
+		mLastPos = pos();
+		mLastLine = mLine;
+	}
 }
 
 void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -359,11 +385,11 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	if (mEnding)
 		mEnding->setPortsVisible(true);
 
-	if (mDragState == -1) {
+	if (mDragPoint == -1) {
 		Element::mouseMoveEvent(event);
 	} else {
 		prepareGeometryChange();
-		mLine[mDragState] = event->pos();
+		mLine[mDragPoint] = event->pos();
 		updateLongestPart();
 	}
 
@@ -372,60 +398,45 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	bool deleteCurrentPoint = false;
+
 	if  (mLine.size() >= 3) {
 
-		if ((mDragState > 0) && (mDragState < (mLine.size() - 1))) {
+		if ((mDragPoint > 0) && (mDragPoint < (mLine.size() - 1))) {
 
 			QPainterPath path;
 			QPainterPathStroker neighbourhood;
 			neighbourhood.setWidth(20);
 
-			path.moveTo(mLine[mDragState - 1]);
-			path.lineTo(mLine[mDragState + 1]);
+			path.moveTo(mLine[mDragPoint - 1]);
+			path.lineTo(mLine[mDragPoint + 1]);
 
-			if (neighbourhood.createStroke(path).contains(mLine[mDragState])) {
+			if (neighbourhood.createStroke(path).contains(mLine[mDragPoint])) {
 
-				delPointHandler(mLine[mDragState]);
-				mDragState -= 1;
+				delPointHandler(mLine[mDragPoint]);
+				mDragPoint -= 1;
 				deleteCurrentPoint = true;
 			}
 		}
-		if ((mDragState != -1) && (mDragState < (mLine.size() - 2))) {
 
-			QPainterPath path;
-			QPainterPathStroker neighbourhood;
-			neighbourhood.setWidth(15);
+		// try to eliminate unneeded points
 
-			path.moveTo(mLine[mDragState]);
-			path.lineTo(mLine[mDragState + 2]);
-
-			if (neighbourhood.createStroke(path).contains(mLine[mDragState + 1]))
-				delPointHandler(mLine[mDragState + 1]);
-
+		if ((mDragPoint != -1) && (mDragPoint < (mLine.size() - 2))) {
+			removeUnneededPoints(mDragPoint);
 			if (deleteCurrentPoint)
-				mDragState += 1;
+				mDragPoint += 1;
 		}
 
-		if (mDragState >= 2) {
-
-			QPainterPath path;
-			QPainterPathStroker neigbourhood;
-			neigbourhood.setWidth(15);
-
-			path.moveTo(mLine[mDragState - 2]);
-			path.lineTo(mLine[mDragState]);
-
-			if (neigbourhood.createStroke(path).contains(mLine[mDragState - 1]))
-				delPointHandler(mLine[mDragState - 1]);
-		}
+		if (mDragPoint >= 2)
+			removeUnneededPoints(mDragPoint - 2);
 	}
 
-	if (mDragState == -1)
+	if (mDragPoint == -1)
 		Element::mouseReleaseEvent(event);
 	else
-		mDragState = -1;
+		mDragPoint = -1;
 
 	connectToPort();
+	qDebug() << (mLine.first() == mLine.last());
 
 	if (mBeginning)
 		mBeginning->setPortsVisible(false);
@@ -437,6 +448,19 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	mBeginning = mEnding = NULL;
 
 	arrangeSrcAndDst();
+}
+
+void EdgeElement::removeUnneededPoints(int startingPoint)
+{
+	QPainterPath path;
+	QPainterPathStroker neighbourhood;
+	neighbourhood.setWidth(15);
+
+	path.moveTo(mLine[startingPoint]);
+	path.lineTo(mLine[startingPoint + 2]);
+
+	if (neighbourhood.createStroke(path).contains(mLine[startingPoint + 1]))
+		delPointHandler(mLine[startingPoint + 1]);
 }
 
 NodeElement *EdgeElement::getNodeAt(QPointF const &position)
@@ -488,7 +512,7 @@ void EdgeElement::addPointHandler(QPointF const &pos)
 		path.lineTo(mLine[i + 1]);
 		if (ps.createStroke(path).contains(pos)) {
 			mLine.insert(i + 1, pos);
-			mDragState = i + 1;
+			mDragPoint = i + 1;
 			update();
 			break;
 		}
@@ -510,12 +534,12 @@ void EdgeElement::breakPointHandler(QPointF const &pos)
 	mBreakPointPressed = true;
 	if (mLine.startsWith(pos.toPoint())) {
 		mLine.insert(0, pos);
-		mDragState = 0;
+		mDragPoint = 0;
 	}
 
 	if (mLine.endsWith(pos.toPoint())) {
 		mLine.insert(mLine.size() - 1, pos);
-		mDragState = mLine.size() - 1;
+		mDragPoint = mLine.size() - 1;
 	}
 }
 
@@ -664,6 +688,7 @@ void EdgeElement::updateData()
 
 	setPos(mGraphicalAssistApi->position(id()));
 	QPolygonF newLine = mGraphicalAssistApi->configuration(id());
+
 	if (!newLine.isEmpty())
 		mLine = newLine;
 

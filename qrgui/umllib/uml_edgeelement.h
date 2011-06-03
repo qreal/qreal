@@ -90,16 +90,19 @@ namespace UML {
 
 			void drawPort(QPainter *painter) const;
 
+			void removeUnneededPoints(int startingPoint);
+
 			NodeElement *mSrc;
 			NodeElement *mDst;
 
 			qreal mPortFrom;
 			qreal mPortTo;
-			int mDragState;
+
+			int mDragPoint; // is a number of mLine's point we're trying to drag
 
 			int mLongPart;
 
-			QPolygonF mLine;
+			QPolygonF mLine; // holds coordinates of polygon points in coordinate system with center in first point
 			QColor mColor;
 
 			NodeElement *mBeginning;
@@ -112,6 +115,11 @@ namespace UML {
 			bool mChaoticEdition;
 
 			ElementImpl *mElementImpl;
+
+			QPointF mLastPos;
+			QPolygonF mLastLine;
+			int mLastDragPoint;
+
 	};
 }
 
