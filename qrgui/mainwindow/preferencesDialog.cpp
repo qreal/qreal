@@ -2,7 +2,7 @@
 #include "ui_preferencesDialog.h"
 
 #include <QSettings>
-
+#include <QFileDialog>
 PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * const showAlignmentAction
 		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
 	: QDialog(parent), ui(new Ui::PreferencesDialog), mShowGridAction(showGridAction), mShowAlignmentAction(showAlignmentAction)
@@ -16,10 +16,16 @@ PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * c
 	connect(ui->otherButton, SIGNAL(clicked()), this, SLOT(systemChoosingButtonClicked()));
 	connect(ui->gridWidthSlider, SIGNAL(sliderMoved(int)), this, SLOT(widthGridSliderMoved(int)));
 	connect(ui->indexGridSlider, SIGNAL(sliderMoved(int)), this, SLOT(indexGridSliderMoved(int)));
+	connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
+	connect(ui->applyButton, SIGNAL(clicked()), this, SLOT(applyChanges()));
+	connect(ui->okButton, SIGNAL(clicked()), this, SLOT(saveAndClose()));
+	connect(ui->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
 
 	// fixing #105
 	ui->indexGridSlider->setVisible(false);
 	ui->label_20->setVisible(false);
+
+	mLastIconsetPath = ui->imagesPathEdit->text();
 }
 
 void PreferencesDialog::widthGridSliderMoved(int value)
@@ -64,6 +70,8 @@ void PreferencesDialog::initPreferences()
 	ui->splashScreenCheckBox->setChecked(settings.value("Splashscreen", true).toBool());
 	ui->openGLCheckBox->setChecked(settings.value("OpenGL", true).toBool());
 
+	ui->imagesPathEdit->setText(settings.value("pathToImages", "./images/iconset1/").toString());
+
 	ui->windowsButton->setChecked(settings.value("windowsButton", false).toBool());
 	ui->linuxButton->setChecked(settings.value("linuxButton", false).toBool());
 	ui->otherButton->setChecked(settings.value("otherButton", false).toBool());
@@ -104,6 +112,8 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("Antialiasing", ui->antialiasingCheckBox->isChecked());
 	settings.setValue("OpenGL", ui->openGLCheckBox->isChecked());
 
+	settings.setValue("pathToImages", ui->imagesPathEdit->text());
+
 	settings.setValue("windowsButton", ui->windowsButton->isChecked());
 	settings.setValue("linuxButton", ui->linuxButton->isChecked());
 	settings.setValue("otherButton", ui->otherButton->isChecked());
@@ -120,6 +130,9 @@ void PreferencesDialog::applyChanges()
 	mShowAlignmentAction->setChecked(ui->showAlignmentCheckBox->isChecked());
 	mActivateGridAction->setChecked(ui->activateGridCheckBox->isChecked());
 	mActivateAlignmentAction->setChecked(ui->activateAlignmentCheckBox->isChecked());
+
+	if (mLastIconsetPath != ui->imagesPathEdit->text())
+		emit iconsetChanged();
 }
 
 void PreferencesDialog::changeEvent(QEvent *e)
@@ -134,18 +147,13 @@ void PreferencesDialog::changeEvent(QEvent *e)
 	}
 }
 
-void PreferencesDialog::on_okButton_clicked()
+void PreferencesDialog::saveAndClose()
 {
 	applyChanges();
 	close();
 }
 
-void PreferencesDialog::on_applyButton_clicked()
-{
-	applyChanges();
-}
-
-void PreferencesDialog::on_cancelButton_clicked()
+void PreferencesDialog::cancel()
 {
 	ui->gridWidthSlider->setValue(mWithGrid);
 	ui->indexGridSlider->setValue(mIndexGrid);
@@ -173,4 +181,10 @@ void PreferencesDialog::initCompilersSettings(const QString &pathToQmake,
 	ui->pluginExtension->setText(pluginExtension);
 	ui->prefix->setText(prefix);
 	ui->compilerSettingsWidget->setEnabled(false);
+}
+
+void PreferencesDialog::browseImagesPath()
+{
+	QString path = QFileDialog::getExistingDirectory(this, "Open Directory");
+	ui->imagesPathEdit->setText(path.replace("\\", "/"));
 }

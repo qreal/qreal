@@ -33,8 +33,13 @@ namespace qReal {
 
 			QVector<QString> getTabNames();
 
+			Id currentTab();
+			void setComboBox(Id id);
+
 		public slots:
 			void setActiveEditor(int const editorIndex);
+			void setActiveEditor(Id id);
+			void recreateTabs();
 
 		private:
 			class DraggableElement : public QWidget {
@@ -67,6 +72,9 @@ namespace qReal {
 			virtual void dropEvent(QDropEvent *event);
 			virtual void mousePressEvent(QMouseEvent *event);
 
+			void createPalette();
+			void deletePalette();
+
 			QHash<Id, int> mCategories;
 			/** @brief vector of editors' contents */
 			QVector<QWidget*> mTabs;
@@ -78,6 +86,7 @@ namespace qReal {
 			QComboBox *mComboBox;
 			/** @brief Area of current editor */
 			QScrollArea *mScrollArea;
+			int mCurrentTab;
 		};
 
 	}

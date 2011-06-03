@@ -12,8 +12,8 @@ using namespace qReal;
 using namespace qReal::gui;
 
 PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &name, QString const &description,
-	QIcon const &icon, QWidget *parent)
-: QWidget(parent), mId(id), mIcon(icon), mText(name)
+												   QIcon const &icon, QWidget *parent)
+	: QWidget(parent), mId(id), mIcon(icon), mText(name)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(4, 4, 4, 4);
@@ -38,7 +38,12 @@ PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &
 }
 
 PaletteToolbox::PaletteToolbox(QWidget *parent)
-	: QWidget(parent)
+	: QWidget(parent), mCurrentTab(0)
+{
+	createPalette();
+}
+
+void PaletteToolbox::createPalette()
 {
 	mLayout = new QVBoxLayout;
 	mLayout->setSpacing(6);
@@ -55,6 +60,11 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 
 PaletteToolbox::~PaletteToolbox()
 {
+	deletePalette();
+}
+
+void PaletteToolbox::deletePalette()
+{
 	mScrollArea->takeWidget();
 	delete mScrollArea;
 	delete mComboBox;
@@ -62,10 +72,19 @@ PaletteToolbox::~PaletteToolbox()
 
 	for (int i = 0; i < mTabs.count(); i++)
 		delete mTabs[i];
+	mTabs.clear();
+	mTabNames.clear();
+	mCategories.clear();
+}
+
+void PaletteToolbox::setActiveEditor(Id id)
+{
+	setActiveEditor(mCategories.value(id, 0));
 }
 
 void PaletteToolbox::setActiveEditor(int const comboIndex)
 {
+	mCurrentTab = comboIndex;
 	if (mTabs.size() > 0) {
 		mScrollArea->takeWidget(); // Save current editor from extermination.
 		mScrollArea->setWidget(mTabs[comboIndex]);
@@ -181,4 +200,20 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 		child->close();
 	else
 		child->show();
+}
+
+Id PaletteToolbox::currentTab()
+{
+	return mCategories.key(mCurrentTab);
+}
+
+void PaletteToolbox::setComboBox(Id id)
+{
+	mComboBox->setCurrentIndex(mCategories.value(id, -1));
+}
+
+
+void PaletteToolbox::recreateTabs() {
+	deletePalette();
+	createPalette();
 }

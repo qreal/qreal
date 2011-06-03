@@ -53,6 +53,7 @@ void UnrealRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum con
 
 void UnrealRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode)
 {
+	Q_UNUSED(mode)
 	mSensors[port] = new sensorImplementations::UnrealColorSensorImplementation(port, mD2Model);
 }
 

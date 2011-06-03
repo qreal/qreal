@@ -792,6 +792,7 @@ void MainWindow::showPreferencesDialog()
 	PreferencesDialog preferencesDialog(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 	if (getCurrentTab() != NULL) {
 		connect(&preferencesDialog, SIGNAL(gridChanged()), getCurrentTab(), SLOT(invalidateScene()));
+		connect(&preferencesDialog, SIGNAL(iconsetChanged()), this, SLOT(updatePaletteIcons()));
 	}
 	preferencesDialog.exec();
 }
@@ -1304,7 +1305,7 @@ gui::ErrorReporter *MainWindow::errorReporter()
 	return mErrorReporter;
 }
 
-void qReal::MainWindow::on_actionNew_Diagram_triggered()
+void MainWindow::on_actionNew_Diagram_triggered()
 {
 	if (getCurrentTab() == NULL || getCurrentTab()->mvIface() == NULL)
 		return;
@@ -1312,3 +1313,16 @@ void qReal::MainWindow::on_actionNew_Diagram_triggered()
 	Id const diagram = getCurrentTab()->mvIface()->rootId();  // Or some other way to find current diagram.
 	createDiagram(diagram.type().toString());
 }
+
+void MainWindow::updatePaletteIcons()
+{
+	Id currentId = mUi->paletteToolbox->currentTab();
+	mUi->paletteToolbox->recreateTabs();
+
+	loadPlugins();
+
+	mUi->paletteToolbox->setActiveEditor(currentId);
+	mUi->paletteToolbox->setComboBox(currentId);
+}
+
+

@@ -16,7 +16,25 @@ public:
 protected:
 	void changeEvent(QEvent *e);
 
+signals:
+	void gridChanged();
+	void iconsetChanged();
+
+private slots:
+	void cancel();
+	void applyChanges();
+	void saveAndClose();
+	void systemChoosingButtonClicked();
+	void widthGridSliderMoved(int value);
+	void indexGridSliderMoved(int value);
+
+	void browseImagesPath();
+
 private:
+	void initPreferences();
+	void initCompilersSettings(QString const &pathToQmake,
+			QString const &pathToMake, QString const &pluginExtension, QString const &prefix);
+
 	Ui::PreferencesDialog *ui;
 	QAction * const mShowGridAction;
 	QAction * const mShowAlignmentAction;
@@ -25,17 +43,6 @@ private:
 	int mWithGrid;
 	int mIndexGrid;
 
-	void applyChanges();
-	void initPreferences();
-	void initCompilersSettings(QString const &pathToQmake,
-			QString const &pathToMake, QString const &pluginExtension, QString const &prefix);
-private slots:
-	void on_cancelButton_clicked();
-	void on_applyButton_clicked();
-	void on_okButton_clicked();
-	void systemChoosingButtonClicked();
-	void widthGridSliderMoved(int value);
-	void indexGridSliderMoved(int value);
-signals:
-	void gridChanged();
+	QString mLastIconsetPath;
+
 };

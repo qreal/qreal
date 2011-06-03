@@ -231,12 +231,15 @@ void SdfRenderer::image_draw(QDomElement &element)
 	float y1 = y1_def(element);
 	float x2 = x2_def(element);
 	float y2 = y2_def(element);
-	QString fileName = element.attribute("name", "error");
+	QSettings settings("SPbSU", "QReal");
+	QString fileName = settings.value("pathToImages").toString() + "/" + element.attribute("name", "error");
+
 	QPixmap pixmap;
+
 	if(mMapFileImage.contains(fileName)) {
 		pixmap = mMapFileImage.value(fileName);
 	} else {
-		pixmap = QPixmap(":/" + fileName);
+		pixmap = QPixmap(fileName);
 		mMapFileImage.insert(fileName, pixmap);
 	}
 	QRect rect(x1, y1, x2-x1, y2-y1);

@@ -139,6 +139,8 @@ private slots:
 
 	void on_actionNew_Diagram_triggered();
 
+	void updatePaletteIcons();
+
 private:
 	Ui::MainWindowUi *mUi;
 

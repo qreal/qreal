@@ -105,9 +105,6 @@ void BluetoothRobotCommunicationThread::sendI2C(QObject *addressee
 
 	send(command);
 
-	if (responseSize < 0)
-		return;
-
 	if (!waitForBytes(responseSize, port)) {
 		qDebug() << "No response, connection error";
 		emit response(addressee, QByteArray());
