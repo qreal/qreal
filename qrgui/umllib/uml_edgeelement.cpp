@@ -445,6 +445,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mDragPoint = -1;
 
 	connectToPort();
+	qDebug() << (mLine.first() == mLine.last());
 
 	if (mBeginning)
 		mBeginning->setPortsVisible(false);
