@@ -71,6 +71,8 @@ void NodeType::generateSdf() const
 
 	QDomNodeList images = mSdfDomElement.elementsByTagName("image");
 
+	if (mDiagram->name() == "RobotsDiagram")
+		return;
 	for (int i = 0; i < images.size(); ++i) {
 		QString const name = images.at(i).toElement().attribute("name");
 		mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + name + "</file>\n");
