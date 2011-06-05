@@ -450,7 +450,13 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		NodeElement *newParent = getNodeAt(newParentInnerPoint);
 
 		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-		if (newParent) {
+
+		QList<QGraphicsItem *> selected = evScene->selectedItems();
+
+		// when we select multiple elements and move them, position of mouse release event could be
+		// exactly over one of them. so to prevent handling this situation as putting all others in
+		// container, we check if new parent is selected right now
+		if (newParent && !selected.contains(newParent)) {
 			mGraphicalAssistApi->changeParent(id(), newParent->id(),
 					mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
 
