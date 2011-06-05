@@ -55,6 +55,7 @@ MainWindow::MainWindow()
 	, mRobotInterpreter(NULL)
 	, mBluetoothCommunication(NULL)
 	, mErrorReporter(NULL)
+	, mIsFullscreen(false)
 {
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("Splashscreen", true).toBool();
@@ -184,6 +185,8 @@ MainWindow::MainWindow()
 
 	if (settings.value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
+
+	mDocksVisibility.clear();
 }
 
 void MainWindow::connectActions()
@@ -228,6 +231,8 @@ void MainWindow::connectActions()
 	connect(mUi->actionStop_Running, SIGNAL(triggered()), this, SLOT(stop()));
 	connect(mUi->actionStop_Robot, SIGNAL(triggered()), this, SLOT(stopRobot()));
 	connect(mUi->actionRobot_Settings, SIGNAL(triggered()), this, SLOT(showRobotSettingsDialog()));
+
+	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -1339,4 +1344,36 @@ void MainWindow::applySettings()
 	getCurrentTab()->invalidateScene();
 	QSettings settings("SPbSU", "QReal");
 	mErrorReporter->updateVisibility(settings.value("warningWindow", true).toBool());
+}
+
+void MainWindow::hideDockWidget(QDockWidget *dockWidget, QString name)
+{
+	mDocksVisibility[name] = !dockWidget->isHidden();
+	if (mDocksVisibility[name])
+		dockWidget->hide();
+}
+
+void MainWindow::showDockWidget(QDockWidget *dockWidget, QString name)
+{
+	if (mDocksVisibility[name])
+		dockWidget->show();
+}
+
+void MainWindow::fullscreen()
+{
+	mIsFullscreen = !mIsFullscreen;
+
+	if (mIsFullscreen) {
+		hideDockWidget(mUi->minimapDock, "minimap");
+		hideDockWidget(mUi->graphicalModelDock, "graphicalModel");
+		hideDockWidget(mUi->logicalModelDock, "logicalModel");
+		hideDockWidget(mUi->propertyDock, "propertyEditor");
+		hideDockWidget(mUi->errorDock, "errorReporter");
+	} else {
+		showDockWidget(mUi->minimapDock, "minimap");
+		showDockWidget(mUi->graphicalModelDock, "graphicalModel");
+		showDockWidget(mUi->logicalModelDock, "logicalModel");
+		showDockWidget(mUi->propertyDock, "propertyEditor");
+		showDockWidget(mUi->errorDock, "errorReporter");
+	}
 }

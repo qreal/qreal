@@ -298,6 +298,8 @@
    <addaction name="actionStop_Robot"/>
    <addaction name="separator"/>
    <addaction name="actionRobot_Settings"/>
+   <addaction name="separator"/>
+   <addaction name="actionFullscreen"/>
   </widget>
   <widget class="QDockWidget" name="logicalModelDock">
    <property name="features">
@@ -695,6 +697,14 @@
    </property>
    <property name="toolTip">
     <string>Create new diagram in a current model</string>
+   </property>
+  </action>
+  <action name="actionFullscreen">
+   <property name="text">
+    <string>Fullscreen Mode</string>
+   </property>
+   <property name="toolTip">
+    <string>Fullscreen Mode</string>
    </property>
   </action>
  </widget>
