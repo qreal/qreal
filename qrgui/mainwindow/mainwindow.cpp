@@ -1416,7 +1416,7 @@ void MainWindow::setDiagramCreateFlag()
 void MainWindow::diagramInCreateListDeselect()
 {
 	if (!mDiagramCreateFlag)
-		deleteFromExplorer(false);
+		deleteFromExplorer(true);
 }
 
 void MainWindow::diagramInCreateListSelected(int num)
