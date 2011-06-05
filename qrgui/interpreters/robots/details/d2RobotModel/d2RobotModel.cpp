@@ -56,7 +56,8 @@ SensorsConfiguration &D2RobotModel::configuration()
 
 D2ModelWidget *D2RobotModel::createModelWidget()
 {
-	return new D2ModelWidget(this, &mWorldModel);
+	mDrawer = new D2ModelWidget(this, &mWorldModel);
+	return mDrawer;
 }
 
 void D2RobotModel::startInit()
