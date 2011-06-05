@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <QtGui/QWidget>
 #include <QtGui/QGraphicsScene>
 #include <QtGui/QGraphicsRectItem>
