@@ -65,10 +65,13 @@ void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 	int const indexGrid = QSettings("SPbSU", "QReal").value("IndexGrid", 50).toInt();
 	qreal const sceneX = rect.x();
 	qreal const sceneY = rect.y();
-	int startX = static_cast<int>(sceneX + 10) / indexGrid * indexGrid;
-	int endX = static_cast<int>(sceneX + rect.width() - 10) / indexGrid * indexGrid;
-	int startY = static_cast<int>(sceneY + 10) / indexGrid * indexGrid;
-	int endY = static_cast<int>(sceneY + rect.height() - 10) / indexGrid * indexGrid;
+
+	int const indent = 100; // should be enough
+
+	int startX = static_cast<int>(sceneX + 10) / indexGrid * indexGrid - indent;
+	int endX = static_cast<int>(sceneX + rect.width() - 10) / indexGrid * indexGrid + indent;
+	int startY = static_cast<int>(sceneY + 10) / indexGrid * indexGrid - indent;
+	int endY = static_cast<int>(sceneY + rect.height() - 10) / indexGrid * indexGrid + indent;
 	for (int i = startX; i <= endX; i = i + indexGrid) {
 		QLineF line(i, startY, i, endY);
 		painter->drawLine(line);
