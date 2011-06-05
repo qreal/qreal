@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>QReal</string>
+   <string>QReal:Robots</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../qrgui.qrc">
