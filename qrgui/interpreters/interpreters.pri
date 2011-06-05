@@ -74,8 +74,13 @@ HEADERS += \
 	interpreters/robots/details/robotImplementations/realRobotModelImplementation.h \
 	interpreters/robots/details/robotImplementations/nullRobotModelImplementation.h \
 	interpreters/robots/details/robotImplementations/unrealRobotModelImplementation.h \
+	interpreters/robots/details/d2RobotModel/d2ModelWidget.h \
 	interpreters/robots/details/d2RobotModel/d2RobotModel.h \
+	interpreters/robots/details/d2RobotModel/iConfigurableModel.h \
 	interpreters/robots/details/d2RobotModel/robotDrawer.h \
+	interpreters/robots/details/d2RobotModel/sensorsConfiguration.h \
+	interpreters/robots/details/d2RobotModel/worldDrawer.h \
+	interpreters/robots/details/d2RobotModel/worldModel.h \
 
 SOURCES += \
 	interpreters/robots/interpreter.cpp \
@@ -136,8 +141,12 @@ SOURCES += \
 	interpreters/robots/details/robotImplementations/realRobotModelImplementation.cpp \
 	interpreters/robots/details/robotImplementations/nullRobotModelImplementation.cpp \
 	interpreters/robots/details/robotImplementations/unrealRobotModelImplementation.cpp \
+	interpreters/robots/details/d2RobotModel/d2ModelWidget.cpp \
 	interpreters/robots/details/d2RobotModel/d2RobotModel.cpp \
 	interpreters/robots/details/d2RobotModel/robotDrawer.cpp \
+	interpreters/robots/details/d2RobotModel/sensorsConfiguration.cpp \
+	interpreters/robots/details/d2RobotModel/worldDrawer.cpp \
+	interpreters/robots/details/d2RobotModel/worldModel.cpp \
 
 FORMS += \
 	interpreters/robots/details/d2RobotModel/d2Form.ui \

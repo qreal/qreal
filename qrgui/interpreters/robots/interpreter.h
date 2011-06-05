@@ -12,6 +12,7 @@
 #include "details/robotParts/robotModel.h"
 #include "details/thread.h"
 #include "details/blocksTable.h"
+#include "details/d2RobotModel/d2RobotModel.h"
 
 #include "../visualDebugger/blockParser.h"
 
@@ -27,7 +28,9 @@ public:
 	Interpreter(models::GraphicalModelAssistApi const &graphicalModelApi
 			, models::LogicalModelAssistApi const &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterface
-			, details::RobotModel * const robotModel);
+			, RobotCommunicationInterface * const robotCommunicationInterface
+			, robotModelType::robotModelTypeEnum modelType
+			);
 	~Interpreter();
 
 	details::RobotModel *robotModel();
@@ -39,7 +42,8 @@ public:
 			, sensorType::SensorTypeEnum const &port4);
 	void stop();
 	void stopRobot();
-	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
+	void setRobotImplementation(robotModelType::robotModelTypeEnum implementationType
+			, RobotCommunicationInterface * const robotCommunicationInterface);
 
 private slots:
 	void threadStopped();
@@ -68,7 +72,10 @@ private:
 	details::BlocksTable *mBlocksTable;  // Has ownership
 	BlockParser *mParser;
 	QTimer *mTimer;
+	details::d2Model::D2ModelWidget *mD2ModelWidget;
+	details::d2Model::D2RobotModel *mD2RobotModel;
 
+	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	Id const findStartingElement(Id const &diagram) const;
 	void addThread(details::Thread * const thread);
 	void updateSensorValues (QString const &sensorVariableName, int sensorValue);

@@ -5,8 +5,8 @@ using namespace details::d2Model;
 
 D2RobotModel::D2RobotModel(QObject *parent)
 	: QObject(parent)
+	, mDrawer(NULL)
 {
-	mDrawer = new RobotDrawer();
 	mTimer = new QTimer(this);
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(nextFragment()));
 	init();
@@ -14,7 +14,6 @@ D2RobotModel::D2RobotModel(QObject *parent)
 
 D2RobotModel::~D2RobotModel()
 {
-	delete mDrawer;
 }
 
 void D2RobotModel::init()
@@ -48,6 +47,16 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 {
 	mMotors[port]->speed = speed;
 	mMotors[port]->degrees = degrees;
+}
+
+SensorsConfiguration &D2RobotModel::configuration()
+{
+	return mSensorsConfiguration;
+}
+
+D2ModelWidget *D2RobotModel::createModelWidget()
+{
+	return new D2ModelWidget(this, &mWorldModel);
 }
 
 void D2RobotModel::startInit()
