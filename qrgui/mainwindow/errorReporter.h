@@ -26,15 +26,21 @@ public:
 	bool showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const;
 
 	void clear();
+
+public slots:
+	void updateVisibility(bool isVisible);
+
 private:
+	static QString severityMessage(Error const &error);
+	void showError(Error const &error, ErrorListWidget* const errorListWidget) const;
+
 	QList<Error> mErrors;
 
 	ErrorListWidget* const mErrorListWidget;  // Doesn't have ownership
 	QDockWidget* const mErrorList;  // Doesn't have ownership
 
-	static QString severityMessage(Error const &error);
-	void showError(Error const &error, ErrorListWidget* const errorListWidget) const;
-
+	/** @brief Should error window be shown or not*/
+	bool mIsVisible;
 };
 
 }

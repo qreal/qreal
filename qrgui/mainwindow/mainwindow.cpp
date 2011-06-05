@@ -156,6 +156,7 @@ MainWindow::MainWindow()
 	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
+	mErrorReporter->updateVisibility(settings.value("warningWindow", true).toBool());
 
 	QString const defaultBluetoothPortName = settings.value("bluetoothPortName", "").toString();
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
@@ -222,6 +223,10 @@ void MainWindow::connectActions()
 	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(mUi->actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
+
+	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(run()));
+	connect(mUi->actionStop_Running, SIGNAL(triggered()), this, SLOT(stop()));
+	connect(mUi->actionStop_Robot, SIGNAL(triggered()), this, SLOT(stopRobot()));
 	connect(mUi->actionRobot_Settings, SIGNAL(triggered()), this, SLOT(showRobotSettingsDialog()));
 }
 
@@ -793,6 +798,7 @@ void MainWindow::showPreferencesDialog()
 	if (getCurrentTab() != NULL) {
 		connect(&preferencesDialog, SIGNAL(gridChanged()), getCurrentTab(), SLOT(invalidateScene()));
 		connect(&preferencesDialog, SIGNAL(iconsetChanged()), this, SLOT(updatePaletteIcons()));
+		connect(&preferencesDialog, SIGNAL(settingsApplied()), this, SLOT(applySettings()));
 	}
 	preferencesDialog.exec();
 }
@@ -1316,6 +1322,9 @@ void MainWindow::on_actionNew_Diagram_triggered()
 
 void MainWindow::updatePaletteIcons()
 {
+	mUi->graphicalModelExplorer->viewport()->update();
+	mUi->logicalModelExplorer->viewport()->update();
+
 	Id currentId = mUi->paletteToolbox->currentTab();
 	mUi->paletteToolbox->recreateTabs();
 
@@ -1325,4 +1334,9 @@ void MainWindow::updatePaletteIcons()
 	mUi->paletteToolbox->setComboBox(currentId);
 }
 
-
+void MainWindow::applySettings()
+{
+	getCurrentTab()->invalidateScene();
+	QSettings settings("SPbSU", "QReal");
+	mErrorReporter->updateVisibility(settings.value("warningWindow", true).toBool());
+}

@@ -9,13 +9,28 @@ using namespace gui;
 ErrorReporter::ErrorReporter()
 	: mErrorListWidget(NULL)
 	, mErrorList(NULL)
+	, mIsVisible(true)
 {
 }
 
 ErrorReporter::ErrorReporter(ErrorListWidget* const errorListWidget, QDockWidget* const errorList)
 	: mErrorListWidget(errorListWidget)
 	, mErrorList(errorList)
+	, mIsVisible(true)
 {
+}
+
+void ErrorReporter::updateVisibility(bool isVisible)
+{
+	if (mIsVisible == isVisible)
+		return;
+
+	mIsVisible = isVisible;
+
+	if (!mIsVisible)
+		mErrorList->hide();
+	else if (mErrorListWidget->count() > 0)
+		mErrorList->show();
 }
 
 void ErrorReporter::addInformation(QString const &message, Id const &position)
@@ -74,7 +89,7 @@ void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorLi
 	if (!errorListWidget)
 		return;
 
-	if (mErrorList && !mErrorList->isVisible())
+	if (mErrorList && !mErrorList->isVisible() &&  mIsVisible)
 		mErrorList->setVisible(true);
 
 	QListWidgetItem* item = new QListWidgetItem(errorListWidget);

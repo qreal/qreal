@@ -99,6 +99,8 @@ private slots:
 
 	void sceneSelectionChanged();
 
+	void applySettings();
+
 	void deleteFromScene(QGraphicsItem *target);
 
 	void activateSubdiagram(QModelIndex const &idx);

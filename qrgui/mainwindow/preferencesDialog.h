@@ -19,6 +19,7 @@ protected:
 signals:
 	void gridChanged();
 	void iconsetChanged();
+	void settingsApplied();
 
 private slots:
 	void cancel();

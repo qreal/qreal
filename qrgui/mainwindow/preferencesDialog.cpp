@@ -3,6 +3,7 @@
 
 #include <QSettings>
 #include <QFileDialog>
+
 PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * const showAlignmentAction
 		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
 	: QDialog(parent), ui(new Ui::PreferencesDialog), mShowGridAction(showGridAction), mShowAlignmentAction(showAlignmentAction)
@@ -70,6 +71,7 @@ void PreferencesDialog::initPreferences()
 	ui->splashScreenCheckBox->setChecked(settings.value("Splashscreen", true).toBool());
 	ui->openGLCheckBox->setChecked(settings.value("OpenGL", true).toBool());
 
+	ui->warningWindowBox->setChecked(settings.value("warningWindow", true).toBool());
 	ui->imagesPathEdit->setText(settings.value("pathToImages", "./images/iconset1/").toString());
 
 	ui->windowsButton->setChecked(settings.value("windowsButton", false).toBool());
@@ -112,6 +114,7 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("Antialiasing", ui->antialiasingCheckBox->isChecked());
 	settings.setValue("OpenGL", ui->openGLCheckBox->isChecked());
 
+	settings.setValue("warningWindow", ui->warningWindowBox->isChecked());
 	settings.setValue("pathToImages", ui->imagesPathEdit->text());
 
 	settings.setValue("windowsButton", ui->windowsButton->isChecked());
@@ -133,6 +136,8 @@ void PreferencesDialog::applyChanges()
 
 	if (mLastIconsetPath != ui->imagesPathEdit->text())
 		emit iconsetChanged();
+
+	emit settingsApplied();
 }
 
 void PreferencesDialog::changeEvent(QEvent *e)
