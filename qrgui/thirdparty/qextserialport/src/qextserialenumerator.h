@@ -40,7 +40,7 @@ struct QextPortInfo {
 #include <QWidget>
 class QextSerialEnumerator;
 
-class QextSerialRegistrationWidget : public QWidget
+class QEXTSERIALPORT_EXPORT QextSerialRegistrationWidget : public QWidget
 {
     Q_OBJECT
     public:
