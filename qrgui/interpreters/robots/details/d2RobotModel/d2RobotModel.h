@@ -44,7 +44,7 @@ private:
 		unsigned time;
 	};
 
-	D2ModelWidget *mDrawer;
+	D2ModelWidget *mD2ModelWidget;
 	QTimer *mTimer;
 	Motor *mMotorA;
 	Motor *mMotorB;

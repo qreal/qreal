@@ -5,7 +5,7 @@ using namespace details::d2Model;
 
 D2RobotModel::D2RobotModel(QObject *parent)
 	: QObject(parent)
-	, mDrawer(NULL)
+	, mD2ModelWidget(NULL)
 {
 	mTimer = new QTimer(this);
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(nextFragment()));
@@ -56,30 +56,30 @@ SensorsConfiguration &D2RobotModel::configuration()
 
 D2ModelWidget *D2RobotModel::createModelWidget()
 {
-	mDrawer = new D2ModelWidget(this, &mWorldModel);
-	return mDrawer;
+	mD2ModelWidget = new D2ModelWidget(this, &mWorldModel);
+	return mD2ModelWidget;
 }
 
 void D2RobotModel::startInit()
 {
 	init();
-	mDrawer->init();
+	mD2ModelWidget->init();
 	mTimer->start(timeInterval);
 }
 
 void D2RobotModel::stopRobot()
 {
 	mTimer->stop();
-	mDrawer->close();
+	mD2ModelWidget->close();
 }
 
 void D2RobotModel::countBeep()
 {
 	if (mBeep.time > 0) {
-		mDrawer->drawBeep(QColor(Qt::red));
+		mD2ModelWidget->drawBeep(QColor(Qt::red));
 		mBeep.time -= timeInterval;
 	} else
-		mDrawer->drawBeep(QColor(Qt::green));
+		mD2ModelWidget->drawBeep(QColor(Qt::green));
 }
 
 void D2RobotModel::countNewCoord()
@@ -124,7 +124,7 @@ void D2RobotModel::countNewCoord()
 
 void D2RobotModel::nextFragment()
 {
-	mDrawer->draw(mPos, mAngle, mRotatePoint);
+	mD2ModelWidget->draw(mPos, mAngle, mRotatePoint);
 	countNewCoord();
 	countBeep();
 }
