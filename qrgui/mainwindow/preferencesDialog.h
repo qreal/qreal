@@ -45,5 +45,4 @@ private:
 	int mIndexGrid;
 
 	QString mLastIconsetPath;
-
 };

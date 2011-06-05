@@ -26,6 +26,7 @@ public:
 	bool showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const;
 
 	void clear();
+	void clearErrors();
 
 public slots:
 	void updateVisibility(bool isVisible);
