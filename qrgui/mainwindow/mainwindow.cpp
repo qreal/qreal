@@ -152,6 +152,8 @@ MainWindow::MainWindow()
 	mVisualDebugger = new VisualDebugger(mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi(), *this);
 	mDebuggerConnector = new DebuggerConnector();
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
+	mErrorReporter->updateVisibility(settings.value("warningWindow", true).toBool());
+
 	connect(mDebuggerConnector, SIGNAL(readyReadStdOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
 	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerErrOutput(QString)));
 
@@ -1025,6 +1027,7 @@ void MainWindow::showPreferencesDialog()
 	PreferencesDialog preferencesDialog(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 	if (getCurrentTab() != NULL) {
 		connect(&preferencesDialog, SIGNAL(gridChanged()), getCurrentTab(), SLOT(invalidateScene()));
+		connect(&preferencesDialog, SIGNAL(settingsApplied()), this, SLOT(applySettings()));
 	}
 	preferencesDialog.exec();
 }
@@ -1711,4 +1714,11 @@ void MainWindow::dehighlight()
 gui::ErrorReporter *MainWindow::errorReporter()
 {
 	return mErrorReporter;
+}
+
+void MainWindow::applySettings()
+{
+	getCurrentTab()->invalidateScene();
+	QSettings settings("SPbSU", "QReal");
+	mErrorReporter->updateVisibility(settings.value("warningWindow", true).toBool());
 }

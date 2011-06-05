@@ -89,6 +89,8 @@ public slots:
 	void generateToJava();
 	void parseJavaLibraries();
 	void deleteFromScene();
+	void applySettings();
+
 	void deleteFromScene(QGraphicsItem *target);
 
 	void activateSubdiagram(QModelIndex const &idx);
