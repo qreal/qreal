@@ -50,6 +50,10 @@ MainWindow::MainWindow()
 	: mUi(new Ui::MainWindowUi())
 	, mListenerManager(NULL)
 	, mPropertyModel(mEditorManager)
+	, mGesturesWidget(NULL)
+	, mErrorReporter(NULL)
+	, mVisualDebugger(NULL)
+	, mIsFullscreen(false)
 {
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("Splashscreen", true).toBool();
@@ -170,6 +174,8 @@ MainWindow::MainWindow()
 
 	if (settings.value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
+
+	mDocksVisibility.clear();
 }
 
 void MainWindow::connectActions()
@@ -219,6 +225,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(mUi->actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
+	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connectDebugActions();
 }
@@ -1721,4 +1728,36 @@ void MainWindow::applySettings()
 	getCurrentTab()->invalidateScene();
 	QSettings settings("SPbSU", "QReal");
 	mErrorReporter->updateVisibility(settings.value("warningWindow", true).toBool());
+}
+
+void MainWindow::hideDockWidget(QDockWidget *dockWidget, QString name)
+{
+	mDocksVisibility[name] = !dockWidget->isHidden();
+	if (mDocksVisibility[name])
+		dockWidget->hide();
+}
+
+void MainWindow::showDockWidget(QDockWidget *dockWidget, QString name)
+{
+	if (mDocksVisibility[name])
+		dockWidget->show();
+}
+
+void MainWindow::fullscreen()
+{
+	mIsFullscreen = !mIsFullscreen;
+
+	if (mIsFullscreen) {
+		hideDockWidget(mUi->minimapDock, "minimap");
+		hideDockWidget(mUi->graphicalModelDock, "graphicalModel");
+		hideDockWidget(mUi->logicalModelDock, "logicalModel");
+		hideDockWidget(mUi->propertyDock, "propertyEditor");
+		hideDockWidget(mUi->errorDock, "errorReporter");
+	} else {
+		showDockWidget(mUi->minimapDock, "minimap");
+		showDockWidget(mUi->graphicalModelDock, "graphicalModel");
+		showDockWidget(mUi->logicalModelDock, "logicalModel");
+		showDockWidget(mUi->propertyDock, "propertyEditor");
+		showDockWidget(mUi->errorDock, "errorReporter");
+	}
 }
