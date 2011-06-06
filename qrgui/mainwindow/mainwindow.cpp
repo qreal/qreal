@@ -161,13 +161,9 @@ MainWindow::MainWindow()
 
 	QString const defaultBluetoothPortName = settings.value("bluetoothPortName", "").toString();
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
-	mD2Model = new interpreters::robots::details::d2Model::D2RobotModel();
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(settings.value("robotModel", "1").toInt());
-	interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation *robotImpl = interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation::robotModel(typeOfRobotModel, mBluetoothCommunication, mD2Model);
-	interpreters::robots::details::RobotModel *robotModel = new interpreters::robots::details::RobotModel();
 	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
-			, mModels->logicalModelAssistApi(), *this, robotModel);
-	mRobotInterpreter->setRobotImplementation(robotImpl);
+			, mModels->logicalModelAssistApi(), *this, mBluetoothCommunication, typeOfRobotModel);
 	sensorType::SensorTypeEnum port1 = static_cast<sensorType::SensorTypeEnum>(settings.value("port1SensorType", "0").toInt());
 	sensorType::SensorTypeEnum port2 = static_cast<sensorType::SensorTypeEnum>(settings.value("port2SensorType", "0").toInt());
 	sensorType::SensorTypeEnum port3 = static_cast<sensorType::SensorTypeEnum>(settings.value("port3SensorType", "0").toInt());
@@ -1300,8 +1296,7 @@ void MainWindow::showRobotSettingsDialog()
 		mBluetoothCommunication->setPortName(robotSettingsDialog.selectedPortName());
 		QSettings settings("SPbSU", "QReal");
 		robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(settings.value("robotModel", "1").toInt());
-		interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation *robotImpl = interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation::robotModel(typeOfRobotModel, mBluetoothCommunication, mD2Model);
-		mRobotInterpreter->setRobotImplementation(robotImpl);
+		mRobotInterpreter->setRobotImplementation(typeOfRobotModel, mBluetoothCommunication);
 		mRobotInterpreter->configureSensors(
 				robotSettingsDialog.selectedPort1Sensor()
 				, robotSettingsDialog.selectedPort2Sensor()

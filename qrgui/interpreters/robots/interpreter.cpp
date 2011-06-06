@@ -14,17 +14,23 @@ const Id startingElementType1 = Id("RobotsMetamodel", "RobotsDiagram", "InitialB
 Interpreter::Interpreter(models::GraphicalModelAssistApi const &graphicalModelApi
 		, models::LogicalModelAssistApi const &logicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-		, RobotModel * const robotModel)
+		, RobotCommunicationInterface * const robotCommunicationInterface
+		, robotModelType::robotModelTypeEnum modelType)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mLogicalModelApi(logicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mState(idle)
-	, mRobotModel(robotModel)
+	, mRobotModel(new RobotModel())
 	, mBlocksTable(NULL)
 {
 	mParser = new BlockParser(mInterpretersInterface.errorReporter());
 	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel, mInterpretersInterface.errorReporter(), mParser);
 	mTimer = new QTimer();
+
+	mD2RobotModel = new d2Model::D2RobotModel();
+	mD2ModelWidget = mD2RobotModel->createModelWidget();
+
+	setRobotImplementation(modelType, robotCommunicationInterface);
 }
 
 Interpreter::~Interpreter()
@@ -71,6 +77,13 @@ void Interpreter::stop()
 void Interpreter::stopRobot()
 {
 	stop();
+}
+
+void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum implementationType, RobotCommunicationInterface * const robotCommunicationInterface)
+{
+	robotImplementations::AbstractRobotModelImplementation *robotImpl =
+			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, robotCommunicationInterface, mD2RobotModel);
+	setRobotImplementation(robotImpl);
 }
 
 Id const Interpreter::findStartingElement(Id const &diagram) const

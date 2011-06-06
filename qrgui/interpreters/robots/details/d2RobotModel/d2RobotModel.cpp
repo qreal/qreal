@@ -5,8 +5,8 @@ using namespace details::d2Model;
 
 D2RobotModel::D2RobotModel(QObject *parent)
 	: QObject(parent)
+	, mD2ModelWidget(NULL)
 {
-	mDrawer = new RobotDrawer();
 	mTimer = new QTimer(this);
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(nextFragment()));
 	init();
@@ -14,7 +14,6 @@ D2RobotModel::D2RobotModel(QObject *parent)
 
 D2RobotModel::~D2RobotModel()
 {
-	delete mDrawer;
 }
 
 void D2RobotModel::init()
@@ -50,26 +49,37 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 	mMotors[port]->degrees = degrees;
 }
 
+SensorsConfiguration &D2RobotModel::configuration()
+{
+	return mSensorsConfiguration;
+}
+
+D2ModelWidget *D2RobotModel::createModelWidget()
+{
+	mD2ModelWidget = new D2ModelWidget(this, &mWorldModel);
+	return mD2ModelWidget;
+}
+
 void D2RobotModel::startInit()
 {
 	init();
-	mDrawer->init();
+	mD2ModelWidget->init();
 	mTimer->start(timeInterval);
 }
 
 void D2RobotModel::stopRobot()
 {
 	mTimer->stop();
-	mDrawer->close();
+	mD2ModelWidget->close();
 }
 
 void D2RobotModel::countBeep()
 {
 	if (mBeep.time > 0) {
-		mDrawer->drawBeep(QColor(Qt::red));
+		mD2ModelWidget->drawBeep(QColor(Qt::red));
 		mBeep.time -= timeInterval;
 	} else
-		mDrawer->drawBeep(QColor(Qt::green));
+		mD2ModelWidget->drawBeep(QColor(Qt::green));
 }
 
 void D2RobotModel::countNewCoord()
@@ -88,7 +98,7 @@ void D2RobotModel::countNewCoord()
 			angularSpeed = vSpeed / vRadius;
 		else
 			angularSpeed = averangeSpeed / averangeRadius;
-		gamma = timeInterval * angularSpeed;//íóæåí óãîë â ðàäèàíàõ
+		gamma = timeInterval * angularSpeed;//Ð½ÑƒÐ¶ÐµÐ½ ÑƒÐ³Ð¾Ð» Ð² Ñ€Ð°Ð´Ð¸Ð°Ð½Ð°Ñ…
 		qreal const gammaDegrees = gamma * 180 / M_PI;
 
 		QTransform map;
@@ -101,7 +111,7 @@ void D2RobotModel::countNewCoord()
 		deltaX = newStart.x();
 		deltaY = newStart.y();
 
-		mAngle += gammaDegrees;//íóæåí óãîë â ãðàäóñàõ
+		mAngle += gammaDegrees;//Ð½ÑƒÐ¶ÐµÐ½ ÑƒÐ³Ð¾Ð» Ð² Ð³Ñ€Ð°Ð´ÑƒÑÐ°Ñ…
 	} else {
 		deltaY = averangeSpeed * timeInterval * sin(mAngle * M_PI / 180);
 		deltaX = averangeSpeed * timeInterval * cos(mAngle * M_PI / 180);
@@ -114,7 +124,7 @@ void D2RobotModel::countNewCoord()
 
 void D2RobotModel::nextFragment()
 {
-	mDrawer->draw(mPos, mAngle, mRotatePoint);
+	mD2ModelWidget->draw(mPos, mAngle, mRotatePoint);
 	countNewCoord();
 	countBeep();
 }

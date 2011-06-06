@@ -1,8 +1,12 @@
 #pragma once
+
 #include <QtCore/QObject>
 #include <QtCore/QTimer>
 #include <QtCore/qmath.h>
-#include "robotDrawer.h"
+
+#include "d2ModelWidget.h"
+#include "iConfigurableModel.h"
+#include "worldModel.h"
 
 namespace qReal {
 namespace interpreters {
@@ -12,7 +16,7 @@ namespace d2Model {
 
 const int timeInterval = 5;
 
-class D2RobotModel : public QObject {
+class D2RobotModel : public QObject, public IConfigurableRobotModel {
 	Q_OBJECT
 
 public:
@@ -22,7 +26,13 @@ public:
 	void stopRobot();
 	void setBeep(unsigned freq, unsigned time);
 	void setNewMotor(int speed, long unsigned int degrees, int const port);
+	virtual SensorsConfiguration &configuration();
+	D2ModelWidget *createModelWidget();
 
+private slots:
+	void nextFragment();
+
+private:
 	struct Motor {
 		int radius;
 		int speed;
@@ -34,8 +44,7 @@ public:
 		unsigned time;
 	};
 
-private:
-	RobotDrawer *mDrawer;
+	D2ModelWidget *mD2ModelWidget;
 	QTimer *mTimer;
 	Motor *mMotorA;
 	Motor *mMotorB;
@@ -45,12 +54,13 @@ private:
 	QPointF mPos;
 	QPointF mRotatePoint;
 	QHash<int, Motor*> mMotors;
+	SensorsConfiguration mSensorsConfiguration;
+	WorldModel mWorldModel;
+
 	void init();
 	Motor* initMotor(int radius, int speed, long unsigned int degrees, int port);
 	void countNewCoord();
 	void countBeep();
-private slots:
-	void nextFragment();
 };
 
 }
