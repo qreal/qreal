@@ -518,15 +518,38 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				break;
 		}
 
-		NodeElement *newParent = getNodeAt(newParentInnerPoint);
-
-		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-
-		QList<QGraphicsItem *> selected = evScene->selectedItems();
-
 		// when we select multiple elements and move them, position of mouse release event could be
 		// exactly over one of them. so to prevent handling this situation as putting all others in
-		// container, we check if new parent is selected right now
+		// container, we check if new parent is selected right now.
+
+		// if we want to put multiple elements in a container, we should take scene()->items()
+		// and remove elements that are currently selected from it
+
+		QList<QGraphicsItem *> parentsList;
+		foreach (QGraphicsItem *item, scene()->items(newParentInnerPoint)) {
+			NodeElement *e = dynamic_cast<NodeElement *>(item);
+			if (e && (item != this))
+				parentsList.append(e);
+		}
+
+		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
+		QList<QGraphicsItem *> selected = evScene->selectedItems();
+
+		// delete from parents list ones that are selected right now
+		QList<QGraphicsItem *> realNewParents;
+		foreach (QGraphicsItem * item, parentsList){
+			if (!selected.contains(item))
+				realNewParents.append(item);
+		}
+
+		NodeElement *newParent = NULL;
+		int i = 0;
+		// we get the first valid NodeElement from realNewParents
+		while (!newParent && i < realNewParents.size()){
+			newParent = dynamic_cast<NodeElement *>(realNewParents.at(i));
+			i++;
+		}
+
 		if (newParent && !selected.contains(newParent)) {
 			mGraphicalAssistApi->changeParent(id(), newParent->id(),
 					mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
