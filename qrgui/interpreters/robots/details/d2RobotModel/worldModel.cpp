@@ -1,5 +1,7 @@
 #include "worldModel.h"
 
+#include <QtCore/QDebug>
+
 using namespace qReal::interpreters::robots::details::d2Model;
 
 int WorldModel::sonarReading(QPoint const &position, qreal direction) const
@@ -9,6 +11,7 @@ int WorldModel::sonarReading(QPoint const &position, qreal direction) const
 
 bool WorldModel::touchSensorReading(QPoint const &position, qreal direction) const
 {
+	qDebug() << "Reading color sensor";
 	return false;
 }
 

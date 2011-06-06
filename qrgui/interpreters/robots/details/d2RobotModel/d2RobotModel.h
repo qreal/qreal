@@ -29,6 +29,10 @@ public:
 	virtual SensorsConfiguration &configuration();
 	D2ModelWidget *createModelWidget();
 
+	bool readTouchSensor(inputPort::InputPortEnum const port) const;
+	int readSonarSensor(inputPort::InputPortEnum const port) const;
+	int readColorSensor(inputPort::InputPortEnum const port) const;
+
 private slots:
 	void nextFragment();
 

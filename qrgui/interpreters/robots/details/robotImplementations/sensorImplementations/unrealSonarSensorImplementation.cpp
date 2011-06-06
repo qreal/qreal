@@ -10,5 +10,5 @@ UnrealSonarSensorImplementation::UnrealSonarSensorImplementation(inputPort::Inpu
 
 void UnrealSonarSensorImplementation::read()
 {
-	emit response(13);
+	emit mD2Model->readSonarSensor(mPort);
 }

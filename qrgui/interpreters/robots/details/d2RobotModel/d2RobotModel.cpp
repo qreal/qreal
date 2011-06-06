@@ -60,6 +60,22 @@ D2ModelWidget *D2RobotModel::createModelWidget()
 	return mD2ModelWidget;
 }
 
+bool D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port) const
+{
+	// TODO: Add checks of sensor type.
+	return mWorldModel.touchSensorReading(mSensorsConfiguration.position(port), mSensorsConfiguration.direction(port));
+}
+
+int D2RobotModel::readSonarSensor(inputPort::InputPortEnum const port) const
+{
+	return mWorldModel.sonarReading(mSensorsConfiguration.position(port), mSensorsConfiguration.direction(port));
+}
+
+int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
+{
+	return mWorldModel.colorSensorReading(mSensorsConfiguration.position(port), mSensorsConfiguration.type(port));
+}
+
 void D2RobotModel::startInit()
 {
 	init();
