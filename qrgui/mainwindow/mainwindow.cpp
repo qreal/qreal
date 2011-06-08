@@ -442,7 +442,6 @@ QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
 	return dirName;
 }
 
-
 bool MainWindow::checkPluginsAndReopen()
 {
 	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
@@ -450,10 +449,10 @@ bool MainWindow::checkPluginsAndReopen()
 	bool loadingCancelled = false;
 
 	while (haveMissingPlugins && !loadingCancelled) {
-		QString text = "These plugins are not present, but needed to load the save:\n";
+		QString text = tr("These plugins are not present, but needed to load the save:\n");
 		foreach (Id const id, missingPlugins)
 			text += id.editor() + "\n";
-		text += "Do you want to create new project?";
+		text += tr("Do you want to create new project?");
 
 		QMessageBox::StandardButton button = QMessageBox::question(this, tr("Some plugins are missing"), text, QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
 
@@ -764,7 +763,7 @@ void MainWindow::generateEditor()
 		}
 	}
 	if (!found) {
-		QMessageBox::warning(this, tr("error"), "Cannot find the directory for saving");
+		QMessageBox::warning(this, tr("error"), tr("Cannot find the directory for saving"));
 		return;
 	}
 	foreach (Id const key, metamodelList.keys()) {
@@ -772,7 +771,7 @@ void MainWindow::generateEditor()
 		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
 
 		if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)) {
-			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to load generated editor %1?").arg(metamodelList[key]),
+			if (QMessageBox::question(this, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelList[key]),
 									  QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 				return;
 			QSettings settings("SPbSU", "QReal");
@@ -808,7 +807,7 @@ void MainWindow::generateEditorWithQRMC()
 		QString const objectType = mModels->logicalRepoApi().typeName(key);
 		if (objectType == "MetamodelDiagram") {
 			QString name = mModels->logicalRepoApi().stringProperty(key, "name of the directory");
-			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to compile and load editor %1?").arg(name),
+			if (QMessageBox::question(this, tr("loading.."), QString(tr("Do you want to compile and load editor %1?")).arg(name),
 									  QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 			{
 				continue;
@@ -817,7 +816,7 @@ void MainWindow::generateEditorWithQRMC()
 			progress->setValue(5);
 
 			if (!metaCompiler.compile(name)) { // generating source code for all metamodels
-				QMessageBox::warning(this, "error", "cannot generate source code for editor " + name);
+				QMessageBox::warning(this, tr("error"), tr("Cannot generate source code for editor ") + name);
 				qDebug() << "compilation failed";
 				continue;
 			}
@@ -846,7 +845,7 @@ void MainWindow::generateEditorWithQRMC()
 								mUi->paletteToolbox->deleteDiagramType(diagram);
 
 							if (!mEditorManager.unloadPlugin(normalizedName)) {
-								QMessageBox::warning(this, "error", "cannot unload plugin " + normalizedName);
+								QMessageBox::warning(this, tr("error"), tr("cannot unload plugin ") + normalizedName);
 								progress->close();
 								delete progress;
 								continue;
@@ -870,7 +869,7 @@ void MainWindow::generateEditorWithQRMC()
 		}
 	}
 	if (progress->value() != 100)
-		QMessageBox::warning(this, tr("error"), "cannot load new editor");
+		QMessageBox::warning(this, tr("error"), tr("cannot load new editor"));
 	progress->setValue(100);
 	progress->close();
 	delete progress;
@@ -883,7 +882,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 	int const progressBarHeight = 20;
 
 	if ((commandFirst == "") || (commandSecond == "") || (extension == "")) {
-		QMessageBox::warning(this, tr("error"), "please, fill compiler settings");
+		QMessageBox::warning(this, tr("error"), tr("please, fill compiler settings"));
 		return;
 	}
 
@@ -906,7 +905,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 			mUi->paletteToolbox->deleteDiagramType(diagram);
 
 		if (!mEditorManager.unloadPlugin(normalizeDirName)) {
-			QMessageBox::warning(this, "error", "cannot unload plugin");
+			QMessageBox::warning(this, tr("error"), tr("cannot unload plugin"));
 			progress->close();
 			delete progress;
 			return;
@@ -935,7 +934,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 		}
 	}
 	if (progress->value() != 100)
-		QMessageBox::warning(this, tr("error"), "cannot load new editor");
+		QMessageBox::warning(this, tr("error"), tr("cannot load new editor"));
 	progress->setValue(100);
 	progress->close();
 	delete progress;

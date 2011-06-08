@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>738</width>
+    <width>1062</width>
     <height>523</height>
    </rect>
   </property>
@@ -35,7 +35,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>738</width>
+     <width>1062</width>
      <height>21</height>
     </rect>
    </property>
@@ -231,6 +231,8 @@
    </attribute>
    <addaction name="actionZoom_In"/>
    <addaction name="actionZoom_Out"/>
+   <addaction name="separator"/>
+   <addaction name="actionFullscreen"/>
   </widget>
   <widget class="QDockWidget" name="logicalModelDock">
    <property name="features">
@@ -405,8 +407,6 @@
    <addaction name="actionStart_debugging"/>
    <addaction name="actionClose_all"/>
    <addaction name="actionNext"/>
-   <addaction name="separator"/>
-   <addaction name="actionFullscreen"/>
   </widget>
   <action name="actionQuit">
    <property name="checkable">
