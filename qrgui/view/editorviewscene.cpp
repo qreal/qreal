@@ -580,6 +580,10 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 	UML::Element* element = getElemAt(event->scenePos());
 
+	QList<QGraphicsItem *> list = selectedItems();
+	foreach(QGraphicsItem *item, list)
+		sendEvent(item, event);
+
 	if (event->button() == Qt::RightButton)
 	{
 		mouseMovementManager->addPoint(event->scenePos());

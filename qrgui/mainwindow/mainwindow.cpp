@@ -50,6 +50,10 @@ MainWindow::MainWindow()
 	: mUi(new Ui::MainWindowUi())
 	, mListenerManager(NULL)
 	, mPropertyModel(mEditorManager)
+	, mGesturesWidget(NULL)
+	, mErrorReporter(NULL)
+	, mVisualDebugger(NULL)
+	, mIsFullscreen(false)
 {
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("Splashscreen", true).toBool();
@@ -152,6 +156,8 @@ MainWindow::MainWindow()
 	mVisualDebugger = new VisualDebugger(mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi(), *this);
 	mDebuggerConnector = new DebuggerConnector();
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
+	mErrorReporter->updateVisibility(settings.value("warningWindow", true).toBool());
+
 	connect(mDebuggerConnector, SIGNAL(readyReadStdOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
 	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerErrOutput(QString)));
 
@@ -168,6 +174,8 @@ MainWindow::MainWindow()
 
 	if (settings.value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
+
+	mDocksVisibility.clear();
 }
 
 void MainWindow::connectActions()
@@ -217,6 +225,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(mUi->actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
+	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connectDebugActions();
 }
@@ -1025,6 +1034,7 @@ void MainWindow::showPreferencesDialog()
 	PreferencesDialog preferencesDialog(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 	if (getCurrentTab() != NULL) {
 		connect(&preferencesDialog, SIGNAL(gridChanged()), getCurrentTab(), SLOT(invalidateScene()));
+		connect(&preferencesDialog, SIGNAL(settingsApplied()), this, SLOT(applySettings()));
 	}
 	preferencesDialog.exec();
 }
@@ -1406,7 +1416,7 @@ void MainWindow::setDiagramCreateFlag()
 void MainWindow::diagramInCreateListDeselect()
 {
 	if (!mDiagramCreateFlag)
-		deleteFromExplorer(false);
+		deleteFromExplorer(true);
 }
 
 void MainWindow::diagramInCreateListSelected(int num)
@@ -1711,4 +1721,43 @@ void MainWindow::dehighlight()
 gui::ErrorReporter *MainWindow::errorReporter()
 {
 	return mErrorReporter;
+}
+
+void MainWindow::applySettings()
+{
+	getCurrentTab()->invalidateScene();
+	QSettings settings("SPbSU", "QReal");
+	mErrorReporter->updateVisibility(settings.value("warningWindow", true).toBool());
+}
+
+void MainWindow::hideDockWidget(QDockWidget *dockWidget, QString name)
+{
+	mDocksVisibility[name] = !dockWidget->isHidden();
+	if (mDocksVisibility[name])
+		dockWidget->hide();
+}
+
+void MainWindow::showDockWidget(QDockWidget *dockWidget, QString name)
+{
+	if (mDocksVisibility[name])
+		dockWidget->show();
+}
+
+void MainWindow::fullscreen()
+{
+	mIsFullscreen = !mIsFullscreen;
+
+	if (mIsFullscreen) {
+		hideDockWidget(mUi->minimapDock, "minimap");
+		hideDockWidget(mUi->graphicalModelDock, "graphicalModel");
+		hideDockWidget(mUi->logicalModelDock, "logicalModel");
+		hideDockWidget(mUi->propertyDock, "propertyEditor");
+		hideDockWidget(mUi->errorDock, "errorReporter");
+	} else {
+		showDockWidget(mUi->minimapDock, "minimap");
+		showDockWidget(mUi->graphicalModelDock, "graphicalModel");
+		showDockWidget(mUi->logicalModelDock, "logicalModel");
+		showDockWidget(mUi->propertyDock, "propertyEditor");
+		showDockWidget(mUi->errorDock, "errorReporter");
+	}
 }

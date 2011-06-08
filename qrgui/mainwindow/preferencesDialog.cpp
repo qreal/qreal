@@ -17,6 +17,9 @@ PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * c
 	connect(ui->otherButton, SIGNAL(clicked()), this, SLOT(systemChoosingButtonClicked()));
 	connect(ui->gridWidthSlider, SIGNAL(sliderMoved(int)), this, SLOT(widthGridSliderMoved(int)));
 	connect(ui->indexGridSlider, SIGNAL(sliderMoved(int)), this, SLOT(indexGridSliderMoved(int)));
+	connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
+	connect(ui->applyButton, SIGNAL(clicked()), this, SLOT(applyChanges()));
+	connect(ui->okButton, SIGNAL(clicked()), this, SLOT(saveAndClose()));
 }
 
 void PreferencesDialog::widthGridSliderMoved(int value)
@@ -61,6 +64,8 @@ void PreferencesDialog::initPreferences()
 	ui->antialiasingCheckBox->setChecked(settings.value("Antialiasing", true).toBool());
 	ui->splashScreenCheckBox->setChecked(settings.value("Splashscreen", true).toBool());
 	ui->openGLCheckBox->setChecked(settings.value("OpenGL", true).toBool());
+
+	ui->warningWindowBox->setChecked(settings.value("warningWindow", true).toBool());
 
 	ui->windowsButton->setChecked(settings.value("windowsButton", false).toBool());
 	ui->linuxButton->setChecked(settings.value("linuxButton", false).toBool());
@@ -108,6 +113,8 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("Antialiasing", ui->antialiasingCheckBox->isChecked());
 	settings.setValue("OpenGL", ui->openGLCheckBox->isChecked());
 
+	settings.setValue("warningWindow", ui->warningWindowBox->isChecked());
+
 	settings.setValue("windowsButton", ui->windowsButton->isChecked());
 	settings.setValue("linuxButton", ui->linuxButton->isChecked());
 	settings.setValue("otherButton", ui->otherButton->isChecked());
@@ -129,6 +136,8 @@ void PreferencesDialog::applyChanges()
 	mShowAlignmentAction->setChecked(ui->showAlignmentCheckBox->isChecked());
 	mActivateGridAction->setChecked(ui->activateGridCheckBox->isChecked());
 	mActivateAlignmentAction->setChecked(ui->activateAlignmentCheckBox->isChecked());
+
+	emit settingsApplied();
 }
 
 void PreferencesDialog::changeEvent(QEvent *e)
@@ -143,18 +152,13 @@ void PreferencesDialog::changeEvent(QEvent *e)
 	}
 }
 
-void PreferencesDialog::on_okButton_clicked()
+void PreferencesDialog::saveAndClose()
 {
 	applyChanges();
 	close();
 }
 
-void PreferencesDialog::on_applyButton_clicked()
-{
-	applyChanges();
-}
-
-void PreferencesDialog::on_cancelButton_clicked()
+void PreferencesDialog::cancel()
 {
 	ui->gridWidthSlider->setValue(mWithGrid);
 	ui->indexGridSlider->setValue(mIndexGrid);

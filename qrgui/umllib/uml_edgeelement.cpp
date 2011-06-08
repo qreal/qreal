@@ -673,10 +673,7 @@ bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst, 
 		}
 	}
 
-	bool reconnected = reconnectedSrc || reconnectedDst;
-	if (reconnected)
-		qDebug() << id() <<"jumps! " << reconnectedSrc << " " << reconnectedDst;
-	return reconnected;
+	return reconnectedSrc || reconnectedDst;
 }
 
 void EdgeElement::updateData()
