@@ -89,6 +89,7 @@ private slots:
 	bool checkPluginsAndReopen();
 	void saveAs();
 	void saveAll();
+	void fullscreen();
 
 	void print();
 	void makeSvg();
@@ -166,6 +167,11 @@ private:
 	interpreters::robots::details::d2Model::D2RobotModel *mD2Model;// Does not have ownership
 	gui::ErrorReporter *mErrorReporter;  // Has ownership
 
+	/** @brief Fullscreen mode flag */
+	bool mIsFullscreen;
+	/** @brief Internal map table to store info what widgets should we hide/show */
+	QMap<QString, bool> mDocksVisibility;
+
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
 			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
@@ -197,5 +203,17 @@ private:
 	void setSwitchAlignment(bool isChecked);
 
 	void setIndexesOfPropertyEditor(Id const &id);
+
+	/** @brief Check if we need to hide widget in fullscreen mode or not. If we do, hide it
+		@param dockWidget QDockWidget to hide
+		@param name Widget's name in internal map
+	*/
+	void hideDockWidget(QDockWidget *dockWidget, QString name);
+
+	/** @brief Check if we need to show widget in fullscreen mode or not. If we do, show it
+		@param dockWidget QDockWidget to show
+		@param name Widget's name in internal map
+	*/
+	void showDockWidget(QDockWidget *dockWidget, QString name);
 };
 }
