@@ -706,6 +706,9 @@
    <property name="toolTip">
     <string>Fullscreen Mode</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F</string>
+   </property>
   </action>
  </widget>
  <layoutdefault spacing="0" margin="0"/>
