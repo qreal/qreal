@@ -18,6 +18,8 @@
 #include "../pluginInterface/elementImpl.h"
 #include "../mainwindow/mainwindow.h"
 
+#include "../view/copypaste.h"
+
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"
 
@@ -39,6 +41,8 @@ namespace UML {
 		void copyChildren(NodeElement *source, bool viewOnly = false);
 		void copyEdges(NodeElement *source);
 		void copyProperties(NodeElement *source);
+
+		NodeElementSerializationData serializationData() const;
 
 		virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w, SdfRenderer *portrenderer);
 		virtual void paint(QPainter *,  const QStyleOptionGraphicsItem *, QWidget *);

@@ -10,14 +10,12 @@ struct ElementSerializationData
 	qReal::Id mId;
 	qReal::Id mLogicalId;
 
-	int mSerialId;
-
 	QMap<QString, QVariant> mProperties;
 };
 
 struct NodeElementSerializationData : public ElementSerializationData
 {
-	int mParentSerialId;
+	qReal::Id mParentId;
 
 	QPointF mPos;
 	QRectF mContenets;
@@ -25,8 +23,8 @@ struct NodeElementSerializationData : public ElementSerializationData
 
 struct EdgeElementSerializationData : public ElementSerializationData
 {
-	int mSrcSerialId;
-	int mDstSerialId;
+	qReal::Id mSrcId;
+	qReal::Id mDstId;
 
 	qreal mPortFrom;
 	qreal mPortTo;

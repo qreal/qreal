@@ -48,6 +48,9 @@ public:
 
 	UML::Element* getLastCreated();
 
+	QList<UML::NodeElement*> selectedNodes() const;
+	QList<UML::EdgeElement*> selectedEdges() const;
+
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
 
 	void highlight(qReal::Id const &graphicalId, bool exclusive = true);

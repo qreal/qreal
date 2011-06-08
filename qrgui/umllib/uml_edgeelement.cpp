@@ -75,6 +75,32 @@ EdgeElement::~EdgeElement()
 	delete mElementImpl;
 }
 
+EdgeElementSerializationData EdgeElement::serializationData() const
+{
+	EdgeElementSerializationData data;
+
+	data.mId = id();
+	data.mLogicalId = logicalId();
+	data.mProperties = mGraphicalAssistApi->properties(id());
+
+	if (mSrc) {
+		data.mSrcId = mSrc->id();
+	} else {
+		data.mSrcId = Id();
+	}
+
+	if (mDst) {
+		data.mDstId = mDst->id();
+	} else {
+		data.mDstId = Id();
+	}
+
+	data.mPortFrom = mPortFrom;
+	data.mPortTo = mPortTo;
+
+	return data;
+}
+
 void EdgeElement::initTitles()
 {
 	Element::initTitles();

@@ -137,6 +137,27 @@ void NodeElement::copyProperties(NodeElement *source)
 	mGraphicalAssistApi->copyProperties(id(), source->id());
 }
 
+NodeElementSerializationData NodeElement::serializationData() const
+{
+	NodeElementSerializationData data;
+	data.mId = id();
+	data.mLogicalId = logicalId();
+	data.mProperties = mGraphicalAssistApi->properties(id());
+
+	NodeElement *parent = dynamic_cast<NodeElement*>(parentItem());
+	if (parent) {
+		data.mParentId = parent->id();
+	} else {
+		qDebug() << "NULL mParentNodeElement when serializing" << id();
+		data.mParentId = Id();
+	}
+
+	data.mPos = mPos;
+	data.mContenets = mContents;
+
+	return data;
+}
+
 void NodeElement::copyEdges(NodeElement *source)
 {
 	Q_UNUSED(source);

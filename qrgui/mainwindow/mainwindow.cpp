@@ -19,6 +19,8 @@
 #include <QtCore/QSettings>
 #include <QtCore/QPluginLoader>
 
+#include <QMetaType>
+
 #include "errorReporter.h"
 
 #include "../pluginInterface/editorInterface.h"
@@ -55,6 +57,10 @@ MainWindow::MainWindow()
 	, mVisualDebugger(NULL)
 	, mIsFullscreen(false)
 {
+	qRegisterMetaType<Id>();
+	qRegisterMetaTypeStreamOperators<Id>();
+	qRegisterMetaType<IdList>();
+	qRegisterMetaTypeStreamOperators<IdList>();
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("Splashscreen", true).toBool();
 	QSplashScreen* splash =

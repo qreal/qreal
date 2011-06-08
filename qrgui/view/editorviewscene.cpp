@@ -6,6 +6,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QSettings>
 #include <QGraphicsItem>
+#include <QClipboard>
 
 #include "editorviewmviface.h"
 #include "editorview.h"
@@ -129,7 +130,7 @@ UML::Element * EditorViewScene::getElem(qReal::Id const &id)
 void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
-	if (mimeData->hasFormat("application/x-real-uml-data"))
+	if (mimeData->hasFormat(DEFAULT_MIME_TYPE))
 		QGraphicsScene::dragEnterEvent(event);
 	else
 		event->ignore();
@@ -314,33 +315,91 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 
 void EditorViewScene::copy()
 {
-	mCopiedNode = dynamic_cast<UML::NodeElement*>(selectedItems()[0]);
-	QList<NodeElementSerializationData> nodes;
-	QList<EdgeElementSerializationData> edges;
-	int nodeIndex = 0;
-	int edgeIndex = 0;
-	foreach (QGraphicsItem *item, selectedItems()) {
-		UML::Element *element = dynamic_cast<UML::NodeElement*>(item);
-		if (element) {
-			ElementSerializationData data;
-			data.mId = element->id();
-			data.mLogicalId = element->logicalId();
-			data.mProperties = mv_iface->graphicalAssistApi()->properties(element->id());
-		}
+	//mCopiedNode = dynamic_cast<UML::NodeElement*>(selectedItems()[0]);
+	QList<NodeElementSerializationData> nodesData;
+	foreach (UML::NodeElement *node, selectedNodes()) {
+		nodesData << node->serializationData();
 	}
+
+	QList<EdgeElementSerializationData> edgesData;
+	foreach (UML::EdgeElement *edge, selectedEdges()) {
+		edgesData << edge->serializationData();
+	}
+
+	QByteArray data;
+	QMimeData *mimeData = new QMimeData();
+	QDataStream stream(&data, QIODevice::WriteOnly);
+	QString mimeType = QString(CLIPBOARD_MIME_TYPE);
+
+	stream << nodesData;
+	stream << edgesData;
+
+	mimeData->setData(mimeType, data);
+
+	QClipboard *clipboard = QApplication::clipboard();
+	clipboard->setMimeData(mimeData);
+
+	// from docs:
+	// QMimeData objects are usually created using new and supplied to QDrag or QClipboard objects.
+	// This is to enable Qt to manage the memory that they use.
+	// so we do not delete mimeData
+
 }
 
 void EditorViewScene::paste(bool viewOnly)
 {
+	/*
 	if (mCopiedNode)
 		mCopiedNode->copyAndPlaceOnDiagram(viewOnly);
 	else
 		qDebug() << "paste attempt on NULL";
+	*/
+
+	const QClipboard *clipboard = QApplication::clipboard();
+	const QMimeData *mimeData = clipboard->mimeData();
+
+	if (mimeData->hasFormat(CLIPBOARD_MIME_TYPE)) {
+		QByteArray data = mimeData->data(CLIPBOARD_MIME_TYPE);
+		QDataStream stream(&data, QIODevice::ReadOnly);
+		QList<NodeElementSerializationData> nodesData;
+		QList<EdgeElementSerializationData> edgesData;
+
+		stream >> nodesData;
+		stream >> edgesData;
+
+		foreach (NodeElementSerializationData ndata, nodesData) {
+			qDebug() << ndata.mId << "mc" << ndata.mParentId;
+		}
+	}
 }
 
 UML::Element* EditorViewScene::getLastCreated()
 {
 	return mLastCreatedWithEdge;
+}
+
+QList<UML::NodeElement*> EditorViewScene::selectedNodes() const
+{
+	QList<UML::NodeElement*> nodes;
+	foreach (QGraphicsItem *item, selectedItems()) {
+		UML::NodeElement *node = dynamic_cast<UML::NodeElement*>(item);
+		if (node)
+			nodes << node;
+	}
+
+	return nodes;
+}
+
+QList<UML::EdgeElement*> EditorViewScene::selectedEdges() const
+{
+	QList<UML::EdgeElement*> edges;
+	foreach (QGraphicsItem *item, selectedItems()) {
+		UML::EdgeElement *edge = dynamic_cast<UML::EdgeElement*> (item);
+		if (edge)
+			edges << edge;
+	}
+
+	return edges;
 }
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)

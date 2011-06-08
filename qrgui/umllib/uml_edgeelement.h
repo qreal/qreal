@@ -6,6 +6,8 @@
 #include "uml_element.h"
 #include "../pluginInterface/elementImpl.h"
 
+#include "../view/copypaste.h"
+
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
 namespace UML {
@@ -21,6 +23,8 @@ namespace UML {
 		public:
 			EdgeElement(ElementImpl *impl);
 			virtual ~EdgeElement();
+
+			EdgeElementSerializationData serializationData() const;
 
 			void updateData();
 
