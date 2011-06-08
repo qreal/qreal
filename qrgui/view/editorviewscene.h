@@ -32,6 +32,7 @@ public:
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
 	virtual UML::Element *getElem(qReal::Id const &id);
+	UML::Element *getElemAt(const QPointF &position);
 
 	virtual qReal::Id rootItemId() const;
 	void setMainWindow(qReal::MainWindow *mainWindow);
@@ -48,7 +49,7 @@ public:
 	UML::Element* getLastCreated();
 
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
-	
+
 	void highlight(qReal::Id const &graphicalId, bool exclusive = true);
 	void dehighlight(qReal::Id const &graphicalId);
 	void dehighlight();
@@ -77,7 +78,7 @@ protected:
 	virtual void drawBackground( QPainter *painter, const QRectF &rect);
 
 private:
-	UML::Element* lastCreatedWithEdge;
+	UML::Element* mLastCreatedWithEdge;
 	UML::NodeElement *mCopiedNode;
 
 	bool mRightButtonPressed;
@@ -93,9 +94,6 @@ private:
 
 	void drawGrid(QPainter *painter, const QRectF &rect);
 	void redraw();
-
-	UML::Element *getElemAt(const QPointF &position);
-
 	void createConnectionSubmenus(QMenu &contextMenu, UML::Element const * const element) const;
 	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
 	void createAddConnectionMenu(UML::Element const * const element
@@ -128,7 +126,7 @@ private:
 	MouseMovementManager * mouseMovementManager;
 
 	QSignalMapper *mActionSignalMapper;
-	
+
 	QSet<UML::Element *> mHighlightedElements;
 
 	friend class qReal::EditorViewMViface;

@@ -1347,5 +1347,17 @@ void NodeElement::checkConnectionsToPort()
 	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksTo(id()), "to");
 	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksNone(id()), QString());
 	mGraphicalAssistApi->removeTemporaryRemovedLinks(id());
-}
 
+
+	// i have no idea what this method does, but it is called when the element
+	// is dropped on scene. so i'll just leave this code here for now.
+	QList<QGraphicsItem *>  items = scene()->items(scenePos());
+	UML::EdgeElement *edge = NULL;
+	foreach(QGraphicsItem *item, items){
+		edge = dynamic_cast<UML::EdgeElement *>(item);
+		if (edge) {
+			edge->connectToPort();
+			return;
+		}
+	}
+}

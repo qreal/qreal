@@ -132,6 +132,8 @@ MainWindow::MainWindow()
 		resize(settings.value("size", QSize(1024, 800)).toSize());
 		move(settings.value("pos", QPoint(0, 0)).toPoint());
 	}
+	// for jzuken's unholy netbook screen
+//	resize(QSize(1024, 600));
 	settings.endGroup();
 
 	QString workingDir = settings.value("workingDir", ".").toString();
