@@ -32,6 +32,7 @@ public:
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
 	virtual UML::Element *getElem(qReal::Id const &id);
+	UML::Element *getElemAt(const QPointF &position);
 
 	virtual qReal::Id rootItemId() const;
 	void setMainWindow(qReal::MainWindow *mainWindow);
@@ -88,7 +89,7 @@ private slots:
 	void createEdge(QString const &);
 
 private:
-	UML::Element* lastCreatedWithEdge;
+	UML::Element* mLastCreatedWithEdge;
 
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid;  // if true, the grid will be shown (as scene's background)
@@ -103,9 +104,6 @@ private:
 
 	void drawGrid(QPainter *painter, const QRectF &rect);
 	void redraw();
-
-	UML::Element *getElemAt(const QPointF &position);
-
 	void createConnectionSubmenus(QMenu &contextMenu, UML::Element const * const element) const;
 	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
 	void createAddConnectionMenu(UML::Element const * const element

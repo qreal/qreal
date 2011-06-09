@@ -68,6 +68,9 @@ MainWindow::MainWindow()
 	progress->setFixedHeight(15);
 	progress->setRange(0, 100);
 
+	if (!settings.contains("pathToImages"))
+		settings.setValue("pathToImages", QDir::currentPath() + "/images/iconset1");
+
 	// Step 1: splash screen loaded, progress bar initialized.
 	progress->setValue(5);
 	if (showSplash)
@@ -131,6 +134,8 @@ MainWindow::MainWindow()
 		resize(settings.value("size", QSize(1024, 800)).toSize());
 		move(settings.value("pos", QPoint(0, 0)).toPoint());
 	}
+	// for jzuken's unholy netbook screen
+//	resize(QSize(1024, 600));
 	settings.endGroup();
 
 	QString workingDir = settings.value("workingDir", ".").toString();

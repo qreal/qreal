@@ -590,7 +590,7 @@ void GraphicType::generateParentsMapping(utils::OutFile &out)
 	QString normalizedName = NameNormalizer::normalize(qualifiedName());
 	out() << "\tparentsMap[\"" << diagramName << "\"][\"" << normalizedName << "\"]\n";
 	foreach (QString const &parent, mParents) {
-		out() << "\t\t<< qMakePair(QString(\"" << diagramName << "\"), QString(\"" << parent << "\"))\n";
+		out() << "\t\t<< qMakePair(QString(\"" << diagramName << "\"), QString(\"" << NameNormalizer::normalize(parent) << "\"))\n";
 	}
 	out() << "\t;\n";
 }

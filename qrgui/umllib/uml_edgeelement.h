@@ -46,6 +46,11 @@ namespace UML {
 			void removeLink(UML::NodeElement const *from);
 			QPolygonF line() const;
 
+			/** @brief Get position of edge's start point*/
+			QPointF from() const;
+			/** @brief Get position of edge's end point*/
+			QPointF to() const;
+
 			void placeStartTo(QPointF const &place);
 			void placeEndTo(QPointF const &place);
 			void moveConnection(UML::NodeElement *node, qreal const portId);
