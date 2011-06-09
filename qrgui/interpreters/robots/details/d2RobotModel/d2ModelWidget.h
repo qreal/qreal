@@ -3,6 +3,7 @@
 #include <QtGui/QWidget>
 #include <QtGui/QGraphicsScene>
 #include <QtGui/QGraphicsRectItem>
+#include <QtGui/QPolygonF>
 
 #include "robotDrawer.h"
 #include "worldDrawer.h"
@@ -32,6 +33,7 @@ public:
 	void close();
 	void draw(QPointF newCoord, qreal angle, QPointF dPoint);
 	void drawBeep(QColor const &color);
+	QPolygonF const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
 
 private:
 	Ui::D2Form *mUi;

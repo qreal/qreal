@@ -25,6 +25,9 @@ void D2RobotModel::init()
 	mAngle = 0;
 	mPos = QPointF(0, 0);
 	mRotatePoint  = QPointF(0, 0);
+
+	// TODO: For testing
+	mSensorsConfiguration.setSensor(inputPort::port1, sensorType::touchBoolean, QPoint(2, 0), 0);
 }
 
 D2RobotModel::Motor* D2RobotModel::initMotor(int radius, int speed, long unsigned int degrees, int port)
@@ -63,7 +66,8 @@ D2ModelWidget *D2RobotModel::createModelWidget()
 bool D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port) const
 {
 	// TODO: Add checks of sensor type.
-	return mWorldModel.touchSensorReading(mSensorsConfiguration.position(port), mSensorsConfiguration.direction(port));
+	return mWorldModel.touchSensorReading(mSensorsConfiguration.position(port) + mPos.toPoint()
+			, mSensorsConfiguration.direction(port) + mAngle);
 }
 
 int D2RobotModel::readSonarSensor(inputPort::InputPortEnum const port) const
@@ -106,6 +110,10 @@ void D2RobotModel::countNewCoord()
 	qreal deltaY = 0;
 	qreal deltaX = 0;
 	qreal averangeSpeed = (vSpeed + uSpeed) / 2;
+
+	qreal const oldAngle = mAngle;
+	QPointF const oldPosition = mPos;
+
 	if (vSpeed != uSpeed) {
 		qreal vRadius = vSpeed * robotHeight / (vSpeed - uSpeed);
 		qreal averangeRadius = vRadius - robotHeight / 2;
@@ -136,6 +144,11 @@ void D2RobotModel::countNewCoord()
 	mPos.setY(mPos.y() + deltaY);
 	if(mAngle > 360)
 		mAngle -= 360;
+	QPolygonF const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
+	if (mWorldModel.checkCollision(boundingRegion)) {
+		mPos = oldPosition;
+		mAngle = oldAngle;
+	}
 }
 
 void D2RobotModel::nextFragment()

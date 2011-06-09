@@ -76,3 +76,8 @@ void D2ModelWidget::drawBeep(QColor const &color)
 {
 	mRobot->setPen(QPen(color));
 }
+
+QPolygonF const D2ModelWidget::robotBoundingPolygon(QPointF const &coord, qreal const &angle) const
+{
+	return QPolygonF() << coord;
+}

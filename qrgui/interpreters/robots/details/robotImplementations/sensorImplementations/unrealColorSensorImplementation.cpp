@@ -12,5 +12,5 @@ UnrealColorSensorImplementation::UnrealColorSensorImplementation(inputPort::Inpu
 
 void UnrealColorSensorImplementation::read()
 {
-	emit mD2Model->readColorSensor(mPort);
+	emit response(mD2Model->readColorSensor(mPort));
 }

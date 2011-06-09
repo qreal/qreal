@@ -9,5 +9,5 @@ UnrealTouchSensorImplementation::UnrealTouchSensorImplementation(inputPort::Inpu
 
 void UnrealTouchSensorImplementation::read()
 {
-	emit mD2Model->readTouchSensor(mPort);
+	emit response(mD2Model->readTouchSensor(mPort));
 }
