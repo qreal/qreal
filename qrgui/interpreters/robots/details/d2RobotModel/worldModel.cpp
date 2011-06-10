@@ -13,12 +13,16 @@ WorldModel::WorldModel()
 
 int WorldModel::sonarReading(QPoint const &position, qreal direction) const
 {
+	Q_UNUSED(position)
+	Q_UNUSED(direction)
 	qDebug() << "Reading sonar";
 	return 0;
 }
 
 bool WorldModel::touchSensorReading(QPoint const &position, qreal direction) const
 {
+	Q_UNUSED(position)
+	Q_UNUSED(direction)
 	QPainterPathStroker pathStroker;
 	pathStroker.setWidth(1);
 
@@ -38,6 +42,8 @@ bool WorldModel::touchSensorReading(QPoint const &position, qreal direction) con
 
 int WorldModel::colorSensorReading(QPoint const &position, sensorType::SensorTypeEnum mode) const
 {
+	Q_UNUSED(mode)
+	Q_UNUSED(position)
 	qDebug() << "Reading color sensor";
 	return 0;
 }

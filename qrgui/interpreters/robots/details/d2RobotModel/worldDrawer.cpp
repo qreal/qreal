@@ -9,4 +9,5 @@ WorldDrawer::WorldDrawer(WorldModel const * const worldModel)
 
 void WorldDrawer::drawWorld(QPainter &painter)
 {
+	Q_UNUSED(painter)
 }
