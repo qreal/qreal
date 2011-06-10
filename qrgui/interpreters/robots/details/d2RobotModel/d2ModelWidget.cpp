@@ -38,6 +38,9 @@ D2ModelWidget::~D2ModelWidget()
 
 void D2ModelWidget::init()
 {
+	if (!isHidden())
+		return;
+
 	QImage image = QImage(":/icons/robot.png");
 	mRobot = mScene->addRect(0, 0, robotWidth, robotHeight, QPen(Qt::green), QBrush(image));
 	mLine.startsWith(mRobot->mapToScene(mRobot->boundingRect().center()));
@@ -51,6 +54,7 @@ void D2ModelWidget::init()
 	mUi->graphicsView->centerOn(mRobot);
 	mUi->graphicsView->show();
 	show();
+	update();
 }
 
 void D2ModelWidget::close()
@@ -66,6 +70,12 @@ void D2ModelWidget::close()
 	setVisible(false);
 }
 
+void D2ModelWidget::update()
+{
+	QWidget::update();
+	drawWalls();
+}
+
 void D2ModelWidget::draw(QPointF newCoord, qreal angle, QPointF dPoint)
 {
 	mRobot->setPos(newCoord);
@@ -76,7 +86,6 @@ void D2ModelWidget::draw(QPointF newCoord, qreal angle, QPointF dPoint)
 	QPoint relativeCoords = mUi->graphicsView->mapFromScene(mRobot->pos());
 	if (!mUi->graphicsView->rect().contains(relativeCoords))
 		mUi->graphicsView->centerOn(mRobot);
-	drawWalls();
 }
 
 void D2ModelWidget::drawWalls()
@@ -129,4 +138,5 @@ void D2ModelWidget::mouseClicked(QPointF const &position)
 		mCurrentWall.clear();
 		mMouseClicksCount = 0;
 	}
+	update();
 }

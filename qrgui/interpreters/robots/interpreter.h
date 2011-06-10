@@ -45,6 +45,9 @@ public:
 	void setRobotImplementation(robotModelType::robotModelTypeEnum implementationType
 			, RobotCommunicationInterface * const robotCommunicationInterface);
 
+public slots:
+	void showD2ModelWidget();
+
 private slots:
 	void threadStopped();
 	void newThread(details::blocks::Block * const startBlock);

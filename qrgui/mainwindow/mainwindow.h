@@ -74,6 +74,8 @@ public slots:
 	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 	virtual void selectItem(Id const &id);
 
+	void showD2ModelWidget();
+
 private slots:
 	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);

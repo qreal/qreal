@@ -293,6 +293,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionShow2Dmodel"/>
    <addaction name="actionRun"/>
    <addaction name="actionStop_Running"/>
    <addaction name="actionStop_Robot"/>
@@ -708,6 +709,17 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+F</string>
+   </property>
+  </action>
+  <action name="actionShow2Dmodel">
+   <property name="text">
+    <string>2D model</string>
+   </property>
+   <property name="toolTip">
+    <string>Show 2D model</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F12</string>
    </property>
   </action>
  </widget>

@@ -42,6 +42,9 @@ public:
 	void drawBeep(QColor const &color);
 	QPolygonF const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
 
+public slots:
+	void update();
+
 private slots:
 	void addWall(bool on);
 	void mouseClicked(QPointF const &position);

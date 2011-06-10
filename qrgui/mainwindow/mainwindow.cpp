@@ -234,6 +234,13 @@ void MainWindow::connectActions()
 	connect(mUi->actionRobot_Settings, SIGNAL(triggered()), this, SLOT(showRobotSettingsDialog()));
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
+
+	connect(mUi->actionShow2Dmodel, SIGNAL(triggered()), this, SLOT(showD2ModelWidget()));
+}
+
+void MainWindow::showD2ModelWidget()
+{
+	mRobotInterpreter->showD2ModelWidget();
 }
 
 QModelIndex MainWindow::rootIndex() const

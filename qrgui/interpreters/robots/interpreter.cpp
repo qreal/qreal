@@ -79,6 +79,11 @@ void Interpreter::stopRobot()
 	stop();
 }
 
+void Interpreter::showD2ModelWidget()
+{
+	mD2ModelWidget->init();
+}
+
 void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum implementationType, RobotCommunicationInterface * const robotCommunicationInterface)
 {
 	robotImplementations::AbstractRobotModelImplementation *robotImpl =
