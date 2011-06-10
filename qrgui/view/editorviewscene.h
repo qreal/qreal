@@ -29,6 +29,9 @@ public:
 	virtual qReal::Id *createElement(const QString &, QPointF scenePos, const QString &name = "(anonymous something)");
 	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
 
+	UML::NodeElement *deserializeNode(const NodeElementSerializationData &data, bool shareLogicalId = false, QPointF offset = QPointF(10, 10));
+	UML::EdgeElement *deserializeEdge(const EdgeElementSerializationData &data, bool shareLogicalId = false, QPointF offset = QPointF(10, 10));
+
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
 	virtual UML::Element *getElem(qReal::Id const &id);

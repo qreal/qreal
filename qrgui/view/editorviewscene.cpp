@@ -313,6 +313,91 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	emit elementCreated(id);
 }
 
+UML::NodeElement *EditorViewScene::deserializeNode(const NodeElementSerializationData &data, bool shareLogicalId, QPointF offset)
+{
+	UML::NodeElement *result = NULL;
+	QPointF placePos = result->pos() + offset;
+
+
+	if (shareLogicalId) {
+		Id resultId = mv_iface->graphicalAssistApi()->createElement(data.mParentId, data.mLogicalId, true, data.mName, placePos);
+		UML::Element *eresult = mainWindow()->manager()->graphicalObject(resultId);
+		result = dynamic_cast<UML::NodeElement*>(eresult);
+		result->setAssistApi(mv_iface->graphicalAssistApi(), mv_iface->logicalAssistApi());
+		result->setId(resultId);
+
+		if (data.mParentId == Id())
+			addItem(result);
+		else {
+			UML::Element *parent = getElem(data.mParentId);
+			result->setParentItem(parent);
+		}
+
+		result->updateData();
+		result->connectToPort();
+		result->checkConnectionsToPort();
+		result->initPossibleEdges();
+		result->initTitles();
+
+	} else {
+		Id typeId = data.mId.type();
+		Id *resultId = createElement(typeId.toString(), QPointF(), data.mName);
+
+		result = dynamic_cast<UML::NodeElement*>(getElem(*resultId));
+	}
+
+	//properties!
+	//result->mContents = mContents;
+	result->setGeometry(data.mContenets.translated(placePos));
+	result->storeGeometry();
+
+	return result;
+
+	/*
+ UML::NodeElement *result = NULL;
+ EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
+ QPointF placePos = toCursorPos ? evscene->getMousePos() : mPos;
+ if (viewOnly) {
+	 qReal::Id resultId = mGraphicalAssistApi->createElement(parentId, logicalId(), true, mGraphicalAssistApi->name(id()), placePos);
+	 Element *eresult = evscene->mainWindow()->manager()->graphicalObject(resultId);
+	 result = dynamic_cast<NodeElement*>(eresult);
+	 result->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
+	 result->setId(resultId);
+	 result->setPos(placePos);
+
+	 if (parentId == Id::rootId())
+		 scene()->addItem(result);
+	 else {
+		 UML::Element *parent = evscene->getElem(parentId);
+		 result->setParentItem(parent);
+	 }
+
+	 result->updateData();
+	 result->connectToPort();
+	 result->checkConnectionsToPort();
+	 result->initPossibleEdges();
+	 result->initTitles();
+
+ } else {
+	 qReal::Id typeId = id().type();
+	 qReal::Id *resultId = evscene->createElement(typeId.toString(), QPointF(), mGraphicalAssistApi->name(id()));
+
+	 result = dynamic_cast<NodeElement*>(evscene->getElem(*resultId));
+ }
+
+ Q_ASSERT(result != NULL);
+
+ result->copyProperties(this);
+ result->copyChildren(this, viewOnly);
+
+ result->mContents = mContents;
+ result->setPos(placePos);
+ result->storeGeometry();
+
+ return result;
+	  */
+}
+
 void EditorViewScene::copy()
 {
 	//mCopiedNode = dynamic_cast<UML::NodeElement*>(selectedItems()[0]);
@@ -367,8 +452,27 @@ void EditorViewScene::paste(bool viewOnly)
 		stream >> nodesData;
 		stream >> edgesData;
 
-		foreach (NodeElementSerializationData ndata, nodesData) {
-			qDebug() << ndata.mId << "mc" << ndata.mParentId;
+		qDebug() << "deser. start!";
+
+		while (!nodesData.isEmpty()) {
+			// Search for node that can be placed by this time, i.e.
+			// it is top-level item or its parent is already placed
+			NodeElementSerializationData oldCandidate = nodesData[0];
+			NodeElementSerializationData candidate = oldCandidate;
+			do {
+				candidate = oldCandidate;
+				foreach (NodeElementSerializationData node, nodesData) {
+					if (candidate.mParentId == node.mId) {
+						candidate = node;
+					}
+				}
+			} while (oldCandidate != candidate);
+
+			// deserialize
+			qDebug() << candidate.mId << "mc" << candidate.mParentId;
+			QPointF offset = candidate.mParentId == Id() ? QPointF(10, 20) : QPointF(0, 0);
+			deserializeNode(candidate, viewOnly, offset);
+			nodesData.removeAll(candidate);
 		}
 	}
 }
