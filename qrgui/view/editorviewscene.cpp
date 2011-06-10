@@ -230,7 +230,7 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 qReal::Id EditorViewScene::createElement(const QString &str)
 {
 	qReal::Id result = createElement(str, mCreatePoint);
-	lastCreatedWithEdge = getElem(result);
+	mLastCreatedWithEdge = getElem(result);
 	return result;
 }
 
@@ -312,7 +312,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 
 UML::Element* EditorViewScene::getLastCreated()
 {
-	return lastCreatedWithEdge;
+	return mLastCreatedWithEdge;
 }
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)

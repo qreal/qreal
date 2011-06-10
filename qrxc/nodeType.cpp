@@ -56,6 +56,11 @@ bool NodeType::initSdf()
 		mWidth = sdfElement.attribute("sizex").toInt();
 		mHeight = sdfElement.attribute("sizey").toInt();
 		mSdfDomElement = sdfElement;
+		if (mDiagram->name() == "RobotsDiagram"){
+			QDomElement image = mSdfDomElement.firstChildElement("image");
+			image.setAttribute("name", image.attribute("name").replace("images/", ""));
+		}
+
 		mVisible = true;
 	} else
 		mVisible = false;
@@ -67,12 +72,13 @@ void NodeType::generateSdf() const
 	mDiagram->editor()->xmlCompiler()->addResource("\t<file>generated/shapes/" + resourceName("Class") + "</file>\n");
 
 	OutFile out("generated/shapes/" + resourceName("Class"));
-	mSdfDomElement.save(out(), 1);
 
-	QDomNodeList images = mSdfDomElement.elementsByTagName("image");
+	mSdfDomElement.save(out(), 1);
 
 	if (mDiagram->name() == "RobotsDiagram")
 		return;
+
+	QDomNodeList images = mSdfDomElement.elementsByTagName("image");
 	for (int i = 0; i < images.size(); ++i) {
 		QString const name = images.at(i).toElement().attribute("name");
 		mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + name + "</file>\n");

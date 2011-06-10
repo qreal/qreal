@@ -26,7 +26,7 @@ public:
 	void setDirection(inputPort::InputPortEnum const &port, qreal direction);
 	qreal direction(inputPort::InputPortEnum const &port) const;
 
-	sensorType::SensorTypeEnum type(inputPort::InputPortEnum const &port);
+	sensorType::SensorTypeEnum type(inputPort::InputPortEnum const &port) const;
 	void clearSensor(inputPort::InputPortEnum const &port);
 
 private:

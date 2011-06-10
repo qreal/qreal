@@ -3,13 +3,13 @@ HEADERS += \
 	interpreters/visualDebugger/visualDebugger.h \
 	interpreters/visualDebugger/blockParser.h \
 	interpreters/visualDebugger/number.h \
-    interpreters/robots/details/blocks/initialBlockWithPorts.h
+	interpreters/robots/details/blocks/initialBlockWithPorts.h
 
 SOURCES += \
 	interpreters/visualDebugger/visualDebugger.cpp \
 	interpreters/visualDebugger/blockParser.cpp \
 	interpreters/visualDebugger/number.cpp \
-    interpreters/robots/details/blocks/initialBlockWithPorts.cpp
+	interpreters/robots/details/blocks/initialBlockWithPorts.cpp
 
 # Robots behavior diagrams interpreter
 HEADERS += \
@@ -75,6 +75,7 @@ HEADERS += \
 	interpreters/robots/details/robotImplementations/nullRobotModelImplementation.h \
 	interpreters/robots/details/robotImplementations/unrealRobotModelImplementation.h \
 	interpreters/robots/details/d2RobotModel/d2ModelWidget.h \
+	interpreters/robots/details/d2RobotModel/d2ModelScene.h \
 	interpreters/robots/details/d2RobotModel/d2RobotModel.h \
 	interpreters/robots/details/d2RobotModel/iConfigurableModel.h \
 	interpreters/robots/details/d2RobotModel/robotDrawer.h \
@@ -142,6 +143,7 @@ SOURCES += \
 	interpreters/robots/details/robotImplementations/nullRobotModelImplementation.cpp \
 	interpreters/robots/details/robotImplementations/unrealRobotModelImplementation.cpp \
 	interpreters/robots/details/d2RobotModel/d2ModelWidget.cpp \
+	interpreters/robots/details/d2RobotModel/d2ModelScene.cpp \
 	interpreters/robots/details/d2RobotModel/d2RobotModel.cpp \
 	interpreters/robots/details/d2RobotModel/robotDrawer.cpp \
 	interpreters/robots/details/d2RobotModel/sensorsConfiguration.cpp \

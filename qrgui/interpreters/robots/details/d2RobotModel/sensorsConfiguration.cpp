@@ -36,7 +36,7 @@ qreal SensorsConfiguration::direction(inputPort::InputPortEnum const &port) cons
 	return mSensors[port].direction();
 }
 
-sensorType::SensorTypeEnum SensorsConfiguration::type(inputPort::InputPortEnum const &port)
+sensorType::SensorTypeEnum SensorsConfiguration::type(inputPort::InputPortEnum const &port) const
 {
 	return mSensors[port].type();
 }

@@ -444,7 +444,6 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mDragPoint = -1;
 
 	connectToPort();
-	qDebug() << (mLine.first() == mLine.last());
 
 	if (mBeginning)
 		mBeginning->setPortsVisible(false);
@@ -767,3 +766,14 @@ void EdgeElement::setColorRect(bool bl)
 {
 	Q_UNUSED(bl);
 }
+
+QPointF EdgeElement::from() const
+{
+	return mLine.first() + pos();
+}
+
+QPointF EdgeElement::to() const
+{
+	return mLine.last() + pos();
+}
+

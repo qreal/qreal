@@ -14,12 +14,19 @@ D2ModelWidget::D2ModelWidget(IConfigurableRobotModel *robotModel, WorldModel *wo
 	, mRobotModel(robotModel)
 	, mWorldDrawer(worldModel)
 	, mWorldModel(worldModel)
+	, mDrawingAction(drawingAction::none)
+	, mMouseClicksCount(0)
 {
 	mUi->setupUi(this);
-	mScene = new QGraphicsScene(mUi->graphicsView);
+	mScene = new D2ModelScene(mUi->graphicsView);
 	mUi->graphicsView->setScene(mScene);
+	mUi->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
 	move(0, 0);
 	mScene->addRect(-500, -500, 1000, 1000, QPen(Qt::NoPen), QBrush(Qt::NoBrush));
+
+	connect(mUi->wallButton, SIGNAL(toggled(bool)), this, SLOT(addWall(bool)));
+	connect(mUi->clearButton, SIGNAL(clicked()), this, SLOT(clearScene()));
+	connect(mScene, SIGNAL(mouseClicked(QPointF)), this, SLOT(mouseClicked(QPointF)));
 }
 
 D2ModelWidget::~D2ModelWidget()
@@ -32,19 +39,30 @@ D2ModelWidget::~D2ModelWidget()
 
 void D2ModelWidget::init()
 {
+	if (!isHidden())
+		return;
+
+	drawInitialRobot();
+
+	//	QGraphicsRectItem *wheel1 = new QGraphicsRectItem(robotWidth - widthBigWheel, 0 - heightBigWheel, widthBigWheel, heightBigWheel, mRobot);
+	//	wheel1->setBrush(QBrush(Qt::gray));
+	//	QGraphicsRectItem *wheel2 = new QGraphicsRectItem(robotWidth - widthBigWheel, robotHeight, widthBigWheel, heightBigWheel, mRobot);
+	//	wheel2->setBrush(QBrush(Qt::gray));
+	//	QGraphicsRectItem *wheel3 = new QGraphicsRectItem(0 - widthSmallWheel / 2, robotHeight / 2 - heightSmallWheel / 2, widthSmallWheel, heightSmallWheel, mRobot);
+	//	wheel3->setBrush(QBrush(Qt::gray));
+
+	mUi->graphicsView->show();
+	show();
+	update();
+}
+
+void D2ModelWidget::drawInitialRobot()
+{
 	QImage image = QImage(":/icons/robot.png");
 	mRobot = mScene->addRect(0, 0, robotWidth, robotHeight, QPen(Qt::green), QBrush(image));
 	mLine.startsWith(mRobot->mapToScene(mRobot->boundingRect().center()));
 	mPolygon = mScene->addPolygon(mLine, QPen(Qt::black));
-//	QGraphicsRectItem *wheel1 = new QGraphicsRectItem(robotWidth - widthBigWheel, 0 - heightBigWheel, widthBigWheel, heightBigWheel, mRobot);
-//	wheel1->setBrush(QBrush(Qt::gray));
-//	QGraphicsRectItem *wheel2 = new QGraphicsRectItem(robotWidth - widthBigWheel, robotHeight, widthBigWheel, heightBigWheel, mRobot);
-//	wheel2->setBrush(QBrush(Qt::gray));
-//	QGraphicsRectItem *wheel3 = new QGraphicsRectItem(0 - widthSmallWheel / 2, robotHeight / 2 - heightSmallWheel / 2, widthSmallWheel, heightSmallWheel, mRobot);
-//	wheel3->setBrush(QBrush(Qt::gray));
 	mUi->graphicsView->centerOn(mRobot);
-	mUi->graphicsView->show();
-	show();
 }
 
 void D2ModelWidget::close()
@@ -60,6 +78,12 @@ void D2ModelWidget::close()
 	setVisible(false);
 }
 
+void D2ModelWidget::update()
+{
+	QWidget::update();
+	drawWalls();
+}
+
 void D2ModelWidget::draw(QPointF newCoord, qreal angle, QPointF dPoint)
 {
 	mRobot->setPos(newCoord);
@@ -72,7 +96,62 @@ void D2ModelWidget::draw(QPointF newCoord, qreal angle, QPointF dPoint)
 		mUi->graphicsView->centerOn(mRobot);
 }
 
+void D2ModelWidget::drawWalls()
+{
+	typedef QPair<QPointF, QPointF> Wall;
+	foreach (Wall const wall, mWorldModel->walls()) {
+		mScene->addLine(QLineF(wall.first,wall.second));
+	}
+}
+
 void D2ModelWidget::drawBeep(QColor const &color)
 {
 	mRobot->setPen(QPen(color));
+}
+
+QPolygonF const D2ModelWidget::robotBoundingPolygon(QPointF const &coord, qreal const &angle) const
+{
+	Q_UNUSED(angle)
+	return QPolygonF() << coord;
+}
+
+void D2ModelWidget::addWall(bool on)
+{
+	if (!on) {
+		mDrawingAction = drawingAction::none;
+		return;
+	}
+
+	mDrawingAction = drawingAction::wall;
+}
+
+void D2ModelWidget::mouseClicked(QPointF const &position)
+{
+	qDebug() << "clicked at" << position;
+
+	switch (mDrawingAction){
+	case drawingAction::wall:
+		mCurrentWall.append(position);
+		mMouseClicksCount++;
+		break;
+	case drawingAction::none:
+		mMouseClicksCount = 0;
+	default:
+		break;
+	}
+
+	if (mMouseClicksCount >= 2)
+	{
+		mWorldModel->addWall(mCurrentWall.at(0), mCurrentWall.at(1));
+		mCurrentWall.clear();
+		mMouseClicksCount = 0;
+	}
+	update();
+}
+
+void D2ModelWidget::clearScene()
+{
+	mWorldModel->clearScene();
+	mScene->clear();
+	drawInitialRobot();
 }

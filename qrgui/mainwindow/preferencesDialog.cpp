@@ -72,7 +72,8 @@ void PreferencesDialog::initPreferences()
 	ui->openGLCheckBox->setChecked(settings.value("OpenGL", true).toBool());
 
 	ui->warningWindowBox->setChecked(settings.value("warningWindow", true).toBool());
-	ui->imagesPathEdit->setText(settings.value("pathToImages", "./images/iconset1/").toString());
+
+	ui->imagesPathEdit->setText(settings.value("pathToImages", QDir::currentPath() + "/images/iconset1").toString());
 
 	ui->windowsButton->setChecked(settings.value("windowsButton", false).toBool());
 	ui->linuxButton->setChecked(settings.value("linuxButton", false).toBool());
