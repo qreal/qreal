@@ -22,7 +22,9 @@ public:
 	int colorSensorReading(QPoint const &position, sensorType::SensorTypeEnum mode) const;
 	bool checkCollision(QPolygonF const &robotRegion) const;
 	QList<QPair<QPointF, QPointF> > const &walls() const;
+
 	void addWall(QPointF const &begin, QPointF const &end);
+	void clearScene();
 
 private:
 	QList<QPair<QPointF, QPointF> > mWalls;

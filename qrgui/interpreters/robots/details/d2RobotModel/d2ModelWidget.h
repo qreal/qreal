@@ -47,10 +47,12 @@ public slots:
 
 private slots:
 	void addWall(bool on);
+	void clearScene();
 	void mouseClicked(QPointF const &position);
 
 private:
 	void drawWalls();
+	void drawInitialRobot();
 
 	Ui::D2Form *mUi;
 	D2ModelScene *mScene;

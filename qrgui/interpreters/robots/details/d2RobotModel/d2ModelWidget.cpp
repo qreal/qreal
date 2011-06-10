@@ -25,6 +25,7 @@ D2ModelWidget::D2ModelWidget(IConfigurableRobotModel *robotModel, WorldModel *wo
 	mScene->addRect(-500, -500, 1000, 1000, QPen(Qt::NoPen), QBrush(Qt::NoBrush));
 
 	connect(mUi->wallButton, SIGNAL(toggled(bool)), this, SLOT(addWall(bool)));
+	connect(mUi->clearButton, SIGNAL(clicked()), this, SLOT(clearScene()));
 	connect(mScene, SIGNAL(mouseClicked(QPointF)), this, SLOT(mouseClicked(QPointF)));
 }
 
@@ -41,20 +42,27 @@ void D2ModelWidget::init()
 	if (!isHidden())
 		return;
 
-	QImage image = QImage(":/icons/robot.png");
-	mRobot = mScene->addRect(0, 0, robotWidth, robotHeight, QPen(Qt::green), QBrush(image));
-	mLine.startsWith(mRobot->mapToScene(mRobot->boundingRect().center()));
-	mPolygon = mScene->addPolygon(mLine, QPen(Qt::black));
+	drawInitialRobot();
+
 	//	QGraphicsRectItem *wheel1 = new QGraphicsRectItem(robotWidth - widthBigWheel, 0 - heightBigWheel, widthBigWheel, heightBigWheel, mRobot);
 	//	wheel1->setBrush(QBrush(Qt::gray));
 	//	QGraphicsRectItem *wheel2 = new QGraphicsRectItem(robotWidth - widthBigWheel, robotHeight, widthBigWheel, heightBigWheel, mRobot);
 	//	wheel2->setBrush(QBrush(Qt::gray));
 	//	QGraphicsRectItem *wheel3 = new QGraphicsRectItem(0 - widthSmallWheel / 2, robotHeight / 2 - heightSmallWheel / 2, widthSmallWheel, heightSmallWheel, mRobot);
 	//	wheel3->setBrush(QBrush(Qt::gray));
-	mUi->graphicsView->centerOn(mRobot);
+
 	mUi->graphicsView->show();
 	show();
 	update();
+}
+
+void D2ModelWidget::drawInitialRobot()
+{
+	QImage image = QImage(":/icons/robot.png");
+	mRobot = mScene->addRect(0, 0, robotWidth, robotHeight, QPen(Qt::green), QBrush(image));
+	mLine.startsWith(mRobot->mapToScene(mRobot->boundingRect().center()));
+	mPolygon = mScene->addPolygon(mLine, QPen(Qt::black));
+	mUi->graphicsView->centerOn(mRobot);
 }
 
 void D2ModelWidget::close()
@@ -139,4 +147,11 @@ void D2ModelWidget::mouseClicked(QPointF const &position)
 		mMouseClicksCount = 0;
 	}
 	update();
+}
+
+void D2ModelWidget::clearScene()
+{
+	mWorldModel->clearScene();
+	mScene->clear();
+	drawInitialRobot();
 }

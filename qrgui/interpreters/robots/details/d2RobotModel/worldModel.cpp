@@ -27,8 +27,10 @@ bool WorldModel::touchSensorReading(QPoint const &position, qreal direction) con
 	pathStroker.setWidth(1);
 
 	typedef QPair<QPointF, QPointF> Wall;
+	qDebug() << "walls:" << mWalls.size() << "poisition" << position << ", dir: " << direction;
 	foreach (Wall const wall, mWalls) {
 		QPainterPath wallPath;
+		qDebug() << "  wall: " << wall.first << wall.second;
 		wallPath.moveTo(wall.first);
 		wallPath.lineTo(wall.second);
 		wallPath = pathStroker.createStroke(wallPath);
@@ -78,4 +80,9 @@ QList<QPair<QPointF, QPointF> > const &WorldModel::walls() const
 void WorldModel::addWall(QPointF const &begin, QPointF const &end)
 {
 	mWalls << qMakePair(begin, end);
+}
+
+void WorldModel::clearScene()
+{
+	mWalls.clear();
 }

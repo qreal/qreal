@@ -1,4 +1,5 @@
 #include "d2RobotModel.h"
+#include <QDebug>
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -65,9 +66,13 @@ D2ModelWidget *D2RobotModel::createModelWidget()
 
 bool D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port) const
 {
+	QPoint point = mSensorsConfiguration.position(port) + mPos.toPoint();
+	qreal point2 = mSensorsConfiguration.direction(port) + mAngle;
+	bool res = mWorldModel.touchSensorReading(point, point2);
+
+//	qDebug() << "point:" << point << ",res: "<< res;
 	// TODO: Add checks of sensor type.
-	return mWorldModel.touchSensorReading(mSensorsConfiguration.position(port) + mPos.toPoint()
-			, mSensorsConfiguration.direction(port) + mAngle);
+	return res;
 }
 
 int D2RobotModel::readSonarSensor(inputPort::InputPortEnum const port) const
