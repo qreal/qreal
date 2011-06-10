@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include <QtGui/QWidget>
-#include <QtGui/QGraphicsScene>
 #include <QtGui/QGraphicsRectItem>
 #include <QtGui/QPolygonF>
 
@@ -9,9 +8,10 @@
 #include "worldDrawer.h"
 #include "worldModel.h"
 #include "iConfigurableModel.h"
+#include "d2ModelScene.h"
 
 namespace Ui {
-	class D2Form;
+class D2Form;
 }
 
 namespace qReal {
@@ -22,6 +22,13 @@ namespace d2Model {
 
 const qreal robotWidth = 50;
 const qreal robotHeight = 50;
+
+namespace drawingAction {
+enum DrawingAction {
+	none,
+	wall
+};
+}
 
 class D2ModelWidget : public QWidget {
 	Q_OBJECT
@@ -35,9 +42,15 @@ public:
 	void drawBeep(QColor const &color);
 	QPolygonF const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
 
+private slots:
+	void addWall(bool on);
+	void mouseClicked(QPointF const &position);
+
 private:
+	void drawWalls();
+
 	Ui::D2Form *mUi;
-	QGraphicsScene *mScene;
+	D2ModelScene *mScene;
 	QGraphicsRectItem *mRobot;
 	QPolygonF mLine;
 	QGraphicsPolygonItem *mPolygon;
@@ -45,6 +58,10 @@ private:
 	RobotDrawer mRobotDrawer;
 	WorldDrawer mWorldDrawer;
 	WorldModel *mWorldModel;
+
+	drawingAction::DrawingAction mDrawingAction;
+	int mMouseClicksCount;
+	QList<QPointF> mCurrentWall;
 };
 
 }

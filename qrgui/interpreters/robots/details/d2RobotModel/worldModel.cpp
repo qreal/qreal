@@ -8,7 +8,7 @@ using namespace qReal::interpreters::robots::details::d2Model;
 
 WorldModel::WorldModel()
 {
-	mWalls << qMakePair(QPoint(50, -100), QPoint(50, 100));
+	mWalls << qMakePair(QPointF(50, -100), QPointF(50, 100));
 }
 
 int WorldModel::sonarReading(QPoint const &position, qreal direction) const
@@ -26,7 +26,7 @@ bool WorldModel::touchSensorReading(QPoint const &position, qreal direction) con
 	QPainterPathStroker pathStroker;
 	pathStroker.setWidth(1);
 
-	typedef QPair<QPoint, QPoint> Wall;
+	typedef QPair<QPointF, QPointF> Wall;
 	foreach (Wall const wall, mWalls) {
 		QPainterPath wallPath;
 		wallPath.moveTo(wall.first);
@@ -56,7 +56,7 @@ bool WorldModel::checkCollision(QPolygonF const &robotRegion) const
 	pathStroker.setWidth(1);
 	robotPath = pathStroker.createStroke(robotPath);
 
-	typedef QPair<QPoint, QPoint> Wall;
+	typedef QPair<QPointF, QPointF> Wall;
 	foreach (Wall const wall, mWalls) {
 		QPainterPath wallPath;
 		wallPath.moveTo(wall.first);
@@ -70,12 +70,12 @@ bool WorldModel::checkCollision(QPolygonF const &robotRegion) const
 	return false;
 }
 
-QList<QPair<QPoint, QPoint> > const &WorldModel::walls() const
+QList<QPair<QPointF, QPointF> > const &WorldModel::walls() const
 {
 	return mWalls;
 }
 
-void WorldModel::addWall(QPoint const &begin, QPoint const &end)
+void WorldModel::addWall(QPointF const &begin, QPointF const &end)
 {
 	mWalls << qMakePair(begin, end);
 }
