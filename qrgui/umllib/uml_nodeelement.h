@@ -54,6 +54,7 @@ namespace UML {
 		void setGeometry(QRectF const &geom);
 		void setPos(const QPointF &pos);
 		void setPos(qreal x, qreal y);
+		void setContents(QRectF const &contents);
 		void storeGeometry();
 		virtual void setName(QString name);
 

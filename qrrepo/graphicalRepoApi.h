@@ -35,7 +35,8 @@ public:
 	virtual void setTemporaryRemovedLinks(qReal::Id const &id, qReal::IdList const &value, QString const &direction) = 0;
 	virtual void removeTemporaryRemovedLinks(qReal::Id const &id) = 0;
 
-	virtual void copyProperties(const qReal::Id &dest, const qReal::Id &src) = 0;
+	virtual void copyProperties(qReal::Id const &dest, qReal::Id const &src) = 0;
+	virtual void setProperties(qReal::Id const &id, QMap<QString, QVariant> const &properties) = 0;
 	virtual QMap<QString, QVariant> properties(const qReal::Id &id) const = 0;
 };
 

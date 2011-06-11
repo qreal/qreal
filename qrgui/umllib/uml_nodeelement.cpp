@@ -194,6 +194,11 @@ void NodeElement::setPos(qreal x, qreal y)
 	setPos(QPointF(x, y));
 }
 
+void NodeElement::setContents(const QRectF &contents)
+{
+	mContents = contents;
+}
+
 void NodeElement::adjustLinks()
 {
 	foreach (EdgeElement *edge, mEdgeList)

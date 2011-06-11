@@ -316,7 +316,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 UML::NodeElement *EditorViewScene::deserializeNode(const NodeElementSerializationData &data, bool shareLogicalId, QPointF offset)
 {
 	UML::NodeElement *result = NULL;
-	QPointF placePos = result->pos() + offset;
+	QPointF placePos = data.mPos + offset;
 
 
 	if (shareLogicalId) {
@@ -346,8 +346,7 @@ UML::NodeElement *EditorViewScene::deserializeNode(const NodeElementSerializatio
 		result = dynamic_cast<UML::NodeElement*>(getElem(*resultId));
 	}
 
-	//properties!
-	//result->mContents = mContents;
+	mv_iface->graphicalAssistApi()->setProperties(result->id(), data.mProperties);
 	result->setGeometry(data.mContenets.translated(placePos));
 	result->storeGeometry();
 
@@ -453,6 +452,8 @@ void EditorViewScene::paste(bool viewOnly)
 		stream >> edgesData;
 
 		qDebug() << "deser. start!";
+		QHash<Id, Id> updateIdMap;
+		updateIdMap.insert(Id(), Id()); // if top-level then we don't change anything
 
 		while (!nodesData.isEmpty()) {
 			// Search for node that can be placed by this time, i.e.
@@ -460,7 +461,7 @@ void EditorViewScene::paste(bool viewOnly)
 			NodeElementSerializationData oldCandidate = nodesData[0];
 			NodeElementSerializationData candidate = oldCandidate;
 			do {
-				candidate = oldCandidate;
+				oldCandidate = candidate;
 				foreach (NodeElementSerializationData node, nodesData) {
 					if (candidate.mParentId == node.mId) {
 						candidate = node;
@@ -469,9 +470,13 @@ void EditorViewScene::paste(bool viewOnly)
 			} while (oldCandidate != candidate);
 
 			// deserialize
-			qDebug() << candidate.mId << "mc" << candidate.mParentId;
 			QPointF offset = candidate.mParentId == Id() ? QPointF(10, 20) : QPointF(0, 0);
-			deserializeNode(candidate, viewOnly, offset);
+			NodeElementSerializationData newNode = candidate;
+			newNode.mParentId = updateIdMap[candidate.mParentId];
+			qDebug() << candidate.mId << "mc" << candidate.mParentId << "/" << newNode.mParentId;
+			Id newId = deserializeNode(newNode, viewOnly, offset)->id();
+			qDebug() << "result:" << newId << "\n";
+			updateIdMap.insert(candidate.mId, newId);
 			nodesData.removeAll(candidate);
 		}
 	}

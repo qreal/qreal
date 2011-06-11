@@ -167,7 +167,7 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	stream << isFromLogicalModel;
 
 	QMimeData *mimeData = new QMimeData;
-	mimeData->setData("application/x-real-uml-data", itemData);
+	mimeData->setData(DEFAULT_MIME_TYPE, itemData);
 
 	QDrag *drag = new QDrag(this);
 	drag->setMimeData(mimeData);

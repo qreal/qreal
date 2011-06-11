@@ -139,6 +139,15 @@ void Client::copyProperties(const Id &dest, const Id &src)
 	mObjects[dest]->copyPropertiesFrom(*mObjects[src]);
 }
 
+void Client::setProperties(const Id &id, const QMap<QString, QVariant> &properties)
+{
+	if (mObjects.contains(id)) {
+		mObjects[id]->setProperties(properties);
+	} else {
+		throw Exception("Client: Setting properties (all at once) of nonexistent object " + id.toString());
+	}
+}
+
 QMap<QString, QVariant> Client::properties(const qReal::Id &id) const
 {
 	if (mObjects.contains(id)) {

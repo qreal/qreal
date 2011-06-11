@@ -100,6 +100,11 @@ void Object::setProperty(const QString &name, const QVariant &value)
 	mProperties.insert(name,value);
 }
 
+void Object::setProperties(const QMap<QString, QVariant> &properties)
+{
+	mProperties = properties;
+}
+
 QVariant Object::property(const QString &name) const
 {
 	if (mProperties.contains(name)) {

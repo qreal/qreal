@@ -248,6 +248,11 @@ void RepoApi::copyProperties(const Id &dest, const Id &src)
 	mClient.copyProperties(dest, src);
 }
 
+void RepoApi::setProperties(const Id &id, QMap<QString, QVariant> const &properties)
+{
+	mClient.setProperties(id, properties);
+}
+
 QMap<QString, QVariant> RepoApi::properties(const Id &id) const
 {
 	return mClient.properties(id);
