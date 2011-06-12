@@ -347,6 +347,9 @@ UML::NodeElement *EditorViewScene::deserializeNode(const NodeElementSerializatio
 	}
 
 	mv_iface->graphicalAssistApi()->setProperties(result->id(), data.mProperties);
+	if (data.mParentId != Id()) {
+		mv_iface->graphicalAssistApi()->changeParent(result->id(), data.mParentId, placePos);
+	}
 	result->setGeometry(data.mContenets.translated(placePos));
 	result->storeGeometry();
 
