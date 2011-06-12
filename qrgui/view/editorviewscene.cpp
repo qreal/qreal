@@ -326,18 +326,12 @@ UML::NodeElement *EditorViewScene::deserializeNode(const NodeElementSerializatio
 		result->setAssistApi(mv_iface->graphicalAssistApi(), mv_iface->logicalAssistApi());
 		result->setId(resultId);
 
-		if (data.mParentId == Id())
+		if (data.mParentId == Id::rootId())
 			addItem(result);
 		else {
 			UML::Element *parent = getElem(data.mParentId);
 			result->setParentItem(parent);
 		}
-
-		result->updateData();
-		result->connectToPort();
-		result->checkConnectionsToPort();
-		result->initPossibleEdges();
-		result->initTitles();
 
 	} else {
 		Id typeId = data.mId.type();
@@ -347,11 +341,16 @@ UML::NodeElement *EditorViewScene::deserializeNode(const NodeElementSerializatio
 	}
 
 	mv_iface->graphicalAssistApi()->setProperties(result->id(), data.mProperties);
-	if (data.mParentId != Id()) {
+	if (data.mParentId != Id::rootId()) {
 		mv_iface->graphicalAssistApi()->changeParent(result->id(), data.mParentId, placePos);
 	}
 	result->setGeometry(data.mContenets.translated(placePos));
 	result->storeGeometry();
+
+	result->checkConnectionsToPort();
+	result->initPossibleEdges();
+	result->updateData();
+	result->initTitles();
 
 	return result;
 
@@ -456,7 +455,7 @@ void EditorViewScene::paste(bool viewOnly)
 
 		qDebug() << "deser. start!";
 		QHash<Id, Id> updateIdMap;
-		updateIdMap.insert(Id(), Id()); // if top-level then we don't change anything
+		updateIdMap.insert(Id::rootId(), Id::rootId()); // if top-level then we don't change anything
 
 		while (!nodesData.isEmpty()) {
 			// Search for node that can be placed by this time, i.e.
@@ -473,7 +472,7 @@ void EditorViewScene::paste(bool viewOnly)
 			} while (oldCandidate != candidate);
 
 			// deserialize
-			QPointF offset = candidate.mParentId == Id() ? QPointF(10, 20) : QPointF(0, 0);
+			QPointF offset = candidate.mParentId == Id::rootId() ? QPointF(10, 20) : QPointF(0, 0);
 			NodeElementSerializationData newNode = candidate;
 			newNode.mParentId = updateIdMap[candidate.mParentId];
 			qDebug() << candidate.mId << "mc" << candidate.mParentId << "/" << newNode.mParentId;

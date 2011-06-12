@@ -86,13 +86,13 @@ EdgeElementSerializationData EdgeElement::serializationData() const
 	if (mSrc) {
 		data.mSrcId = mSrc->id();
 	} else {
-		data.mSrcId = Id();
+		data.mSrcId = Id::rootId();
 	}
 
 	if (mDst) {
 		data.mDstId = mDst->id();
 	} else {
-		data.mDstId = Id();
+		data.mDstId = Id::rootId();
 	}
 
 	data.mPortFrom = mPortFrom;

@@ -149,7 +149,7 @@ NodeElementSerializationData NodeElement::serializationData() const
 		data.mParentId = parent->id();
 	} else {
 		qDebug() << "NULL mParentNodeElement when serializing" << id();
-		data.mParentId = Id();
+		data.mParentId = Id::rootId();
 	}
 
 	data.mPos = mPos;
