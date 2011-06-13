@@ -29,9 +29,6 @@ D2ModelWidget::D2ModelWidget(IConfigurableRobotModel *robotModel, WorldModel *wo
 	connect(mUi->doNothingButton, SIGNAL(clicked()), this, SLOT(resetButtons()));
 
 	connect(mScene, SIGNAL(mouseClicked(QGraphicsSceneMouseEvent *)), this, SLOT(mouseClicked(QGraphicsSceneMouseEvent *)));
-
-	mRobot = new RobotItem();
-	mScene->addItem(mRobot);
 }
 
 D2ModelWidget::~D2ModelWidget()
@@ -63,6 +60,8 @@ void D2ModelWidget::init()
 
 void D2ModelWidget::drawInitialRobot()
 {
+	mRobot = new RobotItem();
+	mScene->addItem(mRobot);
 	mLine.startsWith(mRobot->mapToScene(mRobot->boundingRect().center()));
 	mPolygon = mScene->addPolygon(mLine, QPen(Qt::black));
 	mUi->graphicsView->centerOn(mRobot);
@@ -70,7 +69,7 @@ void D2ModelWidget::drawInitialRobot()
 
 QPointF D2ModelWidget::robotPos()
 {
-	return mRobot->pos();
+	return mRobot ? mRobot->pos() : QPointF(0,0);
 }
 
 void D2ModelWidget::close()

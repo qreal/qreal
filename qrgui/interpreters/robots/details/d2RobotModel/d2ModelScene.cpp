@@ -10,7 +10,7 @@ D2ModelScene::D2ModelScene(QObject *parent) : QGraphicsScene(parent)
 {
 	addRect(-500, -500, 1000, 1000, QPen(Qt::NoPen), QBrush(Qt::NoBrush));
 	setItemIndexMethod(NoIndex);
-	clear();
+//	clear();
 }
 
 D2ModelScene::~D2ModelScene()
