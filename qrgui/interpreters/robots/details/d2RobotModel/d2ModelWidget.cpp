@@ -16,17 +16,22 @@ D2ModelWidget::D2ModelWidget(IConfigurableRobotModel *robotModel, WorldModel *wo
 	, mWorldModel(worldModel)
 	, mDrawingAction(drawingAction::none)
 	, mMouseClicksCount(0)
+	, mIsBeingDragged(false)
 {
 	mUi->setupUi(this);
 	mScene = new D2ModelScene(mUi->graphicsView);
 	mUi->graphicsView->setScene(mScene);
 	mUi->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
 	move(0, 0);
-	mScene->addRect(-500, -500, 1000, 1000, QPen(Qt::NoPen), QBrush(Qt::NoBrush));
 
 	connect(mUi->wallButton, SIGNAL(toggled(bool)), this, SLOT(addWall(bool)));
 	connect(mUi->clearButton, SIGNAL(clicked()), this, SLOT(clearScene()));
-	connect(mScene, SIGNAL(mouseClicked(QPointF)), this, SLOT(mouseClicked(QPointF)));
+	connect(mUi->doNothingButton, SIGNAL(clicked()), this, SLOT(resetButtons()));
+
+	connect(mScene, SIGNAL(mouseClicked(QGraphicsSceneMouseEvent *)), this, SLOT(mouseClicked(QGraphicsSceneMouseEvent *)));
+
+	mRobot = new RobotItem();
+	mScene->addItem(mRobot);
 }
 
 D2ModelWidget::~D2ModelWidget()
@@ -58,11 +63,14 @@ void D2ModelWidget::init()
 
 void D2ModelWidget::drawInitialRobot()
 {
-	QImage image = QImage(":/icons/robot.png");
-	mRobot = mScene->addRect(0, 0, robotWidth, robotHeight, QPen(Qt::green), QBrush(image));
 	mLine.startsWith(mRobot->mapToScene(mRobot->boundingRect().center()));
 	mPolygon = mScene->addPolygon(mLine, QPen(Qt::black));
 	mUi->graphicsView->centerOn(mRobot);
+}
+
+QPointF D2ModelWidget::robotPos()
+{
+	return mRobot->pos();
 }
 
 void D2ModelWidget::close()
@@ -86,6 +94,8 @@ void D2ModelWidget::update()
 
 void D2ModelWidget::draw(QPointF newCoord, qreal angle, QPointF dPoint)
 {
+	mAngleOld = angle;
+	mRotatePointOld = dPoint;
 	mRobot->setPos(newCoord);
 	mRobot->setTransform(QTransform().translate(dPoint.x(), dPoint.y()).rotate(angle).translate(-dPoint.x(), -dPoint.y()));
 	mLine.push_back(mRobot->mapToScene(mRobot->boundingRect().center()));
@@ -98,15 +108,17 @@ void D2ModelWidget::draw(QPointF newCoord, qreal angle, QPointF dPoint)
 
 void D2ModelWidget::drawWalls()
 {
+	QPen pen(Qt::red);
+	pen.setWidth(5);
 	typedef QPair<QPointF, QPointF> Wall;
 	foreach (Wall const wall, mWorldModel->walls()) {
-		mScene->addLine(QLineF(wall.first,wall.second));
+		mScene->addLine(QLineF(wall.first,wall.second), pen);
 	}
 }
 
 void D2ModelWidget::drawBeep(QColor const &color)
 {
-	mRobot->setPen(QPen(color));
+//	mRobot->setPen(QPen(color));
 }
 
 QPolygonF const D2ModelWidget::robotBoundingPolygon(QPointF const &coord, qreal const &angle) const
@@ -125,9 +137,24 @@ void D2ModelWidget::addWall(bool on)
 	mDrawingAction = drawingAction::wall;
 }
 
-void D2ModelWidget::mouseClicked(QPointF const &position)
+void D2ModelWidget::clearScene()
 {
-	qDebug() << "clicked at" << position;
+	mWorldModel->clearScene();
+	mScene->clear();
+	drawInitialRobot();
+}
+
+void D2ModelWidget::resetButtons()
+{
+	mCurrentWall.clear();
+	mMouseClicksCount = 0;
+
+	mUi->wallButton->setChecked(false);
+}
+
+void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
+{
+	QPointF const position = mouseEvent->scenePos();
 
 	switch (mDrawingAction){
 	case drawingAction::wall:
@@ -136,6 +163,7 @@ void D2ModelWidget::mouseClicked(QPointF const &position)
 		break;
 	case drawingAction::none:
 		mMouseClicksCount = 0;
+		break;
 	default:
 		break;
 	}
@@ -149,9 +177,14 @@ void D2ModelWidget::mouseClicked(QPointF const &position)
 	update();
 }
 
-void D2ModelWidget::clearScene()
+void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	mWorldModel->clearScene();
-	mScene->clear();
-	drawInitialRobot();
+	Q_UNUSED(mouseEvent)
 }
+
+void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
+{
+	Q_UNUSED(mouseEvent)
+}
+
+

@@ -1,14 +1,16 @@
-﻿#pragma once
+#pragma once
 
 #include <QtGui/QWidget>
 #include <QtGui/QGraphicsRectItem>
 #include <QtGui/QPolygonF>
+#include <QtGui/QGraphicsSceneMouseEvent>
 
 #include "robotDrawer.h"
 #include "worldDrawer.h"
 #include "worldModel.h"
 #include "iConfigurableModel.h"
 #include "d2ModelScene.h"
+#include "robotItem.h"
 
 namespace Ui {
 class D2Form;
@@ -19,9 +21,6 @@ namespace interpreters {
 namespace robots {
 namespace details {
 namespace d2Model {
-
-const qreal robotWidth = 50;
-const qreal robotHeight = 50;
 
 namespace drawingAction {
 enum DrawingAction {
@@ -42,13 +41,21 @@ public:
 	void drawBeep(QColor const &color);
 	QPolygonF const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
 
+	/** @brief Get current scene position of mRobot */
+	QPointF robotPos();
+
 public slots:
 	void update();
 
 private slots:
 	void addWall(bool on);
 	void clearScene();
-	void mouseClicked(QPointF const &position);
+	void resetButtons();
+
+	void mouseClicked(QGraphicsSceneMouseEvent *mouseEvent);
+	void mouseReleased(QGraphicsSceneMouseEvent *mouseEvent);
+	void mouseMoved(QGraphicsSceneMouseEvent *mouseEvent);
+
 
 private:
 	void drawWalls();
@@ -56,7 +63,7 @@ private:
 
 	Ui::D2Form *mUi;
 	D2ModelScene *mScene;
-	QGraphicsRectItem *mRobot;
+	RobotItem *mRobot;
 	QPolygonF mLine;
 	QGraphicsPolygonItem *mPolygon;
 	IConfigurableRobotModel *mRobotModel;
@@ -67,6 +74,10 @@ private:
 	drawingAction::DrawingAction mDrawingAction;
 	int mMouseClicksCount;
 	QList<QPointF> mCurrentWall;
+
+	bool mIsBeingDragged;
+	qreal mAngleOld;
+	QPointF mRotatePointOld;
 };
 
 }

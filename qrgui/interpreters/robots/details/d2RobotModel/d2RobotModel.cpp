@@ -24,7 +24,7 @@ void D2RobotModel::init()
 	mMotorC = initMotor(5, 0, 0, 2);
 	setBeep(0, 0);
 	mAngle = 0;
-	mPos = QPointF(0, 0);
+	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);
 	mRotatePoint  = QPointF(0, 0);
 
 	// TODO: For testing

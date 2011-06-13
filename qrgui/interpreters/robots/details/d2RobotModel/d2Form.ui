@@ -23,12 +23,12 @@
       <number>10</number>
      </property>
      <item row="2" column="0">
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="doNothingButton">
        <property name="text">
         <string>do nothing</string>
        </property>
        <property name="checkable">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -38,7 +38,7 @@
         <string>Clear</string>
        </property>
        <property name="checkable">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>

@@ -77,6 +77,7 @@ HEADERS += \
 	interpreters/robots/details/d2RobotModel/d2ModelWidget.h \
 	interpreters/robots/details/d2RobotModel/d2ModelScene.h \
 	interpreters/robots/details/d2RobotModel/d2RobotModel.h \
+	interpreters/robots/details/d2RobotModel/robotItem.h \
 	interpreters/robots/details/d2RobotModel/iConfigurableModel.h \
 	interpreters/robots/details/d2RobotModel/robotDrawer.h \
 	interpreters/robots/details/d2RobotModel/sensorsConfiguration.h \
@@ -145,6 +146,7 @@ SOURCES += \
 	interpreters/robots/details/d2RobotModel/d2ModelWidget.cpp \
 	interpreters/robots/details/d2RobotModel/d2ModelScene.cpp \
 	interpreters/robots/details/d2RobotModel/d2RobotModel.cpp \
+	interpreters/robots/details/d2RobotModel/robotItem.cpp \
 	interpreters/robots/details/d2RobotModel/robotDrawer.cpp \
 	interpreters/robots/details/d2RobotModel/sensorsConfiguration.cpp \
 	interpreters/robots/details/d2RobotModel/worldDrawer.cpp \

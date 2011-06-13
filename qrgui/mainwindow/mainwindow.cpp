@@ -68,9 +68,9 @@ MainWindow::MainWindow()
 	progress->setFixedHeight(15);
 	progress->setRange(0, 100);
 
-	QDir imagesDir(settings.value("pathToImages", "").toString());
+	QDir imagesDir(settings.value("pathToImages", "/someWeirdDirectoryName").toString());
 	if (!imagesDir.exists())
-		settings.setValue("pathToImages", QDir::currentPath() + "/images/iconset1");
+		settings.setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
 
 	// Step 1: splash screen loaded, progress bar initialized.
 	progress->setValue(5);
