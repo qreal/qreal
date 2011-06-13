@@ -4,6 +4,7 @@
 #include <QtGui/QGraphicsRectItem>
 #include <QtGui/QPolygonF>
 #include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtCore/QSignalMapper>
 
 #include "robotDrawer.h"
 #include "worldDrawer.h"
@@ -25,7 +26,8 @@ namespace d2Model {
 namespace drawingAction {
 enum DrawingAction {
 	none,
-	wall
+	wall,
+	port
 };
 }
 
@@ -56,10 +58,14 @@ private slots:
 	void mouseReleased(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseMoved(QGraphicsSceneMouseEvent *mouseEvent);
 
+	void addPort(int const);
 
 private:
+	void connectUiButtons();
 	void drawWalls();
 	void drawInitialRobot();
+	/** @brief Set active panel toggle button and deactivate all others */
+	void setActiveButton(int active);
 
 	Ui::D2Form *mUi;
 	D2ModelScene *mScene;
@@ -71,13 +77,26 @@ private:
 	WorldDrawer mWorldDrawer;
 	WorldModel *mWorldModel;
 
+	/** @brief Current action (toggled button on left panel)*/
 	drawingAction::DrawingAction mDrawingAction;
+	/** @brief Variable to count clicks on scene, used to create walls */
 	int mMouseClicksCount;
+	/** @brief Temporary wall that's being created. When it's complete, it's added to world model */
 	QList<QPointF> mCurrentWall;
 
-	bool mIsBeingDragged;
+	/** @brief Latest value of angle for drawing robot image */
 	qreal mAngleOld;
+	/** @brief Latest value of rotate point for drawing robot image */
 	QPointF mRotatePointOld;
+
+	/** @brief Signal mapper for handling addPortButtons' clicks */
+	QSignalMapper mPortsMapper;
+	/** @brief Current port that we're trying to add to 2D model scene*/
+	inputPort::InputPortEnum mCurrentPort;
+
+	int const mButtonsCount;
+	/** @brief List of flags showing which panel button is active now*/
+	QList<bool> mButtonFlags;
 };
 
 }

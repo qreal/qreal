@@ -1,5 +1,6 @@
 #include "d2ModelWidget.h"
 #include "ui_d2Form.h"
+
 #include <QtCore/QDebug>
 
 using namespace qReal::interpreters::robots;
@@ -16,7 +17,8 @@ D2ModelWidget::D2ModelWidget(IConfigurableRobotModel *robotModel, WorldModel *wo
 	, mWorldModel(worldModel)
 	, mDrawingAction(drawingAction::none)
 	, mMouseClicksCount(0)
-	, mIsBeingDragged(false)
+	, mCurrentPort(inputPort::none)
+	, mButtonsCount(5) // magic numbers are baaad, mkay?
 {
 	mUi->setupUi(this);
 	mScene = new D2ModelScene(mUi->graphicsView);
@@ -24,9 +26,7 @@ D2ModelWidget::D2ModelWidget(IConfigurableRobotModel *robotModel, WorldModel *wo
 	mUi->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
 	move(0, 0);
 
-	connect(mUi->wallButton, SIGNAL(toggled(bool)), this, SLOT(addWall(bool)));
-	connect(mUi->clearButton, SIGNAL(clicked()), this, SLOT(clearScene()));
-	connect(mUi->doNothingButton, SIGNAL(clicked()), this, SLOT(resetButtons()));
+	connectUiButtons();
 
 	connect(mScene, SIGNAL(mouseClicked(QGraphicsSceneMouseEvent *)), this, SLOT(mouseClicked(QGraphicsSceneMouseEvent *)));
 }
@@ -37,6 +37,24 @@ D2ModelWidget::~D2ModelWidget()
 	delete mRobot;
 	delete mScene;
 	delete mUi;
+}
+
+void D2ModelWidget::connectUiButtons()
+{
+	connect(mUi->wallButton, SIGNAL(toggled(bool)), this, SLOT(addWall(bool)));
+	connect(mUi->clearButton, SIGNAL(clicked()), this, SLOT(clearScene()));
+	connect(mUi->doNothingButton, SIGNAL(clicked()), this, SLOT(resetButtons()));
+
+	connect(mUi->port1AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
+	mPortsMapper.setMapping(mUi->port1AddButton, inputPort::port1);
+	connect(mUi->port2AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
+	mPortsMapper.setMapping(mUi->port2AddButton, inputPort::port2);
+	connect(mUi->port3AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
+	mPortsMapper.setMapping(mUi->port3AddButton, inputPort::port3);
+	connect(mUi->port4AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
+	mPortsMapper.setMapping(mUi->port4AddButton, inputPort::port4);
+
+	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(addPort(int)));
 }
 
 void D2ModelWidget::init()
@@ -130,10 +148,28 @@ void D2ModelWidget::addWall(bool on)
 {
 	if (!on) {
 		mDrawingAction = drawingAction::none;
+		mMouseClicksCount = 0;
 		return;
 	}
 
+	setActiveButton(4);
+
 	mDrawingAction = drawingAction::wall;
+}
+
+void D2ModelWidget::setActiveButton(int active)
+{
+	mButtonFlags.clear();
+	for (int i = 0; i < mButtonsCount; i++)
+		mButtonFlags.append(false);
+
+	mButtonFlags.replace(active, true);
+
+	mUi->port1AddButton->setChecked(mButtonFlags.at(0));
+	mUi->port2AddButton->setChecked(mButtonFlags.at(1));
+	mUi->port3AddButton->setChecked(mButtonFlags.at(2));
+	mUi->port4AddButton->setChecked(mButtonFlags.at(3));
+	mUi->wallButton->setChecked(mButtonFlags.at(4));
 }
 
 void D2ModelWidget::clearScene()
@@ -151,6 +187,13 @@ void D2ModelWidget::resetButtons()
 	mUi->wallButton->setChecked(false);
 }
 
+void D2ModelWidget::addPort(int const port)
+{
+	mCurrentPort = static_cast<inputPort::InputPortEnum>(port);
+
+	setActiveButton(static_cast<int>(mCurrentPort));
+}
+
 void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	QPointF const position = mouseEvent->scenePos();
@@ -159,6 +202,10 @@ void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 	case drawingAction::wall:
 		mCurrentWall.append(position);
 		mMouseClicksCount++;
+		break;
+	case drawingAction::port:
+		mMouseClicksCount = 0;
+		// add port
 		break;
 	case drawingAction::none:
 		mMouseClicksCount = 0;
@@ -185,5 +232,3 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	Q_UNUSED(mouseEvent)
 }
-
-
