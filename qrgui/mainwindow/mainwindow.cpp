@@ -68,7 +68,8 @@ MainWindow::MainWindow()
 	progress->setFixedHeight(15);
 	progress->setRange(0, 100);
 
-	if (!settings.contains("pathToImages"))
+	QDir imagesDir(settings.value("pathToImages", "").toString());
+	if (!imagesDir.exists())
 		settings.setValue("pathToImages", QDir::currentPath() + "/images/iconset1");
 
 	// Step 1: splash screen loaded, progress bar initialized.
