@@ -37,9 +37,8 @@ namespace UML {
 		NodeElement(ElementImpl *impl);
 		virtual ~NodeElement();
 
-		NodeElement *clone(bool toCursorPos = false, bool viewOnly = false, qReal::Id parentId = qReal::Id::rootId());
-		void copyChildren(NodeElement *source, bool viewOnly = false);
-		void copyEdges(NodeElement *source);
+		NodeElement *clone(bool toCursorPos = false, bool shareLogicalId = false, qReal::Id parentId = qReal::Id::rootId());
+		void copyChildren(NodeElement *source, bool shareLogicalId = false);
 		void copyProperties(NodeElement *source);
 
 		NodeElementSerializationData serializationData() const;
@@ -108,7 +107,7 @@ namespace UML {
 
 	public slots:
 		void switchGrid(bool isChecked);
-		void copyAndPlaceOnDiagram(bool viewOnly = false);
+		void copyAndPlaceOnDiagram(bool shareLogicalId = false);
 
 	private:
 		enum DragState {

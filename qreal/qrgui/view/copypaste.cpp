@@ -25,11 +25,6 @@ QDataStream& operator<< (QDataStream &out, const EdgeElementSerializationData &d
 		   << data.mPortTo;
 }
 
-QDataStream& operator>> (QDataStream& in, ElementSerializationData &data)
-{
-
-}
-
 QDataStream& operator>> (QDataStream& in, NodeElementSerializationData &data)
 {
 	in >> data.mId

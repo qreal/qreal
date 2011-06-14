@@ -70,13 +70,13 @@ NodeElement::~NodeElement()
 	delete mUmlPortHandler;
 }
 
-NodeElement *NodeElement::clone(bool toCursorPos, bool viewOnly, Id parentId)
+NodeElement *NodeElement::clone(bool toCursorPos, bool shareLogicalId, Id parentId)
 {
 	UML::NodeElement *result = NULL;
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
 
 	QPointF placePos = toCursorPos ? evscene->getMousePos() : mPos;
-	if (viewOnly) {
+	if (shareLogicalId) {
 		qReal::Id resultId = mGraphicalAssistApi->createElement(parentId, logicalId(), true, mGraphicalAssistApi->name(id()), placePos);
 		Element *eresult = evscene->mainWindow()->manager()->graphicalObject(resultId);
 		result = dynamic_cast<NodeElement*>(eresult);
@@ -107,7 +107,7 @@ NodeElement *NodeElement::clone(bool toCursorPos, bool viewOnly, Id parentId)
 	Q_ASSERT(result != NULL);
 
 	result->copyProperties(this);
-	result->copyChildren(this, viewOnly);
+	result->copyChildren(this, shareLogicalId);
 
 	result->mContents = mContents;
 	result->setPos(placePos);
@@ -116,17 +116,17 @@ NodeElement *NodeElement::clone(bool toCursorPos, bool viewOnly, Id parentId)
 	return result;
 }
 
-void NodeElement::copyAndPlaceOnDiagram(bool viewOnly)
+void NodeElement::copyAndPlaceOnDiagram(bool shareLogicalId)
 {
-	clone(true, viewOnly);
+	clone(true, shareLogicalId);
 }
 
-void NodeElement::copyChildren(NodeElement *source, bool viewOnly)
+void NodeElement::copyChildren(NodeElement *source, bool shareLogicalId)
 {
 	foreach (QGraphicsItem *child, source->childItems()) {
 		NodeElement *element = dynamic_cast<NodeElement*>(child);
 		if (element) {
-			NodeElement *copyOfChild = element->clone(false, viewOnly, id());
+			NodeElement *copyOfChild = element->clone(false, shareLogicalId, id());
 			mGraphicalAssistApi->changeParent(copyOfChild->id(), id(), element->pos());
 		}
 	}
@@ -156,11 +156,6 @@ NodeElementSerializationData NodeElement::serializationData() const
 	data.mContenets = mContents;
 
 	return data;
-}
-
-void NodeElement::copyEdges(NodeElement *source)
-{
-	Q_UNUSED(source);
 }
 
 void NodeElement::setName(QString value)

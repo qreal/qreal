@@ -353,55 +353,10 @@ UML::NodeElement *EditorViewScene::deserializeNode(const NodeElementSerializatio
 	result->initTitles();
 
 	return result;
-
-	/*
- UML::NodeElement *result = NULL;
- EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
- QPointF placePos = toCursorPos ? evscene->getMousePos() : mPos;
- if (viewOnly) {
-	 qReal::Id resultId = mGraphicalAssistApi->createElement(parentId, logicalId(), true, mGraphicalAssistApi->name(id()), placePos);
-	 Element *eresult = evscene->mainWindow()->manager()->graphicalObject(resultId);
-	 result = dynamic_cast<NodeElement*>(eresult);
-	 result->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
-	 result->setId(resultId);
-	 result->setPos(placePos);
-
-	 if (parentId == Id::rootId())
-		 scene()->addItem(result);
-	 else {
-		 UML::Element *parent = evscene->getElem(parentId);
-		 result->setParentItem(parent);
-	 }
-
-	 result->updateData();
-	 result->connectToPort();
-	 result->checkConnectionsToPort();
-	 result->initPossibleEdges();
-	 result->initTitles();
-
- } else {
-	 qReal::Id typeId = id().type();
-	 qReal::Id *resultId = evscene->createElement(typeId.toString(), QPointF(), mGraphicalAssistApi->name(id()));
-
-	 result = dynamic_cast<NodeElement*>(evscene->getElem(*resultId));
- }
-
- Q_ASSERT(result != NULL);
-
- result->copyProperties(this);
- result->copyChildren(this, viewOnly);
-
- result->mContents = mContents;
- result->setPos(placePos);
- result->storeGeometry();
-
- return result;
-	  */
 }
 
 void EditorViewScene::copy()
 {
-	//mCopiedNode = dynamic_cast<UML::NodeElement*>(selectedItems()[0]);
 	QList<NodeElementSerializationData> nodesData;
 	foreach (UML::NodeElement *node, selectedNodes()) {
 		nodesData << node->serializationData();
@@ -434,13 +389,6 @@ void EditorViewScene::copy()
 
 void EditorViewScene::paste(bool viewOnly)
 {
-	/*
-	if (mCopiedNode)
-		mCopiedNode->copyAndPlaceOnDiagram(viewOnly);
-	else
-		qDebug() << "paste attempt on NULL";
-	*/
-
 	const QClipboard *clipboard = QApplication::clipboard();
 	const QMimeData *mimeData = clipboard->mimeData();
 

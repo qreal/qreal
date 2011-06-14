@@ -104,7 +104,6 @@ private slots:
 
 private:
 	UML::Element* mLastCreatedWithEdge;
-	UML::NodeElement *mCopiedNode;
 
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)

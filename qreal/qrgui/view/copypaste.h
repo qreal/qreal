@@ -36,7 +36,6 @@ QDataStream& operator<< (QDataStream &out, const ElementSerializationData &data)
 QDataStream& operator<< (QDataStream &out, const NodeElementSerializationData &data);
 QDataStream& operator<< (QDataStream &out, const EdgeElementSerializationData &data);
 
-QDataStream& operator>> (QDataStream& in, ElementSerializationData &data);
 QDataStream& operator>> (QDataStream& in, NodeElementSerializationData &data);
 QDataStream& operator>> (QDataStream& in, EdgeElementSerializationData &data);
 
