@@ -21,7 +21,7 @@ SensorItem::SensorItem(QColor const &color)
 	setCursor(QCursor(Qt::PointingHandCursor));
 	setZValue(1);
 
-	mRectangle = QRectF(-size,-size,size*2,size*2);
+	mRectangle = QRectF(-size, -size, size * 2, size * 2);
 }
 
 void SensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)

@@ -1,6 +1,7 @@
 #include "d2ModelWidget.h"
 #include "ui_d2Form.h"
 #include "sensorItem.h"
+#include "sonarSensorItem.h"
 
 #include <QtCore/QDebug>
 
@@ -182,7 +183,6 @@ void D2ModelWidget::clearScene()
 	mRobot->clearSensors();
 	mScene->clear();
 	drawInitialRobot();
-
 }
 
 void D2ModelWidget::resetButtons()
@@ -265,7 +265,9 @@ void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 		mMouseClicksCount++;
 		break;
 	case drawingAction::port: {
-		SensorItem *sensor = new SensorItem(mCurrentPortColor);
+		SensorItem *sensor = mCurrentSensorType == sensorType::sonar
+				? new SonarSensorItem(mCurrentPortColor, *mWorldModel, mRobotModel->configuration(), inputPort::port3)  // TODO: Don't know where the port of current sensor is.
+				: new SensorItem(mCurrentPortColor);
 		mRobot->addSensor(sensor);
 		mScene->addItem(sensor);
 		sensor->setPos(mouseEvent->scenePos());

@@ -77,12 +77,12 @@ bool D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 
 int D2RobotModel::readSonarSensor(inputPort::InputPortEnum const port) const
 {
-	return mWorldModel.sonarReading(mSensorsConfiguration.position(port), mSensorsConfiguration.direction(port));
+	return mWorldModel.sonarReading(mSensorsConfiguration.position(port) + mPos.toPoint(), mSensorsConfiguration.direction(port) + mAngle);
 }
 
 int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 {
-	return mWorldModel.colorSensorReading(mSensorsConfiguration.position(port), mSensorsConfiguration.type(port));
+	return mWorldModel.colorSensorReading(mSensorsConfiguration.position(port) + mPos.toPoint(), mSensorsConfiguration.type(port));
 }
 
 void D2RobotModel::startInit()
