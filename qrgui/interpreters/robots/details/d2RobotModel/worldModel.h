@@ -18,7 +18,7 @@ class WorldModel
 public:
 	WorldModel();
 	int sonarReading(QPoint const &position, qreal direction) const;
-	bool touchSensorReading(QPoint const &position, qreal direction) const;
+	bool touchSensorReading(QPoint const &position, qreal direction);
 	int colorSensorReading(QPoint const &position, sensorType::SensorTypeEnum mode) const;
 	bool checkCollision(QPolygonF const &robotRegion) const;
 	QList<QPair<QPointF, QPointF> > const &walls() const;
@@ -28,6 +28,7 @@ public:
 
 private:
 	QList<QPair<QPointF, QPointF> > mWalls;
+	QPointF mTouchSensorPositionOld;
 };
 
 }

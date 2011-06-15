@@ -28,7 +28,7 @@ void D2RobotModel::init()
 	mRotatePoint  = QPointF(0, 0);
 
 	// TODO: For testing
-	mSensorsConfiguration.setSensor(inputPort::port1, sensorType::touchBoolean, QPoint(2, 0), 0);
+	mSensorsConfiguration.setSensor(inputPort::port1, sensorType::touchBoolean, QPoint(52, 25), 0);
 }
 
 D2RobotModel::Motor* D2RobotModel::initMotor(int radius, int speed, long unsigned int degrees, int port)
@@ -64,7 +64,7 @@ D2ModelWidget *D2RobotModel::createModelWidget()
 	return mD2ModelWidget;
 }
 
-bool D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port) const
+bool D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 {
 	QPoint point = mSensorsConfiguration.position(port) + mPos.toPoint();
 	qreal point2 = mSensorsConfiguration.direction(port) + mAngle;

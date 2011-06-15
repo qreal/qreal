@@ -8,7 +8,7 @@ using namespace qReal::interpreters::robots::details::d2Model;
 
 WorldModel::WorldModel()
 {
-	mWalls << qMakePair(QPointF(50, -100), QPointF(50, 100));
+	mWalls << qMakePair(QPointF(100, -100), QPointF(100, 100));
 }
 
 int WorldModel::sonarReading(QPoint const &position, qreal direction) const
@@ -19,26 +19,28 @@ int WorldModel::sonarReading(QPoint const &position, qreal direction) const
 	return 0;
 }
 
-bool WorldModel::touchSensorReading(QPoint const &position, qreal direction) const
+bool WorldModel::touchSensorReading(QPoint const &position, qreal direction)
 {
-	Q_UNUSED(position)
 	Q_UNUSED(direction)
 	QPainterPathStroker pathStroker;
-	pathStroker.setWidth(1);
+	pathStroker.setWidth(3);
+	QPainterPath robotPath;
+	robotPath.moveTo(mTouchSensorPositionOld);
+	robotPath.lineTo(position);
 
 	typedef QPair<QPointF, QPointF> Wall;
-	qDebug() << "walls:" << mWalls.size() << "poisition" << position << ", dir: " << direction;
 	foreach (Wall const wall, mWalls) {
 		QPainterPath wallPath;
-		qDebug() << "  wall: " << wall.first << wall.second;
 		wallPath.moveTo(wall.first);
 		wallPath.lineTo(wall.second);
 		wallPath = pathStroker.createStroke(wallPath);
-		if (wallPath.contains(position)) {
+		if (wallPath.intersects(robotPath)) {
+			mTouchSensorPositionOld = position;
 			return true;
 		}
 	}
 
+	mTouchSensorPositionOld = position;
 	return false;
 }
 
@@ -55,7 +57,7 @@ bool WorldModel::checkCollision(QPolygonF const &robotRegion) const
 	QPainterPath robotPath;
 	robotPath.addPolygon(robotRegion);
 	QPainterPathStroker pathStroker;
-	pathStroker.setWidth(1);
+	pathStroker.setWidth(3);
 	robotPath = pathStroker.createStroke(robotPath);
 
 	typedef QPair<QPointF, QPointF> Wall;

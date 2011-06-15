@@ -141,7 +141,9 @@ void D2ModelWidget::drawBeep(QColor const &color)
 QPolygonF const D2ModelWidget::robotBoundingPolygon(QPointF const &coord, qreal const &angle) const
 {
 	Q_UNUSED(angle)
-	return QPolygonF() << coord;
+	Q_UNUSED(coord)
+	QRectF rect = mRobot->boundingRect();
+	return QPolygonF() << rect.topLeft() << rect.topRight() << rect.bottomRight() << rect.bottomLeft();
 }
 
 void D2ModelWidget::addWall(bool on)
@@ -191,7 +193,7 @@ void D2ModelWidget::addPort(int const port)
 {
 	mCurrentPort = static_cast<inputPort::InputPortEnum>(port);
 
-	setActiveButton(static_cast<int>(mCurrentPort));
+	setActiveButton(port);
 }
 
 void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
