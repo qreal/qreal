@@ -5,6 +5,8 @@
 #include <QtGui/QPolygonF>
 #include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtCore/QSignalMapper>
+#include <QtGui/QComboBox>
+#include <QtGui/QPushButton>
 
 #include "robotDrawer.h"
 #include "worldDrawer.h"
@@ -66,6 +68,10 @@ private:
 	void drawInitialRobot();
 	/** @brief Set active panel toggle button and deactivate all others */
 	void setActiveButton(int active);
+	/** @brief Get QComboBox that sets current sensor's type */
+	QComboBox *currentComboBox();
+	/** @brief Get QPushButton for current sensor */
+	QPushButton *currentPortButton();
 
 	Ui::D2Form *mUi;
 	D2ModelScene *mScene;
@@ -93,10 +99,16 @@ private:
 	QSignalMapper mPortsMapper;
 	/** @brief Current port that we're trying to add to 2D model scene*/
 	inputPort::InputPortEnum mCurrentPort;
+	/** @brief Type of current sensor that we add */
+	sensorType::SensorTypeEnum mCurrentSensorType;
+	/** @brief Color of current port item */
+	QColor mCurrentPortColor;
 
+	/** @brief Amount of buttons on left panel */
 	int const mButtonsCount;
 	/** @brief List of flags showing which panel button is active now*/
 	QList<bool> mButtonFlags;
+
 };
 
 }

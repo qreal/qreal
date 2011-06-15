@@ -1,5 +1,7 @@
 #include "robotItem.h"
 #include <QtGui/QCursor>
+#include <QtGui/QApplication>
+#include <QtGui/QGraphicsSceneMouseEvent>
 
 #include <QDebug>
 
@@ -33,3 +35,44 @@ QRectF RobotItem::boundingRect() const
 {
 	return QRect(0,0,robotWidth, robotHeight).adjusted(-border, -border, border, border);
 }
+
+void RobotItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+	QGraphicsItem::mousePressEvent(event);
+	mPreviousPos = QPointF();
+}
+
+void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
+{
+	QGraphicsItem::mouseMoveEvent(event);
+
+	if (mPreviousPos.isNull()) {
+		mPreviousPos = event->scenePos();
+		return;
+	}
+
+	foreach (SensorItem *sensor, mSensors)
+		sensor->move(event->scenePos().x() - mPreviousPos.x(), event->scenePos().y() - mPreviousPos.y());
+
+	mPreviousPos = event->scenePos();
+}
+
+void RobotItem::setPos(QPointF const &newPos)
+{
+	foreach (SensorItem *sensor, mSensors)
+		sensor->move(newPos.x() - pos().x(), newPos.y() - pos().y());
+
+	QGraphicsItem::setPos(newPos);
+}
+
+
+void RobotItem::addSensor(SensorItem *sensor)
+{
+	mSensors.append(sensor);
+}
+
+void RobotItem::clearSensors()
+{
+	mSensors.clear();
+}
+

@@ -1,5 +1,6 @@
 #include "d2ModelWidget.h"
 #include "ui_d2Form.h"
+#include "sensorItem.h"
 
 #include <QtCore/QDebug>
 
@@ -18,7 +19,8 @@ D2ModelWidget::D2ModelWidget(IConfigurableRobotModel *robotModel, WorldModel *wo
 	, mDrawingAction(drawingAction::none)
 	, mMouseClicksCount(0)
 	, mCurrentPort(inputPort::none)
-	, mButtonsCount(5) // magic numbers are baaad, mkay?
+	, mCurrentSensorType(sensorType::unused)
+	, mButtonsCount(6) // magic numbers are baaad, mkay?
 {
 	mUi->setupUi(this);
 	mScene = new D2ModelScene(mUi->graphicsView);
@@ -135,7 +137,7 @@ void D2ModelWidget::drawWalls()
 
 void D2ModelWidget::drawBeep(QColor const &color)
 {
-//	mRobot->setPen(QPen(color));
+	//	mRobot->setPen(QPen(color));
 }
 
 QPolygonF const D2ModelWidget::robotBoundingPolygon(QPointF const &coord, qreal const &angle) const
@@ -154,7 +156,7 @@ void D2ModelWidget::addWall(bool on)
 		return;
 	}
 
-	setActiveButton(4);
+	setActiveButton(mButtonsCount - 2);
 
 	mDrawingAction = drawingAction::wall;
 }
@@ -177,16 +179,52 @@ void D2ModelWidget::setActiveButton(int active)
 void D2ModelWidget::clearScene()
 {
 	mWorldModel->clearScene();
+	mRobot->clearSensors();
 	mScene->clear();
 	drawInitialRobot();
+
 }
 
 void D2ModelWidget::resetButtons()
 {
 	mCurrentWall.clear();
 	mMouseClicksCount = 0;
+	mDrawingAction = drawingAction::none;
+	setActiveButton(mButtonsCount - 1);
+}
 
-	mUi->wallButton->setChecked(false);
+QComboBox *D2ModelWidget::currentComboBox()
+{
+	switch (mCurrentPort){
+	case inputPort::port1:
+		return mUi->port1Box;
+	case inputPort::port2:
+		return mUi->port2Box;
+	case inputPort::port3:
+		return mUi->port3Box;
+	case inputPort::port4:
+		return mUi->port4Box;
+	case inputPort::none:
+		break;
+	}
+	return NULL;
+}
+
+QPushButton *D2ModelWidget::currentPortButton()
+{
+	switch (mCurrentPort){
+	case inputPort::port1:
+		return mUi->port1AddButton;
+	case inputPort::port2:
+		return mUi->port2AddButton;
+	case inputPort::port3:
+		return mUi->port3AddButton;
+	case inputPort::port4:
+		return mUi->port4AddButton;
+	case inputPort::none:
+		break;
+	}
+	return NULL;
 }
 
 void D2ModelWidget::addPort(int const port)
@@ -194,6 +232,27 @@ void D2ModelWidget::addPort(int const port)
 	mCurrentPort = static_cast<inputPort::InputPortEnum>(port);
 
 	setActiveButton(port);
+
+	mDrawingAction = drawingAction::port;
+
+	switch (currentComboBox()->currentIndex()){
+	case 0:
+		mCurrentSensorType = sensorType::touchBoolean;
+		mCurrentPortColor = Qt::green;
+		break;
+	case 1:
+		mCurrentSensorType = sensorType::colorFull;
+		mCurrentPortColor = Qt::blue;
+		break;
+	case 2:
+		mCurrentSensorType = sensorType::sonar;
+		mCurrentPortColor = Qt::red;
+		break;
+	default:
+		mCurrentSensorType = sensorType::unused;
+		mCurrentPortColor = Qt::black;
+		break;
+	}
 }
 
 void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
@@ -205,10 +264,15 @@ void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 		mCurrentWall.append(position);
 		mMouseClicksCount++;
 		break;
-	case drawingAction::port:
-		mMouseClicksCount = 0;
-		// add port
-		break;
+	case drawingAction::port: {
+		SensorItem *sensor = new SensorItem(mCurrentPortColor);
+		mRobot->addSensor(sensor);
+		mScene->addItem(sensor);
+		sensor->setPos(mouseEvent->scenePos());
+
+		resetButtons();
+	}
+	break;
 	case drawingAction::none:
 		mMouseClicksCount = 0;
 		break;
