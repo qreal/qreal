@@ -1,6 +1,7 @@
 #include "worldModel.h"
 
 #include <QtGui/QTransform>
+#include <QtCore/QStringList>
 
 #include <QtCore/QDebug>
 
@@ -107,4 +108,44 @@ QPainterPath WorldModel::buildWallPath() const
 		wallPath.lineTo(wall.second);
 	}
 	return wallPath;
+}
+
+QDomDocument WorldModel::serialize() const
+{
+	QDomDocument result;
+	QDomElement walls = result.createElement("walls");
+	result.appendChild(walls);
+
+	typedef QPair<QPointF, QPointF> Wall;
+	foreach (Wall const wall, mWalls) {
+		QDomElement wallNode = result.createElement("wall");
+		wallNode.setAttribute("begin", QString::number(wall.first.x()) + ":" + QString::number(wall.first.y()));
+		wallNode.setAttribute("end", QString::number(wall.second.x()) + ":" + QString::number(wall.second.y()));
+		walls.appendChild(wallNode);
+	}
+	return result;
+}
+
+void WorldModel::deserialize(QDomDocument const &document)
+{
+	mWalls.clear();
+
+	QDomNodeList walls = document.elementsByTagName("wall");
+	for (int i = 0; i < walls.count(); ++i) {
+		QDomElement const wallNode = walls.at(i).toElement();
+
+		QString const beginStr = wallNode.attribute("begin", "0:0");
+		QStringList splittedStr = beginStr.split(":");
+		int x = splittedStr[0].toInt();
+		int y = splittedStr[1].toInt();
+		QPointF const begin = QPointF(x, y);
+
+		QString const endStr = wallNode.attribute("end", "0:0");
+		splittedStr = endStr.split(":");
+		x = splittedStr[0].toInt();
+		y = splittedStr[1].toInt();
+		QPointF const end = QPointF(x, y);
+
+		mWalls << qMakePair(begin, end);
+	}
 }

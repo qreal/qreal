@@ -232,6 +232,20 @@
        </item>
       </layout>
      </item>
+     <item row="8" column="0">
+      <widget class="QPushButton" name="saveWorldModelPushButton">
+       <property name="text">
+        <string>Save World Model</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QPushButton" name="loadWorldModelPushButton">
+       <property name="text">
+        <string>Load World Model</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item row="0" column="9">

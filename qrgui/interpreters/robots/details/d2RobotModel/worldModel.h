@@ -5,6 +5,7 @@
 #include <QtCore/QPair>
 #include <QtGui/QPolygon>
 #include <QtGui/QPainterPath>
+#include <QtXml/QDomDocument>
 
 #include "../../sensorConstants.h"
 
@@ -27,6 +28,9 @@ public:
 
 	void addWall(QPointF const &begin, QPointF const &end);
 	void clearScene();
+
+	QDomDocument serialize() const;
+	void deserialize(QDomDocument const &document);
 
 private:
 	QList<QPair<QPointF, QPointF> > mWalls;

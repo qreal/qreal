@@ -2,6 +2,8 @@
 #include "ui_d2Form.h"
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
+#include "../../../../../utils/outFile.h"
+#include "../../../../../utils/xmlUtils.h"
 
 #include <QtCore/QDebug>
 
@@ -56,6 +58,9 @@ void D2ModelWidget::connectUiButtons()
 	mPortsMapper.setMapping(mUi->port3AddButton, inputPort::port3);
 	connect(mUi->port4AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
 	mPortsMapper.setMapping(mUi->port4AddButton, inputPort::port4);
+
+	connect(mUi->saveWorldModelPushButton, SIGNAL(clicked()), this, SLOT(saveWorldModel()));
+	connect(mUi->loadWorldModelPushButton, SIGNAL(clicked()), this, SLOT(loadWorldModel()));
 
 	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(addPort(int)));
 }
@@ -299,4 +304,20 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	Q_UNUSED(mouseEvent)
+}
+
+void D2ModelWidget::saveWorldModel()
+{
+	QDomDocument document = mWorldModel->serialize();
+
+	utils::OutFile out("worldModel.xml");
+	out() << "<?xml version='1.0' encoding='utf-8'?>\n";
+	out() << document.toString(4);
+}
+
+void D2ModelWidget::loadWorldModel()
+{
+	QDomDocument const doc = utils::xmlUtils::loadDocument("worldModel.xml");
+	mWorldModel->deserialize(doc);
+	update();
 }

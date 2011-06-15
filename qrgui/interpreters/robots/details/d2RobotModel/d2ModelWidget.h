@@ -60,7 +60,10 @@ private slots:
 	void mouseReleased(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseMoved(QGraphicsSceneMouseEvent *mouseEvent);
 
-	void addPort(int const);
+	void addPort(int const port);
+
+	void saveWorldModel();
+	void loadWorldModel();
 
 private:
 	void connectUiButtons();
