@@ -51,11 +51,13 @@ void SensorsConfiguration::clearSensor(inputPort::InputPortEnum const &port)
 QDomDocument SensorsConfiguration::serialize() const
 {
 	QDomDocument result;
+	QDomElement sensorsElem = result.createElement("sensors");
+	result.appendChild(sensorsElem);
 
 	int port = 0;
 	foreach (SensorInfo const &sensor, mSensors) {
 		QDomElement sensorElem = result.createElement("sensor");
-		result.appendChild(sensorElem);
+		sensorsElem.appendChild(sensorElem);
 		sensorElem.setAttribute("port", port);
 		sensorElem.setAttribute("type", sensor.type());
 		sensorElem.setAttribute("position", QString::number(sensor.position().x()) + ":" + QString::number(sensor.position().y()));
