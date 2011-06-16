@@ -304,16 +304,27 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 
 void D2ModelWidget::saveWorldModel()
 {
-	QDomDocument document = mWorldModel->serialize();
+	// Saves world and robot models simultaneously, for now.
+	QDomDocument worldModel = mWorldModel->serialize();
 
-	utils::OutFile out("worldModel.xml");
-	out() << "<?xml version='1.0' encoding='utf-8'?>\n";
-	out() << document.toString(4);
+	utils::OutFile worldModelOut("worldModel.xml");
+	worldModelOut() << "<?xml version='1.0' encoding='utf-8'?>\n";
+	worldModelOut() << worldModel.toString(4);
+
+	QDomDocument robotModel = mRobotModel->configuration().serialize();
+	utils::OutFile robotModelOut("robotModel.xml");
+	robotModelOut() << "<?xml version='1.0' encoding='utf-8'?>\n";
+	robotModelOut() << robotModel.toString(4);
 }
 
 void D2ModelWidget::loadWorldModel()
 {
-	QDomDocument const doc = utils::xmlUtils::loadDocument("worldModel.xml");
-	mWorldModel->deserialize(doc);
+	// Loads world and robot models simultaneously.
+	QDomDocument const worldModelDoc = utils::xmlUtils::loadDocument("worldModel.xml");
+	mWorldModel->deserialize(worldModelDoc);
+
+	QDomDocument const robotModelDoc = utils::xmlUtils::loadDocument("robotModel.xml");
+	mRobotModel->configuration().deserialize(robotModelDoc);
+
 	update();
 }
