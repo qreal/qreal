@@ -67,17 +67,8 @@ void D2ModelWidget::connectUiButtons()
 
 void D2ModelWidget::init()
 {
-	if (!isHidden())
-		return;
-
-	drawInitialRobot();
-
-	//	QGraphicsRectItem *wheel1 = new QGraphicsRectItem(robotWidth - widthBigWheel, 0 - heightBigWheel, widthBigWheel, heightBigWheel, mRobot);
-	//	wheel1->setBrush(QBrush(Qt::gray));
-	//	QGraphicsRectItem *wheel2 = new QGraphicsRectItem(robotWidth - widthBigWheel, robotHeight, widthBigWheel, heightBigWheel, mRobot);
-	//	wheel2->setBrush(QBrush(Qt::gray));
-	//	QGraphicsRectItem *wheel3 = new QGraphicsRectItem(0 - widthSmallWheel / 2, robotHeight / 2 - heightSmallWheel / 2, widthSmallWheel, heightSmallWheel, mRobot);
-	//	wheel3->setBrush(QBrush(Qt::gray));
+	if (!mRobot)
+		drawInitialRobot();
 
 	mUi->graphicsView->show();
 	show();
