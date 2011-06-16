@@ -117,6 +117,11 @@ void D2ModelWidget::update()
 	drawWalls();
 }
 
+bool D2ModelWidget::isRobotOnTheGround()
+{
+	return mRobot ? mRobot->isOnTheGround() : false;
+}
+
 void D2ModelWidget::draw(QPointF newCoord, qreal angle, QPointF dPoint)
 {
 	mAngleOld = angle;

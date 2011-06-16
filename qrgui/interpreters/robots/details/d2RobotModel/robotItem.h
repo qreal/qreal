@@ -26,12 +26,16 @@ public:
 	QRectF boundingRect() const;
 	void mousePressEvent(QGraphicsSceneMouseEvent * event);
 	void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
 	void setPos(QPointF const &newPos);
 
 	/** @brief Add new sensor to mSensors */
 	void addSensor(SensorItem *sensor);
 	/** @brief Clear mSensors */
 	void clearSensors();
+
+	/** @brief Returns false if we're dragging robot item somewhere */
+	bool isOnTheGround();
 
 private:
 	/** @brief Image of a robot drawn on scene */
@@ -41,6 +45,7 @@ private:
 	QList<SensorItem *> mSensors;
 	/** @brief Previous position of robot (used while dragging to update sensors positions)*/
 	QPointF mPreviousPos;
+	bool mIsOnTheGround;
 };
 
 }

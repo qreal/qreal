@@ -51,7 +51,6 @@ QRectF SensorItem::boundingRect() const
 void SensorItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	QGraphicsItem::mousePressEvent(event);
-
 }
 
 void SensorItem::move(qreal dx, qreal dy)

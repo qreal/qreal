@@ -13,6 +13,7 @@ int const border = 5;
 RobotItem::RobotItem()
 	: QGraphicsItem()
 	, mImage(QImage(":/icons/robot.png"))
+	, mIsOnTheGround(true)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
 		ItemClipsToShape | ItemSendsGeometryChanges);
@@ -40,6 +41,7 @@ void RobotItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	QGraphicsItem::mousePressEvent(event);
 	mPreviousPos = QPointF();
+	mIsOnTheGround = false;
 }
 
 void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
@@ -56,6 +58,14 @@ void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 	mPreviousPos = event->scenePos();
 }
+
+void RobotItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+{
+	QGraphicsItem::mouseReleaseEvent(event);
+	mPreviousPos = QPointF();
+	mIsOnTheGround = true;
+}
+
 
 void RobotItem::setPos(QPointF const &newPos)
 {
@@ -74,5 +84,10 @@ void RobotItem::addSensor(SensorItem *sensor)
 void RobotItem::clearSensors()
 {
 	mSensors.clear();
+}
+
+bool RobotItem::isOnTheGround()
+{
+	return mIsOnTheGround;
 }
 

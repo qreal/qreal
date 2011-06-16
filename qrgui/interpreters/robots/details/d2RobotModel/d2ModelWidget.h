@@ -48,6 +48,9 @@ public:
 	/** @brief Get current scene position of mRobot */
 	QPointF robotPos();
 
+	/** @brief Returns false if we click on robot and move it somewhere */
+	bool isRobotOnTheGround();
+
 public slots:
 	void update();
 
