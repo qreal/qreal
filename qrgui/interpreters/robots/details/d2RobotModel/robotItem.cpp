@@ -64,6 +64,8 @@ void RobotItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 	QGraphicsItem::mouseReleaseEvent(event);
 	mPreviousPos = QPointF();
 	mIsOnTheGround = true;
+
+	emit changedPosition();
 }
 
 
@@ -79,6 +81,11 @@ void RobotItem::setPos(QPointF const &newPos)
 void RobotItem::addSensor(SensorItem *sensor)
 {
 	mSensors.append(sensor);
+}
+
+void RobotItem::removeSensor(SensorItem *sensor)
+{
+	mSensors.removeOne(sensor);
 }
 
 void RobotItem::clearSensors()

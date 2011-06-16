@@ -5,7 +5,7 @@
 #include <QtCore/qmath.h>
 
 #include "d2ModelWidget.h"
-#include "iConfigurableModel.h"
+#include "robotModelInterface.h"
 #include "worldModel.h"
 
 namespace qReal {
@@ -16,7 +16,7 @@ namespace d2Model {
 
 const int timeInterval = 5;
 
-class D2RobotModel : public QObject, public IConfigurableRobotModel {
+class D2RobotModel : public QObject, public RobotModelInterface {
 	Q_OBJECT
 
 public:
@@ -32,6 +32,9 @@ public:
 	bool readTouchSensor(inputPort::InputPortEnum const port);
 	int readSonarSensor(inputPort::InputPortEnum const port) const;
 	int readColorSensor(inputPort::InputPortEnum const port) const;
+
+	void addSensor(inputPort::InputPortEnum const port, sensorType::SensorTypeEnum const type
+					, QPoint const &position, qreal const &direction);
 
 private slots:
 	void nextFragment();

@@ -10,7 +10,7 @@
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 
-D2ModelWidget::D2ModelWidget(IConfigurableRobotModel *robotModel, WorldModel *worldModel, QWidget *parent)
+D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel, QWidget *parent)
 	: QWidget(parent)
 	, mUi(new Ui::D2Form)
 	, mScene(NULL)
@@ -26,6 +26,8 @@ D2ModelWidget::D2ModelWidget(IConfigurableRobotModel *robotModel, WorldModel *wo
 	, mButtonsCount(6) // magic numbers are baaad, mkay?
 {
 	mUi->setupUi(this);
+	mSensors.resize(4);
+
 	mScene = new D2ModelScene(mUi->graphicsView);
 	mUi->graphicsView->setScene(mScene);
 	mUi->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
@@ -63,6 +65,11 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->loadWorldModelPushButton, SIGNAL(clicked()), this, SLOT(loadWorldModel()));
 
 	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(addPort(int)));
+
+	connect(mUi->port1Box, SIGNAL(activated(int)), mUi->port1AddButton, SLOT(click()));
+	connect(mUi->port2Box, SIGNAL(activated(int)), mUi->port2AddButton, SLOT(click()));
+	connect(mUi->port3Box, SIGNAL(activated(int)), mUi->port3AddButton, SLOT(click()));
+	connect(mUi->port4Box, SIGNAL(activated(int)), mUi->port4AddButton, SLOT(click()));
 }
 
 void D2ModelWidget::init()
@@ -78,6 +85,8 @@ void D2ModelWidget::init()
 void D2ModelWidget::drawInitialRobot()
 {
 	mRobot = new RobotItem();
+	connect(mRobot, SIGNAL(changedPosition()), this, SLOT(handleNewRobotPosition()));
+
 	mScene->addItem(mRobot);
 	mLine.startsWith(mRobot->mapToScene(mRobot->boundingRect().center()));
 	mPolygon = mScene->addPolygon(mLine, QPen(Qt::black));
@@ -267,11 +276,23 @@ void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 		break;
 	case drawingAction::port: {
 		SensorItem *sensor = mCurrentSensorType == sensorType::sonar
-				? new SonarSensorItem(mCurrentPortColor, *mWorldModel, mRobotModel->configuration(), inputPort::port3)  // TODO: Don't know where the port of current sensor is.
+				? new SonarSensorItem(mCurrentPortColor, *mWorldModel, mRobotModel->configuration(), mCurrentPort)
 				: new SensorItem(mCurrentPortColor);
+
+		if (mSensors[mCurrentPort]) {
+			mRobot->removeSensor(mSensors[mCurrentPort]);
+			mScene->removeItem(mSensors[mCurrentPort]);
+			delete mSensors[mCurrentPort];
+		}
+
 		mRobot->addSensor(sensor);
 		mScene->addItem(sensor);
 		sensor->setPos(mouseEvent->scenePos());
+		mSensors[mCurrentPort] = sensor;
+
+		QPointF newpos = mRobot->mapFromScene(mouseEvent->scenePos().x(), mouseEvent->scenePos().y());
+		mRobotModel->addSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0); // TODO: handle direction
+
 
 		resetButtons();
 	}
@@ -316,4 +337,10 @@ void D2ModelWidget::loadWorldModel()
 	QDomDocument const doc = utils::xmlUtils::loadDocument("worldModel.xml");
 	mWorldModel->deserialize(doc);
 	update();
+}
+
+void D2ModelWidget::handleNewRobotPosition()
+{
+	mLine.clear();
+	mPolygon->setPolygon(mLine);
 }

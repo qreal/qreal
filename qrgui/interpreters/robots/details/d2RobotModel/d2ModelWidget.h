@@ -11,7 +11,7 @@
 #include "robotDrawer.h"
 #include "worldDrawer.h"
 #include "worldModel.h"
-#include "iConfigurableModel.h"
+#include "robotModelInterface.h"
 #include "d2ModelScene.h"
 #include "robotItem.h"
 
@@ -37,7 +37,7 @@ class D2ModelWidget : public QWidget {
 	Q_OBJECT
 
 public:
-	explicit D2ModelWidget(IConfigurableRobotModel *robotModel, WorldModel *worldModel, QWidget *parent = 0);
+	explicit D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel, QWidget *parent = 0);
 	~D2ModelWidget();
 	void init();
 	void close();
@@ -65,6 +65,8 @@ private slots:
 
 	void addPort(int const port);
 
+	void handleNewRobotPosition();
+
 	void saveWorldModel();
 	void loadWorldModel();
 
@@ -84,7 +86,7 @@ private:
 	RobotItem *mRobot;
 	QPolygonF mLine;
 	QGraphicsPolygonItem *mPolygon;
-	IConfigurableRobotModel *mRobotModel;
+	RobotModelInterface *mRobotModel;
 	RobotDrawer mRobotDrawer;
 	WorldDrawer mWorldDrawer;
 	WorldModel *mWorldModel;
@@ -114,6 +116,8 @@ private:
 	int const mButtonsCount;
 	/** @brief List of flags showing which panel button is active now*/
 	QList<bool> mButtonFlags;
+	/** @brief List of sensors, index is port of sensor */
+	QVector<SensorItem *> mSensors;
 
 };
 

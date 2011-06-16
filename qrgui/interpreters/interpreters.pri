@@ -80,7 +80,7 @@ HEADERS += \
 	interpreters/robots/details/d2RobotModel/robotItem.h \
 	interpreters/robots/details/d2RobotModel/sensorItem.h \
 	interpreters/robots/details/d2RobotModel/sonarSensorItem.h \
-	interpreters/robots/details/d2RobotModel/iConfigurableModel.h \
+	interpreters/robots/details/d2RobotModel/robotModelInterface.h \
 	interpreters/robots/details/d2RobotModel/robotDrawer.h \
 	interpreters/robots/details/d2RobotModel/sensorsConfiguration.h \
 	interpreters/robots/details/d2RobotModel/worldDrawer.h \

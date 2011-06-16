@@ -31,11 +31,15 @@ public:
 
 	/** @brief Add new sensor to mSensors */
 	void addSensor(SensorItem *sensor);
+	void removeSensor(SensorItem *sensor);
 	/** @brief Clear mSensors */
 	void clearSensors();
 
 	/** @brief Returns false if we're dragging robot item somewhere */
 	bool isOnTheGround();
+
+signals:
+	void changedPosition();
 
 private:
 	/** @brief Image of a robot drawn on scene */
