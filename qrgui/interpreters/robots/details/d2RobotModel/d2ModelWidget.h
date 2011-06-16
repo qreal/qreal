@@ -8,7 +8,6 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QPushButton>
 
-#include "robotDrawer.h"
 #include "worldDrawer.h"
 #include "worldModel.h"
 #include "iConfigurableModel.h"
@@ -85,7 +84,6 @@ private:
 	QPolygonF mLine;
 	QGraphicsPolygonItem *mPolygon;
 	IConfigurableRobotModel *mRobotModel;
-	RobotDrawer mRobotDrawer;
 	WorldDrawer mWorldDrawer;
 	WorldModel *mWorldModel;
 
