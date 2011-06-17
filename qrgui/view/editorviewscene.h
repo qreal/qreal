@@ -56,6 +56,13 @@ public:
 
 	QPointF getMousePos();
 
+public slots:
+
+	qReal::Id *createElement(const QString &);
+	// TODO: get rid of it here
+	void copy();
+	void paste();
+
 signals:
 	void elementCreated(qReal::Id const &id);
 	void zoomIn();
@@ -76,6 +83,18 @@ protected:
 	void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event);
 
 	virtual void drawBackground( QPainter *painter, const QRectF &rect);
+
+private slots:
+
+	void connectActionTriggered();
+	void goToActionTriggered();
+	void disconnectActionTriggered();
+	void addUsageActionTriggered();
+	void deleteUsageActionTriggered();
+	void printElementsOfRootDiagram();
+	void drawIdealGesture();
+	void initMouseMoveManager();
+	void createEdge(QString const &);
 
 private:
 	UML::Element* mLastCreatedWithEdge;
@@ -131,21 +150,6 @@ private:
 
 	friend class qReal::EditorViewMViface;
 
-public slots:
-
-	qReal::Id *createElement(const QString &);
-	// TODO: get rid of it here
-	void copy();
-	void paste();
-private slots:
-
-	void connectActionTriggered();
-	void goToActionTriggered();
-	void disconnectActionTriggered();
-	void addUsageActionTriggered();
-	void deleteUsageActionTriggered();
-	void printElementsOfRootDiagram();
-	void drawIdealGesture();
-	void initMouseMoveManager();
-	void createEdge(QString const &);
+	/** @brief Is "true" when we just select items on scene, and "false" when we drag selected items */
+	bool mShouldReparentItems;
 };

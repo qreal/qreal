@@ -15,7 +15,10 @@
 using namespace qReal;
 
 EditorViewScene::EditorViewScene(QObject * parent)
-	:  QGraphicsScene(parent), mWindow(NULL), mPrevParent(0)
+	:  QGraphicsScene(parent)
+	, mWindow(NULL)
+	, mPrevParent(0)
+	, mShouldReparentItems(false)
 {
 	QSettings settings("SPbSU", "QReal");
 	mNeedDrawGrid = settings.value("ShowGrid", true).toBool();
@@ -24,7 +27,6 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 	mRightButtonPressed = false;
-
 	mActionSignalMapper = new QSignalMapper(this);
 }
 
@@ -476,6 +478,8 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		//	initContextMenu(e, event->scenePos());
 	}
 	redraw();
+
+	mShouldReparentItems = (selectedItems().size() > 0);
 }
 
 void EditorViewScene::initContextMenu(UML::Element *e, const QPointF &pos)
@@ -580,9 +584,12 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 	UML::Element* element = getElemAt(event->scenePos());
 
-	QList<QGraphicsItem *> list = selectedItems();
-	foreach(QGraphicsItem *item, list)
-		sendEvent(item, event);
+	if (mShouldReparentItems) {
+		QList<QGraphicsItem *> list = selectedItems();
+		foreach(QGraphicsItem *item, list)
+			sendEvent(item, event);
+		mShouldReparentItems = false; // in case there'll be 2 consecutive release events
+	}
 
 	if (event->button() == Qt::RightButton)
 	{
