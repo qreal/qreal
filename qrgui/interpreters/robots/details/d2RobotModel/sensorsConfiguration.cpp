@@ -1,5 +1,7 @@
 #include "sensorsConfiguration.h"
 
+#include <QtCore/QStringList>
+
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 
@@ -46,6 +48,50 @@ void SensorsConfiguration::clearSensor(inputPort::InputPortEnum const &port)
 	mSensors[port] = SensorInfo();
 }
 
+QDomDocument SensorsConfiguration::serialize() const
+{
+	QDomDocument result;
+	QDomElement sensorsElem = result.createElement("sensors");
+	result.appendChild(sensorsElem);
+
+	int port = 0;
+	foreach (SensorInfo const &sensor, mSensors) {
+		QDomElement sensorElem = result.createElement("sensor");
+		sensorsElem.appendChild(sensorElem);
+		sensorElem.setAttribute("port", port);
+		sensorElem.setAttribute("type", sensor.type());
+		sensorElem.setAttribute("position", QString::number(sensor.position().x()) + ":" + QString::number(sensor.position().y()));
+		sensorElem.setAttribute("direction", sensor.direction());
+		++port;
+	}
+
+	return result;
+}
+
+void SensorsConfiguration::deserialize(QDomDocument const &document)
+{
+	mSensors.clear();
+	mSensors.resize(4);
+
+	QDomNodeList sensors = document.elementsByTagName("sensor");
+	for (int i = 0; i < sensors.count(); ++i) {
+		QDomElement const sensorNode = sensors.at(i).toElement();
+
+		inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(sensorNode.attribute("port", "0").toInt());
+
+		sensorType::SensorTypeEnum const type = static_cast<sensorType::SensorTypeEnum>(sensorNode.attribute("type", "0").toInt());
+
+		QString const positionStr = sensorNode.attribute("position", "0:0");
+		QStringList const splittedStr = positionStr.split(":");
+		int const x = splittedStr[0].toInt();
+		int const y = splittedStr[1].toInt();
+		QPoint const position = QPoint(x, y);
+
+		qreal const direction = sensorNode.attribute("direction", "0").toDouble();
+
+		setSensor(port, type, position, direction);
+	}
+}
 
 
 SensorsConfiguration::SensorInfo::SensorInfo()

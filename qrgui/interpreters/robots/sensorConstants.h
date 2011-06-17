@@ -24,6 +24,7 @@ enum InputPortEnum {
 	, port2
 	, port3
 	, port4
+	, none
 };
 }
 

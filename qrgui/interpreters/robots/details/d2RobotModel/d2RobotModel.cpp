@@ -24,11 +24,8 @@ void D2RobotModel::init()
 	mMotorC = initMotor(5, 0, 0, 2);
 	setBeep(0, 0);
 	mAngle = 0;
-	mPos = QPointF(0, 0);
+	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);
 	mRotatePoint  = QPointF(0, 0);
-
-	// TODO: For testing
-	mSensorsConfiguration.setSensor(inputPort::port1, sensorType::touchBoolean, QPoint(2, 0), 0);
 }
 
 D2RobotModel::Motor* D2RobotModel::initMotor(int radius, int speed, long unsigned int degrees, int port)
@@ -58,31 +55,36 @@ SensorsConfiguration &D2RobotModel::configuration()
 	return mSensorsConfiguration;
 }
 
+void D2RobotModel::addSensor(inputPort::InputPortEnum const port, sensorType::SensorTypeEnum const type
+							 , QPoint const &position, qreal const &direction)
+{
+	mSensorsConfiguration.setSensor(port, type, position, direction);
+}
+
 D2ModelWidget *D2RobotModel::createModelWidget()
 {
 	mD2ModelWidget = new D2ModelWidget(this, &mWorldModel);
 	return mD2ModelWidget;
 }
 
-bool D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port) const
+bool D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 {
 	QPoint point = mSensorsConfiguration.position(port) + mPos.toPoint();
 	qreal point2 = mSensorsConfiguration.direction(port) + mAngle;
 	bool res = mWorldModel.touchSensorReading(point, point2);
 
-//	qDebug() << "point:" << point << ",res: "<< res;
 	// TODO: Add checks of sensor type.
 	return res;
 }
 
 int D2RobotModel::readSonarSensor(inputPort::InputPortEnum const port) const
 {
-	return mWorldModel.sonarReading(mSensorsConfiguration.position(port), mSensorsConfiguration.direction(port));
+	return mWorldModel.sonarReading(mSensorsConfiguration.position(port) + mPos.toPoint(), mSensorsConfiguration.direction(port) + mAngle);
 }
 
 int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 {
-	return mWorldModel.colorSensorReading(mSensorsConfiguration.position(port), mSensorsConfiguration.type(port));
+	return mWorldModel.colorSensorReading(mSensorsConfiguration.position(port) + mPos.toPoint(), mSensorsConfiguration.type(port));
 }
 
 void D2RobotModel::startInit()
@@ -95,7 +97,6 @@ void D2RobotModel::startInit()
 void D2RobotModel::stopRobot()
 {
 	mTimer->stop();
-	mD2ModelWidget->close();
 }
 
 void D2RobotModel::countBeep()
@@ -158,7 +159,12 @@ void D2RobotModel::countNewCoord()
 
 void D2RobotModel::nextFragment()
 {
-	mD2ModelWidget->draw(mPos, mAngle, mRotatePoint);
+	// do nothing until robot gets back on the ground
+	if (!mD2ModelWidget->isRobotOnTheGround())
+		return;
+
+	mPos = mD2ModelWidget->robotPos();
 	countNewCoord();
+	mD2ModelWidget->draw(mPos, mAngle, mRotatePoint);
 	countBeep();
 }

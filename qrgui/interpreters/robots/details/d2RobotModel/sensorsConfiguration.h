@@ -2,6 +2,7 @@
 
 #include <QtCore/QPoint>
 #include <QtCore/QVector>
+#include <QtXml/QDomDocument>
 
 #include "../../sensorConstants.h"
 
@@ -28,6 +29,9 @@ public:
 
 	sensorType::SensorTypeEnum type(inputPort::InputPortEnum const &port) const;
 	void clearSensor(inputPort::InputPortEnum const &port);
+
+	QDomDocument serialize() const;
+	void deserialize(QDomDocument const &document);
 
 private:
 	class SensorInfo

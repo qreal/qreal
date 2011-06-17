@@ -18,10 +18,14 @@ public:
 	virtual ~D2ModelScene();
 
 signals:
-	void mouseClicked(QPointF const &point);
+	void mouseClicked(QGraphicsSceneMouseEvent *mouseEvent);
+	void mouseReleased(QGraphicsSceneMouseEvent *mouseEvent);
+	void mouseMoved(QGraphicsSceneMouseEvent *mouseEvent);
 
 protected:
 	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
 };
 
 
