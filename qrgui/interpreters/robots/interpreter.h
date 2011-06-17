@@ -45,8 +45,10 @@ public:
 	void setRobotImplementation(robotModelType::robotModelTypeEnum implementationType
 			, RobotCommunicationInterface * const robotCommunicationInterface);
 
+	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
+
 public slots:
-	void showD2ModelWidget();
+	void showD2ModelWidget(bool isVisible);
 
 private slots:
 	void threadStopped();

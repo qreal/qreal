@@ -168,8 +168,11 @@ MainWindow::MainWindow()
 	QString const defaultBluetoothPortName = settings.value("bluetoothPortName", "").toString();
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(settings.value("robotModel", "1").toInt());
+	mUi->actionShow2Dmodel->setVisible(typeOfRobotModel == robotModelType::unreal);
 	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
 			, mModels->logicalModelAssistApi(), *this, mBluetoothCommunication, typeOfRobotModel);
+	if (typeOfRobotModel == robotModelType::unreal)
+		setD2ModelWidgetActions(mUi->actionRun, mUi->actionStop_Running);
 	sensorType::SensorTypeEnum port1 = static_cast<sensorType::SensorTypeEnum>(settings.value("port1SensorType", "0").toInt());
 	sensorType::SensorTypeEnum port2 = static_cast<sensorType::SensorTypeEnum>(settings.value("port2SensorType", "0").toInt());
 	sensorType::SensorTypeEnum port3 = static_cast<sensorType::SensorTypeEnum>(settings.value("port3SensorType", "0").toInt());
@@ -239,9 +242,15 @@ void MainWindow::connectActions()
 	connect(mUi->actionShow2Dmodel, SIGNAL(triggered()), this, SLOT(showD2ModelWidget()));
 }
 
-void MainWindow::showD2ModelWidget()
+void MainWindow::showD2ModelWidget(bool isVisible)
 {
-	mRobotInterpreter->showD2ModelWidget();
+	mRobotInterpreter->showD2ModelWidget(isVisible);
+}
+
+void MainWindow::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
+{
+	if (mRobotInterpreter)
+		mRobotInterpreter->setD2ModelWidgetActions(runAction, stopAction);
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -1316,6 +1325,11 @@ void MainWindow::showRobotSettingsDialog()
 				, robotSettingsDialog.selectedPort3Sensor()
 				, robotSettingsDialog.selectedPort4Sensor()
 		);
+		mUi->actionShow2Dmodel->setVisible(typeOfRobotModel == robotModelType::unreal);
+		if (typeOfRobotModel == robotModelType::unreal)
+			setD2ModelWidgetActions(mUi->actionRun, mUi->actionStop_Running);
+		else
+			showD2ModelWidget(false);
 	}
 }
 
