@@ -556,7 +556,6 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			}
 
 			if (newParent && !selected.contains(newParent)) {
-				qDebug() << "changing parent from "<< parentItem() << "to" << (QGraphicsItem *)newParent;
 				mGraphicalAssistApi->changeParent(id(), newParent->id(),
 												  mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
 
@@ -576,23 +575,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	setZValue(0);
 }
 
-bool NodeElement::shouldReparent(QList<QGraphicsItem *> const &parents)
-{
-	QGraphicsItem *parent = parentItem();
-
-	if (!parent)
-		return true;
-
-	while (parent && parents.contains(parent)) {
-		parent = parent->parentItem();
-	}
-
-}
-
 void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
 	Q_UNUSED(event)
-	qDebug() << "dblclck";
 }
 
 void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
