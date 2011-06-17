@@ -82,7 +82,6 @@ HEADERS += \
 	interpreters/robots/details/d2RobotModel/sonarSensorItem.h \
 	interpreters/robots/details/d2RobotModel/robotModelInterface.h \
 	interpreters/robots/details/d2RobotModel/sensorsConfiguration.h \
-	interpreters/robots/details/d2RobotModel/worldDrawer.h \
 	interpreters/robots/details/d2RobotModel/worldModel.h \
 
 SOURCES += \
@@ -151,7 +150,6 @@ SOURCES += \
 	interpreters/robots/details/d2RobotModel/sensorItem.cpp \
 	interpreters/robots/details/d2RobotModel/sonarSensorItem.cpp \
 	interpreters/robots/details/d2RobotModel/sensorsConfiguration.cpp \
-	interpreters/robots/details/d2RobotModel/worldDrawer.cpp \
 	interpreters/robots/details/d2RobotModel/worldModel.cpp \
 
 FORMS += \

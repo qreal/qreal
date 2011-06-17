@@ -32,11 +32,12 @@ public:
 	/** @brief Add new sensor to mSensors */
 	void addSensor(SensorItem *sensor);
 	void removeSensor(SensorItem *sensor);
+
 	/** @brief Clear mSensors */
 	void clearSensors();
 
 	/** @brief Returns false if we're dragging robot item somewhere */
-	bool isOnTheGround();
+	bool isOnTheGround() const;
 
 signals:
 	void changedPosition();
@@ -47,8 +48,10 @@ private:
 
 	/** @brief List of sensors added to robot */
 	QList<SensorItem *> mSensors;
+
 	/** @brief Previous position of robot (used while dragging to update sensors positions)*/
 	QPointF mPreviousPos;
+
 	bool mIsOnTheGround;
 };
 

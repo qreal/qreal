@@ -17,7 +17,6 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	, mRobot(NULL)
 	, mPolygon(NULL)
 	, mRobotModel(robotModel)
-	, mWorldDrawer(worldModel)
 	, mWorldModel(worldModel)
 	, mDrawingAction(drawingAction::none)
 	, mMouseClicksCount(0)
@@ -93,7 +92,7 @@ void D2ModelWidget::drawInitialRobot()
 	mUi->graphicsView->centerOn(mRobot);
 }
 
-QPointF D2ModelWidget::robotPos()
+QPointF D2ModelWidget::robotPos() const
 {
 	return mRobot ? mRobot->pos() : QPointF(0,0);
 }
@@ -291,8 +290,7 @@ void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 		mSensors[mCurrentPort] = sensor;
 
 		QPointF newpos = mRobot->mapFromScene(mouseEvent->scenePos().x(), mouseEvent->scenePos().y());
-		mRobotModel->addSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0); // TODO: handle direction
-
+		mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0); // TODO: handle direction
 
 		resetButtons();
 	}

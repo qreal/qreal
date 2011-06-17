@@ -55,12 +55,6 @@ SensorsConfiguration &D2RobotModel::configuration()
 	return mSensorsConfiguration;
 }
 
-void D2RobotModel::addSensor(inputPort::InputPortEnum const port, sensorType::SensorTypeEnum const type
-							 , QPoint const &position, qreal const &direction)
-{
-	mSensorsConfiguration.setSensor(port, type, position, direction);
-}
-
 D2ModelWidget *D2RobotModel::createModelWidget()
 {
 	mD2ModelWidget = new D2ModelWidget(this, &mWorldModel);

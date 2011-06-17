@@ -33,9 +33,6 @@ public:
 	int readSonarSensor(inputPort::InputPortEnum const port) const;
 	int readColorSensor(inputPort::InputPortEnum const port) const;
 
-	void addSensor(inputPort::InputPortEnum const port, sensorType::SensorTypeEnum const type
-					, QPoint const &position, qreal const &direction);
-
 private slots:
 	void nextFragment();
 
