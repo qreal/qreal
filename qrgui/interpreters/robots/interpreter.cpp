@@ -79,9 +79,14 @@ void Interpreter::stopRobot()
 	stop();
 }
 
-void Interpreter::showD2ModelWidget()
+void Interpreter::showD2ModelWidget(bool isVisible)
 {
-	mD2ModelWidget->init();
+	mD2ModelWidget->init(isVisible);
+}
+
+void Interpreter::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
+{
+	mD2ModelWidget->setD2ModelWidgetActions(runAction, stopAction);
 }
 
 void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum implementationType, RobotCommunicationInterface * const robotCommunicationInterface)

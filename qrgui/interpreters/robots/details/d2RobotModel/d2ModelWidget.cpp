@@ -71,14 +71,25 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->port4Box, SIGNAL(activated(int)), mUi->port4AddButton, SLOT(click()));
 }
 
-void D2ModelWidget::init()
+void D2ModelWidget::init(bool isActive)
 {
+	if (!isActive){
+		hide();
+		return;
+	}
+
 	if (!mRobot)
 		drawInitialRobot();
 
 	mUi->graphicsView->show();
 	show();
 	update();
+}
+
+void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
+{
+	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()));
+	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()));
 }
 
 void D2ModelWidget::drawInitialRobot()

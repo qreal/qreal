@@ -37,7 +37,7 @@ class D2ModelWidget : public QWidget {
 public:
 	explicit D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel, QWidget *parent = 0);
 	~D2ModelWidget();
-	void init();
+	void init(bool isActive = true);
 	void close();
 	void draw(QPointF newCoord, qreal angle, QPointF dPoint);
 	void drawBeep(QColor const &color);
@@ -48,6 +48,8 @@ public:
 
 	/** @brief Returns false if we click on robot and move it somewhere */
 	bool isRobotOnTheGround();
+
+	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
 
 public slots:
 	void update();

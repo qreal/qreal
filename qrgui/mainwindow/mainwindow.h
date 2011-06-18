@@ -74,7 +74,7 @@ public slots:
 	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 	virtual void selectItem(Id const &id);
 
-	void showD2ModelWidget();
+	void showD2ModelWidget(bool isVisible = true);
 
 private slots:
 	void adjustMinimapZoom(int zoom);
@@ -217,5 +217,7 @@ private:
 		@param name Widget's name in internal map
 	*/
 	void showDockWidget(QDockWidget *dockWidget, QString name);
+
+	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
 };
 }
