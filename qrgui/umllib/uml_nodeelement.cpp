@@ -70,16 +70,16 @@ NodeElement::~NodeElement()
 	delete mUmlPortHandler;
 }
 
-NodeElement *NodeElement::clone(bool toCursorPos, bool shareLogicalId, Id parentId)
+NodeElement *NodeElement::clone(bool toCursorPos, bool shareLogicalId, Id const &parentId)
 {
 	UML::NodeElement *result = NULL;
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
 
-	QPointF placePos = toCursorPos ? evscene->getMousePos() : mPos;
+	QPointF const placePos = toCursorPos ? evscene->getMousePos() : mPos;
 	if (shareLogicalId) {
 		qReal::Id resultId = mGraphicalAssistApi->createElement(parentId, logicalId(), true, mGraphicalAssistApi->name(id()), placePos);
-		Element *eresult = evscene->mainWindow()->manager()->graphicalObject(resultId);
-		result = dynamic_cast<NodeElement*>(eresult);
+		Element *element = evscene->mainWindow()->manager()->graphicalObject(resultId);
+		result = dynamic_cast<NodeElement*>(element);
 		result->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
 		result->setId(resultId);
 		result->setPos(placePos);
@@ -148,7 +148,6 @@ NodeElementSerializationData NodeElement::serializationData() const
 	if (parent) {
 		data.mParentId = parent->id();
 	} else {
-		qDebug() << "NULL mParentNodeElement when serializing" << id();
 		data.mParentId = Id::rootId();
 	}
 
@@ -207,7 +206,6 @@ void NodeElement::adjustLinks()
 }
 
 void NodeElement::arrangeLinearPorts() {
-	//qDebug() << "linear ports on" << uuid().toString();
 	int lpId = mPointPorts.size(); //point ports before linear
 	foreach (StatLine line, mLinePorts) {
 		//sort first by slope, then by current portId
@@ -226,9 +224,6 @@ void NodeElement::arrangeLinearPorts() {
 				qreal len = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 				qreal scalarProduct = ((x2 - x1) * dx + (y2 - y1) * dy) / len;
 				sortedEdges.insertMulti(qMakePair(edge->portIdOn(this), scalarProduct), edge);
-				//qDebug() << "+" << edge->uuid().toString() <<"pr=" <<scalarProduct << "; p=" << edge->portIdOn(this);
-				//qDebug("'--> vector: (%g, %g)", (x2-x1)/len, (y2-y1)/len);
-				//qDebug() << "'------> because " << (QVariant)conn << "->" << (QVariant)next;
 			}
 		}
 
@@ -237,7 +232,6 @@ void NodeElement::arrangeLinearPorts() {
 		int i = 0;
 		foreach (EdgeElement* edge, sortedEdges) {
 			qreal newId = lpId + (1.0 + i++) / (N + 1);
-			//qDebug() << "-" << edge->uuid().toString() << newId;
 			edge->moveConnection(this, newId);
 		}
 
@@ -248,10 +242,7 @@ void NodeElement::arrangeLinearPorts() {
 
 
 void NodeElement::arrangeLinks() {
-	//qDebug() << "---------------\nDirect call " << uuid().toString();
-
 	//Episode I: Home Jumps
-	//qDebug() << "I";
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
@@ -259,11 +250,9 @@ void NodeElement::arrangeLinks() {
 	}
 
 	//Episode II: Home Ports Arranging
-	//qDebug() << "II";
 	arrangeLinearPorts();
 
 	//Episode III: Remote Jumps
-	//qDebug() << "III";
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
@@ -272,7 +261,6 @@ void NodeElement::arrangeLinks() {
 	}
 
 	//Episode IV: Remote Arrangigng
-	//qDebug() << "IV";
 	QSet<NodeElement*> arranged;
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* other = edge->otherSide(this);

@@ -316,13 +316,12 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 UML::NodeElement *EditorViewScene::deserializeNode(const NodeElementSerializationData &data, bool shareLogicalId, QPointF offset)
 {
 	UML::NodeElement *result = NULL;
-	QPointF placePos = data.mPos + offset;
-
+	QPointF const placePos = data.mPos + offset;
 
 	if (shareLogicalId) {
 		Id resultId = mv_iface->graphicalAssistApi()->createElement(data.mParentId, data.mLogicalId, true, data.mName, placePos);
-		UML::Element *eresult = mainWindow()->manager()->graphicalObject(resultId);
-		result = dynamic_cast<UML::NodeElement*>(eresult);
+		UML::Element *element = mainWindow()->manager()->graphicalObject(resultId);
+		result = dynamic_cast<UML::NodeElement*>(element);
 		result->setAssistApi(mv_iface->graphicalAssistApi(), mv_iface->logicalAssistApi());
 		result->setId(resultId);
 
@@ -401,7 +400,6 @@ void EditorViewScene::paste(bool viewOnly)
 		stream >> nodesData;
 		stream >> edgesData;
 
-		qDebug() << "deser. start!";
 		QHash<Id, Id> updateIdMap;
 		updateIdMap.insert(Id::rootId(), Id::rootId()); // if top-level then we don't change anything
 
@@ -420,12 +418,10 @@ void EditorViewScene::paste(bool viewOnly)
 			} while (oldCandidate != candidate);
 
 			// deserialize
-			QPointF offset = candidate.mParentId == Id::rootId() ? QPointF(10, 20) : QPointF(0, 0);
+			QPointF const offset = candidate.mParentId == Id::rootId() ? QPointF(10, 20) : QPointF(0, 0);
 			NodeElementSerializationData newNode = candidate;
 			newNode.mParentId = updateIdMap[candidate.mParentId];
-			qDebug() << candidate.mId << "mc" << candidate.mParentId << "/" << newNode.mParentId;
 			Id newId = deserializeNode(newNode, viewOnly, offset)->id();
-			qDebug() << "result:" << newId << "\n";
 			updateIdMap.insert(candidate.mId, newId);
 			nodesData.removeAll(candidate);
 		}

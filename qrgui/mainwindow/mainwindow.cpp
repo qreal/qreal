@@ -19,7 +19,7 @@
 #include <QtCore/QSettings>
 #include <QtCore/QPluginLoader>
 
-#include <QMetaType>
+#include <QtCore/QMetaType>
 
 #include "errorReporter.h"
 
@@ -1444,7 +1444,7 @@ void MainWindow::createDiagram(QString const &idString)
 void MainWindow::registerMetatypes()
 {
 	// This is needed because we want to save Id and IdList values of QVariant
-	// to QDataStream during copy-paste. Any other QReal-spacific data types
+	// to QDataStream during copy-paste. Any other QReal-specific data types
 	// used as QVariant values in repository should be mentioned here.
 	qRegisterMetaType<Id>();
 	qRegisterMetaTypeStreamOperators<Id>();

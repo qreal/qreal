@@ -37,7 +37,7 @@ namespace UML {
 		NodeElement(ElementImpl *impl);
 		virtual ~NodeElement();
 
-		NodeElement *clone(bool toCursorPos = false, bool shareLogicalId = false, qReal::Id parentId = qReal::Id::rootId());
+		NodeElement *clone(bool toCursorPos = false, bool shareLogicalId = false, qReal::Id const &parentId = qReal::Id::rootId());
 		void copyChildren(NodeElement *source, bool shareLogicalId = false);
 		void copyProperties(NodeElement *source);
 
