@@ -33,6 +33,7 @@ int WorldModel::sonarReading(QPoint const &position, qreal direction) const
 bool WorldModel::touchSensorReading(QPoint const &position, qreal direction)
 {
 	Q_UNUSED(direction)
+
 	QPainterPathStroker pathStroker;
 	pathStroker.setWidth(3);
 	QPainterPath robotPath;

@@ -3,6 +3,8 @@
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QPainter>
 
+#include "sensorsConfiguration.h"
+
 namespace qReal {
 namespace interpreters {
 namespace robots {
@@ -14,19 +16,26 @@ class SensorItem : public QObject, public QGraphicsItem
 {
 	Q_OBJECT
 	Q_INTERFACES(QGraphicsItem)
+
 public:
-	SensorItem(QColor const &color);
+	SensorItem(SensorsConfiguration &configuration, inputPort::InputPortEnum port);
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget);
 
 	QRectF boundingRect() const;
 
 	void mousePressEvent(QGraphicsSceneMouseEvent * event);
+	void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
 
-	void move(qreal dx, qreal dy);
+	void setBasePosition(QPointF const &pos);
 
-private:
-	QColor mColor;
-	QRectF mRectangle;
+protected:
+	SensorsConfiguration &mConfiguration;
+	inputPort::InputPortEnum const mPort;
+	QPointF mBasePos;
+	bool mDragged;
+
+	QColor color() const;
 };
 
 }

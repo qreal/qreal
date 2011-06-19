@@ -258,19 +258,15 @@ void D2ModelWidget::addPort(int const port)
 	switch (currentComboBox()->currentIndex()){
 	case 0:
 		mCurrentSensorType = sensorType::touchBoolean;
-		mCurrentPortColor = Qt::green;
 		break;
 	case 1:
 		mCurrentSensorType = sensorType::colorFull;
-		mCurrentPortColor = Qt::blue;
 		break;
 	case 2:
 		mCurrentSensorType = sensorType::sonar;
-		mCurrentPortColor = Qt::red;
 		break;
 	default:
 		mCurrentSensorType = sensorType::unused;
-		mCurrentPortColor = Qt::black;
 		break;
 	}
 }
@@ -285,23 +281,10 @@ void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 		mMouseClicksCount++;
 		break;
 	case drawingAction::port: {
-		SensorItem *sensor = mCurrentSensorType == sensorType::sonar
-				? new SonarSensorItem(mCurrentPortColor, *mWorldModel, mRobotModel->configuration(), mCurrentPort)
-				: new SensorItem(mCurrentPortColor);
-
-		if (mSensors[mCurrentPort]) {
-			mRobot->removeSensor(mSensors[mCurrentPort]);
-			mScene->removeItem(mSensors[mCurrentPort]);
-			delete mSensors[mCurrentPort];
-		}
-
-		mRobot->addSensor(sensor);
-		mScene->addItem(sensor);
-		sensor->setPos(mouseEvent->scenePos());
-		mSensors[mCurrentPort] = sensor;
-
 		QPointF newpos = mRobot->mapFromScene(mouseEvent->scenePos().x(), mouseEvent->scenePos().y());
 		mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0); // TODO: handle direction
+
+		reinitSensor(mCurrentPort);
 
 		resetButtons();
 	}
@@ -356,6 +339,10 @@ void D2ModelWidget::loadWorldModel()
 	QDomDocument const robotModelDoc = utils::xmlUtils::loadDocument("robotModel.xml");
 	mRobotModel->configuration().deserialize(robotModelDoc);
 
+	for (int i = 0; i < 4; ++i) {
+		reinitSensor(static_cast<inputPort::InputPortEnum>(i));
+	}
+
 	update();
 }
 
@@ -363,4 +350,33 @@ void D2ModelWidget::handleNewRobotPosition()
 {
 	mLine.clear();
 	mPolygon->setPolygon(mLine);
+}
+
+void D2ModelWidget::removeSensor(inputPort::InputPortEnum port)
+{
+	// Here's the point where all interested entities are notified about sensor deletion,
+	// so if this code gets broken or worked around, we'll have some almost undebuggable
+	// dangling pointers in scene and in robot item. But what could possibly go wrong?
+	if (mSensors[port]) {
+		mRobot->removeSensor(mSensors[port]);
+		mScene->removeItem(mSensors[port]);
+		delete mSensors[port];
+	}
+}
+
+void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
+{
+	removeSensor(port);
+
+	if (mRobotModel->configuration().type(port) == sensorType::unused)
+		return;
+
+	SensorItem *sensor = mRobotModel->configuration().type(port) == sensorType::sonar
+			? new SonarSensorItem(*mWorldModel, mRobotModel->configuration(), port)
+			: new SensorItem(mRobotModel->configuration(), port);
+
+	mRobot->addSensor(sensor);
+	mScene->addItem(sensor);
+	sensor->setBasePosition(mRobot->scenePos());
+	mSensors[port] = sensor;
 }

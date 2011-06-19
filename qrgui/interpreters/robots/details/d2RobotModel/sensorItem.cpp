@@ -9,9 +9,11 @@ using namespace details::d2Model;
 
 int const size = 5;
 
-SensorItem::SensorItem(QColor const &color)
+SensorItem::SensorItem(SensorsConfiguration &configuration, inputPort::InputPortEnum port)
 	: QGraphicsItem()
-	, mColor(color)
+	, mConfiguration(configuration)
+	, mPort(port)
+	, mDragged(false)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
 		ItemClipsToShape | ItemSendsGeometryChanges);
@@ -20,8 +22,6 @@ SensorItem::SensorItem(QColor const &color)
 	setAcceptDrops(true);
 	setCursor(QCursor(Qt::PointingHandCursor));
 	setZValue(1);
-
-	mRectangle = QRectF(-size, -size, size * 2, size * 2);
 }
 
 void SensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
@@ -32,29 +32,60 @@ void SensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *style,
 	painter->save();
 
 	QBrush brush;
-	brush.setColor(mColor);
+	brush.setColor(color());
 	brush.setStyle(Qt::SolidPattern);
 
 	painter->setBrush(brush);
 	painter->setOpacity(0.5);
-	painter->setPen(mColor);
-	painter->drawEllipse(mRectangle);
+	painter->setPen(color());
+	painter->drawEllipse(boundingRect());
 
 	painter->restore();
 }
 
 QRectF SensorItem::boundingRect() const
 {
-	return mRectangle;
+	return QRectF(-size, -size, size * 2, size * 2);
 }
 
 void SensorItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	QGraphicsItem::mousePressEvent(event);
+	mDragged = true;
 }
 
-void SensorItem::move(qreal dx, qreal dy)
+void SensorItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
-	setPos(QPointF(pos().x() + dx, pos().y() + dy));
+	QGraphicsItem::mouseMoveEvent(event);
+	if (mDragged) {
+		mConfiguration.setPosition(mPort, (event->scenePos() - mBasePos).toPoint());
+		setPos(mBasePos + mConfiguration.position(mPort));
+	}
 }
 
+void SensorItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+{
+	QGraphicsItem::mouseReleaseEvent(event);
+	mDragged = false;
+}
+
+void SensorItem::setBasePosition(QPointF const &pos)
+{
+	mBasePos = pos;
+	setPos(mBasePos + mConfiguration.position(mPort));
+}
+
+QColor SensorItem::color() const
+{
+	switch (mConfiguration.type(mPort)) {
+	case sensorType::touchBoolean:
+		return Qt::green;
+	case sensorType::colorFull:
+		return Qt::blue;
+	case sensorType::sonar:
+		return Qt::red;
+	default:
+		Q_ASSERT(!"Unknown sensor type");
+		return Qt::black;
+	}
+}

@@ -64,8 +64,8 @@ D2ModelWidget *D2RobotModel::createModelWidget()
 bool D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 {
 	QPoint point = mSensorsConfiguration.position(port) + mPos.toPoint();
-	qreal point2 = mSensorsConfiguration.direction(port) + mAngle;
-	bool res = mWorldModel.touchSensorReading(point, point2);
+	qreal direction = mSensorsConfiguration.direction(port) + mAngle;
+	bool res = mWorldModel.touchSensorReading(point, direction);
 
 	// TODO: Add checks of sensor type.
 	return res;

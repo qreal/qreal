@@ -54,7 +54,7 @@ void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 	}
 
 	foreach (SensorItem *sensor, mSensors)
-		sensor->move(event->scenePos().x() - mPreviousPos.x(), event->scenePos().y() - mPreviousPos.y());
+		sensor->setBasePosition(scenePos());
 
 	mPreviousPos = event->scenePos();
 }
@@ -71,7 +71,7 @@ void RobotItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 void RobotItem::setPos(QPointF const &newPos)
 {
 	foreach (SensorItem *sensor, mSensors)
-		sensor->move(newPos.x() - pos().x(), newPos.y() - pos().y());
+		sensor->setBasePosition(newPos);
 
 	QGraphicsItem::setPos(newPos);
 }
@@ -95,4 +95,3 @@ bool RobotItem::isOnTheGround() const
 {
 	return mIsOnTheGround;
 }
-

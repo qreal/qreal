@@ -47,7 +47,7 @@ private:
 	QImage mImage;
 
 	/** @brief List of sensors added to robot */
-	QList<SensorItem *> mSensors;
+	QList<SensorItem *> mSensors;  // Does not have ownership
 
 	/** @brief Previous position of robot (used while dragging to update sensors positions)*/
 	QPointF mPreviousPos;

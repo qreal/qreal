@@ -103,9 +103,6 @@ private:
 	/** @brief Type of current sensor that we add */
 	sensorType::SensorTypeEnum mCurrentSensorType;
 
-	/** @brief Color of current port item */
-	QColor mCurrentPortColor;
-
 	/** @brief Amount of buttons on left panel */
 	int const mButtonsCount;
 
@@ -127,6 +124,15 @@ private:
 
 	/** @brief Get QPushButton for current sensor */
 	QPushButton *currentPortButton();
+
+	/** Deletes sensor for given port and removes it from scene and the robot */
+	void removeSensor(inputPort::InputPortEnum port);
+
+	/// Adds sensor to a scene and a robot
+	void addSensor(inputPort::InputPortEnum port, sensorType::SensorTypeEnum type);
+
+	/// Reread sensor configuration on given port, delete old sensor item and create new.
+	void reinitSensor(inputPort::InputPortEnum port);
 };
 
 }

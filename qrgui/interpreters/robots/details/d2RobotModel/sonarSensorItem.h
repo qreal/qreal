@@ -17,14 +17,14 @@ class SonarSensorItem : public SensorItem
 	Q_INTERFACES(QGraphicsItem)
 
 public:
-	SonarSensorItem(QColor const &color, WorldModel const &worldModel, SensorsConfiguration const &configuration, inputPort::InputPortEnum port);
+	SonarSensorItem(WorldModel const &worldModel, SensorsConfiguration &configuration, inputPort::InputPortEnum port);
 	void paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget);
 	QRectF boundingRect() const;
 
 private:
 	WorldModel const &mWorldModel;
-	SensorsConfiguration const &mConfiguration;
-	inputPort::InputPortEnum const mPort;
+
+	QPainterPath scanningRegion() const;
 };
 
 }
