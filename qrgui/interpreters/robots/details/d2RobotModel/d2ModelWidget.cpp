@@ -2,6 +2,7 @@
 #include "ui_d2Form.h"
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
+#include "rotater.h"
 #include "../../../../../utils/outFile.h"
 #include "../../../../../utils/xmlUtils.h"
 
@@ -96,8 +97,14 @@ void D2ModelWidget::drawInitialRobot()
 {
 	mRobot = new RobotItem();
 	connect(mRobot, SIGNAL(changedPosition()), this, SLOT(handleNewRobotPosition()));
-
 	mScene->addItem(mRobot);
+
+	mRotater = new Rotater();
+	mRotater->setMasterItem(mRobot);
+	mRotater->setVisible(true);
+	mScene->addItem(mRotater);
+	mRobot->setRotater(mRotater);
+
 	mLine.startsWith(mRobot->mapToScene(mRobot->boundingRect().center()));
 	mPolygon = mScene->addPolygon(mLine, QPen(Qt::black));
 	mUi->graphicsView->centerOn(mRobot);

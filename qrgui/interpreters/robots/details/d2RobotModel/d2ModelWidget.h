@@ -12,6 +12,7 @@
 #include "robotModelInterface.h"
 #include "d2ModelScene.h"
 #include "robotItem.h"
+#include "rotater.h"
 
 namespace Ui {
 class D2Form;
@@ -112,6 +113,8 @@ private:
 	/** @brief List of sensors, index is port of sensor */
 	QVector<SensorItem *> mSensors;
 
+	Rotater *mRotater;
+
 	void connectUiButtons();
 	void drawWalls();
 	void drawInitialRobot();
@@ -133,6 +136,7 @@ private:
 
 	/// Reread sensor configuration on given port, delete old sensor item and create new.
 	void reinitSensor(inputPort::InputPortEnum port);
+
 };
 
 }

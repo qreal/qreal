@@ -4,6 +4,7 @@
 #include <QtGui/QPainter>
 
 #include "sensorItem.h"
+#include "rotater.h"
 
 namespace qReal {
 namespace interpreters {
@@ -39,6 +40,8 @@ public:
 	/** @brief Returns false if we're dragging robot item somewhere */
 	bool isOnTheGround() const;
 
+	void setRotater(Rotater *rotater);
+
 signals:
 	void changedPosition();
 
@@ -53,6 +56,7 @@ private:
 	QPointF mPreviousPos;
 
 	bool mIsOnTheGround;
+	Rotater *mRotater;
 };
 
 }
