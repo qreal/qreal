@@ -6,10 +6,12 @@
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 
-Rotater::Rotater() : QGraphicsLineItem()
+Rotater::Rotater() : QGraphicsItem()
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
 		ItemClipsToShape | ItemSendsGeometryChanges);
+
+//	mLine.setParentItem(this);
 
 	setAcceptHoverEvents(true);
 	setAcceptDrops(true);
@@ -18,8 +20,8 @@ Rotater::Rotater() : QGraphicsLineItem()
 
 	mFrom = QPointF(0,0);
 	mTo = QPointF(0,0);
-	setLine(QLine(mFrom.toPoint(), mTo.toPoint()));
-	qDebug() << this->line();
+	mLine.setLine(QLine(mFrom.toPoint(), mTo.toPoint()));
+	qDebug() << this->mLine.line();
 }
 
 void Rotater::setMasterItem(QGraphicsItem *masterItem)
@@ -30,9 +32,8 @@ void Rotater::setMasterItem(QGraphicsItem *masterItem)
 	mFrom.setY(mFrom.y() + 10);
 	mTo = mFrom;
 	mTo.setY(mTo.y() - 300);
-	setLine(QLine(mFrom.toPoint(), mTo.toPoint()));
-	qDebug() << this->line();
-
+	mLine.setLine(QLine(mFrom.toPoint(), mTo.toPoint()));
+	qDebug() << this->mLine.line();
 }
 
 void Rotater::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
@@ -49,18 +50,15 @@ void Rotater::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QW
 	painter->setBrush(brush);
 	painter->setOpacity(0.5);
 	painter->setPen(Qt::blue);
-	painter->drawLine(line());
-	qDebug() << "draw" << line();
+	painter->drawLine(mLine.line());
+	qDebug() << "draw" << mLine.line();
 
 	painter->restore();
-
-
 }
 
 QRectF Rotater::boundingRect() const
 {
-	QRect rect = QRect(line().p1().toPoint(), line().p2().toPoint()).adjusted(-5, -5, 5, 5);
-//	qDebug() << "rect:" << rect;
+	QRect rect = QRect(mLine.line().p1().toPoint(), mLine.line().p2().toPoint()).adjusted(-5, -5, 5, 5);
 	return rect;
 }
 

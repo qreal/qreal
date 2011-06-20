@@ -15,8 +15,20 @@ SonarSensorItem::SonarSensorItem(WorldModel const &worldModel
 
 void SonarSensorItem::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget)
 {
-	SensorItem::paint(painter, style, widget);
+	Q_UNUSED(style)
+	Q_UNUSED(widget)
+
 	painter->save();
+
+	QBrush brush;
+	brush.setColor(color());
+	brush.setStyle(Qt::SolidPattern);
+
+	painter->setBrush(brush);
+	painter->setOpacity(0.5);
+	painter->setPen(color());
+	painter->drawEllipse(QRect(-size, -size, size * 2, size * 2));
+
 	painter->setOpacity(0.2);
 	painter->setBrush(Qt::black);
 	painter->drawPath(scanningRegion());
@@ -30,5 +42,5 @@ QRectF SonarSensorItem::boundingRect() const
 
 QPainterPath SonarSensorItem::scanningRegion() const
 {
-	return mWorldModel.sonarScanningRegion(mConfiguration.position(mPort), mConfiguration.direction(mPort));
+	return mWorldModel.sonarScanningRegion(QPoint(), mConfiguration.direction(mPort));
 }

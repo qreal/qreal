@@ -7,8 +7,6 @@
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 
-int const size = 5;
-
 SensorItem::SensorItem(SensorsConfiguration &configuration, inputPort::InputPortEnum port)
 	: QGraphicsItem()
 	, mConfiguration(configuration)

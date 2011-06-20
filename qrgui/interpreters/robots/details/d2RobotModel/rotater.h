@@ -10,7 +10,7 @@ namespace details {
 namespace d2Model {
 
 /// Class that represents line that allows to rotate QGraphicItems
-class Rotater : public QObject, public QGraphicsLineItem {
+class Rotater : public QObject, public QGraphicsItem {
 	Q_OBJECT
 	Q_INTERFACES(QGraphicsItem)
 public:
@@ -25,6 +25,7 @@ private:
 	QPointF mFrom;
 	QPointF mTo;
 	QGraphicsItem *mMaster;
+	QGraphicsLineItem mLine;
 };
 
 }

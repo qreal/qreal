@@ -30,6 +30,8 @@ public:
 	void setBasePosition(QPointF const &pos);
 
 protected:
+	static int const size = 5;
+
 	SensorsConfiguration &mConfiguration;
 	inputPort::InputPortEnum const mPort;
 	QPointF mBasePos;
