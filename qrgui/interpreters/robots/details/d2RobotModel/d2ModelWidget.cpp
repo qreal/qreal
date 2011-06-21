@@ -36,6 +36,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	connectUiButtons();
 
 	connect(mScene, SIGNAL(mouseClicked(QGraphicsSceneMouseEvent *)), this, SLOT(mouseClicked(QGraphicsSceneMouseEvent *)));
+	connect(mScene, SIGNAL(itemDeleted(QGraphicsItem*)), this, SLOT(deleteItem(QGraphicsItem*)));
 }
 
 D2ModelWidget::~D2ModelWidget()
@@ -368,6 +369,7 @@ void D2ModelWidget::removeSensor(inputPort::InputPortEnum port)
 		mRobot->removeSensor(mSensors[port]);
 		mScene->removeItem(mSensors[port]);
 		delete mSensors[port];
+		mSensors[port] = NULL;
 	}
 }
 
@@ -386,4 +388,15 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 	mScene->addItem(sensor);
 	sensor->setBasePosition(mRobot->scenePos());
 	mSensors[port] = sensor;
+}
+
+void D2ModelWidget::deleteItem(QGraphicsItem *item)
+{
+	SensorItem *sensor = dynamic_cast<SensorItem *>(item);
+	if (!sensor)
+		return;
+
+	int port = mSensors.indexOf(sensor);
+	if (port != -1)
+		removeSensor(static_cast<inputPort::InputPortEnum>(port));
 }

@@ -24,14 +24,19 @@ void SonarSensorItem::paint(QPainter *painter, QStyleOptionGraphicsItem const *s
 	brush.setColor(color());
 	brush.setStyle(Qt::SolidPattern);
 
+	QRectF rect(-size, -size, size * 2, size * 2);
+
 	painter->setBrush(brush);
 	painter->setOpacity(0.5);
 	painter->setPen(color());
-	painter->drawEllipse(QRect(-size, -size, size * 2, size * 2));
+	painter->drawEllipse(rect.adjusted(1, 1, -1, -1));
 
 	painter->setOpacity(0.2);
 	painter->setBrush(Qt::black);
 	painter->drawPath(scanningRegion());
+
+	drawSelection(painter, rect);
+
 	painter->restore();
 }
 

@@ -17,10 +17,13 @@ public:
 	D2ModelScene(QObject *parent = 0);
 	virtual ~D2ModelScene();
 
+	void keyPressEvent(QKeyEvent *event);
+
 signals:
 	void mouseClicked(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseReleased(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseMoved(QGraphicsSceneMouseEvent *mouseEvent);
+	void itemDeleted(QGraphicsItem *);
 
 protected:
 	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);

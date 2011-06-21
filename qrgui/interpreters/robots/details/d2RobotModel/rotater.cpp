@@ -51,7 +51,6 @@ void Rotater::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QW
 	painter->setOpacity(0.5);
 	painter->setPen(Qt::blue);
 	painter->drawLine(mLine.line());
-	qDebug() << "draw" << mLine.line();
 
 	painter->restore();
 }

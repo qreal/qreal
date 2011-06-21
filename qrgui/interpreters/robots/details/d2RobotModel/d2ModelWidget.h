@@ -64,6 +64,8 @@ private slots:
 	void mouseReleased(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseMoved(QGraphicsSceneMouseEvent *mouseEvent);
 
+	void deleteItem(QGraphicsItem *);
+
 	void addPort(int const port);
 
 	void handleNewRobotPosition();

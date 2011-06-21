@@ -21,6 +21,9 @@ public:
 	SensorItem(SensorsConfiguration &configuration, inputPort::InputPortEnum port);
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget);
 
+	/// Draws selection rect around sensorBoundingBox
+	void drawSelection(QPainter *painter, QRectF sensorBoundingBox);
+
 	QRectF boundingRect() const;
 
 	void mousePressEvent(QGraphicsSceneMouseEvent * event);
@@ -30,7 +33,7 @@ public:
 	void setBasePosition(QPointF const &pos);
 
 protected:
-	static int const size = 5;
+	static int const size = 6;
 
 	SensorsConfiguration &mConfiguration;
 	inputPort::InputPortEnum const mPort;

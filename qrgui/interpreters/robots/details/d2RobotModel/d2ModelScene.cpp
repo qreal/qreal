@@ -1,6 +1,7 @@
 #include "d2ModelScene.h"
 
-#include <QGraphicsSceneMouseEvent>
+#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtGui/QKeyEvent>
 #include <QDebug>
 
 using namespace qReal::interpreters::robots;
@@ -36,3 +37,11 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	emit mouseMoved(mouseEvent);
 }
 
+void D2ModelScene::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Delete && (selectedItems().size() > 0)){
+		foreach(QGraphicsItem* item, selectedItems())
+			emit itemDeleted(item);
+	} else
+		QGraphicsScene::keyPressEvent(event);
+}

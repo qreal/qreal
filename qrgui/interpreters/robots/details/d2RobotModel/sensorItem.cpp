@@ -14,7 +14,7 @@ SensorItem::SensorItem(SensorsConfiguration &configuration, inputPort::InputPort
 	, mDragged(false)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
-		ItemClipsToShape | ItemSendsGeometryChanges);
+			 ItemClipsToShape | ItemSendsGeometryChanges);
 
 	setAcceptHoverEvents(true);
 	setAcceptDrops(true);
@@ -36,9 +36,21 @@ void SensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *style,
 	painter->setBrush(brush);
 	painter->setOpacity(0.5);
 	painter->setPen(color());
-	painter->drawEllipse(boundingRect());
+	painter->drawEllipse(boundingRect().adjusted(1, 1, -1, -1));
+
+	drawSelection(painter, boundingRect());
 
 	painter->restore();
+
+}
+
+void SensorItem::drawSelection(QPainter *painter, QRectF sensorBoundingBox)
+{
+	if (!isSelected())
+		return;
+
+	painter->setPen(QPen(Qt::black));
+	painter->drawEllipse(sensorBoundingBox);
 }
 
 QRectF SensorItem::boundingRect() const
