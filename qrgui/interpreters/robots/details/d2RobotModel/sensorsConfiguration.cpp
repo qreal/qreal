@@ -48,15 +48,15 @@ void SensorsConfiguration::clearSensor(inputPort::InputPortEnum const &port)
 	mSensors[port] = SensorInfo();
 }
 
-QDomDocument SensorsConfiguration::serialize() const
+QDomElement SensorsConfiguration::serialize(QDomDocument &document) const
 {
-	QDomDocument result;
-	QDomElement sensorsElem = result.createElement("sensors");
+	QDomElement result = document.createElement("robot");
+	QDomElement sensorsElem = document.createElement("sensors");
 	result.appendChild(sensorsElem);
 
 	int port = 0;
 	foreach (SensorInfo const &sensor, mSensors) {
-		QDomElement sensorElem = result.createElement("sensor");
+		QDomElement sensorElem = document.createElement("sensor");
 		sensorsElem.appendChild(sensorElem);
 		sensorElem.setAttribute("port", port);
 		sensorElem.setAttribute("type", sensor.type());
@@ -68,17 +68,21 @@ QDomDocument SensorsConfiguration::serialize() const
 	return result;
 }
 
-void SensorsConfiguration::deserialize(QDomDocument const &document)
+void SensorsConfiguration::deserialize(QDomElement const &element)
 {
+	if (element.isNull()) {
+		// TODO: Report error
+		return;
+	}
+
 	mSensors.clear();
 	mSensors.resize(4);
 
-	QDomNodeList sensors = document.elementsByTagName("sensor");
+	QDomNodeList sensors = element.elementsByTagName("sensor");
 	for (int i = 0; i < sensors.count(); ++i) {
 		QDomElement const sensorNode = sensors.at(i).toElement();
 
 		inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(sensorNode.attribute("port", "0").toInt());
-
 		sensorType::SensorTypeEnum const type = static_cast<sensorType::SensorTypeEnum>(sensorNode.attribute("type", "0").toInt());
 
 		QString const positionStr = sensorNode.attribute("position", "0:0");

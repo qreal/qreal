@@ -111,27 +111,33 @@ QPainterPath WorldModel::buildWallPath() const
 	return wallPath;
 }
 
-QDomDocument WorldModel::serialize() const
+QDomElement WorldModel::serialize(QDomDocument &document) const
 {
-	QDomDocument result;
-	QDomElement walls = result.createElement("walls");
+	QDomElement result = document.createElement("world");
+	QDomElement walls = document.createElement("walls");
 	result.appendChild(walls);
 
 	typedef QPair<QPointF, QPointF> Wall;
 	foreach (Wall const wall, mWalls) {
-		QDomElement wallNode = result.createElement("wall");
+		QDomElement wallNode = document.createElement("wall");
 		wallNode.setAttribute("begin", QString::number(wall.first.x()) + ":" + QString::number(wall.first.y()));
 		wallNode.setAttribute("end", QString::number(wall.second.x()) + ":" + QString::number(wall.second.y()));
 		walls.appendChild(wallNode);
 	}
+
 	return result;
 }
 
-void WorldModel::deserialize(QDomDocument const &document)
+void WorldModel::deserialize(QDomElement const &element)
 {
+	if (element.isNull()) {
+		// TODO: Report error
+		return;
+	}
+
 	mWalls.clear();
 
-	QDomNodeList walls = document.elementsByTagName("wall");
+	QDomNodeList walls = element.elementsByTagName("wall");
 	for (int i = 0; i < walls.count(); ++i) {
 		QDomElement const wallNode = walls.at(i).toElement();
 

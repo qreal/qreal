@@ -1,5 +1,8 @@
 #include "d2ModelWidget.h"
 #include "ui_d2Form.h"
+
+#include <QtGui/QFileDialog>
+
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
 #include "rotater.h"
@@ -326,26 +329,39 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 void D2ModelWidget::saveWorldModel()
 {
 	// Saves world and robot models simultaneously, for now.
-	QDomDocument worldModel = mWorldModel->serialize();
+	QString const saveFileName = QFileDialog::getSaveFileName(this, tr("Saving world and robot model"), ".", tr("2D model saves (*.xml)"));
+	if (saveFileName.isEmpty())
+		return;
 
-	utils::OutFile worldModelOut("worldModel.xml");
-	worldModelOut() << "<?xml version='1.0' encoding='utf-8'?>\n";
-	worldModelOut() << worldModel.toString(4);
+	QDomDocument save;
+	QDomElement root = save.createElement("root");
+	save.appendChild(root);
+	root.appendChild(mWorldModel->serialize(save));
+	root.appendChild(mRobotModel->configuration().serialize(save));
 
-	QDomDocument robotModel = mRobotModel->configuration().serialize();
-	utils::OutFile robotModelOut("robotModel.xml");
-	robotModelOut() << "<?xml version='1.0' encoding='utf-8'?>\n";
-	robotModelOut() << robotModel.toString(4);
+	utils::OutFile saveFile(saveFileName);
+	saveFile() << "<?xml version='1.0' encoding='utf-8'?>\n";
+	saveFile() << save.toString(4);
 }
 
 void D2ModelWidget::loadWorldModel()
 {
 	// Loads world and robot models simultaneously.
-	QDomDocument const worldModelDoc = utils::xmlUtils::loadDocument("worldModel.xml");
-	mWorldModel->deserialize(worldModelDoc);
+	QString const saveFileName = QFileDialog::getOpenFileName(this, tr("Saving world and robot model"), ".", tr("2D model saves (*.xml)"));
+	if (saveFileName.isEmpty())
+		return;
 
-	QDomDocument const robotModelDoc = utils::xmlUtils::loadDocument("robotModel.xml");
-	mRobotModel->configuration().deserialize(robotModelDoc);
+	QDomDocument const save = utils::xmlUtils::loadDocument(saveFileName);
+
+	QDomNodeList const worldList = save.elementsByTagName("world");
+	QDomNodeList const robotList = save.elementsByTagName("robot");
+	if (worldList.count() != 1 || robotList.count() != 1) {
+		// TODO: Report error
+		return;
+	}
+
+	mWorldModel->deserialize(worldList.at(0).toElement());
+	mRobotModel->configuration().deserialize(robotList.at(0).toElement());
 
 	for (int i = 0; i < 4; ++i) {
 		reinitSensor(static_cast<inputPort::InputPortEnum>(i));
@@ -392,11 +408,11 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 
 void D2ModelWidget::deleteItem(QGraphicsItem *item)
 {
-	SensorItem *sensor = dynamic_cast<SensorItem *>(item);
+	SensorItem * const sensor = dynamic_cast<SensorItem *>(item);
 	if (!sensor)
 		return;
 
-	int port = mSensors.indexOf(sensor);
+	int const port = mSensors.indexOf(sensor);
 	if (port != -1)
 		removeSensor(static_cast<inputPort::InputPortEnum>(port));
 }

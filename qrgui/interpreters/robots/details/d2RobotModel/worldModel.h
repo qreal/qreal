@@ -29,8 +29,8 @@ public:
 	void addWall(QPointF const &begin, QPointF const &end);
 	void clearScene();
 
-	QDomDocument serialize() const;
-	void deserialize(QDomDocument const &document);
+	QDomElement serialize(QDomDocument &document) const;
+	void deserialize(QDomElement const &element);
 
 private:
 	QList<QPair<QPointF, QPointF> > mWalls;
