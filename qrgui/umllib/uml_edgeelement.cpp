@@ -274,7 +274,8 @@ void EdgeElement::connectToPort()
 	// if mLine.size() is 2, then an edge will become a point
 	// if mLine.size() is 3, then two parts of an edge will overlap
 	if (newSrc == newDst && newSrc && mLine.size() <= 3) {
-		mLine = mLastLine;
+		if (!mLastLine.isEmpty())
+			mLine = mLastLine;
 
 		mGraphicalAssistApi->setPosition(id(), mLastPos);
 		mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
