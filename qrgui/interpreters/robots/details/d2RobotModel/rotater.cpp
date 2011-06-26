@@ -57,7 +57,7 @@ void Rotater::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QW
 
 QRectF Rotater::boundingRect() const
 {
-	QRect rect = QRect(mLine.line().p1().toPoint(), mLine.line().p2().toPoint()).adjusted(-5, -5, 5, 5);
+	QRect rect = QRect(mLine.line().p1().toPoint(), mLine.line().p2().toPoint()).normalized().adjusted(-5, -5, 5, 5);
 	return rect;
 }
 
