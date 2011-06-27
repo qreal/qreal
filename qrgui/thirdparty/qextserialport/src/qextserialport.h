@@ -52,59 +52,59 @@
 
 enum BaudRateType
 {
-    BAUD50,                //POSIX ONLY
-    BAUD75,                //POSIX ONLY
-    BAUD110,
-    BAUD134,               //POSIX ONLY
-    BAUD150,               //POSIX ONLY
-    BAUD200,               //POSIX ONLY
-    BAUD300,
-    BAUD600,
-    BAUD1200,
-    BAUD1800,              //POSIX ONLY
-    BAUD2400,
-    BAUD4800,
-    BAUD9600,
-    BAUD14400,             //WINDOWS ONLY
-    BAUD19200,
-    BAUD38400,
-    BAUD56000,             //WINDOWS ONLY
-    BAUD57600,
-    BAUD76800,             //POSIX ONLY
-    BAUD115200,
-    BAUD128000,            //WINDOWS ONLY
-    BAUD256000             //WINDOWS ONLY
+	BAUD50,                //POSIX ONLY
+	BAUD75,                //POSIX ONLY
+	BAUD110,
+	BAUD134,               //POSIX ONLY
+	BAUD150,               //POSIX ONLY
+	BAUD200,               //POSIX ONLY
+	BAUD300,
+	BAUD600,
+	BAUD1200,
+	BAUD1800,              //POSIX ONLY
+	BAUD2400,
+	BAUD4800,
+	BAUD9600,
+	BAUD14400,             //WINDOWS ONLY
+	BAUD19200,
+	BAUD38400,
+	BAUD56000,             //WINDOWS ONLY
+	BAUD57600,
+	BAUD76800,             //POSIX ONLY
+	BAUD115200,
+	BAUD128000,            //WINDOWS ONLY
+	BAUD256000             //WINDOWS ONLY
 };
 
 enum DataBitsType
 {
-    DATA_5,
-    DATA_6,
-    DATA_7,
-    DATA_8
+	DATA_5,
+	DATA_6,
+	DATA_7,
+	DATA_8
 };
 
 enum ParityType
 {
-    PAR_NONE,
-    PAR_ODD,
-    PAR_EVEN,
-    PAR_MARK,               //WINDOWS ONLY
-    PAR_SPACE
+	PAR_NONE,
+	PAR_ODD,
+	PAR_EVEN,
+	PAR_MARK,               //WINDOWS ONLY
+	PAR_SPACE
 };
 
 enum StopBitsType
 {
-    STOP_1,
-    STOP_1_5,               //WINDOWS ONLY
-    STOP_2
+	STOP_1,
+	STOP_1_5,               //WINDOWS ONLY
+	STOP_2
 };
 
 enum FlowType
 {
-    FLOW_OFF,
-    FLOW_HARDWARE,
-    FLOW_XONXOFF
+	FLOW_OFF,
+	FLOW_HARDWARE,
+	FLOW_XONXOFF
 };
 
 /**
@@ -112,12 +112,12 @@ enum FlowType
  */
 struct PortSettings
 {
-    BaudRateType BaudRate;
-    DataBitsType DataBits;
-    ParityType Parity;
-    StopBitsType StopBits;
-    FlowType FlowControl;
-    long Timeout_Millisec;
+	BaudRateType BaudRate;
+	DataBitsType DataBits;
+	ParityType Parity;
+	StopBitsType StopBits;
+	FlowType FlowControl;
+	long Timeout_Millisec;
 };
 
 #include <QIODevice>
@@ -156,15 +156,15 @@ connect(port, SIGNAL(readyRead()), myClass, SLOT(onDataAvailable()));
 port->open();
 
 void MyClass::onDataAvailable() {
-    int avail = port->bytesAvailable();
-    if( avail > 0 ) {
-        QByteArray usbdata;
-        usbdata.resize(avail);
-        int read = port->read(usbdata.data(), usbdata.size());
-        if( read > 0 ) {
-            processNewData(usbdata);
-        }
-    }
+	int avail = port->bytesAvailable();
+	if( avail > 0 ) {
+		QByteArray usbdata;
+		usbdata.resize(avail);
+		int read = port->read(usbdata.data(), usbdata.size());
+		if( read > 0 ) {
+			processNewData(usbdata);
+		}
+	}
 }
 \endcode
 
@@ -179,138 +179,138 @@ No guarantees are made as to the quality of POSIX support under NT/2000 however.
 
 \author Stefan Sander, Michal Policht, Brandon Fosdick, Liam Staskawicz
 */
-class QEXTSERIALPORT_EXPORT QextSerialPort: public QIODevice
+class QextSerialPort: public QIODevice
 {
-    Q_OBJECT
-    public:
-        enum QueryMode {
-            Polling,
-            EventDriven
-        };
+	Q_OBJECT
+	public:
+		enum QueryMode {
+			Polling,
+			EventDriven
+		};
 
-        QextSerialPort(QueryMode mode = EventDriven);
-        QextSerialPort(const QString & name, QueryMode mode = EventDriven);
-        QextSerialPort(PortSettings const& s, QueryMode mode = EventDriven);
-        QextSerialPort(const QString & name, PortSettings const& s, QueryMode mode = EventDriven);
-        ~QextSerialPort();
+		QEXTSERIALPORT_EXPORT QextSerialPort(QueryMode mode = EventDriven);
+		QEXTSERIALPORT_EXPORT QextSerialPort(const QString & name, QueryMode mode = EventDriven);
+		QEXTSERIALPORT_EXPORT QextSerialPort(PortSettings const& s, QueryMode mode = EventDriven);
+		QEXTSERIALPORT_EXPORT QextSerialPort(const QString & name, PortSettings const& s, QueryMode mode = EventDriven);
+		QEXTSERIALPORT_EXPORT ~QextSerialPort();
 
-        void setPortName(const QString & name);
-        QString portName() const;
+		QEXTSERIALPORT_EXPORT void setPortName(const QString & name);
+		QEXTSERIALPORT_EXPORT QString portName() const;
 
-        /**!
-         * Get query mode.
-         * \return query mode.
-         */
-        inline QueryMode queryMode() const { return _queryMode; }
+		/**!
+		 * Get query mode.
+		 * \return query mode.
+		 */
+		inline QueryMode queryMode() const { return _queryMode; }
 
-        /*!
-         * Set desired serial communication handling style. You may choose from polling
-         * or event driven approach. This function does nothing when port is open; to
-         * apply changes port must be reopened.
-         *
-         * In event driven approach read() and write() functions are acting
-         * asynchronously. They return immediately and the operation is performed in
-         * the background, so they doesn't freeze the calling thread.
-         * To determine when operation is finished, QextSerialPort runs separate thread
-         * and monitors serial port events. Whenever the event occurs, adequate signal
-         * is emitted.
-         *
-         * When polling is set, read() and write() are acting synchronously. Signals are
-         * not working in this mode and some functions may not be available. The advantage
-         * of polling is that it generates less overhead due to lack of signals emissions
-         * and it doesn't start separate thread to monitor events.
-         *
-         * Generally event driven approach is more capable and friendly, although some
-         * applications may need as low overhead as possible and then polling comes.
-         *
-         * \param mode query mode.
-         */
-        void setQueryMode(QueryMode mode);
+		/*!
+		 * Set desired serial communication handling style. You may choose from polling
+		 * or event driven approach. This function does nothing when port is open; to
+		 * apply changes port must be reopened.
+		 *
+		 * In event driven approach read() and write() functions are acting
+		 * asynchronously. They return immediately and the operation is performed in
+		 * the background, so they doesn't freeze the calling thread.
+		 * To determine when operation is finished, QextSerialPort runs separate thread
+		 * and monitors serial port events. Whenever the event occurs, adequate signal
+		 * is emitted.
+		 *
+		 * When polling is set, read() and write() are acting synchronously. Signals are
+		 * not working in this mode and some functions may not be available. The advantage
+		 * of polling is that it generates less overhead due to lack of signals emissions
+		 * and it doesn't start separate thread to monitor events.
+		 *
+		 * Generally event driven approach is more capable and friendly, although some
+		 * applications may need as low overhead as possible and then polling comes.
+		 *
+		 * \param mode query mode.
+		 */
+		QEXTSERIALPORT_EXPORT void setQueryMode(QueryMode mode);
 
-        void setBaudRate(BaudRateType);
-        BaudRateType baudRate() const;
+		QEXTSERIALPORT_EXPORT void setBaudRate(BaudRateType);
+		QEXTSERIALPORT_EXPORT BaudRateType baudRate() const;
 
-        void setDataBits(DataBitsType);
-        DataBitsType dataBits() const;
+		QEXTSERIALPORT_EXPORT void setDataBits(DataBitsType);
+		QEXTSERIALPORT_EXPORT DataBitsType dataBits() const;
 
-        void setParity(ParityType);
-        ParityType parity() const;
+		QEXTSERIALPORT_EXPORT void setParity(ParityType);
+		QEXTSERIALPORT_EXPORT ParityType parity() const;
 
-        void setStopBits(StopBitsType);
-        StopBitsType stopBits() const;
+		QEXTSERIALPORT_EXPORT void setStopBits(StopBitsType);
+		QEXTSERIALPORT_EXPORT StopBitsType stopBits() const;
 
-        void setFlowControl(FlowType);
-        FlowType flowControl() const;
+		QEXTSERIALPORT_EXPORT void setFlowControl(FlowType);
+		QEXTSERIALPORT_EXPORT FlowType flowControl() const;
 
-        void setTimeout(long);
+		QEXTSERIALPORT_EXPORT void setTimeout(long);
 
-        bool open(OpenMode mode);
-        bool isSequential() const;
-        void close();
-        void flush();
+		QEXTSERIALPORT_EXPORT bool open(OpenMode mode);
+		QEXTSERIALPORT_EXPORT bool isSequential() const;
+		QEXTSERIALPORT_EXPORT void close();
+		QEXTSERIALPORT_EXPORT void flush();
 
-        qint64 size() const;
-        qint64 bytesAvailable() const;
-        QByteArray readAll();
+		QEXTSERIALPORT_EXPORT qint64 size() const;
+		QEXTSERIALPORT_EXPORT qint64 bytesAvailable() const;
+		QEXTSERIALPORT_EXPORT QByteArray readAll();
 
-        void ungetChar(char c);
+		QEXTSERIALPORT_EXPORT void ungetChar(char c);
 
-        ulong lastError() const;
-        void translateError(ulong error);
+		QEXTSERIALPORT_EXPORT ulong lastError() const;
+		QEXTSERIALPORT_EXPORT void translateError(ulong error);
 
-        void setDtr(bool set=true);
-        void setRts(bool set=true);
-        ulong lineStatus();
-        QString errorString();
+		QEXTSERIALPORT_EXPORT void setDtr(bool set=true);
+		QEXTSERIALPORT_EXPORT void setRts(bool set=true);
+		QEXTSERIALPORT_EXPORT ulong lineStatus();
+		QEXTSERIALPORT_EXPORT QString errorString();
 
 #ifdef Q_OS_WIN
-        virtual bool waitForReadyRead(int msecs);  ///< @todo implement.
-        virtual qint64 bytesToWrite() const;
-        static QString fullPortNameWin(const QString & name);
+		QEXTSERIALPORT_EXPORT virtual bool waitForReadyRead(int msecs);  ///< @todo implement.
+		QEXTSERIALPORT_EXPORT virtual qint64 bytesToWrite() const;
+		static QEXTSERIALPORT_EXPORT QString fullPortNameWin(const QString & name);
 #endif
 
-    protected:
-        QMutex* mutex;
-        QString port;
-        PortSettings Settings;
-        ulong lastErr;
-        QueryMode _queryMode;
+	protected:
+		QMutex* mutex;
+		QString port;
+		PortSettings Settings;
+		ulong lastErr;
+		QueryMode _queryMode;
 
-        // platform specific members
+		// platform specific members
 #ifdef Q_OS_UNIX
-        int fd;
-        QSocketNotifier *readNotifier;
-        struct termios Posix_CommConfig;
-        struct termios old_termios;
-        struct timeval Posix_Timeout;
-        struct timeval Posix_Copy_Timeout;
+		int fd;
+		QSocketNotifier *readNotifier;
+		struct termios Posix_CommConfig;
+		struct termios old_termios;
+		struct timeval Posix_Timeout;
+		struct timeval Posix_Copy_Timeout;
 #elif (defined Q_OS_WIN)
-        HANDLE Win_Handle;
-        OVERLAPPED overlap;
-        COMMCONFIG Win_CommConfig;
-        COMMTIMEOUTS Win_CommTimeouts;
-        QWinEventNotifier *winEventNotifier;
-        DWORD eventMask;
-        QList<OVERLAPPED*> pendingWrites;
-        QReadWriteLock* bytesToWriteLock;
-        qint64 _bytesToWrite;
+		HANDLE Win_Handle;
+		OVERLAPPED overlap;
+		COMMCONFIG Win_CommConfig;
+		COMMTIMEOUTS Win_CommTimeouts;
+		QWinEventNotifier *winEventNotifier;
+		DWORD eventMask;
+		QList<OVERLAPPED*> pendingWrites;
+		QReadWriteLock* bytesToWriteLock;
+		qint64 _bytesToWrite;
 #endif
 
-        void construct(); // common construction
-        void platformSpecificDestruct();
-        void platformSpecificInit();
-        qint64 readData(char * data, qint64 maxSize);
-        qint64 writeData(const char * data, qint64 maxSize);
+		QEXTSERIALPORT_EXPORT void construct(); // common construction
+		QEXTSERIALPORT_EXPORT void platformSpecificDestruct();
+		QEXTSERIALPORT_EXPORT void platformSpecificInit();
+		QEXTSERIALPORT_EXPORT qint64 readData(char * data, qint64 maxSize);
+		QEXTSERIALPORT_EXPORT qint64 writeData(const char * data, qint64 maxSize);
 
 #ifdef Q_OS_WIN
-    private slots:
-        void onWinEvent(HANDLE h);
+	private slots:
+		QEXTSERIALPORT_EXPORT void onWinEvent(HANDLE h);
 #endif
 
-    private:
-        Q_DISABLE_COPY(QextSerialPort)
+	private:
+		Q_DISABLE_COPY(QextSerialPort)
 
-    signals:
+	signals:
 //        /**
 //         * This signal is emitted whenever port settings are updated.
 //         * 	\param valid \p true if settings are valid, \p false otherwise.
@@ -319,14 +319,14 @@ class QEXTSERIALPORT_EXPORT QextSerialPort: public QIODevice
 //         */
 //        // void validSettings(bool valid);
 
-        /*!
-         * This signal is emitted whenever dsr line has changed its state. You may
-         * use this signal to check if device is connected.
-         * 	\param status \p true when DSR signal is on, \p false otherwise.
-         *
-         * 	\see lineStatus().
-         */
-        void dsrChanged(bool status);
+		/*!
+		 * This signal is emitted whenever dsr line has changed its state. You may
+		 * use this signal to check if device is connected.
+		 * 	\param status \p true when DSR signal is on, \p false otherwise.
+		 *
+		 * 	\see lineStatus().
+		 */
+		void dsrChanged(bool status);
 
 };
 
