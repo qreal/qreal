@@ -17,9 +17,9 @@ using namespace qReal;
 
 NodeElement::NodeElement(ElementImpl* impl)
 	: mSwitchGridAction(tr("Switch on grid"), this),
-		mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
-		mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)),
-		mSelectionNeeded(false), mConnectionInProgress(false)
+	mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
+	mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)),
+	mSelectionNeeded(false), mConnectionInProgress(false)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -314,7 +314,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()) && mElementImpl->isResizeable())
 			mDragState = BottomLeft;
 		else if (QRectF(mContents.topLeft(), QSizeF(20, 20)).contains(event->pos())
-				&& mElementImpl->isContainer())
+				 && mElementImpl->isContainer())
 			changeFoldState();
 		else
 			Element::mousePressEvent(event);
@@ -349,37 +349,37 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			parentPos = parItem->scenePos();
 
 		switch (mDragState) {
-			case TopLeft:
-				newContents.setTopLeft(event->pos());
-				setPos(event->scenePos() - parentPos);
-				break;
-			case Top:
-				newContents.setTop(event->pos().y());
-				setPos(pos().x(), event->scenePos().y() - parentPos.y());
-				break;
-			case TopRight:
-				newContents.setTopRight(event->pos());
-				setPos(pos().x(), event->scenePos().y() - parentPos.y());
-				break;
-			case Left:
-				newContents.setLeft(event->pos().x());
-				setPos(event->scenePos().x() - parentPos.x(), pos().y());
-				break;
-			case Right:
-				newContents.setRight(event->pos().x());
-				break;
-			case BottomLeft:
-				newContents.setBottomLeft(event->pos());
-				setPos(event->scenePos().x() - parentPos.x(), pos().y());
-				break;
-			case Bottom:
-				newContents.setBottom(event->pos().y());
-				break;
-			case BottomRight:
-				newContents.setBottomRight(event->pos());
-				break;
-			case None:
-				break;
+		case TopLeft:
+			newContents.setTopLeft(event->pos());
+			setPos(event->scenePos() - parentPos);
+			break;
+		case Top:
+			newContents.setTop(event->pos().y());
+			setPos(pos().x(), event->scenePos().y() - parentPos.y());
+			break;
+		case TopRight:
+			newContents.setTopRight(event->pos());
+			setPos(pos().x(), event->scenePos().y() - parentPos.y());
+			break;
+		case Left:
+			newContents.setLeft(event->pos().x());
+			setPos(event->scenePos().x() - parentPos.x(), pos().y());
+			break;
+		case Right:
+			newContents.setRight(event->pos().x());
+			break;
+		case BottomLeft:
+			newContents.setBottomLeft(event->pos());
+			setPos(event->scenePos().x() - parentPos.x(), pos().y());
+			break;
+		case Bottom:
+			newContents.setBottom(event->pos().y());
+			break;
+		case BottomRight:
+			newContents.setBottomRight(event->pos());
+			break;
+		case None:
+			break;
 		}
 
 		if (event->modifiers() & Qt::ShiftModifier) {
@@ -419,32 +419,32 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		//switch нужен для случая, когда мы не можем растягивать объект.
 		//Его родитель должен определяться не по позиции мышки, а по позиции угла.
 		switch (mDragState) {
-			case TopLeft:
-				newParentInnerPoint = scenePos();
-				break;
-			case Top:
-				newParentInnerPoint = scenePos() + QPointF(mContents.width() / 2, 0);
-				break;
-			case TopRight:
-				newParentInnerPoint = scenePos() + QPointF(mContents.width(), 0);
-				break;
-			case Left:
-				newParentInnerPoint = scenePos() + QPointF(0, mContents.height()/2);
-				break;
-			case Right:
-				newParentInnerPoint = scenePos() + QPointF(mContents.width(), mContents.height() / 2);
-				break;
-			case BottomLeft:
-				newParentInnerPoint = scenePos() + QPointF(0, mContents.height());
-				break;
-			case Bottom:
-				newParentInnerPoint = scenePos() + QPointF(mContents.width() / 2, mContents.height());
-				break;
-			case BottomRight:
-				newParentInnerPoint = scenePos() + QPointF(mContents.width(), mContents.height());
-				break;
-			case None:
-				break;
+		case TopLeft:
+			newParentInnerPoint = scenePos();
+			break;
+		case Top:
+			newParentInnerPoint = scenePos() + QPointF(mContents.width() / 2, 0);
+			break;
+		case TopRight:
+			newParentInnerPoint = scenePos() + QPointF(mContents.width(), 0);
+			break;
+		case Left:
+			newParentInnerPoint = scenePos() + QPointF(0, mContents.height()/2);
+			break;
+		case Right:
+			newParentInnerPoint = scenePos() + QPointF(mContents.width(), mContents.height() / 2);
+			break;
+		case BottomLeft:
+			newParentInnerPoint = scenePos() + QPointF(0, mContents.height());
+			break;
+		case Bottom:
+			newParentInnerPoint = scenePos() + QPointF(mContents.width() / 2, mContents.height());
+			break;
+		case BottomRight:
+			newParentInnerPoint = scenePos() + QPointF(mContents.width(), mContents.height());
+			break;
+		case None:
+			break;
 		}
 
 		// when we select multiple elements and move them, position of mouse release event could be
@@ -452,7 +452,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		// container, we check if new parent is selected right now.
 
 		// if we want to put multiple elements in a container, we should take scene()->items()
-		// and remove elements that are currently selected from it
+		// and remove elements that are currently selected from it.
 
 		QList<QGraphicsItem *> parentsList;
 		foreach (QGraphicsItem *item, scene()->items(newParentInnerPoint)) {
@@ -464,34 +464,40 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 		QList<QGraphicsItem *> selected = evScene->selectedItems();
 
-		// delete from parents list ones that are selected right now
-		QList<QGraphicsItem *> realNewParents;
-		foreach (QGraphicsItem * item, parentsList){
-			if (!selected.contains(item))
-				realNewParents.append(item);
-		}
+		// but there could be a situation that we're trying to move element and it's container
+		// together. it that case we should not change parent of this element
 
-		NodeElement *newParent = NULL;
-		int i = 0;
-		// we get the first valid NodeElement from realNewParents
-		while (!newParent && i < realNewParents.size()){
-			newParent = dynamic_cast<NodeElement *>(realNewParents.at(i));
-			i++;
-		}
+		if (!parentItem() || !selected.contains(parentItem())) {
 
-		if (newParent && !selected.contains(newParent)) {
-			mGraphicalAssistApi->changeParent(id(), newParent->id(),
-					mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
-
-			newParent->resize(newParent->mContents);
-
-			while (newParent) {
-				newParent->mContents = newParent->mContents.normalized();
-				newParent->storeGeometry();
-				newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
+			// delete from parents list ones that are selected right now
+			QList<QGraphicsItem *> realNewParents;
+			foreach (QGraphicsItem * item, parentsList){
+				if (!selected.contains(item))
+					realNewParents.append(item);
 			}
-		} else
-			mGraphicalAssistApi->changeParent(id(), evScene->rootItemId(), scenePos());
+
+			NodeElement *newParent = NULL;
+			int i = 0;
+			// we get the first valid NodeElement from realNewParents
+			while (!newParent && i < realNewParents.size()){
+				newParent = dynamic_cast<NodeElement *>(realNewParents.at(i));
+				i++;
+			}
+
+			if (newParent && !selected.contains(newParent)) {
+				mGraphicalAssistApi->changeParent(id(), newParent->id(),
+												  mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
+
+				newParent->resize(newParent->mContents);
+
+				while (newParent) {
+					newParent->mContents = newParent->mContents.normalized();
+					newParent->storeGeometry();
+					newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
+				}
+			} else
+				mGraphicalAssistApi->changeParent(id(), evScene->rootItemId(), scenePos());
+		}
 	}
 
 	mDragState = None;
@@ -531,7 +537,7 @@ void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
-		Q_UNUSED(event);
+	Q_UNUSED(event);
 }
 
 void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
@@ -539,8 +545,8 @@ void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 	Q_UNUSED(event);
 	if (!isSelected())
 		return;
-//        foreach(EmbeddedLinker* mEmbeddedLinker, embeddedLinkers)
-//            mEmbeddedLinker->setCovered(false);
+	//        foreach(EmbeddedLinker* mEmbeddedLinker, embeddedLinkers)
+	//            mEmbeddedLinker->setCovered(false);
 }
 
 void NodeElement::hideEmbeddedLinkers()
@@ -572,7 +578,7 @@ bool NodeElement::initPossibleEdges()
 			QList<StringPossibleEdge> list = editorInterface->getPossibleEdges(elementName);
 			foreach(StringPossibleEdge pEdge, list) {
 				if (editorInterface->isParentOf(id().diagram(), pEdge.first.first, id().diagram(), id().element())
-					|| (editorInterface->isParentOf(id().diagram(), pEdge.first.second, id().diagram(), id().element()) && !pEdge.second.first))
+						|| (editorInterface->isParentOf(id().diagram(), pEdge.first.second, id().diagram(), id().element()) && !pEdge.second.first))
 				{
 					PossibleEdge possibleEdge = toPossibleEdge(pEdge);
 					mPossibleEdges.insert(possibleEdge);
@@ -615,7 +621,7 @@ void NodeElement::moveEmbeddedLinkers()
 	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
 	{
 		embeddedLinker->takePosition(index,maxIndex);
-	index++;
+		index++;
 	}
 }
 
@@ -738,7 +744,7 @@ const QPointF NodeElement::getNearestPort(QPointF location) const
 	foreach (StatLine line, mLinePorts) {
 		qreal k = getNearestPointOfLinePort(num, location);
 		QPointF port = QPointF((line.line.p1().x()*(1-k)+line.line.p2().x()*k),
-			(line.line.p1().y()*(1-k)+line.line.p2().y()*k));
+							   (line.line.p1().y()*(1-k)+line.line.p2().y()*k));
 		if (QLineF(port, location).length() < QLineF(min, location).length())
 			min = port;
 		num++;
@@ -824,18 +830,18 @@ qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, const QPointF &
 	QLineF nearestLinePort = newTransform(mLinePorts[linePortNumber]);
 	if (nearestLinePort.x1() == nearestLinePort.x2()) {
 		nearestPointOfLinePort = (location.y() - nearestLinePort.y1())
-			/ (nearestLinePort.y2() - nearestLinePort.y1());
+				/ (nearestLinePort.y2() - nearestLinePort.y1());
 	} else if (nearestLinePort.y1() == nearestLinePort.y2()) {
 		nearestPointOfLinePort = (location.x() - nearestLinePort.x1())
-			/ (nearestLinePort.x2() - nearestLinePort.x1());
+				/ (nearestLinePort.x2() - nearestLinePort.x1());
 	} else {
 		qreal k = (nearestLinePort.y2() - nearestLinePort.y1())
-			/ (nearestLinePort.x2() - nearestLinePort.x1());
+				/ (nearestLinePort.x2() - nearestLinePort.x1());
 		qreal b2 = location.y() + 1 / k * location.x();
 		qreal b = nearestLinePort.y1() - k * nearestLinePort.x1();
 		qreal x3 = k / (1 + k * k) * (b2 - b);
 		nearestPointOfLinePort = (x3 - nearestLinePort.x1())
-			/ (nearestLinePort.x2() - nearestLinePort.x1());
+				/ (nearestLinePort.x2() - nearestLinePort.x1());
 	}
 	return nearestPointOfLinePort;
 }
@@ -844,7 +850,7 @@ qreal NodeElement::getPortId(const QPointF &location) const
 {
 	for (int i = 0; i < mPointPorts.size(); ++i) {
 		if (QRectF(newTransform(mPointPorts[i]) - QPointF(kvadratik, kvadratik),
-			QSizeF(kvadratik * 2, kvadratik * 2)).contains(location))
+				   QSizeF(kvadratik * 2, kvadratik * 2)).contains(location))
 		{
 			return 1.0 * i;
 		}
@@ -861,8 +867,8 @@ qreal NodeElement::getPortId(const QPointF &location) const
 		path = ps.createStroke(path);
 		if (path.contains(location))
 			return (1.0 * (i + mPointPorts.size()) + qMin(0.9999,
-				QLineF(QLineF(newTransform(mLinePorts[i])).p1(), location).length()
-				/ newTransform(mLinePorts[i]).length()));
+														  QLineF(QLineF(newTransform(mLinePorts[i])).p1(), location).length()
+														  / newTransform(mLinePorts[i]).length()));
 	}
 
 	qreal minDistance = 0;
@@ -946,7 +952,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *style
 }
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-	QWidget*, SdfRenderer* portRenderer)
+						QWidget*, SdfRenderer* portRenderer)
 {
 	if (option->levelOfDetail >= 0.5) {
 		if (option->state & QStyle::State_Selected) {
@@ -1065,10 +1071,10 @@ void NodeElement::sortChildren()
 		if (curItem) {
 			if (mElementImpl->maximizesChildren())
 				curItem->setGeometry(QRectF(mElementImpl->sizeOfForestalling(), curChildY,
-							maxChildrenWidth, curItem->mContents.height()));
+											maxChildrenWidth, curItem->mContents.height()));
 			else
 				curItem->setGeometry(QRectF(mElementImpl->sizeOfForestalling(), curChildY,
-							curItem->mContents.width(), curItem->mContents.height()));
+											curItem->mContents.width(), curItem->mContents.height()));
 
 			curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling();
 			curItem->storeGeometry();
@@ -1200,14 +1206,14 @@ void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 	}
 
 	/*
-	QRectF newContents = mContents;
-	//newContents.moveTo(pos());
-	QRectF itemContents = item->mContents;
-	itemContents.moveTo(item->pos() - pos());
+ QRectF newContents = mContents;
+ //newContents.moveTo(pos());
+ QRectF itemContents = item->mContents;
+ itemContents.moveTo(item->pos() - pos());
 
-	newContents = newContents.united(itemContents);
-	resize(mContents.unite(newContents));
-	*/
+ newContents = newContents.united(itemContents);
+ resize(mContents.unite(newContents));
+ */
 	resize(mContents);
 }
 
@@ -1222,7 +1228,7 @@ void NodeElement::updateByNewParent()
 
 QList<double> NodeElement::borderValues()
 {
-		return mElementImpl->border();
+	return mElementImpl->border();
 }
 
 PossibleEdge NodeElement::toPossibleEdge(const StringPossibleEdge &strPossibleEdge)
@@ -1232,7 +1238,7 @@ PossibleEdge NodeElement::toPossibleEdge(const StringPossibleEdge &strPossibleEd
 	QPair<qReal::Id, qReal::Id> nodes(qReal::Id(editor, diagram, strPossibleEdge.first.first),
 									  qReal::Id(editor, diagram, strPossibleEdge.first.second));
 	QPair<bool, qReal::Id> link(strPossibleEdge.second.first,
-			   qReal::Id(editor, diagram, strPossibleEdge.second.second));
+								qReal::Id(editor, diagram, strPossibleEdge.second.second));
 	return QPair<QPair<qReal::Id, qReal::Id>, PossibleEdgeType>(nodes, link);
 }
 

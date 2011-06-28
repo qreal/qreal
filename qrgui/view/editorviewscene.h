@@ -53,6 +53,10 @@ public:
 	void highlight(qReal::Id const &graphicalId, bool exclusive = true);
 	void dehighlight(qReal::Id const &graphicalId);
 
+public slots:
+
+	qReal::Id createElement(const QString &);
+
 signals:
 	void elementCreated(qReal::Id const &id);
 	void zoomIn();
@@ -75,8 +79,6 @@ protected:
 	virtual void drawBackground( QPainter *painter, const QRectF &rect);
 
 private slots:
-
-	qReal::Id createElement(const QString &);
 
 	void connectActionTriggered();
 	void goToActionTriggered();
@@ -138,4 +140,7 @@ private:
 	QSet<UML::Element *> mHighlightedElements;
 
 	friend class qReal::EditorViewMViface;
+
+	/** @brief Is "true" when we just select items on scene, and "false" when we drag selected items */
+	bool mShouldReparentItems;
 };
