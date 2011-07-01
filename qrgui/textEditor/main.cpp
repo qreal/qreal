@@ -5,7 +5,7 @@
 int main(int argv, char **args) {
     QApplication app(argv, args);
 
-    CodeEditor editor;
+    CodeEditor editor("1.cpp");
     editor.setWindowTitle(QObject::tr("Code Editor Example"));
     editor.show();
 

@@ -61,6 +61,7 @@ MainWindow::MainWindow()
 	, mErrorReporter(NULL)
 	, mIsFullscreen(false)
 	, mSaveDir(qApp->applicationDirPath() + "/save")
+	, mCodeEditor(0)
 {
 
 	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
@@ -283,11 +284,11 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 MainWindow::~MainWindow()
 {
 	saveAll();
-	delete mListenerManager;
 	delete mRobotInterpreter;
 	delete mErrorReporter;
 	SettingsManager::instance()->saveData();
-	//	delete mListenerManager;
+	if (mCodeEditor)
+		delete mCodeEditor;
 }
 
 EditorManager* MainWindow::manager()
