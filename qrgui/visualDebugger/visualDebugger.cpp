@@ -490,6 +490,16 @@ void VisualDebugger::createIdByLineCorrelation(UML::Element *elem, int& line)
 	}
 }
 
+QList<int> VisualDebugger::linesById(const Id& id)
+{
+	return mIdByLineCorrelation.keys(id);
+}
+
+QList<int> VisualDebugger::currentIdCorrelatedLines()
+{
+	return linesById(mCurrentId);
+}
+
 QList<int>* VisualDebugger::computeBreakpoints()
 {
 	QList<int> *breakpoints = new QList<int>();

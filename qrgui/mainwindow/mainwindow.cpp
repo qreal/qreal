@@ -1521,7 +1521,7 @@ void MainWindow::generateAndBuild() {
 		if (mVisualDebugger->canBuild()) {
 			mDebuggerConnector->run();
 
-			QSettings settings("SPbSU", "QReal");
+			//QSettings settings("SPbSU", "QReal");
 			mDebuggerConnector->build(settings.value("debugWorkingDirectory", "").toString() + "/" +
 									  settings.value("codeFileName", "code.c").toString());
 

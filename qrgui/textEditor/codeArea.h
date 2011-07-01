@@ -11,6 +11,8 @@ class CodeArea : public QPlainTextEdit {
 		CodeArea(QWidget *parent = 0);
 		~CodeArea();
 
+		void highlight(const QList<int>& lineNumbers);
+
 	private slots:
 		void highlightCurrentLine();
 
