@@ -66,4 +66,9 @@ FORMS += mainwindow/mainwindow.ui \
 	mainwindow/shapeEdit/shapeEdit.ui \
 	mainwindow/gesturesShow/gestureswidget.ui \
 	mainwindow/preferencesDialog.ui \
-	mainwindow/refWindow.ui
+	mainwindow/refWindow.ui \
+    mainwindow/preferencesEditorForm.ui \
+    mainwindow/preferencesMiscellaniousForm.ui \
+    mainwindow/preferencesBehaviourForm.ui \
+    mainwindow/preferencesCompilerForm.ui \
+    mainwindow/preferencesDebuggerForm.ui
