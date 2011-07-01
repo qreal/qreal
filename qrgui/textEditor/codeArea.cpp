@@ -52,7 +52,8 @@ QList<QTextEdit::ExtraSelection> CodeArea::highlightedLinesSelectionList() {
 		foreach (int lineNum, mHighlightedLineNumbers) {
 			selection.cursor = QTextCursor(document()->findBlockByNumber(lineNum));
 			selection.cursor.clearSelection();
-			selection.cursor.select(QTextCursor::LineUnderCursor);
+			//selection.cursor.select(QTextCursor::LineUnderCursor);
+			selection.cursor.select(QTextCursor::BlockUnderCursor);
 			extraSelections.append(selection);
 		}
 	}
