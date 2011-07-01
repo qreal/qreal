@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>420</width>
     <height>300</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <rect>
      <x>10</x>
      <y>150</y>
-     <width>151</width>
+     <width>201</width>
      <height>16</height>
     </rect>
    </property>
@@ -31,7 +31,7 @@
     <rect>
      <x>10</x>
      <y>170</y>
-     <width>381</width>
+     <width>400</width>
      <height>51</height>
     </rect>
    </property>
@@ -65,7 +65,7 @@
      <rect>
       <x>263</x>
       <y>10</y>
-      <width>101</width>
+      <width>111</width>
       <height>16</height>
      </rect>
     </property>
@@ -97,7 +97,7 @@
      <rect>
       <x>263</x>
       <y>30</y>
-      <width>101</width>
+      <width>111</width>
       <height>16</height>
      </rect>
     </property>
@@ -111,7 +111,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>171</width>
+     <width>211</width>
      <height>16</height>
     </rect>
    </property>
@@ -124,7 +124,7 @@
     <rect>
      <x>20</x>
      <y>230</y>
-     <width>121</width>
+     <width>191</width>
      <height>16</height>
     </rect>
    </property>
@@ -137,7 +137,7 @@
     <rect>
      <x>10</x>
      <y>250</y>
-     <width>381</width>
+     <width>400</width>
      <height>41</height>
     </rect>
    </property>
@@ -152,7 +152,7 @@
      <rect>
       <x>223</x>
       <y>10</y>
-      <width>121</width>
+      <width>151</width>
       <height>16</height>
      </rect>
     </property>
@@ -191,7 +191,7 @@
     <rect>
      <x>10</x>
      <y>30</y>
-     <width>381</width>
+     <width>400</width>
      <height>111</height>
     </rect>
    </property>
@@ -212,7 +212,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>131</width>
+      <width>186</width>
       <height>20</height>
      </rect>
     </property>
@@ -226,11 +226,17 @@
    <widget class="QCheckBox" name="activateGridCheckBox">
     <property name="geometry">
      <rect>
-      <x>150</x>
+      <x>205</x>
       <y>10</y>
-      <width>151</width>
+      <width>186</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="text">
      <string>Activate grid</string>
@@ -294,7 +300,7 @@
      <rect>
       <x>263</x>
       <y>70</y>
-      <width>101</width>
+      <width>111</width>
       <height>16</height>
      </rect>
     </property>
@@ -307,7 +313,7 @@
      <rect>
       <x>263</x>
       <y>90</y>
-      <width>101</width>
+      <width>111</width>
       <height>16</height>
      </rect>
     </property>
@@ -318,17 +324,17 @@
    <widget class="QCheckBox" name="activateAlignmentCheckBox">
     <property name="geometry">
      <rect>
-      <x>150</x>
+      <x>205</x>
       <y>40</y>
-      <width>151</width>
+      <width>186</width>
       <height>17</height>
      </rect>
     </property>
-    <property name="minimumSize">
-     <size>
-      <width>150</width>
-      <height>0</height>
-     </size>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="text">
      <string>Activate alignment</string>
@@ -342,7 +348,7 @@
      <rect>
       <x>10</x>
       <y>40</y>
-      <width>131</width>
+      <width>186</width>
       <height>20</height>
      </rect>
     </property>

@@ -62,6 +62,9 @@
      <property name="flow">
       <enum>QListView::TopToBottom</enum>
      </property>
+     <property name="viewMode">
+      <enum>QListView::ListMode</enum>
+     </property>
      <property name="uniformItemSizes">
       <bool>true</bool>
      </property>
@@ -69,31 +72,51 @@
       <bool>true</bool>
      </property>
      <property name="currentRow">
-      <number>0</number>
+      <number>-1</number>
      </property>
      <item>
       <property name="text">
        <string>Editor</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../qrgui.qrc">
+        <normaloff>:/icons/preferences/editor.png</normaloff>:/icons/preferences/editor.png</iconset>
       </property>
      </item>
      <item>
       <property name="text">
        <string>Behaviour</string>
       </property>
+      <property name="icon">
+       <iconset resource="../qrgui.qrc">
+        <normaloff>:/icons/preferences/behaviour.png</normaloff>:/icons/preferences/behaviour.png</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>Miscellanious</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../qrgui.qrc">
+        <normaloff>:/icons/preferences/miscellaneous.png</normaloff>:/icons/preferences/miscellaneous.png</iconset>
       </property>
      </item>
      <item>
       <property name="text">
        <string>Compiler</string>
       </property>
+      <property name="icon">
+       <iconset resource="../qrgui.qrc">
+        <normaloff>:/icons/preferences/tools.png</normaloff>:/icons/preferences/tools.png</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>Debugger</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../qrgui.qrc">
+        <normaloff>:/icons/preferences/bug.png</normaloff>:/icons/preferences/bug.png</iconset>
       </property>
      </item>
     </widget>
