@@ -36,6 +36,10 @@ PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * c
 
 	connect(ui->listWidget, SIGNAL(clicked(const QModelIndex &)), this, SLOT(chooseTab(const QModelIndex &)));
 
+
+	QSettings settings("SPbSU", "QReal");
+	int currentTab = settings.value("currentPreferencesTab", 0).toInt();
+	ui->listWidget->setCurrentRow(currentTab);
 	chooseTab(ui->listWidget->currentIndex());
 }
 
@@ -55,6 +59,9 @@ void PreferencesDialog::indexGridSliderMoved(int value)
 
 PreferencesDialog::~PreferencesDialog()
 {
+	QSettings settings("SPbSU", "QReal");
+	settings.setValue("currentPreferencesTab", ui->listWidget->currentRow());
+
 	delete ui;
 
 	delete mBehaviourUi;

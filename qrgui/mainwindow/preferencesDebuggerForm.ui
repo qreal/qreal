@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>420</width>
     <height>300</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <rect>
      <x>10</x>
      <y>130</y>
-     <width>381</width>
+     <width>400</width>
      <height>161</height>
     </rect>
    </property>
@@ -83,7 +83,7 @@
    <widget class="QLineEdit" name="debuggerPathLineEdit">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>200</x>
       <y>10</y>
       <width>101</width>
       <height>20</height>
@@ -93,7 +93,7 @@
    <widget class="QLineEdit" name="builderPathLineEdit">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>200</x>
       <y>40</y>
       <width>101</width>
       <height>20</height>
@@ -103,9 +103,9 @@
    <widget class="QLineEdit" name="codeFileNameLineEdit">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>200</x>
       <y>100</y>
-      <width>181</width>
+      <width>191</width>
       <height>20</height>
      </rect>
     </property>
@@ -113,9 +113,9 @@
    <widget class="QLineEdit" name="buildedFileNameLineEdit">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>200</x>
       <y>130</y>
-      <width>181</width>
+      <width>191</width>
       <height>20</height>
      </rect>
     </property>
@@ -123,7 +123,7 @@
    <widget class="QPushButton" name="browseDebPathButton">
     <property name="geometry">
      <rect>
-      <x>290</x>
+      <x>310</x>
       <y>10</y>
       <width>81</width>
       <height>23</height>
@@ -136,7 +136,7 @@
    <widget class="QPushButton" name="builderPathButton">
     <property name="geometry">
      <rect>
-      <x>290</x>
+      <x>310</x>
       <y>40</y>
       <width>81</width>
       <height>23</height>
@@ -162,7 +162,7 @@
    <widget class="QLineEdit" name="workDirLineEdit">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>200</x>
       <y>70</y>
       <width>101</width>
       <height>20</height>
@@ -172,7 +172,7 @@
    <widget class="QPushButton" name="workDirPushButton">
     <property name="geometry">
      <rect>
-      <x>290</x>
+      <x>310</x>
       <y>70</y>
       <width>81</width>
       <height>23</height>
@@ -188,7 +188,7 @@
     <rect>
      <x>10</x>
      <y>30</y>
-     <width>381</width>
+     <width>400</width>
      <height>71</height>
     </rect>
    </property>
@@ -250,7 +250,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>381</width>
+     <width>400</width>
      <height>16</height>
     </rect>
    </property>
@@ -263,7 +263,7 @@
     <rect>
      <x>10</x>
      <y>110</y>
-     <width>381</width>
+     <width>400</width>
      <height>16</height>
     </rect>
    </property>
