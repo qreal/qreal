@@ -1,3 +1,5 @@
+#include <QDebug>
+#include <QtAlgorithms>
 #include "codeArea.h"
 
 CodeArea::CodeArea(QWidget *parent): QPlainTextEdit(parent) {
@@ -19,7 +21,7 @@ void CodeArea::highlightCurrentLine() {
 	if (!isReadOnly()) {
 		QTextEdit::ExtraSelection selection;
 
-		QColor lineColor = QColor(Qt::blue).lighter(200);
+		QColor lineColor = QColor(Qt::blue).lighter(160);
 
 		selection.format.setBackground(lineColor);
 		selection.format.setProperty(QTextFormat::FullWidthSelection, true);
@@ -28,5 +30,32 @@ void CodeArea::highlightCurrentLine() {
 		extraSelections.append(selection);
 	}
 
+	extraSelections.append(highlightedLinesSelectionList());
 	setExtraSelections(extraSelections);
+}
+
+void CodeArea::setHighlightedLineNumbers(const QList<int>& list) {
+	mHighlightedLineNumbers = list;
+}
+
+QList<QTextEdit::ExtraSelection> CodeArea::highlightedLinesSelectionList() {
+	QList<QTextEdit::ExtraSelection> extraSelections;
+
+	if (!isReadOnly()) {
+		QTextEdit::ExtraSelection selection;
+
+		QColor lineColor = QColor(Qt::red).lighter(160);
+
+		selection.format.setBackground(lineColor);
+		selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+
+		foreach (int lineNum, mHighlightedLineNumbers) {
+			selection.cursor = QTextCursor(document()->findBlockByNumber(lineNum));
+			selection.cursor.clearSelection();
+			selection.cursor.select(QTextCursor::LineUnderCursor);
+			extraSelections.append(selection);
+		}
+	}
+
+	return extraSelections;
 }

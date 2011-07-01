@@ -11,9 +11,14 @@ class CodeArea : public QPlainTextEdit {
 		CodeArea(QWidget *parent = 0);
 		~CodeArea();
 
+		void setHighlightedLineNumbers(const QList<int>&);
+
 	private slots:
 		void highlightCurrentLine();
 
 	private:
+		QList<QTextEdit::ExtraSelection> highlightedLinesSelectionList();
+
 		TextHighlighter *mHighlighter;
+		QList<int> mHighlightedLineNumbers;
 };

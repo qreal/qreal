@@ -17,7 +17,9 @@ CodeEditor::CodeEditor(const QString& filename, QWidget *parent): QMainWindow(pa
 
 	if (inStream) {
 		mCodeArea.document()->setPlainText(inStream->readAll());
-		//qDebug() << inStream->readAll();
-		//mCodeArea.document()->setDocumentLayout(new QPlainTextDocumentLayout(codeArea.document()));
 	}
+}
+
+void CodeEditor::setHighlightedLineNumbers(const QList<int>& lineNumbers) {
+	mCodeArea.setHighlightedLineNumbers(lineNumbers);
 }

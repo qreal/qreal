@@ -32,6 +32,8 @@ namespace qReal {
 		bool canComputeBreakpoints();
 		
 		void createIdByLineCorrelation();
+		QList<int> currentIdCorrelatedLines();
+
 		QList<int>* computeBreakpoints();
 		Id getIdByLine(int line);
 		void highlight(Id id);
@@ -83,6 +85,7 @@ namespace qReal {
 		void generateCode(UML::Element* elem, QFile &codeFile);
 		QVariant getProperty(Id id, QString propertyName);
 		void createIdByLineCorrelation(UML::Element *elem, int& line);
+		QList<int> linesById(const Id& id); // lines by id correlation
 		void setCodeFileName(QString name);
 		void setWorkDir(QString path);
 	};
