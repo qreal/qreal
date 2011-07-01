@@ -13,6 +13,7 @@
 #include "gesturesShow/gestureswidget.h"
 #include "../visualDebugger/debuggerConnector.h"
 #include "mainWindowInterpretersInterface.h"
+#include "../textEditor/codeEditor.h"
 
 namespace Ui{
 class MainWindowUi;
@@ -179,6 +180,9 @@ private:
 	bool mIsFullscreen;
 	/** @brief Internal map table to store info what widgets should we hide/show */
 	QMap<QString, bool> mDocksVisibility;
+
+	/** Antons adds**/
+	CodeEditor *mCodeEditor;
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,

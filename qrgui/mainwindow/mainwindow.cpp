@@ -54,6 +54,7 @@ MainWindow::MainWindow()
 	, mErrorReporter(NULL)
 	, mVisualDebugger(NULL)
 	, mIsFullscreen(false)
+	, mCodeEditor(0)
 {
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("Splashscreen", true).toBool();
@@ -269,6 +270,8 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 MainWindow::~MainWindow()
 {
 	saveAll();
+	if (mCodeEditor)
+		delete mCodeEditor;
 	//	delete mListenerManager;
 }
 
@@ -1502,6 +1505,18 @@ void MainWindow::generateAndBuild() {
 
 	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)) {
 		mVisualDebugger->generateCode();
+
+		/** Antons **/
+		if (mCodeEditor)
+			delete mCodeEditor;
+		QSettings settings("SPbSU", "QReal");
+		mCodeEditor = new CodeEditor(settings.value("debugWorkingDirectory", "").toString() + "/" +
+			settings.value("codeFileName", "code.c").toString());
+		qDebug() << settings.value("debugWorkingDirectory", "").toString() + "/" +
+			settings.value("codeFileName", "code.c").toString();
+		mCodeEditor->show();
+		/** **/
+		
 
 		if (mVisualDebugger->canBuild()) {
 			mDebuggerConnector->run();

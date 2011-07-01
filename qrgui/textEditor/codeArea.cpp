@@ -1,16 +1,16 @@
-#include <codeArea.h>
+#include "codeArea.h"
 
 CodeArea::CodeArea(QWidget *parent): QPlainTextEdit(parent) {
 	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
 
-	highlighter = new TextHighlighter(document());
+	mHighlighter = new TextHighlighter(document());
 
 	highlightCurrentLine();
 }
 
 CodeArea::~CodeArea() {
-	if (highlighter)
-		delete highlighter;
+	if (mHighlighter)
+		delete mHighlighter;
 }
 
 void CodeArea::highlightCurrentLine() {
@@ -19,7 +19,7 @@ void CodeArea::highlightCurrentLine() {
 	if (!isReadOnly()) {
 		QTextEdit::ExtraSelection selection;
 
-		QColor lineColor = QColor(Qt::blue).lighter(160);
+		QColor lineColor = QColor(Qt::blue).lighter(200);
 
 		selection.format.setBackground(lineColor);
 		selection.format.setProperty(QTextFormat::FullWidthSelection, true);

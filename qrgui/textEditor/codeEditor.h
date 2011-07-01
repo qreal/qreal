@@ -8,7 +8,8 @@ class CodeEditor : public QMainWindow {
 
 	public:
 		CodeEditor(QWidget *parent = 0);
+		CodeEditor(const QString& filename, QWidget *parent = 0);
 	
 	private:
-		CodeArea codeArea;
+		CodeArea mCodeArea;
 };

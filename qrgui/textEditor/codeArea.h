@@ -15,5 +15,5 @@ class CodeArea : public QPlainTextEdit {
 		void highlightCurrentLine();
 
 	private:
-		TextHighlighter *highlighter;
+		TextHighlighter *mHighlighter;
 };

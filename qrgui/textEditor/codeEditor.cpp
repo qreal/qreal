@@ -1,0 +1,23 @@
+#include <QFile>
+#include <QTextStream>
+#include <QDebug>
+#include "codeEditor.h"
+
+CodeEditor::CodeEditor(QWidget *parent): QMainWindow(parent), mCodeArea(this) {
+	setCentralWidget(&mCodeArea);
+}
+
+CodeEditor::CodeEditor(const QString& filename, QWidget *parent): QMainWindow(parent), mCodeArea(this) {
+	setCentralWidget(&mCodeArea);
+	QFile file(filename);
+	QTextStream *inStream = 0;
+	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		inStream = new QTextStream(&file);
+	}
+
+	if (inStream) {
+		mCodeArea.document()->setPlainText(inStream->readAll());
+		//qDebug() << inStream->readAll();
+		//mCodeArea.document()->setDocumentLayout(new QPlainTextDocumentLayout(codeArea.document()));
+	}
+}
