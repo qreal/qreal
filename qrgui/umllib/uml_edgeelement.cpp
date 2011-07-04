@@ -428,10 +428,9 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				mDragPoint += 1;
 		}
 
-		//if (mDragPoint >= 2)
-			//removeUnneededPoints(mDragPoint - 2);
-		//for (int i = 0; i < mLine.size() - 2; i++)
-			//removeUnneededPoints(i);
+		if (mDragPoint >= 2)
+			removeUnneededPoints(mDragPoint - 2);
+
 	}
 
 	if (mDragPoint == -1)
