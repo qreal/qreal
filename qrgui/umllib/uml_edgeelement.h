@@ -84,6 +84,7 @@ namespace UML {
 			void addPointHandler(QPointF const &pos);
 			void delPointHandler(QPointF const &pos);
 			void squarizeHandler(QPointF const &pos);
+			void straigthenHandler(QPointF const &pos);
 		private:
 
 			QList<PossibleEdge> possibleEdges;
@@ -116,6 +117,7 @@ namespace UML {
 			ContextMenuAction mAddPointAction;
 			ContextMenuAction mDelPointAction;
 			ContextMenuAction mSquarizeAction;
+			ContextMenuAction mStraigthenAction;
 
 			bool mChaoticEdition;
 

@@ -56,6 +56,7 @@ void PreferencesDialog::initPreferences()
 	ui->diagramCreateCheckBox->setChecked(settings.value("DiagramCreateSuggestion", true).toBool());
 	ui->paletteTabCheckBox->setChecked(settings.value("PaletteTabSwitching", true).toBool());
 	ui->chaoticEditionCheckBox->setChecked(settings.value("ChaoticEdition", false).toBool());
+	ui->straigthModeCheckBox->setChecked(settings.value("StraigthLine", false).toBool());
 	ui->saveExitCheckBox->setChecked(settings.value("SaveExitSuggestion", true).toBool());
 	ui->showGridCheckBox->setChecked(settings.value("ShowGrid", true).toBool());
 	ui->showAlignmentCheckBox->setChecked(settings.value("ShowAlignment", true).toBool());
@@ -104,6 +105,7 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("DiagramCreateSuggestion", ui->diagramCreateCheckBox->isChecked());
 	settings.setValue("PaletteTabSwitching", ui->paletteTabCheckBox->isChecked());
 	settings.setValue("ChaoticEdition", ui->chaoticEditionCheckBox->isChecked());
+	settings.setValue("StraigthLine",ui->straigthModeCheckBox->isChecked());
 	settings.setValue("SaveExitSuggestion", ui->saveExitCheckBox->isChecked());
 	settings.setValue("Splashscreen", ui->splashScreenCheckBox->isChecked());
 	settings.setValue("ShowGrid", ui->showGridCheckBox->isChecked());

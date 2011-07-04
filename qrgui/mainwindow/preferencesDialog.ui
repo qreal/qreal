@@ -57,7 +57,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="editorTab">
       <attribute name="title">
@@ -489,7 +489,7 @@
          <x>10</x>
          <y>120</y>
          <width>311</width>
-         <height>61</height>
+         <height>81</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -522,6 +522,19 @@
         </property>
         <property name="text">
          <string>Chaotic Edition</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="straigthModeCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>201</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Striagth Line Mode</string>
         </property>
        </widget>
       </widget>
