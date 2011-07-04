@@ -1,9 +1,0 @@
-<object id="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" parent="qrm:/">
-  <children>
-    <object id="qrm:/BlockDiagram_metamodel/BlockDiagram/BlockDiagramNode/{cfe7d1df-3b66-46bd-8953-ce3a3bf30a03}"/>
-    <object id="qrm:/BlockDiagram_metamodel/BlockDiagram/BlockDiagramNode/{e425127f-557c-40ef-9d6f-598a79503a55}"/>
-  </children>
-  <properties>
-    <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
-  </properties>
-</object>
