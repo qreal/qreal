@@ -70,40 +70,63 @@ NodeElement::~NodeElement()
 	delete mUmlPortHandler;
 }
 
-NodeElement *NodeElement::clone(bool toCursorPos)
+NodeElement *NodeElement::clone(bool toCursorPos, bool shareLogicalId, Id const &parentId)
 {
+	UML::NodeElement *result = NULL;
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
 
-	qReal::Id typeId = id().type();
-	qReal::Id *resultId = evscene->createElement(typeId.toString(), QPointF());
+	QPointF const placePos = toCursorPos ? evscene->getMousePos() : mPos;
+	if (shareLogicalId) {
+		qReal::Id resultId = mGraphicalAssistApi->createElement(parentId, logicalId(), true, mGraphicalAssistApi->name(id()), placePos);
+		Element *element = evscene->mainWindow()->manager()->graphicalObject(resultId);
+		result = dynamic_cast<NodeElement*>(element);
+		result->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
+		result->setId(resultId);
+		result->setPos(placePos);
 
-	NodeElement *result = dynamic_cast<NodeElement*>(evscene->getElem(*resultId));
+		if (parentId == Id::rootId())
+			scene()->addItem(result);
+		else {
+			UML::Element *parent = evscene->getElem(parentId);
+			result->setParentItem(parent);
+		}
+
+		result->updateData();
+		result->connectToPort();
+		result->checkConnectionsToPort();
+		result->initPossibleEdges();
+		result->initTitles();
+
+	} else {
+		qReal::Id typeId = id().type();
+		qReal::Id *resultId = evscene->createElement(typeId.toString(), QPointF(), mGraphicalAssistApi->name(id()));
+
+		result = dynamic_cast<NodeElement*>(evscene->getElem(*resultId));
+	}
+
+	Q_ASSERT(result != NULL);
 
 	result->copyProperties(this);
-	result->copyChildren(this);
+	result->copyChildren(this, shareLogicalId);
+
 	result->mContents = mContents;
-	if (toCursorPos) {
-		result->setPos(evscene->getMousePos());
-		result->storeGeometry();
-	}
-	else {
-		result->setPos(mPos);
-	}
+	result->setPos(placePos);
+	result->storeGeometry();
 
 	return result;
 }
 
-void NodeElement::copyAndPlaceOnDiagram()
+void NodeElement::copyAndPlaceOnDiagram(bool shareLogicalId)
 {
-	clone(true);
+	clone(true, shareLogicalId);
 }
 
-void NodeElement::copyChildren(NodeElement *source)
+void NodeElement::copyChildren(NodeElement *source, bool shareLogicalId)
 {
 	foreach (QGraphicsItem *child, source->childItems()) {
 		NodeElement *element = dynamic_cast<NodeElement*>(child);
 		if (element) {
-			NodeElement *copyOfChild = element->clone();
+			NodeElement *copyOfChild = element->clone(false, shareLogicalId, id());
 			mGraphicalAssistApi->changeParent(copyOfChild->id(), id(), element->pos());
 		}
 	}
@@ -114,9 +137,24 @@ void NodeElement::copyProperties(NodeElement *source)
 	mGraphicalAssistApi->copyProperties(id(), source->id());
 }
 
-void NodeElement::copyEdges(NodeElement *source)
+NodeElementSerializationData NodeElement::serializationData() const
 {
-	Q_UNUSED(source);
+	NodeElementSerializationData data;
+	data.mId = id();
+	data.mLogicalId = logicalId();
+	data.mProperties = mGraphicalAssistApi->properties(id());
+
+	NodeElement *parent = dynamic_cast<NodeElement*>(parentItem());
+	if (parent) {
+		data.mParentId = parent->id();
+	} else {
+		data.mParentId = Id::rootId();
+	}
+
+	data.mPos = mPos;
+	data.mContenets = mContents;
+
+	return data;
 }
 
 void NodeElement::setName(QString value)
@@ -150,6 +188,11 @@ void NodeElement::setPos(qreal x, qreal y)
 	setPos(QPointF(x, y));
 }
 
+void NodeElement::setContents(const QRectF &contents)
+{
+	mContents = contents;
+}
+
 void NodeElement::adjustLinks()
 {
 	foreach (EdgeElement *edge, mEdgeList)
@@ -163,7 +206,6 @@ void NodeElement::adjustLinks()
 }
 
 void NodeElement::arrangeLinearPorts() {
-	//qDebug() << "linear ports on" << uuid().toString();
 	int lpId = mPointPorts.size(); //point ports before linear
 	foreach (StatLine line, mLinePorts) {
 		//sort first by slope, then by current portId
@@ -182,9 +224,6 @@ void NodeElement::arrangeLinearPorts() {
 				qreal len = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 				qreal scalarProduct = ((x2 - x1) * dx + (y2 - y1) * dy) / len;
 				sortedEdges.insertMulti(qMakePair(edge->portIdOn(this), scalarProduct), edge);
-				//qDebug() << "+" << edge->uuid().toString() <<"pr=" <<scalarProduct << "; p=" << edge->portIdOn(this);
-				//qDebug("'--> vector: (%g, %g)", (x2-x1)/len, (y2-y1)/len);
-				//qDebug() << "'------> because " << (QVariant)conn << "->" << (QVariant)next;
 			}
 		}
 
@@ -193,7 +232,6 @@ void NodeElement::arrangeLinearPorts() {
 		int i = 0;
 		foreach (EdgeElement* edge, sortedEdges) {
 			qreal newId = lpId + (1.0 + i++) / (N + 1);
-			//qDebug() << "-" << edge->uuid().toString() << newId;
 			edge->moveConnection(this, newId);
 		}
 
@@ -204,10 +242,7 @@ void NodeElement::arrangeLinearPorts() {
 
 
 void NodeElement::arrangeLinks() {
-	//qDebug() << "---------------\nDirect call " << uuid().toString();
-
 	//Episode I: Home Jumps
-	//qDebug() << "I";
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
@@ -215,11 +250,9 @@ void NodeElement::arrangeLinks() {
 	}
 
 	//Episode II: Home Ports Arranging
-	//qDebug() << "II";
 	arrangeLinearPorts();
 
 	//Episode III: Remote Jumps
-	//qDebug() << "III";
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
@@ -228,7 +261,6 @@ void NodeElement::arrangeLinks() {
 	}
 
 	//Episode IV: Remote Arrangigng
-	//qDebug() << "IV";
 	QSet<NodeElement*> arranged;
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* other = edge->otherSide(this);

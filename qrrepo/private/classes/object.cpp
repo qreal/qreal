@@ -100,6 +100,11 @@ void Object::setProperty(const QString &name, const QVariant &value)
 	mProperties.insert(name,value);
 }
 
+void Object::setProperties(const QMap<QString, QVariant> &properties)
+{
+	mProperties = properties;
+}
+
 QVariant Object::property(const QString &name) const
 {
 	if (mProperties.contains(name)) {
@@ -107,6 +112,11 @@ QVariant Object::property(const QString &name) const
 	} else {
 		throw Exception("Object " + mId.toString() + ": requesting nonexistent property " + name);
 	}
+}
+
+QMap<QString, QVariant> Object::properties() const
+{
+	return mProperties;
 }
 
 void Object::setTemporaryRemovedLinks(QString const &direction, qReal::IdList const &listValue)

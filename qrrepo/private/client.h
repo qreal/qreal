@@ -31,6 +31,8 @@ namespace qrRepo {
 			void removeChild(const qReal::Id &id, const qReal::Id &child);
 			void setProperty(const qReal::Id &id, const QString &name, const QVariant &value);
 			void copyProperties(const qReal::Id &dest, const qReal::Id &src);
+			void setProperties(const qReal::Id &id, const QMap<QString, QVariant> &properties);
+			QMap<QString, QVariant> properties(const qReal::Id &id) const;
 			QVariant property(const qReal::Id &id, const QString &name) const;
 			void removeProperty(const qReal::Id &id, const QString &name);
 			bool hasProperty(const qReal::Id &id, const QString &name) const;

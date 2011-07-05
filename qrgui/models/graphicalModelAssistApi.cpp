@@ -76,6 +76,16 @@ void GraphicalModelAssistApi::copyProperties(Id const &dest, Id const &src)
 	mGraphicalModel.mutableApi().copyProperties(dest, src);
 }
 
+void GraphicalModelAssistApi::setProperties(Id const &elem, QMap<QString, QVariant> properties)
+{
+	mGraphicalModel.mutableApi().setProperties(elem, properties);
+}
+
+QMap<QString, QVariant> GraphicalModelAssistApi::properties(Id const &id) const
+{
+	return mGraphicalModel.api().properties(id);
+}
+
 void GraphicalModelAssistApi::setConfiguration(Id const &elem, QPolygon const &newValue)
 {
 	ModelsAssistApi::setProperty(elem, QVariant(newValue), roles::configurationRole);

@@ -26,8 +26,11 @@ public:
 	void clearScene();
 
 	virtual int launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* node, QPointF scenePos);
-	virtual qReal::Id *createElement(const QString &, QPointF scenePos);
+	virtual qReal::Id *createElement(const QString &, QPointF scenePos, const QString &name = "(anonymous something)");
 	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
+
+	UML::NodeElement *deserializeNode(const NodeElementSerializationData &data, bool shareLogicalId = false, QPointF offset = QPointF(10, 10));
+	UML::EdgeElement *deserializeEdge(const EdgeElementSerializationData &data, bool shareLogicalId = false, QPointF offset = QPointF(10, 10));
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
@@ -48,6 +51,9 @@ public:
 
 	UML::Element* getLastCreated();
 
+	QList<UML::NodeElement*> selectedNodes() const;
+	QList<UML::EdgeElement*> selectedEdges() const;
+
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
 
 	void highlight(qReal::Id const &graphicalId, bool exclusive = true);
@@ -61,7 +67,7 @@ public slots:
 	qReal::Id *createElement(const QString &);
 	// TODO: get rid of it here
 	void copy();
-	void paste();
+	void paste(bool viewOnly = false);
 
 signals:
 	void elementCreated(qReal::Id const &id);
@@ -98,7 +104,6 @@ private slots:
 
 private:
 	UML::Element* mLastCreatedWithEdge;
-	UML::NodeElement *mCopiedNode;
 
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)

@@ -5,7 +5,8 @@ HEADERS += view/editorview.h \
 	view/gestures/mousemovementmanager.h \
 	view/gestures/levenshteindistance.h \
 	view/gestures/keymanager.h \
-	view/gestures/ikeymanager.h
+	view/gestures/ikeymanager.h \
+    view/copypaste.h
 
 SOURCES += view/editorview.cpp \
 	view/editorviewscene.cpp \
@@ -13,4 +14,5 @@ SOURCES += view/editorview.cpp \
 	view/gestures/pathcorrector.cpp \
 	view/gestures/mousemovementmanager.cpp \
 	view/gestures/levenshteindistance.cpp \
-	view/gestures/keymanager.cpp
+	view/gestures/keymanager.cpp \
+    view/copypaste.cpp

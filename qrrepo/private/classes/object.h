@@ -25,7 +25,9 @@ namespace qrRepo {
 			qReal::IdList children() const;
 			qReal::Id parent() const;
 			void setProperty(const QString &name, const QVariant &value);
+			void setProperties(const QMap<QString, QVariant> &properties);
 			QVariant property(const QString &name) const;
+			QMap<QString, QVariant> properties() const;
 			bool hasProperty(const QString &name) const;
 			void removeProperty(const QString &name);
 			qReal::Id id() const;

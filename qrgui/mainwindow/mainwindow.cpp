@@ -19,6 +19,8 @@
 #include <QtCore/QSettings>
 #include <QtCore/QPluginLoader>
 
+#include <QtCore/QMetaType>
+
 #include "errorReporter.h"
 
 #include "../pluginInterface/editorInterface.h"
@@ -55,6 +57,7 @@ MainWindow::MainWindow()
 	, mVisualDebugger(NULL)
 	, mIsFullscreen(false)
 {
+	registerMetatypes();
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("Splashscreen", true).toBool();
 	QSplashScreen* splash =
@@ -1436,6 +1439,17 @@ void MainWindow::createDiagram(QString const &idString)
 	QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalIdCreated);
 	mUi->logicalModelExplorer->setCurrentIndex(logicalIndex);
 	openNewTab(index);
+}
+
+void MainWindow::registerMetatypes()
+{
+	// This is needed because we want to save Id and IdList values of QVariant
+	// to QDataStream during copy-paste. Any other QReal-specific data types
+	// used as QVariant values in repository should be mentioned here.
+	qRegisterMetaType<Id>();
+	qRegisterMetaTypeStreamOperators<Id>();
+	qRegisterMetaType<IdList>();
+	qRegisterMetaTypeStreamOperators<IdList>();
 }
 
 void MainWindow::saveAll()

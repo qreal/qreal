@@ -6,10 +6,12 @@
 #include <QtCore/QDebug>
 #include <QtCore/QSettings>
 #include <QGraphicsItem>
+#include <QClipboard>
 
 #include "editorviewmviface.h"
 #include "editorview.h"
 #include "mainwindow.h"
+#include "copypaste.h"
 #include "../mainwindow/mainwindow.h"
 
 using namespace qReal;
@@ -128,7 +130,7 @@ UML::Element * EditorViewScene::getElem(qReal::Id const &id)
 void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
-	if (mimeData->hasFormat("application/x-real-uml-data"))
+	if (mimeData->hasFormat(DEFAULT_MIME_TYPE))
 		QGraphicsScene::dragEnterEvent(event);
 	else
 		event->ignore();
@@ -236,7 +238,7 @@ qReal::Id *EditorViewScene::createElement(const QString &str)
 	return result;
 }
 
-qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
+qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos, const QString &name)
 {
 	Id typeId = Id::loadFromString(str);
 	Id *objectId = new Id(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
@@ -244,10 +246,9 @@ qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
 	QByteArray data;
 	QMimeData *mimeData = new QMimeData();
 	QDataStream stream(&data, QIODevice::WriteOnly);
-	QString mimeType = QString("application/x-real-uml-data");
+	QString mimeType = QString(DEFAULT_MIME_TYPE);
 	QString uuid = objectId->toString();
 	QString pathToItem = Id::rootId().toString();
-	QString name = "(anonymous something)";
 	QPointF pos = QPointF(0, 0);
 	bool isFromLogicalModel = false;
 	stream << uuid;
@@ -265,7 +266,7 @@ qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
 
 void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 {
-	QByteArray itemData = mimeData->data("application/x-real-uml-data");
+	QByteArray itemData = mimeData->data(DEFAULT_MIME_TYPE);
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
 
 	QString uuid = "";
@@ -312,22 +313,148 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	emit elementCreated(id);
 }
 
-void EditorViewScene::copy()
+UML::NodeElement *EditorViewScene::deserializeNode(const NodeElementSerializationData &data, bool shareLogicalId, QPointF offset)
 {
-	mCopiedNode = dynamic_cast<UML::NodeElement*>(selectedItems()[0]);
+	UML::NodeElement *result = NULL;
+	QPointF const placePos = data.mPos + offset;
+
+	if (shareLogicalId) {
+		Id resultId = mv_iface->graphicalAssistApi()->createElement(data.mParentId, data.mLogicalId, true, data.mName, placePos);
+		UML::Element *element = mainWindow()->manager()->graphicalObject(resultId);
+		result = dynamic_cast<UML::NodeElement*>(element);
+		result->setAssistApi(mv_iface->graphicalAssistApi(), mv_iface->logicalAssistApi());
+		result->setId(resultId);
+
+		if (data.mParentId == Id::rootId())
+			addItem(result);
+		else {
+			UML::Element *parent = getElem(data.mParentId);
+			result->setParentItem(parent);
+		}
+
+	} else {
+		Id typeId = data.mId.type();
+		Id *resultId = createElement(typeId.toString(), QPointF(), data.mName);
+
+		result = dynamic_cast<UML::NodeElement*>(getElem(*resultId));
+	}
+
+	mv_iface->graphicalAssistApi()->setProperties(result->id(), data.mProperties);
+	if (data.mParentId != Id::rootId()) {
+		mv_iface->graphicalAssistApi()->changeParent(result->id(), data.mParentId, placePos);
+	}
+	result->setGeometry(data.mContenets.translated(placePos));
+	result->storeGeometry();
+
+	result->checkConnectionsToPort();
+	result->initPossibleEdges();
+	result->updateData();
+	result->initTitles();
+
+	return result;
 }
 
-void EditorViewScene::paste()
+void EditorViewScene::copy()
 {
-	if (mCopiedNode)
-		mCopiedNode->copyAndPlaceOnDiagram();
-	else
-		qDebug() << "paste attempt on NULL";
+	QList<NodeElementSerializationData> nodesData;
+	foreach (UML::NodeElement *node, selectedNodes()) {
+		nodesData << node->serializationData();
+	}
+
+	QList<EdgeElementSerializationData> edgesData;
+	foreach (UML::EdgeElement *edge, selectedEdges()) {
+		edgesData << edge->serializationData();
+	}
+
+	QByteArray data;
+	QMimeData *mimeData = new QMimeData();
+	QDataStream stream(&data, QIODevice::WriteOnly);
+	QString mimeType = QString(CLIPBOARD_MIME_TYPE);
+
+	stream << nodesData;
+	stream << edgesData;
+
+	mimeData->setData(mimeType, data);
+
+	QClipboard *clipboard = QApplication::clipboard();
+	clipboard->setMimeData(mimeData);
+
+	// from docs:
+	// QMimeData objects are usually created using new and supplied to QDrag or QClipboard objects.
+	// This is to enable Qt to manage the memory that they use.
+	// so we do not delete mimeData
+
+}
+
+void EditorViewScene::paste(bool viewOnly)
+{
+	const QClipboard *clipboard = QApplication::clipboard();
+	const QMimeData *mimeData = clipboard->mimeData();
+
+	if (mimeData->hasFormat(CLIPBOARD_MIME_TYPE)) {
+		QByteArray data = mimeData->data(CLIPBOARD_MIME_TYPE);
+		QDataStream stream(&data, QIODevice::ReadOnly);
+		QList<NodeElementSerializationData> nodesData;
+		QList<EdgeElementSerializationData> edgesData;
+
+		stream >> nodesData;
+		stream >> edgesData;
+
+		QHash<Id, Id> updateIdMap;
+		updateIdMap.insert(Id::rootId(), Id::rootId()); // if top-level then we don't change anything
+
+		while (!nodesData.isEmpty()) {
+			// Search for node that can be placed by this time, i.e.
+			// it is top-level item or its parent is already placed
+			NodeElementSerializationData oldCandidate = nodesData[0];
+			NodeElementSerializationData candidate = oldCandidate;
+			do {
+				oldCandidate = candidate;
+				foreach (NodeElementSerializationData node, nodesData) {
+					if (candidate.mParentId == node.mId) {
+						candidate = node;
+					}
+				}
+			} while (oldCandidate != candidate);
+
+			// deserialize
+			QPointF const offset = candidate.mParentId == Id::rootId() ? QPointF(10, 20) : QPointF(0, 0);
+			NodeElementSerializationData newNode = candidate;
+			newNode.mParentId = updateIdMap[candidate.mParentId];
+			Id newId = deserializeNode(newNode, viewOnly, offset)->id();
+			updateIdMap.insert(candidate.mId, newId);
+			nodesData.removeAll(candidate);
+		}
+	}
 }
 
 UML::Element* EditorViewScene::getLastCreated()
 {
 	return mLastCreatedWithEdge;
+}
+
+QList<UML::NodeElement*> EditorViewScene::selectedNodes() const
+{
+	QList<UML::NodeElement*> nodes;
+	foreach (QGraphicsItem *item, selectedItems()) {
+		UML::NodeElement *node = dynamic_cast<UML::NodeElement*>(item);
+		if (node)
+			nodes << node;
+	}
+
+	return nodes;
+}
+
+QList<UML::EdgeElement*> EditorViewScene::selectedEdges() const
+{
+	QList<UML::EdgeElement*> edges;
+	foreach (QGraphicsItem *item, selectedItems()) {
+		UML::EdgeElement *edge = dynamic_cast<UML::EdgeElement*> (item);
+		if (edge)
+			edges << edge;
+	}
+
+	return edges;
 }
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)
@@ -338,10 +465,13 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 	} else if (event->key() == Qt::Key_Delete) {
 		// Delete selected elements from scene
 		mainWindow()->deleteFromScene();
-	} else if (event->matches(QKeySequence::Paste)) {
-		paste();
 	} else if (event->matches(QKeySequence::Copy)) {
 		copy();
+	} else if (event->matches(QKeySequence::Paste)) {
+		paste(false);
+	} else if (event->modifiers() == Qt::AltModifier && event->key() == Qt::Key_V) {
+		// viewOnly-paste
+		paste(true);
 	} else
 		QGraphicsScene::keyPressEvent(event);
 }

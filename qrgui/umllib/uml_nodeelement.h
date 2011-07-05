@@ -16,6 +16,9 @@
 #include "uml_element.h"
 #include "uml_edgeelement.h"
 #include "../pluginInterface/elementImpl.h"
+#include "../mainwindow/mainwindow.h"
+
+#include "../view/copypaste.h"
 
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"
@@ -34,10 +37,11 @@ namespace UML {
 		NodeElement(ElementImpl *impl);
 		virtual ~NodeElement();
 
-		NodeElement *clone(bool toCursorPos = false);
-		void copyChildren(NodeElement *source);
-		void copyEdges(NodeElement *source);
+		NodeElement *clone(bool toCursorPos = false, bool shareLogicalId = false, qReal::Id const &parentId = qReal::Id::rootId());
+		void copyChildren(NodeElement *source, bool shareLogicalId = false);
 		void copyProperties(NodeElement *source);
+
+		NodeElementSerializationData serializationData() const;
 
 		virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w, SdfRenderer *portrenderer);
 		virtual void paint(QPainter *,  const QStyleOptionGraphicsItem *, QWidget *);
@@ -49,6 +53,7 @@ namespace UML {
 		void setGeometry(QRectF const &geom);
 		void setPos(const QPointF &pos);
 		void setPos(qreal x, qreal y);
+		void setContents(QRectF const &contents);
 		void storeGeometry();
 		virtual void setName(QString name);
 
@@ -102,7 +107,7 @@ namespace UML {
 
 	public slots:
 		void switchGrid(bool isChecked);
-		void copyAndPlaceOnDiagram();
+		void copyAndPlaceOnDiagram(bool shareLogicalId = false);
 
 	private:
 		enum DragState {

@@ -179,6 +179,7 @@ private:
 	bool mIsFullscreen;
 	/** @brief Internal map table to store info what widgets should we hide/show */
 	QMap<QString, bool> mDocksVisibility;
+	void registerMetatypes();
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
