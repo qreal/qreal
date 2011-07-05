@@ -30,7 +30,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	, mAddPointAction(tr("Add point"), this)
 	, mDelPointAction(tr("Delete point"), this)
 	, mSquarizeAction(tr("Squarize"), this)
-	, mStraigthenAction(tr("Straigthen"), this)
+	, mMinimizeAction(tr("Minimize"), this)
 	, mElementImpl(impl)
 	, mLastDragPoint(-1)
 {
@@ -48,7 +48,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	connect(&mAddPointAction, SIGNAL(triggered(QPointF const &)), SLOT(addPointHandler(QPointF const &)));
 	connect(&mDelPointAction, SIGNAL(triggered(QPointF const &)), SLOT(delPointHandler(QPointF const &)));
 	connect(&mSquarizeAction, SIGNAL(triggered(QPointF const &)), SLOT(squarizeHandler(QPointF const &)));
-	connect(&mStraigthenAction, SIGNAL(triggered(QPointF const &)), SLOT(straigthenHandler(QPointF const &)));
+	connect(&mMinimizeAction, SIGNAL(triggered(QPointF const &)), SLOT(minimizeHandler(QPointF const &)));
 
 	QSettings settings("SPbSU", "QReal");
 	mChaoticEdition = settings.value("ChaoticEdition", false).toBool();
@@ -494,7 +494,7 @@ QList<ContextMenuAction*> EdgeElement::contextMenuActions()
 	result.push_back(&mAddPointAction);
 	result.push_back(&mDelPointAction);
 	result.push_back(&mSquarizeAction);
-	result.push_back(&mStraigthenAction);
+	result.push_back(&mMinimizeAction);
 	return result;
 }
 
@@ -561,9 +561,7 @@ void EdgeElement::squarizeHandler(QPointF const &pos)
 	Q_UNUSED(pos);
 	prepareGeometryChange();
 	int i = 0;
-	while (true) {
-		if (mLine.endsWith(mLine[i]))
-			break;
+	while (!mLine.endsWith(mLine[i])) {
 		QPointF insPoint = mLine[i];
 
 		if (i < mLine.size() - 3) {
@@ -596,7 +594,7 @@ void EdgeElement::squarizeHandler(QPointF const &pos)
 	update();
 }
 
-void EdgeElement::straigthenHandler(const QPointF &pos) {
+void EdgeElement::minimizeHandler(const QPointF &pos) {
 	Q_UNUSED(pos);
 	QPolygonF newMLine;
 
@@ -616,7 +614,7 @@ void EdgeElement::adjustLink()
 	updateLongestPart();
 	for (int i = 0; i < mLine.size() - 2; i++)
 		removeUnneededPoints(i);
-	if (settings.value("StraigthLine", true) == false)
+	if (settings.value("SquareLine", true).toBool())
 			squarizeHandler(QPointF());
 }
 

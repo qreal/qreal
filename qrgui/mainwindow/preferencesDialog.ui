@@ -524,7 +524,7 @@
          <string>Chaotic Edition</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="straigthModeCheckBox">
+       <widget class="QCheckBox" name="squareLineModeCheckBox">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -534,7 +534,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>Striagth Line Mode</string>
+         <string>Square Line Mode</string>
         </property>
        </widget>
       </widget>
