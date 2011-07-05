@@ -31,6 +31,8 @@ PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * c
 	connect(ui->okButton, SIGNAL(clicked()), this, SLOT(saveAndClose()));
 	connect(mMiscellaniousUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
 
+	connect(ui->listWidget, SIGNAL(clicked(const QModelIndex &)), this, SLOT(chooseTab(const QModelIndex &)));
+
 	// changing grid size in QReal:Robots is forbidden
 	mEditorUi->indexGridSlider->setVisible(false);
 	mEditorUi->label_20->setVisible(false);
