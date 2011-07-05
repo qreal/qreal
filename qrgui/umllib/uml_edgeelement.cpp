@@ -454,25 +454,13 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void EdgeElement::removeUnneededPoints(int startingPoint)
 {
-	/*QPainterPath path;
-	QPainterPathStroker neighbourhood;
-	neighbourhood.setWidth(15);
-
-	path.moveTo(mLine[startingPoint]);
-	path.lineTo(mLine[startingPoint + 2]);
-
-	if (neighbourhood.createStroke(path).contains(mLine[startingPoint + 1]))
-		delPointHandler(mLine[startingPoint + 1]);*/
-
 	if (startingPoint + 2 < mLine.size()) {
 		if ((mLine[startingPoint].x() == mLine[startingPoint + 1].x() &&
 			mLine[startingPoint].x() == mLine[startingPoint + 2].x()) ||
 			(mLine[startingPoint].y() == mLine[startingPoint + 1].y() &&
 			mLine[startingPoint].y() == mLine[startingPoint + 2].y()))
 			delPointHandler(mLine[startingPoint + 1]);
-
 	}
-
 }
 
 NodeElement *EdgeElement::getNodeAt(QPointF const &position)
