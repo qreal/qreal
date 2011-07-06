@@ -49,7 +49,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	connect(&mSquarizeAction, SIGNAL(triggered(QPointF const &)), SLOT(squarizeHandler(QPointF const &)));
 	connect(&mMinimizeAction, SIGNAL(triggered(QPointF const &)), SLOT(minimizeHandler(QPointF const &)));
 
-		mChaoticEdition = SettingsManager::instance()->value("ChaoticEdition", false).toBool();
+	mChaoticEdition = SettingsManager::instance()->value("ChaoticEdition", false).toBool();
 
 	ElementTitleFactory factory;
 
@@ -401,7 +401,6 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		mLine[mDragPoint] = event->pos();
 		updateLongestPart();
 	}
-
 }
 
 void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -437,6 +436,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 		if (mDragPoint >= 2)
 			removeUnneededPoints(mDragPoint - 2);
+
 	}
 
 	if (mDragPoint == -1)
@@ -445,7 +445,6 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mDragPoint = -1;
 
 	connectToPort();
-	qDebug() << (mLine.first() == mLine.last());
 
 	if (mBeginning)
 		mBeginning->setPortsVisible(false);
@@ -464,8 +463,9 @@ void EdgeElement::removeUnneededPoints(int startingPoint)
 	if (startingPoint + 2 < mLine.size()) {
 		if ((mLine[startingPoint].x() == mLine[startingPoint + 1].x() &&
 			 mLine[startingPoint].x() == mLine[startingPoint + 2].x()) ||
-			(mLine[startingPoint].y() == mLine[startingPoint + 1].y() &&
-			 mLine[startingPoint].y() == mLine[startingPoint + 2].y()))
+				(mLine[startingPoint].y() == mLine[startingPoint + 1].y() &&
+				 mLine[startingPoint].y() == mLine[startingPoint + 2].y())
+		)
 			delPointHandler(mLine[startingPoint + 1]);
 	}
 }
@@ -486,9 +486,9 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position)
 QList<ContextMenuAction*> EdgeElement::contextMenuActions()
 {
 	QList<ContextMenuAction*> result;
-	//	result.push_back(&mAddPointAction);
-	//	result.push_back(&mDelPointAction);
-	//	result.push_back(&mSquarizeAction);
+	result.push_back(&mAddPointAction);
+	result.push_back(&mDelPointAction);
+	result.push_back(&mSquarizeAction);
 	result.push_back(&mMinimizeAction);
 	return result;
 }
@@ -600,6 +600,7 @@ void EdgeElement::minimizeHandler(const QPointF &pos) {
 
 void EdgeElement::adjustLink()
 {
+	QSettings settings("SPbSU", "QReal");
 	prepareGeometryChange();
 	if (mSrc)
 		mLine.first() = mapFromItem(mSrc, mSrc->getPortPos(mPortFrom));

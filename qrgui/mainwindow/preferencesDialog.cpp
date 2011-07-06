@@ -127,6 +127,7 @@ void PreferencesDialog::initPreferences()
 	mMiscellaniousUi->antialiasingCheckBox->setChecked(SettingsManager::instance()->value("Antialiasing", true).toBool());
 	mMiscellaniousUi->splashScreenCheckBox->setChecked(SettingsManager::instance()->value("Splashscreen", true).toBool());
 	mMiscellaniousUi->openGLCheckBox->setChecked(SettingsManager::instance()->value("OpenGL", true).toBool());
+	mMiscellaniousUi->squareLineModeCheckBox->setChecked(SettingsManager::instance()->value("SquareLine", true).toBool());
 
 	mBehaviourUi->warningWindowBox->setChecked(SettingsManager::instance()->value("warningWindow", true).toBool());
 
@@ -169,6 +170,7 @@ void PreferencesDialog::applyChanges()
 	SettingsManager::instance()->setValue("ActivateAlignment", mEditorUi->activateAlignmentCheckBox->isChecked());
 	SettingsManager::instance()->setValue("Antialiasing", mMiscellaniousUi->antialiasingCheckBox->isChecked());
 	SettingsManager::instance()->setValue("OpenGL", mMiscellaniousUi->openGLCheckBox->isChecked());
+	SettingsManager::instance()->setValue("SquareLine", mMiscellaniousUi->squareLineModeCheckBox->isChecked());
 
 	SettingsManager::instance()->setValue("warningWindow", mBehaviourUi->warningWindowBox->isChecked());
 
