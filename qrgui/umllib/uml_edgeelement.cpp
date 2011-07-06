@@ -29,6 +29,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	, mAddPointAction(tr("Add point"), this)
 	, mDelPointAction(tr("Delete point"), this)
 	, mSquarizeAction(tr("Squarize"), this)
+	, mMinimizeAction(tr("Minimize"), this)
 	, mElementImpl(impl)
 	, mLastDragPoint(-1)
 {
@@ -46,6 +47,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	connect(&mAddPointAction, SIGNAL(triggered(QPointF const &)), SLOT(addPointHandler(QPointF const &)));
 	connect(&mDelPointAction, SIGNAL(triggered(QPointF const &)), SLOT(delPointHandler(QPointF const &)));
 	connect(&mSquarizeAction, SIGNAL(triggered(QPointF const &)), SLOT(squarizeHandler(QPointF const &)));
+	connect(&mMinimizeAction, SIGNAL(triggered(QPointF const &)), SLOT(minimizeHandler(QPointF const &)));
 
         mChaoticEdition = SettingsManager::instance()->value("ChaoticEdition", false).toBool();
 
@@ -86,7 +88,7 @@ QRectF EdgeElement::boundingRect() const
 
 QPolygonF EdgeElement::line() const
 {
-	return mLine;
+        return mLine;
 }
 
 static double lineAngle(const QLineF &line)
@@ -103,7 +105,7 @@ static void drawChaosStar(QPainter *painter)
 	painter->save();
 	QPen pen;
 	QColor color;
-	color.setNamedColor("#c3dcc4");
+        color.setNamedColor("#c3dcc4");
 	pen.setColor(color);
 	painter->setPen(pen);
 
@@ -131,13 +133,13 @@ void EdgeElement::drawPort(QPainter *painter) const
 	QPen pen;
 	QColor color;
 	QPointF p1(-0.25,0);
-	QPointF p2(0.25,0);
+        QPointF p2(0.25,0);
 
-	color.setNamedColor("#c3dcc4");
+        color.setNamedColor("#c3dcc4");
 	pen.setWidth(11);
 	pen.setColor(color);
 	painter->setPen(pen);
-	painter->drawLine(p1, p2);
+        painter->drawLine(p1, p2);
 
 	color.setNamedColor("#465945");
 	pen.setWidth(3);
@@ -391,7 +393,6 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		mLine[mDragPoint] = event->pos();
 		updateLongestPart();
 	}
-
 }
 
 void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -427,6 +428,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 		if (mDragPoint >= 2)
 			removeUnneededPoints(mDragPoint - 2);
+
 	}
 
 	if (mDragPoint == -1)
@@ -434,7 +436,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	else
 		mDragPoint = -1;
 
-	connectToPort();
+        connectToPort();
 
 	if (mBeginning)
 		mBeginning->setPortsVisible(false);
@@ -450,15 +452,13 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void EdgeElement::removeUnneededPoints(int startingPoint)
 {
-	QPainterPath path;
-	QPainterPathStroker neighbourhood;
-	neighbourhood.setWidth(15);
-
-	path.moveTo(mLine[startingPoint]);
-	path.lineTo(mLine[startingPoint + 2]);
-
-	if (neighbourhood.createStroke(path).contains(mLine[startingPoint + 1]))
-		delPointHandler(mLine[startingPoint + 1]);
+	if (startingPoint + 2 < mLine.size()) {
+		if ((mLine[startingPoint].x() == mLine[startingPoint + 1].x() &&
+			mLine[startingPoint].x() == mLine[startingPoint + 2].x()) ||
+			(mLine[startingPoint].y() == mLine[startingPoint + 1].y() &&
+			mLine[startingPoint].y() == mLine[startingPoint + 2].y()))
+			delPointHandler(mLine[startingPoint + 1]);
+	}
 }
 
 NodeElement *EdgeElement::getNodeAt(QPointF const &position)
@@ -480,6 +480,7 @@ QList<ContextMenuAction*> EdgeElement::contextMenuActions()
 	result.push_back(&mAddPointAction);
 	result.push_back(&mDelPointAction);
 	result.push_back(&mSquarizeAction);
+	result.push_back(&mMinimizeAction);
 	return result;
 }
 
@@ -545,26 +546,62 @@ void EdgeElement::squarizeHandler(QPointF const &pos)
 {
 	Q_UNUSED(pos);
 	prepareGeometryChange();
-	for (int i = 0; i < mLine.size() - 1; ++i) {
-		QLineF line(mLine[i], mLine[i + 1]);
-		if (qAbs(line.dx()) < qAbs(line.dy())) {
-			mLine[i + 1].setX(mLine[i].x());
-		} else {
-			mLine[i + 1].setY(mLine[i].y());
+	int i = 0;
+	while (!mLine.endsWith(mLine[i])) {
+		QPointF insPoint = mLine[i];
+
+		if (i < mLine.size() - 3) {
+
+				if (mLine[i + 1].x() == mLine[i].x() && mLine[i + 2].x() == mLine[i].x()) {
+					mLine.remove(i + 1);
+					i++;
+					continue;
+				}
+				if (mLine[i + 1].y() == mLine[i].y() && mLine[i + 2].y() == mLine[i].y()) {
+					mLine.remove(i + 1);
+					i++;
+					continue;
+				}
+			}
+
+		if (insPoint.x() == mLine[i + 1].x() || insPoint.y() == mLine[i + 1].y()) {
+			i++;
+			continue;
 		}
+		insPoint.setX(mLine[i + 1].x());
+		if (mLine[i].x() == insPoint.x() && mLine[i].y() == insPoint.y()) {
+			i++;
+			continue;
+		}
+		mLine.insert(i + 1, insPoint);
+		i += 2;
 	}
-	adjustLink();
+
 	update();
+}
+
+void EdgeElement::minimizeHandler(const QPointF &pos) {
+	Q_UNUSED(pos);
+	QPolygonF newMLine;
+
+	newMLine << mLine.first() << mLine.last();
+	mLine = newMLine;
+	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
 }
 
 void EdgeElement::adjustLink()
 {
+	QSettings settings("SPbSU", "QReal");
 	prepareGeometryChange();
 	if (mSrc)
 		mLine.first() = mapFromItem(mSrc, mSrc->getPortPos(mPortFrom));
 	if (mDst)
 		mLine.last() = mapFromItem(mDst, mDst->getPortPos(mPortTo));
 	updateLongestPart();
+	for (int i = 0; i < mLine.size() - 2; i++)
+		removeUnneededPoints(i);
+	if (settings.value("SquareLine", true).toBool())
+			squarizeHandler(QPointF());
 }
 
 bool EdgeElement::shouldReconnect() const

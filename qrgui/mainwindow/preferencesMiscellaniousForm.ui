@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>194</height>
+    <height>220</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>10</x>
      <y>120</y>
      <width>400</width>
-     <height>61</height>
+     <height>81</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -52,6 +52,19 @@
     </property>
     <property name="text">
      <string>Chaotic Edition</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="squareLineModeCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>211</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Square Line Mode</string>
     </property>
    </widget>
   </widget>
