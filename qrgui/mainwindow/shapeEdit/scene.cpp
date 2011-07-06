@@ -3,7 +3,6 @@
 #include <QtCore/QPointF>
 #include <QtGui/QKeyEvent>
 #include <QtCore/QFile>
-#include <QtCore/QSettings>
 #include <QtCore/QDir>
 
 Scene::Scene(View *view, QObject * parent)
@@ -527,8 +526,7 @@ void Scene::addImage(QString const &fileName)
 	mItemType = image;
 	mFileName = fileName;
 
-	QSettings settings("SPbSU", "QReal");
-	QString workingDirName = settings.value("workingDir", "./save").toString();
+        QString workingDirName = SettingsManager::instance()->value("workingDir", "./save").toString();
 	QDir dir(workingDirName);
 	dir.mkdir("images");
 	mFileName = workingDirName + "/images/" + fileName.section('/', -1);

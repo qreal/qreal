@@ -5,7 +5,6 @@
 #include <QtGui/QStyle>
 #include <QtGui/QTextDocument>
 #include <QtGui/QMenu>
-#include <QtCore/QSettings>
 #include <QDebug>
 #include <math.h>
 
@@ -50,8 +49,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	connect(&mSquarizeAction, SIGNAL(triggered(QPointF const &)), SLOT(squarizeHandler(QPointF const &)));
 	connect(&mMinimizeAction, SIGNAL(triggered(QPointF const &)), SLOT(minimizeHandler(QPointF const &)));
 
-	QSettings settings("SPbSU", "QReal");
-	mChaoticEdition = settings.value("ChaoticEdition", false).toBool();
+        mChaoticEdition = SettingsManager::instance()->value("ChaoticEdition", false).toBool();
 
 	ElementTitleFactory factory;
 

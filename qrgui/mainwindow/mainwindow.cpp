@@ -16,7 +16,9 @@
 #include <QtSvg/QSvgGenerator>
 
 #include <QtCore/QDebug>
-#include <QtCore/QSettings>
+
+#include <../../generators/editorGenerator/editorGenerator.h>
+
 #include <QtCore/QPluginLoader>
 
 #include "errorReporter.h"
@@ -42,7 +44,9 @@
 #include "../generators/editorGenerator/editorGenerator.h"
 #include "../visualDebugger/visualDebugger.h"
 
+
 #include "metaCompiler.h"
+
 
 using namespace qReal;
 
@@ -55,8 +59,9 @@ MainWindow::MainWindow()
 	, mVisualDebugger(NULL)
 	, mIsFullscreen(false)
 {
-	QSettings settings("SPbSU", "QReal");
-	bool showSplash = settings.value("Splashscreen", true).toBool();
+
+	bool showSplash = SettingsManager::instance()->value("Splashscreen", true).toBool();
+
 	QSplashScreen* splash =
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
@@ -126,17 +131,19 @@ MainWindow::MainWindow()
 	// Step 5: Plugins are loaded.
 	progress->setValue(70);
 
-	settings.beginGroup("MainWindow");
-	if (!settings.value("maximized", true).toBool()) {
+	//settings.beginGroup("MainWindow");
+
+	if (!SettingsManager::instance()->value("maximized", true).toBool()) {
+
 		showNormal();
-		resize(settings.value("size", QSize(1024, 800)).toSize());
-		move(settings.value("pos", QPoint(0, 0)).toPoint());
+		resize(SettingsManager::instance()->value("size", QSize(1024, 800)).toSize());
+		move(SettingsManager::instance()->value("pos", QPoint(0, 0)).toPoint());
 	}
 	// for jzuken's unholy netbook screen
 //	resize(QSize(1024, 600));
-	settings.endGroup();
+	//settings.endGroup();
 
-	QString workingDir = settings.value("workingDir", ".").toString();
+	QString workingDir = SettingsManager::instance()->value("workingDir", ".").toString();
 
 	mRootIndex = QModelIndex();
 	mModels = new models::Models(workingDir, mEditorManager);
@@ -158,7 +165,7 @@ MainWindow::MainWindow()
 	mVisualDebugger = new VisualDebugger(mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi(), *this);
 	mDebuggerConnector = new DebuggerConnector();
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
-	mErrorReporter->updateVisibility(settings.value("warningWindow", true).toBool());
+	mErrorReporter->updateVisibility(SettingsManager::instance()->value("warningWindow", true).toBool());
 
 	connect(mDebuggerConnector, SIGNAL(readyReadStdOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
 	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerErrOutput(QString)));
@@ -174,7 +181,7 @@ MainWindow::MainWindow()
 	if (mModels->graphicalModel()->rowCount() > 0)
 		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
 
-	if (settings.value("diagramCreateSuggestion", true).toBool())
+	if (SettingsManager::instance()->value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 
 	mDocksVisibility.clear();
@@ -182,11 +189,12 @@ MainWindow::MainWindow()
 
 void MainWindow::connectActions()
 {
-	QSettings settings("SPbSU", "QReal");
-	mUi->actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
-	mUi->actionShow_alignment->setChecked(settings.value("ShowAlignment", true).toBool());
-	mUi->actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", false).toBool());
-	mUi->actionSwitch_on_alignment->setChecked(settings.value("ActivateAlignment", true).toBool());
+
+	mUi->actionShow_grid->setChecked(SettingsManager::instance()->value("ShowGrid", true).toBool());
+	mUi->actionShow_alignment->setChecked(SettingsManager::instance()->value("ShowAlignment", true).toBool());
+	mUi->actionSwitch_on_grid->setChecked(SettingsManager::instance()->value("ActivateGrid", false).toBool());
+	mUi->actionSwitch_on_alignment->setChecked(SettingsManager::instance()->value("ActivateAlignment", true).toBool());
+
 
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
@@ -269,6 +277,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 MainWindow::~MainWindow()
 {
 	saveAll();
+	SettingsManager::instance()->saveData();
 	//	delete mListenerManager;
 }
 
@@ -285,12 +294,11 @@ void MainWindow::finalClose()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
 	mCloseEvent = event;
-	QSettings settings("SPbSU", "QReal");
-	settings.beginGroup("MainWindow");
-	settings.setValue("maximized", isMaximized());
-	settings.setValue("size", size());
-	settings.setValue("pos", pos());
-	settings.endGroup();
+	//settings.beginGroup("MainWindow");
+	SettingsManager::instance()->setValue("maximized", isMaximized());
+	SettingsManager::instance()->setValue("size", size());
+	SettingsManager::instance()->setValue("pos", pos());
+	//settings.endGroup();
 }
 
 void MainWindow::loadPlugins()
@@ -431,15 +439,14 @@ void MainWindow::sceneSelectionChanged()
 
 QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
 {
-	QSettings settings("SPbSU", "QReal");
 
 	QString const dirName = QFileDialog::getExistingDirectory(this, dialogWindowTitle
-		, settings.value("workingDir", ".").toString(), QFileDialog::ShowDirsOnly);
+		, SettingsManager::instance()->value("workingDir", ".").toString(), QFileDialog::ShowDirsOnly);
 
 	if (dirName.isEmpty())
 		return "";
 
-	settings.setValue("workingDir", dirName);
+	SettingsManager::instance()->setValue("workingDir", dirName);
 
 	return dirName;
 }
@@ -636,8 +643,8 @@ void MainWindow::showHelp()
 
 void MainWindow::toggleShowSplash(bool show)
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("Splashscreen", show);
+	SettingsManager::instance()->setValue("Splashscreen", show);
+
 }
 
 void MainWindow::checkoutDialogOk()
@@ -776,9 +783,8 @@ void MainWindow::generateEditor()
 			if (QMessageBox::question(this, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelList[key]),
 									  QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 				return;
-			QSettings settings("SPbSU", "QReal");
-			loadNewEditor(directoryName + "/qrxml/", metamodelList[key], settings.value("pathToQmake", "").toString(),
-						  settings.value("pathToMake", "").toString(), settings.value("pluginExtension", "").toString(), settings.value("prefix", "").toString());
+			loadNewEditor(directoryName + "/qrxml/", metamodelList[key], SettingsManager::instance()->value("pathToQmake", "").toString(),
+			SettingsManager::instance()->value("pathToMake", "").toString(), SettingsManager::instance()->value("pluginExtension", "").toString(), SettingsManager::instance()->value("prefix", "").toString());
 		}
 	}
 }
@@ -788,8 +794,6 @@ void MainWindow::generateEditorWithQRMC()
 	qrmc::MetaCompiler metaCompiler("../qrmc", "./save");
 
 	IdList const metamodels = mModels->logicalRepoApi().children(Id::rootId());
-
-	QSettings settings("SPbSU", "QReal");
 
 	QProgressBar *progress = new QProgressBar(this);
 	progress->show();
@@ -826,12 +830,12 @@ void MainWindow::generateEditorWithQRMC()
 
 			QProcess builder;
 			builder.setWorkingDirectory("../qrmc/plugins");
-			builder.start(settings.value("pathToQmake", "").toString());
+			builder.start(SettingsManager::instance()->value("pathToQmake", "").toString());
 			qDebug()  << "qmake";
 			if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
 				progress->setValue(40);
 
-				builder.start(settings.value("pathToMake", "").toString());
+				builder.start(SettingsManager::instance()->value("pathToMake", "").toString());
 
 				bool finished = builder.waitForFinished(100000);
 				qDebug()  << "make";
@@ -853,8 +857,9 @@ void MainWindow::generateEditorWithQRMC()
 								continue;
 							}
 						}
-						if (mEditorManager.loadPlugin(settings.value("prefix", "").toString() + name + "." + settings.value("pluginExtension", "").toString())) {
-							foreach (Id const diagram, mEditorManager.diagrams(Id(normalizedName))) {
+
+						if (mEditorManager.loadPlugin(SettingsManager::instance()->value("prefix", "").toString() + name + "." + SettingsManager::instance()->value("pluginExtension", "").toString())) {
+						    foreach (Id const diagram, mEditorManager.diagrams(Id(normalizedName))) {
 								mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
 
 								foreach (Id const element, mEditorManager.elements(diagram))
@@ -1189,8 +1194,8 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 	}
 
 	//changing of palette active editor:
-	QSettings settings("SPbSU", "QReal");
-	if (settings.value("PaletteTabSwitching", true).toBool())
+
+	if (SettingsManager::instance()->value("PaletteTabSwitching", true).toBool())
 	{
 		int i = 0;
 		foreach(QString name, mUi->paletteToolbox->getTabNames()) {
@@ -1257,29 +1262,25 @@ void MainWindow::closeTab(QModelIndex const &graphicsIndex)
 
 void MainWindow::showGrid(bool isChecked)
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("ShowGrid", isChecked);
+	SettingsManager::instance()->setValue("ShowGrid", isChecked);
 	setShowGrid(isChecked);
 }
 
 void MainWindow::showAlignment(bool isChecked)
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("ShowAlignment", isChecked);
+	SettingsManager::instance()->setValue("ShowAlignment", isChecked);
 	setShowAlignment(isChecked);
 }
 
 void MainWindow::switchGrid(bool isChecked)
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("ActivateGrid", isChecked);
+	SettingsManager::instance()->setValue("ActivateGrid", isChecked);
 	setSwitchGrid(isChecked);
 }
 
 void MainWindow::switchAlignment(bool isChecked)
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("ActivateAlignment", isChecked);
+	SettingsManager::instance()->setValue("ActivateAlignment", isChecked);
 	setSwitchAlignment(isChecked);
 }
 
@@ -1466,12 +1467,12 @@ int MainWindow::getTabIndex(const QModelIndex &index)
 
 void MainWindow::initGridProperties()
 {
-	QSettings settings("SPbSU", "QReal");
+
 	mUi->actionSwitch_on_grid->blockSignals(false);
-	mUi->actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", false).toBool());
+	mUi->actionSwitch_on_grid->setChecked(SettingsManager::instance()->value("ActivateGrid", false).toBool());
 
 	mUi->actionShow_grid->blockSignals(false);
-	mUi->actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
+	mUi->actionShow_grid->setChecked(SettingsManager::instance()->value("ShowGrid", true).toBool());
 }
 
 void MainWindow::debug()
@@ -1506,9 +1507,9 @@ void MainWindow::generateAndBuild() {
 		if (mVisualDebugger->canBuild()) {
 			mDebuggerConnector->run();
 
-			QSettings settings("SPbSU", "QReal");
-			mDebuggerConnector->build(settings.value("debugWorkingDirectory", "").toString() + "/" +
-									  settings.value("codeFileName", "code.c").toString());
+			mDebuggerConnector->build(SettingsManager::instance()->value("debugWorkingDirectory", "").toString() + "/" +
+						    SettingsManager::instance()->value("codeFileName", "code.c").toString());
+
 
 			if (!mDebuggerConnector->hasBuildError()) {
 				mErrorReporter->addInformation("Code generated and builded successfully");
@@ -1532,9 +1533,9 @@ void MainWindow::startDebugger() {
 
 void MainWindow::configureDebugger() {
 	if (mDebuggerConnector->isDebuggerRunning()) {
-		QSettings settings("SPbSU", "QReal");
-		mDebuggerConnector->configure(settings.value("debugWorkingDirectory", "").toString() + "/" +
-									  settings.value("buildedFileName", "builded.exe").toString());
+
+		mDebuggerConnector->configure(SettingsManager::instance()->value("debugWorkingDirectory", "").toString() + "/" +
+										      SettingsManager::instance()->value("buildedFileName", "builded.exe").toString());
 	}
 }
 
@@ -1621,8 +1622,7 @@ void MainWindow::drawDebuggerStdOutput(QString output) {
 		Id idToLigth = mVisualDebugger->getIdByLine(output.mid(0,index).toInt());
 		mVisualDebugger->highlight(idToLigth);
 	} else {
-		QSettings settings("SPbSU", "QReal");
-		QString fileName = settings.value("codeFileName", "code.c").toString();
+		QString fileName = SettingsManager::instance()->value("codeFileName", "code.c").toString();
 
 		int index = output.indexOf(fileName + ":");
 		if (index > -1) {
@@ -1727,8 +1727,7 @@ gui::ErrorReporter *MainWindow::errorReporter()
 void MainWindow::applySettings()
 {
 	getCurrentTab()->invalidateScene();
-	QSettings settings("SPbSU", "QReal");
-	mErrorReporter->updateVisibility(settings.value("warningWindow", true).toBool());
+	mErrorReporter->updateVisibility(SettingsManager::instance()->value("warningWindow", true).toBool());
 }
 
 void MainWindow::hideDockWidget(QDockWidget *dockWidget, QString name)

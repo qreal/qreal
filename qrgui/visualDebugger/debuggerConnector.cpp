@@ -1,5 +1,4 @@
 #include <QFile>
-#include <QtCore/QSettings>
 
 #include "debuggerConnector.h"
 
@@ -77,8 +76,8 @@ void DebuggerConnector::run()
 
 void DebuggerConnector::startDebugger()
 {
-	QSettings settings("SPbSU", "QReal");
-	setDebuggerPath(settings.value("debuggerPath", "gdb.exe").toString());
+        setDebuggerPath(SettingsManager::instance()->value("debuggerPath", "gdb.exe").toString());
+
 
 	if (QFile::exists(mDebuggerPath)) {
 		mDebuggerProcess->start(mDebuggerPath);
@@ -144,11 +143,13 @@ void DebuggerConnector::sendCommand(QString command)
 
 void DebuggerConnector::build(QString filePath)
 {
-	QSettings settings("SPbSU", "QReal");
-	setBuilderPath(settings.value("builderPath", "gcc.exe").toString());
-	setBuildedFileName(settings.value("buildedFileName", "builded.exe").toString());
-	setCodeFileName(settings.value("codeFileName", "code.c").toString());
-	setWorkDir(settings.value("debugWorkingDirectory", "").toString());
+
+        setBuilderPath(SettingsManager::instance()->value("builderPath", "gcc.exe").toString());
+        setBuildedFileName(SettingsManager::instance()->value("buildedFileName", "builded.exe").toString());
+        setCodeFileName(SettingsManager::instance()->value("codeFileName", "code.c").toString());
+        setWorkDir(SettingsManager::instance()->value("debugWorkingDirectory", "").toString());
+
+
 
 	QStringList args;
 	args.append("-g");

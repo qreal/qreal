@@ -8,6 +8,8 @@
 #include <QRadioButton>
 #include <QLineEdit>
 
+#include <../../kernel/exception/settingsManager.h>
+
 namespace Ui {
 	class PreferencesDialog;
 	class BehaviourForm;
