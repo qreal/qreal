@@ -29,7 +29,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>0</y>
       <width>380</width>
       <height>20</height>
      </rect>
@@ -42,13 +42,26 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>30</y>
+      <y>20</y>
       <width>380</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
      <string>Chaotic Edition</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="squareLineModeCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>171</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Square Line Mode</string>
     </property>
    </widget>
   </widget>

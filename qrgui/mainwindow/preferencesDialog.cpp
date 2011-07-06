@@ -136,6 +136,7 @@ void PreferencesDialog::initMiscellaniousPage()
 	mMiscellaniousUi->antialiasingCheckBox->setChecked(settings.value("Antialiasing", true).toBool());
 	mMiscellaniousUi->splashScreenCheckBox->setChecked(settings.value("Splashscreen", true).toBool());
 	mMiscellaniousUi->openGLCheckBox->setChecked(settings.value("OpenGL", true).toBool());
+	mMiscellaniousUi->squareLineModeCheckBox->setChecked(settings.value("SquareLine", false).toBool());
 }
 
 void PreferencesDialog::initRobotSettingsPage()
@@ -278,6 +279,18 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("DiagramCreateSuggestion", mBehaviourUi->diagramCreateCheckBox->isChecked());
 	settings.setValue("PaletteTabSwitching", mBehaviourUi->paletteTabCheckBox->isChecked());
 	settings.setValue("SaveExitSuggestion", mBehaviourUi->saveExitCheckBox->isChecked());
+
+
+	settings.setValue("Splashscreen", mMiscellaniousUi->splashScreenCheckBox->isChecked());
+	settings.setValue("ShowGrid", mEditorUi->showGridCheckBox->isChecked());
+	settings.setValue("ShowAlignment", mEditorUi->showAlignmentCheckBox->isChecked());
+	settings.setValue("ActivateGrid", mEditorUi->activateGridCheckBox->isChecked());
+	settings.setValue("ActivateAlignment", mEditorUi->activateAlignmentCheckBox->isChecked());
+	settings.setValue("Antialiasing", mMiscellaniousUi->antialiasingCheckBox->isChecked());
+	settings.setValue("OpenGL", mMiscellaniousUi->openGLCheckBox->isChecked());
+	settings.setValue("SquareLine", mMiscellaniousUi->squareLineModeCheckBox->isChecked());
+
+	settings.setValue("warningWindow", mBehaviourUi->warningWindowBox->isChecked());
 
 	settings.setValue("windowsButton", mCompilerUi->windowsButton->isChecked());
 	settings.setValue("linuxButton", mCompilerUi->linuxButton->isChecked());
