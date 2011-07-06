@@ -9,7 +9,7 @@
 
 #include "../blocksTable.h"
 
-#include "../../../visualDebugger/blockParser.h"
+#include "../robotsBlockParser.h"
 
 namespace qReal {
 namespace interpreters {
@@ -27,6 +27,8 @@ public:
 	virtual ~Block() {};
 
 	void interpret();
+	void setFailedStatus();
+	void setIdleStatus();
 	Id const id() const;
 
 	virtual QList<SensorPortPair> usedSensors() const;
@@ -41,6 +43,9 @@ protected:
 	models::GraphicalModelAssistApi const *mGraphicalModelApi;  // Does not have ownership
 	models::LogicalModelAssistApi const *mLogicalModelApi;  // Does not have ownership
 	BlocksTable *mBlocksTable;  // Does not have ownership
+
+	Id mGraphicalId;
+	RobotsBlockParser * mParser;
 
 	Block();
 
@@ -68,19 +73,18 @@ private:
 			, models::LogicalModelAssistApi const &logicalModelApi
 			, BlocksTable &blocksTable
 			, gui::ErrorReporter * const errorReporter
-			, BlockParser * const parser
+			, RobotsBlockParser * const parser
 			);
 
 private:
 	enum State {
 		idle
-		, running
+		,running
+		,failed
 	};
 
 	State mState;
-	Id mGraphicalId;
 	gui::ErrorReporter * mErrorReporter;
-	BlockParser * mParser;
 
 	virtual bool initNextBlocks();
 	virtual void additionalInit() {};

@@ -1,6 +1,7 @@
 #include "block.h"
 
 #include <QtCore/QDebug>
+#include "../robotsBlockParser.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details;
@@ -11,10 +12,10 @@ Block::Block()
 	, mGraphicalModelApi(NULL)
 	, mLogicalModelApi(NULL)
 	, mBlocksTable(NULL)
-	, mState(idle)
 	, mGraphicalId(Id())
-	, mErrorReporter(NULL)
 	, mParser(NULL)
+	, mState(idle)
+	, mErrorReporter(NULL)
 {
 	connect(this, SIGNAL(done(blocks::Block*const)), this, SLOT(finishedRunning()));
 }
@@ -24,7 +25,7 @@ void Block::init(Id const &graphicalId
 		, models::LogicalModelAssistApi const &logicalModelApi
 		, BlocksTable &blocksTable
 		, gui::ErrorReporter * const errorReporter
-		, BlockParser * const parser)
+		, RobotsBlockParser * const parser)
 {
 	mGraphicalId = graphicalId;
 	mGraphicalModelApi = &graphicalModelApi;
@@ -67,7 +68,7 @@ Id const Block::id() const
 
 void Block::interpret()
 {
-	if (mState == running)
+	if ((mState == running) || (mState == failed))
 		return;
 
 	mState = running;
@@ -75,6 +76,16 @@ void Block::interpret()
 	if (result) {
 		run();
 	}
+}
+
+void Block::setFailedStatus()
+{
+	mState = failed;
+}
+
+void Block::setIdleStatus()
+{
+	mState = idle;
 }
 
 void Block::finishedRunning()
@@ -137,10 +148,10 @@ QList<Block::SensorPortPair> Block::usedSensors() const
 QVariant Block::evaluate(const QString &propertyName)
 {
 	int position = 0;
-	QVariant value = mParser->parseProcessForRobots(stringProperty(propertyName), position, mGraphicalId).property("Number");
+	QVariant value = mParser->standartBlockParseProcess(stringProperty(propertyName), position, mGraphicalId).property("Number");
 	if (mParser->hasErrors()) {
-		mParser->clearForRobots();
-//		emit failure();
+		mParser->deselect();
+		emit failure(); /*разобраться с этой хренотой*/
 	}
 	return value;
 }

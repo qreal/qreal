@@ -22,6 +22,7 @@ HEADERS += \
 	interpreters/robots/details/blocksTable.h \
 	interpreters/robots/details/bluetoothRobotCommunicationThread.h \
 	interpreters/robots/details/robotCommandConstants.h \
+	interpreters/robots/details/robotsBlockParser.h \
 	interpreters/robots/details/autoconfigurer.h \
 	interpreters/robots/details/blocks/block.h \
 	interpreters/robots/details/blocks/dummyBlock.h \
@@ -92,6 +93,7 @@ SOURCES += \
 	interpreters/robots/details/blocksTable.cpp \
 	interpreters/robots/details/blocksFactory.cpp \
 	interpreters/robots/details/bluetoothRobotCommunicationThread.cpp \
+	interpreters/robots/details/robotsBlockParser.cpp \
 	interpreters/robots/details/autoconfigurer.cpp \
 	interpreters/robots/details/blocks/block.cpp \
 	interpreters/robots/details/blocks/dummyBlock.cpp \
@@ -156,3 +158,11 @@ SOURCES += \
 
 FORMS += \
 	interpreters/robots/details/d2RobotModel/d2Form.ui \
+
+# Files for parsiong of expressions on diagrams
+HEADERS += \
+	interpreters/expressionsParser/expressionsParser.h \
+
+SOURCES += \
+	interpreters/expressionsParser/expressionsParser.cpp \
+	

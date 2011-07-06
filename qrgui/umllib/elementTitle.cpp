@@ -78,6 +78,7 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 		event->key() == Qt::Key_Return)
 	{
 		// Loose focus: new name will be applied in focusOutEvent
+//		setHtml(toHtml() + "<br>");
 		clearFocus();
 		return;
 	}

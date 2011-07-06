@@ -10,7 +10,7 @@ BlocksTable::BlocksTable(models::GraphicalModelAssistApi const &graphicalModelAp
 		, models::LogicalModelAssistApi const &logicalModelApi
 		, RobotModel * const robotModel
 		, gui::ErrorReporter * const errorReporter
-		, BlockParser * const parser
+		, RobotsBlockParser * const parser
 	)
 	: mBlocksFactory(new BlocksFactory(graphicalModelApi, logicalModelApi, robotModel, errorReporter, this, parser))
 {
@@ -35,10 +35,22 @@ blocks::Block *BlocksTable::block(Id const &element)
 
 void BlocksTable::clear()
 {
-	mBlocksFactory->getParser()->clearVariables();
+	mBlocksFactory->getParser()->robotsClearVariables();
 	foreach (blocks::Block *block, mBlocks.values())
 		delete block;
 	mBlocks.clear();
+}
+
+void BlocksTable::setFailure()
+{
+	foreach (blocks::Block *block, mBlocks.values())
+		block->setFailedStatus();
+}
+
+void BlocksTable::setIdleForBlocks()
+{
+	foreach (blocks::Block *block, mBlocks.values())
+		block->setIdleStatus();
 }
 
 void BlocksTable::addBlock(Id const &element, blocks::Block *block)

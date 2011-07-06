@@ -17,6 +17,8 @@ class FunctionBlock : public Block
 public:
 	FunctionBlock();
 	virtual void run();
+
+	QVariant evaluate(const QString &propertyName);
 };
 
 }
