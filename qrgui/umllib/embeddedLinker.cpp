@@ -17,9 +17,10 @@ using namespace qReal;
 
 EmbeddedLinker::EmbeddedLinker()
 {
-	QSettings settings("SPbSU", "QReal");
-	size = settings.value("EmbeddedLinkerSize", 6).toFloat();
-	indent = settings.value("EmbeddedLinkerIndent", 5).toFloat();
+
+        size = SettingsManager::instance()->value("EmbeddedLinkerSize", 6).toFloat();
+        indent = SettingsManager::instance()->value("EmbeddedLinkerIndent", 5).toFloat();
+
 
 	covered = false;
 	master = NULL;

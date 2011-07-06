@@ -7,10 +7,11 @@
 #include <QtCore/QtDebug>
 
 #include "../kernel/ids.h"
-#include "../kernel/exception/exception.h"
+
 #include "../../qrrepo/repoApi.h"
 #include "../umllib/uml_nodeelement.h"
 #include "../umllib/uml_edgeelement.h"
+#include "../kernel/exception/exception.h"
 
 using namespace qReal;
 

@@ -2,17 +2,16 @@
 #include "uml_nodeelement.h"
 #include "../view/editorviewscene.h"
 
-#include <QtCore/QSettings>
 
 using namespace UML;
 
 SceneGridHandler::SceneGridHandler(NodeElement *node)
 {
-	QSettings settings("SPbSU", "QReal");
-	mNode = node;
-	mShowAlignment = settings.value("ShowAlignment", true).toBool();
-	mSwitchGrid = settings.value("ActivateGrid", false).toBool();
-	mSwitchAlignment = settings.value("ActivateAlignment", true).toBool();
+
+        mNode = node;
+        mShowAlignment = SettingsManager::instance()->value("ShowAlignment", true).toBool();
+        mSwitchGrid = SettingsManager::instance()->value("ActivateGrid", false).toBool();
+        mSwitchAlignment = SettingsManager::instance()->value("ActivateAlignment", true).toBool();
 }
 
 void SceneGridHandler::delUnusedLines()

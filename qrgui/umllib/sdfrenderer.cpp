@@ -6,13 +6,11 @@
 #include <QLineF>
 #include <QTime>
 #include <QDebug>
-#include <QtCore/QSettings>
 
 SdfRenderer::SdfRenderer()
 	: mStartX(0), mStartY(0), mNeedScale(true)
 {
-	QSettings settings("SPbSU", "QReal");
-	mWorkingDirName = settings.value("workingDir", "./save").toString();
+        mWorkingDirName = SettingsManager::instance()->value("workingDir", "./save").toString();
 }
 
 SdfRenderer::SdfRenderer(const QString path)
@@ -21,9 +19,8 @@ SdfRenderer::SdfRenderer(const QString path)
 	if (!load(path))
 	{
 		qDebug() << "File " + path + " - loading failed!";
-	}
-	QSettings settings("SPbSU", "QReal");
-	mWorkingDirName = settings.value("workingDir", "./save").toString();
+        }
+        mWorkingDirName = SettingsManager::instance()->value("workingDir", "./save").toString();
 }
 
 SdfRenderer::~SdfRenderer()

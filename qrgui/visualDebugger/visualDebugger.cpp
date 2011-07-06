@@ -1,7 +1,5 @@
 #include "visualDebugger.h"
 
-#include <QtCore/QSettings>
-
 #include <QEventLoop>
 #include <QTimer>
 #include <QFile>
@@ -220,9 +218,9 @@ void VisualDebugger::processAction()
 
 void VisualDebugger::debug()
 {
-	mDebugType = VisualDebugger::fullDebug;
-	QSettings settings("SPbSU", "QReal");
-	setTimeout(settings.value("debuggerTimeout", 750).toInt());
+        mDebugType = VisualDebugger::fullDebug;
+        setTimeout(SettingsManager::instance()->value("debuggerTimeout", 750).toInt());
+
 
 	if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
 		return;
@@ -346,9 +344,11 @@ void VisualDebugger::generateCode()
 {
 	mHasCodeGenerationError = false;
 
-	QSettings settings("SPbSU", "QReal");
-	setCodeFileName(settings.value("codeFileName", "code.c").toString());
-	setWorkDir(settings.value("debugWorkingDirectory", "").toString());
+
+        setCodeFileName(SettingsManager::instance()->value("codeFileName", "code.c").toString());
+        setWorkDir(SettingsManager::instance()->value("debugWorkingDirectory", "").toString());
+
+
 
 	QFile codeFile(mWorkDir + "/" + mCodeFileName);
 	codeFile.open(QIODevice::WriteOnly);
