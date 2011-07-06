@@ -71,4 +71,5 @@ FORMS += mainwindow/mainwindow.ui \
     mainwindow/preferencesMiscellaniousForm.ui \
     mainwindow/preferencesBehaviourForm.ui \
     mainwindow/preferencesCompilerForm.ui \
-    mainwindow/preferencesDebuggerForm.ui
+    mainwindow/preferencesDebuggerForm.ui \
+	mainwindow/preferencesRobotSettingsForm.ui

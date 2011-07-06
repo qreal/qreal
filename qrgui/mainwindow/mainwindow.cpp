@@ -33,7 +33,6 @@
 #include "../view/editorview.h"
 #include "../umllib/uml_element.h"
 #include "../dialogs/plugindialog.h"
-#include "../dialogs/robotSettingsDialog.h"
 #include "../parsers/xml/xmlParser.h"
 #include "../editorManager/listenerManager.h"
 #include "../generators/editorGenerator/editorGenerator.h"
@@ -1311,26 +1310,26 @@ void MainWindow::dehighlight(Id const &graphicalId)
 
 void MainWindow::showRobotSettingsDialog()
 {
+	QSettings settings("SPbSU", "QReal");
+	settings.setValue("currentPreferencesTab", PreferencesDialog::robotSettings);
 	stopRobot();
-	gui::RobotSettingsDialog robotSettingsDialog;
-	int code = robotSettingsDialog.exec();
-	if (code == QDialog::Accepted) {
-		mBluetoothCommunication->setPortName(robotSettingsDialog.selectedPortName());
-		QSettings settings("SPbSU", "QReal");
-		robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(settings.value("robotModel", "1").toInt());
-		mRobotInterpreter->setRobotImplementation(typeOfRobotModel, mBluetoothCommunication);
-		mRobotInterpreter->configureSensors(
-				robotSettingsDialog.selectedPort1Sensor()
-				, robotSettingsDialog.selectedPort2Sensor()
-				, robotSettingsDialog.selectedPort3Sensor()
-				, robotSettingsDialog.selectedPort4Sensor()
-		);
-		mUi->actionShow2Dmodel->setVisible(typeOfRobotModel == robotModelType::unreal);
-		if (typeOfRobotModel == robotModelType::unreal)
-			setD2ModelWidgetActions(mUi->actionRun, mUi->actionStop_Running);
-		else
-			showD2ModelWidget(false);
-	}
+	showPreferencesDialog();
+
+	QString const bluetoothPortName = settings.value("bluetoothPortName").toString();
+	mBluetoothCommunication->setPortName(bluetoothPortName);
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(settings.value("robotModel", "1").toInt());
+	mRobotInterpreter->setRobotImplementation(typeOfRobotModel, mBluetoothCommunication);
+	mRobotInterpreter->configureSensors(
+			static_cast<sensorType::SensorTypeEnum>(settings.value("port1SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(settings.value("port2SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(settings.value("port3SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(settings.value("port4SensorType").toInt())
+	);
+	mUi->actionShow2Dmodel->setVisible(typeOfRobotModel == robotModelType::unreal);
+	if (typeOfRobotModel == robotModelType::unreal)
+		setD2ModelWidgetActions(mUi->actionRun, mUi->actionStop_Running);
+	else
+		showD2ModelWidget(false);
 }
 
 gui::ErrorReporter *MainWindow::errorReporter()
