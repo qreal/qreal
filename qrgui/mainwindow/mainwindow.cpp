@@ -14,7 +14,9 @@
 #include <QtSvg/QSvgGenerator>
 
 #include <QtCore/QDebug>
-#include <QtCore/QSettings>
+
+#include <../../generators/editorGenerator/editorGenerator.h>
+
 #include <QtCore/QPluginLoader>
 
 #include "ui_mainwindow.h"
@@ -58,8 +60,9 @@ MainWindow::MainWindow()
 	, mIsFullscreen(false)
 	, mSaveDir(qApp->applicationDirPath() + "/save")
 {
-	QSettings settings("SPbSU", "QReal");
-	bool showSplash = settings.value("Splashscreen", true).toBool();
+
+	bool showSplash = SettingsManager::instance()->value("Splashscreen", true).toBool();
+
 	QSplashScreen* splash =
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
@@ -69,9 +72,9 @@ MainWindow::MainWindow()
 	progress->setFixedHeight(15);
 	progress->setRange(0, 100);
 
-	QDir imagesDir(settings.value("pathToImages", "/someWeirdDirectoryName").toString());
+	QDir imagesDir(SettingsManager::instance()->value("pathToImages", "/someWeirdDirectoryName").toString());
 	if (!imagesDir.exists())
-		settings.setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
+		SettingsManager::instance()->setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
 
 	// Step 1: splash screen loaded, progress bar initialized.
 	progress->setValue(5);
@@ -130,17 +133,19 @@ MainWindow::MainWindow()
 	// Step 5: Plugins are loaded.
 	progress->setValue(70);
 
-	settings.beginGroup("MainWindow");
-	if (!settings.value("maximized", true).toBool()) {
+	//settings.beginGroup("MainWindow");
+
+	if (!SettingsManager::instance()->value("maximized", true).toBool()) {
+
 		showNormal();
-		resize(settings.value("size", QSize(1024, 800)).toSize());
-		move(settings.value("pos", QPoint(0, 0)).toPoint());
+		resize(SettingsManager::instance()->value("size", QSize(1024, 800)).toSize());
+		move(SettingsManager::instance()->value("pos", QPoint(0, 0)).toPoint());
 	}
 	// for jzuken's unholy netbook screen
 //	resize(QSize(1024, 600));
-	settings.endGroup();
+	//settings.endGroup();
 
-	QString workingDir = settings.value("workingDir", mSaveDir).toString();
+	QString workingDir = SettingsManager::instance()->value("workingDir", mSaveDir).toString();
 
 	mRootIndex = QModelIndex();
 	mModels = new models::Models(workingDir, mEditorManager);
@@ -164,20 +169,20 @@ MainWindow::MainWindow()
 	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
-	mErrorReporter->updateVisibility(settings.value("warningWindow", true).toBool());
+	mErrorReporter->updateVisibility(SettingsManager::instance()->value("warningWindow", true).toBool());
 
-	QString const defaultBluetoothPortName = settings.value("bluetoothPortName", "").toString();
+	QString const defaultBluetoothPortName = SettingsManager::instance()->value("bluetoothPortName", "").toString();
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
-	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(settings.value("robotModel", "1").toInt());
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
 	mUi->actionShow2Dmodel->setVisible(typeOfRobotModel == robotModelType::unreal);
 	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
 			, mModels->logicalModelAssistApi(), *this, mBluetoothCommunication, typeOfRobotModel);
 	if (typeOfRobotModel == robotModelType::unreal)
 		setD2ModelWidgetActions(mUi->actionRun, mUi->actionStop_Running);
-	sensorType::SensorTypeEnum port1 = static_cast<sensorType::SensorTypeEnum>(settings.value("port1SensorType", "0").toInt());
-	sensorType::SensorTypeEnum port2 = static_cast<sensorType::SensorTypeEnum>(settings.value("port2SensorType", "0").toInt());
-	sensorType::SensorTypeEnum port3 = static_cast<sensorType::SensorTypeEnum>(settings.value("port3SensorType", "0").toInt());
-	sensorType::SensorTypeEnum port4 = static_cast<sensorType::SensorTypeEnum>(settings.value("port4SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port1 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port2 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port3 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port4 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType", "0").toInt());
 	mRobotInterpreter->configureSensors(port1, port2, port3, port4);
 
 	// Step 7: Save consistency checked, interface is initialized with models.
@@ -189,7 +194,7 @@ MainWindow::MainWindow()
 	if (mModels->graphicalModel()->rowCount() > 0)
 		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
 
-	if (settings.value("diagramCreateSuggestion", true).toBool())
+	if (SettingsManager::instance()->value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 
 	mDocksVisibility.clear();
@@ -197,11 +202,12 @@ MainWindow::MainWindow()
 
 void MainWindow::connectActions()
 {
-	QSettings settings("SPbSU", "QReal");
-	mUi->actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
-	mUi->actionShow_alignment->setChecked(settings.value("ShowAlignment", true).toBool());
-	mUi->actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", false).toBool());
-	mUi->actionSwitch_on_alignment->setChecked(settings.value("ActivateAlignment", true).toBool());
+
+	mUi->actionShow_grid->setChecked(SettingsManager::instance()->value("ShowGrid", true).toBool());
+	mUi->actionShow_alignment->setChecked(SettingsManager::instance()->value("ShowAlignment", true).toBool());
+	mUi->actionSwitch_on_grid->setChecked(SettingsManager::instance()->value("ActivateGrid", false).toBool());
+	mUi->actionSwitch_on_alignment->setChecked(SettingsManager::instance()->value("ActivateAlignment", true).toBool());
+
 
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
@@ -277,6 +283,8 @@ MainWindow::~MainWindow()
 	delete mListenerManager;
 	delete mRobotInterpreter;
 	delete mErrorReporter;
+	SettingsManager::instance()->saveData();
+	//	delete mListenerManager;
 }
 
 EditorManager* MainWindow::manager()
@@ -292,12 +300,11 @@ void MainWindow::finalClose()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
 	mCloseEvent = event;
-	QSettings settings("SPbSU", "QReal");
-	settings.beginGroup("MainWindow");
-	settings.setValue("maximized", isMaximized());
-	settings.setValue("size", size());
-	settings.setValue("pos", pos());
-	settings.endGroup();
+	//settings.beginGroup("MainWindow");
+	SettingsManager::instance()->setValue("maximized", isMaximized());
+	SettingsManager::instance()->setValue("size", size());
+	SettingsManager::instance()->setValue("pos", pos());
+	//settings.endGroup();
 }
 
 void MainWindow::loadPlugins()
@@ -429,15 +436,14 @@ void MainWindow::sceneSelectionChanged()
 
 QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
 {
-	QSettings settings("SPbSU", "QReal");
 
 	QString const dirName = QFileDialog::getExistingDirectory(this, dialogWindowTitle
-		, settings.value("workingDir", mSaveDir).toString(), QFileDialog::ShowDirsOnly);
+		, SettingsManager::instance()->value("workingDir", mSaveDir).toString(), QFileDialog::ShowDirsOnly);
 
 	if (dirName.isEmpty())
 		return "";
 
-	settings.setValue("workingDir", dirName);
+	SettingsManager::instance()->setValue("workingDir", dirName);
 
 	return dirName;
 }
@@ -637,8 +643,8 @@ void MainWindow::showHelp()
 
 void MainWindow::toggleShowSplash(bool show)
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("Splashscreen", show);
+	SettingsManager::instance()->setValue("Splashscreen", show);
+
 }
 
 void MainWindow::generateEditor()
@@ -672,9 +678,8 @@ void MainWindow::generateEditor()
 			if (QMessageBox::question(this, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelList[key]),
 					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 				return;
-			QSettings settings("SPbSU", "QReal");
-			loadNewEditor(directoryName + "/qrxml/", metamodelList[key], settings.value("pathToQmake", "").toString(),
-					settings.value("pathToMake", "").toString(), settings.value("pluginExtension", "").toString(), settings.value("prefix", "").toString());
+			loadNewEditor(directoryName + "/qrxml/", metamodelList[key], SettingsManager::instance()->value("pathToQmake", "").toString(),
+			SettingsManager::instance()->value("pathToMake", "").toString(), SettingsManager::instance()->value("pluginExtension", "").toString(), SettingsManager::instance()->value("prefix", "").toString());
 		}
 	}
 }
@@ -975,8 +980,8 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 	}
 
 	//changing of palette active editor:
-	QSettings settings("SPbSU", "QReal");
-	if (settings.value("PaletteTabSwitching", true).toBool())
+
+	if (SettingsManager::instance()->value("PaletteTabSwitching", true).toBool())
 	{
 		int i = 0;
 		foreach(QString name, mUi->paletteToolbox->getTabNames()) {
@@ -1043,29 +1048,25 @@ ListenerManager *MainWindow::listenerManager()
 
 void MainWindow::showGrid(bool isChecked)
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("ShowGrid", isChecked);
+	SettingsManager::instance()->setValue("ShowGrid", isChecked);
 	setShowGrid(isChecked);
 }
 
 void MainWindow::showAlignment(bool isChecked)
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("ShowAlignment", isChecked);
+	SettingsManager::instance()->setValue("ShowAlignment", isChecked);
 	setShowAlignment(isChecked);
 }
 
 void MainWindow::switchGrid(bool isChecked)
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("ActivateGrid", isChecked);
+	SettingsManager::instance()->setValue("ActivateGrid", isChecked);
 	setSwitchGrid(isChecked);
 }
 
 void MainWindow::switchAlignment(bool isChecked)
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("ActivateAlignment", isChecked);
+	SettingsManager::instance()->setValue("ActivateAlignment", isChecked);
 	setSwitchAlignment(isChecked);
 }
 
@@ -1253,12 +1254,12 @@ int MainWindow::getTabIndex(const QModelIndex &index)
 
 void MainWindow::initGridProperties()
 {
-	QSettings settings("SPbSU", "QReal");
+
 	mUi->actionSwitch_on_grid->blockSignals(false);
-	mUi->actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", true).toBool());
+	mUi->actionSwitch_on_grid->setChecked(SettingsManager::instance()->value("ActivateGrid", false).toBool());
 
 	mUi->actionShow_grid->blockSignals(false);
-	mUi->actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
+	mUi->actionShow_grid->setChecked(SettingsManager::instance()->value("ShowGrid", true).toBool());
 }
 
 void MainWindow::run()
@@ -1321,8 +1322,7 @@ void MainWindow::showRobotSettingsDialog()
 	int code = robotSettingsDialog.exec();
 	if (code == QDialog::Accepted) {
 		mBluetoothCommunication->setPortName(robotSettingsDialog.selectedPortName());
-		QSettings settings("SPbSU", "QReal");
-		robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(settings.value("robotModel", "1").toInt());
+		robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
 		mRobotInterpreter->setRobotImplementation(typeOfRobotModel, mBluetoothCommunication);
 		mRobotInterpreter->configureSensors(
 				robotSettingsDialog.selectedPort1Sensor()
@@ -1369,8 +1369,7 @@ void MainWindow::updatePaletteIcons()
 void MainWindow::applySettings()
 {
 	getCurrentTab()->invalidateScene();
-	QSettings settings("SPbSU", "QReal");
-	mErrorReporter->updateVisibility(settings.value("warningWindow", true).toBool());
+	mErrorReporter->updateVisibility(SettingsManager::instance()->value("warningWindow", true).toBool());
 }
 
 void MainWindow::hideDockWidget(QDockWidget *dockWidget, QString name)
@@ -1407,12 +1406,11 @@ void MainWindow::fullscreen()
 
 void MainWindow::createProject()
 {
-	QSettings settings("SPbSU", "QReal");
-	QString dirName = getNextDirName(settings.value("workingDir", mSaveDir).toString());
-	settings.setValue("workingDir", dirName);
+	QString dirName = getNextDirName(SettingsManager::instance()->value("workingDir", mSaveDir).toString());
+	SettingsManager::instance()->setValue("workingDir", dirName);
 	open(dirName);
 
-	if (settings.value("diagramCreateSuggestion", true).toBool())
+	if (SettingsManager::instance()->value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 
 }

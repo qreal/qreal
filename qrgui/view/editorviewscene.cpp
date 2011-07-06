@@ -4,7 +4,6 @@
 #include <QGraphicsTextItem>
 #include <QtGui>
 #include <QtCore/QDebug>
-#include <QtCore/QSettings>
 #include <QGraphicsItem>
 
 #include "editorviewmviface.h"
@@ -20,10 +19,10 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	, mPrevParent(0)
 	, mShouldReparentItems(false)
 {
-	QSettings settings("SPbSU", "QReal");
-	mNeedDrawGrid = settings.value("ShowGrid", true).toBool();
-	mWidthOfGrid = static_cast<double>(settings.value("GridWidth", 10).toInt()) / 100;
-	mRealIndexGrid = settings.value("IndexGrid", 50).toInt();
+	mNeedDrawGrid = SettingsManager::instance()->value("ShowGrid", true).toBool();
+	mWidthOfGrid = static_cast<double>(SettingsManager::instance()->value("GridWidth", 10).toInt()) / 100;
+	mRealIndexGrid = SettingsManager::instance()->value("IndexGrid", 30).toInt();
+
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 	mRightButtonPressed = false;
@@ -64,7 +63,7 @@ void EditorViewScene::initMouseMoveManager()
 
 void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 {
-	int const indexGrid = QSettings("SPbSU", "QReal").value("IndexGrid", 50).toInt();
+	int const indexGrid = SettingsManager::instance()->value("IndexGrid", 50).toInt();
 	qreal const sceneX = rect.x();
 	qreal const sceneY = rect.y();
 
@@ -748,10 +747,11 @@ void EditorViewScene::deleteUsageActionTriggered()
 
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
-	if (mNeedDrawGrid) {
-		QSettings settings("SPbSU", "QReal");
-		mWidthOfGrid = (settings.value("GridWidth", 10).toDouble()) / 100;
-		painter->setPen(QPen(Qt::black, mWidthOfGrid));
+		if (mNeedDrawGrid) {
+				mWidthOfGrid = (SettingsManager::instance()->value("GridWidth", 10).toDouble()) / 100;
+
+
+				painter->setPen(QPen(Qt::black, mWidthOfGrid));
 		drawGrid(painter, rect);
 	}
 }
@@ -821,6 +821,8 @@ void EditorViewScene::highlight(Id const &graphicalId, bool exclusive)
 	UML::Element *elem = getElem(graphicalId);
 	if (!elem)
 		return;
+
+	QColor color = QColor(SettingsManager::instance()->value("debugColor").toString());
 
 	QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
 	effect->setColor(Qt::red);
