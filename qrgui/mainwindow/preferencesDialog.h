@@ -1,25 +1,12 @@
 #pragma once
 
 #include <QDialog>
-#include <QSlider>
-#include <QCheckBox>
-#include <QPushButton>
-#include <QComboBox>
-#include <QRadioButton>
-#include <QLineEdit>
+#include <QModelIndex>
 
-#include "../../interpreters/robots/sensorConstants.h"
-
-using namespace qReal::interpreters::robots;
+#include "preferencesPages/page.h"
 
 namespace Ui {
 	class PreferencesDialog;
-	class BehaviourForm;
-	class CompilerForm;
-	class DebuggerForm;
-	class EditorForm;
-	class MiscellaniousForm;
-	class RobotSettingsForm;
 }
 
 class PreferencesDialog : public QDialog {
@@ -50,56 +37,16 @@ private slots:
 	void cancel();
 	void applyChanges();
 	void saveAndClose();
-	void changeSystem();
-	void widthGridSliderMoved(int value);
-	void indexGridSliderMoved(int value);
 
-	void browseImagesPath();
 	void chooseTab(const QModelIndex &);
 
-	void activatedUnrealModel(bool checked);
-	void manualComPortCheckboxChecked(bool state);
-
 private:
-	void initBehaviourPage();
-	void initCompilerPage();
-	void initDebugPage();
-	void initEditorPage();
-	void initMiscellaniousPage();
-	void initRobotSettingsPage();
-	void initRobotModelType(robotModelType::robotModelTypeEnum type);
-
-	void initCompilersSettings(QString const &pathToQmake,
-			QString const &pathToMake, QString const &pluginExtension, QString const &prefix);
-
-	QString selectedPortName() const;
-	sensorType::SensorTypeEnum selectedPort1Sensor() const;
-	sensorType::SensorTypeEnum selectedPort2Sensor() const;
-	sensorType::SensorTypeEnum selectedPort3Sensor() const;
-	sensorType::SensorTypeEnum selectedPort4Sensor() const;
-	robotModelType::robotModelTypeEnum selectedRobotModel() const;
-
 	Ui::PreferencesDialog *ui;
-	Ui::BehaviourForm *mBehaviourUi;
-	Ui::CompilerForm *mCompilerUi;
-	Ui::DebuggerForm *mDebuggerUi;
-	Ui::EditorForm *mEditorUi;
-	Ui::MiscellaniousForm *mMiscellaniousUi;
-	Ui::RobotSettingsForm *mRobotSettingsUi;
 
-	QWidget *mBehaviourPage;
-	QWidget *mCompilerPage;
-	QWidget *mDebuggerPage;
-	QWidget *mEditorPage;
-	QWidget *mMiscellaniousPage;
-	QWidget *mRobotSettingsPage;
-
-	QAction * const mShowGridAction;
-	QAction * const mShowAlignmentAction;
-	QAction * const mActivateGridAction;
-	QAction * const mActivateAlignmentAction;
-	int mWithGrid;
-	int mIndexGrid;
-
-	QString mLastIconsetPath;
+	PreferencesPage *mBehaviourPage;
+	PreferencesPage *mCompilerPage;
+	PreferencesPage *mDebuggerPage;
+	PreferencesPage *mEditorPage;
+	PreferencesPage *mMiscellaniousPage;
+	PreferencesPage *mRobotSettingsPage;
 };

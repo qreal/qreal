@@ -8,44 +8,36 @@
         <translation type="obsolete">Форма О_о</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesBehaviourForm.ui" line="23"/>
         <source>Automatics</source>
-        <translation>Автоматизация</translation>
+        <translation type="obsolete">Автоматизация</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesBehaviourForm.ui" line="57"/>
         <source>Palette tab switching</source>
-        <translation>Перелючение табов в палитре</translation>
+        <translation type="obsolete">Перелючение табов в палитре</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesBehaviourForm.ui" line="86"/>
         <source>New diagram creating</source>
-        <translation>Создание новой диаграммы</translation>
+        <translation type="obsolete">Создание новой диаграммы</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesBehaviourForm.ui" line="99"/>
         <source>Save on exit</source>
-        <translation>Сохраняться при выходе</translation>
+        <translation type="obsolete">Сохраняться при выходе</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesBehaviourForm.ui" line="112"/>
         <source>Choose diagrams to save</source>
-        <translation>Предлагать выбор диаграмм для сохранения</translation>
+        <translation type="obsolete">Предлагать выбор диаграмм для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesBehaviourForm.ui" line="126"/>
         <source>Suggestions</source>
-        <translation>Предложения</translation>
+        <translation type="obsolete">Предложения</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesBehaviourForm.ui" line="154"/>
         <source>Show window</source>
-        <translation>Показать окно</translation>
+        <translation type="obsolete">Показать окно</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesBehaviourForm.ui" line="168"/>
         <source>Warning window</source>
-        <translation>Окно предупреждений</translation>
+        <translation type="obsolete">Окно предупреждений</translation>
     </message>
 </context>
 <context>
@@ -93,39 +85,32 @@
         <translation type="obsolete">Опять форма</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesCompilerForm.ui" line="23"/>
         <source>Linux</source>
-        <translation>Linux</translation>
+        <translation type="obsolete">Linux</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesCompilerForm.ui" line="36"/>
         <source>Other</source>
-        <translation>Прочее</translation>
+        <translation type="obsolete">Прочее</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesCompilerForm.ui" line="49"/>
         <source>Windows</source>
-        <translation>Windows</translation>
+        <translation type="obsolete">Windows</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesCompilerForm.ui" line="71"/>
         <source>path to qmake</source>
-        <translation>Путь к qmake</translation>
+        <translation type="obsolete">Путь к qmake</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesCompilerForm.ui" line="81"/>
         <source>path to make</source>
-        <translation>Путь к make</translation>
+        <translation type="obsolete">Путь к make</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesCompilerForm.ui" line="91"/>
         <source>plugin file extension</source>
-        <translation>Расширение файла с плагином</translation>
+        <translation type="obsolete">Расширение файла с плагином</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesCompilerForm.ui" line="104"/>
         <source>prefix</source>
-        <translation>Префикс</translation>
+        <translation type="obsolete">Префикс</translation>
     </message>
 </context>
 <context>
@@ -230,56 +215,44 @@
         <translation type="obsolete">Да что ж такое</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDebuggerForm.ui" line="38"/>
         <source>Debugger path:</source>
-        <translation>Путь до отладчика:</translation>
+        <translation type="obsolete">Путь до отладчика:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDebuggerForm.ui" line="51"/>
         <source>Builder path:</source>
-        <translation>Путь до сборщика:</translation>
+        <translation type="obsolete">Путь до сборщика:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDebuggerForm.ui" line="64"/>
         <source>Generated code file name:</source>
-        <translation>Имя файла со сгенерированным кодом:</translation>
+        <translation type="obsolete">Имя файла со сгенерированным кодом:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDebuggerForm.ui" line="77"/>
         <source>Builded file name:</source>
-        <translation>Имя собранного файла:</translation>
+        <translation type="obsolete">Имя собранного файла:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDebuggerForm.ui" line="130"/>
-        <location filename="mainwindow/preferencesDebuggerForm.ui" line="143"/>
-        <location filename="mainwindow/preferencesDebuggerForm.ui" line="179"/>
         <source>Browse...</source>
-        <translation>Просмотр...</translation>
+        <translation type="obsolete">Просмотр...</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDebuggerForm.ui" line="156"/>
         <source>Working directory:</source>
-        <translation>Рабочая папка:</translation>
+        <translation type="obsolete">Рабочая папка:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDebuggerForm.ui" line="208"/>
         <source>Debug timeout (ms):</source>
-        <translation>Задержка при отладке:</translation>
+        <translation type="obsolete">Задержка при отладке:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDebuggerForm.ui" line="231"/>
         <source>Color of highlight:</source>
-        <translation>Цвет подсветки:</translation>
+        <translation type="obsolete">Цвет подсветки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDebuggerForm.ui" line="255"/>
         <source>Presentation</source>
-        <translation>Представление</translation>
+        <translation type="obsolete">Представление</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDebuggerForm.ui" line="268"/>
         <source>Configuration</source>
-        <translation>Конфигурация</translation>
+        <translation type="obsolete">Конфигурация</translation>
     </message>
 </context>
 <context>
@@ -289,64 +262,52 @@
         <translation type="obsolete">Билинейная форма</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesEditorForm.ui" line="23"/>
         <source>Embedded Linkers</source>
-        <translation>Встроенные линкеры</translation>
+        <translation type="obsolete">Встроенные линкеры</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesEditorForm.ui" line="70"/>
         <source>Size</source>
-        <translation>Размер</translation>
+        <translation type="obsolete">Размер</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesEditorForm.ui" line="102"/>
         <source>Indent</source>
-        <translation>Отступ</translation>
+        <translation type="obsolete">Отступ</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesEditorForm.ui" line="116"/>
         <source>Grid</source>
-        <translation>Сетка</translation>
+        <translation type="obsolete">Сетка</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesEditorForm.ui" line="129"/>
         <source>Zoom</source>
-        <translation>Увеличение</translation>
+        <translation type="obsolete">Увеличение</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesEditorForm.ui" line="157"/>
         <source>Zoom factor</source>
-        <translation>Фактор увеличения</translation>
+        <translation type="obsolete">Фактор увеличения</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesEditorForm.ui" line="217"/>
         <source>Show grid</source>
-        <translation>Показать сетку</translation>
+        <translation type="obsolete">Показать сетку</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesEditorForm.ui" line="239"/>
         <source>Activate grid</source>
-        <translation>Активировать сетку</translation>
+        <translation type="obsolete">Активировать сетку</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesEditorForm.ui" line="305"/>
         <source>Width</source>
-        <translation>Ширина</translation>
+        <translation type="obsolete">Ширина</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesEditorForm.ui" line="318"/>
         <source>Cell size</source>
-        <translation>Размер ячейки</translation>
+        <translation type="obsolete">Размер ячейки</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesEditorForm.ui" line="337"/>
         <source>Activate alignment</source>
-        <translation>Активировать направляющие</translation>
+        <translation type="obsolete">Активировать направляющие</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesEditorForm.ui" line="359"/>
         <source>Show alignment</source>
-        <translation>Показать направляющие</translation>
+        <translation type="obsolete">Показать направляющие</translation>
     </message>
 </context>
 <context>
@@ -857,44 +818,36 @@
         <translation type="obsolete">Форма</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesMiscellaniousForm.ui" line="38"/>
         <source>Show splashscreen</source>
-        <translation>Показывать сплешскрин</translation>
+        <translation type="obsolete">Показывать сплешскрин</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesMiscellaniousForm.ui" line="51"/>
         <source>Chaotic Edition</source>
-        <translation>Режим, угодный богам Хаоса</translation>
+        <translation type="obsolete">Режим, угодный богам Хаоса</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesMiscellaniousForm.ui" line="80"/>
         <source>Antialiasing</source>
-        <translation>Антиалиасинг</translation>
+        <translation type="obsolete">Антиалиасинг</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesMiscellaniousForm.ui" line="93"/>
         <source>OpenGL rendering</source>
-        <translation>Рендеринг OpenGL</translation>
+        <translation type="obsolete">Рендеринг OpenGL</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesMiscellaniousForm.ui" line="107"/>
         <source>Graphics</source>
-        <translation>Графика</translation>
+        <translation type="obsolete">Графика</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesMiscellaniousForm.ui" line="120"/>
         <source>Other</source>
-        <translation>Прочее</translation>
+        <translation type="obsolete">Прочее</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesMiscellaniousForm.ui" line="158"/>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Выбрать</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesMiscellaniousForm.ui" line="172"/>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Изображения</translation>
     </message>
 </context>
 <context>
@@ -1091,47 +1044,86 @@
         <translation type="obsolete">Цвет подсветки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.cpp" line="188"/>
+        <source>Unused</source>
+        <translation type="obsolete">Не используется</translation>
+    </message>
+    <message>
+        <source>Touch sensor (boolean value)</source>
+        <translation type="obsolete">Сенсор нажатия (булево значение)</translation>
+    </message>
+    <message>
+        <source>Touch sensor (raw value)</source>
+        <translation type="obsolete">Сенсор нажатия (сырое значение)</translation>
+    </message>
+    <message>
+        <source>Sonar sensor</source>
+        <translation type="obsolete">Ультразвуковой сенсор</translation>
+    </message>
+    <message>
+        <source>Color sensor (full colors)</source>
+        <translation type="obsolete">Сенсор цвета (полные цвета)</translation>
+    </message>
+    <message>
+        <source>Color sensor (red)</source>
+        <translation type="obsolete">Сенсор цвета (красный)</translation>
+    </message>
+    <message>
+        <source>Color sensor (green)</source>
+        <translation type="obsolete">Сенсор цвета (зелёный)</translation>
+    </message>
+    <message>
+        <source>Color sensor (blue)</source>
+        <translation type="obsolete">Сенсор цвета (синий)</translation>
+    </message>
+    <message>
+        <source>Color sensor (passive)</source>
+        <translation type="obsolete">Сенсор цвета (пассивный)</translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesRobotSettingsPage</name>
+    <message>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="55"/>
         <source>Unused</source>
         <translation>Не используется</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.cpp" line="189"/>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="56"/>
         <source>Touch sensor (boolean value)</source>
         <translation>Сенсор нажатия (булево значение)</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.cpp" line="190"/>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="57"/>
         <source>Touch sensor (raw value)</source>
         <translation>Сенсор нажатия (сырое значение)</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.cpp" line="191"/>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="58"/>
         <source>Sonar sensor</source>
         <translation>Ультразвуковой сенсор</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.cpp" line="192"/>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="59"/>
         <source>Color sensor (full colors)</source>
         <translation>Сенсор цвета (полные цвета)</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.cpp" line="193"/>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="60"/>
         <source>Color sensor (red)</source>
         <translation>Сенсор цвета (красный)</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.cpp" line="194"/>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="61"/>
         <source>Color sensor (green)</source>
         <translation>Сенсор цвета (зелёный)</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.cpp" line="195"/>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="62"/>
         <source>Color sensor (blue)</source>
         <translation>Сенсор цвета (синий)</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.cpp" line="196"/>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="63"/>
         <source>Color sensor (passive)</source>
         <translation>Сенсор цвета (пассивный)</translation>
     </message>
@@ -1378,75 +1370,56 @@
 <context>
     <name>RobotSettingsForm</name>
     <message>
-        <location filename="mainwindow/preferencesRobotSettingsForm.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow/preferencesRobotSettingsForm.ui" line="26"/>
         <source>Bluetooth Settings</source>
-        <translation>Настройки Bluetooth</translation>
+        <translation type="obsolete">Настройки Bluetooth</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesRobotSettingsForm.ui" line="32"/>
-        <location filename="mainwindow/preferencesRobotSettingsForm.ui" line="42"/>
         <source>COM Port:</source>
-        <translation>COM-порт:</translation>
+        <translation type="obsolete">COM-порт:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesRobotSettingsForm.ui" line="52"/>
         <source>No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3</source>
-        <translation>COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
+        <translation type="obsolete">COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesRobotSettingsForm.ui" line="62"/>
         <source>Specify COM port manually</source>
-        <translation>Указать COM-порт вручную</translation>
+        <translation type="obsolete">Указать COM-порт вручную</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesRobotSettingsForm.ui" line="78"/>
         <source>Type of Robot Model</source>
-        <translation>Тип модели робота</translation>
+        <translation type="obsolete">Тип модели робота</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesRobotSettingsForm.ui" line="87"/>
         <source>Null model</source>
-        <translation>Пустая модель</translation>
+        <translation type="obsolete">Пустая модель</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesRobotSettingsForm.ui" line="94"/>
         <source>2D robot model</source>
-        <translation>Двухмерная модель</translation>
+        <translation type="obsolete">Двухмерная модель</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesRobotSettingsForm.ui" line="101"/>
         <source>Real robot</source>
-        <translation>Реальный робот</translation>
+        <translation type="obsolete">Реальный робот</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesRobotSettingsForm.ui" line="120"/>
         <source>Sensors Settings</source>
-        <translation>Настройки сенсоров</translation>
+        <translation type="obsolete">Настройки сенсоров</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesRobotSettingsForm.ui" line="129"/>
         <source>Port 1:</source>
-        <translation>Порт 1:</translation>
+        <translation type="obsolete">Порт 1:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesRobotSettingsForm.ui" line="139"/>
         <source>Port 2:</source>
-        <translation>Порт 2:</translation>
+        <translation type="obsolete">Порт 2:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesRobotSettingsForm.ui" line="149"/>
         <source>Port 3:</source>
-        <translation>Порт 3:</translation>
+        <translation type="obsolete">Порт 3:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesRobotSettingsForm.ui" line="159"/>
         <source>Port 4:</source>
-        <translation>Порт 4:</translation>
+        <translation type="obsolete">Порт 4:</translation>
     </message>
 </context>
 <context>
@@ -1637,6 +1610,11 @@
         <source>Squarize</source>
         <translation>Сделать квадратным</translation>
     </message>
+    <message>
+        <location filename="umllib/uml_edgeelement.cpp" line="33"/>
+        <source>Minimize</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UML::NodeElement</name>
@@ -1644,6 +1622,322 @@
         <location filename="umllib/uml_nodeelement.cpp" line="19"/>
         <source>Switch on grid</source>
         <translation>Включить сетку</translation>
+    </message>
+</context>
+<context>
+    <name>preferencesBehaviourPage</name>
+    <message>
+        <location filename="mainwindow/preferencesPages/behaviourPage.ui" line="38"/>
+        <source>Show window</source>
+        <translation>Показать окно</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/behaviourPage.ui" line="52"/>
+        <source>Automatics</source>
+        <translation>Автоматизация</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/behaviourPage.ui" line="86"/>
+        <source>Palette tab switching</source>
+        <translation>Перелючение табов в палитре</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/behaviourPage.ui" line="100"/>
+        <source>Warning window</source>
+        <translation>Окно предупреждений</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/behaviourPage.ui" line="128"/>
+        <source>New diagram creating</source>
+        <translation>Создание новой диаграммы</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/behaviourPage.ui" line="141"/>
+        <source>Save on exit</source>
+        <translation>Сохраняться при выходе</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/behaviourPage.ui" line="154"/>
+        <source>Choose diagrams to save</source>
+        <translation>Предлагать выбор диаграмм для сохранения</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/behaviourPage.ui" line="168"/>
+        <source>Suggestions</source>
+        <translation>Предложения</translation>
+    </message>
+</context>
+<context>
+    <name>preferencesCompilerPage</name>
+    <message>
+        <location filename="mainwindow/preferencesPages/compilerPage.ui" line="29"/>
+        <source>path to qmake</source>
+        <translation>Путь к qmake</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/compilerPage.ui" line="39"/>
+        <source>path to make</source>
+        <translation>Путь к make</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/compilerPage.ui" line="49"/>
+        <source>plugin file extension</source>
+        <translation>Расширение файла с плагином</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/compilerPage.ui" line="62"/>
+        <source>prefix</source>
+        <translation>Префикс</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/compilerPage.ui" line="78"/>
+        <source>Linux</source>
+        <translation>Linux</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/compilerPage.ui" line="91"/>
+        <source>Other</source>
+        <translation>Прочее</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/compilerPage.ui" line="104"/>
+        <source>Windows</source>
+        <translation>Windows</translation>
+    </message>
+</context>
+<context>
+    <name>preferencesDebuggerPage</name>
+    <message>
+        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="23"/>
+        <source>Configuration</source>
+        <translation>Конфигурация</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="51"/>
+        <source>Debug timeout (ms):</source>
+        <translation>Задержка при отладке:</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="74"/>
+        <source>Color of highlight:</source>
+        <translation>Цвет подсветки:</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="98"/>
+        <source>Presentation</source>
+        <translation>Представление</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="126"/>
+        <source>Debugger path:</source>
+        <translation>Путь до отладчика:</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="139"/>
+        <source>Builder path:</source>
+        <translation>Путь до сборщика:</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="152"/>
+        <source>Generated code file name:</source>
+        <translation>Имя файла со сгенерированным кодом:</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="165"/>
+        <source>Builded file name:</source>
+        <translation>Имя собранного файла:</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="218"/>
+        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="231"/>
+        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="267"/>
+        <source>Browse...</source>
+        <translation>Просмотр...</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="244"/>
+        <source>Working directory:</source>
+        <translation>Рабочая папка:</translation>
+    </message>
+</context>
+<context>
+    <name>preferencesEditorPage</name>
+    <message>
+        <location filename="mainwindow/preferencesPages/editorPage.ui" line="57"/>
+        <source>Size</source>
+        <translation>Размер</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/editorPage.ui" line="89"/>
+        <source>Indent</source>
+        <translation>Отступ</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/editorPage.ui" line="124"/>
+        <source>Show grid</source>
+        <translation>Показать сетку</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/editorPage.ui" line="146"/>
+        <source>Activate grid</source>
+        <translation>Активировать сетку</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/editorPage.ui" line="212"/>
+        <source>Width</source>
+        <translation>Ширина</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/editorPage.ui" line="225"/>
+        <source>Cell size</source>
+        <translation>Размер ячейки</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/editorPage.ui" line="244"/>
+        <source>Activate alignment</source>
+        <translation>Активировать направляющие</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/editorPage.ui" line="266"/>
+        <source>Show alignment</source>
+        <translation>Показать направляющие</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/editorPage.ui" line="283"/>
+        <source>Grid</source>
+        <translation>Сетка</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/editorPage.ui" line="296"/>
+        <source>Embedded Linkers</source>
+        <translation>Встроенные линкеры</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/editorPage.ui" line="324"/>
+        <source>Zoom factor</source>
+        <translation>Фактор увеличения</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/editorPage.ui" line="363"/>
+        <source>Zoom</source>
+        <translation>Увеличение</translation>
+    </message>
+</context>
+<context>
+    <name>preferencesMiscellaniousPage</name>
+    <message>
+        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="48"/>
+        <source>Browse</source>
+        <translation>Выбрать</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="62"/>
+        <source>Images</source>
+        <translation>Изображения</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="90"/>
+        <source>Show splashscreen</source>
+        <translation>Показывать сплешскрин</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="103"/>
+        <source>Chaotic Edition</source>
+        <translation>Режим, угодный богам Хаоса</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="116"/>
+        <source>Square Line Mode</source>
+        <translation>Режим перпендикулярных линий</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="145"/>
+        <source>Antialiasing</source>
+        <translation>Антиалиасинг</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="158"/>
+        <source>OpenGL rendering</source>
+        <translation>Рендеринг OpenGL</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="172"/>
+        <source>Graphics</source>
+        <translation>Графика</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="185"/>
+        <source>Other</source>
+        <translation>Прочее</translation>
+    </message>
+</context>
+<context>
+    <name>preferencesRobotSettingsPage</name>
+    <message>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="23"/>
+        <source>Type of Robot Model</source>
+        <translation>Тип модели робота</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="32"/>
+        <source>Null model</source>
+        <translation>Пустая модель</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="39"/>
+        <source>2D robot model</source>
+        <translation>Двухмерная модель</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="46"/>
+        <source>Real robot</source>
+        <translation>Реальный робот</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="65"/>
+        <source>Sensors Settings</source>
+        <translation>Настройки сенсоров</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="74"/>
+        <source>Port 1:</source>
+        <translation>Порт 1:</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="84"/>
+        <source>Port 2:</source>
+        <translation>Порт 2:</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="94"/>
+        <source>Port 3:</source>
+        <translation>Порт 3:</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="104"/>
+        <source>Port 4:</source>
+        <translation>Порт 4:</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="123"/>
+        <source>Bluetooth Settings</source>
+        <translation>Настройки Bluetooth</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="129"/>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="139"/>
+        <source>COM Port:</source>
+        <translation>COM-порт:</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="149"/>
+        <source>No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3</source>
+        <translation>COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="159"/>
+        <source>Specify COM port manually</source>
+        <translation>Указать COM-порт вручную</translation>
     </message>
 </context>
 <context>
