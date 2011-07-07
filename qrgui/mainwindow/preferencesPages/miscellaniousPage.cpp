@@ -13,12 +13,14 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent) :
 	connect(ui->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
 
 	QSettings settings("SPbSU", "QReal");
-	ui->imagesPathEdit->setText(settings.value("pathToImages", QDir::currentPath() + "/images/iconset1").toString());
 	ui->chaoticEditionCheckBox->setChecked(settings.value("ChaoticEdition", false).toBool());
 	ui->antialiasingCheckBox->setChecked(settings.value("Antialiasing", true).toBool());
 	ui->splashScreenCheckBox->setChecked(settings.value("Splashscreen", true).toBool());
 	ui->openGLCheckBox->setChecked(settings.value("OpenGL", true).toBool());
 	ui->squareLineModeCheckBox->setChecked(settings.value("SquareLine", false).toBool());
+
+	mLastIconsetPath = settings.value("pathToImages", QDir::currentPath() + "/images/iconset1").toString();
+	ui->imagesPathEdit->setText(mLastIconsetPath);
 }
 
 PreferencesMiscellaniousPage::~PreferencesMiscellaniousPage()
@@ -53,4 +55,6 @@ void PreferencesMiscellaniousPage::save()
 	settings.setValue("ChaoticEdition", ui->chaoticEditionCheckBox->isChecked());
 	settings.setValue("pathToImages", ui->imagesPathEdit->text());
 
+	if (mLastIconsetPath != ui->imagesPathEdit->text())
+		emit iconsetChanged();
 }

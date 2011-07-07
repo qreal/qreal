@@ -16,6 +16,9 @@ public:
 
 	void save();
 
+signals:
+	void iconsetChanged();
+
 protected:
 	void changeEvent(QEvent *e);
 
@@ -24,4 +27,6 @@ private slots:
 
 private:
 	Ui::preferencesMiscellaniousPage *ui;
+
+	QString mLastIconsetPath;
 };

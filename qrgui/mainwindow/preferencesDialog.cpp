@@ -30,6 +30,7 @@ PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * c
 	connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
 
 	connect(mEditorPage, SIGNAL(gridChanged()), this, SIGNAL(gridChanged()));
+	connect(mMiscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
 
 	QSettings settings("SPbSU", "QReal");
 	int currentTab = settings.value("currentPreferencesTab", 0).toInt();
