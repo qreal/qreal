@@ -3,31 +3,12 @@
 using namespace qReal;
 
 RobotsBlockParser::RobotsBlockParser(gui::ErrorReporter *errorReporter)
-	:ExpressionsParser(errorReporter)
+	: ExpressionsParser(errorReporter)
 {
-	mHasParseErrors = false;
-	mErrorReporter = errorReporter;
-	mCurrentId = Id::rootId();
-	QString pi = "pi";
-	Number value = Number(3.14, Number::doubleType);
-	mVariables.insert(pi, value);
-	for (int i = 1; i <= 4; ++i) {
-		QString variable = QObject::tr("Sensor") + QString::number(i);
-		mVariables.insert(variable, Number(0, Number::intType));
-		mReservedVariables.append(variable);
-	} /*добавляем число pi и имена зарезервированных переменных со значениями по умолчанию (показания датчиков) */
-	for (int i = 1; i <= 4; ++i) {
-		QString variable = QObject::tr("SensorRaw") + QString::number(i);
-		mVariables.insert(variable, Number(0, Number::intType));
-		mReservedVariables.append(variable);
-	} /*разобраться, нужны сырые значения датчиков или нет */
+	setReservedVariables();
 }
 
-RobotsBlockParser::~RobotsBlockParser() {
-	/* тут непонятно, что нужно удалять */
-}
-
-Number RobotsBlockParser::standartBlockParseProcess(QString stream, int &pos, Id curId) /* тут надо решить, нужно ли одно выражение, или можно и переменные объявлять */
+Number RobotsBlockParser::standartBlockParseProcess(const QString &stream, int &pos, const Id &curId) /* тут надо решить, нужно ли одно выражение, или можно и переменные объявлять */
 {
 	mCurrentId = curId;
 
@@ -36,7 +17,7 @@ Number RobotsBlockParser::standartBlockParseProcess(QString stream, int &pos, Id
 		return Number(0, Number::intType);
 	}
 	QStringList exprs = stream.split(";", QString::SkipEmptyParts);
-	for (int i = 0; i < (exprs.length()-1); ++i) {
+	for (int i = 0; i < (exprs.length() - 1); ++i) {
 		if (mHasParseErrors)
 			return Number(0, Number::intType);
 		int position = 0;
@@ -46,7 +27,7 @@ Number RobotsBlockParser::standartBlockParseProcess(QString stream, int &pos, Id
 	}
 	int position = 0;
 	QString valueExpression = exprs.last();
-	if(!valueExpression.contains("="))
+	if (!valueExpression.contains("="))
 		return parseExpression(valueExpression, position);
 	else {
 		error(noExpression);
@@ -54,7 +35,7 @@ Number RobotsBlockParser::standartBlockParseProcess(QString stream, int &pos, Id
 	}
 }
 
-void RobotsBlockParser::functionBlockParseProcess(QString stream, int &pos, Id curId)
+void RobotsBlockParser::functionBlockParseProcess(const QString &stream, int &pos, const Id &curId)
 {
 	mCurrentId = curId;
 
@@ -77,7 +58,6 @@ void RobotsBlockParser::functionBlockParseProcess(QString stream, int &pos, Id c
 	mHasParseErrors = hasParseErrorsFlag;
 }
 
-
 void RobotsBlockParser::deselect()
 {
 	mHasParseErrors = false;
@@ -86,17 +66,10 @@ void RobotsBlockParser::deselect()
 void RobotsBlockParser::robotsClearVariables()
 {
 	mVariables.clear();
-	QString const pi = "pi";
-	Number value = Number(3.14, Number::doubleType);
-	mVariables.insert(pi, value);
-	for (int i = 1; i <= 4; ++i) {
-		QString variable = QObject::tr("Sensor") + QString::number(i);
-		mVariables.insert(variable, Number(0, Number::intType));
-		mReservedVariables.append(variable);
-	}
+	setReservedVariables();
 }
 
-bool RobotsBlockParser::checkForUsingReservedVariables(QString nameOfVariable)
+bool RobotsBlockParser::checkForUsingReservedVariables(const QString &nameOfVariable)
 {
 	if ((mReservedVariables.contains(nameOfVariable)) || (isFunction(nameOfVariable))) {
 		mHasParseErrors = true;
@@ -105,9 +78,21 @@ bool RobotsBlockParser::checkForUsingReservedVariables(QString nameOfVariable)
 	return mHasParseErrors;
 }
 
-bool RobotsBlockParser::isLetter(QChar symbol)
+bool RobotsBlockParser::isLetter(const QChar &symbol)
 {
-	QString rus = QString::fromUtf8("АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЬьЫыЙйЭэЮюЯя"); /* переписать эту хреноту */
+	QString rus = QString::fromUtf8("АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЬьЫыЙйЭэЮюЯя");
 	char symbolChar = symbol.toAscii();
 	return (('A'<=symbolChar && symbolChar<='Z') || ('a'<=symbolChar && symbolChar<='z') || (rus.contains(symbol)));
+}
+
+void RobotsBlockParser::setReservedVariables()
+{
+	QString const pi = "pi";
+	Number value = Number(3.14, Number::doubleType);
+	mVariables.insert(pi, value);
+	for (int i = 1; i <= 4; ++i) {
+		QString variable = QObject::tr("Sensor") + QString::number(i);
+		mVariables.insert(variable, Number(0, Number::intType));
+		mReservedVariables.append(variable);
+	}
 }

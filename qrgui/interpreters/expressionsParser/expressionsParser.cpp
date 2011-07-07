@@ -9,90 +9,86 @@ ExpressionsParser::ExpressionsParser(gui::ErrorReporter* errorReporter)
 {
 }
 
-ExpressionsParser::~ExpressionsParser()
-{
-}
-
 QMap<QString, Number>* ExpressionsParser::getVariables()
 {
 	return &mVariables;
 }
 
-bool ExpressionsParser::isDigit(QChar c)
+bool ExpressionsParser::isDigit(const QChar &c)
 {
 	char symbol = c.toAscii();
 	return '0' <= symbol && symbol <= '9';
 }
 
-bool ExpressionsParser::isSign(QChar c)
+bool ExpressionsParser::isSign(const QChar &c)
 {
 	char symbol = c.toAscii();
 	return symbol == '-' || symbol == '+';
 }
 
-bool ExpressionsParser::isLetter(QChar c)
+bool ExpressionsParser::isLetter(const QChar &c)
 {
 	char symbol = c.toAscii();
-	return ('A'<= symbol && symbol <= 'Z') || ('a'<= symbol && symbol <='z');
+	return ('A' <= symbol && symbol <= 'Z') || ('a'<= symbol && symbol <= 'z');
 }
 
-bool ExpressionsParser::isExp(QChar c)
+bool ExpressionsParser::isExp(const QChar &c)
 {
 	char symbol = c.toAscii();
 	return symbol == 'e' || symbol == 'E';
 }
 
-bool ExpressionsParser::isPoint(QChar c)
+bool ExpressionsParser::isPoint(const QChar &c)
 {
 	return c.toAscii() == '.';
 }
 
-bool ExpressionsParser::isRoundBracket(QChar c)
+bool ExpressionsParser::isRoundBracket(const QChar &c)
 {
 	char symbol = c.toAscii();
 	return symbol == '(' || symbol == ')';
 }
 
-bool ExpressionsParser::isDisjunction(QChar c)
+bool ExpressionsParser::isDisjunction(const QChar &c)
 {
 	return c.toAscii() == '|';
 }
 
-bool ExpressionsParser::isConjunction(QChar c)
+bool ExpressionsParser::isConjunction(const QChar &c)
 {
 	return c.toAscii() == '&';
 }
 
-bool ExpressionsParser::isComparison(QChar c)
+bool ExpressionsParser::isComparison(const QChar &c)
 {
 	char symbol = c.toAscii();
 	return symbol == '<' || symbol == '>';
 }
 
-bool ExpressionsParser::isArithmeticalMinusOrPlus(QChar c)
+bool ExpressionsParser::isArithmeticalMinusOrPlus(const QChar &c)
 {
 	char symbol = c.toAscii();
 	return symbol == '-' || symbol == '+';
 }
 
-bool ExpressionsParser::isMultiplicationOrDivision(QChar c)
+bool ExpressionsParser::isMultiplicationOrDivision(const QChar &c)
 {
 	char symbol = c.toAscii();
 	return symbol == '*' || symbol == '/';
 }
 
-bool ExpressionsParser::isDelimiter(QChar c)
+bool ExpressionsParser::isDelimiter(const QChar &c)
 {
 	char symbol = c.toAscii();
 	return symbol == '\n' || symbol == '\r' || symbol == ' ' || symbol == '\t';
 }
 
-bool ExpressionsParser::isAssignment(QChar c)
+bool ExpressionsParser::isAssignment(const QChar &c)
 {
 	return c.toAscii() == '=';
 }
 
-Number ExpressionsParser::parseNumber(QString stream, int& pos)
+Number ExpressionsParser::parseNumber(const QString &stream, int &pos)
 {
 	int beginPos = pos;
 	bool isDouble = false;
@@ -146,7 +142,7 @@ Number ExpressionsParser::parseNumber(QString stream, int& pos)
 	}
 }
 
-QString ExpressionsParser::parseIdentifier(QString stream, int& pos)
+QString ExpressionsParser::parseIdentifier(const QString &stream, int &pos)
 {
 	int beginPos = pos;
 	if (checkForLetter(stream, pos)) {
@@ -159,7 +155,7 @@ QString ExpressionsParser::parseIdentifier(QString stream, int& pos)
 	return "";
 }
 
-void ExpressionsParser::skip(QString stream, int& pos)
+void ExpressionsParser::skip(const QString &stream, int &pos)
 {
 	while (pos < stream.length() &&
 		   (isDelimiter(stream.at(pos)) || stream.at(pos).toAscii() == '<'))
@@ -168,14 +164,14 @@ void ExpressionsParser::skip(QString stream, int& pos)
 			pos += 4;
 			return;
 		}
-		if (stream.at(pos).toAscii() == '<'){
+		if (stream.at(pos).toAscii() == '<') {
 			return;
 		}
 		pos++;
 	}
 }
 
-bool ExpressionsParser::isHtmlBrTag(QString stream, int& pos)
+bool ExpressionsParser::isHtmlBrTag(const QString &stream, int &pos)
 {
 	if (pos + 3 < stream.length()) {
 		return stream.at(pos).toAscii() == '<' &&
@@ -187,7 +183,7 @@ bool ExpressionsParser::isHtmlBrTag(QString stream, int& pos)
 	}
 }
 
-Number ExpressionsParser::parseTerm(QString stream, int& pos)
+Number ExpressionsParser::parseTerm(const QString &stream, int &pos)
 {
 	Number res;
 	skip(stream, pos);
@@ -250,7 +246,7 @@ Number ExpressionsParser::parseTerm(QString stream, int& pos)
 	return res;
 }
 
-Number ExpressionsParser::parseMult(QString stream, int& pos)
+Number ExpressionsParser::parseMult(const QString &stream, int &pos)
 {
 	Number res = parseTerm(stream, pos);
 	while (pos < stream.length() && isMultiplicationOrDivision(stream.at(pos))) {
@@ -267,7 +263,7 @@ Number ExpressionsParser::parseMult(QString stream, int& pos)
 	return res;
 }
 
-Number ExpressionsParser::parseExpression(QString stream, int& pos)
+Number ExpressionsParser::parseExpression(const QString &stream, int &pos)
 {
 	Number res = parseMult(stream, pos);
 	while (pos < stream.length() && isArithmeticalMinusOrPlus(stream.at(pos))) {
@@ -284,13 +280,13 @@ Number ExpressionsParser::parseExpression(QString stream, int& pos)
 	return res;
 }
 
-void ExpressionsParser::parseVarPart(QString stream, int& pos)
+void ExpressionsParser::parseVarPart(const QString &stream, int &pos)
 {
 	Q_UNUSED(stream);
 	Q_UNUSED(pos);
 }
 
-void ExpressionsParser::parseCommand(QString stream, int& pos)
+void ExpressionsParser::parseCommand(const QString &stream, int &pos)
 {
 	int typesMismatchIndex = pos;
 	QString variable = parseIdentifier(stream, pos);
@@ -328,7 +324,7 @@ void ExpressionsParser::parseCommand(QString stream, int& pos)
 	}
 }
 
-void ExpressionsParser::parseProcess(QString stream, int& pos, Id curId)
+void ExpressionsParser::parseProcess(const QString &stream, int &pos, const Id &curId)
 {
 	mCurrentId = curId;
 
@@ -346,7 +342,7 @@ void ExpressionsParser::parseProcess(QString stream, int& pos, Id curId)
 	}
 }
 
-bool ExpressionsParser::parseSingleComprasion(QString stream, int& pos)
+bool ExpressionsParser::parseSingleComprasion(const QString &stream, int &pos)
 {
 	Number left = parseExpression(stream, pos);
 	Number right;
@@ -403,7 +399,7 @@ bool ExpressionsParser::parseSingleComprasion(QString stream, int& pos)
 	return false;
 }
 
-bool ExpressionsParser::parseDisjunction(QString stream, int& pos)
+bool ExpressionsParser::parseDisjunction(const QString &stream, int &pos)
 {
 	bool res = false;
 	skip(stream, pos);
@@ -452,7 +448,7 @@ bool ExpressionsParser::parseDisjunction(QString stream, int& pos)
 	return res;
 }
 
-bool ExpressionsParser::parseConjunction(QString stream, int& pos)
+bool ExpressionsParser::parseConjunction(const QString &stream, int &pos)
 {
 	bool res = parseDisjunction(stream, pos);
 	while (pos < (stream.length()-1) && isConjunction(stream.at(pos))) {
@@ -468,7 +464,7 @@ bool ExpressionsParser::parseConjunction(QString stream, int& pos)
 	return res;
 }
 
-bool ExpressionsParser::parseConditionHelper(QString stream, int& pos)
+bool ExpressionsParser::parseConditionHelper(const QString &stream, int &pos)
 {
 	bool res = parseConjunction(stream, pos);
 	while (pos < (stream.length()-1) && isDisjunction(stream.at(pos))) {
@@ -484,7 +480,7 @@ bool ExpressionsParser::parseConditionHelper(QString stream, int& pos)
 	return res;
 }
 
-bool ExpressionsParser::parseCondition(QString stream, int& pos, Id curId)
+bool ExpressionsParser::parseCondition(const QString &stream, int &pos, const Id &curId)
 {
 	mCurrentId = curId;
 	if (isEmpty(stream, pos)) {
@@ -510,7 +506,7 @@ bool ExpressionsParser::hasErrors()
 	return mHasParseErrors;
 }
 
-bool ExpressionsParser::isEndOfStream(QString stream, int& pos)
+bool ExpressionsParser::isEndOfStream(const QString &stream, int &pos)
 {
 	if (pos == stream.length()) {
 		error(unexpectedEndOfStream, QString::number(pos + 1));
@@ -519,7 +515,7 @@ bool ExpressionsParser::isEndOfStream(QString stream, int& pos)
 	return false;
 }
 
-bool ExpressionsParser::checkForLetter(QString stream, int &pos)
+bool ExpressionsParser::checkForLetter(const QString &stream, int &pos)
 {
 	if (isEndOfStream(stream, pos)) {
 		return false;
@@ -531,7 +527,7 @@ bool ExpressionsParser::checkForLetter(QString stream, int &pos)
 	return true;
 }
 
-bool ExpressionsParser::checkForDigit(QString stream, int &pos)
+bool ExpressionsParser::checkForDigit(const QString &stream, int &pos)
 {
 	if (isEndOfStream(stream, pos)) {
 		return false;
@@ -543,7 +539,7 @@ bool ExpressionsParser::checkForDigit(QString stream, int &pos)
 	return true;
 }
 
-bool ExpressionsParser::checkForOpeningBracket(QString stream, int &pos)
+bool ExpressionsParser::checkForOpeningBracket(const QString &stream, int &pos)
 {
 	if (isEndOfStream(stream, pos)) {
 		return false;
@@ -555,7 +551,7 @@ bool ExpressionsParser::checkForOpeningBracket(QString stream, int &pos)
 	return true;
 }
 
-bool ExpressionsParser::checkForClosingBracket(QString stream, int &pos)
+bool ExpressionsParser::checkForClosingBracket(const QString &stream, int &pos)
 {
 	if (isEndOfStream(stream, pos)) {
 		return false;
@@ -567,7 +563,7 @@ bool ExpressionsParser::checkForClosingBracket(QString stream, int &pos)
 	return true;
 }
 
-bool ExpressionsParser::checkForColon(QString stream, int &pos)
+bool ExpressionsParser::checkForColon(const QString &stream, int &pos)
 {
 	if (isEndOfStream(stream, pos)) {
 		return false;
@@ -579,7 +575,7 @@ bool ExpressionsParser::checkForColon(QString stream, int &pos)
 	return true;
 }
 
-bool ExpressionsParser::checkForEqual(QString stream, int pos)
+bool ExpressionsParser::checkForEqual(const QString &stream, int pos)
 {
 	if (isEndOfStream(stream, pos)) {
 		return false;
@@ -591,13 +587,13 @@ bool ExpressionsParser::checkForEqual(QString stream, int pos)
 	return true;
 }
 
-bool ExpressionsParser::isEmpty(QString stream, int &pos)
+bool ExpressionsParser::isEmpty(const QString &stream, int &pos)
 {
 	skip(stream, pos);
 	return pos == stream.length();
 }
 
-void ExpressionsParser::error(ParseErrorType type, QString pos, QString expected, QString got)
+void ExpressionsParser::error(const ParseErrorType &type, const QString &pos, const QString &expected, const QString &got)
 {
 	switch (type) {
 	case unexpectedEndOfStream:
@@ -646,13 +642,13 @@ void ExpressionsParser::clear()
 	mCurrentId = Id::rootId();
 }
 
-bool ExpressionsParser::checkForUsingReservedVariables(QString nameOfVariable)
+bool ExpressionsParser::checkForUsingReservedVariables(const QString &nameOfVariable)
 {
 	Q_UNUSED(nameOfVariable)
 	return false;
 }
 
-void ExpressionsParser::checkForVariable(QString nameOfVariable, int &index)
+void ExpressionsParser::checkForVariable(const QString &nameOfVariable, int &index)
 {
 	Q_UNUSED(nameOfVariable);
 	Q_UNUSED(index);

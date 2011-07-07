@@ -8,10 +8,7 @@ BlockParser::BlockParser(gui::ErrorReporter* errorReporter)
 	: ExpressionsParser(errorReporter){
 }
 
-BlockParser::~BlockParser() {
-}
-
-void BlockParser::parseVarPart(QString stream, int& pos)
+void BlockParser::parseVarPart(const QString &stream, int &pos)
 {
 	skip(stream, pos);
 	if (stream.mid(pos, 4).compare("var ") == 0) {
@@ -89,7 +86,7 @@ void BlockParser::parseVarPart(QString stream, int& pos)
 	}
 }
 
-void BlockParser::checkForVariable(QString nameOfVariable, int &index)
+void BlockParser::checkForVariable(const QString &nameOfVariable, int &index)
 {
 	if (!mVariables.contains(nameOfVariable)) {
 			error(unknownIdentifier, QString::number(index + 1), "", nameOfVariable);

@@ -8,16 +8,15 @@
 #include "propertyeditorproxymodel.h"
 
 namespace qReal {
-	class BlockParser : public ExpressionsParser
-	{
+class BlockParser : public ExpressionsParser
+{
 
-	public:
-		BlockParser(gui::ErrorReporter* errorReporter);
-		~BlockParser();
+public:
+	BlockParser(gui::ErrorReporter* errorReporter);
 
-	private:
-		virtual void parseVarPart(QString stream, int& pos);
-		virtual void checkForVariable(QString nameOfVariable, int &index);
+private:
+	virtual void parseVarPart(QString const &stream, int& pos);
+	virtual void checkForVariable(QString const &nameOfVariable, int &index);
 
-	};
+};
 }

@@ -96,7 +96,7 @@ void ElementTitle::startTextInteraction()
 	// Clear scene selection
 	//if (!(event->modifiers() & Qt::ControlModifier)) - was here.
 	scene()->clearSelection();
-	parentItem()->setSelected(true);
+//	parentItem()->setSelected(true);
 
 	if (mReadOnly)
 		setTextInteractionFlags(Qt::TextBrowserInteraction);
@@ -104,7 +104,7 @@ void ElementTitle::startTextInteraction()
 		setTextInteractionFlags(Qt::TextEditorInteraction);
 	setFocus(Qt::OtherFocusReason);
 
-	// Set full text selection
+	 //Set full text selection
 	QTextCursor cursor = QTextCursor(document());
 	cursor.select(QTextCursor::Document);
 	setTextCursor(cursor);
