@@ -13,7 +13,7 @@
 #include "gesturesShow/gesturesWidget.h"
 #include "../visualDebugger/debuggerConnector.h"
 #include "mainWindowInterpretersInterface.h"
-#include "../kernel/exception/settingsManager.h"
+#include "../kernel/settingsManager.h"
 
 namespace Ui{
 class MainWindowUi;

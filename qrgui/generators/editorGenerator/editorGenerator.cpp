@@ -11,7 +11,7 @@
 
 #include "../../../utils/outFile.h"
 
-#include "../../kernel/exception/settingsManager.h"
+#include "../../kernel/settingsManager.h"
 #include "../../mainwindow/mainWindow.h"
 
 using namespace qReal;
