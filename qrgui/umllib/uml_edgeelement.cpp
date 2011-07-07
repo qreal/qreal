@@ -49,7 +49,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	connect(&mSquarizeAction, SIGNAL(triggered(QPointF const &)), SLOT(squarizeHandler(QPointF const &)));
 	connect(&mMinimizeAction, SIGNAL(triggered(QPointF const &)), SLOT(minimizeHandler(QPointF const &)));
 
-        mChaoticEdition = SettingsManager::instance()->value("ChaoticEdition", false).toBool();
+		mChaoticEdition = SettingsManager::instance()->value("ChaoticEdition", false).toBool();
 
 	ElementTitleFactory factory;
 
@@ -600,7 +600,6 @@ void EdgeElement::minimizeHandler(const QPointF &pos) {
 
 void EdgeElement::adjustLink()
 {
-	QSettings settings("SPbSU", "QReal");
 	prepareGeometryChange();
 	if (mSrc)
 		mLine.first() = mapFromItem(mSrc, mSrc->getPortPos(mPortFrom));
@@ -609,7 +608,7 @@ void EdgeElement::adjustLink()
 	updateLongestPart();
 	for (int i = 0; i < mLine.size() - 2; i++)
 		removeUnneededPoints(i);
-	if (settings.value("SquareLine", true).toBool())
+	if (SettingsManager::instance()->value("SquareLine", true).toBool())
 		squarizeHandler(QPointF());
 }
 

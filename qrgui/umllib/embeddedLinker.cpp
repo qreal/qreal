@@ -7,7 +7,6 @@
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtCore/QDebug>
-#include <QSettings>
 
 #include "../view/editorviewscene.h"
 #include "../mainwindow/mainwindow.h"
@@ -18,8 +17,8 @@ using namespace qReal;
 EmbeddedLinker::EmbeddedLinker()
 {
 
-        size = SettingsManager::instance()->value("EmbeddedLinkerSize", 6).toFloat();
-        indent = SettingsManager::instance()->value("EmbeddedLinkerIndent", 5).toFloat();
+		size = SettingsManager::instance()->value("EmbeddedLinkerSize", 6).toFloat();
+		indent = SettingsManager::instance()->value("EmbeddedLinkerIndent", 5).toFloat();
 
 
 	covered = false;

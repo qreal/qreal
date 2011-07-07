@@ -1,7 +1,5 @@
 #include "visualDebugger.h"
 
-#include <QtCore/QSettings>
-
 #include <QEventLoop>
 #include <QTimer>
 #include <QMessageBox>
@@ -229,9 +227,8 @@ gui::ErrorReporter& VisualDebugger::debug()
 	}
 
 	mDebugType = VisualDebugger::fullDebug;
-	QSettings settings("SPbSU", "QReal");
-	setTimeout(settings.value("debuggerTimeout", 750).toInt());
-	setDebugColor(settings.value("debugColor").toString());
+	setTimeout(SettingsManager::instance()->value("debuggerTimeout", 750).toInt());
+	setDebugColor(SettingsManager::instance()->value("debugColor").toString());
 
 	if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
 		return *mErrorReporter;
@@ -298,8 +295,7 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep()
 	}
 
 	mDebugType = VisualDebugger::singleStepDebug;
-	QSettings settings("SPbSU", "QReal");
-	setDebugColor(settings.value("debugColor").toString());
+	setDebugColor(SettingsManager::instance()->value("debugColor").toString());
 
 	if (mCurrentElem == NULL && mCurrentId == Id::rootId()) {
 		if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {

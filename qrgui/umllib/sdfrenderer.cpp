@@ -10,7 +10,7 @@
 SdfRenderer::SdfRenderer()
 	: mStartX(0), mStartY(0), mNeedScale(true)
 {
-        mWorkingDirName = SettingsManager::instance()->value("workingDir", "./save").toString();
+		mWorkingDirName = SettingsManager::instance()->value("workingDir", "./save").toString();
 }
 
 SdfRenderer::SdfRenderer(const QString path)
@@ -19,8 +19,8 @@ SdfRenderer::SdfRenderer(const QString path)
 	if (!load(path))
 	{
 		qDebug() << "File " + path + " - loading failed!";
-        }
-        mWorkingDirName = SettingsManager::instance()->value("workingDir", "./save").toString();
+		}
+		mWorkingDirName = SettingsManager::instance()->value("workingDir", "./save").toString();
 }
 
 SdfRenderer::~SdfRenderer()
@@ -228,8 +228,7 @@ void SdfRenderer::image_draw(QDomElement &element)
 	float y1 = y1_def(element);
 	float x2 = x2_def(element);
 	float y2 = y2_def(element);
-	QSettings settings("SPbSU", "QReal");
-	QString fileName = settings.value("pathToImages").toString() + "/" + element.attribute("name", "error");
+	QString fileName = SettingsManager::instance()->value("pathToImages").toString() + "/" + element.attribute("name", "error");
 
 	QPixmap pixmap;
 
