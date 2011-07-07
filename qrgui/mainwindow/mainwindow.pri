@@ -31,6 +31,13 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/error.h \
 	mainwindow/errorlistwidget.h \
 	mainwindow/mainWindowInterpretersInterface.h \
+	mainwindow/preferencesPages/page.h \
+	mainwindow/preferencesPages/behaviourPage.h \
+	mainwindow/preferencesPages/compilerPage.h \
+	mainwindow/preferencesPages/debuggerPage.h \
+	mainwindow/preferencesPages/editorPage.h \
+	mainwindow/preferencesPages/miscellaniousPage.h \
+	mainwindow/preferencesPages/robotSettingsPage.h
 
 SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/paletteToolbox.cpp \
@@ -61,14 +68,21 @@ SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/shapeEdit/textPicture.cpp \
 	mainwindow/shapeEdit/image.cpp \
 	mainwindow/error.cpp \
-	mainwindow/errorlistwidget.cpp
+	mainwindow/errorlistwidget.cpp \
+	mainwindow/preferencesPages/behaviourPage.cpp \
+	mainwindow/preferencesPages/compilerPage.cpp \
+	mainwindow/preferencesPages/debuggerPage.cpp \
+	mainwindow/preferencesPages/editorPage.cpp \
+	mainwindow/preferencesPages/miscellaniousPage.cpp \
+	mainwindow/preferencesPages/robotSettingsPage.cpp
 FORMS += mainwindow/mainwindow.ui \
 	mainwindow/shapeEdit/shapeEdit.ui \
 	mainwindow/gesturesShow/gestureswidget.ui \
 	mainwindow/preferencesDialog.ui \
 	mainwindow/refWindow.ui \
-    mainwindow/preferencesEditorForm.ui \
-    mainwindow/preferencesMiscellaniousForm.ui \
-    mainwindow/preferencesBehaviourForm.ui \
-    mainwindow/preferencesCompilerForm.ui \
-    mainwindow/preferencesDebuggerForm.ui
+	mainwindow/preferencesPages/robotSettingsPage.ui \
+	mainwindow/preferencesPages/miscellaniousPage.ui \
+	mainwindow/preferencesPages/editorPage.ui \
+	mainwindow/preferencesPages/debuggerPage.ui \
+	mainwindow/preferencesPages/compilerPage.ui \
+	mainwindow/preferencesPages/behaviourPage.ui

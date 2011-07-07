@@ -11,6 +11,9 @@
 
 #include "../../../utils/outFile.h"
 
+#include "../../kernel/settingsManager.h"
+#include "../../mainwindow/mainwindow.h"
+
 using namespace qReal;
 using namespace generators;
 using namespace utils;
@@ -88,9 +91,9 @@ gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const 
 
 void EditorGenerator::copyImages(QString const &pathToFile)
 {
-	QSettings settings("SPbSU", "QReal");
-	QString workingDirName = settings.value("workingDir", "./save").toString();
-	QDir sourceDir(workingDirName);
+
+		QString workingDirName = SettingsManager::instance()->value("workingDir", "./save").toString();
+		QDir sourceDir(workingDirName);
 	sourceDir.cd("images");
 	if (!sourceDir.exists())
 		return;

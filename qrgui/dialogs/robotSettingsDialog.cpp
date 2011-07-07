@@ -1,7 +1,7 @@
 #include "robotSettingsDialog.h"
 #include "ui_robotSettingsDialog.h"
+#include "../kernel/exception/settingsManager.h"
 
-#include <QtCore/QSettings>
 #include <QtCore/QDebug>
 
 #include "../../thirdparty/qextserialport/src/qextserialenumerator.h"
@@ -24,8 +24,7 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 
 	QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
 
-	QSettings settings("SPbSU", "QReal");
-	QString const defaultPortName = settings.value("bluetoothPortName", "").toString();
+	QString const defaultPortName = SettingsManager::instance()->value("bluetoothPortName", "").toString();
 
 	if (ports.isEmpty()) {
 		mUi->comPortComboBox->hide();
@@ -55,7 +54,7 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 			mUi->comPortComboBox->setCurrentIndex(defaultIndex);
 	}
 
-	if (settings.value("manualComPortCheckboxChecked", "false").toBool())
+	if (SettingsManager::instance()->value("manualComPortCheckboxChecked", "false").toBool())
 		mUi->manualComPortCheckbox->setChecked(true);
 
 	QStringList sensorNames;
@@ -75,17 +74,17 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 	mUi->port3ComboBox->addItems(sensorNames);
 	mUi->port4ComboBox->addItems(sensorNames);
 
-	sensorType::SensorTypeEnum const port1 = static_cast<sensorType::SensorTypeEnum>(settings.value("port1SensorType", "0").toInt());
-	sensorType::SensorTypeEnum const port2 = static_cast<sensorType::SensorTypeEnum>(settings.value("port2SensorType", "0").toInt());
-	sensorType::SensorTypeEnum const port3 = static_cast<sensorType::SensorTypeEnum>(settings.value("port3SensorType", "0").toInt());
-	sensorType::SensorTypeEnum const port4 = static_cast<sensorType::SensorTypeEnum>(settings.value("port4SensorType", "0").toInt());
+	sensorType::SensorTypeEnum const port1 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType", "0").toInt());
+	sensorType::SensorTypeEnum const port2 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType", "0").toInt());
+	sensorType::SensorTypeEnum const port3 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType", "0").toInt());
+	sensorType::SensorTypeEnum const port4 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType", "0").toInt());
 
 	mUi->port1ComboBox->setCurrentIndex(port1);
 	mUi->port2ComboBox->setCurrentIndex(port2);
 	mUi->port3ComboBox->setCurrentIndex(port3);
 	mUi->port4ComboBox->setCurrentIndex(port4);
 
-	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(settings.value("robotModel", "1").toInt());
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
 	initRobotModelType(typeOfRobotModel);
 }
 
@@ -96,13 +95,12 @@ RobotSettingsDialog::~RobotSettingsDialog()
 
 void RobotSettingsDialog::ok()
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("bluetoothPortName", selectedPortName());
-	settings.setValue("port1SensorType", selectedPort1Sensor());
-	settings.setValue("port2SensorType", selectedPort2Sensor());
-	settings.setValue("port3SensorType", selectedPort3Sensor());
-	settings.setValue("port4SensorType", selectedPort4Sensor());
-	settings.setValue("robotModel", selectedRobotModel());
+	SettingsManager::instance()->setValue("bluetoothPortName", selectedPortName());
+	SettingsManager::instance()->setValue("port1SensorType", selectedPort1Sensor());
+	SettingsManager::instance()->setValue("port2SensorType", selectedPort2Sensor());
+	SettingsManager::instance()->setValue("port3SensorType", selectedPort3Sensor());
+	SettingsManager::instance()->setValue("port4SensorType", selectedPort4Sensor());
+	SettingsManager::instance()->setValue("robotModel", selectedRobotModel());
 	accept();
 }
 
@@ -144,9 +142,8 @@ void RobotSettingsDialog::activatedUnrealModel(bool checked)
 
 void RobotSettingsDialog::manualComPortCheckboxChecked(bool state)
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("manualComPortCheckboxChecked", state);
-	QString const defaultPortName = settings.value("bluetoothPortName", "").toString();
+	SettingsManager::instance()->setValue("manualComPortCheckboxChecked", state);
+	QString const defaultPortName = SettingsManager::instance()->value("bluetoothPortName", "").toString();
 
 	if (state) {
 		mUi->comPortComboBox->hide();
@@ -166,8 +163,7 @@ void RobotSettingsDialog::manualComPortCheckboxChecked(bool state)
 QString RobotSettingsDialog::selectedPortName() const
 {
 	if (!isVisible()) {
-		QSettings settings("SPbSU", "QReal");
-		return settings.value("bluetoothPortName", "").toString();
+		return SettingsManager::instance()->value("bluetoothPortName", "").toString();
 	}
 
 	if (mUi->comPortComboBox->isVisible())

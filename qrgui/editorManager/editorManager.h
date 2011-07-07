@@ -12,6 +12,7 @@
 #include "../pluginInterface/editorInterface.h"
 #include "../../qrrepo/graphicalRepoApi.h"
 #include "../../qrrepo/logicalRepoApi.h"
+#include "../kernel/settingsManager.h"
 
 namespace UML {
 	class Element;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CompilerForm</class>
- <widget class="QWidget" name="CompilerForm">
+ <class>PreferencesCompilerPage</class>
+ <widget class="QWidget" name="PreferencesCompilerPage">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -10,51 +10,6 @@
     <height>300</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
-  <widget class="QRadioButton" name="linuxButton">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>34</y>
-     <width>400</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Linux</string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="otherButton">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>62</y>
-     <width>400</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Other</string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="windowsButton">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>6</y>
-     <width>400</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Windows</string>
-   </property>
-   <property name="autoExclusive">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QWidget" name="compilerSettingsWidget" native="true">
    <property name="enabled">
     <bool>false</bool>
@@ -62,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>90</y>
+     <y>94</y>
      <width>400</width>
      <height>200</height>
     </rect>
@@ -109,6 +64,48 @@
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QRadioButton" name="linuxButton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>38</y>
+     <width>400</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Linux</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="otherButton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>66</y>
+     <width>400</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Other</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="windowsButton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>400</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Windows</string>
+   </property>
+   <property name="autoExclusive">
+    <bool>true</bool>
+   </property>
   </widget>
  </widget>
  <resources/>

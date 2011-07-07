@@ -12,6 +12,7 @@
 #include "igesturespainter.h"
 #include "gesturesShow/gestureswidget.h"
 #include "mainWindowInterpretersInterface.h"
+#include "../kernel/settingsManager.h"
 
 #include "../interpreters/robots/bluetoothRobotCommunication.h"
 #include "../interpreters/robots/details/d2RobotModel/d2RobotModel.h"
@@ -87,11 +88,13 @@ private slots:
 	void showAbout();
 	void showHelp();
 
-	bool open();
+	bool open(QString const &dirName);
 	bool checkPluginsAndReopen();
 	void saveAs();
 	void saveAll();
 	void fullscreen();
+	bool openNewProject();
+	void createProject();
 
 	void print();
 	void makeSvg();
@@ -174,6 +177,8 @@ private:
 	/** @brief Internal map table to store info what widgets should we hide/show */
 	QMap<QString, bool> mDocksVisibility;
 
+	QString mSaveDir;
+
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
 			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
@@ -219,5 +224,7 @@ private:
 	void showDockWidget(QDockWidget *dockWidget, QString name);
 
 	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
+
+	QString getNextDirName(QString const &name);
 };
 }
