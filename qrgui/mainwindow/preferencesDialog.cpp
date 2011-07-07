@@ -1,5 +1,3 @@
-#include <QSettings>
-
 #include "preferencesDialog.h"
 #include "ui_preferencesDialog.h"
 

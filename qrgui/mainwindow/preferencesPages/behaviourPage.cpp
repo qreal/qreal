@@ -1,32 +1,30 @@
+#include "../../kernel/settingsManager.h"
 #include "preferencesPages/behaviourPage.h"
 #include "ui_behaviourPage.h"
 
-#include <QSettings>
-
 PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent) :
 	PreferencesPage(parent),
-	ui(new Ui::PreferencesBehaviourPage)
+	mUi(new Ui::PreferencesBehaviourPage)
 {
-	ui->setupUi(this);
+	mUi->setupUi(this);
 
-	QSettings settings("SPbSU", "QReal");
-	ui->saveExitCheckBox->setChecked(settings.value("SaveExitSuggestion", true).toBool());
-	ui->warningWindowBox->setChecked(settings.value("warningWindow", true).toBool());
-	ui->chooseDiagramsToSaveCheckBox->setChecked(settings.value("ChooseDiagramsToSave", true).toBool());
-	ui->diagramCreateCheckBox->setChecked(settings.value("DiagramCreateSuggestion", true).toBool());
-	ui->paletteTabCheckBox->setChecked(settings.value("PaletteTabSwitching", true).toBool());
+	mUi->saveExitCheckBox->setChecked(SettingsManager::instance()->value("SaveExitSuggestion", true).toBool());
+	mUi->warningWindowBox->setChecked(SettingsManager::instance()->value("warningWindow", true).toBool());
+	mUi->chooseDiagramsToSaveCheckBox->setChecked(SettingsManager::instance()->value("ChooseDiagramsToSave", true).toBool());
+	mUi->diagramCreateCheckBox->setChecked(SettingsManager::instance()->value("DiagramCreateSuggestion", true).toBool());
+	mUi->paletteTabCheckBox->setChecked(SettingsManager::instance()->value("PaletteTabSwitching", true).toBool());
 }
 
 PreferencesBehaviourPage::~PreferencesBehaviourPage()
 {
-	delete ui;
+	delete mUi;
 }
 
 void PreferencesBehaviourPage::changeEvent(QEvent *e)
 {
 	switch (e->type()) {
 	case QEvent::LanguageChange:
-		ui->retranslateUi(this);
+		mUi->retranslateUi(this);
 		break;
 	default:
 		break;
@@ -35,10 +33,9 @@ void PreferencesBehaviourPage::changeEvent(QEvent *e)
 
 void PreferencesBehaviourPage::save()
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("ChooseDiagramsToSave", ui->chooseDiagramsToSaveCheckBox->isChecked());
-	settings.setValue("DiagramCreateSuggestion", ui->diagramCreateCheckBox->isChecked());
-	settings.setValue("PaletteTabSwitching", ui->paletteTabCheckBox->isChecked());
-	settings.setValue("SaveExitSuggestion", ui->saveExitCheckBox->isChecked());
-	settings.setValue("warningWindow", ui->warningWindowBox->isChecked());
+	SettingsManager::instance()->setValue("ChooseDiagramsToSave", mUi->chooseDiagramsToSaveCheckBox->isChecked());
+	SettingsManager::instance()->setValue("DiagramCreateSuggestion", mUi->diagramCreateCheckBox->isChecked());
+	SettingsManager::instance()->setValue("PaletteTabSwitching", mUi->paletteTabCheckBox->isChecked());
+	SettingsManager::instance()->setValue("SaveExitSuggestion", mUi->saveExitCheckBox->isChecked());
+	SettingsManager::instance()->setValue("warningWindow", mUi->warningWindowBox->isChecked());
 }
