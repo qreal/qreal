@@ -1,38 +1,37 @@
+#include "../../kernel/settingsManager.h"
 #include <QFileDialog>
-#include <QSettings>
 
 #include "preferencesPages/miscellaniousPage.h"
 #include "ui_miscellaniousPage.h"
 
 PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent) :
 	PreferencesPage(parent),
-	ui(new Ui::PreferencesMiscellaniousPage)
+	mUi(new Ui::PreferencesMiscellaniousPage)
 {
-	ui->setupUi(this);
+	mUi->setupUi(this);
 
-	connect(ui->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
+	connect(mUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
 
-	QSettings settings("SPbSU", "QReal");
-	ui->chaoticEditionCheckBox->setChecked(settings.value("ChaoticEdition", false).toBool());
-	ui->antialiasingCheckBox->setChecked(settings.value("Antialiasing", true).toBool());
-	ui->splashScreenCheckBox->setChecked(settings.value("Splashscreen", true).toBool());
-	ui->openGLCheckBox->setChecked(settings.value("OpenGL", true).toBool());
-	ui->squareLineModeCheckBox->setChecked(settings.value("SquareLine", false).toBool());
+	mUi->chaoticEditionCheckBox->setChecked(SettingsManager::instance()->value("ChaoticEdition", false).toBool());
+	mUi->antialiasingCheckBox->setChecked(SettingsManager::instance()->value("Antialiasing", true).toBool());
+	mUi->splashScreenCheckBox->setChecked(SettingsManager::instance()->value("Splashscreen", true).toBool());
+	mUi->openGLCheckBox->setChecked(SettingsManager::instance()->value("OpenGL", true).toBool());
+	mUi->squareLineModeCheckBox->setChecked(SettingsManager::instance()->value("SquareLine", false).toBool());
 
-	mLastIconsetPath = settings.value("pathToImages", QDir::currentPath() + "/images/iconset1").toString();
-	ui->imagesPathEdit->setText(mLastIconsetPath);
+	mLastIconsetPath = SettingsManager::instance()->value("pathToImages", QDir::currentPath() + "/images/iconset1").toString();
+	mUi->imagesPathEdit->setText(mLastIconsetPath);
 }
 
 PreferencesMiscellaniousPage::~PreferencesMiscellaniousPage()
 {
-	delete ui;
+	delete mUi;
 }
 
 void PreferencesMiscellaniousPage::changeEvent(QEvent *e)
 {
 	switch (e->type()) {
 	case QEvent::LanguageChange:
-		ui->retranslateUi(this);
+		mUi->retranslateUi(this);
 		break;
 	default:
 		break;
@@ -42,19 +41,18 @@ void PreferencesMiscellaniousPage::changeEvent(QEvent *e)
 void PreferencesMiscellaniousPage::browseImagesPath()
 {
 	QString path = QFileDialog::getExistingDirectory(this, "Open Directory");
-	ui->imagesPathEdit->setText(path.replace("\\", "/"));
+	mUi->imagesPathEdit->setText(path.replace("\\", "/"));
 }
 
 void PreferencesMiscellaniousPage::save()
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("Splashscreen", ui->splashScreenCheckBox->isChecked());
-	settings.setValue("Antialiasing", ui->antialiasingCheckBox->isChecked());
-	settings.setValue("OpenGL", ui->openGLCheckBox->isChecked());
-	settings.setValue("SquareLine", ui->squareLineModeCheckBox->isChecked());
-	settings.setValue("ChaoticEdition", ui->chaoticEditionCheckBox->isChecked());
-	settings.setValue("pathToImages", ui->imagesPathEdit->text());
+	SettingsManager::instance()->setValue("Splashscreen", mUi->splashScreenCheckBox->isChecked());
+	SettingsManager::instance()->setValue("Antialiasing", mUi->antialiasingCheckBox->isChecked());
+	SettingsManager::instance()->setValue("OpenGL", mUi->openGLCheckBox->isChecked());
+	SettingsManager::instance()->setValue("SquareLine", mUi->squareLineModeCheckBox->isChecked());
+	SettingsManager::instance()->setValue("ChaoticEdition", mUi->chaoticEditionCheckBox->isChecked());
+	SettingsManager::instance()->setValue("pathToImages", mUi->imagesPathEdit->text());
 
-	if (mLastIconsetPath != ui->imagesPathEdit->text())
+	if (mLastIconsetPath != mUi->imagesPathEdit->text())
 		emit iconsetChanged();
 }

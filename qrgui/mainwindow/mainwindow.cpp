@@ -1316,20 +1316,19 @@ void MainWindow::dehighlight(Id const &graphicalId)
 
 void MainWindow::showRobotSettingsDialog()
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("currentPreferencesTab", PreferencesDialog::robotSettings);
+	SettingsManager::instance()->setValue("currentPreferencesTab", PreferencesDialog::robotSettings);
 	stopRobot();
 	showPreferencesDialog();
 
-	QString const bluetoothPortName = settings.value("bluetoothPortName").toString();
+	QString const bluetoothPortName = SettingsManager::instance()->value("bluetoothPortName").toString();
 	mBluetoothCommunication->setPortName(bluetoothPortName);
-	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(settings.value("robotModel", "1").toInt());
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
 	mRobotInterpreter->setRobotImplementation(typeOfRobotModel, mBluetoothCommunication);
 	mRobotInterpreter->configureSensors(
-			static_cast<sensorType::SensorTypeEnum>(settings.value("port1SensorType").toInt())
-			, static_cast<sensorType::SensorTypeEnum>(settings.value("port2SensorType").toInt())
-			, static_cast<sensorType::SensorTypeEnum>(settings.value("port3SensorType").toInt())
-			, static_cast<sensorType::SensorTypeEnum>(settings.value("port4SensorType").toInt())
+			static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt())
 	);
 	mUi->actionShow2Dmodel->setVisible(typeOfRobotModel == robotModelType::unreal);
 	if (typeOfRobotModel == robotModelType::unreal)

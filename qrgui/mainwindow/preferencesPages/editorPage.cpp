@@ -1,54 +1,51 @@
+#include "../../kernel/settingsManager.h"
 #include "preferencesPages/editorPage.h"
 #include "ui_editorPage.h"
-
-#include <QSettings>
 
 PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAction * const showAlignmentAction
 		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent) :
 	PreferencesPage(parent),
-	ui(new Ui::PreferencesEditorPage),
+	mUi(new Ui::PreferencesEditorPage),
 	mShowGridAction(showGridAction),
 	mShowAlignmentAction(showAlignmentAction),
 	mActivateGridAction(activateGridAction),
 	mActivateAlignmentAction(activateAlignmentAction)
 {
-	ui->setupUi(this);
+	mUi->setupUi(this);
 
 	// changing grid size in QReal:Robots is forbidden
-	connect(ui->gridWidthSlider, SIGNAL(sliderMoved(int)), this, SLOT(widthGridSliderMoved(int)));
-	connect(ui->indexGridSlider, SIGNAL(sliderMoved(int)), this, SLOT(indexGridSliderMoved(int)));
-	ui->indexGridSlider->setVisible(false);
-	ui->label_20->setVisible(false);
+	connect(mUi->gridWidthSlider, SIGNAL(sliderMoved(int)), this, SLOT(widthGridSliderMoved(int)));
+	connect(mUi->indexGridSlider, SIGNAL(sliderMoved(int)), this, SLOT(indexGridSliderMoved(int)));
+	mUi->indexGridSlider->setVisible(false);
+	mUi->label_20->setVisible(false);
 
-	QSettings settings("SPbSU", "QReal");
-	ui->showGridCheckBox->setChecked(settings.value("ShowGrid", true).toBool());
-	ui->showAlignmentCheckBox->setChecked(settings.value("ShowAlignment", true).toBool());
-	ui->activateGridCheckBox->setChecked(settings.value("ActivateGrid", false).toBool());
-	ui->activateAlignmentCheckBox->setChecked(settings.value("ActivateAlignment", true).toBool());
-	ui->embeddedLinkerIndentSlider->setValue(settings.value("EmbeddedLinkerIndent", 8).toInt());
-	ui->embeddedLinkerSizeSlider->setValue(settings.value("EmbeddedLinkerSize", 6).toInt());
-	ui->zoomFactorSlider->setValue(settings.value("zoomFactor", 2).toInt());
+	mUi->showGridCheckBox->setChecked(SettingsManager::instance()->value("ShowGrid", true).toBool());
+	mUi->showAlignmentCheckBox->setChecked(SettingsManager::instance()->value("ShowAlignment", true).toBool());
+	mUi->activateGridCheckBox->setChecked(SettingsManager::instance()->value("ActivateGrid", false).toBool());
+	mUi->activateAlignmentCheckBox->setChecked(SettingsManager::instance()->value("ActivateAlignment", true).toBool());
+	mUi->embeddedLinkerIndentSlider->setValue(SettingsManager::instance()->value("EmbeddedLinkerIndent", 8).toInt());
+	mUi->embeddedLinkerSizeSlider->setValue(SettingsManager::instance()->value("EmbeddedLinkerSize", 6).toInt());
+	mUi->zoomFactorSlider->setValue(SettingsManager::instance()->value("zoomFactor", 2).toInt());
 
-	mWidthGrid = settings.value("GridWidth", 10).toInt();
-	mIndexGrid = settings.value("IndexGrid", 30).toInt();
-	ui->gridWidthSlider->setValue(mWidthGrid);
-	ui->indexGridSlider->setValue(mIndexGrid);
+	mWidthGrid = SettingsManager::instance()->value("GridWidth", 10).toInt();
+	mIndexGrid = SettingsManager::instance()->value("IndexGrid", 30).toInt();
+	mUi->gridWidthSlider->setValue(mWidthGrid);
+	mUi->indexGridSlider->setValue(mIndexGrid);
 }
 
 PreferencesEditorPage::~PreferencesEditorPage()
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("GridWidth", mWidthGrid);
-	settings.setValue("IndexGrid", mIndexGrid);
+	SettingsManager::instance()->setValue("GridWidth", mWidthGrid);
+	SettingsManager::instance()->setValue("IndexGrid", mIndexGrid);
 
-	delete ui;
+	delete mUi;
 }
 
 void PreferencesEditorPage::changeEvent(QEvent *e)
 {
 	switch (e->type()) {
 	case QEvent::LanguageChange:
-		ui->retranslateUi(this);
+		mUi->retranslateUi(this);
 		break;
 	default:
 		break;
@@ -57,35 +54,33 @@ void PreferencesEditorPage::changeEvent(QEvent *e)
 
 void PreferencesEditorPage::widthGridSliderMoved(int value)
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("GridWidth", value);
+	SettingsManager::instance()->setValue("GridWidth", value);
 	emit gridChanged();
 }
 
 void PreferencesEditorPage::indexGridSliderMoved(int value)
 {
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("IndexGrid", value);
+	SettingsManager::instance()->setValue("IndexGrid", value);
 	emit gridChanged();
 }
 
-void PreferencesEditorPage::save(){
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("EmbeddedLinkerIndent", ui->embeddedLinkerIndentSlider->value());
-	settings.setValue("EmbeddedLinkerSize", ui->embeddedLinkerSizeSlider->value());
-	settings.setValue("zoomFactor", ui->zoomFactorSlider->value());
-	settings.setValue("ShowGrid", ui->showGridCheckBox->isChecked());
-	settings.setValue("ShowAlignment", ui->showAlignmentCheckBox->isChecked());
-	settings.setValue("ActivateGrid", ui->activateGridCheckBox->isChecked());
-	settings.setValue("ActivateAlignment", ui->activateAlignmentCheckBox->isChecked());
+void PreferencesEditorPage::save()
+{
+	SettingsManager::instance()->setValue("EmbeddedLinkerIndent", mUi->embeddedLinkerIndentSlider->value());
+	SettingsManager::instance()->setValue("EmbeddedLinkerSize", mUi->embeddedLinkerSizeSlider->value());
+	SettingsManager::instance()->setValue("zoomFactor", mUi->zoomFactorSlider->value());
+	SettingsManager::instance()->setValue("ShowGrid", mUi->showGridCheckBox->isChecked());
+	SettingsManager::instance()->setValue("ShowAlignment", mUi->showAlignmentCheckBox->isChecked());
+	SettingsManager::instance()->setValue("ActivateGrid", mUi->activateGridCheckBox->isChecked());
+	SettingsManager::instance()->setValue("ActivateAlignment", mUi->activateAlignmentCheckBox->isChecked());
 
-	mWidthGrid = ui->gridWidthSlider->value();
-	mIndexGrid = ui->indexGridSlider->value();
-	settings.setValue("GridWidth", mWidthGrid);
-	settings.setValue("IndexGrid", mIndexGrid);
+	mWidthGrid = mUi->gridWidthSlider->value();
+	mIndexGrid = mUi->indexGridSlider->value();
+	SettingsManager::instance()->setValue("GridWidth", mWidthGrid);
+	SettingsManager::instance()->setValue("IndexGrid", mIndexGrid);
 
-	mShowGridAction->setChecked(ui->showGridCheckBox->isChecked());
-	mShowAlignmentAction->setChecked(ui->showAlignmentCheckBox->isChecked());
-	mActivateGridAction->setChecked(ui->activateGridCheckBox->isChecked());
-	mActivateAlignmentAction->setChecked(ui->activateAlignmentCheckBox->isChecked());
+	mShowGridAction->setChecked(mUi->showGridCheckBox->isChecked());
+	mShowAlignmentAction->setChecked(mUi->showAlignmentCheckBox->isChecked());
+	mActivateGridAction->setChecked(mUi->activateGridCheckBox->isChecked());
+	mActivateAlignmentAction->setChecked(mUi->activateAlignmentCheckBox->isChecked());
 }

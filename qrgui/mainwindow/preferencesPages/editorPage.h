@@ -28,7 +28,7 @@ private slots:
 	void indexGridSliderMoved(int value);
 
 private:
-	Ui::PreferencesEditorPage *ui;
+	Ui::PreferencesEditorPage *mUi;
 
 	int mWidthGrid;
 	int mIndexGrid;

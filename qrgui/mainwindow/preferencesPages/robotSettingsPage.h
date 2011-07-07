@@ -38,5 +38,5 @@ private:
 	sensorType::SensorTypeEnum selectedPort4Sensor() const;
 	robotModelType::robotModelTypeEnum selectedRobotModel() const;
 
-	Ui::PreferencesRobotSettingsPage *ui;
+	Ui::PreferencesRobotSettingsPage *mUi;
 };
