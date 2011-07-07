@@ -21,7 +21,7 @@
 #include "curve.h"
 #include "image.h"
 #include "../umllib/elementTitle.h"
-#include "../../kernel/exception/settingsManager.h"
+#include "../../kernel/settingsManager.h"
 
 using namespace UML;
 

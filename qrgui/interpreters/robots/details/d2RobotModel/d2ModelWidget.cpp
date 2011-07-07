@@ -169,6 +169,7 @@ void D2ModelWidget::drawWalls()
 
 void D2ModelWidget::drawBeep(QColor const &color)
 {
+	Q_UNUSED(color)
 	//	mRobot->setPen(QPen(color));
 }
 

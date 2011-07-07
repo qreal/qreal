@@ -12,7 +12,7 @@
 #include "igesturespainter.h"
 #include "gesturesShow/gestureswidget.h"
 #include "mainWindowInterpretersInterface.h"
-#include "../kernel/exception/settingsManager.h"
+#include "../kernel/settingsManager.h"
 
 #include "../interpreters/robots/bluetoothRobotCommunication.h"
 #include "../interpreters/robots/details/d2RobotModel/d2RobotModel.h"
