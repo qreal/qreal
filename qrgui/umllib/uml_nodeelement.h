@@ -20,8 +20,6 @@
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"
 
-/** @brief size of a point port */
-const int kvadratik = 5;
 const int widthLineX = 1500;
 const int widthLineY = 1100;
 

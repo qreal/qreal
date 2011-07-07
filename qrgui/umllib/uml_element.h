@@ -14,6 +14,10 @@
 #include "../models/logicalModelAssistApi.h"
 
 namespace UML {
+
+	/** @brief size of a point port */
+	const int kvadratik = 5;
+
 	/** @class Element
 	* 	@brief base class for an element on a diagram
 	 * */

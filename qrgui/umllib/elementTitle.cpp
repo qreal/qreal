@@ -46,6 +46,8 @@ void ElementTitle::focusOutEvent(QFocusEvent *event)
 	QGraphicsTextItem::focusOutEvent(event);
 	setTextInteractionFlags(Qt::NoTextInteraction);
 
+	parentItem()->setSelected(true);
+
 	// Clear selection
 	QTextCursor cursor = textCursor();
 	cursor.clearSelection();
@@ -78,6 +80,7 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 		event->key() == Qt::Key_Return)
 	{
 		// Loose focus: new name will be applied in focusOutEvent
+//		setHtml(toHtml() + "<br>");
 		clearFocus();
 		return;
 	}
@@ -86,6 +89,8 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 
 void ElementTitle::startTextInteraction()
 {
+	parentItem()->setSelected(true);
+
 	// Already interacting?
 	if (hasFocus())
 		return;
@@ -95,7 +100,6 @@ void ElementTitle::startTextInteraction()
 	// Clear scene selection
 	//if (!(event->modifiers() & Qt::ControlModifier)) - was here.
 	scene()->clearSelection();
-	parentItem()->setSelected(true);
 
 	if (mReadOnly)
 		setTextInteractionFlags(Qt::TextBrowserInteraction);
@@ -103,7 +107,7 @@ void ElementTitle::startTextInteraction()
 		setTextInteractionFlags(Qt::TextEditorInteraction);
 	setFocus(Qt::OtherFocusReason);
 
-	// Set full text selection
+	 //Set full text selection
 	QTextCursor cursor = QTextCursor(document());
 	cursor.select(QTextCursor::Document);
 	setTextCursor(cursor);

@@ -28,7 +28,7 @@ BlocksFactory::BlocksFactory(models::GraphicalModelAssistApi const &graphicalMod
 		, models::LogicalModelAssistApi const &logicalModelApi
 		, RobotModel * const robotModel
 		, gui::ErrorReporter * const errorReporter
-		, BlocksTable * const blocksTable, BlockParser * const parser)
+		, BlocksTable * const blocksTable, RobotsBlockParser * const parser)
 	: mRobotModel(robotModel)
 	, mGraphicalModelApi(graphicalModelApi)
 	, mLogicalModelApi(logicalModelApi)
@@ -38,7 +38,7 @@ BlocksFactory::BlocksFactory(models::GraphicalModelAssistApi const &graphicalMod
 {
 }
 
-BlockParser * BlocksFactory::getParser()
+RobotsBlockParser * BlocksFactory::getParser()
 {
 	return mParser;
 }

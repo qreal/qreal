@@ -23,7 +23,7 @@ Interpreter::Interpreter(models::GraphicalModelAssistApi const &graphicalModelAp
 	, mRobotModel(new RobotModel())
 	, mBlocksTable(NULL)
 {
-	mParser = new BlockParser(mInterpretersInterface.errorReporter());
+	mParser = new RobotsBlockParser(mInterpretersInterface.errorReporter());
 	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel, mInterpretersInterface.errorReporter(), mParser);
 	mTimer = new QTimer();
 
@@ -49,6 +49,8 @@ void Interpreter::interpret(Id const &currentDiagramId)
 
 	mState = interpreting;
 
+	mBlocksTable->setIdleForBlocks();
+
 	Id const startingElement = findStartingElement(currentDiagramId);
 	if (startingElement == Id()) {
 		mInterpretersInterface.errorReporter()->addError(tr("No entry point found, please add Initial Node to a diagram"));
@@ -69,9 +71,10 @@ void Interpreter::stop()
 	mState = idle;
 	foreach (Thread *thread, mThreads)
 		delete thread;
-	mBlocksTable->clear();
+	mBlocksTable->setFailure();
+	/*mBlocksTable->clear();
 	mThreads.clear();
-	mRobotModel->clear();
+	mRobotModel->clear();*/
 }
 
 void Interpreter::stopRobot()
@@ -224,6 +227,6 @@ void Interpreter::responseSlot4(int sensorValue)
 
 void Interpreter::updateSensorValues(const QString &sensorVariableName, int sensorValue)
 {
-	mParser->getVariables()[sensorVariableName] = Number(sensorValue, Number::intType);
+	(*(mParser->getVariables()))[sensorVariableName] = Number(sensorValue, Number::intType);
 //	qDebug() << sensorVariableName << sensorValue;
 }

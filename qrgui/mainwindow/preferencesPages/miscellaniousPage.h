@@ -26,7 +26,7 @@ private slots:
 	void browseImagesPath();
 
 private:
-	Ui::PreferencesMiscellaniousPage *ui;
+	Ui::PreferencesMiscellaniousPage *mUi;
 
 	QString mLastIconsetPath;
 };

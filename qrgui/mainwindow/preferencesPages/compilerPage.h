@@ -26,5 +26,5 @@ private:
 	void initCompilersSettings(QString const &pathToQmake,
 			QString const &pathToMake, QString const &pluginExtension, QString const &prefix);
 
-	Ui::PreferencesCompilerPage *ui;
+	Ui::PreferencesCompilerPage *mUi;
 };

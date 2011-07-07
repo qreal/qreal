@@ -20,5 +20,5 @@ protected:
 	void changeEvent(QEvent *e);
 
 private:
-	Ui::PreferencesBehaviourPage *ui;
+	Ui::PreferencesBehaviourPage *mUi;
 };

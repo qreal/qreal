@@ -9,7 +9,7 @@
 
 #include "robotParts/robotModel.h"
 
-#include "../../visualDebugger/blockParser.h"
+#include "robotsBlockParser.h"
 
 namespace qReal {
 namespace interpreters {
@@ -29,12 +29,14 @@ public:
 			, models::LogicalModelAssistApi const &logicalModelApi
 			, RobotModel * const robotModel
 			, gui::ErrorReporter * const errorReporter
-			, BlockParser * const parser
+			, RobotsBlockParser * const parser
 	);
 	~BlocksTable();
 	blocks::Block *block(Id const &element);
 	void clear();
 	void addBlock(Id const &element, blocks::Block *block);
+	void setFailure();
+	void setIdleForBlocks();
 
 private:
 	QHash<Id, blocks::Block *> mBlocks;  // Has ownership

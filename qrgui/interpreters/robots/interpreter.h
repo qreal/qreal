@@ -14,7 +14,7 @@
 #include "details/blocksTable.h"
 #include "details/d2RobotModel/d2RobotModel.h"
 
-#include "../visualDebugger/blockParser.h"
+#include "details/robotsBlockParser.h"
 
 namespace qReal {
 namespace interpreters {
@@ -75,7 +75,7 @@ private:
 	QList<details::Thread *> mThreads;  // Has ownership
 	details::RobotModel *mRobotModel;
 	details::BlocksTable *mBlocksTable;  // Has ownership
-	BlockParser *mParser;
+	RobotsBlockParser *mParser;
 	QTimer *mTimer;
 	details::d2Model::D2ModelWidget *mD2ModelWidget;
 	details::d2Model::D2RobotModel *mD2RobotModel;
