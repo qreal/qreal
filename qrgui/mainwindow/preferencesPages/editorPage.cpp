@@ -6,7 +6,7 @@
 PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAction * const showAlignmentAction
 		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent) :
 	PreferencesPage(parent),
-	ui(new Ui::preferencesEditorPage),
+	ui(new Ui::PreferencesEditorPage),
 	mShowGridAction(showGridAction),
 	mShowAlignmentAction(showAlignmentAction),
 	mActivateGridAction(activateGridAction),

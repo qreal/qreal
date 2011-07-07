@@ -5,7 +5,7 @@
 
 PreferencesCompilerPage::PreferencesCompilerPage(QWidget *parent) :
 	PreferencesPage(parent),
-	ui(new Ui::preferencesCompilerPage)
+	ui(new Ui::PreferencesCompilerPage)
 {
 	ui->setupUi(this);
 

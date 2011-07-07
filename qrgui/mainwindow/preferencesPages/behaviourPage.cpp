@@ -5,7 +5,7 @@
 
 PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent) :
 	PreferencesPage(parent),
-	ui(new Ui::preferencesBehaviourPage)
+	ui(new Ui::PreferencesBehaviourPage)
 {
 	ui->setupUi(this);
 

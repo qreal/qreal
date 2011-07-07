@@ -3,7 +3,7 @@
 #include "page.h"
 
 namespace Ui {
-	class preferencesEditorPage;
+	class PreferencesEditorPage;
 }
 
 class PreferencesEditorPage : public PreferencesPage
@@ -28,7 +28,7 @@ private slots:
 	void indexGridSliderMoved(int value);
 
 private:
-	Ui::preferencesEditorPage *ui;
+	Ui::PreferencesEditorPage *ui;
 
 	int mWidthGrid;
 	int mIndexGrid;

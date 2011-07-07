@@ -5,7 +5,7 @@
 
 PreferencesDebuggerPage::PreferencesDebuggerPage(QWidget *parent) :
 	PreferencesPage(parent),
-	ui(new Ui::preferencesDebuggerPage)
+	ui(new Ui::PreferencesDebuggerPage)
 {
 	ui->setupUi(this);
 

@@ -3,7 +3,7 @@
 #include "page.h"
 
 namespace Ui {
-	class preferencesMiscellaniousPage;
+	class PreferencesMiscellaniousPage;
 }
 
 class PreferencesMiscellaniousPage : public PreferencesPage
@@ -26,7 +26,7 @@ private slots:
 	void browseImagesPath();
 
 private:
-	Ui::preferencesMiscellaniousPage *ui;
+	Ui::PreferencesMiscellaniousPage *ui;
 
 	QString mLastIconsetPath;
 };

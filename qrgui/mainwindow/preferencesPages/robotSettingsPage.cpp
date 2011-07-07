@@ -8,7 +8,7 @@ using namespace qReal::interpreters::robots;
 
 PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent) :
 	PreferencesPage(parent),
-	ui(new Ui::preferencesRobotSettingsPage)
+	ui(new Ui::PreferencesRobotSettingsPage)
 {
 	ui->setupUi(this);
 

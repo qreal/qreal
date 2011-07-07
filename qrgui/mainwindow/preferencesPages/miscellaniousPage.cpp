@@ -6,7 +6,7 @@
 
 PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent) :
 	PreferencesPage(parent),
-	ui(new Ui::preferencesMiscellaniousPage)
+	ui(new Ui::PreferencesMiscellaniousPage)
 {
 	ui->setupUi(this);
 

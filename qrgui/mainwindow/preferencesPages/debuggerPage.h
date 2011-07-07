@@ -3,7 +3,7 @@
 #include "page.h"
 
 namespace Ui {
-	class preferencesDebuggerPage;
+	class PreferencesDebuggerPage;
 }
 
 class PreferencesDebuggerPage : public PreferencesPage
@@ -20,5 +20,5 @@ protected:
 	void changeEvent(QEvent *e);
 
 private:
-	Ui::preferencesDebuggerPage *ui;
+	Ui::PreferencesDebuggerPage *ui;
 };

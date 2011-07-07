@@ -8,7 +8,7 @@
 using namespace qReal::interpreters::robots;
 
 namespace Ui {
-	class preferencesRobotSettingsPage;
+	class PreferencesRobotSettingsPage;
 }
 
 class PreferencesRobotSettingsPage : public PreferencesPage
@@ -38,5 +38,5 @@ private:
 	sensorType::SensorTypeEnum selectedPort4Sensor() const;
 	robotModelType::robotModelTypeEnum selectedRobotModel() const;
 
-	Ui::preferencesRobotSettingsPage *ui;
+	Ui::PreferencesRobotSettingsPage *ui;
 };

@@ -3,7 +3,7 @@
 #include "page.h"
 
 namespace Ui {
-	class preferencesCompilerPage;
+	class PreferencesCompilerPage;
 }
 
 class PreferencesCompilerPage : public PreferencesPage
@@ -26,5 +26,5 @@ private:
 	void initCompilersSettings(QString const &pathToQmake,
 			QString const &pathToMake, QString const &pluginExtension, QString const &prefix);
 
-	Ui::preferencesCompilerPage *ui;
+	Ui::PreferencesCompilerPage *ui;
 };
