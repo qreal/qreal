@@ -1,8 +1,5 @@
 HEADERS += dialogs/plugindialog.h \
-	dialogs/checkoutdialog.h \
-    dialogs/robotSettingsDialog.h
+	dialogs/checkoutdialog.h
 SOURCES += dialogs/plugindialog.cpp \
-	dialogs/checkoutdialog.cpp \
-    dialogs/robotSettingsDialog.cpp
-FORMS += dialogs/editorGeneratorDialog.ui \
-    dialogs/robotSettingsDialog.ui
+	dialogs/checkoutdialog.cpp
+FORMS += dialogs/editorGeneratorDialog.ui

@@ -28,6 +28,7 @@
         <file>icons/preferences/editor.png</file>
         <file>icons/preferences/miscellaneous.png</file>
         <file>icons/preferences/tools.png</file>
+        <file>icons/preferences/robot.png</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>

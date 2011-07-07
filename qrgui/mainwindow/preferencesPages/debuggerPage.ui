@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DebuggerForm</class>
- <widget class="QWidget" name="DebuggerForm">
+ <class>preferencesDebuggerPage</class>
+ <widget class="QWidget" name="preferencesDebuggerPage">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -10,9 +10,94 @@
     <height>300</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
+  <widget class="QLabel" name="label_24">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>110</y>
+     <width>400</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Configuration</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame_7">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>30</y>
+     <width>400</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QLabel" name="label_14">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>171</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Debug timeout (ms):</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="timeoutLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>10</y>
+      <width>71</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_15">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>171</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Color of highlight:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="colorComboBox">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>40</y>
+      <width>71</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QLabel" name="label_16">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>400</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Presentation</string>
+   </property>
+  </widget>
   <widget class="QFrame" name="frame_9">
    <property name="geometry">
     <rect>
@@ -182,94 +267,6 @@
      <string>Browse...</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QFrame" name="frame_7">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>30</y>
-     <width>400</width>
-     <height>71</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <widget class="QLabel" name="label_14">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>171</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Debug timeout (ms):</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="timeoutLineEdit">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>10</y>
-      <width>71</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_15">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>40</y>
-      <width>171</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Color of highlight:</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="colorComboBox">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>40</y>
-      <width>71</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QLabel" name="label_16">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>400</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Presentation</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_24">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>110</y>
-     <width>400</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Configuration</string>
-   </property>
   </widget>
  </widget>
  <resources/>
