@@ -58,6 +58,7 @@ MainWindow::MainWindow()
 	, mErrorReporter(NULL)
 	, mVisualDebugger(NULL)
 	, mIsFullscreen(false)
+	, mSaveDir(qApp->applicationDirPath() + "/save")
 {
 
 	bool showSplash = SettingsManager::instance()->value("Splashscreen", true).toBool();
@@ -143,7 +144,7 @@ MainWindow::MainWindow()
 //	resize(QSize(1024, 600));
 	//settings.endGroup();
 
-	QString workingDir = SettingsManager::instance()->value("workingDir", ".").toString();
+	QString workingDir = SettingsManager::instance()->value("workingDir", mSaveDir).toString();
 
 	mRootIndex = QModelIndex();
 	mModels = new models::Models(workingDir, mEditorManager);
@@ -200,11 +201,12 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 
-	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(open()));
+	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(openNewProject()));
 	connect(mUi->actionSave, SIGNAL(triggered()), this, SLOT(saveAll()));
 	connect(mUi->actionSave_as, SIGNAL(triggered()), this, SLOT(saveAs()));
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
+	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
 
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 
@@ -441,7 +443,7 @@ QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
 {
 
 	QString const dirName = QFileDialog::getExistingDirectory(this, dialogWindowTitle
-		, SettingsManager::instance()->value("workingDir", ".").toString(), QFileDialog::ShowDirsOnly);
+		, SettingsManager::instance()->value("workingDir", mSaveDir).toString(), QFileDialog::ShowDirsOnly);
 
 	if (dirName.isEmpty())
 		return "";
@@ -467,7 +469,7 @@ bool MainWindow::checkPluginsAndReopen()
 
 		if (button == QMessageBox::Yes)
 		{
-			if (!open())
+			if (!openNewProject())
 				loadingCancelled = true;
 		}
 		else
@@ -485,10 +487,13 @@ bool MainWindow::checkPluginsAndReopen()
 	return true;
 }
 
-bool MainWindow::open()
+bool MainWindow::openNewProject()
 {
-	QString const dirName = getWorkingDir(tr("Select directory with a save to open"));
+	return open(getWorkingDir(tr("Select directory with a save to open")));
+}
 
+bool MainWindow::open(QString const &dirName)
+{
 	if (dirName.isEmpty())
 		return false;
 
@@ -859,7 +864,7 @@ void MainWindow::generateEditorWithQRMC()
 						}
 
 						if (mEditorManager.loadPlugin(SettingsManager::instance()->value("prefix", "").toString() + name + "." + SettingsManager::instance()->value("pluginExtension", "").toString())) {
-						    foreach (Id const diagram, mEditorManager.diagrams(Id(normalizedName))) {
+							foreach (Id const diagram, mEditorManager.diagrams(Id(normalizedName))) {
 								mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
 
 								foreach (Id const element, mEditorManager.elements(diagram))
@@ -1508,7 +1513,7 @@ void MainWindow::generateAndBuild() {
 			mDebuggerConnector->run();
 
 			mDebuggerConnector->build(SettingsManager::instance()->value("debugWorkingDirectory", "").toString() + "/" +
-						    SettingsManager::instance()->value("codeFileName", "code.c").toString());
+							SettingsManager::instance()->value("codeFileName", "code.c").toString());
 
 
 			if (!mDebuggerConnector->hasBuildError()) {
@@ -1535,7 +1540,7 @@ void MainWindow::configureDebugger() {
 	if (mDebuggerConnector->isDebuggerRunning()) {
 
 		mDebuggerConnector->configure(SettingsManager::instance()->value("debugWorkingDirectory", "").toString() + "/" +
-										      SettingsManager::instance()->value("buildedFileName", "builded.exe").toString());
+											  SettingsManager::instance()->value("buildedFileName", "builded.exe").toString());
 	}
 }
 
@@ -1760,4 +1765,30 @@ void MainWindow::fullscreen()
 		showDockWidget(mUi->propertyDock, "propertyEditor");
 		showDockWidget(mUi->errorDock, "errorReporter");
 	}
+}
+
+void MainWindow::createProject()
+{
+	QSettings settings("SPbSU", "QReal");
+	QString dirName = getNextDirName(settings.value("workingDir", mSaveDir).toString());
+	settings.setValue("workingDir", dirName);
+	open(dirName);
+
+	if (settings.value("diagramCreateSuggestion", true).toBool())
+		suggestToCreateDiagram();
+
+}
+
+QString MainWindow::getNextDirName(QString const &name)
+{
+	QStringList parts = name.split("_");
+	bool isInt = false;
+	int version = parts.last().toInt(&isInt);
+
+	if (parts.size() < 2 || !isInt)
+		return name + "_2";
+
+	parts.last() = QString::number(++version);
+	return parts.join("_");
+
 }
