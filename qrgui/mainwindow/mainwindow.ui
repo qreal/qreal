@@ -112,6 +112,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionPrint"/>
+   <addaction name="actionNewProject"/>
    <addaction name="actionNew_Diagram"/>
    <addaction name="actionOpen"/>
    <addaction name="actionSave"/>
@@ -720,6 +721,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+F12</string>
+   </property>
+  </action>
+  <action name="actionNewProject">
+   <property name="text">
+    <string>New Project</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+N</string>
    </property>
   </action>
  </widget>
