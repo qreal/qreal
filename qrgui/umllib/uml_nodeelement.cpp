@@ -394,6 +394,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		mUmlPortHandler->handleMoveEvent(mLeftPressed, mPos, event->scenePos(), mParentNodeElement);
 
 	arrangeLinks();
+
+
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
