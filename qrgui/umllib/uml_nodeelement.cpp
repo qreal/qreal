@@ -241,9 +241,8 @@ void NodeElement::arrangeLinks() {
 
 void NodeElement::storeGeometry()
 {
-	QRectF tmp = mContents;
 	mGraphicalAssistApi->setPosition(id(), pos());
-	mGraphicalAssistApi->setConfiguration(id(), QPolygon(tmp.toAlignedRect()));
+	mGraphicalAssistApi->setConfiguration(id(), QPolygon(mContents.toAlignedRect()));
 }
 
 void NodeElement::moveChildren(qreal dx, qreal dy)

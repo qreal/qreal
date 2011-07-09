@@ -73,5 +73,5 @@ void Element::initTitlesBy(QRectF const& contents)
 
 void Element::initTitles()
 {
-	initTitlesBy(boundingRect());
+	initTitlesBy(boundingRect().adjusted(kvadratik, kvadratik, -kvadratik, -kvadratik));
 }
