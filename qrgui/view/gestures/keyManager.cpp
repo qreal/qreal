@@ -1,4 +1,4 @@
-#include "keymanager.h"
+#include "keyManager.h"
 #include <QPointF>
 #include <QString>
 

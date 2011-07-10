@@ -1,5 +1,5 @@
-#include "gestureswidget.h"
-#include "ui_gestureswidget.h"
+#include "gesturesWidget.h"
+#include "ui_gesturesWidget.h"
 
 GesturesWidget::GesturesWidget(QWidget *parent) :
 	QWidget(parent),

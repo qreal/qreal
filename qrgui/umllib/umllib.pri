@@ -1,17 +1,17 @@
-HEADERS += umllib/uml_edgeelement.h \
-	umllib/uml_element.h \
-	umllib/uml_nodeelement.h \
-	umllib/sdfrenderer.h \
+HEADERS += umllib/edgeElement.h \
+	umllib/element.h \
+	umllib/nodeElement.h \
+	umllib/sdfRenderer.h \
 	umllib/elementTitle.h \
 	umllib/contextMenuAction.h \
 	umllib/embeddedLinker.h \
 	umllib/sceneGridHandler.h \
 	umllib/umlPortHandler.h
 
-SOURCES += umllib/uml_edgeelement.cpp \
-	umllib/uml_element.cpp \
-	umllib/uml_nodeelement.cpp \
-	umllib/sdfrenderer.cpp \
+SOURCES += umllib/edgeElement.cpp \
+	umllib/element.cpp \
+	umllib/nodeElement.cpp \
+	umllib/sdfRenderer.cpp \
 	umllib/elementTitle.cpp \
 	umllib/contextMenuAction.cpp \
 	umllib/embeddedLinker.cpp \

@@ -5,7 +5,7 @@
 #include "editorview.h"
 #include "editorviewscene.h"
 #include "../kernel/definitions.h"
-#include "../umllib/uml_element.h"
+#include "../umllib/element.h"
 #include "../editorManager/editorManager.h"
 #include "../mainwindow/mainwindow.h"
 
@@ -133,7 +133,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			continue;
 		}
 
-		UML::Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentId);
+		Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentId);
 		elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
@@ -142,7 +142,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			elem->setPos(ePos);	//задаем позицию до определения родителя для того, чтобы правильно отработал itemChange
 			elem->setId(currentId);
 
-			UML::NodeElement* nodeElement = dynamic_cast<UML::NodeElement*>(elem);
+			NodeElement* nodeElement = dynamic_cast<NodeElement*>(elem);
 			if (nodeElement)
 				nodeElement->storeGeometry();
 
@@ -161,7 +161,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			bool isEdgeFromEmbeddedLinker = false;
 			QList<QGraphicsItem*> selectedItems = mScene->selectedItems();
 			if (selectedItems.size() == 1) {
-				UML::NodeElement* master = dynamic_cast<UML::NodeElement*>(selectedItems.at(0));
+				NodeElement* master = dynamic_cast<NodeElement*>(selectedItems.at(0));
 				if (master && master->connectionInProgress())
 					isEdgeFromEmbeddedLinker = true;
 			}
@@ -170,7 +170,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 				mScene->clearSelection();
 			elem->setSelected(true);
 
-			UML::NodeElement* nodeElem = dynamic_cast<UML::NodeElement*>(elem);
+			NodeElement* nodeElem = dynamic_cast<NodeElement*>(elem);
 			if (nodeElem && currentId.element() == "Class" &&
 				mGraphicalAssistApi->children(currentId).empty())
 			{
@@ -227,7 +227,7 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 		return;
 	}
 
-	UML::Element* movedElement = item(movedElementIndex);
+	Element* movedElement = item(movedElementIndex);
 
 	if (!item(destinationParent)) {
 		// no parent element on the scene, so it should be root element
@@ -235,7 +235,7 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 		return;
 	}
 
-	UML::Element* newParent = item(destinationParent);
+	Element* newParent = item(destinationParent);
 	movedElement->setParentItem(newParent);
 }
 
@@ -253,7 +253,7 @@ void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceSta
 		return;
 	}
 
-	UML::Element* movedElement = item(movedElementIndex);
+	Element* movedElement = item(movedElementIndex);
 	movedElement->updateData();
 }
 
@@ -293,7 +293,7 @@ void EditorViewMViface::clearItems()
 	mItems.clear();
 }
 
-UML::Element *EditorViewMViface::item(QPersistentModelIndex const &index) const
+Element *EditorViewMViface::item(QPersistentModelIndex const &index) const
 {
 	foreach (IndexElementPair pair, mItems) {
 		if (pair.first == index)
@@ -302,7 +302,7 @@ UML::Element *EditorViewMViface::item(QPersistentModelIndex const &index) const
 	return NULL;
 }
 
-void EditorViewMViface::setItem(QPersistentModelIndex const &index, UML::Element *item)
+void EditorViewMViface::setItem(QPersistentModelIndex const &index, Element *item)
 {
 	IndexElementPair pair(index, item);
 	if (!mItems.contains(pair))
@@ -337,7 +337,7 @@ void EditorViewMViface::logicalDataChanged(const QModelIndex &topLeft, const QMo
 		IdList const graphicalIds = mGraphicalAssistApi->graphicalIdsByLogicalId(logicalId);
 		foreach (Id const graphicalId, graphicalIds) {
 			QModelIndex const graphicalIndex = mGraphicalAssistApi->indexById(graphicalId);
-			UML::Element *graphicalItem = item(graphicalIndex);
+			Element *graphicalItem = item(graphicalIndex);
 			if (graphicalItem)
 				graphicalItem->updateData();
 		}

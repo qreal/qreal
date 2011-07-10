@@ -14,9 +14,8 @@
 #include "../../qrrepo/logicalRepoApi.h"
 #include "../kernel/settingsManager.h"
 
-namespace UML {
-	class Element;
-}
+class Element;
+
 namespace qReal {
 	class EditorManager : public QObject
 	{
@@ -37,7 +36,7 @@ namespace qReal {
 		QString propertyDescription(Id const &id, QString const &propertyName) const;
 		QString propertyDisplayedName(Id const &id, QString const &propertyName) const;
 		QIcon icon(Id const &id) const;
-		UML::Element* graphicalObject(Id const &id) const;
+		Element* graphicalObject(Id const &id) const;
 
 		IdList getContainedTypes(const Id &id) const;
 		IdList getConnectedTypes(const Id &id) const;

@@ -8,12 +8,11 @@
 #include <QDebug>
 #include <math.h>
 
-#include "uml_edgeelement.h"
-#include "uml_nodeelement.h"
+#include "edgeElement.h"
+#include "nodeElement.h"
 #include "../view/editorviewscene.h"
 #include "../pluginInterface/editorInterface.h"
 
-using namespace UML;
 using namespace qReal;
 
 const double pi = 3.14159265358979;
@@ -635,27 +634,27 @@ void EdgeElement::arrangeSrcAndDst()
 	}
 }
 
-UML::NodeElement *EdgeElement::src() const
+NodeElement *EdgeElement::src() const
 {
 	return mSrc;
 }
 
-UML::NodeElement *EdgeElement::dst() const
+NodeElement *EdgeElement::dst() const
 {
 	return mDst;
 }
 
-bool EdgeElement::isSrc(UML::NodeElement const *node) const
+bool EdgeElement::isSrc(NodeElement const *node) const
 {
 	return (mSrc == node);
 }
 
-bool EdgeElement::isDst(UML::NodeElement const *node) const
+bool EdgeElement::isDst(NodeElement const *node) const
 {
 	return (mDst == node);
 }
 
-qreal EdgeElement::portIdOn(UML::NodeElement const *node) const
+qreal EdgeElement::portIdOn(NodeElement const *node) const
 {
 	if (node == mSrc)
 		return mPortFrom;
@@ -664,7 +663,7 @@ qreal EdgeElement::portIdOn(UML::NodeElement const *node) const
 	return -1;
 }
 
-QPointF EdgeElement::nextFrom(UML::NodeElement const *node) const
+QPointF EdgeElement::nextFrom(NodeElement const *node) const
 {
 	if (node == mSrc)
 		return mapToItem(mSrc, mLine[1]);
@@ -673,7 +672,7 @@ QPointF EdgeElement::nextFrom(UML::NodeElement const *node) const
 	return QPointF();
 }
 
-QPointF EdgeElement::connectionPoint(UML::NodeElement const *node) const
+QPointF EdgeElement::connectionPoint(NodeElement const *node) const
 {
 	if (node == mSrc)
 		return mapToItem(mSrc, mLine[0]);
@@ -683,7 +682,7 @@ QPointF EdgeElement::connectionPoint(UML::NodeElement const *node) const
 
 }
 
-UML::NodeElement* EdgeElement::otherSide(UML::NodeElement const *node) const
+NodeElement* EdgeElement::otherSide(NodeElement const *node) const
 {
 	if (node == mSrc)
 		return mDst;
@@ -756,7 +755,7 @@ void EdgeElement::updateData()
 	update();
 }
 
-void EdgeElement::removeLink(UML::NodeElement const *from)
+void EdgeElement::removeLink(NodeElement const *from)
 {
 	if (mSrc == from)
 		mSrc = NULL;
@@ -779,7 +778,7 @@ void EdgeElement::placeEndTo(QPointF const &place)
 	adjustLink();
 }
 
-void EdgeElement::moveConnection(UML::NodeElement *node, qreal const portId) {
+void EdgeElement::moveConnection(NodeElement *node, qreal const portId) {
 	if (node == mSrc) {
 		mPortFrom = portId;
 		mGraphicalAssistApi->setFromPort(id(), mPortFrom);

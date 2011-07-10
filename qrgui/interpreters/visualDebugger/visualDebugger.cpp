@@ -4,11 +4,11 @@
 #include <QTimer>
 #include <QFile>
 
-#include "propertyeditorproxymodel.h"
+#include "propertyEditorProxyModel.h"
 #include "../models/models.h"
 
-#include "../view/editorview.h"
-#include "../umllib/uml_element.h"
+#include "../view/editorView.h"
+#include "../umllib/element.h"
 #include "../kernel/exception/exception.h"
 
 using namespace qReal;
@@ -116,13 +116,13 @@ void VisualDebugger::error(ErrorType e)
 	deinitialize();
 }
 
-UML::Element* VisualDebugger::findBeginNode(QString name)
+Element* VisualDebugger::findBeginNode(QString name)
 {
 	int i = 0;
 	int count = mEditor->mvIface()->scene()->items().count();
-	UML::Element *elem = NULL;
+	Element *elem = NULL;
 	while (i < count) {
-		elem = dynamic_cast<UML::Element *>(mEditor->mvIface()->scene()->items().at(i));
+		elem = dynamic_cast<Element *>(mEditor->mvIface()->scene()->items().at(i));
 		if (elem && elem->id().element().compare(name) == 0) {
 			break;
 		}
@@ -171,7 +171,7 @@ bool VisualDebugger::hasEndOfLinkNode(Id id)
 	return mLogicalModelApi.logicalRepoApi().to(id) != Id::rootId();
 }
 
-VisualDebugger::ErrorType VisualDebugger::doFirstStep(UML::Element *elem)
+VisualDebugger::ErrorType VisualDebugger::doFirstStep(Element *elem)
 {
 	if (!elem) {
 		return VisualDebugger::missingBeginNode;
@@ -191,7 +191,7 @@ void VisualDebugger::doStep(Id id)
 
 	highlight(mCurrentId);
 
-	UML::Element *elem = dynamic_cast<UML::NodeElement *>(mCurrentElem);
+	Element *elem = dynamic_cast<NodeElement *>(mCurrentElem);
 	if (elem) {
 		if (elem->id().element().compare("Action") == 0) {
 			processAction();
@@ -291,7 +291,7 @@ void VisualDebugger::debugSingleStep()
 	} else {
 		mBlockParser->setErrorReporter(mInterpretersInterface.errorReporter());
 
-		UML::Element *elem = dynamic_cast<UML::NodeElement *>(mCurrentElem);
+		Element *elem = dynamic_cast<NodeElement *>(mCurrentElem);
 		if (elem) {
 			if (mLogicalModelApi.logicalRepoApi().outgoingLinks(mCurrentId).count() == 0) {
 				if (!isFinalNode(mCurrentId)) {
@@ -354,7 +354,7 @@ void VisualDebugger::generateCode()
 	codeFile.open(QIODevice::WriteOnly);
 
 	codeFile.write("void main(int argc, char* argv[]) {\n");
-	UML::Element *curElem = findBeginNode("InitialNode");
+	Element *curElem = findBeginNode("InitialNode");
 	if (curElem != NULL) {
 		generateCode(curElem, codeFile);
 		codeFile.write("}");
@@ -366,9 +366,9 @@ void VisualDebugger::generateCode()
 	return;
 }
 
-void VisualDebugger::generateCode(UML::Element *elem, QFile &codeFile)
+void VisualDebugger::generateCode(Element *elem, QFile &codeFile)
 {
-	UML::Element *curElem = dynamic_cast<UML::NodeElement *>(elem);
+	Element *curElem = dynamic_cast<NodeElement *>(elem);
 	if (curElem && elem->id().element().compare("InitialNode") != 0) {
 		if (elem->id().element().compare("Action") == 0) {
 			QString code = getProperty(curElem->id(), "process").toString();
@@ -434,14 +434,14 @@ void VisualDebugger::createIdByLineCorrelation()
 {
 	mHasNotEndWithFinalNode = false;
 	int line = 2;
-	UML::Element *curElem = findBeginNode("InitialNode");
+	Element *curElem = findBeginNode("InitialNode");
 	mIdByLineCorrelation[1] = curElem->id();
 	createIdByLineCorrelation(curElem, line);
 }
 
-void VisualDebugger::createIdByLineCorrelation(UML::Element *elem, int& line)
+void VisualDebugger::createIdByLineCorrelation(Element *elem, int& line)
 {
-	UML::Element *curElem = dynamic_cast<UML::NodeElement *>(elem);
+	Element *curElem = dynamic_cast<NodeElement *>(elem);
 	if (curElem && elem->id().element().compare("InitialNode") != 0) {
 		if (elem->id().element().compare("Action") == 0) {
 			mIdByLineCorrelation[line] = elem->id();

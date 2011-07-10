@@ -1,12 +1,12 @@
-#include "mousemovementmanager.h"
-#include "pathcorrector.h"
-#include "levenshteindistance.h"
+#include "mouseMovementManager.h"
+#include "pathCorrector.h"
+#include "levenshteinDistance.h"
 
 const QString comma = ", ";
 const QString pointDelimeter = " : ";
 
 MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager * editorManager,
-										   IGesturesPainter *gesturesPaintManager)
+										   GesturesPainterInterface *gesturesPaintManager)
 {
 	mKeyManager = &mKeyStringManager;
 	mEditorManager = editorManager;
@@ -14,7 +14,7 @@ MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::Edi
 	setElements(elements);
 }
 
-void MouseMovementManager::setGesturesPainter(IGesturesPainter *gesturesPainter)
+void MouseMovementManager::setGesturesPainter(GesturesPainterInterface *gesturesPainter)
 {
 	mGesturesPaintMan = gesturesPainter;
 }

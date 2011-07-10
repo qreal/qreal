@@ -4,7 +4,7 @@
 #include <QGraphicsLineItem>
 #include <QSignalMapper>
 #include "../kernel/roles.h"
-#include "../umllib/uml_nodeelement.h"
+#include "../umllib/nodeElement.h"
 #include "gestures/mousemovementmanager.h"
 
 //const int indexGrid = 30; // distance between two lines in the grid
@@ -25,14 +25,14 @@ public:
 
 	void clearScene();
 
-	virtual int launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* node, QPointF scenePos);
+	virtual int launchEdgeMenu(EdgeElement* edge, NodeElement* node, QPointF scenePos);
 	virtual qReal::Id createElement(const QString &, QPointF scenePos);
 	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
-	virtual UML::Element *getElem(qReal::Id const &id);
-	UML::Element *getElemAt(const QPointF &position);
+	virtual Element *getElem(qReal::Id const &id);
+	Element *getElemAt(const QPointF &position);
 
 	virtual qReal::Id rootItemId() const;
 	void setMainWindow(qReal::MainWindow *mainWindow);
@@ -46,7 +46,7 @@ public:
 	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
 	bool getNeedDrawGrid();
 
-	UML::Element* getLastCreated();
+	Element* getLastCreated();
 
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
 
@@ -96,8 +96,8 @@ private slots:
 	void createEdge(QString const &);
 
 private:
-	UML::Element* mLastCreatedWithEdge;
-	UML::NodeElement *mCopiedNode;
+	Element* mLastCreatedWithEdge;
+	NodeElement *mCopiedNode;
 
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
@@ -106,26 +106,26 @@ private:
 	double mRealIndexGrid;
 
 	void getObjectByGesture();
-	void getLinkByGesture(UML::NodeElement * parent, UML::NodeElement const & child);
+	void getLinkByGesture(NodeElement * parent, NodeElement const & child);
 	void drawGesture();
 	void deleteGesture();
 	void createEdgeMenu(QList<QString> const & ids);
 
 	void drawGrid(QPainter *painter, const QRectF &rect);
 	void redraw();
-	void createConnectionSubmenus(QMenu &contextMenu, UML::Element const * const element) const;
+	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
 	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
-	void createAddConnectionMenu(UML::Element const * const element
+	void createAddConnectionMenu(Element const * const element
 								 , QMenu &contextMenu, QString const &menuName
 								 , qReal::IdList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
 								 , qReal::IdList const &connectableDiagrams, const char *slot) const;
 
-	void createDisconnectMenu(UML::Element const * const element
+	void createDisconnectMenu(Element const * const element
 							  , QMenu &contextMenu, QString const &menuName
 							  , qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
 							  , const char *slot) const;
 
-	void initContextMenu(UML::Element *e, QPointF const & pos);
+	void initContextMenu(Element *e, QPointF const & pos);
 
 	QPointF newElementsPosition;
 
@@ -146,7 +146,7 @@ private:
 
 	QSignalMapper *mActionSignalMapper;
 
-	QSet<UML::Element *> mHighlightedElements;
+	QSet<Element *> mHighlightedElements;
 
 	friend class qReal::EditorViewMViface;
 

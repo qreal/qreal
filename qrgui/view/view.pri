@@ -1,16 +1,16 @@
-HEADERS += view/editorview.h \
-	view/editorviewscene.h \
-	view/editorviewmviface.h \
-	view/gestures/pathcorrector.h \
-	view/gestures/mousemovementmanager.h \
-	view/gestures/levenshteindistance.h \
-	view/gestures/keymanager.h \
-	view/gestures/ikeymanager.h
+HEADERS += view/editorView.h \
+	view/editorViewScene.h \
+	view/editorViewMVIface.h \
+	view/gestures/pathCorrector.h \
+	view/gestures/mouseMovementManager.h \
+	view/gestures/levenshteinDistance.h \
+	view/gestures/keyManager.h \
+	view/gestures/keyManagerInterface.h
 
-SOURCES += view/editorview.cpp \
-	view/editorviewscene.cpp \
-	view/editorviewmviface.cpp \
-	view/gestures/pathcorrector.cpp \
-	view/gestures/mousemovementmanager.cpp \
-	view/gestures/levenshteindistance.cpp \
-	view/gestures/keymanager.cpp
+SOURCES += view/editorView.cpp \
+	view/editorViewScene.cpp \
+	view/editorViewMVIface.cpp \
+	view/gestures/pathCorrector.cpp \
+	view/gestures/mouseMovementManager.cpp \
+	view/gestures/levenshteinDistance.cpp \
+	view/gestures/keyManager.cpp

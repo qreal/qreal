@@ -8,6 +8,10 @@
 #include "preferencesPages/miscellaniousPage.h"
 #include "preferencesPages/robotSettingsPage.h"
 
+#include <QFileDialog>
+
+#include <QMessageBox>
+
 PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * const showAlignmentAction
 		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
 	: QDialog(parent), ui(new Ui::PreferencesDialog)

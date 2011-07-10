@@ -442,7 +442,7 @@ bool GraphicType::generateObjectRequestString(OutFile &out, bool isNotFirst)
 	if (mVisible) {
 		QString name = NameNormalizer::normalize(qualifiedName());
 		generateOneCase(out, isNotFirst);
-		out() << "\t\treturn new UML::" << name << "();\n";
+		out() << "\t\treturn new " << name << "();\n";
 		return true;
 	}
 	return false;

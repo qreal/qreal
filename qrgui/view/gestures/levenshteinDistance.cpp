@@ -1,4 +1,4 @@
-#include "levenshteindistance.h"
+#include "levenshteinDistance.h"
 #include <QtCore/QList>
 
 int LevenshteinDistance::getLevenshteinDistance(QString const & key1, QString const & key2)

@@ -20,9 +20,9 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/shapeEdit/curve.h \
 	mainwindow/shapeEdit/view.h \
 	mainwindow/gesturesShow/gestureswidget.h \
-	mainwindow/igesturespainter.h \
+	mainwindow/gesturesPainterInterface.h \
 	mainwindow/preferencesDialog.h \
-	mainwindow/igesturespainter.h \
+	mainwindow/gesturesPainterInterface.h \
 	mainwindow/buttonRefWindow.h \
 	mainwindow/refWindow.h \
 	mainwindow/shapeEdit/textPicture.h \
@@ -36,7 +36,7 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/preferencesPages/compilerPage.h \
 	mainwindow/preferencesPages/debuggerPage.h \
 	mainwindow/preferencesPages/editorPage.h \
-	mainwindow/preferencesPages/miscellaniousPage.h \
+	mainwindow/preferencesPages/miscellaniousPage.h \\
 	mainwindow/preferencesPages/robotSettingsPage.h
 
 SOURCES += mainwindow/mainwindow.cpp \
@@ -68,13 +68,14 @@ SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/shapeEdit/textPicture.cpp \
 	mainwindow/shapeEdit/image.cpp \
 	mainwindow/error.cpp \
-	mainwindow/errorlistwidget.cpp \
+	mainwindow/errorListWidget.cpp \
 	mainwindow/preferencesPages/behaviourPage.cpp \
 	mainwindow/preferencesPages/compilerPage.cpp \
 	mainwindow/preferencesPages/debuggerPage.cpp \
 	mainwindow/preferencesPages/editorPage.cpp \
 	mainwindow/preferencesPages/miscellaniousPage.cpp \
-	mainwindow/preferencesPages/robotSettingsPage.cpp
+	mainwindow/preferencesPages/robotSettingsPage.cpp \
+
 FORMS += mainwindow/mainwindow.ui \
 	mainwindow/shapeEdit/shapeEdit.ui \
 	mainwindow/gesturesShow/gestureswidget.ui \
@@ -85,4 +86,5 @@ FORMS += mainwindow/mainwindow.ui \
 	mainwindow/preferencesPages/editorPage.ui \
 	mainwindow/preferencesPages/debuggerPage.ui \
 	mainwindow/preferencesPages/compilerPage.ui \
-	mainwindow/preferencesPages/behaviourPage.ui
+	mainwindow/preferencesPages/behaviourPage.ui \
+
