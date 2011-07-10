@@ -7,10 +7,10 @@
 #include <QtGui>
 
 #include "../editorManager/editorManager.h"
-#include "propertyeditorproxymodel.h"
-#include "propertyeditordelegate.h"
-#include "igesturespainter.h"
-#include "gesturesShow/gestureswidget.h"
+#include "propertyEditorProxyModel.h"
+#include "propertyEditorDelegate.h"
+#include "gesturesPainterInterface.h"
+#include "gesturesShow/gesturesWidget.h"
 #include "../visualDebugger/debuggerConnector.h"
 #include "mainWindowInterpretersInterface.h"
 #include "../kernel/exception/settingsManager.h"
@@ -40,7 +40,7 @@ public:
 	EditorManager* manager();
 	EditorView *getCurrentTab();
 	ListenerManager *listenerManager();
-	IGesturesPainter *gesturesPainter();
+	GesturesPainterInterface *gesturesPainter();
 	QModelIndex rootIndex() const;
 
 	QAction *actionDeleteFromDiagram() const;

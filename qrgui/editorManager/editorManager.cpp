@@ -9,8 +9,8 @@
 #include "../kernel/ids.h"
 
 #include "../../qrrepo/repoApi.h"
-#include "../umllib/uml_nodeelement.h"
-#include "../umllib/uml_edgeelement.h"
+#include "../umllib/nodeElement.h"
+#include "../umllib/edgeElement.h"
 #include "../kernel/exception/exception.h"
 
 using namespace qReal;
@@ -175,18 +175,18 @@ QIcon EditorManager::icon(const Id &id) const
 	return mPluginIface[id.editor()]->getIcon(engine);
 }
 
-UML::Element* EditorManager::graphicalObject(const Id &id) const
+Element* EditorManager::graphicalObject(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	UML::ElementImpl *impl = mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
+	ElementImpl *impl = mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
 	if( !impl ){
 		qDebug() << "no impl";
 		return 0;
 	}
 	if (impl->isNode())
-		return new UML::NodeElement(impl);
+		return new NodeElement(impl);
 
-	return  new UML::EdgeElement(impl);
+	return  new EdgeElement(impl);
 }
 
 QStringList EditorManager::getPropertyNames(const Id &id) const

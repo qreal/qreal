@@ -11,7 +11,7 @@
 
 #include <QtDebug>
 
-#include "plugindialog.h"
+#include "pluginDialog.h"
 
 #include "../pluginInterface/editorInterface.h"
 #include "../editorManager/editorManager.h"

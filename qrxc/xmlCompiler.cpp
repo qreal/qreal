@@ -115,14 +115,12 @@ void XmlCompiler::generateElementClasses()
 		<< "#include <QPainter>\n\n"
 		<< "#include \"../../../qrgui/pluginInterface/elementImpl.h\"\n"
 		<< "#include \"../../../qrgui/pluginInterface/elementRepoInterface.h\"\n"
-		<< "#include \"../../../qrgui/pluginInterface/elementTitleHelpers.h\"\n\n"
-		<< "namespace UML {\n\n";
+		<< "#include \"../../../qrgui/pluginInterface/elementTitleHelpers.h\"\n\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values())
 			type->generateCode(out);
 
-	out() << "}\n\n";
 }
 
 void XmlCompiler::generatePluginHeader()
@@ -169,7 +167,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual int isNodeOrEdge(QString const &element) const; \n"
 		<< "\n"
 		<< "\tvirtual QIcon getIcon(SdfIconEngineV2Interface *engine) const;\n"
-		<< "\tvirtual UML::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
+		<< "\tvirtual ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QString getPropertyType(QString const &element, QString const &property) const;\n"
 		<< "\tvirtual QString getPropertyDefaultValue(QString const &element, QString const &property) const;\n"
 		<< "\tvirtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;\n"
@@ -410,7 +408,7 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 
 void XmlCompiler::generateGraphicalObjectRequest(OutFile &out)
 {
-	out() << "UML::ElementImpl* " << mPluginName
+	out() << "ElementImpl* " << mPluginName
 		<< "Plugin::getGraphicalObject(QString const &/*diagram*/, QString const &element) const\n{\n";
 
 	bool isNotFirst = false;

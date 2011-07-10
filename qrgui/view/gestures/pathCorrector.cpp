@@ -1,4 +1,4 @@
-#include "pathcorrector.h"
+#include "pathCorrector.h"
 #include "math.h"
 #include <QPointF>
 

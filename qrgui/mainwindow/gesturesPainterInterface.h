@@ -3,7 +3,7 @@
 #include <QList>
 #include <QPoint>
 
-class IGesturesPainter
+class GesturesPainterInterface
 {
 public:
 	virtual QString currentElement() = 0;

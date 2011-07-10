@@ -1,6 +1,6 @@
-#include "mainwindow.h"
+#include "mainWindow.h"
 
-#include "ui_mainwindow.h"
+#include "ui_mainWindow.h"
 
 #include <QtGui/QDialog>
 #include <QtGui/QPrinter>
@@ -27,15 +27,15 @@
 #include "preferencesDialog.h"
 #include "shapeEdit/shapeEdit.h"
 #include "openShapeEditorButton.h"
-#include "propertyeditorproxymodel.h"
-#include "gesturesShow/gestureswidget.h"
+#include "propertyEditorProxyModel.h"
+#include "gesturesShow/gesturesWidget.h"
 
 #include "../models/models.h"
-#include "../view/editorview.h"
-#include "../umllib/uml_element.h"
-#include "../dialogs/plugindialog.h"
+#include "../view/editorView.h"
+#include "../umllib/element.h"
+#include "../dialogs/pluginDialog.h"
 #include "../parsers/xml/xmlParser.h"
-#include "../dialogs/checkoutdialog.h"
+#include "../dialogs/checkoutDialog.h"
 #include "../generators/xmi/xmiHandler.h"
 #include "../generators/java/javaHandler.h"
 #include "../parsers/hascol/hascolParser.h"
@@ -357,7 +357,7 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool bl, bool isS
 			getCurrentTab()->mvIface()->setRootIndex(parent);
 			// select this item on diagram
 			getCurrentTab()->scene()->clearSelection();
-			UML::Element *e = (static_cast<EditorViewScene *>(getCurrentTab()->scene()))->getElem(idx.data(roles::idRole).value<Id>());
+			Element *e = (static_cast<EditorViewScene *>(getCurrentTab()->scene()))->getElem(idx.data(roles::idRole).value<Id>());
 			if (e) {
 				e->setColorRect(bl);
 				if (isSetSel)
@@ -410,7 +410,7 @@ void MainWindow::sceneSelectionChanged()
 	int length = graphicsItems.size();
 	if (length == 1) {
 		QGraphicsItem *item = graphicsItems[0];
-		if (UML::Element *elem = dynamic_cast<UML::Element *>(item)) {
+		if (Element *elem = dynamic_cast<Element *>(item)) {
 			setIndexesOfPropertyEditor(elem->id());
 			QModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
 			if (index.isValid()) {
@@ -421,7 +421,7 @@ void MainWindow::sceneSelectionChanged()
 			mPropertyModel.clearModelIndexes();
 
 			foreach(QGraphicsItem* item, graphicsItems) {
-				UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(item);
+				EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
 				if (edge) {
 					length--;
 					graphicsItems.removeOne(edge);
@@ -430,7 +430,7 @@ void MainWindow::sceneSelectionChanged()
 			//TODO: remove it? length < 2
 			if (length > 1) {
 				foreach(QGraphicsItem* item, graphicsItems) {
-					UML::NodeElement* node = dynamic_cast<UML::NodeElement*>(item);
+					NodeElement* node = dynamic_cast<NodeElement*>(item);
 					if (node)
 						node->hideEmbeddedLinkers();
 				}
@@ -596,7 +596,7 @@ void MainWindow::deleteFromScene()
 
 void MainWindow::deleteFromScene(QGraphicsItem *target)
 {
-	if (UML::Element *elem = dynamic_cast<UML::Element *>(target)) {
+	if (Element *elem = dynamic_cast<Element *>(target)) {
 		QPersistentModelIndex index = mModels->graphicalModelAssistApi().indexById(elem->id());
 		if (index.isValid()) {
 			PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
@@ -1127,7 +1127,7 @@ void MainWindow::centerOn(Id const &id)
 		return;
 	EditorView* const view = getCurrentTab();
 	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
-	UML::Element* const element = scene->getElem(id);
+	Element* const element = scene->getElem(id);
 
 	scene->clearSelection();
 	if (element != NULL) {
@@ -1352,7 +1352,7 @@ void MainWindow::showGestures()
 	emit gesturesShowed();
 }
 
-IGesturesPainter * MainWindow::gesturesPainter()
+GesturesPainterInterface * MainWindow::gesturesPainter()
 {
 	return mGesturesWidget;
 }
@@ -1705,7 +1705,7 @@ void MainWindow::highlight(Id const &graphicalId, bool exclusive)
 {
 	EditorView* const view = getCurrentTab();
 	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
-	UML::Element* const element = scene->getElem(graphicalId);
+	Element* const element = scene->getElem(graphicalId);
 	scene->highlight(graphicalId, exclusive);
 	view->ensureElementVisible(element);
 }

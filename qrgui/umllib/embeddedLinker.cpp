@@ -1,6 +1,6 @@
 #include "embeddedLinker.h"
-#include "uml_nodeelement.h"
-#include "uml_edgeelement.h"
+#include "nodeElement.h"
+#include "edgeElement.h"
 
 #include <math.h>
 #include <QtGui/QStyle>
@@ -9,10 +9,9 @@
 #include <QtCore/QDebug>
 #include <QSettings>
 
-#include "../view/editorviewscene.h"
-#include "../mainwindow/mainwindow.h"
+#include "../view/editorViewScene.h"
+#include "../mainwindow/mainWindow.h"
 
-using namespace UML;
 using namespace qReal;
 
 EmbeddedLinker::EmbeddedLinker()
@@ -251,7 +250,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		NodeElement *under = dynamic_cast<NodeElement*>(scene->itemAt(event->scenePos()));
 		mEdge->show();
 		int result = 0;
-		UML::NodeElement* target;
+		NodeElement* target;
 
 		if (!under) {
 			result = scene->launchEdgeMenu(mEdge, master, event->scenePos());
@@ -259,7 +258,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				mEdge = NULL;
 			else if ((result == +1) && (scene->getLastCreated()))
 			{
-				target = dynamic_cast<UML::NodeElement*>(scene->getLastCreated());
+				target = dynamic_cast<NodeElement*>(scene->getLastCreated());
 				if (target) {
 					mEdge->placeEndTo(mapFromItem(target,target->getNearestPort(target->pos())));
 					mEdge->connectToPort();	//it provokes to move target somehow, so it needs to place edge end and connect to port again

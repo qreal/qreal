@@ -1,4 +1,4 @@
-#include "checkoutdialog.h"
+#include "checkoutDialog.h"
 
 QPushButton *CheckoutDialog::createButton(const QString &text, const char *member)
 {

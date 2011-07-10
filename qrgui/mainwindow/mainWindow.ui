@@ -875,7 +875,7 @@
   <customwidget>
    <class>ErrorListWidget</class>
    <extends>QListWidget</extends>
-   <header>errorlistwidget.h</header>
+   <header>errorListWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

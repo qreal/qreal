@@ -4,7 +4,7 @@
 #include <QtOpenGL/QGLWidget>
 #endif
 
-#include "editorview.h"
+#include "editorView.h"
 
 using namespace qReal;
 
@@ -113,7 +113,7 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 		setDragMode(NoDrag);
 	} else {
 		if (event->buttons() & Qt::LeftButton ) {
-			UML::EdgeElement *newEdgeEl = dynamic_cast<UML::EdgeElement *>(itemAt(event->pos()));
+			EdgeElement *newEdgeEl = dynamic_cast<EdgeElement *>(itemAt(event->pos()));
 			if (newEdgeEl == NULL) {
 				setDragMode(RubberBandDrag);
 			} else {
@@ -159,7 +159,7 @@ void EditorView::invalidateScene()
 	scene()->invalidate();
 }
 
-void EditorView::ensureElementVisible(UML::Element const * const element)
+void EditorView::ensureElementVisible(Element const * const element)
 {
 	if (element != NULL) {
 		float const widgetWidth = size().width();
