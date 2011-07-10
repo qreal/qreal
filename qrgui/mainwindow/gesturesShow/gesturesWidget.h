@@ -6,13 +6,13 @@
 #include <QList>
 #include <QPoint>
 #include <QString>
-#include "../igesturespainter.h"
+#include "../gesturesPainterInterface.h"
 
 namespace Ui {
 	class GesturesWidget;
 }
 
-class GesturesWidget : public QWidget, public IGesturesPainter
+class GesturesWidget : public QWidget, public GesturesPainterInterface
 {
 	Q_OBJECT
 

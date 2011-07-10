@@ -1,9 +1,9 @@
 #pragma once
-#include "IKeyManager.h"
-#include "keymanager.h"
+#include "keyManagerInterface.h"
+#include "keyManager.h"
 #include "../../kernel/ids.h"
 #include "../../editorManager/editorManager.h"
-#include "../../mainwindow/igesturespainter.h"
+#include "../../mainwindow/gesturesPainterInterface.h"
 #include <QPointF>
 #include <QPoint>
 #include <QLineF>
@@ -17,11 +17,11 @@ class MouseMovementManager
 public:
 	MouseMovementManager(QList<qReal::Id> elements,
 						 qReal::EditorManager * editorManager,
-						 IGesturesPainter * gesturesPaintManager);
+						 GesturesPainterInterface * gesturesPaintManager);
 	void setElements(QList<qReal::Id> const & elements);
 	void addPoint(QPointF const & point);
 	void clear();
-	void setGesturesPainter(IGesturesPainter * gesturesPainter);
+	void setGesturesPainter(GesturesPainterInterface * gesturesPainter);
 	qReal::Id getObject();
 	static QList<QPoint> stringToPath(QString const &str);
 	QPointF pos();
@@ -42,5 +42,5 @@ private:
 	QList<qReal::Id> mElements;
 	QMap<QString, qReal::Id> mGestures;
 	QPointF mCentre;
-	IGesturesPainter * mGesturesPaintMan;
+	GesturesPainterInterface * mGesturesPaintMan;
 };

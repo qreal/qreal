@@ -3,7 +3,7 @@
 #include <QPushButton>
 #include "../../qrrepo/repoApi.h"
 #include "refWindow.h"
-#include "mainwindow.h"
+#include "mainWindow.h"
 
 class ButtonRefWindow : public QPushButton
 {

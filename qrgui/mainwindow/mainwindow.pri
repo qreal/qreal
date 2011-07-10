@@ -1,7 +1,7 @@
-HEADERS += mainwindow/mainwindow.h \
+HEADERS += mainwindow/mainWindow.h \
 	mainwindow/paletteToolbox.h \
-	mainwindow/propertyeditorproxymodel.h \
-	mainwindow/propertyeditordelegate.h \
+	mainwindow/propertyEditorProxyModel.h \
+	mainwindow/propertyEditorDelegate.h \
 	mainwindow/errorReporter.h \
 	mainwindow/openShapeEditorButton.h \
 	mainwindow/shapeEdit/shapeEdit.h \
@@ -16,20 +16,20 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/shapeEdit/linePort.h \
 	mainwindow/shapeEdit/xmlLoader.h \
 	mainwindow/shapeEdit/stylus.h \
-	mainwindow/shapeEdit/colorlisteditor.h \
+	mainwindow/shapeEdit/colorListEditor.h \
 	mainwindow/shapeEdit/curve.h \
 	mainwindow/shapeEdit/view.h \
-	mainwindow/gesturesShow/gestureswidget.h \
-	mainwindow/igesturespainter.h \
+	mainwindow/gesturesShow/gesturesWidget.h \
+	mainwindow/gesturesPainterInterface.h \
 	mainwindow/preferencesDialog.h \
-	mainwindow/igesturespainter.h \
+	mainwindow/gesturesPainterInterface.h \
 	mainwindow/buttonRefWindow.h \
 	mainwindow/refWindow.h \
 	mainwindow/shapeEdit/textPicture.h \
 	mainwindow/shapeEdit/path.h \
 	mainwindow/shapeEdit/image.h \
 	mainwindow/error.h \
-	mainwindow/errorlistwidget.h \
+	mainwindow/errorListWidget.h \
 	mainwindow/mainWindowInterpretersInterface.h \
 	mainwindow/preferencesPages/page.h \
 	mainwindow/preferencesPages/behaviourPage.h \
@@ -39,10 +39,10 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/preferencesPages/miscellaniousPage.h \
 	mainwindow/preferencesPages/robotSettingsPage.h
 
-SOURCES += mainwindow/mainwindow.cpp \
+SOURCES += mainwindow/mainWindow.cpp \
 	mainwindow/paletteToolbox.cpp \
-	mainwindow/propertyeditorproxymodel.cpp \
-	mainwindow/propertyeditordelegate.cpp \
+	mainwindow/propertyEditorProxyModel.cpp \
+	mainwindow/propertyEditorDelegate.cpp \
 	mainwindow/errorReporter.cpp \
 	mainwindow/openShapeEditorButton.cpp \
 	mainwindow/shapeEdit/shapeEdit.cpp \
@@ -57,27 +57,29 @@ SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/shapeEdit/linePort.cpp \
 	mainwindow/shapeEdit/xmlLoader.cpp \
 	mainwindow/shapeEdit/stylus.cpp \
-	mainwindow/shapeEdit/colorlisteditor.cpp \
+	mainwindow/shapeEdit/colorListEditor.cpp \
 	mainwindow/shapeEdit/path.cpp \
 	mainwindow/shapeEdit/curve.cpp \
 	mainwindow/shapeEdit/view.cpp \
-	mainwindow/gesturesShow/gestureswidget.cpp \
+	mainwindow/gesturesShow/gesturesWidget.cpp \
 	mainwindow/preferencesDialog.cpp \
 	mainwindow/buttonRefWindow.cpp \
 	mainwindow/refWindow.cpp \
 	mainwindow/shapeEdit/textPicture.cpp \
 	mainwindow/shapeEdit/image.cpp \
 	mainwindow/error.cpp \
-	mainwindow/errorlistwidget.cpp \
+	mainwindow/errorListWidget.cpp \
 	mainwindow/preferencesPages/behaviourPage.cpp \
 	mainwindow/preferencesPages/compilerPage.cpp \
 	mainwindow/preferencesPages/debuggerPage.cpp \
 	mainwindow/preferencesPages/editorPage.cpp \
 	mainwindow/preferencesPages/miscellaniousPage.cpp \
-	mainwindow/preferencesPages/robotSettingsPage.cpp
-FORMS += mainwindow/mainwindow.ui \
+	mainwindow/preferencesPages/robotSettingsPage.cpp \
+
+
+FORMS += mainwindow/mainWindow.ui \
 	mainwindow/shapeEdit/shapeEdit.ui \
-	mainwindow/gesturesShow/gestureswidget.ui \
+	mainwindow/gesturesShow/gesturesWidget.ui \
 	mainwindow/preferencesDialog.ui \
 	mainwindow/refWindow.ui \
 	mainwindow/preferencesPages/robotSettingsPage.ui \

@@ -5,7 +5,7 @@
 
 #include "../kernel/exception/exception.h"
 
-#include "propertyeditorproxymodel.h"
+#include "propertyEditorProxyModel.h"
 
 using namespace qReal;
 

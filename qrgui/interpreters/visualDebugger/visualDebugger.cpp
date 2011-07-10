@@ -4,11 +4,11 @@
 #include <QTimer>
 #include <QMessageBox>
 
-#include "propertyeditorproxymodel.h"
+#include "propertyEditorProxyModel.h"
 #include "../models/models.h"
 
-#include "../view/editorview.h"
-#include "../umllib/uml_element.h"
+#include "../view/editorView.h"
+#include "../umllib/element.h"
 
 using namespace qReal;
 
@@ -113,13 +113,13 @@ void VisualDebugger::error(ErrorType e)
 	deinitialize();
 }
 
-UML::Element* VisualDebugger::findBeginNode(QString name)
+Element* VisualDebugger::findBeginNode(QString name)
 {
 	int i = 0;
 	int count = mEditor->mvIface()->scene()->items().count();
-	UML::Element *elem = NULL;
+	Element *elem = NULL;
 	while (i < count) {
-		elem = dynamic_cast<UML::Element *>(mEditor->mvIface()->scene()->items().at(i));
+		elem = dynamic_cast<Element *>(mEditor->mvIface()->scene()->items().at(i));
 		if (elem && elem->id().element().compare(name) == 0) {
 			break;
 		}
@@ -168,7 +168,7 @@ bool VisualDebugger::hasEndOfLinkNode(Id id)
 	return mModelApi.graphicalRepoApi().to(id) != Id::rootId();
 }
 
-VisualDebugger::ErrorType VisualDebugger::doFirstStep(UML::Element *elem)
+VisualDebugger::ErrorType VisualDebugger::doFirstStep(Element *elem)
 {
 	if (!elem) {
 		return VisualDebugger::missingBeginNode;
@@ -304,7 +304,7 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep()
 	} else {
 		mBlockParser->setErrorReporter(mErrorReporter);
 
-		UML::Element *elem = dynamic_cast<UML::NodeElement *>(mCurrentElem);
+		Element *elem = dynamic_cast<NodeElement *>(mCurrentElem);
 		if (elem) {
 			if (mModelApi.graphicalRepoApi().outgoingLinks(mCurrentId).count() == 0) {
 				if (!isFinalNode(mCurrentId)) {

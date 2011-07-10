@@ -1,5 +1,5 @@
 #include "shapeEdit.h"
-#include "colorlisteditor.h"
+#include "colorListEditor.h"
 #include "ui_shapeEdit.h"
 #include "../../../utils/outFile.h"
 #include "../../../utils/xmlUtils.h"

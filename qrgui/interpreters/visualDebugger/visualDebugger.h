@@ -2,7 +2,7 @@
 
 #include <QtGui/QGraphicsEffect>
 
-#include "../view/editorview.h"
+#include "../view/editorView.h"
 #include "../mainwindow/errorReporter.h"
 
 #include "blockParser.h"
@@ -40,7 +40,7 @@ namespace qReal {
 	private:
 		EditorView *mEditor;
 		models::GraphicalModelAssistApi const &mModelApi;
-		UML::Element *mCurrentElem;
+		Element *mCurrentElem;
 		VisualDebugger::ErrorType mError;
 		Id mCurrentId;
 		QGraphicsColorizeEffect *mEffect;
@@ -52,12 +52,12 @@ namespace qReal {
 
 		void error(ErrorType e);
 		ErrorType checkEditor();
-		UML::Element* findBeginNode(QString name);
+		Element* findBeginNode(QString name);
 		Id findValidLink();
 		void pause(int time);
 		bool isFinalNode(Id id);
 		bool hasEndOfLinkNode(Id id);
-		ErrorType doFirstStep(UML::Element* elem);
+		ErrorType doFirstStep(Element* elem);
 		void doStep(Id id);
 		void deinitialize();
 		void processAction();

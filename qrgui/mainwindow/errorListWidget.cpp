@@ -1,5 +1,5 @@
-#include "errorlistwidget.h"
-#include"mainwindow.h"
+#include "errorListWidget.h"
+#include"mainWindow.h"
 
 ErrorListWidget::ErrorListWidget(QWidget *parent)
 {
