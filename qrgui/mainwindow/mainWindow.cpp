@@ -1769,12 +1769,11 @@ void MainWindow::fullscreen()
 
 void MainWindow::createProject()
 {
-	QSettings settings("SPbSU", "QReal");
-	QString dirName = getNextDirName(settings.value("workingDir", mSaveDir).toString());
-	settings.setValue("workingDir", dirName);
+	QString dirName = getNextDirName(SettingsManager::instance()->value("workingDir", mSaveDir).toString());
+	SettingsManager::instance()->setValue("workingDir", dirName);
 	open(dirName);
 
-	if (settings.value("diagramCreateSuggestion", true).toBool())
+	if (SettingsManager::instance()->value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 
 }

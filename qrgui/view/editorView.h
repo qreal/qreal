@@ -43,7 +43,6 @@ namespace qReal {
 	private:
 		EditorViewMViface *mMVIface;
 		EditorViewScene *mScene;
-		QSettings mSettings;
 		QPointF mMouseOldPosition;
 		bool mWheelPressed;
 		void checkGrid();

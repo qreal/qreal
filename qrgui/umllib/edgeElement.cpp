@@ -48,7 +48,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	connect(&mSquarizeAction, SIGNAL(triggered(QPointF const &)), SLOT(squarizeHandler(QPointF const &)));
 	connect(&mMinimizeAction, SIGNAL(triggered(QPointF const &)), SLOT(minimizeHandler(QPointF const &)));
 
-        mChaoticEdition = SettingsManager::instance()->value("ChaoticEdition", false).toBool();
+		mChaoticEdition = SettingsManager::instance()->value("ChaoticEdition", false).toBool();
 
 	ElementTitleFactory factory;
 
@@ -87,7 +87,7 @@ QRectF EdgeElement::boundingRect() const
 
 QPolygonF EdgeElement::line() const
 {
-        return mLine;
+		return mLine;
 }
 
 static double lineAngle(const QLineF &line)
@@ -104,7 +104,7 @@ static void drawChaosStar(QPainter *painter)
 	painter->save();
 	QPen pen;
 	QColor color;
-        color.setNamedColor("#c3dcc4");
+		color.setNamedColor("#c3dcc4");
 	pen.setColor(color);
 	painter->setPen(pen);
 
@@ -132,13 +132,13 @@ void EdgeElement::drawPort(QPainter *painter) const
 	QPen pen;
 	QColor color;
 	QPointF p1(-0.25,0);
-        QPointF p2(0.25,0);
+		QPointF p2(0.25,0);
 
-        color.setNamedColor("#c3dcc4");
+		color.setNamedColor("#c3dcc4");
 	pen.setWidth(11);
 	pen.setColor(color);
 	painter->setPen(pen);
-        painter->drawLine(p1, p2);
+		painter->drawLine(p1, p2);
 
 	color.setNamedColor("#465945");
 	pen.setWidth(3);
@@ -435,7 +435,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	else
 		mDragPoint = -1;
 
-        connectToPort();
+		connectToPort();
 
 	if (mBeginning)
 		mBeginning->setPortsVisible(false);
@@ -590,7 +590,6 @@ void EdgeElement::minimizeHandler(const QPointF &pos) {
 
 void EdgeElement::adjustLink()
 {
-	QSettings settings("SPbSU", "QReal");
 	prepareGeometryChange();
 	if (mSrc)
 		mLine.first() = mapFromItem(mSrc, mSrc->getPortPos(mPortFrom));
@@ -599,7 +598,7 @@ void EdgeElement::adjustLink()
 	updateLongestPart();
 	for (int i = 0; i < mLine.size() - 2; i++)
 		removeUnneededPoints(i);
-	if (settings.value("SquareLine", true).toBool())
+	if (SettingsManager::instance()->value("SquareLine", true).toBool())
 			squarizeHandler(QPointF());
 }
 

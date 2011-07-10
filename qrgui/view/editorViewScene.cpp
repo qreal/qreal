@@ -64,7 +64,7 @@ void EditorViewScene::initMouseMoveManager()
 
 void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 {
-	int const indexGrid = QSettings("SPbSU", "QReal").value("IndexGrid", 30).toInt();
+	int const indexGrid = SettingsManager::instance()->value("IndexGrid", 30).toInt();
 	qreal const sceneX = rect.x();
 	qreal const sceneY = rect.y();
 

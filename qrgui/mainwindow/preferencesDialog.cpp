@@ -7,7 +7,6 @@
 #include "ui_preferencesEditorForm.h"
 #include "ui_preferencesMiscellaniousForm.h"
 
-#include <QSettings>
 #include <QFileDialog>
 
 #include <QMessageBox>
