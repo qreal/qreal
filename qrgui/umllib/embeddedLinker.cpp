@@ -8,8 +8,8 @@
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtCore/QDebug>
 
-#include "../view/editorviewscene.h"
-#include "../mainwindow/mainwindow.h"
+#include "../view/editorViewScene.h"
+#include "../mainwindow/mainWindow.h"
 
 using namespace qReal;
 

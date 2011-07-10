@@ -76,6 +76,7 @@ SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/preferencesPages/miscellaniousPage.cpp \
 	mainwindow/preferencesPages/robotSettingsPage.cpp \
 
+
 FORMS += mainwindow/mainwindow.ui \
 	mainwindow/shapeEdit/shapeEdit.ui \
 	mainwindow/gesturesShow/gestureswidget.ui \

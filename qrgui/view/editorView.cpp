@@ -4,7 +4,7 @@
 #include <QtOpenGL/QGLWidget>
 #endif
 
-#include "editorview.h"
+#include "editorView.h"
 
 using namespace qReal;
 

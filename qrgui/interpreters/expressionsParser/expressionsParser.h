@@ -4,7 +4,7 @@
 
 #include "../visualDebugger/number.h"
 #include "../mainwindow/errorReporter.h"
-#include "propertyeditorproxymodel.h"
+#include "propertyEditorProxyModel.h"
 
 namespace qReal {
 
