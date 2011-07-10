@@ -22,6 +22,16 @@ void NonGraphicType::generateNameMapping(OutFile &out)
 	Q_UNUSED(out)
 }
 
+void NonGraphicType::generatePropertyDisplayedNamesMapping(utils::OutFile &out)
+{
+	Q_UNUSED(out)
+}
+
+void NonGraphicType::generatePropertyDescriptionMapping(utils::OutFile &out)
+{
+	Q_UNUSED(out)
+}
+
 bool NonGraphicType::generateObjectRequestString(OutFile &out, bool isNotFirst)
 {
 	Q_UNUSED(out)

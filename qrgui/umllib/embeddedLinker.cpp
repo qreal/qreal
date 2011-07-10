@@ -7,7 +7,6 @@
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtCore/QDebug>
-#include <QSettings>
 
 #include "../view/editorviewscene.h"
 #include "../mainwindow/mainwindow.h"
@@ -18,8 +17,8 @@ using namespace qReal;
 EmbeddedLinker::EmbeddedLinker()
 {
 
-        size = SettingsManager::instance()->value("EmbeddedLinkerSize", 6).toFloat();
-        indent = SettingsManager::instance()->value("EmbeddedLinkerIndent", 5).toFloat();
+	size = SettingsManager::instance()->value("EmbeddedLinkerSize", 6).toFloat();
+	indent = SettingsManager::instance()->value("EmbeddedLinkerIndent", 5).toFloat();
 
 
 	covered = false;
@@ -35,7 +34,6 @@ EmbeddedLinker::EmbeddedLinker()
 
 EmbeddedLinker::~EmbeddedLinker()
 {
-
 }
 
 NodeElement* EmbeddedLinker::getMaster()
@@ -70,7 +68,7 @@ void EmbeddedLinker::generateColor()
 
 void EmbeddedLinker::setColor(QColor arg)
 {
-		color = arg;
+	color = arg;
 }
 
 void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
@@ -215,18 +213,15 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
 
-	if (scene)
-	{
+	if (scene) {
 		const QString type = "qrm:/" + master->id().editor() + "/" +
 							 master->id().diagram() + "/" + edgeType.element();
-		if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type)))
-		{
+		if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type))) {
 			master->setConnectingState(true);
-			Id *edgeId = scene->createElement(type, event->scenePos());
-			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(*edgeId));
+			Id edgeId = scene->createElement(type, event->scenePos());
+			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
 		}
-		if (mEdge)
-		{
+		if (mEdge) {
 			master->setSelected(false);
 			QPointF point = mapToItem(master,event->pos());
 			mEdge->placeStartTo(mEdge->mapFromItem(master,master->getNearestPort(point)));

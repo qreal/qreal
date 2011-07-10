@@ -9,124 +9,125 @@
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
 namespace UML {
-	enum ArrowType { FILLED_ARROW, EMPTY_ARROW, FILLED_RHOMB, EMPTY_RHOMB, NO_ARROW, OPEN_ARROW };
 
-	class NodeElement;
-	/** @class EdgeElement
-	 * 	@brief class for an edge on a diagram
-	 * 	*/
-	class EdgeElement : public Element
-	{
-		Q_OBJECT
-		public:
-			EdgeElement(ElementImpl *impl);
-			virtual ~EdgeElement();
+enum ArrowType { FILLED_ARROW, EMPTY_ARROW, FILLED_RHOMB, EMPTY_RHOMB, NO_ARROW, OPEN_ARROW };
 
-			void updateData();
+class NodeElement;
+/** @class EdgeElement
+  * 	@brief class for an edge on a diagram
+  * 	*/
+class EdgeElement : public Element
+{
+	Q_OBJECT
+public:
+	EdgeElement(ElementImpl *impl);
+	virtual ~EdgeElement();
 
-			virtual QRectF boundingRect() const;
-			QPainterPath shape() const;
-			virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* opt, QWidget* w);
+	void updateData();
 
-			virtual bool initPossibleEdges();
-			virtual void initTitles();
+	virtual QRectF boundingRect() const;
+	QPainterPath shape() const;
+	virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* opt, QWidget* w);
 
-			void adjustLink();
-			bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true, bool jumpsOnly = false);
-			bool shouldReconnect() const;
-			void arrangeSrcAndDst();
-			UML::NodeElement *src() const;
-			UML::NodeElement *dst() const;
-			bool isSrc(UML::NodeElement const *node) const;
-			bool isDst(UML::NodeElement const *node) const;
-			qreal portIdOn(UML::NodeElement const *node) const;
-			QPointF nextFrom(UML::NodeElement const *node) const;
-			QPointF connectionPoint(UML::NodeElement const *node) const;
-			UML::NodeElement* otherSide(UML::NodeElement const *node) const;
-			void removeLink(UML::NodeElement const *from);
-			QPolygonF line() const;
+	virtual bool initPossibleEdges();
+	virtual void initTitles();
 
-			/** @brief Get position of edge's start point*/
-			QPointF from() const;
-			/** @brief Get position of edge's end point*/
-			QPointF to() const;
+	void adjustLink();
+	bool reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst, bool jumpsOnly);
+	bool shouldReconnect() const;
+	void arrangeSrcAndDst();
+	UML::NodeElement *src() const;
+	UML::NodeElement *dst() const;
+	bool isSrc(UML::NodeElement const *node) const;
+	bool isDst(UML::NodeElement const *node) const;
+	qreal portIdOn(UML::NodeElement const *node) const;
+	QPointF nextFrom(UML::NodeElement const *node) const;
+	QPointF connectionPoint(UML::NodeElement const *node) const;
+	UML::NodeElement* otherSide(UML::NodeElement const *node) const;
+	void removeLink(UML::NodeElement const *from);
+	QPolygonF line() const;
 
-			void placeStartTo(QPointF const &place);
-			void placeEndTo(QPointF const &place);
-			void moveConnection(UML::NodeElement *node, qreal const portId);
+	/** @brief Get position of edge's start point*/
+	QPointF from() const;
+	/** @brief Get position of edge's end point*/
+	QPointF to() const;
 
-			virtual void connectToPort();
+	void placeStartTo(QPointF const &place);
+	void placeEndTo(QPointF const &place);
+	void moveConnection(UML::NodeElement *node, qreal const portId);
 
-			virtual QList<ContextMenuAction*> contextMenuActions();
+	virtual void connectToPort();
 
-			QList<PossibleEdge> getPossibleEdges();
+	virtual QList<ContextMenuAction*> contextMenuActions();
 
-			virtual void setColorRect(bool bl);
-			void breakPointHandler(QPointF const &pos);
-			bool isBreakPointPressed();
-			void breakPointUnpressed();
-			bool mBreakPointPressed;
-		protected:
-			virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-			virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-			virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+	QList<PossibleEdge> getPossibleEdges();
 
-			virtual void drawStartArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
-			virtual void drawEndArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
+	virtual void setColorRect(bool bl);
+	void breakPointHandler(QPointF const &pos);
+	bool isBreakPointPressed();
+	void breakPointUnpressed();
+	bool mBreakPointPressed;
+protected:
+	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
-			Qt::PenStyle mPenStyle;
-			QString mText;
-			QString mFromMult, mToMult;
-			ArrowType mStartArrowStyle;
-			ArrowType mEndArrowStyle;
+	virtual void drawStartArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
+	virtual void drawEndArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
 
-		private slots:
-			void addPointHandler(QPointF const &pos);
-			void delPointHandler(QPointF const &pos);
-			void squarizeHandler(QPointF const &pos);
-			void minimizeHandler(QPointF const &pos);
-		private:
+	Qt::PenStyle mPenStyle;
+	QString mText;
+	QString mFromMult, mToMult;
+	ArrowType mStartArrowStyle;
+	ArrowType mEndArrowStyle;
 
-			QList<PossibleEdge> possibleEdges;
+private slots:
+	void addPointHandler(QPointF const &pos);
+	void delPointHandler(QPointF const &pos);
+	void squarizeHandler(QPointF const &pos);
+	void minimizeHandler(QPointF const &pos);
+private:
 
-			int getPoint(const QPointF &location);
-			NodeElement *getNodeAt(const QPointF &position);
-			void updateLongestPart();
-			static QRectF getPortRect(QPointF const &point);
+	QList<PossibleEdge> possibleEdges;
 
-			void drawPort(QPainter *painter) const;
+	int getPoint(const QPointF &location);
+	NodeElement *getNodeAt(const QPointF &position);
+	void updateLongestPart();
+	static QRectF getPortRect(QPointF const &point);
 
-			void removeUnneededPoints(int startingPoint);
+	void drawPort(QPainter *painter) const;
 
-			NodeElement *mSrc;
-			NodeElement *mDst;
+	void removeUnneededPoints(int startingPoint);
 
-			qreal mPortFrom;
-			qreal mPortTo;
+	NodeElement *mSrc;
+	NodeElement *mDst;
 
-			int mDragPoint; // is a number of mLine's point we're trying to drag
+	qreal mPortFrom;
+	qreal mPortTo;
 
-			int mLongPart;
+	int mDragPoint; // is a number of mLine's point we're trying to drag
 
-			QPolygonF mLine; // holds coordinates of polygon points in coordinate system with center in first point
-			QColor mColor;
+	int mLongPart;
 
-			NodeElement *mBeginning;
-			NodeElement *mEnding;
+	QPolygonF mLine; // holds coordinates of polygon points in coordinate system with center in first point
+	QColor mColor;
 
-			ContextMenuAction mAddPointAction;
-			ContextMenuAction mDelPointAction;
-			ContextMenuAction mSquarizeAction;
-			ContextMenuAction mMinimizeAction;
+	NodeElement *mBeginning;
+	NodeElement *mEnding;
 
-			bool mChaoticEdition;
+	ContextMenuAction mAddPointAction;
+	ContextMenuAction mDelPointAction;
+	ContextMenuAction mSquarizeAction;
+	ContextMenuAction mMinimizeAction;
 
-			ElementImpl *mElementImpl;
+	bool mChaoticEdition;
 
-			QPointF mLastPos;
-			QPolygonF mLastLine;
-			int mLastDragPoint;
+	ElementImpl *mElementImpl;
 
-	};
+	QPointF mLastPos;
+	QPolygonF mLastLine;
+	int mLastDragPoint;
+
+};
 }
 

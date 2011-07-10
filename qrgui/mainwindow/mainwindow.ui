@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1062</width>
+    <width>738</width>
     <height>523</height>
    </rect>
   </property>
@@ -35,7 +35,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1062</width>
+     <width>738</width>
      <height>21</height>
     </rect>
    </property>
@@ -76,6 +76,7 @@
      <string>&amp;Settings</string>
     </property>
     <addaction name="actionPreferences"/>
+    <addaction name="actionRobot_Settings"/>
     <addaction name="actionPlugins"/>
     <addaction name="actionShow_grid"/>
     <addaction name="actionShow_alignment"/>
@@ -133,6 +134,10 @@
     <addaction name="actionParse_Editor_xml"/>
     <addaction name="separator"/>
     <addaction name="actionGenerate_Editor_qrmc"/>
+    <addaction name="actionRun"/>
+    <addaction name="actionStop_Running"/>
+    <addaction name="actionStop_Robot"/>
+    <addaction name="actionGenerate_Editor"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -159,6 +164,7 @@
    <addaction name="actionPrint"/>
    <addaction name="actionNewProject"/>
    <addaction name="actionNew_Diagram"/>
+   <addaction name="actionOpen"/>
    <addaction name="actionSave"/>
   </widget>
   <widget class="QDockWidget" name="minimapDock">
@@ -368,7 +374,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="propertyDockWidgetContents">
+   <widget class="QWidget" name="propertyEditorDockWidgetContents">
     <layout class="QVBoxLayout">
      <property name="spacing">
       <number>6</number>
@@ -395,9 +401,9 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QToolBar" name="debuggerToolBar">
+  <widget class="QToolBar" name="interpreterToolBar">
    <property name="windowTitle">
-    <string>toolBar</string>
+    <string>Interpreter Toolbar</string>
    </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
@@ -408,6 +414,51 @@
    <addaction name="actionStart_debugging"/>
    <addaction name="actionClose_all"/>
    <addaction name="actionNext"/>
+   <addaction name="actionShow2Dmodel"/>
+   <addaction name="actionRun"/>
+   <addaction name="actionStop_Running"/>
+   <addaction name="actionStop_Robot"/>
+   <addaction name="separator"/>
+   <addaction name="actionRobot_Settings"/>
+   <addaction name="separator"/>
+   <addaction name="actionFullscreen"/>
+  </widget>
+  <widget class="QDockWidget" name="logicalModelDock">
+   <property name="features">
+    <set>QDockWidget::AllDockWidgetFeatures</set>
+   </property>
+   <property name="windowTitle">
+    <string>Logical Model Explorer</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="logicalModelDockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QTreeView" name="logicalModelExplorer">
+       <property name="contextMenuPolicy">
+        <enum>Qt::ActionsContextMenu</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>true</bool>
+       </property>
+       <property name="dragEnabled">
+        <bool>false</bool>
+       </property>
+       <property name="dragDropOverwriteMode">
+        <bool>false</bool>
+       </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::DragDrop</enum>
+       </property>
+       <property name="defaultDropAction">
+        <enum>Qt::IgnoreAction</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <action name="actionQuit">
    <property name="checkable">
@@ -615,6 +666,9 @@
    <property name="text">
     <string>Open...</string>
    </property>
+   <property name="toolTip">
+    <string>Open</string>
+   </property>
   </action>
   <action name="actionParse_Hascol_sources">
    <property name="text">
@@ -651,6 +705,9 @@
   <action name="actionGenerate_Editor">
    <property name="text">
     <string>Generate Editor</string>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionParse_Editor_xml">
@@ -815,13 +872,40 @@
    <property name="shortcut">
     <string>Ctrl+F2</string>
    </property>
-  </action>
+  </action>  
   <action name="actionBreak_main">
    <property name="text">
     <string>Break main</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+F4</string>
+   </property>
+   <property name="toolTip">
+    <string>Run current diagram on a robot using existing Bluetooth connection</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>  
+  <action name="actionRobot_Settings">
+   <property name="text">
+    <string>Robot Settings...</string>
+   </property>
+  </action>
+  <action name="actionStop_Running">
+   <property name="text">
+    <string>Stop Running</string>
+   </property>
+   <property name="toolTip">
+    <string>Stop Running</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F5</string>
+   </property>
+  </action>
+  <action name="actionStop_Robot">
+   <property name="text">
+    <string>Stop Robot</string>
    </property>
   </action>
   <action name="actionNew_Diagram">
@@ -853,6 +937,17 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+F</string>
+   </property>
+  </action>
+  <action name="actionShow2Dmodel">
+   <property name="text">
+    <string>2D model</string>
+   </property>
+   <property name="toolTip">
+    <string>Show 2D model</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F12</string>
    </property>
   </action>
   <action name="actionNewProject">

@@ -9,7 +9,7 @@
 using namespace qReal;
 
 EditorView::EditorView(QWidget *parent)
-	: QGraphicsView(parent), mSettings("SPbSU", "QReal"), mMouseOldPosition(), mWheelPressed(false)
+	: QGraphicsView(parent), mMouseOldPosition(), mWheelPressed(false)
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
@@ -17,7 +17,7 @@ EditorView::EditorView(QWidget *parent)
 	connect(mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
 	connect(mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
 
-        setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
 	mMVIface = new EditorViewMViface(this, mScene);
 	setScene(mScene);
@@ -53,9 +53,9 @@ void EditorView::zoomIn()
 {
 	if (mWheelPressed)
 		return;
-	double zoomFactor = static_cast<double>(mSettings.value("ZoomFactor", 2).toInt()) / 10 + 1;
+	double zoomFactor = static_cast<double>(SettingsManager::instance()->value("ZoomFactor", 2).toInt()) / 10 + 1;
 	scale(zoomFactor, zoomFactor);
-	if (mSettings.value("ShowGrid", true).toBool()) {
+	if (SettingsManager::instance()->value("ShowGrid", true).toBool()) {
 		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
 	}
 	checkGrid();
@@ -65,9 +65,9 @@ void EditorView::zoomOut()
 {
 	if (mWheelPressed)
 		return;
-	double zoomFactor = 1 / (static_cast<double>(mSettings.value("ZoomFactor", 2).toInt()) / 10 + 1);
+	double zoomFactor = 1 / (static_cast<double>(SettingsManager::instance()->value("ZoomFactor", 2).toInt()) / 10 + 1);
 	scale(zoomFactor, zoomFactor);
-	if (mSettings.value("ShowGrid", true).toBool()) {
+	if (SettingsManager::instance()->value("ShowGrid", true).toBool()) {
 		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
 	}
 	checkGrid();
@@ -75,7 +75,7 @@ void EditorView::zoomOut()
 
 void EditorView::checkGrid()
 {
-	if (mSettings.value("ShowGrid", true).toBool()) {
+	if (SettingsManager::instance()->value("ShowGrid", true).toBool()) {
 		if(mScene->realIndexGrid() < 2 || mScene->realIndexGrid() > 380) {
 			mScene->setNeedDrawGrid(false);
 		}
@@ -169,4 +169,3 @@ void EditorView::ensureElementVisible(UML::Element const * const element)
 		ensureVisible(element, (widgetWidth - elementWidth) / 2, (widgetHeight - elementHeight) / 2);
 	}
 }
-

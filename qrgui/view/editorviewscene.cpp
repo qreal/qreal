@@ -19,13 +19,11 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	, mPrevParent(0)
 	, mShouldReparentItems(false)
 {
+	mNeedDrawGrid = SettingsManager::instance()->value("ShowGrid", true).toBool();
+	mWidthOfGrid = static_cast<double>(SettingsManager::instance()->value("GridWidth", 10).toInt()) / 100;
+	mRealIndexGrid = SettingsManager::instance()->value("IndexGrid", 30).toInt();
 
-        mNeedDrawGrid = SettingsManager::instance()->value("ShowGrid", true).toBool();
-        mWidthOfGrid = static_cast<double>(SettingsManager::instance()->value("GridWidth", 10).toInt()) / 100;
-        mRealIndexGrid = SettingsManager::instance()->value("IndexGrid", 30).toInt();
-
-
-        setItemIndexMethod(NoIndex);
+	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 	mRightButtonPressed = false;
 	mActionSignalMapper = new QSignalMapper(this);
@@ -65,7 +63,7 @@ void EditorViewScene::initMouseMoveManager()
 
 void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 {
-	int const indexGrid = QSettings("SPbSU", "QReal").value("IndexGrid", 30).toInt();
+	int const indexGrid = SettingsManager::instance()->value("IndexGrid", 50).toInt();
 	qreal const sceneX = rect.x();
 	qreal const sceneY = rect.y();
 
@@ -182,10 +180,10 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 	QMenu *edgeMenu = new QMenu();
 	toDelete.append(edgeMenu);
 	edgeMenu->addAction(mWindow->actionDeleteFromDiagram());
-	edgeMenu->addAction(QString("Discard"));
+	edgeMenu->addAction(tr("Discard"));
 	edgeMenu->addSeparator();
 
-	QMenu *createElemMenu = new QMenu(QString("Create new element"), edgeMenu);
+	QMenu *createElemMenu = new QMenu(tr("Create new element"), edgeMenu);
 	toDelete.append(createElemMenu);
 	edgeMenu->addMenu(createElemMenu);
 
@@ -209,7 +207,7 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 	}
 
 	mCreatePoint = scenePos;
-	QObject::connect(menuSignalMapper,SIGNAL(mapped(const QString &)),this,SLOT(createElement(const QString &)));
+	QObject::connect(menuSignalMapper, SIGNAL(mapped(const QString &)), this, SLOT(createElement(const QString &)));
 
 	QAction* executed;
 	QPoint cursorPos = QCursor::pos();
@@ -219,7 +217,7 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 	if (executed) {
 		if (executed == mWindow->actionDeleteFromDiagram())
 			result = -1;
-		else if (!(executed->text() == "Discard"))
+		else if (!(executed->text() == tr("Discard")))
 			result = +1;
 	}
 
@@ -230,23 +228,23 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 	return result;
 }
 
-qReal::Id *EditorViewScene::createElement(const QString &str)
+qReal::Id EditorViewScene::createElement(const QString &str)
 {
-	qReal::Id* result = createElement(str, mCreatePoint);
-	mLastCreatedWithEdge = getElem(*result);
+	qReal::Id result = createElement(str, mCreatePoint);
+	mLastCreatedWithEdge = getElem(result);
 	return result;
 }
 
-qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
+qReal::Id EditorViewScene::createElement(const QString &str, QPointF scenePos)
 {
 	Id typeId = Id::loadFromString(str);
-	Id *objectId = new Id(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
+	Id objectId(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
 
 	QByteArray data;
 	QMimeData *mimeData = new QMimeData();
 	QDataStream stream(&data, QIODevice::WriteOnly);
 	QString mimeType = QString("application/x-real-uml-data");
-	QString uuid = objectId->toString();
+	QString uuid = objectId.toString();
 	QString pathToItem = Id::rootId().toString();
 	QString name = "(anonymous something)";
 	QPointF pos = QPointF(0, 0);
@@ -501,9 +499,7 @@ void EditorViewScene::initContextMenu(UML::Element *e, const QPointF &pos)
 		mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
 	}
 	menu.addSeparator();
-
 	createConnectionSubmenus(menu, e);
-
 	menu.exec(QCursor::pos());
 }
 
@@ -571,8 +567,8 @@ void EditorViewScene::createEdge(const QString & idStr)
 	QPointF start = mouseMovementManager->firstPoint();
 	QPointF end = mouseMovementManager->lastPoint();
 	UML::NodeElement * child = dynamic_cast <UML::NodeElement * > (getElemAt(end));
-	Id * id = createElement(idStr, start);
-	UML::Element * edgeElement = getElem(*id);
+	Id id = createElement(idStr, start);
+	UML::Element * edgeElement = getElem(id);
 	UML::EdgeElement * edge = dynamic_cast <UML::EdgeElement * > (edgeElement);
 	QPointF endPos = edge->mapFromItem(child, child->getNearestPort(end));
 	edge->placeEndTo(endPos);
@@ -653,7 +649,6 @@ QPointF EditorViewScene::getMousePos()
 {
 	return mCurrentMousePos;
 }
-
 
 void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -773,11 +768,9 @@ void EditorViewScene::deleteUsageActionTriggered()
 
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
-        if (mNeedDrawGrid) {
-                mWidthOfGrid = (SettingsManager::instance()->value("GridWidth", 10).toDouble()) / 100;
-
-
-                painter->setPen(QPen(Qt::black, mWidthOfGrid));
+	if (mNeedDrawGrid) {
+		mWidthOfGrid = (SettingsManager::instance()->value("GridWidth", 10).toDouble()) / 100;
+		painter->setPen(QPen(Qt::black, mWidthOfGrid));
 		drawGrid(painter, rect);
 	}
 }
@@ -813,8 +806,7 @@ void EditorViewScene::drawGesture()
 
 void EditorViewScene::deleteGesture()
 {
-	foreach (QGraphicsItem * item, mGesture)
-	{
+	foreach (QGraphicsItem * item, mGesture) {
 		removeItem(item);
 	}
 	mGesture.clear();
@@ -848,8 +840,7 @@ void EditorViewScene::highlight(Id const &graphicalId, bool exclusive)
 	if (!elem)
 		return;
 
-        QColor color = QColor(SettingsManager::instance()->value("debugColor").toString());
-
+	QColor color = QColor(SettingsManager::instance()->value("debugColor").toString());
 
 	QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
 	effect->setColor(color);

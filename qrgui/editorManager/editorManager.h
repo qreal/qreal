@@ -12,7 +12,7 @@
 #include "../pluginInterface/editorInterface.h"
 #include "../../qrrepo/graphicalRepoApi.h"
 #include "../../qrrepo/logicalRepoApi.h"
-#include "../kernel/exception/settingsManager.h"
+#include "../kernel/settingsManager.h"
 
 namespace UML {
 	class Element;
@@ -35,6 +35,7 @@ namespace qReal {
 		QString friendlyName(Id const &id) const;
 		QString description(Id const &id) const;
 		QString propertyDescription(Id const &id, QString const &propertyName) const;
+		QString propertyDisplayedName(Id const &id, QString const &propertyName) const;
 		QIcon icon(Id const &id) const;
 		UML::Element* graphicalObject(Id const &id) const;
 

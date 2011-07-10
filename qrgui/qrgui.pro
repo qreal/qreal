@@ -32,6 +32,12 @@ if (equals(QMAKE_CXX, "g++") : !macx) {
 # Путь до библиотеки с АПИ. Где-нибудь она найдётся...Path to the API library
 LIBS += -Ldebug -lqrrepo -Lrelease -lqrrepo -L. -lqrrepo -lqrmc
 
+CONFIG(debug, debug|release):LIBS  += -lqextserialportd
+else:LIBS  += -lqextserialport
+
+unix:DEFINES   = _TTY_POSIX_
+win32:DEFINES  = _TTY_WIN_
+
 # Graphical elements
 include (umllib/umllib.pri)
 
@@ -69,5 +75,5 @@ include (models/models.pri)
 # Interfaces for plugins, used by qrxc and qrmc.
 include (pluginInterface/pluginInterface.pri)
 
-# Visual debugger
-include (visualDebugger/visualDebugger.pri)
+# Interpreters: visual debugger and robots
+include (interpreters/interpreters.pri)

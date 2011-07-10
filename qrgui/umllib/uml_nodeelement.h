@@ -116,6 +116,7 @@ namespace UML {
 		};
 
 		void delUnusedLines();
+		void arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<NodeElement*>& arranged);
 		PossibleEdge toPossibleEdge(const StringPossibleEdge & strPossibleEdge);
 
 		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);

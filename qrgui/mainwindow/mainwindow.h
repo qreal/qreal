@@ -11,11 +11,14 @@
 #include "propertyeditordelegate.h"
 #include "igesturespainter.h"
 #include "gesturesShow/gestureswidget.h"
-#include "../visualDebugger/debuggerConnector.h"
+#include "../interpreters/visualDebugger/debuggerConnector.h"
 #include "mainWindowInterpretersInterface.h"
-#include "../kernel/exception/settingsManager.h"
+#include "../kernel/settingsManager.h"
 
-namespace Ui{
+#include "../interpreters/robots/bluetoothRobotCommunication.h"
+#include "../interpreters/robots/details/d2RobotModel/d2RobotModel.h"
+
+namespace Ui {
 class MainWindowUi;
 }
 
@@ -27,6 +30,16 @@ class VisualDebugger;
 
 namespace models {
 class Models;
+}
+
+namespace interpreters {
+namespace robots {
+class Interpreter;
+}
+}
+
+namespace gui {
+class ErrorReporter;
 }
 
 class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpretersInterface
@@ -55,8 +68,20 @@ signals:
 	void currentIdealGestureChanged();
 	void rootDiagramChanged();
 
-
 public slots:
+	void deleteFromScene();
+
+	void propertyEditorScrollTo(QModelIndex const &index);
+
+	void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
+	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
+	virtual void selectItem(Id const &id);
+
+	void showD2ModelWidget(bool isVisible = true);
+
+	void selectItemWithError(Id const &id);
+
+private slots:
 	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);
 
@@ -92,17 +117,11 @@ public slots:
 	void exportToXmi();
 	void generateToJava();
 	void parseJavaLibraries();
-	void deleteFromScene();
 	void applySettings();
 
 	void deleteFromScene(QGraphicsItem *target);
 
 	void activateSubdiagram(QModelIndex const &idx);
-	void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
-	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
-	void propertyEditorScrollTo(QModelIndex const &index);
-	void selectItemWithError(Id const &id);
-	virtual void selectItem(Id const &id);
 
 	void debug();
 	void debugSingleStep();
@@ -149,13 +168,20 @@ private slots:
 	void showAlignment(bool isChecked);
 	void switchGrid(bool isChecked);
 	void switchAlignment(bool isChecked);
-	void setShape( QString const &data, QPersistentModelIndex const &index, int const &role);
+	void setShape(QString const &data, QPersistentModelIndex const &index, int const &role);
 
 	void setDiagramCreateFlag();
 	void diagramInCreateListDeselect();
 	void diagramInCreateListSelected(int num);
 
+	void run();
+	void stop();
+	void stopRobot();
+	void showRobotSettingsDialog();
+
 	void on_actionNew_Diagram_triggered();
+
+	void updatePaletteIcons();
 
 private:
 	Ui::MainWindowUi *mUi;
@@ -174,12 +200,16 @@ private:
 	QStringList mDiagramsList;
 	QModelIndex mRootIndex;
 
-	gui::ErrorReporter *mErrorReporter;
-	VisualDebugger *mVisualDebugger;
 	DebuggerConnector *mDebuggerConnector;
+	VisualDebugger *mVisualDebugger;
+	interpreters::robots::Interpreter *mRobotInterpreter;  // Has ownership
+	interpreters::robots::BluetoothRobotCommunication *mBluetoothCommunication;  // Does not have ownership
+	interpreters::robots::details::d2Model::D2RobotModel *mD2Model;// Does not have ownership
+	gui::ErrorReporter *mErrorReporter;  // Has ownership
 
 	/** @brief Fullscreen mode flag */
 	bool mIsFullscreen;
+
 	/** @brief Internal map table to store info what widgets should we hide/show */
 	QMap<QString, bool> mDocksVisibility;
 
@@ -187,7 +217,7 @@ private:
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
-					   QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
+			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
 
 	void loadPlugins();
 
@@ -228,6 +258,8 @@ private:
 		@param name Widget's name in internal map
 	*/
 	void showDockWidget(QDockWidget *dockWidget, QString name);
+
+	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
 
 	QString getNextDirName(QString const &name);
 };

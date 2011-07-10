@@ -11,7 +11,7 @@
 
 #include "../../../utils/outFile.h"
 
-#include "../../kernel/exception/settingsManager.h"
+#include "../../kernel/settingsManager.h"
 #include "../../mainwindow/mainwindow.h"
 
 using namespace qReal;
@@ -79,8 +79,9 @@ gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const 
 	outpro() << "include (../editorsCommon.pri)";
 
 	OutFile outxml(pathToFile + ".xml");
-	outxml() << "<?xml version='1.0' encoding='utf-8'?>\n";
-	outxml() << mDocument.toString(4);
+	QDomNode header = mDocument.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"utf-8\"");
+	mDocument.insertBefore(header, mDocument.firstChild());
+	mDocument.save(outxml(), 4);
 	mDocument.clear();
 
 	copyImages(pathToFile);
@@ -91,8 +92,8 @@ gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const 
 void EditorGenerator::copyImages(QString const &pathToFile)
 {
 
-        QString workingDirName = SettingsManager::instance()->value("workingDir", "./save").toString();
-        QDir sourceDir(workingDirName);
+	QString workingDirName = SettingsManager::instance()->value("workingDir", "./save").toString();
+	QDir sourceDir(workingDirName);
 	sourceDir.cd("images");
 	if (!sourceDir.exists())
 		return;
@@ -306,6 +307,7 @@ void EditorGenerator::setProperties(QDomElement &parent,Id const &id)
 			QDomElement property = mDocument.createElement("property");
 			ensureCorrectness(idChild, property, "type", mApi.stringProperty(idChild, "attributeType"));
 			ensureCorrectness(idChild, property, "name", mApi.name(idChild));
+			ensureCorrectness(idChild, property, "displayedName", mApi.stringProperty(idChild, "displayedName"));
 			if (mApi.stringProperty(idChild, "defaultValue") != "") {
 				QDomElement defaultTag = mDocument.createElement("default");
 				QDomText value = mDocument.createTextNode(mApi.stringProperty(idChild, "defaultValue"));

@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-
 #include "ui_mainwindow.h"
 
 #include <QtGui/QDialog>
@@ -21,8 +20,11 @@
 
 #include <QtCore/QPluginLoader>
 
+#include "ui_mainwindow.h"
 #include "errorReporter.h"
 
+#include "../interpreters/robots/details/robotImplementations/abstractRobotModelImplementation.h"
+#include "../interpreters/robots/details/robotParts/robotModel.h"
 #include "../pluginInterface/editorInterface.h"
 #include "preferencesDialog.h"
 #include "shapeEdit/shapeEdit.h"
@@ -42,21 +44,25 @@
 #include "../editorManager/listenerManager.h"
 #include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
-#include "../visualDebugger/visualDebugger.h"
-
+#include "../interpreters/visualDebugger/visualDebugger.h"
+#include "../interpreters/robots/interpreter.h"
 
 #include "metaCompiler.h"
 
-
 using namespace qReal;
+using namespace interpreters::robots;
 
 MainWindow::MainWindow()
-	: mUi(new Ui::MainWindowUi())
+	: mUi(new Ui::MainWindowUi)
+	, mCloseEvent(NULL)
+	, mModels(NULL)
 	, mListenerManager(NULL)
 	, mPropertyModel(mEditorManager)
 	, mGesturesWidget(NULL)
-	, mErrorReporter(NULL)
 	, mVisualDebugger(NULL)
+	, mRobotInterpreter(NULL)
+	, mBluetoothCommunication(NULL)
+	, mErrorReporter(NULL)
 	, mIsFullscreen(false)
 	, mSaveDir(qApp->applicationDirPath() + "/save")
 {
@@ -67,10 +73,14 @@ MainWindow::MainWindow()
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
 	QProgressBar *progress = new QProgressBar((QWidget*) splash);
-	progress->move(20,270);
+	progress->move(20, 270);
 	progress->setFixedWidth(600);
 	progress->setFixedHeight(15);
 	progress->setRange(0, 100);
+
+	QDir imagesDir(SettingsManager::instance()->value("pathToImages", "/someWeirdDirectoryName").toString());
+	if (!imagesDir.exists())
+		SettingsManager::instance()->setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
 
 	// Step 1: splash screen loaded, progress bar initialized.
 	progress->setValue(5);
@@ -163,6 +173,7 @@ MainWindow::MainWindow()
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
 	mGesturesWidget = new GesturesWidget();
+
 	mVisualDebugger = new VisualDebugger(mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi(), *this);
 	mDebuggerConnector = new DebuggerConnector();
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
@@ -172,6 +183,22 @@ MainWindow::MainWindow()
 	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerErrOutput(QString)));
 
 	mDelegate.init(this, &mModels->logicalModelAssistApi());
+
+	mDelegate.init(this, &mModels->logicalModelAssistApi());
+
+	QString const defaultBluetoothPortName = SettingsManager::instance()->value("bluetoothPortName", "").toString();
+	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
+	mUi->actionShow2Dmodel->setVisible(typeOfRobotModel == robotModelType::unreal);
+	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
+			, mModels->logicalModelAssistApi(), *this, mBluetoothCommunication, typeOfRobotModel);
+	if (typeOfRobotModel == robotModelType::unreal)
+		setD2ModelWidgetActions(mUi->actionRun, mUi->actionStop_Running);
+	sensorType::SensorTypeEnum port1 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port2 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port3 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port4 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType", "0").toInt());
+	mRobotInterpreter->configureSensors(port1, port2, port3, port4);
 
 	// Step 7: Save consistency checked, interface is initialized with models.
 	progress->setValue(100);
@@ -240,6 +267,24 @@ void MainWindow::connectActions()
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connectDebugActions();
+	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(run()));
+	connect(mUi->actionStop_Running, SIGNAL(triggered()), this, SLOT(stop()));
+	connect(mUi->actionStop_Robot, SIGNAL(triggered()), this, SLOT(stopRobot()));
+	connect(mUi->actionRobot_Settings, SIGNAL(triggered()), this, SLOT(showRobotSettingsDialog()));
+
+	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
+	connect(mUi->actionShow2Dmodel, SIGNAL(triggered()), this, SLOT(showD2ModelWidget()));
+}
+
+void MainWindow::showD2ModelWidget(bool isVisible)
+{
+	mRobotInterpreter->showD2ModelWidget(isVisible);
+}
+
+void MainWindow::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
+{
+	if (mRobotInterpreter)
+		mRobotInterpreter->setD2ModelWidgetActions(runAction, stopAction);
 }
 
 void MainWindow::connectDebugActions()
@@ -270,7 +315,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 	if (keyEvent->modifiers() == Qt::AltModifier && keyEvent->key() == Qt::Key_X) {
 		close();
 	} else if (keyEvent->key() == Qt::Key_F2
-			   || (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
+			|| (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
 	{
 		saveAll();
 	}
@@ -279,6 +324,9 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 MainWindow::~MainWindow()
 {
 	saveAll();
+	delete mListenerManager;
+	delete mRobotInterpreter;
+	delete mErrorReporter;
 	SettingsManager::instance()->saveData();
 	//	delete mListenerManager;
 }
@@ -391,7 +439,7 @@ void MainWindow::activateSubdiagram(QModelIndex const &idx) {
 
 	QModelIndex diagramToActivate = idx;
 	while (diagramToActivate.isValid() && diagramToActivate.parent().isValid()
-		   && diagramToActivate.parent() != getCurrentTab()->mvIface()->rootIndex())
+			&& diagramToActivate.parent() != getCurrentTab()->mvIface()->rootIndex())
 	{
 		diagramToActivate = diagramToActivate.parent();
 	}
@@ -566,7 +614,7 @@ void MainWindow::settingsPlugins()
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
 	QModelIndex index = isLogicalModel ? (mUi->logicalModelExplorer->currentIndex())
-									   : (mUi->graphicalModelExplorer->currentIndex());
+			: (mUi->graphicalModelExplorer->currentIndex());
 	if (isLogicalModel) {
 		Id logicalId = mModels->logicalModelAssistApi().idByIndex(index);
 		IdList graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
@@ -633,17 +681,17 @@ void MainWindow::deleteFromDiagram()
 
 void MainWindow::showAbout()
 {
-	QMessageBox::about(this, tr("About QReal"),
-					   tr("<center>This is <b>QReal</b><br>"
-						  "Just another CASE tool</center>"));
+	QMessageBox::about(this, tr("About QReal:Robots"),
+			tr("Contacts:<br><br>"
+			"se.math.spbu.ru/SE/qreal"));
 }
 
 void MainWindow::showHelp()
 {
 	QMessageBox::about(this, tr("Help"),
-					   tr("To begin:\n"
-						  "1. To add items to diagrams, drag & drop them from Palette to editor\n"
-						  "2. Get more help from author :)"));
+			tr("To begin:\n"
+			"1. To add items to diagrams, drag & drop them from Palette to editor\n"
+			"2. Get more help from author :)"));
 }
 
 void MainWindow::toggleShowSplash(bool show)
@@ -786,7 +834,7 @@ void MainWindow::generateEditor()
 
 		if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)) {
 			if (QMessageBox::question(this, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelList[key]),
-									  QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 				return;
 			loadNewEditor(directoryName + "/qrxml/", metamodelList[key], SettingsManager::instance()->value("pathToQmake", "").toString(),
 			SettingsManager::instance()->value("pathToMake", "").toString(), SettingsManager::instance()->value("pluginExtension", "").toString(), SettingsManager::instance()->value("prefix", "").toString());
@@ -888,7 +936,7 @@ void MainWindow::generateEditorWithQRMC()
 }
 
 void MainWindow::loadNewEditor(const QString &directoryName, const QString &metamodelName,
-							   const QString &commandFirst, const QString &commandSecond, const QString &extension, const QString &prefix)
+		const QString &commandFirst, const QString &commandSecond, const QString &extension, const QString &prefix)
 {
 	int const progressBarWidth = 240;
 	int const progressBarHeight = 20;
@@ -955,7 +1003,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 void MainWindow::parseEditorXml()
 {
 	if (!mEditorManager.editors().contains(Id("Meta_editor"))) {
-		QMessageBox::warning(this, tr("error"), "required plugin is not loaded");
+		QMessageBox::warning(this, tr("error"), tr("required plugin is not loaded"));
 		return;
 	}
 	QDir dir(".");
@@ -1045,6 +1093,7 @@ void MainWindow::showPreferencesDialog()
 	PreferencesDialog preferencesDialog(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 	if (getCurrentTab() != NULL) {
 		connect(&preferencesDialog, SIGNAL(gridChanged()), getCurrentTab(), SLOT(invalidateScene()));
+		connect(&preferencesDialog, SIGNAL(iconsetChanged()), this, SLOT(updatePaletteIcons()));
 		connect(&preferencesDialog, SIGNAL(settingsApplied()), this, SLOT(applySettings()));
 	}
 	preferencesDialog.exec();
@@ -1054,7 +1103,7 @@ void MainWindow::openShapeEditor()
 {
 	QObject const *object = sender();
 	OpenShapeEditorButton const *button = dynamic_cast<OpenShapeEditorButton const *>(object);
-	QString const text = "Shape Editor";
+	QString const text = tr("Shape Editor");
 	ShapeEdit *shapeEdit = NULL;
 	if (button != NULL) {
 		QPersistentModelIndex index = button->index();
@@ -1132,12 +1181,7 @@ void MainWindow::centerOn(Id const &id)
 	scene->clearSelection();
 	if (element != NULL) {
 		element->setSelected(true);
-
-		float const widthTab = mUi->tabs->size().width();
-		float const heightTab = mUi->tabs->size().height();
-		float const widthEl = element->boundingRect().width();
-		float const heightEl = element->boundingRect().height();
-		view->ensureVisible(element, (widthTab - widthEl) / 2, (heightTab - heightEl) / 2);
+		view->ensureElementVisible(element);
 	}
 }
 
@@ -1260,10 +1304,10 @@ void MainWindow::closeTab(QModelIndex const &graphicsIndex)
 	}
 }
 
-//ListenerManager *MainWindow::listenerManager()
-//{
-//	return mListenerManager;
-//}
+ListenerManager *MainWindow::listenerManager()
+{
+	return mListenerManager;
+}
 
 void MainWindow::showGrid(bool isChecked)
 {
@@ -1367,9 +1411,9 @@ void MainWindow::suggestToCreateDiagram()
 	dialog.setLayout(&vLayout);
 	dialog.setMinimumSize(320, 240);
 	dialog.setMaximumSize(320, 240);
-	dialog.setWindowTitle("Choose new diagram");
+	dialog.setWindowTitle(tr("Choose new diagram"));
 
-	QLabel label("There is no existing diagram,\n choose diagram you want work with:");
+	QLabel label(tr("There is no existing diagram,\n choose diagram you want work with:"));
 	QListWidget diagramsListWidget;
 	diagramsListWidget.setParent(&dialog);
 
@@ -1387,9 +1431,9 @@ void MainWindow::suggestToCreateDiagram()
 	}
 
 	QPushButton cancelButton;
-	cancelButton.setText("Cancel");
+	cancelButton.setText(tr("Cancel"));
 	QPushButton okButton;
-	okButton.setText("Done");
+	okButton.setText(tr("Done"));
 
 	QObject::connect(&diagramsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(diagramInCreateListSelected(int)));
 	QObject::connect(&diagramsListWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(setDiagramCreateFlag()));
@@ -1655,7 +1699,7 @@ void MainWindow::checkEditorForDebug(int index) {
 
 	bool enabled = mUi->tabs->count() > 0 &&
 			mUi->tabs->tabText(mUi->tabs->currentIndex()).compare("(Block Diagram)") == 0;
-	mUi->debuggerToolBar->setVisible(enabled);
+	// mUi->debuggerToolBar->setVisible(enabled);
 	mUi->actionDebug->setEnabled(enabled);
 	mUi->actionDebug_Single_step->setEnabled(enabled);
 	mUi->actionGenerate_and_build->setEnabled(enabled);
@@ -1671,6 +1715,23 @@ void MainWindow::checkEditorForDebug(int index) {
 	mUi->actionStart_debugging->setEnabled(enabled);
 }
 
+
+void MainWindow::run()
+{
+	mErrorReporter->clear();
+	Id const currentDiagramId = getCurrentTab()->mvIface()->rootId();
+	mRobotInterpreter->interpret(currentDiagramId);
+}
+
+void MainWindow::stop()
+{
+	mRobotInterpreter->stop();
+}
+
+void MainWindow::stopRobot()
+{
+	mRobotInterpreter->stopRobot();
+}
 
 void MainWindow::setIndexesOfPropertyEditor(Id const &id)
 {
@@ -1714,19 +1775,57 @@ void MainWindow::dehighlight(Id const &graphicalId)
 {
 	EditorView* const view = getCurrentTab();
 	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
-	scene->dehighlight(graphicalId);
+	if (graphicalId == Id())
+		scene->dehighlight();
+	else
+		scene->dehighlight(graphicalId);
 }
 
 void MainWindow::dehighlight()
 {
-	EditorView* const view = getCurrentTab();
-	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
-	scene->dehighlight();
+	dehighlight(Id());
+}
+
+void MainWindow::showRobotSettingsDialog()
+{
+	SettingsManager::instance()->setValue("currentPreferencesTab", PreferencesDialog::robotSettings);
+	stopRobot();
+	showPreferencesDialog();
+
+	QString const bluetoothPortName = SettingsManager::instance()->value("bluetoothPortName").toString();
+	mBluetoothCommunication->setPortName(bluetoothPortName);
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
+	mRobotInterpreter->setRobotImplementation(typeOfRobotModel, mBluetoothCommunication);
+	mRobotInterpreter->configureSensors(
+			static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt())
+	);
+	mUi->actionShow2Dmodel->setVisible(typeOfRobotModel == robotModelType::unreal);
+	if (typeOfRobotModel == robotModelType::unreal)
+		setD2ModelWidgetActions(mUi->actionRun, mUi->actionStop_Running);
+	else
+		showD2ModelWidget(false);
 }
 
 gui::ErrorReporter *MainWindow::errorReporter()
 {
 	return mErrorReporter;
+}
+
+void MainWindow::updatePaletteIcons()
+{
+	mUi->graphicalModelExplorer->viewport()->update();
+	mUi->logicalModelExplorer->viewport()->update();
+
+	Id currentId = mUi->paletteToolbox->currentTab();
+	mUi->paletteToolbox->recreateTabs();
+
+	loadPlugins();
+
+	mUi->paletteToolbox->setActiveEditor(currentId);
+	mUi->paletteToolbox->setComboBox(currentId);
 }
 
 void MainWindow::applySettings()
@@ -1769,12 +1868,11 @@ void MainWindow::fullscreen()
 
 void MainWindow::createProject()
 {
-	QSettings settings("SPbSU", "QReal");
-	QString dirName = getNextDirName(settings.value("workingDir", mSaveDir).toString());
-	settings.setValue("workingDir", dirName);
+	QString dirName = getNextDirName(SettingsManager::instance()->value("workingDir", mSaveDir).toString());
+	SettingsManager::instance()->setValue("workingDir", dirName);
 	open(dirName);
 
-	if (settings.value("diagramCreateSuggestion", true).toBool())
+	if (SettingsManager::instance()->value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 
 }
@@ -1790,5 +1888,4 @@ QString MainWindow::getNextDirName(QString const &name)
 
 	parts.last() = QString::number(++version);
 	return parts.join("_");
-
 }

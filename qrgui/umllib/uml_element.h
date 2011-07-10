@@ -26,7 +26,6 @@ namespace UML {
 		Q_INTERFACES(QGraphicsItem)
 
 	public:
-
 		Element();
 		virtual ~Element(){}
 
@@ -40,6 +39,7 @@ namespace UML {
 
 		virtual void connectToPort() {}  //for edge
 		virtual void checkConnectionsToPort() {}  //for node
+
 		virtual QList<ContextMenuAction*> contextMenuActions();
 
 		virtual bool initPossibleEdges() = 0;

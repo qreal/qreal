@@ -26,7 +26,7 @@ public:
 	void clearScene();
 
 	virtual int launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* node, QPointF scenePos);
-	virtual qReal::Id *createElement(const QString &, QPointF scenePos);
+	virtual qReal::Id createElement(const QString &, QPointF scenePos);
 	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
@@ -57,8 +57,7 @@ public:
 	QPointF getMousePos();
 
 public slots:
-
-	qReal::Id *createElement(const QString &);
+	qReal::Id createElement(const QString &);
 	// TODO: get rid of it here
 	void copy();
 	void paste();
@@ -102,6 +101,7 @@ private:
 
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
+
 	qreal mWidthOfGrid;
 	double mRealIndexGrid;
 

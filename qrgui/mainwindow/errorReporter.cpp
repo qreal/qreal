@@ -84,7 +84,8 @@ void ErrorReporter::clear()
 		mErrorList->setVisible(false);
 }
 
-void ErrorReporter::clearErrors() {
+void ErrorReporter::clearErrors()
+{
 	mErrors.clear();
 }
 

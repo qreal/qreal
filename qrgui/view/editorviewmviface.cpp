@@ -142,7 +142,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			elem->setPos(ePos);	//задаем позицию до определения родителя для того, чтобы правильно отработал itemChange
 			elem->setId(currentId);
 
-			UML::NodeElement *nodeElement = dynamic_cast<UML::NodeElement*>(elem);
+			UML::NodeElement* nodeElement = dynamic_cast<UML::NodeElement*>(elem);
 			if (nodeElement)
 				nodeElement->storeGeometry();
 
