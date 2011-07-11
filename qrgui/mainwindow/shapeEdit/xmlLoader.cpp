@@ -316,8 +316,8 @@ void XmlLoader::readRectangle(QDomElement const &rectangle)
 void XmlLoader::readImage(QDomElement const &image)
 {
 	QRectF rect = readRectOfXandY(image);
-        QString fileName = image.attribute("name", "error");
-        QString workingDirName = SettingsManager::instance()->value("workingDir", "./save").toString();
+	QString fileName = image.attribute("name", "error");
+	QString workingDirName = SettingsManager::value("workingDir", "./save").toString();
 	QString fullFileName = workingDirName +"/" + fileName;
 	Image* item = new Image(fullFileName, rect.left(), rect.top(), NULL);
 	item->setX2andY2(rect.right(), rect.bottom());

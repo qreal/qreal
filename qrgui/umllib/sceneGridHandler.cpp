@@ -5,9 +5,9 @@
 SceneGridHandler::SceneGridHandler(NodeElement *node)
 {
 	mNode = node;
-	mShowAlignment = SettingsManager::instance()->value("ShowAlignment", true).toBool();
-	mSwitchGrid = SettingsManager::instance()->value("ActivateGrid", false).toBool();
-	mSwitchAlignment = SettingsManager::instance()->value("ActivateAlignment", true).toBool();
+	mShowAlignment = SettingsManager::value("ShowAlignment", true).toBool();
+	mSwitchGrid = SettingsManager::value("ActivateGrid", false).toBool();
+	mSwitchAlignment = SettingsManager::value("ActivateAlignment", true).toBool();
 }
 
 void SceneGridHandler::delUnusedLines()

@@ -61,7 +61,7 @@ MainWindow::MainWindow()
 	, mSaveDir(qApp->applicationDirPath() + "/save")
 {
 
-	bool showSplash = SettingsManager::instance()->value("Splashscreen", true).toBool();
+	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
 
 	QSplashScreen* splash =
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
@@ -135,17 +135,17 @@ MainWindow::MainWindow()
 
 	//settings.beginGroup("MainWindow");
 
-	if (!SettingsManager::instance()->value("maximized", true).toBool()) {
+	if (!SettingsManager::value("maximized", true).toBool()) {
 
 		showNormal();
-		resize(SettingsManager::instance()->value("size", QSize(1024, 800)).toSize());
-		move(SettingsManager::instance()->value("pos", QPoint(0, 0)).toPoint());
+		resize(SettingsManager::value("size", QSize(1024, 800)).toSize());
+		move(SettingsManager::value("pos", QPoint(0, 0)).toPoint());
 	}
 	// for jzuken's unholy netbook screen
 //	resize(QSize(1024, 600));
 	//settings.endGroup();
 
-	QString workingDir = SettingsManager::instance()->value("workingDir", mSaveDir).toString();
+	QString workingDir = SettingsManager::value("workingDir", mSaveDir).toString();
 
 	mRootIndex = QModelIndex();
 	mModels = new models::Models(workingDir, mEditorManager);
@@ -170,7 +170,7 @@ MainWindow::MainWindow()
 	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
-	mErrorReporter->updateVisibility(SettingsManager::instance()->value("warningWindow", true).toBool());
+	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 
 	QString const defaultBluetoothPortName = SettingsManager::instance()->value("bluetoothPortName", "").toString();
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
@@ -195,20 +195,20 @@ MainWindow::MainWindow()
 	if (mModels->graphicalModel()->rowCount() > 0)
 		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
 
-	if (SettingsManager::instance()->value("diagramCreateSuggestion", true).toBool())
+	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 
-        mDocksVisibility.clear();
-        this->setWindowTitle("QReal:Robots - " + SettingsManager::instance()->value("workingDir", mSaveDir).toString());
+		mDocksVisibility.clear();
+		this->setWindowTitle("QReal:Robots - " + SettingsManager::instance()->value("workingDir", mSaveDir).toString());
 }
 
 void MainWindow::connectActions()
 {
 
-	mUi->actionShow_grid->setChecked(SettingsManager::instance()->value("ShowGrid", true).toBool());
-	mUi->actionShow_alignment->setChecked(SettingsManager::instance()->value("ShowAlignment", true).toBool());
-	mUi->actionSwitch_on_grid->setChecked(SettingsManager::instance()->value("ActivateGrid", false).toBool());
-	mUi->actionSwitch_on_alignment->setChecked(SettingsManager::instance()->value("ActivateAlignment", true).toBool());
+	mUi->actionShow_grid->setChecked(SettingsManager::value("ShowGrid", true).toBool());
+	mUi->actionShow_alignment->setChecked(SettingsManager::value("ShowAlignment", true).toBool());
+	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid", false).toBool());
+	mUi->actionSwitch_on_alignment->setChecked(SettingsManager::value("ActivateAlignment", true).toBool());
 
 
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
@@ -303,9 +303,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
 	mCloseEvent = event;
 	//settings.beginGroup("MainWindow");
-	SettingsManager::instance()->setValue("maximized", isMaximized());
-	SettingsManager::instance()->setValue("size", size());
-	SettingsManager::instance()->setValue("pos", pos());
+	SettingsManager::setValue("maximized", isMaximized());
+	SettingsManager::setValue("size", size());
+	SettingsManager::setValue("pos", pos());
 	//settings.endGroup();
 }
 
@@ -440,12 +440,12 @@ QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
 {
 
 	QString const dirName = QFileDialog::getExistingDirectory(this, dialogWindowTitle
-		, SettingsManager::instance()->value("workingDir", mSaveDir).toString(), QFileDialog::ShowDirsOnly);
+		, SettingsManager::value("workingDir", mSaveDir).toString(), QFileDialog::ShowDirsOnly);
 
 	if (dirName.isEmpty())
 		return "";
 
-	SettingsManager::instance()->setValue("workingDir", dirName);
+	SettingsManager::setValue("workingDir", dirName);
 
 	return dirName;
 }
@@ -514,7 +514,7 @@ bool MainWindow::open(QString const &dirName)
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-        this->setWindowTitle("QReal:Robots - " + SettingsManager::instance()->value("workingDir", mSaveDir).toString());
+		this->setWindowTitle("QReal:Robots - " + SettingsManager::instance()->value("workingDir", mSaveDir).toString());
 	return true;
 }
 
@@ -648,7 +648,7 @@ void MainWindow::showHelp()
 
 void MainWindow::toggleShowSplash(bool show)
 {
-	SettingsManager::instance()->setValue("Splashscreen", show);
+	SettingsManager::setValue("Splashscreen", show);
 
 }
 
@@ -683,8 +683,8 @@ void MainWindow::generateEditor()
 			if (QMessageBox::question(this, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelList[key]),
 					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 				return;
-			loadNewEditor(directoryName + "/qrxml/", metamodelList[key], SettingsManager::instance()->value("pathToQmake", "").toString(),
-			SettingsManager::instance()->value("pathToMake", "").toString(), SettingsManager::instance()->value("pluginExtension", "").toString(), SettingsManager::instance()->value("prefix", "").toString());
+			loadNewEditor(directoryName + "/qrxml/", metamodelList[key], SettingsManager::value("pathToQmake", "").toString(),
+			SettingsManager::value("pathToMake", "").toString(), SettingsManager::value("pluginExtension", "").toString(), SettingsManager::value("prefix", "").toString());
 		}
 	}
 }
@@ -986,7 +986,7 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 
 	//changing of palette active editor:
 
-	if (SettingsManager::instance()->value("PaletteTabSwitching", true).toBool())
+	if (SettingsManager::value("PaletteTabSwitching", true).toBool())
 	{
 		int i = 0;
 		foreach(QString name, mUi->paletteToolbox->getTabNames()) {
@@ -1053,25 +1053,25 @@ ListenerManager *MainWindow::listenerManager()
 
 void MainWindow::showGrid(bool isChecked)
 {
-	SettingsManager::instance()->setValue("ShowGrid", isChecked);
+	SettingsManager::setValue("ShowGrid", isChecked);
 	setShowGrid(isChecked);
 }
 
 void MainWindow::showAlignment(bool isChecked)
 {
-	SettingsManager::instance()->setValue("ShowAlignment", isChecked);
+	SettingsManager::setValue("ShowAlignment", isChecked);
 	setShowAlignment(isChecked);
 }
 
 void MainWindow::switchGrid(bool isChecked)
 {
-	SettingsManager::instance()->setValue("ActivateGrid", isChecked);
+	SettingsManager::setValue("ActivateGrid", isChecked);
 	setSwitchGrid(isChecked);
 }
 
 void MainWindow::switchAlignment(bool isChecked)
 {
-	SettingsManager::instance()->setValue("ActivateAlignment", isChecked);
+	SettingsManager::setValue("ActivateAlignment", isChecked);
 	setSwitchAlignment(isChecked);
 }
 
@@ -1261,10 +1261,10 @@ void MainWindow::initGridProperties()
 {
 
 	mUi->actionSwitch_on_grid->blockSignals(false);
-	mUi->actionSwitch_on_grid->setChecked(SettingsManager::instance()->value("ActivateGrid", false).toBool());
+	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid", false).toBool());
 
 	mUi->actionShow_grid->blockSignals(false);
-	mUi->actionShow_grid->setChecked(SettingsManager::instance()->value("ShowGrid", true).toBool());
+	mUi->actionShow_grid->setChecked(SettingsManager::value("ShowGrid", true).toBool());
 }
 
 void MainWindow::run()
@@ -1374,7 +1374,7 @@ void MainWindow::updatePaletteIcons()
 void MainWindow::applySettings()
 {
 	getCurrentTab()->invalidateScene();
-	mErrorReporter->updateVisibility(SettingsManager::instance()->value("warningWindow", true).toBool());
+	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 }
 
 void MainWindow::hideDockWidget(QDockWidget *dockWidget, QString name)
