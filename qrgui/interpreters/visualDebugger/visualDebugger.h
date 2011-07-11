@@ -63,6 +63,7 @@ private:
 	BlockParser *mBlockParser;
 	int mTimeout;
 	DebugType mDebugType;
+	QColor mDebugColor;
 	QMap<int, Id> mIdByLineCorrelation;
 	bool mHasCodeGenerationError;
 	bool mHasNotEndWithFinalNode;
@@ -85,5 +86,6 @@ private:
 	void createIdByLineCorrelation(Element *elem, int& line);
 	void setCodeFileName(QString name);
 	void setWorkDir(QString path);
+	void setDebugColor(QString color);
 };
 }

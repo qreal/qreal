@@ -74,6 +74,11 @@ void VisualDebugger::setTimeout(int timeout)
 	mTimeout = timeout;
 }
 
+void VisualDebugger::setDebugColor(QString color)
+{
+	mDebugColor = QColor(color);
+}
+
 void VisualDebugger::setEditor(EditorView *editor) {
 	if (NULL == mEditor || mCurrentId == Id::rootId() || mEditor == editor)
 	{
