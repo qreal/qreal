@@ -199,9 +199,7 @@ MainWindow::MainWindow()
 		suggestToCreateDiagram();
 
         mDocksVisibility.clear();
-        QString title = "QReal:Robots - ";
-        title.append(SettingsManager::instance()->value("workingDir", "ololo").toString());
-        this->setWindowTitle(title);
+        this->setWindowTitle("QReal:Robots - " + SettingsManager::instance()->value("workingDir", mSaveDir).toString());
 }
 
 void MainWindow::connectActions()
@@ -516,9 +514,7 @@ bool MainWindow::open(QString const &dirName)
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-        QString title = "QReal:Robots - ";
-        title.append(SettingsManager::instance()->value("workingDir", "ololo").toString());
-        this->setWindowTitle(title);
+        this->setWindowTitle("QReal:Robots - " + SettingsManager::instance()->value("workingDir", mSaveDir).toString());
 	return true;
 }
 
