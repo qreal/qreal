@@ -528,7 +528,7 @@ void Scene::addImage(QString const &fileName)
 	mItemType = image;
 	mFileName = fileName;
 
-		QString workingDirName = SettingsManager::instance()->value("workingDir", "./save").toString();
+	QString workingDirName = SettingsManager::value("workingDir", "./save").toString();
 	QDir dir(workingDirName);
 	dir.mkdir("images");
 	mFileName = workingDirName + "/images/" + fileName.section('/', -1);

@@ -48,7 +48,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	connect(&mSquarizeAction, SIGNAL(triggered(QPointF const &)), SLOT(squarizeHandler(QPointF const &)));
 	connect(&mMinimizeAction, SIGNAL(triggered(QPointF const &)), SLOT(minimizeHandler(QPointF const &)));
 
-	mChaoticEdition = SettingsManager::instance()->value("ChaoticEdition", false).toBool();
+	mChaoticEdition = SettingsManager::value("ChaoticEdition", false).toBool();
 
 	ElementTitleFactory factory;
 
@@ -606,7 +606,7 @@ void EdgeElement::adjustLink()
 	updateLongestPart();
 	for (int i = 0; i < mLine.size() - 2; i++)
 		removeUnneededPoints(i);
-	if (SettingsManager::instance()->value("SquareLine", true).toBool())
+	if (SettingsManager::value("SquareLine", true).toBool())
 		squarizeHandler(QPointF());
 }
 

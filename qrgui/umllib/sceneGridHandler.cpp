@@ -5,9 +5,9 @@
 SceneGridHandler::SceneGridHandler(NodeElement *node)
 {
 	mNode = node;
-	mShowAlignment = SettingsManager::instance()->value("ShowAlignment", true).toBool();
-	mSwitchGrid = SettingsManager::instance()->value("ActivateGrid", false).toBool();
-	mSwitchAlignment = SettingsManager::instance()->value("ActivateAlignment", true).toBool();
+	mShowAlignment = SettingsManager::value("ShowAlignment", true).toBool();
+	mSwitchGrid = SettingsManager::value("ActivateGrid", false).toBool();
+	mSwitchAlignment = SettingsManager::value("ActivateAlignment", true).toBool();
 }
 
 void SceneGridHandler::delUnusedLines()
@@ -182,7 +182,7 @@ void SceneGridHandler::setAlignmentMode(bool mode)
 
 void SceneGridHandler::mouseMoveEvent()
 {
-	int const indexGrid = SettingsManager::instance()->value("IndexGrid", 50).toInt();
+	int const indexGrid = SettingsManager::value("IndexGrid", 30).toInt();
 	NodeElement* parItem = dynamic_cast<NodeElement*>(mNode->parentItem());
 	if(parItem == NULL) {
 		qreal myX1 = mNode->scenePos().x() + mNode->boundingRect().x();

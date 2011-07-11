@@ -92,7 +92,7 @@ gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const 
 void EditorGenerator::copyImages(QString const &pathToFile)
 {
 
-	QString workingDirName = SettingsManager::instance()->value("workingDir", "./save").toString();
+	QString workingDirName = SettingsManager::value("workingDir", "./save").toString();
 	QDir sourceDir(workingDirName);
 	sourceDir.cd("images");
 	if (!sourceDir.exists())
