@@ -220,6 +220,7 @@ void VisualDebugger::debug()
 {
 	mDebugType = VisualDebugger::fullDebug;
 	setTimeout(SettingsManager::value("debuggerTimeout", 750).toInt());
+	setDebugColor(SettingsManager::value("debugColor").toString());
 
 
 	if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
@@ -283,6 +284,7 @@ void VisualDebugger::debug()
 void VisualDebugger::debugSingleStep()
 {
 	mDebugType = VisualDebugger::singleStepDebug;
+	setDebugColor(SettingsManager::value("debugColor").toString());
 
 	if (mCurrentElem == NULL && mCurrentId == Id::rootId()) {
 		if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {

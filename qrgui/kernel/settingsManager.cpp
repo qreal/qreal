@@ -12,12 +12,12 @@ SettingsManager::SettingsManager() : mSettings("SPbSU", "QReal")
 
 void SettingsManager:: setValue(QString name, QVariant value)
 {
-    instance()->set(name, value);
+	instance()->set(name, value);
 }
 
 QVariant SettingsManager::value(QString key, QVariant defaultValue)
 {
-    return instance()->get(key, defaultValue);
+	return instance()->get(key, defaultValue);
 }
 
 

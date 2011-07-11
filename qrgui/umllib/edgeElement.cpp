@@ -203,7 +203,7 @@ QPainterPath EdgeElement::shape() const
 	path.setFillRule(Qt::WindingFill);
 
 	QPainterPathStroker ps;
-	ps.setWidth(kvadratik);
+		ps.setWidth(kvadratik - 5);
 
 	path.addPolygon(mLine);
 	path = ps.createStroke(path);
@@ -217,7 +217,7 @@ QPainterPath EdgeElement::shape() const
 
 QRectF EdgeElement::getPortRect(QPointF const &point)
 {
-	return QRectF(point - QPointF(kvadratik, kvadratik), QSizeF(kvadratik * 2, kvadratik * 2));
+		return QRectF(point - QPointF(kvadratik - 5, kvadratik - 5), QSizeF(kvadratik * 2, kvadratik * 2));
 }
 
 int EdgeElement::getPoint(const QPointF &location)
@@ -323,9 +323,12 @@ void EdgeElement::connectToPort()
 	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
 
 	mMoving = false;
-
+	if (SettingsManager::value("SquareLine", true).toBool())
+		squarizeHandler(QPointF());
 	adjustLink();
 	arrangeSrcAndDst();
+	update();
+
 }
 
 bool EdgeElement::initPossibleEdges()
@@ -435,12 +438,16 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		if (mDragPoint >= 2)
 			removeUnneededPoints(mDragPoint - 2);
 
+
 	}
 
 	if (mDragPoint == -1)
 		Element::mouseReleaseEvent(event);
 	else
 		mDragPoint = -1;
+
+	if (SettingsManager::value("SquareLine", true).toBool())
+		squarizeHandler(QPointF());
 
 	connectToPort();
 
@@ -454,6 +461,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	mBeginning = mEnding = NULL;
 
 	arrangeSrcAndDst();
+
 }
 
 void EdgeElement::removeUnneededPoints(int startingPoint)
@@ -513,7 +521,7 @@ void EdgeElement::addPointHandler(QPointF const &pos)
 	for (int i = 0; i < mLine.size() - 1; ++i) {
 		QPainterPath path;
 		QPainterPathStroker ps;
-		ps.setWidth(kvadratik);
+				ps.setWidth(kvadratik - 5);
 
 		path.moveTo(mLine[i]);
 		path.lineTo(mLine[i + 1]);
@@ -556,8 +564,33 @@ void EdgeElement::squarizeHandler(QPointF const &pos)
 	prepareGeometryChange();
 	int i = 0;
 	while (!mLine.endsWith(mLine[i])) {
-		QPointF insPoint = mLine[i];
 
+		//don't make new point between first-second & (last-1)-last. just drag them.
+		if (i == 0 && mLine.size() > 2) {
+			if (mLine[i + 1].y() == mLine[i + 2].y()) {
+				mLine[i + 1].setX(mLine[i].x());
+				i += 2;
+				continue;
+			}
+			if (mLine[i + 1].x() == mLine[i + 2].x()) {
+				mLine[i + 1].setY(mLine[i].y());
+				i += 2;
+				continue;
+			}
+		}
+
+		if (i == mLine.size() - 3) {
+			if (mLine[i + 1].y() == mLine[i].y()) {
+				mLine[i + 1].setX(mLine[i + 2].x());
+				i += 2;
+				continue;
+			}
+			if (mLine[i + 1].x() == mLine[i].x()) {
+				mLine[i + 1].setY(mLine[i + 2].y());
+				break;
+			}
+		}
+		//if 3 points have same X or Y coordinate delete point between them.
 		if (i < mLine.size() - 3) {
 			if (mLine[i + 1].x() == mLine[i].x() && mLine[i + 2].x() == mLine[i].x()) {
 				mLine.remove(i + 1);
@@ -571,6 +604,11 @@ void EdgeElement::squarizeHandler(QPointF const &pos)
 			}
 		}
 
+
+		QPointF insPoint = mLine[i]; //point to insert between 2 others to make right angle
+
+		// we need moar comments!!111
+		//dont make new points on line
 		if (insPoint.x() == mLine[i + 1].x() || insPoint.y() == mLine[i + 1].y()) {
 			i++;
 			continue;
@@ -580,7 +618,8 @@ void EdgeElement::squarizeHandler(QPointF const &pos)
 			i++;
 			continue;
 		}
-		mLine.insert(i + 1, insPoint);
+
+		mLine.insert(i + 1, insPoint); //insert new point to make right angle
 		i += 2;
 	}
 
@@ -751,6 +790,8 @@ void EdgeElement::updateData()
 	mPortTo = mGraphicalAssistApi->toPort(id());
 
 	adjustLink();
+	if (SettingsManager::value("SquareLine", true).toBool())
+		squarizeHandler(QPointF());
 	mElementImpl->updateData(this);
 	update();
 }
@@ -768,13 +809,18 @@ void EdgeElement::placeStartTo(QPointF const &place)
 {
 	mLine[0] = place;
 	updateLongestPart();
+	if (SettingsManager::value("SquareLine", true).toBool())
+		squarizeHandler(QPointF());
 	adjustLink();
+
 }
 
 void EdgeElement::placeEndTo(QPointF const &place)
 {
 	mLine[mLine.size() - 1] = place;
 	updateLongestPart();
+	if (SettingsManager::value("SquareLine", true).toBool())
+		squarizeHandler(QPointF());
 	adjustLink();
 }
 

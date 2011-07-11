@@ -532,6 +532,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		mUmlPortHandler->handleMoveEvent(mLeftPressed, mPos, event->scenePos(), mParentNodeElement);
 
 	arrangeLinks();
+
+
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -1000,7 +1002,7 @@ qreal NodeElement::getPortId(const QPointF &location) const
 
 	for (int i = 0; i < mLinePorts.size(); i++) {
 		QPainterPathStroker ps;
-		ps.setWidth(kvadratik);
+                ps.setWidth(kvadratik - 5);
 
 		QPainterPath path;
 		path.moveTo(newTransform(mLinePorts[i]).p1());

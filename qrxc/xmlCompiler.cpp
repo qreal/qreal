@@ -115,12 +115,15 @@ void XmlCompiler::generateElementClasses()
 		<< "#include <QPainter>\n\n"
 		<< "#include \"../../../qrgui/pluginInterface/elementImpl.h\"\n"
 		<< "#include \"../../../qrgui/pluginInterface/elementRepoInterface.h\"\n"
-		<< "#include \"../../../qrgui/pluginInterface/elementTitleHelpers.h\"\n\n";
+		<< "#include \"../../../qrgui/pluginInterface/elementTitleHelpers.h\"\n\n"
+//		<< "namespace UML {\n\n";
+		;
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values())
 			type->generateCode(out);
 
+//	out() << "}\n\n";
 }
 
 void XmlCompiler::generatePluginHeader()

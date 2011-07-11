@@ -18,6 +18,7 @@ EmbeddedLinker::EmbeddedLinker()
 
 	size = SettingsManager::value("EmbeddedLinkerSize", 6).toFloat();
 	indent = SettingsManager::value("EmbeddedLinkerIndent", 5).toFloat();
+
 	covered = false;
 	master = NULL;
 	mEdge = NULL;
