@@ -18,8 +18,8 @@ using namespace qReal;
 EmbeddedLinker::EmbeddedLinker()
 {
 
-        size = SettingsManager::instance()->value("EmbeddedLinkerSize", 6).toFloat();
-        indent = SettingsManager::instance()->value("EmbeddedLinkerIndent", 5).toFloat();
+	size = SettingsManager::value("EmbeddedLinkerSize", 6).toFloat();
+	indent = SettingsManager::value("EmbeddedLinkerIndent", 5).toFloat();
 
 
 	covered = false;

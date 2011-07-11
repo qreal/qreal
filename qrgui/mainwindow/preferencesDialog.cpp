@@ -37,26 +37,26 @@ PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * c
 	connect(ui->listWidget, SIGNAL(clicked(const QModelIndex &)), this, SLOT(chooseTab(const QModelIndex &)));
 
 
-	int currentTab = SettingsManager::instance()->value("currentPreferencesTab", 0).toInt();
+	int currentTab = SettingsManager::value("currentPreferencesTab", 0).toInt();
 	ui->listWidget->setCurrentRow(currentTab);
 	chooseTab(ui->listWidget->currentIndex());
 }
 
 void PreferencesDialog::widthGridSliderMoved(int value)
 {
-	SettingsManager::instance()->setValue("GridWidth", value);
+	SettingsManager::setValue("GridWidth", value);
 	emit gridChanged();
 }
 
 void PreferencesDialog::indexGridSliderMoved(int value)
 {
-	SettingsManager::instance()->setValue("IndexGrid", value);
+	SettingsManager::setValue("IndexGrid", value);
 	emit gridChanged();
 }
 
 PreferencesDialog::~PreferencesDialog()
 {
-	SettingsManager::instance()->setValue("currentPreferencesTab", ui->listWidget->currentRow());
+	SettingsManager::setValue("currentPreferencesTab", ui->listWidget->currentRow());
 
 
 	delete ui;
@@ -105,94 +105,94 @@ void PreferencesDialog::initTabs()
 
 void PreferencesDialog::initPreferences()
 {
-	mEditorUi->embeddedLinkerIndentSlider->setValue(SettingsManager::instance()->value("EmbeddedLinkerIndent", 8).toInt());
-	mEditorUi->embeddedLinkerSizeSlider->setValue(SettingsManager::instance()->value("EmbeddedLinkerSize", 6).toInt());
-	mEditorUi->gridWidthSlider->setValue(SettingsManager::instance()->value("GridWidth", 10).toInt());
-	mEditorUi->indexGridSlider->setValue(SettingsManager::instance()->value("IndexGrid", 30).toInt());
-	mEditorUi->zoomFactorSlider->setValue(SettingsManager::instance()->value("zoomFactor", 2).toInt());
+	mEditorUi->embeddedLinkerIndentSlider->setValue(SettingsManager::value("EmbeddedLinkerIndent", 8).toInt());
+	mEditorUi->embeddedLinkerSizeSlider->setValue(SettingsManager::value("EmbeddedLinkerSize", 6).toInt());
+	mEditorUi->gridWidthSlider->setValue(SettingsManager::value("GridWidth", 10).toInt());
+	mEditorUi->indexGridSlider->setValue(SettingsManager::value("IndexGrid", 30).toInt());
+	mEditorUi->zoomFactorSlider->setValue(SettingsManager::value("zoomFactor", 2).toInt());
 	mWithGrid = mEditorUi->gridWidthSlider->value();
 	mIndexGrid = mEditorUi->indexGridSlider->value();
 
-	mBehaviourUi->chooseDiagramsToSaveCheckBox->setChecked(SettingsManager::instance()->value("ChooseDiagramsToSave", true).toBool());
-	mBehaviourUi->diagramCreateCheckBox->setChecked(SettingsManager::instance()->value("DiagramCreateSuggestion", true).toBool());
-	mBehaviourUi->paletteTabCheckBox->setChecked(SettingsManager::instance()->value("PaletteTabSwitching", true).toBool());
-	mMiscellaniousUi->chaoticEditionCheckBox->setChecked(SettingsManager::instance()->value("ChaoticEdition", false).toBool());
-	mBehaviourUi->saveExitCheckBox->setChecked(SettingsManager::instance()->value("SaveExitSuggestion", true).toBool());
-	mEditorUi->showGridCheckBox->setChecked(SettingsManager::instance()->value("ShowGrid", true).toBool());
-	mEditorUi->showAlignmentCheckBox->setChecked(SettingsManager::instance()->value("ShowAlignment", true).toBool());
-	mEditorUi->activateGridCheckBox->setChecked(SettingsManager::instance()->value("ActivateGrid", false).toBool());
-	mEditorUi->activateAlignmentCheckBox->setChecked(SettingsManager::instance()->value("ActivateAlignment", true).toBool());
-	mMiscellaniousUi->antialiasingCheckBox->setChecked(SettingsManager::instance()->value("Antialiasing", true).toBool());
-	mMiscellaniousUi->splashScreenCheckBox->setChecked(SettingsManager::instance()->value("Splashscreen", true).toBool());
-	mMiscellaniousUi->openGLCheckBox->setChecked(SettingsManager::instance()->value("OpenGL", true).toBool());
-	mMiscellaniousUi->squareLineModeCheckBox->setChecked(SettingsManager::instance()->value("SquareLine", true).toBool());
+	mBehaviourUi->chooseDiagramsToSaveCheckBox->setChecked(SettingsManager::value("ChooseDiagramsToSave", true).toBool());
+	mBehaviourUi->diagramCreateCheckBox->setChecked(SettingsManager::value("DiagramCreateSuggestion", true).toBool());
+	mBehaviourUi->paletteTabCheckBox->setChecked(SettingsManager::value("PaletteTabSwitching", true).toBool());
+	mMiscellaniousUi->chaoticEditionCheckBox->setChecked(SettingsManager::value("ChaoticEdition", false).toBool());
+	mBehaviourUi->saveExitCheckBox->setChecked(SettingsManager::value("SaveExitSuggestion", true).toBool());
+	mEditorUi->showGridCheckBox->setChecked(SettingsManager::value("ShowGrid", true).toBool());
+	mEditorUi->showAlignmentCheckBox->setChecked(SettingsManager::value("ShowAlignment", true).toBool());
+	mEditorUi->activateGridCheckBox->setChecked(SettingsManager::value("ActivateGrid", false).toBool());
+	mEditorUi->activateAlignmentCheckBox->setChecked(SettingsManager::value("ActivateAlignment", true).toBool());
+	mMiscellaniousUi->antialiasingCheckBox->setChecked(SettingsManager::value("Antialiasing", true).toBool());
+	mMiscellaniousUi->splashScreenCheckBox->setChecked(SettingsManager::value("Splashscreen", true).toBool());
+	mMiscellaniousUi->openGLCheckBox->setChecked(SettingsManager::value("OpenGL", true).toBool());
+	mMiscellaniousUi->squareLineModeCheckBox->setChecked(SettingsManager::value("SquareLine", true).toBool());
 
-	mBehaviourUi->warningWindowBox->setChecked(SettingsManager::instance()->value("warningWindow", true).toBool());
+	mBehaviourUi->warningWindowBox->setChecked(SettingsManager::value("warningWindow", true).toBool());
 
-	mCompilerUi->windowsButton->setChecked(SettingsManager::instance()->value("windowsButton", false).toBool());
-	mCompilerUi->linuxButton->setChecked(SettingsManager::instance()->value("linuxButton", false).toBool());
-	mCompilerUi->otherButton->setChecked(SettingsManager::instance()->value("otherButton", false).toBool());
+	mCompilerUi->windowsButton->setChecked(SettingsManager::value("windowsButton", false).toBool());
+	mCompilerUi->linuxButton->setChecked(SettingsManager::value("linuxButton", false).toBool());
+	mCompilerUi->otherButton->setChecked(SettingsManager::value("otherButton", false).toBool());
 
-	mCompilerUi->pathToQmake->setText(SettingsManager::instance()->value("pathToQmake", "").toString());
-	mCompilerUi->pathToMake->setText(SettingsManager::instance()->value("pathToMake", "").toString());
-	mCompilerUi->pluginExtension->setText(SettingsManager::instance()->value("pluginExtension", "").toString());
-	mCompilerUi->prefix->setText(SettingsManager::instance()->value("prefix", "").toString());
+	mCompilerUi->pathToQmake->setText(SettingsManager::value("pathToQmake", "").toString());
+	mCompilerUi->pathToMake->setText(SettingsManager::value("pathToMake", "").toString());
+	mCompilerUi->pluginExtension->setText(SettingsManager::value("pluginExtension", "").toString());
+	mCompilerUi->prefix->setText(SettingsManager::value("prefix", "").toString());
 
-	mDebuggerUi->timeoutLineEdit->setText(SettingsManager::instance()->value("debuggerTimeout", 750).toString());
+	mDebuggerUi->timeoutLineEdit->setText(SettingsManager::value("debuggerTimeout", 750).toString());
 	mDebuggerUi->colorComboBox->addItems(QColor::colorNames());
-	QString curColor = SettingsManager::instance()->value("debugColor", "red").toString();
+	QString curColor = SettingsManager::value("debugColor", "red").toString();
 	int curColorIndex = mDebuggerUi->colorComboBox->findText(curColor);
 	mDebuggerUi->colorComboBox->setCurrentIndex(curColorIndex);
-	SettingsManager::instance()->value("debugColor", mDebuggerUi->colorComboBox->currentText());
-	mDebuggerUi->debuggerPathLineEdit->setText(SettingsManager::instance()->value("debuggerPath", "gdb.exe").toString());
-	mDebuggerUi->builderPathLineEdit->setText(SettingsManager::instance()->value("builderPath", "gcc.exe").toString());
-	mDebuggerUi->codeFileNameLineEdit->setText(SettingsManager::instance()->value("codeFileName", "code.c").toString());
-	mDebuggerUi->buildedFileNameLineEdit->setText(SettingsManager::instance()->value("buildedFileName", "builded.exe").toString());
-	mDebuggerUi->workDirLineEdit->setText(SettingsManager::instance()->value("debugWorkingDirectory", "").toString());
+	SettingsManager::value("debugColor", mDebuggerUi->colorComboBox->currentText());
+	mDebuggerUi->debuggerPathLineEdit->setText(SettingsManager::value("debuggerPath", "gdb.exe").toString());
+	mDebuggerUi->builderPathLineEdit->setText(SettingsManager::value("builderPath", "gcc.exe").toString());
+	mDebuggerUi->codeFileNameLineEdit->setText(SettingsManager::value("codeFileName", "code.c").toString());
+	mDebuggerUi->buildedFileNameLineEdit->setText(SettingsManager::value("buildedFileName", "builded.exe").toString());
+	mDebuggerUi->workDirLineEdit->setText(SettingsManager::value("debugWorkingDirectory", "").toString());
 }
 
 void PreferencesDialog::applyChanges()
 {
-	SettingsManager::instance()->setValue("EmbeddedLinkerIndent", mEditorUi->embeddedLinkerIndentSlider->value());
-	SettingsManager::instance()->setValue("EmbeddedLinkerSize", mEditorUi->embeddedLinkerSizeSlider->value());
-	SettingsManager::instance()->setValue("GridWidth", mEditorUi->gridWidthSlider->value());
-	SettingsManager::instance()->setValue("IndexGrid", mEditorUi->indexGridSlider->value());
-	SettingsManager::instance()->setValue("zoomFactor", mEditorUi->zoomFactorSlider->value());
+	SettingsManager::setValue("EmbeddedLinkerIndent", mEditorUi->embeddedLinkerIndentSlider->value());
+	SettingsManager::setValue("EmbeddedLinkerSize", mEditorUi->embeddedLinkerSizeSlider->value());
+	SettingsManager::setValue("GridWidth", mEditorUi->gridWidthSlider->value());
+	SettingsManager::setValue("IndexGrid", mEditorUi->indexGridSlider->value());
+	SettingsManager::setValue("zoomFactor", mEditorUi->zoomFactorSlider->value());
 	mWithGrid = mEditorUi->gridWidthSlider->value();
 	mIndexGrid = mEditorUi->indexGridSlider->value();
 
-	SettingsManager::instance()->setValue("ChooseDiagramsToSave", mBehaviourUi->chooseDiagramsToSaveCheckBox->isChecked());
-	SettingsManager::instance()->setValue("DiagramCreateSuggestion", mBehaviourUi->diagramCreateCheckBox->isChecked());
-	SettingsManager::instance()->setValue("PaletteTabSwitching", mBehaviourUi->paletteTabCheckBox->isChecked());
-	SettingsManager::instance()->setValue("ChaoticEdition", mMiscellaniousUi->chaoticEditionCheckBox->isChecked());
-	SettingsManager::instance()->setValue("SaveExitSuggestion", mBehaviourUi->saveExitCheckBox->isChecked());
-	SettingsManager::instance()->setValue("Splashscreen", mMiscellaniousUi->splashScreenCheckBox->isChecked());
-	SettingsManager::instance()->setValue("ShowGrid", mEditorUi->showGridCheckBox->isChecked());
-	SettingsManager::instance()->setValue("ShowAlignment", mEditorUi->showAlignmentCheckBox->isChecked());
-	SettingsManager::instance()->setValue("ActivateGrid", mEditorUi->activateGridCheckBox->isChecked());
-	SettingsManager::instance()->setValue("ActivateAlignment", mEditorUi->activateAlignmentCheckBox->isChecked());
-	SettingsManager::instance()->setValue("Antialiasing", mMiscellaniousUi->antialiasingCheckBox->isChecked());
-	SettingsManager::instance()->setValue("OpenGL", mMiscellaniousUi->openGLCheckBox->isChecked());
-	SettingsManager::instance()->setValue("SquareLine", mMiscellaniousUi->squareLineModeCheckBox->isChecked());
+	SettingsManager::setValue("ChooseDiagramsToSave", mBehaviourUi->chooseDiagramsToSaveCheckBox->isChecked());
+	SettingsManager::setValue("DiagramCreateSuggestion", mBehaviourUi->diagramCreateCheckBox->isChecked());
+	SettingsManager::setValue("PaletteTabSwitching", mBehaviourUi->paletteTabCheckBox->isChecked());
+	SettingsManager::setValue("ChaoticEdition", mMiscellaniousUi->chaoticEditionCheckBox->isChecked());
+	SettingsManager::setValue("SaveExitSuggestion", mBehaviourUi->saveExitCheckBox->isChecked());
+	SettingsManager::setValue("Splashscreen", mMiscellaniousUi->splashScreenCheckBox->isChecked());
+	SettingsManager::setValue("ShowGrid", mEditorUi->showGridCheckBox->isChecked());
+	SettingsManager::setValue("ShowAlignment", mEditorUi->showAlignmentCheckBox->isChecked());
+	SettingsManager::setValue("ActivateGrid", mEditorUi->activateGridCheckBox->isChecked());
+	SettingsManager::setValue("ActivateAlignment", mEditorUi->activateAlignmentCheckBox->isChecked());
+	SettingsManager::setValue("Antialiasing", mMiscellaniousUi->antialiasingCheckBox->isChecked());
+	SettingsManager::setValue("OpenGL", mMiscellaniousUi->openGLCheckBox->isChecked());
+	SettingsManager::setValue("SquareLine", mMiscellaniousUi->squareLineModeCheckBox->isChecked());
 
-	SettingsManager::instance()->setValue("warningWindow", mBehaviourUi->warningWindowBox->isChecked());
+	SettingsManager::setValue("warningWindow", mBehaviourUi->warningWindowBox->isChecked());
 
-	SettingsManager::instance()->setValue("windowsButton", mCompilerUi->windowsButton->isChecked());
-	SettingsManager::instance()->setValue("linuxButton", mCompilerUi->linuxButton->isChecked());
-	SettingsManager::instance()->setValue("otherButton", mCompilerUi->otherButton->isChecked());
+	SettingsManager::setValue("windowsButton", mCompilerUi->windowsButton->isChecked());
+	SettingsManager::setValue("linuxButton", mCompilerUi->linuxButton->isChecked());
+	SettingsManager::setValue("otherButton", mCompilerUi->otherButton->isChecked());
 
-	SettingsManager::instance()->setValue("pathToQmake", mCompilerUi->pathToQmake->text());
-	SettingsManager::instance()->setValue("pathToMake", mCompilerUi->pathToMake->text());
-	SettingsManager::instance()->setValue("pluginExtension", mCompilerUi->pluginExtension->text());
-	SettingsManager::instance()->setValue("prefix", mCompilerUi->prefix->text());
+	SettingsManager::setValue("pathToQmake", mCompilerUi->pathToQmake->text());
+	SettingsManager::setValue("pathToMake", mCompilerUi->pathToMake->text());
+	SettingsManager::setValue("pluginExtension", mCompilerUi->pluginExtension->text());
+	SettingsManager::setValue("prefix", mCompilerUi->prefix->text());
 
-	SettingsManager::instance()->setValue("debuggerTimeout", mDebuggerUi->timeoutLineEdit->text());
-	SettingsManager::instance()->setValue("debugColor", mDebuggerUi->colorComboBox->currentText());
-	SettingsManager::instance()->setValue("debuggerPath", mDebuggerUi->debuggerPathLineEdit->text());
-	SettingsManager::instance()->setValue("builderPath", mDebuggerUi->builderPathLineEdit->text());
-	SettingsManager::instance()->setValue("codeFileName", mDebuggerUi->codeFileNameLineEdit->text());
-	SettingsManager::instance()->setValue("buildedFileName", mDebuggerUi->buildedFileNameLineEdit->text());
-	SettingsManager::instance()->setValue("debugWorkingDirectory", mDebuggerUi->workDirLineEdit->text());
+	SettingsManager::setValue("debuggerTimeout", mDebuggerUi->timeoutLineEdit->text());
+	SettingsManager::setValue("debugColor", mDebuggerUi->colorComboBox->currentText());
+	SettingsManager::setValue("debuggerPath", mDebuggerUi->debuggerPathLineEdit->text());
+	SettingsManager::setValue("builderPath", mDebuggerUi->builderPathLineEdit->text());
+	SettingsManager::setValue("codeFileName", mDebuggerUi->codeFileNameLineEdit->text());
+	SettingsManager::setValue("buildedFileName", mDebuggerUi->buildedFileNameLineEdit->text());
+	SettingsManager::setValue("debugWorkingDirectory", mDebuggerUi->workDirLineEdit->text());
 
 	mShowGridAction->setChecked(mEditorUi->showGridCheckBox->isChecked());
 	mShowAlignmentAction->setChecked(mEditorUi->showAlignmentCheckBox->isChecked());
@@ -231,8 +231,8 @@ void PreferencesDialog::cancel()
 	mEditorUi->gridWidthSlider->setValue(mWithGrid);
 	mEditorUi->indexGridSlider->setValue(mIndexGrid);
 
-	SettingsManager::instance()->setValue("GridWidth", mWithGrid);
-	SettingsManager::instance()->setValue("IndexGrid", mIndexGrid);
+	SettingsManager::setValue("GridWidth", mWithGrid);
+	SettingsManager::setValue("IndexGrid", mIndexGrid);
 	close();
 }
 

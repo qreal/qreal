@@ -76,7 +76,7 @@ void DebuggerConnector::run()
 
 void DebuggerConnector::startDebugger()
 {
-        setDebuggerPath(SettingsManager::instance()->value("debuggerPath", "gdb.exe").toString());
+	setDebuggerPath(SettingsManager::value("debuggerPath", "gdb.exe").toString());
 
 
 	if (QFile::exists(mDebuggerPath)) {
@@ -144,10 +144,10 @@ void DebuggerConnector::sendCommand(QString command)
 void DebuggerConnector::build(QString filePath)
 {
 
-        setBuilderPath(SettingsManager::instance()->value("builderPath", "gcc.exe").toString());
-        setBuildedFileName(SettingsManager::instance()->value("buildedFileName", "builded.exe").toString());
-        setCodeFileName(SettingsManager::instance()->value("codeFileName", "code.c").toString());
-        setWorkDir(SettingsManager::instance()->value("debugWorkingDirectory", "").toString());
+	setBuilderPath(SettingsManager::value("builderPath", "gcc.exe").toString());
+	setBuildedFileName(SettingsManager::value("buildedFileName", "builded.exe").toString());
+	setCodeFileName(SettingsManager::value("codeFileName", "code.c").toString());
+	setWorkDir(SettingsManager::value("debugWorkingDirectory", "").toString());
 
 
 

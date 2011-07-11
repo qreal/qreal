@@ -218,8 +218,8 @@ void VisualDebugger::processAction()
 
 void VisualDebugger::debug()
 {
-        mDebugType = VisualDebugger::fullDebug;
-        setTimeout(SettingsManager::instance()->value("debuggerTimeout", 750).toInt());
+	mDebugType = VisualDebugger::fullDebug;
+	setTimeout(SettingsManager::value("debuggerTimeout", 750).toInt());
 
 
 	if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
@@ -345,8 +345,8 @@ void VisualDebugger::generateCode()
 	mHasCodeGenerationError = false;
 
 
-        setCodeFileName(SettingsManager::instance()->value("codeFileName", "code.c").toString());
-        setWorkDir(SettingsManager::instance()->value("debugWorkingDirectory", "").toString());
+	setCodeFileName(SettingsManager::value("codeFileName", "code.c").toString());
+	setWorkDir(SettingsManager::value("debugWorkingDirectory", "").toString());
 
 
 

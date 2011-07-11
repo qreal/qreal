@@ -20,12 +20,12 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	, mShouldReparentItems(false)
 {
 
-        mNeedDrawGrid = SettingsManager::instance()->value("ShowGrid", true).toBool();
-        mWidthOfGrid = static_cast<double>(SettingsManager::instance()->value("GridWidth", 10).toInt()) / 100;
-        mRealIndexGrid = SettingsManager::instance()->value("IndexGrid", 30).toInt();
+	mNeedDrawGrid = SettingsManager::value("ShowGrid", true).toBool();
+	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth", 10).toInt()) / 100;
+	mRealIndexGrid = SettingsManager::value("IndexGrid", 30).toInt();
 
 
-        setItemIndexMethod(NoIndex);
+	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 	mRightButtonPressed = false;
 	mActionSignalMapper = new QSignalMapper(this);
@@ -773,11 +773,11 @@ void EditorViewScene::deleteUsageActionTriggered()
 
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
-        if (mNeedDrawGrid) {
-                mWidthOfGrid = (SettingsManager::instance()->value("GridWidth", 10).toDouble()) / 100;
+	if (mNeedDrawGrid) {
+		mWidthOfGrid = (SettingsManager::value("GridWidth", 10).toDouble()) / 100;
 
 
-                painter->setPen(QPen(Qt::black, mWidthOfGrid));
+		painter->setPen(QPen(Qt::black, mWidthOfGrid));
 		drawGrid(painter, rect);
 	}
 }
@@ -848,7 +848,7 @@ void EditorViewScene::highlight(Id const &graphicalId, bool exclusive)
 	if (!elem)
 		return;
 
-        QColor color = QColor(SettingsManager::instance()->value("debugColor").toString());
+	QColor color = QColor(SettingsManager::value("debugColor", "black").toString());
 
 
 	QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();

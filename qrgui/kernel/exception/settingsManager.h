@@ -9,18 +9,21 @@ class SettingsManager
 {
 public:
     static SettingsManager* instance();
-    void setValue(QString name, QVariant value);
-    QVariant value(const QString &key, const QVariant &defaultValue = QVariant()) const;
+    static void setValue(QString name, QVariant value);
+    static QVariant value(QString key, QVariant defaultValue);
     void saveData();
     void load();
 
 private:
+    //doxygen
     static SettingsManager* mInstance;
     SettingsManager();
     QString mDirectory;
     QString mName;
     QHash<QString, QVariant> mData;
     QSettings mSettings;
+    void set(QString name, QVariant value);
+    QVariant get(const QString &key, const QVariant &defaultValue = QVariant()) const;
 
 };
 
