@@ -6,25 +6,49 @@
 using namespace qReal;
 using namespace generators;
 
-EmboxRobotGenerator(qrRepo::LogicalRepoApi const &api, QString const &destinationPath)
-	: mApi(api), mDestinationPath(destinationPath) {
+EmboxRobotGenerator::EmboxRobotGenerator(qrRepo::RepoApi *api, QString const &destinationPath)
+	:  mDestinationPath(destinationPath) {
+		mIsNeedToDeleteMApi = false;
+		mApi = api;
+}
+
+EmboxRobotGenerator::EmboxRobotGenerator(QString const &pathToRepo, QString const &destinationPath)
+	:mDestinationPath(destinationPath) {
+		mIsNeedToDeleteMApi = true;
+		mApi = new qrRepo::RepoApi(pathToRepo);
+}
+
+EmboxRobotGenerator::~EmboxRobotGenerator() {
+	if ((mApi != 0) && mIsNeedToDeleteMApi)
+		delete mApi;
 }
 
 void EmboxRobotGenerator::generate() {
-	QLinkedList<Id> initialNodes = mApi.elementsByType("InitialNode");
+	IdList initialNodes = mApi->elementsByType("InitialNode");
 
 	int curInitialNodeNumber = 0;
 	foreach (Id curInitialNode, initialNodes) {
-		QFile resultFile("prog" + QString::number(curInitialNodeNumber) + ".c");
-		if (!resultFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-			qDebug() << "cannot open \"" << resultFile.fileName() << "\"";
+		if (mApi->isGraphicalElement(curInitialNode)) {
+			QFile resultFile("prog" + QString::number(curInitialNodeNumber) + ".c");
+			if (!resultFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+				qDebug() << "cannot open \"" << resultFile.fileName() << "\"";
+				return;
+			}
 
 			QTextStream out(&resultFile);
-			out << generateByElement(curInitialNode);
-			resultFile.close();
-		}
 
-		curInitialNodeNumber++;
+			AbstractElementGenerator* gen = ElementGeneratorFactory::generator(mApi, curInitialNode);
+			QPair<QString, qReal::Id> stringPair;
+			foreach (stringPair, gen->generate()) {
+				out << stringPair.first << "\n";
+			}
+			out.flush();
+			delete gen;
+
+			resultFile.close();
+
+			curInitialNodeNumber++;
+		}
 	}
 }
 
@@ -106,8 +130,8 @@ QString EmboxRobotGenerator::generateByElement(qReal::Id element, qReal::Id prev
 }
 */
 
-AbstractElementGenerator::AbstractElementGenerator(qrRepo::RepoApi const & api, qReal::Id elementId): mApi(api),
-		mElementId(elementId) {	
+EmboxRobotGenerator::AbstractElementGenerator::AbstractElementGenerator(qrRepo::RepoApi *api,
+		qReal::Id elementId): mApi(api), mElementId(elementId) {	
 }
 
 /*
@@ -118,35 +142,42 @@ QLinkedList<QString> AbstractElementGenerator::generate() {
 }
 */
 
-SimpleElementGenerator::SimpleElementGenerator(qrRepo::RepoApi const & api, qReal::Id elementId):
-	AbstractElementGenerator(api, elementId) {
+EmboxRobotGenerator::SimpleElementGenerator::SimpleElementGenerator(qrRepo::RepoApi *api,
+		qReal::Id elementId): AbstractElementGenerator(api, elementId) {
 }
 
-QLinkedList<QPair<QString, qReal::Id>> SimpleElementGenerator::simpleCode() {
-	QLinkedList<QPair<QString, qReal::Id>> result;
+//EmboxRobotGenerator::SimpleElementGenerator::~SimpleElementGenerator() {
+//}
 
-	if (element.element() == "EnginesForward") {
+QLinkedList< QPair<QString, qReal::Id> > EmboxRobotGenerator::SimpleElementGenerator::simpleCode() {
+	QLinkedList< QPair<QString, qReal::Id> > result;
+
+	qReal::Id logicElementId = mApi->logicalId(mElementId); //TODO
+
+	if (mElementId.element() == "EnginesForward") {
 		result.append(QPair<QString, qReal::Id>(
-					"motor_set_power(MOTOR0, " + QString::number(360 * mApi.property(element, "Power").toInt()) + ");",
+					"motor_set_power(MOTOR0, " + QString::number(360 * mApi->property(logicElementId, "Power").toInt()) 
+					+ " / 100.0);",
 					mElementId));
 
-	} else if (element.element() == "EnginesBackward") {
+	} else if (mElementId.element() == "EnginesBackward") {
 		result.append(QPair<QString, qReal::Id>(
-					"motor_set_power(MOTOR0, " + QString::number(-360 * mApi.property(element, "Power").toInt()) + ");",
+					"motor_set_power(MOTOR0, " + QString::number(-360 * mApi->property(logicElementId, "Power").toInt()) 
+					+ " / 100.0);",
 					mElementId));
 
 
-	} else if (element.element() == "EnginesStop") {
+	} else if (mElementId.element() == "EnginesStop") {
 		result.append(QPair<QString, qReal::Id>(
 					"motor_set_power(MOTOR0, 0);",
 					mElementId));
 
-	} else if (element.element() == "Timer") {
+	} else if (mElementId.element() == "Timer") {
 		result.append(QPair<QString, qReal::Id>(
-					"usleep(" + QString::number(mApi.property(element, "Delay").toInt()) + ")",
+					"usleep(" + QString::number(mApi->property(logicElementId, "Delay").toInt()) + ")",
 					mElementId));
 
-	} else if (element.element() == "Beep")
+	} else if (mElementId.element() == "Beep")
 		result.append(QPair<QString, qReal::Id>(
 					"__BEEP__", //TODO
 					mElementId));
@@ -156,26 +187,29 @@ QLinkedList<QPair<QString, qReal::Id>> SimpleElementGenerator::simpleCode() {
 	return result;
 }
 
-QLinkedList<QPair<QString, qReal::Id>> SimpleElementGenerator::generate() {
-	QLinkedList<QPair<QString, qReal::Id>> result;
-
-	if (mApi.incomingConnectedElements(mElementId).size() <= 1) {
+QLinkedList< QPair<QString, qReal::Id> > EmboxRobotGenerator::SimpleElementGenerator::generate() {
+	QLinkedList< QPair<QString, qReal::Id> > result;
+	
+	if (mApi->incomingConnectedElements(mElementId).size() <= 1) {
 		result = simpleCode();
-		QList outgoingConnectedElements = mApi.outgoingConnectedElements();
 
-		if ((outgoingConnectedElements.size() == 1) || 
-				((mElementId.element() == "FinalNode") && (outgoingConnectedElements.size() == 0))) {
-			AbstractElementGenerator* gen = ElementGeneratorFactory.generate(outgoingConnectedElements.at(0));
-			return result.append(gen->generate());
+		IdList outgoingConnectedElements = mApi->outgoingConnectedElements(mElementId);
+		if (outgoingConnectedElements.size() == 1) {
+			AbstractElementGenerator* gen = ElementGeneratorFactory::generator(mApi, outgoingConnectedElements.at(0));
+			result += gen->generate();
+			delete gen;
+			return result;
+		} if ((mElementId.element() == "FinalNode") && (outgoingConnectedElements.size() == 0)) {
+			return result;
 		} else {
 			if (outgoingConnectedElements.size() > 1) {
 				qDebug() << "Error! There are more than 1 outgoing connected elements with simple robot" <<
 				"element!";
-				return QLinkedList<QPair<QString, qReal::Id>>();
+				return QLinkedList< QPair<QString, qReal::Id> >();
 			} else { 
 				//case of error end of diagram
 				qDebug() << "Error! There is no outgoing connected elements with no final node!";
-				return QLinkedList<QPair<QString, qReal::Id>>();
+				return QLinkedList< QPair<QString, qReal::Id> >();
 			}
 		}
 	}

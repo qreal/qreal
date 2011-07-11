@@ -9,48 +9,57 @@ namespace qReal {
 	namespace generators {
 		class EmboxRobotGenerator {
 			public:
-				explicit EmboxRobotGenerator(qrRepo::RepoApi const &api,
+				explicit EmboxRobotGenerator(qrRepo::RepoApi *api,
 						QString const &destinationPath = "");
+				explicit EmboxRobotGenerator(QString const &pathToRepo,
+						QString const &destinationPath = "");
+
+				~EmboxRobotGenerator();
+
 				void generate();
 
 			private:
 				//QString generateByElement(qReal::Id node, qReal::Id previousNode = qReal::Id());
 
+				class AbstractElementGenerator {
+					public:
+						explicit AbstractElementGenerator(qrRepo::RepoApi *api,
+								qReal::Id elementId);
+
+						virtual ~AbstractElementGenerator() {};
+
+						virtual QLinkedList< QPair<QString, qReal::Id> > generate() = 0;
+
+					protected:
+						qrRepo::RepoApi *mApi;
+						qReal::Id mElementId;
+				};
+
+				//for Beep, Engines
+				class SimpleElementGenerator: public AbstractElementGenerator {
+					public:
+						explicit SimpleElementGenerator(qrRepo::RepoApi *api,
+								qReal::Id elementId);
+
+						virtual ~SimpleElementGenerator() {};
+
+						virtual QLinkedList< QPair<QString, qReal::Id> > generate();
+
+					protected:
+						QLinkedList< QPair<QString, qReal::Id> > simpleCode();
+				};
+
+				class ElementGeneratorFactory {
+					public:
+						static AbstractElementGenerator* generator(qrRepo::RepoApi *api,
+								qReal::Id elementId) {
+							return new SimpleElementGenerator(api, elementId); //TODO: добавить обработку для других классов
+						}
+				};
+
+				qrRepo::RepoApi *mApi;
+				bool mIsNeedToDeleteMApi;
 				QString mDestinationPath;
-				qrRepo::RepoApi mApi;
-		};
-
-		class AbstractElementGenerator {
-			public:
-				explicit AbstractElementGenerator(qrRepo::RepoApi const & api,
-						qReal::Id elementId);
-
-				virtual ~AbstractElementGenerator() = 0;
-
-				virtual QLinkedList<QPair<QString, qReal::Id>> generate() = 0;
-
-			protected:
-				qReal::Id mElementId;
-				qrRepo::RepoApi mApi;
-		};
-
-		//for Beep, Engines
-		class SimpleElementGenerator {
-			public:
-				explicit SimpleElementGenerator(qrRepo::RepoApi const & api,
-						qReal::Id elementId);
-
-				virtual ~SimpleElementGenerator() {};
-
-				virtual QLinkedList<QPair<QString, qReal::Id>> generate();
-
-			protected:
-				QLinkedList<QString> simpleCode();
-		};
-
-		class ElementGeneratorFactory {
-			public:
-				static AbstractElementGenerator* generator(qReal::Id elementId);
 		};
 	}
 }
