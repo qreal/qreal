@@ -2,8 +2,8 @@
 
 #include <QtGui/QGraphicsView>
 
-#include "editorviewscene.h"
-#include "editorviewmviface.h"
+#include "editorViewScene.h"
+#include "editorViewMVIface.h"
 
 namespace qReal {
 
@@ -25,7 +25,7 @@ namespace qReal {
 
 		void setMainWindow(qReal::MainWindow *mainWindow);
 		void setDrawSceneGrid(bool show);
-		void ensureElementVisible(UML::Element const * const element);
+		void ensureElementVisible(Element const * const element);
 
 	public slots:
 		void toggleAntialiasing(bool);

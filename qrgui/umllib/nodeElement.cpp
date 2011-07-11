@@ -1,5 +1,5 @@
-#include "uml_nodeelement.h"
-#include "../view/editorviewscene.h"
+#include "nodeElement.h"
+#include "../view/editorViewScene.h"
 #include "../pluginInterface/editorInterface.h"
 
 #include <QtGui/QStyle>
@@ -12,7 +12,6 @@
 
 #include <math.h>
 
-using namespace UML;
 using namespace qReal;
 
 NodeElement::NodeElement(ElementImpl* impl)
@@ -512,7 +511,7 @@ void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 	QList<QGraphicsItem*> graphicsItems = scene()->selectedItems();
 	int length = graphicsItems.size();
 	foreach(QGraphicsItem* item, graphicsItems) {
-		UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(item);
+		EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
 		if (edge) {
 			length--;
 			graphicsItems.removeOne(edge);
@@ -521,7 +520,7 @@ void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 	if (length > 1) {
 		foreach(QGraphicsItem* item, scene()->selectedItems()) {
-			UML::NodeElement* node = dynamic_cast<UML::NodeElement*>(item);
+			NodeElement* node = dynamic_cast<NodeElement*>(item);
 			if (node)
 				node->hideEmbeddedLinkers();
 		}
@@ -1282,9 +1281,9 @@ void NodeElement::checkConnectionsToPort()
 	// i have no idea what this method does, but it is called when the element
 	// is dropped on scene. so i'll just leave this code here for now.
 	QList<QGraphicsItem *>  items = scene()->items(scenePos());
-	UML::EdgeElement *edge = NULL;
+	EdgeElement *edge = NULL;
 	foreach(QGraphicsItem *item, items){
-		edge = dynamic_cast<UML::EdgeElement *>(item);
+		edge = dynamic_cast<EdgeElement *>(item);
 		if (edge) {
 			edge->connectToPort();
 			return;

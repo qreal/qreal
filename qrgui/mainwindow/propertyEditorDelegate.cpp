@@ -1,14 +1,14 @@
-#include "propertyeditordelegate.h"
-#include "propertyeditorproxymodel.h"
+#include "propertyEditorDelegate.h"
+#include "propertyEditorProxyModel.h"
 #include <QtCore/QDebug>
 #include <QtGui/QComboBox>
 #include <QtGui/QPushButton>
 #include <QtGui/QPushButton>
 
-#include "mainwindow.h"
+#include "mainWindow.h"
 #include "openShapeEditorButton.h"
 
-#include "referencetypewindow.h"
+#include "referenceTypeWindow.h"
 #include "buttonRefWindow.h"
 
 using namespace qReal;

@@ -3,12 +3,11 @@
 #include <QList>
 #include <QPair>
 
-#include "uml_element.h"
+#include "element.h"
 #include "../pluginInterface/elementImpl.h"
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
-namespace UML {
 enum ArrowType { FILLED_ARROW, EMPTY_ARROW, FILLED_RHOMB, EMPTY_RHOMB, NO_ARROW, OPEN_ARROW };
 
 class NodeElement;
@@ -35,15 +34,15 @@ public:
 	bool reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst);
 	bool shouldReconnect() const;
 	void arrangeSrcAndDst();
-	UML::NodeElement *src() const;
-	UML::NodeElement *dst() const;
-	bool isSrc(UML::NodeElement const *node) const;
-	bool isDst(UML::NodeElement const *node) const;
-	qreal portIdOn(UML::NodeElement const *node) const;
-	QPointF nextFrom(UML::NodeElement const *node) const;
-	QPointF connectionPoint(UML::NodeElement const *node) const;
-	UML::NodeElement* otherSide(UML::NodeElement const *node) const;
-	void removeLink(UML::NodeElement const *from);
+	NodeElement *src() const;
+	NodeElement *dst() const;
+	bool isSrc(NodeElement const *node) const;
+	bool isDst(NodeElement const *node) const;
+	qreal portIdOn(NodeElement const *node) const;
+	QPointF nextFrom(NodeElement const *node) const;
+	QPointF connectionPoint(NodeElement const *node) const;
+	NodeElement* otherSide(NodeElement const *node) const;
+	void removeLink(NodeElement const *from);
 	QPolygonF line() const;
 
 	/** @brief Get position of edge's start point*/
@@ -53,7 +52,7 @@ public:
 
 	void placeStartTo(QPointF const &place);
 	void placeEndTo(QPointF const &place);
-	void moveConnection(UML::NodeElement *node, qreal const portId);
+	void moveConnection(NodeElement *node, qreal const portId);
 
 	virtual void connectToPort();
 
@@ -128,5 +127,4 @@ private:
 	int mLastDragPoint;
 
 };
-}
 

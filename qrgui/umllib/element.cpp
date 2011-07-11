@@ -1,9 +1,8 @@
-#include "uml_element.h"
+#include "element.h"
 
 #include <QtGui>
 
 using namespace qReal;
-using namespace UML;
 
 Element::Element()
 	: mMoving(false)

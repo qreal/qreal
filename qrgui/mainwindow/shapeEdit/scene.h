@@ -23,8 +23,6 @@
 #include "../umllib/elementTitle.h"
 #include "../../kernel/settingsManager.h"
 
-using namespace UML;
-
 const int sizeEmptyRectX = 680;
 const int sizeEmptyRectY = 580;
 

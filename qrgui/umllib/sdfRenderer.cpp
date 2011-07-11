@@ -1,4 +1,4 @@
-#include "sdfrenderer.h"
+#include "sdfRenderer.h"
 
 #include <QMessageBox>
 #include <QFont>

@@ -1,9 +1,6 @@
 #include "sceneGridHandler.h"
-#include "uml_nodeelement.h"
-#include "../view/editorviewscene.h"
-
-
-using namespace UML;
+#include "nodeElement.h"
+#include "../view/editorViewScene.h"
 
 SceneGridHandler::SceneGridHandler(NodeElement *node)
 {
