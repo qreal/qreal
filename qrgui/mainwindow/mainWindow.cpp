@@ -41,7 +41,7 @@
 #include "../generators/xmi/xmiHandler.h"
 #include "../generators/java/javaHandler.h"
 #include "../parsers/hascol/hascolParser.h"
-#include "../editorManager/listenerManager.h"
+#include "../pluginManager/listenerManager.h"
 #include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"

@@ -67,13 +67,16 @@ include (../utils/utils.pri)
 include (thirdparty/thirdparty.pri)
 
 # Управление плагинами. Plugin managment
-include (editorManager/editorManager.pri)
+include (pluginManager/pluginManager.pri)
 
 # Graphical and logical models
 include (models/models.pri)
 
 # Interfaces for plugins, used by qrxc and qrmc.
-include (pluginInterface/pluginInterface.pri)
+include (editorPluginInterface/editorPluginInterface.pri)
+
+# Interfaces for tool plugins, used in handcoded tools.
+include (toolPluginInterface/toolPluginInterface.pri)
 
 # Interpreters: visual debugger and robots
 include (interpreters/interpreters.pri)

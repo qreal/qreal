@@ -1,0 +1,1 @@
+# Here must be the call to QRMC console generator

@@ -4,7 +4,7 @@
 #include <QDebug>
 
 #include "../../../qrrepo/repoApi.h"
-#include "../../editorManager/editorManager.h"
+#include "../../pluginManager/editorManager.h"
 #include "modelsImplementation/logicalModelItem.h"
 #include "modelsImplementation/abstractModel.h"
 #include "graphicalModelView.h"

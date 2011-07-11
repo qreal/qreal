@@ -6,7 +6,7 @@
 
 #include "../modelsAssistApi.h"
 #include "../../../qrrepo/repoApi.h"
-#include "../../editorManager/editorManager.h"
+#include "../../pluginManager/editorManager.h"
 #include "abstractModelItem.h"
 
 namespace qReal {

@@ -12,7 +12,7 @@
 
 #include "../../../qrrepo/repoApi.h"
 #include "../../../utils/xmlUtils.h"
-#include "../../editorManager/editorManager.h"
+#include "../../pluginManager/editorManager.h"
 #include "../../kernel/exception/exception.h"
 
 using namespace qReal;

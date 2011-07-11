@@ -2,7 +2,7 @@
 #include "keyManagerInterface.h"
 #include "keyManager.h"
 #include "../../kernel/ids.h"
-#include "../../editorManager/editorManager.h"
+#include "../../pluginManager/editorManager.h"
 #include "../../mainwindow/gesturesPainterInterface.h"
 #include <QPointF>
 #include <QPoint>

@@ -6,7 +6,7 @@
 #include <QSplashScreen>
 #include <QtGui>
 
-#include "../editorManager/editorManager.h"
+#include "../pluginManager/editorManager.h"
 #include "propertyeditorproxymodel.h"
 #include "propertyeditordelegate.h"
 #include "gesturesPainterInterface.h"

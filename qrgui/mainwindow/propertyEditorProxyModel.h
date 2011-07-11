@@ -6,7 +6,7 @@
 #include <QAbstractTableModel>
 #include <QtCore/QStringList>
 
-#include "../editorManager/editorManager.h"
+#include "../pluginManager/editorManager.h"
 #include "../../qrrepo/logicalRepoApi.h"
 
 /** @class PropertyEditorModel
