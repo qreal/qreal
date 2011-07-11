@@ -39,6 +39,7 @@
 #include "../editorManager/listenerManager.h"
 #include "../generators/editorGenerator/editorGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
+#include "../../kernel/settingsManager.h"
 
 #include "../interpreters/robots/interpreter.h"
 
@@ -160,6 +161,7 @@ MainWindow::MainWindow()
 	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &)), this, SLOT(updateTabName(Id const &)));
 
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
+
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
 	mGesturesWidget = new GesturesWidget();
@@ -196,7 +198,8 @@ MainWindow::MainWindow()
 	if (SettingsManager::instance()->value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 
-	mDocksVisibility.clear();
+        mDocksVisibility.clear();
+        this->setWindowTitle("QReal:Robots - " + SettingsManager::instance()->value("workingDir", mSaveDir).toString());
 }
 
 void MainWindow::connectActions()
@@ -488,6 +491,8 @@ bool MainWindow::openNewProject()
 
 bool MainWindow::open(QString const &dirName)
 {
+
+
 	if (dirName.isEmpty())
 		return false;
 
@@ -500,6 +505,7 @@ bool MainWindow::open(QString const &dirName)
 	closeAllTabs();
 
 	mModels->repoControlApi().open(dirName);
+
 	mModels->reinit();
 
 	if (!checkPluginsAndReopen())
@@ -508,7 +514,7 @@ bool MainWindow::open(QString const &dirName)
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-
+        this->setWindowTitle("QReal:Robots - " + SettingsManager::instance()->value("workingDir", mSaveDir).toString());
 	return true;
 }
 
