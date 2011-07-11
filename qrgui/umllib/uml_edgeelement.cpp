@@ -565,8 +565,8 @@ void EdgeElement::squarizeHandler(QPointF const &pos)
 	prepareGeometryChange();
 	int i = 0;
 	while (!mLine.endsWith(mLine[i])) {
-		QPointF insPoint = mLine[i];
 
+		//don't make new point between first-second & (last-1)-last. just drag them.
 		if (i == 0 && mLine.size() > 2) {
 			if (mLine[i + 1].y() == mLine[i + 2].y()) {
 				mLine[i + 1].setX(mLine[i].x());
@@ -591,7 +591,7 @@ void EdgeElement::squarizeHandler(QPointF const &pos)
 				break;
 			}
 		}
-
+		//if 3 points have same X or Y coordinate delete point between them.
 		if (i < mLine.size() - 3) {
 			if (mLine[i + 1].x() == mLine[i].x() && mLine[i + 2].x() == mLine[i].x()) {
 				mLine.remove(i + 1);
@@ -605,6 +605,11 @@ void EdgeElement::squarizeHandler(QPointF const &pos)
 			}
 		}
 
+
+		QPointF insPoint = mLine[i]; //point to insert between 2 others to make right angle
+
+		// we need moar comments!!111
+		//dont make new points on line
 		if (insPoint.x() == mLine[i + 1].x() || insPoint.y() == mLine[i + 1].y()) {
 			i++;
 			continue;
@@ -614,7 +619,8 @@ void EdgeElement::squarizeHandler(QPointF const &pos)
 			i++;
 			continue;
 		}
-		mLine.insert(i + 1, insPoint);
+
+		mLine.insert(i + 1, insPoint); //insert new point to make right angle
 		i += 2;
 	}
 
