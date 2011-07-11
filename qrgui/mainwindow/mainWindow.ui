@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>738</width>
-    <height>523</height>
+    <height>580</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>QReal:Robots</string>
+   <string/>
   </property>
   <property name="windowIcon">
    <iconset resource="../qrgui.qrc">
@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>738</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -198,8 +198,8 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>91</width>
-     <height>113</height>
+     <width>102</width>
+     <height>127</height>
     </size>
    </property>
    <property name="maximumSize">
@@ -237,6 +237,19 @@
    </attribute>
    <widget class="QWidget" name="graphicalModelDockWidgetContents">
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
      <item>
       <widget class="QTreeView" name="graphicalModelExplorer">
        <property name="contextMenuPolicy">
