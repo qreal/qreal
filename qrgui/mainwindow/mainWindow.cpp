@@ -19,7 +19,7 @@
 
 #include <QtCore/QPluginLoader>
 
-#include "ui_mainwindow.h"
+#include "ui_mainWindow.h"
 #include "errorReporter.h"
 
 #include "../interpreters/robots/details/robotImplementations/abstractRobotModelImplementation.h"
