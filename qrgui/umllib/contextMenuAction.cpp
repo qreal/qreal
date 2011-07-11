@@ -1,7 +1,5 @@
 #include "contextMenuAction.h"
 
-using namespace UML;
-
 ContextMenuAction::ContextMenuAction(QString const &text, QObject *parent)
 	: QAction(text, parent)
 {

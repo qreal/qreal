@@ -2,10 +2,8 @@
 
 #include <QtGui/QTextCursor>
 
-#include "uml_nodeelement.h"
-#include "uml_edgeelement.h"
-
-using namespace UML;
+#include "nodeElement.h"
+#include "edgeElement.h"
 
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &text)
 	: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mPoint(x, y), mBinding(""), mBackground(Qt::transparent)
