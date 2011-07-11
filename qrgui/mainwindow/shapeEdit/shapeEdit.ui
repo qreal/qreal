@@ -1088,7 +1088,7 @@
   <customwidget>
    <class>ColorListEditor</class>
    <extends>QComboBox</extends>
-   <header>colorlisteditor.h</header>
+   <header>colorListEditor.h</header>
   </customwidget>
   <customwidget>
    <class>View</class>
