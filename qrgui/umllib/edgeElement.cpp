@@ -203,7 +203,7 @@ QPainterPath EdgeElement::shape() const
 	path.setFillRule(Qt::WindingFill);
 
 	QPainterPathStroker ps;
-	ps.setWidth(kvadratik);
+        ps.setWidth(kvadratik - 5);
 
 	path.addPolygon(mLine);
 	path = ps.createStroke(path);
@@ -217,7 +217,7 @@ QPainterPath EdgeElement::shape() const
 
 QRectF EdgeElement::getPortRect(QPointF const &point)
 {
-	return QRectF(point - QPointF(kvadratik, kvadratik), QSizeF(kvadratik * 2, kvadratik * 2));
+        return QRectF(point - QPointF(kvadratik - 5, kvadratik - 5), QSizeF(kvadratik * 2, kvadratik * 2));
 }
 
 int EdgeElement::getPoint(const QPointF &location)
@@ -521,7 +521,7 @@ void EdgeElement::addPointHandler(QPointF const &pos)
 	for (int i = 0; i < mLine.size() - 1; ++i) {
 		QPainterPath path;
 		QPainterPathStroker ps;
-		ps.setWidth(kvadratik);
+                ps.setWidth(kvadratik - 5);
 
 		path.moveTo(mLine[i]);
 		path.lineTo(mLine[i + 1]);

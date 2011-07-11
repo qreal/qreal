@@ -14,7 +14,7 @@
 #include "../models/logicalModelAssistApi.h"
 
 /** @brief size of a point port */
-const int kvadratik = 5;
+const int kvadratik = 10;
 
 /** @class Element
  * 	@brief base class for an element on a diagram
