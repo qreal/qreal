@@ -227,8 +227,8 @@ gui::ErrorReporter& VisualDebugger::debug()
 	}
 
 	mDebugType = VisualDebugger::fullDebug;
-	setTimeout(SettingsManager::instance()->value("debuggerTimeout", 750).toInt());
-	setDebugColor(SettingsManager::instance()->value("debugColor").toString());
+	setTimeout(SettingsManager::value("debuggerTimeout", 750).toInt());
+	setDebugColor(SettingsManager::value("debugColor").toString());
 
 	if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
 		return *mErrorReporter;

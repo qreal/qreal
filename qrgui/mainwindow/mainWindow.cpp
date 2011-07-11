@@ -72,9 +72,9 @@ MainWindow::MainWindow()
 	progress->setFixedHeight(15);
 	progress->setRange(0, 100);
 
-	QDir imagesDir(SettingsManager::instance()->value("pathToImages", "/someWeirdDirectoryName").toString());
+	QDir imagesDir(SettingsManager::value("pathToImages", "/someWeirdDirectoryName").toString());
 	if (!imagesDir.exists())
-		SettingsManager::instance()->setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
+		SettingsManager::setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
 
 	// Step 1: splash screen loaded, progress bar initialized.
 	progress->setValue(5);
@@ -172,18 +172,18 @@ MainWindow::MainWindow()
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 
-	QString const defaultBluetoothPortName = SettingsManager::instance()->value("bluetoothPortName", "").toString();
+	QString const defaultBluetoothPortName = SettingsManager::value("bluetoothPortName", "").toString();
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
-	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel", "1").toInt());
 	mUi->actionShow2Dmodel->setVisible(typeOfRobotModel == robotModelType::unreal);
 	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
 			, mModels->logicalModelAssistApi(), *this, mBluetoothCommunication, typeOfRobotModel);
 	if (typeOfRobotModel == robotModelType::unreal)
 		setD2ModelWidgetActions(mUi->actionRun, mUi->actionStop_Running);
-	sensorType::SensorTypeEnum port1 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType", "0").toInt());
-	sensorType::SensorTypeEnum port2 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType", "0").toInt());
-	sensorType::SensorTypeEnum port3 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType", "0").toInt());
-	sensorType::SensorTypeEnum port4 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port1 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port1SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port2 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port2SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port3 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port3SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port4 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port4SensorType", "0").toInt());
 	mRobotInterpreter->configureSensors(port1, port2, port3, port4);
 
 	// Step 7: Save consistency checked, interface is initialized with models.
@@ -199,7 +199,7 @@ MainWindow::MainWindow()
 		suggestToCreateDiagram();
 
 		mDocksVisibility.clear();
-		this->setWindowTitle("QReal:Robots - " + SettingsManager::instance()->value("workingDir", mSaveDir).toString());
+		this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
 }
 
 void MainWindow::connectActions()
@@ -514,7 +514,7 @@ bool MainWindow::open(QString const &dirName)
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-		this->setWindowTitle("QReal:Robots - " + SettingsManager::instance()->value("workingDir", mSaveDir).toString());
+		this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
 	return true;
 }
 
@@ -1322,19 +1322,19 @@ void MainWindow::dehighlight(Id const &graphicalId)
 
 void MainWindow::showRobotSettingsDialog()
 {
-	SettingsManager::instance()->setValue("currentPreferencesTab", PreferencesDialog::robotSettings);
+	SettingsManager::setValue("currentPreferencesTab", PreferencesDialog::robotSettings);
 	stopRobot();
 	showPreferencesDialog();
 
-	QString const bluetoothPortName = SettingsManager::instance()->value("bluetoothPortName").toString();
+	QString const bluetoothPortName = SettingsManager::value("bluetoothPortName").toString();
 	mBluetoothCommunication->setPortName(bluetoothPortName);
-	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel", "1").toInt());
 	mRobotInterpreter->setRobotImplementation(typeOfRobotModel, mBluetoothCommunication);
 	mRobotInterpreter->configureSensors(
-			static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
-			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
-			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
-			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt())
+			static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port1SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port2SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port3SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port4SensorType").toInt())
 	);
 	mUi->actionShow2Dmodel->setVisible(typeOfRobotModel == robotModelType::unreal);
 	if (typeOfRobotModel == robotModelType::unreal)
@@ -1411,11 +1411,11 @@ void MainWindow::fullscreen()
 
 void MainWindow::createProject()
 {
-	QString dirName = getNextDirName(SettingsManager::instance()->value("workingDir", mSaveDir).toString());
-	SettingsManager::instance()->setValue("workingDir", dirName);
+	QString dirName = getNextDirName(SettingsManager::value("workingDir", mSaveDir).toString());
+	SettingsManager::setValue("workingDir", dirName);
 	open(dirName);
 
-	if (SettingsManager::instance()->value("diagramCreateSuggestion", true).toBool())
+	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 
 }

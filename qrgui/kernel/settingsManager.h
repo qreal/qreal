@@ -13,9 +13,9 @@ public:
 	void saveData();
 	void load();
 
+private:
 	static SettingsManager* instance();
 
-private:
 	void set(QString name, QVariant value);
 	QVariant get(const QString &key, const QVariant &defaultValue = QVariant()) const;
 
