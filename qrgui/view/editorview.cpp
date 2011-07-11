@@ -27,6 +27,8 @@ EditorView::EditorView(QWidget *parent)
 	setEnabled(false);
 
 	setMouseTracking(true);
+
+	setAlignment(Qt::AlignLeft | Qt::AlignTop); //чтобы фокус был по левому верхнему углу
 }
 
 EditorView::~EditorView()
