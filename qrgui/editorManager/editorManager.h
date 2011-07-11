@@ -9,7 +9,7 @@
 
 #include "listenerManager.h"
 #include "../kernel/ids.h"
-#include "../pluginInterface/editorInterface.h"
+#include "../editorPluginInterface/editorInterface.h"
 #include "../../qrrepo/graphicalRepoApi.h"
 #include "../../qrrepo/logicalRepoApi.h"
 #include "../kernel/settingsManager.h"

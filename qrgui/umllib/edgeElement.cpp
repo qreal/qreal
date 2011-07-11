@@ -11,7 +11,7 @@
 #include "edgeElement.h"
 #include "nodeElement.h"
 #include "../view/editorviewscene.h"
-#include "../pluginInterface/editorInterface.h"
+#include "../editorPluginInterface/editorInterface.h"
 
 using namespace qReal;
 

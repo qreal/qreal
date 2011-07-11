@@ -16,7 +16,7 @@
 #include "sdfRenderer.h"
 #include "element.h"
 #include "edgeElement.h"
-#include "../pluginInterface/elementImpl.h"
+#include "../editorPluginInterface/elementImpl.h"
 
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"

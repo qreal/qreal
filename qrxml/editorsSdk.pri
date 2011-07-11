@@ -1,8 +1,8 @@
 SOURCES		+=
 
 HEADERS		+= \
-			$$QRXML_ROOT/../qrgui/pluginInterface/sdfRendererInterface.h \
-			$$QRXML_ROOT/../qrgui/pluginInterface/elementImpl.h \
-			$$QRXML_ROOT/../qrgui/pluginInterface/elementRepoInterface.h \
-			$$QRXML_ROOT/../qrgui/pluginInterface/elementTitleHelpers.h \
-			$$QRXML_ROOT/../qrgui/pluginInterface/editorInterface.h \
+			$$QRXML_ROOT/../qrgui/editorPluginInterface/sdfRendererInterface.h \
+			$$QRXML_ROOT/../qrgui/editorPluginInterface/elementImpl.h \
+			$$QRXML_ROOT/../qrgui/editorPluginInterface/elementRepoInterface.h \
+			$$QRXML_ROOT/../qrgui/editorPluginInterface/elementTitleHelpers.h \
+			$$QRXML_ROOT/../qrgui/editorPluginInterface/editorInterface.h \

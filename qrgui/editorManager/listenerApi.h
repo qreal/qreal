@@ -2,7 +2,7 @@
 
 #include <QtCore/QObject>
 
-#include "../pluginInterface/listenerApiInterface.h"
+#include "../editorPluginInterface/listenerApiInterface.h"
 #include "../models/graphicalModelAssistApi.h"
 #include "../models/logicalModelAssistApi.h"
 

@@ -1,6 +1,6 @@
 #include "nodeElement.h"
 #include "../view/editorViewScene.h"
-#include "../pluginInterface/editorInterface.h"
+#include "../editorPluginInterface/editorInterface.h"
 
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
@@ -1002,7 +1002,7 @@ qreal NodeElement::getPortId(const QPointF &location) const
 
 	for (int i = 0; i < mLinePorts.size(); i++) {
 		QPainterPathStroker ps;
-                ps.setWidth(kvadratik - 5);
+				ps.setWidth(kvadratik - 5);
 
 		QPainterPath path;
 		path.moveTo(newTransform(mLinePorts[i]).p1());

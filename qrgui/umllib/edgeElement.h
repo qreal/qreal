@@ -4,7 +4,7 @@
 #include <QPair>
 
 #include "element.h"
-#include "../pluginInterface/elementImpl.h"
+#include "../editorPluginInterface/elementImpl.h"
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 

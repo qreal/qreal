@@ -113,9 +113,9 @@ void XmlCompiler::generateElementClasses()
 	out() << "#pragma once\n\n"
 		<< "#include <QBrush>\n"
 		<< "#include <QPainter>\n\n"
-		<< "#include \"../../../qrgui/pluginInterface/elementImpl.h\"\n"
-		<< "#include \"../../../qrgui/pluginInterface/elementRepoInterface.h\"\n"
-		<< "#include \"../../../qrgui/pluginInterface/elementTitleHelpers.h\"\n\n"
+		<< "#include \"../../../qrgui/editorPluginInterface/elementImpl.h\"\n"
+		<< "#include \"../../../qrgui/editorPluginInterface/elementRepoInterface.h\"\n"
+		<< "#include \"../../../qrgui/editorPluginInterface/elementTitleHelpers.h\"\n\n"
 //		<< "namespace UML {\n\n";
 		;
 
@@ -139,7 +139,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtGui/QIcon>\n"
 		<< "#include <QPair>"
 		<< "\n"
-		<< "#include \"../../../qrgui/pluginInterface/editorInterface.h\"\n"
+		<< "#include \"../../../qrgui/editorPluginInterface/editorInterface.h\"\n"
 		<< "\n"
 		<< "class " << mPluginName << "Plugin : public QObject, public qReal::EditorInterface\n"
 		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(qReal::EditorInterface)\n"

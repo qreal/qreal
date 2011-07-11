@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtGui/QGraphicsTextItem>
-#include "../pluginInterface/elementTitleHelpers.h"
+#include "../editorPluginInterface/elementTitleHelpers.h"
 
 class ElementTitle;
 

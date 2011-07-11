@@ -1,7 +1,7 @@
 # pragma once
 
 #include <QtCore/QObject>
-#include "../pluginInterface/listenerInterface.h"
+#include "../editorPluginInterface/listenerInterface.h"
 #include "../kernel/ids.h"
 
 namespace qReal {

@@ -25,7 +25,7 @@
 
 #include "../interpreters/robots/details/robotImplementations/abstractRobotModelImplementation.h"
 #include "../interpreters/robots/details/robotParts/robotModel.h"
-#include "../pluginInterface/editorInterface.h"
+#include "../editorPluginInterface/editorInterface.h"
 #include "preferencesDialog.h"
 #include "shapeEdit/shapeEdit.h"
 #include "openShapeEditorButton.h"
