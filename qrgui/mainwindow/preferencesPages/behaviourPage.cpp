@@ -8,11 +8,11 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent) :
 {
 	mUi->setupUi(this);
 
-	mUi->saveExitCheckBox->setChecked(SettingsManager::instance()->value("SaveExitSuggestion", true).toBool());
-	mUi->warningWindowBox->setChecked(SettingsManager::instance()->value("warningWindow", true).toBool());
-	mUi->chooseDiagramsToSaveCheckBox->setChecked(SettingsManager::instance()->value("ChooseDiagramsToSave", true).toBool());
-	mUi->diagramCreateCheckBox->setChecked(SettingsManager::instance()->value("DiagramCreateSuggestion", true).toBool());
-	mUi->paletteTabCheckBox->setChecked(SettingsManager::instance()->value("PaletteTabSwitching", true).toBool());
+	mUi->saveExitCheckBox->setChecked(SettingsManager::value("SaveExitSuggestion", true).toBool());
+	mUi->warningWindowBox->setChecked(SettingsManager::value("warningWindow", true).toBool());
+	mUi->chooseDiagramsToSaveCheckBox->setChecked(SettingsManager::value("ChooseDiagramsToSave", true).toBool());
+	mUi->diagramCreateCheckBox->setChecked(SettingsManager::value("DiagramCreateSuggestion", true).toBool());
+	mUi->paletteTabCheckBox->setChecked(SettingsManager::value("PaletteTabSwitching", true).toBool());
 }
 
 PreferencesBehaviourPage::~PreferencesBehaviourPage()
@@ -33,9 +33,9 @@ void PreferencesBehaviourPage::changeEvent(QEvent *e)
 
 void PreferencesBehaviourPage::save()
 {
-	SettingsManager::instance()->setValue("ChooseDiagramsToSave", mUi->chooseDiagramsToSaveCheckBox->isChecked());
-	SettingsManager::instance()->setValue("DiagramCreateSuggestion", mUi->diagramCreateCheckBox->isChecked());
-	SettingsManager::instance()->setValue("PaletteTabSwitching", mUi->paletteTabCheckBox->isChecked());
-	SettingsManager::instance()->setValue("SaveExitSuggestion", mUi->saveExitCheckBox->isChecked());
-	SettingsManager::instance()->setValue("warningWindow", mUi->warningWindowBox->isChecked());
+	SettingsManager::setValue("ChooseDiagramsToSave", mUi->chooseDiagramsToSaveCheckBox->isChecked());
+	SettingsManager::setValue("DiagramCreateSuggestion", mUi->diagramCreateCheckBox->isChecked());
+	SettingsManager::setValue("PaletteTabSwitching", mUi->paletteTabCheckBox->isChecked());
+	SettingsManager::setValue("SaveExitSuggestion", mUi->saveExitCheckBox->isChecked());
+	SettingsManager::setValue("warningWindow", mUi->warningWindowBox->isChecked());
 }

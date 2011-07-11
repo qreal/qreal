@@ -295,7 +295,7 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep()
 	}
 
 	mDebugType = VisualDebugger::singleStepDebug;
-	setDebugColor(SettingsManager::instance()->value("debugColor").toString());
+	setDebugColor(SettingsManager::value("debugColor").toString());
 
 	if (mCurrentElem == NULL && mCurrentId == Id::rootId()) {
 		if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {

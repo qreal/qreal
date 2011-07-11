@@ -18,9 +18,9 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	, mPrevParent(0)
 	, mShouldReparentItems(false)
 {
-	mNeedDrawGrid = SettingsManager::instance()->value("ShowGrid", true).toBool();
-	mWidthOfGrid = static_cast<double>(SettingsManager::instance()->value("GridWidth", 10).toInt()) / 100;
-	mRealIndexGrid = SettingsManager::instance()->value("IndexGrid", 30).toInt();
+	mNeedDrawGrid = SettingsManager::value("ShowGrid", true).toBool();
+	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth", 10).toInt()) / 100;
+	mRealIndexGrid = SettingsManager::value("IndexGrid", 30).toInt();
 
 	mNeedDrawGrid = SettingsManager::value("ShowGrid", true).toBool();
 	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth", 10).toInt()) / 100;
@@ -66,7 +66,7 @@ void EditorViewScene::initMouseMoveManager()
 
 void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 {
-	int const indexGrid = SettingsManager::instance()->value("IndexGrid", 50).toInt();
+	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
 	qreal const sceneX = rect.x();
 	qreal const sceneY = rect.y();
 

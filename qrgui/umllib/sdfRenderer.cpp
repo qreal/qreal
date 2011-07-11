@@ -228,7 +228,7 @@ void SdfRenderer::image_draw(QDomElement &element)
 	float y1 = y1_def(element);
 	float x2 = x2_def(element);
 	float y2 = y2_def(element);
-	QString fileName = SettingsManager::instance()->value("pathToImages", ".").toString() + "/" + element.attribute("name", "error");
+	QString fileName = SettingsManager::value("pathToImages", ".").toString() + "/" + element.attribute("name", "error");
 
 	QPixmap pixmap;
 
