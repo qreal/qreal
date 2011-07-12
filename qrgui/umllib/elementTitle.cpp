@@ -10,6 +10,7 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &text)
 {
 	setPos(x, y);
 	setHtml(text);
+
 }
 
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly)
@@ -42,6 +43,18 @@ void ElementTitle::setBackground(Qt::GlobalColor const &background)
 void ElementTitle::focusOutEvent(QFocusEvent *event)
 {
 	QGraphicsTextItem::focusOutEvent(event);
+
+	QString htmlNormalizedText = toHtml().remove("\n", Qt::CaseInsensitive);
+	/*QStringList htmlTextList = htmlText.split(">", QString::SkipEmptyParts);
+	foreach (QString currentHtmlText, htmlTextList) {
+		QString newCurrentHtmlText = currentHtmlText.mid(0, currentHtmlText.indexOf("<"));
+		qDebug() << "newCurrentHtmlText" << newCurrentHtmlText;
+		if (!(newCurrentHtmlText.isEmpty()) && !(newCurrentHtmlText == " ") && !(newCurrentHtmlText.contains("{")))
+			htmlNormalizedText = htmlNormalizedText + newCurrentHtmlText + "<br />";
+		qDebug() << "htmlNormalizedText" << htmlNormalizedText;
+	}
+	qDebug() << "htmlNormalizedText last version" << htmlNormalizedText;*/
+
 	setTextInteractionFlags(Qt::NoTextInteraction);
 
 	parentItem()->setSelected(true);
@@ -56,21 +69,22 @@ void ElementTitle::focusOutEvent(QFocusEvent *event)
 	if (mReadOnly)
 		return;
 
-	if (mOldText != toHtml()) {
+	if (mOldText != toPlainText()) {
 		QString value = toPlainText();
 		if (mBinding == "name")
 			static_cast<NodeElement*>(parentItem())->setName(value);
 		else
 			static_cast<NodeElement*>(parentItem())->setLogicalProperty(mBinding, value);
 	}
+	setHtml(htmlNormalizedText);
 }
 
 void ElementTitle::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Escape)
+	/*if (event->key() == Qt::Key_Escape)
 	{
 		// Restore previous text and loose focus
-		setHtml(mOldText);
+		setPlainText(mOldText);
 		clearFocus();
 		return;
 	}
@@ -78,10 +92,9 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 		event->key() == Qt::Key_Return)
 	{
 		// Loose focus: new name will be applied in focusOutEvent
-//		setHtml(toHtml() + "<br>");
 		clearFocus();
 		return;
-	}
+	}*/
 	QGraphicsTextItem::keyPressEvent(event);
 }
 
@@ -93,7 +106,7 @@ void ElementTitle::startTextInteraction()
 	if (hasFocus())
 		return;
 
-	mOldText = toHtml();
+	mOldText = toPlainText();
 
 	// Clear scene selection
 	//if (!(event->modifiers() & Qt::ControlModifier)) - was here.
