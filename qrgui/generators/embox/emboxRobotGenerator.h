@@ -1,6 +1,10 @@
+#pragma once
+
 #include <QString>
 #include <QPair>
-#include <QLinkedList>
+#include <QMap>
+//#include <QLinkedList>
+#include <QStack>
 
 #include "../../kernel/ids.h"
 #include "../../../qrrepo/repoApi.h"
@@ -19,47 +23,73 @@ namespace qReal {
 				void generate();
 
 			private:
-				//QString generateByElement(qReal::Id node, qReal::Id previousNode = qReal::Id());
-
+				friend class AbstractElementGenerator;
 				class AbstractElementGenerator {
 					public:
-						explicit AbstractElementGenerator(qrRepo::RepoApi *api,
+						explicit AbstractElementGenerator(EmboxRobotGenerator *emboxGen,
 								qReal::Id elementId);
 
 						virtual ~AbstractElementGenerator() {};
 
-						virtual QLinkedList< QPair<QString, qReal::Id> > generate() = 0;
+						virtual bool generate() = 0;
+							//must change mEmboxGen->mGeneratedStringSet
+						
+						virtual QList< QPair<QString, qReal::Id> >
+							cyclePrefixCode() = 0;
+						
+						virtual QList< QPair<QString, qReal::Id> >
+							cyclePostfixCode() = 0;
 
 					protected:
-						qrRepo::RepoApi *mApi;
+						virtual void createListsForIncomingConnections();
+							//creates new lists in mGeneratedStringSet
+							//and connects it with mElementId in mElementToStringListNumbers
+							//if element have more than 1 incoming connection
+
+						EmboxRobotGenerator *mEmboxGen;
 						qReal::Id mElementId;
 				};
 
 				//for Beep, Engines
 				class SimpleElementGenerator: public AbstractElementGenerator {
 					public:
-						explicit SimpleElementGenerator(qrRepo::RepoApi *api,
+						explicit SimpleElementGenerator(EmboxRobotGenerator *emboxGen,
 								qReal::Id elementId);
 
 						virtual ~SimpleElementGenerator() {};
 
-						virtual QLinkedList< QPair<QString, qReal::Id> > generate();
+						virtual bool generate();
+						
+						virtual QList< QPair<QString, qReal::Id> >
+							cyclePrefixCode();
+
+						virtual QList< QPair<QString, qReal::Id> >
+							cyclePostfixCode();
 
 					protected:
-						QLinkedList< QPair<QString, qReal::Id> > simpleCode();
+						QList< QPair<QString, qReal::Id> > simpleCode();
 				};
 
 				class ElementGeneratorFactory {
 					public:
-						static AbstractElementGenerator* generator(qrRepo::RepoApi *api,
+						static AbstractElementGenerator* generator(EmboxRobotGenerator *emboxGen,
 								qReal::Id elementId) {
-							return new SimpleElementGenerator(api, elementId); //TODO: добавить обработку для других классов
+							return new SimpleElementGenerator(emboxGen, elementId); 
+							//TODO: добавить обработку для других классов
 						}
 				};
 
 				qrRepo::RepoApi *mApi;
 				bool mIsNeedToDeleteMApi;
 				QString mDestinationPath;
+				QList< QList< QPair<QString, qReal::Id> > > mGeneratedStringSet;
+				QStack<qReal::Id> mPreviousCycleElements;
+				qReal::Id mPreviousElement;
+
+				QMap< QString, QStack<int> > mElementToStringListNumbers;
+					//mapped element with lists in mGeneratedStringSet
+					//QString in this case is qReal::Id string presentation
+
 		};
 	}
 }
