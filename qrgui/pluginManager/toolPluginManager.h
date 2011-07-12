@@ -1,20 +1,26 @@
 #pragma once
 
-#include <QtCore/QObject>
 #include <QtCore/QDir>
+#include <QtCore/QList>
+
+#include "../toolPluginInterface/toolPluginInterface.h"
+#include "../toolPluginInterface/customToolInterface.h"
 
 namespace qReal {
 
-class ToolPluginManager : public QObject
+class ToolPluginManager
 {
-	Q_OBJECT
-
 public:
 	explicit ToolPluginManager(QObject *parent = NULL);
+	virtual ~ToolPluginManager();
 
+	void init(qrRepo::RepoControlInterface *repo);
+	QList<CustomToolInterface::ActionInfo> actions() const;
 
 private:
 	QDir mPluginsDir;
+
+	QList<ToolPluginInterface *> mPlugins;
 };
 
 }

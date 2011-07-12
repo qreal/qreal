@@ -7,6 +7,7 @@
 #include <QtGui>
 
 #include "../pluginManager/editorManager.h"
+#include "../pluginManager/toolPluginManager.h"
 #include "propertyeditorproxymodel.h"
 #include "propertyeditordelegate.h"
 #include "gesturesPainterInterface.h"
@@ -145,7 +146,7 @@ private slots:
 	void changeMiniMapSource(int index);
 	void closeTab(int index);
 	void closeTab(QModelIndex const &graphicsIndex);
-	void exterminate();
+//	void exterminate();
 	void generateEditor();
 	void generateEditorWithQRMC();
 	void parseEditorXml();
@@ -189,6 +190,7 @@ private:
 	QCloseEvent *mCloseEvent;
 	models::Models *mModels;
 	EditorManager mEditorManager;
+	ToolPluginManager mToolManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
 	PropertyEditorDelegate mDelegate;
@@ -262,5 +264,7 @@ private:
 	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
 
 	QString getNextDirName(QString const &name);
+
+	void initToolPlugins();
 };
 }

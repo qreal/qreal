@@ -7,7 +7,7 @@ namespace qrRepo {
 class RepoControlInterface
 {
 public:
-	virtual ~RepoControlInterface() {};
+	virtual ~RepoControlInterface() {}
 
 	virtual void exterminate() = 0;
 

@@ -217,8 +217,9 @@ MainWindow::MainWindow()
 	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 
-		mDocksVisibility.clear();
-		this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+	mDocksVisibility.clear();
+	setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+	initToolPlugins();
 }
 
 void MainWindow::connectActions()
@@ -269,7 +270,7 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
-	connect(mUi->actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
+//	connect(mUi->actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connectDebugActions();
@@ -1072,6 +1073,7 @@ void qReal::MainWindow::closeTab(int index)
 	delete widget;
 }
 
+/*
 void MainWindow::exterminate()
 {
 	closeAllTabs();
@@ -1082,6 +1084,7 @@ void MainWindow::exterminate()
 	pModel->clearModelIndexes();
 	mUi->propertyEditor->setRootIndex(QModelIndex());
 }
+*/
 
 void MainWindow::parseHascol()
 {
@@ -1897,4 +1900,16 @@ QString MainWindow::getNextDirName(QString const &name)
 
 	parts.last() = QString::number(++version);
 	return parts.join("_");
+}
+
+void MainWindow::initToolPlugins()
+{
+	mToolManager.init(&mModels->repoControlApi());
+	QList<CustomToolInterface::ActionInfo> actions = mToolManager.actions();
+	foreach (CustomToolInterface::ActionInfo action, actions) {
+		if (action.toolbarName() == "file")
+			mUi->fileToolbar->addAction(action.action());
+		if (action.menuName() == "tools")
+			mUi->menuTools->addAction(action.action());
+	}
 }

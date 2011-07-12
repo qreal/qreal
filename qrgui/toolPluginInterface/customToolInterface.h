@@ -4,6 +4,8 @@
 #include <QtCore/QList>
 #include <QtGui/QAction>
 
+#include "../../qrrepo/repoControlInterface.h"
+
 namespace qReal {
 
 class CustomToolInterface
@@ -34,8 +36,8 @@ public:
 		QString mMenuName;
 	};
 
-	virtual QList<ActionInfo> actions() const = 0;
-	virtual void init() = 0;
+	virtual QList<ActionInfo> actions() = 0;
+	virtual void init(qrRepo::RepoControlInterface *repo) = 0;
 };
 
 }

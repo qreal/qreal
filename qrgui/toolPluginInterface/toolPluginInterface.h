@@ -2,13 +2,19 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QtPlugin>
-#include <QtCore/QString>
+#include <QtCore/QList>
+
+#include "../../qrrepo/repoControlInterface.h"
+
+#include "customToolInterface.h"
 
 namespace qReal {
 
 class ToolPluginInterface
 {
 public:
+	virtual void initPlugin(qrRepo::RepoControlInterface *repo) = 0;
+	virtual QList<CustomToolInterface *> toolInterfaces() = 0;
 };
 
 }
