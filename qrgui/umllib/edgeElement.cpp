@@ -149,10 +149,6 @@ void EdgeElement::drawPort(QPainter *painter) const
 
 void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
-//	-----------------------
-//	initEmbeddedControls();
-//	-----------------------
-
 	painter->save();
 	QPen pen = painter->pen();
 	pen.setColor(mColor);
