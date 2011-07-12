@@ -1,16 +1,20 @@
 #pragma once
 
+#include <QSet>
 #include <QPair>
+#include <QMultiMap>
+
 #include <QFontMetrics>
 #include <QGraphicsProxyWidget>
 
 #include "control.h"
+#include "disposer.h"
 #include "../element.h"
 
-class Item;
-class EmbeddedControls;
-typedef QMap<Element*, EmbeddedControls*> ElementsToControls;
+#include "../../kernel/ids.h"
 
+class Item;
+class Disposer;
 class EmbeddedControls : public QGraphicsItem {
 	public:
 		QRectF boundingRect() const;
@@ -26,21 +30,25 @@ class EmbeddedControls : public QGraphicsItem {
 			const qReal::EditorManager &editorManager
 		);
 
-		void   disposeWidgets();
-		void   disposeWidget(QRectF &rect, qreal &curX, qreal &curY, int &i);
-		QRectF disposeWidgets(const int columns, const qreal length, const qreal middleX, const qreal bottom);
-
-		void initializeElement(Element *element);
+		void disposeWidgets();
 		void registerControls(Element *element);
 		void initializeItems(Element *element, const qReal::EditorManager &editorManager);
 
-		bool isEdge;
+		/* Data */
+		Element *element;
+		QList<Item> items;
+		Disposer *disposer;
 		QRectF computatedBoundingRect;
 
-		QList<Item> items;
-		Element *element;
-		static ElementsToControls elementsToControls;
+		/* Static */	//todo: следует сделать отдельным объектом
+		static QSet<qReal::Id> forbiddenTypes;
+		static QMultiMap<qReal::Id, QString> forbiddenProperties;
+		static QMap<Element*, EmbeddedControls*> elementsToControls;
 
+		static void loadSettings();
+		static bool checkPermission(Element *element);
+
+		/* Assist */	//todo: следует перенести куда-нибудь
 		static qReal::Id extractElementId(const qReal::Id &id);
 };
 

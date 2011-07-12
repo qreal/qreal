@@ -12,7 +12,9 @@ HEADERS += umllib/edgeElement.h \
 	umllib/decorations/embeddedControls.h \
 	umllib/decorations/enumWidget.h \
 	umllib/decorations/numericWidget.h \
-    umllib/decorations/layoutedControl.h
+    umllib/decorations/layoutedControl.h \
+    umllib/decorations/disposer.h \
+    umllib/decorations/tableDisposer.h
 
 SOURCES += umllib/edgeElement.cpp \
 	umllib/element.cpp \
@@ -28,4 +30,5 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/decorations/embeddedControls.cpp \
 	umllib/decorations/enumWidget.cpp \
 	umllib/decorations/numericWidget.cpp \
-    umllib/decorations/layoutedControl.cpp
+    umllib/decorations/layoutedControl.cpp \
+    umllib/decorations/tableDisposer.cpp

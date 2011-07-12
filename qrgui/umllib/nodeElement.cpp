@@ -933,9 +933,9 @@ NodeElement *NodeElement::getNodeAt(const QPointF &position)
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
 {
-//	пусть пока тут будет
-//	initEmbeddedControls();
-//	---------------------
+	//	-----------------------
+	//	initEmbeddedControls();
+	//	-----------------------
 
 	mElementImpl->paint(painter, mContents);
 	if (mElementImpl->hasPorts())
