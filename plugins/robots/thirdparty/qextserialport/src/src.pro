@@ -33,10 +33,12 @@ win32 {
 
 
   CONFIG(debug, debug|release) {
-    DESTDIR = ../../../debug/
+    DESTDIR = ../../../../../qrgui/debug/
   } else {
-    DESTDIR = ../../../release/
+    DESTDIR = ../../../../../qrgui/release/
   }
+} else {
+  DESTDIR = ../../../../../qrgui
 }
 
 CONFIG(debug, debug|release) {
