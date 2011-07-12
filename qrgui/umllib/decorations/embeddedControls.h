@@ -58,7 +58,7 @@ class Item : public QPair<Control*, QGraphicsProxyWidget*> {
 			const Control* control = first;
 			const QGraphicsProxyWidget* widget = second;
 			QFontMetrics metrics(widget->font());
-			return metrics.width(control->getProperty());
+			return metrics.width(control->getPropertyName());
 		}
 		qreal boundingLength() const {
 			const QGraphicsProxyWidget* widget = second;

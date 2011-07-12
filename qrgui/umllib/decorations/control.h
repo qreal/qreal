@@ -5,8 +5,10 @@
 class Control {
 	public:
 		Control(const QString &propertyName);
-		QString getProperty() const;
+
+		QString getPropertyName() const;
+		virtual QWidget* castToWidget() const = 0;
 
 	protected:
-		const QString &propertyName;
+		const QString propertyName;
 };

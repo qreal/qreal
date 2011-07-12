@@ -11,6 +11,10 @@ NumericWidget::NumericWidget(Element *element, const QString &propertyName, QWid
 	);
 }
 
+NumericWidget* NumericWidget::castToWidget() const {
+	return const_cast<NumericWidget*>(this);
+}
+
 void NumericWidget::setNewValue(const int value) const {
 	element->setLogicalProperty(propertyName, QString::number(value));
 }

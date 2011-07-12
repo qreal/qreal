@@ -12,15 +12,18 @@ EnumWidget::EnumWidget(Element *element, const QString &propertyName, const QStr
 	qreal maxValueWidth = 0;
 	QFontMetrics metrics(font());
 
-	int i = 1;
+	int i = 0;
 	foreach (const QString value, values) {
+		i++;
 		curValueWidth = metrics.width(value);
 		if (curValueWidth > maxValueWidth) {
 			maxValueWidth = curValueWidth;
 		}
-		textToInt.insert(value, i);
-		i++;
+		possibleValuesToInt.insert(value, i);
 	}
+
+	setMinimum(1);
+	setMaximum(i);
 
 	setMinimumWidth(minimumWidth() + maxValueWidth);
 	setValue(valueFromText(element->logicalProperty(propertyName)));
@@ -31,14 +34,20 @@ EnumWidget::EnumWidget(Element *element, const QString &propertyName, const QStr
 	);
 }
 
+EnumWidget* EnumWidget::castToWidget() const {
+	return const_cast<EnumWidget*>(this);
+}
+
 QString EnumWidget::textFromValue(int index) const {
-	return textToInt.key(index);
+	return possibleValuesToInt.key(index);
 }
 
 int EnumWidget::valueFromText(const QString &text) const {
-	return textToInt.value(text);
+	return possibleValuesToInt.value(text);
 }
 
 void EnumWidget::setNewValue(const QString &text) const {
-	element->setLogicalProperty(propertyName, text);
+	if (possibleValuesToInt.contains(text)) {
+		element->setLogicalProperty(propertyName, text);
+	}
 }

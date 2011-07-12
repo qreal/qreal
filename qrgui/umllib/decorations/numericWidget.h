@@ -10,6 +10,7 @@ class NumericWidget : public QSpinBox, public Control
 	Q_OBJECT
 	public:
 		NumericWidget(Element *element, const QString &propertyName, QWidget *parent = 0);
+		NumericWidget* castToWidget() const;
 	private:
 		Element *element;
 	private slots:

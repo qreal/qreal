@@ -11,6 +11,10 @@ BooleanWidget::BooleanWidget(Element *element, const QString &propertyName, QWid
 	);
 }
 
+BooleanWidget* BooleanWidget::castToWidget() const {
+	return const_cast<BooleanWidget*>(this);
+}
+
 void BooleanWidget::setNewValue(const bool value) const {
 	QString text;
 	if (value) {

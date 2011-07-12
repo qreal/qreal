@@ -30,8 +30,9 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mElementImpl->init(mContents, mPointPorts, mLinePorts, factory, titles, mRenderer, mPortRenderer);
 	foreach (ElementTitleInterface *titleIface, titles){
 		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
-		if (!title)
+		if (!title) {
 			continue;
+		}
 		title->init(mContents);
 		title->setParentItem(this);
 		mTitles.append(title);
@@ -858,7 +859,7 @@ qreal NodeElement::getPortId(const QPointF &location) const
 
 	for (int i = 0; i < mLinePorts.size(); i++) {
 		QPainterPathStroker ps;
-                ps.setWidth(kvadratik - 5);
+				ps.setWidth(kvadratik - 5);
 
 		QPainterPath path;
 		path.moveTo(newTransform(mLinePorts[i]).p1());
@@ -932,6 +933,10 @@ NodeElement *NodeElement::getNodeAt(const QPointF &position)
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
 {
+//	пусть пока тут будет
+//	initEmbeddedControls();
+//	---------------------
+
 	mElementImpl->paint(painter, mContents);
 	if (mElementImpl->hasPorts())
 		paint(painter, style, widget, mPortRenderer);

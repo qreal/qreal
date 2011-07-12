@@ -3,6 +3,8 @@
 #include "enumWidget.h"
 #include "booleanWidget.h"
 #include "numericWidget.h"
+#include "layoutedControl.h"
+
 #include "../edgeElement.h"
 
 #include <QtAlgorithms>
@@ -82,24 +84,23 @@ void EmbeddedControls::initializeItems(Element *element, const qReal::EditorMana
 
 		//todo: можно улучшить. вынеся класс Item в Control
 		//todo: и перенастроив политику выдачи length
+
+		LayoutedControl *wrapper;
 		QGraphicsProxyWidget *proxy;
 		if ("Bool" == type) {
-			BooleanWidget* control = new BooleanWidget(element, property);
-			proxy = scene->addWidget(control);
-			items.append(Item(control, proxy));
+			wrapper = new LayoutedControl(new BooleanWidget(element, property));
 		} else if ("Int" == type) {
-			NumericWidget* control = new NumericWidget(element, property);
-			proxy = scene->addWidget(control);
-			items.append(Item(control, proxy));
+			wrapper = new LayoutedControl(new NumericWidget(element, property));
 		} else if (!values.isEmpty()) {
-			EnumWidget* control = new EnumWidget(element, property, values);
-			proxy = scene->addWidget(control);
-			items.append(Item(control, proxy));
+			wrapper = new LayoutedControl(new EnumWidget(element, property, values));
 		} else {
 			return;
 		}
 
+		proxy = scene->addWidget(wrapper);
 		proxy->setParentItem(this);
+
+		items.append(Item(wrapper->getControl(), proxy));
 	}
 }
 

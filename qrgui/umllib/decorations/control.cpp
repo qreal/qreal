@@ -2,9 +2,8 @@
 
 Control::Control(const QString &propertyName) :
 	propertyName(propertyName)
-{
-}
+{}
 
-QString Control::getProperty() const {
+QString Control::getPropertyName() const {
 	return propertyName;
 }
