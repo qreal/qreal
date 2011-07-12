@@ -48,7 +48,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	connect(&mSquarizeAction, SIGNAL(triggered(QPointF const &)), SLOT(squarizeHandler(QPointF const &)));
 	connect(&mMinimizeAction, SIGNAL(triggered(QPointF const &)), SLOT(minimizeHandler(QPointF const &)));
 
-	mChaoticEdition = SettingsManager::instance()->value("ChaoticEdition", false).toBool();
+	mChaoticEdition = SettingsManager::value("ChaoticEdition", false).toBool();
 
 	ElementTitleFactory factory;
 
@@ -203,7 +203,7 @@ QPainterPath EdgeElement::shape() const
 	path.setFillRule(Qt::WindingFill);
 
 	QPainterPathStroker ps;
-        ps.setWidth(kvadratik - 5);
+		ps.setWidth(kvadratik - 5);
 
 	path.addPolygon(mLine);
 	path = ps.createStroke(path);
@@ -217,7 +217,7 @@ QPainterPath EdgeElement::shape() const
 
 QRectF EdgeElement::getPortRect(QPointF const &point)
 {
-        return QRectF(point - QPointF(kvadratik - 5, kvadratik - 5), QSizeF(kvadratik * 2, kvadratik * 2));
+		return QRectF(point - QPointF(kvadratik - 5, kvadratik - 5), QSizeF(kvadratik * 2, kvadratik * 2));
 }
 
 int EdgeElement::getPoint(const QPointF &location)
@@ -323,7 +323,7 @@ void EdgeElement::connectToPort()
 	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
 
 	mMoving = false;
-	if (SettingsManager::instance()->value("SquareLine", true).toBool())
+	if (SettingsManager::value("SquareLine", true).toBool())
 		squarizeHandler(QPointF());
 	adjustLink();
 	arrangeSrcAndDst();
@@ -447,7 +447,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	else
 		mDragPoint = -1;
 
-	if (SettingsManager::instance()->value("SquareLine", true).toBool())
+	if (SettingsManager::value("SquareLine", true).toBool())
 		squarizeHandler(QPointF());
 
         connectToPort();
@@ -521,7 +521,7 @@ void EdgeElement::addPointHandler(QPointF const &pos)
 	for (int i = 0; i < mLine.size() - 1; ++i) {
 		QPainterPath path;
 		QPainterPathStroker ps;
-                ps.setWidth(kvadratik - 5);
+				ps.setWidth(kvadratik - 5);
 
 		path.moveTo(mLine[i]);
 		path.lineTo(mLine[i + 1]);
@@ -644,7 +644,7 @@ void EdgeElement::adjustLink()
 		mLine.last() = mapFromItem(mDst, mDst->getPortPos(mPortTo));
 	updateLongestPart();
 
-	//if (SettingsManager::instance()->value("SquareLine", true).toBool())
+	//if (SettingsManager::value("SquareLine", true).toBool())
 
 }
 
@@ -784,7 +784,7 @@ void EdgeElement::updateData()
 	mPortTo = mGraphicalAssistApi->toPort(id());
 
 	adjustLink();
-	if (SettingsManager::instance()->value("SquareLine", true).toBool())
+	if (SettingsManager::value("SquareLine", true).toBool())
 		squarizeHandler(QPointF());
 	mElementImpl->updateData(this);
 	update();
@@ -803,7 +803,7 @@ void EdgeElement::placeStartTo(QPointF const &place)
 {
 	mLine[0] = place;
 	updateLongestPart();
-	if (SettingsManager::instance()->value("SquareLine", true).toBool())
+	if (SettingsManager::value("SquareLine", true).toBool())
 		squarizeHandler(QPointF());
 	adjustLink();
 
@@ -813,7 +813,7 @@ void EdgeElement::placeEndTo(QPointF const &place)
 {
 	mLine[mLine.size() - 1] = place;
 	updateLongestPart();
-	if (SettingsManager::instance()->value("SquareLine", true).toBool())
+	if (SettingsManager::value("SquareLine", true).toBool())
 		squarizeHandler(QPointF());
 	adjustLink();
 }
