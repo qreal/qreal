@@ -1,6 +1,6 @@
 #include "embeddedLinker.h"
-#include "nodeElement.h"
-#include "edgeElement.h"
+#include "../nodeElement.h"
+#include "../edgeElement.h"
 
 #include <math.h>
 #include <QtGui/QStyle>

@@ -4,7 +4,7 @@
 #include <QtGui/QPainter>
 
 #include "../kernel/roles.h"
-#include "edgeElement.h"
+#include "../edgeElement.h"
 
 class NodeElement;
 /** @class EmbeddedLinker
