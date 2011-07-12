@@ -3,7 +3,7 @@
 #include "page.h"
 
 #include "../../interpreters/robots/sensorConstants.h"
-#include "../../thirdparty/qextserialport/src/qextserialenumerator.h"
+#include "../../../plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h"
 
 using namespace qReal::interpreters::robots;
 

@@ -1,7 +1,7 @@
 #include "../../kernel/settingsManager.h"
 #include "preferencesPages/robotSettingsPage.h"
 #include "ui_robotSettingsPage.h"
-#include "../../thirdparty/qextserialport/src/qextserialenumerator.h"
+#include "../../../plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h"
 
 using namespace qReal::interpreters::robots;
 
