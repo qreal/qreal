@@ -142,14 +142,6 @@ EmboxRobotGenerator::AbstractElementGenerator::AbstractElementGenerator(EmboxRob
 		qReal::Id elementId): mEmboxGen(emboxGen), mElementId(elementId) {	
 }
 
-/*
-QList<QString> AbstractElementGenerator::generate() {
-	QList<QString> result;
-
-	return result;
-}
-*/
-
 void EmboxRobotGenerator::AbstractElementGenerator::createListsForIncomingConnections() {
 	//connects string lists in mGeneratedStringSet with mElementId in mElementToStringListNumbers
 	for (int i = 1; i < mEmboxGen->mApi->incomingConnectedElements(mElementId).size(); i++) {
@@ -159,6 +151,11 @@ void EmboxRobotGenerator::AbstractElementGenerator::createListsForIncomingConnec
 }
 
 EmboxRobotGenerator::SimpleElementGenerator::SimpleElementGenerator(EmboxRobotGenerator *emboxGen,
+		qReal::Id elementId): 
+	AbstractElementGenerator(emboxGen, elementId) {
+}
+
+EmboxRobotGenerator::LoopElementGenerator::LoopElementGenerator(EmboxRobotGenerator *emboxGen,
 		qReal::Id elementId): 
 	AbstractElementGenerator(emboxGen, elementId) {
 }
@@ -208,19 +205,35 @@ QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::SimpleElementGenerator::
 	return result;
 }
 	
-QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::SimpleElementGenerator::cyclePrefixCode() {
+QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::SimpleElementGenerator::loopPrefixCode() {
 	QList< QPair<QString, qReal::Id> > result;
 	result << QPair<QString, qReal::Id>("while (true) {", mElementId);
 	return result;
 }
 
-QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::SimpleElementGenerator::cyclePostfixCode() {
+QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::SimpleElementGenerator::loopPostfixCode() {
 	QList< QPair<QString, qReal::Id> > result;
 	result << QPair<QString, qReal::Id>("}", mElementId);
 	return result;
 }
 
-bool EmboxRobotGenerator::SimpleElementGenerator::generate() {
+QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::LoopElementGenerator::loopPrefixCode() {
+	QList< QPair<QString, qReal::Id> > result;
+	
+	qReal::Id logicElementId = mEmboxGen->mApi->logicalId(mElementId); //TODO
+	result << QPair<QString, qReal::Id>("for (int __iter__ = ; __iter__ < " +
+			mEmboxGen->mApi->property(logicElementId, "Iterations").toString()
+		       	+ "; __iter__++) {", mElementId); //TODO
+	return result;
+}
+
+QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::LoopElementGenerator::loopPostfixCode() {
+	QList< QPair<QString, qReal::Id> > result;
+	result << QPair<QString, qReal::Id>("}", mElementId);
+	return result;
+}
+
+bool EmboxRobotGenerator::SimpleElementGenerator::preGenerationCheck() {
 	IdList outgoingConnectedElements = mEmboxGen->mApi->outgoingConnectedElements(mElementId);
 	if (outgoingConnectedElements.size() > 1) {
 		//case of error in diagram
@@ -229,29 +242,24 @@ bool EmboxRobotGenerator::SimpleElementGenerator::generate() {
 		return false;
 	}
 
-	if (mEmboxGen->mElementToStringListNumbers.contains(mElementId.toString())) {
-		//if we have already observed this element with more than 1 incoming connection
-		
-		qReal::Id cycleElement = mEmboxGen->mPreviousElement;
-		if (!mEmboxGen->mPreviousCycleElements.empty()) {
-			cycleElement = mEmboxGen->mPreviousCycleElements.pop();
-		}
+	return true;
+}
 
-		//cycleElement must create cycle code
-		AbstractElementGenerator *cycleElementGen = ElementGeneratorFactory::generator(mEmboxGen, cycleElement);
-		mEmboxGen->mGeneratedStringSet[mEmboxGen->mElementToStringListNumbers[cycleElement.toString()].pop()]
-			+= cycleElementGen->cyclePrefixCode();
-		mEmboxGen->mGeneratedStringSet << cycleElementGen->cyclePostfixCode();
+bool EmboxRobotGenerator::LoopElementGenerator::preGenerationCheck() {
+	IdList outgoingLinks = mEmboxGen->mApi->outgoingLinks(mElementId);
 
-		return true;
-	}
+	if ((outgoingLinks.size() != 2) ||
+		( (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "Итерация") 
+		  && 
+		  (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "Итерация") )
+	)
+		return false;
 
-	if (mEmboxGen->mApi->incomingConnectedElements(mElementId).size() > 1) {
-		//in this case element has more then 1 incoming connection
-		//means that element has incoming connections from another elements, we haven`t already observed
-		createListsForIncomingConnections();
-	}
+	return true;
+}
 
+bool EmboxRobotGenerator::SimpleElementGenerator::nextElementsGeneration() {
+	IdList outgoingConnectedElements = mEmboxGen->mApi->outgoingConnectedElements(mElementId);
 	mEmboxGen->mGeneratedStringSet << simpleCode();
 
 	if (outgoingConnectedElements.size() == 1) {
@@ -265,6 +273,89 @@ bool EmboxRobotGenerator::SimpleElementGenerator::generate() {
 	} else {
 		//case of error end of diagram
 		qDebug() << "Error! There is no outgoing connected elements with no final node!";
+		return false;
+	}
+
+	return true;
+}
+
+bool EmboxRobotGenerator::LoopElementGenerator::nextElementsGeneration() {
+	IdList outgoingLinks = mEmboxGen->mApi->outgoingLinks(mElementId);
+	// outgoingLinks.size() must be 2!
+
+	int elementConnectedByIterationEdgeNumber;
+	int afterLoopElementNumber;
+
+	/*
+	qDebug() << "DDD 0" << mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString();
+	qDebug() << "DDD 0" << QString::fromUtf8(
+			mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString().toAscii().data());
+	qDebug() << "DDD 0" << mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString().toAscii().data();
+	qDebug() << "DDD 1" << mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString();
+	*/
+	
+	//Грязный хак! Почему-то неправильно читается русский
+	//if (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "итерация") {
+	if (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "") {
+		elementConnectedByIterationEdgeNumber = 0;
+		afterLoopElementNumber = 1;
+	} else {
+		elementConnectedByIterationEdgeNumber = 1;
+		afterLoopElementNumber = 0;
+	}
+
+	//generate loop	
+	AbstractElementGenerator* loopGen = ElementGeneratorFactory::generator(mEmboxGen, 
+			mEmboxGen->mApi->to(outgoingLinks.at(elementConnectedByIterationEdgeNumber)));
+
+	mEmboxGen->mPreviousElement = mElementId;
+	mEmboxGen->mPreviousLoopElements.push(mElementId);
+	if (!loopGen->generate())
+		return false;
+	delete loopGen;
+
+	//generate next blocks
+	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mEmboxGen, 
+			mEmboxGen->mApi->to(outgoingLinks.at(afterLoopElementNumber)));
+	
+	mEmboxGen->mPreviousElement = mElementId;
+	mEmboxGen->mPreviousLoopElements.push(mElementId);
+	if (!nextBlocksGen->generate())
+		return false;
+	delete nextBlocksGen;
+
+	return true;
+}
+
+bool EmboxRobotGenerator::AbstractElementGenerator::generate() {
+	if (!preGenerationCheck()) {
+		qDebug() << "AAAA";
+		return false;
+	}
+
+	if (mEmboxGen->mElementToStringListNumbers.contains(mElementId.toString())) {
+		//if we have already observed this element with more than 1 incoming connection
+		
+		qReal::Id loopElement = mEmboxGen->mPreviousElement;
+		if (!mEmboxGen->mPreviousLoopElements.empty()) {
+			loopElement = mEmboxGen->mPreviousLoopElements.pop();
+		}
+
+		//loopElement must create loop code
+		AbstractElementGenerator *loopElementGen = ElementGeneratorFactory::generator(mEmboxGen, loopElement);
+		mEmboxGen->mGeneratedStringSet[mEmboxGen->mElementToStringListNumbers[loopElement.toString()].pop()]
+			+= loopElementGen->loopPrefixCode();
+		mEmboxGen->mGeneratedStringSet << loopElementGen->loopPostfixCode();
+
+		return true;
+	}
+
+	//in case element has more then 1 incoming connection
+	//means that element has incoming connections from another elements, we haven`t already observed
+	createListsForIncomingConnections();
+
+	if (!nextElementsGeneration()) {
+		qDebug() << "BBBB";
 		return false;
 	}
 
