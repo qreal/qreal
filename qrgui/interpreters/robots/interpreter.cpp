@@ -72,8 +72,8 @@ void Interpreter::stop()
 	foreach (Thread *thread, mThreads)
 		delete thread;
 	mBlocksTable->setFailure();
-	/*mBlocksTable->clear();
 	mThreads.clear();
+	/*mBlocksTable->clear();
 	mRobotModel->clear();*/
 }
 
@@ -228,5 +228,9 @@ void Interpreter::responseSlot4(int sensorValue)
 void Interpreter::updateSensorValues(const QString &sensorVariableName, int sensorValue)
 {
 	(*(mParser->getVariables()))[sensorVariableName] = Number(sensorValue, Number::intType);
-//	qDebug() << sensorVariableName << sensorValue;
+	qDebug() << "Sensor Value" << sensorVariableName << sensorValue;
+	QMap<QString, qReal::Number> variables = *(mParser->getVariables());
+	foreach (QString key, variables.keys()) {
+		qDebug() << key << variables[key].property("Number").toInt();
+	}
 }

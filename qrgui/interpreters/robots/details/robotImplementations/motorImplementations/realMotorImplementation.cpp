@@ -35,6 +35,10 @@ void RealMotorImplementation::setOutputState(int speed, int mode
 		, regulationMode::RegulationModeEnum regulation, int turnRatio, runState::RunStateEnum runState
 		, unsigned long tachoLimit)
 {
+	if (speed > 100)
+		speed = 100;
+	else if (speed < -100)
+		speed = -100;
 	QByteArray command(15, 0);
 	command[0] = 13;  // command length.
 	command[1] = 0x00;
