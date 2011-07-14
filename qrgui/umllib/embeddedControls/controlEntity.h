@@ -2,9 +2,9 @@
 
 #include <QWidget>
 
-class Control {
+class ControlEntity {
 	public:
-		Control(const QString &propertyName);
+		ControlEntity(const QString &propertyName);
 
 		QString getPropertyName() const;
 		virtual QWidget* castToWidget() const = 0;

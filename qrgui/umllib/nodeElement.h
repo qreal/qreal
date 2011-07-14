@@ -14,7 +14,7 @@
 #include "sdfRenderer.h"
 #include "element.h"
 #include "edgeElement.h"
-#include "decorations/embeddedLinker.h"
+#include "embeddedLinker.h"
 #include "../pluginInterface/elementImpl.h"
 
 #include "sceneGridHandler.h"

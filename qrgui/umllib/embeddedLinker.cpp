@@ -1,6 +1,6 @@
 #include "embeddedLinker.h"
-#include "../nodeElement.h"
-#include "../edgeElement.h"
+#include "nodeElement.h"
+#include "edgeElement.h"
 
 #include <math.h>
 #include <QtGui/QStyle>
@@ -15,7 +15,6 @@ using namespace qReal;
 
 EmbeddedLinker::EmbeddedLinker()
 {
-
 	size = SettingsManager::value("EmbeddedLinkerSize", 6).toFloat();
 	indent = SettingsManager::value("EmbeddedLinkerIndent", 5).toFloat();
 

@@ -4,7 +4,7 @@
 #include "embeddedControls.h"
 
 class Item;
-class Disposer
+class ControlsDisposer
 {
 	public: virtual void dispose(Element *element, QList<Item> &items, QRectF &boundingRectToComputate) const = 0;
 };

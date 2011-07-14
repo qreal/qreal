@@ -1,8 +1,8 @@
 #pragma once
 
-#include "disposer.h"
+#include "controlsDisposer.h"
 
-class TableDisposer : public Disposer
+class TableDisposer : public ControlsDisposer
 {
 	public:
 		TableDisposer();

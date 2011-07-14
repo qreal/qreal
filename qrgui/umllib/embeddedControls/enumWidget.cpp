@@ -5,7 +5,7 @@
 
 EnumWidget::EnumWidget(Element *element, const QString &propertyName, const QStringList &values, QWidget *parent) :
 	QSpinBox(parent),
-	Control(propertyName),
+	ControlEntity(propertyName),
 	element(element)
 {
 	qreal curValueWidth;
