@@ -10,7 +10,7 @@
 #include "propertyEditorProxyModel.h"
 #include "propertyEditorDelegate.h"
 #include "gesturesPainterInterface.h"
-#include "gesturesShow/gesturesWidget.h"
+#include "../dialogs/gesturesShow/gesturesWidget.h"
 #include "mainWindowInterpretersInterface.h"
 #include "../kernel/settingsManager.h"
 

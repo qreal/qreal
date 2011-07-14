@@ -4,7 +4,7 @@
 #include <QtCore/QMetaType>
 #include <time.h>
 
-#include "../../thirdparty/qextserialport/src/qextserialport.h"
+#include "../thirdparty/qextserialport/src/qextserialport.h"
 
 using namespace qReal::interpreters::robots::details;
 

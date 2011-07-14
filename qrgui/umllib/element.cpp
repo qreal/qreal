@@ -1,5 +1,5 @@
 #include "element.h"
-#include "decorations/embeddedControls.h"
+#include "embeddedControls/embeddedControls.h"
 
 #include <QtGui>
 
@@ -80,4 +80,11 @@ void Element::initTitlesBy(QRectF const& contents)
 void Element::initTitles()
 {
 	initTitlesBy(boundingRect().adjusted(kvadratik, kvadratik, -kvadratik, -kvadratik));
+}
+
+void Element::singleSelectionState(const bool singleSelected) {
+	emit switchFolding(!singleSelected);
+}
+void Element::selectionState(const bool selected) {
+	//it will be usefull in the future
 }

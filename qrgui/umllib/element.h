@@ -30,14 +30,16 @@ public:
 
 	void setId(qReal::Id &id);
 
+	void initEmbeddedControls();
+
 	virtual void updateData();
 
 	virtual qReal::Id id() const;
 	virtual qReal::Id logicalId() const;
 	virtual QString name() const;
 
-	virtual void connectToPort() {};//for edge
-	virtual void checkConnectionsToPort() {};//for node
+	virtual void connectToPort() {}//for edge
+	virtual void checkConnectionsToPort() {}//for node
 	virtual QList<ContextMenuAction*> contextMenuActions();
 
 	virtual bool initPossibleEdges() = 0;
@@ -51,6 +53,13 @@ public:
 
 	void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
+public slots:
+	void singleSelectionState(const bool singleSelected);
+	void selectionState(const bool selected);
+
+signals:
+	void switchFolding(bool);
+
 protected:
 
 	bool mMoving;
@@ -61,6 +70,5 @@ protected:
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
 	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
 
-	void initEmbeddedControls();
 	void initTitlesBy(QRectF const& contents);
 };

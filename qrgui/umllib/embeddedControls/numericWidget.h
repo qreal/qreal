@@ -1,11 +1,11 @@
 #pragma once
 
-#include "control.h"
+#include "controlEntity.h"
 #include "../element.h"
 
 #include <QSpinBox>
 
-class NumericWidget : public QSpinBox, public Control
+class NumericWidget : public QSpinBox, public ControlEntity
 {
 	Q_OBJECT
 	public:

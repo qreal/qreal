@@ -291,35 +291,36 @@ void NodeElement::delUnusedLines()
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (event->button() == Qt::RightButton)
-	{
+	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
 	}
 
-	if (mEmbeddedLinkers.isEmpty())
+	if (mEmbeddedLinkers.isEmpty()) {
 		initEmbeddedLinkers();
+	}
 	moveEmbeddedLinkers();
-	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
+	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
 		embeddedLinker->setCovered(true);
+	}
 
 	if (isSelected()) {
-		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()) && mElementImpl->isResizeable())
+		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = TopLeft;
-		else if (QRectF(mContents.topRight(), QSizeF(-4, 4)).contains(event->pos()) && mElementImpl->isResizeable())
+		} else if (QRectF(mContents.topRight(), QSizeF(-4, 4)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = TopRight;
-		else if (QRectF(mContents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()) && mElementImpl->isResizeable())
+		} else if (QRectF(mContents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = BottomRight;
-		else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()) && mElementImpl->isResizeable())
+		} else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = BottomLeft;
-		else if (QRectF(mContents.topLeft(), QSizeF(20, 20)).contains(event->pos())
-				 && mElementImpl->isContainer())
+		} else if (QRectF(mContents.topLeft(), QSizeF(20, 20)).contains(event->pos()) && mElementImpl->isContainer()) {
 			changeFoldState();
-		else
+		} else {
 			Element::mousePressEvent(event);
-	}
-	else
+		}
+	} else {
 		Element::mousePressEvent(event);
+	}
 
 	mLeftPressed = true;
 	setZValue(1);
@@ -327,8 +328,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (event->button() == Qt::RightButton)
-	{
+	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
 	}
@@ -409,11 +409,13 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	storeGeometry();
 
 	moveEmbeddedLinkers();
-	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
+	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
 		embeddedLinker->setCovered(true);
+	}
 
-	if (mDragState == None)
+	if (mDragState == None) {
 		Element::mouseReleaseEvent(event);
+	}
 
 	if (!isPort() && (flags() & ItemIsMovable)) {
 		QPointF newParentInnerPoint = event->scenePos();
@@ -473,8 +475,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			// delete from parents list ones that are selected right now
 			QList<QGraphicsItem *> realNewParents;
 			foreach (QGraphicsItem * item, parentsList){
-				if (!selected.contains(item))
+				if (!selected.contains(item)) {
 					realNewParents.append(item);
+				}
 			}
 
 			NodeElement *newParent = NULL;
@@ -940,10 +943,6 @@ NodeElement *NodeElement::getNodeAt(const QPointF &position)
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
 {
-	//	-----------------------
-	//	initEmbeddedControls();
-	//	-----------------------
-
 	mElementImpl->paint(painter, mContents);
 	if (mElementImpl->hasPorts())
 		paint(painter, style, widget, mPortRenderer);

@@ -149,10 +149,6 @@ void EdgeElement::drawPort(QPainter *painter) const
 
 void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
-//	-----------------------
-//	initEmbeddedControls();
-//	-----------------------
-
 	painter->save();
 	QPen pen = painter->pen();
 	pen.setColor(mColor);
@@ -363,9 +359,11 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	if (mDragPoint == -1) {
 		Element::mousePressEvent(event);
-		if ((mSrc != NULL) || (mDst != NULL))
-			if (event->buttons() != Qt::RightButton)
+		if ((mSrc != NULL) || (mDst != NULL)) {
+			if (event->buttons() != Qt::RightButton) {
 				addPointHandler(event->pos());
+			}
+		}
 	} else {
 		// saving info in case we need to rollback (see #4)
 		mLastDragPoint = mDragPoint;

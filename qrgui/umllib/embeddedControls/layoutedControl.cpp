@@ -4,7 +4,7 @@
 #include <QDebug>
 #include <QBoxLayout>
 
-LayoutedControl::LayoutedControl(Control *control) :
+LayoutedControl::LayoutedControl(ControlEntity *control) :
 	QWidget(),
 	control(control),
 	layout(new QBoxLayout(QBoxLayout::TopToBottom))
@@ -17,6 +17,6 @@ LayoutedControl::LayoutedControl(Control *control) :
 	setLayout(layout);
 }
 
-Control* LayoutedControl::getControl() const {
+ControlEntity* LayoutedControl::getControl() const {
 	return control;
 }

@@ -6,15 +6,15 @@ HEADERS += umllib/edgeElement.h \
 	umllib/contextMenuAction.h \
 	umllib/sceneGridHandler.h \
 	umllib/umlPortHandler.h \
-	umllib/decorations/embeddedLinker.h \
-	umllib/decorations/booleanWidget.h \
-	umllib/decorations/control.h \
-	umllib/decorations/embeddedControls.h \
-	umllib/decorations/enumWidget.h \
-	umllib/decorations/numericWidget.h \
-    umllib/decorations/layoutedControl.h \
-    umllib/decorations/disposer.h \
-    umllib/decorations/tableDisposer.h
+	umllib/embeddedLinker.h \
+	umllib/embeddedControls/booleanWidget.h \
+	umllib/embeddedControls/controlEntity.h \
+	umllib/embeddedControls/embeddedControls.h \
+	umllib/embeddedControls/enumWidget.h \
+	umllib/embeddedControls/numericWidget.h \
+	umllib/embeddedControls/layoutedControl.h \
+	umllib/embeddedControls/controlsDisposer.h \
+	umllib/embeddedControls/tableDisposer.h
 
 SOURCES += umllib/edgeElement.cpp \
 	umllib/element.cpp \
@@ -24,11 +24,11 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/contextMenuAction.cpp \
 	umllib/sceneGridHandler.cpp \
 	umllib/umlPortHandler.cpp \
-	umllib/decorations/embeddedLinker.cpp \
-	umllib/decorations/booleanWidget.cpp \
-	umllib/decorations/control.cpp \
-	umllib/decorations/embeddedControls.cpp \
-	umllib/decorations/enumWidget.cpp \
-	umllib/decorations/numericWidget.cpp \
-    umllib/decorations/layoutedControl.cpp \
-    umllib/decorations/tableDisposer.cpp
+	umllib/embeddedLinker.cpp \
+	umllib/embeddedControls/booleanWidget.cpp \
+	umllib/embeddedControls/controlEntity.cpp \
+	umllib/embeddedControls/embeddedControls.cpp \
+	umllib/embeddedControls/enumWidget.cpp \
+	umllib/embeddedControls/numericWidget.cpp \
+	umllib/embeddedControls/layoutedControl.cpp \
+	umllib/embeddedControls/tableDisposer.cpp

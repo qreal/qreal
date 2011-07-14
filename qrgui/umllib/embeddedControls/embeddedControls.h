@@ -7,15 +7,17 @@
 #include <QFontMetrics>
 #include <QGraphicsProxyWidget>
 
-#include "control.h"
-#include "disposer.h"
+#include "controlEntity.h"
+#include "controlsDisposer.h"
 #include "../element.h"
 
 #include "../../kernel/ids.h"
 
 class Item;
-class Disposer;
-class EmbeddedControls : public QGraphicsItem {
+class ControlsDisposer;
+class EmbeddedControls : public QObject, public QGraphicsItem {
+	Q_OBJECT
+	Q_INTERFACES(QGraphicsItem)
 	public:
 		QRectF boundingRect() const;
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
@@ -24,21 +26,25 @@ class EmbeddedControls : public QGraphicsItem {
 		static void deleteInstance(Element *element);
 		static void createInstance(Element *element, const qReal::EditorManager &editorManager);
 
+	public slots:
+		void switchFolding(const bool request);
+	signals:
+		void foldingSwitched(bool);
+
 	private:
 		EmbeddedControls(
 			Element *element,
 			const qReal::EditorManager &editorManager
 		);
 
-		void disposeWidgets();
 		void registerControls(Element *element);
 		void initializeItems(Element *element, const qReal::EditorManager &editorManager);
 
 		/* Data */
 		Element *element;
 		QList<Item> items;
-		Disposer *disposer;
-		QRectF computatedBoundingRect;
+		ControlsDisposer *disposer;
+		QRectF computedBoundingRect;
 
 		/* Static */	//todo: следует сделать отдельным объектом
 		static QSet<qReal::Id> forbiddenTypes;
@@ -52,18 +58,18 @@ class EmbeddedControls : public QGraphicsItem {
 		static qReal::Id extractElementId(const qReal::Id &id);
 };
 
-/* Measurable pair of control* and proxy* */
+/* Measurable pair of ControlEntity* and ProxyWidget* */
 
-class Item : public QPair<Control*, QGraphicsProxyWidget*> {
+class Item : public QPair<ControlEntity*, QGraphicsProxyWidget*> {
 	public:
-		Item(Control* first, QGraphicsProxyWidget* second) :
-			QPair<Control*, QGraphicsProxyWidget*>(first, second) {}
+		Item(ControlEntity* first, QGraphicsProxyWidget* second) :
+			QPair<ControlEntity*, QGraphicsProxyWidget*>(first, second) {}
 
 		qreal length() const {
 			return textLength() + boundingLength();
 		}
 		qreal textLength() const {
-			const Control* control = first;
+			const ControlEntity* control = first;
 			const QGraphicsProxyWidget* widget = second;
 			QFontMetrics metrics(widget->font());
 			return metrics.width(control->getPropertyName());

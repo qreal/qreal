@@ -2,7 +2,7 @@
 
 BooleanWidget::BooleanWidget(Element *element, const QString &propertyName, QWidget *parent) :
 	QCheckBox(parent),
-	Control(propertyName),
+	ControlEntity(propertyName),
 	element(element)
 {
 	connect(

@@ -36,14 +36,12 @@ void EmbeddedControls::createInstance(Element *element, const qReal::EditorManag
 }
 
 QRectF EmbeddedControls::boundingRect() const {
-	return computatedBoundingRect;
+	return computedBoundingRect;
 }
 
 void EmbeddedControls::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
 	painter->save();
-
-	painter->drawRect(boundingRect().left()-5,boundingRect().top()-5,boundingRect().width()+10,boundingRect().height()+10);
-
+//	painter->drawRect(boundingRect().left()-5,boundingRect().top()-5,boundingRect().width()+10,boundingRect().height()+10);
 	painter->restore();
 }
 
@@ -51,25 +49,22 @@ void EmbeddedControls::paint(QPainter* painter, const QStyleOptionGraphicsItem* 
 
 EmbeddedControls::EmbeddedControls(Element *element, const qReal::EditorManager &editorManager) :
 	QGraphicsItem(element),
-	element(element),
-	disposer(NULL)	//todo: надо загружать из настроек
+	element(element)
 {
+	disposer = NULL;	//todo: надо загружать из настроек
 	registerControls(element);
 	initializeItems(element, editorManager);
-	disposeWidgets();
+	switchFolding(true);
 }
 
 void EmbeddedControls::registerControls(Element *element) {
 	if (elementsToControls.contains(element)) {
 		const EmbeddedControls* prev = elementsToControls.value(element);
-		if (prev != this) {
-			delete prev;
-			elementsToControls.remove(element);
-			elementsToControls.insert(element, this);
-		}
-	} else {
-		elementsToControls.insert(element, this);
+		elementsToControls.remove(element);
+		delete prev;
 	}
+	elementsToControls.insert(element, this);
+	connect(element, SIGNAL(switchFolding(bool)), this, SLOT(switchFolding(bool)));
 }
 
 void EmbeddedControls::initializeItems(Element *element, const qReal::EditorManager &editorManager) {
@@ -101,19 +96,28 @@ void EmbeddedControls::initializeItems(Element *element, const qReal::EditorMana
 
 		proxy = scene->addWidget(wrapper);
 		proxy->setParentItem(this);
+		proxy->hide();
 
 		items.append(Item(wrapper->getControl(), proxy));
 	}
 }
 
-void EmbeddedControls::disposeWidgets() {
+void EmbeddedControls::switchFolding(const bool request) {
 	if (items.isEmpty()) {
 		return;
 	}
+
 	if (disposer == NULL) {
 		disposer = new TableDisposer();//todo: переделать на настройки
 	}
-	disposer->dispose(element, items, computatedBoundingRect);
+
+	const bool current = disposer->isFolded(element);
+	if (current == request) {
+		return;
+	}
+
+	disposer->switchFolding(request, element, items, computedBoundingRect);
+	emit foldingSwitched(request);
 }
 
 /* Static */
