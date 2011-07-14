@@ -2,7 +2,7 @@
 
 NumericWidget::NumericWidget(Element *element, const QString &propertyName, QWidget *parent) :
 	QSpinBox(parent),
-	ControlEntity(propertyName),
+	EmbeddedControl(propertyName),
 	element(element)
 {
 	connect(

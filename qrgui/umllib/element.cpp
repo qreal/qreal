@@ -1,5 +1,5 @@
 #include "element.h"
-#include "embeddedControls/embeddedControls.h"
+#include "embedded/controls/embeddedControls.h"
 
 #include <QtGui>
 

@@ -2,9 +2,9 @@
 
 #include <QWidget>
 
-class ControlEntity {
+class EmbeddedControl {
 	public:
-		ControlEntity(const QString &propertyName);
+		EmbeddedControl(const QString &propertyName);
 
 		QString getPropertyName() const;
 		virtual QWidget* castToWidget() const = 0;

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "controlEntity.h"
-#include "../element.h"
+#include "embeddedControl.h"
+#include "../../element.h"
 
 #include <QCheckBox>
 
-class BooleanWidget : public QCheckBox, public ControlEntity
+class BooleanWidget : public QCheckBox, public EmbeddedControl
 {
 	Q_OBJECT
 	public:

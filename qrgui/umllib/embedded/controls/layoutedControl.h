@@ -1,6 +1,6 @@
 #pragma once
 
-#include "controlEntity.h"
+#include "embeddedControl.h"
 
 #include <QWidget>
 #include <QLayout>
@@ -10,9 +10,9 @@ class LayoutedControl : public QWidget
 {
 	Q_OBJECT
 	public:
-		LayoutedControl(ControlEntity *control);
-		ControlEntity* getControl() const;
+		LayoutedControl(EmbeddedControl *control);
+		EmbeddedControl* getControl() const;
 	private:
-		ControlEntity* control;
+		EmbeddedControl* control;
 		QLayout* layout;
 };

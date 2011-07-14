@@ -7,7 +7,7 @@
 
 #include "tableDisposer.h"
 
-#include "../edgeElement.h"
+#include "../../edgeElement.h"
 
 #include <QtAlgorithms>
 

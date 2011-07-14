@@ -1,5 +1,5 @@
-#include "edgeElement.h"
-#include "nodeElement.h"
+#include "../../edgeElement.h"
+#include "../../nodeElement.h"
 #include "embeddedLinker.h"
 
 #include <math.h>

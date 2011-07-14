@@ -7,9 +7,9 @@
 #include <QFontMetrics>
 #include <QGraphicsProxyWidget>
 
-#include "controlEntity.h"
+#include "embeddedControl.h"
 #include "controlsDisposer.h"
-#include "../element.h"
+#include "../../element.h"
 
 #include "../../kernel/ids.h"
 
@@ -58,18 +58,18 @@ class EmbeddedControls : public QObject, public QGraphicsItem {
 		static qReal::Id extractElementId(const qReal::Id &id);
 };
 
-/* Measurable pair of ControlEntity* and ProxyWidget* */
+/* Measurable pair of embeddedControl* and ProxyWidget* */
 
-class Item : public QPair<ControlEntity*, QGraphicsProxyWidget*> {
+class Item : public QPair<EmbeddedControl*, QGraphicsProxyWidget*> {
 	public:
-		Item(ControlEntity* first, QGraphicsProxyWidget* second) :
-			QPair<ControlEntity*, QGraphicsProxyWidget*>(first, second) {}
+		Item(EmbeddedControl* first, QGraphicsProxyWidget* second) :
+			QPair<EmbeddedControl*, QGraphicsProxyWidget*>(first, second) {}
 
 		qreal length() const {
 			return textLength() + boundingLength();
 		}
 		qreal textLength() const {
-			const ControlEntity* control = first;
+			const EmbeddedControl* control = first;
 			const QGraphicsProxyWidget* widget = second;
 			QFontMetrics metrics(widget->font());
 			return metrics.width(control->getPropertyName());

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "controlEntity.h"
-#include "../element.h"
+#include "embeddedControl.h"
+#include "../../element.h"
 
 #include <QMap>
 #include <QSpinBox>
 
-class EnumWidget : public QSpinBox, public ControlEntity
+class EnumWidget : public QSpinBox, public EmbeddedControl
 {
 	Q_OBJECT
 	public:
