@@ -7,65 +7,47 @@
 #include "edgeElement.h"
 
 class NodeElement;
-/** @class EmbeddedLinker
- * 	@brief small round thing near the element. provides alternative way to create links
-  * */
 class EmbeddedLinker : public QObject, public QGraphicsItem
 {
 	Q_OBJECT
 	Q_INTERFACES(QGraphicsItem)
 
-public:
-	EmbeddedLinker();
-	EmbeddedLinker(QGraphicsItem *parent);
-	virtual ~EmbeddedLinker();
+	public:
+		EmbeddedLinker();
+		EmbeddedLinker(QGraphicsItem *parent);
+		virtual ~EmbeddedLinker();
 
-	QRectF boundingRect() const;
+		void initTitle();
+		void generateColor();
 
-	NodeElement* getMaster();
-	void setMaster(NodeElement* const element);
+		bool isDirected();
+		qReal::Id getEdgeType();
+		NodeElement* getMaster();
 
-	/** @brief notify that mouse cursor is over the NodeElement */
-	void setCovered(bool arg);
+		void setDirected(const bool directed);
+		void setMaster(NodeElement* const master);
+		void setEdgeType(qReal::Id const & edgeType);
 
-	virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w );
+		void takePosition(int index, int maxIndex);
 
-	virtual void initTitle();
-	virtual void generateColor();
-	virtual void setColor(QColor color);
+		virtual QRectF boundingRect() const;
+		virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w );
 
-	virtual void setDirected(bool directed);
-	virtual void setEdgeType(qReal::Id const & edgeType);
-	virtual bool isDirected();
+		virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
+		virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
+		virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 
-	virtual qReal::Id getEdgeType();
+	private:
+		EdgeElement* mEdge;
+		NodeElement* master;
+		ElementTitle* title;
 
-	virtual void takePosition(int index, int maxIndex);
+		float size;
+		float indent;
+		QColor color;
+		QRectF mRectangle;
+		QRectF mInnerRectangle;
 
-	virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event);
-	virtual void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event);
-	virtual void mousePressEvent( QGraphicsSceneMouseEvent * event);
-private:
-	ElementTitle* title;
-
-	bool covered;
-	/** @brief element that handles this object */
-	NodeElement* master;
-	/** @brief current edge */
-	EdgeElement* mEdge;
-	/** @brief bounding rect */
-	QRectF mRectangle;
-	QRectF mInnerRectangle;
-
-	float size;
-	float indent;
-
-	QColor color;
-	bool directed;
-	qReal::Id edgeType;
-signals:
-	void coveredChanged();
-public slots:
-	void changeShowState();
+		bool directed;
+		qReal::Id edgeType;
 };
-

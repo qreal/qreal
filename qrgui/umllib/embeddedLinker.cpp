@@ -1,12 +1,13 @@
-#include "embeddedLinker.h"
-#include "nodeElement.h"
 #include "edgeElement.h"
+#include "nodeElement.h"
+#include "embeddedLinker.h"
 
 #include <math.h>
-#include <QtGui/QStyle>
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QStyleOptionGraphicsItem>
-#include <QtCore/QDebug>
+
+#include <QDebug>
+#include <QStyle>
+#include <QGraphicsItem>
+#include <QStyleOptionGraphicsItem>
 
 #include "../view/editorViewScene.h"
 #include "../mainwindow/mainWindow.h"
@@ -18,42 +19,20 @@ EmbeddedLinker::EmbeddedLinker()
 	size = SettingsManager::value("EmbeddedLinkerSize", 6).toFloat();
 	indent = SettingsManager::value("EmbeddedLinkerIndent", 5).toFloat();
 
-	covered = false;
-	master = NULL;
 	mEdge = NULL;
+	master = NULL;
+	color = Qt::blue;
 	mRectangle = QRectF(-size,-size,size*2,size*2);
 	mInnerRectangle = QRectF(-size/2,-size/2,size,size);
-	setAcceptsHoverEvents(true);
-	color = Qt::blue;
-
-	QObject::connect(this,SIGNAL(coveredChanged()),this,SLOT(changeShowState()));
 }
 
-EmbeddedLinker::~EmbeddedLinker()
-{
+EmbeddedLinker::~EmbeddedLinker() {}
 
-}
-
-NodeElement* EmbeddedLinker::getMaster()
-{
+NodeElement* EmbeddedLinker::getMaster() {
 	return master;
 }
 
-void EmbeddedLinker::setMaster(NodeElement *element)
-{
-	master = element;
-	setParentItem(element);
-	QObject::connect(master->scene(),SIGNAL(selectionChanged()),this,SLOT(changeShowState()));
-}
-
-void EmbeddedLinker::setCovered(bool arg)
-{
-	covered = arg;
-	emit coveredChanged();
-}
-
-void EmbeddedLinker::generateColor()
-{
+void EmbeddedLinker::generateColor() {
 	int result = 0;
 	QChar *data = edgeType.element().data();
 	while (!data->isNull()) {
@@ -64,18 +43,12 @@ void EmbeddedLinker::generateColor()
 	color =QColor(result%192+64,result%128+128,result%64+192).darker(0);
 }
 
-void EmbeddedLinker::setColor(QColor arg)
-{
-		color = arg;
-}
-
-void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
-{
+void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*) {
 	Q_UNUSED(option);
 	painter->save();
 
 	QBrush brush;
-		brush.setColor(color);
+	brush.setColor(color);
 	brush.setStyle(Qt::SolidPattern);
 	painter->setBrush(brush);
 	painter->setOpacity(0.5);
@@ -88,13 +61,11 @@ void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 	painter->restore();
 }
 
-void EmbeddedLinker::setDirected(bool arg)
-{
-	directed = arg;
+void EmbeddedLinker::setDirected(const bool directed) {
+	this->directed = directed;
 }
 
-void EmbeddedLinker::initTitle()
-{
+void EmbeddedLinker::initTitle() {
 	EditorManager* editorManager = dynamic_cast<EditorViewScene*>(scene())->mainWindow()->manager();
 	QString edgeTypeFriendly = editorManager->friendlyName(Id::loadFromString("qrm:/"+master->id().editor()+"/"+master->id().diagram()+"/"+edgeType.element()));
 
@@ -120,24 +91,20 @@ void EmbeddedLinker::initTitle()
 	title->setParentItem(this);
 }
 
-void EmbeddedLinker::setEdgeType(const qReal::Id &arg)
-{
-	edgeType = arg;
+void EmbeddedLinker::setEdgeType(const qReal::Id &edgeType) {
+	this->edgeType = edgeType;
 	generateColor();
 }
 
-bool EmbeddedLinker::isDirected()
-{
+bool EmbeddedLinker::isDirected() {
 	return directed;
 }
 
-qReal::Id EmbeddedLinker::getEdgeType()
-{
+qReal::Id EmbeddedLinker::getEdgeType() {
 	return edgeType;
 }
 
-void EmbeddedLinker::takePosition(int index, int maxIndex)
-{
+void EmbeddedLinker::takePosition(int index, int maxIndex) {
 	const float Pi = 3.141592;
 	QRectF bounding = master->boundingRect();
 
@@ -202,13 +169,15 @@ void EmbeddedLinker::takePosition(int index, int maxIndex)
 	//									master->boundingRect().width(),master->boundingRect().height()));
 }
 
-QRectF EmbeddedLinker::boundingRect() const
-{
+QRectF EmbeddedLinker::boundingRect() const {
 	return mRectangle;
 }
 
-void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
+void EmbeddedLinker::setMaster(NodeElement *const master) {
+	this->master = master;
+}
+
+void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 	EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
 
 	if (scene)
@@ -231,14 +200,12 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
+void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 	if (mEdge != NULL)
 		mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
 }
 
-void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
+void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 	hide();
 	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(master->scene());
 	if ((scene) && (mEdge))
@@ -266,19 +233,4 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		if (result != -1)
 			mEdge->connectToPort();
 	}
-}
-
-void EmbeddedLinker::changeShowState()
-{
-	QList<QGraphicsItem*> graphicsItems;
-	if (scene())
-		graphicsItems = scene()->selectedItems();
-	if ((!master) || (!scene()) || (!covered) ||
-		((!graphicsItems.contains(master)) && (!graphicsItems.contains(mEdge))))
-	{
-		hide();
-		return;
-	}
-	else if ((graphicsItems.contains(master)) && (graphicsItems.size() == 1) && covered)
-		show();
 }
