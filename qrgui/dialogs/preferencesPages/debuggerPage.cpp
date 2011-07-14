@@ -1,5 +1,5 @@
 #include "../../kernel/settingsManager.h"
-#include "preferencesPages/debuggerPage.h"
+#include "debuggerPage.h"
 #include "ui_debuggerPage.h"
 
 PreferencesDebuggerPage::PreferencesDebuggerPage(QWidget *parent) :

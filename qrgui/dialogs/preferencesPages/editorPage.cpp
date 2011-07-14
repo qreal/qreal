@@ -1,5 +1,5 @@
 #include "../../kernel/settingsManager.h"
-#include "preferencesPages/editorPage.h"
+#include "editorPage.h"
 #include "ui_editorPage.h"
 
 PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAction * const showAlignmentAction

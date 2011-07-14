@@ -6,7 +6,7 @@
 #include <QList>
 #include <QPoint>
 #include <QString>
-#include "../gesturesPainterInterface.h"
+#include "../mainwindow/gesturesPainterInterface.h"
 
 namespace Ui {
 	class GesturesWidget;
