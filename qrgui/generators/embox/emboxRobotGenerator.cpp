@@ -1,4 +1,5 @@
 #include <QTextStream>
+#include <cmath>
 #include "emboxRobotGenerator.h"
 
 #include <QDebug>
@@ -160,6 +161,11 @@ EmboxRobotGenerator::LoopElementGenerator::LoopElementGenerator(EmboxRobotGenera
 	AbstractElementGenerator(emboxGen, elementId) {
 }
 
+EmboxRobotGenerator::IfElementGenerator::IfElementGenerator(EmboxRobotGenerator *emboxGen,
+		qReal::Id elementId): 
+	AbstractElementGenerator(emboxGen, elementId) {
+}
+
 QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::SimpleElementGenerator::simpleCode() {
 	QList< QPair<QString, qReal::Id> > result;
 
@@ -233,6 +239,22 @@ QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::LoopElementGenerator::lo
 	return result;
 }
 
+QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::IfElementGenerator::loopPrefixCode() {
+	QList< QPair<QString, qReal::Id> > result;
+	
+	qReal::Id logicElementId = mEmboxGen->mApi->logicalId(mElementId); //TODO
+	result << QPair<QString, qReal::Id>("while (" +
+			mEmboxGen->mApi->property(logicElementId, "Condition").toString()
+		       	+ ") {", mElementId); //TODO
+	return result;
+}
+
+QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::IfElementGenerator::loopPostfixCode() {
+	QList< QPair<QString, qReal::Id> > result;
+	result << QPair<QString, qReal::Id>("}", mElementId);
+	return result;
+}
+
 bool EmboxRobotGenerator::SimpleElementGenerator::preGenerationCheck() {
 	IdList outgoingConnectedElements = mEmboxGen->mApi->outgoingConnectedElements(mElementId);
 	if (outgoingConnectedElements.size() > 1) {
@@ -253,6 +275,15 @@ bool EmboxRobotGenerator::LoopElementGenerator::preGenerationCheck() {
 		  && 
 		  (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "Итерация") )
 	)
+		return false;
+
+	return true;
+}
+
+bool EmboxRobotGenerator::IfElementGenerator::preGenerationCheck() {
+	IdList outgoingLinks = mEmboxGen->mApi->outgoingLinks(mElementId);
+
+	if (outgoingLinks.size() != 2) //TODO: append checking arrows
 		return false;
 
 	return true;
@@ -327,9 +358,46 @@ bool EmboxRobotGenerator::LoopElementGenerator::nextElementsGeneration() {
 	return true;
 }
 
+bool EmboxRobotGenerator::IfElementGenerator::nextElementsGeneration() {
+	IdList outgoingLinks = mEmboxGen->mApi->outgoingLinks(mElementId);
+	// outgoingLinks.size() must be 2!
+	
+	int trueBranch;
+
+	if (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "true") {
+		trueBranch = 0;
+	} else {
+		trueBranch = 1;
+	}
+
+	qReal::Id logicElementId = mEmboxGen->mApi->logicalId(mElementId); //TODO
+
+	//TODO: save number of new created list
+	QList< QPair<QString, qReal::Id> > ifBlockPrefix;
+	ifBlockPrefix << QPair<QString, qReal::Id>("if (" + mEmboxGen->mApi->property(logicElementId, "Condition").toString() + ") {", mElementId);
+	mEmboxGen->mGeneratedStringSet << ifBlockPrefix;
+
+	//generate true/false blocks
+	for (int i = 0; i < 2; i++) {
+		AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mEmboxGen, 
+				mEmboxGen->mApi->to(outgoingLinks.at(abs(i - trueBranch))));
+
+		mEmboxGen->mPreviousElement = mElementId;
+		//mEmboxGen->mPreviousLoopElements.push(mElementId);
+		if (!nextBlocksGen->generate())
+			return false;
+		delete nextBlocksGen;
+	}
+
+	QList< QPair<QString, qReal::Id> > ifBlockPostfix;
+	ifBlockPostfix << QPair<QString, qReal::Id>("}", mElementId);
+	mEmboxGen->mGeneratedStringSet << ifBlockPostfix;
+
+	return true;
+}
+
 bool EmboxRobotGenerator::AbstractElementGenerator::generate() {
 	if (!preGenerationCheck()) {
-		qDebug() << "AAAA";
 		return false;
 	}
 
@@ -355,7 +423,6 @@ bool EmboxRobotGenerator::AbstractElementGenerator::generate() {
 	createListsForIncomingConnections();
 
 	if (!nextElementsGeneration()) {
-		qDebug() << "BBBB";
 		return false;
 	}
 

@@ -59,8 +59,6 @@ namespace qReal {
 						explicit SimpleElementGenerator(EmboxRobotGenerator *emboxGen,
 								qReal::Id elementId);
 
-						virtual ~SimpleElementGenerator() {};
-						
 					protected:
 						virtual QList< QPair<QString, qReal::Id> >
 							loopPrefixCode();
@@ -80,8 +78,23 @@ namespace qReal {
 						explicit LoopElementGenerator(EmboxRobotGenerator *emboxGen,
 								qReal::Id elementId);
 
-						virtual ~LoopElementGenerator() {};
-						
+					protected:
+						virtual QList< QPair<QString, qReal::Id> >
+							loopPrefixCode();
+
+						virtual QList< QPair<QString, qReal::Id> >
+							loopPostfixCode();
+
+						virtual bool preGenerationCheck();
+						virtual bool nextElementsGeneration();
+				};
+
+				//for if blocks
+				class IfElementGenerator : public AbstractElementGenerator {
+					public:	
+						explicit IfElementGenerator(EmboxRobotGenerator *emboxGen,
+								qReal::Id elementId);
+					
 					protected:
 						virtual QList< QPair<QString, qReal::Id> >
 							loopPrefixCode();
@@ -98,7 +111,9 @@ namespace qReal {
 					public:
 						static AbstractElementGenerator* generator(EmboxRobotGenerator *emboxGen,
 								qReal::Id elementId) {
-							if (elementId.element() == "Loop")
+						if (elementId.element() == "IfBlock")
+								return new IfElementGenerator(emboxGen, elementId);
+						if (elementId.element() == "Loop")
 								return new LoopElementGenerator(emboxGen, elementId);
 
 							return new SimpleElementGenerator(emboxGen, elementId); 
