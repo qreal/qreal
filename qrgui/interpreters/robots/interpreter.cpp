@@ -73,6 +73,7 @@ void Interpreter::stop()
 		delete thread;
 	mBlocksTable->setFailure();
 	mThreads.clear();
+	mTimer->stop();
 	/*mBlocksTable->clear();
 	mRobotModel->clear();*/
 }
@@ -229,8 +230,8 @@ void Interpreter::updateSensorValues(const QString &sensorVariableName, int sens
 {
 	(*(mParser->getVariables()))[sensorVariableName] = Number(sensorValue, Number::intType);
 	qDebug() << "Sensor Value" << sensorVariableName << sensorValue;
-	QMap<QString, qReal::Number> variables = *(mParser->getVariables());
-	foreach (QString key, variables.keys()) {
-		qDebug() << key << variables[key].property("Number").toInt();
-	}
+//	QMap<QString, qReal::Number> variables = *(mParser->getVariables());
+//	foreach (QString key, variables.keys()) {
+//		qDebug() << key << variables[key].property("Number").toInt();
+//	}
 }

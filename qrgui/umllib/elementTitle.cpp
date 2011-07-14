@@ -45,15 +45,6 @@ void ElementTitle::focusOutEvent(QFocusEvent *event)
 	QGraphicsTextItem::focusOutEvent(event);
 
 	QString htmlNormalizedText = toHtml().remove("\n", Qt::CaseInsensitive);
-	/*QStringList htmlTextList = htmlText.split(">", QString::SkipEmptyParts);
-	foreach (QString currentHtmlText, htmlTextList) {
-		QString newCurrentHtmlText = currentHtmlText.mid(0, currentHtmlText.indexOf("<"));
-		qDebug() << "newCurrentHtmlText" << newCurrentHtmlText;
-		if (!(newCurrentHtmlText.isEmpty()) && !(newCurrentHtmlText == " ") && !(newCurrentHtmlText.contains("{")))
-			htmlNormalizedText = htmlNormalizedText + newCurrentHtmlText + "<br />";
-		qDebug() << "htmlNormalizedText" << htmlNormalizedText;
-	}
-	qDebug() << "htmlNormalizedText last version" << htmlNormalizedText;*/
 
 	setTextInteractionFlags(Qt::NoTextInteraction);
 
