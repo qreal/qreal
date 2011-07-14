@@ -484,8 +484,15 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				newParent = dynamic_cast<NodeElement *>(realNewParents.at(i));
 				i++;
 			}
-
-			if (newParent && !selected.contains(newParent)) {
+			// проверка, можно ли добавлять наш элемент в найденного родителя
+			bool allowed = false;
+			if (newParent) {
+				foreach (qReal::Id type, mGraphicalAssistApi->editorManager().getContainedTypes(newParent->id().type())){
+					if (id().element() ==  type.editor())
+						allowed = true;
+				}
+			}
+			if (newParent && !selected.contains(newParent) && allowed) {
 				mGraphicalAssistApi->changeParent(id(), newParent->id(),
 												  mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
 

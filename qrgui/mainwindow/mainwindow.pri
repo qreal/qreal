@@ -21,10 +21,8 @@ HEADERS += mainwindow/mainWindow.h \
 	mainwindow/shapeEdit/view.h \
 	mainwindow/gesturesShow/gesturesWidget.h \
 	mainwindow/gesturesPainterInterface.h \
-	mainwindow/preferencesDialog.h \
 	mainwindow/gesturesPainterInterface.h \
 	mainwindow/buttonRefWindow.h \
-	mainwindow/refWindow.h \
 	mainwindow/shapeEdit/textPicture.h \
 	mainwindow/shapeEdit/path.h \
 	mainwindow/shapeEdit/image.h \
@@ -62,9 +60,7 @@ SOURCES += mainwindow/mainWindow.cpp \
 	mainwindow/shapeEdit/curve.cpp \
 	mainwindow/shapeEdit/view.cpp \
 	mainwindow/gesturesShow/gesturesWidget.cpp \
-	mainwindow/preferencesDialog.cpp \
 	mainwindow/buttonRefWindow.cpp \
-	mainwindow/refWindow.cpp \
 	mainwindow/shapeEdit/textPicture.cpp \
 	mainwindow/shapeEdit/image.cpp \
 	mainwindow/error.cpp \
@@ -80,8 +76,6 @@ SOURCES += mainwindow/mainWindow.cpp \
 FORMS += mainwindow/mainWindow.ui \
 	mainwindow/shapeEdit/shapeEdit.ui \
 	mainwindow/gesturesShow/gesturesWidget.ui \
-	mainwindow/preferencesDialog.ui \
-	mainwindow/refWindow.ui \
 	mainwindow/preferencesPages/robotSettingsPage.ui \
 	mainwindow/preferencesPages/miscellaniousPage.ui \
 	mainwindow/preferencesPages/editorPage.ui \

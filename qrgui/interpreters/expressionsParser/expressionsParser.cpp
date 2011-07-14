@@ -301,6 +301,8 @@ void ExpressionsParser::parseCommand(const QString &stream, int &pos)
 	if (isAssignment(stream.at(pos))) {
 		pos++;
 		Number n = parseExpression(stream, pos);
+		qDebug() << "parser" << variable << n.property("Number").toInt();
+		qDebug() << "parser stream" << stream;
 		if (!hasErrors()) {
 			Number::Type t1 = mVariables[variable].property("Type").toInt() ? Number::intType : Number::doubleType;
 			Number::Type t2 = n.property("Type").toInt() ? Number::intType : Number::doubleType;
