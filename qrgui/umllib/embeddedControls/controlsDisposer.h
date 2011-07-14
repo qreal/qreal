@@ -6,5 +6,10 @@
 class Item;
 class ControlsDisposer
 {
-	public: virtual void dispose(Element *element, QList<Item> &items, QRectF &boundingRectToComputate) const = 0;
+	public:
+		virtual bool isFolded(Element *element) const = 0;
+		virtual void switchFolding(const bool request, Element *element, QList<Item> &items, QRectF &boundingRectToCompute) const = 0;
+	protected:
+		virtual void fold(Element *element, QList<Item> &items, QRectF &boundingRectToCompute) const = 0;
+		virtual void dispose(Element *element, QList<Item> &items, QRectF &boundingRectToCompute) const = 0;
 };

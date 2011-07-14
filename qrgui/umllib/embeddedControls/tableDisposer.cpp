@@ -1,10 +1,64 @@
 #include "tableDisposer.h"
 
-TableDisposer::TableDisposer()
-{
+#include <QGraphicsProxyWidget>
+
+TableDisposer::TableDisposer() {}
+
+QMap<Element*, QGraphicsItem*> TableDisposer::switches = QMap<Element*, QGraphicsItem*>();
+QMap<Element*, bool> TableDisposer::folded = QMap<Element*, bool>();
+
+/* Public */
+
+bool TableDisposer::isFolded(Element *element) const {
+	initFoldedGlobalState(element);
+	return folded.take(element);
 }
 
-void TableDisposer::dispose(Element *element, QList<Item> &items, QRectF &boundingRectToComputate) const {
+void TableDisposer::switchFolding(const bool request, Element *element, QList<Item> &items, QRectF &boundingRectToCompute) const {
+	Q_UNUSED(items);
+	Q_UNUSED(boundingRectToCompute);
+	initSwitchesGlobalState(element, items, boundingRectToCompute);
+
+//	QGraphicsItem* switchItem = switches.take(element);
+	if (!request) {
+		folded.insert(element, false);
+		dispose(element, items, boundingRectToCompute);
+//		switchItem->setPos(switchItem->pos() + QPointF(-5,-5));
+	} else {
+		folded.insert(element, true);
+		fold(element, items, boundingRectToCompute);
+//		switchItem->setPos(switchItem->pos() + QPointF(+5,+5));
+	}
+}
+
+/* Initialization */
+
+void TableDisposer::initFoldedGlobalState(Element *element) {
+	if (!folded.contains(element)) {
+		folded.insert(element, true);
+	}
+}
+
+void TableDisposer::initSwitchesGlobalState(Element *element, QList<Item> &items, QRectF &boundingRectToCompute) {
+	Q_UNUSED(items);
+	Q_UNUSED(boundingRectToCompute);
+	if (!switches.contains(element)) {
+//		switches.insert(element, new QGraphicsRectItem(-5,-5,+5,+5, element));
+	}
+}
+
+/* Folding */
+
+void TableDisposer::fold(Element *element, QList<Item> &items, QRectF &boundingRectToCompute) const {
+	foreach(Item forldButton, items) {
+		QGraphicsProxyWidget* widget = forldButton.second;
+		widget->hide();
+	}
+}
+
+/* Disposing */
+
+void TableDisposer::dispose(Element *element, QList<Item> &items, QRectF &boundingRectToCompute) const {
 	const qreal stretching = 2;
 
 	const QRectF elementBounding = element->boundingRect();
@@ -20,9 +74,9 @@ void TableDisposer::dispose(Element *element, QList<Item> &items, QRectF &boundi
 	const qreal treshold  = length*stretching;
 
 	if (sumLength <= treshold && items.length() > 1) {
-		boundingRectToComputate = disposeInColumns(items, 2, sumLength, middleX, bottom);
+		boundingRectToCompute = disposeInColumns(items, 2, sumLength, middleX, bottom);
 	} else {
-		boundingRectToComputate = disposeInColumns(items, 1, maxLength, middleX, bottom);
+		boundingRectToCompute = disposeInColumns(items, 1, maxLength, middleX, bottom);
 	}
 }
 
@@ -58,5 +112,6 @@ void TableDisposer::disposeOne(QList<Item> &items, QRectF &rect, qreal &curX, qr
 	rect = widget->boundingRect();
 	widget->setPos(curX, curY);
 	curY += rect.height();
+	widget->show();
 	i++;
 }

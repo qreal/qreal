@@ -15,7 +15,9 @@
 
 class Item;
 class ControlsDisposer;
-class EmbeddedControls : public QGraphicsItem {
+class EmbeddedControls : public QObject, public QGraphicsItem {
+	Q_OBJECT
+	Q_INTERFACES(QGraphicsItem)
 	public:
 		QRectF boundingRect() const;
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
@@ -24,13 +26,17 @@ class EmbeddedControls : public QGraphicsItem {
 		static void deleteInstance(Element *element);
 		static void createInstance(Element *element, const qReal::EditorManager &editorManager);
 
+	public slots:
+		void switchFolding(const bool request);
+	signals:
+		void foldingSwitched(bool);
+
 	private:
 		EmbeddedControls(
 			Element *element,
 			const qReal::EditorManager &editorManager
 		);
 
-		void disposeWidgets();
 		void registerControls(Element *element);
 		void initializeItems(Element *element, const qReal::EditorManager &editorManager);
 
@@ -38,7 +44,7 @@ class EmbeddedControls : public QGraphicsItem {
 		Element *element;
 		QList<Item> items;
 		ControlsDisposer *disposer;
-		QRectF computatedBoundingRect;
+		QRectF computedBoundingRect;
 
 		/* Static */	//todo: следует сделать отдельным объектом
 		static QSet<qReal::Id> forbiddenTypes;

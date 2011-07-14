@@ -359,9 +359,11 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	if (mDragPoint == -1) {
 		Element::mousePressEvent(event);
-		if ((mSrc != NULL) || (mDst != NULL))
-			if (event->buttons() != Qt::RightButton)
+		if ((mSrc != NULL) || (mDst != NULL)) {
+			if (event->buttons() != Qt::RightButton) {
 				addPointHandler(event->pos());
+			}
+		}
 	} else {
 		// saving info in case we need to rollback (see #4)
 		mLastDragPoint = mDragPoint;

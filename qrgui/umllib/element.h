@@ -53,6 +53,13 @@ public:
 
 	void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
+public slots:
+	void singleSelectionState(const bool singleSelected);
+	void selectionState(const bool selected);
+
+signals:
+	void switchFolding(bool);
+
 protected:
 
 	bool mMoving;
