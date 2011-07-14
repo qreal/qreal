@@ -15,7 +15,7 @@
 
 #include <QtCore/QDebug>
 
-#include <../../generators/editorGenerator/editorGenerator.h>
+#include <../generators/editorGenerator/editorGenerator.h>
 
 #include <QtCore/QPluginLoader>
 
@@ -26,10 +26,10 @@
 #include "../interpreters/robots/details/robotParts/robotModel.h"
 #include "../pluginInterface/editorInterface.h"
 #include "../../qrgui/dialogs/preferencesDialog.h"
-#include "shapeEdit/shapeEdit.h"
+#include "../dialogs/shapeEdit/shapeEdit.h"
 #include "openShapeEditorButton.h"
 #include "propertyEditorProxyModel.h"
-#include "gesturesShow/gesturesWidget.h"
+#include "../dialogs/gesturesShow/gesturesWidget.h"
 
 #include "../models/models.h"
 #include "../view/editorView.h"
@@ -39,7 +39,7 @@
 #include "../editorManager/listenerManager.h"
 #include "../generators/editorGenerator/editorGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
-#include "../../kernel/settingsManager.h"
+#include "../kernel/settingsManager.h"
 
 #include "../interpreters/robots/interpreter.h"
 

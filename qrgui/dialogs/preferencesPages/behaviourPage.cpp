@@ -1,5 +1,5 @@
 #include "../../kernel/settingsManager.h"
-#include "preferencesPages/behaviourPage.h"
+#include "behaviourPage.h"
 #include "ui_behaviourPage.h"
 
 PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent) :
