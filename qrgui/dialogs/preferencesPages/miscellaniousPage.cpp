@@ -1,7 +1,7 @@
 #include "../../kernel/settingsManager.h"
 #include <QFileDialog>
 
-#include "preferencesPages/miscellaniousPage.h"
+#include "miscellaniousPage.h"
 #include "ui_miscellaniousPage.h"
 
 PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent) :

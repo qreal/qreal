@@ -6,7 +6,7 @@
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{3b28ab2c-740a-4387-a6e2-c5a6b4d2cc73}"/>
   </children>
   <properties>
-    <QPolygon key="configuration" value="0, 0 : 190, 0 : 190, 154 : 0, 154 : "/>
+    <QPolygon key="configuration" value="0, 0 : 150, 0 : 150, 100 : 0, 100 : "/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">

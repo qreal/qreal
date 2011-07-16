@@ -11,7 +11,7 @@
 #include "propertyeditorproxymodel.h"
 #include "propertyeditordelegate.h"
 #include "gesturesPainterInterface.h"
-#include "gesturesShow/gestureswidget.h"
+#include "../dialogs/gesturesShow/gesturesWidget.h"
 #include "../interpreters/visualDebugger/debuggerConnector.h"
 #include "mainWindowInterpretersInterface.h"
 #include "../kernel/settingsManager.h"

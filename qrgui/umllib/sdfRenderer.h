@@ -11,7 +11,7 @@
 #include <QtGui/QIconEngine>
 #include <QDebug>
 #include "../editorPluginInterface/sdfRendererInterface.h"
-#include "../../kernel/settingsManager.h"
+#include "../kernel/settingsManager.h"
 
 class SdfRenderer : public SdfRendererInterface
 {

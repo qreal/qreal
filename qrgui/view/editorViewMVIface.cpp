@@ -157,6 +157,8 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			elem->checkConnectionsToPort();
 			elem->initPossibleEdges();
 			elem->initTitles();
+//			elem->initEmbeddedControls();
+			//todo: нужно привести в порядок всякие init~()
 
 			bool isEdgeFromEmbeddedLinker = false;
 			QList<QGraphicsItem*> selectedItems = mScene->selectedItems();

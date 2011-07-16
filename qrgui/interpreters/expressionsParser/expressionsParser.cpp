@@ -158,7 +158,7 @@ QString ExpressionsParser::parseIdentifier(const QString &stream, int &pos)
 void ExpressionsParser::skip(const QString &stream, int &pos)
 {
 	while (pos < stream.length() &&
-		   (isDelimiter(stream.at(pos)) || stream.at(pos).toAscii() == '<'))
+		   (isDelimiter(stream.at(pos)) || stream.at(pos).toAscii() == '<' ))
 	{
 		if (isHtmlBrTag(stream, pos)) {
 			pos += 4;
@@ -625,6 +625,13 @@ void ExpressionsParser::error(const ParseErrorType &type, const QString &pos, co
 	case noExpression:
 		mHasParseErrors = true;
 		mErrorReporter->addCritical(QObject::tr("No value of expression"), mCurrentId);
+		break;
+	case incorrectVariableDeclaration:
+		mErrorReporter->addWarning(QObject::tr("Incorrect variable declaration: use function block for it"), mCurrentId);
+		break;
+	case unexpectedSymbolAfterTheEndOfExpression:
+		mHasParseErrors = true;
+		mErrorReporter->addWarning(QObject::tr("Unexpected symbol after the end of expression"), mCurrentId);
 		break;
 	}
 }

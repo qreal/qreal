@@ -12,11 +12,11 @@
 #include <QtGui/QWidget>
 #include <QList>
 
-#include "embeddedLinker.h"
 #include "sdfRenderer.h"
 #include "element.h"
 #include "edgeElement.h"
 #include "../editorPluginInterface/elementImpl.h"
+#include "embeddedLinker.h"
 
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"

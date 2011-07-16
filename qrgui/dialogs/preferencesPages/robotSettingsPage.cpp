@@ -1,5 +1,5 @@
 #include "../../kernel/settingsManager.h"
-#include "preferencesPages/robotSettingsPage.h"
+#include "robotSettingsPage.h"
 #include "ui_robotSettingsPage.h"
 #include "../../../plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h"
 

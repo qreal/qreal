@@ -152,14 +152,12 @@ bool EditorViewScene::canBeContainedBy(qReal::Id container, qReal::Id candidate)
 	Q_UNUSED(candidate); // TODO: update xml descriptions to remove
 	return true;
 
-	/*
 	bool allowed = false;
 	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container.type())){
 		if (candidate.element() ==  type.editor())
 			allowed = true;
 	}
 	return allowed;
-	*/
 }
 
 void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
@@ -617,6 +615,7 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	if (parent) {
 		if (!canBeContainedBy(parent->id(), element->id())){
 			QMessageBox::critical(0, "Ololo", "can't drop it here!111");
+			qDebug() << "ololo";
 			// fail, reparenting the element as it was before
 			foreach (QGraphicsItem *item, items(event->scenePos())) {
 				Element * elem = dynamic_cast < Element * >(item);
