@@ -1,6 +1,4 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-	editor/hascolEditor.pro \
-
-
+	editor/umlSequenceEditor.pro \

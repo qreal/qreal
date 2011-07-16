@@ -1,6 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-	editor/hascolEditor.pro \
-
+	editor/requirementsEditor.pro \
 

@@ -5,4 +5,4 @@ SUBDIRS = \
 #	interpreter \
 	qextSerialPort \
 
-qextSerialPort.file = thirdparty/qextSerialPort/qextserialport.pro
+qextSerialPort.file = thirdparty/qextserialport/qextserialport.pro
