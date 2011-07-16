@@ -15,11 +15,11 @@ contains(QT_VERSION, ^4\\.[0-5]\\..*){
 	error("Use at least Qt 4.6")
 }
 
-TEMPLATE	= subdirs
-SUBDIRS		= qrmc qrxc qrgui qrxml qrrepo plugins
+TEMPLATE = subdirs
+SUBDIRS = qrmc qrxc qrgui qrrepo plugins 
 
 qrmc.depends = qrrepo
-qrgui.depends = qrxc qrxml qrrepo plugins
+qrgui.depends = qrxc qrrepo plugins
 qrxml.depends = qrxc
 plugins.depends = qrxc qrrepo
 

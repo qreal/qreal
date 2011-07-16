@@ -36,11 +36,12 @@ XmlCompiler::~XmlCompiler()
 			delete editor;
 }
 
-bool XmlCompiler::compile(QString const &inputXmlFileName)
+bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &sourcesRootFolder)
 {
 	QFileInfo const inputXmlFileInfo(inputXmlFileName);
 	mPluginName = NameNormalizer::normalize(inputXmlFileInfo.baseName());
 	mCurrentEditor = inputXmlFileInfo.absoluteFilePath();
+	mSourcesRootFolder = sourcesRootFolder;
 	QDir const startingDir = inputXmlFileInfo.dir();
 	if (!loadXmlFile(startingDir, inputXmlFileInfo.fileName()))
 		return false;
@@ -113,17 +114,14 @@ void XmlCompiler::generateElementClasses()
 	out() << "#pragma once\n\n"
 		<< "#include <QBrush>\n"
 		<< "#include <QPainter>\n\n"
-		<< "#include \"../../../qrgui/editorPluginInterface/elementImpl.h\"\n"
-		<< "#include \"../../../qrgui/editorPluginInterface/elementRepoInterface.h\"\n"
-		<< "#include \"../../../qrgui/editorPluginInterface/elementTitleHelpers.h\"\n\n"
-//		<< "namespace UML {\n\n";
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementImpl.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementRepoInterface.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementTitleHelpers.h\"\n\n"
 		;
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values())
 			type->generateCode(out);
-
-//	out() << "}\n\n";
 }
 
 void XmlCompiler::generatePluginHeader()
@@ -139,7 +137,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtGui/QIcon>\n"
 		<< "#include <QPair>"
 		<< "\n"
-		<< "#include \"../../../qrgui/editorPluginInterface/editorInterface.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/editorInterface.h\"\n"
 		<< "\n"
 		<< "class " << mPluginName << "Plugin : public QObject, public qReal::EditorInterface\n"
 		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(qReal::EditorInterface)\n"
