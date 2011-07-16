@@ -6,4 +6,5 @@ SUBDIRS	= \
 	hascol/hascol.pro \
 	umlActivityDiagram/umlActivityDiagram.pro \
 	umlClassDiagram/umlClassDiagram.pro \
+	additionsEditor/additionsEditor.pro \
 

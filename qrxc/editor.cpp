@@ -37,7 +37,7 @@ bool Editor::load(QDir const &currentDir)
 		includeElement = includeElement.nextSiblingElement("include"))
 	{
 		QString includeFileName = includeElement.text();
-		QFileInfo includeFileInfo(includeFileName);
+		QFileInfo includeFileInfo(currentDir, includeFileName);
 		QDir newDir = currentDir;
 		newDir.cd(includeFileInfo.canonicalPath());
 		Editor *includeFile = mXmlCompiler->loadXmlFile(newDir, includeFileInfo.fileName());
