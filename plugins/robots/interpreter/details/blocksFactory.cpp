@@ -1,6 +1,6 @@
 #include "blocksFactory.h"
 
-#include "../../../kernel/exception/exception.h"
+#include "../../../../qrgui/kernel/exception/exception.h"
 #include "blocks/timerBlock.h"
 #include "blocks/beepBlock.h"
 #include "blocks/initialBlock.h"

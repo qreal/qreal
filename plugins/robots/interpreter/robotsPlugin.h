@@ -15,7 +15,7 @@ public:
 
 	virtual void initPlugin(qrRepo::RepoControlInterface *repo);
 	virtual QList<qReal::CustomToolInterface *> toolInterfaces();
-	virtual QList<InterpreterInterface *> interpreterInterfaces();
+	virtual QList<qReal::InterpreterInterface *> interpreterInterfaces();
 
 private:
 

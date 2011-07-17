@@ -73,9 +73,9 @@ private:
 		, idle
 	};
 
-	models::GraphicalModelAssistApi const &mGraphicalModelApi;
-	models::LogicalModelAssistApi const &mLogicalModelApi;
-	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
+	models::GraphicalModelAssistApi *mGraphicalModelApi;
+	models::LogicalModelAssistApi *mLogicalModelApi;
+	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;
 
 	InterpreterState mState;
 	QList<details::Thread *> mThreads;  // Has ownership

@@ -2,7 +2,7 @@
 
 #include <QtCore/QDebug>
 
-#include "../../../../kernel/exception/exception.h"
+#include "../../../../../qrgui/kernel/exception/exception.h"
 
 #include "nullRobotModelImplementation.h"
 #include "realRobotModelImplementation.h"

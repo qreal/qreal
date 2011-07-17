@@ -11,6 +11,7 @@ using namespace details;
 const Id startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
 const Id startingElementType1 = Id("RobotsMetamodel", "RobotsDiagram", "InitialBlock");
 
+/*
 Interpreter::Interpreter(models::GraphicalModelAssistApi const &graphicalModelApi
 		, models::LogicalModelAssistApi const &logicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
@@ -32,6 +33,23 @@ Interpreter::Interpreter(models::GraphicalModelAssistApi const &graphicalModelAp
 
 	setRobotImplementation(modelType, robotCommunicationInterface);
 }
+*/
+
+Interpreter::Interpreter()
+	: mGraphicalModelApi(NULL)
+	, mLogicalModelApi(NULL)
+	, mInterpretersInterface(NULL)
+	, mState(idle)
+	, mRobotModel(new RobotModel())
+	, mBlocksTable(NULL)
+{
+	mParser = NULL;
+	mBlocksTable = NULL;
+	mTimer = new QTimer();
+
+	mD2RobotModel = new d2Model::D2RobotModel();
+	mD2ModelWidget = mD2RobotModel->createModelWidget();
+}
 
 Interpreter::~Interpreter()
 {
@@ -43,7 +61,7 @@ Interpreter::~Interpreter()
 void Interpreter::interpret(Id const &currentDiagramId)
 {
 	if (mState == interpreting) {
-		mInterpretersInterface.errorReporter()->addInformation(tr("Interpreter is already running"));
+		mInterpretersInterface->errorReporter()->addInformation(tr("Interpreter is already running"));
 		return;
 	}
 
@@ -53,15 +71,15 @@ void Interpreter::interpret(Id const &currentDiagramId)
 
 	Id const startingElement = findStartingElement(currentDiagramId);
 	if (startingElement == Id()) {
-		mInterpretersInterface.errorReporter()->addError(tr("No entry point found, please add Initial Node to a diagram"));
+		mInterpretersInterface->errorReporter()->addError(tr("No entry point found, please add Initial Node to a diagram"));
 		return;
 	}
 
-	Autoconfigurer configurer(mGraphicalModelApi, mBlocksTable, mInterpretersInterface.errorReporter(), mRobotModel);
+	Autoconfigurer configurer(*mGraphicalModelApi, mBlocksTable, mInterpretersInterface->errorReporter(), mRobotModel);
 	if (!configurer.configure(currentDiagramId))
 		return;
 
-	Thread * const initialThread = new Thread(mInterpretersInterface, *mBlocksTable, startingElement);
+	Thread * const initialThread = new Thread(*mInterpretersInterface, *mBlocksTable, startingElement);
 	addThread(initialThread);
 }
 
@@ -101,7 +119,7 @@ void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum impl
 
 Id const Interpreter::findStartingElement(Id const &diagram) const
 {
-	IdList const children = mGraphicalModelApi.graphicalRepoApi().children(diagram);
+	IdList const children = mGraphicalModelApi->graphicalRepoApi().children(diagram);
 
 	foreach (Id const child, children) {
 		if (child.type() == startingElementType || child.type() == startingElementType1)
@@ -124,7 +142,7 @@ void Interpreter::threadStopped()
 
 void Interpreter::newThread(details::blocks::Block * const startBlock)
 {
-	Thread * const thread = new Thread(mInterpretersInterface, *mBlocksTable, startBlock->id());
+	Thread * const thread = new Thread(*mInterpretersInterface, *mBlocksTable, startBlock->id());
 	addThread(thread);
 }
 
