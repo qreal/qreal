@@ -1,3 +1,4 @@
+/*
 #include "../../kernel/settingsManager.h"
 #include "robotSettingsPage.h"
 #include "ui_robotSettingsPage.h"
@@ -186,3 +187,4 @@ void PreferencesRobotSettingsPage::save()
 	SettingsManager::setValue("port3SensorType", selectedPort3Sensor());
 	SettingsManager::setValue("port4SensorType", selectedPort4Sensor());
 }
+*/

@@ -18,7 +18,6 @@ PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * c
 	mCompilerPage = new PreferencesCompilerPage(ui->pageContentWigdet);
 	mDebuggerPage = new PreferencesDebuggerPage(ui->pageContentWigdet);
 	mMiscellaniousPage = new PreferencesMiscellaniousPage(ui->pageContentWigdet);
-	mRobotSettingsPage = new PreferencesRobotSettingsPage(ui->pageContentWigdet);
 	mEditorPage = new PreferencesEditorPage(showGridAction,
 		showAlignmentAction, activateGridAction, activateAlignmentAction, ui->pageContentWigdet);
 
@@ -56,7 +55,6 @@ void PreferencesDialog::applyChanges()
 	mEditorPage->save();
 	mDebuggerPage->save();
 	mMiscellaniousPage->save();
-	mRobotSettingsPage->save();
 
 	emit settingsApplied();
 }
@@ -73,7 +71,6 @@ void PreferencesDialog::changeEvent(QEvent *e)
 		mDebuggerPage->changeEvent(e);
 		mEditorPage->changeEvent(e);
 		mMiscellaniousPage->changeEvent(e);
-		mRobotSettingsPage->changeEvent(e);
 		break;
 	default:
 		break;
@@ -98,7 +95,6 @@ void PreferencesDialog::chooseTab(const QModelIndex &index)
 	mEditorPage->hide();
 	mDebuggerPage->hide();
 	mMiscellaniousPage->hide();
-	mRobotSettingsPage->hide();
 
 	switch(static_cast<PageIndexes>(index.row())){
 	case behaviour:
@@ -119,10 +115,6 @@ void PreferencesDialog::chooseTab(const QModelIndex &index)
 
 	case miscellanious:
 		mMiscellaniousPage->show();
-		break;
-
-	case robotSettings:
-		mRobotSettingsPage->show();
 		break;
 	}
 }

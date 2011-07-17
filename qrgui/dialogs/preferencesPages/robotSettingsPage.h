@@ -1,5 +1,6 @@
 #pragma once
 
+/*
 #include "page.h"
 
 #include "../../interpreters/robots/sensorConstants.h"
@@ -40,3 +41,4 @@ private:
 
 	Ui::PreferencesRobotSettingsPage *mUi;
 };
+*/

@@ -2,7 +2,7 @@
 #pragma once
 #include <QtCore/QObject>
 #include "../robotImplementations/brickImplementations/abstractBrickImplementation.h"
-#include "../../../../kernel/ids.h"
+#include "../../../../../qrgui/kernel/ids.h"
 
 namespace qReal {
 namespace interpreters {

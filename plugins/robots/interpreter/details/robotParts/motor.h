@@ -1,6 +1,6 @@
 #pragma once
 #include <QtCore/QObject>
-#include "../../../../kernel/ids.h"
+#include "../../../../../qrgui/kernel/ids.h"
 #include "../robotCommandConstants.h"
 #include "../robotImplementations/motorImplementations/abstractMotorImplementation.h"
 

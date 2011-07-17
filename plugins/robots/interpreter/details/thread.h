@@ -2,8 +2,8 @@
 
 #include <QtCore/QObject>
 
-#include "../../../kernel/ids.h"
-#include "../../../mainwindow/mainWindowInterpretersInterface.h"
+#include "../../../../qrgui/kernel/ids.h"
+#include "../../../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
 
 #include "blocksTable.h"
 #include "blocks/block.h"

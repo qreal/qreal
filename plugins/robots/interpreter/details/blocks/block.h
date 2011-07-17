@@ -2,10 +2,10 @@
 
 #include <QtCore/QObject>
 
-#include "../../../../kernel/ids.h"
-#include "../../../../models/graphicalModelAssistApi.h"
-#include "../../../../models/logicalModelAssistApi.h"
-#include "../../../../mainwindow/errorReporter.h"
+#include "../../../../../qrgui/kernel/ids.h"
+#include "../../../../../qrgui/models/graphicalModelAssistApi.h"
+#include "../../../../../qrgui/models/logicalModelAssistApi.h"
+#include "../../../../../qrgui/mainwindow/errorReporter.h"
 
 #include "../blocksTable.h"
 

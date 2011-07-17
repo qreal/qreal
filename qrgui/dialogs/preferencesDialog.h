@@ -25,7 +25,6 @@ public:
 		miscellanious = 2,
 		compiler = 3,
 		debugger = 4,
-		robotSettings = 5
 	};
 
 protected:
@@ -51,5 +50,4 @@ private:
 	PreferencesPage *mDebuggerPage;
 	PreferencesPage *mEditorPage;
 	PreferencesPage *mMiscellaniousPage;
-	PreferencesPage *mRobotSettingsPage;
 };

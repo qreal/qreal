@@ -23,8 +23,6 @@
 #include "ui_mainwindow.h"
 #include "errorReporter.h"
 
-#include "../interpreters/robots/details/robotImplementations/abstractRobotModelImplementation.h"
-#include "../interpreters/robots/details/robotParts/robotModel.h"
 #include "../editorPluginInterface/editorInterface.h"
 #include "../../qrgui/dialogs/preferencesDialog.h"
 #include "../dialogs/shapeEdit/shapeEdit.h"
@@ -47,12 +45,9 @@
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../kernel/settingsManager.h"
 
-#include "../interpreters/robots/interpreter.h"
-
 #include "../../qrmc/metaCompiler.h"
 
 using namespace qReal;
-using namespace interpreters::robots;
 
 MainWindow::MainWindow()
 	: mUi(new Ui::MainWindowUi)
@@ -62,8 +57,6 @@ MainWindow::MainWindow()
 	, mPropertyModel(mEditorManager)
 	, mGesturesWidget(NULL)
 	, mVisualDebugger(NULL)
-	, mRobotInterpreter(NULL)
-	, mBluetoothCommunication(NULL)
 	, mErrorReporter(NULL)
 	, mIsFullscreen(false)
 	, mSaveDir(qApp->applicationDirPath() + "/save")
@@ -191,6 +184,7 @@ MainWindow::MainWindow()
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
+	/*
 	QString const defaultBluetoothPortName = SettingsManager::value("bluetoothPortName", "").toString();
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel", "1").toInt());
@@ -204,6 +198,7 @@ MainWindow::MainWindow()
 	sensorType::SensorTypeEnum port3 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port3SensorType", "0").toInt());
 	sensorType::SensorTypeEnum port4 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port4SensorType", "0").toInt());
 	mRobotInterpreter->configureSensors(port1, port2, port3, port4);
+	*/
 
 	// Step 7: Save consistency checked, interface is initialized with models.
 	progress->setValue(100);
@@ -270,7 +265,6 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
-//	connect(mUi->actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connectDebugActions();
@@ -280,18 +274,6 @@ void MainWindow::connectActions()
 	connect(mUi->actionRobot_Settings, SIGNAL(triggered()), this, SLOT(showRobotSettingsDialog()));
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
-	connect(mUi->actionShow2Dmodel, SIGNAL(triggered()), this, SLOT(showD2ModelWidget()));
-}
-
-void MainWindow::showD2ModelWidget(bool isVisible)
-{
-	mRobotInterpreter->showD2ModelWidget(isVisible);
-}
-
-void MainWindow::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
-{
-	if (mRobotInterpreter)
-		mRobotInterpreter->setD2ModelWidgetActions(runAction, stopAction);
 }
 
 void MainWindow::connectDebugActions()
@@ -332,7 +314,6 @@ MainWindow::~MainWindow()
 {
 	saveAll();
 	delete mListenerManager;
-	delete mRobotInterpreter;
 	delete mErrorReporter;
 	SettingsManager::instance()->saveData();
 	//	delete mListenerManager;
@@ -1734,24 +1715,6 @@ void MainWindow::checkEditorForDebug(int index) {
 	mUi->actionStart_debugging->setEnabled(enabled);
 }
 
-
-void MainWindow::run()
-{
-	mErrorReporter->clear();
-	Id const currentDiagramId = getCurrentTab()->mvIface()->rootId();
-	mRobotInterpreter->interpret(currentDiagramId);
-}
-
-void MainWindow::stop()
-{
-	mRobotInterpreter->stop();
-}
-
-void MainWindow::stopRobot()
-{
-	mRobotInterpreter->stopRobot();
-}
-
 void MainWindow::setIndexesOfPropertyEditor(Id const &id)
 {
 	if (mModels->graphicalModelAssistApi().isGraphicalId(id)) {
@@ -1805,6 +1768,7 @@ void MainWindow::dehighlight()
 	dehighlight(Id());
 }
 
+/*
 void MainWindow::showRobotSettingsDialog()
 {
 	SettingsManager::setValue("currentPreferencesTab", PreferencesDialog::robotSettings);
@@ -1827,6 +1791,7 @@ void MainWindow::showRobotSettingsDialog()
 	else
 		showD2ModelWidget(false);
 }
+*/
 
 gui::ErrorReporter *MainWindow::errorReporter()
 {

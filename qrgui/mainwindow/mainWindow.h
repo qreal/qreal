@@ -16,9 +16,6 @@
 #include "mainWindowInterpretersInterface.h"
 #include "../kernel/settingsManager.h"
 
-#include "../interpreters/robots/bluetoothRobotCommunication.h"
-#include "../interpreters/robots/details/d2RobotModel/d2RobotModel.h"
-
 namespace Ui {
 class MainWindowUi;
 }
@@ -31,12 +28,6 @@ class VisualDebugger;
 
 namespace models {
 class Models;
-}
-
-namespace interpreters {
-namespace robots {
-class Interpreter;
-}
 }
 
 namespace gui {
@@ -77,8 +68,6 @@ public slots:
 	void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
 	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 	virtual void selectItem(Id const &id);
-
-	void showD2ModelWidget(bool isVisible = true);
 
 	void selectItemWithError(Id const &id);
 
@@ -175,11 +164,6 @@ private slots:
 	void diagramInCreateListDeselect();
 	void diagramInCreateListSelected(int num);
 
-	void run();
-	void stop();
-	void stopRobot();
-	void showRobotSettingsDialog();
-
 	void on_actionNew_Diagram_triggered();
 
 	void updatePaletteIcons();
@@ -204,9 +188,6 @@ private:
 
 	DebuggerConnector *mDebuggerConnector;
 	VisualDebugger *mVisualDebugger;
-	interpreters::robots::Interpreter *mRobotInterpreter;  // Has ownership
-	interpreters::robots::BluetoothRobotCommunication *mBluetoothCommunication;  // Does not have ownership
-	interpreters::robots::details::d2Model::D2RobotModel *mD2Model;// Does not have ownership
 	gui::ErrorReporter *mErrorReporter;  // Has ownership
 
 	/** @brief Fullscreen mode flag */
@@ -260,8 +241,6 @@ private:
 		@param name Widget's name in internal map
 	*/
 	void showDockWidget(QDockWidget *dockWidget, QString name);
-
-	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
 
 	QString getNextDirName(QString const &name);
 

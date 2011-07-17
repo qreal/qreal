@@ -1088,12 +1088,12 @@
   <customwidget>
    <class>ColorListEditor</class>
    <extends>QComboBox</extends>
-   <header>colorListEditor.h</header>
+   <header>../dialogs/shapeEdit/colorListEditor.h</header>
   </customwidget>
   <customwidget>
    <class>View</class>
    <extends>QGraphicsView</extends>
-   <header>view.h</header>
+   <header>../dialogs/shapeEdit/view.h</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -2,10 +2,15 @@
 
 #include <QtCore/QObject>
 
+#include "../../../qrgui/toolPluginInterface/interpreterInterface.h"
+#include "../../../qrgui/kernel/ids.h"
+
+/*
 #include "../../models/graphicalModelAssistApi.h"
 #include "../../models/logicalModelAssistApi.h"
 #include "../../mainwindow/errorReporter.h"
 #include "../../mainwindow/mainWindowInterpretersInterface.h"
+*/
 
 #include "robotCommunicationInterface.h"
 #include "sensorConstants.h"
@@ -20,18 +25,19 @@ namespace qReal {
 namespace interpreters {
 namespace robots {
 
-class Interpreter : public QObject
+class Interpreter : public QObject, public InterpreterInterface
 {
 	Q_OBJECT
 
 public:
-	Interpreter(models::GraphicalModelAssistApi const &graphicalModelApi
-			, models::LogicalModelAssistApi const &logicalModelApi
-			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterface
-			, RobotCommunicationInterface * const robotCommunicationInterface
-			, robotModelType::robotModelTypeEnum modelType
-			);
-	~Interpreter();
+//	Interpreter(models::GraphicalModelAssistApi const &graphicalModelApi
+//			, models::LogicalModelAssistApi const &logicalModelApi
+//			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterface
+//			, RobotCommunicationInterface * const robotCommunicationInterface
+//			, robotModelType::robotModelTypeEnum modelType
+//			);
+	Interpreter();
+	virtual ~Interpreter();
 
 	details::RobotModel *robotModel();
 	void setRobotModel(details::RobotModel * const robotModel);

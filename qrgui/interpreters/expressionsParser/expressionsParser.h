@@ -3,8 +3,8 @@
 #include <QtCore/QMap>
 
 #include "../visualDebugger/number.h"
-#include "../mainwindow/errorReporter.h"
-#include "../mainwindow/propertyEditorProxyModel.h" // TODO: ?!
+#include "../../mainwindow/errorReporter.h"
+#include "../../mainwindow/propertyEditorProxyModel.h" // TODO: ?!
 
 namespace qReal {
 

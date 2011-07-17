@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../expressionsParser/expressionsParser.h"
+#include "../../../../qrgui/interpreters/expressionsParser/expressionsParser.h"
 
 namespace qReal {
 
