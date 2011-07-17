@@ -4,6 +4,8 @@
 
 #include "metaCompiler.h"
 
+using namespace qrmc;
+
 void myMessageOutput(QtMsgType type, const char *msg)
  {
 	switch (type) {
@@ -29,15 +31,15 @@ int main(int argc, char *argv[])
 
 //	qDebug() << "Running " + args.join(" ");
 
-//	if (args.count() != 2) {
-//		qDebug() << "Usage: qrmc PATH_TO_WORKING_COPY";
-//		return 1;
-//	}
+	if (argc != 2) {
+		qDebug() << "Usage: qrmc PATH_TO_WORKING_COPY";
+		return 1;
+	}
 
-//	QString workingCopyDir = args[1];
-	QString workingCopyDir = "../qrgui/save";
+	QString workingCopyDir = argv[1];
+//	QString workingCopyDir = "../qrgui/save";
 
-	MetaCompiler metaCompiler(workingCopyDir);
+	MetaCompiler metaCompiler(qApp->applicationDirPath(), workingCopyDir);
 	if (!metaCompiler.compile()) {
 		qDebug() << "compilation failed";
 		return 1;

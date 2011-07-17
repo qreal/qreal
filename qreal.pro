@@ -19,5 +19,6 @@ TEMPLATE	= subdirs
 SUBDIRS		= qrmc qrxc qrgui qrxml qrrepo
 
 qrmc.depends = qrrepo
+qrmc.file = qrmc\\qrmc-lib.pro
 qrgui.depends = qrxc qrxml qrrepo
 qrxml.depends = qrxc
