@@ -963,13 +963,13 @@
   <customwidget>
    <class>qReal::gui::PaletteToolbox</class>
    <extends>QToolBox</extends>
-   <header>paletteToolbox.h</header>
+   <header>../mainwindow/paletteToolbox.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>ErrorListWidget</class>
    <extends>QListWidget</extends>
-   <header>errorListWidget.h</header>
+   <header>../mainwindow/errorListWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -4,11 +4,6 @@ macx {
 	CONFIG -= app_bundle
 }
 
-INCLUDEPATH	+=	../qrmc\
-			../qrmc/plugins\
-			mainwindow \
-			dialogs/shapeEdit
-
 RESOURCES	=	qrgui.qrc
 SOURCES		=	main.cpp
 

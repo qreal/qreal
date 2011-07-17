@@ -3,7 +3,7 @@
 #include <QtGui>
 #include <QWidget>
 #include "../../qrrepo/repoApi.h"
-#include "mainWindow.h"
+#include "../mainwindow/mainWindow.h"
 
 namespace Ui {
 	class RefWindow;

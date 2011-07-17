@@ -49,7 +49,7 @@
 
 #include "../interpreters/robots/interpreter.h"
 
-#include "metaCompiler.h"
+#include "../../qrmc/metaCompiler.h"
 
 using namespace qReal;
 using namespace interpreters::robots;

@@ -5,7 +5,7 @@
 #include "../expressionsParser/expressionsParser.h"
 #include "number.h"
 #include "../mainwindow/errorReporter.h"
-#include "propertyEditorProxyModel.h"
+#include "../mainwindow/propertyEditorProxyModel.h"  // TODO: ??!
 
 namespace qReal {
 class BlockParser : public ExpressionsParser

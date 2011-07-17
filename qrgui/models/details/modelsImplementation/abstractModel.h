@@ -5,8 +5,8 @@
 #include <QModelIndexList>
 
 #include "../modelsAssistApi.h"
-#include "../../../qrrepo/repoApi.h"
-#include "../../pluginManager/editorManager.h"
+#include "../../../../qrrepo/repoApi.h"
+#include "../../../pluginManager/editorManager.h"
 #include "abstractModelItem.h"
 
 namespace qReal {

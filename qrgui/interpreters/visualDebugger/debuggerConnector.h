@@ -3,7 +3,7 @@
 #include <QString>
 #include <QThread>
 #include <QProcess>
-#include <../../kernel/settingsManager.h>
+#include "../../kernel/settingsManager.h"
 
 namespace qReal {
 	class DebuggerConnector : public QObject

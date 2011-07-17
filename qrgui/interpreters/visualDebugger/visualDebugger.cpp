@@ -4,7 +4,7 @@
 #include <QTimer>
 #include <QFile>
 
-#include "propertyEditorProxyModel.h"
+#include "../mainwindow/propertyEditorProxyModel.h"
 #include "../models/models.h"
 
 #include "../view/editorView.h"

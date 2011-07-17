@@ -6,6 +6,7 @@
 
 #include "../../qrrepo/repoControlInterface.h"
 
+#include "interpreterInterface.h"
 #include "customToolInterface.h"
 
 namespace qReal {
@@ -14,7 +15,14 @@ class ToolPluginInterface
 {
 public:
 	virtual void initPlugin(qrRepo::RepoControlInterface *repo) = 0;
-	virtual QList<CustomToolInterface *> toolInterfaces() = 0;
+
+	virtual QList<CustomToolInterface *> toolInterfaces() {
+		return QList<CustomToolInterface *>();
+	}
+
+	virtual QList<InterpreterInterface *> interpreterInterfaces() {
+		return QList<InterpreterInterface *>();
+	}
 };
 
 }
