@@ -30,14 +30,16 @@ public:
 
 	void setId(qReal::Id &id);
 
+	void initEmbeddedControls();
+
 	virtual void updateData();
 
 	virtual qReal::Id id() const;
 	virtual qReal::Id logicalId() const;
 	virtual QString name() const;
 
-	virtual void connectToPort() {};//for edge
-	virtual void checkConnectionsToPort() {};//for node
+	virtual void connectToPort() {}//for edge
+	virtual void checkConnectionsToPort() {}//for node
 	virtual QList<ContextMenuAction*> contextMenuActions();
 
 	virtual bool initPossibleEdges() = 0;
@@ -45,23 +47,28 @@ public:
 	// for inline editing we should be able to change properties value. right now via graphical
 	// representation. also labels could store indices and get data themselves
 	virtual void setLogicalProperty(QString const &roleName, QString const &value);
+	QString logicalProperty(QString const &roleName) const;
 
 	virtual void setColorRect(bool bl) = 0;
 
 	void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
+public slots:
+	void singleSelectionState(const bool singleSelected);
+	void selectionState(const bool selected);
+
+signals:
+	void switchFolding(bool);
+
 protected:
-	qReal::Id mId;
 
 	bool mMoving;
-
+	qReal::Id mId;
+	ElementImpl* mElementImpl;
 	QList<ElementTitle*> mTitles;
 
-	ElementImpl* mElementImpl;
-
-	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
+	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
 
-	QString logicalProperty(QString const &roleName) const;
 	void initTitlesBy(QRectF const& contents);
 };

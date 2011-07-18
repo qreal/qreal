@@ -15,7 +15,7 @@
 
 #include <QtCore/QDebug>
 
-#include <../../generators/editorGenerator/editorGenerator.h>
+#include <../generators/editorGenerator/editorGenerator.h>
 
 #include <QtCore/QPluginLoader>
 
@@ -25,11 +25,11 @@
 #include "../interpreters/robots/details/robotImplementations/abstractRobotModelImplementation.h"
 #include "../interpreters/robots/details/robotParts/robotModel.h"
 #include "../pluginInterface/editorInterface.h"
-#include "preferencesDialog.h"
-#include "shapeEdit/shapeEdit.h"
+#include "../../qrgui/dialogs/preferencesDialog.h"
+#include "../dialogs/shapeEdit/shapeEdit.h"
 #include "openShapeEditorButton.h"
 #include "propertyEditorProxyModel.h"
-#include "gesturesShow/gesturesWidget.h"
+#include "../dialogs/gesturesShow/gesturesWidget.h"
 
 #include "../models/models.h"
 #include "../view/editorView.h"
@@ -39,7 +39,7 @@
 #include "../editorManager/listenerManager.h"
 #include "../generators/editorGenerator/editorGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
-#include "../../kernel/settingsManager.h"
+#include "../kernel/settingsManager.h"
 
 #include "../interpreters/robots/interpreter.h"
 
@@ -401,37 +401,44 @@ void MainWindow::activateSubdiagram(QModelIndex const &idx) {
 
 void MainWindow::sceneSelectionChanged()
 {
-	if (!getCurrentTab())
-		return;
-	QList<QGraphicsItem*> graphicsItems = getCurrentTab()->scene()->selectedItems();
-	int length = graphicsItems.size();
-	if (length == 1) {
-		QGraphicsItem *item = graphicsItems[0];
-		if (Element *elem = dynamic_cast<Element *>(item)) {
-			setIndexesOfPropertyEditor(elem->id());
-			QModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
-			if (index.isValid()) {
-				mUi->graphicalModelExplorer->setCurrentIndex(index);
-			}
-		} else {
-			mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());
-			mPropertyModel.clearModelIndexes();
+	if (!getCurrentTab()) {return;}
 
-			foreach(QGraphicsItem* item, graphicsItems) {
-				EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
-				if (edge) {
-					length--;
-					graphicsItems.removeOne(edge);
-				}
+	QList<Element*> elements = QList<Element*>();
+	QList<Element*> selected = QList<Element*>();
+	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
+
+	foreach(QGraphicsItem* item, items) {
+		Element* element = dynamic_cast<Element*>(item);
+		if (element) {
+			elements.append(element);
+			if (element->isSelected()) {
+				selected.append(element);
+				element->selectionState(true);
+			} else {
+				element->selectionState(false);
 			}
-			//TODO: remove it? length < 2
-			if (length > 1) {
-				foreach(QGraphicsItem* item, graphicsItems) {
-					NodeElement* node = dynamic_cast<NodeElement*>(item);
-					if (node)
-						node->hideEmbeddedLinkers();
-				}
-			}
+		}
+	}
+
+	if (selected.isEmpty()) {
+		mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());
+		mPropertyModel.clearModelIndexes();
+		foreach(Element* notSelected, elements) {
+			notSelected->singleSelectionState(false);
+		}
+	} else if (selected.length() > 1) {
+		foreach(Element* notSingleSelected, selected) {
+			notSingleSelected->singleSelectionState(false);
+		}
+	} else {
+		Element* singleSelected = selected.at(0);
+		singleSelected->singleSelectionState(true);
+
+		setIndexesOfPropertyEditor(singleSelected->id());
+
+		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(singleSelected->id());
+		if (index.isValid()) {
+			mUi->graphicalModelExplorer->setCurrentIndex(index);
 		}
 	}
 }

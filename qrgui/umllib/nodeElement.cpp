@@ -30,8 +30,9 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mElementImpl->init(mContents, mPointPorts, mLinePorts, factory, titles, mRenderer, mPortRenderer);
 	foreach (ElementTitleInterface *titleIface, titles){
 		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
-		if (!title)
+		if (!title) {
 			continue;
+		}
 		title->init(mContents);
 		title->setParentItem(this);
 		mTitles.append(title);
@@ -290,35 +291,36 @@ void NodeElement::delUnusedLines()
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (event->button() == Qt::RightButton)
-	{
+	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
 	}
 
-	if (mEmbeddedLinkers.isEmpty())
+	if (mEmbeddedLinkers.isEmpty()) {
 		initEmbeddedLinkers();
+	}
 	moveEmbeddedLinkers();
-	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
+	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
 		embeddedLinker->setCovered(true);
+	}
 
 	if (isSelected()) {
-		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()) && mElementImpl->isResizeable())
+		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = TopLeft;
-		else if (QRectF(mContents.topRight(), QSizeF(-4, 4)).contains(event->pos()) && mElementImpl->isResizeable())
+		} else if (QRectF(mContents.topRight(), QSizeF(-4, 4)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = TopRight;
-		else if (QRectF(mContents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()) && mElementImpl->isResizeable())
+		} else if (QRectF(mContents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = BottomRight;
-		else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()) && mElementImpl->isResizeable())
+		} else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = BottomLeft;
-		else if (QRectF(mContents.topLeft(), QSizeF(20, 20)).contains(event->pos())
-				 && mElementImpl->isContainer())
+		} else if (QRectF(mContents.topLeft(), QSizeF(20, 20)).contains(event->pos()) && mElementImpl->isContainer()) {
 			changeFoldState();
-		else
+		} else {
 			Element::mousePressEvent(event);
-	}
-	else
+		}
+	} else {
 		Element::mousePressEvent(event);
+	}
 
 	mLeftPressed = true;
 	setZValue(1);
@@ -326,8 +328,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (event->button() == Qt::RightButton)
-	{
+	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
 	}
@@ -408,11 +409,13 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	storeGeometry();
 
 	moveEmbeddedLinkers();
-	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
+	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
 		embeddedLinker->setCovered(true);
+	}
 
-	if (mDragState == None)
+	if (mDragState == None) {
 		Element::mouseReleaseEvent(event);
+	}
 
 	if (!isPort() && (flags() & ItemIsMovable)) {
 		QPointF newParentInnerPoint = event->scenePos();
@@ -472,8 +475,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			// delete from parents list ones that are selected right now
 			QList<QGraphicsItem *> realNewParents;
 			foreach (QGraphicsItem * item, parentsList){
-				if (!selected.contains(item))
+				if (!selected.contains(item)) {
 					realNewParents.append(item);
+				}
 			}
 
 			NodeElement *newParent = NULL;
@@ -483,8 +487,15 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				newParent = dynamic_cast<NodeElement *>(realNewParents.at(i));
 				i++;
 			}
-
-			if (newParent && !selected.contains(newParent)) {
+			// проверка, можно ли добавлять наш элемент в найденного родителя
+			bool allowed = false;
+			if (newParent) {
+				foreach (qReal::Id type, mGraphicalAssistApi->editorManager().getContainedTypes(newParent->id().type())){
+					if (id().element() ==  type.editor())
+						allowed = true;
+				}
+			}
+			if (newParent && !selected.contains(newParent) && allowed) {
 				mGraphicalAssistApi->changeParent(id(), newParent->id(),
 												  mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
 
@@ -858,7 +869,7 @@ qreal NodeElement::getPortId(const QPointF &location) const
 
 	for (int i = 0; i < mLinePorts.size(); i++) {
 		QPainterPathStroker ps;
-                ps.setWidth(kvadratik - 5);
+				ps.setWidth(kvadratik - 5);
 
 		QPainterPath path;
 		path.moveTo(newTransform(mLinePorts[i]).p1());

@@ -1,5 +1,5 @@
 #include "../../kernel/settingsManager.h"
-#include "preferencesPages/compilerPage.h"
+#include "compilerPage.h"
 #include "ui_compilerPage.h"
 
 PreferencesCompilerPage::PreferencesCompilerPage(QWidget *parent) :
