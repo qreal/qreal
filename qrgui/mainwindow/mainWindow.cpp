@@ -245,6 +245,9 @@ void MainWindow::connectActions()
 	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(run()));
 	connect(mUi->actionStop_Running, SIGNAL(triggered()), this, SLOT(stop()));
 	connect(mUi->actionStop_Robot, SIGNAL(triggered()), this, SLOT(stopRobot()));
+
+	connect(mUi->actionConnect_To_Robot, SIGNAL(triggered()), this, SLOT(connectToRobot()));
+
 	connect(mUi->actionRobot_Settings, SIGNAL(triggered()), this, SLOT(showRobotSettingsDialog()));
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
@@ -1284,6 +1287,11 @@ void MainWindow::run()
 void MainWindow::stop()
 {
 	mRobotInterpreter->stop();
+}
+
+void MainWindow::connectToRobot()
+{
+	(*(mRobotInterpreter->robotModel())).init();
 }
 
 void MainWindow::stopRobot()

@@ -143,6 +143,9 @@ private slots:
 	void run();
 	void stop();
 	void stopRobot();
+
+	void connectToRobot();
+
 	void showRobotSettingsDialog();
 
 	void on_actionNew_Diagram_triggered();

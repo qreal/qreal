@@ -8,8 +8,8 @@ using namespace qReal;
 Element::Element()
 	: mMoving(false)
 	, mElementImpl(NULL)
-	, mGraphicalAssistApi(NULL)
 	, mLogicalAssistApi(NULL)
+	, mGraphicalAssistApi(NULL)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
 		ItemClipsToShape | ItemSendsGeometryChanges);
