@@ -38,9 +38,10 @@
 #include "../parsers/xml/xmlParser.h"
 #include "../editorManager/listenerManager.h"
 #include "../generators/editorGenerator/editorGenerator.h"
-#include "../interpreters/visualDebugger/visualDebugger.h"
 
+#include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../interpreters/robots/interpreter.h"
+
 
 using namespace qReal;
 using namespace interpreters::robots;
@@ -112,11 +113,8 @@ MainWindow::MainWindow()
 	mUi->errorDock->setWidget(mUi->errorListWidget);
 	mUi->errorListWidget->init(this);
 	mUi->errorDock->setVisible(false);
+
 	mUi->propertyEditor->setModel(&mPropertyModel);
-	mUi->propertyEditor->verticalHeader()->hide();
-	mUi->propertyEditor->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
-	mUi->propertyEditor->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
-	mUi->propertyEditor->setItemDelegate(&mDelegate);
 
 	connect(mUi->graphicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(graphicalModelExplorerClicked(QModelIndex)));
 	connect(mUi->logicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(logicalModelExplorerClicked(QModelIndex)));
@@ -135,7 +133,6 @@ MainWindow::MainWindow()
 	//settings.beginGroup("MainWindow");
 
 	if (!SettingsManager::instance()->value("maximized", true).toBool()) {
-
 		showNormal();
 		resize(SettingsManager::instance()->value("size", QSize(1024, 800)).toSize());
 		move(SettingsManager::instance()->value("pos", QPoint(0, 0)).toPoint());
@@ -165,7 +162,7 @@ MainWindow::MainWindow()
 	mGesturesWidget = new GesturesWidget();
 	mVisualDebugger = new VisualDebugger(mModels->graphicalModelAssistApi());
 
-	mDelegate.init(this, &mModels->logicalModelAssistApi());
+//	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::instance()->value("warningWindow", true).toBool());
@@ -405,11 +402,11 @@ void MainWindow::sceneSelectionChanged()
 	if (length == 1) {
 		QGraphicsItem *item = graphicsItems[0];
 		if (Element *elem = dynamic_cast<Element *>(item)) {
-			setIndexesOfPropertyEditor(elem->id());
 			QModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
 			if (index.isValid()) {
 				mUi->graphicalModelExplorer->setCurrentIndex(index);
 			}
+			setIndexesOfPropertyEditor(elem->id());
 		} else {
 			mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());
 			mPropertyModel.clearModelIndexes();

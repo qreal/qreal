@@ -157,9 +157,10 @@ QStringList PropertyEditorModel::enumValues(const QModelIndex &index) const
 	return mEditorManager.getEnumValues(id, mFields[index.row()].fieldName);
 }
 
-void PropertyEditorModel::rereadData()
+void PropertyEditorModel::rereadData(QModelIndex const &topLeftIndex, QModelIndex const &bottomRightIndex)
 {
-	reset();
+	emit dataChanged(topLeftIndex, bottomRightIndex);
+//	reset();
 }
 
 void PropertyEditorModel::setSourceModels(QAbstractItemModel * const sourceLogicalModel
@@ -172,11 +173,11 @@ void PropertyEditorModel::setSourceModels(QAbstractItemModel * const sourceLogic
 
 	if (mTargetLogicalModel)
 		connect(mTargetLogicalModel, SIGNAL(dataChanged(QModelIndex const &, QModelIndex const &)),
-				this, SLOT(rereadData()));
+				this, SLOT(rereadData(QModelIndex const &, QModelIndex const &)));
 
 	if (mTargetGraphicalModel)
 		connect(mTargetGraphicalModel, SIGNAL(dataChanged(QModelIndex const &, QModelIndex const &)),
-				this, SLOT(rereadData()));
+				this, SLOT(rereadData(QModelIndex const &, QModelIndex const &)));
 
 	reset();
 }

@@ -1,7 +1,6 @@
 HEADERS += mainwindow/mainWindow.h \
 	mainwindow/paletteToolbox.h \
 	mainwindow/propertyEditorProxyModel.h \
-	mainwindow/propertyEditorDelegate.h \
 	mainwindow/errorReporter.h \
 	mainwindow/openShapeEditorButton.h \
 	mainwindow/shapeEdit/shapeEdit.h \
@@ -42,7 +41,6 @@ HEADERS += mainwindow/mainWindow.h \
 SOURCES += mainwindow/mainWindow.cpp \
 	mainwindow/paletteToolbox.cpp \
 	mainwindow/propertyEditorProxyModel.cpp \
-	mainwindow/propertyEditorDelegate.cpp \
 	mainwindow/errorReporter.cpp \
 	mainwindow/openShapeEditorButton.cpp \
 	mainwindow/shapeEdit/shapeEdit.cpp \
@@ -74,7 +72,7 @@ SOURCES += mainwindow/mainWindow.cpp \
 	mainwindow/preferencesPages/debuggerPage.cpp \
 	mainwindow/preferencesPages/editorPage.cpp \
 	mainwindow/preferencesPages/miscellaniousPage.cpp \
-	mainwindow/preferencesPages/robotSettingsPage.cpp \
+	mainwindow/preferencesPages/robotSettingsPage.cpp
 
 
 FORMS += mainwindow/mainWindow.ui \

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>738</width>
-    <height>523</height>
+    <height>544</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>738</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -198,8 +198,8 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>91</width>
-     <height>113</height>
+     <width>93</width>
+     <height>118</height>
     </size>
    </property>
    <property name="maximumSize">
@@ -251,6 +251,18 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="propertyDock">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>79</width>
+     <height>100</height>
+    </size>
+   </property>
    <property name="windowTitle">
     <string>Property Editor</string>
    </property>
@@ -266,18 +278,12 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QTableView" name="propertyEditor">
-       <property name="maximumSize">
-        <size>
-         <width>16777214</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="alternatingRowColors">
-        <bool>true</bool>
-       </property>
-       <property name="showGrid">
-        <bool>false</bool>
+      <widget class="PropertyEditorView" name="propertyEditor" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
       </widget>
      </item>
@@ -744,6 +750,12 @@
    <class>ErrorListWidget</class>
    <extends>QListWidget</extends>
    <header>errorListWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PropertyEditorView</class>
+   <extends>QWidget</extends>
+   <header>view/propertyEditorView.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

@@ -5,7 +5,8 @@ HEADERS += view/editorView.h \
 	view/gestures/mouseMovementManager.h \
 	view/gestures/levenshteinDistance.h \
 	view/gestures/keyManager.h \
-	view/gestures/keyManagerInterface.h
+	view/gestures/keyManagerInterface.h \
+    view/propertyEditorView.h
 
 SOURCES += view/editorView.cpp \
 	view/editorViewScene.cpp \
@@ -13,4 +14,5 @@ SOURCES += view/editorView.cpp \
 	view/gestures/pathCorrector.cpp \
 	view/gestures/mouseMovementManager.cpp \
 	view/gestures/levenshteinDistance.cpp \
-	view/gestures/keyManager.cpp
+	view/gestures/keyManager.cpp \
+    view/propertyEditorView.cpp

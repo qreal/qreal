@@ -8,11 +8,12 @@
 
 #include "../editorManager/editorManager.h"
 #include "propertyEditorProxyModel.h"
-#include "propertyEditorDelegate.h"
 #include "gesturesPainterInterface.h"
 #include "gesturesShow/gesturesWidget.h"
 #include "mainWindowInterpretersInterface.h"
 #include "../kernel/settingsManager.h"
+
+#include "../models/logicalModelAssistApi.h"
 
 #include "../interpreters/robots/bluetoothRobotCommunication.h"
 #include "../interpreters/robots/details/d2RobotModel/d2RobotModel.h"
@@ -157,7 +158,7 @@ private:
 	EditorManager mEditorManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
-	PropertyEditorDelegate mDelegate;
+//	PropertyEditorDelegate mDelegate;
 	GesturesWidget *mGesturesWidget;
 
 	QVector<bool> mSaveListChecked;
