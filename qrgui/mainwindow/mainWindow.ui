@@ -353,19 +353,6 @@
    <widget class="QWidget" name="graphicalModelDockWidgetContents">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
       <widget class="QTreeView" name="graphicalModelExplorer">
        <property name="contextMenuPolicy">
         <enum>Qt::ActionsContextMenu</enum>
@@ -429,6 +416,7 @@
    <addaction name="actionRun"/>
    <addaction name="actionStop_Running"/>
    <addaction name="actionStop_Robot"/>
+   <addaction name="actionConnect_To_Robot"/>
    <addaction name="separator"/>
    <addaction name="actionRobot_Settings"/>
    <addaction name="separator"/>
@@ -918,6 +906,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+N</string>
+   </property>
+  </action>
+  <action name="actionConnect_To_Robot">
+   <property name="text">
+    <string>Connect To Robot</string>
    </property>
   </action>
  </widget>

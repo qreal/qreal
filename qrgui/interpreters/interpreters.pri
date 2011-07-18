@@ -17,4 +17,3 @@ HEADERS += \
 
 SOURCES += \
 	interpreters/expressionsParser/expressionsParser.cpp \
-	

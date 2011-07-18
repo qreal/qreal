@@ -16,7 +16,7 @@
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{842917d6-f252-4f23-b792-a6b48fb14680}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{e7772be3-738d-4e67-9a9e-745005a3c6e0}"/>
     </links>
     <QString key="name" value="PlayTone"/>
     <outgoingConnections type="qReal::IdList"/>

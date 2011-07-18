@@ -1,3 +1,5 @@
+QT += xml
+
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = ../../../qrgui/plugins/
@@ -41,6 +43,7 @@ HEADERS += \
 	details/blocks/waitForColorIntensityBlock.h \
 	details/blocks/functionBlock.h \
 	details/blocks/ifBlock.h \
+	details/blocks/waitForEncoderBlock.h \
 	details/robotParts/robotModel.h \
 	details/robotParts/brick.h \
 	details/robotParts/motor.h \
@@ -48,6 +51,7 @@ HEADERS += \
 	details/robotParts/touchSensor.h \
 	details/robotParts/sonarSensor.h \
 	details/robotParts/colorSensor.h \
+	details/robotParts/encoderSensor.h \
 	details/robotImplementations/sensorImplementations/abstractSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/bluetoothSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/bluetoothTouchSensorImplementation.h \
@@ -112,10 +116,12 @@ SOURCES += \
 	details/blocks/waitForColorIntensityBlock.cpp \
 	details/blocks/functionBlock.cpp \
 	details/blocks/ifBlock.cpp \
+	details/blocks/waitForEncoderBlock.cpp \
 	details/robotParts/robotModel.cpp \
 	details/robotParts/touchSensor.cpp \
 	details/robotParts/sonarSensor.cpp \
 	details/robotParts/colorSensor.cpp \
+	details/robotParts/encoderSensor.cpp \
 	details/robotParts/sensor.cpp \
 	details/robotParts/motor.cpp \
 	details/robotParts/brick.cpp \
