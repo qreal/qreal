@@ -16,11 +16,11 @@ contains(QT_VERSION, ^4\\.[0-5]\\..*){
 }
 
 TEMPLATE = subdirs
-SUBDIRS = qrmc qrxc qrgui qrrepo plugins 
+SUBDIRS = qrmc qrxc qrgui qrrepo plugins qrkernel
 
 qrmc.depends = qrrepo
 qrmc.file = qrmc\\qrmc-lib.pro
-qrgui.depends = qrxc qrxml qrrepo
+qrgui.depends = qrxc qrxml qrrepo qrkernel
 qrxml.depends = qrxc
-plugins.depends = qrxc qrrepo
+plugins.depends = qrxc qrrepo qrkernel
 
