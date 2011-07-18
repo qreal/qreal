@@ -9,7 +9,7 @@
 #include "../editorManager/editorManager.h"
 #include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
-#include "gesturesShow/gesturesWidget.h"
+#include "../dialogs/gesturesShow/gesturesWidget.h"
 #include "mainWindowInterpretersInterface.h"
 #include "../kernel/settingsManager.h"
 

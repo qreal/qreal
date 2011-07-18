@@ -30,14 +30,14 @@ PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * c
 	connect(mEditorPage, SIGNAL(gridChanged()), this, SIGNAL(gridChanged()));
 	connect(mMiscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
 
-	int currentTab = SettingsManager::instance()->value("currentPreferencesTab", 0).toInt();
+	int currentTab = SettingsManager::value("currentPreferencesTab", 0).toInt();
 	ui->listWidget->setCurrentRow(currentTab);
 	chooseTab(ui->listWidget->currentIndex());
 }
 
 PreferencesDialog::~PreferencesDialog()
 {
-	SettingsManager::instance()->setValue("currentPreferencesTab", ui->listWidget->currentRow());
+	SettingsManager::setValue("currentPreferencesTab", ui->listWidget->currentRow());
 
 
 	delete ui;

@@ -34,7 +34,9 @@ protected:
 		emptyProcess,
 		emptyCondition,
 		usingReservedVariable,
-		noExpression
+		noExpression,
+		incorrectVariableDeclaration,
+		unexpectedSymbolAfterTheEndOfExpression
 	};
 
 protected:

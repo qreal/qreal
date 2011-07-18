@@ -1,5 +1,5 @@
 #include "../../kernel/settingsManager.h"
-#include "preferencesPages/debuggerPage.h"
+#include "debuggerPage.h"
 #include "ui_debuggerPage.h"
 
 PreferencesDebuggerPage::PreferencesDebuggerPage(QWidget *parent) :
@@ -8,12 +8,12 @@ PreferencesDebuggerPage::PreferencesDebuggerPage(QWidget *parent) :
 {
 	mUi->setupUi(this);
 
-	mUi->timeoutLineEdit->setText(SettingsManager::instance()->value("debuggerTimeout", 750).toString());
+	mUi->timeoutLineEdit->setText(SettingsManager::value("debuggerTimeout", 750).toString());
 	mUi->colorComboBox->addItems(QColor::colorNames());
-	QString curColor = SettingsManager::instance()->value("debugColor", "red").toString();
+	QString curColor = SettingsManager::value("debugColor", "red").toString();
 	int curColorIndex = mUi->colorComboBox->findText(curColor);
 	mUi->colorComboBox->setCurrentIndex(curColorIndex);
-	mUi->colorComboBox->setCurrentIndex(SettingsManager::instance()->value("debugColor", mUi->colorComboBox->currentIndex()).toInt());
+	mUi->colorComboBox->setCurrentIndex(SettingsManager::value("debugColor", mUi->colorComboBox->currentIndex()).toInt());
 }
 
 PreferencesDebuggerPage::~PreferencesDebuggerPage()
@@ -34,6 +34,6 @@ void PreferencesDebuggerPage::changeEvent(QEvent *e)
 
 void PreferencesDebuggerPage::save()
 {
-	SettingsManager::instance()->setValue("debuggerTimeout", mUi->timeoutLineEdit->text());
-	SettingsManager::instance()->setValue("debugColor", mUi->colorComboBox->currentIndex());
+	SettingsManager::setValue("debuggerTimeout", mUi->timeoutLineEdit->text());
+	SettingsManager::setValue("debugColor", mUi->colorComboBox->currentIndex());
 }

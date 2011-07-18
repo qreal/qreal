@@ -4,7 +4,7 @@
 #include <QtCore/QMetaType>
 #include <time.h>
 
-#include "../../thirdparty/qextserialport/src/qextserialport.h"
+#include "../thirdparty/qextserialport/src/qextserialport.h"
 
 using namespace qReal::interpreters::robots::details;
 
@@ -43,7 +43,7 @@ void BluetoothRobotCommunicationThread::connect(QString const &portName)
 		SleeperThread::msleep(1000);  // Give port some time to close
 	}
 
-	mPort = new QextSerialPort(portName);
+	mPort = new QextSerialPort(portName, QextSerialPort::Polling);
 	mPort->setBaudRate(BAUD9600);
 	mPort->setFlowControl(FLOW_OFF);
 	mPort->setParity(PAR_NONE);
@@ -62,6 +62,9 @@ void BluetoothRobotCommunicationThread::connect(QString const &portName)
 	command[3] = 0x88;
 
 	send(command);
+
+//	SleeperThread::msleep(1000);
+
 	QByteArray const response = receive(9);
 
 	emit connected(response != QByteArray());

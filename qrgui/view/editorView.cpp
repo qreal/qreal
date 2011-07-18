@@ -27,6 +27,8 @@ EditorView::EditorView(QWidget *parent)
 	setEnabled(false);
 
 	setMouseTracking(true);
+
+	setAlignment(Qt::AlignLeft | Qt::AlignTop); //чтобы фокус был по левому верхнему углу
 }
 
 EditorView::~EditorView()
@@ -53,9 +55,9 @@ void EditorView::zoomIn()
 {
 	if (mWheelPressed)
 		return;
-	double zoomFactor = static_cast<double>(SettingsManager::instance()->value("ZoomFactor", 2).toInt()) / 10 + 1;
+	double zoomFactor = static_cast<double>(SettingsManager::value("ZoomFactor", 2).toInt()) / 10 + 1;
 	scale(zoomFactor, zoomFactor);
-	if (SettingsManager::instance()->value("ShowGrid", true).toBool()) {
+	if (SettingsManager::value("ShowGrid", true).toBool()) {
 		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
 	}
 	checkGrid();
@@ -65,9 +67,9 @@ void EditorView::zoomOut()
 {
 	if (mWheelPressed)
 		return;
-	double zoomFactor = 1 / (static_cast<double>(SettingsManager::instance()->value("ZoomFactor", 2).toInt()) / 10 + 1);
+	double zoomFactor = 1 / (static_cast<double>(SettingsManager::value("ZoomFactor", 2).toInt()) / 10 + 1);
 	scale(zoomFactor, zoomFactor);
-	if (SettingsManager::instance()->value("ShowGrid", true).toBool()) {
+	if (SettingsManager::value("ShowGrid", true).toBool()) {
 		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
 	}
 	checkGrid();
@@ -75,7 +77,7 @@ void EditorView::zoomOut()
 
 void EditorView::checkGrid()
 {
-	if (SettingsManager::instance()->value("ShowGrid", true).toBool()) {
+	if (SettingsManager::value("ShowGrid", true).toBool()) {
 		if(mScene->realIndexGrid() < 2 || mScene->realIndexGrid() > 380) {
 			mScene->setNeedDrawGrid(false);
 		}
