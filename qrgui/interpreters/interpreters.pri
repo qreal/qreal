@@ -43,6 +43,7 @@ HEADERS += \
 	interpreters/robots/details/blocks/waitForColorIntensityBlock.h \
 	interpreters/robots/details/blocks/functionBlock.h \
 	interpreters/robots/details/blocks/ifBlock.h \
+	interpreters/robots/details/blocks/waitForEncoderBlock.h \
 	interpreters/robots/details/robotParts/robotModel.h \
 	interpreters/robots/details/robotParts/brick.h \
 	interpreters/robots/details/robotParts/motor.h \
@@ -50,6 +51,7 @@ HEADERS += \
 	interpreters/robots/details/robotParts/touchSensor.h \
 	interpreters/robots/details/robotParts/sonarSensor.h \
 	interpreters/robots/details/robotParts/colorSensor.h \
+	interpreters/robots/details/robotParts/encoderSensor.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/abstractSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothTouchSensorImplementation.h \
@@ -114,10 +116,12 @@ SOURCES += \
 	interpreters/robots/details/blocks/waitForColorIntensityBlock.cpp \
 	interpreters/robots/details/blocks/functionBlock.cpp \
 	interpreters/robots/details/blocks/ifBlock.cpp \
+	interpreters/robots/details/blocks/waitForEncoderBlock.cpp \
 	interpreters/robots/details/robotParts/robotModel.cpp \
 	interpreters/robots/details/robotParts/touchSensor.cpp \
 	interpreters/robots/details/robotParts/sonarSensor.cpp \
 	interpreters/robots/details/robotParts/colorSensor.cpp \
+	interpreters/robots/details/robotParts/encoderSensor.cpp \
 	interpreters/robots/details/robotParts/sensor.cpp \
 	interpreters/robots/details/robotParts/motor.cpp \
 	interpreters/robots/details/robotParts/brick.cpp \
@@ -165,4 +169,3 @@ HEADERS += \
 
 SOURCES += \
 	interpreters/expressionsParser/expressionsParser.cpp \
-	

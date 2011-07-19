@@ -61,6 +61,8 @@ private slots:
 	void responseSlot3(int sensorValue);
 	void responseSlot4(int sensorValue);
 
+	void connectedSlot(bool success);
+
 private:
 	enum InterpreterState {
 		interpreting
@@ -79,6 +81,8 @@ private:
 	QTimer *mTimer;
 	details::d2Model::D2ModelWidget *mD2ModelWidget;
 	details::d2Model::D2RobotModel *mD2RobotModel;
+
+	bool mConnected;
 
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	Id const findStartingElement(Id const &diagram) const;

@@ -170,8 +170,9 @@ void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<No
 
 void NodeElement::storeGeometry()
 {
+	QRectF contents = mContents; //для того, чтобы оставалась правильная конфигурация
 	mGraphicalAssistApi->setPosition(id(), pos());
-	mGraphicalAssistApi->setConfiguration(id(), QPolygon(mContents.toAlignedRect()));
+	mGraphicalAssistApi->setConfiguration(id(), QPolygon(contents.toAlignedRect()));
 }
 
 void NodeElement::moveChildren(qreal dx, qreal dy)
