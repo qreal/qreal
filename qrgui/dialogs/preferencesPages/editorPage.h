@@ -1,5 +1,5 @@
 #pragma once
-
+#include <QFontDialog>
 #include "page.h"
 
 namespace Ui {
@@ -22,17 +22,22 @@ protected:
 
 signals:
 	void gridChanged();
+	void fontChanged();
 
 private slots:
 	void widthGridSliderMoved(int value);
 	void indexGridSliderMoved(int value);
+	void manualFontCheckBoxChecked(bool);
+	void fontSelectionButtonClicked();
+
 
 private:
 	Ui::PreferencesEditorPage *mUi;
-
+	bool fontWasChanged;
+	bool fontButtonWasPressed;
 	int mWidthGrid;
 	int mIndexGrid;
-
+	QFontDialog *fontDialog;
 	QAction * const mShowGridAction;
 	QAction * const mShowAlignmentAction;
 	QAction * const mActivateGridAction;
