@@ -78,6 +78,8 @@ public slots:
 	void showD2ModelWidget(bool isVisible = true);
 
 private slots:
+
+	void setSceneFont();
 	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);
 

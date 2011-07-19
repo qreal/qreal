@@ -452,7 +452,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (SettingsManager::value("SquareLine", true).toBool())
 		squarizeHandler(QPointF());
 
-	connectToPort();
+        connectToPort();
 
 	if (mBeginning)
 		mBeginning->setPortsVisible(false);
