@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "ifBlock.h"
 
 using namespace qReal;

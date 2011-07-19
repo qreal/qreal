@@ -104,6 +104,8 @@ namespace qReal {
 
 						virtual bool preGenerationCheck();
 						virtual bool nextElementsGeneration();
+
+						bool generateBranch(int branchNumber);
 				};
 
 				friend class ElementGeneratorFactory;
