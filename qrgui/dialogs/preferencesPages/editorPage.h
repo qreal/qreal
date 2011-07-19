@@ -33,11 +33,12 @@ private slots:
 
 private:
 	Ui::PreferencesEditorPage *mUi;
-	bool fontWasChanged;
-	bool fontButtonWasPressed;
+	bool mFontWasChanged;
+	bool mFontButtonWasPressed;
 	int mWidthGrid;
 	int mIndexGrid;
-	QFontDialog *fontDialog;
+
+	QFontDialog *mFontDialog;
 	QAction * const mShowGridAction;
 	QAction * const mShowAlignmentAction;
 	QAction * const mActivateGridAction;

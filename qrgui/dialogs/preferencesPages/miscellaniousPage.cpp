@@ -20,8 +20,6 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent) :
 
 	mLastIconsetPath = SettingsManager::value("pathToImages", QDir::currentPath() + "/images/iconset1").toString();
 	mUi->imagesPathEdit->setText(mLastIconsetPath);
-
-
 }
 
 PreferencesMiscellaniousPage::~PreferencesMiscellaniousPage()
