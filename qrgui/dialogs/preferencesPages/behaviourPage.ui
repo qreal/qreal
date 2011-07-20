@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>300</height>
+    <height>279</height>
    </rect>
   </property>
   <widget class="QFrame" name="frame_17">
@@ -58,7 +58,7 @@
      <x>10</x>
      <y>30</y>
      <width>401</width>
-     <height>41</height>
+     <height>61</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -86,6 +86,22 @@
      <string>Palette tab switching</string>
     </property>
    </widget>
+   <widget class="QCheckBox" name="arrangeLinksCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>201</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Arrange Links</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QLabel" name="label_41">
    <property name="geometry">
@@ -104,7 +120,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>110</y>
+     <y>120</y>
      <width>401</width>
      <height>81</height>
     </rect>
@@ -159,7 +175,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>90</y>
+     <y>100</y>
      <width>201</width>
      <height>16</height>
     </rect>

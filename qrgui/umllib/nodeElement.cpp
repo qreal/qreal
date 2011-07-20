@@ -103,6 +103,9 @@ void NodeElement::adjustLinks()
 }
 
 void NodeElement::arrangeLinks() {
+	if (!SettingsManager::value("arrangeLinks", true).toBool())
+		return;
+
 	QSet<NodeElement*> toArrange;
 	QSet<NodeElement*> arranged;
 	arrangeLinksRecursively(toArrange, arranged);
