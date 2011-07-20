@@ -53,18 +53,22 @@ HEADERS += \
 	interpreters/robots/details/robotParts/colorSensor.h \
 	interpreters/robots/details/robotParts/encoderSensor.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/abstractSensorImplementation.h \
+	interpreters/robots/details/robotImplementations/sensorImplementations/abstractEncoderImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothTouchSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothSonarSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothColorSensorImplementation.h \
+	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothEncoderImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/nullSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/nullTouchSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/nullSonarSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/nullColorSensorImplementation.h \
+	interpreters/robots/details/robotImplementations/sensorImplementations/nullEncoderImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/unrealSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/unrealTouchSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/unrealSonarSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/unrealColorSensorImplementation.h \
+	interpreters/robots/details/robotImplementations/sensorImplementations/unrealEncoderImplementation.h \
 	interpreters/robots/details/robotImplementations/motorImplementations/abstractMotorImplementation.h \
 	interpreters/robots/details/robotImplementations/motorImplementations/realMotorImplementation.h \
 	interpreters/robots/details/robotImplementations/motorImplementations/nullMotorImplementation.h \
@@ -126,18 +130,22 @@ SOURCES += \
 	interpreters/robots/details/robotParts/motor.cpp \
 	interpreters/robots/details/robotParts/brick.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/abstractSensorImplementation.cpp \
+	interpreters/robots/details/robotImplementations/sensorImplementations/abstractEncoderImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothSensorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothTouchSensorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothSonarSensorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothColorSensorImplementation.cpp \
+	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothEncoderImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/nullSensorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/nullTouchSensorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/nullSonarSensorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/nullColorSensorImplementation.cpp \
+	interpreters/robots/details/robotImplementations/sensorImplementations/nullEncoderImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/unrealSensorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/unrealTouchSensorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/unrealSonarSensorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/unrealColorSensorImplementation.cpp \
+	interpreters/robots/details/robotImplementations/sensorImplementations/unrealEncoderImplementation.cpp \
 	interpreters/robots/details/robotImplementations/motorImplementations/abstractMotorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/motorImplementations/realMotorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/motorImplementations/nullMotorImplementation.cpp \

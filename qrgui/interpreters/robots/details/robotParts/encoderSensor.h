@@ -1,6 +1,6 @@
 #pragma once
 #include <QtCore/QObject>
-#include "sensor.h"
+#include "../robotImplementations/sensorImplementations/abstractEncoderImplementation.h"
 #include "../../sensorConstants.h"
 #include "../robotCommandConstants.h"
 
@@ -10,13 +10,20 @@ namespace robots {
 namespace details {
 namespace robotParts {
 
-class EncoderSensor : public Sensor
+class EncoderSensor : public QObject
 {
 	Q_OBJECT
 public:
-	EncoderSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const &port);
-};
+	EncoderSensor(robotImplementations::sensorImplementations::AbstractEncoderImplementation *encoderImpl, outputPort::OutputPortEnum const &port);
+	virtual ~EncoderSensor();
+	virtual void read();
+	robotImplementations::sensorImplementations::AbstractEncoderImplementation *encoderImpl();
+	void setImplementation(robotImplementations::sensorImplementations::AbstractEncoderImplementation *encoderImpl);
 
+protected:
+	outputPort::OutputPortEnum mPort;
+	robotImplementations::sensorImplementations::AbstractEncoderImplementation *mEncoderImpl;  // Doesn't have ownership
+};
 }
 }
 }

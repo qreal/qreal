@@ -17,10 +17,8 @@ class WaitForEncoderBlock : public Block
 	Q_OBJECT
 
 public:
-	WaitForEncoderBlock(RobotModel const * const robotModel);
+	WaitForEncoderBlock(RobotModel *  const robotModel);
 	virtual void run();
-
-	virtual QList<SensorPortPair> usedSensors() const;
 
 private slots:
 	void responseSlot(int reading);
@@ -28,8 +26,8 @@ private slots:
 	void timerTimeout();
 
 private:
-	robotParts::EncoderSensor *mEncoderSensor;  // Doesn't have ownership
-	RobotModel const * const mRobotModel;
+	robotParts::EncoderSensor * mEncoderSensor;  // Doesn't have ownership
+	RobotModel * const mRobotModel;
 	QTimer mActiveWaitingTimer;
 
 	void stop();

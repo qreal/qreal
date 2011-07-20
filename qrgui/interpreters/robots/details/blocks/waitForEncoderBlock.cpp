@@ -6,7 +6,7 @@ using namespace qReal;
 using namespace interpreters::robots;
 using namespace details::blocks;
 
-WaitForEncoderBlock::WaitForEncoderBlock(details::RobotModel const * const robotModel)
+WaitForEncoderBlock::WaitForEncoderBlock(details::RobotModel * const robotModel)
 	: mEncoderSensor(NULL)
 	, mRobotModel(robotModel)
 {
@@ -19,17 +19,23 @@ WaitForEncoderBlock::WaitForEncoderBlock(details::RobotModel const * const robot
 
 void WaitForEncoderBlock::run()
 {
-	inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
-	mEncoderSensor = mRobotModel->encoderSensor(port);
-
+	QString const port = stringProperty("Port");
+	if (port == "A")
+		mEncoderSensor = &mRobotModel->encoderA();
+	else if (port == "B")
+		mEncoderSensor = &mRobotModel->encoderB();
+	else if (port == "C")
+		mEncoderSensor = &mRobotModel->encoderC();
+	else
+		mEncoderSensor = &(mRobotModel->encoderA());
 	if (!mEncoderSensor) {
 		mActiveWaitingTimer.stop();
 		error(tr("Encoder sensor is not configured on this port"));
 		return;
 	}
 
-	connect(mEncoderSensor->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot(int)));
-	connect(mEncoderSensor->sensorImpl(), SIGNAL(failure()), this, SLOT(failureSlot()));
+	connect(mEncoderSensor->encoderImpl(), SIGNAL(response(int)), this, SLOT(responseSlot(int)));
+	connect(mEncoderSensor->encoderImpl(), SIGNAL(failure()), this, SLOT(failureSlot()));
 
 	mEncoderSensor->read();
 	mActiveWaitingTimer.start();
@@ -43,8 +49,8 @@ void WaitForEncoderBlock::stop()
 
 void WaitForEncoderBlock::responseSlot(int reading)
 {
-	int const motorLimit = evaluate("MotorLimit").toInt();
-	if (reading >= motorLimit)
+	int const tachoLimit = evaluate("TachoLimit").toInt();
+	if (reading >= tachoLimit)
 		stop();
 }
 
@@ -57,10 +63,4 @@ void WaitForEncoderBlock::failureSlot()
 void WaitForEncoderBlock::timerTimeout()
 {
 	mEncoderSensor->read();
-}
-
-QList<Block::SensorPortPair> WaitForEncoderBlock::usedSensors() const
-{
-	inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
-	return QList<SensorPortPair>() << qMakePair(sensorType::encoder, static_cast<int>(port));
 }

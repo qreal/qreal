@@ -4,6 +4,7 @@
 #include "brickImplementations/abstractBrickImplementation.h"
 #include "motorImplementations/abstractMotorImplementation.h"
 #include "sensorImplementations/abstractSensorImplementation.h"
+#include "sensorImplementations/abstractEncoderImplementation.h"
 #include "../../sensorConstants.h"
 #include "../../robotCommunicationInterface.h"
 #include "../d2RobotModel/d2RobotModel.h"
@@ -38,6 +39,10 @@ public:
 	virtual motorImplementations::AbstractMotorImplementation &motorA() = 0;
 	virtual motorImplementations::AbstractMotorImplementation &motorB() = 0;
 	virtual motorImplementations::AbstractMotorImplementation &motorC() = 0;
+
+	virtual sensorImplementations::AbstractEncoderImplementation &encoderA() = 0;
+	virtual sensorImplementations::AbstractEncoderImplementation &encoderB() = 0;
+	virtual sensorImplementations::AbstractEncoderImplementation &encoderC() = 0;
 
 	virtual void configureSensor(sensorType::SensorTypeEnum const &sensorType
 			, inputPort::InputPortEnum const &port);
