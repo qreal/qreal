@@ -99,6 +99,9 @@ void Interpreter::setD2ModelWidgetActions(QAction *runAction, QAction *stopActio
 void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum implementationType, RobotCommunicationInterface * const robotCommunicationInterface)
 {
 	disconnect(&mRobotModel->robotImpl(), SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
+	mConnected = false;
+	if(implementationType != robotModelType::real)
+		mConnected = true;
 	robotImplementations::AbstractRobotModelImplementation *robotImpl =
 			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, robotCommunicationInterface, mD2RobotModel);
 	setRobotImplementation(robotImpl);

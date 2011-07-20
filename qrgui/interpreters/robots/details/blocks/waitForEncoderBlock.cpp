@@ -26,11 +26,9 @@ void WaitForEncoderBlock::run()
 		mEncoderSensor = &mRobotModel->encoderB();
 	else if (port == "C")
 		mEncoderSensor = &mRobotModel->encoderC();
-	else
-		mEncoderSensor = &(mRobotModel->encoderA());
 	if (!mEncoderSensor) {
 		mActiveWaitingTimer.stop();
-		error(tr("Encoder sensor is not configured on this port"));
+		error(tr("Encoder sensor is not configured on this port ")); // поправить имя ошибки
 		return;
 	}
 

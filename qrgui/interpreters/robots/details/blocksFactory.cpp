@@ -81,7 +81,7 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new WaitForColorIntensityBlock(mRobotModel);
 	else if (elementMetatypeIs(element, "IfBlock"))
 		newBlock = new IfBlock();
-	else if (elementMetatypeIs(element, "WaitForEncoderBlock"))
+	else if (elementMetatypeIs(element, "WaitForEncoder"))
 		newBlock = new WaitForEncoderBlock(mRobotModel);
 	else
 		newBlock = new DummyBlock();

@@ -6,8 +6,8 @@
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">
       <object id="qrm:/Meta_editor/MetaEditor/Container/{62ff1e27-c5e4-41f3-90bc-a0bfa85d226b}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{14a4f096-e82d-4a73-83a9-344ad6919a01}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{1c559793-17f3-4c4b-b519-0ec2f8f7fb62}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{14a4f096-e82d-4a73-83a9-344ad6919a01}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{565cf9f5-c08d-42eb-a2ea-c7631ee6b343}"/>
     </links>
     <QString key="name" value="AbstractNode"/>
