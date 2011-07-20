@@ -645,9 +645,6 @@ void EdgeElement::adjustLink()
 	if (mDst)
 		mLine.last() = mapFromItem(mDst, mDst->getPortPos(mPortTo));
 	updateLongestPart();
-
-	//if (SettingsManager::value("SquareLine", true).toBool())
-
 }
 
 bool EdgeElement::shouldReconnect() const
@@ -815,9 +812,9 @@ void EdgeElement::placeEndTo(QPointF const &place)
 {
 	mLine[mLine.size() - 1] = place;
 	updateLongestPart();
-	if (SettingsManager::value("SquareLine", true).toBool())
+	if (SettingsManager::value("SquareLine", false).toBool())
 		squarizeHandler(QPointF());
-	adjustLink();
+//	adjustLink();
 }
 
 void EdgeElement::moveConnection(NodeElement *node, qreal const portId) {
