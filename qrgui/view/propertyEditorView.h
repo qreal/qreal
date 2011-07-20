@@ -2,10 +2,16 @@
 
 #include <QAbstractItemView>
 #include <QMap>
+
 #include "propertyEditorProxyModel.h"
 
 #include "../thirdparty/qtpropertybrowser/src/qttreepropertybrowser.h"
-#include "../thirdparty/qtpropertybrowser/src/qtvariantproperty.h"
+#include "../models/logicalModelAssistApi.h"
+#include "pushButtonProperty.h"
+
+namespace qReal {
+	class MainWindow;
+}
 
 class PropertyEditorView : public QWidget
 {
@@ -16,6 +22,8 @@ public:
 
 	// QAbstractItemView's methods
 	void setModel(PropertyEditorModel *model);
+	void init(qReal::MainWindow *mainWindow,
+		qReal::models::LogicalModelAssistApi * const logicalModelAssistApi);
 	void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint = QAbstractItemView::EnsureVisible);
 
 	PropertyEditorModel* model(){
@@ -35,9 +43,12 @@ protected slots:
 	// QAbstractItemView's methods
 	void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 	void editorValueChanged(QtProperty *, QVariant);
+	void buttonClicked(QtProperty *);
 
 private:
 	PropertyEditorModel *mModel;
 	QtTreePropertyBrowser *mPropertyEditor;
 	QMap<QModelIndex, QtProperty*> mPropertiesRows;
+	qReal::MainWindow *mMainWindow;
+	qReal::models::LogicalModelAssistApi *mLogicalModelAssistApi;
 };
