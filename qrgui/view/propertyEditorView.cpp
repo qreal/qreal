@@ -143,5 +143,6 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 			value = values.at(intValue);
 		}
 	}
+	value = QVariant(value.toString());
 	mModel->setData(index, value, Qt::EditRole);
 }
