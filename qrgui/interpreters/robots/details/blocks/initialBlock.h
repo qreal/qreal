@@ -19,9 +19,6 @@ public:
 	InitialBlock(RobotModel &robotModel);
 	virtual void run();
 
-private slots:
-	void connected(bool success);
-
 private:
 	RobotModel &mRobotModel;
 };

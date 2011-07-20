@@ -15,6 +15,7 @@ enum SensorTypeEnum {
 	, colorGreen
 	, colorBlue
 	, colorNone
+	, encoder
 };
 }
 

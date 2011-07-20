@@ -241,6 +241,9 @@ void MainWindow::connectActions()
 	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(run()));
 	connect(mUi->actionStop_Running, SIGNAL(triggered()), this, SLOT(stop()));
 	connect(mUi->actionStop_Robot, SIGNAL(triggered()), this, SLOT(stopRobot()));
+
+	connect(mUi->actionConnect_To_Robot, SIGNAL(triggered()), this, SLOT(connectToRobot()));
+
 	connect(mUi->actionRobot_Settings, SIGNAL(triggered()), this, SLOT(showRobotSettingsDialog()));
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
@@ -840,8 +843,24 @@ void MainWindow::showPreferencesDialog()
 		connect(&preferencesDialog, SIGNAL(gridChanged()), getCurrentTab(), SLOT(invalidateScene()));
 		connect(&preferencesDialog, SIGNAL(iconsetChanged()), this, SLOT(updatePaletteIcons()));
 		connect(&preferencesDialog, SIGNAL(settingsApplied()), this, SLOT(applySettings()));
+		connect(&preferencesDialog, SIGNAL(fontChanged()), this, SLOT(setSceneFont()));
 	}
 	preferencesDialog.exec();
+}
+
+void MainWindow::setSceneFont() {
+
+	if (SettingsManager::value("CustomFont", true).toBool()) {
+		QFont font;
+		font.fromString(SettingsManager::value("CurrentFont", "ololo").toString());
+		getCurrentTab()->scene()->setFont(font);
+		getCurrentTab()->scene()->update();
+	} else {
+		getCurrentTab()->scene()->setFont(QFont(QFontDatabase::applicationFontFamilies(
+			QFontDatabase::addApplicationFont(QDir::currentPath() + "/times.ttf")).at(0), 9));
+		getCurrentTab()->scene()->update();
+	}
+
 }
 
 void MainWindow::openShapeEditor(QPersistentModelIndex index, int role, QString const propertyValue)
@@ -1279,6 +1298,11 @@ void MainWindow::run()
 void MainWindow::stop()
 {
 	mRobotInterpreter->stop();
+}
+
+void MainWindow::connectToRobot()
+{
+	(*(mRobotInterpreter->robotModel())).init();
 }
 
 void MainWindow::stopRobot()

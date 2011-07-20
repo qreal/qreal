@@ -80,6 +80,8 @@ public slots:
 	void showD2ModelWidget(bool isVisible = true);
 
 private slots:
+
+	void setSceneFont();
 	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);
 
@@ -146,6 +148,9 @@ private slots:
 	void run();
 	void stop();
 	void stopRobot();
+
+	void connectToRobot();
+
 	void showRobotSettingsDialog();
 
 	void on_actionNew_Diagram_triggered();

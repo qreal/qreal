@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>738</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -304,6 +304,7 @@
    <addaction name="actionRun"/>
    <addaction name="actionStop_Running"/>
    <addaction name="actionStop_Robot"/>
+   <addaction name="actionConnect_To_Robot"/>
    <addaction name="separator"/>
    <addaction name="actionRobot_Settings"/>
    <addaction name="separator"/>
@@ -735,6 +736,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+N</string>
+   </property>
+  </action>
+  <action name="actionConnect_To_Robot">
+   <property name="text">
+    <string>Connect To Robot</string>
    </property>
   </action>
  </widget>
