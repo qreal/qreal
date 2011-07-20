@@ -13,7 +13,7 @@
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList"/>
     <QString key="name" value="Color"/>
-    <QPointF key="position" value="561.557, 926.467"/>
+    <QPointF key="position" value="534.683, 869.733"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

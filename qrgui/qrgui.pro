@@ -4,7 +4,7 @@ CONFIG += rpath_libdirs
 INCLUDEPATH	+=	../qrmc\
 			../qrmc/plugins\
 			mainwindow \
-			mainwindow/shapeEdit
+			dialogs/shapeEdit
 
 RESOURCES	=	qrgui.qrc
 SOURCES		=	main.cpp

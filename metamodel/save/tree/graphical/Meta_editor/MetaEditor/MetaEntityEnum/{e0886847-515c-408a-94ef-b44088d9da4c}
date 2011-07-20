@@ -11,7 +11,7 @@
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList"/>
     <QString key="name" value="SensorPort"/>
-    <QPointF key="position" value="94.632, 944.805"/>
+    <QPointF key="position" value="133.45, 888.071"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

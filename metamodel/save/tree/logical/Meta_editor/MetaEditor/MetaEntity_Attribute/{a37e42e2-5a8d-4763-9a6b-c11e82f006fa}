@@ -2,7 +2,7 @@
   <children/>
   <properties>
     <QString key="attributeType" value="DistanceSign"/>
-    <QString key="defaultValue" value="&lt;"/>
+    <QString key="defaultValue" value=">"/>
     <QString key="displayedName" value="Знак"/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <incomingConnections type="qReal::IdList"/>

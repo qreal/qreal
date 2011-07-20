@@ -14,7 +14,7 @@
 #include "details/blocksTable.h"
 #include "details/d2RobotModel/d2RobotModel.h"
 
-#include "../visualDebugger/blockParser.h"
+#include "details/robotsBlockParser.h"
 
 namespace qReal {
 namespace interpreters {
@@ -61,6 +61,8 @@ private slots:
 	void responseSlot3(int sensorValue);
 	void responseSlot4(int sensorValue);
 
+	void connectedSlot(bool success);
+
 private:
 	enum InterpreterState {
 		interpreting
@@ -75,10 +77,12 @@ private:
 	QList<details::Thread *> mThreads;  // Has ownership
 	details::RobotModel *mRobotModel;
 	details::BlocksTable *mBlocksTable;  // Has ownership
-	BlockParser *mParser;
+	RobotsBlockParser *mParser;
 	QTimer *mTimer;
 	details::d2Model::D2ModelWidget *mD2ModelWidget;
 	details::d2Model::D2RobotModel *mD2RobotModel;
+
+	bool mConnected;
 
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	Id const findStartingElement(Id const &diagram) const;

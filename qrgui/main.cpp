@@ -1,4 +1,4 @@
-#include "mainwindow/mainwindow.h"
+#include "mainwindow/mainWindow.h"
 #include "thirdparty/windowsmodernstyle.h"
 
 #include <QtPlugin>

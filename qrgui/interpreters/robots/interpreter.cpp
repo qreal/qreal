@@ -22,8 +22,9 @@ Interpreter::Interpreter(models::GraphicalModelAssistApi const &graphicalModelAp
 	, mState(idle)
 	, mRobotModel(new RobotModel())
 	, mBlocksTable(NULL)
+	, mConnected(false)
 {
-	mParser = new BlockParser(mInterpretersInterface.errorReporter());
+	mParser = new RobotsBlockParser(mInterpretersInterface.errorReporter());
 	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel, mInterpretersInterface.errorReporter(), mParser);
 	mTimer = new QTimer();
 
@@ -42,12 +43,18 @@ Interpreter::~Interpreter()
 
 void Interpreter::interpret(Id const &currentDiagramId)
 {
+	if (!mConnected) {
+		mInterpretersInterface.errorReporter()->addInformation(tr("No connection to robot"));
+		return;
+	}
 	if (mState == interpreting) {
 		mInterpretersInterface.errorReporter()->addInformation(tr("Interpreter is already running"));
 		return;
 	}
 
 	mState = interpreting;
+
+	mBlocksTable->setIdleForBlocks();
 
 	Id const startingElement = findStartingElement(currentDiagramId);
 	if (startingElement == Id()) {
@@ -69,9 +76,9 @@ void Interpreter::stop()
 	mState = idle;
 	foreach (Thread *thread, mThreads)
 		delete thread;
-	mBlocksTable->clear();
+	mBlocksTable->setFailure();
 	mThreads.clear();
-	mRobotModel->clear();
+	mTimer->stop();
 }
 
 void Interpreter::stopRobot()
@@ -91,9 +98,24 @@ void Interpreter::setD2ModelWidgetActions(QAction *runAction, QAction *stopActio
 
 void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum implementationType, RobotCommunicationInterface * const robotCommunicationInterface)
 {
+	disconnect(&mRobotModel->robotImpl(), SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 	robotImplementations::AbstractRobotModelImplementation *robotImpl =
 			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, robotCommunicationInterface, mD2RobotModel);
 	setRobotImplementation(robotImpl);
+	connect(robotImpl, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
+}
+
+void Interpreter::connectedSlot(bool success)
+{
+	if(success) {
+		mConnected = true;
+		mInterpretersInterface.errorReporter()->addInformation(tr("Connected successfully"));
+	}
+	else {
+		mConnected = false;
+		mInterpretersInterface.errorReporter()->addError(tr("Can't connect to a robot."));
+
+	}
 }
 
 Id const Interpreter::findStartingElement(Id const &diagram) const
@@ -224,6 +246,10 @@ void Interpreter::responseSlot4(int sensorValue)
 
 void Interpreter::updateSensorValues(const QString &sensorVariableName, int sensorValue)
 {
-	mParser->getVariables()[sensorVariableName] = Number(sensorValue, Number::intType);
-//	qDebug() << sensorVariableName << sensorValue;
+	(*(mParser->getVariables()))[sensorVariableName] = Number(sensorValue, Number::intType);
+	qDebug() << "Sensor Value" << sensorVariableName << sensorValue;
+//	QMap<QString, qReal::Number> variables = *(mParser->getVariables());
+//	foreach (QString key, variables.keys()) {
+//		qDebug() << key << variables[key].property("Number").toInt();
+//	}
 }

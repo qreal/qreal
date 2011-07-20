@@ -42,6 +42,12 @@ robotParts::ColorSensor *RobotModel::colorSensor(inputPort::InputPortEnum const 
 	return dynamic_cast<robotParts::ColorSensor *>(mSensors[port]);
 }
 
+robotParts::EncoderSensor *RobotModel::encoderSensor(inputPort::InputPortEnum const &port) const
+{
+	return dynamic_cast<robotParts::EncoderSensor *>(mSensors[port]);
+}
+
+
 robotParts::Sensor *RobotModel::sensor(const inputPort::InputPortEnum &port) const
 {
 	return mSensors[port];
@@ -79,6 +85,9 @@ void RobotModel::configureSensor(sensorType::SensorTypeEnum const &sensorType
 		break;
 	case sensorType::sonar:
 		mSensors[port] = new robotParts::SonarSensor(mRobotImpl->sensors()[port], port);
+		break;
+	case sensorType::encoder:
+		mSensors[port] = new robotParts::EncoderSensor(mRobotImpl->sensors()[port], port);
 		break;
 	case sensorType::colorFull:
 	case sensorType::colorRed:

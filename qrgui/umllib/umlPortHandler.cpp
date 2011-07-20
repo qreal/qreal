@@ -1,7 +1,5 @@
 #include "umlPortHandler.h"
-#include "uml_nodeelement.h"
-
-using namespace UML;
+#include "nodeElement.h"
 
 UmlPortHandler::UmlPortHandler(NodeElement *node) : mNode(node), mBelongsToHorizontalBorders(true)
 {

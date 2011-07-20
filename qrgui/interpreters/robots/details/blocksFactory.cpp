@@ -19,6 +19,7 @@
 #include "blocks/waitForColorBlock.h"
 #include "blocks/waitForColorIntensityBlock.h"
 #include "blocks/ifBlock.h"
+#include "blocks/waitForEncoderBlock.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details;
@@ -28,7 +29,7 @@ BlocksFactory::BlocksFactory(models::GraphicalModelAssistApi const &graphicalMod
 		, models::LogicalModelAssistApi const &logicalModelApi
 		, RobotModel * const robotModel
 		, gui::ErrorReporter * const errorReporter
-		, BlocksTable * const blocksTable, BlockParser * const parser)
+		, BlocksTable * const blocksTable, RobotsBlockParser * const parser)
 	: mRobotModel(robotModel)
 	, mGraphicalModelApi(graphicalModelApi)
 	, mLogicalModelApi(logicalModelApi)
@@ -38,7 +39,7 @@ BlocksFactory::BlocksFactory(models::GraphicalModelAssistApi const &graphicalMod
 {
 }
 
-BlockParser * BlocksFactory::getParser()
+RobotsBlockParser * BlocksFactory::getParser()
 {
 	return mParser;
 }
@@ -80,6 +81,8 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new WaitForColorIntensityBlock(mRobotModel);
 	else if (elementMetatypeIs(element, "IfBlock"))
 		newBlock = new IfBlock();
+	else if (elementMetatypeIs(element, "WaitForEncoderBlock"))
+		newBlock = new WaitForEncoderBlock(mRobotModel);
 	else
 		newBlock = new DummyBlock();
 

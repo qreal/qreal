@@ -22,6 +22,7 @@ HEADERS += \
 	interpreters/robots/details/blocksTable.h \
 	interpreters/robots/details/bluetoothRobotCommunicationThread.h \
 	interpreters/robots/details/robotCommandConstants.h \
+	interpreters/robots/details/robotsBlockParser.h \
 	interpreters/robots/details/autoconfigurer.h \
 	interpreters/robots/details/blocks/block.h \
 	interpreters/robots/details/blocks/dummyBlock.h \
@@ -42,6 +43,7 @@ HEADERS += \
 	interpreters/robots/details/blocks/waitForColorIntensityBlock.h \
 	interpreters/robots/details/blocks/functionBlock.h \
 	interpreters/robots/details/blocks/ifBlock.h \
+	interpreters/robots/details/blocks/waitForEncoderBlock.h \
 	interpreters/robots/details/robotParts/robotModel.h \
 	interpreters/robots/details/robotParts/brick.h \
 	interpreters/robots/details/robotParts/motor.h \
@@ -49,6 +51,7 @@ HEADERS += \
 	interpreters/robots/details/robotParts/touchSensor.h \
 	interpreters/robots/details/robotParts/sonarSensor.h \
 	interpreters/robots/details/robotParts/colorSensor.h \
+	interpreters/robots/details/robotParts/encoderSensor.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/abstractSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothTouchSensorImplementation.h \
@@ -92,6 +95,7 @@ SOURCES += \
 	interpreters/robots/details/blocksTable.cpp \
 	interpreters/robots/details/blocksFactory.cpp \
 	interpreters/robots/details/bluetoothRobotCommunicationThread.cpp \
+	interpreters/robots/details/robotsBlockParser.cpp \
 	interpreters/robots/details/autoconfigurer.cpp \
 	interpreters/robots/details/blocks/block.cpp \
 	interpreters/robots/details/blocks/dummyBlock.cpp \
@@ -112,10 +116,12 @@ SOURCES += \
 	interpreters/robots/details/blocks/waitForColorIntensityBlock.cpp \
 	interpreters/robots/details/blocks/functionBlock.cpp \
 	interpreters/robots/details/blocks/ifBlock.cpp \
+	interpreters/robots/details/blocks/waitForEncoderBlock.cpp \
 	interpreters/robots/details/robotParts/robotModel.cpp \
 	interpreters/robots/details/robotParts/touchSensor.cpp \
 	interpreters/robots/details/robotParts/sonarSensor.cpp \
 	interpreters/robots/details/robotParts/colorSensor.cpp \
+	interpreters/robots/details/robotParts/encoderSensor.cpp \
 	interpreters/robots/details/robotParts/sensor.cpp \
 	interpreters/robots/details/robotParts/motor.cpp \
 	interpreters/robots/details/robotParts/brick.cpp \
@@ -156,3 +162,10 @@ SOURCES += \
 
 FORMS += \
 	interpreters/robots/details/d2RobotModel/d2Form.ui \
+
+# Files for parsiong of expressions on diagrams
+HEADERS += \
+	interpreters/expressionsParser/expressionsParser.h \
+
+SOURCES += \
+	interpreters/expressionsParser/expressionsParser.cpp \
