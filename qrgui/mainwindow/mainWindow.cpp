@@ -847,8 +847,24 @@ void MainWindow::showPreferencesDialog()
 		connect(&preferencesDialog, SIGNAL(gridChanged()), getCurrentTab(), SLOT(invalidateScene()));
 		connect(&preferencesDialog, SIGNAL(iconsetChanged()), this, SLOT(updatePaletteIcons()));
 		connect(&preferencesDialog, SIGNAL(settingsApplied()), this, SLOT(applySettings()));
+		connect(&preferencesDialog, SIGNAL(fontChanged()), this, SLOT(setSceneFont()));
 	}
 	preferencesDialog.exec();
+}
+
+void MainWindow::setSceneFont() {
+
+	if (SettingsManager::value("CustomFont", true).toBool()) {
+		QFont font;
+		font.fromString(SettingsManager::value("CurrentFont", "ololo").toString());
+		getCurrentTab()->scene()->setFont(font);
+		getCurrentTab()->scene()->update();
+	} else {
+		getCurrentTab()->scene()->setFont(QFont(QFontDatabase::applicationFontFamilies(
+			QFontDatabase::addApplicationFont(QDir::currentPath() + "/times.ttf")).at(0), 9));
+		getCurrentTab()->scene()->update();
+	}
+
 }
 
 void MainWindow::openShapeEditor()

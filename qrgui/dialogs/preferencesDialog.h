@@ -34,6 +34,7 @@ signals:
 	void gridChanged();
 	void iconsetChanged();
 	void settingsApplied();
+	void fontChanged();
 
 private slots:
 	void cancel();
