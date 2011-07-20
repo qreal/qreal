@@ -37,12 +37,7 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	mUi->gridWidthSlider->setValue(mWidthGrid);
 	mUi->indexGridSlider->setValue(mIndexGrid);
 	mUi->fontCheckBox->setChecked(SettingsManager::value("CustomFont", false).toBool());
-	mUi->fontSelectionButton->hide();
-
-	if (SettingsManager::value("CustomFont", false).toBool()) {
-		mUi->fontCheckBox->setChecked(true);
-		mUi->fontSelectionButton->show();
-	}
+	mUi->fontSelectionButton->setVisible(SettingsManager::value("CustomFont", false).toBool());
 }
 
 PreferencesEditorPage::~PreferencesEditorPage()
@@ -65,7 +60,8 @@ void PreferencesEditorPage::fontSelectionButtonClicked() {
 		mFontWasChanged = !mFontWasChanged;
 	mFontButtonWasPressed = true;
 	mFontDialog = new QFontDialog();
-	mFontDialog->open();
+	mFontDialog->setModal(true);
+	mFontDialog->exec();
 }
 
 void PreferencesEditorPage::changeEvent(QEvent *e)
