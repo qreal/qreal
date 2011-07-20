@@ -319,21 +319,22 @@ bool EmboxRobotGenerator::LoopElementGenerator::nextElementsGeneration() {
 	IdList outgoingLinks = mEmboxGen->mApi->outgoingLinks(mElementId);
 	// outgoingLinks.size() must be 2!
 
-	int elementConnectedByIterationEdgeNumber;
-	int afterLoopElementNumber;
+	int elementConnectedByIterationEdgeNumber = -1;
+	int afterLoopElementNumber = -1;
 
-	qDebug() << "DDD 0" << mEmboxGen->mApi->stringProperty(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard");
-	qDebug() << "DDD 0" << (mEmboxGen->mApi->stringProperty(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard") == (QObject::tr("Iteration")));
 	/*
-	qDebug() << "DDD 0" << QString::fromUtf8(
-			mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString().toAscii().data());
-	qDebug() << "DDD 0" << mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString().toAscii().data();
-	qDebug() << "DDD 1" << mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString();
+	qDebug() << "DDD 0" << mEmboxGen->mApi->stringProperty(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard");
+	qDebug() << "DDD 0" << mEmboxGen->mApi->logicalId(outgoingLinks.at(0)).toString();
+	
+	qDebug() << "DDD 1" << mEmboxGen->mApi->stringProperty(mEmboxGen->mApi->logicalId(outgoingLinks.at(1)), "Guard");
+	qDebug() << "DDD 1" << QString::fromLocal8Bit(mEmboxGen->mApi->stringProperty(mEmboxGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toAscii());
+	qDebug() << "DDD 1" << (mEmboxGen->mApi->stringProperty(mEmboxGen->mApi->logicalId(outgoingLinks.at(1)), "Guard") == "ппп");
+	qDebug() << "DDD 1" << mEmboxGen->mApi->logicalId(outgoingLinks.at(1)).toString();
 	*/
 	
 	//Грязный хак! Почему-то неправильно читается русский
-	//if (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "итерация") {
-	if (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "") {
+	if (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString().toUtf8() == "итерация") {
+	//if (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "") {
 		elementConnectedByIterationEdgeNumber = 0;
 		afterLoopElementNumber = 1;
 	} else {
@@ -383,7 +384,7 @@ bool EmboxRobotGenerator::IfElementGenerator::nextElementsGeneration() {
 	IdList outgoingLinks = mEmboxGen->mApi->outgoingLinks(mElementId);
 	// outgoingLinks.size() must be 2!
 	
-	int conditionArrowNum;
+	int conditionArrowNum = -1;
 
 	//we search for arrow with condition
 	if (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "") {
