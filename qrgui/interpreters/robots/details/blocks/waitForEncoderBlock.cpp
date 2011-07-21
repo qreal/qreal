@@ -20,11 +20,11 @@ WaitForEncoderBlock::WaitForEncoderBlock(details::RobotModel * const robotModel)
 void WaitForEncoderBlock::run()
 {
 	QString const port = stringProperty("Port");
-	if (port == "A")
+	if (port.trimmed().toUpper() == "A")
 		mEncoderSensor = &mRobotModel->encoderA();
-	else if (port == "B")
+	else if (port.trimmed().toUpper() == "B")
 		mEncoderSensor = &mRobotModel->encoderB();
-	else if (port == "C")
+	else if (port.trimmed().toUpper() == "C")
 		mEncoderSensor = &mRobotModel->encoderC();
 	if (!mEncoderSensor) {
 		mActiveWaitingTimer.stop();
