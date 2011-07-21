@@ -7,6 +7,7 @@
 #include "preferencesPages/editorPage.h"
 #include "preferencesPages/miscellaniousPage.h"
 #include "preferencesPages/robotSettingsPage.h"
+#include "preferencesPages/featuresPage.h"
 
 PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * const showAlignmentAction
 		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
@@ -19,6 +20,7 @@ PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * c
 	mDebuggerPage = new PreferencesDebuggerPage(ui->pageContentWigdet);
 	mMiscellaniousPage = new PreferencesMiscellaniousPage(ui->pageContentWigdet);
 	mRobotSettingsPage = new PreferencesRobotSettingsPage(ui->pageContentWigdet);
+	mFeaturesPage = new PreferencesFeaturesPage(ui->pageContentWigdet);
 	mEditorPage = new PreferencesEditorPage(showGridAction,
 		showAlignmentAction, activateGridAction, activateAlignmentAction, ui->pageContentWigdet);
 
@@ -41,7 +43,6 @@ PreferencesDialog::~PreferencesDialog()
 {
 	SettingsManager::setValue("currentPreferencesTab", ui->listWidget->currentRow());
 
-
 	delete ui;
 
 	delete mBehaviourPage;
@@ -49,6 +50,7 @@ PreferencesDialog::~PreferencesDialog()
 	delete mDebuggerPage;
 	delete mEditorPage;
 	delete mMiscellaniousPage;
+	delete mFeaturesPage;
 }
 
 void PreferencesDialog::applyChanges()
@@ -59,6 +61,7 @@ void PreferencesDialog::applyChanges()
 	mDebuggerPage->save();
 	mMiscellaniousPage->save();
 	mRobotSettingsPage->save();
+	mFeaturesPage->save();
 
 	emit settingsApplied();
 }
@@ -76,6 +79,7 @@ void PreferencesDialog::changeEvent(QEvent *e)
 		mEditorPage->changeEvent(e);
 		mMiscellaniousPage->changeEvent(e);
 		mRobotSettingsPage->changeEvent(e);
+		mFeaturesPage->changeEvent(e);
 		break;
 	default:
 		break;
@@ -101,6 +105,7 @@ void PreferencesDialog::chooseTab(const QModelIndex &index)
 	mDebuggerPage->hide();
 	mMiscellaniousPage->hide();
 	mRobotSettingsPage->hide();
+	mFeaturesPage->hide();
 
 	switch(static_cast<PageIndexes>(index.row())){
 	case behaviour:
@@ -125,6 +130,10 @@ void PreferencesDialog::chooseTab(const QModelIndex &index)
 
 	case robotSettings:
 		mRobotSettingsPage->show();
+		break;
+
+	case features:
+		mFeaturesPage->show();
 		break;
 	}
 }

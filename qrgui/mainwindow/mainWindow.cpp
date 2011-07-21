@@ -417,6 +417,7 @@ void MainWindow::sceneSelectionChanged()
 				element->selectionState(true);
 			} else {
 				element->selectionState(false);
+				element->singleSelectionState(false);
 			}
 		}
 	}
@@ -424,9 +425,6 @@ void MainWindow::sceneSelectionChanged()
 	if (selected.isEmpty()) {
 		mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());
 		mPropertyModel.clearModelIndexes();
-		foreach(Element* notSelected, elements) {
-			notSelected->singleSelectionState(false);
-		}
 	} else if (selected.length() > 1) {
 		foreach(Element* notSingleSelected, selected) {
 			notSingleSelected->singleSelectionState(false);
