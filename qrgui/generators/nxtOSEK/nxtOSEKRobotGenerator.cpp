@@ -1,31 +1,31 @@
 #include <QTextStream>
 #include <cmath>
 #include <QtCore/QObject>
-#include "emboxRobotGenerator.h"
+#include "nxtOSEKRobotGenerator.h"
 
 #include <QDebug>
 
 using namespace qReal;
 using namespace generators;
 
-EmboxRobotGenerator::EmboxRobotGenerator(qrRepo::RepoApi *api, QString const &destinationPath)
+NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(qrRepo::RepoApi *api, QString const &destinationPath)
 	:  mDestinationPath(destinationPath) {
 		mIsNeedToDeleteMApi = false;
 		mApi = api;
 }
 
-EmboxRobotGenerator::EmboxRobotGenerator(QString const &pathToRepo, QString const &destinationPath)
+NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo, QString const &destinationPath)
 	:mDestinationPath(destinationPath) {
 		mIsNeedToDeleteMApi = true;
 		mApi = new qrRepo::RepoApi(pathToRepo);
 }
 
-EmboxRobotGenerator::~EmboxRobotGenerator() {
+NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator() {
 	if (mApi && mIsNeedToDeleteMApi)
 		delete mApi;
 }
 
-void EmboxRobotGenerator::generate() {
+void NxtOSEKRobotGenerator::generate() {
 	IdList initialNodes = mApi->elementsByType("InitialNode");
 
 	int curInitialNodeNumber = 0;
@@ -77,7 +77,7 @@ void EmboxRobotGenerator::generate() {
 }
 
 /*
-QString EmboxRobotGenerator::generateByElement(qReal::Id element, qReal::Id previousElement) {
+QString NxtOSEKRobotGenerator::generateByElement(qReal::Id element, qReal::Id previousElement) {
 	//element.element() <- type of "Id element"
 	if (element.element() == "InitialNode") {
 		return "1";
@@ -154,96 +154,103 @@ QString EmboxRobotGenerator::generateByElement(qReal::Id element, qReal::Id prev
 }
 */
 
-EmboxRobotGenerator::AbstractElementGenerator::AbstractElementGenerator(EmboxRobotGenerator *emboxGen,
-		qReal::Id elementId): mEmboxGen(emboxGen), mElementId(elementId) {	
+NxtOSEKRobotGenerator::AbstractElementGenerator::AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen,
+		qReal::Id elementId): mNxtGen(emboxGen), mElementId(elementId) {	
 }
 
-void EmboxRobotGenerator::AbstractElementGenerator::createListsForIncomingConnections() {
+void NxtOSEKRobotGenerator::AbstractElementGenerator::createListsForIncomingConnections() {
 	//connects string lists in mGeneratedStringSet with mElementId in mElementToStringListNumbers
-	for (int i = 1; i < mEmboxGen->mApi->incomingConnectedElements(mElementId).size(); i++) {
-		mEmboxGen->mGeneratedStringSet << QList< QPair<QString, qReal::Id> >();
-		mEmboxGen->mElementToStringListNumbers[mElementId.toString()] << mEmboxGen->mGeneratedStringSet.size() - 1;
+	for (int i = 1; i < mNxtGen->mApi->incomingConnectedElements(mElementId).size(); i++) {
+		mNxtGen->mGeneratedStringSet << QList< QPair<QString, qReal::Id> >();
+		mNxtGen->mElementToStringListNumbers[mElementId.toString()] << mNxtGen->mGeneratedStringSet.size() - 1;
 	}
 }
 
-EmboxRobotGenerator::SimpleElementGenerator::SimpleElementGenerator(EmboxRobotGenerator *emboxGen,
+NxtOSEKRobotGenerator::SimpleElementGenerator::SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen,
 		qReal::Id elementId): 
 	AbstractElementGenerator(emboxGen, elementId) {
 }
 
-EmboxRobotGenerator::LoopElementGenerator::LoopElementGenerator(EmboxRobotGenerator *emboxGen,
+NxtOSEKRobotGenerator::LoopElementGenerator::LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen,
 		qReal::Id elementId): 
 	AbstractElementGenerator(emboxGen, elementId) {
 }
 
-EmboxRobotGenerator::IfElementGenerator::IfElementGenerator(EmboxRobotGenerator *emboxGen,
+NxtOSEKRobotGenerator::IfElementGenerator::IfElementGenerator(NxtOSEKRobotGenerator *emboxGen,
 		qReal::Id elementId): 
 	AbstractElementGenerator(emboxGen, elementId) {
 }
 
-QList<int> EmboxRobotGenerator::SimpleElementGenerator::portsToEngineNumbers(QString const &portsProperty) {
-	QList<int> result;
+QList<QString> NxtOSEKRobotGenerator::SimpleElementGenerator::portsToEngineNames(QString const &portsProperty) {
+	QList<QString> result;
 
-	//port A -> 0 
-	//port B -> 1
-	//port C -> 2
+	//port {A, B, C} -> NXT_PORT_{A, B, C}  
 	if (portsProperty.contains("A"))
-		result.append(0);
+		result.append("NXT_PORT_A");
 	if (portsProperty.contains("B"))
-		result.append(1);
+		result.append("NXT_PORT_B");
 	if (portsProperty.contains("C"))
-		result.append(2);
+		result.append("NXT_PORT_C");
 
 	return result;
 }
 
-QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::SimpleElementGenerator::simpleCode() {
+QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode() {
 	QList< QPair<QString, qReal::Id> > result;
 
-	qReal::Id logicElementId = mEmboxGen->mApi->logicalId(mElementId); //TODO
+	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
 
+	//TODO: to make "break mode" to do smth
 	if (mElementId.element() == "EnginesForward") {
-		foreach (int engineNumber, portsToEngineNumbers(mEmboxGen->mApi->stringProperty(logicElementId, "Ports"))) {
+		foreach (QString enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
 			result.append(QPair<QString, qReal::Id>(
-						"motor_set_power(MOTOR" + QString::number(engineNumber) + ", 360 * (" + mEmboxGen->mApi->stringProperty(logicElementId, "Power") + ")"
-						+ " / 100.0);",
+						"nxt_motor_set_speed(" + enginePort + ", " + mNxtGen->mApi->stringProperty(logicElementId, "Power") + ", 0);",
 						mElementId));
 		}
 
 	} else if (mElementId.element() == "EnginesBackward") {
-		foreach (int engineNumber, portsToEngineNumbers(mEmboxGen->mApi->stringProperty(logicElementId, "Ports"))) {
+		foreach (QString enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
 			result.append(QPair<QString, qReal::Id>(
-						"motor_set_power(MOTOR" + QString::number(engineNumber) + ", -360 * (" + mEmboxGen->mApi->stringProperty(logicElementId, "Power") + ")"
-						+ " / 100.0);",
+						"nxt_motor_set_speed(" + enginePort + ", " + mNxtGen->mApi->stringProperty(logicElementId, "Power") + ", 0);",
 						mElementId));
 		}
 
 	} else if (mElementId.element() == "EnginesStop") {
-		foreach (int engineNumber, portsToEngineNumbers(mEmboxGen->mApi->stringProperty(logicElementId, "Ports"))) {
+		foreach (QString enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
 			result.append(QPair<QString, qReal::Id>(
-						"motor_set_power(MOTOR" + QString::number(engineNumber) + ", 0);",
+						"nxt_motor_set_speed(" + enginePort + ", 0, 0);",
 						mElementId));
 		}
 
 	} else if (mElementId.element() == "Timer") {
 		result.append(QPair<QString, qReal::Id>(
-					"usleep(" + QString::number(mEmboxGen->mApi->property(logicElementId, "Delay").toInt()) + ");",
+					"systick_wait_ms(" + mNxtGen->mApi->stringProperty(logicElementId, "Delay") + ");",
 					mElementId));
 
 	} else if (mElementId.element() == "Beep") {
 		result.append(QPair<QString, qReal::Id>(
-					"__BEEP__", //TODO
+					"ecrobot_sound_tone(1000, 100, 50)", //TODO: change sound to smth
+					mElementId));
+
+	} else if (mElementId.element() == "PlayTone") {
+		result.append(QPair<QString, qReal::Id>(
+					"ecrobot_sound_tone(" + mNxtGen->mApi->stringProperty(logicElementId, "Frequency") + ", " 
+						+ mNxtGen->mApi->stringProperty(logicElementId, "Duration") + ", 50)", //50 - volume of a sound
 					mElementId));
 
 	} else if (mElementId.element() == "Function") {
-		QByteArray byteFuncCode = mEmboxGen->mApi->property(logicElementId, "Body").toString().toUtf8();
+		QByteArray byteFuncCode = mNxtGen->mApi->property(logicElementId, "Body").toString().toUtf8();
 		qDebug() << byteFuncCode;
-		byteFuncCode.replace("Сенсор1", "nxt_sensor_get_val(SONAR_PORT)");
+		byteFuncCode.replace("Сенсор1", "ecrobot_get_sonar_sensor(NXT_PORT_S1)");
+		byteFuncCode.replace("Сенсор2", "ecrobot_get_sonar_sensor(NXT_PORT_S2)");
+		byteFuncCode.replace("Сенсор3", "ecrobot_get_sonar_sensor(NXT_PORT_S3)");
+		byteFuncCode.replace("Сенсор4", "ecrobot_get_sonar_sensor(NXT_PORT_S4)");
 		
 		QString funcCode = QString::fromUtf8(byteFuncCode);
 
 		result.append(QPair<QString, qReal::Id>(
-					funcCode.right(funcCode.length() - 4), //TODO: just delete "var "
+					//funcCode.right(funcCode.length() - 4), //TODO: just delete "var "
+					funcCode, 
 					mElementId));
 
 	} else if (mElementId.element() == "FinalNode") {
@@ -257,52 +264,52 @@ QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::SimpleElementGenerator::
 	return result;
 }
 	
-QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::SimpleElementGenerator::loopPrefixCode() {
+QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator::loopPrefixCode() {
 	QList< QPair<QString, qReal::Id> > result;
 	result << QPair<QString, qReal::Id>("while (true) {", mElementId);
 	return result;
 }
 
-QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::SimpleElementGenerator::loopPostfixCode() {
+QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator::loopPostfixCode() {
 	QList< QPair<QString, qReal::Id> > result;
 	result << QPair<QString, qReal::Id>("}", mElementId);
 	return result;
 }
 
-QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::LoopElementGenerator::loopPrefixCode() {
+QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::LoopElementGenerator::loopPrefixCode() {
 	QList< QPair<QString, qReal::Id> > result;
 	
-	qReal::Id logicElementId = mEmboxGen->mApi->logicalId(mElementId); //TODO
+	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
 	result << QPair<QString, qReal::Id>("for (int __iter__ = ; __iter__ < " +
-			mEmboxGen->mApi->property(logicElementId, "Iterations").toString()
+			mNxtGen->mApi->property(logicElementId, "Iterations").toString()
 		       	+ "; __iter__++) {", mElementId); //TODO
 	return result;
 }
 
-QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::LoopElementGenerator::loopPostfixCode() {
+QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::LoopElementGenerator::loopPostfixCode() {
 	QList< QPair<QString, qReal::Id> > result;
 	result << QPair<QString, qReal::Id>("}", mElementId);
 	return result;
 }
 
-QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::IfElementGenerator::loopPrefixCode() {
+QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::IfElementGenerator::loopPrefixCode() {
 	QList< QPair<QString, qReal::Id> > result;
 	
-	qReal::Id logicElementId = mEmboxGen->mApi->logicalId(mElementId); //TODO
+	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
 	result << QPair<QString, qReal::Id>("while (" +
-			mEmboxGen->mApi->property(logicElementId, "Condition").toString()
+			mNxtGen->mApi->property(logicElementId, "Condition").toString()
 		       	+ ") {", mElementId); //TODO
 	return result;
 }
 
-QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::IfElementGenerator::loopPostfixCode() {
+QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::IfElementGenerator::loopPostfixCode() {
 	QList< QPair<QString, qReal::Id> > result;
 	result << QPair<QString, qReal::Id>("}", mElementId);
 	return result;
 }
 
-bool EmboxRobotGenerator::SimpleElementGenerator::preGenerationCheck() {
-	IdList outgoingConnectedElements = mEmboxGen->mApi->outgoingConnectedElements(mElementId);
+bool NxtOSEKRobotGenerator::SimpleElementGenerator::preGenerationCheck() {
+	IdList outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
 	if (outgoingConnectedElements.size() > 1) {
 		//case of error in diagram
 		qDebug() << "Error! There are more than 1 outgoing connected elements with simple robot" <<
@@ -313,21 +320,21 @@ bool EmboxRobotGenerator::SimpleElementGenerator::preGenerationCheck() {
 	return true;
 }
 
-bool EmboxRobotGenerator::LoopElementGenerator::preGenerationCheck() {
-	IdList outgoingLinks = mEmboxGen->mApi->outgoingLinks(mElementId);
+bool NxtOSEKRobotGenerator::LoopElementGenerator::preGenerationCheck() {
+	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
 	if ((outgoingLinks.size() != 2) ||
-		( (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "Итерация") 
+		( (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "Итерация") 
 		  && 
-		  (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "Итерация") )
+		  (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "Итерация") )
 	)
 		return false;
 
 	return true;
 }
 
-bool EmboxRobotGenerator::IfElementGenerator::preGenerationCheck() {
-	IdList outgoingLinks = mEmboxGen->mApi->outgoingLinks(mElementId);
+bool NxtOSEKRobotGenerator::IfElementGenerator::preGenerationCheck() {
+	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
 	if (outgoingLinks.size() != 2) //TODO: append checking arrows
 		return false;
@@ -335,13 +342,13 @@ bool EmboxRobotGenerator::IfElementGenerator::preGenerationCheck() {
 	return true;
 }
 
-bool EmboxRobotGenerator::SimpleElementGenerator::nextElementsGeneration() {
-	IdList outgoingConnectedElements = mEmboxGen->mApi->outgoingConnectedElements(mElementId);
-	mEmboxGen->mGeneratedStringSet << simpleCode();
+bool NxtOSEKRobotGenerator::SimpleElementGenerator::nextElementsGeneration() {
+	IdList outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
+	mNxtGen->mGeneratedStringSet << simpleCode();
 
 	if (outgoingConnectedElements.size() == 1) {
-		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(mEmboxGen, outgoingConnectedElements.at(0));
-		mEmboxGen->mPreviousElement = mElementId;
+		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(mNxtGen, outgoingConnectedElements.at(0));
+		mNxtGen->mPreviousElement = mElementId;
 		gen->generate();
 		delete gen;
 		return true;
@@ -356,26 +363,26 @@ bool EmboxRobotGenerator::SimpleElementGenerator::nextElementsGeneration() {
 	return true;
 }
 
-bool EmboxRobotGenerator::LoopElementGenerator::nextElementsGeneration() {
-	IdList outgoingLinks = mEmboxGen->mApi->outgoingLinks(mElementId);
+bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration() {
+	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 	// outgoingLinks.size() must be 2!
 
 	int elementConnectedByIterationEdgeNumber = -1;
 	int afterLoopElementNumber = -1;
 
 	/*
-	qDebug() << "DDD 0" << mEmboxGen->mApi->stringProperty(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard");
-	qDebug() << "DDD 0" << mEmboxGen->mApi->logicalId(outgoingLinks.at(0)).toString();
+	qDebug() << "DDD 0" << mNxtGen->mApi->stringProperty(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard");
+	qDebug() << "DDD 0" << mNxtGen->mApi->logicalId(outgoingLinks.at(0)).toString();
 	
-	qDebug() << "DDD 1" << mEmboxGen->mApi->stringProperty(mEmboxGen->mApi->logicalId(outgoingLinks.at(1)), "Guard");
-	qDebug() << "DDD 1" << QString::fromLocal8Bit(mEmboxGen->mApi->stringProperty(mEmboxGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toAscii());
-	qDebug() << "DDD 1" << (mEmboxGen->mApi->stringProperty(mEmboxGen->mApi->logicalId(outgoingLinks.at(1)), "Guard") == "ппп");
-	qDebug() << "DDD 1" << mEmboxGen->mApi->logicalId(outgoingLinks.at(1)).toString();
+	qDebug() << "DDD 1" << mNxtGen->mApi->stringProperty(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard");
+	qDebug() << "DDD 1" << QString::fromLocal8Bit(mNxtGen->mApi->stringProperty(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toAscii());
+	qDebug() << "DDD 1" << (mNxtGen->mApi->stringProperty(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard") == "ппп");
+	qDebug() << "DDD 1" << mNxtGen->mApi->logicalId(outgoingLinks.at(1)).toString();
 	*/
 	
 	//Грязный хак! Почему-то неправильно читается русский
-	if (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString().toUtf8() == "итерация") {
-	//if (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "") {
+	if (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString().toUtf8() == "итерация") {
+	//if (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "") {
 		elementConnectedByIterationEdgeNumber = 0;
 		afterLoopElementNumber = 1;
 	} else {
@@ -384,21 +391,21 @@ bool EmboxRobotGenerator::LoopElementGenerator::nextElementsGeneration() {
 	}
 
 	//generate loop	
-	AbstractElementGenerator* loopGen = ElementGeneratorFactory::generator(mEmboxGen, 
-			mEmboxGen->mApi->to(outgoingLinks.at(elementConnectedByIterationEdgeNumber)));
+	AbstractElementGenerator* loopGen = ElementGeneratorFactory::generator(mNxtGen, 
+			mNxtGen->mApi->to(outgoingLinks.at(elementConnectedByIterationEdgeNumber)));
 
-	mEmboxGen->mPreviousElement = mElementId;
-	mEmboxGen->mPreviousLoopElements.push(mElementId);
+	mNxtGen->mPreviousElement = mElementId;
+	mNxtGen->mPreviousLoopElements.push(mElementId);
 	if (!loopGen->generate())
 		return false;
 	delete loopGen;
 
 	//generate next blocks
-	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mEmboxGen, 
-			mEmboxGen->mApi->to(outgoingLinks.at(afterLoopElementNumber)));
+	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mNxtGen, 
+			mNxtGen->mApi->to(outgoingLinks.at(afterLoopElementNumber)));
 	
-	mEmboxGen->mPreviousElement = mElementId;
-	mEmboxGen->mPreviousLoopElements.push(mElementId);
+	mNxtGen->mPreviousElement = mElementId;
+	mNxtGen->mPreviousLoopElements.push(mElementId);
 	if (!nextBlocksGen->generate())
 		return false;
 	delete nextBlocksGen;
@@ -406,14 +413,14 @@ bool EmboxRobotGenerator::LoopElementGenerator::nextElementsGeneration() {
 	return true;
 }
 
-bool EmboxRobotGenerator::IfElementGenerator::generateBranch(int branchNumber) {
-	IdList outgoingLinks = mEmboxGen->mApi->outgoingLinks(mElementId);
+bool NxtOSEKRobotGenerator::IfElementGenerator::generateBranch(int branchNumber) {
+	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
-	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mEmboxGen, 
-			mEmboxGen->mApi->to(outgoingLinks.at(branchNumber)));
+	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mNxtGen, 
+			mNxtGen->mApi->to(outgoingLinks.at(branchNumber)));
 
-	mEmboxGen->mPreviousElement = mElementId;
-	//mEmboxGen->mPreviousLoopElements.push(mElementId);
+	mNxtGen->mPreviousElement = mElementId;
+	//mNxtGen->mPreviousLoopElements.push(mElementId);
 	if (!nextBlocksGen->generate())
 		return false;
 	delete nextBlocksGen;
@@ -421,71 +428,71 @@ bool EmboxRobotGenerator::IfElementGenerator::generateBranch(int branchNumber) {
 	return true;
 }
 
-bool EmboxRobotGenerator::IfElementGenerator::nextElementsGeneration() {
-	IdList outgoingLinks = mEmboxGen->mApi->outgoingLinks(mElementId);
+bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration() {
+	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 	// outgoingLinks.size() must be 2!
 	
 	int conditionArrowNum = -1;
 
 	//we search for arrow with condition
-	if (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "") {
+	if (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "") {
 		conditionArrowNum = 1;
 	} else {
 		conditionArrowNum = 0;
 	}
 
-	qReal::Id logicElementId = mEmboxGen->mApi->logicalId(mElementId); //TODO
+	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
 
 	//TODO: save number of new created list
 	QList< QPair<QString, qReal::Id> > ifBlockPrefix;
-	QString condition = mEmboxGen->mApi->property(logicElementId, "Condition").toString();
+	QString condition = mNxtGen->mApi->property(logicElementId, "Condition").toString();
 
 	//Грязное место!
-	if (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)), "Guard") == "меньше 0") {
+	if (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)), "Guard") == "меньше 0") {
 		condition += " < 0";
-	} else if (mEmboxGen->mApi->property(mEmboxGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)), "Guard") == "больше 0") {
+	} else if (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)), "Guard") == "больше 0") {
 		condition += " > 0";
 	} else {
 		condition += " == 0";
 	}
 
 	ifBlockPrefix << QPair<QString, qReal::Id>("if (" + condition + ") {", mElementId);
-	mEmboxGen->mGeneratedStringSet << ifBlockPrefix;
+	mNxtGen->mGeneratedStringSet << ifBlockPrefix;
 
 	//generate true/false blocks
 	generateBranch(conditionArrowNum);
 	QList< QPair<QString, qReal::Id> > elseBlock;
 	elseBlock << QPair<QString, qReal::Id>("} else {", mElementId);
-	mEmboxGen->mGeneratedStringSet << elseBlock;
+	mNxtGen->mGeneratedStringSet << elseBlock;
 	generateBranch(1 - conditionArrowNum);
 
 	QList< QPair<QString, qReal::Id> > ifBlockPostfix;
 	ifBlockPostfix << QPair<QString, qReal::Id>("}", mElementId);
-	mEmboxGen->mGeneratedStringSet << ifBlockPostfix;
+	mNxtGen->mGeneratedStringSet << ifBlockPostfix;
 
 	return true;
 }
 
-bool EmboxRobotGenerator::AbstractElementGenerator::generate() {
+bool NxtOSEKRobotGenerator::AbstractElementGenerator::generate() {
 	if (!preGenerationCheck()) {
 		return false;
 	}
 
-	if (mEmboxGen->mElementToStringListNumbers.contains(mElementId.toString())) {
+	if (mNxtGen->mElementToStringListNumbers.contains(mElementId.toString())) {
 		//if we have already observed this element with more than 1 incoming connection
 		
 		qReal::Id loopElement = mElementId;
-		if (!mEmboxGen->mPreviousLoopElements.empty()) {
-			loopElement = mEmboxGen->mPreviousLoopElements.pop();
+		if (!mNxtGen->mPreviousLoopElements.empty()) {
+			loopElement = mNxtGen->mPreviousLoopElements.pop();
 		}
 
 		//loopElement must create loop code
-		AbstractElementGenerator *loopElementGen = ElementGeneratorFactory::generator(mEmboxGen, loopElement);
+		AbstractElementGenerator *loopElementGen = ElementGeneratorFactory::generator(mNxtGen, loopElement);
 
-		mEmboxGen->mGeneratedStringSet[mEmboxGen->mElementToStringListNumbers[loopElement.toString()].pop()]
+		mNxtGen->mGeneratedStringSet[mNxtGen->mElementToStringListNumbers[loopElement.toString()].pop()]
 			+= loopElementGen->loopPrefixCode();
 
-		mEmboxGen->mGeneratedStringSet << loopElementGen->loopPostfixCode();
+		mNxtGen->mGeneratedStringSet << loopElementGen->loopPostfixCode();
 
 		return true;
 	}
