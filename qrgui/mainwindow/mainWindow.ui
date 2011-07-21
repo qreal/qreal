@@ -760,7 +760,7 @@
   <customwidget>
    <class>PropertyEditorView</class>
    <extends>QWidget</extends>
-   <header>view/propertyEditorView.h</header>
+   <header>../view/propertyEditorView.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
