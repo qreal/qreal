@@ -34,7 +34,10 @@ bool GraphicType::init(QString const &context)
 	mIsVisible = false;
 	if (mApi->hasProperty(mId, "shape"))
 		mIsVisible = !mApi->stringProperty(mId, "shape").isEmpty();
-	mContains << mApi->stringProperty(mId, "container").split(",", QString::SkipEmptyParts);
+
+	mContains << (mApi->hasProperty(mId, "container")
+					  ? mApi->stringProperty(mId, "container").split(",", QString::SkipEmptyParts)
+					  : QStringList());
 
 	foreach(Id id, mApi->children(mId)) {
 		if (!mApi->isLogicalElement(id))
