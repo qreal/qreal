@@ -1483,10 +1483,7 @@ void MainWindow::uploadProgram() {
 
 	QProcess *task = new QProcess(this);
 #ifdef Q_OS_UNIX
-	QMessageBox::information(this, NULL, "Currently not supported");
-	return;
-	//Currenty not supported
-	//task->start("sh", QStringList() << QDir::currentPath() + "/generators/linux/upload.sh");
+	task->start("sh", QStringList() << QDir::currentPath() + "/generators/linux/upload.sh");
 #endif
 
 #ifdef Q_OS_WIN
