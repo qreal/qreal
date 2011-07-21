@@ -6,6 +6,5 @@ void user_1ms_isr_type2(void){ /* do nothing */ }
 
 TASK(OSEK_Task_Background)
 {
-	ecrobot_init_sonar_sensor(NXT_PORT_S1);
 	@@CODE@@
 }

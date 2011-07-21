@@ -1,6 +1,7 @@
 #include <QTextStream>
 #include <cmath>
 #include <QtCore/QObject>
+#include <QDir>
 #include "nxtOSEKRobotGenerator.h"
 
 #include <QDebug>
@@ -48,28 +49,81 @@ void NxtOSEKRobotGenerator::generate() {
 			} //TODO
 			delete gen;
 
-			QFile templateFile("template.c");
-			if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-				qDebug() << "cannot open \"" << templateFile.fileName() << "\"";
+			//QDir projectsDir; //TODO: use user path to projects
+
+			QString projectName = "prog" + QString::number(curInitialNodeNumber);
+
+			//Create project directory
+			if (!QDir(projectName).exists())
+				QDir().mkdir(projectName);
+
+			/* Generate C file */
+			QFile templateCFile("template.c");
+			if (!templateCFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+				qDebug() << "cannot open \"" << templateCFile.fileName() << "\"";
 				return;
 			}
 
-			QTextStream templateStream(&templateFile);
-			QString resultString = templateStream.readAll();
-			resultString.replace("@@TEST_NAME@@", "prog" + QString::number(curInitialNodeNumber));
+			QTextStream templateCStream(&templateCFile);
+			QString resultString = templateCStream.readAll();
+			templateCFile.close();
+
+			resultString.replace("@@PROJECT_NAME@@", projectName);
 			resultString.replace("@@CODE@@", resultCode);
 
-			QFile resultFile("prog" + QString::number(curInitialNodeNumber) + ".c");
-			if (!resultFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-				qDebug() << "cannot open \"" << resultFile.fileName() << "\"";
+			QFile resultCFile(projectName + "/" + projectName + ".c");
+			if (!resultCFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+				qDebug() << "cannot open \"" << resultCFile.fileName() << "\"";
 				return;
 			}
 
-			QTextStream out(&resultFile);
-			out << resultString;
-			out.flush();
+			QTextStream outC(&resultCFile);
+			outC << resultString;
+			outC.flush();
+			resultCFile.close();
+			/**/
+
+			/* Generate OIL file */
+			QFile templateOILFile("template.oil"); 
+			if (!templateOILFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+				qDebug() << "cannot open \"" << templateOILFile.fileName() << "\"";
+				return;
+			}
+
+			QFile resultOILFile(projectName + "/" + projectName + ".oil");
+			if (!resultOILFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+				qDebug() << "cannot open \"" << resultOILFile.fileName() << "\"";
+				return;
+			}
 			
-			resultFile.close();
+			QTextStream outOIL(&resultOILFile);
+			outOIL << templateOILFile.readAll();
+			templateOILFile.close();
+			
+			outOIL.flush();
+			resultOILFile.close();
+			/**/
+
+			/* Generate makefile */
+			QFile templateMakeFile("template.makefile"); 
+			if (!templateMakeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+				qDebug() << "cannot open \"" << templateMakeFile.fileName() << "\"";
+				return;
+			}
+
+			QFile resultMakeFile(projectName + "/makefile");
+			if (!resultMakeFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+				qDebug() << "cannot open \"" << resultMakeFile.fileName() << "\"";
+				return;
+			}
+
+			QTextStream outMake(&resultMakeFile);
+			outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8());
+			templateMakeFile.close();
+			
+			outMake.flush();
+			resultMakeFile.close();
+			/**/
 
 			curInitialNodeNumber++;
 		}
@@ -256,8 +310,9 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 		result.append(QPair<QString, qReal::Id>(
 					"return;",
 					mElementId));
+
 	} else if (mElementId.element() == "InitialBlock") {
-		for (int i = 0; i < 4; i++) {
+		for (int i = 1; i <= 4; i++) {
 			//4 - number of ports on nxt robot
 			QString curPort = "port_" + QString::number(i);
 			QByteArray portValue = mNxtGen->mApi->stringProperty(logicElementId, curPort).toUtf8();
@@ -267,17 +322,96 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 						"ecrobot_init_sonar_sensor(NXT_PORT_S" + QString::number(i) + ")",
 						mElementId));
 
-			} else if (portValue == "Сенсор нажатия (булево значение)") {
-			
-			} else if (portValue == "Сенсор нажатия (сырое значение)") {
+			//in nxtOSEK there are no instructions to initiate touch sensors
+			//} else if (portValue == "Сенсор нажатия (булево значение)") {
+			//} else if (portValue == "Сенсор нажатия (сырое значение)") {
 
 			} else if (portValue == "Сенсор цвета (полные цвета)") {
+				result.append(QPair<QString, qReal::Id>(
+						"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_LIGHTSENSOR_WHITE)",
+						mElementId));
+
 			} else if (portValue == "Сенсор цвета (красный)") {
+				result.append(QPair<QString, qReal::Id>(
+						"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_LIGHTSENSOR_RED)",
+						mElementId));
+
 			} else if (portValue == "Сенсор цвета (зеленый)") {
+				result.append(QPair<QString, qReal::Id>(
+						"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_LIGHTSENSOR_GREEN)",
+						mElementId));
+
 			} else if (portValue == "Сенсор цвета (синий)") {
+				result.append(QPair<QString, qReal::Id>(
+						"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_LIGHTSENSOR_BLUE)",
+						mElementId));
+
 			} else if (portValue == "Сенсор цвета (пассивный)") {
+				result.append(QPair<QString, qReal::Id>(
+						"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_COLORSENSOR)",
+						mElementId));
+
 			}
 		}
+
+	} else if (mElementId.element() == "WaitForColor") {
+		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
+		QByteArray colorStr = mNxtGen->mApi->stringProperty(logicElementId, "Color").toUtf8();
+
+		QString colorNxtType = "";
+
+		if (colorStr == "Красный") {
+			colorNxtType = "NXT_COLOR_RED";
+
+		} else if (colorStr == "Зелёный") {
+			colorNxtType = "NXT_COLOR_GREEN";
+
+		} else if (colorStr == "Синий") {
+			colorNxtType = "NXT_COLOR_BLUE";
+
+		} else if (colorStr == "Чёрный") {
+			colorNxtType = "NXT_COLOR_BLACK";
+
+		} else if (colorStr == "Жёлтый") {
+			colorNxtType = "NXT_COLOR_YELLOW";
+
+		} else if (colorStr == "Белый") {
+			colorNxtType = "NXT_COLOR_WHITE";
+		}
+		
+		if (colorNxtType != "")
+			result.append(QPair<QString, qReal::Id>(
+					"while (ecrobot_get_nxtcolorsensor_id(NXT_PORT_S" + QString::number(port) + ") != " + colorNxtType + ") { }",
+					mElementId));
+
+	} else if (mElementId.element() == "WaitForColorIntensity") {
+		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
+		QString intensity = mNxtGen->mApi->stringProperty(logicElementId,  "Intensity");
+		QString inequalitySign = mNxtGen->mApi->stringProperty(logicElementId, "Sign");
+
+		QString condition = inequalitySign + " " + intensity;
+
+		result.append(QPair<QString, qReal::Id>(
+				"while (!(ecrobot_get_nxtcolorsensor_light(NXT_PORT_S" + QString::number(port) + ") " + condition + ")) { }",
+				mElementId));
+
+	} else if (mElementId.element() == "WaitForTouchSensor") {
+		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
+
+		result.append(QPair<QString, qReal::Id>(
+				"while (!ecrobot_get_touch_sensor(NXT_PORT_S" + QString::number(port) + ")) { }",
+				mElementId));
+
+	} else if (mElementId.element() == "WaitForSonarDistance") {
+		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
+		QString distance = mNxtGen->mApi->stringProperty(logicElementId, "Distance");
+		QString inequalitySign = mNxtGen->mApi->stringProperty(logicElementId, "Sign");
+
+		QString condition = inequalitySign + " " + distance;
+
+		result.append(QPair<QString, qReal::Id>(
+				"while (!(ecrobot_get_sonar_sensor(NXT_PORT_S" + QString::number(port) + ") " + condition + ")) { }",
+				mElementId));
 	}
 
 	//for InitialNode returns empty list
