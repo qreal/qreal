@@ -157,6 +157,9 @@ private slots:
 
 	void updatePaletteIcons();
 
+	void flashRobot();
+	void uploadProgram();
+
 private:
 	Ui::MainWindowUi *mUi;
 

@@ -1,5 +1,5 @@
 #include "mainWindow.h"
-
+#include <QProcess>
 #include <QtGui/QDialog>
 #include <QtGui/QPrinter>
 #include <QtGui/QVBoxLayout>
@@ -223,6 +223,8 @@ void MainWindow::connectActions()
 	connect(mUi->actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
 	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
+	connect(mUi->actionFlash_Robot, SIGNAL(triggered()), this, SLOT(flashRobot()));
+	connect(mUi->actionUpload_Program, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
 	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 	connect(mUi->actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
@@ -1458,4 +1460,37 @@ QString MainWindow::getNextDirName(QString const &name)
 	parts.last() = QString::number(++version);
 	return parts.join("_");
 
+}
+
+void MainWindow::flashRobot() {
+	QProcess *task = new QProcess(this);
+#ifdef Q_OS_UNIX
+	task->start("sh", QStringList() << QDir::currentPath() + "/flash.sh");
+#endif
+
+#ifdef Q_OS_WIN
+	task->start("cmd", QStringList() << QDir::currentPath() + "/flash.bat");
+#endif
+	if (task->waitForFinished())
+		QMessageBox::information(this, NULL, "robot successfully flashed", "ok");
+	else
+		QMessageBox::warning(this, NULL, "smth wrong", "ok");
+	delete task;
+}
+
+void MainWindow::uploadProgram() {
+
+	QProcess *task = new QProcess(this);
+#ifdef Q_OS_UNIX
+	task->start("sh", QStringList() << QDir::currentPath() + "/upload.sh");
+#endif
+
+#ifdef Q_OS_WIN
+	task->start("cmd", QStringList() << QDir::currentPath() + "/upload.bat");
+#endif
+	if (task->waitForFinished())
+		QMessageBox::information(this, NULL, "program successfully\n uploaded", "ok");
+	else
+		QMessageBox::warning(this, NULL, "smth wrong", "ok");
+	delete task;
 }
