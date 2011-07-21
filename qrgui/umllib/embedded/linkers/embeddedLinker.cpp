@@ -43,12 +43,6 @@ void EmbeddedLinker::setMaster(NodeElement *element)
 	QObject::connect(master->scene(), SIGNAL(selectionChanged()), this, SLOT(changeShowState()));
 }
 
-void EmbeddedLinker::setCovered(bool arg)
-{
-	covered = arg;
-	emit coveredChanged();
-}
-
 void EmbeddedLinker::generateColor()
 {
 	int result = 0;
@@ -191,10 +185,6 @@ QRectF EmbeddedLinker::boundingRect() const {
 	return mRectangle;
 }
 
-void EmbeddedLinker::setMaster(NodeElement *const master) {
-	this->master = master;
-}
-
 void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 	EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
 
@@ -219,7 +209,7 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-	if (mEdge != NULL)
+	if (mEdge != NULL) {
 		mEdge->arrangeSrcAndDst();
 		mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
 	}

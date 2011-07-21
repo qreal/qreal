@@ -1,5 +1,4 @@
 #include "element.h"
-#include "embedded/controls/embeddedControls.h"
 
 #include <QtGui>
 
@@ -62,12 +61,6 @@ void Element::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssi
 {
 	mGraphicalAssistApi = graphicalAssistApi;
 	mLogicalAssistApi = logicalAssistApi;
-}
-
-void Element::initEmbeddedControls() {
-	if (SettingsManager::value("EmbeddedControls", false).toBool() && !EmbeddedControls::existsInstance(this)) {
-		EmbeddedControls::createInstance(this, mLogicalAssistApi->editorManager());
-	}
 }
 
 void Element::initTitlesBy(QRectF const& contents)
