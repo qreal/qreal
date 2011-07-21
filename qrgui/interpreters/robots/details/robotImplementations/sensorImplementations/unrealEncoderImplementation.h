@@ -1,5 +1,5 @@
 #pragma once
-#include "AbstractEncoderImplementation.h"
+#include "abstractEncoderImplementation.h"
 #include "../../d2RobotModel/d2RobotModel.h"
 
 namespace qReal {

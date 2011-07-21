@@ -161,7 +161,6 @@ void Interpreter::configureSensors(sensorType::SensorTypeEnum const &port1
 void Interpreter::addThread(details::Thread * const thread)
 {
 	mThreads.append(thread);
-	qDebug() << mThreads.size();
 	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 	connect(thread, SIGNAL(newThread(details::blocks::Block*const)), this, SLOT(newThread(details::blocks::Block*const)));
 

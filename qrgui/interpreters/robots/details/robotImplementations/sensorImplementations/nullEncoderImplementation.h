@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QTimer>
-#include "AbstractEncoderImplementation.h"
+#include "abstractEncoderImplementation.h"
 
 namespace qReal {
 namespace interpreters {
