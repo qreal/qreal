@@ -1463,11 +1463,14 @@ QString MainWindow::getNextDirName(QString const &name)
 void MainWindow::flashRobot() {
 	QProcess *task = new QProcess(this);
 #ifdef Q_OS_UNIX
-	task->start("sh", QStringList() << QDir::currentPath() + "/flash.sh");
+	task->start("sh", QStringList() << QDir::currentPath() + "/generators/linux/flash.sh");
 #endif
 
 #ifdef Q_OS_WIN
-	task->start("cmd", QStringList() << QDir::currentPath() + "/flash.bat");
+	QString path = QDir::currentPath();
+	path.replace(QRegExp("/"), "\\");
+	qDebug() << path;
+	task->start("cmd", QStringList() << path + "\\generators\\windows\\flash.bat");
 #endif
 	if (task->waitForFinished())
 		QMessageBox::information(this, NULL, "robot successfully flashed", "ok");
@@ -1480,11 +1483,16 @@ void MainWindow::uploadProgram() {
 
 	QProcess *task = new QProcess(this);
 #ifdef Q_OS_UNIX
-	task->start("sh", QStringList() << QDir::currentPath() + "/upload.sh");
+	QMessageBox::information(this, NULL, "Currently not supported");
+	return;
+	//Currenty not supported
+	//task->start("sh", QStringList() << QDir::currentPath() + "/generators/linux/upload.sh");
 #endif
 
 #ifdef Q_OS_WIN
-	task->start("cmd", QStringList() << QDir::currentPath() + "/upload.bat");
+	QString path = QDir::currentPath();
+	path.replace(QRegExp("/"), "\\");
+	task->start("cmd", QStringList() << path + "\\generators\\windows\\upload.bat");
 #endif
 	if (task->waitForFinished())
 		QMessageBox::information(this, NULL, "program successfully\n uploaded", "ok");
