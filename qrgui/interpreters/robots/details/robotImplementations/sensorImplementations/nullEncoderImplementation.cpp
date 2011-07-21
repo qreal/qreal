@@ -17,3 +17,7 @@ void NullEncoderImplementation::read()
 	mActiveWaitingTimer.start();
 }
 
+void NullEncoderImplementation::nullificate()
+{
+}
+

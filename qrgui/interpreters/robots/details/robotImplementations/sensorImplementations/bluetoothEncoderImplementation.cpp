@@ -27,6 +27,19 @@ void BluetoothEncoderImplementation::read()
 	mRobotCommunicationInterface->send(this, command, 27);
 }
 
+void BluetoothEncoderImplementation::nullificate()
+{
+	QByteArray command(6, 0);
+	command[0] = 0x04;  //command length
+	command[1] = 0x00;
+	command[2] = telegramType::directCommandNoResponse;
+	command[3] = commandCode::RESETMOTORPOSITION;
+	command[4] = mPort;
+	command[5] = false;
+	mRobotCommunicationInterface->send(this, command, 5);
+
+}
+
 void BluetoothEncoderImplementation::readingDone(QObject *addressee, QByteArray const &reading)
 {
 	if (addressee != this)

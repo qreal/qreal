@@ -17,6 +17,7 @@ public:
 	EncoderSensor(robotImplementations::sensorImplementations::AbstractEncoderImplementation *encoderImpl, outputPort::OutputPortEnum const &port);
 	virtual ~EncoderSensor();
 	virtual void read();
+	virtual void nullificate();
 	robotImplementations::sensorImplementations::AbstractEncoderImplementation *encoderImpl();
 	void setImplementation(robotImplementations::sensorImplementations::AbstractEncoderImplementation *encoderImpl);
 

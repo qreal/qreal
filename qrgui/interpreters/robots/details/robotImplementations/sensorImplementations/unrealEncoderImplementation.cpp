@@ -13,3 +13,8 @@ void UnrealEncoderImplementation::read()
 {
 	emit response(0); //TODO: сделать поддержку в 2D-модели
 }
+
+void UnrealEncoderImplementation::nullificate()
+{
+	//TODO: сделать поддержку в 2D-модели
+}

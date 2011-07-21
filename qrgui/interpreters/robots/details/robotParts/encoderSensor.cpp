@@ -19,6 +19,11 @@ void EncoderSensor::read()
 	mEncoderImpl->read();
 }
 
+void EncoderSensor::nullificate()
+{
+	mEncoderImpl->nullificate();
+}
+
 details::robotImplementations::sensorImplementations::AbstractEncoderImplementation *EncoderSensor::encoderImpl()
 {
 	return mEncoderImpl;

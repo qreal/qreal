@@ -9,8 +9,8 @@
     <links type="qReal::IdList">
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{ff8d1e84-9af2-41fa-b885-1d05e719fdd1}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{14a4f096-e82d-4a73-83a9-344ad6919a01}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{f09a3e55-49ec-4153-a057-93b738ee574a}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{24f88847-0f10-4af4-9f68-3fd9da92dc91}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{f09a3e55-49ec-4153-a057-93b738ee574a}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0dcd6e55-e696-477f-a5a2-d4f82ad04d7d}"/>
     </links>
     <QString key="name" value="SensorBlock"/>

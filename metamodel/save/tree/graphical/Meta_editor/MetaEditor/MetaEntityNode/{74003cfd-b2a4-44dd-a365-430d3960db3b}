@@ -9,6 +9,7 @@
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{1c559793-17f3-4c4b-b519-0ec2f8f7fb62}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{14a4f096-e82d-4a73-83a9-344ad6919a01}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{565cf9f5-c08d-42eb-a2ea-c7631ee6b343}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{feac30d0-698d-4cc5-87c3-4e8d43015917}"/>
     </links>
     <QString key="name" value="AbstractNode"/>
     <QPointF key="position" value="342.392, 153"/>

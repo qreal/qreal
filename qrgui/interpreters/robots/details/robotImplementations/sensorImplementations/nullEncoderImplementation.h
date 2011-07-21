@@ -16,6 +16,7 @@ class NullEncoderImplementation : public AbstractEncoderImplementation
 public:
 	NullEncoderImplementation(outputPort::OutputPortEnum const &port);
 	virtual void read();
+	virtual void nullificate();
 
 protected slots:
 	virtual void timerTimeout();

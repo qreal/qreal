@@ -44,6 +44,7 @@ HEADERS += \
 	interpreters/robots/details/blocks/functionBlock.h \
 	interpreters/robots/details/blocks/ifBlock.h \
 	interpreters/robots/details/blocks/waitForEncoderBlock.h \
+	interpreters/robots/details/blocks/nullificationEncoderBlock.h \
 	interpreters/robots/details/robotParts/robotModel.h \
 	interpreters/robots/details/robotParts/brick.h \
 	interpreters/robots/details/robotParts/motor.h \
@@ -121,6 +122,7 @@ SOURCES += \
 	interpreters/robots/details/blocks/functionBlock.cpp \
 	interpreters/robots/details/blocks/ifBlock.cpp \
 	interpreters/robots/details/blocks/waitForEncoderBlock.cpp \
+	interpreters/robots/details/blocks/nullificationEncoderBlock.cpp \
 	interpreters/robots/details/robotParts/robotModel.cpp \
 	interpreters/robots/details/robotParts/touchSensor.cpp \
 	interpreters/robots/details/robotParts/sonarSensor.cpp \

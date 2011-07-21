@@ -16,6 +16,7 @@ public:
 	BluetoothEncoderImplementation(RobotCommunicationInterface *robotCommunicationInterface
 			,outputPort::OutputPortEnum const &port);
 	virtual void read();
+	virtual void nullificate();
 
 protected:
 	virtual void sensorSpecificProcessResponse(QByteArray const &reading);

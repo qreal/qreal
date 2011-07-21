@@ -18,6 +18,7 @@ public:
 	AbstractEncoderImplementation(outputPort::OutputPortEnum const &port);
 	virtual ~AbstractEncoderImplementation() {};
 	virtual void read() = 0;
+	virtual void nullificate() = 0;
 	void setPort(outputPort::OutputPortEnum const &port);
 
 signals:

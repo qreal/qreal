@@ -15,6 +15,7 @@ class UnrealEncoderImplementation : public AbstractEncoderImplementation
 public:
 	UnrealEncoderImplementation(outputPort::OutputPortEnum const &port, d2Model::D2RobotModel *d2Model);
 	virtual void read();
+	virtual void nullificate();
 
 protected:
 d2Model::D2RobotModel *mD2Model;
