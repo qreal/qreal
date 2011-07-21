@@ -263,7 +263,9 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 			QByteArray portValue = mNxtGen->mApi->stringProperty(logicElementId, curPort).toUtf8();
 
 			if (portValue == "Ультразвуковой сенсор") {
-				result.append("ecrobot_init_sonar_sensor(NXT_PORT_S" + QString::number(i) + ")");
+				result.append(QPair<QString, qReal::Id>(
+						"ecrobot_init_sonar_sensor(NXT_PORT_S" + QString::number(i) + ")",
+						mElementId));
 
 			} else if (portValue == "Сенсор нажатия (булево значение)") {
 			
