@@ -65,7 +65,7 @@ void Element::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssi
 }
 
 void Element::initEmbeddedControls() {
-	if (!EmbeddedControls::existsInstance(this)) {
+	if (SettingsManager::value("EmbeddedControls", false).toBool() && !EmbeddedControls::existsInstance(this)) {
 		EmbeddedControls::createInstance(this, mLogicalAssistApi->editorManager());
 	}
 }

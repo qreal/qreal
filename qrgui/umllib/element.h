@@ -4,6 +4,8 @@
 #include <QtGui/QAction>
 
 #include "../kernel/ids.h"
+#include "../kernel/settingsManager.h"
+
 #include "../pluginInterface/elementRepoInterface.h"
 #include "elementTitle.h"
 
