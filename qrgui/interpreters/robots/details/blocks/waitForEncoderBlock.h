@@ -20,6 +20,8 @@ public:
 	WaitForEncoderBlock(RobotModel *  const robotModel);
 	virtual void run();
 
+	virtual void stopActiveTimerInBlock();
+
 private slots:
 	void responseSlot(int reading);
 	void failureSlot();

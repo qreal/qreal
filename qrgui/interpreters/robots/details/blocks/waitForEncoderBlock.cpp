@@ -62,3 +62,8 @@ void WaitForEncoderBlock::timerTimeout()
 {
 	mEncoderSensor->read();
 }
+
+void WaitForEncoderBlock::stopActiveTimerInBlock()
+{
+	mActiveWaitingTimer.stop();
+}

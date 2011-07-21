@@ -40,9 +40,7 @@ void BluetoothEncoderImplementation::sensorSpecificProcessResponse(QByteArray co
 		qDebug() << "Something is wrong, response is empty";
 	} else {
 		unsigned int recieved = (0xff & reading[15]) | ((0xff & reading[16]) << 8)  | ((0xff & reading[17]) << 16) | ((0xff & reading[18]) << 24);
-		qDebug() << "recieved" << recieved;
-		for (int i = 11; i <= 26; ++i)
-			qDebug() << QString("(0xff & reading[%1])").arg(i) << (0xff & reading[i]);
+		qDebug() << "recieved in bluetoothEncoderImplementation.cpp" << recieved;
 		emit response(recieved);
 	}
 }
