@@ -36,6 +36,7 @@ void BluetoothEncoderImplementation::readingDone(QObject *addressee, QByteArray 
 
 void BluetoothEncoderImplementation::sensorSpecificProcessResponse(QByteArray const &reading)
 {
+	mState = idle;
 	if (reading.isEmpty()) {
 		qDebug() << "Something is wrong, response is empty";
 	} else {
