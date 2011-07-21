@@ -4,6 +4,8 @@
 #include <QtGui/QAction>
 
 #include "../kernel/ids.h"
+#include "../kernel/settingsManager.h"
+
 #include "../pluginInterface/elementRepoInterface.h"
 #include "elementTitle.h"
 
@@ -54,8 +56,8 @@ public:
 	void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
 public slots:
-	void singleSelectionState(const bool singleSelected);
-	void selectionState(const bool selected);
+	virtual void singleSelectionState(const bool singleSelected);
+	virtual void selectionState(const bool selected);
 
 signals:
 	void switchFolding(bool);
