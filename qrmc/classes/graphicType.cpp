@@ -37,6 +37,9 @@ bool GraphicType::init(QString const &context)
 	mContains << mApi->stringProperty(mId, "container").split(",", QString::SkipEmptyParts);
 
 	foreach(Id id, mApi->children(mId)) {
+		if (!mApi->isLogicalElement(id))
+			continue;
+
 		if (id.element() == metaEntityParent) {
 			QString parentName = mApi->name(id);
 			if (!mParents.contains(parentName))
@@ -71,8 +74,9 @@ bool GraphicType::initPossibleEdges()
 {
 	IdList children = mApi->children(mId);
 	foreach(Id id, children) {
-		if (id.element() != metaEntityPossibleEdge)
+		if (!mApi->isLogicalElement(id) || id.element() != metaEntityPossibleEdge)
 			continue;
+
 		QString beginName = mApi->stringProperty(id, "beginName");
 		QString endName = mApi->stringProperty(id, "endName");
 		QString directedField = mApi->stringProperty(id, "directed");
