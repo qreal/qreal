@@ -158,7 +158,7 @@ QString ExpressionsParser::parseIdentifier(const QString &stream, int &pos)
 void ExpressionsParser::skip(const QString &stream, int &pos)
 {
 	while (pos < stream.length() &&
-		   (isDelimiter(stream.at(pos)) || stream.at(pos).toAscii() == '<'))
+		   (isDelimiter(stream.at(pos)) || stream.at(pos).toAscii() == '<' ))
 	{
 		if (isHtmlBrTag(stream, pos)) {
 			pos += 4;
@@ -301,8 +301,6 @@ void ExpressionsParser::parseCommand(const QString &stream, int &pos)
 	if (isAssignment(stream.at(pos))) {
 		pos++;
 		Number n = parseExpression(stream, pos);
-		qDebug() << "parser" << variable << n.property("Number").toInt();
-		qDebug() << "parser stream" << stream;
 		if (!hasErrors()) {
 			Number::Type t1 = mVariables[variable].property("Type").toInt() ? Number::intType : Number::doubleType;
 			Number::Type t2 = n.property("Type").toInt() ? Number::intType : Number::doubleType;
@@ -627,6 +625,13 @@ void ExpressionsParser::error(const ParseErrorType &type, const QString &pos, co
 	case noExpression:
 		mHasParseErrors = true;
 		mErrorReporter->addCritical(QObject::tr("No value of expression"), mCurrentId);
+		break;
+	case incorrectVariableDeclaration:
+		mErrorReporter->addWarning(QObject::tr("Incorrect variable declaration: use function block for it"), mCurrentId);
+		break;
+	case unexpectedSymbolAfterTheEndOfExpression:
+		mHasParseErrors = true;
+		mErrorReporter->addWarning(QObject::tr("Unexpected symbol after the end of expression"), mCurrentId);
 		break;
 	}
 }

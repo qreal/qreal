@@ -11,6 +11,9 @@ RobotModel::RobotModel()
 	, mMotorA(0, &mRobotImpl->motorA())
 	, mMotorB(1, &mRobotImpl->motorA())
 	, mMotorC(2, &mRobotImpl->motorA())
+	, mEncoderA(&mRobotImpl->encoderA(), outputPort::port1)
+	, mEncoderB(&mRobotImpl->encoderB(), outputPort::port2)
+	, mEncoderC(&mRobotImpl->encoderC(), outputPort::port3)
 {
 	mSensors.resize(4);
 }
@@ -41,6 +44,7 @@ robotParts::ColorSensor *RobotModel::colorSensor(inputPort::InputPortEnum const 
 {
 	return dynamic_cast<robotParts::ColorSensor *>(mSensors[port]);
 }
+
 
 robotParts::Sensor *RobotModel::sensor(const inputPort::InputPortEnum &port) const
 {
@@ -118,6 +122,21 @@ robotParts::Motor &RobotModel::motorC()
 	return mMotorC;
 }
 
+robotParts::EncoderSensor &RobotModel::encoderA()
+{
+	return mEncoderA;
+}
+
+robotParts::EncoderSensor &RobotModel::encoderB()
+{
+	return mEncoderB;
+}
+
+robotParts::EncoderSensor &RobotModel::encoderC()
+{
+	return mEncoderC;
+}
+
 robotImplementations::AbstractRobotModelImplementation &RobotModel::robotImpl()
 {
 	return *mRobotImpl;
@@ -129,6 +148,10 @@ void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModel
 	mMotorA.setImplementation(&mRobotImpl->motorA());
 	mMotorB.setImplementation(&mRobotImpl->motorB());
 	mMotorC.setImplementation(&mRobotImpl->motorC());
+	mEncoderA.setImplementation(&mRobotImpl->encoderA());
+	mEncoderB.setImplementation(&mRobotImpl->encoderB());
+	mEncoderC.setImplementation(&mRobotImpl->encoderC());
+
 	mBrick.setImplementation(&mRobotImpl->brick());
 
 	for (int i = 0; i < 4; ++i) {

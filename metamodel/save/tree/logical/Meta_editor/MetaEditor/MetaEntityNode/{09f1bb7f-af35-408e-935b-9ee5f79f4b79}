@@ -25,6 +25,7 @@
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{f8ced802-8494-47f9-80e5-7f4c36055c64}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{bd31b05c-d12b-46a4-8e58-999b342c58bc}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{30f4e3ed-1ec7-45ae-91fd-38d6666f02c4}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{9c07a556-4060-4486-9fbe-affde83ac7fe}"/>
     </links>
     <QString key="name" value="AbstractNode"/>
     <outgoingConnections type="qReal::IdList"/>

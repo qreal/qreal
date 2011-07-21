@@ -20,10 +20,13 @@
     <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{a33aae13-dd73-4322-b32a-26f018822fdd}"/>
     <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{8410bcd0-3a12-48b0-aab2-efddeb8f5ac5}"/>
     <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{24f88847-0f10-4af4-9f68-3fd9da92dc91}"/>
-    <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{cbab6f6a-c050-4e49-b492-32ddba28c212}"/>
     <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0b717f1e-9d1d-4421-b88a-cc83314cc351}"/>
     <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0bcea992-59d8-437e-8980-8038cbd3e27f}"/>
     <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{ec45757b-b186-4970-96aa-4e1e236a6bc8}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{565cf9f5-c08d-42eb-a2ea-c7631ee6b343}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{d0a18fab-b5ae-4bb2-ba4a-6ff6323583e2}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{f09a3e55-49ec-4153-a057-93b738ee574a}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{0a912bde-cb5b-46a4-b6b1-fb1a59f0ed0a}"/>
   </children>
   <properties>
     <QPolygon key="configuration" value=""/>

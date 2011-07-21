@@ -32,6 +32,8 @@ PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * c
 	connect(mEditorPage, SIGNAL(gridChanged()), this, SIGNAL(gridChanged()));
 	connect(mMiscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
 
+	connect(mEditorPage, SIGNAL(fontChanged()), this, SIGNAL(fontChanged()));
+
 	int currentTab = SettingsManager::value("currentPreferencesTab", 0).toInt();
 	ui->listWidget->setCurrentRow(currentTab);
 	chooseTab(ui->listWidget->currentIndex());

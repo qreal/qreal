@@ -24,6 +24,10 @@ EmbeddedLinker::EmbeddedLinker()
 	color = Qt::blue;
 	mRectangle = QRectF(-size,-size,size*2,size*2);
 	mInnerRectangle = QRectF(-size/2,-size/2,size,size);
+	setAcceptsHoverEvents(true);
+	color = Qt::blue;
+
+	QObject::connect(this, SIGNAL(coveredChanged()), this, SLOT(changeShowState()));
 }
 
 EmbeddedLinker::~EmbeddedLinker() {}
@@ -32,7 +36,21 @@ NodeElement* EmbeddedLinker::getMaster() {
 	return master;
 }
 
-void EmbeddedLinker::generateColor() {
+void EmbeddedLinker::setMaster(NodeElement *element)
+{
+	master = element;
+	setParentItem(element);
+	QObject::connect(master->scene(), SIGNAL(selectionChanged()), this, SLOT(changeShowState()));
+}
+
+void EmbeddedLinker::setCovered(bool arg)
+{
+	covered = arg;
+	emit coveredChanged();
+}
+
+void EmbeddedLinker::generateColor()
+{
 	int result = 0;
 	QChar *data = edgeType.element().data();
 	while (!data->isNull()) {
@@ -40,7 +58,7 @@ void EmbeddedLinker::generateColor() {
 		++data;
 	}
 	result *= 666;
-	color =QColor(result%192+64,result%128+128,result%64+192).darker(0);
+	color = QColor(result % 192 + 64, result % 128 + 128, result % 64 + 192).darker(0);
 }
 
 void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*) {
@@ -180,29 +198,31 @@ void EmbeddedLinker::setMaster(NodeElement *const master) {
 void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 	EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
 
-	if (scene)
-	{
-		const QString type = "qrm:/" + master->id().editor() + "/" +
-							 master->id().diagram() + "/" + edgeType.element();
-		if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type)))
-		{
-			master->setConnectingState(true);
-			Id edgeId = scene->createElement(type, event->scenePos());
-			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
-		}
-		if (mEdge)
-		{
-			master->setSelected(false);
-			QPointF point = mapToItem(master,event->pos());
-			mEdge->placeStartTo(mEdge->mapFromItem(master,master->getNearestPort(point)));
-			mEdge->placeEndTo(mapToItem(mEdge,event->pos()));
-		}
+	if (!scene){
+		return;
+	}
+	const QString type = "qrm:/" + master->id().editor() + "/" +
+						 master->id().diagram() + "/" + edgeType.element();
+
+	if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type))){
+		master->setConnectingState(true);
+		Id edgeId = scene->createElement(type, event->scenePos());
+		mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
+	}
+
+	if (mEdge){
+		master->setSelected(false);
+		QPointF point = mapToItem(master, event->pos());
+		mEdge->placeStartTo(mEdge->mapFromItem(master, master->getNearestPort(point)));
+		mEdge->placeEndTo(mapToItem(mEdge, event->pos()));
 	}
 }
 
 void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 	if (mEdge != NULL)
+		mEdge->arrangeSrcAndDst();
 		mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
+	}
 }
 
 void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
@@ -227,6 +247,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 					mEdge->placeEndTo(mapFromItem(target,target->getNearestPort(target->pos())));
 					mEdge->connectToPort();	//it provokes to move target somehow, so it needs to place edge end and connect to port again
 					mEdge->placeEndTo(mapFromItem(target,target->getNearestPort(target->pos())));
+					mEdge->adjustLink();
 				}
 			}
 		}
@@ -234,3 +255,4 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 			mEdge->connectToPort();
 	}
 }
+

@@ -16,19 +16,28 @@ Number RobotsBlockParser::standartBlockParseProcess(const QString &stream, int &
 		error(emptyProcess);
 		return Number(0, Number::intType);
 	}
-	QStringList exprs = stream.split(";", QString::SkipEmptyParts);
-	for (int i = 0; i < (exprs.length() - 1); ++i) {
-		if (mHasParseErrors)
-			return Number(0, Number::intType);
-		int position = 0;
-		QString expr = exprs[i];
-		skip(expr, position);
-		parseCommand(expr + ";", position);
+
+	QStringList expressions = stream.split(";", QString::SkipEmptyParts);
+	QString expression = expressions.last();
+	expressions.removeLast();
+	if (!(expressions.isEmpty())) {
+		error(incorrectVariableDeclaration);
 	}
-	int position = 0;
-	QString valueExpression = exprs.last();
-	if (!valueExpression.contains("="))
-		return parseExpression(valueExpression, position);
+	skip(expression, pos);
+	if (!(expression.isEmpty())) {
+		if (pos == expression.size()){
+			error(noExpression);
+			return Number(0, Number::intType);
+		}
+		Number result = parseExpression(expression, pos);
+		skip(expression, pos);
+		if (pos != (expression.size())) {
+			error(unexpectedSymbolAfterTheEndOfExpression);
+			return Number(0, Number::intType);
+		}
+		else
+			return result;
+	}
 	else {
 		error(noExpression);
 		return Number(0, Number::intType);
@@ -37,25 +46,7 @@ Number RobotsBlockParser::standartBlockParseProcess(const QString &stream, int &
 
 void RobotsBlockParser::functionBlockParseProcess(const QString &stream, int &pos, const Id &curId)
 {
-	mCurrentId = curId;
-
-	if (isEmpty(stream, pos))
-		error(emptyProcess);
-
-	bool hasParseErrorsFlag = false;
-
-	QStringList exprs = stream.split(";", QString::SkipEmptyParts);
-	for (int i = 0; i < exprs.length(); ++i) {
-		if (mHasParseErrors) {
-			mHasParseErrors = false; /*чтобы не получить лишних ошибок, будем независимо обрабатывать переменные*/
-			hasParseErrorsFlag = true;
-		}
-		int position = 0;
-		QString expr = exprs[i];
-		skip(expr, position);
-		parseCommand(expr + ";", position);
-	}
-	mHasParseErrors = hasParseErrorsFlag;
+	parseProcess(stream, pos, curId);
 }
 
 void RobotsBlockParser::deselect()
