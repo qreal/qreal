@@ -7,7 +7,7 @@
 
 #include <drivers/nxt_motor.h>
 
-EMBOX_TEST(box_around_test);
+EMBOX_TEST(@@TEST_NAME@@);
 
 #define SONAR_PORT (&sensors[1])
 #define MOTOR0 (&motors[0])

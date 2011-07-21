@@ -11,14 +11,14 @@
 
 namespace qReal {
 	namespace generators {
-		class EmboxRobotGenerator {
+		class NxtOSEKRobotGenerator {
 			public:
-				explicit EmboxRobotGenerator(qrRepo::RepoApi *api,
+				explicit NxtOSEKRobotGenerator(qrRepo::RepoApi *api,
 						QString const &destinationPath = "");
-				explicit EmboxRobotGenerator(QString const &pathToRepo,
+				explicit NxtOSEKRobotGenerator(QString const &pathToRepo,
 						QString const &destinationPath = "");
 
-				~EmboxRobotGenerator();
+				~NxtOSEKRobotGenerator();
 
 				void generate();
 
@@ -26,13 +26,13 @@ namespace qReal {
 				friend class AbstractElementGenerator;
 				class AbstractElementGenerator {
 					public:
-						explicit AbstractElementGenerator(EmboxRobotGenerator *emboxGen,
+						explicit AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen,
 								qReal::Id elementId);
 
 						virtual ~AbstractElementGenerator() {};
 
 						virtual bool generate();
-							//must change mEmboxGen->mGeneratedStringSet
+							//must change mNxtGen->mGeneratedStringSet
 
 					protected:
 						virtual QList< QPair<QString, qReal::Id> >
@@ -49,14 +49,14 @@ namespace qReal {
 						virtual bool preGenerationCheck() = 0;
 						virtual bool nextElementsGeneration() = 0;
 
-						EmboxRobotGenerator *mEmboxGen;
+						NxtOSEKRobotGenerator *mNxtGen;
 						qReal::Id mElementId;
 				};
 
 				//for Beep, Engines etc
 				class SimpleElementGenerator: public AbstractElementGenerator {
 					public:
-						explicit SimpleElementGenerator(EmboxRobotGenerator *emboxGen,
+						explicit SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen,
 								qReal::Id elementId);
 
 					protected:
@@ -71,13 +71,13 @@ namespace qReal {
 
 						QList< QPair<QString, qReal::Id> > simpleCode();
 
-						QList<int> portsToEngineNumbers(QString const &portsProperty);
+						QList<QString> portsToEngineNames(QString const &portsProperty);
 				};
 
 				//for loops
 				class LoopElementGenerator: public AbstractElementGenerator {
 					public:
-						explicit LoopElementGenerator(EmboxRobotGenerator *emboxGen,
+						explicit LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen,
 								qReal::Id elementId);
 
 					protected:
@@ -94,7 +94,7 @@ namespace qReal {
 				//for if blocks
 				class IfElementGenerator : public AbstractElementGenerator {
 					public:	
-						explicit IfElementGenerator(EmboxRobotGenerator *emboxGen,
+						explicit IfElementGenerator(NxtOSEKRobotGenerator *emboxGen,
 								qReal::Id elementId);
 					
 					protected:
@@ -113,7 +113,7 @@ namespace qReal {
 				friend class ElementGeneratorFactory;
 				class ElementGeneratorFactory {
 					public:
-						static AbstractElementGenerator* generator(EmboxRobotGenerator *emboxGen,
+						static AbstractElementGenerator* generator(NxtOSEKRobotGenerator *emboxGen,
 								qReal::Id elementId) {
 						if (elementId.element() == "IfBlock")
 								return new IfElementGenerator(emboxGen, elementId);

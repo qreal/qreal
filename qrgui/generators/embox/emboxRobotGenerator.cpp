@@ -31,14 +31,8 @@ void EmboxRobotGenerator::generate() {
 	int curInitialNodeNumber = 0;
 	foreach (Id curInitialNode, initialNodes) {
 		if (mApi->isGraphicalElement(curInitialNode)) {
-			QFile resultFile("prog" + QString::number(curInitialNodeNumber) + ".c");
-			if (!resultFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-				qDebug() << "cannot open \"" << resultFile.fileName() << "\"";
-				return;
-			}
-
-			QTextStream out(&resultFile);
-
+			QString resultCode;
+			
 			mGeneratedStringSet.clear();
 			mElementToStringListNumbers.clear();
 			
@@ -49,12 +43,32 @@ void EmboxRobotGenerator::generate() {
 			foreach (stringPairList, mGeneratedStringSet) {
 				QPair<QString, qReal::Id> stringPair;
 				foreach (stringPair, stringPairList) {
-					out << stringPair.first << "\n";
+					resultCode += stringPair.first + "\n";
 				}
 			} //TODO
-			out.flush();
 			delete gen;
 
+			QFile templateFile("template.c");
+			if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+				qDebug() << "cannot open \"" << templateFile.fileName() << "\"";
+				return;
+			}
+
+			QTextStream templateStream(&templateFile);
+			QString resultString = templateStream.readAll();
+			resultString.replace("@@TEST_NAME@@", "prog" + QString::number(curInitialNodeNumber));
+			resultString.replace("@@CODE@@", resultCode);
+
+			QFile resultFile("prog" + QString::number(curInitialNodeNumber) + ".c");
+			if (!resultFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+				qDebug() << "cannot open \"" << resultFile.fileName() << "\"";
+				return;
+			}
+
+			QTextStream out(&resultFile);
+			out << resultString;
+			out.flush();
+			
 			resultFile.close();
 
 			curInitialNodeNumber++;
@@ -167,32 +181,53 @@ EmboxRobotGenerator::IfElementGenerator::IfElementGenerator(EmboxRobotGenerator 
 	AbstractElementGenerator(emboxGen, elementId) {
 }
 
+QList<int> EmboxRobotGenerator::SimpleElementGenerator::portsToEngineNumbers(QString const &portsProperty) {
+	QList<int> result;
+
+	//port A -> 0 
+	//port B -> 1
+	//port C -> 2
+	if (portsProperty.contains("A"))
+		result.append(0);
+	if (portsProperty.contains("B"))
+		result.append(1);
+	if (portsProperty.contains("C"))
+		result.append(2);
+
+	return result;
+}
+
 QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::SimpleElementGenerator::simpleCode() {
 	QList< QPair<QString, qReal::Id> > result;
 
 	qReal::Id logicElementId = mEmboxGen->mApi->logicalId(mElementId); //TODO
 
 	if (mElementId.element() == "EnginesForward") {
-		result.append(QPair<QString, qReal::Id>(
-					"motor_set_power(MOTOR0, " + QString::number(360 * mEmboxGen->mApi->property(logicElementId, "Power").toInt()) 
-					+ " / 100.0);",
-					mElementId));
+		foreach (int engineNumber, portsToEngineNumbers(mEmboxGen->mApi->stringProperty(logicElementId, "Ports"))) {
+			result.append(QPair<QString, qReal::Id>(
+						"motor_set_power(MOTOR" + QString::number(engineNumber) + ", 360 * (" + mEmboxGen->mApi->stringProperty(logicElementId, "Power") + ")"
+						+ " / 100.0);",
+						mElementId));
+		}
 
 	} else if (mElementId.element() == "EnginesBackward") {
-		result.append(QPair<QString, qReal::Id>(
-					"motor_set_power(MOTOR0, " + QString::number(-360 * mEmboxGen->mApi->property(logicElementId, "Power").toInt()) 
-					+ " / 100.0);",
-					mElementId));
-
+		foreach (int engineNumber, portsToEngineNumbers(mEmboxGen->mApi->stringProperty(logicElementId, "Ports"))) {
+			result.append(QPair<QString, qReal::Id>(
+						"motor_set_power(MOTOR" + QString::number(engineNumber) + ", -360 * (" + mEmboxGen->mApi->stringProperty(logicElementId, "Power") + ")"
+						+ " / 100.0);",
+						mElementId));
+		}
 
 	} else if (mElementId.element() == "EnginesStop") {
-		result.append(QPair<QString, qReal::Id>(
-					"motor_set_power(MOTOR0, 0);",
-					mElementId));
+		foreach (int engineNumber, portsToEngineNumbers(mEmboxGen->mApi->stringProperty(logicElementId, "Ports"))) {
+			result.append(QPair<QString, qReal::Id>(
+						"motor_set_power(MOTOR" + QString::number(engineNumber) + ", 0);",
+						mElementId));
+		}
 
 	} else if (mElementId.element() == "Timer") {
 		result.append(QPair<QString, qReal::Id>(
-					"usleep(" + QString::number(mEmboxGen->mApi->property(logicElementId, "Delay").toInt()) + ")",
+					"usleep(" + QString::number(mEmboxGen->mApi->property(logicElementId, "Delay").toInt()) + ");",
 					mElementId));
 
 	} else if (mElementId.element() == "Beep") {
@@ -201,8 +236,14 @@ QList< QPair<QString, qReal::Id> > EmboxRobotGenerator::SimpleElementGenerator::
 					mElementId));
 
 	} else if (mElementId.element() == "Function") {
+		QByteArray byteFuncCode = mEmboxGen->mApi->property(logicElementId, "Body").toString().toUtf8();
+		qDebug() << byteFuncCode;
+		byteFuncCode.replace("Сенсор1", "nxt_sensor_get_val(SONAR_PORT)");
+		
+		QString funcCode = QString::fromUtf8(byteFuncCode);
+
 		result.append(QPair<QString, qReal::Id>(
-					"Function:  " + mEmboxGen->mApi->property(logicElementId, "Body").toString(),
+					funcCode.right(funcCode.length() - 4), //TODO: just delete "var "
 					mElementId));
 
 	} else if (mElementId.element() == "FinalNode") {
