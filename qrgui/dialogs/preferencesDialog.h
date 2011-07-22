@@ -25,6 +25,8 @@ public:
 		miscellanious = 2,
 		compiler = 3,
 		debugger = 4,
+		robotSettings = 5,
+		features = 6
 	};
 
 protected:
@@ -34,6 +36,7 @@ signals:
 	void gridChanged();
 	void iconsetChanged();
 	void settingsApplied();
+	void fontChanged();
 
 private slots:
 	void cancel();
@@ -50,4 +53,5 @@ private:
 	PreferencesPage *mDebuggerPage;
 	PreferencesPage *mEditorPage;
 	PreferencesPage *mMiscellaniousPage;
+	PreferencesPage *mFeaturesPage;
 };

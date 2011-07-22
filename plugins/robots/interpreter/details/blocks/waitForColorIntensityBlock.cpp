@@ -81,3 +81,8 @@ QList<Block::SensorPortPair> WaitForColorIntensityBlock::usedSensors() const
 {
 	return QList<SensorPortPair>();  // Unchecked for now since it needs one of some different color sensor modes.
 }
+
+void WaitForColorIntensityBlock::stopActiveTimerInBlock()
+{
+	mActiveWaitingTimer.stop();
+}

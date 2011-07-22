@@ -1,13 +1,14 @@
 #include "elementTitle.h"
 
 #include <QtGui/QTextCursor>
+#include <QFontDatabase>
 
 #include "nodeElement.h"
 #include "edgeElement.h"
-
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &text)
 	: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mPoint(x, y), mBinding(""), mBackground(Qt::transparent)
 {
+	setTitleFont();
 	setPos(x, y);
 	setHtml(text);
 
@@ -16,7 +17,19 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &text)
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly)
 	: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mPoint(x, y), mBinding(binding), mBackground(Qt::transparent)
 {
+	setTitleFont();
 	setPos(x, y);
+}
+
+void ElementTitle::setTitleFont() {
+	if (SettingsManager::value("CustomFont", true).toBool()) {
+		QFont font;
+		font.fromString(SettingsManager::value("CurrentFont", "ololo").toString());
+		setFont(font);
+	} else {
+		setFont(QFont(QFontDatabase::applicationFontFamilies(
+			QFontDatabase::addApplicationFont(QDir::currentPath() + "/DejaVuSansCondensed.ttf")).at(0), 7));
+	}
 }
 
 void ElementTitle::init(QRectF const& contents)

@@ -33,6 +33,8 @@ public:
 
 	virtual QList<SensorPortPair> usedSensors() const;
 
+	virtual void stopActiveTimerInBlock();
+
 signals:
 	void done(blocks::Block * const nextBlock);
 	void newThread(details::blocks::Block * const startBlock);

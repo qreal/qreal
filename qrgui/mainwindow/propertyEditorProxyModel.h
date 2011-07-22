@@ -52,7 +52,7 @@ public:
 	bool isCurrentIndex(QModelIndex const &index) const;
 
 private slots:
-	void rereadData();
+	void rereadData(QModelIndex const &, QModelIndex const &);
 
 private:
 	enum AttributeClassEnum {

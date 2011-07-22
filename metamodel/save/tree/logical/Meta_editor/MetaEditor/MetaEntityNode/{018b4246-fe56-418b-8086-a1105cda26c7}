@@ -15,7 +15,7 @@
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{692fda09-8c15-4df4-acd0-a5b5fce0919e}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{40800b3b-01f3-473e-ba69-dd1f2851d0f7}"/>
     </links>
     <QString key="name" value="WaitForSonarDistance"/>
     <outgoingConnections type="qReal::IdList"/>

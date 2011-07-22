@@ -45,11 +45,14 @@ public:
 	robotParts::SonarSensor *sonarSensor(inputPort::InputPortEnum const &port) const;
 	robotParts::Sensor *sensor(inputPort::InputPortEnum const &port) const;
 	robotParts::ColorSensor *colorSensor(inputPort::InputPortEnum const &port) const;
-	robotParts::EncoderSensor *encoderSensor(inputPort::InputPortEnum const &port) const;
 
 	robotParts::Motor &motorA();
 	robotParts::Motor &motorB();
 	robotParts::Motor &motorC();
+	robotParts::EncoderSensor &encoderA();
+	robotParts::EncoderSensor &encoderB();
+	robotParts::EncoderSensor &encoderC();
+
 	robotImplementations::AbstractRobotModelImplementation &robotImpl();
 	void setRobotImplementation(robotImplementations::AbstractRobotModelImplementation *robotImpl);
 
@@ -59,6 +62,9 @@ private:
 	robotParts::Motor mMotorA;
 	robotParts::Motor mMotorB;
 	robotParts::Motor mMotorC;
+	robotParts::EncoderSensor mEncoderA;
+	robotParts::EncoderSensor mEncoderB;
+	robotParts::EncoderSensor mEncoderC;
 
 	QVector<robotParts::Sensor *> mSensors;  // Has ownership.
 

@@ -8,6 +8,9 @@ NullRobotModelImplementation::NullRobotModelImplementation()
 	, mMotorA(0)
 	, mMotorB(1)
 	, mMotorC(2)
+	, mEncoderA(outputPort::port1)
+	, mEncoderB(outputPort::port2)
+	, mEncoderC(outputPort::port3)
 {
 	mActiveWaitingTimer.setInterval(100);
 	mActiveWaitingTimer.setSingleShot(true);
@@ -82,3 +85,19 @@ motorImplementations::NullMotorImplementation &NullRobotModelImplementation::mot
 {
 	return mMotorC;
 }
+
+sensorImplementations::NullEncoderImplementation &NullRobotModelImplementation::encoderA()
+{
+	return mEncoderA;
+}
+
+sensorImplementations::NullEncoderImplementation &NullRobotModelImplementation::encoderB()
+{
+	return mEncoderB;
+}
+
+sensorImplementations::NullEncoderImplementation &NullRobotModelImplementation::encoderC()
+{
+	return mEncoderC;
+}
+

@@ -15,8 +15,9 @@
 #include "sdfRenderer.h"
 #include "element.h"
 #include "edgeElement.h"
+#include "embedded/linkers/embeddedLinker.h"
 #include "../editorPluginInterface/elementImpl.h"
-#include "embeddedLinker.h"
+#include "embedded/linkers/embeddedLinker.h"
 
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"
@@ -99,6 +100,8 @@ public:
 	virtual void checkConnectionsToPort();
 
 public slots:
+	virtual void singleSelectionState(const bool singleSelected);
+	virtual void selectionState(const bool selected);
 	void switchGrid(bool isChecked);
 	void copyAndPlaceOnDiagram();
 
@@ -150,8 +153,8 @@ private:
 	qreal distanceFromPointPort(int pointPortNumber, const QPointF &location) const;
 	qreal getNearestPointOfLinePort(int linePortNumber, const QPointF &location) const;
 
-	bool initEmbeddedLinkers();
-	void moveEmbeddedLinkers();
+	void initEmbeddedLinkers();
+	void setVisibleEmbeddedLinkers(const bool show);
 
 	void connectTemporaryRemovedLinksToPort(qReal::IdList const &rtemporaryRemovedLinks, QString const &direction);
 

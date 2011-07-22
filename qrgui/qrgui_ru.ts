@@ -45,37 +45,37 @@
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="20"/>
         <source>&amp;Browse...</source>
-        <translation>Просмотр</translation>
+        <translation type="unfinished">Просмотр</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="21"/>
         <source>Subversion place</source>
-        <translation>Место в SVNе</translation>
+        <translation type="unfinished">Место в SVNе</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="22"/>
         <source>Checkout to directory:</source>
-        <translation>Чекаут в папку:</translation>
+        <translation type="unfinished">Чекаут в папку:</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="25"/>
         <source>Ok</source>
-        <translation>Так точно</translation>
+        <translation type="unfinished">Так точно</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="26"/>
         <source>Cancel</source>
-        <translation>Отставить</translation>
+        <translation type="unfinished">Отставить</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="45"/>
         <source>Checkout options</source>
-        <translation>Настройки чекаута</translation>
+        <translation type="unfinished">Настройки чекаута</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="51"/>
         <source>Select directory</source>
-        <translation>Выбор папки</translation>
+        <translation type="unfinished">Выбор папки</translation>
     </message>
 </context>
 <context>
@@ -164,7 +164,7 @@
         <location filename="interpreters/robots/details/d2RobotModel/d2Form.ui" line="157"/>
         <location filename="interpreters/robots/details/d2RobotModel/d2Form.ui" line="213"/>
         <source>color</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">датчик цвета</translation>
     </message>
     <message>
         <location filename="interpreters/robots/details/d2RobotModel/d2Form.ui" line="118"/>
@@ -172,7 +172,7 @@
         <location filename="interpreters/robots/details/d2RobotModel/d2Form.ui" line="162"/>
         <location filename="interpreters/robots/details/d2RobotModel/d2Form.ui" line="218"/>
         <source>sonar</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">сонар</translation>
     </message>
     <message>
         <location filename="interpreters/robots/details/d2RobotModel/d2Form.ui" line="170"/>
@@ -180,7 +180,7 @@
         <location filename="interpreters/robots/details/d2RobotModel/d2Form.ui" line="190"/>
         <location filename="interpreters/robots/details/d2RobotModel/d2Form.ui" line="226"/>
         <source>add</source>
-        <translation>добавить</translation>
+        <translation type="unfinished">добавить</translation>
     </message>
     <message>
         <location filename="interpreters/robots/details/d2RobotModel/d2Form.ui" line="200"/>
@@ -190,22 +190,22 @@
     <message>
         <location filename="interpreters/robots/details/d2RobotModel/d2Form.ui" line="251"/>
         <source>Save World Model</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Сохранить модель окружения</translation>
     </message>
     <message>
         <location filename="interpreters/robots/details/d2RobotModel/d2Form.ui" line="258"/>
         <source>Load World Model</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Загрузить модель окружения</translation>
     </message>
     <message>
         <location filename="interpreters/robots/details/d2RobotModel/d2Form.ui" line="265"/>
         <source>Run program</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Запустить программу</translation>
     </message>
     <message>
         <location filename="interpreters/robots/details/d2RobotModel/d2Form.ui" line="272"/>
         <source>Stop program</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Остановить программу</translation>
     </message>
 </context>
 <context>
@@ -253,6 +253,29 @@
     <message>
         <source>Configuration</source>
         <translation type="obsolete">Конфигурация</translation>
+    </message>
+</context>
+<context>
+    <name>EdgeElement</name>
+    <message>
+        <location filename="umllib/edgeElement.cpp" line="28"/>
+        <source>Add point</source>
+        <translation>Добавить точку</translation>
+    </message>
+    <message>
+        <location filename="umllib/edgeElement.cpp" line="29"/>
+        <source>Delete point</source>
+        <translation>Удалить точку</translation>
+    </message>
+    <message>
+        <location filename="umllib/edgeElement.cpp" line="30"/>
+        <source>Squarize</source>
+        <translation>Сделать квадратным</translation>
+    </message>
+    <message>
+        <location filename="umllib/edgeElement.cpp" line="31"/>
+        <source>Minimize</source>
+        <translation type="unfinished">Уменьшить</translation>
     </message>
 </context>
 <context>
@@ -326,58 +349,58 @@
 <context>
     <name>EditorViewScene</name>
     <message>
-        <location filename="view/editorviewscene.cpp" line="181"/>
-        <location filename="view/editorviewscene.cpp" line="218"/>
+        <location filename="view/editorViewScene.cpp" line="184"/>
+        <location filename="view/editorViewScene.cpp" line="221"/>
         <source>Discard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Очистить</translation>
     </message>
     <message>
-        <location filename="view/editorviewscene.cpp" line="184"/>
+        <location filename="view/editorViewScene.cpp" line="187"/>
         <source>Create new element</source>
         <translation>Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="view/editorviewscene.cpp" line="392"/>
+        <location filename="view/editorViewScene.cpp" line="395"/>
         <source>Add connection</source>
         <translation>Добавить провязку</translation>
     </message>
     <message>
-        <location filename="view/editorviewscene.cpp" line="399"/>
+        <location filename="view/editorViewScene.cpp" line="402"/>
         <source>Disconnect</source>
         <translation>Убрать провязку</translation>
     </message>
     <message>
-        <location filename="view/editorviewscene.cpp" line="405"/>
+        <location filename="view/editorViewScene.cpp" line="408"/>
         <source>Add usage</source>
         <translation>Добавить использование</translation>
     </message>
     <message>
-        <location filename="view/editorviewscene.cpp" line="412"/>
+        <location filename="view/editorViewScene.cpp" line="415"/>
         <source>Delete usage</source>
         <translation>Убрать использование</translation>
     </message>
     <message>
-        <location filename="view/editorviewscene.cpp" line="418"/>
+        <location filename="view/editorViewScene.cpp" line="421"/>
         <source>Go to</source>
         <translation>Перейти</translation>
     </message>
     <message>
-        <location filename="view/editorviewscene.cpp" line="420"/>
+        <location filename="view/editorViewScene.cpp" line="423"/>
         <source>Forward connection</source>
         <translation>По провязке вперёд</translation>
     </message>
     <message>
-        <location filename="view/editorviewscene.cpp" line="421"/>
+        <location filename="view/editorViewScene.cpp" line="424"/>
         <source>Backward connection</source>
         <translation>По провязке назад</translation>
     </message>
     <message>
-        <location filename="view/editorviewscene.cpp" line="422"/>
+        <location filename="view/editorViewScene.cpp" line="425"/>
         <source>Uses</source>
         <translation>Использует</translation>
     </message>
     <message>
-        <location filename="view/editorviewscene.cpp" line="423"/>
+        <location filename="view/editorViewScene.cpp" line="426"/>
         <source>Used in</source>
         <translation>Используется в</translation>
     </message>
@@ -385,17 +408,17 @@
 <context>
     <name>GesturesWidget</name>
     <message>
-        <location filename="mainwindow/gesturesShow/gestureswidget.ui" line="14"/>
+        <location filename="dialogs/gesturesShow/gesturesWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Жесты</translation>
     </message>
     <message>
-        <location filename="mainwindow/gesturesShow/gestureswidget.ui" line="46"/>
+        <location filename="dialogs/gesturesShow/gesturesWidget.ui" line="46"/>
         <source>List of mouse gestures</source>
         <translation>Список жестов мышью</translation>
     </message>
     <message>
-        <location filename="mainwindow/gesturesShow/gestureswidget.ui" line="59"/>
+        <location filename="dialogs/gesturesShow/gesturesWidget.ui" line="59"/>
         <source>Click to see how to draw it:</source>
         <translation>Кликните, чтобы посмотреть, как рисовать жест</translation>
     </message>
@@ -403,28 +426,27 @@
 <context>
     <name>MainWindowUi</name>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="14"/>
         <source>QReal:Robots</source>
         <oldsource>QReal</oldsource>
-        <translation>QReal:Robots</translation>
+        <translation type="obsolete">QReal:Robots</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="44"/>
+        <location filename="mainwindow/mainWindow.ui" line="44"/>
         <source>&amp;File</source>
         <translation>Ф&amp;айл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="56"/>
+        <location filename="mainwindow/mainWindow.ui" line="56"/>
         <source>&amp;View</source>
         <translation>&amp;Вид</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="66"/>
+        <location filename="mainwindow/mainWindow.ui" line="66"/>
         <source>&amp;Help</source>
         <translation>Справка</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="75"/>
+        <location filename="mainwindow/mainWindow.ui" line="75"/>
         <source>&amp;Settings</source>
         <translation>Настройки</translation>
     </message>
@@ -437,32 +459,32 @@
         <translation type="obsolete">Svn</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="87"/>
+        <location filename="mainwindow/mainWindow.ui" line="87"/>
         <source>Tools</source>
         <translation>Инструменты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="103"/>
+        <location filename="mainwindow/mainWindow.ui" line="103"/>
         <source>File Toolbar</source>
         <translation>Панель инструментов &quot;Файл&quot;</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="122"/>
+        <location filename="mainwindow/mainWindow.ui" line="122"/>
         <source>Mini Map</source>
         <translation>Миникарта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="160"/>
+        <location filename="mainwindow/mainWindow.ui" line="160"/>
         <source>Palette</source>
         <translation>Палитра</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="181"/>
+        <location filename="mainwindow/mainWindow.ui" line="181"/>
         <source>View Toolbar</source>
         <translation>Панель инструментов &quot;Вид&quot;</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="311"/>
+        <location filename="mainwindow/mainWindow.ui" line="318"/>
         <source>Logical Model Explorer</source>
         <translation>Обозреватель логической модели</translation>
     </message>
@@ -471,142 +493,142 @@
         <translation type="obsolete">Панель инструментов &quot;Генераторы&quot;</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="218"/>
+        <location filename="mainwindow/mainWindow.ui" line="218"/>
         <source>Error List</source>
         <translation>Список ошибок</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="233"/>
+        <location filename="mainwindow/mainWindow.ui" line="233"/>
         <source>Graphical Model Explorer</source>
         <translation>Обозреватель графической модели</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="255"/>
+        <location filename="mainwindow/mainWindow.ui" line="267"/>
         <source>Property Editor</source>
         <translation>Редактор свойств</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="289"/>
+        <location filename="mainwindow/mainWindow.ui" line="295"/>
         <source>Interpreter Toolbar</source>
         <translation>Панель инструментов &quot;Интерпретатор&quot;</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="348"/>
+        <location filename="mainwindow/mainWindow.ui" line="355"/>
         <source>&amp;Quit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="357"/>
+        <location filename="mainwindow/mainWindow.ui" line="364"/>
         <source>&amp;Connect</source>
         <translation>Подключиться</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="366"/>
+        <location filename="mainwindow/mainWindow.ui" line="373"/>
         <source>Zoom In</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="375"/>
+        <location filename="mainwindow/mainWindow.ui" line="382"/>
         <source>Zoom Out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="386"/>
+        <location filename="mainwindow/mainWindow.ui" line="393"/>
         <source>Antialiasing</source>
         <translation>Антиалиасинг</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="394"/>
+        <location filename="mainwindow/mainWindow.ui" line="401"/>
         <source>OpenGL Renderer</source>
         <translation>Рендерер OpenGL</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="403"/>
+        <location filename="mainwindow/mainWindow.ui" line="410"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="408"/>
+        <location filename="mainwindow/mainWindow.ui" line="415"/>
         <source>Export to SVG</source>
         <translation>Экспортировать в SVG</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="417"/>
+        <location filename="mainwindow/mainWindow.ui" line="424"/>
         <source>&amp;Disconnect</source>
         <translation>Отключиться</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="429"/>
+        <location filename="mainwindow/mainWindow.ui" line="436"/>
         <source>Begin Transaction</source>
         <translation>Начать транзакцию</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="441"/>
+        <location filename="mainwindow/mainWindow.ui" line="448"/>
         <source>Commit Transaction</source>
         <translation>Закоммитить транзакцию</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="453"/>
+        <location filename="mainwindow/mainWindow.ui" line="460"/>
         <source>Rollback Transaction</source>
         <translation>Откатить транзакцию</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="458"/>
+        <location filename="mainwindow/mainWindow.ui" line="465"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="461"/>
+        <location filename="mainwindow/mainWindow.ui" line="468"/>
         <source>Del</source>
         <translation>Del</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="469"/>
+        <location filename="mainwindow/mainWindow.ui" line="476"/>
         <source>Open in new tab</source>
         <translation>Открыть в новой вкладке</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="474"/>
+        <location filename="mainwindow/mainWindow.ui" line="481"/>
         <source>Small Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="479"/>
+        <location filename="mainwindow/mainWindow.ui" line="486"/>
         <source>About...</source>
         <translation>О программе...</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="484"/>
+        <location filename="mainwindow/mainWindow.ui" line="491"/>
         <source>About Qt...</source>
         <translation>О Qt...</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="492"/>
+        <location filename="mainwindow/mainWindow.ui" line="499"/>
         <source>Plugins...</source>
         <translation>Плагины...</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="503"/>
+        <location filename="mainwindow/mainWindow.ui" line="510"/>
         <source>Show splashscreen</source>
         <translation>Показывать сплешскрин</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="512"/>
+        <location filename="mainwindow/mainWindow.ui" line="519"/>
         <source>Exterminatus</source>
         <translation>Экстерминатус</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="517"/>
+        <location filename="mainwindow/mainWindow.ui" line="524"/>
         <source>Export to XMI</source>
         <translation>Экспортировать в XMI</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="522"/>
+        <location filename="mainwindow/mainWindow.ui" line="529"/>
         <source>Generate to Java</source>
         <translation>Генерировать в Java</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="527"/>
+        <location filename="mainwindow/mainWindow.ui" line="534"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
@@ -615,191 +637,196 @@
         <translation type="obsolete">Генерировать редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="532"/>
+        <location filename="mainwindow/mainWindow.ui" line="539"/>
         <source>Generate to Hascol</source>
         <translation>Генерировать в Hascol</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="537"/>
+        <location filename="mainwindow/mainWindow.ui" line="544"/>
         <source>Save as...</source>
         <translation>Сохранить как...</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="542"/>
+        <location filename="mainwindow/mainWindow.ui" line="549"/>
         <source>Open...</source>
         <translation>Открыть...</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="545"/>
+        <location filename="mainwindow/mainWindow.ui" line="552"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="550"/>
+        <location filename="mainwindow/mainWindow.ui" line="557"/>
         <source>Parse Hascol sources</source>
         <translation>Импортировать исходники Hascol</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="553"/>
+        <location filename="mainwindow/mainWindow.ui" line="560"/>
         <source>Build diagrams from existing Hascol sources</source>
         <translation>Построить диаграммы из существующих исходников Hascol</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="558"/>
-        <location filename="mainwindow/mainwindow.ui" line="561"/>
+        <location filename="mainwindow/mainWindow.ui" line="565"/>
+        <location filename="mainwindow/mainWindow.ui" line="568"/>
         <source>Parse Java Libraries</source>
         <translation>Импортировать библиотеки Java</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="572"/>
+        <location filename="mainwindow/mainWindow.ui" line="579"/>
         <source>Show grid</source>
         <translation>Показать сетку</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="577"/>
+        <location filename="mainwindow/mainWindow.ui" line="584"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="582"/>
+        <location filename="mainwindow/mainWindow.ui" line="589"/>
         <source>Generate Editor</source>
         <translation>Генерировать редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="590"/>
+        <location filename="mainwindow/mainWindow.ui" line="597"/>
         <source>Parse Editor xml</source>
         <translation>Импортировать xml с метамоделью</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="598"/>
+        <location filename="mainwindow/mainWindow.ui" line="605"/>
         <source>Switch on grid</source>
         <translation>Включить сетку</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="603"/>
+        <location filename="mainwindow/mainWindow.ui" line="610"/>
         <source>Commit</source>
         <translation>Закоммитить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="608"/>
+        <location filename="mainwindow/mainWindow.ui" line="615"/>
         <source>Show</source>
         <translation>Показать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="613"/>
+        <location filename="mainwindow/mainWindow.ui" line="620"/>
         <source>Preferences...</source>
         <translation>Настройки...</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="618"/>
+        <location filename="mainwindow/mainWindow.ui" line="625"/>
         <source>Checkout...</source>
         <translation>Зачекаутить...</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="623"/>
+        <location filename="mainwindow/mainWindow.ui" line="630"/>
         <source>Generate Editor (qrmc)</source>
         <translation>Генерировать редактор (qrmc)</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="634"/>
+        <location filename="mainwindow/mainWindow.ui" line="641"/>
         <source>Switch on alignment</source>
         <translation>Включить направляющие</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="645"/>
+        <location filename="mainwindow/mainWindow.ui" line="652"/>
         <source>Show alignment</source>
         <translation>Показать направляющие</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="650"/>
+        <location filename="mainwindow/mainWindow.ui" line="657"/>
         <source>Debug</source>
         <translation>Отладка</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="653"/>
+        <location filename="mainwindow/mainWindow.ui" line="660"/>
         <source>F9</source>
         <translation>F9</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="658"/>
+        <location filename="mainwindow/mainWindow.ui" line="665"/>
         <source>Debug (Single step)</source>
         <translation>Отладка (один шаг)</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="661"/>
+        <location filename="mainwindow/mainWindow.ui" line="668"/>
         <source>F10</source>
         <translation>F10</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="666"/>
+        <location filename="mainwindow/mainWindow.ui" line="673"/>
         <source>Run</source>
         <translation>Выполнить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="669"/>
+        <location filename="mainwindow/mainWindow.ui" line="676"/>
         <source>Run current diagram on a robot using existing Bluetooth connection</source>
         <translation>Выполнить текущую диаграмму на роботе, используя существующее соединение по Bluetooth</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="672"/>
+        <location filename="mainwindow/mainWindow.ui" line="679"/>
         <source>F5</source>
         <translation>F5</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="677"/>
+        <location filename="mainwindow/mainWindow.ui" line="684"/>
         <source>Robot Settings...</source>
         <translation>Настройки робота...</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="682"/>
-        <location filename="mainwindow/mainwindow.ui" line="685"/>
+        <location filename="mainwindow/mainWindow.ui" line="689"/>
+        <location filename="mainwindow/mainWindow.ui" line="692"/>
         <source>Stop Running</source>
         <translation>Прервать выполнение</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="688"/>
+        <location filename="mainwindow/mainWindow.ui" line="695"/>
         <source>Shift+F5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="693"/>
+        <location filename="mainwindow/mainWindow.ui" line="700"/>
         <source>Stop Robot</source>
         <translation>Отключить робота</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="698"/>
+        <location filename="mainwindow/mainWindow.ui" line="705"/>
         <source>New Diagram</source>
         <translation>Новая диаграмма</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="701"/>
+        <location filename="mainwindow/mainWindow.ui" line="708"/>
         <source>Create new diagram in a current model</source>
         <translation>Создать новую диаграмму в текущей модели</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="717"/>
+        <location filename="mainwindow/mainWindow.ui" line="724"/>
         <source>2D model</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">2D-модель</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="720"/>
+        <location filename="mainwindow/mainWindow.ui" line="727"/>
         <source>Show 2D model</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Показать 2D-модель</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="723"/>
+        <location filename="mainwindow/mainWindow.ui" line="730"/>
         <source>Ctrl+Shift+F12</source>
         <translation>Ctrl+Shift+F12</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="728"/>
+        <location filename="mainwindow/mainWindow.ui" line="735"/>
         <source>New Project</source>
-        <translation>Новый проект</translation>
+        <translation type="unfinished">Новый проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="731"/>
+        <location filename="mainwindow/mainWindow.ui" line="738"/>
         <source>Ctrl+Shift+N</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+N</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.ui" line="743"/>
+        <source>Connect To Robot</source>
+        <translation type="unfinished">Подключиться к роботу</translation>
     </message>
     <message>
         <source>Start debugging</source>
@@ -810,13 +837,13 @@
         <translation type="obsolete">Ctrl+F10</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="706"/>
-        <location filename="mainwindow/mainwindow.ui" line="709"/>
+        <location filename="mainwindow/mainWindow.ui" line="713"/>
+        <location filename="mainwindow/mainWindow.ui" line="716"/>
         <source>Fullscreen Mode</source>
         <translation>Полный экран</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.ui" line="712"/>
+        <location filename="mainwindow/mainWindow.ui" line="719"/>
         <source>Ctrl+Shift+F</source>
         <translation>Ctrl+Shift+F</translation>
     </message>
@@ -861,170 +888,183 @@
     </message>
 </context>
 <context>
+    <name>NodeElement</name>
+    <message>
+        <location filename="umllib/nodeElement.cpp" line="18"/>
+        <source>Switch on grid</source>
+        <translation>Включить сетку</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesBehaviourPage</name>
     <message>
-        <location filename="mainwindow/preferencesPages/behaviourPage.ui" line="38"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="38"/>
         <source>Show window</source>
-        <translation type="unfinished">Показать окно</translation>
+        <translation>Показать окно</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/behaviourPage.ui" line="52"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="52"/>
         <source>Automatics</source>
-        <translation type="unfinished">Автоматизация</translation>
+        <translation>Автоматизация</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/behaviourPage.ui" line="86"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="86"/>
         <source>Palette tab switching</source>
-        <translation type="unfinished">Перелючение табов в палитре</translation>
+        <translation>Перелючение табов в палитре</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/behaviourPage.ui" line="100"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="99"/>
+        <source>Arrange Links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="116"/>
         <source>Warning window</source>
-        <translation type="unfinished">Окно предупреждений</translation>
+        <translation>Окно предупреждений</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/behaviourPage.ui" line="128"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="144"/>
         <source>New diagram creating</source>
-        <translation type="unfinished">Создание новой диаграммы</translation>
+        <translation>Создание новой диаграммы</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/behaviourPage.ui" line="141"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="157"/>
         <source>Save on exit</source>
-        <translation type="unfinished">Сохраняться при выходе</translation>
+        <translation>Сохраняться при выходе</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/behaviourPage.ui" line="154"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="170"/>
         <source>Choose diagrams to save</source>
-        <translation type="unfinished">Предлагать выбор диаграмм для сохранения</translation>
+        <translation>Предлагать выбор диаграмм для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/behaviourPage.ui" line="168"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="184"/>
         <source>Suggestions</source>
-        <translation type="unfinished">Предложения</translation>
+        <translation>Предложения</translation>
     </message>
 </context>
 <context>
     <name>PreferencesCompilerPage</name>
     <message>
-        <location filename="mainwindow/preferencesPages/compilerPage.ui" line="29"/>
+        <location filename="dialogs/preferencesPages/compilerPage.ui" line="29"/>
         <source>path to qmake</source>
-        <translation type="unfinished">Путь к qmake</translation>
+        <translation>Путь к qmake</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/compilerPage.ui" line="39"/>
+        <location filename="dialogs/preferencesPages/compilerPage.ui" line="39"/>
         <source>path to make</source>
-        <translation type="unfinished">Путь к make</translation>
+        <translation>Путь к make</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/compilerPage.ui" line="49"/>
+        <location filename="dialogs/preferencesPages/compilerPage.ui" line="49"/>
         <source>plugin file extension</source>
-        <translation type="unfinished">Расширение файла с плагином</translation>
+        <translation>Расширение файла с плагином</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/compilerPage.ui" line="62"/>
+        <location filename="dialogs/preferencesPages/compilerPage.ui" line="62"/>
         <source>prefix</source>
-        <translation type="unfinished">Префикс</translation>
+        <translation>Префикс</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/compilerPage.ui" line="78"/>
+        <location filename="dialogs/preferencesPages/compilerPage.ui" line="78"/>
         <source>Linux</source>
-        <translation type="unfinished">Linux</translation>
+        <translation>Linux</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/compilerPage.ui" line="91"/>
+        <location filename="dialogs/preferencesPages/compilerPage.ui" line="91"/>
         <source>Other</source>
-        <translation type="unfinished">Прочее</translation>
+        <translation>Прочее</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/compilerPage.ui" line="104"/>
+        <location filename="dialogs/preferencesPages/compilerPage.ui" line="104"/>
         <source>Windows</source>
-        <translation type="unfinished">Windows</translation>
+        <translation>Windows</translation>
     </message>
 </context>
 <context>
     <name>PreferencesDebuggerPage</name>
     <message>
-        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="23"/>
+        <location filename="dialogs/preferencesPages/debuggerPage.ui" line="23"/>
         <source>Configuration</source>
-        <translation type="unfinished">Конфигурация</translation>
+        <translation>Конфигурация</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="51"/>
+        <location filename="dialogs/preferencesPages/debuggerPage.ui" line="51"/>
         <source>Debug timeout (ms):</source>
-        <translation type="unfinished">Задержка при отладке:</translation>
+        <translation>Задержка при отладке:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="74"/>
+        <location filename="dialogs/preferencesPages/debuggerPage.ui" line="74"/>
         <source>Color of highlight:</source>
-        <translation type="unfinished">Цвет подсветки:</translation>
+        <translation>Цвет подсветки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="98"/>
+        <location filename="dialogs/preferencesPages/debuggerPage.ui" line="98"/>
         <source>Presentation</source>
-        <translation type="unfinished">Представление</translation>
+        <translation>Представление</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="126"/>
+        <location filename="dialogs/preferencesPages/debuggerPage.ui" line="126"/>
         <source>Debugger path:</source>
-        <translation type="unfinished">Путь до отладчика:</translation>
+        <translation>Путь до отладчика:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="139"/>
+        <location filename="dialogs/preferencesPages/debuggerPage.ui" line="139"/>
         <source>Builder path:</source>
-        <translation type="unfinished">Путь до сборщика:</translation>
+        <translation>Путь до сборщика:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="152"/>
+        <location filename="dialogs/preferencesPages/debuggerPage.ui" line="152"/>
         <source>Generated code file name:</source>
-        <translation type="unfinished">Имя файла со сгенерированным кодом:</translation>
+        <translation>Имя файла со сгенерированным кодом:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="165"/>
+        <location filename="dialogs/preferencesPages/debuggerPage.ui" line="165"/>
         <source>Builded file name:</source>
-        <translation type="unfinished">Имя собранного файла:</translation>
+        <translation>Имя собранного файла:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="218"/>
-        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="231"/>
-        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="267"/>
+        <location filename="dialogs/preferencesPages/debuggerPage.ui" line="218"/>
+        <location filename="dialogs/preferencesPages/debuggerPage.ui" line="231"/>
+        <location filename="dialogs/preferencesPages/debuggerPage.ui" line="267"/>
         <source>Browse...</source>
-        <translation type="unfinished">Просмотр...</translation>
+        <translation>Просмотр...</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/debuggerPage.ui" line="244"/>
+        <location filename="dialogs/preferencesPages/debuggerPage.ui" line="244"/>
         <source>Working directory:</source>
-        <translation type="unfinished">Рабочая папка:</translation>
+        <translation>Рабочая папка:</translation>
     </message>
 </context>
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="mainwindow/preferencesDialog.ui" line="32"/>
+        <location filename="dialogs/preferencesDialog.ui" line="32"/>
         <source>Preferences</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.ui" line="42"/>
+        <location filename="dialogs/preferencesDialog.ui" line="42"/>
         <source>OK</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.ui" line="49"/>
+        <location filename="dialogs/preferencesDialog.ui" line="49"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.ui" line="56"/>
+        <location filename="dialogs/preferencesDialog.ui" line="56"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.ui" line="85"/>
+        <location filename="dialogs/preferencesDialog.ui" line="85"/>
         <source>Editor</source>
         <translation>Редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.ui" line="130"/>
+        <location filename="dialogs/preferencesDialog.ui" line="130"/>
         <source>Robot Settings</source>
         <translation>Робот</translation>
     </message>
@@ -1077,7 +1117,7 @@
         <translation type="obsolete">Увеличение</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.ui" line="103"/>
+        <location filename="dialogs/preferencesDialog.ui" line="103"/>
         <source>Miscellanious</source>
         <translation>Разное</translation>
     </message>
@@ -1107,7 +1147,7 @@
         <translation type="obsolete">Режим, угодный богам Хаоса</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.ui" line="94"/>
+        <location filename="dialogs/preferencesDialog.ui" line="94"/>
         <source>Behaviour</source>
         <translation>Поведение</translation>
     </message>
@@ -1144,7 +1184,7 @@
         <translation type="obsolete">Показать окно</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.ui" line="112"/>
+        <location filename="dialogs/preferencesDialog.ui" line="112"/>
         <source>Compiler</source>
         <translation>Компилятор</translation>
     </message>
@@ -1173,7 +1213,7 @@
         <translation type="obsolete">Префикс</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesDialog.ui" line="121"/>
+        <location filename="dialogs/preferencesDialog.ui" line="121"/>
         <source>Debugger</source>
         <translation>Отладчик</translation>
     </message>
@@ -1229,226 +1269,241 @@
 <context>
     <name>PreferencesEditorPage</name>
     <message>
-        <location filename="mainwindow/preferencesPages/editorPage.ui" line="57"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="57"/>
         <source>Size</source>
-        <translation type="unfinished">Размер</translation>
+        <translation>Размер</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/editorPage.ui" line="89"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="89"/>
         <source>Indent</source>
-        <translation type="unfinished">Отступ</translation>
+        <translation>Отступ</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/editorPage.ui" line="124"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="124"/>
         <source>Show grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать сетку</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/editorPage.ui" line="146"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="146"/>
         <source>Activate grid</source>
-        <translation type="unfinished">Активировать сетку</translation>
+        <translation>Активировать сетку</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/editorPage.ui" line="212"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="212"/>
         <source>Width</source>
-        <translation type="unfinished">Ширина</translation>
+        <translation>Ширина</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/editorPage.ui" line="225"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="225"/>
         <source>Cell size</source>
-        <translation type="unfinished">Размер ячейки</translation>
+        <translation>Размер ячейки</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/editorPage.ui" line="244"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="244"/>
         <source>Activate alignment</source>
-        <translation type="unfinished">Активировать направляющие</translation>
+        <translation>Активировать направляющие</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/editorPage.ui" line="266"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="266"/>
         <source>Show alignment</source>
-        <translation type="unfinished">Показать направляющие</translation>
+        <translation>Показать направляющие</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/editorPage.ui" line="283"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="283"/>
         <source>Grid</source>
-        <translation type="unfinished">Сетка</translation>
+        <translation>Сетка</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/editorPage.ui" line="296"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="296"/>
         <source>Embedded Linkers</source>
-        <translation type="unfinished">Встроенные линкеры</translation>
+        <translation>Встроенные линкеры</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/editorPage.ui" line="324"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="324"/>
         <source>Zoom factor</source>
-        <translation type="unfinished">Фактор увеличения</translation>
+        <translation>Фактор увеличения</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/editorPage.ui" line="363"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="363"/>
         <source>Zoom</source>
-        <translation type="unfinished">Увеличение</translation>
+        <translation>Увеличение</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="376"/>
+        <source>Font</source>
+        <translation type="unfinished">Шрифт</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="404"/>
+        <source>Use some of system fonts</source>
+        <translation type="unfinished">Использовать некоторые системные шрифты</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="417"/>
+        <source>Choose Font</source>
+        <translation type="unfinished">Выбрать шрифт</translation>
     </message>
 </context>
 <context>
     <name>PreferencesMiscellaniousPage</name>
     <message>
-        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="48"/>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="48"/>
         <source>Browse</source>
-        <translation type="unfinished">Выбрать</translation>
+        <translation>Выбрать</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="62"/>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="62"/>
         <source>Images</source>
-        <translation type="unfinished">Изображения</translation>
+        <translation>Изображения</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="90"/>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="90"/>
         <source>Show splashscreen</source>
-        <translation type="unfinished">Показывать сплешскрин</translation>
+        <translation>Показывать сплешскрин</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="103"/>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="103"/>
         <source>Chaotic Edition</source>
-        <translation type="unfinished">Режим, угодный богам Хаоса</translation>
+        <translation>Режим, угодный богам Хаоса</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="116"/>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="116"/>
         <source>Square Line Mode</source>
-        <translation type="unfinished">Режим перпендикулярных линий</translation>
+        <translation>Режим перпендикулярных линий</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="145"/>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="145"/>
         <source>Antialiasing</source>
-        <translation type="unfinished">Антиалиасинг</translation>
+        <translation>Антиалиасинг</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="158"/>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="158"/>
         <source>OpenGL rendering</source>
-        <translation type="unfinished">Рендеринг OpenGL</translation>
+        <translation>Рендеринг OpenGL</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="172"/>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="172"/>
         <source>Graphics</source>
-        <translation type="unfinished">Графика</translation>
+        <translation>Графика</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/miscellaniousPage.ui" line="185"/>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="185"/>
         <source>Other</source>
-        <translation type="unfinished">Прочее</translation>
+        <translation>Прочее</translation>
     </message>
 </context>
 <context>
     <name>PreferencesRobotSettingsPage</name>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="53"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.cpp" line="53"/>
         <source>Unused</source>
         <translation>Не используется</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="54"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.cpp" line="54"/>
         <source>Touch sensor (boolean value)</source>
         <translation>Сенсор нажатия (булево значение)</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="55"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.cpp" line="55"/>
         <source>Touch sensor (raw value)</source>
         <translation>Сенсор нажатия (сырое значение)</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="56"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.cpp" line="56"/>
         <source>Sonar sensor</source>
         <translation>Ультразвуковой сенсор</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="57"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.cpp" line="57"/>
         <source>Color sensor (full colors)</source>
         <translation>Сенсор цвета (полные цвета)</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="58"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.cpp" line="58"/>
         <source>Color sensor (red)</source>
         <translation>Сенсор цвета (красный)</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="59"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.cpp" line="59"/>
         <source>Color sensor (green)</source>
         <translation>Сенсор цвета (зелёный)</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="60"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.cpp" line="60"/>
         <source>Color sensor (blue)</source>
         <translation>Сенсор цвета (синий)</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.cpp" line="61"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.cpp" line="61"/>
         <source>Color sensor (passive)</source>
         <translation>Сенсор цвета (пассивный)</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="23"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.ui" line="23"/>
         <source>Type of Robot Model</source>
-        <translation type="unfinished">Тип модели робота</translation>
+        <translation>Тип модели робота</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="32"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.ui" line="32"/>
         <source>Null model</source>
-        <translation type="unfinished">Пустая модель</translation>
+        <translation>Пустая модель</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="39"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.ui" line="39"/>
         <source>2D robot model</source>
-        <translation type="unfinished">Двухмерная модель</translation>
+        <translation>Двухмерная модель</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="46"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.ui" line="46"/>
         <source>Real robot</source>
-        <translation type="unfinished">Реальный робот</translation>
+        <translation>Реальный робот</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="65"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.ui" line="65"/>
         <source>Sensors Settings</source>
-        <translation type="unfinished">Настройки сенсоров</translation>
+        <translation>Настройки сенсоров</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="74"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.ui" line="74"/>
         <source>Port 1:</source>
-        <translation type="unfinished">Порт 1:</translation>
+        <translation>Порт 1:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="84"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.ui" line="84"/>
         <source>Port 2:</source>
-        <translation type="unfinished">Порт 2:</translation>
+        <translation>Порт 2:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="94"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.ui" line="94"/>
         <source>Port 3:</source>
-        <translation type="unfinished">Порт 3:</translation>
+        <translation>Порт 3:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="104"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.ui" line="104"/>
         <source>Port 4:</source>
-        <translation type="unfinished">Порт 4:</translation>
+        <translation>Порт 4:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="123"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.ui" line="123"/>
         <source>Bluetooth Settings</source>
-        <translation type="unfinished">Настройки Bluetooth</translation>
+        <translation>Настройки Bluetooth</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="129"/>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="139"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.ui" line="129"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.ui" line="139"/>
         <source>COM Port:</source>
-        <translation type="unfinished">COM-порт:</translation>
+        <translation>COM-порт:</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="149"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.ui" line="149"/>
         <source>No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3</source>
-        <translation type="unfinished">COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
+        <translation>COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
     </message>
     <message>
-        <location filename="mainwindow/preferencesPages/robotSettingsPage.ui" line="159"/>
+        <location filename="dialogs/preferencesPages/robotSettingsPage.ui" line="159"/>
         <source>Specify COM port manually</source>
-        <translation type="unfinished">Указать COM-порт вручную</translation>
+        <translation>Указать COM-порт вручную</translation>
     </message>
 </context>
 <context>
@@ -1482,17 +1537,17 @@
         <translation type="obsolete">Конфигурация</translation>
     </message>
     <message>
-        <location filename="mainwindow/propertyeditorproxymodel.cpp" line="53"/>
+        <location filename="mainwindow/propertyEditorProxyModel.cpp" line="53"/>
         <source>value</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow/propertyeditorproxymodel.cpp" line="53"/>
+        <location filename="mainwindow/propertyEditorProxyModel.cpp" line="53"/>
         <source>name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">имя</translation>
     </message>
     <message>
-        <location filename="mainwindow/propertyeditorproxymodel.cpp" line="195"/>
+        <location filename="mainwindow/propertyEditorProxyModel.cpp" line="196"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
@@ -1507,6 +1562,14 @@
     <message>
         <source>Metatype</source>
         <translation type="obsolete">Метатип</translation>
+    </message>
+</context>
+<context>
+    <name>PushButtonPropertyManager</name>
+    <message>
+        <location filename="view/pushButtonProperty.cpp" line="22"/>
+        <source>Click to choose</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1531,7 +1594,7 @@
         <translation>Используется зарезервированная переменная &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="interpreters/robots/details/robotsBlockParser.cpp" line="94"/>
+        <location filename="interpreters/robots/details/robotsBlockParser.cpp" line="85"/>
         <source>Sensor</source>
         <translation>Сенсор</translation>
     </message>
@@ -1562,22 +1625,22 @@
     <message>
         <location filename="interpreters/expressionsParser/expressionsParser.cpp" line="601"/>
         <source>Unexpected end of stream at %1. Mb you forget &apos;;&apos;?</source>
-        <translation type="unfinished">Неверное завершение строки на позиции %1. Возможно, пропущен символ &quot;;&quot;.</translation>
+        <translation type="unfinished">Неверное завершение строки в позиции %1. Возможно, пропущен символ &apos;;&apos;?</translation>
     </message>
     <message>
         <location filename="interpreters/expressionsParser/expressionsParser.cpp" line="605"/>
         <source>Unexpected symbol at %1 : expected %2, got %3</source>
-        <translation type="unfinished">Неверный символ на позиции %1: ожидается %2, получен %3</translation>
+        <translation type="unfinished">Нераспознаваемый символ в позиции %1: ожидается %2, получен %3</translation>
     </message>
     <message>
         <location filename="interpreters/expressionsParser/expressionsParser.cpp" line="608"/>
         <source>Types mismatch at %1: %2 = %3. Possible loss of data</source>
-        <translation type="unfinished">Несовместимость типов на позиции %1: %2 = %3. Возможно, пропущены данные.</translation>
+        <translation type="unfinished">Несовместимость типов в позиции %1.</translation>
     </message>
     <message>
         <location filename="interpreters/expressionsParser/expressionsParser.cpp" line="612"/>
         <source>Unknown identifier at %1 &apos; %2 &apos;</source>
-        <translation type="unfinished">Необъявленная переменна на позиции %1: &apos;%2&apos;.</translation>
+        <translation type="unfinished">Необъявленная переменная в позиции %1 &apos;%2&apos;</translation>
     </message>
     <message>
         <location filename="interpreters/expressionsParser/expressionsParser.cpp" line="615"/>
@@ -1595,40 +1658,481 @@
         <translation>Отсутвует выражение для подсчета значения поля</translation>
     </message>
     <message>
-        <location filename="interpreters/robots/interpreter.cpp" line="210"/>
+        <location filename="interpreters/expressionsParser/expressionsParser.cpp" line="630"/>
+        <source>Incorrect variable declaration: use function block for it</source>
+        <translation type="unfinished">Некорректное объявление переменных: используйте для этого блок &quot;Функция&quot;</translation>
+    </message>
+    <message>
+        <location filename="interpreters/expressionsParser/expressionsParser.cpp" line="634"/>
+        <source>Unexpected symbol after the end of expression</source>
+        <translation type="unfinished">Нераспознаваемый символ после оканчания выражения</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/interpreter.cpp" line="231"/>
         <source>Sensor1</source>
         <translation>Сенсор1</translation>
     </message>
     <message>
-        <location filename="interpreters/robots/interpreter.cpp" line="215"/>
+        <location filename="interpreters/robots/interpreter.cpp" line="236"/>
         <source>Sensor2</source>
         <translation>Сенсор2</translation>
     </message>
     <message>
-        <location filename="interpreters/robots/interpreter.cpp" line="220"/>
+        <location filename="interpreters/robots/interpreter.cpp" line="241"/>
         <source>Sensor3</source>
         <translation>Сенсор3</translation>
     </message>
     <message>
-        <location filename="interpreters/robots/interpreter.cpp" line="225"/>
+        <location filename="interpreters/robots/interpreter.cpp" line="246"/>
         <source>Sensor4</source>
         <translation>Сенсор4</translation>
     </message>
 </context>
 <context>
+    <name>QtBoolEdit</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="228"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="238"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="263"/>
+        <source>True</source>
+        <translation> </translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="238"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="263"/>
+        <source>False</source>
+        <translation> </translation>
+    </message>
+</context>
+<context>
+    <name>QtBoolPropertyManager</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="1529"/>
+        <source>True</source>
+        <translation> </translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="1530"/>
+        <source>False</source>
+        <translation> </translation>
+    </message>
+</context>
+<context>
+    <name>QtCharEdit</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="1601"/>
+        <source>Clear Char</source>
+        <translation>Очистить</translation>
+    </message>
+</context>
+<context>
+    <name>QtColorEditWidget</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="2215"/>
+        <source>...</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>QtColorPropertyManager</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6259"/>
+        <source>Red</source>
+        <translation>Красный</translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6267"/>
+        <source>Green</source>
+        <translation>Зелёный</translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6275"/>
+        <source>Blue</source>
+        <translation>Синий</translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6283"/>
+        <source>Alpha</source>
+        <translation>Прозрачность</translation>
+    </message>
+</context>
+<context>
+    <name>QtCursorDatabase</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="57"/>
+        <source>Arrow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="59"/>
+        <source>Up Arrow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="61"/>
+        <source>Cross</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="63"/>
+        <source>Wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="65"/>
+        <source>IBeam</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="67"/>
+        <source>Size Vertical</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="69"/>
+        <source>Size Horizontal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="71"/>
+        <source>Size Backslash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="73"/>
+        <source>Size Slash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="75"/>
+        <source>Size All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="77"/>
+        <source>Blank</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="79"/>
+        <source>Split Vertical</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="81"/>
+        <source>Split Horizontal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="83"/>
+        <source>Pointing Hand</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="85"/>
+        <source>Forbidden</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="87"/>
+        <source>Open Hand</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="89"/>
+        <source>Closed Hand</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="91"/>
+        <source>What&apos;s This</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="93"/>
+        <source>Busy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QtFontEditWidget</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="2424"/>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="2444"/>
+        <source>Select Font</source>
+        <translation>Выбрать шрифт</translation>
+    </message>
+</context>
+<context>
+    <name>QtFontPropertyManager</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5933"/>
+        <source>Family</source>
+        <translation>Семейство</translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5946"/>
+        <source>Point Size</source>
+        <translation>Размер</translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5954"/>
+        <source>Bold</source>
+        <translation>Полужирный</translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5961"/>
+        <source>Italic</source>
+        <translation>Наклонный</translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5968"/>
+        <source>Underline</source>
+        <translation>Подчёркнутый</translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5975"/>
+        <source>Strikeout</source>
+        <translation>Зачёркнутый</translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5982"/>
+        <source>Kerning</source>
+        <translation>Кернинг</translation>
+    </message>
+</context>
+<context>
+    <name>QtKeySequenceEdit</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="323"/>
+        <source>Clear Shortcut</source>
+        <translation>Очистить</translation>
+    </message>
+</context>
+<context>
+    <name>QtLocalePropertyManager</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2449"/>
+        <source>%1, %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2502"/>
+        <source>Language</source>
+        <translation>Язык</translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2510"/>
+        <source>Country</source>
+        <translation>Страна</translation>
+    </message>
+</context>
+<context>
+    <name>QtPointFPropertyManager</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2919"/>
+        <source>(%1, %2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2990"/>
+        <source>X</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2998"/>
+        <source>Y</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>QtPointPropertyManager</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2679"/>
+        <source>(%1, %2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2716"/>
+        <source>X</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2723"/>
+        <source>Y</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>QtPropertyBrowserUtils</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="178"/>
+        <source>[%1, %2, %3] (%4)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="208"/>
+        <source>[%1, %2]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QtRectFPropertyManager</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4424"/>
+        <source>[(%1, %2), %3 x %4]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4580"/>
+        <source>X</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4588"/>
+        <source>Y</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4596"/>
+        <source>Width</source>
+        <translation>Ширина</translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4605"/>
+        <source>Height</source>
+        <translation>Высота</translation>
+    </message>
+</context>
+<context>
+    <name>QtRectPropertyManager</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3994"/>
+        <source>[(%1, %2), %3 x %4]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4114"/>
+        <source>X</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4121"/>
+        <source>Y</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4128"/>
+        <source>Width</source>
+        <translation>Ширина</translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4136"/>
+        <source>Height</source>
+        <translation>Высота</translation>
+    </message>
+</context>
+<context>
+    <name>QtSizeFPropertyManager</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3602"/>
+        <source>%1 x %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3732"/>
+        <source>Width</source>
+        <translation>Ширина</translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3741"/>
+        <source>Height</source>
+        <translation>Высота</translation>
+    </message>
+</context>
+<context>
+    <name>QtSizePolicyPropertyManager</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5445"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5446"/>
+        <source>&lt;Invalid&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5447"/>
+        <source>[%1, %2, %3, %4]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5492"/>
+        <source>Horizontal Policy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5501"/>
+        <source>Vertical Policy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5510"/>
+        <source>Horizontal Stretch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5518"/>
+        <source>Vertical Stretch</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QtSizePropertyManager</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3238"/>
+        <source>%1 x %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3334"/>
+        <source>Width</source>
+        <translation>Ширина</translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3342"/>
+        <source>Height</source>
+        <translation>Высота</translation>
+    </message>
+</context>
+<context>
+    <name>QtTreePropertyBrowser</name>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qttreepropertybrowser.cpp" line="476"/>
+        <source>Property</source>
+        <translation>Свойство</translation>
+    </message>
+    <message>
+        <location filename="thirdparty/qtpropertybrowser/src/qttreepropertybrowser.cpp" line="477"/>
+        <source>Value</source>
+        <translation>Значение</translation>
+    </message>
+</context>
+<context>
     <name>RefWindow</name>
     <message>
-        <location filename="mainwindow/refWindow.ui" line="14"/>
+        <location filename="dialogs/refWindow.ui" line="14"/>
         <source>Reference window</source>
         <translation>Окно ссылок</translation>
     </message>
     <message>
-        <location filename="mainwindow/refWindow.ui" line="20"/>
+        <location filename="dialogs/refWindow.ui" line="20"/>
         <source>&amp;OK</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="mainwindow/refWindow.ui" line="27"/>
+        <location filename="dialogs/refWindow.ui" line="27"/>
         <source>&amp;Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1758,170 +2262,170 @@
 <context>
     <name>ShapeEdit</name>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="14"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="14"/>
         <source>Form</source>
         <translation>Редактор формы фигур</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="26"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="26"/>
         <source>Draw line</source>
         <translation>Рисовать линию</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="70"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="70"/>
         <source>Draw curve</source>
         <translation>Рисовать кривую</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="127"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="127"/>
         <source>Draw rectangle</source>
         <translation>Рисовать прямоугольник</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="168"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="168"/>
         <source>Draw ellipse</source>
         <translation>Рисовать эллипс</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="209"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="209"/>
         <source>Add static text</source>
         <translation>Добавить статический текст</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="250"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="250"/>
         <source>Add dynamic text</source>
         <translation>Добавить динамический текст</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="313"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="313"/>
         <source>Stylus</source>
         <translation>Стилус</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="354"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="354"/>
         <source>Add picture text</source>
         <translation>Добавить текст-картинку</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="386"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="386"/>
         <source>Add line port</source>
         <translation>Добавить линейный порт</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="427"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="427"/>
         <source>Add point port</source>
         <translation>Добавить точечный порт</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="489"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="489"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="516"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="516"/>
         <source>Family</source>
         <translation>Семейство</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="565"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="565"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="607"/>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="889"/>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1028"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="607"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="889"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="1028"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="628"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="628"/>
         <source>Text format</source>
         <translation>Формат текста</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="640"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="640"/>
         <source>Italic</source>
         <translation>Наклонный</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="653"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="653"/>
         <source> Bold</source>
         <translation>Полужирный</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="666"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="666"/>
         <source>Underline</source>
         <translation>Подчёркнутый</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="688"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="688"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="708"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="708"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="715"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="715"/>
         <source>Save to Xml</source>
         <translation>Сохранить в Xml</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="725"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="725"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="738"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="738"/>
         <source>Delete Item</source>
         <translation>Удалить элемент</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="751"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="751"/>
         <source>Clear</source>
         <translation>Очистить</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="758"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="758"/>
         <source>Save as picture</source>
         <translation>Сохранить как картинку</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="801"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="801"/>
         <source>Pen</source>
         <translation>Перо</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="841"/>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="986"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="841"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="986"/>
         <source>Style</source>
         <translation>Стиль</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="931"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="931"/>
         <source>Width</source>
         <translation>Ширина</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="949"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="949"/>
         <source>Brush</source>
         <translation>Кисть</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1053"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="1053"/>
         <source>None</source>
         <translation>Ничего</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1075"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.ui" line="1075"/>
         <source>Image</source>
         <translation>Картинка</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.cpp" line="229"/>
+        <location filename="dialogs/shapeEdit/shapeEdit.cpp" line="229"/>
         <source>Saving</source>
         <translation>Сохранение</translation>
     </message>
@@ -1929,32 +2433,23 @@
 <context>
     <name>UML::EdgeElement</name>
     <message>
-        <location filename="umllib/uml_edgeelement.cpp" line="29"/>
         <source>Add point</source>
-        <translation>Добавить точку</translation>
+        <translation type="obsolete">Добавить точку</translation>
     </message>
     <message>
-        <location filename="umllib/uml_edgeelement.cpp" line="30"/>
         <source>Delete point</source>
-        <translation>Удалить точку</translation>
+        <translation type="obsolete">Удалить точку</translation>
     </message>
     <message>
-        <location filename="umllib/uml_edgeelement.cpp" line="31"/>
         <source>Squarize</source>
-        <translation>Сделать квадратным</translation>
-    </message>
-    <message>
-        <location filename="umllib/uml_edgeelement.cpp" line="32"/>
-        <source>Minimize</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Сделать квадратным</translation>
     </message>
 </context>
 <context>
     <name>UML::NodeElement</name>
     <message>
-        <location filename="umllib/uml_nodeelement.cpp" line="19"/>
         <source>Switch on grid</source>
-        <translation>Включить сетку</translation>
+        <translation type="obsolete">Включить сетку</translation>
     </message>
 </context>
 <context>
@@ -2224,12 +2719,12 @@
         <translation type="obsolete">Вы хотите создать новый проект?</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="462"/>
+        <location filename="mainwindow/mainWindow.cpp" line="471"/>
         <source>Some plugins are missing</source>
         <translation>Некоторых плагинов не хватает</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="486"/>
+        <location filename="mainwindow/mainWindow.cpp" line="495"/>
         <source>Select directory with a save to open</source>
         <translation>Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
@@ -2242,12 +2737,12 @@
         <translation type="obsolete">&lt;center&gt;Это &lt;b&gt;QReal&lt;/b&gt;&lt;br&gt;Просто ещё одно CASE-средство&lt;/center&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="637"/>
+        <location filename="mainwindow/mainWindow.cpp" line="649"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="638"/>
+        <location filename="mainwindow/mainWindow.cpp" line="650"/>
         <source>To begin:
 1. To add items to diagrams, drag &amp; drop them from Palette to editor
 2. Get more help from author :)</source>
@@ -2268,26 +2763,26 @@
         <translation type="obsolete">Закончено</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="669"/>
-        <location filename="mainwindow/mainwindow.cpp" line="693"/>
-        <location filename="mainwindow/mainwindow.cpp" line="716"/>
-        <location filename="mainwindow/mainwindow.cpp" line="745"/>
-        <location filename="mainwindow/mainwindow.cpp" line="754"/>
+        <location filename="mainwindow/mainWindow.cpp" line="681"/>
+        <location filename="mainwindow/mainWindow.cpp" line="705"/>
+        <location filename="mainwindow/mainWindow.cpp" line="728"/>
+        <location filename="mainwindow/mainWindow.cpp" line="757"/>
+        <location filename="mainwindow/mainWindow.cpp" line="766"/>
         <source>error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="669"/>
+        <location filename="mainwindow/mainWindow.cpp" line="681"/>
         <source>Cannot find the directory for saving</source>
         <translation>Не удалось найти папку для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="677"/>
+        <location filename="mainwindow/mainWindow.cpp" line="689"/>
         <source>loading..</source>
         <translation>Загрузка..</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="677"/>
+        <location filename="mainwindow/mainWindow.cpp" line="689"/>
         <source>Do you want to load generated editor %1?</source>
         <translation>Вы хотите загрузить сгенерированный редактор %1?</translation>
     </message>
@@ -2304,42 +2799,43 @@
         <translation type="obsolete">Не удалось выгрузить плагин</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="745"/>
+        <location filename="mainwindow/mainWindow.cpp" line="757"/>
         <source>cannot load new editor</source>
         <translation>Невозможно загрузить новый редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="693"/>
+        <location filename="mainwindow/mainWindow.cpp" line="705"/>
         <source>please, fill compiler settings</source>
         <translation>Пожалуйста, заполните настройки компиляции (Настройки -&gt; Настройки... -&gt; Компилятор)</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="630"/>
+        <location filename="mainwindow/mainWindow.cpp" line="642"/>
         <source>About QReal:Robots</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="631"/>
+        <location filename="mainwindow/mainWindow.cpp" line="643"/>
         <source>Contacts:&lt;br&gt;&lt;br&gt;se.math.spbu.ru/SE/qreal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="716"/>
+        <location filename="mainwindow/mainWindow.cpp" line="728"/>
         <source>cannot unload plugin</source>
         <translation>Не удалось выгрузить плагин</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="754"/>
+        <location filename="mainwindow/mainWindow.cpp" line="766"/>
         <source>required plugin is not loaded</source>
         <translation>Требуемый плагин не загружен</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="767"/>
+        <location filename="mainwindow/mainWindow.cpp" line="779"/>
         <source>Select xml file to parse</source>
         <translation>Выберите xml-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="842"/>
+        <location filename="mainwindow/mainWindow.cpp" line="878"/>
+        <location filename="mainwindow/mainWindow.cpp" line="886"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -2348,34 +2844,34 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="1128"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1155"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="1151"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1178"/>
         <source>Choose new diagram</source>
         <translation>Выберите новую диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="1153"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1180"/>
         <source>There is no existing diagram,
  choose diagram you want work with:</source>
         <translation>Диаграммы пока не создано,
 укажите диаграмму, с которой хотите работать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="1171"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1198"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="1173"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1200"/>
         <source>Done</source>
-        <translation type="unfinished"></translation>
+        <translation>Готово</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="1235"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1262"/>
         <source>Select directory to save current model to</source>
         <translation>Выберите папку, в которую сохранить текущую модель</translation>
     </message>
@@ -2385,12 +2881,12 @@
     <message>
         <location filename="dialogs/plugindialog.cpp" line="26"/>
         <source>OK</source>
-        <translation>ОК</translation>
+        <translation type="unfinished">ОК</translation>
     </message>
     <message>
         <location filename="dialogs/plugindialog.cpp" line="51"/>
         <source>Plugin Information</source>
-        <translation>Информация о плагинах</translation>
+        <translation type="unfinished">Информация о плагинах</translation>
     </message>
 </context>
 <context>
@@ -2470,14 +2966,29 @@
 <context>
     <name>qReal::interpreters::robots::Interpreter</name>
     <message>
-        <location filename="interpreters/robots/interpreter.cpp" line="46"/>
+        <location filename="interpreters/robots/interpreter.cpp" line="47"/>
+        <source>No connection to robot</source>
+        <translation type="unfinished">Соединение с роботом не установлено</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/interpreter.cpp" line="51"/>
         <source>Interpreter is already running</source>
         <translation>Интерпретатор уже выполняется</translation>
     </message>
     <message>
-        <location filename="interpreters/robots/interpreter.cpp" line="56"/>
+        <location filename="interpreters/robots/interpreter.cpp" line="61"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;.</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/interpreter.cpp" line="115"/>
+        <source>Connected successfully</source>
+        <translation type="unfinished">Подключение к роботу выполнено</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/interpreter.cpp" line="119"/>
+        <source>Can&apos;t connect to a robot.</source>
+        <translation type="unfinished">Не удалось подключиться к роботу</translation>
     </message>
 </context>
 <context>
@@ -2585,9 +3096,8 @@
 <context>
     <name>qReal::interpreters::robots::details::blocks::InitialBlock</name>
     <message>
-        <location filename="interpreters/robots/details/blocks/initialBlock.cpp" line="22"/>
         <source>Can&apos;t connect to a robot.</source>
-        <translation>Не удалось подключиться к роботу</translation>
+        <translation type="obsolete">Не удалось подключиться к роботу</translation>
     </message>
 </context>
 <context>
@@ -2675,6 +3185,14 @@
         <location filename="interpreters/robots/details/blocks/waitForColorIntensityBlock.cpp" line="27"/>
         <source>Color sensor is not configured on this port or it is configured in a wrong mode (not &quot;Full color&quot; mode needed)</source>
         <translation>Сенсор цвета не сконфигурирован на данном порту, или сконфигурирован в неподходящем режиме (нужен режим НЕ &quot;полные цвета&quot;)</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::interpreters::robots::details::blocks::WaitForEncoderBlock</name>
+    <message>
+        <location filename="interpreters/robots/details/blocks/waitForEncoderBlock.cpp" line="31"/>
+        <source>Encoder sensor is not configured on this port </source>
+        <translation type="unfinished">Неверно указан порт для считывания показаний датчика</translation>
     </message>
 </context>
 <context>

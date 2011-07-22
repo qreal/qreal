@@ -1,5 +1,7 @@
 #include "buttonRefWindow.h"
 
+#include "../models/logicalModelAssistApi.h"
+
 ButtonRefWindow::ButtonRefWindow(QWidget *parent, QString const &typeName
 		, qReal::models::LogicalModelAssistApi const &logicalModelAssistApi
 		, int role, const QModelIndex &index

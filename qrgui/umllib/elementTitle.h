@@ -24,6 +24,7 @@ public:
 	~ElementTitle() {}
 	void startTextInteraction();
 	void transform(QRectF const& contents);
+	void setTitleFont();
 
 protected:
 	virtual void focusOutEvent(QFocusEvent *event);

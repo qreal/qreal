@@ -9,7 +9,6 @@
 #include "../pluginManager/editorManager.h"
 #include "../pluginManager/toolPluginManager.h"
 #include "propertyeditorproxymodel.h"
-#include "propertyeditordelegate.h"
 #include "gesturesPainterInterface.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
 #include "../interpreters/visualDebugger/debuggerConnector.h"
@@ -54,6 +53,7 @@ public:
 	virtual void dehighlight(Id const &graphicalId);
 	virtual void dehighlight();
 	virtual gui::ErrorReporter *errorReporter();
+	void openShapeEditor(QPersistentModelIndex index, int role, QString const propertyValue);
 
 signals:
 	void gesturesShowed();
@@ -72,6 +72,8 @@ public slots:
 	void selectItemWithError(Id const &id);
 
 private slots:
+
+	void setSceneFont();
 	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);
 
@@ -150,7 +152,6 @@ private slots:
 	void graphicalModelExplorerClicked(const QModelIndex &index);
 	void logicalModelExplorerClicked(const QModelIndex &index);
 
-	void openShapeEditor();
 	void openNewTab(const QModelIndex &index);
 	void initCurrentTab(const QModelIndex &rootIndex);
 
@@ -159,6 +160,8 @@ private slots:
 	void switchGrid(bool isChecked);
 	void switchAlignment(bool isChecked);
 	void setShape(QString const &data, QPersistentModelIndex const &index, int const &role);
+
+	void openShapeEditor();
 
 	void setDiagramCreateFlag();
 	void diagramInCreateListDeselect();
@@ -177,7 +180,7 @@ private:
 	ToolPluginManager mToolManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
-	PropertyEditorDelegate mDelegate;
+//	PropertyEditorDelegate mDelegate;
 	GesturesWidget *mGesturesWidget;
 
 	QVector<bool> mSaveListChecked;

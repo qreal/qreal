@@ -62,7 +62,7 @@ Interpreter::~Interpreter()
 void Interpreter::interpret(Id const &currentDiagramId)
 {
 	if (!mConnected) {
-		mInterpretersInterface.errorReporter()->addInformation(tr("No connection to robot"));
+		mInterpretersInterface->errorReporter()->addInformation(tr("No connection to robot"));
 		return;
 	}
 	if (mState == interpreting) {
@@ -97,7 +97,7 @@ void Interpreter::stop()
 	mBlocksTable->setFailure();
 	/*mBlocksTable->clear();
 	mThreads.clear();
-	mTimer->stop();
+	mTimer->stop();*/
 }
 
 void Interpreter::stopRobot()
@@ -118,6 +118,9 @@ void Interpreter::setD2ModelWidgetActions(QAction *runAction, QAction *stopActio
 void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum implementationType, RobotCommunicationInterface * const robotCommunicationInterface)
 {
 	disconnect(&mRobotModel->robotImpl(), SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
+	mConnected = false;
+	if(implementationType != robotModelType::real)
+		mConnected = true;
 	robotImplementations::AbstractRobotModelImplementation *robotImpl =
 			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, robotCommunicationInterface, mD2RobotModel);
 	setRobotImplementation(robotImpl);
@@ -128,11 +131,11 @@ void Interpreter::connectedSlot(bool success)
 {
 	if(success) {
 		mConnected = true;
-		mInterpretersInterface.errorReporter()->addInformation(tr("Connected successfully"));
+		mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
 	}
 	else {
 		mConnected = false;
-		mInterpretersInterface.errorReporter()->addError(tr("Can't connect to a robot."));
+		mInterpretersInterface->errorReporter()->addError(tr("Can't connect to a robot."));
 
 	}
 }
@@ -177,7 +180,6 @@ void Interpreter::configureSensors(sensorType::SensorTypeEnum const &port1
 void Interpreter::addThread(details::Thread * const thread)
 {
 	mThreads.append(thread);
-	qDebug() << mThreads.size();
 	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 	connect(thread, SIGNAL(newThread(details::blocks::Block*const)), this, SLOT(newThread(details::blocks::Block*const)));
 
