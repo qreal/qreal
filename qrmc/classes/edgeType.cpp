@@ -168,7 +168,7 @@ void EdgeType::generateSdf() const
 // copy-pasted from Shape, quick workaround for #349
 void EdgeType::initLabels()
 {
-	QString xml = mApi->stringProperty(mId, "labels");
+	QString xml = mApi->hasProperty(mId, "labels") ? mApi->stringProperty(mId, "labels") : "";
 	QString error = "";
 	int errorLine = 0;
 	int errorCol = 0;

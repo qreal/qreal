@@ -47,6 +47,8 @@ bool Editor::load()
 		Editor *includedEditor = NULL;
 		IdList metamodels = mApi->elementsByType(metamodelDiagram);
 		foreach(Id metamodel, metamodels) {
+			if (!mApi->isLogicalElement(metamodel))
+				continue;
 			if (mApi->name(metamodel) == metamodelName) {
 				includedEditor = mMetaCompiler->loadMetaModel(metamodel);
 				break;
@@ -66,11 +68,14 @@ bool Editor::load()
 	IdList children = mApi->children(mId);
 	IdList diagrams;
 	foreach(Id child, children)
-		if (child.element() == metaEditorDiagramNode)
+		if (mApi->isLogicalElement(child) && child.element() == metaEditorDiagramNode)
 			diagrams << child;
 
 	foreach(Id diagramId, diagrams)
 	{
+		if (!mApi->isLogicalElement(diagramId))
+			continue;
+
 		qDebug() << "\tchildren:" << mApi->children(diagramId).size();
 		QString diagramName = mApi->name(diagramId);
 		Diagram const *existingDiagram = mMetaCompiler->getDiagram(diagramName);
