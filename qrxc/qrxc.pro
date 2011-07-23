@@ -1,13 +1,17 @@
 TEMPLATE = app
 QT += xml gui
 CONFIG += console
+
 macx {
 	CONFIG -= app_bundle
 }
+
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
 
 LIBS += -L../bin -lqrutils
+
+DESTDIR += ../bin
 
 HEADERS += association.h \
 	diagram.h \

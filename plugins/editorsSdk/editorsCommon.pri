@@ -10,17 +10,13 @@ DESTDIR = $$ROOT/bin/plugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
 
-win32 | win32-msvc* {
-	CONFIG(debug, debug|release) {
-		QRXC = $$ROOT\\qrxc\\debug\\qrxc.exe
-	} else:CONFIG(release, debug|release){
-		QRXC = $$ROOT\\qrxc\\release\\qrxc.exe
-	} else {
-		error(Windows build definitely needs to be fixed)
-	}
+win32 {
+	QRXC = $$ROOT/bin/qrxc.exe
 } else {
-	QRXC = $$ROOT/qrxc/qrxc
+	QRXC = $$ROOT/bin/qrxc
 }
+
+LIBS += -L$$ROOT/bin -lqrkernel
 
 isEmpty(QREAL_EDITOR_PATH) {
 	error(Please set QREAL_EDITOR_PATH variable in a .pro file of your editor as a path to that editor .xml file relative to /plugins/)

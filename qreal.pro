@@ -19,10 +19,10 @@ TEMPLATE = subdirs
 SUBDIRS = qrmc qrxc qrgui qrrepo plugins qrkernel qrutils qtpropertybrowser
 
 qrutils.depends = qrkernel
+qrrepo.depends = qrkernel qrutils
 qrmc.depends = qrrepo
 qrmc.file = qrmc\\qrmc-lib.pro
-qrgui.depends = qrxc qrxml qrrepo qrkernel qtpropertybrowser qrutils
-qrxml.depends = qrxc
+qrgui.depends = qrxc qrrepo qrkernel qtpropertybrowser qrutils plugins
 plugins.depends = qrxc qrrepo qrkernel qrutils
 
 qtpropertybrowser.file = qrgui\\thirdparty\\qtpropertybrowser\\qtpropertybrowser.pro

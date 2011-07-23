@@ -21,9 +21,10 @@ DESTDIR = ../bin
 }
 
 # Input
-HEADERS += metaCompiler.h \
-	../qrgui/kernel/definitions.h \
-	../qrgui/kernel/ids.h \
+HEADERS += \
+	metaCompiler.h \
+	../qrkernel/definitions.h \
+	../qrkernel/ids.h \
 	../qrrepo/repoApi.h \
 	diagram.h \
 	editor.h
@@ -31,7 +32,8 @@ HEADERS += metaCompiler.h \
 SOURCES += \
 	metaCompiler.cpp \
 	diagram.cpp \
-	editor.cpp
+	editor.cpp \
+	main.cpp
 
 include (classes/classes.pri)
 include (utils/utils.pri)
