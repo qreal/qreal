@@ -1,11 +1,13 @@
-QT		+=	svg xml
+DESTDIR = ../bin
+
+QT += svg xml
 CONFIG += rpath_libdirs
 macx {
 	CONFIG -= app_bundle
 }
 
-RESOURCES	=	qrgui.qrc
-SOURCES		=	main.cpp
+RESOURCES = qrgui.qrc
+SOURCES = main.cpp
 
 TRANSLATIONS = qrgui_ru.ts
 
@@ -24,8 +26,7 @@ if (equals(QMAKE_CXX, "g++") : !macx) {
 	QMAKE_LFLAGS += -Wl,-E
 }
 
-# Путь до библиотеки с АПИ. Где-нибудь она найдётся...Path to the API library
-LIBS += -Ldebug -lqrrepo -Lrelease -lqrrepo -L. -lqrrepo -lqrmc
+LIBS += -L../bin -lqrrepo -lqrmc -lqrkernel
 
 CONFIG(debug, debug|release):LIBS  += -lqextserialportd
 else:LIBS  += -lqextserialport
@@ -44,9 +45,6 @@ include (mainwindow/mainwindow.pri)
 
 # View
 include (view/view.pri)
-
-# Stuff used in all places
-include (kernel/kernel.pri)
 
 # "Встроенные" генераторы
 include (generators/generators.pri)

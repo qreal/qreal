@@ -1,6 +1,6 @@
 #pragma once
 
-#include "classes/port.h"
+#include "port.h"
 
 #include <QDomElement>
 

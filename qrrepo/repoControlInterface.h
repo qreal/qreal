@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../qrgui/kernel/roles.h"
+#include "../qrkernel/roles.h"
 
 namespace qrRepo {
 

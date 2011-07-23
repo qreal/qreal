@@ -1,6 +1,6 @@
 //#include "details/graphicalModel.h"
 #include "graphicalModelAssistApi.h"
-#include "../kernel/exception/exception.h"
+#include "../../qrkernel/exception/exception.h"
 #include <QtCore/QUuid>
 #include <QtCore/QDebug>
 

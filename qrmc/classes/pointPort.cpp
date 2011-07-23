@@ -1,6 +1,6 @@
 #include "pointPort.h"
-#include "utils/defs.h"
-#include "metaCompiler.h"
+#include "../utils/defs.h"
+#include "../metaCompiler.h"
 
 using namespace qrmc;
 

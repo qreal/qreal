@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../qrgui/kernel/roles.h"
+#include "../qrkernel/roles.h"
 #include "private/client.h"
 #include "private/qrRepoGlobal.h"
 #include "repoControlInterface.h"

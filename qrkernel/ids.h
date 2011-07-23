@@ -75,7 +75,7 @@ namespace qReal {
 
 	typedef QList<Id> IdList;
 
-	class IdListHelper {
+	class QRKERNEL_EXPORT IdListHelper {
 	public:
 		static QVariant toVariant(IdList const &list);
 	};

@@ -4,8 +4,8 @@
 #include <QtCore/QList>
 
 #include"mainWindow.h"
-#include "../kernel/ids.h"
-#include "../kernel/definitions.h"
+#include "../../qrkernel/ids.h"
+#include "../../qrkernel/definitions.h"
 #include "error.h"
 #include "errorListWidget.h"
 

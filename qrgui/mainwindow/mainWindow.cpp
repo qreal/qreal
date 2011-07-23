@@ -42,7 +42,7 @@
 #include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
-#include "../kernel/settingsManager.h"
+#include "../../qrkernel/settingsManager.h"
 
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../../qrmc/metaCompiler.h"

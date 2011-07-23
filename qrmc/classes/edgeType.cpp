@@ -1,8 +1,8 @@
 #include "edgeType.h"
-#include "metaCompiler.h"
-#include "diagram.h"
-#include "editor.h"
-#include "utils/nameNormalizer.h"
+#include "../metaCompiler.h"
+#include "../diagram.h"
+#include "../editor.h"
+#include "../utils/nameNormalizer.h"
 
 #include <QDebug>
 

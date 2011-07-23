@@ -7,11 +7,11 @@
 #include <QtCore/QFileInfo>
 #include <QMessageBox>
 
-#include "../../kernel/roles.h"
+#include "../../../qrkernel/roles.h"
 
 #include "../../../utils/outFile.h"
 
-#include "../../kernel/settingsManager.h"
+#include "../../../qrkernel/settingsManager.h"
 #include "../../mainwindow/mainWindow.h"
 
 using namespace qReal;

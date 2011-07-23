@@ -1,7 +1,6 @@
 PROJECT                 = qextserialport
 TEMPLATE                = lib
 #VERSION                 = 1.2.0
-DESTDIR                 = ../../../
 CONFIG                 += qt warn_on debug_and_release
 CONFIG                  += dll
 DEFINES                 += QEXTSERIALPORT_LIB
@@ -30,16 +29,10 @@ win32 {
   SOURCES          += win_qextserialport.cpp qextserialenumerator_win.cpp
   DEFINES          += WINVER=0x0501 # needed for mingw to pull in appropriate dbt business...probably a better way to do this
   LIBS             += -lsetupapi
-
-
-  CONFIG(debug, debug|release) {
-    DESTDIR = ../../../../../qrgui/debug/
-  } else {
-    DESTDIR = ../../../../../qrgui/release/
-  }
-} else {
-  DESTDIR = ../../../../../qrgui
 }
+
+DESTDIR = ../../../../../bin
+
 
 CONFIG(debug, debug|release) {
     TARGET = qextserialportd

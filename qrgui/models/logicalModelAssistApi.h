@@ -1,5 +1,5 @@
 #pragma once
-#include "../kernel/ids.h"
+#include "../../qrkernel/ids.h"
 #include "details/logicalModel.h"
 #include "details/modelsAssistApi.h"
 

@@ -3,8 +3,8 @@
 #include <QtCore/QMap>
 #include <QtCore/QString>
 
-#include "utils/defs.h"
-#include "../qrrepo/repoApi.h"
+#include "../utils/defs.h"
+#include "../../qrrepo/repoApi.h"
 
 namespace qrmc {
 

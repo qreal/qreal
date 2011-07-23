@@ -3,8 +3,8 @@
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QAction>
 
-#include "../kernel/ids.h"
-#include "../kernel/settingsManager.h"
+#include "../../qrkernel/ids.h"
+#include "../../qrkernel/settingsManager.h"
 
 #include "../editorPluginInterface/elementRepoInterface.h"
 #include "elementTitle.h"
@@ -69,8 +69,8 @@ protected:
 	ElementImpl* mElementImpl;
 	QList<ElementTitle*> mTitles;
 
-	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
+	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
 
 	void initTitlesBy(QRectF const& contents);
 };

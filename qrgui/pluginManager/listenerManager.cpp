@@ -3,7 +3,7 @@
 #include <QtCore/QMetaMethod>
 #include <QtCore/QDebug>
 
-#include "../kernel/exception/exception.h"
+#include "../../qrkernel/exception/exception.h"
 #include "listenerApi.h"
 
 #include "../models/logicalModelAssistApi.h"

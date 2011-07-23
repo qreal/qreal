@@ -5,7 +5,7 @@
 
 #include "preferencesPages/page.h"
 
-#include "../kernel/settingsManager.h"
+#include "../../qrkernel/settingsManager.h"
 
 namespace Ui {
 	class PreferencesDialog;

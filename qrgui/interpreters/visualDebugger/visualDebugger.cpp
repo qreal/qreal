@@ -9,7 +9,7 @@
 
 #include "../view/editorView.h"
 #include "../umllib/element.h"
-#include "../kernel/exception/exception.h"
+#include "../../qrkernel/exception/exception.h"
 
 using namespace qReal;
 

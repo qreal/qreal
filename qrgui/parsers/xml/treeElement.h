@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QList>
-#include "../../kernel/ids.h"
+#include "../../../qrkernel/ids.h"
 
 namespace qrRepo {
 	class RepoApi;

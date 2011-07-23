@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../qrgui/kernel/definitions.h"
-#include "../../qrgui/kernel/ids.h"
+#include "../../qrkernel/definitions.h"
+#include "../../qrkernel/ids.h"
 #include "classes/object.h"
 #include "qrRepoGlobal.h"
 #include "serializer.h"

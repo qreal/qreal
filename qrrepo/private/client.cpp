@@ -1,5 +1,5 @@
 #include "client.h"
-#include "../../qrgui/kernel/exception/exception.h"
+#include "../../qrkernel/exception/exception.h"
 
 #include <QtCore/QDebug>
 

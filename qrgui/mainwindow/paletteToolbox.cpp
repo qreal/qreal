@@ -6,7 +6,7 @@
 #include <QtGui/QScrollArea>
 
 #include "paletteToolbox.h"
-#include "../kernel/definitions.h"
+#include "../../qrkernel/definitions.h"
 
 using namespace qReal;
 using namespace qReal::gui;

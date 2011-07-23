@@ -1,7 +1,7 @@
 #include "graphicType.h"
 #include "property.h"
-#include "diagram.h"
-#include "utils/nameNormalizer.h"
+#include "../diagram.h"
+#include "../utils/nameNormalizer.h"
 
 #include <QDebug>
 

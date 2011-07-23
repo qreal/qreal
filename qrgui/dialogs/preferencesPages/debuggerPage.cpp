@@ -1,4 +1,4 @@
-#include "../../kernel/settingsManager.h"
+#include "../../../qrkernel/settingsManager.h"
 #include "debuggerPage.h"
 #include "ui_debuggerPage.h"
 

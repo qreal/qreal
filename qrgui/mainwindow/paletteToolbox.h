@@ -4,7 +4,7 @@
 #include <QtGui/QWidget>
 #include <QtGui/QIcon>
 
-#include "../kernel/ids.h"
+#include "../../qrkernel/ids.h"
 
 class QVBoxLayout;
 class QComboBox;

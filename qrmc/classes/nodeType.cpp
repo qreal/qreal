@@ -1,9 +1,9 @@
 #include "nodeType.h"
-#include "diagram.h"
-#include "metaCompiler.h"
-#include "editor.h"
-#include "utils/nameNormalizer.h"
-#include "../qrrepo/repoApi.h"
+#include "../diagram.h"
+#include "../metaCompiler.h"
+#include "../editor.h"
+#include "../utils/nameNormalizer.h"
+#include "../../qrrepo/repoApi.h"
 
 #include <QDebug>
 

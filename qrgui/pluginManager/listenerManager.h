@@ -2,7 +2,7 @@
 
 #include <QtCore/QObject>
 #include "../editorPluginInterface/listenerInterface.h"
-#include "../kernel/ids.h"
+#include "../../qrkernel/ids.h"
 
 namespace qReal {
 

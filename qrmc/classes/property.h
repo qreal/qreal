@@ -2,7 +2,7 @@
 
 #include <QtCore/QString>
 
-#include "../qrrepo/repoApi.h"
+#include "../../qrrepo/repoApi.h"
 
 namespace qrmc {
 	class Property

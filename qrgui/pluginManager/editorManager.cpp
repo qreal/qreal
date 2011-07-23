@@ -6,12 +6,12 @@
 
 #include <QtCore/QtDebug>
 
-#include "../kernel/ids.h"
+#include "../../qrkernel/ids.h"
 
 #include "../../qrrepo/repoApi.h"
 #include "../umllib/nodeElement.h"
 #include "../umllib/edgeElement.h"
-#include "../kernel/exception/exception.h"
+#include "../../qrkernel/exception/exception.h"
 
 using namespace qReal;
 

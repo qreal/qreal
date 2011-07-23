@@ -1,16 +1,6 @@
 TEMPLATE = lib
 
-win32 {
-	CONFIG(debug, debug|release) {
-		DESTDIR = ../qrgui/debug
-	} else:CONFIG(release, debug|release){
-		DESTDIR = ../qrgui/release
-	} else {
-		error(Windows build definitely needs to be fixed)
-	}
-} else {
-	DESTDIR = ../qrgui
-}
+DESTDIR = ../bin
 
 OBJECTS_DIR = .obj
 MOC_DIR = .moc

@@ -2,7 +2,7 @@
 
 #include <QtCore/QObject>
 
-#include "../kernel/ids.h"
+#include "../../qrkernel/ids.h"
 #include "details/graphicalModel.h"
 #include "details/modelsAssistApi.h"
 

@@ -8,11 +8,11 @@
 #include <QtGui/QIcon>
 
 #include "listenerManager.h"
-#include "../kernel/ids.h"
+#include "../../qrkernel/ids.h"
 #include "../editorPluginInterface/editorInterface.h"
 #include "../../qrrepo/graphicalRepoApi.h"
 #include "../../qrrepo/logicalRepoApi.h"
-#include "../kernel/settingsManager.h"
+#include "../../qrkernel/settingsManager.h"
 
 class Element;
 

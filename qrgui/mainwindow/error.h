@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QString>
-#include "../kernel/ids.h"
+#include "../../qrkernel/ids.h"
 
 
 

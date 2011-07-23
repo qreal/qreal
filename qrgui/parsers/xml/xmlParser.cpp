@@ -13,7 +13,7 @@
 #include "../../../qrrepo/repoApi.h"
 #include "../../../utils/xmlUtils.h"
 #include "../../pluginManager/editorManager.h"
-#include "../../kernel/exception/exception.h"
+#include "../../../qrkernel/exception/exception.h"
 
 using namespace qReal;
 using namespace parsers;

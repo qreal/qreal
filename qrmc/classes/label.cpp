@@ -1,5 +1,5 @@
 #include "label.h"
-#include "metaCompiler.h"
+#include "../metaCompiler.h"
 
 #include <QDebug>
 

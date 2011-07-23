@@ -3,7 +3,7 @@
  * */
 #include <QtCore/QDebug>
 
-#include "../kernel/exception/exception.h"
+#include "../../qrkernel/exception/exception.h"
 
 #include "propertyEditorProxyModel.h"
 

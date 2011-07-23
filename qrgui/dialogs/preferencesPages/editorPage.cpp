@@ -1,4 +1,4 @@
-#include "../../kernel/settingsManager.h"
+#include "../../../qrkernel/settingsManager.h"
 #include "editorPage.h"
 #include "ui_editorPage.h"
 #include <QMessageBox>

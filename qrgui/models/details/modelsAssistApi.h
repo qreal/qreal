@@ -3,7 +3,7 @@
 #include <QtCore/QPointF>
 #include <QtCore/QModelIndex>
 #include <QtCore/QUuid>
-#include "../../kernel/ids.h"
+#include "../../../qrkernel/ids.h"
 
 namespace qReal {
 

@@ -3,7 +3,7 @@
 #include <QtCore/QString>
 #include <QtXml/QDomElement>
 
-#include "../../kernel/ids.h"
+#include "../../../qrkernel/ids.h"
 #include "../../mainwindow/errorReporter.h"
 #include "../../../qrrepo/logicalRepoApi.h"
 

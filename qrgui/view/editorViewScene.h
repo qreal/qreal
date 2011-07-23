@@ -3,7 +3,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsLineItem>
 #include <QSignalMapper>
-#include "../kernel/roles.h"
+#include "../../qrkernel/roles.h"
 #include "../umllib/nodeElement.h"
 #include "gestures/mousemovementmanager.h"
 
