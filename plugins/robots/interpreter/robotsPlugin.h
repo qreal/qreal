@@ -2,6 +2,10 @@
 
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 
+#include "interpreter.h"
+
+namespace qReal {
+namespace interpreters {
 namespace robots {
 
 class RobotsPlugin : public QObject, public qReal::ToolPluginInterface
@@ -18,7 +22,9 @@ public:
 	virtual QList<qReal::InterpreterInterface *> interpreterInterfaces();
 
 private:
-
+	Interpreter mInterpreter;
 };
 
+}
+}
 }

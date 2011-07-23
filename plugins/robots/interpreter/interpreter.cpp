@@ -52,6 +52,10 @@ Interpreter::Interpreter()
 	mD2ModelWidget = mD2RobotModel->createModelWidget();
 }
 
+void Interpreter::init()
+{
+}
+
 Interpreter::~Interpreter()
 {
 	foreach (Thread * const thread, mThreads)
@@ -269,4 +273,9 @@ void Interpreter::updateSensorValues(const QString &sensorVariableName, int sens
 {
 	(*(mParser->getVariables()))[sensorVariableName] = Number(sensorValue, Number::intType);
 //	qDebug() << sensorVariableName << sensorValue;
+}
+
+QList<QAction *> Interpreter::customActions()
+{
+	return QList<QAction *>();
 }

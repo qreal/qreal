@@ -1,6 +1,6 @@
 #include "robotsPlugin.h"
 
-using namespace robots;
+using namespace qReal::interpreters::robots;
 
 RobotsPlugin::RobotsPlugin()
 {
@@ -22,5 +22,5 @@ QList<qReal::CustomToolInterface *> RobotsPlugin::toolInterfaces()
 
 QList<qReal::InterpreterInterface *> RobotsPlugin::interpreterInterfaces()
 {
-	return QList<qReal::InterpreterInterface *>();
+	return QList<qReal::InterpreterInterface *>() << &mInterpreter;
 }

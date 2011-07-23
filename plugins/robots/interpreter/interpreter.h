@@ -39,6 +39,8 @@ public:
 	Interpreter();
 	virtual ~Interpreter();
 
+	virtual void init();
+
 	details::RobotModel *robotModel();
 	void setRobotModel(details::RobotModel * const robotModel);
 	void interpret(Id const &currentDiagramId);
@@ -52,6 +54,8 @@ public:
 			, RobotCommunicationInterface * const robotCommunicationInterface);
 
 	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
+
+	QList<QAction *> customActions();
 
 public slots:
 	void showD2ModelWidget(bool isVisible);
