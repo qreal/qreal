@@ -6,14 +6,14 @@
 
 using namespace qReal;
 using namespace interpreters::robots;
-using namespace details;
+using namespace interpreters::robots::details;
 
 const Id startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
 const Id startingElementType1 = Id("RobotsMetamodel", "RobotsDiagram", "InitialBlock");
 
 /*
-Interpreter::Interpreter(models::GraphicalModelAssistApi const &graphicalModelApi
-		, models::LogicalModelAssistApi const &logicalModelApi
+Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
+		, LogicalModelAssistInterface const &logicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, RobotCommunicationInterface * const robotCommunicationInterface
 		, robotModelType::robotModelTypeEnum modelType)
@@ -186,7 +186,7 @@ void Interpreter::addThread(details::Thread * const thread)
 	thread->interpret();
 }
 
-details::RobotModel *Interpreter::robotModel()
+interpreters::robots::details::RobotModel *Interpreter::robotModel()
 {
 	return mRobotModel;
 }

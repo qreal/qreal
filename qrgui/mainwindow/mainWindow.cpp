@@ -1803,7 +1803,7 @@ void MainWindow::showRobotSettingsDialog()
 }
 */
 
-gui::ErrorReporter *MainWindow::errorReporter()
+ErrorReporterInterface *MainWindow::errorReporter()
 {
 	return mErrorReporter;
 }

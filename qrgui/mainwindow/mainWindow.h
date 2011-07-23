@@ -52,7 +52,7 @@ public:
 	virtual void highlight(Id const &graphicalId, bool exclusive = true);
 	virtual void dehighlight(Id const &graphicalId);
 	virtual void dehighlight();
-	virtual gui::ErrorReporter *errorReporter();
+	virtual ErrorReporterInterface *errorReporter();
 	void openShapeEditor(QPersistentModelIndex index, int role, QString const propertyValue);
 
 signals:

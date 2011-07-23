@@ -26,10 +26,10 @@ using namespace qReal;
 using namespace interpreters::robots::details;
 using namespace blocks;
 
-BlocksFactory::BlocksFactory(models::GraphicalModelAssistApi const &graphicalModelApi
-		, models::LogicalModelAssistApi const &logicalModelApi
+BlocksFactory::BlocksFactory(GraphicalModelAssistInterface const &graphicalModelApi
+		, LogicalModelAssistInterface const &logicalModelApi
 		, RobotModel * const robotModel
-		, gui::ErrorReporter * const errorReporter
+		, ErrorReporterInterface * const errorReporter
 		, BlocksTable * const blocksTable, RobotsBlockParser * const parser)
 	: mRobotModel(robotModel)
 	, mGraphicalModelApi(graphicalModelApi)

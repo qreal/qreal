@@ -8,6 +8,8 @@ OBJECTS_DIR = .obj
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+LIBS += -L../bin -lqrkernel
+
 DEFINES += QRUTILS_LIBRARY
 
 HEADERS += \
@@ -18,3 +20,12 @@ HEADERS += \
 SOURCES += \
 	outFile.cpp \
 	xmlUtils.cpp \
+
+# Files for parsing of expressions on diagrams
+HEADERS += \
+	expressionsParser/expressionsParser.h \
+	expressionsParser/number.h \
+
+SOURCES += \
+	expressionsParser/expressionsParser.cpp \
+	expressionsParser/number.cpp \

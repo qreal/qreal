@@ -5,7 +5,7 @@
 #include "../../../../../qrkernel/ids.h"
 #include "../../../../../qrgui/models/graphicalModelAssistApi.h"
 #include "../../../../../qrgui/models/logicalModelAssistApi.h"
-#include "../../../../../qrgui/mainwindow/errorReporter.h"
+#include "../../../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 #include "../blocksTable.h"
 
@@ -42,8 +42,8 @@ signals:
 
 protected:
 	Block *mNextBlock;  // Does not have ownership
-	models::GraphicalModelAssistApi const *mGraphicalModelApi;  // Does not have ownership
-	models::LogicalModelAssistApi const *mLogicalModelApi;  // Does not have ownership
+	GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
+	LogicalModelAssistInterface const *mLogicalModelApi;  // Does not have ownership
 	BlocksTable *mBlocksTable;  // Does not have ownership
 
 	Id mGraphicalId;
@@ -71,10 +71,10 @@ private slots:
 private:
 	friend class qReal::interpreters::robots::details::BlocksFactory;
 	void init(Id const &graphicalId
-			, models::GraphicalModelAssistApi const &graphicalModelApi
-			, models::LogicalModelAssistApi const &logicalModelApi
+			, GraphicalModelAssistInterface const &graphicalModelApi
+			, LogicalModelAssistInterface const &logicalModelApi
 			, BlocksTable &blocksTable
-			, gui::ErrorReporter * const errorReporter
+			, ErrorReporterInterface * const errorReporter
 			, RobotsBlockParser * const parser
 			);
 
@@ -86,10 +86,10 @@ private:
 	};
 
 	State mState;
-	gui::ErrorReporter * mErrorReporter;
+	ErrorReporterInterface * mErrorReporter;
 
 	virtual bool initNextBlocks();
-	virtual void additionalInit() {};
+	virtual void additionalInit() {}
 	virtual void run() = 0;
 };
 

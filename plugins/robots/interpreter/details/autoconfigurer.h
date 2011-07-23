@@ -9,17 +9,17 @@ namespace details {
 
 class Autoconfigurer {
 public:
-	Autoconfigurer(models::GraphicalModelAssistApi const &graphicalModelApi
+	Autoconfigurer(GraphicalModelAssistInterface const &graphicalModelApi
 			, BlocksTable * const blocksTable
-			, gui::ErrorReporter * const errorReporter
+			, ErrorReporterInterface * const errorReporter
 			, RobotModel *robotModel
 			);
 
 	bool configure(Id const &diagram);
 private:
-	models::GraphicalModelAssistApi const *mGraphicalModelApi;  // Does not have ownership
+	GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
 	BlocksTable *mBlocksTable;  // Does not have ownership
-	gui::ErrorReporter * const mErrorReporter;  // Does not have ownership
+	ErrorReporterInterface * const mErrorReporter;  // Does not have ownership
 	RobotModel *mRobotModel;
 
 	QVector<sensorType::SensorTypeEnum> mUsedSensors;

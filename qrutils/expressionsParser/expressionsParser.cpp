@@ -1,10 +1,11 @@
 #include "expressionsParser.h"
 
 #include <QMessageBox>
+#include <math.h>
 
 using namespace qReal;
 
-ExpressionsParser::ExpressionsParser(gui::ErrorReporter* errorReporter)
+ExpressionsParser::ExpressionsParser(ErrorReporterInterface *errorReporter)
 	: mHasParseErrors(false), mErrorReporter(errorReporter), mCurrentId (Id::rootId())
 {
 }
@@ -496,7 +497,7 @@ bool ExpressionsParser::parseCondition(const QString &stream, int &pos, const Id
 	return res;
 }
 
-gui::ErrorReporter& ExpressionsParser::getErrors()
+ErrorReporterInterface& ExpressionsParser::getErrors()
 {
 	return *mErrorReporter;
 }
@@ -636,7 +637,7 @@ void ExpressionsParser::error(const ParseErrorType &type, const QString &pos, co
 	}
 }
 
-void ExpressionsParser::setErrorReporter(gui::ErrorReporter *errorReporter)
+void ExpressionsParser::setErrorReporter(ErrorReporterInterface *errorReporter)
 {
 	mErrorReporter = errorReporter;
 }

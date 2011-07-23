@@ -14,10 +14,10 @@ namespace details {
 class BlocksFactory
 {
 public:
-	BlocksFactory(models::GraphicalModelAssistApi const &graphicalModelApi
-			, models::LogicalModelAssistApi const &logicalModelApi
+	BlocksFactory(GraphicalModelAssistInterface const &graphicalModelApi
+			, LogicalModelAssistInterface const &logicalModelApi
 			, RobotModel * const robotModel
-			, gui::ErrorReporter * const errorReporter
+			, ErrorReporterInterface * const errorReporter
 			, BlocksTable * const blocksTable
 			, RobotsBlockParser * const parser);
 	blocks::Block *block(Id const &element);
@@ -25,9 +25,9 @@ public:
 	RobotsBlockParser * getParser();
 private:
 	RobotModel * mRobotModel;  // Doesnt't have ownership
-	models::GraphicalModelAssistApi const &mGraphicalModelApi;
-	models::LogicalModelAssistApi const &mLogicalModelApi;
-	gui::ErrorReporter * const mErrorReporter;  // Doesn't have ownership
+	GraphicalModelAssistInterface const &mGraphicalModelApi;
+	LogicalModelAssistInterface const &mLogicalModelApi;
+	ErrorReporterInterface * const mErrorReporter;  // Doesn't have ownership
 	BlocksTable * const mBlocksTable;
 	RobotsBlockParser * mParser;
 

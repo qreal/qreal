@@ -6,10 +6,10 @@
 using namespace qReal;
 using namespace interpreters::robots::details;
 
-BlocksTable::BlocksTable(models::GraphicalModelAssistApi const &graphicalModelApi
-		, models::LogicalModelAssistApi const &logicalModelApi
+BlocksTable::BlocksTable(GraphicalModelAssistInterface const &graphicalModelApi
+		, LogicalModelAssistInterface const &logicalModelApi
 		, RobotModel * const robotModel
-		, gui::ErrorReporter * const errorReporter
+		, ErrorReporterInterface * const errorReporter
 		, RobotsBlockParser * const parser
 	)
 	: mBlocksFactory(new BlocksFactory(graphicalModelApi, logicalModelApi, robotModel, errorReporter, this, parser))

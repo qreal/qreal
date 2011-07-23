@@ -30,8 +30,8 @@ class Interpreter : public QObject, public InterpreterInterface
 	Q_OBJECT
 
 public:
-//	Interpreter(models::GraphicalModelAssistApi const &graphicalModelApi
-//			, models::LogicalModelAssistApi const &logicalModelApi
+//	Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
+//			, LogicalModelAssistInterface const &logicalModelApi
 //			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterface
 //			, RobotCommunicationInterface * const robotCommunicationInterface
 //			, robotModelType::robotModelTypeEnum modelType
@@ -75,8 +75,8 @@ private:
 		, idle
 	};
 
-	models::GraphicalModelAssistApi *mGraphicalModelApi;
-	models::LogicalModelAssistApi *mLogicalModelApi;
+	GraphicalModelAssistInterface *mGraphicalModelApi;
+	LogicalModelAssistInterface *mLogicalModelApi;
 	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;
 
 	InterpreterState mState;

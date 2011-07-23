@@ -21,10 +21,10 @@ Block::Block()
 }
 
 void Block::init(Id const &graphicalId
-		, models::GraphicalModelAssistApi const &graphicalModelApi
-		, models::LogicalModelAssistApi const &logicalModelApi
+		, GraphicalModelAssistInterface const &graphicalModelApi
+		, LogicalModelAssistInterface const &logicalModelApi
 		, BlocksTable &blocksTable
-		, gui::ErrorReporter * const errorReporter
+		, ErrorReporterInterface * const errorReporter
 		, RobotsBlockParser * const parser)
 {
 	mGraphicalId = graphicalId;

@@ -5,11 +5,11 @@
 
 using namespace qReal;
 using namespace interpreters::robots;
-using namespace details;
+using namespace interpreters::robots::details;
 
-Autoconfigurer::Autoconfigurer(models::GraphicalModelAssistApi const &graphicalModelApi
+Autoconfigurer::Autoconfigurer(GraphicalModelAssistInterface const &graphicalModelApi
 							   , BlocksTable * const blocksTable
-							   , gui::ErrorReporter * const errorReporter
+							   , ErrorReporterInterface * const errorReporter
 							   , RobotModel *robotModel
 							   )
 	: mGraphicalModelApi(&graphicalModelApi)

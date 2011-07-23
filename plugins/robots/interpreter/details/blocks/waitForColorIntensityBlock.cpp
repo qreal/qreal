@@ -4,7 +4,7 @@
 
 using namespace qReal;
 using namespace interpreters::robots;
-using namespace details::blocks;
+using namespace interpreters::robots::details::blocks;
 
 WaitForColorIntensityBlock::WaitForColorIntensityBlock(details::RobotModel const * const robotModel)
 	: mColorSensor(NULL)

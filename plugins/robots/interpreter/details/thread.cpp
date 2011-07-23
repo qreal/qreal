@@ -2,7 +2,7 @@
 
 using namespace qReal;
 using namespace interpreters::robots;
-using namespace details;
+using namespace interpreters::robots::details;
 
 Thread::Thread(gui::MainWindowInterpretersInterface &interpretersInterface, BlocksTable &blocksTable
 		, Id const &initialNode)

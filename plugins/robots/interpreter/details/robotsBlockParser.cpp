@@ -2,7 +2,7 @@
 
 using namespace qReal;
 
-RobotsBlockParser::RobotsBlockParser(gui::ErrorReporter *errorReporter)
+RobotsBlockParser::RobotsBlockParser(ErrorReporterInterface *errorReporter)
 	: ExpressionsParser(errorReporter)
 {
 	setReservedVariables();
@@ -80,7 +80,7 @@ bool RobotsBlockParser::checkForUsingReservedVariables(const QString &nameOfVari
 
 bool RobotsBlockParser::isLetter(const QChar &symbol)
 {
-	QString rus = QString::fromUtf8("АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЬьЫыЙйЭэЮюЯя");
+	QString rus = QString::fromUtf8("АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПп� рСсТтУуФфХхЦцЧчШшЩщЬьЫыЙйЭэЮюЯя");
 	char symbolChar = symbol.toAscii();
 	return (('A'<=symbolChar && symbolChar<='Z') || ('a'<=symbolChar && symbolChar<='z') || (rus.contains(symbol)));
 }

@@ -2,8 +2,10 @@
 
 #include <QVariant>
 
+#include "../utilsDeclSpec.h"
+
 namespace qReal {
-	class Number {
+	class QRUTILS_EXPORT Number {
 		public:
 			enum Type {
 				doubleType = 0,

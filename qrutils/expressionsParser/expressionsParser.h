@@ -2,25 +2,25 @@
 
 #include <QtCore/QMap>
 
-#include "../visualDebugger/number.h"
-#include "../../mainwindow/errorReporter.h"
-#include "../../mainwindow/propertyEditorProxyModel.h" // TODO: ?!
+#include "number.h"
+#include "../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "../utilsDeclSpec.h"
 
 namespace qReal {
 
-class ExpressionsParser
+class QRUTILS_EXPORT ExpressionsParser
 {
 
 public:
-	ExpressionsParser(gui::ErrorReporter* errorReporter);
+	ExpressionsParser(ErrorReporterInterface *errorReporter);
 
 	Number parseExpression(QString const &stream, int &pos);
 	void parseProcess(QString const &stream, int& pos, Id const &curId);
 	bool parseConditionHelper(QString const &stream, int &pos);
 	bool parseCondition(QString const &stream, int& pos, Id const &curId);
-	gui::ErrorReporter& getErrors();
+	ErrorReporterInterface& getErrors();
 	bool hasErrors();
-	void setErrorReporter(gui::ErrorReporter* errorReporter);
+	void setErrorReporter(ErrorReporterInterface *errorReporter);
 	void clear();
 
 	QMap<QString, Number>* getVariables(); //only for test using
@@ -89,7 +89,7 @@ protected:
 
 	QMap<QString, Number> mVariables;
 	bool mHasParseErrors;
-	gui::ErrorReporter* mErrorReporter;
+	ErrorReporterInterface *mErrorReporter;
 	Id mCurrentId;
 
 };

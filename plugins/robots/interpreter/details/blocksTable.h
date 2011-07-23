@@ -5,7 +5,7 @@
 #include "../../../../qrkernel/ids.h"
 #include "../../../../qrgui/models/graphicalModelAssistApi.h"
 #include "../../../../qrgui/models/logicalModelAssistApi.h"
-#include "../../../../qrgui/mainwindow/errorReporter.h"
+#include "../../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 #include "robotParts/robotModel.h"
 
@@ -25,10 +25,10 @@ class BlocksFactory;
 class BlocksTable
 {
 public:
-	BlocksTable(models::GraphicalModelAssistApi const &graphicalModelApi
-			, models::LogicalModelAssistApi const &logicalModelApi
+	BlocksTable(GraphicalModelAssistInterface const &graphicalModelApi
+			, LogicalModelAssistInterface const &logicalModelApi
 			, RobotModel * const robotModel
-			, gui::ErrorReporter * const errorReporter
+			, ErrorReporterInterface * const errorReporter
 			, RobotsBlockParser * const parser
 	);
 	~BlocksTable();
