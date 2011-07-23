@@ -1,7 +1,7 @@
 #include "nodeType.h"
 #include "diagram.h"
 #include "xmlCompiler.h"
-#include "../utils/outFile.h"
+#include "../qrutils/outFile.h"
 #include "pointPort.h"
 #include "linePort.h"
 #include "editor.h"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../qrgui/kernel/ids.h"
+#include "../../../../qrkernel/ids.h"
 
 #include "blocks/block.h"
 #include "robotParts/robotModel.h"

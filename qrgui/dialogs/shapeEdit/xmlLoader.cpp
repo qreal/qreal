@@ -1,5 +1,5 @@
 #include "xmlLoader.h"
-#include "../../../utils/xmlUtils.h"
+#include "../../../qrutils/xmlUtils.h"
 
 #include <QtCore/QDebug>
 

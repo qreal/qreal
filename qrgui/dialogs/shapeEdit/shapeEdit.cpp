@@ -1,8 +1,8 @@
 #include "shapeEdit.h"
 #include "colorListEditor.h"
 #include "ui_shapeEdit.h"
-#include "../../../utils/outFile.h"
-#include "../../../utils/xmlUtils.h"
+#include "../../../qrutils/outFile.h"
+#include "../../../qrutils/xmlUtils.h"
 #include "xmlLoader.h"
 
 #include <QtGui/QFileDialog>

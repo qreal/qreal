@@ -2,9 +2,14 @@ QT += xml
 
 TEMPLATE = lib
 CONFIG += plugin
-DESTDIR = ../../../qrgui/plugins/
+DESTDIR = ../../../bin/plugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
+
+LIBS += -L../../../bin -lqrkernel -lqrutils
+
+CONFIG(debug, debug|release):LIBS  += -lqextserialportd
+else:LIBS  += -lqextserialport
 
 HEADERS += \
 	robotsPlugin.h \
@@ -30,6 +35,7 @@ HEADERS += \
 	details/blocks/beepBlock.h \
 	details/blocks/playToneBlock.h \
 	details/blocks/initialBlock.h \
+	details/blocks/initialBlockWithPorts.h \
 	details/blocks/finalBlock.h \
 	details/blocks/waitForTouchSensorBlock.h \
 	details/blocks/waitForSonarDistanceBlock.h \
@@ -44,6 +50,7 @@ HEADERS += \
 	details/blocks/functionBlock.h \
 	details/blocks/ifBlock.h \
 	details/blocks/waitForEncoderBlock.h \
+	details/blocks/nullificationEncoderBlock.h \
 	details/robotParts/robotModel.h \
 	details/robotParts/brick.h \
 	details/robotParts/motor.h \
@@ -53,18 +60,22 @@ HEADERS += \
 	details/robotParts/colorSensor.h \
 	details/robotParts/encoderSensor.h \
 	details/robotImplementations/sensorImplementations/abstractSensorImplementation.h \
+	details/robotImplementations/sensorImplementations/abstractEncoderImplementation.h \
 	details/robotImplementations/sensorImplementations/bluetoothSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/bluetoothTouchSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/bluetoothSonarSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/bluetoothColorSensorImplementation.h \
+	details/robotImplementations/sensorImplementations/bluetoothEncoderImplementation.h \
 	details/robotImplementations/sensorImplementations/nullSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/nullTouchSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/nullSonarSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/nullColorSensorImplementation.h \
+	details/robotImplementations/sensorImplementations/nullEncoderImplementation.h \
 	details/robotImplementations/sensorImplementations/unrealSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/unrealTouchSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/unrealSonarSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/unrealColorSensorImplementation.h \
+	details/robotImplementations/sensorImplementations/unrealEncoderImplementation.h \
 	details/robotImplementations/motorImplementations/abstractMotorImplementation.h \
 	details/robotImplementations/motorImplementations/realMotorImplementation.h \
 	details/robotImplementations/motorImplementations/nullMotorImplementation.h \
@@ -103,6 +114,7 @@ SOURCES += \
 	details/blocks/beepBlock.cpp \
 	details/blocks/playToneBlock.cpp \
 	details/blocks/initialBlock.cpp \
+	details/blocks/initialBlockWithPorts.cpp \
 	details/blocks/finalBlock.cpp \
 	details/blocks/waitForTouchSensorBlock.cpp \
 	details/blocks/waitForSonarDistanceBlock.cpp \
@@ -117,6 +129,7 @@ SOURCES += \
 	details/blocks/functionBlock.cpp \
 	details/blocks/ifBlock.cpp \
 	details/blocks/waitForEncoderBlock.cpp \
+	details/blocks/nullificationEncoderBlock.cpp \
 	details/robotParts/robotModel.cpp \
 	details/robotParts/touchSensor.cpp \
 	details/robotParts/sonarSensor.cpp \
@@ -126,18 +139,22 @@ SOURCES += \
 	details/robotParts/motor.cpp \
 	details/robotParts/brick.cpp \
 	details/robotImplementations/sensorImplementations/abstractSensorImplementation.cpp \
+	details/robotImplementations/sensorImplementations/abstractEncoderImplementation.cpp \
 	details/robotImplementations/sensorImplementations/bluetoothSensorImplementation.cpp \
 	details/robotImplementations/sensorImplementations/bluetoothTouchSensorImplementation.cpp \
 	details/robotImplementations/sensorImplementations/bluetoothSonarSensorImplementation.cpp \
 	details/robotImplementations/sensorImplementations/bluetoothColorSensorImplementation.cpp \
+	details/robotImplementations/sensorImplementations/bluetoothEncoderImplementation.cpp \
 	details/robotImplementations/sensorImplementations/nullSensorImplementation.cpp \
 	details/robotImplementations/sensorImplementations/nullTouchSensorImplementation.cpp \
 	details/robotImplementations/sensorImplementations/nullSonarSensorImplementation.cpp \
 	details/robotImplementations/sensorImplementations/nullColorSensorImplementation.cpp \
+	details/robotImplementations/sensorImplementations/nullEncoderImplementation.cpp \
 	details/robotImplementations/sensorImplementations/unrealSensorImplementation.cpp \
 	details/robotImplementations/sensorImplementations/unrealTouchSensorImplementation.cpp \
 	details/robotImplementations/sensorImplementations/unrealSonarSensorImplementation.cpp \
 	details/robotImplementations/sensorImplementations/unrealColorSensorImplementation.cpp \
+	details/robotImplementations/sensorImplementations/unrealEncoderImplementation.cpp \
 	details/robotImplementations/motorImplementations/abstractMotorImplementation.cpp \
 	details/robotImplementations/motorImplementations/realMotorImplementation.cpp \
 	details/robotImplementations/motorImplementations/nullMotorImplementation.cpp \
@@ -162,10 +179,3 @@ SOURCES += \
 
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
-
-
-HEADERS += \
-	../../../qrgui/kernel/ids.h \
-
-SOURCES += \
-	../../../qrgui/kernel/ids.cpp \

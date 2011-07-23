@@ -3,7 +3,7 @@
 #include "label.h"
 #include "diagram.h"
 #include "nameNormalizer.h"
-#include "../utils/outFile.h"
+#include "../qrutils/outFile.h"
 
 #include <QDebug>
 

@@ -5,8 +5,8 @@
 #include <QtCore/QPointF>
 #include <QtGui/QPolygon>
 
-#include "../../utils/outFile.h"
-#include "../../utils/xmlUtils.h"
+#include "../../qrutils/outFile.h"
+#include "../../qrutils/xmlUtils.h"
 
 using namespace qrRepo;
 using namespace details;

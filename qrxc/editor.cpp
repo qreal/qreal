@@ -3,7 +3,7 @@
 #include "diagram.h"
 #include "type.h"
 #include "enumType.h"
-#include "../utils/outFile.h"
+#include "../qrutils/outFile.h"
 
 #include <QDebug>
 

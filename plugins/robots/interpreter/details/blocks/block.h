@@ -2,7 +2,7 @@
 
 #include <QtCore/QObject>
 
-#include "../../../../../qrgui/kernel/ids.h"
+#include "../../../../../qrkernel/ids.h"
 #include "../../../../../qrgui/models/graphicalModelAssistApi.h"
 #include "../../../../../qrgui/models/logicalModelAssistApi.h"
 #include "../../../../../qrgui/mainwindow/errorReporter.h"
@@ -24,7 +24,7 @@ class Block : public QObject
 public:
 	typedef QPair<sensorType::SensorTypeEnum, int> SensorPortPair;
 
-	virtual ~Block() {};
+	virtual ~Block() {}
 
 	void interpret();
 	void setFailedStatus();

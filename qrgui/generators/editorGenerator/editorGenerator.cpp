@@ -9,7 +9,7 @@
 
 #include "../../../qrkernel/roles.h"
 
-#include "../../../utils/outFile.h"
+#include "../../../qrutils/outFile.h"
 
 #include "../../../qrkernel/settingsManager.h"
 #include "../../mainwindow/mainWindow.h"

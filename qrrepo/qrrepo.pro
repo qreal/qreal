@@ -7,7 +7,7 @@ TEMPLATE = lib
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
 
-LIBS += -L../bin -lqrkernel
+LIBS += -L../bin -lqrkernel -lqrutils
 
 DEFINES += QRREPO_LIBRARY
 
@@ -33,10 +33,3 @@ HEADERS += \
 
 SOURCES += \
 	private/repoApi.cpp \
-
-#svn support
-INCLUDEPATH += include
-
-# .pri заведён, чтобы структура папок более круто показывалась в креаторе.
-# Содержит код, общий для генератора редакторов и основной части.
-include (../utils/utils.pri)

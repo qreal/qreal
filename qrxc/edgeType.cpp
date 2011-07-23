@@ -1,6 +1,6 @@
 #include "edgeType.h"
 #include "association.h"
-#include "../utils/outFile.h"
+#include "../qrutils/outFile.h"
 #include "xmlCompiler.h"
 #include "diagram.h"
 #include "editor.h"

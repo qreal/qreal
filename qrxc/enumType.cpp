@@ -1,6 +1,6 @@
 #include "enumType.h"
 #include "nameNormalizer.h"
-#include "../utils/outFile.h"
+#include "../qrutils/outFile.h"
 
 bool EnumType::init(QDomElement const &element, QString const &context)
 {

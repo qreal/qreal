@@ -11,7 +11,7 @@
 #include "math.h"
 
 #include "../../../qrrepo/repoApi.h"
-#include "../../../utils/xmlUtils.h"
+#include "../../../qrutils/xmlUtils.h"
 #include "../../pluginManager/editorManager.h"
 #include "../../../qrkernel/exception/exception.h"
 

@@ -26,7 +26,7 @@ if (equals(QMAKE_CXX, "g++") : !macx) {
 	QMAKE_LFLAGS += -Wl,-E
 }
 
-LIBS += -L../bin -lqrrepo -lqrmc -lqrkernel
+LIBS += -L../bin -lqrrepo -lqrmc -lqrkernel -lqrutils
 
 CONFIG(debug, debug|release):LIBS  += -lqextserialportd
 else:LIBS  += -lqextserialport
@@ -51,10 +51,6 @@ include (generators/generators.pri)
 
 # "Встроенные" средства реверс-инжиниринга
 include (parsers/parsers.pri)
-
-# .pri заведён, чтобы структура папок более круто показывалась в креаторе.
-# Содержит код, общий для генератора редакторов и основной части.
-include (../utils/utils.pri)
 
 # Код, скачанный из интернета.
 include (thirdparty/thirdparty.pri)

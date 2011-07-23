@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 
 #include "../../../qrgui/toolPluginInterface/interpreterInterface.h"
-#include "../../../qrgui/kernel/ids.h"
+#include "../../../qrkernel/ids.h"
 
 /*
 #include "../../models/graphicalModelAssistApi.h"

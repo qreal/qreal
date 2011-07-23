@@ -1,8 +1,8 @@
 #include "xmlCompiler.h"
 #include "editor.h"
 #include "nameNormalizer.h"
-#include "../utils/outFile.h"
-#include "../utils/xmlUtils.h"
+#include "../qrutils/outFile.h"
+#include "../qrutils/xmlUtils.h"
 #include "diagram.h"
 #include "type.h"
 

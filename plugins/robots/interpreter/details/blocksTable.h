@@ -2,7 +2,7 @@
 
 #include <QtCore/QHash>
 
-#include "../../../../qrgui/kernel/ids.h"
+#include "../../../../qrkernel/ids.h"
 #include "../../../../qrgui/models/graphicalModelAssistApi.h"
 #include "../../../../qrgui/models/logicalModelAssistApi.h"
 #include "../../../../qrgui/mainwindow/errorReporter.h"

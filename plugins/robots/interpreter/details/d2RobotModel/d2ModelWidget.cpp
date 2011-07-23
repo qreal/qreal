@@ -6,8 +6,8 @@
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
 #include "rotater.h"
-#include "../../../../../utils/outFile.h"
-#include "../../../../../utils/xmlUtils.h"
+#include "../../../../../qrutils/outFile.h"
+#include "../../../../../qrutils/xmlUtils.h"
 
 #include <QtCore/QDebug>
 

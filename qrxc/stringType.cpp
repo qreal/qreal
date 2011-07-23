@@ -1,7 +1,7 @@
 #include "stringType.h"
 
 #include <QDebug>
-#include "../utils/outFile.h"
+#include "../qrutils/outFile.h"
 
 bool StringType::init(QDomElement const &element, QString const &context)
 {
