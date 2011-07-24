@@ -805,33 +805,38 @@ void MainWindow::generateEditor()
 	QString directoryName;
 	QFileInfo directoryXml;
 	QDir dir(".");
-	bool found = false;
-	while (dir.cdUp() && !found) {
-		QFileInfoList infoList = dir.entryInfoList(QDir::Dirs);
-		foreach (QFileInfo const directory, infoList){
-			if (directory.baseName() == "qrxml") {
-				found = true;
-				directoryXml = directory;
-				directoryName = directory.absolutePath();
-			}
-		}
-	}
-	if (!found) {
-		QMessageBox::warning(this, tr("error"), tr("Cannot find the directory for saving"));
-		return;
-	}
+
+//	bool found = false;
+//	while (dir.cdUp() && !found) {
+//		QFileInfoList infoList = dir.entryInfoList(QDir::Dirs);
+//		foreach (QFileInfo const directory, infoList){
+//			if (directory.baseName() == "qrxml") {
+//				found = true;
+//				directoryXml = directory;
+//				directoryName = directory.absolutePath();
+//			}
+//		}
+//	}
+//	if (!found) {
+//		QMessageBox::warning(this, tr("error"), tr("Cannot find the directory for saving"));
+//		return;
+//	}
+
+	directoryXml = QFileInfo(dir.absolutePath());
+	directoryName = dir.absolutePath();
 
 	const QHash<Id, QString> metamodelList = editorGenerator.getMetamodelList();
 	foreach (Id const key, metamodelList.keys()) {
-		dir.mkdir(directoryXml.absolutePath() + "/qrxml/" + metamodelList[key]);
-		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
+		QString const dirName = directoryXml.filePath() + "/" + metamodelList[key];
+		dir.mkdir(dirName);
+		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, directoryName + "/" + metamodelList[key] + "/" + metamodelList[key]);
 
 		if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)) {
-			if (QMessageBox::question(this, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelList[key]),
-					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
-				return;
-			loadNewEditor(directoryName + "/qrxml/", metamodelList[key], SettingsManager::value("pathToQmake", "").toString(),
-			SettingsManager::value("pathToMake", "").toString(), SettingsManager::value("pluginExtension", "").toString(), SettingsManager::value("prefix", "").toString());
+//			if (QMessageBox::question(this, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelList[key]),
+//					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+//				return;
+//			loadNewEditor(directoryName, metamodelList[key], SettingsManager::value("pathToQmake", "").toString(),
+//			SettingsManager::value("pathToMake", "").toString(), SettingsManager::value("pluginExtension", "").toString(), SettingsManager::value("prefix", "").toString());
 		}
 	}
 }
