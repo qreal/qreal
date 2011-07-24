@@ -1,6 +1,7 @@
 #include "interpreter.h"
 
 #include "details/autoconfigurer.h"
+#include "bluetoothRobotCommunication.h"
 
 #include <QtCore/QDebug>
 
@@ -52,8 +53,19 @@ Interpreter::Interpreter()
 	mD2ModelWidget = mD2RobotModel->createModelWidget();
 }
 
-void Interpreter::init()
+void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
+	, LogicalModelAssistInterface const &logicalModelApi
+	, qReal::gui::MainWindowInterpretersInterface &interpretersInterface)
 {
+	mGraphicalModelApi = &graphicalModelApi;
+	mLogicalModelApi = &logicalModelApi;
+	mInterpretersInterface = &interpretersInterface;
+
+	mParser = new RobotsBlockParser(mInterpretersInterface->errorReporter());
+	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel, mInterpretersInterface->errorReporter(), mParser);
+
+	RobotCommunicationInterface * const robotCommunicationInterface = new BluetoothRobotCommunication("COM1");
+	setRobotImplementation(robotModelType::real, robotCommunicationInterface);
 }
 
 Interpreter::~Interpreter()

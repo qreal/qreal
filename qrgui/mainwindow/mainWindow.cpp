@@ -1892,7 +1892,11 @@ QString MainWindow::getNextDirName(QString const &name)
 
 void MainWindow::initToolPlugins()
 {
-	mToolManager.init(&mModels->repoControlApi());
+	mToolManager.init(PluginConfigurator(mModels->repoControlApi()
+			, mModels->graphicalModelAssistApi()
+			, mModels->logicalModelAssistApi()
+			, *this
+	));
 	QList<CustomToolInterface::ActionInfo> actions = mToolManager.actions();
 	foreach (CustomToolInterface::ActionInfo action, actions) {
 		if (action.toolbarName() == "file")

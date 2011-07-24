@@ -5,6 +5,7 @@
 
 #include "../toolPluginInterface/toolPluginInterface.h"
 #include "../toolPluginInterface/customToolInterface.h"
+#include "../toolPluginInterface/pluginConfigurator.h"
 
 namespace qReal {
 
@@ -14,7 +15,7 @@ public:
 	explicit ToolPluginManager(QObject *parent = NULL);
 	virtual ~ToolPluginManager();
 
-	void init(qrRepo::RepoControlInterface *repo);
+	void init(PluginConfigurator const &configurator);
 	QList<CustomToolInterface::ActionInfo> actions() const;
 
 private:

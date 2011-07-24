@@ -17,7 +17,7 @@ public:
 	RobotsPlugin();
 	virtual ~RobotsPlugin();
 
-	virtual void initPlugin(qrRepo::RepoControlInterface *repo);
+	virtual void initPlugin(PluginConfigurator const &configurator);
 	virtual QList<qReal::CustomToolInterface *> toolInterfaces();
 	virtual QList<qReal::InterpreterInterface *> interpreterInterfaces();
 

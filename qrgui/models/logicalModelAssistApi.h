@@ -14,7 +14,7 @@ namespace details {
 class LogicalModel;
 }
 
-class LogicalModelAssistApi : public qReal::details::ModelsAssistInterface
+class LogicalModelAssistApi : public qReal::LogicalModelAssistInterface
 {
 public:
 	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManager const &editorManager);

@@ -12,9 +12,11 @@ RobotsPlugin::~RobotsPlugin()
 {
 }
 
-void RobotsPlugin::initPlugin(qrRepo::RepoControlInterface *repo)
+void RobotsPlugin::initPlugin(PluginConfigurator const &configurator)
 {
-	Q_UNUSED(repo);
+	mInterpreter.init(configurator.graphicalModelApi()
+			, configurator.logicalModelApi()
+			, configurator.mainWindowInterpretersInterface());
 }
 
 QList<qReal::CustomToolInterface *> RobotsPlugin::toolInterfaces()

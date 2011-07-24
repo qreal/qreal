@@ -35,10 +35,10 @@ ToolPluginManager::~ToolPluginManager()
 //		delete toolPlugin;
 }
 
-void ToolPluginManager::init(qrRepo::RepoControlInterface *repo)
+void ToolPluginManager::init(PluginConfigurator const &configurator)
 {
 	foreach (ToolPluginInterface *toolPlugin, mPlugins)
-		toolPlugin->initPlugin(repo);
+		toolPlugin->initPlugin(configurator);
 }
 
 QList<CustomToolInterface::ActionInfo> ToolPluginManager::actions() const

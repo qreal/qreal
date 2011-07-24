@@ -39,7 +39,10 @@ public:
 	Interpreter();
 	virtual ~Interpreter();
 
-	virtual void init();
+	virtual void init(GraphicalModelAssistInterface const &graphicalModelApi
+			, LogicalModelAssistInterface const &logicalModelApi
+			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+	);
 
 	details::RobotModel *robotModel();
 	void setRobotModel(details::RobotModel * const robotModel);
@@ -81,8 +84,8 @@ private:
 		, idle
 	};
 
-	GraphicalModelAssistInterface *mGraphicalModelApi;
-	LogicalModelAssistInterface *mLogicalModelApi;
+	GraphicalModelAssistInterface const *mGraphicalModelApi;
+	LogicalModelAssistInterface const *mLogicalModelApi;
 	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;
 
 	InterpreterState mState;

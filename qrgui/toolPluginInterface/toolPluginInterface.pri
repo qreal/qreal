@@ -4,6 +4,7 @@ HEADERS += \
 	toolPluginInterface/generatorInterface.h \
 	toolPluginInterface/customToolInterface.h \
 	toolPluginInterface/customizationInterface.h \
+	toolPluginInterface/pluginConfigurator.h \
 	\
 	toolPluginInterface/usedInterfaces/errorReporterInterface.h \
 	toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h \
