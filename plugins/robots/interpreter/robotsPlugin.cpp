@@ -1,5 +1,7 @@
 #include "robotsPlugin.h"
 
+Q_EXPORT_PLUGIN2(robotsPlugin, qReal::interpreters::robots::RobotsPlugin)
+
 using namespace qReal::interpreters::robots;
 
 RobotsPlugin::RobotsPlugin()

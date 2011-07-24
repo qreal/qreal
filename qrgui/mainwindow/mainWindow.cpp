@@ -235,17 +235,17 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionCheckout, SIGNAL(triggered()), this, SLOT(doCheckout()));
 	connect(mUi->actionCommit, SIGNAL(triggered()), this, SLOT(doCommit()));
-	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
-	connect(mUi->actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
-	connect(mUi->actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
-	connect(mUi->actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
+//	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
+//	connect(mUi->actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
+//	connect(mUi->actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
+//	connect(mUi->actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
 	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(mUi->actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
 	connect(mUi->actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
-	connect(mUi->actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
-	connect(mUi->actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
+//	connect(mUi->actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
+//	connect(mUi->actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
 
 	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 	connect(mUi->actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
@@ -262,33 +262,33 @@ void MainWindow::connectActions()
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connectDebugActions();
-	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(run()));
-	connect(mUi->actionStop_Running, SIGNAL(triggered()), this, SLOT(stop()));
-	connect(mUi->actionStop_Robot, SIGNAL(triggered()), this, SLOT(stopRobot()));
+//	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(run()));
+//	connect(mUi->actionStop_Running, SIGNAL(triggered()), this, SLOT(stop()));
+//	connect(mUi->actionStop_Robot, SIGNAL(triggered()), this, SLOT(stopRobot()));
 
-	connect(mUi->actionConnect_To_Robot, SIGNAL(triggered()), this, SLOT(connectToRobot()));
+//	connect(mUi->actionConnect_To_Robot, SIGNAL(triggered()), this, SLOT(connectToRobot()));
 
-	connect(mUi->actionRobot_Settings, SIGNAL(triggered()), this, SLOT(showRobotSettingsDialog()));
+//	connect(mUi->actionRobot_Settings, SIGNAL(triggered()), this, SLOT(showRobotSettingsDialog()));
 
-	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
+//	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 }
 
 void MainWindow::connectDebugActions()
 {
-	connect(mUi->actionDebug, SIGNAL(triggered()), this, SLOT(debug()));
-	connect(mUi->actionDebug_Single_step, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
-	connect(mUi->actionGenerate_and_build, SIGNAL(triggered()), this, SLOT(generateAndBuild()));
-	connect(mUi->actionStart_debugger, SIGNAL(triggered()), this, SLOT(startDebugger()));
-	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(runProgramWithDebugger()));
-	connect(mUi->actionKill, SIGNAL(triggered()), this, SLOT(killProgramWithDebugger()));
-	connect(mUi->actionClose_all, SIGNAL(triggered()), this, SLOT(closeDebuggerProcessAndThread()));
-	connect(mUi->actionCont, SIGNAL(triggered()), this, SLOT(goToNextBreakpoint()));
-	connect(mUi->actionNext, SIGNAL(triggered()), this, SLOT(goToNextInstruction()));
-	connect(mUi->actionSet_Breakpoints, SIGNAL(triggered()), this, SLOT(placeBreakpointsInDebugger()));
-	connect(mUi->actionConfigure, SIGNAL(triggered()), this, SLOT(configureDebugger()));
-	connect(mUi->actionBreak_main, SIGNAL(triggered()), this, SLOT(setBreakpointAtStart()));
-	connect(mUi->actionStart_debugging, SIGNAL(triggered()), this, SLOT(startDebugging()));
-	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(checkEditorForDebug(int)));
+//	connect(mUi->actionDebug, SIGNAL(triggered()), this, SLOT(debug()));
+//	connect(mUi->actionDebug_Single_step, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
+//	connect(mUi->actionGenerate_and_build, SIGNAL(triggered()), this, SLOT(generateAndBuild()));
+//	connect(mUi->actionStart_debugger, SIGNAL(triggered()), this, SLOT(startDebugger()));
+//	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(runProgramWithDebugger()));
+//	connect(mUi->actionKill, SIGNAL(triggered()), this, SLOT(killProgramWithDebugger()));
+//	connect(mUi->actionClose_all, SIGNAL(triggered()), this, SLOT(closeDebuggerProcessAndThread()));
+//	connect(mUi->actionCont, SIGNAL(triggered()), this, SLOT(goToNextBreakpoint()));
+//	connect(mUi->actionNext, SIGNAL(triggered()), this, SLOT(goToNextInstruction()));
+//	connect(mUi->actionSet_Breakpoints, SIGNAL(triggered()), this, SLOT(placeBreakpointsInDebugger()));
+//	connect(mUi->actionConfigure, SIGNAL(triggered()), this, SLOT(configureDebugger()));
+//	connect(mUi->actionBreak_main, SIGNAL(triggered()), this, SLOT(setBreakpointAtStart()));
+//	connect(mUi->actionStart_debugging, SIGNAL(triggered()), this, SLOT(startDebugging()));
+//	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(checkEditorForDebug(int)));
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -804,7 +804,6 @@ void MainWindow::generateEditor()
 
 	QString directoryName;
 	QFileInfo directoryXml;
-	const QHash<Id, QString> metamodelList = editorGenerator.getMetamodelList();
 	QDir dir(".");
 	bool found = false;
 	while (dir.cdUp() && !found) {
@@ -821,6 +820,8 @@ void MainWindow::generateEditor()
 		QMessageBox::warning(this, tr("error"), tr("Cannot find the directory for saving"));
 		return;
 	}
+
+	const QHash<Id, QString> metamodelList = editorGenerator.getMetamodelList();
 	foreach (Id const key, metamodelList.keys()) {
 		dir.mkdir(directoryXml.absolutePath() + "/qrxml/" + metamodelList[key]);
 		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
@@ -1707,22 +1708,22 @@ void MainWindow::drawDebuggerErrOutput(QString output) {
 void MainWindow::checkEditorForDebug(int index) {
 	Q_UNUSED(index)
 
-	bool enabled = mUi->tabs->count() > 0 &&
-			mUi->tabs->tabText(mUi->tabs->currentIndex()).compare("(Block Diagram)") == 0;
+//	bool enabled = mUi->tabs->count() > 0 &&
+//			mUi->tabs->tabText(mUi->tabs->currentIndex()).compare("(Block Diagram)") == 0;
 	// mUi->debuggerToolBar->setVisible(enabled);
-	mUi->actionDebug->setEnabled(enabled);
-	mUi->actionDebug_Single_step->setEnabled(enabled);
-	mUi->actionGenerate_and_build->setEnabled(enabled);
-	mUi->actionStart_debugger->setEnabled(enabled);
-	mUi->actionRun->setEnabled(enabled);
-	mUi->actionKill->setEnabled(enabled);
-	mUi->actionClose_all->setEnabled(enabled);
-	mUi->actionNext->setEnabled(enabled);
-	mUi->actionCont->setEnabled(enabled);
-	mUi->actionSet_Breakpoints->setEnabled(enabled);
-	mUi->actionConfigure->setEnabled(enabled);
-	mUi->actionBreak_main->setEnabled(enabled);
-	mUi->actionStart_debugging->setEnabled(enabled);
+//	mUi->actionDebug->setEnabled(enabled);
+//	mUi->actionDebug_Single_step->setEnabled(enabled);
+//	mUi->actionGenerate_and_build->setEnabled(enabled);
+//	mUi->actionStart_debugger->setEnabled(enabled);
+//	mUi->actionRun->setEnabled(enabled);
+//	mUi->actionKill->setEnabled(enabled);
+//	mUi->actionClose_all->setEnabled(enabled);
+//	mUi->actionNext->setEnabled(enabled);
+//	mUi->actionCont->setEnabled(enabled);
+//	mUi->actionSet_Breakpoints->setEnabled(enabled);
+//	mUi->actionConfigure->setEnabled(enabled);
+//	mUi->actionBreak_main->setEnabled(enabled);
+//	mUi->actionStart_debugging->setEnabled(enabled);
 }
 
 void MainWindow::setIndexesOfPropertyEditor(Id const &id)
@@ -1891,7 +1892,21 @@ void MainWindow::initToolPlugins()
 	foreach (CustomToolInterface::ActionInfo action, actions) {
 		if (action.toolbarName() == "file")
 			mUi->fileToolbar->addAction(action.action());
+		else if (action.toolbarName() == "interpreters")
+			mUi->interpreterToolBar->addAction(action.action());
+	}
+
+	foreach (CustomToolInterface::ActionInfo action, actions) {
 		if (action.menuName() == "tools")
 			mUi->menuTools->addAction(action.action());
 	}
+
+	if (mUi->parsersToolbar->actions().isEmpty())
+		mUi->parsersToolbar->hide();
+
+	if (mUi->generatorsToolbar->actions().isEmpty())
+		mUi->generatorsToolbar->hide();
+
+	if (mUi->interpreterToolBar->actions().isEmpty())
+		mUi->interpreterToolBar->hide();
 }

@@ -31,8 +31,8 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 
 ToolPluginManager::~ToolPluginManager()
 {
-	foreach (ToolPluginInterface *toolPlugin, mPlugins)
-		delete toolPlugin;
+//	foreach (ToolPluginInterface *toolPlugin, mPlugins)
+//		delete toolPlugin;
 }
 
 void ToolPluginManager::init(qrRepo::RepoControlInterface *repo)
@@ -44,9 +44,14 @@ void ToolPluginManager::init(qrRepo::RepoControlInterface *repo)
 QList<CustomToolInterface::ActionInfo> ToolPluginManager::actions() const
 {
 	QList<CustomToolInterface::ActionInfo> result;
-	foreach (ToolPluginInterface *toolPlugin, mPlugins)
+	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
 		foreach (CustomToolInterface *customTool, toolPlugin->toolInterfaces())
 			foreach (CustomToolInterface::ActionInfo action, customTool->actions())
 				result << action;
+		foreach (InterpreterInterface *interpreter, toolPlugin->interpreterInterfaces())
+			foreach (QAction *action, interpreter->customActions())
+				result << CustomToolInterface::ActionInfo(action, "interpreters", "tools");
+	}
+
 	return result;
 }

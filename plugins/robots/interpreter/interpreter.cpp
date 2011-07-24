@@ -275,7 +275,15 @@ void Interpreter::updateSensorValues(const QString &sensorVariableName, int sens
 //	qDebug() << sensorVariableName << sensorValue;
 }
 
+void Interpreter::connectToRobot()
+{
+	mRobotModel->init();
+}
+
 QList<QAction *> Interpreter::customActions()
 {
-	return QList<QAction *>();
+	QAction *connectToRobotAction = new QAction(tr("Connect to robot"), NULL);
+	connect(connectToRobotAction, SIGNAL(triggered()), this, SLOT(connectToRobot()));
+
+	return QList<QAction *>() << connectToRobotAction;
 }

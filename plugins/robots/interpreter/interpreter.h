@@ -73,6 +73,8 @@ private slots:
 
 	void connectedSlot(bool success);
 
+	void connectToRobot();
+
 private:
 	enum InterpreterState {
 		interpreting

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>738</width>
-    <height>630</height>
+    <width>1188</width>
+    <height>641</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,7 +35,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>738</width>
+     <width>1188</width>
      <height>21</height>
     </rect>
    </property>
@@ -76,7 +76,6 @@
      <string>&amp;Settings</string>
     </property>
     <addaction name="actionPreferences"/>
-    <addaction name="actionRobot_Settings"/>
     <addaction name="actionPlugins"/>
     <addaction name="actionShow_grid"/>
     <addaction name="actionShow_alignment"/>
@@ -108,33 +107,18 @@
       <property name="title">
        <string>Advanced options...</string>
       </property>
-      <addaction name="actionStart_debugger"/>
       <addaction name="actionConfigure"/>
       <addaction name="actionSet_Breakpoints"/>
-      <addaction name="actionBreak_main"/>
-      <addaction name="actionRun"/>
       <addaction name="actionCont"/>
-      <addaction name="actionKill"/>
      </widget>
      <addaction name="actionGenerate_and_build"/>
-     <addaction name="actionStart_debugging"/>
-     <addaction name="actionNext"/>
-     <addaction name="actionClose_all"/>
      <addaction name="menuAdvanced_options"/>
     </widget>
-    <addaction name="actionExport_to_XMI"/>
-    <addaction name="actionGenerate_to_Java"/>
-    <addaction name="actionGenerate_to_Hascol"/>
     <addaction name="actionDebug"/>
-    <addaction name="actionDebug_Single_step"/>
     <addaction name="menuDebug_with_debugger"/>
-    <addaction name="actionShape_Edit"/>
     <addaction name="actionParse_Editor_xml"/>
     <addaction name="separator"/>
     <addaction name="actionGenerate_Editor_qrmc"/>
-    <addaction name="actionRun"/>
-    <addaction name="actionStop_Running"/>
-    <addaction name="actionStop_Robot"/>
     <addaction name="actionGenerate_Editor"/>
    </widget>
    <addaction name="menu_File"/>
@@ -286,10 +270,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionGenerate_to_Hascol"/>
-   <addaction name="actionGenerate_to_Java"/>
-   <addaction name="actionExport_to_XMI"/>
-   <addaction name="actionShape_Edit"/>
   </widget>
   <widget class="QToolBar" name="parsersToolbar">
    <property name="windowTitle">
@@ -301,8 +281,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionParse_Hascol_sources"/>
-   <addaction name="actionParse_Java_Libraries"/>
   </widget>
   <widget class="QDockWidget" name="errorDock">
    <property name="sizePolicy">
@@ -374,7 +352,7 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>79</width>
+     <width>80</width>
      <height>100</height>
     </size>
    </property>
@@ -415,18 +393,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionStart_debugging"/>
-   <addaction name="actionClose_all"/>
-   <addaction name="actionNext"/>
-   <addaction name="actionShow2Dmodel"/>
-   <addaction name="actionRun"/>
-   <addaction name="actionStop_Running"/>
-   <addaction name="actionStop_Robot"/>
-   <addaction name="actionConnect_To_Robot"/>
-   <addaction name="separator"/>
-   <addaction name="actionRobot_Settings"/>
-   <addaction name="separator"/>
-   <addaction name="actionFullscreen"/>
   </widget>
   <action name="actionQuit">
    <property name="checkable">
@@ -434,15 +400,6 @@
    </property>
    <property name="text">
     <string>&amp;Quit</string>
-   </property>
-  </action>
-  <action name="actionConnect">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/database_connected.png</normaloff>:/icons/database_connected.png</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;Connect</string>
    </property>
   </action>
   <action name="actionZoom_In">
@@ -496,51 +453,6 @@
     <string>Export to SVG</string>
    </property>
   </action>
-  <action name="actionDisconnect">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/database_disconnect.png</normaloff>:/icons/database_disconnect.png</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;Disconnect</string>
-   </property>
-  </action>
-  <action name="actionBeginTransaction">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/database_connect.png</normaloff>:/icons/database_connect.png</iconset>
-   </property>
-   <property name="text">
-    <string>Begin Transaction</string>
-   </property>
-  </action>
-  <action name="actionCommitTransaction">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/database_commit.png</normaloff>:/icons/database_commit.png</iconset>
-   </property>
-   <property name="text">
-    <string>Commit Transaction</string>
-   </property>
-  </action>
-  <action name="actionRollbackTransaction">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/database_revert.png</normaloff>:/icons/database_revert.png</iconset>
-   </property>
-   <property name="text">
-    <string>Rollback Transaction</string>
-   </property>
-  </action>
   <action name="actionDeleteFromDiagram">
    <property name="text">
     <string>Delete</string>
@@ -591,16 +503,6 @@
     <string>Show splashscreen</string>
    </property>
   </action>
-  <action name="actionExport_to_XMI">
-   <property name="text">
-    <string>Export to XMI</string>
-   </property>
-  </action>
-  <action name="actionGenerate_to_Java">
-   <property name="text">
-    <string>Generate to Java</string>
-   </property>
-  </action>
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
@@ -609,11 +511,6 @@
   <action name="actionGenerate_editor">
    <property name="text">
     <string>Generate editor</string>
-   </property>
-  </action>
-  <action name="actionGenerate_to_Hascol">
-   <property name="text">
-    <string>Generate to Hascol</string>
    </property>
   </action>
   <action name="actionSave_as">
@@ -629,22 +526,6 @@
     <string>Open</string>
    </property>
   </action>
-  <action name="actionParse_Hascol_sources">
-   <property name="text">
-    <string>Parse Hascol sources</string>
-   </property>
-   <property name="toolTip">
-    <string>Build diagrams from existing Hascol sources</string>
-   </property>
-  </action>
-  <action name="actionParse_Java_Libraries">
-   <property name="text">
-    <string>Parse Java Libraries</string>
-   </property>
-   <property name="toolTip">
-    <string>Parse Java Libraries</string>
-   </property>
-  </action>
   <action name="actionShow_grid">
    <property name="checkable">
     <bool>true</bool>
@@ -654,11 +535,6 @@
    </property>
    <property name="text">
     <string>Show grid</string>
-   </property>
-  </action>
-  <action name="actionShape_Edit">
-   <property name="text">
-    <string>Shape Editor</string>
    </property>
   </action>
   <action name="actionGenerate_Editor">
@@ -737,14 +613,6 @@
     <string>F9</string>
    </property>
   </action>
-  <action name="actionDebug_Single_step">
-   <property name="text">
-    <string>Debug (Single step)</string>
-   </property>
-   <property name="shortcut">
-    <string>F10</string>
-   </property>
-  </action>
   <action name="actionGenerate_and_build">
    <property name="icon">
     <iconset resource="../qrgui.qrc">
@@ -755,42 +623,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+F9</string>
-   </property>
-  </action>
-  <action name="actionStart_debugger">
-   <property name="text">
-    <string>Start debugger</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F1</string>
-   </property>
-  </action>
-  <action name="actionRun">
-   <property name="text">
-    <string>Run</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F5</string>
-   </property>
-  </action>
-  <action name="actionKill">
-   <property name="text">
-    <string>Kill</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F7</string>
-   </property>
-  </action>
-  <action name="actionClose_all">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/stop.png</normaloff>:/icons/stop.png</iconset>
-   </property>
-   <property name="text">
-    <string>Stop debugging</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F12</string>
    </property>
   </action>
   <action name="actionSet_Breakpoints">
@@ -812,18 +644,6 @@
     <string>Ctrl+F6</string>
    </property>
   </action>
-  <action name="actionNext">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/next.png</normaloff>:/icons/next.png</iconset>
-   </property>
-   <property name="text">
-    <string>Next</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F11</string>
-   </property>
-  </action>
   <action name="actionConfigure">
    <property name="text">
     <string>Configure</string>
@@ -832,56 +652,12 @@
     <string>Ctrl+F2</string>
    </property>
   </action>
-  <action name="actionBreak_main">
-   <property name="text">
-    <string>Break main</string>
-   </property>
-   <property name="toolTip">
-    <string>Run current diagram on a robot using existing Bluetooth connection</string>
-   </property>
-   <property name="shortcut">
-    <string>F5</string>
-   </property>
-  </action>
-  <action name="actionRobot_Settings">
-   <property name="text">
-    <string>Robot Settings...</string>
-   </property>
-  </action>
-  <action name="actionStop_Running">
-   <property name="text">
-    <string>Stop Running</string>
-   </property>
-   <property name="toolTip">
-    <string>Stop Running</string>
-   </property>
-   <property name="shortcut">
-    <string>Shift+F5</string>
-   </property>
-  </action>
-  <action name="actionStop_Robot">
-   <property name="text">
-    <string>Stop Robot</string>
-   </property>
-  </action>
   <action name="actionNew_Diagram">
    <property name="text">
     <string>New Diagram</string>
    </property>
    <property name="toolTip">
     <string>Create new diagram in a current model</string>
-   </property>
-  </action>
-  <action name="actionStart_debugging">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/run.png</normaloff>:/icons/run.png</iconset>
-   </property>
-   <property name="text">
-    <string>Start debugging</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F10</string>
    </property>
   </action>
   <action name="actionFullscreen">
@@ -895,28 +671,12 @@
     <string>Ctrl+Shift+F</string>
    </property>
   </action>
-  <action name="actionShow2Dmodel">
-   <property name="text">
-    <string>2D model</string>
-   </property>
-   <property name="toolTip">
-    <string>Show 2D model</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+F12</string>
-   </property>
-  </action>
   <action name="actionNewProject">
    <property name="text">
     <string>New Project</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+N</string>
-   </property>
-  </action>
-  <action name="actionConnect_To_Robot">
-   <property name="text">
-    <string>Connect To Robot</string>
    </property>
   </action>
  </widget>

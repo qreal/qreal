@@ -25,8 +25,7 @@ public:
 		miscellanious = 2,
 		compiler = 3,
 		debugger = 4,
-		robotSettings = 5,
-		features = 6
+		features = 5
 	};
 
 protected:
