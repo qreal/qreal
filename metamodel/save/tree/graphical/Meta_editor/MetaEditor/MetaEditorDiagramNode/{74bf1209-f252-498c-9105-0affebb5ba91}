@@ -28,9 +28,10 @@
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{7f0d0911-ec65-45b5-88c1-8a27c5e24887}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{f376f0cf-391b-49e1-9c68-c3c2d84435bd}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEnum/{c989689d-d7d3-4ba4-a6ad-7292254c3719}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{15f044a9-2543-43c5-b3f5-ac8d04cfb18d}"/>
   </children>
   <properties>
-    <QPolygon key="configuration" value="0, 0 : 1660, 0 : 1660, 1066 : 0, 1066 : "/>
+    <QPolygon key="configuration" value="0, 0 : 1656, 0 : 1656, 1043 : 0, 1043 : "/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList"/>

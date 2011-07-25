@@ -151,7 +151,11 @@ QVariant Block::evaluate(const QString &propertyName)
 	QVariant value = mParser->standartBlockParseProcess(stringProperty(propertyName), position, mGraphicalId).property("Number");
 	if (mParser->hasErrors()) {
 		mParser->deselect();
-		emit failure(); /*разобраться с этой хренотой*/
+		emit failure();
 	}
 	return value;
+}
+
+void Block::stopActiveTimerInBlock()
+{
 }

@@ -78,3 +78,8 @@ QList<Block::SensorPortPair> WaitForColorBlock::usedSensors() const
 	inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
 	return QList<SensorPortPair>() << qMakePair(sensorType::colorFull, static_cast<int>(port));
 }
+
+void WaitForColorBlock::stopActiveTimerInBlock()
+{
+	mActiveWaitingTimer.stop();
+}

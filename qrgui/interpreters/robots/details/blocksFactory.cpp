@@ -20,6 +20,7 @@
 #include "blocks/waitForColorIntensityBlock.h"
 #include "blocks/ifBlock.h"
 #include "blocks/waitForEncoderBlock.h"
+#include "blocks/nullificationEncoderBlock.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details;
@@ -81,8 +82,10 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new WaitForColorIntensityBlock(mRobotModel);
 	else if (elementMetatypeIs(element, "IfBlock"))
 		newBlock = new IfBlock();
-	else if (elementMetatypeIs(element, "WaitForEncoderBlock"))
+	else if (elementMetatypeIs(element, "WaitForEncoder"))
 		newBlock = new WaitForEncoderBlock(mRobotModel);
+	else if (elementMetatypeIs(element, "NullificationEncoder"))
+		newBlock = new NullificationEncoderBlock(mRobotModel);
 	else
 		newBlock = new DummyBlock();
 

@@ -8,11 +8,12 @@
 
 #include "../editorManager/editorManager.h"
 #include "propertyEditorProxyModel.h"
-#include "propertyEditorDelegate.h"
 #include "gesturesPainterInterface.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
 #include "mainWindowInterpretersInterface.h"
 #include "../kernel/settingsManager.h"
+
+#include "../models/logicalModelAssistApi.h"
 
 #include "../interpreters/robots/bluetoothRobotCommunication.h"
 #include "../interpreters/robots/details/d2RobotModel/d2RobotModel.h"
@@ -60,6 +61,7 @@ public:
 	virtual void highlight(Id const &graphicalId, bool exclusive = true);
 	virtual void dehighlight(Id const &graphicalId);
 	virtual gui::ErrorReporter *errorReporter();
+	void openShapeEditor(QPersistentModelIndex index, int role, QString const propertyValue);
 
 signals:
 	void gesturesShowed();
@@ -128,7 +130,6 @@ private slots:
 	void graphicalModelExplorerClicked(const QModelIndex &index);
 	void logicalModelExplorerClicked(const QModelIndex &index);
 
-	void openShapeEditor();
 	void openNewTab(const QModelIndex &index);
 	void initCurrentTab(const QModelIndex &rootIndex);
 
@@ -137,6 +138,8 @@ private slots:
 	void switchGrid(bool isChecked);
 	void switchAlignment(bool isChecked);
 	void setShape(QString const &data, QPersistentModelIndex const &index, int const &role);
+
+	void openShapeEditor();
 
 	void setDiagramCreateFlag();
 	void diagramInCreateListDeselect();
@@ -162,7 +165,7 @@ private:
 	EditorManager mEditorManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
-	PropertyEditorDelegate mDelegate;
+//	PropertyEditorDelegate mDelegate;
 	GesturesWidget *mGesturesWidget;
 
 	QVector<bool> mSaveListChecked;

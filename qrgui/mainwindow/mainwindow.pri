@@ -1,9 +1,7 @@
 HEADERS += mainwindow/mainWindow.h \
 	mainwindow/paletteToolbox.h \
 	mainwindow/propertyEditorProxyModel.h \
-	mainwindow/propertyEditorDelegate.h \
 	mainwindow/errorReporter.h \
-	mainwindow/openShapeEditorButton.h \
 	mainwindow/gesturesPainterInterface.h \
 	mainwindow/gesturesPainterInterface.h \
 	mainwindow/buttonRefWindow.h \
@@ -14,9 +12,7 @@ HEADERS += mainwindow/mainWindow.h \
 SOURCES += mainwindow/mainWindow.cpp \
 	mainwindow/paletteToolbox.cpp \
 	mainwindow/propertyEditorProxyModel.cpp \
-	mainwindow/propertyEditorDelegate.cpp \
 	mainwindow/errorReporter.cpp \
-	mainwindow/openShapeEditorButton.cpp \
 	mainwindow/buttonRefWindow.cpp \
 	mainwindow/error.cpp \
 	mainwindow/errorListWidget.cpp

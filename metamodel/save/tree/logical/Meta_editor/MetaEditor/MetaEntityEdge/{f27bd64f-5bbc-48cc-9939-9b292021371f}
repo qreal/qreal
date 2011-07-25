@@ -11,7 +11,7 @@
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
     <QString key="labelText" value="Guard"/>
-    <QString key="labelType" value="Dynamic text"/>
+    <QString key="labelType" value="Static text"/>
     <QString key="labels" value=""/>
     <QString key="lineType" value="solidLine"/>
     <links type="qReal::IdList"/>

@@ -27,7 +27,6 @@
 #include "../pluginInterface/editorInterface.h"
 #include "../../qrgui/dialogs/preferencesDialog.h"
 #include "../dialogs/shapeEdit/shapeEdit.h"
-#include "openShapeEditorButton.h"
 #include "propertyEditorProxyModel.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
 
@@ -41,7 +40,9 @@
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../kernel/settingsManager.h"
 
+#include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../interpreters/robots/interpreter.h"
+
 
 using namespace qReal;
 using namespace interpreters::robots;
@@ -113,11 +114,14 @@ MainWindow::MainWindow()
 	mUi->errorDock->setWidget(mUi->errorListWidget);
 	mUi->errorListWidget->init(this);
 	mUi->errorDock->setVisible(false);
+
+//	mDelegate.init(this, &mModels->logicalModelAssistApi());
+	QString workingDir = SettingsManager::value("workingDir", mSaveDir).toString();
+	mRootIndex = QModelIndex();
+	mModels = new models::Models(workingDir, mEditorManager);
+
+	mUi->propertyEditor->init(this, &mModels->logicalModelAssistApi());
 	mUi->propertyEditor->setModel(&mPropertyModel);
-	mUi->propertyEditor->verticalHeader()->hide();
-	mUi->propertyEditor->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
-	mUi->propertyEditor->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
-	mUi->propertyEditor->setItemDelegate(&mDelegate);
 
 	connect(mUi->graphicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(graphicalModelExplorerClicked(QModelIndex)));
 	connect(mUi->logicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(logicalModelExplorerClicked(QModelIndex)));
@@ -133,10 +137,7 @@ MainWindow::MainWindow()
 	// Step 5: Plugins are loaded.
 	progress->setValue(70);
 
-	//settings.beginGroup("MainWindow");
-
 	if (!SettingsManager::value("maximized", true).toBool()) {
-
 		showNormal();
 		resize(SettingsManager::value("size", QSize(1024, 800)).toSize());
 		move(SettingsManager::value("pos", QPoint(0, 0)).toPoint());
@@ -144,11 +145,6 @@ MainWindow::MainWindow()
 	// for jzuken's unholy netbook screen
 //	resize(QSize(1024, 600));
 	//settings.endGroup();
-
-	QString workingDir = SettingsManager::value("workingDir", mSaveDir).toString();
-
-	mRootIndex = QModelIndex();
-	mModels = new models::Models(workingDir, mEditorManager);
 
 	// Step 6: Save loaded, models initialized.
 	progress->setValue(80);
@@ -167,7 +163,7 @@ MainWindow::MainWindow()
 	mGesturesWidget = new GesturesWidget();
 	mVisualDebugger = new VisualDebugger(mModels->graphicalModelAssistApi());
 
-	mDelegate.init(this, &mModels->logicalModelAssistApi());
+//	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
@@ -419,6 +415,7 @@ void MainWindow::sceneSelectionChanged()
 				element->selectionState(true);
 			} else {
 				element->selectionState(false);
+				element->singleSelectionState(false);
 			}
 		}
 	}
@@ -426,9 +423,6 @@ void MainWindow::sceneSelectionChanged()
 	if (selected.isEmpty()) {
 		mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());
 		mPropertyModel.clearModelIndexes();
-		foreach(Element* notSelected, elements) {
-			notSelected->singleSelectionState(false);
-		}
 	} else if (selected.length() > 1) {
 		foreach(Element* notSingleSelected, selected) {
 			notSingleSelected->singleSelectionState(false);
@@ -867,31 +861,30 @@ void MainWindow::setSceneFont() {
 
 }
 
-void MainWindow::openShapeEditor()
+void MainWindow::openShapeEditor(QPersistentModelIndex index, int role, QString const propertyValue)
 {
-	QObject const *object = sender();
-	OpenShapeEditorButton const *button = dynamic_cast<OpenShapeEditorButton const *>(object);
-	QString const text = tr("Shape Editor");
-	ShapeEdit *shapeEdit = NULL;
-	if (button != NULL) {
-		QPersistentModelIndex index = button->index();
-		int role = button->role();
-		QString const propertyValue = button->propertyValue();
-		shapeEdit = new ShapeEdit(index, role);
-		if (!propertyValue.isEmpty())
-			shapeEdit->load(propertyValue);
-		// Here we are going to actually modify model to set a value of a shape.
-		QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
-		model->setData(index, propertyValue, role);
-		connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)), this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
-	}
-	else {
-		shapeEdit = new ShapeEdit();
-	}
+	ShapeEdit *shapeEdit = new ShapeEdit(index, role);
+	if (!propertyValue.isEmpty())
+		shapeEdit->load(propertyValue);
 
-	mUi->tabs->addTab(shapeEdit, text);
+	// Here we are going to actually modify model to set a value of a shape.
+	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
+	model->setData(index, propertyValue, role);
+	connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)),
+		this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
+
+	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
 	setConnectActionZoomTo(shapeEdit);
+}
+
+void MainWindow::openShapeEditor()
+{
+	ShapeEdit *shapeEdit = new ShapeEdit;
+	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
+	mUi->tabs->setCurrentWidget(shapeEdit);
+	setConnectActionZoomTo(shapeEdit);
+
 }
 
 void MainWindow::disconnectZoom(QGraphicsView* view)
