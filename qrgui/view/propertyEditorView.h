@@ -46,9 +46,12 @@ protected slots:
 	void buttonClicked(QtProperty *);
 
 private:
+	int enumPropertyIndexOf(QModelIndex const &, QString const &);
+	void setPropertyValue(QtVariantProperty *property, QVariant const &value);
+
+	bool mChangingPropertyValue;
 	PropertyEditorModel *mModel;
 	QtTreePropertyBrowser *mPropertyEditor;
-	QMap<QModelIndex, QtProperty*> mPropertiesRows;
 	qReal::MainWindow *mMainWindow;
 	qReal::models::LogicalModelAssistApi *mLogicalModelAssistApi;
 };
