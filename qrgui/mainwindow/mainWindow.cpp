@@ -209,6 +209,19 @@ MainWindow::MainWindow()
 	mDocksVisibility.clear();
 	setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
 	initToolPlugins();
+
+	// Temporarily disable all actions and menus not related to robots. To be moved to plugins or configured by configurer plugin interface
+	mUi->menuSvn->setVisible(false);
+	mUi->menuMouse_gestures->setVisible(false);
+	mUi->menuDebug_with_debugger->setVisible(false);
+
+	mUi->actionOpenGL_Renderer->setVisible(false);
+	mUi->actionDebug->setVisible(false);
+	mUi->actionCont->setVisible(false);
+	mUi->actionGenerate_Editor_qrmc->setVisible(false);
+
+	mUi->actionCheckout->setVisible(false);
+	mUi->actionCommit->setVisible(false);
 }
 
 void MainWindow::connectActions()
