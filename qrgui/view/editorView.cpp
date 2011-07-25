@@ -107,6 +107,7 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 			rect.moveLeft(rect.left() - dx);
 			rect.moveTop(rect.top() - dy);
 			setSceneRect(rect);
+			translate(dx, dy);
 		}
 		mMouseOldPosition = event->posF();
 	}
