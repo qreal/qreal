@@ -6,5 +6,5 @@ void user_1ms_isr_type2(void){ /* do nothing */ }
 
 TASK(OSEK_Task_Background)
 {
-	@@CODE@@
+@@CODE@@
 }

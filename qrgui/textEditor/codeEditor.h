@@ -11,7 +11,7 @@ class CodeEditor : public QMainWindow {
 		CodeEditor(const QString& filename, QWidget *parent = 0);
 
 		void setHighlightedLineNumbers(const QList<int>& lineNumbers);
-	
+
 	private:
 		CodeArea mCodeArea;
 };

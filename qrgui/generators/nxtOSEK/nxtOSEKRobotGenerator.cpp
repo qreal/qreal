@@ -10,23 +10,27 @@ using namespace qReal;
 using namespace generators;
 
 NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(qrRepo::RepoApi *api, QString const &destinationPath)
-	:  mDestinationPath(destinationPath) {
+	:  mDestinationPath(destinationPath)
+{
 		mIsNeedToDeleteMApi = false;
 		mApi = api;
 }
 
 NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo, QString const &destinationPath)
-	:mDestinationPath(destinationPath) {
+	:mDestinationPath(destinationPath)
+{
 		mIsNeedToDeleteMApi = true;
 		mApi = new qrRepo::RepoApi(pathToRepo);
 }
 
-NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator() {
+NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator()
+{
 	if (mApi && mIsNeedToDeleteMApi)
 		delete mApi;
 }
 
-gui::ErrorReporter &NxtOSEKRobotGenerator::generate() {
+gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
+{
 	IdList initialNodes = mApi->elementsByType("InitialNode");
 
 	int curInitialNodeNumber = 0;
@@ -130,89 +134,13 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate() {
 	return mErrorReporter;
 }
 
-/*
-QString NxtOSEKRobotGenerator::generateByElement(qReal::Id element, qReal::Id previousElement) {
-	//element.element() <- type of "Id element"
-	if (element.element() == "InitialNode") {
-		return "1";
-
-	} else if (element.element() == "FinalNode") {
-		return "";
-
-	} else if (element.element() == "ControlFlow") {
-		return "3";
-
-	//} else if (element.element() == "EngineCommand") {
-	//	return "4";
-
-	} else if (element.element() == "EnginesForward") {
-		return "motor_set_power(MOTOR0, " + QString::number(360 * mApi.property(element, "Power")) + ");";
-
-	} else if (element.element() == "EnginesBackward") {
-		return "motor_set_power(MOTOR0, " + QString::number(-360 * mApi.property(element, "Power").toInt()) + ");";
-
-	} else if (element.element() == "EnginesStop") {
-		return "motor_set_power(MOTOR0, 0);";
-
-	} else if (element.element() == "Timer") {
-		return "usleep(" + QString::number(mApi.property(element, "Delay").toInt()) + ")";
-
-	} else if (element.element() == "WaitForTouchSensor") {
-		return "9";
-
-	//} else if (element.element() == "Beep") {
-	//	return "10";
-
-	} else if (element.element() == "WaitForCompletion") {
-		return "11";
-
-	} else if (element.element() == "Loop") {
-		return "12";
-
-	} else if (element.element() == "Iterations") {
-		return "13";
-
-	} else if (element.element() == "Fork") {
-		return "14";
-
-	//} else if (element.element() == "PlayTone") {
-	//	return "15";
-
-	} else if (element.element() == "WaitForSonarDistance") {
-		return "16";
-
-	} else if (element.element() == "SensorBlock") {
-		return "17";
-
-	//} else if (element.element() == "AbstractNode") {
-	//	return "18";
-
-	} else if (element.element() == "EngineMovementCommand") {
-		return "19";
-
-	} else if (element.element() == "WaitForColorIntensity") {
-		return "20";
-
-	} else if (element.element() == "WaitForColor") {
-		return "21";
-
-	} else if (element.element() == "Function") {
-		return "22";
-
-	} else if (element.element() == "IfBlock") {
-		return "23";
-
-	} else if (element.element() == "InitialBlock") {
-		return "24";
-	}
-}
-*/
-
 NxtOSEKRobotGenerator::AbstractElementGenerator::AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-		qReal::Id elementId): mNxtGen(emboxGen), mElementId(elementId) {
+		qReal::Id elementId): mNxtGen(emboxGen), mElementId(elementId)
+{
 }
 
-void NxtOSEKRobotGenerator::AbstractElementGenerator::createListsForIncomingConnections() {
+void NxtOSEKRobotGenerator::AbstractElementGenerator::createListsForIncomingConnections()
+{
 	//connects string lists in mGeneratedStringSet with mElementId in mElementToStringListNumbers
 	for (int i = 1; i < mNxtGen->mApi->incomingConnectedElements(mElementId).size(); i++) {
 		mNxtGen->mGeneratedStringSet << QList< QPair<QString, qReal::Id> >();
@@ -221,21 +149,22 @@ void NxtOSEKRobotGenerator::AbstractElementGenerator::createListsForIncomingConn
 }
 
 NxtOSEKRobotGenerator::SimpleElementGenerator::SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-		qReal::Id elementId):
-	AbstractElementGenerator(emboxGen, elementId) {
+		qReal::Id elementId): AbstractElementGenerator(emboxGen, elementId)
+{
 }
 
 NxtOSEKRobotGenerator::LoopElementGenerator::LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-		qReal::Id elementId):
-	AbstractElementGenerator(emboxGen, elementId) {
+		qReal::Id elementId): AbstractElementGenerator(emboxGen, elementId)
+{
 }
 
 NxtOSEKRobotGenerator::IfElementGenerator::IfElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-		qReal::Id elementId):
-	AbstractElementGenerator(emboxGen, elementId) {
+		qReal::Id elementId): AbstractElementGenerator(emboxGen, elementId)
+{
 }
 
-QList<QString> NxtOSEKRobotGenerator::SimpleElementGenerator::portsToEngineNames(QString const &portsProperty) {
+QList<QString> NxtOSEKRobotGenerator::SimpleElementGenerator::portsToEngineNames(QString const &portsProperty)
+{
 	QList<QString> result;
 
 	//port {A, B, C} -> NXT_PORT_{A, B, C}
@@ -249,7 +178,8 @@ QList<QString> NxtOSEKRobotGenerator::SimpleElementGenerator::portsToEngineNames
 	return result;
 }
 
-QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode() {
+QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
+{
 	QList< QPair<QString, qReal::Id> > result;
 
 	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
@@ -258,22 +188,24 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 	if (mElementId.element() == "EnginesForward") {
 		foreach (QString enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
 			result.append(QPair<QString, qReal::Id>(
-						"nxt_motor_set_speed(" + enginePort + ", " + mNxtGen->mApi->stringProperty(logicElementId, "Power") + ", 0);",
+						"nxt_motor_set_speed(" + enginePort + ", "
+							+ mNxtGen->mApi->stringProperty(logicElementId, "Power") + ", 0);",
 						mElementId));
 		}
 
 	} else if (mElementId.element() == "EnginesBackward") {
 		foreach (QString enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
 			result.append(QPair<QString, qReal::Id>(
-						"nxt_motor_set_speed(" + enginePort + ", " + mNxtGen->mApi->stringProperty(logicElementId, "Power") + ", 0);",
-						mElementId));
+						"nxt_motor_set_speed(" + enginePort + ", "
+							+ mNxtGen->mApi->stringProperty(logicElementId, "Power") + ", 0);"
+						, mElementId));
 		}
 
 	} else if (mElementId.element() == "EnginesStop") {
 		foreach (QString enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
 			result.append(QPair<QString, qReal::Id>(
-						"nxt_motor_set_speed(" + enginePort + ", 0, 0);",
-						mElementId));
+						"nxt_motor_set_speed(" + enginePort + ", 0, 0);"
+						, mElementId));
 		}
 
 	} else if (mElementId.element() == "Timer") {
@@ -358,7 +290,7 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
 		QByteArray colorStr = mNxtGen->mApi->stringProperty(logicElementId, "Color").toUtf8();
 
-		QString colorNxtType = "";
+		QString colorNxtType;
 
 		if (colorStr == "Красный") {
 			colorNxtType = "NXT_COLOR_RED";
@@ -379,9 +311,10 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 			colorNxtType = "NXT_COLOR_WHITE";
 		}
 
-		if (colorNxtType != "")
+		if (!colorNxtType.isEmpty())
 			result.append(QPair<QString, qReal::Id>(
-					"while (ecrobot_get_nxtcolorsensor_id(NXT_PORT_S" + QString::number(port) + ") != " + colorNxtType + ") { }",
+					"while (ecrobot_get_nxtcolorsensor_id(NXT_PORT_S" + QString::number(port)
+						+ ") != " + colorNxtType + ") { }",
 					mElementId));
 
 	} else if (mElementId.element() == "WaitForColorIntensity") {
@@ -392,14 +325,15 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 		QString condition = inequalitySign + " " + intensity;
 
 		result.append(QPair<QString, qReal::Id>(
-				"while (!(ecrobot_get_nxtcolorsensor_light(NXT_PORT_S" + QString::number(port) + ") " + condition + ")) { }",
+				"while (!(ecrobot_get_nxtcolorsensor_light(NXT_PORT_S" + QString::number(port)
+					+ ") " + condition + ")) \n{\n}",
 				mElementId));
 
 	} else if (mElementId.element() == "WaitForTouchSensor") {
 		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
 
 		result.append(QPair<QString, qReal::Id>(
-				"while (!ecrobot_get_touch_sensor(NXT_PORT_S" + QString::number(port) + ")) { }",
+				"while (!ecrobot_get_touch_sensor(NXT_PORT_S" + QString::number(port) + ")) \n{\n}",
 				mElementId));
 
 	} else if (mElementId.element() == "WaitForSonarDistance") {
@@ -410,7 +344,7 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 		QString condition = inequalitySign + " " + distance;
 
 		result.append(QPair<QString, qReal::Id>(
-				"while (!(ecrobot_get_sonar_sensor(NXT_PORT_S" + QString::number(port) + ") " + condition + ")) { }",
+				"while (!(ecrobot_get_sonar_sensor(NXT_PORT_S" + QString::number(port) + ") " + condition + ")) \n{\n}",
 				mElementId));
 	}
 
@@ -419,19 +353,22 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 	return result;
 }
 
-QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator::loopPrefixCode() {
+QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator::loopPrefixCode()
+{
 	QList< QPair<QString, qReal::Id> > result;
 	result << QPair<QString, qReal::Id>("while (true) {", mElementId);
 	return result;
 }
 
-QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator::loopPostfixCode() {
+QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator::loopPostfixCode()
+{
 	QList< QPair<QString, qReal::Id> > result;
 	result << QPair<QString, qReal::Id>("}", mElementId);
 	return result;
 }
 
-QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::LoopElementGenerator::loopPrefixCode() {
+QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::LoopElementGenerator::loopPrefixCode()
+{
 	QList< QPair<QString, qReal::Id> > result;
 
 	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
@@ -441,13 +378,15 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::LoopElementGenerator::
 	return result;
 }
 
-QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::LoopElementGenerator::loopPostfixCode() {
+QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::LoopElementGenerator::loopPostfixCode()
+{
 	QList< QPair<QString, qReal::Id> > result;
 	result << QPair<QString, qReal::Id>("}", mElementId);
 	return result;
 }
 
-QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::IfElementGenerator::loopPrefixCode() {
+QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::IfElementGenerator::loopPrefixCode()
+{
 	QList< QPair<QString, qReal::Id> > result;
 
 	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
@@ -457,13 +396,15 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::IfElementGenerator::lo
 	return result;
 }
 
-QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::IfElementGenerator::loopPostfixCode() {
+QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::IfElementGenerator::loopPostfixCode()
+{
 	QList< QPair<QString, qReal::Id> > result;
 	result << QPair<QString, qReal::Id>("}", mElementId);
 	return result;
 }
 
-bool NxtOSEKRobotGenerator::SimpleElementGenerator::preGenerationCheck() {
+bool NxtOSEKRobotGenerator::SimpleElementGenerator::preGenerationCheck()
+{
 	IdList outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
 	if (outgoingConnectedElements.size() > 1) {
 		//case of error in diagram
@@ -475,7 +416,8 @@ bool NxtOSEKRobotGenerator::SimpleElementGenerator::preGenerationCheck() {
 	return true;
 }
 
-bool NxtOSEKRobotGenerator::LoopElementGenerator::preGenerationCheck() {
+bool NxtOSEKRobotGenerator::LoopElementGenerator::preGenerationCheck()
+{
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
 	if ((outgoingLinks.size() != 2) ||
@@ -488,16 +430,16 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::preGenerationCheck() {
 	return true;
 }
 
-bool NxtOSEKRobotGenerator::IfElementGenerator::preGenerationCheck() {
+bool NxtOSEKRobotGenerator::IfElementGenerator::preGenerationCheck()
+{
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
-	if (outgoingLinks.size() != 2) //TODO: append checking arrows
-		return false;
-
-	return true;
+	//TODO: append checking arrows
+	return (outgoingLinks.size() == 2);
 }
 
-bool NxtOSEKRobotGenerator::SimpleElementGenerator::nextElementsGeneration() {
+bool NxtOSEKRobotGenerator::SimpleElementGenerator::nextElementsGeneration()
+{
 	IdList outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
 	mNxtGen->mGeneratedStringSet << simpleCode();
 
@@ -518,26 +460,16 @@ bool NxtOSEKRobotGenerator::SimpleElementGenerator::nextElementsGeneration() {
 	return true;
 }
 
-bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration() {
+bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration()
+{
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 	// outgoingLinks.size() must be 2!
 
 	int elementConnectedByIterationEdgeNumber = -1;
 	int afterLoopElementNumber = -1;
 
-	/*
-	qDebug() << "DDD 0" << mNxtGen->mApi->stringProperty(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard");
-	qDebug() << "DDD 0" << mNxtGen->mApi->logicalId(outgoingLinks.at(0)).toString();
-
-	qDebug() << "DDD 1" << mNxtGen->mApi->stringProperty(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard");
-	qDebug() << "DDD 1" << QString::fromLocal8Bit(mNxtGen->mApi->stringProperty(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toAscii());
-	qDebug() << "DDD 1" << (mNxtGen->mApi->stringProperty(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard") == "ппп");
-	qDebug() << "DDD 1" << mNxtGen->mApi->logicalId(outgoingLinks.at(1)).toString();
-	*/
-
 	//Грязный хак! Почему-то неправильно читается русский
 	if (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString().toUtf8() == "итерация") {
-	//if (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "") {
 		elementConnectedByIterationEdgeNumber = 0;
 		afterLoopElementNumber = 1;
 	} else {
@@ -568,14 +500,15 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration() {
 	return true;
 }
 
-bool NxtOSEKRobotGenerator::IfElementGenerator::generateBranch(int branchNumber) {
+bool NxtOSEKRobotGenerator::IfElementGenerator::generateBranch(int branchNumber)
+{
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
 	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mNxtGen,
 			mNxtGen->mApi->to(outgoingLinks.at(branchNumber)));
 
 	mNxtGen->mPreviousElement = mElementId;
-	//mNxtGen->mPreviousLoopElements.push(mElementId);
+
 	if (!nextBlocksGen->generate())
 		return false;
 	delete nextBlocksGen;
@@ -583,18 +516,15 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::generateBranch(int branchNumber)
 	return true;
 }
 
-bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration() {
+bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration()
+{
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
-	// outgoingLinks.size() must be 2!
-
-	int conditionArrowNum = -1;
+	Q_ASSERT(outgoingLinks.size() == 2);
 
 	//we search for arrow with condition
-	if (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "") {
-		conditionArrowNum = 1;
-	} else {
-		conditionArrowNum = 0;
-	}
+	int conditionArrowNum =
+			mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString().isEmpty()
+			? 1 : 0;
 
 	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
 
@@ -628,18 +558,17 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration() {
 	return true;
 }
 
-bool NxtOSEKRobotGenerator::AbstractElementGenerator::generate() {
-	if (!preGenerationCheck()) {
+bool NxtOSEKRobotGenerator::AbstractElementGenerator::generate()
+{
+	if (!preGenerationCheck())
 		return false;
-	}
 
 	if (mNxtGen->mElementToStringListNumbers.contains(mElementId.toString())) {
 		//if we have already observed this element with more than 1 incoming connection
 
 		qReal::Id loopElement = mElementId;
-		if (!mNxtGen->mPreviousLoopElements.empty()) {
+		if (!mNxtGen->mPreviousLoopElements.empty())
 			loopElement = mNxtGen->mPreviousLoopElements.pop();
-		}
 
 		//loopElement must create loop code
 		AbstractElementGenerator *loopElementGen = ElementGeneratorFactory::generator(mNxtGen, loopElement);
@@ -656,9 +585,5 @@ bool NxtOSEKRobotGenerator::AbstractElementGenerator::generate() {
 	//means that element has incoming connections from another elements, we haven`t already observed
 	createListsForIncomingConnections();
 
-	if (!nextElementsGeneration()) {
-		return false;
-	}
-
-	return true;
+	return nextElementsGeneration();
 }

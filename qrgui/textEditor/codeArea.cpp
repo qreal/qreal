@@ -2,7 +2,8 @@
 #include <QtAlgorithms>
 #include "codeArea.h"
 
-CodeArea::CodeArea(QWidget *parent): QPlainTextEdit(parent) {
+CodeArea::CodeArea(QWidget *parent): QPlainTextEdit(parent)
+{
 	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
 
 	mHighlighter = new TextHighlighter(document());
@@ -10,12 +11,14 @@ CodeArea::CodeArea(QWidget *parent): QPlainTextEdit(parent) {
 	highlightCurrentLine();
 }
 
-CodeArea::~CodeArea() {
+CodeArea::~CodeArea()
+{
 	if (mHighlighter)
 		delete mHighlighter;
 }
 
-void CodeArea::highlightCurrentLine() {
+void CodeArea::highlightCurrentLine()
+{
 	QList<QTextEdit::ExtraSelection> extraSelections;
 
 	if (!isReadOnly()) {
@@ -34,11 +37,13 @@ void CodeArea::highlightCurrentLine() {
 	setExtraSelections(extraSelections);
 }
 
-void CodeArea::setHighlightedLineNumbers(const QList<int>& list) {
+void CodeArea::setHighlightedLineNumbers(const QList<int>& list)
+{
 	mHighlightedLineNumbers = list;
 }
 
-QList<QTextEdit::ExtraSelection> CodeArea::highlightedLinesSelectionList() {
+QList<QTextEdit::ExtraSelection> CodeArea::highlightedLinesSelectionList()
+{
 	QList<QTextEdit::ExtraSelection> extraSelections;
 
 	if (!isReadOnly()) {

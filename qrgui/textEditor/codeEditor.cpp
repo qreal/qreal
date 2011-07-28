@@ -3,7 +3,8 @@
 #include <QDebug>
 #include "codeEditor.h"
 
-CodeEditor::CodeEditor(QWidget *parent): QMainWindow(parent), mCodeArea(this) {
+CodeEditor::CodeEditor(QWidget *parent): QMainWindow(parent), mCodeArea(this)
+{
 	setCentralWidget(&mCodeArea);
 }
 
@@ -11,7 +12,8 @@ CodeEditor::CodeEditor(const QString& filename, QWidget *parent): QMainWindow(pa
 	setCentralWidget(&mCodeArea);
 	QFile file(filename);
 	QTextStream *inStream = 0;
-	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
 		inStream = new QTextStream(&file);
 	}
 
@@ -20,6 +22,7 @@ CodeEditor::CodeEditor(const QString& filename, QWidget *parent): QMainWindow(pa
 	}
 }
 
-void CodeEditor::setHighlightedLineNumbers(const QList<int>& lineNumbers) {
+void CodeEditor::setHighlightedLineNumbers(const QList<int>& lineNumbers)
+{
 	mCodeArea.setHighlightedLineNumbers(lineNumbers);
 }

@@ -1464,8 +1464,24 @@ void MainWindow::generateRobotSourceCode()
 	qReal::generators::NxtOSEKRobotGenerator gen(SettingsManager::value("workingDir", mSaveDir).toString());
 	gui::ErrorReporter &errors = gen.generate();
 	if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
-		mErrorReporter->addInformation("Code generation finished succesfully");
+//		mErrorReporter->addInformation("Code generation finished succesfully");
 		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+
+		CodeArea *area = new CodeArea();
+		QFile file("prog0/prog0.c");
+		QTextStream *inStream = 0;
+		if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			inStream = new QTextStream(&file);
+		}
+
+		if (inStream) {
+			area->document()->setPlainText(inStream->readAll());
+		}
+
+		area->show();
+
+		mUi->tabs->addTab(area, "prog0");
+		mUi->tabs->setCurrentWidget(area);
 	}
 }
 

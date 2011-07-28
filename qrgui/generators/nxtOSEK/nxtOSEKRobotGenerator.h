@@ -115,7 +115,8 @@ private:
 	class ElementGeneratorFactory {
 	public:
 		static AbstractElementGenerator* generator(NxtOSEKRobotGenerator *emboxGen,
-												   qReal::Id elementId) {
+												   qReal::Id elementId)
+		{
 			if (elementId.element() == "IfBlock")
 				return new IfElementGenerator(emboxGen, elementId);
 			if (elementId.element() == "Loop")
