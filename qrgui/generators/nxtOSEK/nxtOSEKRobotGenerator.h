@@ -7,135 +7,137 @@
 #include <QStack>
 
 #include "../../kernel/ids.h"
+#include "../../mainwindow/errorReporter.h"
 #include "../../../qrrepo/repoApi.h"
 
 namespace qReal {
-	namespace generators {
-		class NxtOSEKRobotGenerator {
-			public:
-				explicit NxtOSEKRobotGenerator(qrRepo::RepoApi *api,
-						QString const &destinationPath = "");
-				explicit NxtOSEKRobotGenerator(QString const &pathToRepo,
-						QString const &destinationPath = "");
+namespace generators {
+class NxtOSEKRobotGenerator {
+public:
+	explicit NxtOSEKRobotGenerator(qrRepo::RepoApi *api,
+								   QString const &destinationPath = "");
+	explicit NxtOSEKRobotGenerator(QString const &pathToRepo,
+								   QString const &destinationPath = "");
 
-				~NxtOSEKRobotGenerator();
+	~NxtOSEKRobotGenerator();
 
-				void generate();
+	gui::ErrorReporter &generate();
 
-			private:
-				friend class AbstractElementGenerator;
-				class AbstractElementGenerator {
-					public:
-						explicit AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-								qReal::Id elementId);
+private:
+	friend class AbstractElementGenerator;
+	class AbstractElementGenerator {
+	public:
+		explicit AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen,
+										  qReal::Id elementId);
 
-						virtual ~AbstractElementGenerator() {};
+		virtual ~AbstractElementGenerator() {};
 
-						virtual bool generate();
-							//must change mNxtGen->mGeneratedStringSet
+		virtual bool generate();
+		//must change mNxtGen->mGeneratedStringSet
 
-					protected:
-						virtual QList< QPair<QString, qReal::Id> >
-							loopPrefixCode() = 0;
-						
-						virtual QList< QPair<QString, qReal::Id> >
-							loopPostfixCode() = 0;
+	protected:
+		virtual QList< QPair<QString, qReal::Id> >
+		loopPrefixCode() = 0;
 
-						virtual void createListsForIncomingConnections();
-							//creates new lists in mGeneratedStringSet
-							//and connects it with mElementId in mElementToStringListNumbers
-							//if element have more than 1 incoming connection
+		virtual QList< QPair<QString, qReal::Id> >
+		loopPostfixCode() = 0;
 
-						virtual bool preGenerationCheck() = 0;
-						virtual bool nextElementsGeneration() = 0;
+		virtual void createListsForIncomingConnections();
+		//creates new lists in mGeneratedStringSet
+		//and connects it with mElementId in mElementToStringListNumbers
+		//if element have more than 1 incoming connection
 
-						NxtOSEKRobotGenerator *mNxtGen;
-						qReal::Id mElementId;
-				};
+		virtual bool preGenerationCheck() = 0;
+		virtual bool nextElementsGeneration() = 0;
 
-				//for Beep, Engines etc
-				class SimpleElementGenerator: public AbstractElementGenerator {
-					public:
-						explicit SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-								qReal::Id elementId);
+		NxtOSEKRobotGenerator *mNxtGen;
+		qReal::Id mElementId;
+	};
 
-					protected:
-						virtual QList< QPair<QString, qReal::Id> >
-							loopPrefixCode();
+	//for Beep, Engines etc
+	class SimpleElementGenerator: public AbstractElementGenerator {
+	public:
+		explicit SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen,
+										qReal::Id elementId);
 
-						virtual QList< QPair<QString, qReal::Id> >
-							loopPostfixCode();
+	protected:
+		virtual QList< QPair<QString, qReal::Id> >
+		loopPrefixCode();
 
-						virtual bool preGenerationCheck();
-						virtual bool nextElementsGeneration();
+		virtual QList< QPair<QString, qReal::Id> >
+		loopPostfixCode();
 
-						QList< QPair<QString, qReal::Id> > simpleCode();
+		virtual bool preGenerationCheck();
+		virtual bool nextElementsGeneration();
 
-						QList<QString> portsToEngineNames(QString const &portsProperty);
-				};
+		QList< QPair<QString, qReal::Id> > simpleCode();
 
-				//for loops
-				class LoopElementGenerator: public AbstractElementGenerator {
-					public:
-						explicit LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-								qReal::Id elementId);
+		QList<QString> portsToEngineNames(QString const &portsProperty);
+	};
 
-					protected:
-						virtual QList< QPair<QString, qReal::Id> >
-							loopPrefixCode();
+	//for loops
+	class LoopElementGenerator: public AbstractElementGenerator {
+	public:
+		explicit LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen,
+									  qReal::Id elementId);
 
-						virtual QList< QPair<QString, qReal::Id> >
-							loopPostfixCode();
+	protected:
+		virtual QList< QPair<QString, qReal::Id> >
+		loopPrefixCode();
 
-						virtual bool preGenerationCheck();
-						virtual bool nextElementsGeneration();
-				};
+		virtual QList< QPair<QString, qReal::Id> >
+		loopPostfixCode();
 
-				//for if blocks
-				class IfElementGenerator : public AbstractElementGenerator {
-					public:	
-						explicit IfElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-								qReal::Id elementId);
-					
-					protected:
-						virtual QList< QPair<QString, qReal::Id> >
-							loopPrefixCode();
+		virtual bool preGenerationCheck();
+		virtual bool nextElementsGeneration();
+	};
 
-						virtual QList< QPair<QString, qReal::Id> >
-							loopPostfixCode();
+	//for if blocks
+	class IfElementGenerator : public AbstractElementGenerator {
+	public:
+		explicit IfElementGenerator(NxtOSEKRobotGenerator *emboxGen,
+									qReal::Id elementId);
 
-						virtual bool preGenerationCheck();
-						virtual bool nextElementsGeneration();
+	protected:
+		virtual QList< QPair<QString, qReal::Id> >
+		loopPrefixCode();
 
-						bool generateBranch(int branchNumber);
-				};
+		virtual QList< QPair<QString, qReal::Id> >
+		loopPostfixCode();
 
-				friend class ElementGeneratorFactory;
-				class ElementGeneratorFactory {
-					public:
-						static AbstractElementGenerator* generator(NxtOSEKRobotGenerator *emboxGen,
-								qReal::Id elementId) {
-						if (elementId.element() == "IfBlock")
-								return new IfElementGenerator(emboxGen, elementId);
-						if (elementId.element() == "Loop")
-								return new LoopElementGenerator(emboxGen, elementId);
+		virtual bool preGenerationCheck();
+		virtual bool nextElementsGeneration();
 
-							return new SimpleElementGenerator(emboxGen, elementId); 
-							//TODO: добавить обработку для других классов
-						}
-				};
+		bool generateBranch(int branchNumber);
+	};
 
-				qrRepo::RepoApi *mApi;
-				bool mIsNeedToDeleteMApi;
-				QString mDestinationPath;
-				QList< QList< QPair<QString, qReal::Id> > > mGeneratedStringSet;
-				QStack<qReal::Id> mPreviousLoopElements;
-				qReal::Id mPreviousElement;
+	friend class ElementGeneratorFactory;
+	class ElementGeneratorFactory {
+	public:
+		static AbstractElementGenerator* generator(NxtOSEKRobotGenerator *emboxGen,
+												   qReal::Id elementId) {
+			if (elementId.element() == "IfBlock")
+				return new IfElementGenerator(emboxGen, elementId);
+			if (elementId.element() == "Loop")
+				return new LoopElementGenerator(emboxGen, elementId);
 
-				QMap< QString, QStack<int> > mElementToStringListNumbers;
-					//mapped element with lists in mGeneratedStringSet
-					//QString in this case is qReal::Id string presentation
+			return new SimpleElementGenerator(emboxGen, elementId);
+			//TODO: добавить обработку для других классов
+		}
+	};
 
-		};
-	}
+	qrRepo::RepoApi *mApi;
+	bool mIsNeedToDeleteMApi;
+	QString mDestinationPath;
+	QList< QList< QPair<QString, qReal::Id> > > mGeneratedStringSet;
+	QStack<qReal::Id> mPreviousLoopElements;
+	qReal::Id mPreviousElement;
+
+	QMap< QString, QStack<int> > mElementToStringListNumbers;
+	//mapped element with lists in mGeneratedStringSet
+	//QString in this case is qReal::Id string presentation
+
+	gui::ErrorReporter mErrorReporter;
+};
+}
 }

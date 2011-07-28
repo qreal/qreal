@@ -26,17 +26,17 @@ NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator() {
 		delete mApi;
 }
 
-void NxtOSEKRobotGenerator::generate() {
+gui::ErrorReporter &NxtOSEKRobotGenerator::generate() {
 	IdList initialNodes = mApi->elementsByType("InitialNode");
 
 	int curInitialNodeNumber = 0;
 	foreach (Id curInitialNode, initialNodes) {
 		if (mApi->isGraphicalElement(curInitialNode)) {
 			QString resultCode;
-			
+
 			mGeneratedStringSet.clear();
 			mElementToStringListNumbers.clear();
-			
+
 			AbstractElementGenerator* gen = ElementGeneratorFactory::generator(this, curInitialNode);
 			mPreviousElement = curInitialNode;
 			gen->generate();
@@ -58,10 +58,10 @@ void NxtOSEKRobotGenerator::generate() {
 				QDir().mkdir(projectName);
 
 			/* Generate C file */
-			QFile templateCFile("template.c");
+			QFile templateCFile(":/generators/nxtOSEK/templates/template.c");
 			if (!templateCFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-				qDebug() << "cannot open \"" << templateCFile.fileName() << "\"";
-				return;
+				mErrorReporter.addError("cannot open \"" + templateCFile.fileName() + "\"");
+				return mErrorReporter;
 			}
 
 			QTextStream templateCStream(&templateCFile);
@@ -73,8 +73,8 @@ void NxtOSEKRobotGenerator::generate() {
 
 			QFile resultCFile(projectName + "/" + projectName + ".c");
 			if (!resultCFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-				qDebug() << "cannot open \"" << resultCFile.fileName() << "\"";
-				return;
+				mErrorReporter.addError("cannot open \"" + resultCFile.fileName() + "\"");
+				return mErrorReporter;
 			}
 
 			QTextStream outC(&resultCFile);
@@ -84,43 +84,42 @@ void NxtOSEKRobotGenerator::generate() {
 			/**/
 
 			/* Generate OIL file */
-			QFile templateOILFile("template.oil"); 
+			QFile templateOILFile(":/generators/nxtOSEK/templates/template.oil");
 			if (!templateOILFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-				qDebug() << "cannot open \"" << templateOILFile.fileName() << "\"";
-				return;
+				mErrorReporter.addError("cannot open \"" + templateOILFile.fileName() + "\"");
+				return mErrorReporter;
 			}
 
 			QFile resultOILFile(projectName + "/" + projectName + ".oil");
 			if (!resultOILFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-				qDebug() << "cannot open \"" << resultOILFile.fileName() << "\"";
-				return;
+				mErrorReporter.addError("cannot open \"" + resultOILFile.fileName() + "\"");
+				return mErrorReporter;
 			}
-			
+
 			QTextStream outOIL(&resultOILFile);
 			outOIL << templateOILFile.readAll();
 			templateOILFile.close();
-			
+
 			outOIL.flush();
 			resultOILFile.close();
-			/**/
 
 			/* Generate makefile */
-			QFile templateMakeFile("template.makefile"); 
+			QFile templateMakeFile(":/generators/nxtOSEK/templates/template.makefile");
 			if (!templateMakeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-				qDebug() << "cannot open \"" << templateMakeFile.fileName() << "\"";
-				return;
+				mErrorReporter.addError("cannot open \"" + templateMakeFile.fileName() + "\"");
+				return mErrorReporter;
 			}
 
 			QFile resultMakeFile(projectName + "/makefile");
 			if (!resultMakeFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-				qDebug() << "cannot open \"" << resultMakeFile.fileName() << "\"";
-				return;
+				mErrorReporter.addError("cannot open \"" + resultMakeFile.fileName() + "\"");
+				return mErrorReporter;
 			}
 
 			QTextStream outMake(&resultMakeFile);
 			outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8());
 			templateMakeFile.close();
-			
+
 			outMake.flush();
 			resultMakeFile.close();
 			/**/
@@ -128,6 +127,7 @@ void NxtOSEKRobotGenerator::generate() {
 			curInitialNodeNumber++;
 		}
 	}
+	return mErrorReporter;
 }
 
 /*
@@ -209,7 +209,7 @@ QString NxtOSEKRobotGenerator::generateByElement(qReal::Id element, qReal::Id pr
 */
 
 NxtOSEKRobotGenerator::AbstractElementGenerator::AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-		qReal::Id elementId): mNxtGen(emboxGen), mElementId(elementId) {	
+		qReal::Id elementId): mNxtGen(emboxGen), mElementId(elementId) {
 }
 
 void NxtOSEKRobotGenerator::AbstractElementGenerator::createListsForIncomingConnections() {
@@ -221,24 +221,24 @@ void NxtOSEKRobotGenerator::AbstractElementGenerator::createListsForIncomingConn
 }
 
 NxtOSEKRobotGenerator::SimpleElementGenerator::SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-		qReal::Id elementId): 
+		qReal::Id elementId):
 	AbstractElementGenerator(emboxGen, elementId) {
 }
 
 NxtOSEKRobotGenerator::LoopElementGenerator::LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-		qReal::Id elementId): 
+		qReal::Id elementId):
 	AbstractElementGenerator(emboxGen, elementId) {
 }
 
 NxtOSEKRobotGenerator::IfElementGenerator::IfElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-		qReal::Id elementId): 
+		qReal::Id elementId):
 	AbstractElementGenerator(emboxGen, elementId) {
 }
 
 QList<QString> NxtOSEKRobotGenerator::SimpleElementGenerator::portsToEngineNames(QString const &portsProperty) {
 	QList<QString> result;
 
-	//port {A, B, C} -> NXT_PORT_{A, B, C}  
+	//port {A, B, C} -> NXT_PORT_{A, B, C}
 	if (portsProperty.contains("A"))
 		result.append("NXT_PORT_A");
 	if (portsProperty.contains("B"))
@@ -288,7 +288,7 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 
 	} else if (mElementId.element() == "PlayTone") {
 		result.append(QPair<QString, qReal::Id>(
-					"ecrobot_sound_tone(" + mNxtGen->mApi->stringProperty(logicElementId, "Frequency") + ", " 
+					"ecrobot_sound_tone(" + mNxtGen->mApi->stringProperty(logicElementId, "Frequency") + ", "
 						+ mNxtGen->mApi->stringProperty(logicElementId, "Duration") + ", 50)", //50 - volume of a sound
 					mElementId));
 
@@ -298,12 +298,12 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 		byteFuncCode.replace("Сенсор2", "ecrobot_get_sonar_sensor(NXT_PORT_S2)");
 		byteFuncCode.replace("Сенсор3", "ecrobot_get_sonar_sensor(NXT_PORT_S3)");
 		byteFuncCode.replace("Сенсор4", "ecrobot_get_sonar_sensor(NXT_PORT_S4)");
-		
+
 		QString funcCode = QString::fromUtf8(byteFuncCode);
 
 		result.append(QPair<QString, qReal::Id>(
 					//funcCode.right(funcCode.length() - 4), //TODO: just delete "var "
-					funcCode, 
+					funcCode,
 					mElementId));
 
 	} else if (mElementId.element() == "FinalNode") {
@@ -378,7 +378,7 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 		} else if (colorStr == "Белый") {
 			colorNxtType = "NXT_COLOR_WHITE";
 		}
-		
+
 		if (colorNxtType != "")
 			result.append(QPair<QString, qReal::Id>(
 					"while (ecrobot_get_nxtcolorsensor_id(NXT_PORT_S" + QString::number(port) + ") != " + colorNxtType + ") { }",
@@ -418,7 +418,7 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 
 	return result;
 }
-	
+
 QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator::loopPrefixCode() {
 	QList< QPair<QString, qReal::Id> > result;
 	result << QPair<QString, qReal::Id>("while (true) {", mElementId);
@@ -433,11 +433,11 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 
 QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::LoopElementGenerator::loopPrefixCode() {
 	QList< QPair<QString, qReal::Id> > result;
-	
+
 	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
 	result << QPair<QString, qReal::Id>("for (int __iter__ = ; __iter__ < " +
 			mNxtGen->mApi->property(logicElementId, "Iterations").toString()
-		       	+ "; __iter__++) {", mElementId); //TODO
+				+ "; __iter__++) {", mElementId); //TODO
 	return result;
 }
 
@@ -449,11 +449,11 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::LoopElementGenerator::
 
 QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::IfElementGenerator::loopPrefixCode() {
 	QList< QPair<QString, qReal::Id> > result;
-	
+
 	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
 	result << QPair<QString, qReal::Id>("while (" +
 			mNxtGen->mApi->property(logicElementId, "Condition").toString()
-		       	+ ") {", mElementId); //TODO
+				+ ") {", mElementId); //TODO
 	return result;
 }
 
@@ -479,8 +479,8 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::preGenerationCheck() {
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
 	if ((outgoingLinks.size() != 2) ||
-		( (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "Итерация") 
-		  && 
+		( (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "Итерация")
+		  &&
 		  (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "Итерация") )
 	)
 		return false;
@@ -528,13 +528,13 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration() {
 	/*
 	qDebug() << "DDD 0" << mNxtGen->mApi->stringProperty(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard");
 	qDebug() << "DDD 0" << mNxtGen->mApi->logicalId(outgoingLinks.at(0)).toString();
-	
+
 	qDebug() << "DDD 1" << mNxtGen->mApi->stringProperty(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard");
 	qDebug() << "DDD 1" << QString::fromLocal8Bit(mNxtGen->mApi->stringProperty(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toAscii());
 	qDebug() << "DDD 1" << (mNxtGen->mApi->stringProperty(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard") == "ппп");
 	qDebug() << "DDD 1" << mNxtGen->mApi->logicalId(outgoingLinks.at(1)).toString();
 	*/
-	
+
 	//Грязный хак! Почему-то неправильно читается русский
 	if (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString().toUtf8() == "итерация") {
 	//if (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "") {
@@ -545,8 +545,8 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration() {
 		afterLoopElementNumber = 0;
 	}
 
-	//generate loop	
-	AbstractElementGenerator* loopGen = ElementGeneratorFactory::generator(mNxtGen, 
+	//generate loop
+	AbstractElementGenerator* loopGen = ElementGeneratorFactory::generator(mNxtGen,
 			mNxtGen->mApi->to(outgoingLinks.at(elementConnectedByIterationEdgeNumber)));
 
 	mNxtGen->mPreviousElement = mElementId;
@@ -556,9 +556,9 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration() {
 	delete loopGen;
 
 	//generate next blocks
-	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mNxtGen, 
+	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mNxtGen,
 			mNxtGen->mApi->to(outgoingLinks.at(afterLoopElementNumber)));
-	
+
 	mNxtGen->mPreviousElement = mElementId;
 	mNxtGen->mPreviousLoopElements.push(mElementId);
 	if (!nextBlocksGen->generate())
@@ -571,7 +571,7 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration() {
 bool NxtOSEKRobotGenerator::IfElementGenerator::generateBranch(int branchNumber) {
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
-	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mNxtGen, 
+	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mNxtGen,
 			mNxtGen->mApi->to(outgoingLinks.at(branchNumber)));
 
 	mNxtGen->mPreviousElement = mElementId;
@@ -586,7 +586,7 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::generateBranch(int branchNumber)
 bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration() {
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 	// outgoingLinks.size() must be 2!
-	
+
 	int conditionArrowNum = -1;
 
 	//we search for arrow with condition
@@ -635,7 +635,7 @@ bool NxtOSEKRobotGenerator::AbstractElementGenerator::generate() {
 
 	if (mNxtGen->mElementToStringListNumbers.contains(mElementId.toString())) {
 		//if we have already observed this element with more than 1 incoming connection
-		
+
 		qReal::Id loopElement = mElementId;
 		if (!mNxtGen->mPreviousLoopElements.empty()) {
 			loopElement = mNxtGen->mPreviousLoopElements.pop();

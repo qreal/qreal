@@ -124,6 +124,8 @@ private slots:
 	void parseEditorXml();
 	void showPreferencesDialog();
 
+	void generateRobotSourceCode();
+
 	void connectActions();
 
 	void centerOn(Id const &id);

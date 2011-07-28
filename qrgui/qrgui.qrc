@@ -29,6 +29,9 @@
         <file>icons/preferences/miscellaneous.png</file>
         <file>icons/preferences/tools.png</file>
         <file>icons/preferences/robot.png</file>
+        <file>generators/nxtOSEK/templates/template.c</file>
+        <file>generators/nxtOSEK/templates/template.makefile</file>
+        <file>generators/nxtOSEK/templates/template.oil</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>

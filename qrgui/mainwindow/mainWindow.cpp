@@ -37,6 +37,7 @@
 #include "../parsers/xml/xmlParser.h"
 #include "../editorManager/listenerManager.h"
 #include "../generators/editorGenerator/editorGenerator.h"
+#include "../generators/nxtOSEK/nxtOSEKRobotGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../kernel/settingsManager.h"
 
@@ -249,6 +250,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connect(mUi->actionShow2Dmodel, SIGNAL(triggered()), this, SLOT(showD2ModelWidget()));
+	connect(mUi->actionGenerateSourceCode, SIGNAL(triggered()), this, SLOT(generateRobotSourceCode()));
 }
 
 void MainWindow::showD2ModelWidget(bool isVisible)
@@ -494,10 +496,7 @@ bool MainWindow::openNewProject()
 }
 
 bool MainWindow::open(QString const &dirName)
-{
-
-
-	if (dirName.isEmpty())
+{	if (dirName.isEmpty())
 		return false;
 
 	dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
@@ -509,7 +508,6 @@ bool MainWindow::open(QString const &dirName)
 	closeAllTabs();
 
 	mModels->repoControlApi().open(dirName);
-
 	mModels->reinit();
 
 	if (!checkPluginsAndReopen())
@@ -518,7 +516,9 @@ bool MainWindow::open(QString const &dirName)
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-		this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+	setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+
+	mSaveDir = dirName;
 	return true;
 }
 
@@ -1457,3 +1457,14 @@ QString MainWindow::getNextDirName(QString const &name)
 	return parts.join("_");
 
 }
+
+void MainWindow::generateRobotSourceCode()
+{
+	qReal::generators::NxtOSEKRobotGenerator gen(SettingsManager::value("workingDir", mSaveDir).toString());
+	gui::ErrorReporter &errors = gen.generate();
+	if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
+		mErrorReporter->addInformation("Code generation finished succesfully");
+		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+	}
+}
+
