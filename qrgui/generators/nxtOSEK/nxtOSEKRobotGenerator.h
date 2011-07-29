@@ -14,10 +14,8 @@ namespace qReal {
 namespace generators {
 class NxtOSEKRobotGenerator {
 public:
-	explicit NxtOSEKRobotGenerator(qrRepo::RepoApi *api,
-								   QString const &destinationPath = "");
-	explicit NxtOSEKRobotGenerator(QString const &pathToRepo,
-								   QString const &destinationPath = "");
+	explicit NxtOSEKRobotGenerator(qrRepo::RepoApi *api, QString const &destinationPath = "");
+	explicit NxtOSEKRobotGenerator(QString const &pathToRepo, QString const &destinationPath = "");
 
 	~NxtOSEKRobotGenerator();
 
@@ -27,8 +25,7 @@ private:
 	friend class AbstractElementGenerator;
 	class AbstractElementGenerator {
 	public:
-		explicit AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-										  qReal::Id elementId);
+		explicit AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
 
 		virtual ~AbstractElementGenerator() {};
 
@@ -36,11 +33,9 @@ private:
 		//must change mNxtGen->mGeneratedStringSet
 
 	protected:
-		virtual QList< QPair<QString, qReal::Id> >
-		loopPrefixCode() = 0;
+		virtual QList< QPair<QString, qReal::Id> > loopPrefixCode() = 0;
 
-		virtual QList< QPair<QString, qReal::Id> >
-		loopPostfixCode() = 0;
+		virtual QList< QPair<QString, qReal::Id> > loopPostfixCode() = 0;
 
 		virtual void createListsForIncomingConnections();
 		//creates new lists in mGeneratedStringSet
@@ -57,15 +52,12 @@ private:
 	//for Beep, Engines etc
 	class SimpleElementGenerator: public AbstractElementGenerator {
 	public:
-		explicit SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-										qReal::Id elementId);
+		explicit SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
-		virtual QList< QPair<QString, qReal::Id> >
-		loopPrefixCode();
+		virtual QList< QPair<QString, qReal::Id> > loopPrefixCode();
 
-		virtual QList< QPair<QString, qReal::Id> >
-		loopPostfixCode();
+		virtual QList< QPair<QString, qReal::Id> > loopPostfixCode();
 
 		virtual bool preGenerationCheck();
 		virtual bool nextElementsGeneration();
@@ -78,15 +70,12 @@ private:
 	//for loops
 	class LoopElementGenerator: public AbstractElementGenerator {
 	public:
-		explicit LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-									  qReal::Id elementId);
+		explicit LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
-		virtual QList< QPair<QString, qReal::Id> >
-		loopPrefixCode();
+		virtual QList< QPair<QString, qReal::Id> > loopPrefixCode();
 
-		virtual QList< QPair<QString, qReal::Id> >
-		loopPostfixCode();
+		virtual QList< QPair<QString, qReal::Id> > loopPostfixCode();
 
 		virtual bool preGenerationCheck();
 		virtual bool nextElementsGeneration();
@@ -95,15 +84,12 @@ private:
 	//for if blocks
 	class IfElementGenerator : public AbstractElementGenerator {
 	public:
-		explicit IfElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-									qReal::Id elementId);
+		explicit IfElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
-		virtual QList< QPair<QString, qReal::Id> >
-		loopPrefixCode();
+		virtual QList< QPair<QString, qReal::Id> > loopPrefixCode();
 
-		virtual QList< QPair<QString, qReal::Id> >
-		loopPostfixCode();
+		virtual QList< QPair<QString, qReal::Id> > loopPostfixCode();
 
 		virtual bool preGenerationCheck();
 		virtual bool nextElementsGeneration();
@@ -114,8 +100,7 @@ private:
 	friend class ElementGeneratorFactory;
 	class ElementGeneratorFactory {
 	public:
-		static AbstractElementGenerator* generator(NxtOSEKRobotGenerator *emboxGen,
-												   qReal::Id elementId)
+		static AbstractElementGenerator* generator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId)
 		{
 			if (elementId.element() == "IfBlock")
 				return new IfElementGenerator(emboxGen, elementId);

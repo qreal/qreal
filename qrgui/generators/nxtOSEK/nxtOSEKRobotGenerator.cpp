@@ -186,10 +186,12 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 
 	//TODO: to make "break mode" to do smth
 	if (mElementId.element() == "EnginesForward") {
+		QStringList cmds = mNxtGen->mApi->stringProperty(logicElementId, "Power").split(";", QString::SkipEmptyParts);
+		for (int i = 0; i < cmds.size() - 1; ++i)
+			result.append(QPair<QString, qReal::Id>(cmds.at(i) + ";", mElementId));
 		foreach (QString enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
 			result.append(QPair<QString, qReal::Id>(
-						"nxt_motor_set_speed(" + enginePort + ", "
-							+ mNxtGen->mApi->stringProperty(logicElementId, "Power") + ", 0);",
+						"nxt_motor_set_speed(" + enginePort + ", " + cmds.last() + ", 0);",
 						mElementId));
 		}
 
@@ -231,12 +233,9 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 		byteFuncCode.replace("Сенсор3", "ecrobot_get_sonar_sensor(NXT_PORT_S3)");
 		byteFuncCode.replace("Сенсор4", "ecrobot_get_sonar_sensor(NXT_PORT_S4)");
 
-		QString funcCode = QString::fromUtf8(byteFuncCode);
+		QString funcCode = QString::fromUtf8(byteFuncCode) + ";";
 
-		result.append(QPair<QString, qReal::Id>(
-					//funcCode.right(funcCode.length() - 4), //TODO: just delete "var "
-					funcCode,
-					mElementId));
+		result.append(QPair<QString, qReal::Id>(funcCode, mElementId));
 
 	} else if (mElementId.element() == "FinalNode") {
 		result.append(QPair<QString, qReal::Id>(
@@ -581,7 +580,7 @@ bool NxtOSEKRobotGenerator::AbstractElementGenerator::generate()
 		return true;
 	}
 
-	//in case element has more then 1 incoming connection
+	//in case element has more than 1 incoming connection
 	//means that element has incoming connections from another elements, we haven`t already observed
 	createListsForIncomingConnections();
 
