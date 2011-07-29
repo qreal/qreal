@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>738</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -90,6 +90,8 @@
     <addaction name="actionStop_Running"/>
     <addaction name="actionStop_Robot"/>
     <addaction name="actionGenerate_Editor"/>
+    <addaction name="actionUpload_Program"/>
+    <addaction name="actionFlash_Robot"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -741,6 +743,16 @@
   <action name="actionConnect_To_Robot">
    <property name="text">
     <string>Connect To Robot</string>
+   </property>
+  </action>
+  <action name="actionUpload_Program">
+   <property name="text">
+    <string>Upload Program</string>
+   </property>
+  </action>
+  <action name="actionFlash_Robot">
+   <property name="text">
+    <string>Flash Robot</string>
    </property>
   </action>
  </widget>
