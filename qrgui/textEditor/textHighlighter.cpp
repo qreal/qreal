@@ -8,7 +8,8 @@ TextHighlighter::TextHighlighter(QTextDocument *document): QSyntaxHighlighter(do
 	mKeywordFormat.setFontWeight(QFont::Bold);
 	QStringList keywordPatterns;
 	keywordPatterns << "\\bconst\\b" << "\\bdouble\\b" << "\\bint\\b" << "\\bvoid\\b"
-					<< "\\bwhile\\b" << "\\bif\\b";
+					<< "\\bwhile\\b" << "\\bif\\b" << "\\belse\\b"
+					<< "\\breturn\\b" << "\\bcontinue\\b" << "\\bbreak\\b"  ;
 	foreach (const QString &pattern, keywordPatterns) {
 		rule.pattern = QRegExp(pattern);
 		rule.format = mKeywordFormat;
