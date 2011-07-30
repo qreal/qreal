@@ -34,11 +34,10 @@ PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &
 		modifiedDescription.insert(0, "<body>");//turns alignment on
 		setToolTip(modifiedDescription);
 	}
-
 }
 
 PaletteToolbox::PaletteToolbox(QWidget *parent)
-	: QWidget(parent)
+: QWidget(parent), mCurrentTab(0)
 {
 	createPalette();
 }
@@ -84,6 +83,7 @@ void PaletteToolbox::setActiveEditor(Id id)
 
 void PaletteToolbox::setActiveEditor(int const comboIndex)
 {
+	mCurrentTab = comboIndex;
 	if (mTabs.size() > 0) {
 		mScrollArea->takeWidget(); // Save current editor from extermination.
 		mScrollArea->setWidget(mTabs[comboIndex]);
