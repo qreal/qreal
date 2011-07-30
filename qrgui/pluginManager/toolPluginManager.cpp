@@ -55,3 +55,14 @@ QList<CustomToolInterface::ActionInfo> ToolPluginManager::actions() const
 
 	return result;
 }
+
+QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() const
+{
+	QList<QPair<QString, PreferencesPage *> > result;
+	foreach (ToolPluginInterface *toolPlugin, mPlugins)
+		foreach (CustomToolInterface *customTool, toolPlugin->toolInterfaces())
+			if (customTool->preferencesPage().second != NULL)
+				result << customTool->preferencesPage();
+
+	return result;
+}

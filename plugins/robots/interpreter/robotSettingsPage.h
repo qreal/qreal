@@ -1,16 +1,18 @@
 #pragma once
 
-/*
-#include "page.h"
+#include "../../../qrgui/dialogs/preferencesPages/page.h"
 
-#include "../../interpreters/robots/sensorConstants.h"
-#include "../../../plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h"
+#include "sensorConstants.h"
 
 using namespace qReal::interpreters::robots;
 
 namespace Ui {
 	class PreferencesRobotSettingsPage;
 }
+
+namespace qReal {
+namespace interpreters {
+namespace robots {
 
 class PreferencesRobotSettingsPage : public PreferencesPage
 {
@@ -41,4 +43,7 @@ private:
 
 	Ui::PreferencesRobotSettingsPage *mUi;
 };
-*/
+
+}
+}
+}

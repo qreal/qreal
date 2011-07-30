@@ -1,7 +1,7 @@
-/*
-#include "../../kernel/settingsManager.h"
 #include "robotSettingsPage.h"
 #include "ui_robotSettingsPage.h"
+
+#include "../../../qrkernel/settingsManager.h"
 #include "../../../plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h"
 
 using namespace qReal::interpreters::robots;
@@ -187,4 +187,3 @@ void PreferencesRobotSettingsPage::save()
 	SettingsManager::setValue("port3SensorType", selectedPort3Sensor());
 	SettingsManager::setValue("port4SensorType", selectedPort4Sensor());
 }
-*/

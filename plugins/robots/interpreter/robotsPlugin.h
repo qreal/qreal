@@ -2,7 +2,7 @@
 
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 
-#include "interpreter.h"
+#include "pluginGui.h"
 
 namespace qReal {
 namespace interpreters {
@@ -22,7 +22,7 @@ public:
 	virtual QList<qReal::InterpreterInterface *> interpreterInterfaces();
 
 private:
-	Interpreter mInterpreter;
+	PluginGui mPluginGui;
 };
 
 }

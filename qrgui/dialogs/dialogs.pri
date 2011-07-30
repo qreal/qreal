@@ -25,10 +25,10 @@ HEADERS += dialogs/plugindialog.h \
 	dialogs/preferencesPages/debuggerPage.h \
 	dialogs/preferencesPages/editorPage.h \
 	dialogs/preferencesPages/miscellaniousPage.h \
-	dialogs/preferencesPages/robotSettingsPage.h \
 	dialogs/gesturesShow/gesturesWidget.h \
 	dialogs/checkoutdialog.h \
-    dialogs/preferencesPages/featuresPage.h
+	dialogs/preferencesPages/featuresPage.h \
+
 SOURCES += dialogs/plugindialog.cpp \
 	dialogs/refWindow.cpp \
 	dialogs/preferencesDialog.cpp \
@@ -56,18 +56,17 @@ SOURCES += dialogs/plugindialog.cpp \
 	dialogs/preferencesPages/debuggerPage.cpp \
 	dialogs/preferencesPages/editorPage.cpp \
 	dialogs/preferencesPages/miscellaniousPage.cpp \
-	dialogs/preferencesPages/robotSettingsPage.cpp \
 	dialogs/checkoutdialog.cpp \
-    dialogs/preferencesPages/featuresPage.cpp
+	dialogs/preferencesPages/featuresPage.cpp \
+
 FORMS += dialogs/editorGeneratorDialog.ui \
 	dialogs/preferencesDialog.ui \
 	dialogs/shapeEdit/shapeEdit.ui \
 	dialogs/gesturesShow/gesturesWidget.ui \
-	dialogs/preferencesPages/robotSettingsPage.ui \
 	dialogs/preferencesPages/miscellaniousPage.ui \
 	dialogs/preferencesPages/editorPage.ui \
 	dialogs/preferencesPages/debuggerPage.ui \
 	dialogs/preferencesPages/compilerPage.ui \
 	dialogs/preferencesPages/behaviourPage.ui \
 	dialogs/refWindow.ui \
-    dialogs/preferencesPages/featuresPage.ui
+	dialogs/preferencesPages/featuresPage.ui

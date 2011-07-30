@@ -14,17 +14,15 @@ RobotsPlugin::~RobotsPlugin()
 
 void RobotsPlugin::initPlugin(PluginConfigurator const &configurator)
 {
-	mInterpreter.init(configurator.graphicalModelApi()
-			, configurator.logicalModelApi()
-			, configurator.mainWindowInterpretersInterface());
+	mPluginGui.init(configurator);
 }
 
 QList<qReal::CustomToolInterface *> RobotsPlugin::toolInterfaces()
 {
-	return QList<qReal::CustomToolInterface *>();
+	return QList<qReal::CustomToolInterface *>() << &mPluginGui;
 }
 
 QList<qReal::InterpreterInterface *> RobotsPlugin::interpreterInterfaces()
 {
-	return QList<qReal::InterpreterInterface *>() << &mInterpreter;
+	return QList<qReal::InterpreterInterface *>();
 }

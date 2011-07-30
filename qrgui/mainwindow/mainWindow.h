@@ -14,6 +14,7 @@
 #include "../interpreters/visualDebugger/debuggerConnector.h"
 #include "mainWindowInterpretersInterface.h"
 #include "../../qrkernel/settingsManager.h"
+#include "../../qrgui/dialogs/preferencesDialog.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -53,7 +54,9 @@ public:
 	virtual void dehighlight(Id const &graphicalId);
 	virtual void dehighlight();
 	virtual ErrorReporterInterface *errorReporter();
+	virtual Id activeDiagram();
 	void openShapeEditor(QPersistentModelIndex index, int role, QString const propertyValue);
+	virtual void openSettingsDialog(QString const &tab);
 
 signals:
 	void gesturesShowed();
@@ -180,7 +183,6 @@ private:
 	ToolPluginManager mToolManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
-//	PropertyEditorDelegate mDelegate;
 	GesturesWidget *mGesturesWidget;
 
 	QVector<bool> mSaveListChecked;
@@ -200,6 +202,8 @@ private:
 	QMap<QString, bool> mDocksVisibility;
 
 	QString mSaveDir;
+
+	PreferencesDialog mPreferencesDialog;
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,

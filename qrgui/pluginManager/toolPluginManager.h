@@ -6,6 +6,7 @@
 #include "../toolPluginInterface/toolPluginInterface.h"
 #include "../toolPluginInterface/customToolInterface.h"
 #include "../toolPluginInterface/pluginConfigurator.h"
+#include "../dialogs/preferencesPages/page.h"
 
 namespace qReal {
 
@@ -17,6 +18,7 @@ public:
 
 	void init(PluginConfigurator const &configurator);
 	QList<CustomToolInterface::ActionInfo> actions() const;
+	QList<QPair<QString, PreferencesPage *> > preferencesPages() const;
 
 private:
 	QDir mPluginsDir;

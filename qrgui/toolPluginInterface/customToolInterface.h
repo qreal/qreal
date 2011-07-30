@@ -5,6 +5,9 @@
 #include <QtGui/QAction>
 
 #include "../../qrrepo/repoControlInterface.h"
+#include "../dialogs/preferencesPages/page.h"
+
+#include "pluginConfigurator.h"
 
 namespace qReal {
 
@@ -37,7 +40,8 @@ public:
 	};
 
 	virtual QList<ActionInfo> actions() = 0;
-	virtual void init(qrRepo::RepoControlInterface *repo) = 0;
+	virtual void init(PluginConfigurator const &configurator) = 0;
+	virtual QPair<QString, PreferencesPage *> preferencesPage() = 0;
 };
 
 }

@@ -127,15 +127,6 @@
      </item>
      <item>
       <property name="text">
-       <string>Robot Settings</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../qrgui.qrc">
-        <normaloff>:/icons/preferences/robot.png</normaloff>:/icons/preferences/robot.png</iconset>
-      </property>
-     </item>
-     <item>
-      <property name="text">
        <string>Features</string>
       </property>
       <property name="icon">

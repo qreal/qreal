@@ -12,6 +12,9 @@ CONFIG(debug, debug|release):LIBS  += -lqextserialportd
 else:LIBS  += -lqextserialport
 
 HEADERS += \
+	../../../qrgui/dialogs/preferencesPages/page.h \
+
+HEADERS += \
 	robotsPlugin.h \
 
 SOURCES += \
@@ -22,6 +25,8 @@ HEADERS += \
 	sensorConstants.h \
 	robotCommunicationInterface.h \
 	bluetoothRobotCommunication.h \
+	pluginGui.h \
+	robotSettingsPage.h \
 	details/thread.h \
 	details/blocksFactory.h \
 	details/blocksTable.h \
@@ -102,6 +107,8 @@ HEADERS += \
 SOURCES += \
 	interpreter.cpp \
 	bluetoothRobotCommunication.cpp \
+	pluginGui.cpp \
+	robotSettingsPage.cpp \
 	details/thread.cpp \
 	details/blocksTable.cpp \
 	details/blocksFactory.cpp \
@@ -179,3 +186,4 @@ SOURCES += \
 
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
+	robotSettingsPage.ui \

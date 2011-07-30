@@ -5,13 +5,6 @@
 #include "../../../qrgui/toolPluginInterface/interpreterInterface.h"
 #include "../../../qrkernel/ids.h"
 
-/*
-#include "../../models/graphicalModelAssistApi.h"
-#include "../../models/logicalModelAssistApi.h"
-#include "../../mainwindow/errorReporter.h"
-#include "../../mainwindow/mainWindowInterpretersInterface.h"
-*/
-
 #include "robotCommunicationInterface.h"
 #include "sensorConstants.h"
 #include "details/robotParts/robotModel.h"
@@ -25,17 +18,11 @@ namespace qReal {
 namespace interpreters {
 namespace robots {
 
-class Interpreter : public QObject, public InterpreterInterface
+class Interpreter : public QObject
 {
 	Q_OBJECT
 
 public:
-//	Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
-//			, LogicalModelAssistInterface const &logicalModelApi
-//			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterface
-//			, RobotCommunicationInterface * const robotCommunicationInterface
-//			, robotModelType::robotModelTypeEnum modelType
-//			);
 	Interpreter();
 	virtual ~Interpreter();
 
@@ -46,21 +33,20 @@ public:
 
 	details::RobotModel *robotModel();
 	void setRobotModel(details::RobotModel * const robotModel);
-	void interpret(Id const &currentDiagramId);
 	void configureSensors(sensorType::SensorTypeEnum const &port1
 			, sensorType::SensorTypeEnum const &port2
 			, sensorType::SensorTypeEnum const &port3
 			, sensorType::SensorTypeEnum const &port4);
-	void stop();
-	void stopRobot();
 	void setRobotImplementation(robotModelType::robotModelTypeEnum implementationType
 			, RobotCommunicationInterface * const robotCommunicationInterface);
 
 	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
 
-	QList<QAction *> customActions();
-
 public slots:
+	void connectToRobot();
+	void interpret();
+	void stop();
+	void stopRobot();
 	void showD2ModelWidget(bool isVisible);
 
 private slots:
@@ -75,8 +61,6 @@ private slots:
 	void responseSlot4(int sensorValue);
 
 	void connectedSlot(bool success);
-
-	void connectToRobot();
 
 private:
 	enum InterpreterState {

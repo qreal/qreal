@@ -75,8 +75,10 @@ Interpreter::~Interpreter()
 	delete mBlocksTable;
 }
 
-void Interpreter::interpret(Id const &currentDiagramId)
+void Interpreter::interpret()
 {
+	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
+
 	if (!mConnected) {
 		mInterpretersInterface->errorReporter()->addInformation(tr("No connection to robot"));
 		return;
@@ -290,32 +292,4 @@ void Interpreter::updateSensorValues(const QString &sensorVariableName, int sens
 void Interpreter::connectToRobot()
 {
 	mRobotModel->init();
-}
-
-QList<QAction *> Interpreter::customActions()
-{
-	// TODO: Move this to separate classes
-	QAction *d2ModelAction = new QAction(tr("2d model"), NULL);
-//	connect(d2ModelAction, SIGNAL(triggered()), this, SLOT(show2dModel()));
-
-	QAction *runAction = new QAction(tr("Run"), NULL);
-//	connect(runAction, SIGNAL(triggered()), this, SLOT(run()));
-
-	QAction *stopAction = new QAction(tr("Stop"), NULL);
-//	connect(stopAction, SIGNAL(triggered()), this, SLOT(stop()));
-
-	QAction *stopRobotAction = new QAction(tr("Stop robot"), NULL);
-//	connect(stopRobotAction, SIGNAL(triggered()), this, SLOT(stopRobot()));
-
-	QAction *connectToRobotAction = new QAction(tr("Connect to robot"), NULL);
-	connect(connectToRobotAction, SIGNAL(triggered()), this, SLOT(connectToRobot()));
-
-	QAction *robotSettingsAction = new QAction(tr("Robot settings"), NULL);
-//	connect(robotSettingsAction, SIGNAL(triggered()), this, SLOT(showRobotSettings()));
-
-	QAction *separator = new QAction(NULL);
-	separator->setSeparator(true);
-
-	return QList<QAction *>() << d2ModelAction << runAction << stopAction
-			<< stopRobotAction << connectToRobotAction << separator << robotSettingsAction;
 }

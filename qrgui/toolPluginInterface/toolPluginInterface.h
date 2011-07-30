@@ -11,6 +11,7 @@
 #include "customizationInterface.h"
 #include "pluginConfigurator.h"
 
+
 namespace qReal {
 
 class ToolPluginInterface

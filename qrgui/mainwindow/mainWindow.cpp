@@ -24,7 +24,6 @@
 #include "errorReporter.h"
 
 #include "../editorPluginInterface/editorInterface.h"
-#include "../../qrgui/dialogs/preferencesDialog.h"
 #include "../dialogs/shapeEdit/shapeEdit.h"
 #include "propertyeditorproxymodel.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
@@ -61,6 +60,7 @@ MainWindow::MainWindow()
 	, mErrorReporter(NULL)
 	, mIsFullscreen(false)
 	, mSaveDir(qApp->applicationDirPath() + "/save")
+	, mPreferencesDialog(this)
 {
 
 	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
@@ -209,6 +209,8 @@ MainWindow::MainWindow()
 	mDocksVisibility.clear();
 	setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
 	initToolPlugins();
+
+	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 
 	// Temporarily disable all actions and menus not related to robots. To be moved to plugins or configured by configurer plugin interface
 	mUi->menuSvn->setVisible(false);
@@ -1104,14 +1106,20 @@ void MainWindow::parseHascol()
 
 void MainWindow::showPreferencesDialog()
 {
-	PreferencesDialog preferencesDialog(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
+	disconnect(&mPreferencesDialog);
 	if (getCurrentTab() != NULL) {
-		connect(&preferencesDialog, SIGNAL(gridChanged()), getCurrentTab(), SLOT(invalidateScene()));
-		connect(&preferencesDialog, SIGNAL(iconsetChanged()), this, SLOT(updatePaletteIcons()));
-		connect(&preferencesDialog, SIGNAL(settingsApplied()), this, SLOT(applySettings()));
-		connect(&preferencesDialog, SIGNAL(fontChanged()), this, SLOT(setSceneFont()));
+		connect(&mPreferencesDialog, SIGNAL(gridChanged()), getCurrentTab(), SLOT(invalidateScene()));
+		connect(&mPreferencesDialog, SIGNAL(iconsetChanged()), this, SLOT(updatePaletteIcons()));
+		connect(&mPreferencesDialog, SIGNAL(settingsApplied()), this, SLOT(applySettings()));
+		connect(&mPreferencesDialog, SIGNAL(fontChanged()), this, SLOT(setSceneFont()));
 	}
-	preferencesDialog.exec();
+	mPreferencesDialog.exec();
+}
+
+void MainWindow::openSettingsDialog(QString const &tab)
+{
+	mPreferencesDialog.switchCurrentTab(tab);
+	showPreferencesDialog();
 }
 
 void MainWindow::setSceneFont() {
@@ -1903,6 +1911,11 @@ QString MainWindow::getNextDirName(QString const &name)
 	return parts.join("_");
 }
 
+Id MainWindow::activeDiagram()
+{
+	return getCurrentTab()->mvIface()->rootId();
+}
+
 void MainWindow::initToolPlugins()
 {
 	mToolManager.init(PluginConfigurator(mModels->repoControlApi()
@@ -1931,4 +1944,9 @@ void MainWindow::initToolPlugins()
 
 	if (mUi->interpreterToolBar->actions().isEmpty())
 		mUi->interpreterToolBar->hide();
+
+	QList<QPair<QString, PreferencesPage *> > preferencesPages = mToolManager.preferencesPages();
+	typedef QPair<QString, PreferencesPage *> PageDescriptor;
+	foreach (PageDescriptor page, preferencesPages)
+		mPreferencesDialog.registerPage(page.first, page.second);
 }

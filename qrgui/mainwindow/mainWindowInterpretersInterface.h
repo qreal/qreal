@@ -17,6 +17,8 @@ public:
 	virtual void dehighlight(Id const &graphicalId) = 0;
 	virtual void dehighlight() = 0;
 	virtual ErrorReporterInterface *errorReporter() = 0;
+	virtual Id activeDiagram() = 0;
+	virtual void openSettingsDialog(QString const &tab) = 0;
 };
 
 }

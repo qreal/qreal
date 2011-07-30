@@ -15,10 +15,6 @@ class PreferencesDialog : public QDialog {
 	Q_OBJECT
 
 public:
-	PreferencesDialog(QAction * const showGridAction, QAction * const showAlignmentAction
-		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent = 0);
-	~PreferencesDialog();
-
 	enum PageIndexes {
 		editor = 0,
 		behaviour = 1,
@@ -27,6 +23,15 @@ public:
 		debugger = 4,
 		features = 5
 	};
+
+	PreferencesDialog(QWidget *parent = 0);
+	~PreferencesDialog();
+
+	void init(QAction * const showGridAction, QAction * const showAlignmentAction
+		,QAction * const activateGridAction, QAction * const activateAlignmentAction);
+
+	void registerPage(QString const &pageName, PreferencesPage * const page);
+	void switchCurrentTab(QString const &tabName);
 
 protected:
 	void changeEvent(QEvent *e);
@@ -53,4 +58,8 @@ private:
 	PreferencesPage *mEditorPage;
 	PreferencesPage *mMiscellaniousPage;
 	PreferencesPage *mFeaturesPage;
+
+	QMap<QString, PreferencesPage *> mCustomPages;
+
+	void hidePages();
 };
