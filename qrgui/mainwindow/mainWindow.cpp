@@ -87,6 +87,12 @@ MainWindow::MainWindow()
 	}
 	mUi->setupUi(this);
 
+	if (mToolManager.customizer()) {
+		setWindowTitle(mToolManager.customizer()->windowTitle());
+		mUi->logicalModelDock->setVisible(mToolManager.customizer()->showLogicalModelExplorer());
+		setWindowIcon(mToolManager.customizer()->applicationIcon());
+	}
+
 #if defined(Q_WS_WIN)
 	mUi->menuSvn->setEnabled(false);  // Doesn't work on Windows anyway.
 #endif
@@ -547,8 +553,6 @@ bool MainWindow::openNewProject()
 
 bool MainWindow::open(QString const &dirName)
 {
-
-
 	if (dirName.isEmpty())
 		return false;
 

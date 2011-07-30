@@ -27,8 +27,8 @@ public:
 		return QList<InterpreterInterface *>();
 	}
 
-	virtual QList<CustomizationInterface *> customizationInterfaces() {
-		return QList<CustomizationInterface *>();
+	virtual CustomizationInterface* customizationInterface() {
+		return NULL;
 	}
 };
 

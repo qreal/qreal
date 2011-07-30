@@ -9,7 +9,14 @@
 #include "preferencesPages/featuresPage.h"
 
 PreferencesDialog::PreferencesDialog(QWidget *parent)
-	: QDialog(parent), ui(new Ui::PreferencesDialog)
+	: QDialog(parent)
+	, ui(new Ui::PreferencesDialog)
+	, mBehaviourPage(NULL)
+	, mCompilerPage(NULL)
+	, mDebuggerPage(NULL)
+	, mEditorPage(NULL)
+	, mMiscellaniousPage(NULL)
+	, mFeaturesPage(NULL)
 {
 	ui->setupUi(this);
 }
@@ -79,12 +86,14 @@ void PreferencesDialog::changeEvent(QEvent *e)
 	case QEvent::LanguageChange:
 		ui->retranslateUi(this);
 
-		mBehaviourPage->changeEvent(e);
-		mCompilerPage->changeEvent(e);
-		mDebuggerPage->changeEvent(e);
-		mEditorPage->changeEvent(e);
-		mMiscellaniousPage->changeEvent(e);
-		mFeaturesPage->changeEvent(e);
+		if (mBehaviourPage) {
+			mBehaviourPage->changeEvent(e);
+			mCompilerPage->changeEvent(e);
+			mDebuggerPage->changeEvent(e);
+			mEditorPage->changeEvent(e);
+			mMiscellaniousPage->changeEvent(e);
+			mFeaturesPage->changeEvent(e);
+		}
 		foreach (PreferencesPage *page, mCustomPages.values())
 			page->changeEvent(e);
 		break;

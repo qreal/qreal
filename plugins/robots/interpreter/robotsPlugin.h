@@ -3,6 +3,7 @@
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 
 #include "pluginGui.h"
+#include "customizer.h"
 
 namespace qReal {
 namespace interpreters {
@@ -20,9 +21,11 @@ public:
 	virtual void initPlugin(PluginConfigurator const &configurator);
 	virtual QList<qReal::CustomToolInterface *> toolInterfaces();
 	virtual QList<qReal::InterpreterInterface *> interpreterInterfaces();
+	virtual CustomizationInterface* customizationInterface();
 
 private:
 	PluginGui mPluginGui;
+	Customizer mCustomizer;
 };
 
 }

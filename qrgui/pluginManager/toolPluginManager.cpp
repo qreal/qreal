@@ -66,3 +66,11 @@ QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() 
 
 	return result;
 }
+
+CustomizationInterface *ToolPluginManager::customizer() const
+{
+	foreach (ToolPluginInterface *toolPlugin, mPlugins)
+		if (toolPlugin->customizationInterface())
+			return toolPlugin->customizationInterface();
+	return NULL;
+}

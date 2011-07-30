@@ -11,6 +11,8 @@ LIBS += -L../../../bin -lqrkernel -lqrutils
 CONFIG(debug, debug|release):LIBS  += -lqextserialportd
 else:LIBS  += -lqextserialport
 
+TRANSLATIONS = robotsInterpreter_ru.ts
+
 HEADERS += \
 	../../../qrgui/dialogs/preferencesPages/page.h \
 
@@ -27,6 +29,7 @@ HEADERS += \
 	bluetoothRobotCommunication.h \
 	pluginGui.h \
 	robotSettingsPage.h \
+	customizer.h \
 	details/thread.h \
 	details/blocksFactory.h \
 	details/blocksTable.h \
@@ -187,3 +190,6 @@ SOURCES += \
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
+
+RESOURCES += \
+	robotsInterpreter.qrc \

@@ -5,6 +5,7 @@
 
 #include "../toolPluginInterface/toolPluginInterface.h"
 #include "../toolPluginInterface/customToolInterface.h"
+#include "../toolPluginInterface/customizationInterface.h"
 #include "../toolPluginInterface/pluginConfigurator.h"
 #include "../dialogs/preferencesPages/page.h"
 
@@ -19,6 +20,7 @@ public:
 	void init(PluginConfigurator const &configurator);
 	QList<CustomToolInterface::ActionInfo> actions() const;
 	QList<QPair<QString, PreferencesPage *> > preferencesPages() const;
+	CustomizationInterface *customizer() const;
 
 private:
 	QDir mPluginsDir;
