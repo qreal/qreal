@@ -8,6 +8,7 @@ RealRobotModelImplementation::RealRobotModelImplementation(RobotCommunicationInt
 	, mRobotCommunicationInterface(robotCommunicationInterface)
 	, mBrick(robotCommunicationInterface)
 	, mMotorA(0, robotCommunicationInterface), mMotorB(1, robotCommunicationInterface), mMotorC(2, robotCommunicationInterface)
+	, mEncoderA(robotCommunicationInterface, outputPort::port1), mEncoderB(robotCommunicationInterface, outputPort::port2), mEncoderC(robotCommunicationInterface, outputPort::port3)
 {
 	connect(mRobotCommunicationInterface, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 }
@@ -113,3 +114,19 @@ motorImplementations::RealMotorImplementation &RealRobotModelImplementation::mot
 {
 	return mMotorC;
 }
+
+sensorImplementations::BluetoothEncoderImplementation &RealRobotModelImplementation::encoderA()
+{
+	return mEncoderA;
+}
+
+sensorImplementations::BluetoothEncoderImplementation &RealRobotModelImplementation::encoderB()
+{
+	return mEncoderB;
+}
+
+sensorImplementations::BluetoothEncoderImplementation &RealRobotModelImplementation::encoderC()
+{
+	return mEncoderC;
+}
+

@@ -27,6 +27,7 @@
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{d0a18fab-b5ae-4bb2-ba4a-6ff6323583e2}"/>
     <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{f09a3e55-49ec-4153-a057-93b738ee574a}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{0a912bde-cb5b-46a4-b6b1-fb1a59f0ed0a}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{feac30d0-698d-4cc5-87c3-4e8d43015917}"/>
   </children>
   <properties>
     <QPolygon key="configuration" value=""/>

@@ -34,6 +34,7 @@
     <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{5e49adb5-e755-4e90-b7de-1574fc781612}"/>
     <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{9c07a556-4060-4486-9fbe-affde83ac7fe}"/>
     <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{84e8f51d-f7b9-47f1-b6a1-d295ee0221e9}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{7a35559b-019c-4d19-af7c-8b1e807fff17}"/>
   </children>
   <properties>
     <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>

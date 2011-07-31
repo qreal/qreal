@@ -99,6 +99,9 @@ void Interpreter::setD2ModelWidgetActions(QAction *runAction, QAction *stopActio
 void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum implementationType, RobotCommunicationInterface * const robotCommunicationInterface)
 {
 	disconnect(&mRobotModel->robotImpl(), SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
+	mConnected = false;
+	if(implementationType != robotModelType::real)
+		mConnected = true;
 	robotImplementations::AbstractRobotModelImplementation *robotImpl =
 			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, robotCommunicationInterface, mD2RobotModel);
 	setRobotImplementation(robotImpl);
@@ -158,7 +161,6 @@ void Interpreter::configureSensors(sensorType::SensorTypeEnum const &port1
 void Interpreter::addThread(details::Thread * const thread)
 {
 	mThreads.append(thread);
-	qDebug() << mThreads.size();
 	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 	connect(thread, SIGNAL(newThread(details::blocks::Block*const)), this, SLOT(newThread(details::blocks::Block*const)));
 

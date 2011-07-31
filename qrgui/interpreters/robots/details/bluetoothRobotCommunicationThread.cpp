@@ -63,8 +63,6 @@ void BluetoothRobotCommunicationThread::connect(QString const &portName)
 
 	send(command);
 
-//	SleeperThread::msleep(1000);
-
 	QByteArray const response = receive(9);
 
 	emit connected(response != QByteArray());
