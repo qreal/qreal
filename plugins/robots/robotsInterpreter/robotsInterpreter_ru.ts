@@ -230,7 +230,7 @@
     <message>
         <location filename="pluginGui.cpp" line="29"/>
         <source>Robot settings</source>
-        <translation>Нвстройки робота</translation>
+        <translation type="unfinished">Настройки робота</translation>
     </message>
     <message>
         <location filename="pluginGui.cpp" line="52"/>
