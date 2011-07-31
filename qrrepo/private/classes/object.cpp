@@ -32,12 +32,16 @@ void Object::removeParent()
 	mParent = qReal::Id();
 }
 
-void Object::addChild(const Id &child)
+void Object::addChild(const Id &child, int beforePosition)
 {
-	if (!mChildren.contains(child)) {
+	if (mChildren.contains(child)) {
+		throw Exception("Object " + mId.toString() + ": adding existing child " + child.toString());
+	}
+
+	if(beforePosition < 0){
 		mChildren.append(child);
 	} else {
-		throw Exception("Object " + mId.toString() + ": adding existing child " + child.toString());
+		mChildren.insert(beforePosition, child);
 	}
 }
 

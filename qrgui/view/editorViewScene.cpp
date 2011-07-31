@@ -17,6 +17,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	, mWindow(NULL)
 	, mPrevParent(0)
 	, mShouldReparentItems(false)
+	, mHighlightNode(NULL)
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid", true).toBool();
 	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth", 10).toInt()) / 100;
@@ -139,11 +140,65 @@ void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
 	Q_UNUSED(event);
+
+	QList<QGraphicsItem*> elements = items(event->scenePos());
+
+	NodeElement *node = NULL;
+	foreach(QGraphicsItem *item, elements){
+		node = dynamic_cast<NodeElement*>(item);
+		if(node != NULL) break;
+	}
+	if(node == NULL){
+		if(mHighlightNode != NULL){
+			mHighlightNode->erasePlaceholder(true);
+		}
+		return;
+	}
+
+	NodeElement *prevHighlighted = mHighlightNode;
+	QGraphicsRectItem *placeholder = getPlaceholder();
+	node->drawPlaceholder(placeholder, event);
+	mHighlightNode = node;
+	if(prevHighlighted != mHighlightNode && prevHighlighted != NULL){
+		prevHighlighted->erasePlaceholder(true);
+	}
+}
+
+QGraphicsRectItem* EditorViewScene::getPlaceholder()
+{
+	QGraphicsRectItem *placeholder = new QGraphicsRectItem;
+	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+	QColor color(0, 150, 200, 50);
+	effect->setBlurRadius(5);
+	effect->setOffset(0);
+	effect->setColor(Qt::black);
+	placeholder->setGraphicsEffect(effect);
+	placeholder->setBrush(color);
+	placeholder->setPen(QPen(QColor(0, 0, 0, 0), 0));
+	placeholder->setRect(0, 0, 50, 50);
+	return placeholder;
 }
 
 void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
 	Q_UNUSED(event);
+}
+
+void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
+{
+	Q_ASSERT(mWindow); // should be initialized separately.
+	// constuctor is bad for this, because the scene is created in generated .ui file
+
+	// if there's no diagrams. create nothing
+	if (!mv_iface->graphicalAssistApi()->hasRootDiagrams())
+		return;
+
+	QList<QGraphicsItem*> elements = items(event->scenePos());
+	createElement(event->mimeData(),event->scenePos());
+	if(mHighlightNode != NULL){
+		mHighlightNode->erasePlaceholder(true);
+		mHighlightNode = NULL;
+	}
 }
 
 bool EditorViewScene::canBeContainedBy(qReal::Id container, qReal::Id candidate)
@@ -158,18 +213,6 @@ bool EditorViewScene::canBeContainedBy(qReal::Id container, qReal::Id candidate)
 			allowed = true;
 	}
 	return allowed;
-}
-
-void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
-{
-	Q_ASSERT(mWindow); // should be initialized separately.
-	// constuctor is bad for this, because the scene is created in generated .ui file
-
-	// if there's no diagrams. create nothing
-	if (!mv_iface->graphicalAssistApi()->hasRootDiagrams())
-		return;
-
-	createElement(event->mimeData(),event->scenePos());
 }
 
 int EditorViewScene::launchEdgeMenu(EdgeElement* edge, NodeElement* node, QPointF scenePos)
@@ -307,8 +350,17 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 
 	QPointF const position = !newParent ? scenePos : newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
 
-	Id parentId = newParent ? newParent->id() : mv_iface->rootId();
-	id = mv_iface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
+	Id const &parentId = newParent != NULL ? newParent->id() : mv_iface->rootId();
+	Id beforeId;
+
+	if(newParent != NULL) {
+		NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
+		Element *beforeNode = parentNode->getPlaceholderNextElement();
+		if(beforeNode != NULL){
+			beforeId = beforeNode->id();
+		}
+	}
+	id = mv_iface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position, beforeId);
 	emit elementCreated(id);
 }
 

@@ -31,12 +31,16 @@ AbstractModelItem::PointerList AbstractModelItem::children() const
 	return mChildren;
 }
 
-void AbstractModelItem::addChild(AbstractModelItem *child)
+void AbstractModelItem::addChild(AbstractModelItem *child, int beforePosition)
 {
-	if (!mChildren.contains(child))
-		mChildren.append(child);
-	else
+	if (mChildren.contains(child))
 		throw Exception("Model: Adding already existing child " + child->id().toString() + "  to object " + mId.toString());
+
+	if(beforePosition < 0){
+		mChildren.append(child);
+	} else {
+		mChildren.insert(beforePosition, child);
+	}
 }
 
 void AbstractModelItem::removeChild(AbstractModelItem *child)

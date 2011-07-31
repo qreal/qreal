@@ -10,7 +10,7 @@ class LogicalRepoApi : public CommonRepoApi
 public:
 	virtual ~LogicalRepoApi(){}
 
-	virtual void addChild(qReal::Id const &id, qReal::Id const &child) = 0;
+	virtual void addChild(qReal::Id const &id, qReal::Id const &child, int beforePosition = -1) = 0;
 
 	virtual qReal::IdList outgoingConnections(qReal::Id const &id) const = 0;
 	virtual qReal::IdList incomingConnections(qReal::Id const &id) const = 0;

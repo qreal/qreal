@@ -148,6 +148,11 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 
 			if (item(parent) != NULL)
 				elem->setParentItem(item(parent));
+				QModelIndex next = current.sibling(current.row() + 1, 0);
+				if(next.isValid()){
+//					beforeId = next.data(roles::logicalIdRole).value<Id>();
+					elem->stackBefore(item(next));
+				}
 			else {
 				mScene->addItem(elem);
 			}

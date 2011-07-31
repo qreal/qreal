@@ -38,6 +38,8 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	mUi->indexGridSlider->setValue(mIndexGrid);
 	mUi->fontCheckBox->setChecked(SettingsManager::value("CustomFont", false).toBool());
 	mUi->fontSelectionButton->setVisible(SettingsManager::value("CustomFont", false).toBool());
+
+	mFont = SettingsManager::value("CurrentFont", "").toString();
 }
 
 PreferencesEditorPage::~PreferencesEditorPage()
@@ -59,9 +61,13 @@ void PreferencesEditorPage::fontSelectionButtonClicked() {
 	if (!mFontWasChanged)
 		mFontWasChanged = !mFontWasChanged;
 	mFontButtonWasPressed = true;
-	mFontDialog = new QFontDialog();
-	mFontDialog->setModal(true);
-	mFontDialog->exec();
+	QFontDialog fontDialog(this);
+	fontDialog.setModal(true);
+	QFont f;
+	f.fromString(mFont);
+	fontDialog.setCurrentFont(f);
+	fontDialog.exec();
+	mFont = fontDialog.currentFont().toString();
 }
 
 void PreferencesEditorPage::changeEvent(QEvent *e)
@@ -111,8 +117,8 @@ void PreferencesEditorPage::save()
 
 	if (mFontWasChanged) {
 		if (mFontButtonWasPressed)
-			SettingsManager::setValue("CurrentFont", mFontDialog->currentFont().toString());
-		QMessageBox::information(NULL, "Information", "You should restart QReal:Robots to apply changes", "ok");
+			SettingsManager::setValue("CurrentFont", mFont);
+		QMessageBox::information(NULL, tr("Information"), tr("You should restart QReal:Robots to apply changes"), tr("Ok"));
 		mFontWasChanged = false;
 		mFontButtonWasPressed = false;
 	}

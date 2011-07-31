@@ -60,17 +60,18 @@ void Client::setParent(Id const &id, Id const &parent)
 	}
 }
 
-void Client::addChild(const Id &id, const Id &child)
+void Client::addChild(const Id &id, const Id &child, int beforePosition)
 {
-	addChild(id, child, Id());
+	addChild(id, child, Id(), beforePosition);
 }
 
-void Client::addChild(const Id &id, const Id &child, Id const &logicalId)
+void Client::addChild(const Id &id, const Id &child, Id const &logicalId, int beforePosition)
 {
 	if (mObjects.contains(id)) {
 		if (!mObjects[id]->children().contains(child))
-			mObjects[id]->addChild(child);
-		if (mObjects.contains(child)) {
+			mObjects[id]->addChild(child, beforePosition);
+
+		if (mObjects.contains(child)) { // should we move element?
 			mObjects[child]->setParent(id);
 		} else {
 			mObjects.insert(child, new Object(child, id, logicalId));

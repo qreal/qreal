@@ -18,7 +18,8 @@ NodeElement::NodeElement(ElementImpl* impl)
 	: mSwitchGridAction(tr("Switch on grid"), this),
 	mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
 	mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)),
-	mSelectionNeeded(false), mConnectionInProgress(false)
+	mSelectionNeeded(false), mConnectionInProgress(false),
+	mPlaceholder(NULL)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -215,7 +216,7 @@ void NodeElement::resize(QRectF newContents)
 		if (!curItem || curItem->isPort())
 			continue;
 
-		QPointF curItemPos = curItem->scenePos() - scenePos();
+		QPointF curItemPos = childItem->pos();
 
 		if (curItemPos.x() < childrenMoving.x() + mElementImpl->sizeOfForestalling())
 			childrenMoving.setX(curItemPos.x() - mElementImpl->sizeOfForestalling());
@@ -224,16 +225,21 @@ void NodeElement::resize(QRectF newContents)
 	}
 	setPos(pos() + childrenMoving);
 	moveChildren(-childrenMoving);
-	//newContents.setTopLeft(childrenMoving);
-	//newContents.moveTo(0, 0);
 
 	foreach (QGraphicsItem* childItem, childItems()) {
-		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (!curItem || curItem->isPort())
-			continue;
+		QRectF curChildItemBoundingRect;
+		if(childItem == mPlaceholder){
+			curChildItemBoundingRect = childItem->boundingRect();
+			curChildItemBoundingRect.setLeft(newContents.left() + mElementImpl->sizeOfForestalling());
+			curChildItemBoundingRect.setRight(newContents.right() - mElementImpl->sizeOfForestalling());
+		} else {
+			NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
+			if (!curItem || curItem->isPort())
+				continue;
+			curChildItemBoundingRect = curItem->mContents;
+		}
 
-		QRectF curChildItemBoundingRect = curItem->mContents;
-		curChildItemBoundingRect.translate(curItem->scenePos() - scenePos());
+		curChildItemBoundingRect.translate(childItem->pos());
 
 		if (curChildItemBoundingRect.left() < newContents.left() + mElementImpl->sizeOfForestalling())
 			newContents.setLeft(curChildItemBoundingRect.left() - mElementImpl->sizeOfForestalling());
@@ -1070,6 +1076,10 @@ void NodeElement::sortChildren()
 	qreal curChildY = mElementImpl->sizeOfForestalling() + 25; //25 - for container name
 	qreal maxChildrenWidth = 0;
 
+	if(mPlaceholder != NULL){
+		maxChildrenWidth = mPlaceholder->rect().width();
+	}
+
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
@@ -1080,6 +1090,12 @@ void NodeElement::sortChildren()
 
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
+		if(childItem == mPlaceholder){
+			QRectF rect(mElementImpl->sizeOfForestalling(), curChildY,
+				maxChildrenWidth, mPlaceholder->rect().height());
+			mPlaceholder->setRect(rect);
+			curChildY += mPlaceholder->rect().height() + 10;
+		}
 		if (curItem) {
 			if (mElementImpl->maximizesChildren())
 				curItem->setGeometry(QRectF(mElementImpl->sizeOfForestalling(), curChildY,
@@ -1088,9 +1104,73 @@ void NodeElement::sortChildren()
 				curItem->setGeometry(QRectF(mElementImpl->sizeOfForestalling(), curChildY,
 											curItem->mContents.width(), curItem->mContents.height()));
 
-			curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling();
+			curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling() + 10;
 			curItem->storeGeometry();
 		}
+	}
+}
+
+void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QGraphicsSceneDragDropEvent *event)
+{
+	qreal curChildY = mElementImpl->sizeOfForestalling() + 25 + scenePos().y(); //25 - for container name
+
+	QPointF point = event->scenePos();
+	// binary search? No because we need to know summary height of prev elements
+	NodeElement* prevItem = NULL;
+	foreach(QGraphicsItem* childItem, childItems()) {
+		NodeElement *curItem = dynamic_cast<NodeElement*>(childItem);
+		if(childItem == mPlaceholder){
+			curChildY += mPlaceholder->rect().height();
+		}
+		if (curItem) {
+			int height = curItem->mContents.height();
+			if(curChildY + height / 2 > point.y()){
+				prevItem = curItem;
+				break;
+			}
+
+			curChildY += height + mElementImpl->sizeOfChildrenForestalling();
+		}
+	}
+;
+	erasePlaceholder(false);
+	mPlaceholder = placeholder;
+	mPlaceholder->setParentItem(this);
+	if(prevItem != NULL){
+		mPlaceholder->stackBefore(prevItem);
+	}
+
+	resize(QRectF());
+}
+
+Element* NodeElement::getPlaceholderNextElement()
+{
+	if(mPlaceholder == NULL) {
+		return NULL;
+	}
+	bool found = false;
+	// loking for child following the placeholder
+	foreach(QGraphicsItem *childItem, childItems()) {
+		Element *element = dynamic_cast<Element*>(childItem);
+		if(found && element != NULL) {
+			return element;
+		}
+		if(childItem == mPlaceholder) {
+			found = true;
+		}
+	}
+	return NULL;
+}
+
+void NodeElement::erasePlaceholder(bool redraw)
+{
+	if(mPlaceholder != NULL){
+		delete mPlaceholder;
+		mPlaceholder = NULL;
+	}
+	if(redraw){
+//		sortChildren();
+		resize(QRectF());
 	}
 }
 

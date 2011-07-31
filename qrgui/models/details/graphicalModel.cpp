@@ -82,7 +82,8 @@ void GraphicalModel::updateElements(Id const &logicalId, QString const &name)
 	}
 }
 
-void GraphicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId, const QString &name, const QPointF &position)
+void GraphicalModel::addElementToModel(const Id &parent, const Id &id,
+	const Id &logicalId, const QString &name, const QPointF &position, const Id &before)
 {
 	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
 	AbstractModelItem *parentItem = mModelItems[parent];
@@ -93,22 +94,27 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id, const Id 
 		AbstractModelItem *newItem = createModelItem(id, parentItem);
 		newGraphicalModelItem = static_cast<GraphicalModelItem *>(newItem);
 		actualLogicalId = newGraphicalModelItem->logicalId();
-	}
-	else {
+	} else {
 		GraphicalModelItem *graphicalParentItem = static_cast<GraphicalModelItem *>(parentItem);
 		newGraphicalModelItem = new GraphicalModelItem(id, logicalId, graphicalParentItem);
 	}
-	initializeElement(id, actualLogicalId, parentItem, newGraphicalModelItem, name, position);
+	AbstractModelItem *beforeItem = mModelItems.value(before, NULL);
+	initializeElement(id, actualLogicalId, parentItem, newGraphicalModelItem, name, position, beforeItem);
 }
 
 void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem,
-		modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
+	modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position,
+	modelsImplementation::AbstractModelItem *beforeItem)
 {
-	int const newRow = parentItem->children().size();
+
+	int beforePositionInModel = parentItem->children().indexOf(beforeItem);
+	int beforePositionInRepo = beforeItem != NULL ? mApi.children(parentItem->id()).indexOf(beforeItem->id()) : -1;
+
+	int const newRow = beforePositionInModel < 0 ? parentItem->children().size() : beforePositionInModel;
 
 	beginInsertRows(index(parentItem), newRow, newRow);
-	parentItem->addChild(item);
-	mApi.addChild(parentItem->id(), id, logicalId);
+	parentItem->addChild(item, beforePositionInModel);
+	mApi.addChild(parentItem->id(), id, logicalId, beforePositionInRepo);
 	mApi.setName(id, name);
 	mApi.setFromPort(id, 0.0);
 	mApi.setToPort(id, 0.0);
@@ -268,7 +274,7 @@ void GraphicalModel::removeModelItemFromApi(details::modelsImplementation::Abstr
 {
 	mApi.removeProperty(child->id(), "position");
 	mApi.removeProperty(child->id(), "configuration");
-	if (mModelItems.count(child->id())==0) {
+	if (mModelItems.count(child->id()) == 0) {
 		mApi.removeChild(root->id(),child->id());
 	}
 	mApi.removeElement(child->id());

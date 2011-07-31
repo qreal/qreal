@@ -43,28 +43,25 @@ public:
 	virtual void setName(QString name);
 
 	const QPointF getPortPos(qreal id) const;
-	static int portId(qreal id);
 	const QPointF getNearestPort(QPointF location) const;
 
+	static int portId(qreal id);
 	qreal getPortId(const QPointF &location) const;
 
 	void addEdge(EdgeElement *edge);
-
 	void delEdge(EdgeElement *edge);
+
+	virtual bool initPossibleEdges();
+	QList<PossibleEdge> getPossibleEdges();
 
 	void setPortsVisible(bool value);
 
 	void hideEmbeddedLinkers();
 
-	virtual bool initPossibleEdges();
-
 	bool isPort();
-
 	bool canHavePorts();
 
 	QList<double> borderValues();
-
-	QList<PossibleEdge> getPossibleEdges();
 
 	bool checkLowerBorder(QPointF& point, double x, double y) const;
 	bool checkUpperBorder(QPointF& point, double x, double y) const;
@@ -88,6 +85,11 @@ public:
 	void arrangeLinks();
 
 	virtual void checkConnectionsToPort();
+
+	void drawPlaceholder(QGraphicsRectItem *placeholder, QGraphicsSceneDragDropEvent *event);
+	void erasePlaceholder(bool);
+
+	Element *getPlaceholderNextElement();
 
 public slots:
 	void switchGrid(bool isChecked);
@@ -148,8 +150,11 @@ private:
 	ContextMenuAction mSwitchGridAction;
 	static int const objectMinSize = 10;
 	//static int const sizeOfForestalling = 25;//TODO: must be used mElementImpl->sizeOfForestalling
+	QGraphicsRectItem *mPlaceholder;
 
 	bool mPortsVisible;
+
+	QList<NodeElement*> childs;
 
 	QList<StatPoint> mPointPorts;
 	QList<StatLine> mLinePorts;
