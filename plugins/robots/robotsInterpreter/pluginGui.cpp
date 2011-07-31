@@ -3,20 +3,28 @@
 using namespace qReal;
 using namespace interpreters::robots;
 
+PluginGui::PluginGui()
+	: mMainWindowInterpretersInterface(NULL)
+	, m2dModelAction(NULL)
+	, mRunAction(NULL)
+	, mStopAction(NULL)
+{
+}
+
 QList<CustomToolInterface::ActionInfo> PluginGui::actions()
 {
 	// TODO: Move this to separate classes
-	QAction *d2ModelAction = new QAction(QObject::tr("2d model"), NULL);
-	ActionInfo d2ModelActionInfo(d2ModelAction, "interpreters", "tools");
-	QObject::connect(d2ModelAction, SIGNAL(triggered()), this, SLOT(show2dModel()));
+	m2dModelAction = new QAction(QObject::tr("2d model"), NULL);
+	ActionInfo d2ModelActionInfo(m2dModelAction, "interpreters", "tools");
+	QObject::connect(m2dModelAction, SIGNAL(triggered()), this, SLOT(show2dModel()));
 
-	QAction *runAction = new QAction(QObject::tr("Run"), NULL);
-	ActionInfo runActionInfo(runAction, "interpreters", "tools");
-	QObject::connect(runAction, SIGNAL(triggered()), &mInterpreter, SLOT(interpret()));
+	mRunAction = new QAction(QObject::tr("Run"), NULL);
+	ActionInfo runActionInfo(mRunAction, "interpreters", "tools");
+	QObject::connect(mRunAction, SIGNAL(triggered()), &mInterpreter, SLOT(interpret()));
 
-	QAction *stopAction = new QAction(QObject::tr("Stop"), NULL);
-	ActionInfo stopActionInfo(stopAction, "interpreters", "tools");
-	QObject::connect(stopAction, SIGNAL(triggered()), &mInterpreter, SLOT(stop()));
+	mStopAction = new QAction(QObject::tr("Stop"), NULL);
+	ActionInfo stopActionInfo(mStopAction, "interpreters", "tools");
+	QObject::connect(mStopAction, SIGNAL(triggered()), &mInterpreter, SLOT(stop()));
 
 	QAction *stopRobotAction = new QAction(QObject::tr("Stop robot"), NULL);
 	ActionInfo stopRobotActionInfo(stopRobotAction, "interpreters", "tools");
@@ -33,6 +41,8 @@ QList<CustomToolInterface::ActionInfo> PluginGui::actions()
 	QAction *separator = new QAction(NULL);
 	ActionInfo separatorActionInfo(separator, "interpreters", "tools");
 	separator->setSeparator(true);
+
+	updateSettings();
 
 	return QList<ActionInfo>() << d2ModelActionInfo << runActionInfo << stopActionInfo
 			<< stopRobotActionInfo << connectToRobotActionInfo
@@ -60,4 +70,23 @@ void PluginGui::showRobotSettings()
 void PluginGui::show2dModel()
 {
 	mInterpreter.showD2ModelWidget(true);
+}
+
+void PluginGui::updateSettings()
+{
+	QString const bluetoothPortName = SettingsManager::instance()->value("bluetoothPortName").toString();
+	mInterpreter.setBluetoothPortName(bluetoothPortName);
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
+	mInterpreter.setRobotModelType(typeOfRobotModel);
+	mInterpreter.configureSensors(
+			static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt())
+	);
+	m2dModelAction->setVisible(typeOfRobotModel == robotModelType::unreal);
+	if (typeOfRobotModel == robotModelType::unreal)
+		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopAction);
+	else
+		mInterpreter.showD2ModelWidget(false);
 }

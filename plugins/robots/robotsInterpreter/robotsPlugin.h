@@ -21,6 +21,7 @@ public:
 	virtual void initPlugin(PluginConfigurator const &configurator);
 	virtual QList<qReal::CustomToolInterface *> toolInterfaces();
 	virtual CustomizationInterface* customizationInterface();
+	virtual void updateSettings();
 
 private:
 	PluginGui mPluginGui;

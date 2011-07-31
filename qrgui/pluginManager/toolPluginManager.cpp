@@ -71,3 +71,9 @@ CustomizationInterface *ToolPluginManager::customizer() const
 			return toolPlugin->customizationInterface();
 	return NULL;
 }
+
+void ToolPluginManager::updateSettings()
+{
+	foreach (ToolPluginInterface *toolPlugin, mPlugins)
+		toolPlugin->updateSettings();
+}

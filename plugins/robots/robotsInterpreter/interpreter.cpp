@@ -1,7 +1,6 @@
 #include "interpreter.h"
 
 #include "details/autoconfigurer.h"
-#include "bluetoothRobotCommunication.h"
 
 #include <QtCore/QDebug>
 
@@ -12,31 +11,6 @@ using namespace interpreters::robots::details;
 const Id startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
 const Id startingElementType1 = Id("RobotsMetamodel", "RobotsDiagram", "InitialBlock");
 
-/*
-Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
-		, LogicalModelAssistInterface const &logicalModelApi
-		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-		, RobotCommunicationInterface * const robotCommunicationInterface
-		, robotModelType::robotModelTypeEnum modelType)
-	: mGraphicalModelApi(graphicalModelApi)
-	, mLogicalModelApi(logicalModelApi)
-	, mInterpretersInterface(interpretersInterface)
-	, mState(idle)
-	, mRobotModel(new RobotModel())
-	, mBlocksTable(NULL)
-	, mConnected(false)
-{
-	mParser = new RobotsBlockParser(mInterpretersInterface.errorReporter());
-	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel, mInterpretersInterface.errorReporter(), mParser);
-	mTimer = new QTimer();
-
-	mD2RobotModel = new d2Model::D2RobotModel();
-	mD2ModelWidget = mD2RobotModel->createModelWidget();
-
-	setRobotImplementation(modelType, robotCommunicationInterface);
-}
-*/
-
 Interpreter::Interpreter()
 	: mGraphicalModelApi(NULL)
 	, mLogicalModelApi(NULL)
@@ -44,6 +18,7 @@ Interpreter::Interpreter()
 	, mState(idle)
 	, mRobotModel(new RobotModel())
 	, mBlocksTable(NULL)
+	, mBluetoothRobotCommunication(NULL)
 {
 	mParser = NULL;
 	mBlocksTable = NULL;
@@ -64,8 +39,10 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 	mParser = new RobotsBlockParser(mInterpretersInterface->errorReporter());
 	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel, mInterpretersInterface->errorReporter(), mParser);
 
-	RobotCommunicationInterface * const robotCommunicationInterface = new BluetoothRobotCommunication("COM1");
-	setRobotImplementation(robotModelType::real, robotCommunicationInterface);
+	QString const comPort = SettingsManager::instance()->value("bluetoothPortName", "").toString();
+	mBluetoothRobotCommunication = new BluetoothRobotCommunication(comPort);
+	robotModelType::robotModelTypeEnum const modelType = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel", "1").toInt());
+	setRobotImplementation(modelType, mBluetoothRobotCommunication);
 }
 
 Interpreter::~Interpreter()
@@ -77,6 +54,8 @@ Interpreter::~Interpreter()
 
 void Interpreter::interpret()
 {
+	mInterpretersInterface->errorReporter()->clear();
+
 	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
 
 	if (!mConnected) {
@@ -137,7 +116,7 @@ void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum impl
 {
 	disconnect(&mRobotModel->robotImpl(), SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 	mConnected = false;
-	if(implementationType != robotModelType::real)
+	if (implementationType != robotModelType::real)
 		mConnected = true;
 	robotImplementations::AbstractRobotModelImplementation *robotImpl =
 			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, robotCommunicationInterface, mD2RobotModel);
@@ -147,14 +126,12 @@ void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum impl
 
 void Interpreter::connectedSlot(bool success)
 {
-	if(success) {
+	if (success) {
 		mConnected = true;
 		mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
-	}
-	else {
+	} else {
 		mConnected = false;
 		mInterpretersInterface->errorReporter()->addError(tr("Can't connect to a robot."));
-
 	}
 }
 
@@ -292,4 +269,14 @@ void Interpreter::updateSensorValues(const QString &sensorVariableName, int sens
 void Interpreter::connectToRobot()
 {
 	mRobotModel->init();
+}
+
+void Interpreter::setBluetoothPortName(QString const &portName)
+{
+	mBluetoothRobotCommunication->setPortName(portName);
+}
+
+void Interpreter::setRobotModelType(robotModelType::robotModelTypeEnum robotModelType)
+{
+	setRobotImplementation(robotModelType, mBluetoothRobotCommunication);
 }

@@ -10,7 +10,6 @@
 #include "customizationInterface.h"
 #include "pluginConfigurator.h"
 
-
 namespace qReal {
 
 class ToolPluginInterface
@@ -18,12 +17,18 @@ class ToolPluginInterface
 public:
 	virtual void initPlugin(PluginConfigurator const &configurator) = 0;
 
-	virtual QList<CustomToolInterface *> toolInterfaces() {
+	virtual QList<CustomToolInterface *> toolInterfaces()
+	{
 		return QList<CustomToolInterface *>();
 	}
 
-	virtual CustomizationInterface* customizationInterface() {
+	virtual CustomizationInterface* customizationInterface()
+	{
 		return NULL;
+	}
+
+	virtual void updateSettings()
+	{
 	}
 };
 

@@ -17,9 +17,11 @@ class PluginGui: public QObject, public CustomToolInterface
 	Q_OBJECT
 
 public:
+	PluginGui();
 	virtual QList<ActionInfo> actions();
 	virtual void init(PluginConfigurator const &configurator);
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
+	void updateSettings();
 
 private slots:
 	void showRobotSettings();
@@ -29,6 +31,9 @@ private:
 	Interpreter mInterpreter;
 	PreferencesRobotSettingsPage mRobotSettinsPage;
 	gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;
+	QAction *m2dModelAction;
+	QAction *mRunAction;
+	QAction *mStopAction;
 };
 
 }

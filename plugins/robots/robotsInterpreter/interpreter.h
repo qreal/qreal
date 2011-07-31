@@ -5,6 +5,7 @@
 #include "../../../qrkernel/ids.h"
 
 #include "robotCommunicationInterface.h"
+#include "bluetoothRobotCommunication.h"
 #include "sensorConstants.h"
 #include "details/robotParts/robotModel.h"
 #include "details/thread.h"
@@ -40,6 +41,8 @@ public:
 			, RobotCommunicationInterface * const robotCommunicationInterface);
 
 	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
+	void setBluetoothPortName(QString const &portName);
+	void setRobotModelType(robotModelType::robotModelTypeEnum robotModelType);
 
 public slots:
 	void connectToRobot();
@@ -81,6 +84,8 @@ private:
 	details::d2Model::D2RobotModel *mD2RobotModel;
 
 	bool mConnected;
+
+	BluetoothRobotCommunication *mBluetoothRobotCommunication;
 
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	Id const findStartingElement(Id const &diagram) const;

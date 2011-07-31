@@ -46,7 +46,6 @@
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../../qrmc/metaCompiler.h"
 
-
 using namespace qReal;
 
 MainWindow::MainWindow()
@@ -62,7 +61,6 @@ MainWindow::MainWindow()
 	, mSaveDir(qApp->applicationDirPath() + "/save")
 	, mPreferencesDialog(this)
 {
-
 	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
 
 	QSplashScreen* splash =
@@ -234,12 +232,10 @@ MainWindow::MainWindow()
 
 void MainWindow::connectActions()
 {
-
 	mUi->actionShow_grid->setChecked(SettingsManager::value("ShowGrid", true).toBool());
 	mUi->actionShow_alignment->setChecked(SettingsManager::value("ShowAlignment", true).toBool());
 	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid", false).toBool());
 	mUi->actionSwitch_on_alignment->setChecked(SettingsManager::value("ActivateAlignment", true).toBool());
-
 
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
@@ -1118,6 +1114,7 @@ void MainWindow::showPreferencesDialog()
 		connect(&mPreferencesDialog, SIGNAL(fontChanged()), this, SLOT(setSceneFont()));
 	}
 	mPreferencesDialog.exec();
+	mToolManager.updateSettings();
 }
 
 void MainWindow::openSettingsDialog(QString const &tab)

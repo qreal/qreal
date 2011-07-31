@@ -32,3 +32,8 @@ qReal::CustomizationInterface* RobotsPlugin::customizationInterface()
 {
 	return &mCustomizer;
 }
+
+void RobotsPlugin::updateSettings()
+{
+	mPluginGui.updateSettings();
+}

@@ -18,6 +18,7 @@ public:
 	virtual ~ToolPluginManager();
 
 	void init(PluginConfigurator const &configurator);
+	void updateSettings();
 	QList<CustomToolInterface::ActionInfo> actions() const;
 	QList<QPair<QString, PreferencesPage *> > preferencesPages() const;
 	CustomizationInterface *customizer() const;
