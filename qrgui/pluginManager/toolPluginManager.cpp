@@ -48,9 +48,6 @@ QList<CustomToolInterface::ActionInfo> ToolPluginManager::actions() const
 		foreach (CustomToolInterface *customTool, toolPlugin->toolInterfaces())
 			foreach (CustomToolInterface::ActionInfo action, customTool->actions())
 				result << action;
-		foreach (InterpreterInterface *interpreter, toolPlugin->interpreterInterfaces())
-			foreach (QAction *action, interpreter->customActions())
-				result << CustomToolInterface::ActionInfo(action, "interpreters", "tools");
 	}
 
 	return result;

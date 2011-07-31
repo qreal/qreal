@@ -20,7 +20,6 @@ public:
 
 	virtual void initPlugin(PluginConfigurator const &configurator);
 	virtual QList<qReal::CustomToolInterface *> toolInterfaces();
-	virtual QList<qReal::InterpreterInterface *> interpreterInterfaces();
 	virtual CustomizationInterface* customizationInterface();
 
 private:

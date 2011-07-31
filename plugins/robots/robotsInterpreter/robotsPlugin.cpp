@@ -28,11 +28,6 @@ QList<qReal::CustomToolInterface *> RobotsPlugin::toolInterfaces()
 	return QList<qReal::CustomToolInterface *>() << &mPluginGui;
 }
 
-QList<qReal::InterpreterInterface *> RobotsPlugin::interpreterInterfaces()
-{
-	return QList<qReal::InterpreterInterface *>();
-}
-
 qReal::CustomizationInterface* RobotsPlugin::customizationInterface()
 {
 	return &mCustomizer;

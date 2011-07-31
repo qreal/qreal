@@ -1,8 +1,10 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-#	editor \
-#	interpreter \
+	editor \
+	robotsInterpreter \
 	qextSerialPort \
 
 qextSerialPort.file = thirdparty/qextserialport/qextserialport.pro
+editor.file = editor/generated/robotsMetamodel.pro
+robotsInterpreter.depends = qextSerialPort

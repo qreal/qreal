@@ -2,7 +2,6 @@
 
 #include <QtCore/QObject>
 
-#include "../../../qrgui/toolPluginInterface/interpreterInterface.h"
 #include "../../../qrkernel/ids.h"
 
 #include "robotCommunicationInterface.h"

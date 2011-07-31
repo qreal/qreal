@@ -6,7 +6,6 @@
 
 #include "../../qrrepo/repoControlInterface.h"
 
-#include "interpreterInterface.h"
 #include "customToolInterface.h"
 #include "customizationInterface.h"
 #include "pluginConfigurator.h"
@@ -21,10 +20,6 @@ public:
 
 	virtual QList<CustomToolInterface *> toolInterfaces() {
 		return QList<CustomToolInterface *>();
-	}
-
-	virtual QList<InterpreterInterface *> interpreterInterfaces() {
-		return QList<InterpreterInterface *>();
 	}
 
 	virtual CustomizationInterface* customizationInterface() {
