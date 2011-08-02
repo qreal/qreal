@@ -1,5 +1,5 @@
 #include "mainWindow.h"
-
+#include <QProcess>
 #include <QtGui/QDialog>
 #include <QtGui/QPrinter>
 #include <QtGui/QVBoxLayout>
@@ -196,8 +196,11 @@ MainWindow::MainWindow()
 	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 
-		mDocksVisibility.clear();
-		this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+	mDocksVisibility.clear();
+	this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+
+	mUi->actionFlash_Robot->setVisible(false);
+	mUi->actionUpload_Program->setVisible(false);
 }
 
 void MainWindow::connectActions()
@@ -225,6 +228,8 @@ void MainWindow::connectActions()
 	connect(mUi->actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
 	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
+	connect(mUi->actionFlash_Robot, SIGNAL(triggered()), this, SLOT(flashRobot()));
+	connect(mUi->actionUpload_Program, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
 	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 	connect(mUi->actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
@@ -1470,18 +1475,58 @@ void MainWindow::generateRobotSourceCode()
 		CodeArea *area = new CodeArea();
 		QFile file("prog0/prog0.c");
 		QTextStream *inStream = 0;
-		if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text))
 			inStream = new QTextStream(&file);
-		}
 
-		if (inStream) {
+		if (inStream)
 			area->document()->setPlainText(inStream->readAll());
-		}
 
 		area->show();
 
 		mUi->tabs->addTab(area, "prog0");
 		mUi->tabs->setCurrentWidget(area);
+
+		mUi->actionUpload_Program->setVisible(true);
+		mUi->actionFlash_Robot->setVisible(true);
 	}
 }
 
+void MainWindow::flashRobot() {
+	QProcess *task = new QProcess(this);
+#ifdef Q_OS_UNIX
+	task->start("sh", QStringList() << QDir::currentPath() + "/generators/linux/flash.sh");
+#endif
+
+#ifdef Q_OS_WIN
+	QString path = QDir::currentPath();
+	path.replace(QRegExp("/"), "\\");
+	qDebug() << path;
+	task->start("cmd", QStringList() << path + "\\generators\\windows\\flash.bat");
+#endif
+	if (task->waitForFinished())
+		QMessageBox::information(this, NULL, "robot successfully flashed", "ok");
+	else
+		QMessageBox::warning(this, NULL, "smth wrong", "ok");
+	delete task;
+	mUi->actionFlash_Robot->setVisible(false);
+}
+
+void MainWindow::uploadProgram() {
+
+	QProcess *task = new QProcess(this);
+#ifdef Q_OS_UNIX
+	task->start("sh", QStringList() << QDir::currentPath() + "/generators/linux/upload.sh");
+#endif
+
+#ifdef Q_OS_WIN
+	QString path = QDir::currentPath();
+	path.replace(QRegExp("/"), "\\");
+	task->start("cmd", QStringList() << path + "\\generators\\windows\\upload.bat");
+#endif
+	if (task->waitForFinished())
+		QMessageBox::information(this, NULL, "program successfully\n uploaded", "ok");
+	else
+		QMessageBox::warning(this, NULL, "smth wrong", "ok");
+	delete task;
+	mUi->actionUpload_Program->setVisible(false);
+}
