@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd $qrealdir/libnxt
-modprobe -r sam_ba
+cd $QREALDIR/libnxt
+modprobe -r sam_ba cdc_acm
 ./fwflash lms_arm_nbcnxc_107.rfw
