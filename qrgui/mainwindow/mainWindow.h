@@ -12,6 +12,7 @@
 #include "../dialogs/gesturesShow/gesturesWidget.h"
 #include "mainWindowInterpretersInterface.h"
 #include "../kernel/settingsManager.h"
+#include "../textEditor/codeEditor.h"
 
 #include "../models/logicalModelAssistApi.h"
 
@@ -124,6 +125,8 @@ private slots:
 	void parseEditorXml();
 	void showPreferencesDialog();
 
+	void generateRobotSourceCode();
+
 	void connectActions();
 
 	void centerOn(Id const &id);
@@ -189,6 +192,7 @@ private:
 	QMap<QString, bool> mDocksVisibility;
 
 	QString mSaveDir;
+	CodeEditor *mCodeEditor;
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,

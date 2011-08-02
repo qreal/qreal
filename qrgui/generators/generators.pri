@@ -1,17 +1,23 @@
 # XMI
-HEADERS += generators/xmi/xmiHandler.h \
+#HEADERS += generators/xmi/xmiHandler.h \
 
-SOURCES += generators/xmi/xmiHandler.cpp \
+#SOURCES += generators/xmi/xmiHandler.cpp \
 
 # JAVA
-HEADERS += generators/java/javaHandler.h \
+#HEADERS += generators/java/javaHandler.h \
 
-SOURCES += generators/java/javaHandler.cpp \
+#SOURCES += generators/java/javaHandler.cpp \
 
 # Генератор хаскола
-HEADERS += generators/hascol/hascolGenerator.h \
+#HEADERS += generators/hascol/hascolGenerator.h \
 
-SOURCES += generators/hascol/hascolGenerator.cpp \
+#SOURCES += generators/hascol/hascolGenerator.cpp \
+
+# nxtOSEK generator
+
+HEADER += generators/nxtOSEK/nxtOSEKRobotGenerator.h \
+
+SOURCES += generators/nxtOSEK/nxtOSEKRobotGenerator.cpp \
 
 
 HEADERS += generators/editorGenerator/editorGenerator.h \

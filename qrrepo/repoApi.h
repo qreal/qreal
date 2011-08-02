@@ -46,6 +46,10 @@ namespace qrRepo {
 		void addUsage(qReal::Id const &source, qReal::Id const &destination);
 		void deleteUsage(qReal::Id const &source, qReal::Id const &destination);
 
+		qReal::IdList connectedElements(qReal::Id const &id) const;
+		qReal::IdList outgoingConnectedElements(qReal::Id const &id) const;
+		qReal::IdList incomingConnectedElements(qReal::Id const &id) const;
+
 		QString typeName(qReal::Id const &id) const;
 
 		QVariant property(qReal::Id const &id, QString const &propertyName) const;
