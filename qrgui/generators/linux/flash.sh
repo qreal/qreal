@@ -1,4 +1,4 @@
-!#bin/bash
+#!/bin/bash
 
 cd $qrealdir/libnxt
 modprobe -r sam_ba

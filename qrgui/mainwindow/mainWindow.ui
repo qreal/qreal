@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>738</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -302,15 +302,21 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionGenerateSourceCode"/>
+   <addaction name="actionFlash_Robot"/>
+   <addaction name="actionUpload_Program"/>
+   <addaction name="separator"/>
    <addaction name="actionShow2Dmodel"/>
    <addaction name="actionRun"/>
    <addaction name="actionStop_Running"/>
+   <addaction name="separator"/>
    <addaction name="actionStop_Robot"/>
    <addaction name="actionConnect_To_Robot"/>
    <addaction name="separator"/>
    <addaction name="actionRobot_Settings"/>
    <addaction name="separator"/>
    <addaction name="actionFullscreen"/>
+   <addaction name="separator"/>
   </widget>
   <widget class="QDockWidget" name="logicalModelDock">
    <property name="features">
@@ -745,14 +751,28 @@
     <string>Connect To Robot</string>
    </property>
   </action>
+  <action name="actionGenerateSourceCode">
+   <property name="text">
+    <string>Generate</string>
+   </property>
+   <property name="toolTip">
+    <string>Generate source code for robot</string>
+   </property>
+  </action>
   <action name="actionUpload_Program">
    <property name="text">
-    <string>Upload Program</string>
+    <string>Upload</string>
+   </property>
+   <property name="toolTip">
+    <string>Upload program into robot</string>
    </property>
   </action>
   <action name="actionFlash_Robot">
    <property name="text">
-    <string>Flash Robot</string>
+    <string>Flash</string>
+   </property>
+   <property name="toolTip">
+    <string>Flash nxtOSEK into robot</string>
    </property>
   </action>
  </widget>

@@ -37,6 +37,7 @@
 #include "../parsers/xml/xmlParser.h"
 #include "../editorManager/listenerManager.h"
 #include "../generators/editorGenerator/editorGenerator.h"
+#include "../generators/nxtOSEK/nxtOSEKRobotGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../kernel/settingsManager.h"
 
@@ -60,6 +61,7 @@ MainWindow::MainWindow()
 	, mErrorReporter(NULL)
 	, mIsFullscreen(false)
 	, mSaveDir(qApp->applicationDirPath() + "/save")
+	, mCodeEditor(0)
 {
 
 	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
@@ -194,8 +196,11 @@ MainWindow::MainWindow()
 	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 
-		mDocksVisibility.clear();
-		this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+	mDocksVisibility.clear();
+	this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+
+	mUi->actionFlash_Robot->setVisible(false);
+	mUi->actionUpload_Program->setVisible(false);
 }
 
 void MainWindow::connectActions()
@@ -251,6 +256,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connect(mUi->actionShow2Dmodel, SIGNAL(triggered()), this, SLOT(showD2ModelWidget()));
+	connect(mUi->actionGenerateSourceCode, SIGNAL(triggered()), this, SLOT(generateRobotSourceCode()));
 }
 
 void MainWindow::showD2ModelWidget(bool isVisible)
@@ -283,11 +289,11 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 MainWindow::~MainWindow()
 {
 	saveAll();
-	delete mListenerManager;
 	delete mRobotInterpreter;
 	delete mErrorReporter;
 	SettingsManager::instance()->saveData();
-	//	delete mListenerManager;
+	if (mCodeEditor)
+		delete mCodeEditor;
 }
 
 EditorManager* MainWindow::manager()
@@ -496,10 +502,7 @@ bool MainWindow::openNewProject()
 }
 
 bool MainWindow::open(QString const &dirName)
-{
-
-
-	if (dirName.isEmpty())
+{	if (dirName.isEmpty())
 		return false;
 
 	dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
@@ -511,7 +514,6 @@ bool MainWindow::open(QString const &dirName)
 	closeAllTabs();
 
 	mModels->repoControlApi().open(dirName);
-
 	mModels->reinit();
 
 	if (!checkPluginsAndReopen())
@@ -520,7 +522,9 @@ bool MainWindow::open(QString const &dirName)
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-		this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+	setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+
+	mSaveDir = dirName;
 	return true;
 }
 
@@ -1460,6 +1464,33 @@ QString MainWindow::getNextDirName(QString const &name)
 
 }
 
+void MainWindow::generateRobotSourceCode()
+{
+	qReal::generators::NxtOSEKRobotGenerator gen(SettingsManager::value("workingDir", mSaveDir).toString());
+	gui::ErrorReporter &errors = gen.generate();
+	if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
+//		mErrorReporter->addInformation("Code generation finished succesfully");
+		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+
+		CodeArea *area = new CodeArea();
+		QFile file("prog0/prog0.c");
+		QTextStream *inStream = 0;
+		if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text))
+			inStream = new QTextStream(&file);
+
+		if (inStream)
+			area->document()->setPlainText(inStream->readAll());
+
+		area->show();
+
+		mUi->tabs->addTab(area, "prog0");
+		mUi->tabs->setCurrentWidget(area);
+
+		mUi->actionUpload_Program->setVisible(true);
+		mUi->actionFlash_Robot->setVisible(true);
+	}
+}
+
 void MainWindow::flashRobot() {
 	QProcess *task = new QProcess(this);
 #ifdef Q_OS_UNIX
@@ -1477,6 +1508,7 @@ void MainWindow::flashRobot() {
 	else
 		QMessageBox::warning(this, NULL, "smth wrong", "ok");
 	delete task;
+	mUi->actionFlash_Robot->setVisible(false);
 }
 
 void MainWindow::uploadProgram() {
@@ -1496,4 +1528,5 @@ void MainWindow::uploadProgram() {
 	else
 		QMessageBox::warning(this, NULL, "smth wrong", "ok");
 	delete task;
+	mUi->actionUpload_Program->setVisible(false);
 }
