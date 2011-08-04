@@ -30,9 +30,20 @@ public slots:
 
 
 private:
+	enum UploadState {
+		clean,
+		compile,
+		link,
+		uploadStart,
+		flash,
+		done
+	};
+
 	ErrorReporter *mErrorReporter;
 	QProcess mFlashProcess;
 	QProcess mUploadProcess;
+
+	UploadState mUploadState;
 };
 
 }
