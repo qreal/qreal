@@ -1474,7 +1474,7 @@ void MainWindow::generateRobotSourceCode()
 		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
 
 		CodeArea *area = new CodeArea();
-		QFile file("prog0/prog0.c");
+		QFile file("example0/example0.c");
 		QTextStream *inStream = 0;
 		if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text))
 			inStream = new QTextStream(&file);
@@ -1484,7 +1484,7 @@ void MainWindow::generateRobotSourceCode()
 
 		area->show();
 
-		mUi->tabs->addTab(area, "prog0");
+		mUi->tabs->addTab(area, "example0");
 		mUi->tabs->setCurrentWidget(area);
 
 		mUi->actionUpload_Program->setVisible(true);

@@ -55,7 +55,7 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 
 			//QDir projectsDir; //TODO: use user path to projects
 
-			QString projectName = "prog" + QString::number(curInitialNodeNumber);
+			QString projectName = "example" + QString::number(curInitialNodeNumber);
 
 			//Create project directory
 			if (!QDir(projectName).exists())

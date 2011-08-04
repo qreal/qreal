@@ -1,7 +1,9 @@
 #!/bin/bash
 
-cd $QREALDIR/qrgui/generated/example
-export PATH="$PATH:$QREALDIR/arm-elf-gcc-4.3.3/bin"
+
+cd $QREALDIR/example0
+export PATH="$PATH:$QREALDIR/nxt-tools/gnuarm/bin"
 make clean
 make all
+chmod +x ./rxeflash.sh
 ./rxeflash.sh

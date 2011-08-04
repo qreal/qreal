@@ -22,13 +22,17 @@ public slots:
 	void flashRobot();
 	void uploadProgram();
 
-	void readNxtFlashData();
 	void error(QProcess::ProcessError error);
+	void readNxtFlashData();
 	void nxtFlashingFinished(int exitCode, QProcess::ExitStatus exitStatus);
+	void readNxtUploadData();
+	void nxtUploadingFinished(int exitCode, QProcess::ExitStatus exitStatus);
+
 
 private:
 	ErrorReporter *mErrorReporter;
 	QProcess mFlashProcess;
+	QProcess mUploadProcess;
 };
 
 }
