@@ -3,6 +3,9 @@
 #include <QMainWindow>
 #include "codeArea.h"
 
+namespace qReal {
+namespace gui {
+
 class CodeEditor : public QMainWindow {
 	Q_OBJECT
 
@@ -15,3 +18,6 @@ class CodeEditor : public QMainWindow {
 	private:
 		CodeArea mCodeArea;
 };
+
+}
+}

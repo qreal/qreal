@@ -13,6 +13,7 @@
 #include "mainWindowInterpretersInterface.h"
 #include "../kernel/settingsManager.h"
 #include "../textEditor/codeEditor.h"
+#include "nxtFlashTool.h"
 
 #include "../models/logicalModelAssistApi.h"
 
@@ -41,6 +42,7 @@ class Interpreter;
 
 namespace gui {
 class ErrorReporter;
+class NxtFlashTool;
 }
 
 class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpretersInterface
@@ -64,6 +66,8 @@ public:
 	virtual gui::ErrorReporter *errorReporter();
 	void openShapeEditor(QPersistentModelIndex index, int role, QString const propertyValue);
 
+	void showErrors(gui::ErrorReporter *reporter);
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -79,6 +83,8 @@ public slots:
 	virtual void selectItem(Id const &id);
 
 	void showD2ModelWidget(bool isVisible = true);
+
+	void showErrors(gui::ErrorReporter const * const errorReporter);
 
 private slots:
 
@@ -160,8 +166,6 @@ private slots:
 
 	void updatePaletteIcons();
 
-	void flashRobot();
-	void uploadProgram();
 
 private:
 	Ui::MainWindowUi *mUi;
@@ -192,7 +196,8 @@ private:
 	QMap<QString, bool> mDocksVisibility;
 
 	QString mSaveDir;
-	CodeEditor *mCodeEditor;
+
+	gui::NxtFlashTool *mFlashTool;
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,

@@ -15,14 +15,11 @@
 
 # nxtOSEK generator
 
-HEADER += generators/nxtOSEK/nxtOSEKRobotGenerator.h \
+HEADERS += generators/nxtOSEK/nxtOSEKRobotGenerator.h
+SOURCES += generators/nxtOSEK/nxtOSEKRobotGenerator.cpp
 
-SOURCES += generators/nxtOSEK/nxtOSEKRobotGenerator.cpp \
-
-
-HEADERS += generators/editorGenerator/editorGenerator.h \
-
-SOURCES += generators/editorGenerator/editorGenerator.cpp \
+HEADERS += generators/editorGenerator/editorGenerator.h
+SOURCES += generators/editorGenerator/editorGenerator.cpp
 
 
 # Креатор не умеет показывать файлы глубже одного уровня в иерархии инклудов

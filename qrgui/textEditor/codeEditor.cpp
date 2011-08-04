@@ -3,6 +3,9 @@
 #include <QDebug>
 #include "codeEditor.h"
 
+using namespace qReal;
+using namespace gui;
+
 CodeEditor::CodeEditor(QWidget *parent): QMainWindow(parent), mCodeArea(this)
 {
 	setCentralWidget(&mCodeArea);

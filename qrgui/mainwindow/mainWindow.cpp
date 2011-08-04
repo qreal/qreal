@@ -61,7 +61,6 @@ MainWindow::MainWindow()
 	, mErrorReporter(NULL)
 	, mIsFullscreen(false)
 	, mSaveDir(qApp->applicationDirPath() + "/save")
-	, mCodeEditor(0)
 {
 
 	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
@@ -99,7 +98,6 @@ MainWindow::MainWindow()
 
 	// Step 2: Ui is ready, splash screen shown.
 	progress->setValue(20);
-	connectActions();
 
 	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(changeMiniMapSource(int)));
 	connect(mUi->tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
@@ -170,6 +168,11 @@ MainWindow::MainWindow()
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 
+	mFlashTool = new gui::NxtFlashTool(mErrorReporter);
+	connect(mFlashTool, SIGNAL(showErrors(gui::ErrorReporter*const)), this, SLOT(showErrors(gui::ErrorReporter*const)));
+
+	connectActions();
+
 	QString const defaultBluetoothPortName = SettingsManager::value("bluetoothPortName", "").toString();
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel", "1").toInt());
@@ -199,8 +202,9 @@ MainWindow::MainWindow()
 	mDocksVisibility.clear();
 	this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
 
-	mUi->actionFlash_Robot->setVisible(false);
-	mUi->actionUpload_Program->setVisible(false);
+//	mUi->actionFlash_Robot->setVisible(false);
+//	mUi->actionUpload_Program->setVisible(false);
+
 }
 
 void MainWindow::connectActions()
@@ -228,8 +232,8 @@ void MainWindow::connectActions()
 	connect(mUi->actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
 	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
-	connect(mUi->actionFlash_Robot, SIGNAL(triggered()), this, SLOT(flashRobot()));
-	connect(mUi->actionUpload_Program, SIGNAL(triggered()), this, SLOT(uploadProgram()));
+	connect(mUi->actionFlash_Robot, SIGNAL(triggered()), mFlashTool, SLOT(flashRobot()));
+	connect(mUi->actionUpload_Program, SIGNAL(triggered()), mFlashTool, SLOT(uploadProgram()));
 
 	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 	connect(mUi->actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
@@ -292,8 +296,6 @@ MainWindow::~MainWindow()
 	delete mRobotInterpreter;
 	delete mErrorReporter;
 	SettingsManager::instance()->saveData();
-	if (mCodeEditor)
-		delete mCodeEditor;
 }
 
 EditorManager* MainWindow::manager()
@@ -1469,7 +1471,6 @@ void MainWindow::generateRobotSourceCode()
 	qReal::generators::NxtOSEKRobotGenerator gen(SettingsManager::value("workingDir", mSaveDir).toString());
 	gui::ErrorReporter &errors = gen.generate();
 	if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
-//		mErrorReporter->addInformation("Code generation finished succesfully");
 		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
 
 		CodeArea *area = new CodeArea();
@@ -1491,42 +1492,8 @@ void MainWindow::generateRobotSourceCode()
 	}
 }
 
-void MainWindow::flashRobot() {
-	QProcess *task = new QProcess(this);
-#ifdef Q_OS_UNIX
-	task->start("sh", QStringList() << QDir::currentPath() + "/generators/linux/flash.sh");
-#endif
-
-#ifdef Q_OS_WIN
-	QString path = QDir::currentPath();
-	path.replace(QRegExp("/"), "\\");
-	qDebug() << path;
-	task->start("cmd", QStringList() << path + "\\generators\\windows\\flash.bat");
-#endif
-	if (task->waitForFinished())
-		QMessageBox::information(this, NULL, "robot successfully flashed", "ok");
-	else
-		QMessageBox::warning(this, NULL, "smth wrong", "ok");
-	delete task;
-	mUi->actionFlash_Robot->setVisible(false);
+void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
+{
+	errorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
 }
 
-void MainWindow::uploadProgram() {
-
-	QProcess *task = new QProcess(this);
-#ifdef Q_OS_UNIX
-	task->start("sh", QStringList() << QDir::currentPath() + "/generators/linux/upload.sh");
-#endif
-
-#ifdef Q_OS_WIN
-	QString path = QDir::currentPath();
-	path.replace(QRegExp("/"), "\\");
-	task->start("cmd", QStringList() << path + "\\generators\\windows\\upload.bat");
-#endif
-	if (task->waitForFinished())
-		QMessageBox::information(this, NULL, "program successfully\n uploaded", "ok");
-	else
-		QMessageBox::warning(this, NULL, "smth wrong", "ok");
-	delete task;
-	mUi->actionUpload_Program->setVisible(false);
-}

@@ -7,7 +7,8 @@ HEADERS += mainwindow/mainWindow.h \
 	mainwindow/buttonRefWindow.h \
 	mainwindow/error.h \
 	mainwindow/errorListWidget.h \
-	mainwindow/mainWindowInterpretersInterface.h
+	mainwindow/mainWindowInterpretersInterface.h \
+	mainwindow/nxtFlashTool.h
 
 SOURCES += mainwindow/mainWindow.cpp \
 	mainwindow/paletteToolbox.cpp \
@@ -15,6 +16,7 @@ SOURCES += mainwindow/mainWindow.cpp \
 	mainwindow/errorReporter.cpp \
 	mainwindow/buttonRefWindow.cpp \
 	mainwindow/error.cpp \
-	mainwindow/errorListWidget.cpp
+	mainwindow/errorListWidget.cpp \
+	mainwindow/nxtFlashTool.cpp
 
 FORMS += mainwindow/mainWindow.ui
