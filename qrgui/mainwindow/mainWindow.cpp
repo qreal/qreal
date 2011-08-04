@@ -61,6 +61,7 @@ MainWindow::MainWindow()
 	, mErrorReporter(NULL)
 	, mIsFullscreen(false)
 	, mSaveDir(qApp->applicationDirPath() + "/save")
+	, mNxtToolsPresent(false)
 {
 
 	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
@@ -202,9 +203,9 @@ MainWindow::MainWindow()
 	mDocksVisibility.clear();
 	this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
 
-//	mUi->actionFlash_Robot->setVisible(false);
-//	mUi->actionUpload_Program->setVisible(false);
-
+	checkNxtTools();
+	mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
+	mUi->actionFlash_Robot->setVisible(mNxtToolsPresent);
 }
 
 void MainWindow::connectActions()
@@ -233,7 +234,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 	connect(mUi->actionFlash_Robot, SIGNAL(triggered()), mFlashTool, SLOT(flashRobot()));
-	connect(mUi->actionUpload_Program, SIGNAL(triggered()), mFlashTool, SLOT(uploadProgram()));
+	connect(mUi->actionUpload_Program, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
 	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 	connect(mUi->actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
@@ -1492,8 +1493,35 @@ void MainWindow::generateRobotSourceCode()
 	}
 }
 
+void MainWindow::uploadProgram()
+{
+	if (!mNxtToolsPresent)
+		return;
+	generateRobotSourceCode();
+	mFlashTool->uploadProgram();
+}
+
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
 {
 	errorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
 }
 
+void MainWindow::checkNxtTools()
+{
+	QDir dir(qApp->applicationDirPath());
+	dir.cd("nxt-tools");
+	if (!dir.exists()){
+		mNxtToolsPresent = false;
+		return;
+	}
+	qDebug() << dir.absolutePath();
+
+	QDir gnuarm(dir.absolutePath() + "/gnuarm");
+	QDir libnxt(dir.absolutePath() + "/libnxt");
+	QDir nexttool(dir.absolutePath() + "/nexttool");
+	QDir nxtOSEK(dir.absolutePath() + "/nxtOSEK");
+	QFile flash(dir.absolutePath() + "/flash.sh");
+	QFile upload(dir.absolutePath() + "/upload.sh");
+
+	mNxtToolsPresent = gnuarm.exists() && libnxt.exists() && nexttool.exists() && nxtOSEK.exists() && flash.exists() && upload.exists();
+}

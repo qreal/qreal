@@ -132,6 +132,7 @@ private slots:
 	void showPreferencesDialog();
 
 	void generateRobotSourceCode();
+	void uploadProgram();
 
 	void connectActions();
 
@@ -199,6 +200,8 @@ private:
 
 	gui::NxtFlashTool *mFlashTool;
 
+	bool mNxtToolsPresent;
+
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
 			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
@@ -246,5 +249,7 @@ private:
 	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
 
 	QString getNextDirName(QString const &name);
+
+	void checkNxtTools();
 };
 }
