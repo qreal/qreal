@@ -231,30 +231,37 @@ void NodeElement::resize(QRectF newContents)
 
 	foreach (QGraphicsItem* childItem, childItems()) {
 		QRectF curChildItemBoundingRect;
-		if(childItem == mPlaceholder){
+		if(childItem == mPlaceholder) {
 			curChildItemBoundingRect = childItem->boundingRect();
 			curChildItemBoundingRect.setLeft(newContents.left() + mElementImpl->sizeOfForestalling());
 			curChildItemBoundingRect.setRight(newContents.right() - mElementImpl->sizeOfForestalling());
 		} else {
 			NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-			if (!curItem || curItem->isPort())
+			if (!curItem || curItem->isPort()) {
 				continue;
+			}
 			curChildItemBoundingRect = curItem->mContents;
 		}
 
-		curChildItemBoundingRect.translate(childItem->pos());
+		// it seems to be more appropriate to use childItem->pos() but it causes
+		// bad behaviour when dropping element to another
+		curChildItemBoundingRect.translate(childItem->scenePos() - scenePos());
 
-		if (curChildItemBoundingRect.left() < newContents.left() + mElementImpl->sizeOfForestalling())
+		if (curChildItemBoundingRect.left() < newContents.left() + mElementImpl->sizeOfForestalling()) {
 			newContents.setLeft(curChildItemBoundingRect.left() - mElementImpl->sizeOfForestalling());
+		}
 
-		if (curChildItemBoundingRect.right() > newContents.right() - mElementImpl->sizeOfForestalling())
+		if (curChildItemBoundingRect.right() > newContents.right() - mElementImpl->sizeOfForestalling()) {
 			newContents.setRight(curChildItemBoundingRect.right() + mElementImpl->sizeOfForestalling());
+		}
 
-		if (curChildItemBoundingRect.top() < newContents.top() + mElementImpl->sizeOfForestalling())
+		if (curChildItemBoundingRect.top() < newContents.top() + mElementImpl->sizeOfForestalling()) {
 			newContents.setTop(curChildItemBoundingRect.top() - mElementImpl->sizeOfForestalling());
+		}
 
-		if (curChildItemBoundingRect.bottom() > newContents.bottom() - mElementImpl->sizeOfForestalling())
+		if (curChildItemBoundingRect.bottom() > newContents.bottom() - mElementImpl->sizeOfForestalling()) {
 			newContents.setBottom(curChildItemBoundingRect.bottom() + mElementImpl->sizeOfForestalling());
+		}
 	}
 
 	if ((newContents.width() < objectMinSize) || (newContents.height() < objectMinSize))
