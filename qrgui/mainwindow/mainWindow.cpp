@@ -76,8 +76,14 @@ MainWindow::MainWindow()
 	progress->setRange(0, 100);
 
 	QDir imagesDir(SettingsManager::value("pathToImages", "/someWeirdDirectoryName").toString());
-	if (!imagesDir.exists())
-		SettingsManager::setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
+	if (!imagesDir.exists()) {
+		QString path = qApp->applicationDirPath();
+#ifdef Q_OS_WIN
+		path = path.replace("qrgui/debug", "qrgui").replace("qrgui/release", "qrgui");
+#endif
+		qDebug() << path;
+		SettingsManager::setValue("pathToImages", path + "/images/iconset1");
+	}
 
 	// Step 1: splash screen loaded, progress bar initialized.
 	progress->setValue(5);

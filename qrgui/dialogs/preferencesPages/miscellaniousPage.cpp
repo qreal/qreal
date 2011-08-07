@@ -18,7 +18,7 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent) :
 	mUi->openGLCheckBox->setChecked(SettingsManager::value("OpenGL", true).toBool());
 	mUi->squareLineModeCheckBox->setChecked(SettingsManager::value("SquareLine", false).toBool());
 
-	mLastIconsetPath = SettingsManager::value("pathToImages", QDir::currentPath() + "/images/iconset1").toString();
+	mLastIconsetPath = SettingsManager::value("pathToImages", qApp->applicationDirPath() + "/images/iconset1").toString();
 	mUi->imagesPathEdit->setText(mLastIconsetPath);
 }
 

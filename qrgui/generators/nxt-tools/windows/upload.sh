@@ -1,9 +1,9 @@
 #!/bin/bash
 
-export PATH="$PATH:$qrealdir/cygwin/bin"
-export PATH="$PATH:$qrealdir/cygwin/GNUARM/bin"
-export PATH="$PATH:$qrealdir/nexttool"
-cd $qrealdir/qrgui/generators/example
+export PATH="$PATH:$qrealdir/nxt-tools/cygwin/bin"
+export PATH="$PATH:$qrealdir/nxt-tools/cygwin/GNUARM/bin"
+export PATH="$PATH:$qrealdir/nxt-tools/nexttool"
+cd $qrealdir/example0
 make clean
 make all
 sh ./rxeflash.sh

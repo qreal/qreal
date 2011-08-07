@@ -1,5 +1,5 @@
 @echo off
 
 C:
-chdir $qrealdir/cygwin/bin
-bash $qrealdir/qrqui/generated/windows/upload.sh 
+chdir $qrealdir/nxt-tools/cygwin/bin
+bash $qrealdir/nxt-tools/upload.sh 

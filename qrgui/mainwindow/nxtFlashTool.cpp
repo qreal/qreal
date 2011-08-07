@@ -85,13 +85,13 @@ void NxtFlashTool::uploadProgram()
 {
 
 #ifdef Q_OS_UNIX
-	mUploadProcess.start("sh", QStringList() << QDir::currentPath() + "/nxt-tools/upload.sh");
+	mUploadProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/upload.sh");
 #endif
 
 #ifdef Q_OS_WIN
-	QString path = QDir::currentPath();
+	QString path = qApp->applicationDirPath();
 	path.replace(QRegExp("/"), "\\");
-	mUploadProcess->start("cmd", QStringList() << path + "\\nxt-tools\\upload.bat");
+	mUploadProcess.start("cmd", QStringList() << path + "\\nxt-tools\\upload.bat");
 #endif
 
 	mErrorReporter->addInformation("Uploading program started. Please don't disconnect robot during the process");
