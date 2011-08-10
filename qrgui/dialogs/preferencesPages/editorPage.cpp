@@ -58,9 +58,11 @@ void PreferencesEditorPage::manualFontCheckBoxChecked(bool state) {
 }
 
 void PreferencesEditorPage::fontSelectionButtonClicked() {
-	if (!mFontWasChanged)
+	if (!mFontWasChanged) {
 		mFontWasChanged = !mFontWasChanged;
+	}
 	mFontButtonWasPressed = true;
+
 	QFontDialog fontDialog(this);
 	fontDialog.setModal(true);
 	QFont f;
@@ -104,7 +106,6 @@ void PreferencesEditorPage::save()
 	SettingsManager::setValue("ActivateAlignment", mUi->activateAlignmentCheckBox->isChecked());
 	SettingsManager::setValue("CustomFont", mUi->fontCheckBox->isChecked());
 
-
 	mWidthGrid = mUi->gridWidthSlider->value();
 	mIndexGrid = mUi->indexGridSlider->value();
 	SettingsManager::setValue("GridWidth", mWidthGrid);
@@ -116,8 +117,9 @@ void PreferencesEditorPage::save()
 	mActivateAlignmentAction->setChecked(mUi->activateAlignmentCheckBox->isChecked());
 
 	if (mFontWasChanged) {
-		if (mFontButtonWasPressed)
+		if (mFontButtonWasPressed) {
 			SettingsManager::setValue("CurrentFont", mFont);
+		}
 		QMessageBox::information(NULL, tr("Information"), tr("You should restart QReal:Robots to apply changes"), tr("Ok"));
 		mFontWasChanged = false;
 		mFontButtonWasPressed = false;

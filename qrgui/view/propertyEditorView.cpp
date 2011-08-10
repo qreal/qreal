@@ -3,17 +3,22 @@
 
 
 PropertyEditorView::PropertyEditorView(QWidget *parent) :
-	QWidget(parent), mChangingPropertyValue(false)
+	QWidget(parent), mChangingPropertyValue(false),
+	mPropertyEditor(new QtTreePropertyBrowser(this)), mModel(NULL),
+	mLogicalModelAssistApi(NULL)
 {
-	mModel = NULL;
-	mPropertyEditor = new QtTreePropertyBrowser(this);
 	mPropertyEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+}
+
+PropertyEditorView::~PropertyEditorView()
+{
+	delete mPropertyEditor;
 }
 
 void PropertyEditorView::init(qReal::MainWindow *mainWindow, qReal::models::LogicalModelAssistApi *const logicalModelAssistApi)
 {
 	mMainWindow = mainWindow;
-	mLogicalModelAssistApi = logicalModelAssistApi;
+	mLogicalModelAssistApi = logicalModelAssistApi; // unused
 }
 
 /*
@@ -72,8 +77,9 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 		} else if(!values.isEmpty()){
 			type = QtVariantPropertyManager::enumTypeId();
 		} else {
-			if(name == "shape") // hack
+			if(name == "shape") { // hack
 				isButton = true;
+			}
 		}
 
 		QtProperty *item = NULL;
@@ -147,7 +153,6 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 		}
 	}
 	value = QVariant(value.toString());
-	qDebug() << value;
 	mModel->setData(index, value);
 }
 

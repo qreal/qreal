@@ -53,6 +53,7 @@ void PreferencesMiscellaniousPage::save()
 	SettingsManager::setValue("ChaoticEdition", mUi->chaoticEditionCheckBox->isChecked());
 	SettingsManager::setValue("pathToImages", mUi->imagesPathEdit->text());
 
-	if (mLastIconsetPath != mUi->imagesPathEdit->text())
+	if (mLastIconsetPath != mUi->imagesPathEdit->text()) {
 		emit iconsetChanged();
+	}
 }

@@ -11,9 +11,9 @@ PreferencesFeaturesPage::PreferencesFeaturesPage(QWidget *parent) :
 {
 	mUi->setupUi(this);
 
-	qDebug() << SettingsManager::value("Gestures", true).toBool();
-	qDebug() << SettingsManager::value("EmbeddedLinkers", true).toBool();
-	qDebug() << SettingsManager::value("EmbeddedControls", true).toBool();
+//	qDebug() << SettingsManager::value("Gestures", true).toBool();
+//	qDebug() << SettingsManager::value("EmbeddedLinkers", true).toBool();
+//	qDebug() << SettingsManager::value("EmbeddedControls", true).toBool();
 
 	mUi->gesturesCheckBox->setChecked(SettingsManager::value("Gestures", true).toBool());
 	mUi->embeddedLinkersCheckBox->setChecked(SettingsManager::value("EmbeddedLinkers", true).toBool());
@@ -42,7 +42,7 @@ void PreferencesFeaturesPage::save()
 	SettingsManager::setValue("EmbeddedLinkers", mUi->embeddedLinkersCheckBox->isChecked());
 	SettingsManager::setValue("EmbeddedControls", mUi->embeddedControlsCheckBox->isChecked());
 
-	qDebug() << SettingsManager::value("Gestures", true).toBool();
-	qDebug() << SettingsManager::value("EmbeddedLinkers", true).toBool();
-	qDebug() << SettingsManager::value("EmbeddedControls", true).toBool();
+//	qDebug() << SettingsManager::value("Gestures", true).toBool();
+//	qDebug() << SettingsManager::value("EmbeddedLinkers", true).toBool();
+//	qDebug() << SettingsManager::value("EmbeddedControls", true).toBool();
 }

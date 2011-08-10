@@ -15,6 +15,7 @@ PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * c
 {
 	ui->setupUi(this);
 
+	// need some smart code to manage preferences pages?
 	mBehaviourPage = new PreferencesBehaviourPage(ui->pageContentWigdet);
 	mCompilerPage = new PreferencesCompilerPage(ui->pageContentWigdet);
 	mDebuggerPage = new PreferencesDebuggerPage(ui->pageContentWigdet);

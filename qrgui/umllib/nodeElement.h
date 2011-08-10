@@ -86,9 +86,13 @@ public:
 
 	virtual void checkConnectionsToPort();
 
+	/** @brief Drawing placeholder at the appropriate position (calculated using event data) */
 	void drawPlaceholder(QGraphicsRectItem *placeholder, QGraphicsSceneDragDropEvent *event);
 	void erasePlaceholder(bool);
 
+	/** @brief Returning element that follows placeholder
+	*   @return element or NULL
+	* */
 	Element *getPlaceholderNextElement();
 
 public slots:
