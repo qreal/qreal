@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>738</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -90,6 +90,8 @@
     <addaction name="actionStop_Running"/>
     <addaction name="actionStop_Robot"/>
     <addaction name="actionGenerate_Editor"/>
+    <addaction name="actionUpload_Program"/>
+    <addaction name="actionFlash_Robot"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -215,7 +217,7 @@
     <bool>false</bool>
    </property>
    <property name="windowTitle">
-    <string>Error List</string>
+    <string>Output</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
@@ -238,19 +240,6 @@
    <widget class="QWidget" name="graphicalModelDockWidgetContents">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
       <widget class="QTreeView" name="graphicalModelExplorer">
        <property name="contextMenuPolicy">
         <enum>Qt::ActionsContextMenu</enum>
@@ -264,6 +253,18 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="propertyDock">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>79</width>
+     <height>100</height>
+    </size>
+   </property>
    <property name="windowTitle">
     <string>Property Editor</string>
    </property>
@@ -279,18 +280,12 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QTableView" name="propertyEditor">
-       <property name="maximumSize">
-        <size>
-         <width>16777214</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="alternatingRowColors">
-        <bool>true</bool>
-       </property>
-       <property name="showGrid">
-        <bool>false</bool>
+      <widget class="PropertyEditorView" name="propertyEditor" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
       </widget>
      </item>
@@ -307,14 +302,21 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionGenerateSourceCode"/>
+   <addaction name="actionFlash_Robot"/>
+   <addaction name="actionUpload_Program"/>
+   <addaction name="separator"/>
    <addaction name="actionShow2Dmodel"/>
    <addaction name="actionRun"/>
    <addaction name="actionStop_Running"/>
+   <addaction name="separator"/>
    <addaction name="actionStop_Robot"/>
+   <addaction name="actionConnect_To_Robot"/>
    <addaction name="separator"/>
    <addaction name="actionRobot_Settings"/>
    <addaction name="separator"/>
    <addaction name="actionFullscreen"/>
+   <addaction name="separator"/>
   </widget>
   <widget class="QDockWidget" name="logicalModelDock">
    <property name="features">
@@ -744,6 +746,35 @@
     <string>Ctrl+Shift+N</string>
    </property>
   </action>
+  <action name="actionConnect_To_Robot">
+   <property name="text">
+    <string>Connect To Robot</string>
+   </property>
+  </action>
+  <action name="actionGenerateSourceCode">
+   <property name="text">
+    <string>Generate</string>
+   </property>
+   <property name="toolTip">
+    <string>Generate source code for robot</string>
+   </property>
+  </action>
+  <action name="actionUpload_Program">
+   <property name="text">
+    <string>Upload</string>
+   </property>
+   <property name="toolTip">
+    <string>Upload program into robot</string>
+   </property>
+  </action>
+  <action name="actionFlash_Robot">
+   <property name="text">
+    <string>Flash</string>
+   </property>
+   <property name="toolTip">
+    <string>Flash nxtOSEK into robot</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="0" margin="0"/>
  <customwidgets>
@@ -757,6 +788,12 @@
    <class>ErrorListWidget</class>
    <extends>QListWidget</extends>
    <header>errorListWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PropertyEditorView</class>
+   <extends>QWidget</extends>
+   <header>../view/propertyEditorView.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

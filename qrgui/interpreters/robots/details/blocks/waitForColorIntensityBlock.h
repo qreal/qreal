@@ -22,6 +22,8 @@ public:
 
 	virtual QList<SensorPortPair> usedSensors() const;
 
+	virtual void stopActiveTimerInBlock();
+
 private slots:
 	void responseSlot(int reading);
 	void failureSlot();

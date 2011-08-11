@@ -43,8 +43,10 @@ void BlocksTable::clear()
 
 void BlocksTable::setFailure()
 {
-	foreach (blocks::Block *block, mBlocks.values())
+	foreach (blocks::Block *block, mBlocks.values()) {
+		block->stopActiveTimerInBlock();
 		block->setFailedStatus();
+	}
 }
 
 void BlocksTable::setIdleForBlocks()

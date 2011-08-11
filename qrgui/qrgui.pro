@@ -4,7 +4,7 @@ CONFIG += rpath_libdirs
 INCLUDEPATH	+=	../qrmc\
 			../qrmc/plugins\
 			mainwindow \
-			mainwindow/shapeEdit
+			dialogs/shapeEdit
 
 RESOURCES	=	qrgui.qrc
 SOURCES		=	main.cpp
@@ -72,3 +72,6 @@ include (pluginInterface/pluginInterface.pri)
 
 # Various interpreters (visual debugger, robot interpreters)
 include (interpreters/interpreters.pri)
+
+# Text Editor
+include (textEditor/textEditor.pri)

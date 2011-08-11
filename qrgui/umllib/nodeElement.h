@@ -11,10 +11,10 @@
 #include <QtGui/QWidget>
 #include <QList>
 
-#include "embeddedLinker.h"
 #include "sdfRenderer.h"
 #include "element.h"
 #include "edgeElement.h"
+#include "embedded/linkers/embeddedLinker.h"
 #include "../pluginInterface/elementImpl.h"
 
 #include "sceneGridHandler.h"
@@ -90,6 +90,8 @@ public:
 	virtual void checkConnectionsToPort();
 
 public slots:
+	virtual void singleSelectionState(const bool singleSelected);
+	virtual void selectionState(const bool selected);
 	void switchGrid(bool isChecked);
 
 private:
@@ -140,8 +142,8 @@ private:
 	qreal distanceFromPointPort(int pointPortNumber, const QPointF &location) const;
 	qreal getNearestPointOfLinePort(int linePortNumber, const QPointF &location) const;
 
-	bool initEmbeddedLinkers();
-	void moveEmbeddedLinkers();
+	void initEmbeddedLinkers();
+	void setVisibleEmbeddedLinkers(const bool show);
 
 	void connectTemporaryRemovedLinksToPort(qReal::IdList const &rtemporaryRemovedLinks, QString const &direction);
 

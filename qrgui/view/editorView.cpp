@@ -27,6 +27,8 @@ EditorView::EditorView(QWidget *parent)
 	setEnabled(false);
 
 	setMouseTracking(true);
+
+	setAlignment(Qt::AlignLeft | Qt::AlignTop); //чтобы фокус был по левому верхнему углу
 }
 
 EditorView::~EditorView()
@@ -105,6 +107,7 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 			rect.moveLeft(rect.left() - dx);
 			rect.moveTop(rect.top() - dy);
 			setSceneRect(rect);
+			translate(dx, dy);
 		}
 		mMouseOldPosition = event->posF();
 	}

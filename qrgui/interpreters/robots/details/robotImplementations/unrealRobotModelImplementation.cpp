@@ -10,6 +10,9 @@ UnrealRobotModelImplementation::UnrealRobotModelImplementation(D2RobotModel *d2R
 	, mMotorA(0, d2RobotModel)
 	, mMotorB(1, d2RobotModel)
 	, mMotorC(2, d2RobotModel)
+	, mEncoderA(outputPort::port1, d2RobotModel)
+	, mEncoderB(outputPort::port2, d2RobotModel)
+	, mEncoderC(outputPort::port3, d2RobotModel)
 {
 	mActiveWaitingTimer.setInterval(500);
 	mActiveWaitingTimer.setSingleShot(true);
@@ -91,3 +94,19 @@ motorImplementations::UnrealMotorImplementation &UnrealRobotModelImplementation:
 {
 	return mMotorC;
 }
+
+sensorImplementations::UnrealEncoderImplementation &UnrealRobotModelImplementation::encoderA()
+{
+	return mEncoderA;
+}
+
+sensorImplementations::UnrealEncoderImplementation &UnrealRobotModelImplementation::encoderB()
+{
+	return mEncoderB;
+}
+
+sensorImplementations::UnrealEncoderImplementation &UnrealRobotModelImplementation::encoderC()
+{
+	return mEncoderC;
+}
+

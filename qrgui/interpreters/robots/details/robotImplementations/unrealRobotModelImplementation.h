@@ -6,6 +6,7 @@
 #include "sensorImplementations/unrealTouchSensorImplementation.h"
 #include "sensorImplementations/unrealSonarSensorImplementation.h"
 #include "sensorImplementations/unrealColorSensorImplementation.h"
+#include "sensorImplementations/unrealEncoderImplementation.h"
 #include "../d2RobotModel/d2RobotModel.h"
 
 namespace qReal {
@@ -32,6 +33,10 @@ public:
 	virtual motorImplementations::UnrealMotorImplementation &motorB();
 	virtual motorImplementations::UnrealMotorImplementation &motorC();
 
+	virtual sensorImplementations::UnrealEncoderImplementation &encoderA();
+	virtual sensorImplementations::UnrealEncoderImplementation &encoderB();
+	virtual sensorImplementations::UnrealEncoderImplementation &encoderC();
+
 private slots:
 	void timerTimeout();
 
@@ -42,6 +47,11 @@ private:
 	motorImplementations::UnrealMotorImplementation mMotorA;
 	motorImplementations::UnrealMotorImplementation mMotorB;
 	motorImplementations::UnrealMotorImplementation mMotorC;
+
+	sensorImplementations::UnrealEncoderImplementation mEncoderA;
+	sensorImplementations::UnrealEncoderImplementation mEncoderB;
+	sensorImplementations::UnrealEncoderImplementation mEncoderC;
+
 	virtual void addTouchSensor(inputPort::InputPortEnum const &port);
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port);
 	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode);

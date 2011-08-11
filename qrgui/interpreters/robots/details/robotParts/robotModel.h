@@ -8,6 +8,7 @@
 #include "touchSensor.h"
 #include "sonarSensor.h"
 #include "colorSensor.h"
+#include "encoderSensor.h"
 #include "../../sensorConstants.h"
 #include "../robotImplementations/abstractRobotModelImplementation.h"
 
@@ -48,6 +49,10 @@ public:
 	robotParts::Motor &motorA();
 	robotParts::Motor &motorB();
 	robotParts::Motor &motorC();
+	robotParts::EncoderSensor &encoderA();
+	robotParts::EncoderSensor &encoderB();
+	robotParts::EncoderSensor &encoderC();
+
 	robotImplementations::AbstractRobotModelImplementation &robotImpl();
 	void setRobotImplementation(robotImplementations::AbstractRobotModelImplementation *robotImpl);
 
@@ -57,6 +62,9 @@ private:
 	robotParts::Motor mMotorA;
 	robotParts::Motor mMotorB;
 	robotParts::Motor mMotorC;
+	robotParts::EncoderSensor mEncoderA;
+	robotParts::EncoderSensor mEncoderB;
+	robotParts::EncoderSensor mEncoderC;
 
 	QVector<robotParts::Sensor *> mSensors;  // Has ownership.
 

@@ -1,5 +1,5 @@
 #include "mainWindow.h"
-
+#include <QProcess>
 #include <QtGui/QDialog>
 #include <QtGui/QPrinter>
 #include <QtGui/QVBoxLayout>
@@ -15,7 +15,7 @@
 
 #include <QtCore/QDebug>
 
-#include <../../generators/editorGenerator/editorGenerator.h>
+#include <../generators/editorGenerator/editorGenerator.h>
 
 #include <QtCore/QPluginLoader>
 
@@ -25,11 +25,10 @@
 #include "../interpreters/robots/details/robotImplementations/abstractRobotModelImplementation.h"
 #include "../interpreters/robots/details/robotParts/robotModel.h"
 #include "../pluginInterface/editorInterface.h"
-#include "preferencesDialog.h"
-#include "shapeEdit/shapeEdit.h"
-#include "openShapeEditorButton.h"
+#include "../../qrgui/dialogs/preferencesDialog.h"
+#include "../dialogs/shapeEdit/shapeEdit.h"
 #include "propertyEditorProxyModel.h"
-#include "gesturesShow/gesturesWidget.h"
+#include "../dialogs/gesturesShow/gesturesWidget.h"
 
 #include "../models/models.h"
 #include "../view/editorView.h"
@@ -38,10 +37,13 @@
 #include "../parsers/xml/xmlParser.h"
 #include "../editorManager/listenerManager.h"
 #include "../generators/editorGenerator/editorGenerator.h"
+#include "../generators/nxtOSEK/nxtOSEKRobotGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
-#include "../../kernel/settingsManager.h"
+#include "../kernel/settingsManager.h"
 
+#include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../interpreters/robots/interpreter.h"
+
 
 using namespace qReal;
 using namespace interpreters::robots;
@@ -59,6 +61,7 @@ MainWindow::MainWindow()
 	, mErrorReporter(NULL)
 	, mIsFullscreen(false)
 	, mSaveDir(qApp->applicationDirPath() + "/save")
+	, mNxtToolsPresent(false)
 {
 
 	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
@@ -73,8 +76,14 @@ MainWindow::MainWindow()
 	progress->setRange(0, 100);
 
 	QDir imagesDir(SettingsManager::value("pathToImages", "/someWeirdDirectoryName").toString());
-	if (!imagesDir.exists())
-		SettingsManager::setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
+	if (!imagesDir.exists()) {
+		QString path = qApp->applicationDirPath();
+#ifdef Q_OS_WIN
+		path = path.replace("qrgui/debug", "qrgui").replace("qrgui/release", "qrgui");
+#endif
+		qDebug() << path;
+		SettingsManager::setValue("pathToImages", path + "/images/iconset1");
+	}
 
 	// Step 1: splash screen loaded, progress bar initialized.
 	progress->setValue(5);
@@ -96,7 +105,6 @@ MainWindow::MainWindow()
 
 	// Step 2: Ui is ready, splash screen shown.
 	progress->setValue(20);
-	connectActions();
 
 	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(changeMiniMapSource(int)));
 	connect(mUi->tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
@@ -113,11 +121,14 @@ MainWindow::MainWindow()
 	mUi->errorDock->setWidget(mUi->errorListWidget);
 	mUi->errorListWidget->init(this);
 	mUi->errorDock->setVisible(false);
+
+//	mDelegate.init(this, &mModels->logicalModelAssistApi());
+	QString workingDir = SettingsManager::value("workingDir", mSaveDir).toString();
+	mRootIndex = QModelIndex();
+	mModels = new models::Models(workingDir, mEditorManager);
+
+	mUi->propertyEditor->init(this, &mModels->logicalModelAssistApi());
 	mUi->propertyEditor->setModel(&mPropertyModel);
-	mUi->propertyEditor->verticalHeader()->hide();
-	mUi->propertyEditor->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
-	mUi->propertyEditor->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
-	mUi->propertyEditor->setItemDelegate(&mDelegate);
 
 	connect(mUi->graphicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(graphicalModelExplorerClicked(QModelIndex)));
 	connect(mUi->logicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(logicalModelExplorerClicked(QModelIndex)));
@@ -133,10 +144,7 @@ MainWindow::MainWindow()
 	// Step 5: Plugins are loaded.
 	progress->setValue(70);
 
-	//settings.beginGroup("MainWindow");
-
 	if (!SettingsManager::value("maximized", true).toBool()) {
-
 		showNormal();
 		resize(SettingsManager::value("size", QSize(1024, 800)).toSize());
 		move(SettingsManager::value("pos", QPoint(0, 0)).toPoint());
@@ -144,11 +152,6 @@ MainWindow::MainWindow()
 	// for jzuken's unholy netbook screen
 //	resize(QSize(1024, 600));
 	//settings.endGroup();
-
-	QString workingDir = SettingsManager::value("workingDir", mSaveDir).toString();
-
-	mRootIndex = QModelIndex();
-	mModels = new models::Models(workingDir, mEditorManager);
 
 	// Step 6: Save loaded, models initialized.
 	progress->setValue(80);
@@ -167,10 +170,15 @@ MainWindow::MainWindow()
 	mGesturesWidget = new GesturesWidget();
 	mVisualDebugger = new VisualDebugger(mModels->graphicalModelAssistApi());
 
-	mDelegate.init(this, &mModels->logicalModelAssistApi());
+//	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
+
+	mFlashTool = new gui::NxtFlashTool(mErrorReporter);
+	connect(mFlashTool, SIGNAL(showErrors(gui::ErrorReporter*const)), this, SLOT(showErrors(gui::ErrorReporter*const)));
+
+	connectActions();
 
 	QString const defaultBluetoothPortName = SettingsManager::value("bluetoothPortName", "").toString();
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
@@ -198,8 +206,12 @@ MainWindow::MainWindow()
 	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 
-		mDocksVisibility.clear();
-		this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+	mDocksVisibility.clear();
+	this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+
+	checkNxtTools();
+	mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
+	mUi->actionFlash_Robot->setVisible(mNxtToolsPresent);
 }
 
 void MainWindow::connectActions()
@@ -227,6 +239,8 @@ void MainWindow::connectActions()
 	connect(mUi->actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
 	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
+	connect(mUi->actionFlash_Robot, SIGNAL(triggered()), mFlashTool, SLOT(flashRobot()));
+	connect(mUi->actionUpload_Program, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
 	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 	connect(mUi->actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
@@ -245,11 +259,15 @@ void MainWindow::connectActions()
 	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(run()));
 	connect(mUi->actionStop_Running, SIGNAL(triggered()), this, SLOT(stop()));
 	connect(mUi->actionStop_Robot, SIGNAL(triggered()), this, SLOT(stopRobot()));
+
+	connect(mUi->actionConnect_To_Robot, SIGNAL(triggered()), this, SLOT(connectToRobot()));
+
 	connect(mUi->actionRobot_Settings, SIGNAL(triggered()), this, SLOT(showRobotSettingsDialog()));
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connect(mUi->actionShow2Dmodel, SIGNAL(triggered()), this, SLOT(showD2ModelWidget()));
+	connect(mUi->actionGenerateSourceCode, SIGNAL(triggered()), this, SLOT(generateRobotSourceCode()));
 }
 
 void MainWindow::showD2ModelWidget(bool isVisible)
@@ -282,11 +300,9 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 MainWindow::~MainWindow()
 {
 	saveAll();
-	delete mListenerManager;
 	delete mRobotInterpreter;
 	delete mErrorReporter;
 	SettingsManager::instance()->saveData();
-	//	delete mListenerManager;
 }
 
 EditorManager* MainWindow::manager()
@@ -401,37 +417,42 @@ void MainWindow::activateSubdiagram(QModelIndex const &idx) {
 
 void MainWindow::sceneSelectionChanged()
 {
-	if (!getCurrentTab())
-		return;
-	QList<QGraphicsItem*> graphicsItems = getCurrentTab()->scene()->selectedItems();
-	int length = graphicsItems.size();
-	if (length == 1) {
-		QGraphicsItem *item = graphicsItems[0];
-		if (Element *elem = dynamic_cast<Element *>(item)) {
-			setIndexesOfPropertyEditor(elem->id());
-			QModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
-			if (index.isValid()) {
-				mUi->graphicalModelExplorer->setCurrentIndex(index);
-			}
-		} else {
-			mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());
-			mPropertyModel.clearModelIndexes();
+	if (!getCurrentTab()) {return;}
 
-			foreach(QGraphicsItem* item, graphicsItems) {
-				EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
-				if (edge) {
-					length--;
-					graphicsItems.removeOne(edge);
-				}
+	QList<Element*> elements = QList<Element*>();
+	QList<Element*> selected = QList<Element*>();
+	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
+
+	foreach(QGraphicsItem* item, items) {
+		Element* element = dynamic_cast<Element*>(item);
+		if (element) {
+			elements.append(element);
+			if (element->isSelected()) {
+				selected.append(element);
+				element->selectionState(true);
+			} else {
+				element->selectionState(false);
+				element->singleSelectionState(false);
 			}
-			//TODO: remove it? length < 2
-			if (length > 1) {
-				foreach(QGraphicsItem* item, graphicsItems) {
-					NodeElement* node = dynamic_cast<NodeElement*>(item);
-					if (node)
-						node->hideEmbeddedLinkers();
-				}
-			}
+		}
+	}
+
+	if (selected.isEmpty()) {
+		mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());
+		mPropertyModel.clearModelIndexes();
+	} else if (selected.length() > 1) {
+		foreach(Element* notSingleSelected, selected) {
+			notSingleSelected->singleSelectionState(false);
+		}
+	} else {
+		Element* singleSelected = selected.at(0);
+		singleSelected->singleSelectionState(true);
+
+		setIndexesOfPropertyEditor(singleSelected->id());
+
+		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(singleSelected->id());
+		if (index.isValid()) {
+			mUi->graphicalModelExplorer->setCurrentIndex(index);
 		}
 	}
 }
@@ -490,10 +511,7 @@ bool MainWindow::openNewProject()
 }
 
 bool MainWindow::open(QString const &dirName)
-{
-
-
-	if (dirName.isEmpty())
+{	if (dirName.isEmpty())
 		return false;
 
 	dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
@@ -505,7 +523,6 @@ bool MainWindow::open(QString const &dirName)
 	closeAllTabs();
 
 	mModels->repoControlApi().open(dirName);
-
 	mModels->reinit();
 
 	if (!checkPluginsAndReopen())
@@ -514,7 +531,9 @@ bool MainWindow::open(QString const &dirName)
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-		this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+	setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+
+	mSaveDir = dirName;
 	return true;
 }
 
@@ -837,35 +856,50 @@ void MainWindow::showPreferencesDialog()
 		connect(&preferencesDialog, SIGNAL(gridChanged()), getCurrentTab(), SLOT(invalidateScene()));
 		connect(&preferencesDialog, SIGNAL(iconsetChanged()), this, SLOT(updatePaletteIcons()));
 		connect(&preferencesDialog, SIGNAL(settingsApplied()), this, SLOT(applySettings()));
+		connect(&preferencesDialog, SIGNAL(fontChanged()), this, SLOT(setSceneFont()));
 	}
 	preferencesDialog.exec();
 }
 
-void MainWindow::openShapeEditor()
-{
-	QObject const *object = sender();
-	OpenShapeEditorButton const *button = dynamic_cast<OpenShapeEditorButton const *>(object);
-	QString const text = tr("Shape Editor");
-	ShapeEdit *shapeEdit = NULL;
-	if (button != NULL) {
-		QPersistentModelIndex index = button->index();
-		int role = button->role();
-		QString const propertyValue = button->propertyValue();
-		shapeEdit = new ShapeEdit(index, role);
-		if (!propertyValue.isEmpty())
-			shapeEdit->load(propertyValue);
-		// Here we are going to actually modify model to set a value of a shape.
-		QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
-		model->setData(index, propertyValue, role);
-		connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)), this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
-	}
-	else {
-		shapeEdit = new ShapeEdit();
+void MainWindow::setSceneFont() {
+
+	if (SettingsManager::value("CustomFont", true).toBool()) {
+		QFont font;
+		font.fromString(SettingsManager::value("CurrentFont", "ololo").toString());
+		getCurrentTab()->scene()->setFont(font);
+		getCurrentTab()->scene()->update();
+	} else {
+		getCurrentTab()->scene()->setFont(QFont(QFontDatabase::applicationFontFamilies(
+			QFontDatabase::addApplicationFont(QDir::currentPath() + "/times.ttf")).at(0), 9));
+		getCurrentTab()->scene()->update();
 	}
 
-	mUi->tabs->addTab(shapeEdit, text);
+}
+
+void MainWindow::openShapeEditor(QPersistentModelIndex index, int role, QString const propertyValue)
+{
+	ShapeEdit *shapeEdit = new ShapeEdit(index, role);
+	if (!propertyValue.isEmpty())
+		shapeEdit->load(propertyValue);
+
+	// Here we are going to actually modify model to set a value of a shape.
+	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
+	model->setData(index, propertyValue, role);
+	connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)),
+		this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
+
+	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
 	setConnectActionZoomTo(shapeEdit);
+}
+
+void MainWindow::openShapeEditor()
+{
+	ShapeEdit *shapeEdit = new ShapeEdit;
+	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
+	mUi->tabs->setCurrentWidget(shapeEdit);
+	setConnectActionZoomTo(shapeEdit);
+
 }
 
 void MainWindow::disconnectZoom(QGraphicsView* view)
@@ -1279,6 +1313,11 @@ void MainWindow::stop()
 	mRobotInterpreter->stop();
 }
 
+void MainWindow::connectToRobot()
+{
+	(*(mRobotInterpreter->robotModel())).init();
+}
+
 void MainWindow::stopRobot()
 {
 	mRobotInterpreter->stopRobot();
@@ -1432,4 +1471,63 @@ QString MainWindow::getNextDirName(QString const &name)
 	parts.last() = QString::number(++version);
 	return parts.join("_");
 
+}
+
+void MainWindow::generateRobotSourceCode()
+{
+	qReal::generators::NxtOSEKRobotGenerator gen(SettingsManager::value("workingDir", mSaveDir).toString());
+	gui::ErrorReporter &errors = gen.generate();
+	if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
+		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+
+		CodeArea *area = new CodeArea();
+		QFile file("example0/example0.c");
+		QTextStream *inStream = 0;
+		if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text))
+			inStream = new QTextStream(&file);
+
+		if (inStream)
+			area->document()->setPlainText(inStream->readAll());
+
+		area->show();
+
+		mUi->tabs->addTab(area, "example0");
+		mUi->tabs->setCurrentWidget(area);
+
+		mUi->actionUpload_Program->setVisible(true);
+		mUi->actionFlash_Robot->setVisible(true);
+	}
+}
+
+void MainWindow::uploadProgram()
+{
+	if (!mNxtToolsPresent)
+		return;
+	generateRobotSourceCode();
+	mFlashTool->uploadProgram();
+}
+
+void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
+{
+	errorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+}
+
+void MainWindow::checkNxtTools()
+{
+	QDir dir(qApp->applicationDirPath());
+	dir.cd("nxt-tools");
+	if (!dir.exists()){
+		mNxtToolsPresent = false;
+		return;
+	}
+	qDebug() << dir.absolutePath();
+
+	QDir gnuarm(dir.absolutePath() + "/gnuarm");
+	QDir libnxt(dir.absolutePath() + "/libnxt");
+	QDir nexttool(dir.absolutePath() + "/nexttool");
+	QDir nxtOSEK(dir.absolutePath() + "/nxtOSEK");
+	QFile flash(dir.absolutePath() + "/flash.sh");
+	QFile upload(dir.absolutePath() + "/upload.sh");
+
+	mNxtToolsPresent = gnuarm.exists() && libnxt.exists() && nexttool.exists() && nxtOSEK.exists() && flash.exists() && upload.exists();
 }

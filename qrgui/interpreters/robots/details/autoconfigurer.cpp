@@ -8,10 +8,10 @@ using namespace interpreters::robots;
 using namespace details;
 
 Autoconfigurer::Autoconfigurer(models::GraphicalModelAssistApi const &graphicalModelApi
-		, BlocksTable * const blocksTable
-		, gui::ErrorReporter * const errorReporter
-		, RobotModel *robotModel
-		)
+							   , BlocksTable * const blocksTable
+							   , gui::ErrorReporter * const errorReporter
+							   , RobotModel *robotModel
+							   )
 	: mGraphicalModelApi(&graphicalModelApi)
 	, mBlocksTable(blocksTable)
 	, mErrorReporter(errorReporter)
@@ -47,11 +47,11 @@ bool Autoconfigurer::configure(Id const &diagram)
 
 	if (result)
 		mRobotModel->configureSensors(
-				mUsedSensors[0]
-				, mUsedSensors[1]
-				, mUsedSensors[2]
-				, mUsedSensors[3]
-		);
+					mUsedSensors[0]
+					, mUsedSensors[1]
+					, mUsedSensors[2]
+					, mUsedSensors[3]
+					);
 
 	return result;
 }

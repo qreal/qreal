@@ -8,11 +8,14 @@
 
 #include "../editorManager/editorManager.h"
 #include "propertyEditorProxyModel.h"
-#include "propertyEditorDelegate.h"
 #include "gesturesPainterInterface.h"
-#include "gesturesShow/gesturesWidget.h"
+#include "../dialogs/gesturesShow/gesturesWidget.h"
 #include "mainWindowInterpretersInterface.h"
 #include "../kernel/settingsManager.h"
+#include "../textEditor/codeEditor.h"
+#include "nxtFlashTool.h"
+
+#include "../models/logicalModelAssistApi.h"
 
 #include "../interpreters/robots/bluetoothRobotCommunication.h"
 #include "../interpreters/robots/details/d2RobotModel/d2RobotModel.h"
@@ -39,6 +42,7 @@ class Interpreter;
 
 namespace gui {
 class ErrorReporter;
+class NxtFlashTool;
 }
 
 class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpretersInterface
@@ -60,6 +64,9 @@ public:
 	virtual void highlight(Id const &graphicalId, bool exclusive = true);
 	virtual void dehighlight(Id const &graphicalId);
 	virtual gui::ErrorReporter *errorReporter();
+	void openShapeEditor(QPersistentModelIndex index, int role, QString const propertyValue);
+
+	void showErrors(gui::ErrorReporter *reporter);
 
 signals:
 	void gesturesShowed();
@@ -77,7 +84,11 @@ public slots:
 
 	void showD2ModelWidget(bool isVisible = true);
 
+	void showErrors(gui::ErrorReporter const * const errorReporter);
+
 private slots:
+
+	void setSceneFont();
 	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);
 
@@ -120,13 +131,15 @@ private slots:
 	void parseEditorXml();
 	void showPreferencesDialog();
 
+	void generateRobotSourceCode();
+	void uploadProgram();
+
 	void connectActions();
 
 	void centerOn(Id const &id);
 	void graphicalModelExplorerClicked(const QModelIndex &index);
 	void logicalModelExplorerClicked(const QModelIndex &index);
 
-	void openShapeEditor();
 	void openNewTab(const QModelIndex &index);
 	void initCurrentTab(const QModelIndex &rootIndex);
 
@@ -136,6 +149,8 @@ private slots:
 	void switchAlignment(bool isChecked);
 	void setShape(QString const &data, QPersistentModelIndex const &index, int const &role);
 
+	void openShapeEditor();
+
 	void setDiagramCreateFlag();
 	void diagramInCreateListDeselect();
 	void diagramInCreateListSelected(int num);
@@ -143,11 +158,15 @@ private slots:
 	void run();
 	void stop();
 	void stopRobot();
+
+	void connectToRobot();
+
 	void showRobotSettingsDialog();
 
 	void on_actionNew_Diagram_triggered();
 
 	void updatePaletteIcons();
+
 
 private:
 	Ui::MainWindowUi *mUi;
@@ -157,7 +176,7 @@ private:
 	EditorManager mEditorManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
-	PropertyEditorDelegate mDelegate;
+//	PropertyEditorDelegate mDelegate;
 	GesturesWidget *mGesturesWidget;
 
 	QVector<bool> mSaveListChecked;
@@ -178,6 +197,10 @@ private:
 	QMap<QString, bool> mDocksVisibility;
 
 	QString mSaveDir;
+
+	gui::NxtFlashTool *mFlashTool;
+
+	bool mNxtToolsPresent;
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
@@ -226,5 +249,7 @@ private:
 	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
 
 	QString getNextDirName(QString const &name);
+
+	void checkNxtTools();
 };
 }

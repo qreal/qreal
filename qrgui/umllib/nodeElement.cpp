@@ -30,8 +30,9 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mElementImpl->init(mContents, mPointPorts, mLinePorts, factory, titles, mRenderer, mPortRenderer);
 	foreach (ElementTitleInterface *titleIface, titles){
 		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
-		if (!title)
+		if (!title) {
 			continue;
+		}
 		title->init(mContents);
 		title->setParentItem(this);
 		mTitles.append(title);
@@ -102,6 +103,9 @@ void NodeElement::adjustLinks()
 }
 
 void NodeElement::arrangeLinks() {
+	if (!SettingsManager::value("arrangeLinks", true).toBool())
+		return;
+
 	QSet<NodeElement*> toArrange;
 	QSet<NodeElement*> arranged;
 	arrangeLinksRecursively(toArrange, arranged);
@@ -169,8 +173,9 @@ void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<No
 
 void NodeElement::storeGeometry()
 {
+	QRectF contents = mContents; //для того, чтобы оставалась правильная конфигурация
 	mGraphicalAssistApi->setPosition(id(), pos());
-	mGraphicalAssistApi->setConfiguration(id(), QPolygon(mContents.toAlignedRect()));
+	mGraphicalAssistApi->setConfiguration(id(), QPolygon(contents.toAlignedRect()));
 }
 
 void NodeElement::moveChildren(qreal dx, qreal dy)
@@ -290,35 +295,28 @@ void NodeElement::delUnusedLines()
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (event->button() == Qt::RightButton)
-	{
+	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
 	}
 
-	if (mEmbeddedLinkers.isEmpty())
-		initEmbeddedLinkers();
-	moveEmbeddedLinkers();
-	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
-		embeddedLinker->setCovered(true);
-
 	if (isSelected()) {
-		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()) && mElementImpl->isResizeable())
+		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = TopLeft;
-		else if (QRectF(mContents.topRight(), QSizeF(-4, 4)).contains(event->pos()) && mElementImpl->isResizeable())
+		} else if (QRectF(mContents.topRight(), QSizeF(-4, 4)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = TopRight;
-		else if (QRectF(mContents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()) && mElementImpl->isResizeable())
+		} else if (QRectF(mContents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = BottomRight;
-		else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()) && mElementImpl->isResizeable())
+		} else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = BottomLeft;
-		else if (QRectF(mContents.topLeft(), QSizeF(20, 20)).contains(event->pos())
-				 && mElementImpl->isContainer())
+		} else if (QRectF(mContents.topLeft(), QSizeF(20, 20)).contains(event->pos()) && mElementImpl->isContainer()) {
 			changeFoldState();
-		else
+		} else {
 			Element::mousePressEvent(event);
-	}
-	else
+		}
+	} else {
 		Element::mousePressEvent(event);
+	}
 
 	mLeftPressed = true;
 	setZValue(1);
@@ -326,25 +324,24 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (event->button() == Qt::RightButton)
-	{
+	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
 	}
 
 	scene()->invalidate();
-	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
-		embeddedLinker->setCovered(false);
 	if (mDragState == None) {
 		Element::mouseMoveEvent(event);
 		mGrid->mouseMoveEvent();
 	} else if (mElementImpl->isResizeable()) {
-		QRectF newContents = mContents;
+		setVisibleEmbeddedLinkers(false);
 
+		QRectF newContents = mContents;
 		QPointF parentPos = QPointF(0, 0);
 		QGraphicsItem* parItem = parentItem();
-		if (parItem)
+		if (parItem) {
 			parentPos = parItem->scenePos();
+		}
 
 		switch (mDragState) {
 		case TopLeft:
@@ -389,12 +386,16 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		resize(newContents);
 	}
 
-	if (isPort())
-		mUmlPortHandler->handleMoveEvent(mLeftPressed, mPos, event->scenePos(), mParentNodeElement);
+	if (isPort()) {
+		mUmlPortHandler->handleMoveEvent(
+			mLeftPressed,
+			mPos,
+			event->scenePos(),
+			mParentNodeElement
+		);
+	}
 
 	arrangeLinks();
-
-
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -407,12 +408,11 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	mContents = mContents.normalized();
 	storeGeometry();
 
-	moveEmbeddedLinkers();
-	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
-		embeddedLinker->setCovered(true);
+	setVisibleEmbeddedLinkers(true);
 
-	if (mDragState == None)
+	if (mDragState == None) {
 		Element::mouseReleaseEvent(event);
+	}
 
 	if (!isPort() && (flags() & ItemIsMovable)) {
 		QPointF newParentInnerPoint = event->scenePos();
@@ -472,8 +472,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			// delete from parents list ones that are selected right now
 			QList<QGraphicsItem *> realNewParents;
 			foreach (QGraphicsItem * item, parentsList){
-				if (!selected.contains(item))
+				if (!selected.contains(item)) {
 					realNewParents.append(item);
+				}
 			}
 
 			NodeElement *newParent = NULL;
@@ -483,8 +484,15 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				newParent = dynamic_cast<NodeElement *>(realNewParents.at(i));
 				i++;
 			}
-
-			if (newParent && !selected.contains(newParent)) {
+			// проверка, можно ли добавлять наш элемент в найденного родителя
+			bool allowed = false;
+			if (newParent) {
+				foreach (qReal::Id type, mGraphicalAssistApi->editorManager().getContainedTypes(newParent->id().type())){
+					if (id().element() ==  type.editor())
+						allowed = true;
+				}
+			}
+			if (newParent && !selected.contains(newParent) && allowed) {
 				mGraphicalAssistApi->changeParent(id(), newParent->id(),
 												  mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
 
@@ -507,32 +515,6 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 	Q_UNUSED(event);
-
-	QList<QGraphicsItem*> graphicsItems = scene()->selectedItems();
-	int length = graphicsItems.size();
-	foreach(QGraphicsItem* item, graphicsItems) {
-		EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
-		if (edge) {
-			length--;
-			graphicsItems.removeOne(edge);
-		}
-	}
-
-	if (length > 1) {
-		foreach(QGraphicsItem* item, scene()->selectedItems()) {
-			NodeElement* node = dynamic_cast<NodeElement*>(item);
-			if (node)
-				node->hideEmbeddedLinkers();
-		}
-	}
-
-	if (!isSelected())
-		return;
-
-	if (mEmbeddedLinkers.isEmpty())
-		initEmbeddedLinkers();
-	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
-		embeddedLinker->setCovered(true);
 }
 
 void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
@@ -543,16 +525,6 @@ void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 	Q_UNUSED(event);
-	if (!isSelected())
-		return;
-	//        foreach(EmbeddedLinker* mEmbeddedLinker, embeddedLinkers)
-	//            mEmbeddedLinker->setCovered(false);
-}
-
-void NodeElement::hideEmbeddedLinkers()
-{
-	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
-		embeddedLinker->setCovered(false);
 }
 
 bool NodeElement::connectionInProgress()
@@ -591,13 +563,16 @@ bool NodeElement::initPossibleEdges()
 	return !mPossibleEdges.isEmpty();
 }
 
-bool NodeElement::initEmbeddedLinkers()
+void NodeElement::initEmbeddedLinkers()
 {
-	int counter = 0;
+	if (mEmbeddedLinkers.isEmpty()) {
+		return;
+	}
 	QSet<qReal::Id> usedEdges;
 	foreach(PossibleEdgeType type, mPossibleEdgeTypes) {
-		if (usedEdges.contains(type.second))
+		if (usedEdges.contains(type.second)) {
 			continue;
+		}
 		EmbeddedLinker* embeddedLinker = new EmbeddedLinker();
 		scene()->addItem(embeddedLinker);
 		embeddedLinker->setEdgeType(type.second);
@@ -605,23 +580,27 @@ bool NodeElement::initEmbeddedLinkers()
 		mEmbeddedLinkers.append(embeddedLinker);
 		embeddedLinker->setMaster(this);
 		usedEdges.insert(type.second);
-		counter++;
 	}
-	moveEmbeddedLinkers();
-	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
+	setVisibleEmbeddedLinkers(true);
+	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
 		embeddedLinker->initTitle();
-
-	return (counter > 0);
+	}
 }
 
-void NodeElement::moveEmbeddedLinkers()
+void NodeElement::setVisibleEmbeddedLinkers(const bool show)
 {
-	int index = 0;
-	int maxIndex = mEmbeddedLinkers.size();
-	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
-	{
-		embeddedLinker->takePosition(index,maxIndex);
-		index++;
+	if (show) {
+		int index = 0;
+		int maxIndex = mEmbeddedLinkers.size();
+		foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
+			embeddedLinker->takePosition(index,maxIndex);
+			embeddedLinker->show();
+			index++;
+		}
+	} else {
+		foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
+			embeddedLinker->hide();
+		}
 	}
 }
 
@@ -858,7 +837,7 @@ qreal NodeElement::getPortId(const QPointF &location) const
 
 	for (int i = 0; i < mLinePorts.size(); i++) {
 		QPainterPathStroker ps;
-                ps.setWidth(kvadratik - 5);
+				ps.setWidth(kvadratik - 5);
 
 		QPainterPath path;
 		path.moveTo(newTransform(mLinePorts[i]).p1());
@@ -1289,4 +1268,13 @@ void NodeElement::checkConnectionsToPort()
 			return;
 		}
 	}
+}
+
+void NodeElement::singleSelectionState(const bool singleSelected) {
+	initEmbeddedLinkers();
+	setVisibleEmbeddedLinkers(true);
+	Element::singleSelectionState(singleSelected);
+}
+void NodeElement::selectionState(const bool selected) {
+	Element::selectionState(selected);
 }

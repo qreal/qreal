@@ -1,6 +1,6 @@
 #include "graphicalModelItem.h"
 
-#include "../../kernel/exception/exception.h"
+#include "../kernel/exception/exception.h"
 
 using namespace qReal;
 using namespace models::details::modelsImplementation;

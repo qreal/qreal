@@ -7,8 +7,8 @@ using namespace qReal;
 Element::Element()
 	: mMoving(false)
 	, mElementImpl(NULL)
-	, mGraphicalAssistApi(NULL)
 	, mLogicalAssistApi(NULL)
+	, mGraphicalAssistApi(NULL)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
 		ItemClipsToShape | ItemSendsGeometryChanges);
@@ -73,4 +73,11 @@ void Element::initTitlesBy(QRectF const& contents)
 void Element::initTitles()
 {
 	initTitlesBy(boundingRect().adjusted(kvadratik, kvadratik, -kvadratik, -kvadratik));
+}
+
+void Element::singleSelectionState(const bool singleSelected) {
+	emit switchFolding(!singleSelected);
+}
+void Element::selectionState(const bool selected) {
+	//it will be usefull in the future
 }
