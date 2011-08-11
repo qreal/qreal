@@ -1,5 +1,5 @@
 QT		+=	svg xml
-CONFIG += rpath_libdirs
+CONFIG += rpath_libdirs help
 
 INCLUDEPATH	+=	../qrmc\
 			../qrmc/plugins\

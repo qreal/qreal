@@ -14,6 +14,7 @@
 #include "../kernel/settingsManager.h"
 #include "../textEditor/codeEditor.h"
 #include "nxtFlashTool.h"
+#include "helpBrowser.h"
 
 #include "../models/logicalModelAssistApi.h"
 
@@ -201,6 +202,7 @@ private:
 	gui::NxtFlashTool *mFlashTool;
 
 	bool mNxtToolsPresent;
+	HelpBrowser *mHelpBrowser;
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,

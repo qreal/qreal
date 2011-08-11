@@ -32,6 +32,7 @@
         <file>generators/nxtOSEK/templates/template.c</file>
         <file>generators/nxtOSEK/templates/template.makefile</file>
         <file>generators/nxtOSEK/templates/template.oil</file>
+        <file>qreal-robots.qhc</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>

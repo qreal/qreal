@@ -294,6 +294,26 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 			|| (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
 	{
 		saveAll();
+	} else if (keyEvent->key() == Qt::Key_F1){
+		// FIXME: ":/qreal-robots.qhc" doesn't work for some reason
+		QHelpEngine *helpEngine = new QHelpEngine("./qreal-robots.qhc");
+		helpEngine->setupData();
+
+		helpEngine->setCurrentFilter("QReal:Robots");
+
+		mHelpBrowser = new HelpBrowser(helpEngine);
+		mHelpBrowser->setSource(helpEngine->linksForIdentifier("QReal")["QReal:Robots"]);
+
+		QSplitter *helpPanel = new QSplitter(Qt::Horizontal);
+		helpPanel->setGeometry(QRect(0, 0, 1000, 800));
+		helpPanel->setWindowTitle("QReal:Robots Help Center");
+
+		helpPanel->insertWidget(0, helpEngine->contentWidget());
+		helpPanel->insertWidget(1, mHelpBrowser);
+		helpPanel->setStretchFactor(1, 1);
+		helpPanel->show();
+
+		connect(helpEngine->contentWidget(), SIGNAL(linkActivated(const QUrl &)), mHelpBrowser, SLOT(setSource(const QUrl &)));
 	}
 }
 
@@ -302,6 +322,7 @@ MainWindow::~MainWindow()
 	saveAll();
 	delete mRobotInterpreter;
 	delete mErrorReporter;
+	delete mHelpBrowser;
 	SettingsManager::instance()->saveData();
 }
 

@@ -2,13 +2,11 @@
 <QtHelpProject version="1.0">
    <namespace>qreal.robots.1.0</namespace>
    <virtualFolder>doc</virtualFolder>
-   <customFilter name="My Application 1.0">
-         <filterAttribute>myapp</filterAttribute>
-         <filterAttribute>1.0</filterAttribute>
+   <customFilter name="QReal:Robots">
+         <filterAttribute>QReal</filterAttribute>
    </customFilter>
    <filterSection>
-         <filterAttribute>myapp</filterAttribute>
-         <filterAttribute>1.0</filterAttribute>
+         <filterAttribute>QReal</filterAttribute>
         <toc>
             <section title="QReal:Robots" ref="html/index.html">
                <section title="Пользовательский интерфейс" ref="html/interface.html">
@@ -23,6 +21,10 @@
                </section>
             </section>
         </toc>
+        <keywords>
+          <keyword id="QReal" name="QReal" ref="html/index.html" />
+          <keyword id="234" name="123" ref="html/index.html" />
+        </keywords>
         <files>
             <file>html/*.html</file>
             <file>html/pics/*.png</file>
