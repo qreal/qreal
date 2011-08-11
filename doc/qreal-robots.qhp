@@ -11,7 +11,10 @@
          <filterAttribute>1.0</filterAttribute>
         <toc>
             <section title="QReal:Robots" ref="html/index.html">
-               <section title="Пользовательский интерфейс" ref="html/interface.html"/>
+               <section title="Пользовательский интерфейс" ref="html/interface.html">
+                   <section title="Диалог настроек" ref="html/interface.html#settings"/>
+                   <section title="Двухмерная модель робота" ref="html/interface.html#d2model"/>
+			   </section>
                <section title="Подключение робота" ref="html/robot-setup.html"/>
                <section title="Создание программ" ref="html/programming.html"/>
                <section title="Запуск программ" ref="html/run-programs.html">
@@ -21,11 +24,8 @@
             </section>
         </toc>
         <files>
-            <file>html/index.html</file>
-            <file>html/interface.html</file>
-            <file>html/programming.html</file>
-            <file>html/robot-setup.html</file>
-            <file>html/run-programs.html</file>
+            <file>html/*.html</file>
+            <file>html/pics/*.png</file>
         </files>
    </filterSection>
 </QtHelpProject>

@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>738</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -76,11 +76,6 @@
     </property>
     <addaction name="actionPreferences"/>
     <addaction name="actionRobot_Settings"/>
-    <addaction name="actionPlugins"/>
-    <addaction name="actionShow_grid"/>
-    <addaction name="actionShow_alignment"/>
-    <addaction name="actionSwitch_on_grid"/>
-    <addaction name="actionSwitch_on_alignment"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -90,8 +85,6 @@
     <addaction name="actionStop_Running"/>
     <addaction name="actionStop_Robot"/>
     <addaction name="actionGenerate_Editor"/>
-    <addaction name="actionUpload_Program"/>
-    <addaction name="actionFlash_Robot"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -302,13 +295,13 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionGenerateSourceCode"/>
-   <addaction name="actionFlash_Robot"/>
-   <addaction name="actionUpload_Program"/>
-   <addaction name="separator"/>
    <addaction name="actionShow2Dmodel"/>
    <addaction name="actionRun"/>
    <addaction name="actionStop_Running"/>
+   <addaction name="separator"/>
+   <addaction name="actionCode"/>
+   <addaction name="actionFlash_Robot"/>
+   <addaction name="actionUpload_Program"/>
    <addaction name="separator"/>
    <addaction name="actionStop_Robot"/>
    <addaction name="actionConnect_To_Robot"/>
@@ -751,9 +744,9 @@
     <string>Connect To Robot</string>
    </property>
   </action>
-  <action name="actionGenerateSourceCode">
+  <action name="actionCode">
    <property name="text">
-    <string>Generate</string>
+    <string>Code</string>
    </property>
    <property name="toolTip">
     <string>Generate source code for robot</string>
