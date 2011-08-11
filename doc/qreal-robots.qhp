@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QtHelpProject version="1.0">
+   <namespace>qreal.robots.1.0</namespace>
+   <virtualFolder>doc</virtualFolder>
+   <customFilter name="My Application 1.0">
+         <filterAttribute>myapp</filterAttribute>
+         <filterAttribute>1.0</filterAttribute>
+   </customFilter>
+   <filterSection>
+         <filterAttribute>myapp</filterAttribute>
+         <filterAttribute>1.0</filterAttribute>
+        <toc>
+            <section title="QReal:Robots" ref="html/index.html">
+               <section title="Пользовательский интерфейс" ref="html/interface.html"/>
+               <section title="Подключение робота" ref="html/robot-setup.html"/>
+               <section title="Создание программ" ref="html/programming.html"/>
+               <section title="Запуск программ" ref="html/run-programs.html">
+                   <section title="Интерпретация по Bluetooth" ref="html/run-programs.html#bluetooth"/>
+                   <section title="Прошивка в робота" ref="html/run-programs.html#flashing"/>
+               </section>
+            </section>
+        </toc>
+        <files>
+            <file>html/index.html</file>
+            <file>html/interface.html</file>
+            <file>html/programming.html</file>
+            <file>html/robot-setup.html</file>
+            <file>html/run-programs.html</file>
+        </files>
+   </filterSection>
+</QtHelpProject>
