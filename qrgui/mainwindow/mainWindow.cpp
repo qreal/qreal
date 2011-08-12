@@ -322,7 +322,8 @@ MainWindow::~MainWindow()
 	saveAll();
 	delete mRobotInterpreter;
 	delete mErrorReporter;
-	delete mHelpBrowser;
+	if (mHelpBrowser)
+		delete mHelpBrowser;
 	SettingsManager::instance()->saveData();
 }
 
