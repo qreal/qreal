@@ -62,6 +62,7 @@ MainWindow::MainWindow()
 	, mIsFullscreen(false)
 	, mSaveDir(qApp->applicationDirPath() + "/save")
 	, mNxtToolsPresent(false)
+	, mHelpBrowser(NULL)
 {
 
 	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
