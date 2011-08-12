@@ -35,5 +35,5 @@ void PreferencesDebuggerPage::changeEvent(QEvent *e)
 void PreferencesDebuggerPage::save()
 {
 	SettingsManager::setValue("debuggerTimeout", mUi->timeoutLineEdit->text());
-	SettingsManager::setValue("debugColor", mUi->colorComboBox->currentIndex());
+	SettingsManager::setValue("debugColor", mUi->colorComboBox->currentText());
 }
