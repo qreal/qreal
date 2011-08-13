@@ -497,7 +497,7 @@ QList<ContextMenuAction*> EdgeElement::contextMenuActions()
 	QList<ContextMenuAction*> result;
 	result.push_back(&mAddPointAction);
 	result.push_back(&mDelPointAction);
-	result.push_back(&mSquarizeAction);
+//	result.push_back(&mSquarizeAction);
 	result.push_back(&mMinimizeAction);
 	return result;
 }
