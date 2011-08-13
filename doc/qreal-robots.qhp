@@ -14,7 +14,13 @@
                    <section title="Двухмерная модель робота" ref="html/interface.html#d2model"/>
 			   </section>
                <section title="Подключение робота" ref="html/robot-setup.html"/>
-               <section title="Создание программ" ref="html/programming.html"/>
+               <section title="Создание программ" ref="html/programming.html">
+                   <section title="Создание диаграмм" ref="html/programming.html#diagrams"/>
+                   <section title="Создание блоков" ref="html/programming.html#blocks"/>
+                   <section title="Создание связей" ref="html/programming.html#links"/>
+                   <section title="Синтаксис выражений" ref="html/programming.html#functions"/>
+                   <section title="Редактирование свойств элементов" ref="html/programming.html#properties"/>
+               </section>
                <section title="Запуск программ" ref="html/run-programs.html">
                    <section title="Интерпретация по Bluetooth" ref="html/run-programs.html#bluetooth"/>
                    <section title="Прошивка в робота" ref="html/run-programs.html#flashing"/>
@@ -23,7 +29,6 @@
         </toc>
         <keywords>
           <keyword id="QReal" name="QReal" ref="html/index.html" />
-          <keyword id="234" name="123" ref="html/index.html" />
         </keywords>
         <files>
             <file>html/*.html</file>
