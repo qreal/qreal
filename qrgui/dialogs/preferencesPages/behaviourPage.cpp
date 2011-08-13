@@ -8,10 +8,8 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent) :
 {
 	mUi->setupUi(this);
 
-	mUi->saveExitCheckBox->setChecked(SettingsManager::value("SaveExitSuggestion", true).toBool());
 	mUi->warningWindowBox->setChecked(SettingsManager::value("warningWindow", true).toBool());
-	mUi->chooseDiagramsToSaveCheckBox->setChecked(SettingsManager::value("ChooseDiagramsToSave", true).toBool());
-	mUi->diagramCreateCheckBox->setChecked(SettingsManager::value("DiagramCreateSuggestion", true).toBool());
+	mUi->diagramCreateCheckBox->setChecked(SettingsManager::value("diagramCreateSuggestion", true).toBool());
 	mUi->paletteTabCheckBox->setChecked(SettingsManager::value("PaletteTabSwitching", true).toBool());
 	mUi->arrangeLinksCheckBox->setChecked(SettingsManager::value("arrangeLinks", true).toBool());
 }
@@ -34,10 +32,8 @@ void PreferencesBehaviourPage::changeEvent(QEvent *e)
 
 void PreferencesBehaviourPage::save()
 {
-	SettingsManager::setValue("ChooseDiagramsToSave", mUi->chooseDiagramsToSaveCheckBox->isChecked());
-	SettingsManager::setValue("DiagramCreateSuggestion", mUi->diagramCreateCheckBox->isChecked());
+	SettingsManager::setValue("diagramCreateSuggestion", mUi->diagramCreateCheckBox->isChecked());
 	SettingsManager::setValue("PaletteTabSwitching", mUi->paletteTabCheckBox->isChecked());
-	SettingsManager::setValue("SaveExitSuggestion", mUi->saveExitCheckBox->isChecked());
 	SettingsManager::setValue("warningWindow", mUi->warningWindowBox->isChecked());
 	SettingsManager::setValue("arrangeLinks", mUi->arrangeLinksCheckBox->isChecked());
 }

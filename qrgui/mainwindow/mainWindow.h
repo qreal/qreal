@@ -211,7 +211,6 @@ private:
 	void loadPlugins();
 
 	QListWidget* createSaveListWidget();
-	void suggestToSave();
 	void suggestToCreateDiagram();
 
 	virtual void closeEvent(QCloseEvent *event);
