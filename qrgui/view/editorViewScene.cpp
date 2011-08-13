@@ -94,7 +94,6 @@ double EditorViewScene::realIndexGrid()
 void EditorViewScene::setRealIndexGrid(double newIndexGrid)
 {
 	mRealIndexGrid = newIndexGrid;
-	qDebug() << "mRealIndexGrid: " << mRealIndexGrid;
 }
 
 void EditorViewScene::setEnabled(bool enabled)
