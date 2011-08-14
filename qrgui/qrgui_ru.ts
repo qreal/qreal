@@ -2529,7 +2529,7 @@
         <translation type="obsolete">Задержка при отладке:</translation>
     </message>
     <message>
-        <source>Color of highlight:</source>
+        <source>Color of highlighting:</source>
         <translation type="obsolete">Цвет подсветки:</translation>
     </message>
     <message>
