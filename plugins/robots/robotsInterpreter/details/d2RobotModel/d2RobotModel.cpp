@@ -84,7 +84,7 @@ int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 void D2RobotModel::startInit()
 {
 	init();
-	mD2ModelWidget->init();
+	mD2ModelWidget->init(false);
 	mTimer->start(timeInterval);
 }
 
@@ -161,4 +161,9 @@ void D2RobotModel::nextFragment()
 	countNewCoord();
 	mD2ModelWidget->draw(mPos, mAngle, mRotatePoint);
 	countBeep();
+}
+
+void D2RobotModel::showModelWidget()
+{
+	mD2ModelWidget->init(true);
 }

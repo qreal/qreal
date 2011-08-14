@@ -110,3 +110,7 @@ sensorImplementations::UnrealEncoderImplementation &UnrealRobotModelImplementati
 	return mEncoderC;
 }
 
+void UnrealRobotModelImplementation::startInterpretation()
+{
+	mD2Model->showModelWidget();
+}

@@ -82,8 +82,7 @@ void Interpreter::interpret()
 	if (!configurer.configure(currentDiagramId))
 		return;
 
-	if (dynamic_cast<robotImplementations::UnrealRobotModelImplementation*>(&(mRobotModel->robotImpl())))
-		showD2ModelWidget(true);
+	mRobotModel->robotImpl().startInterpretation();
 
 	Thread * const initialThread = new Thread(*mInterpretersInterface, *mBlocksTable, startingElement);
 	addThread(initialThread);
@@ -120,19 +119,20 @@ void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum impl
 {
 	disconnect(&mRobotModel->robotImpl(), SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 	mConnected = false;
-	if (implementationType != robotModelType::real)
-		mConnected = true;
 	robotImplementations::AbstractRobotModelImplementation *robotImpl =
 			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, robotCommunicationInterface, mD2RobotModel);
 	setRobotImplementation(robotImpl);
 	connect(robotImpl, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
+	if (implementationType != robotModelType::real)
+		mRobotModel->init();
 }
 
 void Interpreter::connectedSlot(bool success)
 {
 	if (success) {
 		mConnected = true;
-		mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
+		if (mRobotModel->robotImpl().needsConnection())
+			mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
 	} else {
 		mConnected = false;
 		mInterpretersInterface->errorReporter()->addError(tr("Can't connect to a robot."));

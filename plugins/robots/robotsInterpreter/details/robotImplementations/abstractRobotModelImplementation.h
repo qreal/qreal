@@ -22,6 +22,7 @@ class UnrealRobotModelImplementation;
 class AbstractRobotModelImplementation : public QObject
 {
 	Q_OBJECT
+
 public:
 	AbstractRobotModelImplementation();
 	virtual ~AbstractRobotModelImplementation();
@@ -47,8 +48,13 @@ public:
 	virtual void configureSensor(sensorType::SensorTypeEnum const &sensorType
 			, inputPort::InputPortEnum const &port);
 	virtual QVector<sensorImplementations::AbstractSensorImplementation *> sensors();
+
+	virtual bool needsConnection() const;
+	virtual void startInterpretation();
+
 signals:
 	void connected(bool success);
+
 protected:
 	int mSensorsToConfigure;
 	static NullRobotModelImplementation *mNullRobotModel;

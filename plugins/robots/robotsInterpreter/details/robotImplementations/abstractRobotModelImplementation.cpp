@@ -7,7 +7,7 @@
 #include "nullRobotModelImplementation.h"
 #include "realRobotModelImplementation.h"
 #include "unrealRobotModelImplementation.h"
-#include <QtCore/QDebug>
+
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations;
 
@@ -111,4 +111,13 @@ void AbstractRobotModelImplementation::configureSensor(sensorType::SensorTypeEnu
 		// TODO: Throw an exception
 		break;
 	}
+}
+
+bool AbstractRobotModelImplementation::needsConnection() const
+{
+	return false;
+}
+
+void AbstractRobotModelImplementation::startInterpretation()
+{
 }

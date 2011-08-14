@@ -33,6 +33,8 @@ public:
 	int readSonarSensor(inputPort::InputPortEnum const port) const;
 	int readColorSensor(inputPort::InputPortEnum const port) const;
 
+	void showModelWidget();
+
 private slots:
 	void nextFragment();
 

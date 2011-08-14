@@ -130,3 +130,7 @@ sensorImplementations::BluetoothEncoderImplementation &RealRobotModelImplementat
 	return mEncoderC;
 }
 
+bool RealRobotModelImplementation::needsConnection() const
+{
+	return true;
+}

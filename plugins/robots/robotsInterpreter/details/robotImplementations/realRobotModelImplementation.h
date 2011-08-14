@@ -37,6 +37,8 @@ public:
 	virtual sensorImplementations::BluetoothEncoderImplementation &encoderB();
 	virtual sensorImplementations::BluetoothEncoderImplementation &encoderC();
 
+	bool needsConnection() const;
+
 private slots:
 	void connectedSlot(bool success);
 	void sensorConfigurationDoneSlot();
