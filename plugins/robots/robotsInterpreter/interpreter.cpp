@@ -1,6 +1,7 @@
 #include "interpreter.h"
 
 #include "details/autoconfigurer.h"
+#include "details/robotImplementations/unrealRobotModelImplementation.h"
 
 #include <QtCore/QDebug>
 
@@ -81,7 +82,7 @@ void Interpreter::interpret()
 	if (!configurer.configure(currentDiagramId))
 		return;
 
-	if (dynamic_cast<UnrealRobotModelImplementation*>(mRobotModel->robotImpl()))
+	if (dynamic_cast<robotImplementations::UnrealRobotModelImplementation*>(&(mRobotModel->robotImpl())))
 		showD2ModelWidget(true);
 
 	Thread * const initialThread = new Thread(*mInterpretersInterface, *mBlocksTable, startingElement);
