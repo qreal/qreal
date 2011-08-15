@@ -21,6 +21,7 @@ public:
 	virtual bool doCommit(QString const &from, QString const &message) = 0;
 	virtual bool doUpdate(QString const &to) = 0;
 	virtual QString svnInfo(QString const &workingDir) = 0;
+	virtual QString repoUrl(QString const &workingDir) = 0;
 
 	virtual QStringList newErrors() = 0;
 };

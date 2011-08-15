@@ -1,3 +1,4 @@
+
 #include "errorReporter.h"
 #include <QtGui/QMessageBox>
 #include "errorlistwidget.h"

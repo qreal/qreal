@@ -13,5 +13,6 @@ ExecutionIndicator::ExecutionIndicator(QWidget *parent, const QString &message) 
 	QRect rect(QApplication::desktop()->screenGeometry());
 	move(rect.width()/2, rect.height()/2);
 	setWindowModality(Qt::WindowModal);
-	setWindowFlags(Qt::FramelessWindowHint | Qt::SubWindow);
+	setModal(true);
+	setWindowFlags(Qt::FramelessWindowHint);
 }

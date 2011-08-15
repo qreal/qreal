@@ -36,6 +36,8 @@ namespace qReal {
 		void invalidateScene();
 
 	protected:
+		void setEditorViewScene(EditorViewScene *scene);
+
 		virtual void mouseMoveEvent(QMouseEvent *event);
 		virtual void mouseReleaseEvent(QMouseEvent *event);
 		virtual void mousePressEvent(QMouseEvent *event);

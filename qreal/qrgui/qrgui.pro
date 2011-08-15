@@ -71,3 +71,6 @@ include (pluginInterface/pluginInterface.pri)
 
 # Visual debugger
 include (visualDebugger/visualDebugger.pri)
+
+# Diff Manager
+include (diffManager/diffManager.pri)

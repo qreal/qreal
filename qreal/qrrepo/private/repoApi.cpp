@@ -243,6 +243,12 @@ bool RepoApi::hasProperty(Id const &id, QString const &propertyName) const
 	return mClient.hasProperty(id, propertyName);
 }
 
+QMapIterator<QString, QVariant> RepoApi::propertiesIterator(const qReal::Id &id) const
+{
+	return mClient.propertiesIterator(id);
+}
+
+
 Id RepoApi::from(Id const &id) const
 {
 	Q_ASSERT(mClient.property(id, "from").canConvert<Id>());
@@ -388,6 +394,13 @@ bool RepoApi::doUpdate(const QString &to)
 QString RepoApi::svnInfo(const QString &workingDir)
 {
 	QString result = mClient.svnInfo(workingDir);
+	mErrors.append(mClient.newErrors());
+	return result;
+}
+
+QString RepoApi::repoUrl(const QString &workingDir)
+{
+	QString result = mClient.repoUrl(workingDir);
 	mErrors.append(mClient.newErrors());
 	return result;
 }

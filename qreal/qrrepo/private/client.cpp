@@ -149,6 +149,15 @@ bool Client::hasProperty(const Id &id, const QString &name) const
 	}
 }
 
+QMapIterator<QString, QVariant> Client::propertiesIterator(const Id &id) const
+{
+	if (mObjects.contains(id)) {
+		return mObjects[id]->propertiesIterator();
+	} else {
+		throw Exception("Client: Requesting property iterator of nonexistent object " + id.toString());
+	}
+}
+
 void Client::setTemporaryRemovedLinks(Id const &id, QString const &direction, qReal::IdList const &linkIdList)
 {
 	if (mObjects.contains(id)) {
@@ -292,6 +301,14 @@ QString Client::svnInfo(const QString &workingDir)
 	mErrors.append(mExternalClient.newErrors());
 	return result;
 }
+
+QString Client::repoUrl(const QString &workingDir)
+{
+	QString result = mExternalClient.repoUrl(workingDir);
+	mErrors.append(mExternalClient.newErrors());
+	return result;
+}
+
 
 QStringList Client::newErrors()
 {

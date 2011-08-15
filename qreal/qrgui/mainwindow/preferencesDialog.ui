@@ -1024,6 +1024,68 @@
         <string>Browse...</string>
        </property>
       </widget>
+      <widget class="QGroupBox" name="diffGroupBox">
+       <property name="geometry">
+        <rect>
+         <x>2</x>
+         <y>50</y>
+         <width>331</width>
+         <height>101</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Diff Preferences</string>
+       </property>
+       <widget class="QPushButton" name="diffColorsButton">
+        <property name="geometry">
+         <rect>
+          <x>133</x>
+          <y>62</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Colors...</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_27">
+        <property name="geometry">
+         <rect>
+          <x>7</x>
+          <y>29</y>
+          <width>111</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Checkout path for diff</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="diffCheckoutPathLineEdit">
+        <property name="geometry">
+         <rect>
+          <x>118</x>
+          <y>26</y>
+          <width>121</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="browseDiffCheckoutPathtPushButton">
+        <property name="geometry">
+         <rect>
+          <x>247</x>
+          <y>24</y>
+          <width>71</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Browse...</string>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </widget>
    </item>

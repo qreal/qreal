@@ -1,5 +1,6 @@
 #include "preferencesDialog.h"
 #include "ui_preferencesDialog.h"
+#include "../diffManager/diffView/diffColorPreferencesDialog.h"
 
 #include <QSettings>
 #include <QFileDialog>
@@ -84,6 +85,7 @@ void PreferencesDialog::initPreferences()
 	ui->workDirLineEdit->setText(settings.value("debugWorkingDirectory", "").toString());
 
 	ui->pathToSvnClientLineEdit->setText(settings.value("pathToSvnClient", "").toString());
+	ui->diffCheckoutPathLineEdit->setText(settings.value("diffCheckoutPath", QDir::currentPath()).toString());
 }
 
 void PreferencesDialog::applyChanges()
@@ -128,6 +130,7 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("debugWorkingDirectory", ui->workDirLineEdit->text());
 
 	settings.setValue("pathToSvnClient", ui->pathToSvnClientLineEdit->text());
+	settings.setValue("diffCheckoutPath", ui->diffCheckoutPathLineEdit->text());
 
 	mShowGridAction->setChecked(ui->showGridCheckBox->isChecked());
 	mShowAlignmentAction->setChecked(ui->showAlignmentCheckBox->isChecked());
@@ -216,5 +219,24 @@ void PreferencesDialog::on_browseSvnClientPushButton_clicked()
 	if (path != NULL)
 	{
 		ui->pathToSvnClientLineEdit->setText(path);
+	}
+}
+
+void PreferencesDialog::on_browseDiffCheckoutPathtPushButton_clicked()
+{
+	QString path = QFileDialog::getExistingDirectory(this, "Open Directory");
+	ui->diffCheckoutPathLineEdit->setText(path);
+}
+
+void PreferencesDialog::on_diffColorsButton_clicked()
+{
+	QSettings settings("SPbSU", "QReal");
+
+	DiffColorPreferencesDialog dialog(this);
+	if (QDialog::Accepted == dialog.exec())
+	{
+		settings.setValue("diffAddedRemovedColor", dialog.addedRemovedColor());
+		settings.setValue("diffModifiedColor", dialog.modifiedColor());
+		settings.setValue("diffHintColor", dialog.hintColor());
 	}
 }

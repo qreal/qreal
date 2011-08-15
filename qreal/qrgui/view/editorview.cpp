@@ -13,12 +13,7 @@ EditorView::EditorView(QWidget *parent)
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
-	mScene = new EditorViewScene(this);
-	connect(mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
-	connect(mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
-
-	mMVIface = new EditorViewMViface(this, mScene);
-	setScene(mScene);
+	setEditorViewScene(new EditorViewScene(this));
 
 	setAcceptDrops(true);
 	setDragMode(RubberBandDrag);
@@ -91,6 +86,16 @@ void EditorView::setDrawSceneGrid(bool show)
 {
 	mScene->setNeedDrawGrid(show);
 	mScene->invalidate();
+}
+
+void EditorView::setEditorViewScene(EditorViewScene *scene)
+{
+	mScene = scene;
+	connect(mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
+	connect(mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
+
+	mMVIface = new EditorViewMViface(this, mScene);
+	setScene(mScene);
 }
 
 void EditorView::mouseMoveEvent(QMouseEvent *event)

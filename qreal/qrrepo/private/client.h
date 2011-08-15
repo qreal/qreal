@@ -29,6 +29,7 @@ namespace qrRepo {
 			QVariant property(const qReal::Id &id, const QString &name) const;
 			void removeProperty(const qReal::Id &id, const QString &name);
 			bool hasProperty(const qReal::Id &id, const QString &name) const;
+			QMapIterator<QString, QVariant> propertiesIterator(const qReal::Id &id) const;
 			void remove(const qReal::Id &id);
 			void setTemporaryRemovedLinks(qReal::Id const &id, QString const &direction, qReal::IdList const &linkIdList);
 			qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const;
@@ -43,6 +44,7 @@ namespace qrRepo {
 			bool svnUpdate(QString const &to);
 			bool svnCommit(QString const &from, QString const &message);
 			QString svnInfo(QString const &workingDir);
+			QString repoUrl(const QString &workingDir);
 
 			void printDebug() const;
 

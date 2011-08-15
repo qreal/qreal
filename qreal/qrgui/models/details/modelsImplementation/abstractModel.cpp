@@ -132,7 +132,9 @@ QModelIndex AbstractModel::indexById(Id const &id) const
 
 Id AbstractModel::idByIndex(QModelIndex const &index) const
 {
-	AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
+	//was it a bug?
+//	AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
+	AbstractModelItem *item = parentAbstractItem(index);
 	return mModelItems.key(item);
 }
 

@@ -22,7 +22,6 @@ namespace qrRepo
 			bool doAdd(QString const &what, bool force = true);
 			bool doRemove(QString const &what, bool force = true);
 			QString info(QString const &workingDir);
-
 			QString repoUrl(QString const &workingDir);
 
 			QStringList newErrors();

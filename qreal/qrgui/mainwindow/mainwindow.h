@@ -66,8 +66,6 @@ public slots:
 	void showAbout();
 	void showHelp();
 
-	void checkoutDialogOk();
-	void checkoutDialogCancel();
 	void open();
 	void saveAs();
 	void saveAll();

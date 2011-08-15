@@ -57,6 +57,7 @@ namespace qrRepo {
 		void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value);
 		void removeProperty(qReal::Id const &id, QString const &propertyName);
 		bool hasProperty(qReal::Id const &id, QString const &propertyName) const;
+		QMapIterator<QString, QVariant> propertiesIterator(const qReal::Id &id) const;
 
 		qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const;
 		void setTemporaryRemovedLinks(qReal::Id const &id, qReal::IdList const &value, QString const &direction);
@@ -97,6 +98,7 @@ namespace qrRepo {
 		bool doCommit(const QString &from, const QString &message);
 		bool doUpdate(const QString &to);
 		QString svnInfo(const QString &workingDir);
+		QString repoUrl(const QString &workingDir);
 
 		// "√лобальные" методы, позвол€ющие делать запросы к модели в целом.
 		//Returns all elements with .element() == type.element()

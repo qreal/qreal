@@ -43,6 +43,7 @@
 #include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
 #include "../visualDebugger/visualDebugger.h"
+#include "../diffManager/diffManager.h"
 
 #include "metaCompiler.h"
 
@@ -110,6 +111,7 @@ MainWindow::MainWindow()
 	connect(mUi->actionCheckout, SIGNAL(triggered()), this, SLOT(doCheckout()));
 	connect(mUi->actionCommit, SIGNAL(triggered()), this, SLOT(doCommit()));
 	connect(mUi->actionUpdate, SIGNAL(triggered()), this, SLOT(doUpdate()));	
+	connect(mUi->actionDiff, SIGNAL(triggered()), this, SLOT(showDiff()));
 	connect(mUi->actionInfo, SIGNAL(triggered()), this, SLOT(showInfo()));
 
 	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
@@ -574,21 +576,11 @@ void MainWindow::toggleShowSplash(bool show)
 	settings.setValue("Splashscreen", show);
 }
 
-void MainWindow::checkoutDialogOk()
-{
-}
-
-void MainWindow::checkoutDialogCancel()
-{
-}
-
 void MainWindow::doCheckout()
 {
 	QString path;
 	QString url;
 	CheckoutDialog *dialog = new CheckoutDialog(this);
-	connect(dialog, SIGNAL(accepted()), this, SLOT(checkoutDialogOk()));
-	connect(dialog, SIGNAL(rejected()), this, SLOT(checkoutDialogCancel()));
 	if (QDialog::Accepted == dialog->exec())
 	{
 		gui::ExecutionIndicator indicator(this, tr("Checking out, please wait..."));
@@ -690,6 +682,21 @@ void MainWindow::doUpdate()
 
 void MainWindow::showDiff()
 {
+	qReal::diffManager::DiffManager *diffManager = new qReal::diffManager::DiffManager(this);
+	QSettings settings("SPbSU", "QReal");
+	QString path = settings.value("workingDir", "").toString();
+	if (path.isEmpty())
+		return;
+	if (!diffManager->showDiff(path))
+	{
+		QStringList errors(diffManager->newErrors());
+		foreach (QString error, errors)
+		{
+			mErrorReporter->addError(error);
+		}
+		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+	}
+	QMessageBox::information(this, "Svn Diff", "Diff Success!");
 }
 
 void MainWindow::showInfo()

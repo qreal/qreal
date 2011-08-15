@@ -1,3 +1,4 @@
+
 #include "graphicalModelView.h"
 
 #include <QtCore/QUuid>

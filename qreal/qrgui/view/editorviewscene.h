@@ -53,24 +53,27 @@ public:
 	void dehighlight(qReal::Id const &graphicalId);
 	void dehighlight();
 
+//	void initForDiff();
+//	void highlight(const qReal::Id &graphicalId, qReal::diffManager::details::DiffState state);
+
 signals:
 	void elementCreated(qReal::Id const &id);
 	void zoomIn();
 	void zoomOut();
 
 protected:
-	void dragEnterEvent( QGraphicsSceneDragDropEvent *event);
-	void dragMoveEvent( QGraphicsSceneDragDropEvent *event);
-	void dragLeaveEvent( QGraphicsSceneDragDropEvent *event);
-	void dropEvent ( QGraphicsSceneDragDropEvent *event);
+	virtual void dragEnterEvent( QGraphicsSceneDragDropEvent *event);
+	virtual void dragMoveEvent( QGraphicsSceneDragDropEvent *event);
+	virtual void dragLeaveEvent( QGraphicsSceneDragDropEvent *event);
+	virtual void dropEvent ( QGraphicsSceneDragDropEvent *event);
 
-	void keyPressEvent( QKeyEvent *event);
+	virtual void keyPressEvent( QKeyEvent *event);
 
-	void mousePressEvent( QGraphicsSceneMouseEvent *event);
-	void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent );
-	void mouseMoveEvent (QGraphicsSceneMouseEvent *event);
+	virtual void mousePressEvent( QGraphicsSceneMouseEvent *event);
+	virtual void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent );
+	virtual void mouseMoveEvent (QGraphicsSceneMouseEvent *event);
 
-	void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event);
+	virtual void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event);
 
 	virtual void drawBackground( QPainter *painter, const QRectF &rect);
 

@@ -39,6 +39,7 @@ public:
 		bottomRightX,
 		topLeftY,
 		topRightY,
+
 		bottomLeftY,
 		bottomRightY
 	};

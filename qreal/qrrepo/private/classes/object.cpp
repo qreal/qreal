@@ -132,7 +132,7 @@ Id Object::logicalId() const
 	return mLogicalId;
 }
 
-QMapIterator<QString, QVariant> Object::propertiesIterator()
+QMapIterator<QString, QVariant> Object::propertiesIterator() const
 {
 	return QMapIterator<QString, QVariant>(mProperties);
 }
