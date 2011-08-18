@@ -1,7 +1,7 @@
 DESTDIR = ../bin
 
 QT += svg xml
-CONFIG += rpath_libdirs
+CONFIG += rpath_libdirs help
 macx {
 	CONFIG -= app_bundle
 }
@@ -69,3 +69,6 @@ include (toolPluginInterface/toolPluginInterface.pri)
 
 # Interpreters: visual debugger and robots
 include (interpreters/interpreters.pri)
+
+# Text Editor
+include (textEditor/textEditor.pri)

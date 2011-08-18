@@ -136,6 +136,7 @@ qreal SceneGridHandler::recalculateY2(qreal myY1)
 // move element vertically according to the grid
 void SceneGridHandler::makeGridMovingX(qreal myX, int koef, int indexGrid)
 {
+	qDebug() << indexGrid;
 	int oneKoef = 0;
 	if (koef != 0)
 		oneKoef = koef / qAbs(koef);

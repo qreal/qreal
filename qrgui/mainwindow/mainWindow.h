@@ -15,6 +15,11 @@
 #include "mainWindowInterpretersInterface.h"
 #include "../../qrkernel/settingsManager.h"
 #include "../../qrgui/dialogs/preferencesDialog.h"
+#include "../textEditor/codeEditor.h"
+#include "nxtFlashTool.h"
+#include "helpBrowser.h"
+
+#include "../models/logicalModelAssistApi.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -32,6 +37,7 @@ class Models;
 
 namespace gui {
 class ErrorReporter;
+class NxtFlashTool;
 }
 
 class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpretersInterface
@@ -58,6 +64,8 @@ public:
 	void openShapeEditor(QPersistentModelIndex index, int role, QString const propertyValue);
 	virtual void openSettingsDialog(QString const &tab);
 
+	void showErrors(gui::ErrorReporter *reporter);
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -73,6 +81,8 @@ public slots:
 	virtual void selectItem(Id const &id);
 
 	void selectItemWithError(Id const &id);
+
+	void showErrors(gui::ErrorReporter const * const errorReporter);
 
 private slots:
 
@@ -148,6 +158,9 @@ private slots:
 	void parseHascol();
 	void showPreferencesDialog();
 
+	void generateRobotSourceCode();
+	void uploadProgram();
+
 	void connectActions();
 	void connectDebugActions();
 
@@ -173,6 +186,7 @@ private slots:
 	void on_actionNew_Diagram_triggered();
 
 	void updatePaletteIcons();
+
 
 private:
 	Ui::MainWindowUi *mUi;
@@ -205,6 +219,11 @@ private:
 
 	PreferencesDialog mPreferencesDialog;
 
+	gui::NxtFlashTool *mFlashTool;
+
+	bool mNxtToolsPresent;
+	HelpBrowser *mHelpBrowser;
+
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
 			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
@@ -212,7 +231,6 @@ private:
 	void loadPlugins();
 
 	QListWidget* createSaveListWidget();
-	void suggestToSave();
 	void suggestToCreateDiagram();
 
 	virtual void closeEvent(QCloseEvent *event);
@@ -252,5 +270,6 @@ private:
 	QString getNextDirName(QString const &name);
 
 	void initToolPlugins();
+	void checkNxtTools();
 };
 }

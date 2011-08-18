@@ -10,7 +10,7 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	mFontWasChanged(false),
 	mFontButtonWasPressed(false),
 	mWidthGrid(SettingsManager::value("GridWidth", 10).toInt()),
-	mIndexGrid(SettingsManager::value("IndexGrid", 30).toInt()),
+	mIndexGrid(SettingsManager::value("IndexGrid", 50).toInt()),
 	mShowGridAction(showGridAction),
 	mShowAlignmentAction(showAlignmentAction),
 	mActivateGridAction(activateGridAction),

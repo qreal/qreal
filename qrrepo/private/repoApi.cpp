@@ -205,7 +205,7 @@ qReal::IdList RepoApi::outgoingConnectedElements(qReal::Id const &id) const
 	foreach (qReal::Id curLink, outgoingLinks(id)) {
 		result.append(to(curLink));
 	}
-	return result; 
+	return result;
 }
 
 qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
@@ -214,7 +214,7 @@ qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
 	foreach (qReal::Id curLink, incomingLinks(id)) {
 		result.append(from(curLink));
 	}
-	return result; 
+	return result;
 }
 
 QString RepoApi::typeName(Id const &id) const

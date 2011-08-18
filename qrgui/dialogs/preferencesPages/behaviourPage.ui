@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>279</height>
+    <height>239</height>
    </rect>
   </property>
   <widget class="QFrame" name="frame_17">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>230</y>
+     <y>190</y>
      <width>401</width>
      <height>41</height>
     </rect>
@@ -107,7 +107,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>210</y>
+     <y>170</y>
      <width>211</width>
      <height>16</height>
     </rect>
@@ -122,7 +122,7 @@
      <x>10</x>
      <y>120</y>
      <width>401</width>
-     <height>81</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -142,32 +142,6 @@
     </property>
     <property name="text">
      <string>New diagram creating</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="saveExitCheckBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>381</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Save on exit</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="chooseDiagramsToSaveCheckBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>381</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Choose diagrams to save</string>
     </property>
    </widget>
   </widget>

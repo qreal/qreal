@@ -4,13 +4,35 @@ contains(QT_VERSION, ^4\\.[0-5]\\..*){
 }
 
 TEMPLATE = subdirs
-SUBDIRS = qrmc qrxc qrgui qrrepo plugins qrkernel qrutils qtpropertybrowser
+SUBDIRS = \
+#	doc \
+	qrmc \
+	qrxc \
+	qrgui \
+	qrrepo \
+	plugins \
+	qrkernel \
+	qrutils \
+	qtpropertybrowser \
 
 qrutils.depends = qrkernel
 qrrepo.depends = qrkernel qrutils
+qrxc.depends = qrutils
 qrmc.depends = qrrepo
 qrmc.file = qrmc\\qrmc-lib.pro
-qrgui.depends = qrxc qrrepo qrkernel qtpropertybrowser qrutils plugins
-plugins.depends = qrxc qrrepo qrkernel qrutils
+
+qrgui.depends = \
+#	doc \
+	qrxc \
+	qrrepo \
+	qrutils \
+	qrkernel \
+	qtpropertybrowser \
+
+plugins.depends = \
+	qrxc \
+	qrrepo \
+	qrutils \
+	qrkernel \
 
 qtpropertybrowser.file = qrgui\\thirdparty\\qtpropertybrowser\\qtpropertybrowser.pro

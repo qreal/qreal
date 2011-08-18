@@ -308,7 +308,7 @@
     <bool>false</bool>
    </property>
    <property name="windowTitle">
-    <string>Error List</string>
+    <string>Output</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
@@ -677,6 +677,30 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+N</string>
+   </property>
+  </action>
+  <action name="actionCode">
+   <property name="text">
+    <string>Code</string>
+   </property>
+   <property name="toolTip">
+    <string>Generate source code for robot</string>
+   </property>
+  </action>
+  <action name="actionUpload_Program">
+   <property name="text">
+    <string>Upload</string>
+   </property>
+   <property name="toolTip">
+    <string>Upload program into robot</string>
+   </property>
+  </action>
+  <action name="actionFlash_Robot">
+   <property name="text">
+    <string>Flash</string>
+   </property>
+   <property name="toolTip">
+    <string>Flash nxtOSEK into robot</string>
    </property>
   </action>
  </widget>
