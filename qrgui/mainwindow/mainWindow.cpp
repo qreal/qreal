@@ -191,12 +191,12 @@ MainWindow::MainWindow()
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 //	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
-	/*
 	mFlashTool = new gui::NxtFlashTool(mErrorReporter);
 	connect(mFlashTool, SIGNAL(showErrors(gui::ErrorReporter*const)), this, SLOT(showErrors(gui::ErrorReporter*const)));
 
 	connectActions();
 
+	/*
 	QString const defaultBluetoothPortName = SettingsManager::value("bluetoothPortName", "").toString();
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel", "1").toInt());
