@@ -4,7 +4,7 @@
 
 PropertyEditorView::PropertyEditorView(QWidget *parent) :
 	QWidget(parent), mChangingPropertyValue(false),
-	mPropertyEditor(new QtTreePropertyBrowser(this)), mModel(NULL),
+	mModel(NULL), mPropertyEditor(new QtTreePropertyBrowser(this)),
 	mLogicalModelAssistApi(NULL)
 {
 	mPropertyEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -68,29 +68,29 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 		QString typeName = mModel->typeName(valueCell).toLower();
 		QStringList values = mModel->enumValues(valueCell);
 		bool isButton = false;
-		if(typeName == "int"){
+		if (typeName == "int") {
 			type = QVariant::Int;
-		} else if(typeName == "bool"){
+		} else if (typeName == "bool") {
 			type = QVariant::Bool;
-		} else if(typeName == "string") {
+		} else if (typeName == "string") {
 			type = QVariant::String;
-		} else if(!values.isEmpty()){
+		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
 		} else {
-			if(name == "shape") { // hack
+			if (name == "shape") { // hack
 				isButton = true;
 			}
 		}
 
 		QtProperty *item = NULL;
-		if(isButton){
+		if (isButton) {
 			item = buttonManager->addProperty(name);
 		} else {
 			QtVariantProperty *vItem = variantManager->addProperty(type, name);
 
 			vItem->setValue(value);
 			vItem->setToolTip(value.toString());
-			if(!values.isEmpty()){
+			if (!values.isEmpty()) {
 				vItem->setAttribute("enumNames", values);
 				QVariant idx(enumPropertyIndexOf(valueCell, value.toString()));
 				vItem->setValue(idx);
@@ -110,12 +110,12 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 
 void PropertyEditorView::dataChanged(const QModelIndex &, const QModelIndex &)
 {
-	for(int i = 0, rows = mModel->rowCount(QModelIndex()); i < rows; ++i){
+	for (int i = 0, rows = mModel->rowCount(QModelIndex()); i < rows; ++i) {
 		QModelIndex const &valueIndex = mModel->index(i, 1);
 		QtVariantProperty *property = dynamic_cast<QtVariantProperty*>(mPropertyEditor->properties().at(i));
 		QVariant value = valueIndex.data();
-		if(property){
-			if(property->propertyType() == QtVariantPropertyManager::enumTypeId()){
+		if (property) {
+			if (property->propertyType() == QtVariantPropertyManager::enumTypeId()) {
 				value = enumPropertyIndexOf(valueIndex, value.toString());
 			}
 
@@ -145,10 +145,10 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	int propertyType = property->propertyType(),
 		row = mPropertyEditor->properties().indexOf(property);
 	QModelIndex const &index = mModel->index(row, 1);
-	if(propertyType == QtVariantPropertyManager::enumTypeId()){
+	if (propertyType == QtVariantPropertyManager::enumTypeId()) {
 		QStringList const &values = mModel->enumValues(index);
 		int intValue = value.toInt();
-		if(intValue >= 0 && intValue < values.length()){
+		if (intValue >= 0 && intValue < values.length()) {
 			value = values.at(intValue);
 		}
 	}
@@ -167,7 +167,7 @@ void PropertyEditorView::setPropertyValue(QtVariantProperty *property, const QVa
 int PropertyEditorView::enumPropertyIndexOf(QModelIndex const &index, QString const &value)
 {
 	QStringList const &values = mModel->enumValues(index);
-	if(!values.empty()){
+	if (!values.empty()) {
 		return values.indexOf(value);
 	}
 	return -1;

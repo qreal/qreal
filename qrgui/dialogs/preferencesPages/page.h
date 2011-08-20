@@ -13,6 +13,7 @@ class PreferencesPage : public QWidget
 
 public:
 	explicit PreferencesPage(QWidget *parent = 0) : QWidget(parent){}
+	virtual ~PreferencesPage(){}
 	/** @brief This method will be called on pressing "Apply" or "Ok" */
 	virtual void save() = 0;
 
