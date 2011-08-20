@@ -1,5 +1,5 @@
 #include "mainWindow.h"
-
+#include <QProcess>
 #include <QtGui/QDialog>
 #include <QtGui/QPrinter>
 #include <QtGui/QVBoxLayout>
@@ -37,6 +37,7 @@
 #include "../parsers/xml/xmlParser.h"
 #include "../editorManager/listenerManager.h"
 #include "../generators/editorGenerator/editorGenerator.h"
+#include "../generators/nxtOSEK/nxtOSEKRobotGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../kernel/settingsManager.h"
 
@@ -60,6 +61,8 @@ MainWindow::MainWindow()
 	, mErrorReporter(NULL)
 	, mIsFullscreen(false)
 	, mSaveDir(qApp->applicationDirPath() + "/save")
+	, mNxtToolsPresent(false)
+	, mHelpBrowser(NULL)
 {
 
 	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
@@ -74,8 +77,14 @@ MainWindow::MainWindow()
 	progress->setRange(0, 100);
 
 	QDir imagesDir(SettingsManager::value("pathToImages", "/someWeirdDirectoryName").toString());
-	if (!imagesDir.exists())
-		SettingsManager::setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
+	if (!imagesDir.exists()) {
+		QString path = qApp->applicationDirPath();
+#ifdef Q_OS_WIN
+		path = path.replace("qrgui/debug", "qrgui").replace("qrgui/release", "qrgui");
+#endif
+		qDebug() << path;
+		SettingsManager::setValue("pathToImages", path + "/images/iconset1");
+	}
 
 	// Step 1: splash screen loaded, progress bar initialized.
 	progress->setValue(5);
@@ -97,7 +106,6 @@ MainWindow::MainWindow()
 
 	// Step 2: Ui is ready, splash screen shown.
 	progress->setValue(20);
-	connectActions();
 
 	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(changeMiniMapSource(int)));
 	connect(mUi->tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
@@ -168,6 +176,11 @@ MainWindow::MainWindow()
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 
+	mFlashTool = new gui::NxtFlashTool(mErrorReporter);
+	connect(mFlashTool, SIGNAL(showErrors(gui::ErrorReporter*const)), this, SLOT(showErrors(gui::ErrorReporter*const)));
+
+	connectActions();
+
 	QString const defaultBluetoothPortName = SettingsManager::value("bluetoothPortName", "").toString();
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel", "1").toInt());
@@ -194,8 +207,12 @@ MainWindow::MainWindow()
 	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 
-		mDocksVisibility.clear();
-		this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+	mDocksVisibility.clear();
+	this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+
+	checkNxtTools();
+	mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
+	mUi->actionFlash_Robot->setVisible(mNxtToolsPresent);
 }
 
 void MainWindow::connectActions()
@@ -223,6 +240,8 @@ void MainWindow::connectActions()
 	connect(mUi->actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
 	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
+	connect(mUi->actionFlash_Robot, SIGNAL(triggered()), mFlashTool, SLOT(flashRobot()));
+	connect(mUi->actionUpload_Program, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
 	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 	connect(mUi->actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
@@ -249,6 +268,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connect(mUi->actionShow2Dmodel, SIGNAL(triggered()), this, SLOT(showD2ModelWidget()));
+	connect(mUi->actionCode, SIGNAL(triggered()), this, SLOT(generateRobotSourceCode()));
 }
 
 void MainWindow::showD2ModelWidget(bool isVisible)
@@ -275,17 +295,37 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 			|| (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
 	{
 		saveAll();
+	} else if (keyEvent->key() == Qt::Key_F1){
+		// FIXME: ":/qreal-robots.qhc" doesn't work for some reason
+		QHelpEngine *helpEngine = new QHelpEngine("./qreal-robots.qhc");
+		helpEngine->setupData();
+
+		helpEngine->setCurrentFilter("QReal:Robots");
+
+		mHelpBrowser = new HelpBrowser(helpEngine);
+		mHelpBrowser->setSource(helpEngine->linksForIdentifier("QReal")["QReal:Robots"]);
+
+		QSplitter *helpPanel = new QSplitter(Qt::Horizontal);
+		helpPanel->setGeometry(QRect(0, 0, 1000, 800));
+		helpPanel->setWindowTitle("QReal:Robots Help Center");
+
+		helpPanel->insertWidget(0, helpEngine->contentWidget());
+		helpPanel->insertWidget(1, mHelpBrowser);
+		helpPanel->setStretchFactor(1, 1);
+		helpPanel->show();
+
+		connect(helpEngine->contentWidget(), SIGNAL(linkActivated(const QUrl &)), mHelpBrowser, SLOT(setSource(const QUrl &)));
 	}
 }
 
 MainWindow::~MainWindow()
 {
 	saveAll();
-	delete mListenerManager;
 	delete mRobotInterpreter;
 	delete mErrorReporter;
+	if (mHelpBrowser)
+		delete mHelpBrowser;
 	SettingsManager::instance()->saveData();
-	//	delete mListenerManager;
 }
 
 EditorManager* MainWindow::manager()
@@ -494,10 +534,7 @@ bool MainWindow::openNewProject()
 }
 
 bool MainWindow::open(QString const &dirName)
-{
-
-
-	if (dirName.isEmpty())
+{	if (dirName.isEmpty())
 		return false;
 
 	dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
@@ -509,7 +546,6 @@ bool MainWindow::open(QString const &dirName)
 	closeAllTabs();
 
 	mModels->repoControlApi().open(dirName);
-
 	mModels->reinit();
 
 	if (!checkPluginsAndReopen())
@@ -518,7 +554,9 @@ bool MainWindow::open(QString const &dirName)
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-		this->setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+	setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+
+	mSaveDir = dirName;
 	return true;
 }
 
@@ -1456,4 +1494,63 @@ QString MainWindow::getNextDirName(QString const &name)
 	parts.last() = QString::number(++version);
 	return parts.join("_");
 
+}
+
+void MainWindow::generateRobotSourceCode()
+{
+	qReal::generators::NxtOSEKRobotGenerator gen(SettingsManager::value("workingDir", mSaveDir).toString());
+	gui::ErrorReporter &errors = gen.generate();
+	if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
+		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+
+		CodeArea *area = new CodeArea();
+		QFile file("example0/example0.c");
+		QTextStream *inStream = 0;
+		if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text))
+			inStream = new QTextStream(&file);
+
+		if (inStream)
+			area->document()->setPlainText(inStream->readAll());
+
+		area->show();
+
+		mUi->tabs->addTab(area, "example0");
+		mUi->tabs->setCurrentWidget(area);
+
+		mUi->actionUpload_Program->setVisible(true);
+		mUi->actionFlash_Robot->setVisible(true);
+	}
+}
+
+void MainWindow::uploadProgram()
+{
+	if (!mNxtToolsPresent)
+		return;
+	generateRobotSourceCode();
+	mFlashTool->uploadProgram();
+}
+
+void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
+{
+	errorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+}
+
+void MainWindow::checkNxtTools()
+{
+	QDir dir(qApp->applicationDirPath());
+	dir.cd("nxt-tools");
+	if (!dir.exists()){
+		mNxtToolsPresent = false;
+		return;
+	}
+	qDebug() << dir.absolutePath();
+
+	QDir gnuarm(dir.absolutePath() + "/gnuarm");
+	QDir libnxt(dir.absolutePath() + "/libnxt");
+	QDir nexttool(dir.absolutePath() + "/nexttool");
+	QDir nxtOSEK(dir.absolutePath() + "/nxtOSEK");
+	QFile flash(dir.absolutePath() + "/flash.sh");
+	QFile upload(dir.absolutePath() + "/upload.sh");
+
+	mNxtToolsPresent = gnuarm.exists() && libnxt.exists() && nexttool.exists() && nxtOSEK.exists() && flash.exists() && upload.exists();
 }

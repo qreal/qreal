@@ -12,13 +12,13 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent) :
 
 	connect(mUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
 
-	mUi->chaoticEditionCheckBox->setChecked(SettingsManager::value("ChaoticEdition", false).toBool());
+//	mUi->chaoticEditionCheckBox->setChecked(SettingsManager::value("ChaoticEdition", false).toBool());
 	mUi->antialiasingCheckBox->setChecked(SettingsManager::value("Antialiasing", true).toBool());
 	mUi->splashScreenCheckBox->setChecked(SettingsManager::value("Splashscreen", true).toBool());
 	mUi->openGLCheckBox->setChecked(SettingsManager::value("OpenGL", true).toBool());
 	mUi->squareLineModeCheckBox->setChecked(SettingsManager::value("SquareLine", false).toBool());
 
-	mLastIconsetPath = SettingsManager::value("pathToImages", QDir::currentPath() + "/images/iconset1").toString();
+	mLastIconsetPath = SettingsManager::value("pathToImages", qApp->applicationDirPath() + "/images/iconset1").toString();
 	mUi->imagesPathEdit->setText(mLastIconsetPath);
 }
 
@@ -50,7 +50,7 @@ void PreferencesMiscellaniousPage::save()
 	SettingsManager::setValue("Antialiasing", mUi->antialiasingCheckBox->isChecked());
 	SettingsManager::setValue("OpenGL", mUi->openGLCheckBox->isChecked());
 	SettingsManager::setValue("SquareLine", mUi->squareLineModeCheckBox->isChecked());
-	SettingsManager::setValue("ChaoticEdition", mUi->chaoticEditionCheckBox->isChecked());
+//	SettingsManager::setValue("ChaoticEdition", mUi->chaoticEditionCheckBox->isChecked());
 	SettingsManager::setValue("pathToImages", mUi->imagesPathEdit->text());
 
 	if (mLastIconsetPath != mUi->imagesPathEdit->text()) {

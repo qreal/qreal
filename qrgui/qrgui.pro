@@ -1,5 +1,5 @@
 QT		+=	svg xml
-CONFIG += rpath_libdirs
+CONFIG += rpath_libdirs help
 
 INCLUDEPATH	+=	../qrmc\
 			../qrmc/plugins\
@@ -72,3 +72,6 @@ include (pluginInterface/pluginInterface.pri)
 
 # Various interpreters (visual debugger, robot interpreters)
 include (interpreters/interpreters.pri)
+
+# Text Editor
+include (textEditor/textEditor.pri)

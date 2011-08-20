@@ -21,11 +21,11 @@ EditorViewScene::EditorViewScene(QObject * parent)
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid", true).toBool();
 	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth", 10).toInt()) / 100;
-	mRealIndexGrid = SettingsManager::value("IndexGrid", 30).toInt();
+	mRealIndexGrid = SettingsManager::value("IndexGrid", 50).toInt();
 
 	mNeedDrawGrid = SettingsManager::value("ShowGrid", true).toBool();
 	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth", 10).toInt()) / 100;
-	mRealIndexGrid = SettingsManager::value("IndexGrid", 30).toInt();
+	mRealIndexGrid = SettingsManager::value("IndexGrid", 50).toInt();
 
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);

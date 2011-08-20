@@ -93,7 +93,7 @@ void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorLi
 		mErrorList->setVisible(true);
 
 	QListWidgetItem* item = new QListWidgetItem(errorListWidget);
-	QString message = severityMessage(error) + " ";
+	QString message = error.timestamp() + " " + severityMessage(error) + " ";
 	message += error.message();
 	switch (error.severity()) {
 	case Error::information:

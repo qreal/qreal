@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>300</height>
+    <height>262</height>
    </rect>
   </property>
   <widget class="QFrame" name="frame_5">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>220</y>
+     <y>200</y>
      <width>400</width>
      <height>51</height>
     </rect>
@@ -53,7 +53,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>200</y>
+     <y>180</y>
      <width>151</width>
      <height>16</height>
     </rect>
@@ -68,7 +68,7 @@
      <x>10</x>
      <y>120</y>
      <width>400</width>
-     <height>75</height>
+     <height>51</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -90,24 +90,11 @@
      <string>Show splashscreen</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="chaoticEditionCheckBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>25</y>
-      <width>380</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Chaotic Edition</string>
-    </property>
-   </widget>
    <widget class="QCheckBox" name="squareLineModeCheckBox">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>45</y>
+      <y>25</y>
       <width>381</width>
       <height>22</height>
      </rect>

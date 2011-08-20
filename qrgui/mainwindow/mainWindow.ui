@@ -76,11 +76,6 @@
     </property>
     <addaction name="actionPreferences"/>
     <addaction name="actionRobot_Settings"/>
-    <addaction name="actionPlugins"/>
-    <addaction name="actionShow_grid"/>
-    <addaction name="actionShow_alignment"/>
-    <addaction name="actionSwitch_on_grid"/>
-    <addaction name="actionSwitch_on_alignment"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -215,7 +210,7 @@
     <bool>false</bool>
    </property>
    <property name="windowTitle">
-    <string>Error List</string>
+    <string>Output</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
@@ -303,12 +298,18 @@
    <addaction name="actionShow2Dmodel"/>
    <addaction name="actionRun"/>
    <addaction name="actionStop_Running"/>
+   <addaction name="separator"/>
+   <addaction name="actionCode"/>
+   <addaction name="actionFlash_Robot"/>
+   <addaction name="actionUpload_Program"/>
+   <addaction name="separator"/>
    <addaction name="actionStop_Robot"/>
    <addaction name="actionConnect_To_Robot"/>
    <addaction name="separator"/>
    <addaction name="actionRobot_Settings"/>
    <addaction name="separator"/>
    <addaction name="actionFullscreen"/>
+   <addaction name="separator"/>
   </widget>
   <widget class="QDockWidget" name="logicalModelDock">
    <property name="features">
@@ -741,6 +742,30 @@
   <action name="actionConnect_To_Robot">
    <property name="text">
     <string>Connect To Robot</string>
+   </property>
+  </action>
+  <action name="actionCode">
+   <property name="text">
+    <string>Code</string>
+   </property>
+   <property name="toolTip">
+    <string>Generate source code for robot</string>
+   </property>
+  </action>
+  <action name="actionUpload_Program">
+   <property name="text">
+    <string>Upload</string>
+   </property>
+   <property name="toolTip">
+    <string>Upload program into robot</string>
+   </property>
+  </action>
+  <action name="actionFlash_Robot">
+   <property name="text">
+    <string>Flash</string>
+   </property>
+   <property name="toolTip">
+    <string>Flash nxtOSEK into robot</string>
    </property>
   </action>
  </widget>

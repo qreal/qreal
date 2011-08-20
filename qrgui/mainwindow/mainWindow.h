@@ -12,6 +12,9 @@
 #include "../dialogs/gesturesShow/gesturesWidget.h"
 #include "mainWindowInterpretersInterface.h"
 #include "../kernel/settingsManager.h"
+#include "../textEditor/codeEditor.h"
+#include "nxtFlashTool.h"
+#include "helpBrowser.h"
 
 #include "../models/logicalModelAssistApi.h"
 
@@ -40,6 +43,7 @@ class Interpreter;
 
 namespace gui {
 class ErrorReporter;
+class NxtFlashTool;
 }
 
 class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpretersInterface
@@ -63,6 +67,8 @@ public:
 	virtual gui::ErrorReporter *errorReporter();
 	void openShapeEditor(QPersistentModelIndex index, int role, QString const propertyValue);
 
+	void showErrors(gui::ErrorReporter *reporter);
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -78,6 +84,8 @@ public slots:
 	virtual void selectItem(Id const &id);
 
 	void showD2ModelWidget(bool isVisible = true);
+
+	void showErrors(gui::ErrorReporter const * const errorReporter);
 
 private slots:
 
@@ -124,6 +132,9 @@ private slots:
 	void parseEditorXml();
 	void showPreferencesDialog();
 
+	void generateRobotSourceCode();
+	void uploadProgram();
+
 	void connectActions();
 
 	void centerOn(Id const &id);
@@ -157,6 +168,7 @@ private slots:
 
 	void updatePaletteIcons();
 
+
 private:
 	Ui::MainWindowUi *mUi;
 
@@ -187,6 +199,11 @@ private:
 
 	QString mSaveDir;
 
+	gui::NxtFlashTool *mFlashTool;
+
+	bool mNxtToolsPresent;
+	HelpBrowser *mHelpBrowser;
+
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
 			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
@@ -194,7 +211,6 @@ private:
 	void loadPlugins();
 
 	QListWidget* createSaveListWidget();
-	void suggestToSave();
 	void suggestToCreateDiagram();
 
 	virtual void closeEvent(QCloseEvent *event);
@@ -234,5 +250,7 @@ private:
 	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
 
 	QString getNextDirName(QString const &name);
+
+	void checkNxtTools();
 };
 }
