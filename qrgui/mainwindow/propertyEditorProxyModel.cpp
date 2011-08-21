@@ -203,16 +203,17 @@ void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 			mFields << Field(property, logicalAttribute, role);
 			++role;
 		}
-		mFields << Field(tr("Logical Id"), logicalIdPseudoattribute);
+		// Ids and metatype commented out as they shall not be visible to user, uncomment for debugging.
+//		mFields << Field(tr("Logical Id"), logicalIdPseudoattribute);
 	}
 
 	// There are no custom attributes for graphical objects, but they shall be
 	// added soon.
-	if (graphicalModelIndex != QModelIndex()) {
-		mFields << Field(tr("Graphical Id"), graphicalIdPseudoattribute);
-	}
+//	if (graphicalModelIndex != QModelIndex()) {
+//		mFields << Field(tr("Graphical Id"), graphicalIdPseudoattribute);
+//	}
 
-	mFields << Field(tr("Metatype"), metatypePseudoattribute);
+//	mFields << Field(tr("Metatype"), metatypePseudoattribute);
 
 	reset();
 }

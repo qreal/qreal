@@ -47,7 +47,7 @@
             </enum>
         </nonGraphicTypes>
         <graphicTypes>
-            <node displayedName="Диаграмма поведения робота" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="DiagramNode">
+            <node displayedName="Диаграмма поведения робота" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="RobotsDiagramNode">
                 <graphics>
                     <picture sizex="204" sizey="204">
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="2" stroke-width="0" x1="22" y2="2" fill-style="none" x2="182"/>
@@ -148,11 +148,11 @@
                 <graphics>
                     <lineType type="solidLine"/>
                     <labels>
-                        <label text="Guard"/>
+                        <label textBinded="Guard"/>
                     </labels>
                 </graphics>
                 <logic>
-                    <associations endType="no_arrow" beginType="no_arrow">
+                    <associations endType="open_arrow" beginType="no_arrow">
                         <association beginName="begin" endName="end"/>
                     </associations>
                     <possibleEdges>
