@@ -75,9 +75,12 @@ void Element::initTitles()
 	initTitlesBy(boundingRect().adjusted(kvadratik, kvadratik, -kvadratik, -kvadratik));
 }
 
-void Element::singleSelectionState(const bool singleSelected) {
+void Element::singleSelectionState(const bool singleSelected)
+{
 	emit switchFolding(!singleSelected);
 }
-void Element::selectionState(const bool selected) {
+void Element::selectionState(const bool selected)
+{
+	Q_UNUSED(selected)
 	//it will be usefull in the future
 }

@@ -1,4 +1,4 @@
-#include "editorviewscene.h"
+#include "editorViewScene.h"
 #include "math.h"
 
 #include <QGraphicsTextItem>
@@ -6,9 +6,9 @@
 #include <QtCore/QDebug>
 #include <QGraphicsItem>
 
-#include "editorviewmviface.h"
-#include "editorview.h"
-#include "../mainwindow/mainwindow.h"
+#include "editorViewMVIface.h"
+#include "editorView.h"
+#include "../mainwindow/mainWindow.h"
 
 using namespace qReal;
 

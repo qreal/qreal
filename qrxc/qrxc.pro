@@ -13,6 +13,10 @@ LIBS += -L../bin -lqrutils
 
 DESTDIR += ../bin
 
+!macx {
+	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)/../bin"
+}
+
 HEADERS += association.h \
 	diagram.h \
 	edgeType.h \

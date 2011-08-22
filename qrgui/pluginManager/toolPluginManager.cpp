@@ -7,6 +7,7 @@ using namespace qReal;
 
 ToolPluginManager::ToolPluginManager(QObject *parent)
 {
+	Q_UNUSED(parent)
 	mPluginsDir = QDir(qApp->applicationDirPath());
 
 	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
