@@ -1,6 +1,6 @@
 #include "sceneGridHandler.h"
 #include "nodeElement.h"
-#include "../view/editorviewscene.h"
+#include "../view/editorViewScene.h"
 
 SceneGridHandler::SceneGridHandler(NodeElement *node)
 {

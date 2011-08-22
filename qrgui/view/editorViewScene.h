@@ -5,7 +5,7 @@
 #include <QSignalMapper>
 #include "../../qrkernel/roles.h"
 #include "../umllib/nodeElement.h"
-#include "gestures/mousemovementmanager.h"
+#include "gestures/mouseMovementManager.h"
 
 //const int indexGrid = 30; // distance between two lines in the grid
 

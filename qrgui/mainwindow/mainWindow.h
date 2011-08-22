@@ -8,7 +8,7 @@
 
 #include "../pluginManager/editorManager.h"
 #include "../pluginManager/toolPluginManager.h"
-#include "propertyeditorproxymodel.h"
+#include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
 #include "../interpreters/visualDebugger/debuggerConnector.h"
@@ -152,7 +152,7 @@ private slots:
 	void closeTab(QModelIndex const &graphicsIndex);
 //	void exterminate();
 	void generateEditor();
-	void generateEditorWithQRMC();
+//	void generateEditorWithQRMC();
 	void parseEditorXml();
 	void generateToHascol();
 	void parseHascol();

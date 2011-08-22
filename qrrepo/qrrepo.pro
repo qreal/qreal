@@ -9,6 +9,10 @@ MOC_DIR = .moc
 
 LIBS += -L../bin -lqrkernel -lqrutils
 
+!macx {
+	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)"
+}
+
 DEFINES += QRREPO_LIBRARY
 
 HEADERS += \

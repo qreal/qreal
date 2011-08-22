@@ -1,5 +1,5 @@
 #include "mainWindow.h"
-#include "ui_mainwindow.h"
+#include "ui_mainWindow.h"
 
 #include <QProcess>
 #include <QtGui/QDialog>
@@ -21,20 +21,19 @@
 
 #include <QtCore/QPluginLoader>
 
-#include "ui_mainwindow.h"
 #include "errorReporter.h"
 
 #include "../editorPluginInterface/editorInterface.h"
 #include "../dialogs/shapeEdit/shapeEdit.h"
-#include "propertyeditorproxymodel.h"
+#include "propertyEditorProxyModel.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
 
 #include "../models/models.h"
-#include "../view/editorview.h"
+#include "../view/editorView.h"
 #include "../umllib/element.h"
-#include "../dialogs/plugindialog.h"
+#include "../dialogs/pluginDialog.h"
 #include "../parsers/xml/xmlParser.h"
-#include "../dialogs/checkoutdialog.h"
+#include "../dialogs/checkoutDialog.h"
 #include "../generators/xmi/xmiHandler.h"
 #include "../generators/java/javaHandler.h"
 #include "../parsers/hascol/hascolParser.h"
@@ -238,7 +237,7 @@ MainWindow::MainWindow()
 	mUi->actionOpenGL_Renderer->setVisible(false);
 	mUi->actionDebug->setVisible(false);
 	mUi->actionCont->setVisible(false);
-	mUi->actionGenerate_Editor_qrmc->setVisible(false);
+	mUi->actionGenerate_Editor_qrmc->setVisible(true);
 
 	mUi->actionCheckout->setVisible(false);
 	mUi->actionCommit->setVisible(false);
@@ -276,7 +275,7 @@ void MainWindow::connectActions()
 //	connect(mUi->actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
 //	connect(mUi->actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
 	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
-	connect(mUi->actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
+//	connect(mUi->actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
 	connect(mUi->actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 	connect(mUi->actionFlash_Robot, SIGNAL(triggered()), mFlashTool, SLOT(flashRobot()));
@@ -902,6 +901,7 @@ void MainWindow::generateEditor()
 	}
 }
 
+/*
 void MainWindow::generateEditorWithQRMC()
 {
 	qrmc::MetaCompiler metaCompiler("../qrmc", "./save");
@@ -994,6 +994,7 @@ void MainWindow::generateEditorWithQRMC()
 	progress->close();
 	delete progress;
 }
+*/
 
 void MainWindow::loadNewEditor(const QString &directoryName, const QString &metamodelName,
 		const QString &commandFirst, const QString &commandSecond, const QString &extension, const QString &prefix)

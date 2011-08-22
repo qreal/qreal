@@ -3,7 +3,7 @@
 #include <QList>
 #include <QtGui/QGraphicsEffect>
 
-#include "../view/editorview.h"
+#include "../view/editorView.h"
 #include "../mainwindow/errorReporter.h"
 #include "../mainwindow/mainWindowInterpretersInterface.h"
 
