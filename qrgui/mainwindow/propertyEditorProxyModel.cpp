@@ -78,7 +78,9 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 		return QVariant();
 
 	if (index.column() == 0) {
-		return mFields[index.row()].fieldName;
+		Id const id = mTargetLogicalObject.data(roles::idRole).value<Id>();
+		QString const displayedName = mEditorManager.propertyDisplayedName(id, mFields[index.row()].fieldName);
+		return displayedName.isEmpty() ? mFields[index.row()].fieldName : displayedName;
 	} else if (index.column() == 1) {
 		switch (mFields[index.row()].attributeClass) {
 		case logicalAttribute:
