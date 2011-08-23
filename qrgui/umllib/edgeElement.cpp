@@ -647,7 +647,7 @@ void EdgeElement::adjustLink()
 	updateLongestPart();
 	for (int i = 0; i < mLine.size() - 2; i++)
 		removeUnneededPoints(i);
-	if (SettingsManager::value("SquareLine", true).toBool())
+	if (SettingsManager::value("SquareLine", false).toBool())
 		squarizeHandler(QPointF());
 }
 
