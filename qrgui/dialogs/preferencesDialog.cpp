@@ -138,9 +138,9 @@ void PreferencesDialog::chooseTab(const QModelIndex &index)
 		mMiscellaniousPage->show();
 		break;
 
-	case features:
-		mFeaturesPage->show();
-		break;
+//	case features:
+//		mFeaturesPage->show();
+//		break;
 	default:
 		QString const name = index.data().toString();
 		if (mCustomPages.contains(name))
@@ -171,7 +171,7 @@ void PreferencesDialog::registerPage(QString const &pageName, PreferencesPage * 
 void PreferencesDialog::switchCurrentTab(QString const &tabName)
 {
 	if (mCustomPages.contains(tabName)) {
-		ui->listWidget->setCurrentRow(mCustomPages.keys().indexOf(tabName) + features + 1);
+		ui->listWidget->setCurrentRow(mCustomPages.keys().indexOf(tabName) + debugger + 1);
 		hidePages();
 		mCustomPages[tabName]->show();
 	}
