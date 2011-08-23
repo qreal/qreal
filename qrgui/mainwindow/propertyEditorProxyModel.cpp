@@ -192,8 +192,10 @@ void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 	mTargetLogicalObject = logicalModelIndex;
 	mTargetGraphicalObject = graphicalModelIndex;
 
-	if (!isValid())
+	if (!isValid()) {
+		reset();
 		return;
+	}
 
 	mFields << Field(tr("Name"), namePseudoattribute);
 

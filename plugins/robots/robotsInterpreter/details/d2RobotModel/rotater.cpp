@@ -21,7 +21,6 @@ Rotater::Rotater() : QGraphicsItem()
 	mFrom = QPointF(0,0);
 	mTo = QPointF(0,0);
 	mLine.setLine(QLine(mFrom.toPoint(), mTo.toPoint()));
-	qDebug() << this->mLine.line();
 }
 
 void Rotater::setMasterItem(QGraphicsItem *masterItem)
@@ -33,7 +32,6 @@ void Rotater::setMasterItem(QGraphicsItem *masterItem)
 	mTo = mFrom;
 	mTo.setY(mTo.y() - 300);
 	mLine.setLine(QLine(mFrom.toPoint(), mTo.toPoint()));
-	qDebug() << this->mLine.line();
 }
 
 void Rotater::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)

@@ -498,7 +498,9 @@ void MainWindow::activateSubdiagram(QModelIndex const &idx) {
 
 void MainWindow::sceneSelectionChanged()
 {
-	if (!getCurrentTab()) {return;}
+	if (!getCurrentTab()) {
+		return;
+	}
 
 	QList<Element*> elements = QList<Element*>();
 	QList<Element*> selected = QList<Element*>();
