@@ -159,6 +159,7 @@ private slots:
 	void showPreferencesDialog();
 
 	void generateRobotSourceCode();
+	void flashRobot();
 	void uploadProgram();
 
 	void connectActions();

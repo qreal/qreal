@@ -278,7 +278,7 @@ void MainWindow::connectActions()
 //	connect(mUi->actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
 	connect(mUi->actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
-	connect(mUi->actionFlash_Robot, SIGNAL(triggered()), mFlashTool, SLOT(flashRobot()));
+	connect(mUi->actionFlash_Robot, SIGNAL(triggered()), this, SLOT(flashRobot()));
 	connect(mUi->actionUpload_Program, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 	connect(mUi->actionCode, SIGNAL(triggered()), this, SLOT(generateRobotSourceCode()));
 
@@ -2028,10 +2028,23 @@ void MainWindow::generateRobotSourceCode()
 
 void MainWindow::uploadProgram()
 {
-	if (!mNxtToolsPresent)
+	if (!mNxtToolsPresent) {
+		mErrorReporter->addError("upload.sh not found. Make sure it is present in QReal installation directory");
+		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
 		return;
+	}
 	generateRobotSourceCode();
 	mFlashTool->uploadProgram();
+}
+
+void MainWindow::flashRobot()
+{
+	if (!mNxtToolsPresent){
+		mErrorReporter->addError("flash.sh not found. Make sure it is present in QReal installation directory");
+		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+		return;
+	}
+	mFlashTool->flashRobot();
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
