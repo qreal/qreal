@@ -13,7 +13,6 @@ PreferencesDebuggerPage::PreferencesDebuggerPage(QWidget *parent) :
 	QString curColor = SettingsManager::value("debugColor", "red").toString();
 	int curColorIndex = mUi->colorComboBox->findText(curColor);
 	mUi->colorComboBox->setCurrentIndex(curColorIndex);
-	mUi->colorComboBox->setCurrentIndex(SettingsManager::value("debugColor", mUi->colorComboBox->currentIndex()).toInt());
 }
 
 PreferencesDebuggerPage::~PreferencesDebuggerPage()

@@ -230,17 +230,17 @@ MainWindow::MainWindow()
 	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 
 	// Temporarily disable all actions and menus not related to robots. To be moved to plugins or configured by configurer plugin interface
-	mUi->menuSvn->setVisible(false);
-	mUi->menuMouse_gestures->setVisible(false);
-	mUi->menuDebug_with_debugger->setVisible(false);
+//	mUi->menuSvn->setVisible(false);
+	mUi->menuMouse_gestures->setEnabled(false);
+	mUi->menuDebug_with_debugger->setEnabled(false);
 
-	mUi->actionOpenGL_Renderer->setVisible(false);
-	mUi->actionDebug->setVisible(false);
-	mUi->actionCont->setVisible(false);
-	mUi->actionGenerate_Editor_qrmc->setVisible(true);
+//	mUi->actionOpenGL_Renderer->setVisible(false);
+//	mUi->actionDebug->setVisible(false);
+//	mUi->actionCont->setVisible(false);
+//	mUi->actionGenerate_Editor_qrmc->setVisible(true);
 
-	mUi->actionCheckout->setVisible(false);
-	mUi->actionCommit->setVisible(false);
+//	mUi->actionCheckout->setVisible(false);
+//	mUi->actionCommit->setVisible(false);
 
 	// TODO: !!!
 	checkNxtTools();
@@ -355,7 +355,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 		mHelpBrowser->setSource(helpEngine->linksForIdentifier("QReal")["QReal:Robots"]);
 
 		QSplitter *helpPanel = new QSplitter(Qt::Horizontal);
-		helpPanel->setGeometry(QRect(0, 0, 1000, 800));
+		helpPanel->setGeometry(QRect(50, 50, 1000, 800));
 		helpPanel->setWindowTitle("QReal:Robots Help Center");
 
 		helpPanel->insertWidget(0, helpEngine->contentWidget());
