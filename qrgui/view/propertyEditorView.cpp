@@ -147,7 +147,6 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 		}
 	}
 	value = QVariant(value.toString());
-	qDebug() << value;
 	mModel->setData(index, value);
 }
 

@@ -615,7 +615,6 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	if (parent) {
 		if (!canBeContainedBy(parent->id(), element->id())){
 			QMessageBox::critical(0, "Ololo", "can't drop it here!111");
-			qDebug() << "ololo";
 			// fail, reparenting the element as it was before
 			foreach (QGraphicsItem *item, items(event->scenePos())) {
 				Element * elem = dynamic_cast < Element * >(item);

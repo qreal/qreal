@@ -18,14 +18,28 @@ win32 {
 
 LIBS += -L$$ROOT/bin -lqrkernel
 
+!macx {
+    #QMAKE_LFLAGS += "-Wl,-O1,-rpath,$(PWD)/../../../bin/"
+
+    QMAKE_LFLAGS += "-Wl,-O1,-rpath,."
+}
+
 isEmpty(QREAL_EDITOR_PATH) {
 	error(Please set QREAL_EDITOR_PATH variable in a .pro file of your editor as a path to that editor .xml file relative to /plugins/)
 }
 
-!exists(..\\$$QREAL_EDITOR_PATH/generated/pluginInterface.h) {
-	COMMAND = cd ..\\$$QREAL_EDITOR_PATH && \"$$QRXC\" $$QREAL_XML $$ROOT
-	SYS = $$system($$COMMAND)
+win32 {
+	!exists(..\\$$QREAL_EDITOR_PATH/generated/pluginInterface.h) {
+		COMMAND = cd ..\\$$QREAL_EDITOR_PATH && \"$$QRXC\" $$QREAL_XML $$ROOT
+		SYS = $$system($$COMMAND)
+	}
+} else {
+	!exists(../$$QREAL_EDITOR_PATH/generated/pluginInterface.h) {
+		COMMAND = cd ../$$QREAL_EDITOR_PATH && \"$$QRXC\" $$QREAL_XML $$ROOT
+		SYS = $$system($$COMMAND)
+	}
 }
+
 
 if (equals(QMAKE_CXX, "g++")) {
 	QMAKE_LFLAGS += -Wl,-E

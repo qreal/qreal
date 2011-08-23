@@ -21,7 +21,7 @@ public:
 		miscellanious = 2,
 		compiler = 3,
 		debugger = 4,
-		features = 5
+//		features = 5
 	};
 
 	PreferencesDialog(QWidget *parent = 0);
