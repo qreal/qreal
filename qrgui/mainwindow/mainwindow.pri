@@ -1,6 +1,6 @@
-HEADERS += mainwindow/mainwindow.h \
+HEADERS += mainwindow/mainWindow.h \
 	mainwindow/paletteToolbox.h \
-	mainwindow/propertyeditorproxymodel.h \
+	mainwindow/propertyEditorProxyModel.h \
 	mainwindow/errorReporter.h \
 	mainwindow/gesturesPainterInterface.h \
 	mainwindow/gesturesPainterInterface.h \
@@ -11,9 +11,9 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/nxtFlashTool.h \
 	mainwindow/helpBrowser.h \
 
-SOURCES += mainwindow/mainwindow.cpp \
+SOURCES += mainwindow/mainWindow.cpp \
 	mainwindow/paletteToolbox.cpp \
-	mainwindow/propertyeditorproxymodel.cpp \
+	mainwindow/propertyEditorProxyModel.cpp \
 	mainwindow/errorReporter.cpp \
 	mainwindow/buttonRefWindow.cpp \
 	mainwindow/error.cpp \
