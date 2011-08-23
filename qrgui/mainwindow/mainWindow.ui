@@ -270,6 +270,9 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionCode"/>
+   <addaction name="actionFlash_Robot"/>
+   <addaction name="actionUpload_Program"/>
   </widget>
   <widget class="QToolBar" name="parsersToolbar">
    <property name="windowTitle">

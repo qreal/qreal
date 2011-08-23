@@ -280,6 +280,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 	connect(mUi->actionFlash_Robot, SIGNAL(triggered()), mFlashTool, SLOT(flashRobot()));
 	connect(mUi->actionUpload_Program, SIGNAL(triggered()), this, SLOT(uploadProgram()));
+	connect(mUi->actionCode, SIGNAL(triggered()), this, SLOT(generateRobotSourceCode()));
 
 //	connect(mUi->actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
 //	connect(mUi->actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
@@ -310,7 +311,6 @@ void MainWindow::connectActions()
 //	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 //	connect(mUi->actionShow2Dmodel, SIGNAL(triggered()), this, SLOT(showD2ModelWidget()));
-//	connect(mUi->actionCode, SIGNAL(triggered()), this, SLOT(generateRobotSourceCode()));
 }
 
 void MainWindow::connectDebugActions()
@@ -530,7 +530,6 @@ void MainWindow::sceneSelectionChanged()
 	} else {
 		Element* singleSelected = selected.at(0);
 		singleSelected->singleSelectionState(true);
-
 		setIndexesOfPropertyEditor(singleSelected->id());
 
 		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(singleSelected->id());
