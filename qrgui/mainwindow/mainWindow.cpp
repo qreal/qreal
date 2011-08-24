@@ -100,9 +100,9 @@ MainWindow::MainWindow()
 		setWindowIcon(mToolManager.customizer()->applicationIcon());
 	}
 
-#if defined(Q_WS_WIN)
+//#if defined(Q_WS_WIN)
 	mUi->menuSvn->setEnabled(false);  // Doesn't work on Windows anyway.
-#endif
+//#endif
 
 	mUi->tabs->setTabsClosable(true);
 	mUi->tabs->setMovable(true);

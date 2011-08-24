@@ -16,7 +16,7 @@
      <x>10</x>
      <y>180</y>
      <width>400</width>
-     <height>51</height>
+     <height>61</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -31,7 +31,7 @@
       <x>10</x>
       <y>10</y>
       <width>241</width>
-      <height>16</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="minimum">
@@ -63,7 +63,7 @@
       <x>10</x>
       <y>30</y>
       <width>241</width>
-      <height>16</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="minimum">
@@ -333,7 +333,7 @@
       <x>10</x>
       <y>10</y>
       <width>201</width>
-      <height>16</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="minimum">
