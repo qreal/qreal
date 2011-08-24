@@ -46,8 +46,6 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
-    <addaction name="actionPrint"/>
-    <addaction name="actionMakeSvg"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -58,8 +56,6 @@
     <addaction name="actionZoom_In"/>
     <addaction name="actionZoom_Out"/>
     <addaction name="separator"/>
-    <addaction name="actionAntialiasing"/>
-    <addaction name="actionOpenGL_Renderer"/>
     <addaction name="actionShowSplash"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -76,57 +72,21 @@
      <string>&amp;Settings</string>
     </property>
     <addaction name="actionPreferences"/>
-    <addaction name="actionPlugins"/>
     <addaction name="actionShow_grid"/>
     <addaction name="actionShow_alignment"/>
     <addaction name="actionSwitch_on_grid"/>
     <addaction name="actionSwitch_on_alignment"/>
    </widget>
-   <widget class="QMenu" name="menuMouse_gestures">
-    <property name="title">
-     <string>Mouse gestures</string>
-    </property>
-    <addaction name="actionShow"/>
-   </widget>
-   <widget class="QMenu" name="menuSvn">
-    <property name="title">
-     <string>Svn</string>
-    </property>
-    <addaction name="actionCommit"/>
-    <addaction name="actionCheckout"/>
-   </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
      <string>Tools</string>
     </property>
-    <widget class="QMenu" name="menuDebug_with_debugger">
-     <property name="title">
-      <string>Debug (with debugger)</string>
-     </property>
-     <widget class="QMenu" name="menuAdvanced_options">
-      <property name="title">
-       <string>Advanced options...</string>
-      </property>
-      <addaction name="actionConfigure"/>
-      <addaction name="actionSet_Breakpoints"/>
-      <addaction name="actionCont"/>
-     </widget>
-     <addaction name="actionGenerate_and_build"/>
-     <addaction name="menuAdvanced_options"/>
-    </widget>
-    <addaction name="actionDebug"/>
-    <addaction name="menuDebug_with_debugger"/>
-    <addaction name="actionParse_Editor_xml"/>
-    <addaction name="separator"/>
-    <addaction name="actionGenerate_Editor_qrmc"/>
     <addaction name="actionGenerate_Editor"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
    <addaction name="menuTools"/>
-   <addaction name="menuSvn"/>
    <addaction name="menuSettings"/>
-   <addaction name="menuMouse_gestures"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

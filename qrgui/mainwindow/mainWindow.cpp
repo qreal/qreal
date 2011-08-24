@@ -101,7 +101,7 @@ MainWindow::MainWindow()
 	}
 
 //#if defined(Q_WS_WIN)
-	mUi->menuSvn->setEnabled(false);  // Doesn't work on Windows anyway.
+//	mUi->menuSvn->setEnabled(false);  // Doesn't work on Windows anyway.
 //#endif
 
 	mUi->tabs->setTabsClosable(true);
@@ -231,8 +231,8 @@ MainWindow::MainWindow()
 
 	// Temporarily disable all actions and menus not related to robots. To be moved to plugins or configured by configurer plugin interface
 //	mUi->menuSvn->setVisible(false);
-	mUi->menuMouse_gestures->setEnabled(false);
-	mUi->menuDebug_with_debugger->setEnabled(false);
+//	mUi->menuMouse_gestures->setEnabled(false);
+//	mUi->menuDebug_with_debugger->setEnabled(false);
 
 //	mUi->actionOpenGL_Renderer->setVisible(false);
 //	mUi->actionDebug->setVisible(false);
@@ -242,7 +242,6 @@ MainWindow::MainWindow()
 //	mUi->actionCheckout->setVisible(false);
 //	mUi->actionCommit->setVisible(false);
 
-	// TODO: !!!
 	checkNxtTools();
 	mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
 	mUi->actionFlash_Robot->setVisible(mNxtToolsPresent);
@@ -345,25 +344,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 	{
 		saveAll();
 	} else if (keyEvent->key() == Qt::Key_F1){
-		// FIXME: ":/qreal-robots.qhc" doesn't work for some reason
-		QHelpEngine *helpEngine = new QHelpEngine("./qreal-robots.qhc");
-		helpEngine->setupData();
-
-		helpEngine->setCurrentFilter("QReal:Robots");
-
-		mHelpBrowser = new HelpBrowser(helpEngine);
-		mHelpBrowser->setSource(helpEngine->linksForIdentifier("QReal")["QReal:Robots"]);
-
-		QSplitter *helpPanel = new QSplitter(Qt::Horizontal);
-		helpPanel->setGeometry(QRect(50, 50, 1000, 800));
-		helpPanel->setWindowTitle("QReal:Robots Help Center");
-
-		helpPanel->insertWidget(0, helpEngine->contentWidget());
-		helpPanel->insertWidget(1, mHelpBrowser);
-		helpPanel->setStretchFactor(1, 1);
-		helpPanel->show();
-
-		connect(helpEngine->contentWidget(), SIGNAL(linkActivated(const QUrl &)), mHelpBrowser, SLOT(setSource(const QUrl &)));
+		showHelp();
 	}
 }
 
@@ -742,16 +723,30 @@ void MainWindow::showAbout()
 
 void MainWindow::showHelp()
 {
-	QMessageBox::about(this, tr("Help"),
-			tr("To begin:\n"
-			"1. To add items to diagrams, drag & drop them from Palette to editor\n"
-			"2. Get more help from author :)"));
+	// FIXME: ":/qreal-robots.qhc" doesn't work for some reason
+	QHelpEngine *helpEngine = new QHelpEngine("./qreal-robots.qhc");
+	helpEngine->setupData();
+
+	helpEngine->setCurrentFilter("QReal:Robots");
+
+	mHelpBrowser = new HelpBrowser(helpEngine);
+	mHelpBrowser->setSource(helpEngine->linksForIdentifier("QReal")["QReal:Robots"]);
+
+	QSplitter *helpPanel = new QSplitter(Qt::Horizontal);
+	helpPanel->setGeometry(QRect(50, 50, 1000, 800));
+	helpPanel->setWindowTitle("QReal:Robots Help Center");
+
+	helpPanel->insertWidget(0, helpEngine->contentWidget());
+	helpPanel->insertWidget(1, mHelpBrowser);
+	helpPanel->setStretchFactor(1, 1);
+	helpPanel->show();
+
+	connect(helpEngine->contentWidget(), SIGNAL(linkActivated(const QUrl &)), mHelpBrowser, SLOT(setSource(const QUrl &)));
 }
 
 void MainWindow::toggleShowSplash(bool show)
 {
 	SettingsManager::setValue("Splashscreen", show);
-
 }
 
 void MainWindow::checkoutDialogOk()
