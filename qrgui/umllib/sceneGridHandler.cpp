@@ -6,7 +6,7 @@ SceneGridHandler::SceneGridHandler(NodeElement *node)
 {
 	mNode = node;
 	mShowAlignment = SettingsManager::value("ShowAlignment", true).toBool();
-	mSwitchGrid = SettingsManager::value("ActivateGrid", false).toBool();
+	mSwitchGrid = SettingsManager::value("ActivateGrid", true).toBool();
 	mSwitchAlignment = SettingsManager::value("ActivateAlignment", true).toBool();
 }
 

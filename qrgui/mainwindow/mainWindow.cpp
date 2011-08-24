@@ -252,7 +252,7 @@ void MainWindow::connectActions()
 {
 	mUi->actionShow_grid->setChecked(SettingsManager::value("ShowGrid", true).toBool());
 	mUi->actionShow_alignment->setChecked(SettingsManager::value("ShowAlignment", true).toBool());
-	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid", false).toBool());
+	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid", true).toBool());
 	mUi->actionSwitch_on_alignment->setChecked(SettingsManager::value("ActivateAlignment", true).toBool());
 
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
@@ -1604,7 +1604,7 @@ void MainWindow::initGridProperties()
 {
 
 	mUi->actionSwitch_on_grid->blockSignals(false);
-	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid", false).toBool());
+	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid", true).toBool());
 
 	mUi->actionShow_grid->blockSignals(false);
 	mUi->actionShow_grid->setChecked(SettingsManager::value("ShowGrid", true).toBool());
