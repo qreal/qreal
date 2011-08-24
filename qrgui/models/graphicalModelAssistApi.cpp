@@ -51,9 +51,9 @@ Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &type)
 	return newElementId;
 }
 
-Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
+Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position, Id const &beforeId)
 {
-	return ModelsAssistApi::createElement(parent, id, isFromLogicalModel, name, position);
+	return ModelsAssistApi::createElement(parent, id, isFromLogicalModel, name, position, beforeId);
 }
 
 IdList GraphicalModelAssistApi::children(Id const &element) const

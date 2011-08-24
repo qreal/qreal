@@ -146,9 +146,13 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			if (nodeElement)
 				nodeElement->storeGeometry();
 
-			if (item(parent) != NULL)
+			if (item(parent) != NULL) {
 				elem->setParentItem(item(parent));
-			else {
+				QModelIndex next = current.sibling(current.row() + 1, 0);
+				if(next.isValid() && item(next) != NULL) {
+					elem->stackBefore(item(next));
+				}
+			} else {
 				mScene->addItem(elem);
 			}
 			setItem(current, elem);

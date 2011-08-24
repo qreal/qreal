@@ -13,17 +13,21 @@ namespace qReal {
 	class MainWindow;
 }
 
+/** @brief This widget imitates QtCreator's property editor */
 class PropertyEditorView : public QWidget
 {
 	Q_OBJECT
 
 public:
 	explicit PropertyEditorView(QWidget *parent = 0);
+	~PropertyEditorView();
 
 	// QAbstractItemView's methods
 	void setModel(PropertyEditorModel *model);
+	/** @brief editor initialization */
 	void init(qReal::MainWindow *mainWindow,
 		qReal::models::LogicalModelAssistApi * const logicalModelAssistApi);
+	/** @brief unimplemented */
 	void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint = QAbstractItemView::EnsureVisible);
 
 	PropertyEditorModel* model(){
@@ -43,9 +47,11 @@ protected slots:
 	// QAbstractItemView's methods
 	void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 	void editorValueChanged(QtProperty *, QVariant);
+
 	void buttonClicked(QtProperty *);
 
 private:
+	/** @brief returns index of value in list of possible values for index  */
 	int enumPropertyIndexOf(QModelIndex const &, QString const &);
 	void setPropertyValue(QtVariantProperty *property, QVariant const &value);
 

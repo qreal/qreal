@@ -26,7 +26,9 @@ namespace qReal {
 
 				void connectToLogicalModel(LogicalModel * const logicalModel);
 				void updateElements(Id const &logicalId, QString const &name);
-				void addElementToModel(Id const &parent, Id const &id,Id const &logicalId, QString const &name, QPointF const &position);
+				void addElementToModel(Id const &parent, Id const &id, Id const &logicalId,
+					QString const &name, QPointF const &position, Id const &before = Id());
+
 				virtual QVariant data(const QModelIndex &index, int role) const;
 				virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
 				virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
@@ -47,12 +49,20 @@ namespace qReal {
 
 				virtual void init();
 				void loadSubtreeFromClient(modelsImplementation::GraphicalModelItem * const parent);
-				modelsImplementation::GraphicalModelItem *loadElement(modelsImplementation::GraphicalModelItem *parentItem, Id const &id);
+				modelsImplementation::GraphicalModelItem *loadElement(modelsImplementation::GraphicalModelItem *parentItem,
+					Id const &id);
 
-				virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id, modelsImplementation::AbstractModelItem *parentItem) const;
-				void initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem,
-				modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position);
-				virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child);
+				virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id,
+					modelsImplementation::AbstractModelItem *parentItem) const;
+
+				void initializeElement(const Id &id, const Id &logicalId,
+					modelsImplementation::AbstractModelItem *parentItem,
+					modelsImplementation::AbstractModelItem *item,
+					const QString &name, const QPointF &position,
+					modelsImplementation::AbstractModelItem *before = NULL);
+
+				virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root,
+					details::modelsImplementation::AbstractModelItem *child);
 			};
 		}
 	}

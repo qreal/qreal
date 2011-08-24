@@ -22,10 +22,8 @@ void MouseMovementManager::setGesturesPainter(GesturesPainterInterface *gestures
 void MouseMovementManager::drawIdealPath()
 {
 	QString currentElement = mGesturesPaintMan->currentElement();
-	foreach (qReal::Id element, mGestures.values())
-	{
-		if (element.element() == currentElement)
-		{
+	foreach (qReal::Id element, mGestures.values()) {
+		if (element.element() == currentElement) {
 			QString path = mEditorManager->mouseGesture(element);
 			mGesturesPaintMan->draw(stringToPath(path));
 		}
@@ -35,8 +33,7 @@ void MouseMovementManager::drawIdealPath()
 void MouseMovementManager::printElements()
 {
 	QList<QString> elements;
-	foreach (qReal::Id element, mGestures.values())
-	{
+	foreach (qReal::Id element, mGestures.values()) {
 		elements.push_back(element.element());
 	}
 	mGesturesPaintMan->setElements(elements);
@@ -50,8 +47,7 @@ void MouseMovementManager::clear()
 QLineF MouseMovementManager::newLine()
 {
 	QLineF line;
-	if (mPath.size() > 1)
-	{
+	if (mPath.size() > 1) {
 		line.setP1(mPath[mPath.size() - 2]);
 		line.setP2(mPath.back());
 	}
@@ -61,11 +57,9 @@ QLineF MouseMovementManager::newLine()
 void MouseMovementManager::createMap()
 {
 	mGestures.clear();
-	foreach (qReal::Id element, mElements)
-	{
+	foreach (qReal::Id element, mElements) {
 		QString pathStr = mEditorManager->mouseGesture(element);
-		if (!pathStr.isEmpty())
-		{
+		if (!pathStr.isEmpty()){
 			QList<QPoint> path = stringToPath(pathStr);
 			QString key = mKeyManager->getKey(path);
 			mGestures.insert(key, element);
@@ -94,8 +88,7 @@ QList<QPoint> MouseMovementManager::stringToPath(QString const &valueStr)
 {
 	QStringList points = valueStr.split(pointDelimeter, QString::SkipEmptyParts);
 	QList<QPoint> result;
-	foreach (QString str, points)
-	{
+	foreach (QString str, points){
 		QPoint point = parsePoint(str);
 		result.push_back(point);
 	}
@@ -122,12 +115,11 @@ qReal::Id MouseMovementManager::getObject()
 	QString key = mKeyManager->getKey(mPath);
 	if (key.isEmpty())
 		return id;
-	foreach (QString idealKey, mGestures.keys())
-	{
+
+	foreach (QString idealKey, mGestures.keys()) {
 		distance = (float)(LevenshteinDistance::getLevenshteinDistance(idealKey, key) * e
 						   / std::min(key.size(), idealKey.size()));
-		if (distance < min && distance < maxKeyDistance)
-		{
+		if (distance < min && distance < maxKeyDistance) {
 			min = distance;
 			id = mGestures[idealKey];
 		}

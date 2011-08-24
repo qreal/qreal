@@ -20,7 +20,7 @@ public:
 	AbstractModelItem *parent() const;
 	void setParent(AbstractModelItem *parent);
 	PointerList children() const;
-	void addChild(AbstractModelItem *child);
+	void addChild(AbstractModelItem *child, int beforePosition = -1);
 	void removeChild(AbstractModelItem *child);
 	int row();
 	void clearChildren();

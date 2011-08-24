@@ -27,14 +27,14 @@ IdList RepoApi::children(Id const &id) const
 	return mClient.children(id);
 }
 
-void RepoApi::addChild(Id const &id, Id const &child)
+void RepoApi::addChild(Id const &id, Id const &child, int beforePosition)
 {
-	mClient.addChild(id, child);
+	mClient.addChild(id, child, beforePosition);
 }
 
-void RepoApi::addChild(Id const &id, Id const &child, Id const &logicalId)
+void RepoApi::addChild(Id const &id, Id const &child, Id const &logicalId, int beforePosition)
 {
-	mClient.addChild(id, child, logicalId);
+	mClient.addChild(id, child, logicalId, beforePosition);
 }
 
 void RepoApi::removeChild(Id const &id, Id const &child)

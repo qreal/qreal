@@ -133,33 +133,43 @@ QString LogicalModel::pathToItem(AbstractModelItem const *item) const
 		return Id::rootId().toString();
 }
 
-void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId, const QString &name, const QPointF &position)
+void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId,
+	const QString &name, const QPointF &position, Id const &beforeId)
 {
 	if (mModelItems.contains(id))
 		return;
+
 	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
-	AbstractModelItem *parentItem = mModelItems[parent];
-	AbstractModelItem *newItem = NULL;
+	AbstractModelItem *parentItem = mModelItems[parent],
+		*newItem = NULL;
+
 	if ((logicalId != Id::rootId()) && (mModelItems.contains(logicalId))) {
 		 if (parent == logicalId)
 			 return;
 		else
 			changeParent(index(mModelItems[logicalId]), index(parentItem), QPointF());
-		}
-	else {
+	} else {
+		AbstractModelItem *beforeItem = mModelItems.value(beforeId, NULL);
+
 		newItem = createModelItem(id, parentItem);
-		initializeElement(id, parentItem, newItem, name, position);
+		initializeElement(id, parentItem, newItem, name, position, beforeItem);
 	}
 }
 
 void LogicalModel::initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem,
-		modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
+		modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position,
+		modelsImplementation::AbstractModelItem *beforeItem)
 {
 	Q_UNUSED(position)
-	int const newRow = parentItem->children().size();
+
+	int beforePositionInModel = parentItem->children().indexOf(beforeItem);
+	int beforePositionInRepo = beforeItem != NULL ? mApi.children(parentItem->id()).indexOf(beforeItem->id()) : -1;
+
+	int const newRow = beforePositionInModel >= 0 ? beforePositionInModel : parentItem->children().size();
+
 	beginInsertRows(index(parentItem), newRow, newRow);
-	parentItem->addChild(item);
-	mApi.addChild(parentItem->id(), id);
+	parentItem->addChild(item, beforePositionInModel);
+	mApi.addChild(parentItem->id(), id, beforePositionInRepo);
 	mApi.setProperty(id, "name", name);
 	mApi.setProperty(id, "from", Id::rootId().toVariant());
 	mApi.setProperty(id, "to", Id::rootId().toVariant());

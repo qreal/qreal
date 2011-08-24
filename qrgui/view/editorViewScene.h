@@ -66,7 +66,7 @@ protected:
 	void dragEnterEvent( QGraphicsSceneDragDropEvent *event);
 	void dragMoveEvent( QGraphicsSceneDragDropEvent *event);
 	void dragLeaveEvent( QGraphicsSceneDragDropEvent *event);
-	void dropEvent ( QGraphicsSceneDragDropEvent *event);
+	void dropEvent( QGraphicsSceneDragDropEvent *event);
 
 	void keyPressEvent( QKeyEvent *event);
 
@@ -98,6 +98,8 @@ private:
 	qreal mWidthOfGrid;
 	double mRealIndexGrid;
 
+	QGraphicsRectItem *getPlaceholder();
+
 	void getObjectByGesture();
 	void getLinkByGesture(NodeElement * parent, NodeElement const & child);
 	void drawGesture();
@@ -120,6 +122,7 @@ private:
 
 	void initContextMenu(Element *e, QPointF const & pos);
 
+	NodeElement *mHighlightNode;
 	QPointF newElementsPosition;
 	QList<QGraphicsItem*> mGesture;
 

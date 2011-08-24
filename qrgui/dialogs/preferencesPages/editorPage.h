@@ -37,8 +37,8 @@ private:
 	bool mFontButtonWasPressed;
 	int mWidthGrid;
 	int mIndexGrid;
+	QString mFont;
 
-	QFontDialog *mFontDialog;
 	QAction * const mShowGridAction;
 	QAction * const mShowAlignmentAction;
 	QAction * const mActivateGridAction;
