@@ -6,7 +6,7 @@ using namespace gui;
 NxtFlashTool::NxtFlashTool(ErrorReporter *errorReporter)
 	: mErrorReporter(errorReporter), mUploadState(done)
 {
-	QProcessEnvironment environment;
+	QProcessEnvironment environment(QProcessEnvironment::systemEnvironment());
 	environment.insert("QREALDIR", qApp->applicationDirPath());
 	environment.insert("DISPLAY", ":0.0");
 	mFlashProcess.setProcessEnvironment(environment);
@@ -81,7 +81,7 @@ void NxtFlashTool::readNxtFlashData()
 void NxtFlashTool::uploadProgram()
 {
 #ifdef Q_OS_WIN
-	mFlashProcess.start(qApp->applicationDirPath() + "/nxt-tools/upload.bat");
+	mFlashProcess.start("cmd", QStringList() << "/C" << qApp->applicationDirPath() + "/nxt-tools/upload.bat");
 #else
 	mUploadProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/upload.sh");
 #endif
