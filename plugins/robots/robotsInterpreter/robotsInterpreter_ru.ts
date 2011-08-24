@@ -183,57 +183,57 @@
         <translation>Сенсор</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="268"/>
+        <location filename="interpreter.cpp" line="249"/>
         <source>Sensor1</source>
         <translation>Сенсор1</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="273"/>
+        <location filename="interpreter.cpp" line="254"/>
         <source>Sensor2</source>
         <translation>Сенсор2</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="278"/>
+        <location filename="interpreter.cpp" line="259"/>
         <source>Sensor3</source>
         <translation>Сенсор3</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="283"/>
+        <location filename="interpreter.cpp" line="264"/>
         <source>Sensor4</source>
         <translation>Сенсор4</translation>
     </message>
     <message>
-        <location filename="pluginGui.cpp" line="9"/>
+        <location filename="pluginGui.cpp" line="17"/>
         <source>2d model</source>
         <translation>2D модель</translation>
     </message>
     <message>
-        <location filename="pluginGui.cpp" line="13"/>
+        <location filename="pluginGui.cpp" line="21"/>
         <source>Run</source>
         <translation>Выполнить</translation>
     </message>
     <message>
-        <location filename="pluginGui.cpp" line="17"/>
+        <location filename="pluginGui.cpp" line="25"/>
         <source>Stop</source>
         <translation>Прервать выполнение</translation>
     </message>
     <message>
-        <location filename="pluginGui.cpp" line="21"/>
-        <source>Stop robot</source>
-        <translation>Остановить робота</translation>
-    </message>
-    <message>
-        <location filename="pluginGui.cpp" line="25"/>
-        <source>Connect to robot</source>
-        <translation>Подключиться к роботу</translation>
-    </message>
-    <message>
         <location filename="pluginGui.cpp" line="29"/>
-        <source>Robot settings</source>
-        <translation type="unfinished">Настройки робота</translation>
+        <source>Stop robot</source>
+        <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="pluginGui.cpp" line="52"/>
+        <location filename="pluginGui.cpp" line="33"/>
+        <source>Connect to robot</source>
+        <translation>Подключиться</translation>
+    </message>
+    <message>
+        <location filename="pluginGui.cpp" line="37"/>
+        <source>Robot settings</source>
+        <translation>Настройки</translation>
+    </message>
+    <message>
+        <location filename="pluginGui.cpp" line="62"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -241,27 +241,27 @@
 <context>
     <name>qReal::interpreters::robots::Interpreter</name>
     <message>
-        <location filename="interpreter.cpp" line="83"/>
+        <location filename="interpreter.cpp" line="63"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="87"/>
+        <location filename="interpreter.cpp" line="67"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="97"/>
+        <location filename="interpreter.cpp" line="77"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="152"/>
+        <location filename="interpreter.cpp" line="135"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="156"/>
+        <location filename="interpreter.cpp" line="138"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
@@ -269,7 +269,7 @@
 <context>
     <name>qReal::interpreters::robots::PluginGui</name>
     <message>
-        <location filename="pluginGui.cpp" line="57"/>
+        <location filename="pluginGui.cpp" line="67"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
