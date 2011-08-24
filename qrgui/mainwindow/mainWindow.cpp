@@ -2063,11 +2063,21 @@ void MainWindow::checkNxtTools()
 	qDebug() << dir.absolutePath();
 
 	QDir gnuarm(dir.absolutePath() + "/gnuarm");
-	QDir libnxt(dir.absolutePath() + "/libnxt");
 	QDir nexttool(dir.absolutePath() + "/nexttool");
 	QDir nxtOSEK(dir.absolutePath() + "/nxtOSEK");
+
+#ifdef Q_OS_WIN
+	QFile flash(dir.absolutePath() + "/flash.bat");
+	QFile upload1(dir.absolutePath() + "/upload.bat");
+	QFile upload2(dir.absolutePath() + "/upload.sh");
+
+	mNxtToolsPresent = gnuarm.exists() && nexttool.exists() && nxtOSEK.exists() && flash.exists() && upload1.exists() && upload2.exists();
+#else
+	QDir libnxt(dir.absolutePath() + "/libnxt");
 	QFile flash(dir.absolutePath() + "/flash.sh");
 	QFile upload(dir.absolutePath() + "/upload.sh");
 
 	mNxtToolsPresent = gnuarm.exists() && libnxt.exists() && nexttool.exists() && nxtOSEK.exists() && flash.exists() && upload.exists();
+#endif
+
 }
