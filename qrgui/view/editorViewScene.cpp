@@ -409,6 +409,7 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 {
 	// menu items "connect to"
 	// TODO: move to elements, they can call the model and API themselves
+	/*
 	createAddConnectionMenu(element, contextMenu, tr("Add connection")
 							, mWindow->manager()->getConnectedTypes(element->id().type())
 							, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
@@ -441,6 +442,7 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 	createGoToSubmenu(goToMenu, tr("Backward connection"), mv_iface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId()));
 	createGoToSubmenu(goToMenu, tr("Uses"), mv_iface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId()));
 	createGoToSubmenu(goToMenu, tr("Used in"), mv_iface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId()));
+	*/
 }
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
