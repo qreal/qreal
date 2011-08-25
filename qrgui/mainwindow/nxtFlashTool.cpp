@@ -81,7 +81,7 @@ void NxtFlashTool::readNxtFlashData()
 void NxtFlashTool::uploadProgram()
 {
 #ifdef Q_OS_WIN
-	mFlashProcess.start("cmd", QStringList() << "/C" << qApp->applicationDirPath() + "/nxt-tools/upload.bat");
+	mFlashProcess.start("cmd", QStringList() << "/C" << "start" << qApp->applicationDirPath() + "/nxt-tools/upload.bat");
 #else
 	mUploadProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/upload.sh");
 #endif

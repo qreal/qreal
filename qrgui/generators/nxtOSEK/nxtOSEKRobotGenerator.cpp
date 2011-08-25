@@ -199,7 +199,7 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 		foreach (QString enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
 			result.append(QPair<QString, qReal::Id>(
 						"nxt_motor_set_speed(" + enginePort + ", "
-							+ mNxtGen->mApi->stringProperty(logicElementId, "Power") + ", 0);"
+							+ "-" + mNxtGen->mApi->stringProperty(logicElementId, "Power") + ", 0);"
 						, mElementId));
 		}
 
@@ -339,6 +339,11 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
 		QString distance = mNxtGen->mApi->stringProperty(logicElementId, "Distance");
 		QString inequalitySign = mNxtGen->mApi->stringProperty(logicElementId, "Sign");
+
+		if (inequalitySign == "&lt;")
+			inequalitySign = "<";
+		else if (inequalitySign == "=")
+			inequalitySign = "==";
 
 		QString condition = inequalitySign + " " + distance;
 

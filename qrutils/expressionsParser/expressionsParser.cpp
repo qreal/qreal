@@ -151,7 +151,7 @@ QString ExpressionsParser::parseIdentifier(const QString &stream, int &pos)
 		while (pos < stream.length() && (isDigit(stream.at(pos)) || isLetter(stream.at(pos)))) {
 			pos++;
 		}
-		return stream.mid(beginPos, pos - beginPos);
+		return stream.mid(beginPos, pos - beginPos).trimmed();
 	}
 	return "";
 }
@@ -306,12 +306,15 @@ void ExpressionsParser::parseCommand(const QString &stream, int &pos)
 			Number::Type t1 = mVariables[variable].property("Type").toInt() ? Number::intType : Number::doubleType;
 			Number::Type t2 = n.property("Type").toInt() ? Number::intType : Number::doubleType;
 			if (t1==t2) {
+				qDebug() << "t1==t2" << variable << n.property("Type");
 				mVariables[variable] = n;
 			} else {
 				if (t1 == Number::intType) {
+					qDebug() << "t1 == Number::intType";
 					mVariables[variable].setProperty("Number", n.property("Number").toInt());
 					error(typesMismatch, QString::number(typesMismatchIndex + 1), "\'int\'", "\'double\'");
 				} else {
+					qDebug() << "else";
 					mVariables[variable].setProperty("Number", n.property("Number").toDouble());
 				}
 			}
