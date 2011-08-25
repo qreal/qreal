@@ -89,9 +89,31 @@ PreferencesRobotSettingsPage::~PreferencesRobotSettingsPage()
 void PreferencesRobotSettingsPage::changeEvent(QEvent *e)
 {
 	switch (e->type()) {
-	case QEvent::LanguageChange:
+	case QEvent::LanguageChange: {
 		mUi->retranslateUi(this);
+
+		QStringList sensorNames;
+		sensorNames << tr("Unused")
+				<< tr("Touch sensor (boolean value)")
+				<< tr("Touch sensor (raw value)")
+				<< tr("Sonar sensor")
+				<< tr("Color sensor (full colors)")
+				<< tr("Color sensor (red)")
+				<< tr("Color sensor (green)")
+				<< tr("Color sensor (blue)")
+				<< tr("Color sensor (passive)")
+		;
+
+		mUi->port1ComboBox->clear();
+		mUi->port2ComboBox->clear();
+		mUi->port3ComboBox->clear();
+		mUi->port4ComboBox->clear();
+		mUi->port1ComboBox->addItems(sensorNames);
+		mUi->port2ComboBox->addItems(sensorNames);
+		mUi->port3ComboBox->addItems(sensorNames);
+		mUi->port4ComboBox->addItems(sensorNames);
 		break;
+	}
 	default:
 		break;
 	}
