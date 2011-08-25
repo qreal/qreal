@@ -1,4 +1,4 @@
-generate.commands = qcollectiongenerator qreal-robots.qhcp -o ../qrgui/qreal-robots.qhc
+generate.commands = qcollectiongenerator qreal-robots.qhcp -o ../doc/qreal-robots.qhc && qcollectiongenerator qreal-robots.qhcp -o qreal-robots.qhc
 generate.depends = qreal-robots.qhcp qreal-robots.qhp
 
 QMAKE_EXTRA_TARGETS += generate
