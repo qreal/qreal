@@ -138,6 +138,18 @@ void D2ModelWidget::update()
 	drawWalls();
 }
 
+void D2ModelWidget::changeEvent(QEvent *e)
+{
+	QWidget::changeEvent(e);
+	switch (e->type()) {
+	case QEvent::LanguageChange:
+		mUi->retranslateUi(this);
+		break;
+	default:
+		break;
+	}
+}
+
 bool D2ModelWidget::isRobotOnTheGround()
 {
 	return mRobot ? mRobot->isOnTheGround() : false;

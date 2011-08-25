@@ -55,6 +55,9 @@ public:
 public slots:
 	void update();
 
+protected:
+	void changeEvent(QEvent *e);
+
 private slots:
 	void addWall(bool on);
 	void clearScene();
