@@ -1828,6 +1828,9 @@ void qReal::MainWindow::on_actionNew_Diagram_triggered()
 void MainWindow::highlight(Id const &graphicalId, bool exclusive)
 {
 	EditorView* const view = getCurrentTab();
+	if (!view)
+		return;
+
 	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
 	Element* const element = scene->getElem(graphicalId);
 	scene->highlight(graphicalId, exclusive);
@@ -1837,6 +1840,9 @@ void MainWindow::highlight(Id const &graphicalId, bool exclusive)
 void MainWindow::dehighlight(Id const &graphicalId)
 {
 	EditorView* const view = getCurrentTab();
+	if (!view)
+		return;
+
 	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
 	if (graphicalId == Id())
 		scene->dehighlight();
