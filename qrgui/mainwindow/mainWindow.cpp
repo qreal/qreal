@@ -570,6 +570,7 @@ bool MainWindow::checkPluginsAndReopen()
 
 bool MainWindow::openNewProject()
 {
+	saveAll();
 	return open(getWorkingDir(tr("Select directory with a save to open")));
 }
 
