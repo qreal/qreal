@@ -92,8 +92,10 @@ void Interpreter::stop()
 {
 	mRobotModel->stopRobot();
 	mState = idle;
-	foreach (Thread *thread, mThreads)
+	foreach (Thread *thread, mThreads) {
 		delete thread;
+		mThreads.removeAll(thread);
+	}
 	mBlocksTable->setFailure();
 	/*mBlocksTable->clear();
 	mThreads.clear();
