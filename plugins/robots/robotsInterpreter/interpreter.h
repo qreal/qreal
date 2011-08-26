@@ -87,6 +87,8 @@ private:
 
 	BluetoothRobotCommunication *mBluetoothRobotCommunication;
 
+	robotModelType::robotModelTypeEnum mImplementationType;
+
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	Id const findStartingElement(Id const &diagram) const;
 	void addThread(details::Thread * const thread);

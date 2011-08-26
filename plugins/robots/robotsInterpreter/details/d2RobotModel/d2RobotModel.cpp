@@ -10,14 +10,14 @@ D2RobotModel::D2RobotModel(QObject *parent)
 {
 	mTimer = new QTimer(this);
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(nextFragment()));
-	init();
+	initPosition();
 }
 
 D2RobotModel::~D2RobotModel()
 {
 }
 
-void D2RobotModel::init()
+void D2RobotModel::initPosition()
 {
 	mMotorA = initMotor(5, 0, 0, 0);
 	mMotorB = initMotor(5, 0, 0, 1);
@@ -83,8 +83,7 @@ int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 
 void D2RobotModel::startInit()
 {
-	init();
-	mD2ModelWidget->init(false);
+	initPosition();
 	mTimer->start(timeInterval);
 }
 

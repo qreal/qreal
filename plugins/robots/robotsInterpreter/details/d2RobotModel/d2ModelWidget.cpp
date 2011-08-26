@@ -87,7 +87,8 @@ void D2ModelWidget::init(bool isActive)
 		drawInitialRobot();
 
 	mUi->graphicsView->show();
-	show();
+	if (isHidden())
+		show();
 	update();
 }
 

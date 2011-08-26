@@ -20,6 +20,7 @@ Interpreter::Interpreter()
 	, mRobotModel(new RobotModel())
 	, mBlocksTable(NULL)
 	, mBluetoothRobotCommunication(NULL)
+	, mImplementationType(robotModelType::null)
 {
 	mParser = NULL;
 	mBlocksTable = NULL;
@@ -55,6 +56,9 @@ Interpreter::~Interpreter()
 
 void Interpreter::interpret()
 {
+	if (mImplementationType != robotModelType::real)
+		mRobotModel->init();
+
 	mInterpretersInterface->errorReporter()->clear();
 
 	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
@@ -125,8 +129,10 @@ void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum impl
 			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, robotCommunicationInterface, mD2RobotModel);
 	setRobotImplementation(robotImpl);
 	connect(robotImpl, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
-	if (implementationType != robotModelType::real)
+	mImplementationType = implementationType;
+	if (mImplementationType != robotModelType::real)
 		mRobotModel->init();
+
 }
 
 void Interpreter::connectedSlot(bool success)
