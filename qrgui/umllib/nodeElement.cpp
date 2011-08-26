@@ -709,7 +709,7 @@ bool NodeElement::initPossibleEdges()
 
 void NodeElement::initEmbeddedLinkers()
 {
-	if (!mEmbeddedLinkers.isEmpty()) {
+	if (mEmbeddedLinkers.isEmpty()) {
 		return;
 	}
 	QSet<qReal::Id> usedEdges;
