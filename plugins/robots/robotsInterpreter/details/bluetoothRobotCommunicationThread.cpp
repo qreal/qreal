@@ -43,7 +43,7 @@ void BluetoothRobotCommunicationThread::connect(QString const &portName)
 		SleeperThread::msleep(1000);  // Give port some time to close
 	}
 
-	mPort = new QextSerialPort(portName);
+	mPort = new QextSerialPort(portName, QextSerialPort::Polling);
 	mPort->setBaudRate(BAUD9600);
 	mPort->setFlowControl(FLOW_OFF);
 	mPort->setParity(PAR_NONE);
