@@ -147,10 +147,16 @@ MainWindow::MainWindow()
 	// Step 4: Property editor and model explorers are initialized.
 	progress->setValue(60);
 	loadPlugins();
+	initToolPlugins();
 	showMaximized();
 
 	// Step 5: Plugins are loaded.
 	progress->setValue(70);
+
+	QString windowTitle = mToolManager.customizer()->windowTitle();
+	if (windowTitle.isEmpty())
+		windowTitle = "QReal";
+	setWindowTitle(windowTitle + " - " + SettingsManager::value("workingDir", mSaveDir).toString());
 
 	if (!SettingsManager::value("maximized", true).toBool()) {
 		showNormal();
@@ -206,8 +212,6 @@ MainWindow::MainWindow()
 		suggestToCreateDiagram();
 
 	mDocksVisibility.clear();
-	setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
-	initToolPlugins();
 
 	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 

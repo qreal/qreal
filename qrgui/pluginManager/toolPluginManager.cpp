@@ -28,12 +28,13 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 			}
 		}
 	}
+
+	mCustomizer = new DummyCustomizer();
 }
 
 ToolPluginManager::~ToolPluginManager()
 {
-//	foreach (ToolPluginInterface *toolPlugin, mPlugins)
-//		delete toolPlugin;
+	delete mCustomizer;
 }
 
 void ToolPluginManager::init(PluginConfigurator const &configurator)
@@ -70,7 +71,7 @@ CustomizationInterface *ToolPluginManager::customizer() const
 	foreach (ToolPluginInterface *toolPlugin, mPlugins)
 		if (toolPlugin->customizationInterface())
 			return toolPlugin->customizationInterface();
-	return NULL;
+	return mCustomizer;
 }
 
 void ToolPluginManager::updateSettings()
