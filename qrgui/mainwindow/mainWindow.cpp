@@ -1,7 +1,7 @@
 #include "mainWindow.h"
 #include "ui_mainWindow.h"
 
-#include <QProcess>
+#include <QtCore/QProcess>
 #include <QtGui/QDialog>
 #include <QtGui/QPrinter>
 #include <QtGui/QVBoxLayout>
@@ -12,14 +12,13 @@
 #include <QtGui/QPrintDialog>
 #include <QtGui/QProgressBar>
 #include <QtGui/QListWidgetItem>
+#include <QtCore/QPluginLoader>
 
 #include <QtSvg/QSvgGenerator>
 
 #include <QtCore/QDebug>
 
-#include <../generators/editorGenerator/editorGenerator.h>
-
-#include <QtCore/QPluginLoader>
+#include "../generators/editorGenerator/editorGenerator.h"
 
 #include "errorReporter.h"
 
@@ -165,7 +164,7 @@ MainWindow::MainWindow()
 	// Step 6: Save loaded, models initialized.
 	progress->setValue(80);
 
-	if (!checkPluginsAndReopen())
+	if (!checkPluginsAndReopen(splash))
 		return;
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
@@ -173,7 +172,6 @@ MainWindow::MainWindow()
 	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &)), this, SLOT(updateTabName(Id const &)));
 
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
-
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
 	mGesturesWidget = new GesturesWidget();
@@ -194,22 +192,6 @@ MainWindow::MainWindow()
 	connect(mFlashTool, SIGNAL(showErrors(gui::ErrorReporter*const)), this, SLOT(showErrors(gui::ErrorReporter*const)));
 
 	connectActions();
-
-	/*
-	QString const defaultBluetoothPortName = SettingsManager::value("bluetoothPortName", "").toString();
-	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
-	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel", "1").toInt());
-	mUi->actionShow2Dmodel->setVisible(typeOfRobotModel == robotModelType::unreal);
-	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
-			, mModels->logicalModelAssistApi(), *this, mBluetoothCommunication, typeOfRobotModel);
-	if (typeOfRobotModel == robotModelType::unreal)
-		setD2ModelWidgetActions(mUi->actionRun, mUi->actionStop_Running);
-	sensorType::SensorTypeEnum port1 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port1SensorType", "0").toInt());
-	sensorType::SensorTypeEnum port2 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port2SensorType", "0").toInt());
-	sensorType::SensorTypeEnum port3 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port3SensorType", "0").toInt());
-	sensorType::SensorTypeEnum port4 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port4SensorType", "0").toInt());
-	mRobotInterpreter->configureSensors(port1, port2, port3, port4);
-	*/
 
 	// Step 7: Save consistency checked, interface is initialized with models.
 	progress->setValue(100);
@@ -534,13 +516,16 @@ QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
 	return dirName;
 }
 
-bool MainWindow::checkPluginsAndReopen()
+bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 {
 	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 	bool haveMissingPlugins = !missingPlugins.isEmpty();
 	bool loadingCancelled = false;
 
 	while (haveMissingPlugins && !loadingCancelled) {
+		if (splashScreen)
+			splashScreen->close();
+
 		QString text = tr("These plugins are not present, but needed to load the save:\n");
 		foreach (Id const id, missingPlugins)
 			text += id.editor() + "\n";
@@ -590,7 +575,7 @@ bool MainWindow::open(QString const &dirName)
 	mModels->repoControlApi().open(dirName);
 	mModels->reinit();
 
-	if (!checkPluginsAndReopen())
+	if (!checkPluginsAndReopen(NULL))
 		return false;
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
