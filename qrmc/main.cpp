@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 	QString workingCopyDir = argv[1];
 //	QString workingCopyDir = "../qrgui/save";
 
-	MetaCompiler metaCompiler(qApp->applicationDirPath(), workingCopyDir);
+	MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../qrmc/", workingCopyDir);
 	if (!metaCompiler.compile()) {
 		qDebug() << "compilation failed";
 		return 1;

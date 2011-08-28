@@ -33,7 +33,6 @@ SOURCES += \
 	metaCompiler.cpp \
 	diagram.cpp \
 	editor.cpp \
-	main.cpp
 
 include (classes/classes.pri)
 include (utils/utils.pri)

@@ -119,7 +119,7 @@ Id XmlParser::getPackageId()
 		if (id.element() == "PackageDiagram")
 			return id;
 	}
-	Id const packageId("Meta_editor", "MetaEditor", "PackageDiagram",
+	Id const packageId("MetaEditor", "MetaEditor", "PackageDiagram",
 			QUuid::createUuid().toString());
 	setStandartConfigurations(packageId, Id::rootId(), "Package", "Package");
 	return packageId;
@@ -130,7 +130,7 @@ void XmlParser::initMetamodel(const QDomDocument &document, const QString &direc
 	QFileInfo fileName(directoryName);
 	QString fileBaseName = fileName.baseName();
 
-	Id metamodelId = Id("Meta_editor", "MetaEditor", "MetamodelDiagram",
+	Id metamodelId = Id("MetaEditor", "MetaEditor", "MetamodelDiagram",
 			QUuid::createUuid().toString());
 
 	QDomNodeList const includeList = document.elementsByTagName("include");
@@ -144,7 +144,7 @@ void XmlParser::initMetamodel(const QDomDocument &document, const QString &direc
 	mApi.setProperty(metamodelId, "include", includeListString);
 	mApi.setProperty(metamodelId, "name of the directory", fileBaseName);
 
-	mMetamodel = Id("Meta_editor", "MetaEditor", "MetamodelDiagram",
+	mMetamodel = Id("MetaEditor", "MetaEditor", "MetamodelDiagram",
 					QUuid::createUuid().toString());
 	setStandartConfigurations(mMetamodel, Id::rootId(), fileBaseName, "");
 	mApi.setProperty(mMetamodel, "include", includeListString);
@@ -154,7 +154,7 @@ void XmlParser::initMetamodel(const QDomDocument &document, const QString &direc
 
 Id XmlParser::initListener(const QString &name, const QString &className, const QString &fileName)
 {
-	Id listenerId("Meta_editor", "MetaEditor", "Listener",
+	Id listenerId("MetaEditor", "MetaEditor", "Listener",
 				  QUuid::createUuid().toString());
 	setStandartConfigurations(listenerId, mMetamodel, name, name);
 	mApi.setProperty(listenerId, "class", className);
@@ -165,7 +165,7 @@ Id XmlParser::initListener(const QString &name, const QString &className, const 
 void XmlParser::initDiagram(const QDomElement &diagram, const Id &parent,
 		const QString &name, const QString &displayedName)
 {
-	Id diagramId("Meta_editor", "MetaEditor", "MetaEditorDiagramNode",
+	Id diagramId("MetaEditor", "MetaEditor", "MetaEditorDiagramNode",
 			QUuid::createUuid().toString());
 
 	setStandartConfigurations(diagramId, parent, name, displayedName);
@@ -220,7 +220,7 @@ void XmlParser::createGraphicElements(const QDomElement &type, const Id &diagram
 
 void XmlParser::initEnum(const QDomElement &enumElement, const Id &diagramId)
 {
-	Id enumId("Meta_editor", "MetaEditor", "MetaEntityEnum",
+	Id enumId("MetaEditor", "MetaEditor", "MetaEntityEnum",
 			  QUuid::createUuid().toString());
 
 	setStandartConfigurations(enumId, diagramId, enumElement.attribute("name", ""),
@@ -234,7 +234,7 @@ void XmlParser::initNode(const QDomElement &node, const Id &diagramId)
 	QString const nodeName = node.attribute("name", "");
 
 	if (!(mElements.contains(nodeName))) {
-		Id nodeId("Meta_editor", "MetaEditor", "MetaEntityNode",
+		Id nodeId("MetaEditor", "MetaEditor", "MetaEntityNode",
 				QUuid::createUuid().toString());
 		mElements.insert(nodeName, nodeId);
 
@@ -251,7 +251,7 @@ void XmlParser::initEdge(const QDomElement &edge, const Id &diagramId)
 	QString const edgeName = edge.attribute("name", "");
 
 	if (!(mElements.contains(edgeName))) {
-		Id edgeId("Meta_editor", "MetaEditor", "MetaEntityEdge",
+		Id edgeId("MetaEditor", "MetaEditor", "MetaEntityEdge",
 				QUuid::createUuid().toString());
 		mElements.insert(edgeName, edgeId);
 
@@ -267,7 +267,7 @@ void XmlParser::initImport(const QDomElement &import, const Id &diagramId)
 	QString const importName = import.attribute("name", "");
 
 	if (!(mElements.contains(importName))) {
-		Id importId("Meta_editor", "MetaEditor", "MetaEntityImport",
+		Id importId("MetaEditor", "MetaEditor", "MetaEntityImport",
 				QUuid::createUuid().toString());
 		QStringList nameList = import.attribute("name", "").split("::", QString::SkipEmptyParts);
 		setStandartConfigurations(importId, diagramId, nameList.at(1),
@@ -285,7 +285,7 @@ void XmlParser::setEnumAttributes(const QDomElement &enumElement, const Id &enum
 	for (unsigned i = 0; i < values.length(); ++i) {
 		QDomElement value = values.at(i).toElement();
 		if (value.tagName() == "value"){
-			Id valueId("Meta_editor", "MetaEditor", "MetaEntityValue",
+			Id valueId("MetaEditor", "MetaEditor", "MetaEntityValue",
 					QUuid::createUuid().toString());
 
 			setStandartConfigurations(valueId, enumId, value.text(),
@@ -422,7 +422,7 @@ void XmlParser::setFields(const QDomElement &element, const Id &elementId)
 	for (unsigned i = 0; i < fields.length(); ++i) {
 		QDomElement field = fields.at(i).toElement();
 		if (field.tagName() == "field") {
-			Id fieldId("Meta_editor", "MetaEditor", "MetaEntityContextMenuField", QUuid::createUuid().toString());
+			Id fieldId("MetaEditor", "MetaEditor", "MetaEntityContextMenuField", QUuid::createUuid().toString());
 			setStandartConfigurations(fieldId, elementId, field.attribute("name", ""),
 					field.attribute("displayedName", ""));
 		}
@@ -457,7 +457,7 @@ void XmlParser::setContainerProperties(const QDomElement &element, const Id &ele
 {
 	QDomNodeList properties = element.childNodes();
 	if (properties.size() > 0) {
-		Id containerProperties("Meta_editor", "MetaEditor",
+		Id containerProperties("MetaEditor", "MetaEditor",
 				"MetaEntityPropertiesAsContainer", QUuid::createUuid().toString());
 		setStandartConfigurations(containerProperties, elementId,
 				"properties", "");
@@ -510,7 +510,7 @@ void XmlParser::setUsages(const QDomElement &element, const Id &elementId)
 
 void XmlParser::setAssociations(const QDomElement &element, const Id &elementId)
 {
-	Id associationId("Meta_editor", "MetaEditor", "MetaEntityAssociation",
+	Id associationId("MetaEditor", "MetaEditor", "MetaEntityAssociation",
 			QUuid::createUuid().toString());
 	QDomNodeList associations = element.childNodes();
 
@@ -548,7 +548,7 @@ void XmlParser::setAction(const Id &elementId)
 
 void XmlParser::initPossibleEdge(const QDomElement &possibleEdge, const Id &elementId)
 {
-	Id possibleEdgeId("Meta_editor", "MetaEditor", "MetaEntityPossibleEdge",
+	Id possibleEdgeId("MetaEditor", "MetaEditor", "MetaEntityPossibleEdge",
 			QUuid::createUuid().toString());
 
 	setStandartConfigurations(possibleEdgeId, elementId, possibleEdge.attribute("name", ""),
@@ -561,7 +561,7 @@ void XmlParser::initPossibleEdge(const QDomElement &possibleEdge, const Id &elem
 
 void XmlParser::initProperty(const QDomElement &property, const Id &elementId)
 {
-	Id propertyId("Meta_editor", "MetaEditor", "MetaEntity_Attribute",
+	Id propertyId("MetaEditor", "MetaEditor", "MetaEntity_Attribute",
 			QUuid::createUuid().toString());
 
 	setStandartConfigurations(propertyId, elementId, property.attribute("name", ""),
@@ -578,7 +578,7 @@ void XmlParser::initProperty(const QDomElement &property, const Id &elementId)
 
 void XmlParser::initConnection(const QDomElement &connection, const Id &elementId)
 {
-	Id connectionId("Meta_editor", "MetaEditor", "MetaEntityConnection",
+	Id connectionId("MetaEditor", "MetaEditor", "MetaEntityConnection",
 			QUuid::createUuid().toString());
 
 	setStandartConfigurations(connectionId, elementId, connection.attribute("name", ""),
@@ -589,7 +589,7 @@ void XmlParser::initConnection(const QDomElement &connection, const Id &elementI
 
 void XmlParser::initUsage(const QDomElement &usage, const Id &elementId)
 {
-	Id usageId("Meta_editor", "MetaEditor", "MetaEntityUsage",
+	Id usageId("MetaEditor", "MetaEditor", "MetaEntityUsage",
 			QUuid::createUuid().toString());
 
 	setStandartConfigurations(usageId, elementId, usage.attribute("name", ""),
@@ -638,7 +638,7 @@ void XmlParser::setParents(const Id &id, const QString &diagramName)
 
 void XmlParser::initInheritance(const Id &idFrom, const Id &idTo)
 {
-	Id inheritanceId("Meta_editor", "MetaEditor", "Inheritance",
+	Id inheritanceId("MetaEditor", "MetaEditor", "Inheritance",
 			QUuid::createUuid().toString());
 
 	QString const name = mApi.name(idTo) + "_Inherits_" + mApi.name(idFrom);
@@ -650,7 +650,7 @@ void XmlParser::initInheritance(const Id &idFrom, const Id &idTo)
 
 Id XmlParser::getParentId(const QString &elementName)
 {
-	Id parentId("Meta_editor", "MetaEditor", "MetaEntityImport",
+	Id parentId("MetaEditor", "MetaEditor", "MetaEntityImport",
 			QUuid::createUuid().toString());
 
 	setStandartConfigurations(parentId, mMetamodel, elementName, elementName);
@@ -674,7 +674,7 @@ void XmlParser::setContains(const Id &id, const QString &diagramName)
 
 void XmlParser::initContains(const Id &idFrom, const Id &idTo)
 {
-	Id containerId("Meta_editor", "MetaEditor", "Container",
+	Id containerId("MetaEditor", "MetaEditor", "Container",
 			QUuid::createUuid().toString());
 
 	QString const name = mApi.name(idFrom) + "_Contains_" + mApi.name(idTo);
