@@ -1963,15 +1963,15 @@ void MainWindow::initToolPlugins()
 			, mModels->logicalModelAssistApi()
 			, *this
 	));
-	QList<CustomToolInterface::ActionInfo> actions = mToolManager.actions();
-	foreach (CustomToolInterface::ActionInfo action, actions) {
+	QList<ActionInfo> actions = mToolManager.actions();
+	foreach (ActionInfo action, actions) {
 		if (action.toolbarName() == "file")
 			mUi->fileToolbar->addAction(action.action());
 		else if (action.toolbarName() == "interpreters")
 			mUi->interpreterToolBar->addAction(action.action());
 	}
 
-	foreach (CustomToolInterface::ActionInfo action, actions) {
+	foreach (ActionInfo action, actions) {
 		if (action.menuName() == "tools")
 			mUi->menuTools->addAction(action.action());
 	}

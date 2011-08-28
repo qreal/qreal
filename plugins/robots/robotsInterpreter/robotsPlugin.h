@@ -1,8 +1,10 @@
 #pragma once
 
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
+#include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
 
-#include "pluginGui.h"
+#include "interpreter.h"
+#include "robotSettingsPage.h"
 #include "customizer.h"
 
 namespace qReal {
@@ -18,14 +20,24 @@ public:
 	RobotsPlugin();
 	virtual ~RobotsPlugin();
 
-	virtual void initPlugin(PluginConfigurator const &configurator);
-	virtual QList<qReal::CustomToolInterface *> toolInterfaces();
+	virtual void init(PluginConfigurator const &configurator);
+	virtual QList<ActionInfo> actions();
+	virtual QPair<QString, PreferencesPage *> preferencesPage();
 	virtual CustomizationInterface* customizationInterface();
 	virtual void updateSettings();
 
+private slots:
+	void showRobotSettings();
+	void show2dModel();
+
 private:
-	PluginGui mPluginGui;
 	Customizer mCustomizer;
+	Interpreter mInterpreter;
+	PreferencesRobotSettingsPage mRobotSettinsPage;
+	gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;
+	QAction *m2dModelAction;
+	QAction *mRunAction;
+	QAction *mStopAction;
 };
 
 }

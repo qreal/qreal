@@ -29,7 +29,7 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 		}
 	}
 
-	mCustomizer = new DummyCustomizer();
+	mCustomizer = new DefaultCustomizer();
 }
 
 ToolPluginManager::~ToolPluginManager()
@@ -40,16 +40,15 @@ ToolPluginManager::~ToolPluginManager()
 void ToolPluginManager::init(PluginConfigurator const &configurator)
 {
 	foreach (ToolPluginInterface *toolPlugin, mPlugins)
-		toolPlugin->initPlugin(configurator);
+		toolPlugin->init(configurator);
 }
 
-QList<CustomToolInterface::ActionInfo> ToolPluginManager::actions() const
+QList<ActionInfo> ToolPluginManager::actions() const
 {
-	QList<CustomToolInterface::ActionInfo> result;
+	QList<ActionInfo> result;
 	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
-		foreach (CustomToolInterface *customTool, toolPlugin->toolInterfaces())
-			foreach (CustomToolInterface::ActionInfo action, customTool->actions())
-				result << action;
+		foreach (ActionInfo action, toolPlugin->actions())
+			result << action;
 	}
 
 	return result;
@@ -59,9 +58,8 @@ QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() 
 {
 	QList<QPair<QString, PreferencesPage *> > result;
 	foreach (ToolPluginInterface *toolPlugin, mPlugins)
-		foreach (CustomToolInterface *customTool, toolPlugin->toolInterfaces())
-			if (customTool->preferencesPage().second != NULL)
-				result << customTool->preferencesPage();
+		if (toolPlugin->preferencesPage().second != NULL)
+			result << toolPlugin->preferencesPage();
 
 	return result;
 }

@@ -4,7 +4,6 @@
 #include <QtCore/QList>
 
 #include "../toolPluginInterface/toolPluginInterface.h"
-#include "../toolPluginInterface/customToolInterface.h"
 #include "../toolPluginInterface/customizationInterface.h"
 #include "../toolPluginInterface/pluginConfigurator.h"
 #include "../dialogs/preferencesPages/page.h"
@@ -19,13 +18,13 @@ public:
 
 	void init(PluginConfigurator const &configurator);
 	void updateSettings();
-	QList<CustomToolInterface::ActionInfo> actions() const;
+	QList<ActionInfo> actions() const;
 	QList<QPair<QString, PreferencesPage *> > preferencesPages() const;
 	CustomizationInterface *customizer() const;
 
 private:
 
-	class DummyCustomizer : public CustomizationInterface
+	class DefaultCustomizer : public CustomizationInterface
 	{
 		virtual bool showLogicalModelExplorer() const
 		{
@@ -46,7 +45,7 @@ private:
 	QDir mPluginsDir;
 
 	QList<ToolPluginInterface *> mPlugins;
-	DummyCustomizer *mCustomizer;  // Has ownership
+	DefaultCustomizer *mCustomizer;  // Has ownership
 };
 
 }
