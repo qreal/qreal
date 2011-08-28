@@ -1,8 +1,8 @@
 HEADERS += \
 	toolPluginInterface/toolPluginInterface.h \
-	toolPluginInterface/customToolInterface.h \
 	toolPluginInterface/customizationInterface.h \
 	toolPluginInterface/pluginConfigurator.h \
+	toolPluginInterface/actionInfo.h \
 	\
 	toolPluginInterface/usedInterfaces/errorReporterInterface.h \
 	toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h \

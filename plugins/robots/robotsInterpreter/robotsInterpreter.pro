@@ -27,7 +27,6 @@ HEADERS += \
 	sensorConstants.h \
 	robotCommunicationInterface.h \
 	bluetoothRobotCommunication.h \
-	pluginGui.h \
 	robotSettingsPage.h \
 	customizer.h \
 	details/thread.h \
@@ -110,7 +109,6 @@ HEADERS += \
 SOURCES += \
 	interpreter.cpp \
 	bluetoothRobotCommunication.cpp \
-	pluginGui.cpp \
 	robotSettingsPage.cpp \
 	details/thread.cpp \
 	details/blocksTable.cpp \

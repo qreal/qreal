@@ -28,9 +28,6 @@ if (equals(QMAKE_CXX, "g++") : !macx) {
 
 LIBS += -L../bin -lqrrepo -lqrkernel -lqrutils -lqrmc
 
-CONFIG(debug, debug|release):LIBS  += -lqextserialportd
-else:LIBS  += -lqextserialport
-
 unix:DEFINES   = _TTY_POSIX_
 win32:DEFINES  = _TTY_WIN_
 

@@ -5,23 +5,17 @@
 #include <QtCore/QList>
 
 #include "../../qrrepo/repoControlInterface.h"
+#include "../dialogs/preferencesPages/page.h"
 
-#include "customToolInterface.h"
 #include "customizationInterface.h"
 #include "pluginConfigurator.h"
+#include "actionInfo.h"
 
 namespace qReal {
 
 class ToolPluginInterface
 {
 public:
-	virtual void initPlugin(PluginConfigurator const &configurator) = 0;
-
-	virtual QList<CustomToolInterface *> toolInterfaces()
-	{
-		return QList<CustomToolInterface *>();
-	}
-
 	virtual CustomizationInterface* customizationInterface()
 	{
 		return NULL;
@@ -29,6 +23,21 @@ public:
 
 	virtual void updateSettings()
 	{
+	}
+
+	virtual QList<ActionInfo> actions()
+	{
+		return QList<ActionInfo>();
+	}
+
+	virtual void init(PluginConfigurator const &configurator)
+	{
+		Q_UNUSED(configurator);
+	}
+
+	virtual QPair<QString, PreferencesPage *> preferencesPage()
+	{
+		return QPair<QString, PreferencesPage *>(QString(), NULL);
 	}
 };
 
