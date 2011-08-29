@@ -1,5 +1,5 @@
-#include "diffdetailswidget.h"
-#include "../../details/commondifference.h"
+#include "diffDetailsWidget.h"
+#include "../../details/commonDifference.h"
 #include <QScrollArea>
 
 using namespace qReal::diffManager::diffView::detailsWidget;

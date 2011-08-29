@@ -23,6 +23,8 @@ private:
 	QStringList mErrors;
 
 	QString createRepoModel(QString const &workingCopy);
+	bool clearDir(QString const &path);
+	bool removeDir(QString const &path);
 };
 
 }

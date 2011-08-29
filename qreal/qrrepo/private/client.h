@@ -43,8 +43,10 @@ namespace qrRepo {
 			bool svnCheckout(QString const &from, QString const &to);
 			bool svnUpdate(QString const &to);
 			bool svnCommit(QString const &from, QString const &message);
+			bool svnCleanUp(QString const &workingDir);
 			QString svnInfo(QString const &workingDir);
 			QString repoUrl(const QString &workingDir);
+			int currentRevision(QString const &workingDir);
 
 			void printDebug() const;
 

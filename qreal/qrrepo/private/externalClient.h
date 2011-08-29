@@ -21,19 +21,24 @@ namespace qrRepo
 			bool doCommit(QString const &from, QString const &message);
 			bool doAdd(QString const &what, bool force = true);
 			bool doRemove(QString const &what, bool force = true);
+			bool doCleanUp(QString const &what);
 			QString info(QString const &workingDir);
 			QString repoUrl(QString const &workingDir);
+			int currentRevision(QString const &workingDir);
 
 			QStringList newErrors();
 
 
 		private:
-			void initProcess();
-			bool processErrors();
-
 			QString mPathToClient;
 			QProcess *mClientProcess;
 			QStringList mErrors;
+
+			void initProcess();
+			bool startProcess(QStringList const &args);
+			bool checkSvnClientPath();
+			bool processErrors();
+			bool waitForClient();
 		};
 	}
 }

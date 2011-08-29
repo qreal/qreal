@@ -1,5 +1,5 @@
-#include "diffform.h"
-#include "../details/diffprovider.h"
+#include "diffForm.h"
+#include "../details/diffProvider.h"
 #include "../../mainwindow/mainwindow.h"
 
 using namespace qReal::diffManager::diffView;
@@ -24,7 +24,7 @@ void DiffForm::initWindow()
 {
 	setWindowTitle("Diff");
 	setWindowState(Qt::WindowMaximized | Qt::WindowActive);
-	setWindowFlags(Qt::WindowMinMaxButtonsHint);
+	setWindowFlags(Qt::Window | Qt::WindowMinMaxButtonsHint);
 	setWindowOpacity(1.00);
 }
 

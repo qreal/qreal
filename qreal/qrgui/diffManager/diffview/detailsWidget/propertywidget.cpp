@@ -1,5 +1,5 @@
-#include "propertywidget.h"
-#include "../../details/diffstate.h"
+#include "propertyWidget.h"
+#include "../../details/diffState.h"
 
 using namespace qReal::diffManager::diffView::detailsWidget;
 using namespace qReal::diffManager::details;

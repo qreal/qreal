@@ -1,4 +1,4 @@
-#include "logicaldifference.h"
+#include "logicalDifference.h"
 
 using namespace qReal::diffManager::details;
 

@@ -1,6 +1,6 @@
-#include "diffscene.h"
-#include "diffcolorpreferencesdialog.h"
-#include "../details/diffstate.h"
+#include "diffScene.h"
+#include "diffColorPreferencesDialog.h"
+#include "../details/diffState.h"
 
 #include <QSettings>
 #include <QGraphicsColorizeEffect>

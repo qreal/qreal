@@ -295,6 +295,13 @@ bool Client::svnCommit(const QString &from, const QString &message)
 	return result;
 }
 
+bool Client::svnCleanUp(const QString &workingDir)
+{
+	bool result = mExternalClient.doCleanUp(workingDir);
+	mErrors.append(mExternalClient.newErrors());
+	return result;
+}
+
 QString Client::svnInfo(const QString &workingDir)
 {
 	QString result = mExternalClient.info(workingDir);
@@ -309,6 +316,12 @@ QString Client::repoUrl(const QString &workingDir)
 	return result;
 }
 
+int Client::currentRevision(const QString &workingDir)
+{
+	int result = mExternalClient.currentRevision(workingDir);
+	mErrors.append(mExternalClient.newErrors());
+	return result;
+}
 
 QStringList Client::newErrors()
 {

@@ -85,6 +85,7 @@ void PreferencesDialog::initPreferences()
 	ui->workDirLineEdit->setText(settings.value("debugWorkingDirectory", "").toString());
 
 	ui->pathToSvnClientLineEdit->setText(settings.value("pathToSvnClient", "").toString());
+	ui->svnClientTimeoutSpinBox->setValue(settings.value("svnClientTimeout", 30000).toInt());
 	ui->diffCheckoutPathLineEdit->setText(settings.value("diffCheckoutPath", QDir::currentPath()).toString());
 }
 
@@ -130,6 +131,7 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("debugWorkingDirectory", ui->workDirLineEdit->text());
 
 	settings.setValue("pathToSvnClient", ui->pathToSvnClientLineEdit->text());
+	settings.setValue("svnClientTimeout", ui->svnClientTimeoutSpinBox->value());
 	settings.setValue("diffCheckoutPath", ui->diffCheckoutPathLineEdit->text());
 
 	mShowGridAction->setChecked(ui->showGridCheckBox->isChecked());

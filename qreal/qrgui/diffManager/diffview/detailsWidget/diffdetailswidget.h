@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../../details/diffprovider.h"
-#include "idwidget.h"
-#include "parentwidget.h"
-#include "childrenwidget.h"
-#include "propertieswidget.h"
-#include "idlistdiffwidget.h"
+#include "../../details/diffProvider.h"
+#include "idWidget.h"
+#include "parentWidget.h"
+#include "childrenWidget.h"
+#include "propertiesWidget.h"
+#include "idListDiffWidget.h"
 
 #include <QWidget>
 #include <QGridLayout>

@@ -988,25 +988,12 @@
       <attribute name="title">
        <string>Subversion</string>
       </attribute>
-      <widget class="QLabel" name="label_26">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>91</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Path to svn-client</string>
-       </property>
-      </widget>
       <widget class="QLineEdit" name="pathToSvnClientLineEdit">
        <property name="geometry">
         <rect>
-         <x>100</x>
+         <x>111</x>
          <y>20</y>
-         <width>141</width>
+         <width>137</width>
          <height>20</height>
         </rect>
        </property>
@@ -1028,7 +1015,7 @@
        <property name="geometry">
         <rect>
          <x>2</x>
-         <y>50</y>
+         <y>80</y>
          <width>331</width>
          <height>101</height>
         </rect>
@@ -1085,6 +1072,51 @@
          <string>Browse...</string>
         </property>
        </widget>
+      </widget>
+      <widget class="QLabel" name="label_28">
+       <property name="geometry">
+        <rect>
+         <x>13</x>
+         <y>53</y>
+         <width>123</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Svn-client timeout (in ms)</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="svnClientTimeoutSpinBox">
+       <property name="geometry">
+        <rect>
+         <x>143</x>
+         <y>51</y>
+         <width>111</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="minimum">
+        <number>-1</number>
+       </property>
+       <property name="maximum">
+        <number>2000000000</number>
+       </property>
+       <property name="singleStep">
+        <number>100</number>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_26">
+       <property name="geometry">
+        <rect>
+         <x>11</x>
+         <y>23</y>
+         <width>90</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Path to svn-client</string>
+       </property>
       </widget>
      </widget>
     </widget>

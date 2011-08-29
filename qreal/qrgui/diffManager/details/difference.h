@@ -2,9 +2,9 @@
 
 #include "../../qrgui/kernel/ids.h"
 #include "../models/models.h"
-#include "graphicaldifference.h"
-#include "logicaldifference.h"
-#include "elementtype.h"
+#include "graphicalDifference.h"
+#include "logicalDifference.h"
+#include "elementType.h"
 
 namespace qReal
 {

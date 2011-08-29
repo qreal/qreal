@@ -1,4 +1,4 @@
-#include "diffprovider.h"
+#include "diffProvider.h"
 #include "difference.h"
 
 using namespace qReal;

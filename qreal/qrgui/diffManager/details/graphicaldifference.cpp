@@ -1,4 +1,4 @@
-#include "graphicaldifference.h"
+#include "graphicalDifference.h"
 
 using namespace qReal::diffManager::details;
 

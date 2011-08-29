@@ -1,4 +1,4 @@
-#include "propertieswidget.h"
+#include "propertiesWidget.h"
 
 using namespace qReal::diffManager::diffView::detailsWidget;
 using namespace qReal::diffManager::details;

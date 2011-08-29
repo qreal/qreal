@@ -391,6 +391,13 @@ bool RepoApi::doUpdate(const QString &to)
 	return result;
 }
 
+bool RepoApi::doCleanUp(const QString &workingDir)
+{
+	bool result = mClient.svnCleanUp(workingDir);
+	mErrors.append(mClient.newErrors());
+	return result;
+}
+
 QString RepoApi::svnInfo(const QString &workingDir)
 {
 	QString result = mClient.svnInfo(workingDir);
@@ -401,6 +408,13 @@ QString RepoApi::svnInfo(const QString &workingDir)
 QString RepoApi::repoUrl(const QString &workingDir)
 {
 	QString result = mClient.repoUrl(workingDir);
+	mErrors.append(mClient.newErrors());
+	return result;
+}
+
+int RepoApi::currentRevision(const QString &workingDir)
+{
+	int result = mClient.currentRevision(workingDir);
 	mErrors.append(mClient.newErrors());
 	return result;
 }

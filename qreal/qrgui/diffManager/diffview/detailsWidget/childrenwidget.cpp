@@ -1,4 +1,4 @@
-#include "childrenwidget.h"
+#include "childrenWidget.h"
 
 using namespace qReal::diffManager::diffView::detailsWidget;
 using namespace qReal::diffManager::details;

@@ -1,4 +1,4 @@
-#include "diffcolorpreferencesdialog.h"
+#include "diffColorPreferencesDialog.h"
 #include "ui_diffcolorpreferencesdialog.h"
 
 #include <QSettings>

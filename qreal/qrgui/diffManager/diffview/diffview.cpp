@@ -1,5 +1,5 @@
-#include "diffview.h"
-#include "../details/elementtype.h"
+#include "diffView.h"
+#include "../details/elementType.h"
 
 using namespace qReal::diffManager::diffView;
 using namespace qReal::diffManager::details;

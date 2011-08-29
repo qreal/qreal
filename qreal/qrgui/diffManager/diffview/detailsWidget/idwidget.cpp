@@ -1,4 +1,4 @@
-#include "idwidget.h"
+#include "idWidget.h"
 
 using namespace qReal::diffManager::diffView::detailsWidget;
 

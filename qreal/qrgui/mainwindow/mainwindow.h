@@ -81,6 +81,7 @@ public slots:
 	void doCheckout();
 	void doCommit();
 	void doUpdate();
+	void doCleanUp();
 	void showDiff();
 	void showInfo();
 
@@ -199,5 +200,7 @@ private:
 	void setSwitchAlignment(bool isChecked);
 
 	void setIndexesOfPropertyEditor(Id const &id);
+
+	void processSvnErrors();
 };
 }

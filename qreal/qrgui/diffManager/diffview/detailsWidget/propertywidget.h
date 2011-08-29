@@ -1,8 +1,8 @@
 #pragma once
 
-#include "idwidget.h"
-#include "../../details/commondifference.h"
-#include "../../details/diffprovider.h"
+#include "idWidget.h"
+#include "../../details/commonDifference.h"
+#include "../../details/diffProvider.h"
 
 #include <QWidget>
 #include <QLabel>

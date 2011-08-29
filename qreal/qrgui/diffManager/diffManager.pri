@@ -1,47 +1,47 @@
 
 HEADERS += \
-    diffManager/diffmanager.h \
-    diffManager/details/diffprovider.h \
+    diffManager/diffManager.h \
+    diffManager/details/diffProvider.h \
     diffManager/details/difference.h \
-    diffManager/details/diffstate.h \
+    diffManager/details/diffState.h \
     diffManager/details/modification.h \
-    diffManager/diffview/diffview.h \
-    diffManager/diffview/diffcolorpreferencesdialog.h \
-    diffManager/diffview/diffform.h \
-    diffManager/diffview/diffscene.h \
-    diffManager/diffview/detailsWidget/diffdetailswidget.h \
-    diffManager/diffview/detailsWidget/idwidget.h \
-    diffManager/diffview/detailsWidget/parentwidget.h \
-    diffManager/details/graphicaldifference.h \
-    diffManager/details/logicaldifference.h \
-    diffManager/details/commondifference.h \
-    diffManager/details/elementtype.h \
-    diffManager/diffview/detailsWidget/childrenwidget.h \
-    diffManager/diffview/detailsWidget/idlistwidget.h \
-    diffManager/diffview/detailsWidget/propertieswidget.h \
-    diffManager/diffview/detailsWidget/propertywidget.h \
-    diffManager/diffview/detailsWidget/idlistdiffwidget.h
+    diffManager/diffView/diffView.h \
+    diffManager/diffView/diffColorPreferencesDialog.h \
+    diffManager/diffView/diffForm.h \
+    diffManager/diffView/diffScene.h \
+    diffManager/diffView/detailsWidget/diffDetailsWidget.h \
+    diffManager/diffView/detailsWidget/idWidget.h \
+    diffManager/diffView/detailsWidget/parentWidget.h \
+    diffManager/details/graphicalDifference.h \
+    diffManager/details/logicalDifference.h \
+    diffManager/details/commonDifference.h \
+    diffManager/details/elementType.h \
+    diffManager/diffView/detailsWidget/childrenWidget.h \
+    diffManager/diffView/detailsWidget/idListWidget.h \
+    diffManager/diffView/detailsWidget/propertiesWidget.h \
+    diffManager/diffView/detailsWidget/propertyWidget.h \
+    diffManager/diffView/detailsWidget/idListDiffWidget.h
 
 SOURCES += \
-    diffManager/diffmanager.cpp \
-    diffManager/details/diffprovider.cpp \
+    diffManager/diffManager.cpp \
+    diffManager/details/diffProvider.cpp \
     diffManager/details/difference.cpp \
     diffManager/details/modification.cpp \
-    diffManager/diffview/diffview.cpp \
-    diffManager/diffview/diffcolorpreferencesdialog.cpp \
-    diffManager/diffview/diffform.cpp \
-    diffManager/diffview/diffscene.cpp \
-    diffManager/diffview/detailsWidget/diffdetailswidget.cpp \
-    diffManager/diffview/detailsWidget/idwidget.cpp \
-    diffManager/diffview/detailsWidget/parentwidget.cpp \
-    diffManager/details/graphicaldifference.cpp \
-    diffManager/details/logicaldifference.cpp \
-    diffManager/details/commondifference.cpp \
-    diffManager/diffview/detailsWidget/childrenwidget.cpp \
-    diffManager/diffview/detailsWidget/idlistwidget.cpp \
-    diffManager/diffview/detailsWidget/propertieswidget.cpp \
-    diffManager/diffview/detailsWidget/propertywidget.cpp \
-    diffManager/diffview/detailsWidget/idlistdiffwidget.cpp
+    diffManager/diffView/diffView.cpp \
+    diffManager/diffView/diffColorPreferencesDialog.cpp \
+    diffManager/diffView/diffForm.cpp \
+    diffManager/diffView/diffScene.cpp \
+    diffManager/diffView/detailsWidget/diffdetailsWidget.cpp \
+    diffManager/diffView/detailsWidget/idWidget.cpp \
+    diffManager/diffView/detailsWidget/parentWidget.cpp \
+    diffManager/details/graphicalDifference.cpp \
+    diffManager/details/logicalDifference.cpp \
+    diffManager/details/commonDifference.cpp \
+    diffManager/diffView/detailsWidget/childrenWidget.cpp \
+    diffManager/diffView/detailsWidget/idListWidget.cpp \
+    diffManager/diffView/detailsWidget/propertiesWidget.cpp \
+    diffManager/diffView/detailsWidget/propertyWidget.cpp \
+    diffManager/diffView/detailsWidget/idListDiffWidget.cpp
 
 FORMS += \
-    diffManager/diffview/diffcolorpreferencesdialog.ui
+    diffManager/diffView/diffColorPreferencesDialog.ui

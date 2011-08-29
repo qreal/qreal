@@ -1,9 +1,9 @@
 #pragma once
 
-#include "idlistwidget.h"
-#include "idlistdiffwidget.h"
-#include "../../details/diffprovider.h"
-#include "../../details/diffstate.h"
+#include "idListWidget.h"
+#include "idListDiffWidget.h"
+#include "../../details/diffProvider.h"
+#include "../../details/diffState.h"
 
 #include <QWidget>
 #include <QLabel>

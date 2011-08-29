@@ -1,7 +1,7 @@
 #pragma once
 
 #include "difference.h"
-#include "elementtype.h"
+#include "elementType.h"
 #include "../models/models.h"
 
 namespace qReal

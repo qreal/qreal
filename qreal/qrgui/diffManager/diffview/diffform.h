@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../details/diffprovider.h"
+#include "../details/diffProvider.h"
 #include "../../mainwindow/mainwindow.h"
-#include "diffview.h"
-#include "detailsWidget/diffdetailswidget.h"
+#include "diffView.h"
+#include "detailsWidget/diffDetailsWidget.h"
 
 #include <QDialog>
 #include <QGridLayout>

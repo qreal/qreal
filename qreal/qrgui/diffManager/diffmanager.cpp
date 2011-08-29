@@ -1,8 +1,8 @@
-#include "diffmanager.h"
-#include "diffview/diffform.h"
-#include "../view/editorview.h"
+#include "diffManager.h"
+#include "diffView/diffForm.h"
+#include "../view/editorView.h"
 #include "../mainwindow/mainwindow.h"
-#include "details/diffprovider.h"
+#include "details/diffProvider.h"
 
 #include <QSettings>
 
@@ -30,12 +30,12 @@ bool DiffManager::showDiff(QString const &workingDir)
 		return false;
 	}
 
-	DiffForm diffForm(mMainWindow, new DiffProvider(mRepoModel, mWorkingCopyModel), NULL);
+	DiffForm diffForm(mMainWindow, new DiffProvider(mRepoModel, mWorkingCopyModel), mMainWindow);
 	diffForm.exec();
-
 
 	delete mWorkingCopyModel;
 	delete mRepoModel;
+	removeDir(repoModelDir);
 	return true;
 }
 
@@ -47,6 +47,17 @@ QString DiffManager::createRepoModel(const QString &workingCopy)
 		return "";
 	QSettings settings("SPbSU", "QReal");
 	QString checkoutDir = settings.value("diffCheckoutPath", QDir::currentPath()).toString()+"/CheckoutForDiff";
+	if (!removeDir(checkoutDir))
+	{
+		mErrors.append("Can`t remove directory " + checkoutDir);
+		return "";
+	}
+	QDir dir;
+	if (!dir.mkpath(checkoutDir))
+	{
+		mErrors.append("Can`t create directory " + checkoutDir);
+		return "";
+	}
 	bool ok = mWorkingCopyModel->repoControlApi().doCheckout(repoUrl, checkoutDir);
 	mErrors.append(mWorkingCopyModel->repoControlApi().newErrors());
 	if (!ok)
@@ -62,4 +73,50 @@ QStringList DiffManager::newErrors()
 	QStringList result(mErrors);
 	mErrors.clear();
 	return result;
+}
+
+bool DiffManager::clearDir(QString const &path)
+{
+	QDir dir(path);
+	if (!dir.exists())
+	{
+		return true;
+	}
+	foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden))
+	{
+		if (fileInfo.isDir())
+		{
+			if (!clearDir(fileInfo.filePath()) || !dir.rmdir(fileInfo.fileName()))
+			{
+				return false;
+			}
+		}
+		else
+		{
+			QFile file(fileInfo.filePath());
+			if (!file.setPermissions(QFile::ReadOther | QFile::WriteOther | QFile::ExeOther))
+			{
+				return false;
+			}
+			if (!file.remove())
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool DiffManager::removeDir(QString const &path)
+{
+	QDir dir(path);
+	if (!dir.exists())
+	{
+		return true;
+	}
+	if (!clearDir(path))
+	{
+		return false;
+	}
+	return dir.rmdir(path);
 }

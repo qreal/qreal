@@ -97,8 +97,10 @@ namespace qrRepo {
 		bool doCheckout(const QString &from, const QString &to);
 		bool doCommit(const QString &from, const QString &message);
 		bool doUpdate(const QString &to);
+		bool doCleanUp(const QString &workingDir);
 		QString svnInfo(const QString &workingDir);
 		QString repoUrl(const QString &workingDir);
+		int currentRevision(const QString &workingDir);
 
 		// "√лобальные" методы, позвол€ющие делать запросы к модели в целом.
 		//Returns all elements with .element() == type.element()

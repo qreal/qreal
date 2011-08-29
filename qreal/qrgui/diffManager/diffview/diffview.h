@@ -1,9 +1,9 @@
 #pragma once
 
-#include "diffscene.h"
-#include "detailsWidget/diffdetailswidget.h"
-#include "../../view/editorview.h"
-#include "../details/diffprovider.h"
+#include "diffScene.h"
+#include "detailsWidget/diffDetailsWidget.h"
+#include "../../view/editorView.h"
+#include "../details/diffProvider.h"
 #include "../../mainwindow/mainwindow.h"
 #include "../../models/models.h"
 

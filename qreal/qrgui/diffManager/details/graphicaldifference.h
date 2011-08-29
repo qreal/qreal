@@ -1,7 +1,7 @@
 #pragma once
 
-#include "commondifference.h"
-#include "../../qrrepo/commonrepoapi.h"
+#include "commonDifference.h"
+#include "../../qrrepo/commonRepoApi.h"
 
 namespace qReal
 {

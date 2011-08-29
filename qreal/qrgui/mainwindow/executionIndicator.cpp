@@ -5,9 +5,11 @@
 
 using namespace qReal::gui;
 
-ExecutionIndicator::ExecutionIndicator(QWidget *parent, const QString &message) : QDialog(parent)
+ExecutionIndicator::ExecutionIndicator(QWidget *parent, const QString &message)
+	: QDialog(parent)
 {
-	mLabel = new QLabel(message);
+	mLabel = new QLabel(this);
+	mLabel->setText(message);
 	mLayout = new QGridLayout(this);
 	mLayout->addWidget(mLabel,0,0);
 	QRect rect(QApplication::desktop()->screenGeometry());
@@ -15,4 +17,5 @@ ExecutionIndicator::ExecutionIndicator(QWidget *parent, const QString &message) 
 	setWindowModality(Qt::WindowModal);
 	setModal(true);
 	setWindowFlags(Qt::FramelessWindowHint);
+	resize(300, 100);
 }

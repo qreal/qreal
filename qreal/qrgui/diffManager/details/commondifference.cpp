@@ -1,4 +1,4 @@
-#include "commondifference.h"
+#include "commonDifference.h"
 #include "../models/models.h"
 
 using namespace qReal;

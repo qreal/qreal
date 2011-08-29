@@ -113,6 +113,7 @@ MainWindow::MainWindow()
 	connect(mUi->actionUpdate, SIGNAL(triggered()), this, SLOT(doUpdate()));	
 	connect(mUi->actionDiff, SIGNAL(triggered()), this, SLOT(showDiff()));
 	connect(mUi->actionInfo, SIGNAL(triggered()), this, SLOT(showInfo()));
+	connect(mUi->actionClean_Up, SIGNAL(triggered()), this, SLOT(doCleanUp()));
 
 	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 	connect(mUi->actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
@@ -590,12 +591,7 @@ void MainWindow::doCheckout()
 
 		if (!mModels->repoControlApi().doCheckout(url, path))
 		{
-			QStringList errors(mModels->repoControlApi().newErrors());
-			foreach (QString error, errors)
-			{
-				mErrorReporter->addError(error);
-			}
-			mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+			processSvnErrors();
 		}
 		else
 		{
@@ -605,7 +601,7 @@ void MainWindow::doCheckout()
 			settings.setValue("workingDir", path);
 			settings.setValue("checkoutDirectory", path);
 			settings.setValue("checkoutUrl", url);
-			QMessageBox::information(this, tr("Success!"), tr("Checkout succeeded. Working dir was setted to ") + path);
+			QMessageBox::information(this, tr("Success!"), tr("Checkout succeeded. Working dir was set to ") + path);
 		}
 		indicator.hide();
 	}
@@ -637,12 +633,7 @@ void MainWindow::doCommit()
 	indicator.show();
 	if (!mModels->repoControlApi().doCommit(path, message))
 	{
-		QStringList errors(mModels->repoControlApi().newErrors());
-		foreach (QString error, errors)
-		{
-			mErrorReporter->addError(error);
-		}
-		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+		processSvnErrors();
 	}
 	else
 	{
@@ -653,9 +644,6 @@ void MainWindow::doCommit()
 
 void MainWindow::doUpdate()
 {
-//	QString select = tr("Select directory to be updated");
-//	QString path = QFileDialog::getExistingDirectory(this, select);
-
 	QSettings settings("SPbSU", "QReal");
 	QString path = settings.value("workingDir", "").toString();
 	if (path.isEmpty())
@@ -666,16 +654,38 @@ void MainWindow::doUpdate()
 
 	if (!mModels->repoControlApi().doUpdate(path))
 	{
-		QStringList errors(mModels->repoControlApi().newErrors());
-		foreach (QString error, errors)
-		{
-			mErrorReporter->addError(error);
-		}
-		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+		processSvnErrors();
 	}
 	else
 	{
-		QMessageBox::information(this, tr("Success!"), tr("Updated successfully."));
+		int revision = mModels->repoControlApi().currentRevision(path);
+		if (revision < 0)
+		{
+			processSvnErrors();
+		}
+		QString message = (revision < 0) ? tr("Updated successfully.") : tr("Updated to revision ") + QString::number(revision);
+		QMessageBox::information(this, tr("Success!"), message);
+	}
+	indicator.hide();
+}
+
+void MainWindow::doCleanUp()
+{
+	QSettings settings("SPbSU", "QReal");
+	QString path = settings.value("workingDir", "").toString();
+	if (path.isEmpty())
+		return;
+
+	gui::ExecutionIndicator indicator(this, tr("Cleaning up, please wait..."));
+	indicator.show();
+
+	if (!mModels->repoControlApi().doCleanUp(path))
+	{
+		processSvnErrors();
+	}
+	else
+	{
+		QMessageBox::information(this, tr("Success!"), "Clean Up success");
 	}
 	indicator.hide();
 }
@@ -689,12 +699,9 @@ void MainWindow::showDiff()
 		return;
 	if (!diffManager->showDiff(path))
 	{
-		QStringList errors(diffManager->newErrors());
-		foreach (QString error, errors)
-		{
-			mErrorReporter->addError(error);
-		}
-		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+		processSvnErrors();
+		QMessageBox::warning(this, "Svn Diff", "Diff Failed!");
+		return;
 	}
 	QMessageBox::information(this, "Svn Diff", "Diff Success!");
 }
@@ -710,13 +717,18 @@ void MainWindow::showInfo()
 	}
 	else
 	{
-		QStringList errors(mModels->repoControlApi().newErrors());
-		foreach (QString error, errors)
-		{
-			mErrorReporter->addError(error);
-		}
-		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+		processSvnErrors();
 	}
+}
+
+void MainWindow::processSvnErrors()
+{
+	QStringList errors(mModels->repoControlApi().newErrors());
+	foreach (QString error, errors)
+	{
+		mErrorReporter->addError(error);
+	}
+	mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
 }
 
 void MainWindow::exportToXmi()

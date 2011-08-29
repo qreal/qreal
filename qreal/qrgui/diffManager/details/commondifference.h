@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../qrrepo/commonrepoapi.h"
+#include "../../qrrepo/commonRepoApi.h"
 #include "../../qrgui/kernel/ids.h"
 #include "../models/models.h"
 #include "diffState.h"
