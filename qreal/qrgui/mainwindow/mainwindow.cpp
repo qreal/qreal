@@ -627,7 +627,6 @@ void MainWindow::doCommit()
 	{
 		message = "no_message";
 	}
-	message = "\""+message+"\"";
 
 	gui::ExecutionIndicator indicator(this, tr("Commiting, please wait..."));
 	indicator.show();
