@@ -194,11 +194,13 @@ int EditorViewScene::launchEdgeMenu(EdgeElement* edge, NodeElement* node, QPoint
 	foreach(PossibleEdge pEdge, edge->getPossibleEdges())
 	{
 		QString target;
-		if (pEdge.first.first.element() == node->id().element())
+		if (pEdge.first.first.element() == node->id().element()) {
 			target = pEdge.first.second.element();
-		else if ((pEdge.first.second.element() == node->id().element()) && (!pEdge.second.first))
+		} else if ((pEdge.first.second.element() == node->id().element()) && (!pEdge.second.first)) {
 			target = pEdge.first.first.element();
-		else continue;
+		} else {
+			continue;
+		}
 
 		QAction* element = new QAction(target, createElemMenu);
 		createElemMenu->addAction(element);
@@ -216,10 +218,11 @@ int EditorViewScene::launchEdgeMenu(EdgeElement* edge, NodeElement* node, QPoint
 
 	int result = 0;
 	if (executed) {
-		if (executed == mWindow->actionDeleteFromDiagram())
+		if (executed == mWindow->actionDeleteFromDiagram()) {
 			result = -1;
-		else if (!(executed->text() == tr("Discard")))
+		} else if (!(executed->text() == tr("Discard"))) {
 			result = +1;
+		}
 	}
 
 	//	Cleaning.
