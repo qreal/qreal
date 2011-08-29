@@ -47,6 +47,7 @@ QString DiffManager::createRepoModel(const QString &workingCopy)
 		return "";
 	QSettings settings("SPbSU", "QReal");
 	QString checkoutDir = settings.value("diffCheckoutPath", QDir::currentPath()).toString()+"/CheckoutForDiff";
+	// Checkout operation doesn`t work if checkout directory is not empty
 	if (!removeDir(checkoutDir))
 	{
 		mErrors.append("Can`t remove directory " + checkoutDir);
@@ -94,6 +95,7 @@ bool DiffManager::clearDir(QString const &path)
 		else
 		{
 			QFile file(fileInfo.filePath());
+			// For removing readonly files (in .svn directory)
 			if (!file.setPermissions(QFile::ReadOther | QFile::WriteOther | QFile::ExeOther))
 			{
 				return false;

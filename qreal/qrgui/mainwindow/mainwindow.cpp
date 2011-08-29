@@ -610,9 +610,6 @@ void MainWindow::doCheckout()
 
 void MainWindow::doCommit()
 {
-//	QString select = tr("Select directory to commit");
-//	QString path = QFileDialog::getExistingDirectory(this, select);
-
 	QSettings settings("SPbSU", "QReal");
 	QString path = settings.value("workingDir", "").toString();
 	if (path.isEmpty())
