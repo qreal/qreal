@@ -6,7 +6,7 @@
   <properties>
     <QString key="displayedName" value=""/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
-    <QString key="include" value="../commonXml/kernel_metamodel.xml, x../commonXml/basicbehaviors_metamodel.xml, ../commonXml/basicactions_metamodel.xml, "/>
+    <QString key="include" value="../commonXml/kernel_metamodel.xml, ../commonXml/basicbehaviors_metamodel.xml, ../commonXml/basicactions_metamodel.xml, "/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
     <links type="qReal::IdList"/>

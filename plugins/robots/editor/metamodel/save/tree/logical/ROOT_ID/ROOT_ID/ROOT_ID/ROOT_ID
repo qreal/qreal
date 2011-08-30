@@ -25,9 +25,6 @@
     <object id="qrm:/MetaEditor/MetaEditor/Inheritance/{bd31b05c-d12b-46a4-8e58-999b342c58bc}"/>
     <object id="qrm:/MetaEditor/MetaEditor/Inheritance/{30f4e3ed-1ec7-45ae-91fd-38d6666f02c4}"/>
     <object id="qrm:/MetaEditor/MetaEditor/PackageDiagram/{3a3c48a2-cc7a-4675-8983-d904079b5d53}"/>
-    <object id="qrm:/MetaEditor/MetaEditor/MetamodelDiagram/{886ff731-99a9-4489-98fa-d2c1f184d532}"/>
-    <object id="qrm:/MetaEditor/MetaEditor/MetamodelDiagram/{ba682f1b-8afe-4259-a3d8-b718013f1078}"/>
-    <object id="qrm:/MetaEditor/MetaEditor/MetamodelDiagram/{5d58b12b-259c-433d-b237-7994756ea97a}"/>
   </children>
   <properties>
     <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
