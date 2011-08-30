@@ -152,7 +152,7 @@ private slots:
 	void closeTab(QModelIndex const &graphicsIndex);
 //	void exterminate();
 	void generateEditor();
-	void generateEditorWithQRMC();
+//	void generateEditorWithQRMC();
 	void parseEditorXml();
 	void generateToHascol();
 	void parseHascol();

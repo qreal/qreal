@@ -260,7 +260,7 @@ void MainWindow::connectActions()
 //	connect(mUi->actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
 //	connect(mUi->actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
 	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
-	connect(mUi->actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
+//	connect(mUi->actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
 	connect(mUi->actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 	connect(mUi->actionFlash_Robot, SIGNAL(triggered()), this, SLOT(flashRobot()));
@@ -889,7 +889,7 @@ void MainWindow::generateEditor()
 	}
 }
 
-
+/*
 void MainWindow::generateEditorWithQRMC()
 {
 	qrmc::MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../qrmc", mSaveDir);
@@ -982,6 +982,7 @@ void MainWindow::generateEditorWithQRMC()
 	progress->close();
 	delete progress;
 }
+*/
 
 
 void MainWindow::loadNewEditor(const QString &directoryName, const QString &metamodelName,
