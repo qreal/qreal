@@ -1,6 +1,6 @@
 #include "diffManager.h"
 #include "diffView/diffForm.h"
-#include "../view/editorView.h"
+#include "../view/editorview.h"
 #include "../mainwindow/mainwindow.h"
 #include "details/diffProvider.h"
 
