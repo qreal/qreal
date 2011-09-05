@@ -2,6 +2,8 @@
 
 #include "details/autoconfigurer.h"
 #include "details/robotImplementations/unrealRobotModelImplementation.h"
+#include "details/bluetoothRobotCommunicationThread.h"
+#include "details/usbRobotCommunicationThread.h"
 
 #include <QtCore/QDebug>
 
@@ -19,6 +21,7 @@ Interpreter::Interpreter()
 	, mState(idle)
 	, mRobotModel(new RobotModel())
 	, mBlocksTable(NULL)
+	, mRobotCommunication(new RobotCommunication(SettingsManager::value("valueOfCommunication", "bluetooth").toString())
 	, mBluetoothRobotCommunication(NULL)
 {
 	mParser = NULL;
@@ -283,4 +286,18 @@ void Interpreter::setBluetoothPortName(QString const &portName)
 void Interpreter::setRobotModelType(robotModelType::robotModelTypeEnum robotModelType)
 {
 	setRobotImplementation(robotModelType, mBluetoothRobotCommunication);
+}
+
+void Interpreter::setCommunicator(const QString &valueOfCommunication, const QString &portName)
+{
+	QSettings settings("SPbSU", "QReal");
+	//QString const defaultBluetoothPortName = settings.value("bluetoothPortName", "").toString();
+	if (valueOfCommunication == "bluetooth") {
+		BluetoothRobotCommunicationThread *bluetoothCommunicationThread = new BluetoothRobotCommunicationThread();
+		mRobotCommunication->setRobotCommunicationThreadObject(bluetoothCommunicationThread);
+	} else {
+		UsbRobotCommunicationThread *usbCommunicationThread = new UsbRobotCommunicationThread();
+		mRobotCommunication->setRobotCommunicationThreadObject(usbCommunicationThread);
+	}
+	mRobotCommunication->setPortName(portName);
 }

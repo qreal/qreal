@@ -4,6 +4,7 @@
 #include <QtCore/QByteArray>
 #include <QtCore/QThread>
 
+#include "robotCommunicationThreadInterface.h"
 #include "robotCommandConstants.h"
 
 class QextSerialPort;
@@ -13,7 +14,7 @@ namespace interpreters {
 namespace robots {
 namespace details {
 
-class BluetoothRobotCommunicationThread : public QObject {
+class BluetoothRobotCommunicationThread : public RobotCommunicationThreadInterface {
 	Q_OBJECT
 
 public:

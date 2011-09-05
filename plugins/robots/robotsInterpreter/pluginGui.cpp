@@ -89,4 +89,7 @@ void PluginGui::updateSettings()
 		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopAction);
 	else
 		mInterpreter.showD2ModelWidget(false);
+
+	PreferencesRobotSettingsPage robotSettingsPage;
+	mInterpreter.setCommunicator(robotSettingsPage.selectedCommunication(), robotSettingsPage.selectedPortName());
 }
