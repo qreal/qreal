@@ -63,7 +63,7 @@ private:
 	SensorsConfiguration mSensorsConfiguration;
 	WorldModel mWorldModel;
 
-	void init();
+	void initPosition();
 	Motor* initMotor(int radius, int speed, long unsigned int degrees, int port);
 	void countNewCoord();
 	void countBeep();

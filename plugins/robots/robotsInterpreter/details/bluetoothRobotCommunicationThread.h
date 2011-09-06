@@ -32,7 +32,7 @@ public slots:
 	void reconnect(QString const &portName);
 	void disconnect();
 	void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize
-			, details::lowLevelInputPort::InputPortEnum const &port);
+			, inputPort::InputPortEnum const &port);
 
 private:
 	class SleeperThread : public QThread
@@ -48,8 +48,8 @@ private:
 
 	QextSerialPort *mPort;
 
-	bool waitForBytes(int bytes, lowLevelInputPort::InputPortEnum const &port) const;
-	int i2cBytesReady(lowLevelInputPort::InputPortEnum const &port) const;
+	bool waitForBytes(int bytes, inputPort::InputPortEnum const &port) const;
+	int i2cBytesReady(inputPort::InputPortEnum const &port) const;
 
 	void send(QByteArray const &buffer) const;
 	QByteArray receive(int size) const;

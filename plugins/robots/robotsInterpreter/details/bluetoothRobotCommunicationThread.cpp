@@ -11,7 +11,7 @@ using namespace qReal::interpreters::robots::details;
 BluetoothRobotCommunicationThread::BluetoothRobotCommunicationThread()
 	: mPort(NULL)
 {
-	qRegisterMetaType<details::lowLevelInputPort::InputPortEnum>("details::lowLevelInputPort::InputPortEnum");
+	qRegisterMetaType<inputPort::InputPortEnum>("details::inputPort::InputPortEnum");
 }
 
 BluetoothRobotCommunicationThread::~BluetoothRobotCommunicationThread()
@@ -43,7 +43,7 @@ void BluetoothRobotCommunicationThread::connect(QString const &portName)
 		SleeperThread::msleep(1000);  // Give port some time to close
 	}
 
-	mPort = new QextSerialPort(portName);
+	mPort = new QextSerialPort(portName, QextSerialPort::Polling);
 	mPort->setBaudRate(BAUD9600);
 	mPort->setFlowControl(FLOW_OFF);
 	mPort->setParity(PAR_NONE);
@@ -84,7 +84,7 @@ void BluetoothRobotCommunicationThread::disconnect()
 
 void BluetoothRobotCommunicationThread::sendI2C(QObject *addressee
 		, QByteArray const &buffer, unsigned const responseSize
-		, details::lowLevelInputPort::InputPortEnum const &port)
+		, inputPort::InputPortEnum const &port)
 {
 	if (!mPort) {
 		emit response(addressee, QByteArray());
@@ -134,7 +134,7 @@ void BluetoothRobotCommunicationThread::sendI2C(QObject *addressee
 	}
 }
 
-bool BluetoothRobotCommunicationThread::waitForBytes(int bytes, lowLevelInputPort::InputPortEnum const &port) const
+bool BluetoothRobotCommunicationThread::waitForBytes(int bytes, inputPort::InputPortEnum const &port) const
 {
 	time_t const startTime = clock();
 	do {
@@ -147,7 +147,7 @@ bool BluetoothRobotCommunicationThread::waitForBytes(int bytes, lowLevelInputPor
 	} while (true);
 }
 
-int BluetoothRobotCommunicationThread::i2cBytesReady(lowLevelInputPort::InputPortEnum const &port) const
+int BluetoothRobotCommunicationThread::i2cBytesReady(inputPort::InputPortEnum const &port) const
 {
 	QByteArray command(5, 0);
 	command[0] = 0x03;

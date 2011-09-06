@@ -192,7 +192,6 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const 
 			buffer += (byte)outputBufferPtr[i];
 			buffer += " ";
 		}
-		qDebug() << buffer;
 		qDebug() << "[14] = " << (byte)outputBufferPtr[14] << "[15] =" << (byte)outputBufferPtr[15];
 //		if ((byte)outputBufferPtr[14] == 181)
 //			outputBufferPtr[14] = 1;

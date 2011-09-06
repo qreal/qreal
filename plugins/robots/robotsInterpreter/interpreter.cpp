@@ -21,8 +21,8 @@ Interpreter::Interpreter()
 	, mState(idle)
 	, mRobotModel(new RobotModel())
 	, mBlocksTable(NULL)
-	, mRobotCommunication(new RobotCommunication(SettingsManager::value("valueOfCommunication", "bluetooth").toString())
-	, mBluetoothRobotCommunication(NULL)
+	, mRobotCommunication(new RobotCommunication(SettingsManager::value("valueOfCommunication", "bluetooth").toString()))
+	, mImplementationType(robotModelType::null)
 {
 	mParser = NULL;
 	mBlocksTable = NULL;
@@ -43,10 +43,10 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 	mParser = new RobotsBlockParser(mInterpretersInterface->errorReporter());
 	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel, mInterpretersInterface->errorReporter(), mParser);
 
-	QString const comPort = SettingsManager::instance()->value("bluetoothPortName", "").toString();
-	mBluetoothRobotCommunication = new BluetoothRobotCommunication(comPort);
+//	QString const comPort = SettingsManager::instance()->value("bluetoothPortName", "").toString();
+//	mBluetoothRobotCommunication = new BluetoothRobotCommunication(comPort);
 	robotModelType::robotModelTypeEnum const modelType = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel", "1").toInt());
-	setRobotImplementation(modelType, mBluetoothRobotCommunication);
+	setRobotImplementation(modelType);
 }
 
 Interpreter::~Interpreter()
@@ -58,6 +58,9 @@ Interpreter::~Interpreter()
 
 void Interpreter::interpret()
 {
+	if (mImplementationType != robotModelType::real)
+		mRobotModel->init();
+
 	mInterpretersInterface->errorReporter()->clear();
 
 	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
@@ -95,8 +98,10 @@ void Interpreter::stop()
 {
 	mRobotModel->stopRobot();
 	mState = idle;
-	foreach (Thread *thread, mThreads)
+	foreach (Thread *thread, mThreads) {
 		delete thread;
+		mThreads.removeAll(thread);
+	}
 	mBlocksTable->setFailure();
 	/*mBlocksTable->clear();
 	mThreads.clear();
@@ -118,16 +123,18 @@ void Interpreter::setD2ModelWidgetActions(QAction *runAction, QAction *stopActio
 	mD2ModelWidget->setD2ModelWidgetActions(runAction, stopAction);
 }
 
-void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum implementationType, RobotCommunicationInterface * const robotCommunicationInterface)
+void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum implementationType)
 {
 	disconnect(&mRobotModel->robotImpl(), SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 	mConnected = false;
 	robotImplementations::AbstractRobotModelImplementation *robotImpl =
-			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, robotCommunicationInterface, mD2RobotModel);
+			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, mRobotCommunication, mD2RobotModel);
 	setRobotImplementation(robotImpl);
 	connect(robotImpl, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
-	if (implementationType != robotModelType::real)
+	mImplementationType = implementationType;
+	if (mImplementationType != robotModelType::real)
 		mRobotModel->init();
+
 }
 
 void Interpreter::connectedSlot(bool success)
@@ -278,20 +285,20 @@ void Interpreter::connectToRobot()
 	mRobotModel->init();
 }
 
-void Interpreter::setBluetoothPortName(QString const &portName)
-{
-	mBluetoothRobotCommunication->setPortName(portName);
-}
+//void Interpreter::setBluetoothPortName(QString const &portName)
+//{
+//	mBluetoothRobotCommunication->setPortName(portName);
+//}
 
 void Interpreter::setRobotModelType(robotModelType::robotModelTypeEnum robotModelType)
 {
-	setRobotImplementation(robotModelType, mBluetoothRobotCommunication);
+	setRobotImplementation(robotModelType);
 }
 
 void Interpreter::setCommunicator(const QString &valueOfCommunication, const QString &portName)
 {
 	QSettings settings("SPbSU", "QReal");
-	//QString const defaultBluetoothPortName = settings.value("bluetoothPortName", "").toString();
+	QString const defaultBluetoothPortName = settings.value("bluetoothPortName", "").toString();
 	if (valueOfCommunication == "bluetooth") {
 		BluetoothRobotCommunicationThread *bluetoothCommunicationThread = new BluetoothRobotCommunicationThread();
 		mRobotCommunication->setRobotCommunicationThreadObject(bluetoothCommunicationThread);

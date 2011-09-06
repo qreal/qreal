@@ -19,7 +19,7 @@ qrutils.depends = qrkernel
 qrrepo.depends = qrkernel qrutils
 qrxc.depends = qrutils
 #qrmc.depends = qrrepo
-#qrmc.file = qrmc\\qrmc-lib.pro
+#qrmc.file = qrmc/qrmc-lib.pro
 
 qrgui.depends = \
 #	doc \
@@ -28,6 +28,7 @@ qrgui.depends = \
 	qrutils \
 	qrkernel \
 	qtpropertybrowser \
+#	qrmc \
 
 plugins.depends = \
 	qrxc \

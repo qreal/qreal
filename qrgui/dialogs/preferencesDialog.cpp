@@ -25,6 +25,11 @@ PreferencesDialog::~PreferencesDialog()
 {
 	SettingsManager::setValue("currentPreferencesTab", ui->listWidget->currentRow());
 
+	// UIs of custom pages should be deleted from plugins, so we nullify their parents here
+	// to prevent double destruction
+	foreach (PreferencesPage *page, mCustomPages.values())
+		page->setParent(NULL);
+
 	delete ui;
 
 	delete mBehaviourPage;
@@ -33,9 +38,6 @@ PreferencesDialog::~PreferencesDialog()
 	delete mEditorPage;
 	delete mMiscellaniousPage;
 	delete mFeaturesPage;
-
-//	foreach (PreferencesPage *page, mCustomPages.values())
-//		delete page;
 }
 
 void PreferencesDialog::init(QAction * const showGridAction, QAction * const showAlignmentAction

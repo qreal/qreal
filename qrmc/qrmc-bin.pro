@@ -9,7 +9,7 @@ DESTDIR = ../bin
 
 !macx {
 	CONFIG += rpath_libdirs
-	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD),-rpath,$(PWD)/../qrgui"
+	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD),-rpath,$(PWD)/../bin"
 }
 
 # Input
@@ -27,7 +27,7 @@ SOURCES += \
 	editor.cpp \
 	main.cpp
 
-LIBS += -L../bin -lqrrepo -lqrkernel
+LIBS += -L../bin -lqrrepo -lqrkernel -lqrutils
 
 OBJECTS_DIR = .obj
 UI_DIR = .ui

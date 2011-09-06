@@ -4,8 +4,6 @@
 
 #include "../../../qrkernel/ids.h"
 
-#include "robotCommunicationInterface.h"
-#include "bluetoothRobotCommunication.h"
 #include "details/robotCommunication.h"
 #include "sensorConstants.h"
 #include "details/robotParts/robotModel.h"
@@ -14,6 +12,7 @@
 #include "details/d2RobotModel/d2RobotModel.h"
 
 #include "details/robotsBlockParser.h"
+#include "details/bluetoothRobotCommunicationThread.h"
 
 namespace qReal {
 namespace interpreters {
@@ -38,11 +37,10 @@ public:
 			, sensorType::SensorTypeEnum const &port2
 			, sensorType::SensorTypeEnum const &port3
 			, sensorType::SensorTypeEnum const &port4);
-	void setRobotImplementation(robotModelType::robotModelTypeEnum implementationType
-			, RobotCommunicationInterface * const robotCommunicationInterface);
+	void setRobotImplementation(robotModelType::robotModelTypeEnum implementationType);
 
 	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
-	void setBluetoothPortName(QString const &portName);
+//	void setBluetoothPortName(QString const &portName);
 	void setRobotModelType(robotModelType::robotModelTypeEnum robotModelType);
 	void setCommunicator(const QString &valueOfCommunication, const QString &portName);
 
@@ -88,7 +86,7 @@ private:
 
 	bool mConnected;
 
-	BluetoothRobotCommunication *mBluetoothRobotCommunication;
+	robotModelType::robotModelTypeEnum mImplementationType;
 
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	Id const findStartingElement(Id const &diagram) const;

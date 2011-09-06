@@ -1,9 +1,10 @@
 #include "bluetoothSensorImplementation.h"
 #include "../../robotParts/robotModel.h"
+
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
-BluetoothSensorImplementation::BluetoothSensorImplementation(RobotCommunicationInterface *const robotCommunicationInterface
+BluetoothSensorImplementation::BluetoothSensorImplementation(RobotCommunication *const robotCommunicationInterface
 		, lowLevelSensorType::SensorTypeEnum const &sensorType
 		, sensorMode::SensorModeEnum const &sensorMode
 		, inputPort::InputPortEnum const &port)

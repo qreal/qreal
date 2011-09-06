@@ -23,6 +23,7 @@ public:
 	~PreferencesRobotSettingsPage();
 
 	void save();
+	QString selectedPortName() const;
 	QString selectedCommunication() const;
 
 protected:
@@ -36,7 +37,6 @@ private:
 	void initRobotModelType(robotModelType::robotModelTypeEnum type);
 	void initTypeOfCommunication(QString type);
 
-	QString selectedPortName() const;
 	sensorType::SensorTypeEnum selectedPort1Sensor() const;
 	sensorType::SensorTypeEnum selectedPort2Sensor() const;
 	sensorType::SensorTypeEnum selectedPort3Sensor() const;

@@ -82,6 +82,8 @@
      <string>Tools</string>
     </property>
     <addaction name="actionGenerate_Editor"/>
+    <addaction name="actionGenerate_Editor_qrmc"/>
+    <addaction name="actionParse_Editor_xml"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>

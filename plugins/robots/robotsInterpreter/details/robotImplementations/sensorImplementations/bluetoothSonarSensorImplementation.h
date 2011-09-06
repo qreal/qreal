@@ -13,7 +13,7 @@ class BluetoothSonarSensorImplementation : public BluetoothSensorImplementation
 {
 	Q_OBJECT
 public:
-	BluetoothSonarSensorImplementation(RobotCommunicationInterface *robotCommunicationInterface
+	BluetoothSonarSensorImplementation(RobotCommunication *robotCommunicationInterface
 			, inputPort::InputPortEnum const &port);
 	virtual void read();
 

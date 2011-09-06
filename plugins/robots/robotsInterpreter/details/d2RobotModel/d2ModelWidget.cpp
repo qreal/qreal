@@ -87,7 +87,8 @@ void D2ModelWidget::init(bool isActive)
 		drawInitialRobot();
 
 	mUi->graphicsView->show();
-	show();
+	if (isHidden())
+		show();
 	update();
 }
 
@@ -189,7 +190,7 @@ QPolygonF const D2ModelWidget::robotBoundingPolygon(QPointF const &coord, qreal 
 {
 	Q_UNUSED(angle)
 	Q_UNUSED(coord)
-	QRectF rect = mRobot->boundingRect();
+	QRectF rect = mRobot->mapRectToScene(mRobot->boundingRect());
 	return QPolygonF() << rect.topLeft() << rect.topRight() << rect.bottomRight() << rect.bottomLeft();
 }
 

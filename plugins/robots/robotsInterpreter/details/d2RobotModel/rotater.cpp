@@ -36,6 +36,8 @@ void Rotater::setMasterItem(QGraphicsItem *masterItem)
 
 void Rotater::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
 {
+	return; // doesn't work anyway
+
 	Q_UNUSED(style)
 	Q_UNUSED(widget)
 
