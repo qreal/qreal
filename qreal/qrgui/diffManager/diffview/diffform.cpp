@@ -14,6 +14,11 @@ DiffForm::DiffForm(qReal::MainWindow *mainWindow, DiffProvider *diffProvider, QW
 	initButton();
 	initViews();
 	initDiffDetailsWidget();
+	QList<int> sizes;
+	sizes << 3 << 2;
+	mSplitter->setSizes(sizes);
+	mSplitter->setStretchFactor(0,3);
+	mSplitter->setStretchFactor(1, 2);
 }
 
 DiffForm::~DiffForm()
@@ -34,9 +39,12 @@ void DiffForm::initLayout()
 
 	mLayout->setContentsMargins(5, 5, 5, 5);
 	mLayout->setColumnStretch(0, 10);
-	mLayout->setRowStretch(0, 30);
-	mLayout->setRowStretch(1, 10);
-	mLayout->setRowStretch(2, 0);
+	mLayout->setRowStretch(0, 10);
+	mLayout->setRowStretch(1, 0);
+
+	mSplitter = new QSplitter(Qt::Vertical, this);
+	mSplitter->setFrameStyle(QFrame::Sunken);
+	mLayout->addWidget(mSplitter);
 	setLayout(mLayout);
 }
 
@@ -46,28 +54,30 @@ void DiffForm::initButton()
 	mOkButton->setText("OK");
 	mOkButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
 	connect(mOkButton, SIGNAL(clicked()), this, SLOT(accept()));
-	mLayout->addWidget(mOkButton, 2, 0, Qt::AlignRight);
+	mLayout->addWidget(mOkButton, 1, 0, Qt::AlignRight);
 }
 
 void DiffForm::initViews()
 {
-	QGridLayout *viewsLayout = new QGridLayout(this);
-	viewsLayout->setColumnStretch(0, 10);
-	viewsLayout->setColumnStretch(1, 10);
-	viewsLayout->setRowStretch(0, 10);
-	viewsLayout->setContentsMargins(5, 5, 5, 5);
+	QSplitter *splitter = new QSplitter(Qt::Horizontal, this);
+	splitter->setFrameStyle(QFrame::Raised);
 
 	mOldView = new DiffView(mMainWindow, mDiffProvider, true, this);
 	mNewView = new DiffView(mMainWindow, mDiffProvider, false, this);	
-	viewsLayout->addWidget(mOldView, 0, 0);
-	viewsLayout->addWidget(mNewView, 0, 1);
-	mLayout->addLayout(viewsLayout, 0, 0);
+
+	QList<int> sizes;
+	sizes << 1 << 1;
+
+	splitter->addWidget(mOldView);
+	splitter->addWidget(mNewView);
+	splitter->setSizes(sizes);
+	mSplitter->addWidget(splitter);
 }
 
 void DiffForm::initDiffDetailsWidget()
 {
 	mDiffDetailsWidget = new DiffDetailsWidget(mDiffProvider, this);
-	mLayout->addWidget(mDiffDetailsWidget, 1, 0);
+	mSplitter->addWidget(mDiffDetailsWidget);
 	mOldView->setDetailsWidget(mDiffDetailsWidget);
 	mNewView->setDetailsWidget(mDiffDetailsWidget);
 }

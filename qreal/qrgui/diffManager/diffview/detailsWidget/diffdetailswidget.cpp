@@ -18,20 +18,26 @@ DiffDetailsWidget::DiffDetailsWidget(details::DiffProvider *diffProvider, QWidge
 
 void DiffDetailsWidget::setId(const qReal::Id &graphicalId)
 {
+	if (graphicalId == mGraphicalId)
+	{
+		return;
+	}
+	closeSessionTabs();
 	mGraphicalId = graphicalId;
 	mLogicalId = mDiffProvider->logicalId(graphicalId);
 	mIdWidget->setId(mGraphicalId, mLogicalId);
 	mParentWidget->setId(mGraphicalId, mLogicalId);
 	mChildrenWidget->setId(mGraphicalId, mLogicalId);
 	mGraphicalPropertiesWidget->setId(mGraphicalId, mLogicalId);
-	mLogicalPropertiesWidget->setId(mGraphicalId, mLogicalId);
-	mTabWidget->setVisible(true);
+	mLogicalPropertiesWidget->setId(mGraphicalId, mLogicalId);	
+//	mTabWidget->setVisible(true);
 }
 
 void DiffDetailsWidget::reset()
 {
+	mGraphicalId = Id();
 	mIdWidget->reset();
-	mTabWidget->setVisible(false);
+//	mTabWidget->setVisible(false);
 	mParentWidget->reset();
 	mChildrenWidget->reset();
 	mGraphicalPropertiesWidget->reset();
@@ -60,7 +66,7 @@ void DiffDetailsWidget::initIdWidget()
 void DiffDetailsWidget::initTabWidget()
 {
 	mTabWidget = new QTabWidget(this);
-	mTabWidget->setVisible(false);
+//	mTabWidget->setVisible(false);
 	mLayout->addWidget(mTabWidget, 1, 0);
 }
 

@@ -27,6 +27,7 @@ public:
 private:
 	diffManager::details::DiffProvider *mDiffProvider;
 	QGridLayout *mLayout;
+	QSplitter *mSplitter;
 	QPushButton *mOkButton;
 	DiffView *mOldView;
 	DiffView *mNewView;
