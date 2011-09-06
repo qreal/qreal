@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../qrgui/kernel/roles.h"
+#include "versionControlSystemInterface.h"
 
 namespace qrRepo {
 
@@ -16,16 +17,6 @@ public:
 	virtual bool saveTo(QString const &workingDir) = 0;
 
 	virtual void open(QString const &workingDir) = 0;
-
-	virtual bool doCheckout(QString const &from, QString const &to) = 0;
-	virtual bool doCommit(QString const &from, QString const &message) = 0;
-	virtual bool doUpdate(QString const &to) = 0;
-	virtual bool doCleanUp(QString const &workingDir) = 0;
-	virtual QString svnInfo(QString const &workingDir) = 0;
-	virtual QString repoUrl(QString const &workingDir) = 0;
-	virtual int currentRevision(QString const &workingDir) = 0;
-
-	virtual QStringList newErrors() = 0;
 };
 
 }

@@ -16,9 +16,11 @@ namespace qrRepo {
 
 		class Serializer {
 		public:
-			Serializer(QString const& saveDirName, ExternalClient client);
+			Serializer(QString const& saveDirName);
 			void setWorkingDir(QString const& workingDir);
 			void clearWorkingDir();
+
+			void setVersioningClient(SerializerVersioningInterface *client);
 
 			void removeFromDisk(qReal::Id id) const;
 			bool saveToDisk(QList<Object*> const &objects);
@@ -48,7 +50,7 @@ namespace qrRepo {
 
 			QString mWorkingDir;
 
-			ExternalClient mExternalClient;
+			SerializerVersioningInterface *mVersioningClient;
 			QSet<QString> mSavedFiles;
 			QSet<QString> mSavedDirectories;
 			QMap<QString, QFile*> files;

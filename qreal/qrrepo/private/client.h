@@ -40,11 +40,11 @@ namespace qrRepo {
 			bool isLogicalId(qReal::Id const &elem) const;
 			qReal::Id logicalId(qReal::Id const &elem) const;
 
-			bool svnCheckout(QString const &from, QString const &to);
-			bool svnUpdate(QString const &to);
-			bool svnCommit(QString const &from, QString const &message);
-			bool svnCleanUp(QString const &workingDir);
-			QString svnInfo(QString const &workingDir);
+			bool doCheckout(QString const &from, QString const &to);
+			bool doUpdate(QString const &to);
+			bool doCommit(QString const &from, QString const &message);
+			bool doCleanUp(QString const &workingDir);
+			QString info(QString const &workingDir);
 			QString repoUrl(const QString &workingDir);
 			int currentRevision(QString const &workingDir);
 
@@ -72,8 +72,8 @@ namespace qrRepo {
 			QList<Object*> allChildrenOf(qReal::Id id) const;
 
 			QHash<qReal::Id, Object*> mObjects;
-			ExternalClient mExternalClient;
 			Serializer serializer;
+			VersionControlSystemInterface *mVersioningClient;
 			QStringList mErrors;
 		};
 

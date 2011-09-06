@@ -41,8 +41,8 @@ bool DiffManager::showDiff(QString const &workingDir)
 
 QString DiffManager::createRepoModel(const QString &workingCopy)
 {
-	QString repoUrl = mWorkingCopyModel->repoControlApi().repoUrl(workingCopy);
-	mErrors.append(mWorkingCopyModel->repoControlApi().newErrors());
+	QString repoUrl = mWorkingCopyModel->versionControlSystemApi().repoUrl(workingCopy);
+	mErrors.append(mWorkingCopyModel->versionControlSystemApi().newErrors());
 	if (repoUrl == "")
 		return "";
 	QSettings settings("SPbSU", "QReal");
@@ -59,8 +59,8 @@ QString DiffManager::createRepoModel(const QString &workingCopy)
 		mErrors.append("Can`t create directory " + checkoutDir);
 		return "";
 	}
-	bool ok = mWorkingCopyModel->repoControlApi().doCheckout(repoUrl, checkoutDir);
-	mErrors.append(mWorkingCopyModel->repoControlApi().newErrors());
+	bool ok = mWorkingCopyModel->versionControlSystemApi().doCheckout(repoUrl, checkoutDir);
+	mErrors.append(mWorkingCopyModel->versionControlSystemApi().newErrors());
 	if (!ok)
 		return "";
 	mRepoModel = new Models(checkoutDir, *(mMainWindow->manager()));

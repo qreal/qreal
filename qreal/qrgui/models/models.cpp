@@ -48,6 +48,11 @@ qrRepo::RepoControlInterface &Models::repoControlApi() const
 	return *mRepoApi;
 }
 
+qrRepo::VersionControlSystemInterface &Models::versionControlSystemApi() const
+{
+	return *dynamic_cast<qrRepo::RepoApi*>(mRepoApi);
+}
+
 qrRepo::LogicalRepoApi const &Models::logicalRepoApi() const
 {
 	return mLogicalModel->api();

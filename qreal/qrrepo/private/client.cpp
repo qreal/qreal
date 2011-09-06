@@ -9,9 +9,10 @@ using namespace qrRepo;
 using namespace qrRepo::details;
 
 Client::Client(QString const &workingDirectory)
-	: mExternalClient(QSettings("SPbSU", "QReal").value("pathToSvnClient", "").toString()),
-	serializer(workingDirectory, mExternalClient)
+	: serializer(workingDirectory)
 {
+	mVersioningClient = new ExternalClient(QSettings("SPbSU", "QReal").value("pathToSvnClient", "").toString());
+	serializer.setVersioningClient(dynamic_cast<SerializerVersioningInterface *>(mVersioningClient));
 	init();
 	loadFromDisk();
 }
@@ -274,52 +275,52 @@ void Client::setWorkingDir(QString const &workingDir)
 	serializer.setWorkingDir(workingDir);
 }
 
-bool Client::svnCheckout(const QString &from, const QString &to)
+bool Client::doCheckout(const QString &from, const QString &to)
 {
-	bool result = mExternalClient.doCheckout(from, to);
-	mErrors.append(mExternalClient.newErrors());
+	bool result = mVersioningClient->doCheckout(from, to);
+	mErrors.append(mVersioningClient->newErrors());
 	return result;
 }
 
-bool Client::svnUpdate(const QString &to)
+bool Client::doUpdate(const QString &to)
 {
-	bool result = mExternalClient.doUpdate(to);
-	mErrors.append(mExternalClient.newErrors());
+	bool result = mVersioningClient->doUpdate(to);
+	mErrors.append(mVersioningClient->newErrors());
 	return result;
 }
 
-bool Client::svnCommit(const QString &from, const QString &message)
+bool Client::doCommit(const QString &from, const QString &message)
 {
-	bool result = mExternalClient.doCommit(from, message);
-	mErrors.append(mExternalClient.newErrors());
+	bool result = mVersioningClient->doCommit(from, message);
+	mErrors.append(mVersioningClient->newErrors());
 	return result;
 }
 
-bool Client::svnCleanUp(const QString &workingDir)
+bool Client::doCleanUp(const QString &workingDir)
 {
-	bool result = mExternalClient.doCleanUp(workingDir);
-	mErrors.append(mExternalClient.newErrors());
+	bool result = mVersioningClient->doCleanUp(workingDir);
+	mErrors.append(mVersioningClient->newErrors());
 	return result;
 }
 
-QString Client::svnInfo(const QString &workingDir)
+QString Client::info(const QString &workingDir)
 {
-	QString result = mExternalClient.info(workingDir);
-	mErrors.append(mExternalClient.newErrors());
+	QString result = mVersioningClient->info(workingDir);
+	mErrors.append(mVersioningClient->newErrors());
 	return result;
 }
 
 QString Client::repoUrl(const QString &workingDir)
 {
-	QString result = mExternalClient.repoUrl(workingDir);
-	mErrors.append(mExternalClient.newErrors());
+	QString result = mVersioningClient->repoUrl(workingDir);
+	mErrors.append(mVersioningClient->newErrors());
 	return result;
 }
 
 int Client::currentRevision(const QString &workingDir)
 {
-	int result = mExternalClient.currentRevision(workingDir);
-	mErrors.append(mExternalClient.newErrors());
+	int result = mVersioningClient->currentRevision(workingDir);
+	mErrors.append(mVersioningClient->newErrors());
 	return result;
 }
 

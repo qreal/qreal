@@ -372,35 +372,35 @@ bool RepoApi::save(qReal::IdList list)
 
 bool RepoApi::doCheckout(const QString &from, const QString &to)
 {
-	bool result = mClient.svnCheckout(from, to);
+	bool result = mClient.doCheckout(from, to);
 	mErrors.append(mClient.newErrors());
 	return result;
 }
 
 bool RepoApi::doCommit(const QString &from, const QString &message)
 {
-	bool result = mClient.svnCommit(from, message);
+	bool result = mClient.doCommit(from, message);
 	mErrors.append(mClient.newErrors());
 	return result;
 }
 
 bool RepoApi::doUpdate(const QString &to)
 {
-	bool result = mClient.svnUpdate(to);
+	bool result = mClient.doUpdate(to);
 	mErrors.append(mClient.newErrors());
 	return result;
 }
 
 bool RepoApi::doCleanUp(const QString &workingDir)
 {
-	bool result = mClient.svnCleanUp(workingDir);
+	bool result = mClient.doCleanUp(workingDir);
 	mErrors.append(mClient.newErrors());
 	return result;
 }
 
-QString RepoApi::svnInfo(const QString &workingDir)
+QString RepoApi::info(const QString &workingDir)
 {
-	QString result = mClient.svnInfo(workingDir);
+	QString result = mClient.info(workingDir);
 	mErrors.append(mClient.newErrors());
 	return result;
 }

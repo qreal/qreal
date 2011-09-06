@@ -22,6 +22,7 @@ public:
 	LogicalModelAssistApi &logicalModelAssistApi() const;
 
 	qrRepo::RepoControlInterface &repoControlApi() const;
+	qrRepo::VersionControlSystemInterface &versionControlSystemApi() const;
 
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const;
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi() const;

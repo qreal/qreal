@@ -21,19 +21,6 @@ win32 {
 
 DEFINES += QRREPO_LIBRARY
 
-HEADERS += \
-	private/client.h \
-	private/qrRepoGlobal.h \
-	private/serializer.h \
-    private/classes/object.h \
-    private/externalClient.h
-
-SOURCES += \
-	private/client.cpp \
-	private/serializer.cpp \
-    private/classes/object.cpp \
-    private/externalClient.cpp
-
 # API репозитория
 HEADERS += \
 	repoApi.h \
@@ -41,10 +28,21 @@ HEADERS += \
 	logicalRepoApi.h \
 	repoControlInterface.h \
 	commonRepoApi.h \
+	versionControlSystemInterface.h \
+	private/client.h \
+	private/qrRepoGlobal.h \
+	private/serializer.h \
+	private/classes/object.h \
+	private/externalClient.h \
+	private/serializerVersioningInterface.h
 
 
 SOURCES += \
 	private/repoApi.cpp \
+	private/client.cpp \
+	private/serializer.cpp \
+	private/classes/object.cpp \
+	private/externalClient.cpp
 
 #svn support
 INCLUDEPATH += include

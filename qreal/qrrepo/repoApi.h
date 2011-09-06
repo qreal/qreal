@@ -12,7 +12,7 @@
 
 namespace qrRepo {
 
-	class QRREPO_EXPORT RepoApi : public GraphicalRepoApi, public LogicalRepoApi, public RepoControlInterface
+	class QRREPO_EXPORT RepoApi : public GraphicalRepoApi, public LogicalRepoApi, public RepoControlInterface, public VersionControlSystemInterface
 	{
 	public:
 		explicit RepoApi(QString const &workingDirectory);
@@ -98,7 +98,7 @@ namespace qrRepo {
 		bool doCommit(const QString &from, const QString &message);
 		bool doUpdate(const QString &to);
 		bool doCleanUp(const QString &workingDir);
-		QString svnInfo(const QString &workingDir);
+		QString info(const QString &workingDir);
 		QString repoUrl(const QString &workingDir);
 		int currentRevision(const QString &workingDir);
 

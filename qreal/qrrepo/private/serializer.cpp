@@ -13,9 +13,8 @@ using namespace details;
 using namespace utils;
 using namespace qReal;
 
-Serializer::Serializer(QString const& saveDirName, ExternalClient client)
-	: mWorkingDir(saveDirName + "/save"), mExternalClient(client)
-
+Serializer::Serializer(QString const& saveDirName)
+	: mWorkingDir(saveDirName + "/save")
 {
 }
 
@@ -28,6 +27,12 @@ void Serializer::removeFromDisk(Id id) const
 void Serializer::setWorkingDir(QString const &workingDir)
 {
 	mWorkingDir = workingDir + "/save";
+}
+
+
+void Serializer::setVersioningClient(SerializerVersioningInterface *client)
+{
+	mVersioningClient = client;
 }
 
 void Serializer::clearWorkingDir()
@@ -67,9 +72,9 @@ bool Serializer::saveToDisk(QList<Object*> const &objects)
 	}
 	if (!removeUnsaved(mWorkingDir))
 		result = false;
-	if (!mExternalClient.doAdd(mWorkingDir))
+	if (!mVersioningClient->doAdd(mWorkingDir))
 		result = false;
-	mErrors.append(mExternalClient.newErrors());
+	mErrors.append(mVersioningClient->newErrors());
 	return result;
 }
 
@@ -358,7 +363,7 @@ bool Serializer::removeUnsaved(const QString &path)
 				}
 				else
 				{
-					if (!mExternalClient.doRemove(fileInfo.filePath()))
+					if (!mVersioningClient->doRemove(fileInfo.filePath()))
 						result = false;
 				}
 			}
@@ -366,7 +371,7 @@ bool Serializer::removeUnsaved(const QString &path)
 			{
 				if (!mSavedFiles.contains(fileInfo.filePath()))
 				{
-					if (!mExternalClient.doRemove(fileInfo.filePath()))
+					if (!mVersioningClient->doRemove(fileInfo.filePath()))
 						result = false;
 				}
 			}

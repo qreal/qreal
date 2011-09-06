@@ -589,7 +589,7 @@ void MainWindow::doCheckout()
 		path = dialog->getDir();
 		url = dialog->getUrl();
 
-		if (!mModels->repoControlApi().doCheckout(url, path))
+		if (!mModels->versionControlSystemApi().doCheckout(url, path))
 		{
 			processSvnErrors();
 		}
@@ -627,7 +627,7 @@ void MainWindow::doCommit()
 
 	gui::ExecutionIndicator indicator(this, tr("Commiting, please wait..."));
 	indicator.show();
-	if (!mModels->repoControlApi().doCommit(path, message))
+	if (!mModels->versionControlSystemApi().doCommit(path, message))
 	{
 		processSvnErrors();
 	}
@@ -648,13 +648,13 @@ void MainWindow::doUpdate()
 	gui::ExecutionIndicator indicator(this, tr("Updating, please wait..."));
 	indicator.show();
 
-	if (!mModels->repoControlApi().doUpdate(path))
+	if (!mModels->versionControlSystemApi().doUpdate(path))
 	{
 		processSvnErrors();
 	}
 	else
 	{
-		int revision = mModels->repoControlApi().currentRevision(path);
+		int revision = mModels->versionControlSystemApi().currentRevision(path);
 		if (revision < 0)
 		{
 			processSvnErrors();
@@ -675,7 +675,7 @@ void MainWindow::doCleanUp()
 	gui::ExecutionIndicator indicator(this, tr("Cleaning up, please wait..."));
 	indicator.show();
 
-	if (!mModels->repoControlApi().doCleanUp(path))
+	if (!mModels->versionControlSystemApi().doCleanUp(path))
 	{
 		processSvnErrors();
 	}
@@ -706,7 +706,7 @@ void MainWindow::showInfo()
 {
 	QSettings settings("SPbSU", "QReal");
 	QString workingDir = settings.value("workingDir", "").toString();
-	QString info = mModels->repoControlApi().svnInfo(workingDir);
+	QString info = mModels->versionControlSystemApi().info(workingDir);
 	if (info != "")
 	{
 		QMessageBox::information(this, "SVN Info", info);
@@ -719,7 +719,7 @@ void MainWindow::showInfo()
 
 void MainWindow::processSvnErrors()
 {
-	QStringList errors(mModels->repoControlApi().newErrors());
+	QStringList errors(mModels->versionControlSystemApi().newErrors());
 	foreach (QString error, errors)
 	{
 		mErrorReporter->addError(error);
@@ -1484,7 +1484,7 @@ void MainWindow::saveAll()
 {
 	if (!mModels->repoControlApi().saveAll())
 	{
-		QStringList errors(mModels->repoControlApi().newErrors());
+		QStringList errors(mModels->versionControlSystemApi().newErrors());
 		foreach (QString error, errors)
 		{
 			mErrorReporter->addWarning(error);
@@ -1500,7 +1500,7 @@ void MainWindow::saveAs()
 		return;
 	if (!mModels->repoControlApi().saveTo(dirName))
 	{
-		QStringList errors(mModels->repoControlApi().newErrors());
+		QStringList errors(mModels->versionControlSystemApi().newErrors());
 		foreach (QString error, errors)
 		{
 			mErrorReporter->addWarning(error);
