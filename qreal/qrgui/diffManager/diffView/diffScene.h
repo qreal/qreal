@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../view/editorViewScene.h"
+#include "../../view/editorviewscene.h"
 #include "../details/diffState.h"
 
 namespace qReal

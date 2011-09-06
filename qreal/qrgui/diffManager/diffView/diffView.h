@@ -2,7 +2,7 @@
 
 #include "diffScene.h"
 #include "detailsWidget/diffDetailsWidget.h"
-#include "../../view/editorView.h"
+#include "../../view/editorview.h"
 #include "../details/diffProvider.h"
 #include "../../mainwindow/mainwindow.h"
 #include "../../models/models.h"
