@@ -5,7 +5,7 @@
 #include "classes/object.h"
 #include "qrRepoGlobal.h"
 #include "serializer.h"
-#include "externalClient.h"
+#include "versioningClientFactory.h"
 
 #include <QHash>
 
@@ -73,7 +73,7 @@ namespace qrRepo {
 
 			QHash<qReal::Id, Object*> mObjects;
 			Serializer serializer;
-			VersionControlSystemInterface *mVersioningClient;
+			VersioningClientFactory *mClientFactory;
 			QStringList mErrors;
 		};
 

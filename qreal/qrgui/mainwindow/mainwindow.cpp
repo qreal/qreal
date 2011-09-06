@@ -591,7 +591,7 @@ void MainWindow::doCheckout()
 
 		if (!mModels->versionControlSystemApi().doCheckout(url, path))
 		{
-			processSvnErrors();
+			processErrors(mModels->versionControlSystemApi().newErrors());
 		}
 		else
 		{
@@ -629,7 +629,7 @@ void MainWindow::doCommit()
 	indicator.show();
 	if (!mModels->versionControlSystemApi().doCommit(path, message))
 	{
-		processSvnErrors();
+		processErrors(mModels->versionControlSystemApi().newErrors());
 	}
 	else
 	{
@@ -650,14 +650,14 @@ void MainWindow::doUpdate()
 
 	if (!mModels->versionControlSystemApi().doUpdate(path))
 	{
-		processSvnErrors();
+		processErrors(mModels->versionControlSystemApi().newErrors());
 	}
 	else
 	{
 		int revision = mModels->versionControlSystemApi().currentRevision(path);
 		if (revision < 0)
 		{
-			processSvnErrors();
+			processErrors(mModels->versionControlSystemApi().newErrors());
 		}
 		QString message = (revision < 0) ? tr("Updated successfully.") : tr("Updated to revision ") + QString::number(revision);
 		QMessageBox::information(this, tr("Success!"), message);
@@ -677,7 +677,7 @@ void MainWindow::doCleanUp()
 
 	if (!mModels->versionControlSystemApi().doCleanUp(path))
 	{
-		processSvnErrors();
+		processErrors(mModels->versionControlSystemApi().newErrors());
 	}
 	else
 	{
@@ -695,7 +695,7 @@ void MainWindow::showDiff()
 		return;
 	if (!diffManager->showDiff(path))
 	{
-		processSvnErrors();
+		processErrors(diffManager->newErrors());
 		QMessageBox::warning(this, "Svn Diff", "Diff Failed!");
 		return;
 	}
@@ -713,13 +713,12 @@ void MainWindow::showInfo()
 	}
 	else
 	{
-		processSvnErrors();
+		processErrors(mModels->versionControlSystemApi().newErrors());
 	}
 }
 
-void MainWindow::processSvnErrors()
+void MainWindow::processErrors(const QStringList &errors)
 {
-	QStringList errors(mModels->versionControlSystemApi().newErrors());
 	foreach (QString error, errors)
 	{
 		mErrorReporter->addError(error);

@@ -32,9 +32,11 @@ HEADERS += \
 	private/client.h \
 	private/qrRepoGlobal.h \
 	private/serializer.h \
+	private/serializerVersioningInterface.h \
 	private/classes/object.h \
-	private/externalClient.h \
-	private/serializerVersioningInterface.h
+	private/clients/externalClient.h \
+    private/versioningClientFactory.h \
+    private/clients/svnClient.h
 
 
 SOURCES += \
@@ -42,7 +44,9 @@ SOURCES += \
 	private/client.cpp \
 	private/serializer.cpp \
 	private/classes/object.cpp \
-	private/externalClient.cpp
+	private/clients/externalClient.cpp \
+    private/versioningClientFactory.cpp \
+    private/clients/svnClient.cpp
 
 #svn support
 INCLUDEPATH += include

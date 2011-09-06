@@ -11,8 +11,8 @@ using namespace qrRepo::details;
 Client::Client(QString const &workingDirectory)
 	: serializer(workingDirectory)
 {
-	mVersioningClient = new ExternalClient(QSettings("SPbSU", "QReal").value("pathToSvnClient", "").toString());
-	serializer.setVersioningClient(dynamic_cast<SerializerVersioningInterface *>(mVersioningClient));
+	mClientFactory = new VersioningClientFactory(QSettings("SPbSU", "QReal").value("pathToClient", "").toString());
+	serializer.setVersioningClient(dynamic_cast<SerializerVersioningInterface *>(mClientFactory->GetClient()));
 	init();
 	loadFromDisk();
 }
@@ -277,50 +277,50 @@ void Client::setWorkingDir(QString const &workingDir)
 
 bool Client::doCheckout(const QString &from, const QString &to)
 {
-	bool result = mVersioningClient->doCheckout(from, to);
-	mErrors.append(mVersioningClient->newErrors());
+	bool result = mClientFactory->GetClient()->doCheckout(from, to);
+	mErrors.append(mClientFactory->GetClient()->newErrors());
 	return result;
 }
 
 bool Client::doUpdate(const QString &to)
 {
-	bool result = mVersioningClient->doUpdate(to);
-	mErrors.append(mVersioningClient->newErrors());
+	bool result = mClientFactory->GetClient()->doUpdate(to);
+	mErrors.append(mClientFactory->GetClient()->newErrors());
 	return result;
 }
 
 bool Client::doCommit(const QString &from, const QString &message)
 {
-	bool result = mVersioningClient->doCommit(from, message);
-	mErrors.append(mVersioningClient->newErrors());
+	bool result = mClientFactory->GetClient()->doCommit(from, message);
+	mErrors.append(mClientFactory->GetClient()->newErrors());
 	return result;
 }
 
 bool Client::doCleanUp(const QString &workingDir)
 {
-	bool result = mVersioningClient->doCleanUp(workingDir);
-	mErrors.append(mVersioningClient->newErrors());
+	bool result = mClientFactory->GetClient()->doCleanUp(workingDir);
+	mErrors.append(mClientFactory->GetClient()->newErrors());
 	return result;
 }
 
 QString Client::info(const QString &workingDir)
 {
-	QString result = mVersioningClient->info(workingDir);
-	mErrors.append(mVersioningClient->newErrors());
+	QString result = mClientFactory->GetClient()->info(workingDir);
+	mErrors.append(mClientFactory->GetClient()->newErrors());
 	return result;
 }
 
 QString Client::repoUrl(const QString &workingDir)
 {
-	QString result = mVersioningClient->repoUrl(workingDir);
-	mErrors.append(mVersioningClient->newErrors());
+	QString result = mClientFactory->GetClient()->repoUrl(workingDir);
+	mErrors.append(mClientFactory->GetClient()->newErrors());
 	return result;
 }
 
 int Client::currentRevision(const QString &workingDir)
 {
-	int result = mVersioningClient->currentRevision(workingDir);
-	mErrors.append(mVersioningClient->newErrors());
+	int result = mClientFactory->GetClient()->currentRevision(workingDir);
+	mErrors.append(mClientFactory->GetClient()->newErrors());
 	return result;
 }
 

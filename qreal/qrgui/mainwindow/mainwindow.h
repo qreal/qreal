@@ -84,6 +84,8 @@ public slots:
 	void doCleanUp();
 	void showDiff();
 	void showInfo();
+	void processErrors(QStringList const &errors);
+
 
 	void exportToXmi();
 	void generateToJava();
@@ -201,6 +203,5 @@ private:
 
 	void setIndexesOfPropertyEditor(Id const &id);
 
-	void processSvnErrors();
 };
 }

@@ -60,7 +60,7 @@ QString DiffManager::createRepoModel(const QString &workingCopy)
 		return "";
 	}
 	bool ok = mWorkingCopyModel->versionControlSystemApi().doCheckout(repoUrl, checkoutDir);
-	mErrors.append(mWorkingCopyModel->versionControlSystemApi().newErrors());
+	mErrors.append(QStringList(mWorkingCopyModel->versionControlSystemApi().newErrors()));
 	if (!ok)
 		return "";
 	mRepoModel = new Models(checkoutDir, *(mMainWindow->manager()));

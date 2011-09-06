@@ -84,8 +84,8 @@ void PreferencesDialog::initPreferences()
 	ui->buildedFileNameLineEdit->setText(settings.value("buildedFileName", "builded.exe").toString());
 	ui->workDirLineEdit->setText(settings.value("debugWorkingDirectory", "").toString());
 
-	ui->pathToSvnClientLineEdit->setText(settings.value("pathToSvnClient", "").toString());
-	ui->svnClientTimeoutSpinBox->setValue(settings.value("svnClientTimeout", 30000).toInt());
+	ui->pathToSvnClientLineEdit->setText(settings.value("pathToClient", "").toString());
+	ui->svnClientTimeoutSpinBox->setValue(settings.value("clientTimeout", 30000).toInt());
 	ui->diffCheckoutPathLineEdit->setText(settings.value("diffCheckoutPath", QDir::currentPath()).toString());
 }
 
@@ -130,8 +130,8 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("buildedFileName", ui->buildedFileNameLineEdit->text());
 	settings.setValue("debugWorkingDirectory", ui->workDirLineEdit->text());
 
-	settings.setValue("pathToSvnClient", ui->pathToSvnClientLineEdit->text());
-	settings.setValue("svnClientTimeout", ui->svnClientTimeoutSpinBox->value());
+	settings.setValue("pathToClient", ui->pathToSvnClientLineEdit->text());
+	settings.setValue("clientTimeout", ui->svnClientTimeoutSpinBox->value());
 	settings.setValue("diffCheckoutPath", ui->diffCheckoutPathLineEdit->text());
 
 	mShowGridAction->setChecked(ui->showGridCheckBox->isChecked());
