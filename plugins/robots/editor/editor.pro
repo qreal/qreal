@@ -6,9 +6,13 @@ TEMPLATE = subdirs
 
 SUBDIRS = \
 	generated \
-    doc \
-    copy-images.pro \
-    copy-docs.pro \
+
+!win32 {
+	SUBDIRS += \
+		doc \
+		copy-images.pro \
+		copy-docs.pro \
+}
 
 generated.file = generated/robotsMetamodel.pro
 
