@@ -22,6 +22,9 @@ public:
 	DiffView(qReal::MainWindow *mainWindow, details::DiffProvider *diffProvider, bool isOldModel, QWidget *parent = 0);
 	void setDetailsWidget(detailsWidget::DiffDetailsWidget *widget);
 
+public slots:
+	void adjustZoom(int zoom);
+
 protected:
 	virtual void mousePressEvent(QMouseEvent *event);
 	virtual void dragEnterEvent(QDragEnterEvent *event);

@@ -30,6 +30,12 @@ void DiffView::setDetailsWidget(detailsWidget::DiffDetailsWidget *widget)
 		this, SLOT(unhintItem(qReal::Id)));
 }
 
+void DiffView::adjustZoom(int zoom)
+{
+	resetMatrix();
+	scale(0.01*zoom, 0.01*zoom);
+}
+
 void DiffView::mousePressEvent(QMouseEvent *event)
 {
 	QGraphicsView::mousePressEvent(event);

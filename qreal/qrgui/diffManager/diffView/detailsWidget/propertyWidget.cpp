@@ -1,5 +1,7 @@
 #include "propertyWidget.h"
+#include "../diffColorPreferencesDialog.h"
 #include "../../details/diffState.h"
+#include <QSettings>
 
 using namespace qReal::diffManager::diffView::detailsWidget;
 using namespace qReal::diffManager::details;
@@ -44,6 +46,11 @@ void PropertyWidget::setProperty(const qReal::Id &graphicalId, const qReal::Id &
 	}
 	else
 	{
+		QSettings settings("SPbSU", "QReal");
+		QColor color = settings.value("diffModifiedColor", DiffColorPreferencesDialog::defaultModifiedColor()).value<QColor>();
+		QPalette palette = mPropertyNameLabel->palette();
+		palette.setColor(QPalette::Foreground, color);
+		mPropertyNameLabel->setPalette(palette);
 		stretchLayout(2);
 		setPropertyValue(mOldValueLabel, mOldIdWidget, difference()->oldProperty(mPropertyName), 1);
 		setPropertyValue(mNewValueLabel, mNewIdWidget, difference()->newProperty(mPropertyName), 2);

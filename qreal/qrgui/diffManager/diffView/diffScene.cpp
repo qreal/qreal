@@ -34,13 +34,11 @@ void DiffScene::highlight(const qReal::Id &graphicalId, DiffState state)
 	UML::Element *elem = getElem(graphicalId);
 	if (!elem)
 		return;
-
 	if (qReal::diffManager::details::Same == state)
 	{
 		elem->setGraphicsEffect(NULL);
 		return;
 	}
-
 	QColor color = (Modified == state) ? mModifiedColor : mAddedRemovedColor;
 	highlight(elem, color);
 }
@@ -103,10 +101,20 @@ void DiffScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 	event->accept();
 }
 
-void DiffScene::highlight(UML::Element *elem, const QColor &color)
+void DiffScene::highlight(QGraphicsItem *elem, const QColor &color)
 {
+	QList<QGraphicsEffect *> childEffects;
+	foreach (QGraphicsItem *item, elem->childItems())
+	{
+		childEffects << item->graphicsEffect();
+	}
 	QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect;
 	effect->setEnabled(true);
 	effect->setColor(color);
 	elem->setGraphicsEffect(effect);
+	int i = 0;
+	foreach (QGraphicsItem *item, elem->childItems())
+	{
+		item->setGraphicsEffect(childEffects[i++]);
+	}
 }

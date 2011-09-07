@@ -52,26 +52,26 @@ void ChildrenWidget::setCaption()
 	}
 	if (mSameElements.empty())
 	{
-		mSameLabel->setText("This element in the old model doesn`t have common children with the new models one.");
+		mSameLabel->setText("1. This element in the old model doesn`t have common children with the new models one.");
 	}
 	else
 	{
-		mSameLabel->setText("Children that element has in both models:");
+		mSameLabel->setText("1. Children that element has in both models:");
 	}
 	if (mAddedElements.empty())
 	{
-		mAddedLabel->setText("This element doesn`t have children existing only in the new model.");
+		mAddedLabel->setText("2. This element doesn`t have children existing only in the new model.");
 	}
 	else
 	{
-		mAddedLabel->setText("Children existing only in the new model:");
+		mAddedLabel->setText("2. Children existing only in the new model:");
 	}
 	if (mRemovedElements.empty())
 	{
-		mRemovedLabel->setText("This element doesn`t have children existing only in the old model.");
+		mRemovedLabel->setText("3. This element doesn`t have children existing only in the old model.");
 	}
 	else
 	{
-		mRemovedLabel->setText("Children existing only in the old model:");
+		mRemovedLabel->setText("3. Children existing only in the old model:");
 	}
 }

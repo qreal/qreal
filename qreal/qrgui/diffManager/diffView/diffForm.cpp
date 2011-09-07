@@ -60,18 +60,37 @@ void DiffForm::initButton()
 void DiffForm::initViews()
 {
 	QSplitter *splitter = new QSplitter(Qt::Horizontal, this);
-	splitter->setFrameStyle(QFrame::Raised);
 
 	mOldView = new DiffView(mMainWindow, mDiffProvider, true, this);
-	mNewView = new DiffView(mMainWindow, mDiffProvider, false, this);	
+	mNewView = new DiffView(mMainWindow, mDiffProvider, false, this);
+	QFrame *oldFrame = new QFrame(this);
+	QFrame *newFrame = new QFrame(this);
+	oldFrame->setLayout(initView(mOldView));
+	newFrame->setLayout(initView(mNewView));
 
 	QList<int> sizes;
 	sizes << 1 << 1;
 
-	splitter->addWidget(mOldView);
-	splitter->addWidget(mNewView);
+	splitter->addWidget(oldFrame);
+	splitter->addWidget(newFrame);
 	splitter->setSizes(sizes);
 	mSplitter->addWidget(splitter);
+}
+
+QGridLayout *DiffForm::initView(DiffView *view)
+{
+	QGridLayout *result = new QGridLayout(this);
+	result->setColumnStretch(0, 10);
+	result->setColumnStretch(1, 0);
+	result->addWidget(view, 0, 0);
+	QSlider *zoomSlider = new QSlider(Qt::Horizontal, this);
+	zoomSlider->setMinimum(0);
+	zoomSlider->setMaximum(100);
+	zoomSlider->setValue(50);
+	connect(zoomSlider, SIGNAL(valueChanged(int)), view, SLOT(adjustZoom(int)));
+	view->adjustZoom(zoomSlider->value());
+	result->addWidget(zoomSlider, 1, 0);
+	return result;
 }
 
 void DiffForm::initDiffDetailsWidget()

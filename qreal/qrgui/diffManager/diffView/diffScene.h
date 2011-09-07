@@ -37,7 +37,7 @@ private:
 	QColor mModifiedColor;
 	QColor mHintColor;
 
-	void highlight(UML::Element *elem, QColor const &color);
+	void highlight(QGraphicsItem *elem, QColor const &color);
 };
 
 }

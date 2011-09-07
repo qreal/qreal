@@ -38,6 +38,7 @@ private:
 	void initLayout();
 	void initButton();
 	void initViews();
+	QGridLayout *initView(DiffView *view);
 	void initDiffDetailsWidget();
 };
 
