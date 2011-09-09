@@ -243,7 +243,6 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::FunctionElementGenerat
 	variableAnalysis(byteFuncCode);
 
 	QString funcCode = QString::fromUtf8(byteFuncCode);
-
 	foreach (QString str, funcCode.split(';')) {
 		result.append(QPair<QString, qReal::Id>(str.trimmed() + ";", mElementId));
 	}
