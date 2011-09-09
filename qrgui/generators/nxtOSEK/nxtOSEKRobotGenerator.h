@@ -62,9 +62,19 @@ private:
 		virtual bool preGenerationCheck();
 		virtual bool nextElementsGeneration();
 
-		QList< QPair<QString, qReal::Id> > simpleCode();
+		virtual QList< QPair<QString, qReal::Id> > simpleCode();
 
 		QList<QString> portsToEngineNames(QString const &portsProperty);
+	};
+
+	//for Function
+	class FunctionElementGenerator: public SimpleElementGenerator {
+	public:
+		explicit FunctionElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
+
+	protected:
+		virtual QList< QPair<QString, qReal::Id> > simpleCode();
+		void variableAnalysis(const QByteArray&);
 	};
 
 	//for loops
@@ -106,11 +116,15 @@ private:
 				return new IfElementGenerator(emboxGen, elementId);
 			if (elementId.element() == "Loop")
 				return new LoopElementGenerator(emboxGen, elementId);
+			if (elementId.element() == "Function")
+				return new FunctionElementGenerator(emboxGen, elementId);
 
 			return new SimpleElementGenerator(emboxGen, elementId);
 			//TODO: добавить обработку для других классов
 		}
 	};
+
+	void addToGeneratedStringSetVariableInit();
 
 	qrRepo::RepoApi *mApi;
 	bool mIsNeedToDeleteMApi;
@@ -122,6 +136,9 @@ private:
 	QMap< QString, QStack<int> > mElementToStringListNumbers;
 	//mapped element with lists in mGeneratedStringSet
 	//QString in this case is qReal::Id string presentation
+
+	QList< QPair<QByteArray, qReal::Id> > mVariables;
+	int mVariablePlaceInGenStrSet;
 
 	gui::ErrorReporter mErrorReporter;
 };
