@@ -32,7 +32,7 @@ NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator()
 void NxtOSEKRobotGenerator::addToGeneratedStringSetVariableInit() {
 	QPair<QByteArray, qReal::Id> curVariable;
 	foreach (curVariable, mVariables) {
-		mGeneratedStringSet[mVariablePlaceInGenStrSet].append(QPair<QString, qReal::Id> ("int " + curVariable.first + ";", curVariable.second));
+		mGeneratedStringSet[mVariablePlaceInGenStrSet].append(QPair<QString, qReal::Id> ("int " + QString::fromUtf8(curVariable.first) + ";", curVariable.second));
 	}
 }
 
@@ -208,13 +208,12 @@ void NxtOSEKRobotGenerator::FunctionElementGenerator::variableAnalysis(const QBy
 
 		QByteArray leftPart = block.left(firstEqualSignPos);
 		//must be a normal variable name
+
 		leftPart = leftPart.trimmed();
-		//QList<QChar> forbiddenLastSimbols = {'+', '-', '=', '*', '/', '>', '<'};
 		QString forbiddenLastSimbols = "+-=*/><";
 		if (forbiddenLastSimbols.contains((leftPart.at(leftPart.length() - 1))))
 			continue;
 
-		//TODO: add leftPart to variable set
 		bool isVariableExisted = false;
 		QPair<QByteArray, qReal::Id> curVariable;
 		foreach (curVariable, mNxtGen->mVariables) {
@@ -225,8 +224,6 @@ void NxtOSEKRobotGenerator::FunctionElementGenerator::variableAnalysis(const QBy
 		}
 		if (!isVariableExisted)
 			mNxtGen->mVariables.append(QPair<QByteArray, qReal::Id>(leftPart, mElementId));
-
-		//QByteArray rightPart = block.right(funcBlocks.length() - firstEqualSignPos - 1);
 	}
 }
 
@@ -245,9 +242,11 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::FunctionElementGenerat
 
 	variableAnalysis(byteFuncCode);
 
-	QString funcCode = QString::fromUtf8(byteFuncCode) + ";";
+	QString funcCode = QString::fromUtf8(byteFuncCode);
 
-	result.append(QPair<QString, qReal::Id>(funcCode, mElementId));
+	foreach (QString str, funcCode.split(';')) {
+		result.append(QPair<QString, qReal::Id>(str.trimmed() + ";", mElementId));
+	}
 
 	return result;
 }
@@ -597,7 +596,7 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration()
 
 	//TODO: save number of new created list
 	QList< QPair<QString, qReal::Id> > ifBlockPrefix;
-	QString condition = mNxtGen->mApi->property(logicElementId, "Condition").toString();
+	QString condition = "(" + mNxtGen->mApi->property(logicElementId, "Condition").toString() + ")";
 
 	//Грязное место!
 	if (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)), "Guard") == "меньше 0") {
