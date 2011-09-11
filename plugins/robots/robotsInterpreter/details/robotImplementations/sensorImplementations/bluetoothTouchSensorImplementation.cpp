@@ -1,4 +1,7 @@
 #include "bluetoothTouchSensorImplementation.h"
+
+#include <QtCore/QDebug>
+
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
@@ -11,7 +14,11 @@ BluetoothTouchSensorImplementation::BluetoothTouchSensorImplementation(RobotComm
 void BluetoothTouchSensorImplementation::sensorSpecificProcessResponse(QByteArray const &reading)
 {
 	mState = idle;
-	if (reading[4] == 0 && reading[14] == 1)  // Sensor is pressed.
+	// TODO: A hack. Touch sensor does not want to be configured in boolean mode over USB.
+	// Needs to be checked with bluetooth.
+	int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
+	qDebug() << "BluetoothTouchSensorImplementation::sensorSpecificProcessResponse sensorValue" << sensorValue;
+	if (reading[4] == 0 && sensorValue < 500)  // Sensor is pressed.
 		emit response(1);
 	else
 		emit response(0);

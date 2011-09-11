@@ -166,6 +166,13 @@ void UsbRobotCommunicationThread::send(QObject *addressee
 void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const responseSize, QObject *addressee)
 {
 	qDebug() << "Sending";
+	QString tmp = "";
+	for (int i = 0; i < buffer.length(); i++) {
+		tmp += QString::number((byte)buffer[i]);
+		tmp += " ";
+	}
+	qDebug() << ">" << tmp;
+
 	int status = 0;
 	QByteArray newBuffer;
 	for (int i = 3; i < buffer.length() - 1; i++)
@@ -193,7 +200,7 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const 
 			buffer += QString::number((byte)outputBuffer[i]);
 			buffer += " ";
 		}
-		qDebug() << buffer;
+		qDebug() << "<" << buffer;
 //		qDebug() << "[14] = " << (byte)outputBuffer[14] << "[15] =" << (byte)outputBuffer[15];
 //		if ((byte)outputBufferPtr[14] == 181)
 //			outputBufferPtr[14] = 1;
