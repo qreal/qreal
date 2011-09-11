@@ -4,18 +4,18 @@ using namespace qReal;
 using namespace generators;
 
 SmartLine::SmartLine(QString text, qReal::Id elementId, TabLevelChangeType tabLevelChange)
-	: mText(text), mElementId(elementId), tabLevelChange(mTabLevelChange)
+	: mText(text), mElementId(elementId), mTabLevelChange(tabLevelChange)
 {}
 
-QString SmartLine::text() {
+QString SmartLine::text() const {
 	return mText;
 }
 
-qReal::Id SmartLine::elementId() {
+qReal::Id SmartLine::elementId() const {
 	return mElementId;
 }
 
-TabLevelChangeType SmartLine::tabLevelChange() {
+SmartLine::TabLevelChangeType SmartLine::tabLevelChange() const {
 	return mTabLevelChange;
 }
 

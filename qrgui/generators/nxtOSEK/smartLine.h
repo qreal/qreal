@@ -1,8 +1,14 @@
+#include <QString>
+#include "../../../qrkernel/ids.h"
+
 namespace qReal {
 namespace generators {
 class SmartLine {
 public:
-	enum TabLevelChangeType {increase, decrease, withoutChange};
+	enum TabLevelChangeType {increase, decrease, withoutChange, increaseDecrease};
+	//increases WITHOUT this line
+	//decreases WITH this line
+	//increaseDecrease - decreases only for this line
 
 	SmartLine(QString text, qReal::Id elementId, TabLevelChangeType tabLevelChange = withoutChange);
 
@@ -12,7 +18,7 @@ public:
 
 	void setText(QString const &);
 	void setElementId(qReal::Id const &);
-	void setTabLevelChange(TabLevelChangeType):
+	void setTabLevelChange(TabLevelChangeType);
 
 private:
 	QString mText;

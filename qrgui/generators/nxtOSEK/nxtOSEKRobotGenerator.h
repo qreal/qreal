@@ -10,6 +10,8 @@
 #include "../../mainwindow/errorReporter.h"
 #include "../../../qrrepo/repoApi.h"
 
+#include "smartLine.h"
+
 namespace qReal {
 namespace generators {
 class NxtOSEKRobotGenerator {
@@ -33,9 +35,9 @@ private:
 		//must change mNxtGen->mGeneratedStringSet
 
 	protected:
-		virtual QList< QPair<QString, qReal::Id> > loopPrefixCode() = 0;
+		virtual QList<SmartLine> loopPrefixCode() = 0;
 
-		virtual QList< QPair<QString, qReal::Id> > loopPostfixCode() = 0;
+		virtual QList<SmartLine> loopPostfixCode() = 0;
 
 		virtual void createListsForIncomingConnections();
 		//creates new lists in mGeneratedStringSet
@@ -55,14 +57,14 @@ private:
 		explicit SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
-		virtual QList< QPair<QString, qReal::Id> > loopPrefixCode();
+		virtual QList<SmartLine> loopPrefixCode();
 
-		virtual QList< QPair<QString, qReal::Id> > loopPostfixCode();
+		virtual QList<SmartLine> loopPostfixCode();
 
 		virtual bool preGenerationCheck();
 		virtual bool nextElementsGeneration();
 
-		virtual QList< QPair<QString, qReal::Id> > simpleCode();
+		virtual QList<SmartLine> simpleCode();
 
 		QList<QString> portsToEngineNames(QString const &portsProperty);
 	};
@@ -73,7 +75,7 @@ private:
 		explicit FunctionElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
-		virtual QList< QPair<QString, qReal::Id> > simpleCode();
+		virtual QList<SmartLine> simpleCode();
 		void variableAnalysis(const QByteArray&);
 	};
 
@@ -83,9 +85,9 @@ private:
 		explicit LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
-		virtual QList< QPair<QString, qReal::Id> > loopPrefixCode();
+		virtual QList<SmartLine> loopPrefixCode();
 
-		virtual QList< QPair<QString, qReal::Id> > loopPostfixCode();
+		virtual QList<SmartLine> loopPostfixCode();
 
 		virtual bool preGenerationCheck();
 		virtual bool nextElementsGeneration();
@@ -97,9 +99,9 @@ private:
 		explicit IfElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
-		virtual QList< QPair<QString, qReal::Id> > loopPrefixCode();
+		virtual QList<SmartLine> loopPrefixCode();
 
-		virtual QList< QPair<QString, qReal::Id> > loopPostfixCode();
+		virtual QList<SmartLine> loopPostfixCode();
 
 		virtual bool preGenerationCheck();
 		virtual bool nextElementsGeneration();
@@ -129,7 +131,7 @@ private:
 	qrRepo::RepoApi *mApi;
 	bool mIsNeedToDeleteMApi;
 	QString mDestinationPath;
-	QList< QList< QPair<QString, qReal::Id> > > mGeneratedStringSet;
+	QList< QList<SmartLine> > mGeneratedStringSet;
 	QStack<qReal::Id> mPreviousLoopElements;
 	qReal::Id mPreviousElement;
 
@@ -137,7 +139,8 @@ private:
 	//mapped element with lists in mGeneratedStringSet
 	//QString in this case is qReal::Id string presentation
 
-	QList< QPair<QByteArray, qReal::Id> > mVariables;
+	//QList< QPair<QByteArray, qReal::Id> > mVariables;
+	QList<SmartLine> mVariables; //TODO
 	int mVariablePlaceInGenStrSet;
 
 	gui::ErrorReporter mErrorReporter;
