@@ -40,7 +40,6 @@ public:
 	void setRobotImplementation(robotModelType::robotModelTypeEnum implementationType);
 
 	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
-//	void setBluetoothPortName(QString const &portName);
 	void setRobotModelType(robotModelType::robotModelTypeEnum robotModelType);
 	void setCommunicator(const QString &valueOfCommunication, const QString &portName);
 

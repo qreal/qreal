@@ -17,9 +17,10 @@ class UsbRobotCommunicationThread : public RobotCommunicationThreadInterface
 	Q_OBJECT
 
 public:
-	explicit UsbRobotCommunicationThread();
-	~UsbRobotCommunicationThread() {}
+	UsbRobotCommunicationThread();
+	~UsbRobotCommunicationThread();
 
+	// ???
 	QString getBluetoothName();
 	void setBluetoothName(QString name);
 	bool getUseBT();
@@ -34,7 +35,6 @@ public:
 	void runMotor(unsigned motorName, int speed);
 	void stopMotor(unsigned motorName);
 	bool isOpen();
-
 
 public slots:
 	void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);

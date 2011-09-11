@@ -75,7 +75,7 @@ QList<ActionInfo> RobotsPlugin::actions()
 
 QPair<QString, PreferencesPage *> RobotsPlugin::preferencesPage()
 {
-	return qMakePair(QObject::tr("Robots"), static_cast<PreferencesPage*>(&mRobotSettinsPage));
+	return qMakePair(QObject::tr("Robots"), static_cast<PreferencesPage*>(&mRobotSettingsPage));
 }
 
 void RobotsPlugin::showRobotSettings()
@@ -90,22 +90,21 @@ void RobotsPlugin::show2dModel()
 
 void RobotsPlugin::updateSettings()
 {
-	QString const bluetoothPortName = SettingsManager::instance()->value("bluetoothPortName").toString();
-//	mInterpreter.setBluetoothPortName(bluetoothPortName);
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
 	mInterpreter.setRobotModelType(typeOfRobotModel);
 	mInterpreter.configureSensors(
-			static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
-			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
-			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
-			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt())
-	);
+			static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port1SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port2SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port3SensorType").toInt())
+			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port4SensorType").toInt())
+			);
 	m2dModelAction->setVisible(typeOfRobotModel == robotModelType::unreal);
 	if (typeOfRobotModel == robotModelType::unreal)
 		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopAction);
 	else
 		mInterpreter.showD2ModelWidget(false);
 
-	PreferencesRobotSettingsPage robotSettingsPage;
-	mInterpreter.setCommunicator(robotSettingsPage.selectedCommunication(), robotSettingsPage.selectedPortName());
+	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication", "bluetooth").toString();
+	QString const portName = SettingsManager::value("bluetoothPortName", "").toString();
+	mInterpreter.setCommunicator(typeOfCommunication, portName);
 }

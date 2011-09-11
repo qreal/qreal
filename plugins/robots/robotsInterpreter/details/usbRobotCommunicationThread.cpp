@@ -11,7 +11,12 @@ using namespace qReal::interpreters::robots;
 
 UsbRobotCommunicationThread::UsbRobotCommunicationThread():
 	mActive(false), mResPort(""), mBTName(""), mUseBT(false), mBluetoothSearchTimeout(30), mPort(""), mNXTHandle(0)
-{}
+{
+}
+
+UsbRobotCommunicationThread::~UsbRobotCommunicationThread()
+{
+}
 
 bool UsbRobotCommunicationThread::getIsOpen()
 {
@@ -138,10 +143,12 @@ QList<QString> UsbRobotCommunicationThread::NXTListWidget()
 	//return result;
 	return StringList;
 }
+
 void UsbRobotCommunicationThread::send(QObject *addressee
 		, QByteArray const &buffer, unsigned const responseSize)
 {
 	this->setPort("usb");
+
 	/*if (this->isOpen()) {
 		QList<QString> StringList = NXTListWidget();
 		QString robotId = "";
@@ -152,52 +159,47 @@ void UsbRobotCommunicationThread::send(QObject *addressee
 		emit response(addressee, QByteArray());
 		return;
 	}*/
+
 	send(buffer, responseSize, addressee);
-	if (buffer.size() >= 3 && buffer[2] == 0x00) {
-		QByteArray const result = receive(responseSize);
-		emit response(addressee, result);
-	} else {
-		emit response(addressee, QByteArray());
-	}
 }
 
 void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const responseSize, QObject *addressee)
 {
-	int status;
-	int j = 0;
-	QByteArray newbuffer;
+	qDebug() << "Sending";
+	int status = 0;
+	QByteArray newBuffer;
 	for (int i = 3; i < buffer.length() - 1; i++)
-	{
-		newbuffer[j] = buffer[i];
-		j++;
-	}
-	QByteArray  outputBufferPtr;
-	outputBufferPtr.resize(responseSize);
+		newBuffer[i - 3] = buffer[i];
+
+	QByteArray outputBuffer;
+	outputBuffer.resize(responseSize);
 	if (buffer[2] != 0) {
-		nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, false, newbuffer, newbuffer.length(), NULL, 0, status);
+		nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, false, newBuffer, newBuffer.length(), NULL, 0, status);
+		emit response(addressee, QByteArray());
 	} else {
 		char *outputBufferPtr2 = new char [200];
 		for (int i = 0; i < 200; i++) {
 			outputBufferPtr2[i] = 0;
 		}
-		nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, newbuffer, newbuffer.length(), outputBufferPtr2, responseSize - 3, status);
-		outputBufferPtr[0] = responseSize;
-		outputBufferPtr[1] = 0;
-		outputBufferPtr[2] = 0;
-		for (int i = 0; i < responseSize - 3; i++) {
-			outputBufferPtr[i + 3] = outputBufferPtr2[i];
+		nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, newBuffer, newBuffer.length(), outputBufferPtr2, responseSize - 3, status);
+		outputBuffer[0] = responseSize;
+		outputBuffer[1] = 0;
+		outputBuffer[2] = 2;
+		for (unsigned i = 0; i < responseSize - 3; i++) {
+			outputBuffer[i + 3] = outputBufferPtr2[i];
 		}
 		QString buffer = "";
-		for (int i = 0; i < outputBufferPtr.length(); i++) {
-			buffer += (byte)outputBufferPtr[i];
+		for (int i = 0; i < outputBuffer.length(); i++) {
+			buffer += QString::number((byte)outputBuffer[i]);
 			buffer += " ";
 		}
-		qDebug() << "[14] = " << (byte)outputBufferPtr[14] << "[15] =" << (byte)outputBufferPtr[15];
+		qDebug() << buffer;
+//		qDebug() << "[14] = " << (byte)outputBuffer[14] << "[15] =" << (byte)outputBuffer[15];
 //		if ((byte)outputBufferPtr[14] == 181)
 //			outputBufferPtr[14] = 1;
 //		if ((byte)outputBufferPtr[14] == 255)
 //			outputBufferPtr[14] = 0;
-		emit response(addressee, outputBufferPtr);
+		emit response(addressee, outputBuffer);
 	}
 }
 

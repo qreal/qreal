@@ -43,8 +43,6 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 	mParser = new RobotsBlockParser(mInterpretersInterface->errorReporter());
 	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel, mInterpretersInterface->errorReporter(), mParser);
 
-//	QString const comPort = SettingsManager::instance()->value("bluetoothPortName", "").toString();
-//	mBluetoothRobotCommunication = new BluetoothRobotCommunication(comPort);
 	robotModelType::robotModelTypeEnum const modelType = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel", "1").toInt());
 	setRobotImplementation(modelType);
 }
@@ -274,7 +272,7 @@ void Interpreter::responseSlot4(int sensorValue)
 	updateSensorValues(QObject::tr("Sensor4"), sensorValue);
 }
 
-void Interpreter::updateSensorValues(const QString &sensorVariableName, int sensorValue)
+void Interpreter::updateSensorValues(QString const &sensorVariableName, int sensorValue)
 {
 	(*(mParser->getVariables()))[sensorVariableName] = Number(sensorValue, Number::intType);
 //	qDebug() << sensorVariableName << sensorValue;
@@ -285,26 +283,19 @@ void Interpreter::connectToRobot()
 	mRobotModel->init();
 }
 
-//void Interpreter::setBluetoothPortName(QString const &portName)
-//{
-//	mBluetoothRobotCommunication->setPortName(portName);
-//}
-
 void Interpreter::setRobotModelType(robotModelType::robotModelTypeEnum robotModelType)
 {
 	setRobotImplementation(robotModelType);
 }
 
-void Interpreter::setCommunicator(const QString &valueOfCommunication, const QString &portName)
+void Interpreter::setCommunicator(QString const &valueOfCommunication, QString const &portName)
 {
-	QSettings settings("SPbSU", "QReal");
-	QString const defaultBluetoothPortName = settings.value("bluetoothPortName", "").toString();
-	if (valueOfCommunication == "bluetooth") {
-		BluetoothRobotCommunicationThread *bluetoothCommunicationThread = new BluetoothRobotCommunicationThread();
-		mRobotCommunication->setRobotCommunicationThreadObject(bluetoothCommunicationThread);
-	} else {
-		UsbRobotCommunicationThread *usbCommunicationThread = new UsbRobotCommunicationThread();
-		mRobotCommunication->setRobotCommunicationThreadObject(usbCommunicationThread);
-	}
+	RobotCommunicationThreadInterface *communicator = NULL;
+	if (valueOfCommunication == "bluetooth")
+		communicator = new BluetoothRobotCommunicationThread();
+	else
+		communicator = new UsbRobotCommunicationThread();
+
+	mRobotCommunication->setRobotCommunicationThreadObject(communicator);
 	mRobotCommunication->setPortName(portName);
 }
