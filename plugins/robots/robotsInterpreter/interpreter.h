@@ -12,6 +12,8 @@
 #include "details/blocksTable.h"
 #include "details/d2RobotModel/d2RobotModel.h"
 
+#include "watchListWindow.h"
+
 #include "details/robotsBlockParser.h"
 
 namespace qReal {
@@ -50,6 +52,7 @@ public slots:
 	void stop();
 	void stopRobot();
 	void showD2ModelWidget(bool isVisible);
+	void showWatchList();
 
 private slots:
 	void threadStopped();
@@ -88,6 +91,8 @@ private:
 	BluetoothRobotCommunication *mBluetoothRobotCommunication;
 
 	robotModelType::robotModelTypeEnum mImplementationType;
+	
+	watchListWindow *mWatchListWindow;
 
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	Id const findStartingElement(Id const &diagram) const;
