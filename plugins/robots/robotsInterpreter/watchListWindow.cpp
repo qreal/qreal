@@ -1,3 +1,5 @@
+#include <QLayout>
+
 #include "watchListWindow.h"
 #include "ui_watchListWindow.h"
 
@@ -7,6 +9,10 @@ watchListWindow::watchListWindow(const qReal::ExpressionsParser *parser, QWidget
 	, mParser(parser)
 {
 	mUi->setupUi(this);
+	
+	QGridLayout *layout = new QGridLayout(this);
+	layout->addWidget(mUi->watchListTableWidget);
+	
 	
 	updateVariables();
 	mTimer = new QTimer();
