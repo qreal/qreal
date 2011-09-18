@@ -156,7 +156,7 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 }
 
 NxtOSEKRobotGenerator::AbstractElementGenerator::AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-		qReal::Id elementId): mNxtGen(emboxGen), mElementId(elementId)
+		qReal::Id const &elementId): mNxtGen(emboxGen), mElementId(elementId)
 {
 }
 
@@ -204,7 +204,7 @@ QList<QString> NxtOSEKRobotGenerator::SimpleElementGenerator::portsToEngineNames
 	return result;
 }
 
-void NxtOSEKRobotGenerator::FunctionElementGenerator::variableAnalysis(const QByteArray& code)
+void NxtOSEKRobotGenerator::FunctionElementGenerator::variableAnalysis(QByteArray const &code)
 {
 	QList<QByteArray> funcBlocks = code.split(';');
 
@@ -587,6 +587,40 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::generateBranch(int branchNumber)
 	return true;
 }
 
+QPair<bool, qReal::Id> NxtOSEKRobotGenerator::IfElementGenerator::checkBranchForBackArrows(qReal::Id const &curElementId,
+		qReal::IdList* checkedElements) {
+	qReal::Id logicElementId = curElementId; //TODO
+	if (!mNxtGen->mApi->isLogicalElement(curElementId))
+		logicElementId = mNxtGen->mApi->logicalId(curElementId);
+
+	if (checkedElements->contains(logicElementId))
+		//if we have already observed this element by checkBranchForBackArrows function
+		return QPair<bool, qReal::Id>(false, qReal::Id());
+
+	qDebug() << logicElementId.element();
+	qDebug() << curElementId.toString();
+	qDebug() << logicElementId.toString();
+	qDebug() << mNxtGen->mElementToStringListNumbers;
+	if (mNxtGen->mElementToStringListNumbers.contains(logicElementId.toString())
+			|| mNxtGen->mElementToStringListNumbers.contains(curElementId.toString()))
+		//if we have observed this element and generated code of this element
+		return QPair<bool, qReal::Id>(true, logicElementId);
+
+	//add element to list
+	checkedElements->append(logicElementId);
+
+	foreach (qReal::Id childId, mNxtGen->mApi->outgoingConnectedElements(logicElementId)) {	
+		QPair<bool, qReal::Id> childResult = checkBranchForBackArrows(childId, checkedElements);
+		if (childResult.first)
+			return childResult;
+	}
+
+	//release element to list
+	checkedElements->removeAll(logicElementId);
+
+	return QPair<bool, qReal::Id>(false, qReal::Id());
+}
+
 bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration()
 {
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
@@ -600,31 +634,82 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration()
 	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
 
 	//TODO: save number of new created list
-	QList<SmartLine> ifBlockPrefix;
 	QString condition = "(" + mNxtGen->mApi->property(logicElementId, "Condition").toString() + ")";
 
-	//Грязное место!
-	if (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)), "Guard") == "меньше 0") {
+	QByteArray conditionOnArrow =
+		mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)), "Guard").toByteArray();
+	if (conditionOnArrow == "меньше 0") {
 		condition += " < 0";
-	} else if (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)), "Guard") == "больше 0") {
+	} else if (conditionOnArrow == "больше 0") {
 		condition += " > 0";
 	} else {
 		condition += " == 0";
 	}
 
-	ifBlockPrefix << SmartLine("if (" + condition + ") {", mElementId, SmartLine::increase);
-	mNxtGen->mGeneratedStringSet << ifBlockPrefix;
+	//check for back arrows
+	qReal::IdList emptyList;
 
-	//generate true/false blocks
-	generateBranch(conditionArrowNum);
-	QList<SmartLine> elseBlock;
-	elseBlock << SmartLine("} else {", mElementId, SmartLine::increaseDecrease);
-	mNxtGen->mGeneratedStringSet << elseBlock;
-	generateBranch(1 - conditionArrowNum);
+	QPair<bool, qReal::Id> positiveBranchCheck = 
+		checkBranchForBackArrows(mNxtGen->mApi->to(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum))),
+			&emptyList);
+	bool isPositiveBranchReturnsToBackElems = positiveBranchCheck.first;
 
-	QList<SmartLine> ifBlockPostfix;
-	ifBlockPostfix << SmartLine("}", mElementId, SmartLine::decrease);
-	mNxtGen->mGeneratedStringSet << ifBlockPostfix;
+	emptyList.clear();
+	QPair<bool, qReal::Id> negativeBranchCheck =
+		checkBranchForBackArrows(mNxtGen->mApi->to(outgoingLinks.at(1 - conditionArrowNum)), &emptyList);
+	bool isNegativeBranchReturnsToBackElems = negativeBranchCheck.first;
+
+	qDebug() << "isPositiveBranchReturnsToBackElems" << isPositiveBranchReturnsToBackElems;
+	qDebug() << "isNegativeBranchReturnsToBackElems" << isNegativeBranchReturnsToBackElems;
+
+	if (isPositiveBranchReturnsToBackElems && isNegativeBranchReturnsToBackElems) {
+		if (positiveBranchCheck.second != negativeBranchCheck.second) {
+			mNxtGen->mErrorReporter.addError(
+					"This diagram isn't structed diagram, because there are IF block with 2 back arrows!");
+			return false;
+		}
+
+		//TODO: repair for case with merged branches
+		return false;
+	}
+
+	if (isPositiveBranchReturnsToBackElems != isNegativeBranchReturnsToBackElems) {
+		int cycleBlock = isPositiveBranchReturnsToBackElems ? conditionArrowNum : 1 - conditionArrowNum;
+		if (conditionArrowNum == cycleBlock)
+			condition = "!" + condition;
+
+		QList<SmartLine> ifBlock;
+		ifBlock << SmartLine("if (" + condition + ") {", mElementId, SmartLine::increase);
+		ifBlock << SmartLine("break;", mElementId, SmartLine::withoutChange);
+		ifBlock << SmartLine("}", mElementId, SmartLine::decrease);
+		mNxtGen->mGeneratedStringSet << ifBlock;
+		generateBranch(cycleBlock);
+
+		QList<SmartLine> ifBlockPostfix;
+		generateBranch(1 - cycleBlock);
+		mNxtGen->mGeneratedStringSet << ifBlockPostfix;
+
+		return true;
+	}
+	
+	if (!isPositiveBranchReturnsToBackElems && !isNegativeBranchReturnsToBackElems) {
+		QList<SmartLine> ifBlockPrefix;
+		ifBlockPrefix << SmartLine("if (" + condition + ") {", mElementId, SmartLine::increase);
+		mNxtGen->mGeneratedStringSet << ifBlockPrefix;
+
+		//generate true/false blocks
+		generateBranch(conditionArrowNum);
+		QList<SmartLine> elseBlock;
+		elseBlock << SmartLine("} else {", mElementId, SmartLine::increaseDecrease);
+		mNxtGen->mGeneratedStringSet << elseBlock;
+		generateBranch(1 - conditionArrowNum);
+
+		QList<SmartLine> ifBlockPostfix;
+		ifBlockPostfix << SmartLine("}", mElementId, SmartLine::decrease);
+		mNxtGen->mGeneratedStringSet << ifBlockPostfix;
+		
+		return true;
+	}
 
 	return true;
 }

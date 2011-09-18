@@ -27,7 +27,7 @@ private:
 	friend class AbstractElementGenerator;
 	class AbstractElementGenerator {
 	public:
-		explicit AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
+		explicit AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id const &elementId);
 
 		virtual ~AbstractElementGenerator() {}
 
@@ -76,7 +76,7 @@ private:
 
 	protected:
 		virtual QList<SmartLine> simpleCode();
-		void variableAnalysis(const QByteArray&);
+		void variableAnalysis(QByteArray const &);
 	};
 
 	//for loops
@@ -107,6 +107,7 @@ private:
 		virtual bool nextElementsGeneration();
 
 		bool generateBranch(int branchNumber);
+		QPair<bool, qReal::Id> checkBranchForBackArrows(qReal::Id const &curElementId, qReal::IdList* checkedElements);
 	};
 
 	friend class ElementGeneratorFactory;

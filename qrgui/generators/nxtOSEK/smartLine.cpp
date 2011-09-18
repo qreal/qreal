@@ -3,8 +3,8 @@
 using namespace qReal;
 using namespace generators;
 
-SmartLine::SmartLine(QString text, qReal::Id elementId, TabLevelChangeType tabLevelChange)
-	: mText(text), mElementId(elementId), mTabLevelChange(tabLevelChange)
+SmartLine::SmartLine(QString text, qReal::Id elementId, IndentChangeType tabLevelChange)
+	: mText(text), mElementId(elementId), mIndentChange(tabLevelChange)
 {}
 
 QString SmartLine::text() const {
@@ -15,8 +15,8 @@ qReal::Id SmartLine::elementId() const {
 	return mElementId;
 }
 
-SmartLine::TabLevelChangeType SmartLine::tabLevelChange() const {
-	return mTabLevelChange;
+SmartLine::IndentChangeType SmartLine::tabLevelChange() const {
+	return mIndentChange;
 }
 
 void SmartLine::setText(QString const &text) {
@@ -27,6 +27,6 @@ void SmartLine::setElementId(qReal::Id const &id) {
 	mElementId = id;
 }
 
-void SmartLine::setTabLevelChange(TabLevelChangeType t) {
-	mTabLevelChange = t;
+void SmartLine::setIndentChange(IndentChangeType t) {
+	mIndentChange = t;
 }
