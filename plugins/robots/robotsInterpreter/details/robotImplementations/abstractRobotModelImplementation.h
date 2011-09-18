@@ -7,8 +7,8 @@
 #include "sensorImplementations/abstractEncoderImplementation.h"
 #include "../../sensorConstants.h"
 #include "../d2RobotModel/d2RobotModel.h"
-#include "../robotCommunicationThreadInterface.h"
-#include "../robotCommunication.h"
+#include "../robotCommunication/robotCommunicationThreadInterface.h"
+#include "../robotCommunication/robotCommunication.h"
 
 namespace qReal {
 namespace interpreters {

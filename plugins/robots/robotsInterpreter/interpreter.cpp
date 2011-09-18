@@ -2,8 +2,8 @@
 
 #include "details/autoconfigurer.h"
 #include "details/robotImplementations/unrealRobotModelImplementation.h"
-#include "details/bluetoothRobotCommunicationThread.h"
-#include "details/usbRobotCommunicationThread.h"
+#include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
+#include "details/robotCommunication/usbRobotCommunicationThread.h"
 
 #include <QtCore/QDebug>
 

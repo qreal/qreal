@@ -1,7 +1,5 @@
 #include "usbRobotCommunicationThread.h"
 
-#include "fantomMethods.h"
-
 #include <QtCore/QDebug>
 
 #include "../../thirdparty/qextserialport/src/qextserialenumerator.h"
@@ -26,7 +24,7 @@ bool UsbRobotCommunicationThread::getIsOpen()
 bool UsbRobotCommunicationThread::isOpen()
 {
 	bool result = getIsOpen();
-	return result && FantomAPILoaded;
+	return result && mFantom.isAvailable();
 
 }
 
@@ -76,9 +74,9 @@ void UsbRobotCommunicationThread::connect(QString const &portName)
 		bName = getBluetoothName().toUpper();
 	}
 	if (!(pName.length() > 4)) {
-		nxtIterator = nFANTOM100_createNXTIterator((unsigned char)(getUseBT()), getBST(), status);
+		nxtIterator = mFantom.nFANTOM100_createNXTIterator((unsigned char)(getUseBT()), getBST(), status);
 		while (status >= kStatusNoError) {
-			nFANTOM100_iNXTIterator_getName(nxtIterator, resNamePC, status2);
+			mFantom.nFANTOM100_iNXTIterator_getName(nxtIterator, resNamePC, status2);
 			QString resName = QString(resNamePC);
 			for (int i = 0; i < resName.length() - 1; i++) {
 				if(resName[i].isLetter())
@@ -88,13 +86,13 @@ void UsbRobotCommunicationThread::connect(QString const &portName)
 				break;
 		}
 		if (status >= kStatusNoError) {
-			mNXTHandle = nFANTOM100_iNXTIterator_getNXT(nxtIterator, status);
+			mNXTHandle = mFantom.nFANTOM100_iNXTIterator_getNXT(nxtIterator, status);
 			if (status >= kStatusNoError) {
 				mActive = true; //in interface brick_common???
 				result = true;
 			}
 		}
-		nFANTOM100_destroyNXTIterator(nxtIterator, status);
+		mFantom.nFANTOM100_destroyNXTIterator(nxtIterator, status);
 	}
 	emit connected(true);
 	//return result;
@@ -125,15 +123,15 @@ QList<QString> UsbRobotCommunicationThread::NXTListWidget()
 	if (true) {
 		resName = "";
 		status = 0;
-		nxtIterator = nFANTOM100_createNXTIterator(1, getBST(), status);
+		nxtIterator = mFantom.nFANTOM100_createNXTIterator(1, getBST(), status);
 		while (status >= kStatusNoError) {
-			nFANTOM100_iNXTIterator_getName(nxtIterator, resNamePC, status2);
+			mFantom.nFANTOM100_iNXTIterator_getName(nxtIterator, resNamePC, status2);
 			resName = QString(resNamePC).toUpper();
 			StringList.append(resName);
-			nFANTOM100_iNXTIterator_advance(nxtIterator,  status);
+			mFantom.nFANTOM100_iNXTIterator_advance(nxtIterator,  status);
 		}
-		nFANTOM100_destroyNXTIterator(nxtIterator,  status);
-		nFANTOM100_iNXT_findDeviceInFirmwareDownloadMode(resNamePC, status);
+		mFantom.nFANTOM100_destroyNXTIterator(nxtIterator,  status);
+		mFantom.nFANTOM100_iNXT_findDeviceInFirmwareDownloadMode(resNamePC, status);
 		if (status >= kStatusNoError) {
 			resName = QString(resNamePC).toUpper();
 			StringList.append(resName);
@@ -181,14 +179,14 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const 
 	QByteArray outputBuffer;
 	outputBuffer.resize(responseSize);
 	if (buffer[2] != 0) {
-		nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, false, newBuffer, newBuffer.length(), NULL, 0, status);
+		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, false, newBuffer, newBuffer.length(), NULL, 0, status);
 		emit response(addressee, QByteArray());
 	} else {
 		char *outputBufferPtr2 = new char [200];
 		for (int i = 0; i < 200; i++) {
 			outputBufferPtr2[i] = 0;
 		}
-		nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, newBuffer, newBuffer.length(), outputBufferPtr2, responseSize - 3, status);
+		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, newBuffer, newBuffer.length(), outputBufferPtr2, responseSize - 3, status);
 		outputBuffer[0] = responseSize;
 		outputBuffer[1] = 0;
 		outputBuffer[2] = 2;
@@ -229,5 +227,4 @@ void UsbRobotCommunicationThread::sendI2C(QObject *addressee
 		, QByteArray const &buffer, unsigned const responseSize
 		, inputPort::InputPortEnum const &port)
 {
-
 }

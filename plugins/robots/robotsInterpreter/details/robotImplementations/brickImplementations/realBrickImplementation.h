@@ -1,6 +1,6 @@
 #pragma once
 #include "abstractBrickImplementation.h"
-#include "../../robotCommunication.h"
+#include "../../robotCommunication/robotCommunication.h"
 
 namespace qReal {
 namespace interpreters {

@@ -4,7 +4,8 @@
 #include <QtCore/QThread>
 
 #include "robotCommunicationThreadInterface.h"
-#include "robotCommandConstants.h"
+#include "../robotCommandConstants.h"
+#include "fantom.h"
 
 class QextSerialPort;
 
@@ -45,6 +46,8 @@ public slots:
 			, inputPort::InputPortEnum const &port);
 
 private:
+	static const int kStatusNoError = 0;
+
 	bool getIsOpen();
 	void send(QByteArray const &buffer, unsigned const responseSize, QObject *addressee);
 	QByteArray receive(int size) const;
@@ -58,6 +61,8 @@ private:
 	unsigned long mNXTHandle;
 	unsigned mAPower;
 	unsigned mBPower;
+
+	robotsInterpreter::robotCommunication::Fantom mFantom;
 };
 
 }

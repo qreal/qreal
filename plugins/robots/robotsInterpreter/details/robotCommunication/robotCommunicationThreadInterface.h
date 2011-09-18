@@ -4,7 +4,7 @@
 #include <QtCore/QByteArray>
 
 #include "../robotsInterpreter/sensorConstants.h"
-#include "robotCommandConstants.h"
+#include "../robotCommandConstants.h"
 
 namespace qReal {
 namespace interpreters {

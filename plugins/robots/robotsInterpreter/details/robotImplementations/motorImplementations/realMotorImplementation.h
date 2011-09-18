@@ -1,6 +1,6 @@
 #pragma once
 #include "abstractMotorImplementation.h"
-#include "../../robotCommunication.h"
+#include "../../robotCommunication/robotCommunication.h"
 
 namespace qReal {
 namespace interpreters {

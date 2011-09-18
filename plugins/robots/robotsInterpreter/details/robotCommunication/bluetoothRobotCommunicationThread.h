@@ -5,7 +5,7 @@
 #include <QtCore/QThread>
 
 #include "robotCommunicationThreadInterface.h"
-#include "robotCommandConstants.h"
+#include "../robotCommandConstants.h"
 
 class QextSerialPort;
 

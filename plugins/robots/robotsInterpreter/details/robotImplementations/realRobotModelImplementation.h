@@ -1,7 +1,7 @@
 #pragma once
 
 #include "abstractRobotModelImplementation.h"
-#include "../robotCommunication.h"
+#include "../robotCommunication/robotCommunication.h"
 #include "brickImplementations/realBrickImplementation.h"
 #include "motorImplementations/realMotorImplementation.h"
 #include "sensorImplementations/bluetoothTouchSensorImplementation.h"

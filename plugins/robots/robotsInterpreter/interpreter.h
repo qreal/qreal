@@ -4,7 +4,7 @@
 
 #include "../../../qrkernel/ids.h"
 
-#include "details/robotCommunication.h"
+#include "details/robotCommunication/robotCommunication.h"
 #include "sensorConstants.h"
 #include "details/robotParts/robotModel.h"
 #include "details/thread.h"
@@ -12,7 +12,7 @@
 #include "details/d2RobotModel/d2RobotModel.h"
 
 #include "details/robotsBlockParser.h"
-#include "details/bluetoothRobotCommunicationThread.h"
+#include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
 
 namespace qReal {
 namespace interpreters {

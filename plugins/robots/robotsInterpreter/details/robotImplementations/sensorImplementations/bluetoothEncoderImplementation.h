@@ -1,7 +1,7 @@
 #pragma once
 
 #include "abstractEncoderImplementation.h"
-#include "../../robotCommunication.h"
+#include "../../robotCommunication/robotCommunication.h"
 
 namespace qReal {
 namespace interpreters {

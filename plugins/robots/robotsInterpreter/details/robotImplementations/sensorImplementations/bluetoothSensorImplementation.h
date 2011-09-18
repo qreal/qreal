@@ -1,8 +1,8 @@
 #pragma once
 #include "abstractSensorImplementation.h"
 #include "../../robotCommandConstants.h"
-#include "../../robotCommunicationThreadInterface.h"
-#include "../../robotCommunication.h"
+#include "../../robotCommunication/robotCommunicationThreadInterface.h"
+#include "../../robotCommunication/robotCommunication.h"
 
 namespace qReal {
 namespace interpreters {
