@@ -5,7 +5,7 @@
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
-BluetoothColorSensorImplementation::BluetoothColorSensorImplementation(RobotCommunicationInterface *robotCommunicationInterface
+BluetoothColorSensorImplementation::BluetoothColorSensorImplementation(RobotCommunication *robotCommunicationInterface
 		, inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode)
 	: BluetoothSensorImplementation(robotCommunicationInterface, mode, sensorMode::RAWMODE, port)
 {

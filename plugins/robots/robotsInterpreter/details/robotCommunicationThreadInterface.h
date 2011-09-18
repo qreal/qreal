@@ -3,21 +3,22 @@
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
 
-#include "sensorConstants.h"
+#include "../robotsInterpreter/sensorConstants.h"
+#include "robotCommandConstants.h"
 
 namespace qReal {
 namespace interpreters {
 namespace robots {
 
-class RobotCommunicationInterface : public QObject
+class RobotCommunicationThreadInterface : public QObject
 {
 	Q_OBJECT
 
 public:
-	virtual ~RobotCommunicationInterface() {}
+	virtual ~RobotCommunicationThreadInterface() {}
 	virtual void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize) = 0;
 	virtual void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize, inputPort::InputPortEnum const &port) = 0;
-	virtual void connect() = 0;
+	virtual void connect(QString const &portName) = 0;
 	virtual void disconnect() = 0;
 
 signals:
@@ -29,3 +30,4 @@ signals:
 }
 }
 }
+

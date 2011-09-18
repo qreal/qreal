@@ -6,7 +6,7 @@ DESTDIR = ../../../bin/plugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
 
-LIBS += -L../../../bin -lqrkernel -lqrutils
+LIBS += -L../../../bin -lqrkernel -lqrutils -L../thirdparty -lfantom
 
 CONFIG(debug, debug|release):LIBS  += -lqextserialportd
 else:LIBS  += -lqextserialport
@@ -15,18 +15,23 @@ TRANSLATIONS = robotsInterpreter_ru.ts
 
 HEADERS += \
 	../../../qrgui/dialogs/preferencesPages/page.h \
+	details/usbRobotCommunicationThread.h \
+	details/robotCommunication.h \
+	details/robotCommunicationThreadInterface.h \
+	details/fantomMethods.h
 
 HEADERS += \
 	robotsPlugin.h \
 
 SOURCES += \
 	robotsPlugin.cpp \
+	details/usbRobotCommunicationThread.cpp \
+	details/robotCommunication.cpp
 
 HEADERS += \
 	interpreter.h \
 	sensorConstants.h \
 	robotCommunicationInterface.h \
-	bluetoothRobotCommunication.h \
 	robotSettingsPage.h \
 	customizer.h \
 	details/thread.h \
@@ -108,7 +113,6 @@ HEADERS += \
 
 SOURCES += \
 	interpreter.cpp \
-	bluetoothRobotCommunication.cpp \
 	robotSettingsPage.cpp \
 	details/thread.cpp \
 	details/blocksTable.cpp \
