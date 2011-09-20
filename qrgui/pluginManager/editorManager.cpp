@@ -63,16 +63,24 @@ bool EditorManager::loadPlugin(const QString &pluginName)
 	}
 	QMessageBox::warning(0, "QReal Plugin", loader->errorString());
 	return false;
-
 }
 
 bool EditorManager::unloadPlugin(const QString &pluginName)
 {
+	qDebug() << "pluginName = " << pluginName;
+	foreach (QString key, mPluginFileName.keys()) {
+		qDebug() << "mPluginFileName.key" << key;
+		qDebug() << "mPluginFileName.value" << mPluginFileName[key];
+	}
 	QPluginLoader *loader = mLoaders[mPluginFileName[pluginName]];
 	if (loader != NULL) {
+		if (!(loader->unload())) {
+			qDebug() <<"unload failed" << loader->errorString();
+			return false;
+		}
 		mPluginsLoaded.removeAll(pluginName);
 		mPluginFileName.remove(pluginName);
-		return loader->unload();
+		return true;
 	}
 	return false;
 }
