@@ -18,8 +18,8 @@ namespace qReal {
 		public:
 			explicit EditorGenerator(qrRepo::LogicalRepoApi const &api);
 
-			QHash<Id, QString> getMetamodelList();
-			gui::ErrorReporter& generateEditor(Id const metamodelId, QString const &pathToFile);
+			QHash<Id, QPair<QString, QString> > getMetamodelList();
+			gui::ErrorReporter& generateEditor(Id const metamodelId, QString const &pathToFile, QString const &pathToQRealSourcre);
 		private:
 			void serializeObjects(QDomElement &parent, Id const &idParent);
 			void createImport(QDomElement &parent, Id const &id);
