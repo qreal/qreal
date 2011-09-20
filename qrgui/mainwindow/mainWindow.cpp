@@ -1,7 +1,7 @@
 #include "mainWindow.h"
 #include "ui_mainWindow.h"
 
-#include <QtCore/QProcess>
+#include <QProcess>
 #include <QtGui/QDialog>
 #include <QtGui/QPrinter>
 #include <QtGui/QVBoxLayout>
@@ -12,18 +12,19 @@
 #include <QtGui/QPrintDialog>
 #include <QtGui/QProgressBar>
 #include <QtGui/QListWidgetItem>
-#include <QtCore/QPluginLoader>
 
 #include <QtSvg/QSvgGenerator>
 
 #include <QtCore/QDebug>
 
-#include "../generators/editorGenerator/editorGenerator.h"
+#include <../generators/editorGenerator/editorGenerator.h>
+
+#include <QtCore/QPluginLoader>
 
 #include "errorReporter.h"
 
 #include "../editorPluginInterface/editorInterface.h"
-#include "shapeEdit/shapeEdit.h"
+#include "../dialogs/shapeEdit/shapeEdit.h"
 #include "propertyEditorProxyModel.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
 
@@ -147,16 +148,10 @@ MainWindow::MainWindow()
 	// Step 4: Property editor and model explorers are initialized.
 	progress->setValue(60);
 	loadPlugins();
-	initToolPlugins();
 	showMaximized();
 
 	// Step 5: Plugins are loaded.
 	progress->setValue(70);
-
-	QString windowTitle = mToolManager.customizer()->windowTitle();
-	if (windowTitle.isEmpty())
-		windowTitle = "QReal";
-	setWindowTitle(windowTitle + " - " + SettingsManager::value("workingDir", mSaveDir).toString());
 
 	if (!SettingsManager::value("maximized", true).toBool()) {
 		showNormal();
@@ -170,7 +165,7 @@ MainWindow::MainWindow()
 	// Step 6: Save loaded, models initialized.
 	progress->setValue(80);
 
-	if (!checkPluginsAndReopen(splash))
+	if (!checkPluginsAndReopen())
 		return;
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
@@ -178,6 +173,7 @@ MainWindow::MainWindow()
 	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &)), this, SLOT(updateTabName(Id const &)));
 
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
+
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
 	mGesturesWidget = new GesturesWidget();
@@ -199,6 +195,22 @@ MainWindow::MainWindow()
 
 	connectActions();
 
+	/*
+	QString const defaultBluetoothPortName = SettingsManager::value("bluetoothPortName", "").toString();
+	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel", "1").toInt());
+	mUi->actionShow2Dmodel->setVisible(typeOfRobotModel == robotModelType::unreal);
+	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
+			, mModels->logicalModelAssistApi(), *this, mBluetoothCommunication, typeOfRobotModel);
+	if (typeOfRobotModel == robotModelType::unreal)
+		setD2ModelWidgetActions(mUi->actionRun, mUi->actionStop_Running);
+	sensorType::SensorTypeEnum port1 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port1SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port2 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port2SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port3 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port3SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port4 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port4SensorType", "0").toInt());
+	mRobotInterpreter->configureSensors(port1, port2, port3, port4);
+	*/
+
 	// Step 7: Save consistency checked, interface is initialized with models.
 	progress->setValue(100);
 	if (showSplash)
@@ -212,6 +224,8 @@ MainWindow::MainWindow()
 		suggestToCreateDiagram();
 
 	mDocksVisibility.clear();
+	setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
+	initToolPlugins();
 
 	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 
@@ -520,16 +534,13 @@ QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
 	return dirName;
 }
 
-bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
+bool MainWindow::checkPluginsAndReopen()
 {
 	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 	bool haveMissingPlugins = !missingPlugins.isEmpty();
 	bool loadingCancelled = false;
 
 	while (haveMissingPlugins && !loadingCancelled) {
-		if (splashScreen)
-			splashScreen->close();
-
 		QString text = tr("These plugins are not present, but needed to load the save:\n");
 		foreach (Id const id, missingPlugins)
 			text += id.editor() + "\n";
@@ -579,7 +590,7 @@ bool MainWindow::open(QString const &dirName)
 	mModels->repoControlApi().open(dirName);
 	mModels->reinit();
 
-	if (!checkPluginsAndReopen(NULL))
+	if (!checkPluginsAndReopen())
 		return false;
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
@@ -700,10 +711,8 @@ void MainWindow::deleteFromDiagram()
 			deleteFromExplorer(isLogicalModel);
 		}
 	}
-
-	if (getCurrentTab() != NULL && getCurrentTab()->scene() != NULL) {
+	if (getCurrentTab() != NULL && getCurrentTab()->scene() != NULL)
 		getCurrentTab()->scene()->invalidate();
-	}
 }
 
 void MainWindow::showAbout()
@@ -892,7 +901,7 @@ void MainWindow::generateEditor()
 /*
 void MainWindow::generateEditorWithQRMC()
 {
-	qrmc::MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../qrmc", mSaveDir);
+	qrmc::MetaCompiler metaCompiler("../qrmc", "./save");
 
 	IdList const metamodels = mModels->logicalRepoApi().children(Id::rootId());
 
@@ -984,7 +993,6 @@ void MainWindow::generateEditorWithQRMC()
 }
 */
 
-
 void MainWindow::loadNewEditor(const QString &directoryName, const QString &metamodelName,
 		const QString &commandFirst, const QString &commandSecond, const QString &extension, const QString &prefix)
 {
@@ -1052,7 +1060,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 
 void MainWindow::parseEditorXml()
 {
-	if (!mEditorManager.editors().contains(Id("MetaEditor"))) {
+	if (!mEditorManager.editors().contains(Id("Meta_editor"))) {
 		QMessageBox::warning(this, tr("error"), tr("required plugin is not loaded"));
 		return;
 	}
@@ -1966,15 +1974,15 @@ void MainWindow::initToolPlugins()
 			, mModels->logicalModelAssistApi()
 			, *this
 	));
-	QList<ActionInfo> actions = mToolManager.actions();
-	foreach (ActionInfo action, actions) {
+	QList<CustomToolInterface::ActionInfo> actions = mToolManager.actions();
+	foreach (CustomToolInterface::ActionInfo action, actions) {
 		if (action.toolbarName() == "file")
 			mUi->fileToolbar->addAction(action.action());
 		else if (action.toolbarName() == "interpreters")
 			mUi->interpreterToolBar->addAction(action.action());
 	}
 
-	foreach (ActionInfo action, actions) {
+	foreach (CustomToolInterface::ActionInfo action, actions) {
 		if (action.menuName() == "tools")
 			mUi->menuTools->addAction(action.action());
 	}
@@ -2002,7 +2010,7 @@ void MainWindow::generateRobotSourceCode()
 		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
 
 		CodeArea *area = new CodeArea();
-		QFile file("example0/example0.c");
+		QFile file("nxt-tools/example0/example0.c");
 		QTextStream *inStream = 0;
 		if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text))
 			inStream = new QTextStream(&file);
@@ -2049,24 +2057,30 @@ void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
 void MainWindow::checkNxtTools()
 {
 	QDir dir(qApp->applicationDirPath());
-	dir.cd("nxt-tools");
+	dir.cd("/nxt-tools");
 	if (!dir.exists()){
 		mNxtToolsPresent = false;
 		return;
 	}
+
 	qDebug() << dir.absolutePath();
 
-	QDir gnuarm(dir.absolutePath() + "/gnuarm");
-	QDir nexttool(dir.absolutePath() + "/nexttool");
-	QDir nxtOSEK(dir.absolutePath() + "/nxtOSEK");
+
 
 #ifdef Q_OS_WIN
-	QFile flash(dir.absolutePath() + "/flash.bat");
-	QFile upload1(dir.absolutePath() + "/upload.bat");
-	QFile upload2(dir.absolutePath() + "/upload.sh");
+
+        QDir gnuarm(dir.absolutePath() + "/nxt-tools/gnuarm");
+        QDir nexttool(dir.absolutePath() + "/nxt-tools/nexttool");
+        QDir nxtOSEK(dir.absolutePath() + "/nxt-tools/nxtOSEK");
+	QFile flash(dir.absolutePath() + "/nxt-tools/flash.bat");
+	QFile upload1(dir.absolutePath() + "/nxt-tools/upload.bat");
+	QFile upload2(dir.absolutePath() + "/nxt-tools/upload.sh");
 
 	mNxtToolsPresent = gnuarm.exists() && nexttool.exists() && nxtOSEK.exists() && flash.exists() && upload1.exists() && upload2.exists();
 #else
+        QDir gnuarm(dir.absolutePath() + "/gnuarm");
+        QDir nexttool(dir.absolutePath() + "/nexttool");
+        QDir nxtOSEK(dir.absolutePath() + "/nxtOSEK");
 	QDir libnxt(dir.absolutePath() + "/libnxt");
 	QFile flash(dir.absolutePath() + "/flash.sh");
 	QFile upload(dir.absolutePath() + "/upload.sh");
