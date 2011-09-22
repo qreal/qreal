@@ -2,6 +2,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QList>
+#include <QtCore/QPluginLoader>
 
 #include "../toolPluginInterface/toolPluginInterface.h"
 #include "../toolPluginInterface/customizationInterface.h"
@@ -46,6 +47,7 @@ private:
 
 	QList<ToolPluginInterface *> mPlugins;
 	DefaultCustomizer *mCustomizer;  // Has ownership
+	QList<QPluginLoader *> mLoaders;
 };
 
 }
