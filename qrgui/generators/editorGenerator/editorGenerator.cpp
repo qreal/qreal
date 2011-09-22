@@ -212,6 +212,8 @@ void EditorGenerator::createNode(QDomElement &parent, Id const &id)
 	ensureCorrectness(id, node, "displayedName", mApi.stringProperty(id, "displayedName"));
 	if (mApi.stringProperty(id, "path") != "")
 		node.setAttribute("path", mApi.stringProperty(id, "path"));
+	if (mApi.stringProperty(id, "description") != "")
+		node.setAttribute("description", mApi.stringProperty(id, "description"));
 	parent.appendChild(node);
 
 	QDomDocument graphics;
