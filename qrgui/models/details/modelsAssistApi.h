@@ -23,9 +23,11 @@ namespace qReal {
 				ModelsAssistApi(details::modelsImplementation::AbstractModel &model, EditorManager const &editorManager);
 				EditorManager const &editorManager() const;
 				virtual Id createElement(Id const &parent, Id const &type) = 0;
-				virtual Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position, Id const &beforeId = Id());
+				virtual Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);
 				virtual IdList children(Id const &element) const = 0;
 				virtual void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF()) = 0;
+
+				virtual void stackBefore(Id const &element, Id const &sibling) = 0;
 
 				void setTo(Id const &elem, Id const &newValue);
 				Id to(Id const &elem) const;

@@ -87,10 +87,11 @@ public:
 	virtual void checkConnectionsToPort();
 
 	/** @brief Drawing placeholder at the appropriate position (calculated using event data) */
-	void drawPlaceholder(QGraphicsRectItem *placeholder, QGraphicsSceneDragDropEvent *event);
+	void drawPlaceholder(QGraphicsRectItem *placeholder, QPointF scenePos);
 	void erasePlaceholder(bool);
 
-	/** @brief Returning element that follows placeholder
+	/**
+	*   @brief Returns element that follows placeholder
 	*   @return element or NULL
 	* */
 	Element *getPlaceholderNextElement();
@@ -112,6 +113,9 @@ private:
 		Bottom,
 		BottomRight
 	};
+
+	static int const titlePadding = 25;
+	static int const childSpacing = 10;
 
 	void delUnusedLines();
 	void arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<NodeElement*>& arranged);
@@ -156,7 +160,6 @@ private:
 	ContextMenuAction mSwitchGridAction;
 	static int const objectMinSize = 10;
 	//static int const sizeOfForestalling = 25;//TODO: must be used mElementImpl->sizeOfForestalling
-	QGraphicsRectItem *mPlaceholder;
 
 	bool mPortsVisible;
 
@@ -200,5 +203,7 @@ private:
 	SceneGridHandler *mGrid;
 	UmlPortHandler *mUmlPortHandler;
 
+	QGraphicsRectItem *mPlaceholder;
+	NodeElement *mHighlightedNode;
 };
 

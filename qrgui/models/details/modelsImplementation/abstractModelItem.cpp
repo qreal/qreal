@@ -6,9 +6,8 @@ using namespace qReal;
 using namespace models::details::modelsImplementation;
 
 AbstractModelItem::AbstractModelItem(Id const &id, AbstractModelItem *parent)
-	: mId(id)
+	: mId(id), mParent(parent)
 {
-	mParent = parent;
 }
 
 Id AbstractModelItem::id() const
@@ -31,24 +30,38 @@ AbstractModelItem::PointerList AbstractModelItem::children() const
 	return mChildren;
 }
 
-void AbstractModelItem::addChild(AbstractModelItem *child, int beforePosition)
+void AbstractModelItem::addChild(AbstractModelItem *child)
 {
-	if (mChildren.contains(child))
+	if (mChildren.contains(child)) {
 		throw Exception("Model: Adding already existing child " + child->id().toString() + "  to object " + mId.toString());
-
-	if(beforePosition < 0){
-		mChildren.append(child);
-	} else {
-		mChildren.insert(beforePosition, child);
 	}
+
+	mChildren.append(child);
 }
 
 void AbstractModelItem::removeChild(AbstractModelItem *child)
 {
-	if (mChildren.contains(child))
+	if (mChildren.contains(child)) {
 		mChildren.removeAll(child);
-	else
+	} else {
 		throw Exception("Model: Removing nonexistent child " + child->id().toString() + "  from object " + mId.toString());
+	}
+}
+
+void AbstractModelItem::stackBefore(AbstractModelItem *element, AbstractModelItem *sibling)
+{
+	if (element == sibling) return;
+
+	if(!mChildren.contains(element)) {
+		throw Exception("Model: Trying to move nonexistent child " + element->id().toString());
+	}
+
+	if(!mChildren.contains(sibling)) {
+		throw Exception("Model: Trying to stack element before nonexistent child " + sibling->id().toString());
+	}
+
+	mChildren.removeOne(element);
+	mChildren.insert(mChildren.indexOf(sibling), element);
 }
 
 int AbstractModelItem::row()

@@ -134,7 +134,7 @@ QString LogicalModel::pathToItem(AbstractModelItem const *item) const
 }
 
 void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId,
-	const QString &name, const QPointF &position, Id const &beforeId)
+	const QString &name, const QPointF &position)
 {
 	if (mModelItems.contains(id))
 		return;
@@ -143,33 +143,28 @@ void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &l
 	AbstractModelItem *parentItem = mModelItems[parent],
 		*newItem = NULL;
 
-	if ((logicalId != Id::rootId()) && (mModelItems.contains(logicalId))) {
-		 if (parent == logicalId)
+	if (logicalId != Id::rootId() && mModelItems.contains(logicalId)) {
+		 if (parent == logicalId) {
 			 return;
-		else
+		} else {
 			changeParent(index(mModelItems[logicalId]), index(parentItem), QPointF());
+		}
 	} else {
-		AbstractModelItem *beforeItem = mModelItems.value(beforeId, NULL);
-
 		newItem = createModelItem(id, parentItem);
-		initializeElement(id, parentItem, newItem, name, position, beforeItem);
+		initializeElement(id, parentItem, newItem, name, position);
 	}
 }
 
 void LogicalModel::initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem,
-		modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position,
-		modelsImplementation::AbstractModelItem *beforeItem)
+		modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
 {
 	Q_UNUSED(position)
 
-	int beforePositionInModel = parentItem->children().indexOf(beforeItem);
-	int beforePositionInRepo = beforeItem != NULL ? mApi.children(parentItem->id()).indexOf(beforeItem->id()) : -1;
-
-	int const newRow = beforePositionInModel >= 0 ? beforePositionInModel : parentItem->children().size();
+	int newRow = parentItem->children().size();
 
 	beginInsertRows(index(parentItem), newRow, newRow);
-	parentItem->addChild(item, beforePositionInModel);
-	mApi.addChild(parentItem->id(), id, beforePositionInRepo);
+	parentItem->addChild(item);
+	mApi.addChild(parentItem->id(), id);
 	mApi.setProperty(id, "name", name);
 	mApi.setProperty(id, "from", Id::rootId().toVariant());
 	mApi.setProperty(id, "to", Id::rootId().toVariant());
@@ -180,9 +175,10 @@ void LogicalModel::initializeElement(const Id &id, modelsImplementation::Abstrac
 	mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
 
 	QStringList const properties = mEditorManager.getPropertyNames(id.type());
-	foreach (QString const property, properties)
-	// for those properties that doesn't have default values, plugin will return empty string
+	foreach (QString const property, properties) {
+		// for those properties that doesn't have default values, plugin will return empty string
 		mApi.setProperty(id, property, mEditorManager.getDefaultPropertyValue(id, property));
+	}
 
 	mModelItems.insert(id, item);
 	endInsertRows();
@@ -264,10 +260,26 @@ void LogicalModel::changeParent(QModelIndex const &element, QModelIndex const &p
 		mApi.setParent(elementItem->id(), parentItem->id());
 
 		elementItem->setParent(parentItem);
+
 		parentItem->addChild(elementItem);
 
 		endMoveRows();
 	}
+}
+
+void LogicalModel::stackBefore(const QModelIndex &element, const QModelIndex &sibling)
+{
+	if(element == sibling) return;
+
+	beginMoveRows(element.parent(), element.row(), element.row(), element.parent(), sibling.row());
+
+	AbstractModelItem *parent = static_cast<AbstractModelItem *>(element.parent().internalPointer()),
+		*item = static_cast<AbstractModelItem *>(element.internalPointer()),
+		*siblingItem = static_cast<AbstractModelItem *>(sibling.internalPointer());
+
+	parent->stackBefore(item, siblingItem);
+	mApi.stackBefore(parent->id(), item->id(), siblingItem->id());
+	endMoveRows();
 }
 
 qrRepo::LogicalRepoApi const &LogicalModel::api() const

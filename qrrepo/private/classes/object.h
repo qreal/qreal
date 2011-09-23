@@ -15,15 +15,15 @@ namespace qrRepo {
 			explicit Object(const qReal::Id &id);
 			Object(const qReal::Id &id, const qReal::Id &parent);
 			Object(const qReal::Id &id, const qReal::Id &parent, const qReal::Id &logicalId);
-			void setParent(const qReal::Id &parent);
-			void removeParent();
-			void addChild(const qReal::Id &child, int beforePosition = -1);
-			void removeChild(const qReal::Id &child);
+			void addChild(qReal::Id const &child);
+			void removeChild(qReal::Id const &child);
 			qReal::IdList children() const;
 			qReal::Id parent() const;
-			void setProperty(const QString &name, const QVariant &value);
+			void setParent(const qReal::Id &parent);
+			void removeParent();
 			QVariant property(const QString &name) const;
 			bool hasProperty(const QString &name) const;
+			void setProperty(const QString &name, const QVariant &value);
 			void removeProperty(const QString &name);
 			qReal::Id id() const;
 			qReal::Id logicalId() const;
@@ -33,6 +33,7 @@ namespace qrRepo {
 			qReal::IdList temporaryRemovedLinks() const;
 			void removeTemporaryRemovedLinksAt(QString const &direction);
 			void removeTemporaryRemovedLinks();
+			void stackBefore(qReal::Id const &element, qReal::Id const &sibling);
 
 		private:
 			const qReal::Id mId;

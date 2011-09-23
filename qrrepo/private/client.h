@@ -20,15 +20,19 @@ namespace qrRepo {
 			qReal::IdList children(const qReal::Id &id) const;
 			qReal::Id parent(const qReal::Id &id) const;
 			void setParent(const qReal::Id &id, const qReal::Id &parent);
-			void addChild(const qReal::Id &id, const qReal::Id &child, int beforePosition = -1);
-			void addChild(const qReal::Id &id, const qReal::Id &child, qReal::Id const &logicalId, int beforePosition = -1);
+			void addChild(const qReal::Id &id, const qReal::Id &child);
+			void addChild(const qReal::Id &id, const qReal::Id &child, qReal::Id const &logicalId);
 			void removeParent(const qReal::Id &id);
-			void removeChild(const qReal::Id &id, const qReal::Id &child);
-			void setProperty(const qReal::Id &id, const QString &name, const QVariant &value);
-			QVariant property(const qReal::Id &id, const QString &name) const;
-			void removeProperty(const qReal::Id &id, const QString &name);
-			bool hasProperty(const qReal::Id &id, const QString &name) const;
 			void remove(const qReal::Id &id);
+			void removeChild(const qReal::Id &id, const qReal::Id &child);
+
+			void stackBefore(qReal::Id const &id, qReal::Id const &child, qReal::Id const &sibling);
+
+			QVariant property(const qReal::Id &id, const QString &name) const;
+			bool hasProperty(const qReal::Id &id, const QString &name) const;
+			void setProperty(const qReal::Id &id, const QString &name, const QVariant &value);
+			void removeProperty(const qReal::Id &id, const QString &name);
+
 			void setTemporaryRemovedLinks(qReal::Id const &id, QString const &direction, qReal::IdList const &linkIdList);
 			qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const;
 			qReal::IdList temporaryRemovedLinks(qReal::Id const &id) const;

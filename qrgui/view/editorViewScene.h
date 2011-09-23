@@ -53,8 +53,10 @@ public:
 	void highlight(qReal::Id const &graphicalId, bool exclusive = true);
 	void dehighlight(qReal::Id const &graphicalId);
 
-public slots:
+	static QGraphicsRectItem *getPlaceholder();
+	NodeElement* findNewParent(QPointF, NodeElement*);
 
+public slots:
 	qReal::Id createElement(const QString &);
 
 signals:
@@ -97,8 +99,6 @@ private:
 	bool mNeedDrawGrid;  // if true, the grid will be shown (as scene's background)
 	qreal mWidthOfGrid;
 	double mRealIndexGrid;
-
-	QGraphicsRectItem *getPlaceholder();
 
 	void getObjectByGesture();
 	void getLinkByGesture(NodeElement * parent, NodeElement const & child);

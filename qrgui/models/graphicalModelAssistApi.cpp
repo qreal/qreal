@@ -51,9 +51,9 @@ Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &type)
 	return newElementId;
 }
 
-Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position, Id const &beforeId)
+Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
 {
-	return ModelsAssistApi::createElement(parent, id, isFromLogicalModel, name, position, beforeId);
+	return ModelsAssistApi::createElement(parent, id, isFromLogicalModel, name, position);
 }
 
 IdList GraphicalModelAssistApi::children(Id const &element) const
@@ -64,6 +64,12 @@ IdList GraphicalModelAssistApi::children(Id const &element) const
 void GraphicalModelAssistApi::changeParent(Id const &element, Id const &parent, QPointF const &position)
 {
 	mGraphicalModel.changeParent(mModel.indexById(element), mModel.indexById(parent), position);
+}
+
+
+void GraphicalModelAssistApi::stackBefore(const Id &element, const Id &sibling)
+{
+	mGraphicalModel.stackBefore(mModel.indexById(element), mModel.indexById(sibling));
 }
 
 void GraphicalModelAssistApi::setConfiguration(Id const &elem, QPolygon const &newValue)

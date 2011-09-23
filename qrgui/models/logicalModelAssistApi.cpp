@@ -26,9 +26,14 @@ Id LogicalModelAssistApi::createElement(Id const &parent, Id const &type)
 	return newElementId;
 }
 
-Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position, Id const &before)
+Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
 {
-	return ModelsAssistApi::createElement(parent, id, isFromLogicalModel, name, position, before);
+	return ModelsAssistApi::createElement(parent, id, isFromLogicalModel, name, position);
+}
+
+void LogicalModelAssistApi::stackBefore(const Id &element, const Id &sibling)
+{
+	mLogicalModel.stackBefore(mModel.indexById(element), mModel.indexById(sibling));
 }
 
 IdList LogicalModelAssistApi::children(Id const &element) const

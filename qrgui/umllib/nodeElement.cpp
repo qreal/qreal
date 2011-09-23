@@ -19,7 +19,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
 	mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)),
 	mSelectionNeeded(false), mConnectionInProgress(false),
-	mPlaceholder(NULL)
+	mPlaceholder(NULL), mHighlightedNode(NULL)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -225,11 +225,12 @@ void NodeElement::resize(QRectF newContents)
 	//childrenMoving - negative shift of children from the point (SIZE_OF_FORESTALLING, SIZE_OF_FORESTALLING)
 	//whatever it means :)
 	QPointF childrenMoving = QPointF(0, 0);
-	foreach (QGraphicsItem* childItem, childItems()) {
+	foreach (QGraphicsItem *childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem && (curItem->isPort() && (newContents != mContents))) {
+		if (curItem && curItem->isPort() && newContents != mContents) {
 			curItem->resizeChild(newContents, mContents);
 		}
+
 		if (!curItem || curItem->isPort()) {
 			continue;
 		}
@@ -244,7 +245,7 @@ void NodeElement::resize(QRectF newContents)
 			childrenMoving.setY(curItemPos.y() - mElementImpl->sizeOfForestalling());
 		}
 	}
-	setPos(pos() + childrenMoving);
+//	setPos(pos() + childrenMoving);
 	moveChildren(-childrenMoving);
 
 	foreach (QGraphicsItem* childItem, childItems()) {
@@ -262,7 +263,7 @@ void NodeElement::resize(QRectF newContents)
 		}
 
 		// it seems to be more appropriate to use childItem->pos() but it causes
-		// bad behaviour when dropping element to another
+		// bad behaviour when dropping one element to another
 		curChildItemBoundingRect.translate(childItem->scenePos() - scenePos());
 
 		if (curChildItemBoundingRect.left() < newContents.left() + mElementImpl->sizeOfForestalling()) {
@@ -289,7 +290,7 @@ void NodeElement::resize(QRectF newContents)
 	newContents.moveTo(pos());
 	setGeometry(newContents);
 
-	NodeElement* parItem = dynamic_cast<NodeElement*>(parentItem());
+	NodeElement *parItem = dynamic_cast<NodeElement*>(parentItem());
 	if (parItem) {
 		parItem->resize(parItem->mContents); // recursive expansion of parents
 	}
@@ -364,14 +365,68 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 	scene()->invalidate();
 	if (mDragState == None) {
+
+		if (!isPort() && (flags() & ItemIsMovable)) {
+			// switch нужен для случая, когда мы не можем растягивать объект.
+			// Его родитель должен определяться не по позиции мышки, а по позиции угла.
+			QPointF newParentInnerPoint = event->scenePos();
+			switch (mDragState) {
+			case TopLeft:
+				newParentInnerPoint = scenePos();
+				break;
+			case Top:
+				newParentInnerPoint = scenePos() + QPointF(mContents.width() / 2, 0);
+				break;
+			case TopRight:
+				newParentInnerPoint = scenePos() + QPointF(mContents.width(), 0);
+				break;
+			case Left:
+				newParentInnerPoint = scenePos() + QPointF(0, mContents.height()/2);
+				break;
+			case Right:
+				newParentInnerPoint = scenePos() + QPointF(mContents.width(), mContents.height() / 2);
+				break;
+			case BottomLeft:
+				newParentInnerPoint = scenePos() + QPointF(0, mContents.height());
+				break;
+			case Bottom:
+				newParentInnerPoint = scenePos() + QPointF(mContents.width() / 2, mContents.height());
+				break;
+			case BottomRight:
+				newParentInnerPoint = scenePos() + QPointF(mContents.width(), mContents.height());
+				break;
+			case None:
+				break;
+			}
+			EditorViewScene *evScene = dynamic_cast<EditorViewScene*>(scene());
+			NodeElement *newParent = evScene->findNewParent(newParentInnerPoint, this);
+
+			// it would be nice optimization to do nothing in case of
+			// mHighlightedNode == newParent, but it's unapplicable here because
+			// of element could be moved inside his parent
+
+			if (newParent != NULL) {
+				mHighlightedNode = newParent;
+				if (mHighlightedNode->mElementImpl->isSortingContainer()) {
+					mHighlightedNode->drawPlaceholder(EditorViewScene::getPlaceholder(), event->scenePos());
+				} else {
+					// do something
+				}
+			} else if (mHighlightedNode != NULL) {
+				mHighlightedNode->erasePlaceholder(true);
+				mHighlightedNode = NULL;
+			}
+		}
+
 		Element::mouseMoveEvent(event);
 		mGrid->mouseMoveEvent();
+
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
 
 		QRectF newContents = mContents;
 		QPointF parentPos = QPointF(0, 0);
-		QGraphicsItem* parItem = parentItem();
+		QGraphicsItem *parItem = parentItem();
 		if (parItem) {
 			parentPos = parItem->scenePos();
 		}
@@ -447,101 +502,34 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		Element::mouseReleaseEvent(event);
 	}
 
-	if (!isPort() && (flags() & ItemIsMovable)) {
-		QPointF newParentInnerPoint = event->scenePos();
-		//switch нужен для случая, когда мы не можем растягивать объект.
-		//Его родитель должен определяться не по позиции мышки, а по позиции угла.
-		switch (mDragState) {
-		case TopLeft:
-			newParentInnerPoint = scenePos();
-			break;
-		case Top:
-			newParentInnerPoint = scenePos() + QPointF(mContents.width() / 2, 0);
-			break;
-		case TopRight:
-			newParentInnerPoint = scenePos() + QPointF(mContents.width(), 0);
-			break;
-		case Left:
-			newParentInnerPoint = scenePos() + QPointF(0, mContents.height()/2);
-			break;
-		case Right:
-			newParentInnerPoint = scenePos() + QPointF(mContents.width(), mContents.height() / 2);
-			break;
-		case BottomLeft:
-			newParentInnerPoint = scenePos() + QPointF(0, mContents.height());
-			break;
-		case Bottom:
-			newParentInnerPoint = scenePos() + QPointF(mContents.width() / 2, mContents.height());
-			break;
-		case BottomRight:
-			newParentInnerPoint = scenePos() + QPointF(mContents.width(), mContents.height());
-			break;
-		case None:
-			break;
+	// we should use mHighlightedNode to determine if there a highlighted node
+	// insert current element into them and set mHighlightedNode to NULL
+	// but because of mouseRelease twice triggering we can't do it
+	// This may cause more bugs
+	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
+	if (!isPort() && (flags() & ItemIsMovable))
+	if (mHighlightedNode != NULL) {
+		NodeElement *newParent = mHighlightedNode;
+		Element *insertBefore = mHighlightedNode->getPlaceholderNextElement();
+		mHighlightedNode->erasePlaceholder(false);
+//		mHighlightedNode = NULL;
+
+		mGraphicalAssistApi->changeParent(id(), newParent->id(),
+			mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
+
+		if (insertBefore != NULL) {
+			mGraphicalAssistApi->stackBefore(id(), insertBefore->id());
 		}
 
-		// when we select multiple elements and move them, position of mouse release event could be
-		// exactly over one of them. so to prevent handling this situation as putting all others in
-		// container, we check if new parent is selected right now.
+		newParent->resize(newParent->mContents);
 
-		// if we want to put multiple elements in a container, we should take scene()->items()
-		// and remove elements that are currently selected from it.
-
-		QList<QGraphicsItem *> parentsList;
-		foreach (QGraphicsItem *item, scene()->items(newParentInnerPoint)) {
-			NodeElement *e = dynamic_cast<NodeElement *>(item);
-			if (e && (item != this)) {
-				parentsList.append(e);
-			}
+		while (newParent != NULL) {
+			newParent->mContents = newParent->mContents.normalized();
+			newParent->storeGeometry();
+			newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
 		}
-
-		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-		QList<QGraphicsItem *> selected = evScene->selectedItems();
-
-		// but there could be a situation that we're trying to move element and it's container
-		// together. it that case we should not change parent of this element
-
-		if (!parentItem() || !selected.contains(parentItem())) {
-
-			// delete from parents list ones that are selected right now
-			QList<QGraphicsItem *> realNewParents;
-			foreach (QGraphicsItem * item, parentsList){
-				if (!selected.contains(item)) {
-					realNewParents.append(item);
-				}
-			}
-
-			NodeElement *newParent = NULL;
-			int i = 0;
-			// we get the first valid NodeElement from realNewParents
-			while (!newParent && i < realNewParents.size()){
-				newParent = dynamic_cast<NodeElement *>(realNewParents.at(i));
-				i++;
-			}
-			// проверка, можно ли добавлять наш элемент в найденного родителя
-			bool allowed = false;
-			if (newParent) {
-				foreach (qReal::Id type, mGraphicalAssistApi->editorManager().getContainedTypes(newParent->id().type())) {
-					if (id().element() ==  type.editor()) {
-						allowed = true;
-					}
-				}
-			}
-			if (newParent && !selected.contains(newParent) && allowed) {
-				mGraphicalAssistApi->changeParent(id(), newParent->id(),
-					mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
-
-				newParent->resize(newParent->mContents);
-
-				while (newParent != NULL) {
-					newParent->mContents = newParent->mContents.normalized();
-					newParent->storeGeometry();
-					newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
-				}
-			} else {
-				mGraphicalAssistApi->changeParent(id(), evScene->rootItemId(), scenePos());
-			}
-		}
+	} else {
+		mGraphicalAssistApi->changeParent(id(), evScene->rootItemId(), scenePos());
 	}
 
 	mDragState = None;
@@ -902,8 +890,8 @@ qreal NodeElement::getPortId(const QPointF &location) const
 		path = ps.createStroke(path);
 		if (path.contains(location)) {
 			return (1.0 * (i + mPointPorts.size()) + qMin(0.9999,
-														  QLineF(QLineF(newTransform(mLinePorts[i])).p1(), location).length()
-														  / newTransform(mLinePorts[i]).length()));
+				QLineF(QLineF(newTransform(mLinePorts[i])).p1(), location).length()
+				 / newTransform(mLinePorts[i]).length()));
 		}
 	}
 
@@ -1099,12 +1087,8 @@ void NodeElement::setLinksVisible(bool isVisible)
 
 void NodeElement::sortChildren()
 {
-	qreal curChildY = mElementImpl->sizeOfForestalling() + 25; //25 - for container name
+	qreal curChildY = mElementImpl->sizeOfForestalling() + titlePadding;
 	qreal maxChildrenWidth = 0;
-
-	if(mPlaceholder != NULL){
-		maxChildrenWidth = mPlaceholder->rect().width();
-	}
 
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
@@ -1115,13 +1099,24 @@ void NodeElement::sortChildren()
 		}
 	}
 
+	if (maxChildrenWidth == 0) {
+		maxChildrenWidth = childrenBoundingRect().width();
+	}
+
+	if(mPlaceholder != NULL){
+		int placeHolderWidth = mPlaceholder->rect().width();
+		if (placeHolderWidth > maxChildrenWidth) {
+			maxChildrenWidth = placeHolderWidth;
+		}
+	}
+
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if(childItem == mPlaceholder){
 			QRectF rect(mElementImpl->sizeOfForestalling(), curChildY,
 				maxChildrenWidth, mPlaceholder->rect().height());
 			mPlaceholder->setRect(rect);
-			curChildY += mPlaceholder->rect().height() + 10;
+			curChildY += mPlaceholder->rect().height() + childSpacing;
 		}
 		if (curItem) {
 			if (mElementImpl->maximizesChildren()) {
@@ -1132,42 +1127,43 @@ void NodeElement::sortChildren()
 											curItem->mContents.width(), curItem->mContents.height()));
 			}
 
-			curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling() + 10;
+			curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling() + childSpacing;
 			curItem->storeGeometry();
 		}
 	}
 }
 
-void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QGraphicsSceneDragDropEvent *event)
+void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 {
-	qreal curChildY = mElementImpl->sizeOfForestalling() + 25 + scenePos().y(); //25 - for container name
-
-	QPointF point = event->scenePos();
-
 	// binary search? No because we need to know summary height of prev elements
-	NodeElement* prevItem = NULL;
+	NodeElement *nextItem = NULL;
+
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement *curItem = dynamic_cast<NodeElement*>(childItem);
-		if(childItem == mPlaceholder){
-			curChildY += mPlaceholder->rect().height();
-		}
-
-		if (curItem) {
-			int height = curItem->mContents.height();
-			if(curChildY + height / 2 > point.y()){
-				prevItem = curItem;
+		if (curItem != NULL) {
+			if (curItem->scenePos().y() > pos.y()) {
+				nextItem = curItem;
 				break;
 			}
-
-			curChildY += height + mElementImpl->sizeOfChildrenForestalling();
 		}
 	}
-;
+
+	QList<QGraphicsItem*> const &childs = QGraphicsItem::children();
+//	int placeholderIdx = childs.indexOf(mPlaceholder);
+//	if (placeholderIdx != -1) {
+//		int nextIdx = placeholderIdx + 1;
+//		if (nextIdx < childs.length() && childs[nextIdx] == nextItem) {
+//			// no need to do anything
+//			delete placeholder;
+//			return;
+//		}
+//	}
+
 	erasePlaceholder(false);
 	mPlaceholder = placeholder;
 	mPlaceholder->setParentItem(this);
-	if(prevItem != NULL){
-		mPlaceholder->stackBefore(prevItem);
+	if(nextItem != NULL){
+		mPlaceholder->stackBefore(nextItem);
 	}
 
 	resize(QRectF());

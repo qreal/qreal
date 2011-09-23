@@ -27,11 +27,13 @@ namespace qReal {
 				void connectToLogicalModel(LogicalModel * const logicalModel);
 				void updateElements(Id const &logicalId, QString const &name);
 				void addElementToModel(Id const &parent, Id const &id, Id const &logicalId,
-					QString const &name, QPointF const &position, Id const &before = Id());
+					QString const &name, QPointF const &position);
 
 				virtual QVariant data(const QModelIndex &index, int role) const;
 				virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
 				virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
+				virtual void stackBefore(QModelIndex const &element, QModelIndex const &sibling);
+
 				qrRepo::GraphicalRepoApi const &api() const;
 				qrRepo::GraphicalRepoApi &mutableApi() const;
 				virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
@@ -58,8 +60,7 @@ namespace qReal {
 				void initializeElement(const Id &id, const Id &logicalId,
 					modelsImplementation::AbstractModelItem *parentItem,
 					modelsImplementation::AbstractModelItem *item,
-					const QString &name, const QPointF &position,
-					modelsImplementation::AbstractModelItem *before = NULL);
+					const QString &name, const QPointF &position);
 
 				virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root,
 					details::modelsImplementation::AbstractModelItem *child);

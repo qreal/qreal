@@ -29,9 +29,10 @@ void LogicalModelView::rowsAboutToBeRemoved(QModelIndex const &parent, int start
 		QModelIndex current = model()->index(row, 0, parent);
 		if (current.isValid()) {
 			Id const logicalId = current.data(roles::idRole).value<Id>();
-			QList<QPersistentModelIndex> indexes = static_cast<GraphicalModel *>(mModel)->indexesWithLogicalId(logicalId);
+			GraphicalModel *gModel = dynamic_cast<GraphicalModel *>(mModel);
+			QList<QPersistentModelIndex> indexes = gModel->indexesWithLogicalId(logicalId);
 			foreach (QPersistentModelIndex index, indexes) {
-				static_cast<GraphicalModel *>(mModel)->removeRows(index.row(), 1, index.parent());
+				gModel->removeRows(index.row(), 1, index.parent());
 			}
 		}
 	}

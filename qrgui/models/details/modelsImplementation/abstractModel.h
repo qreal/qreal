@@ -38,8 +38,7 @@ namespace qReal {
 						Id const &id,
 						Id const &logicalId,
 						QString const &name,
-						QPointF const &position,
-						Id const &before = Id()) = 0;
+						QPointF const &position) = 0;
 					QPersistentModelIndex rootIndex() const;
 					//void initializeElement(Id const &id, details::AbstractModelItem *parentItem,
 					//		details::AbstractModelItem *item, QString const &name, QPointF const &position);

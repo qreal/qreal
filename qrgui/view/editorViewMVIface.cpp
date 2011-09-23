@@ -221,11 +221,13 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow)
 {
 	Q_UNUSED(sourceEnd);
-	Q_UNUSED(destinationRow);
 	Q_ASSERT(sourceStart == sourceEnd);  // only one element is permitted to be moved
-	QPersistentModelIndex movedElementIndex = sourceParent.child(sourceStart, 0);
+	QPersistentModelIndex movedElementIndex = sourceParent.child(sourceStart, 0),
+		newSiblingIndex = destinationParent.child(destinationRow, 0);
 
-	if (!item(movedElementIndex)) {
+	Element *movedElement = item(movedElementIndex),
+		*sibling = item(newSiblingIndex);
+	if (movedElement == NULL) {
 		// there's no such element on the scene already
 		// TODO: add element on the scene if there's no such element here, but there's in the model
 		// ignoring there cases now
@@ -233,16 +235,17 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 		return;
 	}
 
-	Element* movedElement = item(movedElementIndex);
-
-	if (!item(destinationParent)) {
+	Element *newParent = item(destinationParent);
+	if (newParent == NULL) {
 		// no parent element on the scene, so it should be root element
 		movedElement->setParentItem(NULL);
 		return;
 	}
 
-	Element* newParent = item(destinationParent);
 	movedElement->setParentItem(newParent);
+	if (sibling != NULL) {
+		movedElement->stackBefore(sibling);
+	}
 }
 
 void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow)
@@ -254,12 +257,13 @@ void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceSta
 	QPersistentModelIndex movedElementIndex = destinationParent.child(destinationRow, 0);
 
 	Q_ASSERT(movedElementIndex.isValid());
-	if (!item(movedElementIndex)) {
+	Element *movedElement = item(movedElementIndex);
+
+	if (movedElement == NULL) {
 		// no element on the scene, forget about it
 		return;
 	}
 
-	Element* movedElement = item(movedElementIndex);
 	movedElement->updateData();
 }
 
@@ -268,8 +272,9 @@ void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
 {
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 		QModelIndex curr = topLeft.sibling(row, 0);
-		if (item(curr))
+		if (item(curr)) {
 			item(curr)->updateData();
+		}
 	}
 }
 

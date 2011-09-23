@@ -27,14 +27,19 @@ IdList RepoApi::children(Id const &id) const
 	return mClient.children(id);
 }
 
-void RepoApi::addChild(Id const &id, Id const &child, int beforePosition)
+void RepoApi::addChild(Id const &id, Id const &child)
 {
-	mClient.addChild(id, child, beforePosition);
+	mClient.addChild(id, child);
 }
 
-void RepoApi::addChild(Id const &id, Id const &child, Id const &logicalId, int beforePosition)
+void RepoApi::addChild(Id const &id, Id const &child, Id const &logicalId)
 {
-	mClient.addChild(id, child, logicalId, beforePosition);
+	mClient.addChild(id, child, logicalId);
+}
+
+void RepoApi::stackBefore(Id const &id, Id const &child, Id const &sibling)
+{
+	mClient.stackBefore(id, child, sibling);
 }
 
 void RepoApi::removeChild(Id const &id, Id const &child)
@@ -453,7 +458,7 @@ qReal::IdList RepoApi::outgoingConnectedElements(qReal::Id const &id) const
 	foreach (qReal::Id curLink, outgoingLinks(id)) {
 		result.append(to(curLink));
 	}
-	return result; 
+	return result;
 }
 
 qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
@@ -462,5 +467,5 @@ qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
 	foreach (qReal::Id curLink, incomingLinks(id)) {
 		result.append(from(curLink));
 	}
-	return result; 
+	return result;
 }

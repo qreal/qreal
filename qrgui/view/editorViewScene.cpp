@@ -145,14 +145,18 @@ void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 
 void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
-	Q_UNUSED(event);
+	QByteArray itemData = event->mimeData()->data("application/x-real-uml-data");
+	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
+	QString uuid = "";
+	in_stream >> uuid;
+	Id id = Id::loadFromString(uuid);
 
 	QList<QGraphicsItem*> elements = items(event->scenePos());
 
 	NodeElement *node = NULL;
 	foreach(QGraphicsItem *item, elements){
 		node = dynamic_cast<NodeElement*>(item);
-		if(node != NULL) break;
+		if(node != NULL && canBeContainedBy(node->id(), id)) break;
 	}
 
 	if(node == NULL){
@@ -164,11 +168,42 @@ void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 
 	NodeElement *prevHighlighted = mHighlightNode;
 	QGraphicsRectItem *placeholder = getPlaceholder();
-	node->drawPlaceholder(placeholder, event);
+	node->drawPlaceholder(placeholder, event->scenePos());
 	mHighlightNode = node;
 	if(prevHighlighted != mHighlightNode && prevHighlighted != NULL){
 		prevHighlighted->erasePlaceholder(true);
 	}
+}
+
+NodeElement* EditorViewScene::findNewParent(QPointF newParentInnerPoint, NodeElement *node) {
+	QList<QGraphicsItem *> selected = selectedItems();
+
+	// when we select multiple elements and move them, position of mouse release event could be
+	// exactly over one of them. so to prevent handling this situation as putting all others in
+	// container, we check if new parent is selected right now.
+	if (NULL == node->parentItem() || !selected.contains(node->parentItem())) {
+
+		// if we want to put multiple elements in a container, we should take scene()->items()
+		// and remove elements that are currently selected from it.
+
+		// but there could be a situation that we're trying to move element and it's container
+		// together. it that case we should not change parent of this element
+
+		// delete from parents list ones that are selected right now
+		// we get the first valid NodeElement
+		foreach (QGraphicsItem *item, items(newParentInnerPoint)) {
+			NodeElement *e = dynamic_cast<NodeElement *>(item);
+			if (e != NULL && e != node && !selected.contains(item)) {
+				// проверка, можно ли добавлять наш элемент в найденного родителя
+				if (canBeContainedBy(e->id(), node->id())) {
+					return e;
+				}
+			}
+
+		}
+	}
+
+	return NULL;
 }
 
 QGraphicsRectItem* EditorViewScene::getPlaceholder()
@@ -189,6 +224,10 @@ QGraphicsRectItem* EditorViewScene::getPlaceholder()
 void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
 	Q_UNUSED(event);
+	if(mHighlightNode != NULL){
+		mHighlightNode->erasePlaceholder(true);
+		mHighlightNode = NULL;
+	}
 }
 
 void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
@@ -201,7 +240,7 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 		return;
 	}
 
-	QList<QGraphicsItem*> elements = items(event->scenePos());
+//	QList<QGraphicsItem*> elements = items(event->scenePos());
 	createElement(event->mimeData(),event->scenePos());
 	if(mHighlightNode != NULL){
 		mHighlightNode->erasePlaceholder(true);
@@ -211,17 +250,15 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 
 bool EditorViewScene::canBeContainedBy(qReal::Id container, qReal::Id candidate)
 {
-	Q_UNUSED(container);
-	Q_UNUSED(candidate); // TODO: update xml descriptions to remove
-	return true;
+//	Q_UNUSED(container);
+//	Q_UNUSED(candidate); // TODO: update xml descriptions to remove
 
-	// this block is commented in master branch
-/*	bool allowed = false;
-	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container.type())){
-		if (candidate.element() ==  type.editor())
-			allowed = true;
+	foreach (qReal::Id const &type, mWindow->manager()->getContainedTypes(container.type())){
+		if (candidate.element() ==  type.editor()) {
+			return true;
+		}
 	}
-	return allowed;*/
+	return false;
 }
 
 int EditorViewScene::launchEdgeMenu(EdgeElement* edge, NodeElement* node, QPointF scenePos)
@@ -276,9 +313,9 @@ int EditorViewScene::launchEdgeMenu(EdgeElement* edge, NodeElement* node, QPoint
 		}
 	}
 
-	//	Cleaning.
-	//	foreach(QObject *object, toDelete)
-	//		delete object;
+//		Cleaning.
+//		foreach(QObject *object, toDelete)
+//			delete object;
 
 	return result;
 }
@@ -324,9 +361,9 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 
 	QString uuid = "";
 	QString pathToItem = "";
-	QString name;
+	QString name = "";
 	QPointF pos;
-	bool isFromLogicalModel;
+	bool isFromLogicalModel = false;
 	in_stream >> uuid;
 	in_stream >> pathToItem;
 	in_stream >> name;
@@ -336,7 +373,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	Element *newParent = NULL;
 
 	// TODO: make it simpler
-	qReal::Id id = qReal::Id::loadFromString(uuid);
+	Id id = Id::loadFromString(uuid);
 	Element* e = mWindow->manager()->graphicalObject(id);
 
 	// TODO: what is it??
@@ -349,10 +386,10 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	}
 
 	if(newParent){
-		if (!canBeContainedBy(newParent->id(), id)){
-			QMessageBox::critical(0, "Error!", "[some text]");
-			return;
-		}
+//		if (!canBeContainedBy(newParent->id(), id)){
+//			QMessageBox::critical(0, "Error!", "[some text]");
+//			return;
+//		}
 
 		//temporary solution for chaotic changes of coordinates of created elements with edge menu
 		EdgeElement* edge = dynamic_cast<EdgeElement*>(newParent);
@@ -364,16 +401,16 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	QPointF const position = !newParent ? scenePos : newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
 
 	Id const &parentId = newParent != NULL ? newParent->id() : mv_iface->rootId();
-	Id beforeId;
 
-	if(newParent != NULL) {
-		NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
-		Element *beforeNode = parentNode->getPlaceholderNextElement();
-		if(beforeNode != NULL){
-			beforeId = beforeNode->id();
+	id = mv_iface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
+
+	NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
+	if(parentNode != NULL) {
+		Element *nextNode = parentNode->getPlaceholderNextElement();
+		if(nextNode != NULL){
+			mv_iface->graphicalAssistApi()->stackBefore(id, nextNode->id());
 		}
 	}
-	id = mv_iface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position, beforeId);
 	emit elementCreated(id);
 }
 
@@ -667,24 +704,24 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	Element *parent = dynamic_cast <Element *>(getElem(element->id())->parent());
 
 	if (parent) {
-		if (!canBeContainedBy(parent->id(), element->id())){
-			QMessageBox::critical(0, "Ololo", "can't drop it here!111");
-			qDebug() << "ololo";
-			// fail, reparenting the element as it was before
-			foreach (QGraphicsItem *item, items(event->scenePos())) {
-				Element * elem = dynamic_cast < Element * >(item);
-				if (elem && elem->id() == element->id()) {
-					qReal::Id id = qReal::Id::rootId();
-					Element * prevParent = dynamic_cast < Element * >(mPrevParent);
-					if (prevParent) {
-						id = prevParent->id();
-					}
-					if (mv_iface && mv_iface->graphicalAssistApi()) {
-						mv_iface->graphicalAssistApi()->changeParent(element->id(), id, mPrevPosition);
-					}
-				}
-			}
-		}
+//		if (!canBeContainedBy(parent->id(), element->id())){
+//			QMessageBox::critical(0, "Ololo", "can't drop it here!111");
+//			qDebug() << "ololo";
+//			// fail, reparenting the element as it was before
+//			foreach (QGraphicsItem *item, items(event->scenePos())) {
+//				Element * elem = dynamic_cast < Element * >(item);
+//				if (elem && elem->id() == element->id()) {
+//					qReal::Id id = qReal::Id::rootId();
+//					Element * prevParent = dynamic_cast < Element * >(mPrevParent);
+//					if (prevParent) {
+//						id = prevParent->id();
+//					}
+//					if (mv_iface && mv_iface->graphicalAssistApi()) {
+//						mv_iface->graphicalAssistApi()->changeParent(element->id(), id, mPrevPosition);
+//					}
+//				}
+//			}
+//		}
 	}
 	redraw();
 }

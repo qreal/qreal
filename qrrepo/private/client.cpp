@@ -60,16 +60,16 @@ void Client::setParent(Id const &id, Id const &parent)
 	}
 }
 
-void Client::addChild(const Id &id, const Id &child, int beforePosition)
+void Client::addChild(const Id &id, const Id &child)
 {
-	addChild(id, child, Id(), beforePosition);
+	addChild(id, child, Id());
 }
 
-void Client::addChild(const Id &id, const Id &child, Id const &logicalId, int beforePosition)
+void Client::addChild(const Id &id, const Id &child, Id const &logicalId)
 {
 	if (mObjects.contains(id)) {
 		if (!mObjects[id]->children().contains(child))
-			mObjects[id]->addChild(child, beforePosition);
+			mObjects[id]->addChild(child);
 
 		if (mObjects.contains(child)) { // should we move element?
 			mObjects[child]->setParent(id);
@@ -79,6 +79,22 @@ void Client::addChild(const Id &id, const Id &child, Id const &logicalId, int be
 	} else {
 		throw Exception("Client: Adding child " + child.toString() + " to nonexistent object " + id.toString());
 	}
+}
+
+void Client::stackBefore(qReal::Id const &id, qReal::Id const &child, qReal::Id const &sibling) {
+	if(!mObjects.contains(id)) {
+		throw Exception("Client: Moving child " + child.toString() + " of nonexistent object " + id.toString());
+	}
+
+	if(!mObjects.contains(child)) {
+		throw Exception("Client: Moving nonexistent child " + child.toString());
+	}
+
+	if(!mObjects.contains(sibling)) {
+		throw Exception("Client: Stacking before nonexistent child " + sibling.toString());
+	}
+
+	mObjects[id]->stackBefore(child, sibling);
 }
 
 void Client::removeParent(const Id &id)
