@@ -19,9 +19,9 @@ win32 {
 LIBS += -L$$ROOT/bin -lqrkernel
 
 !macx {
-    #QMAKE_LFLAGS += "-Wl,-O1,-rpath,$(PWD)/../../../bin/"
+	#QMAKE_LFLAGS += "-Wl,-O1,-rpath,$(PWD)/../../../bin/"
 
-    QMAKE_LFLAGS += "-Wl,-O1,-rpath,."
+	QMAKE_LFLAGS += "-Wl,-O1,-rpath,."
 }
 
 isEmpty(QREAL_EDITOR_PATH) {
