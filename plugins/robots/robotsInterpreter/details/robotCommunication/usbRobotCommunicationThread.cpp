@@ -166,7 +166,7 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const 
 	qDebug() << "Sending";
 	QString tmp = "";
 	for (int i = 0; i < buffer.length(); i++) {
-		tmp += QString::number((byte)buffer[i]);
+		tmp += QString::number((char)buffer[i]);
 		tmp += " ";
 	}
 	qDebug() << ">" << tmp;
@@ -195,15 +195,10 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const 
 		}
 		QString buffer = "";
 		for (int i = 0; i < outputBuffer.length(); i++) {
-			buffer += QString::number((byte)outputBuffer[i]);
+			buffer += QString::number((char)outputBuffer[i]);
 			buffer += " ";
 		}
 		qDebug() << "<" << buffer;
-//		qDebug() << "[14] = " << (byte)outputBuffer[14] << "[15] =" << (byte)outputBuffer[15];
-//		if ((byte)outputBufferPtr[14] == 181)
-//			outputBufferPtr[14] = 1;
-//		if ((byte)outputBufferPtr[14] == 255)
-//			outputBufferPtr[14] = 0;
 		emit response(addressee, outputBuffer);
 	}
 }
