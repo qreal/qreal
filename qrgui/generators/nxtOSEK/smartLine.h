@@ -1,20 +1,30 @@
+#pragma once
+
 #include <QString>
 #include "../../../qrkernel/ids.h"
 
 namespace qReal {
 namespace generators {
+
+//! Class for representing code line generated from Robot Language Diagram.
+/*!
+ * Contains information for formatting (indent level change) and connection with master object ID.
+ */
 class SmartLine {
 public:
-	enum IndentChangeType {increase, decrease, withoutChange, increaseDecrease};
-	//increases WITHOUT this line
-	//decreases WITH this line
-	//increaseDecrease - decreases only for this line
+	//! Indent control type.
+	enum IndentChangeType {
+		increase, //!< increases indent WITHOUT this line
+		decrease, //!< decreases indent WITH this line
+		withoutChange, //!< doesn't change indent
+		increaseDecrease //!< decreases indent only for this line
+	};
 
-	SmartLine(QString text, qReal::Id elementId, IndentChangeType tabLevelChange = withoutChange);
+	SmartLine(QString text, qReal::Id elementId, IndentChangeType indentLevelChange = withoutChange);
 
 	QString text() const;
 	qReal::Id elementId() const;
-	IndentChangeType tabLevelChange() const;
+	IndentChangeType indentLevelChange() const;
 
 	void setText(QString const &);
 	void setElementId(qReal::Id const &);

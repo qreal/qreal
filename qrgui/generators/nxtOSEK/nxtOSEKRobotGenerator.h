@@ -3,7 +3,6 @@
 #include <QString>
 #include <QPair>
 #include <QMap>
-//#include <QLinkedList>
 #include <QStack>
 
 #include "../../../qrkernel/ids.h"
@@ -14,6 +13,9 @@
 
 namespace qReal {
 namespace generators {
+
+//! Class for generate a nxtOSEK code from Robot Language Diagram.
+
 class NxtOSEKRobotGenerator {
 public:
 	explicit NxtOSEKRobotGenerator(qrRepo::RepoApi *api, QString const &destinationPath = "");
@@ -21,9 +23,11 @@ public:
 
 	~NxtOSEKRobotGenerator();
 
+	//! main method that starts a code generation.
 	gui::ErrorReporter &generate();
 
 private:
+	//! AbstractElementGenerator - robot diagram element generator abstraction.
 	friend class AbstractElementGenerator;
 	class AbstractElementGenerator {
 	public:
@@ -32,17 +36,18 @@ private:
 		virtual ~AbstractElementGenerator() {}
 
 		virtual bool generate();
-		//must change mNxtGen->mGeneratedStringSet
 
 	protected:
 		virtual QList<SmartLine> loopPrefixCode() = 0;
 
 		virtual QList<SmartLine> loopPostfixCode() = 0;
 
+		/*!
+		 * Creates new lists in mGeneratedStringSet
+		 * and connects it with mElementId in mElementToStringListNumbers
+		 * in case element have more than 1 incoming connection.
+		*/
 		virtual void createListsForIncomingConnections();
-		//creates new lists in mGeneratedStringSet
-		//and connects it with mElementId in mElementToStringListNumbers
-		//if element have more than 1 incoming connection
 
 		virtual bool preGenerationCheck() = 0;
 		virtual bool nextElementsGeneration() = 0;
@@ -51,7 +56,7 @@ private:
 		qReal::Id mElementId;
 	};
 
-	//for Beep, Engines etc
+	//! Realization of AbstractElementGenerator for Beep, Engines etc.
 	class SimpleElementGenerator: public AbstractElementGenerator {
 	public:
 		explicit SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
@@ -69,7 +74,7 @@ private:
 		QList<QString> portsToEngineNames(QString const &portsProperty);
 	};
 
-	//for Function
+	//! Realization of AbstractElementGenerator for Function.
 	class FunctionElementGenerator: public SimpleElementGenerator {
 	public:
 		explicit FunctionElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
@@ -79,7 +84,7 @@ private:
 		void variableAnalysis(QByteArray const &);
 	};
 
-	//for loops
+	//! Realization of AbstractElementGenerator for Loop.
 	class LoopElementGenerator: public AbstractElementGenerator {
 	public:
 		explicit LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
@@ -93,7 +98,7 @@ private:
 		virtual bool nextElementsGeneration();
 	};
 
-	//for if blocks
+	//! Realization of AbstractElementGenerator for If block.
 	class IfElementGenerator : public AbstractElementGenerator {
 	public:
 		explicit IfElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
@@ -110,6 +115,7 @@ private:
 		QPair<bool, qReal::Id> checkBranchForBackArrows(qReal::Id const &curElementId, qReal::IdList* checkedElements);
 	};
 
+	// Element generator factory that returns for a diagram element ID a connected generator.
 	friend class ElementGeneratorFactory;
 	class ElementGeneratorFactory {
 	public:
@@ -123,7 +129,6 @@ private:
 				return new FunctionElementGenerator(emboxGen, elementId);
 
 			return new SimpleElementGenerator(emboxGen, elementId);
-			//TODO: добавить обработку для других классов
 		}
 	};
 
@@ -132,16 +137,21 @@ private:
 	qrRepo::RepoApi *mApi;
 	bool mIsNeedToDeleteMApi;
 	QString mDestinationPath;
+
+	//! Set of already generated strings united for take a same critical places position (start of loop etc)
 	QList< QList<SmartLine> > mGeneratedStringSet;
+
+	//! Set of elements that have been already observed, but can create a regular loop (If blocks, Loop etc)
 	QStack<qReal::Id> mPreviousLoopElements;
 	qReal::Id mPreviousElement;
 
+	/*!
+	 * Mapped element with lists in mGeneratedStringSet
+	 * QString in this case is qReal::Id string presentation.
+	 */
 	QMap< QString, QStack<int> > mElementToStringListNumbers;
-	//mapped element with lists in mGeneratedStringSet
-	//QString in this case is qReal::Id string presentation
 
-	//QList< QPair<QByteArray, qReal::Id> > mVariables;
-	QList<SmartLine> mVariables; //TODO
+	QList<SmartLine> mVariables;
 	int mVariablePlaceInGenStrSet;
 
 	gui::ErrorReporter mErrorReporter;

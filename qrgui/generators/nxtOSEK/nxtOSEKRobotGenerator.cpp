@@ -30,9 +30,9 @@ NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator()
 }
 
 void NxtOSEKRobotGenerator::addToGeneratedStringSetVariableInit() {
-	//QPair<QByteArray, qReal::Id> curVariable;
 	foreach (SmartLine curVariable, mVariables) {
-		mGeneratedStringSet[mVariablePlaceInGenStrSet].append(SmartLine("int " + curVariable.text() + ";", curVariable.elementId()));
+		mGeneratedStringSet[mVariablePlaceInGenStrSet].append(
+				SmartLine("int " + curVariable.text() + ";", curVariable.elementId()));
 	}
 }
 
@@ -61,14 +61,14 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 		int curTabNumber = 1;
 		foreach (QList<SmartLine> lineList, mGeneratedStringSet) {
 			foreach (SmartLine curLine, lineList) {
-				if ( (curLine.tabLevelChange() == SmartLine::decrease)
-						|| (curLine.tabLevelChange() == SmartLine::increaseDecrease) )
+				if ( (curLine.indentLevelChange() == SmartLine::decrease)
+						|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
 					curTabNumber--;
 
 				resultCode += QString(curTabNumber, '\t') + curLine.text() + "\n";
 
-				if ( (curLine.tabLevelChange() == SmartLine::increase)
-						|| (curLine.tabLevelChange() == SmartLine::increaseDecrease) )
+				if ( (curLine.indentLevelChange() == SmartLine::increase)
+						|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
 					curTabNumber++;
 			}
 		}
@@ -209,12 +209,13 @@ void NxtOSEKRobotGenerator::FunctionElementGenerator::variableAnalysis(QByteArra
 	QList<QByteArray> funcBlocks = code.split(';');
 
 	foreach (QByteArray block, funcBlocks) {
-		int firstEqualSignPos = block.indexOf('='); //только здесь может произойти первое появление переменной
+	       	//Only one possible place for first variable appear
+		int firstEqualSignPos = block.indexOf('=');		
 		if (firstEqualSignPos == -1)
 			continue;
 
-		QByteArray leftPart = block.left(firstEqualSignPos);
 		//must be a normal variable name
+		QByteArray leftPart = block.left(firstEqualSignPos);
 
 		leftPart = leftPart.trimmed();
 		QString forbiddenLastSimbols = "+-=*/><";
@@ -534,12 +535,11 @@ bool NxtOSEKRobotGenerator::SimpleElementGenerator::nextElementsGeneration()
 bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration()
 {
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
-	// outgoingLinks.size() must be 2!
+	Q_ASSERT(outgoingLinks.size == 2);
 
 	int elementConnectedByIterationEdgeNumber = -1;
 	int afterLoopElementNumber = -1;
 
-	//Грязный хак! Почему-то неправильно читается русский
 	if (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString().toUtf8() == "итерация") {
 		elementConnectedByIterationEdgeNumber = 0;
 		afterLoopElementNumber = 1;
@@ -582,7 +582,7 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::generateBranch(int branchNumber)
 
 	if (!nextBlocksGen->generate())
 		return false;
-	delete nextBlocksGen;
+	delete nextocksGen;
 
 	return true;
 }
