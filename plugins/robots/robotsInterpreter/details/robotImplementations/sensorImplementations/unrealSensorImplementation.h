@@ -1,6 +1,5 @@
 #pragma once
 #include "abstractSensorImplementation.h"
-#include "../../../robotCommunicationInterface.h"
 #include "../../robotCommandConstants.h"
 #include "../../d2RobotModel/d2RobotModel.h"
 

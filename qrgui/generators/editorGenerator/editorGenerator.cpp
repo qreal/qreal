@@ -23,31 +23,55 @@ EditorGenerator::EditorGenerator(qrRepo::LogicalRepoApi const &api)
 {
 }
 
-QHash<Id, QString> EditorGenerator::getMetamodelList()
+QHash<Id, QPair<QString,QString> > EditorGenerator::getMetamodelList()
 {
 	Id repoId = Id::rootId();
 
 	IdList const metamodels = mApi.children(repoId);
-	QHash<Id, QString> metamodelList;
+	QHash<Id, QPair<QString,QString> > metamodelList;
 
 	foreach (Id const key, metamodels) {
 		QString const objectType = mApi.typeName(key);
 		if (objectType == "MetamodelDiagram" && mApi.isLogicalElement(key)) {
-			QString name = mApi.stringProperty(key, "name of the directory");
-			if (!name.isEmpty())
-				metamodelList.insert(key, name);
+			/*Now the user must specify the full path to the directory and the relative path to source files of QReal*/
+			QString directoryName = mApi.stringProperty(key, "name of the directory");
+			QString pathToQRealRoot = mApi.stringProperty(key, "relative path to QReal Source Files");
+			if ((!directoryName.isEmpty()) && (!pathToQRealRoot.isEmpty())) {
+				QPair<QString, QString> savingData;
+				savingData.first = directoryName;
+				savingData.second = pathToQRealRoot;
+				metamodelList.insert(key, savingData);
+			}
 			else
-				mErrorReporter.addError("no name of the directory", key);
+				mErrorReporter.addError("no name of the directory or relative path to QReal Source Files", key);
 		}
 	}
 	return metamodelList;
 }
 
-gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const QString &pathToFile)
+gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const QString &pathToFile, const QString &pathToQRealSource)
 {
 	QString includeProList;
 	QFileInfo fileName(pathToFile);
 	QString baseName = fileName.baseName();
+
+	/*find the path to the folder specified by the user for the new editor from the foder "plugins"*/
+	QStringList pathList = pathToQRealSource.split("/", QString::SkipEmptyParts);
+	QString editorPath = "..";
+	int index = pathList.length() - 1;
+	while ((index >= 0) && (pathList[index] != "..")) {
+		editorPath += "/..";
+		index--;
+	}
+	index++;
+	QStringList directoryPathList = pathToFile.split("/", QString::SkipEmptyParts);
+
+	int first = directoryPathList.length() - index - 1;
+	int last = directoryPathList.length() - 1;
+
+	for (int i = first; i < last; ++i) {
+		editorPath += "/" + directoryPathList[i];
+	}
 
 	QDomElement metamodel = mDocument.createElement("metamodel");
 	metamodel.setAttribute("xmlns", "http://schema.real.com/schema/");
@@ -74,9 +98,10 @@ gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const 
 	outpro() << QString("QREAL_XML = %1\n").arg(baseName + ".xml");
 	if (includeProList != "")
 		outpro() << QString("QREAL_XML_DEPENDS = %1\n").arg(includeProList);
-	outpro() << QString ("QREAL_EDITOR_NAME = %1\n").arg(baseName);
+	outpro() << QString ("QREAL_EDITOR_PATH = %1\n").arg(editorPath);
+	outpro() << QString ("ROOT = %1\n").arg(pathToQRealSource);
 	outpro() << "\n";
-	outpro() << "include (../editorsCommon.pri)";
+	outpro() << QString("include (%1)").arg(pathToQRealSource + "/plugins/editorsSdk/editorsCommon.pri");
 
 	OutFile outxml(pathToFile + ".xml");
 	QDomNode header = mDocument.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"utf-8\"");

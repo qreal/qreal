@@ -1,6 +1,6 @@
 #pragma once
 #include "abstractMotorImplementation.h"
-#include "../../../robotCommunicationInterface.h"
+#include "../../robotCommunication/robotCommunication.h"
 
 namespace qReal {
 namespace interpreters {
@@ -13,7 +13,7 @@ class RealMotorImplementation : public AbstractMotorImplementation
 {
 	Q_OBJECT
 public:
-	RealMotorImplementation(int const port, RobotCommunicationInterface *robotCommunicationInterface);
+	RealMotorImplementation(int const port, RobotCommunication *robotCommunicationInterface);
 	virtual void on(int speed);
 	virtual void on(int speed, long unsigned int degrees);
 	virtual void stop();
@@ -23,7 +23,7 @@ private:
 	void setOutputState(int speed, int mode
 			, regulationMode::RegulationModeEnum regulation, int turnRatio, runState::RunStateEnum runState
 			, unsigned long tachoLimit);
-	RobotCommunicationInterface *mRobotCommunicationInterface;
+	RobotCommunication *mRobotCommunicationInterface;
 };
 
 }

@@ -75,7 +75,7 @@ QList<ActionInfo> RobotsPlugin::actions()
 
 QPair<QString, PreferencesPage *> RobotsPlugin::preferencesPage()
 {
-	return qMakePair(QObject::tr("Robots"), static_cast<PreferencesPage*>(&mRobotSettinsPage));
+	return qMakePair(QObject::tr("Robots"), static_cast<PreferencesPage*>(&mRobotSettingsPage));
 }
 
 void RobotsPlugin::showRobotSettings()
@@ -90,8 +90,6 @@ void RobotsPlugin::show2dModel()
 
 void RobotsPlugin::updateSettings()
 {
-	QString const bluetoothPortName = SettingsManager::instance()->value("bluetoothPortName").toString();
-	mInterpreter.setBluetoothPortName(bluetoothPortName);
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
 	mInterpreter.setRobotModelType(typeOfRobotModel);
 	mInterpreter.configureSensors(
@@ -105,4 +103,8 @@ void RobotsPlugin::updateSettings()
 		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopAction);
 	else
 		mInterpreter.showD2ModelWidget(false);
+
+	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication", "bluetooth").toString();
+	QString const portName = SettingsManager::value("bluetoothPortName", "").toString();
+	mInterpreter.setCommunicator(typeOfCommunication, portName);
 }

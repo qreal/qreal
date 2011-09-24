@@ -6,8 +6,9 @@
 #include "sensorImplementations/abstractSensorImplementation.h"
 #include "sensorImplementations/abstractEncoderImplementation.h"
 #include "../../sensorConstants.h"
-#include "../../robotCommunicationInterface.h"
 #include "../d2RobotModel/d2RobotModel.h"
+#include "../robotCommunication/robotCommunicationThreadInterface.h"
+#include "../robotCommunication/robotCommunication.h"
 
 namespace qReal {
 namespace interpreters {
@@ -27,7 +28,7 @@ public:
 	AbstractRobotModelImplementation();
 	virtual ~AbstractRobotModelImplementation();
 
-	static AbstractRobotModelImplementation *robotModel(robotModelType::robotModelTypeEnum type, RobotCommunicationInterface * const robotCommunicationInterface = NULL, d2Model::D2RobotModel *d2RobotModel = NULL);
+	static AbstractRobotModelImplementation *robotModel(robotModelType::robotModelTypeEnum type, RobotCommunication * const robotCommunicationInterface = NULL, d2Model::D2RobotModel *d2RobotModel = NULL);
 
 	virtual void init();
 	virtual void clear();
@@ -67,7 +68,7 @@ protected:
 	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode) = 0;
 
 	static NullRobotModelImplementation *nullRobotModel();
-	static RealRobotModelImplementation *realRobotModel(RobotCommunicationInterface * const robotCommunicationInterface);
+	static RealRobotModelImplementation *realRobotModel(RobotCommunication * const robotCommunicationInterface);
 	static UnrealRobotModelImplementation *unrealRobotModel(d2Model::D2RobotModel *d2RobotModel);
 };
 
