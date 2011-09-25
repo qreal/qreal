@@ -378,11 +378,14 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 			colorNxtType = "NXT_COLOR_WHITE";
 		}
 
-		if (!colorNxtType.isEmpty())
+		if (!colorNxtType.isEmpty()) {
 			result.append(SmartLine(
 					"while (ecrobot_get_nxtcolorsensor_id(NXT_PORT_S" + QString::number(port)
-						+ ") != " + colorNxtType + ") \n{\n}",
+						+ ") != " + colorNxtType + ")",
 					mElementId));
+			result.append(SmartLine("{", mElementId));
+			result.append(SmartLine("}", mElementId));
+		}
 
 	} else if (mElementId.element() == "WaitForColorIntensity") {
 		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
@@ -393,15 +396,19 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 
 		result.append(SmartLine(
 				"while (!(ecrobot_get_nxtcolorsensor_light(NXT_PORT_S" + QString::number(port)
-					+ ") " + condition + ")) \n{\n}",
+					+ ") " + condition + "))",
 				mElementId));
+		result.append(SmartLine("{", mElementId));
+		result.append(SmartLine("}", mElementId));
 
 	} else if (mElementId.element() == "WaitForTouchSensor") {
 		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
 
 		result.append(SmartLine(
-				"while (!ecrobot_get_touch_sensor(NXT_PORT_S" + QString::number(port) + ")) \n{\n}",
+				"while (!ecrobot_get_touch_sensor(NXT_PORT_S" + QString::number(port) + "))",
 				mElementId));
+		result.append(SmartLine("{", mElementId));
+		result.append(SmartLine("}", mElementId));
 
 	} else if (mElementId.element() == "WaitForSonarDistance") {
 		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
@@ -416,8 +423,10 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 		QString condition = inequalitySign + " " + distance;
 
 		result.append(SmartLine(
-				"while (!(ecrobot_get_sonar_sensor(NXT_PORT_S" + QString::number(port) + ") " + condition + ")) \n{\n}",
+				"while (!(ecrobot_get_sonar_sensor(NXT_PORT_S" + QString::number(port) + ") " + condition + "))",
 				mElementId));
+		result.append(SmartLine("{", mElementId));
+		result.append(SmartLine("}", mElementId));
 	}
 
 	//for InitialNode returns empty list
@@ -582,7 +591,7 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::generateBranch(int branchNumber)
 
 	if (!nextBlocksGen->generate())
 		return false;
-	delete nextocksGen;
+	delete nextBlocksGen;
 
 	return true;
 }
@@ -601,10 +610,21 @@ QPair<bool, qReal::Id> NxtOSEKRobotGenerator::IfElementGenerator::checkBranchFor
 	qDebug() << curElementId.toString();
 	qDebug() << logicElementId.toString();
 	qDebug() << mNxtGen->mElementToStringListNumbers;
+	/*
 	if (mNxtGen->mElementToStringListNumbers.contains(logicElementId.toString())
 			|| mNxtGen->mElementToStringListNumbers.contains(curElementId.toString()))
-		//if we have observed this element and generated code of this element
 		return QPair<bool, qReal::Id>(true, logicElementId);
+	*/
+	
+	//if we have observed this element and generated code of this element
+	foreach (QString observedElementString, mNxtGen->mElementToStringListNumbers.keys()) {
+		qReal::Id observedElementId = qReal::Id::loadFromString(observedElementString);
+		qReal::Id observedElementLogicId = mNxtGen->mApi->logicalId(observedElementId);
+
+		if ((logicElementId == observedElementId)
+				|| (logicElementId == observedElementLogicId))
+			return QPair<bool, qReal::Id>(true, logicElementId);
+	}
 
 	//add element to list
 	checkedElements->append(logicElementId);
