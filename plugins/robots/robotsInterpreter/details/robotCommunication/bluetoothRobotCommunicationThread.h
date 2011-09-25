@@ -21,11 +21,6 @@ public:
 	BluetoothRobotCommunicationThread();
 	~BluetoothRobotCommunicationThread();
 
-signals:
-	void connected(bool success);
-	void disconnected();
-	void response(QObject *addressee, QByteArray const &buffer);
-
 public slots:
 	void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
 	void connect(QString const &portName);

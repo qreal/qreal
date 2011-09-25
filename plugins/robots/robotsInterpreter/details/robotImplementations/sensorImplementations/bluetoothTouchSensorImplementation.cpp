@@ -7,15 +7,13 @@ using namespace details::robotImplementations::sensorImplementations;
 
 BluetoothTouchSensorImplementation::BluetoothTouchSensorImplementation(RobotCommunication *robotCommunicationInterface
 		, inputPort::InputPortEnum const &port)
-	: BluetoothSensorImplementation(robotCommunicationInterface, lowLevelSensorType::SWITCH, sensorMode::BOOLEANMODE, port)
+	: BluetoothSensorImplementation(robotCommunicationInterface, lowLevelSensorType::SWITCH, sensorMode::RAWMODE, port)
 {
 }
 
 void BluetoothTouchSensorImplementation::sensorSpecificProcessResponse(QByteArray const &reading)
 {
 	mState = idle;
-	// TODO: A hack. Touch sensor does not want to be configured in boolean mode over USB.
-	// Needs to be checked with bluetooth.
 	int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
 	qDebug() << "BluetoothTouchSensorImplementation::sensorSpecificProcessResponse sensorValue" << sensorValue;
 	if (reading[4] == 0 && sensorValue < 500)  // Sensor is pressed.
