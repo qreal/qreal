@@ -310,6 +310,12 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 					"return;",
 					mElementId));
 
+	} else if (mElementId.element() == "NullificationEncoder") {
+		QString port = mNxtGen->mApi->stringProperty(logicElementId, "Port");
+		result.append(SmartLine(
+					"nxt_motor_set_count(NXT_PORT_" + port + ", 0);",
+					mElementId));
+
 	} else if (mElementId.element() == "InitialBlock") {
 		for (int i = 1; i <= 4; i++) {
 			//4 - number of ports on nxt robot
@@ -427,6 +433,16 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 				mElementId));
 		result.append(SmartLine("{", mElementId));
 		result.append(SmartLine("}", mElementId));
+
+	} else if (mElementId.element() == "WaitForEncoder") {
+		QString port = mNxtGen->mApi->stringProperty(logicElementId, "Port");
+		QString tachoLimit = mNxtGen->mApi->stringProperty(logicElementId, "TachoLimit");
+		result.append(SmartLine(
+				"while (nxt_motor_get_count(NXT_PORT_" + port + ") < " + tachoLimit + ")",
+				mElementId));
+		result.append(SmartLine("{", mElementId));
+		result.append(SmartLine("}", mElementId));
+
 	}
 
 	//for InitialNode returns empty list
@@ -606,10 +622,6 @@ QPair<bool, qReal::Id> NxtOSEKRobotGenerator::IfElementGenerator::checkBranchFor
 		//if we have already observed this element by checkBranchForBackArrows function
 		return QPair<bool, qReal::Id>(false, qReal::Id());
 
-	qDebug() << logicElementId.element();
-	qDebug() << curElementId.toString();
-	qDebug() << logicElementId.toString();
-	qDebug() << mNxtGen->mElementToStringListNumbers;
 	/*
 	if (mNxtGen->mElementToStringListNumbers.contains(logicElementId.toString())
 			|| mNxtGen->mElementToStringListNumbers.contains(curElementId.toString()))
@@ -678,9 +690,6 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration()
 	QPair<bool, qReal::Id> negativeBranchCheck =
 		checkBranchForBackArrows(mNxtGen->mApi->to(outgoingLinks.at(1 - conditionArrowNum)), &emptyList);
 	bool isNegativeBranchReturnsToBackElems = negativeBranchCheck.first;
-
-	qDebug() << "isPositiveBranchReturnsToBackElems" << isPositiveBranchReturnsToBackElems;
-	qDebug() << "isNegativeBranchReturnsToBackElems" << isNegativeBranchReturnsToBackElems;
 
 	if (isPositiveBranchReturnsToBackElems && isNegativeBranchReturnsToBackElems) {
 		if (positiveBranchCheck.second != negativeBranchCheck.second) {
