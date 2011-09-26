@@ -35,7 +35,7 @@ NullRobotModelImplementation *AbstractRobotModelImplementation::nullRobotModel()
 	return mNullRobotModel;
 }
 
-RealRobotModelImplementation *AbstractRobotModelImplementation::realRobotModel(RobotCommunicationInterface * const robotCommunicationInterface)
+RealRobotModelImplementation *AbstractRobotModelImplementation::realRobotModel(RobotCommunication * const robotCommunicationInterface)
 {
 	if (mRealRobotModel == NULL)
 		mRealRobotModel = new RealRobotModelImplementation(robotCommunicationInterface);
@@ -49,14 +49,14 @@ UnrealRobotModelImplementation *AbstractRobotModelImplementation::unrealRobotMod
 	return mUnrealRobotModel;
 }
 
-AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(robotModelType::robotModelTypeEnum type, RobotCommunicationInterface * const robotCommunicationInterface, d2Model::D2RobotModel *d2RobotModel)
+AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(robotModelType::robotModelTypeEnum type, RobotCommunication * const robotCommunication, d2Model::D2RobotModel *d2RobotModel)
 {
 	if (type == robotModelType::null)
 		return nullRobotModel();
 	else if (type == robotModelType::unreal)
 		return unrealRobotModel(d2RobotModel);
 	else if (type == robotModelType::real)
-		return realRobotModel(robotCommunicationInterface);
+		return realRobotModel(robotCommunication);
 	else
 		throw Exception("AbstractRobotModelImplementation::robotModel tried to create unknown robot model");
 }

@@ -75,6 +75,7 @@
 						<property type="string" name="displayedName"/>
 						<property type="string" name="include"/>
 						<property type="string" name="name of the directory"/>
+						<property type="string" name="relative path to QReal Source Files"/>
 					</properties>
 					<containers/>
 					<connections>

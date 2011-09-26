@@ -1,6 +1,5 @@
 #include "toolPluginManager.h"
 
-#include <QtCore/QPluginLoader>
 #include <QtGui/QApplication>
 
 using namespace qReal;
@@ -25,7 +24,13 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 			ToolPluginInterface *toolPlugin = qobject_cast<ToolPluginInterface *>(plugin);
 			if (toolPlugin) {
 				mPlugins << toolPlugin;
+				mLoaders << loader;
 			}
+			else {
+				delete loader;
+			}
+		} else {
+			delete loader;
 		}
 	}
 
@@ -35,6 +40,8 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 ToolPluginManager::~ToolPluginManager()
 {
 	delete mCustomizer;
+	foreach (QPluginLoader *loader, mLoaders)
+		delete loader;
 }
 
 void ToolPluginManager::init(PluginConfigurator const &configurator)
