@@ -24,8 +24,6 @@ bool UsbRobotCommunicationThread::isOpen()
 
 void UsbRobotCommunicationThread::connect(QString const &portName)
 {
-	qDebug() << "UsbRobotCommunicationThread::connect";
-
 	Q_UNUSED(portName);
 
 	char resNamePC[10000];
@@ -60,12 +58,7 @@ void UsbRobotCommunicationThread::send(QObject *addressee
 void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const responseSize, QObject *addressee)
 {
 	qDebug() << "Sending";
-	QString tmp = "";
-	for (int i = 0; i < buffer.length(); i++) {
-		tmp += QString::number((char)buffer[i]);
-		tmp += " ";
-	}
-	qDebug() << ">" << tmp;
+	debugPrint(buffer, true);
 
 	int status = 0;
 	QByteArray newBuffer;
@@ -89,12 +82,7 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const 
 		for (unsigned i = 0; i < responseSize - 3; i++) {
 			outputBuffer[i + 3] = outputBufferPtr2[i];
 		}
-		QString buffer = "";
-		for (int i = 0; i < outputBuffer.length(); i++) {
-			buffer += QString::number((char)outputBuffer[i]);
-			buffer += " ";
-		}
-		qDebug() << "<" << buffer;
+		debugPrint(outputBuffer, false);
 		emit response(addressee, outputBuffer);
 	}
 }
@@ -113,4 +101,14 @@ void UsbRobotCommunicationThread::sendI2C(QObject *addressee
 		, QByteArray const &buffer, unsigned const responseSize
 		, inputPort::InputPortEnum const &port)
 {
+}
+
+void UsbRobotCommunicationThread::debugPrint(QByteArray const &buffer, bool out)
+{
+	QString tmp = "";
+	for (int i = 0; i < buffer.length(); i++) {
+		tmp += QString::number((char)buffer[i]);
+		tmp += " ";
+	}
+	qDebug() << (out ? ">" : "<") << tmp;
 }

@@ -33,6 +33,7 @@ private:
 	static const int kStatusNoError = 0;
 
 	bool isOpen();
+	static void debugPrint(QByteArray const &buffer, bool out);
 
 	void send(QByteArray const &buffer, unsigned const responseSize, QObject *addressee);
 
