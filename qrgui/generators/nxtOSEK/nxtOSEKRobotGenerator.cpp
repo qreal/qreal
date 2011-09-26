@@ -44,7 +44,7 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 	foreach (Id curInitialNode, initialNodes) {
 		if (!mApi->isGraphicalElement(curInitialNode))
 			continue;
-		
+
 		QString resultCode;
 		mGeneratedStringSet.clear();
 		mGeneratedStringSet.append(QList<SmartLine>()); //first list for variable initialization
@@ -151,7 +151,7 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 
 		curInitialNodeNumber++;
 	}
-	
+
 	return mErrorReporter;
 }
 
@@ -209,8 +209,8 @@ void NxtOSEKRobotGenerator::FunctionElementGenerator::variableAnalysis(QByteArra
 	QList<QByteArray> funcBlocks = code.split(';');
 
 	foreach (QByteArray block, funcBlocks) {
-	       	//Only one possible place for first variable appear
-		int firstEqualSignPos = block.indexOf('=');		
+			//Only one possible place for first variable appear
+		int firstEqualSignPos = block.indexOf('=');
 		if (firstEqualSignPos == -1)
 			continue;
 
@@ -560,7 +560,7 @@ bool NxtOSEKRobotGenerator::SimpleElementGenerator::nextElementsGeneration()
 bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration()
 {
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
-	Q_ASSERT(outgoingLinks.size == 2);
+	Q_ASSERT(outgoingLinks.size() == 2);
 
 	int elementConnectedByIterationEdgeNumber = -1;
 	int afterLoopElementNumber = -1;
@@ -627,7 +627,7 @@ QPair<bool, qReal::Id> NxtOSEKRobotGenerator::IfElementGenerator::checkBranchFor
 			|| mNxtGen->mElementToStringListNumbers.contains(curElementId.toString()))
 		return QPair<bool, qReal::Id>(true, logicElementId);
 	*/
-	
+
 	//if we have observed this element and generated code of this element
 	foreach (QString observedElementString, mNxtGen->mElementToStringListNumbers.keys()) {
 		qReal::Id observedElementId = qReal::Id::loadFromString(observedElementString);
@@ -641,7 +641,7 @@ QPair<bool, qReal::Id> NxtOSEKRobotGenerator::IfElementGenerator::checkBranchFor
 	//add element to list
 	checkedElements->append(logicElementId);
 
-	foreach (qReal::Id childId, mNxtGen->mApi->outgoingConnectedElements(logicElementId)) {	
+	foreach (qReal::Id childId, mNxtGen->mApi->outgoingConnectedElements(logicElementId)) {
 		QPair<bool, qReal::Id> childResult = checkBranchForBackArrows(childId, checkedElements);
 		if (childResult.first)
 			return childResult;
@@ -681,7 +681,7 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration()
 	//check for back arrows
 	qReal::IdList emptyList;
 
-	QPair<bool, qReal::Id> positiveBranchCheck = 
+	QPair<bool, qReal::Id> positiveBranchCheck =
 		checkBranchForBackArrows(mNxtGen->mApi->to(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum))),
 			&emptyList);
 	bool isPositiveBranchReturnsToBackElems = positiveBranchCheck.first;
@@ -720,7 +720,7 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration()
 
 		return true;
 	}
-	
+
 	if (!isPositiveBranchReturnsToBackElems && !isNegativeBranchReturnsToBackElems) {
 		QList<SmartLine> ifBlockPrefix;
 		ifBlockPrefix << SmartLine("if (" + condition + ") {", mElementId, SmartLine::increase);
@@ -736,7 +736,7 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration()
 		QList<SmartLine> ifBlockPostfix;
 		ifBlockPostfix << SmartLine("}", mElementId, SmartLine::decrease);
 		mNxtGen->mGeneratedStringSet << ifBlockPostfix;
-		
+
 		return true;
 	}
 

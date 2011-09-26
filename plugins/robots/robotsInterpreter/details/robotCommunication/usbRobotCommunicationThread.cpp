@@ -19,7 +19,6 @@ UsbRobotCommunicationThread::~UsbRobotCommunicationThread()
 bool UsbRobotCommunicationThread::isOpen()
 {
 	return mActive && mFantom.isAvailable();
-
 }
 
 void UsbRobotCommunicationThread::connect(QString const &portName)
