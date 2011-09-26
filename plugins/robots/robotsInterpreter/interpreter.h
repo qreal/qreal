@@ -11,6 +11,8 @@
 #include "details/blocksTable.h"
 #include "details/d2RobotModel/d2RobotModel.h"
 
+#include "watchListWindow.h"
+
 #include "details/robotsBlockParser.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
 
@@ -49,6 +51,7 @@ public slots:
 	void stop();
 	void stopRobot();
 	void showD2ModelWidget(bool isVisible);
+	void showWatchList();
 
 private slots:
 	void threadStopped();
@@ -86,6 +89,8 @@ private:
 	bool mConnected;
 
 	robotModelType::robotModelTypeEnum mImplementationType;
+	
+	watchListWindow *mWatchListWindow;
 
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	Id const findStartingElement(Id const &diagram) const;

@@ -62,6 +62,10 @@ QList<ActionInfo> RobotsPlugin::actions()
 	ActionInfo robotSettingsActionInfo(robotSettingsAction, "interpreters", "tools");
 	QObject::connect(robotSettingsAction, SIGNAL(triggered()), this, SLOT(showRobotSettings()));
 
+	QAction *watchListAction = new QAction(QObject::tr("Show watch list"), NULL);
+	ActionInfo watchListActionInfo(watchListAction, "interpreters", "tools");
+	QObject::connect(watchListAction, SIGNAL(triggered()), &mInterpreter, SLOT(showWatchList()));
+	
 	QAction *separator = new QAction(NULL);
 	ActionInfo separatorActionInfo(separator, "interpreters", "tools");
 	separator->setSeparator(true);
@@ -70,6 +74,7 @@ QList<ActionInfo> RobotsPlugin::actions()
 
 	return QList<ActionInfo>() << d2ModelActionInfo << runActionInfo << stopActionInfo
 			<< stopRobotActionInfo << connectToRobotActionInfo
+			<< watchListActionInfo
 			<< separatorActionInfo << robotSettingsActionInfo;
 }
 

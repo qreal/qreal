@@ -23,6 +23,7 @@ Interpreter::Interpreter()
 	, mBlocksTable(NULL)
 	, mRobotCommunication(new RobotCommunication(SettingsManager::value("valueOfCommunication", "bluetooth").toString()))
 	, mImplementationType(robotModelType::null)
+	, mWatchListWindow(NULL)
 {
 	mParser = NULL;
 	mBlocksTable = NULL;
@@ -109,6 +110,14 @@ void Interpreter::stop()
 void Interpreter::stopRobot()
 {
 	stop();
+}
+
+void Interpreter::showWatchList() {
+	if (mWatchListWindow != NULL) {
+		mWatchListWindow->close();
+	}
+	mWatchListWindow = new watchListWindow(mParser);
+	mWatchListWindow->show();
 }
 
 void Interpreter::showD2ModelWidget(bool isVisible)

@@ -20,6 +20,7 @@ HEADERS += \
 	sensorConstants.h \
 	robotSettingsPage.h \
 	customizer.h \
+	watchListWindow.h \
 	details/thread.h \
 	details/blocksFactory.h \
 	details/blocksTable.h \
@@ -100,6 +101,7 @@ SOURCES += \
 	robotsPlugin.cpp \
 	interpreter.cpp \
 	robotSettingsPage.cpp \
+	watchListWindow.cpp\
 	details/thread.cpp \
 	details/blocksTable.cpp \
 	details/blocksFactory.cpp \
@@ -177,6 +179,7 @@ SOURCES += \
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
+	watchListWindow.ui
 
 RESOURCES += \
 	robotsInterpreter.qrc \

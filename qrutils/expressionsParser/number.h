@@ -19,6 +19,7 @@ namespace qReal {
 			
 			QVariant property(QString name);
 			void setProperty(QString name, QVariant value);
+			QString toString() const;
 			
 			void operator+=(Number add);
 			void operator-=(Number sub);
