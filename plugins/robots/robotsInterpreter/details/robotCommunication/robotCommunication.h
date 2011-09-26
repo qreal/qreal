@@ -3,9 +3,8 @@
 #include <QtCore/QString>
 #include <QtCore/QThread>
 
-#include "robotCommunicationInterface.h"
-#include "details/bluetoothRobotCommunicationThread.h"
-#include "details/robotCommandConstants.h"
+#include "robotCommunicationThreadInterface.h"
+#include "../robotCommandConstants.h"
 
 class QextSerialPort;
 
@@ -13,13 +12,13 @@ namespace qReal {
 namespace interpreters {
 namespace robots {
 
-class BluetoothRobotCommunication : public RobotCommunicationInterface
+class RobotCommunication : public QObject
 {
 	Q_OBJECT
 
 public:
-	BluetoothRobotCommunication(QString const &portName);
-	~BluetoothRobotCommunication();
+	RobotCommunication(QString const &portName);
+	~RobotCommunication();
 
 	virtual void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
 	virtual void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize, inputPort::InputPortEnum const &port);
@@ -27,14 +26,19 @@ public:
 	virtual void disconnect();
 
 	void setPortName(QString const &portName);
+	void setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication);
 
 signals:
 	void threadSend(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
 	void threadSendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize
-					, details::lowLevelInputPort::InputPortEnum const &port);
+					, inputPort::InputPortEnum const &port);
 	void threadConnect(QString portName);
 	void threadReconnect(QString portName);
 	void threadDisconnect();
+
+	void connected(bool success);
+	void disconnected();
+	void response(QObject *addressee, QByteArray const &buffer);
 
 private slots:
 	void connectedSlot(bool success);
@@ -44,7 +48,7 @@ private slots:
 private:
 	QString mPortName;
 	QThread mRobotCommunicationThread;
-	details::BluetoothRobotCommunicationThread mRobotCommunicationThreadObject;
+	RobotCommunicationThreadInterface *mRobotCommunicationThreadObject;
 };
 
 }

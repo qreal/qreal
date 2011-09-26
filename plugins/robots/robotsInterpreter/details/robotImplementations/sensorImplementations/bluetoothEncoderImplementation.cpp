@@ -3,7 +3,7 @@
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
-BluetoothEncoderImplementation::BluetoothEncoderImplementation(RobotCommunicationInterface *robotCommunicationInterface
+BluetoothEncoderImplementation::BluetoothEncoderImplementation(RobotCommunication *robotCommunicationInterface
 		, outputPort::OutputPortEnum const &port)
 	: AbstractEncoderImplementation(port)
 {

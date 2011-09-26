@@ -30,6 +30,10 @@ void Number::setProperty(QString name, QVariant value) {
 	}
 }
 
+QString Number::toString() const {
+	return mNumber.toString();
+}
+
 void Number::operator+=(Number add) {
 	Number::Type t = add.property("Type").toInt() ? Number::intType : Number::doubleType;
 	QVariant val = add.property("Number");

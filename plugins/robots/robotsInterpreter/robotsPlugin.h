@@ -33,7 +33,7 @@ private slots:
 private:
 	Customizer mCustomizer;
 	Interpreter mInterpreter;
-	PreferencesRobotSettingsPage mRobotSettinsPage;
+	PreferencesRobotSettingsPage mRobotSettingsPage;
 	gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;
 	QAction *m2dModelAction;
 	QAction *mRunAction;

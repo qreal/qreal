@@ -1,7 +1,6 @@
 #pragma once
 #include <QtCore/QObject>
 #include "../../../sensorConstants.h"
-#include "../../../robotCommunicationInterface.h"
 #include "../../robotCommandConstants.h"
 
 namespace qReal {
