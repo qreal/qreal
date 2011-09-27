@@ -94,14 +94,20 @@ gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const 
 
 	createDiagrams(metamodel, metamodelId);
 
-	OutFile outpro(pathToFile + ".pro");
-	outpro() << QString("QREAL_XML = %1\n").arg(baseName + ".xml");
-	if (includeProList != "")
-		outpro() << QString("QREAL_XML_DEPENDS = %1\n").arg(includeProList);
-	outpro() << QString ("QREAL_EDITOR_PATH = %1\n").arg(editorPath);
-	outpro() << QString ("ROOT = %1\n").arg(pathToQRealSource);
-	outpro() << "\n";
-	outpro() << QString("include (%1)").arg(pathToQRealSource + "/plugins/editorsSdk/editorsCommon.pri");
+        try {
+            OutFile outpro(pathToFile + ".pro");
+            outpro() << QString("QREAL_XML = %1\n").arg(baseName + ".xml");
+            if (includeProList != "")
+                    outpro() << QString("QREAL_XML_DEPENDS = %1\n").arg(includeProList);
+            outpro() << QString ("QREAL_EDITOR_PATH = %1\n").arg(editorPath);
+            outpro() << QString ("ROOT = %1\n").arg(pathToQRealSource);
+            outpro() << "\n";
+            outpro() << QString("include (%1)").arg(pathToQRealSource + "/plugins/editorsSdk/editorsCommon.pri");
+        }
+        catch (char* e) {
+            mErrorReporter.addCritical(QObject::tr("incorrect file name"));
+            return mErrorReporter;
+        }
 
 	OutFile outxml(pathToFile + ".xml");
 	QDomNode header = mDocument.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"utf-8\"");

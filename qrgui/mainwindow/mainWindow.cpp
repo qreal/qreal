@@ -882,6 +882,8 @@ void MainWindow::generateEditor()
 		QString const metamodelFullName = metamodelList[key].first;
 		QString const pathToQRealRoot = metamodelList[key].second;
 		dir.mkpath(metamodelFullName);
+//		QFileInfo metamodelFileInfo(metamodelFullName);
+//		QStrin metamodelName = metamodelFileInfo.baseName();
 		QString metamodelName = (metamodelFullName.split("/", QString::SkipEmptyParts)).last();
 		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, metamodelFullName + "/" + metamodelName, pathToQRealRoot);
 

@@ -17,16 +17,16 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 	mPluginsDir.cd("plugins");
 
 	foreach (QString fileName, mPluginsDir.entryList(QDir::Files)) {
-//		// TODO: Free memory
-//		QPluginLoader *loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
-//		QObject *plugin = loader->instance();
+		// TODO: Free memory
+		QPluginLoader *loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
+		QObject *plugin = loader->instance();
 
-//		if (plugin) {
-//			ToolPluginInterface *toolPlugin = qobject_cast<ToolPluginInterface *>(plugin);
-//			if (toolPlugin) {
-//				mPlugins << toolPlugin;
-//			}
-//		}
+		if (plugin) {
+			ToolPluginInterface *toolPlugin = qobject_cast<ToolPluginInterface *>(plugin);
+			if (toolPlugin) {
+				mPlugins << toolPlugin;
+			}
+		}
 	}
 
 	mCustomizer = new DefaultCustomizer();
