@@ -1,5 +1,5 @@
 QREAL_XML = ainsEditor.xml
-QREAL_EDITOR_PATH = ../plugins/ainsEditor
-ROOT = ../..
+QREAL_EDITOR_PATH = ains/editors/ainsEditor
+ROOT = ../../../..
 
-include (../../plugins/editorsSdk/editorsCommon.pri)
+include (../../../../plugins/editorsSdk/editorsCommon.pri)
