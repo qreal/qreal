@@ -15,6 +15,16 @@ QMap<QString, Number>* ExpressionsParser::getVariables()
 	return &mVariables;
 }
 
+QMap<QString, QString>* ExpressionsParser::getVariablesForWatch() const
+{
+	QMap<QString, QString>* result = new QMap<QString, QString>();
+	foreach (QString variable, mVariables.keys()) {
+		result->insert(variable, mVariables.value(variable).toString());
+	}
+
+	return result;
+}
+
 bool ExpressionsParser::isDigit(const QChar &c)
 {
 	char symbol = c.toAscii();

@@ -29,7 +29,9 @@ NxtFlashTool::NxtFlashTool(ErrorReporter *errorReporter)
 void NxtFlashTool::flashRobot()
 {
 #ifdef Q_OS_WIN
-	mFlashProcess.start(qApp->applicationDirPath() + "/nxt-tools/flash.bat");
+	mFlashProcess.setEnvironment(QProcess::systemEnvironment());
+	mFlashProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/nexttool/");
+	mFlashProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/flash.bat");
 #else
 	mFlashProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/flash.sh");
 #endif
@@ -81,7 +83,9 @@ void NxtFlashTool::readNxtFlashData()
 void NxtFlashTool::uploadProgram()
 {
 #ifdef Q_OS_WIN
-	mFlashProcess.start("cmd", QStringList() << "/C" << "start" << qApp->applicationDirPath() + "/nxt-tools/upload.bat");
+	mFlashProcess.setEnvironment(QProcess::systemEnvironment());
+	mFlashProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/");
+	mFlashProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/upload.bat");
 #else
 	mUploadProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/upload.sh");
 #endif

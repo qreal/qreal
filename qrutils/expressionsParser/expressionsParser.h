@@ -23,7 +23,8 @@ public:
 	void setErrorReporter(ErrorReporterInterface *errorReporter);
 	void clear();
 
-	QMap<QString, Number>* getVariables(); //only for test using
+	QMap<QString, Number>* getVariables();
+	QMap<QString, QString>* getVariablesForWatch() const;
 
 protected:
 	enum ParseErrorType {

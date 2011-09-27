@@ -15,24 +15,15 @@ TRANSLATIONS = robotsInterpreter_ru.ts
 
 HEADERS += \
 	../../../qrgui/dialogs/preferencesPages/page.h \
-
-HEADERS += \
 	robotsPlugin.h \
-
-SOURCES += \
-	robotsPlugin.cpp \
-
-HEADERS += \
 	interpreter.h \
 	sensorConstants.h \
-	robotCommunicationInterface.h \
-	bluetoothRobotCommunication.h \
 	robotSettingsPage.h \
 	customizer.h \
+	watchListWindow.h \
 	details/thread.h \
 	details/blocksFactory.h \
 	details/blocksTable.h \
-	details/bluetoothRobotCommunicationThread.h \
 	details/robotCommandConstants.h \
 	details/robotsBlockParser.h \
 	details/autoconfigurer.h \
@@ -107,13 +98,13 @@ HEADERS += \
 	details/d2RobotModel/worldModel.h \
 
 SOURCES += \
+	robotsPlugin.cpp \
 	interpreter.cpp \
-	bluetoothRobotCommunication.cpp \
 	robotSettingsPage.cpp \
+	watchListWindow.cpp\
 	details/thread.cpp \
 	details/blocksTable.cpp \
 	details/blocksFactory.cpp \
-	details/bluetoothRobotCommunicationThread.cpp \
 	details/robotsBlockParser.cpp \
 	details/autoconfigurer.cpp \
 	details/blocks/block.cpp \
@@ -188,6 +179,9 @@ SOURCES += \
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
+	watchListWindow.ui
 
 RESOURCES += \
 	robotsInterpreter.qrc \
+
+include (details/robotCommunication/robotCommunication.pri)
