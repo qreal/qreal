@@ -227,7 +227,6 @@ MainWindow::MainWindow()
 
 	//	mUi->actionCheckout->setVisible(false);
 	//	mUi->actionCommit->setVisible(false);
-
 	checkNxtTools();
 	mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
 	mUi->actionFlash_Robot->setVisible(mNxtToolsPresent);
@@ -2011,7 +2010,7 @@ void MainWindow::generateRobotSourceCode()
 		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
 
 		CodeArea *area = new CodeArea();
-		QFile file("example0/example0.c");
+		QFile file("nxt-tools/example0/example0.c");
 		QTextStream *inStream = 0;
 		if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text))
 			inStream = new QTextStream(&file);
@@ -2057,12 +2056,12 @@ void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
 
 void MainWindow::checkNxtTools()
 {
-	QDir dir(qApp->applicationDirPath());
-	dir.cd("nxt-tools");
-	if (!dir.exists()){
+	QDir dir(qApp->applicationDirPath());		
+	if (!QDir().exists(dir.absolutePath() + "/nxt-tools")){
 		mNxtToolsPresent = false;
 		return;
 	}
+	dir.cd(dir.absolutePath() + "/nxt-tools");
 	qDebug() << dir.absolutePath();
 
 	QDir gnuarm(dir.absolutePath() + "/gnuarm");
