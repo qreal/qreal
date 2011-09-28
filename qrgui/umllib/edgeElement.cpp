@@ -327,6 +327,10 @@ void EdgeElement::connectToPort()
 		squarizeHandler(QPointF());
 	adjustLink();
 	arrangeSrcAndDst();
+	if (getNodeAt(mLine.first()) != NULL && getNodeAt(mLine.last()) != NULL)
+		mColor.setRgb(0, 0, 0, 255);
+	else
+		mColor.setRgb(255, 0, 0, 255);
 	update();
 
 }
