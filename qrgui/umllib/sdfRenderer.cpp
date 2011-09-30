@@ -10,7 +10,7 @@
 SdfRenderer::SdfRenderer()
 	: mStartX(0), mStartY(0), mNeedScale(true)
 {
-	mWorkingDirName = SettingsManager::value("workingDir", "./save").toString();
+	setWorkingFileName = SettingsManager::value("workingDir", "./save").toString();
 }
 
 SdfRenderer::SdfRenderer(const QString path)
@@ -20,7 +20,7 @@ SdfRenderer::SdfRenderer(const QString path)
 	{
 		qDebug() << "File " + path + " - loading failed!";
 	}
-	mWorkingDirName = SettingsManager::value("workingDir", "./save").toString();
+	setWorkingFileName = SettingsManager::value("workingDir", "./save").toString();
 }
 
 SdfRenderer::~SdfRenderer()

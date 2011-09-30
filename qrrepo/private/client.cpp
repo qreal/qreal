@@ -7,8 +7,8 @@ using namespace qReal;
 using namespace qrRepo;
 using namespace qrRepo::details;
 
-Client::Client(QString const &workingDirectory)
-	: serializer(workingDirectory)
+Client::Client(QString const &workingFile)
+	: serializer(workingFile)
 {
 	init();
 	loadFromDisk();
@@ -235,7 +235,6 @@ bool Client::exist(const Id &id) const
 
 void Client::saveAll() const
 {
-	serializer.clearWorkingDir();
 	serializer.saveToDisk(mObjects.values());
 }
 
@@ -266,9 +265,9 @@ void Client::remove(const qReal::Id &id)
 	}
 }
 
-void Client::setWorkingDir(QString const &workingDir)
+void Client::setWorkingFile(QString const &workingFile)
 {
-	serializer.setWorkingDir(workingDir);
+	serializer.setWorkingFile(workingFile);
 }
 
 void Client::printDebug() const
@@ -289,15 +288,16 @@ void Client::exterminate()
 {
 	printDebug();
 	mObjects.clear();
-	serializer.clearWorkingDir();
+	//serializer.clearWorkingDir();
 	serializer.saveToDisk(mObjects.values());
 	init();
 	printDebug();
 }
 
-void Client::open(QString const &workingDir)
+void Client::open(QString const &saveFile)
 {
-	serializer.setWorkingDir(workingDir);
+	serializer.setWorkingFile(saveFile);
+	serializer.decompressFile(saveFile);
 	mObjects.clear();
 	init();
 	loadFromDisk();

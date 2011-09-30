@@ -59,6 +59,7 @@ MainWindow::MainWindow()
 	, mErrorReporter(NULL)
 	, mIsFullscreen(false)
 	, mSaveDir(qApp->applicationDirPath() + "/save")
+	, mTempDir(qApp->applicationDirPath() + "/temp")
 	, mPreferencesDialog(this)
 	, mNxtToolsPresent(false)
 	, mHelpBrowser(NULL)
@@ -131,9 +132,17 @@ MainWindow::MainWindow()
 	mUi->errorDock->setVisible(false);
 
 	//	mDelegate.init(this, &mModels->logicalModelAssistApi());
+
+	SettingsManager::setValue("temp", mTempDir);
+	QDir dir(qApp->applicationDirPath());
+	if (!dir.cd("temp"))
+		QDir().mkdir(mTempDir);
+
+	//SettingsManager::setValue("saveFile", "");
+
 	QString workingDir = SettingsManager::value("workingDir", mSaveDir).toString();
 	mRootIndex = QModelIndex();
-	mModels = new models::Models(workingDir, mEditorManager);
+	mModels = new models::Models(mTempDir, mEditorManager);
 
 	mUi->propertyEditor->init(this, &mModels->logicalModelAssistApi());
 	mUi->propertyEditor->setModel(&mPropertyModel);
@@ -156,7 +165,7 @@ MainWindow::MainWindow()
 	QString windowTitle = mToolManager.customizer()->windowTitle();
 	if (windowTitle.isEmpty())
 		windowTitle = "QReal";
-	setWindowTitle(windowTitle + " - " + SettingsManager::value("workingDir", mSaveDir).toString());
+	setWindowTitle(windowTitle + " - " + "unsaved project");
 
 	if (!SettingsManager::value("maximized", true).toBool()) {
 		showNormal();
@@ -230,6 +239,8 @@ MainWindow::MainWindow()
 	checkNxtTools();
 	mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
 	mUi->actionFlash_Robot->setVisible(mNxtToolsPresent);
+
+
 }
 
 void MainWindow::connectActions()
@@ -336,6 +347,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 MainWindow::~MainWindow()
 {
 	saveAll();
+	QDir().rmdir(mTempDir);
 	delete mListenerManager;
 	delete mErrorReporter;
 	if (mHelpBrowser)
@@ -505,18 +517,23 @@ void MainWindow::sceneSelectionChanged()
 	}
 }
 
-QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
+QString MainWindow::getWorkingFile(QString const &dialogWindowTitle)
 {
 
-	QString const dirName = QFileDialog::getExistingDirectory(this, dialogWindowTitle
-															  , SettingsManager::value("workingDir", mSaveDir).toString(), QFileDialog::ShowDirsOnly);
+	QString const fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle
+															  , qApp->applicationDirPath(), tr("QReal Save File(*.qrs)"));
 
-	if (dirName.isEmpty())
-		return "";
+	//if (!QFile(fileName).exists())
+	//	return "";
 
-	SettingsManager::setValue("workingDir", dirName);
+	SettingsManager::setValue("saveFile", fileName);
+	mSaveFile = fileName;
 
-	return dirName;
+	QDir fileDir(fileName);
+	QMessageBox::information(NULL, "Information", fileDir.absolutePath(), "ok");
+
+
+	return fileName;
 }
 
 bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
@@ -558,13 +575,15 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 
 bool MainWindow::openNewProject()
 {
-	saveAll();
-	return open(getWorkingDir(tr("Select directory with a save to open")));
+	//saveAll();
+	return open(getWorkingFile(tr("Select file with a save to open")));
 }
 
-bool MainWindow::open(QString const &dirName)
+bool MainWindow::open(QString const &fileName)
 {
-	if (dirName.isEmpty())
+	//if (dirName.isEmpty())
+	//	return false;
+	if (!QFile(fileName).exists())
 		return false;
 
 	dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
@@ -575,7 +594,7 @@ bool MainWindow::open(QString const &dirName)
 
 	closeAllTabs();
 
-	mModels->repoControlApi().open(dirName);
+	mModels->repoControlApi().open(fileName);
 	mModels->reinit();
 
 	if (!checkPluginsAndReopen(NULL))
@@ -584,9 +603,8 @@ bool MainWindow::open(QString const &dirName)
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-	setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
 
-	mSaveDir = dirName;
+	setWindowTitle("QReal:Robots - " + mSaveFile);
 	return true;
 }
 
@@ -1572,15 +1590,22 @@ void MainWindow::createDiagram(QString const &idString)
 
 void MainWindow::saveAll()
 {
+	if (mSaveFile.isEmpty()) {
+		saveAs();
+		return;
+	}
 	mModels->repoControlApi().saveAll();
 }
 
 void MainWindow::saveAs()
 {
-	QString const dirName = getWorkingDir(tr("Select directory to save current model to"));
-	if (dirName.isEmpty())
-		return;
-	mModels->repoControlApi().saveTo(dirName);
+	QString const fileName = getWorkingFile(tr("Select file to save current model to"));
+	//if (QFile(fileName).exists())
+	//	return;
+	mModels->repoControlApi().saveTo(fileName);
+	if (!mSaveFile.endsWith(".qrs", Qt::CaseInsensitive))
+		mSaveFile += ".qrs";
+	setWindowTitle("QReal:Robots - " + mSaveFile);
 }
 
 int MainWindow::getTabIndex(const QModelIndex &index)
@@ -1940,12 +1965,37 @@ void MainWindow::fullscreen()
 
 void MainWindow::createProject()
 {
+	/*
 	QString dirName = getNextDirName(SettingsManager::value("workingDir", mSaveDir).toString());
 	SettingsManager::setValue("workingDir", dirName);
 	open(dirName);
 
 	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
+	*/
+	/*saveAll();
+	mSaveFile = "";
+
+	delete mModels;
+	mModels = new models::Models(mTempDir, mEditorManager);
+
+	mUi->propertyEditor->init(this, &mModels->logicalModelAssistApi());
+	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
+
+	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &)), this, SLOT(updateTabName(Id const &)));
+
+	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
+	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
+
+	delete mVisualDebugger;
+	mVisualDebugger = new VisualDebugger(mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi(), *this);
+
+	mModels->reinit();
+	if (mModels->graphicalModel()->rowCount() > 0)
+		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
+
+	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
+		suggestToCreateDiagram();*/
 
 }
 
