@@ -1,6 +1,5 @@
 #include "serializer.h"
 #include "folderCompressor.h"
-#include <QMessageBox>
 #include <QtCore/QDir>
 #include <QtCore/QDebug>
 #include <QtCore/QPointF>

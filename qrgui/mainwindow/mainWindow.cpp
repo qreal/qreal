@@ -520,19 +520,14 @@ void MainWindow::sceneSelectionChanged()
 QString MainWindow::getWorkingFile(QString const &dialogWindowTitle)
 {
 
-	QString const fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle
+	QString fileName;
+	do {
+		fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle
 															  , qApp->applicationDirPath(), tr("QReal Save File(*.qrs)"));
-
-	//if (!QFile(fileName).exists())
-	//	return "";
+	} while (fileName.isEmpty());
 
 	SettingsManager::setValue("saveFile", fileName);
 	mSaveFile = fileName;
-
-	QDir fileDir(fileName);
-	QMessageBox::information(NULL, "Information", fileDir.absolutePath(), "ok");
-
-
 	return fileName;
 }
 
