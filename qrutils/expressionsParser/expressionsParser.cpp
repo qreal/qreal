@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <math.h>
 
+using namespace utils;
 using namespace qReal;
 
 ExpressionsParser::ExpressionsParser(ErrorReporterInterface *errorReporter)

@@ -14,14 +14,14 @@ class watchListWindow : public QDialog
 	Q_OBJECT
 
 public:
-	explicit watchListWindow(const qReal::ExpressionsParser *parser, QWidget *parent = 0);
+	explicit watchListWindow(const utils::ExpressionsParser *parser, QWidget *parent = 0);
 	~watchListWindow();
 
 public slots:
 	void updateVariables();
-	
+
 private:
 	Ui::watchListWindow *mUi;
-	const qReal::ExpressionsParser *mParser;
+	const utils::ExpressionsParser *mParser;
 	QTimer *mTimer;
 };

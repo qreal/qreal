@@ -297,7 +297,7 @@ void Interpreter::responseSlot4(int sensorValue)
 
 void Interpreter::updateSensorValues(QString const &sensorVariableName, int sensorValue)
 {
-	(*(mParser->getVariables()))[sensorVariableName] = Number(sensorValue, Number::intType);
+	(*(mParser->getVariables()))[sensorVariableName] = utils::Number(sensorValue, utils::Number::intType);
 //	qDebug() << sensorVariableName << sensorValue;
 }
 
