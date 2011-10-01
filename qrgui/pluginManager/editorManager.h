@@ -62,6 +62,8 @@ namespace qReal {
 		EditorInterface* editorInterface(QString const &editor) const;
 
 		bool isDiagramNode(Id const &id) const;
+
+		bool isParentOf(Id const &child, Id const &parent) const;
 	private:
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;
@@ -72,6 +74,8 @@ namespace qReal {
 		QStringList mPluginFileNames;
 
 		void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
+
+		bool isParentOf(EditorInterface const *plugin, QString const &childDiagram, QString const &child, QString const &parentDiagram, QString const &parent) const;
 	};
 
 }

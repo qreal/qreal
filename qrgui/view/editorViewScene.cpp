@@ -148,14 +148,15 @@ void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 
 bool EditorViewScene::canBeContainedBy(qReal::Id container, qReal::Id candidate)
 {
-	Q_UNUSED(container);
-	Q_UNUSED(candidate); // TODO: update xml descriptions to remove
-	return true;
+//	Q_UNUSED(container);
+//	Q_UNUSED(candidate); // TODO: update xml descriptions to remove
+//	return true;
 
 	bool allowed = false;
+	qDebug() << container << candidate;
+	qDebug() << mWindow->manager()->getContainedTypes(container.type());
 	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container.type())){
-		if (candidate.element() ==  type.editor())
-			allowed = true;
+		allowed = allowed || mWindow->manager()->isParentOf(candidate, type);
 	}
 	return allowed;
 }

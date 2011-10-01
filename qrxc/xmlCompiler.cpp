@@ -173,6 +173,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QString getPropertyDefaultValue(QString const &element, QString const &property) const;\n"
 		<< "\tvirtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QStringList getEnumValues(QString name) const;\n"
+		<< "\tvirtual QList<QPair<QString, QString> > getParentsOf(QString const &diagram, QString const &element) const;\n"
 		<< "\n"
 		<< "\tvirtual QString editorName() const;\n"
 		<< "\tvirtual QString diagramName(QString const &diagram) const;\n"
@@ -215,6 +216,7 @@ void XmlCompiler::generatePluginSource()
 	generateNameMappingsRequests(out);
 	generateGraphicalObjectRequest(out);
 	generateIsParentOfRequest(out);
+	generateGetParentsOfRequest(out);
 	generateProperties(out);
 	generateContainedTypes(out);
 	generateConnections(out);
@@ -453,6 +455,15 @@ void XmlCompiler::generateIsParentOfRequest(OutFile &out)
 		<< "\t\tif (isParentOf(parentDiagram, parentElement, pair.first, pair.second))\n"
 		<< "\t\t\treturn true;\n"
 		<< "\treturn false;\n"
+		<< "}\n"
+	;
+}
+
+void XmlCompiler::generateGetParentsOfRequest(OutFile &out)
+{
+	out() << "QList<QPair<QString, QString> > " << mPluginName << "Plugin::getParentsOf(QString const &diagram" << ", QString const &element) const\n"
+		<< "{\n"
+		<< "\treturn parentsMap[diagram][element];\n"
 		<< "}\n"
 	;
 }
