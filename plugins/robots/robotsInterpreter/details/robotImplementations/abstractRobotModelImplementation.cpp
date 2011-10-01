@@ -16,6 +16,7 @@ RealRobotModelImplementation *AbstractRobotModelImplementation::mRealRobotModel 
 UnrealRobotModelImplementation *AbstractRobotModelImplementation::mUnrealRobotModel = NULL;
 
 AbstractRobotModelImplementation::AbstractRobotModelImplementation()
+	: mIsConnected(false)
 {
 	mSensorsConfigurer.lockConfiguring();  // Model is not connected yet.
 }

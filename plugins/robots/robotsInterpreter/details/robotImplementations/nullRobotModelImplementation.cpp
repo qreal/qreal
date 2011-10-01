@@ -15,6 +15,7 @@ NullRobotModelImplementation::NullRobotModelImplementation()
 	mActiveWaitingTimer.setInterval(100);
 	mActiveWaitingTimer.setSingleShot(true);
 	connect(&mActiveWaitingTimer, SIGNAL(timeout()), this, SLOT(timerTimeout()));
+	connect(&mSensorsConfigurer, SIGNAL(allSensorsConfigured()), this, SLOT(sensorConfigurationDoneSlot()));
 }
 
 brickImplementations::NullBrickImplementation &NullRobotModelImplementation::brick()
@@ -64,14 +65,17 @@ void NullRobotModelImplementation::init()
 
 void NullRobotModelImplementation::timerTimeout()
 {
-	connect(&mSensorsConfigurer, SIGNAL(allSensorsConfigured()), this, SLOT(sensorConfigurationDoneSlot()));
 	mSensorsConfigurer.unlockConfiguring();
 }
 
 void NullRobotModelImplementation::sensorConfigurationDoneSlot()
 {
-	disconnect(&mSensorsConfigurer, SIGNAL(allSensorsConfigured()), this, SLOT(sensorConfigurationDoneSlot()));
-	emit connected(true);
+	if (!mIsConnected) {
+		mIsConnected = true;
+		emit connected(true);
+	} else {
+		emit sensorsConfigured();
+	}
 }
 
 void NullRobotModelImplementation::stopRobot()

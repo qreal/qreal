@@ -18,6 +18,7 @@ UnrealRobotModelImplementation::UnrealRobotModelImplementation(D2RobotModel *d2R
 	mActiveWaitingTimer.setInterval(500);
 	mActiveWaitingTimer.setSingleShot(true);
 	connect(&mActiveWaitingTimer, SIGNAL(timeout()), this, SLOT(timerTimeout()));
+	connect(&mSensorsConfigurer, SIGNAL(allSensorsConfigured()), this, SLOT(sensorConfigurationDoneSlot()));
 }
 
  UnrealRobotModelImplementation::~UnrealRobotModelImplementation()
@@ -79,8 +80,12 @@ void UnrealRobotModelImplementation::timerTimeout()
 
 void UnrealRobotModelImplementation::sensorConfigurationDoneSlot()
 {
-	disconnect(&mSensorsConfigurer, SIGNAL(allSensorsConfigured()), this, SLOT(sensorConfigurationDoneSlot()));
-	emit connected(true);
+	if (!mIsConnected) {
+		mIsConnected = true;
+		emit connected(true);
+	} else {
+		emit sensorsConfigured();
+	}
 }
 
 void UnrealRobotModelImplementation::stopRobot()

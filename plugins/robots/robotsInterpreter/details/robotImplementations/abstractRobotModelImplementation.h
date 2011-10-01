@@ -57,14 +57,14 @@ public:
 
 signals:
 	void connected(bool success);
+	void sensorsConfigured();
 
 protected:
-//	int mSensorsToConfigure;
 	static NullRobotModelImplementation *mNullRobotModel;
 	static RealRobotModelImplementation *mRealRobotModel;
 	static UnrealRobotModelImplementation *mUnrealRobotModel;
-//	QVector<sensorImplementations::AbstractSensorImplementation *> mSensors;
 	SensorsConfigurer mSensorsConfigurer;
+	bool mIsConnected;
 
 	virtual void addTouchSensor(inputPort::InputPortEnum const &port) = 0;
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port) = 0;

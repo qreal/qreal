@@ -12,6 +12,7 @@ RealRobotModelImplementation::RealRobotModelImplementation(RobotCommunication * 
 {
 	connect(mRobotCommunicationInterface, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 	connect(mRobotCommunicationInterface, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
+	connect(&mSensorsConfigurer, SIGNAL(allSensorsConfigured()), this, SLOT(sensorConfigurationDoneSlot()));
 }
 
 RealRobotModelImplementation::~RealRobotModelImplementation()
@@ -78,18 +79,22 @@ void RealRobotModelImplementation::connectedSlot(bool success)
 {
 	if (!success) {
 		qDebug() << "Connection failed.";
+		mIsConnected = false;
 		emit connected(false);
 		return;
 	}
 	qDebug() << "Connected. Initializing sensors...";
-	connect(&mSensorsConfigurer, SIGNAL(allSensorsConfigured()), this, SLOT(sensorConfigurationDoneSlot()));
 	mSensorsConfigurer.unlockConfiguring();
 }
 
 void RealRobotModelImplementation::sensorConfigurationDoneSlot()
 {
-	disconnect(&mSensorsConfigurer, SIGNAL(allSensorsConfigured()), this, SLOT(sensorConfigurationDoneSlot()));
-	emit connected(true);
+	if (!mIsConnected) {
+		mIsConnected = true;
+		emit connected(true);
+	} else {
+		emit sensorsConfigured();
+	}
 }
 
 motorImplementations::RealMotorImplementation &RealRobotModelImplementation::motorA()

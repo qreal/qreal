@@ -23,7 +23,10 @@ SensorsConfigurer::~SensorsConfigurer()
 
 void SensorsConfigurer::configureSensor(sensorImplementations::AbstractSensorImplementation *sensor, inputPort::InputPortEnum const &port)
 {
-	if (sensor != NULL && sensor->type() == mConfiguredSensors[sensor->port()]->type()) {
+	if (sensor != NULL
+		&& mConfiguredSensors[sensor->port()] != NULL
+		&& sensor->type() == mConfiguredSensors[sensor->port()]->type())
+	{
 		// Then there is no need to configure it.
 		return;
 	}
