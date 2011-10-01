@@ -2,7 +2,10 @@
 #include <QtGui/QBitmap>
 #include <QtGui/QImageWriter>
 
-Image::Image(QString fileName, qreal x, qreal y, Item* parent) : Item(parent), mImage(fileName)
+Image::Image(QString fileName, qreal x, qreal y, Item* parent)
+	: Item(parent)
+	, mImage(fileName)
+	, mRectangleImpl()
 {
 	mFileName = fileName;
 	QPixmap* pixmap = new QPixmap(fileName);
@@ -16,7 +19,7 @@ Image::Image(QString fileName, qreal x, qreal y, Item* parent) : Item(parent), m
 }
 
 Image::Image(Image const &other)
-	:Item()
+	:Item(), mRectangleImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
 	mPen = other.mPen;
@@ -41,7 +44,7 @@ Item* Image::clone()
 
 QRectF Image::boundingRect() const
 {
-	return QRectF(qMin(mX1, mX2), qMin(mY1, mY2), abs(mX2 - mX1), abs(mY2 - mY1)).adjusted(-scalingDrift, -scalingDrift, scalingDrift, scalingDrift);
+	return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, scalingDrift);
 }
 
 void Image::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -49,17 +52,7 @@ void Image::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, 
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 
-	QImage image(mImage);
-	if(mX2 > mX1) {
-		if (mY2 < mY1)
-			image = mImage.mirrored(false, true);
-	} else {
-		if (mY2 > mY1)
-			image = mImage.mirrored(true, false);
-		else
-			image = mImage.mirrored(true, true);
-	}
-	painter->drawImage(QRectF(qMin(mX1, mX2), qMin(mY1, mY2), abs(mX2 - mX1), abs(mY2 - mY1)), image);
+	mRectangleImpl.drawImageItemWithMirrored(painter, mX1, mY1, mX2, mY2, mImage);
 }
 
 void Image::setItemZValue(int zValue)

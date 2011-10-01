@@ -4,12 +4,12 @@
 #include <QtCore/QStringList>
 
 #include <QtCore/QDebug>
+#include "stylusItem.h"
 
 using namespace qReal::interpreters::robots::details::d2Model;
 
 WorldModel::WorldModel()
 {
-	mWalls << qMakePair(QPointF(100, -100), QPointF(100, 100));
 }
 
 int WorldModel::sonarReading(QPoint const &position, qreal direction) const
@@ -30,16 +30,18 @@ int WorldModel::sonarReading(QPoint const &position, qreal direction) const
 	return maxSonarRangeCms;
 }
 
-bool WorldModel::touchSensorReading(QPoint const &position, qreal direction)
+bool WorldModel::touchSensorReading(QPoint const &position, qreal direction, inputPort::InputPortEnum const port)
 {
 	Q_UNUSED(direction)
 
 	QPainterPathStroker pathStroker;
 	pathStroker.setWidth(3);
 	QPainterPath robotPath;
-	robotPath.moveTo(mTouchSensorPositionOld);
-	mTouchSensorPositionOld = position;
+
+	robotPath.moveTo(mTouchSensorPositionOld[port]);
 	robotPath.lineTo(position);
+
+	mTouchSensorPositionOld[port] = position;
 
 	QPainterPath wallPath = buildWallPath();
 	return wallPath.intersects(robotPath);
@@ -81,19 +83,30 @@ bool WorldModel::checkCollision(QPolygonF const &robotRegion) const
 	return wallPath.intersects(robotPath);
 }
 
-QList<QPair<QPointF, QPointF> > const &WorldModel::walls() const
+QList<WallItem *> const &WorldModel::walls() const
 {
-	return mWalls;
+        return mWalls;
 }
 
-void WorldModel::addWall(QPointF const &begin, QPointF const &end)
+void WorldModel::addWall(WallItem* wall)
 {
-	mWalls << qMakePair(begin, end);
+	mWalls.append(wall);
+}
+
+QList<ColorFieldItem *> const &WorldModel::colorFields() const
+{
+        return mColorFields;
+}
+
+void WorldModel::addColorField(ColorFieldItem* colorField)
+{
+        mColorFields.append(colorField);
 }
 
 void WorldModel::clearScene()
 {
 	mWalls.clear();
+        mColorFields.clear();
 }
 
 QPainterPath WorldModel::buildWallPath() const
@@ -103,10 +116,9 @@ QPainterPath WorldModel::buildWallPath() const
 	pathStroker.setWidth(3);
 	QPainterPath wallPath;
 
-	typedef QPair<QPointF, QPointF> Wall;
-	foreach (Wall const wall, mWalls) {
-		wallPath.moveTo(wall.first);
-		wallPath.lineTo(wall.second);
+	foreach (WallItem* wall, mWalls) {
+		wallPath.moveTo(wall->begin());
+		wallPath.lineTo(wall->end());
 	}
 	return wallPath;
 }
@@ -114,16 +126,20 @@ QPainterPath WorldModel::buildWallPath() const
 QDomElement WorldModel::serialize(QDomDocument &document) const
 {
 	QDomElement result = document.createElement("world");
+
 	QDomElement walls = document.createElement("walls");
 	result.appendChild(walls);
-
-	typedef QPair<QPointF, QPointF> Wall;
-	foreach (Wall const wall, mWalls) {
-		QDomElement wallNode = document.createElement("wall");
-		wallNode.setAttribute("begin", QString::number(wall.first.x()) + ":" + QString::number(wall.first.y()));
-		wallNode.setAttribute("end", QString::number(wall.second.x()) + ":" + QString::number(wall.second.y()));
+	foreach (WallItem *wall, mWalls) {
+		QDomElement wallNode = wall->serialize(document);
 		walls.appendChild(wallNode);
 	}
+
+        QDomElement colorFields = document.createElement("colorFields");
+        result.appendChild(colorFields);
+        foreach (ColorFieldItem *colorField, mColorFields) {
+                QDomElement colorFiedlNode = colorField->serialize(document);
+                colorFields.appendChild(colorFiedlNode);
+        }
 
 	return result;
 }
@@ -136,23 +152,34 @@ void WorldModel::deserialize(QDomElement const &element)
 	}
 
 	mWalls.clear();
-
 	QDomNodeList walls = element.elementsByTagName("wall");
 	for (int i = 0; i < walls.count(); ++i) {
 		QDomElement const wallNode = walls.at(i).toElement();
 
-		QString const beginStr = wallNode.attribute("begin", "0:0");
-		QStringList splittedStr = beginStr.split(":");
-		int x = splittedStr[0].toInt();
-		int y = splittedStr[1].toInt();
-		QPointF const begin = QPointF(x, y);
-
-		QString const endStr = wallNode.attribute("end", "0:0");
-		splittedStr = endStr.split(":");
-		x = splittedStr[0].toInt();
-		y = splittedStr[1].toInt();
-		QPointF const end = QPointF(x, y);
-
-		mWalls << qMakePair(begin, end);
+		WallItem *wall = new WallItem(QPointF(0, 0), QPointF(0, 0));
+		wall->deserialize(wallNode);
+		mWalls.append(wall);
 	}
+
+        mColorFields.clear();
+        QDomNodeList colorFields = element.elementsByTagName("colorFields");
+        for (int i = 0; i < colorFields.count(); ++i) {
+                QDomElement const colorFieldNode = colorFields.at(i).toElement();
+
+                QDomNodeList lines = colorFieldNode.elementsByTagName("line");
+                for (int i = 0; i < lines.count(); ++i) {
+                        QDomElement const lineNode = lines.at(i).toElement();
+                        LineItem* lineItem = new LineItem(QPointF(0, 0), QPointF(0, 0));
+                        lineItem->deserialize(lineNode);
+                        mColorFields.append(lineItem);
+                }
+
+                QDomNodeList styluses = colorFieldNode.elementsByTagName("stylus");
+                for (int i = 0; i < styluses.count(); ++i) {
+                        QDomElement const stylusNode = styluses.at(i).toElement();
+                        StylusItem *stylusItem = new StylusItem(0, 0);
+                        stylusItem->deserialize(stylusNode);
+                        mColorFields.append(stylusItem);
+                }
+        }
 }

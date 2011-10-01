@@ -4,6 +4,10 @@
 #include <QtGui/QPainter>
 
 #include "sensorsConfiguration.h"
+#include "rotater.h"
+#include "../../../../../qrutils/graphicsUtils/abstractItem.h"
+#include "../../../../../qrutils/graphicsUtils/pointImpl.h"
+#include "../../../../../qrutils/graphicsUtils/rotateInterface.h"
 
 namespace qReal {
 namespace interpreters {
@@ -12,25 +16,35 @@ namespace details {
 namespace d2Model {
 
 /** @brief Class that represents robot port in 2D model */
-class SensorItem : public QObject, public QGraphicsItem
+class SensorItem : public QObject, public graphicsUtils::AbstractItem, public graphicsUtils::RotateInterface
 {
 	Q_OBJECT
-	Q_INTERFACES(QGraphicsItem)
-
 public:
 	SensorItem(SensorsConfiguration &configuration, inputPort::InputPortEnum port);
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget);
+
+	virtual void rotate(double angle);
+	virtual QRectF rect() const;
+	virtual double rotateAngle() const;
+	virtual void setSelected(bool isSelected);
+	void setRotater(Rotater *rotater);
+	virtual void checkSelection();
 
 	/// Draws selection rect around sensorBoundingBox
-	void drawSelection(QPainter *painter, QRectF sensorBoundingBox);
+	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+	virtual void drawExtractionForItem(QPainter* painter);
 
 	QRectF boundingRect() const;
 
-	void mousePressEvent(QGraphicsSceneMouseEvent * event);
-	void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+	virtual void changeDragState(qreal x, qreal y);
+	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 
-	void setBasePosition(QPointF const &pos);
+	virtual void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
+	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
+
+	void setRotatePoint(QPointF rotatePoint);
+	void setDeltaBasePosition(QPointF const &delta, qreal dir);
+	void setBasePosition(QPointF const &pos, qreal dir);
 
 protected:
 	static int const size = 6;
@@ -38,9 +52,14 @@ protected:
 	SensorsConfiguration &mConfiguration;
 	inputPort::InputPortEnum const mPort;
 	QPointF mBasePos;
+	QPointF mRotatePoint;
+	qreal mBaseDir;
 	bool mDragged;
+	graphicsUtils::PointImpl mPointImpl;
+	Rotater *mRotater;
 
 	QColor color() const;
+	void setNewPosition(QPointF rotatePoint);
 };
 
 }

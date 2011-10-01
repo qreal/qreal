@@ -1,9 +1,9 @@
 #include "shapeEdit.h"
-#include "colorListEditor.h"
 #include "ui_shapeEdit.h"
 #include "../../../qrutils/outFile.h"
 #include "../../../qrutils/xmlUtils.h"
 #include "xmlLoader.h"
+#include "../../../qrutils/graphicsUtils/colorlisteditor.h"
 
 #include <QtGui/QFileDialog>
 #include <QtGui/QGraphicsItem>
@@ -12,6 +12,8 @@
 #include <QtGui/QSpinBox>
 #include <QtGui/QImage>
 #include <QtGui/QMessageBox>
+
+#include <QDebug>
 
 using namespace utils;
 
@@ -43,26 +45,28 @@ void ShapeEdit::init()
 	QStringList penStyleList = Item::getPenStyleList();
 	mUi->penStyleComboBox->addItems(penStyleList);
 	mUi->penWidthSpinBox->setRange(0, 13);
+        mUi->penColorComboBox->setColorList(QColor::colorNames());
 	mUi->penColorComboBox->setColor(QColor("black"));
 
 	QStringList brushStyleList = Item::getBrushStyleList();
 	mUi->brushStyleComboBox->addItems(brushStyleList);
+        mUi->brushColorComboBox->setColorList(QColor::colorNames());
 	mUi->brushColorComboBox->setColor(QColor("white"));
 
 	mUi->textPixelSizeSpinBox->setRange(5, 72);
 	initFontPalette();
 
-	connect(mUi->drawLineButton, SIGNAL(clicked(bool)), mScene, SLOT(drawLine(bool)));
-	connect(mUi->drawEllipseButton, SIGNAL(clicked(bool)), mScene, SLOT(drawEllipse(bool)));
-	connect(mUi->drawCurveButton, SIGNAL(clicked(bool)), mScene, SLOT(drawCurve(bool)));
-	connect(mUi->drawRectButton, SIGNAL(clicked(bool)), mScene, SLOT(drawRectangle(bool)));
-	connect(mUi->addTextButton, SIGNAL(clicked(bool)), mScene, SLOT(addText(bool)));
-	connect(mUi->addDynamicTextButton, SIGNAL(clicked(bool)), mScene, SLOT(addDynamicText(bool)));
-	connect(mUi->addTextPictureButton, SIGNAL(clicked(bool)), mScene, SLOT(addTextPicture(bool)));
-	connect(mUi->addPointPortButton, SIGNAL(clicked(bool)), mScene, SLOT(addPointPort(bool)));
-	connect(mUi->addLinePortButton, SIGNAL(clicked(bool)), mScene, SLOT(addLinePort(bool)));
-	connect(mUi->stylusButton, SIGNAL(clicked(bool)), mScene, SLOT(addStylus(bool)));
-	connect(mUi->noneButton, SIGNAL(clicked(bool)), mScene, SLOT(addNone(bool)));
+	initButtonGroup();
+	connect(mUi->drawLineButton, SIGNAL(clicked(bool)), this, SLOT(drawLine(bool)));
+	connect(mUi->drawEllipseButton, SIGNAL(clicked(bool)), this, SLOT(drawEllipse(bool)));
+	connect(mUi->drawCurveButton, SIGNAL(clicked(bool)), this, SLOT(drawCurve(bool)));
+	connect(mUi->drawRectButton, SIGNAL(clicked(bool)), this, SLOT(drawRectangle(bool)));
+	connect(mUi->addTextButton, SIGNAL(clicked(bool)), this, SLOT(addText(bool)));
+	connect(mUi->addDynamicTextButton, SIGNAL(clicked(bool)), this, SLOT(addDynamicText(bool)));
+	connect(mUi->addTextPictureButton, SIGNAL(clicked(bool)), this, SLOT(addTextPicture(bool)));
+	connect(mUi->addPointPortButton, SIGNAL(clicked(bool)), this, SLOT(addPointPort(bool)));
+	connect(mUi->addLinePortButton, SIGNAL(clicked(bool)), this, SLOT(addLinePort(bool)));
+	connect(mUi->stylusButton, SIGNAL(clicked(bool)), this, SLOT(addStylus(bool)));
 	connect(mUi->addImageButton, SIGNAL(clicked(bool)), this, SLOT(addImage(bool)));
 
 	connect(mUi->penStyleComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePenStyle(const QString &)));
@@ -79,7 +83,6 @@ void ShapeEdit::init()
 	connect(mUi->boldCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontBold(bool)));
 	connect(mUi->underlineCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontUnderline(bool)));
 
-
 	connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItem()));
 	connect(mUi->graphicsView, SIGNAL(deleteItem()), mScene, SLOT(deleteItem()));
 	connect(mUi->clearButton, SIGNAL(clicked()), mScene, SLOT(clearScene()));
@@ -92,9 +95,39 @@ void ShapeEdit::init()
 
 	connect(mScene, SIGNAL(noSelectedItems()), this, SLOT(setNoPalette()));
 	connect(mScene, SIGNAL(existSelectedItems(QPen const &, QBrush const &)), this, SLOT(setItemPalette(QPen const&, QBrush const&)));
-
+	connect(mScene, SIGNAL(resetHighlightAllButtons()), this, SLOT(resetHighlightAllButtons()));
 	connect(mScene, SIGNAL(noSelectedTextPictureItems()), this, SLOT(setNoFontPalette()));
 	connect(mScene, SIGNAL(existSelectedTextPictureItems(QPen const &, QFont const &, QString const &)), this, SLOT(setItemFontPalette(QPen const&, QFont const&, QString const &)));
+}
+
+void ShapeEdit::resetHighlightAllButtons()
+{
+	foreach (QAbstractButton *button, mButtonGroup) {
+		button->setChecked(false);
+	}
+	mScene->addNone(true);
+}
+void ShapeEdit::setHighlightOneButton(QAbstractButton *oneButton)
+{
+	foreach (QAbstractButton *button, mButtonGroup) {
+		if (button != oneButton)
+			button->setChecked(false);
+	}
+}
+
+void ShapeEdit::initButtonGroup()
+{
+	mButtonGroup.append(mUi->drawLineButton);
+	mButtonGroup.append(mUi->drawEllipseButton);
+	mButtonGroup.append(mUi->drawCurveButton);
+	mButtonGroup.append(mUi->drawRectButton);
+	mButtonGroup.append(mUi->addTextButton);
+	mButtonGroup.append(mUi->addDynamicTextButton);
+	mButtonGroup.append(mUi->addTextPictureButton);
+	mButtonGroup.append(mUi->addPointPortButton);
+	mButtonGroup.append(mUi->addLinePortButton);
+	mButtonGroup.append(mUi->stylusButton);
+	mButtonGroup.append(mUi->addImageButton);
 }
 
 void ShapeEdit::initPalette()
@@ -111,6 +144,8 @@ void ShapeEdit::initFontPalette()
 {
 	mUi->textFamilyFontComboBox->setCurrentFont(QFont("MS Shell Dlg 2"));
 	mUi->textPixelSizeSpinBox->setValue(15);
+
+        mUi->textColorComboBox->setColorList(QColor::colorNames());
 	mUi->textColorComboBox->setColor(QColor("black"));
 
 	mUi->textEditField->setPlainText("text");
@@ -124,7 +159,7 @@ ShapeEdit::~ShapeEdit()
 	delete mUi;
 }
 
-View* ShapeEdit::getView()
+graphicsUtils::AbstractView* ShapeEdit::getView()
 {
 	return mUi->graphicsView;
 }
@@ -270,6 +305,7 @@ void ShapeEdit::load(const QString &text)
 void ShapeEdit::addImage(bool checked)
 {
 	if (checked) {
+		setHighlightOneButton(mUi->addImageButton);
 		QString fileName = QFileDialog::getOpenFileName(this);
 		if (fileName.isEmpty())
 			return;
@@ -388,4 +424,75 @@ void ShapeEdit::changeTextName()
 {
 	QString newName = mUi->textEditField->toPlainText();
 	mScene->changeTextName(newName);
+}
+
+
+void ShapeEdit::drawLine(bool checked)
+{
+	mScene->drawLine(checked);
+	if (checked)
+		setHighlightOneButton(mUi->drawLineButton);
+}
+
+void ShapeEdit::drawEllipse(bool checked)
+{
+	mScene->drawEllipse(checked);
+	if (checked)
+		setHighlightOneButton(mUi->drawEllipseButton);
+}
+
+void ShapeEdit::drawCurve(bool checked)
+{
+	mScene->drawCurve(checked);
+	if (checked)
+		setHighlightOneButton(mUi->drawCurveButton);
+}
+
+void ShapeEdit::drawRectangle(bool checked)
+{
+	mScene->drawRectangle(checked);
+	if (checked)
+		setHighlightOneButton(mUi->drawRectButton);
+}
+
+void ShapeEdit::addText(bool checked)
+{
+	mScene->addText(checked);
+	if (checked)
+		setHighlightOneButton(mUi->addTextButton);
+}
+
+void ShapeEdit::addDynamicText(bool checked)
+{
+	mScene->addDynamicText(checked);
+	if (checked)
+		setHighlightOneButton(mUi->addDynamicTextButton);
+}
+
+void ShapeEdit::addTextPicture(bool checked)
+{
+	mScene->addTextPicture(checked);
+	if (checked)
+		setHighlightOneButton(mUi->addTextPictureButton);
+}
+
+void ShapeEdit::addPointPort(bool checked)
+{
+	mScene->addPointPort(checked);
+	if (checked)
+		setHighlightOneButton(mUi->addPointPortButton);
+}
+
+void ShapeEdit::addLinePort(bool checked)
+{
+	mScene->addLinePort(checked);
+	if (checked)
+		setHighlightOneButton(mUi->addLinePortButton);
+}
+
+void ShapeEdit::addStylus(bool checked)
+{
+	mScene->addStylus(checked);
+	if (checked)
+		setHighlightOneButton(mUi->stylusButton);
 }

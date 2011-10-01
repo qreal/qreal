@@ -25,6 +25,7 @@ public:
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 	virtual CustomizationInterface* customizationInterface();
 	virtual void updateSettings();
+        virtual void closeNeededWidget();
 
 private slots:
 	void showRobotSettings();
@@ -33,7 +34,7 @@ private slots:
 private:
 	Customizer mCustomizer;
 	Interpreter mInterpreter;
-	PreferencesRobotSettingsPage mRobotSettingsPage;
+	PreferencesRobotSettingsPage mRobotSettinsPage;
 	gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;
 	QAction *m2dModelAction;
 	QAction *mRunAction;

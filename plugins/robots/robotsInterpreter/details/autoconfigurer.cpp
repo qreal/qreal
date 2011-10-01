@@ -8,10 +8,10 @@ using namespace interpreters::robots;
 using namespace interpreters::robots::details;
 
 Autoconfigurer::Autoconfigurer(GraphicalModelAssistInterface const &graphicalModelApi
-			, BlocksTable * const blocksTable
-			, ErrorReporterInterface * const errorReporter
-			, RobotModel *robotModel
-			)
+							   , BlocksTable * const blocksTable
+							   , ErrorReporterInterface * const errorReporter
+							   , RobotModel *robotModel
+							   )
 	: mGraphicalModelApi(&graphicalModelApi)
 	, mBlocksTable(blocksTable)
 	, mErrorReporter(errorReporter)
@@ -22,7 +22,6 @@ Autoconfigurer::Autoconfigurer(GraphicalModelAssistInterface const &graphicalMod
 
 bool Autoconfigurer::configure(Id const &diagram)
 {
-	qDebug() << "Autoconfigurer::configure";
 	bool result = true;
 
 	mUsedSensors[0] = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType", "0").toInt());
@@ -48,11 +47,11 @@ bool Autoconfigurer::configure(Id const &diagram)
 
 	if (result)
 		mRobotModel->configureSensors(
-				mUsedSensors[0]
-				, mUsedSensors[1]
-				, mUsedSensors[2]
-				, mUsedSensors[3]
-				);
+					mUsedSensors[0]
+					, mUsedSensors[1]
+					, mUsedSensors[2]
+					, mUsedSensors[3]
+					);
 
 	return result;
 }

@@ -2,6 +2,7 @@
 
 #include "item.h"
 #include "ellipse.h"
+#include "../../../qrutils/graphicsUtils/pointImpl.h"
 
 class PointPort : public Item
 {
@@ -22,5 +23,6 @@ public:
 
 private:
 	qreal mRadius;
-	QRectF mRect;
+	qreal mUnrealRadius;
+	graphicsUtils::PointImpl mPointImpl;
 };

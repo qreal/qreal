@@ -11,10 +11,11 @@ UnrealEncoderImplementation::UnrealEncoderImplementation(const outputPort::Outpu
 
 void UnrealEncoderImplementation::read()
 {
-	emit response(0); //TODO: сделать поддержку в 2D-модели
+        int readValue = mD2Model->readEncoder(mPort);
+        emit response(readValue);
 }
 
 void UnrealEncoderImplementation::nullificate()
 {
-	//TODO: сделать поддержку в 2D-модели
+        mD2Model->resetEncoder(mPort);
 }

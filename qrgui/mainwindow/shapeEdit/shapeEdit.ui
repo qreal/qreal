@@ -14,48 +14,7 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QPushButton" name="drawLineButton">
-     <property name="maximumSize">
-      <size>
-       <width>65</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="toolTip">
-      <string>Draw line</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../qrgui.qrc">
-       <normaloff>:/icons/line.png</normaloff>:/icons/line.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>45</width>
-       <height>16</height>
-      </size>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-     <property name="autoExclusive">
-      <bool>true</bool>
-     </property>
-     <property name="autoDefault">
-      <bool>false</bool>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
+   <item row="1" column="1">
     <widget class="QPushButton" name="drawCurveButton">
      <property name="enabled">
       <bool>true</bool>
@@ -89,7 +48,7 @@
       <bool>false</bool>
      </property>
      <property name="autoExclusive">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="autoDefault">
       <bool>false</bool>
@@ -99,8 +58,8 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="2" rowspan="17">
-    <widget class="View" name="graphicsView">
+   <item row="1" column="2" rowspan="17">
+    <widget class="graphicsUtils::AbstractView" name="graphicsView">
      <property name="minimumSize">
       <size>
        <width>150</width>
@@ -109,7 +68,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <widget class="QPushButton" name="drawRectButton">
      <property name="minimumSize">
       <size>
@@ -146,7 +105,7 @@
       <bool>false</bool>
      </property>
      <property name="autoExclusive">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="autoDefault">
       <bool>false</bool>
@@ -156,7 +115,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
+   <item row="2" column="1">
     <widget class="QPushButton" name="drawEllipseButton">
      <property name="maximumSize">
       <size>
@@ -187,7 +146,7 @@
       <bool>false</bool>
      </property>
      <property name="autoExclusive">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="autoDefault">
       <bool>false</bool>
@@ -197,7 +156,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="QPushButton" name="addTextButton">
      <property name="maximumSize">
       <size>
@@ -228,7 +187,7 @@
       <bool>false</bool>
      </property>
      <property name="autoExclusive">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="autoDefault">
       <bool>false</bool>
@@ -238,7 +197,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="3" column="1">
     <widget class="QPushButton" name="addDynamicTextButton">
      <property name="maximumSize">
       <size>
@@ -269,7 +228,7 @@
       <bool>false</bool>
      </property>
      <property name="autoExclusive">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="autoDefault">
       <bool>false</bool>
@@ -279,7 +238,7 @@
      </property>
     </widget>
    </item>
-   <item row="12" column="0" colspan="2">
+   <item row="13" column="0" colspan="2">
     <widget class="Line" name="line">
      <property name="enabled">
       <bool>false</bool>
@@ -301,7 +260,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="4" column="1">
     <widget class="QPushButton" name="stylusButton">
      <property name="maximumSize">
       <size>
@@ -332,7 +291,7 @@
       <bool>false</bool>
      </property>
      <property name="autoExclusive">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="autoDefault">
       <bool>false</bool>
@@ -342,7 +301,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="4" column="0">
     <widget class="QPushButton" name="addTextPictureButton">
      <property name="maximumSize">
       <size>
@@ -370,11 +329,11 @@
       <bool>true</bool>
      </property>
      <property name="autoExclusive">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item row="5" column="0">
     <widget class="QPushButton" name="addLinePortButton">
      <property name="maximumSize">
       <size>
@@ -405,7 +364,7 @@
       <bool>false</bool>
      </property>
      <property name="autoExclusive">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="autoDefault">
       <bool>false</bool>
@@ -415,8 +374,14 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
+   <item row="5" column="1">
     <widget class="QPushButton" name="addPointPortButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>25</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
        <width>65</width>
@@ -446,7 +411,7 @@
       <bool>false</bool>
      </property>
      <property name="autoExclusive">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="autoDefault">
       <bool>false</bool>
@@ -456,7 +421,7 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="0" rowspan="2" colspan="2">
+   <item row="7" column="0" rowspan="2" colspan="2">
     <widget class="QToolBox" name="fontToolBox">
      <property name="enabled">
       <bool>false</bool>
@@ -481,8 +446,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>130</width>
-        <height>81</height>
+        <width>124</width>
+        <height>71</height>
        </rect>
       </property>
       <attribute name="label">
@@ -578,7 +543,7 @@
          <height>21</height>
         </rect>
        </property>
-       <widget class="ColorListEditor" name="textColorComboBox">
+       <widget class="graphicsUtils::ColorListEditor" name="textColorComboBox">
         <property name="geometry">
          <rect>
           <x>40</x>
@@ -620,8 +585,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>98</width>
-        <height>28</height>
+        <width>100</width>
+        <height>30</height>
        </rect>
       </property>
       <attribute name="label">
@@ -702,21 +667,21 @@
      </widget>
     </widget>
    </item>
-   <item row="16" column="0" colspan="2">
+   <item row="17" column="0" colspan="2">
     <widget class="QPushButton" name="openButton">
      <property name="text">
       <string>Open</string>
      </property>
     </widget>
    </item>
-   <item row="14" column="0" colspan="2">
+   <item row="15" column="0" colspan="2">
     <widget class="QPushButton" name="saveToXmlButton">
      <property name="text">
       <string>Save to Xml</string>
      </property>
     </widget>
    </item>
-   <item row="15" column="0" colspan="2">
+   <item row="16" column="0" colspan="2">
     <widget class="QPushButton" name="saveButton">
      <property name="enabled">
       <bool>false</bool>
@@ -726,7 +691,7 @@
      </property>
     </widget>
    </item>
-   <item row="11" column="0">
+   <item row="12" column="0">
     <widget class="QPushButton" name="deleteItemButton">
      <property name="maximumSize">
       <size>
@@ -739,7 +704,7 @@
      </property>
     </widget>
    </item>
-   <item row="11" column="1">
+   <item row="12" column="1">
     <widget class="QPushButton" name="clearButton">
      <property name="maximumSize">
       <size>
@@ -752,14 +717,14 @@
      </property>
     </widget>
    </item>
-   <item row="13" column="0" colspan="2">
+   <item row="14" column="0" colspan="2">
     <widget class="QPushButton" name="saveAsPictureButton">
      <property name="text">
       <string>Save as picture</string>
      </property>
     </widget>
    </item>
-   <item row="8" column="0" rowspan="3" colspan="2">
+   <item row="9" column="0" rowspan="3" colspan="2">
     <widget class="QToolBox" name="penBrushToolBox">
      <property name="enabled">
       <bool>true</bool>
@@ -786,15 +751,15 @@
       </font>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="widget">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>130</width>
-        <height>94</height>
+        <width>124</width>
+        <height>90</height>
        </rect>
       </property>
       <attribute name="label">
@@ -854,7 +819,7 @@
          <height>21</height>
         </rect>
        </property>
-       <widget class="ColorListEditor" name="penColorComboBox">
+       <widget class="graphicsUtils::ColorListEditor" name="penColorComboBox">
         <property name="geometry">
          <rect>
           <x>30</x>
@@ -941,8 +906,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>98</width>
-        <height>28</height>
+        <width>124</width>
+        <height>90</height>
        </rect>
       </property>
       <attribute name="label">
@@ -999,7 +964,7 @@
          <height>21</height>
         </rect>
        </property>
-       <widget class="ColorListEditor" name="brushColorComboBox">
+       <widget class="graphicsUtils::ColorListEditor" name="brushColorComboBox">
         <property name="geometry">
          <rect>
           <x>30</x>
@@ -1038,32 +1003,7 @@
      </widget>
     </widget>
    </item>
-   <item row="5" column="1">
-    <widget class="QPushButton" name="noneButton">
-     <property name="maximumSize">
-      <size>
-       <width>60</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="text">
-      <string>None</string>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-     <property name="autoExclusive">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
+   <item row="6" column="0">
     <widget class="QPushButton" name="addImageButton">
      <property name="maximumSize">
       <size>
@@ -1078,7 +1018,48 @@
       <bool>true</bool>
      </property>
      <property name="autoExclusive">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="drawLineButton">
+     <property name="maximumSize">
+      <size>
+       <width>65</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Draw line</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../qrgui.qrc">
+       <normaloff>:/icons/line.png</normaloff>:/icons/line.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>45</width>
+       <height>16</height>
+      </size>
+     </property>
+     <property name="checkable">
       <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>false</bool>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
+     <property name="default">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -1086,14 +1067,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ColorListEditor</class>
-   <extends>QComboBox</extends>
-   <header>../mainwindow/shapeEdit/colorListEditor.h</header>
+   <class>graphicsUtils::AbstractView</class>
+   <extends>QGraphicsView</extends>
+   <header>../../qrutils/graphicsUtils/abstractItemView.h</header>
   </customwidget>
   <customwidget>
-   <class>View</class>
-   <extends>QGraphicsView</extends>
-   <header>../mainwindow/shapeEdit/view.h</header>
+   <class>graphicsUtils::ColorListEditor</class>
+   <extends>QComboBox</extends>
+   <header>../../qrutils/graphicsUtils/colorlisteditor.h</header>
   </customwidget>
  </customwidgets>
  <resources>

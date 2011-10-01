@@ -62,10 +62,6 @@ QList<ActionInfo> RobotsPlugin::actions()
 	ActionInfo robotSettingsActionInfo(robotSettingsAction, "interpreters", "tools");
 	QObject::connect(robotSettingsAction, SIGNAL(triggered()), this, SLOT(showRobotSettings()));
 
-	QAction *watchListAction = new QAction(QObject::tr("Show watch list"), NULL);
-	ActionInfo watchListActionInfo(watchListAction, "interpreters", "tools");
-	QObject::connect(watchListAction, SIGNAL(triggered()), &mInterpreter, SLOT(showWatchList()));
-	
 	QAction *separator = new QAction(NULL);
 	ActionInfo separatorActionInfo(separator, "interpreters", "tools");
 	separator->setSeparator(true);
@@ -74,13 +70,12 @@ QList<ActionInfo> RobotsPlugin::actions()
 
 	return QList<ActionInfo>() << d2ModelActionInfo << runActionInfo << stopActionInfo
 			<< stopRobotActionInfo << connectToRobotActionInfo
-			<< watchListActionInfo
 			<< separatorActionInfo << robotSettingsActionInfo;
 }
 
 QPair<QString, PreferencesPage *> RobotsPlugin::preferencesPage()
 {
-	return qMakePair(QObject::tr("Robots"), static_cast<PreferencesPage*>(&mRobotSettingsPage));
+	return qMakePair(QObject::tr("Robots"), static_cast<PreferencesPage*>(&mRobotSettinsPage));
 }
 
 void RobotsPlugin::showRobotSettings()
@@ -95,6 +90,8 @@ void RobotsPlugin::show2dModel()
 
 void RobotsPlugin::updateSettings()
 {
+	QString const bluetoothPortName = SettingsManager::instance()->value("bluetoothPortName").toString();
+	mInterpreter.setBluetoothPortName(bluetoothPortName);
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
 	mInterpreter.setRobotModelType(typeOfRobotModel);
 	mInterpreter.configureSensors(
@@ -108,8 +105,9 @@ void RobotsPlugin::updateSettings()
 		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopAction);
 	else
 		mInterpreter.showD2ModelWidget(false);
+}
 
-	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication", "bluetooth").toString();
-	QString const portName = SettingsManager::value("bluetoothPortName", "").toString();
-	mInterpreter.setCommunicator(typeOfCommunication, portName);
+void RobotsPlugin::closeNeededWidget()
+{
+    mInterpreter.closeD2ModelWidget();
 }

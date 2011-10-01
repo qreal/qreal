@@ -18,8 +18,10 @@ class SonarSensorItem : public SensorItem
 
 public:
 	SonarSensorItem(WorldModel const &worldModel, SensorsConfiguration &configuration, inputPort::InputPortEnum port);
-	void paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget);
-	QRectF boundingRect() const;
+	virtual void drawItem(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget);
+	virtual void drawExtractionForItem(QPainter *painter);
+	virtual QRectF boundingRect() const;
+	QPainterPath shape() const;
 
 private:
 	WorldModel const &mWorldModel;

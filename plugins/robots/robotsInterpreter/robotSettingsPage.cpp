@@ -79,9 +79,6 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent) :
 
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel", "1").toInt());
 	initRobotModelType(typeOfRobotModel);
-
-	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication", "bluetooth").toString();
-	initTypeOfCommunication(typeOfCommunication);
 }
 
 PreferencesRobotSettingsPage::~PreferencesRobotSettingsPage()
@@ -134,14 +131,6 @@ void PreferencesRobotSettingsPage::initRobotModelType(robotModelType::robotModel
 		mUi->realModelRadioButton->setChecked(true);
 }
 
-void PreferencesRobotSettingsPage::initTypeOfCommunication(QString type)
-{
-	if (type == "bluetooth")
-		mUi->bluetoothRadioButton->setChecked(true);
-	else
-		mUi->usbRadioButton->setChecked(true);
-}
-
 robotModelType::robotModelTypeEnum PreferencesRobotSettingsPage::selectedRobotModel() const
 {
 	if (mUi->nullModelRadioButton->isChecked())
@@ -152,12 +141,6 @@ robotModelType::robotModelTypeEnum PreferencesRobotSettingsPage::selectedRobotMo
 		return robotModelType::real;
 }
 
-QString PreferencesRobotSettingsPage::selectedCommunication() const
-{
-	return mUi->bluetoothRadioButton->isChecked()
-			? "bluetooth"
-			: "usb";
-}
 
 void PreferencesRobotSettingsPage::activatedUnrealModel(bool checked)
 {
@@ -225,5 +208,4 @@ void PreferencesRobotSettingsPage::save()
 	SettingsManager::setValue("port2SensorType", selectedPort2Sensor());
 	SettingsManager::setValue("port3SensorType", selectedPort3Sensor());
 	SettingsManager::setValue("port4SensorType", selectedPort4Sensor());
-	SettingsManager::setValue("valueOfCommunication", selectedCommunication());
 }

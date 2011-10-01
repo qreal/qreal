@@ -337,7 +337,7 @@ void XmlLoader::readStylus(QDomElement const &stylus)
 			QRectF rect = readRectOfXandY(type);
 			Line* item = new Line(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
 			item->readPenBrush(type);
-			stylusItem->mListLine.push_back(item);
+			stylusItem->addLineInList(item);
 			stylusItem->setPen(item->pen());
 			stylusItem->setBrush(item->brush());
 		}

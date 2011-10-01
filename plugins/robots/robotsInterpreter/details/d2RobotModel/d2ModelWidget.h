@@ -8,11 +8,14 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QPushButton>
 
+#include "lineItem.h"
+#include "stylusItem.h"
 #include "worldModel.h"
 #include "robotModelInterface.h"
 #include "d2ModelScene.h"
 #include "robotItem.h"
 #include "rotater.h"
+#include "../../../../../qrutils/graphicsUtils/lineImpl.h"
 
 namespace Ui {
 class D2Form;
@@ -28,6 +31,8 @@ namespace drawingAction {
 enum DrawingAction {
 	none,
 	wall,
+	line,
+	stylus,
 	port
 };
 }
@@ -60,6 +65,8 @@ protected:
 
 private slots:
 	void addWall(bool on);
+	void addLine(bool on);
+	void addStylus(bool on);
 	void clearScene();
 	void resetButtons();
 
@@ -75,6 +82,10 @@ private slots:
 
 	void saveWorldModel();
 	void loadWorldModel();
+
+	void changePenWidth(int width);
+	void changePenColor(const QString &text);
+	void changePalette();
 
 private:
 	Ui::D2Form *mUi;
@@ -92,7 +103,9 @@ private:
 	int mMouseClicksCount;
 
 	/** @brief Temporary wall that's being created. When it's complete, it's added to world model */
-	QList<QPointF> mCurrentWall;
+	WallItem* mCurrentWall;
+	LineItem* mCurrentLine;
+	StylusItem* mCurrentStylus;
 
 	/** @brief Latest value of angle for drawing robot image */
 	qreal mAngleOld;
@@ -119,9 +132,11 @@ private:
 	QVector<SensorItem *> mSensors;
 
 	Rotater *mRotater;
+	QVector<Rotater *> mSensorRotaters;
 
 	void connectUiButtons();
 	void drawWalls();
+		void drawColorFields();
 	void drawInitialRobot();
 
 	/** @brief Set active panel toggle button and deactivate all others */
@@ -142,6 +157,18 @@ private:
 	/// Reread sensor configuration on given port, delete old sensor item and create new.
 	void reinitSensor(inputPort::InputPortEnum port);
 
+	void reshapeWall(QGraphicsSceneMouseEvent *event);
+	void reshapeLine(QGraphicsSceneMouseEvent *event);
+	void reshapeStylus(QGraphicsSceneMouseEvent *event);
+
+		void setValuePenColorComboBox(QColor penColor);
+		void setValuePenWidthSpinBox(int width);
+	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
+	void setNoPalette();
+
+	void initWidget();
+	QList<graphicsUtils::AbstractItem *> selectedColorItems();
+	bool isColorItem(graphicsUtils::AbstractItem *item);
 };
 
 }

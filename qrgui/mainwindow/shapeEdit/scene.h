@@ -22,29 +22,21 @@
 #include "image.h"
 #include "../umllib/elementTitle.h"
 #include "../../../qrkernel/settingsManager.h"
+#include "../../../qrutils/graphicsUtils/abstractScene.h"
 
 const int sizeEmptyRectX = 680;
 const int sizeEmptyRectY = 580;
 
-class Scene : public QGraphicsScene
+class Scene : public graphicsUtils::AbstractScene
 {
 	Q_OBJECT
 public:
-	Scene(View *view, QObject *parent = 0);
-	QGraphicsRectItem *mEmptyRect;
+	Scene(graphicsUtils::AbstractView *view, QObject *parent = 0);
 	QPoint centerEmpty();
-	QRect realItemsBoundingRect() const;
 	void changeTextName(const QString &name);
 	void setZValue(Item* item);
 	void addImage(QString const &fileName);
 
-signals:
-	void noSelectedItems();
-	void existSelectedItems(QPen const &penItem, QBrush const &brushItem);
-	void noSelectedTextPictureItems();
-	void existSelectedTextPictureItems(QPen const &penItem, QFont const &fontItem, QString const &name);
-
-private slots:
 	void drawLine(bool checked);
 	void drawEllipse(bool checked);
 	void drawCurve(bool checked);
@@ -57,6 +49,14 @@ private slots:
 	void addStylus(bool checked);
 	void addNone(bool checked);
 
+signals:
+	void noSelectedItems();
+	void existSelectedItems(QPen const &penItem, QBrush const &brushItem);
+	void noSelectedTextPictureItems();
+	void existSelectedTextPictureItems(QPen const &penItem, QFont const &fontItem, QString const &name);
+	void resetHighlightAllButtons();
+
+private slots:
 	void changePenStyle(const QString &text);
 	void changePenWidth(int width);
 	void changePenColor(const QString &text);
@@ -97,7 +97,6 @@ private:
 	};
 
 	int mZValue;
-	View *mView;
 	ItemTypes mItemType;
 	bool mWaitMove;
 	int mCount;
@@ -111,12 +110,7 @@ private:
 	Stylus *mStylus;
 	Curve* mCurve;
 	Image* mImage;
-	Item *mGraphicsItem;
 	QString mFileName;
-	qreal mX1;
-	qreal mX2;
-	qreal mY1;
-	qreal mY2;
 	QPointF mC1;
 	CopyPasteType mCopyPaste;
 	QList<Item *> mListSelectedItemsForPaste;
@@ -125,24 +119,10 @@ private:
 	TextPicture *mSelectedTextPicture;
 	QPair<bool, Item *> mNeedResize;
 
-	QString mPenStyleItems;
-	int mPenWidthItems;
-	QString mPenColorItems;
-	QString mBrushStyleItems;
-	QString mBrushColorItems;
-
-	static bool compareItems(Item* first, Item* second);
-
 	void initListSelectedItemsForPaste();
 	QRectF selectedItemsBoundingRect() const;
 	QList<Item *> selectedSceneItems();
 	QList<TextPicture *> selectedTextPictureItems();
-	QString convertPenToString(QPen const &pen);
-	QString convertBrushToString(QBrush const &brush);
-	void setPenBrushItems(QPen const &pen, QBrush const &brush);
-	void setEmptyPenBrushItems();
-	void setX1andY1(QGraphicsSceneMouseEvent *event);
-	void setX2andY2(QGraphicsSceneMouseEvent *event);
 	QPointF setCXandCY(QGraphicsSceneMouseEvent *event);
 	void reshapeLine(QGraphicsSceneMouseEvent *event);
 	void reshapeLinePort(QGraphicsSceneMouseEvent *event);
@@ -151,11 +131,7 @@ private:
 	void reshapeStylus(QGraphicsSceneMouseEvent *event);
 	void reshapeCurveFirst(QGraphicsSceneMouseEvent *event);
 	void reshapeCurveSecond(QGraphicsSceneMouseEvent *event);
-	void reshapeItem(QGraphicsSceneMouseEvent *event);
-	void reshapeItem(QGraphicsSceneMouseEvent *event, Item *item);
 
-	void removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item);
-	void setMoveFlag(QGraphicsSceneMouseEvent *event);
 	void setZValueSelectedItems();
 	void setNullZValueItems();
 	QPair<bool, Item *> checkOnResize(qreal x, qreal y);

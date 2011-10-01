@@ -1,7 +1,5 @@
 #include "sonarSensorItem.h"
 
-#include <QtCore/QDebug>
-
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 
@@ -13,12 +11,10 @@ SonarSensorItem::SonarSensorItem(WorldModel const &worldModel
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
 }
 
-void SonarSensorItem::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget)
+void SonarSensorItem::drawItem(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget)
 {
 	Q_UNUSED(style)
 	Q_UNUSED(widget)
-
-	painter->save();
 
 	QBrush brush;
 	brush.setColor(color());
@@ -33,11 +29,15 @@ void SonarSensorItem::paint(QPainter *painter, QStyleOptionGraphicsItem const *s
 
 	painter->setOpacity(0.2);
 	painter->setBrush(Qt::black);
-	painter->drawPath(scanningRegion());
+	painter->drawPath(shape());
+}
 
-	drawSelection(painter, rect);
-
-	painter->restore();
+void SonarSensorItem::drawExtractionForItem(QPainter *painter)
+{
+	if (!isSelected())
+		return;
+	painter->setPen(QPen(Qt::black));
+	painter->drawPath(shape());
 }
 
 QRectF SonarSensorItem::boundingRect() const
@@ -47,5 +47,12 @@ QRectF SonarSensorItem::boundingRect() const
 
 QPainterPath SonarSensorItem::scanningRegion() const
 {
-	return mWorldModel.sonarScanningRegion(QPoint(), mConfiguration.direction(mPort));
+	return mWorldModel.sonarScanningRegion(QPoint(), mBaseDir + mConfiguration.direction(mPort));
+}
+
+QPainterPath SonarSensorItem::shape() const
+{
+	QPainterPath path = scanningRegion();
+	path.addEllipse(QRectF(-size, -size, size * 2, size * 2));
+	return path;
 }

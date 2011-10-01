@@ -2,16 +2,20 @@
 
 #include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtGui/QKeyEvent>
-#include <QDebug>
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
+using namespace graphicsUtils;
 
-D2ModelScene::D2ModelScene(QObject *parent) : QGraphicsScene(parent)
+D2ModelScene::D2ModelScene(AbstractView *view, QObject *parent)
+	: AbstractScene(view, parent)
 {
-	addRect(-500, -500, 1000, 1000, QPen(Qt::NoPen), QBrush(Qt::NoBrush));
+        mFirstPenWidth = 6;
+	mSizeEmptyRectX = 1000;
+	mSizeEmptyRectY = 1000;
+	setEmptyRect(-500, -500, mSizeEmptyRectX, mSizeEmptyRectY);
 	setItemIndexMethod(NoIndex);
-//	clear();
+	setEmptyPenBrushItems();
 }
 
 D2ModelScene::~D2ModelScene()
