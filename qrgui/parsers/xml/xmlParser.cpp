@@ -43,8 +43,8 @@ void XmlParser::parseFile(const QString &fileName)
 	while (!in.atEnd()) {
 		QString line = in.readLine();
 		if (line.contains("ROOT")) {
-			pathToQRealSourceFiles = line.mid(line.indexOf("="));
-			pathToQRealSourceFiles.trimmed();
+			pathToQRealSourceFiles = line.mid(line.indexOf("=") + 1);
+			pathToQRealSourceFiles = pathToQRealSourceFiles.trimmed();
 		}
 	}
 	file.close();
@@ -263,6 +263,7 @@ void XmlParser::initNode(const QDomElement &node, const Id &diagramId)
 		setStandartConfigurations(nodeId, diagramId, nodeName,
 								  node.attribute("displayedName", ""));
 		mApi.setProperty(nodeId, "path", node.attribute("path", ""));
+		mApi.setProperty(nodeId, "description", node.attribute("description", ""));
 
 		setNodeAttributes(node, nodeId);
 	}

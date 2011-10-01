@@ -77,10 +77,14 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 		//QDir projectsDir; //TODO: use user path to projects
 
 		QString projectName = "example" + QString::number(curInitialNodeNumber);
+		QString projectDir = "nxt-tools/" + projectName;
 
 		//Create project directory
-		if (!QDir(projectName).exists())
-			QDir().mkdir(projectName);
+		if (!QDir(projectDir).exists()) {
+			if (!QDir("nxt-tools/").exists())
+				QDir().mkdir("nxt-tools/");
+			QDir().mkdir(projectDir);
+		}
 
 		/* Generate C file */
 		QFile templateCFile(":/generators/nxtOSEK/templates/template.c");
@@ -96,7 +100,7 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 		resultString.replace("@@PROJECT_NAME@@", projectName);
 		resultString.replace("@@CODE@@", resultCode);
 
-		QFile resultCFile(projectName + "/" + projectName + ".c");
+		QFile resultCFile(projectDir + "/" + projectName + ".c");
 		if (!resultCFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
 			mErrorReporter.addError("cannot open \"" + resultCFile.fileName() + "\"");
 			return mErrorReporter;
@@ -115,7 +119,7 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 			return mErrorReporter;
 		}
 
-		QFile resultOILFile(projectName + "/" + projectName + ".oil");
+		QFile resultOILFile(projectDir + "/" + projectName + ".oil");
 		if (!resultOILFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
 			mErrorReporter.addError("cannot open \"" + resultOILFile.fileName() + "\"");
 			return mErrorReporter;
@@ -135,7 +139,7 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 			return mErrorReporter;
 		}
 
-		QFile resultMakeFile(projectName + "/makefile");
+		QFile resultMakeFile(projectDir + "/makefile");
 		if (!resultMakeFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
 			mErrorReporter.addError("cannot open \"" + resultMakeFile.fileName() + "\"");
 			return mErrorReporter;
