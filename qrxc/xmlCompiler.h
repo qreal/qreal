@@ -42,6 +42,7 @@ private:
 	void generateNameMappingsRequests(utils::OutFile &out);
 	void generateGraphicalObjectRequest(utils::OutFile &out);
 	void generateIsParentOfRequest(utils::OutFile &out);
+	void generateGetParentsOfRequest(utils::OutFile &out);
 	void generateProperties(utils::OutFile &out);
 	void generateContainedTypes(utils::OutFile &out);
 	void generateConnections(utils::OutFile &out);

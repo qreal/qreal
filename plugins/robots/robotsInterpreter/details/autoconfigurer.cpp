@@ -22,6 +22,7 @@ Autoconfigurer::Autoconfigurer(GraphicalModelAssistInterface const &graphicalMod
 
 bool Autoconfigurer::configure(Id const &diagram)
 {
+	qDebug() << "Autoconfigurer::configure";
 	bool result = true;
 
 	mUsedSensors[0] = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType", "0").toInt());

@@ -5,12 +5,13 @@ using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
 BluetoothSensorImplementation::BluetoothSensorImplementation(RobotCommunication *const robotCommunicationInterface
-		, lowLevelSensorType::SensorTypeEnum const &sensorType
+		, sensorType::SensorTypeEnum const &sensorType
+		, lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
 		, sensorMode::SensorModeEnum const &sensorMode
 		, inputPort::InputPortEnum const &port)
-	: AbstractSensorImplementation(port)
+	: AbstractSensorImplementation(port, sensorType)
 	, mRobotCommunicationInterface(robotCommunicationInterface)
-	, mSensorType(sensorType)
+	, mLowLevelSensorType(lowLevelSensorType)
 	, mSensorMode(sensorMode)
 	, mIsConfigured(false)
 	, mResetDone(false)
@@ -72,7 +73,7 @@ void BluetoothSensorImplementation::configure()
 	command[2] = telegramType::directCommandResponseRequired;
 	command[3] = commandCode::SETINPUTMODE;
 	command[4] = mPort;
-	command[5] = mSensorType;
+	command[5] = mLowLevelSensorType;
 	command[6] = mSensorMode;
 	mRobotCommunicationInterface->send(this, command, 5);
 }

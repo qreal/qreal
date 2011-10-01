@@ -16,16 +16,13 @@ RealRobotModelImplementation *AbstractRobotModelImplementation::mRealRobotModel 
 UnrealRobotModelImplementation *AbstractRobotModelImplementation::mUnrealRobotModel = NULL;
 
 AbstractRobotModelImplementation::AbstractRobotModelImplementation()
-	: mSensorsToConfigure(0)
+	: mIsConnected(false)
 {
-	mSensors.resize(4);
+	mSensorsConfigurer.lockConfiguring();  // Model is not connected yet.
 }
 
 AbstractRobotModelImplementation::~AbstractRobotModelImplementation()
 {
-	foreach (sensorImplementations::AbstractSensorImplementation *sensor, mSensors) {
-		delete sensor;
-	}
 }
 
 NullRobotModelImplementation *AbstractRobotModelImplementation::nullRobotModel()
@@ -61,9 +58,9 @@ AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(r
 		throw Exception("AbstractRobotModelImplementation::robotModel tried to create unknown robot model");
 }
 
-QVector<sensorImplementations::AbstractSensorImplementation *> AbstractRobotModelImplementation::sensors()
+sensorImplementations::AbstractSensorImplementation * AbstractRobotModelImplementation::sensor(inputPort::InputPortEnum const &port)
 {
-	return mSensors;
+	return mSensorsConfigurer.sensor(port);
 }
 
 void AbstractRobotModelImplementation::init()
@@ -72,15 +69,9 @@ void AbstractRobotModelImplementation::init()
 	qDebug() << "Connecting to robot...";
 }
 
-void AbstractRobotModelImplementation::clear()
-{
-}
-
 void AbstractRobotModelImplementation::configureSensor(sensorType::SensorTypeEnum const &sensorType
 		, inputPort::InputPortEnum const &port)
 {
-	delete mSensors[port];
-	mSensors[port] = NULL;
 	switch (sensorType) {
 	case sensorType::unused:
 		break;
@@ -93,19 +84,19 @@ void AbstractRobotModelImplementation::configureSensor(sensorType::SensorTypeEnu
 		addSonarSensor(port);
 		break;
 	case sensorType::colorFull:
-		addColorSensor(port, lowLevelSensorType::COLORFULL);
+		addColorSensor(port, lowLevelSensorType::COLORFULL, sensorType);
 		break;
 	case sensorType::colorRed:
-		addColorSensor(port, lowLevelSensorType::COLORRED);
+		addColorSensor(port, lowLevelSensorType::COLORRED, sensorType);
 		break;
 	case sensorType::colorGreen:
-		addColorSensor(port, lowLevelSensorType::COLORGREEN);
+		addColorSensor(port, lowLevelSensorType::COLORGREEN, sensorType);
 		break;
 	case sensorType::colorBlue:
-		addColorSensor(port, lowLevelSensorType::COLORBLUE);
+		addColorSensor(port, lowLevelSensorType::COLORBLUE, sensorType);
 		break;
 	case sensorType::colorNone:
-		addColorSensor(port, lowLevelSensorType::COLORNONE);
+		addColorSensor(port, lowLevelSensorType::COLORNONE, sensorType);
 		break;
 	default:
 		// TODO: Throw an exception

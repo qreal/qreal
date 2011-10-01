@@ -7,7 +7,7 @@ using namespace details::robotImplementations::sensorImplementations;
 
 BluetoothTouchSensorImplementation::BluetoothTouchSensorImplementation(RobotCommunication *robotCommunicationInterface
 		, inputPort::InputPortEnum const &port)
-	: BluetoothSensorImplementation(robotCommunicationInterface, lowLevelSensorType::SWITCH, sensorMode::RAWMODE, port)
+	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType::touchBoolean, lowLevelSensorType::SWITCH, sensorMode::RAWMODE, port)
 {
 }
 
@@ -24,6 +24,14 @@ void BluetoothTouchSensorImplementation::sensorSpecificProcessResponse(QByteArra
 
 void BluetoothTouchSensorImplementation::read()
 {
+	if (!mIsConfigured) {
+		// If sensor is not configured, report failure and return immediately.
+		// It is not an error, it shall be possible to reconfigure sensor "on the fly",
+		// but when it is reconfiguring it shall not be available.
+		emit failure();
+		return;
+	}
+
 	if (mState == pending)
 		return;
 

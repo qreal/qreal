@@ -86,6 +86,7 @@ HEADERS += \
 	details/robotImplementations/realRobotModelImplementation.h \
 	details/robotImplementations/nullRobotModelImplementation.h \
 	details/robotImplementations/unrealRobotModelImplementation.h \
+	details/robotImplementations/sensorsConfigurer.h \
 	details/d2RobotModel/d2ModelWidget.h \
 	details/d2RobotModel/d2ModelScene.h \
 	details/d2RobotModel/d2RobotModel.h \
@@ -166,6 +167,7 @@ SOURCES += \
 	details/robotImplementations/realRobotModelImplementation.cpp \
 	details/robotImplementations/nullRobotModelImplementation.cpp \
 	details/robotImplementations/unrealRobotModelImplementation.cpp \
+	details/robotImplementations/sensorsConfigurer.cpp \
 	details/d2RobotModel/d2ModelWidget.cpp \
 	details/d2RobotModel/d2ModelScene.cpp \
 	details/d2RobotModel/d2RobotModel.cpp \

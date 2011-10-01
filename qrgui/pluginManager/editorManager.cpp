@@ -334,3 +334,33 @@ bool EditorManager::isDiagramNode(Id const &id) const
 {
 	return id.element() == editorInterface(id.editor())->diagramNodeName(id.diagram());
 }
+
+
+
+bool EditorManager::isParentOf(Id const &child, Id const &parent) const // child — EnginesForware, parent — AbstractNode
+{
+	EditorInterface const *plugin = mPluginIface[child.editor()];
+	if (!plugin)
+		return false;
+
+	return isParentOf(plugin, child.diagram(), child.element(), parent.diagram(), parent.element());
+}
+
+bool EditorManager::isParentOf(EditorInterface const *plugin, QString const &childDiagram
+							   , QString const &child, QString const &parentDiagram, QString const &parent) const
+{
+	typedef QPair<QString, QString> Ololo88;
+	QList<QPair<QString, QString> > list = plugin->getParentsOf(childDiagram, child);
+
+	bool res = false;
+	foreach (Ololo88 const ololo, list)
+	{
+		if (ololo.second == parent && ololo.first == parentDiagram)
+			return true;
+
+		res = res || isParentOf(plugin, ololo.first, ololo.second, parentDiagram, parent);
+	}
+
+	return res;
+
+}
