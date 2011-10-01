@@ -128,6 +128,12 @@ void Interpreter::showWatchList() {
 	mWatchListWindow->show();
 }
 
+void Interpreter::closeD2ModelWidget()
+{
+	if (mD2ModelWidget)
+		mD2ModelWidget->close();
+}
+
 void Interpreter::showD2ModelWidget(bool isVisible)
 {
 	mD2ModelWidget->init(isVisible);
