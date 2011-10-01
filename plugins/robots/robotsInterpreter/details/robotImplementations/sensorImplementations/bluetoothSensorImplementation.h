@@ -17,6 +17,7 @@ class BluetoothSensorImplementation : public AbstractSensorImplementation
 
 public:
 	BluetoothSensorImplementation(RobotCommunication *robotCommunicationInterface
+		, sensorType::SensorTypeEnum const &sensorType
 		, lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
 		, sensorMode::SensorModeEnum const &sensorMode
 		, inputPort::InputPortEnum const &port
@@ -33,7 +34,7 @@ protected slots:
 
 protected:
 	RobotCommunication *mRobotCommunicationInterface;
-	lowLevelSensorType::SensorTypeEnum mSensorType;
+	lowLevelSensorType::SensorTypeEnum mLowLevelSensorType;
 	sensorMode::SensorModeEnum mSensorMode;
 	bool mIsConfigured;
 	bool mResetDone;

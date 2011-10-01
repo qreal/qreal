@@ -5,9 +5,12 @@
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
-BluetoothColorSensorImplementation::BluetoothColorSensorImplementation(RobotCommunication *robotCommunicationInterface
-		, inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode)
-	: BluetoothSensorImplementation(robotCommunicationInterface, mode, sensorMode::RAWMODE, port)
+BluetoothColorSensorImplementation::BluetoothColorSensorImplementation(
+		RobotCommunication *robotCommunicationInterface
+		, inputPort::InputPortEnum const &port
+		, lowLevelSensorType::SensorTypeEnum mode
+		, sensorType::SensorTypeEnum const sensorType)
+	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType, mode, sensorMode::RAWMODE, port)
 {
 }
 
@@ -46,7 +49,7 @@ void BluetoothColorSensorImplementation::sensorSpecificProcessResponse(QByteArra
 				<< (0xff & reading[14]) << (0xff & reading[15])
 		;
 		mState = idle;
-		if (mSensorType == lowLevelSensorType::COLORFULL) {
+		if (mLowLevelSensorType == lowLevelSensorType::COLORFULL) {
 			emit response(0xff & reading[14]);  // Scaled value, used in ColorFull mode.
 		} else {
 			emit response((0xff & reading[10]) | ((0xff & reading[11]) << 8));
@@ -56,7 +59,7 @@ void BluetoothColorSensorImplementation::sensorSpecificProcessResponse(QByteArra
 
 void BluetoothColorSensorImplementation::reconfigure(lowLevelSensorType::SensorTypeEnum mode)
 {
-	mSensorType = mode;
+	mLowLevelSensorType = mode;
 	mIsConfigured = false;
 	mResetDone = false;
 	configure();

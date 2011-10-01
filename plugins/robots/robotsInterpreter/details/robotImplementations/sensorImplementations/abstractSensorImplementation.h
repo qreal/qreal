@@ -13,10 +13,12 @@ class AbstractSensorImplementation : public QObject
 {
 	Q_OBJECT
 public:
-	AbstractSensorImplementation(inputPort::InputPortEnum const &port);
+	AbstractSensorImplementation(inputPort::InputPortEnum const &port, sensorType::SensorTypeEnum const &sensorType);
 	virtual ~AbstractSensorImplementation() {}
 	virtual void read() = 0;
 	void setPort(inputPort::InputPortEnum const &port);
+	inputPort::InputPortEnum port() const;
+	sensorType::SensorTypeEnum type() const;
 
 signals:
 	void response(int reading);
@@ -30,6 +32,7 @@ protected:
 
 	inputPort::InputPortEnum mPort;
 	State mState;
+	sensorType::SensorTypeEnum mType;
 };
 
 }

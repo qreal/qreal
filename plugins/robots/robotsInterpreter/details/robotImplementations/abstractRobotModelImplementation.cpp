@@ -87,19 +87,19 @@ void AbstractRobotModelImplementation::configureSensor(sensorType::SensorTypeEnu
 		addSonarSensor(port);
 		break;
 	case sensorType::colorFull:
-		addColorSensor(port, lowLevelSensorType::COLORFULL);
+		addColorSensor(port, lowLevelSensorType::COLORFULL, sensorType);
 		break;
 	case sensorType::colorRed:
-		addColorSensor(port, lowLevelSensorType::COLORRED);
+		addColorSensor(port, lowLevelSensorType::COLORRED, sensorType);
 		break;
 	case sensorType::colorGreen:
-		addColorSensor(port, lowLevelSensorType::COLORGREEN);
+		addColorSensor(port, lowLevelSensorType::COLORGREEN, sensorType);
 		break;
 	case sensorType::colorBlue:
-		addColorSensor(port, lowLevelSensorType::COLORBLUE);
+		addColorSensor(port, lowLevelSensorType::COLORBLUE, sensorType);
 		break;
 	case sensorType::colorNone:
-		addColorSensor(port, lowLevelSensorType::COLORNONE);
+		addColorSensor(port, lowLevelSensorType::COLORNONE, sensorType);
 		break;
 	default:
 		// TODO: Throw an exception

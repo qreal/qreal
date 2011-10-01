@@ -51,10 +51,6 @@ robotParts::Sensor *RobotModel::sensor(const inputPort::InputPortEnum &port) con
 	return mSensors[port];
 }
 
-void RobotModel::clear()
-{
-}
-
 void RobotModel::configureSensors(sensorType::SensorTypeEnum const &port1
 		, sensorType::SensorTypeEnum const &port2
 		, sensorType::SensorTypeEnum const &port3

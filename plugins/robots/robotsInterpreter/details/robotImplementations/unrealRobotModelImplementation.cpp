@@ -56,11 +56,11 @@ void UnrealRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum con
 	mSensors[port] = new sensorImplementations::UnrealSonarSensorImplementation(port, mD2Model);
 }
 
-void UnrealRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode)
+void UnrealRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType)
 {
 	Q_UNUSED(mode)
 	delete mSensors[port];
-	mSensors[port] = new sensorImplementations::UnrealColorSensorImplementation(port, mD2Model);
+	mSensors[port] = new sensorImplementations::UnrealColorSensorImplementation(port, mD2Model, sensorType);
 }
 
 void UnrealRobotModelImplementation::init()

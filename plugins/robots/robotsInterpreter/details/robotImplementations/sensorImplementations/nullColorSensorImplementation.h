@@ -13,7 +13,7 @@ class NullColorSensorImplementation : public NullSensorImplementation
 	Q_OBJECT
 
 public:
-	NullColorSensorImplementation(inputPort::InputPortEnum const &port);
+	NullColorSensorImplementation(inputPort::InputPortEnum const &port, sensorType::SensorTypeEnum const &sensorType);
 
 protected slots:
 	virtual void timerTimeout();

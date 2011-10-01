@@ -14,7 +14,7 @@ class NullSensorImplementation : public AbstractSensorImplementation
 	Q_OBJECT
 
 public:
-	NullSensorImplementation(inputPort::InputPortEnum const &port);
+	NullSensorImplementation(inputPort::InputPortEnum const &port, sensorType::SensorTypeEnum const &sensorType);
 	virtual void read();
 
 protected slots:
