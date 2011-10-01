@@ -324,7 +324,7 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property displayedName="Задержка" type="int" name="Delay">
+                        <property displayedName="Задержка" type="string" name="Delay">
                             <default>0</default>
                         </property>
                     </properties>
@@ -523,10 +523,10 @@
                         <property displayedName="Ждать завершения" type="bool" name="WaitForCompletion">
                             <default>true</default>
                         </property>
-                        <property displayedName="Частота" type="int" name="Frequency">
+                        <property displayedName="Частота" type="string" name="Frequency">
                             <default>1000</default>
                         </property>
-                        <property displayedName="Длительность" type="int" name="Duration">
+                        <property displayedName="Длительность" type="string" name="Duration">
                             <default>1000</default>
                         </property>
                     </properties>
@@ -571,7 +571,7 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property displayedName="Дистанция" type="int" name="Distance">
+                        <property displayedName="Дистанция" type="string" name="Distance">
                             <default>0</default>
                         </property>
                         <property displayedName="Знак" type="DistanceSign" name="Sign">
@@ -605,10 +605,10 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property displayedName="Мощность (%)" type="int" name="Power">
+                        <property displayedName="Мощность (%)" type="string" name="Power">
                             <default>100</default>
                         </property>
-                        <property displayedName="Предел оборотов (гр.)" type="int" name="TachoLimit">
+                        <property displayedName="Предел оборотов (гр.)" type="string" name="TachoLimit">
                             <default>0</default>
                         </property>
                     </properties>
@@ -653,7 +653,7 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property displayedName="Интенсивность" type="int" name="Intensity">
+                        <property displayedName="Интенсивность" type="string" name="Intensity">
                             <default>0</default>
                         </property>
                         <property displayedName="Знак" type="DistanceSign" name="Sign">
@@ -741,7 +741,7 @@
                     <container/>
                     <properties>
                         <property displayedName="Порт" type="string" name="Port"/>
-						<property displayedName="Предел оборотов" type="int" name="TachoLimit"/>
+						<property displayedName="Предел оборотов" type="string" name="TachoLimit"/>
                     </properties>
                     <generalizations>
                         <parent parentName="AbstractNode"/>
@@ -819,7 +819,7 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property displayedName="Тело функции" type="int" name="Body"/>
+                        <property displayedName="Тело функции" type="string" name="Body"/>
                     </properties>
                     <generalizations>
                         <parent parentName="AbstractNode"/>
@@ -858,7 +858,7 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property displayedName="Условие" type="int" name="Condition">
+                        <property displayedName="Условие" type="string" name="Condition">
                             <default>0</default>
                         </property>
                     </properties>
