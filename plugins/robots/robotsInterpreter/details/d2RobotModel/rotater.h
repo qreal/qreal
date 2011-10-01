@@ -13,7 +13,7 @@ namespace details {
 namespace d2Model {
 
 const int length = 30;
-const int addAngle = 30; //в градусах; для отрисовки наконечника стрелки
+const int addAngle = 30; //РІ РіСЂР°РґСѓСЃР°С…; РґР»СЏ РѕС‚СЂРёСЃРѕРІРєРё РЅР°РєРѕРЅРµС‡РЅРёРєР° СЃС‚СЂРµР»РєРё
 
 /// Class that represents line that allows to rotate QGraphicItems
 class Rotater : public QObject, public graphicsUtils::AbstractItem
