@@ -141,12 +141,13 @@ MainWindow::MainWindow()
 	//SettingsManager::setValue("saveFile", mSaveFile);
 
 	//QString workingDir = SettingsManager::value("workingDir", mSaveDir).toString();
-	QString saveFile = SettingsManager::value("saveFile", mSaveFile).toString();
-	if (!saveFile.isEmpty())
-		mSaveFile = saveFile;
+	QFileInfo saveFile (SettingsManager::value("saveFile", mSaveFile).toString());
+
+	if (saveFile.exists())
+		mSaveFile = saveFile.absoluteFilePath();
 
 	mRootIndex = QModelIndex();
-	mModels = new models::Models(saveFile, mEditorManager);
+	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
 
 	mUi->propertyEditor->init(this, &mModels->logicalModelAssistApi());
 	mUi->propertyEditor->setModel(&mPropertyModel);
@@ -574,7 +575,7 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 
 bool MainWindow::openNewProject()
 {
-	//saveAll();
+	saveAll();
 	return open(getWorkingFile(tr("Select file with a save to open")));
 }
 
