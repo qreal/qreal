@@ -30,7 +30,7 @@ public:
 	int pictureHeight() { return first_size_y; }
 
 private:
-	QString mWorkingDirName;
+	QString setWorkingFileName;
 	QMap<QString, QPixmap> mMapFileImage;
 	int first_size_x;
 	int first_size_y;

@@ -347,9 +347,9 @@ void RepoApi::exterminate()
 	mClient.exterminate();
 }
 
-void RepoApi::open(QString const &workingDir)
+void RepoApi::open(QString const &saveFile)
 {
-	mClient.open(workingDir);
+	mClient.open(saveFile);
 }
 
 void RepoApi::saveAll() const
@@ -357,9 +357,9 @@ void RepoApi::saveAll() const
 	mClient.saveAll();
 }
 
-void RepoApi::saveTo(QString const &workingDir)
+void RepoApi::saveTo(QString const &workingFile)
 {
-	mClient.setWorkingDir(workingDir);
+	mClient.setWorkingFile(workingFile);
 	mClient.saveAll();
 }
 

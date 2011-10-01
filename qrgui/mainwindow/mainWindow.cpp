@@ -59,6 +59,7 @@ MainWindow::MainWindow()
 	, mErrorReporter(NULL)
 	, mIsFullscreen(false)
 	, mSaveDir(qApp->applicationDirPath() + "/save")
+	, mTempDir(qApp->applicationDirPath() + "/temp")
 	, mPreferencesDialog(this)
 	, mNxtToolsPresent(false)
 	, mHelpBrowser(NULL)
@@ -131,9 +132,22 @@ MainWindow::MainWindow()
 	mUi->errorDock->setVisible(false);
 
 	//	mDelegate.init(this, &mModels->logicalModelAssistApi());
-	QString workingDir = SettingsManager::value("workingDir", mSaveDir).toString();
+
+	SettingsManager::setValue("temp", mTempDir);
+	QDir dir(qApp->applicationDirPath());
+	if (!dir.cd("temp"))
+		QDir().mkdir(mTempDir);
+
+	//SettingsManager::setValue("saveFile", mSaveFile);
+
+	//QString workingDir = SettingsManager::value("workingDir", mSaveDir).toString();
+	QFileInfo saveFile(SettingsManager::value("saveFile", mSaveFile).toString());
+
+	if (saveFile.exists())
+		mSaveFile = saveFile.absoluteFilePath();
+
 	mRootIndex = QModelIndex();
-	mModels = new models::Models(workingDir, mEditorManager);
+	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
 
 	mUi->propertyEditor->init(this, &mModels->logicalModelAssistApi());
 	mUi->propertyEditor->setModel(&mPropertyModel);
@@ -156,7 +170,10 @@ MainWindow::MainWindow()
 	QString windowTitle = mToolManager.customizer()->windowTitle();
 	if (windowTitle.isEmpty())
 		windowTitle = "QReal";
-	setWindowTitle(windowTitle + " - " + SettingsManager::value("workingDir", mSaveDir).toString());
+	if (mSaveFile.isEmpty())
+		setWindowTitle(windowTitle + " - " + "unsaved project");
+	else
+		setWindowTitle(windowTitle + " - " + mSaveFile);
 
 	if (!SettingsManager::value("maximized", true).toBool()) {
 		showNormal();
@@ -230,6 +247,8 @@ MainWindow::MainWindow()
 	checkNxtTools();
 	mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
 	mUi->actionFlash_Robot->setVisible(mNxtToolsPresent);
+
+
 }
 
 void MainWindow::connectActions()
@@ -336,6 +355,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 MainWindow::~MainWindow()
 {
 	saveAll();
+	QDir().rmdir(mTempDir);
 	delete mListenerManager;
 	delete mErrorReporter;
 	if (mHelpBrowser)
@@ -505,18 +525,15 @@ void MainWindow::sceneSelectionChanged()
 	}
 }
 
-QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
+QString MainWindow::getWorkingFile(QString const &dialogWindowTitle)
 {
 
-	QString const dirName = QFileDialog::getExistingDirectory(this, dialogWindowTitle
-															  , SettingsManager::value("workingDir", mSaveDir).toString(), QFileDialog::ShowDirsOnly);
-
-	if (dirName.isEmpty())
-		return "";
-
-	SettingsManager::setValue("workingDir", dirName);
-
-	return dirName;
+	QString fileName;
+	fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle
+															  , qApp->applicationDirPath(), tr("QReal Save File(*.qrs)"));
+	SettingsManager::setValue("saveFile", fileName);
+	mSaveFile = fileName;
+	return fileName;
 }
 
 bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
@@ -559,13 +576,16 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 bool MainWindow::openNewProject()
 {
 	saveAll();
-	return open(getWorkingDir(tr("Select directory with a save to open")));
+	return open(getWorkingFile(tr("Select file with a save to open")));
 }
 
-bool MainWindow::open(QString const &dirName)
+bool MainWindow::open(QString const &fileName)
 {
-	if (dirName.isEmpty())
-		return false;
+	//if (dirName.isEmpty())
+	//	return false;
+	if (!QFile(fileName).exists()) // || (!mSaveFile.isEmpty() && fileName.isEmpty()))
+		if (!(!mSaveFile.isEmpty() && fileName.isEmpty()))
+			return false;
 
 	dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
 	mUi->graphicalModelExplorer->setModel(NULL);
@@ -575,7 +595,7 @@ bool MainWindow::open(QString const &dirName)
 
 	closeAllTabs();
 
-	mModels->repoControlApi().open(dirName);
+	mModels->repoControlApi().open(fileName);
 	mModels->reinit();
 
 	if (!checkPluginsAndReopen(NULL))
@@ -584,9 +604,12 @@ bool MainWindow::open(QString const &dirName)
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-	setWindowTitle("QReal:Robots - " + SettingsManager::value("workingDir", mSaveDir).toString());
 
-	mSaveDir = dirName;
+	if (!fileName.isEmpty())
+		setWindowTitle("QReal:Robots - " + mSaveFile);
+	else
+		setWindowTitle("QReal:Robots - unsaved project");
+	mSaveFile = fileName;
 	return true;
 }
 
@@ -1572,15 +1595,23 @@ void MainWindow::createDiagram(QString const &idString)
 
 void MainWindow::saveAll()
 {
+	if (mSaveFile.isEmpty()) {
+		saveAs();
+		return;
+	}
 	mModels->repoControlApi().saveAll();
 }
 
 void MainWindow::saveAs()
 {
-	QString const dirName = getWorkingDir(tr("Select directory to save current model to"));
-	if (dirName.isEmpty())
+	QString const fileName = getWorkingFile(tr("Select file to save current model to"));
+	if (fileName.isEmpty())
 		return;
-	mModels->repoControlApi().saveTo(dirName);
+	mModels->repoControlApi().saveTo(fileName);
+	if (!mSaveFile.endsWith(".qrs", Qt::CaseInsensitive))
+		mSaveFile += ".qrs";
+	setWindowTitle("QReal:Robots - " + mSaveFile);
+	SettingsManager::setValue("saveFile", mSaveFile);
 }
 
 int MainWindow::getTabIndex(const QModelIndex &index)
@@ -1955,10 +1986,16 @@ void MainWindow::fullscreen()
 
 void MainWindow::createProject()
 {
+	/*
 	QString dirName = getNextDirName(SettingsManager::value("workingDir", mSaveDir).toString());
 	SettingsManager::setValue("workingDir", dirName);
 	open(dirName);
 
+	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
+		suggestToCreateDiagram();
+	*/
+	saveAll();
+	open("");
 	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 
@@ -2021,7 +2058,7 @@ void MainWindow::generateRobotSourceCode()
 {
 	saveAll();
 
-	qReal::generators::NxtOSEKRobotGenerator gen(SettingsManager::value("workingDir", mSaveDir).toString());
+	qReal::generators::NxtOSEKRobotGenerator gen(mSaveFile);
 	gui::ErrorReporter &errors = gen.generate();
 	if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
 		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
