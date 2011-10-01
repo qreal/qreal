@@ -299,7 +299,9 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 
 	if(newParent){
 		if (!canBeContainedBy(newParent->id(), id)){
-			QMessageBox::critical(0, "Error!", "[some text]");
+			QString text;
+			text += "Element of type \"" + id.element() + "\" can not be a child of \"" + newParent->id().element() + "\"";
+			QMessageBox::critical(0, "Error!", text);
 			return;
 		}
 
@@ -411,6 +413,8 @@ void EditorViewScene::createDisconnectMenu(Element const * const element
 
 void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const
 {
+	Q_UNUSED(contextMenu)
+	Q_UNUSED(element)
 	// menu items "connect to"
 	// TODO: move to elements, they can call the model and API themselves
 	/*
