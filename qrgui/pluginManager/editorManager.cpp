@@ -356,6 +356,9 @@ bool EditorManager::isParentOf(Id const &child, Id const &parent) const // child
 bool EditorManager::isParentOf(EditorInterface const *plugin, QString const &childDiagram
 							   , QString const &child, QString const &parentDiagram, QString const &parent) const
 {
+	if (child == parent && childDiagram == parentDiagram)
+		return true;
+
 	typedef QPair<QString, QString> StringPair;
 	QList<QPair<QString, QString> > list = plugin->getParentsOf(childDiagram, child);
 
