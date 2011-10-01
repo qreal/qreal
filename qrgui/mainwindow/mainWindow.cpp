@@ -141,7 +141,7 @@ MainWindow::MainWindow()
 	//SettingsManager::setValue("saveFile", mSaveFile);
 
 	//QString workingDir = SettingsManager::value("workingDir", mSaveDir).toString();
-	QFileInfo saveFile (SettingsManager::value("saveFile", mSaveFile).toString());
+	QFileInfo saveFile(SettingsManager::value("saveFile", mSaveFile).toString());
 
 	if (saveFile.exists())
 		mSaveFile = saveFile.absoluteFilePath();

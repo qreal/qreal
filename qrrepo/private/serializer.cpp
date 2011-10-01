@@ -18,6 +18,7 @@ Serializer::Serializer(QString const& saveDirName)
 	: mWorkingFile(saveDirName)
 	, mWorkingDir(SettingsManager::value("temp", "").toString())
 {
+	clearWorkingDir();
 }
 
 void Serializer::clearWorkingDir() const
