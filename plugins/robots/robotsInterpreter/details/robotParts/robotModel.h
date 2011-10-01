@@ -32,7 +32,6 @@ public:
 	virtual ~RobotModel();
 
 	void init();
-	void clear();
 	void stopRobot();
 
 	void configureSensors(sensorType::SensorTypeEnum const &port1

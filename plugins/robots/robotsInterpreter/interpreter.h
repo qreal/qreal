@@ -65,6 +65,7 @@ private slots:
 	void responseSlot4(int sensorValue);
 
 	void connectedSlot(bool success);
+	void sensorsConfiguredSlot();
 
 private:
 	enum InterpreterState {
@@ -89,7 +90,7 @@ private:
 	bool mConnected;
 
 	robotModelType::robotModelTypeEnum mImplementationType;
-	
+
 	watchListWindow *mWatchListWindow;
 
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
