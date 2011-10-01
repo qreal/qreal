@@ -15,8 +15,8 @@ using namespace utils;
 using namespace qReal;
 
 Serializer::Serializer(QString const& saveDirName)
-	: mWorkingFile(saveDirName)
-	, mWorkingDir(SettingsManager::value("temp", "").toString())
+	: mWorkingDir(SettingsManager::value("temp", "").toString())
+	, mWorkingFile(saveDirName)
 {
 	clearWorkingDir();
 }
