@@ -63,8 +63,7 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 	QString fileName = fileInfo.baseName();
 
 	QDir compressDir(SettingsManager::value("temp", "").toString());
-	QDir dir = compressDir;
-	dir.cdUp();
+	QDir dir = fileInfo.absolutePath();
 
 	QFile previousSave(dir.absolutePath() + "/" + fileName +".qrs");
 	if (previousSave.exists())
@@ -79,7 +78,10 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 
 void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash)
 {
-	decompressFile(mWorkingFile);
+	if (mWorkingFile.isEmpty())
+		clearWorkingDir();
+	else
+		decompressFile(mWorkingFile);
 	loadFromDisk(SettingsManager::value("temp", "").toString(), objectsHash);
 }
 

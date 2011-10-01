@@ -582,8 +582,9 @@ bool MainWindow::open(QString const &fileName)
 {
 	//if (dirName.isEmpty())
 	//	return false;
-	if (!QFile(fileName).exists())
-		return false;
+	if (!QFile(fileName).exists()) // || (!mSaveFile.isEmpty() && fileName.isEmpty()))
+		if (!(!mSaveFile.isEmpty() && fileName.isEmpty()))
+			return false;
 
 	dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
 	mUi->graphicalModelExplorer->setModel(NULL);
@@ -603,7 +604,11 @@ bool MainWindow::open(QString const &fileName)
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
-	setWindowTitle("QReal:Robots - " + mSaveFile);
+	if (!fileName.isEmpty())
+		setWindowTitle("QReal:Robots - " + mSaveFile);
+	else
+		setWindowTitle("QReal:Robots - unsaved project");
+	mSaveFile = fileName;
 	return true;
 }
 
@@ -1973,29 +1978,10 @@ void MainWindow::createProject()
 	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 	*/
-	/*saveAll();
-	mSaveFile = "";
-
-	delete mModels;
-	mModels = new models::Models(mTempDir, mEditorManager);
-
-	mUi->propertyEditor->init(this, &mModels->logicalModelAssistApi());
-	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
-
-	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &)), this, SLOT(updateTabName(Id const &)));
-
-	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
-	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-
-	delete mVisualDebugger;
-	mVisualDebugger = new VisualDebugger(mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi(), *this);
-
-	mModels->reinit();
-	if (mModels->graphicalModel()->rowCount() > 0)
-		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
-
+	saveAll();
+	open("");
 	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
-		suggestToCreateDiagram();*/
+		suggestToCreateDiagram();
 
 }
 
