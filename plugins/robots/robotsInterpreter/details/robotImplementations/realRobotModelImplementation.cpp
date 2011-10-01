@@ -40,16 +40,19 @@ sensorImplementations::BluetoothColorSensorImplementation *RealRobotModelImpleme
 
 void RealRobotModelImplementation::addTouchSensor(inputPort::InputPortEnum const &port)
 {
+	delete mSensors[port];
 	mSensors[port] = new sensorImplementations::BluetoothTouchSensorImplementation(mRobotCommunicationInterface, port);
 }
 
 void RealRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum const &port)
 {
+	delete mSensors[port];
 	mSensors[port] = new sensorImplementations::BluetoothSonarSensorImplementation(mRobotCommunicationInterface, port);
 }
 
 void RealRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode)
 {
+	delete mSensors[port];
 	mSensors[port] = new sensorImplementations::BluetoothColorSensorImplementation(mRobotCommunicationInterface, port, mode);
 }
 
@@ -88,6 +91,17 @@ void RealRobotModelImplementation::connectedSlot(bool success)
 	if (mSensorsToConfigure == 0) {
 		qDebug() << "No sensor configuration needed";
 		emit connected(true);
+	}
+}
+
+void RealRobotModelImplementation::configureSensorImpl(inputPort::InputPortEnum const &port)
+{
+	sensorImplementations::AbstractSensorImplementation *aSensor = mSensors[port];
+	sensorImplementations::BluetoothSensorImplementation *sensor = dynamic_cast<sensorImplementations::BluetoothSensorImplementation *>(aSensor);
+	if (sensor != NULL) {
+		connect(sensor, SIGNAL(configured()), this, SLOT(sensorConfigurationDoneSlot()));
+		sensor->configure();
+		++mSensorsToConfigure;
 	}
 }
 

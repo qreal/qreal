@@ -39,17 +39,20 @@ sensorImplementations::NullColorSensorImplementation *NullRobotModelImplementati
 
 void NullRobotModelImplementation::addTouchSensor(inputPort::InputPortEnum const &port)
 {
+	delete mSensors[port];
 	mSensors[port] = new sensorImplementations::NullTouchSensorImplementation(port);
 }
 
 void NullRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum const &port)
 {
+	delete mSensors[port];
 	mSensors[port] = new sensorImplementations::NullSonarSensorImplementation(port);
 }
 
 void NullRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode)
 {
 	Q_UNUSED(mode);
+	delete mSensors[port];
 	mSensors[port] = new sensorImplementations::NullColorSensorImplementation(port);
 }
 

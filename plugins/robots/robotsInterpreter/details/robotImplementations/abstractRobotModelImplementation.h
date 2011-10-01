@@ -31,7 +31,6 @@ public:
 	static AbstractRobotModelImplementation *robotModel(robotModelType::robotModelTypeEnum type, RobotCommunication * const robotCommunicationInterface = NULL, d2Model::D2RobotModel *d2RobotModel = NULL);
 
 	virtual void init();
-	virtual void clear();
 	virtual void stopRobot() = 0;
 
 	virtual brickImplementations::AbstractBrickImplementation &brick() = 0;

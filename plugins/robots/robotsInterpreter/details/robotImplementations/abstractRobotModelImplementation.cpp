@@ -72,15 +72,9 @@ void AbstractRobotModelImplementation::init()
 	qDebug() << "Connecting to robot...";
 }
 
-void AbstractRobotModelImplementation::clear()
-{
-}
-
 void AbstractRobotModelImplementation::configureSensor(sensorType::SensorTypeEnum const &sensorType
 		, inputPort::InputPortEnum const &port)
 {
-	delete mSensors[port];
-	mSensors[port] = NULL;
 	switch (sensorType) {
 	case sensorType::unused:
 		break;

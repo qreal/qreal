@@ -13,6 +13,14 @@ BluetoothColorSensorImplementation::BluetoothColorSensorImplementation(RobotComm
 
 void BluetoothColorSensorImplementation::read()
 {
+	if (!mIsConfigured) {
+		// If sensor is not configured, report failure and return immediately.
+		// It is not an error, it shall be possible to reconfigure sensor "on the fly",
+		// but when it is reconfiguring it shall not be available.
+		emit failure();
+		return;
+	}
+
 	if (mState == pending)
 		return;
 	mState = pending;

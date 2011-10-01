@@ -14,7 +14,7 @@ class AbstractSensorImplementation : public QObject
 	Q_OBJECT
 public:
 	AbstractSensorImplementation(inputPort::InputPortEnum const &port);
-	virtual ~AbstractSensorImplementation() {};
+	virtual ~AbstractSensorImplementation() {}
 	virtual void read() = 0;
 	void setPort(inputPort::InputPortEnum const &port);
 
