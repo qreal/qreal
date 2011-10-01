@@ -14,6 +14,7 @@ Client::Client(QString const &workingFile)
 	loadFromDisk();
 }
 
+
 void Client::init()
 {
 	mObjects.insert(Id::rootId(), new Object(Id::rootId()));
@@ -25,6 +26,7 @@ Client::~Client()
 	delete mObjects[Id::rootId()];
 	mObjects.remove(Id::rootId());
 	serializer.saveToDisk(mObjects.values());
+	serializer.clearWorkingDir();
 }
 
 IdList Client::children(Id const &id) const
@@ -297,7 +299,6 @@ void Client::exterminate()
 void Client::open(QString const &saveFile)
 {
 	serializer.setWorkingFile(saveFile);
-	serializer.decompressFile(saveFile);
 	mObjects.clear();
 	init();
 	loadFromDisk();

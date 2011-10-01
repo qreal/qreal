@@ -138,11 +138,15 @@ MainWindow::MainWindow()
 	if (!dir.cd("temp"))
 		QDir().mkdir(mTempDir);
 
-	//SettingsManager::setValue("saveFile", "");
+	//SettingsManager::setValue("saveFile", mSaveFile);
 
-	QString workingDir = SettingsManager::value("workingDir", mSaveDir).toString();
+	//QString workingDir = SettingsManager::value("workingDir", mSaveDir).toString();
+	QString saveFile = SettingsManager::value("saveFile", mSaveFile).toString();
+	if (!saveFile.isEmpty())
+		mSaveFile = saveFile;
+
 	mRootIndex = QModelIndex();
-	mModels = new models::Models(mTempDir, mEditorManager);
+	mModels = new models::Models(saveFile, mEditorManager);
 
 	mUi->propertyEditor->init(this, &mModels->logicalModelAssistApi());
 	mUi->propertyEditor->setModel(&mPropertyModel);
@@ -165,7 +169,10 @@ MainWindow::MainWindow()
 	QString windowTitle = mToolManager.customizer()->windowTitle();
 	if (windowTitle.isEmpty())
 		windowTitle = "QReal";
-	setWindowTitle(windowTitle + " - " + "unsaved project");
+	if (mSaveFile.isEmpty())
+		setWindowTitle(windowTitle + " - " + "unsaved project");
+	else
+		setWindowTitle(windowTitle + " - " + mSaveFile);
 
 	if (!SettingsManager::value("maximized", true).toBool()) {
 		showNormal();
@@ -521,11 +528,8 @@ QString MainWindow::getWorkingFile(QString const &dialogWindowTitle)
 {
 
 	QString fileName;
-	do {
-		fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle
+	fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle
 															  , qApp->applicationDirPath(), tr("QReal Save File(*.qrs)"));
-	} while (fileName.isEmpty());
-
 	SettingsManager::setValue("saveFile", fileName);
 	mSaveFile = fileName;
 	return fileName;
@@ -1595,12 +1599,13 @@ void MainWindow::saveAll()
 void MainWindow::saveAs()
 {
 	QString const fileName = getWorkingFile(tr("Select file to save current model to"));
-	//if (QFile(fileName).exists())
-	//	return;
+	if (fileName.isEmpty())
+		return;
 	mModels->repoControlApi().saveTo(fileName);
 	if (!mSaveFile.endsWith(".qrs", Qt::CaseInsensitive))
 		mSaveFile += ".qrs";
 	setWindowTitle("QReal:Robots - " + mSaveFile);
+	SettingsManager::setValue("saveFile", mSaveFile);
 }
 
 int MainWindow::getTabIndex(const QModelIndex &index)
@@ -2049,7 +2054,7 @@ void MainWindow::initToolPlugins()
 
 void MainWindow::generateRobotSourceCode()
 {
-	qReal::generators::NxtOSEKRobotGenerator gen(SettingsManager::value("workingDir", mSaveDir).toString());
+	qReal::generators::NxtOSEKRobotGenerator gen(mSaveFile);
 	gui::ErrorReporter &errors = gen.generate();
 	if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
 		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
