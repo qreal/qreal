@@ -544,7 +544,7 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 		else
 			loadingCancelled = true;
 		missingPlugins = mEditorManager.checkNeededPlugins(
-					mModels->logicalRepoApi(), mModels->graphicalRepoApi());
+							 mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 		haveMissingPlugins = !missingPlugins.isEmpty();
 	}
 
@@ -881,8 +881,8 @@ void MainWindow::generateEditor()
 		QString const metamodelFullName = metamodelList[key].first;
 		QString const pathToQRealRoot = metamodelList[key].second;
 		dir.mkpath(metamodelFullName);
-//		QFileInfo metamodelFileInfo(metamodelFullName);
-//		QStrin metamodelName = metamodelFileInfo.baseName();
+		//		QFileInfo metamodelFileInfo(metamodelFullName);
+		//		QStrin metamodelName = metamodelFileInfo.baseName();
 		QString metamodelName = (metamodelFullName.split("/", QString::SkipEmptyParts)).last();
 		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, metamodelFullName + "/" + metamodelName, pathToQRealRoot);
 
@@ -1628,7 +1628,8 @@ void MainWindow::debugSingleStep()
 	}
 }
 
-void MainWindow::generateAndBuild() {
+void MainWindow::generateAndBuild()
+{
 	EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
 	mVisualDebugger->setEditor(editor);
 
@@ -1653,16 +1654,18 @@ void MainWindow::generateAndBuild() {
 	}
 }
 
-void MainWindow::startDebugger() {
+void MainWindow::startDebugger()
+{
 	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)
-			&& !mDebuggerConnector->isDebuggerRunning()) {
+		&& !mDebuggerConnector->isDebuggerRunning()) {
 		mVisualDebugger->setDebugType(VisualDebugger::debugWithDebugger);
 		mDebuggerConnector->run();
 		mDebuggerConnector->startDebugger();
 	}
 }
 
-void MainWindow::configureDebugger() {
+void MainWindow::configureDebugger()
+{
 	if (mDebuggerConnector->isDebuggerRunning()) {
 
 		mDebuggerConnector->configure(SettingsManager::value("debugWorkingDirectory", "").toString() + "/" +
@@ -1670,7 +1673,8 @@ void MainWindow::configureDebugger() {
 	}
 }
 
-void MainWindow::setBreakpointAtStart() {
+void MainWindow::setBreakpointAtStart()
+{
 	if (mDebuggerConnector->isDebuggerRunning()) {
 		EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
 		mVisualDebugger->setEditor(editor);
@@ -1681,19 +1685,22 @@ void MainWindow::setBreakpointAtStart() {
 	}
 }
 
-void MainWindow::runProgramWithDebugger() {
+void MainWindow::runProgramWithDebugger()
+{
 	if (mDebuggerConnector->isDebuggerRunning()) {
 		mDebuggerConnector->sendCommand("run\n");
 	}
 }
 
-void MainWindow::killProgramWithDebugger() {
+void MainWindow::killProgramWithDebugger()
+{
 	if (mDebuggerConnector->isDebuggerRunning()) {
 		mDebuggerConnector->sendCommand("kill\n");
 	}
 }
 
-void MainWindow::placeBreakpointsInDebugger() {
+void MainWindow::placeBreakpointsInDebugger()
+{
 	if (mDebuggerConnector->isDebuggerRunning()) {
 		EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
 		mVisualDebugger->setEditor(editor);
@@ -1714,19 +1721,23 @@ void MainWindow::placeBreakpointsInDebugger() {
 	}
 }
 
-void MainWindow::goToNextBreakpoint() {
+void MainWindow::goToNextBreakpoint()
+{
 	if (mDebuggerConnector->isDebuggerRunning()) {
 		mDebuggerConnector->sendCommand("cont\n");
 	}
 }
 
-void MainWindow::goToNextInstruction() {
-	if (mDebuggerConnector->isDebuggerRunning()) {
+void MainWindow::goToNextInstruction()
+{
+	if (mDebuggerConnector->isDebuggerRunning())
+	{
 		mDebuggerConnector->sendCommand("next\n");
 	}
 }
 
-void MainWindow::closeDebuggerProcessAndThread() {
+void MainWindow::closeDebuggerProcessAndThread()
+{
 	if (mDebuggerConnector->isDebuggerRunning()) {
 		mVisualDebugger->dehighlight();
 		mVisualDebugger->setDebugType(VisualDebugger::noDebug);
@@ -1734,7 +1745,8 @@ void MainWindow::closeDebuggerProcessAndThread() {
 	}
 }
 
-void MainWindow::startDebugging() {
+void MainWindow::startDebugging()
+{
 	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)) {
 		generateAndBuild();
 		startDebugger();
@@ -1744,7 +1756,8 @@ void MainWindow::startDebugging() {
 	}
 }
 
-void MainWindow::drawDebuggerStdOutput(QString output) {
+void MainWindow::drawDebuggerStdOutput(QString output)
+{
 	mErrorReporter->addInformation(output);
 	mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
 
@@ -1768,7 +1781,8 @@ void MainWindow::drawDebuggerStdOutput(QString output) {
 	}
 }
 
-void MainWindow::drawDebuggerErrOutput(QString output) {
+void MainWindow::drawDebuggerErrOutput(QString output)
+{
 	mVisualDebugger->dehighlight();
 	mVisualDebugger->setDebugType(VisualDebugger::noDebug);
 	mErrorReporter->addCritical(output);
@@ -1776,7 +1790,8 @@ void MainWindow::drawDebuggerErrOutput(QString output) {
 	mErrorReporter->clearErrors();
 }
 
-void MainWindow::checkEditorForDebug(int index) {
+void MainWindow::checkEditorForDebug(int index)
+{
 	Q_UNUSED(index)
 
 	//	bool enabled = mUi->tabs->count() > 0 &&
@@ -2004,6 +2019,8 @@ void MainWindow::initToolPlugins()
 
 void MainWindow::generateRobotSourceCode()
 {
+	saveAll();
+
 	qReal::generators::NxtOSEKRobotGenerator gen(SettingsManager::value("workingDir", mSaveDir).toString());
 	gui::ErrorReporter &errors = gen.generate();
 	if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
@@ -2056,7 +2073,7 @@ void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
 
 void MainWindow::checkNxtTools()
 {
-	QDir dir(qApp->applicationDirPath());		
+	QDir dir(qApp->applicationDirPath());
 	if (!QDir().exists(dir.absolutePath() + "/nxt-tools")){
 		mNxtToolsPresent = false;
 		return;
