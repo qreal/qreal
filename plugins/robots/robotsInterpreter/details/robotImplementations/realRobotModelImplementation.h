@@ -42,6 +42,7 @@ public:
 private slots:
 	void connectedSlot(bool success);
 	void sensorConfigurationDoneSlot();
+	void disconnectedSlot();
 
 private:
 	RobotCommunication * const mRobotCommunicationInterface;

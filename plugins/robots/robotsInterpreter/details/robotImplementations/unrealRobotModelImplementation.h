@@ -41,6 +41,7 @@ public:
 
 private slots:
 	void timerTimeout();
+	void sensorConfigurationDoneSlot();
 
 private:
 	QTimer mActiveWaitingTimer;

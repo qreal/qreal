@@ -16,16 +16,12 @@ RealRobotModelImplementation *AbstractRobotModelImplementation::mRealRobotModel 
 UnrealRobotModelImplementation *AbstractRobotModelImplementation::mUnrealRobotModel = NULL;
 
 AbstractRobotModelImplementation::AbstractRobotModelImplementation()
-	: mSensorsToConfigure(0)
 {
-	mSensors.resize(4);
+	mSensorsConfigurer.lockConfiguring();  // Model is not connected yet.
 }
 
 AbstractRobotModelImplementation::~AbstractRobotModelImplementation()
 {
-	foreach (sensorImplementations::AbstractSensorImplementation *sensor, mSensors) {
-		delete sensor;
-	}
 }
 
 NullRobotModelImplementation *AbstractRobotModelImplementation::nullRobotModel()
@@ -63,7 +59,7 @@ AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(r
 
 sensorImplementations::AbstractSensorImplementation * AbstractRobotModelImplementation::sensor(inputPort::InputPortEnum const &port)
 {
-	return mSensors[port];
+	return mSensorsConfigurer.sensor(port);
 }
 
 void AbstractRobotModelImplementation::init()

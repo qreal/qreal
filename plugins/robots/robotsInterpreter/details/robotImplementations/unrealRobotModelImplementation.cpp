@@ -1,4 +1,5 @@
 #include "unrealRobotModelImplementation.h"
+
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations;
 using namespace details::d2Model;
@@ -31,36 +32,36 @@ brickImplementations::UnrealBrickImplementation &UnrealRobotModelImplementation:
 
 sensorImplementations::UnrealTouchSensorImplementation *UnrealRobotModelImplementation::touchSensor(inputPort::InputPortEnum const &port) const
 {
-	return dynamic_cast<sensorImplementations::UnrealTouchSensorImplementation *>(mSensors[port]);
+	return dynamic_cast<sensorImplementations::UnrealTouchSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
 sensorImplementations::UnrealSonarSensorImplementation *UnrealRobotModelImplementation::sonarSensor(inputPort::InputPortEnum const &port) const
 {
-	return dynamic_cast<sensorImplementations::UnrealSonarSensorImplementation *>(mSensors[port]);
+	return dynamic_cast<sensorImplementations::UnrealSonarSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
 sensorImplementations::UnrealColorSensorImplementation *UnrealRobotModelImplementation::colorSensor(inputPort::InputPortEnum const &port) const
 {
-	return dynamic_cast<sensorImplementations::UnrealColorSensorImplementation *>(mSensors[port]);
+	return dynamic_cast<sensorImplementations::UnrealColorSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
 void UnrealRobotModelImplementation::addTouchSensor(inputPort::InputPortEnum const &port)
 {
-	delete mSensors[port];
-	mSensors[port] = new sensorImplementations::UnrealTouchSensorImplementation(port, mD2Model);
+	sensorImplementations::UnrealTouchSensorImplementation *sensor = new sensorImplementations::UnrealTouchSensorImplementation(port, mD2Model);
+	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
 void UnrealRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum const &port)
 {
-	delete mSensors[port];
-	mSensors[port] = new sensorImplementations::UnrealSonarSensorImplementation(port, mD2Model);
+	sensorImplementations::UnrealSonarSensorImplementation *sensor = new sensorImplementations::UnrealSonarSensorImplementation(port, mD2Model);
+	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
 void UnrealRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType)
 {
 	Q_UNUSED(mode)
-	delete mSensors[port];
-	mSensors[port] = new sensorImplementations::UnrealColorSensorImplementation(port, mD2Model, sensorType);
+	sensorImplementations::UnrealColorSensorImplementation *sensor = new sensorImplementations::UnrealColorSensorImplementation(port, mD2Model, sensorType);
+	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
 void UnrealRobotModelImplementation::init()
@@ -72,6 +73,13 @@ void UnrealRobotModelImplementation::init()
 
 void UnrealRobotModelImplementation::timerTimeout()
 {
+	connect(&mSensorsConfigurer, SIGNAL(allSensorsConfigured()), this, SLOT(sensorConfigurationDoneSlot()));
+	mSensorsConfigurer.unlockConfiguring();
+}
+
+void UnrealRobotModelImplementation::sensorConfigurationDoneSlot()
+{
+	disconnect(&mSensorsConfigurer, SIGNAL(allSensorsConfigured()), this, SLOT(sensorConfigurationDoneSlot()));
 	emit connected(true);
 }
 

@@ -1,6 +1,8 @@
 #pragma once
+
 #include <QtCore/QObject>
 #include <QtCore/QVector>
+
 #include "brickImplementations/abstractBrickImplementation.h"
 #include "motorImplementations/abstractMotorImplementation.h"
 #include "sensorImplementations/abstractSensorImplementation.h"
@@ -9,6 +11,7 @@
 #include "../d2RobotModel/d2RobotModel.h"
 #include "../robotCommunication/robotCommunicationThreadInterface.h"
 #include "../robotCommunication/robotCommunication.h"
+#include "sensorsConfigurer.h"
 
 namespace qReal {
 namespace interpreters {
@@ -56,11 +59,12 @@ signals:
 	void connected(bool success);
 
 protected:
-	int mSensorsToConfigure;
+//	int mSensorsToConfigure;
 	static NullRobotModelImplementation *mNullRobotModel;
 	static RealRobotModelImplementation *mRealRobotModel;
 	static UnrealRobotModelImplementation *mUnrealRobotModel;
-	QVector<sensorImplementations::AbstractSensorImplementation *> mSensors;
+//	QVector<sensorImplementations::AbstractSensorImplementation *> mSensors;
+	SensorsConfigurer mSensorsConfigurer;
 
 	virtual void addTouchSensor(inputPort::InputPortEnum const &port) = 0;
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port) = 0;
