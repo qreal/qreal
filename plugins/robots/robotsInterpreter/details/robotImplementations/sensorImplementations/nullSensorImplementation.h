@@ -16,6 +16,7 @@ class NullSensorImplementation : public AbstractSensorImplementation
 public:
 	NullSensorImplementation(inputPort::InputPortEnum const &port, sensorType::SensorTypeEnum const &sensorType);
 	virtual void read();
+	virtual void configure();
 
 protected slots:
 	virtual void timerTimeout() = 0;

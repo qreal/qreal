@@ -19,10 +19,12 @@ public:
 	void setPort(inputPort::InputPortEnum const &port);
 	inputPort::InputPortEnum port() const;
 	sensorType::SensorTypeEnum type() const;
+	virtual void configure() = 0;
 
 signals:
 	void response(int reading);
 	void failure();
+	void configured();
 
 protected:
 	enum State {

@@ -13,3 +13,8 @@ void NullSensorImplementation::read()
 {
 	mActiveWaitingTimer.start();
 }
+
+void NullSensorImplementation::configure()
+{
+	emit configured();
+}

@@ -7,3 +7,8 @@ UnrealSensorImplementation::UnrealSensorImplementation(inputPort::InputPortEnum 
 	, mD2Model(d2Model)
 {
 }
+
+void UnrealSensorImplementation::configure()
+{
+	emit configured();
+}

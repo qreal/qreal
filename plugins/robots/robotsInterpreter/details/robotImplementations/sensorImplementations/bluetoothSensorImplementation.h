@@ -23,11 +23,8 @@ public:
 		, inputPort::InputPortEnum const &port
 		);
 	virtual ~BluetoothSensorImplementation();
-	void configure();
+	virtual void configure();
 	virtual void read() = 0;
-
-signals:
-	void configured();
 
 protected slots:
 	void readingDone(QObject *addressee, QByteArray const &reading);
