@@ -61,9 +61,9 @@ AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(r
 		throw Exception("AbstractRobotModelImplementation::robotModel tried to create unknown robot model");
 }
 
-QVector<sensorImplementations::AbstractSensorImplementation *> AbstractRobotModelImplementation::sensors()
+sensorImplementations::AbstractSensorImplementation * AbstractRobotModelImplementation::sensor(inputPort::InputPortEnum const &port)
 {
-	return mSensors;
+	return mSensors[port];
 }
 
 void AbstractRobotModelImplementation::init()

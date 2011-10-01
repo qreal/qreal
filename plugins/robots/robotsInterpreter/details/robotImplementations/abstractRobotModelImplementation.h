@@ -47,7 +47,7 @@ public:
 
 	virtual void configureSensor(sensorType::SensorTypeEnum const &sensorType
 			, inputPort::InputPortEnum const &port);
-	virtual QVector<sensorImplementations::AbstractSensorImplementation *> sensors();
+	virtual sensorImplementations::AbstractSensorImplementation * sensor(inputPort::InputPortEnum const &port);
 
 	virtual bool needsConnection() const;
 	virtual void startInterpretation();
