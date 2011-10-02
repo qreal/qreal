@@ -343,8 +343,8 @@ bool EditorManager::isParentOf(Id const &child, Id const &parent) const // child
 	if (!plugin)
 		return false;
 
-	QString parentDiagram;
-	QString parentElement;
+	QString parentDiagram = parent.diagram();
+	QString parentElement = parent.element();
 	if (parent.idSize() == 1) { // seems like it came from plugin's getTypesContainedBy()
 		parentDiagram = child.diagram();
 		parentElement = parent.editor();
@@ -363,8 +363,7 @@ bool EditorManager::isParentOf(EditorInterface const *plugin, QString const &chi
 	QList<QPair<QString, QString> > list = plugin->getParentsOf(childDiagram, child);
 
 	bool res = false;
-	foreach (StringPair const pair, list)
-	{
+	foreach (StringPair const pair, list) {
 		if (pair.second == parent && pair.first == parentDiagram)
 			return true;
 
@@ -372,5 +371,20 @@ bool EditorManager::isParentOf(EditorInterface const *plugin, QString const &chi
 	}
 
 	return res;
-
 }
+
+QStringList EditorManager::getAllChildrenTypesOf(Id const &parent) const
+{
+	EditorInterface const *plugin = mPluginIface[parent.editor()];
+	if (!plugin)
+		return QStringList();
+
+	QStringList result;
+
+	foreach (Id const id, elements(parent)) {
+		if (isParentOf(id, parent))
+			result << id.element();
+	}
+	return result;
+}
+

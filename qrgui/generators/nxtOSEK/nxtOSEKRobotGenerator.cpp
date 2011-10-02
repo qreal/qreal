@@ -19,6 +19,7 @@ NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(qrRepo::RepoApi *api, QString const
 NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo, QString const &destinationPath)
 	:mDestinationPath(SettingsManager::value("temp", "").toString())
 {
+	Q_UNUSED(destinationPath)
 		mIsNeedToDeleteMApi = true;
 		mApi = new qrRepo::RepoApi(pathToRepo);
 }

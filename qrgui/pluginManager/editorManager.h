@@ -43,6 +43,7 @@ namespace qReal {
 		IdList getUsedTypes(const Id &id) const;
 		QStringList getEnumValues(Id const &id, const QString &name) const;
 		QString getTypeName(Id const &id, const QString &name) const;
+		QStringList getAllChildrenTypesOf(Id const &parent) const;
 
 		bool isEditor(Id const &id) const;
 		bool isDiagram(Id const &id) const;
