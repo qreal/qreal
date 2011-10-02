@@ -350,8 +350,6 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 
 MainWindow::~MainWindow()
 {
-
-	saveAll();
 	QDir().rmdir(mTempDir);
 	delete mListenerManager;
 	delete mErrorReporter;
@@ -372,6 +370,7 @@ void MainWindow::finalClose()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	saveAll();
 	mCloseEvent = event;
 	//settings.beginGroup("MainWindow");
 	SettingsManager::setValue("maximized", isMaximized());
@@ -527,7 +526,12 @@ QString MainWindow::getWorkingFile(QString const &dialogWindowTitle)
 
 	QString fileName;
 	QDir lastSaveDir = QFileInfo(mSaveFile).absoluteDir();
-	fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle
+
+	if (dialogWindowTitle == "Select file to save current model to")
+		fileName = QFileDialog::getSaveFileName(this, dialogWindowTitle
+			, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
+	else
+		fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle
 			, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
 	SettingsManager::setValue("saveFile", fileName);
 	mSaveFile = fileName;
