@@ -354,6 +354,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 
 MainWindow::~MainWindow()
 {
+
 	saveAll();
 	QDir().rmdir(mTempDir);
 	delete mListenerManager;
