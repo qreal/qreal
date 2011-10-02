@@ -33,7 +33,7 @@ public:
         void addColorField(ColorFieldItem* colorField);
         void clearScene();
 
-	QDomElement serialize(QDomDocument &document) const;
+        QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture) const;
 	void deserialize(QDomElement const &element);
 
 private:

@@ -17,7 +17,7 @@ public:
 	virtual QRectF boundingRect() const = 0;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
 
-	virtual QDomElement serialize(QDomDocument &document) = 0;
+        virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture) = 0;
 	virtual void deserialize(QDomElement const &element) = 0;
 };
 

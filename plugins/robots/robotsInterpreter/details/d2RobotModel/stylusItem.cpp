@@ -22,6 +22,7 @@ void StylusItem::addLine(qreal x2, qreal y2)
 	LineItem *line = new LineItem(QPointF(mTmpX1, mTmpY1), QPointF(mX2, mY2));
 	line->setPen(mPen);
 	line->setBrush(mBrush);
+        line->setSerializeName(QString("stylusLine"));
 	mAbstractListLine.push_back(line);
 	mTmpX1 = mX2;
 	mTmpY1 = mY2;
@@ -87,15 +88,16 @@ void StylusItem::setBrushColor(const QString& text)
 	mStylusImpl.setBrushColor(mAbstractListLine, text);
 }
 
-QDomElement StylusItem::serialize(QDomDocument &document) /*const*/
+QDomElement StylusItem::serialize(QDomDocument &document, QPoint const &topLeftPicture)
 {
-	QDomElement stylusNode = setPenBrushToDoc(document, "stylus");
-	foreach (AbstractItem *abstractItem, mAbstractListLine) {
-		LineItem *line = dynamic_cast<LineItem *>(abstractItem);
-		QDomElement item = line->serialize(document);
-		stylusNode.appendChild(item);
-	}
-	return stylusNode;
+        QDomElement stylusNode = setPenBrushToDoc(document, "stylus");
+        foreach (AbstractItem *abstractItem, mAbstractListLine) {
+                LineItem *line = dynamic_cast<LineItem *>(abstractItem);
+                line->setSerializeName("stylusLine");
+                QDomElement item = line->serialize(document, topLeftPicture - QPoint(static_cast<int>(scenePos().x()), static_cast<int>(scenePos().y())));
+                stylusNode.appendChild(item);
+        }
+        return stylusNode;
 }
 
 void StylusItem::deserialize(QDomElement const &element)
@@ -106,7 +108,7 @@ void StylusItem::deserialize(QDomElement const &element)
     QDomNodeList stylusAttributes = element.childNodes();
     for (unsigned i = 0; i < stylusAttributes.length(); ++i) {
             QDomElement type = stylusAttributes.at(i).toElement();
-            if (type.tagName() == "line") {
+            if (type.tagName() == "stylusLine") {
                     LineItem* line = new LineItem(QPointF(0, 0), QPointF(0, 0));
                     line->deserialize(type);
                     mAbstractListLine.append(line);

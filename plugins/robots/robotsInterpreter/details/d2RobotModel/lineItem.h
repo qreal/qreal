@@ -27,8 +27,9 @@ public:
 	virtual void reshapeRectWithShift();
 
 
-	virtual QDomElement serialize(QDomDocument &document) /*const*/;
+        virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
 	virtual void deserialize(QDomElement const &element);
+        void setSerializeName(QString name);
 
 protected:
 	void setPrivateData();
