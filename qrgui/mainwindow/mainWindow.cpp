@@ -152,6 +152,9 @@ MainWindow::MainWindow()
 	mUi->graphicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
 
+	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
+	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
+
 	// Step 4: Property editor and model explorers are initialized.
 	progress->setValue(60);
 	loadPlugins();
@@ -195,15 +198,9 @@ MainWindow::MainWindow()
 
 	mVisualDebugger = new VisualDebugger(mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi(), *this);
 	mDebuggerConnector = new DebuggerConnector();
-	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
-	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 
 	connect(mDebuggerConnector, SIGNAL(readyReadStdOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
 	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerErrOutput(QString)));
-
-	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
-	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
-	//	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
 	mFlashTool = new gui::NxtFlashTool(mErrorReporter);
 	connect(mFlashTool, SIGNAL(showErrors(gui::ErrorReporter*const)), this, SLOT(showErrors(gui::ErrorReporter*const)));
