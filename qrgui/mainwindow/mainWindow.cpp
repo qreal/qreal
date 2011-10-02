@@ -2077,8 +2077,8 @@ void MainWindow::generateRobotSourceCode()
 		mUi->tabs->addTab(area, "example0");
 		mUi->tabs->setCurrentWidget(area);
 
-		mUi->actionUpload_Program->setVisible(true);
-		mUi->actionFlash_Robot->setVisible(true);
+		mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
+		mUi->actionFlash_Robot->setVisible(mNxtToolsPresent);
 	}
 }
 
