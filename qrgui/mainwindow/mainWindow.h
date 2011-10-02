@@ -216,7 +216,6 @@ private:
 	/** @brief Internal map table to store info what widgets should we hide/show */
 	QMap<QString, bool> mDocksVisibility;
 
-	QString mSaveDir;
 	QString mSaveFile;
 	QString mTempDir;
 

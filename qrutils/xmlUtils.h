@@ -6,9 +6,9 @@
 
 namespace utils {
 
-	class QRUTILS_EXPORT xmlUtils {
-	public:
-		static QDomDocument loadDocument(QString const& fileName);
-	};
+class QRUTILS_EXPORT xmlUtils {
+public:
+	static QDomDocument loadDocument(QString const& fileName);
+};
 
 }

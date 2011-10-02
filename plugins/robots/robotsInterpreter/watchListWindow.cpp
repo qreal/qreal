@@ -3,17 +3,17 @@
 #include "watchListWindow.h"
 #include "ui_watchListWindow.h"
 
-watchListWindow::watchListWindow(const qReal::ExpressionsParser *parser, QWidget *parent) :
+watchListWindow::watchListWindow(const utils::ExpressionsParser *parser, QWidget *parent) :
 	QDialog(parent)
 	, mUi(new Ui::watchListWindow)
 	, mParser(parser)
 {
 	mUi->setupUi(this);
-	
+
 	QGridLayout *layout = new QGridLayout(this);
 	layout->addWidget(mUi->watchListTableWidget);
-	
-	
+
+
 	updateVariables();
 	mTimer = new QTimer();
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateVariables()));
@@ -32,10 +32,10 @@ void watchListWindow::updateVariables()
 	for (int i = mUi->watchListTableWidget->rowCount() - 1; i >=0; i--) {
 		mUi->watchListTableWidget->removeRow(i);
 	}
-	
+
 	int row = 0;
 	QMap<QString, QString> *variables = mParser->getVariablesForWatch();
-	
+
 	foreach (QString variable, variables->keys()) {
 		mUi->watchListTableWidget->insertRow(row);
 		QTableWidgetItem* item = new QTableWidgetItem(variable);

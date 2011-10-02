@@ -58,7 +58,6 @@ MainWindow::MainWindow()
 	, mVisualDebugger(NULL)
 	, mErrorReporter(NULL)
 	, mIsFullscreen(false)
-	, mSaveDir(qApp->applicationDirPath() + "/save")
 	, mTempDir(qApp->applicationDirPath() + "/temp")
 	, mPreferencesDialog(this)
 	, mNxtToolsPresent(false)
@@ -131,16 +130,11 @@ MainWindow::MainWindow()
 	mUi->errorListWidget->init(this);
 	mUi->errorDock->setVisible(false);
 
-	//	mDelegate.init(this, &mModels->logicalModelAssistApi());
-
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
 	if (!dir.cd("temp"))
 		QDir().mkdir(mTempDir);
 
-	//SettingsManager::setValue("saveFile", mSaveFile);
-
-	//QString workingDir = SettingsManager::value("workingDir", mSaveDir).toString();
 	QFileInfo saveFile(SettingsManager::value("saveFile", mSaveFile).toString());
 
 	if (saveFile.exists())
@@ -347,6 +341,8 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 			   || (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
 	{
 		saveAll();
+	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_W) {
+		closeTab(mUi->tabs->currentIndex());
 	} else if (keyEvent->key() == Qt::Key_F1){
 		showHelp();
 	}
@@ -530,8 +526,9 @@ QString MainWindow::getWorkingFile(QString const &dialogWindowTitle)
 {
 
 	QString fileName;
+	QDir lastSaveDir = QFileInfo(mSaveFile).absoluteDir();
 	fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle
-															  , qApp->applicationDirPath(), tr("QReal Save File(*.qrs)"));
+			, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
 	SettingsManager::setValue("saveFile", fileName);
 	mSaveFile = fileName;
 	return fileName;
@@ -2078,8 +2075,8 @@ void MainWindow::generateRobotSourceCode()
 		mUi->tabs->addTab(area, "example0");
 		mUi->tabs->setCurrentWidget(area);
 
-		mUi->actionUpload_Program->setVisible(true);
-		mUi->actionFlash_Robot->setVisible(true);
+		mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
+		mUi->actionFlash_Robot->setVisible(mNxtToolsPresent);
 	}
 }
 

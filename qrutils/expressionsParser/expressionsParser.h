@@ -6,21 +6,21 @@
 #include "../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 #include "../utilsDeclSpec.h"
 
-namespace qReal {
+namespace utils {
 
 class QRUTILS_EXPORT ExpressionsParser
 {
 
 public:
-	ExpressionsParser(ErrorReporterInterface *errorReporter);
+	ExpressionsParser(qReal::ErrorReporterInterface *errorReporter);
 
 	Number parseExpression(QString const &stream, int &pos);
-	void parseProcess(QString const &stream, int& pos, Id const &curId);
+	void parseProcess(QString const &stream, int& pos, qReal::Id const &curId);
 	bool parseConditionHelper(QString const &stream, int &pos);
-	bool parseCondition(QString const &stream, int& pos, Id const &curId);
-	ErrorReporterInterface& getErrors();
+	bool parseCondition(QString const &stream, int& pos, qReal::Id const &curId);
+	qReal::ErrorReporterInterface& getErrors();
 	bool hasErrors();
-	void setErrorReporter(ErrorReporterInterface *errorReporter);
+	void setErrorReporter(qReal::ErrorReporterInterface *errorReporter);
 	void clear();
 
 	QMap<QString, Number>* getVariables();
@@ -90,8 +90,8 @@ protected:
 
 	QMap<QString, Number> mVariables;
 	bool mHasParseErrors;
-	ErrorReporterInterface *mErrorReporter;
-	Id mCurrentId;
+	qReal::ErrorReporterInterface *mErrorReporter;
+	qReal::Id mCurrentId;
 
 };
 }

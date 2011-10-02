@@ -15,6 +15,7 @@ namespace d2Model {
 class LineItem : public QObject, public ColorFieldItem
 {
 	Q_OBJECT
+
 public:
 	LineItem(QPointF begin, QPointF end);
 	QPainterPath shape() const;
@@ -25,15 +26,14 @@ public:
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 	virtual void reshapeRectWithShift();
 
-//	virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
-//	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
-//	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
 
-        virtual QDomElement serialize(QDomDocument &document) /*const*/;
-        virtual void deserialize(QDomElement const &element);
+	virtual QDomElement serialize(QDomDocument &document) /*const*/;
+	virtual void deserialize(QDomElement const &element);
+
 protected:
 	void setPrivateData();
 	graphicsUtils::LineImpl mLineImpl;
+
 private:
 	QString mSerializeName;
 };

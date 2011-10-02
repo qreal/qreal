@@ -5,6 +5,6 @@ using namespace details::d2Model;
 using namespace graphicsUtils;
 
 ColorFieldItem::ColorFieldItem(QGraphicsItem* parent)
-    : AbstractItem(parent)
+	: AbstractItem(parent)
 {
 }
