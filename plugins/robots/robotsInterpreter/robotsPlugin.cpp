@@ -107,6 +107,10 @@ void RobotsPlugin::updateSettings()
 		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopAction);
 	else
 		mInterpreter.showD2ModelWidget(false);
+
+	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication", "bluetooth").toString();
+	QString const portName = SettingsManager::value("bluetoothPortName", "").toString();
+	mInterpreter.setCommunicator(typeOfCommunication, portName);
 }
 
 void RobotsPlugin::closeNeededWidget()
