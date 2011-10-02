@@ -58,7 +58,6 @@ MainWindow::MainWindow()
 	, mVisualDebugger(NULL)
 	, mErrorReporter(NULL)
 	, mIsFullscreen(false)
-	, mSaveDir(qApp->applicationDirPath() + "/save")
 	, mTempDir(qApp->applicationDirPath() + "/temp")
 	, mPreferencesDialog(this)
 	, mNxtToolsPresent(false)
@@ -131,16 +130,11 @@ MainWindow::MainWindow()
 	mUi->errorListWidget->init(this);
 	mUi->errorDock->setVisible(false);
 
-	//	mDelegate.init(this, &mModels->logicalModelAssistApi());
-
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
 	if (!dir.cd("temp"))
 		QDir().mkdir(mTempDir);
 
-	//SettingsManager::setValue("saveFile", mSaveFile);
-
-	//QString workingDir = SettingsManager::value("workingDir", mSaveDir).toString();
 	QFileInfo saveFile(SettingsManager::value("saveFile", mSaveFile).toString());
 
 	if (saveFile.exists())
@@ -531,8 +525,9 @@ QString MainWindow::getWorkingFile(QString const &dialogWindowTitle)
 {
 
 	QString fileName;
+	QDir lastSaveDir = QFileInfo(mSaveFile).absoluteDir();
 	fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle
-															  , qApp->applicationDirPath(), tr("QReal Save File(*.qrs)"));
+			, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
 	SettingsManager::setValue("saveFile", fileName);
 	mSaveFile = fileName;
 	return fileName;
