@@ -216,7 +216,8 @@ private:
 	/** @brief Internal map table to store info what widgets should we hide/show */
 	QMap<QString, bool> mDocksVisibility;
 
-	QString mSaveDir;
+	QString mSaveFile;
+	QString mTempDir;
 
 	PreferencesDialog mPreferencesDialog;
 
@@ -237,7 +238,7 @@ private:
 	virtual void closeEvent(QCloseEvent *event);
 	void deleteFromExplorer(bool isLogicalModel);
 	void keyPressEvent(QKeyEvent *event);
-	QString getWorkingDir(QString const &dialogWindowTitle);
+	QString getWorkingFile(QString const &dialogWindowTitle);
 
 	int getTabIndex(const QModelIndex &index);
 

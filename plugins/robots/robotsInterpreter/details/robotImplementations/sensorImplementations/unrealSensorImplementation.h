@@ -14,9 +14,10 @@ class UnrealSensorImplementation : public AbstractSensorImplementation
 {
 	Q_OBJECT
 public:
-	UnrealSensorImplementation(inputPort::InputPortEnum const &port, d2Model::D2RobotModel *d2Model);
+	UnrealSensorImplementation(inputPort::InputPortEnum const &port, d2Model::D2RobotModel *d2Model, sensorType::SensorTypeEnum const &sensorType);
 	virtual ~UnrealSensorImplementation() {}
-	virtual void read();
+	virtual void read() = 0;
+	virtual void configure();
 
 protected:
 	d2Model::D2RobotModel *mD2Model;

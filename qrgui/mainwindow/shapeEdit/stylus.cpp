@@ -1,6 +1,6 @@
 #include "stylus.h"
 
-Stylus::Stylus(qreal x1, qreal y1, Item* parent):Item(parent)
+Stylus::Stylus(qreal x1, qreal y1, Item* parent):Item(parent), mStylusImpl()
 {
 	mNeedScalingRect = false;
 	mPen.setColor(Qt::black);
@@ -25,9 +25,9 @@ Stylus::Stylus(Stylus const &other)
 	mTmpX1 = other.mTmpX1;
 	mTmpY1 = other.mTmpY1;
 	mListScalePoint = other.mListScalePoint;
-	foreach (Line *line, other.mListLine) {
-		Line *newLine = new Line(*line);
-		mListLine.append(newLine);
+	foreach (AbstractItem *line, other.mAbstractListLine) {
+		Line *newLine = new Line(*dynamic_cast<Line *>(line));
+		mAbstractListLine.append(newLine);
 	}
 	setPos(other.x(), other.y());
 }
@@ -45,61 +45,35 @@ void Stylus::addLine(qreal x2, qreal y2)
 	Line *line = new Line(mTmpX1, mTmpY1, mX2, mY2, NULL);
 	line->setPen(mPen);
 	line->setBrush(mBrush);
-	mListLine.push_back(line);
+	mAbstractListLine.push_back(dynamic_cast<AbstractItem *>(line));
 	mTmpX1 = mX2;
 	mTmpY1 = mY2;
 }
 
-QRectF Stylus::searchMaxMinCoord() const
+void Stylus::addLineInList(Line *line)
 {
-	if(!mListLine.isEmpty()) {
-		qreal maxX = (mListLine.at(0))->realBoundingRect().right();
-		qreal minX = (mListLine.at(0))->realBoundingRect().left();
-		qreal maxY = (mListLine.at(0))->realBoundingRect().bottom();
-		qreal minY = (mListLine.at(0))->realBoundingRect().top();
-		foreach (Line *line, mListLine) {
-			minX = qMin(line->realBoundingRect().left(), minX);
-			minY = qMin(line->realBoundingRect().top(), minY);
-			maxX = qMax(line->realBoundingRect().right(), maxX);
-			maxY = qMax(line->realBoundingRect().bottom(), maxY);
-		}
-		return QRectF(minX, minY, maxX - minX, maxY - minY);
-	}
-	else
-		return QRectF(0, 0, 0, 0);
+	mListLine.push_back(line);
+	mAbstractListLine.push_back(dynamic_cast<AbstractItem *>(line));
 }
 
 QPainterPath Stylus::shape() const
 {
-	QPainterPath path;
-	path.setFillRule(Qt::WindingFill);
-	foreach (Line *line, mListLine) {
-		path.addPath(line->shape());
-	}
-	return path;
+	return mStylusImpl.shape(mAbstractListLine);
 }
 
 QRectF Stylus::boundingRect() const
 {
-	return searchMaxMinCoord();
+	return mStylusImpl.boundingRect(mAbstractListLine);
 }
 
 void Stylus::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-	foreach (Line *line, mListLine) {
-		painter->setPen(line->pen());
-		painter->setBrush(line->brush());
-		line->drawItem(painter, option, widget);
-	}
+	mStylusImpl.drawItem(mAbstractListLine, painter, option, widget);
 }
 
 void Stylus::drawExtractionForItem(QPainter* painter)
 {
-	QRectF rect = boundingRect();
-	painter->drawPoint(rect.left(), rect.top());
-	painter->drawPoint(rect.left(), rect.bottom());
-	painter->drawPoint(rect.right(), rect.top());
-	painter->drawPoint(rect.right(), rect.bottom());
+	mStylusImpl.drawExtractionForItem(mAbstractListLine, painter);
 
 	/*setPenBrushDriftRect(painter);
 	painter->drawPath(shape());
@@ -108,53 +82,49 @@ void Stylus::drawExtractionForItem(QPainter* painter)
 
 void Stylus::drawFieldForResizeItem(QPainter* painter)
 {
-	Q_UNUSED(painter);
+	mStylusImpl.drawFieldForResizeItem(painter);
 }
 
 void Stylus::drawScalingRects(QPainter* painter)
 {
-	Q_UNUSED(painter);
+	mStylusImpl.drawScalingRects(painter);
 }
 
 void Stylus::setPenStyle(const QString& text)
 {
 	Item::setPenStyle(text);
-	foreach (Line *line, mListLine)
-		line->setPenStyle(text);
+	mStylusImpl.setPenStyle(mAbstractListLine, text);
 }
 
 void Stylus::setPenWidth(int width)
 {
 	Item::setPenWidth(width);
-	foreach (Line *line, mListLine)
-		line->setPenWidth(width);
+	mStylusImpl.setPenWidth(mAbstractListLine, width);
 }
 
 void Stylus::setPenColor(const QString& text)
 {
 	Item::setPenColor(text);
-	foreach (Line *line, mListLine)
-		line->setPenColor(text);
+	mStylusImpl.setPenColor(mAbstractListLine, text);
 }
 
 void Stylus::setBrushStyle(const QString& text)
 {
 	Item::setBrushStyle(text);
-	foreach (Line *line, mListLine)
-		line->setBrushStyle(text);
+	mStylusImpl.setBrushStyle(mAbstractListLine, text);
 }
 
 void Stylus::setBrushColor(const QString& text)
 {
 	Item::setBrushColor(text);
-	foreach (Line *line, mListLine)
-		line->setBrushColor(text);
+	mStylusImpl.setBrushColor(mAbstractListLine, text);
 }
 
 QPair<QDomElement, Item::DomElementTypes> Stylus::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	QDomElement stylus = document.createElement("stylus");
-	foreach (Line *line, mListLine) {
+	foreach (AbstractItem *aItem, mAbstractListLine) {
+		Line *line = dynamic_cast<Line *>(aItem);
 		QDomElement item = (line->generateItem(document, topLeftPicture - QPoint(static_cast<int>(scenePos().x()), static_cast<int>(scenePos().y())))).first;
 		stylus.appendChild(item);
 	}

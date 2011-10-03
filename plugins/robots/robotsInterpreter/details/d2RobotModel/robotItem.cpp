@@ -3,93 +3,130 @@
 #include <QtGui/QApplication>
 #include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtGui/QGraphicsScene>
-
-#include <QDebug>
+#include <QtGui/QStyleOptionGraphicsItem>
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
+using namespace graphicsUtils;
 
 int const border = 5;
 
 RobotItem::RobotItem()
-	: QGraphicsItem()
+	: AbstractItem()
 	, mImage(QImage(":/icons/robot.png"))
 	, mIsOnTheGround(true)
 	, mRotater(NULL)
+	, mRectangleImpl()
+	, mRobotModel()
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
-			 ItemClipsToShape | ItemSendsGeometryChanges);
+                        /* ItemClipsToShape |*/ ItemSendsGeometryChanges);
 
 	setAcceptHoverEvents(true);
 	setAcceptDrops(true);
 	setCursor(QCursor(Qt::PointingHandCursor));
 	setZValue(1);
+	mX2 = mX1 + robotWidth;
+	mY2 = mY1 + robotHeight;
+
+	mPreviousScenePos = QPointF(0, 0);
+
+	mBasePoint = scenePos();
 }
 
-void RobotItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
+void RobotItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-	Q_UNUSED(style)
+	Q_UNUSED(option)
 	Q_UNUSED(widget)
+	mRectangleImpl.drawImageItem(painter, mX1, mY1, mX2, mY2, mImage);
+}
 
-	painter->drawImage(QPoint(0,0), mImage);
-
-//	if (mRotater)
-//		mRotater->setVisible(isSelected());
-
-	if (isSelected()){
-		painter->save();
-		painter->setPen(QPen(Qt::blue));
-		int const delta = 3;
-		QRectF rect = boundingRect();
-		double x1 = rect.x() + delta;
-		double y1 = rect.y() + delta;
-		double x2 = rect.x() + rect.width() - delta;
-		double y2 = rect.y() + rect.height() - delta;
-		painter->drawRect(QRectF(QPointF(x1, y1), QPointF(x2, y2)));
-		painter->restore();
-	}
+void RobotItem::drawExtractionForItem(QPainter* painter)
+{
+	painter->setPen(QPen(Qt::blue));
+	painter->drawRect(QRectF(QPointF(mX1, mY1), QPointF(mX2, mY2)));
 }
 
 QRectF RobotItem::boundingRect() const
 {
-	return QRect(0,0,robotWidth, robotHeight).adjusted(-border, -border, border, border);
+        return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, border);
+}
+
+QRectF RobotItem::calcNecessaryBoundingRect() const
+{
+	return boundingRect().adjusted(border, border, -border, -border);
 }
 
 void RobotItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-	QGraphicsItem::mousePressEvent(event);
+	AbstractItem::mousePressEvent(event);
 	mPreviousPos = QPointF();
+	mPreviousAngle = rotateAngle();
 	mIsOnTheGround = false;
+
+	mPreviousScenePos = scenePos();
+	if (isSelected()) {
+		mRotater->reshapeWithMasterItem(scenePos()- mPreviousScenePos);
+	}
 }
 
 void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
-	QGraphicsItem::mouseMoveEvent(event);
+	AbstractItem::mouseMoveEvent(event);
 
 	if (mPreviousPos.isNull()) {
 		mPreviousPos = event->scenePos();
 		return;
 	}
+	mBasePoint += scenePos()- mPreviousScenePos;
 
-	foreach (SensorItem *sensor, mSensors)
-		sensor->setBasePosition(scenePos());
+	foreach (SensorItem *sensor, mSensors) {
+		sensor->setDeltaBasePosition(scenePos()- mPreviousScenePos, rotateAngle());
+	}
+
+	if (isSelected()) {
+		mRotater->reshapeWithMasterItem(scenePos()- mPreviousScenePos);
+	}
 
 	mPreviousPos = event->scenePos();
+	mPreviousScenePos = scenePos();
+	mPreviousAngle = rotateAngle();
 }
 
 void RobotItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-	QGraphicsItem::mouseReleaseEvent(event);
+	AbstractItem::mouseReleaseEvent(event);
 	mPreviousPos = QPointF();
+	mPreviousAngle = rotateAngle();
 	mIsOnTheGround = true;
+
+	if (isSelected()) {
+		mRotater->reshapeWithMasterItem(scenePos() - mPreviousScenePos);
+	}
+	mPreviousScenePos = scenePos();
 
 	emit changedPosition();
 }
 
-void RobotItem::setPos(QPointF const &newPos)
+QPointF RobotItem::basePoint()
 {
-	foreach (SensorItem *sensor, mSensors)
-		sensor->setBasePosition(newPos);
+	return mBasePoint;
+}
+
+void RobotItem::resizeItem(QGraphicsSceneMouseEvent *event)
+{
+	Q_UNUSED(event);
+}
+
+void RobotItem::setPos(QPointF const &newPos)// for moving
+{
+	foreach (SensorItem *sensor, mSensors) {
+		sensor->setDeltaBasePosition(newPos - pos(), rotateAngle());
+	}
+
+	mRotater->reshapeWithMasterItem(newPos - pos());
+
+	mPreviousAngle = rotateAngle();
 
 	QGraphicsItem::setPos(newPos);
 }
@@ -117,4 +154,37 @@ bool RobotItem::isOnTheGround() const
 void RobotItem::setRotater(Rotater *rotater)
 {
 	mRotater = rotater;
+}
+
+void RobotItem::setRobotModel(RobotModelInterface *robotModel)
+{
+	mRobotModel = robotModel;
+}
+
+void RobotItem::rotate(qreal angle)
+{
+	mRobotModel->rotateOn(angle);
+}
+
+QRectF RobotItem::rect() const
+{
+	return boundingRect();
+}
+
+double RobotItem::rotateAngle() const
+{
+	return mRobotModel->rotateAngle();
+}
+
+void RobotItem::setSelected(bool isSelected)
+{
+	QGraphicsItem::setSelected(isSelected);
+}
+
+void RobotItem::checkSelection()
+{
+	if(isSelected())
+		mRotater->setVisible(true);
+	else
+		mRotater->setVisible(false);
 }

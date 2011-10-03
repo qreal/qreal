@@ -3,7 +3,7 @@ using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
 NullTouchSensorImplementation::NullTouchSensorImplementation(inputPort::InputPortEnum const &port)
-	: NullSensorImplementation(port)
+	: NullSensorImplementation(port, sensorType::touchBoolean)
 {
 }
 

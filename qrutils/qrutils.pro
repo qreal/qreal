@@ -13,19 +13,16 @@ LIBS += -L../bin -lqrkernel
 DEFINES += QRUTILS_LIBRARY
 
 HEADERS += \
-	outFile.h \
-	utilsDeclSpec.h \
-	xmlUtils.h \
+    outFile.h \
+    utilsDeclSpec.h \
+    xmlUtils.h \
 
 SOURCES += \
-	outFile.cpp \
-	xmlUtils.cpp \
+    outFile.cpp \
+    xmlUtils.cpp \
 
 # Files for parsing of expressions on diagrams
-HEADERS += \
-	expressionsParser/expressionsParser.h \
-	expressionsParser/number.h \
+include(expressionsParser/expressionsParser.pri)
 
-SOURCES += \
-	expressionsParser/expressionsParser.cpp \
-	expressionsParser/number.cpp \
+# Graphical scene framework used in qrgui and plugins
+include(graphicsUtils/graphicsUtils.pri)

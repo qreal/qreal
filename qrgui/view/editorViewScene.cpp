@@ -148,14 +148,15 @@ void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 
 bool EditorViewScene::canBeContainedBy(qReal::Id container, qReal::Id candidate)
 {
-	Q_UNUSED(container);
-	Q_UNUSED(candidate); // TODO: update xml descriptions to remove
-	return true;
+//	Q_UNUSED(container);
+//	Q_UNUSED(candidate); // TODO: update xml descriptions to remove
+//	return true;
 
 	bool allowed = false;
+	qDebug() << container << candidate;
+	qDebug() << mWindow->manager()->getContainedTypes(container.type());
 	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container.type())){
-		if (candidate.element() ==  type.editor())
-			allowed = true;
+		allowed = allowed || mWindow->manager()->isParentOf(candidate, type);
 	}
 	return allowed;
 }
@@ -194,19 +195,25 @@ int EditorViewScene::launchEdgeMenu(EdgeElement* edge, NodeElement* node, QPoint
 	foreach(PossibleEdge pEdge, edge->getPossibleEdges())
 	{
 		QString target;
-		if (pEdge.first.first.element() == node->id().element()) {
-			target = pEdge.first.second.element();
-		} else if ((pEdge.first.second.element() == node->id().element()) && (!pEdge.second.first)) {
-			target = pEdge.first.first.element();
-		} else {
-			continue;
+		// if pEdge.first.first is parent of node->id(), then add all children of pEdge.first.second to the list
+		// and vice versa
+
+		QStringList targets;
+		if (mWindow->manager()->isParentOf(node->id(), pEdge.first.first)) {
+			targets << mWindow->manager()->getAllChildrenTypesOf(pEdge.first.second);
 		}
 
-		QAction* element = new QAction(target, createElemMenu);
-		createElemMenu->addAction(element);
-		toDelete.append(element);
-		QObject::connect(element,SIGNAL(triggered()), menuSignalMapper,SLOT(map()));
-		menuSignalMapper->setMapping(element, "qrm:/"+node->id().editor()+"/"+node->id().diagram()+"/"+target);
+		if (mWindow->manager()->isParentOf(node->id(), pEdge.first.second)) {
+			targets << mWindow->manager()->getAllChildrenTypesOf(pEdge.first.first);
+		}
+
+		foreach (QString target, targets.toSet()) { // QSet is used to remove duplicates
+			QAction* element = new QAction(target, createElemMenu);
+			createElemMenu->addAction(element);
+			toDelete.append(element);
+			QObject::connect(element,SIGNAL(triggered()), menuSignalMapper, SLOT(map()));
+			menuSignalMapper->setMapping(element, "qrm:/" + node->id().editor() + "/"+node->id().diagram() + "/"+target);
+		}
 	}
 
 	mCreatePoint = scenePos;
@@ -296,9 +303,11 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 		delete e;
 	}
 
-	if(newParent){
+	if(newParent && dynamic_cast<NodeElement*>(newParent)){
 		if (!canBeContainedBy(newParent->id(), id)){
-			QMessageBox::critical(0, "Error!", "[some text]");
+			QString text;
+			text += "Element of type \"" + id.element() + "\" can not be a child of \"" + newParent->id().element() + "\"";
+			QMessageBox::critical(0, "Error!", text);
 			return;
 		}
 
@@ -410,6 +419,8 @@ void EditorViewScene::createDisconnectMenu(Element const * const element
 
 void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const
 {
+	Q_UNUSED(contextMenu)
+	Q_UNUSED(element)
 	// menu items "connect to"
 	// TODO: move to elements, they can call the model and API themselves
 	/*

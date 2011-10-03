@@ -2,6 +2,8 @@
 #include "ui_d2Form.h"
 
 #include <QtGui/QFileDialog>
+#include <QRegion>
+#include <qmath.h>
 
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
@@ -9,10 +11,9 @@
 #include "../../../../../qrutils/outFile.h"
 #include "../../../../../qrutils/xmlUtils.h"
 
-#include <QtCore/QDebug>
-
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
+using namespace graphicsUtils;
 
 D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel, QWidget *parent)
 	: QWidget(parent)
@@ -24,22 +25,23 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	, mWorldModel(worldModel)
 	, mDrawingAction(drawingAction::none)
 	, mMouseClicksCount(0)
+	, mCurrentWall(NULL)
+	, mCurrentLine(NULL)
+	, mCurrentStylus(NULL)
 	, mCurrentPort(inputPort::none)
 	, mCurrentSensorType(sensorType::unused)
-	, mButtonsCount(6) // magic numbers are baaad, mkay?
+	, mButtonsCount(8) // magic numbers are baaad, mkay?
 {
-	mUi->setupUi(this);
-	mSensors.resize(4);
-
-	mScene = new D2ModelScene(mUi->graphicsView);
-	mUi->graphicsView->setScene(mScene);
-	mUi->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
-	move(0, 0);
+	initWidget();
 
 	connectUiButtons();
 
 	connect(mScene, SIGNAL(mouseClicked(QGraphicsSceneMouseEvent *)), this, SLOT(mouseClicked(QGraphicsSceneMouseEvent *)));
+	connect(mScene, SIGNAL(mouseMoved(QGraphicsSceneMouseEvent*)), this, SLOT(mouseMoved(QGraphicsSceneMouseEvent*)));
+	connect(mScene, SIGNAL(mouseReleased(QGraphicsSceneMouseEvent*)), this, SLOT(mouseReleased(QGraphicsSceneMouseEvent*)));
 	connect(mScene, SIGNAL(itemDeleted(QGraphicsItem*)), this, SLOT(deleteItem(QGraphicsItem*)));
+
+	connect(mScene, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
 }
 
 D2ModelWidget::~D2ModelWidget()
@@ -50,11 +52,39 @@ D2ModelWidget::~D2ModelWidget()
 	delete mUi;
 }
 
+void D2ModelWidget::initWidget()
+{
+	mUi->setupUi(this);
+	mSensors.resize(4);
+	mSensorRotaters.resize(4);
+
+	mScene = new D2ModelScene(mUi->graphicsView);
+	mUi->graphicsView->setScene(mScene);
+	mUi->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
+	move(0, 0);
+
+	mUi->penWidthSpinBox->setRange(6, 13);
+
+	QStringList colorNames;
+	colorNames.push_back("Black");
+	colorNames.push_back("Blue");
+	colorNames.push_back("Green");
+	colorNames.push_back("Yellow");
+	colorNames.push_back("Red");
+
+	mUi->penColorComboBox->setColorList(colorNames);
+	mUi->penColorComboBox->setColor(QColor("black"));
+}
+
 void D2ModelWidget::connectUiButtons()
 {
+	connect(mUi->stylusButton, SIGNAL(toggled(bool)), this, SLOT(addStylus(bool)));
+	connect(mUi->lineButton, SIGNAL(toggled(bool)), this, SLOT(addLine(bool)));
 	connect(mUi->wallButton, SIGNAL(toggled(bool)), this, SLOT(addWall(bool)));
 	connect(mUi->clearButton, SIGNAL(clicked()), this, SLOT(clearScene()));
-	connect(mUi->doNothingButton, SIGNAL(clicked()), this, SLOT(resetButtons()));
+
+	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changePenWidth(int)));
+	connect(mUi->penColorComboBox, SIGNAL(activated(const QString &)), this, SLOT(changePenColor(const QString &)));
 
 	connect(mUi->port1AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
 	mPortsMapper.setMapping(mUi->port1AddButton, inputPort::port1);
@@ -108,7 +138,11 @@ void D2ModelWidget::drawInitialRobot()
 	mRotater->setMasterItem(mRobot);
 	mRotater->setVisible(true);
 	mScene->addItem(mRotater);
+
+	mRotater->setVisible(false);
+
 	mRobot->setRotater(mRotater);
+	mRobot->setRobotModel(mRobotModel);
 
 	mLine.startsWith(mRobot->mapToScene(mRobot->boundingRect().center()));
 	mPolygon = mScene->addPolygon(mLine, QPen(Qt::black));
@@ -137,6 +171,7 @@ void D2ModelWidget::update()
 {
 	QWidget::update();
 	drawWalls();
+	drawColorFields();
 }
 
 void D2ModelWidget::changeEvent(QEvent *e)
@@ -172,11 +207,15 @@ void D2ModelWidget::draw(QPointF newCoord, qreal angle, QPointF dPoint)
 
 void D2ModelWidget::drawWalls()
 {
-	QPen pen(Qt::red);
-	pen.setWidth(5);
-	typedef QPair<QPointF, QPointF> Wall;
-	foreach (Wall const wall, mWorldModel->walls()) {
-		mScene->addLine(QLineF(wall.first,wall.second), pen);
+	foreach (WallItem *wall, mWorldModel->walls()) {
+		mScene->addItem(wall);
+	}
+}
+
+void D2ModelWidget::drawColorFields()
+{
+	foreach (ColorFieldItem *colorField, mWorldModel->colorFields()) {
+		mScene->addItem(colorField);
 	}
 }
 
@@ -188,10 +227,10 @@ void D2ModelWidget::drawBeep(QColor const &color)
 
 QPolygonF const D2ModelWidget::robotBoundingPolygon(QPointF const &coord, qreal const &angle) const
 {
-	Q_UNUSED(angle)
-	Q_UNUSED(coord)
-	QRectF rect = mRobot->mapRectToScene(mRobot->boundingRect());
-	return QPolygonF() << rect.topLeft() << rect.topRight() << rect.bottomRight() << rect.bottomLeft();
+	Q_UNUSED(coord);
+	Q_UNUSED(angle);
+
+	return mRobot->mapToScene(QPolygon(mRobot->boundingRect().toRect()));
 }
 
 void D2ModelWidget::addWall(bool on)
@@ -202,9 +241,30 @@ void D2ModelWidget::addWall(bool on)
 		return;
 	}
 
-	setActiveButton(mButtonsCount - 2);
-
+	setActiveButton(4);
 	mDrawingAction = drawingAction::wall;
+}
+
+void D2ModelWidget::addLine(bool on)
+{
+	if (!on) {
+		mDrawingAction = drawingAction::none;
+		mMouseClicksCount = 0;
+		return;
+	}
+	setActiveButton(5);
+	mDrawingAction = drawingAction::line;
+}
+
+void D2ModelWidget::addStylus(bool on)
+{
+	if (!on) {
+		mDrawingAction = drawingAction::none;
+		mMouseClicksCount = 0;
+		return;
+	}
+	setActiveButton(6);
+	mDrawingAction = drawingAction::stylus;
 }
 
 void D2ModelWidget::setActiveButton(int active)
@@ -220,19 +280,29 @@ void D2ModelWidget::setActiveButton(int active)
 	mUi->port3AddButton->setChecked(mButtonFlags.at(2));
 	mUi->port4AddButton->setChecked(mButtonFlags.at(3));
 	mUi->wallButton->setChecked(mButtonFlags.at(4));
+	mUi->lineButton->setChecked(mButtonFlags.at(5));
+	mUi->stylusButton->setChecked(mButtonFlags.at(6));
+
 }
 
 void D2ModelWidget::clearScene()
 {
 	mWorldModel->clearScene();
 	mRobot->clearSensors();
+	mRobotModel->clear();
+	mLine.clear();
+	foreach (SensorItem *sensor, mSensors) {
+		mScene->removeItem(sensor);
+	}
 	mScene->clear();
 	drawInitialRobot();
 }
 
 void D2ModelWidget::resetButtons()
 {
-	mCurrentWall.clear();
+	mCurrentWall = NULL;
+	mCurrentLine = NULL;
+	mCurrentStylus = NULL;
 	mMouseClicksCount = 0;
 	mDrawingAction = drawingAction::none;
 	setActiveButton(mButtonsCount - 1);
@@ -296,48 +366,161 @@ void D2ModelWidget::addPort(int const port)
 	}
 }
 
+void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
+{
+	QPointF const pos = event->scenePos();
+	if (mCurrentWall != NULL) {
+		mCurrentWall->setX2andY2(pos.x(), pos.y());
+		if (event->modifiers() & Qt::ShiftModifier)
+			mCurrentWall->reshapeRectWithShift();
+	}
+}
+
+void D2ModelWidget::reshapeLine(QGraphicsSceneMouseEvent *event)
+{
+	QPointF const pos = event->scenePos();
+	if (mCurrentLine != NULL) {
+		mCurrentLine->setX2andY2(pos.x(), pos.y());
+		if (event->modifiers() & Qt::ShiftModifier)
+			mCurrentLine->reshapeRectWithShift();
+	}
+}
+
+void D2ModelWidget::reshapeStylus(QGraphicsSceneMouseEvent *event)
+{
+	QPointF const pos = event->scenePos();
+	if (mCurrentStylus != NULL) {
+		mCurrentStylus->addLine(pos.x(), pos.y());
+	}
+}
+
 void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	QPointF const position = mouseEvent->scenePos();
+	mRobot->checkSelection();
+	foreach (SensorItem *sensor, mSensors) {
+		if (sensor != NULL)
+			sensor->checkSelection();
+	}
 
+	QPointF const position = mouseEvent->scenePos();
+	mScene->setDragMode(mDrawingAction);
 	switch (mDrawingAction){
-	case drawingAction::wall:
-		mCurrentWall.append(position);
+	case drawingAction::wall: {
+		mCurrentWall = new WallItem(position, position);
+		mScene->removeMoveFlag(mouseEvent, mCurrentWall);
+		mWorldModel->addWall(mCurrentWall);
 		mMouseClicksCount++;
+	}
+		break;
+	case drawingAction::line: {
+		mCurrentLine = new LineItem(position, position);
+		mCurrentLine->setPenBrush(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems()
+								  , mScene->brushStyleItems(), mScene->brushColorItems());
+		mScene->removeMoveFlag(mouseEvent, mCurrentLine);
+		mWorldModel->addColorField(mCurrentLine);
+		mMouseClicksCount++;
+	}
+		break;
+	case drawingAction::stylus: {
+		mCurrentStylus = new StylusItem(position.x(), position.y());
+		mCurrentStylus->setPenBrush(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems()
+									, mScene->brushStyleItems(), mScene->brushColorItems());
+		mScene->removeMoveFlag(mouseEvent, mCurrentStylus);
+		mWorldModel->addColorField(mCurrentStylus);
+		mMouseClicksCount++;
+	}
 		break;
 	case drawingAction::port: {
-		QPointF newpos = mRobot->mapFromScene(mouseEvent->scenePos().x(), mouseEvent->scenePos().y());
-		mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0); // TODO: handle direction
+		QPointF newpos = mRobot->mapFromScene(mouseEvent->scenePos());
+		mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0);
 
 		reinitSensor(mCurrentPort);
 
 		resetButtons();
 	}
-	break;
-	case drawingAction::none:
+		break;
+	case drawingAction::none: {
 		mMouseClicksCount = 0;
+		mScene->forPressResize(mouseEvent);
+	}
 		break;
 	default:
 		break;
 	}
 
-	if (mMouseClicksCount >= 2)
-	{
-		mWorldModel->addWall(mCurrentWall.at(0), mCurrentWall.at(1));
-		mCurrentWall.clear();
-		mMouseClicksCount = 0;
-	}
 	update();
+}
+
+
+void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
+{
+	mRobot->checkSelection();
+	foreach (SensorItem *sensor, mSensors) {
+		if (sensor != NULL)
+			sensor->checkSelection();
+	}
+
+	mScene->setDragMode(mDrawingAction);
+	switch (mDrawingAction){
+	case drawingAction::wall:
+		reshapeWall(mouseEvent);
+		break;
+	case drawingAction::line: {
+		reshapeLine(mouseEvent);
+	}
+		break;
+	case drawingAction::stylus: {
+		reshapeStylus(mouseEvent);
+	}
+		break;
+	default:
+		mScene->forMoveResize(mouseEvent);
+		break;
+	}
+	mScene->update();
 }
 
 void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	Q_UNUSED(mouseEvent)
-}
+	mRobot->checkSelection();
+	foreach (SensorItem *sensor, mSensors) {
+		if (sensor != NULL)
+			sensor->checkSelection();
+	}
 
-void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
-{
-	Q_UNUSED(mouseEvent)
+	mScene->setDragMode(mDrawingAction);
+
+	switch (mDrawingAction){
+	case drawingAction::wall: {
+		reshapeWall(mouseEvent);
+		mCurrentWall = NULL;
+		mMouseClicksCount = 0;
+		mDrawingAction = drawingAction::none;
+	}
+		break;
+	case drawingAction::line: {
+		reshapeLine(mouseEvent);
+		mCurrentLine = NULL;
+		mMouseClicksCount = 0;
+		mDrawingAction = drawingAction::none;
+	}
+		break;
+	case drawingAction::stylus: {
+		reshapeStylus(mouseEvent);
+		mCurrentStylus = NULL;
+		mMouseClicksCount = 0;
+		mDrawingAction = drawingAction::none;
+	}
+		break;
+	default:
+		mScene->forReleaseResize(mouseEvent);
+		break;
+	}
+	mUi->wallButton->setChecked(false);
+	mUi->lineButton->setChecked(false);
+	mUi->stylusButton->setChecked(false);
+	mScene->setMoveFlag(mouseEvent);
+	mScene->update();
 }
 
 void D2ModelWidget::saveWorldModel()
@@ -349,8 +532,8 @@ void D2ModelWidget::saveWorldModel()
 
 	QDomDocument save;
 	QDomElement root = save.createElement("root");
-	save.appendChild(root);
-	root.appendChild(mWorldModel->serialize(save));
+        save.appendChild(root);
+        root.appendChild(mWorldModel->serialize(save, QPoint(0, 0)));
 	root.appendChild(mRobotModel->configuration().serialize(save));
 
 	utils::OutFile saveFile(saveFileName);
@@ -398,8 +581,11 @@ void D2ModelWidget::removeSensor(inputPort::InputPortEnum port)
 	if (mSensors[port]) {
 		mRobot->removeSensor(mSensors[port]);
 		mScene->removeItem(mSensors[port]);
+		mScene->removeItem(mSensorRotaters[port]);
 		delete mSensors[port];
+		delete mSensorRotaters[port];
 		mSensors[port] = NULL;
+		mSensorRotaters[port] = NULL;
 	}
 }
 
@@ -413,10 +599,19 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 	SensorItem *sensor = mRobotModel->configuration().type(port) == sensorType::sonar
 			? new SonarSensorItem(*mWorldModel, mRobotModel->configuration(), port)
 			: new SensorItem(mRobotModel->configuration(), port);
+	sensor->setRotatePoint(rotatePoint);
 
 	mRobot->addSensor(sensor);
 	mScene->addItem(sensor);
-	sensor->setBasePosition(mRobot->scenePos());
+
+	/*назначаем ротатер*/
+	mSensorRotaters[port] = new Rotater();
+	mSensorRotaters[port]->setMasterItem(sensor);
+	mSensorRotaters[port]->setVisible(false);
+	sensor->setRotater(mSensorRotaters[port]);
+
+	sensor->setBasePosition(mRobot->basePoint(), mRobot->rotateAngle()/*, rotatePoint*/);
+	mScene->addItem(mSensorRotaters[port]);
 	mSensors[port] = sensor;
 }
 
@@ -429,4 +624,88 @@ void D2ModelWidget::deleteItem(QGraphicsItem *item)
 	int const port = mSensors.indexOf(sensor);
 	if (port != -1)
 		removeSensor(static_cast<inputPort::InputPortEnum>(port));
+}
+
+bool D2ModelWidget::isColorItem(AbstractItem *item)
+{
+	RobotItem* robotItem = dynamic_cast<RobotItem*>(item);
+	SensorItem* sensorItem = dynamic_cast<SensorItem*>(item);
+	WallItem* wallItem = dynamic_cast<WallItem*>(item);
+	Rotater* rotaterItem = dynamic_cast<Rotater*>(item);
+	return (!robotItem && !sensorItem && !wallItem && !rotaterItem);
+}
+
+QList<AbstractItem *> D2ModelWidget::selectedColorItems()
+{
+	QList<AbstractItem *> resList;
+	QList<QGraphicsItem *> listSelectedItems = mScene->selectedItems();
+	foreach (QGraphicsItem *graphicsItem, listSelectedItems) {
+		AbstractItem* item = dynamic_cast<AbstractItem*>(graphicsItem);
+		if (item != NULL) {
+			//теперь надо исключить еще те объекты, которым не надо менять цвет и т.д., а т.е. робота, сенсоры, стены и ротатеры
+			if (isColorItem(item))
+				resList.push_back(item);
+		}
+	}
+	qSort(resList.begin(), resList.end(), mScene->compareItems);
+	return resList;
+}
+
+void D2ModelWidget::changePenWidth(int width)
+{
+	mScene->setPenWidthItems(width);
+	foreach (AbstractItem *item, selectedColorItems())
+		item->setPenWidth(width);
+	mScene->update();
+}
+
+void D2ModelWidget::changePenColor(const QString &text)
+{
+	mScene->setPenColorItems(text);
+	foreach (AbstractItem *item, selectedColorItems())
+		item->setPenColor(text);
+	mScene->update();
+}
+
+void D2ModelWidget::changePalette()
+{
+	if(mDrawingAction == drawingAction::none) {
+		QList<QGraphicsItem *> listSelectedItems = mScene->selectedItems();
+		if (listSelectedItems.isEmpty()) {
+			setNoPalette();
+			mScene->setEmptyPenBrushItems();
+		}
+		else {
+			AbstractItem* item = dynamic_cast<AbstractItem*>(listSelectedItems.back());
+			if (isColorItem(item)) {
+				QPen penItem = item->pen();
+				QBrush brushItem = item->brush();
+				setItemPalette(penItem, brushItem);
+				mScene->setPenBrushItems(penItem, brushItem);
+			}
+		}
+	}
+}
+
+void D2ModelWidget::setValuePenColorComboBox(QColor penColor)
+{
+	mUi->penColorComboBox->setColor(penColor);
+}
+
+void D2ModelWidget::setValuePenWidthSpinBox(int width)
+{
+	mUi->penWidthSpinBox->setValue(width);
+}
+
+void D2ModelWidget::setItemPalette(QPen const &penItem, QBrush const &brushItem)
+{
+	Q_UNUSED(brushItem)
+	setValuePenWidthSpinBox(penItem.width());
+	setValuePenColorComboBox(penItem.color());
+}
+
+void D2ModelWidget::setNoPalette()
+{
+	mUi->penWidthSpinBox->setValue(6);
+	mUi->penColorComboBox->setColor(QColor("black"));
 }

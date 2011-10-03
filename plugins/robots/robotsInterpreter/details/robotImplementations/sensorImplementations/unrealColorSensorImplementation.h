@@ -12,7 +12,7 @@ class UnrealColorSensorImplementation : public UnrealSensorImplementation
 {
 	Q_OBJECT
 public:
-	UnrealColorSensorImplementation(inputPort::InputPortEnum const &port, d2Model::D2RobotModel *d2Model);
+	UnrealColorSensorImplementation(inputPort::InputPortEnum const &port, d2Model::D2RobotModel *d2Model, sensorType::SensorTypeEnum const &sensorType);
 	virtual void read();
 };
 

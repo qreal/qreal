@@ -5,8 +5,10 @@
 
 const int step = 3;
 
+using namespace graphicsUtils;
+
 Line::Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
-	:Item(parent)
+	:Item(parent), mLineImpl()
 {
 	mNeedScalingRect = false;
 	mPen.setColor(Qt::green);
@@ -18,7 +20,7 @@ Line::Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 }
 
 Line::Line(Line const &other)
-	:Item()
+	:Item(), mLineImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
 	mPen = other.mPen;
@@ -40,39 +42,31 @@ Item* Line::clone()
 
 QRectF Line::boundingRect() const
 {
-	return (QRectF(qMin(mX1, mX2) - mPen.width(), qMin(mY1, mY2) - mPen.width(), abs(mX2 - mX1) + mPen.width(), abs(mY2 - mY1) + mPen.width()).adjusted(-drift, -drift, drift, drift));
+	return mLineImpl.boundingRect(mX1, mY1, mX2, mY2, mPen.width(), drift);
 }
 
 QRectF Line::realBoundingRect() const
 {
-	return mapToScene(boundingRect().adjusted(drift + mPen.width(), drift + mPen.width(), -drift, -drift)).boundingRect();
+	return mapToScene(mLineImpl.realBoundingRectWithoutScene(mX1, mY1, mX2, mY2, mPen.width(), drift)).boundingRect();
 }
 
 void Line::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
-	painter->drawLine(mX1, mY1, mX2, mY2);
+	mLineImpl.drawItem(painter, mX1, mY1, mX2, mY2);
 }
 
 void Line::drawExtractionForItem(QPainter* painter)
 {
-	painter->drawPoint(mX1, mY1);
-	painter->drawPoint(mX2, mY2);
-
+	mLineImpl.drawPointExtractionForItem(painter, mX1, mY1, mX2, mY2);
 	setPenBrushDriftRect(painter);
-	painter->drawPath(shape());
-	drawFieldForResizeItem(painter);
+	mLineImpl.drawExtractionForItem(painter, mX1, mY1, mX2, mY2, drift);
+	mLineImpl.drawFieldForResizeItem(painter, resizeDrift, mX1, mY1, mX2, mY2);
 
 	painter->setPen(QPen(Qt::red));
 	painter->setBrush(QBrush(Qt::SolidPattern));
 	drawScalingRects(painter);
-}
-
-void Line::drawFieldForResizeItem(QPainter* painter)
-{
-	painter->drawEllipse(QPointF(mX1, mY1), resizeDrift, resizeDrift);
-	painter->drawEllipse(QPointF(mX2, mY2), resizeDrift, resizeDrift);
 }
 
 void Line::drawScalingRects(QPainter* painter)
@@ -153,22 +147,12 @@ void Line::drawScalingRects(QPainter* painter)
 
 QLineF Line::line() const
 {
-	return QLineF(mX1, mY1, mX2, mY2);
+	return mLineImpl.line(mX1, mY1, mX2, mY2);
 }
 
 QPainterPath Line::shape() const
 {
-	QPainterPath path;
-	path.setFillRule(Qt::WindingFill);
-
-	QPainterPathStroker ps;
-	ps.setWidth(drift);
-
-	path.moveTo(mX1, mY1);
-	path.lineTo(mX2, mY2);
-	path = ps.createStroke(path);
-
-	return path;
+	return mLineImpl.shape(drift, mX1, mY1, mX2, mY2);
 }
 
 void Line::changeScalingPointState(qreal x, qreal y)
@@ -197,17 +181,8 @@ void Line::reshapeRectWithShift()
 	qreal size = qMax(differenceX, differenceY);
 	const int delta = size / 2;
 	if (differenceXY > delta) {
-		if (differenceX > differenceY) {
-			if(mX2 > mX1)
-				setX2andY2(mX1 + size, mY1);
-			else
-				setX2andY2(mX1 - size, mY1);
-		} else {
-			if(mY2 > mY1)
-				setX2andY2(mX1, mY1 + size);
-			else
-				setX2andY2(mX1, mY1 - size);
-		}
+		QPair<qreal, qreal> res = mLineImpl.reshapeRectWithShiftForLine(mX1, mY1, mX2, mY2, differenceX, differenceY, size);
+		setX2andY2(res.first, res.second);
 	} else
 		Item::reshapeRectWithShift();
 }

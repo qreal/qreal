@@ -1,7 +1,7 @@
 #include "rectangle.h"
 
 Rectangle::Rectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
-	:Item(parent)
+	:Item(parent), mRectangleImpl()
 {
 	mNeedScalingRect = true;
 	mPen.setColor(Qt::black);
@@ -14,7 +14,7 @@ Rectangle::Rectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 }
 
 Rectangle::Rectangle(Rectangle const &other)
-	:Item()
+	:Item(), mRectangleImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
 	mPen = other.mPen;
@@ -36,24 +36,14 @@ Item* Rectangle::clone()
 
 QRectF Rectangle::boundingRect() const
 {
-	return QRectF(qMin(mX1, mX2), qMin(mY1, mY2), abs(mX2 - mX1), abs(mY2 - mY1)).adjusted(-scalingDrift, -scalingDrift, scalingDrift, scalingDrift);
+	return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, scalingDrift);
 }
 
 void Rectangle::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
-	if(mX2 > mX1) {
-		if (mY2 > mY1)
-			painter->drawRect(mX1, mY1, mX2 - mX1, mY2 - mY1);
-		else
-			painter->drawRect(mX1, mY2, mX2 - mX1, mY1 - mY2);
-	} else {
-		if (mY2 > mY1)
-			painter->drawRect(mX2, mY1, mX1 - mX2, mY2 - mY1);
-		else
-			painter->drawRect(mX2, mY2, mX1 - mX2, mY1 - mY2);
-	}
+	mRectangleImpl.drawRectItem(painter, mX1, mY1, mX2, mY2);
 }
 
 QPair<QDomElement, Item::DomElementTypes> Rectangle::generateItem(QDomDocument &document, QPoint const &topLeftPicture)

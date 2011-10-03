@@ -25,6 +25,7 @@ public:
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 	virtual CustomizationInterface* customizationInterface();
 	virtual void updateSettings();
+		virtual void closeNeededWidget();
 
 private slots:
 	void showRobotSettings();

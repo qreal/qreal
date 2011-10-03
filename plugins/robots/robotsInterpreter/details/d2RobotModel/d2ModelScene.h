@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QGraphicsScene>
+#include "../../../../../qrutils/graphicsUtils/abstractScene.h"
 
 namespace qReal {
 namespace interpreters {
@@ -10,11 +11,11 @@ namespace d2Model {
 
 /** @brief Implementation of QGraphicsScene for 2D robot model
 */
-class D2ModelScene: public QGraphicsScene
+class D2ModelScene: public graphicsUtils::AbstractScene
 {
 	Q_OBJECT
 public:
-	D2ModelScene(QObject *parent = 0);
+	D2ModelScene(graphicsUtils::AbstractView *view, QObject *parent = 0);
 	virtual ~D2ModelScene();
 
 	void keyPressEvent(QKeyEvent *event);

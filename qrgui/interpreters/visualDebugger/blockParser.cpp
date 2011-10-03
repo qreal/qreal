@@ -3,6 +3,7 @@
 #include <QMessageBox>
 
 using namespace qReal;
+using namespace utils;
 
 BlockParser::BlockParser(ErrorReporterInterface* errorReporter)
 	: ExpressionsParser(errorReporter){

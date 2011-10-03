@@ -14,24 +14,24 @@ namespace sensorImplementations {
 class BluetoothSensorImplementation : public AbstractSensorImplementation
 {
 	Q_OBJECT
+
 public:
 	BluetoothSensorImplementation(RobotCommunication *robotCommunicationInterface
+		, sensorType::SensorTypeEnum const &sensorType
 		, lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
 		, sensorMode::SensorModeEnum const &sensorMode
 		, inputPort::InputPortEnum const &port
 		);
 	virtual ~BluetoothSensorImplementation();
-	void configure();
+	virtual void configure();
 	virtual void read() = 0;
 
-signals:
-	void configured();
 protected slots:
 	void readingDone(QObject *addressee, QByteArray const &reading);
 
 protected:
 	RobotCommunication *mRobotCommunicationInterface;
-	lowLevelSensorType::SensorTypeEnum mSensorType;
+	lowLevelSensorType::SensorTypeEnum mLowLevelSensorType;
 	sensorMode::SensorModeEnum mSensorMode;
 	bool mIsConfigured;
 	bool mResetDone;

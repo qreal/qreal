@@ -51,10 +51,6 @@ robotParts::Sensor *RobotModel::sensor(const inputPort::InputPortEnum &port) con
 	return mSensors[port];
 }
 
-void RobotModel::clear()
-{
-}
-
 void RobotModel::configureSensors(sensorType::SensorTypeEnum const &port1
 		, sensorType::SensorTypeEnum const &port2
 		, sensorType::SensorTypeEnum const &port3
@@ -77,19 +73,19 @@ void RobotModel::configureSensor(sensorType::SensorTypeEnum const &sensorType
 	case sensorType::unused:
 		break;
 	case sensorType::touchBoolean:
-		mSensors[port] = new robotParts::TouchSensor(mRobotImpl->sensors()[port], port);
+		mSensors[port] = new robotParts::TouchSensor(mRobotImpl->sensor(port), port);
 		break;
 	case sensorType::touchRaw:
 		break;
 	case sensorType::sonar:
-		mSensors[port] = new robotParts::SonarSensor(mRobotImpl->sensors()[port], port);
+		mSensors[port] = new robotParts::SonarSensor(mRobotImpl->sensor(port), port);
 		break;
 	case sensorType::colorFull:
 	case sensorType::colorRed:
 	case sensorType::colorGreen:
 	case sensorType::colorBlue:
 	case sensorType::colorNone:
-		mSensors[port] = new robotParts::ColorSensor(mRobotImpl->sensors()[port], port);
+		mSensors[port] = new robotParts::ColorSensor(mRobotImpl->sensor(port), port);
 		break;
 	default:
 		// TODO: Throw an exception
@@ -156,8 +152,8 @@ void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModel
 
 	for (int i = 0; i < 4; ++i) {
 		if (mSensors[i] != NULL) {
-			if (mRobotImpl->sensors()[i])
-				mSensors[i]->setImplementation(mRobotImpl->sensors()[i]);
+			if (mRobotImpl->sensor(static_cast<inputPort::InputPortEnum>(i)))
+				mSensors[i]->setImplementation(mRobotImpl->sensor(static_cast<inputPort::InputPortEnum>(i)));
 			else {
 				delete mSensors[i];
 				mSensors[i] = NULL;

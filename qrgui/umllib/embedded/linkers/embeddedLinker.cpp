@@ -42,12 +42,12 @@ void EmbeddedLinker::setMaster(NodeElement *element)
 void EmbeddedLinker::generateColor()
 {
 	int result = 0;
-	QChar *data = edgeType.element().data();
-	while (!data->isNull()) {
-		result += data->unicode();
-		++data;
-	}
-	result *= 666;
+//	QChar *data = edgeType.element().data();
+//	while (!data->isNull()) {
+//		result += data->unicode();
+//		++data;
+//	}
+//	result *= 666;
 	color = QColor(result % 192 + 64, result % 128 + 128, result % 64 + 192).darker(0);
 }
 

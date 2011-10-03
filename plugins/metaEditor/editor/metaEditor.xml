@@ -176,7 +176,7 @@
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntity Attribute"/>
-						<contains type="MetaEditor::MetaEntityConnetction"/>
+						<contains type="MetaEditor::MetaEntityConnection"/>
 						<contains type="MetaEditor::MetaEntityUsage"/>
 						<contains type="MetaEditor::Inheritance"/>
 						<contains type="MetaEditor::MetaEntityPossibleEdge"/>

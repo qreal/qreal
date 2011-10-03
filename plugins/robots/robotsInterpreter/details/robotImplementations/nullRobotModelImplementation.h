@@ -38,6 +38,7 @@ public:
 
 private slots:
 	void timerTimeout();
+	void sensorConfigurationDoneSlot();
 
 private:
 	QTimer mActiveWaitingTimer;
@@ -52,7 +53,7 @@ private:
 
 	virtual void addTouchSensor(inputPort::InputPortEnum const &port);
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port);
-	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode);
+	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType);
 };
 
 }

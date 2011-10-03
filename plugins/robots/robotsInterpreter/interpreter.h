@@ -42,6 +42,7 @@ public:
 	void setRobotImplementation(robotModelType::robotModelTypeEnum implementationType);
 
 	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
+	void closeD2ModelWidget();
 	void setRobotModelType(robotModelType::robotModelTypeEnum robotModelType);
 	void setCommunicator(const QString &valueOfCommunication, const QString &portName);
 
@@ -65,6 +66,7 @@ private slots:
 	void responseSlot4(int sensorValue);
 
 	void connectedSlot(bool success);
+	void sensorsConfiguredSlot();
 
 private:
 	enum InterpreterState {
@@ -89,7 +91,7 @@ private:
 	bool mConnected;
 
 	robotModelType::robotModelTypeEnum mImplementationType;
-	
+
 	watchListWindow *mWatchListWindow;
 
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);

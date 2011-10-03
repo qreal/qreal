@@ -83,12 +83,20 @@ void Interpreter::interpret()
 		return;
 	}
 
+	connect(&mRobotModel->robotImpl(), SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
 	Autoconfigurer configurer(*mGraphicalModelApi, mBlocksTable, mInterpretersInterface->errorReporter(), mRobotModel);
 	if (!configurer.configure(currentDiagramId))
 		return;
+}
+
+void Interpreter::sensorsConfiguredSlot()
+{
+	disconnect(&mRobotModel->robotImpl(), SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
 
 	mRobotModel->robotImpl().startInterpretation();
 
+	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
+	Id const startingElement = findStartingElement(currentDiagramId);
 	Thread * const initialThread = new Thread(*mInterpretersInterface, *mBlocksTable, startingElement);
 	addThread(initialThread);
 }
@@ -118,6 +126,12 @@ void Interpreter::showWatchList() {
 	}
 	mWatchListWindow = new watchListWindow(mParser);
 	mWatchListWindow->show();
+}
+
+void Interpreter::closeD2ModelWidget()
+{
+	if (mD2ModelWidget)
+		mD2ModelWidget->close();
 }
 
 void Interpreter::showD2ModelWidget(bool isVisible)
@@ -283,7 +297,7 @@ void Interpreter::responseSlot4(int sensorValue)
 
 void Interpreter::updateSensorValues(QString const &sensorVariableName, int sensorValue)
 {
-	(*(mParser->getVariables()))[sensorVariableName] = Number(sensorValue, Number::intType);
+	(*(mParser->getVariables()))[sensorVariableName] = utils::Number(sensorValue, utils::Number::intType);
 //	qDebug() << sensorVariableName << sensorValue;
 }
 
