@@ -46,19 +46,19 @@ void WaitForColorIntensityBlock::responseSlot(int reading)
 	int const targetIntensity = evaluate("Intensity").toInt();
 
 	QString const sign = stringProperty("Sign");
-	if (sign == "=")
+	if (sign == "равно")
 		if (reading != targetIntensity)
 			stop();
-	if (sign == ">")
+	if (sign == "больше")
 		if (reading <= targetIntensity)
 			stop();
-	if (sign == "<")
+	if (sign == "меньше")
 		if (reading >= targetIntensity)
 			stop();
-	if (sign == ">=")
+	if (sign == "не меньше")
 		if (reading < targetIntensity)
 			stop();
-	if (sign == "<=")
+	if (sign == "не больше")
 		if (reading > targetIntensity)
 			stop();
 
