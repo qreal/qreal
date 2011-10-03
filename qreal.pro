@@ -36,4 +36,4 @@ plugins.depends = \
 	qrutils \
 	qrkernel \
 
-qtpropertybrowser.file = qrgui/thirdparty/qtpropertybrowser/qtpropertybrowser.pro
+qtpropertybrowser.file = qrgui\\thirdparty\\qtpropertybrowser\\qtpropertybrowser.pro
