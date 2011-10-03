@@ -50,18 +50,6 @@
                     <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>%1/bin/libqextserialport.a</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%1/bin/libqrkernel.a</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%1/bin/libqrrepo.a</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%1/bin/libqrutils.a</origin>
-                        </distributionFile>
-                        <distributionFile>
                             <origin>%1/bin/qextserialport.dll</origin>
                         </distributionFile>
                         <distributionFile>
@@ -75,6 +63,12 @@
                         </distributionFile>
                         <distributionFile>
                             <origin>%1/bin/qrutils.dll</origin>
+                        </distributionFile>
+						<distributionFile>
+                            <origin>%1/plugins/robots/editor/doc/qreal-robots.qhc</origin>
+                        </distributionFile>
+						<distributionFile>
+                            <origin>%1/plugins/robots/editor/doc/qreal-robots.qch</origin>
                         </distributionFile>
                         <distributionDirectory>
                             <origin>%1/bin/plugins</origin>
