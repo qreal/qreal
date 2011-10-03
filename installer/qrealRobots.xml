@@ -50,18 +50,6 @@
                     <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>%1/bin/libqextserialport.a</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%1/bin/libqrkernel.a</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%1/bin/libqrrepo.a</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%1/bin/libqrutils.a</origin>
-                        </distributionFile>
-                        <distributionFile>
                             <origin>%1/bin/qextserialport.dll</origin>
                         </distributionFile>
                         <distributionFile>
