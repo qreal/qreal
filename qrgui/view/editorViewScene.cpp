@@ -208,11 +208,13 @@ int EditorViewScene::launchEdgeMenu(EdgeElement* edge, NodeElement* node, QPoint
 		}
 
 		foreach (QString target, targets.toSet()) { // QSet is used to remove duplicates
-			QAction* element = new QAction(target, createElemMenu);
+			Id id = Id::loadFromString("qrm:/" + node->id().editor() + "/" + node->id().diagram() + "/" + target);
+			QAction* element = new QAction(mWindow->manager()->friendlyName(id), createElemMenu);
 			createElemMenu->addAction(element);
 			toDelete.append(element);
 			QObject::connect(element,SIGNAL(triggered()), menuSignalMapper, SLOT(map()));
-			menuSignalMapper->setMapping(element, "qrm:/" + node->id().editor() + "/"+node->id().diagram() + "/"+target);
+			menuSignalMapper->setMapping(element, id.toString());
+
 		}
 	}
 
