@@ -35,7 +35,7 @@ public:
 	virtual void setBrushColor(const QString& text);
 
         virtual void resizeItem(QGraphicsSceneMouseEvent *event);
-        virtual QDomElement serialize(QDomDocument &document);
+        virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
         virtual void deserialize(QDomElement const &element);
 
 private:

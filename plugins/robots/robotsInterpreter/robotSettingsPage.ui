@@ -16,7 +16,7 @@
      <x>10</x>
      <y>299</y>
      <width>201</width>
-     <height>101</height>
+     <height>91</height>
     </rect>
    </property>
    <property name="title">
@@ -165,10 +165,10 @@
   <widget class="QGroupBox" name="robotModelGroupBox_2">
    <property name="geometry">
     <rect>
-     <x>210</x>
+     <x>220</x>
      <y>300</y>
-     <width>201</width>
-     <height>101</height>
+     <width>191</width>
+     <height>91</height>
     </rect>
    </property>
    <property name="title">

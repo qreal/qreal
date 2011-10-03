@@ -532,8 +532,8 @@ void D2ModelWidget::saveWorldModel()
 
 	QDomDocument save;
 	QDomElement root = save.createElement("root");
-	save.appendChild(root);
-	root.appendChild(mWorldModel->serialize(save));
+        save.appendChild(root);
+        root.appendChild(mWorldModel->serialize(save, QPoint(0, 0)));
 	root.appendChild(mRobotModel->configuration().serialize(save));
 
 	utils::OutFile saveFile(saveFileName);

@@ -301,13 +301,13 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 
 	} else if (mElementId.element() == "Beep") {
 		result.append(SmartLine(
-					"ecrobot_sound_tone(1000, 100, 50)", //TODO: change sound to smth
+					"ecrobot_sound_tone(1000, 100, 50);", //TODO: change sound to smth
 					mElementId));
 
 	} else if (mElementId.element() == "PlayTone") {
 		result.append(SmartLine(
 					"ecrobot_sound_tone(" + mNxtGen->mApi->stringProperty(logicElementId, "Frequency") + ", "
-						+ mNxtGen->mApi->stringProperty(logicElementId, "Duration") + ", 50)", //50 - volume of a sound
+						+ mNxtGen->mApi->stringProperty(logicElementId, "Duration") + ", 50);", //50 - volume of a sound
 					mElementId));
 
 	} else if (mElementId.element() == "FinalNode") {

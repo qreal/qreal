@@ -73,12 +73,12 @@ void LineItem::reshapeRectWithShift()
 		AbstractItem::reshapeRectWithShift();
 }
 
-QDomElement LineItem::serialize(QDomDocument &document) /*const*/
+QDomElement LineItem::serialize(QDomDocument &document, QPoint const &topLeftPicture)
 {
-	QDomElement lineNode = setPenBrushToDoc(document, mSerializeName);
-	lineNode.setAttribute("begin", QString::number(mX1 + scenePos().x()) + ":" + QString::number(mY1 + scenePos().y()));
-	lineNode.setAttribute("end", QString::number(mX2 + scenePos().x()) + ":" + QString::number(mY2 + scenePos().y()));
-	return lineNode;
+        QDomElement lineNode = setPenBrushToDoc(document, mSerializeName);
+        lineNode.setAttribute("begin", QString::number(mX1 + scenePos().x() - topLeftPicture.x()) + ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
+        lineNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x()) + ":" + QString::number(mY2 + scenePos().y() - topLeftPicture.y()));
+        return lineNode;
 }
 
 void LineItem::deserialize(QDomElement const &element)
@@ -101,4 +101,9 @@ void LineItem::deserialize(QDomElement const &element)
 	mY2 = end.y();
 
 	readPenBrush(element);
+}
+
+void LineItem::setSerializeName(QString name)
+{
+    mSerializeName = name;
 }

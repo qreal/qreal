@@ -123,21 +123,21 @@ QPainterPath WorldModel::buildWallPath() const
 	return wallPath;
 }
 
-QDomElement WorldModel::serialize(QDomDocument &document) const
+QDomElement WorldModel::serialize(QDomDocument &document, QPoint const &topLeftPicture) const
 {
 	QDomElement result = document.createElement("world");
 
 	QDomElement walls = document.createElement("walls");
 	result.appendChild(walls);
 	foreach (WallItem *wall, mWalls) {
-		QDomElement wallNode = wall->serialize(document);
+                QDomElement wallNode = wall->serialize(document, topLeftPicture);
 		walls.appendChild(wallNode);
 	}
 
         QDomElement colorFields = document.createElement("colorFields");
         result.appendChild(colorFields);
         foreach (ColorFieldItem *colorField, mColorFields) {
-                QDomElement colorFiedlNode = colorField->serialize(document);
+                QDomElement colorFiedlNode = colorField->serialize(document, topLeftPicture);
                 colorFields.appendChild(colorFiedlNode);
         }
 
@@ -151,7 +151,6 @@ void WorldModel::deserialize(QDomElement const &element)
 		return;
 	}
 
-	mWalls.clear();
 	QDomNodeList walls = element.elementsByTagName("wall");
 	for (int i = 0; i < walls.count(); ++i) {
 		QDomElement const wallNode = walls.at(i).toElement();
@@ -161,7 +160,6 @@ void WorldModel::deserialize(QDomElement const &element)
 		mWalls.append(wall);
 	}
 
-        mColorFields.clear();
         QDomNodeList colorFields = element.elementsByTagName("colorFields");
         for (int i = 0; i < colorFields.count(); ++i) {
                 QDomElement const colorFieldNode = colorFields.at(i).toElement();
