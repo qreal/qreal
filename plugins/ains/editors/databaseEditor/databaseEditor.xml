@@ -39,7 +39,10 @@
                     <ports/>
                 </graphics>
                 <logic>
-                    <container/>
+					<properties>
+						<property name="saveToTheDirectory" type="string" displayedName="saveToTheDirectory"/>
+						<property name="filename" type="string" displayedName="filename"/>
+					</properties>
                 </logic>
             </node>
             <node displayedName="Таблица" description="Новая таблица" name="Table">

@@ -190,8 +190,6 @@ MainWindow::MainWindow()
 	connect(mDebuggerConnector, SIGNAL(readyReadStdOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
 	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerErrOutput(QString)));
 
-	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
-	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 	//	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
 	mFlashTool = new gui::NxtFlashTool(mErrorReporter);
@@ -882,9 +880,9 @@ void MainWindow::generateEditor()
 		QString const metamodelFullName = metamodelList[key].first;
 		QString const pathToQRealRoot = metamodelList[key].second;
 		dir.mkpath(metamodelFullName);
-//		QFileInfo metamodelFileInfo(metamodelFullName);
-//		QStrin metamodelName = metamodelFileInfo.baseName();
-		QString metamodelName = (metamodelFullName.split("/", QString::SkipEmptyParts)).last();
+		QFileInfo metamodelFileInfo(metamodelFullName);
+		QString metamodelName = metamodelFileInfo.baseName();
+//		QString metamodelName = (metamodelFullName.split("/", QString::SkipEmptyParts)).last();
 		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, metamodelFullName + "/" + metamodelName, pathToQRealRoot);
 
 		if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)) {
