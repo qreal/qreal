@@ -53,7 +53,7 @@ public:
 
 	const QPointF getPortPos(qreal id) const;
 	static int portId(qreal id);
-	const QPointF getNearestPort(QPointF location) const;
+	const QPointF getNearestPort(QPointF const &location) const;
 
 	qreal getPortId(const QPointF &location) const;
 
