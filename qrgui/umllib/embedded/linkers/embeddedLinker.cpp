@@ -9,8 +9,8 @@
 #include <QGraphicsItem>
 #include <QStyleOptionGraphicsItem>
 
-#include "../view/editorViewScene.h"
-#include "../mainwindow/mainWindow.h"
+#include "../../../view/editorViewScene.h"
+#include "../../../mainwindow/mainWindow.h"
 
 using namespace qReal;
 
