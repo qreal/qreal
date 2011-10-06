@@ -7,24 +7,45 @@
     <diagram displayedName="Редактор диаграмм баз данных" nodeName="DatabaseDiagram" name="DatabaseEditor">
         <nonGraphicTypes>
             <enum displayedName="Строковый тип" name="StringType">
-                <value>CHAR</value>
-                <value>VARCHAR</value>
-                <value>CLOB</value>
+                <value>char</value>
+                <value>varchar</value>
+                <value>text</value>
+                <value>nchar</value>
+                <value>nvarchar</value>
+                <value>ntext</value>
+                <value>binary</value>
+                <value>varbinary</value>
+                <value>image</value>
             </enum>
             <enum displayedName="Числовой тип" name="NumType">
-                <value>INTEGER</value>
-                <value>SMALLINT</value>
-                <value>BIGINT</value>
-                <value>NUMERIC</value>
-                <value>DECIMAL</value>
-                <value>REAL</value>
-                <value>DOUBLE PRECISION</value>
-                <value>DOUBLE</value>
+                <value>int</value>
+                <value>smallint</value>
+                <value>bigint</value>
+                <value>tynyint</value>
+                <value>decimal</value>
+                <value>numeric</value>
+                <value>money</value>
+                <value>smallmoney</value>
+                <value>bit</value>
+                <value>float</value>
+                <value>real</value>
             </enum>
-            <enum displayedName="Логический тип" name="BoolType">
-                <value>TRUE</value>
-                <value>FALSE</value>
-                <value>UNKNOWN</value>
+            <enum displayedName="Тип Дата-Время" name="DateType">
+                <value>date</value>
+                <value>datetime</value>
+                <value>datetime2</value>
+                <value>time</value>
+                <value>datetimeoffset</value>
+                <value>smalldatetime</value>
+            </enum>
+            <enum displayedName="Другой тип" name="OtherType">
+                <value>cursor</value>
+                <value>timestamp</value>
+                <value>hierarchyid</value>
+                <value>sql_variant</value>
+                <value>xml</value>
+                <value>table</value>
+                <value>uniqueidentifier</value>
             </enum>
         </nonGraphicTypes>
         <graphicTypes>
@@ -48,10 +69,10 @@
             <node displayedName="Таблица" description="Новая таблица" name="Table">
                 <graphics>
                     <picture sizex="150" sizey="180">
-                        <rectangle fill="#f0f8ff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="180" fill-style="solid" x2="150"/>
+                        <rectangle fill="#f5f5f5" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="180" fill-style="solid" x2="150"/>
                     </picture>
                     <labels>
-                        <label x="0" y="-25" textBinded="name"/>
+                        <label x="0" y="-30" textBinded="name"/>
                     </labels>
                    <ports>
                         <linePort>
@@ -74,6 +95,7 @@
                 </graphics>
                 <logic>
                     <container>
+                        <contains type="AbstractColumn"/>
                         <properties>
                             <forestalling size="25"/>
                             <childrenForestalling size="5"/>
@@ -85,15 +107,37 @@
                     </container>
                 </logic>
             </node>
+            <node name="AbstractColumn">
+                <logic>
+                    <container/>
+                </logic>
+            </node>
             <node displayedName="Столбец строкового типа" name="ColumnString">
                 <graphics>
                     <picture sizex="200" sizey="20">
-                        <rectangle fill="#f0fff0" stroke-style="solid" stroke="#6495ed" y1="0" stroke-width="1" x1="0" y2="20" fill-style="solid" x2="200"/>
+                        <rectangle fill="#f5f5f5" stroke-style="solid" stroke="#6495ed" y1="0" stroke-width="1" x1="0" y2="20" fill-style="solid" x2="200"/>
                     </picture>
                     <labels>
                         <label x="5" y="1" textBinded="name"/>
                     </labels>
-                    <ports/>
+                   <ports>
+                        <linePort>
+                            <start startx="0" starty="5"/>
+                            <end endx="0" endy="15"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="0"/>
+                            <end endx="120" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="200" starty="5"/>
+                            <end endx="200" endy="15"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="20"/>
+                            <end endx="120" endy="20"/>
+                        </linePort>
+                    </ports>
                 </graphics>
                 <logic>
                     <container/>
@@ -106,92 +150,141 @@
 						</property>
 						<property displayedName="Максимальное число символов" type="int" name="maxtypeLength"/>
                     </properties>
+                    <generalizations>
+                        <parent parentName="AbstractColumn"/>
+                    </generalizations>
                 </logic>
             </node>
             <node displayedName="Столбец числового типа" name="ColumnNumber">
                 <graphics>
                     <picture sizex="200" sizey="20">
-                        <rectangle fill="#f0fff0" stroke-style="solid" stroke="#f08080" y1="0" stroke-width="1" x1="0" y2="20" fill-style="solid" x2="200"/>
+                        <rectangle fill="#f5f5f5" stroke-style="solid" stroke="#f08080" y1="0" stroke-width="1" x1="0" y2="20" fill-style="solid" x2="200"/>
                     </picture>
                     <labels>
                         <label x="5" y="1" textBinded="name"/>
                     </labels>
-                    <ports/>
+                   <ports>
+                        <linePort>
+                            <start startx="0" starty="5"/>
+                            <end endx="0" endy="15"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="0"/>
+                            <end endx="120" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="200" starty="5"/>
+                            <end endx="200" endy="15"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="20"/>
+                            <end endx="120" endy="20"/>
+                        </linePort>
+                    </ports>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
                         <property displayedName="Числовой тип" type="NumType" name="NumTypeProperty">
-                            <default>INTEGER</default>
+                            <default>int</default>
                         </property>
 						<property type="bool" name="is Primary Key">
 							<default>false</default>
 						</property>
-						<property displayedName="Число знаков" type="int" name="numberOfSigns"/>
-						<property displayedName="Число знаков после запятой" type="int" name="numberOfSignAfterPoint"/>
-                    </properties>
-                </logic>
-            </node>
-            <node displayedName="Столбец логического типа" name="ColumnLogical">
-                <graphics>
-                    <picture sizex="200" sizey="20">
-                        <rectangle fill="#f0fff0" stroke-style="solid" stroke="#006400" y1="0" stroke-width="1" x1="0" y2="20" fill-style="solid" x2="200"/>
-                    </picture>
-                    <labels>
-                        <label x="5" y="1" textBinded="name"/>
-                    </labels>
-                    <ports/>
-                </graphics>
-                <logic>
-                    <container/>
-                    <properties>
-                        <property displayedName="Значение по умолчанию" type="BoolType" name="DefaultValue">
-                            <default>FALSE</default>
-                        </property>
-						<property type="bool" name="is Primary Key">
-							<default>false</default>
+						<property displayedName="Число знаков" type="int" name="numberOfSigns">
+							<default>0</default>
+						</property>
+						<property displayedName="Число знаков после запятой" type="int" name="numberOfSignAfterPoint">
+							<default>0</default>
 						</property>
                     </properties>
+                    <generalizations>
+                        <parent parentName="AbstractColumn"/>
+                    </generalizations>
                 </logic>
             </node>
             <node displayedName="Столбец типа дата-время" name="ColumnDate">
                 <graphics>
                     <picture sizex="200" sizey="20">
-                        <rectangle fill="#f0fff0" stroke-style="solid" stroke="#483d8b" y1="0" stroke-width="1" x1="0" y2="20" fill-style="solid" x2="200"/>
+                        <rectangle fill="#f5f5f5" stroke-style="solid" stroke="#483d8b" y1="0" stroke-width="1" x1="0" y2="20" fill-style="solid" x2="200"/>
                     </picture>
                     <labels>
                         <label x="5" y="1" textBinded="name"/>
                     </labels>
-                    <ports/>
+                   <ports>
+                        <linePort>
+                            <start startx="0" starty="5"/>
+                            <end endx="0" endy="15"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="0"/>
+                            <end endx="120" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="200" starty="5"/>
+                            <end endx="200" endy="15"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="20"/>
+                            <end endx="120" endy="20"/>
+                        </linePort>
+                    </ports>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property displayedName="Тип" type="string" name="TypeProperty"/>
+                        <property displayedName="Тип" type="DateType" name="TypeProperty">
+							<default>date</default>
+						</property>
 						<property type="bool" name="is Primary Key">
 							<default>false</default>
 						</property>
                     </properties>
+                    <generalizations>
+                        <parent parentName="AbstractColumn"/>
+                    </generalizations>
                 </logic>
             </node>
-            <node displayedName="Столбец интервального типа" name="ColumnInterval">
+            <node displayedName="Столбец другого типа" name="ColumnOther">
                 <graphics>
                     <picture sizex="200" sizey="20">
-                        <rectangle fill="#f0fff0" stroke-style="solid" stroke="#808080" y1="0" stroke-width="1" x1="0" y2="20" fill-style="solid" x2="200"/>
+                        <rectangle fill="#f5f5f5" stroke-style="solid" stroke="#00ff00" y1="0" stroke-width="1" x1="0" y2="20" fill-style="solid" x2="200"/>
                     </picture>
                     <labels>
                         <label x="5" y="1" textBinded="name"/>
                     </labels>
-                    <ports/>
+                   <ports>
+                        <linePort>
+                            <start startx="0" starty="5"/>
+                            <end endx="0" endy="15"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="0"/>
+                            <end endx="120" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="200" starty="5"/>
+                            <end endx="200" endy="15"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="20"/>
+                            <end endx="120" endy="20"/>
+                        </linePort>
+                    </ports>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property displayedName="Тип" type="string" name="IntervalProperty"/>
+                        <property displayedName="Тип" type="OtherType" name="TypeProperty">
+							<default>cursor</default>
+						</property>
 						<property type="bool" name="is Primary Key">
 							<default>false</default>
 						</property>
                     </properties>
+                    <generalizations>
+                        <parent parentName="AbstractColumn"/>
+                    </generalizations>
                 </logic>
             </node>
             <edge displayedName="Связь" name="Connection">
@@ -208,6 +301,9 @@
                     <properties>
                         <property displayedName="Foreign Key Name" type="string" name="Foreign Key"/>
                     </properties>
+                    <generalizations>
+                        <parent parentName="AbstractColumn"/>
+                    </generalizations>
                 </logic>
             </edge>
         </graphicTypes>

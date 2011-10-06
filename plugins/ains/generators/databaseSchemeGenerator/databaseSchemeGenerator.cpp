@@ -9,6 +9,30 @@ DatabaseEditorSchemeGenerator::DatabaseEditorSchemeGenerator(const LogicalModelA
 : mApi(api)
 , mErrorReporter(errorReporter)
 {
+	fillKeyWords();
+}
+
+void DatabaseEditorSchemeGenerator::fillKeyWords()
+{
+	QFile sqlKeyWords("../plugins/ains/generators/databaseSchemeGenerator/SQLKeyWords.txt");
+	QString word;
+	if (sqlKeyWords.open(QIODevice::ReadOnly))
+	{
+		QTextStream keyWords(&sqlKeyWords);
+		while (!keyWords.atEnd()) {
+			word = keyWords.readLine();
+			word.trimmed();
+			if ((word != "") && (word != "\n")&& (word != "	" ))
+				mKeyWords << word;
+		}
+		sqlKeyWords.close();
+	}
+
+}
+
+bool DatabaseEditorSchemeGenerator::isKeyWord(const QString &name)
+{
+	return mKeyWords.contains(name.toUpper());
 }
 
 QHash<Id, QPair<QString, QString> > DatabaseEditorSchemeGenerator::modelList()
@@ -45,6 +69,8 @@ ErrorReporterInterface& DatabaseEditorSchemeGenerator::generateDatabaseScheme(co
 			QString const tableType = mApi.logicalRepoApi().typeName(tableId);
 			if (tableType == "Table" && mApi.isLogicalId(tableId)) {
 				QString tableName = mApi.logicalRepoApi().stringProperty(tableId, "name");
+				if (isKeyWord(tableName))
+					mErrorReporter.addError(QObject::tr("using reserved key as name of table"), tableId);
 				sqlFile() << QString("CREATE TABLE %1\n").arg(tableName);
 				processingColumns(tableId, sqlFile);
 				sqlFile() <<"\n\n";
@@ -73,15 +99,13 @@ void DatabaseEditorSchemeGenerator::processingColumns(const Id &tableId, utils::
 		start = false;
 		QString name = mApi.logicalRepoApi().stringProperty(id, "name");
 		if (name == "") {
-			mErrorReporter.addError("no name of the element", id);
+			mErrorReporter.addError(QObject::tr("no name of the element"), id);
 			return;
 		}
 		QString isPrimaryKey = mApi.logicalRepoApi().stringProperty(id, "is Primary Key");
 		QString type = columnType(id);
-		outFile() << QString("%1 %2").arg(name, type);
-		if (isPrimaryKey == "true") {
-			outFile() << " primary key";
-		}
+		QString primaryKey = ((isPrimaryKey == "true") ? "primary key" : "");
+		outFile() << QString("%1 %2 %3").arg(name, type, primaryKey);
 	}
 	addForeignKeys(tableId, outFile);
 	outFile() << "\n";
@@ -98,7 +122,7 @@ void DatabaseEditorSchemeGenerator::addForeignKeys(const Id &tableId, utils::Out
 		if (mApi.logicalRepoApi().typeName(id) == "Connection") {
 			QString foreignKeyName = mApi.logicalRepoApi().stringProperty(id, "Foreign Key");
 			if (foreignKeyName == "") {
-				mErrorReporter.addError("no name of foreign key", id);
+				mErrorReporter.addError(QObject::tr("no name of foreign key"), id);
 				return;
 			}
 			Id const connectedId = mApi.logicalRepoApi().to(id);
@@ -114,7 +138,7 @@ void DatabaseEditorSchemeGenerator::addForeignKeys(const Id &tableId, utils::Out
 
 bool DatabaseEditorSchemeGenerator::isColumn(const QString &type)
 {
-	return ((type == "ColumnString") || (type == "ColumnNumber") || (type == "ColumnLogical") || (type == "ColumnDate") || (type == "ColumnInterval"));
+	return ((type == "ColumnString") || (type == "ColumnNumber") || (type == "ColumnDate") || (type == "ColumnOther"));
 }
 
 const QString DatabaseEditorSchemeGenerator::columnType(const Id &id)
@@ -135,32 +159,19 @@ const QString DatabaseEditorSchemeGenerator::columnType(const Id &id)
 			QString numberOfSigns = mApi.logicalRepoApi().stringProperty(id, "numberOfSigns");
 			QString numberOfSignAfterPoint = mApi.logicalRepoApi().stringProperty(id, "numberOfSignAfterPoint");
 			specificColumnType = type;
-			if (type == "DECIMAL") {
+			if ((type == "decimal") || (type == "numeric")) {
+				if (numberOfSigns.toInt() < numberOfSignAfterPoint.toInt())
+					mErrorReporter.addError(QObject::tr("wrong parametres of type 'decimal' or 'numeric'"), id);
 				if (numberOfSignAfterPoint != "0")
 					specificColumnType += QString("(%1, %2)").arg(numberOfSigns, numberOfSignAfterPoint);
+				else if (numberOfSigns != "0")
+					specificColumnType += QString("(%1)").arg(numberOfSigns);
 			}
 		}
-		else if (columnType == "ColumnLogical") {
-			QString defaultValue = mApi.logicalRepoApi().stringProperty(id, "DefaultValue");
-			specificColumnType = QString("boolean default '%1'").arg(defaultValue);
-		}
-		else if (columnType == "ColumnDate") {
+		else if ((columnType == "ColumnDate") || (columnType == "ColumnOther")) {
 			QString type = mApi.logicalRepoApi().stringProperty(id, "TypeProperty");
-			if (type == "") {
-				mErrorReporter.addError("no type of the element", id);
-				return "";
-			}
-			specificColumnType = type;
-		}
-		else if (columnType == "ColumnInterval") {
-			QString type = mApi.logicalRepoApi().stringProperty(id, "IntervalProperty");
-			if (type == "") {
-				mErrorReporter.addError("no type of the element", id);
-				return "";
-			}
 			specificColumnType = type;
 		}
 	}
 	return specificColumnType;
 }
-

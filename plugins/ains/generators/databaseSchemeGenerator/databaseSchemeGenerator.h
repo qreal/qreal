@@ -24,6 +24,10 @@ private:
 	void addForeignKeys(Id const &tableId, utils::OutFile &outFile);
 	bool isColumn(QString const &type);
 	QString const columnType(Id const &id);
+	bool isKeyWord(QString const &name);
+	void fillKeyWords();
+
+	QStringList mKeyWords;
 };
 }
 
