@@ -604,7 +604,7 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 	mRobot->addSensor(sensor);
 	mScene->addItem(sensor);
 
-	/*назначаем ротатер*/
+	/*РЅР°Р·РЅР°С‡Р°РµРј СЂРѕС‚Р°С‚РµСЂ*/
 	mSensorRotaters[port] = new Rotater();
 	mSensorRotaters[port]->setMasterItem(sensor);
 	mSensorRotaters[port]->setVisible(false);
@@ -642,7 +642,7 @@ QList<AbstractItem *> D2ModelWidget::selectedColorItems()
 	foreach (QGraphicsItem *graphicsItem, listSelectedItems) {
 		AbstractItem* item = dynamic_cast<AbstractItem*>(graphicsItem);
 		if (item != NULL) {
-			//теперь надо исключить еще те объекты, которым не надо менять цвет и т.д., а т.е. робота, сенсоры, стены и ротатеры
+			//С‚РµРїРµСЂСЊ РЅР°РґРѕ РёСЃРєР»СЋС‡РёС‚СЊ РµС‰Рµ С‚Рµ РѕР±СЉРµРєС‚С‹, РєРѕС‚РѕСЂС‹Рј РЅРµ РЅР°РґРѕ РјРµРЅСЏС‚СЊ С†РІРµС‚ Рё С‚.Рґ., Р° С‚.Рµ. СЂРѕР±РѕС‚Р°, СЃРµРЅСЃРѕСЂС‹, СЃС‚РµРЅС‹ Рё СЂРѕС‚Р°С‚РµСЂС‹
 			if (isColorItem(item))
 				resList.push_back(item);
 		}

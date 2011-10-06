@@ -102,7 +102,7 @@ void D2RobotModel::countMotorTurnover()
 
 int D2RobotModel::readEncoder(int/*inputPort::InputPortEnum*/ const port) const
 {
-	return mTurnoverMotors[port] / 360;//����� ���-�� �������� �� ������ ������
+	return mTurnoverMotors[port] / 360;//делим кол-во градусов на полный оборот
 }
 
 void D2RobotModel::resetEncoder(int/*inputPort::InputPortEnum*/ const port)
@@ -198,7 +198,7 @@ void D2RobotModel::countNewCoord()
 			angularSpeed = vSpeed / vRadius;
 		else
 			angularSpeed = averangeSpeed / averangeRadius;
-		gamma = timeInterval * angularSpeed;//нужен угол в радианах
+		gamma = timeInterval * angularSpeed;//РЅСѓР¶РµРЅ СѓРіРѕР» РІ СЂР°РґРёР°РЅР°С…
 		qreal const gammaDegrees = gamma * 180 / M_PI;
 
 		QTransform map;
@@ -211,7 +211,7 @@ void D2RobotModel::countNewCoord()
 		deltaX = newStart.x();
 		deltaY = newStart.y();
 
-		mAngle += gammaDegrees;//нужен угол в градусах
+		mAngle += gammaDegrees;//РЅСѓР¶РµРЅ СѓРіРѕР» РІ РіСЂР°РґСѓСЃР°С…
 	} else {
 		deltaY = averangeSpeed * timeInterval * sin(mAngle * M_PI / 180);
 		deltaX = averangeSpeed * timeInterval * cos(mAngle * M_PI / 180);
