@@ -1422,3 +1422,9 @@ void NodeElement::singleSelectionState(const bool singleSelected) {
 void NodeElement::selectionState(const bool selected) {
 	Element::selectionState(selected);
 }
+
+void NodeElement::highlightEdges()
+{
+	foreach (EdgeElement *edge, mEdgeList)
+		edge->highlight();
+}

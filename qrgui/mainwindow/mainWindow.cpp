@@ -693,6 +693,8 @@ void MainWindow::deleteFromScene(QGraphicsItem *target)
 	if (Element *elem = dynamic_cast<Element *>(target)) {
 		QPersistentModelIndex index = mModels->graphicalModelAssistApi().indexById(elem->id());
 		if (index.isValid()) {
+			if (NodeElement *node = dynamic_cast<NodeElement *>(elem))
+				node->highlightEdges();
 			PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
 			if (pModel->isCurrentIndex(index))
 				pModel->clearModelIndexes();

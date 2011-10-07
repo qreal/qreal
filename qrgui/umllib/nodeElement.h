@@ -99,6 +99,8 @@ public:
 
 	virtual void checkConnectionsToPort();
 
+	void highlightEdges();
+
 public slots:
 	virtual void singleSelectionState(const bool singleSelected);
 	virtual void selectionState(const bool selected);
