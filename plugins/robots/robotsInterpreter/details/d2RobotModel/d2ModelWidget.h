@@ -57,6 +57,9 @@ public:
 
 	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
 
+	D2ModelScene* scene();
+	void setSensorVisible(inputPort::InputPortEnum port, bool isVisible);
+
 public slots:
 	void update();
 

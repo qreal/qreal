@@ -532,8 +532,8 @@ void D2ModelWidget::saveWorldModel()
 
 	QDomDocument save;
 	QDomElement root = save.createElement("root");
-        save.appendChild(root);
-        root.appendChild(mWorldModel->serialize(save, QPoint(0, 0)));
+	save.appendChild(root);
+	root.appendChild(mWorldModel->serialize(save, QPoint(0, 0)));
 	root.appendChild(mRobotModel->configuration().serialize(save));
 
 	utils::OutFile saveFile(saveFileName);
@@ -708,4 +708,16 @@ void D2ModelWidget::setNoPalette()
 {
 	mUi->penWidthSpinBox->setValue(6);
 	mUi->penColorComboBox->setColor(QColor("black"));
+}
+
+D2ModelScene* D2ModelWidget::scene()
+{
+	return mScene;
+}
+
+void D2ModelWidget::setSensorVisible(inputPort::InputPortEnum port, bool isVisible)
+{
+	if (mSensors[port]) {
+		mSensors[port]->setVisible(isVisible);
+	}
 }
