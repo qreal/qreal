@@ -2,7 +2,10 @@
 #include <cmath>
 #include <QtCore/QObject>
 #include <QDir>
+
+#include "../../../qrkernel/exception/exception.h"
 #include "nxtOSEKRobotGenerator.h"
+
 
 #include <QDebug>
 
@@ -56,7 +59,17 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 
 		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(this, curInitialNode);
 		mPreviousElement = curInitialNode;
-		gen->generate();
+
+		try {
+			gen->generate();
+		} catch (qReal::Exception e) {
+			mErrorReporter.addError("Something with the diagram."\
+					" May be you forgot to connect one link end to object.");
+
+			qDebug() << e.message();
+			continue;
+		}
+
 		addToGeneratedStringSetVariableInit();
 
 		int curTabNumber = 1;
