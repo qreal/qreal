@@ -112,6 +112,8 @@ private:
 		virtual bool nextElementsGeneration();
 
 		bool generateBranch(int branchNumber);
+
+		QPair<bool, qReal::Id> checkBranchForBackArrows(qReal::Id const &curElementId); //initial step of checking
 		QPair<bool, qReal::Id> checkBranchForBackArrows(qReal::Id const &curElementId, qReal::IdList* checkedElements);
 	};
 

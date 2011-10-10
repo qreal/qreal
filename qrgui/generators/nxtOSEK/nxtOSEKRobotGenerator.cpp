@@ -60,8 +60,9 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(this, curInitialNode);
 		mPreviousElement = curInitialNode;
 
-		try {
+		//try {
 			gen->generate();
+		/*
 		} catch (qReal::Exception e) {
 			mErrorReporter.addError("Something with the diagram."\
 					" May be you forgot to connect one link end to object.");
@@ -69,6 +70,7 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 			qDebug() << e.message();
 			continue;
 		}
+		*/
 
 		addToGeneratedStringSetVariableInit();
 
@@ -559,6 +561,13 @@ bool NxtOSEKRobotGenerator::SimpleElementGenerator::nextElementsGeneration()
 	mNxtGen->mGeneratedStringSet << simpleCode();
 
 	if (outgoingConnectedElements.size() == 1) {
+		if (outgoingConnectedElements.at(0) == Id::rootId()) {
+			mNxtGen->mErrorReporter.addError("Element " + mElementId.toString() + " has no"\
+					" correct next element because its link has no end object."\
+					" May be you need to connect it to diagram object.");
+			return false;
+		}
+
 		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(mNxtGen, outgoingConnectedElements.at(0));
 		mNxtGen->mPreviousElement = mElementId;
 		gen->generate();
@@ -583,7 +592,7 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration()
 	int elementConnectedByIterationEdgeNumber = -1;
 	int afterLoopElementNumber = -1;
 
-	if (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString().toUtf8() == "итерация") {
+	if (mNxtGen->mApi->stringProperty(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toUtf8() == "итерация") {
 		elementConnectedByIterationEdgeNumber = 0;
 		afterLoopElementNumber = 1;
 	} else {
@@ -592,8 +601,15 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration()
 	}
 
 	//generate loop
+	Id loopNextElement = mNxtGen->mApi->to(outgoingLinks.at(elementConnectedByIterationEdgeNumber));
+	if (loopNextElement == Id::rootId()) {
+		mNxtGen->mErrorReporter.addError("Loop block " + mElementId.toString() + " has no correct loop branch!"\
+				" May be you need to connect it to some diagram element.");
+		return false;
+	}
+
 	AbstractElementGenerator* loopGen = ElementGeneratorFactory::generator(mNxtGen,
-			mNxtGen->mApi->to(outgoingLinks.at(elementConnectedByIterationEdgeNumber)));
+			loopNextElement);
 
 	mNxtGen->mPreviousElement = mElementId;
 	mNxtGen->mPreviousLoopElements.push(mElementId);
@@ -602,8 +618,15 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration()
 	delete loopGen;
 
 	//generate next blocks
+	Id nextBlockElement = mNxtGen->mApi->to(outgoingLinks.at(afterLoopElementNumber));
+	if (nextBlockElement == Id::rootId()) {
+		mNxtGen->mErrorReporter.addError("Loop block " + mElementId.toString() + " has no correct next block branch!"\
+				" May be you need to connect it to some diagram element.");
+		return false;
+	}
+
 	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mNxtGen,
-			mNxtGen->mApi->to(outgoingLinks.at(afterLoopElementNumber)));
+			nextBlockElement);
 
 	mNxtGen->mPreviousElement = mElementId;
 	mNxtGen->mPreviousLoopElements.push(mElementId);
@@ -618,8 +641,15 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::generateBranch(int branchNumber)
 {
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
+	Id branchElement = mNxtGen->mApi->to(outgoingLinks.at(branchNumber));
+	if (branchElement == Id::rootId()) {
+		mNxtGen->mErrorReporter.addError("If block " + mElementId.toString() + " has no 2 correct branches!"\
+				" May be you need to connect one of them to some diagram element.");
+		return false;
+	}
+
 	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mNxtGen,
-			mNxtGen->mApi->to(outgoingLinks.at(branchNumber)));
+			branchElement);
 
 	mNxtGen->mPreviousElement = mElementId;
 
@@ -630,21 +660,21 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::generateBranch(int branchNumber)
 	return true;
 }
 
+QPair<bool, qReal::Id> NxtOSEKRobotGenerator::IfElementGenerator::checkBranchForBackArrows(qReal::Id const &curElementId) {
+	//initial step of checking
+	IdList emptyList;
+	return checkBranchForBackArrows(curElementId, &emptyList);
+}
+
 QPair<bool, qReal::Id> NxtOSEKRobotGenerator::IfElementGenerator::checkBranchForBackArrows(qReal::Id const &curElementId,
 		qReal::IdList* checkedElements) {
-	qReal::Id logicElementId = curElementId; //TODO
+	qReal::Id logicElementId = curElementId;
 	if (!mNxtGen->mApi->isLogicalElement(curElementId))
 		logicElementId = mNxtGen->mApi->logicalId(curElementId);
 
 	if (checkedElements->contains(logicElementId))
 		//if we have already observed this element by checkBranchForBackArrows function
 		return QPair<bool, qReal::Id>(false, qReal::Id());
-
-	/*
-	if (mNxtGen->mElementToStringListNumbers.contains(logicElementId.toString())
-			|| mNxtGen->mElementToStringListNumbers.contains(curElementId.toString()))
-		return QPair<bool, qReal::Id>(true, logicElementId);
-	*/
 
 	//if we have observed this element and generated code of this element
 	foreach (QString observedElementString, mNxtGen->mElementToStringListNumbers.keys()) {
@@ -660,6 +690,13 @@ QPair<bool, qReal::Id> NxtOSEKRobotGenerator::IfElementGenerator::checkBranchFor
 	checkedElements->append(logicElementId);
 
 	foreach (qReal::Id childId, mNxtGen->mApi->outgoingConnectedElements(logicElementId)) {
+		if (childId == Id::rootId()) {
+			mNxtGen->mErrorReporter.addError("Link from " + logicElementId.toString() +
+					" has no object on its end."\
+					" May be you need to connect it to diagram object.");
+			return QPair<bool, qReal::Id>(false, qReal::Id());
+		}
+
 		QPair<bool, qReal::Id> childResult = checkBranchForBackArrows(childId, checkedElements);
 		if (childResult.first)
 			return childResult;
@@ -697,22 +734,32 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration()
 	}
 
 	//check for back arrows
-	qReal::IdList emptyList;
+	Id positiveBranchElement = mNxtGen->mApi->to(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)));
+	if (positiveBranchElement == Id::rootId()) {
+		mNxtGen->mErrorReporter.addError("If block " + mElementId.toString() + " has no 2 correct branches!"\
+				" May be you need to connect one of them to some diagram element.");
+		return false;
+	}
 
-	QPair<bool, qReal::Id> positiveBranchCheck =
-		checkBranchForBackArrows(mNxtGen->mApi->to(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum))),
-			&emptyList);
+	QPair<bool, qReal::Id> positiveBranchCheck = checkBranchForBackArrows(positiveBranchElement);
 	bool isPositiveBranchReturnsToBackElems = positiveBranchCheck.first;
 
-	emptyList.clear();
-	QPair<bool, qReal::Id> negativeBranchCheck =
-		checkBranchForBackArrows(mNxtGen->mApi->to(outgoingLinks.at(1 - conditionArrowNum)), &emptyList);
+	Id negativeBranchElement = mNxtGen->mApi->to(outgoingLinks.at(1 - conditionArrowNum));
+	if (positiveBranchElement == Id::rootId()) {
+		mNxtGen->mErrorReporter.addError("If block " + mElementId.toString() + " has no 2 correct branches!"\
+				" May be you need to connect one of them to some diagram element.");
+		return false;
+	}
+
+	QPair<bool, qReal::Id> negativeBranchCheck = checkBranchForBackArrows(negativeBranchElement);
+
 	bool isNegativeBranchReturnsToBackElems = negativeBranchCheck.first;
 
 	if (isPositiveBranchReturnsToBackElems && isNegativeBranchReturnsToBackElems) {
 		if (positiveBranchCheck.second != negativeBranchCheck.second) {
 			mNxtGen->mErrorReporter.addError(
-					"This diagram isn't structed diagram, because there are IF block with 2 back arrows!");
+					"This diagram isn't structed diagram,"\
+					" because there are IF block with 2 back arrows!");
 			return false;
 		}
 
