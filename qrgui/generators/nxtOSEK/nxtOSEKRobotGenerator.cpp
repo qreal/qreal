@@ -687,7 +687,7 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration()
 	QString condition = "(" + mNxtGen->mApi->property(logicElementId, "Condition").toString() + ")";
 
 	QByteArray conditionOnArrow =
-		mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)), "Guard").toByteArray();
+		mNxtGen->mApi->stringProperty(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)), "Guard").toUtf8();
 	if (conditionOnArrow == "меньше 0") {
 		condition += " < 0";
 	} else if (conditionOnArrow == "больше 0") {
