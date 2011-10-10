@@ -180,10 +180,6 @@ NxtOSEKRobotGenerator::AbstractElementGenerator::AbstractElementGenerator(NxtOSE
 
 void NxtOSEKRobotGenerator::AbstractElementGenerator::createListsForIncomingConnections()
 {
-	if (mElementId == Id::rootId()) {
-		return;
-	}
-
 	//connects string lists in mGeneratedStringSet with mElementId in mElementToStringListNumbers
 	for (int i = 1; i < mNxtGen->mApi->incomingConnectedElements(mElementId).size(); i++) {
 		mNxtGen->mGeneratedStringSet << QList<SmartLine>();
@@ -524,9 +520,6 @@ QList<SmartLine> NxtOSEKRobotGenerator::IfElementGenerator::loopPostfixCode()
 
 bool NxtOSEKRobotGenerator::SimpleElementGenerator::preGenerationCheck()
 {
-	if (mElementId == Id::rootId())
-		return false;
-
 	IdList outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
 	if (outgoingConnectedElements.size() > 1) {
 		//case of error in diagram
@@ -562,9 +555,6 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::preGenerationCheck()
 
 bool NxtOSEKRobotGenerator::SimpleElementGenerator::nextElementsGeneration()
 {
-	if (mElementId == Id::rootId())
-		return false;
-
 	IdList outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
 	mNxtGen->mGeneratedStringSet << simpleCode();
 
