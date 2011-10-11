@@ -328,10 +328,9 @@ void EdgeElement::connectToPort()
 	adjustLink();
 	arrangeSrcAndDst();
 	if (getNodeAt(mLine.first()) != NULL && getNodeAt(mLine.last()) != NULL)
-		mColor.setRgb(0, 0, 0, 255);
+		highlight(Qt::black);
 	else
-		mColor.setRgb(255, 0, 0, 255);
-	update();
+		highlight(Qt::red);
 
 }
 
@@ -948,3 +947,8 @@ QPointF EdgeElement::to() const
 	return mLine.last() + pos();
 }
 
+void EdgeElement::highlight(QColor const color)
+{
+	mColor = color;
+	update();
+}

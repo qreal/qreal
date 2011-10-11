@@ -45,19 +45,19 @@ void WaitForSonarDistanceBlock::responseSlot(int reading)
 {
 	int const targetDistance = evaluate("Distance").toInt();
 	QString const sign = stringProperty("Sign");
-	if (sign == "=")
+	if (sign == "равно")
 		if (reading != targetDistance)
 			stop();
-	if (sign == ">")
+	if (sign == "больше")
 		if (reading <= targetDistance)
 			stop();
-	if (sign == "<")
+	if (sign == "меньше")
 		if (reading >= targetDistance)
 			stop();
-	if (sign == ">=")
+	if (sign == "не меньше")
 		if (reading < targetDistance)
 			stop();
-	if (sign == "<=")
+	if (sign == "не больше")
 		if (reading > targetDistance)
 			stop();
 	if (reading < targetDistance)

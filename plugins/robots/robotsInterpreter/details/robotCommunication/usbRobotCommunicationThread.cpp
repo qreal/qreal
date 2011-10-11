@@ -100,6 +100,10 @@ void UsbRobotCommunicationThread::sendI2C(QObject *addressee
 		, QByteArray const &buffer, unsigned const responseSize
 		, inputPort::InputPortEnum const &port)
 {
+	Q_UNUSED(addressee)
+	Q_UNUSED(buffer)
+	Q_UNUSED(responseSize)
+	Q_UNUSED(port)
 }
 
 void UsbRobotCommunicationThread::debugPrint(QByteArray const &buffer, bool out)

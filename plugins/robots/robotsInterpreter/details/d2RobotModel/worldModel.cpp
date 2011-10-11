@@ -47,14 +47,6 @@ bool WorldModel::touchSensorReading(QPoint const &position, qreal direction, inp
 	return wallPath.intersects(robotPath);
 }
 
-int WorldModel::colorSensorReading(QPoint const &position, sensorType::SensorTypeEnum mode) const
-{
-	Q_UNUSED(mode)
-	Q_UNUSED(position)
-	qDebug() << "Reading color sensor";
-	return 0;
-}
-
 QPainterPath WorldModel::sonarScanningRegion(QPoint const &position, qreal direction, int range) const
 {
 	double const pixelsInCm = 1;
@@ -85,7 +77,7 @@ bool WorldModel::checkCollision(QPolygonF const &robotRegion) const
 
 QList<WallItem *> const &WorldModel::walls() const
 {
-        return mWalls;
+		return mWalls;
 }
 
 void WorldModel::addWall(WallItem* wall)
@@ -95,18 +87,18 @@ void WorldModel::addWall(WallItem* wall)
 
 QList<ColorFieldItem *> const &WorldModel::colorFields() const
 {
-        return mColorFields;
+		return mColorFields;
 }
 
 void WorldModel::addColorField(ColorFieldItem* colorField)
 {
-        mColorFields.append(colorField);
+		mColorFields.append(colorField);
 }
 
 void WorldModel::clearScene()
 {
 	mWalls.clear();
-        mColorFields.clear();
+		mColorFields.clear();
 }
 
 QPainterPath WorldModel::buildWallPath() const
@@ -130,16 +122,16 @@ QDomElement WorldModel::serialize(QDomDocument &document, QPoint const &topLeftP
 	QDomElement walls = document.createElement("walls");
 	result.appendChild(walls);
 	foreach (WallItem *wall, mWalls) {
-                QDomElement wallNode = wall->serialize(document, topLeftPicture);
+				QDomElement wallNode = wall->serialize(document, topLeftPicture);
 		walls.appendChild(wallNode);
 	}
 
-        QDomElement colorFields = document.createElement("colorFields");
-        result.appendChild(colorFields);
-        foreach (ColorFieldItem *colorField, mColorFields) {
-                QDomElement colorFiedlNode = colorField->serialize(document, topLeftPicture);
-                colorFields.appendChild(colorFiedlNode);
-        }
+		QDomElement colorFields = document.createElement("colorFields");
+		result.appendChild(colorFields);
+		foreach (ColorFieldItem *colorField, mColorFields) {
+				QDomElement colorFiedlNode = colorField->serialize(document, topLeftPicture);
+				colorFields.appendChild(colorFiedlNode);
+		}
 
 	return result;
 }
@@ -160,24 +152,24 @@ void WorldModel::deserialize(QDomElement const &element)
 		mWalls.append(wall);
 	}
 
-        QDomNodeList colorFields = element.elementsByTagName("colorFields");
-        for (int i = 0; i < colorFields.count(); ++i) {
-                QDomElement const colorFieldNode = colorFields.at(i).toElement();
+		QDomNodeList colorFields = element.elementsByTagName("colorFields");
+		for (int i = 0; i < colorFields.count(); ++i) {
+				QDomElement const colorFieldNode = colorFields.at(i).toElement();
 
-                QDomNodeList lines = colorFieldNode.elementsByTagName("line");
-                for (int i = 0; i < lines.count(); ++i) {
-                        QDomElement const lineNode = lines.at(i).toElement();
-                        LineItem* lineItem = new LineItem(QPointF(0, 0), QPointF(0, 0));
-                        lineItem->deserialize(lineNode);
-                        mColorFields.append(lineItem);
-                }
+				QDomNodeList lines = colorFieldNode.elementsByTagName("line");
+				for (int i = 0; i < lines.count(); ++i) {
+						QDomElement const lineNode = lines.at(i).toElement();
+						LineItem* lineItem = new LineItem(QPointF(0, 0), QPointF(0, 0));
+						lineItem->deserialize(lineNode);
+						mColorFields.append(lineItem);
+				}
 
-                QDomNodeList styluses = colorFieldNode.elementsByTagName("stylus");
-                for (int i = 0; i < styluses.count(); ++i) {
-                        QDomElement const stylusNode = styluses.at(i).toElement();
-                        StylusItem *stylusItem = new StylusItem(0, 0);
-                        stylusItem->deserialize(stylusNode);
-                        mColorFields.append(stylusItem);
-                }
-        }
+				QDomNodeList styluses = colorFieldNode.elementsByTagName("stylus");
+				for (int i = 0; i < styluses.count(); ++i) {
+						QDomElement const stylusNode = styluses.at(i).toElement();
+						StylusItem *stylusItem = new StylusItem(0, 0);
+						stylusItem->deserialize(stylusNode);
+						mColorFields.append(stylusItem);
+				}
+		}
 }

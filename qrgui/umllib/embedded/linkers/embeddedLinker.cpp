@@ -9,8 +9,8 @@
 #include <QGraphicsItem>
 #include <QStyleOptionGraphicsItem>
 
-#include "../view/editorViewScene.h"
-#include "../mainwindow/mainWindow.h"
+#include "../../../view/editorViewScene.h"
+#include "../../../mainwindow/mainWindow.h"
 
 using namespace qReal;
 
@@ -234,9 +234,10 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 			} else if ((result == +1) && (scene->getLastCreated())) {
 				target = dynamic_cast<NodeElement*>(scene->getLastCreated());
 				if (target) {
-					mEdge->placeEndTo(mapFromItem(target,target->getNearestPort(target->pos())));
+					QPointF const &posRelativeToTheTarget = target->mapFromScene(event->scenePos());
+					mEdge->placeEndTo(mapFromItem(target, target->getNearestPort(posRelativeToTheTarget)));
 					mEdge->connectToPort();	//it provokes to move target somehow, so it needs to place edge end and connect to port again
-					mEdge->placeEndTo(mapFromItem(target,target->getNearestPort(target->pos())));
+					mEdge->placeEndTo(mapFromItem(target, target->getNearestPort(posRelativeToTheTarget)));
 					mEdge->adjustLink();
 				}
 			}

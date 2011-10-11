@@ -31,7 +31,7 @@ void Rotater::setMasterItem(RotateInterface *masterItem)
 
 	QRectF rect = mMaster->rect();
 	mX1 = rect.topRight().x();
-	mY1 = rect.topRight().y() + rect.height() / 2;//asd плохо, если делать другую точку поворота
+	mY1 = rect.topRight().y() + rect.height() / 2;//asd РїР»РѕС…Рѕ, РµСЃР»Рё РґРµР»Р°С‚СЊ РґСЂСѓРіСѓСЋ С‚РѕС‡РєСѓ РїРѕРІРѕСЂРѕС‚Р°
 
 	mX2 = mX1 + mLength;
 	mY2 = mY1;
@@ -45,7 +45,7 @@ void Rotater::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *style,
 	painter->setOpacity(0.5);
 	const int addLength = mLength / 3;
 	qreal angle = addAngle;
-	qreal checkLength = sqrt((mX2 - mX1) * (mX2 - mX1) + (mY2 - mY1) * (mY2 - mY1));// должен быть равен mLength
+	qreal checkLength = sqrt((mX2 - mX1) * (mX2 - mX1) + (mY2 - mY1) * (mY2 - mY1));// РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ СЂР°РІРµРЅ mLength
 	qreal x0 = ((checkLength - addLength) * mX2 + addLength * mX1) / checkLength;
 	qreal y0 = ((checkLength - addLength) * mY2 + addLength * mY1) / checkLength;
 	QPointF first = QTransform().translate(mX2 - x0, mY2 - y0).rotate(- angle).translate(- mX2 + x0, - mY2 + y0).rotate(angle).map(QPointF(x0, y0));
@@ -157,7 +157,7 @@ void Rotater::resizeItem(QGraphicsSceneMouseEvent *event)
 
 void Rotater::reshapeWithMasterItem(QPointF delta)
 {
-//	if (!isSelected())//надо бы уточнить...
+//	if (!isSelected())//РЅР°РґРѕ Р±С‹ СѓС‚РѕС‡РЅРёС‚СЊ...
 		setPos(pos() + delta);
 }
 
@@ -166,7 +166,7 @@ void Rotater::rotateWithMasterItem(QPointF delta, QPointF rotatePoint, QPointF b
 	delta = QPointF(0, 0);
 	QRectF rect = mMaster->rect();
 	qreal x1 = rect.topRight().x() + delta.x();
-	qreal y1 = rect.topRight().y() + rect.height() / 2 + delta.y();//asd плохо, если делать другую точку поворота
+	qreal y1 = rect.topRight().y() + rect.height() / 2 + delta.y();//asd РїР»РѕС…Рѕ, РµСЃР»Рё РґРµР»Р°С‚СЊ РґСЂСѓРіСѓСЋ С‚РѕС‡РєСѓ РїРѕРІРѕСЂРѕС‚Р°
 	qreal x2 = x1 + mLength;
 	qreal y2 = y1;
 

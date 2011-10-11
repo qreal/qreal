@@ -72,6 +72,9 @@ private:
 		virtual QList<SmartLine> simpleCode();
 
 		QList<QString> portsToEngineNames(QString const &portsProperty);
+
+	private:
+		void transformSign(QString &inequalitySign);
 	};
 
 	//! Realization of AbstractElementGenerator for Function.
@@ -112,6 +115,8 @@ private:
 		virtual bool nextElementsGeneration();
 
 		bool generateBranch(int branchNumber);
+
+		QPair<bool, qReal::Id> checkBranchForBackArrows(qReal::Id const &curElementId); //initial step of checking
 		QPair<bool, qReal::Id> checkBranchForBackArrows(qReal::Id const &curElementId, qReal::IdList* checkedElements);
 	};
 

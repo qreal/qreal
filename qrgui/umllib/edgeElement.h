@@ -64,7 +64,9 @@ public:
 	void breakPointHandler(QPointF const &pos);
 	bool isBreakPointPressed();
 	void breakPointUnpressed();
-	bool mBreakPointPressed;
+
+	void highlight(QColor const color = Qt::red);
+
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -127,6 +129,8 @@ private:
 	QPointF mLastPos;
 	QPolygonF mLastLine;
 	int mLastDragPoint;
+
+	bool mBreakPointPressed;
 
 };
 

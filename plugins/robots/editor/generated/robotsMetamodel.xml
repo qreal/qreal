@@ -28,11 +28,11 @@
                 <value>Белый</value>
             </enum>
             <enum name="DistanceSign">
-                <value>=</value>
-                <value>></value>
-                <value>&amp;lt;</value>
-                <value>>=</value>
-                <value>&amp;lt;=</value>
+                <value>равно</value>
+                <value>больше</value>
+                <value>меньше</value>
+                <value>не меньше</value>
+                <value>не больше</value>
             </enum>
             <enum name="Sensors">
                 <value>Не используется</value>
@@ -546,7 +546,7 @@
                         <label x="33" y="80" textBinded="Distance"/>
                         <label x="-55" y="80" text="Расстояние (см):"/>
                         <label x="33" y="100" textBinded="Sign"/>
-                        <label x="0" y="100" text="Знак:"/>
+                        <label x="-80" y="100" text="Считанное значение:"/>
                     </labels>
                     <ports>
                         <linePort>
@@ -574,8 +574,8 @@
                         <property displayedName="Дистанция" type="string" name="Distance">
                             <default>0</default>
                         </property>
-                        <property displayedName="Знак" type="DistanceSign" name="Sign">
-                            <default>&lt;</default>
+                        <property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+                            <default>равно</default>
                         </property>
                     </properties>
                     <generalizations>
@@ -628,7 +628,7 @@
                         <label x="33" y="80" textBinded="Intensity"/>
                         <label x="-50" y="80" text="Интенсивность:"/>
                         <label x="33" y="100" textBinded="Sign"/>
-                        <label x="0" y="100" text="Знак:"/>
+                        <label x="-80" y="100" text="Считанное значение:"/>
                     </labels>
                     <ports>
                         <linePort>
@@ -656,8 +656,8 @@
                         <property displayedName="Интенсивность" type="string" name="Intensity">
                             <default>0</default>
                         </property>
-                        <property displayedName="Знак" type="DistanceSign" name="Sign">
-                            <default>&lt;</default>
+                        <property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+                            <default>равно</default>
                         </property>
                     </properties>
                     <generalizations>

@@ -203,7 +203,11 @@ qReal::IdList RepoApi::outgoingConnectedElements(qReal::Id const &id) const
 {
 	qReal::IdList result;
 	foreach (qReal::Id curLink, outgoingLinks(id)) {
-		result.append(to(curLink));
+		qReal::Id toElem = to(curLink);
+		//if (toElem == Id::rootId())
+		//	continue;
+
+		result.append(toElem);
 	}
 	return result;
 }
@@ -212,7 +216,11 @@ qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
 {
 	qReal::IdList result;
 	foreach (qReal::Id curLink, incomingLinks(id)) {
-		result.append(from(curLink));
+		qReal::Id fromElem = from(curLink);
+		//if (fromElem == Id::rootId())
+		//	continue;
+
+		result.append(fromElem);
 	}
 	return result;
 }
