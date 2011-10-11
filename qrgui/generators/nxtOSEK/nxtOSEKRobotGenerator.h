@@ -72,6 +72,9 @@ private:
 		virtual QList<SmartLine> simpleCode();
 
 		QList<QString> portsToEngineNames(QString const &portsProperty);
+
+	private:
+		void transformSign(QString &inequalitySign);
 	};
 
 	//! Realization of AbstractElementGenerator for Function.

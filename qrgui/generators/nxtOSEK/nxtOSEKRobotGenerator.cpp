@@ -439,13 +439,7 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 	} else if (mElementId.element() == "WaitForSonarDistance") {
 		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
 		QString distance = mNxtGen->mApi->stringProperty(logicElementId, "Distance");
-		QString inequalitySign = mNxtGen->mApi->stringProperty(logicElementId, "Sign");
-
-		if (inequalitySign == "&lt;")
-			inequalitySign = "<";
-		else if (inequalitySign == "=")
-			inequalitySign = "==";
-
+		QString inequalitySign = transformSign(mNxtGen->mApi->stringProperty(logicElementId, "Sign").toUtf8());
 		QString condition = inequalitySign + " " + distance;
 
 		result.append(SmartLine(
@@ -468,6 +462,22 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 	//for InitialNode returns empty list
 
 	return result;
+}
+
+void NxtOSEKRobotGenerator::SimpleElementGenerator::transformSign(QString &sign)
+{
+	qDebug() << sign;
+
+	if (sign == "меньше")
+		sign = "<";
+	else if (sign == "больше")
+		sign = ">";
+	else if (sign == "не меньше")
+		sign = ">=";
+	else if (sign == "не больше")
+		sign = "<=";
+	else if (sign == "равно")
+		sign = "==";
 }
 
 QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::loopPrefixCode()
