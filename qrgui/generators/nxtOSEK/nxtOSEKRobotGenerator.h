@@ -74,7 +74,7 @@ private:
 		QList<QString> portsToEngineNames(QString const &portsProperty);
 
 	private:
-		void transformSign(QString &inequalitySign);
+		QString transformSign(QString const &inequalitySign);
 	};
 
 	//! Realization of AbstractElementGenerator for Function.

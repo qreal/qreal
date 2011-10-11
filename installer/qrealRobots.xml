@@ -86,22 +86,22 @@
                             <origin>%2/QtSql4.dll</origin>
                         </distributionFile>
 						<distributionFile>
-                            <origin>%2/bin/QtCore4.dll</origin>
+                            <origin>%2/QtCore4.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/bin/QtGui4.dll</origin>
+                            <origin>%2/QtGui4.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/bin/QtSvg4.dll</origin>
+                            <origin>%2/QtSvg4.dll</origin>
                         </distributionFile>
 						<distributionFile>
-                            <origin>%2/bin/mingwm10.dll</origin>
+                            <origin>%2/mingwm10.dll</origin>
                         </distributionFile>
 						<distributionFile>
-                            <origin>%2/bin/QtXml4.dll</origin>
+                            <origin>%2/QtXml4.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/bin/libgcc_s_dw2-1.dll</origin>
+                            <origin>%2/libgcc_s_dw2-1.dll</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>%1/bin/icon.ico</origin>
@@ -182,7 +182,7 @@
     <enableRollback>1</enableRollback>
     <enableTimestamp>1</enableTimestamp>
     <requireInstallationByRootUser>1</requireInstallationByRootUser>
-    <vendor>SPSU</vendor>
+    <vendor>SPbSU</vendor>
     <finalPageActionList>
         <runProgram>
             <program>${installdir}/qrgui.exe</program>
