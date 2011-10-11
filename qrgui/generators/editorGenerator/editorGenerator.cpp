@@ -8,6 +8,7 @@
 #include <QMessageBox>
 
 #include "../../../qrkernel/roles.h"
+//#include "../../../../qrkernel/exception/exception.h"
 
 #include "../../../qrutils/outFile.h"
 
