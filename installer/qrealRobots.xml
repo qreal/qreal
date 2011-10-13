@@ -107,7 +107,7 @@
                             <origin>%1/bin/icon.ico</origin>
                         </distributionFile>
                         <distributionDirectory>
-                            <origin>%1/qrgui/images</origin>
+                            <origin>%1/plugins/robots/editor/images</origin>
                         </distributionDirectory>
                     </distributionFileList>
                     <shortcutList>
@@ -187,7 +187,7 @@
         <runProgram>
             <program>${installdir}/qrgui.exe</program>
             <programArguments></programArguments>
-            <progressText>Do you want to run QReal:Robots?</progressText>
+            <progressText>Запустить QReal:Robots</progressText>
         </runProgram>
     </finalPageActionList>
     <parameterList>
