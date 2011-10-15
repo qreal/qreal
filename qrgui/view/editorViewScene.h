@@ -96,7 +96,8 @@ private slots:
 	void createEdge(QString const &);
 
 private:
-	Element* mLastCreatedWithEdge;
+        QMenu *recentProjectsMenu;
+        Element* mLastCreatedWithEdge;
 	NodeElement *mCopiedNode;
 
 	bool mRightButtonPressed;

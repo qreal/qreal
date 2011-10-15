@@ -29,7 +29,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 	mRightButtonPressed = false;
-	mActionSignalMapper = new QSignalMapper(this);
+        mActionSignalMapper = new QSignalMapper(this);
 }
 
 EditorViewScene::~EditorViewScene()
@@ -514,7 +514,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 		connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()),
 				Qt::UniqueConnection);
 		mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
-	}
+        }
 	menu.addSeparator();
 	createConnectionSubmenus(menu, e);
 	menu.exec(QCursor::pos());

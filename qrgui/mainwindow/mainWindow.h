@@ -72,7 +72,7 @@ signals:
 	void rootDiagramChanged();
 
 public slots:
-	void deleteFromScene();
+        void deleteFromScene();
 
 	void propertyEditorScrollTo(QModelIndex const &index);
 
@@ -100,11 +100,12 @@ private slots:
 	void checkoutDialogOk();
 	void checkoutDialogCancel();
 
-	bool open(QString const &dirName);
-	bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
+        bool open(QString const &dirName);
+        bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
 	void saveAs();
 	void saveAll();
 	void fullscreen();
+        void openRecentProjectsMenu();
 	bool openNewProject();
 	void createProject();
 
@@ -192,7 +193,11 @@ private slots:
 private:
 	Ui::MainWindowUi *mUi;
 
-	QCloseEvent *mCloseEvent;
+        int mLimit;
+        QSignalMapper *mSignalMapper;
+        QMenu *mRecentProjectsMenu;
+
+        QCloseEvent *mCloseEvent;
 	models::Models *mModels;
 	EditorManager mEditorManager;
 	ToolPluginManager mToolManager;
@@ -216,10 +221,10 @@ private:
 	/** @brief Internal map table to store info what widgets should we hide/show */
 	QMap<QString, bool> mDocksVisibility;
 
-	QString mSaveFile;
+        QString mSaveFile;
 	QString mTempDir;
 
-	PreferencesDialog mPreferencesDialog;
+        PreferencesDialog mPreferencesDialog;
 
 	gui::NxtFlashTool *mFlashTool;
 
