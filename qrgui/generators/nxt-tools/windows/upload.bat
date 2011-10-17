@@ -1,5 +1,4 @@
-@echo off
-
-C:
-chdir $qrealdir/nxt-tools/cygwin/bin
-bash $qrealdir/nxt-tools/upload.sh 
+echo
+set PATH=/bin;%PATH%
+bin\chmod u+x upload.sh
+bin\bash upload.sh
