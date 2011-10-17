@@ -83,7 +83,7 @@ void Interpreter::interpret()
 		return;
 	}
 
-	connect(&mRobotModel->robotImpl(), SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
+	connect(mRobotModel, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
 	Autoconfigurer configurer(*mGraphicalModelApi, mBlocksTable, mInterpretersInterface->errorReporter(), mRobotModel);
 	if (!configurer.configure(currentDiagramId))
 		return;
@@ -91,9 +91,9 @@ void Interpreter::interpret()
 
 void Interpreter::sensorsConfiguredSlot()
 {
-	disconnect(&mRobotModel->robotImpl(), SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
+	disconnect(mRobotModel, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
 
-	mRobotModel->robotImpl().startInterpretation();
+	mRobotModel->startInterpretation();
 
 	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
 	Id const startingElement = findStartingElement(currentDiagramId);
@@ -146,12 +146,10 @@ void Interpreter::setD2ModelWidgetActions(QAction *runAction, QAction *stopActio
 
 void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum implementationType)
 {
-	disconnect(&mRobotModel->robotImpl(), SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 	mConnected = false;
 	robotImplementations::AbstractRobotModelImplementation *robotImpl =
 			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, mRobotCommunication, mD2RobotModel);
 	setRobotImplementation(robotImpl);
-	connect(robotImpl, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 	mImplementationType = implementationType;
 	if (mImplementationType != robotModelType::real)
 		mRobotModel->init();
@@ -162,7 +160,7 @@ void Interpreter::connectedSlot(bool success)
 {
 	if (success) {
 		mConnected = true;
-		if (mRobotModel->robotImpl().needsConnection())
+		if (mRobotModel->needsConnection())
 			mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
 	} else {
 		mConnected = false;
@@ -230,7 +228,7 @@ void Interpreter::setRobotImplementation(details::robotImplementations::Abstract
 {
 	mRobotModel->setRobotImplementation(robotImpl);
 	if (robotImpl)
-		connect(&mRobotModel->robotImpl(), SIGNAL(connected(bool)), this, SLOT(runTimer()));
+		connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(runTimer()));
 }
 
 void Interpreter::runTimer()

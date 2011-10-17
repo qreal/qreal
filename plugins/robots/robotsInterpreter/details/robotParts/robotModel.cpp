@@ -16,6 +16,8 @@ RobotModel::RobotModel()
 	, mEncoderC(&mRobotImpl->encoderC(), outputPort::port3)
 {
 	mSensors.resize(4);
+	connect(mRobotImpl, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
+	connect(mRobotImpl, SIGNAL(connected()), this, SLOT(connectedSlot()));
 }
 
 RobotModel::~RobotModel()
@@ -66,31 +68,61 @@ void RobotModel::configureSensor(sensorType::SensorTypeEnum const &sensorType
 		, inputPort::InputPortEnum const &port)
 {
 	mRobotImpl->configureSensor(sensorType, port);
+}
 
-	delete mSensors[port];  // Since it deletes a sensor that is exposed to blocks, this method can not be called when diagram is interpreted. Blocks shall be recreated after calling this one.
-	mSensors[port] = NULL;
-	switch (sensorType) {
-	case sensorType::unused:
-		break;
-	case sensorType::touchBoolean:
-		mSensors[port] = new robotParts::TouchSensor(mRobotImpl->sensor(port), port);
-		break;
-	case sensorType::touchRaw:
-		break;
-	case sensorType::sonar:
-		mSensors[port] = new robotParts::SonarSensor(mRobotImpl->sensor(port), port);
-		break;
-	case sensorType::colorFull:
-	case sensorType::colorRed:
-	case sensorType::colorGreen:
-	case sensorType::colorBlue:
-	case sensorType::colorNone:
-		mSensors[port] = new robotParts::ColorSensor(mRobotImpl->sensor(port), port);
-		break;
-	default:
-		// TODO: Throw an exception
-		break;
+void RobotModel::sensorsConfiguredSlot()
+{
+	for (int i = 0; i < 4; ++i) {
+		delete mSensors[i];  // Since it deletes a sensor that is exposed to blocks, this method can not be called when diagram is interpreted. Blocks shall be recreated after calling this one.
+		mSensors[i] = NULL;
 	}
+	for (int i = 0; i < 4; ++i) {
+		inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(i);
+		sensorImplementations::AbstractSensorImplementation const * const sensorImpl = mRobotImpl->sensor(port);
+		if (sensorImpl == NULL)
+			continue;
+
+		sensorType::SensorTypeEnum const sensorType = mRobotImpl->sensor(port)->type();
+
+		switch (sensorType) {
+		case sensorType::unused:
+			break;
+		case sensorType::touchBoolean:
+			mSensors[port] = new robotParts::TouchSensor(mRobotImpl->sensor(port), port);
+			break;
+		case sensorType::touchRaw:
+			break;
+		case sensorType::sonar:
+			mSensors[port] = new robotParts::SonarSensor(mRobotImpl->sensor(port), port);
+			break;
+		case sensorType::colorFull:
+		case sensorType::colorRed:
+		case sensorType::colorGreen:
+		case sensorType::colorBlue:
+		case sensorType::colorNone:
+			mSensors[port] = new robotParts::ColorSensor(mRobotImpl->sensor(port), port);
+			break;
+		default:
+			// TODO: Throw an exception
+			break;
+		}
+	}
+	emit sensorsConfigured();
+}
+
+bool RobotModel::needsConnection() const
+{
+	return mRobotImpl->needsConnection();
+}
+
+void RobotModel::startInterpretation()
+{
+	return mRobotImpl->startInterpretation();
+}
+
+void RobotModel::connectedSlot(bool success)
+{
+	emit connected(success);
 }
 
 void RobotModel::init()
@@ -133,14 +165,14 @@ robotParts::EncoderSensor &RobotModel::encoderC()
 	return mEncoderC;
 }
 
-robotImplementations::AbstractRobotModelImplementation &RobotModel::robotImpl()
-{
-	return *mRobotImpl;
-}
-
 void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModelImplementation *robotImpl)
 {
+	disconnect(mRobotImpl, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
+	disconnect(mRobotImpl, SIGNAL(connected()), this, SLOT(connectedSlot()));
 	mRobotImpl = robotImpl;
+	connect(mRobotImpl, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
+	connect(mRobotImpl, SIGNAL(connected()), this, SLOT(connectedSlot()));
+
 	mMotorA.setImplementation(&mRobotImpl->motorA());
 	mMotorB.setImplementation(&mRobotImpl->motorB());
 	mMotorC.setImplementation(&mRobotImpl->motorC());

@@ -22,6 +22,7 @@ public:
 	void lockConfiguring();
 	void unlockConfiguring();
 
+	/// Returns configured sensor on a given port or NULL if no sensor is configured there
 	sensorImplementations::AbstractSensorImplementation * sensor(inputPort::InputPortEnum const &port) const;
 
 signals:

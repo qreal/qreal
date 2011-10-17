@@ -1,4 +1,5 @@
 #include "robotsPlugin.h"
+#include "details/tracer.h"
 
 #include <QtCore/QTranslator>
 #include <QtGui/QApplication>
@@ -25,6 +26,7 @@ RobotsPlugin::~RobotsPlugin()
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
 {
+	details::Tracer::enableAll();
 	mInterpreter.init(configurator.graphicalModelApi()
 			, configurator.logicalModelApi()
 			, configurator.mainWindowInterpretersInterface());

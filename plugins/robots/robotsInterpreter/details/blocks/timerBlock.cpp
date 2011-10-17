@@ -1,14 +1,15 @@
 #include "timerBlock.h"
 
-#include <QtCore/QDebug>
+#include "../tracer.h"
 
 using namespace qReal;
-using namespace interpreters::robots::details::blocks;
+using namespace interpreters::robots::details;
+using namespace blocks;
 
 void TimerBlock::run()
 {
 	int const interval = evaluate("Delay").toInt();
-	qDebug() << "interval=" << interval;
+	Tracer::debug(tracer::blocks, "TimerBlock::run", "interval=" + QString(interval));
 
 	mTimer.setInterval(interval);
 	mTimer.setSingleShot(true);
@@ -18,6 +19,6 @@ void TimerBlock::run()
 
 void TimerBlock::timeout()
 {
-	qDebug() << "emit done(mNextBlock)";
+	Tracer::debug(tracer::blocks, "TimerBlock::timeout", "emit done(mNextBlock)");
 	emit done(mNextBlock);
 }
