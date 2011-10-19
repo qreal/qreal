@@ -12,6 +12,7 @@ enum TracerEnum {
 	d2Model
 	, initialization
 	, blocks
+	, robotCommunication
 	, sensors
 };
 }

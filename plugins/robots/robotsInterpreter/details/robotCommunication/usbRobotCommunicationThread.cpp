@@ -1,11 +1,11 @@
 #include "usbRobotCommunicationThread.h"
 
-#include <QtCore/QDebug>
-
 #include "../../thirdparty/qextserialport/src/qextserialenumerator.h"
 #include "../../thirdparty/qextserialport/src/qextserialport.h"
+#include "../tracer.h"
 
 using namespace qReal::interpreters::robots;
+using namespace details;
 
 UsbRobotCommunicationThread::UsbRobotCommunicationThread():
 	mActive(false), mNXTHandle(0)
@@ -56,7 +56,7 @@ void UsbRobotCommunicationThread::send(QObject *addressee
 
 void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const responseSize, QObject *addressee)
 {
-	qDebug() << "Sending";
+	Tracer::debug(tracer::robotCommunication, "UsbRobotCommunicationThread::send", "Sending:");
 	debugPrint(buffer, true);
 
 	int status = 0;
