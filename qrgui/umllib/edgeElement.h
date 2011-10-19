@@ -99,6 +99,8 @@ private:
 
 	void removeUnneededPoints(int startingPoint);
 
+	void deleteUnneededPoints();
+
 	NodeElement *mSrc;
 	NodeElement *mDst;
 

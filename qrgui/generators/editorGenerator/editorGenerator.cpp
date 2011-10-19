@@ -8,6 +8,7 @@
 #include <QMessageBox>
 
 #include "../../../qrkernel/roles.h"
+//#include "../../../../qrkernel/exception/exception.h"
 
 #include "../../../qrutils/outFile.h"
 
@@ -94,20 +95,20 @@ gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const 
 
 	createDiagrams(metamodel, metamodelId);
 
-        try {
-            OutFile outpro(pathToFile + ".pro");
-            outpro() << QString("QREAL_XML = %1\n").arg(baseName + ".xml");
-            if (includeProList != "")
-                    outpro() << QString("QREAL_XML_DEPENDS = %1\n").arg(includeProList);
-            outpro() << QString ("QREAL_EDITOR_PATH = %1\n").arg(editorPath);
-            outpro() << QString ("ROOT = %1\n").arg(pathToQRealSource);
-            outpro() << "\n";
-            outpro() << QString("include (%1)").arg(pathToQRealSource + "/plugins/editorsSdk/editorsCommon.pri");
-        }
-        catch (char* e) {
-            mErrorReporter.addCritical(QObject::tr("incorrect file name"));
-            return mErrorReporter;
-        }
+	try {
+		OutFile outpro(pathToFile + ".pro");
+		outpro() << QString("QREAL_XML = %1\n").arg(baseName + ".xml");
+		if (includeProList != "")
+			outpro() << QString("QREAL_XML_DEPENDS = %1\n").arg(includeProList);
+		outpro() << QString ("QREAL_EDITOR_PATH = %1\n").arg(editorPath);
+		outpro() << QString ("ROOT = %1\n").arg(pathToQRealSource);
+		outpro() << "\n";
+		outpro() << QString("include (%1)").arg(pathToQRealSource + "/plugins/editorsSdk/editorsCommon.pri");
+	}
+	catch (char* e) {
+		mErrorReporter.addCritical(QObject::tr("incorrect file name"));
+		return mErrorReporter;
+	}
 
 	OutFile outxml(pathToFile + ".xml");
 	QDomNode header = mDocument.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"utf-8\"");
@@ -315,17 +316,17 @@ void EditorGenerator::setGeneralization(QDomElement &parent, const Id &id)
 		parent.appendChild(generalizations);
 
 	/*IdList parents = mApi.children(id);
-	foreach (Id const id, parents) {
-		QString objectType = mApi.typeName(id);
-		if (objectType == "MetaEntityParent") {
-			QDomElement parent = mDocument.createElement("parent");
-			ensureCorrectness(id, parent, "parentName", mApi.stringProperty(id, "name"));
-			generalizations.appendChild(parent);
-		}
-	}
+ foreach (Id const id, parents) {
+  QString objectType = mApi.typeName(id);
+  if (objectType == "MetaEntityParent") {
+   QDomElement parent = mDocument.createElement("parent");
+   ensureCorrectness(id, parent, "parentName", mApi.stringProperty(id, "name"));
+   generalizations.appendChild(parent);
+  }
+ }
 
-	if (!generalizations.childNodes().isEmpty())
-		parent.appendChild(generalizations);*/
+ if (!generalizations.childNodes().isEmpty())
+  parent.appendChild(generalizations);*/
 }
 
 void EditorGenerator::setProperties(QDomElement &parent,Id const &id)
@@ -335,21 +336,21 @@ void EditorGenerator::setProperties(QDomElement &parent,Id const &id)
 
 	foreach (Id const idChild, childElems)
 		if (idChild != Id::rootId()) {
-		QString const objectType = mApi.typeName(idChild);
-		if (objectType == "MetaEntity_Attribute"){
-			QDomElement property = mDocument.createElement("property");
-			ensureCorrectness(idChild, property, "type", mApi.stringProperty(idChild, "attributeType"));
-			ensureCorrectness(idChild, property, "name", mApi.name(idChild));
-			ensureCorrectness(idChild, property, "displayedName", mApi.stringProperty(idChild, "displayedName"));
-			if (mApi.stringProperty(idChild, "defaultValue") != "") {
-				QDomElement defaultTag = mDocument.createElement("default");
-				QDomText value = mDocument.createTextNode(mApi.stringProperty(idChild, "defaultValue"));
-				defaultTag.appendChild(value);
-				property.appendChild(defaultTag);
+			QString const objectType = mApi.typeName(idChild);
+			if (objectType == "MetaEntity_Attribute"){
+				QDomElement property = mDocument.createElement("property");
+				ensureCorrectness(idChild, property, "type", mApi.stringProperty(idChild, "attributeType"));
+				ensureCorrectness(idChild, property, "name", mApi.name(idChild));
+				ensureCorrectness(idChild, property, "displayedName", mApi.stringProperty(idChild, "displayedName"));
+				if (mApi.stringProperty(idChild, "defaultValue") != "") {
+					QDomElement defaultTag = mDocument.createElement("default");
+					QDomText value = mDocument.createTextNode(mApi.stringProperty(idChild, "defaultValue"));
+					defaultTag.appendChild(value);
+					property.appendChild(defaultTag);
+				}
+				tagProperties.appendChild(property);
 			}
-			tagProperties.appendChild(property);
 		}
-	}
 
 	if (!tagProperties.childNodes().isEmpty())
 		parent.appendChild(tagProperties);
@@ -362,13 +363,13 @@ void EditorGenerator::setContextMenuFields(QDomElement &parent, const Id &id)
 
 	foreach (Id const idChild, childElems)
 		if (idChild != Id::rootId()) {
-		QString const objectType = mApi.typeName(idChild);
-		if (objectType == "MetaEntityContextMenuField"){
-			QDomElement field = mDocument.createElement("field");
-			ensureCorrectness(idChild, field, "name", mApi.name(idChild));
-			fields.appendChild(field);
+			QString const objectType = mApi.typeName(idChild);
+			if (objectType == "MetaEntityContextMenuField"){
+				QDomElement field = mDocument.createElement("field");
+				ensureCorrectness(idChild, field, "name", mApi.name(idChild));
+				fields.appendChild(field);
+			}
 		}
-	}
 
 	if (!fields.childNodes().isEmpty())
 		parent.appendChild(fields);
@@ -419,7 +420,7 @@ void EditorGenerator::setConnections(QDomElement &parent, const Id &id)
 }
 
 void EditorGenerator::newSetConnections(QDomElement &parent, const Id &id,
-		QString const &commonTagName, QString const &internalTagName, QString const &typeName)
+										QString const &commonTagName, QString const &internalTagName, QString const &typeName)
 {
 	IdList const childElems = mApi.children(id);
 

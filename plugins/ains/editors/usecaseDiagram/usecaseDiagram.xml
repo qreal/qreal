@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+    <include>../../../commonMetamodels/kernelMetamodel.xml</include>
+    <include>../../../umlClassDiagram/editor/classMetamodel.xml</include>
+    <namespace>UML 2.0</namespace>
+    <diagram displayedName="Use Case Diagram" nodeName="diagram" name="usecase diagram">
+        <graphicTypes>
+        <import as="DirectedAssociation" displayedName="Directed Association" name="KernelDiagram::DirectedAssociation"/>
+        <import as="Constraint" displayedName="Constraint" name="KernelDiagram::Constraint"/>
+        <import as="ConstraintEdge" displayedName="Constraint Edge" name="ActivityDiagram::ConstraintEdge"/>
+        <import as="Comment" displayedName="Comment" name="KernelDiagram::Comment"/>
+        <import as="CommentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
+            <node displayedName="Use Case" name="useCase">
+                <graphics>
+                    <picture sizex="181" sizey="93">
+                        <ellipse fill="#fafad2" stroke-style="solid" stroke="#000000" y1="2" stroke-width="2" x1="2" y2="90" fill-style="solid" x2="178"/>
+                    </picture>
+                    <labels>
+                        <label x="20" y="20" textBinded="name" center="true"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="2" y="44"/>
+                        <pointPort x="88" y="2"/>
+                        <pointPort x="179" y="43"/>
+                        <pointPort x="96" y="91"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="Use Case Diagram" name="usecasediagram">
+                 <graphics>
+                    <picture sizex="35" sizey="35">
+                        <ellipse fill="#fafad2" stroke-style="solid" stroke="#000000" y1="0" stroke-width="2" x1="0" y2="35" fill-style="solid" x2="35"/>
+                    </picture>
+                    <labels>
+                        <label x="-1" y="40" textBinded="name" center="true"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="Actor" name="actor">
+                <graphics>
+                    <picture sizex="82" sizey="179">
+                        <ellipse fill="#fafad2" stroke-style="solid" stroke="#000000" y1="10" stroke-width="2" x1="23" y2="45" fill-style="solid" x2="61"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="47" stroke-width="2" x1="42" y2="90" fill-style="none" x2="43"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="64" stroke-width="2" x1="12" y2="65" fill-style="none" x2="75"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="90" stroke-width="2" x1="41" y2="130" fill-style="none" x2="15"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="91" stroke-width="2" x1="43" y2="130" fill-style="none" x2="70"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="158" textBinded="name" center="true"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="81" starty="49"/>
+                            <end endx="81" endy="85"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="29" starty="0"/>
+                            <end endx="57" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="50"/>
+                            <end endx="0" endy="81"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="30" starty="140"/>
+                            <end endx="59" endy="140"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="Центр обработки данных" name="dataCenter">
+                <graphics>
+                    <picture sizex="100" sizey="100">
+                        <image y1="6" name="images/database.png" x1="1" y2="90" x2="90"/>
+                    </picture>
+                    <labels>
+                        <label x="5" y="95" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="30" starty="0"/>
+                            <end endx="70" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="30"/>
+                            <end endx="0" endy="70"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="100" starty="30"/>
+                            <end endx="100" endy="70"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="30" starty="100"/>
+                            <end endx="70" endy="100"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="АРМ" description="автоматизированое рабочее место" name="computer">
+                <graphics>
+                    <picture sizex="80" sizey="90">
+                        <image y1="10" name="images/laptop.png" x1="8" y2="80" x2="80"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="85" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="20" starty="0"/>
+                            <end endx="60" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="20"/>
+                            <end endx="0" endy="70"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="20"/>
+                            <end endx="80" endy="70"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="20" starty="85"/>
+                            <end endx="60" endy="85"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+        </graphicTypes>
+    </diagram>
+</metamodel>

@@ -49,24 +49,24 @@
 using namespace qReal;
 
 MainWindow::MainWindow()
-	: mUi(new Ui::MainWindowUi)
-	, mCloseEvent(NULL)
-	, mModels(NULL)
-	, mListenerManager(NULL)
-	, mPropertyModel(mEditorManager)
-	, mGesturesWidget(NULL)
-	, mVisualDebugger(NULL)
-	, mErrorReporter(NULL)
-	, mIsFullscreen(false)
-	, mTempDir(qApp->applicationDirPath() + "/temp")
-	, mPreferencesDialog(this)
-	, mNxtToolsPresent(false)
-	, mHelpBrowser(NULL)
+: mUi(new Ui::MainWindowUi)
+, mCloseEvent(NULL)
+, mModels(NULL)
+, mListenerManager(NULL)
+, mPropertyModel(mEditorManager)
+, mGesturesWidget(NULL)
+, mVisualDebugger(NULL)
+, mErrorReporter(NULL)
+, mIsFullscreen(false)
+, mTempDir(qApp->applicationDirPath() + "/temp")
+, mPreferencesDialog(this)
+, mNxtToolsPresent(false)
+, mHelpBrowser(NULL)
 {
 	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
 
 	QSplashScreen* splash =
-			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
+	new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
 	QProgressBar *progress = new QProgressBar((QWidget*) splash);
 	progress->move(20, 270);
@@ -335,7 +335,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 	if (keyEvent->modifiers() == Qt::AltModifier && keyEvent->key() == Qt::Key_X) {
 		close();
 	} else if (keyEvent->key() == Qt::Key_F2
-			   || (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
+	|| (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
 	{
 		saveAll();
 	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_W) {
@@ -464,7 +464,7 @@ void MainWindow::activateSubdiagram(QModelIndex const &idx) {
 
 	QModelIndex diagramToActivate = idx;
 	while (diagramToActivate.isValid() && diagramToActivate.parent().isValid()
-		   && diagramToActivate.parent() != getCurrentTab()->mvIface()->rootIndex())
+	&& diagramToActivate.parent() != getCurrentTab()->mvIface()->rootIndex())
 	{
 		diagramToActivate = diagramToActivate.parent();
 	}
@@ -526,10 +526,10 @@ QString MainWindow::getWorkingFile(QString const &dialogWindowTitle)
 
 	if (dialogWindowTitle == "Select file to save current model to")
 		fileName = QFileDialog::getSaveFileName(this, dialogWindowTitle
-			, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
+		, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
 	else
 		fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle
-			, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
+		, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
 	SettingsManager::setValue("saveFile", fileName);
 	mSaveFile = fileName;
 	return fileName;
@@ -560,7 +560,7 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 		else
 			loadingCancelled = true;
 		missingPlugins = mEditorManager.checkNeededPlugins(
-							 mModels->logicalRepoApi(), mModels->graphicalRepoApi());
+		mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 		haveMissingPlugins = !missingPlugins.isEmpty();
 	}
 
@@ -660,7 +660,7 @@ void MainWindow::settingsPlugins()
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
 	QModelIndex index = isLogicalModel ? (mUi->logicalModelExplorer->currentIndex())
-									   : (mUi->graphicalModelExplorer->currentIndex());
+	: (mUi->graphicalModelExplorer->currentIndex());
 	if (isLogicalModel) {
 		Id logicalId = mModels->logicalModelAssistApi().idByIndex(index);
 		IdList graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
@@ -732,8 +732,8 @@ void MainWindow::deleteFromDiagram()
 void MainWindow::showAbout()
 {
 	QMessageBox::about(this, tr("About QReal:Robots"),
-					   tr("Contacts:<br><br>"
-						  "se.math.spbu.ru/SE/qreal"));
+	tr("Contacts:<br><br>"
+	"se.math.spbu.ru/SE/qreal"));
 }
 
 void MainWindow::showHelp()
@@ -875,47 +875,21 @@ void MainWindow::generateEditor()
 
 	QDir dir(".");
 
-	//	bool found = false;
-	//	while (dir.cdUp() && !found) {
-	//		QFileInfoList infoList = dir.entryInfoList(QDir::Dirs);
-	//		foreach (QFileInfo const directory, infoList){
-	//			if (directory.baseName() == "qrxml") {
-	//				found = true;
-	//				directoryXml = directory;
-	//				directoryName = directory.absolutePath();
-	//			}
-	//		}
-	//	}
-	//	if (!found) {
-	//		QMessageBox::warning(this, tr("error"), tr("Cannot find the directory for saving"));
-	//		return;
-	//	}
-
-	//	directoryXml = QFileInfo(dir.absolutePath());
-	//	directoryName = dir.absolutePath();
-
-	//	const QHash<Id, QString> metamodelList = editorGenerator.getMetamodelList();
-	//	foreach (Id const key, metamodelList.keys()) {
-	//		QString const dirName = directoryXml.filePath() + "/" + metamodelList[key];
-	//		dir.mkdir(dirName);
-	//		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, directoryName + "/" + metamodelList[key] + "/" + metamodelList[key]);
-
 	QHash<Id, QPair<QString, QString> > metamodelList = editorGenerator.getMetamodelList();
 	foreach (Id const key, metamodelList.keys()) {
 		QString const metamodelFullName = metamodelList[key].first;
 		QString const pathToQRealRoot = metamodelList[key].second;
 		dir.mkpath(metamodelFullName);
-		//		QFileInfo metamodelFileInfo(metamodelFullName);
-		//		QStrin metamodelName = metamodelFileInfo.baseName();
-		QString metamodelName = (metamodelFullName.split("/", QString::SkipEmptyParts)).last();
+		QFileInfo metamodelFileInfo(metamodelFullName);
+		QString metamodelName = metamodelFileInfo.baseName();
 		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, metamodelFullName + "/" + metamodelName, pathToQRealRoot);
 
 		if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)) {
 			if (QMessageBox::question(this, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelName),
-									  QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+			QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 				return;
 			loadNewEditor(metamodelFullName, metamodelName, SettingsManager::value("pathToQmake", "").toString(),
-						  SettingsManager::value("pathToMake", "").toString(), SettingsManager::value("pluginExtension", "").toString(), SettingsManager::value("prefix", "").toString());
+			SettingsManager::value("pathToMake", "").toString(), SettingsManager::value("pluginExtension", "").toString(), SettingsManager::value("prefix", "").toString());
 		}
 	}
 }
@@ -1017,7 +991,7 @@ void MainWindow::generateEditorWithQRMC()
 
 
 void MainWindow::loadNewEditor(const QString &directoryName, const QString &metamodelName,
-							   const QString &commandFirst, const QString &commandSecond, const QString &extension, const QString &prefix)
+const QString &commandFirst, const QString &commandSecond, const QString &extension, const QString &prefix)
 {
 	int const progressBarWidth = 240;
 	int const progressBarHeight = 20;
@@ -1200,7 +1174,7 @@ void MainWindow::setSceneFont() {
 		getCurrentTab()->scene()->update();
 	} else {
 		getCurrentTab()->scene()->setFont(QFont(QFontDatabase::applicationFontFamilies(
-													QFontDatabase::addApplicationFont(QDir::currentPath() + "/times.ttf")).at(0), 9));
+		QFontDatabase::addApplicationFont(QDir::currentPath() + "/times.ttf")).at(0), 9));
 		getCurrentTab()->scene()->update();
 	}
 
@@ -1216,7 +1190,7 @@ void MainWindow::openShapeEditor(QPersistentModelIndex index, int role, QString 
 	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
 	model->setData(index, propertyValue, role);
 	connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)),
-			this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
+	this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
 
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
@@ -1373,19 +1347,20 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 
 	getCurrentTab()->mvIface()->setAssistApi(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi());
 
-	connect(getCurrentTab()->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
-	connect(mUi->actionAntialiasing, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleAntialiasing(bool)));
-	connect(mUi->actionOpenGL_Renderer, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleOpenGL(bool)));
-
 	getCurrentTab()->mvIface()->setModel(mModels->graphicalModel());
 	getCurrentTab()->mvIface()->setLogicalModel(mModels->logicalModel());
 	getCurrentTab()->mvIface()->setRootIndex(index);
 	changeMiniMapSource(mUi->tabs->currentIndex());
 
+	/*connect after setModel etc. because of signal selectionChanged was sent when there were old indexes*/
+	connect(getCurrentTab()->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
+	connect(mUi->actionAntialiasing, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleAntialiasing(bool)));
+	connect(mUi->actionOpenGL_Renderer, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleOpenGL(bool)));
+
 	connect(mModels->graphicalModel(), SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
-			, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
+	, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
 	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
-			, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
+	, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 }
 
 void MainWindow::updateTabName(Id const &id)
@@ -1672,7 +1647,7 @@ void MainWindow::generateAndBuild()
 			mDebuggerConnector->run();
 
 			mDebuggerConnector->build(SettingsManager::value("debugWorkingDirectory", "").toString() + "/" +
-									  SettingsManager::value("codeFileName", "code.c").toString());
+			SettingsManager::value("codeFileName", "code.c").toString());
 
 
 			if (!mDebuggerConnector->hasBuildError()) {
@@ -1689,7 +1664,7 @@ void MainWindow::generateAndBuild()
 void MainWindow::startDebugger()
 {
 	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)
-		&& !mDebuggerConnector->isDebuggerRunning()) {
+	&& !mDebuggerConnector->isDebuggerRunning()) {
 		mVisualDebugger->setDebugType(VisualDebugger::debugWithDebugger);
 		mDebuggerConnector->run();
 		mDebuggerConnector->startDebugger();
@@ -1701,7 +1676,7 @@ void MainWindow::configureDebugger()
 	if (mDebuggerConnector->isDebuggerRunning()) {
 
 		mDebuggerConnector->configure(SettingsManager::value("debugWorkingDirectory", "").toString() + "/" +
-									  SettingsManager::value("buildedFileName", "builded.exe").toString());
+		SettingsManager::value("buildedFileName", "builded.exe").toString());
 	}
 }
 
@@ -1988,13 +1963,13 @@ void MainWindow::fullscreen()
 void MainWindow::createProject()
 {
 	/*
-	QString dirName = getNextDirName(SettingsManager::value("workingDir", mSaveDir).toString());
-	SettingsManager::setValue("workingDir", dirName);
-	open(dirName);
+ QString dirName = getNextDirName(SettingsManager::value("workingDir", mSaveDir).toString());
+ SettingsManager::setValue("workingDir", dirName);
+ open(dirName);
 
-	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
-		suggestToCreateDiagram();
-	*/
+ if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
+  suggestToCreateDiagram();
+ */
 	saveAll();
 	open("");
 	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
@@ -2023,10 +1998,10 @@ Id MainWindow::activeDiagram()
 void MainWindow::initToolPlugins()
 {
 	mToolManager.init(PluginConfigurator(mModels->repoControlApi()
-										 , mModels->graphicalModelAssistApi()
-										 , mModels->logicalModelAssistApi()
-										 , *this
-										 ));
+	, mModels->graphicalModelAssistApi()
+	, mModels->logicalModelAssistApi()
+	, *this
+	));
 	QList<ActionInfo> actions = mToolManager.actions();
 	foreach (ActionInfo action, actions) {
 		if (action.toolbarName() == "file")
