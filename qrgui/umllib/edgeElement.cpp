@@ -153,7 +153,7 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	QPen pen = painter->pen();
 	pen.setColor(mColor);
 	pen.setStyle(mPenStyle);
-	pen.setWidth(3);  // TODO: Move line width to a configuration parameter
+	pen.setWidth(1);  // TODO: Move line width to a configuration parameter
 	painter->setPen(pen);
 	painter->drawPolyline(mLine);
 	painter->restore();
