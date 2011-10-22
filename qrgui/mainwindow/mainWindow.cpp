@@ -63,22 +63,22 @@ MainWindow::MainWindow()
 	, mNxtToolsPresent(false)
 	, mHelpBrowser(NULL)
 {
-        mLimit = 5;
+	mLimit = 5;
 
-        mSignalMapper = new QSignalMapper();
+	mSignalMapper = new QSignalMapper();
 
-        bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
+	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
 
 	QSplashScreen* splash =
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
 	QProgressBar *progress = new QProgressBar((QWidget*) splash);
-        progress->move(20, 270);
+	progress->move(20, 270);
 	progress->setFixedWidth(600);
 	progress->setFixedHeight(15);
 	progress->setRange(0, 100);
 
-        QDir imagesDir(SettingsManager::value("pathToImages", "/someWeirdDirectoryName").toString());
+	QDir imagesDir(SettingsManager::value("pathToImages", "/someWeirdDirectoryName").toString());
 	if (!imagesDir.exists()) {
 		QString path = qApp->applicationDirPath();
 #ifdef Q_OS_WIN
@@ -96,9 +96,9 @@ MainWindow::MainWindow()
 		QApplication::processEvents();
 	}
 	mUi->setupUi(this);
-        mRecentProjectsMenu = new QMenu("Recent projects", mUi->menu_File);
-        mUi->menu_File->addMenu(mRecentProjectsMenu);
-        connect(mRecentProjectsMenu, SIGNAL(aboutToShow()), this, SLOT(openRecentProjectsMenu()));
+	mRecentProjectsMenu = new QMenu("Recent projects", mUi->menu_File);
+	mUi->menu_File->insertMenu(mUi->menu_File->actions().at(1), mRecentProjectsMenu);
+	connect(mRecentProjectsMenu, SIGNAL(aboutToShow()), this, SLOT(openRecentProjectsMenu()));
 
 	if (mToolManager.customizer()) {
 		setWindowTitle(mToolManager.customizer()->windowTitle());
@@ -260,7 +260,7 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 
-        connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(openNewProject()));
+	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(openNewProject()));
 	connect(mUi->actionSave, SIGNAL(triggered()), this, SLOT(saveAll()));
 	connect(mUi->actionSave_as, SIGNAL(triggered()), this, SLOT(saveAs()));
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
@@ -360,8 +360,8 @@ MainWindow::~MainWindow()
 	if (mHelpBrowser)
 		delete mHelpBrowser;
 	SettingsManager::instance()->saveData();
-        delete mRecentProjectsMenu;
-        delete mSignalMapper;
+	delete mRecentProjectsMenu;
+	delete mSignalMapper;
 }
 
 EditorManager* MainWindow::manager()
@@ -541,6 +541,9 @@ QString MainWindow::getWorkingFile(QString const &dialogWindowTitle)
 			, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
 	SettingsManager::setValue("saveFile", fileName);
 	mSaveFile = fileName;
+
+	refreshRecentProjectsList(fileName);
+
 	return fileName;
 }
 
@@ -558,8 +561,8 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 		text += tr("Do you want to create new project?");
 
 		QMessageBox::StandardButton button = QMessageBox::question(this, tr("Some plugins are missing"), text, QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
-                if (splashScreen)
-                        splashScreen->close();
+		if (splashScreen)
+			splashScreen->close();
 
 		if (button == QMessageBox::Yes)
 		{
@@ -583,48 +586,51 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 
 bool MainWindow::openNewProject()
 {
-        saveAll();
-        return open(getWorkingFile(tr("Select file with a save to open")));
+	saveAll();
+	return open(getWorkingFile(tr("Select file with a save to open")));
+}
+
+void MainWindow::refreshRecentProjectsList(QString fileName) {
+	QString previousString =  SettingsManager::value("recentProjects").toString();
+	QStringList previousList = previousString.split(";", QString::SkipEmptyParts);
+	previousList.removeOne(fileName);
+	if (previousList.size() == mLimit)
+	    previousList.removeLast();
+	previousList.push_front(fileName);
+	previousString = "";
+	QStringListIterator iterator(previousList);
+	while (iterator.hasNext())
+	    previousString = previousString + iterator.next() + ";";
+	SettingsManager::setValue("recentProjects", previousString);
 }
 
 void MainWindow::openRecentProjectsMenu()
 {
-        mRecentProjectsMenu->clear();
-        QString stringList = SettingsManager::value("recentProjects").toString();
-        QStringList recentProjects = stringList.split(";", QString::SkipEmptyParts);
-        foreach (QString projectPath, recentProjects)
-        {
-            mRecentProjectsMenu->addAction(projectPath);
-            QObject::connect(mRecentProjectsMenu->actions().last(), SIGNAL(triggered()), mSignalMapper, SLOT(map()));
-            mSignalMapper->setMapping(mRecentProjectsMenu->actions().last(), projectPath);
-        }
+	//SettingsManager::setValue("recentProjects", (QString) "");
+	mRecentProjectsMenu->clear();
+	QString stringList = SettingsManager::value("recentProjects").toString();
+	QStringList recentProjects = stringList.split(";", QString::SkipEmptyParts);
+	foreach (QString projectPath, recentProjects)
+	{
+	    mRecentProjectsMenu->addAction(projectPath);
+	    QObject::connect(mRecentProjectsMenu->actions().last(), SIGNAL(triggered()), mSignalMapper, SLOT(map()));
+	    mSignalMapper->setMapping(mRecentProjectsMenu->actions().last(), projectPath);
+	}
 
-        QObject::connect(mSignalMapper, SIGNAL(mapped(const QString &)), this, SLOT(open(const QString &)));
+	QObject::connect(mSignalMapper, SIGNAL(mapped(const QString &)), this, SLOT(open(const QString &)));
 }
 
 bool MainWindow::open(QString const &fileName)
 {
-        //if (dirName.isEmpty())
+	//if (dirName.isEmpty())
 	//	return false;
-        if (!QFile(fileName).exists()) // || (!mSaveFile.isEmpty() && fileName.isEmpty()))
+	if (!QFile(fileName).exists()) // || (!mSaveFile.isEmpty() && fileName.isEmpty()))
 		if (!(!mSaveFile.isEmpty() && fileName.isEmpty()))
 			return false;
 
-        QString previousList =   SettingsManager::value("recentProjects").toString();
-        previousList = fileName + ";" + previousList;
-        int j = 0;
-        int i = 0;
-        for (i = 0; i < previousList.length(); i++)
-        {
-            if (previousList.at(i) == ';')
-                j++;
-            if (j == mLimit)
-                break;
-        }
-        previousList = previousList.mid(0, ++i);
-        SettingsManager::setValue("recentProjects", previousList);
+	refreshRecentProjectsList(fileName);
 
-        dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
+	dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
 	mUi->graphicalModelExplorer->setModel(NULL);
 	mUi->logicalModelExplorer->setModel(NULL);
 	if (getCurrentTab())
@@ -642,14 +648,14 @@ bool MainWindow::open(QString const &fileName)
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
-        if (!fileName.isEmpty())
-        {
-                setWindowTitle("QReal:Robots - " + mSaveFile);
-        }
-        else
+	if (!fileName.isEmpty())
+	{
+		setWindowTitle("QReal:Robots - " + mSaveFile);
+	}
+	else
 		setWindowTitle("QReal:Robots - unsaved project");
 	mSaveFile = fileName;
-        return true;
+	return true;
 }
 
 void MainWindow::closeAllTabs(){
@@ -2176,3 +2182,4 @@ void MainWindow::checkNxtTools()
 #endif
 
 }
+

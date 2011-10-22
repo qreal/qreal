@@ -228,6 +228,8 @@ private:
 
 	gui::NxtFlashTool *mFlashTool;
 
+	void refreshRecentProjectsList(QString fileName);
+
 	bool mNxtToolsPresent;
 	HelpBrowser *mHelpBrowser;
 
