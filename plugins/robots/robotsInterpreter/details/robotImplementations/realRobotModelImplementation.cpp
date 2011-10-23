@@ -1,7 +1,10 @@
 #include "realRobotModelImplementation.h"
-#include <QtCore/QDebug>
+
+#include "../tracer.h"
+
 using namespace qReal::interpreters::robots;
-using namespace details::robotImplementations;
+using namespace details;
+using namespace robotImplementations;
 
 RealRobotModelImplementation::RealRobotModelImplementation(RobotCommunication * const robotCommunicationInterface)
 	:  AbstractRobotModelImplementation()
@@ -78,12 +81,12 @@ void RealRobotModelImplementation::stopRobot()
 void RealRobotModelImplementation::connectedSlot(bool success)
 {
 	if (!success) {
-		qDebug() << "Connection failed.";
+		Tracer::debug(tracer::initialization, "RealRobotModelImplementation::connectedSlot", "Connection failed.");
 		mIsConnected = false;
 		emit connected(false);
 		return;
 	}
-	qDebug() << "Connected. Initializing sensors...";
+	Tracer::debug(tracer::initialization, "RealRobotModelImplementation::connectedSlot", "Connected. Initializing sensors...");
 	mSensorsConfigurer.unlockConfiguring();
 }
 

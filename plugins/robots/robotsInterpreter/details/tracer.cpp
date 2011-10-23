@@ -66,5 +66,5 @@ void Tracer::disableAllImpl()
 void Tracer::debugImpl(tracer::TracerEnum const &category, QString const &methodName, QString const &message)
 {
 	if (mCategories[category])
-		qDebug() << "Trace: " << methodName << ": " << message;
+		qDebug() << "Trace ---" << methodName << ":" << message;
 }

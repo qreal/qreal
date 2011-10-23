@@ -13,6 +13,7 @@ enum TracerEnum {
 	, initialization
 	, blocks
 	, robotCommunication
+	, autoupdatedSensorValues
 	, sensors
 };
 }

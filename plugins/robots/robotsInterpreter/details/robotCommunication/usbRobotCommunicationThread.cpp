@@ -113,5 +113,5 @@ void UsbRobotCommunicationThread::debugPrint(QByteArray const &buffer, bool out)
 		tmp += QString::number((char)buffer[i]);
 		tmp += " ";
 	}
-	qDebug() << (out ? ">" : "<") << tmp;
+	Tracer::debug(tracer::robotCommunication, "UsbRobotCommunicationThread::debugPrint", (out ? ">" : "<") + tmp);
 }

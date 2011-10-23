@@ -4,8 +4,7 @@
 #include "details/robotImplementations/unrealRobotModelImplementation.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
 #include "details/robotCommunication/usbRobotCommunicationThread.h"
-
-#include <QtCore/QDebug>
+#include "details/tracer.h"
 
 using namespace qReal;
 using namespace interpreters::robots;
@@ -270,7 +269,7 @@ void Interpreter::readSensorValues()
 
 void Interpreter::slotFailure()
 {
-	qDebug() << "slotFailure";
+	Tracer::debug(tracer::autoupdatedSensorValues, "Interpreter::slotFailure", "");
 }
 
 void Interpreter::responseSlot1(int sensorValue)
@@ -296,7 +295,7 @@ void Interpreter::responseSlot4(int sensorValue)
 void Interpreter::updateSensorValues(QString const &sensorVariableName, int sensorValue)
 {
 	(*(mParser->getVariables()))[sensorVariableName] = utils::Number(sensorValue, utils::Number::intType);
-//	qDebug() << sensorVariableName << sensorValue;
+	Tracer::debug(tracer::autoupdatedSensorValues, "Interpreter::updateSensorValues", sensorVariableName + QString::number(sensorValue));
 }
 
 void Interpreter::connectToRobot()

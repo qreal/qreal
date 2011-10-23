@@ -183,7 +183,7 @@ QByteArray BluetoothRobotCommunicationThread::receive(int size) const
 	QByteArray const result = mPort->read(size);
 
 	Tracer::debug(tracer::robotCommunication, "BluetoothRobotCommunicationThread::receive", "Received:");
-	for (int i = 0; i < buffer.size(); ++i) {
+	for (int i = 0; i < result.size(); ++i) {
 		Tracer::debug(tracer::robotCommunication, "BluetoothRobotCommunicationThread::receive"
 				, QString("Byte %1 %2").arg(i).arg(static_cast<unsigned char>(result[i])));
 	}
