@@ -1998,10 +1998,10 @@ Id MainWindow::activeDiagram()
 void MainWindow::initToolPlugins()
 {
 	mToolManager.init(PluginConfigurator(mModels->repoControlApi()
-	, mModels->graphicalModelAssistApi()
-	, mModels->logicalModelAssistApi()
-	, *this
-	));
+			, mModels->graphicalModelAssistApi()
+			, mModels->logicalModelAssistApi()
+			, *this
+		));
 	QList<ActionInfo> actions = mToolManager.actions();
 	foreach (ActionInfo action, actions) {
 		if (action.toolbarName() == "file")

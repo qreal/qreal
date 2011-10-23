@@ -28,6 +28,7 @@ HEADERS += \
 	details/robotsBlockParser.h \
 	details/autoconfigurer.h \
 	details/tracer.h \
+	details/debugHelper.h \
 
 SOURCES += \
 	robotsPlugin.cpp \
@@ -40,6 +41,7 @@ SOURCES += \
 	details/robotsBlockParser.cpp \
 	details/autoconfigurer.cpp \
 	details/tracer.cpp \
+	details/debugHelper.cpp \
 
 FORMS += \
 	details/d2RobotModel/d2Form.ui \

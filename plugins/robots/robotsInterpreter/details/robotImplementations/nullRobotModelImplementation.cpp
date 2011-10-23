@@ -73,9 +73,8 @@ void NullRobotModelImplementation::sensorConfigurationDoneSlot()
 	if (!mIsConnected) {
 		mIsConnected = true;
 		emit connected(true);
-	} else {
-		emit sensorsConfigured();
 	}
+	emit sensorsConfigured();
 }
 
 void NullRobotModelImplementation::stopRobot()

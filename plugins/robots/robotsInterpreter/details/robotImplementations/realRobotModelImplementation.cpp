@@ -95,9 +95,8 @@ void RealRobotModelImplementation::sensorConfigurationDoneSlot()
 	if (!mIsConnected) {
 		mIsConnected = true;
 		emit connected(true);
-	} else {
-		emit sensorsConfigured();
 	}
+	emit sensorsConfigured();
 }
 
 motorImplementations::RealMotorImplementation &RealRobotModelImplementation::motorA()

@@ -1,6 +1,9 @@
 #include "unrealRobotModelImplementation.h"
 
+#include "../tracer.h"
+
 using namespace qReal::interpreters::robots;
+using namespace details;
 using namespace details::robotImplementations;
 using namespace details::d2Model;
 
@@ -74,18 +77,19 @@ void UnrealRobotModelImplementation::init()
 
 void UnrealRobotModelImplementation::timerTimeout()
 {
+	Tracer::debug(tracer::initialization, "UnrealRobotModelImplementation::timerTimeout", "Configuring sensors");
 	connect(&mSensorsConfigurer, SIGNAL(allSensorsConfigured()), this, SLOT(sensorConfigurationDoneSlot()));
 	mSensorsConfigurer.unlockConfiguring();
 }
 
 void UnrealRobotModelImplementation::sensorConfigurationDoneSlot()
 {
+	Tracer::debug(tracer::initialization, "UnrealRobotModelImplementation::sensorConfigurationDoneSlot", "");
 	if (!mIsConnected) {
 		mIsConnected = true;
 		emit connected(true);
-	} else {
-		emit sensorsConfigured();
 	}
+	emit sensorsConfigured();
 }
 
 void UnrealRobotModelImplementation::stopRobot()
