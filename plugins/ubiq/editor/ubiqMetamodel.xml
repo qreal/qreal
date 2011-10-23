@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='utf-8'?>
+<metamodel xmlns="http://schema.real.com/schema/">
+    <include>../../commonMetamodels/kernelMetamodel.xml</include>
+    <diagram displayedName="Ubiq Data Structures" nodeName="dataStructuresDiagram" name="dataStructures">
+        <graphicTypes>
+            <import as="Comment" name="KernelDiagram::Comment"/>
+            <import as="CommentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
+            <node displayedName="Data Structures Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="dataStructuresDiagram">
+                <graphics>
+                    <picture sizex="200" sizey="200">
+                        <line y1="0" x1="20" y2="0" x2="180"/>
+                        <line y1="200" x1="20" y2="200" x2="180"/>
+                        <line y1="20" x1="0" y2="180" x2="0"/>
+                        <line y1="20" x1="200" y2="180" x2="200"/>
+                        <arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="40" x2="40"/>
+                        <arc spanAngle="1440" startAngle="0" y1="0" x1="160" y2="40" x2="200"/>
+                        <arc spanAngle="1440" startAngle="2880" y1="160" x1="0" y2="200" x2="40"/>
+                        <arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200"/>
+                    </picture>
+                    <labels>
+                        <label x="40" y="10" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="0" y="100"/>
+                        <pointPort x="100" y="0"/>
+                        <pointPort x="200" y="100"/>
+                        <pointPort x="100" y="200"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="dataStructures::messageClass"/>
+                        <contains type="dataStructures::customClass"/>
+                        <contains type="dataStructures::errorCodes"/>
+                        <contains type="dataStructures::messageCodes"/>
+                        <contains type="dataStructures::comment"/>
+                    </container>
+                </logic>
+            </node>
+            <node name="messageClass" displayedName="Message Class">
+                <graphics>
+                    <picture sizex="150" sizey="150">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="150" stroke-width="1" x2="150" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="0" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="dataStructures::field"/>
+                    </container>
+                    <properties>
+                        <sortContainer/>
+                        <banChildrenMove/>
+                        <minimizeToChildren/>
+                        <maximizeChildren/>
+                    </properties>
+                </logic>
+            </node>
+            <node path="0, 0 : 75, 0 : 75, 50 : 0, 50 : " name="customClass" displayedName="Custom Class">
+                <graphics>
+                    <picture sizex="150" sizey="150">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="150" stroke-width="1" x2="150" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="0" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="dataStructures::field"/>
+                    </container>
+                    <properties>
+                        <sortContainer/>
+                        <banChildrenMove/>
+                        <minimizeToChildren/>
+                        <maximizeChildren/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="messageCodes" displayedName="Message Codes">
+                <graphics>
+                    <picture sizex="150" sizey="150">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="150" stroke-width="1" x2="150" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="0" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="dataStructures::enumElement"/>
+                    </container>
+                    <properties>
+                        <sortContainer/>
+                        <banChildrenMove/>
+                        <minimizeToChildren/>
+                        <maximizeChildren/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="errorCodes" displayedName="Error Codes">
+                <graphics>
+                    <picture sizex="150" sizey="150">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="150" stroke-width="1" x2="150" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="0" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="dataStructures::enumElement"/>
+                    </container>
+                    <properties>
+                        <sortContainer/>
+                        <banChildrenMove/>
+                        <minimizeToChildren/>
+                        <maximizeChildren/>
+                    </properties>
+                </logic>
+            </node>
+            <node displayedName="Field" name="field">
+                <graphics>
+                    <picture sizex="100" sizey="20"/>
+                    <labels>
+                        <label x="0" y="0" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <properties>
+                        <property type="string" name="type"/>
+                    </properties>
+                </logic>
+            </node>
+            <node displayedName="Enum Element" name="enumElement">
+                <graphics>
+                    <picture sizex="100" sizey="20"/>
+                    <labels>
+                        <label x="0" y="0" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                </logic>
+            </node>
+        </graphicTypes>
+    </diagram>
+</metamodel>
