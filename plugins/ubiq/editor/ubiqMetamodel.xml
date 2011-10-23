@@ -1,10 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/">
     <include>../../commonMetamodels/kernelMetamodel.xml</include>
-    <diagram displayedName="Ubiq Data Structures" nodeName="dataStructuresDiagram" name="dataStructures">
+    <include>../../umlActivityDiagram/editor/activityMetamodel.xml</include>
+    <diagram displayedName="Ubiq Data Structures" nodeName="dataStructuresDiagram" name="ubiqDataStructures">
         <graphicTypes>
-            <import as="Comment" name="KernelDiagram::Comment"/>
-            <import as="CommentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
+            <import as="comment" name="KernelDiagram::Comment"/>
+            <import as="commentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
             <node displayedName="Data Structures Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="dataStructuresDiagram">
                 <graphics>
                     <picture sizex="200" sizey="200">
@@ -144,6 +145,272 @@
                     <labels>
                         <label x="0" y="0" textBinded="name"/>
                     </labels>
+                </graphics>
+                <logic>
+                </logic>
+            </node>
+        </graphicTypes>
+    </diagram>
+    <diagram displayedName="Ubiq Master Diagram" nodeName="ubiqMasterDiagram" name="ubiqMaster">
+        <graphicTypes>
+            <import as="masterDiagramComment" name="KernelDiagram::Comment"/>
+            <import as="masterDiagramCommentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
+            <node displayedName="Master Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="ubiqMasterDiagram">
+                <graphics>
+                    <picture sizex="200" sizey="200">
+                        <line y1="0" x1="20" y2="0" x2="180"/>
+                        <line y1="200" x1="20" y2="200" x2="180"/>
+                        <line y1="20" x1="0" y2="180" x2="0"/>
+                        <line y1="20" x1="200" y2="180" x2="200"/>
+                        <arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="40" x2="40"/>
+                        <arc spanAngle="1440" startAngle="0" y1="0" x1="160" y2="40" x2="200"/>
+                        <arc spanAngle="1440" startAngle="2880" y1="160" x1="0" y2="200" x2="40"/>
+                        <arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200"/>
+                    </picture>
+                    <labels>
+                        <label x="40" y="10" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="0" y="100"/>
+                        <pointPort x="100" y="0"/>
+                        <pointPort x="200" y="100"/>
+                        <pointPort x="100" y="200"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="ubiqMaster::masterNode"/>
+                        <contains type="ubiqMaster::masterDiagramComment"/>
+                    </container>
+                </logic>
+            </node>
+            <node name="masterNode" displayedName="Master Node">
+                <graphics>
+                    <picture sizex="150" sizey="150">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="150" stroke-width="1" x2="150" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="0" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="ubiqMaster::handler"/>
+                    </container>
+                    <properties>
+                        <sortContainer/>
+                        <banChildrenMove/>
+                        <minimizeToChildren/>
+                        <maximizeChildren/>
+                    </properties>
+                </logic>
+            </node>
+            <node displayedName="Handler" name="handler">
+                <graphics>
+                    <picture sizex="100" sizey="20"/>
+                    <labels>
+                        <label x="0" y="0" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                </logic>
+            </node>
+        </graphicTypes>
+    </diagram>
+    <diagram displayedName="Ubiq Activity Diagram" nodeName="ubiqActivityDiagram" name="ubiqActivity">
+        <graphicTypes>
+            <import as="ubiqActivityComment" name="KernelDiagram::Comment"/>
+            <import as="ubiqActivityCommentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
+            <import as="handlerStart" displayedName="Handler Start" name="ActivityDiagram::AcceptEventAction"/>
+            <import as="action" name="ActivityDiagram::Action"/>
+            <import as="decisionNode" displayedName="Decision Node" name="ActivityDiagram::DecisionNode"/>
+            <import as="mergeNode" displayedName="Merge Node" name="ActivityDiagram::MergeNode"/>
+            <import as="activityFinalNode" displayedName="Activity Final Node" name="ActivityDiagram::ActivityFinalNode"/>
+            <import as="controlFlow" displayedName="Control Flow" name="ActivityDiagram::ControlFlow"/>
+            <node displayedName="Activity Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="ubiqActivityDiagram">
+                <graphics>
+                    <picture sizex="200" sizey="200">
+                        <line y1="0" x1="20" y2="0" x2="180"/>
+                        <line y1="200" x1="20" y2="200" x2="180"/>
+                        <line y1="20" x1="0" y2="180" x2="0"/>
+                        <line y1="20" x1="200" y2="180" x2="200"/>
+                        <arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="40" x2="40"/>
+                        <arc spanAngle="1440" startAngle="0" y1="0" x1="160" y2="40" x2="200"/>
+                        <arc spanAngle="1440" startAngle="2880" y1="160" x1="0" y2="200" x2="40"/>
+                        <arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200"/>
+                    </picture>
+                    <labels>
+                        <label x="40" y="10" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="0" y="100"/>
+                        <pointPort x="100" y="0"/>
+                        <pointPort x="200" y="100"/>
+                        <pointPort x="100" y="200"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="ubiqActivity::ubiqActivityComment"/>
+                        <contains type="ubiqActivity::handlerStart"/>
+                        <contains type="ubiqActivity::action"/>
+                        <contains type="ubiqActivity::decisionNode"/>
+                        <contains type="ubiqActivity::mergeNode"/>
+                        <contains type="ubiqActivity::activityFinalNode"/>
+                        <contains type="ubiqActivity::returnAction"/>
+                        <contains type="ubiqActivity::formalParameters"/>
+                    </container>
+                </logic>
+            </node>
+            <node displayedName="Return" path="0, 0 : 84, 0 : 98, 30 : 84, 58 : 0, 58 : 0, 0 : " name="returnAction">
+                <graphics>
+                    <picture sizex="100" sizey="60">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="1" stroke-width="1" x2="84" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="84" y2="30" stroke-width="1" x2="99" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="99" y2="59" stroke-width="1" x2="84" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="84" y2="59" stroke-width="1" x2="1" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="1" y2="1" stroke-width="1" x2="1" fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="0" text="&lt;b>return&lt;b>"/>
+                        <label x="30" y="0" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="50" y="0"/>
+                        <pointPort x="50" y="60"/>
+                        <pointPort x="0" y="30"/>
+                        <pointPort x="100" y="30"/>
+                    </ports>
+                </graphics>
+                <logic>
+                </logic>
+            </node>
+            <node name="formalParameters" displayedName="Formal Parameters">
+                <graphics>
+                    <picture sizex="150" sizey="150">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="150" stroke-width="1" x2="150" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="0" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="0" starty="0"/>
+                            <end endx="150" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="150" starty="0"/>
+                            <end endx="150" endy="150"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="150" starty="150"/>
+                            <end endx="0" endy="150"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="150"/>
+                            <end endx="0" endy="0"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="ubiqActivity::formalParameter"/>
+                    </container>
+                    <properties>
+                        <sortContainer/>
+                        <banChildrenMove/>
+                        <minimizeToChildren/>
+                        <maximizeChildren/>
+                    </properties>
+                </logic>
+            </node>
+            <node displayedName="Formal Parameter" name="formalParameter">
+                <graphics>
+                    <picture sizex="100" sizey="20"/>
+                    <labels>
+                        <label x="0" y="0" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <properties>
+                        <property type="string" name="type"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="functionCall" displayedName="Function Call">
+                <graphics>
+                    <picture sizex="150" sizey="150">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="150" stroke-width="1" x2="150" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="0" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="0" starty="0"/>
+                            <end endx="150" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="150" starty="0"/>
+                            <end endx="150" endy="150"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="150" starty="150"/>
+                            <end endx="0" endy="150"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="150"/>
+                            <end endx="0" endy="0"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="ubiqActivity::actualParameter"/>
+                        <contains type="ubiqActivity::returnValue"/>
+                    </container>
+                    <properties>
+                        <sortContainer/>
+                        <banChildrenMove/>
+                        <minimizeToChildren/>
+                        <maximizeChildren/>
+                    </properties>
+                </logic>
+            </node>
+            <node displayedName="Actual Parameter" name="actualParameter">
+                <graphics>
+                    <picture sizex="100" sizey="20"/>
+                    <labels>
+                        <label x="0" y="0" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <properties>
+                        <property type="string" name="type"/>
+                    </properties>
+                </logic>
+            </node>
+            <node displayedName="Return Value" name="returnValue">
+                <graphics>
+                    <picture sizex="100" sizey="60">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="1" x2="100" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="60" stroke-width="1" x2="100" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="100" y2="60" stroke-width="1" x2="0" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="0" y2="30" stroke-width="1" x2="15" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="15" y2="0" stroke-width="1" x2="0" fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="5" y="3" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="15" y="30"/>
+                        <pointPort x="100" y="30"/>
+                        <pointPort x="50" y="0"/>
+                        <pointPort x="50" y="60"/>
+                    </ports>
                 </graphics>
                 <logic>
                 </logic>
