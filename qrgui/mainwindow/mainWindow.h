@@ -186,6 +186,7 @@ private slots:
 	void updatePaletteIcons();
 
 	void autosave();
+	void setAutoSaveParameters();
 
 private:
 	Ui::MainWindowUi *mUi;
@@ -225,6 +226,7 @@ private:
 	HelpBrowser *mHelpBrowser;
 
 	bool mIsNewProject;
+	QTimer mAutoSaveTimer;
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,

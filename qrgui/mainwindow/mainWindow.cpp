@@ -188,6 +188,9 @@ MainWindow::MainWindow()
 
 	if (mIsNewProject)
 		saveAs(mTempDir);
+
+	setAutoSaveParameters();
+	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
 }
 
 void MainWindow::connectActions()
@@ -1102,6 +1105,7 @@ void MainWindow::showPreferencesDialog()
 	}
 	mPreferencesDialog.exec();
 	mToolManager.updateSettings();
+	setAutoSaveParameters();
 }
 
 void MainWindow::openSettingsDialog(QString const &tab)
@@ -1119,7 +1123,7 @@ void MainWindow::setSceneFont() {
 		getCurrentTab()->scene()->update();
 	} else {
 		getCurrentTab()->scene()->setFont(QFont(QFontDatabase::applicationFontFamilies(
-													QFontDatabase::addApplicationFont(QDir::currentPath() + "/times.ttf")).at(0), 9));
+					QFontDatabase::addApplicationFont(QDir::currentPath() + "/times.ttf")).at(0), 9));
 		getCurrentTab()->scene()->update();
 	}
 
@@ -2050,9 +2054,23 @@ void MainWindow::checkNxtTools()
 
 }
 
+void MainWindow::setAutoSaveParameters()
+{
+	if (!SettingsManager::value("autoSave", true).toBool()) {
+		mAutoSaveTimer.stop();
+		return;
+	}
+
+	mAutoSaveTimer.setInterval(SettingsManager::value("autoSaveInterval", 10).toInt() * 1000);
+	mAutoSaveTimer.start();
+}
+
 void MainWindow::autosave()
 {
-	//save
+	if (mIsNewProject)
+		saveAs(mTempDir);
+	else
+		saveAll();
 }
 
 QProgressBar *MainWindow::createProgressBar(QSplashScreen* splash)
