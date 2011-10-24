@@ -105,7 +105,6 @@ private:
     qreal mWidthOfGrid;
     double mRealIndexGrid;
 
-    void getObjectByGesture();
     void getLinkByGesture(NodeElement * parent, NodeElement const & child);
     void drawGesture();
     void deleteGesture();
@@ -147,9 +146,12 @@ private:
     QSignalMapper *mActionSignalMapper;
 
     QSet<Element *> mHighlightedElements;
+    QTimer * mTimer;
 
     friend class qReal::EditorViewMViface;
 
     /** @brief Is "true" when we just select items on scene, and "false" when we drag selected items */
     bool mShouldReparentItems;
+private slots:
+    void getObjectByGesture();
 };
