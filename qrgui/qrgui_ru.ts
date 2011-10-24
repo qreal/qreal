@@ -321,7 +321,7 @@
         <location filename="view/editorViewScene.cpp" line="187"/>
         <location filename="view/editorViewScene.cpp" line="234"/>
         <source>Discard</source>
-        <translation>Очистить</translation>
+        <translation>Убрать меню</translation>
     </message>
     <message>
         <location filename="view/editorViewScene.cpp" line="190"/>
