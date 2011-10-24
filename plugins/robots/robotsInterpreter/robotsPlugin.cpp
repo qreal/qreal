@@ -15,7 +15,7 @@ RobotsPlugin::RobotsPlugin()
 	, mRunAction(NULL)
 	, mStopAction(NULL)
 {
-	details::Tracer::enableAll();
+//	details::Tracer::enableAll();
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
 	QTranslator *appTranslator = new QTranslator();
 	appTranslator->load(":/robotsInterpreter_" + QLocale::system().name());

@@ -48,6 +48,8 @@
 
 using namespace qReal;
 
+const QString unsavedDir = "unsaved";
+
 MainWindow::MainWindow()
 	: mUi(new Ui::MainWindowUi)
 	, mCloseEvent(NULL)
@@ -58,10 +60,11 @@ MainWindow::MainWindow()
 	, mVisualDebugger(NULL)
 	, mErrorReporter(NULL)
 	, mIsFullscreen(false)
-	, mTempDir(qApp->applicationDirPath() + "/unsaved")
+	, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
 	, mPreferencesDialog(this)
 	, mNxtToolsPresent(false)
 	, mHelpBrowser(NULL)
+	, mIsNewProject(true)
 {
 	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
 
@@ -165,8 +168,12 @@ MainWindow::MainWindow()
 		splash->close();
 	delete splash;
 
-	if (mModels->graphicalModel()->rowCount() > 0)
+	mIsNewProject = (mSaveFile.isEmpty() || mSaveFile == mTempDir + ".qrs");
+
+	if (mModels->graphicalModel()->rowCount() > 0) {
 		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
+	}
+
 
 	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
@@ -178,6 +185,9 @@ MainWindow::MainWindow()
 	checkNxtTools();
 	mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
 	mUi->actionFlash_Robot->setVisible(mNxtToolsPresent);
+
+	if (mIsNewProject)
+		saveAs(mTempDir);
 }
 
 void MainWindow::connectActions()
@@ -193,7 +203,7 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(openNewProject()));
 	connect(mUi->actionSave, SIGNAL(triggered()), this, SLOT(saveAll()));
-	connect(mUi->actionSave_as, SIGNAL(triggered()), this, SLOT(saveAs()));
+	connect(mUi->actionSave_as, SIGNAL(triggered()), this, SLOT(saveProjectAs()));
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
@@ -305,13 +315,12 @@ void MainWindow::finalClose()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	mIsNewProject = false;
 	saveAll();
 	mCloseEvent = event;
-	//settings.beginGroup("MainWindow");
 	SettingsManager::setValue("maximized", isMaximized());
 	SettingsManager::setValue("size", size());
 	SettingsManager::setValue("pos", pos());
-	//settings.endGroup();
 }
 
 void MainWindow::loadPlugins()
@@ -518,8 +527,6 @@ bool MainWindow::openNewProject()
 
 bool MainWindow::open(QString const &fileName)
 {
-	//if (dirName.isEmpty())
-	//	return false;
 	if (!QFile(fileName).exists()) // || (!mSaveFile.isEmpty() && fileName.isEmpty()))
 		if (!(!mSaveFile.isEmpty() && fileName.isEmpty()))
 			return false;
@@ -542,11 +549,11 @@ bool MainWindow::open(QString const &fileName)
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
+	mSaveFile = fileName;
 	if (!fileName.isEmpty())
 		setWindowTitle("QReal:Robots - " + mSaveFile);
 	else
 		setWindowTitle("QReal:Robots - unsaved project");
-	mSaveFile = fileName;
 	return true;
 }
 
@@ -1509,20 +1516,29 @@ void MainWindow::createDiagram(QString const &idString)
 
 void MainWindow::saveAll()
 {
-	if (mSaveFile.isEmpty()) {
-		saveAs();
+	if (mSaveFile.isEmpty() || mIsNewProject) {
+		saveProjectAs();
 		return;
 	}
 
 	mModels->repoControlApi().saveAll();
 }
 
-void MainWindow::saveAs()
+void MainWindow::saveProjectAs()
 {
-	QString const fileName = getWorkingFile(tr("Select file to save current model to"));
+	saveAs(getWorkingFile(tr("Select file to save current model to")));
+}
+
+void MainWindow::saveAs(QString const &fileName)
+{
 	if (fileName.isEmpty())
 		return;
-	mModels->repoControlApi().saveTo(fileName);
+
+	mSaveFile = fileName;
+	mIsNewProject = (mSaveFile == mTempDir);
+
+	mModels->repoControlApi().saveTo(mSaveFile);
+
 	if (!mSaveFile.endsWith(".qrs", Qt::CaseInsensitive))
 		mSaveFile += ".qrs";
 	setWindowTitle("QReal:Robots - " + mSaveFile);
@@ -1891,14 +1907,6 @@ void MainWindow::fullscreen()
 
 void MainWindow::createProject()
 {
-	/*
- QString dirName = getNextDirName(SettingsManager::value("workingDir", mSaveDir).toString());
- SettingsManager::setValue("workingDir", dirName);
- open(dirName);
-
- if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
-  suggestToCreateDiagram();
- */
 	saveAll();
 	open("");
 	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
@@ -2021,7 +2029,6 @@ void MainWindow::checkNxtTools()
 		return;
 	}
 	dir.cd(dir.absolutePath() + "/nxt-tools");
-	qDebug() << dir.absolutePath();
 
 	QDir gnuarm(dir.absolutePath() + "/gnuarm");
 	QDir nexttool(dir.absolutePath() + "/nexttool");
@@ -2107,7 +2114,6 @@ void MainWindow::initWindowTitle()
 
 	if (mSaveFile.isEmpty()) {
 		setWindowTitle(windowTitle + " - " + "unsaved project");
-		saveAll();
 	}
 	else {
 		setWindowTitle(windowTitle + " - " + mSaveFile);

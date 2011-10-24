@@ -102,7 +102,7 @@ private slots:
 
 	bool open(QString const &dirName);
 	bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
-	void saveAs();
+	void saveProjectAs();
 	void saveAll();
 	void fullscreen();
 	bool openNewProject();
@@ -145,14 +145,11 @@ private slots:
 	void startDebugging();
 	void checkEditorForDebug(int index);
 
-private slots:
 	void deleteFromDiagram();
 	void changeMiniMapSource(int index);
 	void closeTab(int index);
 	void closeTab(QModelIndex const &graphicsIndex);
-//	void exterminate();
 	void generateEditor();
-//	void generateEditorWithQRMC();
 	void parseEditorXml();
 	void generateToHascol();
 	void parseHascol();
@@ -227,6 +224,8 @@ private:
 	bool mNxtToolsPresent;
 	HelpBrowser *mHelpBrowser;
 
+	bool mIsNewProject;
+
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
 			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
@@ -283,5 +282,7 @@ private:
 	void initWindowTitle();
 	void initDebugger();
 	void initExplorers();
+
+	void saveAs(QString const &saveName);
 };
 }
