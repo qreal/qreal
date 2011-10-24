@@ -530,6 +530,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 
 void EditorViewScene::getObjectByGesture()
 {
+    mTimer->stop();
     deleteGesture();
     QPointF start = mMouseMovementManager->firstPoint();
     QPointF end = mMouseMovementManager->lastPoint();
