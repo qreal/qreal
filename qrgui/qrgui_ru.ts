@@ -2940,6 +2940,75 @@
     </message>
 </context>
 <context>
+    <name>qReal::gui::NxtFlashTool</name>
+    <message>
+        <location filename="mainwindow/nxtFlashTool.cpp" line="39"/>
+        <source>Firmware flash started. Please don&apos;t disconnect robot during the process</source>
+        <translation>Начат процесс загрузки прошивки в робота. Пожалуйста, не отсоединяйте робота, пока процесс не будет завершен</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/nxtFlashTool.cpp" line="46"/>
+        <source>Some error occured. Make sure you are running QReal with superuser privileges</source>
+        <translation>Ошибка. Убедитесь, что QReal:Robots запущен с правами администратора</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/nxtFlashTool.cpp" line="55"/>
+        <source>Flashing process completed.</source>
+        <translation>Процесс загрузки программы завершен</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/nxtFlashTool.cpp" line="57"/>
+        <source>flash.sh not found. Make sure it is present in QReal installation directory</source>
+        <translation>Не найден скрипт flash.sh. Убедитесь, что пакет nxt-tools установлен корректно</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/nxtFlashTool.cpp" line="59"/>
+        <location filename="mainwindow/nxtFlashTool.cpp" line="105"/>
+        <source>QReal requires superuser privileges to flash NXT robot</source>
+        <translation>Для загрузки прошивки в робота требуется запустить QReal:Robots с правами администратора</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/nxtFlashTool.cpp" line="73"/>
+        <source>NXT not found. Check USB connection and make sure the robot is ON</source>
+        <translation>Соединение с роботом не обнаружено. Проверьте USB-соединение и убедитесь, что робот включен</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/nxtFlashTool.cpp" line="75"/>
+        <source>NXT is not in reset mode. Please reset your NXT manually and try again</source>
+        <translation>Робот находится в неправильном режиме. Переведите робота в режим перепрошивки</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/nxtFlashTool.cpp" line="77"/>
+        <source>Firmware flash complete!</source>
+        <translation>Процесс загрузки прошивки в робота завершен</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/nxtFlashTool.cpp" line="93"/>
+        <source>Uploading program started. Please don&apos;t disconnect robot during the process</source>
+        <translation>Начат процесс загрузки программы в робота. Пожалуйста, не отсоединяйте робота, пока процесс не будет завершен</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/nxtFlashTool.cpp" line="103"/>
+        <source>Uploading failed. Make sure that X-server allows root to run GUI applications</source>
+        <translation>Не удалось загрузить программу в робота. Убедитесь, что QReal:Robots запущен с нужными правами</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/nxtFlashTool.cpp" line="134"/>
+        <source>Could not upload program. Make sure the robot is connected and ON</source>
+        <translation>Не удалось загрузить программу в робота. Убедитесь, что робот включен и подсоединен к компьютеру</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/nxtFlashTool.cpp" line="136"/>
+        <source>Uploading completed successfully</source>
+        <translation>Загрузка программы завершена успешно</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/nxtFlashTool.cpp" line="140"/>
+        <source>QReal requires superuser privileges to upload programs on NXT robot</source>
+        <translation>Для загрузки программ в робота требуется запустить QReal:Robots с правами администратора</translation>
+    </message>
+</context>
+<context>
     <name>qReal::gui::RobotSettingsDialog</name>
     <message>
         <source>No COM ports found</source>
