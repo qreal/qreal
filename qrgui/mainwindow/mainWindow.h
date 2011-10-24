@@ -188,6 +188,7 @@ private slots:
 
 	void updatePaletteIcons();
 
+	void autosave();
 
 private:
 	Ui::MainWindowUi *mUi;
@@ -273,5 +274,14 @@ private:
 
 	void initToolPlugins();
 	void checkNxtTools();
+
+	QProgressBar *createProgressBar(QSplashScreen* splash);
+	void initMiniMap();
+	void initToolManager();
+	void initTabs();
+	void initDocks();
+	void initWindowTitle();
+	void initDebugger();
+	void initExplorers();
 };
 }
