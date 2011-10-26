@@ -531,22 +531,10 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 void EditorViewScene::getObjectByGesture()
 {
     mTimer->stop();
+    qReal::Id id = mMouseMovementManager->getObject();
+    if (id.element() != "")
+        createElement(id.toString(), mMouseMovementManager->pos());
     deleteGesture();
-    QPointF start = mMouseMovementManager->firstPoint();
-    QPointF end = mMouseMovementManager->lastPoint();
-    NodeElement * parent = dynamic_cast <NodeElement * > (getElemAt(start));
-    NodeElement * child = dynamic_cast <NodeElement * > (getElemAt(end));
-    if (parent && child)
-    {
-        getLinkByGesture(parent, *child);
-    }
-    else
-    {
-        qReal::Id id = mMouseMovementManager->getObject();
-        if (id.element() != "")
-            createElement(id.toString(), mMouseMovementManager->pos());
-    }
-    mMouseMovementManager->clear();
 }
 
 void EditorViewScene::getLinkByGesture(NodeElement * parent, const NodeElement &child)
@@ -618,8 +606,19 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
     if (event->button() == Qt::RightButton)
     {
         mMouseMovementManager->mouseMove(event->scenePos());
-        drawGesture();
         mRightButtonPressed = false;
+        drawGesture();
+        QPointF start = mMouseMovementManager->firstPoint();
+        QPointF end = mMouseMovementManager->lastPoint();
+        NodeElement * parent = dynamic_cast <NodeElement * > (getElemAt(start));
+        NodeElement * child = dynamic_cast <NodeElement * > (getElemAt(end));
+        if (parent && child && mMouseMovementManager->isEdgeCandidate())
+        {
+            getLinkByGesture(parent, *child);
+            deleteGesture();
+        }
+        else
+            mTimer->start(3000);
         EdgeElement *edgeElement = dynamic_cast<EdgeElement *>(element);
         if(edgeElement != NULL)
             if (event->buttons() & Qt::LeftButton ) {
@@ -627,7 +626,6 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
             return;}
         if (element && !mMouseMovementManager->wasMoving())
             initContextMenu(element, event->scenePos());
-        mTimer->start(3000);
         return;
     }
 
@@ -841,6 +839,7 @@ void EditorViewScene::deleteGesture()
         removeItem(item);
     }
     mGesture.clear();
+    mMouseMovementManager->clear();
 }
 
 void EditorViewScene::wheelEvent(QGraphicsSceneWheelEvent *wheelEvent)

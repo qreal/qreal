@@ -33,6 +33,7 @@ public:
     void printElements();
     void drawIdealPath();
     bool wasMoving();
+    bool isEdgeCandidate();
 
 private:
     static QPoint parsePoint(QString const &str);

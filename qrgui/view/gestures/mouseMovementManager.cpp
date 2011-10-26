@@ -178,3 +178,8 @@ bool MouseMovementManager::wasMoving()
     return (firstPoint() != lastPoint() || mPath.size() > 1 ||
             (!mPath.isEmpty() && mPath.at(0).size() > 2));
 }
+
+bool MouseMovementManager::isEdgeCandidate()
+{
+    return mPath.count() <= 1;
+}
