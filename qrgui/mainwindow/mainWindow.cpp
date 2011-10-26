@@ -617,7 +617,13 @@ void MainWindow::openRecentProjectsMenu()
 	    mSignalMapper->setMapping(mRecentProjectsMenu->actions().last(), projectPath);
 	}
 
-	QObject::connect(mSignalMapper, SIGNAL(mapped(const QString &)), this, SLOT(open(const QString &)));
+	QObject::connect(mSignalMapper, SIGNAL(mapped(const QString &)), this, SLOT(saveAllAndOpen(const QString &)));
+}
+
+void MainWindow::saveAllAndOpen(QString const &dirName)
+{
+	saveAll();
+	open(dirName);
 }
 
 bool MainWindow::open(QString const &fileName)

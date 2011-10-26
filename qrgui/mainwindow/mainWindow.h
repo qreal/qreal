@@ -100,7 +100,9 @@ private slots:
 	void checkoutDialogOk();
 	void checkoutDialogCancel();
 
-        bool open(QString const &dirName);
+	void saveAllAndOpen(QString const &dirName);
+
+	bool open(QString const &dirName);
         bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
 	void saveAs();
 	void saveAll();
