@@ -207,6 +207,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(openNewProject()));
 	connect(mUi->actionSave, SIGNAL(triggered()), this, SLOT(saveAll()));
 	connect(mUi->actionSave_as, SIGNAL(triggered()), this, SLOT(saveProjectAs()));
+	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()), this, SLOT(saveDiagramAsAPicture()));
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
@@ -2165,4 +2166,26 @@ void MainWindow::initExplorers()
 	connect(mUi->graphicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(graphicalModelExplorerClicked(QModelIndex)));
 	connect(mUi->logicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(logicalModelExplorerClicked(QModelIndex)));
 
+}
+
+void MainWindow::saveDiagramAsAPicture()
+{
+	QString const fileName = QFileDialog::getSaveFileName(this,  tr("Save File"), "", tr("Images (*.png *.jpg)"));
+	if (fileName.isEmpty())
+		return;
+	QRectF const sceneRect = getCurrentTab()->scene()->itemsBoundingRect();
+
+	QImage image(sceneRect.size().toSize(), QImage::Format_RGB32);
+	QPainter painter(&image);
+
+	QBrush brush(Qt::SolidPattern);
+	brush.setColor(Qt::white);
+	painter.setBrush(brush);
+	painter.setPen(QPen(Qt::white));
+	QRectF realBoundingRect = getCurrentTab()->scene()->sceneRect();
+	realBoundingRect.moveTo(QPointF());
+	painter.drawRect(realBoundingRect);
+
+	getCurrentTab()->scene()->render(&painter);
+	image.save(fileName);
 }
