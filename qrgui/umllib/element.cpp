@@ -11,7 +11,7 @@ Element::Element()
 	, mGraphicalAssistApi(NULL)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
-		ItemClipsToShape | ItemSendsGeometryChanges);
+			 ItemClipsToShape | ItemSendsGeometryChanges);
 	setAcceptDrops(true);
 	setCursor(Qt::PointingHandCursor);
 }

@@ -16,9 +16,9 @@ using namespace qReal;
 
 NodeElement::NodeElement(ElementImpl* impl)
 	: mSwitchGridAction(tr("Switch on grid"), this),
-	mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
-	mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)),
-	mSelectionNeeded(false), mConnectionInProgress(false)
+	  mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
+	  mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)),
+	  mSelectionNeeded(false), mConnectionInProgress(false)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -72,7 +72,7 @@ NodeElement::~NodeElement()
 
 NodeElement *NodeElement::clone(bool toCursorPos, bool shareLogicalId, Id const &parentId)
 {
-	UML::NodeElement *result = NULL;
+	NodeElement *result = NULL;
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
 
 	QPointF const placePos = toCursorPos ? evscene->getMousePos() : mPos;
@@ -87,7 +87,7 @@ NodeElement *NodeElement::clone(bool toCursorPos, bool shareLogicalId, Id const 
 		if (parentId == Id::rootId())
 			scene()->addItem(result);
 		else {
-			UML::Element *parent = evscene->getElem(parentId);
+			Element *parent = evscene->getElem(parentId);
 			result->setParentItem(parent);
 		}
 
@@ -208,72 +208,72 @@ void NodeElement::adjustLinks()
 // TODO: Understand what happens here ASAP!
 /*
 void NodeElement::arrangeLinks() {
-	if (!SettingsManager::value("arrangeLinks", true).toBool())
-		return;
+ if (!SettingsManager::value("arrangeLinks", true).toBool())
+  return;
 
-	QSet<NodeElement*> toArrange;
-	QSet<NodeElement*> arranged;
-	arrangeLinksRecursively(toArrange, arranged);
+ QSet<NodeElement*> toArrange;
+ QSet<NodeElement*> arranged;
+ arrangeLinksRecursively(toArrange, arranged);
 
-	foreach (QGraphicsItem *child, childItems()) {
-		NodeElement *element = dynamic_cast<NodeElement*>(child);
-		if (element)
-			element->arrangeLinks();
-	}
+ foreach (QGraphicsItem *child, childItems()) {
+  NodeElement *element = dynamic_cast<NodeElement*>(child);
+  if (element)
+   element->arrangeLinks();
+ }
 }
 */
 
 /*
 void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<NodeElement*>& arranged)
 {
-	toArrange.remove(this);
+ toArrange.remove(this);
 
-	foreach (EdgeElement* edge, mEdgeList) {
-		NodeElement* src = edge->src();
-		NodeElement* dst = edge->dst();
-		edge->reconnectToNearestPorts(this == src || !arranged.contains(src), this == dst || !arranged.contains(dst), false);
-		NodeElement* other = edge->otherSide(this);
-		if (!arranged.contains(other) && other != 0)
-			toArrange.insert(other);
-	}
+ foreach (EdgeElement* edge, mEdgeList) {
+  NodeElement* src = edge->src();
+  NodeElement* dst = edge->dst();
+  edge->reconnectToNearestPorts(this == src || !arranged.contains(src), this == dst || !arranged.contains(dst), false);
+  NodeElement* other = edge->otherSide(this);
+  if (!arranged.contains(other) && other != 0)
+   toArrange.insert(other);
+ }
 
-	//make equal space on all linear ports.
-	int lpId = 0;
-	foreach (StatLine line, mLinePorts) {
-		//sort first by slope, then by current portId
-		QMap<QPair<qreal, qreal>, EdgeElement*> sortedEdges;
-		QLineF portLine = line;
-		qreal dx = portLine.dx();
-		qreal dy = portLine.dy();
-		foreach (EdgeElement* edge, mEdgeList) {
-			if (portId(edge->portIdOn(this)) == lpId) {
-				QPointF conn = edge->connectionPoint(this);
-				QPointF next = edge->nextFrom(this);
-				qreal x1 = conn.x();
-				qreal y1 = conn.y();
-				qreal x2 = next.x();
-				qreal y2 = next.y();
-				qreal len = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-				qreal scalarProduct = ((x2 - x1) * dx + (y2 - y1) * dy) / len;
-				sortedEdges.insertMulti(qMakePair(edge->portIdOn(this), scalarProduct), edge);
-				//qDebug() << "+" << edge->uuid().toString() <<"pr=" <<scalarProduct << "; p=" << edge->portIdOn(this);
-				//qDebug("'--> vector: (%g, %g)", (x2-x1)/len, (y2-y1)/len);
-				//qDebug() << "'------> because " << (QVariant)conn << "->" << (QVariant)next;
-			}
-		}
+ //make equal space on all linear ports.
+ int lpId = 0;
+ foreach (StatLine line, mLinePorts) {
+  //sort first by slope, then by current portId
+  QMap<QPair<qreal, qreal>, EdgeElement*> sortedEdges;
+  QLineF portLine = line;
+  qreal dx = portLine.dx();
+  qreal dy = portLine.dy();
+  foreach (EdgeElement* edge, mEdgeList) {
+   if (portId(edge->portIdOn(this)) == lpId) {
+	QPointF conn = edge->connectionPoint(this);
+	QPointF next = edge->nextFrom(this);
+	qreal x1 = conn.x();
+	qreal y1 = conn.y();
+	qreal x2 = next.x();
+	qreal y2 = next.y();
+	qreal len = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+	qreal scalarProduct = ((x2 - x1) * dx + (y2 - y1) * dy) / len;
+	sortedEdges.insertMulti(qMakePair(edge->portIdOn(this), scalarProduct), edge);
+	//qDebug() << "+" << edge->uuid().toString() <<"pr=" <<scalarProduct << "; p=" << edge->portIdOn(this);
+	//qDebug("'--> vector: (%g, %g)", (x2-x1)/len, (y2-y1)/len);
+	//qDebug() << "'------> because " << (QVariant)conn << "->" << (QVariant)next;
+   }
+  }
 
-		//by now, edges of this port are sorted by their optimal slope.
-		int N = sortedEdges.size();
-		int i = 0;
-		foreach (EdgeElement* edge, sortedEdges) {
-			qreal newId = lpId + (1.0 + i++) / (N + 1);
-			//qDebug() << "-" << edge->uuid().toString() << newId;
-			edge->moveConnection(this, newId);
-		}
+  //by now, edges of this port are sorted by their optimal slope.
+  int N = sortedEdges.size();
+  int i = 0;
+  foreach (EdgeElement* edge, sortedEdges) {
+   qreal newId = lpId + (1.0 + i++) / (N + 1);
+   //qDebug() << "-" << edge->uuid().toString() << newId;
+   edge->moveConnection(this, newId);
+  }
 
-		lpId++; //next linear port.
+  lpId++; //next linear port.
 
-	}
+ }
 }
 */
 
@@ -313,17 +313,14 @@ void NodeElement::arrangeLinearPorts() {
 }
 
 void NodeElement::arrangeLinks() {
-	//Episode I: Home Jumps
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
 		edge->reconnectToNearestPorts(this == src, this == dst, true);
 	}
 
-	//Episode II: Home Ports Arranging
 	arrangeLinearPorts();
 
-	//Episode III: Remote Jumps
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
@@ -331,7 +328,6 @@ void NodeElement::arrangeLinks() {
 		edge->reconnectToNearestPorts(other == src, other == dst, true);
 	}
 
-	//Episode IV: Remote Arrangigng
 	QSet<NodeElement*> arranged;
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* other = edge->otherSide(this);
@@ -559,11 +555,11 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 	if (isPort()) {
 		mUmlPortHandler->handleMoveEvent(
-			mLeftPressed,
-			mPos,
-			event->scenePos(),
-			mParentNodeElement
-		);
+					mLeftPressed,
+					mPos,
+					event->scenePos(),
+					mParentNodeElement
+					);
 	}
 
 	arrangeLinks();
@@ -986,9 +982,9 @@ qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, const QPointF &
 	qreal nearestPointOfLinePort = 0;
 	QLineF nearestLinePort = newTransform(mLinePorts[linePortNumber]);
 	qreal y1 = nearestLinePort.y1(),
-		y2 = nearestLinePort.y2(),
-		x1 = nearestLinePort.x1(),
-		x2 = nearestLinePort.x2();
+			y2 = nearestLinePort.y2(),
+			x1 = nearestLinePort.x1(),
+			x2 = nearestLinePort.x2();
 
 	if (x1 == x2) {
 		nearestPointOfLinePort = (location.y() - y1) / (y2 - y1);
@@ -996,9 +992,9 @@ qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, const QPointF &
 		nearestPointOfLinePort = (location.x() - x1) / (x2 - x1);
 	} else {
 		qreal k = (y2 - y1) / (x2 - x1),
-			b2 = location.y() + 1 / k * location.x(),
-			b = y1 - k * x1,
-			x3 = k / (1 + k * k) * (b2 - b);
+				b2 = location.y() + 1 / k * location.x(),
+				b = y1 - k * x1,
+				x3 = k / (1 + k * k) * (b2 - b);
 		nearestPointOfLinePort = (x3 - x1) / (x2 - x1);
 	}
 	return nearestPointOfLinePort;
@@ -1016,7 +1012,7 @@ qreal NodeElement::getPortId(const QPointF &location) const
 
 	for (int i = 0; i < mLinePorts.size(); i++) {
 		QPainterPathStroker ps;
-				ps.setWidth(kvadratik - 5);
+		ps.setWidth(kvadratik - 5);
 
 		QPainterPath path;
 		path.moveTo(newTransform(mLinePorts[i]).p1());

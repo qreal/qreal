@@ -5,6 +5,7 @@
 
 #include "element.h"
 #include "../editorPluginInterface/elementImpl.h"
+#include "../view/copypaste.h"
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
@@ -20,6 +21,8 @@ class EdgeElement : public Element
 public:
 	EdgeElement(ElementImpl *impl);
 	virtual ~EdgeElement();
+
+	EdgeElementSerializationData serializationData() const;
 
 	void updateData();
 
@@ -76,9 +79,9 @@ protected:
 	virtual void drawEndArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
 
 	Qt::PenStyle mPenStyle;
-		/*adding*/
+	/*adding*/
 	int mPenWidth;
-		/*adding*/
+	/*adding*/
 	QString mText;
 	QString mFromMult, mToMult;
 	ArrowType mStartArrowStyle;

@@ -3,26 +3,26 @@
 QDataStream& operator<< (QDataStream &out, const ElementSerializationData &data)
 {
 	return out << data.mId
-		   << data.mLogicalId
-		   << data.mName
-		   << data.mProperties;
+			   << data.mLogicalId
+			   << data.mName
+			   << data.mProperties;
 }
 
 QDataStream& operator<< (QDataStream &out, const NodeElementSerializationData &data)
 {
 	return out << (ElementSerializationData)data
-		   << data.mParentId
-		   << data.mPos
-		   << data.mContenets;
+			   << data.mParentId
+			   << data.mPos
+			   << data.mContenets;
 }
 
 QDataStream& operator<< (QDataStream &out, const EdgeElementSerializationData &data)
 {
 	return out << (ElementSerializationData)data
-		   << data.mSrcId
-		   << data.mDstId
-		   << data.mPortFrom
-		   << data.mPortTo;
+			   << data.mSrcId
+			   << data.mDstId
+			   << data.mPortFrom
+			   << data.mPortTo;
 }
 
 QDataStream& operator>> (QDataStream& in, NodeElementSerializationData &data)
