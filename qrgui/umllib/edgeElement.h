@@ -76,6 +76,9 @@ protected:
 	virtual void drawEndArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
 
 	Qt::PenStyle mPenStyle;
+		/*adding*/
+	int mPenWidth;
+		/*adding*/
 	QString mText;
 	QString mFromMult, mToMult;
 	ArrowType mStartArrowStyle;
