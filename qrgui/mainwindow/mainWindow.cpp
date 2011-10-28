@@ -1976,7 +1976,7 @@ void MainWindow::generateRobotSourceCode()
 {
 	saveAll();
 
-	qReal::generators::NxtOSEKRobotGenerator gen(mSaveFile);
+	qReal::generators::NxtOSEKRobotGenerator gen(mModels->repoControlApi());
 	gui::ErrorReporter &errors = gen.generate();
 	if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
 		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);

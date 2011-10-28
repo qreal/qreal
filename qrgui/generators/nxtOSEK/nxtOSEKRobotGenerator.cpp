@@ -12,11 +12,11 @@
 using namespace qReal;
 using namespace generators;
 
-NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(qrRepo::RepoApi *api, QString const &destinationPath)
+NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath)
 	:  mDestinationPath(destinationPath)
 {
 		mIsNeedToDeleteMApi = false;
-		mApi = api;
+		mApi = dynamic_cast<qrRepo::RepoApi *>(&api);
 }
 
 NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo, QString const &destinationPath)
