@@ -1,7 +1,7 @@
 #include "errorReporter.h"
 #include <QtGui/QMessageBox>
-#include "errorlistwidget.h"
-#include "../kernel/exception/exception.h"
+#include "errorListWidget.h"
+#include "../../qrkernel/exception/exception.h"
 
 using namespace qReal;
 using namespace gui;
@@ -84,7 +84,8 @@ void ErrorReporter::clear()
 		mErrorList->setVisible(false);
 }
 
-void ErrorReporter::clearErrors() {
+void ErrorReporter::clearErrors()
+{
 	mErrors.clear();
 }
 
@@ -97,7 +98,7 @@ void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorLi
 		mErrorList->setVisible(true);
 
 	QListWidgetItem* item = new QListWidgetItem(errorListWidget);
-	QString message = severityMessage(error) + " ";
+	QString message = error.timestamp() + " " + severityMessage(error) + " ";
 	message += error.message();
 	switch (error.severity()) {
 	case Error::information:

@@ -35,7 +35,7 @@ public:
 	virtual int isNodeOrEdge(QString const &element) const; 
 
 	virtual QIcon getIcon(SdfIconEngineV2Interface *engine) const;
-	virtual UML::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;
+	virtual ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;
 	virtual QString getPropertyType(QString const &element, QString const &property) const;
 	virtual QString getPropertyDefaultValue(QString const &element, QString const &property) const;
 	virtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;

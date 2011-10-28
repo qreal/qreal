@@ -1,7 +1,7 @@
 #include "numericType.h"
 
 #include <QDebug>
-#include "../utils/outFile.h"
+#include "../qrutils/outFile.h"
 
 bool NumericType::init(QDomElement const &element, QString const &context)
 {

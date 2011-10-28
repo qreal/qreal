@@ -3,7 +3,7 @@
 
 using namespace qReal;
 using namespace models;
-using namespace details;
+using namespace models::details;
 using namespace modelsImplementation;
 
 ModelsAssistApi::ModelsAssistApi(AbstractModel &model, EditorManager const &editorManager)

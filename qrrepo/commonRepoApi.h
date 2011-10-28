@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../qrgui/kernel/roles.h"
+#include "../qrkernel/roles.h"
 
 namespace qrRepo {
 
@@ -19,6 +19,7 @@ public:
 	virtual qReal::IdList outgoingLinks(qReal::Id const &id) const = 0;
 	virtual qReal::IdList incomingLinks(qReal::Id const &id) const = 0;
 	virtual qReal::IdList links(qReal::Id const &id) const = 0;
+	virtual qReal::Id otherEntityFromLink(qReal::Id const &linkId, qReal::Id const &firstNode) const = 0;
 
 	virtual QVariant property(qReal::Id const &id, QString const &propertyName) const = 0;
 	virtual QString stringProperty(qReal::Id const &id, QString const &propertyName) const = 0;

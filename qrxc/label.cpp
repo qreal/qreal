@@ -1,5 +1,5 @@
 #include "label.h"
-#include "../utils/outFile.h"
+#include "../qrutils/outFile.h"
 
 #include <QDebug>
 
@@ -65,7 +65,7 @@ void Label::generateCodeForUpdateData(OutFile &out)
 		// Кастомное свойство. Если есть желание забиндиться на ещё какое-нибудь из предефайненных, надо тут дописать.
 		field = "repo->logicalProperty(\"" + mTextBinded + "\")";
 	out() << "\t\t\t" + titleName() + "->setHtml(QString(\""
-		+ (mCenter == "true" ? "<center>%1</center>" : "%1") + "\").arg(" + field + "));\n";
+		+ (mCenter == "true" ? "<center>%1</center>" : "%1") + "\").arg(" + field + ").replace(\"\\n\", \"<br>\"));\n";
 }
 
 void Label::generateCodeForFields(OutFile &out)

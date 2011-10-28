@@ -1,8 +1,8 @@
 #include "xmlCompiler.h"
 #include "editor.h"
 #include "nameNormalizer.h"
-#include "../utils/outFile.h"
-#include "../utils/xmlUtils.h"
+#include "../qrutils/outFile.h"
+#include "../qrutils/xmlUtils.h"
 #include "diagram.h"
 #include "type.h"
 
@@ -36,11 +36,12 @@ XmlCompiler::~XmlCompiler()
 			delete editor;
 }
 
-bool XmlCompiler::compile(QString const &inputXmlFileName)
+bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &sourcesRootFolder)
 {
 	QFileInfo const inputXmlFileInfo(inputXmlFileName);
 	mPluginName = NameNormalizer::normalize(inputXmlFileInfo.baseName());
 	mCurrentEditor = inputXmlFileInfo.absoluteFilePath();
+	mSourcesRootFolder = sourcesRootFolder;
 	QDir const startingDir = inputXmlFileInfo.dir();
 	if (!loadXmlFile(startingDir, inputXmlFileInfo.fileName()))
 		return false;
@@ -113,16 +114,14 @@ void XmlCompiler::generateElementClasses()
 	out() << "#pragma once\n\n"
 		<< "#include <QBrush>\n"
 		<< "#include <QPainter>\n\n"
-		<< "#include \"../../../qrgui/pluginInterface/elementImpl.h\"\n"
-		<< "#include \"../../../qrgui/pluginInterface/elementRepoInterface.h\"\n"
-		<< "#include \"../../../qrgui/pluginInterface/elementTitleHelpers.h\"\n\n"
-		<< "namespace UML {\n\n";
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementImpl.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementRepoInterface.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementTitleHelpers.h\"\n\n"
+		;
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values())
 			type->generateCode(out);
-
-	out() << "}\n\n";
 }
 
 void XmlCompiler::generatePluginHeader()
@@ -138,7 +137,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtGui/QIcon>\n"
 		<< "#include <QPair>"
 		<< "\n"
-		<< "#include \"../../../qrgui/pluginInterface/editorInterface.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/editorInterface.h\"\n"
 		<< "\n"
 		<< "class " << mPluginName << "Plugin : public QObject, public qReal::EditorInterface\n"
 		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(qReal::EditorInterface)\n"
@@ -169,11 +168,12 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual int isNodeOrEdge(QString const &element) const; \n"
 		<< "\n"
 		<< "\tvirtual QIcon getIcon(SdfIconEngineV2Interface *engine) const;\n"
-		<< "\tvirtual UML::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
+		<< "\tvirtual ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QString getPropertyType(QString const &element, QString const &property) const;\n"
 		<< "\tvirtual QString getPropertyDefaultValue(QString const &element, QString const &property) const;\n"
 		<< "\tvirtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QStringList getEnumValues(QString name) const;\n"
+		<< "\tvirtual QList<QPair<QString, QString> > getParentsOf(QString const &diagram, QString const &element) const;\n"
 		<< "\n"
 		<< "\tvirtual QString editorName() const;\n"
 		<< "\tvirtual QString diagramName(QString const &diagram) const;\n"
@@ -181,6 +181,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QString elementName(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QString elementDescription(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QString propertyDescription(QString const &diagram, QString const &element, QString const &property) const;\n"
+		<< "\tvirtual QString propertyDisplayedName(QString const &diagram, QString const &element, QString const &property) const;\n"
 		<< "\tvirtual QString elementMouseGesture(QString const &digram, QString const &element) const;\n"
 		<< "\n"
 		<< "\tvirtual QList<qReal::ListenerInterface*> listeners() const;\n"
@@ -197,6 +198,7 @@ void XmlCompiler::generatePluginHeader()
 
 		<< "\tQMap<QString, QMap<QString, QString> > elementsDescriptionMap;\n"
 		<< "\tQMap<QString, QMap<QString, QMap<QString, QString> > > propertiesDescriptionMap;\n"
+		<< "\tQMap<QString, QMap<QString, QMap<QString, QString> > > propertiesDisplayedNamesMap;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > elementMouseGesturesMap;\n"
 		<< "\tQMap<QString, QMap<QString, QList<QPair<QString, QString> > > > parentsMap;  // Maps diagram and element to a list of diagram-element pairs of parents (generalization relation).\n"
 		<< "};\n"
@@ -214,6 +216,7 @@ void XmlCompiler::generatePluginSource()
 	generateNameMappingsRequests(out);
 	generateGraphicalObjectRequest(out);
 	generateIsParentOfRequest(out);
+	generateGetParentsOfRequest(out);
 	generateProperties(out);
 	generateContainedTypes(out);
 	generateConnections(out);
@@ -278,7 +281,12 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 		foreach (Type *type, diagram->types().values())
 			type->generateNameMapping(out);
 
-	// property types
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+		foreach (Type *type, diagram->types().values()) {
+			GraphicType *obj = dynamic_cast<GraphicType *>(type);
+			if (obj)
+				obj->generatePropertyDisplayedNamesMapping(out);
+		}
 
 	out() << "}\n\n";
 }
@@ -403,6 +411,10 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 		<< "\treturn propertiesDescriptionMap[diagram][element][property];\n"
 		<< "}\n\n"
 
+		<< "QString " << mPluginName << "Plugin::propertyDisplayedName(QString const &diagram, QString const &element, QString const &property) const\n{\n"
+		<< "\treturn propertiesDisplayedNamesMap[diagram][element][property];\n"
+		<< "}\n\n"
+
 		<< "QString " << mPluginName << "Plugin::elementMouseGesture(QString const &diagram, QString const &element) const\n{\n"
 		<< "\treturn elementMouseGesturesMap[diagram][element];\n"
 		<< "}\n\n";
@@ -410,7 +422,7 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 
 void XmlCompiler::generateGraphicalObjectRequest(OutFile &out)
 {
-	out() << "UML::ElementImpl* " << mPluginName
+	out() << "ElementImpl* " << mPluginName
 		<< "Plugin::getGraphicalObject(QString const &/*diagram*/, QString const &element) const\n{\n";
 
 	bool isNotFirst = false;
@@ -443,6 +455,15 @@ void XmlCompiler::generateIsParentOfRequest(OutFile &out)
 		<< "\t\tif (isParentOf(parentDiagram, parentElement, pair.first, pair.second))\n"
 		<< "\t\t\treturn true;\n"
 		<< "\treturn false;\n"
+		<< "}\n"
+	;
+}
+
+void XmlCompiler::generateGetParentsOfRequest(OutFile &out)
+{
+	out() << "QList<QPair<QString, QString> > " << mPluginName << "Plugin::getParentsOf(QString const &diagram" << ", QString const &element) const\n"
+		<< "{\n"
+		<< "\treturn parentsMap[diagram][element];\n"
 		<< "}\n"
 	;
 }

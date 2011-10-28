@@ -2,9 +2,10 @@
 
 #include <QtCore/QObject>
 
-#include "../kernel/ids.h"
+#include "../../qrkernel/ids.h"
 #include "details/graphicalModel.h"
 #include "details/modelsAssistApi.h"
+#include "../toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
 
 namespace qReal {
 
@@ -16,22 +17,21 @@ namespace details {
 class GraphicalModel;
 }
 
-class GraphicalModelAssistApi : public QObject, public details::ModelsAssistApi
+class GraphicalModelAssistApi : public QObject, public GraphicalModelAssistInterface
 {
 	Q_OBJECT
 
 public:
 	GraphicalModelAssistApi(details::GraphicalModel &graphicalModel, EditorManager const &editorManager);
+	EditorManager const &editorManager() const;
 	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
 	qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const;
-	virtual Id createElement(Id const &parent, Id const &type);
-	virtual Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);
-	virtual Id copyElement(Id const &source);
-	virtual IdList children(Id const &element) const;
-	virtual void changeParent(Id const &element, Id const &parent, QPointF const &position);
-	virtual void copyProperties(Id const &dest, Id const &src);
-	virtual void setProperties(Id const &elem, QMap<QString, QVariant> properties);
-	virtual QMap<QString, QVariant> properties(Id const &elem) const;
+	Id createElement(Id const &parent, Id const &type);
+	Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);
+	Id copyElement(Id const &source);
+	IdList children(Id const &element) const;
+	void changeParent(Id const &element, Id const &parent, QPointF const &position);
+	void copyProperties(Id const &dest, Id const &src);
 	IdList temporaryRemovedLinksFrom(Id const &elem) const;
 	IdList temporaryRemovedLinksTo(Id const &elem) const;
 	IdList temporaryRemovedLinksNone(Id const &elem) const;
@@ -60,6 +60,21 @@ public:
 
 	bool isGraphicalId(Id const &id) const;
 
+	void setTo(Id const &elem, Id const &newValue);
+	Id to(Id const &elem) const;
+
+	void setFrom(Id const &elem, Id const &newValue);
+	Id from(Id const &elem) const;
+
+	QModelIndex indexById(Id const &id) const;
+	Id idByIndex(QModelIndex const &index) const;
+	QPersistentModelIndex rootIndex() const;
+	Id rootId() const;
+
+	bool hasRootDiagrams() const;
+	int childrenOfRootDiagram() const;
+	int childrenOfDiagram(const Id &parent) const;
+
 signals:
 	void nameChanged(Id const &id);
 
@@ -67,6 +82,7 @@ private:
 	GraphicalModelAssistApi(GraphicalModelAssistApi const &);
 	GraphicalModelAssistApi& operator =(GraphicalModelAssistApi const &);
 
+	details::ModelsAssistApi mModelsAssistApi;
 	details::GraphicalModel &mGraphicalModel;
 };
 

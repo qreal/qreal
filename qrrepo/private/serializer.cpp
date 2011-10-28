@@ -1,12 +1,13 @@
 #include "serializer.h"
-
+#include "folderCompressor.h"
 #include <QtCore/QDir>
 #include <QtCore/QDebug>
 #include <QtCore/QPointF>
 #include <QtGui/QPolygon>
+#include "../../qrkernel/settingsManager.h"
 
-#include "../../utils/outFile.h"
-#include "../../utils/xmlUtils.h"
+#include "../../qrutils/outFile.h"
+#include "../../qrutils/xmlUtils.h"
 
 using namespace qrRepo;
 using namespace details;
@@ -14,13 +15,15 @@ using namespace utils;
 using namespace qReal;
 
 Serializer::Serializer(QString const& saveDirName)
-	: mWorkingDir(saveDirName + "/save")
+	: mWorkingDir(SettingsManager::value("temp", "").toString())
+	, mWorkingFile(saveDirName)
 {
+	clearWorkingDir();
 }
 
 void Serializer::clearWorkingDir() const
 {
-	clearDir(mWorkingDir + "/tree");
+	clearDir(mWorkingDir);
 }
 
 void Serializer::removeFromDisk(Id id) const
@@ -29,9 +32,9 @@ void Serializer::removeFromDisk(Id id) const
 	dir.remove(pathToElement(id));
 }
 
-void Serializer::setWorkingDir(QString const &workingDir)
+void Serializer::setWorkingFile(QString const &workingFile)
 {
-	mWorkingDir = workingDir + "/save";
+	mWorkingFile = workingFile;
 }
 
 void Serializer::saveToDisk(QList<Object*> const &objects) const
@@ -54,18 +57,39 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 		OutFile out(filePath);
 		doc.save(out(), 2);
 	}
+
+
+
+	QFileInfo fileInfo(mWorkingFile);
+	QString fileName = fileInfo.baseName();
+
+	QDir compressDir(SettingsManager::value("temp", "").toString());
+	QDir dir = fileInfo.absolutePath();
+
+	QFile previousSave(dir.absolutePath() + "/" + fileName +".qrs");
+	if (previousSave.exists())
+		previousSave.remove();
+
+
+	FolderCompressor().compressFolder(compressDir.absolutePath(), fileInfo.absolutePath() + "/" + fileName + ".qrs");
+
+
+	clearDir(mWorkingDir);
 }
 
 void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash)
 {
-	loadFromDisk(mWorkingDir + "/tree", objectsHash);
+	if (mWorkingFile.isEmpty())
+		clearWorkingDir();
+	else
+		decompressFile(mWorkingFile);
+	loadFromDisk(SettingsManager::value("temp", "").toString(), objectsHash);
 }
 
 void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object*> &objectsHash)
 {
-	QDir dir(currentPath);
-	if (dir.exists()) {
-		dir.cd("logical");
+	QDir dir(currentPath + "/tree");
+	if (dir.cd("logical")) {
 		loadModel(dir, objectsHash);
 		dir.cdUp();
 		dir.cd("graphical");
@@ -344,3 +368,9 @@ QDomElement Serializer::propertiesToXml(Object* const object, QDomDocument &doc)
 	}
 	return result;
 }
+
+void Serializer::decompressFile(QString fileName)
+{
+	FolderCompressor().decompressFolder(fileName, mWorkingDir);
+}
+

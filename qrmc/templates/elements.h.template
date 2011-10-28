@@ -3,16 +3,13 @@
 #include <QBrush>
 #include <QPainter>
 
-#include "../../../qrgui/umllib/elementImpl.h"
-#include "../../../qrgui/umllib/uml_element.h"
-#include "../../../qrgui/umllib/elementRepoInterface.h"
-#include "../../../qrgui/umllib/elementTitleHelpers.h"
-
-namespace UML {
+#include "../../../qrgui/pluginInterface/elementImpl.h"
+#include "../../../qrgui/pluginInterface/elementTitleHelpers.h"
+#include "../../../qrgui/pluginInterface/elementRepoInterface.h"
+#include "../../../qrgui/umllib/element.h"
 
 @@NodesList@@
 
 @@EdgesList@@
 
-}
 

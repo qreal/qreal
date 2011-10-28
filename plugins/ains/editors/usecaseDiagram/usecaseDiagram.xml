@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+	<include>../../../commonMetamodels/kernelMetamodel.xml</include>
+    <namespace>UML 2.0</namespace>
+    <diagram displayedName="Редактор диаграмм прецедентов" nodeName="diagram" name="usecaseEditor">
+        <graphicTypes>
+		<node displayedName="Система" name="system">
+			<graphics>
+				<picture sizex="500" sizey="500">
+					<rectangle fill="#bbbbbb" stroke-style="solid" stroke="#bbbbbb" y1="0" x1="0" y2="500" stroke-width="1" x2="500" fill-style="none"/>
+						<text i="0" font-fill="#bbbbbb" y1="10" b="0" x1="5" font-name="Helvetica" u="0" font-size="10a">СИСТЕМА</text>
+					</picture>
+					<labels>
+						<label x="5" y="20" textBinded="name" center="true"/>
+					</labels>
+			</graphics>
+			<logic>
+					<container>
+						<contains type="comment"/>
+						<contains type="useCase"/>
+						<contains type="commonLink"/>
+						<contains type="includeLink"/>
+						<contains type="extendLink"/>
+						<contains type="commentLink"/>
+					</container>
+			</logic>
+		</node>
+        <node displayedName="Комментарий" name="comment">
+          <graphics>
+            <picture sizex="200" sizey="100">
+              <line y1="0" x1="0" y2="0" x2="180"/>
+              <line y1="0" x1="0" y2="100" x2="0"/>
+              <line y1="100" x1="0" y2="100" x2="200"/>
+              <line y1="100" x1="200" y2="20" x2="200"/>
+              <line y1="0" x1="180" y2="20" x2="200"/>
+              <line y1="0" x1="180" y2="20" x2="180"/>
+              <line y1="20" x1="200" y2="20" x2="180"/>
+            </picture>
+            <ports>
+              <linePort>
+                <start startx="0" starty="0"/>
+                <end endx="180" endy="0"/>
+              </linePort>
+              <linePort>
+                <start startx="0" starty="0"/>
+                <end endx="0" endy="100"/>
+              </linePort>
+              <linePort>
+                <start startx="0" starty="100"/>
+                <end endx="200" endy="100"/>
+              </linePort>
+              <linePort>
+                <start startx="200" starty="100"/>
+                <end endx="200" endy="20"/>
+              </linePort>
+            </ports>
+            <labels>
+              <label x="0" y="0" textBinded="body"/>
+            </labels>
+          </graphics>
+          <logic>
+            <properties>
+              <property displayedName="Текст" type="string" name="body"/>
+            </properties>
+          </logic>
+        </node>
+            <node displayedName="Прецедент" name="useCase">
+                <graphics>
+                    <picture sizex="181" sizey="93">
+                        <ellipse fill="#bfefff" stroke-style="solid" stroke="#000000" y1="2" stroke-width="1" x1="2" y2="90" fill-style="solid" x2="178"/>
+                    </picture>
+                    <labels>
+                        <label x="20" y="20" textBinded="name" center="true"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="2" y="44"/>
+                        <pointPort x="88" y="2"/>
+                        <pointPort x="179" y="43"/>
+                        <pointPort x="96" y="91"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="Диаграмма прецедентов" name="usecaseDiagram">
+                 <graphics>
+                    <picture sizex="36" sizey="36">
+                        <image y1="2" name="images/puzzle.png" x1="2" y2="34" x2="34"/>
+                    </picture>
+                    <labels>
+                        <label x="-1" y="36" textBinded="name" center="true"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="Действующее лицо" name="actor">
+                <graphics>
+<!--                    <picture sizex="82" sizey="179">
+                        <ellipse fill="#fafad2" stroke-style="solid" stroke="#000000" y1="10" stroke-width="2" x1="23" y2="45" fill-style="solid" x2="61"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="47" stroke-width="2" x1="42" y2="90" fill-style="none" x2="43"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="64" stroke-width="2" x1="12" y2="65" fill-style="none" x2="75"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="90" stroke-width="2" x1="41" y2="130" fill-style="none" x2="15"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="91" stroke-width="2" x1="43" y2="130" fill-style="none" x2="70"/>
+                    </picture>-->
+                    <picture sizex="132" sizey="132">
+                        <image y1="2" name="images/user.png" x1="2" y2="130" x2="130"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="135" textBinded="name" center="true"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="32" starty="0"/>
+                            <end endx="100" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="132" starty="32"/>
+                            <end endx="132" endy="100"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="32"/>
+                            <end endx="0" endy="100"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="32" starty="132"/>
+                            <end endx="100" endy="132"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+			<edge name="commentLink" displayedName="Связь для комментария">
+				<graphics>
+					<lineType type="dashLine"/>
+				</graphics>
+				<logic>
+					<associations endType="no_arrow" beginType="no_arrow">
+						<association beginName="comment1" endName="comment2"/>
+					</associations>
+				</logic>
+			</edge>
+			<edge name="extendLink" displayedName="Расширение">
+				<graphics>
+					<lineType type="dotLine"/>
+					<labels>
+						<label text="расширяет"/>
+					</labels>
+				</graphics>
+				<logic>
+					<associations endType="filled_arrow" beginType="no_arrow">
+						<association beginName="extend1" endName="extend2"/>
+					</associations>
+				</logic>
+			</edge>
+			<edge name="includeLink" displayedName="Включение">
+				<graphics>
+					<lineType type="dotLine"/>
+					<labels>
+						<label text="включает"/>
+					</labels>
+				</graphics>
+				<logic>
+					<associations endType="no_arrow" beginType="filled_arrow">
+						<association beginName="include1" endName="include2"/>
+					</associations>
+				</logic>
+			</edge>
+			<edge name="commonLink" displayedName="Связь">
+				<graphics>
+					<lineType type="solidLine"/>
+				</graphics>
+				<logic>
+					<associations endType="empty_arrow" beginType="no_arrow">
+						<association beginName="common1" endName="common2"/>
+					</associations>
+				</logic>
+			</edge>
+        </graphicTypes>
+    </diagram>
+</metamodel>

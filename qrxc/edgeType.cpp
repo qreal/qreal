@@ -1,6 +1,6 @@
 #include "edgeType.h"
 #include "association.h"
-#include "../utils/outFile.h"
+#include "../qrutils/outFile.h"
 #include "xmlCompiler.h"
 #include "diagram.h"
 #include "editor.h"
@@ -47,8 +47,8 @@ bool EdgeType::initAssociations()
 		return false;
 	}
 	for (QDomElement element = associationsElement.firstChildElement("association");
-		!element.isNull();
-		element = element.nextSiblingElement("association"))
+	!element.isNull();
+	element = element.nextSiblingElement("association"))
 	{
 		Association *association = new Association();
 		if (!association->init(element))
@@ -70,6 +70,34 @@ bool EdgeType::initGraphics()
 		mVisible = false;
 		return true;
 	}
+	/* code for setting the width of the edges */
+	QDomElement lineWidthElement = mGraphics.firstChildElement("lineWidth");
+	if (lineWidthElement.isNull()) {
+		mLineWidth = 1;
+	}
+	else {
+		QString lineWidth = lineWidthElement.attribute("width");
+		if (lineWidth.isEmpty())
+		{
+			qDebug() << "ERROR: no width of line";
+			return false;
+		}
+		else {
+			bool success = true;
+			int lineWidthInt = lineWidth.toInt(&success);
+			if (!success) {
+				qDebug() << "ERROR: line width is not a number";
+				return false;
+			}
+			else if (lineWidthInt <= 0) {
+				qDebug() << "ERROR: line width is negative number";
+				return false;
+			}
+			else
+				mLineWidth = lineWidthInt;
+		}
+	}
+	/* code for setting the width of the edges */
 	QString lineType = lineTypeElement.attribute("type");
 	if (lineType.isEmpty())
 	{
@@ -95,9 +123,9 @@ void EdgeType::generateGraphics() const
 
 	OutFile out("generated/shapes/" + resourceName("Class"));
 	out() << "<picture sizex=\"100\" sizey=\"60\" >\n" <<
-		"\t<line fill=\"#000000\" stroke-style=\"" << sdfType << "\" stroke=\"#000000\" y1=\"0\" " <<
-		"x1=\"0\" y2=\"60\" stroke-width=\"2\" x2=\"100\" fill-style=\"solid\" />\n" <<
-		"</picture>";
+	"\t<line fill=\"#000000\" stroke-style=\"" << sdfType << "\" stroke=\"#000000\" y1=\"0\" " <<
+	"x1=\"0\" y2=\"60\" stroke-width=\"2\" x2=\"100\" fill-style=\"solid\" />\n" <<
+	"</picture>";
 	mDiagram->editor()->xmlCompiler()->addResource("\t<file>generated/shapes/" + resourceName("Class") + "</file>\n");
 }
 
@@ -108,7 +136,7 @@ void EdgeType::generateCode(OutFile &out)
 	QString const className = NameNormalizer::normalize(qualifiedName());
 
 	out() << "\tclass " << className << " : public ElementImpl {\n"
-		<< "\tpublic:\n";
+	<< "\tpublic:\n";
 
 	if (!mBonusContextMenuFields.empty()) {
 		out() << "\t\t" << className << "() {\n";
@@ -121,43 +149,43 @@ void EdgeType::generateCode(OutFile &out)
 	}
 
 	out() << "\t\tvoid init(QRectF &, QList<StatPoint> &, QList<StatLine> &,\n"
-		<< "\t\t\t\t\t\t\t\t\t\t\tElementTitleFactoryInterface &, QList<ElementTitleInterface*> &,\n"
-		<< "\t\t\t\t\t\t\t\t\t\t\tSdfRendererInterface *, SdfRendererInterface *) {}\n\n"
-		<< "\t\tvoid init(ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles)\n\t\t{\n";
+	<< "\t\t\t\t\t\t\t\t\t\t\tElementTitleFactoryInterface &, QList<ElementTitleInterface*> &,\n"
+	<< "\t\t\t\t\t\t\t\t\t\t\tSdfRendererInterface *, SdfRendererInterface *) {}\n\n"
+	<< "\t\tvoid init(ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles)\n\t\t{\n";
 
 	if (!mLabels.isEmpty())
 		mLabels[0]->generateCodeForConstructor(out);
 	else
 		out() << "\t\t\tQ_UNUSED(titles);\n"
-			<< "\t\t\tQ_UNUSED(factory);\n";
+		<< "\t\t\tQ_UNUSED(factory);\n";
 
 	out() << "\t\t}\n\n"
-		<< "\t\tvirtual ~" << className << "() {}\n\n"
-		<< "\t\tElementImpl *clone() { return NULL; }\n"
-		<< "\t\tvoid paint(QPainter *, QRectF &){}\n"
-		<< "\t\tbool isNode() { return false; }\n"
-		<< "\t\tbool isResizeable() { return true; }\n"
-		<< "\t\tbool isContainer() { return false; }\n"
-		<< "\t\tbool isSortingContainer() { return false; }\n"
-		<< "\t\tint sizeOfForestalling() { return 0; }\n"
-		<< "\t\tint sizeOfChildrenForestalling() { return 0; }\n"
-		<< "\t\tbool hasMovableChildren() { return false; }\n"
-		<< "\t\tbool minimizesToChildren() { return false; }\n"
-		<< "\t\tbool maximizesChildren() { return false; }\n"
-		<< "\t\tbool isPort() { return false; }\n"
-		<< "\t\tbool hasPin() { return false; }\n"
-		<< "\t\tQList<double> border()\n\t\t{\n"
-		<< "\t\t\tQList<double> list;\n"
-		<< "\t\t\tlist << 0 << 0 << 0 << 0;\n"
-		<< "\t\t\treturn list;\n"
-		<< "\t\t}\n"
-		<< "\t\tbool hasPorts() { return false; }\n"
-		<< "\t\tQt::PenStyle getPenStyle() { ";
+	<< "\t\tvirtual ~" << className << "() {}\n\n"
+	<< "\t\tElementImpl *clone() { return NULL; }\n"
+	<< "\t\tvoid paint(QPainter *, QRectF &){}\n"
+	<< "\t\tbool isNode() { return false; }\n"
+	<< "\t\tbool isResizeable() { return true; }\n"
+	<< "\t\tbool isContainer() { return false; }\n"
+	<< "\t\tbool isSortingContainer() { return false; }\n"
+	<< "\t\tint sizeOfForestalling() { return 0; }\n"
+	<< "\t\tint sizeOfChildrenForestalling() { return 0; }\n"
+	<< "\t\tbool hasMovableChildren() { return false; }\n"
+	<< "\t\tbool minimizesToChildren() { return false; }\n"
+	<< "\t\tbool maximizesChildren() { return false; }\n"
+	<< "\t\tbool isPort() { return false; }\n"
+	<< "\t\tbool hasPin() { return false; }\n"
+	<< "\t\tQList<double> border()\n\t\t{\n"
+	<< "\t\t\tQList<double> list;\n"
+	<< "\t\t\tlist << 0 << 0 << 0 << 0;\n"
+	<< "\t\t\treturn list;\n"
+	<< "\t\t}\n"
+	<< "\t\tbool hasPorts() { return false; }\n"
+	<< "\t\tint getPenWidth() { return " << mLineWidth << "; }\n"
+	<< "\t\tQt::PenStyle getPenStyle() { ";
 	if (mLineType != "")
 		out() << "return " << mLineType << "; }\n";
 	else
 		out() << "return Qt::SolidLine; }\n";
-
 	out() << "\t\tQStringList bonusContextMenuFields()\n\t\t{\n" << "\t\t\treturn ";
 	if (!mBonusContextMenuFields.empty())
 		out() << "mBonusContextMenuFields;";
@@ -166,7 +194,7 @@ void EdgeType::generateCode(OutFile &out)
 	out() << "\n\t\t}\n\n";
 
 	out() << "\tprotected:\n"
-		<< "\t\tvirtual void drawStartArrow(QPainter * painter) const\n\t\t{\n";
+	<< "\t\tvirtual void drawStartArrow(QPainter * painter) const\n\t\t{\n";
 
 	generateEdgeStyle(mBeginType, out);
 
@@ -200,8 +228,8 @@ void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
 		style = "filled_arrow";
 
 	out() << "\t\t\tQBrush old = painter->brush();\n"
-		"\t\t\tQBrush brush;\n"
-		"\t\t\tbrush.setStyle(Qt::SolidPattern);\n";
+	"\t\t\tQBrush brush;\n"
+	"\t\t\tbrush.setStyle(Qt::SolidPattern);\n";
 
 	if (style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow")
 		out() << "\t\t\tbrush.setColor(Qt::white);\n";

@@ -3,42 +3,26 @@
 #include <QtCore/QPointF>
 #include <QtGui/QKeyEvent>
 #include <QtCore/QFile>
-#include <QtCore/QSettings>
 #include <QtCore/QDir>
 
-Scene::Scene(View *view, QObject * parent)
-	:  QGraphicsScene(parent), mItemType(none), mWaitMove(false), mCount(0), mGraphicsItem(NULL), mSelectedTextPicture(NULL)
+#include <limits>
+
+Scene::Scene(graphicsUtils::AbstractView *view, QObject * parent)
+	:  AbstractScene(view, parent)
+	, mItemType(none)
+	, mWaitMove(false)
+	, mCount(0)
+	, mSelectedTextPicture(NULL)
 {
-	mView = view;
+	mSizeEmptyRectX = sizeEmptyRectX;
+	mSizeEmptyRectY = sizeEmptyRectY;
 	setItemIndexMethod(NoIndex);
-	mEmptyRect = addRect(0, 0, sizeEmptyRectX, sizeEmptyRectY, QPen(Qt::white));
+	setEmptyRect(0, 0, mSizeEmptyRectX, mSizeEmptyRectY);
 	setEmptyPenBrushItems();
 	mCopyPaste = nonePaste;
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changeFontPalette()));
 	mZValue = 0;
-}
-
-QRect Scene::realItemsBoundingRect() const
-{
-	QRectF rect = itemsBoundingRect();
-	int maxX = static_cast<int>(rect.left());
-	int maxY = static_cast<int>(rect.top());
-	int minY = static_cast<int>(rect.bottom());
-	int minX = static_cast<int>(rect.right());
-	QList<QGraphicsItem *> list = items();
-	foreach (QGraphicsItem *graphicsItem, list) {
-
-		Item* item = dynamic_cast<Item*>(graphicsItem);
-		if (item != NULL) {
-			QRectF itemRect = item->realBoundingRect();
-			maxX = qMax(static_cast<int>(itemRect.right()), maxX);
-			maxY = qMax(static_cast<int>(itemRect.bottom()), maxY);
-			minX = qMin(static_cast<int>(itemRect.left()), minX);
-			minY = qMin(static_cast<int>(itemRect.top()), minY);
-		}
-	}
-	return QRect(minX, minY, maxX - minX, maxY - minY);
 }
 
 QRectF Scene::selectedItemsBoundingRect() const
@@ -50,30 +34,9 @@ QRectF Scene::selectedItemsBoundingRect() const
 	return resBoundRect;
 }
 
-void Scene::setEmptyPenBrushItems()
-{
-	mPenStyleItems = "Solid";
-	mPenWidthItems = 0;
-	mPenColorItems = "black";
-	mBrushStyleItems = "None";
-	mBrushColorItems = "white";
-}
-
 QPoint Scene::centerEmpty()
 {
 	return QPoint(sizeEmptyRectX / 2, sizeEmptyRectY / 2);
-}
-
-void Scene::setX1andY1(QGraphicsSceneMouseEvent *event)
-{
-	mX1 = event->scenePos().x();
-	mY1 = event->scenePos().y();
-}
-
-void Scene::setX2andY2(QGraphicsSceneMouseEvent *event)
-{
-	mX2 = event->scenePos().x();
-	mY2 = event->scenePos().y();
 }
 
 QPointF Scene::setCXandCY(QGraphicsSceneMouseEvent *event)
@@ -133,48 +96,6 @@ void Scene::reshapeCurveSecond(QGraphicsSceneMouseEvent *event)
 	mCurve->setCXandCY(mC1.x(), mC1.y());
 }
 
-void Scene::reshapeItem(QGraphicsSceneMouseEvent *event)
-{
-	setX2andY2(event);
-	if (mGraphicsItem != NULL) {
-		if (mGraphicsItem->getDragState() != Item::None)
-			mView->setDragMode(QGraphicsView::NoDrag);
-		mGraphicsItem->resizeItem(event);
-	}
-}
-
-void Scene::reshapeItem(QGraphicsSceneMouseEvent *event, Item *item)
-{
-	setX2andY2(event);
-	if (item != NULL) {
-		if (item->getDragState() != Item::None)
-			mView->setDragMode(QGraphicsView::NoDrag);
-		item->resizeItem(event);
-	}
-}
-
-void Scene::removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item)
-{
-	QList<QGraphicsItem *> list = items(event->scenePos());
-	foreach (QGraphicsItem *graphicsItem, list) {
-		Item *grItem = dynamic_cast<Item *>(graphicsItem);
-		if (grItem != NULL)
-			grItem->setFlag(QGraphicsItem::ItemIsMovable, false);
-	}
-	if (item!= NULL && item != mEmptyRect)
-		item->setFlag(QGraphicsItem::ItemIsMovable, true);
-}
-
-void Scene::setMoveFlag(QGraphicsSceneMouseEvent *event)
-{
-	QList<QGraphicsItem *> list = items(event->scenePos());
-	foreach (QGraphicsItem *graphicsItem, list){
-		Item *item = dynamic_cast<Item *>(graphicsItem);
-		if (item != NULL)
-			graphicsItem->setFlag(QGraphicsItem::ItemIsMovable, true);
-	}
-}
-
 void Scene::setZValue(Item* item)
 {
 	item->setItemZValue(mZValue);
@@ -217,10 +138,7 @@ QPair<bool, Item *> Scene::checkOnResize(qreal x, qreal y)
 void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsScene::mousePressEvent(event);
-	if (mItemType != none)
-		mView->setDragMode(QGraphicsView::NoDrag);
-	else
-		mView->setDragMode(QGraphicsView::RubberBandDrag);
+	setDragMode(mItemType);
 	switch (mItemType) {
 	case curve:
 		if (mCount == 1)
@@ -308,14 +226,14 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		break;
 	default:  // if we wait some resize
 		setX1andY1(event);
-		mGraphicsItem = dynamic_cast<Item *>(itemAt(event->scenePos()));
+		mGraphicsItem = dynamic_cast<graphicsUtils::AbstractItem *>(itemAt(event->scenePos()));
 		if (mGraphicsItem != NULL) {
 			mGraphicsItem->changeDragState(mX1, mY1);
-			mGraphicsItem->changeScalingPointState(mX1, mY1);
-			if (mGraphicsItem->getDragState() != Item::None)
-				mView->setDragMode(QGraphicsView::NoDrag);
-			if (mGraphicsItem->getScalingPointState() != Item::noneScale) {
-				mGraphicsItem->setScalingPointColor();
+			Item *graphicsItem = dynamic_cast<Item *>(mGraphicsItem);
+			graphicsItem->changeScalingPointState(mX1, mY1);
+			forPressResize(event);
+			if (graphicsItem->getScalingPointState() != Item::noneScale) {
+				graphicsItem->setScalingPointColor();
 				update();
 			}
 		}
@@ -327,8 +245,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void Scene::mouseMoveEvent( QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsScene::mouseMoveEvent(event);
-	if (mItemType != none)
-		mView->setDragMode(QGraphicsView::NoDrag);
+	setDragMode(mItemType);
 	switch (mItemType) {
 	case stylus :
 		if (mWaitMove)
@@ -358,7 +275,7 @@ void Scene::mouseMoveEvent( QGraphicsSceneMouseEvent *event)
 			reshapeLinePort(event);
 		break;
 	default:  // if we wait some resize
-		reshapeItem(event);
+		forMoveResize(event);
 		break;
 	}
 	update();
@@ -367,8 +284,7 @@ void Scene::mouseMoveEvent( QGraphicsSceneMouseEvent *event)
 void Scene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
 	QGraphicsScene::mouseReleaseEvent(event);
-	if (mItemType != none)
-		mView->setDragMode(QGraphicsView::NoDrag);
+	setDragMode(mItemType);
 	switch (mItemType) {
 	case curve:
 		if (mCount == 2) {
@@ -379,10 +295,6 @@ void Scene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			setZValue(mCurve);
 		} else if (mCount == 3)
 			reshapeCurveSecond(event);
-		else if (mCount == 4) {
-			mCount = 1;
-			mCurve = NULL;
-		}
 		break;
 	case stylus :
 		reshapeStylus(event);
@@ -400,14 +312,18 @@ void Scene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		reshapeLinePort(event);
 		break;
 	default:  // if we wait some resize
-		reshapeItem(event);
+		forReleaseResize(event);
 		break;
 	}
 	mWaitMove = false;
-	mGraphicsItem = NULL;
 	setMoveFlag(event);
 	setNullZValueItems();
-	mView->setDragMode(QGraphicsView::RubberBandDrag);
+	if (mItemType != curve || mCount > 3) {
+		emit resetHighlightAllButtons();
+		mItemType = none;
+		mCount = 0;
+		mCurve = NULL;
+	}
 }
 
 void Scene::initListSelectedItemsForPaste()
@@ -469,6 +385,7 @@ void Scene::drawCurve(bool checked)
 	if (checked) {
 		mItemType = curve;
 		mCount = 1;
+		mCurve = NULL;
 	}
 }
 
@@ -527,8 +444,7 @@ void Scene::addImage(QString const &fileName)
 	mItemType = image;
 	mFileName = fileName;
 
-	QSettings settings("SPbSU", "QReal");
-	QString workingDirName = settings.value("workingDir", "./save").toString();
+	QString workingDirName = SettingsManager::value("workingDir", "./save").toString();
 	QDir dir(workingDirName);
 	dir.mkdir("images");
 	mFileName = workingDirName + "/images/" + fileName.section('/', -1);
@@ -549,11 +465,6 @@ void Scene::clearScene()
 	clear();
 	mEmptyRect = addRect(0, 0, sizeEmptyRectX, sizeEmptyRectY, QPen(Qt::white));
 	mZValue = 0;
-}
-
-bool Scene::compareItems(Item* first, Item* second)
-{
-	return first->zValue() < second->zValue();
 }
 
 QList<Item *> Scene::selectedSceneItems()
@@ -619,53 +530,6 @@ void Scene::changeBrushColor(const QString &text)
 	foreach (Item *item, selectedSceneItems())
 		item->setBrushColor(text);
 	update();
-}
-
-QString Scene::convertPenToString(QPen const &pen)
-{
-	QString penStyle;
-	switch (pen.style()) {
-	case Qt::SolidLine:
-		penStyle = "Solid";
-		break;
-	case Qt::DotLine:
-		penStyle = "Dot";
-		break;
-	case Qt::DashLine:
-		penStyle = "Dash";
-		break;
-	case Qt::DashDotLine:
-		penStyle =  "DashDot";
-		break;
-	case Qt::DashDotDotLine:
-		penStyle = "DashDotDot";
-		break;
-	case Qt::NoPen:
-		penStyle = "None";
-		break;
-	default:
-		break;
-	}
-	return penStyle;
-}
-
-QString Scene::convertBrushToString(QBrush const &brush)
-{
-	QString brushStyle;
-	if (brush.style() == Qt::NoBrush)
-		brushStyle = "None";
-	if (brush.style() == Qt::SolidPattern)
-		brushStyle = "Solid";
-	return brushStyle;
-}
-
-void Scene::setPenBrushItems(QPen const &pen, QBrush const &brush)
-{
-	mPenStyleItems = convertPenToString(pen);
-	mPenWidthItems = pen.width();
-	mPenColorItems = pen.color().name();
-	mBrushStyleItems = convertBrushToString(brush);
-	mBrushColorItems = brush.color().name();
 }
 
 void Scene::changePalette()

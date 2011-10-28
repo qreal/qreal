@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+    <namespace>UML 2.0</namespace>
+    <diagram displayedName="Редактор обзорных диаграмм" nodeName="diagram" name="editor">
+        <graphicTypes>
+            <node displayedName="Центр обработки данных" name="dataCenter">
+                <graphics>
+                    <picture sizex="100" sizey="100">
+                        <image y1="6" name="images/database.png" x1="1" y2="90" x2="90"/>
+                    </picture>
+                    <labels>
+                        <label x="5" y="95" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="30" starty="0"/>
+                            <end endx="70" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="30"/>
+                            <end endx="0" endy="70"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="100" starty="30"/>
+                            <end endx="100" endy="70"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="30" starty="100"/>
+                            <end endx="70" endy="100"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="Обзорная диаграмма" name="diagram">
+                <graphics>
+                    <picture sizex="32" sizey="32">
+                        <image y1="0" name="images/circle_blue.png" x1="0" y2="31" x2="31"/>
+                    </picture>
+                    <labels>
+                        <label x="-1" y="40" textBinded="name"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="АРМ" description="автоматизированое рабочее место" name="computer">
+                <graphics>
+                    <picture sizex="80" sizey="90">
+                        <image y1="10" name="images/laptop.png" x1="8" y2="80" x2="80"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="85" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="20" starty="0"/>
+                            <end endx="60" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="20"/>
+                            <end endx="0" endy="70"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="20"/>
+                            <end endx="80" endy="70"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="20" starty="85"/>
+                            <end endx="60" endy="85"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="Средство транспортировки" name="transport">
+                <graphics>
+                    <picture sizex="70" sizey="80">
+                        <image y1="8" name="images/transport.png" x1="5" y2="70" x2="70"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="75" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="20" starty="0"/>
+                            <end endx="60" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="20"/>
+                            <end endx="0" endy="60"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="20"/>
+                            <end endx="80" endy="60"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="20" starty="75"/>
+                            <end endx="60" endy="75"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="Спутник" name="satellite">
+                <graphics>
+                    <picture sizex="80" sizey="90">
+                        <image y1="8" name="images/satellite.png" x1="7" y2="80" x2="80"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="85" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="20" starty="0"/>
+                            <end endx="60" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="20"/>
+                            <end endx="0" endy="60"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="20"/>
+                            <end endx="80" endy="60"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="20" starty="75"/>
+                            <end endx="60" endy="75"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="Коммуникационный узел" name="communication">
+                <graphics>
+                    <picture sizex="80" sizey="90">
+                        <image y1="6" name="images/network-wireless.png" x1="7" y2="80" x2="80"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="85" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="20" starty="0"/>
+                            <end endx="60" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="20"/>
+                            <end endx="0" endy="60"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="20"/>
+                            <end endx="80" endy="60"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="20" starty="75"/>
+                            <end endx="60" endy="75"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="Карточка" name="card">
+                <graphics>
+                    <picture sizex="50" sizey="50">
+                        <image y1="3" name="images/controlpanel.png" x1="3" y2="40" x2="40"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="45" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="15" starty="0"/>
+                            <end endx="35" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="15"/>
+                            <end endx="0" endy="35"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="50" starty="15"/>
+                            <end endx="50" endy="35"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="15" starty="50"/>
+                            <end endx="35" endy="50"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="Пост проверки" name="control">
+                <graphics>
+                    <picture sizex="80" sizey="90">
+                        <image y1="5" name="images/ktalkd.png" x1="5" y2="85" x2="75"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="85" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="20" starty="0"/>
+                            <end endx="60" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="20"/>
+                            <end endx="0" endy="70"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="20"/>
+                            <end endx="80" endy="70"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="20" starty="85"/>
+                            <end endx="60" endy="85"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="Промежуточный буфер" name="buffer">
+                <graphics>
+                    <picture sizex="160" sizey="160">
+                        <image y1="17" name="images/server.png" x1="21" y2="144" x2="148"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="166" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="0"/>
+                            <end endx="150" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="10"/>
+                            <end endx="0" endy="150"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="160" starty="10"/>
+                            <end endx="160" endy="150"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="160"/>
+                            <end endx="150" endy="160"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="Описание" description="Блок для описания обязанностей и характера взаимодействия рассматриваемого узла" name="DescriptionBlock">
+                <graphics>
+                    <picture sizex="150" sizey="180">
+                        <rectangle fill="#f0f8ff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="180" fill-style="solid" x2="150"/>
+                    </picture>
+					<labels>
+                        <label x="5" y="5" textBinded="text"/>
+                    </labels>
+                   <ports>
+                        <linePort>
+                            <start startx="0" starty="30"/>
+                            <end endx="0" endy="150"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="30" starty="0"/>
+                            <end endx="120" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="150" starty="30"/>
+                            <end endx="150" endy="150"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="30" starty="180"/>
+                            <end endx="120" endy="180"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+					<properties>
+						<property name="text" type="string" displayedName="текст"/>
+					</properties>
+                </logic>
+            </node>
+            <edge displayedName="Беспроводная связь" name="wirelessEdge">
+                <graphics>
+                    <lineType type="dotLine"/>
+                </graphics>
+                <logic>
+                    <associations endType="empty_arrow" beginType="empty_arrow">
+                        <association beginName="assotiationBegin" endName="assotiationEnd"/>
+                    </associations>
+                </logic>
+            </edge>
+            <edge displayedName="Проводная связь" name="wireEdge">
+                <graphics>
+                    <lineType type="solidLine"/>
+                   <labels>
+                        <label textBinded="description"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="empty_arrow" beginType="empty_arrow">
+                        <association beginName="assotiationBegin" endName="assotiationEnd"/>
+                    </associations>
+                </logic>
+            </edge>
+            <edge displayedName="Связь описания" name="descriptionEdge">
+                <graphics>
+                    <lineType type="solidLine"/>
+                </graphics>
+                <logic>
+                    <associations endType="filled_rhomb" beginType="no_arrow">
+                        <association beginName="assotiationBegin" endName="assotiationEnd"/>
+                    </associations>
+                </logic>
+            </edge>
+        </graphicTypes>
+    </diagram>
+</metamodel>

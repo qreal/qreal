@@ -2,8 +2,8 @@
 
 #include <QPushButton>
 #include "../../qrrepo/repoApi.h"
-#include "refWindow.h"
-#include "mainwindow.h"
+#include "../../qrgui/dialogs/refWindow.h"
+#include "mainWindow.h"
 
 class ButtonRefWindow : public QPushButton
 {

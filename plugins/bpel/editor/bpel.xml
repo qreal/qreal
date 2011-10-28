@@ -1,0 +1,794 @@
+          <metamodel xmlns="http://schema.real.com/schema/">
+                    <include>../../commonMetamodels/kernelMetamodel.xml</include>
+                    <namespace>UML 2.1</namespace>
+                    <diagram name="BPEL">
+                              <graphicTypes>
+                                        <edge id="bplRelationShip" name="Relationship">
+                                                  <graphics>
+                                                            <lineType type="solidLine"/>
+															<lineWidth width="6"/>
+                                                  </graphics>
+                                                  <logic>
+                                                            <properties>
+                                                                      <property type="string" name="suppressJoinFailure"/>
+                                                                      <property type="string" name="comment"/>
+                                                            </properties>
+                                                            <associations endType="filled_rhomb" beginType="no_arrow">
+                                                                      <association beginName="Element" endName="Element"/>
+                                                            </associations>
+                                                            <generalizations>
+                                                                      <parent parentName="KernelDiagram::Association"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </edge>
+                                        <node id="bplAbstract" name="bplAbstract">
+                                                  <logic>
+                                                            <properties>
+                                                                      <property type="bool" name="isAbstract">
+                                                                                <default>false</default>
+                                                                      </property>
+                                                                      <property type="string" name="suppressJoinFailure"/>
+                                                                      <property type="string" name="comment"/>
+                                                                      <property type="string" name="joinCondition"/>
+                                                                      <property type="string" name="createInstance"/>
+                                                                      <property type="string" name="operation"/>
+                                                                      <property type="string" name="partnerLink"/>
+                                                                      <property type="string" name="portType"/>
+                                                                      <property type="string" name="variable"/>
+                                                            </properties>
+                                                            <!--    <generalizations> <parent parentName="KernelDiagram::Class" /> </generalizations>-->
+                                                  </logic>
+                                        </node>
+                                        <node path="58, 30 : 54, 40 : 48, 48 : 40, 54 : 30, 56 : 20, 54 : 12, 48 : 6, 40 : 4, 30 : 6, 20 : 12, 12 : 20, 6 : 30, 4 : 40, 6 : 48, 12 : 54, 20 : 58, 30 : 72, 30 : 68, 46 : 58, 58 : 46, 68 : 30, 70 : 14, 68 : 2, 58 : -8, 46 : -10, 30 : -8, 14 : 2, 2 : 14, -8 : 30, -10 : 46, -8 : 58, 2 : 68, 14 : 72, 30 : " id="bplReply" name="Reply">
+                                                  <graphics>
+                                                            <picture sizex="30" sizey="30">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplReply</text>
+                                                                      <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="30" fill-style="solid"/>
+                                                                      <ellipse fill="#FF0000" stroke-style="solid" stroke="#F00000" y1="5" x1="5" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
+                                                            </picture>
+                                                            <ports>
+                                                                      <pointPort x="0" y="15"/>
+                                                                      <pointPort x="15" y="0"/>
+                                                                      <pointPort x="15" y="30"/>
+                                                                      <pointPort x="30" y="15"/>
+                                                                      <pointPort x="15" y="15"/>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <properties>
+                                                                      <property type="string" name="faultName"/>
+                                                                      <property type="string" name="operation"/>
+                                                            </properties>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="72, 30 : 68, 14 : 58, 2 : 46, -8 : 30, -10 : 14, -8 : 2, 2 : -8, 14 : -10, 30 : -8, 46 : 2, 58 : 14, 68 : 30, 70 : 46, 68 : 58, 58 : 68, 46 : 72, 30 : 58, 30 : 54, 20 : 48, 12 : 40, 6 : 30, 4 : 20, 6 : 12, 12 : 6, 20 : 4, 30 : 6, 40 : 12, 48 : 20, 54 : 30, 56 : 40, 54 : 48, 48 : 54, 40 : 58, 30 : " id="bplReceive" name="Receive">
+                                                  <graphics>
+                                                            <picture sizex="30" sizey="30">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplReceive</text>
+                                                                      <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="30" fill-style="solid"/>
+                                                                      <ellipse fill="#0000ff" stroke-style="solid" stroke="#0000f0" y1="5" x1="5" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
+                                                            </picture>
+                                                            <ports>
+                                                                      <pointPort x="0" y="15"/>
+                                                                      <pointPort x="15" y="0"/>
+                                                                      <pointPort x="15" y="30"/>
+                                                                      <pointPort x="30" y="15"/>
+                                                                      <pointPort x="15" y="15"/>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <properties>
+                                                                      <property type="string" name="faultName"/>
+                                                                      <property type="string" name="operation"/>
+                                                            </properties>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplInvoke" name="Invoke">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplInvoke</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <properties>
+                                                                      <property type="string" name="inputVariable"/>
+                                                                      <property type="string" name="outputVariable"/>
+                                                                      <property type="string" name="function"/>
+                                                            </properties>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplCall" name="Call">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplCall</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <properties>
+                                                                      <property type="string" name="inputVariable"/>
+                                                                      <property type="string" name="outputVariable"/>
+                                                                      <property type="string" name="function"/>
+                                                            </properties>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplSource" name="Source">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplSource</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <properties>
+                                                                      <property type="string" name="source"/>
+                                                            </properties>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplAssign" name="Assign">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplAssign</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <properties>
+                                                                      <property type="string" name="fromVariable"/>
+                                                                      <property type="string" name="fromPart"/>
+                                                                      <property type="string" name="toVariable"/>
+                                                                      <property type="string" name="toPart"/>
+                                                                      <property type="string" name="ignoreMissingFromData"/>
+                                                            </properties>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplThrow" name="Throw">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplThrow</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <properties>
+                                                                      <property type="string" name="faultVariable"/>
+                                                            </properties>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplRethrow" name="Rethrow">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplRethrow</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplExit" name="Exit">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplExit</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplEmpty" name="Empty">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplEmpty</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <properties>
+                                                                      <property type="string" name="text"/>
+                                                            </properties>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplIf" name="If">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplIf</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplIfCondition" name="If Condition">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplIfCondition</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <properties>
+                                                                      <property type="string" name="condition"/>
+                                                                      <property type="string" name="order"/>
+                                                            </properties>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplElse" name="Else">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplElse</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplSequence" name="Sequence">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplSequence</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplFlow" name="Flow">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplFlow</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplWhile" name="While">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplWhile</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <properties>
+                                                                      <property type="string" name="condition"/>
+                                                            </properties>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplBreak" name="Break">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplBreak</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplContinue" name="Continue">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplContinue</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <generalizations>
+                                                                      <parent parentName="BPEL::bplAbstract"/>
+                                                            </generalizations>
+                                                  </logic>
+                                        </node>
+                                        <!-- -->
+                                        <node path="0, 0 : " id="bplRawString" name="String Data">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplRawString</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <properties>
+                                                                      <property type="string" name="data"/>
+                                                            </properties>
+                                                  </logic>
+                                        </node>
+                                        <node path="0, 0 : " id="bplVariable" name="Variable">
+                                                  <graphics>
+                                                            <picture sizex="70" sizey="100">
+                                                                      <text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a">bplVariable</text>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
+                                                                      <line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
+                                                            </picture>
+                                                            <labels>
+                                                                      <label x="30" y="30" textBinded="name"/>
+                                                            </labels>
+                                                            <ports>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="0a" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="100%" starty="20a"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="20a"/>
+                                                                                <end endx="100%" endy="20a"/>
+                                                                      </linePort>
+                                                                      <linePort>
+                                                                                <start startx="0a" starty="100%"/>
+                                                                                <end endx="100%" endy="100%"/>
+                                                                      </linePort>
+                                                            </ports>
+                                                  </graphics>
+                                                  <logic>
+                                                            <properties>
+                                                                      <property type="string" name="messageType"/>
+                                                            </properties>
+                                                  </logic>
+                                        </node>
+                              </graphicTypes>
+                    </diagram>
+          </metamodel>

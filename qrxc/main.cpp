@@ -3,7 +3,6 @@
 #include <QCoreApplication>
 #include <QStringList>
 #include <QDebug>
-#include "typelib.h"
 
 void myMessageOutput(QtMsgType type, const char *msg)
  {
@@ -25,26 +24,22 @@ void myMessageOutput(QtMsgType type, const char *msg)
 
 int main(int argc, char *argv[])
 {
-    qInstallMsgHandler(myMessageOutput);
+	qInstallMsgHandler(myMessageOutput);
 	QCoreApplication app(argc, argv);
 	QStringList args = app.arguments();
 
-// Ad kalendas graecas
-#if 0
-	qRealType::QRealTypeFactory::init();
-#endif
-
 	qDebug() << "Running " + args.join(" ");
 
-	if (args.count() != 2) {
-		qDebug() << "Usage: qrxc inputFile.xml";
+	if (args.count() != 3) {
+		qDebug() << "Usage: qrxc inputFile.xml <path to root directory of qreal sources>";
 		return 1;
 	}
 
-	QString inputXmlFileName = args[1];
+	QString const inputXmlFileName = args[1];
+	QString const root = args[2];
 
 	XmlCompiler xmlCompiler;
-	if (!xmlCompiler.compile(inputXmlFileName))
+	if (!xmlCompiler.compile(inputXmlFileName, root))
 		return 1;
 
 	return 0;

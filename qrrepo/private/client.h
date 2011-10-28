@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../qrgui/kernel/definitions.h"
-#include "../../qrgui/kernel/ids.h"
+#include "../../qrkernel/definitions.h"
+#include "../../qrkernel/ids.h"
 #include "classes/object.h"
 #include "qrRepoGlobal.h"
 #include "serializer.h"
@@ -15,7 +15,7 @@ namespace qrRepo {
 		class Client
 		{
 		public:
-			QRREPO_EXPORT Client(QString const &workingDirectory);
+			QRREPO_EXPORT Client(QString const &workingFile);
 			QRREPO_EXPORT ~Client();
 			qReal::IdList children(const qReal::Id &id) const;
 			qReal::Id parent(const qReal::Id &id) const;
@@ -52,15 +52,14 @@ namespace qrRepo {
 			void printDebug() const;
 
 			void exterminate();
-			void open(QString const &workingDir);
+			void open(QString const &saveFile);
 
 			bool exist(qReal::Id const &id) const;
 
 			void saveAll() const;
 			void save(qReal::IdList list) const;
 			void remove(qReal::IdList list) const;
-			void setWorkingDir(QString const &workingDir);
-
+			void setWorkingFile(QString const &workingDir);
 		private:
 			void init();
 

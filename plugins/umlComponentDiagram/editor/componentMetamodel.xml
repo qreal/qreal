@@ -1,0 +1,148 @@
+<metamodel xmlns="http://schema.real.com/schema/">
+    <include>../../commonMetamodels/kernelMetamodel.xml</include>
+    <include>../../umlClassDiagram/editor/classMetamodel.xml</include>
+    <namespace>UML 2.1</namespace>
+    <editor name="COMPONENT DIAGRAM">
+      <graph_types>
+        <node id="cmpnComponent" name="Component">
+          <graphics>
+            <view>
+              <picture sizex="100" sizey="60"/>
+              <repo_info>
+                <html:html y="45" xmlns:html="http://www.w3.org/html/">
+                  <html:center>
+                    <html:b>
+                      <html:text_from_repo name="ComponentName"/>
+                    </html:b>
+                  </html:center>
+                </html:html>
+              </repo_info>
+              <ports>
+                <line_port>
+                  <start startx="1" starty="1"/>
+                  <end endx="1" endy="59"/>
+                </line_port>
+                <line_port>
+                  <start startx="99" starty="1"/>
+                  <end endx="99" endy="59"/>
+                </line_port>
+              </ports>
+            </view>
+          </graphics>
+          <logic>
+            <generalizations>
+              <generalization>
+                <parent parent_id="KernelDiagram::NamedElement"/>
+                <parent parent_id="ClassDiagram::Class"/>
+              </generalization>
+            </generalizations>
+            <properties>
+              <property type="string" name="ComponentName"/>
+            </properties>
+            <associations>
+              <assoc_ref idref="cmpaPort"/>
+              <assoc_ref idref="cmpaConnectorSource"/>
+            </associations>
+          </logic>
+        </node>
+        <node id="cmpnPort" name="Port">
+          <graphics>
+            <view>
+              <picture sizex="20" sizey="20"/>
+            </view>
+          </graphics>
+          <logic>
+            <associations>
+              <!--или лучше container?-->
+              <association role="port" id="cmpaPort">
+                <begin idref="cmpnComponent"/>
+              </association>
+            </associations>
+          </logic>
+        </node>
+        <!--а надпись (name) поместится в шейп?-->
+        <node path="50, 54 : 46, 64 : 40, 72 : 32, 78 : 22, 80 : 12, 78 : 4, 72 : -2, 64 : -4, 54 : -2, 44 : 4, 36 : 12, 30 : 22, 28 : 32, 30 : 40, 36 : 46, 44 : 50, 54 : " id="cmpnProvidedInterface" name="ProvidedInterface">
+          <graphics>
+            <view>
+              <picture sizex="22" sizey="38">
+                <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="17" x1="1" y2="37" stroke-width="2" x2="21" fill-style="solid"/>
+              </picture>
+              <repo_info>
+                <html:html x="2" y="12" xmlns:html="http://www.w3.org/html/">
+                  <html:text_from_repo name="name"/>
+                </html:html>
+              </repo_info>
+              <ports>
+                <point_port x="1" y="27"/>
+                <point_port x="11" y="17"/>
+                <point_port x="21" y="27"/>
+                <point_port x="11" y="37"/>
+              </ports>
+            </view>
+          </graphics>
+          <logic>
+            <associations>
+              <assoc_ref idref="cmpaConnectorTarget"/>
+              <association role="CheckInterfaces" id="cmpaInterface">
+                <begin idref="cmpnRequiredInterface"/>
+              </association>
+            </associations>
+            <!--    <properties>
+     <property type="string" name="name" />
+    </properties> -->
+          </logic>
+        </node>
+        <!--а надпись (name) поместится в шейп?-->
+        <!--если они нашли друг друга, то надпись должна писаться только один раз-->
+        <node path="28, 54 : 24, 44 : 18, 36 : 10, 30 : 0, 28 : -10, 30 : -18, 36 : -24, 44 : -26, 54 : -24, 64 : -18, 72 : -10, 78 : 0, 80 : 10, 78 : 18, 72 : 24, 64 : 28, 54 : " id="cmpnRequiredInterface" name="RequiredInterface">
+          <graphics>
+            <view>
+              <picture sizex="22" sizey="38">
+                <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="17" x1="-10" y2="37" stroke-width="2" x2="10" fill-style="solid"/>
+              </picture>
+              <repo_info>
+                <html:html x="2" y="12" xmlns:html="http://www.w3.org/html/">
+                  <html:text_from_repo name="name"/>
+                </html:html>
+              </repo_info>
+              <ports>
+                <point_port x="10" y="27"/>
+              </ports>
+            </view>
+          </graphics>
+          <logic>
+            <associations>
+              <assoc_ref idref="cmpaConnectorTarget"/>
+              <assoc_ref idref="cmpaInterface"/>
+            </associations>
+            <!--    <properties>
+     <property type="string" name="name" />
+    </properties> -->
+          </logic>
+        </node>
+        <edge id="cmpConnector" name="Connector">
+          <graphics>
+            <view>
+              <line_type type="solidLine"/>
+            </view>
+          </graphics>
+          <logic>
+            <generalizations>
+              <generalization>
+                <parent parent_id="KernelDiagram::Relationship"/>
+              </generalization>
+            </generalizations>
+            <associations>
+              <association role="source" id="cmpaConnectorSource">
+                <begin idref="cmpnComponent"/>
+              </association>
+              <association role="target" id="cmpaConnectorTarget">
+                <end idref="cmpnProvidedInterface"/>
+                <end idfer="cmpnRequiredInterface"/>
+              </association>
+            </associations>
+          </logic>
+        </edge>
+      </graph_types>
+    </editor>
+  </metamodel>

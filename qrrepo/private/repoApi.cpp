@@ -203,18 +203,26 @@ qReal::IdList RepoApi::outgoingConnectedElements(qReal::Id const &id) const
 {
 	qReal::IdList result;
 	foreach (qReal::Id curLink, outgoingLinks(id)) {
-		result.append(to(curLink));
+		qReal::Id toElem = to(curLink);
+		//if (toElem == Id::rootId())
+		//	continue;
+
+		result.append(toElem);
 	}
-	return result; 
+	return result;
 }
 
 qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
 {
 	qReal::IdList result;
 	foreach (qReal::Id curLink, incomingLinks(id)) {
-		result.append(from(curLink));
+		qReal::Id fromElem = from(curLink);
+		//if (fromElem == Id::rootId())
+		//	continue;
+
+		result.append(fromElem);
 	}
-	return result; 
+	return result;
 }
 
 QString RepoApi::typeName(Id const &id) const
@@ -357,9 +365,9 @@ void RepoApi::exterminate()
 	mClient.exterminate();
 }
 
-void RepoApi::open(QString const &workingDir)
+void RepoApi::open(QString const &saveFile)
 {
-	mClient.open(workingDir);
+	mClient.open(saveFile);
 }
 
 void RepoApi::saveAll() const
@@ -367,9 +375,9 @@ void RepoApi::saveAll() const
 	mClient.saveAll();
 }
 
-void RepoApi::saveTo(QString const &workingDir)
+void RepoApi::saveTo(QString const &workingFile)
 {
-	mClient.setWorkingDir(workingDir);
+	mClient.setWorkingFile(workingFile);
 	mClient.saveAll();
 }
 

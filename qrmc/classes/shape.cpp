@@ -1,10 +1,10 @@
 #include "shape.h"
-#include "utils/defs.h"
-#include "diagram.h"
-#include "metaCompiler.h"
-#include "editor.h"
+#include "../utils/defs.h"
+#include "../diagram.h"
+#include "../metaCompiler.h"
+#include "../editor.h"
 #include "graphicType.h"
-#include "utils/nameNormalizer.h"
+#include "../utils/nameNormalizer.h"
 
 #include <QtCore/QDebug>
 #include <QtCore/QFile>

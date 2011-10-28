@@ -4,7 +4,7 @@
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
 
-#include "../../kernel/ids.h"
+#include "../../../qrkernel/ids.h"
 #include "../../../qrrepo/logicalRepoApi.h"
 
 namespace qReal {

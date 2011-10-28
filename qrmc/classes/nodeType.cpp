@@ -1,9 +1,9 @@
 #include "nodeType.h"
-#include "diagram.h"
-#include "metaCompiler.h"
-#include "editor.h"
-#include "utils/nameNormalizer.h"
-#include "../qrrepo/repoApi.h"
+#include "../diagram.h"
+#include "../metaCompiler.h"
+#include "../editor.h"
+#include "../utils/nameNormalizer.h"
+#include "../../qrrepo/repoApi.h"
 
 #include <QDebug>
 
@@ -103,6 +103,9 @@ void NodeType::generateContainerStuff(QString &classTemplate) const
 	IdList children = mApi->children(mId);
 	bool foundChild = false;
 	foreach(Id child, children){
+		if (!mApi->isLogicalElement(child))
+			continue;
+
 		if (child.element() == metaEntityPropertiesAsContainer) {
 			foundChild = true;
 			QString movableChildren = mApi->stringProperty(child, "banChildrenMove") == "true" ? "false" : "true";

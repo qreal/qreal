@@ -3,10 +3,11 @@
 #include <QtGui/QWidget>
 #include <QtCore/QString>
 #include <QtXml/QDomDocument>
+#include <QtGui/QButtonGroup>
 
-#include "view.h"
 #include "scene.h"
 #include "item.h"
+#include "../../../qrutils/graphicsUtils/abstractItemView.h"
 
 namespace Ui {
 	class ShapeEdit;
@@ -17,7 +18,7 @@ class ShapeEdit : public QWidget {
 public:
 	explicit ShapeEdit(QWidget *parent = NULL);
 	ShapeEdit(QPersistentModelIndex const &index, int const &role);
-	View* getView();
+	graphicsUtils::AbstractView* getView();
 	void load(const QString &text);
 	~ShapeEdit();
 signals:
@@ -31,6 +32,17 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 private slots:
+	void drawLine(bool checked);
+	void drawEllipse(bool checked);
+	void drawCurve(bool checked);
+	void drawRectangle(bool checked);
+	void addText(bool checked);
+	void addDynamicText(bool checked);
+	void addTextPicture(bool checked);
+	void addPointPort(bool checked);
+	void addLinePort(bool checked);
+	void addStylus(bool checked);
+
 	void savePicture();
 	void saveToXml();
 	void save();
@@ -41,18 +53,23 @@ private slots:
 	void setNoFontPalette();
 	void setItemFontPalette(QPen const &penItem, QFont const &fontItem, QString const &name);
 	void changeTextName();
+	void resetHighlightAllButtons();
 
 private:
 	Scene *mScene;
 	QGraphicsItemGroup mItemGroup;
+	QList<QAbstractButton *> mButtonGroup;
 	QDomDocument mDocument;
 	QPoint mTopLeftPicture;
 	Ui::ShapeEdit *mUi;
 	QPersistentModelIndex const mIndex;
 	int const mRole;
+	void initButtonGroup();
 	void initFontPalette();
 	void initPalette();
 	void init();
+
+	void setHighlightOneButton(QAbstractButton *oneButton);
 
 	void setValuePenStyleComboBox(Qt::PenStyle penStyle);
 	void setValuePenColorComboBox(QColor penColor);

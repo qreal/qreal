@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>robotsInterpreter_ru.qm</file>
+        <file>icons/kroki.png</file>
+        <file>icons/wall.png</file>
+        <file>icons/preferences/robot.png</file>
+    </qresource>
+</RCC>
+

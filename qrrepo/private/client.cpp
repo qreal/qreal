@@ -1,5 +1,5 @@
 #include "client.h"
-#include "../../qrgui/kernel/exception/exception.h"
+#include "../../qrkernel/exception/exception.h"
 
 #include <QtCore/QDebug>
 
@@ -7,12 +7,13 @@ using namespace qReal;
 using namespace qrRepo;
 using namespace qrRepo::details;
 
-Client::Client(QString const &workingDirectory)
-	: serializer(workingDirectory)
+Client::Client(QString const &workingFile)
+	: serializer(workingFile)
 {
 	init();
 	loadFromDisk();
 }
+
 
 void Client::init()
 {
@@ -25,6 +26,7 @@ Client::~Client()
 	delete mObjects[Id::rootId()];
 	mObjects.remove(Id::rootId());
 	serializer.saveToDisk(mObjects.values());
+	serializer.clearWorkingDir();
 }
 
 IdList Client::children(Id const &id) const
@@ -261,7 +263,6 @@ bool Client::exist(const Id &id) const
 
 void Client::saveAll() const
 {
-	serializer.clearWorkingDir();
 	serializer.saveToDisk(mObjects.values());
 }
 
@@ -292,9 +293,9 @@ void Client::remove(const qReal::Id &id)
 	}
 }
 
-void Client::setWorkingDir(QString const &workingDir)
+void Client::setWorkingFile(QString const &workingFile)
 {
-	serializer.setWorkingDir(workingDir);
+	serializer.setWorkingFile(workingFile);
 }
 
 void Client::printDebug() const
@@ -315,15 +316,15 @@ void Client::exterminate()
 {
 	printDebug();
 	mObjects.clear();
-	serializer.clearWorkingDir();
+	//serializer.clearWorkingDir();
 	serializer.saveToDisk(mObjects.values());
 	init();
 	printDebug();
 }
 
-void Client::open(QString const &workingDir)
+void Client::open(QString const &saveFile)
 {
-	serializer.setWorkingDir(workingDir);
+	serializer.setWorkingFile(saveFile);
 	mObjects.clear();
 	init();
 	loadFromDisk();

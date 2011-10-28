@@ -3,16 +3,17 @@
 #include <QtCore/QString>
 #include <QtCore/QList>
 
-#include"mainwindow.h"
-#include "../kernel/ids.h"
-#include "../kernel/definitions.h"
+#include "mainWindow.h"
+#include "../../qrkernel/ids.h"
+#include "../../qrkernel/definitions.h"
 #include "error.h"
-#include "errorlistwidget.h"
+#include "errorListWidget.h"
+#include "../toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 namespace qReal {
 namespace gui {
 
-class ErrorReporter : public QObject {
+class ErrorReporter : public QObject, public ErrorReporterInterface {
 	Q_OBJECT
 
 public:

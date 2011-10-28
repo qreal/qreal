@@ -1,18 +1,13 @@
 #include "sceneGridHandler.h"
-#include "uml_nodeelement.h"
-#include "../view/editorviewscene.h"
-
-#include <QtCore/QSettings>
-
-using namespace UML;
+#include "nodeElement.h"
+#include "../view/editorViewScene.h"
 
 SceneGridHandler::SceneGridHandler(NodeElement *node)
 {
-	QSettings settings("SPbSU", "QReal");
 	mNode = node;
-	mShowAlignment = settings.value("ShowAlignment", true).toBool();
-	mSwitchGrid = settings.value("ActivateGrid", false).toBool();
-	mSwitchAlignment = settings.value("ActivateAlignment", true).toBool();
+	mShowAlignment = SettingsManager::value("ShowAlignment", true).toBool();
+	mSwitchGrid = SettingsManager::value("ActivateGrid", true).toBool();
+	mSwitchAlignment = SettingsManager::value("ActivateAlignment", true).toBool();
 }
 
 void SceneGridHandler::delUnusedLines()
@@ -187,7 +182,7 @@ void SceneGridHandler::setAlignmentMode(bool mode)
 
 void SceneGridHandler::mouseMoveEvent()
 {
-	int const indexGrid = QSettings("SPbSU", "QReal").value("IndexGrid", 30).toInt();
+	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
 	NodeElement* parItem = dynamic_cast<NodeElement*>(mNode->parentItem());
 	if(parItem == NULL) {
 		qreal myX1 = mNode->scenePos().x() + mNode->boundingRect().x();

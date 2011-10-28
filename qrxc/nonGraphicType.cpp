@@ -1,5 +1,5 @@
 #include "nonGraphicType.h"
-#include "../utils/outFile.h"
+#include "../qrutils/outFile.h"
 
 using namespace utils;
 
@@ -18,6 +18,16 @@ void NonGraphicType::generateCode(OutFile &out)
 }
 
 void NonGraphicType::generateNameMapping(OutFile &out)
+{
+	Q_UNUSED(out)
+}
+
+void NonGraphicType::generatePropertyDisplayedNamesMapping(utils::OutFile &out)
+{
+	Q_UNUSED(out)
+}
+
+void NonGraphicType::generatePropertyDescriptionMapping(utils::OutFile &out)
 {
 	Q_UNUSED(out)
 }

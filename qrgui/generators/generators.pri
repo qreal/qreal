@@ -13,10 +13,15 @@ HEADERS += generators/hascol/hascolGenerator.h \
 
 SOURCES += generators/hascol/hascolGenerator.cpp \
 
+# nxtOSEK generator
 
-HEADERS += generators/editorGenerator/editorGenerator.h \
+HEADERS += generators/nxtOSEK/nxtOSEKRobotGenerator.h \
+		generators/nxtOSEK/smartLine.h
+SOURCES += generators/nxtOSEK/nxtOSEKRobotGenerator.cpp \
+		generators/nxtOSEK/smartLine.cpp
 
-SOURCES += generators/editorGenerator/editorGenerator.cpp \
+HEADERS += generators/editorGenerator/editorGenerator.h
+SOURCES += generators/editorGenerator/editorGenerator.cpp
 
 
 # Креатор не умеет показывать файлы глубже одного уровня в иерархии инклудов

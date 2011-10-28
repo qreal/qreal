@@ -23,6 +23,8 @@ private:
 	QString mBeginType;
 	QString mEndType;
 	QString mLineType;
+	QString mLineColor;
+	int mLineWidth;
 
 	virtual bool initAssociations();
 	virtual bool initGraphics();

@@ -1,9 +1,33 @@
-HEADERS += mainwindow/mainwindow.h \
+HEADERS += \
+	mainwindow/mainWindow.h \
 	mainwindow/paletteToolbox.h \
-	mainwindow/propertyeditorproxymodel.h \
-	mainwindow/propertyeditordelegate.h \
+	mainwindow/propertyEditorProxyModel.h \
 	mainwindow/errorReporter.h \
-	mainwindow/openShapeEditorButton.h \
+	mainwindow/gesturesPainterInterface.h \
+	mainwindow/gesturesPainterInterface.h \
+	mainwindow/buttonRefWindow.h \
+	mainwindow/error.h \
+	mainwindow/errorListWidget.h \
+	mainwindow/mainWindowInterpretersInterface.h \
+	mainwindow/nxtFlashTool.h \
+	mainwindow/helpBrowser.h \
+
+SOURCES += \
+	mainwindow/mainWindow.cpp \
+	mainwindow/paletteToolbox.cpp \
+	mainwindow/propertyEditorProxyModel.cpp \
+	mainwindow/errorReporter.cpp \
+	mainwindow/buttonRefWindow.cpp \
+	mainwindow/error.cpp \
+	mainwindow/errorListWidget.cpp \
+	mainwindow/nxtFlashTool.cpp \
+	mainwindow/helpBrowser.cpp \
+
+FORMS += \
+	mainwindow/mainWindow.ui
+
+# Shape editor
+HEADERS += \
 	mainwindow/shapeEdit/shapeEdit.h \
 	mainwindow/shapeEdit/scene.h \
 	mainwindow/shapeEdit/arch.h \
@@ -16,28 +40,14 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/shapeEdit/linePort.h \
 	mainwindow/shapeEdit/xmlLoader.h \
 	mainwindow/shapeEdit/stylus.h \
-	mainwindow/shapeEdit/colorlisteditor.h \
+	mainwindow/shapeEdit/colorListEditor.h \
 	mainwindow/shapeEdit/curve.h \
 	mainwindow/shapeEdit/view.h \
-	mainwindow/gesturesShow/gestureswidget.h \
-	mainwindow/igesturespainter.h \
-	mainwindow/preferencesDialog.h \
-	mainwindow/igesturespainter.h \
-	mainwindow/buttonRefWindow.h \
-	mainwindow/refWindow.h \
 	mainwindow/shapeEdit/textPicture.h \
 	mainwindow/shapeEdit/path.h \
 	mainwindow/shapeEdit/image.h \
-	mainwindow/error.h \
-	mainwindow/errorlistwidget.h \
-	mainwindow/mainWindowInterpretersInterface.h \
 
-SOURCES += mainwindow/mainwindow.cpp \
-	mainwindow/paletteToolbox.cpp \
-	mainwindow/propertyeditorproxymodel.cpp \
-	mainwindow/propertyeditordelegate.cpp \
-	mainwindow/errorReporter.cpp \
-	mainwindow/openShapeEditorButton.cpp \
+SOURCES += \
 	mainwindow/shapeEdit/shapeEdit.cpp \
 	mainwindow/shapeEdit/scene.cpp \
 	mainwindow/shapeEdit/arch.cpp \
@@ -50,20 +60,12 @@ SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/shapeEdit/linePort.cpp \
 	mainwindow/shapeEdit/xmlLoader.cpp \
 	mainwindow/shapeEdit/stylus.cpp \
-	mainwindow/shapeEdit/colorlisteditor.cpp \
+	mainwindow/shapeEdit/colorListEditor.cpp \
 	mainwindow/shapeEdit/path.cpp \
 	mainwindow/shapeEdit/curve.cpp \
 	mainwindow/shapeEdit/view.cpp \
-	mainwindow/gesturesShow/gestureswidget.cpp \
-	mainwindow/preferencesDialog.cpp \
-	mainwindow/buttonRefWindow.cpp \
-	mainwindow/refWindow.cpp \
 	mainwindow/shapeEdit/textPicture.cpp \
 	mainwindow/shapeEdit/image.cpp \
-	mainwindow/error.cpp \
-	mainwindow/errorlistwidget.cpp
-FORMS += mainwindow/mainwindow.ui \
+
+FORMS += \
 	mainwindow/shapeEdit/shapeEdit.ui \
-	mainwindow/gesturesShow/gestureswidget.ui \
-	mainwindow/preferencesDialog.ui \
-	mainwindow/refWindow.ui

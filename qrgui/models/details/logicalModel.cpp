@@ -5,7 +5,7 @@
 
 using namespace qReal;
 using namespace models;
-using namespace details;
+using namespace models::details;
 using namespace modelsImplementation;
 
 LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const &editorManager)
@@ -307,7 +307,7 @@ void LogicalModel::removeModelItemFromApi(details::modelsImplementation::Abstrac
 	mApi.removeElement(child->id());
 }
 
-ModelsAssistApi* LogicalModel::modelAssistApi() const
+qReal::details::ModelsAssistInterface* LogicalModel::modelAssistInterface() const
 {
 	return mLogicalAssistApi;
 }

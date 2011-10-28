@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../qrgui/kernel/roles.h"
+#include "../qrkernel/roles.h"
 
 namespace qrRepo {
 
 class RepoControlInterface
 {
 public:
-	virtual ~RepoControlInterface() {};
+	virtual ~RepoControlInterface() {}
 
 	virtual void exterminate() = 0;
 

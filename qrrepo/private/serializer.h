@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../qrgui/kernel/roles.h"
+#include "../../qrkernel/roles.h"
 #include "classes/object.h"
 
 #include <QtXml/QDomDocument>
@@ -17,11 +17,13 @@ namespace qrRepo {
 		public:
 			Serializer(QString const& saveDirName);
 			void clearWorkingDir() const;
-			void setWorkingDir(QString const& workingDir);
+			void setWorkingFile(QString const& workingDir);
 
 			void removeFromDisk(qReal::Id id) const;
 			void saveToDisk(QList<Object*> const &objects) const;
 			void loadFromDisk(QHash<qReal::Id, Object*> &objectsHash);
+
+			void decompressFile(QString fileName);
 		private:
 			void loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object*> &objectsHash);
 			void loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHash);
@@ -44,6 +46,7 @@ namespace qrRepo {
 			static QDomElement propertiesToXml(Object * const object, QDomDocument &doc);
 
 			QString mWorkingDir;
+			QString mWorkingFile;
 
 			QMap<QString, QFile*> files;
 		};
