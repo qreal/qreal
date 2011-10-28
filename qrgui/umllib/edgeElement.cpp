@@ -21,7 +21,7 @@ const double pi = 3.14159265358979;
 // static bool moving = false;
 
 EdgeElement::EdgeElement(ElementImpl *impl)
-: mPenStyle(Qt::SolidLine), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
+: mPenStyle(Qt::SolidLine),mPenWidth(1), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
 , mSrc(NULL), mDst(NULL)
 , mPortFrom(0), mPortTo(0)
 , mDragPoint(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL)
@@ -33,6 +33,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 , mLastDragPoint(-1)
 {
 	mPenStyle = mElementImpl->getPenStyle();
+	mPenWidth = mElementImpl->getPenWidth();
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
 	// FIXME: draws strangely...
@@ -153,7 +154,7 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	QPen pen = painter->pen();
 	pen.setColor(mColor);
 	pen.setStyle(mPenStyle);
-	pen.setWidth(1);  // TODO: Move line width to a configuration parameter
+	pen.setWidth(mPenWidth);
 	painter->setPen(pen);
 	painter->drawPolyline(mLine);
 	painter->restore();
