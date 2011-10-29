@@ -9,8 +9,8 @@
 #include <QGraphicsItem>
 #include <QStyleOptionGraphicsItem>
 
-#include "../view/editorViewScene.h"
-#include "../mainwindow/mainWindow.h"
+#include "../../../view/editorViewScene.h"
+#include "../../../mainwindow/mainWindow.h"
 
 using namespace qReal;
 
@@ -188,28 +188,32 @@ QRectF EmbeddedLinker::boundingRect() const {
 }
 
 void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-	EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
-
-	if (!scene) {
-		return;
-	}
-
-	const QString type = "qrm:/" + master->id().editor() + "/" +
-						 master->id().diagram() + "/" + edgeType.element();
-	if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type))) {
-		master->setConnectingState(true);
-		Id edgeId = scene->createElement(type, event->scenePos());
-		mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
-	}
-
-	if (mEdge){
-		QPointF point = mapToItem(master, event->pos());
-		mEdge->placeStartTo(mEdge->mapFromItem(master, master->getNearestPort(point)));
-		mEdge->placeEndTo(mapToItem(mEdge, event->pos()));
-	}
+	mPressed = true;
 }
 
 void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+	if (mPressed) {
+		mPressed = false;
+		EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
+
+		if (!scene) {
+			return;
+		}
+		const QString type = "qrm:/" + master->id().editor() + "/" +
+							 master->id().diagram() + "/" + edgeType.element();
+		if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type))) {
+			master->setConnectingState(true);
+			Id edgeId = scene->createElement(type, event->scenePos());
+			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
+		}
+
+		if (mEdge){
+			QPointF point = mapToItem(master, event->pos());
+			mEdge->placeStartTo(mEdge->mapFromItem(master, master->getNearestPort(point)));
+			mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
+		}
+	}
+
 	if (mEdge != NULL) {
 		mEdge->arrangeSrcAndDst();
 		mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
@@ -220,29 +224,30 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 	hide();
 	master->selectionState(false);
 	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(master->scene());
-	if ((scene) && (mEdge)) {
+
+	if (!mPressed && scene && mEdge) {
 		mEdge->hide();
-		NodeElement *under = dynamic_cast<NodeElement*>(scene->itemAt(event->scenePos()));
+		QPointF const &eScenePos = event->scenePos();
+		NodeElement *under = dynamic_cast<NodeElement*>(scene->itemAt(eScenePos));
 		mEdge->show();
 		int result = 0;
-		NodeElement* target;
 
 		if (!under) {
-			result = scene->launchEdgeMenu(mEdge, master, event->scenePos());
+			result = scene->launchEdgeMenu(mEdge, master, eScenePos);
+			NodeElement *target = dynamic_cast<NodeElement*>(scene->getLastCreated());
 			if (result == -1) {
 				mEdge = NULL;
-			} else if ((result == +1) && (scene->getLastCreated())) {
-				target = dynamic_cast<NodeElement*>(scene->getLastCreated());
-				if (target) {
-					mEdge->placeEndTo(mapFromItem(target,target->getNearestPort(target->pos())));
-					mEdge->connectToPort();	//it provokes to move target somehow, so it needs to place edge end and connect to port again
-					mEdge->placeEndTo(mapFromItem(target,target->getNearestPort(target->pos())));
-					mEdge->adjustLink();
-				}
+			} else if ((result == +1) && target) {
+				QPointF const &posRelativeToTheTarget = target->mapFromScene(eScenePos);
+				mEdge->placeEndTo(mapFromItem(target, target->getNearestPort(posRelativeToTheTarget)));
+				mEdge->connectToPort();	//it provokes to move target somehow, so it needs to place edge end and connect to port again
+				mEdge->placeEndTo(mapFromItem(target, target->getNearestPort(posRelativeToTheTarget)));
+				mEdge->adjustLink();
 			}
 		}
-		if (result != -1)
+		if (result != -1) {
 			mEdge->connectToPort();
+		}
 	}
 }
 

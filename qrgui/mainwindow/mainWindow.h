@@ -72,7 +72,7 @@ signals:
 	void rootDiagramChanged();
 
 public slots:
-        void deleteFromScene();
+	void deleteFromScene();
 
 	void propertyEditorScrollTo(QModelIndex const &index);
 
@@ -103,13 +103,15 @@ private slots:
 	void saveAllAndOpen(QString const &dirName);
 
 	bool open(QString const &dirName);
-        bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
-	void saveAs();
+	bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
+	void saveProjectAs();
 	void saveAll();
 	void fullscreen();
-        void openRecentProjectsMenu();
+	void openRecentProjectsMenu();
 	bool openNewProject();
 	void createProject();
+
+	void saveDiagramAsAPicture();
 
 	void print();
 	void makeSvg();
@@ -148,14 +150,11 @@ private slots:
 	void startDebugging();
 	void checkEditorForDebug(int index);
 
-private slots:
 	void deleteFromDiagram();
 	void changeMiniMapSource(int index);
 	void closeTab(int index);
 	void closeTab(QModelIndex const &graphicsIndex);
-//	void exterminate();
 	void generateEditor();
-//	void generateEditorWithQRMC();
 	void parseEditorXml();
 	void generateToHascol();
 	void parseHascol();
@@ -191,15 +190,17 @@ private slots:
 
 	void updatePaletteIcons();
 
+	void autosave();
+	void setAutoSaveParameters();
 
 private:
 	Ui::MainWindowUi *mUi;
 
-        int mLimit;
-        QSignalMapper *mSignalMapper;
-        QMenu *mRecentProjectsMenu;
+	int mLimit;
+	QSignalMapper *mSignalMapper;
+	QMenu *mRecentProjectsMenu;
 
-        QCloseEvent *mCloseEvent;
+	QCloseEvent *mCloseEvent;
 	models::Models *mModels;
 	EditorManager mEditorManager;
 	ToolPluginManager mToolManager;
@@ -223,10 +224,10 @@ private:
 	/** @brief Internal map table to store info what widgets should we hide/show */
 	QMap<QString, bool> mDocksVisibility;
 
-        QString mSaveFile;
+	QString mSaveFile;
 	QString mTempDir;
 
-        PreferencesDialog mPreferencesDialog;
+	PreferencesDialog mPreferencesDialog;
 
 	gui::NxtFlashTool *mFlashTool;
 
@@ -235,9 +236,12 @@ private:
 	bool mNxtToolsPresent;
 	HelpBrowser *mHelpBrowser;
 
+	bool mIsNewProject;
+	QTimer mAutoSaveTimer;
+
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
-			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
+					   QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
 
 	void loadPlugins();
 
@@ -267,20 +271,31 @@ private:
 	void setIndexesOfPropertyEditor(Id const &id);
 
 	/** @brief Check if we need to hide widget in fullscreen mode or not. If we do, hide it
-		@param dockWidget QDockWidget to hide
-		@param name Widget's name in internal map
-	*/
+  @param dockWidget QDockWidget to hide
+  @param name Widget's name in internal map
+ */
 	void hideDockWidget(QDockWidget *dockWidget, QString name);
 
 	/** @brief Check if we need to show widget in fullscreen mode or not. If we do, show it
-		@param dockWidget QDockWidget to show
-		@param name Widget's name in internal map
-	*/
+  @param dockWidget QDockWidget to show
+  @param name Widget's name in internal map
+ */
 	void showDockWidget(QDockWidget *dockWidget, QString name);
 
 	QString getNextDirName(QString const &name);
 
 	void initToolPlugins();
 	void checkNxtTools();
+
+	QProgressBar *createProgressBar(QSplashScreen* splash);
+	void initMiniMap();
+	void initToolManager();
+	void initTabs();
+	void initDocks();
+	void initWindowTitle();
+	void initDebugger();
+	void initExplorers();
+
+	void saveAs(QString const &saveName);
 };
 }

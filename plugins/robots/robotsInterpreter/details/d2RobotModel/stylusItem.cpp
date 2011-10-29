@@ -1,8 +1,9 @@
 #include "stylusItem.h"
-#include <QtCore/QDebug>
+#include "../tracer.h"
 
 using namespace qReal::interpreters::robots;
-using namespace details::d2Model;
+using namespace details;
+using namespace d2Model;
 using namespace graphicsUtils;
 
 StylusItem::StylusItem(qreal x1, qreal y1)
@@ -22,7 +23,7 @@ void StylusItem::addLine(qreal x2, qreal y2)
 	LineItem *line = new LineItem(QPointF(mTmpX1, mTmpY1), QPointF(mX2, mY2));
 	line->setPen(mPen);
 	line->setBrush(mBrush);
-        line->setSerializeName(QString("stylusLine"));
+		line->setSerializeName(QString("stylusLine"));
 	mAbstractListLine.push_back(line);
 	mTmpX1 = mX2;
 	mTmpY1 = mY2;
@@ -90,32 +91,32 @@ void StylusItem::setBrushColor(const QString& text)
 
 QDomElement StylusItem::serialize(QDomDocument &document, QPoint const &topLeftPicture)
 {
-        QDomElement stylusNode = setPenBrushToDoc(document, "stylus");
-        foreach (AbstractItem *abstractItem, mAbstractListLine) {
-                LineItem *line = dynamic_cast<LineItem *>(abstractItem);
-                line->setSerializeName("stylusLine");
-                QDomElement item = line->serialize(document, topLeftPicture - QPoint(static_cast<int>(scenePos().x()), static_cast<int>(scenePos().y())));
-                stylusNode.appendChild(item);
-        }
-        return stylusNode;
+		QDomElement stylusNode = setPenBrushToDoc(document, "stylus");
+		foreach (AbstractItem *abstractItem, mAbstractListLine) {
+				LineItem *line = dynamic_cast<LineItem *>(abstractItem);
+				line->setSerializeName("stylusLine");
+				QDomElement item = line->serialize(document, topLeftPicture - QPoint(static_cast<int>(scenePos().x()), static_cast<int>(scenePos().y())));
+				stylusNode.appendChild(item);
+		}
+		return stylusNode;
 }
 
 void StylusItem::deserialize(QDomElement const &element)
 {
-    mAbstractListLine.clear();
+	mAbstractListLine.clear();
 
-    readPenBrush(element);
-    QDomNodeList stylusAttributes = element.childNodes();
-    for (unsigned i = 0; i < stylusAttributes.length(); ++i) {
-            QDomElement type = stylusAttributes.at(i).toElement();
-            if (type.tagName() == "stylusLine") {
-                    LineItem* line = new LineItem(QPointF(0, 0), QPointF(0, 0));
-                    line->deserialize(type);
-                    mAbstractListLine.append(line);
-            }
-            else
-                    qDebug() << "Incorrect stylus tag";
-    }
+	readPenBrush(element);
+	QDomNodeList stylusAttributes = element.childNodes();
+	for (unsigned i = 0; i < stylusAttributes.length(); ++i) {
+			QDomElement type = stylusAttributes.at(i).toElement();
+			if (type.tagName() == "stylusLine") {
+					LineItem* line = new LineItem(QPointF(0, 0), QPointF(0, 0));
+					line->deserialize(type);
+					mAbstractListLine.append(line);
+			}
+			else
+				Tracer::debug(tracer::d2Model, "StylusItem::deserialize", "Incorrect stylus tag");
+	}
 }
 
 void StylusItem::resizeItem(QGraphicsSceneMouseEvent *event)

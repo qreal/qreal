@@ -1,8 +1,11 @@
 #include "bluetoothSensorImplementation.h"
 #include "../../robotParts/robotModel.h"
 
+#include "../../tracer.h"
+
 using namespace qReal::interpreters::robots;
-using namespace details::robotImplementations::sensorImplementations;
+using namespace details;
+using namespace robotImplementations::sensorImplementations;
 
 BluetoothSensorImplementation::BluetoothSensorImplementation(RobotCommunication *const robotCommunicationInterface
 		, sensorType::SensorTypeEnum const &sensorType
@@ -36,21 +39,20 @@ void BluetoothSensorImplementation::processResponse(QByteArray const &reading)
 	if (reading.isEmpty()) {
 		mState = idle;
 		if (mResetDone) {
-			qDebug() << "Response is empty, seems to be a connection failure";
+			Tracer::debug(tracer::sensors, "BluetoothSensorImplementation::processResponse", "Response is empty, seems to be a connection failure");
 			// Just ignore connection failures for now
 //			emit failure();
 		}
 	} else if (reading.size() >= 5 && reading[3] == commandCode::RESETINPUTSCALEDVALUE) {
-		qDebug() << "Response is a reset input scaled value response package";
-		qDebug() << "Status byte is:" << static_cast<int>(reading[4]);
+		Tracer::debug(tracer::sensors, "BluetoothSensorImplementation::processResponse", "Response is a reset input scaled value response package");
+		Tracer::debug(tracer::sensors, "BluetoothSensorImplementation::processResponse", "Status byte is: " + QString::number(static_cast<int>(reading[4])));
 		mState = idle;
 		mResetDone = true;
 		emit configured();
 	} else if (reading.size() >= 5 && reading[3] == commandCode::SETINPUTMODE) {
 		mState = idle;
-		qDebug() << "Response is a configuration response package";
-		qDebug() << "Status byte is:" << static_cast<int>(reading[4]);
-
+		Tracer::debug(tracer::sensors, "BluetoothSensorImplementation::processResponse", "Response is a configuration response package");
+		Tracer::debug(tracer::sensors, "BluetoothSensorImplementation::processResponse", "Status byte is: " + QString::number(static_cast<int>(reading[4])));
 		QByteArray command(5, 0);
 		command[0] = 0x03;
 		command[1] = 0x00;

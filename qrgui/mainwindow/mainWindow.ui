@@ -46,6 +46,7 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
+    <addaction name="actionSave_diagram_as_a_picture"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -671,6 +672,11 @@
   <action name="actionRecent_projects">
    <property name="text">
     <string>Recent projects</string>
+   </property>
+  </action>
+  <action name="actionSave_diagram_as_a_picture">
+   <property name="text">
+    <string>Save diagram as a picture...</string>
    </property>
   </action>
  </widget>

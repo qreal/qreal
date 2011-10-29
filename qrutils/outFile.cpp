@@ -1,5 +1,8 @@
 #include "outFile.h"
 
+
+#include "../qrkernel/exception/exception.h"
+
 using namespace utils;
 
 OutFile::OutFile(QString const &fileName)
@@ -8,7 +11,7 @@ OutFile::OutFile(QString const &fileName)
 	mFile.setFileName(fileName);
 	mFile.open(QIODevice::WriteOnly | QIODevice::Text);
 	if (!mFile.isOpen())
-		throw "File open operation failed";
+		throw qReal::Exception("File open operation failed");
 	mOut.setDevice(&mFile);
 	mOut.setCodec("UTF-8");
 }

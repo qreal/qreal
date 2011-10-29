@@ -18,7 +18,7 @@ namespace generators {
 
 class NxtOSEKRobotGenerator {
 public:
-	explicit NxtOSEKRobotGenerator(qrRepo::RepoApi *api, QString const &destinationPath = "");
+	explicit NxtOSEKRobotGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath = "");
 	explicit NxtOSEKRobotGenerator(QString const &pathToRepo, QString const &destinationPath = "");
 
 	~NxtOSEKRobotGenerator();
@@ -72,6 +72,9 @@ private:
 		virtual QList<SmartLine> simpleCode();
 
 		QList<QString> portsToEngineNames(QString const &portsProperty);
+
+	private:
+		QString transformSign(QString const &inequalitySign);
 	};
 
 	//! Realization of AbstractElementGenerator for Function.
@@ -112,6 +115,8 @@ private:
 		virtual bool nextElementsGeneration();
 
 		bool generateBranch(int branchNumber);
+
+		QPair<bool, qReal::Id> checkBranchForBackArrows(qReal::Id const &curElementId); //initial step of checking
 		QPair<bool, qReal::Id> checkBranchForBackArrows(qReal::Id const &curElementId, qReal::IdList* checkedElements);
 	};
 

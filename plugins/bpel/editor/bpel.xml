@@ -6,6 +6,7 @@
                                         <edge id="bplRelationShip" name="Relationship">
                                                   <graphics>
                                                             <lineType type="solidLine"/>
+															<lineWidth width="6"/>
                                                   </graphics>
                                                   <logic>
                                                             <properties>

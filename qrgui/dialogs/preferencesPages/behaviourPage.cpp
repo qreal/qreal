@@ -8,10 +8,16 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent) :
 {
 	mUi->setupUi(this);
 
+	connect(mUi->autoSaveCheckBox, SIGNAL(clicked(bool)), this, SLOT(showAutoSaveBox(bool)));
+
 	mUi->warningWindowBox->setChecked(SettingsManager::value("warningWindow", true).toBool());
 	mUi->diagramCreateCheckBox->setChecked(SettingsManager::value("diagramCreateSuggestion", true).toBool());
 	mUi->paletteTabCheckBox->setChecked(SettingsManager::value("PaletteTabSwitching", true).toBool());
 	mUi->arrangeLinksCheckBox->setChecked(SettingsManager::value("arrangeLinks", true).toBool());
+	mUi->autoSaveCheckBox->setChecked(SettingsManager::value("autoSave", true).toBool());
+	mUi->autoSaveSpinBox->setValue(SettingsManager::value("autoSaveInterval", 10).toInt());
+
+	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
 }
 
 PreferencesBehaviourPage::~PreferencesBehaviourPage()
@@ -36,4 +42,12 @@ void PreferencesBehaviourPage::save()
 	SettingsManager::setValue("PaletteTabSwitching", mUi->paletteTabCheckBox->isChecked());
 	SettingsManager::setValue("warningWindow", mUi->warningWindowBox->isChecked());
 	SettingsManager::setValue("arrangeLinks", mUi->arrangeLinksCheckBox->isChecked());
+	SettingsManager::setValue("autoSave", mUi->autoSaveCheckBox->isChecked());
+	SettingsManager::setValue("autoSaveInterval", mUi->autoSaveSpinBox->value());
+}
+
+void PreferencesBehaviourPage::showAutoSaveBox(bool show)
+{
+	mUi->autoSaveSpinBox->setVisible(show);
+	mUi->autoSaveLabel->setVisible(show);
 }

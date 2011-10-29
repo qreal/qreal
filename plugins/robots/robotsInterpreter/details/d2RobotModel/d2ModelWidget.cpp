@@ -532,8 +532,8 @@ void D2ModelWidget::saveWorldModel()
 
 	QDomDocument save;
 	QDomElement root = save.createElement("root");
-        save.appendChild(root);
-        root.appendChild(mWorldModel->serialize(save, QPoint(0, 0)));
+	save.appendChild(root);
+	root.appendChild(mWorldModel->serialize(save, QPoint(0, 0)));
 	root.appendChild(mRobotModel->configuration().serialize(save));
 
 	utils::OutFile saveFile(saveFileName);
@@ -604,7 +604,7 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 	mRobot->addSensor(sensor);
 	mScene->addItem(sensor);
 
-	/*íàçíà÷àåì ðîòàòåð*/
+	/*Ð½Ð°Ð·Ð½Ð°Ñ‡Ð°ÐµÐ¼ Ñ€Ð¾Ñ‚Ð°Ñ‚ÐµÑ€*/
 	mSensorRotaters[port] = new Rotater();
 	mSensorRotaters[port]->setMasterItem(sensor);
 	mSensorRotaters[port]->setVisible(false);
@@ -642,7 +642,7 @@ QList<AbstractItem *> D2ModelWidget::selectedColorItems()
 	foreach (QGraphicsItem *graphicsItem, listSelectedItems) {
 		AbstractItem* item = dynamic_cast<AbstractItem*>(graphicsItem);
 		if (item != NULL) {
-			//òåïåðü íàäî èñêëþ÷èòü åùå òå îáúåêòû, êîòîðûì íå íàäî ìåíÿòü öâåò è ò.ä., à ò.å. ðîáîòà, ñåíñîðû, ñòåíû è ðîòàòåðû
+			//Ñ‚ÐµÐ¿ÐµÑ€ÑŒ Ð½Ð°Ð´Ð¾ Ð¸ÑÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑŒ ÐµÑ‰Ðµ Ñ‚Ðµ Ð¾Ð±ÑŠÐµÐºÑ‚Ñ‹, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ð¼ Ð½Ðµ Ð½Ð°Ð´Ð¾ Ð¼ÐµÐ½ÑÑ‚ÑŒ Ñ†Ð²ÐµÑ‚ Ð¸ Ñ‚.Ð´., Ð° Ñ‚.Ðµ. Ñ€Ð¾Ð±Ð¾Ñ‚Ð°, ÑÐµÐ½ÑÐ¾Ñ€Ñ‹, ÑÑ‚ÐµÐ½Ñ‹ Ð¸ Ñ€Ð¾Ñ‚Ð°Ñ‚ÐµÑ€Ñ‹
 			if (isColorItem(item))
 				resList.push_back(item);
 		}
@@ -708,4 +708,16 @@ void D2ModelWidget::setNoPalette()
 {
 	mUi->penWidthSpinBox->setValue(6);
 	mUi->penColorComboBox->setColor(QColor("black"));
+}
+
+D2ModelScene* D2ModelWidget::scene()
+{
+	return mScene;
+}
+
+void D2ModelWidget::setSensorVisible(inputPort::InputPortEnum port, bool isVisible)
+{
+	if (mSensors[port]) {
+		mSensors[port]->setVisible(isVisible);
+	}
 }

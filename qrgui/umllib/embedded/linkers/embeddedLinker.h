@@ -49,5 +49,6 @@ class EmbeddedLinker : public QObject, public QGraphicsItem
 		QRectF mInnerRectangle;
 
 		bool directed;
+		bool mPressed;
 		qReal::Id edgeType;
 };
