@@ -57,6 +57,7 @@ MainWindow::MainWindow()
 	, mListenerManager(NULL)
 	, mPropertyModel(mEditorManager)
 	, mGesturesWidget(NULL)
+	, mRootIndex(QModelIndex())
 	, mVisualDebugger(NULL)
 	, mErrorReporter(NULL)
 	, mIsFullscreen(false)
@@ -65,11 +66,9 @@ MainWindow::MainWindow()
 	, mNxtToolsPresent(false)
 	, mHelpBrowser(NULL)
 	, mIsNewProject(true)
+	, mRecentProjectsLimit(5)
+	, mRecentProjectsMapper(new QSignalMapper())
 {
-	mLimit = 5;
-
-	mSignalMapper = new QSignalMapper();
-
 	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
 
 	QSplashScreen* splash =
@@ -95,11 +94,8 @@ MainWindow::MainWindow()
 	}
 
 	mUi->setupUi(this);
-	mRecentProjectsMenu = new QMenu("Recent projects", mUi->menu_File);
-	mUi->menu_File->insertMenu(mUi->menu_File->actions().at(1), mRecentProjectsMenu);
-	connect(mRecentProjectsMenu, SIGNAL(aboutToShow()), this, SLOT(openRecentProjectsMenu()));
 
-
+	initRecentProjectsMenu();
 	initToolManager();
 	initTabs();
 
@@ -126,7 +122,7 @@ MainWindow::MainWindow()
 	if (saveFile.exists())
 		mSaveFile = saveFile.absoluteFilePath();
 
-	mRootIndex = QModelIndex();
+
 	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
@@ -314,7 +310,7 @@ MainWindow::~MainWindow()
 		delete mHelpBrowser;
 	SettingsManager::instance()->saveData();
 	delete mRecentProjectsMenu;
-	delete mSignalMapper;
+	delete mRecentProjectsMapper;
 }
 
 EditorManager* MainWindow::manager()
@@ -546,7 +542,7 @@ void MainWindow::refreshRecentProjectsList(QString fileName) {
 	QString previousString =  SettingsManager::value("recentProjects").toString();
 	QStringList previousList = previousString.split(";", QString::SkipEmptyParts);
 	previousList.removeOne(fileName);
-	if (previousList.size() == mLimit)
+	if (previousList.size() == mRecentProjectsLimit)
 		previousList.removeLast();
 	previousList.push_front(fileName);
 	previousString = "";
@@ -565,11 +561,11 @@ void MainWindow::openRecentProjectsMenu()
 	foreach (QString projectPath, recentProjects)
 	{
 		mRecentProjectsMenu->addAction(projectPath);
-		QObject::connect(mRecentProjectsMenu->actions().last(), SIGNAL(triggered()), mSignalMapper, SLOT(map()));
-		mSignalMapper->setMapping(mRecentProjectsMenu->actions().last(), projectPath);
+		QObject::connect(mRecentProjectsMenu->actions().last(), SIGNAL(triggered()), mRecentProjectsMapper, SLOT(map()));
+		mRecentProjectsMapper->setMapping(mRecentProjectsMenu->actions().last(), projectPath);
 	}
 
-	QObject::connect(mSignalMapper, SIGNAL(mapped(const QString &)), this, SLOT(saveAllAndOpen(const QString &)));
+	QObject::connect(mRecentProjectsMapper, SIGNAL(mapped(const QString &)), this, SLOT(saveAllAndOpen(const QString &)));
 }
 
 void MainWindow::saveAllAndOpen(QString const &dirName)
@@ -2219,6 +2215,13 @@ void MainWindow::initExplorers()
 	connect(mUi->graphicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(graphicalModelExplorerClicked(QModelIndex)));
 	connect(mUi->logicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(logicalModelExplorerClicked(QModelIndex)));
 
+}
+
+void MainWindow::initRecentProjectsMenu()
+{
+	mRecentProjectsMenu = new QMenu("Recent projects", mUi->menu_File);
+	mUi->menu_File->insertMenu(mUi->menu_File->actions().at(1), mRecentProjectsMenu);
+	connect(mRecentProjectsMenu, SIGNAL(aboutToShow()), this, SLOT(openRecentProjectsMenu()));
 }
 
 void MainWindow::saveDiagramAsAPicture()

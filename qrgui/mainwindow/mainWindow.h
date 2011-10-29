@@ -196,10 +196,6 @@ private slots:
 private:
 	Ui::MainWindowUi *mUi;
 
-	int mLimit;
-	QSignalMapper *mSignalMapper;
-	QMenu *mRecentProjectsMenu;
-
 	QCloseEvent *mCloseEvent;
 	models::Models *mModels;
 	EditorManager mEditorManager;
@@ -238,6 +234,10 @@ private:
 
 	bool mIsNewProject;
 	QTimer mAutoSaveTimer;
+
+	int mRecentProjectsLimit;
+	QSignalMapper *mRecentProjectsMapper;
+	QMenu *mRecentProjectsMenu;
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
@@ -295,6 +295,7 @@ private:
 	void initWindowTitle();
 	void initDebugger();
 	void initExplorers();
+	void initRecentProjectsMenu();
 
 	void saveAs(QString const &saveName);
 };
