@@ -199,9 +199,11 @@ void MainWindow::connectActions()
 	mUi->actionShow_alignment->setChecked(SettingsManager::value("ShowAlignment", true).toBool());
 	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid", true).toBool());
 	mUi->actionSwitch_on_alignment->setChecked(SettingsManager::value("ActivateAlignment", true).toBool());
-
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
-
+	connect(mModels->graphicalModel(),SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+			this,SLOT(editWindowTitle()));
+	connect(mModels->logicalModel(),SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+			this,SLOT(editWindowTitle()));
 	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 
 	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(openNewProject()));
@@ -675,6 +677,11 @@ void MainWindow::deleteFromDiagram()
 
 	if (getCurrentTab() != NULL && getCurrentTab()->scene() != NULL) {
 		getCurrentTab()->scene()->invalidate();
+	}
+}
+void MainWindow::editWindowTitle(){
+	if(windowTitle().indexOf("[modified]")<0){
+		setWindowTitle(windowTitle()+" [modified]");
 	}
 }
 
@@ -1525,20 +1532,21 @@ void MainWindow::saveAll()
 		saveProjectAs();
 		return;
 	}
-
 	mModels->repoControlApi().saveAll();
+	setWindowTitle("QReal:Robots - " + mSaveFile);
+	SettingsManager::setValue("saveFile", mSaveFile);
 }
 
 void MainWindow::saveProjectAs()
 {
 	saveAs(getWorkingFile(tr("Select file to save current model to")));
+
 }
 
 void MainWindow::saveAs(QString const &fileName)
 {
 	if (fileName.isEmpty())
 		return;
-
 	mSaveFile = fileName;
 	mIsNewProject = (mSaveFile == mTempDir);
 
