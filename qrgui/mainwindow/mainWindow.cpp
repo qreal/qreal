@@ -2115,7 +2115,7 @@ void MainWindow::setAutoSaveParameters()
 		return;
 	}
 
-	mAutoSaveTimer.setInterval(SettingsManager::value("autoSaveInterval", 10).toInt() * 1000);
+	mAutoSaveTimer.setInterval(SettingsManager::value("autoSaveInterval", 60 * 10).toInt() * 1000); // in ms
 	mAutoSaveTimer.start();
 }
 
