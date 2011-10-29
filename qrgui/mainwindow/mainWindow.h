@@ -61,7 +61,7 @@ public:
 	virtual void dehighlight();
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram();
-	void openShapeEditor(QPersistentModelIndex index, int role, QString const propertyValue);
+	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
 	virtual void openSettingsDialog(QString const &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);
@@ -214,10 +214,10 @@ private:
 	VisualDebugger *mVisualDebugger;
 	gui::ErrorReporter *mErrorReporter;  // Has ownership
 
-	/** @brief Fullscreen mode flag */
+	/// Fullscreen mode flag
 	bool mIsFullscreen;
 
-	/** @brief Internal map table to store info what widgets should we hide/show */
+	/// Internal map table to store info what widgets should we hide/show
 	QMap<QString, bool> mDocksVisibility;
 
 	QString mSaveFile;
@@ -227,7 +227,7 @@ private:
 
 	gui::NxtFlashTool *mFlashTool;
 
-	void refreshRecentProjectsList(QString fileName);
+	void refreshRecentProjectsList(QString const &fileName);
 
 	bool mNxtToolsPresent;
 	HelpBrowser *mHelpBrowser;
@@ -241,7 +241,7 @@ private:
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
-					   QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
+			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
 
 	void loadPlugins();
 
@@ -271,15 +271,15 @@ private:
 	void setIndexesOfPropertyEditor(Id const &id);
 
 	/** @brief Check if we need to hide widget in fullscreen mode or not. If we do, hide it
-  @param dockWidget QDockWidget to hide
-  @param name Widget's name in internal map
- */
+		@param dockWidget QDockWidget to hide
+		@param name Widget's name in internal map
+	*/
 	void hideDockWidget(QDockWidget *dockWidget, QString name);
 
 	/** @brief Check if we need to show widget in fullscreen mode or not. If we do, show it
-  @param dockWidget QDockWidget to show
-  @param name Widget's name in internal map
- */
+		@param dockWidget QDockWidget to show
+		@param name Widget's name in internal map
+	*/
 	void showDockWidget(QDockWidget *dockWidget, QString name);
 
 	QString getNextDirName(QString const &name);
@@ -299,4 +299,5 @@ private:
 
 	void saveAs(QString const &saveName);
 };
+
 }
