@@ -474,13 +474,12 @@ void MainWindow::sceneSelectionChanged()
 	}
 }
 
-QString MainWindow::getWorkingFile(QString const &dialogWindowTitle)
+QString MainWindow::getWorkingFile(QString const &dialogWindowTitle, bool save)
 {
-
 	QString fileName;
 	QDir const lastSaveDir = QFileInfo(mSaveFile).absoluteDir();
 
-	if (dialogWindowTitle == "Select file to save current model to")
+	if (save)
 		fileName = QFileDialog::getSaveFileName(this, dialogWindowTitle
 				, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
 	else
@@ -535,7 +534,7 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 bool MainWindow::openNewProject()
 {
 	saveAll();
-	return open(getWorkingFile(tr("Select file with a save to open")));
+	return open(getWorkingFile(tr("Select file with a save to open"), false));
 }
 
 void MainWindow::refreshRecentProjectsList(QString const &fileName)
@@ -1597,7 +1596,7 @@ void MainWindow::saveAll()
 
 void MainWindow::saveProjectAs()
 {
-	saveAs(getWorkingFile(tr("Select file to save current model to")));
+	saveAs(getWorkingFile(tr("Select file to save current model to"), true));
 }
 
 void MainWindow::saveAs(QString const &fileName)
