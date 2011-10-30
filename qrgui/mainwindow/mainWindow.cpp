@@ -480,7 +480,7 @@ QString MainWindow::getWorkingFile(QString const &dialogWindowTitle)
 	QString fileName;
 	QDir const lastSaveDir = QFileInfo(mSaveFile).absoluteDir();
 
-	if (dialogWindowTitle == "Select file to save current model to")
+	if (dialogWindowTitle == tr("Select file to save current model to"))
 		fileName = QFileDialog::getSaveFileName(this, dialogWindowTitle
 				, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
 	else
