@@ -65,7 +65,6 @@ MainWindow::MainWindow()
 	, mNxtToolsPresent(false)
 	, mHelpBrowser(NULL)
 	, mIsNewProject(true)
-	, mLastSavedProjectName("")
 	, mUnsavedProjectIndicator(false)
 {
 	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
@@ -681,12 +680,12 @@ void MainWindow::deleteFromDiagram()
 		getCurrentTab()->scene()->invalidate();
 	}
 }
-void MainWindow::editWindowTitle(){
-	if( ! mUnsavedProjectIndicator && mLastSavedProjectName == mSaveFile){
+void MainWindow::editWindowTitle()
+{
+	if (!mUnsavedProjectIndicator){
 		setWindowTitle(windowTitle() + " [modified]");
 		mUnsavedProjectIndicator = true;
 	}
-	mLastSavedProjectName = mSaveFile;
 }
 
 void MainWindow::showAbout()
@@ -1554,7 +1553,6 @@ void MainWindow::saveAs(QString const &fileName)
 	mSaveFile = fileName;
 	mUnsavedProjectIndicator = false;
 	mIsNewProject = (mSaveFile == mTempDir);
-
 	mModels->repoControlApi().saveTo(mSaveFile);
 	if (!mSaveFile.endsWith(".qrs", Qt::CaseInsensitive))
 		mSaveFile += ".qrs";
@@ -2069,7 +2067,7 @@ void MainWindow::checkNxtTools()
 
 void MainWindow::setAutoSaveParameters()
 {
-	if ( ! SettingsManager::value("autoSave", true).toBool() ) {
+	if (!SettingsManager::value("autoSave", true).toBool()) {
 		mAutoSaveTimer.stop();
 		return;
 	}
@@ -2080,7 +2078,7 @@ void MainWindow::setAutoSaveParameters()
 
 void MainWindow::autosave()
 {
-	if ( mIsNewProject )
+	if (mIsNewProject)
 		saveAs(mTempDir);
 	else
 		saveAll();

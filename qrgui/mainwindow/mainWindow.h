@@ -226,7 +226,6 @@ private:
 	bool mNxtToolsPresent;
 	HelpBrowser *mHelpBrowser;
 	bool mIsNewProject;
-	QString mLastSavedProjectName;
 	bool mUnsavedProjectIndicator;
 	QTimer mAutoSaveTimer;
 
