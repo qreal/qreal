@@ -225,8 +225,9 @@ private:
 
 	bool mNxtToolsPresent;
 	HelpBrowser *mHelpBrowser;
-
 	bool mIsNewProject;
+	QString mLastSavedProjectName;
+	bool mUnsavedProjectIndicator;
 	QTimer mAutoSaveTimer;
 
 	void createDiagram(const QString &idString);
@@ -252,6 +253,8 @@ private:
 	void connectActionZoomTo(QWidget* widget);
 	void setConnectActionZoomTo(QWidget* widget);
 	void clickErrorListWidget();
+	void connectWindowTitle();
+	void disconnectWindowTitle();
 
 	void setShowGrid(bool isChecked);
 	void setShowAlignment(bool isChecked);

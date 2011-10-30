@@ -65,6 +65,8 @@ MainWindow::MainWindow()
 	, mNxtToolsPresent(false)
 	, mHelpBrowser(NULL)
 	, mIsNewProject(true)
+	, mLastSavedProjectName("")
+	, mUnsavedProjectIndicator(false)
 {
 	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
 
@@ -160,6 +162,7 @@ MainWindow::MainWindow()
 
 	connectActions();
 
+
 	// =========== Step 7: Save consistency checked, interface is initialized with models ===========
 
 	progress->setValue(100);
@@ -191,6 +194,8 @@ MainWindow::MainWindow()
 
 	setAutoSaveParameters();
 	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
+	connectWindowTitle();
+
 }
 
 void MainWindow::connectActions()
@@ -200,12 +205,8 @@ void MainWindow::connectActions()
 	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid", true).toBool());
 	mUi->actionSwitch_on_alignment->setChecked(SettingsManager::value("ActivateAlignment", true).toBool());
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
-	connect(mModels->graphicalModel(),SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-			this,SLOT(editWindowTitle()));
-	connect(mModels->logicalModel(),SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-			this,SLOT(editWindowTitle()));
-	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 
+	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(openNewProject()));
 	connect(mUi->actionSave, SIGNAL(triggered()), this, SLOT(saveAll()));
 	connect(mUi->actionSave_as, SIGNAL(triggered()), this, SLOT(saveProjectAs()));
@@ -550,11 +551,11 @@ bool MainWindow::open(QString const &fileName)
 
 	if (!checkPluginsAndReopen(NULL))
 		return false;
-
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
+	connectWindowTitle();
 	mSaveFile = fileName;
 	if (!fileName.isEmpty())
 		setWindowTitle("QReal:Robots - " + mSaveFile);
@@ -567,6 +568,7 @@ void MainWindow::closeAllTabs(){
 	int tabCount = mUi->tabs->count();
 	for (int i = 0; i < tabCount; i++)
 		closeTab(i);
+	disconnectWindowTitle();
 }
 
 void MainWindow::setShape(const QString &data, const QPersistentModelIndex &index, const int &role)
@@ -680,9 +682,11 @@ void MainWindow::deleteFromDiagram()
 	}
 }
 void MainWindow::editWindowTitle(){
-	if(windowTitle().indexOf("[modified]")<0){
-		setWindowTitle(windowTitle()+" [modified]");
+	if( ! mUnsavedProjectIndicator && mLastSavedProjectName == mSaveFile){
+		setWindowTitle(windowTitle() + " [modified]");
+		mUnsavedProjectIndicator = true;
 	}
+	mLastSavedProjectName = mSaveFile;
 }
 
 void MainWindow::showAbout()
@@ -1313,7 +1317,6 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 	connect(getCurrentTab()->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
 	connect(mUi->actionAntialiasing, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleAntialiasing(bool)));
 	connect(mUi->actionOpenGL_Renderer, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleOpenGL(bool)));
-
 	connect(mModels->graphicalModel(), SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
 	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
@@ -1533,6 +1536,7 @@ void MainWindow::saveAll()
 		return;
 	}
 	mModels->repoControlApi().saveAll();
+	mUnsavedProjectIndicator = false;
 	setWindowTitle("QReal:Robots - " + mSaveFile);
 	SettingsManager::setValue("saveFile", mSaveFile);
 }
@@ -1548,10 +1552,10 @@ void MainWindow::saveAs(QString const &fileName)
 	if (fileName.isEmpty())
 		return;
 	mSaveFile = fileName;
+	mUnsavedProjectIndicator = false;
 	mIsNewProject = (mSaveFile == mTempDir);
 
 	mModels->repoControlApi().saveTo(mSaveFile);
-
 	if (!mSaveFile.endsWith(".qrs", Qt::CaseInsensitive))
 		mSaveFile += ".qrs";
 	setWindowTitle("QReal:Robots - " + mSaveFile);
@@ -2065,7 +2069,7 @@ void MainWindow::checkNxtTools()
 
 void MainWindow::setAutoSaveParameters()
 {
-	if (!SettingsManager::value("autoSave", true).toBool()) {
+	if ( ! SettingsManager::value("autoSave", true).toBool() ) {
 		mAutoSaveTimer.stop();
 		return;
 	}
@@ -2076,7 +2080,7 @@ void MainWindow::setAutoSaveParameters()
 
 void MainWindow::autosave()
 {
-	if (mIsNewProject)
+	if ( mIsNewProject )
 		saveAs(mTempDir);
 	else
 		saveAll();
@@ -2196,4 +2200,45 @@ void MainWindow::saveDiagramAsAPicture()
 
 	getCurrentTab()->scene()->render(&painter);
 	image.save(fileName);
+}
+void MainWindow::connectWindowTitle(){
+	connect(mModels->graphicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+			this, SLOT(editWindowTitle()));
+	connect(mModels->logicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+			this, SLOT(editWindowTitle()));
+	connect(mModels->graphicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int)),
+			this, SLOT(editWindowTitle()));
+	connect(mModels->logicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int)),
+			this, SLOT(editWindowTitle()));
+	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(const QModelIndex, int,
+														 int, const QModelIndex &,
+														 int )), this, SLOT(editWindowTitle()));
+	connect(mModels->logicalModel(), SIGNAL(rowsMoved(const QModelIndex, int,
+													   int, const QModelIndex &,
+													   int )), this, SLOT(editWindowTitle()));
+	connect(mModels->graphicalModel(), SIGNAL(rowsRemoved(const QModelIndex, int, int )),
+			this, SLOT(editWindowTitle()));
+	connect(mModels->logicalModel(), SIGNAL(rowsRemoved (const QModelIndex &, int , int )),
+			this, SLOT(editWindowTitle()));
+}
+void MainWindow::disconnectWindowTitle(){
+	disconnect(mModels->graphicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+			this, SLOT(editWindowTitle()));
+	disconnect(mModels->logicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+			this, SLOT(editWindowTitle()));
+	disconnect(mModels->graphicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int)),
+			this, SLOT(editWindowTitle()));
+	disconnect(mModels->logicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int)),
+			this, SLOT(editWindowTitle()));
+	disconnect(mModels->graphicalModel(), SIGNAL(rowsMoved(const QModelIndex, int,
+														 int, const QModelIndex &,
+														 int )), this, SLOT(editWindowTitle()));
+	disconnect(mModels->logicalModel(), SIGNAL(rowsMoved(const QModelIndex, int,
+													   int, const QModelIndex &,
+													   int )), this, SLOT(editWindowTitle()));
+	disconnect(mModels->graphicalModel(), SIGNAL(rowsRemoved(const QModelIndex, int, int )),
+			this, SLOT(editWindowTitle()));
+	disconnect(mModels->logicalModel(), SIGNAL(rowsRemoved (const QModelIndex &, int , int )),
+			this, SLOT(editWindowTitle()));
+	mUnsavedProjectIndicator = false;
 }
