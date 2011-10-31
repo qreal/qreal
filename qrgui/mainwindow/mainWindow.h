@@ -194,50 +194,6 @@ private slots:
 	void setAutoSaveParameters();
 
 private:
-	Ui::MainWindowUi *mUi;
-
-	QCloseEvent *mCloseEvent;
-	models::Models *mModels;
-	EditorManager mEditorManager;
-	ToolPluginManager mToolManager;
-	ListenerManager *mListenerManager;
-	PropertyEditorModel mPropertyModel;
-	GesturesWidget *mGesturesWidget;
-
-	QVector<bool> mSaveListChecked;
-	bool mDiagramCreateFlag;
-
-	QStringList mDiagramsList;
-	QModelIndex mRootIndex;
-
-	DebuggerConnector *mDebuggerConnector;
-	VisualDebugger *mVisualDebugger;
-	gui::ErrorReporter *mErrorReporter;  // Has ownership
-
-	/// Fullscreen mode flag
-	bool mIsFullscreen;
-
-	/// Internal map table to store info what widgets should we hide/show
-	QMap<QString, bool> mDocksVisibility;
-
-	QString mSaveFile;
-	QString mTempDir;
-	PreferencesDialog mPreferencesDialog;
-
-	gui::NxtFlashTool *mFlashTool;
-
-	void refreshRecentProjectsList(QString const &fileName);
-
-	bool mNxtToolsPresent;
-	HelpBrowser *mHelpBrowser;
-	bool mIsNewProject;
-	bool mUnsavedProjectIndicator;
-	QTimer mAutoSaveTimer;
-
-	int mRecentProjectsLimit;
-	QSignalMapper *mRecentProjectsMapper;
-	QMenu *mRecentProjectsMenu;
-
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
 			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
@@ -299,6 +255,50 @@ private:
 	void initRecentProjectsMenu();
 
 	void saveAs(QString const &saveName);
+
+	void refreshRecentProjectsList(QString const &fileName);
+
+	Ui::MainWindowUi *mUi;
+
+	QCloseEvent *mCloseEvent;
+	models::Models *mModels;
+	EditorManager mEditorManager;
+	ToolPluginManager mToolManager;
+	ListenerManager *mListenerManager;
+	PropertyEditorModel mPropertyModel;
+	GesturesWidget *mGesturesWidget;
+
+	QVector<bool> mSaveListChecked;
+	bool mDiagramCreateFlag;
+
+	QStringList mDiagramsList;
+	QModelIndex mRootIndex;
+
+	DebuggerConnector *mDebuggerConnector;
+	VisualDebugger *mVisualDebugger;
+	gui::ErrorReporter *mErrorReporter;  // Has ownership
+
+	/// Fullscreen mode flag
+	bool mIsFullscreen;
+
+	/// Internal map table to store info what widgets should we hide/show
+	QMap<QString, bool> mDocksVisibility;
+
+	QString mSaveFile;
+	QString mTempDir;
+	PreferencesDialog mPreferencesDialog;
+
+	gui::NxtFlashTool *mFlashTool;
+
+	bool mNxtToolsPresent;
+	HelpBrowser *mHelpBrowser;
+	bool mIsNewProject;
+	bool mUnsavedProjectIndicator;
+	QTimer mAutoSaveTimer;
+
+	int mRecentProjectsLimit;
+	QSignalMapper *mRecentProjectsMapper;
+	QMenu *mRecentProjectsMenu;
 };
 
 }

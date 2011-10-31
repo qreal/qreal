@@ -430,40 +430,40 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 	// menu items "connect to"
 	// TODO: move to elements, they can call the model and API themselves
 	/*
- createAddConnectionMenu(element, contextMenu, tr("Add connection")
- , mWindow->manager()->getConnectedTypes(element->id().type())
- , mv_iface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
- , mv_iface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId())
- , SLOT(connectActionTriggered())
- );
+	createAddConnectionMenu(element, contextMenu, tr("Add connection")
+	, mWindow->manager()->getConnectedTypes(element->id().type())
+	, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
+	, mv_iface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId())
+	, SLOT(connectActionTriggered())
+	);
 
- createDisconnectMenu(element, contextMenu, tr("Disconnect")
- , mv_iface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
- , mv_iface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId())
- , SLOT(disconnectActionTriggered())
- );
+	createDisconnectMenu(element, contextMenu, tr("Disconnect")
+	, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
+	, mv_iface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId())
+	, SLOT(disconnectActionTriggered())
+	);
 
- createAddConnectionMenu(element, contextMenu, tr("Add usage")
- , mWindow->manager()->getUsedTypes(element->id().type())
- , mv_iface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
- , mv_iface->logicalAssistApi()->diagramsAbleToBeUsedIn(element->logicalId())
- , SLOT(addUsageActionTriggered())
- );
+	createAddConnectionMenu(element, contextMenu, tr("Add usage")
+	, mWindow->manager()->getUsedTypes(element->id().type())
+	, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
+	, mv_iface->logicalAssistApi()->diagramsAbleToBeUsedIn(element->logicalId())
+	, SLOT(addUsageActionTriggered())
+	);
 
- createDisconnectMenu(element, contextMenu, tr("Delete usage")
- , mv_iface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
- , mv_iface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId())
- , SLOT(deleteUsageActionTriggered())
- );
+	createDisconnectMenu(element, contextMenu, tr("Delete usage")
+	, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
+	, mv_iface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId())
+	, SLOT(deleteUsageActionTriggered())
+	);
 
- QMenu *goToMenu = contextMenu.addMenu(tr("Go to"));
+	QMenu *goToMenu = contextMenu.addMenu(tr("Go to"));
 
- createGoToSubmenu(goToMenu, tr("Forward connection"), mv_iface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId()));
- createGoToSubmenu(goToMenu, tr("Backward connection"), mv_iface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId()));
- createGoToSubmenu(goToMenu, tr("Uses"), mv_iface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId()));
- createGoToSubmenu(goToMenu, tr("Used in"), mv_iface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId()));
- */
-}
+	createGoToSubmenu(goToMenu, tr("Forward connection"), mv_iface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId()));
+	createGoToSubmenu(goToMenu, tr("Backward connection"), mv_iface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId()));
+	createGoToSubmenu(goToMenu, tr("Uses"), mv_iface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId()));
+	createGoToSubmenu(goToMenu, tr("Used in"), mv_iface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId()));
+	*/
+	}
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -548,7 +548,7 @@ void EditorViewScene::getLinkByGesture(NodeElement * parent, const NodeElement &
 		if (possibleEdge.first.second.editor() == child.id().editor()
 			&& possibleEdge.first.second.diagram() == child.id().diagram()
 			&& editorInterface->isParentOf(child.id().diagram(), possibleEdge.first.second.element(), child.id().diagram(), child.id().element()))
-		{
+			{
 			allLinks.push_back(possibleEdge.second.second.toString());
 		}
 	}
@@ -590,42 +590,44 @@ void EditorViewScene::createEdge(const QString & idStr)
 	edge->connectToPort();
 }
 
-void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
+void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	QGraphicsScene::mouseReleaseEvent(event);
 
 	Element* element = getElemAt(event->scenePos());
 
 	if (mShouldReparentItems) {
-		QList<QGraphicsItem *> list = selectedItems();
+		QList<QGraphicsItem *> const list = selectedItems();
 		foreach(QGraphicsItem *item, list)
 			sendEvent(item, event);
 		mShouldReparentItems = false; // in case there'll be 2 consecutive release events
 	}
 
-	if (event->button() == Qt::RightButton)
-	{
+	if (event->button() == Qt::RightButton) {
 		mMouseMovementManager->mouseMove(event->scenePos());
 		mRightButtonPressed = false;
 		drawGesture();
-		QPointF start = mMouseMovementManager->firstPoint();
-		QPointF end = mMouseMovementManager->lastPoint();
+		EdgeElement * const edgeElement = dynamic_cast<EdgeElement *>(element);
+		if (edgeElement != NULL)
+			if (event->buttons() & Qt::LeftButton ) {
+				edgeElement->breakPointHandler(element->mapFromScene(event->scenePos()));
+				return;
+			}
+		if (element && !mMouseMovementManager->wasMoving()) {
+			initContextMenu(element, event->scenePos());
+			mMouseMovementManager->clear();
+			return;
+		}
+		QPointF const start = mMouseMovementManager->firstPoint();
+		QPointF const end = mMouseMovementManager->lastPoint();
 		NodeElement * parent = dynamic_cast <NodeElement * > (getElemAt(start));
 		NodeElement * child = dynamic_cast <NodeElement * > (getElemAt(end));
-		if (parent && child && mMouseMovementManager->isEdgeCandidate())
-		{
+		if (parent && child && mMouseMovementManager->isEdgeCandidate()) {
 			getLinkByGesture(parent, *child);
 			deleteGesture();
 		}
 		else
-			mTimer->start(3000);
-		EdgeElement *edgeElement = dynamic_cast<EdgeElement *>(element);
-		if(edgeElement != NULL)
-			if (event->buttons() & Qt::LeftButton ) {
-				edgeElement->breakPointHandler(element->mapFromScene(event->scenePos()));
-				return;}
-		if (element && !mMouseMovementManager->wasMoving())
-			initContextMenu(element, event->scenePos());
+			mTimer->start(500);
 		return;
 	}
 

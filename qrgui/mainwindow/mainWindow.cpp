@@ -2244,44 +2244,44 @@ void MainWindow::saveDiagramAsAPicture()
 	getCurrentTab()->scene()->render(&painter);
 	image.save(fileName);
 }
-void MainWindow::connectWindowTitle(){
-	connect(mModels->graphicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-			this, SLOT(editWindowTitle()));
-	connect(mModels->logicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-			this, SLOT(editWindowTitle()));
-	connect(mModels->graphicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int)),
-			this, SLOT(editWindowTitle()));
-	connect(mModels->logicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int)),
-			this, SLOT(editWindowTitle()));
-	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(const QModelIndex, int,
-														 int, const QModelIndex &,
-														 int )), this, SLOT(editWindowTitle()));
-	connect(mModels->logicalModel(), SIGNAL(rowsMoved(const QModelIndex, int,
-													   int, const QModelIndex &,
-													   int )), this, SLOT(editWindowTitle()));
-	connect(mModels->graphicalModel(), SIGNAL(rowsRemoved(const QModelIndex, int, int )),
-			this, SLOT(editWindowTitle()));
-	connect(mModels->logicalModel(), SIGNAL(rowsRemoved (const QModelIndex &, int , int )),
-			this, SLOT(editWindowTitle()));
+void MainWindow::connectWindowTitle()
+{
+	connect(mModels->graphicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex))
+			, this, SLOT(editWindowTitle()));
+	connect(mModels->logicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex))
+			, this, SLOT(editWindowTitle()));
+	connect(mModels->graphicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int))
+			, this, SLOT(editWindowTitle()));
+	connect(mModels->logicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int))
+			, this, SLOT(editWindowTitle()));
+	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(const QModelIndex, int, int, const QModelIndex &, int ))
+			, this, SLOT(editWindowTitle()));
+	connect(mModels->logicalModel(), SIGNAL(rowsMoved(const QModelIndex, int, int, const QModelIndex &, int ))
+			, this, SLOT(editWindowTitle()));
+	connect(mModels->graphicalModel(), SIGNAL(rowsRemoved(const QModelIndex, int, int ))
+			, this, SLOT(editWindowTitle()));
+	connect(mModels->logicalModel(), SIGNAL(rowsRemoved (const QModelIndex &, int , int ))
+			, this, SLOT(editWindowTitle()));
 }
-void MainWindow::disconnectWindowTitle(){
-	disconnect(mModels->graphicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-			this, SLOT(editWindowTitle()));
-	disconnect(mModels->logicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-			this, SLOT(editWindowTitle()));
-	disconnect(mModels->graphicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int)),
-			this, SLOT(editWindowTitle()));
-	disconnect(mModels->logicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int)),
-			this, SLOT(editWindowTitle()));
-	disconnect(mModels->graphicalModel(), SIGNAL(rowsMoved(const QModelIndex, int,
-														 int, const QModelIndex &,
-														 int )), this, SLOT(editWindowTitle()));
-	disconnect(mModels->logicalModel(), SIGNAL(rowsMoved(const QModelIndex, int,
-													   int, const QModelIndex &,
-													   int )), this, SLOT(editWindowTitle()));
-	disconnect(mModels->graphicalModel(), SIGNAL(rowsRemoved(const QModelIndex, int, int )),
-			this, SLOT(editWindowTitle()));
-	disconnect(mModels->logicalModel(), SIGNAL(rowsRemoved (const QModelIndex &, int , int )),
-			this, SLOT(editWindowTitle()));
+
+void MainWindow::disconnectWindowTitle()
+{
+	disconnect(mModels->graphicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex))
+			, this, SLOT(editWindowTitle()));
+	disconnect(mModels->logicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex))
+			, this, SLOT(editWindowTitle()));
+	disconnect(mModels->graphicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int))
+			, this, SLOT(editWindowTitle()));
+	disconnect(mModels->logicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int))
+			, this, SLOT(editWindowTitle()));
+	disconnect(mModels->graphicalModel(), SIGNAL(rowsMoved(const QModelIndex, int, int, const QModelIndex &, int ))
+			, this, SLOT(editWindowTitle()));
+	disconnect(mModels->logicalModel(), SIGNAL(rowsMoved(const QModelIndex, int, int, const QModelIndex &, int ))
+			, this, SLOT(editWindowTitle()));
+	disconnect(mModels->graphicalModel(), SIGNAL(rowsRemoved(const QModelIndex, int, int ))
+			, this, SLOT(editWindowTitle()));
+	disconnect(mModels->logicalModel(), SIGNAL(rowsRemoved (const QModelIndex &, int , int ))
+			, this, SLOT(editWindowTitle()));
+
 	mUnsavedProjectIndicator = false;
 }
