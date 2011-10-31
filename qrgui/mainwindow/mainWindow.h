@@ -73,7 +73,7 @@ signals:
 
 public slots:
 	void deleteFromScene();
-
+	void editWindowTitle();
 	void propertyEditorScrollTo(QModelIndex const &index);
 
 	void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
@@ -222,7 +222,6 @@ private:
 
 	QString mSaveFile;
 	QString mTempDir;
-
 	PreferencesDialog mPreferencesDialog;
 
 	gui::NxtFlashTool *mFlashTool;
@@ -231,8 +230,8 @@ private:
 
 	bool mNxtToolsPresent;
 	HelpBrowser *mHelpBrowser;
-
 	bool mIsNewProject;
+	bool mUnsavedProjectIndicator;
 	QTimer mAutoSaveTimer;
 
 	int mRecentProjectsLimit;
@@ -262,6 +261,8 @@ private:
 	void connectActionZoomTo(QWidget* widget);
 	void setConnectActionZoomTo(QWidget* widget);
 	void clickErrorListWidget();
+	void connectWindowTitle();
+	void disconnectWindowTitle();
 
 	void setShowGrid(bool isChecked);
 	void setShowAlignment(bool isChecked);
