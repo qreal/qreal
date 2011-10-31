@@ -17,6 +17,7 @@
 #include <QtSvg/QSvgGenerator>
 
 #include <QtCore/QDebug>
+#include <QAbstractButton>
 
 #include "../generators/editorGenerator/editorGenerator.h"
 
@@ -330,8 +331,15 @@ void MainWindow::finalClose()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	mIsNewProject = false;
-	saveAll();
+	if (mUnsavedProjectIndicator) {
+		switch (openSaveOfferDialog()) {
+		case QMessageBox::AcceptRole:
+			saveAll();
+			break;
+		case QMessageBox::RejectRole:
+			return;
+		}
+	}
 	mCloseEvent = event;
 	SettingsManager::setValue("maximized", isMaximized());
 	SettingsManager::setValue("size", size());
@@ -540,7 +548,15 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 
 bool MainWindow::openNewProject()
 {
-	saveAll();
+	if (mUnsavedProjectIndicator) {
+		switch (openSaveOfferDialog()) {
+		case QMessageBox::AcceptRole:
+			saveAll();
+			break;
+		case QMessageBox::RejectRole:
+			return false;
+		}
+	}
 	return open(getWorkingFile(tr("Select file with a save to open"), false));
 }
 
@@ -1963,7 +1979,15 @@ void MainWindow::fullscreen()
 
 void MainWindow::createProject()
 {
-	saveAll();
+	if (mUnsavedProjectIndicator) {
+		switch (openSaveOfferDialog()) {
+		case QMessageBox::AcceptRole:
+			saveAll();
+			break;
+		case QMessageBox::RejectRole:
+			return;
+		}
+	}
 	open("");
 	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
@@ -2284,4 +2308,15 @@ void MainWindow::disconnectWindowTitle()
 			, this, SLOT(editWindowTitle()));
 
 	mUnsavedProjectIndicator = false;
+}
+
+int MainWindow::openSaveOfferDialog()
+{
+	QMessageBox offerSave(this);
+	offerSave.setWindowTitle(tr("Save"));
+	offerSave.addButton(tr("Save"), QMessageBox::AcceptRole);
+	offerSave.addButton(tr("Cancel"), QMessageBox::RejectRole);
+	offerSave.addButton(tr("Discard"), QMessageBox::DestructiveRole);
+	offerSave.setText(tr("Do you want to save current project?"));
+	return offerSave.exec();
 }

@@ -257,6 +257,7 @@ private:
 	void saveAs(QString const &saveName);
 
 	void refreshRecentProjectsList(QString const &fileName);
+	int openSaveOfferDialog();
 
 	Ui::MainWindowUi *mUi;
 
