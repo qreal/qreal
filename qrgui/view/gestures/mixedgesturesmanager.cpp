@@ -12,8 +12,7 @@ MixedGesturesManager::MixedGesturesManager()
 
 double MixedGesturesManager::getMaxDistance(QString const &)
 {
-    qDebug() << "max dist is 1000";
-    return 1000;
+    return 30;
 }
 bool MixedGesturesManager::isMultistroke()
 {
@@ -23,9 +22,7 @@ bool MixedGesturesManager::isMultistroke()
 double MixedGesturesManager::getDistance(QPair<double *,double *> const & key1,
                                          QPair<double *, double *> const & key2)
 {
-    qDebug() << "try to get distance at MixedGesturesManager";
     double dist1 = (new RectangleGesturesManager())->getDistance(key1.first, key2.first);
-    qDebug() << "got distance at RectangleGesturesManager";
     double dist2 = (new NearestPosGridGesturesManager)->getDistance(key1.second, key2.second);
     return dist1 * weight1 + dist2 * weight2;
 }
