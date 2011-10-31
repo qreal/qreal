@@ -12,26 +12,26 @@ MixedGesturesManager::MixedGesturesManager()
 
 double MixedGesturesManager::getMaxDistance(QString const &)
 {
-    return 30;
+	return 30;
 }
 bool MixedGesturesManager::isMultistroke()
 {
-    return true;
+	return true;
 }
 
 double MixedGesturesManager::getDistance(QPair<double *,double *> const & key1,
-                                         QPair<double *, double *> const & key2)
+										 QPair<double *, double *> const & key2)
 {
-    double dist1 = (new RectangleGesturesManager())->getDistance(key1.first, key2.first);
-    double dist2 = (new NearestPosGridGesturesManager)->getDistance(key1.second, key2.second);
-    return dist1 * weight1 + dist2 * weight2;
+	double dist1 = (new RectangleGesturesManager())->getDistance(key1.first, key2.first);
+	double dist2 = (new NearestPosGridGesturesManager)->getDistance(key1.second, key2.second);
+	return dist1 * weight1 + dist2 * weight2;
 }
 
 QPair<double *, double *> MixedGesturesManager::getKey(PathVector const & path)
 {
-    double * key1 = (new RectangleGesturesManager())->getKey(path);
-    double * key2 = (new NearestPosGridGesturesManager)->getKey(path);
-    return QPair<double *, double *>(key1, key2);
+	double * key1 = (new RectangleGesturesManager())->getKey(path);
+	double * key2 = (new NearestPosGridGesturesManager)->getKey(path);
+	return QPair<double *, double *>(key1, key2);
 }
 
 

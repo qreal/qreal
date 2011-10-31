@@ -23,24 +23,19 @@ public:
 		double left = leftBound(mousePath);
 		if (right - left < minMovement && lower - upper < minMovement)
 			return key;
-		foreach (PointVector path, mousePath)
-		{
+		foreach (PointVector path, mousePath) {
 			SquarePos previous(minPoint, minPoint);
 			SquarePos last;
-			foreach (QPointF point, path)
-			{
-				if((lower - upper) * maxRelation  < right - left)
-				{
+			foreach (QPointF point, path) {
+				if((lower - upper) * maxRelation  < right - left) {
 					last.first = (point.x() - left) * widthSize / (right - left);
 					last.second = 0;
 				}
-				else if((right - left) * maxRelation < lower - upper)
-				{
+				else if((right - left) * maxRelation < lower - upper) {
 					last.first = 0;
 					last.second = (point.y() - upper) * heightSize / (lower - upper);
 				}
-				else
-				{
+				else {
 					last.first = (int)((point.x() - left) * widthSize / (right - left));
 					last.second = (int)((point.y() - upper) * heightSize / (lower - upper));
 				}
@@ -48,8 +43,7 @@ public:
 					last.first --;
 				if (last.second == heightSize)
 					last.second --;
-				if (previous.first != minPoint || previous.second != minPoint)
-				{
+				if (previous.first != minPoint || previous.second != minPoint) {
 					rasterizeSegment(previous, last, &key);
 				}
 				previous = last;
@@ -63,8 +57,7 @@ private:
 		if (mousePath.isEmpty())
 			return 0;
 		int upperBound = mousePath.at(0).at(0).y();
-		foreach (PointVector path, mousePath)
-		{
+		foreach (PointVector path, mousePath) {
 			foreach (QPointF pnt, path)
 				if (pnt.y() < upperBound)
 					upperBound = pnt.y();
@@ -76,8 +69,7 @@ private:
 		if (mousePath.isEmpty())
 			return 0;
 		int lowerBound = mousePath.at(0).at(0).y();
-		foreach (PointVector path, mousePath)
-		{
+		foreach (PointVector path, mousePath) {
 			foreach (QPointF pnt, path)
 				if (pnt.y() > lowerBound)
 					lowerBound = pnt.y();
@@ -89,8 +81,7 @@ private:
 		if (mousePath.isEmpty())
 			return 0;
 		int leftBound = mousePath.at(0).at(0).x();
-		foreach (PointVector path, mousePath)
-		{
+		foreach (PointVector path, mousePath) {
 			foreach (QPointF pnt, path)
 				if (pnt.x() < leftBound)
 					leftBound = pnt.x();
@@ -102,8 +93,7 @@ private:
 		if (mousePath.isEmpty())
 			return 0;
 		int rightBound = mousePath.at(0).at(0).x();
-		foreach (PointVector path, mousePath)
-		{
+		foreach (PointVector path, mousePath) {
 			foreach (QPointF pnt, path)
 				if (pnt.x() > rightBound)
 					rightBound = pnt.x();
@@ -114,8 +104,7 @@ private:
 	{
 		if (!segment->isEmpty() && pos1 == segment->at(0))
 			segment->pop_back();
-		if (pos1 == pos2)
-		{
+		if (pos1 == pos2) {
 			segment->push_back(pos1);
 			return;
 		}
@@ -126,19 +115,16 @@ private:
 		int signX = sign(pos2.first - x);
 		int signY = sign(pos2.second - y);
 		bool isChanged = false;
-		if (deltaY > deltaX)
-		{
+		if (deltaY > deltaX) {
 			int c = deltaX;
 			deltaX = deltaY;
 			deltaY = c;
 			isChanged = true;
 		}
 		int e = 2 * deltaY - deltaX;
-		for (int i = 0; i < deltaX; i ++)
-		{
+		for (int i = 0; i < deltaX; i ++) {
 			segment->push_back(SquarePos(x, y));
-			while (e >= 0)
-			{
+			while (e >= 0) {
 				if (isChanged)
 					x += signX;
 				else
