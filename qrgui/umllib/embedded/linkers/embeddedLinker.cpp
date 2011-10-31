@@ -28,8 +28,12 @@ EmbeddedLinker::EmbeddedLinker()
 	color = Qt::blue;
 }
 
-EmbeddedLinker::~EmbeddedLinker() {}
-NodeElement* EmbeddedLinker::getMaster() {
+EmbeddedLinker::~EmbeddedLinker()
+{
+}
+
+NodeElement* EmbeddedLinker::getMaster()
+{
 	return master;
 }
 
@@ -75,11 +79,13 @@ void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 	painter->restore();
 }
 
-void EmbeddedLinker::setDirected(const bool directed) {
+void EmbeddedLinker::setDirected(const bool directed)
+{
 	this->directed = directed;
 }
 
-void EmbeddedLinker::initTitle() {
+void EmbeddedLinker::initTitle()
+{
 	EditorManager* editorManager = dynamic_cast<EditorViewScene*>(scene())->mainWindow()->manager();
 	QString edgeTypeFriendly = editorManager->friendlyName(Id::loadFromString("qrm:/"+master->id().editor()+"/"+master->id().diagram()+"/"+edgeType.element()));
 
@@ -105,20 +111,24 @@ void EmbeddedLinker::initTitle() {
 	title->setParentItem(this);
 }
 
-void EmbeddedLinker::setEdgeType(const qReal::Id &edgeType) {
+void EmbeddedLinker::setEdgeType(const qReal::Id &edgeType)
+{
 	this->edgeType = edgeType;
 	generateColor();
 }
 
-qReal::Id EmbeddedLinker::getEdgeType() {
+qReal::Id EmbeddedLinker::getEdgeType()
+{
 	return edgeType;
 }
 
-bool EmbeddedLinker::isDirected() {
+bool EmbeddedLinker::isDirected()
+{
 	return directed;
 }
 
-void EmbeddedLinker::takePosition(int index, int maxIndex) {
+void EmbeddedLinker::takePosition(int index, int maxIndex)
+{
 	const float Pi = 3.141592;
 	QRectF bounding = master->boundingRect();
 
@@ -187,11 +197,14 @@ QRectF EmbeddedLinker::boundingRect() const {
 	return mRectangle;
 }
 
-void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	Q_UNUSED(event)
 	mPressed = true;
 }
 
-void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
 	if (mPressed) {
 		mPressed = false;
 		EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
@@ -220,7 +233,8 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 	}
 }
 
-void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
 	hide();
 	master->selectionState(false);
 	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(master->scene());

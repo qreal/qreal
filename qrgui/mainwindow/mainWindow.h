@@ -61,7 +61,7 @@ public:
 	virtual void dehighlight();
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram();
-	void openShapeEditor(QPersistentModelIndex index, int role, QString const propertyValue);
+	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
 	virtual void openSettingsDialog(QString const &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);
@@ -100,11 +100,14 @@ private slots:
 	void checkoutDialogOk();
 	void checkoutDialogCancel();
 
+	void saveAllAndOpen(QString const &dirName);
+
 	bool open(QString const &dirName);
 	bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
 	void saveProjectAs();
 	void saveAll();
 	void fullscreen();
+	void openRecentProjectsMenu();
 	bool openNewProject();
 	void createProject();
 
@@ -211,10 +214,10 @@ private:
 	VisualDebugger *mVisualDebugger;
 	gui::ErrorReporter *mErrorReporter;  // Has ownership
 
-	/** @brief Fullscreen mode flag */
+	/// Fullscreen mode flag
 	bool mIsFullscreen;
 
-	/** @brief Internal map table to store info what widgets should we hide/show */
+	/// Internal map table to store info what widgets should we hide/show
 	QMap<QString, bool> mDocksVisibility;
 
 	QString mSaveFile;
@@ -223,11 +226,17 @@ private:
 
 	gui::NxtFlashTool *mFlashTool;
 
+	void refreshRecentProjectsList(QString const &fileName);
+
 	bool mNxtToolsPresent;
 	HelpBrowser *mHelpBrowser;
 	bool mIsNewProject;
 	bool mUnsavedProjectIndicator;
 	QTimer mAutoSaveTimer;
+
+	int mRecentProjectsLimit;
+	QSignalMapper *mRecentProjectsMapper;
+	QMenu *mRecentProjectsMenu;
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
@@ -241,7 +250,7 @@ private:
 	virtual void closeEvent(QCloseEvent *event);
 	void deleteFromExplorer(bool isLogicalModel);
 	void keyPressEvent(QKeyEvent *event);
-	QString getWorkingFile(QString const &dialogWindowTitle);
+	QString getWorkingFile(QString const &dialogWindowTitle, bool save);
 
 	int getTabIndex(const QModelIndex &index);
 
@@ -287,7 +296,9 @@ private:
 	void initWindowTitle();
 	void initDebugger();
 	void initExplorers();
+	void initRecentProjectsMenu();
 
 	void saveAs(QString const &saveName);
 };
+
 }

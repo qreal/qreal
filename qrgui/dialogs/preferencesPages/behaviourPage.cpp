@@ -15,7 +15,7 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent) :
 	mUi->paletteTabCheckBox->setChecked(SettingsManager::value("PaletteTabSwitching", true).toBool());
 	mUi->arrangeLinksCheckBox->setChecked(SettingsManager::value("arrangeLinks", true).toBool());
 	mUi->autoSaveCheckBox->setChecked(SettingsManager::value("autoSave", true).toBool());
-	mUi->autoSaveSpinBox->setValue(SettingsManager::value("autoSaveInterval", 10).toInt());
+	mUi->autoSaveSpinBox->setValue(SettingsManager::value("autoSaveInterval", 60 * 10).toInt());
 
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
 }
