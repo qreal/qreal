@@ -98,6 +98,31 @@ bool EdgeType::initGraphics()
 		}
 	}
 	/* code for setting the width of the edges */
+
+	/* code for setting the color of the edges */
+	QDomElement lineColorElement = mGraphics.firstChildElement("lineColor");
+	if (lineColorElement.isNull()) {
+		mLineColor = Qt::black;
+	}
+	else {
+		QString lineColor = lineColorElement.attribute("color");
+		if (lineColor.isEmpty()) {
+			qDebug() << "ERROR: no color of line";
+			return false;
+		}
+		else {
+			QColor color = QColor(lineColor);
+			if (!color.isValid()) {
+				qDebug() << "ERROR: invalid color name of line";
+				return false;
+			}
+			else {
+				mLineColor = color;
+			}
+		}
+	}
+	/* code for setting the color of the edges */
+
 	QString lineType = lineTypeElement.attribute("type");
 	if (lineType.isEmpty())
 	{
@@ -123,7 +148,7 @@ void EdgeType::generateGraphics() const
 
 	OutFile out("generated/shapes/" + resourceName("Class"));
 	out() << "<picture sizex=\"100\" sizey=\"60\" >\n" <<
-	"\t<line fill=\"#000000\" stroke-style=\"" << sdfType << "\" stroke=\"#000000\" y1=\"0\" " <<
+	"\t<line fill=\""<< mLineColor.name() << "\" stroke-style=\"" << sdfType << "\" stroke=\""<< mLineColor.name() <<"\" y1=\"0\" " <<
 	"x1=\"0\" y2=\"60\" stroke-width=\"2\" x2=\"100\" fill-style=\"solid\" />\n" <<
 	"</picture>";
 	mDiagram->editor()->xmlCompiler()->addResource("\t<file>generated/shapes/" + resourceName("Class") + "</file>\n");
@@ -181,6 +206,11 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\t}\n"
 	<< "\t\tbool hasPorts() { return false; }\n"
 	<< "\t\tint getPenWidth() { return " << mLineWidth << "; }\n"
+	<< "\t\tQColor getPenColor() { return QColor("
+	<< mLineColor.red() << ","
+	<< mLineColor.green() << ","
+	<< mLineColor.blue()
+	<< "); }\n"
 	<< "\t\tQt::PenStyle getPenStyle() { ";
 	if (mLineType != "")
 		out() << "return " << mLineType << "; }\n";

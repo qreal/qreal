@@ -21,7 +21,7 @@ const double pi = 3.14159265358979;
 // static bool moving = false;
 
 EdgeElement::EdgeElement(ElementImpl *impl)
-: mPenStyle(Qt::SolidLine),mPenWidth(1), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
+: mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
 , mSrc(NULL), mDst(NULL)
 , mPortFrom(0), mPortTo(0)
 , mDragPoint(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL)
@@ -34,6 +34,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
+	mPenColor = mElementImpl->getPenColor();
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
 	// FIXME: draws strangely...
@@ -153,6 +154,7 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	painter->save();
 	QPen pen = painter->pen();
 	pen.setColor(mColor);
+	pen.setBrush(mColor);
 	pen.setStyle(mPenStyle);
 	pen.setWidth(mPenWidth);
 	painter->setPen(pen);
@@ -165,6 +167,7 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	painter->rotate(90 - lineAngle(QLineF(mLine[1], mLine[0])));
 	pen = painter->pen();
 	pen.setColor(mColor);
+	pen.setBrush(mColor);
 	pen.setWidth(3);
 	painter->setPen(pen);
 	drawStartArrow(painter);
@@ -176,6 +179,7 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	painter->rotate(90 - lineAngle(QLineF(mLine[mLine.size() - 2], mLine[mLine.size() - 1])));
 	pen = painter->pen();
 	pen.setColor(mColor);
+	pen.setBrush(mColor);
 	pen.setWidth(3);
 	painter->setPen(pen);
 	drawEndArrow(painter);
@@ -329,7 +333,7 @@ void EdgeElement::connectToPort()
 	adjustLink();
 	arrangeSrcAndDst();
 	if (getNodeAt(mLine.first()) != NULL && getNodeAt(mLine.last()) != NULL)
-		highlight(Qt::black);
+		highlight(mPenColor);
 	else
 		highlight(Qt::red);
 

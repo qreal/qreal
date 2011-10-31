@@ -6,4 +6,4 @@ SUBDIRS	= \
 		ains/editors/databaseEditor/databaseEditor.pro \
 		ains/editors/usecaseDiagram/usecaseDiagram.pro \
 		ains/generators/generators.pro \
-#		databaseEditor/databaseEditor2.pro \
+		bpel/bpel.pro \

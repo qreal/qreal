@@ -13,6 +13,7 @@ unsigned long Fantom::nFANTOM100_createNXT(char resString[], int status, unsigne
 	Q_UNUSED(resString);
 	Q_UNUSED(status);
 	Q_UNUSED(checkFVersion);
+	return 0;
 }
 
 void Fantom::nFANTOM100_iNXT_sendDirectCommand(unsigned long nxtHandle
@@ -37,6 +38,7 @@ unsigned long Fantom::nFANTOM100_createNXTIterator(unsigned char searchBluetooth
 	Q_UNUSED(searchBluetooth);
 	Q_UNUSED(bluetoothSearchTimeout);
 	Q_UNUSED(status);
+	return 0;
 }
 
 void Fantom::nFANTOM100_iNXTIterator_getName(unsigned long NXTIterHandle, char resString[], int &status)
@@ -50,6 +52,7 @@ unsigned long Fantom::nFANTOM100_iNXTIterator_getNXT(unsigned long nxtIterHandle
 {
 	Q_UNUSED(nxtIterHandle);
 	Q_UNUSED(status);
+	return 0;
 }
 
 void Fantom::nFANTOM100_destroyNXTIterator(unsigned long nxtIteratorHandle, int &status)
