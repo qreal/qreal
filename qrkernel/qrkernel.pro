@@ -15,9 +15,12 @@ HEADERS += \
 	roles.h \
 	settingsManager.h \
 	kernelDeclSpec.h \
+	timeMeasurer.h \
 
 SOURCES += \
 	ids.cpp \
 	exception/exception.cpp \
 	settingsManager.cpp \
+	timeMeasurer.cpp \
+
 

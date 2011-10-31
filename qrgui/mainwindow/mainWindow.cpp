@@ -43,6 +43,8 @@
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../../qrkernel/settingsManager.h"
 
+#include "../../qrkernel/timeMeasurer.h"
+
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../../qrmc/metaCompiler.h"
 
@@ -70,6 +72,9 @@ MainWindow::MainWindow()
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 {
+	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
+	timeMeasurer.doNothing(); //to avoid the unused variables problem
+
 	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
 
 	QSplashScreen* splash =
