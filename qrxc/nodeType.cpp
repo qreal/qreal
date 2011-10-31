@@ -285,9 +285,8 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\t\t}\n\n";
 
 	out() << "\t\tQt::PenStyle getPenStyle() { return Qt::SolidLine; }\n\n"
-	/*adding*/
 	<< "\t\tint getPenWidth() { return 0; }\n\n"
-	/*adding*/
+	<< "\t\tQColor getPenColor() { return QColor(); }\n\n"
 	<< "\t\tvoid drawStartArrow(QPainter *) const {}\n"
 	<< "\t\tvoid drawEndArrow(QPainter *) const {}\n"
 	<< "\t\tbool hasPorts()\n\t\t{\n";

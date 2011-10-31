@@ -92,6 +92,7 @@ public:
 	virtual bool isResizeable() = 0;
 	virtual Qt::PenStyle getPenStyle() = 0;
 	virtual int getPenWidth() = 0;
+	virtual QColor getPenColor() = 0;
 	virtual void drawStartArrow(QPainter *painter) const = 0;
 	virtual void drawEndArrow(QPainter *painter) const = 0;
 
