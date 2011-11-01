@@ -2,4 +2,4 @@ TEMPLATE = subdirs
 
 SUBDIRS = \
 	ubiqEditor \
-	generator \
+	ubiqGenerator \
