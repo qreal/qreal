@@ -6,14 +6,14 @@
 #include <QtGui/QScrollArea>
 
 #include "paletteToolbox.h"
-#include "../kernel/definitions.h"
+#include "../../qrkernel/definitions.h"
 
 using namespace qReal;
 using namespace qReal::gui;
 
 PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &name, QString const &description,
-												   QIcon const &icon, QWidget *parent)
-	: QWidget(parent), mId(id), mIcon(icon), mText(name)
+	QIcon const &icon, QWidget *parent)
+: QWidget(parent), mId(id), mIcon(icon), mText(name)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(4, 4, 4, 4);
@@ -34,11 +34,10 @@ PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &
 		modifiedDescription.insert(0, "<body>");//turns alignment on
 		setToolTip(modifiedDescription);
 	}
-
 }
 
 PaletteToolbox::PaletteToolbox(QWidget *parent)
-	: QWidget(parent), mCurrentTab(0)
+: QWidget(parent), mCurrentTab(0)
 {
 	createPalette();
 }
@@ -212,8 +211,8 @@ void PaletteToolbox::setComboBox(Id id)
 	mComboBox->setCurrentIndex(mCategories.value(id, -1));
 }
 
-
-void PaletteToolbox::recreateTabs() {
+void PaletteToolbox::recreateTabs()
+{
 	deletePalette();
 	createPalette();
 }

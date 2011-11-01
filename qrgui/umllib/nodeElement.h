@@ -1,4 +1,5 @@
-/** @file nodeElement.h
+
+/** @file uml_nodeelement.h
  * 	@brief class for an element object on a diagram
  * */
 
@@ -15,7 +16,8 @@
 #include "element.h"
 #include "edgeElement.h"
 #include "embedded/linkers/embeddedLinker.h"
-#include "../pluginInterface/elementImpl.h"
+#include "../editorPluginInterface/elementImpl.h"
+#include "embedded/linkers/embeddedLinker.h"
 
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"
@@ -31,6 +33,11 @@ public:
 	NodeElement(ElementImpl *impl);
 	virtual ~NodeElement();
 
+	NodeElement *clone(bool toCursorPos = false);
+	void copyChildren(NodeElement *source);
+	void copyEdges(NodeElement *source);
+	void copyProperties(NodeElement *source);
+
 	virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w, SdfRenderer *portrenderer);
 	virtual void paint(QPainter *,  const QStyleOptionGraphicsItem *, QWidget *);
 
@@ -39,6 +46,8 @@ public:
 
 	virtual void updateData();
 	void setGeometry(QRectF const &geom);
+	void setPos(const QPointF &pos);
+	void setPos(qreal x, qreal y);
 	void storeGeometry();
 	virtual void setName(QString name);
 
@@ -82,6 +91,7 @@ public:
 	void setConnectingState(bool arg);
 
 	void adjustLinks();
+	void arrangeLinearPorts();
 	void arrangeLinks();
 
 	virtual void checkConnectionsToPort();
@@ -100,6 +110,7 @@ public slots:
 	virtual void singleSelectionState(const bool singleSelected);
 	virtual void selectionState(const bool selected);
 	void switchGrid(bool isChecked);
+	void copyAndPlaceOnDiagram();
 
 private:
 	enum DragState {
@@ -118,12 +129,12 @@ private:
 	static int const childSpacing = 10;
 
 	void delUnusedLines();
-	void arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<NodeElement*>& arranged);
 	PossibleEdge toPossibleEdge(const StringPossibleEdge & strPossibleEdge);
 
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event);
 
 	virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
 	virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
@@ -206,4 +217,3 @@ private:
 	QGraphicsRectItem *mPlaceholder;
 	NodeElement *mHighlightedNode;
 };
-

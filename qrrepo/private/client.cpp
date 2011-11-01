@@ -1,5 +1,5 @@
 #include "client.h"
-#include "../../qrgui/kernel/exception/exception.h"
+#include "../../qrkernel/exception/exception.h"
 
 #include <QtCore/QDebug>
 
@@ -43,6 +43,12 @@ Id Client::parent(Id const &id) const
 	} else {
 		throw Exception("Client: Requesting parents of nonexistent object " + id.toString());
 	}
+}
+
+Id Client::cloneObject(const qReal::Id &id)
+{
+	Object *result = mObjects[id]->clone(mObjects);
+	return result->id();
 }
 
 void Client::setParent(Id const &id, Id const &parent)
@@ -137,6 +143,11 @@ void Client::setProperty(const Id &id, const QString &name, const QVariant &valu
 	}
 }
 
+void Client::copyProperties(const Id &dest, const Id &src)
+{
+	mObjects[dest]->copyPropertiesFrom(*mObjects[src]);
+}
+
 QVariant Client::property( const Id &id, const QString &name ) const
 {
 	if (mObjects.contains(id)) {
@@ -160,7 +171,7 @@ bool Client::hasProperty(const Id &id, const QString &name) const
 	if (mObjects.contains(id)) {
 		return mObjects[id]->hasProperty(name);
 	} else {
-		throw Exception("Client: Checking the existence of a property of nonexistent object " + id.toString());
+		throw Exception("Client: Checking the existence of a property '" + name + "' of nonexistent object " + id.toString());
 	}
 }
 
@@ -256,8 +267,8 @@ void Client::save(IdList list) const
 
 void Client::remove(IdList list) const
 {
-	foreach(Id const id, list) {
-		qDebug() << id;
+	foreach(Id id, list) {
+		qDebug() << id.toString();
 		serializer.removeFromDisk(id);
 	}
 }
@@ -281,12 +292,12 @@ void Client::printDebug() const
 {
 	qDebug() << mObjects.size() << " objects in repository";
 	foreach (Object *object, mObjects.values()) {
-		qDebug() << object->id();
+		qDebug() << object->id().toString();
 		qDebug() << "Children:";
-		foreach (Id const id, object->children())
-			qDebug() << id;
+		foreach (Id id, object->children())
+			qDebug() << id.toString();
 		qDebug() << "Parent:";
-		qDebug() << object->parent();
+		qDebug() << object->parent().toString();
 		qDebug() << "============";
 	}
 }

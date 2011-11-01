@@ -3,7 +3,7 @@
  * */
 #include <QtCore/QDebug>
 
-#include "../kernel/exception/exception.h"
+#include "../../qrkernel/exception/exception.h"
 
 #include "propertyEditorProxyModel.h"
 
@@ -50,7 +50,7 @@ Qt::ItemFlags PropertyEditorModel::flags(QModelIndex const &index) const
 QVariant PropertyEditorModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
-		return QString(section == 1 ? tr("value") : tr("name"));
+		return QString(section == 1 ? "value" : "name");
 	else
 		return QVariant();
 }
@@ -84,14 +84,7 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 	} else if (index.column() == 1) {
 		switch (mFields[index.row()].attributeClass) {
 		case logicalAttribute:
-		{
-			QVariant data = mTargetLogicalObject.data(mFields[index.row()].role);
-			if (data.canConvert<QString>()){
-				data = data.toString().replace("&lt;", "<");
-				return data;
-			}
 			return mTargetLogicalObject.data(mFields[index.row()].role);
-		}
 		case graphicalAttribute:
 			return mTargetGraphicalObject.data(mFields[index.row()].role);
 		case graphicalIdPseudoattribute:
@@ -157,6 +150,15 @@ QStringList PropertyEditorModel::enumValues(const QModelIndex &index) const
 	return mEditorManager.getEnumValues(id, mFields[index.row()].fieldName);
 }
 
+//QString PropertyEditorModel::typeName(const QModelIndex &index) const
+//{
+//	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
+//	if (im){
+//		return im->getTypeName(targetObject, roleByIndex(index.row()));
+//	}
+//	return QString();
+//}
+
 void PropertyEditorModel::rereadData(QModelIndex const &topLeftIndex, QModelIndex const &bottomRightIndex)
 {
 	emit dataChanged(topLeftIndex, bottomRightIndex);
@@ -190,8 +192,10 @@ void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 	mTargetLogicalObject = logicalModelIndex;
 	mTargetGraphicalObject = graphicalModelIndex;
 
-	if (!isValid())
+	if (!isValid()) {
+		reset();
 		return;
+	}
 
 	mFields << Field(tr("Name"), namePseudoattribute);
 
@@ -200,9 +204,10 @@ void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 		QStringList const logicalProperties = mEditorManager.getPropertyNames(logicalId.type());
 		int role = roles::customPropertiesBeginRole;
 		foreach (QString property, logicalProperties) {
-			mFields << Field(property, property, logicalAttribute, role);
+			mFields << Field(property, logicalAttribute, role);
 			++role;
 		}
+		// Ids and metatype commented out as they shall not be visible to user, uncomment for debugging.
 //		mFields << Field(tr("Logical Id"), logicalIdPseudoattribute);
 	}
 

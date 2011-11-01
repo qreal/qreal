@@ -1,8 +1,8 @@
 #include "xmlCompiler.h"
 #include "editor.h"
 #include "nameNormalizer.h"
-#include "../utils/outFile.h"
-#include "../utils/xmlUtils.h"
+#include "../qrutils/outFile.h"
+#include "../qrutils/xmlUtils.h"
 #include "diagram.h"
 #include "type.h"
 
@@ -36,11 +36,12 @@ XmlCompiler::~XmlCompiler()
 			delete editor;
 }
 
-bool XmlCompiler::compile(QString const &inputXmlFileName)
+bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &sourcesRootFolder)
 {
 	QFileInfo const inputXmlFileInfo(inputXmlFileName);
 	mPluginName = NameNormalizer::normalize(inputXmlFileInfo.baseName());
 	mCurrentEditor = inputXmlFileInfo.absoluteFilePath();
+	mSourcesRootFolder = sourcesRootFolder;
 	QDir const startingDir = inputXmlFileInfo.dir();
 	if (!loadXmlFile(startingDir, inputXmlFileInfo.fileName()))
 		return false;
@@ -113,17 +114,14 @@ void XmlCompiler::generateElementClasses()
 	out() << "#pragma once\n\n"
 		<< "#include <QBrush>\n"
 		<< "#include <QPainter>\n\n"
-		<< "#include \"../../../qrgui/pluginInterface/elementImpl.h\"\n"
-		<< "#include \"../../../qrgui/pluginInterface/elementRepoInterface.h\"\n"
-		<< "#include \"../../../qrgui/pluginInterface/elementTitleHelpers.h\"\n\n"
-//		<< "namespace UML {\n\n";
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementImpl.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementRepoInterface.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementTitleHelpers.h\"\n\n"
 		;
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values())
 			type->generateCode(out);
-
-//	out() << "}\n\n";
 }
 
 void XmlCompiler::generatePluginHeader()
@@ -139,7 +137,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtGui/QIcon>\n"
 		<< "#include <QPair>"
 		<< "\n"
-		<< "#include \"../../../qrgui/pluginInterface/editorInterface.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/editorInterface.h\"\n"
 		<< "\n"
 		<< "class " << mPluginName << "Plugin : public QObject, public qReal::EditorInterface\n"
 		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(qReal::EditorInterface)\n"
@@ -185,7 +183,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QString propertyDisplayedName(QString const &diagram, QString const &element, QString const &property) const;\n"
 		<< "\tvirtual QString elementMouseGesture(QString const &digram, QString const &element) const;\n"
 		<< "\n"
-		<< 	"\tvirtual QList<qReal::ListenerInterface*> listeners() const;\n"
+		<< "\tvirtual QList<qReal::ListenerInterface*> listeners() const;\n"
 		<< "\n"
 		<< "\tvirtual bool isParentOf(QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const;\n"
 		<< "\n"
@@ -282,7 +280,7 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 			type->generateNameMapping(out);
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values()){
+		foreach (Type *type, diagram->types().values()) {
 			GraphicType *obj = dynamic_cast<GraphicType *>(type);
 			if (obj)
 				obj->generatePropertyDisplayedNamesMapping(out);
@@ -297,14 +295,14 @@ void XmlCompiler::generateDescriptionMappings(OutFile &out)
 	out() << "void " << mPluginName << "Plugin::initDescriptionMap()\n{\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values()){
+		foreach (Type *type, diagram->types().values()) {
 			GraphicType *obj = dynamic_cast<GraphicType *>(type);
 			if (obj)
 				obj->generateDescriptionMapping(out);
 		}
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values()){
+		foreach (Type *type, diagram->types().values()) {
 			GraphicType *obj = dynamic_cast<GraphicType *>(type);
 			if (obj)
 				obj->generatePropertyDescriptionMapping(out);

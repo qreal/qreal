@@ -1,6 +1,6 @@
 #include "refWindow.h"
 #include "ui_refWindow.h"
-#include "../kernel/ids.h"
+#include "../../qrkernel/ids.h"
 
 RefWindow::RefWindow(qrRepo::LogicalRepoApi const &logicalRepoApi, QString const &name,
 		int role, QModelIndex const &index,

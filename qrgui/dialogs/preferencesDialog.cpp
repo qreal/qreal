@@ -6,21 +6,47 @@
 #include "preferencesPages/debuggerPage.h"
 #include "preferencesPages/editorPage.h"
 #include "preferencesPages/miscellaniousPage.h"
-#include "preferencesPages/robotSettingsPage.h"
 #include "preferencesPages/featuresPage.h"
 
-PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * const showAlignmentAction
-		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
-	: QDialog(parent), ui(new Ui::PreferencesDialog)
+PreferencesDialog::PreferencesDialog(QWidget *parent)
+	: QDialog(parent)
+	, ui(new Ui::PreferencesDialog)
+	, mBehaviourPage(NULL)
+	, mCompilerPage(NULL)
+	, mDebuggerPage(NULL)
+	, mEditorPage(NULL)
+	, mMiscellaniousPage(NULL)
+	, mFeaturesPage(NULL)
 {
 	ui->setupUi(this);
+}
 
-	// need some smart code to manage preferences pages?
+PreferencesDialog::~PreferencesDialog()
+{
+	SettingsManager::setValue("currentPreferencesTab", ui->listWidget->currentRow());
+
+	// UIs of custom pages should be deleted from plugins, so we nullify their parents here
+	// to prevent double destruction
+	foreach (PreferencesPage *page, mCustomPages.values())
+		page->setParent(NULL);
+
+	delete ui;
+
+	delete mBehaviourPage;
+	delete mCompilerPage;
+	delete mDebuggerPage;
+	delete mEditorPage;
+	delete mMiscellaniousPage;
+	delete mFeaturesPage;
+}
+
+void PreferencesDialog::init(QAction * const showGridAction, QAction * const showAlignmentAction
+	,QAction * const activateGridAction, QAction * const activateAlignmentAction)
+{
 	mBehaviourPage = new PreferencesBehaviourPage(ui->pageContentWigdet);
 	mCompilerPage = new PreferencesCompilerPage(ui->pageContentWigdet);
 	mDebuggerPage = new PreferencesDebuggerPage(ui->pageContentWigdet);
 	mMiscellaniousPage = new PreferencesMiscellaniousPage(ui->pageContentWigdet);
-	mRobotSettingsPage = new PreferencesRobotSettingsPage(ui->pageContentWigdet);
 	mFeaturesPage = new PreferencesFeaturesPage(ui->pageContentWigdet);
 	mEditorPage = new PreferencesEditorPage(showGridAction,
 		showAlignmentAction, activateGridAction, activateAlignmentAction, ui->pageContentWigdet);
@@ -40,20 +66,6 @@ PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * c
 	chooseTab(ui->listWidget->currentIndex());
 }
 
-PreferencesDialog::~PreferencesDialog()
-{
-	SettingsManager::setValue("currentPreferencesTab", ui->listWidget->currentRow());
-
-	delete ui;
-
-	delete mBehaviourPage;
-	delete mCompilerPage;
-	delete mDebuggerPage;
-	delete mEditorPage;
-	delete mMiscellaniousPage;
-	delete mFeaturesPage;
-}
-
 void PreferencesDialog::applyChanges()
 {
 	mBehaviourPage->save();
@@ -61,8 +73,10 @@ void PreferencesDialog::applyChanges()
 	mEditorPage->save();
 	mDebuggerPage->save();
 	mMiscellaniousPage->save();
-	mRobotSettingsPage->save();
 	mFeaturesPage->save();
+
+	foreach (PreferencesPage *page, mCustomPages.values())
+		page->save();
 
 	emit settingsApplied();
 }
@@ -74,13 +88,16 @@ void PreferencesDialog::changeEvent(QEvent *e)
 	case QEvent::LanguageChange:
 		ui->retranslateUi(this);
 
-		mBehaviourPage->changeEvent(e);
-		mCompilerPage->changeEvent(e);
-		mDebuggerPage->changeEvent(e);
-		mEditorPage->changeEvent(e);
-		mMiscellaniousPage->changeEvent(e);
-		mRobotSettingsPage->changeEvent(e);
-		mFeaturesPage->changeEvent(e);
+		if (mBehaviourPage) {
+			mBehaviourPage->changeEvent(e);
+			mCompilerPage->changeEvent(e);
+			mDebuggerPage->changeEvent(e);
+			mEditorPage->changeEvent(e);
+			mMiscellaniousPage->changeEvent(e);
+			mFeaturesPage->changeEvent(e);
+		}
+		foreach (PreferencesPage *page, mCustomPages.values())
+			page->changeEvent(e);
 		break;
 	default:
 		break;
@@ -100,13 +117,7 @@ void PreferencesDialog::cancel()
 
 void PreferencesDialog::chooseTab(const QModelIndex &index)
 {
-	mBehaviourPage->hide();
-	mCompilerPage->hide();
-	mEditorPage->hide();
-	mDebuggerPage->hide();
-	mMiscellaniousPage->hide();
-	mRobotSettingsPage->hide();
-	mFeaturesPage->hide();
+	hidePages();
 
 	switch(static_cast<PageIndexes>(index.row())){
 	case behaviour:
@@ -129,12 +140,41 @@ void PreferencesDialog::chooseTab(const QModelIndex &index)
 		mMiscellaniousPage->show();
 		break;
 
-	case robotSettings:
-		mRobotSettingsPage->show();
-		break;
+//	case features:
+//		mFeaturesPage->show();
+//		break;
+	default:
+		QString const name = index.data().toString();
+		if (mCustomPages.contains(name))
+			mCustomPages[name]->show();
+	}
+}
 
-	case features:
-		mFeaturesPage->show();
-		break;
+void PreferencesDialog::hidePages()
+{
+	mBehaviourPage->hide();
+	mCompilerPage->hide();
+	mEditorPage->hide();
+	mDebuggerPage->hide();
+	mMiscellaniousPage->hide();
+	mFeaturesPage->hide();
+
+	foreach (PreferencesPage *page, mCustomPages.values())
+		page->hide();
+}
+
+void PreferencesDialog::registerPage(QString const &pageName, PreferencesPage * const page)
+{
+	page->setParent(ui->pageContentWigdet);
+	mCustomPages.insert(pageName, page);
+	ui->listWidget->addItem(pageName);
+}
+
+void PreferencesDialog::switchCurrentTab(QString const &tabName)
+{
+	if (mCustomPages.contains(tabName)) {
+		ui->listWidget->setCurrentRow(mCustomPages.keys().indexOf(tabName) + debugger + 1);
+		hidePages();
+		mCustomPages[tabName]->show();
 	}
 }

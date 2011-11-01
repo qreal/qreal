@@ -6,7 +6,7 @@ SceneGridHandler::SceneGridHandler(NodeElement *node)
 {
 	mNode = node;
 	mShowAlignment = SettingsManager::value("ShowAlignment", true).toBool();
-	mSwitchGrid = SettingsManager::value("ActivateGrid", false).toBool();
+	mSwitchGrid = SettingsManager::value("ActivateGrid", true).toBool();
 	mSwitchAlignment = SettingsManager::value("ActivateAlignment", true).toBool();
 }
 
@@ -136,7 +136,6 @@ qreal SceneGridHandler::recalculateY2(qreal myY1)
 // move element vertically according to the grid
 void SceneGridHandler::makeGridMovingX(qreal myX, int koef, int indexGrid)
 {
-	qDebug() << indexGrid;
 	int oneKoef = 0;
 	if (koef != 0)
 		oneKoef = koef / qAbs(koef);

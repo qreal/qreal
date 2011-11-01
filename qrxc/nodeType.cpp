@@ -1,7 +1,7 @@
 #include "nodeType.h"
 #include "diagram.h"
 #include "xmlCompiler.h"
-#include "../utils/outFile.h"
+#include "../qrutils/outFile.h"
 #include "pointPort.h"
 #include "linePort.h"
 #include "editor.h"
@@ -56,11 +56,6 @@ bool NodeType::initSdf()
 		mWidth = sdfElement.attribute("sizex").toInt();
 		mHeight = sdfElement.attribute("sizey").toInt();
 		mSdfDomElement = sdfElement;
-		if (mDiagram->name() == "RobotsDiagram"){
-			QDomElement image = mSdfDomElement.firstChildElement("image");
-			image.setAttribute("name", image.attribute("name").replace("images/", ""));
-		}
-
 		mVisible = true;
 	} else
 		mVisible = false;
@@ -72,17 +67,15 @@ void NodeType::generateSdf() const
 	mDiagram->editor()->xmlCompiler()->addResource("\t<file>generated/shapes/" + resourceName("Class") + "</file>\n");
 
 	OutFile out("generated/shapes/" + resourceName("Class"));
-
 	mSdfDomElement.save(out(), 1);
 
-	if (mDiagram->name() == "RobotsDiagram")
-		return;
+//	QDomNodeList images = mSdfDomElement.elementsByTagName("image");
 
-	QDomNodeList images = mSdfDomElement.elementsByTagName("image");
-	for (int i = 0; i < images.size(); ++i) {
+/*	for (int i = 0; i < images.size(); ++i) {
 		QString const name = images.at(i).toElement().attribute("name");
 		mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + name + "</file>\n");
 	}
+	*/
 }
 
 bool NodeType::initPorts()
@@ -279,8 +272,11 @@ void NodeType::generateCode(OutFile &out)
 	foreach (Label *label, mLabels)
 		label->generateCodeForConstructor(out);
 
-	out() << "\t\t}\n\n"
-		<< "\t\t~" << className << "() {}\n\n"
+	out() << "\t\t}\n\n";
+
+	out() << "\t\t ElementImpl *clone() { return NULL; }\n";
+
+	out() << "\t\t~" << className << "() {}\n\n"
 		<< "\t\tvoid paint(QPainter *painter, QRectF &contents)\n\t\t{\n";
 
 	if (hasSdf)

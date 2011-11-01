@@ -1,4 +1,4 @@
-#include "../../kernel/settingsManager.h"
+#include "../../../qrkernel/settingsManager.h"
 #include "behaviourPage.h"
 #include "ui_behaviourPage.h"
 

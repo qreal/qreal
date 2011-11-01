@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../qrgui/kernel/definitions.h"
-#include "../../qrgui/kernel/ids.h"
+#include "../../qrkernel/definitions.h"
+#include "../../qrkernel/ids.h"
 #include "classes/object.h"
 #include "qrRepoGlobal.h"
 #include "serializer.h"
@@ -19,6 +19,11 @@ namespace qrRepo {
 			QRREPO_EXPORT ~Client();
 			qReal::IdList children(const qReal::Id &id) const;
 			qReal::Id parent(const qReal::Id &id) const;
+			/**
+			  Clones object recursively in internal structures.
+			  This doesn't mean it'll appear on your diagrams
+			  */
+			qReal::Id cloneObject(const qReal::Id &id);
 			void setParent(const qReal::Id &id, const qReal::Id &parent);
 			void addChild(const qReal::Id &id, const qReal::Id &child);
 			void addChild(const qReal::Id &id, const qReal::Id &child, qReal::Id const &logicalId);
@@ -28,9 +33,10 @@ namespace qrRepo {
 
 			void stackBefore(qReal::Id const &id, qReal::Id const &child, qReal::Id const &sibling);
 
+			void setProperty(const qReal::Id &id, const QString &name, const QVariant &value);
+			void copyProperties(const qReal::Id &dest, const qReal::Id &src);
 			QVariant property(const qReal::Id &id, const QString &name) const;
 			bool hasProperty(const qReal::Id &id, const QString &name) const;
-			void setProperty(const qReal::Id &id, const QString &name, const QVariant &value);
 			void removeProperty(const qReal::Id &id, const QString &name);
 
 			void setTemporaryRemovedLinks(qReal::Id const &id, QString const &direction, qReal::IdList const &linkIdList);

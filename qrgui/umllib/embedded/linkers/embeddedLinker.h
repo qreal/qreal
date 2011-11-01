@@ -3,7 +3,7 @@
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QPainter>
 
-#include "../../kernel/roles.h"
+#include "../../../../qrkernel/roles.h"
 #include "../../edgeElement.h"
 
 class NodeElement;

@@ -1972,7 +1972,11 @@ QWidget *QtEnumEditorFactory::createEditor(QtEnumPropertyManager *manager, QtPro
     editor->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
     editor->setMinimumContentsLength(1);
     editor->view()->setTextElideMode(Qt::ElideRight);
-    QStringList enumNames = manager->enumNames(property);
+    QStringList enumNamesUnfiltered = manager->enumNames(property);
+    QStringList enumNames;
+    foreach(QString name, enumNamesUnfiltered){
+        enumNames << name.replace("&lt;", "<");
+    }
     editor->addItems(enumNames);
     QMap<int, QIcon> enumIcons = manager->enumIcons(property);
     const int enumNamesCount = enumNames.count();

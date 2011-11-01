@@ -1,5 +1,5 @@
 #include "enumType.h"
-#include "utils/nameNormalizer.h"
+#include "../utils/nameNormalizer.h"
 
 using namespace qReal;
 using namespace qrmc;
@@ -13,6 +13,8 @@ bool EnumType::init(QString const &context)
 	Type::init(context);
 	IdList children = mApi->children(mId);
 	foreach(Id child, children) {
+		if (!mApi->isLogicalElement(child))
+			continue;
 		if (child.element() == metaEntityValue) {
 			mValues << mApi->stringProperty(child, "valueName");
 		}

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QDomElement>
-#include <typelib.h>
 
 class Property
 {

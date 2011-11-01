@@ -1,6 +1,6 @@
 #include "nodeElement.h"
 #include "../view/editorViewScene.h"
-#include "../pluginInterface/editorInterface.h"
+#include "../editorPluginInterface/editorInterface.h"
 
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
@@ -9,6 +9,8 @@
 #include <QtGui/QToolTip>
 #include <QtCore/QDebug>
 #include <QtCore/QUuid>
+
+#include <QGraphicsDropShadowEffect>
 
 #include <math.h>
 
@@ -74,6 +76,55 @@ NodeElement::~NodeElement()
 	delete mUmlPortHandler;
 }
 
+NodeElement *NodeElement::clone(bool toCursorPos)
+{
+	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
+
+	qReal::Id typeId = id().type();
+	qReal::Id resultId = evscene->createElement(typeId.toString(), QPointF());
+
+	NodeElement *result = dynamic_cast<NodeElement*>(evscene->getElem(resultId));
+
+	result->copyProperties(this);
+	result->copyChildren(this);
+	result->mContents = mContents;
+	if (toCursorPos) {
+		result->setPos(evscene->getMousePos());
+		result->storeGeometry();
+	}
+	else {
+		result->setPos(mPos);
+	}
+
+	return result;
+}
+
+void NodeElement::copyAndPlaceOnDiagram()
+{
+	clone(true);
+}
+
+void NodeElement::copyChildren(NodeElement *source)
+{
+	foreach (QGraphicsItem *child, source->childItems()) {
+		NodeElement *element = dynamic_cast<NodeElement*>(child);
+		if (element) {
+			NodeElement *copyOfChild = element->clone();
+			mGraphicalAssistApi->changeParent(copyOfChild->id(), id(), element->pos());
+		}
+	}
+}
+
+void NodeElement::copyProperties(NodeElement *source)
+{
+	mGraphicalAssistApi->copyProperties(id(), source->id());
+}
+
+void NodeElement::copyEdges(NodeElement *source)
+{
+	Q_UNUSED(source);
+}
+
 void NodeElement::setName(QString value)
 {
 	mGraphicalAssistApi->setName(id(), value);
@@ -95,6 +146,17 @@ void NodeElement::setGeometry(QRectF const &geom)
 	}
 }
 
+void NodeElement::setPos(const QPointF &pos)
+{
+	mPos = pos;
+	QGraphicsItem::setPos(pos);
+}
+
+void NodeElement::setPos(qreal x, qreal y)
+{
+	setPos(QPointF(x, y));
+}
+
 void NodeElement::adjustLinks()
 {
 	foreach (EdgeElement *edge, mEdgeList) {
@@ -109,6 +171,8 @@ void NodeElement::adjustLinks()
 	}
 }
 
+// TODO: Understand what happens here ASAP!
+/*
 void NodeElement::arrangeLinks() {
 	if (!SettingsManager::value("arrangeLinks", true).toBool()) {
 		return;
@@ -125,7 +189,9 @@ void NodeElement::arrangeLinks() {
 		}
 	}
 }
+*/
 
+/*
 void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<NodeElement*>& arranged)
 {
 	toArrange.remove(this);
@@ -133,7 +199,7 @@ void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<No
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
-		edge->reconnectToNearestPorts(this == src || !arranged.contains(src), this == dst || !arranged.contains(dst));
+		edge->reconnectToNearestPorts(this == src || !arranged.contains(src), this == dst || !arranged.contains(dst), false);
 		NodeElement* other = edge->otherSide(this);
 		if (!arranged.contains(other) && other != 0) {
 			toArrange.insert(other);
@@ -158,7 +224,10 @@ void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<No
 				qreal y2 = next.y();
 				qreal len = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 				qreal scalarProduct = ((x2 - x1) * dx + (y2 - y1) * dy) / len;
-				sortedEdges.insertMulti(qMakePair(scalarProduct, edge->portIdOn(this)), edge);
+				sortedEdges.insertMulti(qMakePair(edge->portIdOn(this), scalarProduct), edge);
+				//qDebug() << "+" << edge->uuid().toString() <<"pr=" <<scalarProduct << "; p=" << edge->portIdOn(this);
+				//qDebug("'--> vector: (%g, %g)", (x2-x1)/len, (y2-y1)/len);
+				//qDebug() << "'------> because " << (QVariant)conn << "->" << (QVariant)next;
 			}
 		}
 
@@ -166,18 +235,90 @@ void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<No
 		int N = sortedEdges.size();
 		int i = 0;
 		foreach (EdgeElement* edge, sortedEdges) {
-			edge->moveConnection(this, lpId + (1.0 + i++) / (N + 1));
+			qreal newId = lpId + (1.0 + i++) / (N + 1);
+			//qDebug() << "-" << edge->uuid().toString() << newId;
+			edge->moveConnection(this, newId);
 		}
 
 		lpId++; //next linear port.
 
 	}
+}
+*/
 
-	//recursive calls
-	arranged.insert(this);
-	while (!toArrange.isEmpty()) {
-		NodeElement *next = *toArrange.begin();
-		next->arrangeLinksRecursively(toArrange, arranged);
+void NodeElement::arrangeLinearPorts() {
+	//qDebug() << "linear ports on" << uuid().toString();
+	int lpId = mPointPorts.size(); //point ports before linear
+	foreach (StatLine line, mLinePorts) {
+		//sort first by slope, then by current portId
+		QMap<QPair<qreal, qreal>, EdgeElement*> sortedEdges;
+		QLineF portLine = line;
+		qreal dx = portLine.dx();
+		qreal dy = portLine.dy();
+		foreach (EdgeElement* edge, mEdgeList) {
+			if (portId(edge->portIdOn(this)) == lpId) {
+				QPointF conn = edge->connectionPoint(this);
+				QPointF next = edge->nextFrom(this);
+				qreal x1 = conn.x();
+				qreal y1 = conn.y();
+				qreal x2 = next.x();
+				qreal y2 = next.y();
+				qreal len = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+				qreal scalarProduct = ((x2 - x1) * dx + (y2 - y1) * dy) / len;
+				sortedEdges.insertMulti(qMakePair(edge->portIdOn(this), scalarProduct), edge);
+				//qDebug() << "+" << edge->uuid().toString() <<"pr=" <<scalarProduct << "; p=" << edge->portIdOn(this);
+				//qDebug("'--> vector: (%g, %g)", (x2-x1)/len, (y2-y1)/len);
+				//qDebug() << "'------> because " << (QVariant)conn << "->" << (QVariant)next;
+			}
+		}
+
+		//by now, edges of this port are sorted by their optimal slope.
+		int N = sortedEdges.size();
+		int i = 0;
+		foreach (EdgeElement* edge, sortedEdges) {
+			qreal newId = lpId + (1.0 + i++) / (N + 1);
+			//qDebug() << "-" << edge->uuid().toString() << newId;
+			edge->moveConnection(this, newId);
+		}
+
+		lpId++; //next linear port.
+
+	}
+}
+
+void NodeElement::arrangeLinks() {
+	//qDebug() << "---------------\nDirect call " << uuid().toString();
+
+	//Episode I: Home Jumps
+	//qDebug() << "I";
+	foreach (EdgeElement* edge, mEdgeList) {
+		NodeElement* src = edge->src();
+		NodeElement* dst = edge->dst();
+		edge->reconnectToNearestPorts(this == src, this == dst, true);
+	}
+
+	//Episode II: Home Ports Arranging
+	//qDebug() << "II";
+	arrangeLinearPorts();
+
+	//Episode III: Remote Jumps
+	//qDebug() << "III";
+	foreach (EdgeElement* edge, mEdgeList) {
+		NodeElement* src = edge->src();
+		NodeElement* dst = edge->dst();
+		NodeElement* other = edge->otherSide(this);
+		edge->reconnectToNearestPorts(other == src, other == dst, true);
+	}
+
+	//Episode IV: Remote Arrangigng
+	//qDebug() << "IV";
+	QSet<NodeElement*> arranged;
+	foreach (EdgeElement* edge, mEdgeList) {
+		NodeElement* other = edge->otherSide(this);
+		if (other && !arranged.contains(other)) {
+			other->arrangeLinearPorts();
+			arranged.insert(other);
+		}
 	}
 }
 
@@ -213,7 +354,6 @@ void NodeElement::moveChildren(QPointF const &moving)
 void NodeElement::resize(QRectF newContents)
 {
 	newContents.moveTo(0, 0);
-
 	if (mElementImpl->isSortingContainer()) {
 		sortChildren();
 	}
@@ -407,11 +547,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 			if (newParent != NULL) {
 				mHighlightedNode = newParent;
-				if (mHighlightedNode->mElementImpl->isSortingContainer()) {
-					mHighlightedNode->drawPlaceholder(EditorViewScene::getPlaceholder(), event->scenePos());
-				} else {
-					// do something
-				}
+				mHighlightedNode->drawPlaceholder(EditorViewScene::getPlaceholder(), event->scenePos());
 			} else if (mHighlightedNode != NULL) {
 				mHighlightedNode->erasePlaceholder(true);
 				mHighlightedNode = NULL;
@@ -536,6 +672,11 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	setZValue(0);
 }
 
+void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+	Q_UNUSED(event)
+}
+
 void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 	Q_UNUSED(event);
@@ -589,7 +730,7 @@ bool NodeElement::initPossibleEdges()
 
 void NodeElement::initEmbeddedLinkers()
 {
-	if (mEmbeddedLinkers.isEmpty()) {
+	if (!mEmbeddedLinkers.isEmpty()) {
 		return;
 	}
 	QSet<qReal::Id> usedEdges;
@@ -1103,38 +1244,44 @@ void NodeElement::sortChildren()
 		maxChildrenWidth = childrenBoundingRect().width();
 	}
 
-	if(mPlaceholder != NULL){
-		int placeHolderWidth = mPlaceholder->rect().width();
-		if (placeHolderWidth > maxChildrenWidth) {
-			maxChildrenWidth = placeHolderWidth;
-		}
-	}
+//	if(mPlaceholder != NULL){
+//		int placeHolderWidth = mPlaceholder->rect().width();
+//		if (placeHolderWidth > maxChildrenWidth) {
+//			maxChildrenWidth = placeHolderWidth;
+//		}
+//	}
 
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if(childItem == mPlaceholder){
+		if(mPlaceholder != NULL && childItem == mPlaceholder){
 			QRectF rect(mElementImpl->sizeOfForestalling(), curChildY,
 				maxChildrenWidth, mPlaceholder->rect().height());
 			mPlaceholder->setRect(rect);
 			curChildY += mPlaceholder->rect().height() + childSpacing;
 		}
 		if (curItem) {
+			QRectF rect(mElementImpl->sizeOfForestalling(), curChildY, 0, curItem->mContents.height());
 			if (mElementImpl->maximizesChildren()) {
-				curItem->setGeometry(QRectF(mElementImpl->sizeOfForestalling(), curChildY,
-											maxChildrenWidth, curItem->mContents.height()));
+				rect.setWidth(maxChildrenWidth);
 			} else {
-				curItem->setGeometry(QRectF(mElementImpl->sizeOfForestalling(), curChildY,
-											curItem->mContents.width(), curItem->mContents.height()));
+				rect.setWidth(curItem->mContents.width());
 			}
-
-			curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling() + childSpacing;
+			curItem->setGeometry(rect);
 			curItem->storeGeometry();
+			curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling() + childSpacing;
 		}
 	}
 }
 
 void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 {
+	// for non-sorting containers no need for drawing placeholder so just make them marked
+	if (!mElementImpl->isSortingContainer()) {
+		setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
+		setOpacity(.2);
+		return;
+	}
+
 	// binary search? No because we need to know summary height of prev elements
 	NodeElement *nextItem = NULL;
 
@@ -1190,6 +1337,7 @@ Element* NodeElement::getPlaceholderNextElement()
 
 void NodeElement::erasePlaceholder(bool redraw)
 {
+	setOpacity(1);
 	if(mPlaceholder != NULL){
 		delete mPlaceholder;
 		mPlaceholder = NULL;
@@ -1411,7 +1559,7 @@ void NodeElement::checkConnectionsToPort()
 void NodeElement::singleSelectionState(const bool singleSelected)
 {
 	initEmbeddedLinkers();
-	setVisibleEmbeddedLinkers(true);
+	setVisibleEmbeddedLinkers(singleSelected);
 	Element::singleSelectionState(singleSelected);
 }
 

@@ -3,7 +3,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsLineItem>
 #include <QSignalMapper>
-#include "../kernel/roles.h"
+#include "../../qrkernel/roles.h"
 #include "../umllib/nodeElement.h"
 #include "gestures/mouseMovementManager.h"
 
@@ -25,9 +25,9 @@ public:
 
 	void clearScene();
 
-	virtual int launchEdgeMenu(EdgeElement* edge, NodeElement* node, QPointF scenePos);
-	virtual qReal::Id createElement(const QString &, QPointF scenePos);
-	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
+	virtual int launchEdgeMenu(EdgeElement* edge, NodeElement* node, const QPointF &scenePos);
+	virtual qReal::Id createElement(const QString &, QPointF const &scenePos);
+	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
@@ -43,7 +43,7 @@ public:
 	double realIndexGrid();
 	void setRealIndexGrid(double newIndexGrid);
 
-	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
+	bool canBeContainedBy(qReal::Id const &candidate, qReal::Id const &container) const;
 	bool getNeedDrawGrid();
 
 	Element* getLastCreated();
@@ -52,12 +52,17 @@ public:
 
 	void highlight(qReal::Id const &graphicalId, bool exclusive = true);
 	void dehighlight(qReal::Id const &graphicalId);
+	void dehighlight();
 
+	QPointF getMousePos();
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement* findNewParent(QPointF, NodeElement*);
 
 public slots:
 	qReal::Id createElement(const QString &);
+	// TODO: get rid of it here
+	void copy();
+	void paste();
 
 signals:
 	void elementCreated(qReal::Id const &id);
@@ -94,9 +99,11 @@ private slots:
 
 private:
 	Element* mLastCreatedWithEdge;
+	NodeElement *mCopiedNode;
 
 	bool mRightButtonPressed;
-	bool mNeedDrawGrid;  // if true, the grid will be shown (as scene's background)
+	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
+
 	qreal mWidthOfGrid;
 	double mRealIndexGrid;
 
@@ -124,6 +131,7 @@ private:
 
 	NodeElement *mHighlightNode;
 	QPointF newElementsPosition;
+
 	QList<QGraphicsItem*> mGesture;
 
 	qReal::EditorViewMViface *mv_iface;
@@ -132,6 +140,7 @@ private:
 	qReal::MainWindow *mWindow;
 
 	QPointF mPrevPosition;
+	QPointF mCurrentMousePos;
 	QGraphicsItem *mPrevParent;
 
 	QPointF mCreatePoint;

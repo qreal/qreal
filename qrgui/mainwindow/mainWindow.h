@@ -6,20 +6,20 @@
 #include <QSplashScreen>
 #include <QtGui>
 
-#include "../editorManager/editorManager.h"
+#include "../pluginManager/editorManager.h"
+#include "../pluginManager/toolPluginManager.h"
 #include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
+#include "../interpreters/visualDebugger/debuggerConnector.h"
 #include "mainWindowInterpretersInterface.h"
-#include "../kernel/settingsManager.h"
+#include "../../qrkernel/settingsManager.h"
+#include "../../qrgui/dialogs/preferencesDialog.h"
 #include "../textEditor/codeEditor.h"
 #include "nxtFlashTool.h"
 #include "helpBrowser.h"
 
 #include "../models/logicalModelAssistApi.h"
-
-#include "../interpreters/robots/bluetoothRobotCommunication.h"
-#include "../interpreters/robots/details/d2RobotModel/d2RobotModel.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -33,12 +33,6 @@ class VisualDebugger;
 
 namespace models {
 class Models;
-}
-
-namespace interpreters {
-namespace robots {
-class Interpreter;
-}
 }
 
 namespace gui {
@@ -64,8 +58,11 @@ public:
 
 	virtual void highlight(Id const &graphicalId, bool exclusive = true);
 	virtual void dehighlight(Id const &graphicalId);
-	virtual gui::ErrorReporter *errorReporter();
+	virtual void dehighlight();
+	virtual ErrorReporterInterface *errorReporter();
+	virtual Id activeDiagram();
 	void openShapeEditor(QPersistentModelIndex index, int role, QString const propertyValue);
+	virtual void openSettingsDialog(QString const &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);
 
@@ -83,7 +80,7 @@ public slots:
 	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 	virtual void selectItem(Id const &id);
 
-	void showD2ModelWidget(bool isVisible = true);
+	void selectItemWithError(Id const &id);
 
 	void showErrors(gui::ErrorReporter const * const errorReporter);
 
@@ -100,8 +97,11 @@ private slots:
 	void showAbout();
 	void showHelp();
 
+	void checkoutDialogOk();
+	void checkoutDialogCancel();
+
 	bool open(QString const &dirName);
-	bool checkPluginsAndReopen();
+	bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
 	void saveAs();
 	void saveAll();
 	void fullscreen();
@@ -117,25 +117,53 @@ private slots:
 
 	void sceneSelectionChanged();
 
+	void doCheckout();
+	void doCommit();
+	void exportToXmi();
+	void generateToJava();
+	void parseJavaLibraries();
 	void applySettings();
 
 	void deleteFromScene(QGraphicsItem *target);
 
 	void activateSubdiagram(QModelIndex const &idx);
 
+	void debug();
+	void debugSingleStep();
+	void drawDebuggerStdOutput(QString output);
+	void drawDebuggerErrOutput(QString output);
+	void generateAndBuild();
+	void startDebugger();
+	void runProgramWithDebugger();
+	void killProgramWithDebugger();
+	void closeDebuggerProcessAndThread();
+	void placeBreakpointsInDebugger();
+	void goToNextBreakpoint();
+	void goToNextInstruction();
+	void configureDebugger();
+	void setBreakpointAtStart();
+	void startDebugging();
+	void checkEditorForDebug(int index);
+
+private slots:
 	void deleteFromDiagram();
 	void changeMiniMapSource(int index);
 	void closeTab(int index);
-	void closeTab(QModelIndex const &index);
-	void exterminate();
+	void closeTab(QModelIndex const &graphicsIndex);
+//	void exterminate();
 	void generateEditor();
+//	void generateEditorWithQRMC();
 	void parseEditorXml();
+	void generateToHascol();
+	void parseHascol();
 	void showPreferencesDialog();
 
 	void generateRobotSourceCode();
+	void flashRobot();
 	void uploadProgram();
 
 	void connectActions();
+	void connectDebugActions();
 
 	void centerOn(Id const &id);
 	void graphicalModelExplorerClicked(const QModelIndex &index);
@@ -156,14 +184,6 @@ private slots:
 	void diagramInCreateListDeselect();
 	void diagramInCreateListSelected(int num);
 
-	void run();
-	void stop();
-	void stopRobot();
-
-	void connectToRobot();
-
-	void showRobotSettingsDialog();
-
 	void on_actionNew_Diagram_triggered();
 
 	void updatePaletteIcons();
@@ -175,9 +195,9 @@ private:
 	QCloseEvent *mCloseEvent;
 	models::Models *mModels;
 	EditorManager mEditorManager;
+	ToolPluginManager mToolManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
-//	PropertyEditorDelegate mDelegate;
 	GesturesWidget *mGesturesWidget;
 
 	QVector<bool> mSaveListChecked;
@@ -186,18 +206,19 @@ private:
 	QStringList mDiagramsList;
 	QModelIndex mRootIndex;
 
+	DebuggerConnector *mDebuggerConnector;
 	VisualDebugger *mVisualDebugger;
-	interpreters::robots::Interpreter *mRobotInterpreter;  // Has ownership
-	interpreters::robots::BluetoothRobotCommunication *mBluetoothCommunication;  // Does not have ownership
-	interpreters::robots::details::d2Model::D2RobotModel *mD2Model;// Does not have ownership
 	gui::ErrorReporter *mErrorReporter;  // Has ownership
 
 	/** @brief Fullscreen mode flag */
 	bool mIsFullscreen;
+
 	/** @brief Internal map table to store info what widgets should we hide/show */
 	QMap<QString, bool> mDocksVisibility;
 
 	QString mSaveDir;
+
+	PreferencesDialog mPreferencesDialog;
 
 	gui::NxtFlashTool *mFlashTool;
 
@@ -247,10 +268,9 @@ private:
 	*/
 	void showDockWidget(QDockWidget *dockWidget, QString name);
 
-	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
-
 	QString getNextDirName(QString const &name);
 
+	void initToolPlugins();
 	void checkNxtTools();
 };
 }

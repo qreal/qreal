@@ -11,7 +11,7 @@
 #include "edgeElement.h"
 #include "nodeElement.h"
 #include "../view/editorViewScene.h"
-#include "../pluginInterface/editorInterface.h"
+#include "../editorPluginInterface/editorInterface.h"
 
 using namespace qReal;
 
@@ -28,7 +28,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	, mAddPointAction(tr("Add point"), this)
 	, mDelPointAction(tr("Delete point"), this)
 	, mSquarizeAction(tr("Squarize"), this)
-	, mMinimizeAction(tr("Minimize"), this)
+	, mMinimizeAction(tr("Remove all points"), this)
 	, mElementImpl(impl)
 	, mLastDragPoint(-1)
 {
@@ -153,7 +153,7 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	QPen pen = painter->pen();
 	pen.setColor(mColor);
 	pen.setStyle(mPenStyle);
-	pen.setWidth(3);
+	pen.setWidth(3);  // TODO: Move line width to a configuration parameter
 	painter->setPen(pen);
 	painter->drawPolyline(mLine);
 	painter->restore();
@@ -340,10 +340,9 @@ bool EdgeElement::initPossibleEdges()
 	QString diagram = id().diagram();
 	EditorInterface * editorInterface = mGraphicalAssistApi->editorManager().editorInterface(editor);
 	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(id().element());
-	foreach (StringPossibleEdge pEdge, stringPossibleEdges)
-	{
+	foreach (StringPossibleEdge pEdge, stringPossibleEdges) {
 		QPair<qReal::Id, qReal::Id> nodes(Id(editor, diagram, pEdge.first.first),
-										  Id(editor, diagram, pEdge.first.second));
+				Id(editor, diagram, pEdge.first.second));
 		QPair<bool, qReal::Id> edge(pEdge.second.first, Id(editor, diagram, pEdge.second.second));
 		PossibleEdge possibleEdge(nodes, edge);
 		possibleEdges.push_back(possibleEdge);
@@ -471,11 +470,12 @@ void EdgeElement::removeUnneededPoints(int startingPoint)
 {
 	if (startingPoint + 2 < mLine.size()) {
 		if ((mLine[startingPoint].x() == mLine[startingPoint + 1].x() &&
-			 mLine[startingPoint].x() == mLine[startingPoint + 2].x()) ||
-				(mLine[startingPoint].y() == mLine[startingPoint + 1].y() &&
-				 mLine[startingPoint].y() == mLine[startingPoint + 2].y())
-		)
+			mLine[startingPoint].x() == mLine[startingPoint + 2].x()) ||
+			(mLine[startingPoint].y() == mLine[startingPoint + 1].y() &&
+			mLine[startingPoint].y() == mLine[startingPoint + 2].y()))
+		{
 			delPointHandler(mLine[startingPoint + 1]);
+		}
 	}
 }
 
@@ -645,6 +645,10 @@ void EdgeElement::adjustLink()
 	if (mDst)
 		mLine.last() = mapFromItem(mDst, mDst->getPortPos(mPortTo));
 	updateLongestPart();
+	for (int i = 0; i < mLine.size() - 2; i++)
+		removeUnneededPoints(i);
+	if (SettingsManager::value("SquareLine", false).toBool())
+		squarizeHandler(QPointF());
 }
 
 bool EdgeElement::shouldReconnect() const
@@ -707,7 +711,6 @@ QPointF EdgeElement::nextFrom(NodeElement const *node) const
 	if (node == mDst)
 		return mapToItem(mDst, mLine[mLine.count() - 2]);
 	return QPointF();
-
 }
 
 QPointF EdgeElement::connectionPoint(NodeElement const *node) const
@@ -729,23 +732,29 @@ NodeElement* EdgeElement::otherSide(NodeElement const *node) const
 	return 0;
 }
 
-bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
+bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst, bool jumpsOnly)
 {
-	bool reconnected = false;
+	bool reconnectedSrc = false;
+	bool reconnectedDst = false;
 	if (mSrc && reconnectSrc) {
 		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
-		reconnected |= (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
-		mPortFrom = newFrom;
-		mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+		reconnectedSrc = (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
+		if (!jumpsOnly || reconnectedSrc) {
+			mPortFrom = newFrom;
+			mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+		}
+
 	}
 	if (mDst && reconnectDst) {
 		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
-		reconnected |= (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
-		mPortTo = newTo;
-		mGraphicalAssistApi->setToPort(id(), mPortTo);
+		reconnectedDst = (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
+		if (!jumpsOnly || reconnectedDst) {
+			mPortTo = newTo;
+			mGraphicalAssistApi->setToPort(id(), mPortTo);
+		}
 	}
 
-	return reconnected;
+	return reconnectedSrc || reconnectedDst;
 }
 
 void EdgeElement::updateData()

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../qrgui/kernel/roles.h"
+#include "../qrkernel/roles.h"
 #include "commonRepoApi.h"
 
 namespace qrRepo {
@@ -9,6 +9,8 @@ class GraphicalRepoApi : public CommonRepoApi
 {
 public:
 	virtual ~GraphicalRepoApi(){}
+
+	virtual qReal::Id copy(qReal::Id const &src) = 0;
 
 	virtual void addChild(qReal::Id const &id, qReal::Id const &logicalId, qReal::Id const &child) = 0;
 	virtual void stackBefore(qReal::Id const &id, qReal::Id const &child, qReal::Id const &sibling) = 0;
@@ -33,6 +35,8 @@ public:
 	virtual qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const = 0;
 	virtual void setTemporaryRemovedLinks(qReal::Id const &id, qReal::IdList const &value, QString const &direction) = 0;
 	virtual void removeTemporaryRemovedLinks(qReal::Id const &id) = 0;
+
+	virtual void copyProperties(const qReal::Id &dest, const qReal::Id &src) = 0;
 };
 
 }

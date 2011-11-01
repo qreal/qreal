@@ -3,7 +3,7 @@
 
 using namespace qReal;
 using namespace models;
-using namespace details;
+using namespace models::details;
 using namespace modelsImplementation;
 
 ModelsAssistApi::ModelsAssistApi(AbstractModel &model, EditorManager const &editorManager)
@@ -32,6 +32,11 @@ Id ModelsAssistApi::createElement(Id const &parent, Id const &id, bool isFromLog
 void ModelsAssistApi::setProperty(Id const &elem, QVariant const &newValue, int const role)
 {
 	mModel.setData(indexById(elem), newValue, role);
+}
+
+void ModelsAssistApi::stackBefore(Id const &element, Id const &sibling)
+{
+	mModel.stackBefore(indexById(element), indexById(sibling));
 }
 
 QVariant ModelsAssistApi::property(Id const &elem, int const role) const

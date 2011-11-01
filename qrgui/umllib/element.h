@@ -3,14 +3,14 @@
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QAction>
 
-#include "../kernel/ids.h"
-#include "../kernel/settingsManager.h"
+#include "../../qrkernel/ids.h"
+#include "../../qrkernel/settingsManager.h"
 
-#include "../pluginInterface/elementRepoInterface.h"
+#include "../editorPluginInterface/elementRepoInterface.h"
 #include "elementTitle.h"
 
 #include "contextMenuAction.h"
-#include "../pluginInterface/elementImpl.h"
+#include "../editorPluginInterface/elementImpl.h"
 
 #include "../models/graphicalModelAssistApi.h"
 #include "../models/logicalModelAssistApi.h"
@@ -40,8 +40,8 @@ public:
 	virtual qReal::Id logicalId() const;
 	virtual QString name() const;
 
-	virtual void connectToPort() {}//for edge
-	virtual void checkConnectionsToPort() {}//for node
+	virtual void connectToPort() {}  // for edge
+	virtual void checkConnectionsToPort() {}  // for node
 	virtual QList<ContextMenuAction*> contextMenuActions();
 
 	virtual bool initPossibleEdges() = 0;

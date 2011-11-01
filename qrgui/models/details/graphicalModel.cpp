@@ -7,7 +7,7 @@
 
 using namespace qReal;
 using namespace models;
-using namespace details;
+using namespace models::details;
 using namespace modelsImplementation;
 
 GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const EditorManager &editorManager)
@@ -303,7 +303,7 @@ QList<QPersistentModelIndex> GraphicalModel::indexesWithLogicalId(Id const &logi
 	return indexes;
 }
 
-ModelsAssistApi* GraphicalModel::modelAssistApi() const
+qReal::details::ModelsAssistInterface* GraphicalModel::modelAssistInterface() const
 {
 	return mGraphicalAssistApi;
 }

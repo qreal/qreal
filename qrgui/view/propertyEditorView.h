@@ -3,7 +3,7 @@
 #include <QAbstractItemView>
 #include <QMap>
 
-#include "propertyEditorProxyModel.h"
+#include "../mainwindow/propertyEditorProxyModel.h"
 
 #include "../thirdparty/qtpropertybrowser/src/qttreepropertybrowser.h"
 #include "../models/logicalModelAssistApi.h"

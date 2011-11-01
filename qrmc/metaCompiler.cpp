@@ -46,6 +46,9 @@ bool MetaCompiler::compile(QString const &targetMetamodel)
 	if (rootItems.isEmpty())
 		qDebug() << "couldn't load any root diagrams";
 	foreach(qReal::Id editorId, rootItems) {
+		if (!mApi.isLogicalElement(editorId))
+			continue;
+
 		if (editorId.element() == metamodelDiagram) {
 			if (!mTargetMetamodel.isEmpty() && mApi.name(editorId) != mTargetMetamodel )
 				continue;

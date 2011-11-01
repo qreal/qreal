@@ -42,6 +42,11 @@ void RepoApi::stackBefore(Id const &id, Id const &child, Id const &sibling)
 	mClient.stackBefore(id, child, sibling);
 }
 
+Id RepoApi::copy(qReal::Id const &src)
+{
+	return mClient.cloneObject(src);
+}
+
 void RepoApi::removeChild(Id const &id, Id const &child)
 {
 	mClient.removeChild(id, child);
@@ -192,6 +197,31 @@ void RepoApi::deleteUsage(qReal::Id const &source, qReal::Id const &destination)
 	removeFromList(destination, "incomingUsages", source);
 }
 
+qReal::IdList RepoApi::connectedElements(qReal::Id const &id) const
+{
+	qReal::IdList result = outgoingConnectedElements(id);
+	result.append(incomingConnectedElements(id));
+	return result;
+}
+
+qReal::IdList RepoApi::outgoingConnectedElements(qReal::Id const &id) const
+{
+	qReal::IdList result;
+	foreach (qReal::Id curLink, outgoingLinks(id)) {
+		result.append(to(curLink));
+	}
+	return result;
+}
+
+qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
+{
+	qReal::IdList result;
+	foreach (qReal::Id curLink, incomingLinks(id)) {
+		result.append(from(curLink));
+	}
+	return result;
+}
+
 QString RepoApi::typeName(Id const &id) const
 {
 	return id.element();
@@ -216,6 +246,11 @@ void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant co
 void RepoApi::removeProperty(Id const &id, QString const &propertyName)
 {
 	mClient.removeProperty(id, propertyName);
+}
+
+void RepoApi::copyProperties(const Id &dest, const Id &src)
+{
+	mClient.copyProperties(dest, src);
 }
 
 bool RepoApi::hasProperty(Id const &id, QString const &propertyName) const
@@ -378,12 +413,10 @@ void RepoApi::removeFromList(Id const &target, QString const &listName, Id const
 Id RepoApi::otherEntityFromLink(Id const &linkId, Id const &firstNode) const
 {
 	Id const fromId = from(linkId);
-	if (fromId != firstNode && fromId != Id::rootId())
+	if (fromId != firstNode)
 		return fromId;
-	else if (to(linkId) != Id::rootId())
-		return to(linkId);
 	else
-		return Id();
+		return to(linkId);
 }
 
 IdList RepoApi::logicalElements(Id const &type) const
@@ -443,29 +476,4 @@ void RepoApi::setTemporaryRemovedLinks(Id const &id, IdList const &value, QStrin
 void RepoApi::removeTemporaryRemovedLinks(Id const &id)
 {
 	mClient.removeTemporaryRemovedLinks(id);
-}
-
-qReal::IdList RepoApi::connectedElements(qReal::Id const &id) const
-{
-	qReal::IdList result = outgoingConnectedElements(id);
-	result.append(incomingConnectedElements(id));
-	return result;
-}
-
-qReal::IdList RepoApi::outgoingConnectedElements(qReal::Id const &id) const
-{
-	qReal::IdList result;
-	foreach (qReal::Id curLink, outgoingLinks(id)) {
-		result.append(to(curLink));
-	}
-	return result;
-}
-
-qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
-{
-	qReal::IdList result;
-	foreach (qReal::Id curLink, incomingLinks(id)) {
-		result.append(from(curLink));
-	}
-	return result;
 }

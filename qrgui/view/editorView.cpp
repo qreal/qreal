@@ -17,7 +17,7 @@ EditorView::EditorView(QWidget *parent)
 	connect(mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
 	connect(mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
 
-		setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
 	mMVIface = new EditorViewMViface(this, mScene);
 	setScene(mScene);

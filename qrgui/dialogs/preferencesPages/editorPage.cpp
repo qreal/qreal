@@ -1,4 +1,4 @@
-#include "../../kernel/settingsManager.h"
+#include "../../../qrkernel/settingsManager.h"
 #include "editorPage.h"
 #include "ui_editorPage.h"
 #include <QMessageBox>
@@ -28,7 +28,7 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 
 	mUi->showGridCheckBox->setChecked(SettingsManager::value("ShowGrid", true).toBool());
 	mUi->showAlignmentCheckBox->setChecked(SettingsManager::value("ShowAlignment", true).toBool());
-	mUi->activateGridCheckBox->setChecked(SettingsManager::value("ActivateGrid", false).toBool());
+	mUi->activateGridCheckBox->setChecked(SettingsManager::value("ActivateGrid", true).toBool());
 	mUi->activateAlignmentCheckBox->setChecked(SettingsManager::value("ActivateAlignment", true).toBool());
 	mUi->embeddedLinkerIndentSlider->setValue(SettingsManager::value("EmbeddedLinkerIndent", 8).toInt());
 	mUi->embeddedLinkerSizeSlider->setValue(SettingsManager::value("EmbeddedLinkerSize", 6).toInt());

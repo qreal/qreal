@@ -1,6 +1,6 @@
 #include "type.h"
 #include "property.h"
-#include "utils/nameNormalizer.h"
+#include "../utils/nameNormalizer.h"
 
 #include <QDebug>
 

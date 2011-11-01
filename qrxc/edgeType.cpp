@@ -1,6 +1,6 @@
 #include "edgeType.h"
 #include "association.h"
-#include "../utils/outFile.h"
+#include "../qrutils/outFile.h"
 #include "xmlCompiler.h"
 #include "diagram.h"
 #include "editor.h"
@@ -133,6 +133,7 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\t\t}\n\n"
 		<< "\t\tvirtual ~" << className << "() {}\n\n"
+		<< "\t\tElementImpl *clone() { return NULL; }\n"
 		<< "\t\tvoid paint(QPainter *, QRectF &){}\n"
 		<< "\t\tbool isNode() { return false; }\n"
 		<< "\t\tbool isResizeable() { return true; }\n"

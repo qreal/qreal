@@ -2,7 +2,7 @@
 
 #include <QtCore/QString>
 
-#include "../../kernel/ids.h"
+#include "../../../qrkernel/ids.h"
 #include "../../../qrrepo/logicalRepoApi.h"
 
 namespace qReal {

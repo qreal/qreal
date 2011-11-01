@@ -1,0 +1,45 @@
+#pragma once
+
+#include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
+#include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
+
+#include "interpreter.h"
+#include "robotSettingsPage.h"
+#include "customizer.h"
+
+namespace qReal {
+namespace interpreters {
+namespace robots {
+
+class RobotsPlugin : public QObject, public qReal::ToolPluginInterface
+{
+	Q_OBJECT
+	Q_INTERFACES(qReal::ToolPluginInterface)
+
+public:
+	RobotsPlugin();
+	virtual ~RobotsPlugin();
+
+	virtual void init(PluginConfigurator const &configurator);
+	virtual QList<ActionInfo> actions();
+	virtual QPair<QString, PreferencesPage *> preferencesPage();
+	virtual CustomizationInterface* customizationInterface();
+	virtual void updateSettings();
+
+private slots:
+	void showRobotSettings();
+	void show2dModel();
+
+private:
+	Customizer mCustomizer;
+	Interpreter mInterpreter;
+	PreferencesRobotSettingsPage mRobotSettinsPage;
+	gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;
+	QAction *m2dModelAction;
+	QAction *mRunAction;
+	QAction *mStopAction;
+};
+
+}
+}
+}

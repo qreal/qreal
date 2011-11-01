@@ -5,7 +5,7 @@
 
 #include "preferencesPages/page.h"
 
-#include "../kernel/settingsManager.h"
+#include "../../qrkernel/settingsManager.h"
 
 namespace Ui {
 	class PreferencesDialog;
@@ -13,20 +13,25 @@ namespace Ui {
 
 class PreferencesDialog : public QDialog {
 	Q_OBJECT
-public:
-	PreferencesDialog(QAction * const showGridAction, QAction * const showAlignmentAction
-		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent = 0);
-	~PreferencesDialog();
 
+public:
 	enum PageIndexes {
 		editor = 0,
 		behaviour = 1,
 		miscellanious = 2,
 		compiler = 3,
 		debugger = 4,
-		robotSettings = 5,
-		features = 6
+//		features = 5
 	};
+
+	PreferencesDialog(QWidget *parent = 0);
+	~PreferencesDialog();
+
+	void init(QAction * const showGridAction, QAction * const showAlignmentAction
+		,QAction * const activateGridAction, QAction * const activateAlignmentAction);
+
+	void registerPage(QString const &pageName, PreferencesPage * const page);
+	void switchCurrentTab(QString const &tabName);
 
 protected:
 	void changeEvent(QEvent *e);
@@ -52,6 +57,9 @@ private:
 	PreferencesPage *mDebuggerPage;
 	PreferencesPage *mEditorPage;
 	PreferencesPage *mMiscellaniousPage;
-	PreferencesPage *mRobotSettingsPage;
 	PreferencesPage *mFeaturesPage;
+
+	QMap<QString, PreferencesPage *> mCustomPages;
+
+	void hidePages();
 };

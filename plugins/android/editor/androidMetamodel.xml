@@ -1,0 +1,1259 @@
+<?xml version='1.0' encoding='utf-8'?>
+<metamodel xmlns="http://schema.real.com/schema/">
+    <namespace>UML 2.0</namespace>
+    <diagram displayedName="Handler Diagram" nodeName="Handler Diagram" name="Handler Diagram">
+        <graphicTypes>
+            <node name="Tag">
+                <graphics>
+                    <picture sizex="107" sizey="38">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="37" fill-style="none" x2="106"/>
+                    </picture>
+                    <labels>
+                        <label x="34" y="4" text="Tag"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="13" starty="0"/>
+                            <end endx="88" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="11" starty="37"/>
+                            <end endx="93" endy="38"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" name="name"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Parameter">
+                <graphics>
+                    <picture sizex="127" sizey="45">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="43" fill-style="none" x2="126"/>
+                    </picture>
+                    <labels>
+                        <label x="23" y="7" text="Parameter"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="-1"/>
+                            <end endx="119" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="44"/>
+                            <end endx="118" endy="45"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" name="name"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Text">
+                <graphics>
+                    <picture sizex="72" sizey="45">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="43" fill-style="none" x2="71"/>
+                    </picture>
+                    <labels>
+                        <label x="16" y="7" text="Text"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="4" starty="0"/>
+                            <end endx="60" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="7" starty="44"/>
+                            <end endx="63" endy="45"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node name="Object">
+                <graphics>
+                    <picture sizex="86" sizey="35">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="33" fill-style="none" x2="85"/>
+                    </picture>
+                    <labels>
+                        <label x="16" y="4" text="Object"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="7" starty="0"/>
+                            <end endx="78" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="9" starty="34"/>
+                            <end endx="76" endy="35"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" name="name"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="List">
+                <graphics>
+                    <picture sizex="76" sizey="41">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#483d8b" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="75"/>
+                    </picture>
+                    <labels>
+                        <label x="22" y="9" text="List"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="9" starty="-1"/>
+                            <end endx="67" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="7" starty="40"/>
+                            <end endx="66" endy="41"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" name="name"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Variable">
+                <graphics>
+                    <picture sizex="101" sizey="46">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#483d8b" y1="0" stroke-width="0" x1="0" y2="44" fill-style="none" x2="100"/>
+                    </picture>
+                    <labels>
+                        <label x="19" y="12" text="Variable"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="0"/>
+                            <end endx="89" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="45"/>
+                            <end endx="85" endy="46"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" name="name"/>
+                    </properties>
+                </logic>
+            </node>
+            <edge displayedName="saveAs" name="saveAs">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="saveAs"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="saveAs1" endName="saveAs2"/>
+                    </associations>
+                    <possibleEdges>
+                        <possibleEdge beginName="Tag" directed="true" endName="Object"/>
+                    </possibleEdges>
+                </logic>
+            </edge>
+            <edge displayedName="saveIn" name="saveIn">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="saveIn"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="saveIn1" endName="saveIn2"/>
+                    </associations>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="collectIn1" endName="collectIn2"/>
+                    </associations>
+                    <possibleEdges>
+                        <possibleEdge beginName="Parameter" directed="true" endName="Variable"/>
+                        <possibleEdge beginName="Object" directed="true" endName="Variable"/>
+                        <possibleEdge beginName="Text" directed="true" endName="Variable"/>
+                    </possibleEdges>
+                </logic>
+            </edge>
+            <edge displayedName="collectIn" name="collectIn">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="collectIn"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <possibleEdges>
+                        <possibleEdge beginName="Parameter" directed="true" endName="List"/>
+                        <possibleEdge beginName="Object" directed="false" endName="List"/>
+                        <possibleEdge beginName="Text" directed="false" endName="List"/>
+                    </possibleEdges>
+                </logic>
+            </edge>
+            <edge displayedName="enclose" name="enclose">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="enclose"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="enclose1" endName="enclose2"/>
+                    </associations>
+                    <possibleEdges>
+                        <possibleEdge beginName="Tag" directed="true" endName="Text"/>
+                        <possibleEdge beginName="Tag" directed="true" endName="Tag"/>
+                        <possibleEdge beginName="Tag" directed="true" endName="Parameter"/>
+                    </possibleEdges>
+                </logic>
+            </edge>
+        </graphicTypes>
+    </diagram>
+    <diagram nodeName="Main Diagram" name="Main Diagram">
+        <nonGraphicTypes>
+            <enum name="Toast Duration Value">
+                <value>long</value>
+                <value>short</value>
+            </enum>
+        </nonGraphicTypes>
+        <graphicTypes>
+            <node name="Begin">
+                <graphics>
+                    <picture sizex="80" sizey="42">
+                        <ellipse fill="#ffffff" stroke-style="solid" stroke="#228b22" y1="0" stroke-width="2" x1="0" y2="41" fill-style="none" x2="79"/>
+                    </picture>
+                    <labels>
+                        <label x="19" y="8" text="Begin"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="23" starty="40"/>
+                            <end endx="54" endy="41"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="28" starty="0"/>
+                            <end endx="53" endy="0"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node name="Create Activity">
+                <graphics>
+                    <picture sizex="135" sizey="40">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="38" fill-style="none" x2="134"/>
+                    </picture>
+                    <labels>
+                        <label x="15" y="5" text="Create Activity"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="5" starty="-1"/>
+                            <end endx="126" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="9" starty="39"/>
+                            <end endx="125" endy="40"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" name="label"/>
+                        <property type="LayoutDiagram" name="layout"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Set Content View">
+                <graphics>
+                    <picture sizex="154" sizey="37">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="36" fill-style="none" x2="153"/>
+                    </picture>
+                    <labels>
+                        <label x="19" y="6" text="Set Content View"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="7" starty="0"/>
+                            <end endx="139" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="8" starty="35"/>
+                            <end endx="144" endy="36"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="Layout Diagram" name="layout"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Http Request">
+                <graphics>
+                    <picture sizex="123" sizey="39">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#5f9ea0" y1="1" stroke-width="2" x1="0" y2="32" fill-style="none" x2="122"/>
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#483d8b" y1="38" stroke-width="0" x1="85" y2="38" fill-style="none" x2="85"/>
+                    </picture>
+                    <labels>
+                        <label x="14" y="4" text="Http Request"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="6" starty="0"/>
+                            <end endx="112" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="32"/>
+                            <end endx="115" endy="32"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" name="url"/>
+                        <property type="Handler Diagram" name="handler"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Show Text Dialog">
+                <graphics>
+                    <picture sizex="137" sizey="43">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="42" fill-style="none" x2="136"/>
+                    </picture>
+                    <labels>
+                        <label x="7" y="10" text="Show Text Dialog"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="-1"/>
+                            <end endx="121" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="7" starty="42"/>
+                            <end endx="128" endy="43"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" name="text"/>
+                        <property type="String" name="positiveButton"/>
+                        <property type="String" name="negativeButton"/>
+                        <property type="String" name="neutralButton"/>
+                        <property type="bool" name="isCancelable"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Show Custom Dialog">
+                <graphics>
+                    <picture sizex="165" sizey="31">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="30" fill-style="none" x2="164"/>
+                    </picture>
+                    <labels>
+                        <label x="9" y="4" text="Show Custom Dialog"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="7" starty="-1"/>
+                            <end endx="153" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="13" starty="30"/>
+                            <end endx="153" endy="31"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="Layout Diagram" name="layout"/>
+                        <property type="String" name="title"/>
+                        <property type="bool" name="isCancelable"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Close Dialog">
+                <graphics>
+                    <picture sizex="114" sizey="30">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="29" fill-style="none" x2="113"/>
+                    </picture>
+                    <labels>
+                        <label x="12" y="2" text="Close Dialog"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="4" starty="-1"/>
+                            <end endx="106" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="7" starty="29"/>
+                            <end endx="108" endy="30"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <edge displayedName="onCreate" name="onCreate">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="onCreate"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="onCreate1" endName="onCreate2"/>
+                    </associations>
+                    <possibleEdges>
+                        <possibleEdge beginName="Create Activity" directed="true" endName="Set Content View"/>
+                    </possibleEdges>
+                </logic>
+            </edge>
+            <edge displayedName="onClose" name="onClose">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="onClose"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="onClose1" endName="onClose2"/>
+                    </associations>
+                </logic>
+            </edge>
+            <edge displayedName="onButtonClick" name="onButtonClick">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="onButtonClick"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="onButtonClick1" endName="onButtonClick2"/>
+                    </associations>
+                    <properties>
+                        <property type="String" name="buttonName"/>
+                    </properties>
+                </logic>
+            </edge>
+            <edge displayedName="onItemClick" name="onItemClick">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="onItemClick"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="onItemClick1" endName="onItemClick2"/>
+                    </associations>
+                    <properties>
+                        <property type="String" name="itemName"/>
+                    </properties>
+                </logic>
+            </edge>
+            <edge displayedName="success" name="success">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="success"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="success1" endName="success2"/>
+                    </associations>
+                </logic>
+            </edge>
+            <edge displayedName="fail" name="fail">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="fail"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="empty_arrow" beginType="no_arrow">
+                        <association beginName="fail1" endName="fail2"/>
+                    </associations>
+                </logic>
+            </edge>
+            <edge displayedName="onDismiss" name="onDismiss">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="onDismiss"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="onDismiss1" endName="onDismiss2"/>
+                    </associations>
+                </logic>
+            </edge>
+            <node name="Toast Notification">
+                <graphics>
+                    <picture sizex="144" sizey="34">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="32" fill-style="none" x2="143"/>
+                    </picture>
+                    <labels>
+                        <label x="7" y="3" text="Toast Notification"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="4" starty="0"/>
+                            <end endx="137" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="33"/>
+                            <end endx="136" endy="34"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" name="text"/>
+                        <property type="Toast Duration Value" name="duration"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Create Tab Layout">
+                <graphics>
+                    <picture sizex="148" sizey="28">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="27" fill-style="none" x2="147"/>
+                    </picture>
+                    <labels>
+                        <label x="10" y="1" text="Create Tab Layout"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="9" starty="0"/>
+                            <end endx="137" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="8" starty="27"/>
+                            <end endx="139" endy="28"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String[]" name="tabsText"/>
+                        <property type="String" name="tabsIds"/>
+                        <property type="String" name="selectedIcons"/>
+                        <property type="String" name="deselectedIcons"/>
+                    </properties>
+                </logic>
+            </node>
+            <edge displayedName="tab" name="tab">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="tab"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="tab1" endName="tab2"/>
+                    </associations>
+                    <possibleEdges>
+                        <possibleEdge beginName="Create Tab Layout" directed="false" endName="Create Activity"/>
+                    </possibleEdges>
+                    <properties>
+                        <property type="String" name="tabId"/>
+                    </properties>
+                </logic>
+            </edge>
+            <node name="End">
+                <graphics>
+                    <picture sizex="71" sizey="40">
+                        <ellipse fill="#ffffff" stroke-style="solid" stroke="#800000" y1="0" stroke-width="2" x1="0" y2="39" fill-style="none" x2="70"/>
+                    </picture>
+                    <labels>
+                        <label x="20" y="9" text="End"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="22" starty="1"/>
+                            <end endx="51" endy="2"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="23" starty="39"/>
+                            <end endx="48" endy="39"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node name="Create Bound Service">
+                <graphics>
+                    <picture sizex="171" sizey="32">
+                        <rectangle fill="#000000" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="31" fill-style="none" x2="170"/>
+                    </picture>
+                    <labels>
+                        <label x="10" y="3" text="Create Bound Service"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="9" starty="0"/>
+                            <end endx="152" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="12" starty="31"/>
+                            <end endx="165" endy="32"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node name="Service Success">
+                <graphics>
+                    <picture sizex="121" sizey="32">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="30" fill-style="none" x2="120"/>
+                    </picture>
+                    <labels>
+                        <label x="5" y="3" text="Service Success"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="7" starty="-1"/>
+                            <end endx="114" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="3" starty="31"/>
+                            <end endx="114" endy="32"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node name="Show Progress Wheel">
+                <graphics>
+                    <picture sizex="161" sizey="30">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="28" fill-style="none" x2="160"/>
+                    </picture>
+                    <labels>
+                        <label x="4" y="2" text="Show Progress Wheel"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="13" starty="1"/>
+                            <end endx="153" endy="2"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="13" starty="29"/>
+                            <end endx="150" endy="30"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node name="Custom Toast Notification">
+                <graphics>
+                    <picture sizex="196" sizey="35">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="32" fill-style="none" x2="195"/>
+                    </picture>
+                    <labels>
+                        <label x="6" y="4" text="Custom Toast Notification"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="4" starty="-1"/>
+                            <end endx="182" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="34"/>
+                            <end endx="182" endy="35"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="Toast Duration Value" name="duration"/>
+                        <property type="Layout Diagram" name="layout"/>
+                    </properties>
+                </logic>
+            </node>
+            <edge displayedName="backgroundFlow" name="backgroundFlow">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="backgroundFlow"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="backgroundFlow1" endName="backgroundFlow2"/>
+                    </associations>
+                </logic>
+            </edge>
+            <edge displayedName="mainFlow" name="mainFlow">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="mainFlow"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="mainFlow1" endName="mainFlow2"/>
+                    </associations>
+                </logic>
+            </edge>
+            <edge displayedName="next" name="next">
+                <graphics>
+                    <lineType type="solidLine"/>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="next1" endName="next2"/>
+                    </associations>
+                </logic>
+            </edge>
+        </graphicTypes>
+    </diagram>
+    <diagram nodeName="Layout Diagram" name="Layout Diagram">
+        <nonGraphicTypes>
+            <enum name="Layout Value">
+                <value>fill_parent</value>
+                <value>wrap_content</value>
+            </enum>
+            <enum name="Orientation Value">
+                <value>horizontal</value>
+                <value>vertical</value>
+            </enum>
+            <enum name="Scale Value">
+                <value>matrix</value>
+                <value>fit_XY</value>
+                <value>fit_start</value>
+                <value>fit_center</value>
+                <value>fit_end</value>
+                <value>center</value>
+                <value>center_crop</value>
+            </enum>
+            <enum name="Check Value">
+                <value>checked</value>
+                <value>not_checked</value>
+            </enum>
+            <enum name="Stretch Mode Value">
+                <value>no_stretch</value>
+                <value>strectch_spacing</value>
+                <value>stretch_spacing_uniform</value>
+                <value>stretch_column_width</value>
+            </enum>
+        </nonGraphicTypes>
+        <graphicTypes>
+            <node name="View">
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="Layout Value" name="layoutWidth"/>
+                        <property type="Layout Value" name="layoutHeight"/>
+                        <property type="String" name="padding"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Linear Layout">
+                <graphics>
+                    <picture sizex="120" sizey="51">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#483d8b" y1="0" stroke-width="2" x1="0" y2="50" fill-style="none" x2="119a"/>
+                    </picture>
+                    <labels>
+                        <label x="12" y="12" text="Linear Layout"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="0"/>
+                            <end endx="108" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="13" starty="48"/>
+                            <end endx="108" endy="49"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="Orientation Value" name="orientation"/>
+                        <property type="String" name="background"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="View"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Frame Layout">
+                <graphics>
+                    <picture sizex="130" sizey="35">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#483d8b" y1="0" stroke-width="2" x1="0" y2="34" fill-style="none" x2="129"/>
+                    </picture>
+                    <labels>
+                        <label x="18" y="6" text="Frame Layout"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="12" starty="0"/>
+                            <end endx="118" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="12" starty="34"/>
+                            <end endx="121" endy="34"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" name="background"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="View"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Button">
+                <graphics>
+                    <picture sizex="71" sizey="32">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" stroke-width="0" x1="0" y2="30" fill-style="none" x2="70"/>
+                    </picture>
+                    <labels>
+                        <label x="9" y="5" text="Button"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="6" starty="-1"/>
+                            <end endx="66" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="4" starty="31"/>
+                            <end endx="67" endy="32"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" name="variable"/>
+                        <property type="String" name="label"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="View"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Image">
+                <graphics>
+                    <picture sizex="79" sizey="39">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="37" fill-style="none" x2="78"/>
+                    </picture>
+                    <labels>
+                        <label x="16" y="7" text="Image"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="0"/>
+                            <end endx="72" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="7" starty="38"/>
+                            <end endx="70" endy="39"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" name="source"/>
+                        <property type="Scale Value" name="scaleType"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="View"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Text View">
+                <graphics>
+                    <picture sizex="99" sizey="32">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="31" fill-style="none" x2="98"/>
+                    </picture>
+                    <labels>
+                        <label x="12" y="3" text="Text View"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="11" starty="0"/>
+                            <end endx="89" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="14" starty="31"/>
+                            <end endx="85" endy="32"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" name="text"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="View"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Edit Text">
+                <graphics>
+                    <picture sizex="87" sizey="39">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="36" fill-style="none" x2="86"/>
+                    </picture>
+                    <labels>
+                        <label x="11" y="8" text="Edit Text"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="7" starty="-1"/>
+                            <end endx="76" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="4" starty="38"/>
+                            <end endx="78" endy="39"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="bool" name="isPassword"/>
+                        <property type="String" name="variable"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="View"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Table Layout">
+                <graphics>
+                    <picture sizex="150" sizey="52">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#483d8b" y1="0" stroke-width="2" x1="0" y2="51" fill-style="none" x2="149"/>
+                    </picture>
+                    <labels>
+                        <label x="26" y="11" text="Table Layout"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="6" starty="0"/>
+                            <end endx="140" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="13" starty="51"/>
+                            <end endx="131" endy="52"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <generalizations>
+                        <parent parentName="View"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Table Row">
+                <graphics>
+                    <picture sizex="126" sizey="50">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="49" fill-style="none" x2="125"/>
+                    </picture>
+                    <labels>
+                        <label x="24" y="12" text="Table Row"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="7" starty="1"/>
+                            <end endx="117" endy="2"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="12" starty="49"/>
+                            <end endx="110" endy="50"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <generalizations>
+                        <parent parentName="View"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Gallery">
+                <graphics>
+                    <picture sizex="115" sizey="46">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="45" fill-style="none" x2="114"/>
+                    </picture>
+                    <labels>
+                        <label x="32" y="9" text="Gallery"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="8" starty="0"/>
+                            <end endx="109" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="8" starty="45"/>
+                            <end endx="106" endy="46"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <generalizations>
+                        <parent parentName="View"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Grid View">
+                <graphics>
+                    <picture sizex="90" sizey="42">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="41" fill-style="none" x2="89"/>
+                    </picture>
+                    <labels>
+                        <label x="9" y="9" text="Grid View"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="7" starty="0"/>
+                            <end endx="83" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="12" starty="41"/>
+                            <end endx="84" endy="42"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="int" name="columnWidth"/>
+                        <property type="int" name="verticalSpacing"/>
+                        <property type="int" name="horizontalSpacing"/>
+                        <property type="int" name="numColumns"/>
+                        <property type="Stretch Mode Value" name="stretchMode"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="View"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Scroll View">
+                <graphics>
+                    <picture sizex="100" sizey="47">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="45" fill-style="none" x2="99"/>
+                    </picture>
+                    <labels>
+                        <label x="9" y="12" text="Scroll View"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="6" starty="-1"/>
+                            <end endx="90" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="11" starty="46"/>
+                            <end endx="87" endy="47"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <generalizations>
+                        <parent parentName="View"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Spinner">
+                <graphics>
+                    <picture sizex="89" sizey="38">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="37" fill-style="none" x2="88"/>
+                    </picture>
+                    <labels>
+                        <label x="16" y="7" text="Spinner"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="8" starty="1"/>
+                            <end endx="82" endy="2"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="9" starty="37"/>
+                            <end endx="78" endy="38"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" name="itemsContent"/>
+                        <property type="String" name="itemsIds"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="View"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Check Box">
+                <graphics>
+                    <picture sizex="116" sizey="51">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="50" fill-style="none" x2="115"/>
+                    </picture>
+                    <labels>
+                        <label x="20" y="13" text="Check Box"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="13" starty="0"/>
+                            <end endx="108" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="13" starty="50"/>
+                            <end endx="103" endy="51"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" name="text"/>
+                        <property type="Check Value" name="default"/>
+                        <property type="String" name="variable"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="View"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="List View">
+                <graphics>
+                    <picture sizex="113" sizey="42">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="112"/>
+                    </picture>
+                    <labels>
+                        <label x="23" y="6" text="List View"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="9" starty="-1"/>
+                            <end endx="103" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="9" starty="41"/>
+                            <end endx="106" endy="41"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <generalizations>
+                        <parent parentName="View"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="List of Text Views">
+                <graphics>
+                    <picture sizex="145" sizey="41">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="144"/>
+                    </picture>
+                    <labels>
+                        <label x="11" y="8" text="List of Text Views"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="7" starty="0"/>
+                            <end endx="137" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="11" starty="40"/>
+                            <end endx="132" endy="41"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="Layout Value" name="textViewLayoutWidth"/>
+                        <property type="Layout Value" name="textViewLayoutHeight"/>
+                        <property type="String" name="itemsContent"/>
+                        <property type="String" name="itemsIds"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="View"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <edge displayedName="followingBy" name="followingBy">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="followingBy"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="followingBy1" endName="followingBy"/>
+                    </associations>
+                </logic>
+            </edge>
+            <edge displayedName="contains" name="contains">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="contains"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="contains1" endName="contains2"/>
+                    </associations>
+                </logic>
+            </edge>
+        </graphicTypes>
+    </diagram>
+</metamodel>

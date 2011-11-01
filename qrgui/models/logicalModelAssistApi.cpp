@@ -3,11 +3,16 @@
 
 using namespace qReal;
 using namespace models;
-using namespace details;
+using namespace models::details;
 
 LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel, EditorManager const &editorManager)
-	: ModelsAssistApi(logicalModel, editorManager), mLogicalModel(logicalModel)
+	: mModelsAssistApi(logicalModel, editorManager), mLogicalModel(logicalModel)
 {
+}
+
+EditorManager const &LogicalModelAssistApi::editorManager() const
+{
+	return mModelsAssistApi.editorManager();
 }
 
 qrRepo::LogicalRepoApi const &LogicalModelAssistApi::logicalRepoApi() const
@@ -21,19 +26,19 @@ Id LogicalModelAssistApi::createElement(Id const &parent, Id const &type)
 	Q_ASSERT(parent.idSize() == 4);
 
 	Id const newElementId(type, QUuid::createUuid().toString());
-	QString const elementFriendlyName = mEditorManager.friendlyName(type);
+	QString const elementFriendlyName = mModelsAssistApi.editorManager().friendlyName(type);
 	mLogicalModel.addElementToModel(parent, newElementId, Id(), "(" + elementFriendlyName + ")", QPointF(0, 0));
 	return newElementId;
 }
 
 Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
 {
-	return ModelsAssistApi::createElement(parent, id, isFromLogicalModel, name, position);
+	return mModelsAssistApi.createElement(parent, id, isFromLogicalModel, name, position);
 }
 
 void LogicalModelAssistApi::stackBefore(const Id &element, const Id &sibling)
 {
-	mLogicalModel.stackBefore(mModel.indexById(element), mModel.indexById(sibling));
+	mModelsAssistApi.stackBefore(element, sibling);
 }
 
 IdList LogicalModelAssistApi::children(Id const &element) const
@@ -44,7 +49,7 @@ IdList LogicalModelAssistApi::children(Id const &element) const
 void LogicalModelAssistApi::changeParent(Id const &element, Id const &parent, QPointF const &position)
 {
 	Q_UNUSED(position);
-	mLogicalModel.changeParent(mModel.indexById(element), mModel.indexById(parent), QPointF());
+	mLogicalModel.changeParent(mLogicalModel.indexById(element), mLogicalModel.indexById(parent), QPointF());
 }
 
 void LogicalModelAssistApi::connect(Id const &source, Id const &destination)
@@ -114,21 +119,76 @@ IdList LogicalModelAssistApi::diagramsAbleToBeUsedIn(Id const &element) const
 
 void LogicalModelAssistApi::setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName)
 {
-	int roleIndex = roleIndexByName(elem, roleName);
+	int roleIndex = mModelsAssistApi.roleIndexByName(elem, roleName);
 	if (roleIndex < roles::customPropertiesBeginRole)
 		return;
-	setProperty(elem, newValue, roleIndex);
+	mModelsAssistApi.setProperty(elem, newValue, roleIndex);
 }
 
 QVariant LogicalModelAssistApi::propertyByRoleName(Id const &elem, QString const &roleName) const
 {
-	int roleIndex = roleIndexByName(elem, roleName);
+	int roleIndex = mModelsAssistApi.roleIndexByName(elem, roleName);
 	if (roleIndex < roles::customPropertiesBeginRole)
 		return "";
-	return property(elem, roleIndex);
+	return mModelsAssistApi.property(elem, roleIndex);
 }
 
 bool LogicalModelAssistApi::isLogicalId(Id const &id) const
 {
-	return indexById(id) != QModelIndex();
+	return mModelsAssistApi.indexById(id) != QModelIndex();
+}
+
+void LogicalModelAssistApi::setTo(Id const &elem, Id const &newValue)
+{
+	mModelsAssistApi.setTo(elem, newValue);
+}
+
+Id LogicalModelAssistApi::to(Id const &elem) const
+{
+	return mModelsAssistApi.to(elem);
+}
+
+void LogicalModelAssistApi::setFrom(Id const &elem, Id const &newValue)
+{
+	mModelsAssistApi.setFrom(elem, newValue);
+}
+
+Id LogicalModelAssistApi::from(Id const &elem) const
+{
+	return mModelsAssistApi.from(elem);
+}
+
+QModelIndex LogicalModelAssistApi::indexById(Id const &id) const
+{
+	return mModelsAssistApi.indexById(id);
+}
+
+Id LogicalModelAssistApi::idByIndex(QModelIndex const &index) const
+{
+	return mModelsAssistApi.idByIndex(index);
+}
+
+QPersistentModelIndex LogicalModelAssistApi::rootIndex() const
+{
+	return mModelsAssistApi.rootIndex();
+}
+
+Id LogicalModelAssistApi::rootId() const
+{
+	return mModelsAssistApi.rootId();
+}
+
+bool LogicalModelAssistApi::hasRootDiagrams() const
+{
+	return mModelsAssistApi.hasRootDiagrams();
+}
+
+int LogicalModelAssistApi::childrenOfRootDiagram() const
+{
+	return mModelsAssistApi.childrenOfRootDiagram();
+}
+
+int LogicalModelAssistApi::childrenOfDiagram(const Id &parent) const
+{
+	return mModelsAssistApi.childrenOfDiagram(parent);
 }

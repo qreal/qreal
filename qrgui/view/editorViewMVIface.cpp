@@ -4,9 +4,9 @@
 #include "editorViewMVIface.h"
 #include "editorView.h"
 #include "editorViewScene.h"
-#include "../kernel/definitions.h"
+#include "../../qrkernel/definitions.h"
 #include "../umllib/element.h"
-#include "../editorManager/editorManager.h"
+#include "../pluginManager/editorManager.h"
 #include "../mainwindow/mainWindow.h"
 
 using namespace qReal;
@@ -168,13 +168,15 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			QList<QGraphicsItem*> selectedItems = mScene->selectedItems();
 			if (selectedItems.size() == 1) {
 				NodeElement* master = dynamic_cast<NodeElement*>(selectedItems.at(0));
-				if (master && master->connectionInProgress())
+				if (master && master->connectionInProgress()) {
 					isEdgeFromEmbeddedLinker = true;
+				}
 			}
 
-			if (!isEdgeFromEmbeddedLinker)
+			if (!isEdgeFromEmbeddedLinker) {
 				mScene->clearSelection();
-			elem->setSelected(true);
+				elem->setSelected(true);
+			}
 
 			NodeElement* nodeElem = dynamic_cast<NodeElement*>(elem);
 			if (nodeElem && currentId.element() == "Class" &&

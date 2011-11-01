@@ -6,16 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>738</width>
-    <height>580</height>
+    <width>1188</width>
+    <height>641</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string/>
+   <string>QReal</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../qrgui.qrc">
-    <normaloff>:/icons/kroki.png</normaloff>:/icons/kroki.png</iconset>
+    <normaloff>:/icons/qreal.png</normaloff>:/icons/qreal.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout">
@@ -35,8 +35,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>738</width>
-     <height>21</height>
+     <width>1188</width>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -46,8 +46,6 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
-    <addaction name="actionPrint"/>
-    <addaction name="actionMakeSvg"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -58,7 +56,6 @@
     <addaction name="actionZoom_In"/>
     <addaction name="actionZoom_Out"/>
     <addaction name="separator"/>
-    <addaction name="actionAntialiasing"/>
     <addaction name="actionShowSplash"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -75,16 +72,18 @@
      <string>&amp;Settings</string>
     </property>
     <addaction name="actionPreferences"/>
-    <addaction name="actionRobot_Settings"/>
+    <addaction name="actionShow_grid"/>
+    <addaction name="actionShow_alignment"/>
+    <addaction name="actionSwitch_on_grid"/>
+    <addaction name="actionSwitch_on_alignment"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionRun"/>
-    <addaction name="actionStop_Running"/>
-    <addaction name="actionStop_Robot"/>
     <addaction name="actionGenerate_Editor"/>
+    <addaction name="actionGenerate_Editor_qrmc"/>
+    <addaction name="actionParse_Editor_xml"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -183,6 +182,70 @@
    </attribute>
    <addaction name="actionZoom_In"/>
    <addaction name="actionZoom_Out"/>
+   <addaction name="separator"/>
+   <addaction name="actionFullscreen"/>
+  </widget>
+  <widget class="QDockWidget" name="logicalModelDock">
+   <property name="features">
+    <set>QDockWidget::AllDockWidgetFeatures</set>
+   </property>
+   <property name="windowTitle">
+    <string>Logical Model Explorer</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="logicalModelDockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QTreeView" name="logicalModelExplorer">
+       <property name="contextMenuPolicy">
+        <enum>Qt::ActionsContextMenu</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>true</bool>
+       </property>
+       <property name="dragEnabled">
+        <bool>false</bool>
+       </property>
+       <property name="dragDropOverwriteMode">
+        <bool>false</bool>
+       </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::DragDrop</enum>
+       </property>
+       <property name="defaultDropAction">
+        <enum>Qt::IgnoreAction</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QToolBar" name="generatorsToolbar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionCode"/>
+   <addaction name="actionFlash_Robot"/>
+   <addaction name="actionUpload_Program"/>
+  </widget>
+  <widget class="QToolBar" name="parsersToolbar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
   </widget>
   <widget class="QDockWidget" name="errorDock">
    <property name="sizePolicy">
@@ -254,7 +317,7 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>79</width>
+     <width>80</width>
      <height>100</height>
     </size>
    </property>
@@ -295,58 +358,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionShow2Dmodel"/>
-   <addaction name="actionRun"/>
-   <addaction name="actionStop_Running"/>
-   <addaction name="separator"/>
-   <addaction name="actionCode"/>
-   <addaction name="actionFlash_Robot"/>
-   <addaction name="actionUpload_Program"/>
-   <addaction name="separator"/>
-   <addaction name="actionStop_Robot"/>
-   <addaction name="actionConnect_To_Robot"/>
-   <addaction name="separator"/>
-   <addaction name="actionRobot_Settings"/>
-   <addaction name="separator"/>
-   <addaction name="actionFullscreen"/>
-   <addaction name="separator"/>
-  </widget>
-  <widget class="QDockWidget" name="logicalModelDock">
-   <property name="features">
-    <set>QDockWidget::AllDockWidgetFeatures</set>
-   </property>
-   <property name="windowTitle">
-    <string>Logical Model Explorer</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>1</number>
-   </attribute>
-   <widget class="QWidget" name="logicalModelDockWidgetContents">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QTreeView" name="logicalModelExplorer">
-       <property name="contextMenuPolicy">
-        <enum>Qt::ActionsContextMenu</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>true</bool>
-       </property>
-       <property name="dragEnabled">
-        <bool>false</bool>
-       </property>
-       <property name="dragDropOverwriteMode">
-        <bool>false</bool>
-       </property>
-       <property name="dragDropMode">
-        <enum>QAbstractItemView::DragDrop</enum>
-       </property>
-       <property name="defaultDropAction">
-        <enum>Qt::IgnoreAction</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
   </widget>
   <action name="actionQuit">
    <property name="checkable">
@@ -354,15 +365,6 @@
    </property>
    <property name="text">
     <string>&amp;Quit</string>
-   </property>
-  </action>
-  <action name="actionConnect">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/database_connected.png</normaloff>:/icons/database_connected.png</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;Connect</string>
    </property>
   </action>
   <action name="actionZoom_In">
@@ -416,51 +418,6 @@
     <string>Export to SVG</string>
    </property>
   </action>
-  <action name="actionDisconnect">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/database_disconnect.png</normaloff>:/icons/database_disconnect.png</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;Disconnect</string>
-   </property>
-  </action>
-  <action name="actionBeginTransaction">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/database_connect.png</normaloff>:/icons/database_connect.png</iconset>
-   </property>
-   <property name="text">
-    <string>Begin Transaction</string>
-   </property>
-  </action>
-  <action name="actionCommitTransaction">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/database_commit.png</normaloff>:/icons/database_commit.png</iconset>
-   </property>
-   <property name="text">
-    <string>Commit Transaction</string>
-   </property>
-  </action>
-  <action name="actionRollbackTransaction">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/database_revert.png</normaloff>:/icons/database_revert.png</iconset>
-   </property>
-   <property name="text">
-    <string>Rollback Transaction</string>
-   </property>
-  </action>
   <action name="actionDeleteFromDiagram">
    <property name="text">
     <string>Delete</string>
@@ -511,33 +468,14 @@
     <string>Show splashscreen</string>
    </property>
   </action>
-  <action name="actionClear">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
-   </property>
-   <property name="text">
-    <string>Exterminatus</string>
-   </property>
-  </action>
-  <action name="actionExport_to_XMI">
-   <property name="text">
-    <string>Export to XMI</string>
-   </property>
-  </action>
-  <action name="actionGenerate_to_Java">
-   <property name="text">
-    <string>Generate to Java</string>
-   </property>
-  </action>
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
    </property>
   </action>
-  <action name="actionGenerate_to_Hascol">
+  <action name="actionGenerate_editor">
    <property name="text">
-    <string>Generate to Hascol</string>
+    <string>Generate editor</string>
    </property>
   </action>
   <action name="actionSave_as">
@@ -553,22 +491,6 @@
     <string>Open</string>
    </property>
   </action>
-  <action name="actionParse_Hascol_sources">
-   <property name="text">
-    <string>Parse Hascol sources</string>
-   </property>
-   <property name="toolTip">
-    <string>Build diagrams from existing Hascol sources</string>
-   </property>
-  </action>
-  <action name="actionParse_Java_Libraries">
-   <property name="text">
-    <string>Parse Java Libraries</string>
-   </property>
-   <property name="toolTip">
-    <string>Parse Java Libraries</string>
-   </property>
-  </action>
   <action name="actionShow_grid">
    <property name="checkable">
     <bool>true</bool>
@@ -578,11 +500,6 @@
    </property>
    <property name="text">
     <string>Show grid</string>
-   </property>
-  </action>
-  <action name="actionShape_Edit">
-   <property name="text">
-    <string>Shape Editor</string>
    </property>
   </action>
   <action name="actionGenerate_Editor">
@@ -661,44 +578,43 @@
     <string>F9</string>
    </property>
   </action>
-  <action name="actionDebug_Single_step">
+  <action name="actionGenerate_and_build">
+   <property name="icon">
+    <iconset resource="../qrgui.qrc">
+     <normaloff>:/icons/build.png</normaloff>:/icons/build.png</iconset>
+   </property>
    <property name="text">
-    <string>Debug (Single step)</string>
+    <string>Generate and build</string>
    </property>
    <property name="shortcut">
-    <string>F10</string>
+    <string>Ctrl+F9</string>
    </property>
   </action>
-  <action name="actionRun">
+  <action name="actionSet_Breakpoints">
    <property name="text">
-    <string>Run</string>
+    <string>Set breakpoints</string>
    </property>
-   <property name="toolTip">
-    <string>Run current diagram on a robot using existing Bluetooth connection</string>
+   <property name="iconText">
+    <string>Set breakpoints</string>
    </property>
    <property name="shortcut">
-    <string>F5</string>
+    <string>Ctrl+F3</string>
    </property>
   </action>
-  <action name="actionRobot_Settings">
+  <action name="actionCont">
    <property name="text">
-    <string>Robot Settings...</string>
-   </property>
-  </action>
-  <action name="actionStop_Running">
-   <property name="text">
-    <string>Stop Running</string>
-   </property>
-   <property name="toolTip">
-    <string>Stop Running</string>
+    <string>Cont</string>
    </property>
    <property name="shortcut">
-    <string>Shift+F5</string>
+    <string>Ctrl+F6</string>
    </property>
   </action>
-  <action name="actionStop_Robot">
+  <action name="actionConfigure">
    <property name="text">
-    <string>Stop Robot</string>
+    <string>Configure</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F2</string>
    </property>
   </action>
   <action name="actionNew_Diagram">
@@ -720,28 +636,12 @@
     <string>Ctrl+Shift+F</string>
    </property>
   </action>
-  <action name="actionShow2Dmodel">
-   <property name="text">
-    <string>2D model</string>
-   </property>
-   <property name="toolTip">
-    <string>Show 2D model</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+F12</string>
-   </property>
-  </action>
   <action name="actionNewProject">
    <property name="text">
     <string>New Project</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+N</string>
-   </property>
-  </action>
-  <action name="actionConnect_To_Robot">
-   <property name="text">
-    <string>Connect To Robot</string>
    </property>
   </action>
   <action name="actionCode">
@@ -774,13 +674,13 @@
   <customwidget>
    <class>qReal::gui::PaletteToolbox</class>
    <extends>QToolBox</extends>
-   <header>paletteToolbox.h</header>
+   <header>../mainwindow/paletteToolbox.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>ErrorListWidget</class>
    <extends>QListWidget</extends>
-   <header>errorListWidget.h</header>
+   <header>../mainwindow/errorListWidget.h</header>
   </customwidget>
   <customwidget>
    <class>PropertyEditorView</class>

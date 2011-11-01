@@ -4,7 +4,7 @@
 
 using namespace qReal;
 
-BlockParser::BlockParser(gui::ErrorReporter* errorReporter)
+BlockParser::BlockParser(ErrorReporterInterface* errorReporter)
 	: ExpressionsParser(errorReporter){
 }
 

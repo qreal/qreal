@@ -1,7 +1,7 @@
 #include "errorReporter.h"
 #include <QtGui/QMessageBox>
 #include "errorListWidget.h"
-#include "../kernel/exception/exception.h"
+#include "../../qrkernel/exception/exception.h"
 
 using namespace qReal;
 using namespace gui;
@@ -82,6 +82,11 @@ void ErrorReporter::clear()
 		mErrorListWidget->clear();
 	if (mErrorList)
 		mErrorList->setVisible(false);
+}
+
+void ErrorReporter::clearErrors()
+{
+	mErrors.clear();
 }
 
 void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorListWidget) const

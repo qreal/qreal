@@ -3,7 +3,7 @@
 #include "label.h"
 #include "diagram.h"
 #include "nameNormalizer.h"
-#include "../utils/outFile.h"
+#include "../qrutils/outFile.h"
 
 #include <QDebug>
 
@@ -514,7 +514,7 @@ void GraphicType::generatePropertyDefaults(OutFile &out)
 	foreach (Property *property, mProperties)
 		if (!property->defaultValue().isEmpty())
 			out() << "\tpropertyDefault[\"" << name << "\"][\"" << property->name()
-									<< "\"] = QString::fromUtf8(\"" << property->defaultValue() << "\");\n";
+					<< "\"] = QString::fromUtf8(\"" << property->defaultValue() << "\");\n";
 }
 
 void GraphicType::generateOneCase(OutFile &out, bool isNotFirst) const

@@ -1,13 +1,13 @@
-QT		+=	svg xml
+DESTDIR = ../bin
+
+QT += svg xml
 CONFIG += rpath_libdirs help
+macx {
+	CONFIG -= app_bundle
+}
 
-INCLUDEPATH	+=	../qrmc\
-			../qrmc/plugins\
-			mainwindow \
-			dialogs/shapeEdit
-
-RESOURCES	=	qrgui.qrc
-SOURCES		=	main.cpp
+RESOURCES = qrgui.qrc
+SOURCES = main.cpp
 
 TRANSLATIONS = qrgui_ru.ts
 
@@ -16,22 +16,20 @@ QMAKE_LFLAGS_DEBUG += -pg
 
 # workaround для http://bugreports.qt.nokia.com/browse/QTBUG-8110
 # как только поправят, можно будет юзать QMAKE_LFLAGS_RPATH
-QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)"
+!macx {
+	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)/../bin/"
+}
 
 OBJECTS_DIR = .obj
 UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
-if (equals(QMAKE_CXX, "g++")) {
+if (equals(QMAKE_CXX, "g++") : !macx) {
 	QMAKE_LFLAGS += -Wl,-E
 }
 
-# Путь до библиотеки с АПИ. Где-нибудь она найдётся...Path to the API library
-LIBS += -Ldebug -lqrrepo -Lrelease -lqrrepo -L. -lqrrepo -lqrmc
-
-CONFIG(debug, debug|release):LIBS  += -lqextserialportd
-else:LIBS  += -lqextserialport
+LIBS += -L../bin -lqrrepo -lqrkernel -lqrutils #-lqrmc
 
 unix:DEFINES   = _TTY_POSIX_
 win32:DEFINES  = _TTY_WIN_
@@ -48,32 +46,28 @@ include (mainwindow/mainwindow.pri)
 # View
 include (view/view.pri)
 
-# Stuff used in all places
-include (kernel/kernel.pri)
-
 # "Встроенные" генераторы
 include (generators/generators.pri)
 
 # "Встроенные" средства реверс-инжиниринга
 include (parsers/parsers.pri)
 
-# .pri заведён, чтобы структура папок более круто показывалась в креаторе.
-# Содержит код, общий для генератора редакторов и основной части.
-include (../utils/utils.pri)
-
 # Код, скачанный из интернета.
 include (thirdparty/thirdparty.pri)
 
 # Управление плагинами. Plugin managment
-include (editorManager/editorManager.pri)
+include (pluginManager/pluginManager.pri)
 
 # Graphical and logical models
 include (models/models.pri)
 
 # Interfaces for plugins, used by qrxc and qrmc.
-include (pluginInterface/pluginInterface.pri)
+include (editorPluginInterface/editorPluginInterface.pri)
 
-# Various interpreters (visual debugger, robot interpreters)
+# Interfaces for tool plugins, used in handcoded tools.
+include (toolPluginInterface/toolPluginInterface.pri)
+
+# Interpreters: visual debugger and robots
 include (interpreters/interpreters.pri)
 
 # Text Editor

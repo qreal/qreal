@@ -10,8 +10,8 @@
 #include <QTextStream>
 #include <QtGui/QIconEngine>
 #include <QDebug>
-#include "../pluginInterface/sdfRendererInterface.h"
-#include "../kernel/settingsManager.h"
+#include "../editorPluginInterface/sdfRendererInterface.h"
+#include "../../qrkernel/settingsManager.h"
 
 class SdfRenderer : public SdfRendererInterface
 {

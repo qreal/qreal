@@ -28,6 +28,9 @@ Diagram::~Diagram()
 bool Diagram::init()
 {
 	foreach(Id id, mApi->children(mId)) {
+		if (!mApi->isLogicalElement(id))
+			continue;
+
 		if (id.element() == metaEntityNode) {
 			Type *nodeType = new NodeType(this, mApi, id);
 			if (!nodeType->init(mDiagramName)) {

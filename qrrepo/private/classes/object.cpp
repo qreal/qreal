@@ -1,5 +1,5 @@
 #include "object.h"
-#include "../../../qrgui/kernel/exception/exception.h"
+#include "../../../qrkernel/exception/exception.h"
 
 #include <QDebug>
 
@@ -20,6 +20,31 @@ Object::Object(const Id &id, const Id &parent, const qReal::Id &logicalId)
 
 Object::Object(const Id &id) : mId(id)
 {
+}
+
+Object *Object::clone(QHash<Id, Object*> &objHash) const
+{
+	Id resultId = id().sameTypeId();
+	Object *result = new Object(resultId);
+	objHash.insert(resultId, result);
+
+	foreach (Id childId, mChildren) {
+		Object *child = objHash[childId]->clone(id(), objHash);
+		result->addChild(child->id());
+	}
+
+	//using copy constructor
+	result->mProperties = mProperties;
+
+	return result;
+}
+
+Object *Object::clone(const Id &parent, QHash<Id, Object*> &objHash) const
+{
+	Object *result = clone(objHash);
+	result->setParent(parent);
+
+	return result;
 }
 
 void Object::setParent(const Id &parent)
@@ -48,6 +73,11 @@ void Object::removeChild(const Id &child)
 	} else {
 		throw Exception("Object " + mId.toString() + ": removing nonexistent child " + child.toString());
 	}
+}
+
+void Object::copyPropertiesFrom(const Object &src)
+{
+	mProperties = src.mProperties;
 }
 
 IdList Object::children() const
@@ -79,7 +109,7 @@ Id Object::parent() const
 void Object::setProperty(const QString &name, const QVariant &value)
 {
 	if (value == QVariant()) {
-		qDebug() << "Empty QVariant set as a property for " << id();
+		qDebug() << "Empty QVariant set as a property for " << id().toString();
 		qDebug() << ", property name " << name;
 		Q_ASSERT(!"Empty QVariant set as a property");
 	}

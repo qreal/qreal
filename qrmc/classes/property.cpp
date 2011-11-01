@@ -1,5 +1,5 @@
 #include "property.h"
-#include "utils/defs.h"
+#include "../utils/defs.h"
 
 #include <QDebug>
 

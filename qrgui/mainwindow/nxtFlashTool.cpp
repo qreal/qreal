@@ -6,7 +6,7 @@ using namespace gui;
 NxtFlashTool::NxtFlashTool(ErrorReporter *errorReporter)
 	: mErrorReporter(errorReporter), mUploadState(done)
 {
-	QProcessEnvironment environment;
+	QProcessEnvironment environment(QProcessEnvironment::systemEnvironment());
 	environment.insert("QREALDIR", qApp->applicationDirPath());
 	environment.insert("DISPLAY", ":0.0");
 	mFlashProcess.setProcessEnvironment(environment);
@@ -28,15 +28,10 @@ NxtFlashTool::NxtFlashTool(ErrorReporter *errorReporter)
 
 void NxtFlashTool::flashRobot()
 {
-#ifdef Q_OS_UNIX
-	mFlashProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/flash.sh");
-#endif
-
 #ifdef Q_OS_WIN
-	QString path = qApp->applicationDirPath();
-	path.replace(QRegExp("/"), "\\");
-	qDebug() << path;
-	mFlashProcess.start("cmd", QStringList() << path + "\\nxt-tools\\flash.bat");
+	mFlashProcess.start(qApp->applicationDirPath() + "/nxt-tools/flash.bat");
+#else
+	mFlashProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/flash.sh");
 #endif
 
 	mErrorReporter->addInformation("Firmware flash started. Please don't disconnect robot during the process");
@@ -54,7 +49,9 @@ void NxtFlashTool::nxtFlashingFinished(int exitCode, QProcess::ExitStatus exitSt
 {
 	qDebug() << "finished with code " << exitCode << ", status: " << exitStatus;
 
-	if (exitCode == 127)
+	if (exitCode == 0)
+		mErrorReporter->addInformation("Flashing process completed.");
+	else if (exitCode == 127)
 		mErrorReporter->addError("flash.sh not found. Make sure it is present in QReal installation directory");
 	else if (exitCode == 139)
 		mErrorReporter->addError("QReal requires superuser privileges to flash NXT robot");
@@ -83,15 +80,10 @@ void NxtFlashTool::readNxtFlashData()
 
 void NxtFlashTool::uploadProgram()
 {
-
-#ifdef Q_OS_UNIX
-	mUploadProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/upload.sh");
-#endif
-
 #ifdef Q_OS_WIN
-	QString path = qApp->applicationDirPath();
-	path.replace(QRegExp("/"), "\\");
-	mUploadProcess.start("cmd", QStringList() << path + "\\nxt-tools\\upload.bat");
+	mFlashProcess.start("cmd", QStringList() << "/C" << "start" << qApp->applicationDirPath() + "/nxt-tools/upload.bat");
+#else
+	mUploadProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/upload.sh");
 #endif
 
 	mErrorReporter->addInformation("Uploading program started. Please don't disconnect robot during the process");

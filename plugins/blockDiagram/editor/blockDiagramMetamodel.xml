@@ -1,0 +1,164 @@
+  <metamodel xmlns="http://schema.real.com/schema/">
+    <include>../../commonMetamodels/kernelMetamodel.xml</include>
+    <include>../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
+    <include>../../commonMetamodels/basicActionsMetamodel.xml</include>
+    <namespace>UML 2.0</namespace>
+    <diagram displayedName="Block Diagram" nodeName="BlockDiagramNode" name="BlockDiagram">
+      <graphicTypes>
+        <node displayedName="Block Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="BlockDiagramNode">
+          <graphics>
+            <picture sizex="200" sizey="200">
+              <line y1="0" x1="20" y2="0" x2="180"/>
+              <line y1="200" x1="20" y2="200" x2="180"/>
+              <line y1="20" x1="0" y2="180" x2="0"/>
+              <line y1="20" x1="200" y2="180" x2="200"/>
+              <arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="40" x2="40"/>
+              <arc spanAngle="1440" startAngle="0" y1="0" x1="160" y2="40" x2="200"/>
+              <arc spanAngle="1440" startAngle="2880" y1="160" x1="0" y2="200" x2="40"/>
+              <arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200"/>
+            </picture>
+            <labels>
+              <label x="40" y="10" textBinded="name"/>
+            </labels>
+            <ports>
+              <pointPort x="0" y="100"/>
+              <pointPort x="100" y="0"/>
+              <pointPort x="200" y="100"/>
+              <pointPort x="100" y="200"/>
+            </ports>
+          </graphics>
+          <logic>
+            <generalizations>
+              <parent parentName="KernelDiagram::Diagram"/>
+            </generalizations>
+            <container>
+              <contains type="BlockDiagram::Action"/>
+              <contains type="BlockDiagram::FinalNode"/>
+              <contains type="BlockDiagram::ControlFlow"/>
+              <contains type="BlockDiagram::InitialNode"/>
+              <contains type="BlockDiagram::DecisionNode"/>
+            </container>
+          </logic>
+        </node>
+        <node displayedName="Action" name="Action">
+          <graphics>
+            <picture sizex="80" sizey="60">
+              <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 10.75 1 C 5.36522 1 1 5.41447 1 10.86 L 1 49.14 C 1 54.5855 5.36522 59 10.75 59 L 69.25 59 C 74.6348 59 79 54.5855 79 49.14 L 79 10.86 C 79 5.41447 74.6348 1 69.25 1 L 10.75 1" fill-style="solid"/>
+            </picture>
+            <ports>
+              <linePort>
+                <start startx="79" starty="10"/>
+                <end endx="79" endy="50"/>
+              </linePort>
+              <linePort>
+                <start startx="1" starty="10"/>
+                <end endx="1" endy="50"/>
+              </linePort>
+              <linePort>
+                <start startx="10" starty="1"/>
+                <end endx="70" endy="1"/>
+              </linePort>
+              <linePort>
+                <start startx="10" starty="59"/>
+                <end endx="70" endy="59"/>
+              </linePort>
+            </ports>
+            <labels>
+              <label textBinded="process" center="true"/>
+            </labels>
+          </graphics>
+          <logic>
+            <properties>
+              <property type="string" name="process" />
+            </properties>
+          </logic>
+        </node>
+        <node displayedName="Final Node" path="29, 15 : 27, 20 : 24, 24 : 20, 27 : 15, 28 : 10, 27 : 6, 24 : 3, 20 : 2, 15 : 3, 10 : 6, 6 : 10, 3 : 15, 2 : 20, 3 : 24, 6 : 27, 10 : 29, 15 : 36, 15 : 34, 23 : 29, 29 : 23, 34 : 15, 35 : 7, 34 : 1, 29 : -4, 23 : -5, 15 : -4, 7 : 1, 1 : 7, -4 : 15, -5 : 23, -4 : 29, 1 : 34, 7 : 36, 15 : " name="BlockFinalNode">
+          <graphics>
+            <picture sizex="30" sizey="30">
+              <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="30" fill-style="solid"/>
+              <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
+            </picture>
+            <ports>
+              <pointPort x="0" y="15"/>
+              <pointPort x="15" y="0"/>
+              <pointPort x="15" y="30"/>
+              <pointPort x="30" y="15"/>
+              <pointPort x="15" y="15"/>
+            </ports>
+          </graphics>
+          <logic>
+          </logic>
+        </node>
+        <edge displayedName="Control Flow" name="ControlFlow">
+          <graphics>
+            <labels>
+              <label textBinded="type"/>
+            </labels>
+            <lineType type="solidLine"/>
+          </graphics>
+          <logic>
+            <properties>
+              <property type="string" name="type_number" />
+              <property type="bool" name="type" />
+            </properties>
+            <associations endType="open_arrow" beginType="no_arrow">
+            </associations>
+            <possibleEdges>
+              <possibleEdge beginName="Action" directed="false" endName="Action"/>
+              <possibleEdge beginName="Action" directed="true" endName="BlockFinalNode"/>
+              <possibleEdge beginName="Action" directed="false" endName="ConditionNode"/>
+              <possibleEdge beginName="ConditionNode" directed="false" endName="ConditionNode"/>
+              <possibleEdge beginName="ConditionNode" directed="true" endName="FinalNode"/>
+              <possibleEdge beginName="InitialNode" directed="true" endName="Action"/>
+              <possibleEdge beginName="InitialNode" directed="true" endName="BlockFinalNode"/>
+              <possibleEdge beginName="InitialNode" directed="true" endName="ConditionNode"/>
+            </possibleEdges>
+          </logic>
+        </edge>
+        <node displayedName="Initial Node" path="36, 15 : 34, 23 : 29, 29 : 23, 34 : 15, 35 : 7, 34 : 1, 29 : -4, 23 : -5, 15 : -4, 7 : 1, 1 : 7, -4 : 15, -5 : 23, -4 : 29, 1 : 34, 7 : 36, 15 : " name="InitialNode">
+          <graphics>
+            <picture sizex="30" sizey="30">
+              <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="30" fill-style="solid"/>
+            </picture>
+            <ports>
+              <pointPort x="0" y="15"/>
+              <pointPort x="30" y="15"/>
+              <pointPort x="15" y="0"/>
+              <pointPort x="15" y="30"/>
+              <pointPort x="15" y="15"/>
+            </ports>
+          </graphics>
+          <logic>
+          </logic>
+        </node>
+        <node displayedName="Condition Node" path="30, 2 : 58, 30 : 30, 58 : 2, 30 : 30, 2 :" name="ConditionNode">
+          <graphics>
+            <picture sizex="60" sizey="60">
+              <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="30" stroke-width="1" x2="1" fill-style="solid" />
+              <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="1" y2="59" stroke-width="1" x2="30" fill-style="solid" />
+              <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="30" y2="30" stroke-width="1" x2="59" fill-style="solid" />
+              <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="59" y2="1" stroke-width="1" x2="30" fill-style="solid" />
+            </picture>
+            <ports>
+              <pointPort x="1" y="30"/>
+              <pointPort x="30" y="59"/>
+              <pointPort x="59" y="30"/>
+              <pointPort x="30" y="1"/>
+            </ports>
+            <labels>
+              <label textBinded="condition" center="true"/>
+            </labels>
+          </graphics>
+          <logic>
+            <properties>
+              <property type="string" name="decision">
+                <default>1</default>
+              </property>
+              <property type="string" name="condition" />
+            </properties>
+          </logic>
+        </node>
+      </graphicTypes>
+    </diagram>
+  </metamodel>

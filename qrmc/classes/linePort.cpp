@@ -1,6 +1,6 @@
 #include "linePort.h"
-#include "utils/defs.h"
-#include "metaCompiler.h"
+#include "../utils/defs.h"
+#include "../metaCompiler.h"
 
 #include <QtCore/QDebug>
 

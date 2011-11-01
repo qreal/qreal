@@ -296,7 +296,7 @@ QIcon QtProperty::valueIcon() const
 */
 QString QtProperty::valueText() const
 {
-    return d_ptr->m_manager->valueText(this);
+    return d_ptr->m_manager->valueText(this).replace("&lt;", "<");
 }
 
 /*!

@@ -4,7 +4,7 @@
 #include <QPair>
 
 #include "element.h"
-#include "../pluginInterface/elementImpl.h"
+#include "../editorPluginInterface/elementImpl.h"
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
@@ -31,7 +31,7 @@ public:
 	virtual void initTitles();
 
 	void adjustLink();
-	bool reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst);
+	bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true, bool jumpsOnly = false);
 	bool shouldReconnect() const;
 	void arrangeSrcAndDst();
 	NodeElement *src() const;

@@ -1,5 +1,5 @@
 #include "propertyEditorView.h"
-#include "mainWindow.h"
+#include "../mainwindow/mainWindow.h"
 
 
 PropertyEditorView::PropertyEditorView(QWidget *parent) :

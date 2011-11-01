@@ -8,7 +8,7 @@
 #include <QFileInfo>
 #include <QDir>
 
-#include "../../kernel/roles.h"
+#include "../../../qrkernel/roles.h"
 
 using namespace qReal;
 using namespace generators;

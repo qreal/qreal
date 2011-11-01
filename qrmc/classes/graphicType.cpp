@@ -1,7 +1,7 @@
 #include "graphicType.h"
 #include "property.h"
-#include "diagram.h"
-#include "utils/nameNormalizer.h"
+#include "../diagram.h"
+#include "../utils/nameNormalizer.h"
 
 #include <QDebug>
 
@@ -34,9 +34,15 @@ bool GraphicType::init(QString const &context)
 	mIsVisible = false;
 	if (mApi->hasProperty(mId, "shape"))
 		mIsVisible = !mApi->stringProperty(mId, "shape").isEmpty();
-	mContains << mApi->stringProperty(mId, "container").split(",", QString::SkipEmptyParts);
+
+	mContains << (mApi->hasProperty(mId, "container")
+					  ? mApi->stringProperty(mId, "container").split(",", QString::SkipEmptyParts)
+					  : QStringList());
 
 	foreach(Id id, mApi->children(mId)) {
+		if (!mApi->isLogicalElement(id))
+			continue;
+
 		if (id.element() == metaEntityParent) {
 			QString parentName = mApi->name(id);
 			if (!mParents.contains(parentName))
@@ -71,8 +77,9 @@ bool GraphicType::initPossibleEdges()
 {
 	IdList children = mApi->children(mId);
 	foreach(Id id, children) {
-		if (id.element() != metaEntityPossibleEdge)
+		if (!mApi->isLogicalElement(id) || id.element() != metaEntityPossibleEdge)
 			continue;
+
 		QString beginName = mApi->stringProperty(id, "beginName");
 		QString endName = mApi->stringProperty(id, "endName");
 		QString directedField = mApi->stringProperty(id, "directed");

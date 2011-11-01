@@ -27,8 +27,9 @@ void ElementTitle::setTitleFont() {
 		font.fromString(SettingsManager::value("CurrentFont", "ololo").toString());
 		setFont(font);
 	} else {
-		setFont(QFont(QFontDatabase::applicationFontFamilies(
-			QFontDatabase::addApplicationFont(QDir::currentPath() + "/DejaVuSansCondensed.ttf")).at(0), 7));
+		int const fontId = QFontDatabase::addApplicationFont(QDir::currentPath() + "/DejaVuSansCondensed.ttf");
+		if (fontId != -1)
+			setFont(QFont(QFontDatabase::applicationFontFamilies(fontId).at(0), 7));
 	}
 }
 
@@ -122,7 +123,7 @@ void ElementTitle::startTextInteraction()
 		setTextInteractionFlags(Qt::TextEditorInteraction);
 	setFocus(Qt::OtherFocusReason);
 
-	 //Set full text selection
+	// Set full text selection
 	QTextCursor cursor = QTextCursor(document());
 	cursor.select(QTextCursor::Document);
 	setTextCursor(cursor);

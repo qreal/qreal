@@ -29,108 +29,122 @@ NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator()
 		delete mApi;
 }
 
+void NxtOSEKRobotGenerator::addToGeneratedStringSetVariableInit() {
+	QPair<QByteArray, qReal::Id> curVariable;
+	foreach (curVariable, mVariables) {
+		mGeneratedStringSet[mVariablePlaceInGenStrSet].append(QPair<QString, qReal::Id> ("int " + QString::fromUtf8(curVariable.first) + ";", curVariable.second));
+	}
+}
+
 gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 {
 	IdList initialNodes = mApi->elementsByType("InitialNode");
 
 	int curInitialNodeNumber = 0;
 	foreach (Id curInitialNode, initialNodes) {
-		if (mApi->isGraphicalElement(curInitialNode)) {
-			QString resultCode;
+		if (!mApi->isGraphicalElement(curInitialNode))
+			continue;
+		
+		QString resultCode;
+		mGeneratedStringSet.clear();
+		mGeneratedStringSet.append(QList< QPair<QString, qReal::Id> >()); //first list for variable initialization
+		mVariablePlaceInGenStrSet = 0;
 
-			mGeneratedStringSet.clear();
-			mElementToStringListNumbers.clear();
+		mElementToStringListNumbers.clear();
+		mVariables.clear();
 
-			AbstractElementGenerator* gen = ElementGeneratorFactory::generator(this, curInitialNode);
-			mPreviousElement = curInitialNode;
-			gen->generate();
-			QList< QPair<QString, qReal::Id> > stringPairList;
-			foreach (stringPairList, mGeneratedStringSet) {
-				QPair<QString, qReal::Id> stringPair;
-				foreach (stringPair, stringPairList) {
-					resultCode += stringPair.first + "\n";
-				}
-			} //TODO
-			delete gen;
+		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(this, curInitialNode);
+		mPreviousElement = curInitialNode;
+		gen->generate();
+		addToGeneratedStringSetVariableInit();
 
-			//QDir projectsDir; //TODO: use user path to projects
-
-			QString projectName = "example" + QString::number(curInitialNodeNumber);
-
-			//Create project directory
-			if (!QDir(projectName).exists())
-				QDir().mkdir(projectName);
-
-			/* Generate C file */
-			QFile templateCFile(":/generators/nxtOSEK/templates/template.c");
-			if (!templateCFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-				mErrorReporter.addError("cannot open \"" + templateCFile.fileName() + "\"");
-				return mErrorReporter;
+		QList< QPair<QString, qReal::Id> > stringPairList;
+		foreach (stringPairList, mGeneratedStringSet) {
+			QPair<QString, qReal::Id> stringPair;
+			foreach (stringPair, stringPairList) {
+				resultCode += stringPair.first + "\n";
 			}
+		} //TODO
+		delete gen;
 
-			QTextStream templateCStream(&templateCFile);
-			QString resultString = templateCStream.readAll();
-			templateCFile.close();
+		//QDir projectsDir; //TODO: use user path to projects
 
-			resultString.replace("@@PROJECT_NAME@@", projectName);
-			resultString.replace("@@CODE@@", resultCode);
+		QString projectName = "example" + QString::number(curInitialNodeNumber);
 
-			QFile resultCFile(projectName + "/" + projectName + ".c");
-			if (!resultCFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-				mErrorReporter.addError("cannot open \"" + resultCFile.fileName() + "\"");
-				return mErrorReporter;
-			}
+		//Create project directory
+		if (!QDir(projectName).exists())
+			QDir().mkdir(projectName);
 
-			QTextStream outC(&resultCFile);
-			outC << resultString;
-			outC.flush();
-			resultCFile.close();
-			/**/
-
-			/* Generate OIL file */
-			QFile templateOILFile(":/generators/nxtOSEK/templates/template.oil");
-			if (!templateOILFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-				mErrorReporter.addError("cannot open \"" + templateOILFile.fileName() + "\"");
-				return mErrorReporter;
-			}
-
-			QFile resultOILFile(projectName + "/" + projectName + ".oil");
-			if (!resultOILFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-				mErrorReporter.addError("cannot open \"" + resultOILFile.fileName() + "\"");
-				return mErrorReporter;
-			}
-
-			QTextStream outOIL(&resultOILFile);
-			outOIL << templateOILFile.readAll();
-			templateOILFile.close();
-
-			outOIL.flush();
-			resultOILFile.close();
-
-			/* Generate makefile */
-			QFile templateMakeFile(":/generators/nxtOSEK/templates/template.makefile");
-			if (!templateMakeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-				mErrorReporter.addError("cannot open \"" + templateMakeFile.fileName() + "\"");
-				return mErrorReporter;
-			}
-
-			QFile resultMakeFile(projectName + "/makefile");
-			if (!resultMakeFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-				mErrorReporter.addError("cannot open \"" + resultMakeFile.fileName() + "\"");
-				return mErrorReporter;
-			}
-
-			QTextStream outMake(&resultMakeFile);
-			outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8());
-			templateMakeFile.close();
-
-			outMake.flush();
-			resultMakeFile.close();
-			/**/
-
-			curInitialNodeNumber++;
+		/* Generate C file */
+		QFile templateCFile(":/generators/nxtOSEK/templates/template.c");
+		if (!templateCFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			mErrorReporter.addError("cannot open \"" + templateCFile.fileName() + "\"");
+			return mErrorReporter;
 		}
+
+		QTextStream templateCStream(&templateCFile);
+		QString resultString = templateCStream.readAll();
+		templateCFile.close();
+
+		resultString.replace("@@PROJECT_NAME@@", projectName);
+		resultString.replace("@@CODE@@", resultCode);
+
+		QFile resultCFile(projectName + "/" + projectName + ".c");
+		if (!resultCFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+			mErrorReporter.addError("cannot open \"" + resultCFile.fileName() + "\"");
+			return mErrorReporter;
+		}
+
+		QTextStream outC(&resultCFile);
+		outC << resultString;
+		outC.flush();
+		resultCFile.close();
+		/**/
+
+		/* Generate OIL file */
+		QFile templateOILFile(":/generators/nxtOSEK/templates/template.oil");
+		if (!templateOILFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			mErrorReporter.addError("cannot open \"" + templateOILFile.fileName() + "\"");
+			return mErrorReporter;
+		}
+
+		QFile resultOILFile(projectName + "/" + projectName + ".oil");
+		if (!resultOILFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+			mErrorReporter.addError("cannot open \"" + resultOILFile.fileName() + "\"");
+			return mErrorReporter;
+		}
+
+		QTextStream outOIL(&resultOILFile);
+		outOIL << templateOILFile.readAll();
+		templateOILFile.close();
+
+		outOIL.flush();
+		resultOILFile.close();
+
+		/* Generate makefile */
+		QFile templateMakeFile(":/generators/nxtOSEK/templates/template.makefile");
+		if (!templateMakeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			mErrorReporter.addError("cannot open \"" + templateMakeFile.fileName() + "\"");
+			return mErrorReporter;
+		}
+
+		QFile resultMakeFile(projectName + "/makefile");
+		if (!resultMakeFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+			mErrorReporter.addError("cannot open \"" + resultMakeFile.fileName() + "\"");
+			return mErrorReporter;
+		}
+
+		QTextStream outMake(&resultMakeFile);
+		outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8());
+		templateMakeFile.close();
+
+		outMake.flush();
+		resultMakeFile.close();
+		/**/
+
+		curInitialNodeNumber++;
 	}
+	
 	return mErrorReporter;
 }
 
@@ -150,6 +164,11 @@ void NxtOSEKRobotGenerator::AbstractElementGenerator::createListsForIncomingConn
 
 NxtOSEKRobotGenerator::SimpleElementGenerator::SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen,
 		qReal::Id elementId): AbstractElementGenerator(emboxGen, elementId)
+{
+}
+
+NxtOSEKRobotGenerator::FunctionElementGenerator::FunctionElementGenerator(NxtOSEKRobotGenerator *emboxGen,
+		qReal::Id elementId): SimpleElementGenerator(emboxGen, elementId)
 {
 }
 
@@ -178,6 +197,60 @@ QList<QString> NxtOSEKRobotGenerator::SimpleElementGenerator::portsToEngineNames
 	return result;
 }
 
+void NxtOSEKRobotGenerator::FunctionElementGenerator::variableAnalysis(const QByteArray& code)
+{
+	QList<QByteArray> funcBlocks = code.split(';');
+
+	foreach (QByteArray block, funcBlocks) {
+		int firstEqualSignPos = block.indexOf('='); //только здесь может произойти первое появление переменной
+		if (firstEqualSignPos == -1)
+			continue;
+
+		QByteArray leftPart = block.left(firstEqualSignPos);
+		//must be a normal variable name
+
+		leftPart = leftPart.trimmed();
+		QString forbiddenLastSimbols = "+-=*/><";
+		if (forbiddenLastSimbols.contains((leftPart.at(leftPart.length() - 1))))
+			continue;
+
+		bool isVariableExisted = false;
+		QPair<QByteArray, qReal::Id> curVariable;
+		foreach (curVariable, mNxtGen->mVariables) {
+			if (curVariable.first == leftPart) {
+				isVariableExisted = true;
+				break;
+			}
+		}
+		if (!isVariableExisted)
+			mNxtGen->mVariables.append(QPair<QByteArray, qReal::Id>(leftPart, mElementId));
+	}
+}
+
+QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::FunctionElementGenerator::simpleCode()
+{
+	QList< QPair<QString, qReal::Id> > result;
+
+	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
+
+	QByteArray byteFuncCode = mNxtGen->mApi->stringProperty(logicElementId, "Body").toUtf8();
+
+	byteFuncCode.replace("Сенсор1", "ecrobot_get_sonar_sensor(NXT_PORT_S1)");
+	byteFuncCode.replace("Сенсор2", "ecrobot_get_sonar_sensor(NXT_PORT_S2)");
+	byteFuncCode.replace("Сенсор3", "ecrobot_get_sonar_sensor(NXT_PORT_S3)");
+	byteFuncCode.replace("Сенсор4", "ecrobot_get_sonar_sensor(NXT_PORT_S4)");
+
+	variableAnalysis(byteFuncCode);
+
+	QString funcCode = QString::fromUtf8(byteFuncCode);
+
+	foreach (QString str, funcCode.split(';')) {
+		result.append(QPair<QString, qReal::Id>(str.trimmed() + ";", mElementId));
+	}
+
+	return result;
+}
+
 QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 {
 	QList< QPair<QString, qReal::Id> > result;
@@ -199,7 +272,7 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 		foreach (QString enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
 			result.append(QPair<QString, qReal::Id>(
 						"nxt_motor_set_speed(" + enginePort + ", "
-							+ mNxtGen->mApi->stringProperty(logicElementId, "Power") + ", 0);"
+							+ "-" + mNxtGen->mApi->stringProperty(logicElementId, "Power") + ", 0);"
 						, mElementId));
 		}
 
@@ -225,17 +298,6 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 					"ecrobot_sound_tone(" + mNxtGen->mApi->stringProperty(logicElementId, "Frequency") + ", "
 						+ mNxtGen->mApi->stringProperty(logicElementId, "Duration") + ", 50)", //50 - volume of a sound
 					mElementId));
-
-	} else if (mElementId.element() == "Function") {
-		QByteArray byteFuncCode = mNxtGen->mApi->stringProperty(logicElementId, "Body").toUtf8();
-		byteFuncCode.replace("Сенсор1", "ecrobot_get_sonar_sensor(NXT_PORT_S1)");
-		byteFuncCode.replace("Сенсор2", "ecrobot_get_sonar_sensor(NXT_PORT_S2)");
-		byteFuncCode.replace("Сенсор3", "ecrobot_get_sonar_sensor(NXT_PORT_S3)");
-		byteFuncCode.replace("Сенсор4", "ecrobot_get_sonar_sensor(NXT_PORT_S4)");
-
-		QString funcCode = QString::fromUtf8(byteFuncCode) + ";";
-
-		result.append(QPair<QString, qReal::Id>(funcCode, mElementId));
 
 	} else if (mElementId.element() == "FinalNode") {
 		result.append(QPair<QString, qReal::Id>(
@@ -339,6 +401,11 @@ QList< QPair<QString, qReal::Id> > NxtOSEKRobotGenerator::SimpleElementGenerator
 		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
 		QString distance = mNxtGen->mApi->stringProperty(logicElementId, "Distance");
 		QString inequalitySign = mNxtGen->mApi->stringProperty(logicElementId, "Sign");
+
+		if (inequalitySign == "&lt;")
+			inequalitySign = "<";
+		else if (inequalitySign == "=")
+			inequalitySign = "==";
 
 		QString condition = inequalitySign + " " + distance;
 
@@ -529,7 +596,7 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration()
 
 	//TODO: save number of new created list
 	QList< QPair<QString, qReal::Id> > ifBlockPrefix;
-	QString condition = mNxtGen->mApi->property(logicElementId, "Condition").toString();
+	QString condition = "(" + mNxtGen->mApi->property(logicElementId, "Condition").toString() + ")";
 
 	//Грязное место!
 	if (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)), "Guard") == "меньше 0") {

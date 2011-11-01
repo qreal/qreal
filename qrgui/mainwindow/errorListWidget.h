@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtGui/QListWidget>
-#include "../kernel/ids.h"
+#include "../../qrkernel/ids.h"
 #include "error.h"
 
 namespace qReal {

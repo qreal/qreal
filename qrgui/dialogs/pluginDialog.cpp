@@ -13,8 +13,8 @@
 
 #include "pluginDialog.h"
 
-#include "../pluginInterface/editorInterface.h"
-#include "../editorManager/editorManager.h"
+#include "../editorPluginInterface/editorInterface.h"
+#include "../pluginManager/editorManager.h"
 
 using namespace qReal;
 
