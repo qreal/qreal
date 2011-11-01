@@ -627,7 +627,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 			deleteGesture();
 		}
 		else
-			mTimer->start(500);
+			mTimer->start(1000);  // TODO: Make it configurable in options
 		return;
 	}
 

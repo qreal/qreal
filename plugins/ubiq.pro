@@ -1,4 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-	robots/robots.pro \
+	ubiq/ubiq.pro \
+
