@@ -2,7 +2,7 @@
     <shortName>nxttools</shortName>
     <fullName>QReal nxt-tools</fullName>
     <version>1.0</version>
-    <licenseFile>D:/projects/PortableGit-1.7.6-preview20110709/projects/qreal/installer/%1/installer/gpl-3.0.txt</licenseFile>
+    <licenseFile>%1/installer/gpl-3.0.txt</licenseFile>
     <componentList>
         <component>
             <name>default</name>
@@ -46,43 +46,43 @@
                     <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>D:/projects/PortableGit-1.7.6-preview20110709/projects/qreal/installer/%2/bin/nxt-tools/upload.sh</origin>
+                            <origin>%2/bin/nxt-tools/upload.sh</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>D:/projects/PortableGit-1.7.6-preview20110709/projects/qreal/installer/%2/bin/nxt-tools/flash.bat</origin>
+                            <origin>%2/bin/nxt-tools/flash.bat</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>D:/projects/PortableGit-1.7.6-preview20110709/projects/qreal/installer/%2/bin/nxt-tools/upload.bat</origin>
+                            <origin>%2/bin/nxt-tools/upload.bat</origin>
                         </distributionFile>
                         <distributionDirectory>
-                            <origin>D:/projects/PortableGit-1.7.6-preview20110709/projects/qreal/installer/%2/bin/nxt-tools/bin</origin>
+                            <origin>%2/bin/nxt-tools/bin</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>D:/projects/PortableGit-1.7.6-preview20110709/projects/qreal/installer/%2/bin/nxt-tools/dev</origin>
+                            <origin>%2/bin/nxt-tools/dev</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>D:/projects/PortableGit-1.7.6-preview20110709/projects/qreal/installer/%2/bin/nxt-tools/etc</origin>
+                            <origin>%2/bin/nxt-tools/etc</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>D:/projects/PortableGit-1.7.6-preview20110709/projects/qreal/installer/%2/bin/nxt-tools/GNUARM</origin>
+                            <origin>%2/bin/nxt-tools/GNUARM</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>D:/projects/PortableGit-1.7.6-preview20110709/projects/qreal/installer/%2/bin/nxt-tools/lib</origin>
+                            <origin>%2/bin/nxt-tools/lib</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>D:/projects/PortableGit-1.7.6-preview20110709/projects/qreal/installer/%2/bin/nxt-tools/nexttool</origin>
+                            <origin>%2/bin/nxt-tools/nexttool</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>D:/projects/PortableGit-1.7.6-preview20110709/projects/qreal/installer/%2/bin/nxt-tools/nxtOSEK</origin>
+                            <origin>%2/bin/nxt-tools/nxtOSEK</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>D:/projects/PortableGit-1.7.6-preview20110709/projects/qreal/installer/%2/bin/nxt-tools/tmp</origin>
+                            <origin>%2/bin/nxt-tools/tmp</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>D:/projects/PortableGit-1.7.6-preview20110709/projects/qreal/installer/%2/bin/nxt-tools/usr</origin>
+                            <origin>%2/bin/nxt-tools/usr</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>D:/projects/PortableGit-1.7.6-preview20110709/projects/qreal/installer/%2/bin/nxt-tools/var</origin>
+                            <origin>%2/bin/nxt-tools/var</origin>
                         </distributionDirectory>
                     </distributionFileList>
                 </folder>
@@ -151,7 +151,7 @@
             <scope>user</scope>
         </deleteEnvironmentVariable>
     </postUninstallationActionList>
-    <enableRollback>1</enableRollback>
+    <enableRollback>0</enableRollback>
     <enableTimestamp>1</enableTimestamp>
     <vendor>SPSU</vendor>
     <parameterList>

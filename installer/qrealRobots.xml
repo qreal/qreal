@@ -5,8 +5,8 @@
     <licenseFile>%1/installer/gpl-3.0.txt</licenseFile>
     <leftImage>%1/installer/left.png</leftImage>
     <logoImage>%1/installer/logo.png</logoImage>
-    <defaultLanguage>en</defaultLanguage>
-    <allowLanguageSelection>1</allowLanguageSelection>
+    <defaultLanguage>ru</defaultLanguage>
+    <allowLanguageSelection>0</allowLanguageSelection>
     <componentList>
         <component>
             <name>default</name>
