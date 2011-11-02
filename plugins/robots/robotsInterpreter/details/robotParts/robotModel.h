@@ -32,7 +32,6 @@ public:
 	virtual ~RobotModel();
 
 	void init();
-	void clear();
 	void stopRobot();
 
 	void configureSensors(sensorType::SensorTypeEnum const &port1
@@ -53,8 +52,18 @@ public:
 	robotParts::EncoderSensor &encoderB();
 	robotParts::EncoderSensor &encoderC();
 
-	robotImplementations::AbstractRobotModelImplementation &robotImpl();
+//	robotImplementations::AbstractRobotModelImplementation &robotImpl();
 	void setRobotImplementation(robotImplementations::AbstractRobotModelImplementation *robotImpl);
+	bool needsConnection() const;
+	void startInterpretation();
+
+signals:
+	void sensorsConfigured();
+	void connected(bool success);
+
+private slots:
+	void sensorsConfiguredSlot();
+	void connectedSlot(bool success);
 
 private:
 	robotImplementations::AbstractRobotModelImplementation *mRobotImpl;  // Has ownership.

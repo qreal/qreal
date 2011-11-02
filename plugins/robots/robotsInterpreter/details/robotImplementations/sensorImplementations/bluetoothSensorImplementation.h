@@ -1,7 +1,8 @@
 #pragma once
 #include "abstractSensorImplementation.h"
-#include "../../../robotCommunicationInterface.h"
 #include "../../robotCommandConstants.h"
+#include "../../robotCommunication/robotCommunicationThreadInterface.h"
+#include "../../robotCommunication/robotCommunication.h"
 
 namespace qReal {
 namespace interpreters {
@@ -13,24 +14,24 @@ namespace sensorImplementations {
 class BluetoothSensorImplementation : public AbstractSensorImplementation
 {
 	Q_OBJECT
+
 public:
-	BluetoothSensorImplementation(RobotCommunicationInterface *robotCommunicationInterface
+	BluetoothSensorImplementation(RobotCommunication *robotCommunicationInterface
+		, sensorType::SensorTypeEnum const &sensorType
 		, lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
 		, sensorMode::SensorModeEnum const &sensorMode
 		, inputPort::InputPortEnum const &port
 		);
 	virtual ~BluetoothSensorImplementation();
-	void configure();
+	virtual void configure();
 	virtual void read() = 0;
 
-signals:
-	void configured();
 protected slots:
 	void readingDone(QObject *addressee, QByteArray const &reading);
 
 protected:
-	RobotCommunicationInterface *mRobotCommunicationInterface;
-	lowLevelSensorType::SensorTypeEnum mSensorType;
+	RobotCommunication *mRobotCommunicationInterface;
+	lowLevelSensorType::SensorTypeEnum mLowLevelSensorType;
 	sensorMode::SensorModeEnum mSensorMode;
 	bool mIsConfigured;
 	bool mResetDone;

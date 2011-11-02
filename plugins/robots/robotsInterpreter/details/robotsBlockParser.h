@@ -4,12 +4,12 @@
 
 namespace qReal {
 
-class RobotsBlockParser : public ExpressionsParser
+class RobotsBlockParser : public utils::ExpressionsParser
 {
 public:
 	explicit RobotsBlockParser(ErrorReporterInterface* errorReporter);
 
-	Number standartBlockParseProcess(QString const &stream, int &pos, Id const &curId);
+	utils::Number standartBlockParseProcess(QString const &stream, int &pos, Id const &curId);
 	void functionBlockParseProcess(QString const &stream, int &pos, Id const &curId);
 	void deselect();
 	void robotsClearVariables();

@@ -96,7 +96,7 @@ namespace qrRepo {
 		void save(qReal::IdList list) const;
 		void saveTo(QString const &workingDir);
 
-		void open(QString const &workingDir);
+		void open(QString const &saveFile);
 
 		// "Глобальные" методы, позволяющие делать запросы к модели в целом.
 		//Returns all elements with .element() == type.element()

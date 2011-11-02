@@ -1,7 +1,7 @@
 #pragma once
 
 #include "abstractRobotModelImplementation.h"
-#include "../../robotCommunicationInterface.h"
+#include "../robotCommunication/robotCommunication.h"
 #include "brickImplementations/realBrickImplementation.h"
 #include "motorImplementations/realMotorImplementation.h"
 #include "sensorImplementations/bluetoothTouchSensorImplementation.h"
@@ -19,7 +19,7 @@ class RealRobotModelImplementation : public AbstractRobotModelImplementation
 {
 	Q_OBJECT
 public:
-	RealRobotModelImplementation(RobotCommunicationInterface * const robotCommunicationInterface);
+	RealRobotModelImplementation(RobotCommunication * const robotCommunicationInterface);
 	virtual ~RealRobotModelImplementation();
 	virtual void init();
 	virtual void stopRobot();
@@ -42,9 +42,10 @@ public:
 private slots:
 	void connectedSlot(bool success);
 	void sensorConfigurationDoneSlot();
+	void disconnectedSlot();
 
 private:
-	RobotCommunicationInterface * const mRobotCommunicationInterface;
+	RobotCommunication * const mRobotCommunicationInterface;
 	brickImplementations::RealBrickImplementation mBrick;
 	motorImplementations::RealMotorImplementation mMotorA;
 	motorImplementations::RealMotorImplementation mMotorB;
@@ -56,7 +57,9 @@ private:
 
 	virtual void addTouchSensor(inputPort::InputPortEnum const &port);
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port);
-	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode);
+	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType);
+
+	void configureSensorImpl(inputPort::InputPortEnum const &port);
 };
 
 }

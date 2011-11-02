@@ -64,7 +64,9 @@ public:
 	void breakPointHandler(QPointF const &pos);
 	bool isBreakPointPressed();
 	void breakPointUnpressed();
-	bool mBreakPointPressed;
+
+	void highlight(QColor const color = Qt::red);
+
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -74,6 +76,8 @@ protected:
 	virtual void drawEndArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
 
 	Qt::PenStyle mPenStyle;
+	int mPenWidth;
+	QColor mPenColor;
 	QString mText;
 	QString mFromMult, mToMult;
 	ArrowType mStartArrowStyle;
@@ -96,6 +100,8 @@ private:
 	void drawPort(QPainter *painter) const;
 
 	void removeUnneededPoints(int startingPoint);
+
+	void deleteUnneededPoints();
 
 	NodeElement *mSrc;
 	NodeElement *mDst;
@@ -125,6 +131,8 @@ private:
 	QPointF mLastPos;
 	QPolygonF mLastLine;
 	int mLastDragPoint;
+
+	bool mBreakPointPressed;
 
 };
 

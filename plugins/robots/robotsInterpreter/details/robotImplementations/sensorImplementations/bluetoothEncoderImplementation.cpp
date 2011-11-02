@@ -1,9 +1,12 @@
 #include "bluetoothEncoderImplementation.h"
-#include <QtCore/QDebug>
-using namespace qReal::interpreters::robots;
-using namespace details::robotImplementations::sensorImplementations;
 
-BluetoothEncoderImplementation::BluetoothEncoderImplementation(RobotCommunicationInterface *robotCommunicationInterface
+#include "../../tracer.h"
+
+using namespace qReal::interpreters::robots;
+using namespace details;
+using namespace robotImplementations::sensorImplementations;
+
+BluetoothEncoderImplementation::BluetoothEncoderImplementation(RobotCommunication *robotCommunicationInterface
 		, outputPort::OutputPortEnum const &port)
 	: AbstractEncoderImplementation(port)
 {
@@ -50,12 +53,18 @@ void BluetoothEncoderImplementation::readingDone(QObject *addressee, QByteArray 
 void BluetoothEncoderImplementation::sensorSpecificProcessResponse(QByteArray const &reading)
 {
 	mState = idle;
+
 	if (reading.isEmpty()) {
-		qDebug() << "Something is wrong, response is empty";
+		Tracer::debug(tracer::sensors, "BluetoothEncoderImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
 	} else {
 		unsigned int recieved = (0xff & reading[15]) | ((0xff & reading[16]) << 8)  | ((0xff & reading[17]) << 16) | ((0xff & reading[18]) << 24);
-		qDebug() << "recieved in bluetoothEncoderImplementation.cpp" << recieved;
+
+		Tracer::debug(tracer::sensors, "BluetoothEncoderImplementation::sensorSpecificProcessResponse"
+				, "Data received "
+				+ QString::number((0xff & reading[15])) + " " + QString::number((0xff & reading[16])) + " "
+				+ QString::number((0xff & reading[17])) + " " + QString::number((0xff & reading[18])) + " "
+			);
+
 		emit response(recieved);
 	}
 }
-

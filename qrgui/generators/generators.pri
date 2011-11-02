@@ -15,8 +15,10 @@ SOURCES += generators/hascol/hascolGenerator.cpp \
 
 # nxtOSEK generator
 
-HEADERS += generators/nxtOSEK/nxtOSEKRobotGenerator.h
-SOURCES += generators/nxtOSEK/nxtOSEKRobotGenerator.cpp
+HEADERS += generators/nxtOSEK/nxtOSEKRobotGenerator.h \
+		generators/nxtOSEK/smartLine.h
+SOURCES += generators/nxtOSEK/nxtOSEKRobotGenerator.cpp \
+		generators/nxtOSEK/smartLine.cpp
 
 HEADERS += generators/editorGenerator/editorGenerator.h
 SOURCES += generators/editorGenerator/editorGenerator.cpp

@@ -12,6 +12,9 @@ class RobotModelInterface
 {
 public:
 	virtual SensorsConfiguration &configuration() = 0;
+	virtual void clear() = 0;
+	virtual void rotateOn(double angle) = 0;
+	virtual double rotateAngle() const = 0;
 };
 
 }

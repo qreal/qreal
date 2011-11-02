@@ -1,4 +1,5 @@
 #include "robotsPlugin.h"
+#include "details/tracer.h"
 
 #include <QtCore/QTranslator>
 #include <QtGui/QApplication>
@@ -14,6 +15,8 @@ RobotsPlugin::RobotsPlugin()
 	, mRunAction(NULL)
 	, mStopAction(NULL)
 {
+//	details::Tracer::enableAll();
+	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
 	QTranslator *appTranslator = new QTranslator();
 	appTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(appTranslator);
@@ -25,10 +28,12 @@ RobotsPlugin::~RobotsPlugin()
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
 {
+	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing plugin");
 	mInterpreter.init(configurator.graphicalModelApi()
 			, configurator.logicalModelApi()
 			, configurator.mainWindowInterpretersInterface());
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
+	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing done");
 }
 
 qReal::CustomizationInterface* RobotsPlugin::customizationInterface()
@@ -62,6 +67,10 @@ QList<ActionInfo> RobotsPlugin::actions()
 	ActionInfo robotSettingsActionInfo(robotSettingsAction, "interpreters", "tools");
 	QObject::connect(robotSettingsAction, SIGNAL(triggered()), this, SLOT(showRobotSettings()));
 
+	QAction *watchListAction = new QAction(QObject::tr("Show watch list"), NULL);
+	ActionInfo watchListActionInfo(watchListAction, "interpreters", "tools");
+	QObject::connect(watchListAction, SIGNAL(triggered()), &mInterpreter, SLOT(showWatchList()));
+
 	QAction *separator = new QAction(NULL);
 	ActionInfo separatorActionInfo(separator, "interpreters", "tools");
 	separator->setSeparator(true);
@@ -70,12 +79,12 @@ QList<ActionInfo> RobotsPlugin::actions()
 
 	return QList<ActionInfo>() << d2ModelActionInfo << runActionInfo << stopActionInfo
 			<< stopRobotActionInfo << connectToRobotActionInfo
-			<< separatorActionInfo << robotSettingsActionInfo;
+			<< separatorActionInfo << robotSettingsActionInfo << separatorActionInfo << watchListActionInfo;
 }
 
 QPair<QString, PreferencesPage *> RobotsPlugin::preferencesPage()
 {
-	return qMakePair(QObject::tr("Robots"), static_cast<PreferencesPage*>(&mRobotSettinsPage));
+	return qMakePair(QObject::tr("Robots"), static_cast<PreferencesPage*>(&mRobotSettingsPage));
 }
 
 void RobotsPlugin::showRobotSettings()
@@ -90,8 +99,7 @@ void RobotsPlugin::show2dModel()
 
 void RobotsPlugin::updateSettings()
 {
-	QString const bluetoothPortName = SettingsManager::instance()->value("bluetoothPortName").toString();
-	mInterpreter.setBluetoothPortName(bluetoothPortName);
+	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Updating settings, model and sensors are going to be reinitialized...");
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
 	mInterpreter.setRobotModelType(typeOfRobotModel);
 	mInterpreter.configureSensors(
@@ -105,4 +113,14 @@ void RobotsPlugin::updateSettings()
 		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopAction);
 	else
 		mInterpreter.showD2ModelWidget(false);
+
+	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication", "bluetooth").toString();
+	QString const portName = SettingsManager::value("bluetoothPortName", "").toString();
+	mInterpreter.setCommunicator(typeOfCommunication, portName);
+	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Done updating settings");
+}
+
+void RobotsPlugin::closeNeededWidget()
+{
+	mInterpreter.closeD2ModelWidget();
 }

@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <math.h>
 
+using namespace utils;
 using namespace qReal;
 
 ExpressionsParser::ExpressionsParser(ErrorReporterInterface *errorReporter)
@@ -13,6 +14,16 @@ ExpressionsParser::ExpressionsParser(ErrorReporterInterface *errorReporter)
 QMap<QString, Number>* ExpressionsParser::getVariables()
 {
 	return &mVariables;
+}
+
+QMap<QString, QString>* ExpressionsParser::getVariablesForWatch() const
+{
+	QMap<QString, QString>* result = new QMap<QString, QString>();
+	foreach (QString variable, mVariables.keys()) {
+		result->insert(variable, mVariables.value(variable).toString());
+	}
+
+	return result;
 }
 
 bool ExpressionsParser::isDigit(const QChar &c)

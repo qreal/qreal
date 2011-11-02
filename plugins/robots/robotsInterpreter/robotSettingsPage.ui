@@ -15,8 +15,8 @@
     <rect>
      <x>10</x>
      <y>299</y>
-     <width>402</width>
-     <height>101</height>
+     <width>201</width>
+     <height>91</height>
     </rect>
    </property>
    <property name="title">
@@ -157,6 +157,41 @@
      <widget class="QCheckBox" name="manualComPortCheckbox">
       <property name="text">
        <string>Specify COM port manually</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="robotModelGroupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>300</y>
+     <width>191</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Type of Communication</string>
+   </property>
+   <layout class="QFormLayout" name="formLayout_6">
+    <property name="fieldGrowthPolicy">
+     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+    </property>
+    <item row="0" column="0">
+     <widget class="QRadioButton" name="bluetoothRadioButton">
+      <property name="text">
+       <string>Bluetooth</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QRadioButton" name="usbRadioButton">
+      <property name="text">
+       <string>USB</string>
       </property>
      </widget>
     </item>

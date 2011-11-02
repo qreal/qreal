@@ -6,7 +6,7 @@
 #include "../mainwindow/errorReporter.h"
 
 namespace qReal {
-class BlockParser : public ExpressionsParser
+class BlockParser : public utils::ExpressionsParser
 {
 
 public:

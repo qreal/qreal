@@ -52,9 +52,9 @@ public:
 	virtual void setName(QString name);
 
 	const QPointF getPortPos(qreal id) const;
-	const QPointF getNearestPort(QPointF location) const;
-
 	static int portId(qreal id);
+	const QPointF getNearestPort(QPointF const &location) const;
+
 	qreal getPortId(const QPointF &location) const;
 
 	void addEdge(EdgeElement *edge);
@@ -105,6 +105,7 @@ public:
 	*   @return element or NULL
 	* */
 	Element *getPlaceholderNextElement();
+	void highlightEdges();
 
 public slots:
 	virtual void singleSelectionState(const bool singleSelected);

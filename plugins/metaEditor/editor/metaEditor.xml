@@ -165,6 +165,7 @@
 							<default>false</default>
 						</property>
 						<property type="string" name="shape"/>
+						<property type="string" name="description"/>
 						<property type="bool" name="isAction">
 							<default>false</default>
 						</property>
@@ -175,7 +176,7 @@
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntity Attribute"/>
-						<contains type="MetaEditor::MetaEntityConnetction"/>
+						<contains type="MetaEditor::MetaEntityConnection"/>
 						<contains type="MetaEditor::MetaEntityUsage"/>
 						<contains type="MetaEditor::Inheritance"/>
 						<contains type="MetaEditor::MetaEntityPossibleEdge"/>

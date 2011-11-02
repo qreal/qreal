@@ -67,15 +67,9 @@ bool EditorManager::loadPlugin(const QString &pluginName)
 
 bool EditorManager::unloadPlugin(const QString &pluginName)
 {
-	qDebug() << "pluginName = " << pluginName;
-	foreach (QString key, mPluginFileName.keys()) {
-		qDebug() << "mPluginFileName.key" << key;
-		qDebug() << "mPluginFileName.value" << mPluginFileName[key];
-	}
 	QPluginLoader *loader = mLoaders[mPluginFileName[pluginName]];
 	if (loader != NULL) {
 		if (!(loader->unload())) {
-			qDebug() <<"unload failed" << loader->errorString();
 			return false;
 		}
 		mPluginsLoaded.removeAll(pluginName);
@@ -340,3 +334,57 @@ bool EditorManager::isDiagramNode(Id const &id) const
 {
 	return id.element() == editorInterface(id.editor())->diagramNodeName(id.diagram());
 }
+
+
+
+bool EditorManager::isParentOf(Id const &child, Id const &parent) const // child — EnginesForware, parent — AbstractNode
+{
+	EditorInterface const *plugin = mPluginIface[child.editor()];
+	if (!plugin)
+		return false;
+
+	QString parentDiagram = parent.diagram();
+	QString parentElement = parent.element();
+	if (parent.idSize() == 1) { // seems like it came from plugin's getTypesContainedBy()
+		parentDiagram = child.diagram();
+		parentElement = parent.editor();
+	}
+
+	return isParentOf(plugin, child.diagram(), child.element(), parentDiagram, parentElement);
+}
+
+bool EditorManager::isParentOf(EditorInterface const *plugin, QString const &childDiagram
+							   , QString const &child, QString const &parentDiagram, QString const &parent) const
+{
+	if (child == parent && childDiagram == parentDiagram)
+		return true;
+
+	typedef QPair<QString, QString> StringPair;
+	QList<QPair<QString, QString> > list = plugin->getParentsOf(childDiagram, child);
+
+	bool res = false;
+	foreach (StringPair const pair, list) {
+		if (pair.second == parent && pair.first == parentDiagram)
+			return true;
+
+		res = res || isParentOf(plugin, pair.first, pair.second, parentDiagram, parent);
+	}
+
+	return res;
+}
+
+QStringList EditorManager::getAllChildrenTypesOf(Id const &parent) const
+{
+	EditorInterface const *plugin = mPluginIface[parent.editor()];
+	if (!plugin)
+		return QStringList();
+
+	QStringList result;
+
+	foreach (Id const id, elements(parent)) {
+		if (isParentOf(id, parent))
+			result << id.element();
+	}
+	return result;
+}
+

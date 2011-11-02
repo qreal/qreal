@@ -3,6 +3,7 @@
 #include "graphicType.h"
 
 #include <QList>
+#include <QColor>
 
 class Association;
 namespace utils {
@@ -23,6 +24,8 @@ private:
 	QString mBeginType;
 	QString mEndType;
 	QString mLineType;
+	QColor mLineColor;
+	int mLineWidth;
 
 	virtual bool initAssociations();
 	virtual bool initGraphics();

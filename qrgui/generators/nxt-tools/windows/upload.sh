@@ -1,10 +1,8 @@
-#!/bin/bash
-
-export PATH="$PATH:$qrealdir/nxt-tools/cygwin/bin"
-export PATH="$PATH:$qrealdir/nxt-tools/cygwin/GNUARM/bin"
-export PATH="$PATH:$qrealdir/nxt-tools/nexttool"
-cd $qrealdir/example0
+#! /bin/bash
+# export $PATH="$PATH:/bin"
+cd /example0/
 make clean
 make all
+chmod u+x rxeflash.sh
 sh ./rxeflash.sh
 echo "Done"

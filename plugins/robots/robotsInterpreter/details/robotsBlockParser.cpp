@@ -1,6 +1,7 @@
 #include "robotsBlockParser.h"
 
 using namespace qReal;
+using namespace utils;
 
 RobotsBlockParser::RobotsBlockParser(ErrorReporterInterface *errorReporter)
 	: ExpressionsParser(errorReporter)
@@ -8,7 +9,7 @@ RobotsBlockParser::RobotsBlockParser(ErrorReporterInterface *errorReporter)
 	setReservedVariables();
 }
 
-Number RobotsBlockParser::standartBlockParseProcess(const QString &stream, int &pos, const Id &curId) /* тут надо решить, нужно ли одно выражение, или можно и переменные объявлять */
+Number RobotsBlockParser::standartBlockParseProcess(const QString &stream, int &pos, const Id &curId)
 {
 	mCurrentId = curId;
 
@@ -47,7 +48,7 @@ void RobotsBlockParser::functionBlockParseProcess(const QString &stream, int &po
 	QStringList exprs = stream.split(";", QString::SkipEmptyParts);
 	for (int i = 0; i < exprs.length(); ++i) {
 		if (mHasParseErrors) {
-			mHasParseErrors = false; /*чтобы не получить лишних ошибок, будем независимо обрабатывать переменные*/
+			mHasParseErrors = false; /*С‡С‚РѕР±С‹ РЅРµ РїРѕР»СѓС‡РёС‚СЊ Р»РёС€РЅРёС… РѕС€РёР±РѕРє, Р±СѓРґРµРј РЅРµР·Р°РІРёСЃРёРјРѕ РѕР±СЂР°Р±Р°С‚С‹РІР°С‚СЊ РїРµСЂРµРјРµРЅРЅС‹Рµ*/
 			hasParseErrorsFlag = true;
 		}
 		int position = 0;
@@ -80,7 +81,7 @@ bool RobotsBlockParser::checkForUsingReservedVariables(const QString &nameOfVari
 
 bool RobotsBlockParser::isLetter(const QChar &symbol)
 {
-	QString rus = QString::fromUtf8("АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПп� рСсТтУуФфХхЦцЧчШшЩщЬьЫыЙйЭэЮюЯя");
+	QString rus = QString::fromUtf8("РђР°Р‘Р±Р’РІР“РіР”РґР•РµРЃС‘Р–Р¶Р—Р·РРёР™Р№РљРєР›Р»РњРјРќРЅРћРѕРџРїР СЂРЎСЃРўС‚РЈСѓР¤С„РҐС…Р¦С†Р§С‡РЁС€Р©С‰Р¬СЊР«С‹Р™Р№Р­СЌР®СЋРЇСЏ");
 	char symbolChar = symbol.toAscii();
 	return (('A'<=symbolChar && symbolChar<='Z') || ('a'<=symbolChar && symbolChar<='z') || (rus.contains(symbol)));
 }

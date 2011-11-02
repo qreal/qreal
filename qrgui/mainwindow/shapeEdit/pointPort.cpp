@@ -1,15 +1,15 @@
 #include "pointPort.h"
 
 const int step = 3;
-PointPort::PointPort(qreal x, qreal y, Item *parent) : Item(parent)
+PointPort::PointPort(qreal x, qreal y, Item *parent) : Item(parent), mPointImpl()
 {
 	mNeedScalingRect = true;
-	mRadius = 4;
-	mRect = QRectF(x - mRadius / 2, y - mRadius / 2, mRadius, mRadius);
-	mX1 = x - mRadius * 0.8;
-	mY1 = y - mRadius * 0.8;
-	mX2 = x + mRadius * 0.8;
-	mY2 = y + mRadius * 0.8;
+	mRadius = 2;
+	mX1 = x - mRadius * 1.6;
+	mY1 = y - mRadius * 1.6;
+	mX2 = x + mRadius * 1.6;
+	mY2 = y + mRadius * 1.6;
+	mUnrealRadius = mRadius * 1.6;
 	mPen = QPen(Qt::blue);
 	mBrush = QBrush(Qt::SolidPattern);
 	mBrush.setColor(Qt::blue);
@@ -17,7 +17,7 @@ PointPort::PointPort(qreal x, qreal y, Item *parent) : Item(parent)
 }
 
 PointPort::PointPort(PointPort const &other)
-	:Item()
+	:Item(), mPointImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
 	mPen = other.mPen;
@@ -27,7 +27,6 @@ PointPort::PointPort(PointPort const &other)
 	mX2 = other.mX2;
 	mY1 = other.mY1;
 	mY2 = other.mY2;
-	mRect = other.mRect;
 	mRadius = other.mRadius;
 	mListScalePoint = other.mListScalePoint;
 	setPos(other.x(), other.y());
@@ -41,7 +40,7 @@ Item* PointPort::clone()
 
 QRectF PointPort::boundingRect() const
 {
-	return mRect.adjusted(-scalingDrift, -scalingDrift, scalingDrift, scalingDrift);
+	return mPointImpl.boundingRect(mX1 + mUnrealRadius, mY1 + mUnrealRadius, mRadius, scalingDrift);
 }
 
 void PointPort::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -50,25 +49,21 @@ void PointPort::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* opti
 	Q_UNUSED(widget);
 	painter->setPen(mPen);
 	painter->setBrush(mBrush);
-	painter->drawEllipse(mRect);
+	mPointImpl.drawItem(painter, mX1 + mUnrealRadius, mY1 + mUnrealRadius, mRadius);
 }
 
 void PointPort::drawExtractionForItem(QPainter* painter)
 {
 	QPen pen(Qt::red);
-	pen.setWidth(mRadius / 2.3);
+	pen.setWidth(2 * mRadius / 2.3);
 	painter->setPen(pen);
 	Item::drawExtractionForItem(painter);
 	drawFieldForResizeItem(painter);
-
-	painter->setPen(QPen(Qt::red));
-	painter->setBrush(QBrush(Qt::SolidPattern));
-	drawScalingRects(painter);
 }
 
 void PointPort::drawFieldForResizeItem(QPainter* painter)
 {
-	Q_UNUSED(painter);
+	mPointImpl.drawFieldForResizeItem(painter);
 }
 
 void PointPort::drawScalingRects(QPainter* painter)
@@ -114,8 +109,8 @@ QPair<QDomElement, Item::DomElementTypes> PointPort::generateItem(QDomDocument &
 {
 	QRectF itemBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
 	QDomElement pointPort = document.createElement("pointPort");
-	int const x = static_cast<int>(scenePos().x() + itemBoundingRect.x() + mRadius / 2 - topLeftPicture.x());
-	int const y = static_cast<int>(scenePos().y() + itemBoundingRect.y() + mRadius / 2 - topLeftPicture.y());
+	int const x = static_cast<int>(scenePos().x() + itemBoundingRect.x() + mRadius - topLeftPicture.x());
+	int const y = static_cast<int>(scenePos().y() + itemBoundingRect.y() + mRadius - topLeftPicture.y());
 	pointPort.setAttribute("y", setSingleScaleForDoc(4, x, y));
 	pointPort.setAttribute("x", setSingleScaleForDoc(0, x, y));
 

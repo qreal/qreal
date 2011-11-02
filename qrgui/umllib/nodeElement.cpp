@@ -25,6 +25,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
+	setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
 
 	mPortRenderer = new SdfRenderer();
 	mRenderer = new SdfRenderer();
@@ -324,9 +325,15 @@ void NodeElement::arrangeLinks() {
 
 void NodeElement::storeGeometry()
 {
-	QRectF contents = mContents; //для того, чтобы оставалась правильная конфигурация
-	mGraphicalAssistApi->setPosition(id(), pos());
-	mGraphicalAssistApi->setConfiguration(id(), QPolygon(contents.toAlignedRect()));
+	QRectF contents = mContents; // saving correct current contents
+
+	if ((pos() != mGraphicalAssistApi->position(id()))) { // check if it's been changed
+		mGraphicalAssistApi->setPosition(id(), pos());
+	}
+
+	if (QPolygon(mContents.toAlignedRect()) != mGraphicalAssistApi->configuration(id())) { // check if it's been changed
+		mGraphicalAssistApi->setConfiguration(id(), QPolygon(contents.toAlignedRect()));
+	}
 }
 
 void NodeElement::moveChildren(qreal dx, qreal dy)
@@ -870,45 +877,43 @@ const QPointF NodeElement::getPortPos(qreal id) const
 	}
 }
 
-const QPointF NodeElement::getNearestPort(QPointF location) const
+const QPointF NodeElement::getNearestPort(QPointF const &location) const
 {
 	QPointF min;
+
 	if (mPointPorts.size() > 0) {
 		QPointF const pointPort = newTransform(mPointPorts[0]);
 		min.setX(pointPort.x() + boundingRect().left());
 		min.setY(pointPort.y() + boundingRect().top());
-	}
-	else if (mLinePorts.size() > 0) {
-		min = mLinePorts[0].line.p1();
-	} else {
-		return location;
-	}
 
-	foreach (StatPoint port, mPointPorts) {
-		QPointF const pointPort = newTransform(port);
-		port.point.setX(pointPort.x() + boundingRect().left());
-		port.point.setY(pointPort.y() + boundingRect().top());
-		if (QLineF(port.point, location).length() < QLineF(min, location).length()) {
-			min = port.point;
+		foreach (StatPoint port, mPointPorts) {
+			QPointF const pointPort = newTransform(port);
+			port.point.setX(pointPort.x() + boundingRect().left());
+			port.point.setY(pointPort.y() + boundingRect().top());
+			if (QLineF(port.point, location).length() < QLineF(min, location).length()) {
+				min = port.point;
+			}
 		}
-	}
-	if (mPointPorts.size() > 0) {
 		return min;
 	}
 
-	//TODO: improve line port search
-	int num = 0;
-	foreach (StatLine line, mLinePorts) {
-		qreal k = getNearestPointOfLinePort(num, location);
-		QPointF port = QPointF((line.line.p1().x()*(1-k)+line.line.p2().x()*k),
-							   (line.line.p1().y()*(1-k)+line.line.p2().y()*k));
-		if (QLineF(port, location).length() < QLineF(min, location).length()) {
-			min = port;
+	if (mLinePorts.size() > 0) {
+		int num = 0;
+		foreach (StatLine line, mLinePorts) {
+			qreal k = qMin(qMax(0., getNearestPointOfLinePort(num, location)), 0.9999);
+			QLineF const &sceneLine = newTransform(line);
+			QPointF const &port = sceneLine.pointAt(k);
+
+			if (QLineF(port, location).length() < QLineF(min, location).length() || num == 0) {
+				min = port;
+			}
+			num++;
 		}
-		num++;
+
+		return min;
 	}
 
-	return min;
+	return location;
 }
 
 QLineF NodeElement::newTransform(const StatLine& port) const
@@ -992,20 +997,21 @@ qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, const QPointF &
 {
 	qreal nearestPointOfLinePort = 0;
 	QLineF nearestLinePort = newTransform(mLinePorts[linePortNumber]);
-	if (nearestLinePort.x1() == nearestLinePort.x2()) {
-		nearestPointOfLinePort = (location.y() - nearestLinePort.y1())
-				/ (nearestLinePort.y2() - nearestLinePort.y1());
-	} else if (nearestLinePort.y1() == nearestLinePort.y2()) {
-		nearestPointOfLinePort = (location.x() - nearestLinePort.x1())
-				/ (nearestLinePort.x2() - nearestLinePort.x1());
+	qreal y1 = nearestLinePort.y1(),
+		y2 = nearestLinePort.y2(),
+		x1 = nearestLinePort.x1(),
+		x2 = nearestLinePort.x2();
+
+	if (x1 == x2) {
+		nearestPointOfLinePort = (location.y() - y1) / (y2 - y1);
+	} else if (y1 == y2) {
+		nearestPointOfLinePort = (location.x() - x1) / (x2 - x1);
 	} else {
-		qreal k = (nearestLinePort.y2() - nearestLinePort.y1())
-				/ (nearestLinePort.x2() - nearestLinePort.x1());
-		qreal b2 = location.y() + 1 / k * location.x();
-		qreal b = nearestLinePort.y1() - k * nearestLinePort.x1();
-		qreal x3 = k / (1 + k * k) * (b2 - b);
-		nearestPointOfLinePort = (x3 - nearestLinePort.x1())
-				/ (nearestLinePort.x2() - nearestLinePort.x1());
+		qreal k = (y2 - y1) / (x2 - x1),
+			b2 = location.y() + 1 / k * location.x(),
+			b = y1 - k * x1,
+			x3 = k / (1 + k * k) * (b2 - b);
+		nearestPointOfLinePort = (x3 - x1) / (x2 - x1);
 	}
 	return nearestPointOfLinePort;
 }
@@ -1277,7 +1283,6 @@ void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 {
 	// for non-sorting containers no need for drawing placeholder so just make them marked
 	if (!mElementImpl->isSortingContainer()) {
-		setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
 		setOpacity(.2);
 		return;
 	}
@@ -1566,4 +1571,10 @@ void NodeElement::singleSelectionState(const bool singleSelected)
 void NodeElement::selectionState(const bool selected)
 {
 	Element::selectionState(selected);
+}
+
+void NodeElement::highlightEdges()
+{
+	foreach (EdgeElement *edge, mEdgeList)
+		edge->highlight();
 }

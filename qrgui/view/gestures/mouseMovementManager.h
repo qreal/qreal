@@ -1,9 +1,11 @@
 #pragma once
+
 #include "keyManagerInterface.h"
 #include "keyManager.h"
 #include "../../../qrkernel/ids.h"
 #include "../../pluginManager/editorManager.h"
 #include "../../mainwindow/gesturesPainterInterface.h"
+#include "abstractRecognizer.h"
 #include <QPointF>
 #include <QPoint>
 #include <QLineF>
@@ -19,11 +21,12 @@ public:
 						 qReal::EditorManager * editorManager,
 						 GesturesPainterInterface * gesturesPaintManager);
 	void setElements(QList<qReal::Id> const & elements);
-	void addPoint(QPointF const & point);
+	void mousePress(QPointF const & point);
+	void mouseMove(QPointF const & point);
 	void clear();
 	void setGesturesPainter(GesturesPainterInterface * gesturesPainter);
 	qReal::Id getObject();
-	static QList<QPoint> stringToPath(QString const &str);
+	static PathVector stringToPath(QString const &str);
 	QPointF pos();
 	QPointF firstPoint();
 	QPointF lastPoint();
@@ -31,16 +34,17 @@ public:
 	void printElements();
 	void drawIdealPath();
 	bool wasMoving();
+	bool isEdgeCandidate();
 
 private:
 	static QPoint parsePoint(QString const &str);
-	void createMap();
-	QList<QPoint> mPath;
+	void recountCentre();
+	PathVector mPath;
 	IKeyManager * mKeyManager;
 	KeyManager mKeyStringManager;
 	qReal::EditorManager * mEditorManager;
 	QList<qReal::Id> mElements;
-	QMap<QString, qReal::Id> mGestures;
 	QPointF mCentre;
 	GesturesPainterInterface * mGesturesPaintMan;
+	GesturesManager * mGesturesManager;
 };

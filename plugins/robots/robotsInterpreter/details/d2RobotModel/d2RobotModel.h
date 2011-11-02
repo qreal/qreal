@@ -22,6 +22,7 @@ class D2RobotModel : public QObject, public RobotModelInterface {
 public:
 	D2RobotModel(QObject *parent = 0);
 	~D2RobotModel();
+	virtual void clear();
 	void startInit();
 	void stopRobot();
 	void setBeep(unsigned freq, unsigned time);
@@ -29,11 +30,24 @@ public:
 	virtual SensorsConfiguration &configuration();
 	D2ModelWidget *createModelWidget();
 
+	int readEncoder(int/*inputPort::InputPortEnum*/  const port) const;
+	void resetEncoder(int/*inputPort::InputPortEnum*/  const port);
+
 	bool readTouchSensor(inputPort::InputPortEnum const port);
 	int readSonarSensor(inputPort::InputPortEnum const port) const;
 	int readColorSensor(inputPort::InputPortEnum const port) const;
 
 	void showModelWidget();
+
+	virtual void rotateOn(double angle);
+	virtual double rotateAngle() const;
+
+	enum ATime {
+		DoInf,
+		Do,
+		End
+	};
+
 
 private slots:
 	void nextFragment();
@@ -43,6 +57,7 @@ private:
 		int radius;
 		int speed;
 		int degrees;
+		QPair<ATime, qreal> activeTime;
 	};
 
 	struct Beep {
@@ -60,6 +75,7 @@ private:
 	QPointF mPos;
 	QPointF mRotatePoint;
 	QHash<int, Motor*> mMotors;
+	QHash<int, qreal> mTurnoverMotors;//хранит, сколько прошел градусов мотор
 	SensorsConfiguration mSensorsConfiguration;
 	WorldModel mWorldModel;
 
@@ -67,6 +83,18 @@ private:
 	Motor* initMotor(int radius, int speed, long unsigned int degrees, int port);
 	void countNewCoord();
 	void countBeep();
+	QPair<QPoint, qreal> countPositionAndDirection(inputPort::InputPortEnum const port) const;
+	QPair<QPoint, qreal> countPositionAndDirection(QPointF localPosition, qreal localDirection) const;
+
+	void countOneMotorTime(Motor &motor);
+	void countMotorTime();
+
+	void countMotorTurnover();
+
+	QImage printColorSensor(inputPort::InputPortEnum const port) const;
+	int readColorFullSensor(QHash<unsigned long, int> countsColor) const;
+	int readColorNoneSensor(QHash<unsigned long, int> countsColor, int n) const;
+	int readSingleColorSensor(unsigned long color, QHash<unsigned long, int> countsColor, int n) const;
 };
 
 }

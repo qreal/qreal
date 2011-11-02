@@ -21,18 +21,20 @@ const double pi = 3.14159265358979;
 // static bool moving = false;
 
 EdgeElement::EdgeElement(ElementImpl *impl)
-	: mPenStyle(Qt::SolidLine), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
-	, mSrc(NULL), mDst(NULL)
-	, mPortFrom(0), mPortTo(0)
-	, mDragPoint(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL)
-	, mAddPointAction(tr("Add point"), this)
-	, mDelPointAction(tr("Delete point"), this)
-	, mSquarizeAction(tr("Squarize"), this)
-	, mMinimizeAction(tr("Remove all points"), this)
-	, mElementImpl(impl)
-	, mLastDragPoint(-1)
+: mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
+, mSrc(NULL), mDst(NULL)
+, mPortFrom(0), mPortTo(0)
+, mDragPoint(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL)
+, mAddPointAction(tr("Add point"), this)
+, mDelPointAction(tr("Delete point"), this)
+, mSquarizeAction(tr("Squarize"), this)
+, mMinimizeAction(tr("Remove all points"), this)
+, mElementImpl(impl)
+, mLastDragPoint(-1)
 {
 	mPenStyle = mElementImpl->getPenStyle();
+	mPenWidth = mElementImpl->getPenWidth();
+	mPenColor = mElementImpl->getPenColor();
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
 	// FIXME: draws strangely...
@@ -152,8 +154,9 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	painter->save();
 	QPen pen = painter->pen();
 	pen.setColor(mColor);
+	pen.setBrush(mColor);
 	pen.setStyle(mPenStyle);
-	pen.setWidth(3);  // TODO: Move line width to a configuration parameter
+	pen.setWidth(mPenWidth);
 	painter->setPen(pen);
 	painter->drawPolyline(mLine);
 	painter->restore();
@@ -164,6 +167,7 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	painter->rotate(90 - lineAngle(QLineF(mLine[1], mLine[0])));
 	pen = painter->pen();
 	pen.setColor(mColor);
+	pen.setBrush(mColor);
 	pen.setWidth(3);
 	painter->setPen(pen);
 	drawStartArrow(painter);
@@ -175,6 +179,7 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	painter->rotate(90 - lineAngle(QLineF(mLine[mLine.size() - 2], mLine[mLine.size() - 1])));
 	pen = painter->pen();
 	pen.setColor(mColor);
+	pen.setBrush(mColor);
 	pen.setWidth(3);
 	painter->setPen(pen);
 	drawEndArrow(painter);
@@ -203,7 +208,7 @@ QPainterPath EdgeElement::shape() const
 	path.setFillRule(Qt::WindingFill);
 
 	QPainterPathStroker ps;
-		ps.setWidth(kvadratik - 5);
+	ps.setWidth(kvadratik - 5);
 
 	path.addPolygon(mLine);
 	path = ps.createStroke(path);
@@ -217,7 +222,7 @@ QPainterPath EdgeElement::shape() const
 
 QRectF EdgeElement::getPortRect(QPointF const &point)
 {
-		return QRectF(point - QPointF(kvadratik - 5, kvadratik - 5), QSizeF(kvadratik * 2, kvadratik * 2));
+	return QRectF(point - QPointF(kvadratik - 5, kvadratik - 5), QSizeF(kvadratik * 2, kvadratik * 2));
 }
 
 int EdgeElement::getPoint(const QPointF &location)
@@ -327,7 +332,10 @@ void EdgeElement::connectToPort()
 		squarizeHandler(QPointF());
 	adjustLink();
 	arrangeSrcAndDst();
-	update();
+	if (getNodeAt(mLine.first()) != NULL && getNodeAt(mLine.last()) != NULL)
+		highlight(mPenColor);
+	else
+		highlight(Qt::red);
 
 }
 
@@ -342,7 +350,7 @@ bool EdgeElement::initPossibleEdges()
 	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(id().element());
 	foreach (StringPossibleEdge pEdge, stringPossibleEdges) {
 		QPair<qReal::Id, qReal::Id> nodes(Id(editor, diagram, pEdge.first.first),
-				Id(editor, diagram, pEdge.first.second));
+		Id(editor, diagram, pEdge.first.second));
 		QPair<bool, qReal::Id> edge(pEdge.second.first, Id(editor, diagram, pEdge.second.second));
 		PossibleEdge possibleEdge(nodes, edge);
 		possibleEdges.push_back(possibleEdge);
@@ -408,48 +416,73 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	bool deleteCurrentPoint = false;
+	//	bool deleteCurrentPoint = false;
 
-	if  (mLine.size() >= 3) {
+	//	if  (mLine.size() >= 3) {
 
-		if ((mDragPoint > 0) && (mDragPoint < (mLine.size() - 1))) {
+	//		if ((mDragPoint > 0) && (mDragPoint < (mLine.size() - 1))) {
 
-			QPainterPath path;
-			QPainterPathStroker neighbourhood;
-			neighbourhood.setWidth(20);
+	//			QPainterPath path;
+	//			QPainterPathStroker neighbourhood;
+	//			neighbourhood.setWidth(20);
 
-			path.moveTo(mLine[mDragPoint - 1]);
-			path.lineTo(mLine[mDragPoint + 1]);
+	//			path.moveTo(mLine[mDragPoint - 1]);
+	//			path.lineTo(mLine[mDragPoint + 1]);
 
-			if (neighbourhood.createStroke(path).contains(mLine[mDragPoint])) {
+	//			if (neighbourhood.createStroke(path).contains(mLine[mDragPoint])) {
 
-				delPointHandler(mLine[mDragPoint]);
-				mDragPoint -= 1;
-				deleteCurrentPoint = true;
-			}
-		}
+	//				delPointHandler(mLine[mDragPoint]);
+	//				mDragPoint -= 1;
+	//				deleteCurrentPoint = true;
+	//			}
+	//		}
 
-		// try to eliminate unneeded points
+	//		// try to eliminate unneeded points
 
-		if ((mDragPoint != -1) && (mDragPoint < (mLine.size() - 2))) {
-			removeUnneededPoints(mDragPoint);
-			if (deleteCurrentPoint)
-				mDragPoint += 1;
-		}
+	//		if ((mDragPoint != -1) && (mDragPoint < (mLine.size() - 2))) {
+	//			removeUnneededPoints(mDragPoint);
+	//			if (deleteCurrentPoint)
+	//				mDragPoint += 1;
+	//		}
 
-		if (mDragPoint >= 2)
-			removeUnneededPoints(mDragPoint - 2);
+	//		if (mDragPoint >= 2)
+	//			removeUnneededPoints(mDragPoint - 2);
 
 
-	}
+	//	}
+
+	//	if (mDragPoint == -1)
+	//		Element::mouseReleaseEvent(event);
+	//	else
+	//		mDragPoint = -1;
+
+	//	if (SettingsManager::value("SquareLine", false).toBool())
+	//		squarizeHandler(QPointF());
+
+	//	connectToPort();
+
+	//	if (mBeginning)
+	//		mBeginning->setPortsVisible(false);
+
+	//	if (mEnding)
+	//		mEnding->setPortsVisible(false);
+
+	//	// cleanup after moving/resizing
+	//	mBeginning = mEnding = NULL;
+
+	//	arrangeSrcAndDst();
+
+	deleteUnneededPoints();
 
 	if (mDragPoint == -1)
 		Element::mouseReleaseEvent(event);
 	else
 		mDragPoint = -1;
 
-	if (SettingsManager::value("SquareLine", false).toBool())
+	if (SettingsManager::value("SquareLine", false).toBool()) {
 		squarizeHandler(QPointF());
+		deleteUnneededPoints();//wtf
+	}
 
 	connectToPort();
 
@@ -466,13 +499,68 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 }
 
+void EdgeElement::deleteUnneededPoints()
+{
+	int const delWidth = 30;
+	bool deleteCurrentPoint = false;
+	if  (mLine.size() >= 3) {
+
+		if ((mDragPoint > 0) && (mDragPoint < (mLine.size() - 1))) {
+
+			QPainterPath path;
+			QPainterPathStroker neighbourhood;
+			neighbourhood.setWidth(delWidth);
+
+			path.moveTo(mLine[mDragPoint - 1]);
+			path.lineTo(mLine[mDragPoint + 1]);
+
+			if (neighbourhood.createStroke(path).contains(mLine[mDragPoint])) {
+
+				delPointHandler(mLine[mDragPoint]);
+				mDragPoint -= 1;
+				if (mLine.size() == 3)
+					mDragPoint = 0;
+				deleteCurrentPoint = true;
+			}
+		}
+		if ((mDragPoint != -1) && (mDragPoint < (mLine.size() - 2))) {
+
+			QPainterPath path;
+			QPainterPathStroker neighbourhood;
+			neighbourhood.setWidth(delWidth);
+
+			path.moveTo(mLine[mDragPoint]);
+			path.lineTo(mLine[mDragPoint + 2]);
+
+			if (neighbourhood.createStroke(path).contains(mLine[mDragPoint + 1]))
+				delPointHandler(mLine[mDragPoint + 1]);
+
+			if (deleteCurrentPoint)
+				mDragPoint += 1;
+		}
+
+		if (mDragPoint >= 2) {
+
+			QPainterPath path;
+			QPainterPathStroker neigbourhood;
+			neigbourhood.setWidth(delWidth);
+
+			path.moveTo(mLine[mDragPoint - 2]);
+			path.lineTo(mLine[mDragPoint]);
+
+			if (neigbourhood.createStroke(path).contains(mLine[mDragPoint - 1]))
+				delPointHandler(mLine[mDragPoint - 1]);
+		}
+	}
+}
+
 void EdgeElement::removeUnneededPoints(int startingPoint)
 {
 	if (startingPoint + 2 < mLine.size()) {
 		if ((mLine[startingPoint].x() == mLine[startingPoint + 1].x() &&
-			mLine[startingPoint].x() == mLine[startingPoint + 2].x()) ||
-			(mLine[startingPoint].y() == mLine[startingPoint + 1].y() &&
-			mLine[startingPoint].y() == mLine[startingPoint + 2].y()))
+		mLine[startingPoint].x() == mLine[startingPoint + 2].x()) ||
+		(mLine[startingPoint].y() == mLine[startingPoint + 1].y() &&
+		mLine[startingPoint].y() == mLine[startingPoint + 2].y()))
 		{
 			delPointHandler(mLine[startingPoint + 1]);
 		}
@@ -497,7 +585,7 @@ QList<ContextMenuAction*> EdgeElement::contextMenuActions()
 	QList<ContextMenuAction*> result;
 	result.push_back(&mAddPointAction);
 	result.push_back(&mDelPointAction);
-//	result.push_back(&mSquarizeAction);
+	//	result.push_back(&mSquarizeAction);
 	result.push_back(&mMinimizeAction);
 	return result;
 }
@@ -523,7 +611,7 @@ void EdgeElement::addPointHandler(QPointF const &pos)
 	for (int i = 0; i < mLine.size() - 1; ++i) {
 		QPainterPath path;
 		QPainterPathStroker ps;
-				ps.setWidth(kvadratik - 5);
+		ps.setWidth(kvadratik - 5);
 
 		path.moveTo(mLine[i]);
 		path.lineTo(mLine[i + 1]);
@@ -823,7 +911,7 @@ void EdgeElement::placeEndTo(QPointF const &place)
 	updateLongestPart();
 	if (SettingsManager::value("SquareLine", false).toBool())
 		squarizeHandler(QPointF());
-//	adjustLink();
+	//	adjustLink();
 }
 
 void EdgeElement::moveConnection(NodeElement *node, qreal const portId) {
@@ -864,3 +952,8 @@ QPointF EdgeElement::to() const
 	return mLine.last() + pos();
 }
 
+void EdgeElement::highlight(QColor const color)
+{
+	mColor = color;
+	update();
+}

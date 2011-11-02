@@ -1,5 +1,6 @@
 #pragma once
 #include "item.h"
+#include "../../../qrutils/graphicsUtils/rectangleImpl.h"
 
 class Image : public Item
 {
@@ -16,4 +17,5 @@ private:
 	QGraphicsPixmapItem* mPixmapItem;
 	QImage mImage;
 	QString mFileName;
+	graphicsUtils::RectangleImpl mRectangleImpl;
 };

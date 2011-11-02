@@ -1,9 +1,11 @@
 #pragma once
 
 #include "item.h"
+#include "../../../qrutils/graphicsUtils/lineImpl.h"
 
 class Line : public Item
 {
+	Q_INTERFACES(AbstractItem)
 public:
 	Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0);
 	Line(Line const &other);
@@ -15,7 +17,6 @@ public:
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawScalingRects(QPainter* painter);
-	virtual void drawFieldForResizeItem(QPainter* painter);
 	virtual void changeScalingPointState(qreal x, qreal y);
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 	virtual void reshapeRectWithShift();
@@ -23,4 +24,7 @@ public:
 	QPair<QPair<QString, QString>, QPair<QString, QString> > setXandYBefore(QRect const &rect);
 	void setXandY(QDomElement& dom, QPair<QPair<QString, QString>, QPair<QString, QString> > pair);
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
+
+private:
+	graphicsUtils::LineImpl mLineImpl;
 };

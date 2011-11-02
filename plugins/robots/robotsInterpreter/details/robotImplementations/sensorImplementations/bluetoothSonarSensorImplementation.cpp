@@ -1,16 +1,27 @@
 #include "bluetoothSonarSensorImplementation.h"
-#include <QtCore/QDebug>
-using namespace qReal::interpreters::robots;
-using namespace details::robotImplementations::sensorImplementations;
 
-BluetoothSonarSensorImplementation::BluetoothSonarSensorImplementation(RobotCommunicationInterface *robotCommunicationInterface
+#include "../../tracer.h"
+
+using namespace qReal::interpreters::robots;
+using namespace details;
+using namespace robotImplementations::sensorImplementations;
+
+BluetoothSonarSensorImplementation::BluetoothSonarSensorImplementation(RobotCommunication *robotCommunicationInterface
 		, inputPort::InputPortEnum const &port)
-	: BluetoothSensorImplementation(robotCommunicationInterface, lowLevelSensorType::LOWSPEED_9V, sensorMode::RAWMODE, port)
+	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType::sonar, lowLevelSensorType::LOWSPEED_9V, sensorMode::RAWMODE, port)
 {
 }
 
 void BluetoothSonarSensorImplementation::read()
 {
+	if (!mIsConfigured) {
+		// If sensor is not configured, report failure and return immediately.
+		// It is not an error, it shall be possible to reconfigure sensor "on the fly",
+		// but when it is reconfiguring it shall not be available.
+		emit failure();
+		return;
+	}
+
 	if (mState == pending)
 		return;
 	mState = pending;
@@ -20,7 +31,7 @@ void BluetoothSonarSensorImplementation::read()
 void BluetoothSonarSensorImplementation::sensorSpecificProcessResponse(QByteArray const &reading)
 {
 	if (reading.isEmpty()) {
-		qDebug() << "Something is wrong, response is empty";
+		Tracer::debug(tracer::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
 	} else if (reading.size() == 1 && reading[0] == 0) {
 		// Sensor configured, now we can send actual request.
 		QByteArray command(2, 0);
@@ -28,9 +39,9 @@ void BluetoothSonarSensorImplementation::sensorSpecificProcessResponse(QByteArra
 		command[1] = sonarRegisters::RESULT_1;
 		sendCommand(command, 1);
 	} else if (reading.size() == 1 && reading[0] != 0) {
-		qDebug() << "Reading malformed:" << static_cast<unsigned int>(reading[0]);
+		Tracer::debug(tracer::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse", "Reading malformed: " + QString::number(static_cast<unsigned int>(reading[0])));
 	} else {
-		qDebug() << "Data received" << (0xff & reading[1]) << "cm";
+		Tracer::debug(tracer::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse", "Data received: " + QString::number(0xff & reading[1]) + " cm");
 		mState = idle;
 		emit response(0xff & reading[1]);
 	}

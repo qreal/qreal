@@ -15,6 +15,7 @@ NullRobotModelImplementation::NullRobotModelImplementation()
 	mActiveWaitingTimer.setInterval(100);
 	mActiveWaitingTimer.setSingleShot(true);
 	connect(&mActiveWaitingTimer, SIGNAL(timeout()), this, SLOT(timerTimeout()));
+	connect(&mSensorsConfigurer, SIGNAL(allSensorsConfigured()), this, SLOT(sensorConfigurationDoneSlot()));
 }
 
 brickImplementations::NullBrickImplementation &NullRobotModelImplementation::brick()
@@ -24,33 +25,36 @@ brickImplementations::NullBrickImplementation &NullRobotModelImplementation::bri
 
 sensorImplementations::NullTouchSensorImplementation *NullRobotModelImplementation::touchSensor(inputPort::InputPortEnum const &port) const
 {
-	return dynamic_cast<sensorImplementations::NullTouchSensorImplementation *>(mSensors[port]);
+	return dynamic_cast<sensorImplementations::NullTouchSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
 sensorImplementations::NullSonarSensorImplementation *NullRobotModelImplementation::sonarSensor(inputPort::InputPortEnum const &port) const
 {
-	return dynamic_cast<sensorImplementations::NullSonarSensorImplementation *>(mSensors[port]);
+	return dynamic_cast<sensorImplementations::NullSonarSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
 sensorImplementations::NullColorSensorImplementation *NullRobotModelImplementation::colorSensor(inputPort::InputPortEnum const &port) const
 {
-	return dynamic_cast<sensorImplementations::NullColorSensorImplementation *>(mSensors[port]);
+	return dynamic_cast<sensorImplementations::NullColorSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
 void NullRobotModelImplementation::addTouchSensor(inputPort::InputPortEnum const &port)
 {
-	mSensors[port] = new sensorImplementations::NullTouchSensorImplementation(port);
+	sensorImplementations::NullTouchSensorImplementation *sensor = new sensorImplementations::NullTouchSensorImplementation(port);
+	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
 void NullRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum const &port)
 {
-	mSensors[port] = new sensorImplementations::NullSonarSensorImplementation(port);
+	sensorImplementations::NullSonarSensorImplementation *sensor = new sensorImplementations::NullSonarSensorImplementation(port);
+	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
-void NullRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode)
+void NullRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType)
 {
 	Q_UNUSED(mode);
-	mSensors[port] = new sensorImplementations::NullColorSensorImplementation(port);
+	sensorImplementations::NullColorSensorImplementation *sensor = new sensorImplementations::NullColorSensorImplementation(port, sensorType);
+	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
 void NullRobotModelImplementation::init()
@@ -61,7 +65,16 @@ void NullRobotModelImplementation::init()
 
 void NullRobotModelImplementation::timerTimeout()
 {
-	emit connected(true);
+	mSensorsConfigurer.unlockConfiguring();
+}
+
+void NullRobotModelImplementation::sensorConfigurationDoneSlot()
+{
+	if (!mIsConnected) {
+		mIsConnected = true;
+		emit connected(true);
+	}
+	emit sensorsConfigured();
 }
 
 void NullRobotModelImplementation::stopRobot()
@@ -100,4 +113,3 @@ sensorImplementations::NullEncoderImplementation &NullRobotModelImplementation::
 {
 	return mEncoderC;
 }
-
