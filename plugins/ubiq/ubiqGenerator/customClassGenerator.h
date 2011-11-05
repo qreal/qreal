@@ -5,6 +5,8 @@
 namespace ubiq {
 namespace generator {
 
+QString const customClassLabel = "CustomClass";
+
 class CustomClassGenerator : public AbstractGenerator
 {
 public:

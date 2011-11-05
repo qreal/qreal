@@ -5,7 +5,7 @@ using Ubiq.MessagingAPI;
 
 namespace DeviceService
 {
-  class DevRecord
+  class @@CustomClassName@@
   {
 @@Properties@@
 

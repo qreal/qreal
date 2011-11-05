@@ -24,12 +24,7 @@ void CustomClassGenerator::generate()
 {
 	// TODO: get output file names from Generator somehow
 
-	QString const fileName = "DevRecord.cs";
-
-	loadTemplateFromFile(fileName, mFileTemplate);
 	loadTemplateUtils();
-	qDebug() << mFileTemplate;
-	QString properties;
 
 	foreach (Id const diagram, mApi.elementsByType("DataStructuresDiagram")){ // for each diagram
 		if (!mApi.isLogicalElement(diagram))
@@ -38,8 +33,16 @@ void CustomClassGenerator::generate()
 		// find custom classes
 
 		foreach (Id const element, mApi.children(diagram)){
-			if (!mApi.isLogicalElement(element) || (element.element() != "CustomClass"))
+			if (!mApi.isLogicalElement(element) || (element.element() != customClassLabel))
 				continue;
+
+			QString const templateName = "CustomClass.cs";
+			QString const outputName = NameNormalizer::normalize(mApi.name(element)) + ".cs";
+
+
+			loadTemplateFromFile(templateName, mFileTemplate);
+			mFileTemplate.replace("@@CustomClassName@@", mApi.name(element));
+			QString properties;
 
 			// find properties
 
@@ -58,26 +61,28 @@ void CustomClassGenerator::generate()
 				properties += propertyTemplate;
 			}
 
+			QDir dir;
+
+			if (!dir.exists(mOutputDirPath))
+				dir.mkdir(mOutputDirPath);
+			dir.cd(mOutputDirPath);
+
+			QString const outputFileName = dir.absoluteFilePath(outputName);
+			QFile file(outputFileName);
+			if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+				qDebug() << "cannot open \"" << outputFileName << "\"";
+				return;
+			}
+
+			QTextStream out(&file);
+			QString projectTemplate = mFileTemplate.replace("@@Properties@@", properties).replace("\\n", "\n");
+			out << projectTemplate.replace("@@Properties@@", "ololo");
+			file.close();
+
 		}
 	}
 
 
-	QDir dir;
 
-	if (!dir.exists(mOutputDirPath))
-		dir.mkdir(mOutputDirPath);
-	dir.cd(mOutputDirPath);
-
-	QString const outputFileName = dir.absoluteFilePath(fileName);
-	QFile file(outputFileName);
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		qDebug() << "cannot open \"" << outputFileName << "\"";
-		return;
-	}
-
-	QTextStream out(&file);
-	QString projectTemplate = mFileTemplate.replace("@@Properties@@", properties).replace("\\n", "\n");
-	out << projectTemplate.replace("@@Properties@@", "ololo");
-	file.close();
 
 }
