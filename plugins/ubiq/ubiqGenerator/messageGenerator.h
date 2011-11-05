@@ -20,6 +20,10 @@ public:
 
 private:
 	QString generateEnumElements(qReal::Id const &element);
+	QString generateDefaultFieldsInitialization(qReal::Id const &element);
+	QString generateFieldsInitialization(qReal::Id const &element);
+	QString generateConstructorArguments(qReal::Id const &element);
+	QString generateConstructorActualArguments(qReal::Id const &element);
 };
 
 }

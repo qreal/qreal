@@ -44,7 +44,12 @@ void MessageGenerator::generate()
 				continue;
 
 			if (element.element() == "MessageClass") {
-				result.replace("@@Properties@@", generatePropertiesCode(element));
+				result.replace("@@Properties@@", generatePropertiesCode(element))
+						.replace("@@InitFieldsWithDefaults@@", generateDefaultFieldsInitialization(element))
+						.replace("@@ConstructorArgs@@", generateConstructorArguments(element))
+						.replace("@@InitFieldsWithArgs@@", generateFieldsInitialization(element))
+						.replace("@@ConstructorActualArgs@@", generateConstructorActualArguments(element))
+						;
 			} else if (element.element() == "MessageCodes") {
 				result.replace("@@MessageCodes@@", generateEnumElements(element));
 			} else if (element.element() == "ErrorCodes") {
@@ -73,4 +78,74 @@ QString MessageGenerator::generateEnumElements(qReal::Id const &element)
 		++value;
 	}
 	return result;
+}
+
+QString MessageGenerator::generateDefaultFieldsInitialization(qReal::Id const &element)
+{
+	QString fieldsInitialization;
+	foreach (Id const property, mApi.children(element)) {
+		if (!mApi.isLogicalElement(property) || property.element() != "Field")
+			continue;
+
+		QString initTemplate = mTemplateUtils["@@FieldInit@@"];
+		QString const name = mApi.name(property);
+
+		QString const defaultValue = mApi.stringProperty(property, "defaultValue").isEmpty()
+				? getDefaultValue(mApi.stringProperty(property, "type"))
+				: mApi.stringProperty(property, "defaultValue");
+
+		initTemplate.replace("@@Name@@", NameNormalizer::normalize(name, false))
+				.replace("@@Value@@", defaultValue)
+				;
+
+		fieldsInitialization += ("    " + initTemplate);
+	}
+	return fieldsInitialization;
+}
+
+QString MessageGenerator::generateFieldsInitialization(qReal::Id const &element)
+{
+	QString fieldsInitialization;
+	foreach (Id const property, mApi.children(element)) {
+		if (!mApi.isLogicalElement(property) || property.element() != "Field")
+			continue;
+
+		QString initTemplate = mTemplateUtils["@@FieldInit@@"];
+		QString argName = NameNormalizer::normalize(mApi.name(property), false);
+		initTemplate.replace("@@Name@@", argName)
+				.replace("@@Value@@", argName)
+				;
+
+		fieldsInitialization += ("    " + initTemplate);
+	}
+	return fieldsInitialization;
+}
+
+QString MessageGenerator::generateConstructorArguments(qReal::Id const &element)
+{
+	QString parametersList;
+	foreach (Id const property, mApi.children(element)) {
+		if (!mApi.isLogicalElement(property) || property.element() != "Field")
+			continue;
+
+		QString argumentTemplate = mTemplateUtils["@@Argument@@"];
+		QString argName = NameNormalizer::normalize(mApi.name(property), false);
+		QString type = mApi.stringProperty(property, "type");
+		argumentTemplate.replace("@@ArgType@@", type).replace("@@ArgName@@", argName);
+		parametersList += (argumentTemplate + ", ");
+	}
+	return parametersList;
+}
+
+QString MessageGenerator::generateConstructorActualArguments(qReal::Id const &element)
+{
+	QString parametersList;
+	foreach (Id const property, mApi.children(element)) {
+		if (!mApi.isLogicalElement(property) || property.element() != "Field")
+			continue;
+
+		QString argName = NameNormalizer::normalize(mApi.name(property), false);
+		parametersList += (argName + ", ");
+	}
+	return parametersList;
 }

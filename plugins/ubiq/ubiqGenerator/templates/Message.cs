@@ -58,10 +58,19 @@ namespace DeviceService
 
         public static bool iBigEndianFlag = true;
 
-        // !!! TODO!
-        public Message(int aDeviceID, int aCommand)
+        public void initAsError()
         {
-            iDeviceID = aDeviceID;
+@@InitFieldsWithDefaults@@
+            iCommand = KMsgError;
+            iCode = KErrBadParameters;
+            iReader = null;
+            iWriter = null;
+            iData = null;
+        }
+
+        public Message(@@ConstructorArgs@@int aCommand)
+        {
+@@InitFieldsWithArgs@@
             iCommand = aCommand;
             iCode = KErrNo;
             iData = null;
@@ -69,15 +78,13 @@ namespace DeviceService
             iWriter = null;
         }
 
-        // !!! TODO!
-        public static Message ErrorMessage(int aDeviceID, int aErrCode)
+        public static Message ErrorMessage(@@ConstructorArgs@@int aErrCode)
         {
-            Message iMsg = new Message(aDeviceID, KMsgError);
+            Message iMsg = new Message(@@ConstructorActualArgs@@KMsgError);
             iMsg.iCode = aErrCode;
             return iMsg;
         }
         
-        // !!! TODO!
         public Message(byte[] aData)
         {
             iData = null;
@@ -85,32 +92,23 @@ namespace DeviceService
             iWriter = null;
             if (!Parse(aData))
             {
-                iDeviceID = -1;
-                iCommand = KMsgError;
-                iCode = KErrBadParameters;
-                iReader = null;
-                iWriter = null;
-                iData = null;
+                initAsError();
             }
         }
 
-        // !!! TODO!
-        public Message(int aDeviceID, byte[] aData)
+        public Message(@@ConstructorArgs@@byte[] aData)
         {
             iData = null;
             iReader = null;
             iWriter = null;
             if (!Parse(aData))
             {
-                iDeviceID = -1;
-                iCommand = KMsgError;
-                iCode = KErrBadParameters;
-                iReader = null;
-                iWriter = null;
-                iData = null;
+                initAsError();
             }
-            else
-                iDeviceID = aDeviceID;
+            else 
+            {
+    @@InitFieldsWithArgs@@
+            }
         }
 
         public byte GetByte()
@@ -262,10 +260,9 @@ namespace DeviceService
             }
         }
 
-        // !!! TODO!
         private void Init()
         {
-            iDeviceID = -1;
+@@InitFieldsWithDefaults@@
             iCommand = KMsgNoCommand;
             iCode = KErrNo;
             iData = null;
