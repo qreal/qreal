@@ -24,6 +24,6 @@ void Generator::init(qReal::LogicalModelAssistInterface const &logicalModel
 
 void Generator::generate()
 {
-	MessageGenerator generator("./templates/Message.cs", *mLogicalModel, *mErrorReporter);
+	MessageGenerator generator("./templates/Message.cs", "./output/Message.cs", *mLogicalModel, *mErrorReporter);
 	generator.generate();
 }

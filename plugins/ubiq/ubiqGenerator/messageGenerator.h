@@ -10,15 +10,18 @@ class MessageGenerator
 {
 public:
 	MessageGenerator(QString const &templateFilePath
+			, QString const &outputFilePath
 			, qReal::LogicalModelAssistInterface const &logicalModel
 			, qReal::ErrorReporterInterface &errorReporter
 			);
+
 	virtual ~MessageGenerator();
 
 	void generate();
 
 private:
 	QString const mTemplateFilePath;
+	QString const mOutputFilePath;
 	qReal::LogicalModelAssistInterface const &mModel;
 	qReal::ErrorReporterInterface &mErrorReporter;
 };
