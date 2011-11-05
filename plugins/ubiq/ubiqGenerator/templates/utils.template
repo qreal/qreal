@@ -1,1 +1,3 @@
-@@Property@@=    private @Type@ @Name@;\n    public @Type@ @NameCaps@\n    {\n      set\n      {\n        @Name@ = value;\n      }\n      get\n      {\n        return @Name@;\n      }\n    }\n
+@@Property@@=    private @@Type@@ @@Name@@;\n    public @@Type@@ @@NameCaps@@\n    {\n      set\n      {\n        @@Name@@ = value;\n      }\n      get\n      {\n        return @@Name@@;\n      }\n    }\n
+@@Constructor@@=    public @@CustomClassName@@(@@ConstructorParameters@@)\n    {\n@@Fields@@    }\n
+@@FieldInit@@=        this.@@Name@@ = @@DefaultValue@@;\n

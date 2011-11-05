@@ -68,9 +68,9 @@ QString MessageGenerator::generateCustomProperties(QString const &templateString
 
 		QString propertyTemplate = mTemplateUtils["@@Property@@"];
 		QString const name = mApi.name(element);
-		propertyTemplate.replace("@Name@", NameNormalizer::normalize(name, false))
-				.replace("@NameCaps@", NameNormalizer::normalize(name))
-				.replace("@Type@", mApi.stringProperty(element, "type"));
+		propertyTemplate.replace("@@Name@@", NameNormalizer::normalize(name, false))
+				.replace("@@NameCaps@@", NameNormalizer::normalize(name))
+				.replace("@@Type@@", mApi.stringProperty(element, "type"));
 
 		properties += propertyTemplate;
 	}

@@ -28,6 +28,8 @@ protected:
 	bool loadTemplateUtils();
 	void saveOutputFile(QString const &fileName, QString const &content);
 
+	QString getDefaultValue(QString const &type);
+
 	QString const mTemplateDirPath;
 	QString const mOutputDirPath;
 	qrRepo::LogicalRepoApi const &mApi;
