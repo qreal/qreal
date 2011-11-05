@@ -21,7 +21,6 @@ public:
 	void generate();
 
 private:
-	QString generatePropertiesCode(qReal::Id const &element);
 	QString generateConstructors(qReal::Id const &element);
 };
 

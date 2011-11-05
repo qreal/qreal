@@ -20,25 +20,6 @@ CustomClassGenerator::~CustomClassGenerator()
 {
 }
 
-QString CustomClassGenerator::generatePropertiesCode(Id const &element)
-{
-	QString properties;
-	foreach (Id const property, mApi.children(element)) {
-
-		// generate property code
-
-		QString propertyTemplate = mTemplateUtils["@@Property@@"];
-		QString name = mApi.name(property);
-		propertyTemplate.replace("@@Name@@", NameNormalizer::normalize(name, false))
-				.replace("@@NameCaps@@", NameNormalizer::normalize(name))
-				.replace("@@Type@@", mApi.stringProperty(property, "type"));
-
-
-		properties += propertyTemplate;
-	}
-	return properties;
-}
-
 QString CustomClassGenerator::generateConstructors(qReal::Id const &element)
 {
 	QString defaultConstructorTemplate = mTemplateUtils["@@Constructor@@"];

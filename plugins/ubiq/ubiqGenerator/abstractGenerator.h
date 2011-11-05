@@ -27,6 +27,7 @@ protected:
 	bool loadTemplateFromFile(QString const &templateFileName, QString &loadedTemplate);
 	bool loadTemplateUtils();
 	void saveOutputFile(QString const &fileName, QString const &content);
+	QString generatePropertiesCode(qReal::Id const &element);
 
 	QString getDefaultValue(QString const &type);
 
