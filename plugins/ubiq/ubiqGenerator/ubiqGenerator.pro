@@ -12,12 +12,16 @@ HEADERS = \
         ubiqGeneratorPlugin.h \
         generator.h \
         messageGenerator.h \
-        devRecordGenerator.h
+        devRecordGenerator.h \
+    abstractGenerator.h
 
 SOURCES = \
         ubiqGeneratorPlugin.cpp \
         generator.cpp \
         messageGenerator.cpp \
-        devRecordGenerator.cpp
+        devRecordGenerator.cpp \
+    abstractGenerator.cpp
+
+
 
 

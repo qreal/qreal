@@ -6,15 +6,12 @@
 
 using namespace ubiq::generator;
 
-MessageGenerator::MessageGenerator(QString const &templateFilePath
-		, QString const &outputFilePath
+MessageGenerator::MessageGenerator(QString const &templateDirPath
+		, QString const &outputDirPath
 		, qReal::LogicalModelAssistInterface const &logicalModel
 		, qReal::ErrorReporterInterface &errorReporter
 		)
-		: mTemplateFilePath(templateFilePath)
-		, mOutputFilePath(outputFilePath)
-		, mApi(logicalModel.logicalRepoApi())
-		, mErrorReporter(errorReporter)
+		: AbstractGenerator(templateDirPath, outputDirPath, logicalModel, errorReporter)
 {
 }
 
@@ -24,7 +21,7 @@ MessageGenerator::~MessageGenerator()
 
 void MessageGenerator::generate()
 {
-	QFile templateFile(mTemplateFilePath);
+	QFile templateFile(mTemplateDirPath);
 	if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		mErrorReporter.addError("cannot open \"" + templateFile.fileName() + "\"");
 		return;
@@ -36,7 +33,7 @@ void MessageGenerator::generate()
 
 	resultString.replace("@@TEST@@", "FFFFFFFUUuuuUUuuuUUuu~");
 
-	QFile resultFile(mOutputFilePath);
+	QFile resultFile(mOutputDirPath);
 	if (!resultFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		mErrorReporter.addError("cannot open \"" + resultFile.fileName() + "\"");
 		return;

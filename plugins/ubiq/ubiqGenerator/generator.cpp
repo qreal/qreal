@@ -3,6 +3,7 @@
 #include <QtCore/QDebug>
 
 #include "messageGenerator.h"
+#include "devRecordGenerator.h"
 
 using namespace ubiq::generator;
 
@@ -26,4 +27,7 @@ void Generator::generate()
 {
 	MessageGenerator generator("./templates/Message.cs", "./output/Message.cs", *mLogicalModel, *mErrorReporter);
 	generator.generate();
+
+	DevRecordGenerator devRecordGenerator("./templates/", "./output/", *mLogicalModel, *mErrorReporter);
+	devRecordGenerator.generate();
 }
