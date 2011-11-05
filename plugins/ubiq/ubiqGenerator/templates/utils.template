@@ -1,1 +1,1 @@
-@@Property@@=    private short @Name@;\n    public short @NameCaps@\n    {\n      set\n      {\n        @Name@ = value;\n      }\n      get\n      {\n        return @Name@;      }\n    }\n
+@@Property@@=    private @Type@ @Name@;\n    public @Type@ @NameCaps@\n    {\n      set\n      {\n        @Name@ = value;\n      }\n      get\n      {\n        return @Name@;\n      }\n    }\n
