@@ -5,6 +5,7 @@
 using namespace qReal;
 
 ToolPluginManager::ToolPluginManager(QObject *parent)
+		: mCustomizer()
 {
 	Q_UNUSED(parent)
 	mPluginsDir = QDir(qApp->applicationDirPath());
@@ -33,13 +34,10 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 			delete loader;
 		}
 	}
-
-	mCustomizer = new DefaultCustomizer();
 }
 
 ToolPluginManager::~ToolPluginManager()
 {
-	delete mCustomizer;
 	foreach (QPluginLoader *loader, mLoaders)
 		delete loader;
 }
@@ -71,12 +69,12 @@ QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() 
 	return result;
 }
 
-CustomizationInterface *ToolPluginManager::customizer() const
+Customizer const *ToolPluginManager::customizer() const
 {
 	foreach (ToolPluginInterface *toolPlugin, mPlugins)
 		if (toolPlugin->customizationInterface())
 			return toolPlugin->customizationInterface();
-	return mCustomizer;
+	return &mCustomizer;
 }
 
 void ToolPluginManager::updateSettings()

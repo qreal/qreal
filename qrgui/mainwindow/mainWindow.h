@@ -66,6 +66,8 @@ public:
 
 	void showErrors(gui::ErrorReporter *reporter);
 
+	bool showConnectionRelatedMenus() const;
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();

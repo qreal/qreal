@@ -5,7 +5,7 @@
 #include <QtCore/QPluginLoader>
 
 #include "../toolPluginInterface/toolPluginInterface.h"
-#include "../toolPluginInterface/customizationInterface.h"
+#include "../toolPluginInterface/customizer.h"
 #include "../toolPluginInterface/pluginConfigurator.h"
 #include "../dialogs/preferencesPages/page.h"
 
@@ -21,33 +21,14 @@ public:
 	void updateSettings();
 	QList<ActionInfo> actions() const;
 	QList<QPair<QString, PreferencesPage *> > preferencesPages() const;
-	CustomizationInterface *customizer() const;
+	Customizer const *customizer() const;
 
 private:
-
-	class DefaultCustomizer : public CustomizationInterface
-	{
-		virtual bool showLogicalModelExplorer() const
-		{
-			return true;
-		}
-
-		virtual QString windowTitle() const
-		{
-			return QString();
-		}
-
-		virtual QIcon applicationIcon() const
-		{
-			return QIcon();
-		}
-	};
-
 	QDir mPluginsDir;
 
 	QList<ToolPluginInterface *> mPlugins;
-	DefaultCustomizer *mCustomizer;  // Has ownership
 	QList<QPluginLoader *> mLoaders;
+	Customizer const mCustomizer;  // Has ownership
 };
 
 }

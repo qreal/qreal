@@ -18,7 +18,7 @@ void UbiqGeneratorPlugin::init(PluginConfigurator const &configurator)
 	mGenerator.init(configurator.logicalModelApi(), *configurator.mainWindowInterpretersInterface().errorReporter());
 }
 
-qReal::CustomizationInterface* UbiqGeneratorPlugin::customizationInterface()
+qReal::Customizer* UbiqGeneratorPlugin::customizationInterface()
 {
 	return &mCustomizer;
 }

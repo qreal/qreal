@@ -1363,7 +1363,7 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 	if (tabNumber != -1) {
 		mUi->tabs->setCurrentIndex(tabNumber);
 	} else {
-		EditorView * const view = new EditorView();
+		EditorView * const view = new EditorView(this);
 		mUi->tabs->addTab(view, index.data().toString());
 		mUi->tabs->setCurrentWidget(view);
 		initCurrentTab(index);
@@ -2099,6 +2099,11 @@ void MainWindow::flashRobot()
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
 {
 	errorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+}
+
+bool MainWindow::showConnectionRelatedMenus() const
+{
+	return mToolManager.customizer()->showConnectionRelatedMenus();
 }
 
 void MainWindow::checkNxtTools()
