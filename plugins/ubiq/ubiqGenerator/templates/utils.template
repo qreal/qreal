@@ -3,3 +3,7 @@
 @@FieldInit@@=        this.@@Name@@ = @@Value@@;\n
 @@Argument@@=@@ArgType@@ @@ArgName@@
 @@EnumElement@@=        public const int @@Name@@ = @@Value@@;\n
+@@SerializationIntAsShort@@=            short @@Name@@_temp = (short)@@Name@@;\n            if (iBigEndianFlag) @@Name@@_temp = Convert16(@@Name@@_temp);\n            iPackWriter.Write(@@Name@@_temp);\n
+@@DeserializationIntAsShort@@=            short @@Name@@_temp = iRdr.ReadInt16();\n            if (iBigEndianFlag) @@Name@@_temp = Convert16(@@Name@@_temp);\n            @@Name@@ = (int)@@Name@@_temp;\n
+@@Serialization_int@@=            int @@Name@@_temp = @@Name@@;\n            if (iBigEndianFlag) @@Name@@_temp = Convert32(@@Name@@_temp);\n            iPackWriter.Write(@@Name@@_temp);\n
+@@Deserialization_int@@=            int @@Name@@_temp = iRdr.ReadInt16();\n            if (iBigEndianFlag) @@Name@@_temp = Convert32(@@Name@@_temp);\n            @@Name@@ = @@Name@@_temp;\n

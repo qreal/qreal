@@ -24,6 +24,8 @@ private:
 	QString generateFieldsInitialization(qReal::Id const &element);
 	QString generateConstructorArguments(qReal::Id const &element);
 	QString generateConstructorActualArguments(qReal::Id const &element);
+	QString generatePackFields(qReal::Id const &element);
+	QString generateUnpackFields(qReal::Id const &element);
 };
 
 }

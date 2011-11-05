@@ -49,6 +49,8 @@ void MessageGenerator::generate()
 						.replace("@@ConstructorArgs@@", generateConstructorArguments(element))
 						.replace("@@InitFieldsWithArgs@@", generateFieldsInitialization(element))
 						.replace("@@ConstructorActualArgs@@", generateConstructorActualArguments(element))
+						.replace("@@PackFields@@", generatePackFields(element))
+						.replace("@@UnpackFields@@", generateUnpackFields(element))
 						;
 			} else if (element.element() == "MessageCodes") {
 				result.replace("@@MessageCodes@@", generateEnumElements(element));
@@ -148,4 +150,58 @@ QString MessageGenerator::generateConstructorActualArguments(qReal::Id const &el
 		parametersList += (argName + ", ");
 	}
 	return parametersList;
+}
+
+QString MessageGenerator::generatePackFields(qReal::Id const &element)
+{
+	QString serializersList;
+	foreach (Id const property, mApi.children(element)) {
+		if (!mApi.isLogicalElement(property) || property.element() != "Field")
+			continue;
+
+		QString const name = NameNormalizer::normalize(mApi.name(property), false);
+		QString const type = mApi.stringProperty(property, "type");
+
+		QString serializationTemplate;
+
+		if (type == "int") {
+			bool const serializeAsShort = mApi.property(property, "serializeAsShort").toBool();
+			if (serializeAsShort) {
+				serializationTemplate = mTemplateUtils["@@SerializationIntAsShort@@"];
+			}
+		}
+		if (serializationTemplate.isEmpty())
+			serializationTemplate = mTemplateUtils["@@Serialization_" + type + "@@"];
+
+		serializationTemplate.replace("@@Name@@", name);
+		serializersList += serializationTemplate;
+	}
+	return serializersList;
+}
+
+QString MessageGenerator::generateUnpackFields(qReal::Id const &element)
+{
+	QString deserializersList;
+	foreach (Id const property, mApi.children(element)) {
+		if (!mApi.isLogicalElement(property) || property.element() != "Field")
+			continue;
+
+		QString const name = NameNormalizer::normalize(mApi.name(property), false);
+		QString const type = mApi.stringProperty(property, "type");
+
+		QString deserializationTemplate;
+
+		if (type == "int") {
+			bool const serializeAsShort = mApi.property(property, "serializeAsShort").toBool();
+			if (serializeAsShort) {
+				deserializationTemplate = mTemplateUtils["@@DeserializationIntAsShort@@"];
+			}
+		}
+		if (deserializationTemplate.isEmpty())
+			deserializationTemplate = mTemplateUtils["@@Deserialization_" + type + "@@"];
+
+		deserializationTemplate.replace("@@Name@@", name);
+		deserializersList += deserializationTemplate;
+	}
+	return deserializersList;
 }

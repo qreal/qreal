@@ -148,7 +148,6 @@ namespace DeviceService
             return new MemoryStream(iData, aPos, iData.GetLength(0)-aPos);
         }
 
-        // !!! TODO!
         public byte[] Pack()
         {
             MemoryStream iOutStream = new MemoryStream();
@@ -160,9 +159,7 @@ namespace DeviceService
             byte iDest = (byte)101; // Dispatcher
             if (iCommand == KMsgDataToSend || iCommand == KMsgSetParameters) iDest = (byte)100; // Driver
             iPackWriter.Write(iDest);
-            short iDevID = (short)iDeviceID;
-            if (iBigEndianFlag) iDevID = Convert16(iDevID);
-            iPackWriter.Write(iDevID);
+@@PackFields@@
             iPackWriter.Write((byte)iCommand);
             iPackWriter.Write((byte)iCode);
             if (iData != null) iPackWriter.Write(iData);
@@ -271,7 +268,6 @@ namespace DeviceService
             iWriter = null;
         }
 
-        // !!! TODO!
         private bool Parse(byte[] aData)
         {
             if (iData != null || iReader != null || iWriter != null) return false;
@@ -283,11 +279,7 @@ namespace DeviceService
 //                return false;
 // Here some sort of Try/Catch should be - for the case of incorrect data reading
             byte aux = iRdr.ReadByte();   // dest - now obsolete
-
-            short iDevID = iRdr.ReadInt16();
-            if (iBigEndianFlag) iDevID = Convert16(iDevID);
-            iDeviceID = (int)iDevID;
-
+@@UnpackFields@@
             iCommand = (int)iRdr.ReadByte();
             iCode = (int)iRdr.ReadByte();
 

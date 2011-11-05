@@ -137,6 +137,9 @@
                     <properties>
                         <property type="string" name="type"/>
                         <property type="string" name="defaultValue"/>
+                        <property type="bool" name="serializeAsShort">
+                            <default>false</default>
+                        </property>
                     </properties>
                 </logic>
             </node>
