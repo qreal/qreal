@@ -1,5 +1,7 @@
 #include "messageGenerator.h"
 
+#include "nameNormalizer.h"
+
 #include <QtCore/QFile>
 
 #include <QtCore/QDebug>
@@ -44,9 +46,9 @@ void MessageGenerator::generate()
 			if (element.element() == "MessageClass") {
 				result.replace("@@Properties@@", generatePropertiesCode(element));
 			} else if (element.element() == "MessageCodes") {
-				result = generateMessageCodes(result, element);
+				result.replace("@@MessageCodes@@", generateEnumElements(element));
 			} else if (element.element() == "ErrorCodes") {
-				result = generateErrorCodes(result, element);
+				result.replace("@@ErrorCodes@@", generateEnumElements(element));
 			}
 		}
 	}
@@ -54,14 +56,21 @@ void MessageGenerator::generate()
 	saveOutputFile(dir.absoluteFilePath(fileName), result);
 }
 
-QString MessageGenerator::generateMessageCodes(QString const &templateString, qReal::Id const &id)
+QString MessageGenerator::generateEnumElements(qReal::Id const &element)
 {
-	QString result = templateString;
-	return result;
-}
+	QString result;
+	int value = 0;
+	foreach (Id const id, mApi.children(element)) {
+		if (!mApi.isLogicalElement(id) || id.element() != "EnumElement")
+			continue;
 
-QString MessageGenerator::generateErrorCodes(QString const &templateString, qReal::Id const &id)
-{
-	QString result = templateString;
+		QString propertyTemplate = mTemplateUtils["@@EnumElement@@"];
+		QString name = mApi.name(id);
+		propertyTemplate.replace("@@Name@@", NameNormalizer::normalize(name))
+				.replace("@@Value@@", QString::number(value));
+
+		result += propertyTemplate;
+		++value;
+	}
 	return result;
 }

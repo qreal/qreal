@@ -19,8 +19,7 @@ public:
 	void generate();
 
 private:
-	QString generateMessageCodes(QString const &templateString, qReal::Id const &id);
-	QString generateErrorCodes(QString const &templateString, qReal::Id const &id);
+	QString generateEnumElements(qReal::Id const &element);
 };
 
 }

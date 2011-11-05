@@ -104,7 +104,7 @@ QString AbstractGenerator::generatePropertiesCode(Id const &element)
 {
 	QString properties;
 	foreach (Id const property, mApi.children(element)) {
-		if (!mApi.isLogicalElement(element) || element.element() != "Field")
+		if (!mApi.isLogicalElement(property) || property.element() != "Field")
 			continue;
 
 		// generate property code
