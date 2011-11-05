@@ -28,6 +28,6 @@ void Generator::generate()
 	MessageGenerator generator("./templates/Message.cs", "./output/Message.cs", *mLogicalModel, *mErrorReporter);
 	generator.generate();
 
-	DevRecordGenerator devRecordGenerator("./templates/", "./output/", *mLogicalModel, *mErrorReporter);
-	devRecordGenerator.generate();
+	CustomClassGenerator customClassGenerator("./templates/", "./output/", *mLogicalModel, *mErrorReporter);
+	customClassGenerator.generate();
 }

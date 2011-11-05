@@ -12,7 +12,7 @@ HEADERS = \
     ubiqGeneratorPlugin.h \
     generator.h \
     messageGenerator.h \
-    devRecordGenerator.h \
+    customClassGenerator.h \
     abstractGenerator.h \
     nameNormalizer.h
 
@@ -20,7 +20,7 @@ SOURCES = \
     ubiqGeneratorPlugin.cpp \
     generator.cpp \
     messageGenerator.cpp \
-    devRecordGenerator.cpp \
+    customClassGenerator.cpp \
     abstractGenerator.cpp \
     nameNormalizer.cpp
 

@@ -5,18 +5,16 @@
 namespace ubiq {
 namespace generator {
 
-QString const fileName = "DevRecord.cs";
-
-class DevRecordGenerator : public AbstractGenerator
+class CustomClassGenerator : public AbstractGenerator
 {
 public:
-	DevRecordGenerator(QString const &templateDirPath
+	CustomClassGenerator(QString const &templateDirPath
 			, QString const &outputDirPath
 			, qReal::LogicalModelAssistInterface const &logicalModel
 			, qReal::ErrorReporterInterface &errorReporter
 			);
 
-	virtual ~DevRecordGenerator();
+	virtual ~CustomClassGenerator();
 
 	void generate();
 

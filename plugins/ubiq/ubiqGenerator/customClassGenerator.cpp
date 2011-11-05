@@ -1,13 +1,13 @@
 #include <QtCore/QFile>
 #include <QtCore/QDebug>
 
-#include "devRecordGenerator.h"
+#include "customClassGenerator.h"
 #include "nameNormalizer.h"
 
 using namespace ubiq::generator;
 using namespace qReal;
 
-DevRecordGenerator::DevRecordGenerator(QString const &templateDirPath
+CustomClassGenerator::CustomClassGenerator(QString const &templateDirPath
 		, QString const &outputDirPath
 		, qReal::LogicalModelAssistInterface const &logicalModel
 		, qReal::ErrorReporterInterface &errorReporter
@@ -16,12 +16,16 @@ DevRecordGenerator::DevRecordGenerator(QString const &templateDirPath
 {
 }
 
-DevRecordGenerator::~DevRecordGenerator()
+CustomClassGenerator::~CustomClassGenerator()
 {
 }
 
-void DevRecordGenerator::generate()
+void CustomClassGenerator::generate()
 {
+	// TODO: get output file names from Generator somehow
+
+	QString const fileName = "DevRecord.cs";
+
 	loadTemplateFromFile(fileName, mFileTemplate);
 	loadTemplateUtils();
 	qDebug() << mFileTemplate;
@@ -31,7 +35,7 @@ void DevRecordGenerator::generate()
 		if (!mApi.isLogicalElement(diagram))
 			continue;
 
-		// find DevRecord
+		// find custom classes
 
 		foreach (Id const element, mApi.children(diagram)){
 			if (!mApi.isLogicalElement(element) || (element.element() != "CustomClass"))
