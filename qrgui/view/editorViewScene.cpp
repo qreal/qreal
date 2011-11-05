@@ -14,10 +14,10 @@ using namespace qReal;
 
 EditorViewScene::EditorViewScene(QObject * parent)
 	:  QGraphicsScene(parent)
+	, mLastCreatedWithEdge(NULL)
 	, mWindow(NULL)
 	, mPrevParent(0)
 	, mShouldReparentItems(false)
-	, mLastCreatedWithEdge(NULL)
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid", true).toBool();
 	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth", 10).toInt()) / 100;
