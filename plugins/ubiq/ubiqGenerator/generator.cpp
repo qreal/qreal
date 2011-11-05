@@ -3,7 +3,7 @@
 #include <QtCore/QDebug>
 
 #include "messageGenerator.h"
-#include "devRecordGenerator.h"
+#include "customClassGenerator.h"
 
 using namespace ubiq::generator;
 

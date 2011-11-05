@@ -76,3 +76,25 @@ bool AbstractGenerator::loadTemplateUtils()
 	return true;
 }
 
+
+void AbstractGenerator::saveOutputFile(QString const &fileName, QString const &content)
+{
+	QDir dir;
+
+	if (!dir.exists(mOutputDirPath))
+		dir.mkdir(mOutputDirPath);
+	dir.cd(mOutputDirPath);
+
+	QString const outputFileName = dir.absoluteFilePath(fileName);
+	QFile file(outputFileName);
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		qDebug() << "cannot open \"" << outputFileName << "\"";
+		return;
+	}
+
+	QTextStream out(&file);
+	QString projectTemplate = content;
+	out << content;
+	file.close();
+}
+

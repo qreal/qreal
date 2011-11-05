@@ -21,6 +21,9 @@ public:
 	void generate();
 
 private:
+
+	QString generatePropertiesCode(qReal::Id const &element);
+
 	QString mFileTemplate;
 };
 

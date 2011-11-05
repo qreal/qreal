@@ -26,6 +26,7 @@ protected:
 	bool changeDir(const QString &path);
 	bool loadTemplateFromFile(QString const &templateFileName, QString &loadedTemplate);
 	bool loadTemplateUtils();
+	void saveOutputFile(QString const &fileName, QString const &content);
 
 	QString const mTemplateDirPath;
 	QString const mOutputDirPath;
