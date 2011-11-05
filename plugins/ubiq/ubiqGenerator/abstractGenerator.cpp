@@ -2,8 +2,10 @@
 #include <QtCore/QDebug>
 
 #include "abstractGenerator.h"
+#include "nameNormalizer.h"
 
 using namespace ubiq::generator;
+using namespace qReal;
 
 AbstractGenerator::AbstractGenerator(QString const &templateDirPath
 		, QString const &outputDirPath
@@ -77,7 +79,6 @@ bool AbstractGenerator::loadTemplateUtils()
 	return true;
 }
 
-
 void AbstractGenerator::saveOutputFile(QString const &fileName, QString const &content)
 {
 	QDir dir;
@@ -99,3 +100,21 @@ void AbstractGenerator::saveOutputFile(QString const &fileName, QString const &c
 	file.close();
 }
 
+QString AbstractGenerator::generatePropertiesCode(Id const &element)
+{
+	QString properties;
+	foreach (Id const property, mApi.children(element)) {
+		if (!mApi.isLogicalElement(element) || element.element() != "Field")
+			continue;
+
+		// generate property code
+		QString propertyTemplate = mTemplateUtils["@@Property@@"];
+		QString name = mApi.name(property);
+		propertyTemplate.replace("@Name@", NameNormalizer::normalize(name, false))
+				.replace("@NameCaps@", NameNormalizer::normalize(name))
+				.replace("@Type@", mApi.stringProperty(property, "type"));
+
+		properties += propertyTemplate;
+	}
+	return properties;
+}

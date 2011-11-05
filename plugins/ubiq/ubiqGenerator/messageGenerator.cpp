@@ -1,7 +1,5 @@
 #include "messageGenerator.h"
 
-#include "nameNormalizer.h"
-
 #include <QtCore/QFile>
 
 #include <QtCore/QDebug>
@@ -26,7 +24,8 @@ MessageGenerator::~MessageGenerator()
 
 void MessageGenerator::generate()
 {
-	loadTemplateFromFile(fileName, mFileTemplate);
+	QString result;
+	loadTemplateFromFile(fileName, result);
 	loadTemplateUtils();
 
 	QDir dir;
@@ -39,43 +38,30 @@ void MessageGenerator::generate()
 			continue;
 
 		foreach (Id const element, mApi.children(diagram)) {
-			if (!mApi.isLogicalElement(element) || element.element() != "MessageClass")
+			if (!mApi.isLogicalElement(element))
 				continue;
 
-			mFileTemplate = generateCustomProperties(mFileTemplate, element);
+			if (element.element() == "MessageClass") {
+				result.replace("@@Properties@@", generatePropertiesCode(element));
+			} else if (element.element() == "MessageCodes") {
+				result = generateMessageCodes(result, element);
+			} else if (element.element() == "ErrorCodes") {
+				result = generateErrorCodes(result, element);
+			}
 		}
 	}
 
-	QString const outputFileName = dir.absoluteFilePath(fileName);
-	QFile resultFile(outputFileName);
-	if (!resultFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		mErrorReporter.addError("cannot open \"" + resultFile.fileName() + "\"");
-		return;
-	}
-
-	QTextStream out(&resultFile);
-	out << mFileTemplate;
-	out.flush();
-	resultFile.close();
+	saveOutputFile(dir.absoluteFilePath(fileName), result);
 }
 
-QString MessageGenerator::generateCustomProperties(QString const &templateString, qReal::Id const &id)
+QString MessageGenerator::generateMessageCodes(QString const &templateString, qReal::Id const &id)
 {
-	QString properties;
-	foreach (Id const element, mApi.children(id)) {
-		if (!mApi.isLogicalElement(element) || element.element() != "Field")
-			continue;
-
-		QString propertyTemplate = mTemplateUtils["@@Property@@"];
-		QString const name = mApi.name(element);
-		propertyTemplate.replace("@Name@", NameNormalizer::normalize(name, false))
-				.replace("@NameCaps@", NameNormalizer::normalize(name))
-				.replace("@Type@", mApi.stringProperty(element, "type"));
-
-		properties += propertyTemplate;
-	}
-
 	QString result = templateString;
-	result.replace("@@Properties@@", properties);
+	return result;
+}
+
+QString MessageGenerator::generateErrorCodes(QString const &templateString, qReal::Id const &id)
+{
+	QString result = templateString;
 	return result;
 }

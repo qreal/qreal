@@ -19,9 +19,8 @@ public:
 	void generate();
 
 private:
-	QString generateCustomProperties(QString const &templateString, qReal::Id const &id);
-
-	QString mFileTemplate;
+	QString generateMessageCodes(QString const &templateString, qReal::Id const &id);
+	QString generateErrorCodes(QString const &templateString, qReal::Id const &id);
 };
 
 }
