@@ -4,6 +4,7 @@
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
 
 #include "customizer.h"
+#include "generator.h"
 
 namespace ubiq {
 namespace generator {
@@ -33,6 +34,9 @@ public:
 private:
 	/// Customization object for configuring QReal main window.
 	Customizer mCustomizer;
+
+	/// Generator main object, directs generation.
+	Generator mGenerator;
 };
 
 }

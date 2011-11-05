@@ -2,6 +2,8 @@
 
 #include <QtCore/QDebug>
 
+#include "messageGenerator.h"
+
 using namespace ubiq::generator;
 
 Generator::Generator()
@@ -14,5 +16,11 @@ Generator::~Generator()
 
 void Generator::generate()
 {
-	qDebug() << "lol";
+	MessageGenerator generator("./templates/Message.cs", *mLogicalModel);
+	generator.generate();
+}
+
+void Generator::init(qReal::LogicalModelAssistInterface const &logicalModel)
+{
+	mLogicalModel = &logicalModel;
 }
