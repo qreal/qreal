@@ -23,7 +23,7 @@ public:
 	virtual void generate() = 0;
 
 protected:
-	bool changeDir(const QString &path);
+	bool changeDir(QString const &path);
 	bool loadTemplateFromFile(QString const &templateFileName, QString &loadedTemplate);
 	bool loadTemplateUtils();
 
