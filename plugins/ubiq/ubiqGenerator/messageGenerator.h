@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+#include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 namespace ubiq {
 namespace generator {
@@ -8,14 +9,18 @@ namespace generator {
 class MessageGenerator
 {
 public:
-	MessageGenerator(QString const &templateFilePath, qReal::LogicalModelAssistInterface const &logicalModel);
+	MessageGenerator(QString const &templateFilePath
+			, qReal::LogicalModelAssistInterface const &logicalModel
+			, qReal::ErrorReporterInterface &errorReporter
+			);
 	virtual ~MessageGenerator();
 
 	void generate();
 
 private:
-	qrRepo::LogicalRepoApi const &mApi;
 	QString const mTemplateFilePath;
+	qrRepo::LogicalRepoApi const &mApi;
+	qReal::ErrorReporterInterface &mErrorReporter;
 };
 
 }
