@@ -22,7 +22,7 @@ public:
 private:
 	QString const mTemplateFilePath;
 	QString const mOutputFilePath;
-	qReal::LogicalModelAssistInterface const &mModel;
+	qrRepo::LogicalRepoApi const &mApi;
 	qReal::ErrorReporterInterface &mErrorReporter;
 };
 

@@ -13,7 +13,7 @@ MessageGenerator::MessageGenerator(QString const &templateFilePath
 		)
 		: mTemplateFilePath(templateFilePath)
 		, mOutputFilePath(outputFilePath)
-		, mModel(logicalModel)
+		, mApi(logicalModel.logicalRepoApi())
 		, mErrorReporter(errorReporter)
 {
 }
