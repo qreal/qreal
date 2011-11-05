@@ -5,6 +5,8 @@
 namespace ubiq {
 namespace generator {
 
+QString const fileName = "DevRecord.cs";
+
 class DevRecordGenerator : public AbstractGenerator
 {
 public:

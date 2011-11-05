@@ -8,6 +8,8 @@
 namespace ubiq {
 namespace generator {
 
+QString const utilsFileName = "utils.template";
+
 class AbstractGenerator
 {
 public:
@@ -16,13 +18,14 @@ public:
 			, qReal::LogicalModelAssistInterface const &logicalModel
 			, qReal::ErrorReporterInterface &errorReporter
 			);
-	virtual ~AbstractGenerator() = 0;
+	virtual ~AbstractGenerator() {}
 
 	virtual void generate() = 0;
 
 protected:
 	bool changeDir(const QString &path);
 	bool loadTemplateFromFile(QString const &templateFileName, QString &loadedTemplate);
+	bool loadTemplateUtils();
 
 	QString const mTemplateDirPath;
 	QString const mOutputDirPath;
@@ -30,6 +33,7 @@ protected:
 	qReal::ErrorReporterInterface &mErrorReporter;
 
 	QDir mDirectory;
+	QMap<QString, QString> mTemplateUtils;
 };
 
 }
