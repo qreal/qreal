@@ -66,6 +66,7 @@ bool AbstractGenerator::loadTemplateUtils()
 	while (!line.isNull()) {
 		QString name = line.section("=", 0, 0);
 		QString definition = line.section("=", 1);
+		definition.replace("\\n", "\n");
 		mTemplateUtils[name] = definition;
 		line = in.readLine();
 	}
