@@ -21,7 +21,7 @@ public:
 	void generate();
 
 private:
-	QString mFileTemplate;
+	QString generateConstructors(qReal::Id const &element);
 };
 
 }

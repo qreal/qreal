@@ -100,6 +100,14 @@ void AbstractGenerator::saveOutputFile(QString const &fileName, QString const &c
 	file.close();
 }
 
+QString AbstractGenerator::getDefaultValue(QString const &type)
+{
+	if (type == "short" || type == "int")
+		return "0";
+
+	return "new " + type + "()";
+}
+
 QString AbstractGenerator::generatePropertiesCode(Id const &element)
 {
 	QString properties;

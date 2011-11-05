@@ -20,29 +20,57 @@ CustomClassGenerator::~CustomClassGenerator()
 {
 }
 
+QString CustomClassGenerator::generateConstructors(qReal::Id const &element)
+{
+	QString defaultConstructorTemplate = mTemplateUtils["@@Constructor@@"];
+	QString constructorTemplate = defaultConstructorTemplate;
+
+	defaultConstructorTemplate.replace("@@ConstructorParameters@@", "");
+
+	QString properties;
+	foreach (Id const property, mApi.children(element)) {
+		QString name = NameNormalizer::normalize(mApi.name(property));
+		QString type = mApi.stringProperty(property, "type"); // FIXME: not needed?
+		QString propertyTemplate = mTemplateUtils["@@FieldInit@@"];
+		propertyTemplate.replace("@@Name@@", name);
+
+		QString defaultPropertyTemplate = propertyTemplate;
+
+		defaultPropertyTemplate.replace("@@DefaultValue@@", getDefaultValue(mApi.stringProperty(property, "type")));
+		properties += defaultPropertyTemplate;
+	}
+
+	defaultConstructorTemplate.replace("@@Fields@@", properties);
+	return defaultConstructorTemplate;
+}
+
 void CustomClassGenerator::generate()
 {
 	loadTemplateUtils();
 
-	foreach (Id const diagram, mApi.elementsByType("DataStructuresDiagram")){ // for each diagram
+	foreach (Id const diagram, mApi.elementsByType("DataStructuresDiagram")) { // for each diagram
 		if (!mApi.isLogicalElement(diagram))
 			continue;
 
 		// get custom classes
 
-		foreach (Id const element, mApi.children(diagram)){
+		foreach (Id const element, mApi.children(diagram)) {
 			if (!mApi.isLogicalElement(element) || (element.element() != customClassLabel))
 				continue;
 
 			QString const templateName = "CustomClass.cs";
 
-			loadTemplateFromFile(templateName, mFileTemplate);
-			mFileTemplate.replace("@@CustomClassName@@", mApi.name(element));
+			QString fileTemplate;
+			loadTemplateFromFile(templateName, fileTemplate);
 
+			QString constructors = generateConstructors(element);
 			QString properties = generatePropertiesCode(element);
-			mFileTemplate.replace("@@Properties@@", properties).replace("\\n", "\n");
 
-			saveOutputFile(NameNormalizer::normalize(mApi.name(element)) + ".cs", mFileTemplate);
+			fileTemplate.replace("@@Properties@@", properties)
+					.replace("@@Constructors@@", constructors)
+					.replace("@@CustomClassName@@", mApi.name(element));
+
+			saveOutputFile(NameNormalizer::normalize(mApi.name(element)) + ".cs", fileTemplate);
 		}
 	}
 }

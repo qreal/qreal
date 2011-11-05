@@ -29,6 +29,8 @@ protected:
 	void saveOutputFile(QString const &fileName, QString const &content);
 	QString generatePropertiesCode(qReal::Id const &element);
 
+	QString getDefaultValue(QString const &type);
+
 	QString const mTemplateDirPath;
 	QString const mOutputDirPath;
 	qrRepo::LogicalRepoApi const &mApi;
