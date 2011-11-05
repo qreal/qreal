@@ -1,12 +1,11 @@
 #pragma once
 
-#include "../../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
-#include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "abstractGenerator.h"
 
 namespace ubiq {
 namespace generator {
 
-class MessageGenerator
+class MessageGenerator : public AbstractGenerator
 {
 public:
 	MessageGenerator(QString const &templateFilePath
@@ -20,10 +19,6 @@ public:
 	void generate();
 
 private:
-	QString const mTemplateFilePath;
-	QString const mOutputFilePath;
-	qrRepo::LogicalRepoApi const &mApi;
-	qReal::ErrorReporterInterface &mErrorReporter;
 };
 
 }
