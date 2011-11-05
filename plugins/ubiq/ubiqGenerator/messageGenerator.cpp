@@ -5,7 +5,7 @@
 using namespace ubiq::generator;
 
 MessageGenerator::MessageGenerator(QString const &templateFilePath, qReal::LogicalModelAssistInterface const &logicalModel)
-		: mModel(logicalModel)
+		: mApi(logicalModel.logicalRepoApi())
 		, mTemplateFilePath(templateFilePath)
 {
 }

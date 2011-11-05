@@ -5,11 +5,11 @@
 namespace ubiq {
 namespace generator {
 
-class MessageGenerator
+class DevRecordGenerator
 {
 public:
-	MessageGenerator(QString const &templateFilePath, qReal::LogicalModelAssistInterface const &logicalModel);
-	virtual ~MessageGenerator();
+	DevRecordGenerator(QString const &templateFilePath, qReal::LogicalModelAssistInterface const &logicalModel);
+	virtual ~DevRecordGenerator();
 
 	void generate();
 
