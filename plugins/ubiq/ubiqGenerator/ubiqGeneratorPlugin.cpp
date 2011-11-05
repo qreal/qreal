@@ -15,6 +15,7 @@ UbiqGeneratorPlugin::~UbiqGeneratorPlugin()
 
 void UbiqGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
+	mGenerator.init(configurator.logicalModelApi());
 }
 
 qReal::CustomizationInterface* UbiqGeneratorPlugin::customizationInterface()

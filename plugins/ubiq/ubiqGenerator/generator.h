@@ -2,6 +2,8 @@
 
 #include <QtCore/QObject>
 
+#include "../../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+
 namespace ubiq {
 namespace generator {
 
@@ -14,9 +16,14 @@ public:
 	Generator();
 	virtual ~Generator();
 
+	void init(qReal::LogicalModelAssistInterface const &logicalModel);
+
 public slots:
 	/// Starts generation process.
 	void generate();
+
+private:
+	qReal::LogicalModelAssistInterface const *mLogicalModel;
 };
 
 }
