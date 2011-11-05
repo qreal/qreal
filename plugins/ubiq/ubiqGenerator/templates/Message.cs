@@ -1,6 +1,7 @@
-﻿using System;
+﻿// @@TEST@@
+
+using System;
 using System.Collections.Generic;
-//using System.Linq;
 using System.Diagnostics;
 using System.Text;
 using System.IO;
@@ -10,47 +11,16 @@ namespace DeviceService
 {
     public class Message: Msg
     {
-        public const int KHeaderSize             = 9; // 4 + 1 + 2 + 1 + 1
 /*  M e s s a g e   c o d e s   */
-        public const int KMsgNoCommand           = 0;
-        public const int KMsgReceivedData        = 20;
-        public const int KMsgDataToSend          = 2;
-
-        public const int KMsgRegistrationRequest  = 10;
-        public const int KMsgStopTransfer         = 11;
-        public const int KMsgRegistrationCancel   = 12;
-        public const int KMsgDeviceIDRequest      = 13;
-        public const int KMsgWrongDeviceIDFormat  = 14;
-        public const int KMsgConfirmRergistration = 30;
-        public const int KMsgSetParameters        = 51;
-        public const int KMsgDeviceRequest        = 60;
-        public const int KMsgDeviceReady          = 71;
-        public const int KMsgEndSession           = 72;
-        public const int KMsgSuspendTransfer      = 73;
-        public const int KMsgResumeTransfer       = 74;
-
+@@MessageCodes@@
         public const int KMsgError                = 255;
-     
-        
+
 /*  E r r o r   c o d e s   */
-        public const int KErrNo                      = 0;
-        public const int KErrWrongCode               = -1;
-        public const int KErrDeviceRegistrationCancel= 121;
-        public const int KErrLostConnection          = 124;
-        public const int KErrDispatcherNotFound      = 125;
-        public const int KErrDeviceNotRegistered     = 121;
-        public const int KErrDeviceNotReady          = 123;
-        public const int KErrBadParameters           = 127;
+@@ErrorCodes@@
 
 /*   Internal fields    */
-        private int iDeviceID;
-        public int DeviceID
-        {
-            get
-            {
-                return iDeviceID;
-            }
-        }
+@@Properties@@
+
         private int iCommand;
         public int Command
         {
@@ -88,6 +58,7 @@ namespace DeviceService
 
         public static bool iBigEndianFlag = true;
 
+        // !!! TODO!
         public Message(int aDeviceID, int aCommand)
         {
             iDeviceID = aDeviceID;
@@ -98,6 +69,7 @@ namespace DeviceService
             iWriter = null;
         }
 
+        // !!! TODO!
         public static Message ErrorMessage(int aDeviceID, int aErrCode)
         {
             Message iMsg = new Message(aDeviceID, KMsgError);
@@ -105,6 +77,7 @@ namespace DeviceService
             return iMsg;
         }
         
+        // !!! TODO!
         public Message(byte[] aData)
         {
             iData = null;
@@ -121,6 +94,7 @@ namespace DeviceService
             }
         }
 
+        // !!! TODO!
         public Message(int aDeviceID, byte[] aData)
         {
             iData = null;
@@ -176,6 +150,7 @@ namespace DeviceService
             return new MemoryStream(iData, aPos, iData.GetLength(0)-aPos);
         }
 
+        // !!! TODO!
         public byte[] Pack()
         {
             MemoryStream iOutStream = new MemoryStream();
@@ -287,6 +262,7 @@ namespace DeviceService
             }
         }
 
+        // !!! TODO!
         private void Init()
         {
             iDeviceID = -1;
@@ -298,6 +274,7 @@ namespace DeviceService
             iWriter = null;
         }
 
+        // !!! TODO!
         private bool Parse(byte[] aData)
         {
             if (iData != null || iReader != null || iWriter != null) return false;

@@ -2,3 +2,4 @@
 @@Constructor@@=    public @@CustomClassName@@(@@ConstructorParameters@@)\n    {\n@@Fields@@    }\n
 @@FieldInit@@=        this.@@Name@@ = @@Value@@;\n
 @@Argument@@=@@ArgType@@ @@ArgName@@
+@@EnumElement@@=        public const int @@Name@@ = @@Value@@;\n
