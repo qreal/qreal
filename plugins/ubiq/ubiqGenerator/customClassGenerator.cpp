@@ -27,21 +27,38 @@ QString CustomClassGenerator::generateConstructors(qReal::Id const &element)
 
 	defaultConstructorTemplate.replace("@@ConstructorParameters@@", "");
 
+	QString parametersList;
+	QString defaultProperties;
 	QString properties;
+
 	foreach (Id const property, mApi.children(element)) {
 		QString name = NameNormalizer::normalize(mApi.name(property));
-		QString type = mApi.stringProperty(property, "type"); // FIXME: not needed?
+		QString type = mApi.stringProperty(property, "type");
+
+		// constructor that inits all fields
 		QString propertyTemplate = mTemplateUtils["@@FieldInit@@"];
-		propertyTemplate.replace("@@Name@@", name);
+		QString argumentTemplate = mTemplateUtils["@@Argument@@"];
+		QString argName = NameNormalizer::normalize(mApi.name(property), false);
+		argumentTemplate.replace("@@ArgType@@", type).replace("@@ArgName@@", argName);
+		parametersList += (argumentTemplate + ", ");
 
-		QString defaultPropertyTemplate = propertyTemplate;
+		propertyTemplate.replace("@@Name@@", name).replace("@@Value@@", argName);
+		properties += propertyTemplate;
 
-		defaultPropertyTemplate.replace("@@DefaultValue@@", getDefaultValue(mApi.stringProperty(property, "type")));
-		properties += defaultPropertyTemplate;
+		// default constructor
+		QString defaultPropertyTemplate = mTemplateUtils["@@FieldInit@@"];
+		defaultPropertyTemplate.replace("@@Name@@", name).replace("@@Value@@", getDefaultValue(type));
+		defaultProperties += defaultPropertyTemplate;
+
 	}
 
-	defaultConstructorTemplate.replace("@@Fields@@", properties);
-	return defaultConstructorTemplate;
+	parametersList.chop(2); // remove terminating space and comma
+	constructorTemplate.replace("@@ConstructorParameters@@", parametersList)
+			.replace("@@Fields@@", properties);
+
+
+	defaultConstructorTemplate.replace("@@Fields@@", defaultProperties);
+	return defaultConstructorTemplate + constructorTemplate;
 }
 
 void CustomClassGenerator::generate()
