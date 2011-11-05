@@ -16,32 +16,34 @@ namespace qReal {
 class ToolPluginInterface
 {
 public:
-    virtual CustomizationInterface* customizationInterface()
-    {
-        return NULL;
-    }
+	virtual CustomizationInterface* customizationInterface()
+	{
+		return NULL;
+	}
 
-    virtual void updateSettings()
-    {
-    }
+	virtual void updateSettings()
+	{
+	}
 
-    virtual QList<ActionInfo> actions()
-    {
-        return QList<ActionInfo>();
-    }
+	virtual QList<ActionInfo> actions()
+	{
+		return QList<ActionInfo>();
+	}
 
-    virtual void init(PluginConfigurator const &configurator)
-    {
-        Q_UNUSED(configurator);
-    }
+	virtual void init(PluginConfigurator const &configurator)
+	{
+		Q_UNUSED(configurator);
+	}
 
-    virtual QPair<QString, PreferencesPage *> preferencesPage()
-    {
-        return QPair<QString, PreferencesPage *>(QString(), NULL);
-    }
-    virtual void closeNeededWidget()
-    {
-    }
+	virtual QPair<QString, PreferencesPage *> preferencesPage()
+	{
+		return QPair<QString, PreferencesPage *>(QString(), NULL);
+	}
+
+	// TODO: Properly rename it or remove at all.
+	virtual void closeNeededWidget()
+	{
+	}
 };
 
 }
