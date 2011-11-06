@@ -350,10 +350,14 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 		QString const guard = mApi.stringProperty(thenBranch, "guard");
 
 		QString ifTemplate = mTemplateUtils["@@If@@"];
-		ifTemplate.replace("@@Condition@@", guard);
 
 		CodeBranchGenerationResult thenBranchGenerationResult = generateOperatorCode(mApi.otherEntityFromLink(thenBranch, currentNode));
 		CodeBranchGenerationResult elseBranchGenerationResult = generateOperatorCode(mApi.otherEntityFromLink(elseBranch, currentNode));
+
+		if (thenBranchGenerationResult.text.endsWith('\n'))
+			thenBranchGenerationResult.text.chop(1);
+		if (elseBranchGenerationResult.text.endsWith('\n'))
+			elseBranchGenerationResult.text.chop(1);
 
 		Id nextNode;
 		if (thenBranchGenerationResult.stopNode.element() == "MergeNode") {
@@ -366,7 +370,11 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 			}
 		}
 
-		ifTemplate.replace("@@Then@@", thenBranchGenerationResult.text)
+		if (elseBranchGenerationResult.text.trimmed().isEmpty())
+			ifTemplate = mTemplateUtils["@@IfWithoutElse@@"];
+
+		ifTemplate.replace("@@Condition@@", guard)
+				.replace("@@Then@@", thenBranchGenerationResult.text)
 				.replace("@@Else@@", elseBranchGenerationResult.text)
 				;
 

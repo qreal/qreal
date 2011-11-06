@@ -95,3 +95,9 @@ AsyncMailBox
                 {
 @@Else@@
                 }
+==========
+@@IfWithoutElse@@
+                if (@@Condition@@)
+                {
+@@Then@@
+                }
