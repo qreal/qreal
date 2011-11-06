@@ -8,25 +8,9 @@
             <import as="commentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
             <node displayedName="Data Structures Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="dataStructuresDiagram">
                 <graphics>
-                    <picture sizex="200" sizey="200">
-                        <line y1="0" x1="20" y2="0" x2="180"/>
-                        <line y1="200" x1="20" y2="200" x2="180"/>
-                        <line y1="20" x1="0" y2="180" x2="0"/>
-                        <line y1="20" x1="200" y2="180" x2="200"/>
-                        <arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="40" x2="40"/>
-                        <arc spanAngle="1440" startAngle="0" y1="0" x1="160" y2="40" x2="200"/>
-                        <arc spanAngle="1440" startAngle="2880" y1="160" x1="0" y2="200" x2="40"/>
-                        <arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200"/>
+                    <picture sizex="48" sizey="48">
+                        <image y1="0" name="images/dataStructuresDiagram.png" x1="0" y2="47" x2="47"/>
                     </picture>
-                    <labels>
-                        <label x="40" y="10" textBinded="name"/>
-                    </labels>
-                    <ports>
-                        <pointPort x="0" y="100"/>
-                        <pointPort x="100" y="0"/>
-                        <pointPort x="200" y="100"/>
-                        <pointPort x="100" y="200"/>
-                    </ports>
                 </graphics>
                 <logic>
                     <container>
@@ -173,25 +157,9 @@
             <import as="masterDiagramCommentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
             <node displayedName="Master Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="ubiqMasterDiagram">
                 <graphics>
-                    <picture sizex="200" sizey="200">
-                        <line y1="0" x1="20" y2="0" x2="180"/>
-                        <line y1="200" x1="20" y2="200" x2="180"/>
-                        <line y1="20" x1="0" y2="180" x2="0"/>
-                        <line y1="20" x1="200" y2="180" x2="200"/>
-                        <arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="40" x2="40"/>
-                        <arc spanAngle="1440" startAngle="0" y1="0" x1="160" y2="40" x2="200"/>
-                        <arc spanAngle="1440" startAngle="2880" y1="160" x1="0" y2="200" x2="40"/>
-                        <arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200"/>
+                    <picture sizex="48" sizey="48">
+                        <image y1="0" name="images/masterDiagram.png" x1="0" y2="47" x2="47"/>
                     </picture>
-                    <labels>
-                        <label x="40" y="10" textBinded="name"/>
-                    </labels>
-                    <ports>
-                        <pointPort x="0" y="100"/>
-                        <pointPort x="100" y="0"/>
-                        <pointPort x="200" y="100"/>
-                        <pointPort x="100" y="200"/>
-                    </ports>
                 </graphics>
                 <logic>
                     <container>
@@ -282,37 +250,11 @@
             <import as="decisionNode" displayedName="Decision Node" name="ActivityDiagram::DecisionNode"/>
             <import as="mergeNode" displayedName="Merge Node" name="ActivityDiagram::MergeNode"/>
             <import as="activityFinalNode" displayedName="Activity Final Node" name="ActivityDiagram::ActivityFinalNode"/>
-            <edge name="controlFlow" displayedName="Control Flow">
-                <graphics>
-                    <lineType type="solidLine"/>
-                </graphics>
-                <logic>
-                    <associations endType="no_arrow" beginType="empty_arrow">
-                        <association beginName="controlFlow1" endName="controlFlow2"/>
-                    </associations>
-                </logic>
-            </edge>
             <node displayedName="Activity Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="ubiqActivityDiagram">
                 <graphics>
-                    <picture sizex="200" sizey="200">
-                        <line y1="0" x1="20" y2="0" x2="180"/>
-                        <line y1="200" x1="20" y2="200" x2="180"/>
-                        <line y1="20" x1="0" y2="180" x2="0"/>
-                        <line y1="20" x1="200" y2="180" x2="200"/>
-                        <arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="40" x2="40"/>
-                        <arc spanAngle="1440" startAngle="0" y1="0" x1="160" y2="40" x2="200"/>
-                        <arc spanAngle="1440" startAngle="2880" y1="160" x1="0" y2="200" x2="40"/>
-                        <arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200"/>
+                    <picture sizex="48" sizey="48">
+                        <image y1="0" name="images/activityDiagram.png" x1="0" y2="47" x2="47"/>
                     </picture>
-                    <labels>
-                        <label x="40" y="10" textBinded="name"/>
-                    </labels>
-                    <ports>
-                        <pointPort x="0" y="100"/>
-                        <pointPort x="100" y="0"/>
-                        <pointPort x="200" y="100"/>
-                        <pointPort x="100" y="200"/>
-                    </ports>
                 </graphics>
                 <logic>
                     <container>
@@ -327,6 +269,16 @@
                     </container>
                 </logic>
             </node>
+            <edge name="controlFlow" displayedName="Control Flow">
+                <graphics>
+                    <lineType type="solidLine"/>
+                </graphics>
+                <logic>
+                    <associations endType="no_arrow" beginType="empty_arrow">
+                        <association beginName="controlFlow1" endName="controlFlow2"/>
+                    </associations>
+                </logic>
+            </edge>
             <node displayedName="Return" path="0, 0 : 84, 0 : 98, 30 : 84, 58 : 0, 58 : 0, 0 : " name="returnAction">
                 <graphics>
                     <picture sizex="100" sizey="60">
@@ -487,25 +439,9 @@
             <import as="stateMachineCommentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
             <node displayedName="State Machine Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="ubiqStateMachineDiagram">
                 <graphics>
-                    <picture sizex="200" sizey="200">
-                        <line y1="0" x1="20" y2="0" x2="180"/>
-                        <line y1="200" x1="20" y2="200" x2="180"/>
-                        <line y1="20" x1="0" y2="180" x2="0"/>
-                        <line y1="20" x1="200" y2="180" x2="200"/>
-                        <arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="40" x2="40"/>
-                        <arc spanAngle="1440" startAngle="0" y1="0" x1="160" y2="40" x2="200"/>
-                        <arc spanAngle="1440" startAngle="2880" y1="160" x1="0" y2="200" x2="40"/>
-                        <arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200"/>
+                    <picture sizex="48" sizey="48">
+                        <image y1="0" name="images/stateMachineDiagram.png" x1="0" y2="47" x2="47"/>
                     </picture>
-                    <labels>
-                        <label x="40" y="10" textBinded="name"/>
-                    </labels>
-                    <ports>
-                        <pointPort x="0" y="100"/>
-                        <pointPort x="100" y="0"/>
-                        <pointPort x="200" y="100"/>
-                        <pointPort x="100" y="200"/>
-                    </ports>
                 </graphics>
                 <logic>
                     <container>
