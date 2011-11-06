@@ -246,7 +246,7 @@
     </diagram>
     <diagram displayedName="Ubiq Activity Diagram" nodeName="ubiqActivityDiagram" name="ubiqActivity">
         <graphicTypes>
-            <import as="ubiqActivityComment" name="KernelDiagram::Comment"/>
+            <import as="ubiqActivityComment" name="KernelDiagram::Comment" displayedName="Comment"/>
             <import as="ubiqActivityCommentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
             <node displayedName="Activity Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="ubiqActivityDiagram">
                 <graphics>
@@ -406,22 +406,22 @@
             </node>
             <node name="returnAction" displayedName="Return" path="0, 0 : 84, 0 : 98, 30 : 84, 58 : 0, 58 : 0, 0 : ">
                 <graphics>
-                    <picture sizex="100" sizey="60">
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="1" stroke-width="1" x2="84" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="84" y2="30" stroke-width="1" x2="99" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="99" y2="59" stroke-width="1" x2="84" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="84" y2="59" stroke-width="1" x2="1" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="1" y2="1" stroke-width="1" x2="1" fill-style="solid"/>
+                    <picture sizex="100" sizey="40">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="1" x2="85" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="85" y2="20" stroke-width="1" x2="100" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="100" y2="40" stroke-width="1" x2="85" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="40" x1="85" y2="40" stroke-width="1" x2="0" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="40" x1="0" y2="0" stroke-width="1" x2="0" fill-style="solid"/>
                     </picture>
                     <labels>
                         <label x="0" y="0" text="&lt;b>return&lt;b>"/>
-                        <label x="30" y="0" textBinded="name"/>
+                        <label x="40" y="0" textBinded="name"/>
                     </labels>
                     <ports>
                         <pointPort x="50" y="0"/>
-                        <pointPort x="50" y="60"/>
-                        <pointPort x="0" y="30"/>
-                        <pointPort x="100" y="30"/>
+                        <pointPort x="50" y="40"/>
+                        <pointPort x="0" y="20"/>
+                        <pointPort x="100" y="20"/>
                     </ports>
                 </graphics>
                 <logic>
@@ -432,9 +432,9 @@
             </node>
             <node name="formalParameters" displayedName="Formal Parameters">
                 <graphics>
-                    <picture sizex="150" sizey="150">
-                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="150" stroke-width="1" x2="150" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid"/>
+                    <picture sizex="200" sizey="50">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="50" stroke-width="1" x2="200" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="200" fill-style="solid"/>
                     </picture>
                     <labels>
                         <label x="0" y="0" textBinded="name"/>
@@ -442,18 +442,18 @@
                     <ports>
                         <linePort>
                             <start startx="0" starty="0"/>
-                            <end endx="150" endy="0"/>
+                            <end endx="200" endy="0"/>
                         </linePort>
                         <linePort>
-                            <start startx="150" starty="0"/>
-                            <end endx="150" endy="150"/>
+                            <start startx="200" starty="0"/>
+                            <end endx="200" endy="50"/>
                         </linePort>
                         <linePort>
-                            <start startx="150" starty="150"/>
-                            <end endx="0" endy="150"/>
+                            <start startx="200" starty="50"/>
+                            <end endx="0" endy="50"/>
                         </linePort>
                         <linePort>
-                            <start startx="0" starty="150"/>
+                            <start startx="0" starty="50"/>
                             <end endx="0" endy="0"/>
                         </linePort>
                     </ports>
@@ -466,6 +466,8 @@
                             <banChildrenMove/>
                             <minimizeToChildren/>
                             <maximizeChildren/>
+                            <forestalling size="25"/>
+                            <childrenForestalling size="2"/>
                         </properties>
                     </container>
                     <generalizations>
@@ -475,7 +477,7 @@
             </node>
             <node name="formalParameter" displayedName="Formal Parameter">
                 <graphics>
-                    <picture sizex="100" sizey="20"/>
+                    <picture sizex="200" sizey="20"/>
                     <labels>
                         <label x="0" y="0" textBinded="name"/>
                     </labels>
@@ -547,21 +549,21 @@
             </node>
             <node name="returnValue" displayedName="Return Value">
                 <graphics>
-                    <picture sizex="100" sizey="60">
+                    <picture sizex="100" sizey="40">
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="1" x2="100" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="60" stroke-width="1" x2="100" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="100" y2="60" stroke-width="1" x2="0" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="0" y2="30" stroke-width="1" x2="15" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="15" y2="0" stroke-width="1" x2="0" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="40" stroke-width="1" x2="100" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="40" x1="100" y2="40" stroke-width="1" x2="0" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="40" x1="0" y2="20" stroke-width="1" x2="15" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="15" y2="0" stroke-width="1" x2="0" fill-style="solid"/>
                     </picture>
                     <labels>
-                        <label x="5" y="3" textBinded="name"/>
+                        <label x="20" y="3" textBinded="name"/>
                     </labels>
                     <ports>
-                        <pointPort x="15" y="30"/>
-                        <pointPort x="100" y="30"/>
+                        <pointPort x="15" y="20"/>
+                        <pointPort x="100" y="20"/>
                         <pointPort x="50" y="0"/>
-                        <pointPort x="50" y="60"/>
+                        <pointPort x="50" y="40"/>
                     </ports>
                 </graphics>
                 <logic>
