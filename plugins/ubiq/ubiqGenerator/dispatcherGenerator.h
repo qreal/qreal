@@ -20,6 +20,8 @@ public:
 
 private:
 	QString generateConstructors(qReal::Id const &element);
+	QString generateEventHandlers(qReal::Id const &diagram);
+	QString generateEventHandler(QString const handlerName);
 
 	QString generateConstants(qReal::Id const &element) const;
 	QString generateFields(qReal::Id const &element) const;
