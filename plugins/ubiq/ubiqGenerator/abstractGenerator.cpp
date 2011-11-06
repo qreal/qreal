@@ -50,12 +50,10 @@ bool AbstractGenerator::loadTemplateFromFile(QString const &templateFileName, QS
 	return true;
 }
 
-bool AbstractGenerator::loadTemplateUtils()
+bool AbstractGenerator::loadUtilsFromFile()
 {
 	if (!changeDir(mTemplateDirPath))
 		return false;
-
-	mTemplateUtils.clear();
 
 	QString fileName = mDirectory.absoluteFilePath(utilsFileName);
 	QFile utilsFile(fileName);
@@ -67,10 +65,10 @@ bool AbstractGenerator::loadTemplateUtils()
 
 	QString line = in.readLine();
 	do {
-		// first line is name
+		// first line is name, everything else before the separator is template body
+
 		QString name = line;
 		QString body;
-		// everything else before the separator is template body
 		line = in.readLine();
 		while (!line.contains(utilsSeparator) && !line.isNull()) {
 			body += (line + '\n');
@@ -84,6 +82,56 @@ bool AbstractGenerator::loadTemplateUtils()
 	mDirectory.cdUp();
 
 	return true;
+}
+
+bool AbstractGenerator::loadUtilsFromDir()
+{
+	if (!changeDir(mTemplateDirPath + "/utils"))
+		return false;
+
+	QStringList files = mDirectory.entryList(QStringList());
+
+	foreach (QString const fileName, files) {
+		if (fileName == "." || fileName == "..")
+			continue;
+
+		// file name is template name, file contents is template body
+
+		QString file = mDirectory.absoluteFilePath(fileName);
+		QFile templateFile(file);
+
+		if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			qDebug() << "cannot load file \"" << file << "\"";
+			return false;
+		}
+
+		QTextStream in(&templateFile);
+
+		QString line = in.readLine();
+		QString body = line;
+		while (!line.isNull()) {
+			body += (line + '\n');
+			line = in.readLine();
+		}
+
+		QString name = "@@" + fileName + "@@";
+		if (!mTemplateUtils.contains(name))
+			mTemplateUtils[name] = body;
+
+		templateFile.close();
+	}
+	mDirectory.cdUp();
+	mDirectory.cdUp();
+
+	return true;
+}
+
+
+bool AbstractGenerator::loadUtilsTemplates()
+{
+	mTemplateUtils.clear();
+
+	return loadUtilsFromFile() && loadUtilsFromDir();
 }
 
 void AbstractGenerator::saveOutputFile(QString const &fileName, QString const &content)

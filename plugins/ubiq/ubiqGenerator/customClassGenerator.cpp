@@ -63,7 +63,7 @@ QString CustomClassGenerator::generateConstructors(qReal::Id const &element)
 
 void CustomClassGenerator::generate()
 {
-	loadTemplateUtils();
+	loadUtilsTemplates();
 
 	foreach (Id const diagram, mApi.elementsByType("DataStructuresDiagram")) { // for each diagram
 		if (!mApi.isLogicalElement(diagram))

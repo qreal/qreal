@@ -26,7 +26,7 @@ public:
 protected:
 	bool changeDir(QString const &path);
 	bool loadTemplateFromFile(QString const &templateFileName, QString &loadedTemplate);
-	bool loadTemplateUtils();
+	bool loadUtilsTemplates();
 	void saveOutputFile(QString const &fileName, QString const &content);
 	QString generatePropertiesCode(qReal::Id const &element);
 
@@ -39,6 +39,10 @@ protected:
 
 	QDir mDirectory;
 	QMap<QString, QString> mTemplateUtils;
+
+private:
+	bool loadUtilsFromFile();
+	bool loadUtilsFromDir();
 };
 
 }

@@ -1,0 +1,12 @@
+    private @@Type@@ @@Name@@;
+    public @@Type@@ @@NameCaps@@
+    {
+        set
+        {
+            @@Name@@ = value;
+        }
+        get
+        {
+            return @@Name@@;
+        }
+    }
