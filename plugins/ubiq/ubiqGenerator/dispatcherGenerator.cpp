@@ -37,7 +37,10 @@ void DispatcherGenerator::generate()
 		QString eventHadlers = generateEventHandlers(diagram);
 
 
-		fileTemplate.replace("@@EventHandlers@@", eventHadlers);
+		fileTemplate.replace("@@EventHandlers@@", eventHadlers)
+				.replace("@@Constants@@", generateConstants(diagram))
+				.replace("@@Fields@@", generateFields(diagram))
+				;
 
 		saveOutputFile(templateName, fileTemplate);
 	}
@@ -66,7 +69,7 @@ QString DispatcherGenerator::generateConstants(qReal::Id const &element) const
 		QString const name = mApi.name(id);
 		QString const type = mApi.stringProperty(id, "type");
 		QString const value = mApi.stringProperty(id, "value");
-		constantTemplate.replace("@@Name@@", NameNormalizer::normalize(name))
+		constantTemplate.replace("@@Name@@", name)
 				.replace("@@Type@@", type)
 				.replace("@@Value@@", value)
 				;
@@ -83,16 +86,22 @@ QString DispatcherGenerator::generateFields(qReal::Id const &element) const
 		if (!mApi.isLogicalElement(id) || id.element() != "MasterDiagramField")
 			continue;
 
-		QString constantTemplate = mTemplateUtils["@@MasterDiagramField@@"];
 		QString const name = mApi.name(id);
 		QString const type = mApi.stringProperty(id, "type");
-		QString const value = mApi.stringProperty(id, "value");
-		constantTemplate.replace("@@Name@@", NameNormalizer::normalize(name))
+		QString const value = mApi.stringProperty(id, "defaultValue");
+		bool const isStatic = mApi.property(id, "static").toBool();
+
+		QString fieldTemplate = value.isEmpty()
+				? mTemplateUtils["@@MasterDiagramFieldWithoutInit@@"]
+				: mTemplateUtils["@@MasterDiagramField@@"];
+
+		fieldTemplate.replace("@@Name@@", name)
 				.replace("@@Type@@", type)
 				.replace("@@Value@@", value)
+				.replace("@@OptionalStatic@@", isStatic ? "static " : "")
 				;
 
-		result += constantTemplate;
+		result += fieldTemplate;
 	}
 	return result;
 }
