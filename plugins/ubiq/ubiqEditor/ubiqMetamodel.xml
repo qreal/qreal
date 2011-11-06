@@ -40,31 +40,33 @@
             </node>
             <node name="messageClass" displayedName="Message Class">
                 <graphics>
-                    <picture sizex="150" sizey="150">
-                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="150" stroke-width="1" x2="150" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid"/>
+                    <picture sizex="200" sizey="50">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="50" stroke-width="1" x2="200" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="200" fill-style="solid"/>
                     </picture>
                     <labels>
-                        <label x="0" y="0" textBinded="name"/>
+                        <label x="0" y="0" text="&lt;b&gt;Message&lt;/b&gt;"/>
                     </labels>
                 </graphics>
                 <logic>
                     <container>
                         <contains type="dataStructures::field"/>
+                        <properties>
+                            <sortContainer/>
+                            <banChildrenMove/>
+                            <minimizeToChildren/>
+                            <maximizeChildren/>
+                            <forestalling size="5"/>
+                            <childrenForestalling size="2"/>
+                        </properties>
                     </container>
-                    <properties>
-                        <sortContainer/>
-                        <banChildrenMove/>
-                        <minimizeToChildren/>
-                        <maximizeChildren/>
-                    </properties>
                 </logic>
             </node>
             <node path="0, 0 : 75, 0 : 75, 50 : 0, 50 : " name="customClass" displayedName="Custom Class">
                 <graphics>
-                    <picture sizex="150" sizey="150">
-                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="150" stroke-width="1" x2="150" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid"/>
+                    <picture sizex="200" sizey="50">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="50" stroke-width="1" x2="200" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="200" fill-style="solid"/>
                     </picture>
                     <labels>
                         <label x="0" y="0" textBinded="name"/>
@@ -73,62 +75,70 @@
                 <logic>
                     <container>
                         <contains type="dataStructures::field"/>
+                        <properties>
+                            <sortContainer/>
+                            <banChildrenMove/>
+                            <minimizeToChildren/>
+                            <maximizeChildren/>
+                            <forestalling size="5"/>
+                            <childrenForestalling size="2"/>
+                        </properties>
                     </container>
-                    <properties>
-                        <sortContainer/>
-                        <banChildrenMove/>
-                        <minimizeToChildren/>
-                        <maximizeChildren/>
-                    </properties>
                 </logic>
             </node>
             <node name="messageCodes" displayedName="Message Codes">
                 <graphics>
-                    <picture sizex="150" sizey="150">
-                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="150" stroke-width="1" x2="150" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid"/>
+                    <picture sizex="200" sizey="50">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="50" stroke-width="1" x2="200" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="200" fill-style="solid"/>
                     </picture>
                     <labels>
-                        <label x="0" y="0" textBinded="name"/>
+                        <label x="0" y="0" text="&lt;b&gt;Message Codes&lt;/b&gt;"/>
                     </labels>
                 </graphics>
                 <logic>
                     <container>
                         <contains type="dataStructures::enumElement"/>
+                        <properties>
+                            <sortContainer/>
+                            <banChildrenMove/>
+                            <minimizeToChildren/>
+                            <maximizeChildren/>
+                            <forestalling size="5"/>
+                            <childrenForestalling size="2"/>
+                        </properties>
                     </container>
-                    <properties>
-                        <sortContainer/>
-                        <banChildrenMove/>
-                        <minimizeToChildren/>
-                        <maximizeChildren/>
-                    </properties>
                 </logic>
             </node>
             <node name="errorCodes" displayedName="Error Codes">
                 <graphics>
-                    <picture sizex="150" sizey="150">
-                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="150" stroke-width="1" x2="150" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid"/>
+                    <picture sizex="200" sizey="50">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="50" stroke-width="1" x2="200" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="200" fill-style="solid"/>
                     </picture>
                     <labels>
-                        <label x="0" y="0" textBinded="name"/>
+                        <label x="0" y="0" text="&lt;b&gt;Error Codes&lt;/b&gt;"/>
                     </labels>
                 </graphics>
                 <logic>
                     <container>
                         <contains type="dataStructures::enumElement"/>
+                        <properties>
+                            <sortContainer/>
+                            <banChildrenMove/>
+                            <minimizeToChildren/>
+                            <maximizeChildren/>
+                            <forestalling size="5"/>
+                            <childrenForestalling size="2"/>
+                        </properties>
                     </container>
-                    <properties>
-                        <sortContainer/>
-                        <banChildrenMove/>
-                        <minimizeToChildren/>
-                        <maximizeChildren/>
-                    </properties>
                 </logic>
             </node>
             <node displayedName="Field" name="field">
                 <graphics>
-                    <picture sizex="100" sizey="20"/>
+                    <picture sizex="200" sizey="20">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#A0A0FF" y1="0" x1="0" y2="20" stroke-width="1" x2="200" fill-style="solid"/>
+                    </picture>
                     <labels>
                         <label x="0" y="0" textBinded="name"/>
                     </labels>
@@ -145,7 +155,9 @@
             </node>
             <node displayedName="Enum Element" name="enumElement">
                 <graphics>
-                    <picture sizex="100" sizey="20"/>
+                    <picture sizex="200" sizey="20">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#A0FFA0" y1="0" x1="0" y2="20" stroke-width="1" x2="200" fill-style="solid"/>
+                    </picture>
                     <labels>
                         <label x="0" y="0" textBinded="name"/>
                     </labels>
@@ -190,9 +202,9 @@
             </node>
             <node name="masterNode" displayedName="Master Node">
                 <graphics>
-                    <picture sizex="150" sizey="150">
-                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="150" stroke-width="1" x2="150" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid"/>
+                    <picture sizex="200" sizey="50">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="50" stroke-width="1" x2="200" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="200" fill-style="solid"/>
                     </picture>
                     <labels>
                         <label x="0" y="0" textBinded="name"/>
@@ -203,18 +215,22 @@
                         <contains type="ubiqMaster::handler"/>
                         <contains type="ubiqMaster::masterDiagramField"/>
                         <contains type="ubiqMaster::masterDiagramConstant"/>
+                        <properties>
+                            <sortContainer/>
+                            <banChildrenMove/>
+                            <minimizeToChildren/>
+                            <maximizeChildren/>
+                            <forestalling size="5"/>
+                            <childrenForestalling size="2"/>
+                        </properties>
                     </container>
-                    <properties>
-                        <sortContainer/>
-                        <banChildrenMove/>
-                        <minimizeToChildren/>
-                        <maximizeChildren/>
-                    </properties>
                 </logic>
             </node>
             <node displayedName="Handler" name="handler">
                 <graphics>
-                    <picture sizex="100" sizey="20"/>
+                    <picture sizex="200" sizey="20">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#F0F0F0" y1="0" x1="0" y2="20" stroke-width="1" x2="200" fill-style="solid"/>
+                    </picture>
                     <labels>
                         <label x="0" y="0" textBinded="name"/>
                     </labels>
@@ -224,7 +240,9 @@
             </node>
             <node displayedName="Field" name="masterDiagramField">
                 <graphics>
-                    <picture sizex="100" sizey="20"/>
+                    <picture sizex="200" sizey="20">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#A0A0FF" y1="0" x1="0" y2="20" stroke-width="1" x2="200" fill-style="solid"/>
+                    </picture>
                     <labels>
                         <label x="0" y="0" textBinded="name"/>
                     </labels>
@@ -239,7 +257,9 @@
             </node>
             <node displayedName="Constant" name="masterDiagramConstant">
                 <graphics>
-                    <picture sizex="100" sizey="20"/>
+                    <picture sizex="200" sizey="20">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#A0FFA0" y1="0" x1="0" y2="20" stroke-width="1" x2="200" fill-style="solid"/>
+                    </picture>
                     <labels>
                         <label x="0" y="0" textBinded="name"/>
                     </labels>
@@ -262,7 +282,16 @@
             <import as="decisionNode" displayedName="Decision Node" name="ActivityDiagram::DecisionNode"/>
             <import as="mergeNode" displayedName="Merge Node" name="ActivityDiagram::MergeNode"/>
             <import as="activityFinalNode" displayedName="Activity Final Node" name="ActivityDiagram::ActivityFinalNode"/>
-            <import as="controlFlow" displayedName="Control Flow" name="ActivityDiagram::ControlFlow"/>
+            <edge name="controlFlow" displayedName="Control Flow">
+                <graphics>
+                    <lineType type="solidLine"/>
+                </graphics>
+                <logic>
+                    <associations endType="no_arrow" beginType="empty_arrow">
+                        <association beginName="controlFlow1" endName="controlFlow2"/>
+                    </associations>
+                </logic>
+            </edge>
             <node displayedName="Activity Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="ubiqActivityDiagram">
                 <graphics>
                     <picture sizex="200" sizey="200">
@@ -352,13 +381,13 @@
                 <logic>
                     <container>
                         <contains type="ubiqActivity::formalParameter"/>
+                        <properties>
+                            <sortContainer/>
+                            <banChildrenMove/>
+                            <minimizeToChildren/>
+                            <maximizeChildren/>
+                        </properties>
                     </container>
-                    <properties>
-                        <sortContainer/>
-                        <banChildrenMove/>
-                        <minimizeToChildren/>
-                        <maximizeChildren/>
-                    </properties>
                 </logic>
             </node>
             <node displayedName="Formal Parameter" name="formalParameter">
@@ -406,13 +435,13 @@
                     <container>
                         <contains type="ubiqActivity::actualParameter"/>
                         <contains type="ubiqActivity::returnValue"/>
+                        <properties>
+                            <sortContainer/>
+                            <banChildrenMove/>
+                            <minimizeToChildren/>
+                            <maximizeChildren/>
+                        </properties>
                     </container>
-                    <properties>
-                        <sortContainer/>
-                        <banChildrenMove/>
-                        <minimizeToChildren/>
-                        <maximizeChildren/>
-                    </properties>
                 </logic>
             </node>
             <node displayedName="Actual Parameter" name="actualParameter">
