@@ -173,8 +173,7 @@ QString AbstractGenerator::generatePropertiesCode(Id const &element)
 		// generate property code
 		QString propertyTemplate = mTemplateUtils["@@Property@@"];
 		QString name = mApi.name(property);
-		propertyTemplate.replace("@@Name@@", NameNormalizer::normalize(name, false))
-				.replace("@@NameCaps@@", NameNormalizer::normalize(name))
+		propertyTemplate.replace("@@Name@@", NameNormalizer::normalize(name))
 				.replace("@@Type@@", mApi.stringProperty(property, "type"));
 
 		properties += propertyTemplate;

@@ -1,12 +1,1 @@
-    private @@Type@@ @@Name@@;
-    public @@Type@@ @@NameCaps@@
-    {
-        set
-        {
-            @@Name@@ = value;
-        }
-        get
-        {
-            return @@Name@@;
-        }
-    }
+    internal @@Type@@ @@Name@@ {get; set;}
