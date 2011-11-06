@@ -85,3 +85,13 @@ AsyncMailBox
 ==========
 @@Return@@
             return@@OptionalReturnValue@@;
+==========
+@@If@@
+                if (@@Condition@@)
+                {
+@@Then@@
+                }
+                else
+                {
+@@Else@@
+                }

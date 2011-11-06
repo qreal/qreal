@@ -19,10 +19,21 @@ public:
 	void generate();
 
 private:
+	struct CodeBranchGenerationResult
+	{
+		CodeBranchGenerationResult(QString text, qReal::Id stopNode)
+				:text(text), stopNode(stopNode)
+		{
+		}
+
+		QString text;
+		qReal::Id stopNode;
+	};
+
 	QString generateEventHandlers(qReal::Id const &diagram) const;
 	QString generateEventHandler(QString const &handlerName) const;
 	QString generateCaseBody(qReal::Id const &handlerStart) const;
-	QString generateOperatorCode(qReal::Id const &currentNode) const;
+	CodeBranchGenerationResult generateOperatorCode(qReal::Id const &currentNode) const;
 
 	QString generateConstants(qReal::Id const &element) const;
 	QString generateFields(qReal::Id const &element) const;
