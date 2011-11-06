@@ -19,13 +19,14 @@ public:
 	void generate();
 
 private:
-	QString generateEnumElements(qReal::Id const &element);
-	QString generateDefaultFieldsInitialization(qReal::Id const &element);
-	QString generateFieldsInitialization(qReal::Id const &element);
-	QString generateConstructorArguments(qReal::Id const &element);
-	QString generateConstructorActualArguments(qReal::Id const &element);
-	QString generatePackFields(qReal::Id const &element);
-	QString generateUnpackFields(qReal::Id const &element);
+	QString generateEnumElements(qReal::Id const &element) const;
+	QString generateDefaultFieldsInitialization(qReal::Id const &element) const;
+	QString generateFieldsInitialization(qReal::Id const &element) const;
+	QString generateConstructorArguments(qReal::Id const &element) const;
+	QString generateConstructorActualArguments(qReal::Id const &element) const;
+	QString generatePackFields(qReal::Id const &element) const;
+	QString generateUnpackFields(qReal::Id const &element) const;
+	QString generateSerializationRelatedCode(qReal::Id const &element, QString const &method) const;
 };
 
 }

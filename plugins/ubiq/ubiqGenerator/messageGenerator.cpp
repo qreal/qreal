@@ -63,7 +63,7 @@ void MessageGenerator::generate()
 	saveOutputFile(dir.absoluteFilePath(fileName), result);
 }
 
-QString MessageGenerator::generateEnumElements(qReal::Id const &element)
+QString MessageGenerator::generateEnumElements(qReal::Id const &element) const
 {
 	QString result;
 	int value = 0;
@@ -82,7 +82,7 @@ QString MessageGenerator::generateEnumElements(qReal::Id const &element)
 	return result;
 }
 
-QString MessageGenerator::generateDefaultFieldsInitialization(qReal::Id const &element)
+QString MessageGenerator::generateDefaultFieldsInitialization(qReal::Id const &element) const
 {
 	QString fieldsInitialization;
 	foreach (Id const property, mApi.children(element)) {
@@ -105,7 +105,7 @@ QString MessageGenerator::generateDefaultFieldsInitialization(qReal::Id const &e
 	return fieldsInitialization;
 }
 
-QString MessageGenerator::generateFieldsInitialization(qReal::Id const &element)
+QString MessageGenerator::generateFieldsInitialization(qReal::Id const &element) const
 {
 	QString fieldsInitialization;
 	foreach (Id const property, mApi.children(element)) {
@@ -123,7 +123,7 @@ QString MessageGenerator::generateFieldsInitialization(qReal::Id const &element)
 	return fieldsInitialization;
 }
 
-QString MessageGenerator::generateConstructorArguments(qReal::Id const &element)
+QString MessageGenerator::generateConstructorArguments(qReal::Id const &element) const
 {
 	QString parametersList;
 	foreach (Id const property, mApi.children(element)) {
@@ -139,7 +139,7 @@ QString MessageGenerator::generateConstructorArguments(qReal::Id const &element)
 	return parametersList;
 }
 
-QString MessageGenerator::generateConstructorActualArguments(qReal::Id const &element)
+QString MessageGenerator::generateConstructorActualArguments(qReal::Id const &element) const
 {
 	QString parametersList;
 	foreach (Id const property, mApi.children(element)) {
@@ -152,7 +152,17 @@ QString MessageGenerator::generateConstructorActualArguments(qReal::Id const &el
 	return parametersList;
 }
 
-QString MessageGenerator::generatePackFields(qReal::Id const &element)
+QString MessageGenerator::generatePackFields(qReal::Id const &element) const
+{
+	return generateSerializationRelatedCode(element, "Serialization");
+}
+
+QString MessageGenerator::generateUnpackFields(qReal::Id const &element) const
+{
+	return generateSerializationRelatedCode(element, "Deserialization");
+}
+
+QString MessageGenerator::generateSerializationRelatedCode(qReal::Id const &element, QString const &method) const
 {
 	QString serializersList;
 	foreach (Id const property, mApi.children(element)) {
@@ -167,41 +177,14 @@ QString MessageGenerator::generatePackFields(qReal::Id const &element)
 		if (type == "int") {
 			bool const serializeAsShort = mApi.property(property, "serializeAsShort").toBool();
 			if (serializeAsShort) {
-				serializationTemplate = mTemplateUtils["@@SerializationIntAsShort@@"];
+				serializationTemplate = mTemplateUtils["@@" + method + "IntAsShort@@"];
 			}
 		}
 		if (serializationTemplate.isEmpty())
-			serializationTemplate = mTemplateUtils["@@Serialization_" + type + "@@"];
+			serializationTemplate = mTemplateUtils["@@" + method + "_" + type + "@@"];
 
 		serializationTemplate.replace("@@Name@@", name);
 		serializersList += serializationTemplate;
 	}
 	return serializersList;
-}
-
-QString MessageGenerator::generateUnpackFields(qReal::Id const &element)
-{
-	QString deserializersList;
-	foreach (Id const property, mApi.children(element)) {
-		if (!mApi.isLogicalElement(property) || property.element() != "Field")
-			continue;
-
-		QString const name = NameNormalizer::normalize(mApi.name(property), false);
-		QString const type = mApi.stringProperty(property, "type");
-
-		QString deserializationTemplate;
-
-		if (type == "int") {
-			bool const serializeAsShort = mApi.property(property, "serializeAsShort").toBool();
-			if (serializeAsShort) {
-				deserializationTemplate = mTemplateUtils["@@DeserializationIntAsShort@@"];
-			}
-		}
-		if (deserializationTemplate.isEmpty())
-			deserializationTemplate = mTemplateUtils["@@Deserialization_" + type + "@@"];
-
-		deserializationTemplate.replace("@@Name@@", name);
-		deserializersList += deserializationTemplate;
-	}
-	return deserializersList;
 }
