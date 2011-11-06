@@ -245,11 +245,6 @@
         <graphicTypes>
             <import as="ubiqActivityComment" name="KernelDiagram::Comment"/>
             <import as="ubiqActivityCommentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
-            <import as="handlerStart" displayedName="Handler Start" name="ActivityDiagram::AcceptEventAction"/>
-            <import as="action" name="ActivityDiagram::Action"/>
-            <import as="decisionNode" displayedName="Decision Node" name="ActivityDiagram::DecisionNode"/>
-            <import as="mergeNode" displayedName="Merge Node" name="ActivityDiagram::MergeNode"/>
-            <import as="activityFinalNode" displayedName="Activity Final Node" name="ActivityDiagram::ActivityFinalNode"/>
             <node displayedName="Activity Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="ubiqActivityDiagram">
                 <graphics>
                     <picture sizex="48" sizey="48">
@@ -274,11 +269,116 @@
                     <lineType type="solidLine"/>
                 </graphics>
                 <logic>
-                    <associations endType="no_arrow" beginType="empty_arrow">
+                    <associations endType="open_arrow" beginType="no_arrow">
                         <association beginName="controlFlow1" endName="controlFlow2"/>
                     </associations>
                 </logic>
             </edge>
+            <node name="ActivityFinalNode" displayedName="Activity Final Node" path="29, 15 : 27, 20 : 24, 24 : 20, 27 : 15, 28 : 10, 27 : 6, 24 : 3, 20 : 2, 15 : 3, 10 : 6, 6 : 10, 3 : 15, 2 : 20, 3 : 24, 6 : 27, 10 : 29, 15 : 36, 15 : 34, 23 : 29, 29 : 23, 34 : 15, 35 : 7, 34 : 1, 29 : -4, 23 : -5, 15 : -4, 7 : 1, 1 : 7, -4 : 15, -5 : 23, -4 : 29, 1 : 34, 7 : 36, 15 : ">
+                <graphics>
+                    <picture sizex="30" sizey="30">
+                        <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="30" fill-style="solid"/>
+                        <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <pointPort x="0" y="15"/>
+                        <pointPort x="15" y="0"/>
+                        <pointPort x="15" y="30"/>
+                        <pointPort x="30" y="15"/>
+                        <pointPort x="15" y="15"/>
+                    </ports>
+                </graphics>
+                <logic>
+                </logic>
+            </node>
+            <node displayedName="Action" name="action">
+                <graphics>
+                    <picture sizex="80" sizey="60">
+                        <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 10.75 1 C 5.36522 1 1 5.41447 1 10.86 L 1 49.14 C 1 54.5855 5.36522 59 10.75 59 L 69.25 59 C 74.6348 59 79 54.5855 79 49.14 L 79 10.86 C 79 5.41447 74.6348 1 69.25 1 L 10.75 1" fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="5" y="3" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="79" starty="10"/>
+                            <end endx="79" endy="50"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="1" starty="10"/>
+                            <end endx="1" endy="50"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="1"/>
+                            <end endx="70" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="59"/>
+                            <end endx="70" endy="59"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                </logic>
+            </node>
+            <node name="decisionNode" displayedName="Decision Node" path="30, 2 : 58, 30 : 30, 58 : 2, 30 : 30, 2 : ">
+                <graphics>
+                    <picture sizex="60" sizey="60">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="30" y2="30" stroke-width="1" x2="0" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="0" y2="60" stroke-width="1" x2="30" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="30" y2="30" stroke-width="1" x2="60" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="60" y2="0" stroke-width="1" x2="30" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <pointPort x="0" y="30"/>
+                        <pointPort x="60" y="30"/>
+                        <pointPort x="30" y="0"/>
+                        <pointPort x="30" y="60"/>
+                    </ports>
+                </graphics>
+                <logic>
+                </logic>
+            </node>
+            <node name="mergeNode" displayedName="Merge Node" >
+                <graphics>
+                    <picture sizex="60" sizey="60">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="30" y2="30" stroke-width="1" x2="0" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="0" y2="60" stroke-width="1" x2="30" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="30" y2="30" stroke-width="1" x2="60" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="60" y2="0" stroke-width="1" x2="30" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <pointPort x="0" y="30"/>
+                        <pointPort x="60" y="30"/>
+                        <pointPort x="30" y="0"/>
+                        <pointPort x="30" y="60"/>
+                    </ports>
+                </graphics>
+                <logic>
+                </logic>
+            </node>
+            <node name="handlerStart" displayedName="Handler Start" path="0, 0 : 100, 0 : 100, 60 : 0, 60 : 15, 30 : 0, 0 : ">
+                <graphics>
+                    <picture sizex="200" sizey="40">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="1" x2="200" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="200" y2="40" stroke-width="1" x2="200" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="40" x1="200" y2="40" stroke-width="1" x2="0" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="40" x1="0" y2="20" stroke-width="1" x2="10" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="10" y2="0" stroke-width="1" x2="0" fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="15" y="3" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="10" y="20"/>
+                        <pointPort x="200" y="20"/>
+                        <pointPort x="100" y="0"/>
+                        <pointPort x="100" y="40"/>
+                    </ports>
+                </graphics>
+                <logic>
+                </logic>
+            </node>
             <node displayedName="Return" path="0, 0 : 84, 0 : 98, 30 : 84, 58 : 0, 58 : 0, 0 : " name="returnAction">
                 <graphics>
                     <picture sizex="100" sizey="60">
@@ -342,7 +442,7 @@
                     </container>
                 </logic>
             </node>
-            <node displayedName="Formal Parameter" name="formalParameter">
+            <node name="formalParameter" displayedName="Formal Parameter">
                 <graphics>
                     <picture sizex="100" sizey="20"/>
                     <labels>
@@ -357,9 +457,9 @@
             </node>
             <node name="functionCall" displayedName="Function Call">
                 <graphics>
-                    <picture sizex="150" sizey="150">
-                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="150" stroke-width="1" x2="150" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid"/>
+                    <picture sizex="200" sizey="50">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="50" stroke-width="1" x2="200" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="200" fill-style="solid"/>
                     </picture>
                     <labels>
                         <label x="0" y="0" textBinded="name"/>
@@ -367,18 +467,18 @@
                     <ports>
                         <linePort>
                             <start startx="0" starty="0"/>
-                            <end endx="150" endy="0"/>
+                            <end endx="200" endy="0"/>
                         </linePort>
                         <linePort>
-                            <start startx="150" starty="0"/>
-                            <end endx="150" endy="150"/>
+                            <start startx="200" starty="0"/>
+                            <end endx="200" endy="50"/>
                         </linePort>
                         <linePort>
-                            <start startx="150" starty="150"/>
-                            <end endx="0" endy="150"/>
+                            <start startx="200" starty="50"/>
+                            <end endx="0" endy="50"/>
                         </linePort>
                         <linePort>
-                            <start startx="0" starty="150"/>
+                            <start startx="0" starty="50"/>
                             <end endx="0" endy="0"/>
                         </linePort>
                     </ports>
@@ -392,13 +492,15 @@
                             <banChildrenMove/>
                             <minimizeToChildren/>
                             <maximizeChildren/>
+                            <forestalling size="25"/>
+                            <childrenForestalling size="2"/>
                         </properties>
                     </container>
                 </logic>
             </node>
-            <node displayedName="Actual Parameter" name="actualParameter">
+            <node name="actualParameter" displayedName="Actual Parameter">
                 <graphics>
-                    <picture sizex="100" sizey="20"/>
+                    <picture sizex="200" sizey="30"/>
                     <labels>
                         <label x="0" y="0" textBinded="name"/>
                     </labels>
@@ -429,6 +531,7 @@
                     </ports>
                 </graphics>
                 <logic>
+                    <property type="string" name="type"/>
                 </logic>
             </node>
         </graphicTypes>
