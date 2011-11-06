@@ -79,6 +79,7 @@ protected:
 	void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent );
 	void mouseMoveEvent (QGraphicsSceneMouseEvent *event);
 
+
 	void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event);
 
 	virtual void drawBackground( QPainter *painter, const QRectF &rect);
@@ -147,7 +148,6 @@ private:
 
 	QSet<Element *> mHighlightedElements;
 	QTimer * mTimer;
-
 	friend class qReal::EditorViewMViface;
 
 	/** @brief Is "true" when we just select items on scene, and "false" when we drag selected items */
