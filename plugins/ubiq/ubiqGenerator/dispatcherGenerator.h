@@ -19,14 +19,17 @@ public:
 	void generate();
 
 private:
-	QString generateEventHandlers(qReal::Id const &diagram);
-	QString generateEventHandler(QString const &handlerName);
-	QString generateCaseBody(qReal::Id const &handlerStart);
-	QString generateOperatorCode(qReal::Id const &currentNode);
+	QString generateEventHandlers(qReal::Id const &diagram) const;
+	QString generateEventHandler(QString const &handlerName) const;
+	QString generateCaseBody(qReal::Id const &handlerStart) const;
+	QString generateOperatorCode(qReal::Id const &currentNode) const;
 
 	QString generateConstants(qReal::Id const &element) const;
 	QString generateFields(qReal::Id const &element) const;
 	QString generateMessageInputMethods(qReal::Id const &element) const;
+	QString generateHelperFunctions(qReal::Id const &element) const;
+	QString generateFunctionParameters(qReal::Id const &element) const;
+	QString generateFunctionBody(qReal::Id const &element) const;
 };
 
 }

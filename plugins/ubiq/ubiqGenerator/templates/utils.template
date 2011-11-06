@@ -36,6 +36,15 @@
             if (iBigEndianFlag) @@Name@@_temp = Convert32(@@Name@@_temp);
             @@Name@@ = @@Name@@_temp;
 ==========
+@@MasterDiagramConstant@@
+        const @@Type@@ @@Name@@ = @@Value@@;
+==========
+@@MasterDiagramFieldWithoutInit@@
+        private @@OptionalStatic@@@@Type@@ @@Name@@;
+==========
+@@MasterDiagramField@@
+        private @@OptionalStatic@@@@Type@@ @@Name@@ = @@Value@@;
+==========
 @@EventHandler@@
         public override void @@HandlerName@@(Message msg)
         {
@@ -63,3 +72,13 @@ TcpIPMessageInput
 ==========
 @@OnMailboxMessageClass@@
 AsyncMailBox
+==========
+@@HelperFunction@@
+        internal @@Type@@ @@Name@@(@@Params@@)
+        {
+@@Body@@
+        }
+
+==========
+@@Return@@
+            return@@OptionalReturnValue@@;

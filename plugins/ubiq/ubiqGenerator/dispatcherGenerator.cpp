@@ -25,8 +25,8 @@ void DispatcherGenerator::generate()
 {
 	loadUtilsTemplates();
 
-	foreach (Id const diagram, mApi.elementsByType("MasterNode")) { // get master node
-		if (!mApi.isLogicalElement(diagram))
+	foreach (Id const masterNode, mApi.elementsByType("MasterNode")) { // get master node
+		if (!mApi.isLogicalElement(masterNode))
 			continue;
 
 		QString const templateName = "DeviceDispatcher.cs";
@@ -34,19 +34,18 @@ void DispatcherGenerator::generate()
 		QString fileTemplate;
 		loadTemplateFromFile(templateName, fileTemplate);
 
-		QString eventHadlers = generateEventHandlers(diagram);
-
-		fileTemplate.replace("@@EventHandlers@@", eventHadlers)
-				.replace("@@Constants@@", generateConstants(diagram))
-				.replace("@@Fields@@", generateFields(diagram))
-				.replace("@@MessageInputMethods@@", generateMessageInputMethods(diagram))
+		fileTemplate.replace("@@EventHandlers@@", generateEventHandlers(masterNode))
+				.replace("@@Constants@@", generateConstants(masterNode))
+				.replace("@@Fields@@", generateFields(masterNode))
+				.replace("@@MessageInputMethods@@", generateMessageInputMethods(masterNode))
+				.replace("@@HelperFunctions@@", generateHelperFunctions(masterNode))
 				;
 
 		saveOutputFile(templateName, fileTemplate);
 	}
 }
 
-QString DispatcherGenerator::generateEventHandlers(Id const &diagram)
+QString DispatcherGenerator::generateEventHandlers(Id const &diagram) const
 {
 	QString eventHadlers;
 	foreach (Id const element, mApi.children(diagram)) { // get elements on master node
@@ -114,7 +113,7 @@ QString DispatcherGenerator::generateMessageInputMethods(qReal::Id const &elemen
 			continue;
 
 		QString const name = mApi.name(id);
-		QString messageInputClass = mTemplateUtils["@@" + name + "Class@@"].trimmed();
+		QString const messageInputClass = mTemplateUtils["@@" + name + "Class@@"].trimmed();
 		QString const parameter = mApi.stringProperty(id, "MessageInputParameter");
 
 		QString useMessageInputTemplate = mTemplateUtils["@@UseMessageInput@@"];
@@ -128,7 +127,59 @@ QString DispatcherGenerator::generateMessageInputMethods(qReal::Id const &elemen
 	return result;
 }
 
-QString DispatcherGenerator::generateEventHandler(QString const &handlerName)
+QString DispatcherGenerator::generateHelperFunctions(qReal::Id const &element) const
+{
+	QString result;
+	foreach (Id const diagram, mApi.outgoingConnections(element)) {
+		if (!mApi.isLogicalElement(diagram) || diagram.element() != "UbiqActivityDiagram")
+			continue;
+
+		foreach (Id const &id, mApi.children(diagram)) {
+			if (!mApi.isLogicalElement(id) || (id.element() != "FormalParameters"))
+				continue;
+
+			QString const name = mApi.name(id);
+			QString returnType = mApi.stringProperty(id, "returnType");
+			QString const parameters = generateFunctionParameters(id);
+			QString const body = generateFunctionBody(id);
+
+			QString helperFunctionTemplate = mTemplateUtils["@@HelperFunction@@"];
+			helperFunctionTemplate.replace("@@Name@@", name)
+					.replace("@@Type@@", returnType)
+					.replace("@@Params@@", parameters)
+					.replace("@@Body@@", body)
+					;
+
+			result += helperFunctionTemplate;
+		}
+	}
+	return result;
+}
+
+QString DispatcherGenerator::generateFunctionParameters(qReal::Id const &element) const
+{
+	QString result;
+	foreach (Id const id, mApi.children(element)) {
+		if (!mApi.isLogicalElement(id) || id.element() != "FormalParameter")
+			continue;
+
+		QString argumentTemplate = mTemplateUtils["@@Argument@@"].trimmed();
+		argumentTemplate.replace("@@ArgType@@", mApi.stringProperty(id, "type"))
+				.replace("@@ArgName@@", mApi.name(id))
+				;
+
+		result += argumentTemplate + ", ";
+	}
+	result.chop(2);
+	return result;
+}
+
+QString DispatcherGenerator::generateFunctionBody(qReal::Id const &element) const
+{
+	return generateCaseBody(element);
+}
+
+QString DispatcherGenerator::generateEventHandler(QString const &handlerName) const
 {
 	QString handlerCode = mTemplateUtils["@@EventHandler@@"];
 	handlerCode.replace("@@HandlerName@@", handlerName);
@@ -159,11 +210,15 @@ QString DispatcherGenerator::generateEventHandler(QString const &handlerName)
 	return handlerCode;
 }
 
-QString DispatcherGenerator::generateCaseBody(qReal::Id const &handlerStart)
+QString DispatcherGenerator::generateCaseBody(qReal::Id const &handlerStart) const
 {
 	IdList links = mApi.outgoingLinks(handlerStart);
-	if (links.size() != 1) {
-		mErrorReporter.addError(QObject::tr("HandlerStart node should have exactly 1 outgoing link"), handlerStart);
+	if (links.size() > 1) {
+		mErrorReporter.addError(QObject::tr("Start node should have exactly 1 outgoing link"), handlerStart);
+		return "";
+	}
+
+	if (links.size() == 0) {
 		return "";
 	}
 
@@ -171,7 +226,7 @@ QString DispatcherGenerator::generateCaseBody(qReal::Id const &handlerStart)
 	return generateOperatorCode(nextNode);
 }
 
-QString DispatcherGenerator::generateOperatorCode(qReal::Id const &currentNode)
+QString DispatcherGenerator::generateOperatorCode(qReal::Id const &currentNode) const
 {
 	QString operatorCode = mTemplateUtils["@@CaseCode@@"];
 
@@ -185,6 +240,7 @@ QString DispatcherGenerator::generateOperatorCode(qReal::Id const &currentNode)
 		}
 		code.chop(2); // terminating space and comma
 		code += ")";
+
 		operatorCode.replace("@@Command@@", code);
 
 		IdList links = mApi.outgoingLinks(currentNode);
@@ -200,6 +256,42 @@ QString DispatcherGenerator::generateOperatorCode(qReal::Id const &currentNode)
 		return operatorCode + generateOperatorCode(nextNode);
 	}
 
+	if (currentNode.element() == "Action") {
+		operatorCode = mApi.name(currentNode);
+
+		IdList links = mApi.outgoingLinks(currentNode);
+
+		if (links.size() == 0)
+			return operatorCode;
+		else if (links.size() > 1) {
+			mErrorReporter.addError(QObject::tr("Action node should have exactly 1 outgoing link"), currentNode);
+			return "";
+		}
+
+		Id nextNode = mApi.otherEntityFromLink(links.at(0), currentNode);
+		return operatorCode + "\n" + generateOperatorCode(nextNode);
+	}
+
+	if (currentNode.element() == "ReturnAction") {
+		QString const returnValue = mApi.name(currentNode).isEmpty()
+				? ""
+				: (" " + mApi.name(currentNode))
+				;
+
+		QString returnWithValueTemplate = mTemplateUtils["@@Return@@"];
+		returnWithValueTemplate.replace("@@OptionalReturnValue@@", returnValue);
+
+		operatorCode = returnWithValueTemplate;
+
+		IdList links = mApi.outgoingLinks(currentNode);
+
+		if (links.size() == 0)
+			return operatorCode;
+		else {
+			mErrorReporter.addError(QObject::tr("ReturnAction node shall have no outgoing links"), currentNode);
+			return "";
+		}
+	}
+
 	return "";
 }
-
