@@ -20,6 +20,9 @@ public:
 
 private:
 	QString generateConstructors(qReal::Id const &element);
+
+	QString generateConstants(qReal::Id const &element) const;
+	QString generateFields(qReal::Id const &element) const;
 };
 
 }
