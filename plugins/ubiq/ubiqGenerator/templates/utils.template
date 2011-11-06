@@ -36,3 +36,22 @@
             if (iBigEndianFlag) @@Name@@_temp = Convert32(@@Name@@_temp);
             @@Name@@ = @@Name@@_temp;
 ==========
+@@EventHandler@@
+        public override void @@HandlerName@@(Message msg)
+        {
+            switch (msg.Command)
+            {
+@@SwitchCases@@
+            }
+        }
+==========
+@@SwitchCase@@
+            case Message.@@CaseValue@@:
+                {
+@@CaseCode@@
+                }
+                break;
+==========
+@@CaseCode@@
+                    @@Command@@;
+==========
