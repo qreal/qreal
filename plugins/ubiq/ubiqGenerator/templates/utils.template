@@ -55,3 +55,11 @@
 @@CaseCode@@
                     @@Command@@;
 ==========
+@@UseMessageInput@@
+            UseMessageInput(new @@MessageInputClass@@(@@MessageInputParameter@@));
+==========
+@@OnTcpMessageClass@@
+TcpIPMessageInput
+==========
+@@OnMailboxMessageClass@@
+AsyncMailBox

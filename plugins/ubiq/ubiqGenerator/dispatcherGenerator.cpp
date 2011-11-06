@@ -36,10 +36,10 @@ void DispatcherGenerator::generate()
 
 		QString eventHadlers = generateEventHandlers(diagram);
 
-
 		fileTemplate.replace("@@EventHandlers@@", eventHadlers)
 				.replace("@@Constants@@", generateConstants(diagram))
 				.replace("@@Fields@@", generateFields(diagram))
+				.replace("@@MessageInputMethods@@", generateMessageInputMethods(diagram))
 				;
 
 		saveOutputFile(templateName, fileTemplate);
@@ -106,6 +106,28 @@ QString DispatcherGenerator::generateFields(qReal::Id const &element) const
 	return result;
 }
 
+QString DispatcherGenerator::generateMessageInputMethods(qReal::Id const &element) const
+{
+	QString result;
+	foreach (Id const id, mApi.children(element)) {
+		if (!mApi.isLogicalElement(id) || id.element() != "Handler")
+			continue;
+
+		QString const name = mApi.name(id);
+		QString messageInputClass = mTemplateUtils["@@" + name + "Class@@"].trimmed();
+		QString const parameter = mApi.stringProperty(id, "MessageInputParameter");
+
+		QString useMessageInputTemplate = mTemplateUtils["@@UseMessageInput@@"];
+
+		useMessageInputTemplate.replace("@@MessageInputClass@@", messageInputClass)
+				.replace("@@MessageInputParameter@@", parameter)
+				;
+
+		result += useMessageInputTemplate;
+	}
+	return result;
+}
+
 QString DispatcherGenerator::generateEventHandler(QString const &handlerName)
 {
 	QString handlerCode = mTemplateUtils["@@EventHandler@@"];
@@ -139,18 +161,14 @@ QString DispatcherGenerator::generateEventHandler(QString const &handlerName)
 
 QString DispatcherGenerator::generateCaseBody(qReal::Id const &handlerStart)
 {
-	QString body;
-
 	IdList links = mApi.outgoingLinks(handlerStart);
 	if (links.size() != 1) {
 		mErrorReporter.addError(QObject::tr("HandlerStart node should have exactly 1 outgoing link"), handlerStart);
 		return "";
 	}
 
-	Id nextNode = mApi.otherEntityFromLink(links.at(0), handlerStart);
-	body += generateOperatorCode(nextNode);
-
-	return body;
+	Id const nextNode = mApi.otherEntityFromLink(links.at(0), handlerStart);
+	return generateOperatorCode(nextNode);
 }
 
 QString DispatcherGenerator::generateOperatorCode(qReal::Id const &currentNode)
@@ -181,8 +199,6 @@ QString DispatcherGenerator::generateOperatorCode(qReal::Id const &currentNode)
 		Id nextNode = mApi.otherEntityFromLink(links.at(0), currentNode);
 		return operatorCode + generateOperatorCode(nextNode);
 	}
-
-
 
 	return "";
 }

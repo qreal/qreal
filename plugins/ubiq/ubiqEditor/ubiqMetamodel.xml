@@ -204,6 +204,9 @@
                     </labels>
                 </graphics>
                 <logic>
+                    <properties>
+                        <property type="string" name="MessageInputParameter"/>
+                    </properties>
                 </logic>
             </node>
             <node displayedName="Field" name="masterDiagramField">

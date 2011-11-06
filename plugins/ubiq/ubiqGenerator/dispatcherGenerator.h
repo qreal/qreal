@@ -26,6 +26,7 @@ private:
 
 	QString generateConstants(qReal::Id const &element) const;
 	QString generateFields(qReal::Id const &element) const;
+	QString generateMessageInputMethods(qReal::Id const &element) const;
 };
 
 }

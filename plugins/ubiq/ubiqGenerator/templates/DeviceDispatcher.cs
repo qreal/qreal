@@ -23,9 +23,7 @@ namespace DeviceService
 
         public override void MainOverride()
         {
-            UseMessageInput(new TcpIPMessageInput(portNumber));
-            UseMessageInput(new AsyncMailBox(KBoxName));
-
+@@MessageInputMethods@@
             ProcessIncomingMessages();
         }
 
