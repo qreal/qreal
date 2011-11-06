@@ -141,7 +141,10 @@ QString DispatcherGenerator::generateHelperFunctions(qReal::Id const &element) c
 			QString const name = mApi.name(id);
 			QString returnType = mApi.stringProperty(id, "returnType");
 			QString const parameters = generateFunctionParameters(id);
-			QString const body = generateFunctionBody(id);
+			QString body = generateFunctionBody(id);
+
+			if (body.endsWith('\n'))
+				body.chop(1);
 
 			QString helperFunctionTemplate = mTemplateUtils["@@HelperFunction@@"];
 			helperFunctionTemplate.replace("@@Name@@", name)
@@ -196,13 +199,27 @@ QString DispatcherGenerator::generateEventHandler(QString const &handlerName) co
 			if (!mApi.isLogicalElement(element) || (element.element() != "HandlerStart"))
 				continue;
 
-			QString caseCode = mTemplateUtils["@@SwitchCase@@"];
+			QString caseStmts;
+			foreach (QString const &caseLabel, mApi.name(element).split(",", QString::SkipEmptyParts)) {
+				QString caseStmtTemplate = mTemplateUtils["@@Case@@"];
+				caseStmtTemplate.replace("@@CaseValue@@", caseLabel.trimmed());
+				caseStmts += caseStmtTemplate;
+			}
+
+			QString caseCodeTemplate = mTemplateUtils["@@SwitchCase@@"];
+
 			QString body = generateCaseBody(element);
+			if (body.endsWith('\n'))
+				body.chop(1);
 
-			caseCode.replace("@@CaseValue@@", mApi.name(element))
-					.replace("@@CaseCode@@", body);
+			if (caseStmts.endsWith('\n'))
+				caseStmts.chop(1);
 
-			cases += caseCode;
+			caseCodeTemplate.replace("@@Cases@@", caseStmts)
+					.replace("@@CaseCode@@", body)
+					;
+
+			cases += caseCodeTemplate;
 		}
 		handlerCode.replace("@@SwitchCases@@", cases);
 	}

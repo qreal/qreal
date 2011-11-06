@@ -55,11 +55,14 @@
         }
 ==========
 @@SwitchCase@@
-            case Message.@@CaseValue@@:
+@@Cases@@
                 {
 @@CaseCode@@
                 }
                 break;
+==========
+@@Case@@
+                case Message.@@CaseValue@@:
 ==========
 @@CaseCode@@
                     @@Command@@;
