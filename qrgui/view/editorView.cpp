@@ -133,22 +133,17 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 
 void EditorView::mouseReleaseEvent(QMouseEvent *event)
 {
-
 	if (!(event->buttons() & Qt::MidButton)) {
 		mWheelPressed = false;
-		mWheelWasPressed = true;
 		mMouseOldPosition = QPointF();
 	}
-	if (!mWheelPressed && (!mWheelWasPressed || event->button() == Qt::RightButton))
-		QGraphicsView::mouseReleaseEvent(event);
-
+	QGraphicsView::mouseReleaseEvent(event);
 	if (mScene->getNeedDrawGrid())
 		mScene->invalidate();
 }
 
 void EditorView::mousePressEvent(QMouseEvent *event)
 {
-	mWheelWasPressed = false;
 	mWheelPressed  = (event->buttons() & Qt::MidButton);
 	mMouseOldPosition = QPointF();
 	if (!mWheelPressed)

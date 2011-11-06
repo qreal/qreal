@@ -605,7 +605,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 		mShouldReparentItems = false; // in case there'll be 2 consecutive release events
 	}
 
-	if (event->button() == Qt::RightButton) {
+	if (event->button() == Qt::RightButton && !(mMouseMovementManager->pathIsEmpty())) {
 		mMouseMovementManager->mouseMove(event->scenePos());
 		mRightButtonPressed = false;
 		drawGesture();

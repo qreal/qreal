@@ -45,7 +45,6 @@ namespace qReal {
 		EditorViewScene *mScene;
 		QPointF mMouseOldPosition;
 		bool mWheelPressed;
-		bool mWheelWasPressed;
 		void checkGrid();
 	};
 
