@@ -19,7 +19,8 @@ public:
 	void generate();
 
 private:
-	QString generateConstructors(qReal::Id const &element);
+	QString generateEventHandlers(qReal::Id const &diagram);
+	QString generateEventHandler(QString const handlerName);
 };
 
 }
