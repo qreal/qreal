@@ -261,6 +261,19 @@
                     </container>
                 </logic>
             </node>
+            <node displayedName="Package" name="ubiqPackage">
+                <graphics>
+                    <picture sizex="48" sizey="48">
+                        <image y1="0" name="images/package.png" x1="0" y2="47" x2="47"/>
+                    </picture>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="ubiqActivity::ubiqActivityComment"/>
+                        <contains type="ubiqActivity::ubiqActivityDiagram"/>
+                    </container>
+                </logic>
+            </node>
             <edge name="controlFlow" displayedName="Control Flow">
                 <graphics>
                     <lineType type="solidLine"/>
@@ -430,7 +443,7 @@
                     </generalizations>
                 </logic>
             </node>
-            <node name="formalParameters" displayedName="Formal Parameters">
+            <node name="formalParameters" displayedName="Function Signature">
                 <graphics>
                     <picture sizex="200" sizey="50">
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="50" stroke-width="1" x2="200" fill-style="solid"/>
@@ -473,6 +486,9 @@
                     <generalizations>
                         <parent parentName="abstractActivityNode"/>
                     </generalizations>
+                    <properties>
+                        <property type="string" name="returnType"/>
+                    </properties>
                 </logic>
             </node>
             <node name="formalParameter" displayedName="Formal Parameter">
