@@ -415,7 +415,14 @@ void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool bl, bool isS
 
 void MainWindow::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel)
 {
-	activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(id), bl, isSetSel);
+	if (mModels->graphicalModelAssistApi().isGraphicalId(id)) {
+		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(id), bl, isSetSel);
+	} else {
+		IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(id);
+		if (graphicalIds.count() == 0)
+			return;
+		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(graphicalIds[0]), bl, isSetSel);
+	}
 }
 
 void MainWindow::activateSubdiagram(QModelIndex const &idx)
@@ -456,7 +463,7 @@ void MainWindow::sceneSelectionChanged()
 	QList<Element*> selected = QList<Element*>();
 	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
 
-	foreach(QGraphicsItem* item, items) {
+	foreach (QGraphicsItem* item, items) {
 		Element* element = dynamic_cast<Element*>(item);
 		if (element) {
 			elements.append(element);
@@ -2273,6 +2280,7 @@ void MainWindow::saveDiagramAsAPicture()
 	getCurrentTab()->scene()->render(&painter);
 	image.save(fileName);
 }
+
 void MainWindow::connectWindowTitle()
 {
 	connect(mModels->graphicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex))
