@@ -4,6 +4,7 @@
 
 #include "messageGenerator.h"
 #include "customClassGenerator.h"
+#include "dispatcherGenerator.h"
 
 using namespace ubiq::generator;
 
@@ -30,4 +31,7 @@ void Generator::generate()
 
 	CustomClassGenerator customClassGenerator("./templates/", "./output/", *mLogicalModel, *mErrorReporter);
 	customClassGenerator.generate();
+
+	DispatcherGenerator dispatcherGenerator("./templates", "./output", *mLogicalModel, *mErrorReporter);
+	dispatcherGenerator.generate();
 }
