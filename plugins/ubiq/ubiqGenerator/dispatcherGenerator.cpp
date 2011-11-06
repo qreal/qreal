@@ -258,6 +258,32 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 		code.chop(2); // terminating space and comma
 		code += ")";
 
+		QString returnValue;
+		foreach (Id const &argument, mApi.children(currentNode)) {
+			if (!mApi.isLogicalElement(argument) || (argument.element() != "ReturnValue"))
+				continue;
+
+			if (!returnValue.isEmpty())
+			{
+				mErrorReporter.addError(QObject::tr("FunctionCall shall have no more than one return value"), currentNode);
+				return CodeBranchGenerationResult("", currentNode);
+			}
+			QString returnValueTemplate = mTemplateUtils["@@ReturnValue@@"];
+			QString const type = mApi.stringProperty(argument, "type").isEmpty()
+					? ""
+					: mApi.stringProperty(argument, "type") + " ";
+
+			returnValueTemplate.replace("@@OptionalType@@", type)
+					.replace("@@Name@@", mApi.name(argument))
+					;
+			returnValue += returnValueTemplate;
+		}
+
+		if (returnValue.endsWith('\n'))
+			returnValue.chop(1);
+
+		code = returnValue + code;
+
 		operatorCode.replace("@@Command@@", code);
 
 		IdList links = mApi.outgoingLinks(currentNode);

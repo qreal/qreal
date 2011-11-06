@@ -586,7 +586,9 @@
                     </ports>
                 </graphics>
                 <logic>
-                    <property type="string" name="type"/>
+                    <properties>
+                        <property type="string" name="type"/>
+                    </properties>
                 </logic>
             </node>
         </graphicTypes>
