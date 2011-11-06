@@ -23,6 +23,9 @@ private:
 	QString generateEventHandler(QString const &handlerName);
 	QString generateCaseBody(qReal::Id const &handlerStart);
 	QString generateOperatorCode(qReal::Id const &currentNode);
+
+	QString generateConstants(qReal::Id const &element) const;
+	QString generateFields(qReal::Id const &element) const;
 };
 
 }

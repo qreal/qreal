@@ -14,15 +14,12 @@ namespace DeviceService
 
     public class DeviceDispatcher: QRealApp
     {
-/*  Что с константами делать?     */
-        const string KBoxName = "DeviceServicesMailBox";
-        private List <DevRecord> devTab;
-        static Random random = new Random();
-        const int portNumber = 4546;
-	    public DeviceDispatcher ()
-	    {
+@@Constants@@
+@@Fields@@
+        public DeviceDispatcher ()
+        {
 /* Возможно, инициализация полей  */
-	    }
+        }
 
         public override void MainOverride()
         {

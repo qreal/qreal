@@ -37,7 +37,10 @@ void DispatcherGenerator::generate()
 		QString eventHadlers = generateEventHandlers(diagram);
 
 
-		fileTemplate.replace("@@EventHandlers@@", eventHadlers);
+		fileTemplate.replace("@@EventHandlers@@", eventHadlers)
+				.replace("@@Constants@@", generateConstants(diagram))
+				.replace("@@Fields@@", generateFields(diagram))
+				;
 
 		saveOutputFile(templateName, fileTemplate);
 	}
@@ -53,6 +56,54 @@ QString DispatcherGenerator::generateEventHandlers(Id const &diagram)
 		eventHadlers += generateEventHandler(mApi.name(element)); // generate code for each event handler
 	}
 	return eventHadlers;
+}
+
+QString DispatcherGenerator::generateConstants(qReal::Id const &element) const
+{
+	QString result;
+	foreach (Id const id, mApi.children(element)) {
+		if (!mApi.isLogicalElement(id) || id.element() != "MasterDiagramConstant")
+			continue;
+
+		QString constantTemplate = mTemplateUtils["@@MasterDiagramConstant@@"];
+		QString const name = mApi.name(id);
+		QString const type = mApi.stringProperty(id, "type");
+		QString const value = mApi.stringProperty(id, "value");
+		constantTemplate.replace("@@Name@@", name)
+				.replace("@@Type@@", type)
+				.replace("@@Value@@", value)
+				;
+
+		result += constantTemplate;
+	}
+	return result;
+}
+
+QString DispatcherGenerator::generateFields(qReal::Id const &element) const
+{
+	QString result;
+	foreach (Id const id, mApi.children(element)) {
+		if (!mApi.isLogicalElement(id) || id.element() != "MasterDiagramField")
+			continue;
+
+		QString const name = mApi.name(id);
+		QString const type = mApi.stringProperty(id, "type");
+		QString const value = mApi.stringProperty(id, "defaultValue");
+		bool const isStatic = mApi.property(id, "static").toBool();
+
+		QString fieldTemplate = value.isEmpty()
+				? mTemplateUtils["@@MasterDiagramFieldWithoutInit@@"]
+				: mTemplateUtils["@@MasterDiagramField@@"];
+
+		fieldTemplate.replace("@@Name@@", name)
+				.replace("@@Type@@", type)
+				.replace("@@Value@@", value)
+				.replace("@@OptionalStatic@@", isStatic ? "static " : "")
+				;
+
+		result += fieldTemplate;
+	}
+	return result;
 }
 
 QString DispatcherGenerator::generateEventHandler(QString const &handlerName)
