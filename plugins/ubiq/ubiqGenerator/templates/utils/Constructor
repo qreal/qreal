@@ -1,4 +1,4 @@
-    public @@CustomClassName@@(@@ConstructorParameters@@)
+    internal @@CustomClassName@@(@@ConstructorParameters@@)
     {
-        @@Fields@@
+@@Fields@@
     }

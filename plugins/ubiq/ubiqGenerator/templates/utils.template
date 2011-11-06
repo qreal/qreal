@@ -1,22 +1,11 @@
 @@Property@@
-    private @@Type@@ @@Name@@;
-    public @@Type@@ @@NameCaps@@
-    {
-        set
-        {
-            @@Name@@ = value;
-        }
-        get
-        {
-            return @@Name@@;
-        }
-    }
+    internal @@Type@@ @@Name@@ {get; set;}
 ==========    
 @@Constructor@@
-public @@CustomClassName@@(@@ConstructorParameters@@)
-{
+    internal @@CustomClassName@@(@@ConstructorParameters@@)
+    {
 @@Fields@@    
-}
+    }
 ==========
 @@FieldInit@@
         this.@@Name@@ = @@Value@@;
