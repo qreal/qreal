@@ -192,6 +192,9 @@
                             <childrenForestalling size="2"/>
                         </properties>
                     </container>
+                    <connections>
+                        <connection type="ubiqActivity::ubiqActivityDiagram"/>
+                    </connections>
                 </logic>
             </node>
             <node displayedName="Handler" name="handler">
