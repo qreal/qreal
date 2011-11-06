@@ -134,7 +134,7 @@ QString MessageGenerator::generateConstructorArguments(qReal::Id const &element)
 		QString argName = NameNormalizer::normalize(mApi.name(property), false);
 		QString type = mApi.stringProperty(property, "type");
 		argumentTemplate.replace("@@ArgType@@", type).replace("@@ArgName@@", argName);
-		parametersList += (argumentTemplate + ", ");
+		parametersList += (argumentTemplate.trimmed() + ", ");
 	}
 	return parametersList;
 }

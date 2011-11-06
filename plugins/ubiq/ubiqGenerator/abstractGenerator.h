@@ -9,6 +9,7 @@ namespace ubiq {
 namespace generator {
 
 QString const utilsFileName = "utils.template";
+QString const utilsSeparator = "==========";
 
 class AbstractGenerator
 {

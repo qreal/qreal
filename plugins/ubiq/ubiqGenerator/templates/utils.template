@@ -1,9 +1,49 @@
-@@Property@@=    private @@Type@@ @@Name@@;\n    public @@Type@@ @@NameCaps@@\n    {\n      set\n      {\n        @@Name@@ = value;\n      }\n      get\n      {\n        return @@Name@@;\n      }\n    }\n
-@@Constructor@@=    public @@CustomClassName@@(@@ConstructorParameters@@)\n    {\n@@Fields@@    }\n
-@@FieldInit@@=        this.@@Name@@ = @@Value@@;\n
-@@Argument@@=@@ArgType@@ @@ArgName@@
-@@EnumElement@@=        public const int @@Name@@ = @@Value@@;\n
-@@SerializationIntAsShort@@=            short @@Name@@_temp = (short)@@Name@@;\n            if (iBigEndianFlag) @@Name@@_temp = Convert16(@@Name@@_temp);\n            iPackWriter.Write(@@Name@@_temp);\n
-@@DeserializationIntAsShort@@=            short @@Name@@_temp = iRdr.ReadInt16();\n            if (iBigEndianFlag) @@Name@@_temp = Convert16(@@Name@@_temp);\n            @@Name@@ = (int)@@Name@@_temp;\n
-@@Serialization_int@@=            int @@Name@@_temp = @@Name@@;\n            if (iBigEndianFlag) @@Name@@_temp = Convert32(@@Name@@_temp);\n            iPackWriter.Write(@@Name@@_temp);\n
-@@Deserialization_int@@=            int @@Name@@_temp = iRdr.ReadInt16();\n            if (iBigEndianFlag) @@Name@@_temp = Convert32(@@Name@@_temp);\n            @@Name@@ = @@Name@@_temp;\n
+@@Property@@
+    private @@Type@@ @@Name@@;
+    public @@Type@@ @@NameCaps@@
+    {
+        set
+        {
+            @@Name@@ = value;
+        }
+        get
+        {
+            return @@Name@@;
+        }
+    }
+==========    
+@@Constructor@@
+public @@CustomClassName@@(@@ConstructorParameters@@)
+{
+@@Fields@@    
+}
+==========
+@@FieldInit@@
+        this.@@Name@@ = @@Value@@;
+==========
+@@Argument@@
+@@ArgType@@ @@ArgName@@
+==========
+@@EnumElement@@
+        public const int @@Name@@ = @@Value@@;
+==========
+@@SerializationIntAsShort@@
+            short @@Name@@_temp = (short)@@Name@@;
+            if (iBigEndianFlag) @@Name@@_temp = Convert16(@@Name@@_temp);
+            iPackWriter.Write(@@Name@@_temp);
+==========
+@@DeserializationIntAsShort@@
+            short @@Name@@_temp = iRdr.ReadInt16();
+            if (iBigEndianFlag) @@Name@@_temp = Convert16(@@Name@@_temp);
+            @@Name@@ = (int)@@Name@@_temp;
+==========
+@@Serialization_int@@
+            int @@Name@@_temp = @@Name@@;
+            if (iBigEndianFlag) @@Name@@_temp = Convert32(@@Name@@_temp);
+            iPackWriter.Write(@@Name@@_temp);
+==========
+@@Deserialization_int@@
+            int @@Name@@_temp = iRdr.ReadInt16();
+            if (iBigEndianFlag) @@Name@@_temp = Convert32(@@Name@@_temp);
+            @@Name@@ = @@Name@@_temp;
+==========

@@ -64,14 +64,21 @@ bool AbstractGenerator::loadTemplateUtils()
 		return false;
 	}
 	QTextStream in(&utilsFile);
+
 	QString line = in.readLine();
-	while (!line.isNull()) {
-		QString name = line.section("=", 0, 0);
-		QString definition = line.section("=", 1);
-		definition.replace("\\n", "\n");
-		mTemplateUtils[name] = definition;
+	do {
+		// first line is name
+		QString name = line;
+		QString body;
+		// everything else before the separator is template body
 		line = in.readLine();
-	}
+		while (!line.contains(utilsSeparator) && !line.isNull()) {
+			body += (line + '\n');
+			line = in.readLine();
+		}
+		mTemplateUtils[name] = body;
+		line = in.readLine();
+	} while (!line.isNull());
 
 	utilsFile.close();
 	mDirectory.cdUp();

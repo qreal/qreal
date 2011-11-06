@@ -40,7 +40,7 @@ QString CustomClassGenerator::generateConstructors(qReal::Id const &element)
 		QString argumentTemplate = mTemplateUtils["@@Argument@@"];
 		QString argName = NameNormalizer::normalize(mApi.name(property), false);
 		argumentTemplate.replace("@@ArgType@@", type).replace("@@ArgName@@", argName);
-		parametersList += (argumentTemplate + ", ");
+		parametersList += (argumentTemplate.trimmed() + ", ");
 
 		propertyTemplate.replace("@@Name@@", name).replace("@@Value@@", argName);
 		properties += propertyTemplate;
