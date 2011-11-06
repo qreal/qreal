@@ -28,7 +28,7 @@ void MessageGenerator::generate()
 {
 	QString result;
 	loadTemplateFromFile(fileName, result);
-	loadTemplateUtils();
+	loadUtilsTemplates();
 
 	QDir dir;
 	if (!dir.exists(mOutputDirPath))
