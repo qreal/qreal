@@ -440,6 +440,7 @@ void NodeElement::delUnusedLines()
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	qDebug() << mId.toString();
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;

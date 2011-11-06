@@ -55,7 +55,7 @@ QString DispatcherGenerator::generateEventHandlers(Id const &diagram)
 	return eventHadlers;
 }
 
-QString DispatcherGenerator::generateEventHandler(QString const handlerName)
+QString DispatcherGenerator::generateEventHandler(QString const &handlerName)
 {
 	QString handlerCode = mTemplateUtils["@@EventHandler@@"];
 	handlerCode.replace("@@HandlerName@@", handlerName);
@@ -69,11 +69,14 @@ QString DispatcherGenerator::generateEventHandler(QString const handlerName)
 
 		QString cases;
 		foreach (Id const &element, mApi.children(diagram)) {
-			if (!mApi.isLogicalElement(diagram) || (element.element() != "HandlerStart"))
+			if (!mApi.isLogicalElement(element) || (element.element() != "HandlerStart"))
 				continue;
 
 			QString caseCode = mTemplateUtils["@@SwitchCase@@"];
-			caseCode.replace("@@CaseValue@@", mApi.name(element));
+			QString body = generateCaseBody(element);
+
+			caseCode.replace("@@CaseValue@@", mApi.name(element))
+					.replace("@@CaseCode@@", body);
 
 			cases += caseCode;
 		}
@@ -81,5 +84,55 @@ QString DispatcherGenerator::generateEventHandler(QString const handlerName)
 	}
 
 	return handlerCode;
+}
+
+QString DispatcherGenerator::generateCaseBody(qReal::Id const &handlerStart)
+{
+	QString body;
+
+	IdList links = mApi.outgoingLinks(handlerStart);
+	if (links.size() != 1) {
+		mErrorReporter.addError(QObject::tr("HandlerStart node should have exactly 1 outgoing link"), handlerStart);
+		return "";
+	}
+
+	Id nextNode = mApi.otherEntityFromLink(links.at(0), handlerStart);
+	body += generateOperatorCode(nextNode);
+
+	return body;
+}
+
+QString DispatcherGenerator::generateOperatorCode(qReal::Id const &currentNode)
+{
+	QString operatorCode = mTemplateUtils["@@CaseCode@@"];
+
+	if (currentNode.element() == "FunctionCall") {
+		QString code = mApi.name(currentNode) + "(";
+		foreach (Id const &argument, mApi.children(currentNode)) {
+			if (!mApi.isLogicalElement(argument) || (argument.element() != "ActualParameter"))
+				continue;
+
+			code += (mApi.name(argument) + ", ");
+		}
+		code.chop(2); // terminating space and comma
+		code += ")";
+		operatorCode.replace("@@Command@@", code);
+
+		IdList links = mApi.outgoingLinks(currentNode);
+
+		if (links.size() == 0)
+			return operatorCode;
+		else if (links.size() > 1) {
+			mErrorReporter.addError(QObject::tr("FunctionCall node should have exactly 1 outgoing link"), currentNode);
+			return "";
+		}
+
+		Id nextNode = mApi.otherEntityFromLink(links.at(0), currentNode);
+		return operatorCode + generateOperatorCode(nextNode);
+	}
+
+
+
+	return "";
 }
 

@@ -20,7 +20,9 @@ public:
 
 private:
 	QString generateEventHandlers(qReal::Id const &diagram);
-	QString generateEventHandler(QString const handlerName);
+	QString generateEventHandler(QString const &handlerName);
+	QString generateCaseBody(qReal::Id const &handlerStart);
+	QString generateOperatorCode(qReal::Id const &currentNode);
 };
 
 }
