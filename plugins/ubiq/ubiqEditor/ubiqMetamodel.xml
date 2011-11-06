@@ -274,7 +274,7 @@
                     </associations>
                 </logic>
             </edge>
-            <node name="ActivityFinalNode" displayedName="Activity Final Node" path="29, 15 : 27, 20 : 24, 24 : 20, 27 : 15, 28 : 10, 27 : 6, 24 : 3, 20 : 2, 15 : 3, 10 : 6, 6 : 10, 3 : 15, 2 : 20, 3 : 24, 6 : 27, 10 : 29, 15 : 36, 15 : 34, 23 : 29, 29 : 23, 34 : 15, 35 : 7, 34 : 1, 29 : -4, 23 : -5, 15 : -4, 7 : 1, 1 : 7, -4 : 15, -5 : 23, -4 : 29, 1 : 34, 7 : 36, 15 : ">
+            <node name="activityFinalNode" displayedName="Activity Final Node" path="29, 15 : 27, 20 : 24, 24 : 20, 27 : 15, 28 : 10, 27 : 6, 24 : 3, 20 : 2, 15 : 3, 10 : 6, 6 : 10, 3 : 15, 2 : 20, 3 : 24, 6 : 27, 10 : 29, 15 : 36, 15 : 34, 23 : 29, 29 : 23, 34 : 15, 35 : 7, 34 : 1, 29 : -4, 23 : -5, 15 : -4, 7 : 1, 1 : 7, -4 : 15, -5 : 23, -4 : 29, 1 : 34, 7 : 36, 15 : ">
                 <graphics>
                     <picture sizex="30" sizey="30">
                         <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="30" fill-style="solid"/>
@@ -291,7 +291,7 @@
                 <logic>
                 </logic>
             </node>
-            <node displayedName="Action" name="action">
+            <node name="action" displayedName="Action">
                 <graphics>
                     <picture sizex="80" sizey="60">
                         <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 10.75 1 C 5.36522 1 1 5.41447 1 10.86 L 1 49.14 C 1 54.5855 5.36522 59 10.75 59 L 69.25 59 C 74.6348 59 79 54.5855 79 49.14 L 79 10.86 C 79 5.41447 74.6348 1 69.25 1 L 10.75 1" fill-style="solid"/>
@@ -323,17 +323,17 @@
             </node>
             <node name="decisionNode" displayedName="Decision Node" path="30, 2 : 58, 30 : 30, 58 : 2, 30 : 30, 2 : ">
                 <graphics>
-                    <picture sizex="60" sizey="60">
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="30" y2="30" stroke-width="1" x2="0" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="0" y2="60" stroke-width="1" x2="30" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="30" y2="30" stroke-width="1" x2="60" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="60" y2="0" stroke-width="1" x2="30" fill-style="solid"/>
+                    <picture sizex="50" sizey="50">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="25" y2="25" stroke-width="1" x2="0" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25" x1="0" y2="50" stroke-width="1" x2="25" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="25" y2="25" stroke-width="1" x2="50" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25" x1="50" y2="0" stroke-width="1" x2="25" fill-style="solid"/>
                     </picture>
                     <ports>
-                        <pointPort x="0" y="30"/>
-                        <pointPort x="60" y="30"/>
-                        <pointPort x="30" y="0"/>
-                        <pointPort x="30" y="60"/>
+                        <pointPort x="0" y="25"/>
+                        <pointPort x="50" y="25"/>
+                        <pointPort x="25" y="0"/>
+                        <pointPort x="25" y="50"/>
                     </ports>
                 </graphics>
                 <logic>
@@ -341,17 +341,17 @@
             </node>
             <node name="mergeNode" displayedName="Merge Node" >
                 <graphics>
-                    <picture sizex="60" sizey="60">
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="30" y2="30" stroke-width="1" x2="0" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="0" y2="60" stroke-width="1" x2="30" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="30" y2="30" stroke-width="1" x2="60" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="60" y2="0" stroke-width="1" x2="30" fill-style="solid"/>
+                    <picture sizex="50" sizey="50">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="25" y2="25" stroke-width="1" x2="0" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25" x1="0" y2="50" stroke-width="1" x2="25" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="25" y2="25" stroke-width="1" x2="50" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25" x1="50" y2="0" stroke-width="1" x2="25" fill-style="solid"/>
                     </picture>
                     <ports>
-                        <pointPort x="0" y="30"/>
-                        <pointPort x="60" y="30"/>
-                        <pointPort x="30" y="0"/>
-                        <pointPort x="30" y="60"/>
+                        <pointPort x="0" y="25"/>
+                        <pointPort x="50" y="25"/>
+                        <pointPort x="25" y="0"/>
+                        <pointPort x="25" y="50"/>
                     </ports>
                 </graphics>
                 <logic>
@@ -379,7 +379,7 @@
                 <logic>
                 </logic>
             </node>
-            <node displayedName="Return" path="0, 0 : 84, 0 : 98, 30 : 84, 58 : 0, 58 : 0, 0 : " name="returnAction">
+            <node name="returnAction" displayedName="Return" path="0, 0 : 84, 0 : 98, 30 : 84, 58 : 0, 58 : 0, 0 : ">
                 <graphics>
                     <picture sizex="100" sizey="60">
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="1" stroke-width="1" x2="84" fill-style="solid"/>
@@ -511,7 +511,7 @@
                     </properties>
                 </logic>
             </node>
-            <node displayedName="Return Value" name="returnValue">
+            <node name="returnValue" displayedName="Return Value">
                 <graphics>
                     <picture sizex="100" sizey="60">
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="1" x2="100" fill-style="solid"/>
