@@ -35,6 +35,7 @@ void DispatcherGenerator::generate()
 		loadTemplateFromFile(templateName, fileTemplate);
 
 		fileTemplate.replace("@@EventHandlers@@", generateEventHandlers(masterNode))
+				.replace("@@Preprocessors@@", generatePreprocessors(masterNode))
 				.replace("@@Constants@@", generateConstants(masterNode))
 				.replace("@@Fields@@", generateFields(masterNode))
 				.replace("@@MessageInputMethods@@", generateMessageInputMethods(masterNode))
@@ -55,6 +56,18 @@ QString DispatcherGenerator::generateEventHandlers(Id const &diagram) const
 		eventHadlers += generateEventHandler(mApi.name(element)); // generate code for each event handler
 	}
 	return eventHadlers;
+}
+
+QString DispatcherGenerator::generatePreprocessors(Id const &masterNode) const
+{
+	QString preprocessors;
+	foreach (Id const element, mApi.children(masterNode)) {  // get elements on master node
+		if (!mApi.isLogicalElement(element) || (element.element() != "Preprocessor"))
+			continue;
+
+		preprocessors += generatePreprocessor(mApi.name(element)); // generate code for each event handler
+	}
+	return preprocessors;
 }
 
 QString DispatcherGenerator::generateConstants(qReal::Id const &element) const
@@ -227,6 +240,30 @@ QString DispatcherGenerator::generateEventHandler(QString const &handlerName) co
 	return handlerCode;
 }
 
+QString DispatcherGenerator::generatePreprocessor(QString const &preprocessorName) const
+{
+	QString preprocessorCode = mTemplateUtils["@@Preprocessor@@"];
+	preprocessorCode.replace("@@PreprocessorName@@", preprocessorName);
+
+	foreach (Id const diagram, mApi.elementsByType("UbiqActivityDiagram")) {
+		// search for the diagram with name preprocessorName
+		if (!mApi.isLogicalElement(diagram) || (mApi.name(diagram) != preprocessorName))
+			continue;
+
+		QString code;
+		foreach (Id const child, mApi.children(diagram)) {
+			if (!mApi.isLogicalElement(child) || (child.element() != "InitialNode"))
+				continue;
+
+			code = generateOperatorCode(child).text;
+		}
+
+		preprocessorCode.replace("@@Code@@", code);
+	}
+
+	return preprocessorCode;
+}
+
 QString DispatcherGenerator::generateCaseBody(qReal::Id const &handlerStart) const
 {
 	IdList links = mApi.outgoingLinks(handlerStart);
@@ -319,6 +356,19 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 		CodeBranchGenerationResult result = generateOperatorCode(nextNode);
 		result.text = operatorCode + "\n" + result.text;
 		return result;
+	}
+
+	if (currentNode.element() == "InitialNode") {
+		IdList links = mApi.outgoingLinks(currentNode);
+
+		if (links.size() != 1) {
+			mErrorReporter.addError(QObject::tr("Initial node should have exactly 1 outgoing link"), currentNode);
+			return CodeBranchGenerationResult("", currentNode);
+		}
+
+		Id nextNode = mApi.otherEntityFromLink(links.at(0), currentNode);
+
+		return generateOperatorCode(nextNode);
 	}
 
 	if (currentNode.element() == "ReturnAction") {

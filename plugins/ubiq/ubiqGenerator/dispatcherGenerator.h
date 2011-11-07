@@ -31,7 +31,9 @@ private:
 	};
 
 	QString generateEventHandlers(qReal::Id const &diagram) const;
+	QString generatePreprocessors(qReal::Id const &diagram) const;
 	QString generateEventHandler(QString const &handlerName) const;
+	QString generatePreprocessor(QString const &handlerName) const;
 	QString generateCaseBody(qReal::Id const &handlerStart) const;
 	CodeBranchGenerationResult generateOperatorCode(qReal::Id const &currentNode) const;
 
