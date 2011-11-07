@@ -66,18 +66,17 @@ void MessageGenerator::generate()
 QString MessageGenerator::generateEnumElements(qReal::Id const &element) const
 {
 	QString result;
-	int value = 0;
 	foreach (Id const id, mApi.children(element)) {
 		if (!mApi.isLogicalElement(id) || id.element() != "EnumElement")
 			continue;
 
 		QString propertyTemplate = mTemplateUtils["@@EnumElement@@"];
-		QString name = mApi.name(id);
+		QString const name = mApi.name(id);
+		QString const value = mApi.stringProperty(id, "value");
 		propertyTemplate.replace("@@Name@@", NameNormalizer::normalize(name))
-				.replace("@@Value@@", QString::number(value));
+				.replace("@@Value@@", value);
 
 		result += propertyTemplate;
-		++value;
 	}
 	return result;
 }
