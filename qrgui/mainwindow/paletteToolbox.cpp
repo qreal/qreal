@@ -7,7 +7,7 @@
 
 #include "paletteToolbox.h"
 #include "../../qrkernel/definitions.h"
-
+#include <algorithm>
 using namespace qReal;
 using namespace qReal::gui;
 
@@ -119,6 +119,46 @@ void PaletteToolbox::addItemType(Id const &id, QString const &name, QString cons
 
 	DraggableElement *element = new DraggableElement(id, name, description, icon, this);
 	tab->layout()->addWidget(element);
+}
+void PaletteToolbox::qsort(QVector<const Id *> &m, const int p, const int r, EditorManager * editorManager){
+	if (r > p + 1){
+		const Id* x = m[p];
+		int i = p;
+		int j = r - 1;
+		const Id* t;
+		while (i <= j){
+			while (editorManager->friendlyName(*m[i]).compare(editorManager->friendlyName(*x),
+															  Qt::CaseSensitivity(false)) < 0)
+				i++;
+			while (editorManager->friendlyName(*m[j]).compare(editorManager->friendlyName(*x),
+															  Qt::CaseSensitivity(false)) > 0)
+				j--;
+			if (i <= j){
+				t = m[i];
+				m[i] = m[j];
+				m[j] = t;
+				i++;
+				j--;
+			}
+		}
+	if (p + 1 < i)
+		qsort(m, p, i, editorManager);
+	if (i + 1 < r)
+		qsort(m, i, r, editorManager);
+	}
+}
+void  PaletteToolbox::addSortedItemTypes(EditorManager * editorManager, const Id * diagram){
+	QVector <const Id * > sortedIds;
+	sortedIds.resize(editorManager->elements(*diagram).size());
+	int i = 0;
+	QListIterator < Id > Iter(editorManager->elements(*diagram));
+	while (Iter.hasNext())
+		sortedIds[i++] = &Iter.next();
+	qsort(sortedIds, 0, i, editorManager);
+	foreach (const Id *element, sortedIds){
+		addItemType(*element, editorManager->friendlyName(*element),
+										 editorManager->description(*element), editorManager->icon(*element));
+	}
 }
 
 void PaletteToolbox::deleteDiagramType(const Id &id)
