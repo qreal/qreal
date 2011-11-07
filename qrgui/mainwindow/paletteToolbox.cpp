@@ -143,6 +143,7 @@ void PaletteToolbox::qsort(QVector<const Id *> &m, const int p, const int r, Edi
 		}
 	if (p + 1 < i)
 		qsort(m, p, i, editorManager);
+
 	if (i + 1 < r)
 		qsort(m, i, r, editorManager);
 	}
