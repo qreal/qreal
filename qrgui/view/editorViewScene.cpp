@@ -261,7 +261,7 @@ qReal::Id EditorViewScene::createElement(const QString &str, QPointF scenePos)
 	QString mimeType = QString("application/x-real-uml-data");
 	QString uuid = objectId.toString();
 	QString pathToItem = Id::rootId().toString();
-	QString name = "(anonymous something)";
+	QString name = "(" + mWindow->manager()->friendlyName(typeId) + ")";
 	QPointF pos = QPointF(0, 0);
 	bool isFromLogicalModel = false;
 	stream << uuid;
@@ -614,14 +614,14 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 				return;
 			}
 		if (element && !mMouseMovementManager->wasMoving()) {
+			deleteGesture();
 			initContextMenu(element, event->scenePos());
-			mMouseMovementManager->clear();
 			return;
 		}
 		QPointF const start = mMouseMovementManager->firstPoint();
 		QPointF const end = mMouseMovementManager->lastPoint();
-		NodeElement * parent = dynamic_cast <NodeElement * > (getElemAt(start));
-		NodeElement * child = dynamic_cast <NodeElement * > (getElemAt(end));
+		NodeElement * parent = dynamic_cast<NodeElement *>(getElemAt(start));
+		NodeElement * child = dynamic_cast<NodeElement *>(getElemAt(end));
 		if (parent && child && mMouseMovementManager->isEdgeCandidate()) {
 			getLinkByGesture(parent, *child);
 			deleteGesture();
@@ -637,14 +637,14 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 	Element *parent = dynamic_cast <Element *>(getElem(element->id())->parent());
 
 	if (parent) {
-		if (!canBeContainedBy(parent->id(), element->id())){
+		if (!canBeContainedBy(parent->id(), element->id())) {
 			QMessageBox::critical(0, "Ololo", "can't drop it here!111");
 			// fail, reparenting the element as it was before
 			foreach (QGraphicsItem *item, items(event->scenePos())) {
-				Element * elem = dynamic_cast < Element * >(item);
+				Element * elem = dynamic_cast<Element *>(item);
 				if (elem && elem->id() == element->id()) {
 					qReal::Id id = qReal::Id::rootId();
-					Element * prevParent = dynamic_cast < Element * >(mPrevParent);
+					Element * prevParent = dynamic_cast<Element *>(mPrevParent);
 					if (prevParent)
 						id = prevParent->id();
 					if (mv_iface && mv_iface->graphicalAssistApi()) {
