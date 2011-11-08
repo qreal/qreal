@@ -168,10 +168,20 @@ QString MessageGenerator::generateSerializationRelatedCode(qReal::Id const &elem
 		if (!mApi.isLogicalElement(property) || property.element() != "Field")
 			continue;
 
-		QString const name = NameNormalizer::normalize(mApi.name(property), false);
+		if (!mApi.property(property, "serialize").toBool())
+			continue;
+
+		QString const name = mApi.name(property);
 		QString const type = mApi.stringProperty(property, "type");
 
 		QString serializationTemplate;
+
+		if (type == "int") {
+			bool const serializeAsShort = mApi.property(property, "serializeAsShort").toBool();
+			if (serializeAsShort) {
+				serializationTemplate = mTemplateUtils["@@" + method + "IntAsShort@@"];
+			}
+		}
 
 		if (serializationTemplate.isEmpty())
 			serializationTemplate = mTemplateUtils["@@" + method + "_" + type + "@@"];

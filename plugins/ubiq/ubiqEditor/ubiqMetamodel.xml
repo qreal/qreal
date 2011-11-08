@@ -131,6 +131,8 @@
                     <properties>
                         <property type="string" name="type"/>
                         <property type="string" name="defaultValue"/>
+                        <property type="bool" name="serialize"/>
+                        <property type="bool" name="serializeAsShort"/>
                     </properties>
                 </logic>
             </node>
@@ -198,6 +200,7 @@
                     </connections>
                     <properties>
                         <property type="string" name="initCode"/>
+                        <property type="string" name="onTcpIpCloseHandler"/>
                     </properties>
                 </logic>
             </node>

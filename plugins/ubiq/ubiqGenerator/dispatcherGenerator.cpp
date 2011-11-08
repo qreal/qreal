@@ -36,6 +36,7 @@ void DispatcherGenerator::generate()
 
 		fileTemplate.replace("@@EventHandlers@@", generateEventHandlers(masterNode))
 				.replace("@@InitCode@@", mApi.stringProperty(masterNode, "initCode"))
+				.replace("@@OnTcpIpCloseHandler@@", mApi.stringProperty(masterNode, "onTcpIpCloseHandler"))
 				.replace("@@Preprocessors@@", generatePreprocessors(masterNode))
 				.replace("@@Constants@@", generateConstants(masterNode))
 				.replace("@@Fields@@", generateFields(masterNode))
