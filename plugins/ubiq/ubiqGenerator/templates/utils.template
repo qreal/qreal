@@ -18,7 +18,7 @@
 ==========
 @@SerializationIntAsShort@@
             short @@Name@@_temp = (short)@@Name@@;
-            if (iBigEndianFlag) @@Name@@_temp = Convert16(@@Name@@_temp);
+            if (bigEndianFlag) @@Name@@_temp = Convert16(@@Name@@_temp);
             packWriter.Write(@@Name@@_temp);
 ==========
 @@DeserializationIntAsShort@@
@@ -28,12 +28,12 @@
 ==========
 @@Serialization_int@@
             int @@Name@@_temp = @@Name@@;
-            if (iBigEndianFlag) @@Name@@_temp = Convert32(@@Name@@_temp);
+            if (bigEndianFlag) @@Name@@_temp = Convert32(@@Name@@_temp);
             iPackWriter.Write(@@Name@@_temp);
 ==========
 @@Deserialization_int@@
             int @@Name@@_temp = iRdr.ReadInt16();
-            if (iBigEndianFlag) @@Name@@_temp = Convert32(@@Name@@_temp);
+            if (bigEndianFlag) @@Name@@_temp = Convert32(@@Name@@_temp);
             @@Name@@ = @@Name@@_temp;
 ==========
 @@MasterDiagramConstant@@

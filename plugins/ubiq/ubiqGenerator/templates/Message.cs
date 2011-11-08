@@ -73,7 +73,7 @@ namespace DeviceService
             }
         }
 
-        public Message(int deviceID, byte[] aData)
+        public Message(@@ConstructorArgs@@byte[] aData)
         {
             Init();
             if (!Parse(aData))

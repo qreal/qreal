@@ -95,7 +95,7 @@ QString MessageGenerator::generateDefaultFieldsInitialization(qReal::Id const &e
 				? getDefaultValue(mApi.stringProperty(property, "type"))
 				: mApi.stringProperty(property, "defaultValue");
 
-		initTemplate.replace("@@Name@@", NameNormalizer::normalize(name, false))
+		initTemplate.replace("@@Name@@", name)
 				.replace("@@Value@@", defaultValue)
 				;
 
@@ -112,7 +112,7 @@ QString MessageGenerator::generateFieldsInitialization(qReal::Id const &element)
 			continue;
 
 		QString initTemplate = mTemplateUtils["@@FieldInit@@"];
-		QString argName = NameNormalizer::normalize(mApi.name(property), false);
+		QString argName = mApi.name(property);
 		initTemplate.replace("@@Name@@", argName)
 				.replace("@@Value@@", argName)
 				;
