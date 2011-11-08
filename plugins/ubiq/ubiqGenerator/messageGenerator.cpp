@@ -114,7 +114,7 @@ QString MessageGenerator::generateFieldsInitialization(qReal::Id const &element)
 		QString initTemplate = mTemplateUtils["@@FieldInit@@"];
 		QString argName = mApi.name(property);
 		initTemplate.replace("@@Name@@", argName)
-				.replace("@@Value@@", argName)
+				.replace("@@Value@@", NameNormalizer::normalize(argName, false))
 				;
 
 		fieldsInitialization += ("    " + initTemplate);
