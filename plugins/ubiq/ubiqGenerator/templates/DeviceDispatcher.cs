@@ -10,15 +10,13 @@ using Ubiq.QRealAPI;
 
 namespace DeviceService
 {
-/* Структура Message должна быть в том же namespace   */
-
     public class DeviceDispatcher: QRealApp
     {
 @@Constants@@
 @@Fields@@
         public DeviceDispatcher ()
         {
-/* Возможно, инициализация полей  */
+@@InitCode@@
         }
 
         public override void MainOverride()
@@ -27,6 +25,7 @@ namespace DeviceService
             ProcessIncomingMessages();
         }
 
+@@Preprocessors@@
 @@EventHandlers@@
 
 @@HelperFunctions@@

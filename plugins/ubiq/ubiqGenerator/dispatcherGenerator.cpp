@@ -35,6 +35,7 @@ void DispatcherGenerator::generate()
 		loadTemplateFromFile(templateName, fileTemplate);
 
 		fileTemplate.replace("@@EventHandlers@@", generateEventHandlers(masterNode))
+				.replace("@@InitCode@@", mApi.stringProperty(masterNode, "initCode"))
 				.replace("@@Preprocessors@@", generatePreprocessors(masterNode))
 				.replace("@@Constants@@", generateConstants(masterNode))
 				.replace("@@Fields@@", generateFields(masterNode))
@@ -126,12 +127,12 @@ QString DispatcherGenerator::generateMessageInputMethods(qReal::Id const &elemen
 			continue;
 
 		QString const name = mApi.name(id);
-		QString const messageInputClass = mTemplateUtils["@@" + name + "Class@@"].trimmed();
+		QString const messageInputMethod = mTemplateUtils["@@" + name + "Input@@"].trimmed();
 		QString const parameter = mApi.stringProperty(id, "MessageInputParameter");
 
 		QString useMessageInputTemplate = mTemplateUtils["@@UseMessageInput@@"];
 
-		useMessageInputTemplate.replace("@@MessageInputClass@@", messageInputClass)
+		useMessageInputTemplate.replace("@@MessageInputMethod@@", messageInputMethod)
 				.replace("@@MessageInputParameter@@", parameter)
 				;
 

@@ -173,12 +173,6 @@ QString MessageGenerator::generateSerializationRelatedCode(qReal::Id const &elem
 
 		QString serializationTemplate;
 
-		if (type == "int") {
-			bool const serializeAsShort = mApi.property(property, "serializeAsShort").toBool();
-			if (serializeAsShort) {
-				serializationTemplate = mTemplateUtils["@@" + method + "IntAsShort@@"];
-			}
-		}
 		if (serializationTemplate.isEmpty())
 			serializationTemplate = mTemplateUtils["@@" + method + "_" + type + "@@"];
 

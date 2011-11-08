@@ -1,5 +1,5 @@
 @@Property@@
-    internal @@Type@@ @@Name@@ {get; set;}
+        public @@Type@@ @@Name@@ {get; set; }
 ==========    
 @@Constructor@@
     internal @@CustomClassName@@(@@ConstructorParameters@@)
@@ -8,7 +8,7 @@
     }
 ==========
 @@FieldInit@@
-        this.@@Name@@ = @@Value@@;
+            this.@@Name@@ = @@Value@@;
 ==========
 @@Argument@@
 @@ArgType@@ @@ArgName@@
@@ -46,8 +46,9 @@
         private @@OptionalStatic@@@@Type@@ @@Name@@ = @@Value@@;
 ==========
 @@EventHandler@@
-        public override void @@HandlerName@@(Message msg)
+        public override void @@HandlerName@@(Msg _msg)
         {
+            Message msg = (Message)_msg;
             switch (msg.Command)
             {
 @@SwitchCases@@
@@ -68,13 +69,13 @@
                     @@Command@@;
 ==========
 @@UseMessageInput@@
-            UseMessageInput(new @@MessageInputClass@@(@@MessageInputParameter@@));
+            @@MessageInputMethod@@(@@MessageInputParameter@@);
 ==========
-@@OnTcpMessageClass@@
-TcpIPMessageInput
+@@OnTcpIpMessageInput@@
+UseTcpIpInput
 ==========
-@@OnMailboxMessageClass@@
-AsyncMailBox
+@@OnMailBoxMessageInput@@
+UseAsyncBoxInput
 ==========
 @@HelperFunction@@
         internal @@Type@@ @@Name@@(@@Params@@)
@@ -104,3 +105,10 @@ AsyncMailBox
 ==========
 @@ReturnValue@@
 @@OptionalType@@@@Name@@ = 
+==========
+@@Preprocessor@@
+        public override void @@PreprocessorName@@(Msg _msg)
+        {
+            Message msg = (Message)_msg;
+@@Code@@
+        }

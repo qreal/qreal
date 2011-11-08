@@ -5,10 +5,11 @@ using System.Diagnostics;
 using System.Text;
 using System.IO;
 using Ubiq.MessagingAPI;
+using Ubiq.QRealAPI;
 
 namespace DeviceService
 {
-    public class Message: Msg
+    public class Message: QRealMessage
     {
         public const int KHeaderSize             = 9; // 4 + 1 + 2 + 1 + 1
 /*  M e s s a g e   c o d e s   */
@@ -17,15 +18,16 @@ namespace DeviceService
      
         
 /*  E r r o r   c o d e s   */
+        public const int KErrNo                      = 0;
+        public const int KErrWrongCode               = -1;
 @@ErrorCodes@@
 
-/*   Internal fields    */
+/*   Fields    */
 @@Properties@@
         public int Command  {get; set;}
         public int Code     {get; set;}
 
         private byte[] _data;
-        private MemoryStream _outStream;
 
         public int Length
         {
@@ -39,19 +41,15 @@ namespace DeviceService
             }
         }
 
+        private MemoryStream _outStream;
         private BinaryReader _reader;
         private BinaryWriter _writer;
 
-        public static bool bigEndianFlag = true;
-
         public Message(@@ConstructorArgs@@int command)
         {
+            Init();
 @@InitFieldsWithArgs@@
             Command = command;
-            Code = KErrNo;
-            _data = null;
-            _reader = null;
-            _writer = null;
         }
 
         public static Message ErrorMessage(@@ConstructorArgs@@int errCode)
@@ -63,9 +61,7 @@ namespace DeviceService
         
         public Message(byte[] aData)
         {
-            _data = null;
-            _reader = null;
-            _writer = null;
+            Init();
             if (!Parse(aData))
             {
 @@InitFieldsWithDefaults@@
@@ -79,9 +75,7 @@ namespace DeviceService
 
         public Message(int deviceID, byte[] aData)
         {
-            _data = null;
-            _reader = null;
-            _writer = null;
+            Init();
             if (!Parse(aData))
             {
 @@InitFieldsWithDefaults@@
@@ -93,8 +87,19 @@ namespace DeviceService
             }
             else
             {
-    @@InitFieldsWithArgs@@
+@@InitFieldsWithArgs@@
             }
+        }
+
+        public override void Init()
+        {
+@@InitFieldsWithDefaults@@
+            Command = KMsgNoCommand;
+            Code = KErrNo;
+            _data = null;
+            _outStream = null;
+            _reader = null;
+            _writer = null;
         }
 
         public byte GetByte()
@@ -198,62 +203,12 @@ namespace DeviceService
             }
         }
 
-        public static void SetBigEndian()
-        {
-            bigEndianFlag = true;
-        }
 
-        public static void SetLittleEndian()
-        {
-            bigEndianFlag = false;
-        }
-
-       public static int Convert32(int i)
-        {
-            UInt32 src = (UInt32)(i);
-            UInt32 res = 0;
-            for (int ii = 0; ii < 4; ++ii)
-                res |= (((src >> ((3 - ii) * 8)) & 0xff) << (ii * 8));
-            return (int)(res);
-        }
-
-        public static short Convert16(short i)
-        {
-            UInt32 src = (UInt32)(i);
-            UInt32 res;
-            res = ((src >> 8) & 0xff) | ((src & 0xff) << 8);
-            return (short)(res);
-        }
-
-        public static void ConvertData (byte [] data, int pos, int len)
-        {
-            if (len == 4)
-            {
-                byte b = data[pos]; data[pos] = data[pos+3]; data[pos+3] = b;
-                b = data[pos+1];data[pos+1] = data[pos+2]; data[pos+2] = b;
-            }
-            else if (len == 2)
-            {
-                byte b = data[pos]; data[pos] = data[pos+1]; data[pos+1] = b;
-            }
-        }
-
-        private void Init()
-        {
-@@InitFieldsWithDefaults@@
-            Command = KMsgNoCommand;
-            Code = KErrNo;
-            _data = null;
-            _outStream = null;
-            _reader = null;
-            _writer = null;
-        }
-
-        private bool Parse(byte[] aData)
+        public override bool Parse(byte[] aData)
         {
             if (_data != null || _reader != null || _writer != null) return false;
 
-            BinaryReader rdr = new BinaryReader(new MemoryStream(aData));
+            var rdr = new BinaryReader(new MemoryStream(aData));
             int len = rdr.ReadInt32();
             if (bigEndianFlag) len = Convert32(len);
             byte aux = rdr.ReadByte();   // dest - now obsolete
@@ -269,6 +224,7 @@ namespace DeviceService
                 Array.Copy(aData, KHeaderSize, _data, 0, len - KHeaderSize);
                 _reader = new BinaryReader(new MemoryStream(_data));
             }
+            rdr.Close();
             return true;
         }
 

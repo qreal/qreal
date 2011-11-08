@@ -131,9 +131,6 @@
                     <properties>
                         <property type="string" name="type"/>
                         <property type="string" name="defaultValue"/>
-                        <property type="bool" name="serializeAsShort">
-                            <default>false</default>
-                        </property>
                     </properties>
                 </logic>
             </node>
@@ -199,6 +196,9 @@
                     <connections>
                         <connection type="ubiqActivity::ubiqActivityDiagram"/>
                     </connections>
+                    <properties>
+                        <property type="string" name="initCode"/>
+                    </properties>
                 </logic>
             </node>
             <node displayedName="Handler" name="handler">
@@ -577,9 +577,6 @@
                     </labels>
                 </graphics>
                 <logic>
-                    <properties>
-                        <property type="string" name="type"/>
-                    </properties>
                 </logic>
             </node>
             <node name="returnValue" displayedName="Return Value">
@@ -594,12 +591,6 @@
                     <labels>
                         <label x="20" y="3" textBinded="name"/>
                     </labels>
-                    <ports>
-                        <pointPort x="15" y="20"/>
-                        <pointPort x="100" y="20"/>
-                        <pointPort x="50" y="0"/>
-                        <pointPort x="50" y="40"/>
-                    </ports>
                 </graphics>
                 <logic>
                     <properties>
