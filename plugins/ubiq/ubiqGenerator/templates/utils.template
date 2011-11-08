@@ -19,11 +19,11 @@
 @@SerializationIntAsShort@@
             short @@Name@@_temp = (short)@@Name@@;
             if (iBigEndianFlag) @@Name@@_temp = Convert16(@@Name@@_temp);
-            iPackWriter.Write(@@Name@@_temp);
+            packWriter.Write(@@Name@@_temp);
 ==========
 @@DeserializationIntAsShort@@
-            short @@Name@@_temp = iRdr.ReadInt16();
-            if (iBigEndianFlag) @@Name@@_temp = Convert16(@@Name@@_temp);
+            short @@Name@@_temp = rdr.ReadInt16();
+            if (bigEndianFlag) @@Name@@_temp = Convert16(@@Name@@_temp);
             @@Name@@ = (int)@@Name@@_temp;
 ==========
 @@Serialization_int@@
@@ -78,7 +78,7 @@ UseTcpIpInput
 UseAsyncBoxInput
 ==========
 @@HelperFunction@@
-        internal @@Type@@ @@Name@@(@@Params@@)
+        private @@Type@@ @@Name@@(@@Params@@)
         {
 @@Body@@
         }

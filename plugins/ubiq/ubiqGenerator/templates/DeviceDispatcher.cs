@@ -28,6 +28,27 @@ namespace DeviceService
 @@Preprocessors@@
 @@EventHandlers@@
 
+@@OnTcpIpCloseHandler@@
+
 @@HelperFunctions@@
+
+        private void _sendMessage(Message aMsg, MailBox aDest)
+        {
+            int failedSendCounter = 0;
+            try
+            {
+                aMsg.Send(aDest);
+                failedSendCounter = 0;
+            }
+            catch (Exception)
+            {
+                failedSendCounter++;
+                App.Trace("Counter ->" + failedSendCounter.ToString());
+                if (failedSendCounter == 10)
+                {
+                    terminateFlag = true;
+                }
+            }
+        }
 
 }
