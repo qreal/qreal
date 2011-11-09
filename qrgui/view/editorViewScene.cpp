@@ -629,7 +629,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 			deleteGesture();
 		}
 		else
-			mTimer->start(1000);  // TODO: Make it configurable in options
+			mTimer->start(SettingsManager::value("gestureDelay", 1000).toInt());
 		return;
 	}
 
