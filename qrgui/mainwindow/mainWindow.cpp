@@ -222,7 +222,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
-
+	connect(mUi->actionCloseProject, SIGNAL(triggered()), this, SLOT(closeProjectAndSave()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 
 	connect(mUi->actionCheckout, SIGNAL(triggered()), this, SLOT(doCheckout()));
@@ -604,13 +604,7 @@ bool MainWindow::open(QString const &fileName)
 
 	refreshRecentProjectsList(fileName);
 
-	static_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
-	mUi->graphicalModelExplorer->setModel(NULL);
-	mUi->logicalModelExplorer->setModel(NULL);
-	if (getCurrentTab())
-		static_cast<EditorViewScene*>(getCurrentTab()->scene())->clearScene();
-
-	closeAllTabs();
+	closeProject();
 
 	mModels->repoControlApi().open(fileName);
 	mModels->reinit();
@@ -2319,4 +2313,29 @@ int MainWindow::openSaveOfferDialog()
 	offerSave.addButton(tr("Discard"), QMessageBox::DestructiveRole);
 	offerSave.setText(tr("Do you want to save current project?"));
 	return offerSave.exec();
+}
+
+void MainWindow::closeProjectAndSave()
+{
+	if (mUnsavedProjectIndicator) {
+		switch (openSaveOfferDialog()) {
+		case QMessageBox::AcceptRole:
+			saveAll();
+			break;
+		case QMessageBox::RejectRole:
+			return;
+		}
+	}
+	closeProject();
+}
+
+void MainWindow::closeProject()
+{
+	static_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
+	mUi->graphicalModelExplorer->setModel(NULL);
+	mUi->logicalModelExplorer->setModel(NULL);
+	if (getCurrentTab())
+		static_cast<EditorViewScene*>(getCurrentTab()->scene())->clearScene();
+	closeAllTabs();
+	setWindowTitle("QReal:Robots");
 }

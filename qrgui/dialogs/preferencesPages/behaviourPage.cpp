@@ -16,6 +16,7 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent) :
 	mUi->diagramCreateCheckBox->setChecked(SettingsManager::value("diagramCreateSuggestion", true).toBool());
 	mUi->autoSaveCheckBox->setChecked(SettingsManager::value("autoSave", true).toBool());
 	mUi->autoSaveSpinBox->setValue(SettingsManager::value("autoSaveInterval", 60 * 10).toInt());
+	mUi->gestureDelaySpinBox->setValue(SettingsManager::value("gestureDelay", 1000).toInt());
 
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
 }
@@ -44,6 +45,7 @@ void PreferencesBehaviourPage::save()
 	SettingsManager::setValue("warningWindow", mUi->warningWindowBox->isChecked());
 	SettingsManager::setValue("autoSave", mUi->autoSaveCheckBox->isChecked());
 	SettingsManager::setValue("autoSaveInterval", mUi->autoSaveSpinBox->value());
+	SettingsManager::setValue("gestureDelay", mUi->gestureDelaySpinBox->value());
 }
 
 void PreferencesBehaviourPage::showAutoSaveBox(bool show)

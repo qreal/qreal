@@ -15,6 +15,7 @@ using namespace qReal;
 EditorViewScene::EditorViewScene(QObject * parent)
 	:  QGraphicsScene(parent)
 	, mHighlightNode(NULL)
+	, mLastCreatedWithEdge(NULL)
 	, mWindow(NULL)
 	, mPrevParent(0)
 	, mShouldReparentItems(false)
@@ -590,23 +591,25 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			mPrevPosition = item->pos();
 		}
 
-	} else if (event->button() == Qt::RightButton) {
-		mTimer->stop();
-		Element *e = getElemAt(event->scenePos());
-		//	if (!e) {
-		mMouseMovementManager->mousePress(event->scenePos());
-		mRightButtonPressed = true;
-		//		return;
-		//	}
-		if (e && !e->isSelected()) {
-			clearSelection();
-			e->setSelected(true);
-		}
+	} else {
+		if (event->button() == Qt::RightButton) {
+			mTimer->stop();
+			Element *e = getElemAt(event->scenePos());
+			//	if (!e) {
+			mMouseMovementManager->mousePress(event->scenePos());
+			mRightButtonPressed = true;
+			//		return;
+			//	}
+			if (e && !e->isSelected()) {
+				clearSelection();
+				e->setSelected(true);
 
-		// Menu belongs to scene handler because it can delete elements.
-		// We cannot allow elements to commit suicide.
-		//if (e)
-		//	initContextMenu(e, event->scenePos());
+			// Menu belongs to scene handler because it can delete elements.
+			// We cannot allow elements to commit suicide.
+			//if (e)
+			//	initContextMenu(e, event->scenePos());
+			}
+		}
 	}
 	redraw();
 
@@ -712,7 +715,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 		mShouldReparentItems = false; // in case there'll be 2 consecutive release events
 	}
 
-	if (event->button() == Qt::RightButton) {
+	if (event->button() == Qt::RightButton && !(mMouseMovementManager->pathIsEmpty())) {
 		mMouseMovementManager->mouseMove(event->scenePos());
 		mRightButtonPressed = false;
 		drawGesture();
@@ -736,7 +739,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 			deleteGesture();
 		}
 		else
-			mTimer->start(1000);  // TODO: Make it configurable in options
+			mTimer->start(SettingsManager::value("gestureDelay", 1000).toInt());
 		return;
 	}
 
