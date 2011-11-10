@@ -649,30 +649,31 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	// insert current element into them and set mHighlightedNode to NULL
 	// but because of mouseRelease twice triggering we can't do it
 	// This may cause more bugs
-	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-	if (!isPort() && (flags() & ItemIsMovable))
-	if (mHighlightedNode != NULL) {
-		NodeElement *newParent = mHighlightedNode;
-		Element *insertBefore = mHighlightedNode->getPlaceholderNextElement();
-		mHighlightedNode->erasePlaceholder(false);
-//		mHighlightedNode = NULL;
+	if (!isPort() && (flags() & ItemIsMovable)) {
+		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
+		if (mHighlightedNode != NULL) {
+			NodeElement *newParent = mHighlightedNode;
+			Element *insertBefore = mHighlightedNode->getPlaceholderNextElement();
+			mHighlightedNode->erasePlaceholder(false);
+	//		mHighlightedNode = NULL;
 
-		mGraphicalAssistApi->changeParent(id(), newParent->id(),
-			mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
+			mGraphicalAssistApi->changeParent(id(), newParent->id(),
+				mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
 
-		if (insertBefore != NULL) {
-			mGraphicalAssistApi->stackBefore(id(), insertBefore->id());
+			if (insertBefore != NULL) {
+				mGraphicalAssistApi->stackBefore(id(), insertBefore->id());
+			}
+
+			newParent->resize(newParent->mContents);
+
+			while (newParent != NULL) {
+				newParent->mContents = newParent->mContents.normalized();
+				newParent->storeGeometry();
+				newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
+			}
+		} else {
+			mGraphicalAssistApi->changeParent(id(), evScene->rootItemId(), scenePos());
 		}
-
-		newParent->resize(newParent->mContents);
-
-		while (newParent != NULL) {
-			newParent->mContents = newParent->mContents.normalized();
-			newParent->storeGeometry();
-			newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
-		}
-	} else {
-		mGraphicalAssistApi->changeParent(id(), evScene->rootItemId(), scenePos());
 	}
 
 	mDragState = None;
@@ -1300,7 +1301,7 @@ void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 		}
 	}
 
-	QList<QGraphicsItem*> const &childs = QGraphicsItem::children();
+//	QList<QGraphicsItem*> const &childs = QGraphicsItem::children();
 //	int placeholderIdx = childs.indexOf(mPlaceholder);
 //	if (placeholderIdx != -1) {
 //		int nextIdx = placeholderIdx + 1;
