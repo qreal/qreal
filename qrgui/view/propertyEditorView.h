@@ -2,6 +2,7 @@
 
 #include <QAbstractItemView>
 #include <QMap>
+#include <QResizeEvent>
 
 #include "../mainwindow/propertyEditorProxyModel.h"
 
@@ -19,6 +20,7 @@ class PropertyEditorView : public QWidget
 
 public:
 	explicit PropertyEditorView(QWidget *parent = 0);
+	~PropertyEditorView();
 
 	// QAbstractItemView's methods
 	void setModel(PropertyEditorModel *model);
@@ -26,7 +28,7 @@ public:
 		qReal::models::LogicalModelAssistApi * const logicalModelAssistApi);
 	void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint = QAbstractItemView::EnsureVisible);
 
-	PropertyEditorModel* model(){
+	PropertyEditorModel* model() {
 		return mModel;
 	}
 
@@ -38,6 +40,7 @@ public slots:
 	void reset();
 
 protected:
+	virtual void resizeEvent(QResizeEvent *event);
 
 protected slots:
 	// QAbstractItemView's methods
