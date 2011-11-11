@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <../pluginManager/editorManager.h>
 #include "../../qrkernel/ids.h"
+
 class QVBoxLayout;
 class QComboBox;
 class QScrollArea;
@@ -28,9 +29,9 @@ public:
 	void addItemType(Id const &id, QString const &name, QString const &description, QIcon const &icon);
 	void initDone();
 	void deleteDiagramType(Id const &id);
-	void addSortedItemTypes(EditorManager * editorManager, const Id * diagram);
 	QComboBox* getComboBox();
-
+        void addSortedItemTypes(EditorManager &editorManager, const Id &diagram);
+        static bool idLessThan(const Id &s1, const Id &s2);
 	QVector<QString> getTabNames();
 
 	Id currentTab();
@@ -71,7 +72,6 @@ private:
 	virtual void dragEnterEvent(QDragEnterEvent *event);
 	virtual void dropEvent(QDropEvent *event);
 	virtual void mousePressEvent(QMouseEvent *event);
-	void qsort(QVector < const Id *> &m, const int p, const int r, EditorManager * mEditorManager);
 	void createPalette();
 	void deletePalette();
 
@@ -87,8 +87,10 @@ private:
 	/** @brief Area of current editor */
 	QScrollArea *mScrollArea;
 	int mCurrentTab;
+
 };
 
 }
 
 }
+

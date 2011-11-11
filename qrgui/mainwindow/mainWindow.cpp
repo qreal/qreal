@@ -95,7 +95,7 @@ MainWindow::MainWindow()
 	mUi->setupUi(this);
 
 	if (showSplash) {
-		splash->show();
+                //splash->show();
 		QApplication::processEvents();
 	}
 	else {
@@ -351,7 +351,7 @@ void MainWindow::loadPlugins()
 	foreach (Id const editor, mEditorManager.editors()) {
 		foreach (Id const diagram, mEditorManager.diagrams(editor)) {
 			mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-			mUi->paletteToolbox->addSortedItemTypes(&mEditorManager, &diagram);
+			mUi->paletteToolbox->addSortedItemTypes(mEditorManager, diagram);
 		}
 	}
 	mUi->paletteToolbox->initDone();
@@ -1003,7 +1003,7 @@ void MainWindow::generateEditorWithQRMC()
    if (mEditorManager.loadPlugin(SettingsManager::value("prefix", "").toString() + name + "." + SettingsManager::value("pluginExtension", "").toString())) {
  foreach (Id const diagram, mEditorManager.diagrams(Id(normalizedName))) {
   mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-  mUi->paletteToolbox->addSortedItemTypes(&mEditorManager, &diagram);
+  mUi->paletteToolbox->addSortedItemTypes(mEditorManager, diagram);
    }
   }
   progress->setValue(progress->value() + forEditor/2);
@@ -1078,7 +1078,7 @@ void MainWindow::loadNewEditor(const QString &directoryName
 			if (mEditorManager.loadPlugin(prefix + metamodelName + "." + extension)) {
 				foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName))) {
 					mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-					mUi->paletteToolbox->addSortedItemTypes(&mEditorManager, &diagram);
+					mUi->paletteToolbox->addSortedItemTypes(mEditorManager, diagram);
 				}
 				mUi->paletteToolbox->initDone();
 				progress->setValue(100);
@@ -2028,6 +2028,7 @@ void MainWindow::initToolPlugins()
 
 	if (mUi->interpreterToolBar->actions().isEmpty())
 		mUi->interpreterToolBar->hide();
+
 
 	QList<QPair<QString, PreferencesPage *> > const preferencesPages = mToolManager.preferencesPages();
 	typedef QPair<QString, PreferencesPage *> PageDescriptor;

@@ -7,10 +7,10 @@
 
 #include "paletteToolbox.h"
 #include "../../qrkernel/definitions.h"
-#include <algorithm>
+#include <QtAlgorithms>
 using namespace qReal;
 using namespace qReal::gui;
-
+static EditorManager *EditMan;
 PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &name, QString const &description,
 	QIcon const &icon, QWidget *parent)
 : QWidget(parent), mId(id), mIcon(icon), mText(name)
@@ -37,7 +37,7 @@ PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &
 }
 
 PaletteToolbox::PaletteToolbox(QWidget *parent)
-: QWidget(parent), mCurrentTab(0)
+    : QWidget(parent), mCurrentTab(0)
 {
 	createPalette();
 }
@@ -120,46 +120,20 @@ void PaletteToolbox::addItemType(Id const &id, QString const &name, QString cons
 	DraggableElement *element = new DraggableElement(id, name, description, icon, this);
 	tab->layout()->addWidget(element);
 }
-void PaletteToolbox::qsort(QVector<const Id *> &m, const int p, const int r, EditorManager * editorManager){
-	if (r > p + 1){
-		const Id* x = m[p];
-		int i = p;
-		int j = r - 1;
-		const Id* t;
-		while (i <= j){
-			while (editorManager->friendlyName(*m[i]).compare(editorManager->friendlyName(*x),
-															  Qt::CaseSensitivity(false)) < 0)
-				i++;
-			while (editorManager->friendlyName(*m[j]).compare(editorManager->friendlyName(*x),
-															  Qt::CaseSensitivity(false)) > 0)
-				j--;
-			if (i <= j){
-				t = m[i];
-				m[i] = m[j];
-				m[j] = t;
-				i++;
-				j--;
-			}
-		}
-	if (p + 1 < i)
-		qsort(m, p, i, editorManager);
 
-	if (i + 1 < r)
-		qsort(m, i, r, editorManager);
+void  PaletteToolbox::addSortedItemTypes(EditorManager &editman, const Id &diagram){
+        EditMan = &editman;
+        IdList list = editman.elements(diagram);
+        qSort(list.begin(), list.end(), idLessThan);
+        foreach (const Id element, list){
+                addItemType(element, editman.friendlyName(element),
+                            editman.description(element), editman.icon(element));
 	}
+
 }
-void  PaletteToolbox::addSortedItemTypes(EditorManager * editorManager, const Id * diagram){
-	QVector <const Id * > sortedIds;
-	sortedIds.resize(editorManager->elements(*diagram).size());
-	int i = 0;
-	QListIterator < Id > Iter(editorManager->elements(*diagram));
-	while (Iter.hasNext())
-		sortedIds[i++] = &Iter.next();
-	qsort(sortedIds, 0, i, editorManager);
-	foreach (const Id *element, sortedIds){
-		addItemType(*element, editorManager->friendlyName(*element),
-										 editorManager->description(*element), editorManager->icon(*element));
-	}
+bool PaletteToolbox::idLessThan(const Id &s1, const Id &s2){
+    return EditMan->friendlyName(s1).toLower() <
+            EditMan->friendlyName(s2).toLower();
 }
 
 void PaletteToolbox::deleteDiagramType(const Id &id)
