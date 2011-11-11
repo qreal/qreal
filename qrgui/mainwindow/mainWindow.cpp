@@ -337,6 +337,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 			saveAll();
 			break;
 		case QMessageBox::RejectRole:
+			event->ignore();
 			return;
 		}
 	}
@@ -2023,6 +2024,7 @@ void MainWindow::initToolPlugins()
 
 	foreach (ActionInfo const action, actions) {
 		if (action.menuName() == "tools")
+
 			mUi->menuTools->addAction(action.action());
 	}
 
