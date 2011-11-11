@@ -8,7 +8,7 @@ using namespace qrRepo;
 using namespace qrRepo::details;
 
 Client::Client(QString const &workingFile)
-	: serializer(workingFile)
+	: mWorkingFile(workingFile), serializer(workingFile)
 {
 	init();
 	loadFromDisk();
@@ -202,6 +202,13 @@ void Client::loadFromDisk()
 	addChildrenToRootObject();
 }
 
+void Client::importFromDisk(const QString &importedFile)
+{
+	serializer.setWorkingFile(importedFile);
+	loadFromDisk();
+	serializer.setWorkingFile(mWorkingFile);
+}
+
 void Client::addChildrenToRootObject()
 {
 	foreach (Object *object, mObjects.values()) {
@@ -270,6 +277,7 @@ void Client::remove(const qReal::Id &id)
 void Client::setWorkingFile(QString const &workingFile)
 {
 	serializer.setWorkingFile(workingFile);
+	mWorkingFile = workingFile;
 }
 
 void Client::printDebug() const

@@ -371,6 +371,11 @@ void RepoApi::saveTo(QString const &workingFile)
 	mClient.saveAll();
 }
 
+void RepoApi::importFromDisk(const QString &importedFile)
+{
+	mClient.importFromDisk(importedFile);
+}
+
 void RepoApi::save(qReal::IdList list) const
 {
 	mClient.save(list);

@@ -259,6 +259,8 @@ void MainWindow::connectActions()
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
+	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
+
 
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 
@@ -569,6 +571,21 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 		return false;
 	}
 
+	return true;
+}
+
+bool MainWindow::importProject()
+{
+	return import(getWorkingFile(tr("Select file with a save to import")));
+}
+
+bool MainWindow::import(QString const &fileName)
+{
+	//who knows, probably we'll shift import file here
+	if (!QFile(fileName).exists() && fileName.isEmpty())
+		return false;
+	mModels->repoControlApi().importFromDisk(fileName);
+	mModels->reinit();
 	return true;
 }
 

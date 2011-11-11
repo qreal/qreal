@@ -54,6 +54,7 @@ namespace qrRepo {
 
 			bool exist(qReal::Id const &id) const;
 
+			void importFromDisk(const QString &importedFile);
 			void saveAll() const;
 			void save(qReal::IdList list) const;
 			void remove(qReal::IdList list) const;
@@ -68,6 +69,7 @@ namespace qrRepo {
 			QList<Object*> allChildrenOf(qReal::Id id) const;
 
 			QHash<qReal::Id, Object*> mObjects;
+			QString mWorkingFile;
 			Serializer serializer;
 		};
 

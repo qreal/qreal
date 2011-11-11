@@ -13,7 +13,7 @@ Models::Models(QString const &workingCopy, EditorManager const &editorManager)
 	mLogicalModel->connectToGraphicalModel(mGraphicalModel);
 	mGraphicalModel->connectToLogicalModel(mLogicalModel);
 
-	mRepoApi = repoApi;
+	mRepoApi = repoApi;//!!Два раза
 }
 
 Models::~Models()

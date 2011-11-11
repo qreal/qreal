@@ -90,6 +90,7 @@ namespace qrRepo {
 
 		void exterminate();
 
+		void importFromDisk(const QString &importedFile);
 		void saveAll() const;
 		void save(qReal::IdList list) const;
 		void saveTo(QString const &workingDir);

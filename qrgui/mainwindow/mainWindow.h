@@ -100,6 +100,8 @@ private slots:
 	void checkoutDialogOk();
 	void checkoutDialogCancel();
 
+	bool importProject();
+	bool import(QString const &fileName);
 	bool open(QString const &dirName);
 	bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
 	void saveAs();
