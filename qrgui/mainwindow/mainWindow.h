@@ -192,6 +192,8 @@ private slots:
 
 	void autosave();
 	void setAutoSaveParameters();
+	void closeProject();
+	void closeProjectAndSave();
 
 private:
 	void createDiagram(const QString &idString);
@@ -257,6 +259,7 @@ private:
 	void saveAs(QString const &saveName);
 
 	void refreshRecentProjectsList(QString const &fileName);
+	int openSaveOfferDialog();
 
 	Ui::MainWindowUi *mUi;
 

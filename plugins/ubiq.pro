@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-	ubiqEditor \
-	ubiqGenerator \
+	ubiq/ubiq.pro \
+

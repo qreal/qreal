@@ -197,6 +197,8 @@
                 <logic>
                     <container>
                         <contains type="ubiqMaster::handler"/>
+                        <contains type="ubiqMaster::masterDiagramField"/>
+                        <contains type="ubiqMaster::masterDiagramConstant"/>
                     </container>
                     <properties>
                         <sortContainer/>
@@ -214,6 +216,35 @@
                     </labels>
                 </graphics>
                 <logic>
+                </logic>
+            </node>
+            <node displayedName="Field" name="masterDiagramField">
+                <graphics>
+                    <picture sizex="100" sizey="20"/>
+                    <labels>
+                        <label x="0" y="0" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <properties>
+                        <property type="string" name="type"/>
+                        <property type="bool" name="static"/>
+                        <property type="string" name="defaultValue"/>
+                    </properties>
+                </logic>
+            </node>
+            <node displayedName="Constant" name="masterDiagramConstant">
+                <graphics>
+                    <picture sizex="100" sizey="20"/>
+                    <labels>
+                        <label x="0" y="0" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <properties>
+                        <property type="string" name="type"/>
+                        <property type="string" name="value"/>
+                    </properties>
                 </logic>
             </node>
         </graphicTypes>
