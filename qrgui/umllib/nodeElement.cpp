@@ -467,6 +467,11 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	setZValue(1);
 }
 
+void NodeElement::alignToGrid()
+{
+	mGrid->mouseMoveEvent();
+}
+
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (event->button() == Qt::RightButton) {
