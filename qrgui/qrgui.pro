@@ -12,7 +12,7 @@ SOURCES = main.cpp
 TRANSLATIONS = qrgui_ru.ts
 
 # QMAKE_CXXFLAGS_DEBUG += -pg
-QMAKE_LFLAGS_DEBUG += -pg
+# QMAKE_LFLAGS_DEBUG += -pg
 
 # workaround для http://bugreports.qt.nokia.com/browse/QTBUG-8110
 # как только поправят, можно будет юзать QMAKE_LFLAGS_RPATH
