@@ -15,6 +15,7 @@ UbiqGeneratorPlugin::~UbiqGeneratorPlugin()
 
 void UbiqGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
+	Q_UNUSED(configurator)
 }
 
 qReal::CustomizationInterface* UbiqGeneratorPlugin::customizationInterface()

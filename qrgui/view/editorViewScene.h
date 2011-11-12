@@ -25,9 +25,9 @@ public:
 
 	void clearScene();
 
-	virtual int launchEdgeMenu(EdgeElement* edge, NodeElement* node, QPointF scenePos);
-	virtual qReal::Id createElement(const QString &, QPointF scenePos);
-	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
+	virtual int launchEdgeMenu(EdgeElement* edge, NodeElement* node, const QPointF &scenePos);
+	virtual qReal::Id createElement(const QString &, QPointF const &scenePos);
+	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
@@ -43,7 +43,7 @@ public:
 	double realIndexGrid();
 	void setRealIndexGrid(double newIndexGrid);
 
-	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
+	bool canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const;
 	bool getNeedDrawGrid();
 
 	Element* getLastCreated();
@@ -55,6 +55,8 @@ public:
 	void dehighlight();
 
 	QPointF getMousePos();
+	static QGraphicsRectItem *getPlaceholder();
+	NodeElement* findNewParent(QPointF, NodeElement*);
 
 public slots:
 	qReal::Id createElement(const QString &);
@@ -71,7 +73,7 @@ protected:
 	void dragEnterEvent( QGraphicsSceneDragDropEvent *event);
 	void dragMoveEvent( QGraphicsSceneDragDropEvent *event);
 	void dragLeaveEvent( QGraphicsSceneDragDropEvent *event);
-	void dropEvent ( QGraphicsSceneDragDropEvent *event);
+	void dropEvent( QGraphicsSceneDragDropEvent *event);
 
 	void keyPressEvent( QKeyEvent *event);
 
@@ -127,6 +129,7 @@ private:
 
 	void initContextMenu(Element *e, QPointF const & pos);
 
+	NodeElement *mHighlightNode;
 	QPointF newElementsPosition;
 
 	QList<QGraphicsItem*> mGesture;

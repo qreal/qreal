@@ -82,7 +82,8 @@ void GraphicalModel::updateElements(Id const &logicalId, QString const &name)
 	}
 }
 
-void GraphicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId, const QString &name, const QPointF &position)
+void GraphicalModel::addElementToModel(const Id &parent, const Id &id
+		, const Id &logicalId, const QString &name, const QPointF &position)
 {
 	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
 	AbstractModelItem *parentItem = mModelItems[parent];
@@ -93,16 +94,15 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id, const Id 
 		AbstractModelItem *newItem = createModelItem(id, parentItem);
 		newGraphicalModelItem = static_cast<GraphicalModelItem *>(newItem);
 		actualLogicalId = newGraphicalModelItem->logicalId();
-	}
-	else {
+	} else {
 		GraphicalModelItem *graphicalParentItem = static_cast<GraphicalModelItem *>(parentItem);
 		newGraphicalModelItem = new GraphicalModelItem(id, logicalId, graphicalParentItem);
 	}
 	initializeElement(id, actualLogicalId, parentItem, newGraphicalModelItem, name, position);
 }
 
-void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem,
-		modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
+void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem
+		, modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
 {
 	int const newRow = parentItem->children().size();
 
@@ -204,8 +204,9 @@ bool GraphicalModel::setData(const QModelIndex &index, const QVariant &value, in
 
 void GraphicalModel::changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position)
 {
-	if (!parent.isValid() || element.parent() == parent)
+	if (!parent.isValid() || element.parent() == parent) {
 		return;
+	}
 
 	int destinationRow = parentAbstractItem(parent)->children().size();
 
@@ -218,11 +219,31 @@ void GraphicalModel::changeParent(QModelIndex const &element, QModelIndex const 
 		mApi.setParent(elementItem->id(), parentItem->id());
 
 		elementItem->setParent(parentItem);
+
 		parentItem->addChild(elementItem);
 
 		mApi.setPosition(elementItem->id(), position);
 		mApi.setConfiguration(elementItem->id(), configuration);
 		endMoveRows();
+	}
+}
+
+void GraphicalModel::stackBefore(const QModelIndex &element, const QModelIndex &sibling)
+{
+	if (element == sibling) {
+		return;
+	}
+
+	if (beginMoveRows(element.parent(), element.row(), element.row(), element.parent(), sibling.row())) {
+		AbstractModelItem *parent = static_cast<AbstractModelItem *>(element.parent().internalPointer()),
+			*item = static_cast<AbstractModelItem *>(element.internalPointer()),
+			*siblingItem = static_cast<AbstractModelItem *>(sibling.internalPointer());
+
+		parent->stackBefore(item, siblingItem);
+		mApi.stackBefore(parent->id(), item->id(), siblingItem->id());
+		endMoveRows();
+	} else {
+		qDebug() << "GraphicalModel::stackBefore : problem with beginMoveRows";
 	}
 }
 
@@ -268,7 +289,7 @@ void GraphicalModel::removeModelItemFromApi(details::modelsImplementation::Abstr
 {
 	mApi.removeProperty(child->id(), "position");
 	mApi.removeProperty(child->id(), "configuration");
-	if (mModelItems.count(child->id())==0) {
+	if (mModelItems.count(child->id()) == 0) {
 		mApi.removeChild(root->id(),child->id());
 	}
 	mApi.removeElement(child->id());

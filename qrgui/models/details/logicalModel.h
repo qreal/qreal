@@ -39,6 +39,7 @@ public:
 	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 	virtual qReal::details::ModelsAssistInterface* modelAssistInterface() const;
 	LogicalModelAssistApi &logicalModelAssistApi() const;
+	virtual void stackBefore(QModelIndex const &element, QModelIndex const &sibling);
 
 private:
 	GraphicalModelView mGraphicalModelView;

@@ -13,7 +13,6 @@ SUBDIRS = \
 	plugins \
 	qrkernel \
 	qrutils \
-	qtpropertybrowser \
 
 qrutils.depends = qrkernel
 qrrepo.depends = qrkernel qrutils
@@ -27,7 +26,6 @@ qrgui.depends = \
 	qrrepo \
 	qrutils \
 	qrkernel \
-	qtpropertybrowser \
 #	qrmc \
 
 plugins.depends = \
@@ -36,4 +34,3 @@ plugins.depends = \
 	qrutils \
 	qrkernel \
 
-qtpropertybrowser.file = qrgui/thirdparty/qtpropertybrowser/qtpropertybrowser.pro
