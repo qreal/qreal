@@ -265,39 +265,6 @@
                     <container/>
                 </logic>
             </node>
-            <node displayedName="Комментарий" name="Comment">
-                <graphics>
-                    <picture sizex="160" sizey="160">
-                        <image y1="17" name="images/comment_plain.png" x1="21" y2="144" x2="148"/>
-                    </picture>
-                    <labels>
-                        <label x="10" y="50" textBinded="comment"/>
-                    </labels>
-                    <ports>
-                        <linePort>
-                            <start startx="10" starty="0"/>
-                            <end endx="150" endy="0"/>
-                        </linePort>
-                        <linePort>
-                            <start startx="0" starty="10"/>
-                            <end endx="0" endy="150"/>
-                        </linePort>
-                        <linePort>
-                            <start startx="160" starty="10"/>
-                            <end endx="160" endy="150"/>
-                        </linePort>
-                        <linePort>
-                            <start startx="10" starty="160"/>
-                            <end endx="150" endy="160"/>
-                        </linePort>
-                    </ports>
-                </graphics>
-                <logic>
-					<properties>
-						<property name="comment" displayedName="текст" type="string"/>
-					</properties>
-                </logic>
-            </node>
             <node displayedName="Описание" description="Блок для описания обязанностей и характера взаимодействия рассматриваемого узла" name="DescriptionBlock">
                 <graphics>
                     <picture sizex="150" sizey="180">

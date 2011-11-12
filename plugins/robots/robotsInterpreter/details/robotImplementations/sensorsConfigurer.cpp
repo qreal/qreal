@@ -1,7 +1,10 @@
 #include "sensorsConfigurer.h"
 
+#include "../tracer.h"
+
 using namespace qReal::interpreters::robots;
-using namespace details::robotImplementations;
+using namespace qReal::interpreters::robots::details;
+using namespace qReal::interpreters::robots::details::robotImplementations;
 
 SensorsConfigurer::SensorsConfigurer()
 	: mLocked(true)
@@ -23,27 +26,27 @@ SensorsConfigurer::~SensorsConfigurer()
 
 void SensorsConfigurer::configureSensor(sensorImplementations::AbstractSensorImplementation *sensor, inputPort::InputPortEnum const &port)
 {
-	if (sensor != NULL
-		&& mConfiguredSensors[sensor->port()] != NULL
-		&& sensor->type() == mConfiguredSensors[sensor->port()]->type())
+	Tracer::debug(tracer::initialization, "SensorsConfigurer::configureSensor", "Configuring sensor on port " + QString::number(port));
+	if (sensor == NULL
+		|| mConfiguredSensors[sensor->port()] == NULL
+		|| sensor->type() != mConfiguredSensors[sensor->port()]->type())
 	{
-		// Then there is no need to configure it.
-		return;
+		if (mConfiguredSensors[port] != mPendingSensors[port])
+			delete mPendingSensors[port];
+		mPendingSensors[port] = sensor;
 	}
-
-	if (mConfiguredSensors[port] != mPendingSensors[port])
-		delete mPendingSensors[port];
-	mPendingSensors[port] = sensor;
 	reconfigureSensors();
 }
 
 void SensorsConfigurer::lockConfiguring()
 {
+	Tracer::debug(tracer::initialization, "SensorsConfigurer::lockConfiguring", "Sensor configuration locked, all configuration requests are queued.");
 	mLocked = true;
 }
 
 void SensorsConfigurer::unlockConfiguring()
 {
+	Tracer::debug(tracer::initialization, "SensorsConfigurer::unlockConfiguring", "Sensor configuration unlocked, running queued configurations.");
 	mLocked = false;
 	reconfigureSensors();
 }
@@ -58,6 +61,7 @@ void SensorsConfigurer::reconfigureSensors()
 	if (mLocked)
 		return;
 
+	Tracer::debug(tracer::initialization, "SensorsConfigurer::reconfigureSensors", "Going to reconfigure sensors");
 	mSensorsToConfigure = 0;
 	bool needToConfigure = false;
 	for (inputPort::InputPortEnum i = inputPort::port1; i <= inputPort::port4; i = static_cast<inputPort::InputPortEnum>(i + 1))
@@ -80,12 +84,15 @@ void SensorsConfigurer::reconfigureSensors()
 			mConfiguredSensors[i]->configure();
 		}
 	}
-	if (!needToConfigure)
+	if (!needToConfigure) {
+		Tracer::debug(tracer::initialization, "SensorsConfigurer::reconfigureSensors", "No need to wait for a response, sending allSensorsReconfigured signal now.");
 		emit allSensorsConfigured();
+	}
 }
 
 void SensorsConfigurer::sensorConfiguredSlot()
 {
+	Tracer::debug(tracer::initialization, "SensorsConfigurer::sensorConfiguredSlot", "Sensor configured, " + QString::number(mSensorsToConfigure) + " remaining");
 	sensorImplementations::AbstractSensorImplementation *sensor = dynamic_cast<sensorImplementations::AbstractSensorImplementation *>(sender());
 	emit sensorConfigured(sensor);
 	--mSensorsToConfigure;

@@ -6,7 +6,7 @@ using namespace interpreters::robots::details::blocks;
 InitialBlockWithPorts::InitialBlockWithPorts(details::RobotModel &robotModel)
 	: mRobotModel(robotModel)
 {
-	connect(&mRobotModel.robotImpl(), SIGNAL(connected(bool)), this, SLOT(connected(bool)));
+	connect(&mRobotModel, SIGNAL(connected(bool)), this, SLOT(connected(bool)));
 }
 
 void InitialBlockWithPorts::run()

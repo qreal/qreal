@@ -1,15 +1,15 @@
 #include "abstractRobotModelImplementation.h"
 
-#include <QtCore/QDebug>
-
 #include "../../../../../qrkernel/exception/exception.h"
 
 #include "nullRobotModelImplementation.h"
 #include "realRobotModelImplementation.h"
 #include "unrealRobotModelImplementation.h"
+#include "../tracer.h"
 
 using namespace qReal::interpreters::robots;
-using namespace details::robotImplementations;
+using namespace details;
+using namespace robotImplementations;
 
 NullRobotModelImplementation *AbstractRobotModelImplementation::mNullRobotModel = NULL;
 RealRobotModelImplementation *AbstractRobotModelImplementation::mRealRobotModel = NULL;
@@ -65,8 +65,7 @@ sensorImplementations::AbstractSensorImplementation * AbstractRobotModelImplemen
 
 void AbstractRobotModelImplementation::init()
 {
-	qDebug() << "Initializing robot model...";
-	qDebug() << "Connecting to robot...";
+	Tracer::debug(tracer::initialization, "AbstractRobotModelImplementation::init", "Initializing robot model and connecting to robot...");
 }
 
 void AbstractRobotModelImplementation::configureSensor(sensorType::SensorTypeEnum const &sensorType

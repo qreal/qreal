@@ -18,7 +18,7 @@ namespace generators {
 
 class NxtOSEKRobotGenerator {
 public:
-	explicit NxtOSEKRobotGenerator(qrRepo::RepoApi *api, QString const &destinationPath = "");
+	explicit NxtOSEKRobotGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath = "");
 	explicit NxtOSEKRobotGenerator(QString const &pathToRepo, QString const &destinationPath = "");
 
 	~NxtOSEKRobotGenerator();

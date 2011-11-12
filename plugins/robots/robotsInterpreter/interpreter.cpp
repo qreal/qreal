@@ -4,8 +4,8 @@
 #include "details/robotImplementations/unrealRobotModelImplementation.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
 #include "details/robotCommunication/usbRobotCommunicationThread.h"
-
-#include <QtCore/QDebug>
+#include "details/tracer.h"
+#include "details/debugHelper.h"
 
 using namespace qReal;
 using namespace interpreters::robots;
@@ -31,6 +31,9 @@ Interpreter::Interpreter()
 
 	mD2RobotModel = new d2Model::D2RobotModel();
 	mD2ModelWidget = mD2RobotModel->createModelWidget();
+
+	connect(mRobotModel, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
+	connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 }
 
 void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
@@ -45,6 +48,7 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel, mInterpretersInterface->errorReporter(), mParser);
 
 	robotModelType::robotModelTypeEnum const modelType = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel", "1").toInt());
+	Tracer::debug(tracer::initialization, "Interpreter::init", "Going to set robot implementation, model type is " + DebugHelper::toString(modelType));
 	setRobotImplementation(modelType);
 }
 
@@ -57,8 +61,7 @@ Interpreter::~Interpreter()
 
 void Interpreter::interpret()
 {
-	if (mImplementationType != robotModelType::real)
-		mRobotModel->init();
+	Tracer::debug(tracer::initialization, "Interpreter::interpret", "Preparing for interpretation");
 
 	mInterpretersInterface->errorReporter()->clear();
 
@@ -68,12 +71,12 @@ void Interpreter::interpret()
 		mInterpretersInterface->errorReporter()->addInformation(tr("No connection to robot"));
 		return;
 	}
-	if (mState == interpreting) {
+	if (mState != idle) {
 		mInterpretersInterface->errorReporter()->addInformation(tr("Interpreter is already running"));
 		return;
 	}
 
-	mState = interpreting;
+	mState = waitingForSensorsConfiguredToLaunch;
 
 	mBlocksTable->setIdleForBlocks();
 
@@ -83,22 +86,9 @@ void Interpreter::interpret()
 		return;
 	}
 
-	connect(&mRobotModel->robotImpl(), SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
 	Autoconfigurer configurer(*mGraphicalModelApi, mBlocksTable, mInterpretersInterface->errorReporter(), mRobotModel);
 	if (!configurer.configure(currentDiagramId))
 		return;
-}
-
-void Interpreter::sensorsConfiguredSlot()
-{
-	disconnect(&mRobotModel->robotImpl(), SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
-
-	mRobotModel->robotImpl().startInterpretation();
-
-	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
-	Id const startingElement = findStartingElement(currentDiagramId);
-	Thread * const initialThread = new Thread(*mInterpretersInterface, *mBlocksTable, startingElement);
-	addThread(initialThread);
 }
 
 void Interpreter::stop()
@@ -146,27 +136,42 @@ void Interpreter::setD2ModelWidgetActions(QAction *runAction, QAction *stopActio
 
 void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum implementationType)
 {
-	disconnect(&mRobotModel->robotImpl(), SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 	mConnected = false;
 	robotImplementations::AbstractRobotModelImplementation *robotImpl =
 			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, mRobotCommunication, mD2RobotModel);
 	setRobotImplementation(robotImpl);
-	connect(robotImpl, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 	mImplementationType = implementationType;
 	if (mImplementationType != robotModelType::real)
 		mRobotModel->init();
-
 }
 
 void Interpreter::connectedSlot(bool success)
 {
-	if (success) {
-		mConnected = true;
-		if (mRobotModel->robotImpl().needsConnection())
-			mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
-	} else {
+	Tracer::debug(tracer::initialization, "Interpreter::connectedSlot", "Robot connection status: " + QString::number(success));
+	if (!success) {
 		mConnected = false;
 		mInterpretersInterface->errorReporter()->addError(tr("Can't connect to a robot."));
+	}
+}
+
+void Interpreter::sensorsConfiguredSlot()
+{
+	Tracer::debug(tracer::initialization, "Interpreter::sensorsConfiguredSlot", "Sensors are configured");
+
+	mConnected = true;
+	if (mRobotModel->needsConnection())
+		mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
+
+	if (mState == waitingForSensorsConfiguredToLaunch) {
+		mState = interpreting;
+
+		Tracer::debug(tracer::initialization, "Interpreter::sensorsConfiguredSlot", "Starting interpretation");
+		mRobotModel->startInterpretation();
+
+		Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
+		Id const startingElement = findStartingElement(currentDiagramId);
+		Thread * const initialThread = new Thread(*mInterpretersInterface, *mBlocksTable, startingElement);
+		addThread(initialThread);
 	}
 }
 
@@ -230,7 +235,7 @@ void Interpreter::setRobotImplementation(details::robotImplementations::Abstract
 {
 	mRobotModel->setRobotImplementation(robotImpl);
 	if (robotImpl)
-		connect(&mRobotModel->robotImpl(), SIGNAL(connected(bool)), this, SLOT(runTimer()));
+		connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(runTimer()));
 }
 
 void Interpreter::runTimer()
@@ -272,7 +277,7 @@ void Interpreter::readSensorValues()
 
 void Interpreter::slotFailure()
 {
-	qDebug() << "slotFailure";
+	Tracer::debug(tracer::autoupdatedSensorValues, "Interpreter::slotFailure", "");
 }
 
 void Interpreter::responseSlot1(int sensorValue)
@@ -298,7 +303,7 @@ void Interpreter::responseSlot4(int sensorValue)
 void Interpreter::updateSensorValues(QString const &sensorVariableName, int sensorValue)
 {
 	(*(mParser->getVariables()))[sensorVariableName] = utils::Number(sensorValue, utils::Number::intType);
-//	qDebug() << sensorVariableName << sensorValue;
+	Tracer::debug(tracer::autoupdatedSensorValues, "Interpreter::updateSensorValues", sensorVariableName + QString::number(sensorValue));
 }
 
 void Interpreter::connectToRobot()

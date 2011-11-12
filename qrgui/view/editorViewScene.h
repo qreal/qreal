@@ -10,9 +10,9 @@
 //const int indexGrid = 30; // distance between two lines in the grid
 
 namespace qReal {
-	class EditorViewMViface;
-	class EditorView;
-	class MainWindow;
+class EditorViewMViface;
+class EditorView;
+class MainWindow;
 }
 
 class EditorViewScene : public QGraphicsScene
@@ -79,6 +79,7 @@ protected:
 	void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent );
 	void mouseMoveEvent (QGraphicsSceneMouseEvent *event);
 
+
 	void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event);
 
 	virtual void drawBackground( QPainter *painter, const QRectF &rect);
@@ -105,7 +106,6 @@ private:
 	qreal mWidthOfGrid;
 	double mRealIndexGrid;
 
-	void getObjectByGesture();
 	void getLinkByGesture(NodeElement * parent, NodeElement const & child);
 	void drawGesture();
 	void deleteGesture();
@@ -142,14 +142,16 @@ private:
 
 	QPointF mCreatePoint;
 
-	MouseMovementManager * mouseMovementManager;
+	MouseMovementManager * mMouseMovementManager;
 
 	QSignalMapper *mActionSignalMapper;
 
 	QSet<Element *> mHighlightedElements;
-
+	QTimer * mTimer;
 	friend class qReal::EditorViewMViface;
 
 	/** @brief Is "true" when we just select items on scene, and "false" when we drag selected items */
 	bool mShouldReparentItems;
+private slots:
+	void getObjectByGesture();
 };

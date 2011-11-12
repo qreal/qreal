@@ -1,9 +1,10 @@
 #include "bluetoothTouchSensorImplementation.h"
 
-#include <QtCore/QDebug>
+#include "../../tracer.h"
 
 using namespace qReal::interpreters::robots;
-using namespace details::robotImplementations::sensorImplementations;
+using namespace details;
+using namespace robotImplementations::sensorImplementations;
 
 BluetoothTouchSensorImplementation::BluetoothTouchSensorImplementation(RobotCommunication *robotCommunicationInterface
 		, inputPort::InputPortEnum const &port)
@@ -15,7 +16,7 @@ void BluetoothTouchSensorImplementation::sensorSpecificProcessResponse(QByteArra
 {
 	mState = idle;
 	int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
-	qDebug() << "BluetoothTouchSensorImplementation::sensorSpecificProcessResponse sensorValue" << sensorValue;
+	Tracer::debug(tracer::sensors, "BluetoothTouchSensorImplementation::sensorSpecificProcessResponse", QString::number(sensorValue));
 	if (reading[4] == 0 && sensorValue < 500)  // Sensor is pressed.
 		emit response(1);
 	else
