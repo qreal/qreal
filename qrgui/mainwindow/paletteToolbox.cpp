@@ -4,7 +4,7 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QComboBox>
 #include <QtGui/QScrollArea>
-#include <QtAlgorithms>
+#include <QtCore/QtAlgorithms>
 
 #include "paletteToolbox.h"
 #include "../../qrkernel/definitions.h"
@@ -128,16 +128,19 @@ void PaletteToolbox::addItemType(Id const &id, QString const &name, QString cons
 	tab->layout()->addWidget(element);
 }
 
-void  PaletteToolbox::addSortedItemTypes(EditorManager &editman, const Id &diagram){
+void  PaletteToolbox::addSortedItemTypes(EditorManager &editman, const Id &diagram)
+{
 	mEditorManager = &editman;
 	IdList list = editman.elements(diagram);
+
 	qSort(list.begin(), list.end(), idLessThan);
 	foreach (const Id element, list)
 		addItemType(element, editman.friendlyName(element)
 				, editman.description(element), editman.icon(element));
 
 }
-bool PaletteToolbox::idLessThan(const Id &s1, const Id &s2){
+bool PaletteToolbox::idLessThan(const Id &s1, const Id &s2)
+{
 	return mEditorManager->friendlyName(s1).toLower() <
 		mEditorManager->friendlyName(s2).toLower();
 }
