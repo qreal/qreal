@@ -556,7 +556,7 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 
 bool MainWindow::importProject()
 {
-	return import(getWorkingFile(tr("Select file with a save to import")));
+	return import(getWorkingFile(tr("Select file with a save to import"), false));
 }
 
 bool MainWindow::import(QString const &fileName)
