@@ -4,16 +4,22 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QComboBox>
 #include <QtGui/QScrollArea>
+#include <QtAlgorithms>
 
 #include "paletteToolbox.h"
 #include "../../qrkernel/definitions.h"
-#include <QtAlgorithms>
 using namespace qReal;
 using namespace qReal::gui;
+
 EditorManager * PaletteToolbox::mEditMan = NULL;
-PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &name, QString const &description,
-	QIcon const &icon, QWidget *parent)
-: QWidget(parent), mId(id), mIcon(icon), mText(name)
+
+PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &name
+		, QString const &description, QIcon const &icon, QWidget *parent
+		)
+		: QWidget(parent)
+		, mId(id)
+		, mIcon(icon)
+		, mText(name)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(4, 4, 4, 4);
@@ -37,7 +43,7 @@ PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &
 }
 
 PaletteToolbox::PaletteToolbox(QWidget *parent)
-    : QWidget(parent), mCurrentTab(0)
+	: QWidget(parent), mCurrentTab(0)
 {
 	createPalette();
 }
@@ -123,16 +129,16 @@ void PaletteToolbox::addItemType(Id const &id, QString const &name, QString cons
 
 void  PaletteToolbox::addSortedItemTypes(EditorManager &editman, const Id &diagram){
 	mEditMan = &editman;
-        IdList list = editman.elements(diagram);
+	IdList list = editman.elements(diagram);
 	qSort(list.begin(), list.end(), idLessThan);
 	foreach (const Id element, list)
 		addItemType(element, editman.friendlyName(element)
-			    , editman.description(element), editman.icon(element));
+				, editman.description(element), editman.icon(element));
 
 }
 bool PaletteToolbox::idLessThan(const Id &s1, const Id &s2){
-    return mEditMan->friendlyName(s1).toLower() <
-	    mEditMan->friendlyName(s2).toLower();
+	return mEditMan->friendlyName(s1).toLower() <
+		mEditMan->friendlyName(s2).toLower();
 }
 
 void PaletteToolbox::deleteDiagramType(const Id &id)

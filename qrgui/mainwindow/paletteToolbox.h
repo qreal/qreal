@@ -30,8 +30,8 @@ public:
 	void initDone();
 	void deleteDiagramType(Id const &id);
 	QComboBox* getComboBox();
-        void addSortedItemTypes(EditorManager &editorManager, const Id &diagram);
-        static bool idLessThan(const Id &s1, const Id &s2);
+	void addSortedItemTypes(EditorManager &editorManager, const Id &diagram);
+	static bool idLessThan(const Id &s1, const Id &s2);
 	QVector<QString> getTabNames();
 
 	Id currentTab();
@@ -76,18 +76,19 @@ private:
 	void deletePalette();
 
 	QHash<Id, int> mCategories;
-	/** @brief vector of editors' contents */
+	/// vector of editors' contents
 	QVector<QWidget*> mTabs;
-	/** @brief vector of editors' names */
+	/// vector of editors' names
 	QVector<QString> mTabNames;
-	/** @brief main layout */
+	/// main layout
 	QVBoxLayout *mLayout;
-	/** @brief Combobox with editors */
+	/// Combobox with editors
 	QComboBox *mComboBox;
-	/** @brief Area of current editor */
+	/// Area of current editor
 	QScrollArea *mScrollArea;
 	int mCurrentTab;
-        static EditorManager *mEditMan;
+	/// EditorManager instance used to sort palette's content
+	static EditorManager *mEditMan;
 
 };
 

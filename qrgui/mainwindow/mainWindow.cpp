@@ -95,7 +95,7 @@ MainWindow::MainWindow()
 	mUi->setupUi(this);
 
 	if (showSplash) {
-                splash->show();
+		 splash->show();
 		QApplication::processEvents();
 	}
 	else {
