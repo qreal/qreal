@@ -44,7 +44,7 @@ PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &
 }
 
 PaletteToolbox::PaletteToolbox(QWidget *parent)
-	: QWidget(parent), mCurrentTab(0)
+		: QWidget(parent), mCurrentTab(0)
 {
 	createPalette();
 }
@@ -118,7 +118,7 @@ void PaletteToolbox::addDiagramType(Id const &id, QString const &name)
 	Q_ASSERT(mTabNames.size() == mTabs.size());
 }
 
-void PaletteToolbox::addItemType(Id const &id, QString const &name, QString const &description,  QIcon const &icon)
+void PaletteToolbox::addItemType(Id const &id, QString const &name, QString const &description, QIcon const &icon)
 {
 	Id category(id.editor(), id.diagram());
 	QWidget *tab = mTabs[mCategories[category]];
@@ -128,21 +128,23 @@ void PaletteToolbox::addItemType(Id const &id, QString const &name, QString cons
 	tab->layout()->addWidget(element);
 }
 
-void  PaletteToolbox::addSortedItemTypes(EditorManager &editman, const Id &diagram)
+void PaletteToolbox::addSortedItemTypes(EditorManager &editman, const Id &diagram)
 {
 	mEditorManager = &editman;
+
 	IdList list = editman.elements(diagram);
 
 	qSort(list.begin(), list.end(), idLessThan);
+
 	foreach (const Id element, list)
 		addItemType(element, editman.friendlyName(element)
 				, editman.description(element), editman.icon(element));
-
 }
+
 bool PaletteToolbox::idLessThan(const Id &s1, const Id &s2)
 {
 	return mEditorManager->friendlyName(s1).toLower() <
-		mEditorManager->friendlyName(s2).toLower();
+			mEditorManager->friendlyName(s2).toLower();
 }
 
 void PaletteToolbox::deleteDiagramType(const Id &id)
@@ -202,8 +204,8 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	bool isFromLogicalModel = false;
 
 	QDataStream stream(&itemData, QIODevice::WriteOnly);
-	stream << elementId.toString();  // uuid
-	stream << Id::rootId().toString();  // pathToItem
+	stream << elementId.toString(); // uuid
+	stream << Id::rootId().toString(); // pathToItem
 	stream << QString("(" + child->text() + ")");
 	stream << QPointF(0, 0);
 	stream << isFromLogicalModel;

@@ -31,7 +31,7 @@ public:
 	void deleteDiagramType(Id const &id);
 	QComboBox* getComboBox();
 
-	/// Gets item types of diagram, sorts by name and show them
+	/// Gets item types of diagram, sorts by displayed name and shows them
 	void addSortedItemTypes(EditorManager &editorManager, const Id &diagram);
 	QVector<QString> getTabNames();
 
