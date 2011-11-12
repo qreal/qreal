@@ -26,7 +26,7 @@ PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &
 	layout->setContentsMargins(4, 4, 4, 4);
 
 	QLabel *pic = new QLabel(this);
-	pic->setFixedSize(24, 24); // the frame
+	pic->setFixedSize(24, 24);  // the frame
 	pic->setPixmap(mIcon.pixmap(22, 22));
 	layout->addWidget(pic);
 
@@ -38,7 +38,7 @@ PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &
 
 	QString modifiedDescription = description;
 	if (!modifiedDescription.isEmpty()){
-		modifiedDescription.insert(0, "<body>");//turns alignment on
+		modifiedDescription.insert(0, "<body>");  //turns alignment on
 		setToolTip(modifiedDescription);
 	}
 }
@@ -92,7 +92,7 @@ void PaletteToolbox::setActiveEditor(int const comboIndex)
 {
 	mCurrentTab = comboIndex;
 	if (mTabs.size() > 0) {
-		mScrollArea->takeWidget(); // Save current editor from extermination.
+		mScrollArea->takeWidget();  // Save current editor from extermination.
 		mScrollArea->setWidget(mTabs[comboIndex]);
 	}
 }
@@ -110,7 +110,7 @@ void PaletteToolbox::addDiagramType(Id const &id, QString const &name)
 	mTabs.append(tab);
 	mTabNames.append(name);
 
-	Q_ASSERT(id.idSize() == 2); // it should be diagram
+	Q_ASSERT(id.idSize() == 2);  // it should be diagram
 	mCategories[id] = mTabs.size() - 1;
 
 	mComboBox->addItem(name);
@@ -193,7 +193,7 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	if (!child)
 		return;
 
-	Q_ASSERT(child->id().idSize() == 3); // it should be element type
+	Q_ASSERT(child->id().idSize() == 3);  // it should be element type
 
 	// new element's ID is being generated here
 	// may this epic event should take place in some more appropriate place
@@ -204,8 +204,8 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	bool isFromLogicalModel = false;
 
 	QDataStream stream(&itemData, QIODevice::WriteOnly);
-	stream << elementId.toString(); // uuid
-	stream << Id::rootId().toString(); // pathToItem
+	stream << elementId.toString();  // uuid
+	stream << Id::rootId().toString();  // pathToItem
 	stream << QString("(" + child->text() + ")");
 	stream << QPointF(0, 0);
 	stream << isFromLogicalModel;
