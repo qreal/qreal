@@ -10,7 +10,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QUuid>
 
-#include <QGraphicsDropShadowEffect>
+#include <QtGui/QGraphicsDropShadowEffect>
 
 #include <math.h>
 
@@ -514,8 +514,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	if (mDragState == None) {
 
 		if (!isPort() && (flags() & ItemIsMovable)) {
-			// switch нужен для случая, когда мы не можем растягивать объект.
-			// Его родитель должен определяться не по позиции мышки, а по позиции угла.
+			// in case of unresizable item use switch
+			// Determing parent using corner position, not mouse coordinates
 			QPointF newParentInnerPoint = event->scenePos();
 			switch (mDragState) {
 			case TopLeft:
@@ -655,6 +655,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			NodeElement *newParent = mHighlightedNode;
 			Element *insertBefore = mHighlightedNode->getPlaceholderNextElement();
 			mHighlightedNode->erasePlaceholder(false);
+			// commented because of bug with double event sending (see #204)
 	//		mHighlightedNode = NULL;
 
 			mGraphicalAssistApi->changeParent(id(), newParent->id(),
@@ -1251,13 +1252,6 @@ void NodeElement::sortChildren()
 		maxChildrenWidth = childrenBoundingRect().width();
 	}
 
-//	if(mPlaceholder != NULL){
-//		int placeHolderWidth = mPlaceholder->rect().width();
-//		if (placeHolderWidth > maxChildrenWidth) {
-//			maxChildrenWidth = placeHolderWidth;
-//		}
-//	}
-
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if(mPlaceholder != NULL && childItem == mPlaceholder){
@@ -1300,17 +1294,6 @@ void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 			}
 		}
 	}
-
-//	QList<QGraphicsItem*> const &childs = QGraphicsItem::children();
-//	int placeholderIdx = childs.indexOf(mPlaceholder);
-//	if (placeholderIdx != -1) {
-//		int nextIdx = placeholderIdx + 1;
-//		if (nextIdx < childs.length() && childs[nextIdx] == nextItem) {
-//			// no need to do anything
-//			delete placeholder;
-//			return;
-//		}
-//	}
 
 	erasePlaceholder(false);
 	mPlaceholder = placeholder;

@@ -133,15 +133,15 @@ QString LogicalModel::pathToItem(AbstractModelItem const *item) const
 		return Id::rootId().toString();
 }
 
-void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId,
-	const QString &name, const QPointF &position)
+void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId
+		, const QString &name, const QPointF &position)
 {
 	if (mModelItems.contains(id))
 		return;
 
 	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
-	AbstractModelItem *parentItem = mModelItems[parent],
-		*newItem = NULL;
+	AbstractModelItem *parentItem = mModelItems[parent];
+	AbstractModelItem *newItem = NULL;
 
 	if (logicalId != Id::rootId() && mModelItems.contains(logicalId)) {
 		 if (parent == logicalId) {
@@ -155,8 +155,8 @@ void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &l
 	}
 }
 
-void LogicalModel::initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem,
-		modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
+void LogicalModel::initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem
+		, modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
 {
 	Q_UNUSED(position)
 
@@ -269,13 +269,15 @@ void LogicalModel::changeParent(QModelIndex const &element, QModelIndex const &p
 
 void LogicalModel::stackBefore(const QModelIndex &element, const QModelIndex &sibling)
 {
-	if(element == sibling) return;
+	if (element == sibling) {
+		return;
+	}
 
 	beginMoveRows(element.parent(), element.row(), element.row(), element.parent(), sibling.row());
 
-	AbstractModelItem *parent = static_cast<AbstractModelItem *>(element.parent().internalPointer()),
-		*item = static_cast<AbstractModelItem *>(element.internalPointer()),
-		*siblingItem = static_cast<AbstractModelItem *>(sibling.internalPointer());
+	AbstractModelItem *parent = static_cast<AbstractModelItem *>(element.parent().internalPointer())
+			, *item = static_cast<AbstractModelItem *>(element.internalPointer())
+			, *siblingItem = static_cast<AbstractModelItem *>(sibling.internalPointer());
 
 	parent->stackBefore(item, siblingItem);
 	mApi.stackBefore(parent->id(), item->id(), siblingItem->id());

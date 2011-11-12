@@ -720,11 +720,12 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 		mRightButtonPressed = false;
 		drawGesture();
 		EdgeElement * const edgeElement = dynamic_cast<EdgeElement *>(element);
-		if (edgeElement != NULL)
+		if (edgeElement != NULL) {
 			if (event->buttons() & Qt::LeftButton ) {
 				edgeElement->breakPointHandler(element->mapFromScene(event->scenePos()));
 				return;
 			}
+		}
 		if (element && !mMouseMovementManager->wasMoving()) {
 			initContextMenu(element, event->scenePos());
 			mMouseMovementManager->clear();
@@ -737,9 +738,9 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 		if (parent && child && mMouseMovementManager->isEdgeCandidate()) {
 			getLinkByGesture(parent, *child);
 			deleteGesture();
-		}
-		else
+		} else {
 			mTimer->start(SettingsManager::value("gestureDelay", 1000).toInt());
+		}
 		return;
 	}
 
@@ -749,26 +750,6 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 
 	Element *parent = dynamic_cast <Element *>(getElem(element->id())->parent());
 
-	if (parent) {
-//		if (!canBeContainedBy(parent->id(), element->id())){
-//			QMessageBox::critical(0, "Ololo", "can't drop it here!111");
-//			qDebug() << "ololo";
-//			// fail, reparenting the element as it was before
-//			foreach (QGraphicsItem *item, items(event->scenePos())) {
-//				Element * elem = dynamic_cast < Element * >(item);
-//				if (elem && elem->id() == element->id()) {
-//					qReal::Id id = qReal::Id::rootId();
-//					Element * prevParent = dynamic_cast < Element * >(mPrevParent);
-//					if (prevParent) {
-//						id = prevParent->id();
-//					}
-//					if (mv_iface && mv_iface->graphicalAssistApi()) {
-//						mv_iface->graphicalAssistApi()->changeParent(element->id(), id, mPrevPosition);
-//					}
-//				}
-//			}
-//		}
-	}
 	redraw();
 }
 

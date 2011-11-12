@@ -11,7 +11,7 @@ SOURCES = main.cpp
 
 TRANSLATIONS = qrgui_ru.ts
 
-QMAKE_CXXFLAGS_DEBUG += -pg
+# QMAKE_CXXFLAGS_DEBUG += -pg
 QMAKE_LFLAGS_DEBUG += -pg
 
 # workaround для http://bugreports.qt.nokia.com/browse/QTBUG-8110
@@ -33,6 +33,7 @@ LIBS += -L../bin -lqrrepo -lqrkernel -lqrutils #-lqrmc
 
 unix:DEFINES   = _TTY_POSIX_
 win32:DEFINES  = _TTY_WIN_
+
 
 # Graphical elements
 include (umllib/umllib.pri)

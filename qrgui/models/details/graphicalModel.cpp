@@ -82,8 +82,8 @@ void GraphicalModel::updateElements(Id const &logicalId, QString const &name)
 	}
 }
 
-void GraphicalModel::addElementToModel(const Id &parent, const Id &id,
-	const Id &logicalId, const QString &name, const QPointF &position)
+void GraphicalModel::addElementToModel(const Id &parent, const Id &id
+		, const Id &logicalId, const QString &name, const QPointF &position)
 {
 	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
 	AbstractModelItem *parentItem = mModelItems[parent];
@@ -101,8 +101,8 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id,
 	initializeElement(id, actualLogicalId, parentItem, newGraphicalModelItem, name, position);
 }
 
-void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem,
-	modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
+void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem
+		, modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
 {
 	int const newRow = parentItem->children().size();
 
@@ -230,9 +230,11 @@ void GraphicalModel::changeParent(QModelIndex const &element, QModelIndex const 
 
 void GraphicalModel::stackBefore(const QModelIndex &element, const QModelIndex &sibling)
 {
-	if(element == sibling) return;
+	if (element == sibling) {
+		return;
+	}
 
-	if(beginMoveRows(element.parent(), element.row(), element.row(), element.parent(), sibling.row())){
+	if (beginMoveRows(element.parent(), element.row(), element.row(), element.parent(), sibling.row())) {
 		AbstractModelItem *parent = static_cast<AbstractModelItem *>(element.parent().internalPointer()),
 			*item = static_cast<AbstractModelItem *>(element.internalPointer()),
 			*siblingItem = static_cast<AbstractModelItem *>(sibling.internalPointer());

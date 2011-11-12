@@ -126,7 +126,10 @@ private:
 		BottomRight
 	};
 
+	
+	/** @brief Padding that reserves space for title */
 	static int const titlePadding = 25;
+	/** @brief Space between children inside sorting containers */
 	static int const childSpacing = 10;
 
 	void delUnusedLines();

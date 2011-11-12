@@ -87,7 +87,9 @@ IdList Object::children() const
 
 void Object::stackBefore(const qReal::Id &element, const qReal::Id &sibling)
 {
-	if (element == sibling) return;
+	if (element == sibling) {
+		return;
+	}
 
 	if (!mChildren.contains(element)) {
 		throw Exception("Object " + mId.toString() + ": moving nonexistent child " + element.toString());

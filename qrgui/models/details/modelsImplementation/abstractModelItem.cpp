@@ -50,13 +50,15 @@ void AbstractModelItem::removeChild(AbstractModelItem *child)
 
 void AbstractModelItem::stackBefore(AbstractModelItem *element, AbstractModelItem *sibling)
 {
-	if (element == sibling) return;
+	if (element == sibling) {
+		return;
+	}
 
-	if(!mChildren.contains(element)) {
+	if (!mChildren.contains(element)) {
 		throw Exception("Model: Trying to move nonexistent child " + element->id().toString());
 	}
 
-	if(!mChildren.contains(sibling)) {
+	if (!mChildren.contains(sibling)) {
 		throw Exception("Model: Trying to stack element before nonexistent child " + sibling->id().toString());
 	}
 
