@@ -12,7 +12,6 @@ public:
 
 	virtual void addChild(qReal::Id const &id, qReal::Id const &child) = 0;
 	virtual qReal::Id otherEntityFromLink(qReal::Id const &linkId, qReal::Id const &firstNode) const = 0;
-	virtual void stackBefore(qReal::Id const &id, qReal::Id const &child, qReal::Id const &sibling) = 0;
 
 	virtual qReal::IdList outgoingConnections(qReal::Id const &id) const = 0;
 	virtual qReal::IdList incomingConnections(qReal::Id const &id) const = 0;

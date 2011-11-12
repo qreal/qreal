@@ -13,12 +13,12 @@
 using namespace qReal;
 
 EditorViewScene::EditorViewScene(QObject * parent)
-	:  QGraphicsScene(parent)
-	, mHighlightNode(NULL)
-	, mLastCreatedWithEdge(NULL)
-	, mWindow(NULL)
-	, mPrevParent(0)
-	, mShouldReparentItems(false)
+		:  QGraphicsScene(parent)
+		, mLastCreatedWithEdge(NULL)
+		, mHighlightNode(NULL)
+		, mWindow(NULL)
+		, mPrevParent(0)
+		, mShouldReparentItems(false)
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid", true).toBool();
 	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth", 10).toInt()) / 100;
@@ -63,8 +63,8 @@ void EditorViewScene::initMouseMoveManager()
 		return;
 	}
 	QList<qReal::Id> elements = mWindow->manager()->elements(diagram);
-	mMouseMovementManager = new MouseMovementManager(elements,
-													 mWindow->manager(), mWindow->gesturesPainter());
+	mMouseMovementManager = new MouseMovementManager(elements
+			, mWindow->manager(), mWindow->gesturesPainter());
 	connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
 	connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
 }
@@ -162,7 +162,7 @@ void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 		NodeElement *el = dynamic_cast<NodeElement*>(item);
 		if(el != NULL){
 			if (canBeContainedBy(el->id(), id)) {
-				 node = el;
+				node = el;
 				break;
 			}
 		}
@@ -242,7 +242,7 @@ void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 
 void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-	Q_ASSERT(mWindow); // should be initialized separately.
+	Q_ASSERT(mWindow);  // should be initialized separately.
 	// constuctor is bad for this, because the scene is created in generated .ui file
 
 	// if there's no diagrams. create nothing
@@ -250,7 +250,6 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 		return;
 	}
 
-//	QList<QGraphicsItem*> elements = items(event->scenePos());
 	createElement(event->mimeData(), event->scenePos());
 	if (mHighlightNode != NULL) {
 		mHighlightNode->erasePlaceholder(true);
@@ -482,9 +481,9 @@ void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &n
 }
 
 void EditorViewScene::createAddConnectionMenu(Element const * const element
-											  , QMenu &contextMenu, QString const &menuName
-											  , IdList const &connectableTypes, IdList const &alreadyConnectedElements
-											  , IdList const &connectableDiagrams, const char *slot) const
+		, QMenu &contextMenu, QString const &menuName
+		, IdList const &connectableTypes, IdList const &alreadyConnectedElements
+		, IdList const &connectableDiagrams, const char *slot) const
 {
 	QMenu *addConnectionMenu = contextMenu.addMenu(menuName);
 
@@ -514,9 +513,9 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 }
 
 void EditorViewScene::createDisconnectMenu(Element const * const element
-										   , QMenu &contextMenu, QString const &menuName
-										   , IdList const &outgoingConnections, IdList const &incomingConnections
-										   , const char *slot) const
+		, QMenu &contextMenu, QString const &menuName
+		, IdList const &outgoingConnections, IdList const &incomingConnections
+		, const char *slot) const
 {
 	QMenu *disconnectMenu = contextMenu.addMenu(menuName);
 	IdList list = outgoingConnections;
@@ -571,7 +570,7 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 	createGoToSubmenu(goToMenu, tr("Uses"), mv_iface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId()));
 	createGoToSubmenu(goToMenu, tr("Used in"), mv_iface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId()));
 	*/
-	}
+}
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -748,8 +747,6 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 		return;
 	}
 
-	Element *parent = dynamic_cast <Element *>(getElem(element->id())->parent());
-
 	redraw();
 }
 
@@ -923,13 +920,6 @@ void EditorViewScene::drawGesture()
 	item->setPen(penColor);
 	addItem(item);
 	mGesture.push_back(item);
-	//int ellipseSize = 2;
-	//    QPointF bound(ellipseSize, ellipseSize);
-	//    QRectF rect(line.p2() + bound, line.p2() - bound);
-	//    QGraphicsEllipseItem * ellipseItem = new QGraphicsEllipseItem(rect, NULL, this);
-	//    ellipseItem->setPen(penColor);
-	//    addItem(ellipseItem);
-	// mGesture.push_back(ellipseItem);
 }
 
 void EditorViewScene::deleteGesture()

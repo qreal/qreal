@@ -26,6 +26,8 @@ public:
 	void clearChildren();
 
 	void setParent(AbstractModelItem *parent);
+
+	/// Stacks item element before sibling (they should have the same parent)
 	void stackBefore(AbstractModelItem *element, AbstractModelItem *sibling);
 
 private:

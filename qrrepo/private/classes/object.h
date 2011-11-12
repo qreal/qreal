@@ -36,6 +36,8 @@ namespace qrRepo {
 			qReal::IdList temporaryRemovedLinks() const;
 			void removeTemporaryRemovedLinksAt(QString const &direction);
 			void removeTemporaryRemovedLinks();
+
+			/// Stacks item element before sibling (they should have the same parent)
 			void stackBefore(qReal::Id const &element, qReal::Id const &sibling);
 
 		private:

@@ -31,6 +31,7 @@ namespace qrRepo {
 			void remove(const qReal::Id &id);
 			void removeChild(const qReal::Id &id, const qReal::Id &child);
 
+			/// Stacks element child before sibling (element id shold be parent of them both)
 			void stackBefore(qReal::Id const &id, qReal::Id const &child, qReal::Id const &sibling);
 
 			void setProperty(const qReal::Id &id, const QString &name, const QVariant &value);

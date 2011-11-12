@@ -6,7 +6,7 @@ using namespace qReal;
 using namespace models::details::modelsImplementation;
 
 AbstractModelItem::AbstractModelItem(Id const &id, AbstractModelItem *parent)
-	: mId(id), mParent(parent)
+		: mParent(parent), mId(id)
 {
 }
 

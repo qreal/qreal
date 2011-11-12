@@ -7,7 +7,7 @@ using namespace qrRepo::details;
 using namespace qReal;
 
 RepoApi::RepoApi(QString const &workingDirectory)
-	: mClient(workingDirectory)
+		: mClient(workingDirectory)
 {
 }
 
