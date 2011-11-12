@@ -275,8 +275,6 @@ void NodeElement::arrangeLinearPorts() {
 }
 
 void NodeElement::arrangeLinks() {
-	//qDebug() << "---------------\nDirect call " << uuid().toString();
-
 	//Episode I: Home Jumps
 	//qDebug() << "I";
 	foreach (EdgeElement* edge, mEdgeList) {
@@ -533,11 +531,11 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 	if (isPort()) {
 		mUmlPortHandler->handleMoveEvent(
-			mLeftPressed,
-			mPos,
-			event->scenePos(),
-			mParentNodeElement
-		);
+				  mLeftPressed
+				, mPos
+				, event->scenePos()
+				, mParentNodeElement
+			);
 	}
 
 	arrangeLinks();

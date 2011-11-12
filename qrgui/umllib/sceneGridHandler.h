@@ -1,7 +1,9 @@
 #pragma once
 
 #include <QtCore/QList>
+
 #include <QtGui/QGraphicsLineItem>
+#include <QtGui/QPen>
 
 class NodeElement;
 
@@ -19,16 +21,18 @@ public:
 	void mouseMoveEvent();
 
 private:
+	/** @brief drawing a horizontal line */
 	void drawLineY(qreal pointY, qreal myX);
+	/** @brief drawing a vertical line */
 	void drawLineX(qreal pointX, qreal myY);
 
-	bool makeJumpX(qreal deltaX, qreal radiusJump, qreal pointX);
-	bool makeJumpY(qreal deltaY, qreal radiusJump, qreal pointY);
+	bool makeJumpX(qreal deltaX, qreal pointX);
+	bool makeJumpY(qreal deltaY, qreal pointY);
 
-	void buildLineX(qreal deltaX, qreal radius, bool doAlways, qreal radiusJump
-					, qreal pointX, qreal correctionX	, qreal &myX1, qreal &myX2, qreal myY);
-	void buildLineY(qreal deltaY, qreal radius, bool doAlways, qreal radiusJump
-					, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2, qreal myX);
+	void buildLineX(qreal deltaX, qreal pointX, qreal correctionX
+			, qreal &myX1, qreal &myX2, qreal myY);
+	void buildLineY(qreal deltaY, qreal pointY, qreal correctionY
+			, qreal &myY1, qreal &myY2, qreal myX);
 
 	void makeGridMovingX(qreal myX, int koef, int indexGrid);
 	void makeGridMovingY(qreal myY, int koef, int indexGrid);
@@ -43,7 +47,19 @@ private:
 	QGraphicsScene *mScene;
 
 	bool mShowAlignment;
-	bool mSwitchGrid;  //if true, the object will be aligned to indexGrid
+	/** @brief if true, the object will be aligned to indexGrid */
+	bool mSwitchGrid;
 	bool mSwitchAlignment;
+
+	QPen mGuidesPen;
+
+	/** @brief radius of guides appearing */
+	static qreal radius;
+	/** @brief minimum distance to approach to jump to the guide */
+	static qreal radiusJump;
+	/** @brief spacing between element and guide */
+	static qreal spacing;
+	/** @brief guides that have distance equal or less will be represented by only one of them */
+	static qreal indistinguishabilitySpace;
 };
 
