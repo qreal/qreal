@@ -10,7 +10,7 @@
 #include <QtAlgorithms>
 using namespace qReal;
 using namespace qReal::gui;
-static EditorManager *EditMan;
+EditorManager * PaletteToolbox::mEditMan = NULL;
 PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &name, QString const &description,
 	QIcon const &icon, QWidget *parent)
 : QWidget(parent), mId(id), mIcon(icon), mText(name)
@@ -122,18 +122,17 @@ void PaletteToolbox::addItemType(Id const &id, QString const &name, QString cons
 }
 
 void  PaletteToolbox::addSortedItemTypes(EditorManager &editman, const Id &diagram){
-        EditMan = &editman;
+	mEditMan = &editman;
         IdList list = editman.elements(diagram);
-        qSort(list.begin(), list.end(), idLessThan);
-        foreach (const Id element, list){
-                addItemType(element, editman.friendlyName(element),
-                            editman.description(element), editman.icon(element));
-	}
+	qSort(list.begin(), list.end(), idLessThan);
+	foreach (const Id element, list)
+		addItemType(element, editman.friendlyName(element)
+			    , editman.description(element), editman.icon(element));
 
 }
 bool PaletteToolbox::idLessThan(const Id &s1, const Id &s2){
-    return EditMan->friendlyName(s1).toLower() <
-            EditMan->friendlyName(s2).toLower();
+    return mEditMan->friendlyName(s1).toLower() <
+	    mEditMan->friendlyName(s2).toLower();
 }
 
 void PaletteToolbox::deleteDiagramType(const Id &id)

@@ -87,6 +87,7 @@ private:
 	/** @brief Area of current editor */
 	QScrollArea *mScrollArea;
 	int mCurrentTab;
+        static EditorManager *mEditMan;
 
 };
 
