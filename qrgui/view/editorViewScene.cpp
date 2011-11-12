@@ -353,7 +353,7 @@ qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scen
 	QString mimeType = QString("application/x-real-uml-data");
 	QString uuid = objectId.toString();
 	QString pathToItem = Id::rootId().toString();
-	QString name = "(anonymous something)";
+	QString name = "(" + mWindow->manager()->friendlyName(typeId) + ")";
 	QPointF pos = QPointF(0, 0);
 	bool isFromLogicalModel = false;
 	stream << uuid;
@@ -726,14 +726,14 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 			}
 		}
 		if (element && !mMouseMovementManager->wasMoving()) {
+			deleteGesture();
 			initContextMenu(element, event->scenePos());
-			mMouseMovementManager->clear();
 			return;
 		}
 		QPointF const start = mMouseMovementManager->firstPoint();
 		QPointF const end = mMouseMovementManager->lastPoint();
-		NodeElement * parent = dynamic_cast <NodeElement * > (getElemAt(start));
-		NodeElement * child = dynamic_cast <NodeElement * > (getElemAt(end));
+		NodeElement * parent = dynamic_cast<NodeElement *>(getElemAt(start));
+		NodeElement * child = dynamic_cast<NodeElement *>(getElemAt(end));
 		if (parent && child && mMouseMovementManager->isEdgeCandidate()) {
 			getLinkByGesture(parent, *child);
 			deleteGesture();

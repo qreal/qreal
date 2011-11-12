@@ -337,6 +337,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 			saveAll();
 			break;
 		case QMessageBox::RejectRole:
+			event->ignore();
 			return;
 		}
 	}
@@ -351,10 +352,7 @@ void MainWindow::loadPlugins()
 	foreach (Id const editor, mEditorManager.editors()) {
 		foreach (Id const diagram, mEditorManager.diagrams(editor)) {
 			mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-
-			foreach (Id const element, mEditorManager.elements(diagram)) {
-				mUi->paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.description(element), mEditorManager.icon(element));
-			}
+			mUi->paletteToolbox->addSortedItemTypes(mEditorManager, diagram);
 		}
 	}
 	mUi->paletteToolbox->initDone();
@@ -1000,10 +998,7 @@ void MainWindow::generateEditorWithQRMC()
    if (mEditorManager.loadPlugin(SettingsManager::value("prefix", "").toString() + name + "." + SettingsManager::value("pluginExtension", "").toString())) {
  foreach (Id const diagram, mEditorManager.diagrams(Id(normalizedName))) {
   mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-
-  foreach (Id const element, mEditorManager.elements(diagram))
-   mUi->paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.description(element), mEditorManager.icon(element));
- }
+  mUi->paletteToolbox->addSortedItemTypes(mEditorManager, diagram);
    }
   }
   progress->setValue(progress->value() + forEditor/2);
@@ -1078,13 +1073,7 @@ void MainWindow::loadNewEditor(const QString &directoryName
 			if (mEditorManager.loadPlugin(prefix + metamodelName + "." + extension)) {
 				foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName))) {
 					mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-
-					foreach (Id const element, mEditorManager.elements(diagram))
-						mUi->paletteToolbox->addItemType(element
-								, mEditorManager.friendlyName(element)
-								, mEditorManager.description(element)
-								, mEditorManager.icon(element)
-								);
+					mUi->paletteToolbox->addSortedItemTypes(mEditorManager, diagram);
 				}
 				mUi->paletteToolbox->initDone();
 				progress->setValue(100);
@@ -2023,6 +2012,7 @@ void MainWindow::initToolPlugins()
 
 	foreach (ActionInfo const action, actions) {
 		if (action.menuName() == "tools")
+
 			mUi->menuTools->addAction(action.action());
 	}
 

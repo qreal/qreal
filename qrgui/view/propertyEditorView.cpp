@@ -59,7 +59,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 	mPropertyEditor->setFactoryForManager(buttonManager, buttonFactory);
 	mPropertyEditor->setFactoryForManager(variantManager, variantFactory);
 
-	for(int i = 0, rows = mModel->rowCount(index); i < rows; ++i){
+	for (int i = 0, rows = mModel->rowCount(index); i < rows; ++i) {
 		QModelIndex const &valueCell = mModel->index(i, 1);
 		QString name = mModel->data(mModel->index(i, 0)).toString();
 		QVariant const &value = mModel->data(valueCell);
@@ -145,6 +145,7 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	int propertyType = property->propertyType(),
 		row = mPropertyEditor->properties().indexOf(property);
 	QModelIndex const &index = mModel->index(row, 1);
+
 	if (propertyType == QtVariantPropertyManager::enumTypeId()) {
 		QStringList const &values = mModel->enumValues(index);
 		int intValue = value.toInt();
@@ -171,4 +172,8 @@ int PropertyEditorView::enumPropertyIndexOf(QModelIndex const &index, QString co
 		return values.indexOf(value);
 	}
 	return -1;
+}
+
+void PropertyEditorView::resizeEvent(QResizeEvent *event ) {
+	mPropertyEditor->resize(event->size());
 }

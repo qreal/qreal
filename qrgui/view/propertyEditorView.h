@@ -2,6 +2,7 @@
 
 #include <QAbstractItemView>
 #include <QMap>
+#include <QResizeEvent>
 
 #include "../mainwindow/propertyEditorProxyModel.h"
 
@@ -30,7 +31,7 @@ public:
 	/** @brief unimplemented */
 	void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint = QAbstractItemView::EnsureVisible);
 
-	PropertyEditorModel* model(){
+	PropertyEditorModel* model() {
 		return mModel;
 	}
 
@@ -42,6 +43,7 @@ public slots:
 	void reset();
 
 protected:
+	virtual void resizeEvent(QResizeEvent *event);
 
 protected slots:
 	// QAbstractItemView's methods
