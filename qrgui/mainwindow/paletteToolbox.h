@@ -3,8 +3,8 @@
 #include <QtCore/QHash>
 #include <QtGui/QWidget>
 #include <QtGui/QIcon>
-#include <stdlib.h>
-#include <../pluginManager/editorManager.h>
+
+#include "../pluginManager/editorManager.h"
 #include "../../qrkernel/ids.h"
 
 class QVBoxLayout;
@@ -31,7 +31,6 @@ public:
 	void deleteDiagramType(Id const &id);
 	QComboBox* getComboBox();
 	void addSortedItemTypes(EditorManager &editorManager, const Id &diagram);
-	static bool idLessThan(const Id &s1, const Id &s2);
 	QVector<QString> getTabNames();
 
 	Id currentTab();
@@ -74,6 +73,9 @@ private:
 	virtual void mousePressEvent(QMouseEvent *event);
 	void createPalette();
 	void deletePalette();
+	/// Method-comparator for sorting Ids by displayed name. Needs EditorManager instance to work,
+	/// but qSort() prohibits it to be a member of an object. So making it static does the trick.
+	static bool idLessThan(const Id &s1, const Id &s2);
 
 	QHash<Id, int> mCategories;
 	/// vector of editors' contents
@@ -87,8 +89,8 @@ private:
 	/// Area of current editor
 	QScrollArea *mScrollArea;
 	int mCurrentTab;
-	/// EditorManager instance used to sort palette's content
-	static EditorManager *mEditMan;
+	/// EditorManager instance used to sort palette's content. Made static to be used inside idLessThan()
+	static EditorManager *mEditorManager;
 
 };
 
