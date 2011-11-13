@@ -5,4 +5,5 @@ win32{
 	SOURCES += \
 		thirdparty/windowsmodernstyle.cpp \
 }
+
 include (qtpropertybrowser/src/qtpropertybrowser.pri)

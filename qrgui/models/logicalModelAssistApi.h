@@ -34,6 +34,7 @@ public:
 	Id createConnectedElement(Id const &source, Id const &elementType);
 	IdList diagramsAbleToBeConnectedTo(Id const &element) const;
 	IdList diagramsAbleToBeUsedIn(Id const &element) const;
+	virtual void stackBefore(Id const &element, Id const &sibling);
 
 	void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName);
 	QVariant propertyByRoleName(Id const &elem, QString const &roleName) const;

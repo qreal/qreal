@@ -41,6 +41,9 @@ public:
 	//		details::AbstractModelItem *item, QString const &name, QPointF const &position);
 	EditorManager const &editorManager() const;
 
+	/// Stacks item element before sibling (they should have the same parent)
+	virtual void stackBefore(QModelIndex const &element, QModelIndex const &sibling) = 0;
+
 	QModelIndex indexById(Id const &id) const;
 	Id idByIndex(QModelIndex const &index) const;
 

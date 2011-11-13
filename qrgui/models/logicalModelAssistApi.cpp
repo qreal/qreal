@@ -36,6 +36,11 @@ Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isF
 	return mModelsAssistApi.createElement(parent, id, isFromLogicalModel, name, position);
 }
 
+void LogicalModelAssistApi::stackBefore(const Id &element, const Id &sibling)
+{
+	mModelsAssistApi.stackBefore(element, sibling);
+}
+
 IdList LogicalModelAssistApi::children(Id const &element) const
 {
 	return mLogicalModel.api().children(element);

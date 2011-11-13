@@ -4,6 +4,7 @@
 #include <QtGui/QWidget>
 #include <QtGui/QIcon>
 
+#include "../pluginManager/editorManager.h"
 #include "../../qrkernel/ids.h"
 
 class QVBoxLayout;
@@ -28,9 +29,10 @@ public:
 	void addItemType(Id const &id, QString const &name, QString const &description, QIcon const &icon);
 	void initDone();
 	void deleteDiagramType(Id const &id);
-
 	QComboBox* getComboBox();
 
+	/// Gets item types of diagram, sorts by displayed name and shows them
+	void addSortedItemTypes(EditorManager &editorManager, const Id &diagram);
 	QVector<QString> getTabNames();
 
 	Id currentTab();
@@ -71,24 +73,37 @@ private:
 	virtual void dragEnterEvent(QDragEnterEvent *event);
 	virtual void dropEvent(QDropEvent *event);
 	virtual void mousePressEvent(QMouseEvent *event);
-
 	void createPalette();
 	void deletePalette();
 
+	/// Method-comparator for sorting Ids by displayed name. Needs EditorManager instance to work,
+	/// but qSort() prohibits it to be a member of an object. So making it static does the trick.
+	static bool idLessThan(const Id &s1, const Id &s2);
+
 	QHash<Id, int> mCategories;
-	/** @brief vector of editors' contents */
+
+	/// Vector of editors' contents
 	QVector<QWidget*> mTabs;
-	/** @brief vector of editors' names */
+
+	/// Vector of editors' names
 	QVector<QString> mTabNames;
-	/** @brief main layout */
+
+	/// Main layout
 	QVBoxLayout *mLayout;
-	/** @brief Combobox with editors */
+
+	/// Combobox with editors
 	QComboBox *mComboBox;
-	/** @brief Area of current editor */
+
+	/// Area of current editor
 	QScrollArea *mScrollArea;
 	int mCurrentTab;
+
+	/// EditorManager instance used to sort palette's content. Made static to be used inside idLessThan()
+	static EditorManager *mEditorManager;
+
 };
 
 }
 
 }
+

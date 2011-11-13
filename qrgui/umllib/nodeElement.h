@@ -58,22 +58,19 @@ public:
 	qreal getPortId(const QPointF &location) const;
 
 	void addEdge(EdgeElement *edge);
-
 	void delEdge(EdgeElement *edge);
+
+	virtual bool initPossibleEdges();
+	QList<PossibleEdge> getPossibleEdges();
 
 	void setPortsVisible(bool value);
 
 	void hideEmbeddedLinkers();
 
-	virtual bool initPossibleEdges();
-
 	bool isPort();
-
 	bool canHavePorts();
 
 	QList<double> borderValues();
-
-	QList<PossibleEdge> getPossibleEdges();
 
 	bool checkLowerBorder(QPointF& point, double x, double y) const;
 	bool checkUpperBorder(QPointF& point, double x, double y) const;
@@ -99,6 +96,15 @@ public:
 
 	virtual void checkConnectionsToPort();
 
+	/** @brief Drawing placeholder at the appropriate position (calculated using event data) */
+	void drawPlaceholder(QGraphicsRectItem *placeholder, QPointF scenePos);
+	void erasePlaceholder(bool);
+
+	/**
+	*   @brief Returns element that follows placeholder
+	*   @return element or NULL
+	* */
+	Element *getPlaceholderNextElement();
 	void highlightEdges();
 
 public slots:
@@ -119,6 +125,12 @@ private:
 		Bottom,
 		BottomRight
 	};
+
+	
+	/** @brief Padding that reserves space for title */
+	static int const titlePadding = 25;
+	/** @brief Space between children inside sorting containers */
+	static int const childSpacing = 10;
 
 	void delUnusedLines();
 	PossibleEdge toPossibleEdge(const StringPossibleEdge & strPossibleEdge);
@@ -166,6 +178,8 @@ private:
 
 	bool mPortsVisible;
 
+	QList<NodeElement*> childs;
+
 	QList<StatPoint> mPointPorts;
 	QList<StatLine> mLinePorts;
 	QRectF mContents;
@@ -204,4 +218,6 @@ private:
 	SceneGridHandler *mGrid;
 	UmlPortHandler *mUmlPortHandler;
 
+	QGraphicsRectItem *mPlaceholder;
+	NodeElement *mHighlightedNode;
 };
