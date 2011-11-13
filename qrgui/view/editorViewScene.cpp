@@ -536,32 +536,32 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 		// menu items "connect to"
 		// TODO: move to elements, they can call the model and API themselves
 		createAddConnectionMenu(element, contextMenu, tr("Add connection")
-		, mWindow->manager()->getConnectedTypes(element->id().type())
-		, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
-		, mv_iface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId())
-		, SLOT(connectActionTriggered())
-		);
+				, mWindow->manager()->getConnectedTypes(element->id().type())
+				, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
+				, mv_iface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId())
+				, SLOT(connectActionTriggered())
+				);
 
 		createDisconnectMenu(element, contextMenu, tr("Disconnect")
-		, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
-		, mv_iface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId())
-		, SLOT(disconnectActionTriggered())
-		);
+				, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
+				, mv_iface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId())
+				, SLOT(disconnectActionTriggered())
+				);
 
 		createAddConnectionMenu(element, contextMenu, tr("Add usage")
-		, mWindow->manager()->getUsedTypes(element->id().type())
-		, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
-		, mv_iface->logicalAssistApi()->diagramsAbleToBeUsedIn(element->logicalId())
-		, SLOT(addUsageActionTriggered())
-		);
+				, mWindow->manager()->getUsedTypes(element->id().type())
+				, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
+				, mv_iface->logicalAssistApi()->diagramsAbleToBeUsedIn(element->logicalId())
+				, SLOT(addUsageActionTriggered())
+				);
 
 		createDisconnectMenu(element, contextMenu, tr("Delete usage")
-		, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
-		, mv_iface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId())
-		, SLOT(deleteUsageActionTriggered())
-		);
+				, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
+				, mv_iface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId())
+				, SLOT(deleteUsageActionTriggered())
+				);
 
-		QMenu *goToMenu = contextMenu.addMenu(tr("Go to"));
+		QMenu * const goToMenu = contextMenu.addMenu(tr("Go to"));
 
 		createGoToSubmenu(goToMenu, tr("Forward connection"), mv_iface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId()));
 		createGoToSubmenu(goToMenu, tr("Backward connection"), mv_iface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId()));

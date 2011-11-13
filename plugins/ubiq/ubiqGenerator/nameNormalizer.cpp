@@ -7,9 +7,6 @@ using namespace ubiq::generator;
 QString NameNormalizer::normalize(QString const &name, bool const isUpperFirst)
 {
 	QString result = name;
-	if (name.contains("::")) {
-		result = result.right(result.length() - result.lastIndexOf("::") - 2);
-	}
 	result = result.simplified().replace(" ", "_");
 	result = result.replace("::", "_");
 	result = isUpperFirst ? upperFirst(result) : lowerFirst(result);
@@ -24,9 +21,9 @@ QString NameNormalizer::upperFirst(QString const &string)
 	if (string.size() < 1) {
 		return "";
 	}
-	QStringList tokens = string.split(" ");
+	QStringList const tokens = string.split(" ");
 	QStringList upperedTokens;
-	foreach (QString token, tokens) {
+	foreach (QString const &token, tokens) {
 		upperedTokens.append(token.at(0).toUpper() + token.mid(1));
 	}
 	return upperedTokens.join("_");
@@ -37,9 +34,9 @@ QString NameNormalizer::lowerFirst(QString const &string)
 	if (string.size() < 1) {
 		return "";
 	}
-	QStringList tokens = string.split(" ");
+	QStringList const tokens = string.split(" ");
 	QStringList loweredTokens;
-	foreach (QString token, tokens) {
+	foreach (QString const &token, tokens) {
 		loweredTokens.append(token.at(0).toLower() + token.mid(1));
 	}
 	return loweredTokens.join("_");

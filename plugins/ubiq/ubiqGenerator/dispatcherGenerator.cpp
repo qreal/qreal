@@ -23,7 +23,7 @@ void DispatcherGenerator::generate()
 {
 	loadUtilsTemplates();
 
-	foreach (Id const masterNode, mApi.elementsByType("MasterNode")) {  // get master node
+	foreach (Id const &masterNode, mApi.elementsByType("MasterNode")) {  // get master node
 		if (!mApi.isLogicalElement(masterNode)) {
 			continue;
 		}
@@ -50,8 +50,8 @@ void DispatcherGenerator::generate()
 QString DispatcherGenerator::generateEventHandlers(Id const &diagram) const
 {
 	QString eventHadlers;
-	foreach (Id const element, mApi.children(diagram)) {  // get elements on master node
-		if (!mApi.isLogicalElement(element) || (element.element() != "Handler")) {
+	foreach (Id const &element, mApi.children(diagram)) {  // get elements on master node
+		if (!mApi.isLogicalElement(element) || element.element() != "Handler") {
 			continue;
 		}
 
@@ -63,8 +63,8 @@ QString DispatcherGenerator::generateEventHandlers(Id const &diagram) const
 QString DispatcherGenerator::generatePreprocessors(Id const &masterNode) const
 {
 	QString preprocessors;
-	foreach (Id const element, mApi.children(masterNode)) {  // get elements on master node
-		if (!mApi.isLogicalElement(element) || (element.element() != "Preprocessor")) {
+	foreach (Id const &element, mApi.children(masterNode)) {  // get elements on master node
+		if (!mApi.isLogicalElement(element) || element.element() != "Preprocessor") {
 			continue;
 		}
 
@@ -76,7 +76,7 @@ QString DispatcherGenerator::generatePreprocessors(Id const &masterNode) const
 QString DispatcherGenerator::generateConstants(qReal::Id const &element) const
 {
 	QString result;
-	foreach (Id const id, mApi.children(element)) {
+	foreach (Id const &id, mApi.children(element)) {
 		if (!mApi.isLogicalElement(id) || id.element() != "MasterDiagramConstant") {
 			continue;
 		}
@@ -98,7 +98,7 @@ QString DispatcherGenerator::generateConstants(qReal::Id const &element) const
 QString DispatcherGenerator::generateFields(qReal::Id const &element) const
 {
 	QString result;
-	foreach (Id const id, mApi.children(element)) {
+	foreach (Id const &id, mApi.children(element)) {
 		if (!mApi.isLogicalElement(id) || id.element() != "MasterDiagramField") {
 			continue;
 		}
@@ -126,7 +126,7 @@ QString DispatcherGenerator::generateFields(qReal::Id const &element) const
 QString DispatcherGenerator::generateMessageInputMethods(qReal::Id const &element) const
 {
 	QString result;
-	foreach (Id const id, mApi.children(element)) {
+	foreach (Id const &id, mApi.children(element)) {
 		if (!mApi.isLogicalElement(id) || id.element() != "Handler") {
 			continue;
 		}
@@ -149,7 +149,7 @@ QString DispatcherGenerator::generateMessageInputMethods(qReal::Id const &elemen
 QString DispatcherGenerator::generateHelperFunctions(qReal::Id const &element) const
 {
 	QString result;
-	foreach (Id const diagram, mApi.outgoingConnections(element)) {
+	foreach (Id const &diagram, mApi.outgoingConnections(element)) {
 		if (!mApi.isLogicalElement(diagram) || diagram.element() != "UbiqActivityDiagram") {
 			continue;
 		}
@@ -184,7 +184,7 @@ QString DispatcherGenerator::generateHelperFunctions(qReal::Id const &element) c
 QString DispatcherGenerator::generateFunctionParameters(qReal::Id const &element) const
 {
 	QString result;
-	foreach (Id const id, mApi.children(element)) {
+	foreach (Id const &id, mApi.children(element)) {
 		if (!mApi.isLogicalElement(id) || id.element() != "FormalParameter") {
 			continue;
 		}
@@ -210,7 +210,7 @@ QString DispatcherGenerator::generateEventHandler(QString const &handlerName) co
 	QString handlerCode = mTemplateUtils["@@EventHandler@@"];
 	handlerCode.replace("@@HandlerName@@", handlerName);
 
-	foreach (Id const diagram, mApi.elementsByType("UbiqActivityDiagram")) {
+	foreach (Id const &diagram, mApi.elementsByType("UbiqActivityDiagram")) {
 		// search for the diagram with name handlerName
 		if (!mApi.isLogicalElement(diagram) || (mApi.name(diagram) != handlerName)) {
 			continue;
@@ -258,14 +258,14 @@ QString DispatcherGenerator::generatePreprocessor(QString const &preprocessorNam
 	QString preprocessorCode = mTemplateUtils["@@Preprocessor@@"];
 	preprocessorCode.replace("@@PreprocessorName@@", preprocessorName);
 
-	foreach (Id const diagram, mApi.elementsByType("UbiqActivityDiagram")) {
+	foreach (Id const &diagram, mApi.elementsByType("UbiqActivityDiagram")) {
 		// search for the diagram with name preprocessorName
 		if (!mApi.isLogicalElement(diagram) || (mApi.name(diagram) != preprocessorName)) {
 			continue;
 		}
 
 		QString code;
-		foreach (Id const child, mApi.children(diagram)) {
+		foreach (Id const &child, mApi.children(diagram)) {
 			if (!mApi.isLogicalElement(child) || (child.element() != "InitialNode")) {
 				continue;
 			}
@@ -281,7 +281,7 @@ QString DispatcherGenerator::generatePreprocessor(QString const &preprocessorNam
 
 QString DispatcherGenerator::generateCaseBody(qReal::Id const &handlerStart) const
 {
-	IdList links = mApi.outgoingLinks(handlerStart);
+	IdList const links = mApi.outgoingLinks(handlerStart);
 	if (links.size() > 1) {
 		mErrorReporter.addError(QObject::tr("Start node should have exactly 1 outgoing link"), handlerStart);
 		return "";

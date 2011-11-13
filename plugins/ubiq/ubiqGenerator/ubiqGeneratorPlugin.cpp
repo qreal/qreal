@@ -25,7 +25,7 @@ qReal::Customizer* UbiqGeneratorPlugin::customizationInterface()
 
 QList<ActionInfo> UbiqGeneratorPlugin::actions()
 {
-	QAction *generateAction = new QAction(QObject::tr("generate"), NULL);
+	QAction * const generateAction = new QAction(QObject::tr("generate"), NULL);
 	ActionInfo generateActionInfo(generateAction, "interpreters", "tools");
 	QObject::connect(generateAction, SIGNAL(triggered()), &mGenerator, SLOT(generate()));
 

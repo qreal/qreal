@@ -97,7 +97,7 @@ bool AbstractGenerator::loadUtilsFromDir()
 
 	QStringList const files = dir.entryList(QStringList());
 
-	foreach (QString const fileName, files) {
+	foreach (QString const &fileName, files) {
 		if (fileName == "." || fileName == "..") {
 			continue;
 		}
@@ -172,7 +172,7 @@ QString AbstractGenerator::getDefaultValue(QString const &type)
 QString AbstractGenerator::generatePropertiesCode(Id const &element)
 {
 	QString properties;
-	foreach (Id const property, mApi.children(element)) {
+	foreach (Id const &property, mApi.children(element)) {
 		if (!mApi.isLogicalElement(property) || property.element() != "Field") {
 			continue;
 		}

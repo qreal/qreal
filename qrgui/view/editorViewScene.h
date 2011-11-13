@@ -96,6 +96,8 @@ private slots:
 	void drawIdealGesture();
 	void initMouseMoveManager();
 	void createEdge(QString const &);
+
+	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
 	void getObjectByGesture();
 
 private:
