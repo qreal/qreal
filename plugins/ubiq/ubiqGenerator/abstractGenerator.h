@@ -21,8 +21,8 @@ class AbstractGenerator
 {
 public:
 	/** Constructor.
-	  @param templateFilePath Path to a directory with generation templates.
-	  @param outputFilePath Path to a directory where file shall be generated.
+	  @param templateDirPath Path to a directory with generation templates.
+	  @param outputDirPath Path to a directory where file shall be generated.
 	  @param logicalModel Logical model reference.
 	  @param errorReporter Object to return errors to.
 	  */

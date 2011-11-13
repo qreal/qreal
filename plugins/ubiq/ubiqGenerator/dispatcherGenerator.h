@@ -13,8 +13,8 @@ class DispatcherGenerator : public AbstractGenerator
 {
 public:
 	/** Constructor.
-	  @param templateFilePath Path to a directory with generation template.
-	  @param outputFilePath Path to a directory where DeviceDispatcher.cs shall be generated.
+	  @param templateDirPath Path to a directory with generation template.
+	  @param outputDirPath Path to a directory where DeviceDispatcher.cs shall be generated.
 	  @param logicalModel Logical model reference.
 	  @param errorReporter Object to return errors to.
 	  */

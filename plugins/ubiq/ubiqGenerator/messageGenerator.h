@@ -15,13 +15,13 @@ class MessageGenerator : public AbstractGenerator
 {
 public:
 	/** Constructor.
-	  @param templateFilePath Path to a directory with generation template.
-	  @param outputFilePath Path to a directory where Message.cs shall be generated.
+	  @param templateDirPath Path to a directory with generation template.
+	  @param outputDirPath Path to a directory where Message.cs shall be generated.
 	  @param logicalModel Logical model reference.
 	  @param errorReporter Object to return errors to.
 	  */
-	MessageGenerator(QString const &templateFilePath
-			, QString const &outputFilePath
+	MessageGenerator(QString const &templateDirPath
+			, QString const &outputDirPath
 			, qReal::LogicalModelAssistInterface const &logicalModel
 			, qReal::ErrorReporterInterface &errorReporter
 			);
