@@ -43,12 +43,14 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent) :
 			}
 		}
 		int const defaultIndex = mUi->comPortComboBox->findText(defaultPortName);
-		if (defaultIndex != -1)
+		if (defaultIndex != -1) {
 			mUi->comPortComboBox->setCurrentIndex(defaultIndex);
+		}
 	}
 
-	if (SettingsManager::value("manualComPortCheckboxChecked", "false").toBool())
+	if (SettingsManager::value("manualComPortCheckboxChecked", "false").toBool()) {
 		mUi->manualComPortCheckbox->setChecked(true);
+	}
 
 	QStringList sensorNames;
 	sensorNames << tr("Unused")
@@ -130,8 +132,9 @@ void PreferencesRobotSettingsPage::initRobotModelType(robotModelType::robotModel
 	} else if (type == robotModelType::unreal) {
 		mUi->d2ModelRadioButton->setChecked(true);
 		activatedUnrealModel(true);
-	} else
+	} else {
 		mUi->realModelRadioButton->setChecked(true);
+	}
 }
 
 void PreferencesRobotSettingsPage::initTypeOfCommunication(QString type)
@@ -144,12 +147,13 @@ void PreferencesRobotSettingsPage::initTypeOfCommunication(QString type)
 
 robotModelType::robotModelTypeEnum PreferencesRobotSettingsPage::selectedRobotModel() const
 {
-	if (mUi->nullModelRadioButton->isChecked())
+	if (mUi->nullModelRadioButton->isChecked()) {
 		return robotModelType::null;
-	else if (mUi->d2ModelRadioButton->isChecked())
+	} else if (mUi->d2ModelRadioButton->isChecked()) {
 		return robotModelType::unreal;
-	else
+	} else {
 		return robotModelType::real;
+	}
 }
 
 QString PreferencesRobotSettingsPage::selectedCommunication() const
@@ -161,10 +165,7 @@ QString PreferencesRobotSettingsPage::selectedCommunication() const
 
 void PreferencesRobotSettingsPage::activatedUnrealModel(bool checked)
 {
-	if (checked)
-		mUi->bluetoothSettingsGroupBox->setEnabled(false);
-	else
-		mUi->bluetoothSettingsGroupBox->setEnabled(true);
+	mUi->bluetoothSettingsGroupBox->setEnabled(!checked);
 }
 
 void PreferencesRobotSettingsPage::manualComPortCheckboxChecked(bool state)
@@ -189,8 +190,9 @@ void PreferencesRobotSettingsPage::manualComPortCheckboxChecked(bool state)
 
 QString PreferencesRobotSettingsPage::selectedPortName() const
 {
-	if (!isVisible())
+	if (!isVisible()) {
 		return SettingsManager::value("bluetoothPortName", "").toString();
+	}
 
 	return mUi->comPortComboBox->isVisible()
 			? mUi->comPortComboBox->currentText()

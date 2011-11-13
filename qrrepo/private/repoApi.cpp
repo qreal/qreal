@@ -7,7 +7,7 @@ using namespace qrRepo::details;
 using namespace qReal;
 
 RepoApi::RepoApi(QString const &workingDirectory)
-	: mClient(workingDirectory)
+		: mClient(workingDirectory)
 {
 }
 
@@ -35,6 +35,11 @@ void RepoApi::addChild(Id const &id, Id const &child)
 void RepoApi::addChild(Id const &id, Id const &child, Id const &logicalId)
 {
 	mClient.addChild(id, child, logicalId);
+}
+
+void RepoApi::stackBefore(Id const &id, Id const &child, Id const &sibling)
+{
+	mClient.stackBefore(id, child, sibling);
 }
 
 Id RepoApi::copy(qReal::Id const &src)
