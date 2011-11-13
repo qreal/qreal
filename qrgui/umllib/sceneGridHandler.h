@@ -44,7 +44,6 @@ private:
 
 	QList<QGraphicsLineItem*> mLines;
 	NodeElement *mNode;
-	QGraphicsScene *mScene;
 
 	bool mShowAlignment;
 	/** @brief if true, the object will be aligned to indexGrid */
