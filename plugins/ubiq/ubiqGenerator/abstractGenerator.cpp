@@ -37,8 +37,9 @@ QDir AbstractGenerator::getDir(QString const &path)
 bool AbstractGenerator::loadTemplateFromFile(QString const &templateFileName, QString &loadedTemplate)
 {
 	QDir const dir = getDir(mTemplateDirPath);
-	if (dir == QDir())
+	if (dir == QDir()) {
 		return false;
+	}
 
 	QString const fileName = dir.absoluteFilePath(templateFileName);
 	QFile file(fileName);
@@ -56,8 +57,9 @@ bool AbstractGenerator::loadTemplateFromFile(QString const &templateFileName, QS
 bool AbstractGenerator::loadUtilsFromFile()
 {
 	QDir const dir = getDir(mTemplateDirPath);
-	if (dir == QDir())
+	if (dir == QDir()) {
 		return false;
+	}
 
 	QString const fileName = dir.absoluteFilePath(utilsFileName);
 	QFile utilsFile(fileName);
@@ -89,14 +91,16 @@ bool AbstractGenerator::loadUtilsFromFile()
 bool AbstractGenerator::loadUtilsFromDir()
 {
 	QDir const dir = getDir(mTemplateDirPath + "/utils");
-	if (dir == QDir())
+	if (dir == QDir()) {
 		return false;
+	}
 
 	QStringList const files = dir.entryList(QStringList());
 
 	foreach (QString const fileName, files) {
-		if (fileName == "." || fileName == "..")
+		if (fileName == "." || fileName == "..") {
 			continue;
+		}
 
 		// file name is template name, file contents is template body
 		QString const file = dir.absoluteFilePath(fileName);
@@ -117,8 +121,9 @@ bool AbstractGenerator::loadUtilsFromDir()
 		}
 
 		QString const name = "@@" + fileName + "@@";
-		if (!mTemplateUtils.contains(name))
+		if (!mTemplateUtils.contains(name)) {
 			mTemplateUtils[name] = body;
+		}
 
 		templateFile.close();
 	}
@@ -137,8 +142,9 @@ void AbstractGenerator::saveOutputFile(QString const &fileName, QString const &c
 {
 	QDir dir;
 
-	if (!dir.exists(mOutputDirPath))
+	if (!dir.exists(mOutputDirPath)) {
 		dir.mkdir(mOutputDirPath);
+	}
 	dir.cd(mOutputDirPath);
 
 	QString const outputFileName = dir.absoluteFilePath(fileName);
@@ -156,8 +162,9 @@ void AbstractGenerator::saveOutputFile(QString const &fileName, QString const &c
 QString AbstractGenerator::getDefaultValue(QString const &type)
 {
 	// Here to write all other needed types.
-	if (type == "short" || type == "int")
+	if (type == "short" || type == "int") {
 		return "0";
+	}
 
 	return "new " + type + "()";
 }
@@ -166,8 +173,9 @@ QString AbstractGenerator::generatePropertiesCode(Id const &element)
 {
 	QString properties;
 	foreach (Id const property, mApi.children(element)) {
-		if (!mApi.isLogicalElement(property) || property.element() != "Field")
+		if (!mApi.isLogicalElement(property) || property.element() != "Field") {
 			continue;
+		}
 
 		// generate property code
 		QString propertyTemplate = mTemplateUtils["@@Property@@"];

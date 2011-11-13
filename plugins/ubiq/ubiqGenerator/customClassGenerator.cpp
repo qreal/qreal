@@ -63,13 +63,15 @@ void CustomClassGenerator::generate()
 	loadUtilsTemplates();
 
 	foreach (Id const diagram, mApi.elementsByType("DataStructuresDiagram")) {  // for each diagram
-		if (!mApi.isLogicalElement(diagram))
+		if (!mApi.isLogicalElement(diagram)) {
 			continue;
+		}
 
 		// get custom classes
 		foreach (Id const element, mApi.children(diagram)) {
-			if (!mApi.isLogicalElement(element) || (element.element() != customClassLabel))
+			if (!mApi.isLogicalElement(element) || (element.element() != customClassLabel)) {
 				continue;
+			}
 
 			QString const templateName = "CustomClass.cs";
 

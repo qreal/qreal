@@ -24,8 +24,9 @@ void DispatcherGenerator::generate()
 	loadUtilsTemplates();
 
 	foreach (Id const masterNode, mApi.elementsByType("MasterNode")) {  // get master node
-		if (!mApi.isLogicalElement(masterNode))
+		if (!mApi.isLogicalElement(masterNode)) {
 			continue;
+		}
 
 		QString const templateName = "DeviceDispatcher.cs";
 
@@ -50,8 +51,9 @@ QString DispatcherGenerator::generateEventHandlers(Id const &diagram) const
 {
 	QString eventHadlers;
 	foreach (Id const element, mApi.children(diagram)) {  // get elements on master node
-		if (!mApi.isLogicalElement(element) || (element.element() != "Handler"))
+		if (!mApi.isLogicalElement(element) || (element.element() != "Handler")) {
 			continue;
+		}
 
 		eventHadlers += generateEventHandler(mApi.name(element));  // generate code for each event handler
 	}
@@ -62,8 +64,9 @@ QString DispatcherGenerator::generatePreprocessors(Id const &masterNode) const
 {
 	QString preprocessors;
 	foreach (Id const element, mApi.children(masterNode)) {  // get elements on master node
-		if (!mApi.isLogicalElement(element) || (element.element() != "Preprocessor"))
+		if (!mApi.isLogicalElement(element) || (element.element() != "Preprocessor")) {
 			continue;
+		}
 
 		preprocessors += generatePreprocessor(mApi.name(element));  // generate code for each event handler
 	}
@@ -74,8 +77,9 @@ QString DispatcherGenerator::generateConstants(qReal::Id const &element) const
 {
 	QString result;
 	foreach (Id const id, mApi.children(element)) {
-		if (!mApi.isLogicalElement(id) || id.element() != "MasterDiagramConstant")
+		if (!mApi.isLogicalElement(id) || id.element() != "MasterDiagramConstant") {
 			continue;
+		}
 
 		QString constantTemplate = mTemplateUtils["@@MasterDiagramConstant@@"];
 		QString const name = mApi.name(id);
@@ -95,8 +99,9 @@ QString DispatcherGenerator::generateFields(qReal::Id const &element) const
 {
 	QString result;
 	foreach (Id const id, mApi.children(element)) {
-		if (!mApi.isLogicalElement(id) || id.element() != "MasterDiagramField")
+		if (!mApi.isLogicalElement(id) || id.element() != "MasterDiagramField") {
 			continue;
+		}
 
 		QString const name = mApi.name(id);
 		QString const type = mApi.stringProperty(id, "type");
@@ -122,8 +127,9 @@ QString DispatcherGenerator::generateMessageInputMethods(qReal::Id const &elemen
 {
 	QString result;
 	foreach (Id const id, mApi.children(element)) {
-		if (!mApi.isLogicalElement(id) || id.element() != "Handler")
+		if (!mApi.isLogicalElement(id) || id.element() != "Handler") {
 			continue;
+		}
 
 		QString const name = mApi.name(id);
 		QString const messageInputMethod = mTemplateUtils["@@" + name + "Input@@"].trimmed();
@@ -144,20 +150,23 @@ QString DispatcherGenerator::generateHelperFunctions(qReal::Id const &element) c
 {
 	QString result;
 	foreach (Id const diagram, mApi.outgoingConnections(element)) {
-		if (!mApi.isLogicalElement(diagram) || diagram.element() != "UbiqActivityDiagram")
+		if (!mApi.isLogicalElement(diagram) || diagram.element() != "UbiqActivityDiagram") {
 			continue;
+		}
 
 		foreach (Id const &id, mApi.children(diagram)) {
-			if (!mApi.isLogicalElement(id) || (id.element() != "FormalParameters"))
+			if (!mApi.isLogicalElement(id) || (id.element() != "FormalParameters")) {
 				continue;
+			}
 
 			QString const name = mApi.name(id);
 			QString const returnType = mApi.stringProperty(id, "returnType");
 			QString const parameters = generateFunctionParameters(id);
 			QString body = generateFunctionBody(id);
 
-			if (body.endsWith('\n'))
+			if (body.endsWith('\n')) {
 				body.chop(1);
+			}
 
 			QString helperFunctionTemplate = mTemplateUtils["@@HelperFunction@@"];
 			helperFunctionTemplate.replace("@@Name@@", name)
@@ -176,8 +185,9 @@ QString DispatcherGenerator::generateFunctionParameters(qReal::Id const &element
 {
 	QString result;
 	foreach (Id const id, mApi.children(element)) {
-		if (!mApi.isLogicalElement(id) || id.element() != "FormalParameter")
+		if (!mApi.isLogicalElement(id) || id.element() != "FormalParameter") {
 			continue;
+		}
 
 		QString argumentTemplate = mTemplateUtils["@@Argument@@"].trimmed();
 		argumentTemplate.replace("@@ArgType@@", mApi.stringProperty(id, "type"))
@@ -202,14 +212,16 @@ QString DispatcherGenerator::generateEventHandler(QString const &handlerName) co
 
 	foreach (Id const diagram, mApi.elementsByType("UbiqActivityDiagram")) {
 		// search for the diagram with name handlerName
-		if (!mApi.isLogicalElement(diagram) || (mApi.name(diagram) != handlerName))
+		if (!mApi.isLogicalElement(diagram) || (mApi.name(diagram) != handlerName)) {
 			continue;
+		}
 
 		// diagram found, now get HandlerStart-s and generate cases
 		QString cases;
 		foreach (Id const &element, mApi.children(diagram)) {
-			if (!mApi.isLogicalElement(element) || (element.element() != "HandlerStart"))
+			if (!mApi.isLogicalElement(element) || (element.element() != "HandlerStart")) {
 				continue;
+			}
 
 			QString caseStmts;
 			foreach (QString const &caseLabel, mApi.name(element).split(",", QString::SkipEmptyParts)) {
@@ -221,11 +233,13 @@ QString DispatcherGenerator::generateEventHandler(QString const &handlerName) co
 			QString caseCodeTemplate = mTemplateUtils["@@SwitchCase@@"];
 
 			QString body = generateCaseBody(element);
-			if (body.endsWith('\n'))
+			if (body.endsWith('\n')) {
 				body.chop(1);
+			}
 
-			if (caseStmts.endsWith('\n'))
+			if (caseStmts.endsWith('\n')) {
 				caseStmts.chop(1);
+			}
 
 			caseCodeTemplate.replace("@@Cases@@", caseStmts)
 					.replace("@@CaseCode@@", body)
@@ -246,13 +260,15 @@ QString DispatcherGenerator::generatePreprocessor(QString const &preprocessorNam
 
 	foreach (Id const diagram, mApi.elementsByType("UbiqActivityDiagram")) {
 		// search for the diagram with name preprocessorName
-		if (!mApi.isLogicalElement(diagram) || (mApi.name(diagram) != preprocessorName))
+		if (!mApi.isLogicalElement(diagram) || (mApi.name(diagram) != preprocessorName)) {
 			continue;
+		}
 
 		QString code;
 		foreach (Id const child, mApi.children(diagram)) {
-			if (!mApi.isLogicalElement(child) || (child.element() != "InitialNode"))
+			if (!mApi.isLogicalElement(child) || (child.element() != "InitialNode")) {
 				continue;
+			}
 
 			code = generateOperatorCode(child).text;
 		}
@@ -286,8 +302,9 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 	if (currentNode.element() == "FunctionCall") {
 		QString code = mApi.name(currentNode) + "(";
 		foreach (Id const &argument, mApi.children(currentNode)) {
-			if (!mApi.isLogicalElement(argument) || (argument.element() != "ActualParameter"))
+			if (!mApi.isLogicalElement(argument) || (argument.element() != "ActualParameter")) {
 				continue;
+			}
 
 			code += (mApi.name(argument) + ", ");
 		}
@@ -296,14 +313,15 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 
 		QString returnValue;
 		foreach (Id const &argument, mApi.children(currentNode)) {
-			if (!mApi.isLogicalElement(argument) || (argument.element() != "ReturnValue"))
+			if (!mApi.isLogicalElement(argument) || (argument.element() != "ReturnValue")) {
 				continue;
+			}
 
-			if (!returnValue.isEmpty())
-			{
+			if (!returnValue.isEmpty()) {
 				mErrorReporter.addError(QObject::tr("FunctionCall shall have no more than one return value"), currentNode);
 				return CodeBranchGenerationResult("", currentNode);
 			}
+
 			QString returnValueTemplate = mTemplateUtils["@@ReturnValue@@"];
 			QString const type = mApi.stringProperty(argument, "type").isEmpty()
 					? ""
@@ -312,11 +330,13 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 			returnValueTemplate.replace("@@OptionalType@@", type)
 					.replace("@@Name@@", mApi.name(argument))
 					;
+
 			returnValue += returnValueTemplate;
 		}
 
-		if (returnValue.endsWith('\n'))
+		if (returnValue.endsWith('\n')) {
 			returnValue.chop(1);
+		}
 
 		code = returnValue + code;
 
@@ -324,9 +344,9 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 
 		IdList const links = mApi.outgoingLinks(currentNode);
 
-		if (links.size() == 0)
+		if (links.size() == 0) {
 			return CodeBranchGenerationResult(operatorCode, currentNode);
-		else if (links.size() > 1) {
+		} else if (links.size() > 1) {
 			mErrorReporter.addError(QObject::tr("FunctionCall node should have exactly 1 outgoing link"), currentNode);
 			return CodeBranchGenerationResult("", currentNode);
 		}
@@ -343,9 +363,9 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 
 		IdList const links = mApi.outgoingLinks(currentNode);
 
-		if (links.size() == 0)
+		if (links.size() == 0) {
 			return CodeBranchGenerationResult(operatorCode, currentNode);
-		else if (links.size() > 1) {
+		} else if (links.size() > 1) {
 			mErrorReporter.addError(QObject::tr("Action node should have exactly 1 outgoing link"), currentNode);
 			return CodeBranchGenerationResult("", currentNode);
 		}
@@ -383,9 +403,9 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 
 		IdList const links = mApi.outgoingLinks(currentNode);
 
-		if (links.size() == 0)
+		if (links.size() == 0) {
 			return CodeBranchGenerationResult(operatorCode, currentNode);
-		else {
+		} else {
 			mErrorReporter.addError(QObject::tr("ReturnAction node shall have no outgoing links"), currentNode);
 			return CodeBranchGenerationResult("", currentNode);
 		}
@@ -397,16 +417,16 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 
 		foreach (Id const &link, mApi.outgoingLinks(currentNode)) {
 			if (!mApi.stringProperty(link, "guard").isEmpty()) {
-				if (thenBranch == Id())
+				if (thenBranch == Id()) {
 					thenBranch = link;
-				else {
+				} else {
 					mErrorReporter.addError(QObject::tr("Decision node shall have exactly one outgoing link with guard"), currentNode);
 					return CodeBranchGenerationResult("", currentNode);
 				}
 			} else {
-				if (elseBranch == Id())
+				if (elseBranch == Id()) {
 					elseBranch = link;
-				else {
+				} else {
 					mErrorReporter.addError(QObject::tr("Decision node shall have exactly one outgoing link without guard"), currentNode);
 					return CodeBranchGenerationResult("", currentNode);
 				}
@@ -429,10 +449,12 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 		CodeBranchGenerationResult thenBranchGenerationResult = generateOperatorCode(mApi.otherEntityFromLink(thenBranch, currentNode));
 		CodeBranchGenerationResult elseBranchGenerationResult = generateOperatorCode(mApi.otherEntityFromLink(elseBranch, currentNode));
 
-		if (thenBranchGenerationResult.text.endsWith('\n'))
+		if (thenBranchGenerationResult.text.endsWith('\n')) {
 			thenBranchGenerationResult.text.chop(1);
-		if (elseBranchGenerationResult.text.endsWith('\n'))
+		}
+		if (elseBranchGenerationResult.text.endsWith('\n')) {
 			elseBranchGenerationResult.text.chop(1);
+		}
 
 		Id nextNode;
 		if (thenBranchGenerationResult.stopNode.element() == "MergeNode") {
@@ -445,8 +467,9 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 			}
 		}
 
-		if (elseBranchGenerationResult.text.trimmed().isEmpty())
+		if (elseBranchGenerationResult.text.trimmed().isEmpty()) {
 			ifTemplate = mTemplateUtils["@@IfWithoutElse@@"];
+		}
 
 		ifTemplate.replace("@@Condition@@", guard)
 				.replace("@@Then@@", thenBranchGenerationResult.text)
@@ -460,9 +483,9 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 		}
 
 		IdList const links = mApi.outgoingLinks(nextNode);
-		if (links.size() == 0)
+		if (links.size() == 0) {
 			return CodeBranchGenerationResult(operatorCode, nextNode);
-		else if (links.size() > 1) {
+		} else if (links.size() > 1) {
 			mErrorReporter.addError(QObject::tr("Branches merge node should have no more than 1 outgoing link"), currentNode);
 			return CodeBranchGenerationResult("", nextNode);
 		}

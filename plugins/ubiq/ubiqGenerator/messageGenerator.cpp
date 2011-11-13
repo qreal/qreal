@@ -32,8 +32,9 @@ void MessageGenerator::generate()
 	loadUtilsTemplates();
 
 	foreach (Id const diagram, mApi.elementsByType("DataStructuresDiagram")) {
-		if (!mApi.isLogicalElement(diagram))
+		if (!mApi.isLogicalElement(diagram)) {
 			continue;
+		}
 
 		foreach (Id const element, mApi.children(diagram)) {
 			if (!mApi.isLogicalElement(element))
@@ -63,8 +64,9 @@ QString MessageGenerator::generateEnumElements(qReal::Id const &element) const
 {
 	QString result;
 	foreach (Id const id, mApi.children(element)) {
-		if (!mApi.isLogicalElement(id) || id.element() != "EnumElement")
+		if (!mApi.isLogicalElement(id) || id.element() != "EnumElement") {
 			continue;
+		}
 
 		QString propertyTemplate = mTemplateUtils["@@EnumElement@@"];
 		QString const name = mApi.name(id);
@@ -81,8 +83,9 @@ QString MessageGenerator::generateDefaultFieldsInitialization(qReal::Id const &e
 {
 	QString fieldsInitialization;
 	foreach (Id const property, mApi.children(element)) {
-		if (!mApi.isLogicalElement(property) || property.element() != "Field")
+		if (!mApi.isLogicalElement(property) || property.element() != "Field") {
 			continue;
+		}
 
 		QString initTemplate = mTemplateUtils["@@FieldInit@@"];
 		QString const name = mApi.name(property);
@@ -104,8 +107,9 @@ QString MessageGenerator::generateFieldsInitialization(qReal::Id const &element)
 {
 	QString fieldsInitialization;
 	foreach (Id const property, mApi.children(element)) {
-		if (!mApi.isLogicalElement(property) || property.element() != "Field")
+		if (!mApi.isLogicalElement(property) || property.element() != "Field") {
 			continue;
+		}
 
 		QString initTemplate = mTemplateUtils["@@FieldInit@@"];
 		QString argName = mApi.name(property);
@@ -122,8 +126,9 @@ QString MessageGenerator::generateConstructorArguments(qReal::Id const &element)
 {
 	QString parametersList;
 	foreach (Id const property, mApi.children(element)) {
-		if (!mApi.isLogicalElement(property) || property.element() != "Field")
+		if (!mApi.isLogicalElement(property) || property.element() != "Field") {
 			continue;
+		}
 
 		QString argumentTemplate = mTemplateUtils["@@Argument@@"];
 		QString argName = NameNormalizer::normalize(mApi.name(property), false);
@@ -138,8 +143,9 @@ QString MessageGenerator::generateConstructorActualArguments(qReal::Id const &el
 {
 	QString parametersList;
 	foreach (Id const property, mApi.children(element)) {
-		if (!mApi.isLogicalElement(property) || property.element() != "Field")
+		if (!mApi.isLogicalElement(property) || property.element() != "Field") {
 			continue;
+		}
 
 		QString argName = NameNormalizer::normalize(mApi.name(property), false);
 		parametersList += (argName + ", ");
@@ -161,11 +167,13 @@ QString MessageGenerator::generateSerializationRelatedCode(qReal::Id const &elem
 {
 	QString serializersList;
 	foreach (Id const property, mApi.children(element)) {
-		if (!mApi.isLogicalElement(property) || property.element() != "Field")
+		if (!mApi.isLogicalElement(property) || property.element() != "Field") {
 			continue;
+		}
 
-		if (!mApi.property(property, "serialize").toBool())
+		if (!mApi.property(property, "serialize").toBool()) {
 			continue;
+		}
 
 		QString const name = mApi.name(property);
 		QString const type = mApi.stringProperty(property, "type");
@@ -179,8 +187,9 @@ QString MessageGenerator::generateSerializationRelatedCode(qReal::Id const &elem
 			}
 		}
 
-		if (serializationTemplate.isEmpty())
+		if (serializationTemplate.isEmpty()) {
 			serializationTemplate = mTemplateUtils["@@" + method + "_" + type + "@@"];
+		}
 
 		serializationTemplate.replace("@@Name@@", name);
 		serializersList += serializationTemplate;
