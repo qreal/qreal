@@ -22,9 +22,6 @@
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"
 
-const int widthLineX = 1500;
-const int widthLineY = 1100;
-
 class NodeElement : public Element
 {
 	Q_OBJECT
