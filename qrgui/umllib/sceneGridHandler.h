@@ -10,7 +10,7 @@ class NodeElement;
 class SceneGridHandler
 {
 public:
-	SceneGridHandler(NodeElement *mNode);
+	explicit SceneGridHandler(NodeElement *mNode);
 
 	void delUnusedLines();
 
@@ -54,12 +54,11 @@ private:
 	QPen mGuidesPen;
 
 	/** @brief radius of guides appearing */
-	static qreal radius;
+	static qreal const radius = 20;
 	/** @brief minimum distance to approach to jump to the guide */
-	static qreal radiusJump;
+	static qreal const radiusJump = 10;
 	/** @brief spacing between element and guide */
-	static qreal spacing;
+	static qreal const spacing = 0;
 	/** @brief guides that have distance equal or less will be represented by only one of them */
-	static qreal indistinguishabilitySpace;
+	static qreal const indistinguishabilitySpace = 10;
 };
-

@@ -2,11 +2,6 @@
 #include "nodeElement.h"
 #include "../view/editorViewScene.h"
 
-qreal SceneGridHandler::radius = 20;
-qreal SceneGridHandler::radiusJump = 10;
-qreal SceneGridHandler::spacing = 0;
-qreal SceneGridHandler::indistinguishabilitySpace = 10;
-
 namespace {
 // magic constants
 const int widthLineX = 1500;
@@ -31,12 +26,12 @@ void SceneGridHandler::delUnusedLines()
 
 void SceneGridHandler::drawLineY(qreal pointY, qreal myX)
 {
-	QRectF sceneRect = mNode->scene()->sceneRect();
+	QRectF const sceneRect = mNode->scene()->sceneRect();
 
-	qreal x1 = qMax(myX - widthLineY / 2, sceneRect.x() + 10);
-	qreal x2 = qMin(myX + widthLineY / 2, sceneRect.x() + sceneRect.width() - 10);
+	qreal const x1 = qMax(myX - widthLineY / 2, sceneRect.x() + 10);
+	qreal const x2 = qMin(myX + widthLineY / 2, sceneRect.x() + sceneRect.width() - 10);
 
-	QLineF line(x1, pointY, x2, pointY);
+	QLineF const line(x1, pointY, x2, pointY);
 
 	// checking whether the scene already has this line or not.
 	// if not (lineIsFound is false), then adding it
@@ -52,12 +47,12 @@ void SceneGridHandler::drawLineY(qreal pointY, qreal myX)
 
 void SceneGridHandler::drawLineX(qreal pointX, qreal myY)
 {
-	QRectF sceneRect = mNode->scene()->sceneRect();
+	QRectF const sceneRect = mNode->scene()->sceneRect();
 
-	qreal y1 = qMax(myY - widthLineY / 2, sceneRect.y() + 10);
-	qreal y2 = qMin(myY + widthLineY / 2, sceneRect.y() + sceneRect.height() - 10);
+	qreal const y1 = qMax(myY - widthLineY / 2, sceneRect.y() + 10);
+	qreal const y2 = qMin(myY + widthLineY / 2, sceneRect.y() + sceneRect.height() - 10);
 
-	QLineF line(pointX, y1, pointX, y2);
+	QLineF const line(pointX, y1, pointX, y2);
 
 	// checking whether the scene already has this line or not.
 	// if not (lineIsFound is false), then adding it
@@ -94,7 +89,7 @@ bool SceneGridHandler::makeJumpY(qreal deltaY, qreal pointY)
 
 // build a vertical line: draw it and check for alignment
 void SceneGridHandler::buildLineX(qreal deltaX
-	, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2, qreal myY)
+		, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2, qreal myY)
 {
 	if (deltaX > radius) {
 		return;
@@ -149,10 +144,8 @@ qreal SceneGridHandler::recalculateY2(qreal myY1)
 // move element vertically according to the grid
 void SceneGridHandler::makeGridMovingX(qreal myX, int koef, int indexGrid)
 {
-	int oneKoef = 0;
-	if (koef != 0) {
-		oneKoef = koef / qAbs(koef);
-	}
+	int oneKoef = koef != 0 ? koef / qAbs(koef) : 0;
+
 	if (qAbs(qAbs(myX) - qAbs(koef) * indexGrid) <= indexGrid / 2) {
 		mNode->setX(koef * indexGrid);
 		mNode->adjustLinks();
@@ -165,10 +158,8 @@ void SceneGridHandler::makeGridMovingX(qreal myX, int koef, int indexGrid)
 // move element horizontally according to the grid
 void SceneGridHandler::makeGridMovingY(qreal myY, int koef, int indexGrid)
 {
-	int oneKoef = 0;
-	if (koef != 0) {
-		oneKoef = koef / qAbs(koef);
-	}
+	int oneKoef = koef != 0 ? koef / qAbs(koef) : 0;
+
 	if (qAbs(qAbs(myY) - qAbs(koef) * indexGrid) <= indexGrid / 2) {
 		mNode->setY(koef * indexGrid);
 		mNode->adjustLinks();
@@ -200,8 +191,8 @@ void SceneGridHandler::mouseMoveEvent()
 	if (parItem != NULL) {
 		return;
 	}
-	QPointF nodeScenePos = mNode->scenePos();
-	QRectF contentsRect = mNode->contentsRect();
+	QPointF const nodeScenePos = mNode->scenePos();
+	QRectF const contentsRect = mNode->contentsRect();
 
 	qreal myX1 = nodeScenePos.x() + contentsRect.x();
 	qreal myY1 = nodeScenePos.y() + contentsRect.y();
@@ -240,19 +231,19 @@ void SceneGridHandler::mouseMoveEvent()
 			continue;
 		}
 
-		QPointF point = item->scenePos();
-		QRectF contents = item->contentsRect();
+		QPointF const point = item->scenePos();
+		QRectF const contents = item->contentsRect();
 
-		qreal pointX1 = point.x() + contents.x() - spacing;
-		qreal pointY1  = point.y() + contents.y() - spacing;
-		qreal pointX2 = pointX1  + contents.width() + 2 * spacing;
-		qreal pointY2  = pointY1 + contents.height() + 2 * spacing;
+		qreal const pointX1 = point.x() + contents.x() - spacing;
+		qreal const pointY1  = point.y() + contents.y() - spacing;
+		qreal const pointX2 = pointX1  + contents.width() + 2 * spacing;
+		qreal const pointY2  = pointY1 + contents.height() + 2 * spacing;
 
 		if (pointX1 != myX1 || pointY1 != myY1) {
-			qreal deltaY1 = qAbs(pointY1 - myY1);
-			qreal deltaY2 = qAbs(pointY2 - myY2);
-			qreal deltaX1 = qAbs(pointX1 - myX1);
-			qreal deltaX2 = qAbs(pointX2 - myX2);
+			qreal const deltaY1 = qAbs(pointY1 - myY1);
+			qreal const deltaY2 = qAbs(pointY2 - myY2);
+			qreal const deltaX1 = qAbs(pointX1 - myX1);
+			qreal const deltaX2 = qAbs(pointX2 - myX2);
 
 			buildLineY(deltaY1, pointY1, 0, myY1, myY2, myX1);
 			buildLineY(deltaY2, pointY2, contentsRect.height(), myY1, myY2, myX1);
