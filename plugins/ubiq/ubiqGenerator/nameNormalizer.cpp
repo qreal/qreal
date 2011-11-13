@@ -1,7 +1,8 @@
 #include "nameNormalizer.h"
 
 #include <QtCore/QStringList>
-#include <QtCore/QDebug>
+
+using namespace ubiq::generator;
 
 QString NameNormalizer::normalize(QString const &name, bool const isUpperFirst)
 {
@@ -40,10 +41,10 @@ QString NameNormalizer::lowerFirst(QString const &string)
 		return "";
 	}
 	QStringList tokens = string.split(" ");
-	QStringList upperedTokens;
+	QStringList loweredTokens;
 	foreach (QString token, tokens)
 	{
-		upperedTokens.append(token.at(0).toLower() + token.mid(1));
+		loweredTokens.append(token.at(0).toLower() + token.mid(1));
 	}
-	return upperedTokens.join("_");
+	return loweredTokens.join("_");
 }

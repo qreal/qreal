@@ -12,30 +12,35 @@ AbstractGenerator::AbstractGenerator(QString const &templateDirPath
 		, qReal::LogicalModelAssistInterface const &logicalModel
 		, qReal::ErrorReporterInterface &errorReporter
 		)
-		: mTemplateDirPath(templateDirPath)
-		, mOutputDirPath(outputDirPath)
-		, mApi(logicalModel.logicalRepoApi())
+		: mApi(logicalModel.logicalRepoApi())
 		, mErrorReporter(errorReporter)
+		, mOutputDirPath(outputDirPath)
+		, mTemplateDirPath(templateDirPath)
 {
-	mTemplateUtils.clear();
 }
 
-bool AbstractGenerator::changeDir(const QString &path)
+AbstractGenerator::~AbstractGenerator()
 {
-	if (!mDirectory.exists(path)) {
+}
+
+QDir AbstractGenerator::getDir(QString const &path)
+{
+	QDir const result(path);
+	if (!result.exists()) {
 		qDebug() << "cannot find directory " << path;
-		return false;
+		return QDir();
 	}
-	mDirectory.cd(path);
-	return true;
+
+	return result;
 }
 
 bool AbstractGenerator::loadTemplateFromFile(QString const &templateFileName, QString &loadedTemplate)
 {
-	if (!changeDir(mTemplateDirPath))
+	QDir const dir = getDir(mTemplateDirPath);
+	if (dir == QDir())
 		return false;
 
-	QString fileName = mDirectory.absoluteFilePath(templateFileName);
+	QString const fileName = dir.absoluteFilePath(templateFileName);
 	QFile file(fileName);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		qDebug() << "cannot load file \"" << fileName << "\"";
@@ -43,19 +48,18 @@ bool AbstractGenerator::loadTemplateFromFile(QString const &templateFileName, QS
 	}
 	QTextStream in(&file);
 	loadedTemplate = in.readAll();
-
 	file.close();
-	mDirectory.cdUp();
 
 	return true;
 }
 
 bool AbstractGenerator::loadUtilsFromFile()
 {
-	if (!changeDir(mTemplateDirPath))
+	QDir const dir = getDir(mTemplateDirPath);
+	if (dir == QDir())
 		return false;
 
-	QString fileName = mDirectory.absoluteFilePath(utilsFileName);
+	QString const fileName = dir.absoluteFilePath(utilsFileName);
 	QFile utilsFile(fileName);
 	if (!utilsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		qDebug() << "cannot load file \"" << fileName << "\"";
@@ -66,8 +70,7 @@ bool AbstractGenerator::loadUtilsFromFile()
 	QString line = in.readLine();
 	do {
 		// first line is name, everything else before the separator is template body
-
-		QString name = line;
+		QString const name = line;
 		QString body;
 		line = in.readLine();
 		while (!line.contains(utilsSeparator) && !line.isNull()) {
@@ -79,25 +82,24 @@ bool AbstractGenerator::loadUtilsFromFile()
 	} while (!line.isNull());
 
 	utilsFile.close();
-	mDirectory.cdUp();
 
 	return true;
 }
 
 bool AbstractGenerator::loadUtilsFromDir()
 {
-	if (!changeDir(mTemplateDirPath + "/utils"))
+	QDir const dir = getDir(mTemplateDirPath + "/utils");
+	if (dir == QDir())
 		return false;
 
-	QStringList files = mDirectory.entryList(QStringList());
+	QStringList const files = dir.entryList(QStringList());
 
 	foreach (QString const fileName, files) {
 		if (fileName == "." || fileName == "..")
 			continue;
 
 		// file name is template name, file contents is template body
-
-		QString file = mDirectory.absoluteFilePath(fileName);
+		QString const file = dir.absoluteFilePath(fileName);
 		QFile templateFile(file);
 
 		if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -114,18 +116,15 @@ bool AbstractGenerator::loadUtilsFromDir()
 			line = in.readLine();
 		}
 
-		QString name = "@@" + fileName + "@@";
+		QString const name = "@@" + fileName + "@@";
 		if (!mTemplateUtils.contains(name))
 			mTemplateUtils[name] = body;
 
 		templateFile.close();
 	}
-	mDirectory.cdUp();
-	mDirectory.cdUp();
 
 	return true;
 }
-
 
 bool AbstractGenerator::loadUtilsTemplates()
 {
@@ -150,13 +149,13 @@ void AbstractGenerator::saveOutputFile(QString const &fileName, QString const &c
 	}
 
 	QTextStream out(&file);
-	QString projectTemplate = content;
 	out << content;
 	file.close();
 }
 
 QString AbstractGenerator::getDefaultValue(QString const &type)
 {
+	// Here to write all other needed types.
 	if (type == "short" || type == "int")
 		return "0";
 
@@ -172,7 +171,7 @@ QString AbstractGenerator::generatePropertiesCode(Id const &element)
 
 		// generate property code
 		QString propertyTemplate = mTemplateUtils["@@Property@@"];
-		QString name = mApi.name(property);
+		QString const name = mApi.name(property);
 		propertyTemplate.replace("@@Name@@", NameNormalizer::normalize(name))
 				.replace("@@Type@@", mApi.stringProperty(property, "type"));
 

@@ -9,6 +9,7 @@
 using namespace ubiq::generator;
 using namespace qReal;
 
+/// Generation target file
 QString const fileName = "Message.cs";
 
 MessageGenerator::MessageGenerator(QString const &templateDirPath
@@ -29,11 +30,6 @@ void MessageGenerator::generate()
 	QString result;
 	loadTemplateFromFile(fileName, result);
 	loadUtilsTemplates();
-
-	QDir dir;
-	if (!dir.exists(mOutputDirPath))
-		dir.mkdir(mOutputDirPath);
-	dir.cd(mOutputDirPath);
 
 	foreach (Id const diagram, mApi.elementsByType("DataStructuresDiagram")) {
 		if (!mApi.isLogicalElement(diagram))
@@ -60,7 +56,7 @@ void MessageGenerator::generate()
 		}
 	}
 
-	saveOutputFile(dir.absoluteFilePath(fileName), result);
+	saveOutputFile(fileName, result);
 }
 
 QString MessageGenerator::generateEnumElements(qReal::Id const &element) const

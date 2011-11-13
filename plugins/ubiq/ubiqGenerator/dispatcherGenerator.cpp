@@ -1,5 +1,4 @@
 #include <QtCore/QFile>
-#include <QtCore/QDebug>
 
 #include "dispatcherGenerator.h"
 #include "nameNormalizer.h"
@@ -20,12 +19,11 @@ DispatcherGenerator::~DispatcherGenerator()
 {
 }
 
-
 void DispatcherGenerator::generate()
 {
 	loadUtilsTemplates();
 
-	foreach (Id const masterNode, mApi.elementsByType("MasterNode")) { // get master node
+	foreach (Id const masterNode, mApi.elementsByType("MasterNode")) {  // get master node
 		if (!mApi.isLogicalElement(masterNode))
 			continue;
 
@@ -51,11 +49,11 @@ void DispatcherGenerator::generate()
 QString DispatcherGenerator::generateEventHandlers(Id const &diagram) const
 {
 	QString eventHadlers;
-	foreach (Id const element, mApi.children(diagram)) { // get elements on master node
+	foreach (Id const element, mApi.children(diagram)) {  // get elements on master node
 		if (!mApi.isLogicalElement(element) || (element.element() != "Handler"))
 			continue;
 
-		eventHadlers += generateEventHandler(mApi.name(element)); // generate code for each event handler
+		eventHadlers += generateEventHandler(mApi.name(element));  // generate code for each event handler
 	}
 	return eventHadlers;
 }
@@ -67,7 +65,7 @@ QString DispatcherGenerator::generatePreprocessors(Id const &masterNode) const
 		if (!mApi.isLogicalElement(element) || (element.element() != "Preprocessor"))
 			continue;
 
-		preprocessors += generatePreprocessor(mApi.name(element)); // generate code for each event handler
+		preprocessors += generatePreprocessor(mApi.name(element));  // generate code for each event handler
 	}
 	return preprocessors;
 }
@@ -154,7 +152,7 @@ QString DispatcherGenerator::generateHelperFunctions(qReal::Id const &element) c
 				continue;
 
 			QString const name = mApi.name(id);
-			QString returnType = mApi.stringProperty(id, "returnType");
+			QString const returnType = mApi.stringProperty(id, "returnType");
 			QString const parameters = generateFunctionParameters(id);
 			QString body = generateFunctionBody(id);
 
@@ -208,7 +206,6 @@ QString DispatcherGenerator::generateEventHandler(QString const &handlerName) co
 			continue;
 
 		// diagram found, now get HandlerStart-s and generate cases
-
 		QString cases;
 		foreach (Id const &element, mApi.children(diagram)) {
 			if (!mApi.isLogicalElement(element) || (element.element() != "HandlerStart"))
@@ -325,7 +322,7 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 
 		operatorCode.replace("@@Command@@", code);
 
-		IdList links = mApi.outgoingLinks(currentNode);
+		IdList const links = mApi.outgoingLinks(currentNode);
 
 		if (links.size() == 0)
 			return CodeBranchGenerationResult(operatorCode, currentNode);
@@ -334,7 +331,7 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 			return CodeBranchGenerationResult("", currentNode);
 		}
 
-		Id nextNode = mApi.otherEntityFromLink(links.at(0), currentNode);
+		Id const nextNode = mApi.otherEntityFromLink(links.at(0), currentNode);
 
 		CodeBranchGenerationResult result = generateOperatorCode(nextNode);
 		result.text = operatorCode + result.text;
@@ -344,7 +341,7 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 	if (currentNode.element() == "Action") {
 		operatorCode = mApi.name(currentNode);
 
-		IdList links = mApi.outgoingLinks(currentNode);
+		IdList const links = mApi.outgoingLinks(currentNode);
 
 		if (links.size() == 0)
 			return CodeBranchGenerationResult(operatorCode, currentNode);
@@ -353,7 +350,7 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 			return CodeBranchGenerationResult("", currentNode);
 		}
 
-		Id nextNode = mApi.otherEntityFromLink(links.at(0), currentNode);
+		Id const nextNode = mApi.otherEntityFromLink(links.at(0), currentNode);
 
 		CodeBranchGenerationResult result = generateOperatorCode(nextNode);
 		result.text = operatorCode + "\n" + result.text;
@@ -361,14 +358,14 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 	}
 
 	if (currentNode.element() == "InitialNode") {
-		IdList links = mApi.outgoingLinks(currentNode);
+		IdList const links = mApi.outgoingLinks(currentNode);
 
 		if (links.size() != 1) {
 			mErrorReporter.addError(QObject::tr("Initial node should have exactly 1 outgoing link"), currentNode);
 			return CodeBranchGenerationResult("", currentNode);
 		}
 
-		Id nextNode = mApi.otherEntityFromLink(links.at(0), currentNode);
+		Id const nextNode = mApi.otherEntityFromLink(links.at(0), currentNode);
 
 		return generateOperatorCode(nextNode);
 	}
@@ -384,7 +381,7 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 
 		operatorCode = returnWithValueTemplate;
 
-		IdList links = mApi.outgoingLinks(currentNode);
+		IdList const links = mApi.outgoingLinks(currentNode);
 
 		if (links.size() == 0)
 			return CodeBranchGenerationResult(operatorCode, currentNode);
@@ -462,7 +459,7 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 			return CodeBranchGenerationResult(operatorCode, nextNode);
 		}
 
-		IdList links = mApi.outgoingLinks(nextNode);
+		IdList const links = mApi.outgoingLinks(nextNode);
 		if (links.size() == 0)
 			return CodeBranchGenerationResult(operatorCode, nextNode);
 		else if (links.size() > 1) {
@@ -470,7 +467,7 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 			return CodeBranchGenerationResult("", nextNode);
 		}
 
-		Id nextNodeToGenerate = mApi.otherEntityFromLink(links.at(0), nextNode);
+		Id const nextNodeToGenerate = mApi.otherEntityFromLink(links.at(0), nextNode);
 
 		CodeBranchGenerationResult result = generateOperatorCode(nextNodeToGenerate);
 		result.text = operatorCode + "\n" + result.text;

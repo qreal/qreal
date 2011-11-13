@@ -1,5 +1,4 @@
 #include <QtCore/QFile>
-#include <QtCore/QDebug>
 
 #include "customClassGenerator.h"
 #include "nameNormalizer.h"
@@ -32,13 +31,13 @@ QString CustomClassGenerator::generateConstructors(qReal::Id const &element)
 	QString properties;
 
 	foreach (Id const property, mApi.children(element)) {
-		QString name = NameNormalizer::normalize(mApi.name(property));
-		QString type = mApi.stringProperty(property, "type");
+		QString const name = NameNormalizer::normalize(mApi.name(property));
+		QString const type = mApi.stringProperty(property, "type");
 
 		// constructor that inits all fields
 		QString propertyTemplate = mTemplateUtils["@@FieldInit@@"];
 		QString argumentTemplate = mTemplateUtils["@@Argument@@"];
-		QString argName = NameNormalizer::normalize(mApi.name(property), false);
+		QString const argName = NameNormalizer::normalize(mApi.name(property), false);
 		argumentTemplate.replace("@@ArgType@@", type).replace("@@ArgName@@", argName);
 		parametersList += (argumentTemplate.trimmed() + ", ");
 
@@ -49,13 +48,11 @@ QString CustomClassGenerator::generateConstructors(qReal::Id const &element)
 		QString defaultPropertyTemplate = mTemplateUtils["@@FieldInit@@"];
 		defaultPropertyTemplate.replace("@@Name@@", name).replace("@@Value@@", getDefaultValue(type));
 		defaultProperties += defaultPropertyTemplate;
-
 	}
 
 	parametersList.chop(2); // remove terminating space and comma
 	constructorTemplate.replace("@@ConstructorParameters@@", parametersList)
 			.replace("@@Fields@@", properties);
-
 
 	defaultConstructorTemplate.replace("@@Fields@@", defaultProperties);
 	return defaultConstructorTemplate + constructorTemplate;
@@ -65,12 +62,11 @@ void CustomClassGenerator::generate()
 {
 	loadUtilsTemplates();
 
-	foreach (Id const diagram, mApi.elementsByType("DataStructuresDiagram")) { // for each diagram
+	foreach (Id const diagram, mApi.elementsByType("DataStructuresDiagram")) {  // for each diagram
 		if (!mApi.isLogicalElement(diagram))
 			continue;
 
 		// get custom classes
-
 		foreach (Id const element, mApi.children(diagram)) {
 			if (!mApi.isLogicalElement(element) || (element.element() != customClassLabel))
 				continue;
