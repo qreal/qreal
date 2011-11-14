@@ -11,6 +11,11 @@ public:
 
 	virtual void exterminate() = 0;
 
+	/**
+	  @function importFromDisk
+	virtual, for import *.qrs file into current project
+	@param importedFile - file to be imported
+	  */
 	virtual void importFromDisk(QString const &importedFile) = 0;
 	virtual void saveAll() const = 0;
 	virtual void save(qReal::IdList list) const = 0;
