@@ -416,7 +416,7 @@ void MainWindow::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel)
 	if (mModels->graphicalModelAssistApi().isGraphicalId(id)) {
 		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(id), bl, isSetSel);
 	} else {
-		const IdList graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(id);
+		IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(id);
 		if (graphicalIds.count() == 0) {
 			return;
 		}
@@ -428,9 +428,9 @@ void MainWindow::activateSubdiagram(QModelIndex const &idx)
 {
 	// end-to-end links: if there's a first-level diagram with the same name as
 	// this element, show it
-	const Id id = idx.data(roles::idRole).value<Id>();
-	const QString targetName = mModels->graphicalModelAssistApi().name(id);
-	const int rows = mModels->graphicalModelAssistApi().childrenOfRootDiagram();
+	Id const id = idx.data(roles::idRole).value<Id>();
+	QString const targetName = mModels->graphicalModelAssistApi().name(id);
+	int const rows = mModels->graphicalModelAssistApi().childrenOfRootDiagram();
 	for (int i = 0; i < rows; ++i) {
 		Id child = mModels->graphicalModelAssistApi().rootId();
 		if (mModels->graphicalModelAssistApi().name(child) == targetName) {
