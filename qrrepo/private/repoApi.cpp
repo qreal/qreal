@@ -376,7 +376,7 @@ void RepoApi::saveTo(QString const &workingFile)
 	mClient.saveAll();
 }
 
-void RepoApi::importFromDisk(const QString &importedFile)
+void RepoApi::importFromDisk(QString const &importedFile)
 {
 	mClient.importFromDisk(importedFile);
 }

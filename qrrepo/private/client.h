@@ -59,7 +59,7 @@ namespace qrRepo {
 
 			bool exist(qReal::Id const &id) const;
 
-			void importFromDisk(const QString &importedFile);
+			void importFromDisk(QString const &importedFile);
 			void saveAll() const;
 			void save(qReal::IdList list) const;
 			void remove(qReal::IdList list) const;

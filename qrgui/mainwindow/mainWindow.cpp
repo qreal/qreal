@@ -46,13 +46,6 @@
 
 #include "../../qrkernel/timeMeasurer.h"
 
-#include "../interpreters/visualDebugger/visualDebugger.h"
-#include "../generators/editorGenerator/editorGenerator.h"
-#include "../generators/nxtOSEK/nxtOSEKRobotGenerator.h"
-#include "../interpreters/visualDebugger/visualDebugger.h"
-#include "../../qrkernel/settingsManager.h"
-
-#include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../../qrmc/metaCompiler.h"
 
 using namespace qReal;
@@ -558,9 +551,9 @@ bool MainWindow::importProject()
 
 bool MainWindow::import(QString const &fileName)
 {
-	//who knows, probably we'll shift import file here
-	if (!QFile(fileName).exists() && fileName.isEmpty())
+	if (!QFile(fileName).exists() || fileName.isEmpty()) {
 		return false;
+	}
 	mModels->repoControlApi().importFromDisk(fileName);
 	mModels->reinit();
 	return true;

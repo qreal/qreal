@@ -11,7 +11,7 @@ public:
 
 	virtual void exterminate() = 0;
 
-	virtual void importFromDisk(const QString &importedFile) = 0;
+	virtual void importFromDisk(QString const &importedFile) = 0;
 	virtual void saveAll() const = 0;
 	virtual void save(qReal::IdList list) const = 0;
 	virtual void saveTo(QString const &workingDir) = 0;

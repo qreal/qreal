@@ -219,7 +219,7 @@ void Client::loadFromDisk()
 	addChildrenToRootObject();
 }
 
-void Client::importFromDisk(const QString &importedFile)
+void Client::importFromDisk(QString const &importedFile)
 {
 	serializer.setWorkingFile(importedFile);
 	loadFromDisk();
