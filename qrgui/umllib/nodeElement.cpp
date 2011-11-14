@@ -147,7 +147,7 @@ void NodeElement::setGeometry(QRectF const &geom)
 	}
 }
 
-void NodeElement::setPos(const QPointF &pos)
+void NodeElement::setPos(QPointF const &pos)
 {
 	mPos = pos;
 	QGraphicsItem::setPos(pos);
@@ -474,7 +474,6 @@ void NodeElement::delUnusedLines()
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	qDebug() << mId.toString();
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
@@ -760,7 +759,7 @@ void NodeElement::initEmbeddedLinkers()
 	}
 }
 
-void NodeElement::setVisibleEmbeddedLinkers(const bool show)
+void NodeElement::setVisibleEmbeddedLinkers(bool const show)
 {
 	if (show) {
 		int index = 0;
@@ -777,7 +776,7 @@ void NodeElement::setVisibleEmbeddedLinkers(const bool show)
 	}
 }
 
-QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)
+QVariant NodeElement::itemChange(GraphicsItemChange change, QVariant const &value)
 {
 	bool isItemAddedOrDeleted = false;
 	NodeElement *item = dynamic_cast<NodeElement*>(value.value<QGraphicsItem*>());
@@ -917,7 +916,7 @@ const QPointF NodeElement::getNearestPort(QPointF const &location) const
 	return location;
 }
 
-QLineF NodeElement::newTransform(const StatLine& port) const
+QLineF NodeElement::newTransform(StatLine const &port) const
 {
 	float x1 = 0.0;
 	float x2 = 0.0;
@@ -951,7 +950,7 @@ QLineF NodeElement::newTransform(const StatLine& port) const
 	return QLineF(x1, y1, x2, y2);
 }
 
-QPointF NodeElement::newTransform(const StatPoint& port) const
+QPointF NodeElement::newTransform(StatPoint const &port) const
 {
 	qreal x = 0;
 	qreal y = 0;
@@ -971,7 +970,7 @@ QPointF NodeElement::newTransform(const StatPoint& port) const
 	return QPointF(x, y);
 }
 
-qreal NodeElement::minDistanceFromLinePort(int linePortNumber, const QPointF &location) const
+qreal NodeElement::minDistanceFromLinePort(int linePortNumber, QPointF const &location) const
 {
 	QLineF linePort = newTransform(mLinePorts[linePortNumber]);
 	qreal a = linePort.length();
@@ -989,12 +988,12 @@ qreal NodeElement::minDistanceFromLinePort(int linePortNumber, const QPointF &lo
 	}
 }
 
-qreal NodeElement::distanceFromPointPort(int pointPortNumber, const QPointF &location) const
+qreal NodeElement::distanceFromPointPort(int pointPortNumber, QPointF const &location) const
 {
 	return QLineF(newTransform(mPointPorts[pointPortNumber]), location).length();
 }
 
-qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, const QPointF &location) const
+qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, QPointF const &location) const
 {
 	qreal nearestPointOfLinePort = 0;
 	QLineF nearestLinePort = newTransform(mLinePorts[linePortNumber]);
@@ -1017,7 +1016,7 @@ qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, const QPointF &
 	return nearestPointOfLinePort;
 }
 
-qreal NodeElement::getPortId(const QPointF &location) const
+qreal NodeElement::getPortId(QPointF const&location) const
 {
 	for (int i = 0; i < mPointPorts.size(); ++i) {
 		if (QRectF(newTransform(mPointPorts[i]) - QPointF(kvadratik, kvadratik),
@@ -1096,7 +1095,7 @@ void NodeElement::setPortsVisible(bool value)
 	mPortsVisible = value;
 }
 
-NodeElement *NodeElement::getNodeAt(const QPointF &position)
+NodeElement *NodeElement::getNodeAt(QPointF const &position)
 {
 	foreach (QGraphicsItem *item, scene()->items(position)) {
 		NodeElement *e = dynamic_cast<NodeElement *>(item);
@@ -1107,7 +1106,7 @@ NodeElement *NodeElement::getNodeAt(const QPointF &position)
 	return 0;
 }
 
-void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
+void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget)
 {
 	mElementImpl->paint(painter, mContents);
 	if (mElementImpl->hasPorts()) {
@@ -1129,7 +1128,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *style
 	}
 }
 
-void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *option,
 						QWidget*, SdfRenderer* portRenderer)
 {
 	if (option->levelOfDetail >= 0.5) {
@@ -1485,7 +1484,7 @@ QList<double> NodeElement::borderValues()
 	return mElementImpl->border();
 }
 
-PossibleEdge NodeElement::toPossibleEdge(const StringPossibleEdge &strPossibleEdge)
+PossibleEdge NodeElement::toPossibleEdge(StringPossibleEdge const &strPossibleEdge)
 {
 	QString editor = id().editor();
 	QString diagram = id().diagram();
@@ -1544,14 +1543,14 @@ void NodeElement::checkConnectionsToPort()
 	}
 }
 
-void NodeElement::singleSelectionState(const bool singleSelected)
+void NodeElement::singleSelectionState(bool const singleSelected)
 {
 	initEmbeddedLinkers();
 	setVisibleEmbeddedLinkers(singleSelected);
 	Element::singleSelectionState(singleSelected);
 }
 
-void NodeElement::selectionState(const bool selected)
+void NodeElement::selectionState(bool const selected)
 {
 	Element::selectionState(selected);
 }

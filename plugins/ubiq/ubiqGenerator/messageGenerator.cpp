@@ -37,8 +37,9 @@ void MessageGenerator::generate()
 		}
 
 		foreach (Id const &element, mApi.children(diagram)) {
-			if (!mApi.isLogicalElement(element))
+			if (!mApi.isLogicalElement(element)) {
 				continue;
+			}
 
 			if (element.element() == "MessageClass") {
 				result.replace("@@Properties@@", generatePropertiesCode(element))

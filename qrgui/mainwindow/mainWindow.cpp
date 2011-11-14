@@ -416,9 +416,10 @@ void MainWindow::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel)
 	if (mModels->graphicalModelAssistApi().isGraphicalId(id)) {
 		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(id), bl, isSetSel);
 	} else {
-		IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(id);
-		if (graphicalIds.count() == 0)
+		const IdList graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(id);
+		if (graphicalIds.count() == 0) {
 			return;
+		}
 		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(graphicalIds[0]), bl, isSetSel);
 	}
 }
@@ -427,9 +428,9 @@ void MainWindow::activateSubdiagram(QModelIndex const &idx)
 {
 	// end-to-end links: if there's a first-level diagram with the same name as
 	// this element, show it
-	Id const id = idx.data(roles::idRole).value<Id>();
-	QString const targetName = mModels->graphicalModelAssistApi().name(id);
-	int rows = mModels->graphicalModelAssistApi().childrenOfRootDiagram();
+	const Id id = idx.data(roles::idRole).value<Id>();
+	const QString targetName = mModels->graphicalModelAssistApi().name(id);
+	const int rows = mModels->graphicalModelAssistApi().childrenOfRootDiagram();
 	for (int i = 0; i < rows; ++i) {
 		Id child = mModels->graphicalModelAssistApi().rootId();
 		if (mModels->graphicalModelAssistApi().name(child) == targetName) {
@@ -457,8 +458,8 @@ void MainWindow::sceneSelectionChanged()
 		return;
 	}
 
-	QList<Element*> elements = QList<Element*>();
-	QList<Element*> selected = QList<Element*>();
+	QList<Element*> elements;
+	QList<Element*> selected;
 	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
 
 	foreach (QGraphicsItem* item, items) {
