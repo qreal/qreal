@@ -414,22 +414,19 @@ DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOpe
 	if (currentNode.element() == "DecisionNode") {
 		Id thenBranch;
 		Id elseBranch;
+		Id *currentBranch = NULL;
 
 		foreach (Id const &link, mApi.outgoingLinks(currentNode)) {
 			if (!mApi.stringProperty(link, "guard").isEmpty()) {
-				if (thenBranch == Id()) {
-					thenBranch = link;
-				} else {
-					mErrorReporter.addError(QObject::tr("Decision node shall have exactly one outgoing link with guard"), currentNode);
-					return CodeBranchGenerationResult("", currentNode);
-				}
+				currentBranch = &thenBranch;
 			} else {
-				if (elseBranch == Id()) {
-					elseBranch = link;
-				} else {
-					mErrorReporter.addError(QObject::tr("Decision node shall have exactly one outgoing link without guard"), currentNode);
-					return CodeBranchGenerationResult("", currentNode);
-				}
+				currentBranch = &elseBranch;
+			}
+			if (*currentBranch == Id()) {
+				*currentBranch = link;
+			} else {
+				mErrorReporter.addError(QObject::tr("Decision node shall have exactly one outgoing link without guard"), currentNode);
+				return CodeBranchGenerationResult("", currentNode);
 			}
 		}
 

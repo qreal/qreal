@@ -28,6 +28,8 @@ private:
 
 	QList<ToolPluginInterface *> mPlugins;
 	QList<QPluginLoader *> mLoaders;
+
+	/// An object and that is used to customize GUI with values from plugins
 	Customizer const mCustomizer;  // Has ownership
 };
 

@@ -424,34 +424,6 @@ void MainWindow::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel)
 	}
 }
 
-void MainWindow::activateSubdiagram(QModelIndex const &idx)
-{
-	// end-to-end links: if there's a first-level diagram with the same name as
-	// this element, show it
-	Id const id = idx.data(roles::idRole).value<Id>();
-	QString const targetName = mModels->graphicalModelAssistApi().name(id);
-	int const rows = mModels->graphicalModelAssistApi().childrenOfRootDiagram();
-	for (int i = 0; i < rows; ++i) {
-		Id child = mModels->graphicalModelAssistApi().rootId();
-		if (mModels->graphicalModelAssistApi().name(child) == targetName) {
-			activateItemOrDiagram(child);
-			return;
-		}
-	}
-
-	QModelIndex diagramToActivate = idx;
-	while (diagramToActivate.isValid() && diagramToActivate.parent().isValid()
-			&& diagramToActivate.parent() != getCurrentTab()->mvIface()->rootIndex())
-	{
-		diagramToActivate = diagramToActivate.parent();
-	}
-
-	if (diagramToActivate.model()->rowCount(diagramToActivate) > 0) {
-		QModelIndex const childIndex = diagramToActivate.model()->index(0, 0, diagramToActivate);
-		activateItemOrDiagram(childIndex);
-	}
-}
-
 void MainWindow::sceneSelectionChanged()
 {
 	if (!getCurrentTab()) {
