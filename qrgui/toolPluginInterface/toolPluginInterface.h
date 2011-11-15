@@ -7,7 +7,7 @@
 #include "../../qrrepo/repoControlInterface.h"
 #include "../dialogs/preferencesPages/page.h"
 
-#include "customizationInterface.h"
+#include "customizer.h"
 #include "pluginConfigurator.h"
 #include "actionInfo.h"
 
@@ -16,7 +16,7 @@ namespace qReal {
 class ToolPluginInterface
 {
 public:
-	virtual CustomizationInterface* customizationInterface()
+	virtual Customizer* customizationInterface()
 	{
 		return NULL;
 	}

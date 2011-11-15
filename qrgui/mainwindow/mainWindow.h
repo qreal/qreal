@@ -66,6 +66,9 @@ public:
 
 	void showErrors(gui::ErrorReporter *reporter);
 
+	/// Tells if we should display trace connections menu or not
+	bool showConnectionRelatedMenus() const;
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -130,8 +133,6 @@ private slots:
 	void applySettings();
 
 	void deleteFromScene(QGraphicsItem *target);
-
-	void activateSubdiagram(QModelIndex const &idx);
 
 	void debug();
 	void debugSingleStep();
