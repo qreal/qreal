@@ -23,7 +23,7 @@ void DispatcherGenerator::generate()
 {
 	loadUtilsTemplates();
 
-	foreach (Id const &masterNode, mApi.elementsByType("MasterNode")) {  // get master node
+	foreach (Id const &masterNode, mApi.elementsByType("MasterNode")) {
 		if (!mApi.isLogicalElement(masterNode)) {
 			continue;
 		}
