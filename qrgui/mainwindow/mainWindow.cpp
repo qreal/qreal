@@ -551,7 +551,7 @@ bool MainWindow::importProject()
 
 bool MainWindow::import(QString const &fileName)
 {
-	if (!QFile(fileName).exists() || fileName.isEmpty()) {
+	if (!QFile(fileName).exists()) {
 		return false;
 	}
 	mModels->repoControlApi().importFromDisk(fileName);

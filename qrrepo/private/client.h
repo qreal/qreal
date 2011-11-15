@@ -59,8 +59,8 @@ namespace qrRepo {
 
 			bool exist(qReal::Id const &id) const;
 
-			///Opens file into existing project
-			///@param importedFile - name of file to be imported
+			/// Opens file into existing project
+			/// @param importedFile - name of file to be imported
 			void importFromDisk(QString const &importedFile);
 			void saveAll() const;
 			void save(qReal::IdList list) const;
