@@ -50,12 +50,12 @@ void DispatcherGenerator::generate()
 QString DispatcherGenerator::generateEventHandlers(Id const &diagram) const
 {
 	QString eventHadlers;
-	foreach (Id const &element, mApi.children(diagram)) {  // get elements on master node
+	foreach (Id const &element, mApi.children(diagram)) {
 		if (!mApi.isLogicalElement(element) || element.element() != "Handler") {
 			continue;
 		}
 
-		eventHadlers += generateEventHandler(mApi.name(element));  // generate code for each event handler
+		eventHadlers += generateEventHandler(mApi.name(element));
 	}
 	return eventHadlers;
 }
@@ -63,12 +63,12 @@ QString DispatcherGenerator::generateEventHandlers(Id const &diagram) const
 QString DispatcherGenerator::generatePreprocessors(Id const &masterNode) const
 {
 	QString preprocessors;
-	foreach (Id const &element, mApi.children(masterNode)) {  // get elements on master node
+	foreach (Id const &element, mApi.children(masterNode)) {
 		if (!mApi.isLogicalElement(element) || element.element() != "Preprocessor") {
 			continue;
 		}
 
-		preprocessors += generatePreprocessor(mApi.name(element));  // generate code for each event handler
+		preprocessors += generatePreprocessor(mApi.name(element));
 	}
 	return preprocessors;
 }
@@ -295,203 +295,224 @@ QString DispatcherGenerator::generateCaseBody(qReal::Id const &handlerStart) con
 	return generateOperatorCode(nextNode).text;
 }
 
-DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOperatorCode(qReal::Id const &currentNode) const
+DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateFunctionCallCode(qReal::Id const &currentNode) const
 {
 	QString operatorCode = mTemplateUtils["@@CaseCode@@"];
 
-	if (currentNode.element() == "FunctionCall") {
-		QString code = mApi.name(currentNode) + "(";
-		foreach (Id const &argument, mApi.children(currentNode)) {
-			if (!mApi.isLogicalElement(argument) || (argument.element() != "ActualParameter")) {
-				continue;
-			}
-
-			code += (mApi.name(argument) + ", ");
-		}
-		code.chop(2); // terminating space and comma
-		code += ")";
-
-		QString returnValue;
-		foreach (Id const &argument, mApi.children(currentNode)) {
-			if (!mApi.isLogicalElement(argument) || (argument.element() != "ReturnValue")) {
-				continue;
-			}
-
-			if (!returnValue.isEmpty()) {
-				mErrorReporter.addError(QObject::tr("FunctionCall shall have no more than one return value"), currentNode);
-				return CodeBranchGenerationResult("", currentNode);
-			}
-
-			QString returnValueTemplate = mTemplateUtils["@@ReturnValue@@"];
-			QString const type = mApi.stringProperty(argument, "type").isEmpty()
-					? ""
-					: mApi.stringProperty(argument, "type") + " ";
-
-			returnValueTemplate.replace("@@OptionalType@@", type)
-					.replace("@@Name@@", mApi.name(argument))
-					;
-
-			returnValue += returnValueTemplate;
+	QString code = mApi.name(currentNode) + "(";
+	foreach (Id const &argument, mApi.children(currentNode)) {
+		if (!mApi.isLogicalElement(argument) || (argument.element() != "ActualParameter")) {
+			continue;
 		}
 
-		if (returnValue.endsWith('\n')) {
-			returnValue.chop(1);
+		code += (mApi.name(argument) + ", ");
+	}
+	code.chop(2); // terminating space and comma
+	code += ")";
+
+	QString returnValue;
+	foreach (Id const &argument, mApi.children(currentNode)) {
+		if (!mApi.isLogicalElement(argument) || (argument.element() != "ReturnValue")) {
+			continue;
 		}
 
-		code = returnValue + code;
-
-		operatorCode.replace("@@Command@@", code);
-
-		IdList const links = mApi.outgoingLinks(currentNode);
-
-		if (links.size() == 0) {
-			return CodeBranchGenerationResult(operatorCode, currentNode);
-		} else if (links.size() > 1) {
-			mErrorReporter.addError(QObject::tr("FunctionCall node should have exactly 1 outgoing link"), currentNode);
+		if (!returnValue.isEmpty()) {
+			mErrorReporter.addError(QObject::tr("FunctionCall shall have no more than one return value"), currentNode);
 			return CodeBranchGenerationResult("", currentNode);
 		}
 
-		Id const nextNode = mApi.otherEntityFromLink(links.at(0), currentNode);
-
-		CodeBranchGenerationResult result = generateOperatorCode(nextNode);
-		result.text = operatorCode + result.text;
-		return result;
-	}
-
-	if (currentNode.element() == "Action") {
-		operatorCode = mApi.name(currentNode);
-
-		IdList const links = mApi.outgoingLinks(currentNode);
-
-		if (links.size() == 0) {
-			return CodeBranchGenerationResult(operatorCode, currentNode);
-		} else if (links.size() > 1) {
-			mErrorReporter.addError(QObject::tr("Action node should have exactly 1 outgoing link"), currentNode);
-			return CodeBranchGenerationResult("", currentNode);
-		}
-
-		Id const nextNode = mApi.otherEntityFromLink(links.at(0), currentNode);
-
-		CodeBranchGenerationResult result = generateOperatorCode(nextNode);
-		result.text = operatorCode + "\n" + result.text;
-		return result;
-	}
-
-	if (currentNode.element() == "InitialNode") {
-		IdList const links = mApi.outgoingLinks(currentNode);
-
-		if (links.size() != 1) {
-			mErrorReporter.addError(QObject::tr("Initial node should have exactly 1 outgoing link"), currentNode);
-			return CodeBranchGenerationResult("", currentNode);
-		}
-
-		Id const nextNode = mApi.otherEntityFromLink(links.at(0), currentNode);
-
-		return generateOperatorCode(nextNode);
-	}
-
-	if (currentNode.element() == "ReturnAction") {
-		QString const returnValue = mApi.name(currentNode).isEmpty()
+		QString returnValueTemplate = mTemplateUtils["@@ReturnValue@@"];
+		QString const type = mApi.stringProperty(argument, "type").isEmpty()
 				? ""
-				: (" " + mApi.name(currentNode))
+				: mApi.stringProperty(argument, "type") + " ";
+
+		returnValueTemplate.replace("@@OptionalType@@", type)
+				.replace("@@Name@@", mApi.name(argument))
 				;
 
-		QString returnWithValueTemplate = mTemplateUtils["@@Return@@"];
-		returnWithValueTemplate.replace("@@OptionalReturnValue@@", returnValue);
-
-		operatorCode = returnWithValueTemplate;
-
-		IdList const links = mApi.outgoingLinks(currentNode);
-
-		if (links.size() == 0) {
-			return CodeBranchGenerationResult(operatorCode, currentNode);
-		} else {
-			mErrorReporter.addError(QObject::tr("ReturnAction node shall have no outgoing links"), currentNode);
-			return CodeBranchGenerationResult("", currentNode);
-		}
+		returnValue += returnValueTemplate;
 	}
 
-	if (currentNode.element() == "DecisionNode") {
-		Id thenBranch;
-		Id elseBranch;
-		Id *currentBranch = NULL;
+	if (returnValue.endsWith('\n')) {
+		returnValue.chop(1);
+	}
 
-		foreach (Id const &link, mApi.outgoingLinks(currentNode)) {
-			if (!mApi.stringProperty(link, "guard").isEmpty()) {
-				currentBranch = &thenBranch;
-			} else {
-				currentBranch = &elseBranch;
-			}
-			if (*currentBranch == Id()) {
-				*currentBranch = link;
-			} else {
-				mErrorReporter.addError(QObject::tr("Decision node shall have exactly one outgoing link without guard"), currentNode);
-				return CodeBranchGenerationResult("", currentNode);
-			}
-		}
+	code = returnValue + code;
 
-		if (thenBranch == Id()) {
-			mErrorReporter.addError(QObject::tr("Decision node shall have exactly one outgoing link with guard"), currentNode);
-			return CodeBranchGenerationResult("", currentNode);
+	operatorCode.replace("@@Command@@", code);
+
+	IdList const links = mApi.outgoingLinks(currentNode);
+
+	if (links.size() == 0) {
+		return CodeBranchGenerationResult(operatorCode, currentNode);
+	} else if (links.size() > 1) {
+		mErrorReporter.addError(QObject::tr("FunctionCall node should have exactly 1 outgoing link"), currentNode);
+		return CodeBranchGenerationResult("", currentNode);
+	}
+
+	Id const nextNode = mApi.otherEntityFromLink(links.at(0), currentNode);
+
+	CodeBranchGenerationResult result = generateOperatorCode(nextNode);
+	result.text = operatorCode + result.text;
+	return result;
+}
+
+DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateActionCode(qReal::Id const &currentNode) const
+{
+	QString operatorCode = mApi.name(currentNode);
+
+	IdList const links = mApi.outgoingLinks(currentNode);
+
+	if (links.size() == 0) {
+		return CodeBranchGenerationResult(operatorCode, currentNode);
+	} else if (links.size() > 1) {
+		mErrorReporter.addError(QObject::tr("Action node should have exactly 1 outgoing link"), currentNode);
+		return CodeBranchGenerationResult("", currentNode);
+	}
+
+	Id const nextNode = mApi.otherEntityFromLink(links.at(0), currentNode);
+
+	CodeBranchGenerationResult result = generateOperatorCode(nextNode);
+	result.text = operatorCode + "\n" + result.text;
+	return result;
+}
+
+DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateInitialNodeCode(qReal::Id const &currentNode) const
+{
+	IdList const links = mApi.outgoingLinks(currentNode);
+
+	if (links.size() != 1) {
+		mErrorReporter.addError(QObject::tr("Initial node should have exactly 1 outgoing link"), currentNode);
+		return CodeBranchGenerationResult("", currentNode);
+	}
+
+	Id const nextNode = mApi.otherEntityFromLink(links.at(0), currentNode);
+
+	return generateOperatorCode(nextNode);
+}
+
+DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateReturnActionCode(qReal::Id const &currentNode) const
+{
+	QString const returnValue = mApi.name(currentNode).isEmpty()
+			? ""
+			: (" " + mApi.name(currentNode))
+			;
+
+	QString returnWithValueTemplate = mTemplateUtils["@@Return@@"];
+	returnWithValueTemplate.replace("@@OptionalReturnValue@@", returnValue);
+
+	IdList const links = mApi.outgoingLinks(currentNode);
+
+	if (links.size() == 0) {
+		return CodeBranchGenerationResult(returnWithValueTemplate, currentNode);
+	} else {
+		mErrorReporter.addError(QObject::tr("ReturnAction node shall have no outgoing links"), currentNode);
+		return CodeBranchGenerationResult("", currentNode);
+	}
+}
+
+DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateDecisionNodeCode(qReal::Id const &currentNode) const
+{
+	Id thenBranch;
+	Id elseBranch;
+	Id *currentBranch = NULL;
+
+	foreach (Id const &link, mApi.outgoingLinks(currentNode)) {
+		if (!mApi.stringProperty(link, "guard").isEmpty()) {
+			currentBranch = &thenBranch;
+		} else {
+			currentBranch = &elseBranch;
 		}
-		if (elseBranch == Id()) {
+		if (*currentBranch == Id()) {
+			*currentBranch = link;
+		} else {
 			mErrorReporter.addError(QObject::tr("Decision node shall have exactly one outgoing link without guard"), currentNode);
 			return CodeBranchGenerationResult("", currentNode);
 		}
+	}
 
-		QString const guard = mApi.stringProperty(thenBranch, "guard");
+	if (thenBranch == Id()) {
+		mErrorReporter.addError(QObject::tr("Decision node shall have exactly one outgoing link with guard"), currentNode);
+		return CodeBranchGenerationResult("", currentNode);
+	}
+	if (elseBranch == Id()) {
+		mErrorReporter.addError(QObject::tr("Decision node shall have exactly one outgoing link without guard"), currentNode);
+		return CodeBranchGenerationResult("", currentNode);
+	}
 
-		QString ifTemplate = mTemplateUtils["@@If@@"];
+	QString const guard = mApi.stringProperty(thenBranch, "guard");
 
-		CodeBranchGenerationResult thenBranchGenerationResult = generateOperatorCode(mApi.otherEntityFromLink(thenBranch, currentNode));
-		CodeBranchGenerationResult elseBranchGenerationResult = generateOperatorCode(mApi.otherEntityFromLink(elseBranch, currentNode));
+	QString ifTemplate = mTemplateUtils["@@If@@"];
 
-		if (thenBranchGenerationResult.text.endsWith('\n')) {
-			thenBranchGenerationResult.text.chop(1);
+	CodeBranchGenerationResult thenBranchGenerationResult = generateOperatorCode(mApi.otherEntityFromLink(thenBranch, currentNode));
+	CodeBranchGenerationResult elseBranchGenerationResult = generateOperatorCode(mApi.otherEntityFromLink(elseBranch, currentNode));
+
+	if (thenBranchGenerationResult.text.endsWith('\n')) {
+		thenBranchGenerationResult.text.chop(1);
+	}
+	if (elseBranchGenerationResult.text.endsWith('\n')) {
+		elseBranchGenerationResult.text.chop(1);
+	}
+
+	Id nextNode;
+	if (thenBranchGenerationResult.stopNode.element() == "MergeNode") {
+		nextNode = thenBranchGenerationResult.stopNode;
+	}
+	if (elseBranchGenerationResult.stopNode.element() == "MergeNode") {
+		if (elseBranchGenerationResult.stopNode != nextNode) {
+			mErrorReporter.addError(QObject::tr("Decision branches shall end on the same merge node"), currentNode);
+			return CodeBranchGenerationResult("", currentNode);
 		}
-		if (elseBranchGenerationResult.text.endsWith('\n')) {
-			elseBranchGenerationResult.text.chop(1);
-		}
+	}
 
-		Id nextNode;
-		if (thenBranchGenerationResult.stopNode.element() == "MergeNode") {
-			nextNode = thenBranchGenerationResult.stopNode;
-		}
-		if (elseBranchGenerationResult.stopNode.element() == "MergeNode") {
-			if (elseBranchGenerationResult.stopNode != nextNode) {
-				mErrorReporter.addError(QObject::tr("Decision branches shall end on the same merge node"), currentNode);
-				return CodeBranchGenerationResult("", currentNode);
-			}
-		}
+	if (elseBranchGenerationResult.text.trimmed().isEmpty()) {
+		ifTemplate = mTemplateUtils["@@IfWithoutElse@@"];
+	}
 
-		if (elseBranchGenerationResult.text.trimmed().isEmpty()) {
-			ifTemplate = mTemplateUtils["@@IfWithoutElse@@"];
-		}
+	ifTemplate.replace("@@Condition@@", guard)
+			.replace("@@Then@@", thenBranchGenerationResult.text)
+			.replace("@@Else@@", elseBranchGenerationResult.text)
+			;
 
-		ifTemplate.replace("@@Condition@@", guard)
-				.replace("@@Then@@", thenBranchGenerationResult.text)
-				.replace("@@Else@@", elseBranchGenerationResult.text)
-				;
+	if (nextNode == Id()) {
+		return CodeBranchGenerationResult(ifTemplate, nextNode);
+	}
 
-		operatorCode = ifTemplate;
+	IdList const links = mApi.outgoingLinks(nextNode);
+	if (links.size() == 0) {
+		return CodeBranchGenerationResult(ifTemplate, nextNode);
+	} else if (links.size() > 1) {
+		mErrorReporter.addError(QObject::tr("Branches merge node should have no more than 1 outgoing link"), currentNode);
+		return CodeBranchGenerationResult("", nextNode);
+	}
 
-		if (nextNode == Id()) {
-			return CodeBranchGenerationResult(operatorCode, nextNode);
-		}
+	Id const nextNodeToGenerate = mApi.otherEntityFromLink(links.at(0), nextNode);
 
-		IdList const links = mApi.outgoingLinks(nextNode);
-		if (links.size() == 0) {
-			return CodeBranchGenerationResult(operatorCode, nextNode);
-		} else if (links.size() > 1) {
-			mErrorReporter.addError(QObject::tr("Branches merge node should have no more than 1 outgoing link"), currentNode);
-			return CodeBranchGenerationResult("", nextNode);
-		}
+	CodeBranchGenerationResult result = generateOperatorCode(nextNodeToGenerate);
+	result.text = ifTemplate + "\n" + result.text;
+	return result;
+}
 
-		Id const nextNodeToGenerate = mApi.otherEntityFromLink(links.at(0), nextNode);
+DispatcherGenerator::CodeBranchGenerationResult DispatcherGenerator::generateOperatorCode(qReal::Id const &currentNode) const
+{
+	if (currentNode.element() == "FunctionCall") {
+		return generateFunctionCallCode(currentNode);
+	}
 
-		CodeBranchGenerationResult result = generateOperatorCode(nextNodeToGenerate);
-		result.text = operatorCode + "\n" + result.text;
-		return result;
+	if (currentNode.element() == "Action") {
+		return generateActionCode(currentNode);
+	}
+
+	if (currentNode.element() == "InitialNode") {
+		return generateInitialNodeCode(currentNode);
+	}
+
+	if (currentNode.element() == "ReturnAction") {
+		return generateReturnActionCode(currentNode);
+	}
+
+	if (currentNode.element() == "DecisionNode") {
+		generateDecisionNodeCode(currentNode);
 	}
 
 	return CodeBranchGenerationResult("", currentNode);

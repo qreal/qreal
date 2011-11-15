@@ -54,9 +54,7 @@ QList<ActionInfo> ToolPluginManager::actions() const
 {
 	QList<ActionInfo> result;
 	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
-		foreach (ActionInfo action, toolPlugin->actions()) {
-			result << action;
-		}
+		result += toolPlugin->actions();
 	}
 
 	return result;

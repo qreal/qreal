@@ -89,6 +89,21 @@ private:
 
 	/// Generates body of a helper function (the same as case body).
 	QString generateFunctionBody(qReal::Id const &element) const;
+
+	/// Generates code for functional calls elements.
+	CodeBranchGenerationResult generateFunctionCallCode(qReal::Id const &currentNode) const;
+
+	/// Generates code for action nodes.
+	CodeBranchGenerationResult generateActionCode(qReal::Id const &currentNode) const;
+
+	/// Generates code for initial nodes.
+	CodeBranchGenerationResult generateInitialNodeCode(qReal::Id const &currentNode) const;
+
+	/// Generates code for return action nodes.
+	CodeBranchGenerationResult generateReturnActionCode(qReal::Id const &currentNode) const;
+
+	/// Generates code for decision nodes.
+	CodeBranchGenerationResult generateDecisionNodeCode(qReal::Id const &currentNode) const;
 };
 
 }

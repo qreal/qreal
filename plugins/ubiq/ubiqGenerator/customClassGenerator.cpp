@@ -62,12 +62,11 @@ void CustomClassGenerator::generate()
 {
 	loadUtilsTemplates();
 
-	foreach (Id const &diagram, mApi.elementsByType("DataStructuresDiagram")) {  // for each diagram
+	foreach (Id const &diagram, mApi.elementsByType("DataStructuresDiagram")) {
 		if (!mApi.isLogicalElement(diagram)) {
 			continue;
 		}
 
-		// get custom classes
 		foreach (Id const &element, mApi.children(diagram)) {
 			if (!mApi.isLogicalElement(element) || element.element() != customClassLabel) {
 				continue;
@@ -78,8 +77,8 @@ void CustomClassGenerator::generate()
 			QString fileTemplate;
 			loadTemplateFromFile(templateName, fileTemplate);
 
-			QString constructors = generateConstructors(element);
-			QString properties = generatePropertiesCode(element);
+			QString const constructors = generateConstructors(element);
+			QString const properties = generatePropertiesCode(element);
 
 			fileTemplate.replace("@@Properties@@", properties)
 					.replace("@@Constructors@@", constructors)
