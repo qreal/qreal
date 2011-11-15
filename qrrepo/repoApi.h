@@ -92,11 +92,8 @@ namespace qrRepo {
 
 		void exterminate();
 
-		/**
-		@function importFromDisk
-		RepoApi's wrapper for Client.importFromDisk
-		@param importedFile - file to be imported
-		 */
+		///RepoApi's wrapper for Client.importFromDisk
+		///@param importedFile - file to be imported
 		void importFromDisk(QString const &importedFile);
 		void saveAll() const;
 		void save(qReal::IdList list) const;
