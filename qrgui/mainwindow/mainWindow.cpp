@@ -413,34 +413,14 @@ void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool bl, bool isS
 
 void MainWindow::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel)
 {
-	activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(id), bl, isSetSel);
-}
-
-void MainWindow::activateSubdiagram(QModelIndex const &idx)
-{
-	// end-to-end links: if there's a first-level diagram with the same name as
-	// this element, show it
-	Id const id = idx.data(roles::idRole).value<Id>();
-	QString const targetName = mModels->graphicalModelAssistApi().name(id);
-	int rows = mModels->graphicalModelAssistApi().childrenOfRootDiagram();
-	for (int i = 0; i < rows; ++i) {
-		Id child = mModels->graphicalModelAssistApi().rootId();
-		if (mModels->graphicalModelAssistApi().name(child) == targetName) {
-			activateItemOrDiagram(child);
+	if (mModels->graphicalModelAssistApi().isGraphicalId(id)) {
+		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(id), bl, isSetSel);
+	} else {
+		IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(id);
+		if (graphicalIds.count() == 0) {
 			return;
 		}
-	}
-
-	QModelIndex diagramToActivate = idx;
-	while (diagramToActivate.isValid() && diagramToActivate.parent().isValid()
-			&& diagramToActivate.parent() != getCurrentTab()->mvIface()->rootIndex())
-	{
-		diagramToActivate = diagramToActivate.parent();
-	}
-
-	if (diagramToActivate.model()->rowCount(diagramToActivate) > 0) {
-		QModelIndex const childIndex = diagramToActivate.model()->index(0, 0, diagramToActivate);
-		activateItemOrDiagram(childIndex);
+		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(graphicalIds[0]), bl, isSetSel);
 	}
 }
 
@@ -450,11 +430,11 @@ void MainWindow::sceneSelectionChanged()
 		return;
 	}
 
-	QList<Element*> elements = QList<Element*>();
-	QList<Element*> selected = QList<Element*>();
+	QList<Element*> elements;
+	QList<Element*> selected;
 	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
 
-	foreach(QGraphicsItem* item, items) {
+	foreach (QGraphicsItem* item, items) {
 		Element* element = dynamic_cast<Element*>(item);
 		if (element) {
 			elements.append(element);
@@ -1346,7 +1326,7 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 	if (tabNumber != -1) {
 		mUi->tabs->setCurrentIndex(tabNumber);
 	} else {
-		EditorView * const view = new EditorView();
+		EditorView * const view = new EditorView(this);
 		mUi->tabs->addTab(view, index.data().toString());
 		mUi->tabs->setCurrentWidget(view);
 		initCurrentTab(index);
@@ -2085,6 +2065,11 @@ void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
 	errorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
 }
 
+bool MainWindow::showConnectionRelatedMenus() const
+{
+	return mToolManager.customizer()->showConnectionRelatedMenus();
+}
+
 void MainWindow::checkNxtTools()
 {
 	QDir dir(qApp->applicationDirPath());
@@ -2252,6 +2237,7 @@ void MainWindow::saveDiagramAsAPicture()
 	getCurrentTab()->scene()->render(&painter);
 	image.save(fileName);
 }
+
 void MainWindow::connectWindowTitle()
 {
 	connect(mModels->graphicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex))

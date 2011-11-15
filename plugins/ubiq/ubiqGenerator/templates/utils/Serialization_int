@@ -1,0 +1,3 @@
+            int @@Name@@_temp = @@Name@@;
+            if (iBigEndianFlag) @@Name@@_temp = Convert32(@@Name@@_temp);
+            iPackWriter.Write(@@Name@@_temp);
