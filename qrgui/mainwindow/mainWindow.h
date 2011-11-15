@@ -108,7 +108,6 @@ private slots:
 	/// @return true - if all ok, false - if not ok
 	bool importProject();
 
-
 	/// checks parameters for integrity,then importing it
 	/// @param fileName - *.qrs file to import
 	/// @return true - if all ok, false - if not ok
