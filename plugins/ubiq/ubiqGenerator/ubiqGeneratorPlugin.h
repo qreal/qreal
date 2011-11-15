@@ -4,6 +4,7 @@
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
 
 #include "customizer.h"
+#include "generator.h"
 
 namespace ubiq {
 namespace generator {
@@ -28,13 +29,15 @@ public:
 	virtual QList<qReal::ActionInfo> actions();
 
 	/// Provides customization object that changes main window title and so on.
-	virtual qReal::CustomizationInterface* customizationInterface();
+	virtual qReal::Customizer* customizationInterface();
 
 private:
 	/// Customization object for configuring QReal main window.
 	Customizer mCustomizer;
+
+	/// Generator main object, directs generation.
+	Generator mGenerator;
 };
 
 }
 }
-

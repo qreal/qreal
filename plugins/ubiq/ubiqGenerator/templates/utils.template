@@ -1,1 +1,114 @@
-@@Property@@=    private short @Name@;\n    public short @NameCaps@\n    {\n      set\n      {\n        @Name@ = value;\n      }\n      get\n      {\n        return @Name@;      }\n    }\n
+@@Property@@
+        public @@Type@@ @@Name@@ {get; set; }
+==========    
+@@Constructor@@
+    internal @@CustomClassName@@(@@ConstructorParameters@@)
+    {
+@@Fields@@    
+    }
+==========
+@@FieldInit@@
+            this.@@Name@@ = @@Value@@;
+==========
+@@Argument@@
+@@ArgType@@ @@ArgName@@
+==========
+@@EnumElement@@
+        public const int @@Name@@ = @@Value@@;
+==========
+@@SerializationIntAsShort@@
+            short @@Name@@_temp = (short)@@Name@@;
+            if (bigEndianFlag) @@Name@@_temp = Convert16(@@Name@@_temp);
+            packWriter.Write(@@Name@@_temp);
+==========
+@@DeserializationIntAsShort@@
+            short @@Name@@_temp = rdr.ReadInt16();
+            if (bigEndianFlag) @@Name@@_temp = Convert16(@@Name@@_temp);
+            @@Name@@ = (int)@@Name@@_temp;
+==========
+@@Serialization_int@@
+            int @@Name@@_temp = @@Name@@;
+            if (bigEndianFlag) @@Name@@_temp = Convert32(@@Name@@_temp);
+            iPackWriter.Write(@@Name@@_temp);
+==========
+@@Deserialization_int@@
+            int @@Name@@_temp = iRdr.ReadInt16();
+            if (bigEndianFlag) @@Name@@_temp = Convert32(@@Name@@_temp);
+            @@Name@@ = @@Name@@_temp;
+==========
+@@MasterDiagramConstant@@
+        const @@Type@@ @@Name@@ = @@Value@@;
+==========
+@@MasterDiagramFieldWithoutInit@@
+        private @@OptionalStatic@@@@Type@@ @@Name@@;
+==========
+@@MasterDiagramField@@
+        private @@OptionalStatic@@@@Type@@ @@Name@@ = @@Value@@;
+==========
+@@EventHandler@@
+        public override void @@HandlerName@@(Msg _msg)
+        {
+            Message msg = (Message)_msg;
+            switch (msg.Command)
+            {
+@@SwitchCases@@
+            }
+        }
+==========
+@@SwitchCase@@
+@@Cases@@
+                {
+@@CaseCode@@
+                }
+                break;
+==========
+@@Case@@
+                case Message.@@CaseValue@@:
+==========
+@@CaseCode@@
+                    @@Command@@;
+==========
+@@UseMessageInput@@
+            @@MessageInputMethod@@(@@MessageInputParameter@@);
+==========
+@@OnTcpIpMessageInput@@
+UseTcpIpInput
+==========
+@@OnMailBoxMessageInput@@
+UseAsyncBoxInput
+==========
+@@HelperFunction@@
+        private @@Type@@ @@Name@@(@@Params@@)
+        {
+@@Body@@
+        }
+
+==========
+@@Return@@
+            return@@OptionalReturnValue@@;
+==========
+@@If@@
+                    if (@@Condition@@)
+                    {
+@@Then@@
+                    }
+                    else
+                    {
+@@Else@@
+                    }
+==========
+@@IfWithoutElse@@
+                    if (@@Condition@@)
+                    {
+@@Then@@
+                    }
+==========
+@@ReturnValue@@
+@@OptionalType@@@@Name@@ = 
+==========
+@@Preprocessor@@
+        public override void @@PreprocessorName@@(Msg _msg)
+        {
+            Message msg = (Message)_msg;
+@@Code@@
+        }

@@ -5,6 +5,7 @@
 using namespace qReal;
 
 ToolPluginManager::ToolPluginManager(QObject *parent)
+		: mCustomizer()
 {
 	Q_UNUSED(parent)
 	mPluginsDir = QDir(qApp->applicationDirPath());
@@ -33,29 +34,27 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 			delete loader;
 		}
 	}
-
-	mCustomizer = new DefaultCustomizer();
 }
 
 ToolPluginManager::~ToolPluginManager()
 {
-	delete mCustomizer;
-	foreach (QPluginLoader *loader, mLoaders)
+	foreach (QPluginLoader *loader, mLoaders) {
 		delete loader;
+	}
 }
 
 void ToolPluginManager::init(PluginConfigurator const &configurator)
 {
-	foreach (ToolPluginInterface *toolPlugin, mPlugins)
+	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
 		toolPlugin->init(configurator);
+	}
 }
 
 QList<ActionInfo> ToolPluginManager::actions() const
 {
 	QList<ActionInfo> result;
 	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
-		foreach (ActionInfo action, toolPlugin->actions())
-			result << action;
+		result += toolPlugin->actions();
 	}
 
 	return result;
@@ -64,23 +63,28 @@ QList<ActionInfo> ToolPluginManager::actions() const
 QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() const
 {
 	QList<QPair<QString, PreferencesPage *> > result;
-	foreach (ToolPluginInterface *toolPlugin, mPlugins)
-		if (toolPlugin->preferencesPage().second != NULL)
+	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
+		if (toolPlugin->preferencesPage().second != NULL) {
 			result << toolPlugin->preferencesPage();
+		}
+	}
 
 	return result;
 }
 
-CustomizationInterface *ToolPluginManager::customizer() const
+Customizer const *ToolPluginManager::customizer() const
 {
-	foreach (ToolPluginInterface *toolPlugin, mPlugins)
-		if (toolPlugin->customizationInterface())
+	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
+		if (toolPlugin->customizationInterface()) {
 			return toolPlugin->customizationInterface();
-	return mCustomizer;
+		}
+	}
+	return &mCustomizer;
 }
 
 void ToolPluginManager::updateSettings()
 {
-	foreach (ToolPluginInterface *toolPlugin, mPlugins)
+	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
 		toolPlugin->updateSettings();
+	}
 }
