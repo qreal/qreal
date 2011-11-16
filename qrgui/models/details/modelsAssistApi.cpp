@@ -34,6 +34,11 @@ void ModelsAssistApi::setProperty(Id const &elem, QVariant const &newValue, int 
 	mModel.setData(indexById(elem), newValue, role);
 }
 
+void ModelsAssistApi::stackBefore(Id const &element, Id const &sibling)
+{
+	mModel.stackBefore(indexById(element), indexById(sibling));
+}
+
 QVariant ModelsAssistApi::property(Id const &elem, int const role) const
 {
 	return mModel.data(indexById(elem), role);

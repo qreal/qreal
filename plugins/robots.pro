@@ -1,4 +1,4 @@
 TEMPLATE = subdirs
 
-SUBDIRS	= \
+SUBDIRS = \
 	robots/robots.pro \

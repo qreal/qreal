@@ -7,6 +7,7 @@
                                                   <graphics>
                                                             <lineType type="solidLine"/>
 															<lineWidth width="6"/>
+															<lineColor color="#fffaf0"/>
                                                   </graphics>
                                                   <logic>
                                                             <properties>

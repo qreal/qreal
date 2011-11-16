@@ -61,10 +61,13 @@ public:
 	virtual void dehighlight();
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram();
-	void openShapeEditor(QPersistentModelIndex index, int role, QString const propertyValue);
+	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
 	virtual void openSettingsDialog(QString const &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);
+
+	/// Tells if we should display trace connections menu or not
+	bool showConnectionRelatedMenus() const;
 
 signals:
 	void gesturesShowed();
@@ -73,7 +76,7 @@ signals:
 
 public slots:
 	void deleteFromScene();
-
+	void editWindowTitle();
 	void propertyEditorScrollTo(QModelIndex const &index);
 
 	void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
@@ -100,11 +103,14 @@ private slots:
 	void checkoutDialogOk();
 	void checkoutDialogCancel();
 
+	void saveAllAndOpen(QString const &dirName);
+
 	bool open(QString const &dirName);
 	bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
 	void saveProjectAs();
 	void saveAll();
 	void fullscreen();
+	void openRecentProjectsMenu();
 	bool openNewProject();
 	void createProject();
 
@@ -127,8 +133,6 @@ private slots:
 	void applySettings();
 
 	void deleteFromScene(QGraphicsItem *target);
-
-	void activateSubdiagram(QModelIndex const &idx);
 
 	void debug();
 	void debugSingleStep();
@@ -189,48 +193,10 @@ private slots:
 
 	void autosave();
 	void setAutoSaveParameters();
+	void closeProject();
+	void closeProjectAndSave();
 
 private:
-	Ui::MainWindowUi *mUi;
-
-	QCloseEvent *mCloseEvent;
-	models::Models *mModels;
-	EditorManager mEditorManager;
-	ToolPluginManager mToolManager;
-	ListenerManager *mListenerManager;
-	PropertyEditorModel mPropertyModel;
-	GesturesWidget *mGesturesWidget;
-
-	QVector<bool> mSaveListChecked;
-	bool mDiagramCreateFlag;
-
-	QStringList mDiagramsList;
-	QModelIndex mRootIndex;
-
-	DebuggerConnector *mDebuggerConnector;
-	VisualDebugger *mVisualDebugger;
-	gui::ErrorReporter *mErrorReporter;  // Has ownership
-
-	/** @brief Fullscreen mode flag */
-	bool mIsFullscreen;
-
-	/** @brief Internal map table to store info what widgets should we hide/show */
-	QMap<QString, bool> mDocksVisibility;
-	void registerMetatypes();
-
-	QString mSaveFile;
-	QString mTempDir;
-
-	PreferencesDialog mPreferencesDialog;
-
-	gui::NxtFlashTool *mFlashTool;
-
-	bool mNxtToolsPresent;
-	HelpBrowser *mHelpBrowser;
-
-	bool mIsNewProject;
-	QTimer mAutoSaveTimer;
-
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
 			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
@@ -243,7 +209,7 @@ private:
 	virtual void closeEvent(QCloseEvent *event);
 	void deleteFromExplorer(bool isLogicalModel);
 	void keyPressEvent(QKeyEvent *event);
-	QString getWorkingFile(QString const &dialogWindowTitle);
+	QString getWorkingFile(QString const &dialogWindowTitle, bool save);
 
 	int getTabIndex(const QModelIndex &index);
 
@@ -254,6 +220,8 @@ private:
 	void connectActionZoomTo(QWidget* widget);
 	void setConnectActionZoomTo(QWidget* widget);
 	void clickErrorListWidget();
+	void connectWindowTitle();
+	void disconnectWindowTitle();
 
 	void setShowGrid(bool isChecked);
 	void setShowAlignment(bool isChecked);
@@ -287,7 +255,54 @@ private:
 	void initWindowTitle();
 	void initDebugger();
 	void initExplorers();
+	void initRecentProjectsMenu();
 
 	void saveAs(QString const &saveName);
+
+	void refreshRecentProjectsList(QString const &fileName);
+	int openSaveOfferDialog();
+
+	Ui::MainWindowUi *mUi;
+
+	QCloseEvent *mCloseEvent;
+	models::Models *mModels;
+	EditorManager mEditorManager;
+	ToolPluginManager mToolManager;
+	ListenerManager *mListenerManager;
+	PropertyEditorModel mPropertyModel;
+	GesturesWidget *mGesturesWidget;
+
+	QVector<bool> mSaveListChecked;
+	bool mDiagramCreateFlag;
+
+	QStringList mDiagramsList;
+	QModelIndex mRootIndex;
+
+	DebuggerConnector *mDebuggerConnector;
+	VisualDebugger *mVisualDebugger;
+	gui::ErrorReporter *mErrorReporter;  // Has ownership
+
+	/// Fullscreen mode flag
+	bool mIsFullscreen;
+
+	/// Internal map table to store info what widgets should we hide/show
+	QMap<QString, bool> mDocksVisibility;
+
+	QString mSaveFile;
+	QString mTempDir;
+	PreferencesDialog mPreferencesDialog;
+
+	gui::NxtFlashTool *mFlashTool;
+
+	bool mNxtToolsPresent;
+	HelpBrowser *mHelpBrowser;
+	bool mIsNewProject;
+	bool mUnsavedProjectIndicator;
+	QTimer mAutoSaveTimer;
+
+	int mRecentProjectsLimit;
+	QSignalMapper *mRecentProjectsMapper;
+	QMenu *mRecentProjectsMenu;
 };
+
 }

@@ -29,6 +29,7 @@ namespace qrRepo {
 			QVariant property(const QString &name) const;
 			QMap<QString, QVariant> properties() const;
 			bool hasProperty(const QString &name) const;
+			void setProperty(const QString &name, const QVariant &value);
 			void removeProperty(const QString &name);
 			qReal::Id id() const;
 			qReal::Id logicalId() const;
@@ -38,6 +39,9 @@ namespace qrRepo {
 			qReal::IdList temporaryRemovedLinks() const;
 			void removeTemporaryRemovedLinksAt(QString const &direction);
 			void removeTemporaryRemovedLinks();
+
+			/// Stacks item element before sibling (they should have the same parent)
+			void stackBefore(qReal::Id const &element, qReal::Id const &sibling);
 
 		private:
 			const qReal::Id mId;

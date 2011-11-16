@@ -132,26 +132,26 @@
     <postInstallationActionList>
         <addEnvironmentVariable>
             <name>GNUARM_ROOT</name>
-            <scope>system</scope>
+            <scope>user</scope>
             <value>/GNUARM</value>
         </addEnvironmentVariable>
         <addEnvironmentVariable>
             <name>NEXTTOOL_ROOT</name>
-            <scope>system</scope>
+            <scope>user</scope>
             <value>/nexttool</value>
         </addEnvironmentVariable>
     </postInstallationActionList>
     <postUninstallationActionList>
         <deleteEnvironmentVariable>
             <name>GNUARM_ROOT</name>
-            <scope>system</scope>
+            <scope>user</scope>
         </deleteEnvironmentVariable>
         <deleteEnvironmentVariable>
             <name>NEXTTOOL_ROOT</name>
-            <scope>system</scope>
+            <scope>user</scope>
         </deleteEnvironmentVariable>
     </postUninstallationActionList>
-    <enableRollback>1</enableRollback>
+    <enableRollback>0</enableRollback>
     <enableTimestamp>1</enableTimestamp>
     <vendor>SPSU</vendor>
     <parameterList>

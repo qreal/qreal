@@ -6,7 +6,6 @@
     <leftImage>%1/installer/left.png</leftImage>
     <logoImage>%1/installer/logo.png</logoImage>
     <defaultLanguage>ru</defaultLanguage>
-    <allowLanguageSelection>1</allowLanguageSelection>
     <componentList>
         <component>
             <name>default</name>
@@ -64,10 +63,10 @@
                         <distributionFile>
                             <origin>%1/bin/qrutils.dll</origin>
                         </distributionFile>
-						<distributionFile>
+                        <distributionFile>
                             <origin>%1/plugins/robots/editor/doc/qreal-robots.qhc</origin>
                         </distributionFile>
-						<distributionFile>
+                        <distributionFile>
                             <origin>%1/plugins/robots/editor/doc/qreal-robots.qch</origin>
                         </distributionFile>
                         <distributionDirectory>
@@ -85,7 +84,7 @@
                         <distributionFile>
                             <origin>%2/QtSql4.dll</origin>
                         </distributionFile>
-						<distributionFile>
+                        <distributionFile>
                             <origin>%2/QtCore4.dll</origin>
                         </distributionFile>
                         <distributionFile>
@@ -94,17 +93,17 @@
                         <distributionFile>
                             <origin>%2/QtSvg4.dll</origin>
                         </distributionFile>
-						<distributionFile>
+                        <distributionFile>
                             <origin>%2/mingwm10.dll</origin>
                         </distributionFile>
-						<distributionFile>
+                        <distributionFile>
                             <origin>%2/QtXml4.dll</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>%2/libgcc_s_dw2-1.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%1/bin/icon.ico</origin>
+                            <origin>%1/installer/icon.ico</origin>
                         </distributionFile>
                         <distributionDirectory>
                             <origin>%1/plugins/robots/editor/images</origin>
@@ -114,11 +113,11 @@
                         <shortcut>
                             <comment></comment>
                             <exec></exec>
-                            <icon></icon>
+                            <icon>${installdir}/icon.ico</icon>
                             <name>Run QReal-Robots</name>
                             <path></path>
                             <platforms>windows</platforms>
-                            <runAsAdmin>1</runAsAdmin>
+                            <runAsAdmin>0</runAsAdmin>
                             <runInTerminal>0</runInTerminal>
                             <windowsExec>${installdir}/qrgui.exe</windowsExec>
                             <windowsExecArgs></windowsExecArgs>
@@ -148,7 +147,7 @@
                 <startMenuShortcut>
                     <comment></comment>
                     <name>Run QReal-Robots</name>
-                    <runAsAdmin>1</runAsAdmin>
+                    <runAsAdmin>0</runAsAdmin>
                     <runInTerminal>0</runInTerminal>
                     <windowsExec>${installdir}/qrgui.exe</windowsExec>
                     <windowsExecArgs></windowsExecArgs>
@@ -179,7 +178,7 @@
             <name>installDir</name>
         </registryDelete>
     </postUninstallationActionList>
-    <enableRollback>1</enableRollback>
+    <enableRollback>0</enableRollback>
     <enableTimestamp>1</enableTimestamp>
     <requireInstallationByRootUser>1</requireInstallationByRootUser>
     <vendor>SPbSU</vendor>
@@ -187,7 +186,7 @@
         <runProgram>
             <program>${installdir}/qrgui.exe</program>
             <programArguments></programArguments>
-            <progressText>Запустить QReal:Robots</progressText>
+            <progressText>Run QReal:Robots</progressText>
         </runProgram>
     </finalPageActionList>
     <parameterList>

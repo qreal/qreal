@@ -9,7 +9,7 @@ using namespace models;
 using namespace models::details;
 
 GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel, EditorManager const &editorManager)
-	: mModelsAssistApi(graphicalModel, editorManager), mGraphicalModel(graphicalModel)
+		: mGraphicalModel(graphicalModel), mModelsAssistApi(graphicalModel, editorManager)
 {
 	connect(&graphicalModel, SIGNAL(nameChanged(Id)), this, SIGNAL(nameChanged(Id)));
 }
@@ -89,6 +89,11 @@ void GraphicalModelAssistApi::setProperties(Id const &elem, QMap<QString, QVaria
 QMap<QString, QVariant> GraphicalModelAssistApi::properties(Id const &id) const
 {
 	return mGraphicalModel.api().properties(id);
+}
+
+void GraphicalModelAssistApi::stackBefore(const Id &element, const Id &sibling)
+{
+	mModelsAssistApi.stackBefore(element, sibling);
 }
 
 void GraphicalModelAssistApi::setConfiguration(Id const &elem, QPolygon const &newValue)

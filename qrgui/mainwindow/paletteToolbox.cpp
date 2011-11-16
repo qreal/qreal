@@ -4,6 +4,7 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QComboBox>
 #include <QtGui/QScrollArea>
+#include <QtCore/QtAlgorithms>
 
 #include "paletteToolbox.h"
 #include "../../qrkernel/definitions.h"
@@ -11,15 +12,21 @@
 using namespace qReal;
 using namespace qReal::gui;
 
-PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &name, QString const &description,
-	QIcon const &icon, QWidget *parent)
-: QWidget(parent), mId(id), mIcon(icon), mText(name)
+EditorManager * PaletteToolbox::mEditorManager = NULL;
+
+PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &name
+		, QString const &description, QIcon const &icon, QWidget *parent
+		)
+		: QWidget(parent)
+		, mId(id)
+		, mIcon(icon)
+		, mText(name)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(4, 4, 4, 4);
 
 	QLabel *pic = new QLabel(this);
-	pic->setFixedSize(24, 24); // the frame
+	pic->setFixedSize(24, 24);  // the frame
 	pic->setPixmap(mIcon.pixmap(22, 22));
 	layout->addWidget(pic);
 
@@ -31,13 +38,13 @@ PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &
 
 	QString modifiedDescription = description;
 	if (!modifiedDescription.isEmpty()){
-		modifiedDescription.insert(0, "<body>");//turns alignment on
+		modifiedDescription.insert(0, "<body>");  //turns alignment on
 		setToolTip(modifiedDescription);
 	}
 }
 
 PaletteToolbox::PaletteToolbox(QWidget *parent)
-: QWidget(parent), mCurrentTab(0)
+		: QWidget(parent), mCurrentTab(0)
 {
 	createPalette();
 }
@@ -85,7 +92,7 @@ void PaletteToolbox::setActiveEditor(int const comboIndex)
 {
 	mCurrentTab = comboIndex;
 	if (mTabs.size() > 0) {
-		mScrollArea->takeWidget(); // Save current editor from extermination.
+		mScrollArea->takeWidget();  // Save current editor from extermination.
 		mScrollArea->setWidget(mTabs[comboIndex]);
 	}
 }
@@ -103,7 +110,7 @@ void PaletteToolbox::addDiagramType(Id const &id, QString const &name)
 	mTabs.append(tab);
 	mTabNames.append(name);
 
-	Q_ASSERT(id.idSize() == 2); // it should be diagram
+	Q_ASSERT(id.idSize() == 2);  // it should be diagram
 	mCategories[id] = mTabs.size() - 1;
 
 	mComboBox->addItem(name);
@@ -111,7 +118,7 @@ void PaletteToolbox::addDiagramType(Id const &id, QString const &name)
 	Q_ASSERT(mTabNames.size() == mTabs.size());
 }
 
-void PaletteToolbox::addItemType(Id const &id, QString const &name, QString const &description,  QIcon const &icon)
+void PaletteToolbox::addItemType(Id const &id, QString const &name, QString const &description, QIcon const &icon)
 {
 	Id category(id.editor(), id.diagram());
 	QWidget *tab = mTabs[mCategories[category]];
@@ -119,6 +126,25 @@ void PaletteToolbox::addItemType(Id const &id, QString const &name, QString cons
 
 	DraggableElement *element = new DraggableElement(id, name, description, icon, this);
 	tab->layout()->addWidget(element);
+}
+
+void PaletteToolbox::addSortedItemTypes(EditorManager &editman, const Id &diagram)
+{
+	mEditorManager = &editman;
+
+	IdList list = editman.elements(diagram);
+
+	qSort(list.begin(), list.end(), idLessThan);
+
+	foreach (const Id element, list)
+		addItemType(element, editman.friendlyName(element)
+				, editman.description(element), editman.icon(element));
+}
+
+bool PaletteToolbox::idLessThan(const Id &s1, const Id &s2)
+{
+	return mEditorManager->friendlyName(s1).toLower() <
+			mEditorManager->friendlyName(s2).toLower();
 }
 
 void PaletteToolbox::deleteDiagramType(const Id &id)
@@ -167,7 +193,7 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	if (!child)
 		return;
 
-	Q_ASSERT(child->id().idSize() == 3); // it should be element type
+	Q_ASSERT(child->id().idSize() == 3);  // it should be element type
 
 	// new element's ID is being generated here
 	// may this epic event should take place in some more appropriate place

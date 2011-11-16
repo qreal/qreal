@@ -746,7 +746,7 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration()
 	bool isPositiveBranchReturnsToBackElems = positiveBranchCheck.first;
 
 	Id negativeBranchElement = mNxtGen->mApi->to(outgoingLinks.at(1 - conditionArrowNum));
-	if (positiveBranchElement == Id::rootId()) {
+	if (negativeBranchElement == Id::rootId()) {
 		mNxtGen->mErrorReporter.addError("If block " + mElementId.toString() + " has no 2 correct branches!"\
 				" May be you need to connect one of them to some diagram element.", mElementId);
 		return false;

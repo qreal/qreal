@@ -60,6 +60,15 @@ void RobotModel::configureSensors(sensorType::SensorTypeEnum const &port1
 		, sensorType::SensorTypeEnum const &port4)
 {
 	Tracer::debug(tracer::initialization, "RobotModel::configureSensors", "Request for sensors configuration in Model");
+
+	if (port1 == sensorType::unused && port2 == sensorType::unused
+			&& port3 == sensorType::unused && port4 == sensorType::unused)
+	{
+		Tracer::debug(tracer::initialization, "RobotModel::configureSensors", "There is no need to initialize anything, emitting and exiting");
+		emit sensorsConfigured();
+		return;
+	}
+
 	configureSensor(port1, inputPort::port1);
 	configureSensor(port2, inputPort::port2);
 	configureSensor(port3, inputPort::port3);

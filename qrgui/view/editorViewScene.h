@@ -25,6 +25,7 @@ public:
 
 	void clearScene();
 
+<<<<<<< HEAD
 	virtual int launchEdgeMenu(EdgeElement* edge, NodeElement* node, QPointF scenePos);
 	virtual qReal::Id *createElement(const QString &, QPointF scenePos, const QString &name = "(anonymous something)");
 	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
@@ -60,6 +61,40 @@ public:
 	void dehighlight();
 
 	QPointF getMousePos();
+=======
+	virtual int launchEdgeMenu(EdgeElement* edge, NodeElement* node, const QPointF &scenePos);
+	virtual qReal::Id createElement(const QString &, QPointF const &scenePos);
+	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos);
+
+	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
+	// including the scene (with dependencies) there
+	virtual Element *getElem(qReal::Id const &id);
+	Element *getElemAt(const QPointF &position);
+
+	virtual qReal::Id rootItemId() const;
+	void setMainWindow(qReal::MainWindow *mainWindow);
+	qReal::MainWindow *mainWindow() const;
+	void setEnabled(bool enabled);
+
+	void setNeedDrawGrid(bool show);
+	double realIndexGrid();
+	void setRealIndexGrid(double newIndexGrid);
+
+	bool canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const;
+	bool getNeedDrawGrid();
+
+	Element* getLastCreated();
+
+	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
+
+	void highlight(qReal::Id const &graphicalId, bool exclusive = true);
+	void dehighlight(qReal::Id const &graphicalId);
+	void dehighlight();
+
+	QPointF getMousePos();
+	static QGraphicsRectItem *getPlaceholder();
+	NodeElement* findNewParent(QPointF, NodeElement*);
+>>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 
 public slots:
 	qReal::Id createElement(const QString &);
@@ -76,20 +111,19 @@ protected:
 	void dragEnterEvent( QGraphicsSceneDragDropEvent *event);
 	void dragMoveEvent( QGraphicsSceneDragDropEvent *event);
 	void dragLeaveEvent( QGraphicsSceneDragDropEvent *event);
-	void dropEvent ( QGraphicsSceneDragDropEvent *event);
+	void dropEvent( QGraphicsSceneDragDropEvent *event);
 
 	void keyPressEvent( QKeyEvent *event);
 
 	void mousePressEvent( QGraphicsSceneMouseEvent *event);
-	void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent );
-	void mouseMoveEvent (QGraphicsSceneMouseEvent *event);
+	void mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent );
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
 	void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event);
 
 	virtual void drawBackground( QPainter *painter, const QRectF &rect);
 
 private slots:
-
 	void connectActionTriggered();
 	void goToActionTriggered();
 	void disconnectActionTriggered();
@@ -100,8 +134,12 @@ private slots:
 	void initMouseMoveManager();
 	void createEdge(QString const &);
 
+	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
+	void getObjectByGesture();
+
 private:
 	Element* mLastCreatedWithEdge;
+	NodeElement *mCopiedNode;
 
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
@@ -130,6 +168,7 @@ private:
 
 	void initContextMenu(Element *e, QPointF const & pos);
 
+	NodeElement *mHighlightNode;
 	QPointF newElementsPosition;
 
 	QList<QGraphicsItem*> mGesture;

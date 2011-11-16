@@ -31,9 +31,14 @@ public:
 	Id copyElement(Id const &source);
 	IdList children(Id const &element) const;
 	void changeParent(Id const &element, Id const &parent, QPointF const &position);
+
 	void copyProperties(Id const &dest, Id const &src);
+
 	void setProperties(Id const &elem, QMap<QString, QVariant> properties);
 	QMap<QString, QVariant> properties(Id const &elem) const;
+
+	virtual void stackBefore(Id const &element, Id const &sibling);
+
 	IdList temporaryRemovedLinksFrom(Id const &elem) const;
 	IdList temporaryRemovedLinksTo(Id const &elem) const;
 	IdList temporaryRemovedLinksNone(Id const &elem) const;
@@ -76,7 +81,6 @@ public:
 	bool hasRootDiagrams() const;
 	int childrenOfRootDiagram() const;
 	int childrenOfDiagram(const Id &parent) const;
-
 signals:
 	void nameChanged(Id const &id);
 
@@ -84,8 +88,8 @@ private:
 	GraphicalModelAssistApi(GraphicalModelAssistApi const &);
 	GraphicalModelAssistApi& operator =(GraphicalModelAssistApi const &);
 
-	details::ModelsAssistApi mModelsAssistApi;
 	details::GraphicalModel &mGraphicalModel;
+	details::ModelsAssistApi mModelsAssistApi;
 };
 
 }
