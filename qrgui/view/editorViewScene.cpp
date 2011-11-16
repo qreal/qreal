@@ -15,19 +15,12 @@
 using namespace qReal;
 
 EditorViewScene::EditorViewScene(QObject * parent)
-<<<<<<< HEAD
-	:  QGraphicsScene(parent)
-	, mWindow(NULL)
-	, mPrevParent(0)
-	, mShouldReparentItems(false)
-=======
 		:  QGraphicsScene(parent)
 		, mLastCreatedWithEdge(NULL)
 		, mHighlightNode(NULL)
 		, mWindow(NULL)
 		, mPrevParent(0)
 		, mShouldReparentItems(false)
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid", true).toBool();
 	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth", 10).toInt()) / 100;
@@ -66,15 +59,6 @@ void EditorViewScene::initMouseMoveManager()
 	if (!mv_iface || !mv_iface->graphicalAssistApi())
 		return;
 	qReal::Id diagram = mv_iface->graphicalAssistApi()->idByIndex(mWindow->rootIndex());
-<<<<<<< HEAD
-	if (diagram == Id())
-		// Root diagram is not set, for example, current tab is disabled. No need
-		// to do anything with mouse manager.
-		return;
-	QList<qReal::Id> elements = mWindow->manager()->elements(diagram);
-	mMouseMovementManager = new MouseMovementManager(elements,
-													 mWindow->manager(), mWindow->gesturesPainter());
-=======
 	if (diagram == Id()) {
 		// Root diagram is not set, for example, current tab is disabled. No need
 		// to do anything with mouse manager.
@@ -83,7 +67,6 @@ void EditorViewScene::initMouseMoveManager()
 	QList<qReal::Id> elements = mWindow->manager()->elements(diagram);
 	mMouseMovementManager = new MouseMovementManager(elements
 			, mWindow->manager(), mWindow->gesturesPainter());
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 	connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
 	connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
 }
@@ -122,43 +105,26 @@ void EditorViewScene::setRealIndexGrid(double newIndexGrid)
 
 void EditorViewScene::setEnabled(bool enabled)
 {
-<<<<<<< HEAD
-	foreach (QGraphicsView *view, views())
-		view->setEnabled(enabled);
-=======
 	foreach (QGraphicsView *view, views()) {
 		view->setEnabled(enabled);
 	}
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 }
 
 void EditorViewScene::clearScene()
 {
-<<<<<<< HEAD
-	foreach (QGraphicsItem *item, items())
-		// looks really insane, but some elements were alreadt deleted together with their parent
-		if (items().contains(item))
-			removeItem(item);
-=======
 	foreach (QGraphicsItem *item, items()) {
 		// looks really insane, but some elements were alreadt deleted together with their parent
 		if (items().contains(item)) {
 			removeItem(item);
 		}
 	}
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 }
 
 Element * EditorViewScene::getElem(qReal::Id const &id)
 {
-<<<<<<< HEAD
-	if (id == Id::rootId())
-		return NULL;
-=======
 	if (id == Id::rootId()) {
 		return NULL;
 	}
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 
 	// FIXME: SLOW!
 	QList < QGraphicsItem * > list = items();
@@ -175,25 +141,15 @@ Element * EditorViewScene::getElem(qReal::Id const &id)
 void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
-<<<<<<< HEAD
-	if (mimeData->hasFormat(DEFAULT_MIME_TYPE))
-		QGraphicsScene::dragEnterEvent(event);
-	else
-		event->ignore();
-=======
-	if (mimeData->hasFormat("application/x-real-uml-data")) {
+	if (mimeData->hasFormat(DEFAULT_MIME_TYPE)) {
 		QGraphicsScene::dragEnterEvent(event);
 	} else {
 		event->ignore();
 	}
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 }
 
 void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
-<<<<<<< HEAD
-	Q_UNUSED(event);
-=======
 	// forming id to check if we can put draggable element to element under cursor
 	QByteArray itemData = event->mimeData()->data("application/x-real-uml-data");
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
@@ -275,36 +231,19 @@ QGraphicsRectItem* EditorViewScene::getPlaceholder()
 	placeholder->setPen(QPen(QColor(0, 0, 0, 0), 0));
 	placeholder->setRect(0, 0, 50, 50);
 	return placeholder;
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 }
 
 void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
 	Q_UNUSED(event);
-<<<<<<< HEAD
-=======
 	if (mHighlightNode != NULL) {
 		mHighlightNode->erasePlaceholder(true);
 		mHighlightNode = NULL;
 	}
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 }
 
 void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-<<<<<<< HEAD
-	//	Q_UNUSED(container);
-	//	Q_UNUSED(candidate); // TODO: update xml descriptions to remove
-	//	return true;
-
-	bool allowed = false;
-	qDebug() << container << candidate;
-	qDebug() << mWindow->manager()->getContainedTypes(container.type());
-	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container.type())){
-		allowed = allowed || mWindow->manager()->isParentOf(candidate, type);
-	}
-	return allowed;
-=======
 	Q_ASSERT(mWindow);  // should be initialized separately.
 	// constuctor is bad for this, because the scene is created in generated .ui file
 
@@ -318,29 +257,17 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 		mHighlightNode->erasePlaceholder(true);
 		mHighlightNode = NULL;
 	}
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 }
 
 bool EditorViewScene::canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const
 {
-<<<<<<< HEAD
-	Q_ASSERT(mWindow); // should be initialized separately.
-	// constuctor is bad for this, because the scene is created in generated .ui file
-
-	// if there's no diagrams. create nothing
-	if (!mv_iface->graphicalAssistApi()->hasRootDiagrams())
-		return;
-
-	createElement(event->mimeData(),event->scenePos());
-=======
 	bool allowed = false;
 	qDebug() << container << candidate;
 	qDebug() << mWindow->manager()->getContainedTypes(container.type());
-	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container.type())){
+	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container.type())) {
 		allowed = allowed || mWindow->manager()->isParentOf(candidate, type);
 	}
 	return allowed;
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 }
 
 int EditorViewScene::launchEdgeMenu(EdgeElement* edge, NodeElement* node, QPointF const &scenePos)
@@ -362,12 +289,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement* edge, NodeElement* node, QPoint
 	QSignalMapper *menuSignalMapper = new QSignalMapper(this);
 	toDelete.append(menuSignalMapper);
 
-<<<<<<< HEAD
-	foreach(PossibleEdge pEdge, edge->getPossibleEdges())
-	{
-=======
 	foreach(PossibleEdge pEdge, edge->getPossibleEdges()){
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 		QString target;
 		// if pEdge.first.first is parent of node->id(), then add all children of pEdge.first.second to the list
 		// and vice versa
@@ -408,22 +330,15 @@ int EditorViewScene::launchEdgeMenu(EdgeElement* edge, NodeElement* node, QPoint
 		}
 	}
 
-<<<<<<< HEAD
-	//	Cleaning.
-	//	foreach(QObject *object, toDelete)
-	//		delete object;
-=======
 //		Cleaning.
 //		foreach(QObject *object, toDelete)
 //			delete object;
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 
 	return result;
 }
 
 qReal::Id EditorViewScene::createElement(const QString &str)
 {
-<<<<<<< HEAD
 	qReal::Id *result = createElement(str, mCreatePoint);
 	mLastCreatedWithEdge = getElem(*result);
 	return *result;
@@ -433,31 +348,14 @@ qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos, 
 {
 	Id typeId = Id::loadFromString(str);
 	Id *objectId = new Id(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
-=======
-	qReal::Id result = createElement(str, mCreatePoint);
-	mLastCreatedWithEdge = getElem(result);
-	return result;
-}
-
-qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scenePos)
-{
-	Id typeId = Id::loadFromString(str);
-	Id objectId(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 
 	QByteArray data;
 	QMimeData *mimeData = new QMimeData();
 	QDataStream stream(&data, QIODevice::WriteOnly);
-<<<<<<< HEAD
 	QString mimeType = QString(DEFAULT_MIME_TYPE);
 	QString uuid = objectId->toString();
 	QString pathToItem = Id::rootId().toString();
-=======
-	QString mimeType = QString("application/x-real-uml-data");
-	QString uuid = objectId.toString();
-	QString pathToItem = Id::rootId().toString();
-	QString name = "(" + mWindow->manager()->friendlyName(typeId) + ")";
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
+//	QString name = "(" + mWindow->manager()->friendlyName(typeId) + ")";
 	QPointF pos = QPointF(0, 0);
 	bool isFromLogicalModel = false;
 	stream << uuid;
@@ -473,28 +371,16 @@ qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scen
 	return objectId;
 }
 
-<<<<<<< HEAD
-void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
-{
-	QByteArray itemData = mimeData->data(DEFAULT_MIME_TYPE);
-=======
 void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &scenePos)
 {
-	QByteArray itemData = mimeData->data("application/x-real-uml-data");
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
+	QByteArray itemData = mimeData->data(DEFAULT_MIME_TYPE);
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
 
 	QString uuid = "";
 	QString pathToItem = "";
-<<<<<<< HEAD
-	QString name;
-	QPointF pos;
-	bool isFromLogicalModel;
-=======
 	QString name = "";
 	QPointF pos;
 	bool isFromLogicalModel = false;
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 	in_stream >> uuid;
 	in_stream >> pathToItem;
 	in_stream >> name;
@@ -504,14 +390,6 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	Element *newParent = NULL;
 
 	// TODO: make it simpler
-<<<<<<< HEAD
-	qReal::Id id = qReal::Id::loadFromString(uuid);
-	Element* e = mWindow->manager()->graphicalObject(id);
-
-	// TODO: what is it??
-	if (dynamic_cast<NodeElement*>(e))
-		newParent = getElemAt(scenePos);
-=======
 	Id id = Id::loadFromString(uuid);
 
 	// if element is node then we should look for parent for him
@@ -525,18 +403,13 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 			}
 		}
 	}
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 
 	if (e) {
 		delete e;
 	}
 
 	if(newParent && dynamic_cast<NodeElement*>(newParent)){
-<<<<<<< HEAD
-		if (!canBeContainedBy(newParent->id(), id)){
-=======
 		if (!canBeContainedBy(newParent->id(), id)) {
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 			QString text;
 			text += "Element of type \"" + id.element() + "\" can not be a child of \"" + newParent->id().element() + "\"";
 			QMessageBox::critical(0, "Error!", text);
@@ -553,7 +426,14 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 
 	Id parentId = newParent ? newParent->id() : mv_iface->rootId();
 	id = mv_iface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
-<<<<<<< HEAD
+
+	NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
+	if (parentNode != NULL) {
+		Element *nextNode = parentNode->getPlaceholderNextElement();
+		if (nextNode != NULL) {
+			mv_iface->graphicalAssistApi()->stackBefore(id, nextNode->id());
+		}
+	}
 	emit elementCreated(id);
 }
 
@@ -598,7 +478,6 @@ NodeElement *EditorViewScene::deserializeNode(const NodeElementSerializationData
 	return result;
 }
 
-
 void EditorViewScene::copy()
 {
 	QList<NodeElementSerializationData> nodesData;
@@ -628,23 +507,10 @@ void EditorViewScene::copy()
 	// QMimeData objects are usually created using new and supplied to QDrag or QClipboard objects.
 	// This is to enable Qt to manage the memory that they use.
 	// so we do not delete mimeData
-=======
-
-	NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
-	if (parentNode != NULL) {
-		Element *nextNode = parentNode->getPlaceholderNextElement();
-		if (nextNode != NULL) {
-			mv_iface->graphicalAssistApi()->stackBefore(id, nextNode->id());
-		}
-	}
-	emit elementCreated(id);
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 }
 
 void EditorViewScene::paste(bool viewOnly)
 {
-<<<<<<< HEAD
-
 	const QClipboard *clipboard = QApplication::clipboard();
 	const QMimeData *mimeData = clipboard->mimeData();
 
@@ -683,27 +549,16 @@ void EditorViewScene::paste(bool viewOnly)
 			nodesData.removeAll(candidate);
 		}
 	}
-=======
-	mCopiedNode = dynamic_cast<NodeElement*>(selectedItems()[0]);
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 }
 
 Element* EditorViewScene::getLastCreated()
 {
-<<<<<<< HEAD
 	return mLastCreatedWithEdge;
-=======
-	if (mCopiedNode)
-		mCopiedNode->copyAndPlaceOnDiagram();
-	else
-		qDebug() << "paste attempt on NULL";
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 }
 
 
 QList<NodeElement*> EditorViewScene::selectedNodes() const
 {
-<<<<<<< HEAD
 	QList<NodeElement*> nodes;
 	foreach (QGraphicsItem *item, selectedItems()) {
 		NodeElement *node = dynamic_cast<NodeElement*>(item);
@@ -712,14 +567,10 @@ QList<NodeElement*> EditorViewScene::selectedNodes() const
 	}
 
 	return nodes;
-=======
-	return mLastCreatedWithEdge;
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 }
 
 QList<EdgeElement*> EditorViewScene::selectedEdges() const
 {
-<<<<<<< HEAD
 	QList<EdgeElement*> edges;
 	foreach (QGraphicsItem *item, selectedItems()) {
 		EdgeElement *edge = dynamic_cast<EdgeElement*> (item);
@@ -732,8 +583,6 @@ QList<EdgeElement*> EditorViewScene::selectedEdges() const
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)
 {
-=======
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 	if (dynamic_cast<QGraphicsTextItem*>(focusItem())) {
 		// Forward event to text editor
 		QGraphicsScene::keyPressEvent(event);
@@ -1028,7 +877,6 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 		return;
 	}
 
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 	redraw();
 }
 

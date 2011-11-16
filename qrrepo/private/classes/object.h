@@ -24,7 +24,6 @@ namespace qrRepo {
 			void copyPropertiesFrom(const Object &src);
 			qReal::IdList children() const;
 			qReal::Id parent() const;
-			void setProperty(const QString &name, const QVariant &value);
 			void setProperties(const QMap<QString, QVariant> &properties);
 			QVariant property(const QString &name) const;
 			QMap<QString, QVariant> properties() const;

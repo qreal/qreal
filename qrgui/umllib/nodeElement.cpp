@@ -105,7 +105,7 @@ NodeElement *NodeElement::clone(bool toCursorPos, bool shareLogicalId, Id const 
 
 	} else {
 		qReal::Id typeId = id().type();
-		qReal::Id *resultId = evscene->createElement(typeId.toString(), QPointF(), mGraphicalAssistApi->name(id()));
+		qReal::Id *resultId = evscene->createElement(typeId.toString(), QPointF());
 
 		result = dynamic_cast<NodeElement*>(evscene->getElem(*resultId));
 	}

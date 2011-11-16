@@ -25,46 +25,12 @@ public:
 
 	void clearScene();
 
-<<<<<<< HEAD
-	virtual int launchEdgeMenu(EdgeElement* edge, NodeElement* node, QPointF scenePos);
+	virtual int launchEdgeMenu(EdgeElement* edge, NodeElement* node, const QPointF &scenePos);
 	virtual qReal::Id *createElement(const QString &, QPointF scenePos, const QString &name = "(anonymous something)");
-	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
+	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos);
 
 	NodeElement *deserializeNode(const NodeElementSerializationData &data, bool shareLogicalId = false, QPointF offset = QPointF(10, 10));
 	EdgeElement *deserializeEdge(const EdgeElementSerializationData &data, bool shareLogicalId = false, QPointF offset = QPointF(10, 10));
-
-	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
-	// including the scene (with dependencies) there
-	virtual Element *getElem(qReal::Id const &id);
-	Element *getElemAt(const QPointF &position);
-
-	virtual qReal::Id rootItemId() const;
-	void setMainWindow(qReal::MainWindow *mainWindow);
-	qReal::MainWindow *mainWindow() const;
-	void setEnabled(bool enabled);
-
-	void setNeedDrawGrid(bool show);
-	double realIndexGrid();
-	void setRealIndexGrid(double newIndexGrid);
-
-	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
-	bool getNeedDrawGrid();
-
-	Element* getLastCreated();
-	QList<NodeElement*> selectedNodes() const;
-	QList<EdgeElement*> selectedEdges() const;
-
-	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
-
-	void highlight(qReal::Id const &graphicalId, bool exclusive = true);
-	void dehighlight(qReal::Id const &graphicalId);
-	void dehighlight();
-
-	QPointF getMousePos();
-=======
-	virtual int launchEdgeMenu(EdgeElement* edge, NodeElement* node, const QPointF &scenePos);
-	virtual qReal::Id createElement(const QString &, QPointF const &scenePos);
-	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
@@ -87,6 +53,9 @@ public:
 
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
 
+	QList<NodeElement*> selectedNodes() const;
+	QList<EdgeElement*> selectedEdges() const;
+
 	void highlight(qReal::Id const &graphicalId, bool exclusive = true);
 	void dehighlight(qReal::Id const &graphicalId);
 	void dehighlight();
@@ -94,7 +63,6 @@ public:
 	QPointF getMousePos();
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement* findNewParent(QPointF, NodeElement*);
->>>>>>> 57c9e10edece43136500b2d54ebdaedb9e960c42
 
 public slots:
 	qReal::Id createElement(const QString &);
@@ -195,6 +163,4 @@ private:
 
 	/** @brief Is "true" when we just select items on scene, and "false" when we drag selected items */
 	bool mShouldReparentItems;
-private slots:
-	void getObjectByGesture();
 };
