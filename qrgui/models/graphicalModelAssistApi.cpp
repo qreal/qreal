@@ -9,7 +9,7 @@ using namespace models;
 using namespace models::details;
 
 GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel, EditorManager const &editorManager)
-	: mModelsAssistApi(graphicalModel, editorManager), mGraphicalModel(graphicalModel)
+		: mGraphicalModel(graphicalModel), mModelsAssistApi(graphicalModel, editorManager)
 {
 	connect(&graphicalModel, SIGNAL(nameChanged(Id)), this, SIGNAL(nameChanged(Id)));
 }
@@ -79,6 +79,11 @@ void GraphicalModelAssistApi::changeParent(Id const &element, Id const &parent, 
 void GraphicalModelAssistApi::copyProperties(Id const &dest, Id const &src)
 {
 	mGraphicalModel.mutableApi().copyProperties(dest, src);
+}
+
+void GraphicalModelAssistApi::stackBefore(const Id &element, const Id &sibling)
+{
+	mModelsAssistApi.stackBefore(element, sibling);
 }
 
 void GraphicalModelAssistApi::setConfiguration(Id const &elem, QPolygon const &newValue)

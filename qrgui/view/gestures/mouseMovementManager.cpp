@@ -172,3 +172,8 @@ bool MouseMovementManager::isEdgeCandidate()
 {
 	return mPath.count() <= 1;
 }
+
+bool MouseMovementManager::pathIsEmpty()
+{
+	return mPath.isEmpty();
+}
