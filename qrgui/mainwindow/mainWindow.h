@@ -66,6 +66,9 @@ public:
 
 	void showErrors(gui::ErrorReporter *reporter);
 
+	/// Tells if we should display trace connections menu or not
+	bool showConnectionRelatedMenus() const;
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -131,8 +134,6 @@ private slots:
 
 	void deleteFromScene(QGraphicsItem *target);
 
-	void activateSubdiagram(QModelIndex const &idx);
-
 	void debug();
 	void debugSingleStep();
 	void drawDebuggerStdOutput(QString output);
@@ -192,6 +193,8 @@ private slots:
 
 	void autosave();
 	void setAutoSaveParameters();
+	void closeProject();
+	void closeProjectAndSave();
 
 private:
 	void createDiagram(const QString &idString);

@@ -20,7 +20,7 @@ public:
 	virtual void init(PluginConfigurator const &configurator);
 	virtual QList<ActionInfo> actions();
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
-	virtual CustomizationInterface* customizationInterface();
+	virtual qReal::Customizer* customizationInterface();
 	virtual void updateSettings();
 
 public slots:

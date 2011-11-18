@@ -4,6 +4,7 @@
 #include "../thirdparty/qtpropertybrowser/src/qtvariantproperty.h"
 #include "../thirdparty/qtpropertybrowser/src/qteditorfactory.h"
 
+/** @brief This manager allows to use push buttons in property editor to do some stuff by click */
 class PushButtonPropertyManager : public QtAbstractPropertyManager
 {
 	friend class PushButtonFactory;
@@ -30,7 +31,7 @@ private:
 	Q_DISABLE_COPY(PushButtonPropertyManager)
 };
 
-
+/** @brief helper to PushButtonPropertyManager */
 class PushButtonFactory : public QtAbstractEditorFactory<PushButtonPropertyManager>
 {
 	Q_OBJECT

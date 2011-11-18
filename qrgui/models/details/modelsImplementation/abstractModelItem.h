@@ -18,12 +18,17 @@ public:
 	AbstractModelItem(Id const &id, AbstractModelItem *parent);
 	Id id() const;
 	AbstractModelItem *parent() const;
-	void setParent(AbstractModelItem *parent);
 	PointerList children() const;
+
+	int row();
 	void addChild(AbstractModelItem *child);
 	void removeChild(AbstractModelItem *child);
-	int row();
 	void clearChildren();
+
+	void setParent(AbstractModelItem *parent);
+
+	/// Stacks item element before sibling (they should have the same parent)
+	void stackBefore(AbstractModelItem *element, AbstractModelItem *sibling);
 
 private:
 	AbstractModelItem *mParent;

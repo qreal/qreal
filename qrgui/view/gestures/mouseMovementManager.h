@@ -35,6 +35,7 @@ public:
 	void drawIdealPath();
 	bool wasMoving();
 	bool isEdgeCandidate();
+	bool pathIsEmpty();
 
 private:
 	static QPoint parsePoint(QString const &str);

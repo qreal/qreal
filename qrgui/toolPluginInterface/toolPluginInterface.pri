@@ -1,6 +1,6 @@
 HEADERS += \
 	toolPluginInterface/toolPluginInterface.h \
-	toolPluginInterface/customizationInterface.h \
+	toolPluginInterface/customizer.h \
 	toolPluginInterface/pluginConfigurator.h \
 	toolPluginInterface/actionInfo.h \
 	\
