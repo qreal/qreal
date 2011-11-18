@@ -24,7 +24,7 @@ void AinsPlugin::init(PluginConfigurator const &configurator)
 	mDatabaseEditorGenerator = new DatabaseEditorSchemeGenerator(configurator.logicalModelApi(), *configurator.mainWindowInterpretersInterface().errorReporter());
 }
 
-qReal::CustomizationInterface* AinsPlugin::customizationInterface()
+qReal::Customizer* AinsPlugin::customizationInterface()
 {
 	return NULL;
 }

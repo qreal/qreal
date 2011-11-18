@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../../../qrgui/toolPluginInterface/customizationInterface.h"
+#include "../../../qrgui/toolPluginInterface/customizer.h"
 
 namespace qReal {
 namespace interpreters {
 namespace robots {
 
-class Customizer : public CustomizationInterface
+class Customizer : public qReal::Customizer
 {
 public:
 	virtual bool showLogicalModelExplorer() const
