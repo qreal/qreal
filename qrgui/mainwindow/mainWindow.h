@@ -19,6 +19,7 @@
 #include "nxtFlashTool.h"
 #include "helpBrowser.h"
 
+
 #include "../models/logicalModelAssistApi.h"
 
 namespace Ui {
@@ -263,6 +264,7 @@ private:
 
 	Ui::MainWindowUi *mUi;
 
+	QMap<EditorView*, CodeArea*> *mCodeTabManager;
 	QCloseEvent *mCloseEvent;
 	models::Models *mModels;
 	EditorManager mEditorManager;
