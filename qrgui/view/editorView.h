@@ -15,7 +15,7 @@ namespace qReal {
 		Q_OBJECT
 
 	public:
-		explicit EditorView(QWidget *parent = NULL);
+		explicit EditorView(QWidget *parent);
 		~EditorView();
 
 		EditorViewMViface * mvIface()

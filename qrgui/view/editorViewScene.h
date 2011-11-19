@@ -20,7 +20,7 @@ class EditorViewScene : public QGraphicsScene
 	Q_OBJECT
 
 public:
-	explicit EditorViewScene(QObject *parent = 0);
+	explicit EditorViewScene(QObject *parent);
 	~EditorViewScene();
 
 	void clearScene();
@@ -87,7 +87,6 @@ protected:
 	virtual void drawBackground( QPainter *painter, const QRectF &rect);
 
 private slots:
-
 	void connectActionTriggered();
 	void goToActionTriggered();
 	void disconnectActionTriggered();
@@ -97,6 +96,9 @@ private slots:
 	void drawIdealGesture();
 	void initMouseMoveManager();
 	void createEdge(QString const &);
+
+	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
+	void getObjectByGesture();
 
 private:
 	Element* mLastCreatedWithEdge;
@@ -155,6 +157,4 @@ private:
 
 	/** @brief Is "true" when we just select items on scene, and "false" when we drag selected items */
 	bool mShouldReparentItems;
-private slots:
-	void getObjectByGesture();
 };

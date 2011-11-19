@@ -36,7 +36,7 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing done");
 }
 
-qReal::CustomizationInterface* RobotsPlugin::customizationInterface()
+qReal::Customizer* RobotsPlugin::customizationInterface()
 {
 	return &mCustomizer;
 }
