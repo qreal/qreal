@@ -5,349 +5,250 @@ using System.Diagnostics;
 using System.Text;
 using System.IO;
 using Ubiq.MessagingAPI;
+using Ubiq.QRealAPI;
 
 namespace DeviceService
 {
-    public class Message: Msg
+    public class Message: QRealMessage
     {
         public const int KHeaderSize             = 9; // 4 + 1 + 2 + 1 + 1
 /*  M e s s a g e   c o d e s   */
-        public const int KMsgNoCommand           = 0;
-        public const int KMsgReceivedData        = 20;
-        public const int KMsgDataToSend          = 2;
-
-        public const int KMsgRegistrationRequest  = 10;
-        public const int KMsgStopTransfer         = 11;
-        public const int KMsgRegistrationCancel   = 12;
-        public const int KMsgDeviceIDRequest      = 13;
-        public const int KMsgWrongDeviceIDFormat  = 14;
-        public const int KMsgConfirmRergistration = 30;
-        public const int KMsgSetParameters        = 51;
-        public const int KMsgDeviceRequest        = 60;
-        public const int KMsgDeviceReady          = 71;
-        public const int KMsgEndSession           = 72;
-        public const int KMsgSuspendTransfer      = 73;
-        public const int KMsgResumeTransfer       = 74;
-
+@@MessageCodes@@
         public const int KMsgError                = 255;
      
         
 /*  E r r o r   c o d e s   */
         public const int KErrNo                      = 0;
         public const int KErrWrongCode               = -1;
-        public const int KErrDeviceRegistrationCancel= 121;
-        public const int KErrLostConnection          = 124;
-        public const int KErrDispatcherNotFound      = 125;
-        public const int KErrDeviceNotRegistered     = 121;
-        public const int KErrDeviceNotReady          = 123;
-        public const int KErrBadParameters           = 127;
+@@ErrorCodes@@
 
-/*   Internal fields    */
-        private int iDeviceID;
-        public int DeviceID
-        {
-            get
-            {
-                return iDeviceID;
-            }
-        }
-        private int iCommand;
-        public int Command
-        {
-            get
-            {
-                return iCommand;
-            }
-        }
-        private int iCode;
-        public int Code
-        {
-            get
-            {
-                return iCode;
-            }
-        }
+/*   Fields    */
+@@Properties@@
+        public int Command  {get; set;}
+        public int Code     {get; set;}
 
-        private byte[] iData;
-        private MemoryStream iOutStream;
+        private byte[] _data;
 
         public int Length
         {
             get
             {
-                if (iData != null)
-                    return iData.GetLength(0);
-                else if (iOutStream != null)
-                    return (int) iOutStream.Length;
+                if (_data != null)
+                    return _data.GetLength(0);
+                else if (_outStream != null)
+                    return (int) _outStream.Length;
                 else return -1;
             }
         }
 
-        private BinaryReader iReader;
-        private BinaryWriter iWriter;
+        private MemoryStream _outStream;
+        private BinaryReader _reader;
+        private BinaryWriter _writer;
 
-        public static bool iBigEndianFlag = true;
-
-        public Message(int aDeviceID, int aCommand)
+        public Message(@@ConstructorArgs@@int command)
         {
-            iDeviceID = aDeviceID;
-            iCommand = aCommand;
-            iCode = KErrNo;
-            iData = null;
-            iReader = null;
-            iWriter = null;
+            Init();
+@@InitFieldsWithArgs@@
+            Command = command;
         }
 
-        public static Message ErrorMessage(int aDeviceID, int aErrCode)
+        public static Message ErrorMessage(@@ConstructorArgs@@int errCode)
         {
-            Message iMsg = new Message(aDeviceID, KMsgError);
-            iMsg.iCode = aErrCode;
-            return iMsg;
+            Message msg = new Message(@@ConstructorActualArgs@@KMsgError);
+            msg.Code = errCode;
+            return msg;
         }
         
         public Message(byte[] aData)
         {
-            iData = null;
-            iReader = null;
-            iWriter = null;
+            Init();
             if (!Parse(aData))
             {
-                iDeviceID = -1;
-                iCommand = KMsgError;
-                iCode = KErrBadParameters;
-                iReader = null;
-                iWriter = null;
-                iData = null;
+@@InitFieldsWithDefaults@@
+                Command = KMsgError;
+                Code = KErrBadParameters;
+                _reader = null;
+                _writer = null;
+                _data = null;
             }
         }
 
-        public Message(int aDeviceID, byte[] aData)
+        public Message(@@ConstructorArgs@@byte[] aData)
         {
-            iData = null;
-            iReader = null;
-            iWriter = null;
+            Init();
             if (!Parse(aData))
             {
-                iDeviceID = -1;
-                iCommand = KMsgError;
-                iCode = KErrBadParameters;
-                iReader = null;
-                iWriter = null;
-                iData = null;
+@@InitFieldsWithDefaults@@
+                Command = KMsgError;
+                Code = KErrBadParameters;
+                _reader = null;
+                _writer = null;
+                _data = null;
             }
             else
-                iDeviceID = aDeviceID;
+            {
+@@InitFieldsWithArgs@@
+            }
+        }
+
+        public override void Init()
+        {
+@@InitFieldsWithDefaults@@
+            Command = KMsgNoCommand;
+            Code = KErrNo;
+            _data = null;
+            _outStream = null;
+            _reader = null;
+            _writer = null;
         }
 
         public byte GetByte()
         {
             bool iOk = ReadAvailable();
             Debug.Assert(iOk);
-            return iReader.ReadByte();
+            return _reader.ReadByte();
         }
 
         public short GetInt16()
         {
             bool iOk = ReadAvailable();
             Debug.Assert(iOk);
-            short res = iReader.ReadInt16();
-            if (iBigEndianFlag) res = Convert16(res);
+            short res = _reader.ReadInt16();
+            if (bigEndianFlag) res = Convert16(res);
             return res;
         }
 
         public int GetInt32()
         {
-            bool iOk = ReadAvailable();
-            Debug.Assert(iOk);
-            int res = iReader.ReadInt32();
-            if (iBigEndianFlag) res = Convert32 (res);
+            Debug.Assert(ReadAvailable());
+            int res = _reader.ReadInt32();
+            if (bigEndianFlag) res = Convert32 (res);
             return res;
         }
 
         public MemoryStream GetData()
         {
-            Debug.Assert(iData != null);
-            return new MemoryStream(iData);
+            Debug.Assert(_data != null);
+            return new MemoryStream(_data);
         }
 
         public MemoryStream GetData(int aPos)
         {
-            Debug.Assert(iData != null);
-            return new MemoryStream(iData, aPos, iData.GetLength(0)-aPos);
+            Debug.Assert(_data != null);
+            return new MemoryStream(_data, aPos, _data.GetLength(0)-aPos);
         }
 
         public byte[] Pack()
         {
-            MemoryStream iOutStream = new MemoryStream();
-            BinaryWriter iPackWriter = new BinaryWriter(iOutStream);
+            MemoryStream outStream = new MemoryStream();
+            BinaryWriter packWriter = new BinaryWriter(outStream);
             int iLength = KHeaderSize;
-            if (iData != null) iLength += iData.GetLength(0);
-            if (iBigEndianFlag) iLength = Convert32(iLength);
-            iPackWriter.Write(iLength);
+            if (_data != null) iLength += _data.GetLength(0);
+            if (bigEndianFlag) iLength = Convert32(iLength);
+            packWriter.Write(iLength);
             byte iDest = (byte)101; // Dispatcher
-            if (iCommand == KMsgDataToSend || iCommand == KMsgSetParameters) iDest = (byte)100; // Driver
-            iPackWriter.Write(iDest);
-            short iDevID = (short)iDeviceID;
-            if (iBigEndianFlag) iDevID = Convert16(iDevID);
-            iPackWriter.Write(iDevID);
-            iPackWriter.Write((byte)iCommand);
-            iPackWriter.Write((byte)iCode);
-            if (iData != null) iPackWriter.Write(iData);
-            iPackWriter.Flush();
-            iPackWriter.Close();
-            return iOutStream.ToArray();
+            if (Command == KMsgDataToSend || Command == KMsgSetParameters) iDest = (byte)100; // Driver
+            packWriter.Write(iDest);
+@@PackFields@@
+            packWriter.Write((byte)Command);
+            packWriter.Write((byte)Code);
+            if (_data != null) packWriter.Write(_data);
+            packWriter.Flush();
+            packWriter.Close();
+            return outStream.ToArray();
         }
 
         public void Add(byte aData)
         {
-            bool iOk = WriteAvailable();
-            Debug.Assert(iOk);
-            iWriter.Write(aData);
+            Debug.Assert(WriteAvailable ());
+            _writer.Write(aData);
         }
 
         public void Add(Int16 aData)
         {
-            bool iOk = WriteAvailable();
-            Debug.Assert(iOk);
-            if (iBigEndianFlag) aData = Convert16(aData);
-            iWriter.Write(aData);
+            Debug.Assert(WriteAvailable());
+            if (bigEndianFlag) aData = Convert16(aData);
+            _writer.Write(aData);
         }
 
         public void Add(int aData)
         {
-            bool iOk = WriteAvailable();
-            Debug.Assert(iOk);
-            if (iBigEndianFlag) aData = Convert32(aData);
-            iWriter.Write(aData);
+            Debug.Assert(WriteAvailable());
+            if (bigEndianFlag) aData = Convert32(aData);
+            _writer.Write(aData);
         }
 
         public void Add(byte[] aData)
         {
-            bool iOk = WriteAvailable();
-            Debug.Assert(iOk);
-            iWriter.Write(aData);
+            Debug.Assert(WriteAvailable());
+            _writer.Write(aData);
         }
 
         public void Close()
         {
 
-            if (iReader != null)
+            if (_reader != null)
             {
-                iReader.Close();
-                iReader = null;
+                _reader.Close();
+                _reader = null;
             }
-            else if (iWriter != null)
+            else if (_writer != null)
             {
-                Debug.Assert(iData == null && iOutStream != null);
-                iWriter.Flush();
-                iWriter.Close();
-                iData = iOutStream.ToArray();
-                iWriter = null;
-                iOutStream = null;
-            }
-        }
-
-        public static void SetBigEndian()
-        {
-            iBigEndianFlag = true;
-        }
-
-        public static void SetLittleEndian()
-        {
-            iBigEndianFlag = false;
-        }
-
-       public static int Convert32(int i)
-        {
-            UInt32 src = (UInt32)(i);
-            UInt32 res = 0;
-            for (int ii = 0; ii < 4; ++ii)
-                res |= (((src >> ((3 - ii) * 8)) & 0xff) << (ii * 8));
-            return (int)(res);
-        }
-
-        public static short Convert16(short i)
-        {
-            UInt32 src = (UInt32)(i);
-            UInt32 res;
-            res = ((src >> 8) & 0xff) | ((src & 0xff) << 8);
-            return (short)(res);
-        }
-
-        public static void ConvertData (byte [] data, int pos, int len)
-        {
-            if (len == 4)
-            {
-                byte b = data[pos]; data[pos] = data[pos+3]; data[pos+3] = b;
-                b = data[pos+1];data[pos+1] = data[pos+2]; data[pos+2] = b;
-            }
-            else if (len == 2)
-            {
-                byte b = data[pos]; data[pos] = data[pos+1]; data[pos+1] = b;
+                Debug.Assert(_data == null && _outStream != null);
+                _writer.Flush();
+                _writer.Close();
+                _data = _outStream.ToArray();
+                _writer = null;
+                _outStream = null;
             }
         }
 
-        private void Init()
+
+        public override bool Parse(byte[] aData)
         {
-            iDeviceID = -1;
-            iCommand = KMsgNoCommand;
-            iCode = KErrNo;
-            iData = null;
-            iOutStream = null;
-            iReader = null;
-            iWriter = null;
-        }
+            if (_data != null || _reader != null || _writer != null) return false;
 
-        private bool Parse(byte[] aData)
-        {
-            if (iData != null || iReader != null || iWriter != null) return false;
+            var rdr = new BinaryReader(new MemoryStream(aData));
+            int len = rdr.ReadInt32();
+            if (bigEndianFlag) len = Convert32(len);
+            byte aux = rdr.ReadByte();   // dest - now obsolete
 
-            BinaryReader iRdr = new BinaryReader(new MemoryStream(aData));
-            int iLen = iRdr.ReadInt32();
-            if (iBigEndianFlag) iLen = Convert32(iLen);
-//            if (iLen != aData.GetLength(0))
-//                return false;
-// Here some sort of Try/Catch should be - for the case of incorrect data reading
-            byte aux = iRdr.ReadByte();   // dest - now obsolete
+@@UnpackFields@@
+            Command = (int)rdr.ReadByte();
+            Code = (int)rdr.ReadByte();
 
-            short iDevID = iRdr.ReadInt16();
-            if (iBigEndianFlag) iDevID = Convert16(iDevID);
-            iDeviceID = (int)iDevID;
-
-            iCommand = (int)iRdr.ReadByte();
-            iCode = (int)iRdr.ReadByte();
-
-            if (iLen > KHeaderSize)
+            if (len > KHeaderSize)
             {
-                Debug.Assert(iData == null);
-                iData = (byte[])Array.CreateInstance (typeof (byte), iLen-KHeaderSize);
-                Array.Copy(aData, KHeaderSize, iData, 0, iLen - KHeaderSize);
-                iReader = new BinaryReader(new MemoryStream(iData));
+                Debug.Assert(_data == null);
+                _data = (byte[])Array.CreateInstance (typeof (byte), len-KHeaderSize);
+                Array.Copy(aData, KHeaderSize, _data, 0, len - KHeaderSize);
+                _reader = new BinaryReader(new MemoryStream(_data));
             }
+            rdr.Close();
             return true;
         }
 
         private bool ReadAvailable()
         {
-            bool res = (iWriter == null && iData != null);
-            if (iReader == null) iReader = new BinaryReader(new MemoryStream(iData));
+            bool res = (_writer == null && _data != null);
+            if (_reader == null) _reader = new BinaryReader(new MemoryStream(_data));
             return res;
         }
 
         private bool WriteAvailable()
         {
-            bool res = (iReader == null && iData == null);
-            if (iWriter == null)
+            bool res = (_reader == null && _data == null);
+            if (_writer == null)
             {
-                iOutStream = new MemoryStream();
-                iWriter = new BinaryWriter(iOutStream);
+                _outStream = new MemoryStream();
+                _writer = new BinaryWriter(_outStream);
             }
             return res;
         }
 
         public override bool SendAvailable()
         {
-            return (iOutStream == null && iWriter == null);
+            return (_outStream == null && _writer == null);
         }
     }
 }
