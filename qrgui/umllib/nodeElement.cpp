@@ -501,6 +501,11 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	setZValue(1);
 }
 
+void NodeElement::alignToGrid()
+{
+	mGrid->mouseMoveEvent();
+}
+
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (event->button() == Qt::RightButton) {
@@ -560,7 +565,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 
 		Element::mouseMoveEvent(event);
-		mGrid->mouseMoveEvent();
+		alignToGrid();
 
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
