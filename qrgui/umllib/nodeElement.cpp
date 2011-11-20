@@ -501,7 +501,6 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	setZValue(1);
 }
 
-//aligning the element to grid
 void NodeElement::alignToGrid()
 {
 	mGrid->mouseMoveEvent();
