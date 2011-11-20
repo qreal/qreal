@@ -46,7 +46,6 @@
 
 #include "../../qrkernel/timeMeasurer.h"
 
-#include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../../qrmc/metaCompiler.h"
 
 using namespace qReal;
@@ -223,6 +222,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
 	connect(mUi->actionCloseProject, SIGNAL(triggered()), this, SLOT(closeProjectAndSave()));
+	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 
 	connect(mUi->actionCheckout, SIGNAL(triggered()), this, SLOT(doCheckout()));
@@ -521,6 +521,21 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 		return false;
 	}
 
+	return true;
+}
+
+bool MainWindow::importProject()
+{
+	return import(getWorkingFile(tr("Select file with a save to import"), false));
+}
+
+bool MainWindow::import(QString const &fileName)
+{
+	if (!QFile(fileName).exists()) {
+		return false;
+	}
+	mModels->repoControlApi().importFromDisk(fileName);
+	mModels->reinit();
 	return true;
 }
 
