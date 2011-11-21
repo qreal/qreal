@@ -18,7 +18,7 @@ SceneGridHandler::SceneGridHandler(NodeElement *node) : mNode(node)
 
 void SceneGridHandler::delUnusedLines()
 {
-	foreach (QGraphicsLineItem* lineItem, mLines) {
+	foreach (QGraphicsLineItem *lineItem, mLines) {
 		mNode->scene()->removeItem(lineItem);
 	}
 	mLines.clear();
@@ -35,7 +35,7 @@ void SceneGridHandler::drawLineY(qreal pointY, qreal myX)
 
 	// checking whether the scene already has this line or not.
 	// if not (lineIsFound is false), then adding it
-	foreach (QGraphicsLineItem* lineItem, mLines) {
+	foreach (QGraphicsLineItem *lineItem, mLines) {
 		if (qAbs(lineItem->line().y1() - line.y1()) < indistinguishabilitySpace
 				&& lineItem->line().y2() == lineItem->line().y1())
 		{
@@ -56,7 +56,7 @@ void SceneGridHandler::drawLineX(qreal pointX, qreal myY)
 
 	// checking whether the scene already has this line or not.
 	// if not (lineIsFound is false), then adding it
-	foreach (QGraphicsLineItem* lineItem, mLines) {
+	foreach (QGraphicsLineItem *lineItem, mLines) {
 		if (qAbs(lineItem->line().x1() - line.x1()) < indistinguishabilitySpace
 				&& lineItem->line().x2() == lineItem->line().x1())
 		{
@@ -184,32 +184,10 @@ void SceneGridHandler::setAlignmentMode(bool mode)
 	mSwitchAlignment = mode;
 }
 
-void SceneGridHandler::mouseMoveEvent()
+QList<QGraphicsItem *> SceneGridHandler::getAdjancedNodes()
 {
-	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
-	NodeElement* parItem = dynamic_cast<NodeElement*>(mNode->parentItem());
-	if (parItem != NULL) {
-		return;
-	}
 	QPointF const nodeScenePos = mNode->scenePos();
 	QRectF const contentsRect = mNode->contentsRect();
-
-	qreal myX1 = nodeScenePos.x() + contentsRect.x();
-	qreal myY1 = nodeScenePos.y() + contentsRect.y();
-
-	if (mSwitchGrid) {
-		int coefX = static_cast<int>(myX1) / indexGrid;
-		int coefY = static_cast<int>(myY1) / indexGrid;
-
-		makeGridMovingX(myX1, coefX, indexGrid);
-		makeGridMovingY(myY1, coefY, indexGrid);
-
-		myX1 = nodeScenePos.x() + contentsRect.x();
-		myY1 = nodeScenePos.y() + contentsRect.y();
-	}
-
-	qreal myX2 = myX1 + contentsRect.width();
-	qreal myY2 = myY1 + contentsRect.height();
 
 	// verical
 	QList<QGraphicsItem *> listX = mNode->scene()->items(nodeScenePos.x(), 0
@@ -222,11 +200,47 @@ void SceneGridHandler::mouseMoveEvent()
 			, nodeScenePos.y() + contentsRect.height()
 			, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder);
 
-	QList<QGraphicsItem *> list = listX + listY;
+	return listX + listY;
+}
+
+void SceneGridHandler::alignToGrid()
+{
+	if (!mSwitchGrid) {
+		return;
+	}
+	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
+
+	QPointF const nodeScenePos = mNode->scenePos();
+	QRectF const contentsRect = mNode->contentsRect();
+
+	qreal myX1 = nodeScenePos.x() + contentsRect.x();
+	qreal myY1 = nodeScenePos.y() + contentsRect.y();
+
+	int coefX = static_cast<int>(myX1) / indexGrid;
+	int coefY = static_cast<int>(myY1) / indexGrid;
+
+	makeGridMovingX(myX1, coefX, indexGrid);
+	makeGridMovingY(myY1, coefY, indexGrid);
+
+	myX1 = nodeScenePos.x() + contentsRect.x();
+	myY1 = nodeScenePos.y() + contentsRect.y();
+}
+
+void SceneGridHandler::drawGuides()
+{
+	QPointF const nodeScenePos = mNode->scenePos();
+	QRectF const contentsRect = mNode->contentsRect();
 
 	delUnusedLines();
+	qreal myX1 = nodeScenePos.x() + contentsRect.x();
+	qreal myY1 = nodeScenePos.y() + contentsRect.y();
+	qreal myX2 = myX1 + contentsRect.width();
+	qreal myY2 = myY1 + contentsRect.height();
+
+	QList<QGraphicsItem *> list = getAdjancedNodes();
+
 	foreach (QGraphicsItem *graphicsItem, list) {
-		NodeElement* item = dynamic_cast<NodeElement*>(graphicsItem);
+		NodeElement *item = dynamic_cast<NodeElement*>(graphicsItem);
 		if (item == NULL || item->parentItem() != NULL || item == mNode) {
 			continue;
 		}
@@ -258,5 +272,16 @@ void SceneGridHandler::mouseMoveEvent()
 			buildLineX(qAbs(pointX2 - myX1), pointX2, 0, myX1, myX2, myY1);
 		}
 	}
+}
+
+void SceneGridHandler::mouseMoveEvent()
+{
+	NodeElement *parItem = dynamic_cast<NodeElement*>(mNode->parentItem());
+	if (parItem != NULL) {
+		return;
+	}
+
+	alignToGrid();
+	drawGuides();
 	mNode->adjustLinks();
 }

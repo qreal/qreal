@@ -18,9 +18,18 @@ public:
 	void setAlignmentMode(bool mode);
 	void setShowAlignmentMode(bool mode);
 
+	/// Align node to grid
+	void alignToGrid();
+	/// Draw alignment lines
+	void drawGuides();
+
 	void mouseMoveEvent();
 
 private:
+
+	/// returns list of elements lying in the same layer
+	QList<QGraphicsItem *> getAdjancedNodes();
+
 	/** @brief drawing a horizontal line */
 	void drawLineY(qreal pointY, qreal myX);
 	/** @brief drawing a vertical line */
