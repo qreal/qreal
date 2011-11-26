@@ -11,6 +11,7 @@ class SceneGridHandler
 {
 public:
 	explicit SceneGridHandler(NodeElement *mNode);
+	~SceneGridHandler();
 
 	void delUnusedLines();
 
@@ -23,7 +24,7 @@ public:
 	/// Draw alignment lines
 	void drawGuides();
 
-	void mouseMoveEvent();
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
 private:
 
@@ -51,8 +52,8 @@ private:
 	qreal recalculateY1();
 	qreal recalculateY2(qreal myY1);
 
-	QList<QGraphicsLineItem*> mLines;
 	NodeElement *mNode;
+	QGraphicsItemGroup *mLines;
 
 	bool mShowAlignment;
 	/** @brief if true, the object will be aligned to indexGrid */
