@@ -72,6 +72,9 @@ MainWindow::MainWindow()
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 {
+	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
+
+
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
 	timeMeasurer.doNothing(); //to avoid the unused variables problem
 
@@ -317,6 +320,7 @@ MainWindow::~MainWindow()
 	SettingsManager::instance()->saveData();
 	delete mRecentProjectsMenu;
 	delete mRecentProjectsMapper;
+	delete mCodeTabManager;
 }
 
 EditorManager* MainWindow::manager()
@@ -2031,28 +2035,40 @@ void MainWindow::generateRobotSourceCode()
 {
 	saveAll();
 
-	qReal::generators::NxtOSEKRobotGenerator gen(mModels->repoControlApi());
-	gui::ErrorReporter &errors = gen.generate();
-	if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
-		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+	if (dynamic_cast<EditorView *>(getCurrentTab()) != NULL)
+	{
+		if (!mCodeTabManager->contains(getCurrentTab()))
+		{
 
-		CodeArea * const area = new CodeArea();
-		QFile file("nxt-tools/example0/example0.c");
-		QTextStream * inStream = NULL;
-		if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text))
-			inStream = new QTextStream(&file);
+		    qReal::generators::NxtOSEKRobotGenerator gen(mModels->repoControlApi());
+		    gui::ErrorReporter &errors = gen.generate();
+		    if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
+			    mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
 
-		if (inStream)
-			area->document()->setPlainText(inStream->readAll());
+			    CodeArea * const area = new CodeArea();
+			    QFile file("nxt-tools/example0/example0.c");
+			    QTextStream * inStream = NULL;
+			    if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text))
+				inStream = new QTextStream(&file);
 
-		area->show();
+			    if (inStream)
+				area->document()->setPlainText(inStream->readAll());
 
-		mUi->tabs->addTab(area, "example0");
-		mUi->tabs->setCurrentWidget(area);
+			    area->show();
 
-		mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
-		mUi->actionFlash_Robot->setVisible(mNxtToolsPresent);
+			    mCodeTabManager->insert(getCurrentTab(), area);
+
+			    mUi->tabs->addTab(area, "example0");
+			    mUi->tabs->setCurrentWidget(area);
+
+			    mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
+			    mUi->actionFlash_Robot->setVisible(mNxtToolsPresent);
+		    }
+		}
+		else
+		    mUi->tabs->setCurrentWidget(mCodeTabManager->value(getCurrentTab()));
 	}
+
 }
 
 void MainWindow::uploadProgram()
