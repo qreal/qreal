@@ -11,6 +11,7 @@ class SceneGridHandler
 {
 public:
 	explicit SceneGridHandler(NodeElement *mNode);
+	~SceneGridHandler();
 
 	void delUnusedLines();
 
@@ -18,9 +19,18 @@ public:
 	void setAlignmentMode(bool mode);
 	void setShowAlignmentMode(bool mode);
 
-	void mouseMoveEvent();
+	/// Align node to grid
+	void alignToGrid();
+	/// Draw alignment lines
+	void drawGuides();
+
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
 private:
+
+	/// returns list of elements lying in the same layer
+	QList<QGraphicsItem *> getAdjancedNodes();
+
 	/** @brief drawing a horizontal line */
 	void drawLineY(qreal pointY, qreal myX);
 	/** @brief drawing a vertical line */
@@ -42,8 +52,8 @@ private:
 	qreal recalculateY1();
 	qreal recalculateY2(qreal myY1);
 
-	QList<QGraphicsLineItem*> mLines;
 	NodeElement *mNode;
+	QGraphicsItemGroup *mLines;
 
 	bool mShowAlignment;
 	/** @brief if true, the object will be aligned to indexGrid */
