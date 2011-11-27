@@ -5,6 +5,7 @@
 
 namespace qReal {
 namespace generators {
+namespace nxtOSEKgenerator {
 
 //! Class for representing code line generated from Robot Language Diagram.
 /*!
@@ -35,5 +36,7 @@ private:
 	qReal::Id mElementId;
 	IndentChangeType mIndentChange;
 };
+
+}
 }
 }

@@ -24,7 +24,7 @@ HEADERS += generators/editorGenerator/editorGenerator.h
 SOURCES += generators/editorGenerator/editorGenerator.cpp
 
 # nxtOSEK_FN generator
-include (generators/nxtOSEK_FN/nxtOSEK_FN.pri)
+#include (generators/nxtOSEK_FN/nxtOSEK_FN.pri)
 
 # Креатор не умеет показывать файлы глубже одного уровня в иерархии инклудов
 # include (generators/xmi/xmi.pri)
