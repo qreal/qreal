@@ -13,15 +13,16 @@
 
 namespace qReal {
 namespace generators {
+namespace nxtOSEKgenerator {
 
 //! Class for generate a nxtOSEK code from Robot Language Diagram.
 
-class NxtOSEKRobotGenerator {
+class NxtOSEKsequentialGenerator {
 public:
-	explicit NxtOSEKRobotGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath = "");
-	explicit NxtOSEKRobotGenerator(QString const &pathToRepo, QString const &destinationPath = "");
+	explicit NxtOSEKsequentialGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath = "");
+	explicit NxtOSEKsequentialGenerator(QString const &pathToRepo, QString const &destinationPath = "");
 
-	~NxtOSEKRobotGenerator();
+	~NxtOSEKsequentialGenerator();
 
 	//! main method that starts a code generation.
 	gui::ErrorReporter &generate();
@@ -31,7 +32,7 @@ private:
 	friend class AbstractElementGenerator;
 	class AbstractElementGenerator {
 	public:
-		explicit AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id const &elementId);
+		explicit AbstractElementGenerator(NxtOSEKsequentialGenerator *emboxGen, qReal::Id const &elementId);
 
 		virtual ~AbstractElementGenerator() {}
 
@@ -52,14 +53,14 @@ private:
 		virtual bool preGenerationCheck() = 0;
 		virtual bool nextElementsGeneration() = 0;
 
-		NxtOSEKRobotGenerator *mNxtGen;
+		NxtOSEKsequentialGenerator *mNxtGen;
 		qReal::Id mElementId;
 	};
 
 	//! Realization of AbstractElementGenerator for Beep, Engines etc.
 	class SimpleElementGenerator: public AbstractElementGenerator {
 	public:
-		explicit SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
+		explicit SimpleElementGenerator(NxtOSEKsequentialGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
 		virtual QList<SmartLine> loopPrefixCode();
@@ -80,7 +81,7 @@ private:
 	//! Realization of AbstractElementGenerator for Function.
 	class FunctionElementGenerator: public SimpleElementGenerator {
 	public:
-		explicit FunctionElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
+		explicit FunctionElementGenerator(NxtOSEKsequentialGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
 		virtual QList<SmartLine> simpleCode();
@@ -90,7 +91,7 @@ private:
 	//! Realization of AbstractElementGenerator for Loop.
 	class LoopElementGenerator: public AbstractElementGenerator {
 	public:
-		explicit LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
+		explicit LoopElementGenerator(NxtOSEKsequentialGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
 		virtual QList<SmartLine> loopPrefixCode();
@@ -104,7 +105,7 @@ private:
 	//! Realization of AbstractElementGenerator for If block.
 	class IfElementGenerator : public AbstractElementGenerator {
 	public:
-		explicit IfElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
+		explicit IfElementGenerator(NxtOSEKsequentialGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
 		virtual QList<SmartLine> loopPrefixCode();
@@ -124,7 +125,7 @@ private:
 	friend class ElementGeneratorFactory;
 	class ElementGeneratorFactory {
 	public:
-		static AbstractElementGenerator* generator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId)
+		static AbstractElementGenerator* generator(NxtOSEKsequentialGenerator *emboxGen, qReal::Id elementId)
 		{
 			if (elementId.element() == "IfBlock")
 				return new IfElementGenerator(emboxGen, elementId);
@@ -161,5 +162,6 @@ private:
 
 	gui::ErrorReporter mErrorReporter;
 };
+}
 }
 }

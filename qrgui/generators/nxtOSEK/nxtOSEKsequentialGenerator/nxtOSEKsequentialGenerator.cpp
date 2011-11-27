@@ -3,23 +3,23 @@
 #include <QtCore/QObject>
 #include <QDir>
 
-#include "../../../qrkernel/exception/exception.h"
-#include "nxtOSEKRobotGenerator.h"
-
+#include "../../../../qrkernel/exception/exception.h"
+#include "../nxtOSEKsequentialGenerator.h"
 
 #include <QDebug>
 
 using namespace qReal;
 using namespace generators;
+using namespace nxtOSEKgenerator;
 
-NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath)
+NxtOSEKsequentialGenerator::NxtOSEKsequentialGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath)
 	:  mDestinationPath(destinationPath)
 {
 		mIsNeedToDeleteMApi = false;
 		mApi = dynamic_cast<qrRepo::RepoApi *>(&api);
 }
 
-NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo, QString const &destinationPath)
+NxtOSEKsequentialGenerator::NxtOSEKsequentialGenerator(QString const &pathToRepo, QString const &destinationPath)
 	:mDestinationPath(SettingsManager::value("temp", "").toString())
 {
 	Q_UNUSED(destinationPath)
@@ -27,20 +27,20 @@ NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo, QString 
 		mApi = new qrRepo::RepoApi(pathToRepo);
 }
 
-NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator()
+NxtOSEKsequentialGenerator::~NxtOSEKsequentialGenerator()
 {
 	if (mApi && mIsNeedToDeleteMApi)
 		delete mApi;
 }
 
-void NxtOSEKRobotGenerator::addToGeneratedStringSetVariableInit() {
+void NxtOSEKsequentialGenerator::addToGeneratedStringSetVariableInit() {
 	foreach (SmartLine curVariable, mVariables) {
 		mGeneratedStringSet[mVariablePlaceInGenStrSet].append(
 				SmartLine("int " + curVariable.text() + ";", curVariable.elementId()));
 	}
 }
 
-gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
+gui::ErrorReporter &NxtOSEKsequentialGenerator::generate()
 {
 	IdList initialNodes = mApi->elementsByType("InitialNode");
 
@@ -165,12 +165,12 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 	return mErrorReporter;
 }
 
-NxtOSEKRobotGenerator::AbstractElementGenerator::AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen,
+NxtOSEKsequentialGenerator::AbstractElementGenerator::AbstractElementGenerator(NxtOSEKsequentialGenerator *emboxGen,
 		qReal::Id const &elementId): mNxtGen(emboxGen), mElementId(elementId)
 {
 }
 
-void NxtOSEKRobotGenerator::AbstractElementGenerator::createListsForIncomingConnections()
+void NxtOSEKsequentialGenerator::AbstractElementGenerator::createListsForIncomingConnections()
 {
 	//connects string lists in mGeneratedStringSet with mElementId in mElementToStringListNumbers
 	for (int i = 1; i < mNxtGen->mApi->incomingConnectedElements(mElementId).size(); i++) {
@@ -179,27 +179,27 @@ void NxtOSEKRobotGenerator::AbstractElementGenerator::createListsForIncomingConn
 	}
 }
 
-NxtOSEKRobotGenerator::SimpleElementGenerator::SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen,
+NxtOSEKsequentialGenerator::SimpleElementGenerator::SimpleElementGenerator(NxtOSEKsequentialGenerator *emboxGen,
 		qReal::Id elementId): AbstractElementGenerator(emboxGen, elementId)
 {
 }
 
-NxtOSEKRobotGenerator::FunctionElementGenerator::FunctionElementGenerator(NxtOSEKRobotGenerator *emboxGen,
+NxtOSEKsequentialGenerator::FunctionElementGenerator::FunctionElementGenerator(NxtOSEKsequentialGenerator *emboxGen,
 		qReal::Id elementId): SimpleElementGenerator(emboxGen, elementId)
 {
 }
 
-NxtOSEKRobotGenerator::LoopElementGenerator::LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen,
+NxtOSEKsequentialGenerator::LoopElementGenerator::LoopElementGenerator(NxtOSEKsequentialGenerator *emboxGen,
 		qReal::Id elementId): AbstractElementGenerator(emboxGen, elementId)
 {
 }
 
-NxtOSEKRobotGenerator::IfElementGenerator::IfElementGenerator(NxtOSEKRobotGenerator *emboxGen,
+NxtOSEKsequentialGenerator::IfElementGenerator::IfElementGenerator(NxtOSEKsequentialGenerator *emboxGen,
 		qReal::Id elementId): AbstractElementGenerator(emboxGen, elementId)
 {
 }
 
-QList<QString> NxtOSEKRobotGenerator::SimpleElementGenerator::portsToEngineNames(QString const &portsProperty)
+QList<QString> NxtOSEKsequentialGenerator::SimpleElementGenerator::portsToEngineNames(QString const &portsProperty)
 {
 	QList<QString> result;
 
@@ -214,7 +214,7 @@ QList<QString> NxtOSEKRobotGenerator::SimpleElementGenerator::portsToEngineNames
 	return result;
 }
 
-void NxtOSEKRobotGenerator::FunctionElementGenerator::variableAnalysis(QByteArray const &code)
+void NxtOSEKsequentialGenerator::FunctionElementGenerator::variableAnalysis(QByteArray const &code)
 {
 	QList<QByteArray> funcBlocks = code.split(';');
 
@@ -244,7 +244,7 @@ void NxtOSEKRobotGenerator::FunctionElementGenerator::variableAnalysis(QByteArra
 	}
 }
 
-QList<SmartLine> NxtOSEKRobotGenerator::FunctionElementGenerator::simpleCode()
+QList<SmartLine> NxtOSEKsequentialGenerator::FunctionElementGenerator::simpleCode()
 {
 	QList<SmartLine> result;
 
@@ -267,7 +267,7 @@ QList<SmartLine> NxtOSEKRobotGenerator::FunctionElementGenerator::simpleCode()
 	return result;
 }
 
-QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
+QList<SmartLine> NxtOSEKsequentialGenerator::SimpleElementGenerator::simpleCode()
 {
 	QList<SmartLine> result;
 
@@ -454,7 +454,7 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 	return result;
 }
 
-QString NxtOSEKRobotGenerator::SimpleElementGenerator::transformSign(QString const &sign)
+QString NxtOSEKsequentialGenerator::SimpleElementGenerator::transformSign(QString const &sign)
 {
 	qDebug() << sign;
 
@@ -471,21 +471,21 @@ QString NxtOSEKRobotGenerator::SimpleElementGenerator::transformSign(QString con
 	return "";
 }
 
-QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::loopPrefixCode()
+QList<SmartLine> NxtOSEKsequentialGenerator::SimpleElementGenerator::loopPrefixCode()
 {
 	QList<SmartLine> result;
 	result << SmartLine("while (true) {", mElementId, SmartLine::increase);
 	return result;
 }
 
-QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::loopPostfixCode()
+QList<SmartLine> NxtOSEKsequentialGenerator::SimpleElementGenerator::loopPostfixCode()
 {
 	QList<SmartLine> result;
 	result << SmartLine("}", mElementId, SmartLine::decrease);
 	return result;
 }
 
-QList<SmartLine> NxtOSEKRobotGenerator::LoopElementGenerator::loopPrefixCode()
+QList<SmartLine> NxtOSEKsequentialGenerator::LoopElementGenerator::loopPrefixCode()
 {
 	QList<SmartLine> result;
 
@@ -496,14 +496,14 @@ QList<SmartLine> NxtOSEKRobotGenerator::LoopElementGenerator::loopPrefixCode()
 	return result;
 }
 
-QList<SmartLine> NxtOSEKRobotGenerator::LoopElementGenerator::loopPostfixCode()
+QList<SmartLine> NxtOSEKsequentialGenerator::LoopElementGenerator::loopPostfixCode()
 {
 	QList<SmartLine> result;
 	result << SmartLine("}", mElementId, SmartLine::decrease);
 	return result;
 }
 
-QList<SmartLine> NxtOSEKRobotGenerator::IfElementGenerator::loopPrefixCode()
+QList<SmartLine> NxtOSEKsequentialGenerator::IfElementGenerator::loopPrefixCode()
 {
 	QList<SmartLine> result;
 
@@ -514,14 +514,14 @@ QList<SmartLine> NxtOSEKRobotGenerator::IfElementGenerator::loopPrefixCode()
 	return result;
 }
 
-QList<SmartLine> NxtOSEKRobotGenerator::IfElementGenerator::loopPostfixCode()
+QList<SmartLine> NxtOSEKsequentialGenerator::IfElementGenerator::loopPostfixCode()
 {
 	QList<SmartLine> result;
 	result << SmartLine("}", mElementId, SmartLine::decrease);
 	return result;
 }
 
-bool NxtOSEKRobotGenerator::SimpleElementGenerator::preGenerationCheck()
+bool NxtOSEKsequentialGenerator::SimpleElementGenerator::preGenerationCheck()
 {
 	IdList outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
 	if (outgoingConnectedElements.size() > 1) {
@@ -534,7 +534,7 @@ bool NxtOSEKRobotGenerator::SimpleElementGenerator::preGenerationCheck()
 	return true;
 }
 
-bool NxtOSEKRobotGenerator::LoopElementGenerator::preGenerationCheck()
+bool NxtOSEKsequentialGenerator::LoopElementGenerator::preGenerationCheck()
 {
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
@@ -548,7 +548,7 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::preGenerationCheck()
 	return true;
 }
 
-bool NxtOSEKRobotGenerator::IfElementGenerator::preGenerationCheck()
+bool NxtOSEKsequentialGenerator::IfElementGenerator::preGenerationCheck()
 {
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
@@ -556,7 +556,7 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::preGenerationCheck()
 	return (outgoingLinks.size() == 2);
 }
 
-bool NxtOSEKRobotGenerator::SimpleElementGenerator::nextElementsGeneration()
+bool NxtOSEKsequentialGenerator::SimpleElementGenerator::nextElementsGeneration()
 {
 	IdList outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
 	mNxtGen->mGeneratedStringSet << simpleCode();
@@ -585,7 +585,7 @@ bool NxtOSEKRobotGenerator::SimpleElementGenerator::nextElementsGeneration()
 	return true;
 }
 
-bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration()
+bool NxtOSEKsequentialGenerator::LoopElementGenerator::nextElementsGeneration()
 {
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 	Q_ASSERT(outgoingLinks.size() == 2);
@@ -638,7 +638,7 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration()
 	return true;
 }
 
-bool NxtOSEKRobotGenerator::IfElementGenerator::generateBranch(int branchNumber)
+bool NxtOSEKsequentialGenerator::IfElementGenerator::generateBranch(int branchNumber)
 {
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
@@ -661,13 +661,13 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::generateBranch(int branchNumber)
 	return true;
 }
 
-QPair<bool, qReal::Id> NxtOSEKRobotGenerator::IfElementGenerator::checkBranchForBackArrows(qReal::Id const &curElementId) {
+QPair<bool, qReal::Id> NxtOSEKsequentialGenerator::IfElementGenerator::checkBranchForBackArrows(qReal::Id const &curElementId) {
 	//initial step of checking
 	IdList emptyList;
 	return checkBranchForBackArrows(curElementId, &emptyList);
 }
 
-QPair<bool, qReal::Id> NxtOSEKRobotGenerator::IfElementGenerator::checkBranchForBackArrows(qReal::Id const &curElementId,
+QPair<bool, qReal::Id> NxtOSEKsequentialGenerator::IfElementGenerator::checkBranchForBackArrows(qReal::Id const &curElementId,
 		qReal::IdList* checkedElements) {
 	qReal::Id logicElementId = curElementId;
 	if (!mNxtGen->mApi->isLogicalElement(curElementId))
@@ -709,7 +709,7 @@ QPair<bool, qReal::Id> NxtOSEKRobotGenerator::IfElementGenerator::checkBranchFor
 	return QPair<bool, qReal::Id>(false, qReal::Id());
 }
 
-bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration()
+bool NxtOSEKsequentialGenerator::IfElementGenerator::nextElementsGeneration()
 {
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 	Q_ASSERT(outgoingLinks.size() == 2);
@@ -809,7 +809,7 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration()
 	return true;
 }
 
-bool NxtOSEKRobotGenerator::AbstractElementGenerator::generate()
+bool NxtOSEKsequentialGenerator::AbstractElementGenerator::generate()
 {
 	if (!preGenerationCheck())
 		return false;

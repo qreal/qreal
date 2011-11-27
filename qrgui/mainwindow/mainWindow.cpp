@@ -40,7 +40,8 @@
 #include "../pluginManager/listenerManager.h"
 #include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
-#include "../generators/nxtOSEK/nxtOSEKRobotGenerator.h"
+//#include "../generators/nxtOSEK/nxtOSEKRobotGenerator.h"
+#include "../generators/nxtOSEK/nxtOSEKsequentialGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../../qrkernel/settingsManager.h"
 
@@ -2031,7 +2032,7 @@ void MainWindow::generateRobotSourceCode()
 {
 	saveAll();
 
-	qReal::generators::NxtOSEKRobotGenerator gen(mModels->repoControlApi());
+	qReal::generators::nxtOSEKgenerator::NxtOSEKsequentialGenerator gen(mModels->repoControlApi());
 	gui::ErrorReporter &errors = gen.generate();
 	if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
 		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
