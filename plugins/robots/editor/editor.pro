@@ -10,8 +10,6 @@ SUBDIRS = \
 !win32 {
 	SUBDIRS += \
 		doc \
-		copy-images.pro \
-		copy-docs.pro \
 }
 
 generated.file = generated/robotsMetamodel.pro
