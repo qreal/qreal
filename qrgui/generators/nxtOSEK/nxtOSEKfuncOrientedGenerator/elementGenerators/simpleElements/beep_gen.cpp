@@ -1,9 +1,8 @@
 #include "beep_gen.h"
 
-#include "../../smartLine.h"
-
 using namespace qReal;
 using namespace generators;
+using namespace nxtOSEKgenerator;
 
 void Beep_gen::generateBodyWithoutNextElementCall()
 {

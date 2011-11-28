@@ -1,9 +1,10 @@
 #include "loop_gen.h"
 
-#include "../smartLine.h"
+#include "../../smartLine.h"
 
 using namespace qReal;
 using namespace generators;
+using namespace nxtOSEKgenerator;
 
 void Loop_gen::generateMethodBody() {
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);

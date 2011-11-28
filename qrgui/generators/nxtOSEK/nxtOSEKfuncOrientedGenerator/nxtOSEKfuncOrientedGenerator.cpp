@@ -1,4 +1,4 @@
-#include "nxtOSEKRobotGenerator.h"
+#include "../nxtOSEKfuncOrientedGenerator.h"
 #include "elementGeneratorFactory.h"
 
 #include <QTextStream>
@@ -8,21 +8,22 @@
 
 using namespace qReal;
 using namespace generators;
+using namespace nxtOSEKgenerator; 
 
-NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(qrRepo::RepoApi *api, QString const &destinationPath)
+NxtOSEKfuncOrientedGenerator::NxtOSEKfuncOrientedGenerator(qrRepo::RepoApi *api, QString const &destinationPath)
 	:  mApi(api), mIsNeedToDeleteMApi(false), mDestinationPath(destinationPath) {
 }
 
-NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo, QString const &destinationPath)
+NxtOSEKfuncOrientedGenerator::NxtOSEKfuncOrientedGenerator(QString const &pathToRepo, QString const &destinationPath)
 	:  mApi(new qrRepo::RepoApi(pathToRepo)), mIsNeedToDeleteMApi(true), mDestinationPath(destinationPath) {
 }
 
-NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator() {
+NxtOSEKfuncOrientedGenerator::~NxtOSEKfuncOrientedGenerator() {
 	if (mIsNeedToDeleteMApi)
 		delete mApi;
 }
 
-void NxtOSEKRobotGenerator::writeGeneratedCodeToFile(QString const &resultCode, QString const &initNodeProcedureName,
+void NxtOSEKfuncOrientedGenerator::writeGeneratedCodeToFile(QString const &resultCode, QString const &initNodeProcedureName,
 		int initialNodeNumber) {
 	QString projectName = "example" + QString::number(initialNodeNumber);
 	QString projectDir = "nxt-tools/" + projectName;
@@ -35,7 +36,7 @@ void NxtOSEKRobotGenerator::writeGeneratedCodeToFile(QString const &resultCode, 
 	}
 
 	/* Generate C file */
-	QFile templateCFile(":/generators/nxtOSEK_FN/templates/template.c");
+	QFile templateCFile(":/generators/nxtOSEK/nxtOSEKfuncOrientedGenerator/templates/template.c");
 	if (!templateCFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		mErrorReporter.addError("cannot open \"" + templateCFile.fileName() + "\"");
 		return;
@@ -62,7 +63,7 @@ void NxtOSEKRobotGenerator::writeGeneratedCodeToFile(QString const &resultCode, 
 	/**/
 
 	/* Generate OIL file */
-	QFile templateOILFile(":/generators/nxtOSEK_FN/templates/template.oil");
+	QFile templateOILFile(":/generators/nxtOSEK/nxtOSEKfuncOrientedGenerator/template/template.oil");
 	if (!templateOILFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		mErrorReporter.addError("cannot open \"" + templateOILFile.fileName() + "\"");
 		return;
@@ -82,7 +83,7 @@ void NxtOSEKRobotGenerator::writeGeneratedCodeToFile(QString const &resultCode, 
 	resultOILFile.close();
 
 	/* Generate makefile */
-	QFile templateMakeFile(":/generators/nxtOSEK_FN/templates/template.makefile");
+	QFile templateMakeFile(":/generators/nxtOSEK/nxtOSEKfuncOrientedGenerator/templates/template.makefile");
 	if (!templateMakeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		mErrorReporter.addError("cannot open \"" + templateMakeFile.fileName() + "\"");
 		return;
@@ -103,7 +104,7 @@ void NxtOSEKRobotGenerator::writeGeneratedCodeToFile(QString const &resultCode, 
 	/**/
 }
 
-gui::ErrorReporter &NxtOSEKRobotGenerator::generate() 
+gui::ErrorReporter &NxtOSEKfuncOrientedGenerator::generate() 
 {
 	prepareIdToMethodNameMap();
 	QList<Id> initialNodes = mApi->elementsByType("InitialNode");
@@ -156,7 +157,7 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 	return mErrorReporter; 
 }
 
-void NxtOSEKRobotGenerator::prepareIdToMethodNameMap()
+void NxtOSEKfuncOrientedGenerator::prepareIdToMethodNameMap()
 {
 	mIdToMethodNameMap.clear();
 
@@ -171,7 +172,7 @@ void NxtOSEKRobotGenerator::prepareIdToMethodNameMap()
 	}
 }
 
-QString NxtOSEKRobotGenerator::smartLineListToString(QList<SmartLine> list, int startIndentSize) {
+QString NxtOSEKfuncOrientedGenerator::smartLineListToString(QList<SmartLine> list, int startIndentSize) {
 	QString result;
 	int curIndentSize = startIndentSize;
 	foreach (SmartLine curLine, list) {

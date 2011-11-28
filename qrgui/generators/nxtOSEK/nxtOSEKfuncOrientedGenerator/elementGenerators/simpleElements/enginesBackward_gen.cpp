@@ -1,9 +1,8 @@
 #include "enginesBackward_gen.h"
 
-#include "../../smartLine.h"
-
 using namespace qReal;
 using namespace generators;
+using namespace nxtOSEKgenerator;
 
 void EnginesBackward_gen::generateBodyWithoutNextElementCall()
 {

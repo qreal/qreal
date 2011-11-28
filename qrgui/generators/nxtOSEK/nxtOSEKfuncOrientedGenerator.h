@@ -12,8 +12,9 @@
 
 namespace qReal {
 namespace generators {
+namespace nxtOSEKgenerator {
 
-class NxtOSEKRobotGenerator {
+class NxtOSEKfuncOrientedGenerator {
 	friend class AbstractElementGenerator;
 	
 	friend class SimpleElementGenerator;
@@ -39,10 +40,10 @@ class NxtOSEKRobotGenerator {
 	friend class Function_gen;
 
 public:
-	explicit NxtOSEKRobotGenerator(qrRepo::RepoApi *api, QString const &destinationPath = "");
-	explicit NxtOSEKRobotGenerator(QString const &pathToRepo, QString const &destinationPath = "");
+	explicit NxtOSEKfuncOrientedGenerator(qrRepo::RepoApi *api, QString const &destinationPath = "");
+	explicit NxtOSEKfuncOrientedGenerator(QString const &pathToRepo, QString const &destinationPath = "");
 	gui::ErrorReporter &generate();
-	~NxtOSEKRobotGenerator();
+	~NxtOSEKfuncOrientedGenerator();
 
 private:
 	static QString smartLineListToString(QList<SmartLine> list, int startIndentSize);
@@ -64,5 +65,6 @@ private:
 	QSet<Id> mAlreadyGeneratedElements;
 };
 
+}
 }
 }

@@ -4,10 +4,11 @@
 #include <QPair>
 
 #include "../smartLine.h"
-#include "nxtOSEKRobotGenerator.h"
+#include "../nxtOSEKfuncOrientedGenerator.h"
 
 namespace qReal {
 namespace generators {
+namespace nxtOSEKgenerator {
 
 class AbstractElementGenerator {
 public:	
@@ -38,5 +39,6 @@ protected:
 	Id mElementId;
 };
 
+}
 }
 }

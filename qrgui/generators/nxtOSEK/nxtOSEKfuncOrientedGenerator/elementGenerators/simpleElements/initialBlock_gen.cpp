@@ -1,12 +1,11 @@
 #include "initialBlock_gen.h"
 
-#include "../../smartLine.h"
-
 #include <QString>
 #include <QByteArray>
 
 using namespace qReal;
 using namespace generators;
+using namespace nxtOSEKgenerator;
 
 void InitialBlock_gen::generateBodyWithoutNextElementCall()
 {

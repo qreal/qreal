@@ -4,6 +4,7 @@
 
 namespace qReal {
 namespace generators {
+namespace nxtOSEKgenerator {
 
 class Beep_gen: public SimpleElementGenerator {
 public:
@@ -14,5 +15,6 @@ protected:
 	virtual void generateBodyWithoutNextElementCall();
 };
 
+}
 }
 }

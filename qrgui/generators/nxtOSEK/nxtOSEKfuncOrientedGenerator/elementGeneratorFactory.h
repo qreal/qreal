@@ -1,10 +1,11 @@
 #pragma once
 
-#include "nxtOSEKRobotGenerator.h"
+#include "../nxtOSEKfuncOrientedGenerator.h"
 #include "abstractElementGenerator.h"
 
 namespace qReal {
 namespace generators {
+namespace nxtOSEKgenerator {
 
 class ElementGeneratorFactory {
 public:
@@ -13,4 +14,4 @@ public:
 
 }
 }
-
+}

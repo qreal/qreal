@@ -4,6 +4,7 @@
 
 namespace qReal {
 namespace generators {
+namespace nxtOSEKgenerator {
 
 class Function_gen: public SimpleElementGenerator {
 public:
@@ -15,5 +16,6 @@ protected:
 	void variableAnalysis(QByteArray const &code);
 };
 
+}
 }
 }

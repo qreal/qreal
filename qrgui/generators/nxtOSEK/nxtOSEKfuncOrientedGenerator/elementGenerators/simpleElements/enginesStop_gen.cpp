@@ -1,9 +1,8 @@
 #include "enginesStop_gen.h"
 
-#include "../../smartLine.h"
-
 using namespace qReal;
 using namespace generators;
+using namespace nxtOSEKgenerator;
 
 void EnginesStop_gen::generateBodyWithoutNextElementCall()
 {

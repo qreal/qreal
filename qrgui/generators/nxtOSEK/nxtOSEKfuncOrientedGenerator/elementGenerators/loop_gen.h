@@ -4,6 +4,7 @@
 
 namespace qReal {
 namespace generators {
+namespace nxtOSEKgenerator {
 
 //class for Loop element
 class Loop_gen: public AbstractElementGenerator {
@@ -15,5 +16,6 @@ protected:
 	virtual void generateMethodBody();
 };
 
+}
 }
 }

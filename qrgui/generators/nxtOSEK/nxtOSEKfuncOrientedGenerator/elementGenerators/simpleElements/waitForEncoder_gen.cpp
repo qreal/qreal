@@ -1,9 +1,8 @@
 #include "waitForEncoder_gen.h"
 
-#include "../../smartLine.h"
-
 using namespace qReal;
 using namespace generators;
+using namespace nxtOSEKgenerator;
 
 void WaitForEncoder_gen::generateBodyWithoutNextElementCall()
 {

@@ -2,6 +2,7 @@
 
 using namespace qReal;
 using namespace generators;
+using namespace nxtOSEKgenerator;
 
 void IfBlock_gen::generateMethodBody() {
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);

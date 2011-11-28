@@ -1,9 +1,10 @@
 #include "simpleElementGenerator.h"
 
-#include "../smartLine.h"
+#include "../../smartLine.h"
 
 using namespace qReal;
 using namespace generators;
+using namespace nxtOSEKgenerator;
 
 void SimpleElementGenerator::generateMethodBody()
 {

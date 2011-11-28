@@ -1,9 +1,8 @@
 #include "waitForColorIntensity_gen.h"
 
-#include "../../smartLine.h"
-
 using namespace qReal;
 using namespace generators;
+using namespace nxtOSEKgenerator;
 
 void WaitForColorIntensity_gen::generateBodyWithoutNextElementCall()
 {

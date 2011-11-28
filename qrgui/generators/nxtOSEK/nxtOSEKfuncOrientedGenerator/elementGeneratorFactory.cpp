@@ -3,6 +3,7 @@
 
 using namespace qReal;
 using namespace generators;
+using namespace nxtOSEKgenerator; 
 
 AbstractElementGenerator* ElementGeneratorFactory::generator(NxtOSEKRobotGenerator* gen, Id elementId)
 {

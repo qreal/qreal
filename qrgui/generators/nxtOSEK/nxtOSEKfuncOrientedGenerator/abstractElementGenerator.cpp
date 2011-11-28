@@ -2,6 +2,7 @@
 
 using namespace qReal;
 using namespace generators; 
+using namespace nxtOSEKgenerator; 
 
 int AbstractElementGenerator::mElementCounter = 0;
 

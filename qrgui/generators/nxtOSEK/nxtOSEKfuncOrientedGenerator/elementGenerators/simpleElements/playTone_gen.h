@@ -4,6 +4,7 @@
 
 namespace qReal {
 namespace generators {
+namespace nxtOSEKgenerator {
 
 class PlayTone_gen: public SimpleElementGenerator {
 public:
@@ -14,5 +15,6 @@ protected:
 	virtual void generateBodyWithoutNextElementCall();
 };
 
+}
 }
 }

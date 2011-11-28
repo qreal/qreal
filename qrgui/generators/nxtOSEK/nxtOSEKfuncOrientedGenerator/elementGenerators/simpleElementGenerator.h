@@ -4,6 +4,7 @@
 
 namespace qReal {
 namespace generators {
+namespace nxtOSEKgenerator {
 
 //class for simple elements such as Beep, WaitForColor etc
 class SimpleElementGenerator: public AbstractElementGenerator {
@@ -16,5 +17,6 @@ protected:
 	virtual void generateBodyWithoutNextElementCall() = 0;
 };
 
+}
 }
 }

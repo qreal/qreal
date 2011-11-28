@@ -1,9 +1,8 @@
 #include "waitForSonarDistance_gen.h"
 
-#include "../../smartLine.h"
-
 using namespace qReal;
 using namespace generators;
+using namespace nxtOSEKgenerator;
 
 void WaitForSonarDistance_gen::generateBodyWithoutNextElementCall()
 {
