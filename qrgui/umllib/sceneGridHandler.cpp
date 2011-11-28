@@ -4,11 +4,12 @@
 
 namespace {
 // magic constants
-const int widthLineX = 1500;
-const int widthLineY = 1100;
+const int widthLineX = 15000;
+const int widthLineY = 11000;
 }
 
-SceneGridHandler::SceneGridHandler(NodeElement *node) : mNode(node)
+SceneGridHandler::SceneGridHandler(NodeElement *node)
+		: mNode(node), mLines(new QGraphicsItemGroup())
 {
 	mGuidesPen = QPen(Qt::black, 0.25, Qt::DashLine);
 	mShowAlignment = SettingsManager::value("ShowAlignment", true).toBool();
@@ -16,12 +17,17 @@ SceneGridHandler::SceneGridHandler(NodeElement *node) : mNode(node)
 	mSwitchAlignment = SettingsManager::value("ActivateAlignment", true).toBool();
 }
 
+SceneGridHandler::~SceneGridHandler()
+{
+	delete mLines;
+}
+
 void SceneGridHandler::delUnusedLines()
 {
-	foreach (QGraphicsLineItem* lineItem, mLines) {
-		mNode->scene()->removeItem(lineItem);
+	foreach (QGraphicsItem *lineItem, mLines->childItems()) {
+		mLines->removeFromGroup(lineItem);
+		delete lineItem;
 	}
-	mLines.clear();
 }
 
 void SceneGridHandler::drawLineY(qreal pointY, qreal myX)
@@ -31,18 +37,25 @@ void SceneGridHandler::drawLineY(qreal pointY, qreal myX)
 	qreal const x1 = qMax(myX - widthLineY / 2, sceneRect.x() + 10);
 	qreal const x2 = qMin(myX + widthLineY / 2, sceneRect.x() + sceneRect.width() - 10);
 
-	QLineF const line(x1, pointY, x2, pointY);
+	QGraphicsLineItem *line = new QGraphicsLineItem(x1, pointY, x2, pointY);
+	line->setPen(mGuidesPen);
 
 	// checking whether the scene already has this line or not.
 	// if not (lineIsFound is false), then adding it
-	foreach (QGraphicsLineItem* lineItem, mLines) {
-		if (qAbs(lineItem->line().y1() - line.y1()) < indistinguishabilitySpace
+	foreach (QGraphicsItem *item, mLines->childItems()) {
+		QGraphicsLineItem *lineItem = dynamic_cast<QGraphicsLineItem*>(item);
+		if (!lineItem) {
+			continue;
+		}
+		if (qAbs(lineItem->line().y1() - line->line().y1()) < indistinguishabilitySpace
 				&& lineItem->line().y2() == lineItem->line().y1())
 		{
+			delete line;
 			return;
 		}
 	}
-	mLines.push_back(mNode->scene()->addLine(line, mGuidesPen));
+
+	mLines->addToGroup(line);
 }
 
 void SceneGridHandler::drawLineX(qreal pointX, qreal myY)
@@ -52,19 +65,25 @@ void SceneGridHandler::drawLineX(qreal pointX, qreal myY)
 	qreal const y1 = qMax(myY - widthLineY / 2, sceneRect.y() + 10);
 	qreal const y2 = qMin(myY + widthLineY / 2, sceneRect.y() + sceneRect.height() - 10);
 
-	QLineF const line(pointX, y1, pointX, y2);
+	QGraphicsLineItem *line = new QGraphicsLineItem(pointX, y1, pointX, y2);
+	line->setPen(mGuidesPen);
 
 	// checking whether the scene already has this line or not.
 	// if not (lineIsFound is false), then adding it
-	foreach (QGraphicsLineItem* lineItem, mLines) {
-		if (qAbs(lineItem->line().x1() - line.x1()) < indistinguishabilitySpace
+	foreach (QGraphicsItem *item, mLines->childItems()) {
+		QGraphicsLineItem *lineItem = dynamic_cast<QGraphicsLineItem*>(item);
+		if (!lineItem) {
+			continue;
+		}
+		if (qAbs(lineItem->line().x1() - line->line().x1()) < indistinguishabilitySpace
 				&& lineItem->line().x2() == lineItem->line().x1())
 		{
+			delete line;
 			return;
 		}
 	}
 
-	mLines.push_back(mNode->scene()->addLine(line, mGuidesPen));
+	mLines->addToGroup(line);
 }
 
 // checking whether we should align with the vertical line or not
@@ -184,49 +203,67 @@ void SceneGridHandler::setAlignmentMode(bool mode)
 	mSwitchAlignment = mode;
 }
 
-void SceneGridHandler::mouseMoveEvent()
+QList<QGraphicsItem *> SceneGridHandler::getAdjancedNodes()
 {
-	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
-	NodeElement* parItem = dynamic_cast<NodeElement*>(mNode->parentItem());
-	if (parItem != NULL) {
+	QPointF const nodeScenePos = mNode->scenePos();
+	QRectF const contentsRect = mNode->contentsRect();
+
+	// verical
+	QList<QGraphicsItem *> listX = mNode->scene()->items(nodeScenePos.x(), 0
+			, contentsRect.width(), widthLineY
+			, Qt::IntersectsItemBoundingRect);
+
+	// horizontal
+	QList<QGraphicsItem *> listY = mNode->scene()->items(0, nodeScenePos.y()
+			, widthLineX, contentsRect.height()
+			, Qt::IntersectsItemBoundingRect);
+
+	return listX + listY;
+}
+
+void SceneGridHandler::alignToGrid()
+{
+	if (!mSwitchGrid) {
 		return;
 	}
+	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
+
 	QPointF const nodeScenePos = mNode->scenePos();
 	QRectF const contentsRect = mNode->contentsRect();
 
 	qreal myX1 = nodeScenePos.x() + contentsRect.x();
 	qreal myY1 = nodeScenePos.y() + contentsRect.y();
 
-	if (mSwitchGrid) {
-		int coefX = static_cast<int>(myX1) / indexGrid;
-		int coefY = static_cast<int>(myY1) / indexGrid;
+	int coefX = static_cast<int>(myX1) / indexGrid;
+	int coefY = static_cast<int>(myY1) / indexGrid;
 
-		makeGridMovingX(myX1, coefX, indexGrid);
-		makeGridMovingY(myY1, coefY, indexGrid);
+	makeGridMovingX(myX1, coefX, indexGrid);
+	makeGridMovingY(myY1, coefY, indexGrid);
 
-		myX1 = nodeScenePos.x() + contentsRect.x();
-		myY1 = nodeScenePos.y() + contentsRect.y();
+	myX1 = nodeScenePos.x() + contentsRect.x();
+	myY1 = nodeScenePos.y() + contentsRect.y();
+}
+
+void SceneGridHandler::drawGuides()
+{
+	QPointF const nodeScenePos = mNode->scenePos();
+	QRectF const contentsRect = mNode->contentsRect();
+
+	if (mLines->scene() != mNode->scene()) {
+		mNode->scene()->addItem(mLines);
 	}
 
+	delUnusedLines();
+
+	QList<QGraphicsItem *> list = getAdjancedNodes();
+
+	qreal myX1 = nodeScenePos.x() + contentsRect.x();
+	qreal myY1 = nodeScenePos.y() + contentsRect.y();
 	qreal myX2 = myX1 + contentsRect.width();
 	qreal myY2 = myY1 + contentsRect.height();
 
-	// verical
-	QList<QGraphicsItem *> listX = mNode->scene()->items(nodeScenePos.x(), 0
-			, nodeScenePos.x() + contentsRect.width()
-			, widthLineY
-			, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder);
-	// horizontal
-	QList<QGraphicsItem *> listY = mNode->scene()->items(0, nodeScenePos.y()
-			, widthLineX
-			, nodeScenePos.y() + contentsRect.height()
-			, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder);
-
-	QList<QGraphicsItem *> list = listX + listY;
-
-	delUnusedLines();
 	foreach (QGraphicsItem *graphicsItem, list) {
-		NodeElement* item = dynamic_cast<NodeElement*>(graphicsItem);
+		NodeElement *item = dynamic_cast<NodeElement *>(graphicsItem);
 		if (item == NULL || item->parentItem() != NULL || item == mNode) {
 			continue;
 		}
@@ -258,5 +295,18 @@ void SceneGridHandler::mouseMoveEvent()
 			buildLineX(qAbs(pointX2 - myX1), pointX2, 0, myX1, myX2, myY1);
 		}
 	}
+
+	mLines->show();
+}
+
+void SceneGridHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+	NodeElement *parItem = dynamic_cast<NodeElement*>(mNode->parentItem());
+	if (parItem != NULL) {
+		return;
+	}
+
+	alignToGrid();
+	drawGuides();
 	mNode->adjustLinks();
 }
