@@ -9,9 +9,9 @@ const int widthLineY = 11000;
 }
 
 SceneGridHandler::SceneGridHandler(NodeElement *node)
-		: mNode(node), mLines(new QGraphicsItemGroup())
+		: mNode(node), mGuidesPixmap(NULL)
 {
-	mGuidesPen = QPen(Qt::black, 0.25, Qt::DashLine);
+	mGuidesPen = QPen(QColor(0, 0, 0, 42), 1, Qt::DashLine);
 	mShowAlignment = SettingsManager::value("ShowAlignment", true).toBool();
 	mSwitchGrid = SettingsManager::value("ActivateGrid", true).toBool();
 	mSwitchAlignment = SettingsManager::value("ActivateAlignment", true).toBool();
@@ -19,71 +19,56 @@ SceneGridHandler::SceneGridHandler(NodeElement *node)
 
 SceneGridHandler::~SceneGridHandler()
 {
-	delete mLines;
+	delete mGuidesPixmap;
 }
 
 void SceneGridHandler::delUnusedLines()
 {
-	foreach (QGraphicsItem *lineItem, mLines->childItems()) {
-		mLines->removeFromGroup(lineItem);
-		delete lineItem;
-	}
+	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(mNode->scene());
+	evScene->deleteFromForeground(mGuidesPixmap);
+	delete mGuidesPixmap;
+	mGuidesPixmap = NULL;
+	mLines.clear();
 }
 
 void SceneGridHandler::drawLineY(qreal pointY, qreal myX)
 {
 	QRectF const sceneRect = mNode->scene()->sceneRect();
 
-	qreal const x1 = qMax(myX - widthLineY / 2, sceneRect.x() + 10);
-	qreal const x2 = qMin(myX + widthLineY / 2, sceneRect.x() + sceneRect.width() - 10);
-
-	QGraphicsLineItem *line = new QGraphicsLineItem(x1, pointY, x2, pointY);
-	line->setPen(mGuidesPen);
+	pointY -= sceneRect.y();
+	QLineF newLine(0., pointY, sceneRect.width(), pointY);
 
 	// checking whether the scene already has this line or not.
 	// if not (lineIsFound is false), then adding it
-	foreach (QGraphicsItem *item, mLines->childItems()) {
-		QGraphicsLineItem *lineItem = dynamic_cast<QGraphicsLineItem*>(item);
-		if (!lineItem) {
-			continue;
-		}
-		if (qAbs(lineItem->line().y1() - line->line().y1()) < indistinguishabilitySpace
-				&& lineItem->line().y2() == lineItem->line().y1())
+	foreach (QLineF const &line, mLines) {
+		if (qAbs(line.y1() - newLine.y1()) < indistinguishabilitySpace
+				&& line.y2() == line.y1())
 		{
-			delete line;
 			return;
 		}
 	}
 
-	mLines->addToGroup(line);
+	mLines.push_back(newLine);
 }
 
 void SceneGridHandler::drawLineX(qreal pointX, qreal myY)
 {
 	QRectF const sceneRect = mNode->scene()->sceneRect();
 
-	qreal const y1 = qMax(myY - widthLineY / 2, sceneRect.y() + 10);
-	qreal const y2 = qMin(myY + widthLineY / 2, sceneRect.y() + sceneRect.height() - 10);
-
-	QGraphicsLineItem *line = new QGraphicsLineItem(pointX, y1, pointX, y2);
-	line->setPen(mGuidesPen);
+	pointX -= sceneRect.x();
+	QLineF newLine(pointX, 0, pointX, sceneRect.height());
 
 	// checking whether the scene already has this line or not.
 	// if not (lineIsFound is false), then adding it
-	foreach (QGraphicsItem *item, mLines->childItems()) {
-		QGraphicsLineItem *lineItem = dynamic_cast<QGraphicsLineItem*>(item);
-		if (!lineItem) {
-			continue;
-		}
-		if (qAbs(lineItem->line().x1() - line->line().x1()) < indistinguishabilitySpace
-				&& lineItem->line().x2() == lineItem->line().x1())
+	foreach (QLineF const &line, mLines) {
+		if (qAbs(line.x1() - newLine.x1()) < indistinguishabilitySpace
+				&& line.x2() == line.x1())
 		{
-			delete line;
 			return;
 		}
 	}
 
-	mLines->addToGroup(line);
+	mLines.push_back(newLine);
 }
 
 // checking whether we should align with the vertical line or not
@@ -249,10 +234,6 @@ void SceneGridHandler::drawGuides()
 	QPointF const nodeScenePos = mNode->scenePos();
 	QRectF const contentsRect = mNode->contentsRect();
 
-	if (mLines->scene() != mNode->scene()) {
-		mNode->scene()->addItem(mLines);
-	}
-
 	delUnusedLines();
 
 	QList<QGraphicsItem *> list = getAdjancedNodes();
@@ -296,7 +277,17 @@ void SceneGridHandler::drawGuides()
 		}
 	}
 
-	mLines->show();
+
+	if (mLines.size()) {
+		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(mNode->scene());
+		QRectF sceneRect = evScene->sceneRect();
+		mGuidesPixmap = new QPixmap(sceneRect.width(), sceneRect.height());
+		mGuidesPixmap->fill(Qt::transparent);
+		QPainter painter(mGuidesPixmap);
+		painter.setPen(mGuidesPen);
+		painter.drawLines(mLines);
+		evScene->putOnForeground(mGuidesPixmap);
+	}
 }
 
 void SceneGridHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

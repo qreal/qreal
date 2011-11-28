@@ -53,7 +53,10 @@ private:
 	qreal recalculateY2(qreal myY1);
 
 	NodeElement *mNode;
-	QGraphicsItemGroup *mLines;
+	/// Lines of guides
+	QVector<QLineF> mLines;
+	/// Pixmap of guides lines
+	QPixmap *mGuidesPixmap;
 
 	bool mShowAlignment;
 	/** @brief if true, the object will be aligned to indexGrid */
