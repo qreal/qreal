@@ -36,6 +36,25 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 }
 
+void EditorViewScene::drawForeground(QPainter *painter, const QRectF &rect)
+{
+	foreach (QPixmap *pixmap, mForegroundPixmaps) {
+		painter->drawPixmap(rect.topLeft(), *pixmap);
+	}
+	QGraphicsScene::drawForeground(painter, rect);
+}
+
+void EditorViewScene::putOnForeground(QPixmap *pixmap)
+{
+	mForegroundPixmaps.push_back(pixmap);
+}
+
+void EditorViewScene::deleteFromForeground(QPixmap *pixmap)
+{
+	mForegroundPixmaps.removeOne(pixmap);
+	update();
+}
+
 EditorViewScene::~EditorViewScene()
 {
 	delete mActionSignalMapper;
