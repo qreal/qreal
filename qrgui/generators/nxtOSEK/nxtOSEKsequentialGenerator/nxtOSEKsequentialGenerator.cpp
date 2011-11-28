@@ -13,24 +13,13 @@ using namespace generators;
 using namespace nxtOSEKgenerator;
 
 NxtOSEKsequentialGenerator::NxtOSEKsequentialGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath)
-	:  mDestinationPath(destinationPath)
+	: NxtOSEKgenerator(api, destinationPath)
 {
-		mIsNeedToDeleteMApi = false;
-		mApi = dynamic_cast<qrRepo::RepoApi *>(&api);
 }
 
 NxtOSEKsequentialGenerator::NxtOSEKsequentialGenerator(QString const &pathToRepo, QString const &destinationPath)
-	:mDestinationPath(SettingsManager::value("temp", "").toString())
+	: NxtOSEKgenerator(pathToRepo, destinationPath)
 {
-	Q_UNUSED(destinationPath)
-		mIsNeedToDeleteMApi = true;
-		mApi = new qrRepo::RepoApi(pathToRepo);
-}
-
-NxtOSEKsequentialGenerator::~NxtOSEKsequentialGenerator()
-{
-	if (mApi && mIsNeedToDeleteMApi)
-		delete mApi;
 }
 
 void NxtOSEKsequentialGenerator::addToGeneratedStringSetVariableInit() {

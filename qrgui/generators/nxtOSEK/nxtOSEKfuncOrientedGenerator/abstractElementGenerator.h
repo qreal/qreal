@@ -3,7 +3,7 @@
 #include <QList>
 #include <QPair>
 
-#include "smartLine.h"
+#include "../smartLine.h"
 #include "nxtOSEKRobotGenerator.h"
 
 namespace qReal {

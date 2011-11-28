@@ -14,7 +14,8 @@ HEADERS += generators/hascol/hascolGenerator.h \
 SOURCES += generators/hascol/hascolGenerator.cpp \
 
 # nxtOSEK sequential generator
-HEADERS += generators/nxtOSEK/nxtOSEKsequentialGenerator.h \
+HEADERS += generators/nxtOSEK/nxtOSEKgenerator.h \
+		generators/nxtOSEK/nxtOSEKsequentialGenerator.h \
 		generators/nxtOSEK/smartLine.h
 SOURCES += generators/nxtOSEK/nxtOSEKsequentialGenerator/nxtOSEKsequentialGenerator.cpp \
 		generators/nxtOSEK/private/smartLine.cpp

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "nxtOSEKgenerator.h"
+
 #include <QString>
 #include <QPair>
 #include <QMap>
@@ -17,12 +19,13 @@ namespace nxtOSEKgenerator {
 
 //! Class for generate a nxtOSEK code from Robot Language Diagram.
 
-class NxtOSEKsequentialGenerator {
+class NxtOSEKsequentialGenerator: public NxtOSEKgenerator {
 public:
 	explicit NxtOSEKsequentialGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath = "");
 	explicit NxtOSEKsequentialGenerator(QString const &pathToRepo, QString const &destinationPath = "");
 
-	~NxtOSEKsequentialGenerator();
+	virtual	~NxtOSEKsequentialGenerator() {
+	}
 
 	//! main method that starts a code generation.
 	gui::ErrorReporter &generate();
@@ -140,9 +143,9 @@ private:
 
 	void addToGeneratedStringSetVariableInit();
 
-	qrRepo::RepoApi *mApi;
-	bool mIsNeedToDeleteMApi;
-	QString mDestinationPath;
+	//qrRepo::RepoApi *mApi;
+	//bool mIsNeedToDeleteMApi;
+	//QString mDestinationPath;
 
 	//! Set of already generated strings united for take a same critical places position (start of loop etc)
 	QList< QList<SmartLine> > mGeneratedStringSet;
@@ -160,7 +163,7 @@ private:
 	QList<SmartLine> mVariables;
 	int mVariablePlaceInGenStrSet;
 
-	gui::ErrorReporter mErrorReporter;
+	//gui::ErrorReporter mErrorReporter;
 };
 }
 }
