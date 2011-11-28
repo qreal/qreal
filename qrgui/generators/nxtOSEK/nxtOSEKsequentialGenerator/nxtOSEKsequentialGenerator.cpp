@@ -93,7 +93,7 @@ gui::ErrorReporter &NxtOSEKsequentialGenerator::generate()
 		}
 
 		/* Generate C file */
-		QFile templateCFile(":/generators/nxtOSEK/templates/template.c");
+		QFile templateCFile(":/generators/nxtOSEK/nxtOSEKsequentialGenerator/templates/template.c");
 		if (!templateCFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 			mErrorReporter.addError("cannot open \"" + templateCFile.fileName() + "\"");
 			return mErrorReporter;
@@ -119,7 +119,7 @@ gui::ErrorReporter &NxtOSEKsequentialGenerator::generate()
 		/**/
 
 		/* Generate OIL file */
-		QFile templateOILFile(":/generators/nxtOSEK/templates/template.oil");
+		QFile templateOILFile(":/generators/nxtOSEK/nxtOSEKsequentialGenerator/templates/template.oil");
 		if (!templateOILFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 			mErrorReporter.addError("cannot open \"" + templateOILFile.fileName() + "\"");
 			return mErrorReporter;
@@ -139,7 +139,7 @@ gui::ErrorReporter &NxtOSEKsequentialGenerator::generate()
 		resultOILFile.close();
 
 		/* Generate makefile */
-		QFile templateMakeFile(":/generators/nxtOSEK/templates/template.makefile");
+		QFile templateMakeFile(":/generators/nxtOSEK/nxtOSEKsequentialGenerator/templates/template.makefile");
 		if (!templateMakeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 			mErrorReporter.addError("cannot open \"" + templateMakeFile.fileName() + "\"");
 			return mErrorReporter;
