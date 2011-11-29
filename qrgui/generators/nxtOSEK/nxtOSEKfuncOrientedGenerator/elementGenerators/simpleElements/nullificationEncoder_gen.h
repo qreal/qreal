@@ -4,6 +4,7 @@
 
 namespace qReal {
 namespace generators {
+namespace nxtOSEKgenerator {
 
 class NullificationEncoder_gen: public SimpleElementGenerator {
 public:

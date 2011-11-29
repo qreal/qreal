@@ -5,7 +5,7 @@ using namespace qReal;
 using namespace generators;
 using namespace nxtOSEKgenerator; 
 
-AbstractElementGenerator* ElementGeneratorFactory::generator(NxtOSEKRobotGenerator* gen, Id elementId)
+AbstractElementGenerator* ElementGeneratorFactory::generator(NxtOSEKfuncOrientedGenerator* gen, Id elementId)
 {
 	//if (elementId.element() == "")
 	//	return (gen, elementId);
