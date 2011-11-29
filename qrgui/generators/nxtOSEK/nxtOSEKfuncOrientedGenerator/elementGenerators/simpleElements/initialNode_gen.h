@@ -8,7 +8,7 @@ namespace nxtOSEKgenerator {
 
 class InitialNode_gen: public SimpleElementGenerator {
 public:
-	InitialNode_gen(NxtOSEKRobotGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
+	InitialNode_gen(NxtOSEKfuncOrientedGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

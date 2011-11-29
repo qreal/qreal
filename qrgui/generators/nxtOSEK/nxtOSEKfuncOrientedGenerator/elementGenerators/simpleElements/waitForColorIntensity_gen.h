@@ -8,7 +8,7 @@ namespace nxtOSEKgenerator {
 
 class WaitForColorIntensity_gen: public SimpleElementGenerator {
 public:
-	WaitForColorIntensity_gen(NxtOSEKRobotGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
+	WaitForColorIntensity_gen(NxtOSEKfuncOrientedGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

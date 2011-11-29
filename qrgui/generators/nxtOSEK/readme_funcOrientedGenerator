@@ -1,3 +1,4 @@
-New nxtOSEK C generator, that produces separate functions for each diagram node. Arrows are produced to function calls.
+New nxtOSEK function oriented C generator, that produces separate functions for each diagram node.
+Arrows are produced to function calls.
 Processed robot language is a little bit different. Loops must be without back arrows, loop element must be
 in the beggining of the appropriate loop.

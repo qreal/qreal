@@ -9,7 +9,7 @@ namespace nxtOSEKgenerator {
 
 class ElementGeneratorFactory {
 public:
-	static AbstractElementGenerator* generator(NxtOSEKRobotGenerator* gen, Id elementId);
+	static AbstractElementGenerator* generator(NxtOSEKfuncOrientedGenerator* gen, Id elementId);
 };
 
 }

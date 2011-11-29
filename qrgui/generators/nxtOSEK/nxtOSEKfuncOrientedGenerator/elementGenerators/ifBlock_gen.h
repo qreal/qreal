@@ -9,7 +9,7 @@ namespace nxtOSEKgenerator {
 //class for IfBlock element
 class IfBlock_gen: public AbstractElementGenerator {
 public:
-	IfBlock_gen(NxtOSEKRobotGenerator* gen, Id elementId): AbstractElementGenerator(gen, elementId) {
+	IfBlock_gen(NxtOSEKfuncOrientedGenerator* gen, Id elementId): AbstractElementGenerator(gen, elementId) {
 	}
 	
 protected:

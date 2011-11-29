@@ -8,7 +8,7 @@ namespace nxtOSEKgenerator {
 
 class WaitForEncoder_gen: public SimpleElementGenerator {
 public:
-	WaitForEncoder_gen(NxtOSEKRobotGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
+	WaitForEncoder_gen(NxtOSEKfuncOrientedGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

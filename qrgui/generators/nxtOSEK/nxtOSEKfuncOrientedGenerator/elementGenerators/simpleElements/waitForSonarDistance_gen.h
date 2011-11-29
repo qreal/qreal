@@ -8,7 +8,7 @@ namespace nxtOSEKgenerator {
 
 class WaitForSonarDistance_gen: public SimpleElementGenerator {
 public:
-	WaitForSonarDistance_gen(NxtOSEKRobotGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
+	WaitForSonarDistance_gen(NxtOSEKfuncOrientedGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

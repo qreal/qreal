@@ -8,7 +8,7 @@ namespace nxtOSEKgenerator {
 
 class EnginesStop_gen: public SimpleElementGenerator {
 public:
-	EnginesStop_gen(NxtOSEKRobotGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
+	EnginesStop_gen(NxtOSEKfuncOrientedGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

@@ -10,17 +10,12 @@ using namespace qReal;
 using namespace generators;
 using namespace nxtOSEKgenerator; 
 
-NxtOSEKfuncOrientedGenerator::NxtOSEKfuncOrientedGenerator(qrRepo::RepoApi *api, QString const &destinationPath)
-	:  mApi(api), mIsNeedToDeleteMApi(false), mDestinationPath(destinationPath) {
+NxtOSEKfuncOrientedGenerator::NxtOSEKfuncOrientedGenerator(qrRepo::RepoApi &api, QString const &destinationPath)
+	: NxtOSEKgenerator(api, destinationPath) {
 }
 
 NxtOSEKfuncOrientedGenerator::NxtOSEKfuncOrientedGenerator(QString const &pathToRepo, QString const &destinationPath)
-	:  mApi(new qrRepo::RepoApi(pathToRepo)), mIsNeedToDeleteMApi(true), mDestinationPath(destinationPath) {
-}
-
-NxtOSEKfuncOrientedGenerator::~NxtOSEKfuncOrientedGenerator() {
-	if (mIsNeedToDeleteMApi)
-		delete mApi;
+	: NxtOSEKgenerator(pathToRepo, destinationPath) {
 }
 
 void NxtOSEKfuncOrientedGenerator::writeGeneratedCodeToFile(QString const &resultCode, QString const &initNodeProcedureName,

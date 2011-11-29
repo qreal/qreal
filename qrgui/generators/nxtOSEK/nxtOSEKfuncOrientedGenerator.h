@@ -1,5 +1,7 @@
 #pragma once
 
+#include "nxtOSEKgenerator.h"
+
 #include <QString>
 #include <QList>
 #include <QMap>
@@ -14,7 +16,7 @@ namespace qReal {
 namespace generators {
 namespace nxtOSEKgenerator {
 
-class NxtOSEKfuncOrientedGenerator {
+class NxtOSEKfuncOrientedGenerator: public NxtOSEKgenerator {
 	friend class AbstractElementGenerator;
 	
 	friend class SimpleElementGenerator;
@@ -40,22 +42,18 @@ class NxtOSEKfuncOrientedGenerator {
 	friend class Function_gen;
 
 public:
-	explicit NxtOSEKfuncOrientedGenerator(qrRepo::RepoApi *api, QString const &destinationPath = "");
+	explicit NxtOSEKfuncOrientedGenerator(qrRepo::RepoApi &api, QString const &destinationPath = "");
 	explicit NxtOSEKfuncOrientedGenerator(QString const &pathToRepo, QString const &destinationPath = "");
+	virtual ~NxtOSEKfuncOrientedGenerator() {
+	}
+	
 	gui::ErrorReporter &generate();
-	~NxtOSEKfuncOrientedGenerator();
 
 private:
 	static QString smartLineListToString(QList<SmartLine> list, int startIndentSize);
 
 	void prepareIdToMethodNameMap();
 	void writeGeneratedCodeToFile(QString const &resultCode, QString const &initNodeProcedureName, int initialNodeNumber);
-
-	qrRepo::RepoApi *mApi;
-	bool mIsNeedToDeleteMApi;
-	QString mDestinationPath;
-
-	gui::ErrorReporter mErrorReporter;
 
 	QMap<QString, QString> mIdToMethodNameMap;
 

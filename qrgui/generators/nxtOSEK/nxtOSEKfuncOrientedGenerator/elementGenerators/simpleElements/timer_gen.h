@@ -8,7 +8,7 @@ namespace nxtOSEKgenerator {
 
 class Timer_gen: public SimpleElementGenerator {
 public:
-	Timer_gen(NxtOSEKRobotGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
+	Timer_gen(NxtOSEKfuncOrientedGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

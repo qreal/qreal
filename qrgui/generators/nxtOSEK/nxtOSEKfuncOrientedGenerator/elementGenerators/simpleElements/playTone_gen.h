@@ -8,7 +8,7 @@ namespace nxtOSEKgenerator {
 
 class PlayTone_gen: public SimpleElementGenerator {
 public:
-	PlayTone_gen(NxtOSEKRobotGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
+	PlayTone_gen(NxtOSEKfuncOrientedGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

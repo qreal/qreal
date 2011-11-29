@@ -8,7 +8,7 @@ namespace nxtOSEKgenerator {
 
 class Beep_gen: public SimpleElementGenerator {
 public:
-	Beep_gen(NxtOSEKRobotGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
+	Beep_gen(NxtOSEKfuncOrientedGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

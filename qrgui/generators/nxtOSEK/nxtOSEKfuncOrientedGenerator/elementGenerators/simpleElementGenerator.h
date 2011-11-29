@@ -9,7 +9,7 @@ namespace nxtOSEKgenerator {
 //class for simple elements such as Beep, WaitForColor etc
 class SimpleElementGenerator: public AbstractElementGenerator {
 public:
-	SimpleElementGenerator(NxtOSEKRobotGenerator* gen, Id elementId): AbstractElementGenerator(gen, elementId) {
+	SimpleElementGenerator(NxtOSEKfuncOrientedGenerator* gen, Id elementId): AbstractElementGenerator(gen, elementId) {
 	}
 	
 protected:

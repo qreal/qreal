@@ -8,7 +8,7 @@ namespace nxtOSEKgenerator {
 
 class WaitForTouchSensor_gen: public SimpleElementGenerator {
 public:
-	WaitForTouchSensor_gen(NxtOSEKRobotGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
+	WaitForTouchSensor_gen(NxtOSEKfuncOrientedGenerator* gen, Id elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

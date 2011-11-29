@@ -12,7 +12,7 @@ namespace nxtOSEKgenerator {
 
 class AbstractElementGenerator {
 public:	
-	AbstractElementGenerator(NxtOSEKRobotGenerator* gen, Id elementId): mNxtGen(gen){
+	AbstractElementGenerator(NxtOSEKfuncOrientedGenerator* gen, Id elementId): mNxtGen(gen){
 		if (mNxtGen->mApi->isLogicalElement(elementId))
 			mElementId = elementId;
 		else
@@ -35,7 +35,7 @@ protected:
 
 	static int mElementCounter;
 
-	NxtOSEKRobotGenerator* mNxtGen;
+	NxtOSEKfuncOrientedGenerator* mNxtGen;
 	Id mElementId;
 };
 
