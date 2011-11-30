@@ -390,6 +390,7 @@ void NodeElement::resize(QRectF newContents)
 			childrenMoving.setY(curItemPos.y() - mElementImpl->sizeOfForestalling());
 		}
 	}
+
 //	setPos(pos() + childrenMoving);
 	moveChildren(-childrenMoving);
 
@@ -576,7 +577,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (parItem) {
 			parentPos = parItem->scenePos();
 		}
-
 		switch (mDragState) {
 		case TopLeft:
 			newContents.setTopLeft(event->pos());
@@ -1424,6 +1424,7 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 		double dy = newContents.height() - oldContents.height();
 		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
 		setPos(mPos);
+		qDebug() << "resize maybe happened";
 	}
 
 	if (mParentNodeElement->checkUpperBorder(posi, xHor, yHor)) {

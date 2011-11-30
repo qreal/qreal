@@ -211,7 +211,7 @@ void SceneGridHandler::mouseMoveEvent()
 	qreal myX2 = myX1 + contentsRect.width();
 	qreal myY2 = myY1 + contentsRect.height();
 
-	// verical
+	// vertical
 	QList<QGraphicsItem *> listX = mNode->scene()->items(nodeScenePos.x(), 0
 			, nodeScenePos.x() + contentsRect.width()
 			, widthLineY
