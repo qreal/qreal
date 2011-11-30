@@ -14,7 +14,6 @@ else:LIBS  += -lqextserialport
 TRANSLATIONS = robotsInterpreter_ru.ts
 
 HEADERS += \
-	../../../qrgui/dialogs/preferencesPages/page.h \
 	robotsPlugin.h \
 	interpreter.h \
 	sensorConstants.h \
@@ -60,3 +59,5 @@ include(details/blocks/blocks.pri)
 include(details/robotImplementations/robotImplementations.pri)
 
 include(details/robotParts/robotParts.pri)
+
+include(qrguiIncludes.pri)
