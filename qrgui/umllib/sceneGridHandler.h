@@ -14,6 +14,9 @@ public:
 
 	void delUnusedLines();
 
+	qreal makeGridAlignmentX(qreal myX);
+	qreal makeGridAlignmentY(qreal myY);
+
 	void setGridMode(bool mode);
 	void setAlignmentMode(bool mode);
 	void setShowAlignmentMode(bool mode);
