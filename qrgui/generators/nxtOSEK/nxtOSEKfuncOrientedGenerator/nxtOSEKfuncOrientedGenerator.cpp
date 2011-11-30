@@ -10,7 +10,7 @@ using namespace qReal;
 using namespace generators;
 using namespace nxtOSEKgenerator; 
 
-NxtOSEKfuncOrientedGenerator::NxtOSEKfuncOrientedGenerator(qrRepo::RepoApi &api, QString const &destinationPath)
+NxtOSEKfuncOrientedGenerator::NxtOSEKfuncOrientedGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath)
 	: NxtOSEKgenerator(api, destinationPath) {
 }
 

@@ -42,7 +42,7 @@ class NxtOSEKfuncOrientedGenerator: public NxtOSEKgenerator {
 	friend class Function_gen;
 
 public:
-	explicit NxtOSEKfuncOrientedGenerator(qrRepo::RepoApi &api, QString const &destinationPath = "");
+	explicit NxtOSEKfuncOrientedGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath = "");
 	explicit NxtOSEKfuncOrientedGenerator(QString const &pathToRepo, QString const &destinationPath = "");
 	virtual ~NxtOSEKfuncOrientedGenerator() {
 	}
