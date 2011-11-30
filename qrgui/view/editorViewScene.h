@@ -23,8 +23,8 @@ public:
 	explicit EditorViewScene(QObject *parent);
 	~EditorViewScene();
 
-	void clearScene();
 
+	void clearScene();
 	virtual int launchEdgeMenu(EdgeElement* edge, NodeElement* node, const QPointF &scenePos);
 	virtual qReal::Id createElement(const QString &, QPointF const &scenePos);
 	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos);
@@ -54,6 +54,11 @@ public:
 	void dehighlight(qReal::Id const &graphicalId);
 	void dehighlight();
 
+	/// Draws pixmap on scene's foreground (doesn't take ownership!)
+	void putOnForeground(QPixmap *pixmap);
+	/// Deletes pixmap from scene's foreground
+	void deleteFromForeground(QPixmap *pixmap);
+
 	QPointF getMousePos();
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement* findNewParent(QPointF, NodeElement*);
@@ -70,21 +75,22 @@ signals:
 	void zoomOut();
 
 protected:
-	void dragEnterEvent( QGraphicsSceneDragDropEvent *event);
-	void dragMoveEvent( QGraphicsSceneDragDropEvent *event);
-	void dragLeaveEvent( QGraphicsSceneDragDropEvent *event);
-	void dropEvent( QGraphicsSceneDragDropEvent *event);
+	void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
+	void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
+	void dragLeaveEvent(QGraphicsSceneDragDropEvent *event);
+	void dropEvent(QGraphicsSceneDragDropEvent *event);
 
-	void keyPressEvent( QKeyEvent *event);
+	void keyPressEvent(QKeyEvent *event);
 
-	void mousePressEvent( QGraphicsSceneMouseEvent *event);
-	void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent );
-	void mouseMoveEvent (QGraphicsSceneMouseEvent *event);
+	void mousePressEvent(QGraphicsSceneMouseEvent *event);
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
 
-	void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event);
+	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
-	virtual void drawBackground( QPainter *painter, const QRectF &rect);
+	virtual void drawForeground(QPainter *painter, QRectF const &rect);
+	virtual void drawBackground(QPainter *painter, QRectF const &rect);
 
 private slots:
 	void connectActionTriggered();
@@ -135,6 +141,8 @@ private:
 	QPointF newElementsPosition;
 
 	QList<QGraphicsItem*> mGesture;
+	/// list of pixmaps to be drawn on scene's foreground
+	QList<QPixmap*> mForegroundPixmaps;
 
 	qReal::EditorViewMViface *mv_iface;
 	qReal::EditorView *view;
