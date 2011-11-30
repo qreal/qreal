@@ -36,7 +36,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 }
 
-void EditorViewScene::drawForeground(QPainter *painter, const QRectF &rect)
+void EditorViewScene::drawForeground(QPainter *painter, QRectF const &rect)
 {
 	foreach (QPixmap *pixmap, mForegroundPixmaps) {
 		painter->drawPixmap(rect.topLeft(), *pixmap);

@@ -55,9 +55,9 @@ public:
 	void dehighlight();
 
 	/// Draws pixmap on scene's foreground (doesn't take ownership!)
-	void putOnForeground(QPixmap *);
+	void putOnForeground(QPixmap *pixmap);
 	/// Deletes pixmap from scene's foreground
-	void deleteFromForeground(QPixmap *);
+	void deleteFromForeground(QPixmap *pixmap);
 
 	QPointF getMousePos();
 	static QGraphicsRectItem *getPlaceholder();
@@ -83,14 +83,14 @@ protected:
 	void keyPressEvent(QKeyEvent *event);
 
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent * mouseEvent );
-	void mouseMoveEvent (QGraphicsSceneMouseEvent *event);
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
 
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
-	virtual void drawForeground(QPainter *painter, const QRectF &rect);
-	virtual void drawBackground(QPainter *painter, const QRectF &rect);
+	virtual void drawForeground(QPainter *painter, QRectF const &rect);
+	virtual void drawBackground(QPainter *painter, QRectF const &rect);
 
 private slots:
 	void connectActionTriggered();
