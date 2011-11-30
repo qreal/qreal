@@ -31,12 +31,12 @@ void SceneGridHandler::delUnusedLines()
 	mLines.clear();
 }
 
-void SceneGridHandler::drawLineY(qreal pointY, qreal myX)
+void SceneGridHandler::drawLineY(qreal pointY)
 {
 	QRectF const sceneRect = mNode->scene()->sceneRect();
 
 	pointY -= sceneRect.y();
-	QLineF newLine(0., pointY, sceneRect.width(), pointY);
+	QLineF const newLine(0., pointY, sceneRect.width(), pointY);
 
 	// checking whether the scene already has this line or not.
 	// if not (lineIsFound is false), then adding it
@@ -51,12 +51,12 @@ void SceneGridHandler::drawLineY(qreal pointY, qreal myX)
 	mLines.push_back(newLine);
 }
 
-void SceneGridHandler::drawLineX(qreal pointX, qreal myY)
+void SceneGridHandler::drawLineX(qreal pointX)
 {
 	QRectF const sceneRect = mNode->scene()->sceneRect();
 
 	pointX -= sceneRect.x();
-	QLineF newLine(pointX, 0, pointX, sceneRect.height());
+	QLineF const newLine(pointX, 0, pointX, sceneRect.height());
 
 	// checking whether the scene already has this line or not.
 	// if not (lineIsFound is false), then adding it
@@ -93,14 +93,14 @@ bool SceneGridHandler::makeJumpY(qreal deltaY, qreal pointY)
 
 // build a vertical line: draw it and check for alignment
 void SceneGridHandler::buildLineX(qreal deltaX
-		, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2, qreal myY)
+		, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2)
 {
 	if (deltaX > radius) {
 		return;
 	}
 
 	if (mShowAlignment) {
-		drawLineX(pointX, myY);
+		drawLineX(pointX);
 	}
 	if (makeJumpX(deltaX, pointX - correctionX)) {
 		myX1 = recalculateX1();
@@ -110,14 +110,14 @@ void SceneGridHandler::buildLineX(qreal deltaX
 
 // build a horizontal line: draw it and check for alignment
 void SceneGridHandler::buildLineY(qreal deltaY
-		, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2, qreal myX)
+		, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2)
 {
 	if (deltaY > radius) {
 		return;
 	}
 
 	if (mShowAlignment) {
-		drawLineY(pointY, myX);
+		drawLineY(pointY);
 	}
 	if (makeJumpY(deltaY, pointY - correctionY)) {
 		myY1 = recalculateY1();
@@ -125,22 +125,22 @@ void SceneGridHandler::buildLineY(qreal deltaY
 	}
 }
 
-qreal SceneGridHandler::recalculateX1()
+qreal SceneGridHandler::recalculateX1() const
 {
 	return mNode->scenePos().x() + mNode->boundingRect().x();
 }
 
-qreal SceneGridHandler::recalculateX2(qreal myX1)
+qreal SceneGridHandler::recalculateX2(qreal myX1) const
 {
 	return myX1 + mNode->boundingRect().width();
 }
 
-qreal SceneGridHandler::recalculateY1()
+qreal SceneGridHandler::recalculateY1() const
 {
 	return mNode->scenePos().y() + mNode->boundingRect().y();
 }
 
-qreal SceneGridHandler::recalculateY2(qreal myY1)
+qreal SceneGridHandler::recalculateY2(qreal myY1) const
 {
 	return myY1 + mNode->boundingRect().height();
 }
@@ -188,7 +188,7 @@ void SceneGridHandler::setAlignmentMode(bool mode)
 	mSwitchAlignment = mode;
 }
 
-QList<QGraphicsItem *> SceneGridHandler::getAdjancedNodes()
+QList<QGraphicsItem *> SceneGridHandler::getAdjancedNodes() const
 {
 	QPointF const nodeScenePos = mNode->scenePos();
 	QRectF const contentsRect = mNode->contentsRect();
@@ -263,17 +263,17 @@ void SceneGridHandler::drawGuides()
 			qreal const deltaX1 = qAbs(pointX1 - myX1);
 			qreal const deltaX2 = qAbs(pointX2 - myX2);
 
-			buildLineY(deltaY1, pointY1, 0, myY1, myY2, myX1);
-			buildLineY(deltaY2, pointY2, contentsRect.height(), myY1, myY2, myX1);
+			buildLineY(deltaY1, pointY1, 0, myY1, myY2);
+			buildLineY(deltaY2, pointY2, contentsRect.height(), myY1, myY2);
 
-			buildLineX(deltaX1, pointX1, 0, myX1, myX2, myY1);
-			buildLineX(deltaX2, pointX2, contentsRect.width(), myX1, myX2, myY1);
+			buildLineX(deltaX1, pointX1, 0, myX1, myX2);
+			buildLineX(deltaX2, pointX2, contentsRect.width(), myX1, myX2);
 
-			buildLineY(qAbs(pointY1 - myY2), pointY1, contentsRect.height(), myY1, myY2, myX1);
-			buildLineX(qAbs(pointX1 - myX2), pointX1, contentsRect.width(), myX1, myX2, myY1);
+			buildLineY(qAbs(pointY1 - myY2), pointY1, contentsRect.height(), myY1, myY2);
+			buildLineX(qAbs(pointX1 - myX2), pointX1, contentsRect.width(), myX1, myX2);
 
-			buildLineY(qAbs(pointY2 - myY1), pointY2, 0, myY1, myY2, myX1);
-			buildLineX(qAbs(pointX2 - myX1), pointX2, 0, myX1, myX2, myY1);
+			buildLineY(qAbs(pointY2 - myY1), pointY2, 0, myY1, myY2);
+			buildLineX(qAbs(pointX2 - myX1), pointX2, 0, myX1, myX2);
 		}
 	}
 
