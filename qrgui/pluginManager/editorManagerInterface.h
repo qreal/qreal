@@ -17,13 +17,9 @@
 class Element;
 
 namespace qReal {
-class EditorManagerInterface : public QObject
+class EditorManagerInterface
 {
-	Q_OBJECT
-
 public:
-	explicit EditorManagerInterface(QObject *parent = NULL);
-
 	virtual IdList editors() const = 0;
 	virtual IdList diagrams(Id const &editor) const = 0;
 	virtual IdList elements(Id const &diagram) const = 0;

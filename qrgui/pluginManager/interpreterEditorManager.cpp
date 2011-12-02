@@ -162,6 +162,20 @@ QString InterpreterEditorManager::mouseGesture(Id const &id) const
 //	return QIcon(engine);
 //}
 
+QString InterpreterEditorManager::propertyDisplayedName(Id const &id, QString const &propertyName) const
+{
+	QString displayedName = "";
+	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values())
+			foreach (Id editor, repo->elementsByType("MetamodelDiagram"))
+				foreach (Id diagram, repo->children(editor))
+					foreach (Id element, repo->children(diagram))
+						if (element == id)
+							foreach (Id child, repo->children(element))
+								if (repo->name(child) == propertyName)
+									displayedName = repo->stringProperty(child, "displayedName");
+	return displayedName;
+}
+
 QString InterpreterEditorManager::getDefaultPropertyValue(Id const &id, QString name) const
 {
 	QString defaultProperty;
