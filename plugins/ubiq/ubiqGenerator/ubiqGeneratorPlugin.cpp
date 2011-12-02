@@ -15,18 +15,19 @@ UbiqGeneratorPlugin::~UbiqGeneratorPlugin()
 
 void UbiqGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
+	mGenerator.init(configurator.logicalModelApi(), *configurator.mainWindowInterpretersInterface().errorReporter());
 }
 
-qReal::CustomizationInterface* UbiqGeneratorPlugin::customizationInterface()
+qReal::Customizer* UbiqGeneratorPlugin::customizationInterface()
 {
 	return &mCustomizer;
 }
 
 QList<ActionInfo> UbiqGeneratorPlugin::actions()
 {
-	QAction *generateAction = new QAction(QObject::tr("generate"), NULL);
+	QAction * const generateAction = new QAction(QObject::tr("generate"), NULL);
 	ActionInfo generateActionInfo(generateAction, "interpreters", "tools");
-	QObject::connect(generateAction, SIGNAL(triggered()), this, SLOT(generate()));
+	QObject::connect(generateAction, SIGNAL(triggered()), &mGenerator, SLOT(generate()));
 
 	return QList<ActionInfo>() << generateActionInfo;
 }

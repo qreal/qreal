@@ -66,6 +66,9 @@ public:
 
 	void showErrors(gui::ErrorReporter *reporter);
 
+	/// Tells if we should display trace connections menu or not
+	bool showConnectionRelatedMenus() const;
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -102,6 +105,16 @@ private slots:
 
 	void saveAllAndOpen(QString const &dirName);
 
+
+	/// wrapper for import(QString const &fileName)
+	/// uses getWorkingFile(...)
+	/// @return true - if all ok, false - if not ok
+	bool importProject();
+
+	/// checks parameters for integrity,then importing it
+	/// @param fileName - *.qrs file to import
+	/// @return true - if all ok, false - if not ok
+	bool import(QString const &fileName);
 	bool open(QString const &dirName);
 	bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
 	void saveProjectAs();
@@ -130,8 +143,6 @@ private slots:
 	void applySettings();
 
 	void deleteFromScene(QGraphicsItem *target);
-
-	void activateSubdiagram(QModelIndex const &idx);
 
 	void debug();
 	void debugSingleStep();
@@ -192,6 +203,8 @@ private slots:
 
 	void autosave();
 	void setAutoSaveParameters();
+	void closeProject();
+	void closeProjectAndSave();
 
 private:
 	void createDiagram(const QString &idString);

@@ -7,6 +7,9 @@ SUBDIRS	= \
 #	android/android.pro \
 #	blockDiagram/blockDiagram.pro \
 #	bpel/bpel.pro \
+#	android/android.pro \
+	blockDiagram/blockDiagram.pro \
+#	bpel/bpel.pro \
 #	exterminatus/exterminatus.pro \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \

@@ -20,14 +20,14 @@ class EditorViewScene : public QGraphicsScene
 	Q_OBJECT
 
 public:
-	explicit EditorViewScene(QObject *parent = 0);
+	explicit EditorViewScene(QObject *parent);
 	~EditorViewScene();
 
-	void clearScene();
 
-	virtual int launchEdgeMenu(EdgeElement* edge, NodeElement* node, QPointF scenePos);
-	virtual qReal::Id createElement(const QString &, QPointF scenePos);
-	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
+	void clearScene();
+	virtual int launchEdgeMenu(EdgeElement* edge, NodeElement* node, const QPointF &scenePos);
+	virtual qReal::Id createElement(const QString &, QPointF const &scenePos);
+	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
@@ -43,7 +43,7 @@ public:
 	double realIndexGrid();
 	void setRealIndexGrid(double newIndexGrid);
 
-	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
+	bool canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const;
 	bool getNeedDrawGrid();
 
 	Element* getLastCreated();
@@ -54,7 +54,14 @@ public:
 	void dehighlight(qReal::Id const &graphicalId);
 	void dehighlight();
 
+	/// Draws pixmap on scene's foreground (doesn't take ownership!)
+	void putOnForeground(QPixmap *pixmap);
+	/// Deletes pixmap from scene's foreground
+	void deleteFromForeground(QPixmap *pixmap);
+
 	QPointF getMousePos();
+	static QGraphicsRectItem *getPlaceholder();
+	NodeElement* findNewParent(QPointF, NodeElement*);
 
 public slots:
 	qReal::Id createElement(const QString &);
@@ -68,23 +75,24 @@ signals:
 	void zoomOut();
 
 protected:
-	void dragEnterEvent( QGraphicsSceneDragDropEvent *event);
-	void dragMoveEvent( QGraphicsSceneDragDropEvent *event);
-	void dragLeaveEvent( QGraphicsSceneDragDropEvent *event);
-	void dropEvent ( QGraphicsSceneDragDropEvent *event);
+	void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
+	void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
+	void dragLeaveEvent(QGraphicsSceneDragDropEvent *event);
+	void dropEvent(QGraphicsSceneDragDropEvent *event);
 
-	void keyPressEvent( QKeyEvent *event);
+	void keyPressEvent(QKeyEvent *event);
 
-	void mousePressEvent( QGraphicsSceneMouseEvent *event);
-	void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent );
-	void mouseMoveEvent (QGraphicsSceneMouseEvent *event);
+	void mousePressEvent(QGraphicsSceneMouseEvent *event);
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
-	void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event);
 
-	virtual void drawBackground( QPainter *painter, const QRectF &rect);
+	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+
+	virtual void drawForeground(QPainter *painter, QRectF const &rect);
+	virtual void drawBackground(QPainter *painter, QRectF const &rect);
 
 private slots:
-
 	void connectActionTriggered();
 	void goToActionTriggered();
 	void disconnectActionTriggered();
@@ -94,6 +102,9 @@ private slots:
 	void drawIdealGesture();
 	void initMouseMoveManager();
 	void createEdge(QString const &);
+
+	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
+	void getObjectByGesture();
 
 private:
 	Element* mLastCreatedWithEdge;
@@ -126,9 +137,12 @@ private:
 
 	void initContextMenu(Element *e, QPointF const & pos);
 
+	NodeElement *mHighlightNode;
 	QPointF newElementsPosition;
 
 	QList<QGraphicsItem*> mGesture;
+	/// list of pixmaps to be drawn on scene's foreground
+	QList<QPixmap*> mForegroundPixmaps;
 
 	qReal::EditorViewMViface *mv_iface;
 	qReal::EditorView *view;
@@ -147,11 +161,8 @@ private:
 
 	QSet<Element *> mHighlightedElements;
 	QTimer * mTimer;
-
 	friend class qReal::EditorViewMViface;
 
 	/** @brief Is "true" when we just select items on scene, and "false" when we drag selected items */
 	bool mShouldReparentItems;
-private slots:
-	void getObjectByGesture();
 };

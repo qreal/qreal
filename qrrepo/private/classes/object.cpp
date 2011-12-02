@@ -59,11 +59,11 @@ void Object::removeParent()
 
 void Object::addChild(const Id &child)
 {
-	if (!mChildren.contains(child)) {
-		mChildren.append(child);
-	} else {
+	if (mChildren.contains(child)) {
 		throw Exception("Object " + mId.toString() + ": adding existing child " + child.toString());
 	}
+
+	mChildren.append(child);
 }
 
 void Object::removeChild(const Id &child)
@@ -83,6 +83,24 @@ void Object::copyPropertiesFrom(const Object &src)
 IdList Object::children() const
 {
 	return mChildren;
+}
+
+void Object::stackBefore(const qReal::Id &element, const qReal::Id &sibling)
+{
+	if (element == sibling) {
+		return;
+	}
+
+	if (!mChildren.contains(element)) {
+		throw Exception("Object " + mId.toString() + ": moving nonexistent child " + element.toString());
+	}
+
+	if (!mChildren.contains(sibling)) {
+		throw Exception("Object " + mId.toString() + ": stacking before nonexistent child " + sibling.toString());
+	}
+
+	mChildren.removeOne(element);
+	mChildren.insert(mChildren.indexOf(sibling), element);
 }
 
 Id Object::parent() const

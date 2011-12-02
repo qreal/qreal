@@ -34,6 +34,8 @@ namespace qrRepo {
 		qReal::Id parent(qReal::Id const &id) const;
 		void setParent(qReal::Id const &id, qReal::Id const &parent);
 
+		virtual void stackBefore(qReal::Id const &id, qReal::Id const &child, qReal::Id const &sibling);
+
 		qReal::IdList outgoingLinks(qReal::Id const &id) const;
 		qReal::IdList incomingLinks(qReal::Id const &id) const;
 		qReal::IdList links(qReal::Id const &id) const;
@@ -90,6 +92,9 @@ namespace qrRepo {
 
 		void exterminate();
 
+		/// RepoApi's wrapper for Client.importFromDisk
+		/// @param importedFile - file to be imported
+		void importFromDisk(QString const &importedFile);
 		void saveAll() const;
 		void save(qReal::IdList list) const;
 		void saveTo(QString const &workingDir);
