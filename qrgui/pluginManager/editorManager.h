@@ -13,11 +13,12 @@
 #include "../../qrrepo/graphicalRepoApi.h"
 #include "../../qrrepo/logicalRepoApi.h"
 #include "../../qrkernel/settingsManager.h"
+#include "editorManagerInterface.h"
 
 class Element;
 
 namespace qReal {
-	class EditorManager : public QObject
+	class EditorManager : public QObject, public EditorManagerInterface
 	{
 		Q_OBJECT
 

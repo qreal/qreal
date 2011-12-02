@@ -14,11 +14,12 @@
 #include "../../qrrepo/logicalRepoApi.h"
 #include "../../qrkernel/settingsManager.h"
 #include "../../qrrepo/repoApi.h"
+#include "editorManagerInterface.h"
 
 class Element;
 
 namespace qReal {
-	class InterpreterEditorManager : public QObject
+	class InterpreterEditorManager : public QObject, public EditorManagerInterface
 	{
 		Q_OBJECT
 
@@ -68,11 +69,7 @@ namespace qReal {
 
 		bool isParentOf(Id const &child, Id const &parent) const;
 	private:
-//		QStringList mPluginsLoaded;
-//		QMap<QString, QString> mPluginFileName;
 		QMap<QString, qrRepo::RepoApi*> mEditorRepoApi;
-//		QDir mPluginsDir;
-//		QStringList mPluginFileNames;
 
 		void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
 
