@@ -606,8 +606,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			break;
 		case BottomRight:
 		{
-			qreal newX = mGrid->makeGridAlignmentX(event->pos().x());
-			qreal newY = mGrid->makeGridAlignmentY(event->pos().y());
+			qreal const newX = mGrid->makeGridAlignmentX(event->pos().x());
+			qreal const newY = mGrid->makeGridAlignmentY(event->pos().y());
 			QPointF newPoint(newX, newY);
 			newContents.setBottomRight(newPoint);
 			break;

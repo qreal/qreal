@@ -173,34 +173,28 @@ void SceneGridHandler::makeGridMovingY(qreal myY, int koef, int indexGrid)
 qreal SceneGridHandler::makeGridAlignmentX(qreal myX)
 {
 	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
-
-	int koef = static_cast<int>(myX) / indexGrid;
-
-	int oneKoef = koef != 0 ? koef / qAbs(koef) : 0;
+	int const koef = static_cast<int>(myX) / indexGrid;
+	int const oneKoef = koef != 0 ? koef / qAbs(koef) : 0;
 
 	if (qAbs(qAbs(myX) - qAbs(koef) * indexGrid) <= indexGrid / 2) {
 		return koef * indexGrid;
 	} else if (qAbs(qAbs(myX) - (qAbs(koef) + 1) * indexGrid) < indexGrid / 2) {
 		return (koef + oneKoef) * indexGrid;
 	}
-
 	return myX;
 }
 
 qreal SceneGridHandler::makeGridAlignmentY(qreal myY)
 {
 	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
-
-	int koef = static_cast<int>(myY) / indexGrid;
-
-	int oneKoef = koef != 0 ? koef / qAbs(koef) : 0;
+	int const koef = static_cast<int>(myY) / indexGrid;
+	int const oneKoef = koef != 0 ? koef / qAbs(koef) : 0;
 
 	if (qAbs(qAbs(myY) - qAbs(koef) * indexGrid) <= indexGrid / 2) {
 		return koef * indexGrid;
 	} else if (qAbs(qAbs(myY) - (qAbs(koef) + 1) * indexGrid) < indexGrid / 2) {
 		return (koef + oneKoef) * indexGrid;
 	}
-
 	return myY;
 }
 
