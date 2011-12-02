@@ -3,8 +3,20 @@ HEADERS += \
 	pluginManager/listenerManager.h \
 	pluginManager/listenerApi.h \
 	pluginManager/toolPluginManager.h \
+	pluginManager/interpreterEditorManager.h \
 
 SOURCES += \
 	pluginManager/editorManager.cpp \
 	pluginManager/listenerManager.cpp \
 	pluginManager/toolPluginManager.cpp \
+	pluginManager/interpreterEditorManager.cpp \
+
+
+
+
+
+
+
+
+
+
