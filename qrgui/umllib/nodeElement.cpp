@@ -550,7 +550,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			}
 			EditorViewScene *evScene = dynamic_cast<EditorViewScene*>(scene());
 			NodeElement *newParent = evScene->findNewParent(newParentInnerPoint, this);
-
 			// it would be nice optimization to do nothing in case of
 			// mHighlightedNode == newParent, but it's unapplicable here because
 			// of element could be moved inside his parent
