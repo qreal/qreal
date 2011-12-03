@@ -443,7 +443,6 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 
 	Id parentId = newParent ? newParent->id() : mv_iface->rootId();
 	id = mv_iface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
-
 	NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
 	if (parentNode != NULL) {
 		Element *nextNode = parentNode->getPlaceholderNextElement();
@@ -451,7 +450,6 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 			mv_iface->graphicalAssistApi()->stackBefore(id, nextNode->id());
 		}
 	}
-	emit elementCreated(id);
 }
 
 void EditorViewScene::copy()
@@ -477,15 +475,21 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 	if (dynamic_cast<QGraphicsTextItem*>(focusItem())) {
 		// Forward event to text editor
 		QGraphicsScene::keyPressEvent(event);
-	} else if (event->key() == Qt::Key_Delete) {
+	} else {
+		if (event->key() == Qt::Key_Delete) {
 		// Delete selected elements from scene
 		mainWindow()->deleteFromScene();
-	} else if (event->matches(QKeySequence::Paste)) {
-		paste();
-	} else if (event->matches(QKeySequence::Copy)) {
-		copy();
-	} else {
-		QGraphicsScene::keyPressEvent(event);
+		} else {
+			if (event->matches(QKeySequence::Paste)) {
+				paste();
+			} else  {
+				if (event->matches(QKeySequence::Copy)) {
+					copy();
+					} else {
+						QGraphicsScene::keyPressEvent(event);
+				}
+			}
+		}
 	}
 }
 
@@ -721,7 +725,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	QGraphicsScene::mouseReleaseEvent(event);
 
-	Element* element = getElemAt(event->scenePos());
+	Element *element = getElemAt(event->scenePos());
 
 	if (mShouldReparentItems) {
 		QList<QGraphicsItem *> const list = selectedItems();
