@@ -41,7 +41,7 @@ void PreferencesMiscellaniousPage::changeEvent(QEvent *e)
 void PreferencesMiscellaniousPage::browseImagesPath()
 {
 	QString path = QFileDialog::getExistingDirectory(this, "Open Directory");
-	if (!path.isEmpty {
+	if (!path.isEmpty()) {
 		mUi->imagesPathEdit->setText(path.replace("\\", "/"));
 	}
 }
