@@ -273,16 +273,16 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 
 	if (event->scenePos().x() > sceneRect().right()) {
 		newSceneRect.setRight(event->scenePos().x());
-	} else if (event->scenePos().x() < sceneRect().left()){
+	} else if (event->scenePos().x() < sceneRect().left()) {
 		newSceneRect.setLeft(event->scenePos().x());
 	}
 	if (event->scenePos().y() > sceneRect().bottom()) {
 		newSceneRect.setBottom(event->scenePos().y());
-	} else if (event->scenePos().y() < sceneRect().top()){
+	} else if (event->scenePos().y() < sceneRect().top()) {
 		newSceneRect.setTop(event->scenePos().y());
 	}
 
-	this->setSceneRect(newSceneRect);
+	setSceneRect(newSceneRect);
 
 	createElement(event->mimeData(), event->scenePos());
 	if (mHighlightNode != NULL) {
