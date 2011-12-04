@@ -450,6 +450,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 			mv_iface->graphicalAssistApi()->stackBefore(id, nextNode->id());
 		}
 	}
+	emit elementCreated(id);
 }
 
 void EditorViewScene::copy()
@@ -475,21 +476,15 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 	if (dynamic_cast<QGraphicsTextItem*>(focusItem())) {
 		// Forward event to text editor
 		QGraphicsScene::keyPressEvent(event);
-	} else {
-		if (event->key() == Qt::Key_Delete) {
+	} else if (event->key() == Qt::Key_Delete) {
 		// Delete selected elements from scene
 		mainWindow()->deleteFromScene();
-		} else {
-			if (event->matches(QKeySequence::Paste)) {
-				paste();
-			} else  {
-				if (event->matches(QKeySequence::Copy)) {
-					copy();
-					} else {
-						QGraphicsScene::keyPressEvent(event);
-				}
-			}
-		}
+	} else if (event->matches(QKeySequence::Paste)) {
+		paste();
+	} else if (event->matches(QKeySequence::Copy)) {
+		copy();
+	} else {
+		QGraphicsScene::keyPressEvent(event);
 	}
 }
 
