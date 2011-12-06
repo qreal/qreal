@@ -10,7 +10,7 @@ HEADERS += \
 	dialogs/gesturesShow/gesturesWidget.h \
 	dialogs/checkoutdialog.h \
 	dialogs/preferencesPages/featuresPage.h \
-    dialogs/preferencesPages/preferencesPage.h
+	dialogs/preferencesPages/preferencesPage.h
 
 SOURCES += \
 	dialogs/plugindialog.cpp \
@@ -36,9 +36,3 @@ FORMS += \
 	dialogs/preferencesPages/behaviourPage.ui \
 	dialogs/refWindow.ui \
 	dialogs/preferencesPages/featuresPage.ui
-
-
-
-
-
-
