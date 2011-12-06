@@ -1,22 +1,16 @@
 #include "preferencesDialog.h"
 #include "ui_preferencesDialog.h"
-
 #include "preferencesPages/behaviourPage.h"
 #include "preferencesPages/compilerPage.h"
 #include "preferencesPages/debuggerPage.h"
 #include "preferencesPages/editorPage.h"
 #include "preferencesPages/miscellaniousPage.h"
 #include "preferencesPages/featuresPage.h"
+//#include "../../../../plugins/robots/robotsInterpreter/robotSettingsPage.h"
 
 PreferencesDialog::PreferencesDialog(QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::PreferencesDialog)
-	, mBehaviourPage(NULL)
-	, mCompilerPage(NULL)
-	, mDebuggerPage(NULL)
-	, mEditorPage(NULL)
-	, mMiscellaniousPage(NULL)
-	, mFeaturesPage(NULL)
 {
 	ui->setupUi(this);
 }
@@ -31,24 +25,17 @@ PreferencesDialog::~PreferencesDialog()
 		page->setParent(NULL);
 
 	delete ui;
-
-	delete mBehaviourPage;
-	delete mCompilerPage;
-	delete mDebuggerPage;
-	delete mEditorPage;
-	delete mMiscellaniousPage;
-	delete mFeaturesPage;
 }
 
 void PreferencesDialog::init(QAction * const showGridAction, QAction * const showAlignmentAction
 	,QAction * const activateGridAction, QAction * const activateAlignmentAction)
 {
-	mBehaviourPage = new PreferencesBehaviourPage(ui->pageContentWigdet);
-	mCompilerPage = new PreferencesCompilerPage(ui->pageContentWigdet);
-	mDebuggerPage = new PreferencesDebuggerPage(ui->pageContentWigdet);
-	mMiscellaniousPage = new PreferencesMiscellaniousPage(ui->pageContentWigdet);
-	mFeaturesPage = new PreferencesFeaturesPage(ui->pageContentWigdet);
-	mEditorPage = new PreferencesEditorPage(showGridAction,
+	PreferencesPage *behaviourPage = new PreferencesBehaviourPage(ui->pageContentWigdet);
+	PreferencesPage *compilerPage = new PreferencesCompilerPage(ui->pageContentWigdet);
+	PreferencesPage *debuggerPage = new PreferencesDebuggerPage(ui->pageContentWigdet);
+	PreferencesPage *miscellaniousPage = new PreferencesMiscellaniousPage(ui->pageContentWigdet);
+//	PreferencesPage *featuresPage = new PreferencesFeaturesPage(ui->pageContentWigdet);
+	PreferencesPage *editorPage = new PreferencesEditorPage(showGridAction,
 		showAlignmentAction, activateGridAction, activateAlignmentAction, ui->pageContentWigdet);
 
 	connect(ui->listWidget, SIGNAL(clicked(const QModelIndex &)), this, SLOT(chooseTab(const QModelIndex &)));
@@ -56,9 +43,15 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	connect(ui->okButton, SIGNAL(clicked()), this, SLOT(saveAndClose()));
 	connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
 
-	connect(mEditorPage, SIGNAL(gridChanged()), this, SIGNAL(gridChanged()));
-	connect(mEditorPage, SIGNAL(fontChanged()), this, SIGNAL(fontChanged()));
-	connect(mMiscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
+	connect(editorPage, SIGNAL(gridChanged()), this, SIGNAL(gridChanged()));
+	connect(editorPage, SIGNAL(fontChanged()), this, SIGNAL(fontChanged()));
+	connect(miscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
+
+	registerPage(tr("Behaviour"), behaviourPage);
+	registerPage(tr("Compiler"), compilerPage);
+	registerPage(tr("Debugger"), debuggerPage);
+	registerPage(tr("Miscellanious"), miscellaniousPage);
+	registerPage(tr("Editor"), editorPage);
 
 	int currentTab = SettingsManager::value("currentPreferencesTab", 0).toInt();
 	ui->listWidget->setCurrentRow(currentTab);
@@ -67,13 +60,6 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 
 void PreferencesDialog::applyChanges()
 {
-	mBehaviourPage->save();
-	mCompilerPage->save();
-	mEditorPage->save();
-	mDebuggerPage->save();
-	mMiscellaniousPage->save();
-	mFeaturesPage->save();
-
 	foreach (PreferencesPage *page, mCustomPages.values())
 		page->save();
 
@@ -87,14 +73,14 @@ void PreferencesDialog::changeEvent(QEvent *e)
 	case QEvent::LanguageChange:
 		ui->retranslateUi(this);
 
-		if (mBehaviourPage) {
-			mBehaviourPage->changeEvent(e);
-			mCompilerPage->changeEvent(e);
-			mDebuggerPage->changeEvent(e);
-			mEditorPage->changeEvent(e);
-			mMiscellaniousPage->changeEvent(e);
-			mFeaturesPage->changeEvent(e);
-		}
+		//if (mBehaviourPage) {
+		//	mBehaviourPage->changeEvent(e);
+		//	mCompilerPage->changeEvent(e);
+		//	mDebuggerPage->changeEvent(e);
+		//	mEditorPage->changeEvent(e);
+		//	mMiscellaniousPage->changeEvent(e);
+		//	mFeaturesPage->changeEvent(e);
+		//} // from past version
 		foreach (PreferencesPage *page, mCustomPages.values())
 			page->changeEvent(e);
 		break;
@@ -117,47 +103,14 @@ void PreferencesDialog::cancel()
 void PreferencesDialog::chooseTab(const QModelIndex &index)
 {
 	hidePages();
-
-	switch(static_cast<PageIndexes>(index.row())){
-	case behaviour:
-		mBehaviourPage->show();
-		break;
-
-	case compiler:
-		mCompilerPage->show();
-		break;
-
-	case debugger:
-		mDebuggerPage->show();
-		break;
-
-	case editor:
-		mEditorPage->show();
-		break;
-
-	case miscellanious:
-		mMiscellaniousPage->show();
-		break;
-
-//	case features:
-//		mFeaturesPage->show();
-//		break;
-	default:
-		QString const name = index.data().toString();
-		if (mCustomPages.contains(name))
-			mCustomPages[name]->show();
-	}
+	QString const name = index.data().toString();
+	if (mCustomPages.contains(name))
+		mCustomPages[name]->show();
 }
+
 
 void PreferencesDialog::hidePages()
 {
-	mBehaviourPage->hide();
-	mCompilerPage->hide();
-	mEditorPage->hide();
-	mDebuggerPage->hide();
-	mMiscellaniousPage->hide();
-	mFeaturesPage->hide();
-
 	foreach (PreferencesPage *page, mCustomPages.values())
 		page->hide();
 }
@@ -166,13 +119,13 @@ void PreferencesDialog::registerPage(QString const &pageName, PreferencesPage * 
 {
 	page->setParent(ui->pageContentWigdet);
 	mCustomPages.insert(pageName, page);
-	ui->listWidget->addItem(pageName);
+	ui->listWidget->addItem(new QListWidgetItem(QIcon(page->getIcon()), pageName));
 }
 
 void PreferencesDialog::switchCurrentTab(QString const &tabName)
 {
 	if (mCustomPages.contains(tabName)) {
-		ui->listWidget->setCurrentRow(mCustomPages.keys().indexOf(tabName) + debugger + 1);
+		ui->listWidget->setCurrentRow(mCustomPages.keys().indexOf(tabName)); //count current pages
 		hidePages();
 		mCustomPages[tabName]->show();
 	}

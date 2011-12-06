@@ -4,7 +4,8 @@
 
 PreferencesDebuggerPage::PreferencesDebuggerPage(QWidget *parent) :
 	PreferencesPage(parent),
-	mUi(new Ui::PreferencesDebuggerPage)
+	mUi(new Ui::PreferencesDebuggerPage),
+	mIcon(":/icons/preferences/bug.png")
 {
 	mUi->setupUi(this);
 
@@ -35,4 +36,9 @@ void PreferencesDebuggerPage::save()
 {
 	SettingsManager::setValue("debuggerTimeout", mUi->timeoutLineEdit->text());
 	SettingsManager::setValue("debugColor", mUi->colorComboBox->currentText());
+}
+
+QIcon PreferencesDebuggerPage::getIcon()
+{
+	return mIcon;
 }

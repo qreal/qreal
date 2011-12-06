@@ -1,6 +1,6 @@
 #pragma once
 
-#include "page.h"
+#include "preferencesPage.h"
 
 namespace Ui {
 	class PreferencesCompilerPage;
@@ -15,6 +15,7 @@ public:
 	~PreferencesCompilerPage();
 
 	void save();
+	QIcon getIcon();
 
 protected:
 	void changeEvent(QEvent *e);
@@ -27,4 +28,6 @@ private:
 			QString const &pathToMake, QString const &pluginExtension, QString const &prefix);
 
 	Ui::PreferencesCompilerPage *mUi;
+
+	QIcon mIcon;
 };

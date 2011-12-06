@@ -57,6 +57,17 @@
      </property>
     </widget>
    </item>
+   <item row="0" column="1" colspan="3">
+    <widget class="QWidget" name="pageContentWigdet" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <zorder>listWidget</zorder>
+    </widget>
+   </item>
    <item row="0" column="0">
     <widget class="QListWidget" name="listWidget">
      <property name="sizePolicy">
@@ -79,61 +90,6 @@
      </property>
      <property name="currentRow">
       <number>-1</number>
-     </property>
-     <item>
-      <property name="text">
-       <string>Editor</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../qrgui.qrc">
-        <normaloff>:/icons/preferences/editor.png</normaloff>:/icons/preferences/editor.png</iconset>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Behaviour</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../qrgui.qrc">
-        <normaloff>:/icons/preferences/behaviour.png</normaloff>:/icons/preferences/behaviour.png</iconset>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Miscellanious</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../qrgui.qrc">
-        <normaloff>:/icons/preferences/miscellaneous.png</normaloff>:/icons/preferences/miscellaneous.png</iconset>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Compiler</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../qrgui.qrc">
-        <normaloff>:/icons/preferences/tools.png</normaloff>:/icons/preferences/tools.png</iconset>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Debugger</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../qrgui.qrc">
-        <normaloff>:/icons/preferences/bug.png</normaloff>:/icons/preferences/bug.png</iconset>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="0" column="1" colspan="3">
-    <widget class="QWidget" name="pageContentWigdet" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
      </property>
     </widget>
    </item>

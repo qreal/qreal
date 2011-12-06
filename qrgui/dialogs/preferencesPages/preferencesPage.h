@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QtGui/QIcon>
 #include <QWidget>
 
 /**
@@ -16,5 +17,6 @@ public:
 	virtual ~PreferencesPage(){}
 	/** @brief This method will be called on pressing "Apply" or "Ok" */
 	virtual void save() = 0;
+	virtual QIcon getIcon() = 0;
 
 };

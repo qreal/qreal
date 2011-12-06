@@ -1,6 +1,6 @@
 #pragma once
 #include <QFontDialog>
-#include "page.h"
+#include "preferencesPage.h"
 
 namespace Ui {
 	class PreferencesEditorPage;
@@ -16,6 +16,7 @@ public:
 	~PreferencesEditorPage();
 
 	void save();
+	QIcon getIcon();
 
 protected:
 	void changeEvent(QEvent *e);
@@ -43,5 +44,7 @@ private:
 	QAction * const mShowAlignmentAction;
 	QAction * const mActivateGridAction;
 	QAction * const mActivateAlignmentAction;
+
+	QIcon mIcon;
 
 };

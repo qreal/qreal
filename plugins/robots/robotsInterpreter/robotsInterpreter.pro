@@ -14,7 +14,6 @@ else:LIBS  += -lqextserialport
 TRANSLATIONS = robotsInterpreter_ru.ts
 
 HEADERS += \
-	../../../qrgui/dialogs/preferencesPages/page.h \
 	robotsPlugin.h \
 	interpreter.h \
 	sensorConstants.h \
@@ -29,6 +28,8 @@ HEADERS += \
 	details/autoconfigurer.h \
 	details/tracer.h \
 	details/debugHelper.h \
+    ui_watchListWindow.h \
+    ../../../qrgui/dialogs/preferencesPages/preferencesPage.h
 
 SOURCES += \
 	robotsPlugin.cpp \
@@ -46,7 +47,7 @@ SOURCES += \
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
-	watchListWindow.ui
+    watchListWindow.ui
 
 RESOURCES += \
 	robotsInterpreter.qrc \
@@ -60,3 +61,15 @@ include(details/blocks/blocks.pri)
 include(details/robotImplementations/robotImplementations.pri)
 
 include(details/robotParts/robotParts.pri)
+
+
+
+
+
+
+
+
+
+
+
+

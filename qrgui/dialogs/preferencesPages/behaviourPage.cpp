@@ -4,7 +4,8 @@
 
 PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent) :
 	PreferencesPage(parent),
-	mUi(new Ui::PreferencesBehaviourPage)
+	mUi(new Ui::PreferencesBehaviourPage),
+	mIcon(":/icons/preferences/behaviour.png")
 {
 	mUi->setupUi(this);
 
@@ -52,4 +53,9 @@ void PreferencesBehaviourPage::showAutoSaveBox(bool show)
 {
 	mUi->autoSaveSpinBox->setVisible(show);
 	mUi->autoSaveLabel->setVisible(show);
+}
+
+QIcon PreferencesBehaviourPage::getIcon()
+{
+	return mIcon;
 }

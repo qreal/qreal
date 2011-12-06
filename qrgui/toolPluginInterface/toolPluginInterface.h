@@ -5,7 +5,7 @@
 #include <QtCore/QList>
 
 #include "../../qrrepo/repoControlInterface.h"
-#include "../dialogs/preferencesPages/page.h"
+#include "../dialogs/preferencesPages/preferencesPage.h"
 
 #include "customizer.h"
 #include "pluginConfigurator.h"

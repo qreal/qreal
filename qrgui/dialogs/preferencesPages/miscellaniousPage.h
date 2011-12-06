@@ -1,6 +1,6 @@
 #pragma once
 
-#include "page.h"
+#include "preferencesPage.h"
 
 namespace Ui {
 	class PreferencesMiscellaniousPage;
@@ -15,6 +15,7 @@ public:
 	~PreferencesMiscellaniousPage();
 
 	void save();
+	QIcon getIcon();
 
 signals:
 	void iconsetChanged();
@@ -29,4 +30,6 @@ private:
 	Ui::PreferencesMiscellaniousPage *mUi;
 
 	QString mLastIconsetPath;
+
+	QIcon mIcon;
 };
