@@ -591,8 +591,9 @@ void MainWindow::saveAllAndOpen(QString const &dirName)
 
 bool MainWindow::open(QString const &fileName)
 {
-	if (!QFile(fileName).exists() && fileName != "")
+	if (!QFile(fileName).exists() && fileName != "") {
 		return false;
+	}
 
 	refreshRecentProjectsList(fileName);
 
