@@ -6,7 +6,8 @@
 
 PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent) :
 	PreferencesPage(parent),
-	mUi(new Ui::PreferencesMiscellaniousPage)
+	mUi(new Ui::PreferencesMiscellaniousPage),
+	mIcon(":/icons/preferences/miscellaneous.png")
 {
 	mUi->setupUi(this);
 
@@ -56,4 +57,9 @@ void PreferencesMiscellaniousPage::save()
 	if (mLastIconsetPath != mUi->imagesPathEdit->text()) {
 		emit iconsetChanged();
 	}
+}
+
+QIcon PreferencesMiscellaniousPage::getIcon()
+{
+	return mIcon;
 }

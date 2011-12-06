@@ -4,7 +4,8 @@
 
 PreferencesCompilerPage::PreferencesCompilerPage(QWidget *parent) :
 	PreferencesPage(parent),
-	mUi(new Ui::PreferencesCompilerPage)
+	mUi(new Ui::PreferencesCompilerPage),
+	mIcon(":/icons/preferences/tools.png")
 {
 	mUi->setupUi(this);
 
@@ -69,4 +70,9 @@ void PreferencesCompilerPage::save()
 	SettingsManager::setValue("pathToMake", mUi->pathToMake->text());
 	SettingsManager::setValue("pluginExtension", mUi->pluginExtension->text());
 	SettingsManager::setValue("prefix", mUi->prefix->text());
+}
+
+QIcon PreferencesCompilerPage::getIcon()
+{
+	return mIcon;
 }

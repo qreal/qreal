@@ -7,7 +7,8 @@
 
 PreferencesFeaturesPage::PreferencesFeaturesPage(QWidget *parent) :
 	PreferencesPage(parent),
-	mUi(new Ui::PreferencesFeaturesPage)
+	mUi(new Ui::PreferencesFeaturesPage),
+	mIcon(":/icons/preferences/features.png")
 {
 	mUi->setupUi(this);
 
@@ -37,4 +38,9 @@ void PreferencesFeaturesPage::save()
 	SettingsManager::setValue("Gestures", mUi->gesturesCheckBox->isChecked());
 	SettingsManager::setValue("EmbeddedLinkers", mUi->embeddedLinkersCheckBox->isChecked());
 	SettingsManager::setValue("EmbeddedControls", mUi->embeddedControlsCheckBox->isChecked());
+}
+
+QIcon PreferencesFeaturesPage::getIcon()
+{
+	return mIcon;
 }

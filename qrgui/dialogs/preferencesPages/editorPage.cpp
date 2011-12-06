@@ -14,7 +14,8 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	mShowGridAction(showGridAction),
 	mShowAlignmentAction(showAlignmentAction),
 	mActivateGridAction(activateGridAction),
-	mActivateAlignmentAction(activateAlignmentAction)
+	mActivateAlignmentAction(activateAlignmentAction),
+	mIcon(":/icons/preferences/editor.png")
 {
 	mUi->setupUi(this);
 
@@ -124,4 +125,9 @@ void PreferencesEditorPage::save()
 		mFontWasChanged = false;
 		mFontButtonWasPressed = false;
 	}
+}
+
+QIcon PreferencesEditorPage::getIcon()
+{
+	return mIcon;
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "page.h"
+#include "preferencesPage.h"
 
 namespace Ui {
 	class PreferencesFeaturesPage;
@@ -15,10 +15,13 @@ public:
 	~PreferencesFeaturesPage();
 
 	void save();
+	QIcon getIcon();
 
 protected:
 	void changeEvent(QEvent *e);
 
 private:
 	Ui::PreferencesFeaturesPage *mUi;
+
+	QIcon mIcon;
 };
