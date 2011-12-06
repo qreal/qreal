@@ -61,15 +61,3 @@ include(details/blocks/blocks.pri)
 include(details/robotImplementations/robotImplementations.pri)
 
 include(details/robotParts/robotParts.pri)
-
-
-
-
-
-
-
-
-
-
-
-
