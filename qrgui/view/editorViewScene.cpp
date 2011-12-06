@@ -36,6 +36,25 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 }
 
+void EditorViewScene::drawForeground(QPainter *painter, QRectF const &rect)
+{
+	foreach (QPixmap *pixmap, mForegroundPixmaps) {
+		painter->drawPixmap(rect.topLeft(), *pixmap);
+	}
+	QGraphicsScene::drawForeground(painter, rect);
+}
+
+void EditorViewScene::putOnForeground(QPixmap *pixmap)
+{
+	mForegroundPixmaps.push_back(pixmap);
+}
+
+void EditorViewScene::deleteFromForeground(QPixmap *pixmap)
+{
+	mForegroundPixmaps.removeOne(pixmap);
+	update();
+}
+
 EditorViewScene::~EditorViewScene()
 {
 	delete mActionSignalMapper;
@@ -424,7 +443,6 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 
 	Id parentId = newParent ? newParent->id() : mv_iface->rootId();
 	id = mv_iface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
-
 	NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
 	if (parentNode != NULL) {
 		Element *nextNode = parentNode->getPlaceholderNextElement();
@@ -702,7 +720,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	QGraphicsScene::mouseReleaseEvent(event);
 
-	Element* element = getElemAt(event->scenePos());
+	Element *element = getElemAt(event->scenePos());
 
 	if (mShouldReparentItems) {
 		QList<QGraphicsItem *> const list = selectedItems();
