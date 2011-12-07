@@ -13,7 +13,7 @@
 using namespace qReal;
 
 EditorViewScene::EditorViewScene(QObject * parent)
-		:  QGraphicsScene(0, 0, 1, 1, parent)
+		:  QGraphicsScene(parent)
 		, mLastCreatedWithEdge(NULL)
 		, mHighlightNode(NULL)
 		, mWindow(NULL)
@@ -269,21 +269,7 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 		return;
 	}
 
-	QRectF newSceneRect(sceneRect());
-
-	if (event->scenePos().x() > sceneRect().right()) {
-		newSceneRect.setRight(event->scenePos().x());
-	} else if (event->scenePos().x() < sceneRect().left()) {
-		newSceneRect.setLeft(event->scenePos().x());
-	}
-	if (event->scenePos().y() > sceneRect().bottom()) {
-		newSceneRect.setBottom(event->scenePos().y());
-	} else if (event->scenePos().y() < sceneRect().top()) {
-		newSceneRect.setTop(event->scenePos().y());
-	}
-
-	setSceneRect(newSceneRect);
-
+	qDebug() << "from createElement" << sceneRect();
 	createElement(event->mimeData(), event->scenePos());
 	if (mHighlightNode != NULL) {
 		mHighlightNode->erasePlaceholder(true);
