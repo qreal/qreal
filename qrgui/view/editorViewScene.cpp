@@ -743,7 +743,11 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 		}
 		if (element && !mMouseMovementManager->wasMoving()) {
 			deleteGesture();
+			element->setSelected(true);
 			initContextMenu(element, event->scenePos());
+			if (element) {
+				element->setSelected(false);
+			}
 			return;
 		}
 		QPointF const start = mMouseMovementManager->firstPoint();
