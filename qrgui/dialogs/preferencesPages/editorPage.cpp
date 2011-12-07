@@ -127,7 +127,7 @@ void PreferencesEditorPage::save()
 	}
 }
 
-QIcon PreferencesEditorPage::getIcon()
+QIcon PreferencesEditorPage::getIcon() const
 {
 	return mIcon;
 }

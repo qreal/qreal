@@ -72,7 +72,7 @@ void PreferencesCompilerPage::save()
 	SettingsManager::setValue("prefix", mUi->prefix->text());
 }
 
-QIcon PreferencesCompilerPage::getIcon()
+QIcon PreferencesCompilerPage::getIcon() const
 {
 	return mIcon;
 }

@@ -15,7 +15,7 @@ public:
 	~PreferencesMiscellaniousPage();
 
 	void save();
-	QIcon getIcon();
+	QIcon getIcon() const;
 
 signals:
 	void iconsetChanged();

@@ -7,9 +7,9 @@
 using namespace qReal::interpreters::robots;
 
 PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent) :
-	PreferencesPage(parent),
-	mUi(new Ui::PreferencesRobotSettingsPage),
-	mIcon(":/icons/preferences/robot.png")
+		PreferencesPage(parent)
+		,mUi(new Ui::PreferencesRobotSettingsPage)
+		,mIcon(":/icons/preferences/robot.png")
 {
 	mUi->setupUi(this);
 	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedUnrealModel(bool)));
@@ -230,7 +230,7 @@ void PreferencesRobotSettingsPage::save()
 	SettingsManager::setValue("valueOfCommunication", selectedCommunication());
 }
 
-QIcon PreferencesRobotSettingsPage::getIcon()
+QIcon PreferencesRobotSettingsPage::getIcon() const
 {
 	return mIcon;
 }

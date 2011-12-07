@@ -23,7 +23,7 @@ public:
 	~PreferencesRobotSettingsPage();
 
 	void save();
-	QIcon getIcon();
+	QIcon getIcon() const;
 	QString selectedPortName() const;
 	QString selectedCommunication() const;
 

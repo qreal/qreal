@@ -40,7 +40,7 @@ void PreferencesFeaturesPage::save()
 	SettingsManager::setValue("EmbeddedControls", mUi->embeddedControlsCheckBox->isChecked());
 }
 
-QIcon PreferencesFeaturesPage::getIcon()
+QIcon PreferencesFeaturesPage::getIcon() const
 {
 	return mIcon;
 }
