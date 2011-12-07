@@ -61,7 +61,7 @@ void PreferencesMiscellaniousPage::save()
 	}
 }
 
-QIcon PreferencesMiscellaniousPage::getIcon()
+QIcon PreferencesMiscellaniousPage::getIcon() const
 {
 	return mIcon;
 }

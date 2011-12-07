@@ -38,7 +38,7 @@ void PreferencesDebuggerPage::save()
 	SettingsManager::setValue("debugColor", mUi->colorComboBox->currentText());
 }
 
-QIcon PreferencesDebuggerPage::getIcon()
+QIcon PreferencesDebuggerPage::getIcon() const
 {
 	return mIcon;
 }

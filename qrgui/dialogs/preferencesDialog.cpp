@@ -6,7 +6,6 @@
 #include "preferencesPages/editorPage.h"
 #include "preferencesPages/miscellaniousPage.h"
 #include "preferencesPages/featuresPage.h"
-//#include "../../../../plugins/robots/robotsInterpreter/robotSettingsPage.h"
 
 PreferencesDialog::PreferencesDialog(QWidget *parent)
 	: QDialog(parent)
@@ -72,15 +71,6 @@ void PreferencesDialog::changeEvent(QEvent *e)
 	switch (e->type()) {
 	case QEvent::LanguageChange:
 		ui->retranslateUi(this);
-
-		//if (mBehaviourPage) {
-		//	mBehaviourPage->changeEvent(e);
-		//	mCompilerPage->changeEvent(e);
-		//	mDebuggerPage->changeEvent(e);
-		//	mEditorPage->changeEvent(e);
-		//	mMiscellaniousPage->changeEvent(e);
-		//	mFeaturesPage->changeEvent(e);
-		//} // from past version
 		foreach (PreferencesPage *page, mCustomPages.values())
 			page->changeEvent(e);
 		break;
@@ -104,8 +94,9 @@ void PreferencesDialog::chooseTab(const QModelIndex &index)
 {
 	hidePages();
 	QString const name = index.data().toString();
-	if (mCustomPages.contains(name))
+	if (mCustomPages.contains(name)) {
 		mCustomPages[name]->show();
+	}
 }
 
 

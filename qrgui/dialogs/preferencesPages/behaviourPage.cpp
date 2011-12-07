@@ -55,7 +55,7 @@ void PreferencesBehaviourPage::showAutoSaveBox(bool show)
 	mUi->autoSaveLabel->setVisible(show);
 }
 
-QIcon PreferencesBehaviourPage::getIcon()
+QIcon PreferencesBehaviourPage::getIcon() const
 {
 	return mIcon;
 }

@@ -15,7 +15,7 @@ public:
 	~PreferencesCompilerPage();
 
 	void save();
-	QIcon getIcon();
+	QIcon getIcon() const;
 
 protected:
 	void changeEvent(QEvent *e);
