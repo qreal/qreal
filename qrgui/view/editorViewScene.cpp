@@ -1006,3 +1006,10 @@ void EditorViewScene::dehighlight()
 	}
 	mHighlightedElements.clear();
 }
+
+void EditorViewScene::selectAll()
+{
+	foreach (QGraphicsItem *element, this->items()) {
+		element->setSelected(true);
+	}
+}

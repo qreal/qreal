@@ -68,6 +68,7 @@ public slots:
 	// TODO: get rid of it here
 	void copy();
 	void paste();
+	void selectAll();
 
 signals:
 	void elementCreated(qReal::Id const &id);
