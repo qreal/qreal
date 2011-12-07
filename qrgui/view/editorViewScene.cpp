@@ -269,7 +269,6 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 		return;
 	}
 
-	qDebug() << "from createElement" << sceneRect();
 	createElement(event->mimeData(), event->scenePos());
 	if (mHighlightNode != NULL) {
 		mHighlightNode->erasePlaceholder(true);
