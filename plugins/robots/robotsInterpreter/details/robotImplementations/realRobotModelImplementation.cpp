@@ -135,4 +135,5 @@ bool RealRobotModelImplementation::needsConnection() const
 void RealRobotModelImplementation::disconnectedSlot()
 {
 	mSensorsConfigurer.lockConfiguring();
+	emit disconnected();
 }

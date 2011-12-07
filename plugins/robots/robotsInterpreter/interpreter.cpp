@@ -7,6 +7,8 @@
 
 #include <QtCore/QDebug>
 
+#include <QAction>
+
 using namespace qReal;
 using namespace interpreters::robots;
 using namespace interpreters::robots::details;
@@ -24,6 +26,7 @@ Interpreter::Interpreter()
 	, mRobotCommunication(new RobotCommunication(SettingsManager::value("valueOfCommunication", "bluetooth").toString()))
 	, mImplementationType(robotModelType::null)
 	, mWatchListWindow(NULL)
+	, actionConnectToRobot(NULL)
 {
 	mParser = NULL;
 	mBlocksTable = NULL;
@@ -31,6 +34,8 @@ Interpreter::Interpreter()
 
 	mD2RobotModel = new d2Model::D2RobotModel();
 	mD2ModelWidget = mD2RobotModel->createModelWidget();
+	connect(mRobotModel, SIGNAL(disconnected()), this, SLOT(disconnectSlot()));
+	connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 }
 
 void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
@@ -162,10 +167,12 @@ void Interpreter::connectedSlot(bool success)
 {
 	if (success) {
 		mConnected = true;
+		actionConnectToRobot->setChecked(true);
 		if (mRobotModel->robotImpl().needsConnection())
 			mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
 	} else {
 		mConnected = false;
+		actionConnectToRobot->setChecked(false);
 		mInterpretersInterface->errorReporter()->addError(tr("Can't connect to a robot."));
 	}
 }
@@ -303,7 +310,18 @@ void Interpreter::updateSensorValues(QString const &sensorVariableName, int sens
 
 void Interpreter::connectToRobot()
 {
-	mRobotModel->init();
+	if (mConnected) {
+		mRobotModel->stopRobot();
+	} else {
+		mRobotModel->init();
+		actionConnectToRobot->setChecked(mConnected);
+	}
+}
+
+void Interpreter::disconnectSlot()
+{
+	actionConnectToRobot->setChecked(false);
+	mConnected = false;
 }
 
 void Interpreter::setRobotModelType(robotModelType::robotModelTypeEnum robotModelType)
@@ -320,5 +338,12 @@ void Interpreter::setCommunicator(QString const &valueOfCommunication, QString c
 		communicator = new UsbRobotCommunicationThread();
 
 	mRobotCommunication->setRobotCommunicationThreadObject(communicator);
+
 	mRobotCommunication->setPortName(portName);
+
+}
+
+void Interpreter::setConnectRobotAction(QAction *actionConnect)
+{
+	actionConnectToRobot = actionConnect;
 }

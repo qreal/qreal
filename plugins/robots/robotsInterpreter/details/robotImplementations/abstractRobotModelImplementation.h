@@ -58,6 +58,7 @@ public:
 signals:
 	void connected(bool success);
 	void sensorsConfigured();
+	void disconnected();
 
 protected:
 	static NullRobotModelImplementation *mNullRobotModel;

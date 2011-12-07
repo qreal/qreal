@@ -318,7 +318,7 @@ void D2RobotModel::countNewCoord()
 			angularSpeed = vSpeed / vRadius;
 		else
 			angularSpeed = averangeSpeed / averangeRadius;
-		gamma = timeInterval * angularSpeed;//РЅСѓР¶РµРЅ СѓРіРѕР» РІ СЂР°РґРёР°РЅР°С…
+		gamma = timeInterval * angularSpeed;//� ЅСѓ� ¶� µ� Ѕ Сѓ� і� ѕ� » � І СЂ� °� ґ� ё� °� Ѕ� °С…
 		qreal const gammaDegrees = gamma * 180 / M_PI;
 
 		QTransform map;
@@ -331,7 +331,7 @@ void D2RobotModel::countNewCoord()
 		deltaX = newStart.x();
 		deltaY = newStart.y();
 
-		mAngle += gammaDegrees;//РЅСѓР¶РµРЅ СѓРіРѕР» РІ РіСЂР°РґСѓСЃР°С…
+		mAngle += gammaDegrees;//� ЅСѓ� ¶� µ� Ѕ Сѓ� і� ѕ� » � І � іСЂ� °� ґСѓСЃ� °С…
 	} else {
 		deltaY = averangeSpeed * timeInterval * sin(mAngle * M_PI / 180);
 		deltaX = averangeSpeed * timeInterval * cos(mAngle * M_PI / 180);

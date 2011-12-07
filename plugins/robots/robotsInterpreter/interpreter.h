@@ -45,6 +45,7 @@ public:
 	void closeD2ModelWidget();
 	void setRobotModelType(robotModelType::robotModelTypeEnum robotModelType);
 	void setCommunicator(const QString &valueOfCommunication, const QString &portName);
+	void setConnectRobotAction(QAction *actionConnect);
 
 public slots:
 	void connectToRobot();
@@ -53,6 +54,7 @@ public slots:
 	void stopRobot();
 	void showD2ModelWidget(bool isVisible);
 	void showWatchList();
+	void disconnectSlot();
 
 private slots:
 	void threadStopped();
@@ -93,6 +95,7 @@ private:
 	robotModelType::robotModelTypeEnum mImplementationType;
 
 	watchListWindow *mWatchListWindow;
+	QAction *actionConnectToRobot;
 
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	Id const findStartingElement(Id const &diagram) const;

@@ -83,6 +83,8 @@ void NullRobotModelImplementation::stopRobot()
 	mMotorA.off();
 	mMotorB.off();
 	mMotorC.off();
+	mIsConnected = false;
+	emit disconnected();
 }
 
 motorImplementations::NullMotorImplementation &NullRobotModelImplementation::motorA()

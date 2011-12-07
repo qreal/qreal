@@ -141,6 +141,8 @@ robotImplementations::AbstractRobotModelImplementation &RobotModel::robotImpl()
 void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModelImplementation *robotImpl)
 {
 	mRobotImpl = robotImpl;
+	connect(robotImpl, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
+	connect(robotImpl, SIGNAL(connected(bool)), this,SIGNAL(connected(bool)));
 	mMotorA.setImplementation(&mRobotImpl->motorA());
 	mMotorB.setImplementation(&mRobotImpl->motorB());
 	mMotorC.setImplementation(&mRobotImpl->motorC());

@@ -1,5 +1,6 @@
 #include "unrealRobotModelImplementation.h"
 
+#include <QtCore/QDebug>
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations;
 using namespace details::d2Model;
@@ -83,6 +84,7 @@ void UnrealRobotModelImplementation::sensorConfigurationDoneSlot()
 	if (!mIsConnected) {
 		mIsConnected = true;
 		emit connected(true);
+
 	} else {
 		emit sensorsConfigured();
 	}
@@ -94,6 +96,8 @@ void UnrealRobotModelImplementation::stopRobot()
 	mMotorB.off();
 	mMotorC.off();
 	mD2Model->stopRobot();
+	mIsConnected = false;
+	emit disconnected();
 }
 
 motorImplementations::UnrealMotorImplementation &UnrealRobotModelImplementation::motorA()
