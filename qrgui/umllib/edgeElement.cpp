@@ -598,7 +598,7 @@ QList<PossibleEdge> EdgeElement::getPossibleEdges()
 void EdgeElement::delPointHandler(QPointF const &pos)
 {
 	int pointIndex = getPoint(pos);
-	if (pointIndex != -1) {
+	if (pointIndex != -1 && pointIndex != mLine.count() - 1 && pointIndex != 0) {
 		prepareGeometryChange();
 		mLine.remove(pointIndex);
 		mLongPart = 0;
