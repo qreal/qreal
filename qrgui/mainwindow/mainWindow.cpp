@@ -1372,8 +1372,9 @@ void MainWindow::initCurrentTab(QModelIndex const &rootIndex)
 	getCurrentTab()->mvIface()->setAssistApi(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi());
 
 	getCurrentTab()->mvIface()->setModel(mModels->graphicalModel());
-	if (getCurrentTab()->sceneRect() == QRectF(0,0,0,0))
-		getCurrentTab()->setSceneRect(0,0,1,1);
+	if (getCurrentTab()->sceneRect() == QRectF(0, 0, 0, 0)) {
+		getCurrentTab()->setSceneRect(0, 0, 1, 1);
+	}
 
 	getCurrentTab()->mvIface()->setLogicalModel(mModels->logicalModel());
 	getCurrentTab()->mvIface()->setRootIndex(index);
