@@ -23,7 +23,7 @@ public:
 	~PreferencesRobotSettingsPage();
 
 	void save();
-	QIcon getIcon() const;
+
 	QString selectedPortName() const;
 	QString selectedCommunication() const;
 
@@ -45,8 +45,6 @@ private:
 	robotModelType::robotModelTypeEnum selectedRobotModel() const;
 
 	Ui::PreferencesRobotSettingsPage *mUi;
-
-	QIcon mIcon;
 };
 
 }

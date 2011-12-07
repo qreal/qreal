@@ -15,13 +15,10 @@ public:
 	~PreferencesFeaturesPage();
 
 	void save();
-	QIcon getIcon() const;
 
 protected:
 	void changeEvent(QEvent *e);
 
 private:
 	Ui::PreferencesFeaturesPage *mUi;
-
-	QIcon mIcon;
 };

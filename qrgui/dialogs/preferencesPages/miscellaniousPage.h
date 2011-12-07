@@ -15,7 +15,6 @@ public:
 	~PreferencesMiscellaniousPage();
 
 	void save();
-	QIcon getIcon() const;
 
 signals:
 	void iconsetChanged();
@@ -30,6 +29,4 @@ private:
 	Ui::PreferencesMiscellaniousPage *mUi;
 
 	QString mLastIconsetPath;
-
-	QIcon mIcon;
 };

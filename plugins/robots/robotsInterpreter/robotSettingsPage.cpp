@@ -6,12 +6,13 @@
 
 using namespace qReal::interpreters::robots;
 
-PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent) :
-		PreferencesPage(parent)
-		,mUi(new Ui::PreferencesRobotSettingsPage)
-		,mIcon(":/icons/preferences/robot.png")
+PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
+		: PreferencesPage(parent)
+		, mUi(new Ui::PreferencesRobotSettingsPage)
 {
+	mIcon = QIcon(":/icons/preferences/robot.png");
 	mUi->setupUi(this);
+
 	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedUnrealModel(bool)));
 	connect(mUi->d2ModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedUnrealModel(bool)));
 	connect(mUi->manualComPortCheckbox, SIGNAL(toggled(bool)), this, SLOT(manualComPortCheckboxChecked(bool)));
@@ -228,9 +229,4 @@ void PreferencesRobotSettingsPage::save()
 	SettingsManager::setValue("port3SensorType", selectedPort3Sensor());
 	SettingsManager::setValue("port4SensorType", selectedPort4Sensor());
 	SettingsManager::setValue("valueOfCommunication", selectedCommunication());
-}
-
-QIcon PreferencesRobotSettingsPage::getIcon() const
-{
-	return mIcon;
 }

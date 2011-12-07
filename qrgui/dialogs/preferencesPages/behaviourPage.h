@@ -15,7 +15,6 @@ public:
 	~PreferencesBehaviourPage();
 
 	void save();
-	QIcon getIcon() const;
 
 protected:
 	void changeEvent(QEvent *e);
@@ -25,6 +24,4 @@ private slots:
 
 private:
 	Ui::PreferencesBehaviourPage *mUi;
-
-	QIcon mIcon;
 };

@@ -4,11 +4,11 @@
 #include "miscellaniousPage.h"
 #include "ui_miscellaniousPage.h"
 
-PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent) :
-	PreferencesPage(parent),
-	mUi(new Ui::PreferencesMiscellaniousPage),
-	mIcon(":/icons/preferences/miscellaneous.png")
+PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
+		: PreferencesPage(parent)
+		, mUi(new Ui::PreferencesMiscellaniousPage)
 {
+	mIcon = QIcon(":/icons/preferences/miscellaneous.png");
 	mUi->setupUi(this);
 
 	connect(mUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
@@ -59,9 +59,4 @@ void PreferencesMiscellaniousPage::save()
 	if (mLastIconsetPath != mUi->imagesPathEdit->text()) {
 		emit iconsetChanged();
 	}
-}
-
-QIcon PreferencesMiscellaniousPage::getIcon() const
-{
-	return mIcon;
 }

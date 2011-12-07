@@ -15,13 +15,10 @@ public:
 	~PreferencesDebuggerPage();
 
 	void save();
-	QIcon getIcon() const;
 
 protected:
 	void changeEvent(QEvent *e);
 
 private:
 	Ui::PreferencesDebuggerPage *mUi;
-
-	QIcon mIcon;
 };

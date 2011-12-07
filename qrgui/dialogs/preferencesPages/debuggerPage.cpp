@@ -2,11 +2,12 @@
 #include "debuggerPage.h"
 #include "ui_debuggerPage.h"
 
-PreferencesDebuggerPage::PreferencesDebuggerPage(QWidget *parent) :
-	PreferencesPage(parent),
-	mUi(new Ui::PreferencesDebuggerPage),
-	mIcon(":/icons/preferences/bug.png")
+PreferencesDebuggerPage::PreferencesDebuggerPage(QWidget *parent)
+		: PreferencesPage(parent)
+		, mUi(new Ui::PreferencesDebuggerPage)
+
 {
+	mIcon = QIcon(":/icons/preferences/bug.png");
 	mUi->setupUi(this);
 
 	mUi->timeoutLineEdit->setText(SettingsManager::value("debuggerTimeout", 750).toString());
@@ -36,9 +37,4 @@ void PreferencesDebuggerPage::save()
 {
 	SettingsManager::setValue("debuggerTimeout", mUi->timeoutLineEdit->text());
 	SettingsManager::setValue("debugColor", mUi->colorComboBox->currentText());
-}
-
-QIcon PreferencesDebuggerPage::getIcon() const
-{
-	return mIcon;
 }

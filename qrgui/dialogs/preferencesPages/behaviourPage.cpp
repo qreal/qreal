@@ -2,11 +2,11 @@
 #include "behaviourPage.h"
 #include "ui_behaviourPage.h"
 
-PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent) :
-	PreferencesPage(parent),
-	mUi(new Ui::PreferencesBehaviourPage),
-	mIcon(":/icons/preferences/behaviour.png")
+PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
+		: PreferencesPage(parent)
+		, mUi(new Ui::PreferencesBehaviourPage)
 {
+	mIcon = QIcon(":/icons/preferences/behaviour.png");
 	mUi->setupUi(this);
 
 	connect(mUi->autoSaveCheckBox, SIGNAL(clicked(bool)), this, SLOT(showAutoSaveBox(bool)));
@@ -53,9 +53,4 @@ void PreferencesBehaviourPage::showAutoSaveBox(bool show)
 {
 	mUi->autoSaveSpinBox->setVisible(show);
 	mUi->autoSaveLabel->setVisible(show);
-}
-
-QIcon PreferencesBehaviourPage::getIcon() const
-{
-	return mIcon;
 }

@@ -16,7 +16,6 @@ public:
 	~PreferencesEditorPage();
 
 	void save();
-	QIcon getIcon() const;
 
 protected:
 	void changeEvent(QEvent *e);
@@ -44,7 +43,4 @@ private:
 	QAction * const mShowAlignmentAction;
 	QAction * const mActivateGridAction;
 	QAction * const mActivateAlignmentAction;
-
-	QIcon mIcon;
-
 };
