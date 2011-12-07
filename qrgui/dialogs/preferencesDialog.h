@@ -20,7 +20,7 @@ public:
 	~PreferencesDialog();
 
 	void init(QAction * const showGridAction, QAction * const showAlignmentAction
-		,QAction * const activateGridAction, QAction * const activateAlignmentAction);
+		, QAction * const activateGridAction, QAction * const activateAlignmentAction);
 
 	void registerPage(QString const &pageName, PreferencesPage * const page);
 	void switchCurrentTab(QString const &tabName);

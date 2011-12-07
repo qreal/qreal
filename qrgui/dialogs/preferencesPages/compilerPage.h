@@ -15,7 +15,6 @@ public:
 	~PreferencesCompilerPage();
 
 	void save();
-	QIcon getIcon() const;
 
 protected:
 	void changeEvent(QEvent *e);
@@ -28,6 +27,4 @@ private:
 			QString const &pathToMake, QString const &pluginExtension, QString const &prefix);
 
 	Ui::PreferencesCompilerPage *mUi;
-
-	QIcon mIcon;
 };

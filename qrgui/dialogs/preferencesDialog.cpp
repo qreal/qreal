@@ -8,8 +8,8 @@
 #include "preferencesPages/featuresPage.h"
 
 PreferencesDialog::PreferencesDialog(QWidget *parent)
-	: QDialog(parent)
-	, ui(new Ui::PreferencesDialog)
+		: QDialog(parent)
+		, ui(new Ui::PreferencesDialog)
 {
 	ui->setupUi(this);
 }
@@ -34,8 +34,8 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	PreferencesPage *debuggerPage = new PreferencesDebuggerPage(ui->pageContentWigdet);
 	PreferencesPage *miscellaniousPage = new PreferencesMiscellaniousPage(ui->pageContentWigdet);
 //	PreferencesPage *featuresPage = new PreferencesFeaturesPage(ui->pageContentWigdet);
-	PreferencesPage *editorPage = new PreferencesEditorPage(showGridAction,
-		showAlignmentAction, activateGridAction, activateAlignmentAction, ui->pageContentWigdet);
+	PreferencesPage *editorPage = new PreferencesEditorPage(showGridAction
+		, showAlignmentAction, activateGridAction, activateAlignmentAction, ui->pageContentWigdet);
 
 	connect(ui->listWidget, SIGNAL(clicked(const QModelIndex &)), this, SLOT(chooseTab(const QModelIndex &)));
 	connect(ui->applyButton, SIGNAL(clicked()), this, SLOT(applyChanges()));
@@ -116,7 +116,7 @@ void PreferencesDialog::registerPage(QString const &pageName, PreferencesPage * 
 void PreferencesDialog::switchCurrentTab(QString const &tabName)
 {
 	if (mCustomPages.contains(tabName)) {
-		ui->listWidget->setCurrentRow(mCustomPages.keys().indexOf(tabName)); //count current pages
+		ui->listWidget->setCurrentRow(mCustomPages.keys().indexOf(tabName));  // count of current pages
 		hidePages();
 		mCustomPages[tabName]->show();
 	}

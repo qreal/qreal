@@ -2,11 +2,11 @@
 #include "compilerPage.h"
 #include "ui_compilerPage.h"
 
-PreferencesCompilerPage::PreferencesCompilerPage(QWidget *parent) :
-	PreferencesPage(parent),
-	mUi(new Ui::PreferencesCompilerPage),
-	mIcon(":/icons/preferences/tools.png")
+PreferencesCompilerPage::PreferencesCompilerPage(QWidget *parent)
+		: PreferencesPage(parent)
+		, mUi(new Ui::PreferencesCompilerPage)
 {
+	mIcon = QIcon(":/icons/preferences/tools.png");
 	mUi->setupUi(this);
 
 	connect(mUi->linuxButton, SIGNAL(clicked()), this, SLOT(changeSystem()));
@@ -70,9 +70,4 @@ void PreferencesCompilerPage::save()
 	SettingsManager::setValue("pathToMake", mUi->pathToMake->text());
 	SettingsManager::setValue("pluginExtension", mUi->pluginExtension->text());
 	SettingsManager::setValue("prefix", mUi->prefix->text());
-}
-
-QIcon PreferencesCompilerPage::getIcon() const
-{
-	return mIcon;
 }
