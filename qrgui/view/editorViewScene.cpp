@@ -39,7 +39,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 void EditorViewScene::drawForeground(QPainter *painter, QRectF const &rect)
 {
 	foreach (QPixmap *pixmap, mForegroundPixmaps) {
-		painter->drawPixmap(rect.topLeft(), *pixmap);
+		painter->drawPixmap(sceneRect().topLeft(), *pixmap);
 	}
 	QGraphicsScene::drawForeground(painter, rect);
 }
