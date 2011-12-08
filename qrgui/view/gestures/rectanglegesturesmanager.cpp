@@ -1,7 +1,6 @@
 #include "rectanglegesturesmanager.h"
 #include "curveKeyBuilder.h"
 #include "sorts.h"
-#include "QDebug"
 
 RectangleGesturesManager::RectangleGesturesManager()
 {
