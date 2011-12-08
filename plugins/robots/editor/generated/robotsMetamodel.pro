@@ -4,3 +4,10 @@ QREAL_EDITOR_PATH = robots/editor/generated
 ROOT = ../../../..
 
 include (../../../editorsSdk/editorsCommon.pri)
+
+win32 {
+    QMAKE_POST_LINK = "xcopy ..\\images ..\\..\\..\\..\\bin\\images /s /e /q /y /i && copy ..\\doc\\qreal-robots.qhc ..\\..\\..\\..\\bin /y && copy ..\\doc\\qreal-robots.qch ..\\..\\..\\..\\bin /y "
+}
+else {
+    QMAKE_POST_LINK = "mkdir ../../../../bin/images/ && cp -r ../images ../../../../bin/images/ && cp ../doc/qreal-robots.qhc ../../../../bin && cp ../doc/qreal-robots.qch ../../../../bin"
+}
