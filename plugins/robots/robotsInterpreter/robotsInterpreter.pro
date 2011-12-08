@@ -28,8 +28,8 @@ HEADERS += \
 	details/autoconfigurer.h \
 	details/tracer.h \
 	details/debugHelper.h \
-    ui_watchListWindow.h \
-    ../../../qrgui/dialogs/preferencesPages/preferencesPage.h
+	ui_watchListWindow.h \
+	../../../qrgui/dialogs/preferencesPages/preferencesPage.h
 
 SOURCES += \
 	robotsPlugin.cpp \
@@ -47,7 +47,7 @@ SOURCES += \
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
-    watchListWindow.ui
+	watchListWindow.ui
 
 RESOURCES += \
 	robotsInterpreter.qrc \

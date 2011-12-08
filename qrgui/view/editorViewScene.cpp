@@ -1009,7 +1009,7 @@ void EditorViewScene::dehighlight()
 
 void EditorViewScene::selectAll()
 {
-	foreach (QGraphicsItem *element, this->items()) {
+	foreach (QGraphicsItem *element, items()) {
 		element->setSelected(true);
 	}
 }
