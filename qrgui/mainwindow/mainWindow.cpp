@@ -317,6 +317,8 @@ MainWindow::~MainWindow()
 	SettingsManager::instance()->saveData();
 	delete mRecentProjectsMenu;
 	delete mRecentProjectsMapper;
+	delete mGesturesWidget;
+	delete mModels;
 }
 
 EditorManager* MainWindow::manager()
@@ -1493,7 +1495,7 @@ void MainWindow::setSwitchAlignment(bool isChecked)
 
 void MainWindow::showGestures()
 {
-	mGesturesWidget = new GesturesWidget();
+	mGesturesWidget = new GesturesWidget(); // why create another one here?
 	mUi->tabs->addTab(mGesturesWidget, tr("Gestures Show"));
 	mUi->tabs->setCurrentWidget(mGesturesWidget);
 	connect(mGesturesWidget, SIGNAL(currentElementChanged()), this, SIGNAL(currentIdealGestureChanged()));

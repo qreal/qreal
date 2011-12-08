@@ -20,6 +20,9 @@ public:
 	MouseMovementManager(QList<qReal::Id> elements,
 						 qReal::EditorManager * editorManager,
 						 GesturesPainterInterface * gesturesPaintManager);
+
+	~MouseMovementManager();
+
 	void setElements(QList<qReal::Id> const & elements);
 	void mousePress(QPointF const & point);
 	void mouseMove(QPointF const & point);

@@ -58,6 +58,7 @@ void EditorViewScene::deleteFromForeground(QPixmap *pixmap)
 EditorViewScene::~EditorViewScene()
 {
 	delete mActionSignalMapper;
+	delete mMouseMovementManager;
 }
 
 void EditorViewScene::drawIdealGesture()

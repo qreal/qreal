@@ -9,14 +9,19 @@ const QString pointDelimeter = " : ";
 const QString pathDelimeter = " | ";
 
 
-MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager * editorManager,
-		GesturesPainterInterface *gesturesPaintManager)
+MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager * editorManager
+		, GesturesPainterInterface *gesturesPaintManager)
 {
 	mGesturesManager = new MixedGesturesManager();
 	mKeyManager = &mKeyStringManager;
 	mEditorManager = editorManager;
 	mGesturesPaintMan = gesturesPaintManager;
 	setElements(elements);
+}
+
+MouseMovementManager::~MouseMovementManager()
+{
+	delete mGesturesManager;
 }
 
 void MouseMovementManager::setGesturesPainter(GesturesPainterInterface *gesturesPainter)
