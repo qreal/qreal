@@ -95,7 +95,7 @@ private:
 	robotModelType::robotModelTypeEnum mImplementationType;
 
 	watchListWindow *mWatchListWindow;
-	QAction *actionConnectToRobot;
+	QAction *mActionConnectToRobot;
 
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	Id const findStartingElement(Id const &diagram) const;

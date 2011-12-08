@@ -26,7 +26,7 @@ Interpreter::Interpreter()
 	, mRobotCommunication(new RobotCommunication(SettingsManager::value("valueOfCommunication", "bluetooth").toString()))
 	, mImplementationType(robotModelType::null)
 	, mWatchListWindow(NULL)
-	, actionConnectToRobot(NULL)
+	, mActionConnectToRobot(NULL)
 {
 	mParser = NULL;
 	mBlocksTable = NULL;
@@ -167,12 +167,12 @@ void Interpreter::connectedSlot(bool success)
 {
 	if (success) {
 		mConnected = true;
-		actionConnectToRobot->setChecked(true);
+		mActionConnectToRobot->setChecked(true);
 		if (mRobotModel->robotImpl().needsConnection())
 			mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
 	} else {
 		mConnected = false;
-		actionConnectToRobot->setChecked(false);
+		mActionConnectToRobot->setChecked(false);
 		mInterpretersInterface->errorReporter()->addError(tr("Can't connect to a robot."));
 	}
 }
@@ -314,13 +314,13 @@ void Interpreter::connectToRobot()
 		mRobotModel->stopRobot();
 	} else {
 		mRobotModel->init();
-		actionConnectToRobot->setChecked(mConnected);
+		mActionConnectToRobot->setChecked(mConnected);
 	}
 }
 
 void Interpreter::disconnectSlot()
 {
-	actionConnectToRobot->setChecked(false);
+	mActionConnectToRobot->setChecked(false);
 	mConnected = false;
 }
 
@@ -345,5 +345,5 @@ void Interpreter::setCommunicator(QString const &valueOfCommunication, QString c
 
 void Interpreter::setConnectRobotAction(QAction *actionConnect)
 {
-	actionConnectToRobot = actionConnect;
+	mActionConnectToRobot = actionConnect;
 }
