@@ -517,7 +517,6 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 	}
 
 	if (loadingCancelled) {
-		close();
 		return false;
 	}
 
