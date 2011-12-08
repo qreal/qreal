@@ -61,6 +61,9 @@ namespace qrRepo {
 
 			bool exist(qReal::Id const &id) const;
 
+			/// Opens file into existing project
+			/// @param importedFile - name of file to be imported
+			void importFromDisk(QString const &importedFile);
 			void saveAll() const;
 			void save(qReal::IdList list) const;
 			void remove(qReal::IdList list) const;
@@ -75,6 +78,9 @@ namespace qrRepo {
 			QList<Object*> allChildrenOf(qReal::Id id) const;
 
 			QHash<qReal::Id, Object*> mObjects;
+
+			/// This term keeps name of current save file for project
+			QString mWorkingFile;
 			Serializer serializer;
 		};
 

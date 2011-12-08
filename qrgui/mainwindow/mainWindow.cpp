@@ -48,7 +48,6 @@
 
 #include "../../qrkernel/timeMeasurer.h"
 
-#include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../../qrmc/metaCompiler.h"
 
 using namespace qReal;
@@ -226,6 +225,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
 	connect(mUi->actionCloseProject, SIGNAL(triggered()), this, SLOT(closeProjectAndSave()));
+	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 
 	connect(mUi->actionCheckout, SIGNAL(triggered()), this, SLOT(doCheckout()));
@@ -527,6 +527,21 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 	return true;
 }
 
+bool MainWindow::importProject()
+{
+	return import(getWorkingFile(tr("Select file with a save to import"), false));
+}
+
+bool MainWindow::import(QString const &fileName)
+{
+	if (!QFile(fileName).exists()) {
+		return false;
+	}
+	mModels->repoControlApi().importFromDisk(fileName);
+	mModels->reinit();
+	return true;
+}
+
 bool MainWindow::openNewProject()
 {
 	if (mUnsavedProjectIndicator) {
@@ -598,11 +613,12 @@ bool MainWindow::open(QString const &fileName)
 
 	connectWindowTitle();
 	mSaveFile = fileName;
+	QString windowTitle = mToolManager.customizer()->windowTitle();
 	if (!fileName.isEmpty()) {
-		setWindowTitle("QReal:Robots - " + mSaveFile);
+		setWindowTitle(windowTitle + " - " + mSaveFile);
 	}
 	else
-		setWindowTitle("QReal:Robots - unsaved project");
+		setWindowTitle(windowTitle + " - unsaved project");
 	return true;
 }
 
@@ -1599,7 +1615,7 @@ void MainWindow::saveAll()
 	}
 	mModels->repoControlApi().saveAll();
 	mUnsavedProjectIndicator = false;
-	setWindowTitle("QReal:Robots - " + mSaveFile);
+	setWindowTitle(mToolManager.customizer()->windowTitle() + " - " + mSaveFile);
 	SettingsManager::setValue("saveFile", mSaveFile);
 }
 
@@ -1618,7 +1634,7 @@ void MainWindow::saveAs(QString const &fileName)
 	mModels->repoControlApi().saveTo(mSaveFile);
 	if (!mSaveFile.endsWith(".qrs", Qt::CaseInsensitive))
 		mSaveFile += ".qrs";
-	setWindowTitle("QReal:Robots - " + mSaveFile);
+	setWindowTitle(mToolManager.customizer()->windowTitle() + " - " + mSaveFile);
 	SettingsManager::setValue("saveFile", mSaveFile);
 }
 
@@ -2327,5 +2343,5 @@ void MainWindow::closeProject()
 	if (getCurrentTab())
 		static_cast<EditorViewScene*>(getCurrentTab()->scene())->clearScene();
 	closeAllTabs();
-	setWindowTitle("QReal:Robots");
+	setWindowTitle(mToolManager.customizer()->windowTitle());
 }

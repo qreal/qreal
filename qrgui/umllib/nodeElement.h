@@ -49,6 +49,10 @@ public:
 	void setPos(const QPointF &pos);
 	void setPos(qreal x, qreal y);
 	void setContents(QRectF const &contents);
+
+	/// Aligning the element to grid
+	void alignToGrid();
+
 	void storeGeometry();
 	virtual void setName(QString name);
 
@@ -127,7 +131,7 @@ private:
 		BottomRight
 	};
 
-	
+
 	/** @brief Padding that reserves space for title */
 	static int const titlePadding = 25;
 	/** @brief Space between children inside sorting containers */
