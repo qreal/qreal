@@ -1,6 +1,5 @@
 #include "nearestposgridgesturesmanager.h"
 #include "curveKeyBuilder.h"
-#include "QDebug"
 
 NearestPosGridGesturesManager::NearestPosGridGesturesManager()
 {
@@ -30,7 +29,7 @@ double NearestPosGridGesturesManager::getDistance(double * const & key1, double 
 double * NearestPosGridGesturesManager::getKey(PathVector const & path)
 {
 	Key key = KeyBuilder::getKey(path, gridSize, gridSize);
-	double * finalKey = new double[gridSize * gridSize];
+	double * finalKey = new double[gridSize * gridSize]; // deal with this too
 	for (int i = 0; i < gridSize * gridSize; i ++)
 		finalKey[i] = gridSize;
 	if (key.isEmpty())

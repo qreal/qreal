@@ -23,6 +23,8 @@ public:
 
 	MixedClassifier(){}
 
+	~MixedClassifier();
+
 	double getDistance(const MixedClassifier &classifier)
 	{
 		QPair<double *, double *> key = classifier.key();

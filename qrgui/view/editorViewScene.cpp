@@ -280,8 +280,6 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 bool EditorViewScene::canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const
 {
 	bool allowed = false;
-	qDebug() << container << candidate;
-	qDebug() << mWindow->manager()->getContainedTypes(container.type());
 	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container.type())){
 		allowed = allowed || mWindow->manager()->isParentOf(candidate, type);
 	}
@@ -774,9 +772,7 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	// button isn't recognized while mouse moves
 	if (mRightButtonPressed) {
 		mMouseMovementManager->mouseMove(event->scenePos());
-		qDebug() << "move OK";
 		drawGesture();
-		qDebug() << "draw OK";
 	} else {
 		QGraphicsScene::mouseMoveEvent(event);
 	}
@@ -927,9 +923,7 @@ bool EditorViewScene::getNeedDrawGrid()
 
 void EditorViewScene::drawGesture()
 {
-	qDebug() << "try to draw";
 	QLineF line = mMouseMovementManager->newLine();
-	qDebug() << line.x1() << line.y1() << line.x2() << line.y2();
 	QGraphicsLineItem * item = new QGraphicsLineItem(line, NULL, this);
 	double size = mGesture.size() * 0.1;
 	double color_ratio = pow(fabs(sin(size)), 1.5);
