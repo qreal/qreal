@@ -615,15 +615,11 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			mRightButtonPressed = true;
 			//		return;
 			//	}
-			if (e && !e->isSelected()) {
-				clearSelection();
-				e->setSelected(true);
 
 			// Menu belongs to scene handler because it can delete elements.
 			// We cannot allow elements to commit suicide.
 			//if (e)
 			//	initContextMenu(e, event->scenePos());
-			}
 		}
 	}
 	redraw();
@@ -743,11 +739,11 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 		}
 		if (element && !mMouseMovementManager->wasMoving()) {
 			deleteGesture();
-			element->setSelected(true);
-			initContextMenu(element, event->scenePos());
-			if (element) {
-				element->setSelected(false);
+			if (element && !element->isSelected()) {
+				element->setSelected(true);
 			}
+			initContextMenu(element, event->scenePos());
+			clearSelection();
 			return;
 		}
 		QPointF const start = mMouseMovementManager->firstPoint();
