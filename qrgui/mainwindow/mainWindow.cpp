@@ -517,7 +517,6 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 	}
 
 	if (loadingCancelled) {
-		close();
 		return false;
 	}
 
@@ -591,9 +590,9 @@ void MainWindow::saveAllAndOpen(QString const &dirName)
 
 bool MainWindow::open(QString const &fileName)
 {
-	if (!QFile(fileName).exists()) // || (!mSaveFile.isEmpty() && fileName.isEmpty()))
-		if (!(!mSaveFile.isEmpty() && fileName.isEmpty()))
-			return false;
+	if (!QFile(fileName).exists() && fileName != "") {
+		return false;
+	}
 
 	refreshRecentProjectsList(fileName);
 
