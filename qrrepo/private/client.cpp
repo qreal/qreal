@@ -23,8 +23,11 @@ void Client::init()
 
 Client::~Client()
 {
-	delete mObjects[Id::rootId()];
-	mObjects.remove(Id::rootId());
+	foreach (Id id, mObjects.keys()) {
+		delete mObjects[id];
+		mObjects.remove(id);
+	}
+
 	serializer.saveToDisk(mObjects.values());
 	serializer.clearWorkingDir();
 }

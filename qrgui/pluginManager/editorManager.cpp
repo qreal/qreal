@@ -43,6 +43,7 @@ EditorManager::EditorManager(QObject *parent)
 			// Keep silent.
 			// QMessageBox::warning(0, "QReal Plugin", loader->errorString() );
 		}
+		delete loader;
 	}
 }
 
