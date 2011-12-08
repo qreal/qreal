@@ -47,12 +47,14 @@ void EditorViewScene::drawForeground(QPainter *painter, QRectF const &rect)
 
 void EditorViewScene::putOnForeground(QPixmap *pixmap)
 {
-	mForegroundPixmaps.push_back(pixmap);
+	if (!mForegroundPixmaps.contains(pixmap)) {
+		mForegroundPixmaps.push_back(pixmap);
+	}
 }
 
 void EditorViewScene::deleteFromForeground(QPixmap *pixmap)
 {
-	mForegroundPixmaps.removeOne(pixmap);
+	mForegroundPixmaps.removeAll(pixmap);
 	update();
 }
 

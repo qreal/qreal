@@ -280,9 +280,11 @@ void SceneGridHandler::drawGuides()
 
 	if (mLines.size()) {
 		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(mNode->scene());
-		QRectF sceneRect = evScene->sceneRect();
+		QRectF const sceneRect = evScene->sceneRect();
+
 		mGuidesPixmap = new QPixmap(sceneRect.width(), sceneRect.height());
 		mGuidesPixmap->fill(Qt::transparent);
+
 		QPainter painter(mGuidesPixmap);
 		painter.setPen(mGuidesPen);
 		painter.drawLines(mLines);
