@@ -238,6 +238,7 @@ private:
 	void setSwitchGrid(bool isChecked);
 	void setSwitchAlignment(bool isChecked);
 
+	/// sets shortcuts which don`t have own buttons anywhere
 	void setUnmenuShortcuts();
 
 	void setIndexesOfPropertyEditor(Id const &id);

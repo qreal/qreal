@@ -18,10 +18,10 @@ PreferencesDialog::~PreferencesDialog()
 {
 	SettingsManager::setValue("currentPreferencesTab", ui->listWidget->currentRow());
 
-	// UIs of custom pages should be deleted from plugins, so we nullify their parents here
-	// to prevent double destruction
-	foreach (PreferencesPage *page, mCustomPages.values())
+	foreach (PreferencesPage *page, mCustomPages.values()) {
 		page->setParent(NULL);
+		delete page;
+	}
 
 	delete ui;
 }

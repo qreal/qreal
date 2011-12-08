@@ -68,6 +68,8 @@ public slots:
 	// TODO: get rid of it here
 	void copy();
 	void paste();
+
+	/// selects all elements on the current scene
 	void selectAll();
 
 signals:

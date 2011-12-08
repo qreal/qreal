@@ -1392,10 +1392,13 @@ void MainWindow::initCurrentTab(QModelIndex const &rootIndex)
 void MainWindow::setUnmenuShortcuts()
 {
 	// add shortcut - select all
-	QAction *selectAction = new QAction(getCurrentTab());
-	selectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
-	connect(selectAction, SIGNAL(triggered()), static_cast <EditorViewScene *> (getCurrentTab()->scene()), SLOT(selectAll()));
-	getCurrentTab()->addAction(selectAction);
+	EditorViewScene *scene = dynamic_cast <EditorViewScene *> (getCurrentTab()->scene());
+	if (!scene) {
+		QAction *selectAction = new QAction(getCurrentTab());
+		selectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
+		connect(selectAction, SIGNAL(triggered()), scene, SLOT(selectAll()));
+		getCurrentTab()->addAction(selectAction);
+	}
 	// addDocumentation(String); // in perspective
 }
 
