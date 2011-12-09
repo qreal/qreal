@@ -321,7 +321,7 @@ MainWindow::~MainWindow()
 	delete mModels;
 	delete mFlashTool;
 	delete mVisualDebugger;
-	delete mDebuggerConnector;
+//	delete mDebuggerConnector;
 }
 
 EditorManager* MainWindow::manager()
@@ -2249,7 +2249,7 @@ void MainWindow::initWindowTitle()
 void MainWindow::initDebugger()
 {
 	mVisualDebugger = new VisualDebugger(mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi(), *this);
-	mDebuggerConnector = new DebuggerConnector();
+	mDebuggerConnector = new DebuggerConnector(this);
 
 	connect(mDebuggerConnector, SIGNAL(readyReadStdOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
 	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerErrOutput(QString)));
