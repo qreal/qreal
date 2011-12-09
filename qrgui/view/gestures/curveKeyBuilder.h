@@ -17,15 +17,19 @@ public:
 		Key key;
 		if (mousePath.isEmpty())
 			return key;
-		double lower = lowerBound(mousePath);
-		double upper = upperBound(mousePath);
-		double right = rightBound(mousePath);
-		double left = leftBound(mousePath);
+
+		double const lower = lowerBound(mousePath);
+		double const upper = upperBound(mousePath);
+		double const right = rightBound(mousePath);
+		double const left = leftBound(mousePath);
+
 		if (right - left < minMovement && lower - upper < minMovement)
 			return key;
+
 		foreach (PointVector path, mousePath) {
 			SquarePos previous(minPoint, minPoint);
 			SquarePos last;
+
 			foreach (QPointF point, path) {
 				if((lower - upper) * maxRelation  < right - left) {
 					last.first = (point.x() - left) * widthSize / (right - left);
@@ -51,8 +55,9 @@ public:
 		}
 		return key;
 	}
+
 private:
-	static int upperBound(const PathVector & mousePath)
+	static int upperBound(const PathVector &mousePath)
 	{
 		if (mousePath.isEmpty())
 			return 0;
@@ -64,7 +69,8 @@ private:
 		}
 		return upperBound;
 	}
-	static int lowerBound(const PathVector & mousePath)
+
+	static int lowerBound(const PathVector &mousePath)
 	{
 		if (mousePath.isEmpty())
 			return 0;
@@ -76,7 +82,8 @@ private:
 		}
 		return lowerBound;
 	}
-	static int leftBound(const PathVector & mousePath)
+
+	static int leftBound(const PathVector &mousePath)
 	{
 		if (mousePath.isEmpty())
 			return 0;
@@ -88,7 +95,8 @@ private:
 		}
 		return leftBound;
 	}
-	static int rightBound(const PathVector & mousePath)
+
+	static int rightBound(const PathVector &mousePath)
 	{
 		if (mousePath.isEmpty())
 			return 0;
@@ -100,7 +108,8 @@ private:
 		}
 		return rightBound;
 	}
-	static void rasterizeSegment(SquarePos const & pos1, SquarePos const & pos2, Key * segment)
+
+	static void rasterizeSegment(SquarePos const &pos1, SquarePos const &pos2, Key *segment)
 	{
 		if (!segment->isEmpty() && pos1 == segment->at(0))
 			segment->pop_back();
@@ -112,16 +121,19 @@ private:
 		int y = pos1.second;
 		int deltaX = abs(pos2.first - x);
 		int deltaY = abs(pos2.second - y);
-		int signX = sign(pos2.first - x);
-		int signY = sign(pos2.second - y);
+		int const signX = sign(pos2.first - x);
+		int const signY = sign(pos2.second - y);
 		bool isChanged = false;
+
 		if (deltaY > deltaX) {
 			int c = deltaX;
 			deltaX = deltaY;
 			deltaY = c;
 			isChanged = true;
 		}
+
 		int e = 2 * deltaY - deltaX;
+
 		for (int i = 0; i < deltaX; i ++) {
 			segment->push_back(SquarePos(x, y));
 			while (e >= 0) {
@@ -138,6 +150,7 @@ private:
 			e += 2 * deltaY;
 		}
 	}
+
 	static int sign(int a)
 	{
 		if (a < 0)

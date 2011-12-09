@@ -29,8 +29,8 @@ bool MixedGesturesManager::isMultistroke()
 	return true;
 }
 
-double MixedGesturesManager::getDistance(QPair<double *,double *> const & key1,
-										 QPair<double *, double *> const & key2)
+double MixedGesturesManager::getDistance(QPair<double *,double *> const &key1,
+										 QPair<double *, double *> const &key2)
 {
 	RectangleGesturesManager rectMan;
 	NearestPosGridGesturesManager gridMan;
@@ -39,7 +39,7 @@ double MixedGesturesManager::getDistance(QPair<double *,double *> const & key1,
 	return dist1 * weight1 + dist2 * weight2;
 }
 
-QPair<double *, double *> MixedGesturesManager::getKey(PathVector const & path)
+QPair<double *, double *> MixedGesturesManager::getKey(PathVector const &path)
 {
 	RectangleGesturesManager rectMan;
 	NearestPosGridGesturesManager gridMan;
