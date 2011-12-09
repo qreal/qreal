@@ -302,11 +302,10 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node, QPoint
 	edgeMenu->addAction(tr("Discard"));
 	edgeMenu->addSeparator();
 
-	QMenu *createElemMenu = new QMenu(tr("Create new element"), edgeMenu);
-	toDelete.append(createElemMenu);
+	QMenu *createElemMenu = new QMenu(tr("Create new element"), edgeMenu); // deleted as child of edgeMenu
 	edgeMenu->addMenu(createElemMenu);
 
-	QSignalMapper *menuSignalMapper = new QSignalMapper(this);
+	QSignalMapper *menuSignalMapper = new QSignalMapper();
 	toDelete.append(menuSignalMapper);
 
 	foreach(PossibleEdge pEdge, edge->getPossibleEdges()){
@@ -326,11 +325,10 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node, QPoint
 		foreach (QString target, targets.toSet()) { // QSet is used to remove duplicates
 			Id id = Id::loadFromString("qrm:/" + node->id().editor() + "/" + node->id().diagram() + "/" + target);
 			QAction *element = new QAction(mWindow->manager()->friendlyName(id), createElemMenu);
+			// deleted as child of createElemMenu
 			createElemMenu->addAction(element);
-			toDelete.append(element);
 			QObject::connect(element,SIGNAL(triggered()), menuSignalMapper, SLOT(map()));
 			menuSignalMapper->setMapping(element, id.toString());
-
 		}
 	}
 
@@ -349,9 +347,8 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node, QPoint
 		}
 	}
 
-//		Cleaning.
-//		foreach(QObject *object, toDelete)
-//			delete object;
+	foreach(QObject *object, toDelete)
+		delete object;
 
 	return result;
 }

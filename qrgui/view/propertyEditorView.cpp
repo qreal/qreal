@@ -17,6 +17,10 @@ PropertyEditorView::PropertyEditorView(QWidget *parent)
 PropertyEditorView::~PropertyEditorView()
 {
 	delete mPropertyEditor;
+	delete mVariantManager;
+	delete mVariantFactory;
+	delete mButtonManager;
+	delete mButtonFactory;
 }
 
 void PropertyEditorView::init(qReal::MainWindow *mainWindow, qReal::models::LogicalModelAssistApi *const logicalModelAssistApi)
@@ -59,7 +63,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 	delete mButtonManager;
 	delete mButtonFactory;
 
-	mVariantManager = new QtVariantPropertyManager(); // memleaks?
+	mVariantManager = new QtVariantPropertyManager();
 	mVariantFactory = new QtVariantEditorFactory();
 
 	mButtonManager = new PushButtonPropertyManager();
