@@ -923,7 +923,7 @@ bool EditorViewScene::getNeedDrawGrid()
 void EditorViewScene::drawGesture()
 {
 	QLineF line = mMouseMovementManager->newLine();
-	QGraphicsLineItem *item = new QGraphicsLineItem(line, NULL, this);
+	QGraphicsLineItem *item = new QGraphicsLineItem(line);
 	double size = mGesture.size() * 0.1;
 	double color_ratio = pow(fabs(sin(size)), 1.5);
 	QColor penColor(255 * color_ratio, 255 * (1 - color_ratio), 255);
