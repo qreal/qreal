@@ -521,7 +521,6 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 	}
 
 	if (loadingCancelled) {
-		close();
 		return false;
 	}
 
@@ -595,9 +594,9 @@ void MainWindow::saveAllAndOpen(QString const &dirName)
 
 bool MainWindow::open(QString const &fileName)
 {
-	if (!QFile(fileName).exists()) // || (!mSaveFile.isEmpty() && fileName.isEmpty()))
-		if (!(!mSaveFile.isEmpty() && fileName.isEmpty()))
-			return false;
+	if (!QFile(fileName).exists() && fileName != "") {
+		return false;
+	}
 
 	refreshRecentProjectsList(fileName);
 
@@ -674,27 +673,58 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
 	QModelIndex index = isLogicalModel ? (mUi->logicalModelExplorer->currentIndex())
 			: (mUi->graphicalModelExplorer->currentIndex());
+	QList<NodeElement*> itemsToArrangeLinks;
+	EditorView const * const view = getCurrentTab();
+	EditorViewScene* scene = NULL;
+	if (view) {
+		scene = dynamic_cast<EditorViewScene*>(view->scene());
+	}
 
 	if (isLogicalModel) {
 		Id const logicalId = mModels->logicalModelAssistApi().idByIndex(index);
 		IdList const graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
 		foreach (Id graphicalId, graphicalIdList) {
 			closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
+			if (scene) {
+				QGraphicsItem const * const item = scene->getElem(graphicalId);
+				EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(item);
+				if (edge) {
+					itemsToArrangeLinks.append(edge->src());
+					itemsToArrangeLinks.append(edge->dst());
+				}
+			}
 		}
-	} else
+	} else {
 		closeTab(index);
+		Id const graphicalId = mModels->graphicalModelAssistApi().idByIndex(index);
+		if (scene) {
+			QGraphicsItem const * const item = scene->getElem(graphicalId);
+			EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(item);
+			if (edge) {
+				itemsToArrangeLinks.append(edge->src());
+				itemsToArrangeLinks.append(edge->dst());
+			}
+		}
+	}
 
-	if (index.isValid()) {
+	if (index.isValid()) {  // TODO: why only here?
 		PropertyEditorModel* propertyEditorModel = static_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
 		if (propertyEditorModel->isCurrentIndex(index)) {
 			propertyEditorModel->clearModelIndexes();
 			mUi->propertyEditor->setRootIndex(QModelIndex());
 		}
 
-		if (isLogicalModel)
+		if (isLogicalModel) {
 			mModels->logicalModel()->removeRow(index.row(), index.parent());
-		else
+		}
+		else {
 			mModels->graphicalModel()->removeRow(index.row(), index.parent());
+		}
+		foreach (NodeElement *item, itemsToArrangeLinks) {
+			if (item) {
+				item->arrangeLinks();
+			}
+		}
 	}
 }
 
@@ -710,14 +740,30 @@ void MainWindow::deleteFromScene(QGraphicsItem *target)
 	if (elem) {
 		QPersistentModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
 		if (index.isValid()) {
-			NodeElement *node = dynamic_cast<NodeElement *>(elem);
-			if (node)
+			NodeElement* const node = dynamic_cast<NodeElement*>(elem);
+			if (node) {
 				node->highlightEdges();
+			}
+			EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(elem);
+			NodeElement* source = NULL;
+			NodeElement* destination = NULL;
+			if (edge) {
+				source = edge->src();
+				destination = edge->dst();
+			}
 			PropertyEditorModel* propertyEditorModel = static_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
 			if (propertyEditorModel->isCurrentIndex(index))
 				propertyEditorModel->clearModelIndexes();
 			mUi->propertyEditor->setRootIndex(QModelIndex());
 			mModels->graphicalModel()->removeRow(index.row(), index.parent());
+			if (edge) {
+				if (source) {
+					source->arrangeLinks();
+				}
+				if (destination) {
+					destination->arrangeLinks();
+				}
+			}
 		}
 		if (getCurrentTab() != NULL && getCurrentTab()->scene() != NULL)
 			getCurrentTab()->scene()->invalidate();
@@ -726,19 +772,16 @@ void MainWindow::deleteFromScene(QGraphicsItem *target)
 
 void MainWindow::deleteFromDiagram()
 {
-	bool isLogicalModel = false;
 	if (mModels->graphicalModel()) {
 		if (mUi->graphicalModelExplorer->hasFocus()) {
-			isLogicalModel = false;
-			deleteFromExplorer(isLogicalModel);
+			deleteFromExplorer(false);
 		} else if (getCurrentTab() != NULL && getCurrentTab()->hasFocus()) {
 			deleteFromScene();
 		}
 	}
 	if (mModels->logicalModel()) {
 		if (mUi->logicalModelExplorer->hasFocus()) {
-			isLogicalModel = true;
-			deleteFromExplorer(isLogicalModel);
+			deleteFromExplorer(true);
 		}
 	}
 
