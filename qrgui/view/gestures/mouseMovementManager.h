@@ -18,16 +18,16 @@ class MouseMovementManager
 {
 public:
 	MouseMovementManager(QList<qReal::Id> elements,
-						 qReal::EditorManager * editorManager,
-						 GesturesPainterInterface * gesturesPaintManager);
+						 qReal::EditorManager *editorManager,
+						 GesturesPainterInterface *gesturesPaintManager);
 
 	~MouseMovementManager();
 
-	void setElements(QList<qReal::Id> const & elements);
-	void mousePress(QPointF const & point);
-	void mouseMove(QPointF const & point);
+	void setElements(QList<qReal::Id> const &elements);
+	void mousePress(QPointF const &point);
+	void mouseMove(QPointF const &point);
 	void clear();
-	void setGesturesPainter(GesturesPainterInterface * gesturesPainter);
+	void setGesturesPainter(GesturesPainterInterface *gesturesPainter);
 	qReal::Id getObject();
 	static PathVector stringToPath(QString const &str);
 	QPointF pos();
@@ -44,11 +44,11 @@ private:
 	static QPoint parsePoint(QString const &str);
 	void recountCentre();
 	PathVector mPath;
-	IKeyManager * mKeyManager;
+	IKeyManager *mKeyManager;
 	KeyManager mKeyStringManager;
-	qReal::EditorManager * mEditorManager;
+	qReal::EditorManager *mEditorManager;
 	QList<qReal::Id> mElements;
 	QPointF mCentre;
-	GesturesPainterInterface * mGesturesPaintMan;
-	GesturesManager * mGesturesManager;
+	GesturesPainterInterface *mGesturesPaintMan;
+	GesturesManager *mGesturesManager;
 };

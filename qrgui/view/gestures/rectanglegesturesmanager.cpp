@@ -37,14 +37,14 @@ double RectangleGesturesManager::getDistance(double * const & key1, double * con
 double * RectangleGesturesManager::getKey(PathVector const & path)
 {
 	Key key = KeyBuilder::getKey(path, gridSize, gridSize);
-	double * finalKey = new double[gridSize * gridSize];
-	for (int i = 0; i < gridSize * gridSize; i ++)
+	double *finalKey = new double[gridSize * gridSize];
+	for (int i = 0; i < gridSize * gridSize; i++)
 		finalKey[i] = key.size();
-	for (int k = 0; k < key.size(); k ++) {
+	for (int k = 0; k < key.size(); k++) {
 		SquarePos pos = key.at(k);
-		for (int i = 0; i < pos.first; i ++) {
-			for (int j = 0; j < pos.second; j ++)
-				finalKey[i * gridSize + j] --;
+		for (int i = 0; i < pos.first; i++) {
+			for (int j = 0; j < pos.second; j++)
+				finalKey[i * gridSize + j]--;
 		}
 	}
 	return finalKey;
