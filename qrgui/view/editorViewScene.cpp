@@ -778,6 +778,13 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		qDebug() << "draw OK";
 	} else {
 		QGraphicsScene::mouseMoveEvent(event);
+		foreach (QGraphicsItem *item, items()) {
+			NodeElement *e = dynamic_cast<NodeElement *>(item);
+			if (e) {
+				if (e->isSelected())
+					e->alignToGrid();
+			}
+		}
 	}
 }
 
