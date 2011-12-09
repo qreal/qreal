@@ -16,6 +16,9 @@ public:
 	virtual void removeChild(qReal::Id const &id, qReal::Id const &child) = 0;
 	virtual void removeChildren(qReal::Id const &id) = 0;
 
+	/// Stacks element child before sibling (element id shold be parent of them both)
+	virtual void stackBefore(qReal::Id const &id, qReal::Id const &child, qReal::Id const &sibling) = 0;
+
 	virtual qReal::IdList outgoingLinks(qReal::Id const &id) const = 0;
 	virtual qReal::IdList incomingLinks(qReal::Id const &id) const = 0;
 	virtual qReal::IdList links(qReal::Id const &id) const = 0;

@@ -8,7 +8,7 @@ using namespace qrRepo;
 using namespace qrRepo::details;
 
 Client::Client(QString const &workingFile)
-	: serializer(workingFile)
+	: mWorkingFile(workingFile), serializer(workingFile)
 {
 	init();
 	loadFromDisk();
@@ -78,7 +78,8 @@ void Client::addChild(const Id &id, const Id &child, Id const &logicalId)
 	if (mObjects.contains(id)) {
 		if (!mObjects[id]->children().contains(child))
 			mObjects[id]->addChild(child);
-		if (mObjects.contains(child)) {
+
+		if (mObjects.contains(child)) { // should we move element?
 			mObjects[child]->setParent(id);
 		} else {
 			mObjects.insert(child, new Object(child, id, logicalId));
@@ -86,6 +87,22 @@ void Client::addChild(const Id &id, const Id &child, Id const &logicalId)
 	} else {
 		throw Exception("Client: Adding child " + child.toString() + " to nonexistent object " + id.toString());
 	}
+}
+
+void Client::stackBefore(qReal::Id const &id, qReal::Id const &child, qReal::Id const &sibling) {
+	if(!mObjects.contains(id)) {
+		throw Exception("Client: Moving child " + child.toString() + " of nonexistent object " + id.toString());
+	}
+
+	if(!mObjects.contains(child)) {
+		throw Exception("Client: Moving nonexistent child " + child.toString());
+	}
+
+	if(!mObjects.contains(sibling)) {
+		throw Exception("Client: Stacking before nonexistent child " + sibling.toString());
+	}
+
+	mObjects[id]->stackBefore(child, sibling);
 }
 
 void Client::removeParent(const Id &id)
@@ -202,6 +219,13 @@ void Client::loadFromDisk()
 	addChildrenToRootObject();
 }
 
+void Client::importFromDisk(QString const &importedFile)
+{
+	serializer.setWorkingFile(importedFile);
+	loadFromDisk();
+	serializer.setWorkingFile(mWorkingFile);
+}
+
 void Client::addChildrenToRootObject()
 {
 	foreach (Object *object, mObjects.values()) {
@@ -270,6 +294,7 @@ void Client::remove(const qReal::Id &id)
 void Client::setWorkingFile(QString const &workingFile)
 {
 	serializer.setWorkingFile(workingFile);
+	mWorkingFile = workingFile;
 }
 
 void Client::printDebug() const

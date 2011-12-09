@@ -36,6 +36,7 @@ public:
 	QList<QPersistentModelIndex> indexesWithLogicalId(Id const &logicalId) const;
 	virtual qReal::details::ModelsAssistInterface* modelAssistInterface() const;
 	GraphicalModelAssistApi &graphicalModelAssistApi() const;
+	virtual void stackBefore(QModelIndex const &element, QModelIndex const &sibling);
 
 signals:
 	void nameChanged(Id const &id);

@@ -15,7 +15,7 @@ SensorItem::SensorItem(SensorsConfiguration &configuration, inputPort::InputPort
 	, mRotater(NULL)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
-                         /*ItemClipsToShape |*/ ItemSendsGeometryChanges);
+						 /*ItemClipsToShape |*/ ItemSendsGeometryChanges);
 
 	setAcceptHoverEvents(true);
 	setAcceptDrops(true);
@@ -33,8 +33,6 @@ void SensorItem::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *sty
 {
 	Q_UNUSED(style)
 	Q_UNUSED(widget)
-
-	painter->save();
 
 	QBrush brush;
 	brush.setColor(color());

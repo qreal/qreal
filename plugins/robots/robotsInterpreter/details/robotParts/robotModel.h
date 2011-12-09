@@ -54,10 +54,18 @@ public:
 
 	robotImplementations::AbstractRobotModelImplementation &robotImpl();
 	void setRobotImplementation(robotImplementations::AbstractRobotModelImplementation *robotImpl);
+	bool needsConnection() const;
+	void startInterpretation();
 
 signals:
-	void disconnected();
+	void sensorsConfigured();
 	void connected(bool success);
+	void disconnected();
+
+private slots:
+	void sensorsConfiguredSlot();
+	void connectedSlot(bool success);
+
 
 private:
 	robotImplementations::AbstractRobotModelImplementation *mRobotImpl;  // Has ownership.

@@ -2,6 +2,7 @@
 
 #include "blocks/block.h"
 #include "../sensorConstants.h"
+#include "tracer.h"
 
 using namespace qReal;
 using namespace interpreters::robots;
@@ -45,13 +46,15 @@ bool Autoconfigurer::configure(Id const &diagram)
 		}
 	}
 
-	if (result)
+	if (result) {
+		Tracer::debug(tracer::initialization, "Autoconfigurer::configure", "Autoconfiguring sensors in a model");
 		mRobotModel->configureSensors(
-					mUsedSensors[0]
-					, mUsedSensors[1]
-					, mUsedSensors[2]
-					, mUsedSensors[3]
-					);
+				mUsedSensors[0]
+				, mUsedSensors[1]
+				, mUsedSensors[2]
+				, mUsedSensors[3]
+			);
+	}
 
 	return result;
 }

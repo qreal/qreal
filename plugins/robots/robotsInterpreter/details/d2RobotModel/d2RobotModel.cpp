@@ -1,8 +1,9 @@
 #include "d2RobotModel.h"
-#include <QtCore/QDebug>
+#include "../tracer.h"
 
 using namespace qReal::interpreters::robots;
-using namespace details::d2Model;
+using namespace details;
+using namespace d2Model;
 
 const unsigned long black   = 0xFF000000;
 const unsigned long white   = 0xFFFFFFFF;
@@ -223,31 +224,31 @@ int D2RobotModel::readColorFullSensor(QHash<unsigned long, int> countsColor) con
 
 	switch (maxColor) {
 	case (black):
-		qDebug() << "BLACK";
+		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "BLACK");
 		return 1;
 	case (red):
-		qDebug() << "RED";
+		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "RED");
 		return 5;
 	case (green):
-		qDebug() << "GREEN";
+		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "GREEN");
 		return 3;
 	case (blue) :
-		qDebug() << "BLUE";
+		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "BLUE");
 		return 2;
 	case (yellow):
-		qDebug() << "YELLOW";
+		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "YELLOW");
 		return 4;
 	case (white):
-		qDebug() << "WHITE";
+		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "WHITE");
 		return 6;
 	case (cyan):
-		qDebug() << "CYAN";
+		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "CYAN");
 		return 7;
 	case (magenta):
-		qDebug() << "MAGENTA";
+		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "MAGENTA");
 		return 8;
 	default:
-		qDebug() << "Other Color";
+		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "Other Color");
 		return 0;
 	}
 }

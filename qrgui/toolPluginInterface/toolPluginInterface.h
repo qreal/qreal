@@ -7,7 +7,7 @@
 #include "../../qrrepo/repoControlInterface.h"
 #include "../dialogs/preferencesPages/page.h"
 
-#include "customizationInterface.h"
+#include "customizer.h"
 #include "pluginConfigurator.h"
 #include "actionInfo.h"
 
@@ -16,32 +16,34 @@ namespace qReal {
 class ToolPluginInterface
 {
 public:
-    virtual CustomizationInterface* customizationInterface()
-    {
-        return NULL;
-    }
+	virtual Customizer* customizationInterface()
+	{
+		return NULL;
+	}
 
-    virtual void updateSettings()
-    {
-    }
+	virtual void updateSettings()
+	{
+	}
 
-    virtual QList<ActionInfo> actions()
-    {
-        return QList<ActionInfo>();
-    }
+	virtual QList<ActionInfo> actions()
+	{
+		return QList<ActionInfo>();
+	}
 
-    virtual void init(PluginConfigurator const &configurator)
-    {
-        Q_UNUSED(configurator);
-    }
+	virtual void init(PluginConfigurator const &configurator)
+	{
+		Q_UNUSED(configurator);
+	}
 
-    virtual QPair<QString, PreferencesPage *> preferencesPage()
-    {
-        return QPair<QString, PreferencesPage *>(QString(), NULL);
-    }
-    virtual void closeNeededWidget()
-    {
-    }
+	virtual QPair<QString, PreferencesPage *> preferencesPage()
+	{
+		return QPair<QString, PreferencesPage *>(QString(), NULL);
+	}
+
+	// TODO: Properly rename it or remove at all.
+	virtual void closeNeededWidget()
+	{
+	}
 };
 
 }

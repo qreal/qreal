@@ -1,10 +1,10 @@
 #include "bluetoothRobotCommunicationThread.h"
 
-#include <QtCore/QDebug>
 #include <QtCore/QMetaType>
 #include <time.h>
 
 #include "../../thirdparty/qextserialport/src/qextserialport.h"
+#include "../tracer.h"
 
 using namespace qReal::interpreters::robots::details;
 
@@ -53,7 +53,8 @@ void BluetoothRobotCommunicationThread::connect(QString const &portName)
 
 	mPort->open(QIODevice::ReadWrite | QIODevice::Unbuffered);
 
-	qDebug() << "Port" << mPort->portName() << "is open:" << mPort->isOpen();
+	Tracer::debug(tracer::initialization, "BluetoothRobotCommunicationThread::connect"
+			, "Port " + mPort->portName() + " is open: " + QString("%1").arg(mPort->isOpen()));
 
 	QByteArray command(4, 0);
 	command[0] = 0x02;  //command length
@@ -106,7 +107,7 @@ void BluetoothRobotCommunicationThread::sendI2C(QObject *addressee
 	send(command);
 
 	if (!waitForBytes(responseSize, port)) {
-		qDebug() << "No response, connection error";
+		Tracer::debug(tracer::robotCommunication, "BluetoothRobotCommunicationThread::sendI2C", "No response, connection error");
 		emit response(addressee, QByteArray());
 		return;
 	}
@@ -169,19 +170,23 @@ int BluetoothRobotCommunicationThread::i2cBytesReady(inputPort::InputPortEnum co
 
 void BluetoothRobotCommunicationThread::send(QByteArray const &buffer) const
 {
-//	qDebug() << "Sending:";
-//	for (int i = 0; i < buffer.size(); ++i) {
-//		qDebug() << "Byte" << i << static_cast<unsigned char>(buffer[i]);
-//	}
+	Tracer::debug(tracer::robotCommunication, "BluetoothRobotCommunicationThread::send", "Sending:");
+	for (int i = 0; i < buffer.size(); ++i) {
+		Tracer::debug(tracer::robotCommunication, "BluetoothRobotCommunicationThread::send"
+				, QString("Byte %1 %2").arg(i).arg(static_cast<unsigned char>(buffer[i])));
+	}
 	mPort->write(buffer);
 }
 
 QByteArray BluetoothRobotCommunicationThread::receive(int size) const
 {
 	QByteArray const result = mPort->read(size);
-//	qDebug() << "Received:";
-//	for (int i = 0; i < result.size(); ++i) {
-//		qDebug() << "Byte" << i << static_cast<unsigned char>(result[i]);
-//	}
+
+	Tracer::debug(tracer::robotCommunication, "BluetoothRobotCommunicationThread::receive", "Received:");
+	for (int i = 0; i < result.size(); ++i) {
+		Tracer::debug(tracer::robotCommunication, "BluetoothRobotCommunicationThread::receive"
+				, QString("Byte %1 %2").arg(i).arg(static_cast<unsigned char>(result[i])));
+	}
+
 	return result;
 }

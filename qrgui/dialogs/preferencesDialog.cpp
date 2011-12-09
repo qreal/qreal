@@ -57,9 +57,8 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
 
 	connect(mEditorPage, SIGNAL(gridChanged()), this, SIGNAL(gridChanged()));
-	connect(mMiscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
-
 	connect(mEditorPage, SIGNAL(fontChanged()), this, SIGNAL(fontChanged()));
+	connect(mMiscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
 
 	int currentTab = SettingsManager::value("currentPreferencesTab", 0).toInt();
 	ui->listWidget->setCurrentRow(currentTab);

@@ -1,4 +1,5 @@
 #include "robotsPlugin.h"
+#include "details/tracer.h"
 
 #include <QtCore/QTranslator>
 #include <QtGui/QApplication>
@@ -14,6 +15,8 @@ RobotsPlugin::RobotsPlugin()
 	, mRunAction(NULL)
 	, mStopAction(NULL)
 {
+//	details::Tracer::enableAll();
+	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
 	QTranslator *appTranslator = new QTranslator();
 	appTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(appTranslator);
@@ -25,13 +28,15 @@ RobotsPlugin::~RobotsPlugin()
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
 {
+	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing plugin");
 	mInterpreter.init(configurator.graphicalModelApi()
 			, configurator.logicalModelApi()
 			, configurator.mainWindowInterpretersInterface());
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
+	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing done");
 }
 
-qReal::CustomizationInterface* RobotsPlugin::customizationInterface()
+qReal::Customizer* RobotsPlugin::customizationInterface()
 {
 	return &mCustomizer;
 }
@@ -97,6 +102,7 @@ void RobotsPlugin::show2dModel()
 
 void RobotsPlugin::updateSettings()
 {
+	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Updating settings, model and sensors are going to be reinitialized...");
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
 	mInterpreter.setRobotModelType(typeOfRobotModel);
 	mInterpreter.configureSensors(
@@ -114,6 +120,7 @@ void RobotsPlugin::updateSettings()
 	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication", "bluetooth").toString();
 	QString const portName = SettingsManager::value("bluetoothPortName", "").toString();
 	mInterpreter.setCommunicator(typeOfCommunication, portName);
+	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Done updating settings");
 }
 
 void RobotsPlugin::closeNeededWidget()

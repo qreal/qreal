@@ -1,7 +1,11 @@
 #include "unrealRobotModelImplementation.h"
 
 #include <QtCore/QDebug>
+
+#include "../tracer.h"
+
 using namespace qReal::interpreters::robots;
+using namespace details;
 using namespace details::robotImplementations;
 using namespace details::d2Model;
 
@@ -49,12 +53,14 @@ sensorImplementations::UnrealColorSensorImplementation *UnrealRobotModelImplemen
 
 void UnrealRobotModelImplementation::addTouchSensor(inputPort::InputPortEnum const &port)
 {
+	Tracer::debug(tracer::initialization, "UnrealRobotModelImplementation::addTouchSensor", "Configuring touch sensor on port " + QString::number(port));
 	sensorImplementations::UnrealTouchSensorImplementation *sensor = new sensorImplementations::UnrealTouchSensorImplementation(port, mD2Model);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
 void UnrealRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum const &port)
 {
+	Tracer::debug(tracer::initialization, "UnrealRobotModelImplementation::addSonarSensor", "Configuring sonar sensor on port " + QString::number(port));
 	sensorImplementations::UnrealSonarSensorImplementation *sensor = new sensorImplementations::UnrealSonarSensorImplementation(port, mD2Model);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
@@ -62,6 +68,7 @@ void UnrealRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum con
 void UnrealRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType)
 {
 	Q_UNUSED(mode)
+	Tracer::debug(tracer::initialization, "UnrealRobotModelImplementation::addColorSensor", "Configuring color sensor on port " + QString::number(port));
 	sensorImplementations::UnrealColorSensorImplementation *sensor = new sensorImplementations::UnrealColorSensorImplementation(port, mD2Model, sensorType);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
@@ -75,12 +82,14 @@ void UnrealRobotModelImplementation::init()
 
 void UnrealRobotModelImplementation::timerTimeout()
 {
+	Tracer::debug(tracer::initialization, "UnrealRobotModelImplementation::timerTimeout", "Configuring sensors");
 	connect(&mSensorsConfigurer, SIGNAL(allSensorsConfigured()), this, SLOT(sensorConfigurationDoneSlot()));
 	mSensorsConfigurer.unlockConfiguring();
 }
 
 void UnrealRobotModelImplementation::sensorConfigurationDoneSlot()
 {
+	Tracer::debug(tracer::initialization, "UnrealRobotModelImplementation::sensorConfigurationDoneSlot", "");
 	if (!mIsConnected) {
 		mIsConnected = true;
 		emit connected(true);
@@ -88,6 +97,7 @@ void UnrealRobotModelImplementation::sensorConfigurationDoneSlot()
 	} else {
 		emit sensorsConfigured();
 	}
+	emit sensorsConfigured();
 }
 
 void UnrealRobotModelImplementation::stopRobot()

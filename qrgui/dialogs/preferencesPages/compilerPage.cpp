@@ -39,12 +39,15 @@ void PreferencesCompilerPage::changeEvent(QEvent *e)
 
 void PreferencesCompilerPage::changeSystem()
 {
-	if(mUi->linuxButton->isChecked())
+	if (mUi->linuxButton->isChecked()) {
 		initCompilersSettings("qmake", "make", "so", "lib");
-	if(mUi->windowsButton->isChecked())
+	}
+	if (mUi->windowsButton->isChecked()) {
 		initCompilersSettings("qmake", "mingw32-make", "dll", "");
-	if(mUi->otherButton->isChecked())
+	}
+	if (mUi->otherButton->isChecked()) {
 		mUi->compilerSettingsWidget->setEnabled(true);
+	}
 }
 
 void PreferencesCompilerPage::initCompilersSettings(const QString &pathToQmake,

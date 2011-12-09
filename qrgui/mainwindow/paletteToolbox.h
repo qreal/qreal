@@ -4,6 +4,7 @@
 #include <QtGui/QWidget>
 #include <QtGui/QIcon>
 
+#include "../pluginManager/editorManager.h"
 #include "../../qrkernel/ids.h"
 
 class QVBoxLayout;
@@ -14,81 +15,95 @@ class QDropEvent;
 
 namespace qReal {
 
-	namespace gui {
+namespace gui {
 
-		class PaletteToolbox : public QWidget
+class PaletteToolbox : public QWidget
+{
+	Q_OBJECT
+
+public:
+	explicit PaletteToolbox(QWidget *parent = NULL);
+	~PaletteToolbox();
+
+	void addDiagramType(Id const &id, QString const &name);
+	void addItemType(Id const &id, QString const &name, QString const &description, QIcon const &icon);
+	void initDone();
+	void deleteDiagramType(Id const &id);
+	QComboBox* getComboBox();
+
+	/// Gets item types of diagram, sorts by displayed name and shows them
+	void addSortedItemTypes(EditorManager &editorManager, const Id &diagram);
+	QVector<QString> getTabNames();
+
+	Id currentTab();
+	void setComboBox(Id id);
+
+public slots:
+	void setActiveEditor(int const editorIndex);
+	void setActiveEditor(Id id);
+	void recreateTabs();
+
+private:
+	class DraggableElement : public QWidget {
+	public:
+		DraggableElement(Id const &id, QString const &name, QString const &description,
+				QIcon const &icon, QWidget *parent = NULL);
+
+		QIcon icon() const
 		{
-			Q_OBJECT
+			return mIcon;
+		}
 
-		public:
-			explicit PaletteToolbox(QWidget *parent = NULL);
-			~PaletteToolbox();
+		QString text() const
+		{
+			return mText;
+		}
 
-			void addDiagramType(Id const &id, QString const &name);
-			void addItemType(Id const &id, QString const &name, QString const &description, QIcon const &icon);
-			void initDone();
-			void deleteDiagramType(Id const &id);
+		Id id() const
+		{
+			return mId;
+		}
 
-			QComboBox* getComboBox();
+	private:
+		Id mId;
+		QIcon mIcon;
+		QString mText;
+	};
 
-			QVector<QString> getTabNames();
+	virtual void dragEnterEvent(QDragEnterEvent *event);
+	virtual void dropEvent(QDropEvent *event);
+	virtual void mousePressEvent(QMouseEvent *event);
+	void createPalette();
+	void deletePalette();
 
-			Id currentTab();
-			void setComboBox(Id id);
+	/// Method-comparator for sorting Ids by displayed name. Needs EditorManager instance to work,
+	/// but qSort() prohibits it to be a member of an object. So making it static does the trick.
+	static bool idLessThan(const Id &s1, const Id &s2);
 
-		public slots:
-			void setActiveEditor(int const editorIndex);
-			void setActiveEditor(Id id);
-			void recreateTabs();
+	QHash<Id, int> mCategories;
 
-		private:
-			class DraggableElement : public QWidget {
-			public:
-				DraggableElement(Id const &id, QString const &name, QString const &description,
-					QIcon const &icon, QWidget *parent = NULL);
+	/// Vector of editors' contents
+	QVector<QWidget*> mTabs;
 
-				QIcon icon() const
-				{
-					return mIcon;
-				}
+	/// Vector of editors' names
+	QVector<QString> mTabNames;
 
-				QString text() const
-				{
-					return mText;
-				}
+	/// Main layout
+	QVBoxLayout *mLayout;
 
-				Id id() const
-				{
-					return mId;
-				}
+	/// Combobox with editors
+	QComboBox *mComboBox;
 
-			private:
-				Id mId;
-				QIcon mIcon;
-				QString mText;
-			};
+	/// Area of current editor
+	QScrollArea *mScrollArea;
+	int mCurrentTab;
 
-			virtual void dragEnterEvent(QDragEnterEvent *event);
-			virtual void dropEvent(QDropEvent *event);
-			virtual void mousePressEvent(QMouseEvent *event);
+	/// EditorManager instance used to sort palette's content. Made static to be used inside idLessThan()
+	static EditorManager *mEditorManager;
 
-			void createPalette();
-			void deletePalette();
-
-			QHash<Id, int> mCategories;
-			/** @brief vector of editors' contents */
-			QVector<QWidget*> mTabs;
-			/** @brief vector of editors' names */
-			QVector<QString> mTabNames;
-			/** @brief main layout */
-			QVBoxLayout *mLayout;
-			/** @brief Combobox with editors */
-			QComboBox *mComboBox;
-			/** @brief Area of current editor */
-			QScrollArea *mScrollArea;
-			int mCurrentTab;
-		};
-
-	}
+};
 
 }
+
+}
+
