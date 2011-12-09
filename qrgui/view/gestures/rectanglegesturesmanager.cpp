@@ -6,6 +6,14 @@ RectangleGesturesManager::RectangleGesturesManager()
 {
 }
 
+RectangleGesturesManager::~RectangleGesturesManager()
+{
+	foreach (QString const object, mGestures.keys()) {
+		delete mGestures[object];
+		mGestures.remove(object);
+	}
+}
+
 double RectangleGesturesManager::getMaxDistance(QString const &)
 {
 	return 1000;

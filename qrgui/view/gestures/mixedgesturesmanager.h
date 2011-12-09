@@ -6,6 +6,7 @@ class MixedGesturesManager : public GesturesRecognizer<QPair<double *, double *>
 {
 public:
 	MixedGesturesManager();
+	~MixedGesturesManager();
 	double getMaxDistance(QString const &);
 	bool isMultistroke();
 	double getDistance(QPair<double *, double *> const & key1, QPair<double *, double *> const & key2);

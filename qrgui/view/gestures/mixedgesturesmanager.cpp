@@ -10,6 +10,16 @@ MixedGesturesManager::MixedGesturesManager()
 {
 }
 
+MixedGesturesManager::~MixedGesturesManager()
+{
+	foreach (QString const object, mGestures.keys()) {
+		delete mGestures[object].first;
+		delete mGestures[object].second;
+		mGestures.remove(object);
+	}
+}
+
+
 double MixedGesturesManager::getMaxDistance(QString const &)
 {
 	return 30;
