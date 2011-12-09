@@ -1,7 +1,11 @@
 #pragma once
 
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
+#include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
+#include "databaseSchemeGenerator/databaseSchemeGenerator.h"
 
+
+namespace qReal {
 namespace ains {
 
 class AinsPlugin : public QObject, public qReal::ToolPluginInterface
@@ -16,8 +20,17 @@ public:
 	virtual void init(PluginConfigurator const &configurator);
 	virtual QList<ActionInfo> actions();
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
-	virtual CustomizationInterface* customizationInterface();
+	virtual qReal::Customizer* customizationInterface();
 	virtual void updateSettings();
+
+public slots:
+	void generateDatabaseScheme();
+
+private:
+	QAction *mGenerateDatabaseSchemeAction;
+	DatabaseEditorSchemeGenerator *mDatabaseEditorGenerator;
+
 };
 
+}
 }

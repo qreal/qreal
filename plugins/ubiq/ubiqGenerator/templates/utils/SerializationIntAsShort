@@ -1,0 +1,3 @@
+            short @@Name@@_temp = (short)@@Name@@;
+            if (iBigEndianFlag) @@Name@@_temp = Convert16(@@Name@@_temp);
+            iPackWriter.Write(@@Name@@_temp);

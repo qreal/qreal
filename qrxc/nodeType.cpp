@@ -13,10 +13,10 @@
 using namespace utils;
 
 NodeType::NodeType(Diagram *diagram)
-	: GraphicType(diagram)
-	, mIsPin(false)
-	, mIsHavePin(false)
-	, mIsResizeable(true)
+: GraphicType(diagram)
+, mIsPin(false)
+, mIsHavePin(false)
+, mIsResizeable(true)
 {}
 
 NodeType::~NodeType()
@@ -69,13 +69,13 @@ void NodeType::generateSdf() const
 	OutFile out("generated/shapes/" + resourceName("Class"));
 	mSdfDomElement.save(out(), 1);
 
-//	QDomNodeList images = mSdfDomElement.elementsByTagName("image");
+	//	QDomNodeList images = mSdfDomElement.elementsByTagName("image");
 
-/*	for (int i = 0; i < images.size(); ++i) {
-		QString const name = images.at(i).toElement().attribute("name");
-		mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + name + "</file>\n");
-	}
-	*/
+	/*	for (int i = 0; i < images.size(); ++i) {
+  QString const name = images.at(i).toElement().attribute("name");
+  mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + name + "</file>\n");
+ }
+ */
 }
 
 bool NodeType::initPorts()
@@ -93,8 +93,8 @@ bool NodeType::initPorts()
 bool NodeType::initPointPorts(QDomElement const &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("pointPort");
-		!portElement.isNull();
-		portElement = portElement.nextSiblingElement("pointPort"))
+	!portElement.isNull();
+	portElement = portElement.nextSiblingElement("pointPort"))
 	{
 		Port *pointPort = new PointPort();
 		if (!pointPort->init(portElement, mWidth, mHeight)) {
@@ -109,8 +109,8 @@ bool NodeType::initPointPorts(QDomElement const &portsElement)
 bool NodeType::initLinePorts(QDomElement const &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("linePort");
-		!portElement.isNull();
-		portElement = portElement.nextSiblingElement("linePort"))
+	!portElement.isNull();
+	portElement = portElement.nextSiblingElement("linePort"))
 	{
 		Port *linePort = new LinePort();
 		if (!linePort->init(portElement, mWidth, mHeight))
@@ -164,7 +164,7 @@ void NodeType::generatePorts() const
 void NodeType::generatePointPorts(QDomElement const &portsElement, OutFile &out) const
 {
 	for (QDomElement portElement = portsElement.firstChildElement("pointPort"); !portElement.isNull();
-		portElement = portElement.nextSiblingElement("pointPort"))
+	portElement = portElement.nextSiblingElement("pointPort"))
 	{
 		out() << "\t<point stroke-width=\"11\" stroke-style=\"solid\" stroke=\"#c3dcc4\" ";
 		out() << "x1=\""<<portElement.attribute("x") << "\" y1=\""<<portElement.attribute("y") << "\" ";
@@ -178,7 +178,7 @@ void NodeType::generatePointPorts(QDomElement const &portsElement, OutFile &out)
 void NodeType::generateLinePorts(QDomElement const &portsElement, OutFile &out) const
 {
 	for (QDomElement portElement = portsElement.firstChildElement("linePort"); !portElement.isNull();
-		portElement = portElement.nextSiblingElement("linePort"))
+	portElement = portElement.nextSiblingElement("linePort"))
 	{
 		QDomElement portStartElement = portElement.firstChildElement("start");
 		QDomElement portEndElement = portElement.firstChildElement("end");
@@ -223,23 +223,23 @@ void NodeType::generateCode(OutFile &out)
 	bool hasPorts = false;
 
 	out() << "\tclass " << className << " : public ElementImpl\n\t{\n"
-		<< "\tpublic:\n";
+	<< "\tpublic:\n";
 
 	if (!mBonusContextMenuFields.empty()) {
 		out() << "\t\t" << className << "()\n\t\t{\n";
 		out() << "\t\t\tmBonusContextMenuFields";
-			foreach (QString elem, mBonusContextMenuFields) {
-				out() << " << " << "\"" << elem << "\"";
-			}
+		foreach (QString elem, mBonusContextMenuFields) {
+			out() << " << " << "\"" << elem << "\"";
+		}
 		out() << ";\n";
 		out() << "\t\t}\n\n";
 	}
 
 	out () << "\t\tvoid init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}\n\n"
-		<< "\t\tvoid init(QRectF &contents, QList<StatPoint> &pointPorts,\n"
-		<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,\n"
-		<< "\t\t\t\t\t\t\tQList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,\n"
-		<< "\t\t\t\t\t\t\tSdfRendererInterface *portRenderer)\n\t\t{\n";
+	<< "\t\tvoid init(QRectF &contents, QList<StatPoint> &pointPorts,\n"
+	<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,\n"
+	<< "\t\t\t\t\t\t\tQList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,\n"
+	<< "\t\t\t\t\t\t\tSdfRendererInterface *portRenderer)\n\t\t{\n";
 
 	if (!hasPointPorts())
 		out() << "\t\t\tQ_UNUSED(pointPorts);\n";
@@ -247,12 +247,12 @@ void NodeType::generateCode(OutFile &out)
 		out() << "\t\t\tQ_UNUSED(linePorts);\n";
 	if (mLabels.size() == 0)
 		out() << "\t\t\tQ_UNUSED(titles);\n"
-			<<"\t\t\tQ_UNUSED(factory);\n";
+		<<"\t\t\tQ_UNUSED(factory);\n";
 
 	QFile sdfFile("generated/shapes/" + className + "Class.sdf");
 	if (sdfFile.exists()) {
 		out() << "\t\t\tmRenderer = renderer;\n"
-				"\t\t\tmRenderer->load(QString(\":/generated/shapes/" << className << "Class.sdf\"));\n";
+		"\t\t\tmRenderer->load(QString(\":/generated/shapes/" << className << "Class.sdf\"));\n";
 		hasSdf = true;
 	} else
 		out() << "\t\t\tQ_UNUSED(portRenderer);\n";
@@ -264,7 +264,7 @@ void NodeType::generateCode(OutFile &out)
 	}
 
 	out() << "\t\t\tcontents.setWidth(" << mWidth << ");\n"
-		<< "\t\t\tcontents.setHeight(" << mHeight << ");\n";
+	<< "\t\t\tcontents.setHeight(" << mHeight << ");\n";
 
 	foreach (Port *port, mPorts)
 		port->generateCode(out);
@@ -277,7 +277,7 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\t\t ElementImpl *clone() { return NULL; }\n";
 
 	out() << "\t\t~" << className << "() {}\n\n"
-		<< "\t\tvoid paint(QPainter *painter, QRectF &contents)\n\t\t{\n";
+	<< "\t\tvoid paint(QPainter *painter, QRectF &contents)\n\t\t{\n";
 
 	if (hasSdf)
 		out() << "\t\t\tmRenderer->render(painter, contents);\n";
@@ -285,13 +285,15 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\t\t}\n\n";
 
 	out() << "\t\tQt::PenStyle getPenStyle() { return Qt::SolidLine; }\n\n"
-		<< "\t\tvoid drawStartArrow(QPainter *) const {}\n"
-		<< "\t\tvoid drawEndArrow(QPainter *) const {}\n"
-		<< "\t\tbool hasPorts()\n\t\t{\n";
+	<< "\t\tint getPenWidth() { return 0; }\n\n"
+	<< "\t\tQColor getPenColor() { return QColor(); }\n\n"
+	<< "\t\tvoid drawStartArrow(QPainter *) const {}\n"
+	<< "\t\tvoid drawEndArrow(QPainter *) const {}\n"
+	<< "\t\tbool hasPorts()\n\t\t{\n";
 
 	out() << (hasPorts ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-		<< "\t\t}\n\n"
-		<< "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n";
+	<< "\t\t}\n\n"
+	<< "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n";
 
 	if (mLabels.isEmpty())
 		out() << "\t\t\tQ_UNUSED(repo);\n";
@@ -300,58 +302,58 @@ void NodeType::generateCode(OutFile &out)
 			label->generateCodeForUpdateData(out);
 
 	out() << "\t\t}\n\n"
-		<< "\t\tbool isNode()\n\t\t{\n"
-		<< "\t\t\treturn true;\n"
-		<< "\t\t}\n\n"
+	<< "\t\tbool isNode()\n\t\t{\n"
+	<< "\t\t\treturn true;\n"
+	<< "\t\t}\n\n"
 
-		<< "\t\tbool isResizeable()\n\t\t{\n"
-		<< "\t\t\treturn " << (mIsResizeable ? "true" : "false") << ";\n"
-		<< "\t\t}\n\n"
+	<< "\t\tbool isResizeable()\n\t\t{\n"
+	<< "\t\t\treturn " << (mIsResizeable ? "true" : "false") << ";\n"
+	<< "\t\t}\n\n"
 
-		<< "\t\tbool isContainer()\n\t\t{\n"
-		<< (!mContains.empty() ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-		<< "\t\t}\n\n"
+	<< "\t\tbool isContainer()\n\t\t{\n"
+	<< (!mContains.empty() ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+	<< "\t\t}\n\n"
 
-		<< "\t\tbool isSortingContainer()\n\t\t{\n"
-		<< (mContainerProperties.isSortingContainer ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-		<< "\t\t}\n\n"
+	<< "\t\tbool isSortingContainer()\n\t\t{\n"
+	<< (mContainerProperties.isSortingContainer ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+	<< "\t\t}\n\n"
 
-		<< "\t\tint sizeOfForestalling()\n\t\t{\n"
-		<< "\t\t\treturn " + QString::number(mContainerProperties.sizeOfForestalling) + ";\n"
-		<< "\t\t}\n\n"
+	<< "\t\tint sizeOfForestalling()\n\t\t{\n"
+	<< "\t\t\treturn " + QString::number(mContainerProperties.sizeOfForestalling) + ";\n"
+	<< "\t\t}\n\n"
 
-		<< "\t\tint sizeOfChildrenForestalling()\n\t\t{\n"
-		<< "\t\t\treturn " << QString::number(mContainerProperties.sizeOfChildrenForestalling) << ";\n"
-		<< "\t\t}\n\n"
+	<< "\t\tint sizeOfChildrenForestalling()\n\t\t{\n"
+	<< "\t\t\treturn " << QString::number(mContainerProperties.sizeOfChildrenForestalling) << ";\n"
+	<< "\t\t}\n\n"
 
-		<< "\t\tbool hasMovableChildren()\n\t\t{\n"
-		<< (mContainerProperties.hasMovableChildren ?  "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-		<< "\t\t}\n\n"
+	<< "\t\tbool hasMovableChildren()\n\t\t{\n"
+	<< (mContainerProperties.hasMovableChildren ?  "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+	<< "\t\t}\n\n"
 
-		<< "\t\tbool minimizesToChildren()\n\t\t{\n"
-		<< (mContainerProperties.minimizesToChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-		<< "\t\t}\n\n"
+	<< "\t\tbool minimizesToChildren()\n\t\t{\n"
+	<< (mContainerProperties.minimizesToChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+	<< "\t\t}\n\n"
 
-		<< "\t\tbool maximizesChildren()\n\t\t{\n"
-		<< (mContainerProperties.maximizesChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-		<< "\t\t}\n\n"
+	<< "\t\tbool maximizesChildren()\n\t\t{\n"
+	<< (mContainerProperties.maximizesChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+	<< "\t\t}\n\n"
 
-		<< "\t\tbool isPort()\n\t\t{\n"
-		<< (mIsPin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-		<< "\t\t}\n\n"
+	<< "\t\tbool isPort()\n\t\t{\n"
+	<< (mIsPin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+	<< "\t\t}\n\n"
 
-		<< "\t\tbool hasPin()\n\t\t{\n"
-		<< (mIsHavePin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-		<< "\t\t}\n\n";
+	<< "\t\tbool hasPin()\n\t\t{\n"
+	<< (mIsHavePin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+	<< "\t\t}\n\n";
 
 	out() << "\t\tQList<double> border()\n\t\t{\n"
-		<< "\t\t\tQList<double> list;\n";
+	<< "\t\t\tQList<double> list;\n";
 	if (mIsHavePin)
 		out() << "\t\t\tlist << 30 << 15 << 15 << 25;\n";
 	else
 		out() << "\t\t\tlist << 0 << 0 << 0 << 0;\n";
 	out() << "\t\t\treturn list;\n"
-		<< "\t\t}\n\n";
+	<< "\t\t}\n\n";
 
 	out() << "\t\tQStringList bonusContextMenuFields()\n\t\t{\n" << "\t\t\treturn ";
 	if (!mBonusContextMenuFields.empty())

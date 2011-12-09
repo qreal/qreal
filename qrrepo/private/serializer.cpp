@@ -79,9 +79,8 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 
 void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash)
 {
-	if (mWorkingFile.isEmpty())
-		clearWorkingDir();
-	else
+	clearWorkingDir();
+	if (!mWorkingFile.isEmpty())
 		decompressFile(mWorkingFile);
 	loadFromDisk(SettingsManager::value("temp", "").toString(), objectsHash);
 }

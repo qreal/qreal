@@ -76,6 +76,8 @@ protected:
 	virtual void drawEndArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
 
 	Qt::PenStyle mPenStyle;
+	int mPenWidth;
+	QColor mPenColor;
 	QString mText;
 	QString mFromMult, mToMult;
 	ArrowType mStartArrowStyle;
@@ -98,6 +100,8 @@ private:
 	void drawPort(QPainter *painter) const;
 
 	void removeUnneededPoints(int startingPoint);
+
+	void deleteUnneededPoints();
 
 	NodeElement *mSrc;
 	NodeElement *mDst;

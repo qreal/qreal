@@ -3,7 +3,7 @@
 #include <QtGui/QTransform>
 #include <QtCore/QStringList>
 
-#include <QtCore/QDebug>
+#include "../tracer.h"
 #include "stylusItem.h"
 
 using namespace qReal::interpreters::robots::details::d2Model;
@@ -21,12 +21,12 @@ int WorldModel::sonarReading(QPoint const &position, qreal direction) const
 	for (int currentRangeInCm = 1; currentRangeInCm <= maxSonarRangeCms; ++currentRangeInCm) {
 		QPainterPath rayPath = sonarScanningRegion(position, direction, currentRangeInCm);
 		if (rayPath.intersects(wallPath)) {
-			qDebug() << "Sonar sensor. Reading: " << currentRangeInCm;
+			Tracer::debug(tracer::d2Model, "WorldModel::sonarReading", "Sonar sensor. Reading: " + QString(currentRangeInCm));
 			return currentRangeInCm;
 		}
 	}
 
-	qDebug() << "Sonar sensor. Reading: max (" << maxSonarRangeCms << ")";
+	Tracer::debug(tracer::d2Model, "WorldModel::sonarReading", "Sonar sensor. Reading: max (" + QString(maxSonarRangeCms) + ")");
 	return maxSonarRangeCms;
 }
 

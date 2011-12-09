@@ -41,7 +41,9 @@ void PreferencesMiscellaniousPage::changeEvent(QEvent *e)
 void PreferencesMiscellaniousPage::browseImagesPath()
 {
 	QString path = QFileDialog::getExistingDirectory(this, "Open Directory");
-	mUi->imagesPathEdit->setText(path.replace("\\", "/"));
+	if (!path.isEmpty()) {
+		mUi->imagesPathEdit->setText(path.replace("\\", "/"));
+	}
 }
 
 void PreferencesMiscellaniousPage::save()
@@ -53,6 +55,7 @@ void PreferencesMiscellaniousPage::save()
 //	SettingsManager::setValue("ChaoticEdition", mUi->chaoticEditionCheckBox->isChecked());
 	SettingsManager::setValue("pathToImages", mUi->imagesPathEdit->text());
 
-	if (mLastIconsetPath != mUi->imagesPathEdit->text())
+	if (mLastIconsetPath != mUi->imagesPathEdit->text()) {
 		emit iconsetChanged();
+	}
 }

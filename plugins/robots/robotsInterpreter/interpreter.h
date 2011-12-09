@@ -73,6 +73,7 @@ private slots:
 private:
 	enum InterpreterState {
 		interpreting
+		, waitingForSensorsConfiguredToLaunch
 		, idle
 	};
 

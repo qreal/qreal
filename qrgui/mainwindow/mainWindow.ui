@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>1188</width>
-     <height>20</height>
+     <height>18</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -46,6 +46,9 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
+    <addaction name="actionImport"/>
+    <addaction name="actionSave_diagram_as_a_picture"/>
+    <addaction name="actionCloseProject"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -666,6 +669,29 @@
    </property>
    <property name="toolTip">
     <string>Flash nxtOSEK into robot</string>
+   </property>
+  </action>
+  <action name="actionImport">
+   <property name="text">
+    <string>Import...</string>
+   </property>
+   <property name="toolTip">
+    <string>Import QReal project into current.</string>
+   </property>
+  </action>
+  <action name="actionRecent_projects">
+   <property name="text">
+    <string>Recent projects</string>
+   </property>
+  </action>
+  <action name="actionSave_diagram_as_a_picture">
+   <property name="text">
+    <string>Save diagram as a picture...</string>
+   </property>
+  </action>
+  <action name="actionCloseProject">
+   <property name="text">
+    <string>Close project</string>
    </property>
   </action>
  </widget>

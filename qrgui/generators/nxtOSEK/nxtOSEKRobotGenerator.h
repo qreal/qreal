@@ -18,7 +18,7 @@ namespace generators {
 
 class NxtOSEKRobotGenerator {
 public:
-	explicit NxtOSEKRobotGenerator(qrRepo::RepoApi *api, QString const &destinationPath = "");
+	explicit NxtOSEKRobotGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath = "");
 	explicit NxtOSEKRobotGenerator(QString const &pathToRepo, QString const &destinationPath = "");
 
 	~NxtOSEKRobotGenerator();
@@ -74,7 +74,7 @@ private:
 		QList<QString> portsToEngineNames(QString const &portsProperty);
 
 	private:
-		void transformSign(QString &inequalitySign);
+		QString transformSign(QString const &inequalitySign);
 	};
 
 	//! Realization of AbstractElementGenerator for Function.
