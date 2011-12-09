@@ -780,9 +780,8 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		QGraphicsScene::mouseMoveEvent(event);
 		foreach (QGraphicsItem *item, items()) {
 			NodeElement *e = dynamic_cast<NodeElement *>(item);
-			if (e) {
-				if (e->isSelected())
-					e->alignToGrid();
+			if (e && e->isSelected()) {
+				e->alignToGrid();
 			}
 		}
 	}
