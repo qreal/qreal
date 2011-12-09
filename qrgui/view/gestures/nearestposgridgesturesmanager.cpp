@@ -5,6 +5,14 @@ NearestPosGridGesturesManager::NearestPosGridGesturesManager()
 {
 }
 
+NearestPosGridGesturesManager::~NearestPosGridGesturesManager()
+{
+	foreach (QString const object, mGestures.keys()) {
+		delete mGestures[object];
+		mGestures.remove(object);
+	}
+}
+
 double NearestPosGridGesturesManager::getMaxDistance(QString const &)
 {
 	return 1000;

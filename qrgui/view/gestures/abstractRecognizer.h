@@ -12,6 +12,7 @@
 class GesturesManager
 {
 public:
+	virtual ~GesturesManager(){};
 	virtual void initIdealGestures(QMap<QString, PathVector> const & objects) = 0;
 	virtual void setKey(const PathVector & path) = 0;
 	virtual double getMaxDistance(QString const & object) = 0;
@@ -24,6 +25,8 @@ template <typename TKey>
 {
 public:
 	GesturesRecognizer(){}
+
+	virtual ~GesturesRecognizer(){};
 
 	double getDistance(QString const & item)
 	{
