@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtCore/QTranslator>
+
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
 
@@ -39,6 +41,7 @@ private:
 	QAction *m2dModelAction;
 	QAction *mRunAction;
 	QAction *mStopAction;
+	QTranslator *mAppTranslator;
 };
 
 }

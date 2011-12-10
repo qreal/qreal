@@ -1,7 +1,6 @@
 #include "robotsPlugin.h"
 #include "details/tracer.h"
 
-#include <QtCore/QTranslator>
 #include <QtGui/QApplication>
 
 Q_EXPORT_PLUGIN2(robotsPlugin, qReal::interpreters::robots::RobotsPlugin)
@@ -17,13 +16,14 @@ RobotsPlugin::RobotsPlugin()
 {
 //	details::Tracer::enableAll();
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
-	QTranslator *appTranslator = new QTranslator();
-	appTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
-	QApplication::installTranslator(appTranslator);
+	mAppTranslator = new QTranslator();
+	mAppTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
+	QApplication::installTranslator(mAppTranslator);
 }
 
 RobotsPlugin::~RobotsPlugin()
 {
+	delete mAppTranslator;
 }
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
