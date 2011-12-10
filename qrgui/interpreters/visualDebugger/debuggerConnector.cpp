@@ -32,7 +32,6 @@ DebuggerConnector::~DebuggerConnector()
 	delete mDebuggerProcess;
 	delete mBuilderProcess;
 	delete mThread;
-	qDebug() << "OLOLO!";
 }
 
 bool DebuggerConnector::hasBuildError()
