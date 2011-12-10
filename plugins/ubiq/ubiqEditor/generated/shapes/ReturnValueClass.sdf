@@ -1,7 +1,0 @@
- <picture sizex="100" sizey="40">
-  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="1" x2="100" fill-style="solid"/>
-  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="40" stroke-width="1" x2="100" fill-style="solid"/>
-  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="40" x1="100" y2="40" stroke-width="1" x2="0" fill-style="solid"/>
-  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="40" x1="0" y2="20" stroke-width="1" x2="15" fill-style="solid"/>
-  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="15" y2="0" stroke-width="1" x2="0" fill-style="solid"/>
- </picture>
