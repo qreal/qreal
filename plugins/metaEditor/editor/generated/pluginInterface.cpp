@@ -355,11 +355,7 @@ int MetaEditorPlugin::isNodeOrEdge(QString const &element) const
 QStringList MetaEditorPlugin::getEnumValues(QString name) const 
 {
 	QStringList result;
-	if (name == "ParameterDirectionKind")
-		result << QString::fromUtf8("in") << QString::fromUtf8("inout") << QString::fromUtf8("out") << QString::fromUtf8("return");
-	else if (name == "VisibilityKind")
-		result << QString::fromUtf8("private") << QString::fromUtf8("protected") << QString::fromUtf8("public") << QString::fromUtf8("package");
-	else if (name == "AssociationTypes")
+	if (name == "AssociationTypes")
 		result << QString::fromUtf8("no_arrow") << QString::fromUtf8("open_arrow") << QString::fromUtf8("empty_arrow") << QString::fromUtf8("filled_arrow") << QString::fromUtf8("empty_rhomb") << QString::fromUtf8("filled_rhomb");
 	else if (name == "AggregationKind")
 		result << QString::fromUtf8("none") << QString::fromUtf8("shared") << QString::fromUtf8("composite");
@@ -369,6 +365,10 @@ QStringList MetaEditorPlugin::getEnumValues(QString name) const
 		result << QString::fromUtf8("false") << QString::fromUtf8("true");
 	else if (name == "LabelTypes")
 		result << QString::fromUtf8("Static text") << QString::fromUtf8("Dynamic text");
+	else if (name == "ParameterDirectionKind")
+		result << QString::fromUtf8("in") << QString::fromUtf8("inout") << QString::fromUtf8("out") << QString::fromUtf8("return");
+	else if (name == "VisibilityKind")
+		result << QString::fromUtf8("private") << QString::fromUtf8("protected") << QString::fromUtf8("public") << QString::fromUtf8("package");
 	return result;
 }
 
