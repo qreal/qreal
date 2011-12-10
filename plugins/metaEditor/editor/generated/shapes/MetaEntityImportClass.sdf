@@ -1,0 +1,4 @@
+ <picture sizex="100" sizey="100">
+  <rectangle fill="#bbbbbb" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="0" y2="100" stroke-width="1" x2="100" fill-style="solid"/>
+  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Import</text>
+ </picture>

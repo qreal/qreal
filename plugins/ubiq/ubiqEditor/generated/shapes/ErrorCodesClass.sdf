@@ -1,0 +1,4 @@
+ <picture sizex="200" sizey="50">
+  <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="50" stroke-width="1" x2="200" fill-style="solid"/>
+  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="200" fill-style="solid"/>
+ </picture>
