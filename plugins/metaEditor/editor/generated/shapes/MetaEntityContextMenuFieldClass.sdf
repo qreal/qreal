@@ -1,0 +1,4 @@
+ <picture sizex="100" sizey="30">
+  <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="100" fill-style="solid"/>
+  <text i="0" font-fill="#00007f" y1="10" b="0" x1="5" font-name="Helvetica" u="0" font-size="10a">Context Menu Field</text>
+ </picture>

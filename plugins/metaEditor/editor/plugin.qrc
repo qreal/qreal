@@ -1,0 +1,38 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file>generated/shapes/ContainerClass.sdf</file>
+	<file>generated/shapes/InheritanceClass.sdf</file>
+	<file>generated/shapes/ListenerClass.sdf</file>
+	<file>generated/shapes/ListenerPorts.sdf</file>
+	<file>generated/shapes/MetaEditorDiagramNodeClass.sdf</file>
+	<file>generated/shapes/MetaEditorDiagramNodePorts.sdf</file>
+	<file>generated/shapes/MetaEntity_AttributeClass.sdf</file>
+	<file>generated/shapes/MetaEntity_AttributePorts.sdf</file>
+	<file>generated/shapes/MetaEntityAssociationClass.sdf</file>
+	<file>generated/shapes/MetaEntityAssociationPorts.sdf</file>
+	<file>generated/shapes/MetaEntityConnectionClass.sdf</file>
+	<file>generated/shapes/MetaEntityConnectionPorts.sdf</file>
+	<file>generated/shapes/MetaEntityContextMenuFieldClass.sdf</file>
+	<file>generated/shapes/MetaEntityContextMenuFieldPorts.sdf</file>
+	<file>generated/shapes/MetaEntityEdgeClass.sdf</file>
+	<file>generated/shapes/MetaEntityEdgePorts.sdf</file>
+	<file>generated/shapes/MetaEntityEnumClass.sdf</file>
+	<file>generated/shapes/MetaEntityEnumPorts.sdf</file>
+	<file>generated/shapes/MetaEntityImportClass.sdf</file>
+	<file>generated/shapes/MetaEntityImportPorts.sdf</file>
+	<file>generated/shapes/MetaEntityNodeClass.sdf</file>
+	<file>generated/shapes/MetaEntityNodePorts.sdf</file>
+	<file>generated/shapes/MetaEntityPossibleEdgeClass.sdf</file>
+	<file>generated/shapes/MetaEntityPossibleEdgePorts.sdf</file>
+	<file>generated/shapes/MetaEntityPropertiesAsContainerClass.sdf</file>
+	<file>generated/shapes/MetaEntityPropertiesAsContainerPorts.sdf</file>
+	<file>generated/shapes/MetaEntityUsageClass.sdf</file>
+	<file>generated/shapes/MetaEntityUsagePorts.sdf</file>
+	<file>generated/shapes/MetaEntityValueClass.sdf</file>
+	<file>generated/shapes/MetaEntityValuePorts.sdf</file>
+	<file>generated/shapes/MetamodelDiagramClass.sdf</file>
+	<file>generated/shapes/MetamodelDiagramPorts.sdf</file>
+	<file>generated/shapes/PackageDiagramClass.sdf</file>
+	<file>generated/shapes/PackageDiagramPorts.sdf</file>
+</qresource>
+</RCC>

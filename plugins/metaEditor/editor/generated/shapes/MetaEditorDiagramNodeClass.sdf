@@ -1,0 +1,8 @@
+ <picture sizex="200" sizey="200">
+  <line y1="40" x1="0" y2="160" x2="0"/>
+  <line y1="40" x1="200" y2="160" x2="200"/>
+  <arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="80" x2="80"/>
+  <arc spanAngle="1440" startAngle="0" y1="0" x1="120" y2="80" x2="200"/>
+  <arc spanAngle="1440" startAngle="2880" y1="120" x1="0" y2="200" x2="80"/>
+  <arc spanAngle="-1440" startAngle="0" y1="120" x1="120" y2="200" x2="200"/>
+ </picture>

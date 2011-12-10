@@ -1,0 +1,15 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file>generated/shapes/ActionClass.sdf</file>
+	<file>generated/shapes/ActionPorts.sdf</file>
+	<file>generated/shapes/BlockDiagramNodeClass.sdf</file>
+	<file>generated/shapes/BlockDiagramNodePorts.sdf</file>
+	<file>generated/shapes/BlockFinalNodeClass.sdf</file>
+	<file>generated/shapes/BlockFinalNodePorts.sdf</file>
+	<file>generated/shapes/ConditionNodeClass.sdf</file>
+	<file>generated/shapes/ConditionNodePorts.sdf</file>
+	<file>generated/shapes/ControlFlowClass.sdf</file>
+	<file>generated/shapes/InitialNodeClass.sdf</file>
+	<file>generated/shapes/InitialNodePorts.sdf</file>
+</qresource>
+</RCC>
