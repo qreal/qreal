@@ -321,7 +321,6 @@ MainWindow::~MainWindow()
 	delete mModels;
 	delete mFlashTool;
 	delete mVisualDebugger;
-//	delete mDebuggerConnector;
 }
 
 EditorManager* MainWindow::manager()
