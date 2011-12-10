@@ -1,7 +1,0 @@
- <picture sizex="50" sizey="50">
-  <rectangle fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="0" stroke-width="1" x1="20" y2="30" fill-style="none" x2="50"/>
-  <rectangle fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="50" stroke-width="1" x1="0" y2="20" fill-style="none" x2="30"/>
-  <line fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="5" stroke-width="1" x1="35" y2="25" fill-style="none" x2="35"/>
-  <line fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="15" stroke-width="1" x1="25" y2="15" fill-style="none" x2="45"/>
-  <line fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="35" stroke-width="1" x1="5" y2="35" fill-style="none" x2="25"/>
- </picture>
