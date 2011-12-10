@@ -504,24 +504,24 @@ int UbiqMetamodelPlugin::isNodeOrEdge(QString const &element) const
 QStringList UbiqMetamodelPlugin::getEnumValues(QString name) const 
 {
 	QStringList result;
-	if (name == "ExpansionKind")
-		result << QString::fromUtf8("parallel") << QString::fromUtf8("iterative") << QString::fromUtf8("stream");
-	else if (name == "Type")
-		result << QString::fromUtf8("localPrecondition") << QString::fromUtf8("localPostCondation");
-	else if (name == "AggregationKind")
-		result << QString::fromUtf8("none") << QString::fromUtf8("shared") << QString::fromUtf8("composite");
-	else if (name == "CallConcurrencyKind")
-		result << QString::fromUtf8("sequential") << QString::fromUtf8("guarded") << QString::fromUtf8("concurrent");
-	else if (name == "Bool")
-		result << QString::fromUtf8("false") << QString::fromUtf8("true");
-	else if (name == "ObjectNodeOrderingKind")
-		result << QString::fromUtf8("unordered") << QString::fromUtf8("ordered") << QString::fromUtf8("LIFO") << QString::fromUtf8("FIFO");
-	else if (name == "ParameterDirectionKind")
+	if (name == "ParameterDirectionKind")
 		result << QString::fromUtf8("in") << QString::fromUtf8("inout") << QString::fromUtf8("out") << QString::fromUtf8("return");
 	else if (name == "VisibilityKind")
 		result << QString::fromUtf8("private") << QString::fromUtf8("protected") << QString::fromUtf8("public") << QString::fromUtf8("package");
+	else if (name == "CallConcurrencyKind")
+		result << QString::fromUtf8("sequential") << QString::fromUtf8("guarded") << QString::fromUtf8("concurrent");
+	else if (name == "ObjectNodeOrderingKind")
+		result << QString::fromUtf8("unordered") << QString::fromUtf8("ordered") << QString::fromUtf8("LIFO") << QString::fromUtf8("FIFO");
+	else if (name == "AggregationKind")
+		result << QString::fromUtf8("none") << QString::fromUtf8("shared") << QString::fromUtf8("composite");
 	else if (name == "ParameterEffectKind")
 		result << QString::fromUtf8("create") << QString::fromUtf8("read") << QString::fromUtf8("update") << QString::fromUtf8("delete");
+	else if (name == "Bool")
+		result << QString::fromUtf8("false") << QString::fromUtf8("true");
+	else if (name == "ExpansionKind")
+		result << QString::fromUtf8("parallel") << QString::fromUtf8("iterative") << QString::fromUtf8("stream");
+	else if (name == "Type")
+		result << QString::fromUtf8("localPrecondition") << QString::fromUtf8("localPostCondation");
 	return result;
 }
 

@@ -248,12 +248,6 @@ void SceneGridHandler::alignToGrid()
 	qreal myX1 = nodeScenePos.x() + contentsRect.x();
 	qreal myY1 = nodeScenePos.y() + contentsRect.y();
 
-	if (mSwitchGrid) {
-		// coefX, coefY - index of cell in the grid
-		int coefX = static_cast<int>(myX1) / indexGrid;
-		int coefY = static_cast<int>(myY1) / indexGrid;
-	}
-
 	int coefX = static_cast<int>(myX1) / indexGrid;
 	int coefY = static_cast<int>(myY1) / indexGrid;
 
