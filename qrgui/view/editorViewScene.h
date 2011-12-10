@@ -23,9 +23,8 @@ public:
 	explicit EditorViewScene(QObject *parent);
 	~EditorViewScene();
 
-
 	void clearScene();
-	virtual int launchEdgeMenu(EdgeElement* edge, NodeElement* node, const QPointF &scenePos);
+	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos);
 	virtual qReal::Id createElement(const QString &, QPointF const &scenePos);
 	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos);
 
@@ -46,7 +45,7 @@ public:
 	bool canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const;
 	bool getNeedDrawGrid();
 
-	Element* getLastCreated();
+	Element *getLastCreated();
 
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
 
@@ -61,10 +60,10 @@ public:
 
 	QPointF getMousePos();
 	static QGraphicsRectItem *getPlaceholder();
-	NodeElement* findNewParent(QPointF, NodeElement*);
+	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
 public slots:
-	qReal::Id createElement(const QString &);
+	qReal::Id createElement(const QString &type);
 	// TODO: get rid of it here
 	void copy();
 	void paste();
@@ -101,12 +100,33 @@ private slots:
 	void printElementsOfRootDiagram();
 	void drawIdealGesture();
 	void initMouseMoveManager();
-	void createEdge(QString const &);
+	void createEdge(QString const &id);
 
 	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
 	void getObjectByGesture();
 
 private:
+	void getLinkByGesture(NodeElement *parent, NodeElement const &child);
+	void drawGesture();
+	void deleteGesture();
+	void createEdgeMenu(QList<QString> const &ids);
+
+	void drawGrid(QPainter *painter, const QRectF &rect);
+	void redraw();
+	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
+	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
+	void createAddConnectionMenu(Element const * const element
+			, QMenu &contextMenu, QString const &menuName
+			, qReal::IdList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
+			, qReal::IdList const &connectableDiagrams, const char *slot) const;
+
+	void createDisconnectMenu(Element const * const element
+			, QMenu &contextMenu, QString const &menuName
+			, qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
+			, const char *slot) const;
+
+	void initContextMenu(Element *e, QPointF const &pos);
+
 	Element* mLastCreatedWithEdge;
 	NodeElement *mCopiedNode;
 
@@ -116,27 +136,6 @@ private:
 	qreal mWidthOfGrid;
 	double mRealIndexGrid;
 
-	void getLinkByGesture(NodeElement * parent, NodeElement const & child);
-	void drawGesture();
-	void deleteGesture();
-	void createEdgeMenu(QList<QString> const & ids);
-
-	void drawGrid(QPainter *painter, const QRectF &rect);
-	void redraw();
-	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
-	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
-	void createAddConnectionMenu(Element const * const element
-								 , QMenu &contextMenu, QString const &menuName
-								 , qReal::IdList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
-								 , qReal::IdList const &connectableDiagrams, const char *slot) const;
-
-	void createDisconnectMenu(Element const * const element
-							  , QMenu &contextMenu, QString const &menuName
-							  , qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
-							  , const char *slot) const;
-
-	void initContextMenu(Element *e, QPointF const & pos);
-
 	NodeElement *mHighlightNode;
 	QPointF newElementsPosition;
 
@@ -144,8 +143,8 @@ private:
 	/// list of pixmaps to be drawn on scene's foreground
 	QList<QPixmap*> mForegroundPixmaps;
 
-	qReal::EditorViewMViface *mv_iface;
-	qReal::EditorView *view;
+	qReal::EditorViewMViface *mMVIface;
+	qReal::EditorView *mView;
 
 	qReal::MainWindow *mWindow;
 
@@ -161,8 +160,9 @@ private:
 
 	QSet<Element *> mHighlightedElements;
 	QTimer * mTimer;
-	friend class qReal::EditorViewMViface;
 
 	/** @brief Is "true" when we just select items on scene, and "false" when we drag selected items */
 	bool mShouldReparentItems;
+
+	friend class qReal::EditorViewMViface;
 };

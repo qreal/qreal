@@ -338,6 +338,7 @@ void SceneGridHandler::drawGuides()
 
 void SceneGridHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+	Q_UNUSED(event)
 	NodeElement *parItem = dynamic_cast<NodeElement*>(mNode->parentItem());
 	if (parItem != NULL) {
 		return;
