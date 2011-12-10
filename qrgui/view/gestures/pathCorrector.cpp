@@ -4,7 +4,7 @@
 
 const double mouseSpeed = 5;
 
-QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const & path)
+QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const &path)
 {
 	QList<QPoint> mousePath;
 	if (path.isEmpty())
@@ -26,7 +26,7 @@ QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const & path)
 	return mousePath;
 }
 
-QList<QPoint> PathCorrector::correctPath(QList<QPoint> const & path)
+QList<QPoint> PathCorrector::correctPath(QList<QPoint> const &path)
 {
 	QList<QPoint> newPath;
 	if (path.isEmpty())
