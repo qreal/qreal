@@ -46,6 +46,20 @@ EditorManager::EditorManager(QObject *parent)
 	}
 }
 
+EditorManager::~EditorManager()
+{
+	foreach (QString id, mPluginIface.keys()) {
+		delete mPluginIface[id];
+		mPluginIface.remove(id);
+	}
+
+	foreach (QString name, mLoaders.keys()) {
+		delete mLoaders[name];
+		mLoaders.remove(name);
+	}
+
+}
+
 bool EditorManager::loadPlugin(const QString &pluginName)
 {
 	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
