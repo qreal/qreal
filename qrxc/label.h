@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QDomElement>
+#include <QStringList>
 #include "scalableItem.h"
 
 namespace utils {
@@ -17,6 +18,8 @@ public:
 	// Default copy constructor ok.
 private:
 	QString titleName() const;
+	QStringList getListOfStr(QString strToParse);
+	QStringList getReformedList(QStringList list);
 
 	ScalableCoordinate mX;
 	ScalableCoordinate mY;
