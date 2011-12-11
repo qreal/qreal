@@ -66,7 +66,6 @@ private slots:
 	void sensorsConfiguredSlot();
 	void connectedSlot(bool success);
 
-
 private:
 	robotImplementations::AbstractRobotModelImplementation *mRobotImpl;  // Has ownership.
 	robotParts::Brick mBrick;

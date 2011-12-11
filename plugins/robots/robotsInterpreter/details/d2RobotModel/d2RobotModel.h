@@ -75,7 +75,7 @@ private:
 	QPointF mPos;
 	QPointF mRotatePoint;
 	QHash<int, Motor*> mMotors;
-	QHash<int, qreal> mTurnoverMotors;//хранит, сколько прошел градусов мотор
+	QHash<int, qreal> mTurnoverMotors;//stores, how many degrees the motor was
 	SensorsConfiguration mSensorsConfiguration;
 	WorldModel mWorldModel;
 
