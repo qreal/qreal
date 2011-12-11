@@ -2,6 +2,8 @@
 
 #include "../tracer.h"
 
+#include <QDebug>
+
 using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace robotImplementations;
@@ -76,6 +78,8 @@ void RealRobotModelImplementation::stopRobot()
 	for (unsigned i = 0; i < 4; ++i)
 		if (colorSensor(static_cast<inputPort::InputPortEnum>(i)) != NULL)
 			colorSensor(static_cast<inputPort::InputPortEnum>(i))->reconfigure(lowLevelSensorType::COLORNONE);
+	mIsConnected = false;
+	emit disconnected();
 }
 
 void RealRobotModelImplementation::connectedSlot(bool success)
