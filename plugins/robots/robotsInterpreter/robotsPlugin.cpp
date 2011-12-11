@@ -65,7 +65,6 @@ QList<ActionInfo> RobotsPlugin::actions()
 	mInterpreter.setConnectRobotAction(connectToRobotAction);
 	QObject::connect(connectToRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(connectToRobot()));
 
-
 	QAction *robotSettingsAction = new QAction(QObject::tr("Robot settings"), NULL);
 	ActionInfo robotSettingsActionInfo(robotSettingsAction, "interpreters", "tools");
 	QObject::connect(robotSettingsAction, SIGNAL(triggered()), this, SLOT(showRobotSettings()));

@@ -7,7 +7,7 @@
 #include "details/tracer.h"
 #include "details/debugHelper.h"
 
-#include <QAction>
+#include <QtGui/QAction>
 
 using namespace qReal;
 using namespace interpreters::robots;
@@ -154,14 +154,15 @@ void Interpreter::connectedSlot(bool success)
 	if (success) {
 		mConnected = true;
 		mActionConnectToRobot->setChecked(true);
-		if (mRobotModel->needsConnection())
+		if (mRobotModel->needsConnection()) {
 			mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
+		}
 	} else {
-	Tracer::debug(tracer::initialization, "Interpreter::connectedSlot", "Robot connection status: " + QString::number(success));
-	if (!success) {
-		mConnected = false;
-		mActionConnectToRobot->setChecked(false);
-		mInterpretersInterface->errorReporter()->addError(tr("Can't connect to a robot."));
+		Tracer::debug(tracer::initialization, "Interpreter::connectedSlot", "Robot connection status: " + QString::number(success));
+		if (!success) {
+			mConnected = false;
+			mActionConnectToRobot->setChecked(false);
+			mInterpretersInterface->errorReporter()->addError(tr("Can't connect to a robot."));
 		}
 	}
 }
@@ -348,9 +349,7 @@ void Interpreter::setCommunicator(QString const &valueOfCommunication, QString c
 		communicator = new UsbRobotCommunicationThread();
 
 	mRobotCommunication->setRobotCommunicationThreadObject(communicator);
-
 	mRobotCommunication->setPortName(portName);
-
 }
 
 void Interpreter::setConnectRobotAction(QAction *actionConnect)
