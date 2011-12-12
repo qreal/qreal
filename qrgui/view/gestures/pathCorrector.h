@@ -8,6 +8,6 @@ const double speedKoef = 0.0275;
 class PathCorrector
 {
 public:
-	static QList<QPoint> correctPath(QList<QPoint> const & path);
-	static QList<QPoint> getMousePath(QList<QPoint> const & path);
+	static QList<QPoint> correctPath(QList<QPoint> const &path);
+	static QList<QPoint> getMousePath(QList<QPoint> const &path);
 };

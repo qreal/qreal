@@ -1,19 +1,21 @@
 #include <QFile>
 
 #include "debuggerConnector.h"
+#include <QtCore/QDebug>
 
 using namespace qReal;
 
-DebuggerConnector::DebuggerConnector():
-	mThread(new QThread()),
-	mDebuggerProcess(new QProcess(this)),
-	mBuilderProcess(new QProcess(this)),
-	mDebuggerPath("gdb.exe"),
-	mBuilderPath("gcc.exe"),
-	mBuildedFileName("builded.exe"),
-	mCodeFileName("code.c"),
-	mWorkDir(""),
-	mHasGccError(false)
+DebuggerConnector::DebuggerConnector(QObject *parent)
+	: QObject(parent)
+	, mThread(new QThread())
+	, mDebuggerProcess(new QProcess(this))
+	, mBuilderProcess(new QProcess(this))
+	, mDebuggerPath("gdb.exe")
+	, mBuilderPath("gcc.exe")
+	, mBuildedFileName("builded.exe")
+	, mCodeFileName("code.c")
+	, mWorkDir("")
+	, mHasGccError(false)
 {
 	moveToThread(mThread);
 	connect(mDebuggerProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(readOutput()));

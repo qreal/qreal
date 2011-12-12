@@ -6,6 +6,7 @@ class MixedGesturesManager : public GesturesRecognizer<QPair<double *, double *>
 {
 public:
 	MixedGesturesManager();
+	~MixedGesturesManager();
 	double getMaxDistance(QString const &);
 	bool isMultistroke();
 	double getDistance(QPair<double *, double *> const & key1, QPair<double *, double *> const & key2);
@@ -23,13 +24,15 @@ public:
 
 	MixedClassifier(){}
 
+	~MixedClassifier();
+
 	double getDistance(const MixedClassifier &classifier)
 	{
 		QPair<double *, double *> key = classifier.key();
 		MixedGesturesManager gManager;
 		return gManager.getDistance(key, mKey);
 	}
-	MixedClassifier getPoint(MixedClassifier const & centre, double centreWeight)
+	MixedClassifier getPoint(MixedClassifier const &centre, double centreWeight)
 	{
 		double * key1 = centre.key().first;
 		double * key2 = centre.key().second;
