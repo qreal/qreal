@@ -1393,7 +1393,7 @@ void MainWindow::setUnmenuShortcuts()
 {
 	// add shortcut - select all
 	EditorViewScene *scene = dynamic_cast <EditorViewScene *> (getCurrentTab()->scene());
-	if (!scene) {
+	if (scene) {
 		QAction *selectAction = new QAction(getCurrentTab());
 		selectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
 		connect(selectAction, SIGNAL(triggered()), scene, SLOT(selectAll()));
