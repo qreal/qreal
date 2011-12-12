@@ -8,14 +8,15 @@ KeyManager::KeyManager()
 {
 }
 
-QString KeyManager::getKey(QList<QPoint> const & path)
+QString KeyManager::getKey(QList<QPoint> const &path)
 {
 	analysePoints(path);
 	QString key = "";
 	QPoint pntLast (-1, -1);
 	QPoint pntPath;
 	if ((mLowerBound - mUpperBound) / iSize > unidimensionalLimit
-		|| (mRightBound - mLeftBound) / iSize > unidimensionalLimit) {
+			|| (mRightBound - mLeftBound) / iSize > unidimensionalLimit
+	) {
 		foreach (QPoint point, path) {
 			if((mLowerBound - mUpperBound) / iSize < unidimensionalLimit) {
 				pntPath.setX((point.x() - mLeftBound) * iSize / (mRightBound - mLeftBound));
@@ -38,7 +39,7 @@ QString KeyManager::getKey(QList<QPoint> const & path)
 	return key;
 }
 
-void KeyManager::analysePoints(QList<QPoint> const & path)
+void KeyManager::analysePoints(QList<QPoint> const &path)
 {
 	if (path.size() > 0) {
 		mLeftBound = path[0].x();
@@ -47,10 +48,14 @@ void KeyManager::analysePoints(QList<QPoint> const & path)
 		mLowerBound = path[0].y();
 	}
 	foreach (QPoint pnt, path) {
-		if (pnt.x() < mLeftBound) mLeftBound = pnt.x();
-		if (pnt.x() > mRightBound) mRightBound = pnt.x();
-		if (pnt.y() > mLowerBound) mLowerBound = pnt.y();
-		if (pnt.y() < mUpperBound) mUpperBound = pnt.y();
+		if (pnt.x() < mLeftBound)
+			mLeftBound = pnt.x();
+		if (pnt.x() > mRightBound)
+			mRightBound = pnt.x();
+		if (pnt.y() > mLowerBound)
+			mLowerBound = pnt.y();
+		if (pnt.y() < mUpperBound)
+			mUpperBound = pnt.y();
 	}
 }
 

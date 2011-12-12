@@ -4,10 +4,10 @@
 class Sorting
 {
 public:
-	static Key sortPicture(Key const & unsortedKey)
+	static Key sortPicture(Key const &unsortedKey)
 	{
 		Key key = unsortedKey;
-		int size = key.size();
+		int const size = key.size();
 		for (int i = 0; i < size - 1; i++) {
 			for (int j = 0; j < size - i - 1; j++) {
 				if (key.at(j).first > key.at(j + 1).first
@@ -28,7 +28,8 @@ public:
 		}
 		return key;
 	}
-	static Key sortCurve(const Key & key)
+
+	static Key sortCurve(const Key &key)
 	{
 		Key sortedKey;
 		Key unsortedKey = key;
@@ -42,6 +43,7 @@ public:
 		}
 		return sortedKey;
 	}
+
 private:
 	static SquarePos getNextPos(const SquarePos &pos, const Key &key)
 	{
@@ -73,6 +75,7 @@ private:
 			return next;
 		return SquarePos(-1, -1);
 	}
+
 	static SquarePos getMinPos(const Key &key)
 	{
 		SquarePos minPos;
