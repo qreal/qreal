@@ -58,6 +58,10 @@ void PropertyEditorView::update(const QModelIndex &)
 void PropertyEditorView::setRootIndex(const QModelIndex &index)
 {
 	mPropertyEditor->clear();
+
+	mPropertyEditor->unsetFactoryForManager(mButtonManager);
+	mPropertyEditor->unsetFactoryForManager(mVariantManager);
+
 	delete mVariantManager;
 	delete mVariantFactory;
 	delete mButtonManager;
@@ -65,7 +69,6 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 
 	mVariantManager = new QtVariantPropertyManager();
 	mVariantFactory = new QtVariantEditorFactory();
-
 	mButtonManager = new PushButtonPropertyManager();
 	mButtonFactory = new PushButtonFactory();
 
