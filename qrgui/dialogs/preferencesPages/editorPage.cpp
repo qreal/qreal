@@ -4,7 +4,7 @@
 #include <QMessageBox>
 
 PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAction * const showAlignmentAction
-		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
+		, QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
 		: PreferencesPage(parent)
 		, mUi(new Ui::PreferencesEditorPage)
 		, mFontWasChanged(false)
