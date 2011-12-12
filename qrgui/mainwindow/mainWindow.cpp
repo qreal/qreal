@@ -134,6 +134,8 @@ MainWindow::MainWindow()
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 
+	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
+
 	// =========== Step 4: Property editor and model explorers are initialized ===========
 
 	progress->setValue(60);
@@ -189,8 +191,6 @@ MainWindow::MainWindow()
 		suggestToCreateDiagram();
 
 	mDocksVisibility.clear();
-
-	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 
 	checkNxtTools();
 	mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
@@ -1431,6 +1431,22 @@ void MainWindow::initCurrentTab(QModelIndex const &rootIndex)
 			, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
 	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
+
+	setUnmenuShortcuts();
+
+}
+
+void MainWindow::setUnmenuShortcuts()
+{
+	// add shortcut - select all
+	EditorViewScene *scene = dynamic_cast <EditorViewScene *> (getCurrentTab()->scene());
+	if (scene) {
+		QAction *selectAction = new QAction(getCurrentTab());
+		selectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
+		connect(selectAction, SIGNAL(triggered()), scene, SLOT(selectAll()));
+		getCurrentTab()->addAction(selectAction);
+	}
+	// addDocumentation(String); // in perspective
 }
 
 void MainWindow::updateTabName(Id const &id)
