@@ -1435,6 +1435,22 @@ void MainWindow::initCurrentTab(QModelIndex const &rootIndex)
 			, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
 	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
+
+	setUnmenuShortcuts();
+
+}
+
+void MainWindow::setUnmenuShortcuts()
+{
+	// add shortcut - select all
+	EditorViewScene *scene = dynamic_cast <EditorViewScene *> (getCurrentTab()->scene());
+	if (scene) {
+		QAction *selectAction = new QAction(getCurrentTab());
+		selectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
+		connect(selectAction, SIGNAL(triggered()), scene, SLOT(selectAll()));
+		getCurrentTab()->addAction(selectAction);
+	}
+	// addDocumentation(String); // in perspective
 }
 
 void MainWindow::updateTabName(Id const &id)

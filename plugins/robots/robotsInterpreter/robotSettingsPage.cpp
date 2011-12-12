@@ -6,10 +6,11 @@
 
 using namespace qReal::interpreters::robots;
 
-PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent) :
-	PreferencesPage(parent),
-	mUi(new Ui::PreferencesRobotSettingsPage)
+PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
+		: PreferencesPage(parent)
+		, mUi(new Ui::PreferencesRobotSettingsPage)
 {
+	mIcon = QIcon(":/icons/preferences/robot.png");
 	mUi->setupUi(this);
 
 	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedUnrealModel(bool)));

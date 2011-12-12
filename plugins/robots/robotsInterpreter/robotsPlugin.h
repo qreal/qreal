@@ -27,7 +27,7 @@ public:
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 	virtual qReal::Customizer* customizationInterface();
 	virtual void updateSettings();
-		virtual void closeNeededWidget();
+	virtual void closeNeededWidget();
 
 private slots:
 	void showRobotSettings();
