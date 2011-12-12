@@ -41,20 +41,23 @@ EditorViewScene::EditorViewScene(QObject *parent)
 
 void EditorViewScene::drawForeground(QPainter *painter, QRectF const &rect)
 {
+	QPointF const point = sceneRect().topLeft();
 	foreach (QPixmap *pixmap, mForegroundPixmaps) {
-		painter->drawPixmap(rect.topLeft(), *pixmap);
+		painter->drawPixmap(point, *pixmap);
 	}
 	QGraphicsScene::drawForeground(painter, rect);
 }
 
 void EditorViewScene::putOnForeground(QPixmap *pixmap)
 {
-	mForegroundPixmaps.push_back(pixmap);
+	if (!mForegroundPixmaps.contains(pixmap)) {
+		mForegroundPixmaps.push_back(pixmap);
+	}
 }
 
 void EditorViewScene::deleteFromForeground(QPixmap *pixmap)
 {
-	mForegroundPixmaps.removeOne(pixmap);
+	mForegroundPixmaps.removeAll(pixmap);
 	update();
 }
 
