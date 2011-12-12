@@ -1,6 +1,6 @@
 #pragma once
 #include <QFontDialog>
-#include "page.h"
+#include "preferencesPage.h"
 
 namespace Ui {
 	class PreferencesEditorPage;
@@ -43,5 +43,4 @@ private:
 	QAction * const mShowAlignmentAction;
 	QAction * const mActivateGridAction;
 	QAction * const mActivateAlignmentAction;
-
 };

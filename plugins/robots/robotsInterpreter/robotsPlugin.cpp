@@ -9,10 +9,10 @@ using namespace qReal;
 using namespace interpreters::robots;
 
 RobotsPlugin::RobotsPlugin()
-	: mMainWindowInterpretersInterface(NULL)
-	, m2dModelAction(NULL)
-	, mRunAction(NULL)
-	, mStopAction(NULL)
+		: mMainWindowInterpretersInterface(NULL)
+		, m2dModelAction(NULL)
+		, mRunAction(NULL)
+		, mStopAction(NULL)
 {
 //	details::Tracer::enableAll();
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
