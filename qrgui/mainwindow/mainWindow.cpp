@@ -681,8 +681,8 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 		Id const logicalId = mModels->logicalModelAssistApi().idByIndex(index);
 		IdList const graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
 		foreach (Id graphicalId, graphicalIdList) {
-			closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
-			if (scene) {
+			bool const tabClosed = closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
+			if (scene && !tabClosed) {
 				QGraphicsItem const * const item = scene->getElem(graphicalId);
 				EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(item);
 				if (edge) {
@@ -692,9 +692,9 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 			}
 		}
 	} else {
-		closeTab(index);
+		bool const tabClosed = closeTab(index);
 		Id const graphicalId = mModels->graphicalModelAssistApi().idByIndex(index);
-		if (scene) {
+		if (scene && !tabClosed) {
 			QGraphicsItem const * const item = scene->getElem(graphicalId);
 			EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(item);
 			if (edge) {
@@ -1441,15 +1441,16 @@ void MainWindow::updateTabName(Id const &id)
 	}
 }
 
-void MainWindow::closeTab(QModelIndex const &graphicsIndex)
+bool MainWindow::closeTab(QModelIndex const &graphicsIndex)
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
 		EditorView * const tab = (static_cast<EditorView *>(mUi->tabs->widget(i)));
 		if (tab->mvIface()->rootIndex() == graphicsIndex) {
 			closeTab(i);
-			return;
+			return true;
 		}
 	}
+	return false;
 }
 
 ListenerManager *MainWindow::listenerManager()
