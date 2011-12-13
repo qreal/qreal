@@ -8,7 +8,7 @@ AbstractScene::AbstractScene(AbstractView *view, QObject *parent) :
 	QGraphicsScene(parent), mGraphicsItem(NULL)
 {
 	mView = view;
-        mFirstPenWidth = 0;
+	mFirstPenWidth = 0;
 }
 
 void AbstractScene::setEmptyRect(int x, int y, int w, int h)
@@ -113,7 +113,7 @@ void AbstractScene::forPressResize(QGraphicsSceneMouseEvent *event)
 	update();
 }
 
-void AbstractScene::forMoveResize( QGraphicsSceneMouseEvent *event)
+void AbstractScene::forMoveResize(QGraphicsSceneMouseEvent *event)
 {
 	reshapeItem(event);
 	update();
@@ -134,7 +134,7 @@ bool AbstractScene::compareItems(AbstractItem* first, AbstractItem* second)
 void AbstractScene::setEmptyPenBrushItems()
 {
 	mPenStyleItems = "Solid";
-        mPenWidthItems = mFirstPenWidth;
+	mPenWidthItems = mFirstPenWidth;
 	mPenColorItems = "black";
 	mBrushStyleItems = "None";
 	mBrushColorItems = "white";
