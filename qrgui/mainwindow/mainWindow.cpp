@@ -678,7 +678,7 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	if (view) {
 		scene = dynamic_cast<EditorViewScene*>(view->scene());
 	}
-	QList<NodeElement*> itemsToArrangeLinks;
+
 	IdList graphicalIdList;
 	if (isLogicalModel) {
 		Id const logicalId = mModels->logicalModelAssistApi().idByIndex(index);
@@ -687,6 +687,8 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 		Id const graphicalId = mModels->graphicalModelAssistApi().idByIndex(index);
 		graphicalIdList.append(graphicalId);
 	}
+
+	QList<NodeElement*> itemsToArrangeLinks;
 	foreach (Id graphicalId, graphicalIdList) {
 		bool const tabClosed = closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
 		if (scene && !tabClosed) {
@@ -698,17 +700,19 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 			}
 		}
 	}
+
 	PropertyEditorModel* propertyEditorModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
 	if (propertyEditorModel && propertyEditorModel->isCurrentIndex(index)) {
 		propertyEditorModel->clearModelIndexes();
 		mUi->propertyEditor->setRootIndex(QModelIndex());
 	}
+
 	if (isLogicalModel) {
 		mModels->logicalModel()->removeRow(index.row(), index.parent());
-	}
-	else {
+	}else {
 		mModels->graphicalModel()->removeRow(index.row(), index.parent());
 	}
+
 	foreach (NodeElement *item, itemsToArrangeLinks) {
 		if (item) {
 			item->arrangeLinks();
