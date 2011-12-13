@@ -709,7 +709,7 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 
 	if (isLogicalModel) {
 		mModels->logicalModel()->removeRow(index.row(), index.parent());
-	}else {
+	} else {
 		mModels->graphicalModel()->removeRow(index.row(), index.parent());
 	}
 
