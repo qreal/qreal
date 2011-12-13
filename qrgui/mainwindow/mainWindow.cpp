@@ -668,32 +668,27 @@ void MainWindow::settingsPlugins()
 
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
-	QModelIndex index = isLogicalModel ? (mUi->logicalModelExplorer->currentIndex())
+	QModelIndex const index = isLogicalModel ? (mUi->logicalModelExplorer->currentIndex())
 			: (mUi->graphicalModelExplorer->currentIndex());
-	QList<NodeElement*> itemsToArrangeLinks;
+	if (!index.isValid()) {
+		return;
+	}
 	EditorView const * const view = getCurrentTab();
 	EditorViewScene* scene = NULL;
 	if (view) {
 		scene = dynamic_cast<EditorViewScene*>(view->scene());
 	}
-
+	QList<NodeElement*> itemsToArrangeLinks;
+	IdList graphicalIdList;
 	if (isLogicalModel) {
 		Id const logicalId = mModels->logicalModelAssistApi().idByIndex(index);
-		IdList const graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
-		foreach (Id graphicalId, graphicalIdList) {
-			bool const tabClosed = closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
-			if (scene && !tabClosed) {
-				QGraphicsItem const * const item = scene->getElem(graphicalId);
-				EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(item);
-				if (edge) {
-					itemsToArrangeLinks.append(edge->src());
-					itemsToArrangeLinks.append(edge->dst());
-				}
-			}
-		}
+		graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
 	} else {
-		bool const tabClosed = closeTab(index);
 		Id const graphicalId = mModels->graphicalModelAssistApi().idByIndex(index);
+		graphicalIdList.append(graphicalId);
+	}
+	foreach (Id graphicalId, graphicalIdList) {
+		bool const tabClosed = closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
 		if (scene && !tabClosed) {
 			QGraphicsItem const * const item = scene->getElem(graphicalId);
 			EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(item);
@@ -703,24 +698,20 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 			}
 		}
 	}
-
-	if (index.isValid()) {  // TODO: why only here?
-		PropertyEditorModel* propertyEditorModel = static_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
-		if (propertyEditorModel->isCurrentIndex(index)) {
-			propertyEditorModel->clearModelIndexes();
-			mUi->propertyEditor->setRootIndex(QModelIndex());
-		}
-
-		if (isLogicalModel) {
-			mModels->logicalModel()->removeRow(index.row(), index.parent());
-		}
-		else {
-			mModels->graphicalModel()->removeRow(index.row(), index.parent());
-		}
-		foreach (NodeElement *item, itemsToArrangeLinks) {
-			if (item) {
-				item->arrangeLinks();
-			}
+	PropertyEditorModel* propertyEditorModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
+	if (propertyEditorModel && propertyEditorModel->isCurrentIndex(index)) {
+		propertyEditorModel->clearModelIndexes();
+		mUi->propertyEditor->setRootIndex(QModelIndex());
+	}
+	if (isLogicalModel) {
+		mModels->logicalModel()->removeRow(index.row(), index.parent());
+	}
+	else {
+		mModels->graphicalModel()->removeRow(index.row(), index.parent());
+	}
+	foreach (NodeElement *item, itemsToArrangeLinks) {
+		if (item) {
+			item->arrangeLinks();
 		}
 	}
 }
