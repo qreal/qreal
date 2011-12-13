@@ -301,46 +301,55 @@ void D2RobotModel::countBeep()
 
 void D2RobotModel::countNewCoord()
 {
-	qreal vSpeed = mMotorA->speed * 2 * M_PI * mMotorA->radius * 1.0 / 120000;
-	qreal uSpeed = mMotorB->speed * 2 * M_PI * mMotorB->radius * 1.0 / 120000;
-	qreal gamma = 0;
+	qreal const vSpeed = mMotorA->speed * 2 * M_PI * mMotorA->radius * 1.0 / 120000;
+	qreal const uSpeed = mMotorB->speed * 2 * M_PI * mMotorB->radius * 1.0 / 120000;
 	qreal deltaY = 0;
 	qreal deltaX = 0;
-	qreal averangeSpeed = (vSpeed + uSpeed) / 2;
+	qreal const averageSpeed = (vSpeed + uSpeed) / 2;
 
 	qreal const oldAngle = mAngle;
 	QPointF const oldPosition = mPos;
 
 	if (vSpeed != uSpeed) {
-		qreal vRadius = vSpeed * robotHeight / (vSpeed - uSpeed);
-		qreal averangeRadius = vRadius - robotHeight / 2;
+		qreal const vRadius = vSpeed * robotHeight / (vSpeed - uSpeed);
+		qreal const averageRadius = vRadius - robotHeight / 2;
 		qreal angularSpeed = 0;
-		if (vSpeed == -uSpeed)
+		qreal actualRadius = 0;
+		if (vSpeed == -uSpeed) {
 			angularSpeed = vSpeed / vRadius;
-		else
-			angularSpeed = averangeSpeed / averangeRadius;
-		gamma = timeInterval * angularSpeed;//РЅСѓР¶РµРЅ СѓРіРѕР» РІ СЂР°РґРёР°РЅР°С…
-		qreal const gammaDegrees = gamma * 180 / M_PI;
+			actualRadius = 0;  // Radius is relative to the center of the robot.
+		} else {
+			angularSpeed = averageSpeed / averageRadius;
+			actualRadius = averageRadius;
+		}
+		qreal const gammaRadians = timeInterval * angularSpeed;
+		qreal const gammaDegrees = gammaRadians * 180 / M_PI;
 
 		QTransform map;
 		map.rotate(mAngle);
-		map.translate(robotWidth / 2, averangeRadius);
+		// TODO: robotWidth / 2 shall actually be a distance between robot center and
+		// centers of the wheels by x axis.
+		map.translate(robotWidth / 2, actualRadius);
 		map.rotate(gammaDegrees);
-		map.translate(-robotWidth / 2, -vRadius);
+		map.translate(-robotWidth / 2, -actualRadius);
 
 		QPointF newStart = map.map(QPointF(0, 0));
 		deltaX = newStart.x();
 		deltaY = newStart.y();
 
-		mAngle += gammaDegrees;//РЅСѓР¶РµРЅ СѓРіРѕР» РІ РіСЂР°РґСѓСЃР°С…
+		mAngle += gammaDegrees;
 	} else {
-		deltaY = averangeSpeed * timeInterval * sin(mAngle * M_PI / 180);
-		deltaX = averangeSpeed * timeInterval * cos(mAngle * M_PI / 180);
+		deltaY = averageSpeed * timeInterval * sin(mAngle * M_PI / 180);
+		deltaX = averageSpeed * timeInterval * cos(mAngle * M_PI / 180);
 	}
+
 	mPos.setX(mPos.x() + deltaX);
 	mPos.setY(mPos.y() + deltaY);
-	if(mAngle > 360)
+
+	if(mAngle > 360) {
 		mAngle -= 360;
+	}
+
 	QPolygonF const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
 	if (mWorldModel.checkCollision(boundingRegion)) {
 		mPos = oldPosition;
