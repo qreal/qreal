@@ -58,7 +58,8 @@ public:
 signals:
 	void connected(bool success);
 	void sensorsConfigured();
-	/// Sends if robot had been disconnected
+
+	/// Is emitted if robot is disconnected
 	void disconnected();
 
 protected:
@@ -71,6 +72,8 @@ protected:
 	virtual void addTouchSensor(inputPort::InputPortEnum const &port) = 0;
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port) = 0;
 	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType) = 0;
+	virtual void disconnectRobot();// Disconnect from the robot
+	virtual void connectRobot();// Connect to robot if connection doesn't established
 
 	static NullRobotModelImplementation *nullRobotModel();
 	static RealRobotModelImplementation *realRobotModel(RobotCommunication * const robotCommunicationInterface);

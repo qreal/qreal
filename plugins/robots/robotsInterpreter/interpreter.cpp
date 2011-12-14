@@ -152,19 +152,15 @@ void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum impl
 void Interpreter::connectedSlot(bool success)
 {
 	if (success) {
-		mConnected = true;
-		mActionConnectToRobot->setChecked(true);
 		if (mRobotModel->needsConnection()) {
 			mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
 		}
 	} else {
 		Tracer::debug(tracer::initialization, "Interpreter::connectedSlot", "Robot connection status: " + QString::number(success));
-		if (!success) {
-			mConnected = false;
-			mActionConnectToRobot->setChecked(false);
-			mInterpretersInterface->errorReporter()->addError(tr("Can't connect to a robot."));
-		}
+		mInterpretersInterface->errorReporter()->addError(tr("Can't connect to a robot."));
 	}
+	mConnected = success;
+	mActionConnectToRobot->setChecked(success);
 }
 
 void Interpreter::sensorsConfiguredSlot()
