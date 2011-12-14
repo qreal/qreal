@@ -199,9 +199,16 @@ void D2ModelWidget::draw(QPointF newCoord, qreal angle, QPointF dPoint)
 	++mDrawCyclesCount;
 
 	if (mDrawCyclesCount > mMaxDrawCyclesBetweenPathElements) {
+		// Here we place a green circle in a center of a robot
+
 		QPointF const robotCenterPos = mRobot->sceneBoundingRect().center();
+
+		// This is a rectangle where the circle will be located, first placing its top-left corner in robot center, then moving it
+		// so that its center becomes robot center
 		QRectF const pathElementRect = QRectF(robotCenterPos, robotCenterPos + QPointF(4, 4)).translated(QPointF(-2, -2));
 		QGraphicsItem * const pathElement = mScene->addEllipse(pathElementRect, QPen(Qt::green), QBrush(Qt::green));
+
+		// Adding resulting element to a path
 		mRobotPath << pathElement;
 		mDrawCyclesCount = 0;
 	}
