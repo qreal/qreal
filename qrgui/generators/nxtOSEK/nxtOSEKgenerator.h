@@ -5,7 +5,7 @@
 
 namespace qReal {
 namespace generators {
-namespace nxtOSEKgenerator {
+namespace nxtOSEK {
 
 //! Class for generate a nxtOSEK code from Robot Language Diagram.
 

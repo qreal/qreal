@@ -5,7 +5,7 @@
 
 namespace qReal {
 namespace generators {
-namespace nxtOSEKgenerator {
+namespace nxtOSEK {
 
 //! Class for representing code line generated from Robot Language Diagram.
 /*!

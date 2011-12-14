@@ -40,8 +40,8 @@
 #include "../pluginManager/listenerManager.h"
 #include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
-#include "../generators/nxtOSEK/nxtOSEKsequentialGenerator.h"
-#include "../generators/nxtOSEK/nxtOSEKfuncOrientedGenerator.h"
+#include "../generators/nxtOSEK/sequentialGenerator.h"
+#include "../generators/nxtOSEK/funcOrientedGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../../qrkernel/settingsManager.h"
 
@@ -2083,9 +2083,9 @@ void MainWindow::generateRobotSourceCode()
 {
 	saveAll();
 
-	qReal::generators::nxtOSEKgenerator::NxtOSEKgenerator* gen =
-	//	new qReal::generators::nxtOSEKgenerator::NxtOSEKsequentialGenerator(mModels->repoControlApi());
-		new qReal::generators::nxtOSEKgenerator::NxtOSEKfuncOrientedGenerator(mModels->repoControlApi());
+	qReal::generators::nxtOSEK::NxtOSEKgenerator* gen =
+		new qReal::generators::nxtOSEK::SequentialGenerator(mModels->repoControlApi());
+	//	new qReal::generators::nxtOSEK::FuncOrientedGenerator(mModels->repoControlApi());
 	gui::ErrorReporter &errors = gen->generate();
 	if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
 		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
