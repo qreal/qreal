@@ -54,7 +54,9 @@ public slots:
 	void stopRobot();
 	void showD2ModelWidget(bool isVisible);
 	void showWatchList();
-	void disconnectSlot(); // actions when robot disconnect
+
+	/// actions when robot disconnect
+	void disconnectSlot();
 
 private slots:
 	void threadStopped();
@@ -96,7 +98,7 @@ private:
 	robotModelType::robotModelTypeEnum mImplementationType;
 
 	watchListWindow *mWatchListWindow;
-	QAction *mActionConnectToRobot;
+	QAction *mActionConnectToRobot; // Action responsible for the connection to the robot
 
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	Id const findStartingElement(Id const &diagram) const;
