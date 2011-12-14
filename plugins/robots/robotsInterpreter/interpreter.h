@@ -45,7 +45,7 @@ public:
 	void closeD2ModelWidget();
 	void setRobotModelType(robotModelType::robotModelTypeEnum robotModelType);
 	void setCommunicator(const QString &valueOfCommunication, const QString &portName);
-	void setConnectRobotAction(QAction *actionConnect);
+	void setConnectRobotAction(QAction *actionConnect); // assigning a value to the field mActionConnectToRobot
 
 public slots:
 	void connectToRobot();
@@ -54,7 +54,7 @@ public slots:
 	void stopRobot();
 	void showD2ModelWidget(bool isVisible);
 	void showWatchList();
-	void disconnectSlot();
+	void disconnectSlot(); // actions when robot disconnect
 
 private slots:
 	void threadStopped();

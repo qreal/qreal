@@ -58,6 +58,7 @@ public:
 signals:
 	void connected(bool success);
 	void sensorsConfigured();
+	/// Sends if robot had been disconnected
 	void disconnected();
 
 protected:
