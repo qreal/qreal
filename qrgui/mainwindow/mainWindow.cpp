@@ -689,7 +689,7 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	}
 
 	QList<NodeElement*> itemsToArrangeLinks;
-	foreach (Id graphicalId, graphicalIdList) {
+	foreach (Id const &graphicalId, graphicalIdList) {
 		bool const tabClosed = closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
 		if (scene && !tabClosed) {
 			QGraphicsItem const * const item = scene->getElem(graphicalId);
