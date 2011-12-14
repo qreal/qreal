@@ -1,7 +1,5 @@
 #include "unrealRobotModelImplementation.h"
 
-#include <QtCore/QDebug>
-
 #include "../tracer.h"
 
 using namespace qReal::interpreters::robots;
@@ -93,8 +91,6 @@ void UnrealRobotModelImplementation::sensorConfigurationDoneSlot()
 	if (!mIsConnected) {
 		mIsConnected = true;
 		emit connected(true);
-	} else {
-		emit sensorsConfigured();
 	}
 	emit sensorsConfigured();
 }
