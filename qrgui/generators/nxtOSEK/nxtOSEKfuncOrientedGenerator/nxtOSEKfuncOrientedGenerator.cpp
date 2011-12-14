@@ -58,7 +58,7 @@ void NxtOSEKfuncOrientedGenerator::writeGeneratedCodeToFile(QString const &resul
 	/**/
 
 	/* Generate OIL file */
-	QFile templateOILFile(":/generators/nxtOSEK/nxtOSEKfuncOrientedGenerator/template/template.oil");
+	QFile templateOILFile(":/generators/nxtOSEK/nxtOSEKfuncOrientedGenerator/templates/template.oil");
 	if (!templateOILFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		mErrorReporter.addError("cannot open \"" + templateOILFile.fileName() + "\"");
 		return;

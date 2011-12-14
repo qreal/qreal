@@ -34,6 +34,9 @@
         <file>generators/nxtOSEK/nxtOSEKsequentialGenerator/templates/template.c</file>
         <file>generators/nxtOSEK/nxtOSEKsequentialGenerator/templates/template.makefile</file>
         <file>generators/nxtOSEK/nxtOSEKsequentialGenerator/templates/template.oil</file>
+        <file>generators/nxtOSEK/nxtOSEKfuncOrientedGenerator/templates/template.c</file>
+        <file>generators/nxtOSEK/nxtOSEKfuncOrientedGenerator/templates/template.makefile</file>
+        <file>generators/nxtOSEK/nxtOSEKfuncOrientedGenerator/templates/template.oil</file>
         <!-- <file>qreal-robots.qhc</file> -->
     </qresource>
     <qresource prefix="/images">
