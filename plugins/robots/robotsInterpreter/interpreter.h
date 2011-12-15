@@ -45,7 +45,9 @@ public:
 	void closeD2ModelWidget();
 	void setRobotModelType(robotModelType::robotModelTypeEnum robotModelType);
 	void setCommunicator(const QString &valueOfCommunication, const QString &portName);
-	void setConnectRobotAction(QAction *actionConnect); // assigning a value to the field mActionConnectToRobot
+
+	/// Assigning a value to the field mActionConnectToRobot
+	void setConnectRobotAction(QAction *actionConnect);
 
 public slots:
 	void connectToRobot();
