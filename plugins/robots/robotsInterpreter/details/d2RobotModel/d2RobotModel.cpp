@@ -197,7 +197,7 @@ QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
 	QPointF position = neededPosDir.first;
 	qreal width = colorSensorWidth / 2.0;
 	QRectF scanningRect = QRectF(position.x() -  width, position.y() - width
-								 , 2 * width, 2 * width);
+			, 2 * width, 2 * width);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
 	QPainter painter(&image);
