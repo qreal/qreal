@@ -60,6 +60,8 @@ public:
 signals:
 	void sensorsConfigured();
 	void connected(bool success);
+
+	/// Is emitted if robot is disconnected
 	void disconnected();
 
 private slots:
