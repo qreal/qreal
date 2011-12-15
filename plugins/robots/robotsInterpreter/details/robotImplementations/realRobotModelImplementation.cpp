@@ -76,14 +76,14 @@ void RealRobotModelImplementation::stopRobot()
 	for (unsigned i = 0; i < 4; ++i)
 		if (colorSensor(static_cast<inputPort::InputPortEnum>(i)) != NULL)
 			colorSensor(static_cast<inputPort::InputPortEnum>(i))->reconfigure(lowLevelSensorType::COLORNONE);
+	disconnectRobot();
 }
 
 void RealRobotModelImplementation::connectedSlot(bool success)
 {
 	if (!success) {
 		Tracer::debug(tracer::initialization, "RealRobotModelImplementation::connectedSlot", "Connection failed.");
-		mIsConnected = false;
-		emit connected(false);
+		disconnectRobot();
 		return;
 	}
 	Tracer::debug(tracer::initialization, "RealRobotModelImplementation::connectedSlot", "Connected. Initializing sensors...");
@@ -92,11 +92,7 @@ void RealRobotModelImplementation::connectedSlot(bool success)
 
 void RealRobotModelImplementation::sensorConfigurationDoneSlot()
 {
-	if (!mIsConnected) {
-		mIsConnected = true;
-		emit connected(true);
-	}
-	emit sensorsConfigured();
+	connectRobot();
 }
 
 motorImplementations::RealMotorImplementation &RealRobotModelImplementation::motorA()
@@ -137,4 +133,5 @@ bool RealRobotModelImplementation::needsConnection() const
 void RealRobotModelImplementation::disconnectedSlot()
 {
 	mSensorsConfigurer.lockConfiguring();
+	emit disconnected();
 }

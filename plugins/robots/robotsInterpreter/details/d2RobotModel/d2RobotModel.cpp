@@ -113,7 +113,7 @@ void D2RobotModel::countMotorTurnover()
 
 int D2RobotModel::readEncoder(int/*inputPort::InputPortEnum*/ const port) const
 {
-	return mTurnoverMotors[port] / 360;//делим кол-во градусов на полный оборот
+	return mTurnoverMotors[port] / 360;// divide the number of degrees by complete revolutions count
 }
 
 void D2RobotModel::resetEncoder(int/*inputPort::InputPortEnum*/ const port)

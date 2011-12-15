@@ -7,6 +7,8 @@
 #include "details/tracer.h"
 #include "details/debugHelper.h"
 
+#include <QtGui/QAction>
+
 using namespace qReal;
 using namespace interpreters::robots;
 using namespace interpreters::robots::details;
@@ -24,6 +26,7 @@ Interpreter::Interpreter()
 	, mRobotCommunication(new RobotCommunication(SettingsManager::value("valueOfCommunication", "bluetooth").toString()))
 	, mImplementationType(robotModelType::null)
 	, mWatchListWindow(NULL)
+	, mActionConnectToRobot(NULL)
 {
 	mParser = NULL;
 	mBlocksTable = NULL;
@@ -32,6 +35,7 @@ Interpreter::Interpreter()
 	mD2RobotModel = new d2Model::D2RobotModel();
 	mD2ModelWidget = mD2RobotModel->createModelWidget();
 
+	connect(mRobotModel, SIGNAL(disconnected()), this, SLOT(disconnectSlot()));
 	connect(mRobotModel, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
 	connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 }
@@ -147,11 +151,16 @@ void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum impl
 
 void Interpreter::connectedSlot(bool success)
 {
-	Tracer::debug(tracer::initialization, "Interpreter::connectedSlot", "Robot connection status: " + QString::number(success));
-	if (!success) {
-		mConnected = false;
+	if (success) {
+		if (mRobotModel->needsConnection()) {
+			mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
+		}
+	} else {
+		Tracer::debug(tracer::initialization, "Interpreter::connectedSlot", "Robot connection status: " + QString::number(success));
 		mInterpretersInterface->errorReporter()->addError(tr("Can't connect to a robot."));
 	}
+	mConnected = success;
+	mActionConnectToRobot->setChecked(success);
 }
 
 void Interpreter::sensorsConfiguredSlot()
@@ -308,7 +317,18 @@ void Interpreter::updateSensorValues(QString const &sensorVariableName, int sens
 
 void Interpreter::connectToRobot()
 {
-	mRobotModel->init();
+	if (mConnected) {
+		mRobotModel->stopRobot();
+	} else {
+		mRobotModel->init();
+		mActionConnectToRobot->setChecked(mConnected);
+	}
+}
+
+void Interpreter::disconnectSlot()
+{
+	mActionConnectToRobot->setChecked(false);
+	mConnected = false;
 }
 
 void Interpreter::setRobotModelType(robotModelType::robotModelTypeEnum robotModelType)
@@ -326,4 +346,9 @@ void Interpreter::setCommunicator(QString const &valueOfCommunication, QString c
 
 	mRobotCommunication->setRobotCommunicationThreadObject(communicator);
 	mRobotCommunication->setPortName(portName);
+}
+
+void Interpreter::setConnectRobotAction(QAction *actionConnect)
+{
+	mActionConnectToRobot = actionConnect;
 }
