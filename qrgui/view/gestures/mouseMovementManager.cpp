@@ -9,14 +9,19 @@ const QString pointDelimeter = " : ";
 const QString pathDelimeter = " | ";
 
 
-MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager * editorManager,
-		GesturesPainterInterface *gesturesPaintManager)
+MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager *editorManager
+		, GesturesPainterInterface *gesturesPaintManager)
 {
 	mGesturesManager = new MixedGesturesManager();
 	mKeyManager = &mKeyStringManager;
 	mEditorManager = editorManager;
 	mGesturesPaintMan = gesturesPaintManager;
 	setElements(elements);
+}
+
+MouseMovementManager::~MouseMovementManager()
+{
+	delete mGesturesManager;
 }
 
 void MouseMovementManager::setGesturesPainter(GesturesPainterInterface *gesturesPainter)
@@ -130,7 +135,6 @@ QPoint MouseMovementManager::parsePoint(QString const &str)
 
 qReal::Id MouseMovementManager::getObject()
 {
-	qDebug() << "try to recognize";
 	qReal::Id recognizedObject;
 	mGesturesManager->setKey(mPath);
 	mPath.clear();
@@ -138,13 +142,11 @@ qReal::Id MouseMovementManager::getObject()
 	foreach (qReal::Id object, mElements) {
 		minDist = std::min(minDist, mGesturesManager->getMaxDistance(object.toString()));
 		double dist = mGesturesManager->getDistance(object.toString());
-		qDebug() << object << dist;
 		if (dist < minDist) {
 			minDist = dist;
 			recognizedObject = object;
 		}
 	}
-	qDebug() << "found object";
 	return recognizedObject;
 }
 

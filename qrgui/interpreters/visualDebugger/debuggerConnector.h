@@ -11,7 +11,7 @@ namespace qReal {
 		Q_OBJECT
 
 		public:
-			DebuggerConnector();
+			explicit DebuggerConnector(QObject *parent);
 			~DebuggerConnector();
 
 			void run();

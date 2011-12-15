@@ -317,6 +317,10 @@ MainWindow::~MainWindow()
 	SettingsManager::instance()->saveData();
 	delete mRecentProjectsMenu;
 	delete mRecentProjectsMapper;
+	delete mGesturesWidget;
+	delete mModels;
+	delete mFlashTool;
+	delete mVisualDebugger;
 }
 
 EditorManager* MainWindow::manager()
@@ -517,7 +521,6 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 	}
 
 	if (loadingCancelled) {
-		close();
 		return false;
 	}
 
@@ -591,9 +594,9 @@ void MainWindow::saveAllAndOpen(QString const &dirName)
 
 bool MainWindow::open(QString const &fileName)
 {
-	if (!QFile(fileName).exists()) // || (!mSaveFile.isEmpty() && fileName.isEmpty()))
-		if (!(!mSaveFile.isEmpty() && fileName.isEmpty()))
-			return false;
+	if (!QFile(fileName).exists() && fileName != "") {
+		return false;
+	}
 
 	refreshRecentProjectsList(fileName);
 
@@ -1411,6 +1414,10 @@ void MainWindow::initCurrentTab(QModelIndex const &rootIndex)
 	getCurrentTab()->mvIface()->setAssistApi(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi());
 
 	getCurrentTab()->mvIface()->setModel(mModels->graphicalModel());
+	if (getCurrentTab()->sceneRect() == QRectF(0, 0, 0, 0)) {
+		getCurrentTab()->setSceneRect(0, 0, 1, 1);
+	}
+
 	getCurrentTab()->mvIface()->setLogicalModel(mModels->logicalModel());
 	getCurrentTab()->mvIface()->setRootIndex(index);
 	changeMiniMapSource(mUi->tabs->currentIndex());
@@ -1533,7 +1540,7 @@ void MainWindow::setSwitchAlignment(bool isChecked)
 
 void MainWindow::showGestures()
 {
-	mGesturesWidget = new GesturesWidget();
+	mGesturesWidget = new GesturesWidget(); // why create another one here?
 	mUi->tabs->addTab(mGesturesWidget, tr("Gestures Show"));
 	mUi->tabs->setCurrentWidget(mGesturesWidget);
 	connect(mGesturesWidget, SIGNAL(currentElementChanged()), this, SIGNAL(currentIdealGestureChanged()));
@@ -2241,7 +2248,7 @@ void MainWindow::initWindowTitle()
 void MainWindow::initDebugger()
 {
 	mVisualDebugger = new VisualDebugger(mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi(), *this);
-	mDebuggerConnector = new DebuggerConnector();
+	mDebuggerConnector = new DebuggerConnector(this);
 
 	connect(mDebuggerConnector, SIGNAL(readyReadStdOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
 	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerErrOutput(QString)));

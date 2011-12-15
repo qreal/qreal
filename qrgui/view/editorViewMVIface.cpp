@@ -18,8 +18,8 @@ EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	, mGraphicalAssistApi(NULL)
 	, mLogicalAssistApi(NULL)
 {
-	mScene->mv_iface = this;
-	mScene->view = mView;
+	mScene->mMVIface = this;
+	mScene->mView = mView;
 }
 
 EditorViewMViface::~EditorViewMViface()
