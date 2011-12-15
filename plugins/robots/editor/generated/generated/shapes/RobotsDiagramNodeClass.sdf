@@ -1,0 +1,10 @@
+ <picture sizex="204" sizey="204">
+  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="2" stroke-width="0" x1="22" y2="2" fill-style="none" x2="182"/>
+  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="202" stroke-width="0" x1="22" y2="202" fill-style="none" x2="182"/>
+  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="22" stroke-width="0" x1="2" y2="182" fill-style="none" x2="2"/>
+  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="22" stroke-width="0" x1="202" y2="182" fill-style="none" x2="202"/>
+  <arc spanAngle="1440" startAngle="1440" y1="2" x1="2" y2="42" x2="42"/>
+  <arc spanAngle="1440" startAngle="0" y1="2" x1="162" y2="42" x2="202"/>
+  <arc spanAngle="1440" startAngle="2880" y1="162" x1="2" y2="202" x2="42"/>
+  <arc spanAngle="-1440" startAngle="0" y1="162" x1="162" y2="202" x2="202"/>
+ </picture>

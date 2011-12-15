@@ -88,11 +88,7 @@ void UnrealRobotModelImplementation::timerTimeout()
 void UnrealRobotModelImplementation::sensorConfigurationDoneSlot()
 {
 	Tracer::debug(tracer::initialization, "UnrealRobotModelImplementation::sensorConfigurationDoneSlot", "");
-	if (!mIsConnected) {
-		mIsConnected = true;
-		emit connected(true);
-	}
-	emit sensorsConfigured();
+	connectRobot();
 }
 
 void UnrealRobotModelImplementation::stopRobot()
@@ -101,6 +97,7 @@ void UnrealRobotModelImplementation::stopRobot()
 	mMotorB.off();
 	mMotorC.off();
 	mD2Model->stopRobot();
+	disconnectRobot();
 }
 
 motorImplementations::UnrealMotorImplementation &UnrealRobotModelImplementation::motorA()

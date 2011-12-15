@@ -111,3 +111,18 @@ bool AbstractRobotModelImplementation::needsConnection() const
 void AbstractRobotModelImplementation::startInterpretation()
 {
 }
+
+void AbstractRobotModelImplementation::disconnectRobot()
+{
+	mIsConnected = false;
+	emit disconnected();
+}
+
+void AbstractRobotModelImplementation::connectRobot()
+{
+	if (!mIsConnected) {
+		mIsConnected = true;
+		emit connected(true);
+	}
+	emit sensorsConfigured();
+}
