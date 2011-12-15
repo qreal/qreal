@@ -671,8 +671,10 @@ void MainWindow::settingsPlugins()
 
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
-	QModelIndex const index = isLogicalModel ? (mUi->logicalModelExplorer->currentIndex())
-			: (mUi->graphicalModelExplorer->currentIndex());
+	QModelIndex const index = isLogicalModel
+		? (mUi->logicalModelExplorer->currentIndex())
+		: (mUi->graphicalModelExplorer->currentIndex());
+
 	if (!index.isValid()) {
 		return;
 	}
