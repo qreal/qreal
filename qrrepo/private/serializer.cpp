@@ -106,8 +106,9 @@ void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHa
 			QDomDocument doc = xmlUtils::loadDocument(path);
 			Object *object = parseObject(doc.documentElement());
 			Q_ASSERT(object);  // All objects in a repository shall be loadable.
-			if (object != NULL)
+			if (object != NULL) {
 				objectsHash.insert(object->id(), object);
+			}
 		}
 	}
 }
