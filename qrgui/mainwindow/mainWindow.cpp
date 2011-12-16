@@ -41,7 +41,7 @@
 #include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
 #include "../generators/nxtOSEK/sequentialGenerator.h" 	
-#include "../generators/nxtOSEK/funcOrientedGenerator.h"i
+#include "../generators/nxtOSEK/funcOrientedGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../../qrkernel/settingsManager.h"
 
