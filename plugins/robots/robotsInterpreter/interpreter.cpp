@@ -167,9 +167,11 @@ void Interpreter::sensorsConfiguredSlot()
 {
 	Tracer::debug(tracer::initialization, "Interpreter::sensorsConfiguredSlot", "Sensors are configured");
 
-	mConnected = true;
-	if (mRobotModel->needsConnection())
+	if (mRobotModel->needsConnection() && mConnected)
 		mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
+
+	mConnected = true;
+	mActionConnectToRobot->setChecked(mConnected);
 
 	if (mState == waitingForSensorsConfiguredToLaunch) {
 		mState = interpreting;
@@ -346,6 +348,8 @@ void Interpreter::setCommunicator(QString const &valueOfCommunication, QString c
 
 	mRobotCommunication->setRobotCommunicationThreadObject(communicator);
 	mRobotCommunication->setPortName(portName);
+
+	disconnectSlot();
 }
 
 void Interpreter::setConnectRobotAction(QAction *actionConnect)
