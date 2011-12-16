@@ -8,7 +8,6 @@ namespace generators {
 namespace nxtOSEK {
 
 //! Class for generate a nxtOSEK code from Robot Language Diagram.
-
 class NxtOSEKgenerator {
 public:
 	explicit NxtOSEKgenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath = "")
@@ -30,6 +29,7 @@ public:
 			delete mApi;
 	}
 
+	//! main method that starts a code generation.
 	virtual gui::ErrorReporter &generate() = 0;
 
 protected:

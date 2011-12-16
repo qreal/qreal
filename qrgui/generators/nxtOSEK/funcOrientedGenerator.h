@@ -16,6 +16,9 @@ namespace qReal {
 namespace generators {
 namespace nxtOSEK {
 
+/*! Class for generate a nxtOSEK code from Robot Language Diagram.
+ * Creates code that contains separate functions for each diagram node.
+ */
 class FuncOrientedGenerator: public NxtOSEKgenerator {
 	friend class AbstractElementGenerator;
 	
@@ -47,6 +50,7 @@ public:
 	virtual ~FuncOrientedGenerator() {
 	}
 	
+	//! main method that starts a code generation.
 	gui::ErrorReporter &generate();
 
 private:

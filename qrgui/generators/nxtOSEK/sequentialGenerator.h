@@ -17,8 +17,10 @@ namespace qReal {
 namespace generators {
 namespace nxtOSEK {
 
-//! Class for generate a nxtOSEK code from Robot Language Diagram.
-
+/*! Class for generate a nxtOSEK code from Robot Language Diagram.
+ * Creates code that contains one main function with sequentially writed
+ * strings mapped from diagram elements.
+ */
 class SequentialGenerator: public NxtOSEKgenerator {
 public:
 	explicit SequentialGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath = "");
@@ -124,7 +126,7 @@ private:
 		QPair<bool, qReal::Id> checkBranchForBackArrows(qReal::Id const &curElementId, qReal::IdList* checkedElements);
 	};
 
-	// Element generator factory that returns for a diagram element ID a connected generator.
+	//! Element generator factory that returns for a diagram element ID a connected generator.
 	friend class ElementGeneratorFactory;
 	class ElementGeneratorFactory {
 	public:
@@ -143,10 +145,6 @@ private:
 
 	void addToGeneratedStringSetVariableInit();
 
-	//qrRepo::RepoApi *mApi;
-	//bool mIsNeedToDeleteMApi;
-	//QString mDestinationPath;
-
 	//! Set of already generated strings united for take a same critical places position (start of loop etc)
 	QList< QList<SmartLine> > mGeneratedStringSet;
 
@@ -162,8 +160,6 @@ private:
 
 	QList<SmartLine> mVariables;
 	int mVariablePlaceInGenStrSet;
-
-	//gui::ErrorReporter mErrorReporter;
 };
 }
 }
