@@ -175,6 +175,7 @@ private slots:
 	void showPreferencesDialog();
 
 	void generateRobotSourceCode();
+	void toggleRobotSourceCodeGenerator();
 	void flashRobot();
 	void uploadProgram();
 
@@ -316,6 +317,11 @@ private:
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;
+
+	enum {
+		funcOrientedGeneratorVersion,
+		sequentialGeneratorVersion
+	} mCurRobotSourceCodeGeneratorVersion;
 };
 
 }

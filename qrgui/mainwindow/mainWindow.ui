@@ -236,6 +236,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionCode"/>
+   <addaction name="actionToggle_Generator"/>
    <addaction name="actionFlash_Robot"/>
    <addaction name="actionUpload_Program"/>
   </widget>
@@ -653,6 +654,14 @@
    </property>
    <property name="toolTip">
     <string>Generate source code for robot</string>
+   </property>
+  </action>
+  <action name="actionToggle_Generator">
+   <property name="text">
+    <string>Toggle generator</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle robot generator</string>
    </property>
   </action>
   <action name="actionUpload_Program">

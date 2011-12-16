@@ -72,6 +72,7 @@ MainWindow::MainWindow()
 		, mUnsavedProjectIndicator(false)
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
+		, mCurRobotSourceCodeGeneratorVersion(sequentialGeneratorVersion)
 {
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
 	timeMeasurer.doNothing(); //to avoid the unused variables problem
@@ -239,6 +240,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionFlash_Robot, SIGNAL(triggered()), this, SLOT(flashRobot()));
 	connect(mUi->actionUpload_Program, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 	connect(mUi->actionCode, SIGNAL(triggered()), this, SLOT(generateRobotSourceCode()));
+	connect(mUi->actionToggle_Generator, SIGNAL(triggered()), this, SLOT(toggleRobotSourceCodeGenerator()));
 
 	//	connect(mUi->actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
 	//	connect(mUi->actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
@@ -2077,13 +2079,23 @@ void MainWindow::initToolPlugins()
 		mPreferencesDialog.registerPage(page.first, page.second);
 }
 
+void MainWindow::toggleRobotSourceCodeGenerator() {
+	if (mCurRobotSourceCodeGeneratorVersion == funcOrientedGeneratorVersion)
+		mCurRobotSourceCodeGeneratorVersion = sequentialGeneratorVersion;
+	else
+		mCurRobotSourceCodeGeneratorVersion = funcOrientedGeneratorVersion;
+}
+
 void MainWindow::generateRobotSourceCode()
 {
 	saveAll();
 
-	qReal::generators::nxtOSEK::NxtOSEKgenerator* gen =
-	    new qReal::generators::nxtOSEK::SequentialGenerator(mModels->repoControlApi());
-	//  new qReal::generators::nxtOSEK::FuncOrientedGenerator(mModels->repoControlApi());
+	qReal::generators::nxtOSEK::NxtOSEKgenerator* gen;
+	if (mCurRobotSourceCodeGeneratorVersion == funcOrientedGeneratorVersion)
+		gen = new qReal::generators::nxtOSEK::FuncOrientedGenerator(mModels->repoControlApi());
+	else
+	    	gen = new qReal::generators::nxtOSEK::SequentialGenerator(mModels->repoControlApi());
+
 	gui::ErrorReporter &errors = gen->generate();
 	if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
 		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
@@ -2105,6 +2117,8 @@ void MainWindow::generateRobotSourceCode()
 		mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
 		mUi->actionFlash_Robot->setVisible(mNxtToolsPresent);
 	}
+
+	delete gen;
 }
 
 void MainWindow::uploadProgram()
