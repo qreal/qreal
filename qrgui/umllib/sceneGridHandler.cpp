@@ -145,61 +145,35 @@ qreal SceneGridHandler::recalculateY2(qreal myY1) const
 	return myY1 + mNode->boundingRect().height();
 }
 
-// move element vertically according to the grid
-// koef - index of cell in the grid
-void SceneGridHandler::makeGridMovingX(qreal myX, int koef, int indexGrid)
+qreal SceneGridHandler::alignedCoordinate(qreal coord, int coef, int indexGrid)
 {
-	int oneKoef = koef != 0 ? koef / qAbs(koef) : 0;
+	int const oneCoef = coef != 0 ? coef / qAbs(coef) : 0;
 
-	if (qAbs(qAbs(myX) - qAbs(koef) * indexGrid) <= indexGrid / 2) {
-		mNode->setX(koef * indexGrid);
-		mNode->adjustLinks();
-	} else if (qAbs(qAbs(myX) - (qAbs(koef) + 1) * indexGrid) < indexGrid / 2) {
-		mNode->setX((koef + oneKoef) * indexGrid);
-		mNode->adjustLinks();
+	if (qAbs(qAbs(coord) - qAbs(coef) * indexGrid) <= indexGrid / 2) {
+		return coef * indexGrid;
+	} else if (qAbs(qAbs(coord) - (qAbs(coef) + 1) * indexGrid) < indexGrid / 2) {
+		return (coef + oneCoef) * indexGrid;
 	}
+	return coord;
 }
 
-// move element horizontally according to the grid
-void SceneGridHandler::makeGridMovingY(qreal myY, int koef, int indexGrid)
+void SceneGridHandler::makeGridMovingX(qreal myX, int coef, int indexGrid)
 {
-	int oneKoef = koef != 0 ? koef / qAbs(koef) : 0;
-
-	if (qAbs(qAbs(myY) - qAbs(koef) * indexGrid) <= indexGrid / 2) {
-		mNode->setY(koef * indexGrid);
-		mNode->adjustLinks();
-	} else if (qAbs(qAbs(myY) - (qAbs(koef) + 1) * indexGrid) < indexGrid / 2) {
-		mNode->setY((koef + oneKoef) * indexGrid);
-		mNode->adjustLinks();
-	}
+	mNode->setX(alignedCoordinate(myX, coef, indexGrid));
+	mNode->adjustLinks();
 }
 
-qreal SceneGridHandler::makeGridAlignmentX(qreal myX)
+void SceneGridHandler::makeGridMovingY(qreal myY, int coef, int indexGrid)
+{
+	mNode->setY(alignedCoordinate(myY, coef, indexGrid));
+	mNode->adjustLinks();
+}
+
+qreal SceneGridHandler::makeGridAlignment(qreal coord)
 {
 	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
-	int const koef = static_cast<int>(myX) / indexGrid;
-	int const oneKoef = koef != 0 ? koef / qAbs(koef) : 0;
-
-	if (qAbs(qAbs(myX) - qAbs(koef) * indexGrid) <= indexGrid / 2) {
-		return koef * indexGrid;
-	} else if (qAbs(qAbs(myX) - (qAbs(koef) + 1) * indexGrid) < indexGrid / 2) {
-		return (koef + oneKoef) * indexGrid;
-	}
-	return myX;
-}
-
-qreal SceneGridHandler::makeGridAlignmentY(qreal myY)
-{
-	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
-	int const koef = static_cast<int>(myY) / indexGrid;
-	int const oneKoef = koef != 0 ? koef / qAbs(koef) : 0;
-
-	if (qAbs(qAbs(myY) - qAbs(koef) * indexGrid) <= indexGrid / 2) {
-		return koef * indexGrid;
-	} else if (qAbs(qAbs(myY) - (qAbs(koef) + 1) * indexGrid) < indexGrid / 2) {
-		return (koef + oneKoef) * indexGrid;
-	}
-	return myY;
+	int const coef = static_cast<int>(coord) / indexGrid;
+	return alignedCoordinate(coord, coef, indexGrid);
 }
 
 void SceneGridHandler::setShowAlignmentMode(bool mode)
@@ -262,17 +236,6 @@ void SceneGridHandler::drawGuides()
 {
 	QPointF const nodeScenePos = mNode->scenePos();
 	QRectF const contentsRect = mNode->contentsRect();
-
-	// vertical
-	QList<QGraphicsItem *> listX = mNode->scene()->items(nodeScenePos.x(), 0
-			, nodeScenePos.x() + contentsRect.width()
-			, widthLineY
-			, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder);
-	// horizontal
-	QList<QGraphicsItem *> listY = mNode->scene()->items(0, nodeScenePos.y()
-			, widthLineX
-			, nodeScenePos.y() + contentsRect.height()
-			, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder);
 
 	delUnusedLines();
 

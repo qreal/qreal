@@ -15,9 +15,8 @@ public:
 
 	void delUnusedLines();
 
-	// aligning the coordinates of a point to the grid
-	qreal makeGridAlignmentX(qreal myX);
-	qreal makeGridAlignmentY(qreal myY);
+	/// aligning the coordinates of a point to the grid
+	qreal makeGridAlignment(qreal coord);
 
 	void setGridMode(bool mode);
 	void setAlignmentMode(bool mode);
@@ -48,8 +47,13 @@ private:
 	void buildLineY(qreal deltaY, qreal pointY, qreal correctionY
 			, qreal &myY1, qreal &myY2);
 
-	void makeGridMovingX(qreal myX, int koef, int indexGrid);
-	void makeGridMovingY(qreal myY, int koef, int indexGrid);
+	/// move element vertically according to the grid; сoef - index of cell in the grid
+	void makeGridMovingX(qreal myX, int coef, int indexGrid);
+	/// move element horizontally according to the grid
+	void makeGridMovingY(qreal myY, int coef, int indexGrid);
+
+	/// return coordinate aligned to grid
+	qreal alignedCoordinate(qreal coord, int coef, int indexGrid);
 
 	qreal recalculateX1() const;
 	qreal recalculateX2(qreal myX1) const;

@@ -578,39 +578,61 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (parItem) {
 			parentPos = parItem->scenePos();
 		}
+
 		switch (mDragState) {
-		case TopLeft:
-			newContents.setTopLeft(event->pos());
+		case TopLeft: {
+			qreal const newX = mGrid->makeGridAlignment(event->pos().x());
+			qreal const newY = mGrid->makeGridAlignment(event->pos().y());
+			newContents.setTopLeft(QPoint(newX, newY));
 			setPos(event->scenePos() - parentPos);
 			break;
-		case Top:
-			newContents.setTop(event->pos().y());
+		}
+		case Top: {
+			qreal const newY = mGrid->makeGridAlignment(event->pos().y());
+			newContents.setTop(newY);
 			setPos(pos().x(), event->scenePos().y() - parentPos.y());
 			break;
-		case TopRight:
-			newContents.setTopRight(event->pos());
+		}
+		case TopRight: {
+			qreal const newX = mGrid->makeGridAlignment(event->pos().x());
+			qreal const newY = mGrid->makeGridAlignment(event->pos().y());
+			newContents.setTopRight(QPoint(newX, newY));
 			setPos(pos().x(), event->scenePos().y() - parentPos.y());
+			/*newContents.setTopRight(event->pos());
+			setPos(pos().x(), event->scenePos().y() - parentPos.y());
+			*/
 			break;
-		case Left:
-			newContents.setLeft(event->pos().x());
+		}
+		case Left: {
+			qreal const newX = mGrid->makeGridAlignment(event->pos().x());
+			newContents.setLeft(newX);
 			setPos(event->scenePos().x() - parentPos.x(), pos().y());
 			break;
-		case Right:
-			newContents.setRight(event->pos().x());
+		}
+		case Right: {
+			qreal const newX = mGrid->makeGridAlignment(event->pos().x());
+			newContents.setRight(newX);
 			break;
-		case BottomLeft:
+		}
+		case BottomLeft: {
+			qreal const newX = mGrid->makeGridAlignment(event->pos().x());
+			qreal const newY = mGrid->makeGridAlignment(event->pos().y());
+			newContents.setBottomLeft(QPoint(newX, newY));
+			/*
 			newContents.setBottomLeft(event->pos());
+			*/
 			setPos(event->scenePos().x() - parentPos.x(), pos().y());
 			break;
-		case Bottom:
-			newContents.setBottom(event->pos().y());
+		}
+		case Bottom: {
+			qreal const newY = mGrid->makeGridAlignment(event->pos().y());
+			newContents.setBottom(newY);
 			break;
-		case BottomRight:
-		{
-			qreal const newX = mGrid->makeGridAlignmentX(event->pos().x());
-			qreal const newY = mGrid->makeGridAlignmentY(event->pos().y());
-			QPointF newPoint(newX, newY);
-			newContents.setBottomRight(newPoint);
+		}
+		case BottomRight: {
+			qreal const newX = mGrid->makeGridAlignment(event->pos().x());
+			qreal const newY = mGrid->makeGridAlignment(event->pos().y());
+			newContents.setBottomRight(QPoint(newX, newY));
 			break;
 		}
 		case None:
@@ -1430,7 +1452,6 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 		double dy = newContents.height() - oldContents.height();
 		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
 		setPos(mPos);
-		qDebug() << "resize maybe happened";
 	}
 
 	if (mParentNodeElement->checkUpperBorder(posi, xHor, yHor)) {
