@@ -54,11 +54,11 @@ void Label::generateCodeForConstructor(OutFile &out)
 		<< "			titles.append(" + titleName() + ");\n";
 }
 
-QStringList Label::getReformedList(QStringList list)
+QStringList Label::getReformedList(QStringList const &list) const
 {
 	QStringList result;
 	int counter = 1;
-	foreach (QString str, list){
+	foreach (QString const &str, list){
 		if (counter % 2 == 0) {
 			result.append(str);
 		} else {
@@ -69,7 +69,7 @@ QStringList Label::getReformedList(QStringList list)
 	return result;
 }
 
-QStringList Label::getListOfStr(QString strToParse)
+QStringList Label::getListOfStr(QString const &strToParse) const
 {
 	return getReformedList(strToParse.split("##"));
 }
@@ -89,10 +89,10 @@ void Label::generateCodeForUpdateData(OutFile &out)
 		list.append(mTextBinded);
 	}
 
-	QString field;
 	QString resultStr;
 	int counter = 1;
-	foreach (QString listElement, list) {
+	foreach (QString const &listElement, list) {
+		QString field;
 		if (counter % 2 == 0) {
 			if (listElement == "name") {
 				field = "repo->name()";
@@ -103,7 +103,7 @@ void Label::generateCodeForUpdateData(OutFile &out)
 			field = "QString::fromUtf8(" + listElement + ")";
 		}
 
-		resultStr = resultStr + " + " +  field;
+		resultStr += " + " +  field;
 		counter++;
 	}
 	resultStr = resultStr.mid(3);
