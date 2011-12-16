@@ -113,7 +113,7 @@ void D2RobotModel::countMotorTurnover()
 
 int D2RobotModel::readEncoder(int/*inputPort::InputPortEnum*/ const port) const
 {
-	return mTurnoverMotors[port] / 360;//делим кол-во градусов на полный оборот
+	return mTurnoverMotors[port] / 360;// divide the number of degrees by complete revolutions count
 }
 
 void D2RobotModel::resetEncoder(int/*inputPort::InputPortEnum*/ const port)
@@ -197,7 +197,7 @@ QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
 	QPointF position = neededPosDir.first;
 	qreal width = colorSensorWidth / 2.0;
 	QRectF scanningRect = QRectF(position.x() -  width, position.y() - width
-								 , 2 * width, 2 * width);
+			, 2 * width, 2 * width);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
 	QPainter painter(&image);

@@ -60,7 +60,9 @@ QList<ActionInfo> RobotsPlugin::actions()
 	QObject::connect(stopRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(stopRobot()));
 
 	QAction *connectToRobotAction = new QAction(QObject::tr("Connect to robot"), NULL);
+	connectToRobotAction->setCheckable(true);
 	ActionInfo connectToRobotActionInfo(connectToRobotAction, "interpreters", "tools");
+	mInterpreter.setConnectRobotAction(connectToRobotAction);
 	QObject::connect(connectToRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(connectToRobot()));
 
 	QAction *robotSettingsAction = new QAction(QObject::tr("Robot settings"), NULL);

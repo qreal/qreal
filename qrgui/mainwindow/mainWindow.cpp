@@ -40,8 +40,7 @@
 #include "../pluginManager/listenerManager.h"
 #include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
-#include "../generators/nxtOSEK/sequentialGenerator.h"
-#include "../generators/nxtOSEK/funcOrientedGenerator.h"
+#include "../generators/nxtOSEK/nxtOSEKRobotGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../../qrkernel/settingsManager.h"
 
@@ -672,33 +671,32 @@ void MainWindow::settingsPlugins()
 
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
-	QModelIndex index = isLogicalModel ? (mUi->logicalModelExplorer->currentIndex())
-			: (mUi->graphicalModelExplorer->currentIndex());
-	QList<NodeElement*> itemsToArrangeLinks;
+	QModelIndex const index = isLogicalModel
+		? (mUi->logicalModelExplorer->currentIndex())
+		: (mUi->graphicalModelExplorer->currentIndex());
+
+	if (!index.isValid()) {
+		return;
+	}
 	EditorView const * const view = getCurrentTab();
 	EditorViewScene* scene = NULL;
 	if (view) {
 		scene = dynamic_cast<EditorViewScene*>(view->scene());
 	}
 
+	IdList graphicalIdList;
 	if (isLogicalModel) {
 		Id const logicalId = mModels->logicalModelAssistApi().idByIndex(index);
-		IdList const graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
-		foreach (Id graphicalId, graphicalIdList) {
-			closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
-			if (scene) {
-				QGraphicsItem const * const item = scene->getElem(graphicalId);
-				EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(item);
-				if (edge) {
-					itemsToArrangeLinks.append(edge->src());
-					itemsToArrangeLinks.append(edge->dst());
-				}
-			}
-		}
+		graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
 	} else {
-		closeTab(index);
 		Id const graphicalId = mModels->graphicalModelAssistApi().idByIndex(index);
-		if (scene) {
+		graphicalIdList.append(graphicalId);
+	}
+
+	QList<NodeElement*> itemsToArrangeLinks;
+	foreach (Id const &graphicalId, graphicalIdList) {
+		bool const tabClosed = closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
+		if (scene && !tabClosed) {
 			QGraphicsItem const * const item = scene->getElem(graphicalId);
 			EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(item);
 			if (edge) {
@@ -708,23 +706,21 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 		}
 	}
 
-	if (index.isValid()) {  // TODO: why only here?
-		PropertyEditorModel* propertyEditorModel = static_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
-		if (propertyEditorModel->isCurrentIndex(index)) {
-			propertyEditorModel->clearModelIndexes();
-			mUi->propertyEditor->setRootIndex(QModelIndex());
-		}
+	PropertyEditorModel* propertyEditorModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
+	if (propertyEditorModel && propertyEditorModel->isCurrentIndex(index)) {
+		propertyEditorModel->clearModelIndexes();
+		mUi->propertyEditor->setRootIndex(QModelIndex());
+	}
 
-		if (isLogicalModel) {
-			mModels->logicalModel()->removeRow(index.row(), index.parent());
-		}
-		else {
-			mModels->graphicalModel()->removeRow(index.row(), index.parent());
-		}
-		foreach (NodeElement *item, itemsToArrangeLinks) {
-			if (item) {
-				item->arrangeLinks();
-			}
+	if (isLogicalModel) {
+		mModels->logicalModel()->removeRow(index.row(), index.parent());
+	} else {
+		mModels->graphicalModel()->removeRow(index.row(), index.parent());
+	}
+
+	foreach (NodeElement *item, itemsToArrangeLinks) {
+		if (item) {
+			item->arrangeLinks();
 		}
 	}
 }
@@ -1449,15 +1445,16 @@ void MainWindow::updateTabName(Id const &id)
 	}
 }
 
-void MainWindow::closeTab(QModelIndex const &graphicsIndex)
+bool MainWindow::closeTab(QModelIndex const &graphicsIndex)
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
 		EditorView * const tab = (static_cast<EditorView *>(mUi->tabs->widget(i)));
 		if (tab->mvIface()->rootIndex() == graphicsIndex) {
 			closeTab(i);
-			return;
+			return true;
 		}
 	}
+	return false;
 }
 
 ListenerManager *MainWindow::listenerManager()
@@ -2083,10 +2080,8 @@ void MainWindow::generateRobotSourceCode()
 {
 	saveAll();
 
-	qReal::generators::nxtOSEK::NxtOSEKgenerator* gen =
-		new qReal::generators::nxtOSEK::SequentialGenerator(mModels->repoControlApi());
-	//	new qReal::generators::nxtOSEK::FuncOrientedGenerator(mModels->repoControlApi());
-	gui::ErrorReporter &errors = gen->generate();
+	qReal::generators::NxtOSEKRobotGenerator gen(mModels->repoControlApi());
+	gui::ErrorReporter &errors = gen.generate();
 	if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
 		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
 
@@ -2107,8 +2102,6 @@ void MainWindow::generateRobotSourceCode()
 		mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
 		mUi->actionFlash_Robot->setVisible(mNxtToolsPresent);
 	}
-
-	delete gen;
 }
 
 void MainWindow::uploadProgram()
