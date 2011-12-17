@@ -7,7 +7,7 @@
 #include "../toolPluginInterface/toolPluginInterface.h"
 #include "../toolPluginInterface/customizer.h"
 #include "../toolPluginInterface/pluginConfigurator.h"
-#include "../dialogs/preferencesPages/page.h"
+#include "../dialogs/preferencesPages/preferencesPage.h"
 
 namespace qReal {
 

@@ -5,7 +5,7 @@
 #include <QtCore/QList>
 
 #include "../../qrrepo/repoControlInterface.h"
-#include "../dialogs/preferencesPages/page.h"
+#include "../dialogs/preferencesPages/preferencesPage.h"
 
 #include "customizer.h"
 #include "pluginConfigurator.h"
@@ -35,6 +35,8 @@ public:
 		Q_UNUSED(configurator);
 	}
 
+	/// Returns preferences page along with its name if plugin has any, NULL otherwise.
+	/// Ownership is passed to the caller.
 	virtual QPair<QString, PreferencesPage *> preferencesPage()
 	{
 		return QPair<QString, PreferencesPage *>(QString(), NULL);
