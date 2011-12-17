@@ -160,11 +160,14 @@ private slots:
 	void setBreakpointAtStart();
 	void startDebugging();
 	void checkEditorForDebug(int index);
-
 	void deleteFromDiagram();
 	void changeMiniMapSource(int index);
 	void closeTab(int index);
-	void closeTab(QModelIndex const &graphicsIndex);
+
+	/// Closes the appropriate tab if the specified index corresponds to the diagram on one of the tabs
+	/// @return true if one of the tabs was closed
+	bool closeTab(QModelIndex const &graphicsIndex);
+
 	void generateEditor();
 	void parseEditorXml();
 	void generateToHascol();
