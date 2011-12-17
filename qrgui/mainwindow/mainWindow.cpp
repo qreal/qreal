@@ -1436,11 +1436,11 @@ void MainWindow::initCurrentTab(QModelIndex const &rootIndex)
 	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 
-	setUnmenuShortcuts();
+	setShortcuts();
 
 }
 
-void MainWindow::setUnmenuShortcuts()
+void MainWindow::setShortcuts()
 {
 	// add shortcut - select all
 	EditorViewScene *scene = dynamic_cast <EditorViewScene *> (getCurrentTab()->scene());
