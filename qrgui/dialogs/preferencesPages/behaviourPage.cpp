@@ -2,10 +2,11 @@
 #include "behaviourPage.h"
 #include "ui_behaviourPage.h"
 
-PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent) :
-	PreferencesPage(parent),
-	mUi(new Ui::PreferencesBehaviourPage)
+PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
+		: PreferencesPage(parent)
+		, mUi(new Ui::PreferencesBehaviourPage)
 {
+	mIcon = QIcon(":/icons/preferences/behaviour.png");
 	mUi->setupUi(this);
 
 	connect(mUi->autoSaveCheckBox, SIGNAL(clicked(bool)), this, SLOT(showAutoSaveBox(bool)));

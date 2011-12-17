@@ -5,10 +5,11 @@
 #include "featuresPage.h"
 #include "ui_featuresPage.h"
 
-PreferencesFeaturesPage::PreferencesFeaturesPage(QWidget *parent) :
-	PreferencesPage(parent),
-	mUi(new Ui::PreferencesFeaturesPage)
+PreferencesFeaturesPage::PreferencesFeaturesPage(QWidget *parent)
+		: PreferencesPage(parent)
+		, mUi(new Ui::PreferencesFeaturesPage)
 {
+	mIcon = QIcon(":/icons/preferences/features.png");
 	mUi->setupUi(this);
 
 	mUi->gesturesCheckBox->setChecked(SettingsManager::value("Gestures", true).toBool());

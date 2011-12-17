@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QtGui/QIcon>
 #include <QWidget>
 
 /**
@@ -16,5 +17,12 @@ public:
 	virtual ~PreferencesPage(){}
 	/** @brief This method will be called on pressing "Apply" or "Ok" */
 	virtual void save() = 0;
+	/** @brief This method will be called when need to get icon on label in form*/
+	virtual QIcon getIcon() const
+	{
+		return mIcon;
+	}
 
+protected:
+	QIcon mIcon;
 };

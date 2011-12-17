@@ -4,18 +4,19 @@
 #include <QMessageBox>
 
 PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAction * const showAlignmentAction
-		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent) :
-	PreferencesPage(parent),
-	mUi(new Ui::PreferencesEditorPage),
-	mFontWasChanged(false),
-	mFontButtonWasPressed(false),
-	mWidthGrid(SettingsManager::value("GridWidth", 10).toInt()),
-	mIndexGrid(SettingsManager::value("IndexGrid", 50).toInt()),
-	mShowGridAction(showGridAction),
-	mShowAlignmentAction(showAlignmentAction),
-	mActivateGridAction(activateGridAction),
-	mActivateAlignmentAction(activateAlignmentAction)
+		, QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
+		: PreferencesPage(parent)
+		, mUi(new Ui::PreferencesEditorPage)
+		, mFontWasChanged(false)
+		, mFontButtonWasPressed(false)
+		, mWidthGrid(SettingsManager::value("GridWidth", 10).toInt())
+		, mIndexGrid(SettingsManager::value("IndexGrid", 50).toInt())
+		, mShowGridAction(showGridAction)
+		, mShowAlignmentAction(showAlignmentAction)
+		, mActivateGridAction(activateGridAction)
+		, mActivateAlignmentAction(activateAlignmentAction)
 {
+	mIcon = QIcon(":/icons/preferences/editor.png");
 	mUi->setupUi(this);
 
 	// changing grid size in QReal:Robots is forbidden
