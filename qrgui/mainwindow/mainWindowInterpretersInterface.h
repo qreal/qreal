@@ -19,6 +19,14 @@ public:
 	virtual ErrorReporterInterface *errorReporter() = 0;
 	virtual Id activeDiagram() = 0;
 	virtual void openSettingsDialog(QString const &tab) = 0;
+
+	/// Save currently opened model
+	virtual void saveAll() = 0;
+
+	/// Opens new tab with text editor and shows a text in it
+	/// @param title A title of the tab
+	/// @param text A text that should be shown in an editor
+	virtual void showInTextEditor(QString const &title, QString const &text) = 0;
 };
 
 }
