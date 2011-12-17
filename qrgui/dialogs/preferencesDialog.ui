@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>580</width>
+    <width>600</width>
     <height>450</height>
    </rect>
   </property>
@@ -35,29 +35,8 @@
    <iconset resource="../qrgui.qrc">
     <normaloff>:/icons/qreal.png</normaloff>:/icons/qreal.png</iconset>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
-   <item row="1" column="1">
-    <widget class="QPushButton" name="okButton">
-     <property name="text">
-      <string>OK</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QPushButton" name="applyButton">
-     <property name="text">
-      <string>Apply</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="3">
-    <widget class="QPushButton" name="cancelButton">
-     <property name="text">
-      <string>Cancel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0" rowspan="2">
     <widget class="QListWidget" name="listWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
@@ -80,60 +59,37 @@
      <property name="currentRow">
       <number>-1</number>
      </property>
-     <item>
-      <property name="text">
-       <string>Editor</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../qrgui.qrc">
-        <normaloff>:/icons/preferences/editor.png</normaloff>:/icons/preferences/editor.png</iconset>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Behaviour</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../qrgui.qrc">
-        <normaloff>:/icons/preferences/behaviour.png</normaloff>:/icons/preferences/behaviour.png</iconset>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Miscellanious</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../qrgui.qrc">
-        <normaloff>:/icons/preferences/miscellaneous.png</normaloff>:/icons/preferences/miscellaneous.png</iconset>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Compiler</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../qrgui.qrc">
-        <normaloff>:/icons/preferences/tools.png</normaloff>:/icons/preferences/tools.png</iconset>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Debugger</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../qrgui.qrc">
-        <normaloff>:/icons/preferences/bug.png</normaloff>:/icons/preferences/bug.png</iconset>
-      </property>
-     </item>
     </widget>
    </item>
-   <item row="0" column="1" colspan="3">
-    <widget class="QWidget" name="pageContentWigdet" native="true">
+   <item row="1" column="1" colspan="3">
+    <widget class="QStackedWidget" name="pageContentWigdet">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <widget class="QWidget" name="pageContentWigdetPage1" native="true"/>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QPushButton" name="cancelButton">
+     <property name="text">
+      <string>Cancel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="3">
+    <widget class="QPushButton" name="applyButton">
+     <property name="text">
+      <string>Apply</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QPushButton" name="okButton">
+     <property name="text">
+      <string>OK</string>
      </property>
     </widget>
    </item>
