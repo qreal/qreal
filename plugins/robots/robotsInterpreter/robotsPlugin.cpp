@@ -19,6 +19,8 @@ RobotsPlugin::RobotsPlugin()
 	mAppTranslator = new QTranslator();
 	mAppTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(mAppTranslator);
+
+	mRobotSettingsPage = new PreferencesRobotSettingsPage();
 }
 
 RobotsPlugin::~RobotsPlugin()
@@ -86,7 +88,7 @@ QList<ActionInfo> RobotsPlugin::actions()
 
 QPair<QString, PreferencesPage *> RobotsPlugin::preferencesPage()
 {
-	return qMakePair(QObject::tr("Robots"), static_cast<PreferencesPage*>(&mRobotSettingsPage));
+	return qMakePair(QObject::tr("Robots"), static_cast<PreferencesPage*>(mRobotSettingsPage));
 }
 
 void RobotsPlugin::showRobotSettings()
