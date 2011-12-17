@@ -235,6 +235,9 @@ private:
 	void setSwitchGrid(bool isChecked);
 	void setSwitchAlignment(bool isChecked);
 
+	/// sets shortcuts which don`t have own buttons anywhere
+	void setShortcuts();
+
 	void setIndexesOfPropertyEditor(Id const &id);
 
 	/** @brief Check if we need to hide widget in fullscreen mode or not. If we do, hide it

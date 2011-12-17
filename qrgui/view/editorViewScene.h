@@ -68,6 +68,9 @@ public slots:
 	void copy();
 	void paste();
 
+	/// selects all elements on the current scene
+	void selectAll();
+
 signals:
 	void elementCreated(qReal::Id const &id);
 	void zoomIn();
