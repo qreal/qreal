@@ -33,27 +33,29 @@ QList<QString> AbstractElementGenerator::portsToEngineNames(QString const &ports
 	QList<QString> result;
 
 	//port {A, B, C} -> NXT_PORT_{A, B, C}
-	if (portsProperty.contains("A"))
+	if (portsProperty.contains("A")) {
 		result.append("NXT_PORT_A");
-	if (portsProperty.contains("B"))
+	} else if (portsProperty.contains("B")) {
 		result.append("NXT_PORT_B");
-	if (portsProperty.contains("C"))
+	} else if (portsProperty.contains("C")) {
 		result.append("NXT_PORT_C");
+	}
 
 	return result;
 }
 
 QString AbstractElementGenerator::transformSign(QString const &sign)
 {
-	if (sign == "меньше")
+	if (sign == "меньше") {
 		return "<";
-	else if (sign == "больше")
+	} else if (sign == "больше") {
 		return ">";
-	else if (sign == "не меньше")
+	} else if (sign == "не меньше") {
 		return ">=";
-	else if (sign == "не больше")
+	} else if (sign == "не больше") {
 		return "<=";
-	else if (sign == "равно")
+	} else if (sign == "равно") {
 		return "==";
+	}
 	return "";
 }

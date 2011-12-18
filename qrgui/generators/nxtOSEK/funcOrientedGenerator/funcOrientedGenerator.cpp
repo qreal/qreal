@@ -25,8 +25,9 @@ void FuncOrientedGenerator::writeGeneratedCodeToFile(QString const &resultCode, 
 
 	//Create project directory
 	if (!QDir(projectDir).exists()) {
-		if (!QDir("nxt-tools/").exists())
+		if (!QDir("nxt-tools/").exists()) {
 			QDir().mkdir("nxt-tools/");
+		}
 		QDir().mkdir(projectDir);
 	}
 
@@ -106,8 +107,9 @@ gui::ErrorReporter &FuncOrientedGenerator::generate()
 
 	int curInitialNodeNumber = 0;
 	foreach (Id curInitialNode, initialNodes) {
-		if (!mApi->isLogicalElement(curInitialNode)) //? may be necessary to use graphical  elements
+		if (!mApi->isLogicalElement(curInitialNode)) {//? may be necessary to use graphical  elements
 			continue;
+		}
 
 		mVariables.clear();
 		mGeneratedStrings.clear();
@@ -128,8 +130,9 @@ gui::ErrorReporter &FuncOrientedGenerator::generate()
 			foreach (Id nextElement, mApi->outgoingConnectedElements(curElement)) {
 				if (!mAlreadyGeneratedElements.contains(nextElement) &&
 						!elementsToGenerate.contains(nextElement) && 
-						(nextElement.element() != "ROOT_ID"))
+						(nextElement.element() != "ROOT_ID")) {
 					elementsToGenerate.enqueue(nextElement);
+				}
 			}
 
 			mAlreadyGeneratedElements.insert(curElement);
@@ -159,8 +162,9 @@ void FuncOrientedGenerator::prepareIdToMethodNameMap()
 	IdList allNodes = mApi->logicalElements();
 	foreach (Id curNode, allNodes) {
 		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(this, curNode);
-		if (gen == 0)
+		if (gen == 0) {
 			continue;
+		}
 
 		mIdToMethodNameMap.insert(curNode.toString(), gen->nextMethodName());
 		delete gen;
@@ -172,14 +176,16 @@ QString FuncOrientedGenerator::smartLineListToString(QList<SmartLine> list, int 
 	int curIndentSize = startIndentSize;
 	foreach (SmartLine curLine, list) {
 		if ( (curLine.indentLevelChange() == SmartLine::decrease)
-				|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
+				|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) ) {
 			curIndentSize--;
+		}
 
 		result += QString(curIndentSize, '\t') + curLine.text() + "\n";
 
 		if ( (curLine.indentLevelChange() == SmartLine::increase)
-				|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
+				|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) ) {
 			curIndentSize++;
+		}
 	}
 
 	return result;

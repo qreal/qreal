@@ -35,8 +35,9 @@ gui::ErrorReporter &SequentialGenerator::generate()
 
 	int curInitialNodeNumber = 0;
 	foreach (Id curInitialNode, initialNodes) {
-		if (!mApi->isGraphicalElement(curInitialNode))
+		if (!mApi->isGraphicalElement(curInitialNode)) {
 			continue;
+		}
 
 		QString resultCode;
 		mGeneratedStringSet.clear();
@@ -57,14 +58,16 @@ gui::ErrorReporter &SequentialGenerator::generate()
 		foreach (QList<SmartLine> lineList, mGeneratedStringSet) {
 			foreach (SmartLine curLine, lineList) {
 				if ( (curLine.indentLevelChange() == SmartLine::decrease)
-						|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
+						|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) ) {
 					curTabNumber--;
+				}
 
 				resultCode += QString(curTabNumber, '\t') + curLine.text() + "\n";
 
 				if ( (curLine.indentLevelChange() == SmartLine::increase)
-						|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
+						|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) ) {
 					curTabNumber++;
+				}
 			}
 		}
 		delete gen;
@@ -76,8 +79,9 @@ gui::ErrorReporter &SequentialGenerator::generate()
 
 		//Create project directory
 		if (!QDir(projectDir).exists()) {
-			if (!QDir("nxt-tools/").exists())
+			if (!QDir("nxt-tools/").exists()) {
 				QDir().mkdir("nxt-tools/");
+			}
 			QDir().mkdir(projectDir);
 		}
 
@@ -193,12 +197,13 @@ QList<QString> SequentialGenerator::SimpleElementGenerator::portsToEngineNames(Q
 	QList<QString> result;
 
 	//port {A, B, C} -> NXT_PORT_{A, B, C}
-	if (portsProperty.contains("A"))
+	if (portsProperty.contains("A")) {
 		result.append("NXT_PORT_A");
-	if (portsProperty.contains("B"))
+	} else if (portsProperty.contains("B")) {
 		result.append("NXT_PORT_B");
-	if (portsProperty.contains("C"))
+	} else if (portsProperty.contains("C")) {
 		result.append("NXT_PORT_C");
+	}
 
 	return result;
 }
@@ -210,17 +215,18 @@ void SequentialGenerator::FunctionElementGenerator::variableAnalysis(QByteArray 
 	foreach (QByteArray block, funcBlocks) {
 			//Only one possible place for first variable appear
 		int firstEqualSignPos = block.indexOf('=');
-		if (firstEqualSignPos == -1)
+		if (firstEqualSignPos == -1) {
 			continue;
+		}
 
 		//must be a normal variable name
 		QByteArray leftPart = block.left(firstEqualSignPos);
 
 		leftPart = leftPart.trimmed();
 		QString forbiddenLastSimbols = "+-=*/><";
-		if (forbiddenLastSimbols.contains((leftPart.at(leftPart.length() - 1))))
+		if (forbiddenLastSimbols.contains((leftPart.at(leftPart.length() - 1)))) {
 			continue;
-
+		}
 		bool isVariableExisted = false;
 		foreach (SmartLine curVariable, mNxtGen->mVariables) {
 			if (curVariable.text() == QString::fromUtf8(leftPart)) {
@@ -228,8 +234,9 @@ void SequentialGenerator::FunctionElementGenerator::variableAnalysis(QByteArray 
 				break;
 			}
 		}
-		if (!isVariableExisted)
+		if (!isVariableExisted) {
 			mNxtGen->mVariables.append(SmartLine(QString::fromUtf8(leftPart), mElementId));
+		}
 	}
 }
 
@@ -447,16 +454,17 @@ QString SequentialGenerator::SimpleElementGenerator::transformSign(QString const
 {
 	qDebug() << sign;
 
-	if (sign == "меньше")
+	if (sign == "меньше") {
 		return "<";
-	else if (sign == "больше")
+	} else if (sign == "больше") {
 		return ">";
-	else if (sign == "не меньше")
+	} else if (sign == "не меньше") {
 		return ">=";
-	else if (sign == "не больше")
+	} else if (sign == "не больше") {
 		return "<=";
-	else if (sign == "равно")
+	} else if (sign == "равно") {
 		return "==";
+	}
 	return "";
 }
 
@@ -603,8 +611,9 @@ bool SequentialGenerator::LoopElementGenerator::nextElementsGeneration()
 
 	mNxtGen->mPreviousElement = mElementId;
 	mNxtGen->mPreviousLoopElements.push(mElementId);
-	if (!loopGen->generate())
+	if (!loopGen->generate()) {
 		return false;
+	}
 	delete loopGen;
 
 	//generate next blocks
@@ -620,8 +629,9 @@ bool SequentialGenerator::LoopElementGenerator::nextElementsGeneration()
 
 	mNxtGen->mPreviousElement = mElementId;
 	mNxtGen->mPreviousLoopElements.push(mElementId);
-	if (!nextBlocksGen->generate())
+	if (!nextBlocksGen->generate()) {
 		return false;
+	}
 	delete nextBlocksGen;
 
 	return true;
@@ -643,8 +653,9 @@ bool SequentialGenerator::IfElementGenerator::generateBranch(int branchNumber)
 
 	mNxtGen->mPreviousElement = mElementId;
 
-	if (!nextBlocksGen->generate())
+	if (!nextBlocksGen->generate()) {
 		return false;
+	}
 	delete nextBlocksGen;
 
 	return true;
@@ -659,12 +670,14 @@ QPair<bool, qReal::Id> SequentialGenerator::IfElementGenerator::checkBranchForBa
 QPair<bool, qReal::Id> SequentialGenerator::IfElementGenerator::checkBranchForBackArrows(qReal::Id const &curElementId,
 		qReal::IdList* checkedElements) {
 	qReal::Id logicElementId = curElementId;
-	if (!mNxtGen->mApi->isLogicalElement(curElementId))
+	if (!mNxtGen->mApi->isLogicalElement(curElementId)) {
 		logicElementId = mNxtGen->mApi->logicalId(curElementId);
+	}
 
-	if (checkedElements->contains(logicElementId))
+	if (checkedElements->contains(logicElementId)) {
 		//if we have already observed this element by checkBranchForBackArrows function
 		return QPair<bool, qReal::Id>(false, qReal::Id());
+	}
 
 	//if we have observed this element and generated code of this element
 	foreach (QString observedElementString, mNxtGen->mElementToStringListNumbers.keys()) {
@@ -672,8 +685,9 @@ QPair<bool, qReal::Id> SequentialGenerator::IfElementGenerator::checkBranchForBa
 		qReal::Id observedElementLogicId = mNxtGen->mApi->logicalId(observedElementId);
 
 		if ((logicElementId == observedElementId)
-				|| (logicElementId == observedElementLogicId))
+				|| (logicElementId == observedElementLogicId)) {
 			return QPair<bool, qReal::Id>(true, logicElementId);
+		}
 	}
 
 	//add element to list
@@ -688,8 +702,9 @@ QPair<bool, qReal::Id> SequentialGenerator::IfElementGenerator::checkBranchForBa
 		}
 
 		QPair<bool, qReal::Id> childResult = checkBranchForBackArrows(childId, checkedElements);
-		if (childResult.first)
+		if (childResult.first) {
 			return childResult;
+		}
 	}
 
 	//release element to list
@@ -759,8 +774,9 @@ bool SequentialGenerator::IfElementGenerator::nextElementsGeneration()
 
 	if (isPositiveBranchReturnsToBackElems != isNegativeBranchReturnsToBackElems) {
 		int cycleBlock = isPositiveBranchReturnsToBackElems ? conditionArrowNum : 1 - conditionArrowNum;
-		if (conditionArrowNum == cycleBlock)
+		if (conditionArrowNum == cycleBlock) {
 			condition = "!" + condition;
+		}
 
 		QList<SmartLine> ifBlock;
 		ifBlock << SmartLine("if (" + condition + ") {", mElementId, SmartLine::increase);
@@ -800,15 +816,17 @@ bool SequentialGenerator::IfElementGenerator::nextElementsGeneration()
 
 bool SequentialGenerator::AbstractElementGenerator::generate()
 {
-	if (!preGenerationCheck())
+	if (!preGenerationCheck()) {
 		return false;
+	}
 
 	if (mNxtGen->mElementToStringListNumbers.contains(mElementId.toString())) {
 		//if we have already observed this element with more than 1 incoming connection
 
 		qReal::Id loopElement = mElementId;
-		if (!mNxtGen->mPreviousLoopElements.empty())
+		if (!mNxtGen->mPreviousLoopElements.empty()) {
 			loopElement = mNxtGen->mPreviousLoopElements.pop();
+		}
 
 		//loopElement must create loop code
 		AbstractElementGenerator *loopElementGen = ElementGeneratorFactory::generator(mNxtGen, loopElement);

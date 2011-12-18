@@ -50,7 +50,7 @@ public:
 	virtual ~FuncOrientedGenerator() {
 	}
 	
-	//! main method that starts a code generation.
+	//! main method that starts code generation.
 	gui::ErrorReporter &generate();
 
 private:
