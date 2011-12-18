@@ -6,7 +6,6 @@
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
 
 namespace hascol {
-namespace support {
 
 class HascolSupportPlugin : public QObject, public qReal::ToolPluginInterface
 {
@@ -32,5 +31,4 @@ private:
 	qrRepo::LogicalRepoApi *mLogicalRepoApi;  // Does not have ownership
 };
 
-}
 }

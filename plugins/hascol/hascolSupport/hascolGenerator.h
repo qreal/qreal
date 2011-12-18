@@ -8,7 +8,6 @@
 #include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 namespace hascol {
-namespace support {
 
 class HascolGenerator
 {
@@ -40,5 +39,4 @@ private:
 	qReal::IdList mActivityDiagrams;
 };
 
-}
 }

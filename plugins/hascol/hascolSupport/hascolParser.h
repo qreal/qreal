@@ -8,7 +8,6 @@
 #include "../../../qrrepo/logicalRepoApi.h"
 
 namespace hascol {
-namespace support {
 
 class HascolParser
 {
@@ -41,5 +40,4 @@ private:
 	qReal::ErrorReporterInterface &mErrorReporter;
 };
 
-}
 }
