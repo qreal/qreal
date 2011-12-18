@@ -27,6 +27,10 @@ public:
 	/// @param title A title of the tab
 	/// @param text A text that should be shown in an editor
 	virtual void showInTextEditor(QString const &title, QString const &text) = 0;
+
+	/// Rereads model information from repository and reinitializes models
+	/// and all related views. Needs to be called after major changes in repo.
+	virtual void reinitModels() = 0;
 };
 
 }

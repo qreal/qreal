@@ -8,11 +8,6 @@ HEADERS += generators/java/javaHandler.h \
 
 SOURCES += generators/java/javaHandler.cpp \
 
-# Генератор хаскола
-HEADERS += generators/hascol/hascolGenerator.h \
-
-SOURCES += generators/hascol/hascolGenerator.cpp \
-
 HEADERS += generators/editorGenerator/editorGenerator.h
 SOURCES += generators/editorGenerator/editorGenerator.cpp
 

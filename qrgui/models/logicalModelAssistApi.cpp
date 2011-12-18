@@ -20,6 +20,11 @@ qrRepo::LogicalRepoApi const &LogicalModelAssistApi::logicalRepoApi() const
 	return mLogicalModel.api();
 }
 
+qrRepo::LogicalRepoApi &LogicalModelAssistApi::mutableLogicalRepoApi()
+{
+	return mLogicalModel.mutableApi();
+}
+
 Id LogicalModelAssistApi::createElement(Id const &parent, Id const &type)
 {
 	Q_ASSERT(type.idSize() == 3);
