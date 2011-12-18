@@ -15,7 +15,7 @@ HascolSupportPlugin::HascolSupportPlugin()
 		: mGenerateCodeAction(NULL)
 		, mParseSourcesAction(NULL)
 {
-	mAppTranslator.load(":/hasacolGenerator_" + QLocale::system().name());
+	mAppTranslator.load(":/hascolSupport" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
 }
 
