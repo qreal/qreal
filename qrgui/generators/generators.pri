@@ -13,16 +13,6 @@ HEADERS += generators/hascol/hascolGenerator.h \
 
 SOURCES += generators/hascol/hascolGenerator.cpp \
 
-# nxtOSEK sequential generator
-HEADERS += generators/nxtOSEK/nxtOSEKgenerator.h \
-		generators/nxtOSEK/sequentialGenerator.h \
-		generators/nxtOSEK/smartLine.h
-SOURCES += generators/nxtOSEK/sequentialGenerator/sequentialGenerator.cpp \
-		generators/nxtOSEK/private/smartLine.cpp
-
-# nxtOSEK function oriented generator
-include (generators/nxtOSEK/funcOrientedGenerator.pri)
-
 HEADERS += generators/editorGenerator/editorGenerator.h
 SOURCES += generators/editorGenerator/editorGenerator.cpp
 

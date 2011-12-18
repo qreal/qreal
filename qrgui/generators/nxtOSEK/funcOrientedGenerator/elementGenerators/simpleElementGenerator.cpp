@@ -20,8 +20,9 @@ void SimpleElementGenerator::generateMethodBody()
 	
 	if (outgoingConnectedElements.size() == 1) {
 		Id nextElement = outgoingConnectedElements.at(0);
-		if (!mNxtGen->mApi->isLogicalElement(nextElement))
+		if (!mNxtGen->mApi->isLogicalElement(nextElement)) {
 			nextElement = mNxtGen->mApi->logicalId(nextElement);
+		}
 		
 		QString methodName = mNxtGen->mIdToMethodNameMap[nextElement.toString()];
 		mNxtGen->mGeneratedStrings.append(SmartLine(methodName + "();", mElementId));

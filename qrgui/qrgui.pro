@@ -50,6 +50,9 @@ include (view/view.pri)
 # "Встроенные" генераторы
 include (generators/generators.pri)
 
+# "Встроенные" генераторы (nxtOSEK)
+include (generators/nxtOSEK.pri)
+
 # "Встроенные" средства реверс-инжиниринга
 include (parsers/parsers.pri)
 

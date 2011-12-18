@@ -1,3 +1,12 @@
+# nxtOSEK sequential generator
+HEADERS += generators/nxtOSEK/nxtOSEKgenerator.h \
+		generators/nxtOSEK/sequentialGenerator.h \
+		generators/nxtOSEK/smartLine.h
+SOURCES += generators/nxtOSEK/sequentialGenerator/sequentialGenerator.cpp \
+		generators/nxtOSEK/private/smartLine.cpp
+
+# nxtOSEK function oriented generator
+
 #generators/nxtOSEK/funcOrientedGenerator/elementGenerators/
 HEADERS += generators/nxtOSEK/funcOrientedGenerator.h
 HEADERS += generators/nxtOSEK/funcOrientedGenerator/abstractElementGenerator.h \
@@ -50,3 +59,4 @@ SOURCES += generators/nxtOSEK/funcOrientedGenerator/elementGenerators/loop_gen.c
 
 HEADERS += generators/nxtOSEK/funcOrientedGenerator/elementGenerators/ifBlock_gen.h
 SOURCES += generators/nxtOSEK/funcOrientedGenerator/elementGenerators/ifBlock_gen.cpp
+
