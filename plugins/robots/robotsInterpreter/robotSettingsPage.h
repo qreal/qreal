@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../qrgui/dialogs/preferencesPages/page.h"
+#include "../../../../qrgui/dialogs/preferencesPages/preferencesPage.h"
 
 #include "sensorConstants.h"
 
@@ -23,6 +23,7 @@ public:
 	~PreferencesRobotSettingsPage();
 
 	void save();
+
 	QString selectedPortName() const;
 	QString selectedCommunication() const;
 

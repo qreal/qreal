@@ -4,10 +4,11 @@
 #include "miscellaniousPage.h"
 #include "ui_miscellaniousPage.h"
 
-PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent) :
-	PreferencesPage(parent),
-	mUi(new Ui::PreferencesMiscellaniousPage)
+PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
+		: PreferencesPage(parent)
+		, mUi(new Ui::PreferencesMiscellaniousPage)
 {
+	mIcon = QIcon(":/icons/preferences/miscellaneous.png");
 	mUi->setupUi(this);
 
 	connect(mUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));

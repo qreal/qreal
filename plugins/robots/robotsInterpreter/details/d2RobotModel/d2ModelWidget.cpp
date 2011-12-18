@@ -34,6 +34,8 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mCurrentSensorType(sensorType::unused)
 		, mButtonsCount(8) // magic numbers are baaad, mkay?
 {
+	setWindowIcon(QIcon(":/icons/kcron.png"));
+
 	initWidget();
 
 	connectUiButtons();

@@ -27,7 +27,7 @@ public:
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 	virtual qReal::Customizer* customizationInterface();
 	virtual void updateSettings();
-		virtual void closeNeededWidget();
+	virtual void closeNeededWidget();
 
 private slots:
 	void showRobotSettings();
@@ -36,7 +36,11 @@ private slots:
 private:
 	Customizer mCustomizer;
 	Interpreter mInterpreter;
-	PreferencesRobotSettingsPage mRobotSettingsPage;
+
+	/// Page with plugin settings. Created here, but then ownership is passed to
+	/// a caller of preferencesPage().
+	PreferencesRobotSettingsPage *mRobotSettingsPage;  // Does not have ownership
+
 	gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;
 	QAction *m2dModelAction;
 	QAction *mRunAction;
