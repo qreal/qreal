@@ -6,10 +6,10 @@
 #include <QtGui/QApplication>
 #include <QtGui/QFileDialog>
 
-Q_EXPORT_PLUGIN2(hascolSupportPlugin, hascol::support::HascolSupportPlugin)
+Q_EXPORT_PLUGIN2(hascolSupportPlugin, hascol::HascolSupportPlugin)
 
 using namespace qReal;
-using namespace hascol::support;
+using namespace hascol;
 
 HascolSupportPlugin::HascolSupportPlugin()
 		: mGenerateCodeAction(NULL)

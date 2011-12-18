@@ -13,7 +13,7 @@
 #include "../../../qrutils/xmlUtils.h"
 
 using namespace qReal;
-using namespace hascol::support;
+using namespace hascol;
 
 HascolParser::HascolParser(qrRepo::LogicalRepoApi &api, qReal::ErrorReporterInterface &errorReporter)
 		: mApi(api)

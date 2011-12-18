@@ -9,7 +9,7 @@
 #include "../../../qrutils/outFile.h"
 
 using namespace qReal;
-using namespace hascol::support;
+using namespace hascol;
 using utils::OutFile;
 
 HascolGenerator::HascolGenerator(qrRepo::LogicalRepoApi const &api, qReal::ErrorReporterInterface &errorReporter)
