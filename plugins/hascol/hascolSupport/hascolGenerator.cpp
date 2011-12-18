@@ -9,15 +9,16 @@
 #include "../../../qrutils/outFile.h"
 
 using namespace qReal;
-using namespace generators;
+using namespace hascol::support;
 using utils::OutFile;
 
-HascolGenerator::HascolGenerator(qrRepo::LogicalRepoApi const &api)
-	: mApi(api)
+HascolGenerator::HascolGenerator(qrRepo::LogicalRepoApi const &api, qReal::ErrorReporterInterface &errorReporter)
+		: mApi(api)
+		, mErrorReporter(errorReporter)
 {
 }
 
-gui::ErrorReporter& HascolGenerator::generate()
+void HascolGenerator::generate()
 {
 	Id repoId = Id::rootId();
 	IdList rootDiagrams = mApi.children(repoId);
@@ -34,8 +35,6 @@ gui::ErrorReporter& HascolGenerator::generate()
 		if (diagram.element() == "HascolStructure_HascolStructureDiagram")
 			generateDiagram(diagram);
 	}
-
-	return mErrorReporter;
 }
 
 void HascolGenerator::generateDiagram(Id const &id)

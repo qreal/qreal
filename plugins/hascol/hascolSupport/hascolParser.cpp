@@ -1,40 +1,39 @@
 #include "hascolParser.h"
 
-#include "../../pluginManager/editorManager.h"
-
 #include <QtCore/QDebug>
 #include <QtCore/QUuid>
-#include <QtXml/QDomDocument>
 #include <QtCore/QProcess>
+#include <QtCore/QVariant>
+#include <QtCore/QPointF>
+#include <QtGui/QPolygon>
+#include <QtXml/QDomDocument>
 
 #include "math.h"
 
 #include "../../../qrutils/xmlUtils.h"
 
 using namespace qReal;
-using namespace parsers;
-using gui::ErrorReporter;
+using namespace hascol::support;
 
-HascolParser::HascolParser(qrRepo::LogicalRepoApi &api, EditorManager const &editorManager)
-	: mApi(api), mEditorManager(editorManager), mErrorReporter()
+HascolParser::HascolParser(qrRepo::LogicalRepoApi &api, qReal::ErrorReporterInterface &errorReporter)
+		: mApi(api)
+		, mErrorReporter(errorReporter)
 {
 }
 
-ErrorReporter &HascolParser::parse(QStringList const &files)
+void HascolParser::parse(QStringList const &files)
 {
 	mImportedPortMappingDiagramId = initDiagram("Imported port mapping", "HascolPortMapping_HascolPortMappingDiagram");
 	mImportedStructureDiagramId = initDiagram("Imported structure", "HascolStructure_HascolStructureDiagram");
 	mApi.setProperty(mImportedStructureDiagramId, "output directory", "");
 
-	foreach (QString file, files) {
+	foreach (QString const &file, files) {
 		preprocessFile(file);
 		parseFile(file + ".xml");
 	}
 
 	doPortMappingLayout();
 	doStructureLayout();
-
-	return mErrorReporter;
 }
 
 void HascolParser::preprocessFile(QString const &fileName)

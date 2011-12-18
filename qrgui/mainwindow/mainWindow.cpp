@@ -36,9 +36,7 @@
 #include "../dialogs/checkoutDialog.h"
 #include "../generators/xmi/xmiHandler.h"
 #include "../generators/java/javaHandler.h"
-#include "../parsers/hascol/hascolParser.h"
 #include "../pluginManager/listenerManager.h"
-#include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../../qrkernel/settingsManager.h"
@@ -219,14 +217,12 @@ void MainWindow::connectActions()
 
 	//	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 	//	connect(mUi->actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
-	//	connect(mUi->actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
 	//	connect(mUi->actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
 	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	//	connect(mUi->actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
 	connect(mUi->actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
-	//	connect(mUi->actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
 	//	connect(mUi->actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
 
 	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
@@ -863,14 +859,6 @@ void MainWindow::parseJavaLibraries()
 	}
 }
 
-void MainWindow::generateToHascol()
-{
-	generators::HascolGenerator hascolGenerator(mModels->logicalRepoApi());
-
-	gui::ErrorReporter& errors = hascolGenerator.generate();
-	errors.showErrors(mUi->errorListWidget, mUi->errorDock);
-}
-
 void MainWindow::generateEditor()
 {
 	generators::EditorGenerator editorGenerator(mModels->logicalRepoApi());
@@ -1138,20 +1126,6 @@ void MainWindow::exterminate()
  mUi->propertyEditor->setRootIndex(QModelIndex());
 }
 */
-
-void MainWindow::parseHascol()
-{
-	QStringList const fileNames = QFileDialog::getOpenFileNames(this, tr("Select Hascol files to parse"), ".", "*.md;;*.*");
-	if (fileNames.empty())
-		return;
-
-	parsers::HascolParser parser(mModels->mutableLogicalRepoApi(), mEditorManager);
-	gui::ErrorReporter& errors = parser.parse(fileNames);
-
-	errors.showErrors(mUi->errorListWidget, mUi->errorDock);
-
-	mModels->reinit();
-}
 
 void MainWindow::showPreferencesDialog()
 {
@@ -2050,6 +2024,17 @@ void MainWindow::showInTextEditor(QString const &title, QString const &text)
 
 	mUi->tabs->addTab(area, title);
 	mUi->tabs->setCurrentWidget(area);
+}
+
+void MainWindow::reinitModels()
+{
+	closeAllTabs();
+
+	mModels->reinit();
+
+	PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
+	pModel->clearModelIndexes();
+	mUi->propertyEditor->setRootIndex(QModelIndex());
 }
 
 void MainWindow::setAutoSaveParameters()

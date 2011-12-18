@@ -69,6 +69,8 @@ public:
 
 	virtual void showInTextEditor(QString const &title, QString const &text);
 
+	virtual void reinitModels();
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -168,8 +170,6 @@ private slots:
 
 	void generateEditor();
 	void parseEditorXml();
-	void generateToHascol();
-	void parseHascol();
 	void showPreferencesDialog();
 
 	void connectActions();
