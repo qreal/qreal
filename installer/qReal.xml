@@ -49,9 +49,6 @@
                     <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>../bin/qextserialport.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
                             <origin>../bin/qrgui.exe</origin>
                         </distributionFile>
                         <distributionFile>
@@ -85,14 +82,9 @@
                         <distributionFile>
                             <origin>icon.ico</origin>
                         </distributionFile>
-
-                        <distributionFile>
-                            <origin>../bin/plugins/hascolEditor.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../bin/plugins/hascolSupport.dll</origin>
-                        </distributionFile>
-
+                        <distributionDirectory>
+                            <origin>../bin/plugins/</origin>
+                        </distributionDirectory>
                     </distributionFileList>
                     <shortcutList>
                         <shortcut>
