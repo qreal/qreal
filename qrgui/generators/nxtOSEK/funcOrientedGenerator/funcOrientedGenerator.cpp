@@ -31,7 +31,7 @@ void FuncOrientedGenerator::writeGeneratedCodeToFile(QString const &resultCode, 
 		QDir().mkdir(projectDir);
 	}
 
-	/* Generate C file */
+	// Generate C file (start)
 	QFile templateCFile(":/generators/nxtOSEK/funcOrientedGenerator/templates/template.c");
 	if (!templateCFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		mErrorReporter.addError("cannot open \"" + templateCFile.fileName() + "\"");
@@ -56,9 +56,9 @@ void FuncOrientedGenerator::writeGeneratedCodeToFile(QString const &resultCode, 
 	outC << resultString;
 	outC.flush();
 	resultCFile.close();
-	/**/
+	// Generate C file (end)
 
-	/* Generate OIL file */
+	// Generate OIL file (start)
 	QFile templateOILFile(":/generators/nxtOSEK/funcOrientedGenerator/templates/template.oil");
 	if (!templateOILFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		mErrorReporter.addError("cannot open \"" + templateOILFile.fileName() + "\"");
@@ -77,8 +77,9 @@ void FuncOrientedGenerator::writeGeneratedCodeToFile(QString const &resultCode, 
 
 	outOIL.flush();
 	resultOILFile.close();
+	// Generate OIL file (end)
 
-	/* Generate makefile */
+	// Generate makefile (start)
 	QFile templateMakeFile(":/generators/nxtOSEK/funcOrientedGenerator/templates/template.makefile");
 	if (!templateMakeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		mErrorReporter.addError("cannot open \"" + templateMakeFile.fileName() + "\"");
@@ -97,7 +98,7 @@ void FuncOrientedGenerator::writeGeneratedCodeToFile(QString const &resultCode, 
 
 	outMake.flush();
 	resultMakeFile.close();
-	/**/
+	// Generate makefile (end)
 }
 
 gui::ErrorReporter &FuncOrientedGenerator::generate() 
