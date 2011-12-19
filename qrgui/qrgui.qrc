@@ -29,6 +29,7 @@
         <file>icons/preferences/editor.png</file>
         <file>icons/preferences/miscellaneous.png</file>
         <file>icons/preferences/tools.png</file>
+        <!-- <file>qreal-robots.qhc</file> -->
         <file>generators/nxtOSEK/sequentialGenerator/templates/template.c</file>
         <file>generators/nxtOSEK/sequentialGenerator/templates/template.makefile</file>
         <file>generators/nxtOSEK/sequentialGenerator/templates/template.oil</file>
