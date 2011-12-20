@@ -49,6 +49,7 @@ private:
 
 	/// move element vertically according to the grid; сoef - index of cell in the grid
 	void makeGridMovingX(qreal myX, int coef, int indexGrid);
+
 	/// move element horizontally according to the grid
 	void makeGridMovingY(qreal myY, int coef, int indexGrid);
 
