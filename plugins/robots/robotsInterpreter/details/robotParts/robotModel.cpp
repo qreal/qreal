@@ -191,7 +191,6 @@ void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModel
 	mRobotImpl = robotImpl;
 
 	connect(robotImpl, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
-	connect(robotImpl, SIGNAL(connected(bool)), this, SIGNAL(connected(bool)));
 	connect(mRobotImpl, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
 	connect(mRobotImpl, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 

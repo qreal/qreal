@@ -167,9 +167,6 @@ void Interpreter::sensorsConfiguredSlot()
 {
 	Tracer::debug(tracer::initialization, "Interpreter::sensorsConfiguredSlot", "Sensors are configured");
 
-	if (mRobotModel->needsConnection() && mConnected)
-		mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
-
 	mConnected = true;
 	mActionConnectToRobot->setChecked(mConnected);
 
