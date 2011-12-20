@@ -35,17 +35,17 @@ private:
 	QList<QGraphicsItem *> getAdjancedNodes() const;
 
 	/** @brief drawing a horizontal line */
-	void drawLineY(qreal pointY);
+	void drawLineY(qreal pointY, QRectF const &sceneRect);
 	/** @brief drawing a vertical line */
-	void drawLineX(qreal pointX);
+	void drawLineX(qreal pointX, QRectF const &sceneRect);
 
 	bool makeJumpX(qreal deltaX, qreal pointX);
 	bool makeJumpY(qreal deltaY, qreal pointY);
 
 	void buildLineX(qreal deltaX, qreal pointX, qreal correctionX
-			, qreal &myX1, qreal &myX2);
+			, qreal &myX1, qreal &myX2, QRectF const &sceneRect);
 	void buildLineY(qreal deltaY, qreal pointY, qreal correctionY
-			, qreal &myY1, qreal &myY2);
+			, qreal &myY1, qreal &myY2, QRectF const &sceneRect);
 
 	/// move element vertically according to the grid; сoef - index of cell in the grid
 	void makeGridMovingX(qreal myX, int coef, int indexGrid);

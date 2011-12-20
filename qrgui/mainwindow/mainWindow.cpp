@@ -134,6 +134,8 @@ MainWindow::MainWindow()
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 
+	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
+
 	// =========== Step 4: Property editor and model explorers are initialized ===========
 
 	progress->setValue(60);
@@ -189,8 +191,6 @@ MainWindow::MainWindow()
 		suggestToCreateDiagram();
 
 	mDocksVisibility.clear();
-
-	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 
 	checkNxtTools();
 	mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
@@ -671,33 +671,32 @@ void MainWindow::settingsPlugins()
 
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
-	QModelIndex index = isLogicalModel ? (mUi->logicalModelExplorer->currentIndex())
-			: (mUi->graphicalModelExplorer->currentIndex());
-	QList<NodeElement*> itemsToArrangeLinks;
+	QModelIndex const index = isLogicalModel
+		? (mUi->logicalModelExplorer->currentIndex())
+		: (mUi->graphicalModelExplorer->currentIndex());
+
+	if (!index.isValid()) {
+		return;
+	}
 	EditorView const * const view = getCurrentTab();
 	EditorViewScene* scene = NULL;
 	if (view) {
 		scene = dynamic_cast<EditorViewScene*>(view->scene());
 	}
 
+	IdList graphicalIdList;
 	if (isLogicalModel) {
 		Id const logicalId = mModels->logicalModelAssistApi().idByIndex(index);
-		IdList const graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
-		foreach (Id graphicalId, graphicalIdList) {
-			closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
-			if (scene) {
-				QGraphicsItem const * const item = scene->getElem(graphicalId);
-				EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(item);
-				if (edge) {
-					itemsToArrangeLinks.append(edge->src());
-					itemsToArrangeLinks.append(edge->dst());
-				}
-			}
-		}
+		graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
 	} else {
-		closeTab(index);
 		Id const graphicalId = mModels->graphicalModelAssistApi().idByIndex(index);
-		if (scene) {
+		graphicalIdList.append(graphicalId);
+	}
+
+	QList<NodeElement*> itemsToArrangeLinks;
+	foreach (Id const &graphicalId, graphicalIdList) {
+		bool const tabClosed = closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
+		if (scene && !tabClosed) {
 			QGraphicsItem const * const item = scene->getElem(graphicalId);
 			EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(item);
 			if (edge) {
@@ -707,23 +706,21 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 		}
 	}
 
-	if (index.isValid()) {  // TODO: why only here?
-		PropertyEditorModel* propertyEditorModel = static_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
-		if (propertyEditorModel->isCurrentIndex(index)) {
-			propertyEditorModel->clearModelIndexes();
-			mUi->propertyEditor->setRootIndex(QModelIndex());
-		}
+	PropertyEditorModel* propertyEditorModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
+	if (propertyEditorModel && propertyEditorModel->isCurrentIndex(index)) {
+		propertyEditorModel->clearModelIndexes();
+		mUi->propertyEditor->setRootIndex(QModelIndex());
+	}
 
-		if (isLogicalModel) {
-			mModels->logicalModel()->removeRow(index.row(), index.parent());
-		}
-		else {
-			mModels->graphicalModel()->removeRow(index.row(), index.parent());
-		}
-		foreach (NodeElement *item, itemsToArrangeLinks) {
-			if (item) {
-				item->arrangeLinks();
-			}
+	if (isLogicalModel) {
+		mModels->logicalModel()->removeRow(index.row(), index.parent());
+	} else {
+		mModels->graphicalModel()->removeRow(index.row(), index.parent());
+	}
+
+	foreach (NodeElement *item, itemsToArrangeLinks) {
+		if (item) {
+			item->arrangeLinks();
 		}
 	}
 }
@@ -1419,6 +1416,10 @@ void MainWindow::initCurrentTab(QModelIndex const &rootIndex)
 	getCurrentTab()->mvIface()->setAssistApi(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi());
 
 	getCurrentTab()->mvIface()->setModel(mModels->graphicalModel());
+	if (getCurrentTab()->sceneRect() == QRectF(0, 0, 0, 0)) {
+		getCurrentTab()->setSceneRect(0, 0, 1, 1);
+	}
+
 	getCurrentTab()->mvIface()->setLogicalModel(mModels->logicalModel());
 	getCurrentTab()->mvIface()->setRootIndex(index);
 	changeMiniMapSource(mUi->tabs->currentIndex());
@@ -1431,6 +1432,22 @@ void MainWindow::initCurrentTab(QModelIndex const &rootIndex)
 			, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
 	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
+
+	setShortcuts();
+
+}
+
+void MainWindow::setShortcuts()
+{
+	// add shortcut - select all
+	EditorViewScene *scene = dynamic_cast <EditorViewScene *> (getCurrentTab()->scene());
+	if (scene) {
+		QAction *selectAction = new QAction(getCurrentTab());
+		selectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
+		connect(selectAction, SIGNAL(triggered()), scene, SLOT(selectAll()));
+		getCurrentTab()->addAction(selectAction);
+	}
+	// addDocumentation(String); // in perspective
 }
 
 void MainWindow::updateTabName(Id const &id)
@@ -1444,15 +1461,16 @@ void MainWindow::updateTabName(Id const &id)
 	}
 }
 
-void MainWindow::closeTab(QModelIndex const &graphicsIndex)
+bool MainWindow::closeTab(QModelIndex const &graphicsIndex)
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
 		EditorView * const tab = (static_cast<EditorView *>(mUi->tabs->widget(i)));
 		if (tab->mvIface()->rootIndex() == graphicsIndex) {
 			closeTab(i);
-			return;
+			return true;
 		}
 	}
+	return false;
 }
 
 ListenerManager *MainWindow::listenerManager()
