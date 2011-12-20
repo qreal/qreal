@@ -615,9 +615,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			qreal const newX = mGrid->makeGridAlignment(event->pos().x());
 			qreal const newY = mGrid->makeGridAlignment(event->pos().y());
 			newContents.setBottomLeft(QPoint(newX, newY));
-			/*
-			newContents.setBottomLeft(event->pos());
-			*/
 			setPos(event->scenePos().x() - parentPos.x(), pos().y());
 			break;
 		}

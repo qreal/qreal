@@ -77,36 +77,40 @@ QStringList Label::getListOfStr(QString const &strToParse) const
 void Label::generateCodeForUpdateData(OutFile &out)
 {
 	if (mTextBinded.isEmpty()) {
-		// Метка статическая.
+		// Static label
 		out() << "\t\t\tQ_UNUSED(repo);\n";
 		return;
 	}
 
 	QStringList list = getListOfStr(mTextBinded);
 
-	if (list.isEmpty()) {
-		list.append("");
-		list.append(mTextBinded);
-	}
 
 	QString resultStr;
-	int counter = 1;
-	foreach (QString const &listElement, list) {
-		QString field;
-		if (counter % 2 == 0) {
-			if (listElement == "name") {
-				field = "repo->name()";
-			} else {
-				field = "repo->logicalProperty(\"" + listElement + "\")";
-			}
+	if (list.count() == 1) {
+		if (list.first() == "name") {
+			resultStr = "repo->name()";
 		} else {
-			field = "QString::fromUtf8(" + listElement + ")";
+			resultStr = "repo->logicalProperty(" + list.first() + ")";
 		}
+	} else {
+		int counter = 1;
+		foreach (QString const &listElement, list) {
+			QString field;
+			if (counter % 2 == 0) {
+				if (listElement == "name") {
+					field = "repo->name()";
+				} else {
+					field = "repo->logicalProperty(\"" + listElement + "\")";
+				}
+			} else {
+				field = "QString::fromUtf8(" + listElement + ")";
+			}
 
-		resultStr += " + " +  field;
-		counter++;
+			resultStr += " + " +  field;
+			counter++;
+		}
+		resultStr = resultStr.mid(3);
 	}
-	resultStr = resultStr.mid(3);
 	out() << "\t\t\t" + titleName() + "->setHtml(QString(\""
 		+ (mCenter == "true" ? "<center>%1</center>" : "<b>%1</b>") + "\").arg(" + resultStr + ").replace(\"\\n\", \"<br>\"));\n";
 }

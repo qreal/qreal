@@ -297,8 +297,9 @@
                     <picture sizex="50" sizey="50">
                         <image y1="0" name="images/timerBlock.png" x1="0" y2="50" x2="50"/>
                     </picture>
-                    <labels>
-                        <label x="-47" y="60" textBinded="Задержка (мс): ##Delay##"/>
+                    <labels>	  	
+                        <label x="33" y="60" textBinded="Delay"/>
+                        <label x="-47" y="60" text="Задержка (мс):"/>
                     </labels>
                     <ports>
                         <linePort>
