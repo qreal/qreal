@@ -319,7 +319,7 @@ void D2RobotModel::countNewCoord()
 			angularSpeed = vSpeed / vRadius;
 		else
 			angularSpeed = averangeSpeed / averangeRadius;
-		gamma = timeInterval * angularSpeed;//РЅСѓР¶РµРЅ СѓРіРѕР» РІ СЂР°РґРёР°РЅР°С…
+		gamma = timeInterval * angularSpeed;//ЅСѓР¶РµРЅ СѓРіРѕР» РІ СЂР°РґРёР°РЅР°С…
 		qreal const gammaDegrees = gamma * 180 / M_PI;
 
 		QTransform map;
