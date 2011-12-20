@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QGraphicsScene>
+#include <QtGui/QGraphicsScene>
 #include "../../../../../qrutils/graphicsUtils/abstractScene.h"
 
 namespace qReal {
@@ -9,8 +9,7 @@ namespace robots {
 namespace details {
 namespace d2Model {
 
-/** @brief Implementation of QGraphicsScene for 2D robot model
-*/
+/// Implementation of QGraphicsScene for 2D robot model
 class D2ModelScene: public graphicsUtils::AbstractScene
 {
 	Q_OBJECT

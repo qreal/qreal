@@ -52,7 +52,7 @@ public:
 	robotParts::EncoderSensor &encoderB();
 	robotParts::EncoderSensor &encoderC();
 
-//	robotImplementations::AbstractRobotModelImplementation &robotImpl();
+	robotImplementations::AbstractRobotModelImplementation &robotImpl();
 	void setRobotImplementation(robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	bool needsConnection() const;
 	void startInterpretation();
@@ -60,6 +60,9 @@ public:
 signals:
 	void sensorsConfigured();
 	void connected(bool success);
+
+	/// Is emitted if robot is disconnected
+	void disconnected();
 
 private slots:
 	void sensorsConfiguredSlot();

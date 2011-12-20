@@ -3,6 +3,7 @@
 #include "../view/editorViewScene.h"
 
 namespace {
+// TODO: find a way to remove it
 // magic constants
 const int widthLineX = 15000;
 const int widthLineY = 11000;
@@ -31,12 +32,10 @@ void SceneGridHandler::delUnusedLines()
 	mLines.clear();
 }
 
-void SceneGridHandler::drawLineY(qreal pointY)
+void SceneGridHandler::drawLineY(qreal pointY, QRectF const &sceneRect)
 {
-	QRectF const sceneRect = mNode->scene()->sceneRect();
-
 	pointY -= sceneRect.y();
-	QLineF const newLine(0., pointY, sceneRect.width(), pointY);
+	QLineF const newLine(0, pointY, sceneRect.width(), pointY);
 
 	// checking whether the scene already has this line or not.
 	// if not (lineIsFound is false), then adding it
@@ -51,10 +50,8 @@ void SceneGridHandler::drawLineY(qreal pointY)
 	mLines.push_back(newLine);
 }
 
-void SceneGridHandler::drawLineX(qreal pointX)
+void SceneGridHandler::drawLineX(qreal pointX, QRectF const &sceneRect)
 {
-	QRectF const sceneRect = mNode->scene()->sceneRect();
-
 	pointX -= sceneRect.x();
 	QLineF const newLine(pointX, 0, pointX, sceneRect.height());
 
@@ -93,14 +90,14 @@ bool SceneGridHandler::makeJumpY(qreal deltaY, qreal pointY)
 
 // build a vertical line: draw it and check for alignment
 void SceneGridHandler::buildLineX(qreal deltaX
-		, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2)
+		, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2, QRectF const &sceneRect)
 {
 	if (deltaX > radius) {
 		return;
 	}
 
 	if (mShowAlignment) {
-		drawLineX(pointX);
+		drawLineX(pointX, sceneRect);
 	}
 	if (makeJumpX(deltaX, pointX - correctionX)) {
 		myX1 = recalculateX1();
@@ -110,14 +107,14 @@ void SceneGridHandler::buildLineX(qreal deltaX
 
 // build a horizontal line: draw it and check for alignment
 void SceneGridHandler::buildLineY(qreal deltaY
-		, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2)
+		, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2, QRectF const &sceneRect)
 {
 	if (deltaY > radius) {
 		return;
 	}
 
 	if (mShowAlignment) {
-		drawLineY(pointY);
+		drawLineY(pointY, sceneRect);
 	}
 	if (makeJumpY(deltaY, pointY - correctionY)) {
 		myY1 = recalculateY1();
@@ -145,35 +142,40 @@ qreal SceneGridHandler::recalculateY2(qreal myY1) const
 	return myY1 + mNode->boundingRect().height();
 }
 
-qreal SceneGridHandler::alignedCoordinate(qreal coord, int coef, int indexGrid)
-{
-	int const oneCoef = coef != 0 ? coef / qAbs(coef) : 0;
-
-	if (qAbs(qAbs(coord) - qAbs(coef) * indexGrid) <= indexGrid / 2) {
-		return coef * indexGrid;
-	} else if (qAbs(qAbs(coord) - (qAbs(coef) + 1) * indexGrid) < indexGrid / 2) {
-		return (coef + oneCoef) * indexGrid;
-	}
-	return coord;
-}
-
+// move element vertically according to the grid
 void SceneGridHandler::makeGridMovingX(qreal myX, int coef, int indexGrid)
 {
-	mNode->setX(alignedCoordinate(myX, coef, indexGrid));
-	mNode->adjustLinks();
+	int coefSign = coef != 0 ? coef / qAbs(coef) : 0;
+
+	int distToCeilTop = qAbs(qAbs(myX) - qAbs(coef) * indexGrid);
+	int distToCeilBottom = qAbs(qAbs(myX) - (qAbs(coef) + 1) * indexGrid);
+
+	if (distToCeilTop * 2 <= indexGrid) {
+		mNode->setX(coef * indexGrid);
+		mNode->adjustLinks();
+	} else if (distToCeilBottom * 2 < indexGrid) {
+		// TODO: understand why we sum coef and coefSign. Comments are welcome
+		mNode->setX((coef + coefSign) * indexGrid);
+		mNode->adjustLinks();
+	}
 }
 
+// move element horizontally according to the grid
 void SceneGridHandler::makeGridMovingY(qreal myY, int coef, int indexGrid)
 {
-	mNode->setY(alignedCoordinate(myY, coef, indexGrid));
-	mNode->adjustLinks();
-}
+	int coefSign = coef != 0 ? coef / qAbs(coef) : 0;
 
-qreal SceneGridHandler::makeGridAlignment(qreal coord)
-{
-	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
-	int const coef = static_cast<int>(coord) / indexGrid;
-	return alignedCoordinate(coord, coef, indexGrid);
+	int distToCeilTop = qAbs(qAbs(myY) - qAbs(coef) * indexGrid);
+	int distToCeilBottom = qAbs(qAbs(myY) - (qAbs(coef) + 1) * indexGrid);
+
+	if (distToCeilTop * 2 <= indexGrid) {
+		mNode->setY(coef * indexGrid);
+		mNode->adjustLinks();
+	} else if (distToCeilBottom < indexGrid) {
+		// TODO: understand why we sum coef and coefSign. Comments are welcome
+		mNode->setY((coef + coefSign) * indexGrid);
+		mNode->adjustLinks();
+	}
 }
 
 void SceneGridHandler::setShowAlignmentMode(bool mode)
@@ -236,6 +238,7 @@ void SceneGridHandler::drawGuides()
 {
 	QPointF const nodeScenePos = mNode->scenePos();
 	QRectF const contentsRect = mNode->contentsRect();
+	QRectF const sceneRect = mNode->scene()->sceneRect();
 
 	delUnusedLines();
 
@@ -266,26 +269,27 @@ void SceneGridHandler::drawGuides()
 			qreal const deltaX1 = qAbs(pointX1 - myX1);
 			qreal const deltaX2 = qAbs(pointX2 - myX2);
 
-			buildLineY(deltaY1, pointY1, 0, myY1, myY2);
-			buildLineY(deltaY2, pointY2, contentsRect.height(), myY1, myY2);
+			buildLineY(deltaY1, pointY1, 0, myY1, myY2, sceneRect);
+			buildLineY(deltaY2, pointY2, contentsRect.height(), myY1, myY2, sceneRect);
 
-			buildLineX(deltaX1, pointX1, 0, myX1, myX2);
-			buildLineX(deltaX2, pointX2, contentsRect.width(), myX1, myX2);
+			buildLineX(deltaX1, pointX1, 0, myX1, myX2, sceneRect);
+			buildLineX(deltaX2, pointX2, contentsRect.width(), myX1, myX2, sceneRect);
 
-			buildLineY(qAbs(pointY1 - myY2), pointY1, contentsRect.height(), myY1, myY2);
-			buildLineX(qAbs(pointX1 - myX2), pointX1, contentsRect.width(), myX1, myX2);
+			buildLineY(qAbs(pointY1 - myY2), pointY1, contentsRect.height(), myY1, myY2, sceneRect);
+			buildLineX(qAbs(pointX1 - myX2), pointX1, contentsRect.width(), myX1, myX2, sceneRect);
 
-			buildLineY(qAbs(pointY2 - myY1), pointY2, 0, myY1, myY2);
-			buildLineX(qAbs(pointX2 - myX1), pointX2, 0, myX1, myX2);
+			buildLineY(qAbs(pointY2 - myY1), pointY2, 0, myY1, myY2, sceneRect);
+			buildLineX(qAbs(pointX2 - myX1), pointX2, 0, myX1, myX2, sceneRect);
 		}
 	}
 
 
 	if (mLines.size()) {
 		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(mNode->scene());
-		QRectF sceneRect = evScene->sceneRect();
+
 		mGuidesPixmap = new QPixmap(sceneRect.width(), sceneRect.height());
 		mGuidesPixmap->fill(Qt::transparent);
+
 		QPainter painter(mGuidesPixmap);
 		painter.setPen(mGuidesPen);
 		painter.drawLines(mLines);

@@ -41,20 +41,23 @@ EditorViewScene::EditorViewScene(QObject *parent)
 
 void EditorViewScene::drawForeground(QPainter *painter, QRectF const &rect)
 {
+	QPointF const point = sceneRect().topLeft();
 	foreach (QPixmap *pixmap, mForegroundPixmaps) {
-		painter->drawPixmap(rect.topLeft(), *pixmap);
+		painter->drawPixmap(point, *pixmap);
 	}
 	QGraphicsScene::drawForeground(painter, rect);
 }
 
 void EditorViewScene::putOnForeground(QPixmap *pixmap)
 {
-	mForegroundPixmaps.push_back(pixmap);
+	if (!mForegroundPixmaps.contains(pixmap)) {
+		mForegroundPixmaps.push_back(pixmap);
+	}
 }
 
 void EditorViewScene::deleteFromForeground(QPixmap *pixmap)
 {
-	mForegroundPixmaps.removeOne(pixmap);
+	mForegroundPixmaps.removeAll(pixmap);
 	update();
 }
 
@@ -607,17 +610,8 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	} else {
 		if (event->button() == Qt::RightButton) {
 			mTimer->stop();
-			Element *e = getElemAt(event->scenePos()); // not needed anymore?
-			//	if (!e) {
 			mMouseMovementManager->mousePress(event->scenePos());
 			mRightButtonPressed = true;
-			//		return;
-			//	}
-
-			// Menu belongs to scene handler because it can delete elements.
-			// We cannot allow elements to commit suicide.
-			//if (e)
-			//	initContextMenu(e, event->scenePos());
 		}
 	}
 	redraw();
@@ -1005,4 +999,11 @@ void EditorViewScene::dehighlight()
 		element->setGraphicsEffect(NULL);
 	}
 	mHighlightedElements.clear();
+}
+
+void EditorViewScene::selectAll()
+{
+	foreach (QGraphicsItem *element, items()) {
+		element->setSelected(true);
+	}
 }

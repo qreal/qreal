@@ -2,7 +2,6 @@ HEADERS += \
 	dialogs/plugindialog.h \
 	dialogs/refWindow.h \
 	dialogs/preferencesDialog.h \
-	dialogs/preferencesPages/page.h \
 	dialogs/preferencesPages/behaviourPage.h \
 	dialogs/preferencesPages/compilerPage.h \
 	dialogs/preferencesPages/debuggerPage.h \
@@ -11,6 +10,7 @@ HEADERS += \
 	dialogs/gesturesShow/gesturesWidget.h \
 	dialogs/checkoutdialog.h \
 	dialogs/preferencesPages/featuresPage.h \
+	dialogs/preferencesPages/preferencesPage.h
 
 SOURCES += \
 	dialogs/plugindialog.cpp \
@@ -23,7 +23,7 @@ SOURCES += \
 	dialogs/preferencesPages/editorPage.cpp \
 	dialogs/preferencesPages/miscellaniousPage.cpp \
 	dialogs/checkoutdialog.cpp \
-	dialogs/preferencesPages/featuresPage.cpp \
+	dialogs/preferencesPages/featuresPage.cpp
 
 FORMS += \
 	dialogs/editorGeneratorDialog.ui \
