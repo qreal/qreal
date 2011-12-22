@@ -4,116 +4,109 @@ FolderCompressor::FolderCompressor()
 {
 }
 
-bool FolderCompressor::compressFolder(QString sourceFolder, QString destinationFile) {
-    QDir src(sourceFolder);
-	if(!src.exists()) { //folder not found
-        return false;
-    }
-
-    file.setFileName(destinationFile);
-	if(!file.open(QIODevice::WriteOnly)) { //could not open file
-        return false;
-    }
-
-    dataStream.setDevice(&file);
-
-    bool success = compress(sourceFolder, "");
-    file.close();
-
-    return success;
-}
-
-bool FolderCompressor::compress(QString sourceFolder, QString prefex) {
-    QDir dir(sourceFolder);
-    if(!dir.exists())
-        return false;
-
-    //1 - list all folders inside the current folder
-    dir.setFilter(QDir::NoDotAndDotDot | QDir::Dirs);
-    QFileInfoList foldersList = dir.entryInfoList();
-
-    //2 - For each folder in list: call the same function with folders' paths
-    for(int i=0; i<foldersList.length(); i++)
-    {
-        QString folderName = foldersList.at(i).fileName();
-        QString folderPath = dir.absolutePath()+"/"+folderName;
-        QString newPrefex = prefex+"/"+folderName;
-
-        compress(folderPath, newPrefex);
-    }
-
-    //3 - List all files inside the current folder
-    dir.setFilter(QDir::NoDotAndDotDot | QDir::Files);
-    QFileInfoList filesList = dir.entryInfoList();
-
-    //4- For each file in list: add file path and compressed binary data
-    for(int i=0; i<filesList.length(); i++)
-    {
-        QFile file(dir.absolutePath()+"/"+filesList.at(i).fileName());
-        if(!file.open(QIODevice::ReadOnly))//couldn't open file
-        {
-            return false;
-        }
-
-        dataStream << QString(prefex+"/"+filesList.at(i).fileName());
-        dataStream << qCompress(file.readAll());
-
-		file.close();
+bool FolderCompressor::compressFolder(QString const &sourceFolder, QString const &destinationFile)
+{
+	if (!QDir(sourceFolder).exists()) { // folder not found
+		return false;
 	}
 
-    return true;
+	mFile.setFileName(destinationFile);
+	if (!mFile.open(QIODevice::WriteOnly)) { // could not open mFile
+		return false;
+	}
+
+	mDataStream.setDevice(&mFile);
+
+	bool result = compress(sourceFolder, "");
+	mFile.close();
+
+	return result;
 }
 
-bool FolderCompressor::decompressFolder(QString sourceFile, QString destinationFolder)
+bool FolderCompressor::compress(QString const &sourceFolder, QString const &prefix)
 {
-    //validation
-    QFile src(sourceFile);
-    if(!src.exists())
-    {//file not found, to handle later
-        return false;
-    }
-    QDir dir;
-    if(!dir.mkpath(destinationFolder))
-    {//could not create folder
-        return false;
-    }
+	QDir dir(sourceFolder);
+	if (!dir.exists()) {
+		return false;
+	}
 
-    file.setFileName(sourceFile);
-    if(!file.open(QIODevice::ReadOnly))
-        return false;
+	// 1 - list all folders inside the current folder
+	dir.setFilter(QDir::NoDotAndDotDot | QDir::Dirs);
+	QFileInfoList foldersList = dir.entryInfoList();
 
-    dataStream.setDevice(&file);
+	// 2 - For each folder in list: call the same function with folders' paths
+	foreach (QFileInfo const &folder, foldersList) {
+		QString folderName = folder.fileName();
+		QString folderPath = dir.absolutePath() + "/" + folderName;
+		QString newPrefix = prefix + "/" + folderName;
+		compress(folderPath, newPrefix);
+	}
 
-    while(!dataStream.atEnd())
-    {
-        QString fileName;
-        QByteArray data;
+	// 3 - List all files inside the current folder
+	dir.setFilter(QDir::NoDotAndDotDot | QDir::Files);
+	QFileInfoList filesList = dir.entryInfoList();
 
-        //extract file name and data in order
-        dataStream >> fileName >> data;
+	// 4- For each mFile in list: add mFile path and compressed binary data
+	foreach (QFileInfo const &file, filesList) {
+		QFile outFile(dir.absolutePath() + "/" + file.fileName());
+		if (!outFile.open(QIODevice::ReadOnly)) { // couldn't open mFile
+			return false;
+		}
 
-        //create any needed folder
-        QString subfolder;
-        for(int i=fileName.length()-1; i>0; i--)
-        {
-            if((QString(fileName.at(i)) == QString("\\")) || (QString(fileName.at(i)) == QString("/")))
-            {
-                subfolder = fileName.left(i);
-                dir.mkpath(destinationFolder+"/"+subfolder);
-                break;
-            }
-        }
+		mDataStream << QString(prefix + "/" + file.fileName());
+		mDataStream << qCompress(mFile.readAll());
 
-        QFile outFile(destinationFolder+"/"+fileName);
-        if(!outFile.open(QIODevice::WriteOnly))
-        {
-            file.close();
-            return false;
-        }
-        outFile.write(qUncompress(data));
-        outFile.close();
-    }
+		outFile.close();
+	}
 
-    file.close();
-    return true;
+	return true;
 }
+
+bool FolderCompressor::decompressFolder(QString const &sourceFile, QString const &destinationFolder)
+{
+	if (!QFile(sourceFile).exists()) { // mFile not found, to handle later
+		return false;
+	}
+
+	QDir dir;
+	if (!dir.mkpath(destinationFolder)) { // could not create folder
+		return false;
+	}
+
+	mFile.setFileName(sourceFile);
+	if (!mFile.open(QIODevice::ReadOnly)) {
+		return false;
+	}
+
+	mDataStream.setDevice(&mFile);
+
+	while (!mDataStream.atEnd()) {
+		QString fileName;
+		QByteArray data;
+
+		mDataStream >> fileName >> data; // extract file name and data in order
+
+		QString subfolder; // create any needed folder
+		for(int i = fileName.length() - 1; i > 0; i--) {
+			if((QString(fileName.at(i)) == QString("\\"))
+					|| (QString(fileName.at(i)) == QString("/")))
+			{
+				subfolder = fileName.left(i);
+				dir.mkpath(destinationFolder+"/"+subfolder);
+				break;
+			}
+		}
+
+		QFile outFile(destinationFolder + "/" + fileName);
+		if(!outFile.open(QIODevice::WriteOnly)) {
+			mFile.close();
+			return false;
+		}
+		outFile.write(qUncompress(data));
+		outFile.close();
+	}
+
+	mFile.close();
+	return true;
+}
+
