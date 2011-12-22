@@ -14,6 +14,9 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel, int widt
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
 	mReadOnly = element.attribute("readOnly", "false");
+	if (mTextBinded.contains("##")) {
+		mReadOnly = "true";
+	}
 	mIndex = index;
 	mBackground = element.attribute("background", nodeLabel ? "transparent" : "white");
 	if ((mText.isEmpty() && mTextBinded.isEmpty()) || (mReadOnly != "true" && mReadOnly != "false")) {
@@ -51,24 +54,70 @@ void Label::generateCodeForConstructor(OutFile &out)
 		<< "			titles.append(" + titleName() + ");\n";
 }
 
+QStringList Label::getReformedList(QStringList const &list) const
+{
+	QStringList result;
+	int counter = 1;
+	foreach (QString const &str, list){
+		if (counter % 2 == 0) {
+			result.append(str);
+		} else {
+			result.append("\"" + str + "\"");
+		}
+		counter++;
+	}
+	return result;
+}
+
+QStringList Label::getListOfStr(QString const &strToParse) const
+{
+	return getReformedList(strToParse.split("##"));
+}
+
 void Label::generateCodeForUpdateData(OutFile &out)
 {
-	if (mTextBinded.isEmpty()){
-		// Метка статическая.
+	if (mTextBinded.isEmpty()) {
+		// Static label
 		out() << "\t\t\tQ_UNUSED(repo);\n";
 		return;
 	}
-	QString field;
-	if (mTextBinded == "name")
-		field = "repo->name()";
-	else
-		// Кастомное свойство. Если есть желание забиндиться на ещё какое-нибудь из предефайненных, надо тут дописать.
-		field = "repo->logicalProperty(\"" + mTextBinded + "\")";
+
+	QStringList list = getListOfStr(mTextBinded);
+
+
+	QString resultStr;
+	if (list.count() == 1) {
+		if (list.first() == "name") {
+			resultStr = "repo->name()";
+		} else {
+			resultStr = "repo->logicalProperty(" + list.first() + ")";
+		}
+	} else {
+		int counter = 1;
+		foreach (QString const &listElement, list) {
+			QString field;
+			if (counter % 2 == 0) {
+				if (listElement == "name") {
+					field = "repo->name()";
+				} else {
+					field = "repo->logicalProperty(\"" + listElement + "\")";
+				}
+			} else {
+				field = "QString::fromUtf8(" + listElement + ")";
+			}
+
+			resultStr += " + " +  field;
+			counter++;
+		}
+		resultStr = resultStr.mid(3);
+	}
 	out() << "\t\t\t" + titleName() + "->setHtml(QString(\""
-		+ (mCenter == "true" ? "<center>%1</center>" : "%1") + "\").arg(" + field + ").replace(\"\\n\", \"<br>\"));\n";
+		+ (mCenter == "true" ? "<center>%1</center>" : "<b>%1</b>") + "\").arg(" + resultStr + ").replace(\"\\n\", \"<br>\"));\n";
 }
 
 void Label::generateCodeForFields(OutFile &out)
 {
 	out() << "		ElementTitleInterface *" + titleName() + ";\n";
 }
+
+
