@@ -213,7 +213,7 @@ QList<QGraphicsItem *> SceneGridHandler::getAdjancedNodes() const
 
 void SceneGridHandler::alignToGrid()
 {
-	if (!mSwitchGrid) {
+	if (!mSwitchGrid || mNode->parentItem()) {
 		return;
 	}
 	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
@@ -305,7 +305,12 @@ void SceneGridHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
-	alignToGrid();
+	foreach (QGraphicsItem *item, mNode->scene()->items()) {
+		NodeElement *e = dynamic_cast<NodeElement *>(item);
+		if (e && e->isSelected()) {
+			e->alignToGrid();
+		}
+	}
 	drawGuides();
 	mNode->adjustLinks();
 }
