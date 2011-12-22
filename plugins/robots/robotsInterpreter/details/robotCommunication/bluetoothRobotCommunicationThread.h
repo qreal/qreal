@@ -29,6 +29,9 @@ public slots:
 	void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize
 			, inputPort::InputPortEnum const &port);
 
+	/// Checks if robot is connected
+	void checkForConnection();
+
 private:
 	class SleeperThread : public QThread
 	{
