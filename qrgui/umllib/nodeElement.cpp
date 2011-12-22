@@ -579,53 +579,43 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			parentPos = parItem->scenePos();
 		}
 
+		qreal const newX = mGrid->makeGridAlignment(event->pos().x());
+		qreal const newY = mGrid->makeGridAlignment(event->pos().y());
 		switch (mDragState) {
 		case TopLeft: {
-			qreal const newX = mGrid->makeGridAlignment(event->pos().x());
-			qreal const newY = mGrid->makeGridAlignment(event->pos().y());
 			newContents.setTopLeft(QPoint(newX, newY));
 			setPos(event->scenePos() - parentPos);
 			break;
 		}
 		case Top: {
-			qreal const newY = mGrid->makeGridAlignment(event->pos().y());
 			newContents.setTop(newY);
 			setPos(pos().x(), event->scenePos().y() - parentPos.y());
 			break;
 		}
 		case TopRight: {
-			qreal const newX = mGrid->makeGridAlignment(event->pos().x());
-			qreal const newY = mGrid->makeGridAlignment(event->pos().y());
 			newContents.setTopRight(QPoint(newX, newY));
 			setPos(pos().x(), event->scenePos().y() - parentPos.y());
 			break;
 		}
 		case Left: {
-			qreal const newX = mGrid->makeGridAlignment(event->pos().x());
 			newContents.setLeft(newX);
 			setPos(event->scenePos().x() - parentPos.x(), pos().y());
 			break;
 		}
 		case Right: {
-			qreal const newX = mGrid->makeGridAlignment(event->pos().x());
 			newContents.setRight(newX);
 			break;
 		}
 		case BottomLeft: {
-			qreal const newX = mGrid->makeGridAlignment(event->pos().x());
-			qreal const newY = mGrid->makeGridAlignment(event->pos().y());
 			newContents.setBottomLeft(QPoint(newX, newY));
 			setPos(event->scenePos().x() - parentPos.x(), pos().y());
 			break;
 		}
 		case Bottom: {
-			qreal const newY = mGrid->makeGridAlignment(event->pos().y());
 			newContents.setBottom(newY);
 			break;
 		}
 		case BottomRight: {
-			qreal const newX = mGrid->makeGridAlignment(event->pos().x());
-			qreal const newY = mGrid->makeGridAlignment(event->pos().y());
 			newContents.setBottomRight(QPoint(newX, newY));
 			break;
 		}

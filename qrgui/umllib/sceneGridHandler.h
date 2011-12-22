@@ -15,7 +15,7 @@ public:
 
 	void delUnusedLines();
 
-	/// aligning the coordinates of a point to the grid
+	/// aligning the coordinates of a point to grid
 	qreal makeGridAlignment(qreal coord);
 
 	void setGridMode(bool mode);
