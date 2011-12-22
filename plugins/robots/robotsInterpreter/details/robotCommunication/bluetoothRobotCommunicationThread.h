@@ -48,6 +48,11 @@ private:
 
 	void send(QByteArray const &buffer) const;
 	QByteArray receive(int size) const;
+
+private slots:
+
+	/// Checks if robot is connected
+	void checkForConnection();
 };
 
 }
