@@ -2,7 +2,7 @@
 
 #include <QtCore/QMetaType>
 #include <time.h>
-#include <QTimer>
+#include <QtCore/QTimer>
 
 #include "../../thirdparty/qextserialport/src/qextserialport.h"
 #include "../tracer.h"
