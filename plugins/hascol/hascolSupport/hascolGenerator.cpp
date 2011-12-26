@@ -3,8 +3,6 @@
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 
-#include <QtCore/QDebug>
-
 #include "../../../qrkernel/roles.h"
 #include "../../../qrutils/outFile.h"
 
@@ -20,37 +18,37 @@ HascolGenerator::HascolGenerator(qrRepo::LogicalRepoApi const &api, qReal::Error
 
 void HascolGenerator::generate()
 {
-	Id repoId = Id::rootId();
-	IdList rootDiagrams = mApi.children(repoId);
+	Id const repoId = Id::rootId();
+	IdList const rootDiagrams = mApi.children(repoId);
 
-	foreach (Id const diagram, rootDiagrams) {
-		if (diagram.element() == "HascolPortMapping_HascolPortMappingDiagram")
+	foreach (Id const &diagram, rootDiagrams) {
+		if (diagram.element() == "HascolPortMappingDiagram") {
 			mPortMappingDiagrams.append(diagram);
-		else if (diagram.element() == "HascolActivity_HascolActivityDiagram")
+		} else if (diagram.element() == "HascolActivityDiagram") {
 			mActivityDiagrams.append(diagram);
+		}
 	}
 
-	foreach (Id const diagram, rootDiagrams) {
-		qDebug() << diagram.element();
-		if (diagram.element() == "HascolStructureDiagram")
+	foreach (Id const &diagram, rootDiagrams) {
+		if (diagram.element() == "HascolStructureDiagram") {
 			generateDiagram(diagram);
+		}
 	}
 }
 
 void HascolGenerator::generateDiagram(Id const &id)
 {
 	QString outputDirectory = mApi.stringProperty(id, "output directory");
-	if (outputDirectory == "")
+	if (outputDirectory == "") {
 		outputDirectory = ".";
+	}
 	OutFile out(outputDirectory + "/" + mApi.name(id) + ".md");
 
-	out() << "using bincompl;\n";  // Сигнатура по умолчанию, определяет основные используемые типы и операции.
+	out() << "using bincompl;\n";  // Default signature, defines common types and operations
 	out() << "\n";
 
-	foreach (Id const element, mApi.children(id)) {
-		if (element.element() == "Process"
-			&& !mApi.name(element).isEmpty())
-		{
+	foreach (Id const &element, mApi.children(id)) {
+		if (element.element() == "Process" && !mApi.name(element).isEmpty()) {
 			generateProcess(element, out);
 			out() << "\n";
 		} else if (element.element() == "Functor") {
@@ -72,12 +70,14 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 
 	out.incIndent();
 
-	foreach (Id const child, mApi.children(id))
-		if (child.element() == "ProcessOperation")
+	foreach (Id const &child, mApi.children(id)) {
+		if (child.element() == "ProcessOperation") {
 			generateProcessOperation(child, out);
+		}
+	}
 
 	bool firstResource = true;
-	foreach (Id const child, mApi.children(id))
+	foreach (Id const &child, mApi.children(id)) {
 		if (child.element() == "Resource") {
 			if (firstResource) {
 				out() << "data\n";
@@ -86,16 +86,20 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 			generateResource(child, firstResource, out);
 			firstResource = false;
 		}
+	}
+
 	if (!firstResource) {
 		out.decIndent();
 		out() << ";\n";
 	}
 
-	foreach (Id const child, mApi.children(id))
-		if (child.element() == "LetBinding")
+	foreach (Id const &child, mApi.children(id)) {
+		if (child.element() == "LetBinding") {
 			generateLetBinding(child, out);
+		}
+	}
 
-	foreach (Id const link, mApi.incomingLinks(id)) {
+	foreach (Id const &link, mApi.incomingLinks(id)) {
 		if (link.element() == "UsedProcessRelation") {
 			Id const usedProcess = mApi.otherEntityFromLink(link, id);
 			out() << "process " << mApi.name(link) << " = " << mApi.name(usedProcess) << ";\n";
@@ -107,13 +111,17 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 		}
 	}
 
-	foreach (Id const activity, mActivityDiagrams)
-		if (mApi.name(activity) == mApi.name(id))
+	foreach (Id const &activity, mActivityDiagrams) {
+		if (mApi.name(activity) == mApi.name(id)) {
 			generateActivity(activity, out);
+		}
+	}
 
-	foreach (Id const portMap, mPortMappingDiagrams)
-		if (mApi.name(portMap) == mApi.name(id))
+	foreach (Id const &portMap, mPortMappingDiagrams) {
+		if (mApi.name(portMap) == mApi.name(id)) {
 			generatePortMap(portMap, out);
+		}
+	}
 
 	out.decIndent();
 
@@ -122,19 +130,17 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 
 void HascolGenerator::generatePortMap(Id const &id, utils::OutFile &out)
 {
-	foreach (Id const child, mApi.children(id)) {
-		if (child.element() == "HascolPortMapping_ProcessInstance"
-			|| child.element() == "HascolPortMapping_FunctorInstance")
-		{
-			foreach (Id const instanceChild, mApi.children(child)) {
-				if (instanceChild.element() == "HascolPortMapping_ProcessInstance"
-					|| instanceChild.element() == "HascolPortMapping_ProcessInstance")
+	foreach (Id const &child, mApi.children(id)) {
+		if (child.element() == "ProcessInstance" || child.element() == "FunctorInstance") {
+			foreach (Id const &instanceChild, mApi.children(child)) {
+				if (instanceChild.element() == "ProcessInstance"
+						|| instanceChild.element() == "ProcessInstance")
 				{
 					out() << "process " << mApi.name(instanceChild).replace(":", "=") << " with\n";
 					out.incIndent();
 					bool first = true;
-					foreach (Id const port, mApi.children(instanceChild)) {
-						if (port.element() == "HascolPortMapping_Port") {
+					foreach (Id const &port, mApi.children(instanceChild)) {
+						if (port.element() == "Port") {
 							if (mApi.links(port).isEmpty()) {
 								mErrorReporter.addWarning("Port without connections", port);
 								continue;
@@ -145,9 +151,9 @@ void HascolGenerator::generatePortMap(Id const &id, utils::OutFile &out)
 
 							Id const mappedPortParent = mApi.parent(mappedPort);
 							QString parentName;
-							if (mappedPortParent == child)
+							if (mappedPortParent == child) {
 								parentName = "";
-							else {
+							} else {
 								parentName = mApi.name(mappedPortParent);
 								parentName.remove(parentName.indexOf(":"), parentName.length());
 								parentName = parentName.trimmed();
@@ -178,9 +184,11 @@ void HascolGenerator::generateFunctor(Id const &id, OutFile &out)
 
 	out.incIndent();
 
-	foreach (Id const child, mApi.children(id))
-		if (child.element() == "FunctorFormalParameter")
+	foreach (Id const &child, mApi.children(id)) {
+		if (child.element() == "FunctorFormalParameter") {
 			generateFunctorFormalParameter(child, out);
+		}
+	}
 
 	out.decIndent();
 
@@ -206,10 +214,10 @@ void HascolGenerator::generateFunctorFormalParameter(Id const &id, utils::OutFil
 	}
 }
 
-void HascolGenerator::generateProcessOperation(Id const &id, OutFile &out)
+void HascolGenerator::generateProcessOperation(Id const &id, utils::OutFile &out)
 {
 	out() << mApi.stringProperty(id, "direction") << " "
-		<< mApi.name(id) << ";\n";
+			<< mApi.name(id) << ";\n";
 }
 
 void HascolGenerator::generateLetBinding(Id const &id, utils::OutFile &out)
@@ -224,14 +232,14 @@ void HascolGenerator::generateResource(Id const &id, bool first, OutFile &out)
 
 void HascolGenerator::generateActivity(Id const &id, utils::OutFile &out)
 {
-	foreach (Id const element, mApi.children(id)) {
-		if (element.element() == "HascolActivity_Group") {
+	foreach (Id const &element, mApi.children(id)) {
+		if (element.element() == "Group") {
 			out() << "group {\n";
 			out.incIndent();
 			generateActivity(element, out);
 			out.decIndent();
 			out() << "}\n";
-		} else if (element.element() == "HascolActivity_HandlerStart")
+		} else if (element.element() == "HandlerStart")
 			generateHandler(element, out);
 	}
 }
@@ -253,20 +261,22 @@ Id HascolGenerator::generateChain(Id const &startNode, utils::OutFile &out)
 	Id currentId = startNode;
 	while (mApi.outgoingLinks(currentId).count() > 0) {
 
-		if (mApi.incomingLinks(currentId).count() > 1)
+		if (mApi.incomingLinks(currentId).count() > 1) {
 			return currentId;
+		}
 
-		if (currentId.element() == "HascolActivity_DecisionNode") {
+		if (currentId.element() == "DecisionNode") {
 			currentId = generateIf(currentId, out);
 		} else if (mApi.outgoingLinks(currentId).count() > 1) {
 			generateActivityNode(currentId, out);
 			Id chainEndId;
 			bool wasOutgoingLink = false;
-			foreach (Id linkId, mApi.outgoingLinks(currentId)) {
-				if (wasOutgoingLink)
+			foreach (Id const &linkId, mApi.outgoingLinks(currentId)) {
+				if (wasOutgoingLink) {
 					out() << "|\n";
+				}
 				wasOutgoingLink = true;
-				Id chainBeginId = mApi.otherEntityFromLink(linkId, currentId);
+				Id const chainBeginId = mApi.otherEntityFromLink(linkId, currentId);
 				chainEndId = generateChain(chainBeginId, out);
 			}
 			currentId = chainEndId;
@@ -275,7 +285,7 @@ Id HascolGenerator::generateChain(Id const &startNode, utils::OutFile &out)
 		generateActivityNode(currentId, out);
 
 		if (mApi.outgoingLinks(currentId).count() > 0) {
-			Id const link = mApi.outgoingLinks(currentId)[0];  // Последовательный участок цепочки.
+			Id const link = mApi.outgoingLinks(currentId)[0];  // Proceed to next statement in a chain
 			currentId = mApi.otherEntityFromLink(link, currentId);
 		}
 	}
@@ -284,11 +294,11 @@ Id HascolGenerator::generateChain(Id const &startNode, utils::OutFile &out)
 
 void HascolGenerator::generateActivityNode(Id const &id, utils::OutFile &out)
 {
-	if (id.element() == "HascolActivity_SendSignalAction") {
+	if (id.element() == "SendSignalAction") {
 		out() << "send " << mApi.name(id) << "\n";
-	} else if (id.element() == "HascolActivity_InformSignalAction") {
+	} else if (id.element() == "InformSignalAction") {
 		out() << "inform " << mApi.name(id) << "\n";
-	} else if (id.element() == "HascolActivity_Action") {
+	} else if (id.element() == "Action") {
 		out() << mApi.name(id) << "\n";
 	}
 }
