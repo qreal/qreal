@@ -142,40 +142,35 @@ qreal SceneGridHandler::recalculateY2(qreal myY1) const
 	return myY1 + mNode->boundingRect().height();
 }
 
-// move element vertically according to the grid
-void SceneGridHandler::makeGridMovingX(qreal myX, int coef, int indexGrid)
+qreal SceneGridHandler::alignedCoordinate(qreal coord, int coef, int indexGrid)
 {
-	int coefSign = coef != 0 ? coef / qAbs(coef) : 0;
+	int const coefSign = coef != 0 ? coef / qAbs(coef) : 0;
 
-	int distToCeilTop = qAbs(qAbs(myX) - qAbs(coef) * indexGrid);
-	int distToCeilBottom = qAbs(qAbs(myX) - (qAbs(coef) + 1) * indexGrid);
-
-	if (distToCeilTop * 2 <= indexGrid) {
-		mNode->setX(coef * indexGrid);
-		mNode->adjustLinks();
-	} else if (distToCeilBottom * 2 < indexGrid) {
-		// TODO: understand why we sum coef and coefSign. Comments are welcome
-		mNode->setX((coef + coefSign) * indexGrid);
-		mNode->adjustLinks();
+	if (qAbs(qAbs(coord) - qAbs(coef) * indexGrid) <= indexGrid / 2) {
+		return coef * indexGrid;
+	} else if (qAbs(qAbs(coord) - (qAbs(coef) + 1) * indexGrid) < indexGrid / 2) {
+		return (coef + coefSign) * indexGrid;
 	}
+	return coord;
 }
 
-// move element horizontally according to the grid
+void SceneGridHandler::makeGridMovingX(qreal myX, int coef, int indexGrid)
+{
+	mNode->setX(alignedCoordinate(myX, coef, indexGrid));
+	mNode->adjustLinks();
+}
+
 void SceneGridHandler::makeGridMovingY(qreal myY, int coef, int indexGrid)
 {
-	int coefSign = coef != 0 ? coef / qAbs(coef) : 0;
+	mNode->setY(alignedCoordinate(myY, coef, indexGrid));
+	mNode->adjustLinks();
+}
 
-	int distToCeilTop = qAbs(qAbs(myY) - qAbs(coef) * indexGrid);
-	int distToCeilBottom = qAbs(qAbs(myY) - (qAbs(coef) + 1) * indexGrid);
-
-	if (distToCeilTop * 2 <= indexGrid) {
-		mNode->setY(coef * indexGrid);
-		mNode->adjustLinks();
-	} else if (distToCeilBottom < indexGrid) {
-		// TODO: understand why we sum coef and coefSign. Comments are welcome
-		mNode->setY((coef + coefSign) * indexGrid);
-		mNode->adjustLinks();
-	}
+qreal SceneGridHandler::makeGridAlignment(qreal coord)
+{
+	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
+	int const coef = static_cast<int>(coord) / indexGrid;
+	return alignedCoordinate(coord, coef, indexGrid);
 }
 
 void SceneGridHandler::setShowAlignmentMode(bool mode)
@@ -213,7 +208,7 @@ QList<QGraphicsItem *> SceneGridHandler::getAdjancedNodes() const
 
 void SceneGridHandler::alignToGrid()
 {
-	if (!mSwitchGrid) {
+	if (!mSwitchGrid || mNode->parentItem()) {
 		return;
 	}
 	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
@@ -305,7 +300,12 @@ void SceneGridHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
-	alignToGrid();
+	foreach (QGraphicsItem *item, mNode->scene()->items()) {
+		NodeElement *e = dynamic_cast<NodeElement *>(item);
+		if (e && e->isSelected()) {
+			e->alignToGrid();
+		}
+	}
 	drawGuides();
 	mNode->adjustLinks();
 }
