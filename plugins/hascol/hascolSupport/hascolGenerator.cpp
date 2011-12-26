@@ -32,7 +32,7 @@ void HascolGenerator::generate()
 
 	foreach (Id const diagram, rootDiagrams) {
 		qDebug() << diagram.element();
-		if (diagram.element() == "HascolStructure_HascolStructureDiagram")
+		if (diagram.element() == "HascolStructureDiagram")
 			generateDiagram(diagram);
 	}
 }
@@ -48,12 +48,12 @@ void HascolGenerator::generateDiagram(Id const &id)
 	out() << "\n";
 
 	foreach (Id const element, mApi.children(id)) {
-		if (element.element() == "HascolStructure_Process"
+		if (element.element() == "Process"
 			&& !mApi.name(element).isEmpty())
 		{
 			generateProcess(element, out);
 			out() << "\n";
-		} else if (element.element() == "HascolStructure_Functor") {
+		} else if (element.element() == "Functor") {
 			generateFunctor(element, out);
 			out() << "\n";
 		}
@@ -73,12 +73,12 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 	out.incIndent();
 
 	foreach (Id const child, mApi.children(id))
-		if (child.element() == "HascolStructure_ProcessOperation")
+		if (child.element() == "ProcessOperation")
 			generateProcessOperation(child, out);
 
 	bool firstResource = true;
 	foreach (Id const child, mApi.children(id))
-		if (child.element() == "HascolStructure_Resource") {
+		if (child.element() == "Resource") {
 			if (firstResource) {
 				out() << "data\n";
 				out.incIndent();
@@ -92,15 +92,15 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 	}
 
 	foreach (Id const child, mApi.children(id))
-		if (child.element() == "HascolStructure_LetBinding")
+		if (child.element() == "LetBinding")
 			generateLetBinding(child, out);
 
 	foreach (Id const link, mApi.incomingLinks(id)) {
-		if (link.element() == "HascolStructure_UsedProcessRelation") {
+		if (link.element() == "UsedProcessRelation") {
 			Id const usedProcess = mApi.otherEntityFromLink(link, id);
 			out() << "process " << mApi.name(link) << " = " << mApi.name(usedProcess) << ";\n";
 		}
-		if (link.element() == "HascolStructure_NestedProcessRelation") {
+		if (link.element() == "NestedProcessRelation") {
 			Id const nestedProcess = mApi.otherEntityFromLink(link, id);
 			out() << "process " << mApi.name(link) << " =\n";
 			generateProcessTypeBody(nestedProcess, out);
@@ -179,7 +179,7 @@ void HascolGenerator::generateFunctor(Id const &id, OutFile &out)
 	out.incIndent();
 
 	foreach (Id const child, mApi.children(id))
-		if (child.element() == "HascolStructure_FunctorFormalParameter")
+		if (child.element() == "FunctorFormalParameter")
 			generateFunctorFormalParameter(child, out);
 
 	out.decIndent();
