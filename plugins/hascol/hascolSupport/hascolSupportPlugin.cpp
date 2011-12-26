@@ -1,10 +1,10 @@
 #include "hascolSupportPlugin.h"
 
-#include "hascolGenerator.h"
-#include "hascolParser.h"
-
 #include <QtGui/QApplication>
 #include <QtGui/QFileDialog>
+
+#include "hascolGenerator.h"
+#include "hascolParser.h"
 
 Q_EXPORT_PLUGIN2(hascolSupportPlugin, hascol::HascolSupportPlugin)
 
