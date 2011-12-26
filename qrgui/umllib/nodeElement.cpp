@@ -391,6 +391,7 @@ void NodeElement::resize(QRectF newContents)
 			childrenMoving.setY(curItemPos.y() - mElementImpl->sizeOfForestalling());
 		}
 	}
+
 //	setPos(pos() + childrenMoving);
 	moveChildren(-childrenMoving);
 
@@ -578,36 +579,46 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			parentPos = parItem->scenePos();
 		}
 
+		qreal const newX = mGrid->makeGridAlignment(event->pos().x());
+		qreal const newY = mGrid->makeGridAlignment(event->pos().y());
 		switch (mDragState) {
-		case TopLeft:
-			newContents.setTopLeft(event->pos());
+		case TopLeft: {
+			newContents.setTopLeft(QPoint(newX, newY));
 			setPos(event->scenePos() - parentPos);
 			break;
-		case Top:
-			newContents.setTop(event->pos().y());
+		}
+		case Top: {
+			newContents.setTop(newY);
 			setPos(pos().x(), event->scenePos().y() - parentPos.y());
 			break;
-		case TopRight:
-			newContents.setTopRight(event->pos());
+		}
+		case TopRight: {
+			newContents.setTopRight(QPoint(newX, newY));
 			setPos(pos().x(), event->scenePos().y() - parentPos.y());
 			break;
-		case Left:
-			newContents.setLeft(event->pos().x());
+		}
+		case Left: {
+			newContents.setLeft(newX);
 			setPos(event->scenePos().x() - parentPos.x(), pos().y());
 			break;
-		case Right:
-			newContents.setRight(event->pos().x());
+		}
+		case Right: {
+			newContents.setRight(newX);
 			break;
-		case BottomLeft:
-			newContents.setBottomLeft(event->pos());
+		}
+		case BottomLeft: {
+			newContents.setBottomLeft(QPoint(newX, newY));
 			setPos(event->scenePos().x() - parentPos.x(), pos().y());
 			break;
-		case Bottom:
-			newContents.setBottom(event->pos().y());
+		}
+		case Bottom: {
+			newContents.setBottom(newY);
 			break;
-		case BottomRight:
-			newContents.setBottomRight(event->pos());
+		}
+		case BottomRight: {
+			newContents.setBottomRight(QPoint(newX, newY));
 			break;
+		}
 		case None:
 			break;
 		}
@@ -649,7 +660,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		Element::mouseReleaseEvent(event);
 	}
 
-	// we should use mHighlightedNode to determine if there a highlighted node
+	// we should use mHighlightedNode to determine if there is a highlighted node
 	// insert current element into them and set mHighlightedNode to NULL
 	// but because of mouseRelease twice triggering we can't do it
 	// This may cause more bugs
