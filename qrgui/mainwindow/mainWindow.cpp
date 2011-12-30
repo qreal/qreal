@@ -124,7 +124,6 @@ MainWindow::MainWindow()
 	if (saveFile.exists())
 		mSaveFile = saveFile.absoluteFilePath();
 
-
 	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);

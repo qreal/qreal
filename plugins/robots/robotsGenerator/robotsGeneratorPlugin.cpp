@@ -22,6 +22,7 @@ RobotsGeneratorPlugin::RobotsGeneratorPlugin()
 
 RobotsGeneratorPlugin::~RobotsGeneratorPlugin()
 {
+	delete mFlashTool;
 }
 
 void RobotsGeneratorPlugin::init(PluginConfigurator const &configurator)
