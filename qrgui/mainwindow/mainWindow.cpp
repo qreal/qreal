@@ -116,7 +116,7 @@ MainWindow::MainWindow()
 
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
-	if (!dir.cd("temp"))
+	if (!dir.cd(mTempDir))
 		QDir().mkdir(mTempDir);
 
 	QFileInfo saveFile(SettingsManager::value("saveFile", mSaveFile).toString());
