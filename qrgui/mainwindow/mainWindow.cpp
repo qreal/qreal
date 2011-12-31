@@ -1187,6 +1187,7 @@ void qReal::MainWindow::closeTab(int index)
 	QWidget *widget = mUi->tabs->widget(index);
 	mUi->tabs->removeTab(index);
 	delete widget;
+	currentTabChanged();
 }
 
 /*
@@ -1435,6 +1436,17 @@ void MainWindow::initCurrentTab(QModelIndex const &rootIndex)
 
 	setShortcuts();
 
+	currentTabChanged();
+}
+
+void MainWindow::currentTabChanged()
+{
+	if (getCurrentTab() == NULL) {
+		mToolManager.activeTabChanged(Id());
+	} else {
+		Id const currentTabId = getCurrentTab()->mvIface()->rootId();
+		mToolManager.activeTabChanged(currentTabId);
+	}
 }
 
 void MainWindow::setShortcuts()
