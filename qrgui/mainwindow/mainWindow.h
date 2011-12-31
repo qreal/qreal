@@ -160,6 +160,7 @@ private slots:
 	void setBreakpointAtStart();
 	void startDebugging();
 	void checkEditorForDebug(int index);
+
 	void deleteFromDiagram();
 	void changeMiniMapSource(int index);
 	void closeTab(int index);
@@ -187,6 +188,10 @@ private slots:
 
 	void openNewTab(const QModelIndex &index);
 	void initCurrentTab(const QModelIndex &rootIndex);
+
+	/// Called after current tab was changed somehow --- opened, closed, switched to other
+	// TODO: Make this slot call all other tab-related stuff
+	void currentTabChanged();
 
 	void showGestures();
 	void showAlignment(bool isChecked);
