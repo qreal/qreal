@@ -47,16 +47,16 @@ bool FolderCompressor::compress(QString const &sourceFolder, QString const &pref
 	QFileInfoList filesList = dir.entryInfoList();
 
 	// 4- For each mFile in list: add mFile path and compressed binary data
-	foreach (QFileInfo const &file, filesList) {
-		QFile outFile(dir.absolutePath() + "/" + file.fileName());
-		if (!outFile.open(QIODevice::ReadOnly)) { // couldn't open mFile
+	foreach (QFileInfo const &fileInfo, filesList) {
+		QFile file(dir.absolutePath() + "/" + fileInfo.fileName());
+		if (!file.open(QIODevice::ReadOnly)) { // couldn't open mFile
 			return false;
 		}
 
-		mDataStream << QString(prefix + "/" + file.fileName());
-		mDataStream << qCompress(mFile.readAll());
+		mDataStream << QString(prefix + "/" + fileInfo.fileName());
+		mDataStream << qCompress(file.readAll());
 
-		outFile.close();
+		file.close();
 	}
 
 	return true;
@@ -98,7 +98,7 @@ bool FolderCompressor::decompressFolder(QString const &sourceFile, QString const
 		}
 
 		QFile outFile(destinationFolder + "/" + fileName);
-		if(!outFile.open(QIODevice::WriteOnly)) {
+		if (!outFile.open(QIODevice::WriteOnly)) {
 			mFile.close();
 			return false;
 		}
