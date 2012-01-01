@@ -1,5 +1,7 @@
 #include "nxtFlashTool.h"
 
+#include <QtGui/QApplication>
+
 using namespace qReal;
 using namespace gui;
 
