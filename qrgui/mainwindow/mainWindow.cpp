@@ -2078,7 +2078,7 @@ QString MainWindow::getNextDirName(QString const &name)
 
 Id MainWindow::activeDiagram()
 {
-	return getCurrentTab()->mvIface()->rootId();
+	return getCurrentTab() && getCurrentTab()->mvIface() ? getCurrentTab()->mvIface()->rootId() : Id();
 }
 
 void MainWindow::initToolPlugins()
