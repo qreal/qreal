@@ -1455,12 +1455,18 @@ void MainWindow::currentTabChanged(int newIndex)
 {
 	changeMiniMapSource(newIndex);
 
-	if (getCurrentTab() == NULL) {
+	bool const isEditorTab = getCurrentTab() != NULL;
+
+	if (!isEditorTab) {
 		mToolManager.activeTabChanged(Id());
 	} else if (getCurrentTab()->mvIface() != NULL) {
 		Id const currentTabId = getCurrentTab()->mvIface()->rootId();
 		mToolManager.activeTabChanged(currentTabId);
 	}
+
+	mUi->actionZoom_In->setEnabled(isEditorTab);
+	mUi->actionZoom_Out->setEnabled(isEditorTab);
+
 	emit rootDiagramChanged();
 }
 
