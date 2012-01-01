@@ -672,8 +672,8 @@ void MainWindow::settingsPlugins()
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
 	QModelIndex const index = isLogicalModel
-		? (mUi->logicalModelExplorer->currentIndex())
-		: (mUi->graphicalModelExplorer->currentIndex());
+			? (mUi->logicalModelExplorer->currentIndex())
+			: (mUi->graphicalModelExplorer->currentIndex());
 
 	if (!index.isValid()) {
 		return;
@@ -1179,7 +1179,6 @@ void MainWindow::changeMiniMapSource(int index)
 		mUi->tabs->setEnabled(false);
 		mUi->minimapView->setScene(0);;
 	}
-	emit rootDiagramChanged();
 }
 
 void qReal::MainWindow::closeTab(int index)
@@ -1187,7 +1186,6 @@ void qReal::MainWindow::closeTab(int index)
 	QWidget *widget = mUi->tabs->widget(index);
 	mUi->tabs->removeTab(index);
 	delete widget;
-	currentTabChanged();
 }
 
 /*
@@ -1370,11 +1368,12 @@ void MainWindow::logicalModelExplorerClicked(QModelIndex const &index)
 	}
 }
 
-void MainWindow::openNewTab(const QModelIndex &arg)
+void MainWindow::openNewTab(QModelIndex const &arg)
 {
 	QModelIndex index = arg;
-	while (index.parent() != QModelIndex())
+	while (index.parent() != QModelIndex()) {
 		index = index.parent();
+	}
 
 	int tabNumber = -1;
 	for (int i = 0; i < mUi->tabs->count(); i++) {
@@ -1388,9 +1387,9 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 		mUi->tabs->setCurrentIndex(tabNumber);
 	} else {
 		EditorView * const view = new EditorView(this);
+		initCurrentTab(view, index);
 		mUi->tabs->addTab(view, index.data().toString());
 		mUi->tabs->setCurrentWidget(view);
-		initCurrentTab(index);
 	}
 
 	// changing of palette active editor
@@ -1409,57 +1408,60 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 	}
 }
 
-void MainWindow::initCurrentTab(QModelIndex const &rootIndex)
+void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIndex)
 {
-	getCurrentTab()->setMainWindow(this);
-	QModelIndex const index = rootIndex;
-
-	getCurrentTab()->mvIface()->setAssistApi(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi());
-
-	getCurrentTab()->mvIface()->setModel(mModels->graphicalModel());
-	if (getCurrentTab()->sceneRect() == QRectF(0, 0, 0, 0)) {
-		getCurrentTab()->setSceneRect(0, 0, 1, 1);
+	if (!tab) {
+		return;
 	}
 
-	getCurrentTab()->mvIface()->setLogicalModel(mModels->logicalModel());
-	getCurrentTab()->mvIface()->setRootIndex(index);
-	changeMiniMapSource(mUi->tabs->currentIndex());
+	tab->setMainWindow(this);
+	QModelIndex const index = rootIndex;
 
-	/*connect after setModel etc. because of signal selectionChanged was sent when there were old indexes*/
-	connect(getCurrentTab()->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
-	connect(mUi->actionAntialiasing, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleAntialiasing(bool)));
-	connect(mUi->actionOpenGL_Renderer, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleOpenGL(bool)));
+	tab->mvIface()->setAssistApi(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi());
+
+	tab->mvIface()->setModel(mModels->graphicalModel());
+	if (tab->sceneRect() == QRectF(0, 0, 0, 0)) {
+		tab->setSceneRect(0, 0, 1, 1);
+	}
+
+	tab->mvIface()->setLogicalModel(mModels->logicalModel());
+	tab->mvIface()->setRootIndex(index);
+
+	// Connect after setModel etc. because of signal selectionChanged was sent when there were old indexes
+	connect(tab->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
+	connect(mUi->actionAntialiasing, SIGNAL(toggled(bool)), tab, SLOT(toggleAntialiasing(bool)));
+	connect(mUi->actionOpenGL_Renderer, SIGNAL(toggled(bool)), tab, SLOT(toggleOpenGL(bool)));
 	connect(mModels->graphicalModel(), SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
-			, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
+			, tab->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
 	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
-			, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
+			, tab->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 
-	setShortcuts();
-
-	currentTabChanged();
+	setShortcuts(tab);
 }
 
-void MainWindow::currentTabChanged()
+void MainWindow::setShortcuts(EditorView * const tab)
 {
+	EditorViewScene *scene = dynamic_cast<EditorViewScene *>(tab->scene());
+	if (scene) {
+		// Add shortcut - select all
+		QAction *selectAction = new QAction(tab);
+		selectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
+		connect(selectAction, SIGNAL(triggered()), scene, SLOT(selectAll()));
+		tab->addAction(selectAction);
+	}
+}
+
+void MainWindow::currentTabChanged(int newIndex)
+{
+	changeMiniMapSource(newIndex);
+
 	if (getCurrentTab() == NULL) {
 		mToolManager.activeTabChanged(Id());
-	} else {
+	} else if (getCurrentTab()->mvIface() != NULL) {
 		Id const currentTabId = getCurrentTab()->mvIface()->rootId();
 		mToolManager.activeTabChanged(currentTabId);
 	}
-}
-
-void MainWindow::setShortcuts()
-{
-	// add shortcut - select all
-	EditorViewScene *scene = dynamic_cast <EditorViewScene *> (getCurrentTab()->scene());
-	if (scene) {
-		QAction *selectAction = new QAction(getCurrentTab());
-		selectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
-		connect(selectAction, SIGNAL(triggered()), scene, SLOT(selectAll()));
-		getCurrentTab()->addAction(selectAction);
-	}
-	// addDocumentation(String); // in perspective
+	emit rootDiagramChanged();
 }
 
 void MainWindow::updateTabName(Id const &id)
@@ -1604,8 +1606,9 @@ void MainWindow::suggestToCreateDiagram()
 		foreach(Id diagram, manager()->diagrams(Id::loadFromString("qrm:/" + editor.editor()))) {
 			QString const diagramName = mEditorManager.editorInterface(editor.editor())->diagramName(diagram.diagram());
 			QString const diagramNodeName = mEditorManager.editorInterface(editor.editor())->diagramNodeName(diagram.diagram());
-			if (diagramNodeName.isEmpty())
+			if (diagramNodeName.isEmpty()) {
 				continue;
+			}
 			mDiagramsList.append("qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
 			diagramsListWidget.addItem(diagramName);
 			i++;
@@ -1617,15 +1620,15 @@ void MainWindow::suggestToCreateDiagram()
 	QPushButton okButton;
 	okButton.setText(tr("Done"));
 
-	QObject::connect(&diagramsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(diagramInCreateListSelected(int)));
-	QObject::connect(&diagramsListWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(setDiagramCreateFlag()));
-	QObject::connect(&diagramsListWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),&dialog,SLOT(close()));
-	QObject::connect(&dialog,SIGNAL(destroyed()),this,SLOT(diagramInCreateListDeselect()));
+	QObject::connect(&diagramsListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(diagramInCreateListSelected(int)));
+	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(setDiagramCreateFlag()));
+	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), &dialog, SLOT(close()));
+	QObject::connect(&dialog, SIGNAL(destroyed()), this, SLOT(diagramInCreateListDeselect()));
 
-	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+	QObject::connect(&cancelButton, SIGNAL(clicked()), &dialog, SLOT(close()));
 
-	QObject::connect(&okButton,SIGNAL(clicked()),this,SLOT(setDiagramCreateFlag()));
-	QObject::connect(&okButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+	QObject::connect(&okButton, SIGNAL(clicked()), this, SLOT(setDiagramCreateFlag()));
+	QObject::connect(&okButton, SIGNAL(clicked()), &dialog, SLOT(close()));
 
 	diagramsListWidget.setCurrentRow(0);
 	mDiagramCreateFlag = false;
@@ -1648,8 +1651,9 @@ void MainWindow::setDiagramCreateFlag()
 
 void MainWindow::diagramInCreateListDeselect()
 {
-	if (!mDiagramCreateFlag)
+	if (!mDiagramCreateFlag) {
 		deleteFromExplorer(true);
+	}
 }
 
 void MainWindow::diagramInCreateListSelected(int num)
@@ -1689,8 +1693,9 @@ void MainWindow::saveProjectAs()
 
 void MainWindow::saveAs(QString const &fileName)
 {
-	if (fileName.isEmpty())
+	if (fileName.isEmpty()) {
 		return;
+	}
 	mSaveFile = fileName;
 	mUnsavedProjectIndicator = false;
 	mIsNewProject = (mSaveFile == mTempDir);
@@ -2001,17 +2006,19 @@ void MainWindow::applySettings()
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 }
 
-void MainWindow::hideDockWidget(QDockWidget *dockWidget, QString name)
+void MainWindow::hideDockWidget(QDockWidget *dockWidget, const QString &name)
 {
 	mDocksVisibility[name] = !dockWidget->isHidden();
-	if (mDocksVisibility[name])
+	if (mDocksVisibility[name]) {
 		dockWidget->hide();
+	}
 }
 
-void MainWindow::showDockWidget(QDockWidget *dockWidget, QString name)
+void MainWindow::showDockWidget(QDockWidget *dockWidget, QString const &name)
 {
-	if (mDocksVisibility[name])
+	if (mDocksVisibility[name]) {
 		dockWidget->show();
+	}
 }
 
 void MainWindow::fullscreen()
@@ -2240,7 +2247,7 @@ void MainWindow::initTabs()
 {
 	mUi->tabs->setTabsClosable(true);
 	mUi->tabs->setMovable(true);
-	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(changeMiniMapSource(int)));
+	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(currentTabChanged(int)));
 	connect(mUi->tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 }
 
