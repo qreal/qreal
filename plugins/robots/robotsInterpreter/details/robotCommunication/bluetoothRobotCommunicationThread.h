@@ -49,10 +49,11 @@ private:
 	static int const timeout = 5000;
 
 	QextSerialPort *mPort;
-	QTimer mTimer;
+
+	/// Timer that sends messages to robot to check that connection is still alive
+	QTimer mKeepAliveTimer;
 
 private slots:
-
 	/// Checks if robot is connected
 	void checkForConnection();
 };
