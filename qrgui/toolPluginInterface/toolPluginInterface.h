@@ -63,8 +63,15 @@ public:
 	virtual void closeNeededWidget()
 	{
 	}
+
+	/// Event that is sent to a plugin by GUI when user switches or closes a tab
+	/// @param rootElementId Id of the root element of a new tab, whose diagram is shown
+	virtual void activeTabChanged(Id const & rootElementId)
+	{
+		Q_UNUSED(rootElementId);
+	}
 };
 
 }
 
-Q_DECLARE_INTERFACE(qReal::ToolPluginInterface, "ru.tepkom.QReal.ToolPluginInterface/0.1")
+Q_DECLARE_INTERFACE(qReal::ToolPluginInterface, "ru.tepkom.QReal.ToolPluginInterface/0.2")

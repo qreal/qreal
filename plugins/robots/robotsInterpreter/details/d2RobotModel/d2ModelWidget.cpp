@@ -739,3 +739,13 @@ void D2ModelWidget::setSensorVisible(inputPort::InputPortEnum port, bool isVisib
 		mSensors[port]->setVisible(isVisible);
 	}
 }
+
+void D2ModelWidget::enableRunStopButtons()
+{
+	mUi->runButton->setEnabled(true);
+}
+
+void D2ModelWidget::disableRunStopButtons()
+{
+	mUi->runButton->setEnabled(false);
+}
