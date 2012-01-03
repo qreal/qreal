@@ -111,7 +111,7 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 
 Id EditorViewMViface::rootId()
 {
-	return mGraphicalAssistApi->idByIndex(rootIndex());
+	return mGraphicalAssistApi ? mGraphicalAssistApi->idByIndex(rootIndex()) : Id();
 }
 
 void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int end)

@@ -1,10 +1,11 @@
 #include "editorViewScene.h"
 #include "math.h"
 
-#include <QGraphicsTextItem>
-#include <QtGui>
-#include <QtCore/QDebug>
-#include <QGraphicsItem>
+#include <QtGui/QGraphicsTextItem>
+#include <QtGui/QGraphicsItem>
+#include <QtGui/QGraphicsDropShadowEffect>
+#include <QtGui/QMenu>
+#include <QtGui/QMessageBox>
 
 #include "editorViewMVIface.h"
 #include "editorView.h"
@@ -13,7 +14,7 @@
 using namespace qReal;
 
 EditorViewScene::EditorViewScene(QObject *parent)
-		:  QGraphicsScene(parent)
+		: QGraphicsScene(parent)
 		, mLastCreatedWithEdge(NULL)
 		, mCopiedNode(NULL)
 		, mRightButtonPressed(false)
@@ -80,9 +81,17 @@ void EditorViewScene::printElementsOfRootDiagram()
 
 void EditorViewScene::initMouseMoveManager()
 {
-	if (!mMVIface || !mMVIface->graphicalAssistApi())
+	if (!mMVIface || !mMVIface->graphicalAssistApi()) {
 		return;
-	qReal::Id diagram = mMVIface->graphicalAssistApi()->idByIndex(mWindow->rootIndex());
+	}
+
+	qReal::Id const diagram = mMVIface->rootId();
+
+	if (!mainWindow() || mainWindow()->activeDiagram() != diagram) {
+		// If it is not our diagram, do nothing. We will init mouse manager when our diagram will be activated
+		return;
+	}
+
 	if (diagram == Id()) {
 		// Root diagram is not set, for example, current tab is disabled. No need
 		// to do anything with mouse manager.

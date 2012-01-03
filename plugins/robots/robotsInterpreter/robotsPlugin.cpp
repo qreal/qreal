@@ -8,6 +8,8 @@ Q_EXPORT_PLUGIN2(robotsPlugin, qReal::interpreters::robots::RobotsPlugin)
 using namespace qReal;
 using namespace interpreters::robots;
 
+const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
+
 RobotsPlugin::RobotsPlugin()
 		: mMainWindowInterpretersInterface(NULL)
 		, m2dModelAction(NULL)
@@ -21,11 +23,55 @@ RobotsPlugin::RobotsPlugin()
 	QApplication::installTranslator(mAppTranslator);
 
 	mRobotSettingsPage = new PreferencesRobotSettingsPage();
+
+	initActions();
+
 }
 
 RobotsPlugin::~RobotsPlugin()
 {
 	delete mAppTranslator;
+}
+
+void RobotsPlugin::initActions()
+{
+	m2dModelAction = new QAction(QObject::tr("2d model"), NULL);
+	ActionInfo d2ModelActionInfo(m2dModelAction, "interpreters", "tools");
+	QObject::connect(m2dModelAction, SIGNAL(triggered()), this, SLOT(show2dModel()));
+
+	mRunAction = new QAction(QObject::tr("Run"), NULL);
+	ActionInfo runActionInfo(mRunAction, "interpreters", "tools");
+	QObject::connect(mRunAction, SIGNAL(triggered()), &mInterpreter, SLOT(interpret()));
+
+	mStopAction = new QAction(QObject::tr("Stop"), NULL);
+	ActionInfo stopActionInfo(mStopAction, "interpreters", "tools");
+	QObject::connect(mStopAction, SIGNAL(triggered()), &mInterpreter, SLOT(stop()));
+
+	mStopRobotAction = new QAction(QObject::tr("Stop robot"), NULL);
+	ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
+	QObject::connect(mStopRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(stopRobot()));
+
+	mConnectToRobotAction = new QAction(QObject::tr("Connect to robot"), NULL);
+	mConnectToRobotAction->setCheckable(true);
+	ActionInfo connectToRobotActionInfo(mConnectToRobotAction, "interpreters", "tools");
+	mInterpreter.setConnectRobotAction(mConnectToRobotAction);
+	QObject::connect(mConnectToRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(connectToRobot()));
+
+	mRobotSettingsAction = new QAction(QObject::tr("Robot settings"), NULL);
+	ActionInfo robotSettingsActionInfo(mRobotSettingsAction, "interpreters", "tools");
+	QObject::connect(mRobotSettingsAction, SIGNAL(triggered()), this, SLOT(showRobotSettings()));
+
+	mWatchListAction = new QAction(QObject::tr("Show watch list"), NULL);
+	ActionInfo watchListActionInfo(mWatchListAction, "interpreters", "tools");
+	QObject::connect(mWatchListAction, SIGNAL(triggered()), &mInterpreter, SLOT(showWatchList()));
+
+	QAction *separator = new QAction(NULL);
+	ActionInfo separatorActionInfo(separator, "interpreters", "tools");
+	separator->setSeparator(true);
+
+	mActionInfos << d2ModelActionInfo << runActionInfo << stopActionInfo
+			<< stopRobotActionInfo << connectToRobotActionInfo
+			<< separatorActionInfo << robotSettingsActionInfo << separatorActionInfo << watchListActionInfo;
 }
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
@@ -45,45 +91,8 @@ qReal::Customizer* RobotsPlugin::customizationInterface()
 
 QList<ActionInfo> RobotsPlugin::actions()
 {
-	m2dModelAction = new QAction(QObject::tr("2d model"), NULL);
-	ActionInfo d2ModelActionInfo(m2dModelAction, "interpreters", "tools");
-	QObject::connect(m2dModelAction, SIGNAL(triggered()), this, SLOT(show2dModel()));
-
-	mRunAction = new QAction(QObject::tr("Run"), NULL);
-	ActionInfo runActionInfo(mRunAction, "interpreters", "tools");
-	QObject::connect(mRunAction, SIGNAL(triggered()), &mInterpreter, SLOT(interpret()));
-
-	mStopAction = new QAction(QObject::tr("Stop"), NULL);
-	ActionInfo stopActionInfo(mStopAction, "interpreters", "tools");
-	QObject::connect(mStopAction, SIGNAL(triggered()), &mInterpreter, SLOT(stop()));
-
-	QAction *stopRobotAction = new QAction(QObject::tr("Stop robot"), NULL);
-	ActionInfo stopRobotActionInfo(stopRobotAction, "interpreters", "tools");
-	QObject::connect(stopRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(stopRobot()));
-
-	QAction *connectToRobotAction = new QAction(QObject::tr("Connect to robot"), NULL);
-	connectToRobotAction->setCheckable(true);
-	ActionInfo connectToRobotActionInfo(connectToRobotAction, "interpreters", "tools");
-	mInterpreter.setConnectRobotAction(connectToRobotAction);
-	QObject::connect(connectToRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(connectToRobot()));
-
-	QAction *robotSettingsAction = new QAction(QObject::tr("Robot settings"), NULL);
-	ActionInfo robotSettingsActionInfo(robotSettingsAction, "interpreters", "tools");
-	QObject::connect(robotSettingsAction, SIGNAL(triggered()), this, SLOT(showRobotSettings()));
-
-	QAction *watchListAction = new QAction(QObject::tr("Show watch list"), NULL);
-	ActionInfo watchListActionInfo(watchListAction, "interpreters", "tools");
-	QObject::connect(watchListAction, SIGNAL(triggered()), &mInterpreter, SLOT(showWatchList()));
-
-	QAction *separator = new QAction(NULL);
-	ActionInfo separatorActionInfo(separator, "interpreters", "tools");
-	separator->setSeparator(true);
-
 	updateSettings();
-
-	return QList<ActionInfo>() << d2ModelActionInfo << runActionInfo << stopActionInfo
-			<< stopRobotActionInfo << connectToRobotActionInfo
-			<< separatorActionInfo << robotSettingsActionInfo << separatorActionInfo << watchListActionInfo;
+	return mActionInfos;
 }
 
 QPair<QString, PreferencesPage *> RobotsPlugin::preferencesPage()
@@ -113,10 +122,11 @@ void RobotsPlugin::updateSettings()
 			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt())
 	);
 	m2dModelAction->setVisible(typeOfRobotModel == robotModelType::unreal);
-	if (typeOfRobotModel == robotModelType::unreal)
+	if (typeOfRobotModel == robotModelType::unreal) {
 		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopAction);
-	else
+	} else {
 		mInterpreter.showD2ModelWidget(false);
+	}
 
 	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication", "bluetooth").toString();
 	QString const portName = SettingsManager::value("bluetoothPortName", "").toString();
@@ -127,4 +137,24 @@ void RobotsPlugin::updateSettings()
 void RobotsPlugin::closeNeededWidget()
 {
 	mInterpreter.closeD2ModelWidget();
+}
+
+void RobotsPlugin::activeTabChanged(Id const & rootElementId)
+{
+	bool const enabled = rootElementId.type() == robotDiagramType;
+	foreach (ActionInfo const &actionInfo, mActionInfos) {
+		if (needToDisableWhenNotRobotsDiagram(actionInfo.action())) {
+			actionInfo.action()->setEnabled(enabled);
+		}
+	}
+	if (enabled) {
+		mInterpreter.enableD2ModelWidgetRunStopButtons();
+	} else {
+		mInterpreter.disableD2ModelWidgetRunStopButtons();
+	}
+}
+
+bool RobotsPlugin::needToDisableWhenNotRobotsDiagram(QAction const * const action) const
+{
+	return action != mRobotSettingsAction && action != mConnectToRobotAction && action != m2dModelAction;
 }
