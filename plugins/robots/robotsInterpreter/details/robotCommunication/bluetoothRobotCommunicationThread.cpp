@@ -2,7 +2,6 @@
 
 #include <QtCore/QMetaType>
 #include <time.h>
-#include <QtCore/QTimer>
 
 #include "../../thirdparty/qextserialport/src/qextserialport.h"
 #include "../tracer.h"
@@ -68,9 +67,8 @@ void BluetoothRobotCommunicationThread::connect(QString const &portName)
 
 	emit connected(response != QByteArray());
 
-	QTimer *timer = new QTimer(this);
-	QObject::connect(timer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
-	timer->start(1000);
+	QObject::connect(&mTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
+	mTimer.start(1000);
 }
 
 void BluetoothRobotCommunicationThread::reconnect(QString const &portName)
@@ -84,6 +82,7 @@ void BluetoothRobotCommunicationThread::disconnect()
 		mPort->close();
 		delete mPort;
 		mPort = NULL;
+		mTimer.stop();
 	}
 	emit disconnected();
 }

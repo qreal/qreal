@@ -8,8 +8,8 @@
 using namespace qReal::interpreters::robots;
 
 RobotCommunication::RobotCommunication(QString const &portName)
-	: mPortName(portName)
-	, mRobotCommunicationThreadObject(NULL)
+		: mPortName(portName)
+		, mRobotCommunicationThreadObject(NULL)
 {
 
 }
@@ -66,6 +66,8 @@ void RobotCommunication::responseSlot(QObject *addressee, QByteArray const &buff
 
 void RobotCommunication::setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication)
 {
+	mRobotCommunicationThread.quit();
+	mRobotCommunicationThread.wait();
 	delete mRobotCommunicationThreadObject;
 	mRobotCommunicationThreadObject = robotCommunication;
 	mRobotCommunicationThreadObject->moveToThread(&mRobotCommunicationThread);
