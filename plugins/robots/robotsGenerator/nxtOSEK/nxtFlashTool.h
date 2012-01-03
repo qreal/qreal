@@ -1,22 +1,22 @@
 #pragma once
 
 #include <QtCore/QProcess>
-#include "errorReporter.h"
 
-namespace qReal {
-namespace gui {
+#include "../../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
-/// Class that handles flashing NXT robot via USB. Should be moved to Robots plugin in new architecture
+namespace robots {
+namespace generator {
 
+/// Class that handles flashing NXT robot via USB.
 class NxtFlashTool : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit NxtFlashTool(ErrorReporter *errorReporter);
+	explicit NxtFlashTool(qReal::ErrorReporterInterface *errorReporter);
 
-signals:
-	void showErrors(gui::ErrorReporter * const errorReporter);
+//signals:
+//	void showErrors(gui::ErrorReporter * const errorReporter);
 
 public slots:
 	void flashRobot();
@@ -39,7 +39,7 @@ private:
 		done
 	};
 
-	ErrorReporter *mErrorReporter;
+	qReal::ErrorReporterInterface *mErrorReporter;
 	QProcess mFlashProcess;
 	QProcess mUploadProcess;
 

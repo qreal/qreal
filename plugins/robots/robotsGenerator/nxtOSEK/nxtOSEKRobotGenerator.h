@@ -5,26 +5,25 @@
 #include <QMap>
 #include <QStack>
 
-#include "../../../qrkernel/ids.h"
-#include "../../mainwindow/errorReporter.h"
-#include "../../../qrrepo/repoApi.h"
+#include "../../../../qrkernel/ids.h"
+#include "../../../../qrrepo/repoApi.h"
+#include "../../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 #include "smartLine.h"
 
-namespace qReal {
-namespace generators {
+namespace robots {
+namespace generator {
 
-//! Class for generate a nxtOSEK code from Robot Language Diagram.
-
+/// Class for generate a nxtOSEK code from Robot Language Diagram.
 class NxtOSEKRobotGenerator {
 public:
-	explicit NxtOSEKRobotGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath = "");
-	explicit NxtOSEKRobotGenerator(QString const &pathToRepo, QString const &destinationPath = "");
+	NxtOSEKRobotGenerator(qrRepo::RepoControlInterface &api, qReal::ErrorReporterInterface &errorReporter, QString const &destinationPath = "");
+	NxtOSEKRobotGenerator(QString const &pathToRepo, qReal::ErrorReporterInterface &errorReporter, QString const &destinationPath = "");
 
 	~NxtOSEKRobotGenerator();
 
-	//! main method that starts a code generation.
-	gui::ErrorReporter &generate();
+	/// main method that starts a code generation.
+	void generate();
 
 private:
 	//! AbstractElementGenerator - robot diagram element generator abstraction.
@@ -159,7 +158,8 @@ private:
 	QList<SmartLine> mVariables;
 	int mVariablePlaceInGenStrSet;
 
-	gui::ErrorReporter mErrorReporter;
+	qReal::ErrorReporterInterface &mErrorReporter;
 };
+
 }
 }

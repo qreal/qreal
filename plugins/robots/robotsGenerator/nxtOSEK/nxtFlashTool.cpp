@@ -1,10 +1,13 @@
 #include "nxtFlashTool.h"
 
-using namespace qReal;
-using namespace gui;
+#include <QtCore/QCoreApplication>
 
-NxtFlashTool::NxtFlashTool(ErrorReporter *errorReporter)
-	: mErrorReporter(errorReporter), mUploadState(done)
+using namespace qReal;
+using namespace robots::generator;
+
+NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
+		: mErrorReporter(errorReporter)
+		, mUploadState(done)
 {
 	QProcessEnvironment environment(QProcessEnvironment::systemEnvironment());
 	environment.insert("QREALDIR", qApp->applicationDirPath());
@@ -37,14 +40,12 @@ void NxtFlashTool::flashRobot()
 #endif
 
 	mErrorReporter->addInformation(tr("Firmware flash started. Please don't disconnect robot during the process"));
-	emit showErrors(mErrorReporter);
 }
 
 void NxtFlashTool::error(QProcess::ProcessError error)
 {
 	qDebug() << "error:" << error;
 	mErrorReporter->addInformation(tr("Some error occured. Make sure you are running QReal with superuser privileges"));
-	emit showErrors(mErrorReporter);
 }
 
 void NxtFlashTool::nxtFlashingFinished(int exitCode, QProcess::ExitStatus exitStatus)
@@ -57,8 +58,6 @@ void NxtFlashTool::nxtFlashingFinished(int exitCode, QProcess::ExitStatus exitSt
 		mErrorReporter->addError(tr("flash.sh not found. Make sure it is present in QReal installation directory"));
 	else if (exitCode == 139)
 		mErrorReporter->addError(tr("QReal requires superuser privileges to flash NXT robot"));
-
-	emit showErrors(mErrorReporter);
 }
 
 void NxtFlashTool::readNxtFlashData()
@@ -76,8 +75,6 @@ void NxtFlashTool::readNxtFlashData()
 		else if (error == "Firmware flash complete.")
 			mErrorReporter->addInformation(tr("Firmware flash complete!"));
 	}
-
-	emit showErrors(mErrorReporter);
 }
 
 void NxtFlashTool::uploadProgram()
@@ -91,7 +88,6 @@ void NxtFlashTool::uploadProgram()
 #endif
 
 	mErrorReporter->addInformation(tr("Uploading program started. Please don't disconnect robot during the process"));
-	emit showErrors(mErrorReporter);
 }
 
 
@@ -103,8 +99,6 @@ void NxtFlashTool::nxtUploadingFinished(int exitCode, QProcess::ExitStatus exitS
 		mErrorReporter->addError(tr("Uploading failed. Make sure that X-server allows root to run GUI applications"));
 	else if (exitCode == 139)
 		mErrorReporter->addError(tr("QReal requires superuser privileges to flash NXT robot"));
-
-	emit showErrors(mErrorReporter);
 }
 
 void NxtFlashTool::readNxtUploadData()
@@ -141,7 +135,5 @@ void NxtFlashTool::readNxtUploadData()
 			break;
 		}
 	}
-	qDebug() << mUploadState;
-
-	emit showErrors(mErrorReporter);
+	qDebug() << "NxtFlashTool::readNxtUploadData" << mUploadState;
 }

@@ -1,10 +1,10 @@
 #pragma once
 
 #include <QString>
-#include "../../../qrkernel/ids.h"
+#include "../../../../qrkernel/ids.h"
 
-namespace qReal {
-namespace generators {
+namespace robots {
+namespace generator {
 
 //! Class for representing code line generated from Robot Language Diagram.
 /*!
@@ -20,7 +20,7 @@ public:
 		increaseDecrease //!< decreases indent only for this line
 	};
 
-	SmartLine(QString text, qReal::Id elementId, IndentChangeType indentLevelChange = withoutChange);
+	SmartLine(QString const &text, qReal::Id const &elementId, IndentChangeType indentLevelChange = withoutChange);
 
 	QString text() const;
 	qReal::Id elementId() const;
