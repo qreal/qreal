@@ -1,40 +1,41 @@
 #include "hascolParser.h"
 
-#include "../../pluginManager/editorManager.h"
-
 #include <QtCore/QDebug>
 #include <QtCore/QUuid>
-#include <QtXml/QDomDocument>
 #include <QtCore/QProcess>
+#include <QtCore/QVariant>
+#include <QtCore/QPointF>
+#include <QtGui/QPolygon>
+#include <QtXml/QDomDocument>
 
 #include "math.h"
 
 #include "../../../qrutils/xmlUtils.h"
 
 using namespace qReal;
-using namespace parsers;
-using gui::ErrorReporter;
+using namespace hascol;
 
-HascolParser::HascolParser(qrRepo::LogicalRepoApi &api, EditorManager const &editorManager)
-	: mApi(api), mEditorManager(editorManager), mErrorReporter()
+HascolParser::HascolParser(qrRepo::LogicalRepoApi &api, qReal::ErrorReporterInterface &errorReporter)
+		: mApi(api)
+		, mErrorReporter(errorReporter)
 {
 }
 
-ErrorReporter &HascolParser::parse(QStringList const &files)
+void HascolParser::parse(QStringList const &files)
 {
-	mImportedPortMappingDiagramId = initDiagram("Imported port mapping", "HascolPortMapping_HascolPortMappingDiagram");
-	mImportedStructureDiagramId = initDiagram("Imported structure", "HascolStructure_HascolStructureDiagram");
+	mImportedPortMappingDiagramId = initDiagram("Imported port mapping", "HascolPortMappingDiagram");
+	mImportedStructureDiagramId = initDiagram("Imported structure", "HascolStructureDiagram");
 	mApi.setProperty(mImportedStructureDiagramId, "output directory", "");
 
-	foreach (QString file, files) {
+	foreach (QString const &file, files) {
 		preprocessFile(file);
 		parseFile(file + ".xml");
 	}
 
-	doPortMappingLayout();
-	doStructureLayout();
-
-	return mErrorReporter;
+	// Commented out --- they have no meaning in logical model anyway
+	// TODO: Change layouts for a graphical model
+//	doPortMappingLayout();
+//	doStructureLayout();
 }
 
 void HascolParser::preprocessFile(QString const &fileName)
@@ -50,18 +51,21 @@ void HascolParser::preprocessFile(QString const &fileName)
 	preprocessor.start("hascolStructur2xml.byte.exe", args);
 	preprocessor.waitForFinished();
 
-	if (preprocessor.exitStatus() == QProcess::CrashExit)
-		mErrorReporter.addError("Hascol preprocessor crashed.");
-	else if (preprocessor.exitCode() != 0)
-		mErrorReporter.addError(QString("Hascol preprocessor finished with error code %1").arg(preprocessor.exitCode()));
+	if (preprocessor.exitStatus() == QProcess::CrashExit) {
+		mErrorReporter.addError(QObject::tr("Hascol preprocessor crashed."));
+	} else if (preprocessor.exitCode() != 0) {
+		mErrorReporter.addError(QString(QObject::tr("Hascol preprocessor finished with error code %1")).arg(preprocessor.exitCode()));
+	}
 
-	mErrorReporter.addInformation(QString("Preprocessed file %1").arg(fileName));
+	mErrorReporter.addInformation(QString(QObject::tr("Preprocessed file %1")).arg(fileName));
 	QByteArray standardOutput = preprocessor.readAllStandardOutput();
-	if (!standardOutput.isEmpty())
-		mErrorReporter.addInformation(QString("Output stream: %1").arg(standardOutput.data()));
+	if (!standardOutput.isEmpty()) {
+		mErrorReporter.addInformation(QString(QObject::tr("Output stream: %1")).arg(standardOutput.data()));
+	}
 	QByteArray standardError = preprocessor.readAllStandardError();
-	if (!standardError.isEmpty())
-		mErrorReporter.addInformation(QString("Error stream: %1").arg(standardError.data()));
+	if (!standardError.isEmpty()) {
+		mErrorReporter.addInformation(QString(QObject::tr("Error stream: %1")).arg(standardError.data()));
+	}
 }
 
 Id HascolParser::initDiagram(QString const &diagramName, QString const &diagramType)
@@ -69,7 +73,7 @@ Id HascolParser::initDiagram(QString const &diagramName, QString const &diagramT
 	Id result;
 	Id const diagramTypeId = Id("HascolMetamodel", "HascolPortMapping", diagramType);
 
-	foreach(Id element, mApi.children(Id::rootId())) {
+	foreach(Id const &element, mApi.children(Id::rootId())) {
 		if (element.type() == diagramTypeId && mApi.name(element) == diagramName) {
 			result = element;
 			// full exterminatus
@@ -78,8 +82,9 @@ Id HascolParser::initDiagram(QString const &diagramName, QString const &diagramT
 		}
 	}
 
-	if (result == Id())
+	if (result == Id()) {
 		result = addElement(Id::rootId(), diagramTypeId, diagramName);
+	}
 	return result;
 }
 
@@ -101,16 +106,16 @@ Id HascolParser::addElement(Id const &parent, Id const &elementType, QString con
 	return element;
 }
 
-void HascolParser::parseFile(QString const& fileName)
+void HascolParser::parseFile(QString const &fileName)
 {
-	QDomDocument doc = utils::xmlUtils::loadDocument(fileName);
+	QDomDocument const doc = utils::xmlUtils::loadDocument(fileName);
 
-	QDomNodeList list = doc.elementsByTagName("md");
+	QDomNodeList const list = doc.elementsByTagName("md");
 	for (unsigned i = 0; i < list.length(); ++i) {
-		QDomElement md = list.at(i).toElement();
-		QDomNodeList children = md.childNodes();
-		for(unsigned j = 0; j < children.length(); ++j) {
-			QDomElement child = children.at(j).toElement();
+		QDomElement const md = list.at(i).toElement();
+		QDomNodeList const children = md.childNodes();
+		for (unsigned j = 0; j < children.length(); ++j) {
+			QDomElement const child = children.at(j).toElement();
 			if (child.isElement()) {
 				parseProcess(child.toElement());
 			}
@@ -142,44 +147,44 @@ void HascolParser::parseProcess(QDomElement const &element)
 	bool const functor = element.attribute("isFunctor", "0") == "1";
 
 	Id const portMappingBaseId = Id("HascolMetamodel", "HascolPortMapping");
-	Id const structureBaseId = Id("HascolMetamodel", "HascolPortMapping");
+	Id const structureBaseId = Id("HascolMetamodel", "HascolStructure");
 
-	Id portMappingElementType = functor ? Id(portMappingBaseId, "HascolPortMapping_FunctorInstance")
-		: Id(portMappingBaseId, "HascolPortMapping_ProcessInstance");
+	Id const portMappingElementType = functor ? Id(portMappingBaseId, "FunctorInstance")
+			: Id(portMappingBaseId, "ProcessInstance");
 
-	Id structureElementType = functor ? Id(structureBaseId, "HascolStructure_Functor")
-		: Id(structureBaseId, "HascolStructure_Process");
+	Id const structureElementType = functor ? Id(structureBaseId, "Functor")
+			: Id(structureBaseId, "Process");
 
-	Id processOnAPortMap = addElement(mImportedPortMappingDiagramId, portMappingElementType, "a" + name + " : " + name);
-	Id processOnAStructure = addElement(mImportedStructureDiagramId, structureElementType, name);
+	Id const processOnAPortMap = addElement(mImportedPortMappingDiagramId, portMappingElementType, "a" + name + " : " + name);
+	Id const processOnAStructure = addElement(mImportedStructureDiagramId, structureElementType, name);
 	initClassifierFields(processOnAStructure);
 
-	QDomNodeList insList = element.elementsByTagName("ins");
+	QDomNodeList const insList = element.elementsByTagName("ins");
 	for (unsigned i = 0; i < insList.length(); ++i) {
-		QDomElement ins = insList.at(i).toElement();
+		QDomElement const ins = insList.at(i).toElement();
 		parsePorts(ins.childNodes(), "in", processOnAPortMap, processOnAStructure);
 	}
 
-	QDomNodeList outsList = element.elementsByTagName("outs");
+	QDomNodeList const outsList = element.elementsByTagName("outs");
 	for (unsigned i = 0; i < outsList.length(); ++i) {
-		QDomElement outs = outsList.at(i).toElement();
+		QDomElement const outs = outsList.at(i).toElement();
 		parsePorts(outs.childNodes(), "out", processOnAPortMap, processOnAStructure);
 	}
 }
 
 void HascolParser::parsePorts(QDomNodeList const &ports, QString const &direction
-	, Id const &parentOnAPortMap, Id const &parentOnAStructure)
+		, Id const &parentOnAPortMap, Id const &parentOnAStructure)
 {
 	for (unsigned i = 0; i < ports.length(); ++i) {
 		Id const portMappingBaseId = Id("HascolMetamodel", "HascolPortMapping");
 		Id const structureBaseId = Id("HascolMetamodel", "HascolPortMapping");
 
-		QDomElement port =  ports.at(i).toElement();
+		QDomElement const port =  ports.at(i).toElement();
 		QString portName = port.nodeName();
 		QString parameters;
-		QDomNamedNodeMap attrs = port.attributes();
+		QDomNamedNodeMap const attrs = port.attributes();
 		for (int i = 0; i < attrs.count(); ++i) {
-			QDomAttr param = attrs.item(i).toAttr();
+			QDomAttr const param = attrs.item(i).toAttr();
 			QString paramValue = param.value();
 			// removing explicit qualification for bincompl since it's included automatically
 			paramValue = paramValue.remove("bincompl::");
@@ -188,14 +193,14 @@ void HascolParser::parsePorts(QDomNodeList const &ports, QString const &directio
 		parameters.chop(2);
 
 		// ports should be without arguments here
-		Id attrType = Id(portMappingBaseId, "HascolPortMapping_Port");
-		Id portId = addElement(parentOnAPortMap, attrType, portName);
+		Id const attrType = Id(portMappingBaseId, "HascolPortMapping_Port");
+		Id const portId = addElement(parentOnAPortMap, attrType, portName);
 		mApi.setProperty(portId, "direction", direction);
 
 		portName += "(" + parameters + ")";
 
-		Id structureAttrType = Id(structureBaseId, "HascolStructure_ProcessOperation");
-		Id plugId = addElement(parentOnAStructure, structureAttrType, portName);
+		Id const structureAttrType = Id(structureBaseId, "ProcessOperation");
+		Id const plugId = addElement(parentOnAStructure, structureAttrType, portName);
 		mApi.setProperty(plugId, "direction", direction);
 		initClassifierFields(plugId);
 	}
@@ -203,10 +208,10 @@ void HascolParser::parsePorts(QDomNodeList const &ports, QString const &directio
 
 void HascolParser::doLayout(Id const &diagram, unsigned cellWidth, unsigned cellHeight)
 {
-	unsigned rowWidth = ceil(sqrt(static_cast<qreal>(mApi.children(diagram).count())));
+	unsigned const rowWidth = ceil(sqrt(static_cast<qreal>(mApi.children(diagram).count())));
 	unsigned currentRow = 0;
 	unsigned currentColumn = 0;
-	foreach(Id element, mApi.children(diagram)) {
+	foreach(Id const &element, mApi.children(diagram)) {
 		mApi.setProperty(element, "position", QPointF(currentColumn * cellWidth, currentRow * cellHeight));
 		++currentColumn;
 		if (currentColumn >= rowWidth) {
@@ -219,25 +224,27 @@ void HascolParser::doLayout(Id const &diagram, unsigned cellWidth, unsigned cell
 void HascolParser::doPortMappingLayout()
 {
 	doLayout(mImportedPortMappingDiagramId, 300, 150);
-	foreach(Id element, mApi.children(mImportedPortMappingDiagramId))
+	foreach(Id const &element, mApi.children(mImportedPortMappingDiagramId)) {
 		doPortsLayout(element);
+	}
 }
 
 void HascolParser::doStructureLayout()
 {
 	doLayout(mImportedStructureDiagramId, 300, 250);
-	foreach(Id element, mApi.children(mImportedStructureDiagramId))
+	foreach(Id const &element, mApi.children(mImportedStructureDiagramId)) {
 		doPlugsLayout(element);
+	}
 }
 
 void HascolParser::doPlugsLayout(Id const &parent)
 {
 	unsigned const startY = 50;
 
-	double step = 25;
+	double const step = 25;
 	unsigned current = 1;
 
-	foreach(Id element, mApi.children(parent)) {
+	foreach(Id const &element, mApi.children(parent)) {
 		mApi.setProperty(element, "position", QPointF(10, startY + step * current));
 		++current;
 	}
@@ -247,12 +254,13 @@ void HascolParser::doPortsLayout(Id const &parent)
 {
 	unsigned inputPorts = 0;
 	unsigned outputPorts = 0;
-	foreach(Id element, mApi.children(parent)) {
+	foreach(Id const &element, mApi.children(parent)) {
 		if (mApi.hasProperty(element, "direction")) {
-			if (mApi.stringProperty(element, "direction") == "in")
+			if (mApi.stringProperty(element, "direction") == "in") {
 				++inputPorts;
-			else if (mApi.stringProperty(element, "direction") == "out")
+			} else if (mApi.stringProperty(element, "direction") == "out") {
 				++outputPorts;
+			}
 		}
 	}
 
@@ -265,10 +273,10 @@ void HascolParser::doLayoutForPortsType(Id const &parent, unsigned margin, QStri
 	unsigned const startY = 0;
 	unsigned const endY = 100;
 
-	double step = (endY - startY) / (count + 1);
+	double const step = (endY - startY) / (count + 1);
 	unsigned current = 1;
 
-	foreach(Id element, mApi.children(parent)) {
+	foreach(Id const &element, mApi.children(parent)) {
 		if (mApi.hasProperty(element, "direction")) {
 			if (mApi.stringProperty(element, "direction") == direction) {
 				mApi.setProperty(element, "position", QPointF(margin, startY + step * current));

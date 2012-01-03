@@ -3,28 +3,34 @@
 #include <QtCore/QObject>
 #include <QDir>
 
-#include "../../../qrkernel/exception/exception.h"
+#include "../../../../qrkernel/exception/exception.h"
+#include "../../../../qrkernel/settingsManager.h"
 #include "nxtOSEKRobotGenerator.h"
 
-
-#include <QDebug>
-
 using namespace qReal;
-using namespace generators;
+using namespace robots::generator;
 
-NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath)
-	:  mDestinationPath(destinationPath)
+NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(qrRepo::RepoControlInterface &api
+		, qReal::ErrorReporterInterface &errorReporter
+		, QString const &destinationPath
+		)
+		: mDestinationPath(destinationPath)
+		, mErrorReporter(errorReporter)
 {
-		mIsNeedToDeleteMApi = false;
-		mApi = dynamic_cast<qrRepo::RepoApi *>(&api);
+	mIsNeedToDeleteMApi = false;
+	mApi = dynamic_cast<qrRepo::RepoApi *>(&api);  // TODO: ???
 }
 
-NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo, QString const &destinationPath)
-	:mDestinationPath(SettingsManager::value("temp", "").toString())
+NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo
+		, qReal::ErrorReporterInterface &errorReporter
+		, QString const &destinationPath
+		)
+		: mDestinationPath(SettingsManager::value("temp", "").toString())
+		, mErrorReporter(errorReporter)
 {
 	Q_UNUSED(destinationPath)
-		mIsNeedToDeleteMApi = true;
-		mApi = new qrRepo::RepoApi(pathToRepo);
+	mIsNeedToDeleteMApi = true;
+	mApi = new qrRepo::RepoApi(pathToRepo);
 }
 
 NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator()
@@ -40,7 +46,7 @@ void NxtOSEKRobotGenerator::addToGeneratedStringSetVariableInit() {
 	}
 }
 
-gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
+void NxtOSEKRobotGenerator::generate()
 {
 	IdList initialNodes = mApi->elementsByType("InitialNode");
 
@@ -93,10 +99,10 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 		}
 
 		/* Generate C file */
-		QFile templateCFile(":/generators/nxtOSEK/templates/template.c");
+		QFile templateCFile(":/nxtOSEK/templates/template.c");
 		if (!templateCFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 			mErrorReporter.addError("cannot open \"" + templateCFile.fileName() + "\"");
-			return mErrorReporter;
+			return;
 		}
 
 		QTextStream templateCStream(&templateCFile);
@@ -109,7 +115,7 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 		QFile resultCFile(projectDir + "/" + projectName + ".c");
 		if (!resultCFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
 			mErrorReporter.addError("cannot open \"" + resultCFile.fileName() + "\"");
-			return mErrorReporter;
+			return;
 		}
 
 		QTextStream outC(&resultCFile);
@@ -119,16 +125,16 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 		/**/
 
 		/* Generate OIL file */
-		QFile templateOILFile(":/generators/nxtOSEK/templates/template.oil");
+		QFile templateOILFile(":/nxtOSEK/templates/template.oil");
 		if (!templateOILFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 			mErrorReporter.addError("cannot open \"" + templateOILFile.fileName() + "\"");
-			return mErrorReporter;
+			return;
 		}
 
 		QFile resultOILFile(projectDir + "/" + projectName + ".oil");
 		if (!resultOILFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
 			mErrorReporter.addError("cannot open \"" + resultOILFile.fileName() + "\"");
-			return mErrorReporter;
+			return;
 		}
 
 		QTextStream outOIL(&resultOILFile);
@@ -139,16 +145,16 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 		resultOILFile.close();
 
 		/* Generate makefile */
-		QFile templateMakeFile(":/generators/nxtOSEK/templates/template.makefile");
+		QFile templateMakeFile(":/nxtOSEK/templates/template.makefile");
 		if (!templateMakeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 			mErrorReporter.addError("cannot open \"" + templateMakeFile.fileName() + "\"");
-			return mErrorReporter;
+			return;
 		}
 
 		QFile resultMakeFile(projectDir + "/makefile");
 		if (!resultMakeFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
 			mErrorReporter.addError("cannot open \"" + resultMakeFile.fileName() + "\"");
-			return mErrorReporter;
+			return;
 		}
 
 		QTextStream outMake(&resultMakeFile);
@@ -157,12 +163,10 @@ gui::ErrorReporter &NxtOSEKRobotGenerator::generate()
 
 		outMake.flush();
 		resultMakeFile.close();
-		/**/
 
 		curInitialNodeNumber++;
 	}
-
-	return mErrorReporter;
+	mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"));
 }
 
 NxtOSEKRobotGenerator::AbstractElementGenerator::AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen,

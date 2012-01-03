@@ -36,11 +36,8 @@
 #include "../dialogs/checkoutDialog.h"
 #include "../generators/xmi/xmiHandler.h"
 #include "../generators/java/javaHandler.h"
-#include "../parsers/hascol/hascolParser.h"
 #include "../pluginManager/listenerManager.h"
-#include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
-#include "../generators/nxtOSEK/nxtOSEKRobotGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../../qrkernel/settingsManager.h"
 
@@ -65,7 +62,6 @@ MainWindow::MainWindow()
 		, mIsFullscreen(false)
 		, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
 		, mPreferencesDialog(this)
-		, mNxtToolsPresent(false)
 		, mHelpBrowser(NULL)
 		, mIsNewProject(true)
 		, mUnsavedProjectIndicator(false)
@@ -120,14 +116,13 @@ MainWindow::MainWindow()
 
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
-	if (!dir.cd("temp"))
+	if (!dir.cd(mTempDir))
 		QDir().mkdir(mTempDir);
 
 	QFileInfo saveFile(SettingsManager::value("saveFile", mSaveFile).toString());
 
 	if (saveFile.exists())
 		mSaveFile = saveFile.absoluteFilePath();
-
 
 	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
 
@@ -167,11 +162,7 @@ MainWindow::MainWindow()
 	initExplorers();
 	initDebugger();
 
-	mFlashTool = new gui::NxtFlashTool(mErrorReporter);
-	connect(mFlashTool, SIGNAL(showErrors(gui::ErrorReporter*const)), this, SLOT(showErrors(gui::ErrorReporter*const)));
-
 	connectActions();
-
 
 	// =========== Step 7: Save consistency checked, interface is initialized with models ===========
 
@@ -192,9 +183,7 @@ MainWindow::MainWindow()
 
 	mDocksVisibility.clear();
 
-	checkNxtTools();
-	mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
-	mUi->actionFlash_Robot->setVisible(mNxtToolsPresent);
+	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 
 	if (mIsNewProject)
 		saveAs(mTempDir);
@@ -225,21 +214,14 @@ void MainWindow::connectActions()
 	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 
-	connect(mUi->actionCheckout, SIGNAL(triggered()), this, SLOT(doCheckout()));
-	connect(mUi->actionCommit, SIGNAL(triggered()), this, SLOT(doCommit()));
 	//	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 	//	connect(mUi->actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
-	//	connect(mUi->actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
 	//	connect(mUi->actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
 	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	//	connect(mUi->actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
 	connect(mUi->actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
-	connect(mUi->actionFlash_Robot, SIGNAL(triggered()), this, SLOT(flashRobot()));
-	connect(mUi->actionUpload_Program, SIGNAL(triggered()), this, SLOT(uploadProgram()));
-	connect(mUi->actionCode, SIGNAL(triggered()), this, SLOT(generateRobotSourceCode()));
 
-	//	connect(mUi->actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
 	//	connect(mUi->actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
 
 	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
@@ -257,17 +239,6 @@ void MainWindow::connectActions()
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connectDebugActions();
-	//	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(run()));
-	//	connect(mUi->actionStop_Running, SIGNAL(triggered()), this, SLOT(stop()));
-	//	connect(mUi->actionStop_Robot, SIGNAL(triggered()), this, SLOT(stopRobot()));
-
-	//	connect(mUi->actionConnect_To_Robot, SIGNAL(triggered()), this, SLOT(connectToRobot()));
-
-	//	connect(mUi->actionRobot_Settings, SIGNAL(triggered()), this, SLOT(showRobotSettingsDialog()));
-
-	//	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
-
-	//	connect(mUi->actionShow2Dmodel, SIGNAL(triggered()), this, SLOT(showD2ModelWidget()));
 }
 
 void MainWindow::connectDebugActions()
@@ -319,7 +290,6 @@ MainWindow::~MainWindow()
 	delete mRecentProjectsMapper;
 	delete mGesturesWidget;
 	delete mModels;
-	delete mFlashTool;
 	delete mVisualDebugger;
 }
 
@@ -837,44 +807,6 @@ void MainWindow::checkoutDialogCancel()
 {
 }
 
-void MainWindow::doCheckout()
-{
-//	QString path;
-//	QString url;
-//	CheckoutDialog *dialog = new CheckoutDialog(this);
-//	connect(dialog, SIGNAL(accepted()), this, SLOT(checkoutDialogOk()));
-//	connect(dialog, SIGNAL(rejected()), this, SLOT(checkoutDialogCancel()));
-//	dialog->show();
-//	if (dialog->Accepted)
-//	{
-//		path = dialog->getDir();
-//		url = dialog->getUrl();
-//	}
-}
-
-void MainWindow::doCommit()
-{
-//	QString select = tr("Select directory to commit");
-//	QString path = QFileDialog::getExistingDirectory(this, select);
-
-//	if (path.isEmpty())
-//		return;
-	/*	char* p;
- QByteArray p1 = path.toAscii();
- p = p1.data();
- SvnClient client(p, "", "");
-//	client.commit(path, )
- QString *messag = new QString;
- int revision = client.commit(*messag);
- if (revision > 0)
- {
-  QString success = tr("Committed successfully to revision ");
-  QMessageBox::information(this, tr("Success"), success.append(QString(revision)));
- }
- else
-  QMessageBox::information(this, tr("Error"), *messag);*/
-}
-
 void MainWindow::exportToXmi()
 {
 	generators::XmiHandler xmi(mModels->logicalRepoApi());
@@ -924,14 +856,6 @@ void MainWindow::parseJavaLibraries()
 	} else {
 		QMessageBox::information(this, tr("finished"), "Parsing is finished");
 	}
-}
-
-void MainWindow::generateToHascol()
-{
-	generators::HascolGenerator hascolGenerator(mModels->logicalRepoApi());
-
-	gui::ErrorReporter& errors = hascolGenerator.generate();
-	errors.showErrors(mUi->errorListWidget, mUi->errorDock);
 }
 
 void MainWindow::generateEditor()
@@ -1201,20 +1125,6 @@ void MainWindow::exterminate()
  mUi->propertyEditor->setRootIndex(QModelIndex());
 }
 */
-
-void MainWindow::parseHascol()
-{
-	QStringList const fileNames = QFileDialog::getOpenFileNames(this, tr("Select Hascol files to parse"), ".", "*.md;;*.*");
-	if (fileNames.empty())
-		return;
-
-	parsers::HascolParser parser(mModels->mutableLogicalRepoApi(), mEditorManager);
-	gui::ErrorReporter& errors = parser.parse(fileNames);
-
-	errors.showErrors(mUi->errorListWidget, mUi->errorDock);
-
-	mModels->reinit();
-}
 
 void MainWindow::showPreferencesDialog()
 {
@@ -2068,7 +1978,9 @@ void MainWindow::initToolPlugins()
 		if (action.toolbarName() == "file")
 			mUi->fileToolbar->addAction(action.action());
 		else if (action.toolbarName() == "interpreters")
-			mUi->interpreterToolBar->addAction(action.action());
+			mUi->interpreterToolbar->addAction(action.action());
+		else if (action.toolbarName() == "generators")
+			mUi->generatorsToolbar->addAction(action.action());
 	}
 
 	foreach (ActionInfo const action, actions) {
@@ -2083,62 +1995,13 @@ void MainWindow::initToolPlugins()
 	if (mUi->generatorsToolbar->actions().isEmpty())
 		mUi->generatorsToolbar->hide();
 
-	if (mUi->interpreterToolBar->actions().isEmpty())
-		mUi->interpreterToolBar->hide();
+	if (mUi->interpreterToolbar->actions().isEmpty())
+		mUi->interpreterToolbar->hide();
 
 	QList<QPair<QString, PreferencesPage *> > const preferencesPages = mToolManager.preferencesPages();
 	typedef QPair<QString, PreferencesPage *> PageDescriptor;
 	foreach (PageDescriptor const page, preferencesPages)
 		mPreferencesDialog.registerPage(page.first, page.second);
-}
-
-void MainWindow::generateRobotSourceCode()
-{
-	saveAll();
-
-	qReal::generators::NxtOSEKRobotGenerator gen(mModels->repoControlApi());
-	gui::ErrorReporter &errors = gen.generate();
-	if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)){
-		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-
-		CodeArea * const area = new CodeArea();
-		QFile file("nxt-tools/example0/example0.c");
-		QTextStream * inStream = NULL;
-		if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text))
-			inStream = new QTextStream(&file);
-
-		if (inStream)
-			area->document()->setPlainText(inStream->readAll());
-
-		area->show();
-
-		mUi->tabs->addTab(area, "example0");
-		mUi->tabs->setCurrentWidget(area);
-
-		mUi->actionUpload_Program->setVisible(mNxtToolsPresent);
-		mUi->actionFlash_Robot->setVisible(mNxtToolsPresent);
-	}
-}
-
-void MainWindow::uploadProgram()
-{
-	if (!mNxtToolsPresent) {
-		mErrorReporter->addError("upload.sh not found. Make sure it is present in QReal installation directory");
-		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-		return;
-	}
-	generateRobotSourceCode();
-	mFlashTool->uploadProgram();
-}
-
-void MainWindow::flashRobot()
-{
-	if (!mNxtToolsPresent) {
-		mErrorReporter->addError("flash.sh not found. Make sure it is present in QReal installation directory");
-		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-		return;
-	}
-	mFlashTool->flashRobot();
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
@@ -2151,32 +2014,26 @@ bool MainWindow::showConnectionRelatedMenus() const
 	return mToolManager.customizer()->showConnectionRelatedMenus();
 }
 
-void MainWindow::checkNxtTools()
+void MainWindow::showInTextEditor(QString const &title, QString const &text)
 {
-	QDir dir(qApp->applicationDirPath());
-	if (!QDir().exists(dir.absolutePath() + "/nxt-tools")) {
-		mNxtToolsPresent = false;
-		return;
-	}
-	dir.cd(dir.absolutePath() + "/nxt-tools");
+	CodeArea * const area = new CodeArea();
+	area->document()->setPlainText(text);
 
-	QDir gnuarm(dir.absolutePath() + "/gnuarm");
-	QDir nexttool(dir.absolutePath() + "/nexttool");
-	QDir nxtOSEK(dir.absolutePath() + "/nxtOSEK");
+	area->show();
 
-#ifdef Q_OS_WIN
-	QFile flash(dir.absolutePath() + "/flash.bat");
-	QFile upload1(dir.absolutePath() + "/upload.bat");
-	QFile upload2(dir.absolutePath() + "/upload.sh");
+	mUi->tabs->addTab(area, title);
+	mUi->tabs->setCurrentWidget(area);
+}
 
-	mNxtToolsPresent = gnuarm.exists() && nexttool.exists() && nxtOSEK.exists() && flash.exists() && upload1.exists() && upload2.exists();
-#else
-	QDir libnxt(dir.absolutePath() + "/libnxt");
-	QFile flash(dir.absolutePath() + "/flash.sh");
-	QFile upload(dir.absolutePath() + "/upload.sh");
+void MainWindow::reinitModels()
+{
+	closeAllTabs();
 
-	mNxtToolsPresent = gnuarm.exists() && libnxt.exists() && nexttool.exists() && nxtOSEK.exists() && flash.exists() && upload.exists();
-#endif
+	mModels->reinit();
+
+	PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
+	pModel->clearModelIndexes();
+	mUi->propertyEditor->setRootIndex(QModelIndex());
 }
 
 void MainWindow::setAutoSaveParameters()

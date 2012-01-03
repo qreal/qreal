@@ -448,6 +448,8 @@ void XmlCompiler::generateIsParentOfRequest(OutFile &out)
 	out() << "bool " << mPluginName << "Plugin::isParentOf(QString const &parentDiagram"
 			 << ", QString const &parentElement, QString const &childDiagram, QString const &childElement) const\n"
 		<< "{\n"
+		<< "\tif (childDiagram == parentDiagram && childElement == parentElement)\n"
+		<< "\t\treturn true;\n"
 		<< "\tif (parentsMap[childDiagram][childElement].contains(qMakePair(parentDiagram, parentElement)))\n"
 		<< "\t\treturn true;\n"
 		<< "\ttypedef QPair<QString, QString> StringPair;\n"
