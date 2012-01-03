@@ -9,7 +9,8 @@
 using namespace qReal::interpreters::robots::details;
 
 BluetoothRobotCommunicationThread::BluetoothRobotCommunicationThread()
-	: mPort(NULL)
+		: mPort(NULL)
+		, mKeepAliveTimer(this)
 {
 	qRegisterMetaType<inputPort::InputPortEnum>("details::inputPort::InputPortEnum");
 }
@@ -67,8 +68,8 @@ void BluetoothRobotCommunicationThread::connect(QString const &portName)
 
 	emit connected(response != QByteArray());
 
-	QObject::connect(&mTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
-	mTimer.start(1000);
+	QObject::connect(&mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
+	mKeepAliveTimer.start(1000);
 }
 
 void BluetoothRobotCommunicationThread::reconnect(QString const &portName)
@@ -82,7 +83,7 @@ void BluetoothRobotCommunicationThread::disconnect()
 		mPort->close();
 		delete mPort;
 		mPort = NULL;
-		mTimer.stop();
+		mKeepAliveTimer.stop();
 	}
 	emit disconnected();
 }
