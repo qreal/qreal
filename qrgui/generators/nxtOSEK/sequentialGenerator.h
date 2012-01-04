@@ -1,5 +1,7 @@
 #pragma once
 
+#include "nxtOSEKgenerator.h"
+
 #include <QString>
 #include <QPair>
 #include <QMap>
@@ -13,15 +15,19 @@
 
 namespace qReal {
 namespace generators {
+namespace nxtOSEK {
 
-//! Class for generate a nxtOSEK code from Robot Language Diagram.
-
-class NxtOSEKRobotGenerator {
+/*! Class for generate a nxtOSEK code from Robot Language Diagram.
+ * Creates code that contains one main function with sequentially writed
+ * strings mapped from diagram elements.
+ */
+class SequentialGenerator: public NxtOSEKgenerator {
 public:
-	explicit NxtOSEKRobotGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath = "");
-	explicit NxtOSEKRobotGenerator(QString const &pathToRepo, QString const &destinationPath = "");
+	explicit SequentialGenerator(qrRepo::RepoControlInterface &api, QString const &destinationPath = "");
+	explicit SequentialGenerator(QString const &pathToRepo, QString const &destinationPath = "");
 
-	~NxtOSEKRobotGenerator();
+	virtual	~SequentialGenerator() {
+	}
 
 	//! main method that starts a code generation.
 	gui::ErrorReporter &generate();
@@ -31,7 +37,7 @@ private:
 	friend class AbstractElementGenerator;
 	class AbstractElementGenerator {
 	public:
-		explicit AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id const &elementId);
+		explicit AbstractElementGenerator(SequentialGenerator *emboxGen, qReal::Id const &elementId);
 
 		virtual ~AbstractElementGenerator() {}
 
@@ -52,14 +58,14 @@ private:
 		virtual bool preGenerationCheck() = 0;
 		virtual bool nextElementsGeneration() = 0;
 
-		NxtOSEKRobotGenerator *mNxtGen;
+		SequentialGenerator *mNxtGen;
 		qReal::Id mElementId;
 	};
 
 	//! Realization of AbstractElementGenerator for Beep, Engines etc.
 	class SimpleElementGenerator: public AbstractElementGenerator {
 	public:
-		explicit SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
+		explicit SimpleElementGenerator(SequentialGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
 		virtual QList<SmartLine> loopPrefixCode();
@@ -80,7 +86,7 @@ private:
 	//! Realization of AbstractElementGenerator for Function.
 	class FunctionElementGenerator: public SimpleElementGenerator {
 	public:
-		explicit FunctionElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
+		explicit FunctionElementGenerator(SequentialGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
 		virtual QList<SmartLine> simpleCode();
@@ -90,7 +96,7 @@ private:
 	//! Realization of AbstractElementGenerator for Loop.
 	class LoopElementGenerator: public AbstractElementGenerator {
 	public:
-		explicit LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
+		explicit LoopElementGenerator(SequentialGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
 		virtual QList<SmartLine> loopPrefixCode();
@@ -104,7 +110,7 @@ private:
 	//! Realization of AbstractElementGenerator for If block.
 	class IfElementGenerator : public AbstractElementGenerator {
 	public:
-		explicit IfElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
+		explicit IfElementGenerator(SequentialGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
 		virtual QList<SmartLine> loopPrefixCode();
@@ -120,11 +126,11 @@ private:
 		QPair<bool, qReal::Id> checkBranchForBackArrows(qReal::Id const &curElementId, qReal::IdList* checkedElements);
 	};
 
-	// Element generator factory that returns for a diagram element ID a connected generator.
+	//! Element generator factory that returns for a diagram element ID a connected generator.
 	friend class ElementGeneratorFactory;
 	class ElementGeneratorFactory {
 	public:
-		static AbstractElementGenerator* generator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId)
+		static AbstractElementGenerator* generator(SequentialGenerator *emboxGen, qReal::Id elementId)
 		{
 			if (elementId.element() == "IfBlock")
 				return new IfElementGenerator(emboxGen, elementId);
@@ -138,10 +144,6 @@ private:
 	};
 
 	void addToGeneratedStringSetVariableInit();
-
-	qrRepo::RepoApi *mApi;
-	bool mIsNeedToDeleteMApi;
-	QString mDestinationPath;
 
 	//! Set of already generated strings united for take a same critical places position (start of loop etc)
 	QList< QList<SmartLine> > mGeneratedStringSet;
@@ -158,8 +160,7 @@ private:
 
 	QList<SmartLine> mVariables;
 	int mVariablePlaceInGenStrSet;
-
-	gui::ErrorReporter mErrorReporter;
 };
+}
 }
 }

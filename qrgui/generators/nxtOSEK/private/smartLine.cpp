@@ -1,7 +1,8 @@
-#include "smartLine.h"
+#include "../smartLine.h"
 
 using namespace qReal;
 using namespace generators;
+using namespace nxtOSEK;
 
 SmartLine::SmartLine(QString text, qReal::Id elementId, IndentChangeType indentLevelChange)
 	: mText(text), mElementId(elementId), mIndentChange(indentLevelChange)
