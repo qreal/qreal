@@ -19,7 +19,7 @@ class NullRobotModelImplementation : public AbstractRobotModelImplementation
 	Q_OBJECT
 public:
 	NullRobotModelImplementation();
-	virtual ~NullRobotModelImplementation() {};
+	virtual ~NullRobotModelImplementation() {}
 	virtual void init();
 	virtual void stopRobot();
 

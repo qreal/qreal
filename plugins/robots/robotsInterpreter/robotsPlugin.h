@@ -67,9 +67,6 @@ private:
 	/// Action that runs program
 	QAction *mRunAction;
 
-	/// Action that stops program
-	QAction *mStopAction;
-
 	/// Action that stops program and also stops robot motors
 	QAction *mStopRobotAction;
 

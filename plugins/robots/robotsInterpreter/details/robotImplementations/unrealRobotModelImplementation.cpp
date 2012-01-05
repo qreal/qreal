@@ -97,7 +97,6 @@ void UnrealRobotModelImplementation::stopRobot()
 	mMotorB.off();
 	mMotorC.off();
 	mD2Model->stopRobot();
-	disconnectRobot();
 }
 
 motorImplementations::UnrealMotorImplementation &UnrealRobotModelImplementation::motorA()
@@ -133,4 +132,5 @@ sensorImplementations::UnrealEncoderImplementation &UnrealRobotModelImplementati
 void UnrealRobotModelImplementation::startInterpretation()
 {
 	mD2Model->showModelWidget();
+	mD2Model->startInit();
 }

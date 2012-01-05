@@ -150,6 +150,11 @@ void RobotModel::stopRobot()
 	mRobotImpl->stopRobot();
 }
 
+void RobotModel::disconnectFromRobot()
+{
+	mRobotImpl->disconnectFromRobot();
+}
+
 robotParts::Motor &RobotModel::motorA()
 {
 	return mMotorA;

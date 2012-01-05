@@ -12,13 +12,13 @@ namespace qReal {
 namespace interpreters {
 namespace robots {
 
-class RobotCommunication : public QObject
+class RobotCommunicator : public QObject
 {
 	Q_OBJECT
 
 public:
-	RobotCommunication(QString const &portName);
-	~RobotCommunication();
+	RobotCommunicator(QString const &portName);
+	~RobotCommunicator();
 
 	virtual void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
 	virtual void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize, inputPort::InputPortEnum const &port);
