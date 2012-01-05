@@ -51,7 +51,7 @@ private:
 	QextSerialPort *mPort;
 
 	/// Timer that sends messages to robot to check that connection is still alive
-	QTimer mKeepAliveTimer;
+	QTimer *mKeepAliveTimer;
 
 private slots:
 	/// Checks if robot is connected
