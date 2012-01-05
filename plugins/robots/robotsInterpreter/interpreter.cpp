@@ -87,6 +87,7 @@ void Interpreter::interpret()
 	Id const startingElement = findStartingElement(currentDiagramId);
 	if (startingElement == Id()) {
 		mInterpretersInterface->errorReporter()->addError(tr("No entry point found, please add Initial Node to a diagram"));
+		mState = idle;
 		return;
 	}
 
