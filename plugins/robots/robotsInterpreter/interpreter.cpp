@@ -23,7 +23,7 @@ Interpreter::Interpreter()
 	, mState(idle)
 	, mRobotModel(new RobotModel())
 	, mBlocksTable(NULL)
-	, mRobotCommunication(new RobotCommunication(SettingsManager::value("valueOfCommunication", "bluetooth").toString()))
+	, mRobotCommunication(new RobotCommunicator(SettingsManager::value("valueOfCommunication", "bluetooth").toString()))
 	, mImplementationType(robotModelType::null)
 	, mWatchListWindow(NULL)
 	, mActionConnectToRobot(NULL)
@@ -96,7 +96,7 @@ void Interpreter::interpret()
 		return;
 }
 
-void Interpreter::stop()
+void Interpreter::stopRobot()
 {
 	mRobotModel->stopRobot();
 	mState = idle;
@@ -108,11 +108,6 @@ void Interpreter::stop()
 	/*mBlocksTable->clear();
 	mThreads.clear();
 	mTimer->stop();*/
-}
-
-void Interpreter::stopRobot()
-{
-	stop();
 }
 
 void Interpreter::showWatchList() {
@@ -213,8 +208,9 @@ void Interpreter::threadStopped()
 	mThreads.removeAll(thread);
 	delete thread;
 
-	if (mThreads.isEmpty())
-		stop();
+	if (mThreads.isEmpty()) {
+		stopRobot();
+	}
 }
 
 void Interpreter::newThread(details::blocks::Block * const startBlock)
@@ -329,10 +325,11 @@ void Interpreter::connectToRobot()
 {
 	if (mConnected) {
 		mRobotModel->stopRobot();
+		mRobotModel->disconnectFromRobot();
 	} else {
 		mRobotModel->init();
-		mActionConnectToRobot->setChecked(mConnected);
 	}
+	mActionConnectToRobot->setChecked(mConnected);
 }
 
 void Interpreter::disconnectSlot()

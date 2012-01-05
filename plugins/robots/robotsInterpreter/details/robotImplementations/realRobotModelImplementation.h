@@ -1,7 +1,7 @@
 #pragma once
 
 #include "abstractRobotModelImplementation.h"
-#include "../robotCommunication/robotCommunication.h"
+#include "../robotCommunication/robotCommunicator.h"
 #include "brickImplementations/realBrickImplementation.h"
 #include "motorImplementations/realMotorImplementation.h"
 #include "sensorImplementations/bluetoothTouchSensorImplementation.h"
@@ -19,10 +19,11 @@ class RealRobotModelImplementation : public AbstractRobotModelImplementation
 {
 	Q_OBJECT
 public:
-	RealRobotModelImplementation(RobotCommunication * const robotCommunicationInterface);
+	RealRobotModelImplementation(RobotCommunicator * const robotCommunicationInterface);
 	virtual ~RealRobotModelImplementation();
 	virtual void init();
 	virtual void stopRobot();
+	virtual void disconnectFromRobot();
 
 	virtual brickImplementations::RealBrickImplementation &brick();
 	virtual sensorImplementations::BluetoothTouchSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const;
@@ -45,7 +46,7 @@ private slots:
 	void disconnectedSlot();
 
 private:
-	RobotCommunication * const mRobotCommunicationInterface;
+	RobotCommunicator * const mRobotCommunicator;
 	brickImplementations::RealBrickImplementation mBrick;
 	motorImplementations::RealMotorImplementation mMotorA;
 	motorImplementations::RealMotorImplementation mMotorB;

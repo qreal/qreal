@@ -1,5 +1,5 @@
 HEADERS += \
-	details/robotCommunication/robotCommunication.h \
+	details/robotCommunication/robotCommunicator.h \
 	details/robotCommunication/robotCommunicationThreadInterface.h \
 	details/robotCommunication/bluetoothRobotCommunicationThread.h \
 	details/robotCommunication/usbRobotCommunicationThread.h \
@@ -10,7 +10,7 @@ HEADERS += \
 SOURCES += \
 	details/robotCommunication/bluetoothRobotCommunicationThread.cpp \
 	details/robotCommunication/usbRobotCommunicationThread.cpp \
-	details/robotCommunication/robotCommunication.cpp \
+	details/robotCommunication/robotCommunicator.cpp \
 	details/robotCommunication/robotCommunicationException.cpp \
 
 win32 {

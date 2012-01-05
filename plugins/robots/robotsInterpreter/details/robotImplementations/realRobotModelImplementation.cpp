@@ -6,21 +6,21 @@ using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace robotImplementations;
 
-RealRobotModelImplementation::RealRobotModelImplementation(RobotCommunication * const robotCommunicationInterface)
+RealRobotModelImplementation::RealRobotModelImplementation(RobotCommunicator * const robotCommunicationInterface)
 	:  AbstractRobotModelImplementation()
-	, mRobotCommunicationInterface(robotCommunicationInterface)
+	, mRobotCommunicator(robotCommunicationInterface)
 	, mBrick(robotCommunicationInterface)
 	, mMotorA(0, robotCommunicationInterface), mMotorB(1, robotCommunicationInterface), mMotorC(2, robotCommunicationInterface)
 	, mEncoderA(robotCommunicationInterface, outputPort::port1), mEncoderB(robotCommunicationInterface, outputPort::port2), mEncoderC(robotCommunicationInterface, outputPort::port3)
 {
-	connect(mRobotCommunicationInterface, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
-	connect(mRobotCommunicationInterface, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
+	connect(mRobotCommunicator, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
+	connect(mRobotCommunicator, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
 	connect(&mSensorsConfigurer, SIGNAL(allSensorsConfigured()), this, SLOT(sensorConfigurationDoneSlot()));
 }
 
 RealRobotModelImplementation::~RealRobotModelImplementation()
 {
-	delete mRobotCommunicationInterface;
+	delete mRobotCommunicator;
 }
 
 brickImplementations::RealBrickImplementation &RealRobotModelImplementation::brick()
@@ -45,19 +45,19 @@ sensorImplementations::BluetoothColorSensorImplementation *RealRobotModelImpleme
 
 void RealRobotModelImplementation::addTouchSensor(inputPort::InputPortEnum const &port)
 {
-	sensorImplementations::BluetoothTouchSensorImplementation *sensor = new sensorImplementations::BluetoothTouchSensorImplementation(mRobotCommunicationInterface, port);
+	sensorImplementations::BluetoothTouchSensorImplementation *sensor = new sensorImplementations::BluetoothTouchSensorImplementation(mRobotCommunicator, port);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
 void RealRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum const &port)
 {
-	sensorImplementations::BluetoothSonarSensorImplementation *sensor = new sensorImplementations::BluetoothSonarSensorImplementation(mRobotCommunicationInterface, port);
+	sensorImplementations::BluetoothSonarSensorImplementation *sensor = new sensorImplementations::BluetoothSonarSensorImplementation(mRobotCommunicator, port);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
 void RealRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType)
 {
-	sensorImplementations::BluetoothColorSensorImplementation *sensor = new sensorImplementations::BluetoothColorSensorImplementation(mRobotCommunicationInterface, port, mode, sensorType);
+	sensorImplementations::BluetoothColorSensorImplementation *sensor = new sensorImplementations::BluetoothColorSensorImplementation(mRobotCommunicator, port, mode, sensorType);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
@@ -65,7 +65,7 @@ void RealRobotModelImplementation::init()
 {
 	mSensorsConfigurer.lockConfiguring();
 	AbstractRobotModelImplementation::init();
-	mRobotCommunicationInterface->connect();
+	mRobotCommunicator->connect();
 }
 
 void RealRobotModelImplementation::stopRobot()
@@ -73,17 +73,24 @@ void RealRobotModelImplementation::stopRobot()
 	mMotorA.off();
 	mMotorB.off();
 	mMotorC.off();
-	for (unsigned i = 0; i < 4; ++i)
-		if (colorSensor(static_cast<inputPort::InputPortEnum>(i)) != NULL)
+	for (unsigned i = 0; i < 4; ++i) {
+		if (colorSensor(static_cast<inputPort::InputPortEnum>(i)) != NULL) {
 			colorSensor(static_cast<inputPort::InputPortEnum>(i))->reconfigure(lowLevelSensorType::COLORNONE);
-	disconnectRobot();
+		}
+	}
+}
+
+void RealRobotModelImplementation::disconnectFromRobot()
+{
+	mRobotCommunicator->disconnect();
 }
 
 void RealRobotModelImplementation::connectedSlot(bool success)
 {
 	if (!success) {
 		Tracer::debug(tracer::initialization, "RealRobotModelImplementation::connectedSlot", "Connection failed.");
-		disconnectRobot();
+		mIsConnected = false;
+		emit connected(false);
 		return;
 	}
 	Tracer::debug(tracer::initialization, "RealRobotModelImplementation::connectedSlot", "Connected. Initializing sensors...");
@@ -133,5 +140,6 @@ bool RealRobotModelImplementation::needsConnection() const
 void RealRobotModelImplementation::disconnectedSlot()
 {
 	mSensorsConfigurer.lockConfiguring();
+	mIsConnected = false;
 	emit disconnected();
 }

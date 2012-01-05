@@ -1,7 +1,7 @@
 #pragma once
 
 #include "abstractEncoderImplementation.h"
-#include "../../robotCommunication/robotCommunication.h"
+#include "../../robotCommunication/robotCommunicator.h"
 
 namespace qReal {
 namespace interpreters {
@@ -14,14 +14,14 @@ class BluetoothEncoderImplementation : public AbstractEncoderImplementation
 {
 	Q_OBJECT
 public:
-	BluetoothEncoderImplementation(RobotCommunication *robotCommunicationInterface
+	BluetoothEncoderImplementation(RobotCommunicator *robotCommunicationInterface
 			,outputPort::OutputPortEnum const &port);
 	virtual void read();
 	virtual void nullificate();
 
 protected:
 	virtual void sensorSpecificProcessResponse(QByteArray const &reading);
-	RobotCommunication *mRobotCommunicationInterface;
+	RobotCommunicator *mRobotCommunicationInterface;
 
 protected slots:
 	void readingDone(QObject *addressee, QByteArray const &reading);

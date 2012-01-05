@@ -4,7 +4,7 @@
 
 #include "../../../qrkernel/ids.h"
 
-#include "details/robotCommunication/robotCommunication.h"
+#include "details/robotCommunication/robotCommunicator.h"
 #include "sensorConstants.h"
 #include "details/robotParts/robotModel.h"
 #include "details/thread.h"
@@ -58,13 +58,9 @@ public:
 public slots:
 	void connectToRobot();
 	void interpret();
-	void stop();
 	void stopRobot();
 	void showD2ModelWidget(bool isVisible);
 	void showWatchList();
-
-	/// actions when robot disconnect
-	void disconnectSlot();
 
 private slots:
 	void threadStopped();
@@ -79,6 +75,9 @@ private slots:
 
 	void connectedSlot(bool success);
 	void sensorsConfiguredSlot();
+
+	/// actions when robot disconnect
+	void disconnectSlot();
 
 private:
 	enum InterpreterState {
@@ -99,7 +98,7 @@ private:
 	QTimer *mTimer;
 	details::d2Model::D2ModelWidget *mD2ModelWidget;
 	details::d2Model::D2RobotModel *mD2RobotModel;
-	RobotCommunication* const mRobotCommunication;
+	RobotCommunicator* const mRobotCommunication;
 
 	bool mConnected;
 
