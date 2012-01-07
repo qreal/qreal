@@ -2174,7 +2174,7 @@ void MainWindow::initExplorers()
 
 void MainWindow::initRecentProjectsMenu()
 {
-	mRecentProjectsMenu = new QMenu("Recent projects", mUi->menu_File);
+	mRecentProjectsMenu = new QMenu(tr("Recent projects"), mUi->menu_File);
 	mUi->menu_File->insertMenu(mUi->menu_File->actions().at(1), mRecentProjectsMenu);
 	connect(mRecentProjectsMenu, SIGNAL(aboutToShow()), this, SLOT(openRecentProjectsMenu()));
 }
