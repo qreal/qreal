@@ -1,7 +1,7 @@
 #pragma once
 
 typedef unsigned long (*NFANTOM100_createNXT)(char resString[], int status, unsigned char checkFVersion);
-typedef void (*NFANTOM100_iNXT_sendDirectCommand)(unsigned long nxtHandle, bool requireResponse, const char *inputBufferPtr, int inputBufferSize, char *outputBufferPtr, int outputBufferSize, int &status);
+typedef unsigned int (*NFANTOM100_iNXT_sendDirectCommand)(unsigned long nxtHandle, bool requireResponse, const char *inputBufferPtr, unsigned long inputBufferSize, char *outputBufferPtr, unsigned long outputBufferSize, int &status);
 
 typedef unsigned long (*NFANTOM100_createNXTIterator)(unsigned char searchBluetooth, unsigned long bluetoothSearchTimeout, int &status);
 typedef void (*NFANTOM100_iNXTIterator_getName)(unsigned long NXTIterHandle, char resString[], int &status);

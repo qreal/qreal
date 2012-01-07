@@ -24,7 +24,7 @@ unsigned long Fantom::nFANTOM100_createNXT(char resString[], int status, unsigne
 		throw RobotCommunicationException("Fantom driver is not available");
 }
 
-void Fantom::nFANTOM100_iNXT_sendDirectCommand(unsigned long nxtHandle
+unsigned Fantom::nFANTOM100_iNXT_sendDirectCommand(unsigned long nxtHandle
 		, bool requireResponse
 		, const char *inputBufferPtr
 		, int inputBufferSize
@@ -34,7 +34,7 @@ void Fantom::nFANTOM100_iNXT_sendDirectCommand(unsigned long nxtHandle
 {
 	NFANTOM100_iNXT_sendDirectCommand nFANTOM100_iNXT_sendDirectCommandHandle = (NFANTOM100_iNXT_sendDirectCommand)(mFantomLibrary.resolve("nFANTOM100_iNXT_sendDirectCommand"));
 	if (nFANTOM100_iNXT_sendDirectCommandHandle)
-		nFANTOM100_iNXT_sendDirectCommandHandle(nxtHandle, requireResponse, inputBufferPtr, inputBufferSize, outputBufferPtr, outputBufferSize, status);
+		return nFANTOM100_iNXT_sendDirectCommandHandle(nxtHandle, requireResponse, inputBufferPtr, inputBufferSize, outputBufferPtr, outputBufferSize, status);
 	else
 		throw RobotCommunicationException("Fantom driver is not available");
 }
