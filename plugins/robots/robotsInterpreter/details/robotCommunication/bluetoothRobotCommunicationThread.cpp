@@ -59,6 +59,7 @@ void BluetoothRobotCommunicationThread::connect(QString const &portName)
 	Tracer::debug(tracer::initialization, "BluetoothRobotCommunicationThread::connect"
 			, "Port " + mPort->portName() + " is open: " + QString("%1").arg(mPort->isOpen()));
 
+	// Sending "Get firmware version" system command to check connection.
 	QByteArray command(4, 0);
 	command[0] = 0x02;  //command length
 	command[1] = 0x00;
@@ -208,7 +209,7 @@ void BluetoothRobotCommunicationThread::checkForConnection()
 
 	send(command);
 
-	QByteArray const response = receive(8);
+	QByteArray const response = receive(9);
 
 	if (response == QByteArray()) {
 		emit disconnected();
