@@ -144,6 +144,22 @@
                         </distributionFile>
                     </distributionFileList>
                 </folder>
+                <folder>
+                    <destination>${installdir}/examples</destination>
+                    <name>examples</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>%1/plugins/robots/examples/2dModelExample.qrs</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%1/plugins/robots/examples/simultaneousSensorReading.qrs</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%1/plugins/robots/examples/touchObstacle.qrs</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
             </folderList>
             <startMenuShortcutList>
                 <startMenuShortcut>
