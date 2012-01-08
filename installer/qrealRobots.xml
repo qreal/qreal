@@ -1,12 +1,13 @@
 <project>
-    <shortName>qrealRobots</shortName>
-    <fullName>QReal-Robots</fullName>
+    <shortName>qRealRobots</shortName>
+    <fullName>QReal Robots</fullName>
     <version>1.5</version>
     <licenseFile>%1/installer/gpl-3.0.txt</licenseFile>
     <leftImage>%1/installer/left.png</leftImage>
     <logoImage>%1/installer/logo.png</logoImage>
     <defaultLanguage>ru</defaultLanguage>
     <outputDirectory>.</outputDirectory>
+    <width>600</width>
     <componentList>
         <component>
             <name>default</name>
