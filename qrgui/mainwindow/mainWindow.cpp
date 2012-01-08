@@ -767,8 +767,7 @@ void MainWindow::editWindowTitle()
 void MainWindow::showAbout()
 {
 	QMessageBox::about(this, tr("About QReal:Robots"),
-			tr("Contacts:<br><br>"
-			"se.math.spbu.ru/SE/qreal"));
+			tr("<b>QReal:Robots<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>"));
 }
 
 void MainWindow::showHelp()
