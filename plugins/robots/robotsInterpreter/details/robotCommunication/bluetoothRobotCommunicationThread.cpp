@@ -200,6 +200,10 @@ QByteArray BluetoothRobotCommunicationThread::receive(int size) const
 
 void BluetoothRobotCommunicationThread::checkForConnection()
 {
+	if (!mPort || !mPort->isOpen()) {
+		return;
+	}
+
 	QByteArray command(4, 0);
 	command[0] = 0x02;
 	command[1] = 0x00;
