@@ -45,7 +45,7 @@ QList<ActionInfo> RobotsGeneratorPlugin::actions()
 
 	mUploadProgramAction.setText(tr("Upload program"));
 	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
-	connect(&mFlashRobotAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
+	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
 	checkNxtTools();
 

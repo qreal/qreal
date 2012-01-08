@@ -16,8 +16,8 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 	mUploadProcess.setProcessEnvironment(environment);
 
 	// for debug
-//	mUploadProcess.setStandardErrorFile("/home/me/downloads/incoming/errors");
-//	mUploadProcess.setStandardOutputFile("/home/me/downloads/incoming/out");
+//	mUploadProcess.setStandardErrorFile("./errors");
+//	mUploadProcess.setStandardOutputFile("./out");
 
 	connect(&mFlashProcess, SIGNAL(readyRead()), this, SLOT(readNxtFlashData()));
 	connect(&mFlashProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)));
@@ -26,7 +26,6 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 	connect(&mUploadProcess, SIGNAL(readyRead()), this, SLOT(readNxtUploadData()));
 	connect(&mUploadProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)));
 	connect(&mUploadProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(nxtUploadingFinished(int, QProcess::ExitStatus)));
-
 }
 
 void NxtFlashTool::flashRobot()
@@ -80,9 +79,9 @@ void NxtFlashTool::readNxtFlashData()
 void NxtFlashTool::uploadProgram()
 {
 #ifdef Q_OS_WIN
-	mFlashProcess.setEnvironment(QProcess::systemEnvironment());
-	mFlashProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/");
-	mFlashProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/upload.bat");
+	mUploadProcess.setEnvironment(QProcess::systemEnvironment());
+	mUploadProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/");
+	mUploadProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/upload.bat");
 #else
 	mUploadProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/upload.sh");
 #endif
@@ -95,10 +94,11 @@ void NxtFlashTool::nxtUploadingFinished(int exitCode, QProcess::ExitStatus exitS
 {
 	qDebug() << "finished uploading with code " << exitCode << ", status: " << exitStatus;
 
-	if (exitCode == 127) // most likely wineconsole didn't start and generate files needed to proceed compilation
+	if (exitCode == 127) {  // most likely wineconsole didn't start and generate files needed to proceed compilation
 		mErrorReporter->addError(tr("Uploading failed. Make sure that X-server allows root to run GUI applications"));
-	else if (exitCode == 139)
+	} else if (exitCode == 139) {
 		mErrorReporter->addError(tr("QReal requires superuser privileges to flash NXT robot"));
+	}
 }
 
 void NxtFlashTool::readNxtUploadData()
