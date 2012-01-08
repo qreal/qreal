@@ -112,6 +112,16 @@ void AbstractRobotModelImplementation::startInterpretation()
 {
 }
 
+void AbstractRobotModelImplementation::lockSensorsConfiguration()
+{
+	mSensorsConfigurer.lockConfiguring();
+}
+
+void AbstractRobotModelImplementation::unlockSensorsConfiguration()
+{
+	mSensorsConfigurer.unlockConfiguring();
+}
+
 void AbstractRobotModelImplementation::connectRobot()
 {
 	if (!mIsConnected) {
