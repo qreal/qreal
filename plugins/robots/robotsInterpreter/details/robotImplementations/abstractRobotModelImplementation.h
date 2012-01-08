@@ -56,6 +56,9 @@ public:
 	virtual bool needsConnection() const;
 	virtual void startInterpretation();
 
+	void lockSensorsConfiguration();
+	void unlockSensorsConfiguration();
+
 signals:
 	void connected(bool success);
 	void sensorsConfigured();
