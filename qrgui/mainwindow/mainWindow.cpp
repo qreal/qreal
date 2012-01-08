@@ -183,8 +183,6 @@ MainWindow::MainWindow()
 
 	mDocksVisibility.clear();
 
-	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
-
 	if (mIsNewProject)
 		saveAs(mTempDir);
 
