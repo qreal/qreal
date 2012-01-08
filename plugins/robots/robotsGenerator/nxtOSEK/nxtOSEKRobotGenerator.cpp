@@ -166,7 +166,9 @@ void NxtOSEKRobotGenerator::generate()
 
 		curInitialNodeNumber++;
 	}
-	mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"));
+	if (initialNodes.isEmpty()) {
+		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"));
+	}
 }
 
 NxtOSEKRobotGenerator::AbstractElementGenerator::AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen,
