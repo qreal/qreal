@@ -239,6 +239,11 @@ void MainWindow::connectActions()
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connectDebugActions();
+
+	mUi->actionGenerate_Editor->setVisible(false);
+	mUi->actionGenerate_editor->setVisible(false);
+	mUi->actionGenerate_Editor_qrmc->setVisible(false);
+	mUi->actionParse_Editor_xml->setVisible(false);
 }
 
 void MainWindow::connectDebugActions()
