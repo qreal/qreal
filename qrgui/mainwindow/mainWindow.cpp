@@ -19,7 +19,7 @@
 #include <QtCore/QDebug>
 #include <QAbstractButton>
 
-#include "../generators/editorGenerator/editorGenerator.h"
+// #include "../generators/editorGenerator/editorGenerator.h"
 
 #include "errorReporter.h"
 
@@ -37,7 +37,7 @@
 #include "../generators/xmi/xmiHandler.h"
 #include "../generators/java/javaHandler.h"
 #include "../pluginManager/listenerManager.h"
-#include "../generators/editorGenerator/editorGenerator.h"
+//#include "../generators/editorGenerator/editorGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../../qrkernel/settingsManager.h"
 
@@ -862,33 +862,33 @@ void MainWindow::parseJavaLibraries()
 
 void MainWindow::generateEditor()
 {
-	generators::EditorGenerator editorGenerator(mModels->logicalRepoApi());
+//	generators::EditorGenerator editorGenerator(mModels->logicalRepoApi());
 
-	QDir dir(".");
+//	QDir dir(".");
 
-	QHash<Id, QPair<QString, QString> > metamodelList = editorGenerator.getMetamodelList();
-	foreach (Id const key, metamodelList.keys()) {
-		QString const metamodelFullName = metamodelList[key].first;
-		QString const pathToQRealRoot = metamodelList[key].second;
-		dir.mkpath(metamodelFullName);
-		QFileInfo metamodelFileInfo(metamodelFullName);
-		QString metamodelName = metamodelFileInfo.baseName();
-		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, metamodelFullName + "/" + metamodelName, pathToQRealRoot);
+//	QHash<Id, QPair<QString, QString> > metamodelList = editorGenerator.getMetamodelList();
+//	foreach (Id const key, metamodelList.keys()) {
+//		QString const metamodelFullName = metamodelList[key].first;
+//		QString const pathToQRealRoot = metamodelList[key].second;
+//		dir.mkpath(metamodelFullName);
+//		QFileInfo metamodelFileInfo(metamodelFullName);
+//		QString metamodelName = metamodelFileInfo.baseName();
+//		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, metamodelFullName + "/" + metamodelName, pathToQRealRoot);
 
-		if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)) {
-			if (QMessageBox::question(this
-					, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelName),
-					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
-			{
-				return;
-			}
-			loadNewEditor(metamodelFullName, metamodelName
-					, SettingsManager::value("pathToQmake", "").toString()
-					, SettingsManager::value("pathToMake", "").toString()
-					, SettingsManager::value("pluginExtension", "").toString()
-					, SettingsManager::value("prefix", "").toString());
-		}
-	}
+//		if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)) {
+//			if (QMessageBox::question(this
+//					, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelName),
+//					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+//			{
+//				return;
+//			}
+//			loadNewEditor(metamodelFullName, metamodelName
+//					, SettingsManager::value("pathToQmake", "").toString()
+//					, SettingsManager::value("pathToMake", "").toString()
+//					, SettingsManager::value("pluginExtension", "").toString()
+//					, SettingsManager::value("prefix", "").toString());
+//		}
+//	}
 }
 
 /*
@@ -1052,6 +1052,35 @@ void MainWindow::loadNewEditor(const QString &directoryName
 	progress->setValue(100);
 	progress->close();
 	delete progress;
+}
+
+bool MainWindow::unloadPlugin(QString const &pluginName)
+{
+	if (mEditorManager.editors().contains(Id(pluginName))) {
+		IdList const diagrams = mEditorManager.diagrams(Id(pluginName));
+
+		if (!mEditorManager.unloadPlugin(pluginName)) {
+			return false;
+		}
+		foreach (Id const &diagram, diagrams) {
+			mUi->paletteToolbox->deleteDiagramType(diagram);
+		}
+	}
+	return true;
+}
+
+bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
+{
+	if (!mEditorManager.loadPlugin(fileName)) {
+		return false;
+	}
+
+	foreach (Id const &diagram, mEditorManager.diagrams(Id(pluginName))) {
+		mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
+		mUi->paletteToolbox->addSortedItemTypes(mEditorManager, diagram);
+	}
+	mUi->paletteToolbox->initDone();
+	return true;
 }
 
 void MainWindow::parseEditorXml()
@@ -2061,6 +2090,11 @@ void MainWindow::reinitModels()
 	PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
 	pModel->clearModelIndexes();
 	mUi->propertyEditor->setRootIndex(QModelIndex());
+}
+
+QWidget *MainWindow::windowWidget()
+{
+	return this;
 }
 
 void MainWindow::setAutoSaveParameters()
