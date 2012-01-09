@@ -8,10 +8,6 @@ HEADERS += generators/java/javaHandler.h \
 
 SOURCES += generators/java/javaHandler.cpp \
 
-HEADERS += generators/editorGenerator/editorGenerator.h
-SOURCES += generators/editorGenerator/editorGenerator.cpp
-
-
 # Креатор не умеет показывать файлы глубже одного уровня в иерархии инклудов
 # include (generators/xmi/xmi.pri)
 

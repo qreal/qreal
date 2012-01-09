@@ -17,6 +17,10 @@ public:
 
 	virtual void clear() = 0;
 	virtual void clearErrors() = 0;
+
+	/// Are there errors reported by now or not. Counted after latest clearErrors() call
+	/// @returns True, when there are messages with severity "Critical" and "Error" registered
+	virtual bool wereErrors() = 0;
 };
 
 }

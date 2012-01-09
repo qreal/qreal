@@ -74,6 +74,11 @@ public:
 
 	virtual void reinitModels();
 
+	virtual QWidget *windowWidget();
+
+	virtual bool unloadPlugin(QString const &pluginName);
+	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
