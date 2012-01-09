@@ -1,5 +1,5 @@
 <project>
-    <shortName>qRealRobots</shortName>
+    <shortName>QRealRobots</shortName>
     <fullName>QReal Robots</fullName>
     <version>1.5</version>
     <licenseFile>%1/installer/gpl-3.0.txt</licenseFile>
