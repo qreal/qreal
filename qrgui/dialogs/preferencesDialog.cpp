@@ -24,7 +24,7 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	,QAction * const activateGridAction, QAction * const activateAlignmentAction)
 {
 	PreferencesPage *behaviourPage = new PreferencesBehaviourPage(ui->pageContentWigdet);
-	PreferencesPage *compilerPage = new PreferencesCompilerPage(ui->pageContentWigdet);
+//	PreferencesPage *compilerPage = new PreferencesCompilerPage(ui->pageContentWigdet);
 	PreferencesPage *debuggerPage = new PreferencesDebuggerPage(ui->pageContentWigdet);
 	PreferencesPage *miscellaniousPage = new PreferencesMiscellaniousPage(ui->pageContentWigdet);
 //	PreferencesPage *featuresPage = new PreferencesFeaturesPage(ui->pageContentWigdet);
@@ -41,7 +41,8 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	connect(miscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
 
 	registerPage(tr("Behaviour"), behaviourPage);
-	registerPage(tr("Compiler"), compilerPage);
+	// Commented out as it is not needed in Robots version (actually, it is a part of editor generator plugin)
+//	registerPage(tr("Compiler"), compilerPage);
 	registerPage(tr("Debugger"), debuggerPage);
 	registerPage(tr("Miscellanious"), miscellaniousPage);
 	registerPage(tr("Editor"), editorPage);
