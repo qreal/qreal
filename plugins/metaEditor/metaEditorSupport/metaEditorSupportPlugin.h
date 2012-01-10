@@ -52,6 +52,9 @@ private:
 
 	/// API of logical part of a repository, mutable to allow parser build model
 	qrRepo::LogicalRepoApi *mLogicalRepoApi;  // Does not have ownership
+
+	/// Control API of a repository, used for requests such as current save file name
+	qrRepo::RepoControlInterface *mRepoControlApi;  // Does not have ownership
 };
 
 }
