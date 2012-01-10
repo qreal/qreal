@@ -78,6 +78,7 @@ public:
 
 	virtual bool unloadPlugin(QString const &pluginName);
 	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
+	virtual bool pluginLoaded(QString const &pluginName);
 
 signals:
 	void gesturesShowed();
@@ -177,8 +178,6 @@ private slots:
 	/// @return true if one of the tabs was closed
 	bool closeTab(QModelIndex const &graphicsIndex);
 
-	void generateEditor();
-	void parseEditorXml();
 	void showPreferencesDialog();
 
 	void connectActions();
@@ -189,7 +188,6 @@ private slots:
 	void logicalModelExplorerClicked(const QModelIndex &index);
 
 	void openNewTab(const QModelIndex &index);
-
 
 	/// Called after current tab was changed somehow --- opened, closed, switched to other
 	/// @param newIndex Index of a new active tab, -1 if there is none
@@ -228,8 +226,6 @@ private:
 	void setShortcuts(EditorView * const tab);
 
 	void createDiagram(QString const &idString);
-	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
-			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
 
 	void loadPlugins();
 

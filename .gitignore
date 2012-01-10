@@ -8,7 +8,6 @@
 *.orig
 *.rej
 *.so
-*.qm
 .#*
 *.*#
 moc_*.cpp
