@@ -62,10 +62,15 @@ namespace qrRepo {
 			/// Opens file into existing project
 			/// @param importedFile - name of file to be imported
 			void importFromDisk(QString const &importedFile);
+
 			void saveAll() const;
 			void save(qReal::IdList list) const;
 			void remove(qReal::IdList list) const;
 			void setWorkingFile(QString const &workingDir);
+
+			/// Returns current working file name
+			QString workingFile() const;
+
 		private:
 			void init();
 

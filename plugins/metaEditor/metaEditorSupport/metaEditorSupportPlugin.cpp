@@ -7,8 +7,11 @@
 #include <QtGui/QProgressBar>
 #include <QtGui/QDesktopWidget>
 
-#include "editorGenerator.h"
 #include "../../../qrkernel/settingsManager.h"
+#include "../../../qrmc/metaCompiler.h"
+
+#include "editorGenerator.h"
+#include "xmlParser.h"
 
 Q_EXPORT_PLUGIN2(metaEditorSupportPlugin, metaEditor::MetaEditorSupportPlugin)
 
@@ -19,6 +22,7 @@ MetaEditorSupportPlugin::MetaEditorSupportPlugin()
 		: mGenerateEditorForQrxcAction(NULL)
 		, mGenerateEditorWithQrmcAction(NULL)
 		, mParseEditorXmlAction(NULL)
+		, mRepoControlApi(NULL)
 {
 	mAppTranslator.load(":/metaEditorSupport_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
@@ -32,6 +36,7 @@ void MetaEditorSupportPlugin::init(PluginConfigurator const &configurator)
 {
 	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
 	mLogicalRepoApi = &configurator.logicalModelApi().mutableLogicalRepoApi();
+	mRepoControlApi = &configurator.repoControlInterface();
 }
 
 QList<ActionInfo> MetaEditorSupportPlugin::actions()
@@ -88,10 +93,127 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 
 void MetaEditorSupportPlugin::generateEditorWithQrmc()
 {
+	qrmc::MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../qrmc", mRepoControlApi->workingFile());
+
+	IdList const metamodels = mLogicalRepoApi->children(Id::rootId());
+
+	QProgressBar *progress = new QProgressBar(mMainWindowInterface->windowWidget());
+	progress->show();
+	int const progressBarWidth = 240;
+	int const progressBarHeight = 20;
+
+	QApplication::processEvents();
+	QRect const screenRect = qApp->desktop()->availableGeometry();
+	progress->move(screenRect.width() / 2 - progressBarWidth / 2, screenRect.height() / 2 - progressBarHeight / 2);
+	progress->setFixedWidth(progressBarWidth);
+	progress->setFixedHeight(progressBarHeight);
+	progress->setRange(0, 100);
+
+	int forEditor = 60 / metamodels.size();
+
+	foreach (Id const &key, metamodels) {
+		QString const objectType = mLogicalRepoApi->typeName(key);
+		if (objectType == "MetamodelDiagram") {
+			QString name = mLogicalRepoApi->stringProperty(key, "name of the directory");
+			if (QMessageBox::question(mMainWindowInterface->windowWidget()
+					, tr("loading..")
+					, QString(tr("Do you want to compile and load editor %1?")).arg(name)
+					, QMessageBox::Yes, QMessageBox::No)
+					== QMessageBox::No)
+			{
+				continue;
+			}
+
+			progress->setValue(5);
+
+			if (!metaCompiler.compile(name)) { // generating source code for all metamodels
+				QMessageBox::warning(mMainWindowInterface->windowWidget()
+						, tr("error")
+						, tr("Cannot generate source code for editor ") + name);
+				continue;
+			}
+			progress->setValue(20);
+
+			QProcess builder;
+			builder.setWorkingDirectory("../qrmc/plugins");
+			builder.start(SettingsManager::value("pathToQmake", "").toString());
+			qDebug()  << "qmake";
+			if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
+				progress->setValue(40);
+
+				builder.start(SettingsManager::value("pathToMake", "").toString());
+
+				bool finished = builder.waitForFinished(100000);
+				qDebug()  << "make";
+				if (finished && (builder.exitCode() == 0)) {
+					qDebug()  << "make ok";
+
+					progress->setValue(progress->value() + forEditor / 2);
+
+					QString normalizedName = name.at(0).toUpper() + name.mid(1);
+					if (!name.isEmpty()) {
+						if (!mMainWindowInterface->unloadPlugin(normalizedName)) {
+							QMessageBox::warning(mMainWindowInterface->windowWidget()
+									, tr("error")
+									, tr("cannot unload plugin ") + normalizedName);
+							progress->close();
+							delete progress;
+							continue;
+						}
+					}
+
+					QString const generatedPluginFileName = SettingsManager::value("prefix", "").toString()
+							+ name
+							+ "."
+							+ SettingsManager::value("pluginExtension", "").toString()
+							;
+					if (mMainWindowInterface->loadPlugin(generatedPluginFileName, normalizedName)) {
+						progress->setValue(progress->value() + forEditor / 2);
+					}
+				}
+				progress->setValue(100);
+			}
+		}
+	}
+	if (progress->value() != 100) {
+		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot load new editor"));
+	}
+	progress->setValue(100);
+	progress->close();
+	delete progress;
 }
 
 void MetaEditorSupportPlugin::parseEditorXml()
 {
+	if (!mMainWindowInterface->pluginLoaded("MetaEditor")) {
+		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("required plugin (MetaEditor) is not loaded"));
+		return;
+	}
+	QDir dir(".");
+	QString directoryName = ".";
+	while (dir.cdUp()) {
+		QFileInfoList const infoList = dir.entryInfoList(QDir::Dirs);
+		foreach (QFileInfo const &directory, infoList){
+			if (directory.baseName() == "qrxml") {
+				directoryName = directory.absolutePath() + "/qrxml";
+			}
+		}
+	}
+	QString const fileName = QFileDialog::getOpenFileName(mMainWindowInterface->windowWidget()
+			, tr("Select xml file to parse")
+			, directoryName
+			, "XML files (*.xml)");
+
+	if (fileName.isEmpty())
+		return;
+
+	XmlParser parser(*mLogicalRepoApi);
+
+	parser.parseFile(fileName);
+
+	parser.loadIncludeList(fileName);
+
+	mMainWindowInterface->reinitModels();
 }
 
 void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName

@@ -46,6 +46,11 @@ public:
 	/// @param pluginName Name of an editor plugin itself (as it will return in id())
 	/// @returns True, if plugin loaded successfully, false if plugin is not loaded.
 	virtual bool loadPlugin(QString const &fileName, QString const &pluginName) = 0;
+
+	/// Checks if an editor plugin is loaded
+	/// @param pluginName Name of a plugin to check (as it will return in id() method)
+	/// @returns True, if plugin is present and loaded
+	virtual bool pluginLoaded(QString const &pluginName) = 0;
 };
 
 }
