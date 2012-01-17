@@ -1,10 +1,12 @@
 #pragma once
 
-#include "preferencesPage.h"
+#include "../../../qrgui/dialogs/preferencesPages/preferencesPage.h"
 
 namespace Ui {
 	class PreferencesCompilerPage;
 }
+
+namespace metaEditor {
 
 class PreferencesCompilerPage : public PreferencesPage
 {
@@ -28,3 +30,5 @@ private:
 
 	Ui::PreferencesCompilerPage *mUi;
 };
+
+}

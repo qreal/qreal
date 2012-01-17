@@ -23,6 +23,7 @@ MetaEditorSupportPlugin::MetaEditorSupportPlugin()
 		, mGenerateEditorWithQrmcAction(NULL)
 		, mParseEditorXmlAction(NULL)
 		, mRepoControlApi(NULL)
+		, mCompilerSettingsPage(new PreferencesCompilerPage())
 {
 	mAppTranslator.load(":/metaEditorSupport_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
@@ -55,6 +56,11 @@ QList<ActionInfo> MetaEditorSupportPlugin::actions()
 
 	return QList<ActionInfo>() << generateEditorForQrxcActionInfo << generateEditorWithQrmcActionInfo
 			<< parseEditorXmlActionInfo;
+}
+
+QPair<QString, PreferencesPage *> MetaEditorSupportPlugin::preferencesPage()
+{
+	return qMakePair(QObject::tr("Compiler"), static_cast<PreferencesPage*>(mCompilerSettingsPage));
 }
 
 void MetaEditorSupportPlugin::generateEditorForQrxc()
