@@ -16,8 +16,15 @@ HEADERS += \
 	metaEditorSupportPlugin.h \
 	editorGenerator.h \
 	xmlParser.h \
+	compilerPage.h \
+	../../../qrgui/dialogs/preferencesPages/preferencesPage.h
 
 SOURCES += \
 	metaEditorSupportPlugin.cpp \
 	editorGenerator.cpp \
 	xmlParser.cpp \
+	compilerPage.cpp \
+
+FORMS += \
+	compilerPage.ui \
+

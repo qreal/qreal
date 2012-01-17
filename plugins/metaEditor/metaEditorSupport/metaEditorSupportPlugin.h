@@ -5,6 +5,8 @@
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
 
+#include "compilerPage.h"
+
 namespace metaEditor {
 
 class MetaEditorSupportPlugin : public QObject, public qReal::ToolPluginInterface
@@ -18,6 +20,7 @@ public:
 
 	virtual void init(qReal::PluginConfigurator const &configurator);
 	virtual QList<qReal::ActionInfo> actions();
+	virtual QPair<QString, PreferencesPage *> preferencesPage();
 
 private slots:
 
@@ -55,6 +58,10 @@ private:
 
 	/// Control API of a repository, used for requests such as current save file name
 	qrRepo::RepoControlInterface *mRepoControlApi;  // Does not have ownership
+
+	/// Page with plugin settings. Created here, but then ownership is passed to
+	/// a caller of preferencesPage().
+	PreferencesCompilerPage *mCompilerSettingsPage;  // Does not have ownership
 };
 
 }
