@@ -9,6 +9,9 @@
 
 namespace metaEditor {
 
+/// Main plugin class for metaeditor support code. Provides generation of editor
+/// by metamodel specified in .xml file or in QReal save file, compilation of
+/// generated editor and loading it to QReal, and parsing of existing .xml metamodel.
 class MetaEditorSupportPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
@@ -23,28 +26,34 @@ public:
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 
 private slots:
-
+	/// Generates .xml file with metamodel for later compilation with qrxc tool
 	void generateEditorForQrxc();
 
+	/// Generates .cpp/.h code ready to be compiled into editor plugin
 	void generateEditorWithQrmc();
 
+	/// Parses existing .xml with metamodel and shows it in QReal as logical model
+	/// in metaeditor
 	void parseEditorXml();
 
 private:
-	void loadNewEditor(QString const &directoryName
-			, QString const &metamodelName
-			, QString const &commandFirst
-			, QString const &commandSecond
-			, QString const &extension
-			, QString const &prefix);
+	/// Compiles and loads to QReal new editor plugin
+	void loadNewEditor(
+			QString const &directoryName  ///< Directory where editor was generated (containing .pro file of that editor)
+			, QString const &metamodelName  ///< Metamodel name as set in metamodel
+			, QString const &commandFirst  ///< qmake command
+			, QString const &commandSecond  ///< make command
+			, QString const &extension  ///< Extension of the resulting binary file with editor plugin (.dll/.so)
+			, QString const &prefix  ///< Optional OS-dependent prefix for resulting binary file (lib for linux, for example)
+			);
 
-
+	/// Action that starts generation of .xml file with metamodel for qrxc
 	QAction mGenerateEditorForQrxcAction;
 
-
+	/// Action that starts generation of C++ sources with qrmc
 	QAction mGenerateEditorWithQrmcAction;
 
-
+	/// Action that starts parsing of existing .xml metamodel
 	QAction mParseEditorXmlAction;
 
 	/// Thanslator object for this plugin, provides localisation

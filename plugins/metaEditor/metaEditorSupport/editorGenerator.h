@@ -11,6 +11,7 @@
 
 namespace metaEditor {
 
+/// Generates metamodel in .xml format to be compile into C++ sources by qrxc tool
 class EditorGenerator
 {
 public:

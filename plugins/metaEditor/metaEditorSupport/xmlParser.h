@@ -10,6 +10,7 @@
 
 namespace metaEditor {
 
+/// Parses existing .xml file with metamodel
 class XmlParser
 {
 public:
