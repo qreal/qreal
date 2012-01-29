@@ -51,12 +51,13 @@ void NxtFlashTool::nxtFlashingFinished(int exitCode, QProcess::ExitStatus exitSt
 {
 	qDebug() << "finished with code " << exitCode << ", status: " << exitStatus;
 
-	if (exitCode == 0)
+	if (exitCode == 0) {
 		mErrorReporter->addInformation(tr("Flashing process completed."));
-	else if (exitCode == 127)
+	} else if (exitCode == 127) {
 		mErrorReporter->addError(tr("flash.sh not found. Make sure it is present in QReal installation directory"));
-	else if (exitCode == 139)
+	} else if (exitCode == 139) {
 		mErrorReporter->addError(tr("QReal requires superuser privileges to flash NXT robot"));
+	}
 }
 
 void NxtFlashTool::readNxtFlashData()
@@ -66,13 +67,14 @@ void NxtFlashTool::readNxtFlashData()
 	qDebug() << "exit code:" << mFlashProcess.exitCode();
 	qDebug() << output;
 
-	foreach (QString error, output){
-		if (error == "NXT not found. Is it properly plugged in via USB?")
+	foreach (QString error, output) {
+		if (error == "NXT not found. Is it properly plugged in via USB?") {
 			mErrorReporter->addError(tr("NXT not found. Check USB connection and make sure the robot is ON"));
-		else if (error == "NXT found, but not running in reset mode.")
+		} else if (error == "NXT found, but not running in reset mode.") {
 			mErrorReporter->addError(tr("NXT is not in reset mode. Please reset your NXT manually and try again"));
-		else if (error == "Firmware flash complete.")
+		} else if (error == "Firmware flash complete.") {
 			mErrorReporter->addInformation(tr("Firmware flash complete!"));
+		}
 	}
 }
 
@@ -89,12 +91,11 @@ void NxtFlashTool::uploadProgram()
 	mErrorReporter->addInformation(tr("Uploading program started. Please don't disconnect robot during the process"));
 }
 
-
 void NxtFlashTool::nxtUploadingFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
 	qDebug() << "finished uploading with code " << exitCode << ", status: " << exitStatus;
 
-	if (exitCode == 127) {  // most likely wineconsole didn't start and generate files needed to proceed compilation
+	if (exitCode == 127) { // most likely wineconsole didn't start and generate files needed to proceed compilation
 		mErrorReporter->addError(tr("Uploading failed. Make sure that X-server allows root to run GUI applications"));
 	} else if (exitCode == 139) {
 		mErrorReporter->addError(tr("QReal requires superuser privileges to flash NXT robot"));
@@ -112,22 +113,23 @@ void NxtFlashTool::readNxtUploadData()
 	   to determine in which state we are (to show appropriate error if something goes wrong)
 	*/
 
-	foreach (QString error, output){
-		if (error.contains("Removing "))
+	foreach (QString error, output) {
+		if (error.contains("Removing ")) {
 			mUploadState = clean;
-		else if (error.contains("Compiling "))
+		} else if (error.contains("Compiling ")) {
 			mUploadState = compile;
-		else if (error.contains("Generating binary image file"))
+		} else if (error.contains("Generating binary image file")) {
 			mUploadState = link;
-		else if (error.contains("Executing NeXTTool to upload"))
+		} else if (error.contains("Executing NeXTTool to upload")) {
 			mUploadState = uploadStart;
-		else if (error.contains("_OSEK.rxe="))
+		} else if (error.contains("_OSEK.rxe=")) {
 			mUploadState = flash;
-		else if (error.contains("NeXTTool is terminated")) {
-			if (mUploadState == uploadStart)
+		} else if (error.contains("NeXTTool is terminated")) {
+			if (mUploadState == uploadStart) {
 				mErrorReporter->addError(tr("Could not upload program. Make sure the robot is connected and ON"));
-			else if (mUploadState == flash)
+			} else if (mUploadState == flash) {
 				mErrorReporter->addInformation(tr("Uploading completed successfully"));
+			}
 			mUploadState = done;
 		}
 		else if (error.contains("An unhandled exception occurred")) {
@@ -137,3 +139,4 @@ void NxtFlashTool::readNxtUploadData()
 	}
 	qDebug() << "NxtFlashTool::readNxtUploadData" << mUploadState;
 }
+
