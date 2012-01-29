@@ -133,6 +133,16 @@
                     <name>programfilesosx</name>
                     <platforms>osx</platforms>
                 </folder>
+                <folder>
+                    <destination>${installdir}/sqldrivers</destination>
+                    <name>sqldriverswindows</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>%2/../plugins/sqldrivers/qsqlite4.dll</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
             </folderList>
             <startMenuShortcutList>
                 <startMenuShortcut>
