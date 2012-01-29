@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QString>
+#include <QtCore/QString>
 #include "../../../../qrkernel/ids.h"
 
 namespace robots {
