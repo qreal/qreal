@@ -49,13 +49,19 @@ public:
 	void drawBeep(QColor const &color);
 	QPolygonF const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
 
-	/** @brief Get current scene position of mRobot */
+	/// Get current scene position of mRobot
 	QPointF robotPos() const;
 
-	/** @brief Returns false if we click on robot and move it somewhere */
+	/// Returns false if we click on robot and move it somewhere
 	bool isRobotOnTheGround();
 
 	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
+
+	/// Enables Run and Stop buttons
+	void enableRunStopButtons();
+
+	/// Disables Run and Stop buttons, used when current tab is not related to robots
+	void disableRunStopButtons();
 
 	D2ModelScene* scene();
 	void setSensorVisible(inputPort::InputPortEnum port, bool isVisible);
@@ -91,6 +97,42 @@ private slots:
 	void changePalette();
 
 private:
+	void connectUiButtons();
+	void drawWalls();
+	void drawColorFields();
+	void drawInitialRobot();
+
+	/** @brief Set active panel toggle button and deactivate all others */
+	void setActiveButton(int active);
+
+	/** @brief Get QComboBox that sets current sensor's type */
+	QComboBox *currentComboBox();
+
+	/** @brief Get QPushButton for current sensor */
+	QPushButton *currentPortButton();
+
+	/** Deletes sensor for given port and removes it from scene and the robot */
+	void removeSensor(inputPort::InputPortEnum port);
+
+	/// Adds sensor to a scene and a robot
+	void addSensor(inputPort::InputPortEnum port, sensorType::SensorTypeEnum type);
+
+	/// Reread sensor configuration on given port, delete old sensor item and create new.
+	void reinitSensor(inputPort::InputPortEnum port);
+
+	void reshapeWall(QGraphicsSceneMouseEvent *event);
+	void reshapeLine(QGraphicsSceneMouseEvent *event);
+	void reshapeStylus(QGraphicsSceneMouseEvent *event);
+
+		void setValuePenColorComboBox(QColor penColor);
+		void setValuePenWidthSpinBox(int width);
+	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
+	void setNoPalette();
+
+	void initWidget();
+	QList<graphicsUtils::AbstractItem *> selectedColorItems();
+	bool isColorItem(graphicsUtils::AbstractItem *item);
+
 	Ui::D2Form *mUi;
 	D2ModelScene *mScene;
 	RobotItem *mRobot;
@@ -149,41 +191,6 @@ private:
 	Rotater *mRotater;
 	QVector<Rotater *> mSensorRotaters;
 
-	void connectUiButtons();
-	void drawWalls();
-	void drawColorFields();
-	void drawInitialRobot();
-
-	/** @brief Set active panel toggle button and deactivate all others */
-	void setActiveButton(int active);
-
-	/** @brief Get QComboBox that sets current sensor's type */
-	QComboBox *currentComboBox();
-
-	/** @brief Get QPushButton for current sensor */
-	QPushButton *currentPortButton();
-
-	/** Deletes sensor for given port and removes it from scene and the robot */
-	void removeSensor(inputPort::InputPortEnum port);
-
-	/// Adds sensor to a scene and a robot
-	void addSensor(inputPort::InputPortEnum port, sensorType::SensorTypeEnum type);
-
-	/// Reread sensor configuration on given port, delete old sensor item and create new.
-	void reinitSensor(inputPort::InputPortEnum port);
-
-	void reshapeWall(QGraphicsSceneMouseEvent *event);
-	void reshapeLine(QGraphicsSceneMouseEvent *event);
-	void reshapeStylus(QGraphicsSceneMouseEvent *event);
-
-		void setValuePenColorComboBox(QColor penColor);
-		void setValuePenWidthSpinBox(int width);
-	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
-	void setNoPalette();
-
-	void initWidget();
-	QList<graphicsUtils::AbstractItem *> selectedColorItems();
-	bool isColorItem(graphicsUtils::AbstractItem *item);
 };
 
 }

@@ -1,10 +1,13 @@
 #pragma once
 
-#include <QtGui/QMainWindow>
-#include <QtSql/QSqlDatabase>
+#include <QtCore/QSignalMapper>
+#include <QtCore/QTranslator>
 #include <QtCore/QDir>
-#include <QSplashScreen>
-#include <QtGui>
+#include <QtGui/QMainWindow>
+#include <QtGui/QSplashScreen>
+#include <QtGui/QProgressBar>
+#include <QtGui/QListWidget>
+#include <QtSql/QSqlDatabase>
 
 #include "../pluginManager/editorManager.h"
 #include "../pluginManager/toolPluginManager.h"
@@ -160,6 +163,7 @@ private slots:
 	void setBreakpointAtStart();
 	void startDebugging();
 	void checkEditorForDebug(int index);
+
 	void deleteFromDiagram();
 	void changeMiniMapSource(int index);
 	void closeTab(int index);
@@ -186,7 +190,11 @@ private slots:
 	void logicalModelExplorerClicked(const QModelIndex &index);
 
 	void openNewTab(const QModelIndex &index);
-	void initCurrentTab(const QModelIndex &rootIndex);
+
+
+	/// Called after current tab was changed somehow --- opened, closed, switched to other
+	/// @param newIndex Index of a new active tab, -1 if there is none
+	void currentTabChanged(int newIndex);
 
 	void showGestures();
 	void showAlignment(bool isChecked);
@@ -210,7 +218,17 @@ private slots:
 	void closeProjectAndSave();
 
 private:
-	void createDiagram(const QString &idString);
+	/// Initializes a tab if it is a diagram --- sets its logical and graphical
+	/// models, connects to various main window actions and so on
+	/// @param tab Tab to be initialized
+	/// @param rootIndex Index of a graphical model element that will be root of a diagram shown in this tab
+	void initCurrentTab(EditorView * const tab, const QModelIndex &rootIndex);
+
+	/// Sets shortcuts for a given tab which don`t have own buttons anywhere
+	/// @param tab Tab to be initialized with shortcuts
+	void setShortcuts(EditorView * const tab);
+
+	void createDiagram(QString const &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
 			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
 
@@ -241,22 +259,17 @@ private:
 	void setSwitchGrid(bool isChecked);
 	void setSwitchAlignment(bool isChecked);
 
-	/// sets shortcuts which don`t have own buttons anywhere
-	void setShortcuts();
-
 	void setIndexesOfPropertyEditor(Id const &id);
 
-	/** @brief Check if we need to hide widget in fullscreen mode or not. If we do, hide it
-		@param dockWidget QDockWidget to hide
-		@param name Widget's name in internal map
-	*/
-	void hideDockWidget(QDockWidget *dockWidget, QString name);
+	/// Check if we need to hide widget in fullscreen mode or not. If we do, hide it
+	/// @param dockWidget QDockWidget to hide
+	/// @param name Widget's name in internal map
+	void hideDockWidget(QDockWidget *dockWidget, QString const &name);
 
-	/** @brief Check if we need to show widget in fullscreen mode or not. If we do, show it
-		@param dockWidget QDockWidget to show
-		@param name Widget's name in internal map
-	*/
-	void showDockWidget(QDockWidget *dockWidget, QString name);
+	/// Check if we need to show widget in fullscreen mode or not. If we do, show it
+	/// @param dockWidget QDockWidget to show
+	/// @param name Widget's name in internal map
+	void showDockWidget(QDockWidget *dockWidget, QString const &name);
 
 	QString getNextDirName(QString const &name);
 

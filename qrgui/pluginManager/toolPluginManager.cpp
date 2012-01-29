@@ -88,3 +88,10 @@ void ToolPluginManager::updateSettings()
 		toolPlugin->updateSettings();
 	}
 }
+
+void ToolPluginManager::activeTabChanged(Id const & rootElementId)
+{
+	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
+		toolPlugin->activeTabChanged(rootElementId);
+	}
+}
