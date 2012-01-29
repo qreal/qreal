@@ -138,6 +138,16 @@ void Interpreter::setD2ModelWidgetActions(QAction *runAction, QAction *stopActio
 	mD2ModelWidget->setD2ModelWidgetActions(runAction, stopAction);
 }
 
+void Interpreter::enableD2ModelWidgetRunStopButtons()
+{
+	mD2ModelWidget->enableRunStopButtons();
+}
+
+void Interpreter::disableD2ModelWidgetRunStopButtons()
+{
+	mD2ModelWidget->disableRunStopButtons();
+}
+
 void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum implementationType)
 {
 	mConnected = false;
