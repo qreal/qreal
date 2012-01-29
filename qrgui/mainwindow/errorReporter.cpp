@@ -1,5 +1,8 @@
 #include "errorReporter.h"
+
 #include <QtGui/QMessageBox>
+#include <QtGui/QDockWidget>
+
 #include "errorListWidget.h"
 #include "../../qrkernel/exception/exception.h"
 
