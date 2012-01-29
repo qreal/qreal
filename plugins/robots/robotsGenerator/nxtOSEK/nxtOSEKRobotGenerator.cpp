@@ -18,7 +18,7 @@ NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(qrRepo::RepoControlInterface &api
 		, mErrorReporter(errorReporter)
 {
 	mIsNeedToDeleteMApi = false;
-	mApi = dynamic_cast<qrRepo::RepoApi *>(&api);  // TODO: ???
+	mApi = dynamic_cast<qrRepo::RepoApi *>(&api);  // TODO: remove unneeded dynamic_cast or provide strong argumentation why it is needed.
 }
 
 NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo
