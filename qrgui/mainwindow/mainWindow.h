@@ -19,7 +19,6 @@
 #include "../../qrkernel/settingsManager.h"
 #include "../../qrgui/dialogs/preferencesDialog.h"
 #include "../textEditor/codeEditor.h"
-#include "nxtFlashTool.h"
 #include "helpBrowser.h"
 
 #include "../models/logicalModelAssistApi.h"
@@ -40,7 +39,6 @@ class Models;
 
 namespace gui {
 class ErrorReporter;
-class NxtFlashTool;
 }
 
 class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpretersInterface
@@ -71,6 +69,10 @@ public:
 
 	/// Tells if we should display trace connections menu or not
 	bool showConnectionRelatedMenus() const;
+
+	virtual void showInTextEditor(QString const &title, QString const &text);
+
+	virtual void reinitModels();
 
 signals:
 	void gesturesShowed();
@@ -121,7 +123,7 @@ private slots:
 	bool open(QString const &dirName);
 	bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
 	void saveProjectAs();
-	void saveAll();
+	virtual void saveAll();
 	void fullscreen();
 	void openRecentProjectsMenu();
 	bool openNewProject();
@@ -138,8 +140,6 @@ private slots:
 
 	void sceneSelectionChanged();
 
-	void doCheckout();
-	void doCommit();
 	void exportToXmi();
 	void generateToJava();
 	void parseJavaLibraries();
@@ -174,13 +174,7 @@ private slots:
 
 	void generateEditor();
 	void parseEditorXml();
-	void generateToHascol();
-	void parseHascol();
 	void showPreferencesDialog();
-
-	void generateRobotSourceCode();
-	void flashRobot();
-	void uploadProgram();
 
 	void connectActions();
 	void connectDebugActions();
@@ -274,7 +268,6 @@ private:
 	QString getNextDirName(QString const &name);
 
 	void initToolPlugins();
-	void checkNxtTools();
 
 	QProgressBar *createProgressBar(QSplashScreen* splash);
 	void initMiniMap();
@@ -321,9 +314,6 @@ private:
 	QString mTempDir;
 	PreferencesDialog mPreferencesDialog;
 
-	gui::NxtFlashTool *mFlashTool;
-
-	bool mNxtToolsPresent;
 	HelpBrowser *mHelpBrowser;
 	bool mIsNewProject;
 	bool mUnsavedProjectIndicator;
