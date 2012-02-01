@@ -673,11 +673,11 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			// commented because of bug with double event sending (see #204)
 	//		mHighlightedNode = NULL;
 
-			mGraphicalAssistApi->changeParent(id(), newParent->id(),
+			mGraphicalAssistApi->changeParent(id(), newParent->id(),//asd
 				mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
 
 			if (insertBefore != NULL) {
-				mGraphicalAssistApi->stackBefore(id(), insertBefore->id());
+				mGraphicalAssistApi->stackBefore(id(), insertBefore->id());//asd
 			}
 
 			newParent->resize(newParent->mContents);
@@ -688,7 +688,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
 			}
 		} else {
-			mGraphicalAssistApi->changeParent(id(), evScene->rootItemId(), scenePos());
+			mGraphicalAssistApi->changeParent(id(), evScene->rootItemId(), scenePos());//asd
 		}
 	}
 
@@ -1572,8 +1572,9 @@ void NodeElement::selectionState(bool const selected)
 	Element::selectionState(selected);
 }
 
-void NodeElement::highlightEdges()
+void NodeElement::disconnectEdges()
 {
-	foreach (EdgeElement *edge, mEdgeList)
-		edge->highlight();
+	foreach (EdgeElement *edge, mEdgeList) {
+		edge->disconnectFromNode(logicalId());
+	}
 }

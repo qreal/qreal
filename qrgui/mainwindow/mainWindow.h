@@ -11,6 +11,7 @@
 
 #include "../pluginManager/editorManager.h"
 #include "../pluginManager/toolPluginManager.h"
+#include "../pluginManager/constraintsManager.h" //qwerty
 #include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
@@ -97,6 +98,8 @@ public slots:
 	void selectItemWithError(Id const &id);
 
 	void showErrors(gui::ErrorReporter const * const errorReporter);
+
+	void checkConstraints(Id const &id);
 
 private slots:
 
@@ -291,6 +294,7 @@ private:
 	models::Models *mModels;
 	EditorManager mEditorManager;
 	ToolPluginManager mToolManager;
+	ConstraintsManager mConstraintsManager;//qwerty
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
 	GesturesWidget *mGesturesWidget;

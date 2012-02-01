@@ -6,14 +6,19 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-ModelsAssistApi::ModelsAssistApi(AbstractModel &model, EditorManager const &editorManager)
-	: mModel(model), mEditorManager(editorManager)
+ModelsAssistApi::ModelsAssistApi(AbstractModel &model, EditorManager const &editorManager, ConstraintsManager const &constraintsManager)
+	: mModel(model), mEditorManager(editorManager), mConstraintsManager(constraintsManager)//qwerty
 {
 }
 
 EditorManager const &ModelsAssistApi::editorManager() const
 {
 	return mEditorManager;
+}
+
+ConstraintsManager const &ModelsAssistApi::constraintsManager() const//qwerty
+{
+	return mConstraintsManager;
 }
 
 Id ModelsAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
@@ -32,6 +37,7 @@ Id ModelsAssistApi::createElement(Id const &parent, Id const &id, bool isFromLog
 void ModelsAssistApi::setProperty(Id const &elem, QVariant const &newValue, int const role)
 {
 	mModel.setData(indexById(elem), newValue, role);
+	emit propertyChanged(elem);
 }
 
 void ModelsAssistApi::stackBefore(Id const &element, Id const &sibling)

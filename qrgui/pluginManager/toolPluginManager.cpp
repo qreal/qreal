@@ -22,8 +22,8 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 		QObject *plugin = loader->instance();
 
 		if (plugin) {
-			ToolPluginInterface *toolPlugin = qobject_cast<ToolPluginInterface *>(plugin);
-			if (toolPlugin) {
+                        ToolPluginInterface *toolPlugin = qobject_cast<ToolPluginInterface *>(plugin);
+                        if (toolPlugin) {
 				mPlugins << toolPlugin;
 				mLoaders << loader;
 			}

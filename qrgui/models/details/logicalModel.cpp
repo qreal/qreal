@@ -8,12 +8,12 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const &editorManager)
-	: AbstractModel(editorManager), mGraphicalModelView(this), mApi(*repoApi)
+LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const &editorManager, ConstraintsManager const &constraintsManager)
+	: AbstractModel(editorManager, constraintsManager), mGraphicalModelView(this), mApi(*repoApi)//qwerty
 {
 	mRootItem = new LogicalModelItem(Id::rootId(), NULL);
 	init();
-	mLogicalAssistApi = new LogicalModelAssistApi(*this, editorManager);
+	mLogicalAssistApi = new LogicalModelAssistApi(*this, editorManager, constraintsManager);//qwerty
 }
 
 LogicalModel::~LogicalModel()

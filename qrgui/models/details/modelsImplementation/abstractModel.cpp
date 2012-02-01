@@ -6,8 +6,8 @@
 using namespace qReal;
 using namespace models::details::modelsImplementation;
 
-AbstractModel::AbstractModel(const EditorManager &editorManager)
-	: mEditorManager(editorManager)
+AbstractModel::AbstractModel(const EditorManager &editorManager, ConstraintsManager const &constraintsManager)
+	: mEditorManager(editorManager), mConstraintsManager(constraintsManager)//qwerty
 {
 }
 
@@ -120,6 +120,11 @@ QStringList AbstractModel::mimeTypes() const
 EditorManager const &AbstractModel::editorManager() const
 {
 	return mEditorManager;
+}
+
+ConstraintsManager const &AbstractModel::constraintsManager() const//qwerty
+{
+	return mConstraintsManager;
 }
 
 QModelIndex AbstractModel::indexById(Id const &id) const

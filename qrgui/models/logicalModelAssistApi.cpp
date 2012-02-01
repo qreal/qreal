@@ -5,14 +5,25 @@ using namespace qReal;
 using namespace models;
 using namespace models::details;
 
-LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel, EditorManager const &editorManager)
-	: mModelsAssistApi(logicalModel, editorManager), mLogicalModel(logicalModel)
+LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel, EditorManager const &editorManager, ConstraintsManager const &constraintsManager)
+	: mModelsAssistApi(logicalModel, editorManager, constraintsManager), mLogicalModel(logicalModel)//qwerty
 {
+	QObject::connect(&mModelsAssistApi, SIGNAL(propertyChanged(Id)), this, SLOT(propertyChangedSlot(Id)));
+}
+
+void LogicalModelAssistApi::propertyChangedSlot(Id const &elem)
+{
+	emit propertyChanged(elem);
 }
 
 EditorManager const &LogicalModelAssistApi::editorManager() const
 {
 	return mModelsAssistApi.editorManager();
+}
+
+ConstraintsManager const &LogicalModelAssistApi::constraintsManager() const
+{
+	return mModelsAssistApi.constraintsManager();
 }
 
 qrRepo::LogicalRepoApi const &LogicalModelAssistApi::logicalRepoApi() const

@@ -70,3 +70,7 @@ include (interpreters/interpreters.pri)
 
 # Text Editor
 include (textEditor/textEditor.pri)
+
+# Interfaces for constraints plugins.
+include (constraintsPluginInterface/constraintsPluginInterface.pri)
+

@@ -11,6 +11,7 @@
 namespace qReal {
 
 class EditorManager;
+class ConstraintsManager;//qwerty
 
 namespace models {
 
@@ -20,11 +21,14 @@ namespace modelsImplementation {
 class AbstractModel;
 }
 
-class ModelsAssistApi
+class ModelsAssistApi : public QObject
 {
+	Q_OBJECT
+
 public:
-	ModelsAssistApi(details::modelsImplementation::AbstractModel &model, EditorManager const &editorManager);
+	ModelsAssistApi(details::modelsImplementation::AbstractModel &model, EditorManager const &editorManager, ConstraintsManager const &constraintsManager);//qwerty
 	EditorManager const &editorManager() const;
+	ConstraintsManager const &constraintsManager() const;//qwerty
 	Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);
 
 	/// Stacks item element before sibling (they should have the same parent)
@@ -46,9 +50,12 @@ public:
 	int childrenOfRootDiagram() const;
 	int childrenOfDiagram(const Id &parent) const;
 
-	void setProperty(Id const &elem, QVariant const &newValue, int const role);
+	void setProperty(Id const &elem, QVariant const &newValue, int const role);//asd
 	QVariant property(Id const &elem, int const role) const;
 	int roleIndexByName(Id const &elem, QString const &roleName) const;
+
+signals:
+	void propertyChanged(Id const &elem);
 
 private:
 
@@ -57,6 +64,7 @@ private:
 
 	details::modelsImplementation::AbstractModel &mModel;
 	EditorManager const &mEditorManager;
+	ConstraintsManager const &mConstraintsManager;
 };
 }
 }

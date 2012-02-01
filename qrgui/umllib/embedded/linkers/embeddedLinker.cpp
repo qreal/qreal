@@ -254,7 +254,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			} else if ((result == +1) && target) {
 				QPointF const &posRelativeToTheTarget = target->mapFromScene(eScenePos);
 				mEdge->placeEndTo(mapFromItem(target, target->getNearestPort(posRelativeToTheTarget)));
-				mEdge->connectToPort();	//it provokes to move target somehow, so it needs to place edge end and connect to port again
+				mEdge->connectToPort(); //it provokes to move target somehow, so it needs to place edge end and connect to port again
 				mEdge->placeEndTo(mapFromItem(target, target->getNearestPort(posRelativeToTheTarget)));
 				mEdge->adjustLink();
 			}

@@ -118,7 +118,7 @@ MainWindow::MainWindow()
 	if (saveFile.exists())
 		mSaveFile = saveFile.absoluteFilePath();
 
-	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
+	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager, mConstraintsManager);//qwerty
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
@@ -183,7 +183,7 @@ MainWindow::MainWindow()
 	setAutoSaveParameters();
 	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
 	connectWindowTitle();
-
+	connect(&mModels->logicalModelAssistApi(), SIGNAL(propertyChanged(Id)), this, SLOT(checkConstraints(Id)));
 }
 
 void MainWindow::connectActions()
@@ -697,7 +697,7 @@ void MainWindow::deleteFromScene(QGraphicsItem *target)
 		if (index.isValid()) {
 			NodeElement* const node = dynamic_cast<NodeElement*>(elem);
 			if (node) {
-				node->highlightEdges();
+				node->disconnectEdges();
 			}
 			EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(elem);
 			NodeElement* source = NULL;
@@ -2081,4 +2081,18 @@ void MainWindow::closeProject()
 		static_cast<EditorViewScene*>(getCurrentTab()->scene())->clearScene();
 	closeAllTabs();
 	setWindowTitle(mToolManager.customizer()->windowTitle());
+}
+
+void MainWindow::checkConstraints(Id const &id)//qwerty
+{
+	IdList graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(id);
+	IdList listOfElements;
+	listOfElements.append(mModels->logicalId(id));
+	if (mConstraintsManager.check(listOfElements, mModels->logicalModelAssistApi().logicalRepoApi())) {//qwerty
+		dehighlight();
+	} else {
+		foreach (Id graphicalId, graphicalIds) {
+			highlight(graphicalId);
+		}
+	}
 }

@@ -12,6 +12,7 @@
 #include "nodeElement.h"
 #include "../view/editorViewScene.h"
 #include "../editorPluginInterface/editorInterface.h"
+#include "../pluginManager/constraintsManager.h"
 
 using namespace qReal;
 
@@ -21,16 +22,16 @@ const double pi = 3.14159265358979;
 // static bool moving = false;
 
 EdgeElement::EdgeElement(ElementImpl *impl)
-: mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
-, mSrc(NULL), mDst(NULL)
-, mPortFrom(0), mPortTo(0)
-, mDragPoint(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL)
-, mAddPointAction(tr("Add point"), this)
-, mDelPointAction(tr("Delete point"), this)
-, mSquarizeAction(tr("Squarize"), this)
-, mMinimizeAction(tr("Remove all points"), this)
-, mElementImpl(impl)
-, mLastDragPoint(-1)
+	: mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
+	, mSrc(NULL), mDst(NULL)
+	, mPortFrom(0), mPortTo(0)
+	, mDragPoint(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL)
+	, mAddPointAction(tr("Add point"), this)
+	, mDelPointAction(tr("Delete point"), this)
+	, mSquarizeAction(tr("Squarize"), this)
+	, mMinimizeAction(tr("Remove all points"), this)
+	, mElementImpl(impl)
+	, mLastDragPoint(-1)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
@@ -332,11 +333,15 @@ void EdgeElement::connectToPort()
 		squarizeHandler(QPointF());
 	adjustLink();
 	arrangeSrcAndDst();
-	if (getNodeAt(mLine.first()) != NULL && getNodeAt(mLine.last()) != NULL)
-		highlight(mPenColor);
-	else
-		highlight(Qt::red);
 
+//	ConstraintsManager constraitsManager = mLogicalAssistApi->constraintsManager();//qwerty
+//	IdList listOfElements;
+//	listOfElements.append(logicalId());
+//	if(constraitsManager.check(listOfElements, mLogicalAssistApi->logicalRepoApi()))//qwerty
+//		//if (getNodeAt(mLine.first()) != NULL && getNodeAt(mLine.last()) != NULL)
+//		highlight(mPenColor);
+//	else
+//		highlight(Qt::red);
 }
 
 bool EdgeElement::initPossibleEdges()
@@ -350,7 +355,7 @@ bool EdgeElement::initPossibleEdges()
 	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(id().element());
 	foreach (StringPossibleEdge pEdge, stringPossibleEdges) {
 		QPair<qReal::Id, qReal::Id> nodes(Id(editor, diagram, pEdge.first.first),
-		Id(editor, diagram, pEdge.first.second));
+										  Id(editor, diagram, pEdge.first.second));
 		QPair<bool, qReal::Id> edge(pEdge.second.first, Id(editor, diagram, pEdge.second.second));
 		PossibleEdge possibleEdge(nodes, edge);
 		possibleEdges.push_back(possibleEdge);
@@ -558,9 +563,9 @@ void EdgeElement::removeUnneededPoints(int startingPoint)
 {
 	if (startingPoint + 2 < mLine.size()) {
 		if ((mLine[startingPoint].x() == mLine[startingPoint + 1].x() &&
-		mLine[startingPoint].x() == mLine[startingPoint + 2].x()) ||
-		(mLine[startingPoint].y() == mLine[startingPoint + 1].y() &&
-		mLine[startingPoint].y() == mLine[startingPoint + 2].y()))
+			 mLine[startingPoint].x() == mLine[startingPoint + 2].x()) ||
+				(mLine[startingPoint].y() == mLine[startingPoint + 1].y() &&
+				 mLine[startingPoint].y() == mLine[startingPoint + 2].y()))
 		{
 			delPointHandler(mLine[startingPoint + 1]);
 		}
@@ -953,8 +958,15 @@ QPointF EdgeElement::to() const
 	return mLine.last() + pos();
 }
 
-void EdgeElement::highlight(QColor const color)
+void EdgeElement::disconnectFromNode(Id const &nodeLogicalId)
 {
-	mColor = color;
-	update();
+	if (mLogicalAssistApi->to(logicalId()) == nodeLogicalId) {
+		mLogicalAssistApi->setTo(logicalId(), Id::rootId());
+		mDst = NULL;
+	}
+
+	if (mLogicalAssistApi->from(logicalId()) == nodeLogicalId) {
+		mLogicalAssistApi->setFrom(logicalId(), Id::rootId());
+		mSrc = NULL;
+	}
 }

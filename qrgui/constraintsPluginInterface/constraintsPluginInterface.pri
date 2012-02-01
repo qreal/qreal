@@ -1,0 +1,2 @@
+HEADERS += \
+        constraintsPluginInterface/constraintsPluginInterface.h \

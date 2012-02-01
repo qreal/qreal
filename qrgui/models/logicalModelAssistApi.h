@@ -7,6 +7,7 @@
 namespace qReal {
 
 class EditorManager;
+class ConstraintsManager;//qwerty
 
 namespace models {
 
@@ -14,11 +15,14 @@ namespace details {
 class LogicalModel;
 }
 
-class LogicalModelAssistApi : public qReal::LogicalModelAssistInterface
+class LogicalModelAssistApi : public QObject, public qReal::LogicalModelAssistInterface
 {
+	Q_OBJECT
+
 public:
-	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManager const &editorManager);
+	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManager const &editorManager, ConstraintsManager const &constraintsManager);//qwerty
 	EditorManager const &editorManager() const;
+	ConstraintsManager const &constraintsManager() const;//qwerty
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const;
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi();
 	Id createElement(Id const &parent, Id const &type);
@@ -56,6 +60,12 @@ public:
 	bool hasRootDiagrams() const;
 	int childrenOfRootDiagram() const;
 	int childrenOfDiagram(const Id &parent) const;
+
+public slots:
+	void propertyChangedSlot(Id const &elem);
+
+signals:
+	void propertyChanged(Id const &elem);
 
 private:
 	details::ModelsAssistApi mModelsAssistApi;

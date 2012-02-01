@@ -5,6 +5,7 @@
 
 #include "element.h"
 #include "../editorPluginInterface/elementImpl.h"
+#include "../../qrkernel/ids.h"
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
@@ -65,7 +66,7 @@ public:
 	bool isBreakPointPressed();
 	void breakPointUnpressed();
 
-	void highlight(QColor const color = Qt::red);
+	void disconnectFromNode(qReal::Id const &nodeLogicalId);
 
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);

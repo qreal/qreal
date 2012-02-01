@@ -10,12 +10,12 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const EditorManager &editorManager)
-	: AbstractModel(editorManager), mLogicalModelView(this), mApi(*repoApi)
+GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const EditorManager &editorManager, ConstraintsManager const &constraintsManager)
+	: AbstractModel(editorManager, constraintsManager), mLogicalModelView(this), mApi(*repoApi)//qwerty
 {
 	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);
 	init();
-	mGraphicalAssistApi = new GraphicalModelAssistApi(*this, editorManager);
+	mGraphicalAssistApi = new GraphicalModelAssistApi(*this, editorManager, constraintsManager);//qwerty
 }
 
 GraphicalModel::~GraphicalModel()
