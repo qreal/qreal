@@ -20,6 +20,7 @@ public:
 	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManager const &editorManager);
 	EditorManager const &editorManager() const;
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const;
+	qrRepo::LogicalRepoApi &mutableLogicalRepoApi();
 	Id createElement(Id const &parent, Id const &type);
 	Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);
 	IdList children(Id const &element) const;

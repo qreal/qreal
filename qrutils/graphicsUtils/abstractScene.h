@@ -1,17 +1,19 @@
 #pragma once
 
-#include <QGraphicsScene>
+#include <QtGui/QGraphicsScene>
+
 #include "abstractItemView.h"
 #include "abstractItem.h"
 #include "../utilsDeclSpec.h"
 
 namespace graphicsUtils
 {
+
 class QRUTILS_EXPORT AbstractScene : public QGraphicsScene
 {
 	Q_OBJECT
+
 public:
-	QGraphicsRectItem *mEmptyRect;
 	explicit AbstractScene(AbstractView *view, QObject *parent = 0);
 	QRect realItemsBoundingRect() const;
 
@@ -57,7 +59,9 @@ protected:
 	QString mBrushStyleItems;
 	QString mBrushColorItems;
 
-        int mFirstPenWidth;
+	int mFirstPenWidth;
+
+	QGraphicsRectItem *mEmptyRect;
 
 	void setEmptyRect(int x, int y, int w, int h);
 

@@ -18,8 +18,8 @@ EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	, mGraphicalAssistApi(NULL)
 	, mLogicalAssistApi(NULL)
 {
-	mScene->mv_iface = this;
-	mScene->view = mView;
+	mScene->mMVIface = this;
+	mScene->mView = mView;
 }
 
 EditorViewMViface::~EditorViewMViface()
@@ -111,7 +111,7 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 
 Id EditorViewMViface::rootId()
 {
-	return mGraphicalAssistApi->idByIndex(rootIndex());
+	return mGraphicalAssistApi ? mGraphicalAssistApi->idByIndex(rootIndex()) : Id();
 }
 
 void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int end)
@@ -134,7 +134,9 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		}
 
 		Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentId);
-		elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
+		if (elem) {
+			elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
+		}
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;

@@ -626,7 +626,8 @@ QList<PossibleEdge> EdgeElement::getPossibleEdges()
 void EdgeElement::delPointHandler(QPointF const &pos)
 {
 	int pointIndex = getPoint(pos);
-	if (pointIndex != -1) {
+	// it is understood that there is a point and its index is equal to the index of the first and last (end) points
+	if (pointIndex != -1 && pointIndex != mLine.count() - 1 && pointIndex) {
 		prepareGeometryChange();
 		mLine.remove(pointIndex);
 		mLongPart = 0;

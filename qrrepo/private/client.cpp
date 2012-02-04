@@ -23,10 +23,13 @@ void Client::init()
 
 Client::~Client()
 {
-	delete mObjects[Id::rootId()];
-	mObjects.remove(Id::rootId());
 	serializer.saveToDisk(mObjects.values());
 	serializer.clearWorkingDir();
+
+	foreach (Id id, mObjects.keys()) {
+		delete mObjects[id];
+		mObjects.remove(id);
+	}
 }
 
 IdList Client::children(Id const &id) const

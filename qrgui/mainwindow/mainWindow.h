@@ -1,10 +1,13 @@
 #pragma once
 
-#include <QtGui/QMainWindow>
-#include <QtSql/QSqlDatabase>
+#include <QtCore/QSignalMapper>
+#include <QtCore/QTranslator>
 #include <QtCore/QDir>
-#include <QSplashScreen>
-#include <QtGui>
+#include <QtGui/QMainWindow>
+#include <QtGui/QSplashScreen>
+#include <QtGui/QProgressBar>
+#include <QtGui/QListWidget>
+#include <QtSql/QSqlDatabase>
 
 #include "../pluginManager/editorManager.h"
 #include "../pluginManager/toolPluginManager.h"
@@ -16,7 +19,6 @@
 #include "../../qrkernel/settingsManager.h"
 #include "../../qrgui/dialogs/preferencesDialog.h"
 #include "../textEditor/codeEditor.h"
-#include "nxtFlashTool.h"
 #include "helpBrowser.h"
 
 #include "../models/logicalModelAssistApi.h"
@@ -37,7 +39,6 @@ class Models;
 
 namespace gui {
 class ErrorReporter;
-class NxtFlashTool;
 }
 
 class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpretersInterface
@@ -68,6 +69,10 @@ public:
 
 	/// Tells if we should display trace connections menu or not
 	bool showConnectionRelatedMenus() const;
+
+	virtual void showInTextEditor(QString const &title, QString const &text);
+
+	virtual void reinitModels();
 
 signals:
 	void gesturesShowed();
@@ -118,7 +123,7 @@ private slots:
 	bool open(QString const &dirName);
 	bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
 	void saveProjectAs();
-	void saveAll();
+	virtual void saveAll();
 	void fullscreen();
 	void openRecentProjectsMenu();
 	bool openNewProject();
@@ -135,8 +140,6 @@ private slots:
 
 	void sceneSelectionChanged();
 
-	void doCheckout();
-	void doCommit();
 	void exportToXmi();
 	void generateToJava();
 	void parseJavaLibraries();
@@ -164,16 +167,14 @@ private slots:
 	void deleteFromDiagram();
 	void changeMiniMapSource(int index);
 	void closeTab(int index);
-	void closeTab(QModelIndex const &graphicsIndex);
+
+	/// Closes the appropriate tab if the specified index corresponds to the diagram on one of the tabs
+	/// @return true if one of the tabs was closed
+	bool closeTab(QModelIndex const &graphicsIndex);
+
 	void generateEditor();
 	void parseEditorXml();
-	void generateToHascol();
-	void parseHascol();
 	void showPreferencesDialog();
-
-	void generateRobotSourceCode();
-	void flashRobot();
-	void uploadProgram();
 
 	void connectActions();
 	void connectDebugActions();
@@ -183,7 +184,11 @@ private slots:
 	void logicalModelExplorerClicked(const QModelIndex &index);
 
 	void openNewTab(const QModelIndex &index);
-	void initCurrentTab(const QModelIndex &rootIndex);
+
+
+	/// Called after current tab was changed somehow --- opened, closed, switched to other
+	/// @param newIndex Index of a new active tab, -1 if there is none
+	void currentTabChanged(int newIndex);
 
 	void showGestures();
 	void showAlignment(bool isChecked);
@@ -207,7 +212,17 @@ private slots:
 	void closeProjectAndSave();
 
 private:
-	void createDiagram(const QString &idString);
+	/// Initializes a tab if it is a diagram --- sets its logical and graphical
+	/// models, connects to various main window actions and so on
+	/// @param tab Tab to be initialized
+	/// @param rootIndex Index of a graphical model element that will be root of a diagram shown in this tab
+	void initCurrentTab(EditorView * const tab, const QModelIndex &rootIndex);
+
+	/// Sets shortcuts for a given tab which don`t have own buttons anywhere
+	/// @param tab Tab to be initialized with shortcuts
+	void setShortcuts(EditorView * const tab);
+
+	void createDiagram(QString const &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
 			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
 
@@ -240,22 +255,19 @@ private:
 
 	void setIndexesOfPropertyEditor(Id const &id);
 
-	/** @brief Check if we need to hide widget in fullscreen mode or not. If we do, hide it
-		@param dockWidget QDockWidget to hide
-		@param name Widget's name in internal map
-	*/
-	void hideDockWidget(QDockWidget *dockWidget, QString name);
+	/// Check if we need to hide widget in fullscreen mode or not. If we do, hide it
+	/// @param dockWidget QDockWidget to hide
+	/// @param name Widget's name in internal map
+	void hideDockWidget(QDockWidget *dockWidget, QString const &name);
 
-	/** @brief Check if we need to show widget in fullscreen mode or not. If we do, show it
-		@param dockWidget QDockWidget to show
-		@param name Widget's name in internal map
-	*/
-	void showDockWidget(QDockWidget *dockWidget, QString name);
+	/// Check if we need to show widget in fullscreen mode or not. If we do, show it
+	/// @param dockWidget QDockWidget to show
+	/// @param name Widget's name in internal map
+	void showDockWidget(QDockWidget *dockWidget, QString const &name);
 
 	QString getNextDirName(QString const &name);
 
 	void initToolPlugins();
-	void checkNxtTools();
 
 	QProgressBar *createProgressBar(QSplashScreen* splash);
 	void initMiniMap();
@@ -304,9 +316,6 @@ private:
 	QString mTempDir;
 	PreferencesDialog mPreferencesDialog;
 
-	gui::NxtFlashTool *mFlashTool;
-
-	bool mNxtToolsPresent;
 	HelpBrowser *mHelpBrowser;
 	bool mIsNewProject;
 	bool mUnsavedProjectIndicator;

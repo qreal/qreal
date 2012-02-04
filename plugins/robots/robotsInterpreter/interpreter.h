@@ -46,6 +46,15 @@ public:
 	void setRobotModelType(robotModelType::robotModelTypeEnum robotModelType);
 	void setCommunicator(const QString &valueOfCommunication, const QString &portName);
 
+	/// Assigning a value to the field mActionConnectToRobot
+	void setConnectRobotAction(QAction *actionConnect);
+
+	/// Enable Run and Stop buttons on 2d model widget
+	void enableD2ModelWidgetRunStopButtons();
+
+	/// Disable Run and Stop buttons on 2d model widget, when running current diagram is impossible
+	void disableD2ModelWidgetRunStopButtons();
+
 public slots:
 	void connectToRobot();
 	void interpret();
@@ -53,6 +62,9 @@ public slots:
 	void stopRobot();
 	void showD2ModelWidget(bool isVisible);
 	void showWatchList();
+
+	/// actions when robot disconnect
+	void disconnectSlot();
 
 private slots:
 	void threadStopped();
@@ -94,6 +106,9 @@ private:
 	robotModelType::robotModelTypeEnum mImplementationType;
 
 	watchListWindow *mWatchListWindow;
+
+	/// Action responsible for the connection to the robot
+	QAction *mActionConnectToRobot;
 
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	Id const findStartingElement(Id const &diagram) const;
