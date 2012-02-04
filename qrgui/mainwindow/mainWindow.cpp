@@ -184,7 +184,7 @@ MainWindow::MainWindow()
 	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
 	connectWindowTitle();
 
-	connect(&mModels->logicalModelAssistApi(), SIGNAL(propertyChanged(Id)), this, SLOT(checkConstraints(Id)));// this -> connectForConstraints
+	connect(&mModels->logicalModelAssistApi(), SIGNAL(propertyChanged(Id)), this, SLOT(checkConstraints(Id)));//asd // this -> connectForConstraints
 	connect(&mPropertyModel, SIGNAL(propertyChangedFromPropertyEditor(QModelIndex)), this, SLOT(checkConstraints(QModelIndex)));//asd
 	connect(&mModels->logicalModelAssistApi(), SIGNAL(parentChanged(IdList)), this, SLOT(checkConstraints(IdList)));//asd
 	connect(&mModels->logicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));//asd
@@ -639,7 +639,9 @@ void MainWindow::deleteFromHighlightedElements(Element *element)//asd_need
 	if (view) {
 		scene = dynamic_cast<EditorViewScene*>(view->scene());
 	}
-	scene->deleteFromHighlightedElements(element);
+	if (scene) {
+		scene->deleteFromHighlightedElements(element);
+	}
 }
 
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
@@ -727,9 +729,9 @@ void MainWindow::deleteFromScene(QGraphicsItem *target)
 {
 	Element *elem = dynamic_cast<Element *>(target);
 
-	deleteFromHighlightedElements(elem);//asd
-
 	if (elem) {
+		deleteFromHighlightedElements(elem);//asd
+
 		QPersistentModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
 		if (index.isValid()) {
 			NodeElement* const node = dynamic_cast<NodeElement*>(elem);
@@ -2122,29 +2124,29 @@ void MainWindow::closeProject()
 
 void MainWindow::checkConstraints(Id const &id)//qwerty
 {
-	Id logicalId = mModels->logicalId(id);
-	IdList graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
+	Id const logicalId = mModels->logicalId(id);
+	IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
 	IdList listOfElements;
 	listOfElements.append(logicalId);
 	QPair<bool, QPair<QString, QString> > check = mConstraintsManager.check(listOfElements, mModels->logicalModelAssistApi().logicalRepoApi());
 	if (check.first) {
-		foreach (Id graphicalId, graphicalIds) {
+		foreach (Id const &graphicalId, graphicalIds) {
 			dehighlight(graphicalId);
 		}
-		mErrorReporter->delUnicError(check.second.second, id);//asd
+		mErrorReporter->delUniqueError(check.second.second, id);//asd
 	} else {
-		foreach (Id graphicalId, graphicalIds) {
+		foreach (Id const &graphicalId, graphicalIds) {
 			highlight(graphicalId, false);
 		}
 		if (check.second.first != "") {
-			mErrorReporter->addUnicError(check.second.first, check.second.second, id);//asd
+			mErrorReporter->addUniqueError(check.second.first, check.second.second, id);//asd
 		}
 	}
 }
 
 void MainWindow::checkConstraints(QModelIndex const &index)//asd
 {
-	Id id = mModels->logicalModelAssistApi().idByIndex(index);
+	Id const id = mModels->logicalModelAssistApi().idByIndex(index);
 	checkConstraints(id);
 }
 

@@ -57,10 +57,10 @@ void ErrorReporter::addError(QString const &message, Id const &position)
 	showError(error, mErrorListWidget);
 }
 
-void ErrorReporter::addUnicError(QString const &message, QString const &severity, Id const &position)//asd
+void ErrorReporter::addUniqueError(QString const &message, QString const &severity, Id const &position)//asd
 {
-	foreach (Error curError, mErrors) {
-		if(curError.position() == position && curError.severityString().compare(severity) == 0) {
+	foreach (Error const &curError, mErrors) {
+		if (curError.position() == position && curError.severityString() == severity) {
 			return;
 		}
 	}
@@ -70,13 +70,13 @@ void ErrorReporter::addUnicError(QString const &message, QString const &severity
 	showError(error, mErrorListWidget);
 }
 
-void ErrorReporter::delUnicError(QString const &severity, Id const &position) //asd
+void ErrorReporter::delUniqueError(QString const &severity, Id const &position) //asd
 {
 	QList<Error> tempErrorList = mErrors;
 	mErrors.clear();
 	clear(); //asd_need //??
-	foreach (Error curError, tempErrorList) {
-		if(curError.position() != position || curError.severityString().compare(severity) != 0) {
+	foreach (Error const &curError, tempErrorList) {
+		if (curError.position() != position || curError.severityString() != severity) {
 			mErrors.append(curError);
 			showError(curError, mErrorListWidget); //asd_need //??
 		}
