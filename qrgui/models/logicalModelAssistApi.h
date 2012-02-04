@@ -62,10 +62,14 @@ public:
 	int childrenOfDiagram(const Id &parent) const;
 
 public slots:
-	void propertyChangedSlot(Id const &elem);
+	void propertyChangedSlot(Id const &elem);//qwerty
+	void parentChangedSlot(IdList const &elements);//qwerty
+	void nameChangedSlot(Id const &element);//asd
 
 signals:
-	void propertyChanged(Id const &elem);
+	void propertyChanged(Id const &elem);//qwerty
+	void parentChanged(IdList const &elements);//qwerty
+	void nameChanged(Id const &element);//asd
 
 private:
 	details::ModelsAssistApi mModelsAssistApi;

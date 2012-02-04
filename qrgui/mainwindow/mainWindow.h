@@ -99,10 +99,11 @@ public slots:
 
 	void showErrors(gui::ErrorReporter const * const errorReporter);
 
-	void checkConstraints(Id const &id);
+	void checkConstraints(Id const &id);//qwerty
+	void checkConstraints(QModelIndex const &index);//asd
+	void checkConstraints(IdList const &idList);//asd
 
 private slots:
-
 	void setSceneFont();
 	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);
@@ -237,6 +238,7 @@ private:
 
 	virtual void closeEvent(QCloseEvent *event);
 	void deleteFromExplorer(bool isLogicalModel);
+	void deleteFromHighlightedElements(Element *element);//asd_need
 	void keyPressEvent(QKeyEvent *event);
 	QString getWorkingFile(QString const &dialogWindowTitle, bool save);
 

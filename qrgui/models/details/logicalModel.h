@@ -42,6 +42,10 @@ public:
 	LogicalModelAssistApi &logicalModelAssistApi() const;
 	virtual void stackBefore(QModelIndex const &element, QModelIndex const &sibling);
 
+signals:
+	void parentChanged(IdList const &idList);//qwerty
+	void nameChanged(Id const &id);//asd
+
 private:
 	GraphicalModelView mGraphicalModelView;
 	qrRepo::LogicalRepoApi &mApi;

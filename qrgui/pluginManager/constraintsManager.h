@@ -9,7 +9,7 @@ class ConstraintsManager
 {
 public:
 	ConstraintsManager();
-	bool check(IdList const &elements, qrRepo::LogicalRepoApi const &logicalApi);
+	QPair<bool, QPair<QString, QString> > check(IdList const &elements, qrRepo::LogicalRepoApi const &logicalApi);
 
 private:
 	QList<ConstraintsPluginInterface *> mPlugins;

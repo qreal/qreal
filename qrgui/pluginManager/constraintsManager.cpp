@@ -36,13 +36,13 @@ ConstraintsManager::ConstraintsManager()
 	}
 }
 
-bool ConstraintsManager::check(IdList const &elements, qrRepo::LogicalRepoApi const &logicalApi)
+QPair<bool, QPair<QString, QString> > ConstraintsManager::check(IdList const &elements, qrRepo::LogicalRepoApi const &logicalApi)
 {
 	foreach (ConstraintsPluginInterface *constraintsInterface, mPlugins) {
-//		if (constraintsInterface->isCorrectLanguageName(elements)) {
-		if (constraintsInterface->languageName() == elements.at(0).editor()) {
+		if (constraintsInterface->isCorrectLanguageName(elements)) {
+//		if (constraintsInterface->languageName() == elements.at(0).editor()) {
 			return constraintsInterface->check(elements, logicalApi);
 		}
 	}
-	return true;
+	return QPair<bool, QPair<QString, QString> >(true, QPair<QString, QString>("", "information"));
 }

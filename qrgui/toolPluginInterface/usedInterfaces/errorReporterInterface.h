@@ -15,6 +15,9 @@ public:
 	virtual void addError(QString const &message, Id const &position = Id::rootId()) = 0;
 	virtual void addCritical(QString const &message, Id const &position = Id::rootId()) = 0;
 
+	virtual void addUnicError(QString const &message, QString const &severity, Id const &position) = 0;
+	virtual void delUnicError(QString const &severity, Id const &position) = 0;
+
 	virtual void clear() = 0;
 	virtual void clearErrors() = 0;
 

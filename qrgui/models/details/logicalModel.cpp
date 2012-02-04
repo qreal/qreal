@@ -222,6 +222,7 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 		case Qt::DisplayRole:
 		case Qt::EditRole:
 			mApi.setName(item->id(), value.toString());
+			emit nameChanged(item->id());
 			break;
 		case roles::fromRole:
 			mApi.setFrom(item->id(), value.value<Id>());
@@ -264,6 +265,11 @@ void LogicalModel::changeParent(QModelIndex const &element, QModelIndex const &p
 		parentItem->addChild(elementItem);
 
 		endMoveRows();
+
+		IdList elements;//asd
+		elements.append(elementItem->id());
+		elements.append(parentItem->id());
+		emit parentChanged(elements);//asd
 	}
 }
 

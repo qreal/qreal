@@ -958,7 +958,7 @@ QPointF EdgeElement::to() const
 	return mLine.last() + pos();
 }
 
-void EdgeElement::disconnectFromNode(Id const &nodeLogicalId)
+void EdgeElement::disconnectFromNode(Id const &nodeLogicalId)//qwerty
 {
 	if (mLogicalAssistApi->to(logicalId()) == nodeLogicalId) {
 		mLogicalAssistApi->setTo(logicalId(), Id::rootId());

@@ -1575,6 +1575,8 @@ void NodeElement::selectionState(bool const selected)
 void NodeElement::disconnectEdges()
 {
 	foreach (EdgeElement *edge, mEdgeList) {
-		edge->disconnectFromNode(logicalId());
+		if(edge) {
+			edge->disconnectFromNode(logicalId());
+		}
 	}
 }

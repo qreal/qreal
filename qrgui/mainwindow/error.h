@@ -18,6 +18,8 @@ public:
 
 	Error(QString const &message, Severity const &severity, qReal::Id  const &position);
 	Severity severity() const;
+	QString severityString() const;
+	static Severity severityByString(QString const &severity);
 	QString message() const;
 	QString timestamp() const;
 	qReal::Id  position() const;

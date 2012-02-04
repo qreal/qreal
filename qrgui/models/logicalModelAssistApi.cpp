@@ -8,12 +8,24 @@ using namespace models::details;
 LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel, EditorManager const &editorManager, ConstraintsManager const &constraintsManager)
 	: mModelsAssistApi(logicalModel, editorManager, constraintsManager), mLogicalModel(logicalModel)//qwerty
 {
-	QObject::connect(&mModelsAssistApi, SIGNAL(propertyChanged(Id)), this, SLOT(propertyChangedSlot(Id)));
+	QObject::connect(&mModelsAssistApi, SIGNAL(propertyChanged(Id)), this, SLOT(propertyChangedSlot(Id)));//qwerty
+	QObject::connect(&mLogicalModel, SIGNAL(parentChanged(IdList)), this, SLOT(parentChangedSlot(IdList)));//qwerty
+	QObject::connect(&mLogicalModel, SIGNAL(nameChanged(Id)), this, SLOT(nameChangedSlot(Id)));//qwerty
 }
 
 void LogicalModelAssistApi::propertyChangedSlot(Id const &elem)
 {
 	emit propertyChanged(elem);
+}
+
+void LogicalModelAssistApi::parentChangedSlot(IdList const &elements)
+{
+	emit parentChanged(elements);
+}
+
+void LogicalModelAssistApi::nameChangedSlot(Id const &element)
+{
+	emit nameChanged(element);
 }
 
 EditorManager const &LogicalModelAssistApi::editorManager() const

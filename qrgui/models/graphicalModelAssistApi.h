@@ -10,7 +10,7 @@
 namespace qReal {
 
 class EditorManager;
-class ConstraintsManager;//qwerty
+class ConstraintsManager;//qwerty //asd
 
 namespace models {
 
@@ -25,7 +25,7 @@ class GraphicalModelAssistApi : public QObject, public GraphicalModelAssistInter
 public:
 	GraphicalModelAssistApi(details::GraphicalModel &graphicalModel, EditorManager const &editorManager, ConstraintsManager const &constraintsManager);//qwerty
 	EditorManager const &editorManager() const;
-	ConstraintsManager const &constraintsManager() const;//qwerty
+	ConstraintsManager const &constraintsManager() const;//qwerty //asd
 	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
 	qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const;
 	Id createElement(Id const &parent, Id const &type);

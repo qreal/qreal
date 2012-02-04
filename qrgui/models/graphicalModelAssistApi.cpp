@@ -9,7 +9,7 @@ using namespace models;
 using namespace models::details;
 
 GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel, EditorManager const &editorManager, ConstraintsManager const &constraintsManager)//qwerty
-		: mGraphicalModel(graphicalModel), mModelsAssistApi(graphicalModel, editorManager, constraintsManager)//qwerty
+		: mGraphicalModel(graphicalModel), mModelsAssistApi(graphicalModel, editorManager, constraintsManager)//qwerty //asd
 {
 	connect(&graphicalModel, SIGNAL(nameChanged(Id)), this, SIGNAL(nameChanged(Id)));
 }
@@ -19,7 +19,7 @@ EditorManager const &GraphicalModelAssistApi::editorManager() const
 	return mModelsAssistApi.editorManager();
 }
 
-ConstraintsManager const &GraphicalModelAssistApi::constraintsManager() const//qwerty
+ConstraintsManager const &GraphicalModelAssistApi::constraintsManager() const//qwerty //asd
 {
 	return mModelsAssistApi.constraintsManager();
 }

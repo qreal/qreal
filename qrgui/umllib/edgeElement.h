@@ -66,7 +66,7 @@ public:
 	bool isBreakPointPressed();
 	void breakPointUnpressed();
 
-	void disconnectFromNode(qReal::Id const &nodeLogicalId);
+	void disconnectFromNode(qReal::Id const &nodeLogicalId);//qwerty
 
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
