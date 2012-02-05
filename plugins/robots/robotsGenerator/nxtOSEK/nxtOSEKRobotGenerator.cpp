@@ -18,7 +18,7 @@ NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(qrRepo::RepoControlInterface &api
 		, mErrorReporter(errorReporter)
 {
 	mIsNeedToDeleteMApi = false;
-	mApi = dynamic_cast<qrRepo::RepoApi *>(&api);  // TODO: ???
+	mApi = dynamic_cast<qrRepo::RepoApi *>(&api);  // TODO: remove unneeded dynamic_cast or provide strong argumentation why it is needed.
 }
 
 NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo
@@ -166,9 +166,7 @@ void NxtOSEKRobotGenerator::generate()
 
 		curInitialNodeNumber++;
 	}
-	if (initialNodes.isEmpty()) {
-		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"));
-	}
+	mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"));
 }
 
 NxtOSEKRobotGenerator::AbstractElementGenerator::AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen,
