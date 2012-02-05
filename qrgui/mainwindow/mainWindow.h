@@ -219,6 +219,8 @@ private slots:
 	void closeProjectAndSave();
 
 private:
+	gui::Error::Severity severityByErrorType(CheckStatus::ErrorType const &errorType); //asd
+
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on
 	/// @param tab Tab to be initialized

@@ -57,26 +57,26 @@ void ErrorReporter::addError(QString const &message, Id const &position)
 	showError(error, mErrorListWidget);
 }
 
-void ErrorReporter::addUniqueError(QString const &message, QString const &severity, Id const &position)//asd
+void ErrorReporter::addUniqueError(QString const &message, Error::Severity const &severity, Id const &position)//asd
 {
 	foreach (Error const &curError, mErrors) {
-		if (curError.position() == position && curError.severityString() == severity) {
+		if (curError.position() == position && curError.severity() == severity) {
 			return;
 		}
 	}
 
-	Error error(message, Error::severityByString(severity), position);
+	Error error(message, severity, position);
 	mErrors.append(error);
 	showError(error, mErrorListWidget);
 }
 
-void ErrorReporter::delUniqueError(QString const &severity, Id const &position) //asd
+void ErrorReporter::delUniqueError(Error::Severity const &severity, Id const &position) //asd
 {
 	QList<Error> tempErrorList = mErrors;
 	mErrors.clear();
 	clear(); //asd_need //??
 	foreach (Error const &curError, tempErrorList) {
-		if (curError.position() != position || curError.severityString() != severity) {
+		if (curError.position() != position || curError.severity() != severity) {
 			mErrors.append(curError);
 			showError(curError, mErrorListWidget); //asd_need //??
 		}

@@ -2122,24 +2122,37 @@ void MainWindow::closeProject()
 	setWindowTitle(mToolManager.customizer()->windowTitle());
 }
 
+gui::Error::Severity MainWindow::severityByErrorType(CheckStatus::ErrorType const &errorType)
+{
+	if (errorType == CheckStatus::warning) {
+		return gui::Error::warning;
+	} else if (errorType == CheckStatus::critical) {
+		return gui::Error::critical;
+	} else if (errorType == CheckStatus::verification) {
+		return gui::Error::error; //else gui::Error::warning
+	}
+	return gui::Error::warning;
+}
+
 void MainWindow::checkConstraints(Id const &id)//qwerty
 {
 	Id const logicalId = mModels->logicalId(id);
 	IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
 	IdList listOfElements;
 	listOfElements.append(logicalId);
-	QPair<bool, QPair<QString, QString> > check = mConstraintsManager.check(listOfElements, mModels->logicalModelAssistApi().logicalRepoApi());
-	if (check.first) {
+	CheckStatus check = mConstraintsManager.check(listOfElements, mModels->logicalModelAssistApi().logicalRepoApi());
+	gui::Error::Severity errorSeverity = severityByErrorType(check.errorType());
+	if (check.checkStatus()) {
 		foreach (Id const &graphicalId, graphicalIds) {
 			dehighlight(graphicalId);
 		}
-		mErrorReporter->delUniqueError(check.second.second, id);//asd
+		mErrorReporter->delUniqueError(errorSeverity, id);//asd
 	} else {
 		foreach (Id const &graphicalId, graphicalIds) {
 			highlight(graphicalId, false);
 		}
-		if (check.second.first != "") {
-			mErrorReporter->addUniqueError(check.second.first, check.second.second, id);//asd
+		if (errorSeverity != gui::Error::warning) {
+			mErrorReporter->addUniqueError(check.message(), errorSeverity, id);//asd
 		}
 	}
 }
