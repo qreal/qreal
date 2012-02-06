@@ -20,7 +20,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 		: mSwitchGridAction(tr("Switch on grid"), this)
 		, mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false)
 		, mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0))
-		, mSelectionNeeded(false), mConnectionInProgress(false)
+		, mSelectionNeeded(false), mConnectionInProgress(false), mHighlightedNode(NULL)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
