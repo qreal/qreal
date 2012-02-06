@@ -53,7 +53,7 @@ public:
 	void dehighlight(qReal::Id const &graphicalId);
 	void dehighlight();
 
-	void deleteFromHighlightedElements(Element *element);//asd // qwerty
+	void deleteFromHighlightedElements(Element *element);
 
 	/// Draws pixmap on scene's foreground (doesn't take ownership!)
 	void putOnForeground(QPixmap *pixmap);

@@ -2,7 +2,7 @@
 
 #include "../../../qrrepo/repoApi.h"
 #include "../../pluginManager/editorManager.h"
-#include "../../pluginManager/constraintsManager.h"//qwerty
+#include "../../pluginManager/constraintsManager.h"
 #include "modelsImplementation/graphicalModelItem.h"
 #include "modelsImplementation/abstractModel.h"
 #include "logicalModelView.h"
@@ -22,7 +22,7 @@ class GraphicalModel : public modelsImplementation::AbstractModel
 	Q_OBJECT
 
 public:
-	GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, EditorManager const &editorManager, ConstraintsManager const &constraintsManager);//qwerty
+	GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, EditorManager const &editorManager, ConstraintsManager const &constraintsManager);
 	virtual ~GraphicalModel();
 
 	void connectToLogicalModel(LogicalModel * const logicalModel);

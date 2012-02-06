@@ -7,7 +7,7 @@
 namespace qReal {
 
 class EditorManager;
-class ConstraintsManager;//qwerty
+class ConstraintsManager;
 
 namespace models {
 
@@ -20,9 +20,9 @@ class LogicalModelAssistApi : public QObject, public qReal::LogicalModelAssistIn
 	Q_OBJECT
 
 public:
-	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManager const &editorManager, ConstraintsManager const &constraintsManager);//qwerty
+	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManager const &editorManager, ConstraintsManager const &constraintsManager);
 	EditorManager const &editorManager() const;
-	ConstraintsManager const &constraintsManager() const;//qwerty
+	ConstraintsManager const &constraintsManager() const;
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const;
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi();
 	Id createElement(Id const &parent, Id const &type);
@@ -62,14 +62,14 @@ public:
 	int childrenOfDiagram(const Id &parent) const;
 
 public slots:
-	void propertyChangedSlot(Id const &elem);//qwerty
-	void parentChangedSlot(IdList const &elements);//qwerty
-	void nameChangedSlot(Id const &element);//asd
+	void propertyChangedSlot(Id const &elem);
+	void parentChangedSlot(IdList const &elements);
+	void nameChangedSlot(Id const &element);
 
 signals:
-	void propertyChanged(Id const &elem);//qwerty
-	void parentChanged(IdList const &elements);//qwerty
-	void nameChanged(Id const &element);//asd
+	void propertyChanged(Id const &elem);
+	void parentChanged(IdList const &elements);
+	void nameChanged(Id const &element);
 
 private:
 	details::ModelsAssistApi mModelsAssistApi;

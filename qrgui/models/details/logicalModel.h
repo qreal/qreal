@@ -5,7 +5,7 @@
 
 #include "../../../qrrepo/repoApi.h"
 #include "../../pluginManager/editorManager.h"
-#include "../../pluginManager/constraintsManager.h"//qwerty
+#include "../../pluginManager/constraintsManager.h"
 #include "modelsImplementation/logicalModelItem.h"
 #include "modelsImplementation/abstractModel.h"
 #include "graphicalModelView.h"
@@ -25,7 +25,7 @@ class LogicalModel : public modelsImplementation::AbstractModel
 	Q_OBJECT;
 
 public:
-	LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const &editorManager, ConstraintsManager const &constraintsManager);//qwerty
+	LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const &editorManager, ConstraintsManager const &constraintsManager);
 	virtual ~LogicalModel();
 
 	void connectToGraphicalModel(GraphicalModel * const graphicalModel);
@@ -43,8 +43,8 @@ public:
 	virtual void stackBefore(QModelIndex const &element, QModelIndex const &sibling);
 
 signals:
-	void parentChanged(IdList const &idList);//qwerty
-	void nameChanged(Id const &id);//asd
+	void parentChanged(IdList const &idList);
+	void nameChanged(Id const &id);
 
 private:
 	GraphicalModelView mGraphicalModelView;

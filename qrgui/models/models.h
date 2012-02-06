@@ -13,7 +13,7 @@ namespace models {
 class Models
 {
 public:
-	explicit Models(QString const &workingCopy, EditorManager const &editorManager, ConstraintsManager const &constraintsManager);//qwerty
+	explicit Models(QString const &workingCopy, EditorManager const &editorManager, ConstraintsManager const &constraintsManager);
 	~Models();
 
 	QAbstractItemModel* graphicalModel() const;
@@ -29,7 +29,7 @@ public:
 
 	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
 
-	Id logicalId(Id const &element) const;//qwerty
+	Id logicalId(Id const &element) const;
 
 	void reinit();
 

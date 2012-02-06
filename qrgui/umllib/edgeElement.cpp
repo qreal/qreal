@@ -333,15 +333,6 @@ void EdgeElement::connectToPort()
 		squarizeHandler(QPointF());
 	adjustLink();
 	arrangeSrcAndDst();
-
-//	ConstraintsManager constraitsManager = mLogicalAssistApi->constraintsManager();//qwerty
-//	IdList listOfElements;
-//	listOfElements.append(logicalId());
-//	if(constraitsManager.check(listOfElements, mLogicalAssistApi->logicalRepoApi()))//qwerty
-//		//if (getNodeAt(mLine.first()) != NULL && getNodeAt(mLine.last()) != NULL)
-//		highlight(mPenColor);
-//	else
-//		highlight(Qt::red);
 }
 
 bool EdgeElement::initPossibleEdges()
@@ -958,7 +949,7 @@ QPointF EdgeElement::to() const
 	return mLine.last() + pos();
 }
 
-void EdgeElement::disconnectFromNode(Id const &nodeLogicalId)//qwerty
+void EdgeElement::disconnectFromNode(Id const &nodeLogicalId)
 {
 	if (mLogicalAssistApi->to(logicalId()) == nodeLogicalId) {
 		mLogicalAssistApi->setTo(logicalId(), Id::rootId());

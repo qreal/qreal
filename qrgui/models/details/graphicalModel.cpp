@@ -11,11 +11,11 @@ using namespace models::details;
 using namespace modelsImplementation;
 
 GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const EditorManager &editorManager, ConstraintsManager const &constraintsManager)
-	: AbstractModel(editorManager, constraintsManager), mLogicalModelView(this), mApi(*repoApi)//qwerty
+	: AbstractModel(editorManager, constraintsManager), mLogicalModelView(this), mApi(*repoApi)
 {
 	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);
 	init();
-	mGraphicalAssistApi = new GraphicalModelAssistApi(*this, editorManager, constraintsManager);//qwerty
+	mGraphicalAssistApi = new GraphicalModelAssistApi(*this, editorManager, constraintsManager);
 }
 
 GraphicalModel::~GraphicalModel()

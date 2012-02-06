@@ -118,7 +118,7 @@ MainWindow::MainWindow()
 	if (saveFile.exists())
 		mSaveFile = saveFile.absoluteFilePath();
 
-	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager, mConstraintsManager);//qwerty
+	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager, mConstraintsManager);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
@@ -184,11 +184,11 @@ MainWindow::MainWindow()
 	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
 	connectWindowTitle();
 
-	connect(&mModels->logicalModelAssistApi(), SIGNAL(propertyChanged(Id)), this, SLOT(checkConstraints(Id)));//asd // this -> connectForConstraints
-	connect(&mPropertyModel, SIGNAL(propertyChangedFromPropertyEditor(QModelIndex)), this, SLOT(checkConstraints(QModelIndex)));//asd
-	connect(&mModels->logicalModelAssistApi(), SIGNAL(parentChanged(IdList)), this, SLOT(checkConstraints(IdList)));//asd
-	connect(&mModels->logicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));//asd
-	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));//asd
+	connect(&mModels->logicalModelAssistApi(), SIGNAL(propertyChanged(Id)), this, SLOT(checkConstraints(Id)));//asd // TODO: this -> connectForConstraints
+	connect(&mPropertyModel, SIGNAL(propertyChangedFromPropertyEditor(QModelIndex)), this, SLOT(checkConstraints(QModelIndex)));
+	connect(&mModels->logicalModelAssistApi(), SIGNAL(parentChanged(IdList)), this, SLOT(checkConstraints(IdList)));
+	connect(&mModels->logicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
+	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
 }
 
 void MainWindow::connectActions()
@@ -632,7 +632,7 @@ void MainWindow::settingsPlugins()
 	dialog.exec();
 }
 
-void MainWindow::deleteFromHighlightedElements(Element *element)//asd_need
+void MainWindow::deleteFromHighlightedElements(Element *element)
 {
 	EditorView const * const view = getCurrentTab();
 	EditorViewScene* scene = NULL;
@@ -663,38 +663,34 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	if (isLogicalModel) {
 		Id const logicalId = mModels->logicalModelAssistApi().idByIndex(index);
 		graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
+
+		if (logicalId != Id::rootId()) {
+			checkParentsConstraints(index); //проверяем на ограничения всех родителей удаляемого элемента в логической модели
+		}
 	} else {
 		Id const graphicalId = mModels->graphicalModelAssistApi().idByIndex(index);
 		graphicalIdList.append(graphicalId);
 	}
 
 	QList<NodeElement*> itemsToArrangeLinks;
-//	QList<NodeElement*> deletedNodes;//asd_need
 	foreach (Id const &graphicalId, graphicalIdList) {
 		bool const tabClosed = closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
 		if (scene && !tabClosed) {
-			QGraphicsItem /*const*/ * const item = scene->getElem(graphicalId);//asd
-			EdgeElement /*const*/ * const edge = dynamic_cast<EdgeElement /*const*/ *>(item);//asd
-			NodeElement *node = dynamic_cast<NodeElement *>(item);//asd
+			QGraphicsItem * const item = scene->getElem(graphicalId);
+			EdgeElement * const edge = dynamic_cast<EdgeElement *>(item);
+			NodeElement *node = dynamic_cast<NodeElement *>(item);
 
 			if (edge) {
 				itemsToArrangeLinks.append(edge->src());
 				itemsToArrangeLinks.append(edge->dst());
 			} else if (node) {
-//				deletedNodes.append(node);//asd_need
 				node->disconnectEdges();
 			}
 
-			Element* const element = scene->getElem(graphicalId);//asd
-			scene->deleteFromHighlightedElements(element);//asd
+			Element* const element = scene->getElem(graphicalId);
+			scene->deleteFromHighlightedElements(element);
 		}
 	}
-
-//	foreach (NodeElement *item, deletedNodes) {//asd_need
-//		if (item) {
-//			item->disconnectEdges();//asd
-//		}
-//	}
 
 	PropertyEditorModel* propertyEditorModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
 	if (propertyEditorModel && propertyEditorModel->isCurrentIndex(index)) {
@@ -713,10 +709,6 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 			item->arrangeLinks();
 		}
 	}
-
-//	if(isLogicalModel) {//asd_need
-//		checkConstraints(mModels->logicalModelAssistApi().idByIndex(index));
-//	}
 }
 
 void MainWindow::deleteFromScene()
@@ -730,7 +722,7 @@ void MainWindow::deleteFromScene(QGraphicsItem *target)
 	Element *elem = dynamic_cast<Element *>(target);
 
 	if (elem) {
-		deleteFromHighlightedElements(elem);//asd
+		deleteFromHighlightedElements(elem);
 
 		QPersistentModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
 		if (index.isValid()) {
@@ -2134,38 +2126,50 @@ gui::Error::Severity MainWindow::severityByErrorType(CheckStatus::ErrorType cons
 	return gui::Error::warning;
 }
 
-void MainWindow::checkConstraints(Id const &id)//qwerty
+void MainWindow::checkConstraints(Id const &id)
 {
 	Id const logicalId = mModels->logicalId(id);
 	IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
 	IdList listOfElements;
 	listOfElements.append(logicalId);
+
 	CheckStatus check = mConstraintsManager.check(listOfElements, mModels->logicalModelAssistApi().logicalRepoApi());
 	gui::Error::Severity errorSeverity = severityByErrorType(check.errorType());
+
 	if (check.checkStatus()) {
 		foreach (Id const &graphicalId, graphicalIds) {
 			dehighlight(graphicalId);
 		}
-		mErrorReporter->delUniqueError(errorSeverity, id);//asd
+		mErrorReporter->delUniqueError(errorSeverity, id);
 	} else {
 		foreach (Id const &graphicalId, graphicalIds) {
 			highlight(graphicalId, false);
 		}
 		if (errorSeverity != gui::Error::warning) {
-			mErrorReporter->addUniqueError(check.message(), errorSeverity, id);//asd
+			mErrorReporter->addUniqueError(check.message(), errorSeverity, id);
 		}
 	}
 }
 
-void MainWindow::checkConstraints(QModelIndex const &index)//asd
+void MainWindow::checkConstraints(QModelIndex const &index)
 {
 	Id const id = mModels->logicalModelAssistApi().idByIndex(index);
 	checkConstraints(id);
 }
 
-void MainWindow::checkConstraints(IdList const &idList)//asd
+void MainWindow::checkConstraints(IdList const &idList)
 {
 	foreach (Id const &id, idList) {
 		checkConstraints(id);
+	}
+}
+
+void MainWindow::checkParentsConstraints(QModelIndex const &index)
+{
+	QModelIndex parent = mModels->logicalModel()->parent(index);
+	Id const parentId = mModels->logicalModelAssistApi().idByIndex(parent);
+	if (mModels->logicalModelAssistApi().isLogicalId(parentId)) {
+		checkConstraints(parentId);
+		checkParentsConstraints(parent);
 	}
 }

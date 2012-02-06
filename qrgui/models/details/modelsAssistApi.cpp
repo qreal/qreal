@@ -7,7 +7,7 @@ using namespace models::details;
 using namespace modelsImplementation;
 
 ModelsAssistApi::ModelsAssistApi(AbstractModel &model, EditorManager const &editorManager, ConstraintsManager const &constraintsManager)
-	: mModel(model), mEditorManager(editorManager), mConstraintsManager(constraintsManager)//qwerty
+	: mModel(model), mEditorManager(editorManager), mConstraintsManager(constraintsManager)
 {
 }
 
@@ -16,7 +16,7 @@ EditorManager const &ModelsAssistApi::editorManager() const
 	return mEditorManager;
 }
 
-ConstraintsManager const &ModelsAssistApi::constraintsManager() const//qwerty
+ConstraintsManager const &ModelsAssistApi::constraintsManager() const
 {
 	return mConstraintsManager;
 }

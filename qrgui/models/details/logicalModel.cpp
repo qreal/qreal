@@ -9,11 +9,11 @@ using namespace models::details;
 using namespace modelsImplementation;
 
 LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const &editorManager, ConstraintsManager const &constraintsManager)
-	: AbstractModel(editorManager, constraintsManager), mGraphicalModelView(this), mApi(*repoApi)//qwerty
+	: AbstractModel(editorManager, constraintsManager), mGraphicalModelView(this), mApi(*repoApi)
 {
 	mRootItem = new LogicalModelItem(Id::rootId(), NULL);
 	init();
-	mLogicalAssistApi = new LogicalModelAssistApi(*this, editorManager, constraintsManager);//qwerty
+	mLogicalAssistApi = new LogicalModelAssistApi(*this, editorManager, constraintsManager);
 }
 
 LogicalModel::~LogicalModel()
@@ -266,10 +266,10 @@ void LogicalModel::changeParent(QModelIndex const &element, QModelIndex const &p
 
 		endMoveRows();
 
-		IdList elements;//asd
+		IdList elements;
 		elements.append(elementItem->id());
 		elements.append(parentItem->id());
-		emit parentChanged(elements);//asd
+		emit parentChanged(elements);
 	}
 }
 

@@ -11,7 +11,7 @@
 
 #include "../pluginManager/editorManager.h"
 #include "../pluginManager/toolPluginManager.h"
-#include "../pluginManager/constraintsManager.h" //qwerty
+#include "../pluginManager/constraintsManager.h"
 #include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
@@ -99,9 +99,9 @@ public slots:
 
 	void showErrors(gui::ErrorReporter const * const errorReporter);
 
-	void checkConstraints(Id const &id);//qwerty
-	void checkConstraints(QModelIndex const &index);//asd
-	void checkConstraints(IdList const &idList);//asd
+	void checkConstraints(Id const &id);
+	void checkConstraints(QModelIndex const &index);
+	void checkConstraints(IdList const &idList);
 
 private slots:
 	void setSceneFont();
@@ -219,7 +219,8 @@ private slots:
 	void closeProjectAndSave();
 
 private:
-	gui::Error::Severity severityByErrorType(CheckStatus::ErrorType const &errorType); //asd
+	gui::Error::Severity severityByErrorType(CheckStatus::ErrorType const &errorType); //forCheckConstraints
+	void checkParentsConstraints(QModelIndex const &index);
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on
@@ -240,7 +241,7 @@ private:
 
 	virtual void closeEvent(QCloseEvent *event);
 	void deleteFromExplorer(bool isLogicalModel);
-	void deleteFromHighlightedElements(Element *element);//asd_need
+	void deleteFromHighlightedElements(Element *element);
 	void keyPressEvent(QKeyEvent *event);
 	QString getWorkingFile(QString const &dialogWindowTitle, bool save);
 
@@ -298,7 +299,7 @@ private:
 	models::Models *mModels;
 	EditorManager mEditorManager;
 	ToolPluginManager mToolManager;
-	ConstraintsManager mConstraintsManager;//qwerty
+	ConstraintsManager mConstraintsManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
 	GesturesWidget *mGesturesWidget;

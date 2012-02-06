@@ -8,8 +8,8 @@ using namespace qReal;
 using namespace models;
 using namespace models::details;
 
-GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel, EditorManager const &editorManager, ConstraintsManager const &constraintsManager)//qwerty
-		: mGraphicalModel(graphicalModel), mModelsAssistApi(graphicalModel, editorManager, constraintsManager)//qwerty //asd
+GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel, EditorManager const &editorManager, ConstraintsManager const &constraintsManager)
+		: mGraphicalModel(graphicalModel), mModelsAssistApi(graphicalModel, editorManager, constraintsManager)
 {
 	connect(&graphicalModel, SIGNAL(nameChanged(Id)), this, SIGNAL(nameChanged(Id)));
 }
@@ -19,7 +19,7 @@ EditorManager const &GraphicalModelAssistApi::editorManager() const
 	return mModelsAssistApi.editorManager();
 }
 
-ConstraintsManager const &GraphicalModelAssistApi::constraintsManager() const//qwerty //asd
+ConstraintsManager const &GraphicalModelAssistApi::constraintsManager() const
 {
 	return mModelsAssistApi.constraintsManager();
 }

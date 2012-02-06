@@ -7,7 +7,7 @@ using namespace qReal;
 using namespace models::details::modelsImplementation;
 
 AbstractModel::AbstractModel(const EditorManager &editorManager, ConstraintsManager const &constraintsManager)
-	: mEditorManager(editorManager), mConstraintsManager(constraintsManager)//qwerty
+	: mEditorManager(editorManager), mConstraintsManager(constraintsManager)
 {
 }
 
@@ -122,7 +122,7 @@ EditorManager const &AbstractModel::editorManager() const
 	return mEditorManager;
 }
 
-ConstraintsManager const &AbstractModel::constraintsManager() const//qwerty
+ConstraintsManager const &AbstractModel::constraintsManager() const
 {
 	return mConstraintsManager;
 }

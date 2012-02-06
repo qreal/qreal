@@ -114,14 +114,14 @@ bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &valu
 		switch (mFields[index.row()].attributeClass) {
 		case logicalAttribute:
 			mTargetLogicalModel->setData(mTargetLogicalObject, value, mFields[index.row()].role);
-			emit propertyChangedFromPropertyEditor(mTargetLogicalObject);//asd
+			emit propertyChangedFromPropertyEditor(mTargetLogicalObject);
 			break;
 		case graphicalAttribute:
 			mTargetGraphicalModel->setData(mTargetGraphicalObject, value, mFields[index.row()].role);
 			break;
 		case namePseudoattribute:
 			mTargetLogicalModel->setData(mTargetLogicalObject, value, Qt::DisplayRole);
-			emit propertyChangedFromPropertyEditor(mTargetLogicalObject);//asd
+			emit propertyChangedFromPropertyEditor(mTargetLogicalObject);
 			break;
 		default:
 			modelChanged = false;

@@ -106,7 +106,7 @@ public:
 	*   @return element or NULL
 	* */
 	Element *getPlaceholderNextElement();
-	void disconnectEdges();//qwerty
+	void disconnectEdges();
 
 public slots:
 	virtual void singleSelectionState(const bool singleSelected);

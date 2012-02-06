@@ -3,11 +3,11 @@
 using namespace qReal;
 using namespace models;
 
-Models::Models(QString const &workingCopy, EditorManager const &editorManager, ConstraintsManager const &constraintsManager)//qwerty
+Models::Models(QString const &workingCopy, EditorManager const &editorManager, ConstraintsManager const &constraintsManager)
 {
 	qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(workingCopy);
-	mGraphicalModel = new models::details::GraphicalModel(repoApi, editorManager, constraintsManager);//qwerty
-	mLogicalModel = new models::details::LogicalModel(repoApi, editorManager, constraintsManager);//qwerty
+	mGraphicalModel = new models::details::GraphicalModel(repoApi, editorManager, constraintsManager);
+	mLogicalModel = new models::details::LogicalModel(repoApi, editorManager, constraintsManager);
 	mRepoApi = repoApi;
 
 	mLogicalModel->connectToGraphicalModel(mGraphicalModel);

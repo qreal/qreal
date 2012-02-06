@@ -57,7 +57,7 @@ void ErrorReporter::addError(QString const &message, Id const &position)
 	showError(error, mErrorListWidget);
 }
 
-void ErrorReporter::addUniqueError(QString const &message, Error::Severity const &severity, Id const &position)//asd
+void ErrorReporter::addUniqueError(QString const &message, Error::Severity const &severity, Id const &position)
 {
 	foreach (Error const &curError, mErrors) {
 		if (curError.position() == position && curError.severity() == severity) {
@@ -70,7 +70,7 @@ void ErrorReporter::addUniqueError(QString const &message, Error::Severity const
 	showError(error, mErrorListWidget);
 }
 
-void ErrorReporter::delUniqueError(Error::Severity const &severity, Id const &position) //asd
+void ErrorReporter::delUniqueError(Error::Severity const &severity, Id const &position)
 {
 	QList<Error> tempErrorList = mErrors;
 	mErrors.clear();

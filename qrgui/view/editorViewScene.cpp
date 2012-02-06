@@ -962,7 +962,7 @@ void EditorViewScene::redraw()
 	}
 }
 
-void EditorViewScene::deleteFromHighlightedElements(Element *element)//asd // qwerty
+void EditorViewScene::deleteFromHighlightedElements(Element *element)
 {
 	foreach (Element *curElement, mHighlightedElements) {
 		if (element == curElement) {
@@ -975,7 +975,7 @@ void EditorViewScene::highlight(Id const &graphicalId, bool exclusive)
 {
 	if (exclusive) {
 		foreach (Element *element, mHighlightedElements) {
-			if(element) {//qwerty
+			if(element) {//asd //??
 				element->setGraphicsEffect(NULL);
 			}
 		}

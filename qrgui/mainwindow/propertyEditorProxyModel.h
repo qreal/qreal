@@ -52,7 +52,7 @@ public:
 	bool isCurrentIndex(QModelIndex const &index) const;
 
 signals:
-	void propertyChangedFromPropertyEditor(QModelIndex const &index);//asd
+	void propertyChangedFromPropertyEditor(QModelIndex const &index);
 
 private slots:
 	void rereadData(QModelIndex const &, QModelIndex const &);
