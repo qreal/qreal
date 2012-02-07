@@ -20,7 +20,7 @@ RobotItem::RobotItem()
 	, mRobotModel()
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
-                        /* ItemClipsToShape |*/ ItemSendsGeometryChanges);
+			/* ItemClipsToShape |*/ ItemSendsGeometryChanges);
 
 	setAcceptHoverEvents(true);
 	setAcceptDrops(true);
@@ -49,7 +49,7 @@ void RobotItem::drawExtractionForItem(QPainter* painter)
 
 QRectF RobotItem::boundingRect() const
 {
-        return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, border);
+		return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, border);
 }
 
 QRectF RobotItem::calcNecessaryBoundingRect() const

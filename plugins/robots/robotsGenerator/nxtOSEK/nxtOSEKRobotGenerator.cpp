@@ -166,7 +166,9 @@ void NxtOSEKRobotGenerator::generate()
 
 		curInitialNodeNumber++;
 	}
-	mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"));
+	if (initialNodes.isEmpty()) {
+		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"));
+	}
 }
 
 NxtOSEKRobotGenerator::AbstractElementGenerator::AbstractElementGenerator(NxtOSEKRobotGenerator *emboxGen,
@@ -543,9 +545,9 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::preGenerationCheck()
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
 	if ((outgoingLinks.size() != 2) ||
-		( (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "Итерация")
+		( (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "�?терация")
 		  &&
-		  (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "Итерация") )
+		  (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "�?терация") )
 	)
 		return false;
 

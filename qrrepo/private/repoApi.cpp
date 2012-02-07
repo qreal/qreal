@@ -396,6 +396,11 @@ void RepoApi::save(qReal::IdList list) const
 	mClient.save(list);
 }
 
+QString RepoApi::workingFile() const
+{
+	return mClient.workingFile();
+}
+
 void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data, QString const &direction)
 {
 	if (target == Id::rootId())

@@ -326,6 +326,11 @@ void Client::setWorkingFile(QString const &workingFile)
 	mWorkingFile = workingFile;
 }
 
+QString Client::workingFile() const
+{
+	return mWorkingFile;
+}
+
 void Client::printDebug() const
 {
 	qDebug() << mObjects.size() << " objects in repository";

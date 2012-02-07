@@ -73,9 +73,6 @@
                     <container>
                         <contains type="AbstractNode"/>
                     </container>
-                    <generalizations>
-                        <parent parentName="KernelDiagram::Diagram"/>
-                    </generalizations>
                 </logic>
             </node>
             <node displayedName="Конец" name="FinalNode">

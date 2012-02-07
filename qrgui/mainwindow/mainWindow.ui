@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>1188</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -84,9 +84,6 @@
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionGenerate_Editor"/>
-    <addaction name="actionGenerate_Editor_qrmc"/>
-    <addaction name="actionParse_Editor_xml"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -473,11 +470,6 @@
     <string>Save</string>
    </property>
   </action>
-  <action name="actionGenerate_editor">
-   <property name="text">
-    <string>Generate editor</string>
-   </property>
-  </action>
   <action name="actionSave_as">
    <property name="text">
     <string>Save as...</string>
@@ -502,19 +494,6 @@
     <string>Show grid</string>
    </property>
   </action>
-  <action name="actionGenerate_Editor">
-   <property name="text">
-    <string>Generate Editor</string>
-   </property>
-   <property name="visible">
-    <bool>true</bool>
-   </property>
-  </action>
-  <action name="actionParse_Editor_xml">
-   <property name="text">
-    <string>Parse Editor xml</string>
-   </property>
-  </action>
   <action name="actionSwitch_on_grid">
    <property name="checkable">
     <bool>true</bool>
@@ -531,11 +510,6 @@
   <action name="actionPreferences">
    <property name="text">
     <string>Preferences...</string>
-   </property>
-  </action>
-  <action name="actionGenerate_Editor_qrmc">
-   <property name="text">
-    <string>Generate Editor (qrmc)</string>
    </property>
   </action>
   <action name="actionSwitch_on_alignment">
@@ -640,11 +614,6 @@
    </property>
    <property name="toolTip">
     <string>Import QReal project into current.</string>
-   </property>
-  </action>
-  <action name="actionRecent_projects">
-   <property name="text">
-    <string>Recent projects</string>
    </property>
   </action>
   <action name="actionSave_diagram_as_a_picture">

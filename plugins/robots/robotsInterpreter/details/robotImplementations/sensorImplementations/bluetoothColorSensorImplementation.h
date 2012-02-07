@@ -14,7 +14,7 @@ class BluetoothColorSensorImplementation : public BluetoothSensorImplementation
 	Q_OBJECT
 
 public:
-	BluetoothColorSensorImplementation(RobotCommunication *robotCommunicationInterface
+	BluetoothColorSensorImplementation(RobotCommunicator *robotCommunicationInterface
 			, inputPort::InputPortEnum const &port
 			, lowLevelSensorType::SensorTypeEnum mode
 			, sensorType::SensorTypeEnum const sensorType

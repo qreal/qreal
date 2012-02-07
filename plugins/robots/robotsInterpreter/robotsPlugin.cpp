@@ -14,11 +14,14 @@ RobotsPlugin::RobotsPlugin()
 		: mMainWindowInterpretersInterface(NULL)
 		, m2dModelAction(NULL)
 		, mRunAction(NULL)
-		, mStopAction(NULL)
+		, mStopRobotAction(NULL)
+		, mConnectToRobotAction(NULL)
+		, mRobotSettingsAction(NULL)
+		, mWatchListAction(NULL)
+		, mAppTranslator(new QTranslator())
 {
 //	details::Tracer::enableAll();
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
-	mAppTranslator = new QTranslator();
 	mAppTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(mAppTranslator);
 
@@ -43,10 +46,6 @@ void RobotsPlugin::initActions()
 	ActionInfo runActionInfo(mRunAction, "interpreters", "tools");
 	QObject::connect(mRunAction, SIGNAL(triggered()), &mInterpreter, SLOT(interpret()));
 
-	mStopAction = new QAction(QObject::tr("Stop"), NULL);
-	ActionInfo stopActionInfo(mStopAction, "interpreters", "tools");
-	QObject::connect(mStopAction, SIGNAL(triggered()), &mInterpreter, SLOT(stop()));
-
 	mStopRobotAction = new QAction(QObject::tr("Stop robot"), NULL);
 	ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
 	QObject::connect(mStopRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(stopRobot()));
@@ -69,9 +68,9 @@ void RobotsPlugin::initActions()
 	ActionInfo separatorActionInfo(separator, "interpreters", "tools");
 	separator->setSeparator(true);
 
-	mActionInfos << d2ModelActionInfo << runActionInfo << stopActionInfo
-			<< stopRobotActionInfo << connectToRobotActionInfo
-			<< separatorActionInfo << robotSettingsActionInfo << separatorActionInfo << watchListActionInfo;
+	mActionInfos << d2ModelActionInfo << runActionInfo << stopRobotActionInfo
+			<< connectToRobotActionInfo << separatorActionInfo << robotSettingsActionInfo
+			<< separatorActionInfo << watchListActionInfo;
 }
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
@@ -123,7 +122,7 @@ void RobotsPlugin::updateSettings()
 	);
 	m2dModelAction->setVisible(typeOfRobotModel == robotModelType::unreal);
 	if (typeOfRobotModel == robotModelType::unreal) {
-		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopAction);
+		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopRobotAction);
 	} else {
 		mInterpreter.showD2ModelWidget(false);
 	}
