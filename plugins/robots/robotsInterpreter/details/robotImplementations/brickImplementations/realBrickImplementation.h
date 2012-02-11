@@ -1,6 +1,6 @@
 #pragma once
 #include "abstractBrickImplementation.h"
-#include "../../robotCommunication/robotCommunication.h"
+#include "../../robotCommunication/robotCommunicator.h"
 
 namespace qReal {
 namespace interpreters {
@@ -13,11 +13,11 @@ class RealBrickImplementation : public AbstractBrickImplementation
 {
 	Q_OBJECT
 public:
-	RealBrickImplementation(RobotCommunication * const robotCommunicationInterface);
+	RealBrickImplementation(RobotCommunicator * const robotCommunicationInterface);
 	virtual void beep(unsigned time);
 	virtual void playTone(unsigned freq, unsigned time);
 private:
-	RobotCommunication * const mRobotCommunicationInterface;
+	RobotCommunicator * const mRobotCommunicationInterface;
 };
 
 }

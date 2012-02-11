@@ -58,8 +58,6 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 		doc.save(out(), 2);
 	}
 
-
-
 	QFileInfo fileInfo(mWorkingFile);
 	QString fileName = fileInfo.baseName();
 
@@ -70,9 +68,7 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 	if (previousSave.exists())
 		previousSave.remove();
 
-
 	FolderCompressor().compressFolder(compressDir.absolutePath(), fileInfo.absolutePath() + "/" + fileName + ".qrs");
-
 
 	clearDir(mWorkingDir);
 }

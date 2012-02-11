@@ -97,9 +97,11 @@ namespace qrRepo {
 		void importFromDisk(QString const &importedFile);
 		void saveAll() const;
 		void save(qReal::IdList list) const;
-		void saveTo(QString const &workingDir);
+		void saveTo(QString const &workingFile);
 
 		void open(QString const &saveFile);
+
+		virtual QString workingFile() const;
 
 		// "Глобальные" методы, позволяющие делать запросы к модели в целом.
 		//Returns all elements with .element() == type.element()
@@ -108,7 +110,7 @@ namespace qrRepo {
 
 		virtual qReal::Id logicalId(qReal::Id const &id) const;
 
-		//Returns all elements with .element() == type
+		/// Returns all elements with .element() == type
 		qReal::IdList elementsByType(QString const &type) const;
 		int elementsCount() const;
 

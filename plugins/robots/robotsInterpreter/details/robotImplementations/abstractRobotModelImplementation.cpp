@@ -32,7 +32,7 @@ NullRobotModelImplementation *AbstractRobotModelImplementation::nullRobotModel()
 	return mNullRobotModel;
 }
 
-RealRobotModelImplementation *AbstractRobotModelImplementation::realRobotModel(RobotCommunication * const robotCommunicationInterface)
+RealRobotModelImplementation *AbstractRobotModelImplementation::realRobotModel(RobotCommunicator * const robotCommunicationInterface)
 {
 	if (mRealRobotModel == NULL)
 		mRealRobotModel = new RealRobotModelImplementation(robotCommunicationInterface);
@@ -46,7 +46,7 @@ UnrealRobotModelImplementation *AbstractRobotModelImplementation::unrealRobotMod
 	return mUnrealRobotModel;
 }
 
-AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(robotModelType::robotModelTypeEnum type, RobotCommunication * const robotCommunication, d2Model::D2RobotModel *d2RobotModel)
+AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(robotModelType::robotModelTypeEnum type, RobotCommunicator * const robotCommunication, d2Model::D2RobotModel *d2RobotModel)
 {
 	if (type == robotModelType::null)
 		return nullRobotModel();
@@ -112,10 +112,14 @@ void AbstractRobotModelImplementation::startInterpretation()
 {
 }
 
-void AbstractRobotModelImplementation::disconnectRobot()
+void AbstractRobotModelImplementation::lockSensorsConfiguration()
 {
-	mIsConnected = false;
-	emit disconnected();
+	mSensorsConfigurer.lockConfiguring();
+}
+
+void AbstractRobotModelImplementation::unlockSensorsConfiguration()
+{
+	mSensorsConfigurer.unlockConfiguring();
 }
 
 void AbstractRobotModelImplementation::connectRobot()
@@ -125,4 +129,8 @@ void AbstractRobotModelImplementation::connectRobot()
 		emit connected(true);
 	}
 	emit sensorsConfigured();
+}
+
+void AbstractRobotModelImplementation::disconnectFromRobot()
+{
 }

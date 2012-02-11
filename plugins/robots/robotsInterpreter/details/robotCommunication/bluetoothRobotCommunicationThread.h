@@ -3,6 +3,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
 #include <QtCore/QThread>
+#include <QtCore/QTimer>
 
 #include "robotCommunicationThreadInterface.h"
 #include "../robotCommandConstants.h"
@@ -39,18 +40,20 @@ private:
 		}
 	};
 
-	static int const timeout = 5000;
-
-	QextSerialPort *mPort;
-
 	bool waitForBytes(int bytes, inputPort::InputPortEnum const &port) const;
 	int i2cBytesReady(inputPort::InputPortEnum const &port) const;
 
 	void send(QByteArray const &buffer) const;
 	QByteArray receive(int size) const;
 
-private slots:
+	static int const timeout = 5000;
 
+	QextSerialPort *mPort;
+
+	/// Timer that sends messages to robot to check that connection is still alive
+	QTimer *mKeepAliveTimer;
+
+private slots:
 	/// Checks if robot is connected
 	void checkForConnection();
 };

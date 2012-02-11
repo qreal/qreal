@@ -2,17 +2,23 @@
 
 #include <QtCore/QMetaType>
 #include <time.h>
-#include <QtCore/QTimer>
 
 #include "../../thirdparty/qextserialport/src/qextserialport.h"
 #include "../tracer.h"
 
+unsigned const keepAliveResponseSize = 9;
+unsigned const getFirmwareVersionResponseSize = 9;
+unsigned const lsGetStatusResponseSize = 6;
+
 using namespace qReal::interpreters::robots::details;
 
 BluetoothRobotCommunicationThread::BluetoothRobotCommunicationThread()
-	: mPort(NULL)
+		: mPort(NULL)
+		, mKeepAliveTimer(new QTimer(this))
 {
 	qRegisterMetaType<inputPort::InputPortEnum>("details::inputPort::InputPortEnum");
+
+	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
 }
 
 BluetoothRobotCommunicationThread::~BluetoothRobotCommunicationThread()
@@ -29,7 +35,7 @@ void BluetoothRobotCommunicationThread::send(QObject *addressee
 	}
 
 	send(buffer);
-	if (buffer.size() >= 3 && buffer[2] == 0x00) {
+	if (buffer.size() >= 3 && buffer[2] == errorCode::success) {
 		QByteArray const result = receive(responseSize);
 		emit response(addressee, result);
 	} else {
@@ -57,6 +63,7 @@ void BluetoothRobotCommunicationThread::connect(QString const &portName)
 	Tracer::debug(tracer::initialization, "BluetoothRobotCommunicationThread::connect"
 			, "Port " + mPort->portName() + " is open: " + QString("%1").arg(mPort->isOpen()));
 
+	// Sending "Get firmware version" system command to check connection.
 	QByteArray command(4, 0);
 	command[0] = 0x02;  //command length
 	command[1] = 0x00;
@@ -64,13 +71,11 @@ void BluetoothRobotCommunicationThread::connect(QString const &portName)
 	command[3] = 0x88;
 
 	send(command);
-	QByteArray const response = receive(9);
+	QByteArray const response = receive(getFirmwareVersionResponseSize);
 
 	emit connected(response != QByteArray());
 
-	QTimer *timer = new QTimer(this);
-	QObject::connect(timer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
-	timer->start(1000);
+	mKeepAliveTimer->start(1000);
 }
 
 void BluetoothRobotCommunicationThread::reconnect(QString const &portName)
@@ -84,6 +89,7 @@ void BluetoothRobotCommunicationThread::disconnect()
 		mPort->close();
 		delete mPort;
 		mPort = NULL;
+		mKeepAliveTimer->stop();
 	}
 	emit disconnected();
 }
@@ -164,7 +170,7 @@ int BluetoothRobotCommunicationThread::i2cBytesReady(inputPort::InputPortEnum co
 	command[4] = port;
 
 	send(command);
-	QByteArray const result = receive(6);
+	QByteArray const result = receive(lsGetStatusResponseSize);
 
 	if (result.isEmpty() || result[4] != errorCode::success) {
 		return 0;
@@ -198,6 +204,10 @@ QByteArray BluetoothRobotCommunicationThread::receive(int size) const
 
 void BluetoothRobotCommunicationThread::checkForConnection()
 {
+	if (!mPort || !mPort->isOpen()) {
+		return;
+	}
+
 	QByteArray command(4, 0);
 	command[0] = 0x02;
 	command[1] = 0x00;
@@ -207,7 +217,7 @@ void BluetoothRobotCommunicationThread::checkForConnection()
 
 	send(command);
 
-	QByteArray const response = receive(8);
+	QByteArray const response = receive(keepAliveResponseSize);
 
 	if (response == QByteArray()) {
 		emit disconnected();
