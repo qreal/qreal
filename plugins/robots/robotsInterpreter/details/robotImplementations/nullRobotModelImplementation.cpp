@@ -78,7 +78,6 @@ void NullRobotModelImplementation::stopRobot()
 	mMotorA.off();
 	mMotorB.off();
 	mMotorC.off();
-	disconnectRobot();
 }
 
 motorImplementations::NullMotorImplementation &NullRobotModelImplementation::motorA()

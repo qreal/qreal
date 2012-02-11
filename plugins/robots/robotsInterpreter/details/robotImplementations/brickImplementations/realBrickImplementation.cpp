@@ -3,7 +3,7 @@
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::brickImplementations;
 
-RealBrickImplementation::RealBrickImplementation(RobotCommunication * const robotCommunicationInterface)
+RealBrickImplementation::RealBrickImplementation(RobotCommunicator * const robotCommunicationInterface)
 	: mRobotCommunicationInterface(robotCommunicationInterface)
 {
 }

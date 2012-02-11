@@ -2,11 +2,13 @@
 #include "compilerPage.h"
 #include "ui_compilerPage.h"
 
+using namespace metaEditor;
+
 PreferencesCompilerPage::PreferencesCompilerPage(QWidget *parent)
 		: PreferencesPage(parent)
 		, mUi(new Ui::PreferencesCompilerPage)
 {
-	mIcon = QIcon(":/icons/preferences/tools.png");
+	mIcon = QIcon(":/icons/tools.png");
 	mUi->setupUi(this);
 
 	connect(mUi->linuxButton, SIGNAL(clicked()), this, SLOT(changeSystem()));

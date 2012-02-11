@@ -19,8 +19,6 @@
 #include <QtCore/QDebug>
 #include <QAbstractButton>
 
-#include "../generators/editorGenerator/editorGenerator.h"
-
 #include "errorReporter.h"
 
 #include "../editorPluginInterface/editorInterface.h"
@@ -32,18 +30,14 @@
 #include "../view/editorView.h"
 #include "../umllib/element.h"
 #include "../dialogs/pluginDialog.h"
-#include "../parsers/xml/xmlParser.h"
 #include "../dialogs/checkoutDialog.h"
 #include "../generators/xmi/xmiHandler.h"
 #include "../generators/java/javaHandler.h"
 #include "../pluginManager/listenerManager.h"
-#include "../generators/editorGenerator/editorGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../../qrkernel/settingsManager.h"
 
 #include "../../qrkernel/timeMeasurer.h"
-
-#include "../../qrmc/metaCompiler.h"
 
 using namespace qReal;
 
@@ -183,8 +177,6 @@ MainWindow::MainWindow()
 
 	mDocksVisibility.clear();
 
-	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
-
 	if (mIsNewProject)
 		saveAs(mTempDir);
 
@@ -216,10 +208,6 @@ void MainWindow::connectActions()
 
 	//	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 	//	connect(mUi->actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
-	//	connect(mUi->actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
-	connect(mUi->actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
-	//	connect(mUi->actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
-	connect(mUi->actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
 	//	connect(mUi->actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
@@ -767,8 +755,7 @@ void MainWindow::editWindowTitle()
 void MainWindow::showAbout()
 {
 	QMessageBox::about(this, tr("About QReal:Robots"),
-			tr("Contacts:<br><br>"
-			"se.math.spbu.ru/SE/qreal"));
+			tr("<b>QReal:Robots<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>"));
 }
 
 void MainWindow::showHelp()
@@ -846,239 +833,51 @@ void MainWindow::parseJavaLibraries()
 	generators::JavaHandler java(mModels->logicalRepoApi());
 
 	QString const dirName = QFileDialog::getExistingDirectory(this);
-	if (dirName.isEmpty())
+	if (dirName.isEmpty()) {
 		return;
+	}
 
 	QString const errors = java.parseJavaLibraries(dirName);
 
 	if (!errors.isEmpty()) {
-		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
+		QMessageBox::warning(this, tr("errors"), tr("Some errors occured. Export may be incorrect. Errors list:") + " \n" + errors);
 	} else {
-		QMessageBox::information(this, tr("finished"), "Parsing is finished");
+		QMessageBox::information(this, tr("finished"), tr("Parsing is finished"));
 	}
 }
 
-void MainWindow::generateEditor()
+bool MainWindow::unloadPlugin(QString const &pluginName)
 {
-	generators::EditorGenerator editorGenerator(mModels->logicalRepoApi());
+	if (mEditorManager.editors().contains(Id(pluginName))) {
+		IdList const diagrams = mEditorManager.diagrams(Id(pluginName));
 
-	QDir dir(".");
-
-	QHash<Id, QPair<QString, QString> > metamodelList = editorGenerator.getMetamodelList();
-	foreach (Id const key, metamodelList.keys()) {
-		QString const metamodelFullName = metamodelList[key].first;
-		QString const pathToQRealRoot = metamodelList[key].second;
-		dir.mkpath(metamodelFullName);
-		QFileInfo metamodelFileInfo(metamodelFullName);
-		QString metamodelName = metamodelFileInfo.baseName();
-		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, metamodelFullName + "/" + metamodelName, pathToQRealRoot);
-
-		if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)) {
-			if (QMessageBox::question(this
-					, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelName),
-					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
-			{
-				return;
-			}
-			loadNewEditor(metamodelFullName, metamodelName
-					, SettingsManager::value("pathToQmake", "").toString()
-					, SettingsManager::value("pathToMake", "").toString()
-					, SettingsManager::value("pluginExtension", "").toString()
-					, SettingsManager::value("prefix", "").toString());
+		if (!mEditorManager.unloadPlugin(pluginName)) {
+			return false;
 		}
-	}
-}
-
-/*
-void MainWindow::generateEditorWithQRMC()
-{
- qrmc::MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../qrmc", mSaveDir);
-
- IdList const metamodels = mModels->logicalRepoApi().children(Id::rootId());
-
- QProgressBar *progress = new QProgressBar(this);
- progress->show();
- int const progressBarWidth = 240;
- int const progressBarHeight = 20;
-
- QApplication::processEvents();
- QRect screenRect = qApp->desktop()->availableGeometry();
- progress->move(screenRect.width() / 2 - progressBarWidth / 2, screenRect.height() / 2 - progressBarHeight / 2);
- progress->setFixedWidth(progressBarWidth);
- progress->setFixedHeight(progressBarHeight);
- progress->setRange(0, 100);
-
- int forEditor = 60 / metamodels.size();
-
- foreach (Id const key, metamodels) {
-  QString const objectType = mModels->logicalRepoApi().typeName(key);
-  if (objectType == "MetamodelDiagram") {
-   QString name = mModels->logicalRepoApi().stringProperty(key, "name of the directory");
-   if (QMessageBox::question(this, tr("loading.."), QString(tr("Do you want to compile and load editor %1?")).arg(name),
-  QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
-   {
- continue;
-   }
-
-   progress->setValue(5);
-
-   if (!metaCompiler.compile(name)) { // generating source code for all metamodels
- QMessageBox::warning(this, tr("error"), tr("Cannot generate source code for editor ") + name);
- qDebug() << "compilation failed";
- continue;
-   }
-   progress->setValue(20);
-
-   QProcess builder;
-   builder.setWorkingDirectory("../qrmc/plugins");
-   builder.start(SettingsManager::value("pathToQmake", "").toString());
-   qDebug()  << "qmake";
-   if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
- progress->setValue(40);
-
- builder.start(SettingsManager::value("pathToMake", "").toString());
-
- bool finished = builder.waitForFinished(100000);
- qDebug()  << "make";
- if (finished && (builder.exitCode() == 0)) {
-  qDebug()  << "make ok";
-
-  progress->setValue(progress->value() + forEditor/2);
-
-  QString normalizedName = name.at(0).toUpper() + name.mid(1);
-  if (!name.isEmpty()) {
-   if (mEditorManager.editors().contains(Id(normalizedName))) {
- foreach (Id const diagram, mEditorManager.diagrams(Id(normalizedName)))
-  mUi->paletteToolbox->deleteDiagramType(diagram);
-
- if (!mEditorManager.unloadPlugin(normalizedName)) {
-  QMessageBox::warning(this, tr("error"), tr("cannot unload plugin ") + normalizedName);
-  progress->close();
-  delete progress;
-  continue;
- }
-   }
-
-   if (mEditorManager.loadPlugin(SettingsManager::value("prefix", "").toString() + name + "." + SettingsManager::value("pluginExtension", "").toString())) {
- foreach (Id const diagram, mEditorManager.diagrams(Id(normalizedName))) {
-  mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-  mUi->paletteToolbox->addSortedItemTypes(mEditorManager, diagram);
-   }
-  }
-  progress->setValue(progress->value() + forEditor/2);
- }
-   }
-   mUi->paletteToolbox->initDone();
-   progress->setValue(100);
-
-  }
- }
- if (progress->value() != 100)
-  QMessageBox::warning(this, tr("error"), tr("cannot load new editor"));
- progress->setValue(100);
- progress->close();
- delete progress;
-}
-*/
-
-
-void MainWindow::loadNewEditor(const QString &directoryName
-		, const QString &metamodelName
-		, const QString &commandFirst
-		, const QString &commandSecond
-		, const QString &extension
-		, const QString &prefix)
-{
-	int const progressBarWidth = 240;
-	int const progressBarHeight = 20;
-
-	if ((commandFirst == "") || (commandSecond == "") || (extension == "")) {
-		QMessageBox::warning(this, tr("error"), tr("please, fill compiler settings"));
-		return;
-	}
-
-	QString const normalizeDirName = metamodelName.at(0).toUpper() + metamodelName.mid(1);
-
-	QProgressBar * const progress = new QProgressBar(this);
-	progress->show();
-
-	QApplication::processEvents();
-
-	QRect const screenRect = qApp->desktop()->availableGeometry();
-	progress->move(screenRect.width() / 2 - progressBarWidth / 2, screenRect.height() / 2 - progressBarHeight / 2);
-	progress->setFixedWidth(progressBarWidth);
-	progress->setFixedHeight(progressBarHeight);
-	progress->setRange(0, 100);
-	progress->setValue(5);
-
-	if (mEditorManager.editors().contains(Id(normalizeDirName))) {
-		IdList const diagrams = mEditorManager.diagrams(Id(normalizeDirName));
-
-		if (!mEditorManager.unloadPlugin(normalizeDirName)) {
-			QMessageBox::warning(this, tr("error"), tr("cannot unload plugin"));
-			progress->close();
-			delete progress;
-			return;
-		}
-		foreach (Id const diagram, diagrams)
+		foreach (Id const &diagram, diagrams) {
 			mUi->paletteToolbox->deleteDiagramType(diagram);
-	}
-	progress->setValue(20);
-
-	QProcess builder;
-	builder.setWorkingDirectory(directoryName);
-	builder.start(commandFirst);
-
-	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
-		progress->setValue(60);
-		builder.start(commandSecond);
-		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
-			progress->setValue(80);
-			if (mEditorManager.loadPlugin(prefix + metamodelName + "." + extension)) {
-				foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName))) {
-					mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-					mUi->paletteToolbox->addSortedItemTypes(mEditorManager, diagram);
-				}
-				mUi->paletteToolbox->initDone();
-				progress->setValue(100);
-			}
 		}
 	}
-
-	if (progress->value() != 100)
-		QMessageBox::warning(this, tr("error"), tr("cannot load new editor"));
-	progress->setValue(100);
-	progress->close();
-	delete progress;
+	return true;
 }
 
-void MainWindow::parseEditorXml()
+bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 {
-	if (!mEditorManager.editors().contains(Id("MetaEditor"))) {
-		QMessageBox::warning(this, tr("error"), tr("required plugin is not loaded"));
-		return;
+	if (!mEditorManager.loadPlugin(fileName)) {
+		return false;
 	}
-	QDir dir(".");
-	QString directoryName = ".";
-	while (dir.cdUp()) {
-		QFileInfoList infoList = dir.entryInfoList(QDir::Dirs);
-		foreach (QFileInfo const directory, infoList){
-			if (directory.baseName() == "qrxml") {
-				directoryName = directory.absolutePath() + "/qrxml";
-			}
-		}
+
+	foreach (Id const &diagram, mEditorManager.diagrams(Id(pluginName))) {
+		mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
+		mUi->paletteToolbox->addSortedItemTypes(mEditorManager, diagram);
 	}
-	QString const fileName = QFileDialog::getOpenFileName(this, tr("Select xml file to parse"), directoryName, "XML files (*.xml)");
-	if (fileName == "")
-		return;
+	mUi->paletteToolbox->initDone();
+	return true;
+}
 
-	parsers::XmlParser parser(mModels->mutableLogicalRepoApi(), mEditorManager);
-
-	parser.parseFile(fileName);
-
-	parser.loadIncludeList(fileName);
-
-	mModels->reinit();
+bool MainWindow::pluginLoaded(QString const &pluginName)
+{
+	return mEditorManager.editors().contains(Id(pluginName));
 }
 
 EditorView * MainWindow::getCurrentTab()
@@ -2061,6 +1860,11 @@ void MainWindow::reinitModels()
 	mUi->propertyEditor->setRootIndex(QModelIndex());
 }
 
+QWidget *MainWindow::windowWidget()
+{
+	return this;
+}
+
 void MainWindow::setAutoSaveParameters()
 {
 	if (!SettingsManager::value("autoSave", true).toBool()) {
@@ -2174,7 +1978,7 @@ void MainWindow::initExplorers()
 
 void MainWindow::initRecentProjectsMenu()
 {
-	mRecentProjectsMenu = new QMenu("Recent projects", mUi->menu_File);
+	mRecentProjectsMenu = new QMenu(tr("Recent projects"), mUi->menu_File);
 	mUi->menu_File->insertMenu(mUi->menu_File->actions().at(1), mRecentProjectsMenu);
 	connect(mRecentProjectsMenu, SIGNAL(aboutToShow()), this, SLOT(openRecentProjectsMenu()));
 }
