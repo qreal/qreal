@@ -92,6 +92,16 @@ void ErrorReporter::clearErrors()
 	mErrors.clear();
 }
 
+bool ErrorReporter::wereErrors()
+{
+	foreach (Error const &error, mErrors) {
+		if (error.severity() == Error::critical || error.severity() == Error::error) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorListWidget) const
 {
 	if (!errorListWidget)

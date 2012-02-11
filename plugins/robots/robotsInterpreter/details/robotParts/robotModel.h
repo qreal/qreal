@@ -33,6 +33,7 @@ public:
 
 	void init();
 	void stopRobot();
+	void disconnectFromRobot();
 
 	void configureSensors(sensorType::SensorTypeEnum const &port1
 			, sensorType::SensorTypeEnum const &port2

@@ -16,8 +16,8 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 	mUploadProcess.setProcessEnvironment(environment);
 
 	// for debug
-//	mUploadProcess.setStandardErrorFile("/home/me/downloads/incoming/errors");
-//	mUploadProcess.setStandardOutputFile("/home/me/downloads/incoming/out");
+//	mUploadProcess.setStandardErrorFile("./errors");
+//	mUploadProcess.setStandardOutputFile("./out");
 
 	connect(&mFlashProcess, SIGNAL(readyRead()), this, SLOT(readNxtFlashData()));
 	connect(&mFlashProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)));
@@ -26,7 +26,6 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 	connect(&mUploadProcess, SIGNAL(readyRead()), this, SLOT(readNxtUploadData()));
 	connect(&mUploadProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)));
 	connect(&mUploadProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(nxtUploadingFinished(int, QProcess::ExitStatus)));
-
 }
 
 void NxtFlashTool::flashRobot()
@@ -82,9 +81,9 @@ void NxtFlashTool::readNxtFlashData()
 void NxtFlashTool::uploadProgram()
 {
 #ifdef Q_OS_WIN
-	mFlashProcess.setEnvironment(QProcess::systemEnvironment());
-	mFlashProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/");
-	mFlashProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/upload.bat");
+	mUploadProcess.setEnvironment(QProcess::systemEnvironment());
+	mUploadProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/");
+	mUploadProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/upload.bat");
 #else
 	mUploadProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/upload.sh");
 #endif

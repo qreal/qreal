@@ -2,7 +2,7 @@
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::motorImplementations;
 
-RealMotorImplementation::RealMotorImplementation(int const port, RobotCommunication *robotCommunicationInterface)
+RealMotorImplementation::RealMotorImplementation(int const port, RobotCommunicator *robotCommunicationInterface)
 	:  AbstractMotorImplementation(port)
 	, mRobotCommunicationInterface(robotCommunicationInterface)
 {

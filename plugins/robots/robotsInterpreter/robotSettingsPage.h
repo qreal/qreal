@@ -4,8 +4,6 @@
 
 #include "sensorConstants.h"
 
-using namespace qReal::interpreters::robots;
-
 namespace Ui {
 	class PreferencesRobotSettingsPage;
 }
@@ -14,6 +12,7 @@ namespace qReal {
 namespace interpreters {
 namespace robots {
 
+/// Preferences page for robots interpreter plugin
 class PreferencesRobotSettingsPage : public PreferencesPage
 {
 	Q_OBJECT

@@ -16,9 +16,12 @@ public:
 	virtual void importFromDisk(QString const &importedFile) = 0;
 	virtual void saveAll() const = 0;
 	virtual void save(qReal::IdList list) const = 0;
-	virtual void saveTo(QString const &workingDir) = 0;
+	virtual void saveTo(QString const &workingFile) = 0;
 
-	virtual void open(QString const &workingDir) = 0;
+	virtual void open(QString const &workingFile) = 0;
+
+	/// Returns current working file name, to which model is saved
+	virtual QString workingFile() const = 0;
 };
 
 }

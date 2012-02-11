@@ -26,8 +26,10 @@ public:
 	void addCritical(QString const &message, Id const &position = Id::rootId());
 	bool showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const;
 
-	void clear();
-	void clearErrors();
+	virtual void clear();
+	virtual void clearErrors();
+
+	virtual bool wereErrors();
 
 public slots:
 	void updateVisibility(bool isVisible);
@@ -41,7 +43,7 @@ private:
 	ErrorListWidget* const mErrorListWidget;  // Doesn't have ownership
 	QDockWidget* const mErrorList;  // Doesn't have ownership
 
-	/** @brief Should error window be shown or not*/
+	/// Should error window be shown or not
 	bool mIsVisible;
 };
 
