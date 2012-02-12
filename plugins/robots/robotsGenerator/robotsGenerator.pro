@@ -16,17 +16,11 @@ HEADERS += \
 	robotsGeneratorPlugin.h \
 	nxtOSEK/smartLine.h \
 	nxtOSEK/nxtFlashTool.h
-#
-#	nxtOSEK/nxtOSEKRobotGenerator.h \
-#
 
 SOURCES += \
 	robotsGeneratorPlugin.cpp \
 	nxtOSEK/smartLine.cpp \
 	nxtOSEK/nxtFlashTool.cpp
-#
-#	nxtOSEK/nxtOSEKRobotGenerator.cpp \
-#	
 
 # nxtOSEK base generator
 HEADERS += nxtOSEK/nxtOSEKgenerator.h
