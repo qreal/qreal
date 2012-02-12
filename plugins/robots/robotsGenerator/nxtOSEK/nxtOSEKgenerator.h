@@ -7,7 +7,7 @@
 namespace robots {
 namespace generator {
 
-//! Class for generate a nxtOSEK code from Robot Language Diagram.
+/// Class for generate a nxtOSEK code from Robot Language Diagram.
 class NxtOSEKgenerator {
 public:
 	enum GeneratorType {
@@ -20,7 +20,7 @@ public:
 
 	virtual ~NxtOSEKgenerator();
 
-	//! main method that starts a code generation.
+	/// main method that starts a code generation.
 	virtual qReal::ErrorReporterInterface &generate() = 0;
 
 	static NxtOSEKgenerator* createGenerator(
@@ -34,9 +34,15 @@ public:
 				qReal::ErrorReporterInterface &errorReporter,
 				QString const &destinationPath = ""
 				);
+	
+	/// toggles generator types that will be produced by 'createGenerator' method
+	/// funcOrientedType -> sequentialType
+	/// sequentialType -> funcOrientedType
+	static void toggleGeneratorTypes();
+
 
 protected:
-	static GeneratorType curGeneratorType;
+	static GeneratorType mCurGeneratorType;
 
 	NxtOSEKgenerator(
 			qrRepo::RepoControlInterface &api,

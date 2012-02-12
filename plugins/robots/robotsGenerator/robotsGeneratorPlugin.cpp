@@ -11,6 +11,7 @@ using namespace robots::generator;
 
 RobotsGeneratorPlugin::RobotsGeneratorPlugin()
 		: mGenerateCodeAction(NULL)
+		, mToggleGenerators(NULL)
 		, mFlashRobotAction(NULL)
 		, mUploadProgramAction(NULL)
 		, mNxtToolsPresent(false)
@@ -39,6 +40,10 @@ QList<ActionInfo> RobotsGeneratorPlugin::actions()
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
 	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateRobotSourceCode()));
 
+	mToggleGenerators.setText(tr("Toggle generators"));
+	ActionInfo toggleGeneratorsActionInfo(&mToggleGenerators, "generators", "tools");
+	connect(&mToggleGenerators, SIGNAL(triggered()), this, SLOT(toggleRobotCodeGenerators()));
+
 	mFlashRobotAction.setText(tr("Flash robot"));
 	ActionInfo flashRobotActionInfo(&mFlashRobotAction, "generators", "tools");
 	connect(&mFlashRobotAction, SIGNAL(triggered()), this, SLOT(flashRobot()));
@@ -49,8 +54,10 @@ QList<ActionInfo> RobotsGeneratorPlugin::actions()
 
 	checkNxtTools();
 
-	return QList<ActionInfo>() << generateCodeActionInfo << flashRobotActionInfo
-			<< uploadProgramActionInfo;
+	return QList<ActionInfo>() << generateCodeActionInfo
+		<< toggleGeneratorsActionInfo
+		<< flashRobotActionInfo
+		<< uploadProgramActionInfo;
 }
 
 void RobotsGeneratorPlugin::generateRobotSourceCode()
@@ -68,6 +75,11 @@ void RobotsGeneratorPlugin::generateRobotSourceCode()
 
 	if (inStream)
 		mMainWindowInterface->showInTextEditor("example0", inStream->readAll());
+}
+
+void RobotsGeneratorPlugin::toggleRobotCodeGenerators()
+{
+	robots::generator::NxtOSEKgenerator::toggleGeneratorTypes();
 }
 
 void RobotsGeneratorPlugin::flashRobot()

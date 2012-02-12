@@ -6,16 +6,16 @@
 using namespace qReal;
 using namespace robots::generator;
 
-NxtOSEKgenerator::GeneratorType NxtOSEKgenerator::curGeneratorType = NxtOSEKgenerator::sequentialType;
-//NxtOSEKgenerator::GeneratorType NxtOSEKgenerator::curGeneratorType = NxtOSEKgenerator::funcOrientedType;
+NxtOSEKgenerator::GeneratorType NxtOSEKgenerator::mCurGeneratorType = NxtOSEKgenerator::sequentialType;
+//NxtOSEKgenerator::GeneratorType NxtOSEKgenerator::mCurGeneratorType = NxtOSEKgenerator::funcOrientedType;
 
 NxtOSEKgenerator::GeneratorType NxtOSEKgenerator::getCurGeneratorType() {
-	return curGeneratorType;
+	return mCurGeneratorType;
 }
 
 void NxtOSEKgenerator::setCurGeneratorType(NxtOSEKgenerator::GeneratorType type)
 {
-	curGeneratorType = type;
+	mCurGeneratorType = type;
 }
 
 NxtOSEKgenerator::~NxtOSEKgenerator()
@@ -56,7 +56,7 @@ NxtOSEKgenerator* NxtOSEKgenerator::createGenerator(
 	QString const &destinationPath
 	)
 {
-	switch (curGeneratorType) {
+	switch (mCurGeneratorType) {
 		case funcOrientedType:
 			return new FuncOrientedGenerator(api, errorReporter, destinationPath);
 		case sequentialType:
@@ -72,7 +72,7 @@ NxtOSEKgenerator* NxtOSEKgenerator::createGenerator(
 	QString const &destinationPath
 	)
 {
-	switch (curGeneratorType) {
+	switch (mCurGeneratorType) {
 		case funcOrientedType:
 			return new FuncOrientedGenerator(pathToRepo, errorReporter, destinationPath);
 		case sequentialType:
@@ -80,4 +80,21 @@ NxtOSEKgenerator* NxtOSEKgenerator::createGenerator(
 	}
 
 	return new SequentialGenerator(pathToRepo, errorReporter, destinationPath);
+}
+
+void NxtOSEKgenerator::toggleGeneratorTypes()
+{
+	switch (mCurGeneratorType) {
+		case funcOrientedType:
+		{
+			mCurGeneratorType = sequentialType;
+			break;
+		}
+
+		case sequentialType:
+		{
+			mCurGeneratorType = funcOrientedType;
+			break;
+		}
+	}
 }
