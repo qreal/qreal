@@ -2,7 +2,7 @@
 
 #include <QtGui/QApplication>
 
-#include "nxtOSEK/nxtOSEKRobotGenerator.h"
+#include "nxtOSEK/nxtOSEKgenerator.h"
 
 Q_EXPORT_PLUGIN2(robotsGeneratorPlugin, robots::generator::RobotsGeneratorPlugin)
 
@@ -45,7 +45,7 @@ QList<ActionInfo> RobotsGeneratorPlugin::actions()
 
 	mUploadProgramAction.setText(tr("Upload program"));
 	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
-	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
+	connect(&mFlashRobotAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
 	checkNxtTools();
 
@@ -57,8 +57,9 @@ void RobotsGeneratorPlugin::generateRobotSourceCode()
 {
 	mMainWindowInterface->saveAll();
 
-	robots::generator::NxtOSEKRobotGenerator gen(*mRepoControlApi, *mMainWindowInterface->errorReporter());
-	gen.generate();
+	robots::generator::NxtOSEKgenerator* gen = robots::generator::NxtOSEKgenerator::createGenerator(*mRepoControlApi, *mMainWindowInterface->errorReporter());
+	gen->generate();
+	delete gen;
 
 	QFile file("nxt-tools/example0/example0.c");
 	QTextStream *inStream = NULL;
