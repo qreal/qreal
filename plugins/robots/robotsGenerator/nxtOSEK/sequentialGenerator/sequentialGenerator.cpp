@@ -91,7 +91,7 @@ qReal::ErrorReporterInterface &SequentialGenerator::generate()
 		// Generate C file (start)
 		QFile templateCFile(":/nxtOSEK/sequentialGenerator/templates/template.c");
 		if (!templateCFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			mErrorReporter.addError("cannot open \"" + templateCFile.fileName() + "\"");
+			mErrorReporter.addError(QObject::tr("cannot open \"" + templateCFile.fileName() + "\""));
 			return mErrorReporter;
 		}
 
@@ -117,13 +117,13 @@ qReal::ErrorReporterInterface &SequentialGenerator::generate()
 		// Generate OIL file (start)
 		QFile templateOILFile(":/nxtOSEK/sequentialGenerator/templates/template.oil");
 		if (!templateOILFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			mErrorReporter.addError("cannot open \"" + templateOILFile.fileName() + "\"");
+			mErrorReporter.addError(QObject::tr("cannot open \"" + templateOILFile.fileName() + "\""));
 			return mErrorReporter;
 		}
 
 		QFile resultOILFile(projectDir + "/" + projectName + ".oil");
 		if (!resultOILFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-			mErrorReporter.addError("cannot open \"" + resultOILFile.fileName() + "\"");
+			mErrorReporter.addError(QObject::tr(("cannot open \"" + resultOILFile.fileName() + "\"")));
 			return mErrorReporter;
 		}
 
@@ -138,13 +138,13 @@ qReal::ErrorReporterInterface &SequentialGenerator::generate()
 		// Generate makefile (start)
 		QFile templateMakeFile(":/nxtOSEK/sequentialGenerator/templates/template.makefile");
 		if (!templateMakeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			mErrorReporter.addError("cannot open \"" + templateMakeFile.fileName() + "\"");
+			mErrorReporter.addError(QObject::tr("cannot open \"" + templateMakeFile.fileName() + "\""));
 			return mErrorReporter;
 		}
 
 		QFile resultMakeFile(projectDir + "/makefile");
 		if (!resultMakeFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-			mErrorReporter.addError("cannot open \"" + resultMakeFile.fileName() + "\"");
+			mErrorReporter.addError(QObject::tr(("cannot open \"" + resultMakeFile.fileName() + "\"")));
 			return mErrorReporter;
 		}
 
@@ -531,8 +531,9 @@ bool SequentialGenerator::SimpleElementGenerator::preGenerationCheck()
 	IdList outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
 	if (outgoingConnectedElements.size() > 1) {
 		//case of error in diagram
-		qDebug() << "Error! There are more than 1 outgoing connected elements with simple robot" <<
-			"element!";
+		mErrorReporter.addError(
+				QObject::tr("Error! There are more than 1 outgoing connected elements with simple robot element!")
+				);
 		return false;
 	}
 
@@ -568,9 +569,11 @@ bool SequentialGenerator::SimpleElementGenerator::nextElementsGeneration()
 
 	if (outgoingConnectedElements.size() == 1) {
 		if (outgoingConnectedElements.at(0) == Id::rootId()) {
-			mNxtGen->mErrorReporter.addError("Element " + mElementId.toString() + " has no"\
-					" correct next element because its link has no end object."\
-					" May be you need to connect it to diagram object.", mElementId);
+			mNxtGen->mErrorReporter.addError(
+					QObject::tr("Element " + mElementId.toString() + " has no"\
+						" correct next element because its link has no end object."\
+						" May be you need to connect it to diagram object.")
+					, mElementId);
 			return false;
 		}
 
@@ -583,7 +586,9 @@ bool SequentialGenerator::SimpleElementGenerator::nextElementsGeneration()
 		return true;
 	} else {
 		//case of error end of diagram
-		qDebug() << "Error! There is no outgoing connected elements with no final node!";
+		mNxtGen->mErrorReporter.addError(
+				QObject::tr("Error! There is no outgoing connected elements with no final node!")
+				);
 		return false;
 	}
 
@@ -609,8 +614,10 @@ bool SequentialGenerator::LoopElementGenerator::nextElementsGeneration()
 	//generate loop
 	Id loopNextElement = mNxtGen->mApi->to(outgoingLinks.at(elementConnectedByIterationEdgeNumber));
 	if (loopNextElement == Id::rootId()) {
-		mNxtGen->mErrorReporter.addError("Loop block " + mElementId.toString() + " has no correct loop branch!"\
-				" May be you need to connect it to some diagram element.", mElementId);
+		mNxtGen->mErrorReporter.addError(
+				QObject::tr("Loop block " + mElementId.toString() + " has no correct loop branch!"\
+					" May be you need to connect it to some diagram element.")
+				, mElementId);
 		return false;
 	}
 
@@ -627,8 +634,10 @@ bool SequentialGenerator::LoopElementGenerator::nextElementsGeneration()
 	//generate next blocks
 	Id nextBlockElement = mNxtGen->mApi->to(outgoingLinks.at(afterLoopElementNumber));
 	if (nextBlockElement == Id::rootId()) {
-		mNxtGen->mErrorReporter.addError("Loop block " + mElementId.toString() + " has no correct next block branch!"\
-				" May be you need to connect it to some diagram element.", mElementId);
+		mNxtGen->mErrorReporter.addError(
+				QObject::tr("Loop block " + mElementId.toString() + " has no correct next block branch!"\
+					" May be you need to connect it to some diagram element.")
+				, mElementId);
 		return false;
 	}
 
@@ -651,8 +660,10 @@ bool SequentialGenerator::IfElementGenerator::generateBranch(int branchNumber)
 
 	Id branchElement = mNxtGen->mApi->to(outgoingLinks.at(branchNumber));
 	if (branchElement == Id::rootId()) {
-		mNxtGen->mErrorReporter.addError("If block " + mElementId.toString() + " has no 2 correct branches!"\
-				" May be you need to connect one of them to some diagram element.", mElementId);
+		mNxtGen->mErrorReporter.addError(
+				QObject::tr("If block " + mElementId.toString() + " has no 2 correct branches!"\
+					" May be you need to connect one of them to some diagram element.")
+				, mElementId);
 		return false;
 	}
 
@@ -703,9 +714,11 @@ QPair<bool, qReal::Id> SequentialGenerator::IfElementGenerator::checkBranchForBa
 
 	foreach (qReal::Id childId, mNxtGen->mApi->outgoingConnectedElements(logicElementId)) {
 		if (childId == Id::rootId()) {
-			mNxtGen->mErrorReporter.addError("Link from " + logicElementId.toString() +
-					" has no object on its end."\
-					" May be you need to connect it to diagram object.", mElementId);
+			mNxtGen->mErrorReporter.addError(
+					QObject::tr("Link from " + logicElementId.toString() +
+						" has no object on its end."\
+						" May be you need to connect it to diagram object.")
+					, mElementId);
 			return QPair<bool, qReal::Id>(false, qReal::Id());
 		}
 
@@ -749,8 +762,10 @@ bool SequentialGenerator::IfElementGenerator::nextElementsGeneration()
 	//check for back arrows
 	Id positiveBranchElement = mNxtGen->mApi->to(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)));
 	if (positiveBranchElement == Id::rootId()) {
-		mNxtGen->mErrorReporter.addError("If block " + mElementId.toString() + " has no 2 correct branches!"\
-				" May be you need to connect one of them to some diagram element.", mElementId);
+		mNxtGen->mErrorReporter.addError(
+				QObject::tr("If block " + mElementId.toString() + " has no 2 correct branches!"\
+					" May be you need to connect one of them to some diagram element.")
+				, mElementId);
 		return false;
 	}
 
@@ -759,8 +774,10 @@ bool SequentialGenerator::IfElementGenerator::nextElementsGeneration()
 
 	Id negativeBranchElement = mNxtGen->mApi->to(outgoingLinks.at(1 - conditionArrowNum));
 	if (negativeBranchElement == Id::rootId()) {
-		mNxtGen->mErrorReporter.addError("If block " + mElementId.toString() + " has no 2 correct branches!"\
-				" May be you need to connect one of them to some diagram element.", mElementId);
+		mNxtGen->mErrorReporter.addError(
+				QObject::tr("If block " + mElementId.toString() + " has no 2 correct branches!"\
+					" May be you need to connect one of them to some diagram element.")
+				, mElementId);
 		return false;
 	}
 
@@ -771,8 +788,9 @@ bool SequentialGenerator::IfElementGenerator::nextElementsGeneration()
 	if (isPositiveBranchReturnsToBackElems && isNegativeBranchReturnsToBackElems) {
 		if (positiveBranchCheck.second != negativeBranchCheck.second) {
 			mNxtGen->mErrorReporter.addError(
-					"This diagram isn't structed diagram,"\
-					" because there are IF block with 2 back arrows!", mElementId);
+					QObject::tr("This diagram isn't structed diagram,"\
+						" because there are IF block with 2 back arrows!")
+					, mElementId);
 			return false;
 		}
 

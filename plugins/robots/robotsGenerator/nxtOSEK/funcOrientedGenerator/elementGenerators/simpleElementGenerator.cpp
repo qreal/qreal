@@ -11,7 +11,7 @@ void SimpleElementGenerator::generateMethodBody()
 	
 	IdList outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
 	if (outgoingConnectedElements.size() > 1) {
-		mNxtGen->mErrorReporter.addError("Too many outgoing connections!", mElementId);
+		mNxtGen->mErrorReporter.addError(QObject::tr("Too many outgoing connections!"), mElementId);
 		return;
 	}
 

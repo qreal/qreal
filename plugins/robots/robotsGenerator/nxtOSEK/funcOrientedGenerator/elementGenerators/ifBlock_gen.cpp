@@ -6,7 +6,9 @@ using namespace robots::generator;
 void IfBlock_gen::generateMethodBody() {
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 	if (outgoingLinks.size() < 2) {
-		mNxtGen->mErrorReporter.addError("Less than 2 outgoing elements for if element!", mElementId);
+		mNxtGen->mErrorReporter.addError(
+				QObject::tr("Less than 2 outgoing elements for if element!")
+				, mElementId);
 		return;
 	}
 
@@ -28,8 +30,10 @@ void IfBlock_gen::generateMethodBody() {
 	
 	Id positiveBranchElement = mNxtGen->mApi->to(outgoingLinks.at(conditionArrowNum));
 	if (positiveBranchElement == Id::rootId()) {
-		mNxtGen->mErrorReporter.addError("If block " + mElementId.toString() + " has no 2 correct branches!"\
-				" May be you need to connect one of them to some diagram element.", mElementId);
+		mNxtGen->mErrorReporter.addError(
+				QObject::tr("If block " + mElementId.toString() + " has no 2 correct branches!"\
+					" May be you need to connect one of them to some diagram element.")
+				, mElementId);
 		return;
 	}
 	QString positiveBranchNextElementMethod = mNxtGen->mIdToMethodNameMap[positiveBranchElement.toString()];

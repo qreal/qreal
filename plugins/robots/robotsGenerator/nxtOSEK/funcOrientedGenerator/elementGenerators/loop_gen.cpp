@@ -8,7 +8,9 @@ using namespace robots::generator;
 void Loop_gen::generateMethodBody() {
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 	if (outgoingLinks.size() < 2) {
-		mNxtGen->mErrorReporter.addError("Less than 2 outgoing elements for loop element!", mElementId);
+		mNxtGen->mErrorReporter.addError(
+				QObject::tr("Less than 2 outgoing elements for loop element!")
+				, mElementId);
 		return;
 	}
 
@@ -26,8 +28,10 @@ void Loop_gen::generateMethodBody() {
 	//generate loop
 	Id loopNextElement = mNxtGen->mApi->to(outgoingLinks.at(elementConnectedByIterationEdgeNumber));
 	if (loopNextElement == Id::rootId()) {
-		mNxtGen->mErrorReporter.addError("Loop block " + mElementId.toString() + " has no correct loop branch!"\
-				" May be you need to connect it to some diagram element.", mElementId);
+		mNxtGen->mErrorReporter.addError(
+				QObject::tr("Loop block " + mElementId.toString() + " has no correct loop branch!"\
+					" May be you need to connect it to some diagram element.")
+				, mElementId);
 		return;
 	}
 
@@ -43,8 +47,10 @@ void Loop_gen::generateMethodBody() {
 	//generate next blocks
 	Id nextBlockElement = mNxtGen->mApi->to(outgoingLinks.at(afterLoopElementNumber));
 	if (nextBlockElement == Id::rootId()) {
-		mNxtGen->mErrorReporter.addError("Loop block " + mElementId.toString() + " has no correct next block branch!"\
-				" May be you need to connect it to some diagram element.", mElementId);
+		mNxtGen->mErrorReporter.addError(
+				QObject::tr("Loop block " + mElementId.toString() + " has no correct next block branch!"\
+					" May be you need to connect it to some diagram element.")
+				, mElementId);
 		return;
 	}
 
