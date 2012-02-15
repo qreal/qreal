@@ -30,7 +30,7 @@ public:
 	void addItemType(Id const &id, QString const &name, QString const &description
 			, QIcon const &icon,QTreeWidget *tree, QTreeWidgetItem *parent);
 
-	/** Adds all editors elements to appropriate tree/
+	/** Adds all editors elements to appropriate tree.
 	  @param editorManager Editor manager which all editors with elements are taken from.
 	  @param diagram Diagram that corresponds to the chosen editor.
 	*/
@@ -60,7 +60,7 @@ public slots:
 	void setActiveEditor(int index);
 	void setActiveEditor(Id id);
 
-	/// Recreate PaletteTree
+	/// Recreate PaletteTree.
 	void recreateTrees();
 private:
 
@@ -144,7 +144,7 @@ private:
 	/// Vector with all editors names.
 	QVector <QString> mEditorsNames;
 
-	/// Combobox with editors
+	/// Combobox with editors.
 	QComboBox *mComboBox;
 
 	/// Main layout of the widget.
