@@ -285,6 +285,8 @@ private:
 	void refreshRecentProjectsList(QString const &fileName);
 	int openSaveOfferDialog();
 
+	void registerMetatypes();
+
 	Ui::MainWindowUi *mUi;
 
 	QCloseEvent *mCloseEvent;

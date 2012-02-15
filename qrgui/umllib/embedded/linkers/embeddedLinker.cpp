@@ -46,12 +46,12 @@ void EmbeddedLinker::setMaster(NodeElement *element)
 void EmbeddedLinker::generateColor()
 {
 	int result = 0;
-//	QChar *data = edgeType.element().data();
-//	while (!data->isNull()) {
-//		result += data->unicode();
-//		++data;
-//	}
-//	result *= 666;
+	//	QChar *data = edgeType.element().data();
+	//	while (!data->isNull()) {
+	//		result += data->unicode();
+	//		++data;
+	//	}
+	//	result *= 666;
 	color = QColor(result % 192 + 64, result % 128 + 128, result % 64 + 192).darker(0);
 }
 
@@ -213,11 +213,11 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			return;
 		}
 		const QString type = "qrm:/" + master->id().editor() + "/" +
-							 master->id().diagram() + "/" + edgeType.element();
+				master->id().diagram() + "/" + edgeType.element();
 		if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type))) {
 			master->setConnectingState(true);
-			Id edgeId = scene->createElement(type, event->scenePos());
-			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
+			Id *edgeId = scene->createElement(type, event->scenePos());
+			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(*edgeId));
 		}
 
 		if (mEdge){

@@ -150,7 +150,33 @@ void Client::setProperty(const Id &id, const QString &name, const QVariant &valu
 
 void Client::copyProperties(const Id &dest, const Id &src)
 {
+	if (!mObjects.contains(src)) {
+		throw Exception("Client: Copying properties from nonexistent object " + src.toString());
+	}
+
+	if (!mObjects.contains(dest)) {
+		throw Exception("Client: Copying properties to nonexistent object " + dest.toString());
+	}
+
 	mObjects[dest]->copyPropertiesFrom(*mObjects[src]);
+}
+
+void Client::setProperties(const Id &id, const QMap<QString, QVariant> &properties)
+{
+	if (mObjects.contains(id)) {
+		mObjects[id]->setProperties(properties);
+	} else {
+		throw Exception("Client: Setting properties (all at once) of nonexistent object " + id.toString());
+	}
+}
+
+QMap<QString, QVariant> Client::properties(const qReal::Id &id) const
+{
+	if (mObjects.contains(id)) {
+		return mObjects[id]->properties();
+	} else {
+		throw Exception("Client: Requesting properties of nonexistent object " + id.toString());
+	}
 }
 
 QVariant Client::property( const Id &id, const QString &name ) const

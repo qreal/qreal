@@ -12,6 +12,7 @@
 #include "nodeElement.h"
 #include "../view/editorViewScene.h"
 #include "../editorPluginInterface/editorInterface.h"
+#include "../view/copypaste.h"
 
 using namespace qReal;
 
@@ -21,16 +22,17 @@ const double pi = 3.14159265358979;
 // static bool moving = false;
 
 EdgeElement::EdgeElement(ElementImpl *impl)
-: mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
-, mSrc(NULL), mDst(NULL)
-, mPortFrom(0), mPortTo(0)
-, mDragPoint(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL)
-, mAddPointAction(tr("Add point"), this)
-, mDelPointAction(tr("Delete point"), this)
-, mSquarizeAction(tr("Squarize"), this)
-, mMinimizeAction(tr("Remove all points"), this)
-, mElementImpl(impl)
-, mLastDragPoint(-1)
+		: mPenStyle(Qt::SolidLine)
+		,mPenWidth(1), mPenColor(Qt::black), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
+		, mSrc(NULL), mDst(NULL)
+		, mPortFrom(0), mPortTo(0)
+		, mDragPoint(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL)
+		, mAddPointAction(tr("Add point"), this)
+		, mDelPointAction(tr("Delete point"), this)
+		, mSquarizeAction(tr("Squarize"), this)
+		, mMinimizeAction(tr("Remove all points"), this)
+		, mElementImpl(impl)
+		, mLastDragPoint(-1)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
@@ -74,6 +76,32 @@ EdgeElement::~EdgeElement()
 		mDst->delEdge(this);
 
 	delete mElementImpl;
+}
+
+EdgeElementSerializationData EdgeElement::serializationData() const
+{
+	EdgeElementSerializationData data;
+
+	data.mId = id();
+	data.mLogicalId = logicalId();
+	data.mProperties = mGraphicalAssistApi->properties(id());
+
+	if (mSrc) {
+		data.mSrcId = mSrc->id();
+	} else {
+		data.mSrcId = Id::rootId();
+	}
+
+	if (mDst) {
+		data.mDstId = mDst->id();
+	} else {
+		data.mDstId = Id::rootId();
+	}
+
+	data.mPortFrom = mPortFrom;
+	data.mPortTo = mPortTo;
+
+	return data;
 }
 
 void EdgeElement::initTitles()
@@ -350,7 +378,7 @@ bool EdgeElement::initPossibleEdges()
 	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(id().element());
 	foreach (StringPossibleEdge pEdge, stringPossibleEdges) {
 		QPair<qReal::Id, qReal::Id> nodes(Id(editor, diagram, pEdge.first.first),
-		Id(editor, diagram, pEdge.first.second));
+										  Id(editor, diagram, pEdge.first.second));
 		QPair<bool, qReal::Id> edge(pEdge.second.first, Id(editor, diagram, pEdge.second.second));
 		PossibleEdge possibleEdge(nodes, edge);
 		possibleEdges.push_back(possibleEdge);
@@ -558,9 +586,9 @@ void EdgeElement::removeUnneededPoints(int startingPoint)
 {
 	if (startingPoint + 2 < mLine.size()) {
 		if ((mLine[startingPoint].x() == mLine[startingPoint + 1].x() &&
-		mLine[startingPoint].x() == mLine[startingPoint + 2].x()) ||
-		(mLine[startingPoint].y() == mLine[startingPoint + 1].y() &&
-		mLine[startingPoint].y() == mLine[startingPoint + 2].y()))
+			 mLine[startingPoint].x() == mLine[startingPoint + 2].x()) ||
+				(mLine[startingPoint].y() == mLine[startingPoint + 1].y() &&
+				 mLine[startingPoint].y() == mLine[startingPoint + 2].y()))
 		{
 			delPointHandler(mLine[startingPoint + 1]);
 		}
