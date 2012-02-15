@@ -20,16 +20,13 @@ class EditorViewScene : public QGraphicsScene
 	Q_OBJECT
 
 public:
-	explicit EditorViewScene(QObject *parent = 0);
+	explicit EditorViewScene(QObject *parent);
 	~EditorViewScene();
 
 	void clearScene();
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos);
-	virtual qReal::Id *createElement(const QString &, QPointF scenePos, const QString &name = "(anonymous something)");
+	virtual qReal::Id createElement(const QString &, QPointF const &scenePos);
 	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos);
-
-	NodeElement *deserializeNode(const NodeElementSerializationData &data, bool shareLogicalId = false, QPointF offset = QPointF(10, 10));
-	EdgeElement *deserializeEdge(const EdgeElementSerializationData &data, bool shareLogicalId = false, QPointF offset = QPointF(10, 10));
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
@@ -52,9 +49,6 @@ public:
 
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
 
-	QList<NodeElement*> selectedNodes() const;
-	QList<EdgeElement*> selectedEdges() const;
-
 	void highlight(qReal::Id const &graphicalId, bool exclusive = true);
 	void dehighlight(qReal::Id const &graphicalId);
 	void dehighlight();
@@ -72,7 +66,7 @@ public slots:
 	qReal::Id createElement(const QString &type);
 	// TODO: get rid of it here
 	void copy();
-	void paste(bool viewOnly = false);
+	void paste();
 
 	/// selects all elements on the current scene
 	void selectAll();
@@ -93,6 +87,7 @@ protected:
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+
 
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 

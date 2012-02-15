@@ -18,8 +18,6 @@
 #include "embedded/linkers/embeddedLinker.h"
 #include "../editorPluginInterface/elementImpl.h"
 #include "embedded/linkers/embeddedLinker.h"
-#include "../view/copypaste.h"
-#include "../mainwindow/mainWindow.h"
 
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"
@@ -32,11 +30,10 @@ public:
 	NodeElement(ElementImpl *impl);
 	virtual ~NodeElement();
 
-	NodeElement *clone(bool toCursorPos = false, bool shareLogicalId = false, qReal::Id const &parentId = qReal::Id::rootId());
-	void copyChildren(NodeElement *source, bool shareLogicalId = false);
+	NodeElement *clone(bool toCursorPos = false);
+	void copyChildren(NodeElement *source);
+	void copyEdges(NodeElement *source);
 	void copyProperties(NodeElement *source);
-
-	NodeElementSerializationData serializationData() const;
 
 	virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w, SdfRenderer *portrenderer);
 	virtual void paint(QPainter *,  const QStyleOptionGraphicsItem *, QWidget *);
@@ -48,7 +45,6 @@ public:
 	void setGeometry(QRectF const &geom);
 	void setPos(const QPointF &pos);
 	void setPos(qreal x, qreal y);
-	void setContents(QRectF const &contents);
 
 	/// Aligning the element to grid
 	void alignToGrid();
@@ -116,7 +112,7 @@ public slots:
 	virtual void singleSelectionState(const bool singleSelected);
 	virtual void selectionState(const bool selected);
 	void switchGrid(bool isChecked);
-	void copyAndPlaceOnDiagram(bool shareLogicalId = false);
+	void copyAndPlaceOnDiagram();
 
 private:
 	enum DragState {
