@@ -28,9 +28,11 @@ void Loop_gen::generateMethodBody() {
 	//generate loop
 	Id loopNextElement = mNxtGen->mApi->to(outgoingLinks.at(elementConnectedByIterationEdgeNumber));
 	if (loopNextElement == Id::rootId()) {
+		QString errorMessage = QObject::tr("Loop block %1 has no correct loop branch!"\
+					" May be you need to connect it to some diagram element.");
+		errorMessage.replace("%1", mElementId.toString());
 		mNxtGen->mErrorReporter.addError(
-				QObject::tr("Loop block " + mElementId.toString() + " has no correct loop branch!"\
-					" May be you need to connect it to some diagram element.")
+				errorMessage
 				, mElementId);
 		return;
 	}
@@ -47,10 +49,13 @@ void Loop_gen::generateMethodBody() {
 	//generate next blocks
 	Id nextBlockElement = mNxtGen->mApi->to(outgoingLinks.at(afterLoopElementNumber));
 	if (nextBlockElement == Id::rootId()) {
+		QString errorMessage = QObject::tr("Loop block %1 has no correct next block branch!"\
+					" May be you need to connect it to some diagram element.");
+		errorMessage.replace("%1", mElementId.toString());
 		mNxtGen->mErrorReporter.addError(
-				QObject::tr("Loop block " + mElementId.toString() + " has no correct next block branch!"\
-					" May be you need to connect it to some diagram element.")
+				errorMessage
 				, mElementId);
+
 		return;
 	}
 

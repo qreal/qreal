@@ -91,7 +91,9 @@ qReal::ErrorReporterInterface &SequentialGenerator::generate()
 		// Generate C file (start)
 		QFile templateCFile(":/nxtOSEK/sequentialGenerator/templates/template.c");
 		if (!templateCFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			mErrorReporter.addError(QObject::tr("cannot open \"" + templateCFile.fileName() + "\""));
+			QString errorMessage(QObject::tr("cannot open \"%1\""));
+			errorMessage.replace("%1", templateCFile.fileName());
+			mErrorReporter.addError(errorMessage);
 			return mErrorReporter;
 		}
 
@@ -104,7 +106,10 @@ qReal::ErrorReporterInterface &SequentialGenerator::generate()
 
 		QFile resultCFile(projectDir + "/" + projectName + ".c");
 		if (!resultCFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-			mErrorReporter.addError("cannot open \"" + resultCFile.fileName() + "\"");
+			QString errorMessage(QObject::tr("cannot open \"%1\""));
+			errorMessage.replace("%1", resultCFile.fileName());
+			mErrorReporter.addError(errorMessage);
+
 			return mErrorReporter;
 		}
 
@@ -117,13 +122,17 @@ qReal::ErrorReporterInterface &SequentialGenerator::generate()
 		// Generate OIL file (start)
 		QFile templateOILFile(":/nxtOSEK/sequentialGenerator/templates/template.oil");
 		if (!templateOILFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			mErrorReporter.addError(QObject::tr("cannot open \"" + templateOILFile.fileName() + "\""));
+			QString errorMessage(QObject::tr("cannot open \"%1\""));
+			errorMessage.replace("%1", templateOILFile.fileName());
+			mErrorReporter.addError(errorMessage);
 			return mErrorReporter;
 		}
 
 		QFile resultOILFile(projectDir + "/" + projectName + ".oil");
 		if (!resultOILFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-			mErrorReporter.addError(QObject::tr(("cannot open \"" + resultOILFile.fileName() + "\"")));
+			QString errorMessage(QObject::tr("cannot open \"%1\""));
+			errorMessage.replace("%1", resultOILFile.fileName());
+			mErrorReporter.addError(errorMessage);
 			return mErrorReporter;
 		}
 
@@ -138,13 +147,18 @@ qReal::ErrorReporterInterface &SequentialGenerator::generate()
 		// Generate makefile (start)
 		QFile templateMakeFile(":/nxtOSEK/sequentialGenerator/templates/template.makefile");
 		if (!templateMakeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			mErrorReporter.addError(QObject::tr("cannot open \"" + templateMakeFile.fileName() + "\""));
+			QString errorMessage(QObject::tr("cannot open \"%1\""));
+			errorMessage.replace("%1", templateMakeFile.fileName());
+			mErrorReporter.addError(errorMessage);
 			return mErrorReporter;
 		}
 
 		QFile resultMakeFile(projectDir + "/makefile");
 		if (!resultMakeFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-			mErrorReporter.addError(QObject::tr(("cannot open \"" + resultMakeFile.fileName() + "\"")));
+			QString errorMessage(QObject::tr("cannot open \"%1\""));
+			errorMessage.replace("%1", resultMakeFile.fileName());
+			mErrorReporter.addError(errorMessage);
+
 			return mErrorReporter;
 		}
 
@@ -569,10 +583,13 @@ bool SequentialGenerator::SimpleElementGenerator::nextElementsGeneration()
 
 	if (outgoingConnectedElements.size() == 1) {
 		if (outgoingConnectedElements.at(0) == Id::rootId()) {
-			mNxtGen->mErrorReporter.addError(
-					QObject::tr("Element " + mElementId.toString() + " has no"\
+			QString errorMessage = 	QObject::tr("Element %1 has no"\
 						" correct next element because its link has no end object."\
-						" May be you need to connect it to diagram object.")
+						" May be you need to connect it to diagram object.");
+			errorMessage.replace("%1", mElementId.toString());
+
+			mNxtGen->mErrorReporter.addError(
+					errorMessage
 					, mElementId);
 			return false;
 		}
@@ -614,9 +631,11 @@ bool SequentialGenerator::LoopElementGenerator::nextElementsGeneration()
 	//generate loop
 	Id loopNextElement = mNxtGen->mApi->to(outgoingLinks.at(elementConnectedByIterationEdgeNumber));
 	if (loopNextElement == Id::rootId()) {
+		QString errorMessage = QObject::tr("Loop block %1 has no correct loop branch!"\
+					" May be you need to connect it to some diagram element.");
+		errorMessage.replace("%1", mElementId.toString());
 		mNxtGen->mErrorReporter.addError(
-				QObject::tr("Loop block " + mElementId.toString() + " has no correct loop branch!"\
-					" May be you need to connect it to some diagram element.")
+				errorMessage
 				, mElementId);
 		return false;
 	}
@@ -634,9 +653,11 @@ bool SequentialGenerator::LoopElementGenerator::nextElementsGeneration()
 	//generate next blocks
 	Id nextBlockElement = mNxtGen->mApi->to(outgoingLinks.at(afterLoopElementNumber));
 	if (nextBlockElement == Id::rootId()) {
+		QString errorMessage = QObject::tr("Loop block %1 has no correct next block branch!"\
+					" May be you need to connect it to some diagram element.");
+		errorMessage.replace("%1", mElementId.toString());
 		mNxtGen->mErrorReporter.addError(
-				QObject::tr("Loop block " + mElementId.toString() + " has no correct next block branch!"\
-					" May be you need to connect it to some diagram element.")
+				errorMessage
 				, mElementId);
 		return false;
 	}
@@ -660,9 +681,10 @@ bool SequentialGenerator::IfElementGenerator::generateBranch(int branchNumber)
 
 	Id branchElement = mNxtGen->mApi->to(outgoingLinks.at(branchNumber));
 	if (branchElement == Id::rootId()) {
+		QString errorMessage = QObject::tr("If block %1 has no 2 correct branches!"\
+					" May be you need to connect one of them to some diagram element.");
 		mNxtGen->mErrorReporter.addError(
-				QObject::tr("If block " + mElementId.toString() + " has no 2 correct branches!"\
-					" May be you need to connect one of them to some diagram element.")
+				errorMessage
 				, mElementId);
 		return false;
 	}
@@ -714,10 +736,12 @@ QPair<bool, qReal::Id> SequentialGenerator::IfElementGenerator::checkBranchForBa
 
 	foreach (qReal::Id childId, mNxtGen->mApi->outgoingConnectedElements(logicElementId)) {
 		if (childId == Id::rootId()) {
-			mNxtGen->mErrorReporter.addError(
-					QObject::tr("Link from " + logicElementId.toString() +
+			QString errorMessage = QObject::tr("Link from %1"\
 						" has no object on its end."\
-						" May be you need to connect it to diagram object.")
+						" May be you need to connect it to diagram object.");
+			errorMessage.replace("%1", logicElementId.toString());
+			mNxtGen->mErrorReporter.addError(
+					errorMessage
 					, mElementId);
 			return QPair<bool, qReal::Id>(false, qReal::Id());
 		}
@@ -762,9 +786,11 @@ bool SequentialGenerator::IfElementGenerator::nextElementsGeneration()
 	//check for back arrows
 	Id positiveBranchElement = mNxtGen->mApi->to(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)));
 	if (positiveBranchElement == Id::rootId()) {
+		QString errorMessage = QObject::tr("If block %1 has no 2 correct branches!"\
+					" May be you need to connect one of them to some diagram element.");
+		errorMessage.replace("%1", mElementId.toString());
 		mNxtGen->mErrorReporter.addError(
-				QObject::tr("If block " + mElementId.toString() + " has no 2 correct branches!"\
-					" May be you need to connect one of them to some diagram element.")
+				errorMessage
 				, mElementId);
 		return false;
 	}
@@ -774,9 +800,12 @@ bool SequentialGenerator::IfElementGenerator::nextElementsGeneration()
 
 	Id negativeBranchElement = mNxtGen->mApi->to(outgoingLinks.at(1 - conditionArrowNum));
 	if (negativeBranchElement == Id::rootId()) {
+		QString errorMessage = QObject::tr("If block %1 has no 2 correct branches!"\
+					" May be you need to connect one of them to some diagram element.");
+		errorMessage.replace("%1", mElementId.toString());
+
 		mNxtGen->mErrorReporter.addError(
-				QObject::tr("If block " + mElementId.toString() + " has no 2 correct branches!"\
-					" May be you need to connect one of them to some diagram element.")
+				errorMessage
 				, mElementId);
 		return false;
 	}

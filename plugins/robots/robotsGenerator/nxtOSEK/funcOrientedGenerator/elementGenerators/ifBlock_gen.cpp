@@ -30,9 +30,11 @@ void IfBlock_gen::generateMethodBody() {
 	
 	Id positiveBranchElement = mNxtGen->mApi->to(outgoingLinks.at(conditionArrowNum));
 	if (positiveBranchElement == Id::rootId()) {
+		QString errorMessage = QObject::tr("If block %1 has no 2 correct branches!"\
+					" May be you need to connect one of them to some diagram element.");
+		errorMessage.replace("%1", mElementId.toString());
 		mNxtGen->mErrorReporter.addError(
-				QObject::tr("If block " + mElementId.toString() + " has no 2 correct branches!"\
-					" May be you need to connect one of them to some diagram element.")
+				errorMessage
 				, mElementId);
 		return;
 	}
@@ -40,8 +42,12 @@ void IfBlock_gen::generateMethodBody() {
 
 	Id negativeBranchElement = mNxtGen->mApi->to(outgoingLinks.at(1 - conditionArrowNum));
 	if (negativeBranchElement == Id::rootId()) {
-		mNxtGen->mErrorReporter.addError("If block " + mElementId.toString() + " has no 2 correct branches!"\
-				" May be you need to connect one of them to some diagram element.", mElementId);
+		QString errorMessage = QObject::tr("If block %1 has no 2 correct branches!"\
+				" May be you need to connect one of them to some diagram element.");
+		errorMessage.replace("%1", mElementId.toString());
+		mNxtGen->mErrorReporter.addError(
+				errorMessage
+				, mElementId);
 		return;
 	}
 	QString negativeBranchNextElementMethod = mNxtGen->mIdToMethodNameMap[negativeBranchElement.toString()];

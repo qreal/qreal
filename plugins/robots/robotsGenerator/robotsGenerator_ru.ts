@@ -5,76 +5,85 @@
     <name>QObject</name>
     <message>
         <location filename="nxtOSEK/funcOrientedGenerator/funcOrientedGenerator.cpp" line="54"/>
-        <location filename="nxtOSEK/funcOrientedGenerator/funcOrientedGenerator.cpp" line="67"/>
-        <location filename="nxtOSEK/funcOrientedGenerator/funcOrientedGenerator.cpp" line="73"/>
-        <location filename="nxtOSEK/funcOrientedGenerator/funcOrientedGenerator.cpp" line="88"/>
+        <location filename="nxtOSEK/funcOrientedGenerator/funcOrientedGenerator.cpp" line="69"/>
+        <location filename="nxtOSEK/funcOrientedGenerator/funcOrientedGenerator.cpp" line="77"/>
         <location filename="nxtOSEK/funcOrientedGenerator/funcOrientedGenerator.cpp" line="94"/>
+        <location filename="nxtOSEK/funcOrientedGenerator/funcOrientedGenerator.cpp" line="102"/>
         <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="94"/>
-        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="120"/>
-        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="141"/>
-        <source>cannot open &quot;</source>
-        <translation type="unfinished"></translation>
+        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="109"/>
+        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="125"/>
+        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="133"/>
+        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="150"/>
+        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="158"/>
+        <source>cannot open &quot;%1&quot;</source>
+        <oldsource>cannot open &quot;</oldsource>
+        <translation>невозможно открыть &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="163"/>
+        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="177"/>
         <source>There is nothing to generate, diagram doesn&apos;t have Initial Node</source>
         <translation>Генерация невозможна, на диаграмме нет начальных блоков</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="535"/>
+        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="549"/>
         <source>Error! There are more than 1 outgoing connected elements with simple robot element!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка! Больше одной исходящей связи из простого блока!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="573"/>
-        <source>Element </source>
-        <translation type="unfinished"></translation>
+        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="586"/>
+        <source>Element %1 has no correct next element because its link has no end object. May be you need to connect it to diagram object.</source>
+        <translation>У элемента %1 нет корректного следующего, так как его исходящая связь ни на что не показывает. Надо соединить её с некоторым элементом диаграммы.</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="590"/>
+        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="739"/>
+        <source>Link from %1 has no object on its end. May be you need to connect it to diagram object.</source>
+        <translation>Исходящая связь %1 ни на что не указывает. Надо соединить её с некоторым элементом диаграммы.</translation>
+    </message>
+    <message>
+        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="607"/>
         <source>Error! There is no outgoing connected elements with no final node!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка! У не конечного элемента не задан следующий!</translation>
     </message>
     <message>
         <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/loop_gen.cpp" line="12"/>
         <source>Less than 2 outgoing elements for loop element!</source>
-        <translation type="unfinished"></translation>
+        <translation>Менее 2 исходящих связей для блока цикла!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/loop_gen.cpp" line="32"/>
-        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/loop_gen.cpp" line="51"/>
-        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="618"/>
-        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="638"/>
-        <source>Loop block </source>
-        <translation type="unfinished"></translation>
+        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/loop_gen.cpp" line="31"/>
+        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="634"/>
+        <source>Loop block %1 has no correct loop branch! May be you need to connect it to some diagram element.</source>
+        <translation>У блока цикла %1 некорректно задана ветвь цикла! Возможно надо поправить связи со следующими элементами.</translation>
+    </message>
+    <message>
+        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/loop_gen.cpp" line="52"/>
+        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="656"/>
+        <source>Loop block %1 has no correct next block branch! May be you need to connect it to some diagram element.</source>
+        <translation>У блока цикла %1 некорректно задана ветвь после него! Возможно надо поправить связи со следующими элементами.</translation>
     </message>
     <message>
         <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/ifBlock_gen.cpp" line="10"/>
         <source>Less than 2 outgoing elements for if element!</source>
-        <translation type="unfinished"></translation>
+        <translation>Менее 2 исходящих связей для условного блока!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/ifBlock_gen.cpp" line="34"/>
-        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="664"/>
-        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="766"/>
-        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="778"/>
-        <source>If block </source>
-        <translation type="unfinished"></translation>
+        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/ifBlock_gen.cpp" line="33"/>
+        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/ifBlock_gen.cpp" line="45"/>
+        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="684"/>
+        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="789"/>
+        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="803"/>
+        <source>If block %1 has no 2 correct branches! May be you need to connect one of them to some diagram element.</source>
+        <translation>У условного блока %1 нет 2 корректных следующих элементов. Возможно надо поправить связи со следующими элементами.</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="718"/>
-        <source>Link from </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="791"/>
+        <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="820"/>
         <source>This diagram isn&apos;t structed diagram, because there are IF block with 2 back arrows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Данная диаграмма не структурная, так как в ней есть условный блок (IF) с 2 ветками, ведущими к предыдущим элементам!</translation>
     </message>
     <message>
         <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElementGenerator.cpp" line="14"/>
         <source>Too many outgoing connections!</source>
-        <translation type="unfinished"></translation>
+        <translation>Слишком много исходящих связей!</translation>
     </message>
 </context>
 <context>
@@ -156,7 +165,7 @@
     <message>
         <location filename="robotsGeneratorPlugin.cpp" line="43"/>
         <source>Toggle generators</source>
-        <translation type="unfinished"></translation>
+        <translation>Переключить генераторы</translation>
     </message>
     <message>
         <location filename="robotsGeneratorPlugin.cpp" line="47"/>

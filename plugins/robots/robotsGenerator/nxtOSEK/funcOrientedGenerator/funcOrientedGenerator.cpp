@@ -51,7 +51,9 @@ void FuncOrientedGenerator::writeGeneratedCodeToFile(QString const &resultCode, 
 
 	QFile resultCFile(projectDir + "/" + projectName + ".c");
 	if (!resultCFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		mErrorReporter.addError(QObject::tr("cannot open \"" + resultCFile.fileName() + "\""));
+		QString errorMessage = QObject::tr("cannot open \"%1\"");
+		errorMessage.replace("%1", resultCFile.fileName());
+		mErrorReporter.addError(errorMessage);
 		return;
 	}
 
@@ -64,13 +66,17 @@ void FuncOrientedGenerator::writeGeneratedCodeToFile(QString const &resultCode, 
 	// Generate OIL file (start)
 	QFile templateOILFile(":/nxtOSEK/funcOrientedGenerator/templates/template.oil");
 	if (!templateOILFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		mErrorReporter.addError(QObject::tr("cannot open \"" + templateOILFile.fileName() + "\""));
+		QString errorMessage = QObject::tr("cannot open \"%1\"");
+		errorMessage.replace("%1", templateOILFile.fileName());
+		mErrorReporter.addError(errorMessage);
 		return;
 	}
 
 	QFile resultOILFile(projectDir + "/" + projectName + ".oil");
 	if (!resultOILFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		mErrorReporter.addError(QObject::tr("cannot open \"" + resultOILFile.fileName() + "\""));
+		QString errorMessage = QObject::tr("cannot open \"%1\"");
+		errorMessage.replace("%1", resultOILFile.fileName());
+		mErrorReporter.addError(errorMessage);
 		return;
 	}
 
@@ -85,13 +91,17 @@ void FuncOrientedGenerator::writeGeneratedCodeToFile(QString const &resultCode, 
 	// Generate makefile (start)
 	QFile templateMakeFile(":/nxtOSEK/funcOrientedGenerator/templates/template.makefile");
 	if (!templateMakeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		mErrorReporter.addError(QObject::tr("cannot open \"" + templateMakeFile.fileName() + "\""));
+		QString errorMessage = QObject::tr("cannot open \"%1\"");
+		errorMessage.replace("%1", templateMakeFile.fileName());
+		mErrorReporter.addError(errorMessage);
 		return;
 	}
 
 	QFile resultMakeFile(projectDir + "/makefile");
 	if (!resultMakeFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		mErrorReporter.addError(QObject::tr("cannot open \"" + resultMakeFile.fileName() + "\""));
+		QString errorMessage = QObject::tr("cannot open \"%1\"");
+		errorMessage.replace("%1", resultMakeFile.fileName());
+		mErrorReporter.addError(errorMessage);
 		return;
 	}
 
