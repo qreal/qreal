@@ -108,6 +108,10 @@ namespace qrRepo {
 		virtual qReal::IdList graphicalElements(qReal::Id const &type) const;
 		virtual qReal::IdList logicalElements(qReal::Id const &type) const;
 
+		//Returns all elements
+		virtual qReal::IdList graphicalElements() const;
+		virtual qReal::IdList logicalElements() const;
+
 		virtual qReal::Id logicalId(qReal::Id const &id) const;
 
 		/// Returns all elements with .element() == type

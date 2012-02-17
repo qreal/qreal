@@ -2,7 +2,7 @@
 
 #include <QtGui/QApplication>
 
-#include "nxtOSEK/nxtOSEKRobotGenerator.h"
+#include "nxtOSEK/nxtOSEKgenerator.h"
 
 Q_EXPORT_PLUGIN2(robotsGeneratorPlugin, robots::generator::RobotsGeneratorPlugin)
 
@@ -11,6 +11,7 @@ using namespace robots::generator;
 
 RobotsGeneratorPlugin::RobotsGeneratorPlugin()
 		: mGenerateCodeAction(NULL)
+		, mToggleGenerators(NULL)
 		, mFlashRobotAction(NULL)
 		, mUploadProgramAction(NULL)
 		, mNxtToolsPresent(false)
@@ -39,26 +40,33 @@ QList<ActionInfo> RobotsGeneratorPlugin::actions()
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
 	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateRobotSourceCode()));
 
+	mToggleGenerators.setText(tr("Toggle generators"));
+	ActionInfo toggleGeneratorsActionInfo(&mToggleGenerators, "generators", "tools");
+	connect(&mToggleGenerators, SIGNAL(triggered()), this, SLOT(toggleRobotCodeGenerators()));
+
 	mFlashRobotAction.setText(tr("Flash robot"));
 	ActionInfo flashRobotActionInfo(&mFlashRobotAction, "generators", "tools");
 	connect(&mFlashRobotAction, SIGNAL(triggered()), this, SLOT(flashRobot()));
 
 	mUploadProgramAction.setText(tr("Upload program"));
 	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
-	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
+	connect(&mFlashRobotAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
 	checkNxtTools();
 
-	return QList<ActionInfo>() << generateCodeActionInfo << flashRobotActionInfo
-			<< uploadProgramActionInfo;
+	return QList<ActionInfo>() << generateCodeActionInfo
+		<< toggleGeneratorsActionInfo
+		<< flashRobotActionInfo
+		<< uploadProgramActionInfo;
 }
 
 void RobotsGeneratorPlugin::generateRobotSourceCode()
 {
 	mMainWindowInterface->saveAll();
 
-	robots::generator::NxtOSEKRobotGenerator gen(*mRepoControlApi, *mMainWindowInterface->errorReporter());
-	gen.generate();
+	robots::generator::NxtOSEKgenerator* gen = robots::generator::NxtOSEKgenerator::createGenerator(*mRepoControlApi, *mMainWindowInterface->errorReporter());
+	gen->generate();
+	delete gen;
 
 	QFile file("nxt-tools/example0/example0.c");
 	QTextStream *inStream = NULL;
@@ -67,6 +75,11 @@ void RobotsGeneratorPlugin::generateRobotSourceCode()
 
 	if (inStream)
 		mMainWindowInterface->showInTextEditor("example0", inStream->readAll());
+}
+
+void RobotsGeneratorPlugin::toggleRobotCodeGenerators()
+{
+	robots::generator::NxtOSEKgenerator::toggleGeneratorTypes();
 }
 
 void RobotsGeneratorPlugin::flashRobot()

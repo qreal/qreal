@@ -3,9 +3,9 @@
 using namespace robots::generator;
 
 SmartLine::SmartLine(QString const &text, qReal::Id const &elementId, IndentChangeType indentLevelChange)
-		: mText(text)
-		, mElementId(elementId)
-		, mIndentChange(indentLevelChange)
+	: mText(text)
+	, mElementId(elementId)
+	, mIndentChange(indentLevelChange)
 {
 }
 
