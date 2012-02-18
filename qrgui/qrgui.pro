@@ -50,9 +50,6 @@ include (view/view.pri)
 # "Встроенные" генераторы
 include (generators/generators.pri)
 
-# "Встроенные" средства реверс-инжиниринга
-include (parsers/parsers.pri)
-
 # Код, скачанный из интернета.
 include (thirdparty/thirdparty.pri)
 

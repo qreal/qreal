@@ -74,7 +74,7 @@ private:
 	
 	QList<qReal::ActionInfo> mActionInfos;
 	
-	watchListWindow *mWatchListWindow;
+	utils::watchListWindow *mWatchListWindow;
 	qReal::VisualDebuggerPreferencesPage *mPreferencesPage;
 	qReal::BlockParser *mParser;
 };

@@ -3,6 +3,8 @@
 #include "watchListWindow.h"
 #include "ui_watchListWindow.h"
 
+using namespace utils;
+
 watchListWindow::watchListWindow(const utils::ExpressionsParser *parser, QWidget *parent) :
 	QDialog(parent)
 	, mUi(new Ui::watchListWindow)

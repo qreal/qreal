@@ -69,10 +69,12 @@ void RobotModel::configureSensors(sensorType::SensorTypeEnum const &port1
 		return;
 	}
 
+	mRobotImpl->lockSensorsConfiguration();
 	configureSensor(port1, inputPort::port1);
 	configureSensor(port2, inputPort::port2);
 	configureSensor(port3, inputPort::port3);
 	configureSensor(port4, inputPort::port4);
+	mRobotImpl->unlockSensorsConfiguration();
 }
 
 void RobotModel::configureSensor(sensorType::SensorTypeEnum const &sensorType
@@ -148,6 +150,11 @@ void RobotModel::init()
 void RobotModel::stopRobot()
 {
 	mRobotImpl->stopRobot();
+}
+
+void RobotModel::disconnectFromRobot()
+{
+	mRobotImpl->disconnectFromRobot();
 }
 
 robotParts::Motor &RobotModel::motorA()

@@ -4,6 +4,7 @@ Q_EXPORT_PLUGIN2(visualDebugger, qReal::visualDebugger::VisualDebuggerPlugin)
 
 using namespace qReal;
 using namespace visualDebugger;
+using namespace utils;
 
 const QString blockDiagram = "BlockDiagram";
 

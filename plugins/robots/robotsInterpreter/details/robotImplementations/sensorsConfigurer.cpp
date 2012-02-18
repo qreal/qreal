@@ -63,7 +63,7 @@ void SensorsConfigurer::reconfigureSensors()
 
 	Tracer::debug(tracer::initialization, "SensorsConfigurer::reconfigureSensors", "Going to reconfigure sensors");
 	mSensorsToConfigure = 0;
-	bool needToConfigure = false;
+	QList<int> sensorsToConfigure;
 	for (inputPort::InputPortEnum i = inputPort::port1; i <= inputPort::port4; i = static_cast<inputPort::InputPortEnum>(i + 1))
 	{
 		if (mPendingSensors[i] == NULL) {
@@ -73,29 +73,32 @@ void SensorsConfigurer::reconfigureSensors()
 			mConfiguredSensors[i] = mPendingSensors[i];
 			connect(mConfiguredSensors[i], SIGNAL(configured()), this, SLOT(sensorConfiguredSlot()));
 			++mSensorsToConfigure;
-			needToConfigure = true;
-			mConfiguredSensors[i]->configure();
+			sensorsToConfigure << i;
 		} else if (mPendingSensors[i]->type() != mConfiguredSensors[i]->type()) {
 			delete mConfiguredSensors[i];
 			mConfiguredSensors[i] = mPendingSensors[i];
 			connect(mConfiguredSensors[i], SIGNAL(configured()), this, SLOT(sensorConfiguredSlot()));
 			++mSensorsToConfigure;
-			needToConfigure = true;
-			mConfiguredSensors[i]->configure();
+			sensorsToConfigure << i;
 		}
 	}
-	if (!needToConfigure) {
+	if (sensorsToConfigure.isEmpty()) {
 		Tracer::debug(tracer::initialization, "SensorsConfigurer::reconfigureSensors", "No need to wait for a response, sending allSensorsReconfigured signal now.");
 		emit allSensorsConfigured();
+	} else {
+		foreach (int const &i, sensorsToConfigure) {
+			mConfiguredSensors[i]->configure();
+		}
 	}
 }
 
 void SensorsConfigurer::sensorConfiguredSlot()
 {
+	--mSensorsToConfigure;
 	Tracer::debug(tracer::initialization, "SensorsConfigurer::sensorConfiguredSlot", "Sensor configured, " + QString::number(mSensorsToConfigure) + " remaining");
 	sensorImplementations::AbstractSensorImplementation *sensor = dynamic_cast<sensorImplementations::AbstractSensorImplementation *>(sender());
 	emit sensorConfigured(sensor);
-	--mSensorsToConfigure;
-	if (mSensorsToConfigure == 0)
+	if (mSensorsToConfigure == 0) {
 		emit allSensorsConfigured();
+	}
 }

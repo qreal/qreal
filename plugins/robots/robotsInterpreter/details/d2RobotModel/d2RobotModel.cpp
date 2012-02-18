@@ -15,8 +15,8 @@ const unsigned long cyan    = 0xFF00FFFF;
 const unsigned long magenta = 0xFFFF00FF;
 
 D2RobotModel::D2RobotModel(QObject *parent)
-	: QObject(parent)
-	, mD2ModelWidget(NULL)
+		: QObject(parent)
+		, mD2ModelWidget(NULL)
 {
 	mAngle = 0;
 	mTimer = new QTimer(this);
@@ -35,8 +35,7 @@ void D2RobotModel::initPosition()
 	mMotorC = initMotor(5, 0, 0, 2);
 	setBeep(0, 0);
 	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);
-	mRotatePoint  = QPointF(0, 0);
-
+	mRotatePoint = QPointF(0, 0);  // TODO: not rotatePoint? why?
 }
 
 void D2RobotModel::clear()
@@ -113,7 +112,7 @@ void D2RobotModel::countMotorTurnover()
 
 int D2RobotModel::readEncoder(int/*inputPort::InputPortEnum*/ const port) const
 {
-	return mTurnoverMotors[port] / 360;// divide the number of degrees by complete revolutions count
+	return mTurnoverMotors[port] / 360;  // divide the number of degrees by complete revolutions count
 }
 
 void D2RobotModel::resetEncoder(int/*inputPort::InputPortEnum*/ const port)
@@ -278,7 +277,6 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> countsColor, int
 	return (allWhite / static_cast<qreal>(n)) * 100.0;
 }
 
-
 void D2RobotModel::startInit()
 {
 	initPosition();
@@ -287,7 +285,8 @@ void D2RobotModel::startInit()
 
 void D2RobotModel::stopRobot()
 {
-	mTimer->stop();
+	mMotorA->speed = 0;
+	mMotorB->speed = 0;
 }
 
 void D2RobotModel::countBeep()

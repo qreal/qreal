@@ -9,7 +9,9 @@ namespace Ui {
 	class watchListWindow;
 }
 
-class watchListWindow : public QDialog
+namespace utils {
+
+class QRUTILS_EXPORT watchListWindow : public QDialog
 {
 	Q_OBJECT
 
@@ -25,3 +27,5 @@ private:
 	const utils::ExpressionsParser *mParser;
 	QTimer *mTimer;
 };
+
+}

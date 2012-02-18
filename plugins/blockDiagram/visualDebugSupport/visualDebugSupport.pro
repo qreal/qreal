@@ -4,6 +4,8 @@ DESTDIR = ../../../bin/plugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+LIBS += -L../../../bin -lqrkernel -lqrutils
+
 HEADERS = \
 	visualDebuggerPlugin.h \
 	visualDebuggerPreferencesPage.h \
@@ -16,7 +18,7 @@ SOURCES = \
 FORMS += \
 	visualDebuggerPreferencesPage.ui
 
-include(interpreter/interpreter.pri)
-
 RESOURCES += \
 	visualDebugger.qrc
+
+include(interpreter/interpreter.pri)

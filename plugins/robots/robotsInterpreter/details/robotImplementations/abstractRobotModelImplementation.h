@@ -10,7 +10,7 @@
 #include "../../sensorConstants.h"
 #include "../d2RobotModel/d2RobotModel.h"
 #include "../robotCommunication/robotCommunicationThreadInterface.h"
-#include "../robotCommunication/robotCommunication.h"
+#include "../robotCommunication/robotCommunicator.h"
 #include "sensorsConfigurer.h"
 
 namespace qReal {
@@ -31,10 +31,11 @@ public:
 	AbstractRobotModelImplementation();
 	virtual ~AbstractRobotModelImplementation();
 
-	static AbstractRobotModelImplementation *robotModel(robotModelType::robotModelTypeEnum type, RobotCommunication * const robotCommunicationInterface = NULL, d2Model::D2RobotModel *d2RobotModel = NULL);
+	static AbstractRobotModelImplementation *robotModel(robotModelType::robotModelTypeEnum type, RobotCommunicator * const robotCommunicationInterface = NULL, d2Model::D2RobotModel *d2RobotModel = NULL);
 
 	virtual void init();
 	virtual void stopRobot() = 0;
+	virtual void disconnectFromRobot();
 
 	virtual brickImplementations::AbstractBrickImplementation &brick() = 0;
 	virtual sensorImplementations::AbstractSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const = 0;
@@ -55,33 +56,36 @@ public:
 	virtual bool needsConnection() const;
 	virtual void startInterpretation();
 
+	void lockSensorsConfiguration();
+	void unlockSensorsConfiguration();
+
 signals:
 	void connected(bool success);
 	void sensorsConfigured();
 
-	/// Is emitted if robot is disconnected
+	/// Emitted if robot is disconnected. Shall be only emitted when
+	/// needsConnection() returns true for that model. If needsConnection()
+	/// is false, it means that model is always connected and can't be disconnected at all
+	/// (although it shall send connected(true) during initialization)
 	void disconnected();
 
 protected:
-	static NullRobotModelImplementation *mNullRobotModel;
-	static RealRobotModelImplementation *mRealRobotModel;
-	static UnrealRobotModelImplementation *mUnrealRobotModel;
-	SensorsConfigurer mSensorsConfigurer;
-	bool mIsConnected;
-
 	virtual void addTouchSensor(inputPort::InputPortEnum const &port) = 0;
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port) = 0;
 	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType) = 0;
-
-	/// Disconnect from the robot
-	virtual void disconnectRobot();
 
 	/// Connect to robot if connection doesn't established
 	virtual void connectRobot();
 
 	static NullRobotModelImplementation *nullRobotModel();
-	static RealRobotModelImplementation *realRobotModel(RobotCommunication * const robotCommunicationInterface);
+	static RealRobotModelImplementation *realRobotModel(RobotCommunicator * const robotCommunicationInterface);
 	static UnrealRobotModelImplementation *unrealRobotModel(d2Model::D2RobotModel *d2RobotModel);
+
+	static NullRobotModelImplementation *mNullRobotModel;
+	static RealRobotModelImplementation *mRealRobotModel;
+	static UnrealRobotModelImplementation *mUnrealRobotModel;
+	SensorsConfigurer mSensorsConfigurer;
+	bool mIsConnected;
 };
 
 }

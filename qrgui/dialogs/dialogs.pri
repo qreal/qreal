@@ -3,7 +3,6 @@ HEADERS += \
 	dialogs/refWindow.h \
 	dialogs/preferencesDialog.h \
 	dialogs/preferencesPages/behaviourPage.h \
-	dialogs/preferencesPages/compilerPage.h \
 	dialogs/preferencesPages/debuggerPage.h \
 	dialogs/preferencesPages/editorPage.h \
 	dialogs/preferencesPages/miscellaniousPage.h \
@@ -18,7 +17,6 @@ SOURCES += \
 	dialogs/preferencesDialog.cpp \
 	dialogs/gesturesShow/gesturesWidget.cpp \
 	dialogs/preferencesPages/behaviourPage.cpp \
-	dialogs/preferencesPages/compilerPage.cpp \
 	dialogs/preferencesPages/debuggerPage.cpp \
 	dialogs/preferencesPages/editorPage.cpp \
 	dialogs/preferencesPages/miscellaniousPage.cpp \
@@ -32,7 +30,6 @@ FORMS += \
 	dialogs/preferencesPages/miscellaniousPage.ui \
 	dialogs/preferencesPages/editorPage.ui \
 	dialogs/preferencesPages/debuggerPage.ui \
-	dialogs/preferencesPages/compilerPage.ui \
 	dialogs/preferencesPages/behaviourPage.ui \
 	dialogs/refWindow.ui \
 	dialogs/preferencesPages/featuresPage.ui

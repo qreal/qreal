@@ -28,7 +28,6 @@ HEADERS += \
 	details/autoconfigurer.h \
 	details/tracer.h \
 	details/debugHelper.h \
-	ui_watchListWindow.h \
 	../../../qrgui/dialogs/preferencesPages/preferencesPage.h
 
 SOURCES += \
