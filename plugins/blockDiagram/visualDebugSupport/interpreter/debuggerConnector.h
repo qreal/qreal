@@ -3,7 +3,8 @@
 #include <QString>
 #include <QThread>
 #include <QProcess>
-#include "../../../qrkernel//settingsManager.h"
+
+#include "../../../qrkernel/settingsManager.h"
 
 namespace qReal {
 

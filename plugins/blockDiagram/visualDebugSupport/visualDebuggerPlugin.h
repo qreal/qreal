@@ -8,6 +8,7 @@
 
 #include "interpreter/visualDebugger.h"
 #include "interpreter/debuggerConnector.h"
+
 #include "../../../qrutils/watchListWindow.h"
 #include "../../../qrgui/mainwindow/errorReporter.h"
 

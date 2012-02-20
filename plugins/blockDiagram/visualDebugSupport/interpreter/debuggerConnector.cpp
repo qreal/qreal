@@ -1,6 +1,6 @@
-#include <QFile>
-
 #include "debuggerConnector.h"
+
+#include <QFile>
 #include <QtCore/QDebug>
 
 using namespace qReal;

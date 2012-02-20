@@ -480,7 +480,7 @@ QList<int>* VisualDebugger::computeBreakpoints()
 	QList<int> *breakpoints = new QList<int>();
 	int line = 1;
 	Id curId = mIdByLineCorrelation[line];
-	while (mIdByLineCorrelation[line].element() == "BlockFinalNode") {
+	while (mIdByLineCorrelation[line].element() != "BlockFinalNode") {
 
 		while (mIdByLineCorrelation.contains(line) &&
 			   curId.toString() == mIdByLineCorrelation[line].toString()) {
