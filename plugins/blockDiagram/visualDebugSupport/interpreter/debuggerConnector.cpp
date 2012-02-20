@@ -66,7 +66,7 @@ void DebuggerConnector::setCodeFileName(QString name)
 
 void DebuggerConnector::setWorkDir(QString path)
 {
-	if (path.compare("") != 0) {
+	if (path != "") {
 		mWorkDir = path + "/";
 	}
 }
@@ -82,7 +82,7 @@ void DebuggerConnector::startDebugger()
 {
 	setDebuggerPath(SettingsManager::value("debuggerPath", "gdb").toString());
 
-	if (QFile::exists(mDebuggerPath) || mDebuggerPath.compare("gdb") == 0) {
+	if (QFile::exists(mDebuggerPath) || mDebuggerPath == "gdb") {
 		mDebuggerProcess->start(mDebuggerPath);
 		mDebuggerProcess->waitForStarted();
 		//mDebuggerProcess->waitForReadyRead();
@@ -159,7 +159,7 @@ void DebuggerConnector::build()
 	args.append(mWorkDir + mCodeFileName);
 
 	if (QFile::exists(mWorkDir + mCodeFileName)) {
-		if (QFile::exists(mBuilderPath) || mBuilderPath.compare("gcc") == 0) {
+		if (QFile::exists(mBuilderPath) || mBuilderPath == "gcc") {
 			mBuilderProcess->start(mBuilderPath, args);
 			mBuilderProcess->waitForStarted();
 			mBuilderProcess->waitForReadyRead();

@@ -44,12 +44,16 @@ private slots:
 	void placeBreakpointsInDebugger();
 	void goToNextBreakpoint();
 	void goToNextInstruction();
+	
 	///Set program to be debugged
 	void configureDebugger();
+	
 	void setBreakpointAtStart();
+	
 	///Generate, build, start debugger, set program to be debugged,
 	///set breakpoint at start and run it in debugger in automatic way
 	void startDebugging();
+	
 	void showWatchList();
 
 private:

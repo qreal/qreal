@@ -41,7 +41,7 @@ QString VisualDebuggerPreferencesPage::choosePath(bool isFolder)
 
 void VisualDebuggerPreferencesPage::putTextInLineEdit(QLineEdit *lineEdit, QString text)
 {
-	if (text.compare("") != 0) {
+	if (text != "") {
 		lineEdit->setText(text);
 	}
 }

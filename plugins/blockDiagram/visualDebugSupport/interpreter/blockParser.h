@@ -14,6 +14,7 @@ public:
 	BlockParser(ErrorReporterInterface* errorReporter);
 
 private:
+
 	///Parse from stream declaration of variables and calcule its values
 	virtual void parseVarPart(QString const &stream, int& pos);
 	

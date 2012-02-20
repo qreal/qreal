@@ -21,14 +21,19 @@ class DebuggerConnector : public QObject
 		void run();
 		void startDebugger();
 		bool isDebuggerRunning();
+		
 		///Build executable file from generated sources
 		void build();
+		
 		///Has problems with gcc build process
 		bool hasBuildError();
+		
 		///Send command to the debugger
 		void sendCommand(QString command);
+		
 		///Terminate debugger process
 		void finishProcess();
+		
 		///Set program to be debugged
 		void configure();
 	
@@ -57,10 +62,13 @@ class DebuggerConnector : public QObject
 	private slots:
 		///Read debugger output
 		void readOutput();
+		
 		///Read debugger error output
 		void readErrOutput();
+		
 		///Read builder output
 		void readBuilderErrOutput();
+		
 		///Read builder error output
 		void readBuilderStdOutput();
 };
