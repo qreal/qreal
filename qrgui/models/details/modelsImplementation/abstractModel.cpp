@@ -6,7 +6,7 @@
 using namespace qReal;
 using namespace models::details::modelsImplementation;
 
-AbstractModel::AbstractModel(const EditorManager &editorManager)
+AbstractModel::AbstractModel(const InterpreterEditorManager &editorManager)
 	: mEditorManager(editorManager)
 {
 }
@@ -117,7 +117,7 @@ QStringList AbstractModel::mimeTypes() const
 	return types;
 }
 
-EditorManager const &AbstractModel::editorManager() const
+EditorManagerInterface const &AbstractModel::editorManager() const
 {
 	return mEditorManager;
 }

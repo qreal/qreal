@@ -10,7 +10,7 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const EditorManager &editorManager)
+GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const InterpreterEditorManager &editorManager)
 	: AbstractModel(editorManager), mLogicalModelView(this), mApi(*repoApi)
 {
 	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);

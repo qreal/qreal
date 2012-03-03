@@ -12,7 +12,7 @@ namespace models {
 class Models
 {
 public:
-	explicit Models(QString const &workingCopy, EditorManager const &editorManager);
+	explicit Models(QString const &workingCopy, InterpreterEditorManager const &editorManager);
 	~Models();
 
 	QAbstractItemModel* graphicalModel() const;

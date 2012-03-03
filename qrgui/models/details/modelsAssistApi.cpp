@@ -6,12 +6,12 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-ModelsAssistApi::ModelsAssistApi(AbstractModel &model, EditorManager const &editorManager)
+ModelsAssistApi::ModelsAssistApi(AbstractModel &model, InterpreterEditorManager const &editorManager)
 	: mModel(model), mEditorManager(editorManager)
 {
 }
 
-EditorManager const &ModelsAssistApi::editorManager() const
+EditorManagerInterface const &ModelsAssistApi::editorManager() const
 {
 	return mEditorManager;
 }

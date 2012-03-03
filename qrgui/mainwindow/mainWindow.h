@@ -7,6 +7,7 @@
 #include <QtGui>
 
 #include "../pluginManager/editorManager.h"
+#include "../pluginManager/interpreterEditorManager.h"
 #include "../pluginManager/toolPluginManager.h"
 #include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
@@ -48,7 +49,7 @@ public:
 	MainWindow();
 	~MainWindow();
 
-	EditorManager* manager();
+	EditorManagerInterface* manager();
 	EditorView *getCurrentTab();
 	ListenerManager *listenerManager();
 	GesturesPainterInterface *gesturesPainter();
@@ -276,7 +277,7 @@ private:
 
 	QCloseEvent *mCloseEvent;
 	models::Models *mModels;
-	EditorManager mEditorManager;
+	InterpreterEditorManager mEditorManager;
 	ToolPluginManager mToolManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;

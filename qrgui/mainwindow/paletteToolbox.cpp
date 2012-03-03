@@ -12,7 +12,7 @@
 using namespace qReal;
 using namespace qReal::gui;
 
-EditorManager * PaletteToolbox::mEditorManager = NULL;
+InterpreterEditorManager * PaletteToolbox::mEditorManager = NULL;
 
 PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &name
 		, QString const &description, QIcon const &icon, QWidget *parent
@@ -128,7 +128,7 @@ void PaletteToolbox::addItemType(Id const &id, QString const &name, QString cons
 	tab->layout()->addWidget(element);
 }
 
-void PaletteToolbox::addSortedItemTypes(EditorManager &editman, const Id &diagram)
+void PaletteToolbox::addSortedItemTypes(InterpreterEditorManager &editman, const Id &diagram)
 {
 	mEditorManager = &editman;
 

@@ -13,12 +13,13 @@
 #include "../../../qrrepo/repoApi.h"
 #include "../../../qrutils/xmlUtils.h"
 #include "../../pluginManager/editorManager.h"
+#include "../../pluginManager/interpreterEditorManager.h"
 #include "../../../qrkernel/exception/exception.h"
 
 using namespace qReal;
 using namespace parsers;
 
-XmlParser::XmlParser(qrRepo::LogicalRepoApi &api, EditorManager const &editorManager)
+XmlParser::XmlParser(qrRepo::LogicalRepoApi &api, InterpreterEditorManager const &editorManager)
 	: mApi(api), mEditorManager(editorManager), mElementsColumn(0), mElementCurrentColumn(0),
 	  mMoveWidth(180), mMoveHeight(100), mCurrentWidth(0), mCurrentHeight(0), mParentPositionX(280)
 {

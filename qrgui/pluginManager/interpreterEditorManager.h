@@ -68,6 +68,7 @@ namespace qReal {
 		bool isDiagramNode(Id const &id) const;
 
 		bool isParentOf(Id const &child, Id const &parent) const;
+
 	private:
 		QMap<QString, qrRepo::RepoApi*> mEditorRepoApi;
 

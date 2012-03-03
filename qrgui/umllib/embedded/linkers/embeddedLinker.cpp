@@ -86,7 +86,7 @@ void EmbeddedLinker::setDirected(const bool directed)
 
 void EmbeddedLinker::initTitle()
 {
-	EditorManager* editorManager = dynamic_cast<EditorViewScene*>(scene())->mainWindow()->manager();
+	EditorManagerInterface* editorManager = dynamic_cast<EditorViewScene*>(scene())->mainWindow()->manager();
 	QString edgeTypeFriendly = editorManager->friendlyName(Id::loadFromString("qrm:/"+master->id().editor()+"/"+master->id().diagram()+"/"+edgeType.element()));
 
 	float textWidth = edgeTypeFriendly.size()*10;

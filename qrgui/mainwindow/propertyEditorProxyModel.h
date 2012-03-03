@@ -7,6 +7,7 @@
 #include <QtCore/QStringList>
 
 #include "../pluginManager/editorManager.h"
+#include "../pluginManager/interpreterEditorManager.h"
 #include "../../qrrepo/logicalRepoApi.h"
 
 /** @class PropertyEditorModel
@@ -17,7 +18,7 @@ class PropertyEditorModel : public QAbstractTableModel
 	Q_OBJECT
 
 public:
-	explicit PropertyEditorModel(qReal::EditorManager const &editorManager,
+	explicit PropertyEditorModel(qReal::InterpreterEditorManager const &editorManager,
 			QObject *parent = 0);
 
 	int rowCount(const QModelIndex &index) const;
@@ -87,7 +88,7 @@ private:
 
 	QList<Field> mFields;
 
-	qReal::EditorManager const &mEditorManager;
+	qReal::InterpreterEditorManager const &mEditorManager;
 
 	bool isValid() const;
 };

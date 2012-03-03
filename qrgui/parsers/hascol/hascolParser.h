@@ -9,14 +9,14 @@
 
 namespace qReal {
 
-	class EditorManager;
+	class EditorManagerInterface;
 
 	namespace parsers {
 
 		class HascolParser
 		{
 		public:
-			explicit HascolParser(qrRepo::LogicalRepoApi &api, EditorManager const &editorManager);
+			explicit HascolParser(qrRepo::LogicalRepoApi &api, InterpreterEditorManager const &editorManager);
 
 			gui::ErrorReporter &parse(QStringList const &files);
 		private:
@@ -24,7 +24,7 @@ namespace qReal {
 			Id mImportedStructureDiagramId;
 
 			qrRepo::LogicalRepoApi &mApi;
-			EditorManager const &mEditorManager;
+			InterpreterEditorManager const &mEditorManager;
 			gui::ErrorReporter mErrorReporter;
 
 			Id initDiagram(QString const &diagramName, QString const &diagramType);

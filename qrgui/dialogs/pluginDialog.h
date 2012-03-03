@@ -11,14 +11,14 @@ class QTreeWidgetItem;
 
 namespace qReal {
 
-	class EditorManager;
+	class EditorManagerInterface;
 
 	class PluginDialog : public QDialog
 	{
 		Q_OBJECT
 
 	public:
-		PluginDialog(const EditorManager &mgr, QWidget *parent = 0);
+		PluginDialog(const EditorManagerInterface &mgr, QWidget *parent = 0);
 
 	private:
 		QLabel *label;

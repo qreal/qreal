@@ -6,7 +6,7 @@
 
 namespace qReal {
 
-class EditorManager;
+class EditorManagerInterface;
 
 namespace models {
 
@@ -17,8 +17,8 @@ class LogicalModel;
 class LogicalModelAssistApi : public qReal::LogicalModelAssistInterface
 {
 public:
-	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManager const &editorManager);
-	EditorManager const &editorManager() const;
+	LogicalModelAssistApi(details::LogicalModel &logicalModel, InterpreterEditorManager const &editorManager);
+	EditorManagerInterface const &editorManager() const;
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const;
 	Id createElement(Id const &parent, Id const &type);
 	Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);

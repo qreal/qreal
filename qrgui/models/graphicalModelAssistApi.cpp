@@ -8,13 +8,13 @@ using namespace qReal;
 using namespace models;
 using namespace models::details;
 
-GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel, EditorManager const &editorManager)
+GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel, InterpreterEditorManager const &editorManager)
 		: mGraphicalModel(graphicalModel), mModelsAssistApi(graphicalModel, editorManager)
 {
 	connect(&graphicalModel, SIGNAL(nameChanged(Id)), this, SIGNAL(nameChanged(Id)));
 }
 
-EditorManager const &GraphicalModelAssistApi::editorManager() const
+EditorManagerInterface const &GraphicalModelAssistApi::editorManager() const
 {
 	return mModelsAssistApi.editorManager();
 }

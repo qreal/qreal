@@ -15,7 +15,7 @@ using namespace qReal;
 using namespace parsers;
 using gui::ErrorReporter;
 
-HascolParser::HascolParser(qrRepo::LogicalRepoApi &api, EditorManager const &editorManager)
+HascolParser::HascolParser(qrRepo::LogicalRepoApi &api, InterpreterEditorManager const &editorManager)
 	: mApi(api), mEditorManager(editorManager), mErrorReporter()
 {
 }

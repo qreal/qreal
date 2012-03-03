@@ -9,7 +9,7 @@
 
 using namespace qReal;
 
-PropertyEditorModel::PropertyEditorModel(qReal::EditorManager const &editorManager,
+PropertyEditorModel::PropertyEditorModel(qReal::InterpreterEditorManager const &editorManager,
 		QObject *parent)
 	: QAbstractTableModel(parent)
 	, mTargetLogicalModel(NULL)

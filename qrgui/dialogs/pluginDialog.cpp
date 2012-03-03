@@ -14,11 +14,11 @@
 #include "pluginDialog.h"
 
 #include "../editorPluginInterface/editorInterface.h"
-#include "../pluginManager/editorManager.h"
+#include "../pluginManager/editorManagerInterface.h"
 
 using namespace qReal;
 
-PluginDialog::PluginDialog(const EditorManager &mgr,
+PluginDialog::PluginDialog(const EditorManagerInterface &mgr,
 		QWidget *parent) :
 	QDialog(parent),
 	label(new QLabel),

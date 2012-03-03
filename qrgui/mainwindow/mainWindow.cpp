@@ -319,7 +319,7 @@ MainWindow::~MainWindow()
 	delete mRecentProjectsMapper;
 }
 
-EditorManager* MainWindow::manager()
+EditorManagerInterface* MainWindow::manager()
 {
 	return &mEditorManager;
 }

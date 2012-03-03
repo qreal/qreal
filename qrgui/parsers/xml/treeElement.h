@@ -9,7 +9,7 @@ namespace qrRepo {
 
 namespace qReal {
 
-	class EditorManager;
+	class EditorManagerInterface;
 
 	namespace parsers {
 
