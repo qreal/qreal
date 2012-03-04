@@ -32,9 +32,9 @@ bool Diagram::init(QDomElement const &diagramElement)
 		} else if (element.nodeName() == "nonGraphicTypes") {
 			if (!initNonGraphicTypes(element))
 				return false;
-		} else if(element.nodeName() == "palette"){
+		} else if (element.nodeName() == "palette") {
 			initPaletteGroups(element);
-		}else
+		} else
 			qDebug() << "ERROR: unknown tag" << element.nodeName();
 	}
 	return true;

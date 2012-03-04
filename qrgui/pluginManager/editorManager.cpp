@@ -115,14 +115,13 @@ IdList EditorManager::diagrams(Id const &editor) const
 
 QStringList EditorManager::paletteGroups(Id const &editor, const Id &diagram) const
 {
-	QString s = friendlyName(diagram);
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
-	return mPluginIface[editor.editor()]->diagramPaletteGroups(s);
+	return mPluginIface[editor.editor()]->diagramPaletteGroups(diagram.diagram());
 }
 
 QStringList EditorManager::paletteGroupList(Id const &editor, const Id &diagram, const QString &group) const
 {
-	return mPluginIface[editor.editor()]->diagramPaletteGroupList(friendlyName(diagram), group);
+	return mPluginIface[editor.editor()]->diagramPaletteGroupList(diagram.diagram(), group);
 }
 
 IdList EditorManager::elements(Id const &diagram) const

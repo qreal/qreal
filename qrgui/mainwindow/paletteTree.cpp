@@ -187,7 +187,7 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 		item->setText(0, group);
 		foreach (QString elementName, mEditorManager->paletteGroupList(editor, diagram, group)){
 			foreach (const Id element, list) {
-				if (mEditorManager->friendlyName(element) == elementName){
+				if (element.element() == elementName){
 					addItemType(element, mEditorManager->friendlyName(element)
 							, mEditorManager->description(element)
 							, mEditorManager->icon(element), EditorTree, item);

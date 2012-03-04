@@ -261,6 +261,7 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 		<< "\tinitPropertyDefaultsMap();\n"
 		<< "\tinitDescriptionMap();\n"
 		<< "\tinitParentsMap();\n"
+		<< "\tinitPaletteGroupsMap();\n"
 		<< "}\n\n";
 
 	generateNameMappings(out);
@@ -301,15 +302,12 @@ void XmlCompiler::generatePaletteGroupsLists(utils::OutFile &out)
 {
 	out() << "void " << mPluginName << "Plugin::initPaletteGroupsMap()\n{\n";
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-	{
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		QString diagramName = NameNormalizer::normalize(diagram->name());
 		QMap<QString, QStringList > paletteGroups = diagram->paletteGroups();
-		foreach(QList<QString> list , paletteGroups)
-		{
+		foreach(QList<QString> list , paletteGroups) {
 			QString groupName = paletteGroups.key(list);
-			foreach(QString name, list)
-			{
+			foreach(QString name, list) {
 				out() << "\tpaletteGroupsMap[\"" << diagramName << "\"][\"" << groupName
 					<< "\"].append(\"" << name << "\");\n";
 			}
