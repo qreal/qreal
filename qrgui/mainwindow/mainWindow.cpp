@@ -313,7 +313,7 @@ void MainWindow::loadPlugins()
 {
 	foreach (Id const editor, mEditorManager.editors()) {
 		foreach (Id const diagram, mEditorManager.diagrams(editor)) {
-			mUi->paletteTree->addEditorElements(mEditorManager, diagram);
+			mUi->paletteTree->addEditorElements(mEditorManager, editor, diagram);
 		}
 	}
 	mUi->paletteTree->initDone();
@@ -867,7 +867,7 @@ bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 	}
 
 	foreach (Id const &diagram, mEditorManager.diagrams(Id(pluginName))) {
-		mUi->paletteTree->addEditorElements(mEditorManager, diagram);
+		mUi->paletteTree->addEditorElements(mEditorManager, Id(pluginName), diagram);
 	}
 	mUi->paletteTree->initDone();
 	return true;

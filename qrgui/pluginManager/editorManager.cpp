@@ -102,7 +102,7 @@ IdList EditorManager::editors() const
 	return editors;
 }
 
-IdList EditorManager::diagrams(const Id &editor) const
+IdList EditorManager::diagrams(Id const &editor) const
 {
 	IdList diagrams;
 	Q_ASSERT(mPluginsLoaded.contains(editor.editor()));
@@ -113,7 +113,19 @@ IdList EditorManager::diagrams(const Id &editor) const
 	return diagrams;
 }
 
-IdList EditorManager::elements(const Id &diagram) const
+QStringList EditorManager::paletteGroups(Id const &editor, const Id &diagram) const
+{
+	QString s = friendlyName(diagram);
+	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
+	return mPluginIface[editor.editor()]->diagramPaletteGroups(s);
+}
+
+QStringList EditorManager::paletteGroupList(Id const &editor, const Id &diagram, const QString &group) const
+{
+	return mPluginIface[editor.editor()]->diagramPaletteGroupList(friendlyName(diagram), group);
+}
+
+IdList EditorManager::elements(Id const &diagram) const
 {
 	IdList elements;
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));

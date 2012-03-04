@@ -153,6 +153,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual void initPropertyDefaultsMap();\n"
 		<< "\tvirtual void initDescriptionMap();\n"
 		<< "\tvirtual void initParentsMap();\n"
+		<< "\tvirtual void initPaletteGroupsMap();\n"
 		<< "\n"
 		<< "\tvirtual QString id() const { return \"" << mPluginName << "\"; }\n"
 		<< "\n"
@@ -188,6 +189,9 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tvirtual bool isParentOf(QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const;\n"
 		<< "\n"
+		<< "\tvirtual QStringList diagramPaletteGroups(QString const &diagram) const;\n"
+		<< "\tvirtual QStringList diagramPaletteGroupList(QString const &diagram, QString const &group) const;\n"
+		<< "\n"
 		<< "private:\n"
 		<< "\tQMap<QString, QIcon> iconMap;\n"
 		<< "\tQMap<QString, QString> diagramNameMap;\n"
@@ -201,6 +205,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQMap<QString, QMap<QString, QMap<QString, QString> > > propertiesDisplayedNamesMap;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > elementMouseGesturesMap;\n"
 		<< "\tQMap<QString, QMap<QString, QList<QPair<QString, QString> > > > parentsMap;  // Maps diagram and element to a list of diagram-element pairs of parents (generalization relation).\n"
+		<< "\tQMap<QString, QMap<QString, QStringList > > paletteGroupsMap;  // Maps element`s lists of all palette groups.\n"
 		<< "};\n"
 		<< "\n";
 }
@@ -259,6 +264,7 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 		<< "}\n\n";
 
 	generateNameMappings(out);
+	generatePaletteGroupsLists(out);
 	generateMouseGestureMap(out);
 	generatePropertyMap(out);
 	generatePropertyDefaultsMap(out);
@@ -287,6 +293,28 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 			if (obj)
 				obj->generatePropertyDisplayedNamesMapping(out);
 		}
+
+	out() << "}\n\n";
+}
+
+void XmlCompiler::generatePaletteGroupsLists(utils::OutFile &out)
+{
+	out() << "void " << mPluginName << "Plugin::initPaletteGroupsMap()\n{\n";
+
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+	{
+		QString diagramName = NameNormalizer::normalize(diagram->name());
+		QMap<QString, QStringList > paletteGroups = diagram->paletteGroups();
+		foreach(QList<QString> list , paletteGroups)
+		{
+			QString groupName = paletteGroups.key(list);
+			foreach(QString name, list)
+			{
+				out() << "\tpaletteGroupsMap[\"" << diagramName << "\"][\"" << groupName
+					<< "\"].append(\"" << name << "\");\n";
+			}
+		}
+	}
 
 	out() << "}\n\n";
 }
@@ -373,6 +401,14 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 {
 	out() << "QStringList " << mPluginName << "Plugin::diagrams() const\n{\n"
 		<< "\treturn diagramNameMap.keys();\n"
+		<< "}\n\n"
+
+		<< "QStringList " << mPluginName << "Plugin::diagramPaletteGroups(QString const &diagram) const\n{\n"
+		<< "\treturn paletteGroupsMap[diagram].keys();\n"
+		<< "}\n\n"
+
+		<< "QStringList " << mPluginName << "Plugin::diagramPaletteGroupList(QString const &diagram, QString const &group) const\n{\n"
+		<< "\treturn paletteGroupsMap[diagram][group];\n"
 		<< "}\n\n"
 
 		<< "QStringList " << mPluginName << "Plugin::elements(QString const &diagram) const\n{\n"

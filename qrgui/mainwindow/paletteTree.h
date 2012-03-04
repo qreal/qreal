@@ -32,9 +32,10 @@ public:
 
 	/** Adds all editors elements to appropriate tree.
 	  @param editorManager Editor manager which all editors with elements are taken from.
+	  @param editor Editor
 	  @param diagram Diagram that corresponds to the chosen editor.
 	*/
-	void addEditorElements(EditorManager &editorManager, const Id &diagram);
+	void addEditorElements(EditorManager &editorManager, const Id &editor, const Id &diagram);
 
 	/// Initialize connection editors combobox with slot that sets active editor.
 	void initDone();

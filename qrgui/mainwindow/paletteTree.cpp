@@ -171,7 +171,7 @@ void PaletteTree::expand()
 	}
 }
 
-void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &diagram)
+void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &editor, const Id &diagram)
 {
 	mEditorManager = &editorManager;
 	mEditorsNames.push_back(mEditorManager->friendlyName(diagram));
@@ -180,10 +180,25 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &diag
 
 	QTreeWidget *EditorTree = new QTreeWidget(this);
 	EditorTree->setHeaderHidden(true);
-
-	mCategories[diagram] = mEditorsTrees.size() - 1;
-
 	IdList list = mEditorManager->elements(diagram);
+	mCategories[diagram] = mEditorsTrees.size() - 1;
+	foreach (QString group, mEditorManager->paletteGroups(editor, diagram)){
+		QTreeWidgetItem *item = new QTreeWidgetItem;
+		item->setText(0, group);
+		foreach (QString elementName, mEditorManager->paletteGroupList(editor, diagram, group)){
+			foreach (const Id element, list) {
+				if (mEditorManager->friendlyName(element) == elementName){
+					addItemType(element, mEditorManager->friendlyName(element)
+							, mEditorManager->description(element)
+							, mEditorManager->icon(element), EditorTree, item);
+					break;
+				}
+			}
+		}
+		EditorTree->addTopLevelItem(item);
+	}
+
+	/*IdList list = mEditorManager->elements(diagram);
 	qSort(list.begin(), list.end(), idLessThan);
 
 	int count = 1;
@@ -204,7 +219,7 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &diag
 				, mEditorManager->icon(element), EditorTree, item);
 		count++;
 	}
-	EditorTree->addTopLevelItem(item);
+	EditorTree->addTopLevelItem(item);*/
 	EditorTree->hide();
 
 	mEditorsTrees.push_back(EditorTree);
