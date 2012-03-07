@@ -305,7 +305,10 @@ void D2ModelWidget::setActiveButton(int active)
 void D2ModelWidget::clearScene()
 {
 	mWorldModel->clearScene();
-	mRobot->clearSensors();
+	removeSensor(inputPort::port1);
+	removeSensor(inputPort::port2);
+	removeSensor(inputPort::port3);
+	removeSensor(inputPort::port4);
 	mRobotModel->clear();
 	mScene->clear();
 	mRobotPath.clear();

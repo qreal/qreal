@@ -13,7 +13,7 @@
                 <value>4</value>
             </enum>
             <enum name="GuardType">
-                <value>итерация</value>
+                <value>повторение</value>
                 <value></value>
                 <value>меньше 0</value>
                 <value>больше 0</value>
@@ -141,7 +141,7 @@
                     </generalizations>
                 </logic>
             </node>
-            <edge displayedName="Поток управления" name="ControlFlow">
+            <edge displayedName="Линия соединения" name="ControlFlow">
                 <graphics>
                     <lineType type="solidLine"/>
                     <labels>
@@ -414,7 +414,7 @@
                     </picture>
                     <labels>
                         <label x="33" y="60" textBinded="Iterations"/>
-                        <label x="-37" y="60" text="Итераций:"/>
+                        <label x="-37" y="60" text="Повторений:"/>
                     </labels>
                     <ports>
                         <linePort>
@@ -439,7 +439,7 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property displayedName="Итерации" type="string" name="Iterations">
+                        <property displayedName="Повторения" type="string" name="Iterations">
                             <default>10</default>
                         </property>
                     </properties>
@@ -448,7 +448,7 @@
                     </generalizations>
                 </logic>
             </node>
-            <node displayedName="Породить поток" name="Fork">
+            <node displayedName="Параллельные задачи" name="Fork">
                 <graphics>
                     <picture sizex="50" sizey="50">
                         <image y1="0" name="images/forkBlock.png" x1="0" y2="50" x2="50"/>
