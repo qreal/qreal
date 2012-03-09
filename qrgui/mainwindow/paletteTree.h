@@ -25,10 +25,20 @@ public:
 	  @param description Item description.
 	  @param icon Item icon.
 	  @param tree Editors tree.
-	  @param parent Parent group of items.
+	  @param parent Parent of item's group.
 	*/
 	void addItemType(Id const &id, QString const &name, QString const &description
 			, QIcon const &icon,QTreeWidget *tree, QTreeWidgetItem *parent);
+
+	/** Adds top item type to some editors tree.
+	  @param id Item id.
+	  @param name Item name.
+	  @param description Item description.
+	  @param icon Item icon.
+	  @param tree Editors tree.
+	*/
+	void addTopItemType(Id const &id, QString const &name, QString const &description
+			    , QIcon const &icon,QTreeWidget *tree);
 
 	/** Adds all editors elements to appropriate tree.
 	  @param editorManager Editor manager which all editors with elements are taken from.
@@ -37,7 +47,7 @@ public:
 	*/
 	void addEditorElements(EditorManager &editorManager, const Id &editor, const Id &diagram);
 
-	/// Initialize connection editors combobox with slot that sets active editor.
+	/// Initialize connection editor's combobox with slot that sets active editor.
 	void initDone();
 
 	/** Delete chosen editor.
@@ -47,9 +57,10 @@ public:
 	QComboBox* comboBox() const;
 	QVector<QString> editorsNames() const;
 	Id currentEditor() const;
+	/// Set item with such id as active in ComboBox.
 	void setComboBox(Id id);
 
-	/// Sets current index in ComboBox.
+	/// Set item with such index as active in ComboBox.
 	void setComboBoxIndex(int index);
 	~PaletteTree();
 public slots:

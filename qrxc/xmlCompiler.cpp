@@ -305,15 +305,15 @@ void XmlCompiler::generatePaletteGroupsLists(utils::OutFile &out)
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		QString diagramName = NameNormalizer::normalize(diagram->name());
 		QMap<QString, QStringList > paletteGroups = diagram->paletteGroups();
-		foreach(QList<QString> list , paletteGroups) {
+		foreach (QList<QString> list , paletteGroups) {
 			QString groupName = paletteGroups.key(list);
-			foreach(QString name, list) {
-				out() << "\tpaletteGroupsMap[\"" << diagramName << "\"][\"" << groupName
-					<< "\"].append(\"" << name << "\");\n";
+			foreach (QString name, list) {
+				out() << "\tpaletteGroupsMap[\"" << diagramName
+					<< "\"][\"" << groupName<< "\"].append(\""
+					<< name << "\");\n";
 			}
 		}
 	}
-
 	out() << "}\n\n";
 }
 

@@ -160,5 +160,17 @@
           </logic>
         </node>
       </graphicTypes>
+      <palette>
+	<group name="MMM">
+		<element name="Action"></element>
+		<element name="ConditionNode"></element>
+		<element name="InitialNode"></element>
+	</group>
+	<group name="group2">
+		<element name="ControlFlow"></element>
+		<element name="DecisionNode"></element>
+		<element name="FinalNode"></element>
+	</group>
+      </palette>
     </diagram>
   </metamodel>
