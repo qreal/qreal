@@ -1525,8 +1525,8 @@ void MainWindow::suggestToCreateDiagram()
 	int i = 0;
 	foreach(Id editor, manager()->editors()) {
 		foreach(Id diagram, manager()->diagrams(Id::loadFromString("qrm:/" + editor.editor()))) {
-			QString const diagramName = mEditorManager.editorInterface(editor.editor())->diagramName(diagram.diagram());
-			QString const diagramNodeName = mEditorManager.editorInterface(editor.editor())->diagramNodeName(diagram.diagram());
+			QString const diagramName = mEditorManager.diagramName(editor.editor(), diagram.diagram());
+			QString const diagramNodeName = mEditorManager.diagramNodeName(editor.editor(), diagram.diagram());
 			if (diagramNodeName.isEmpty())
 				continue;
 			mDiagramsList.append("qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);

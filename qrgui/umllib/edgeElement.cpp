@@ -346,8 +346,7 @@ bool EdgeElement::initPossibleEdges()
 	QString editor = id().editor();
 	//TODO: do a code generation for diagrams
 	QString diagram = id().diagram();
-	EditorInterface * editorInterface = mGraphicalAssistApi->editorManager().editorInterface(editor);
-	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(id().element());
+	QList<StringPossibleEdge> stringPossibleEdges = mGraphicalAssistApi->editorManager().getPossibleEdges(editor, id().element());
 	foreach (StringPossibleEdge pEdge, stringPossibleEdges) {
 		QPair<qReal::Id, qReal::Id> nodes(Id(editor, diagram, pEdge.first.first),
 		Id(editor, diagram, pEdge.first.second));

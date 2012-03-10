@@ -667,14 +667,12 @@ void EditorViewScene::getObjectByGesture()
 
 void EditorViewScene::getLinkByGesture(NodeElement * parent, const NodeElement &child)
 {
-	EditorInterface const * const editorInterface = mainWindow()->manager()->editorInterface(child.id().editor());
-
 	QList<PossibleEdge> edges = parent->getPossibleEdges();
 	QList<QString> allLinks;
 	foreach (PossibleEdge const &possibleEdge, edges) {
 		if (possibleEdge.first.second.editor() == child.id().editor()
 			&& possibleEdge.first.second.diagram() == child.id().diagram()
-			&& editorInterface->isParentOf(child.id().diagram(), possibleEdge.first.second.element(), child.id().diagram(), child.id().element()))
+			&& mainWindow()->manager()->isParentOf(child.id().editor(), child.id().diagram(), possibleEdge.first.second.element(), child.id().diagram(), child.id().element()))
 			{
 			allLinks.push_back(possibleEdge.second.second.toString());
 		}

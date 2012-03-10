@@ -324,3 +324,34 @@ bool InterpreterEditorManager::isDiagramNode(Id const &id) const
 							return true;
 	return false;
 }
+
+//TODO: functional realization below
+QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > InterpreterEditorManager::getPossibleEdges(QString const &editor, QString const &element) const
+{
+	return QList<QPair<QPair<QString, QString>, QPair<bool, QString> > >();
+}
+
+QStringList InterpreterEditorManager::elements(QString const &editor, QString const &diagram) const
+{
+	return QStringList();
+}
+
+int InterpreterEditorManager::isNodeOrEdge(QString const &editor, QString const &element) const
+{
+	return 0;
+}
+
+bool InterpreterEditorManager::isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const
+{
+	return true;
+}
+
+QString InterpreterEditorManager::diagramName(QString const &editor, QString const &diagram) const
+{
+	return "";
+}
+
+QString InterpreterEditorManager::diagramNodeName(QString const &editor, QString const &diagram) const
+{
+	return "";
+}

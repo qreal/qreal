@@ -61,11 +61,17 @@ namespace qReal {
 		Id findElementByType(QString const &type) const;
 		QList<ListenerInterface *> listeners() const;
 
-		EditorInterface* editorInterface(QString const &editor) const;
-
 		bool isDiagramNode(Id const &id) const;
 
 		bool isParentOf(Id const &child, Id const &parent) const;
+
+		//new methods:
+		QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &editor, QString const &element) const;
+		QStringList elements(QString const &editor, QString const &diagram) const;
+		int isNodeOrEdge(QString const &editor, QString const &element) const;
+		bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const;
+		QString diagramName(QString const &editor, QString const &diagram) const;
+		QString diagramNodeName(QString const &editor, QString const &diagram) const;
 	private:
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;
@@ -75,6 +81,7 @@ namespace qReal {
 		QDir mPluginsDir;
 		QStringList mPluginFileNames;
 
+		EditorInterface* editorInterface(QString const &editor) const;
 		void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
 
 		bool isParentOf(EditorInterface const *plugin, QString const &childDiagram, QString const &child, QString const &parentDiagram, QString const &parent) const;

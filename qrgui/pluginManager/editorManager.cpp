@@ -388,3 +388,39 @@ QStringList EditorManager::getAllChildrenTypesOf(Id const &parent) const
 	return result;
 }
 
+//new methods with realization below:
+QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > EditorManager::getPossibleEdges(QString const &editor, QString const &element) const
+{
+	EditorInterface * editorInter = editorInterface(editor);
+	return editorInter->getPossibleEdges(element);
+}
+
+QStringList EditorManager::elements(QString const &editor, QString const &diagram) const
+{
+	EditorInterface * editorInter = editorInterface(editor);
+	return editorInter->elements(diagram);
+}
+
+int EditorManager::isNodeOrEdge(QString const &editor, QString const &element) const
+{
+	EditorInterface * editorInter = editorInterface(editor);
+	return editorInter->isNodeOrEdge(element);
+}
+
+bool EditorManager::isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const
+{
+	EditorInterface * editorInter = editorInterface(editor);
+	return editorInter->isParentOf(parentDiagram, parentElement, childDiagram, childElement);
+}
+
+QString EditorManager::diagramName(QString const &editor, QString const &diagram) const
+{
+	EditorInterface * editorInter = editorInterface(editor);
+	return editorInter->diagramName(diagram);
+}
+
+QString EditorManager::diagramNodeName(QString const &editor, QString const &diagram) const
+{
+	EditorInterface * editorInter = editorInterface(editor);
+	return editorInter->diagramNodeName(diagram);
+}

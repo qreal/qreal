@@ -40,7 +40,6 @@ public:
 	virtual QStringList getEnumValues(Id const &id, const QString &name) const = 0;
 	virtual QString getTypeName(Id const &id, const QString &name) const = 0;
 	virtual QStringList getAllChildrenTypesOf(Id const &parent) const = 0;
-
 	virtual bool isEditor(Id const &id) const = 0;
 	virtual bool isDiagram(Id const &id) const = 0;
 	virtual bool isElement(Id const &id) const = 0;
@@ -56,11 +55,19 @@ public:
 	virtual Id findElementByType(QString const &type) const = 0;
 	virtual QList<ListenerInterface *> listeners() const = 0;
 
-	virtual EditorInterface* editorInterface(QString const &editor) const = 0;
+	//virtual EditorInterface* editorInterface(QString const &editor) const = 0;
 
 	virtual bool isDiagramNode(Id const &id) const = 0;
 
 	virtual bool isParentOf(Id const &child, Id const &parent) const = 0;
+
+	//new methods:
+	virtual QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &editor, QString const &element) const = 0;
+	virtual QStringList elements(QString const &editor, QString const &diagram) const = 0;
+	virtual int isNodeOrEdge(QString const &editor, QString const &element) const = 0;
+	virtual bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const = 0;
+	virtual QString diagramName(QString const &editor, QString const &diagram) const = 0;
+	virtual QString diagramNodeName(QString const &editor, QString const &diagram) const = 0;
 };
 
 }
