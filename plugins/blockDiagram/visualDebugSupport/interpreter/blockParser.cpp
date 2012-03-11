@@ -1,7 +1,5 @@
 #include "blockParser.h"
 
-#include <QMessageBox>
-
 using namespace qReal;
 using namespace utils;
 
@@ -90,6 +88,6 @@ void BlockParser::parseVarPart(const QString &stream, int &pos)
 void BlockParser::checkForVariable(const QString &nameOfVariable, int &index)
 {
 	if (!mVariables.contains(nameOfVariable)) {
-			error(unknownIdentifier, QString::number(index + 1), "", nameOfVariable);
-		}
+		error(unknownIdentifier, QString::number(index + 1), "", nameOfVariable);
+	}
 }
