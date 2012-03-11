@@ -461,6 +461,30 @@ IdList RepoApi::graphicalElements(Id const &type) const
 	return result;
 }
 
+IdList RepoApi::logicalElements() const
+{
+	Q_ASSERT(type.idSize() == 3);
+
+	IdList result;
+	foreach (Id id, mClient.elements()) {
+		if (mClient.isLogicalId(id))
+			result.append(id);
+	}
+	return result;
+}
+
+IdList RepoApi::graphicalElements() const
+{
+	Q_ASSERT(type.idSize() == 3);
+
+	IdList result;
+	foreach (Id id, mClient.elements()) {
+		if (!mClient.isLogicalId(id))
+			result.append(id);
+	}
+	return result;
+}
+
 IdList RepoApi::elementsByType(QString const &type) const
 {
 	IdList result;

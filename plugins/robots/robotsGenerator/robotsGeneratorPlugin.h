@@ -29,6 +29,9 @@ private slots:
 	/// Calls code generator
 	void generateRobotSourceCode();
 
+	/// Toggles code generator types
+	void toggleRobotCodeGenerators();
+
 	/// Uploads and installs nxtOSEK on a robot. Requires nxt-tools.
 	void flashRobot();
 
@@ -43,6 +46,9 @@ private:
 
 	/// Action that launches code generator
 	QAction mGenerateCodeAction;
+
+	/// Action that toggles code generator types
+	QAction mToggleGenerators;
 
 	/// Action that uploads nxtOSEK on a robot
 	QAction mFlashRobotAction;
