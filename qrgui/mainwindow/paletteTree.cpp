@@ -8,7 +8,9 @@
 
 using namespace qReal;
 using namespace gui;
+
 EditorManager * PaletteTree::mEditorManager = NULL;
+
 PaletteTree::DraggableElement::DraggableElement(Id const &id, QString const &name
 		, QString const &description, QIcon const &icon, QWidget *parent)
 	: QWidget(parent)

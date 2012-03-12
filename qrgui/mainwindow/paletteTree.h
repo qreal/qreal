@@ -9,6 +9,7 @@
 #include <QtGui/QVBoxLayout>
 #include "../pluginManager/editorManager.h"
 #include "../../qrkernel/ids.h"
+
 namespace  qReal{
 namespace gui{
 
