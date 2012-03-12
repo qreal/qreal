@@ -921,15 +921,15 @@
                 </logic>
             </node>
         </graphicTypes>
-	<palette>
-            	<group name="group1">
-                	<element name="FinalNode"></element>
-                	<element name="InitialNode"></element>
-            	</group>
-            	<group name="group2">
-                	<element name="ControlFlow"></element>
-                	<element name="EnginesForward"></element>
-            	</group>
+        <palette>
+            <group name="group1">
+                <element name="FinalNode"></element>
+                <element name="InitialNode"></element>
+            </group>
+            <group name="group2">
+                <element name="ControlFlow"></element>
+                <element name="EnginesForward"></element>
+            </group>
         </palette>
     </diagram>
 </metamodel>

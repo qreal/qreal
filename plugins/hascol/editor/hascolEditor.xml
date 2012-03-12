@@ -231,18 +231,6 @@
                 </logic>
             </edge>
         </graphicTypes>
-      <palette>
-	<group name="group1">
-		<element name="Process"></element>
-		<element name="Functor"></element>
-		<element name="Comment"></element>
-	</group>
-	<group name="group2">
-		<element name="ProcessOperation"></element>
-		<element name="LetBinding"></element>
-		<element name="FunctorFormalParameter"></element>
-	</group>
-      </palette>
     </diagram>
     <diagram displayedName="Hascol Port Mapping" nodeName="HascolPortMappingDiagram" name="HascolPortMapping">
         <graphicTypes>
