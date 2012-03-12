@@ -275,7 +275,8 @@ private:
 
 	Ui::MainWindowUi *mUi;
 
-	QMap<EditorView*, CodeArea*> *mCodeTabManager;
+	/// @param mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
+	Map<EditorView*, CodeArea*> *mCodeTabManager;
 	QCloseEvent *mCloseEvent;
 	models::Models *mModels;
 	EditorManager mEditorManager;
