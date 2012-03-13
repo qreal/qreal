@@ -15,7 +15,8 @@ RESOURCES = robotsGenerator.qrc
 HEADERS += \
 	robotsGeneratorPlugin.h \
 	nxtOSEK/smartLine.h \
-	nxtOSEK/nxtFlashTool.h
+	nxtOSEK/nxtFlashTool.h \
+    nxtOSEK/funcOrientedGenerator/elementGenerators/ifBlockGenerator.h
 
 SOURCES += \
 	robotsGeneratorPlugin.cpp \
@@ -48,44 +49,44 @@ HEADERS += nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElementGenerato
 SOURCES += nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElementGenerator.cpp
 
 HEADERS += \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/beep_gen.h \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/enginesBackward_gen.h \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/enginesForward_gen.h \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/enginesStop_gen.h \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/finalNode_gen.h \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/initialBlock_gen.h \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/initialNode_gen.h \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/nullificationEncoder_gen.h \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/playTone_gen.h \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/timer_gen.h \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForColor_gen.h \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForColorIntensity_gen.h \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForEncoder_gen.h \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForSonarDistance_gen.h \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForTouchSensor_gen.h \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/function_gen.h
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/beepGenerator.h \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/enginesBackwardGenerator.h \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/enginesForwardGenerator.h \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/enginesStopGenerator.h \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/finalNodeGenerator.h \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/initialBlockGenerator.h \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/initialNodeGenerator.h \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/nullificationEncoderGenerator.h \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/playToneGenerator.h \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/timerGenerator.h \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForColorGenerator.h \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForColorIntensityGenerator.h \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForEncoderGenerator.h \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForSonarDistanceGenerator.h \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForTouchSensorGenerator.h \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/functionGenerator.h
 
 SOURCES += \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/beep_gen.cpp \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/enginesBackward_gen.cpp \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/enginesForward_gen.cpp \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/enginesStop_gen.cpp \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/finalNode_gen.cpp \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/initialBlock_gen.cpp \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/initialNode_gen.cpp \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/nullificationEncoder_gen.cpp \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/playTone_gen.cpp \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/timer_gen.cpp \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForColor_gen.cpp \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForColorIntensity_gen.cpp \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForEncoder_gen.cpp \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForSonarDistance_gen.cpp \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForTouchSensor_gen.cpp \
-	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/function_gen.cpp
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/beepGenerator.cpp \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/enginesBackwardGenerator.cpp \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/enginesForwardGenerator.cpp \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/enginesStopGenerator.cpp \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/finalNodeGenerator.cpp \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/initialBlockGenerator.cpp \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/initialNodeGenerator.cpp \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/nullificationEncoderGenerator.cpp \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/playToneGenerator.cpp \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/timerGenerator.cpp \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForColorGenerator.cpp \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForColorIntensityGenerator.cpp \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForEncoderGenerator.cpp \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForSonarDistanceGenerator.cpp \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/waitForTouchSensorGenerator.cpp \
+	nxtOSEK/funcOrientedGenerator/elementGenerators/simpleElements/functionGenerator.cpp
 
-HEADERS += nxtOSEK/funcOrientedGenerator/elementGenerators/loop_gen.h
-SOURCES += nxtOSEK/funcOrientedGenerator/elementGenerators/loop_gen.cpp
+HEADERS += nxtOSEK/funcOrientedGenerator/elementGenerators/loopGenerator.h
+SOURCES += nxtOSEK/funcOrientedGenerator/elementGenerators/loopGenerator.cpp
 
-HEADERS += nxtOSEK/funcOrientedGenerator/elementGenerators/ifBlock_gen.h
-SOURCES += nxtOSEK/funcOrientedGenerator/elementGenerators/ifBlock_gen.cpp
+HEADERS +=
+SOURCES += nxtOSEK/funcOrientedGenerator/elementGenerators/ifBlockGenerator.cpp
 

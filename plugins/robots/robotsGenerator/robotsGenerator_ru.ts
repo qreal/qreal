@@ -45,30 +45,30 @@
         <translation>Ошибка! У не конечного элемента не задан следующий!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/loop_gen.cpp" line="12"/>
+        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/loopGenerator.cpp" line="12"/>
         <source>Less than 2 outgoing elements for loop element!</source>
         <translation>Менее 2 исходящих связей для блока цикла!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/loop_gen.cpp" line="31"/>
+        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/loopGenerator.cpp" line="31"/>
         <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="634"/>
         <source>Loop block %1 has no correct loop branch! May be you need to connect it to some diagram element.</source>
         <translation>У блока цикла %1 некорректно задана ветвь цикла! Возможно надо поправить связи со следующими элементами.</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/loop_gen.cpp" line="52"/>
+        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/loopGenerator.cpp" line="52"/>
         <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="656"/>
         <source>Loop block %1 has no correct next block branch! May be you need to connect it to some diagram element.</source>
         <translation>У блока цикла %1 некорректно задана ветвь после него! Возможно надо поправить связи со следующими элементами.</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/ifBlock_gen.cpp" line="10"/>
+        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/ifBlockGenerator.cpp" line="10"/>
         <source>Less than 2 outgoing elements for if element!</source>
         <translation>Менее 2 исходящих связей для условного блока!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/ifBlock_gen.cpp" line="33"/>
-        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/ifBlock_gen.cpp" line="45"/>
+        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/ifBlockGenerator.cpp" line="33"/>
+        <location filename="nxtOSEK/funcOrientedGenerator/elementGenerators/ifBlockGenerator.cpp" line="45"/>
         <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="684"/>
         <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="789"/>
         <location filename="nxtOSEK/sequentialGenerator/sequentialGenerator.cpp" line="803"/>

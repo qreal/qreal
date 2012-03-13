@@ -23,25 +23,25 @@ class FuncOrientedGenerator: public NxtOSEKgenerator {
 	
 	friend class SimpleElementGenerator;
 	
-	friend class Beep_gen;
-	friend class EnginesBackward_gen;
-	friend class EnginesForward_gen;
-	friend class EnginesStop_gen;
-	friend class FinalNode_gen;
-	friend class InitialBlock_gen;
-	friend class InitialNode_gen;
-	friend class NullificationEncoder_gen;
-	friend class PlayTone_gen;
-	friend class Timer_gen;
-	friend class WaitForColor_gen;
-	friend class WaitForColorIntensity_gen;
-	friend class WaitForEncoder_gen;
-	friend class WaitForSonarDistance_gen;
-	friend class WaitForTouchSensor_gen;
+	friend class BeepGenerator;
+	friend class EnginesBackwardGenerator;
+	friend class EnginesForwardGenerator;
+	friend class EnginesStopGenerator;
+	friend class FinalNodeGenerator;
+	friend class InitialBlockGenerator;
+	friend class InitialNodeGenerator;
+	friend class NullificationEncoderGenerator;
+	friend class PlayToneGenerator;
+	friend class TimerGenerator;
+	friend class WaitForColorGenerator;
+	friend class WaitForColorIntensityGenerator;
+	friend class WaitForEncoderGenerator;
+	friend class WaitForSonarDistanceGenerator;
+	friend class WaitForTouchSensorGenerator;
 	
-	friend class Loop_gen;
-	friend class IfBlock_gen;
-	friend class Function_gen;
+	friend class LoopGenerator;
+	friend class IfBlockGenerator;
+	friend class FunctionGenerator;
 
 public:
 	FuncOrientedGenerator(
