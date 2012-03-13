@@ -120,7 +120,7 @@ qReal::ErrorReporterInterface &FuncOrientedGenerator::generate()
 	QList<Id> initialNodes = mApi->elementsByType("InitialNode");
 
 	int curInitialNodeNumber = 0;
-	foreach (Id curInitialNode, initialNodes) {
+	foreach (Id const &curInitialNode, initialNodes) {
 		if (!mApi->isLogicalElement(curInitialNode)) {//? may be necessary to use graphical  elements
 			continue;
 		}
@@ -141,7 +141,7 @@ qReal::ErrorReporterInterface &FuncOrientedGenerator::generate()
 				delete gen;
 			}
 
-			foreach (Id nextElement, mApi->outgoingConnectedElements(curElement)) {
+			foreach (Id const &nextElement, mApi->outgoingConnectedElements(curElement)) {
 				if (!mAlreadyGeneratedElements.contains(nextElement) &&
 						!elementsToGenerate.contains(nextElement) && 
 						(nextElement.element() != "ROOT_ID")) {
@@ -153,7 +153,7 @@ qReal::ErrorReporterInterface &FuncOrientedGenerator::generate()
 		}
 
 		QList<SmartLine> variableGeneratedStrings;
-		foreach (SmartLine line, mVariables) {
+		foreach (SmartLine const &line, mVariables) {
 			variableGeneratedStrings.append(SmartLine("int " + line.text() + ";", line.elementId()));
 		}
 
@@ -174,7 +174,7 @@ void FuncOrientedGenerator::prepareIdToMethodNameMap()
 	mIdToMethodNameMap.clear();
 
 	IdList allNodes = mApi->logicalElements();
-	foreach (Id curNode, allNodes) {
+	foreach (Id const &curNode, allNodes) {
 		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(this, curNode);
 		if (gen == 0) {
 			continue;
@@ -188,7 +188,7 @@ void FuncOrientedGenerator::prepareIdToMethodNameMap()
 QString FuncOrientedGenerator::smartLineListToString(QList<SmartLine> list, int startIndentSize) {
 	QString result;
 	int curIndentSize = startIndentSize;
-	foreach (SmartLine curLine, list) {
+	foreach (SmartLine const &curLine, list) {
 		if ( (curLine.indentLevelChange() == SmartLine::decrease)
 				|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) ) {
 			curIndentSize--;

@@ -15,7 +15,7 @@ void FunctionGenerator::generateBodyWithoutNextElementCall()
 	variableAnalysis(byteFuncCode);
 
 	QString funcCode = QString::fromUtf8(byteFuncCode);
-	foreach (QString str, funcCode.split(';')) {
+	foreach (QString const &str, funcCode.split(';')) {
 		mNxtGen->mGeneratedStrings.append(SmartLine(str.trimmed() + ";", mElementId));
 	}
 }
@@ -24,7 +24,7 @@ void FunctionGenerator::variableAnalysis(QByteArray const &code)
 {
 	QList<QByteArray> funcBlocks = code.split(';');
 
-	foreach (QByteArray block, funcBlocks) {
+	foreach (QByteArray const &block, funcBlocks) {
 			//Only one possible place for first variable appear
 		int firstEqualSignPos = block.indexOf('=');
 		if (firstEqualSignPos == -1)
@@ -39,7 +39,7 @@ void FunctionGenerator::variableAnalysis(QByteArray const &code)
 			continue;
 
 		bool isVariableExisted = false;
-		foreach (SmartLine curVariable, mNxtGen->mVariables) {
+		foreach (SmartLine const &curVariable, mNxtGen->mVariables) {
 			if (curVariable.text() == QString::fromUtf8(leftPart)) {
 				isVariableExisted = true;
 				break;

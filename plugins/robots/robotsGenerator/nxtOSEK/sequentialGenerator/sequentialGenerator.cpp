@@ -26,7 +26,7 @@ SequentialGenerator::SequentialGenerator(QString const &pathToRepo,
 }
 
 void SequentialGenerator::addToGeneratedStringSetVariableInit() {
-	foreach (SmartLine curVariable, mVariables) {
+	foreach (SmartLine const &curVariable, mVariables) {
 		mGeneratedStringSet[mVariablePlaceInGenStrSet].append(
 				SmartLine("int " + curVariable.text() + ";", curVariable.elementId()));
 	}
@@ -37,7 +37,7 @@ qReal::ErrorReporterInterface &SequentialGenerator::generate()
 	IdList initialNodes = mApi->elementsByType("InitialNode");
 
 	int curInitialNodeNumber = 0;
-	foreach (Id curInitialNode, initialNodes) {
+	foreach (Id const &curInitialNode, initialNodes) {
 		if (!mApi->isGraphicalElement(curInitialNode)) {
 			continue;
 		}
@@ -58,8 +58,8 @@ qReal::ErrorReporterInterface &SequentialGenerator::generate()
 		addToGeneratedStringSetVariableInit();
 
 		int curTabNumber = 1;
-		foreach (QList<SmartLine> lineList, mGeneratedStringSet) {
-			foreach (SmartLine curLine, lineList) {
+		foreach (QList<SmartLine> const &lineList, mGeneratedStringSet) {
+			foreach (SmartLine const &curLine, lineList) {
 				if ( (curLine.indentLevelChange() == SmartLine::decrease)
 						|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) ) {
 					curTabNumber--;
@@ -234,7 +234,7 @@ void SequentialGenerator::FunctionElementGenerator::variableAnalysis(QByteArray 
 {
 	QList<QByteArray> funcBlocks = code.split(';');
 
-	foreach (QByteArray block, funcBlocks) {
+	foreach (QByteArray const &block, funcBlocks) {
 			//Only one possible place for first variable appear
 		int firstEqualSignPos = block.indexOf('=');
 		if (firstEqualSignPos == -1) {
@@ -250,7 +250,7 @@ void SequentialGenerator::FunctionElementGenerator::variableAnalysis(QByteArray 
 			continue;
 		}
 		bool isVariableExisted = false;
-		foreach (SmartLine curVariable, mNxtGen->mVariables) {
+		foreach (SmartLine const &curVariable, mNxtGen->mVariables) {
 			if (curVariable.text() == QString::fromUtf8(leftPart)) {
 				isVariableExisted = true;
 				break;
@@ -278,7 +278,7 @@ QList<SmartLine> SequentialGenerator::FunctionElementGenerator::simpleCode()
 	variableAnalysis(byteFuncCode);
 
 	QString funcCode = QString::fromUtf8(byteFuncCode);
-	foreach (QString str, funcCode.split(';')) {
+	foreach (QString const &str, funcCode.split(';')) {
 		result.append(SmartLine(str.trimmed() + ";", mElementId));
 	}
 
@@ -296,14 +296,14 @@ QList<SmartLine> SequentialGenerator::SimpleElementGenerator::simpleCode()
 		QStringList cmds = mNxtGen->mApi->stringProperty(logicElementId, "Power").split(";", QString::SkipEmptyParts);
 		for (int i = 0; i < cmds.size() - 1; ++i)
 			result.append(SmartLine(cmds.at(i) + ";", mElementId));
-		foreach (QString enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
+		foreach (QString const &enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
 			result.append(SmartLine(
 						"nxt_motor_set_speed(" + enginePort + ", " + cmds.last() + ", 0);",
 						mElementId));
 		}
 
 	} else if (mElementId.element() == "EnginesBackward") {
-		foreach (QString enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
+		foreach (QString const &enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
 			result.append(SmartLine(
 						"nxt_motor_set_speed(" + enginePort + ", "
 							+ "-" + mNxtGen->mApi->stringProperty(logicElementId, "Power") + ", 0);",
@@ -311,7 +311,7 @@ QList<SmartLine> SequentialGenerator::SimpleElementGenerator::simpleCode()
 		}
 
 	} else if (mElementId.element() == "EnginesStop") {
-		foreach (QString enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
+		foreach (QString const &enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
 			result.append(SmartLine(
 						"nxt_motor_set_speed(" + enginePort + ", 0, 0);",
 						mElementId));
@@ -721,7 +721,7 @@ QPair<bool, qReal::Id> SequentialGenerator::IfElementGenerator::checkBranchForBa
 	}
 
 	//if we have observed this element and generated code of this element
-	foreach (QString observedElementString, mNxtGen->mElementToStringListNumbers.keys()) {
+	foreach (QString const &observedElementString, mNxtGen->mElementToStringListNumbers.keys()) {
 		qReal::Id observedElementId = qReal::Id::loadFromString(observedElementString);
 		qReal::Id observedElementLogicId = mNxtGen->mApi->logicalId(observedElementId);
 
@@ -734,7 +734,7 @@ QPair<bool, qReal::Id> SequentialGenerator::IfElementGenerator::checkBranchForBa
 	//add element to list
 	checkedElements->append(logicElementId);
 
-	foreach (qReal::Id childId, mNxtGen->mApi->outgoingConnectedElements(logicElementId)) {
+	foreach (qReal::Id const &childId, mNxtGen->mApi->outgoingConnectedElements(logicElementId)) {
 		if (childId == Id::rootId()) {
 			QString errorMessage = QObject::tr("Link from %1"\
 						" has no object on its end."\
