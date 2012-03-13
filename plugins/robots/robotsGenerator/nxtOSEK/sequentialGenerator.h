@@ -37,11 +37,11 @@ public:
 	virtual	~SequentialGenerator() {
 	}
 
-	//! main method that starts a code generation.
+	/// main method that starts a code generation.
 	qReal::ErrorReporterInterface &generate();
 
 private:
-	//! AbstractElementGenerator - robot diagram element generator abstraction.
+	/// AbstractElementGenerator - robot diagram element generator abstraction.
 	friend class AbstractElementGenerator;
 	class AbstractElementGenerator {
 	public:
@@ -70,7 +70,7 @@ private:
 		qReal::Id mElementId;
 	};
 
-	//! Realization of AbstractElementGenerator for Beep, Engines etc.
+	/// Realization of AbstractElementGenerator for Beep, Engines etc.
 	class SimpleElementGenerator: public AbstractElementGenerator {
 	public:
 		explicit SimpleElementGenerator(SequentialGenerator *emboxGen, qReal::Id elementId);
@@ -91,7 +91,7 @@ private:
 		QString transformSign(QString const &inequalitySign);
 	};
 
-	//! Realization of AbstractElementGenerator for Function.
+	/// Realization of AbstractElementGenerator for Function.
 	class FunctionElementGenerator: public SimpleElementGenerator {
 	public:
 		explicit FunctionElementGenerator(SequentialGenerator *emboxGen, qReal::Id elementId);
@@ -101,7 +101,7 @@ private:
 		void variableAnalysis(QByteArray const &);
 	};
 
-	//! Realization of AbstractElementGenerator for Loop.
+	/// Realization of AbstractElementGenerator for Loop.
 	class LoopElementGenerator: public AbstractElementGenerator {
 	public:
 		explicit LoopElementGenerator(SequentialGenerator *emboxGen, qReal::Id elementId);
@@ -115,7 +115,7 @@ private:
 		virtual bool nextElementsGeneration();
 	};
 
-	//! Realization of AbstractElementGenerator for If block.
+	/// Realization of AbstractElementGenerator for If block.
 	class IfElementGenerator : public AbstractElementGenerator {
 	public:
 		explicit IfElementGenerator(SequentialGenerator *emboxGen, qReal::Id elementId);
@@ -134,7 +134,7 @@ private:
 		QPair<bool, qReal::Id> checkBranchForBackArrows(qReal::Id const &curElementId, qReal::IdList* checkedElements);
 	};
 
-	//! Element generator factory that returns for a diagram element ID a connected generator.
+	/// Element generator factory that returns for a diagram element ID a connected generator.
 	friend class ElementGeneratorFactory;
 	class ElementGeneratorFactory {
 	public:
@@ -153,14 +153,14 @@ private:
 
 	void addToGeneratedStringSetVariableInit();
 
-	//! Set of already generated strings united for take a same critical places position (start of loop etc)
+	/// Set of already generated strings united for take a same critical places position (start of loop etc)
 	QList< QList<SmartLine> > mGeneratedStringSet;
 
-	//! Set of elements that have been already observed, but can create a regular loop (If blocks, Loop etc)
+	/// Set of elements that have been already observed, but can create a regular loop (If blocks, Loop etc)
 	QStack<qReal::Id> mPreviousLoopElements;
 	qReal::Id mPreviousElement;
 
-	/*!
+	/**
 	 * Mapped element with lists in mGeneratedStringSet
 	 * QString in this case is qReal::Id string presentation.
 	 */

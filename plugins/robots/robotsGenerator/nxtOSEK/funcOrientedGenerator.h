@@ -59,7 +59,7 @@ public:
 	virtual ~FuncOrientedGenerator() {
 	}
 	
-	//! main method that starts code generation.
+	/// main method that starts code generation.
 	qReal::ErrorReporterInterface &generate();
 
 private:
