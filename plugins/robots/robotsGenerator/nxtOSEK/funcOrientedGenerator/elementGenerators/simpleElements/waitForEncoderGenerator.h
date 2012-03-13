@@ -7,7 +7,7 @@ namespace generator {
 
 class WaitForEncoderGenerator: public SimpleElementGenerator {
 public:
-	WaitForEncoderGenerator(FuncOrientedGenerator* gen, qReal::Id elementId): SimpleElementGenerator(gen, elementId) {
+	WaitForEncoderGenerator(FuncOrientedGenerator* gen, qReal::Id const &elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

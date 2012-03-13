@@ -16,7 +16,7 @@ void AbstractElementGenerator::generate()
 {
 	mNxtGen->mAlreadyGeneratedElements.insert(mElementId);
 
-	QString methodName = mNxtGen->mIdToMethodNameMap[mElementId.toString()];
+	QString const methodName = mNxtGen->mIdToMethodNameMap[mElementId.toString()];
 
 	mNxtGen->mGeneratedStrings.append(SmartLine("void " + methodName + "()", mElementId));
 	mNxtGen->mGeneratedStrings.append(SmartLine("{", mElementId, SmartLine::increase));
@@ -27,7 +27,7 @@ void AbstractElementGenerator::generate()
 	mNxtGen->mGeneratedStrings.append(SmartLine("", mElementId)); //just for space between methods
 }
 
-QList<QString> AbstractElementGenerator::portsToEngineNames(QString const &portsProperty)
+QList<QString> AbstractElementGenerator::portsToEngineNames(QString const &portsProperty) const
 {
 	QList<QString> result;
 
@@ -43,7 +43,7 @@ QList<QString> AbstractElementGenerator::portsToEngineNames(QString const &ports
 	return result;
 }
 
-QString AbstractElementGenerator::transformSign(QString const &sign)
+QString AbstractElementGenerator::transformSign(QString const &sign) const
 {
 	if (sign == "меньше") {
 		return "<";

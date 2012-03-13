@@ -11,7 +11,7 @@ namespace generator {
 
 class AbstractElementGenerator {
 public:	
-	AbstractElementGenerator(FuncOrientedGenerator* gen, qReal::Id elementId): mNxtGen(gen){
+	AbstractElementGenerator(FuncOrientedGenerator* gen, qReal::Id const &elementId): mNxtGen(gen){
 		if (mNxtGen->mApi->isLogicalElement(elementId))
 			mElementId = elementId;
 		else
@@ -21,14 +21,15 @@ public:
 	virtual ~AbstractElementGenerator() {
 	}
 
+	//changes mElementCounter
 	virtual QString nextMethodName();
 	
 	//changes mVariables, mGeneratedStrings, mAlreadyGeneratedElements, mErrorReporter in mNxtGen
 	virtual void generate();
 
 protected:
-	QList<QString> portsToEngineNames(QString const &portsProperty);
-	QString transformSign(QString const &sign);
+	QList<QString> portsToEngineNames(QString const &portsProperty) const;
+	QString transformSign(QString const &sign) const;
 
 	virtual void generateMethodBody() = 0;
 

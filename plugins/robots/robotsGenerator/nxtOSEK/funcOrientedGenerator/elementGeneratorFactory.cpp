@@ -4,7 +4,7 @@
 using namespace qReal;
 using namespace robots::generator;
 
-AbstractElementGenerator* ElementGeneratorFactory::generator(FuncOrientedGenerator* gen, Id elementId)
+AbstractElementGenerator* ElementGeneratorFactory::generator(FuncOrientedGenerator* gen, Id const &elementId)
 {
 	if (elementId.element() == "Beep") {
 		return new BeepGenerator(gen, elementId);

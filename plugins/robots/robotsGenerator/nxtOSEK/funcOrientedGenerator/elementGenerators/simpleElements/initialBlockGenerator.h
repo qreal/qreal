@@ -7,7 +7,7 @@ namespace generator {
 
 class InitialBlockGenerator: public SimpleElementGenerator {
 public:
-	InitialBlockGenerator(FuncOrientedGenerator* gen, qReal::Id elementId): SimpleElementGenerator(gen, elementId) {
+	InitialBlockGenerator(FuncOrientedGenerator* gen, qReal::Id const &elementId): SimpleElementGenerator(gen, elementId) {
 	}
 
 protected:	

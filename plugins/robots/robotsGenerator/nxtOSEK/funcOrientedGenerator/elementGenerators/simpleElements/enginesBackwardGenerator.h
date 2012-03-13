@@ -7,7 +7,7 @@ namespace generator {
 
 class EnginesBackwardGenerator: public SimpleElementGenerator {
 public:
-	EnginesBackwardGenerator(FuncOrientedGenerator* gen, qReal::Id elementId): SimpleElementGenerator(gen, elementId) {
+	EnginesBackwardGenerator(FuncOrientedGenerator* gen, qReal::Id const &elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

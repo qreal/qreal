@@ -4,7 +4,7 @@ using namespace qReal;
 using namespace robots::generator;
 
 void IfBlockGenerator::generateMethodBody() {
-	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
+	IdList const outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 	if (outgoingLinks.size() < 2) {
 		mNxtGen->mErrorReporter.addError(
 				QObject::tr("Less than 2 outgoing elements for if element!")
@@ -13,7 +13,7 @@ void IfBlockGenerator::generateMethodBody() {
 	}
 
 	//search for arrow with condition
-	int conditionArrowNum =
+	int const conditionArrowNum =
 			mNxtGen->mApi->property(outgoingLinks.at(0), "Guard").toString().isEmpty()
 			? 1 : 0;
 	QString condition = "(" + mNxtGen->mApi->property(mElementId, "Condition").toString() + ")";
@@ -28,7 +28,7 @@ void IfBlockGenerator::generateMethodBody() {
 		condition += " == 0";
 	}
 	
-	Id positiveBranchElement = mNxtGen->mApi->to(outgoingLinks.at(conditionArrowNum));
+	Id const positiveBranchElement = mNxtGen->mApi->to(outgoingLinks.at(conditionArrowNum));
 	if (positiveBranchElement == Id::rootId()) {
 		QString errorMessage = QObject::tr("If block %1 has no 2 correct branches!"\
 					" May be you need to connect one of them to some diagram element.");
@@ -38,9 +38,9 @@ void IfBlockGenerator::generateMethodBody() {
 				, mElementId);
 		return;
 	}
-	QString positiveBranchNextElementMethod = mNxtGen->mIdToMethodNameMap[positiveBranchElement.toString()];
+	QString const positiveBranchNextElementMethod = mNxtGen->mIdToMethodNameMap[positiveBranchElement.toString()];
 
-	Id negativeBranchElement = mNxtGen->mApi->to(outgoingLinks.at(1 - conditionArrowNum));
+	Id const negativeBranchElement = mNxtGen->mApi->to(outgoingLinks.at(1 - conditionArrowNum));
 	if (negativeBranchElement == Id::rootId()) {
 		QString errorMessage = QObject::tr("If block %1 has no 2 correct branches!"\
 				" May be you need to connect one of them to some diagram element.");
@@ -50,7 +50,7 @@ void IfBlockGenerator::generateMethodBody() {
 				, mElementId);
 		return;
 	}
-	QString negativeBranchNextElementMethod = mNxtGen->mIdToMethodNameMap[negativeBranchElement.toString()];
+	QString const negativeBranchNextElementMethod = mNxtGen->mIdToMethodNameMap[negativeBranchElement.toString()];
 
 	mNxtGen->mGeneratedStrings.append(SmartLine("if (" + condition + ") {", mElementId, SmartLine::increase));
 	mNxtGen->mGeneratedStrings.append(SmartLine(positiveBranchNextElementMethod + "();", mElementId));

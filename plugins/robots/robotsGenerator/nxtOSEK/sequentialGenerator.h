@@ -52,9 +52,8 @@ private:
 		virtual bool generate();
 
 	protected:
-		virtual QList<SmartLine> loopPrefixCode() = 0;
-
-		virtual QList<SmartLine> loopPostfixCode() = 0;
+		virtual QList<SmartLine> loopPrefixCode() const = 0;
+		virtual QList<SmartLine> loopPostfixCode() const = 0;
 
 		/*!
 		 * Creates new lists in mGeneratedStringSet
@@ -76,13 +75,14 @@ private:
 		explicit SimpleElementGenerator(SequentialGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
-		virtual QList<SmartLine> loopPrefixCode();
-
-		virtual QList<SmartLine> loopPostfixCode();
+		virtual QList<SmartLine> loopPrefixCode() const;
+		virtual QList<SmartLine> loopPostfixCode() const;
 
 		virtual bool preGenerationCheck();
 		virtual bool nextElementsGeneration();
 
+		/// Returns code, that will be generated from simple diagram element
+		/// can change generating variable initialization strings
 		virtual QList<SmartLine> simpleCode();
 
 		QList<QString> portsToEngineNames(QString const &portsProperty);
@@ -107,9 +107,8 @@ private:
 		explicit LoopElementGenerator(SequentialGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
-		virtual QList<SmartLine> loopPrefixCode();
-
-		virtual QList<SmartLine> loopPostfixCode();
+		virtual QList<SmartLine> loopPrefixCode() const;
+		virtual QList<SmartLine> loopPostfixCode() const;
 
 		virtual bool preGenerationCheck();
 		virtual bool nextElementsGeneration();
@@ -121,9 +120,8 @@ private:
 		explicit IfElementGenerator(SequentialGenerator *emboxGen, qReal::Id elementId);
 
 	protected:
-		virtual QList<SmartLine> loopPrefixCode();
-
-		virtual QList<SmartLine> loopPostfixCode();
+		virtual QList<SmartLine> loopPrefixCode() const;
+		virtual QList<SmartLine> loopPostfixCode() const;
 
 		virtual bool preGenerationCheck();
 		virtual bool nextElementsGeneration();

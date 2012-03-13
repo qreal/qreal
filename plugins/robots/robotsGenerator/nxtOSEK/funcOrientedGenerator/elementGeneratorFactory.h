@@ -8,7 +8,7 @@ namespace generator {
 
 class ElementGeneratorFactory {
 public:
-	static AbstractElementGenerator* generator(FuncOrientedGenerator* gen, qReal::Id elementId);
+	static AbstractElementGenerator* generator(FuncOrientedGenerator* gen, qReal::Id const &elementId);
 };
 
 }

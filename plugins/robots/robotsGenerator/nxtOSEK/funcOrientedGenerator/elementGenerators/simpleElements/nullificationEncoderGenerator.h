@@ -7,7 +7,7 @@ namespace generator {
 
 class NullificationEncoderGenerator: public SimpleElementGenerator {
 public:
-	NullificationEncoderGenerator(FuncOrientedGenerator* gen, qReal::Id elementId): SimpleElementGenerator(gen, elementId) {
+	NullificationEncoderGenerator(FuncOrientedGenerator* gen, qReal::Id const &elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

@@ -5,8 +5,8 @@ using namespace robots::generator;
 
 void WaitForColorGenerator::generateBodyWithoutNextElementCall()
 {
-	int port = mNxtGen->mApi->stringProperty(mElementId, "Port").toInt();
-	QByteArray colorStr = mNxtGen->mApi->stringProperty(mElementId, "Color").toUtf8();
+	int const port = mNxtGen->mApi->stringProperty(mElementId, "Port").toInt();
+	QByteArray const colorStr = mNxtGen->mApi->stringProperty(mElementId, "Color").toUtf8();
 
 	QString colorNxtType;
 

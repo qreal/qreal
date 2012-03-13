@@ -14,7 +14,7 @@ void FunctionGenerator::generateBodyWithoutNextElementCall()
 
 	variableAnalysis(byteFuncCode);
 
-	QString funcCode = QString::fromUtf8(byteFuncCode);
+	QString const funcCode = QString::fromUtf8(byteFuncCode);
 	foreach (QString const &str, funcCode.split(';')) {
 		mNxtGen->mGeneratedStrings.append(SmartLine(str.trimmed() + ";", mElementId));
 	}
@@ -22,7 +22,7 @@ void FunctionGenerator::generateBodyWithoutNextElementCall()
 
 void FunctionGenerator::variableAnalysis(QByteArray const &code)
 {
-	QList<QByteArray> funcBlocks = code.split(';');
+	QList<QByteArray> const funcBlocks = code.split(';');
 
 	foreach (QByteArray const &block, funcBlocks) {
 			//Only one possible place for first variable appear

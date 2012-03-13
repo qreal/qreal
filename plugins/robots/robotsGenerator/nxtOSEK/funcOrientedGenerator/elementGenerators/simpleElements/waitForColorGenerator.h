@@ -7,7 +7,7 @@ namespace generator {
 
 class WaitForColorGenerator: public SimpleElementGenerator {
 public:
-	WaitForColorGenerator(FuncOrientedGenerator* gen, qReal::Id elementId): SimpleElementGenerator(gen, elementId) {
+	WaitForColorGenerator(FuncOrientedGenerator* gen, qReal::Id const &elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

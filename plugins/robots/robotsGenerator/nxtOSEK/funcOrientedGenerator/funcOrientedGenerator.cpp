@@ -23,8 +23,8 @@ FuncOrientedGenerator::FuncOrientedGenerator(QString const &pathToRepo,
 
 void FuncOrientedGenerator::writeGeneratedCodeToFile(QString const &resultCode, QString const &initNodeProcedureName,
 		int initialNodeNumber) {
-	QString projectName = "example" + QString::number(initialNodeNumber);
-	QString projectDir = "nxt-tools/" + projectName;
+	QString const projectName = "example" + QString::number(initialNodeNumber);
+	QString const projectDir = "nxt-tools/" + projectName;
 
 	//Create project directory
 	if (!QDir(projectDir).exists()) {
@@ -117,7 +117,7 @@ void FuncOrientedGenerator::writeGeneratedCodeToFile(QString const &resultCode, 
 qReal::ErrorReporterInterface &FuncOrientedGenerator::generate()
 {
 	prepareIdToMethodNameMap();
-	QList<Id> initialNodes = mApi->elementsByType("InitialNode");
+	IdList const initialNodes = mApi->elementsByType("InitialNode");
 
 	int curInitialNodeNumber = 0;
 	foreach (Id const &curInitialNode, initialNodes) {
@@ -133,7 +133,7 @@ qReal::ErrorReporterInterface &FuncOrientedGenerator::generate()
 		elementsToGenerate.enqueue(curInitialNode);
 
 		while (!elementsToGenerate.empty()) {
-			Id curElement = elementsToGenerate.dequeue();
+			Id const curElement = elementsToGenerate.dequeue();
 			AbstractElementGenerator* gen = ElementGeneratorFactory::generator(this, curElement);
 			if (gen) {
 				//changes mVariables, mGeneratedStrings, mAlreadyGeneratedElements
@@ -157,7 +157,7 @@ qReal::ErrorReporterInterface &FuncOrientedGenerator::generate()
 			variableGeneratedStrings.append(SmartLine("int " + line.text() + ";", line.elementId()));
 		}
 
-		QString resultCode = smartLineListToString(variableGeneratedStrings, 0) +
+		QString const resultCode = smartLineListToString(variableGeneratedStrings, 0) +
 			smartLineListToString(mGeneratedStrings, 0);
 
 		writeGeneratedCodeToFile(resultCode, mIdToMethodNameMap[curInitialNode.toString()],
@@ -173,7 +173,7 @@ void FuncOrientedGenerator::prepareIdToMethodNameMap()
 {
 	mIdToMethodNameMap.clear();
 
-	IdList allNodes = mApi->logicalElements();
+	IdList const allNodes = mApi->logicalElements();
 	foreach (Id const &curNode, allNodes) {
 		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(this, curNode);
 		if (gen == 0) {
@@ -185,7 +185,7 @@ void FuncOrientedGenerator::prepareIdToMethodNameMap()
 	}
 }
 
-QString FuncOrientedGenerator::smartLineListToString(QList<SmartLine> list, int startIndentSize) {
+QString FuncOrientedGenerator::smartLineListToString(QList<SmartLine> const &list, int startIndentSize) {
 	QString result;
 	int curIndentSize = startIndentSize;
 	foreach (SmartLine const &curLine, list) {

@@ -5,7 +5,7 @@ using namespace robots::generator;
 
 void WaitForTouchSensorGenerator::generateBodyWithoutNextElementCall()
 {
-	int port = mNxtGen->mApi->stringProperty(mElementId, "Port").toInt();
+	int const port = mNxtGen->mApi->stringProperty(mElementId, "Port").toInt();
 
 	mNxtGen->mGeneratedStrings.append(SmartLine(
 				"while (!ecrobot_get_touch_sensor(NXT_PORT_S" + QString::number(port) + "))",

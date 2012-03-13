@@ -34,7 +34,7 @@ void SequentialGenerator::addToGeneratedStringSetVariableInit() {
 
 qReal::ErrorReporterInterface &SequentialGenerator::generate()
 {
-	IdList initialNodes = mApi->elementsByType("InitialNode");
+	IdList const initialNodes = mApi->elementsByType("InitialNode");
 
 	int curInitialNodeNumber = 0;
 	foreach (Id const &curInitialNode, initialNodes) {
@@ -188,6 +188,7 @@ SequentialGenerator::AbstractElementGenerator::AbstractElementGenerator(Sequenti
 void SequentialGenerator::AbstractElementGenerator::createListsForIncomingConnections()
 {
 	//connects string lists in mGeneratedStringSet with mElementId in mElementToStringListNumbers
+	//starts at 1 because must not be created list for current first appearance
 	for (int i = 1; i < mNxtGen->mApi->incomingConnectedElements(mElementId).size(); i++) {
 		mNxtGen->mGeneratedStringSet << QList<SmartLine>();
 		mNxtGen->mElementToStringListNumbers[mElementId.toString()] << mNxtGen->mGeneratedStringSet.size() - 1;
@@ -232,11 +233,11 @@ QList<QString> SequentialGenerator::SimpleElementGenerator::portsToEngineNames(Q
 
 void SequentialGenerator::FunctionElementGenerator::variableAnalysis(QByteArray const &code)
 {
-	QList<QByteArray> funcBlocks = code.split(';');
+	QList<QByteArray> const funcBlocks = code.split(';');
 
 	foreach (QByteArray const &block, funcBlocks) {
 			//Only one possible place for first variable appear
-		int firstEqualSignPos = block.indexOf('=');
+		int const firstEqualSignPos = block.indexOf('=');
 		if (firstEqualSignPos == -1) {
 			continue;
 		}
@@ -266,7 +267,7 @@ QList<SmartLine> SequentialGenerator::FunctionElementGenerator::simpleCode()
 {
 	QList<SmartLine> result;
 
-	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
+	qReal::Id const logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
 
 	QByteArray byteFuncCode = mNxtGen->mApi->stringProperty(logicElementId, "Body").toUtf8();
 
@@ -289,11 +290,11 @@ QList<SmartLine> SequentialGenerator::SimpleElementGenerator::simpleCode()
 {
 	QList<SmartLine> result;
 
-	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
+	qReal::Id const logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
 
 	//TODO: to make "break mode" to do smth
 	if (mElementId.element() == "EnginesForward") {
-		QStringList cmds = mNxtGen->mApi->stringProperty(logicElementId, "Power").split(";", QString::SkipEmptyParts);
+		QStringList const cmds = mNxtGen->mApi->stringProperty(logicElementId, "Power").split(";", QString::SkipEmptyParts);
 		for (int i = 0; i < cmds.size() - 1; ++i)
 			result.append(SmartLine(cmds.at(i) + ";", mElementId));
 		foreach (QString const &enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
@@ -347,8 +348,8 @@ QList<SmartLine> SequentialGenerator::SimpleElementGenerator::simpleCode()
 	} else if (mElementId.element() == "InitialBlock") {
 		for (int i = 1; i <= 4; i++) {
 			//4 - number of ports on nxt robot
-			QString curPort = "port_" + QString::number(i);
-			QByteArray portValue = mNxtGen->mApi->stringProperty(logicElementId, curPort).toUtf8();
+			QString const curPort = "port_" + QString::number(i);
+			QByteArray const portValue = mNxtGen->mApi->stringProperty(logicElementId, curPort).toUtf8();
 
 			if (portValue == "Ультразвуковой сенсор") {
 				result.append(SmartLine(
@@ -388,8 +389,8 @@ QList<SmartLine> SequentialGenerator::SimpleElementGenerator::simpleCode()
 		}
 
 	} else if (mElementId.element() == "WaitForColor") {
-		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
-		QByteArray colorStr = mNxtGen->mApi->stringProperty(logicElementId, "Color").toUtf8();
+		int const port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
+		QByteArray const colorStr = mNxtGen->mApi->stringProperty(logicElementId, "Color").toUtf8();
 
 		QString colorNxtType;
 
@@ -422,11 +423,11 @@ QList<SmartLine> SequentialGenerator::SimpleElementGenerator::simpleCode()
 		}
 
 	} else if (mElementId.element() == "WaitForColorIntensity") {
-		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
-		QString intensity = mNxtGen->mApi->stringProperty(logicElementId,  "Intensity");
-		QString inequalitySign = mNxtGen->mApi->stringProperty(logicElementId, "Sign");
+		int const port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
+		QString const intensity = mNxtGen->mApi->stringProperty(logicElementId,  "Intensity");
+		QString const inequalitySign = mNxtGen->mApi->stringProperty(logicElementId, "Sign");
 
-		QString condition = inequalitySign + " " + intensity;
+		QString const condition = inequalitySign + " " + intensity;
 
 		result.append(SmartLine(
 				"while (!(ecrobot_get_nxtcolorsensor_light(NXT_PORT_S" + QString::number(port)
@@ -436,7 +437,7 @@ QList<SmartLine> SequentialGenerator::SimpleElementGenerator::simpleCode()
 		result.append(SmartLine("}", mElementId));
 
 	} else if (mElementId.element() == "WaitForTouchSensor") {
-		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
+		int const port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
 
 		result.append(SmartLine(
 				"while (!ecrobot_get_touch_sensor(NXT_PORT_S" + QString::number(port) + "))",
@@ -445,10 +446,10 @@ QList<SmartLine> SequentialGenerator::SimpleElementGenerator::simpleCode()
 		result.append(SmartLine("}", mElementId));
 
 	} else if (mElementId.element() == "WaitForSonarDistance") {
-		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
-		QString distance = mNxtGen->mApi->stringProperty(logicElementId, "Distance");
-		QString inequalitySign = transformSign(QString(mNxtGen->mApi->stringProperty(logicElementId, "Sign").toUtf8()));
-		QString condition = inequalitySign + " " + distance;
+		int const port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
+		QString const distance = mNxtGen->mApi->stringProperty(logicElementId, "Distance");
+		QString const inequalitySign = transformSign(QString(mNxtGen->mApi->stringProperty(logicElementId, "Sign").toUtf8()));
+		QString const condition = inequalitySign + " " + distance;
 
 		result.append(SmartLine(
 				"while (!(ecrobot_get_sonar_sensor(NXT_PORT_S" + QString::number(port) + ") " + condition + "))",
@@ -457,8 +458,8 @@ QList<SmartLine> SequentialGenerator::SimpleElementGenerator::simpleCode()
 		result.append(SmartLine("}", mElementId));
 
 	} else if (mElementId.element() == "WaitForEncoder") {
-		QString port = mNxtGen->mApi->stringProperty(logicElementId, "Port");
-		QString tachoLimit = mNxtGen->mApi->stringProperty(logicElementId, "TachoLimit");
+		QString const port = mNxtGen->mApi->stringProperty(logicElementId, "Port");
+		QString const tachoLimit = mNxtGen->mApi->stringProperty(logicElementId, "TachoLimit");
 		result.append(SmartLine(
 				"while (nxt_motor_get_count(NXT_PORT_" + port + ") < " + tachoLimit + ")",
 				mElementId));
@@ -474,8 +475,6 @@ QList<SmartLine> SequentialGenerator::SimpleElementGenerator::simpleCode()
 
 QString SequentialGenerator::SimpleElementGenerator::transformSign(QString const &sign)
 {
-	qDebug() << sign;
-
 	if (sign == "меньше") {
 		return "<";
 	} else if (sign == "больше") {
@@ -490,50 +489,50 @@ QString SequentialGenerator::SimpleElementGenerator::transformSign(QString const
 	return "";
 }
 
-QList<SmartLine> SequentialGenerator::SimpleElementGenerator::loopPrefixCode()
+QList<SmartLine> SequentialGenerator::SimpleElementGenerator::loopPrefixCode() const
 {
 	QList<SmartLine> result;
 	result << SmartLine("while (true) {", mElementId, SmartLine::increase);
 	return result;
 }
 
-QList<SmartLine> SequentialGenerator::SimpleElementGenerator::loopPostfixCode()
+QList<SmartLine> SequentialGenerator::SimpleElementGenerator::loopPostfixCode() const
 {
 	QList<SmartLine> result;
 	result << SmartLine("}", mElementId, SmartLine::decrease);
 	return result;
 }
 
-QList<SmartLine> SequentialGenerator::LoopElementGenerator::loopPrefixCode()
+QList<SmartLine> SequentialGenerator::LoopElementGenerator::loopPrefixCode() const
 {
 	QList<SmartLine> result;
 
-	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
+	qReal::Id const logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
 	result << SmartLine("for (int __iter__ = ; __iter__ < " +
 			mNxtGen->mApi->property(logicElementId, "Iterations").toString()
 				+ "; __iter__++) {", mElementId, SmartLine::increase); //TODO
 	return result;
 }
 
-QList<SmartLine> SequentialGenerator::LoopElementGenerator::loopPostfixCode()
+QList<SmartLine> SequentialGenerator::LoopElementGenerator::loopPostfixCode() const
 {
 	QList<SmartLine> result;
 	result << SmartLine("}", mElementId, SmartLine::decrease);
 	return result;
 }
 
-QList<SmartLine> SequentialGenerator::IfElementGenerator::loopPrefixCode()
+QList<SmartLine> SequentialGenerator::IfElementGenerator::loopPrefixCode() const
 {
 	QList<SmartLine> result;
 
-	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
+	qReal::Id const logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
 	result << SmartLine("while (" +
 			mNxtGen->mApi->property(logicElementId, "Condition").toString()
 				+ ") {", mElementId, SmartLine::increase); //TODO
 	return result;
 }
 
-QList<SmartLine> SequentialGenerator::IfElementGenerator::loopPostfixCode()
+QList<SmartLine> SequentialGenerator::IfElementGenerator::loopPostfixCode() const
 {
 	QList<SmartLine> result;
 	result << SmartLine("}", mElementId, SmartLine::decrease);
@@ -542,7 +541,7 @@ QList<SmartLine> SequentialGenerator::IfElementGenerator::loopPostfixCode()
 
 bool SequentialGenerator::SimpleElementGenerator::preGenerationCheck()
 {
-	IdList outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
+	IdList const outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
 	if (outgoingConnectedElements.size() > 1) {
 		//case of error in diagram
 		mNxtGen->mErrorReporter.addError(
@@ -556,7 +555,7 @@ bool SequentialGenerator::SimpleElementGenerator::preGenerationCheck()
 
 bool SequentialGenerator::LoopElementGenerator::preGenerationCheck()
 {
-	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
+	IdList const outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
 	if ((outgoingLinks.size() != 2) ||
 		( (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "Итерация")
@@ -570,7 +569,7 @@ bool SequentialGenerator::LoopElementGenerator::preGenerationCheck()
 
 bool SequentialGenerator::IfElementGenerator::preGenerationCheck()
 {
-	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
+	IdList const outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
 	//TODO: append checking arrows
 	return (outgoingLinks.size() == 2);
@@ -578,7 +577,7 @@ bool SequentialGenerator::IfElementGenerator::preGenerationCheck()
 
 bool SequentialGenerator::SimpleElementGenerator::nextElementsGeneration()
 {
-	IdList outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
+	IdList const outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
 	mNxtGen->mGeneratedStringSet << simpleCode();
 
 	if (outgoingConnectedElements.size() == 1) {
@@ -614,7 +613,7 @@ bool SequentialGenerator::SimpleElementGenerator::nextElementsGeneration()
 
 bool SequentialGenerator::LoopElementGenerator::nextElementsGeneration()
 {
-	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
+	IdList const outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 	Q_ASSERT(outgoingLinks.size() == 2);
 
 	int elementConnectedByIterationEdgeNumber = -1;
@@ -629,7 +628,7 @@ bool SequentialGenerator::LoopElementGenerator::nextElementsGeneration()
 	}
 
 	//generate loop
-	Id loopNextElement = mNxtGen->mApi->to(outgoingLinks.at(elementConnectedByIterationEdgeNumber));
+	Id const loopNextElement = mNxtGen->mApi->to(outgoingLinks.at(elementConnectedByIterationEdgeNumber));
 	if (loopNextElement == Id::rootId()) {
 		QString errorMessage = QObject::tr("Loop block %1 has no correct loop branch!"\
 					" May be you need to connect it to some diagram element.");
@@ -651,7 +650,7 @@ bool SequentialGenerator::LoopElementGenerator::nextElementsGeneration()
 	delete loopGen;
 
 	//generate next blocks
-	Id nextBlockElement = mNxtGen->mApi->to(outgoingLinks.at(afterLoopElementNumber));
+	Id const nextBlockElement = mNxtGen->mApi->to(outgoingLinks.at(afterLoopElementNumber));
 	if (nextBlockElement == Id::rootId()) {
 		QString errorMessage = QObject::tr("Loop block %1 has no correct next block branch!"\
 					" May be you need to connect it to some diagram element.");
@@ -677,9 +676,9 @@ bool SequentialGenerator::LoopElementGenerator::nextElementsGeneration()
 
 bool SequentialGenerator::IfElementGenerator::generateBranch(int branchNumber)
 {
-	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
+	IdList const outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
-	Id branchElement = mNxtGen->mApi->to(outgoingLinks.at(branchNumber));
+	Id const branchElement = mNxtGen->mApi->to(outgoingLinks.at(branchNumber));
 	if (branchElement == Id::rootId()) {
 		QString errorMessage = QObject::tr("If block %1 has no 2 correct branches!"\
 					" May be you need to connect one of them to some diagram element.");
@@ -722,8 +721,8 @@ QPair<bool, qReal::Id> SequentialGenerator::IfElementGenerator::checkBranchForBa
 
 	//if we have observed this element and generated code of this element
 	foreach (QString const &observedElementString, mNxtGen->mElementToStringListNumbers.keys()) {
-		qReal::Id observedElementId = qReal::Id::loadFromString(observedElementString);
-		qReal::Id observedElementLogicId = mNxtGen->mApi->logicalId(observedElementId);
+		qReal::Id const observedElementId = qReal::Id::loadFromString(observedElementString);
+		qReal::Id const observedElementLogicId = mNxtGen->mApi->logicalId(observedElementId);
 
 		if ((logicElementId == observedElementId)
 				|| (logicElementId == observedElementLogicId)) {
@@ -760,20 +759,20 @@ QPair<bool, qReal::Id> SequentialGenerator::IfElementGenerator::checkBranchForBa
 
 bool SequentialGenerator::IfElementGenerator::nextElementsGeneration()
 {
-	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
+	IdList const outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 	Q_ASSERT(outgoingLinks.size() == 2);
 
 	//we search for arrow with condition
-	int conditionArrowNum =
+	int const conditionArrowNum =
 			mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString().isEmpty()
 			? 1 : 0;
 
-	qReal::Id logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
+	qReal::Id const logicElementId = mNxtGen->mApi->logicalId(mElementId); //TODO
 
 	//TODO: save number of new created list
 	QString condition = "(" + mNxtGen->mApi->property(logicElementId, "Condition").toString() + ")";
 
-	QByteArray conditionOnArrow =
+	QByteArray const conditionOnArrow =
 		mNxtGen->mApi->stringProperty(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)), "Guard").toUtf8();
 	if (conditionOnArrow == "меньше 0") {
 		condition += " < 0";
@@ -784,7 +783,7 @@ bool SequentialGenerator::IfElementGenerator::nextElementsGeneration()
 	}
 
 	//check for back arrows
-	Id positiveBranchElement = mNxtGen->mApi->to(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)));
+	Id const positiveBranchElement = mNxtGen->mApi->to(mNxtGen->mApi->logicalId(outgoingLinks.at(conditionArrowNum)));
 	if (positiveBranchElement == Id::rootId()) {
 		QString errorMessage = QObject::tr("If block %1 has no 2 correct branches!"\
 					" May be you need to connect one of them to some diagram element.");
@@ -795,10 +794,10 @@ bool SequentialGenerator::IfElementGenerator::nextElementsGeneration()
 		return false;
 	}
 
-	QPair<bool, qReal::Id> positiveBranchCheck = checkBranchForBackArrows(positiveBranchElement);
-	bool isPositiveBranchReturnsToBackElems = positiveBranchCheck.first;
+	QPair<bool, qReal::Id> const positiveBranchCheck = checkBranchForBackArrows(positiveBranchElement);
+	bool const isPositiveBranchReturnsToBackElems = positiveBranchCheck.first;
 
-	Id negativeBranchElement = mNxtGen->mApi->to(outgoingLinks.at(1 - conditionArrowNum));
+	Id const negativeBranchElement = mNxtGen->mApi->to(outgoingLinks.at(1 - conditionArrowNum));
 	if (negativeBranchElement == Id::rootId()) {
 		QString errorMessage = QObject::tr("If block %1 has no 2 correct branches!"\
 					" May be you need to connect one of them to some diagram element.");
@@ -810,9 +809,9 @@ bool SequentialGenerator::IfElementGenerator::nextElementsGeneration()
 		return false;
 	}
 
-	QPair<bool, qReal::Id> negativeBranchCheck = checkBranchForBackArrows(negativeBranchElement);
+	QPair<bool, qReal::Id> const negativeBranchCheck = checkBranchForBackArrows(negativeBranchElement);
 
-	bool isNegativeBranchReturnsToBackElems = negativeBranchCheck.first;
+	bool const isNegativeBranchReturnsToBackElems = negativeBranchCheck.first;
 
 	if (isPositiveBranchReturnsToBackElems && isNegativeBranchReturnsToBackElems) {
 		if (positiveBranchCheck.second != negativeBranchCheck.second) {
@@ -828,7 +827,7 @@ bool SequentialGenerator::IfElementGenerator::nextElementsGeneration()
 	}
 
 	if (isPositiveBranchReturnsToBackElems != isNegativeBranchReturnsToBackElems) {
-		int cycleBlock = isPositiveBranchReturnsToBackElems ? conditionArrowNum : 1 - conditionArrowNum;
+		int const cycleBlock = isPositiveBranchReturnsToBackElems ? conditionArrowNum : 1 - conditionArrowNum;
 		if (conditionArrowNum == cycleBlock) {
 			condition = "!" + condition;
 		}
@@ -840,10 +839,7 @@ bool SequentialGenerator::IfElementGenerator::nextElementsGeneration()
 		mNxtGen->mGeneratedStringSet << ifBlock;
 		generateBranch(cycleBlock);
 
-		QList<SmartLine> ifBlockPostfix;
 		generateBranch(1 - cycleBlock);
-		mNxtGen->mGeneratedStringSet << ifBlockPostfix;
-
 		return true;
 	}
 

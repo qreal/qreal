@@ -7,7 +7,7 @@ namespace generator {
 
 class BeepGenerator: public SimpleElementGenerator {
 public:
-	BeepGenerator(FuncOrientedGenerator* gen, qReal::Id elementId): SimpleElementGenerator(gen, elementId) {
+	BeepGenerator(FuncOrientedGenerator* gen, qReal::Id const &elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

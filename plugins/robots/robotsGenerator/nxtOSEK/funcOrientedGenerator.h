@@ -63,7 +63,7 @@ public:
 	qReal::ErrorReporterInterface &generate();
 
 private:
-	static QString smartLineListToString(QList<SmartLine> list, int startIndentSize);
+	static QString smartLineListToString(QList<SmartLine> const &list, int startIndentSize);
 
 	void prepareIdToMethodNameMap();
 	void writeGeneratedCodeToFile(QString const &resultCode, QString const &initNodeProcedureName, int initialNodeNumber);

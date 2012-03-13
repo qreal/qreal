@@ -7,7 +7,7 @@ namespace generator {
 
 class EnginesStopGenerator: public SimpleElementGenerator {
 public:
-	EnginesStopGenerator(FuncOrientedGenerator* gen, qReal::Id elementId): SimpleElementGenerator(gen, elementId) {
+	EnginesStopGenerator(FuncOrientedGenerator* gen, qReal::Id const &elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

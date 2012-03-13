@@ -7,7 +7,7 @@ namespace generator {
 
 class PlayToneGenerator: public SimpleElementGenerator {
 public:
-	PlayToneGenerator(FuncOrientedGenerator* gen, qReal::Id elementId): SimpleElementGenerator(gen, elementId) {
+	PlayToneGenerator(FuncOrientedGenerator* gen, qReal::Id const &elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

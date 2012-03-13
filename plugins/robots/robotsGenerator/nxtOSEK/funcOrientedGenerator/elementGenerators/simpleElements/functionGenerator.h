@@ -7,7 +7,7 @@ namespace generator {
 
 class FunctionGenerator: public SimpleElementGenerator {
 public:
-	FunctionGenerator(FuncOrientedGenerator* gen, qReal::Id elementId): SimpleElementGenerator(gen, elementId) {
+	FunctionGenerator(FuncOrientedGenerator* gen, qReal::Id const &elementId): SimpleElementGenerator(gen, elementId) {
 	}
 	
 protected:

@@ -9,7 +9,7 @@ void SimpleElementGenerator::generateMethodBody()
 {
 	generateBodyWithoutNextElementCall();
 	
-	IdList outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
+	IdList const outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
 	if (outgoingConnectedElements.size() > 1) {
 		mNxtGen->mErrorReporter.addError(QObject::tr("Too many outgoing connections!"), mElementId);
 		return;
@@ -23,7 +23,7 @@ void SimpleElementGenerator::generateMethodBody()
 			nextElement = mNxtGen->mApi->logicalId(nextElement);
 		}
 		
-		QString methodName = mNxtGen->mIdToMethodNameMap[nextElement.toString()];
+		QString const methodName = mNxtGen->mIdToMethodNameMap[nextElement.toString()];
 		mNxtGen->mGeneratedStrings.append(SmartLine(methodName + "();", mElementId));
 	}
 }
