@@ -195,14 +195,14 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 	mCategories[diagram] = mEditorsTrees.size() - 1;
 
 	if (!mEditorManager->paletteGroups(editor, diagram).empty()) {
-		foreach (const QString group, mEditorManager->paletteGroups(editor, diagram)) {
+		foreach (const QString &group, mEditorManager->paletteGroups(editor, diagram)) {
 			QTreeWidgetItem *item = new QTreeWidgetItem;
 			item->setText(0, group);
 
 			IdList tmpIdList;
 
-			foreach (const QString elementName, mEditorManager->paletteGroupList(editor, diagram, group)) {
-				foreach (const Id element, list) {
+			foreach (const QString &elementName, mEditorManager->paletteGroupList(editor, diagram, group)) {
+				foreach (const Id &element, list) {
 					if (element.element() == elementName) {
 						tmpIdList.append (element);
 						break;
@@ -211,7 +211,7 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 			}
 			qSort(tmpIdList.begin(), tmpIdList.end(), idLessThan);
 
-			foreach (const Id element, tmpIdList) {
+			foreach (const Id &element, tmpIdList) {
 				addItemType(element, mEditorManager->friendlyName(element)
 						, mEditorManager->description(element)
 						, mEditorManager->icon(element), EditorTree, item);
@@ -219,7 +219,7 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 			EditorTree->addTopLevelItem(item);
 		}
 	} else {
-		foreach (const Id element, list) {
+		foreach (const Id &element, list) {
 			addTopItemType(element, mEditorManager->friendlyName(element)
 					, mEditorManager->description(element)
 					, mEditorManager->icon(element), EditorTree);

@@ -922,13 +922,36 @@
             </node>
         </graphicTypes>
         <palette>
-            <group name="group1">
-                <element name="FinalNode"></element>
-                <element name="InitialNode"></element>
+            <group name="Actions">
+                <element name="Beep"/>
+                <element name="PlayTone"/>
+                <element name="EnginesForward"/>
+                <element name="EnginesBackward"/>
+                <element name="EnginesStop"/>
+                <element name="Function"/>
+                <element name="ControlFlow"/>
             </group>
-            <group name="group2">
-                <element name="ControlFlow"></element>
-                <element name="EnginesForward"></element>
+            <group name="Waitings">
+                <element name="Timer"/>
+                <element name="WaitForTouchSensor"/>
+                <element name="WaitForSonarDistance"/>
+                <element name="WaitForColor"/>
+                <element name="WaitForEncoder"/>
+                <element name="WaitForColorIntensity"/>
+            </group>
+            <group name="Algorithms">
+                <element name="Fork"/>
+                <element name="Guard"/>
+                <element name="Loop"/>
+                <element name="RobotsDiagramNode"/>
+                <element name="WaitForEncoder"/>
+                <element name="WaitForColorIntensity"/>
+            </group>
+            <group name="Initialization">
+                <element name="InitialNode"/>
+                <element name="FinalNode"/>
+                <element name="InitialBlock"/>
+                <element name="NullificationEncoder"/>
             </group>
         </palette>
     </diagram>
