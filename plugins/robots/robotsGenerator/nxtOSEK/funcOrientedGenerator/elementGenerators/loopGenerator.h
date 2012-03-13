@@ -5,7 +5,7 @@
 namespace robots {
 namespace generator {
 
-//class for Loop element
+/// Class for Loop element
 class LoopGenerator: public AbstractElementGenerator {
 public:
 	LoopGenerator(FuncOrientedGenerator* gen, qReal::Id elementId): AbstractElementGenerator(gen, elementId) {

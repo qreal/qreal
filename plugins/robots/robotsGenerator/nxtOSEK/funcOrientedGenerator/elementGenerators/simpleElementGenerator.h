@@ -5,7 +5,7 @@
 namespace robots {
 namespace generator {
 
-//class for simple elements such as Beep, WaitForColor etc
+// Class for simple elements such as Beep, WaitForColor etc
 class SimpleElementGenerator: public AbstractElementGenerator {
 public:
 	SimpleElementGenerator(FuncOrientedGenerator* gen, qReal::Id elementId): AbstractElementGenerator(gen, elementId) {
