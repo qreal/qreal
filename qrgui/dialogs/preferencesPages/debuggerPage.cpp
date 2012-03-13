@@ -2,10 +2,12 @@
 #include "debuggerPage.h"
 #include "ui_debuggerPage.h"
 
-PreferencesDebuggerPage::PreferencesDebuggerPage(QWidget *parent) :
-	PreferencesPage(parent),
-	mUi(new Ui::PreferencesDebuggerPage)
+PreferencesDebuggerPage::PreferencesDebuggerPage(QWidget *parent)
+		: PreferencesPage(parent)
+		, mUi(new Ui::PreferencesDebuggerPage)
+
 {
+	mIcon = QIcon(":/icons/preferences/bug.png");
 	mUi->setupUi(this);
 
 	mUi->timeoutLineEdit->setText(SettingsManager::value("debuggerTimeout", 750).toString());

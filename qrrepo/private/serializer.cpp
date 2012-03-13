@@ -58,8 +58,6 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 		doc.save(out(), 2);
 	}
 
-
-
 	QFileInfo fileInfo(mWorkingFile);
 	QString fileName = fileInfo.baseName();
 
@@ -70,9 +68,7 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 	if (previousSave.exists())
 		previousSave.remove();
 
-
 	FolderCompressor().compressFolder(compressDir.absolutePath(), fileInfo.absolutePath() + "/" + fileName + ".qrs");
-
 
 	clearDir(mWorkingDir);
 }
@@ -106,8 +102,9 @@ void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHa
 			QDomDocument doc = xmlUtils::loadDocument(path);
 			Object *object = parseObject(doc.documentElement());
 			Q_ASSERT(object);  // All objects in a repository shall be loadable.
-			if (object != NULL)
+			if (object != NULL) {
 				objectsHash.insert(object->id(), object);
+			}
 		}
 	}
 }

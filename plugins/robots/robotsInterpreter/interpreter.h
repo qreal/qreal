@@ -4,7 +4,7 @@
 
 #include "../../../qrkernel/ids.h"
 
-#include "details/robotCommunication/robotCommunication.h"
+#include "details/robotCommunication/robotCommunicator.h"
 #include "sensorConstants.h"
 #include "details/robotParts/robotModel.h"
 #include "details/thread.h"
@@ -46,10 +46,18 @@ public:
 	void setRobotModelType(robotModelType::robotModelTypeEnum robotModelType);
 	void setCommunicator(const QString &valueOfCommunication, const QString &portName);
 
+	/// Assigning a value to the field mActionConnectToRobot
+	void setConnectRobotAction(QAction *actionConnect);
+
+	/// Enable Run and Stop buttons on 2d model widget
+	void enableD2ModelWidgetRunStopButtons();
+
+	/// Disable Run and Stop buttons on 2d model widget, when running current diagram is impossible
+	void disableD2ModelWidgetRunStopButtons();
+
 public slots:
 	void connectToRobot();
 	void interpret();
-	void stop();
 	void stopRobot();
 	void showD2ModelWidget(bool isVisible);
 	void showWatchList();
@@ -67,6 +75,9 @@ private slots:
 
 	void connectedSlot(bool success);
 	void sensorsConfiguredSlot();
+
+	/// actions when robot disconnect
+	void disconnectSlot();
 
 private:
 	enum InterpreterState {
@@ -87,13 +98,16 @@ private:
 	QTimer *mTimer;
 	details::d2Model::D2ModelWidget *mD2ModelWidget;
 	details::d2Model::D2RobotModel *mD2RobotModel;
-	RobotCommunication* const mRobotCommunication;
+	RobotCommunicator* const mRobotCommunication;
 
 	bool mConnected;
 
 	robotModelType::robotModelTypeEnum mImplementationType;
 
 	watchListWindow *mWatchListWindow;
+
+	/// Action responsible for the connection to the robot
+	QAction *mActionConnectToRobot;
 
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	Id const findStartingElement(Id const &diagram) const;

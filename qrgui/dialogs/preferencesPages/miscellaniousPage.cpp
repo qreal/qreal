@@ -4,10 +4,11 @@
 #include "miscellaniousPage.h"
 #include "ui_miscellaniousPage.h"
 
-PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent) :
-	PreferencesPage(parent),
-	mUi(new Ui::PreferencesMiscellaniousPage)
+PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
+		: PreferencesPage(parent)
+		, mUi(new Ui::PreferencesMiscellaniousPage)
 {
+	mIcon = QIcon(":/icons/preferences/miscellaneous.png");
 	mUi->setupUi(this);
 
 	connect(mUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
@@ -41,7 +42,9 @@ void PreferencesMiscellaniousPage::changeEvent(QEvent *e)
 void PreferencesMiscellaniousPage::browseImagesPath()
 {
 	QString path = QFileDialog::getExistingDirectory(this, "Open Directory");
-	mUi->imagesPathEdit->setText(path.replace("\\", "/"));
+	if (!path.isEmpty()) {
+		mUi->imagesPathEdit->setText(path.replace("\\", "/"));
+	}
 }
 
 void PreferencesMiscellaniousPage::save()

@@ -14,7 +14,6 @@ else:LIBS  += -lqextserialport
 TRANSLATIONS = robotsInterpreter_ru.ts
 
 HEADERS += \
-	../../../qrgui/dialogs/preferencesPages/page.h \
 	robotsPlugin.h \
 	interpreter.h \
 	sensorConstants.h \
@@ -29,6 +28,7 @@ HEADERS += \
 	details/autoconfigurer.h \
 	details/tracer.h \
 	details/debugHelper.h \
+	../../../qrgui/dialogs/preferencesPages/preferencesPage.h
 
 SOURCES += \
 	robotsPlugin.cpp \

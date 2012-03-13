@@ -6,7 +6,7 @@ using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace robotImplementations::sensorImplementations;
 
-BluetoothTouchSensorImplementation::BluetoothTouchSensorImplementation(RobotCommunication *robotCommunicationInterface
+BluetoothTouchSensorImplementation::BluetoothTouchSensorImplementation(RobotCommunicator *robotCommunicationInterface
 		, inputPort::InputPortEnum const &port)
 	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType::touchBoolean, lowLevelSensorType::SWITCH, sensorMode::RAWMODE, port)
 {

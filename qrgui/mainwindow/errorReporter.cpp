@@ -1,5 +1,8 @@
 #include "errorReporter.h"
+
 #include <QtGui/QMessageBox>
+#include <QtGui/QDockWidget>
+
 #include "errorListWidget.h"
 #include "../../qrkernel/exception/exception.h"
 
@@ -87,6 +90,16 @@ void ErrorReporter::clear()
 void ErrorReporter::clearErrors()
 {
 	mErrors.clear();
+}
+
+bool ErrorReporter::wereErrors()
+{
+	foreach (Error const &error, mErrors) {
+		if (error.severity() == Error::critical || error.severity() == Error::error) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorListWidget) const

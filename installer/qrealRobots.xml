@@ -1,11 +1,13 @@
 <project>
-    <shortName>qrealRobots</shortName>
-    <fullName>QReal</fullName>
+    <shortName>QRealRobots</shortName>
+    <fullName>QReal Robots</fullName>
     <version>1.5</version>
     <licenseFile>%1/installer/gpl-3.0.txt</licenseFile>
     <leftImage>%1/installer/left.png</leftImage>
     <logoImage>%1/installer/logo.png</logoImage>
     <defaultLanguage>ru</defaultLanguage>
+    <outputDirectory>.</outputDirectory>
+    <width>600</width>
     <componentList>
         <component>
             <name>default</name>
@@ -132,6 +134,32 @@
                     <name>programfilesosx</name>
                     <platforms>osx</platforms>
                 </folder>
+                <folder>
+                    <destination>${installdir}/sqldrivers</destination>
+                    <name>sqldriverswindows</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>%2/../plugins/sqldrivers/qsqlite4.dll</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <destination>${installdir}/examples</destination>
+                    <name>examples</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>%1/plugins/robots/examples/2dModelExample.qrs</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%1/plugins/robots/examples/simultaneousSensorReading.qrs</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%1/plugins/robots/examples/touchObstacle.qrs</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
             </folderList>
             <startMenuShortcutList>
                 <startMenuShortcut>
@@ -186,7 +214,7 @@
         <runProgram>
             <program>${installdir}/qrgui.exe</program>
             <programArguments></programArguments>
-            <progressText>Run QReal:Robots</progressText>
+            <progressText>Запустить QReal:Robots</progressText>
         </runProgram>
     </finalPageActionList>
     <parameterList>
