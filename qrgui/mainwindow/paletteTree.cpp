@@ -51,7 +51,7 @@ void PaletteTree::addItemType(const Id &id, const QString &name, const QString &
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
 	DraggableElement *element = new DraggableElement(id, name, description, icon);
 	parent->addChild(leaf);
-	tree->setItemWidget(leaf,0,element);
+	tree->setItemWidget(leaf, 0, element);
 }
 
 void PaletteTree::addTopItemType(const Id &id, const QString &name
@@ -130,7 +130,7 @@ bool PaletteTree::idLessThan(const Id &s1, const Id &s2)
 
 void PaletteTree::collapseChildren(QTreeWidgetItem *item)
 {
-	for (int  i = 0; i < item->childCount(); i++) {
+	for (int i = 0; i < item->childCount(); i++) {
 		if (item->child(i)) {
 			collapseChildren(item->child(i));
 		}
@@ -195,13 +195,13 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 	mCategories[diagram] = mEditorsTrees.size() - 1;
 
 	if (!mEditorManager->paletteGroups(editor, diagram).empty()) {
-		foreach (QString group, mEditorManager->paletteGroups(editor, diagram)) {
+		foreach (const QString group, mEditorManager->paletteGroups(editor, diagram)) {
 			QTreeWidgetItem *item = new QTreeWidgetItem;
 			item->setText(0, group);
 
 			IdList tmpIdList;
 
-			foreach (QString elementName, mEditorManager->paletteGroupList(editor, diagram, group)) {
+			foreach (const QString elementName, mEditorManager->paletteGroupList(editor, diagram, group)) {
 				foreach (const Id element, list) {
 					if (element.element() == elementName) {
 						tmpIdList.append (element);
