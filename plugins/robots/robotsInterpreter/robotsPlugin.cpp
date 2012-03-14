@@ -31,7 +31,7 @@ RobotsPlugin::RobotsPlugin()
 
 }
 
-qReal::Customizer* RobotsPlugin::customizationInterface()
+-RobotsPlugin::~RobotsPlugin()
 
 {
 	delete mAppTranslator;

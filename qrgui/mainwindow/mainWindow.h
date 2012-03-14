@@ -21,7 +21,6 @@
 #include "../textEditor/codeEditor.h"
 #include "helpBrowser.h"
 
-
 #include "../models/logicalModelAssistApi.h"
 
 namespace Ui {
