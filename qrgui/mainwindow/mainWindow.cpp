@@ -62,6 +62,8 @@ MainWindow::MainWindow()
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 {
+	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
+
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
 	timeMeasurer.doNothing(); //to avoid the unused variables problem
 
@@ -276,6 +278,7 @@ MainWindow::~MainWindow()
 	SettingsManager::instance()->saveData();
 	delete mRecentProjectsMenu;
 	delete mRecentProjectsMapper;
+	delete mCodeTabManager;
 	delete mGesturesWidget;
 	delete mModels;
 	delete mVisualDebugger;

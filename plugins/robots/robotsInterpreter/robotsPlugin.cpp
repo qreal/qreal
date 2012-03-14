@@ -31,7 +31,8 @@ RobotsPlugin::RobotsPlugin()
 
 }
 
-RobotsPlugin::~RobotsPlugin()
+-RobotsPlugin::~RobotsPlugin()
+
 {
 	delete mAppTranslator;
 }
