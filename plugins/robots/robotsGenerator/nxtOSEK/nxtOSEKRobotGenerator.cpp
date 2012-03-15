@@ -412,7 +412,7 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 	} else if (mElementId.element() == "WaitForColorIntensity") {
 		int port = mNxtGen->mApi->stringProperty(logicElementId, "Port").toInt();
 		QString intensity = mNxtGen->mApi->stringProperty(logicElementId,  "Intensity");
-		QString inequalitySign = mNxtGen->mApi->stringProperty(logicElementId, "Sign");
+		QString inequalitySign = transformSign(QString(mNxtGen->mApi->stringProperty(logicElementId, "Sign").toUtf8()));
 
 		QString condition = inequalitySign + " " + intensity;
 
