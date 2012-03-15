@@ -912,14 +912,10 @@ void qReal::MainWindow::closeTab(int index)
 	QWidget *widget = mUi->tabs->widget(index);
 	CodeArea *possibleCodeTab = static_cast<CodeArea *>(widget);
 	EditorView * deletingCodeTab = NULL;
-	bool contains = false;
-	foreach (EditorView *diagram, mCodeTabManager->keys()) {
-		if (mCodeTabManager->value(diagram) == possibleCodeTab) {
+	foreach (EditorView *diagram, mCodeTabManager->keys())
+		if (mCodeTabManager->value(diagram) == possibleCodeTab)
 			deletingCodeTab = diagram;
-			contains = true;
-		}
-	}
-	if (contains)
+	if (deletingCodeTab != NULL)
 		mCodeTabManager->remove(deletingCodeTab);
 	mUi->tabs->removeTab(index);
 	delete widget;
