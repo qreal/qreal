@@ -920,7 +920,7 @@ void qReal::MainWindow::closeTab(int index)
 		}
 	}
 	if (contains)
-	mCodeTabManager->remove(deletingCodeTab);
+		mCodeTabManager->remove(deletingCodeTab);
 	mUi->tabs->removeTab(index);
 	delete widget;
 }
