@@ -60,6 +60,8 @@ MainWindow::MainWindow()
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 {
+	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
+
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
 	timeMeasurer.doNothing(); //to avoid the unused variables problem
 
@@ -256,6 +258,7 @@ MainWindow::~MainWindow()
 	delete mRecentProjectsMapper;
 	delete mGesturesWidget;
 	delete mModels;
+	delete mVisualDebugger;
 }
 
 EditorManager* MainWindow::manager()
@@ -884,6 +887,13 @@ void MainWindow::changeMiniMapSource(int index)
 void qReal::MainWindow::closeTab(int index)
 {
 	QWidget *widget = mUi->tabs->widget(index);
+	CodeArea *possibleCodeTab = static_cast<CodeArea *>(widget);
+	EditorView * deletingCodeTab = NULL;
+	foreach (EditorView *diagram, mCodeTabManager->keys())
+		if (mCodeTabManager->value(diagram) == possibleCodeTab)
+			deletingCodeTab = diagram;
+	if (deletingCodeTab != NULL)
+		mCodeTabManager->remove(deletingCodeTab);
 	mUi->tabs->removeTab(index);
 	delete widget;
 }
@@ -1620,13 +1630,21 @@ bool MainWindow::showConnectionRelatedMenus() const
 
 void MainWindow::showInTextEditor(QString const &title, QString const &text)
 {
-	CodeArea * const area = new CodeArea();
-	area->document()->setPlainText(text);
+	if (dynamic_cast<EditorView *>(getCurrentTab()) != NULL) {
+		if (!mCodeTabManager->contains(getCurrentTab())) {
+			CodeArea * const area = new CodeArea();
+			area->document()->setPlainText(text);
 
-	area->show();
+			area->show();
 
-	mUi->tabs->addTab(area, title);
-	mUi->tabs->setCurrentWidget(area);
+			mCodeTabManager->insert(getCurrentTab(), area);
+
+			mUi->tabs->addTab(area, title);
+			mUi->tabs->setCurrentWidget(area);
+		}
+		else
+			mUi->tabs->setCurrentWidget(mCodeTabManager->value(getCurrentTab()));
+	}
 }
 
 void MainWindow::reinitModels()
