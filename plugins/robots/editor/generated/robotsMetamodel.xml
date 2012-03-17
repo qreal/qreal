@@ -922,36 +922,34 @@
             </node>
         </graphicTypes>
         <palette>
-            <group name="Actions">
-                <element name="Beep"/>
-                <element name="PlayTone"/>
-                <element name="EnginesForward"/>
-                <element name="EnginesBackward"/>
-                <element name="EnginesStop"/>
-                <element name="Function"/>
-                <element name="ControlFlow"/>
+            <group name="Действия">
+                <element name="Гудое"/>
+                <element name="Играть звук"/>
+                <element name="Моторы вперед"/>
+                <element name="Моторы назад"/>
+                <element name="Моторы стоп"/>
+                <element name="Функция"/>
+                <element name="Поток управления"/>
             </group>
-            <group name="Waitings">
-                <element name="Timer"/>
-                <element name="WaitForTouchSensor"/>
-                <element name="WaitForSonarDistance"/>
-                <element name="WaitForColor"/>
-                <element name="WaitForEncoder"/>
-                <element name="WaitForColorIntensity"/>
+            <group name="Ожидания">
+                <element name="Таймер"/>
+                <element name="Ждать сенсор касания"/>
+                <element name="Ждать сонар"/>
+                <element name="Ждать цвет"/>
+                <element name="Ждать энкодер"/>
+                <element name="Ждать интенсивность цвета"/>
             </group>
-            <group name="Algorithms">
-                <element name="Fork"/>
-                <element name="Guard"/>
-                <element name="Loop"/>
-                <element name="RobotsDiagramNode"/>
-                <element name="WaitForEncoder"/>
-                <element name="WaitForColorIntensity"/>
+            <group name="Алгоритмы">
+                <element name="Породить поток"/>
+                <element name="Условие"/>
+                <element name="Цикл"/>
+                <element name="Диаграмма поведения робота"/>
             </group>
-            <group name="Initialization">
-                <element name="InitialNode"/>
-                <element name="FinalNode"/>
-                <element name="InitialBlock"/>
-                <element name="NullificationEncoder"/>
+            <group name="Инициализация">
+                <element name="Начало"/>
+                <element name="Конец"/>
+                <element name="Блок инициализации"/>
+                <element name="Сбросить показания энкодера"/>
             </group>
         </palette>
     </diagram>
