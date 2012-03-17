@@ -258,10 +258,10 @@ QList<SmartLine> NxtOSEKRobotGenerator::FunctionElementGenerator::simpleCode()
 
 	QByteArray byteFuncCode = mNxtGen->mApi->stringProperty(logicElementId, "Body").toUtf8();
 
-	byteFuncCode.replace("Сенсор1", "ecrobot_get_sonar_sensor(NXT_PORT_S1)");
-	byteFuncCode.replace("Сенсор2", "ecrobot_get_sonar_sensor(NXT_PORT_S2)");
-	byteFuncCode.replace("Сенсор3", "ecrobot_get_sonar_sensor(NXT_PORT_S3)");
-	byteFuncCode.replace("Сенсор4", "ecrobot_get_sonar_sensor(NXT_PORT_S4)");
+	byteFuncCode.replace("Сенсор1", "ecrobot_get_light_sensor(NXT_PORT_S1)");
+	byteFuncCode.replace("Сенсор2", "ecrobot_get_light_sensor(NXT_PORT_S2)");
+	byteFuncCode.replace("Сенсор3", "ecrobot_get_light_sensor(NXT_PORT_S3)");
+	byteFuncCode.replace("Сенсор4", "ecrobot_get_light_sensor(NXT_PORT_S4)");
 
 	variableAnalysis(byteFuncCode);
 
@@ -354,8 +354,7 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 
 			} else if (portValue == "Сенсор цвета (красный)") {
 				result.append(SmartLine(
-						"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_LIGHTSENSOR_RED)",
-						mElementId));
+								  "ecrobot_set_light_sensor_active(NXT_PORT_S" + QString::number(i) + ");", mElementId));
 
 			} else if (portValue == "Сенсор цвета (зеленый)") {
 				result.append(SmartLine(
