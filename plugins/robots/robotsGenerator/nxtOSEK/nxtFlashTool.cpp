@@ -16,8 +16,8 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 	mUploadProcess.setProcessEnvironment(environment);
 
 	// for debug
-//	mUploadProcess.setStandardErrorFile("./errors");
-//	mUploadProcess.setStandardOutputFile("./out");
+	mUploadProcess.setStandardErrorFile("./errors");
+	mUploadProcess.setStandardOutputFile("./out");
 
 	connect(&mFlashProcess, SIGNAL(readyRead()), this, SLOT(readNxtFlashData()));
 	connect(&mFlashProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)));
