@@ -19,8 +19,8 @@
 namespace qReal {
 namespace visualDebugger {
 
-///Visual debugger plugin for block diagrams. Allows interpret block diagrams
-///and generate some code and debug it with gdb with highlighting elements on scene
+/// Visual debugger plugin for block diagrams. Allows interpret block diagrams
+/// and generate some code and debug it with gdb with highlighting elements on scene
 class VisualDebuggerPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
@@ -38,54 +38,54 @@ public:
 
 private slots:
 	
-	///Start interpretation of block diagram in automatic mode
+	/// Start interpretation of block diagram in automatic mode
 	void debug();
 	
-	///Make one step of interpretation
+	/// Make one step of interpretation
 	void debugSingleStep();
 	
-	///Draws debugger (gdb) standart output
+	/// Draws debugger (gdb) standart output
 	void drawDebuggerStdOutput(QString const &output);
 	
-	///Draws debugger (gdb) error output
+	/// Draws debugger (gdb) error output
 	void drawDebuggerErrOutput(QString const &output);
 	
-	///Generate code from block diagram and build it in executable file
+	/// Generate code from block diagram and build it in executable file
 	void generateAndBuild();
 	
-	///Start debugger process (gdb)
+	/// Start debugger process (gdb)
 	void startDebugger();
 	
-	///Set executable file in debugger
+	/// Set executable file in debugger
 	void runProgramWithDebugger();
 	
-	///Kill program within debugger
+	/// Kill program within debugger
 	void killProgramWithDebugger();
 	
-	///Terminate debugger process and close its thread
+	/// Terminate debugger process and close its thread
 	void closeDebuggerProcessAndThread();
 	
-	///Place breakpoints in debugger at every element of block diagram
+	/// Place breakpoints in debugger at every element of block diagram
 	void placeBreakpointsInDebugger();
 	
-	///Equivalent of 'gdb cont'
+	/// Equivalent of 'gdb cont'
 	void goToNextBreakpoint();
 	
-	///Equivalent of 'gdb next'
+	/// Equivalent of 'gdb next'
 	void goToNextInstruction();
 	
-	///Set program to be debugged
+	/// Set program to be debugged
 	void configureDebugger();
 	
-	///Set breakpoint at main function in generated code (equivalent of 'break main')
+	/// Set breakpoint at main function in generated code (equivalent of 'break main')
 	void setBreakpointAtStart();
 	
-	///Generate, build, start debugger, set program to be debugged,
-	///set breakpoint at start and run it in debugger in automatic way
+	/// Generate, build, start debugger, set program to be debugged,
+	/// set breakpoint at start and run it in debugger in automatic way
 	void startDebugging();
 	
-	///Show watch list with all decalred variables and its values. List updates
-	///dynamically
+	/// Show watch list with all decalred variables and its values. List updates
+	/// dynamically
 	void showWatchList();
 
 private:
@@ -107,6 +107,9 @@ private:
 	QAction *mBreakMainAction;
 	QAction *mStartDebuggingAction;
 	QAction *mWatchListAction;
+	
+	QMenu *mVisualDebugMenu;
+	QMenu *mVisualDebugWithGdbMenu;
 	
 	QList<qReal::ActionInfo> mActionInfos;
 	

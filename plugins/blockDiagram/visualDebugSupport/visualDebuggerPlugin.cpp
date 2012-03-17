@@ -1,7 +1,6 @@
 #include "visualDebuggerPlugin.h"
 
 #include <QtGui/QApplication>
-#include <QMessageBox>
 
 Q_EXPORT_PLUGIN2(visualDebugger, qReal::visualDebugger::VisualDebuggerPlugin)
 
@@ -49,71 +48,73 @@ QPair<QString, PreferencesPage *> VisualDebuggerPlugin::preferencesPage()
 
 QList<qReal::ActionInfo> VisualDebuggerPlugin::actions()
 {
+	mVisualDebugMenu = new QMenu(tr("Visual debug"));
+	ActionInfo visualDebugMenuInfo(mVisualDebugMenu, "tools");
+
 	mDebugAction = new QAction(tr("Interpret (automatic)"), NULL);
-	ActionInfo debugActionInfo(mDebugAction, "visual debug", "tools");
 	connect(mDebugAction, SIGNAL(triggered()), this, SLOT(debug()));
+	mVisualDebugMenu->addAction(mDebugAction);
 	
 	mDebugSingleStepAction = new QAction(tr("Interpret (one step)"), NULL);
-	ActionInfo debugSingleStepActionInfo(mDebugSingleStepAction, "visual debug", "tools");
 	connect(mDebugSingleStepAction, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
+	mVisualDebugMenu->addAction(mDebugSingleStepAction);
 	
 	mWatchListAction = new QAction(tr("Show watch list"), NULL);
-	ActionInfo watchListActionInfo(mWatchListAction, "visual debug", "tools");
-	QObject::connect(mWatchListAction, SIGNAL(triggered()), this, SLOT(showWatchList()));
+	connect(mWatchListAction, SIGNAL(triggered()), this, SLOT(showWatchList()));
+	mVisualDebugMenu->addAction(mWatchListAction);
 	
+	
+	mVisualDebugWithGdbMenu = new QMenu(tr("Visual debug (with gdb)"));
+	ActionInfo visualDebugWithGdbMenuInfo(mVisualDebugWithGdbMenu, "tools");
 	
 	mGenerateAndBuildAction = new QAction(tr("Generate and build"), NULL);
-	ActionInfo generateAndBuildActionInfo(mGenerateAndBuildAction, "visual debug (with gdb)", "tools");
 	connect(mGenerateAndBuildAction, SIGNAL(triggered()), this, SLOT(generateAndBuild()));
+	mVisualDebugWithGdbMenu->addAction(mGenerateAndBuildAction);
 	
 	mStartDebuggerAction = new QAction(tr("Start debugger (gdb)"), NULL);
-	ActionInfo startDebuggerActionInfo(mStartDebuggerAction, "visual debug (with gdb)", "tools");
 	connect(mStartDebuggerAction, SIGNAL(triggered()), this, SLOT(startDebugger()));
-	
-	mRunAction = new QAction(tr("run"), NULL);
-	ActionInfo runActionInfo(mRunAction, "visual debug (with gdb)", "tools");
-	connect(mRunAction, SIGNAL(triggered()), this, SLOT(runProgramWithDebugger()));
-	
-	mKillAction = new QAction(tr("kill"), NULL);
-	ActionInfo killActionInfo(mKillAction, "visual debug (with gdb)", "tools");
-	connect(mKillAction, SIGNAL(triggered()), this, SLOT(killProgramWithDebugger()));
-	
-	mCloseAllAction = new QAction(tr("Cancel debug"), NULL);
-	ActionInfo closeAllActionInfo(mCloseAllAction, "visual debug (with gdb)", "tools");
-	connect(mCloseAllAction, SIGNAL(triggered()), this, SLOT(closeDebuggerProcessAndThread()));
-	
-	mContAction = new QAction(tr("cont"), NULL);
-	ActionInfo contActionInfo(mContAction, "visual debug (with gdb)", "tools");
-	connect(mContAction, SIGNAL(triggered()), this, SLOT(goToNextBreakpoint()));
-	
-	mNextAction = new QAction(tr("next"), NULL);
-	ActionInfo nextActionInfo(mNextAction, "visual debug (with gdb)", "tools");
-	connect(mNextAction, SIGNAL(triggered()), this, SLOT(goToNextInstruction()));
-	
-	mSetBreakpointsAction = new QAction(tr("Set breakpoints on each element"), NULL);
-	ActionInfo setBreakpointsActionInfo(mSetBreakpointsAction, "visual debug (with gdb)", "tools");
-	connect(mSetBreakpointsAction, SIGNAL(triggered()), this, SLOT(placeBreakpointsInDebugger()));
+	mVisualDebugWithGdbMenu->addAction(mStartDebuggerAction);
 	
 	mConfigureAction = new QAction(tr("Configure"), NULL);
-	ActionInfo configureActionInfo(mConfigureAction, "visual debug (with gdb)", "tools");
 	connect(mConfigureAction, SIGNAL(triggered()), this, SLOT(configureDebugger()));
+	mVisualDebugWithGdbMenu->addAction(mConfigureAction);
 	
+	mSetBreakpointsAction = new QAction(tr("Set breakpoints on each element"), NULL);
+	connect(mSetBreakpointsAction, SIGNAL(triggered()), this, SLOT(placeBreakpointsInDebugger()));
+	mVisualDebugWithGdbMenu->addAction(mSetBreakpointsAction);
+
 	mBreakMainAction = new QAction(tr("Set breakpoint at start"), NULL);
-	ActionInfo breakMainActionInfo(mBreakMainAction, "visual debug (with gdb)", "tools");
 	connect(mBreakMainAction, SIGNAL(triggered()), this, SLOT(setBreakpointAtStart()));
+	mVisualDebugWithGdbMenu->addAction(mBreakMainAction);
+	
+	mRunAction = new QAction(tr("run"), NULL);
+	connect(mRunAction, SIGNAL(triggered()), this, SLOT(runProgramWithDebugger()));
+	mVisualDebugWithGdbMenu->addAction(mRunAction);
+	
+	mNextAction = new QAction(tr("next"), NULL);
+	connect(mNextAction, SIGNAL(triggered()), this, SLOT(goToNextInstruction()));
+	mVisualDebugWithGdbMenu->addAction(mNextAction);
+	
+	mContAction = new QAction(tr("cont"), NULL);
+	connect(mContAction, SIGNAL(triggered()), this, SLOT(goToNextBreakpoint()));
+	mVisualDebugWithGdbMenu->addAction(mContAction);
+	
+	mKillAction = new QAction(tr("kill"), NULL);
+	connect(mKillAction, SIGNAL(triggered()), this, SLOT(killProgramWithDebugger()));
+	mVisualDebugWithGdbMenu->addAction(mKillAction);
 	
 	mStartDebuggingAction = new QAction(tr("Start debug (automatic)"), NULL);
-	ActionInfo startDebuggingActionInfo(mStartDebuggingAction, "visual debug (with gdb)", "tools");
 	connect(mStartDebuggingAction, SIGNAL(triggered()), this, SLOT(startDebugging()));
+	mVisualDebugWithGdbMenu->addAction(mStartDebuggingAction);
 	
-	mActionInfos << debugActionInfo << debugSingleStepActionInfo << watchListActionInfo << generateAndBuildActionInfo
-			<< startDebuggerActionInfo << configureActionInfo
-			<< setBreakpointsActionInfo << breakMainActionInfo
-			<< runActionInfo << nextActionInfo << contActionInfo << killActionInfo
-			<< startDebuggingActionInfo << closeAllActionInfo;
+	mCloseAllAction = new QAction(tr("Cancel debug"), NULL);
+	connect(mCloseAllAction, SIGNAL(triggered()), this, SLOT(closeDebuggerProcessAndThread()));
+	mVisualDebugWithGdbMenu->addAction(mCloseAllAction);
 	
 	connect(mDebuggerConnector, SIGNAL(readyReadStdOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
 	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerErrOutput(QString)));
+	
+	mActionInfos << visualDebugMenuInfo << visualDebugWithGdbMenuInfo;
 	
 	return mActionInfos;
 }
@@ -122,7 +123,11 @@ void VisualDebuggerPlugin::activeTabChanged(Id const &rootElementId)
 {
 	bool const enabled = rootElementId.diagram() == blockDiagram;
 	foreach (ActionInfo const &actionInfo, mActionInfos) {
-		actionInfo.action()->setEnabled(enabled);
+		if (actionInfo.isAction()) {
+			actionInfo.action()->setEnabled(enabled);
+		} else {
+			actionInfo.menu()->setEnabled(enabled);
+		}
 	}
 }
 
