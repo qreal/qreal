@@ -258,7 +258,6 @@ MainWindow::~MainWindow()
 	delete mRecentProjectsMapper;
 	delete mGesturesWidget;
 	delete mModels;
-	delete mVisualDebugger;
 }
 
 EditorManager* MainWindow::manager()
