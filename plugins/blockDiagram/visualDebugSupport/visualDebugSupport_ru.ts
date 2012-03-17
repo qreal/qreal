@@ -175,82 +175,92 @@ code file name:</oldsource>
 <context>
     <name>qReal::visualDebugger::VisualDebuggerPlugin</name>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="47"/>
+        <location filename="visualDebuggerPlugin.cpp" line="46"/>
         <source>Block Diagram Debug</source>
         <translation type="unfinished">Отладка блок-схем</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="52"/>
+        <location filename="visualDebuggerPlugin.cpp" line="51"/>
+        <source>Visual debug</source>
+        <translation type="unfinished">Визуальная отладка</translation>
+    </message>
+    <message>
+        <location filename="visualDebuggerPlugin.cpp" line="54"/>
         <source>Interpret (automatic)</source>
         <translation type="unfinished">Интерпретировать (автоматический режим)</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="56"/>
+        <location filename="visualDebuggerPlugin.cpp" line="58"/>
         <source>Interpret (one step)</source>
         <translation type="unfinished">Интерпретировать (один шаг)</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="60"/>
+        <location filename="visualDebuggerPlugin.cpp" line="62"/>
         <source>Show watch list</source>
         <translation type="unfinished">Показать список переменных</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="65"/>
+        <location filename="visualDebuggerPlugin.cpp" line="67"/>
+        <source>Visual debug (with gdb)</source>
+        <translation type="unfinished">Визуальная отладка (при помощи gdb)</translation>
+    </message>
+    <message>
+        <location filename="visualDebuggerPlugin.cpp" line="70"/>
         <source>Generate and build</source>
         <translation type="unfinished">Сгенерировать и скомпилировать</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="69"/>
+        <location filename="visualDebuggerPlugin.cpp" line="74"/>
         <source>Start debugger (gdb)</source>
         <translation type="unfinished">Запустить отладчик (gdb)</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="73"/>
+        <location filename="visualDebuggerPlugin.cpp" line="90"/>
         <source>run</source>
         <translation type="unfinished">Запустить отладку в gdb</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="77"/>
+        <location filename="visualDebuggerPlugin.cpp" line="102"/>
         <source>kill</source>
         <translation type="unfinished">Остановить отладку в gdb</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="81"/>
+        <location filename="visualDebuggerPlugin.cpp" line="110"/>
         <source>Cancel debug</source>
         <translation type="unfinished">Закончить отладку</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="85"/>
+        <location filename="visualDebuggerPlugin.cpp" line="98"/>
         <source>cont</source>
         <translation type="unfinished">Перейти к следующей точки останова</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="89"/>
+        <location filename="visualDebuggerPlugin.cpp" line="94"/>
         <source>next</source>
         <translation type="unfinished">Перейти к следующей строчке</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="93"/>
+        <location filename="visualDebuggerPlugin.cpp" line="82"/>
         <source>Set breakpoints on each element</source>
         <translation type="unfinished">Поставить точки останова на каждом элементе диаграммы</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="97"/>
+        <location filename="visualDebuggerPlugin.cpp" line="78"/>
         <source>Configure</source>
         <translation type="unfinished">Настроить gdb</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="101"/>
+        <location filename="visualDebuggerPlugin.cpp" line="86"/>
         <source>Set breakpoint at start</source>
         <translation type="unfinished">Поставить точку останова в начале программы</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="105"/>
+        <location filename="visualDebuggerPlugin.cpp" line="106"/>
         <source>Start debug (automatic)</source>
         <translation type="unfinished">Начать отладку (автоматический режим)</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="171"/>
+        <location filename="visualDebuggerPlugin.cpp" line="176"/>
         <source>Code generated and builded successfully</source>
         <translation type="unfinished">Исходный код сгенерирован и скомпилирован успешно</translation>
     </message>

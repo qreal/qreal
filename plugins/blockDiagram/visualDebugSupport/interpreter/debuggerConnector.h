@@ -8,8 +8,8 @@
 
 namespace qReal {
 
-///Debugger connector provides an opportunity to interact with existing 
-///textual builders and debuggers (like gcc and gdb)
+/// Debugger connector provides an opportunity to interact with existing 
+/// textual builders and debuggers (like gcc and gdb)
 class DebuggerConnector : public QObject
 {
 	Q_OBJECT
@@ -18,42 +18,42 @@ public:
 	explicit DebuggerConnector(QObject *parent);
 	~DebuggerConnector();
 	
-	///Run debugger connector entity in other thread
+	/// Run debugger connector entity in other thread
 	void run();
 	void startDebugger();
 	bool isDebuggerRunning();
 	
-	///Build executable file from generated sources
+	/// Build executable file from generated sources
 	void build();
 	
-	///Has problems with gcc build process
+	/// Has problems with gcc build process
 	bool hasBuildError();
 	
-	///Send command to the debugger
+	/// Send command to the debugger
 	void sendCommand(QString const &command);
 	
-	///Terminate debugger process
+	/// Terminate debugger process
 	void finishProcess();
 	
-	///Set program to be debugged
+	/// Set program to be debugged
 	void configure();
 
-///Signals for transfer debugger connector output to the main application
+/// Signals for transfer debugger connector output to the main application
 signals:
 	void readyReadStdOutput(QString const &output);
 	void readyReadErrOutput(QString const &output);
 
 private slots:
-	///Read debugger output
+	/// Read debugger output
 	void readOutput();
 	
-	///Read debugger error output
+	/// Read debugger error output
 	void readErrOutput();
 	
-	///Read builder output
+	/// Read builder output
 	void readBuilderErrOutput();
 	
-	///Read builder error output
+	/// Read builder error output
 	void readBuilderStdOutput();
 	
 private:

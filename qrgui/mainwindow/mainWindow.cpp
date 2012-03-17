@@ -1570,22 +1570,29 @@ void MainWindow::initToolPlugins()
 			, mModels->logicalModelAssistApi()
 			, *this
 			));
+	
 	QList<ActionInfo> const actions = mToolManager.actions();
 	foreach (ActionInfo const action, actions) {
-		if (action.toolbarName() == "file")
-			mUi->fileToolbar->addAction(action.action());
-		else if (action.toolbarName() == "interpreters")
-			mUi->interpreterToolbar->addAction(action.action());
-		else if (action.toolbarName() == "generators")
-			mUi->generatorsToolbar->addAction(action.action());
+		if (action.isAction()) {
+			if (action.toolbarName() == "file")
+				mUi->fileToolbar->addAction(action.action());
+			else if (action.toolbarName() == "interpreters")
+				mUi->interpreterToolbar->addAction(action.action());
+			else if (action.toolbarName() == "generators")
+				mUi->generatorsToolbar->addAction(action.action());
+		}
 	}
 
 	foreach (ActionInfo const action, actions) {
-		if (action.menuName() == "tools")
-
-			mUi->menuTools->addAction(action.action());
+		if (action.menuName() == "tools") {
+			if (action.isAction()) {
+				mUi->menuTools->addAction(action.action());
+			} else {
+				mUi->menuTools->addMenu(action.menu());
+			}
+		}
 	}
-
+	
 	if (mUi->parsersToolbar->actions().isEmpty())
 		mUi->parsersToolbar->hide();
 
