@@ -12,22 +12,22 @@
 using namespace qReal;
 
 VisualDebugger::VisualDebugger(qReal::LogicalModelAssistInterface const &logicalModelApi
-							   , qReal::GraphicalModelAssistInterface const &graphicalModelApi
-							   , qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-							   , qReal::BlockParser *blockParser)
-	: mCurrentDiagram(Id::rootId())
-	, mInterpretersInterface(interpretersInterface)
-	, mLogicalModelApi(logicalModelApi)
-	, mGraphicalModelApi(graphicalModelApi)
-	, mError(VisualDebugger::noErrors)
-	, mCurrentId(Id::rootId())
-	, mBlockParser(blockParser)
-	, mTimeout(750)
-	, mDebugType(VisualDebugger::noDebug)
-	, mHasCodeGenerationError(false)
-	, mHasNotEndWithFinalNode(false)
-	, mCodeFileName("code.c")
-	, mWorkDir("")
+		, qReal::GraphicalModelAssistInterface const &graphicalModelApi
+		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+		, qReal::BlockParser *blockParser)
+		: mCurrentDiagram(Id::rootId())
+		, mInterpretersInterface(interpretersInterface)
+		, mLogicalModelApi(logicalModelApi)
+		, mGraphicalModelApi(graphicalModelApi)
+		, mError(VisualDebugger::noErrors)
+		, mCurrentId(Id::rootId())
+		, mBlockParser(blockParser)
+		, mTimeout(750)
+		, mDebugType(VisualDebugger::noDebug)
+		, mHasCodeGenerationError(false)
+		, mHasNotEndWithFinalNode(false)
+		, mCodeFileName("code.c")
+		, mWorkDir("")
 {
 	if (blockParser == NULL) {
 		mBlockParser = new BlockParser(interpretersInterface.errorReporter());
@@ -39,14 +39,14 @@ VisualDebugger::~VisualDebugger()
 	delete mBlockParser;
 }
 
-QVariant VisualDebugger::getProperty(Id const id, QString propertyName)
+QVariant VisualDebugger::getProperty(Id const &id, QString const &propertyName)
 {
 	if (mLogicalModelApi.isLogicalId(id)) {
 		return mLogicalModelApi.logicalRepoApi().property(id, propertyName);
-	} else {
-		return mLogicalModelApi.logicalRepoApi().property(
-					mGraphicalModelApi.logicalId(id), propertyName);
 	}
+	
+	return mLogicalModelApi.logicalRepoApi().property(
+			mGraphicalModelApi.logicalId(id), propertyName);
 }
 
 void VisualDebugger::setDebugType(VisualDebugger::DebugType type)
@@ -59,14 +59,15 @@ void VisualDebugger::setTimeout(int timeout)
 	mTimeout = timeout;
 }
 
-void VisualDebugger::setDebugColor(QString color)
+void VisualDebugger::setDebugColor(QString const &color)
 {
 	mDebugColor = QColor(color);
 }
 
 void VisualDebugger::setCurrentDiagram() {
-	Id currentDiagram = mInterpretersInterface.activeDiagram();
-	if (currentDiagram == mCurrentDiagram || Id::rootId() == mCurrentDiagram || Id::rootId() == mCurrentId)
+	Id const currentDiagram = mInterpretersInterface.activeDiagram();
+	if (currentDiagram == mCurrentDiagram || Id::rootId() == mCurrentDiagram
+			|| Id::rootId() == mCurrentId)
 	{
 		mCurrentDiagram = currentDiagram;
 	} else {
@@ -79,13 +80,15 @@ bool VisualDebugger::canDebug(DebugType type)
 	bool res = false;
 	switch (type) {
 		case VisualDebugger::singleStepDebug:
-			res = mDebugType != VisualDebugger::fullDebug && mDebugType != VisualDebugger::debugWithDebugger;
+			res = mDebugType != VisualDebugger::fullDebug
+					&& mDebugType != VisualDebugger::debugWithDebugger;
 			break;
 		case VisualDebugger::fullDebug:
 			res = mDebugType == VisualDebugger::noDebug;
 			break;
 		case VisualDebugger::debugWithDebugger:
-			res = mDebugType != VisualDebugger::fullDebug && mDebugType != VisualDebugger::singleStepDebug;
+			res = mDebugType != VisualDebugger::fullDebug
+					&& mDebugType != VisualDebugger::singleStepDebug;
 			break;
 		default:
 			res = false;
@@ -103,28 +106,35 @@ void VisualDebugger::error(ErrorType e)
 {
 	switch (e) {
 		case missingBeginNode:
-			mInterpretersInterface.errorReporter()->addCritical("The diagram doesn't have Initial Node");
+			mInterpretersInterface.errorReporter()->addCritical(
+					tr("The diagram doesn't have Initial Node"));
 			break;
 		case missingEndNode:
-			mInterpretersInterface.errorReporter()->addCritical("The diagram doesn't end with Final Node");
+			mInterpretersInterface.errorReporter()->addCritical(
+					tr("The diagram doesn't end with Final Node"));
 			break;
 		case missingEndOfLinkNode:
-			mInterpretersInterface.errorReporter()->addCritical("The diagram cann't end with edge", mCurrentId);
+			mInterpretersInterface.errorReporter()->addCritical(
+					tr("The diagram cann't end with edge"), mCurrentId);
 			break;
 		case endWithNotEndNode:
-			mInterpretersInterface.errorReporter()->addWarning("There are no links from this node"
-															   " and it mismatches Final Node", mCurrentId);
+			mInterpretersInterface.errorReporter()->addWarning(
+					tr("There are no links from this node and it mismatches Final Node"),
+					mCurrentId);
 			break;
 		case missingValidLink:
-			mInterpretersInterface.errorReporter()->addCritical("The condition doesn't have valid link", mCurrentId);
+			mInterpretersInterface.errorReporter()->addCritical(
+					tr("The condition doesn't have valid link"), mCurrentId);
 			break;
 		case someDiagramIsRunning:
-			mInterpretersInterface.errorReporter()->addCritical("Some diagram is already under debug");
+			mInterpretersInterface.errorReporter()->addCritical(
+					tr("Some diagram is already under debug"));
 			mError = VisualDebugger::noErrors;
 			return;
 			break;
 		case codeGenerationError:
-			mInterpretersInterface.errorReporter()->addCritical("Code generation failed");
+			mInterpretersInterface.errorReporter()->addCritical(
+					tr("Code generation failed"));
 			mHasCodeGenerationError = true;
 		case noErrors:
 			return;
@@ -133,10 +143,10 @@ void VisualDebugger::error(ErrorType e)
 	deinitialize();
 }
 
-Id const VisualDebugger::findBeginNode(QString name)
+Id const VisualDebugger::findBeginNode(QString const &name)
 {
 	IdList const children = mGraphicalModelApi.graphicalRepoApi().children(mCurrentDiagram);
-	foreach (Id const child, children) {
+	foreach (Id const &child, children) {
 		if (child.element() == name) {
 			return child;
 		}
@@ -148,19 +158,22 @@ Id const VisualDebugger::findBeginNode(QString name)
 
 Id const VisualDebugger::findValidLink()
 {
-	IdList outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(mCurrentId);
-	QString conditionStr = getProperty(mCurrentId, "condition").toString();
+	IdList const outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(mCurrentId);
+	QString const conditionStr = getProperty(mCurrentId, "condition").toString();
 	int pos = 0;
 	bool condition = mBlockParser->parseCondition(conditionStr, pos, mCurrentId);
-	foreach (Id const link, outLinks) {
+	
+	foreach (Id const &link, outLinks) {
 		bool type = getProperty(link, "type").toBool();
 		if (type == condition) {
 			return link;
 		}
 	}
+	
 	if (!mBlockParser->hasErrors()) {
 		error(VisualDebugger::missingValidLink);
 	}
+	
 	return Id::rootId();
 }
 
@@ -171,18 +184,18 @@ void VisualDebugger::pause(int time)
 	loop.exec();
 }
 
-bool VisualDebugger::isFinalNode(Id const id)
+bool VisualDebugger::isFinalNode(Id const &id)
 {
-	IdList outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(id);
+	IdList const outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(id);
 	return outLinks.count() == 0 && id.element() == "BlockFinalNode";
 }
 
-bool VisualDebugger::hasEndOfLinkNode(Id const id)
+bool VisualDebugger::hasEndOfLinkNode(Id const &id)
 {
 	return mLogicalModelApi.logicalRepoApi().to(id) != Id::rootId();
 }
 
-VisualDebugger::ErrorType VisualDebugger::doFirstStep(Id const id)
+VisualDebugger::ErrorType VisualDebugger::doFirstStep(Id const &id)
 {
 	if (id == Id::rootId()) {
 		return VisualDebugger::missingBeginNode;
@@ -194,7 +207,7 @@ VisualDebugger::ErrorType VisualDebugger::doFirstStep(Id const id)
 	return VisualDebugger::noErrors;
 }
 
-void VisualDebugger::doStep(Id const id)
+void VisualDebugger::doStep(Id const &id)
 {
 	mCurrentId = id;
 	highlight(mCurrentId);
@@ -217,7 +230,8 @@ void VisualDebugger::deinitialize()
 void VisualDebugger::processAction()
 {
 	int pos = 0;
-	mBlockParser->parseProcess(getProperty(mCurrentId, "process").toString(), pos, mCurrentId);
+	mBlockParser->parseProcess(getProperty(mCurrentId, "process").toString(),
+			pos, mCurrentId);
 }
 
 void VisualDebugger::debug()
@@ -239,11 +253,12 @@ void VisualDebugger::debug()
 		pause(mTimeout);
 
 		if (mCurrentId.element() == "ConditionNode") {
-			Id validLinkId = findValidLink();
+			Id const validLinkId = findValidLink();
 			if (mBlockParser->hasErrors()) {
 				deinitialize();
 				return;
 			}
+			
 			if (validLinkId != Id::rootId()) {
 				doStep(validLinkId);
 			} else {
@@ -280,7 +295,8 @@ void VisualDebugger::debug()
 		return;
 	}
 
-	mInterpretersInterface.errorReporter()->addInformation("Debug finished successfully");
+	mInterpretersInterface.errorReporter()->addInformation(
+			tr("Debug finished successfully"));
 	deinitialize();
 	return;
 }
@@ -302,7 +318,9 @@ void VisualDebugger::debugSingleStep()
 				error(VisualDebugger::missingEndOfLinkNode);
 				return;
 			}
+			
 			doStep(mLogicalModelApi.logicalRepoApi().to(mCurrentId));
+			
 			if (mBlockParser->hasErrors()) {
 				deinitialize();
 				return;
@@ -312,15 +330,20 @@ void VisualDebugger::debugSingleStep()
 				error(VisualDebugger::endWithNotEndNode);
 				return;
 			}
+			
 			deinitialize();
-			mInterpretersInterface.errorReporter()->addInformation("Debug (single step) finished successfully");
+			mInterpretersInterface.errorReporter()->addInformation(
+					tr("Debug (single step) finished successfully"));
+			
 			return ;
 		} else if (mCurrentId.element() == "ConditionNode") {
-			Id validLinkId = findValidLink();
+			Id const validLinkId = findValidLink();
+			
 			if (mBlockParser->hasErrors()) {
 				deinitialize();
 				return;
 			}
+			
 			if (validLinkId != Id::rootId()) {
 				doStep(validLinkId);
 			} else {
@@ -328,17 +351,20 @@ void VisualDebugger::debugSingleStep()
 			}
 		} else {
 			doStep(mLogicalModelApi.logicalRepoApi().outgoingLinks(mCurrentId).at(0));
+			
 			if (mBlockParser->hasErrors()) {
 				deinitialize();
 				return;
 			}
 		}
 		
-		mInterpretersInterface.errorReporter()->addInformation("Debug (single step) finished successfully");
+		mInterpretersInterface.errorReporter()->addInformation(
+				tr("Debug (single step) finished successfully"));
 		return;
 	}
 
-	mInterpretersInterface.errorReporter()->addInformation("Debug (single step) finished successfully");
+	mInterpretersInterface.errorReporter()->addInformation(
+			tr("Debug (single step) finished successfully"));
 	return;
 }
 
@@ -354,21 +380,35 @@ void VisualDebugger::generateCode()
 
 	codeFile.write("void main(int argc, char* argv[]) {\n");
 	Id const startId = findBeginNode("InitialNode");
+	
 	if (startId != Id::rootId()) {
 		generateCode(startId, codeFile);
 		codeFile.write("}");
 		codeFile.close();
 		return;
 	}
+	
 	codeFile.close();
 	error(codeGenerationError);
 	return;
 }
 
-void VisualDebugger::generateCode(Id const id, QFile &codeFile)
+void VisualDebugger::getConditionLinks(IdList const &outLinks, Id &falseEdge, Id &trueEdge)
+{
+	foreach (Id const &outLink, outLinks) {
+		bool type = getProperty(outLink, "type").toBool();
+		if (type) {
+			trueEdge = outLink;
+		} else {
+			falseEdge = outLink;
+		}
+	}
+}
+
+void VisualDebugger::generateCode(Id const &id, QFile &codeFile)
 {
 	if (id.element() == "Action") {
-		QString code = getProperty(id, "process").toString();
+		QString const code = getProperty(id, "process").toString();
 		if (code.mid(0,4) == "var ") {
 			codeFile.write(code.mid(4).toAscii());
 		} else {
@@ -388,24 +428,22 @@ void VisualDebugger::generateCode(Id const id, QFile &codeFile)
 			codeFile.write("if (");
 			codeFile.write(getProperty(id, "condition").toByteArray());
 			codeFile.write(") {\n");
-			IdList outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(id);
+			
+			IdList const outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(id);
 			Id falseEdge = falseEdge.rootId();
 			Id trueEdge = trueEdge.rootId();
-			for (int i=0; i<outLinks.count(); i++) {
-				bool type = getProperty(outLinks.at(i), "type").toBool();
-				if (type) {
-					trueEdge = outLinks.at(i);
-				} else {
-					falseEdge = outLinks.at(i);
-				}
-			}
+			
+			getConditionLinks(outLinks, falseEdge, trueEdge);
+
 			if (trueEdge == trueEdge.rootId()) {
 				error(VisualDebugger::missingValidLink);
 				error(codeGenerationError);
 				return;
 			}
+			
 			generateCode(trueEdge, codeFile);
 			codeFile.write("}\n");
+			
 			if (falseEdge != falseEdge.rootId()) {
 				codeFile.write("else {\n");
 				generateCode(falseEdge, codeFile);
@@ -431,13 +469,14 @@ void VisualDebugger::createIdByLineCorrelation()
 	createIdByLineCorrelation(startId, line);
 }
 
-void VisualDebugger::createIdByLineCorrelation(Id const id, int& line)
+void VisualDebugger::createIdByLineCorrelation(Id const &id, int& line)
 {
 	if (id.element() == "Action") {
 		mIdByLineCorrelation[line] = id;
 		line++;
+		
 		if (mLogicalModelApi.logicalRepoApi().outgoingLinks(id).count() != 0) {
-			Id nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(id).at(0);
+			Id const nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(id).at(0);
 			createIdByLineCorrelation(nextEdge, line);
 		} else {
 			error(missingEndNode);
@@ -446,31 +485,27 @@ void VisualDebugger::createIdByLineCorrelation(Id const id, int& line)
 	} else if (id.element() == "ConditionNode") {
 		mIdByLineCorrelation[line] = id;
 		line++;
-		IdList outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(id);
+		IdList const outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(id);
 		Id falseEdge = falseEdge.rootId();
 		Id trueEdge = trueEdge.rootId();
-		for (int i=0; i<outLinks.count(); i++) {
-			bool type = getProperty(outLinks.at(i), "type").toBool();
-			if (type) {
-				trueEdge = outLinks.at(i);
-			} else {
-				falseEdge = outLinks.at(i);
-			}
-		}
+		
+		getConditionLinks(outLinks, falseEdge, trueEdge);
+		
 		createIdByLineCorrelation(trueEdge, line);
 		line++;
+		
 		if (falseEdge != falseEdge.rootId()) {
 			line++;
 			createIdByLineCorrelation(falseEdge, line);
 			line++;
 		}
 	} else if (id.element() == "InitialNode") {
-		Id nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(id).at(0);
+		Id const nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(id).at(0);
 		createIdByLineCorrelation(nextEdge, line);
 	} else if (id.element() == "BlockFinalNode") {
 		mIdByLineCorrelation[line] = id;
 	} else {
-		Id nextNode  = mLogicalModelApi.logicalRepoApi().to(id);
+		Id const nextNode  = mLogicalModelApi.logicalRepoApi().to(id);
 		createIdByLineCorrelation(nextNode, line);
 	}
 }
@@ -480,17 +515,19 @@ QList<int>* VisualDebugger::computeBreakpoints()
 	QList<int> *breakpoints = new QList<int>();
 	int line = 1;
 	Id curId = mIdByLineCorrelation[line];
+	
 	while (mIdByLineCorrelation[line].element() != "BlockFinalNode") {
-
 		while (mIdByLineCorrelation.contains(line) &&
-			   curId.toString() == mIdByLineCorrelation[line].toString()) {
+				curId.toString() == mIdByLineCorrelation[line].toString()) {
 			line++;
 		}
-		breakpoints->append(line-1);
+		
+		breakpoints->append(line - 1);
 
 		while (!mIdByLineCorrelation.contains(line)) {
 			line++;
 		}
+		
 		curId = mIdByLineCorrelation[line];
 	}
 	breakpoints->append(line);
@@ -502,7 +539,7 @@ Id VisualDebugger::getIdByLine(int line)
 	return mIdByLineCorrelation[line];
 }
 
-void VisualDebugger::highlight(Id id)
+void VisualDebugger::highlight(Id const &id)
 {
 	mInterpretersInterface.highlight(id);
 }
@@ -517,7 +554,7 @@ bool VisualDebugger::canBuild()
 	return !mHasCodeGenerationError;
 }
 
-void VisualDebugger::setCodeFileName(QString name)
+void VisualDebugger::setCodeFileName(QString const &name)
 {
 	mCodeFileName = name;
 }
@@ -527,7 +564,7 @@ bool VisualDebugger::canComputeBreakpoints()
 	return !mHasNotEndWithFinalNode;
 }
 
-void VisualDebugger::setWorkDir(QString path)
+void VisualDebugger::setWorkDir(QString const &path)
 {
 	if (path != "") {
 		mWorkDir = path + "/";

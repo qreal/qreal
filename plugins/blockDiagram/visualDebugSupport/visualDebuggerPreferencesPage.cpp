@@ -7,11 +7,12 @@
 
 using namespace qReal;
 
-VisualDebuggerPreferencesPage::VisualDebuggerPreferencesPage(QWidget *parent) :
-	PreferencesPage(parent),
-	mUi(new Ui::VisualDebuggerPreferencesPage)
+VisualDebuggerPreferencesPage::VisualDebuggerPreferencesPage(QWidget *parent)
+		: PreferencesPage(parent),
+		mUi(new Ui::VisualDebuggerPreferencesPage)
 {
 	mIcon = QIcon(":/icons/preferences/bug.png");
+	
 	mUi->setupUi(this);
 	
 	mUi->builderPathLineEdit->setText(SettingsManager::value("builderPath", "gcc").toString());
@@ -34,12 +35,12 @@ QString VisualDebuggerPreferencesPage::choosePath(bool isFolder)
 {
 	if (isFolder) {
 		return QFileDialog::getExistingDirectory(this, tr("Specify directory:"));
-	} else {
-		return QFileDialog::getOpenFileName(this, tr("Specify file:"));
 	}
+	
+	return QFileDialog::getOpenFileName(this, tr("Specify file:"));
 }
 
-void VisualDebuggerPreferencesPage::putTextInLineEdit(QLineEdit *lineEdit, QString text)
+void VisualDebuggerPreferencesPage::putTextInLineEdit(QLineEdit *lineEdit, QString const &text)
 {
 	if (text != "") {
 		lineEdit->setText(text);

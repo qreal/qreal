@@ -4,10 +4,11 @@ using namespace qReal;
 using namespace utils;
 
 BlockParser::BlockParser(ErrorReporterInterface* errorReporter)
-	: ExpressionsParser(errorReporter){
+		: ExpressionsParser(errorReporter)
+{
 }
 
-void BlockParser::parseVarPart(const QString &stream, int &pos)
+void BlockParser::parseVarPart(QString const &stream, int &pos)
 {
 	skip(stream, pos);
 	if (stream.mid(pos, 4).compare("var ") == 0) {
@@ -16,12 +17,13 @@ void BlockParser::parseVarPart(const QString &stream, int &pos)
 		if (!isEndOfStream(stream, pos) &&
 				stream.mid(pos, 4).compare("int ") != 0 && stream.mid(pos, 7).compare("double ") != 0)
 		{
-			error(unexpectedSymbol, QString::number(pos + 1), "int\' or \'double", stream.at(pos));
+			error(unexpectedSymbol, QString::number(pos + 1), tr("int\' or \'double"), stream.at(pos));
 			return;
 		}
 
 		while (pos < stream.length() &&
-			   (stream.mid(pos, 4).compare("int ") == 0 || stream.mid(pos, 7).compare("double ") == 0))
+				(stream.mid(pos, 4).compare("int ") == 0 ||
+				stream.mid(pos, 7).compare("double ") == 0) )
 		{
 			Number::Type curType;
 			if (stream.mid(pos, 4).compare("int ") == 0) {
@@ -34,7 +36,7 @@ void BlockParser::parseVarPart(const QString &stream, int &pos)
 			skip(stream, pos);
 			while (pos < stream.length() && stream.at(pos).toAscii() != ';') {
 				skip(stream, pos);
-				QString variable = parseIdentifier(stream, pos);
+				QString const variable = parseIdentifier(stream, pos);
 				if (hasErrors()) {
 					return;
 				}
@@ -61,8 +63,10 @@ void BlockParser::parseVarPart(const QString &stream, int &pos)
 						return;
 					}
 					if (stream.at(pos).toAscii() == ';') {
-						error(unexpectedSymbol, QString::number(pos+1), "\'letter",
-							  QString(stream.at(pos).toAscii()));
+						error(unexpectedSymbol, QString::number(pos + 1),
+								tr("\'letter"),
+								QString(stream.at(pos).toAscii())
+						);
 						return;
 					}
 					break;
@@ -85,7 +89,7 @@ void BlockParser::parseVarPart(const QString &stream, int &pos)
 	}
 }
 
-void BlockParser::checkForVariable(const QString &nameOfVariable, int &index)
+void BlockParser::checkForVariable(QString const &nameOfVariable, int &index)
 {
 	if (!mVariables.contains(nameOfVariable)) {
 		error(unknownIdentifier, QString::number(index + 1), "", nameOfVariable);

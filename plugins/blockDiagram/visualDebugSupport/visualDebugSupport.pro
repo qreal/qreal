@@ -6,6 +6,8 @@ RCC_DIR = .moc
 
 LIBS += -L../../../bin -lqrkernel -lqrutils
 
+TRANSLATIONS = visualDebugSupport_ru.ts
+
 HEADERS = \
 	visualDebuggerPlugin.h \
 	visualDebuggerPreferencesPage.h \

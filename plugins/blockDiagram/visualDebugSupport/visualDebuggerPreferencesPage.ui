@@ -6,24 +6,27 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>480</width>
     <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Visual Debugger Preferences</string>
   </property>
   <widget class="QLabel" name="builderPathLabel">
    <property name="geometry">
     <rect>
      <x>20</x>
      <y>20</y>
-     <width>91</width>
+     <width>201</width>
      <height>17</height>
     </rect>
    </property>
    <property name="text">
     <string>Builder path:</string>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::AutoText</enum>
    </property>
   </widget>
   <widget class="QLabel" name="debuggerPathLabel">
@@ -31,7 +34,7 @@
     <rect>
      <x>20</x>
      <y>50</y>
-     <width>111</width>
+     <width>201</width>
      <height>17</height>
     </rect>
    </property>
@@ -50,13 +53,13 @@
     <rect>
      <x>20</x>
      <y>80</y>
-     <width>131</width>
+     <width>201</width>
      <height>41</height>
     </rect>
    </property>
    <property name="text">
-    <string>Visual debugger
-working directory:</string>
+    <string>Visual debugger working
+directory:</string>
    </property>
   </widget>
   <widget class="QLabel" name="codeFileNameLabel">
@@ -64,13 +67,12 @@ working directory:</string>
     <rect>
      <x>20</x>
      <y>130</y>
-     <width>111</width>
+     <width>201</width>
      <height>31</height>
     </rect>
    </property>
    <property name="text">
-    <string>Generated
-code file name:</string>
+    <string>Generated code file name:</string>
    </property>
   </widget>
   <widget class="QLabel" name="buildedFileNameLabel">
@@ -78,8 +80,8 @@ code file name:</string>
     <rect>
      <x>20</x>
      <y>180</y>
-     <width>121</width>
-     <height>17</height>
+     <width>201</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -89,7 +91,7 @@ code file name:</string>
   <widget class="QLineEdit" name="builderPathLineEdit">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>240</x>
      <y>20</y>
      <width>151</width>
      <height>21</height>
@@ -99,7 +101,7 @@ code file name:</string>
   <widget class="QLineEdit" name="debuggerPathLineEdit">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>240</x>
      <y>50</y>
      <width>151</width>
      <height>21</height>
@@ -109,7 +111,7 @@ code file name:</string>
   <widget class="QLineEdit" name="visDebWorkDirLineEdit">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>240</x>
      <y>100</y>
      <width>151</width>
      <height>21</height>
@@ -119,7 +121,7 @@ code file name:</string>
   <widget class="QLineEdit" name="codeFileNameLineEdit">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>240</x>
      <y>140</y>
      <width>151</width>
      <height>21</height>
@@ -129,8 +131,8 @@ code file name:</string>
   <widget class="QLineEdit" name="buildedFileNameLineEdit">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>180</y>
+     <x>240</x>
+     <y>190</y>
      <width>151</width>
      <height>21</height>
     </rect>
@@ -139,7 +141,7 @@ code file name:</string>
   <widget class="QPushButton" name="builderPathPushButton">
    <property name="geometry">
     <rect>
-     <x>330</x>
+     <x>410</x>
      <y>20</y>
      <width>30</width>
      <height>21</height>
@@ -152,7 +154,7 @@ code file name:</string>
   <widget class="QPushButton" name="debuggerPathPushButton">
    <property name="geometry">
     <rect>
-     <x>330</x>
+     <x>410</x>
      <y>50</y>
      <width>30</width>
      <height>21</height>
@@ -165,7 +167,7 @@ code file name:</string>
   <widget class="QPushButton" name="visDebWorkDirPushButton">
    <property name="geometry">
     <rect>
-     <x>330</x>
+     <x>410</x>
      <y>100</y>
      <width>30</width>
      <height>21</height>

@@ -6,16 +6,16 @@
 using namespace qReal;
 
 DebuggerConnector::DebuggerConnector(QObject *parent)
-	: QObject(parent)
-	, mThread(new QThread())
-	, mDebuggerProcess(new QProcess(this))
-	, mBuilderProcess(new QProcess(this))
-	, mDebuggerPath("gdb.exe")
-	, mBuilderPath("gcc.exe")
-	, mBuildedFileName("builded.exe")
-	, mCodeFileName("code.c")
-	, mWorkDir("")
-	, mHasGccError(false)
+		: QObject(parent)
+		, mThread(new QThread())
+		, mDebuggerProcess(new QProcess(this))
+		, mBuilderProcess(new QProcess(this))
+		, mDebuggerPath("gdb.exe")
+		, mBuilderPath("gcc.exe")
+		, mBuildedFileName("builded.exe")
+		, mCodeFileName("code.c")
+		, mWorkDir("")
+		, mHasGccError(false)
 {
 	moveToThread(mThread);
 	connect(mDebuggerProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(readOutput()));
@@ -44,27 +44,27 @@ bool DebuggerConnector::isDebuggerRunning()
 	return mDebuggerProcess->state() == QProcess::Running;
 }
 
-void DebuggerConnector::setDebuggerPath(QString path)
+void DebuggerConnector::setDebuggerPath(QString const &path)
 {
 	mDebuggerPath = path;
 }
 
-void DebuggerConnector::setBuilderPath(QString path)
+void DebuggerConnector::setBuilderPath(QString const &path)
 {
 	mBuilderPath = path;
 }
 
-void DebuggerConnector::setBuildedFileName(QString name)
+void DebuggerConnector::setBuildedFileName(QString const &name)
 {
 	mBuildedFileName = name;
 }
 
-void DebuggerConnector::setCodeFileName(QString name)
+void DebuggerConnector::setCodeFileName(QString const &name)
 {
 	mCodeFileName = name;
 }
 
-void DebuggerConnector::setWorkDir(QString path)
+void DebuggerConnector::setWorkDir(QString const &path)
 {
 	if (path != "") {
 		mWorkDir = path + "/";
@@ -87,20 +87,21 @@ void DebuggerConnector::startDebugger()
 		mDebuggerProcess->waitForStarted();
 		//mDebuggerProcess->waitForReadyRead();
 	} else {
-		emit readyReadErrOutput("Debugger not found. " + mDebuggerPath + " was searched");
+		emit readyReadErrOutput(tr("Debugger not found. ")
+				+ mDebuggerPath + tr(" was searched"));
 	}
 }
 
 void DebuggerConnector::configure()
 {
-	QString command = "file " + mWorkDir + mBuildedFileName + "\n";
+	QString const command = "file " + mWorkDir + mBuildedFileName + "\n";
 	sendCommand(command);
 }
 
 void DebuggerConnector::readOutput()
 {
-	QByteArray out = mDebuggerProcess->readAllStandardOutput();
-	QString output = QString(out);
+	QByteArray const out = mDebuggerProcess->readAllStandardOutput();
+	QString const output = QString(out);
 	int index = output.indexOf("(gdb)");
 	if (index > 0) {
 		emit readyReadStdOutput(output.mid(0, index));
@@ -114,8 +115,8 @@ void DebuggerConnector::readOutput()
 
 void DebuggerConnector::readErrOutput()
 {
-	QByteArray out = mDebuggerProcess->readAllStandardError();
-	QString output = QString(out);
+	QByteArray const out = mDebuggerProcess->readAllStandardError();
+	QString const output = QString(out);
 	int index = output.indexOf("(gdb)");
 	if (index > 0) {
 		emit readyReadErrOutput(output.mid(0, index));
@@ -128,17 +129,17 @@ void DebuggerConnector::readErrOutput()
 
 void DebuggerConnector::readBuilderErrOutput()
 {
-	QByteArray out = mBuilderProcess->readAllStandardError();
-	emit readyReadErrOutput("gcc build error:\n" + QString(out));
+	QByteArray const out = mBuilderProcess->readAllStandardError();
+	emit readyReadErrOutput(tr("gcc build error:\n") + QString(out));
 }
 
 void DebuggerConnector::readBuilderStdOutput()
 {
-	QByteArray out = mBuilderProcess->readAllStandardOutput();
-	emit readyReadErrOutput("gcc build error:\n" + QString(out));
+	QByteArray const out = mBuilderProcess->readAllStandardOutput();
+	emit readyReadErrOutput(tr("gcc build error:\n") + QString(out));
 }
 
-void DebuggerConnector::sendCommand(QString command)
+void DebuggerConnector::sendCommand(QString const &command)
 {
 	mDebuggerProcess->write(command.toAscii());
 	//mDebuggerProcess->waitForBytesWritten();
@@ -146,7 +147,6 @@ void DebuggerConnector::sendCommand(QString command)
 
 void DebuggerConnector::build()
 {
-
 	setBuilderPath(SettingsManager::value("builderPath", "gcc").toString());
 	setBuildedFileName(SettingsManager::value("buildedFileName", "builded").toString());
 	setCodeFileName(SettingsManager::value("codeFileName", "code.c").toString());
@@ -165,15 +165,17 @@ void DebuggerConnector::build()
 			mBuilderProcess->waitForReadyRead();
 			if (mBuilderProcess->exitCode() != 0) {
 				mHasGccError = true;
-				emit readyReadErrOutput("Build failed");
+				emit readyReadErrOutput(tr("Build failed"));
 			}
 		} else {
 			mHasGccError = true;
-			emit readyReadErrOutput("Builder not found. " + mBuilderPath + " was searched");
+			emit readyReadErrOutput(tr("Builder not found. ")
+					+ mBuilderPath + tr(" was searched"));
 		}
 	} else {
 		mHasGccError = true;
-		emit readyReadErrOutput("Source code file not found. " + mWorkDir + mCodeFileName + " was searched");
+		emit readyReadErrOutput(tr("Source code file not found. ")
+				+ mWorkDir + mCodeFileName + tr(" was searched"));
 	}
 }
 
@@ -181,8 +183,8 @@ void DebuggerConnector::finishProcess()
 {
 	mDebuggerProcess->terminate();
 	if (mDebuggerProcess->exitCode() != 0) {
-		emit readyReadErrOutput("Debugger closing error");
+		emit readyReadErrOutput(tr("Debugger closing error"));
 	} else {
-		emit readyReadStdOutput("Debugger was closed successfully");
+		emit readyReadStdOutput(tr("Debugger was closed successfully"));
 	}
 }

@@ -7,7 +7,8 @@
 
 namespace qReal {
 
-class BlockParser : public utils::ExpressionsParser
+///Block diagram action process field parser and interpreter
+class BlockParser : public QObject, public utils::ExpressionsParser
 {
 
 public:
@@ -16,7 +17,7 @@ public:
 private:
 
 	///Parse from stream declaration of variables and calcule its values
-	virtual void parseVarPart(QString const &stream, int& pos);
+	virtual void parseVarPart(QString const &stream, int &pos);
 	
 	///Checking for the existence of variable declaration
 	virtual void checkForVariable(QString const &nameOfVariable, int &index);
