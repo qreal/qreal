@@ -9,8 +9,8 @@
 
 namespace qReal {
 
-///Visual debugger provides an opportunity to interpret and check correctness
-///of block diagram
+/// Visual debugger provides an opportunity to interpret and check correctness
+/// of block diagram
 class VisualDebugger : public QObject
 {
 	Q_OBJECT
@@ -34,11 +34,11 @@ public:
 	bool canBuild();
 	bool canComputeBreakpoints();
 	
-	///For every line in generated code file it contains Id of element on the diagram
-	///from it was generated
+	/// For every line in generated code file it contains Id of element on the diagram
+	/// from it was generated
 	void createIdByLineCorrelation();
 	
-	///Compute line number in generated code file for each element on diagram
+	/// Compute line number in generated code file for each element on diagram
 	QList<int>* computeBreakpoints();
 	
 	Id getIdByLine(int line);
@@ -51,13 +51,13 @@ public:
 	
 public slots:
 	
-	///Generate source code from block diagram
+	/// Generate source code from block diagram
 	void generateCode();
 	
-	///Start interpretation of block diagram in automatic mode
+	/// Start interpretation of block diagram in automatic mode
 	void debug();
 	
-	///Make one step of interpretation
+	/// Make one step of interpretation
 	void debugSingleStep();
 	
 private:
@@ -76,13 +76,13 @@ private:
 	void error(ErrorType e);
 	Id const findBeginNode(QString const &name);
 	
-	///Find valid link after condition node
+	/// Find valid link after condition node
 	Id const findValidLink();
 	
-	///Find in links false and true edge
+	/// Find in links false and true edge
 	void getConditionLinks(IdList const &outLinks, Id &falseEdge, Id &trueEdge);
 	
-	///Pause before doing next step
+	/// Pause before doing next step
 	void pause(int time);
 	
 	bool isFinalNode(Id const &id);
@@ -91,14 +91,14 @@ private:
 	void doStep(Id const &id);
 	void deinitialize();
 	
-	///Interpret action in one block
+	/// Interpret action in one block
 	void processAction();
 	
 	void setTimeout(int timeout);
 	void generateCode(Id const &id, QFile &codeFile);
 	QVariant getProperty(Id const &id, QString const &propertyName);
 	
-	///Create id by line correlation from current element on diagram
+	/// Create id by line correlation from current element on diagram
 	void createIdByLineCorrelation(Id const &id, int& line);
 	
 	void setCodeFileName(QString const &name);
@@ -113,7 +113,7 @@ private:
 	Id mCurrentId;
 	BlockParser *mBlockParser;
 	
-	///Timeout time before doing next step
+	/// Timeout time before doing next step
 	int mTimeout;
 	
 	DebugType mDebugType;
