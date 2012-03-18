@@ -22,6 +22,7 @@
 
 #include "../models/logicalModelAssistApi.h"
 
+#include  "paletteTree.h"
 namespace Ui {
 class MainWindowUi;
 }
@@ -303,6 +304,7 @@ private:
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;
+	qReal::gui::PaletteTree *mPaletteTree;
 };
 
 }
