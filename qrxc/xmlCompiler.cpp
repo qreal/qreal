@@ -308,9 +308,10 @@ void XmlCompiler::generatePaletteGroupsLists(utils::OutFile &out)
 		foreach (QList<QString> list , paletteGroups) {
 			QString groupName = paletteGroups.key(list);
 			foreach (QString name, list) {
-				out() << "\tpaletteGroupsMap[\"" << diagramName
-					<< "\"][\"" << groupName<< "\"].append(\""
-					<< name << "\");\n";
+				out() << "\tpaletteGroupsMap[QString::fromUtf8(\""
+					<< diagramName << "\")][QString::fromUtf8(\""
+					<< groupName << "\")].append(QString::fromUtf8(\""
+					<< name << "\"));\n";
 			}
 		}
 	}

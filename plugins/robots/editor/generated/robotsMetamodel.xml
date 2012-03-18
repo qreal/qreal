@@ -923,7 +923,7 @@
         </graphicTypes>
         <palette>
             <group name="Действия">
-                <element name="Гудое"/>
+                <element name="Гудок"/>
                 <element name="Играть звук"/>
                 <element name="Моторы вперед"/>
                 <element name="Моторы назад"/>

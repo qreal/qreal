@@ -131,14 +131,14 @@ void Diagram::initPaletteGroups(const QDomElement &paletteGroupsElement)
 		!element.isNull();
 		element = element.nextSiblingElement("group"))
 	{
-		QString name = QString::fromUtf8(element.attribute("name").toStdString().c_str());
+		QString name = element.attribute("name");
 		FILE *f = fopen("1.txt", "wt");
 		fprintf(f, "%s\n", element.attribute("name").toStdString().c_str());
 		for (QDomElement groupElement = element.firstChildElement("element");
 			!groupElement.isNull();
 			groupElement = groupElement.nextSiblingElement("element"))
 		{
-			mPaletteGroups[name].append(QString::fromUtf8(groupElement.attribute("name").toStdString().c_str()));
+			mPaletteGroups[name].append(groupElement.attribute("name"));
 		}
 	}
 }
