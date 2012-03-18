@@ -292,11 +292,10 @@ void MainWindow::loadPlugins()
 {
 	foreach (Id const editor, mEditorManager.editors()) {
 		foreach (Id const diagram, mEditorManager.diagrams(editor)) {
-			mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-			mUi->paletteToolbox->addSortedItemTypes(mEditorManager, diagram);
+			mUi->paletteTree->addEditorElements(mEditorManager, editor, diagram);
 		}
 	}
-	mUi->paletteToolbox->initDone();
+	mUi->paletteTree->initDone();
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -834,7 +833,7 @@ bool MainWindow::unloadPlugin(QString const &pluginName)
 			return false;
 		}
 		foreach (Id const &diagram, diagrams) {
-			mUi->paletteToolbox->deleteDiagramType(diagram);
+			mUi->paletteTree->deleteEditor(diagram);
 		}
 	}
 	return true;
@@ -847,10 +846,9 @@ bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 	}
 
 	foreach (Id const &diagram, mEditorManager.diagrams(Id(pluginName))) {
-		mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-		mUi->paletteToolbox->addSortedItemTypes(mEditorManager, diagram);
+		mUi->paletteTree->addEditorElements(mEditorManager, Id(pluginName), diagram);
 	}
-	mUi->paletteToolbox->initDone();
+	mUi->paletteTree->initDone();
 	return true;
 }
 
@@ -1090,12 +1088,12 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 	// changing of palette active editor
 	if (SettingsManager::value("PaletteTabSwitching", true).toBool()) {
 		int i = 0;
-		foreach(QString name, mUi->paletteToolbox->getTabNames()) {
+		foreach (const QString &name, mUi->paletteTree->editorsNames()) {
 			Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
 			Id const diagramId = Id(id.editor(), id.diagram());
 			QString const diagramName = mEditorManager.friendlyName(diagramId);
 			if (diagramName == name) {
-				mUi->paletteToolbox->getComboBox()->setCurrentIndex(i);
+				mUi->paletteTree->setComboBoxIndex(i);
 				break;
 			}
 			i++;
@@ -1488,13 +1486,13 @@ void MainWindow::updatePaletteIcons()
 	mUi->graphicalModelExplorer->viewport()->update();
 	mUi->logicalModelExplorer->viewport()->update();
 
-	Id const currentId = mUi->paletteToolbox->currentTab();
-	mUi->paletteToolbox->recreateTabs();
+	Id const currentId = mUi->paletteTree->currentEditor();
+	mUi->paletteTree->recreateTrees();
 
 	loadPlugins();
 
-	mUi->paletteToolbox->setActiveEditor(currentId);
-	mUi->paletteToolbox->setComboBox(currentId);
+	mUi->paletteTree->setActiveEditor(currentId);
+	mUi->paletteTree->setComboBox(currentId);
 }
 
 void MainWindow::applySettings()
@@ -1717,7 +1715,7 @@ void MainWindow::initTabs()
 
 void MainWindow::initDocks()
 {
-	mUi->paletteDock->setWidget(mUi->paletteToolbox);
+	mUi->paletteDock->setWidget(mUi->paletteTree);
 	mUi->errorDock->setWidget(mUi->errorListWidget);
 	mUi->errorListWidget->init(this);
 	mUi->errorDock->setVisible(false);

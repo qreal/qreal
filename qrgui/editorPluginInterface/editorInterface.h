@@ -50,6 +50,9 @@ public:
 	virtual QList<qReal::ListenerInterface*> listeners() const = 0;
 
 	virtual bool isParentOf(QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const = 0;
+
+	virtual QStringList diagramPaletteGroups(QString const &diagram) const = 0;
+	virtual QStringList diagramPaletteGroupList(QString const &diagram, QString const &group) const = 0;
 };
 
 }

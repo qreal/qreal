@@ -102,7 +102,7 @@ IdList EditorManager::editors() const
 	return editors;
 }
 
-IdList EditorManager::diagrams(const Id &editor) const
+IdList EditorManager::diagrams(Id const &editor) const
 {
 	IdList diagrams;
 	Q_ASSERT(mPluginsLoaded.contains(editor.editor()));
@@ -113,7 +113,18 @@ IdList EditorManager::diagrams(const Id &editor) const
 	return diagrams;
 }
 
-IdList EditorManager::elements(const Id &diagram) const
+QStringList EditorManager::paletteGroups(Id const &editor, const Id &diagram) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
+	return mPluginIface[editor.editor()]->diagramPaletteGroups(diagram.diagram());
+}
+
+QStringList EditorManager::paletteGroupList(Id const &editor, const Id &diagram, const QString &group) const
+{
+	return mPluginIface[editor.editor()]->diagramPaletteGroupList(diagram.diagram(), group);
+}
+
+IdList EditorManager::elements(Id const &diagram) const
 {
 	IdList elements;
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
@@ -170,8 +181,9 @@ QString EditorManager::propertyDescription(const Id &id, const QString &property
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
-	if (id.idSize() != 4)
+	if (id.idSize() != 4) {
 		return "";
+	}
 	return mPluginIface[id.editor()]->propertyDescription(id.diagram(), id.element(), propertyName);
 }
 
@@ -179,16 +191,18 @@ QString EditorManager::propertyDisplayedName(Id const &id, QString const &proper
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
-	if (id.idSize() != 4)
+	if (id.idSize() != 4) {
 		return "";
+	}
 	return mPluginIface[id.editor()]->propertyDisplayedName(id.diagram(), id.element(), propertyName);
 }
 
 QString EditorManager::mouseGesture(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	if (id.idSize() != 3)
+	if (id.idSize() != 3) {
 		return "";
+	}
 	return mPluginIface[id.editor()]->elementMouseGesture(id.diagram(), id.element());
 }
 
@@ -204,12 +218,13 @@ Element* EditorManager::graphicalObject(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	ElementImpl *impl = mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
-	if( !impl ){
+	if( !impl ) {
 		qDebug() << "no impl";
 		return 0;
 	}
-	if (impl->isNode())
+	if (impl->isNode()) {
 		return new NodeElement(impl);
+	}
 
 	return  new EdgeElement(impl);
 }
@@ -227,8 +242,7 @@ IdList EditorManager::getContainedTypes(const Id &id) const
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
 	IdList result;
-	foreach (QString type, mPluginIface[id.editor()]->getTypesContainedBy(id.element()))
-	{
+	foreach (QString type, mPluginIface[id.editor()]->getTypesContainedBy(id.element())) {
 		result.append(Id(type));
 	}
 	return result;
@@ -241,9 +255,10 @@ IdList EditorManager::getConnectedTypes(const Id &id) const
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
 	IdList result;
-	foreach (QString type, mPluginIface[id.editor()]->getConnectedTypes(id.element()))
+	foreach (QString type, mPluginIface[id.editor()]->getConnectedTypes(id.element())) {
 		// a hack caused by absence  of ID entity in editors generator
 		result.append(Id("?", "?", type));
+	}
 
 	return result;
 }
@@ -255,8 +270,9 @@ IdList EditorManager::getUsedTypes(const Id &id) const
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
 	IdList result;
-	foreach (QString type, mPluginIface[id.editor()]->getUsedTypes(id.element()))
+	foreach (QString type, mPluginIface[id.editor()]->getUsedTypes(id.element())) {
 		result.append(Id("?", "?", type));
+	}
 
 	return result;
 }
@@ -299,8 +315,9 @@ void EditorManager::checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api
 {
 	if (id != Id::rootId() && !mPluginsLoaded.contains(id.editor())) {
 		Id missingEditor = Id(id.editor());
-		if (!result.contains(missingEditor))
+		if (!result.contains(missingEditor)) {
 			result.append(missingEditor);
+		}
 	}
 
 	foreach (Id child, api.children(id)) {
@@ -314,28 +331,36 @@ bool EditorManager::hasElement(Id const &elementId) const
 	if (!mPluginsLoaded.contains(elementId.editor()))
 		return false;
 	EditorInterface *editor = mPluginIface[elementId.editor()];
-	foreach (QString diagram, editor->diagrams())
-		foreach (QString element, editor->elements(diagram))
-			if (elementId.diagram() == diagram && elementId.element() == element)
+	foreach (QString diagram, editor->diagrams()) {
+		foreach (QString element, editor->elements(diagram)) {
+			if (elementId.diagram() == diagram && elementId.element() == element) {
 				return true;
+			}
+		}
+	}
 	return false;
 }
 
 Id EditorManager::findElementByType(QString const &type) const
 {
-	foreach (EditorInterface *editor, mPluginIface.values())
-		foreach (QString diagram, editor->diagrams())
-			foreach (QString element, editor->elements(diagram))
-				if (type == element)
+	foreach (EditorInterface *editor, mPluginIface.values()) {
+		foreach (QString diagram, editor->diagrams()) {
+			foreach (QString element, editor->elements(diagram)) {
+				if (type == element) {
 					return Id(editor->id(), diagram, element);
+				}
+			}
+		}
+	}
 	throw Exception("No type " + type + " in loaded plugins");
 }
 
 QList<ListenerInterface*> EditorManager::listeners() const
 {
 	QList<ListenerInterface*> result;
-	foreach (EditorInterface *editor, mPluginIface.values())
+	foreach (EditorInterface *editor, mPluginIface.values()) {
 		result << editor->listeners();
+	}
 	return result;
 }
 
@@ -349,13 +374,12 @@ bool EditorManager::isDiagramNode(Id const &id) const
 	return id.element() == editorInterface(id.editor())->diagramNodeName(id.diagram());
 }
 
-
-
 bool EditorManager::isParentOf(Id const &child, Id const &parent) const // child — EnginesForware, parent — AbstractNode
 {
 	EditorInterface const *plugin = mPluginIface[child.editor()];
-	if (!plugin)
+	if (!plugin) {
 		return false;
+	}
 
 	QString parentDiagram = parent.diagram();
 	QString parentElement = parent.element();
@@ -368,19 +392,20 @@ bool EditorManager::isParentOf(Id const &child, Id const &parent) const // child
 }
 
 bool EditorManager::isParentOf(EditorInterface const *plugin, QString const &childDiagram
-							   , QString const &child, QString const &parentDiagram, QString const &parent) const
+		, QString const &child, QString const &parentDiagram, QString const &parent) const
 {
-	if (child == parent && childDiagram == parentDiagram)
+	if (child == parent && childDiagram == parentDiagram) {
 		return true;
+	}
 
 	typedef QPair<QString, QString> StringPair;
 	QList<QPair<QString, QString> > list = plugin->getParentsOf(childDiagram, child);
 
 	bool res = false;
 	foreach (StringPair const pair, list) {
-		if (pair.second == parent && pair.first == parentDiagram)
+		if (pair.second == parent && pair.first == parentDiagram) {
 			return true;
-
+		}
 		res = res || isParentOf(plugin, pair.first, pair.second, parentDiagram, parent);
 	}
 
@@ -390,14 +415,16 @@ bool EditorManager::isParentOf(EditorInterface const *plugin, QString const &chi
 QStringList EditorManager::getAllChildrenTypesOf(Id const &parent) const
 {
 	EditorInterface const *plugin = mPluginIface[parent.editor()];
-	if (!plugin)
+	if (!plugin) {
 		return QStringList();
+	}
 
 	QStringList result;
 
 	foreach (Id const id, elements(parent)) {
-		if (isParentOf(id, parent))
+		if (isParentOf(id, parent)) {
 			result << id.element();
+		}
 	}
 	return result;
 }
