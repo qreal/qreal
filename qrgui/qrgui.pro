@@ -65,8 +65,5 @@ include (editorPluginInterface/editorPluginInterface.pri)
 # Interfaces for tool plugins, used in handcoded tools.
 include (toolPluginInterface/toolPluginInterface.pri)
 
-# Interpreters: visual debugger and robots
-include (interpreters/interpreters.pri)
-
 # Text Editor
 include (textEditor/textEditor.pri)
