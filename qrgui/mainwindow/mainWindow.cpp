@@ -62,6 +62,8 @@ MainWindow::MainWindow()
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 {
+
+	mFindDialog = new FindDialog();
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
 
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
@@ -264,8 +266,10 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 		saveAll();
 	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_W) {
 		closeTab(mUi->tabs->currentIndex());
-	} else if (keyEvent->key() == Qt::Key_F1){
+	} else if (keyEvent->key() == Qt::Key_F1) {
 		showHelp();
+	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_F) {
+		mFindDialog->show();
 	}
 }
 
@@ -282,6 +286,7 @@ MainWindow::~MainWindow()
 	delete mModels;
 	delete mVisualDebugger;
 	delete mCodeTabManager;
+	delete mFindDialog;
 }
 
 EditorManager* MainWindow::manager()

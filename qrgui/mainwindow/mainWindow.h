@@ -1,5 +1,10 @@
 #pragma once
 
+
+#include <QApplication>
+
+#include "findDialog.h"
+
 #include <QtCore/QSignalMapper>
 #include <QtCore/QTranslator>
 #include <QtCore/QDir>
@@ -215,6 +220,10 @@ private slots:
 	void closeProjectAndSave();
 
 private:
+
+	/// @param mFindDialog - Dialod for searching model by name.
+	FindDialog *mFindDialog;
+
 	/// @param mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
 	QMap<EditorView*, CodeArea*> *mCodeTabManager;
 

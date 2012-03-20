@@ -10,6 +10,7 @@ HEADERS += \
 	mainwindow/errorListWidget.h \
 	mainwindow/mainWindowInterpretersInterface.h \
 	mainwindow/helpBrowser.h \
+    mainwindow/findDialog.h
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 	mainwindow/error.cpp \
 	mainwindow/errorListWidget.cpp \
 	mainwindow/helpBrowser.cpp \
+    mainwindow/findDialog.cpp
 
 FORMS += \
 	mainwindow/mainWindow.ui
