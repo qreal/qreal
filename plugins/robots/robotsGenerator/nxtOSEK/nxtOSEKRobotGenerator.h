@@ -74,16 +74,19 @@ private:
 
 	private:
 		QString transformSign(QString const &inequalitySign);
+		QList<SmartLine> mInitCode;
 	};
 
 	//! Realization of AbstractElementGenerator for Function.
 	class FunctionElementGenerator: public SimpleElementGenerator {
 	public:
-		explicit FunctionElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
+		explicit FunctionElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId, bool generateToInit);
 
 	protected:
 		virtual QList<SmartLine> simpleCode();
 		void variableAnalysis(QByteArray const &);
+	private:
+			bool mGenerateToInit;
 	};
 
 	//! Realization of AbstractElementGenerator for Loop.
@@ -123,20 +126,23 @@ private:
 	friend class ElementGeneratorFactory;
 	class ElementGeneratorFactory {
 	public:
-		static AbstractElementGenerator* generator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId)
+		static AbstractElementGenerator* generator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId, qrRepo::RepoApi const &api)
 		{
 			if (elementId.element() == "IfBlock")
 				return new IfElementGenerator(emboxGen, elementId);
 			if (elementId.element() == "Loop")
 				return new LoopElementGenerator(emboxGen, elementId);
-			if (elementId.element() == "Function")
-				return new FunctionElementGenerator(emboxGen, elementId);
+			if (elementId.element() == "Function"){
+				qReal::Id const logicElementId = api.logicalId(elementId);
+				return new FunctionElementGenerator(emboxGen, elementId, api.property(logicElementId, "Init").toBool());
+			}
 
 			return new SimpleElementGenerator(emboxGen, elementId);
 		}
 	};
 
 	void addToGeneratedStringSetVariableInit();
+	QString generateVariableString();
 
 	qrRepo::RepoApi *mApi;
 	bool mIsNeedToDeleteMApi;
@@ -144,6 +150,7 @@ private:
 
 	//! Set of already generated strings united for take a same critical places position (start of loop etc)
 	QList< QList<SmartLine> > mGeneratedStringSet;
+	QList<SmartLine> mInitCode;
 
 	//! Set of elements that have been already observed, but can create a regular loop (If blocks, Loop etc)
 	QStack<qReal::Id> mPreviousLoopElements;

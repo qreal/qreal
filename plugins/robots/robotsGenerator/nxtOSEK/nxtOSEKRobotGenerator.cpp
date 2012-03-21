@@ -40,10 +40,18 @@ NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator()
 }
 
 void NxtOSEKRobotGenerator::addToGeneratedStringSetVariableInit() {
-	foreach (SmartLine curVariable, mVariables) {
+		/*foreach (SmartLine curVariable, mVariables) {
 		mGeneratedStringSet[mVariablePlaceInGenStrSet].append(
 				SmartLine("int " + curVariable.text() + ";", curVariable.elementId()));
+	}*/
+}
+
+QString NxtOSEKRobotGenerator::generateVariableString() {
+	QString res;
+	foreach (SmartLine curVariable, mVariables) {
+		res = res + "static int " + curVariable.text() + ";\n";
 	}
+	return res;
 }
 
 void NxtOSEKRobotGenerator::generate()
@@ -63,7 +71,7 @@ void NxtOSEKRobotGenerator::generate()
 		mElementToStringListNumbers.clear();
 		mVariables.clear();
 
-		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(this, curInitialNode);
+		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(this, curInitialNode, *mApi);
 		mPreviousElement = curInitialNode;
 
 		gen->generate(); //may throws a exception
@@ -109,8 +117,24 @@ void NxtOSEKRobotGenerator::generate()
 		QString resultString = templateCStream.readAll();
 		templateCFile.close();
 
+		QString resultInitCode;
+		foreach (SmartLine curLine, mInitCode) {
+			if ( (curLine.indentLevelChange() == SmartLine::decrease)
+					|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
+				curTabNumber--;
+
+			resultInitCode += QString(curTabNumber, '\t') + curLine.text() + "\n";
+
+			if ( (curLine.indentLevelChange() == SmartLine::increase)
+					|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
+				curTabNumber++;
+		}
+
+
 		resultString.replace("@@PROJECT_NAME@@", projectName);
 		resultString.replace("@@CODE@@", resultCode);
+		resultString.replace("@@VARIABLES@@", generateVariableString());
+		resultString.replace("@@HOOKS@@", resultInitCode);
 
 		QFile resultCFile(projectDir + "/" + projectName + ".c");
 		if (!resultCFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -191,7 +215,7 @@ NxtOSEKRobotGenerator::SimpleElementGenerator::SimpleElementGenerator(NxtOSEKRob
 }
 
 NxtOSEKRobotGenerator::FunctionElementGenerator::FunctionElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-		qReal::Id elementId): SimpleElementGenerator(emboxGen, elementId)
+		qReal::Id elementId, bool generateToInit): SimpleElementGenerator(emboxGen, elementId), mGenerateToInit(generateToInit)
 {
 }
 
@@ -270,6 +294,11 @@ QList<SmartLine> NxtOSEKRobotGenerator::FunctionElementGenerator::simpleCode()
 		result.append(SmartLine(str.trimmed() + ";", mElementId));
 	}
 
+	if (mGenerateToInit) {
+		mNxtGen->mInitCode.append(result);
+		result.clear();
+	}
+
 	return result;
 }
 
@@ -286,7 +315,7 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 			result.append(SmartLine(cmds.at(i) + ";", mElementId));
 		foreach (QString enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
 			result.append(SmartLine(
-						"nxt_motor_set_speed(" + enginePort + ", " + cmds.last() + ", 0);",
+						"nxt_motor_set_speed(" + enginePort + ", " + cmds.last() + ", 1);",
 						mElementId));
 		}
 
@@ -294,14 +323,14 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 		foreach (QString enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
 			result.append(SmartLine(
 						"nxt_motor_set_speed(" + enginePort + ", "
-							+ "-" + mNxtGen->mApi->stringProperty(logicElementId, "Power") + ", 0);",
+							+ "-" + mNxtGen->mApi->stringProperty(logicElementId, "Power") + ", 1);",
 						mElementId));
 		}
 
 	} else if (mElementId.element() == "EnginesStop") {
 		foreach (QString enginePort, portsToEngineNames(mNxtGen->mApi->stringProperty(logicElementId, "Ports"))) {
 			result.append(SmartLine(
-						"nxt_motor_set_speed(" + enginePort + ", 0, 0);",
+						"nxt_motor_set_speed(" + enginePort + ", 0, 1);",
 						mElementId));
 		}
 
@@ -339,7 +368,7 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 			QByteArray portValue = mNxtGen->mApi->stringProperty(logicElementId, curPort).toUtf8();
 
 			if (portValue == "Ультразвуковой сенсор") {
-				result.append(SmartLine(
+				mInitCode.append(SmartLine(
 						"ecrobot_init_sonar_sensor(NXT_PORT_S" + QString::number(i) + ")",
 						mElementId));
 
@@ -348,26 +377,26 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 			//} else if (portValue == "Сенсор нажатия (сырое значение)") {
 
 			} else if (portValue == "Сенсор цвета (полные цвета)") {
-				result.append(SmartLine(
+				mInitCode.append(SmartLine(
 						"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_LIGHTSENSOR_WHITE)",
 						mElementId));
 
 			} else if (portValue == "Сенсор цвета (красный)") {
-				result.append(SmartLine(
-								  "ecrobot_set_light_sensor_active(NXT_PORT_S" + QString::number(i) + ");", mElementId));
+				mInitCode.append(SmartLine(
+						"ecrobot_set_light_sensor_active(NXT_PORT_S" + QString::number(i) + ");", mElementId));
 
 			} else if (portValue == "Сенсор цвета (зеленый)") {
-				result.append(SmartLine(
+				mInitCode.append(SmartLine(
 						"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_LIGHTSENSOR_GREEN)",
 						mElementId));
 
 			} else if (portValue == "Сенсор цвета (синий)") {
-				result.append(SmartLine(
+				mInitCode.append(SmartLine(
 						"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_LIGHTSENSOR_BLUE)",
 						mElementId));
 
 			} else if (portValue == "Сенсор цвета (пассивный)") {
-				result.append(SmartLine(
+				mInitCode.append(SmartLine(
 						"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_COLORSENSOR)",
 						mElementId));
 
@@ -565,6 +594,7 @@ bool NxtOSEKRobotGenerator::SimpleElementGenerator::nextElementsGeneration()
 {
 	IdList outgoingConnectedElements = mNxtGen->mApi->outgoingConnectedElements(mElementId);
 	mNxtGen->mGeneratedStringSet << simpleCode();
+	mNxtGen->mInitCode.append(mInitCode);
 
 	if (outgoingConnectedElements.size() == 1) {
 		if (outgoingConnectedElements.at(0) == Id::rootId()) {
@@ -574,7 +604,7 @@ bool NxtOSEKRobotGenerator::SimpleElementGenerator::nextElementsGeneration()
 			return false;
 		}
 
-		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(mNxtGen, outgoingConnectedElements.at(0));
+		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(mNxtGen, outgoingConnectedElements.at(0), *mNxtGen->mApi);
 		mNxtGen->mPreviousElement = mElementId;
 		gen->generate();
 		delete gen;
@@ -615,7 +645,7 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration()
 	}
 
 	AbstractElementGenerator* loopGen = ElementGeneratorFactory::generator(mNxtGen,
-			loopNextElement);
+			loopNextElement, *mNxtGen->mApi);
 
 	mNxtGen->mPreviousElement = mElementId;
 	mNxtGen->mPreviousLoopElements.push(mElementId);
@@ -632,7 +662,7 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::nextElementsGeneration()
 	}
 
 	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mNxtGen,
-			nextBlockElement);
+			nextBlockElement, *mNxtGen->mApi);
 
 	mNxtGen->mPreviousElement = mElementId;
 	mNxtGen->mPreviousLoopElements.push(mElementId);
@@ -655,7 +685,7 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::generateBranch(int branchNumber)
 	}
 
 	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mNxtGen,
-			branchElement);
+			branchElement, *mNxtGen->mApi);
 
 	mNxtGen->mPreviousElement = mElementId;
 
@@ -827,7 +857,7 @@ bool NxtOSEKRobotGenerator::AbstractElementGenerator::generate()
 			loopElement = mNxtGen->mPreviousLoopElements.pop();
 
 		//loopElement must create loop code
-		AbstractElementGenerator *loopElementGen = ElementGeneratorFactory::generator(mNxtGen, loopElement);
+		AbstractElementGenerator *loopElementGen = ElementGeneratorFactory::generator(mNxtGen, loopElement, *mNxtGen->mApi);
 
 		mNxtGen->mGeneratedStringSet[mNxtGen->mElementToStringListNumbers[loopElement.toString()].pop()]
 			+= loopElementGen->loopPrefixCode();

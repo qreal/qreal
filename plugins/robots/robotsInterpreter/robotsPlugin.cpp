@@ -121,6 +121,7 @@ void RobotsPlugin::updateSettings()
 			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt())
 	);
 	m2dModelAction->setVisible(typeOfRobotModel == robotModelType::unreal);
+	mConnectToRobotAction->setVisible(typeOfRobotModel == robotModelType::real);
 	if (typeOfRobotModel == robotModelType::unreal) {
 		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopRobotAction);
 	} else {

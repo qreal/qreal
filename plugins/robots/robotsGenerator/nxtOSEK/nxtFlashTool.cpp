@@ -98,7 +98,7 @@ void NxtFlashTool::nxtUploadingFinished(int exitCode, QProcess::ExitStatus exitS
 	if (exitCode == 127) { // most likely wineconsole didn't start and generate files needed to proceed compilation
 		mErrorReporter->addError(tr("Uploading failed. Make sure that X-server allows root to run GUI applications"));
 	} else if (exitCode == 139) {
-		mErrorReporter->addError(tr("QReal requires superuser privileges to flash NXT robot"));
+		mErrorReporter->addError(tr("QReal requires supruser privileges to flash NXT robot"));
 	}
 }
 
