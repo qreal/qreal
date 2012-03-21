@@ -39,7 +39,7 @@
    <item row="1" column="0" rowspan="2">
     <widget class="QListWidget" name="listWidget">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -69,7 +69,7 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <widget class="QWidget" name="pageContentWigdetPage1" native="true"/>
+     <widget class="QWidget" name="pageContentWigdetPage1"/>
     </widget>
    </item>
    <item row="3" column="2">

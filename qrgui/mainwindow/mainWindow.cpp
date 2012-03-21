@@ -34,7 +34,6 @@
 #include "../generators/xmi/xmiHandler.h"
 #include "../generators/java/javaHandler.h"
 #include "../pluginManager/listenerManager.h"
-#include "../interpreters/visualDebugger/visualDebugger.h"
 #include "../../qrkernel/settingsManager.h"
 
 #include "../../qrkernel/timeMeasurer.h"
@@ -51,7 +50,6 @@ MainWindow::MainWindow()
 		, mPropertyModel(mEditorManager)
 		, mGesturesWidget(NULL)
 		, mRootIndex(QModelIndex())
-		, mVisualDebugger(NULL)
 		, mErrorReporter(NULL)
 		, mIsFullscreen(false)
 		, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
@@ -62,6 +60,8 @@ MainWindow::MainWindow()
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 {
+	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
+
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
 	timeMeasurer.doNothing(); //to avoid the unused variables problem
 
@@ -154,7 +154,6 @@ MainWindow::MainWindow()
 	mGesturesWidget = new GesturesWidget();
 
 	initExplorers();
-	initDebugger();
 
 	connectActions();
 
@@ -226,25 +225,6 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
-	connectDebugActions();
-}
-
-void MainWindow::connectDebugActions()
-{
-	//	connect(mUi->actionDebug, SIGNAL(triggered()), this, SLOT(debug()));
-	//	connect(mUi->actionDebug_Single_step, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
-	//	connect(mUi->actionGenerate_and_build, SIGNAL(triggered()), this, SLOT(generateAndBuild()));
-	//	connect(mUi->actionStart_debugger, SIGNAL(triggered()), this, SLOT(startDebugger()));
-	//	connect(mUi->actionRun, SIGNAL(triggered()), this, SLOT(runProgramWithDebugger()));
-	//	connect(mUi->actionKill, SIGNAL(triggered()), this, SLOT(killProgramWithDebugger()));
-	//	connect(mUi->actionClose_all, SIGNAL(triggered()), this, SLOT(closeDebuggerProcessAndThread()));
-	//	connect(mUi->actionCont, SIGNAL(triggered()), this, SLOT(goToNextBreakpoint()));
-	//	connect(mUi->actionNext, SIGNAL(triggered()), this, SLOT(goToNextInstruction()));
-	//	connect(mUi->actionSet_Breakpoints, SIGNAL(triggered()), this, SLOT(placeBreakpointsInDebugger()));
-	//	connect(mUi->actionConfigure, SIGNAL(triggered()), this, SLOT(configureDebugger()));
-	//	connect(mUi->actionBreak_main, SIGNAL(triggered()), this, SLOT(setBreakpointAtStart()));
-	//	connect(mUi->actionStart_debugging, SIGNAL(triggered()), this, SLOT(startDebugging()));
-	//	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(checkEditorForDebug(int)));
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -278,7 +258,6 @@ MainWindow::~MainWindow()
 	delete mRecentProjectsMapper;
 	delete mGesturesWidget;
 	delete mModels;
-	delete mVisualDebugger;
 }
 
 EditorManager* MainWindow::manager()
@@ -313,11 +292,10 @@ void MainWindow::loadPlugins()
 {
 	foreach (Id const editor, mEditorManager.editors()) {
 		foreach (Id const diagram, mEditorManager.diagrams(editor)) {
-			mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-			mUi->paletteToolbox->addSortedItemTypes(mEditorManager, diagram);
+			mUi->paletteTree->addEditorElements(mEditorManager, editor, diagram);
 		}
 	}
-	mUi->paletteToolbox->initDone();
+	mUi->paletteTree->initDone();
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -855,7 +833,7 @@ bool MainWindow::unloadPlugin(QString const &pluginName)
 			return false;
 		}
 		foreach (Id const &diagram, diagrams) {
-			mUi->paletteToolbox->deleteDiagramType(diagram);
+			mUi->paletteTree->deleteEditor(diagram);
 		}
 	}
 	return true;
@@ -868,10 +846,9 @@ bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 	}
 
 	foreach (Id const &diagram, mEditorManager.diagrams(Id(pluginName))) {
-		mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-		mUi->paletteToolbox->addSortedItemTypes(mEditorManager, diagram);
+		mUi->paletteTree->addEditorElements(mEditorManager, Id(pluginName), diagram);
 	}
-	mUi->paletteToolbox->initDone();
+	mUi->paletteTree->initDone();
 	return true;
 }
 
@@ -907,6 +884,13 @@ void MainWindow::changeMiniMapSource(int index)
 void qReal::MainWindow::closeTab(int index)
 {
 	QWidget *widget = mUi->tabs->widget(index);
+	CodeArea *possibleCodeTab = static_cast<CodeArea *>(widget);
+	EditorView * deletingCodeTab = NULL;
+	foreach (EditorView *diagram, mCodeTabManager->keys())
+		if (mCodeTabManager->value(diagram) == possibleCodeTab)
+			deletingCodeTab = diagram;
+	if (deletingCodeTab != NULL)
+		mCodeTabManager->remove(deletingCodeTab);
 	mUi->tabs->removeTab(index);
 	delete widget;
 }
@@ -1104,12 +1088,12 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 	// changing of palette active editor
 	if (SettingsManager::value("PaletteTabSwitching", true).toBool()) {
 		int i = 0;
-		foreach(QString name, mUi->paletteToolbox->getTabNames()) {
+		foreach (const QString &name, mUi->paletteTree->editorsNames()) {
 			Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
 			Id const diagramId = Id(id.editor(), id.diagram());
 			QString const diagramName = mEditorManager.friendlyName(diagramId);
 			if (diagramName == name) {
-				mUi->paletteToolbox->getComboBox()->setCurrentIndex(i);
+				mUi->paletteTree->setComboBoxIndex(i);
 				break;
 			}
 			i++;
@@ -1433,210 +1417,6 @@ int MainWindow::getTabIndex(const QModelIndex &index)
 	return -1;
 }
 
-void MainWindow::debug()
-{
-	EditorView * const editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
-	mVisualDebugger->setEditor(editor);
-	if (mVisualDebugger->canDebug(VisualDebugger::fullDebug)) {
-		mVisualDebugger->debug();
-		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-		mErrorReporter->clearErrors();
-	}
-}
-
-void MainWindow::debugSingleStep()
-{
-	EditorView * const editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
-	mVisualDebugger->setEditor(editor);
-	if (mVisualDebugger->canDebug(VisualDebugger::singleStepDebug)) {
-		mVisualDebugger->debugSingleStep();
-		mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-		mErrorReporter->clearErrors();
-	}
-}
-
-void MainWindow::generateAndBuild()
-{
-	EditorView * const editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
-	mVisualDebugger->setEditor(editor);
-
-	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)) {
-		mVisualDebugger->generateCode();
-
-		if (mVisualDebugger->canBuild()) {
-			mDebuggerConnector->run();
-
-			mDebuggerConnector->build(SettingsManager::value("debugWorkingDirectory", "").toString() + "/" +
-					SettingsManager::value("codeFileName", "code.c").toString());
-
-			if (!mDebuggerConnector->hasBuildError()) {
-				mErrorReporter->addInformation("Code generated and builded successfully");
-				mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-			}
-		} else {
-			mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-		}
-		mErrorReporter->clearErrors();
-	}
-}
-
-void MainWindow::startDebugger()
-{
-	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)
-		&& !mDebuggerConnector->isDebuggerRunning())
-	{
-		mVisualDebugger->setDebugType(VisualDebugger::debugWithDebugger);
-		mDebuggerConnector->run();
-		mDebuggerConnector->startDebugger();
-	}
-}
-
-void MainWindow::configureDebugger()
-{
-	if (mDebuggerConnector->isDebuggerRunning()) {
-		mDebuggerConnector->configure(SettingsManager::value("debugWorkingDirectory", "").toString() + "/" +
-				SettingsManager::value("buildedFileName", "builded.exe").toString());
-	}
-}
-
-void MainWindow::setBreakpointAtStart()
-{
-	if (mDebuggerConnector->isDebuggerRunning()) {
-		EditorView *editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
-		mVisualDebugger->setEditor(editor);
-
-		mVisualDebugger->createIdByLineCorrelation();
-
-		mDebuggerConnector->sendCommand("break main\n");
-	}
-}
-
-void MainWindow::runProgramWithDebugger()
-{
-	if (mDebuggerConnector->isDebuggerRunning()) {
-		mDebuggerConnector->sendCommand("run\n");
-	}
-}
-
-void MainWindow::killProgramWithDebugger()
-{
-	if (mDebuggerConnector->isDebuggerRunning()) {
-		mDebuggerConnector->sendCommand("kill\n");
-	}
-}
-
-void MainWindow::placeBreakpointsInDebugger()
-{
-	if (mDebuggerConnector->isDebuggerRunning()) {
-		EditorView * const editor = dynamic_cast<EditorView *>(mUi->tabs->widget(mUi->tabs->currentIndex()));
-		mVisualDebugger->setEditor(editor);
-
-		mVisualDebugger->createIdByLineCorrelation();
-		if (mVisualDebugger->canComputeBreakpoints()) {
-			QList<int>* breakpoints = mVisualDebugger->computeBreakpoints();
-
-			for (int i = 0; i < breakpoints->size(); i++) {
-				mDebuggerConnector->sendCommand("break " + QString::number(breakpoints->at(i)) + "\n");
-			}
-
-			delete breakpoints;
-		} else {
-			mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-			mErrorReporter->clearErrors();
-		}
-	}
-}
-
-void MainWindow::goToNextBreakpoint()
-{
-	if (mDebuggerConnector->isDebuggerRunning()) {
-		mDebuggerConnector->sendCommand("cont\n");
-	}
-}
-
-void MainWindow::goToNextInstruction()
-{
-	if (mDebuggerConnector->isDebuggerRunning()) {
-		mDebuggerConnector->sendCommand("next\n");
-	}
-}
-
-void MainWindow::closeDebuggerProcessAndThread()
-{
-	if (mDebuggerConnector->isDebuggerRunning()) {
-		mVisualDebugger->dehighlight();
-		mVisualDebugger->setDebugType(VisualDebugger::noDebug);
-		mDebuggerConnector->finishProcess();
-	}
-}
-
-void MainWindow::startDebugging()
-{
-	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)) {
-		generateAndBuild();
-		startDebugger();
-		configureDebugger();
-		setBreakpointAtStart();
-		runProgramWithDebugger();
-	}
-}
-
-void MainWindow::drawDebuggerStdOutput(QString output)
-{
-	mErrorReporter->addInformation(output);
-	mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-
-	if ('1' <= output.at(0) && output.at(0) <= '9') {
-		int index = output.indexOf("\t");
-		Id idToLigth = mVisualDebugger->getIdByLine(output.mid(0,index).toInt());
-		mVisualDebugger->highlight(idToLigth);
-	} else {
-		QString const fileName = SettingsManager::value("codeFileName", "code.c").toString();
-
-		int index = output.indexOf(fileName + ":");
-		if (index > -1) {
-			index += (fileName.length() + 1);
-			int boundaryIndex = index;
-			while ('0' <= output.at(boundaryIndex) && output.at(boundaryIndex) <= '9') {
-				boundaryIndex++;
-			}
-			Id const idToLight = mVisualDebugger->getIdByLine(output.mid(index, boundaryIndex - index).toInt());
-			mVisualDebugger->highlight(idToLight);
-		}
-	}
-}
-
-void MainWindow::drawDebuggerErrOutput(QString output)
-{
-	mVisualDebugger->dehighlight();
-	mVisualDebugger->setDebugType(VisualDebugger::noDebug);
-	mErrorReporter->addCritical(output);
-	mErrorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-	mErrorReporter->clearErrors();
-}
-
-void MainWindow::checkEditorForDebug(int index)
-{
-	Q_UNUSED(index)
-
-	//	bool enabled = mUi->tabs->count() > 0 &&
-	//			mUi->tabs->tabText(mUi->tabs->currentIndex()).compare("(Block Diagram)") == 0;
-	// mUi->debuggerToolBar->setVisible(enabled);
-	//	mUi->actionDebug->setEnabled(enabled);
-	//	mUi->actionDebug_Single_step->setEnabled(enabled);
-	//	mUi->actionGenerate_and_build->setEnabled(enabled);
-	//	mUi->actionStart_debugger->setEnabled(enabled);
-	//	mUi->actionRun->setEnabled(enabled);
-	//	mUi->actionKill->setEnabled(enabled);
-	//	mUi->actionClose_all->setEnabled(enabled);
-	//	mUi->actionNext->setEnabled(enabled);
-	//	mUi->actionCont->setEnabled(enabled);
-	//	mUi->actionSet_Breakpoints->setEnabled(enabled);
-	//	mUi->actionConfigure->setEnabled(enabled);
-	//	mUi->actionBreak_main->setEnabled(enabled);
-	//	mUi->actionStart_debugging->setEnabled(enabled);
-}
-
 void MainWindow::setIndexesOfPropertyEditor(Id const &id)
 {
 	if (mModels->graphicalModelAssistApi().isGraphicalId(id)) {
@@ -1706,13 +1486,13 @@ void MainWindow::updatePaletteIcons()
 	mUi->graphicalModelExplorer->viewport()->update();
 	mUi->logicalModelExplorer->viewport()->update();
 
-	Id const currentId = mUi->paletteToolbox->currentTab();
-	mUi->paletteToolbox->recreateTabs();
+	Id const currentId = mUi->paletteTree->currentEditor();
+	mUi->paletteTree->recreateTrees();
 
 	loadPlugins();
 
-	mUi->paletteToolbox->setActiveEditor(currentId);
-	mUi->paletteToolbox->setComboBox(currentId);
+	mUi->paletteTree->setActiveEditor(currentId);
+	mUi->paletteTree->setComboBox(currentId);
 }
 
 void MainWindow::applySettings()
@@ -1797,22 +1577,29 @@ void MainWindow::initToolPlugins()
 			, mModels->logicalModelAssistApi()
 			, *this
 			));
+	
 	QList<ActionInfo> const actions = mToolManager.actions();
 	foreach (ActionInfo const action, actions) {
-		if (action.toolbarName() == "file")
-			mUi->fileToolbar->addAction(action.action());
-		else if (action.toolbarName() == "interpreters")
-			mUi->interpreterToolbar->addAction(action.action());
-		else if (action.toolbarName() == "generators")
-			mUi->generatorsToolbar->addAction(action.action());
+		if (action.isAction()) {
+			if (action.toolbarName() == "file")
+				mUi->fileToolbar->addAction(action.action());
+			else if (action.toolbarName() == "interpreters")
+				mUi->interpreterToolbar->addAction(action.action());
+			else if (action.toolbarName() == "generators")
+				mUi->generatorsToolbar->addAction(action.action());
+		}
 	}
 
 	foreach (ActionInfo const action, actions) {
-		if (action.menuName() == "tools")
-
-			mUi->menuTools->addAction(action.action());
+		if (action.menuName() == "tools") {
+			if (action.isAction()) {
+				mUi->menuTools->addAction(action.action());
+			} else {
+				mUi->menuTools->addMenu(action.menu());
+			}
+		}
 	}
-
+	
 	if (mUi->parsersToolbar->actions().isEmpty())
 		mUi->parsersToolbar->hide();
 
@@ -1840,13 +1627,21 @@ bool MainWindow::showConnectionRelatedMenus() const
 
 void MainWindow::showInTextEditor(QString const &title, QString const &text)
 {
-	CodeArea * const area = new CodeArea();
-	area->document()->setPlainText(text);
+	if (dynamic_cast<EditorView *>(getCurrentTab()) != NULL) {
+		if (!mCodeTabManager->contains(getCurrentTab())) {
+			CodeArea * const area = new CodeArea();
+			area->document()->setPlainText(text);
 
-	area->show();
+			area->show();
 
-	mUi->tabs->addTab(area, title);
-	mUi->tabs->setCurrentWidget(area);
+			mCodeTabManager->insert(getCurrentTab(), area);
+
+			mUi->tabs->addTab(area, title);
+			mUi->tabs->setCurrentWidget(area);
+		}
+		else
+			mUi->tabs->setCurrentWidget(mCodeTabManager->value(getCurrentTab()));
+	}
 }
 
 void MainWindow::reinitModels()
@@ -1920,7 +1715,7 @@ void MainWindow::initTabs()
 
 void MainWindow::initDocks()
 {
-	mUi->paletteDock->setWidget(mUi->paletteToolbox);
+	mUi->paletteDock->setWidget(mUi->paletteTree);
 	mUi->errorDock->setWidget(mUi->errorListWidget);
 	mUi->errorListWidget->init(this);
 	mUi->errorDock->setVisible(false);
@@ -1947,15 +1742,6 @@ void MainWindow::initWindowTitle()
 	else {
 		setWindowTitle(windowTitle + " - " + mSaveFile);
 	}
-}
-
-void MainWindow::initDebugger()
-{
-	mVisualDebugger = new VisualDebugger(mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi(), *this);
-	mDebuggerConnector = new DebuggerConnector(this);
-
-	connect(mDebuggerConnector, SIGNAL(readyReadStdOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
-	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerErrOutput(QString)));
 }
 
 void MainWindow::initExplorers()

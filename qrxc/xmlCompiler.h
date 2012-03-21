@@ -53,6 +53,7 @@ private:
 	void generateResourceFile();
 	void generatePropertyTypesRequests(utils::OutFile &out);
 	void generatePropertyDefaultsRequests(utils::OutFile &out);
+	void generatePaletteGroupsLists(utils::OutFile &out);
 
 	class ListMethodGenerator;
 	class PropertiesGenerator;

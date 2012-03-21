@@ -35,9 +35,9 @@ public:
 	{
 	}
 
-	/// Shall be overriden to return QAction objects along with where to put them in
-	/// main window. These actions shall be connected to slots of a plugin, so when user
-	/// clicks on an action, some code in plugin gets executed
+	/// Shall be overriden to return QAction or QMenu objects along with where to put them in
+	/// main window. Menus can contains more actions. These actions shall be connected
+	/// to slots of a plugin, so when user clicks on an action, some code in plugin gets executed
 	virtual QList<ActionInfo> actions()
 	{
 		return QList<ActionInfo>();
