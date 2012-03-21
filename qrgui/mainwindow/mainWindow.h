@@ -105,6 +105,9 @@ public slots:
 
 private slots:
 
+	/// handler for find dialog 'button find' pressed
+	void handleFindDialog(QString const &name);
+
 	void setSceneFont();
 	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);

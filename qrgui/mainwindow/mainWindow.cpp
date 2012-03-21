@@ -64,6 +64,7 @@ MainWindow::MainWindow()
 {
 
 	mFindDialog = new FindDialog();
+
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
 
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
@@ -230,6 +231,8 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
+	connect(mFindDialog, SIGNAL(findModelByName(QString)), this, SLOT(handleFindDialog(QString)));
+
 	connectDebugActions();
 }
 
@@ -298,6 +301,12 @@ void MainWindow::finalClose()
 {
 	mCloseEvent->accept();
 }
+
+void MainWindow::handleFindDialog(QString const &name)
+{
+	close();//temporary
+}
+
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
