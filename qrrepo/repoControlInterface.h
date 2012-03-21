@@ -11,6 +11,10 @@ public:
 
 	virtual void exterminate() = 0;
 
+	/// virtual, for returning IdList of elements that names contains input string
+	/// @param name - string that should be contained by names of elements that Id's are in the output list
+	virtual qReal::IdList findElementsByName(QString const &name) const = 0;
+
 	/// virtual, for import *.qrs file into current project
 	/// @param importedFile - file to be imported
 	virtual void importFromDisk(QString const &importedFile) = 0;

@@ -27,6 +27,18 @@ IdList RepoApi::children(Id const &id) const
 	return mClient.children(id);
 }
 
+IdList RepoApi::findElementsByName(QString const &name) const
+{
+	IdList result;
+
+	foreach (Id id, mClient.elements()) {
+		if (this->name(id).contains(name))
+			result.append(id);
+	}
+
+	return result;
+}
+
 void RepoApi::addChild(Id const &id, Id const &child)
 {
 	mClient.addChild(id, child);
