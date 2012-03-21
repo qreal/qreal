@@ -333,7 +333,16 @@ QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > InterpreterEditorM
 
 QStringList InterpreterEditorManager::elements(QString const &editor, QString const &diagram) const
 {
-	return QStringList();
+	QStringList result;
+	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values())
+		foreach (Id edit, repo->elementsByType("MetamodelDiagram")) {
+			if (editor == repo->name(edit))
+				foreach (Id editChild, repo->children(edit))
+					if (diagram == repo->name(editChild))
+						foreach (Id editChildChild, repo->children(editChild))
+							result.append(repo->name(editChildChild));
+		}
+	return result;
 }
 
 int InterpreterEditorManager::isNodeOrEdge(QString const &editor, QString const &element) const
@@ -348,10 +357,41 @@ bool InterpreterEditorManager::isParentOf(QString const &editor, QString const &
 
 QString InterpreterEditorManager::diagramName(QString const &editor, QString const &diagram) const
 {
-	return "";
+	QString diagramName = "";
+	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values())
+	{
+		foreach (Id edit, repo->elementsByType("MetamodelDiagram"))
+		{
+			if (editor == repo->name(edit))
+				foreach (Id editChild, repo->children(edit))
+				{
+					if (diagram == repo->name(editChild)) {
+						qDebug() << diagram << editChild;
+						QString ololo = repo->stringProperty(editChild, "displayedName");
+						qDebug() << ololo;
+					}
+				}
+		}
+	}
+	qDebug() << diagramName;
+	return diagramName;
 }
 
 QString InterpreterEditorManager::diagramNodeName(QString const &editor, QString const &diagram) const
 {
-	return "";
+	QString diagramNodeName = "";
+//	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values())
+//	{
+//		foreach (Id edit, repo->elementsByType("MetamodelDiagram"))
+//		{
+//			if (editor == repo->name(edit))
+//				foreach (Id editChild, repo->children(edit))
+//				{
+//					if (diagram == repo->name(editChild))
+//						diagramNodeName = repo->stringProperty(editChild, "nodeName");
+//				}
+//		}
+//	}
+//	qDebug() << diagramNodeName;
+	return diagramNodeName;
 }
