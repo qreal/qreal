@@ -30,9 +30,16 @@ FindDialog::FindDialog(QWidget *parent) : QDialog(parent)
 	setFixedHeight(sizeHint().height());
 }
 
+FindDialog::~FindDialog()
+{
+	delete mLabel;
+	delete mLineEdit;
+	delete mFindButton;
+}
+
 void FindDialog::findClicked()
 {
-	this->close(); // temporary
+	this->close();
 	QString text = mLineEdit->text();
 	emit findModelByName(text);
 }

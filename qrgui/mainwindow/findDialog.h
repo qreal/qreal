@@ -13,6 +13,7 @@ class FindDialog : public QDialog
 	public:
 
 		FindDialog(QWidget *parent = NULL);
+		~FindDialog();
 
 	signals:
 

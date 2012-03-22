@@ -63,6 +63,7 @@ MainWindow::MainWindow()
 		, mRecentProjectsMapper(new QSignalMapper())
 {
 
+	mRefWindowDialog = new RefWindowDialog();
 	mFindDialog = new FindDialog();
 
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
@@ -232,6 +233,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connect(mFindDialog, SIGNAL(findModelByName(QString)), this, SLOT(handleFindDialog(QString)));
+	connect(mRefWindowDialog, SIGNAL(chosenElement(QString)), this, SLOT(handleRefsDialog(QString)));
 
 	connectDebugActions();
 }
@@ -290,6 +292,7 @@ MainWindow::~MainWindow()
 	delete mVisualDebugger;
 	delete mCodeTabManager;
 	delete mFindDialog;
+	delete mRefWindowDialog;
 }
 
 EditorManager* MainWindow::manager()
@@ -302,9 +305,23 @@ void MainWindow::finalClose()
 	mCloseEvent->accept();
 }
 
+void MainWindow::handleRefsDialog(QString const &name)
+{
+	activateItemOrDiagram(mElementsNamesAndIds.value(name));
+}
+
 void MainWindow::handleFindDialog(QString const &name)
 {
-	close();//temporary
+	mElementsNamesAndIds.clear();
+	IdList found = mModels->repoControlApi().findElementsByName(name);
+	if (!found.isEmpty()) {
+		foreach (Id id, found) {
+			mElementsNamesAndIds.insert(mModels->logicalRepoApi().name(id), id);
+		}
+
+		mRefWindowDialog->init(static_cast<QStringList>(mElementsNamesAndIds.keys()));
+		mRefWindowDialog->show();
+	}
 }
 
 

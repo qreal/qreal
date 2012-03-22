@@ -3,8 +3,6 @@
 
 #include <QApplication>
 
-#include "findDialog.h"
-
 #include <QtCore/QSignalMapper>
 #include <QtCore/QTranslator>
 #include <QtCore/QDir>
@@ -27,6 +25,9 @@
 #include "helpBrowser.h"
 
 #include "../models/logicalModelAssistApi.h"
+
+#include "findDialog.h"
+#include "refWindowDialog.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -106,7 +107,12 @@ public slots:
 private slots:
 
 	/// handler for find dialog 'button find' pressed
+	/// @param name - line was input to find dialog
 	void handleFindDialog(QString const &name);
+
+	/// handler for refs dialog reference chosen
+	/// @param name - name of element that was chosen to show and highlighting
+	void handleRefsDialog(QString const &name);
 
 	void setSceneFont();
 	void adjustMinimapZoom(int zoom);
@@ -224,10 +230,15 @@ private slots:
 
 private:
 
-	/// @param mFindDialog - Dialod for searching model by name.
+	QMap<QString, Id> mElementsNamesAndIds;
+
+	/// mFindDialog - Dialod for searching elements by name.
 	FindDialog *mFindDialog;
 
-	/// @param mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
+	/// mRefWindowDialog - Dialog of searched elements by name.
+	RefWindowDialog *mRefWindowDialog;
+
+	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
 	QMap<EditorView*, CodeArea*> *mCodeTabManager;
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
