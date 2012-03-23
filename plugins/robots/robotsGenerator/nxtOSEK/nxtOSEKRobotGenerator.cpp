@@ -130,7 +130,6 @@ void NxtOSEKRobotGenerator::generate()
 				curTabNumber++;
 		}
 
-
 		resultString.replace("@@PROJECT_NAME@@", projectName);
 		resultString.replace("@@CODE@@", resultCode);
 		resultString.replace("@@VARIABLES@@", generateVariableString());
@@ -274,6 +273,21 @@ void NxtOSEKRobotGenerator::FunctionElementGenerator::variableAnalysis(QByteArra
 	}
 }
 
+QByteArray NxtOSEKRobotGenerator::FunctionElementGenerator::replaceSensorVariables(QByteArray portValue)
+{
+	if ((portValue == "Сенсор цвета (красный)")
+			|| (portValue == "Сенсор цвета (зеленый)")
+			|| (portValue == "Сенсор цвета (синий)")
+			|| (portValue == "Сенсор цвета (полные цвета)")
+			|| (portValue == "Сенсор цвета (пассивный)"))
+		return "ecrobot_get_light_sensor(NXT_PORT_S";
+	else
+		if (portValue == "Ультразвуковой сенсор")
+			return "ecrobot_get_sonar_sensor(NXT_PORT_S";
+		else
+			return "ecrobot_get_touch_sensor(NXT_PORT_S";
+}
+
 QList<SmartLine> NxtOSEKRobotGenerator::FunctionElementGenerator::simpleCode()
 {
 	QList<SmartLine> result;
@@ -282,14 +296,14 @@ QList<SmartLine> NxtOSEKRobotGenerator::FunctionElementGenerator::simpleCode()
 
 	QByteArray byteFuncCode = mNxtGen->mApi->stringProperty(logicElementId, "Body").toUtf8();
 
-	byteFuncCode.replace("Сенсор1", "ecrobot_get_light_sensor(NXT_PORT_S1)");
-	byteFuncCode.replace("Сенсор2", "ecrobot_get_light_sensor(NXT_PORT_S2)");
-	byteFuncCode.replace("Сенсор3", "ecrobot_get_light_sensor(NXT_PORT_S3)");
-	byteFuncCode.replace("Сенсор4", "ecrobot_get_light_sensor(NXT_PORT_S4)");
+	byteFuncCode.replace("Сенсор1", replaceSensorVariables(mNxtGen->mPortValue1) + "1)");
+	byteFuncCode.replace("Сенсор2", replaceSensorVariables(mNxtGen->mPortValue2) + "2)");
+	byteFuncCode.replace("Сенсор3", replaceSensorVariables(mNxtGen->mPortValue3) + "3)");
+	byteFuncCode.replace("Сенсор4", replaceSensorVariables(mNxtGen->mPortValue4) + "4)");
 
 	variableAnalysis(byteFuncCode);
-
 	QString funcCode = QString::fromUtf8(byteFuncCode);
+
 	foreach (QString str, funcCode.split(';')) {
 		result.append(SmartLine(str.trimmed() + ";", mElementId));
 	}
@@ -367,6 +381,21 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 			QString curPort = "port_" + QString::number(i);
 			QByteArray portValue = mNxtGen->mApi->stringProperty(logicElementId, curPort).toUtf8();
 
+			switch (i) {
+			case 1:
+				mNxtGen->mPortValue1 = portValue;
+				break;
+			case 2:
+				mNxtGen->mPortValue2 = portValue;
+				break;
+			case 3:
+				mNxtGen->mPortValue3 = portValue;
+				break;
+			case 4:
+				mNxtGen->mPortValue4 = portValue;
+				break;
+			}
+
 			if (portValue == "Ультразвуковой сенсор") {
 				mInitCode.append(SmartLine(
 						"ecrobot_init_sonar_sensor(NXT_PORT_S" + QString::number(i) + ")",
@@ -399,7 +428,6 @@ QList<SmartLine> NxtOSEKRobotGenerator::SimpleElementGenerator::simpleCode()
 				mInitCode.append(SmartLine(
 						"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_COLORSENSOR)",
 						mElementId));
-
 			}
 		}
 
