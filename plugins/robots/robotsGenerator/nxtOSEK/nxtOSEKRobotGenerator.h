@@ -86,7 +86,7 @@ private:
 		virtual QList<SmartLine> simpleCode();
 		void variableAnalysis(QByteArray const &);
 	private:
-			bool mGenerateToInit;
+		bool mGenerateToInit;
 	};
 
 	//! Realization of AbstractElementGenerator for Loop.
@@ -132,7 +132,7 @@ private:
 				return new IfElementGenerator(emboxGen, elementId);
 			if (elementId.element() == "Loop")
 				return new LoopElementGenerator(emboxGen, elementId);
-			if (elementId.element() == "Function"){
+			if (elementId.element() == "Function") {
 				qReal::Id const logicElementId = api.logicalId(elementId);
 				return new FunctionElementGenerator(emboxGen, elementId, api.property(logicElementId, "Init").toBool());
 			}

@@ -40,7 +40,7 @@ NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator()
 }
 
 void NxtOSEKRobotGenerator::addToGeneratedStringSetVariableInit() {
-		/*foreach (SmartLine curVariable, mVariables) {
+	/*foreach (SmartLine curVariable, mVariables) {
 		mGeneratedStringSet[mVariablePlaceInGenStrSet].append(
 				SmartLine("int " + curVariable.text() + ";", curVariable.elementId()));
 	}*/
@@ -573,9 +573,9 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::preGenerationCheck()
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
 	if ((outgoingLinks.size() != 2) ||
-		( (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "Итерация")
+		( (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "�?терация")
 		  &&
-		  (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "Итерация") )
+		  (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "�?терация") )
 	)
 		return false;
 
