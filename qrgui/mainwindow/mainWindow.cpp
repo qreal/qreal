@@ -63,8 +63,8 @@ MainWindow::MainWindow()
 		, mRecentProjectsMapper(new QSignalMapper())
 {
 
-	mRefWindowDialog = new RefWindowDialog();
-	mFindDialog = new FindDialog();
+	mRefWindowDialog = new RefWindowDialog(this);
+	mFindDialog = new FindDialog(this);
 
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
 
