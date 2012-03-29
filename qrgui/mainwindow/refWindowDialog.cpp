@@ -3,8 +3,7 @@
 
 RefWindowDialog::RefWindowDialog(QWidget *parent) : QDialog(parent)
 {
-	mButtons = new QList<QPushButton*>();
-	mRefButtonsMapper = new QSignalMapper();
+	mReferences = new QListWidget();
 }
 
 void RefWindowDialog::init(QStringList names)
@@ -12,16 +11,13 @@ void RefWindowDialog::init(QStringList names)
 	QHBoxLayout *mainLayout = new QHBoxLayout;
 
 	foreach (QString name, names) {
-		mButtons->append(new QPushButton(name));
-
-		mainLayout->addWidget(mButtons->last());
-
-		QObject::connect(mButtons->last(), SIGNAL(clicked()), mRefButtonsMapper, SLOT(map()));
-		mRefButtonsMapper->setMapping(mButtons->last(), name);
+		QListWidgetItem *item = new QListWidgetItem();
+		item->setText(name);
+		mReferences->addItem(item);
 	}
+	QObject::connect(mReferences, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(refClicked(QListWidgetItem*)));
 
-	QObject::connect(mRefButtonsMapper, SIGNAL(mapped(const QString)), this, SLOT(refClicked(const QString)));
-
+	mainLayout->addWidget(mReferences);
 	setLayout(mainLayout);
 
 	setWindowTitle(tr("Found elements:"));
@@ -30,11 +26,10 @@ void RefWindowDialog::init(QStringList names)
 
 RefWindowDialog::~RefWindowDialog()
 {
-	delete mRefButtonsMapper;
-	delete mButtons;
+	delete mReferences;
 }
 
-void RefWindowDialog::refClicked(const QString &refName)
+void RefWindowDialog::refClicked(QListWidgetItem *ref)
 {
-	emit chosenElement(refName);
+	emit chosenElement(ref->text());
 }

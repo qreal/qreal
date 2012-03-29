@@ -3,6 +3,7 @@
 
 #include <QtCore/QSignalMapper>
 #include <QDialog>
+#include <QtGui>
 class QCheckBox;
 class QLabel;
 class QLineEdit;
@@ -24,12 +25,11 @@ class RefWindowDialog : public QDialog
 
 	private slots:
 
-		void refClicked(const QString &refName);
+		void refClicked(QListWidgetItem *ref);
 
 	private:
 
-		QList<QPushButton*> *mButtons;
-		QSignalMapper *mRefButtonsMapper;
+		QListWidget *mReferences;
 };
 
 #endif // FINDBYNAMEREFWINDOW_H
