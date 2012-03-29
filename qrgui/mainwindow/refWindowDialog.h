@@ -29,4 +29,5 @@ class RefWindowDialog : public QDialog
 	private:
 
 		QListWidget *mReferences;
+		QHBoxLayout *mMainLayout;
 };

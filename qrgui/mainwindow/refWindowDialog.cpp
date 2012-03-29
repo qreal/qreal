@@ -4,11 +4,13 @@
 RefWindowDialog::RefWindowDialog(QWidget *parent) : QDialog(parent)
 {
 	mReferences = new QListWidget();
+	mMainLayout = new QHBoxLayout();
 }
 
 void RefWindowDialog::init(QStringList names)
 {
-	QHBoxLayout *mainLayout = new QHBoxLayout;
+	mReferences->clear();
+	mMainLayout->removeWidget(mReferences);
 
 	foreach (QString name, names) {
 		QListWidgetItem *item = new QListWidgetItem();
@@ -17,8 +19,8 @@ void RefWindowDialog::init(QStringList names)
 	}
 	QObject::connect(mReferences, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(refClicked(QListWidgetItem*)));
 
-	mainLayout->addWidget(mReferences);
-	setLayout(mainLayout);
+	mMainLayout->addWidget(mReferences);
+	setLayout(mMainLayout);
 
 	setWindowTitle(tr("Found elements:"));
 	setFixedHeight(sizeHint().height());
@@ -27,6 +29,7 @@ void RefWindowDialog::init(QStringList names)
 RefWindowDialog::~RefWindowDialog()
 {
 	delete mReferences;
+	delete mMainLayout;
 }
 
 void RefWindowDialog::refClicked(QListWidgetItem *ref)
