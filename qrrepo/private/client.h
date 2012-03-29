@@ -17,6 +17,9 @@ namespace qrRepo {
 		public:
 			QRREPO_EXPORT Client(QString const &workingFile);
 			QRREPO_EXPORT ~Client();
+
+			qReal::IdList findElementsByName(QString const &name) const;
+
 			qReal::IdList children(const qReal::Id &id) const;
 			qReal::Id parent(const qReal::Id &id) const;
 			/**

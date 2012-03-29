@@ -32,6 +32,17 @@ Client::~Client()
 	}
 }
 
+IdList Client::findElementsByName(const QString &name) const
+{
+	IdList result;
+
+	foreach (Object *element, mObjects.values())
+		if (element->property("name").toString().contains(name))
+			result.append(mObjects.key(element));
+
+	return result;
+}
+
 IdList Client::children(Id const &id) const
 {
 	if (mObjects.contains(id)) {
