@@ -3,7 +3,7 @@
 
 FindDialog::FindDialog(QWidget *parent) : QDialog(parent)
 {
-	mLabel = new QLabel(tr("Model name:"));
+	mLabel = new QLabel(tr("Element name:"));
 	mLineEdit = new QLineEdit();
 	mLabel->setBuddy(mLineEdit);
 	mFindButton = new QPushButton(tr("Find"));
@@ -26,7 +26,7 @@ FindDialog::FindDialog(QWidget *parent) : QDialog(parent)
 	mainLayout->addLayout(rightLayout);
 	setLayout(mainLayout);
 
-	setWindowTitle(tr("Find model"));
+	setWindowTitle(tr("Search"));
 	setFixedHeight(sizeHint().height());
 }
 

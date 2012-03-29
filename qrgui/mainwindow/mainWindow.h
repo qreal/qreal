@@ -1,8 +1,5 @@
 #pragma once
 
-
-#include <QApplication>
-
 #include <QtCore/QSignalMapper>
 #include <QtCore/QTranslator>
 #include <QtCore/QDir>
@@ -232,7 +229,7 @@ private:
 
 	QMap<QString, Id> mElementsNamesAndIds;
 
-	/// mFindDialog - Dialod for searching elements by name.
+	/// mFindDialog - Dialog for searching elements by name.
 	FindDialog *mFindDialog;
 
 	/// mRefWindowDialog - Dialog of searched elements by name.

@@ -1,5 +1,4 @@
-#ifndef FINDBYNAMEREFWINDOW_H
-#define FINDBYNAMEREFWINDOW_H
+#pragma once
 
 #include <QtCore/QSignalMapper>
 #include <QDialog>
@@ -31,5 +30,3 @@ class RefWindowDialog : public QDialog
 
 		QListWidget *mReferences;
 };
-
-#endif // FINDBYNAMEREFWINDOW_H
