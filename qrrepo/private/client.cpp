@@ -37,8 +37,9 @@ IdList Client::findElementsByName(const QString &name) const
 	IdList result;
 
 	foreach (Object *element, mObjects.values())
-		if (element->property("name").toString().contains(name))
-			result.append(mObjects.key(element));
+		if ((element->property("name").toString().contains(name))
+			&& (!isLogicalId(mObjects.key(element))))
+				result.append(mObjects.key(element));
 
 	return result;
 }
