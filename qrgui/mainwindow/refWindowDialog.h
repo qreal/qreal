@@ -3,6 +3,7 @@
 #include <QtCore/QSignalMapper>
 #include <QDialog>
 #include <QtGui>
+#include <../mainwindow/mainWindow.h>
 class QCheckBox;
 class QLabel;
 class QLineEdit;

@@ -26,6 +26,8 @@
 #include "findDialog.h"
 #include "refWindowDialog.h"
 
+class RefWindowDialog;
+
 namespace Ui {
 class MainWindowUi;
 }
