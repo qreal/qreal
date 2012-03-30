@@ -17,18 +17,18 @@ class RefWindowDialog : public QDialog
 
 		RefWindowDialog(QWidget *parent = NULL);
 		~RefWindowDialog();
-		void init(QStringList names);
+		void init(qReal::IdList ids, QStringList names);
 
 	signals:
 
-		void chosenElement(const QString &str);
+		void chosenElement(qReal::Id const &id);
 
 	private slots:
 
-		void refClicked(QListWidgetItem *ref);
+		void itemChosen(QListWidgetItem *item);
 
 	private:
 
-		QListWidget *mReferences;
+		QListWidget *mListWidget;
 		QHBoxLayout *mMainLayout;
 };

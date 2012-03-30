@@ -3,36 +3,39 @@
 
 RefWindowDialog::RefWindowDialog(QWidget *parent) : QDialog(parent)
 {
-	mReferences = new QListWidget();
+	mListWidget = new QListWidget();
 	mMainLayout = new QHBoxLayout();
 }
 
-void RefWindowDialog::init(QStringList names)
+void RefWindowDialog::init(qReal::IdList ids, QStringList names)
 {
-	mReferences->clear();
-	mMainLayout->removeWidget(mReferences);
-
-	foreach (QString name, names) {
+	mListWidget->clear();
+	mMainLayout->removeWidget(mListWidget);
+	QString l = tr("");
+	for (int i = 0; i < ids.length(); i++) {
 		QListWidgetItem *item = new QListWidgetItem();
-		item->setText(name);
-		mReferences->addItem(item);
+		QVariant val = ids[i].toString();
+		item->setText(names[i]);
+		item->setData(Qt::ToolTipRole, val);
+		mListWidget->addItem(item);l = l + tr("1");
 	}
-	QObject::connect(mReferences, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(refClicked(QListWidgetItem*)));
 
-	mMainLayout->addWidget(mReferences);
+	QObject::connect(mListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemChosen(QListWidgetItem*)));
+
+	mMainLayout->addWidget(mListWidget);
 	setLayout(mMainLayout);
 
-	setWindowTitle(tr("Found elements:"));
+	setWindowTitle(tr("Found elements:") + l);
 	setFixedHeight(sizeHint().height());
 }
 
 RefWindowDialog::~RefWindowDialog()
 {
-	delete mReferences;
+	delete mListWidget;
 	delete mMainLayout;
 }
 
-void RefWindowDialog::refClicked(QListWidgetItem *ref)
+void RefWindowDialog::itemChosen(QListWidgetItem *item)
 {
-	emit chosenElement(ref->text());
+	emit chosenElement(qReal::Id::loadFromString(item->data(Qt::ToolTipRole).toString()));
 }

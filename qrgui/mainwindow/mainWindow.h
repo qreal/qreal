@@ -111,7 +111,7 @@ private slots:
 
 	/// handler for refs dialog reference chosen
 	/// @param name - name of element that was chosen to show and highlighting
-	void handleRefsDialog(QString const &name);
+	void handleRefsDialog(qReal::Id const &id);
 
 	void setSceneFont();
 	void adjustMinimapZoom(int zoom);

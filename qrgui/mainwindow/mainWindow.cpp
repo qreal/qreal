@@ -62,7 +62,6 @@ MainWindow::MainWindow()
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 {
-
 	mRefWindowDialog = new RefWindowDialog(this);
 	mFindDialog = new FindDialog(this);
 
@@ -233,7 +232,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connect(mFindDialog, SIGNAL(findModelByName(QString)), this, SLOT(handleFindDialog(QString)));
-	connect(mRefWindowDialog, SIGNAL(chosenElement(QString)), this, SLOT(handleRefsDialog(QString)));
+	connect(mRefWindowDialog, SIGNAL(chosenElement(qReal::Id)), this, SLOT(handleRefsDialog(qReal::Id)));
 
 	connectDebugActions();
 }
@@ -305,25 +304,22 @@ void MainWindow::finalClose()
 	mCloseEvent->accept();
 }
 
-void MainWindow::handleRefsDialog(QString const &name)
+void MainWindow::handleRefsDialog(qReal::Id const &id)
 {
-	activateItemOrDiagram(mElementsNamesAndIds.value(name));
+	activateItemOrDiagram(id, false, true);
 }
 
 void MainWindow::handleFindDialog(QString const &name)
 {
-	mElementsNamesAndIds.clear();
 	IdList found = mModels->repoControlApi().findElementsByName(name);
 	if (!found.isEmpty()) {
-		foreach (Id id, found) {
-			mElementsNamesAndIds.insert(mModels->logicalRepoApi().name(id), id);
-		}
-
-		mRefWindowDialog->init(static_cast<QStringList>(mElementsNamesAndIds.keys()));
+		QStringList names;
+		foreach (Id id, found)
+			names.append(mModels->logicalRepoApi().name(id));
+		mRefWindowDialog->init(found, names);
 		mRefWindowDialog->show();
 	}
 }
-
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
