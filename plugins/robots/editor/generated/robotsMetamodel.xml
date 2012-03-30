@@ -108,6 +108,39 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Неведомая хрень" name="unknown something">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/unknownSomething.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels/>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Начало" name="InitialNode">
 				<graphics>
 					<picture sizex="50" sizey="50">

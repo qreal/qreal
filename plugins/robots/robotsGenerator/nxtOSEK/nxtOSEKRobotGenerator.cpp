@@ -828,6 +828,7 @@ bool NxtOSEKRobotGenerator::IfElementGenerator::nextElementsGeneration()
 		}
 
 		//TODO: repair for case with merged branches
+		mNxtGen->mErrorReporter.addError("Generator JUST does not work n this case.", mElementId);
 		return false;
 	}
 

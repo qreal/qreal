@@ -59,6 +59,7 @@ private:
 	class SimpleElementGenerator: public AbstractElementGenerator {
 	public:
 		explicit SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
+
 	protected:
 		virtual QList<SmartLine> loopPrefixCode();
 
@@ -79,7 +80,6 @@ private:
 	//! Realization of AbstractElementGenerator for Function.
 	class FunctionElementGenerator: public SimpleElementGenerator {
 	public:
-
 		explicit FunctionElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId, bool generateToInit);
 
 	protected:
