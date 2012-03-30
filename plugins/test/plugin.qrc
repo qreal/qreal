@@ -1,0 +1,9 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file>generated/shapes/DiagramClass.sdf</file>
+	<file>generated/shapes/DiagramPorts.sdf</file>
+	<file>generated/shapes/LinkClass.sdf</file>
+	<file>generated/shapes/NodeClass.sdf</file>
+	<file>generated/shapes/NodePorts.sdf</file>
+</qresource>
+</RCC>
