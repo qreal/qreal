@@ -225,6 +225,8 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
+	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this
+		, SLOT(changePaletteRepresentation()));
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -290,12 +292,14 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::loadPlugins()
 {
+	mUi->paletteTree->setIconsView(SettingsManager::value("PaletteRepresentation", 0).toBool());
 	foreach (Id const editor, mEditorManager.editors()) {
 		foreach (Id const diagram, mEditorManager.diagrams(editor)) {
 			mUi->paletteTree->addEditorElements(mEditorManager, editor, diagram);
 		}
 	}
 	mUi->paletteTree->initDone();
+	mUi->paletteTree->setComboBoxIndex();
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -1488,7 +1492,6 @@ void MainWindow::updatePaletteIcons()
 
 	Id const currentId = mUi->paletteTree->currentEditor();
 	mUi->paletteTree->recreateTrees();
-
 	loadPlugins();
 
 	mUi->paletteTree->setActiveEditor(currentId);
@@ -1867,4 +1870,12 @@ void MainWindow::closeProject()
 		static_cast<EditorViewScene*>(getCurrentTab()->scene())->clearScene();
 	closeAllTabs();
 	setWindowTitle(mToolManager.customizer()->windowTitle());
+}
+void MainWindow::changePaletteRepresentation()
+{
+	if (SettingsManager::value("PaletteRepresentation", 0).toBool() != mUi->paletteTree->IconsView()) {
+		mUi->paletteTree->recreateTrees();
+		loadPlugins();
+		mUi->paletteTree->setComboBoxIndex();
+	}
 }

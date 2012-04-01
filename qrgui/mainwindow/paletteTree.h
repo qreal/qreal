@@ -2,6 +2,7 @@
 
 #include <QTreeWidget>
 #include <QtCore/QHash>
+#include <QtCore/QSettings>
 #include <QtGui/QWidget>
 #include <QtGui/QIcon>
 #include <QPushButton>
@@ -59,10 +60,15 @@ public:
 	QVector<QString> editorsNames() const;
 	Id currentEditor() const;
 	/// Set item with such id as active in ComboBox.
-	void setComboBox(Id id);
+	void setComboBox(Id const &id);
+	void setIconsView(bool iconsView);
+	bool IconsView() const;
 
 	/// Set item with such index as active in ComboBox.
 	void setComboBoxIndex(int index);
+
+	/// Set saved item index as current in ComboBox.
+	void setComboBoxIndex();
 	~PaletteTree();
 public slots:
 	/// Collapse all nodes of current tree.
@@ -83,7 +89,7 @@ private:
 	public:
 			DraggableElement(Id const &id, QString const &name
 					, QString const &description
-					, QIcon const &icon, QWidget *parent = NULL);
+					, QIcon const &icon, bool iconsOnly, QWidget *parent = NULL);
 
 			QIcon icon() const
 			{
@@ -165,6 +171,12 @@ private:
 
 	/// Current editor number.
 	int mCurrentEditor;
+
+	/// Stores info about expanded nodes in tree
+	QSettings *mSettings;
+
+	/// Representation flag
+	bool mIconsView;
 };
 }
 }

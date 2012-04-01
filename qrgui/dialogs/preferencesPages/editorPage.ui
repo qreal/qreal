@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>400</height>
+    <height>433</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -275,13 +275,6 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="fontCheckBox">
-        <property name="text">
-         <string>Use some of system fonts</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="1">
        <widget class="QPushButton" name="fontSelectionButton">
         <property name="text">
@@ -289,7 +282,35 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="fontCheckBox">
+        <property name="text">
+         <string>Use some of system fonts</string>
+        </property>
+       </widget>
+      </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_6">
+     <property name="text">
+      <string>Palette representation</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="paletteComboBox">
+     <item>
+      <property name="text">
+       <string>Icons  and names</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Icons</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item>

@@ -23,6 +23,7 @@ protected:
 signals:
 	void gridChanged();
 	void fontChanged();
+	void paletteRepresentationChanged();
 
 private slots:
 	void widthGridSliderMoved(int value);

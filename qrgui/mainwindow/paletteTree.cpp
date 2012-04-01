@@ -11,8 +11,8 @@ using namespace gui;
 
 EditorManager * PaletteTree::mEditorManager = NULL;
 
-PaletteTree::DraggableElement::DraggableElement(Id const &id, QString const &name
-		, QString const &description, QIcon const &icon, QWidget *parent)
+PaletteTree::DraggableElement::DraggableElement(const Id &id, const QString &name
+		, const QString &description, const QIcon &icon, bool iconsOnly, QWidget *parent)
 	: QWidget(parent)
 	, mId(id)
 	, mIcon(icon)
@@ -21,14 +21,17 @@ PaletteTree::DraggableElement::DraggableElement(Id const &id, QString const &nam
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(4, 4, 4, 4);
 
+	int size = iconsOnly ? 42 : 24;
 	QLabel *pic = new QLabel(this);
-	pic->setFixedSize(24, 24);  // the frame
-	pic->setPixmap(mIcon.pixmap(22, 22));
+	pic->setFixedSize(size, size);  // the frame
+	pic->setPixmap(mIcon.pixmap(size - 2, size - 2));
 	layout->addWidget(pic);
 
-	QLabel *text = new QLabel(this);
-	text->setText(mText);
-	layout->addWidget(text);
+	if (!iconsOnly) {
+		QLabel *text = new QLabel(this);
+		text->setText(mText);
+		layout->addWidget(text);
+	}
 
 	setLayout(layout);
 
@@ -49,7 +52,7 @@ void PaletteTree::addItemType(const Id &id, const QString &name, const QString &
 		, const QIcon &icon, QTreeWidget *tree, QTreeWidgetItem *parent)
 {
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(id, name, description, icon);
+	DraggableElement *element = new DraggableElement(id, name, description, icon, mIconsView);
 	parent->addChild(leaf);
 	tree->setItemWidget(leaf, 0, element);
 }
@@ -58,7 +61,7 @@ void PaletteTree::addTopItemType(const Id &id, const QString &name
 		, const QString &description, const QIcon &icon, QTreeWidget *tree)
 {
 	QTreeWidgetItem *item = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(id, name, description, icon);
+	DraggableElement *element = new DraggableElement(id, name, description, icon, mIconsView);
 	tree->addTopLevelItem(item);
 	tree->setItemWidget(item,0,element);
 }
@@ -217,6 +220,10 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 						, mEditorManager->icon(element), EditorTree, item);
 			}
 			EditorTree->addTopLevelItem(item);
+			if (mSettings->value("Diagram" + mEditorsTrees.count() + group, 0).toBool()) {
+				EditorTree->expandItem(item);
+				mSettings->remove("Diagram" + mEditorsTrees.count() + group);
+			}
 		}
 	} else {
 		foreach (const Id &element, list) {
@@ -235,10 +242,10 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 void PaletteTree::initDone()
 {
 	connect(mComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setActiveEditor(int)));
-	setActiveEditor(0);
+	setActiveEditor(mSettings->value("CurrentIndex", 0).toInt());
 }
 
-void PaletteTree::setComboBox(Id id)
+void PaletteTree::setComboBox(Id const &id)
 {
 	mComboBox->setCurrentIndex(mCategories.value(id, -1));
 }
@@ -310,10 +317,22 @@ void PaletteTree::createPaletteTree()
 	mTree = new QTreeWidget(this);
 	mTree->setHeaderHidden(true);
 	mLayout->addWidget(mTree);
+	mSettings = new QSettings("Qreal", "PaletteItems");
 }
 
 void PaletteTree::deletePaletteTree()
 {
+	for (int i = 0; i < mEditorsTrees.count(); i++) {
+		const QTreeWidget *editorTree = mEditorsTrees[i];
+		for (int j = 0; j < editorTree->topLevelItemCount(); j++) {
+			const QTreeWidgetItem *topItem = editorTree->topLevelItem(j);
+			if (topItem && topItem->isExpanded()) {
+				mSettings->setValue("Diagram" + i + topItem->text(0), 1);
+			}
+		}
+	}
+	mSettings->setValue("CurrentIndex", mComboBox->currentIndex());
+	mSettings->sync();
 	delete mCollapseAll;
 	delete mExpandAll;
 	delete mComboBox;
@@ -332,4 +351,19 @@ PaletteTree::~PaletteTree()
 void PaletteTree::setComboBoxIndex(int index)
 {
 	mComboBox->setCurrentIndex(index);
+}
+
+void PaletteTree::setComboBoxIndex()
+{
+	mComboBox->setCurrentIndex(mSettings->value("CurrentIndex", 0).toInt());
+}
+
+bool PaletteTree::IconsView() const
+{
+	return mIconsView;
+}
+
+void PaletteTree::setIconsView(bool iconsView)
+{
+	mIconsView = iconsView;
 }
