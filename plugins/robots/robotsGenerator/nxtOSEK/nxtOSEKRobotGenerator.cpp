@@ -1,4 +1,4 @@
-#include <QTextStream>
+﻿#include <QTextStream>
 #include <cmath>
 #include <QtCore/QObject>
 #include <QDir>
@@ -601,9 +601,9 @@ bool NxtOSEKRobotGenerator::LoopElementGenerator::preGenerationCheck()
 	IdList outgoingLinks = mNxtGen->mApi->outgoingLinks(mElementId);
 
 	if ((outgoingLinks.size() != 2) ||
-		( (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "�?терация")
+		( (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(0)), "Guard").toString() == "итерация")
 		  &&
-		  (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "�?терация") )
+		  (mNxtGen->mApi->property(mNxtGen->mApi->logicalId(outgoingLinks.at(1)), "Guard").toString() == "итерация") )
 	)
 		return false;
 
