@@ -110,7 +110,7 @@ private slots:
 	void handleFindDialog(QString const &name);
 
 	/// handler for refs dialog reference chosen
-	/// @param name - name of element that was chosen to show and highlighting
+	/// @param id - id of element that was chosen to show and highlighting
 	void handleRefsDialog(qReal::Id const &id);
 
 	void setSceneFont();
@@ -231,10 +231,10 @@ private:
 
 	QMap<QString, Id> mElementsNamesAndIds;
 
-	/// mFindDialog - Dialog for searching elements by name.
+	/// mFindDialog - Dialog for searching elements.
 	FindDialog *mFindDialog;
 
-	/// mRefWindowDialog - Dialog of searched elements by name.
+	/// mRefWindowDialog - Dialog of searched elements.
 	RefWindowDialog *mRefWindowDialog;
 
 	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.

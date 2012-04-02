@@ -1,23 +1,24 @@
 #include <QtGui>
 #include "refWindowDialog.h"
 
-RefWindowDialog::RefWindowDialog(QWidget *parent) : QDialog(parent)
+RefWindowDialog::RefWindowDialog(qrRepo::LogicalRepoApi const &logicalRepoApi, QWidget *parent)
+	: QDialog(parent)
+	, mApi(logicalRepoApi)
 {
 	mListWidget = new QListWidget();
 	mMainLayout = new QHBoxLayout();
 }
 
-void RefWindowDialog::init(qReal::IdList ids, QStringList names)
+void RefWindowDialog::initIds(qReal::IdList ids)
 {
 	mListWidget->clear();
 	mMainLayout->removeWidget(mListWidget);
-	QString l = tr("");
-	for (int i = 0; i < ids.length(); i++) {
+	foreach (qReal::Id currentId, ids) {
 		QListWidgetItem *item = new QListWidgetItem();
-		QVariant val = ids[i].toString();
-		item->setText(names[i]);
+		QVariant val = currentId.toString();
+		item->setText(mApi.name(currentId));
 		item->setData(Qt::ToolTipRole, val);
-		mListWidget->addItem(item);l = l + tr("1");
+		mListWidget->addItem(item);
 	}
 
 	QObject::connect(mListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemChosen(QListWidgetItem*)));
@@ -25,7 +26,7 @@ void RefWindowDialog::init(qReal::IdList ids, QStringList names)
 	mMainLayout->addWidget(mListWidget);
 	setLayout(mMainLayout);
 
-	setWindowTitle(tr("Found elements:") + l);
+	setWindowTitle(tr("Found elements:"));
 	setFixedHeight(sizeHint().height());
 }
 

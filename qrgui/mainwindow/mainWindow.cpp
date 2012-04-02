@@ -62,7 +62,6 @@ MainWindow::MainWindow()
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 {
-	mRefWindowDialog = new RefWindowDialog(this);
 	mFindDialog = new FindDialog(this);
 
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
@@ -124,6 +123,8 @@ MainWindow::MainWindow()
 		mSaveFile = saveFile.absoluteFilePath();
 
 	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
+
+	mRefWindowDialog = new RefWindowDialog(mModels->logicalRepoApi(), this);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
@@ -313,10 +314,7 @@ void MainWindow::handleFindDialog(QString const &name)
 {
 	IdList found = mModels->repoControlApi().findElementsByName(name);
 	if (!found.isEmpty()) {
-		QStringList names;
-		foreach (Id id, found)
-			names.append(mModels->logicalRepoApi().name(id));
-		mRefWindowDialog->init(found, names);
+		mRefWindowDialog->initIds(found);
 		mRefWindowDialog->show();
 	}
 }

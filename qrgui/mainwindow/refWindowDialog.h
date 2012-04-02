@@ -15,9 +15,9 @@ class RefWindowDialog : public QDialog
 
 	public:
 
-		RefWindowDialog(QWidget *parent = NULL);
+		RefWindowDialog(qrRepo::LogicalRepoApi const &logicalRepoApi, QWidget *parent = NULL);
 		~RefWindowDialog();
-		void init(qReal::IdList ids, QStringList names);
+		void initIds(qReal::IdList ids);
 
 	signals:
 
@@ -31,4 +31,5 @@ class RefWindowDialog : public QDialog
 
 		QListWidget *mListWidget;
 		QHBoxLayout *mMainLayout;
+		qrRepo::LogicalRepoApi const &mApi;
 };
