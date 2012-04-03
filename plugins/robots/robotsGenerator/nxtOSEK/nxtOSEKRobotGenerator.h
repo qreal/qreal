@@ -19,7 +19,7 @@ namespace generator {
 /// Class for generate a nxtOSEK code from Robot Language Diagram.
 class NxtOSEKRobotGenerator {
 public:
-	NxtOSEKRobotGenerator(qrRepo::RepoControlInterface &api, qReal::ErrorReporterInterface &errorReporter, QString const &destinationPath = "");
+	NxtOSEKRobotGenerator(qReal::Id const &diagram, qrRepo::RepoControlInterface &api, qReal::ErrorReporterInterface &errorReporter, QString const &destinationPath = "");
 	NxtOSEKRobotGenerator(QString const &pathToRepo, qReal::ErrorReporterInterface &errorReporter, QString const &destinationPath = "");
 
 	~NxtOSEKRobotGenerator();
@@ -77,6 +77,9 @@ private:
 	int mVariablePlaceInGenStrSet;
 
 	qReal::ErrorReporterInterface &mErrorReporter;
+
+	/// Id of a diagram to generate.
+	qReal::Id mDiagram;
 };
 
 }
