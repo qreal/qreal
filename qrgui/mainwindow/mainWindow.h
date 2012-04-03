@@ -14,7 +14,6 @@
 #include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
-#include "../interpreters/visualDebugger/debuggerConnector.h"
 #include "mainWindowInterpretersInterface.h"
 #include "../../qrkernel/settingsManager.h"
 #include "../../qrgui/dialogs/preferencesDialog.h"
@@ -26,6 +25,8 @@
 #include "findDialog.h"
 #include "refWindowDialog.h"
 
+#include  "paletteTree.h"
+
 class RefWindowDialog;
 
 namespace Ui {
@@ -36,7 +37,6 @@ namespace qReal {
 
 class EditorView;
 class ListenerManager;
-class VisualDebugger;
 
 namespace models {
 class Models;
@@ -166,23 +166,6 @@ private slots:
 
 	void deleteFromScene(QGraphicsItem *target);
 
-	void debug();
-	void debugSingleStep();
-	void drawDebuggerStdOutput(QString output);
-	void drawDebuggerErrOutput(QString output);
-	void generateAndBuild();
-	void startDebugger();
-	void runProgramWithDebugger();
-	void killProgramWithDebugger();
-	void closeDebuggerProcessAndThread();
-	void placeBreakpointsInDebugger();
-	void goToNextBreakpoint();
-	void goToNextInstruction();
-	void configureDebugger();
-	void setBreakpointAtStart();
-	void startDebugging();
-	void checkEditorForDebug(int index);
-
 	void deleteFromDiagram();
 	void changeMiniMapSource(int index);
 	void closeTab(int index);
@@ -194,7 +177,6 @@ private slots:
 	void showPreferencesDialog();
 
 	void connectActions();
-	void connectDebugActions();
 
 	void centerOn(Id const &id);
 	void graphicalModelExplorerClicked(const QModelIndex &index);
@@ -301,7 +283,6 @@ private:
 	void initTabs();
 	void initDocks();
 	void initWindowTitle();
-	void initDebugger();
 	void initExplorers();
 	void initRecentProjectsMenu();
 
@@ -326,8 +307,6 @@ private:
 	QStringList mDiagramsList;
 	QModelIndex mRootIndex;
 
-	DebuggerConnector *mDebuggerConnector;
-	VisualDebugger *mVisualDebugger;
 	gui::ErrorReporter *mErrorReporter;  // Has ownership
 
 	/// Fullscreen mode flag
@@ -348,6 +327,7 @@ private:
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;
+	qReal::gui::PaletteTree *mPaletteTree;
 };
 
 }

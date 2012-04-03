@@ -32,6 +32,8 @@ bool Diagram::init(QDomElement const &diagramElement)
 		} else if (element.nodeName() == "nonGraphicTypes") {
 			if (!initNonGraphicTypes(element))
 				return false;
+		} else if (element.nodeName() == "palette") {
+			initPaletteGroups(element);
 		} else
 			qDebug() << "ERROR: unknown tag" << element.nodeName();
 	}
@@ -123,6 +125,25 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 	return true;
 }
 
+void Diagram::initPaletteGroups(const QDomElement &paletteGroupsElement)
+{
+	for (QDomElement element = paletteGroupsElement.firstChildElement("group");
+		!element.isNull();
+		element = element.nextSiblingElement("group"))
+	{
+		QString name = element.attribute("name");
+		FILE *f = fopen("1.txt", "wt");
+		fprintf(f, "%s\n", element.attribute("name").toStdString().c_str());
+		for (QDomElement groupElement = element.firstChildElement("element");
+			!groupElement.isNull();
+			groupElement = groupElement.nextSiblingElement("element"))
+		{
+			mPaletteGroups[name].append(groupElement.attribute("name"));
+		}
+	}
+}
+
+
 bool Diagram::resolve()
 {
 	foreach (ImportSpecification import, mImports) {
@@ -179,4 +200,9 @@ QString Diagram::nodeName() const
 QString Diagram::displayedName() const
 {
 	return mDiagramDisplayedName;
+}
+
+QMap<QString, QStringList> Diagram::paletteGroups() const
+{
+	return mPaletteGroups;
 }
