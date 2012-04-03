@@ -1,6 +1,8 @@
 #include "kernel.h"
 #include "ecrobot_interface.h"
 
+#include "balancer.h" 
+
 @@VARIABLES@@
 
 void ecrobot_device_initialize(void)
