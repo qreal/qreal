@@ -70,6 +70,7 @@ QPair<bool, qReal::Id> IfElementGenerator::checkBranchForBackArrows(qReal::Id co
 QPair<bool, qReal::Id> IfElementGenerator::checkBranchForBackArrows(qReal::Id const &curElementId,
 		qReal::IdList* checkedElements)
 {
+	// TODO: Why the hell it is using logical model when in other places there is graphical?
 	qReal::Id logicElementId = curElementId;
 	if (!mNxtGen->api()->isLogicalElement(curElementId))
 		logicElementId = mNxtGen->api()->logicalId(curElementId);

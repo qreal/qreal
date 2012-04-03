@@ -218,7 +218,8 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 				mElementId));
 		result.append(SmartLine("{", mElementId));
 		result.append(SmartLine("}", mElementId));
-
+	} else if (mElementId.element() == "Unknown_something") {
+		result.append(SmartLine("{ int trololo = 1488; }", mElementId));
 	}
 
 	//for InitialNode returns empty list
@@ -249,7 +250,7 @@ bool SimpleElementGenerator::nextElementsGeneration()
 		return true;
 	} else {
 		//case of error end of diagram
-		qDebug() << "Error! There is no outgoing connected elements with no final node!";
+		mNxtGen->errorReporter().addError(QObject::tr("There is no outgoing connected element with no final node!"), mElementId);
 		return false;
 	}
 
@@ -292,8 +293,7 @@ bool SimpleElementGenerator::preGenerationCheck()
 	IdList outgoingConnectedElements = mNxtGen->api()->outgoingConnectedElements(mElementId);
 	if (outgoingConnectedElements.size() > 1) {
 		//case of error in diagram
-		qDebug() << "Error! There are more than 1 outgoing connected elements with simple robot" <<
-			"element!";
+		mNxtGen->errorReporter().addError(QObject::tr("There are more than 1 outgoing connected elements with simple robot element!"), mElementId);
 		return false;
 	}
 
