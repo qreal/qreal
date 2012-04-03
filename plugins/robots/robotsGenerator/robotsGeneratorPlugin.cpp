@@ -62,11 +62,13 @@ void RobotsGeneratorPlugin::generateRobotSourceCode()
 
 	QFile file("nxt-tools/example0/example0.c");
 	QTextStream *inStream = NULL;
-	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text))
+	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		inStream = new QTextStream(&file);
+	}
 
-	if (inStream)
+	if (inStream) {
 		mMainWindowInterface->showInTextEditor("example0", inStream->readAll());
+	}
 }
 
 void RobotsGeneratorPlugin::flashRobot()
