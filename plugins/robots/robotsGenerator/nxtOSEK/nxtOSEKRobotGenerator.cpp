@@ -13,7 +13,9 @@
 using namespace qReal;
 using namespace robots::generator;
 
-NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(qrRepo::RepoControlInterface &api
+NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(
+		Id const &diagram
+		, qrRepo::RepoControlInterface &api
 		, qReal::ErrorReporterInterface &errorReporter
 		, QString const &destinationPath
 		)
@@ -22,6 +24,7 @@ NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(qrRepo::RepoControlInterface &api
 {
 	mIsNeedToDeleteMApi = false;
 	mApi = dynamic_cast<qrRepo::RepoApi *>(&api);  // TODO: remove unneeded dynamic_cast or provide strong argumentation why it is needed.
+	mDiagram = diagram;
 }
 
 NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo
@@ -60,12 +63,23 @@ QString NxtOSEKRobotGenerator::generateVariableString() {
 
 void NxtOSEKRobotGenerator::generate()
 {
-	IdList initialNodes = mApi->elementsByType("InitialNode");
+	if (mDiagram == Id()) {
+		mErrorReporter.addCritical(QObject::tr("There is no opened diagram"));
+		return;
+	}
+
+	IdList toGenerate = mApi->elementsByType("InitialNode");
+	toGenerate << mApi->elementsByType("InitialBlock");
 
 	int curInitialNodeNumber = 0;
-	foreach (Id curInitialNode, initialNodes) {
-		if (!mApi->isGraphicalElement(curInitialNode))
+	foreach (Id curInitialNode, toGenerate) {
+		if (!mApi->isGraphicalElement(curInitialNode)) {
 			continue;
+		}
+
+		if (mApi->parent(curInitialNode) != mDiagram) {
+			continue;
+		}
 
 		QString resultCode;
 		mGeneratedStringSet.clear();
@@ -193,8 +207,8 @@ void NxtOSEKRobotGenerator::generate()
 
 		curInitialNodeNumber++;
 	}
-	if (initialNodes.isEmpty()) {
-		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"));
+	if (toGenerate.isEmpty()) {
+		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node or Initial Block"));
 	}
 }
 
