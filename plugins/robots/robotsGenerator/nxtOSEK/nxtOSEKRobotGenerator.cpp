@@ -56,7 +56,7 @@ void NxtOSEKRobotGenerator::addToGeneratedStringSetVariableInit()
 QString NxtOSEKRobotGenerator::generateVariableString() {
 	QString res;
 	foreach (SmartLine curVariable, mVariables) {
-		res = res + "static int " + curVariable.text() + ";\n";
+		res = res + "static float " + curVariable.text() + ";\n";
 	}
 	return res;
 }

@@ -1,11 +1,11 @@
 /**
  ******************************************************************************
- **	ファイル名 : balancer.h
+ **	t@C : balancer.h
  **
- ** モデル関連情報:
- **   モデル名   : balancer.mdl
- **   バージョン : 1.893
- **   履歴       : y_yama - Tue Sep 25 11:37:09 2007
+ ** fﾖ連:
+ **   f   : balancer.mdl
+ **   o[W : 1.893
+ **          : y_yama - Tue Sep 25 11:37:09 2007
  **                takashic - Sun Sep 28 17:50:53 2008
  **
  ** Copyright (c) 2009-2011 MathWorks, Inc.
@@ -36,9 +36,9 @@
 # define rtmGetStopRequested(rtm)      ((void*) 0)
 #endif
 
-#define CMD_MAX                        100.0F                    /* 前進/旋回命令絶対最大値 */
-#define DEG2RAD                        0.01745329238F            /* 角度単位変換係数(=pi/180) */
-#define EXEC_PERIOD                    0.00400000019F            /* バランス制御実行周期(秒) */
+#define CMD_MAX                        100.0F                    /* Oi/ｽ令石最鼠 */
+#define DEG2RAD                        0.01745329238F            /* pxPﾊ変蓋(=pi/180) */
+#define EXEC_PERIOD                    0.00400000019F            /* oXs(b) */
 
 /* Model entry point functions */
 extern void balance_init(void);
@@ -46,7 +46,7 @@ extern void balance_init(void);
 /* Customized model step function */
 extern void balance_control(F32 args_cmd_forward, F32 args_cmd_turn,
   F32 args_gyro, F32 args_gyro_offset, F32 args_theta_m_l,
-  F32 args_theta_m_r, F32 args_battery, S8 *ret_pwm_l, S8
+  F32 args_theta_m_r, F32 args_battery, F32 *ret_pwm_l, F32
   *ret_pwm_r);
 
 /*-
