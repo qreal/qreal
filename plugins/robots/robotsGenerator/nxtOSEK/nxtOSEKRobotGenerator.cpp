@@ -167,6 +167,15 @@ void NxtOSEKRobotGenerator::generate()
 		resultCFile.close();
 		/**/
 
+		/* Generate files for balancer */
+		QFile::copy(":/nxtOSEK/templates/balancer/balancer_param.c", projectDir + "/" + "balancer_param.c");
+		QFile::copy(":/nxtOSEK/templates/balancer/balancer.h", projectDir + "/" +"balancer.h");
+		QFile::copy(":/nxtOSEK/templates/balancer/balancer_types.h", projectDir + "/" + "balancer_types.h");
+		QFile::copy(":/nxtOSEK/templates/balancer/libnxtway_gs_balancer.a", projectDir + "/" + "libnxtway_gs_balancer.a");
+		QFile::copy(":/nxtOSEK/templates/balancer/rt_SATURATE.h", projectDir + "/" + "rt_SATURATE.h");
+		QFile::copy(":/nxtOSEK/templates/balancer/rtwtypes.h", projectDir + "/" + "rtwtypes.h");
+		/**/
+
 		/* Generate OIL file */
 		QFile templateOILFile(":/nxtOSEK/templates/template.oil");
 		if (!templateOILFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
