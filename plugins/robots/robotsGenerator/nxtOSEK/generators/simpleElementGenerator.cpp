@@ -220,6 +220,31 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 		result.append(SmartLine("}", mElementId));
 	} else if (mElementId.element() == "Unknown_something") {
 		result.append(SmartLine("{ int trololo = 1488; }", mElementId));
+	} else if (mElementId.element() == "Balance") {
+		QString const forward = mNxtGen->api()->stringProperty(logicElementId, "forward");
+		QString const turn = mNxtGen->api()->stringProperty(logicElementId, "turn");
+		QString const gyroPort = mNxtGen->api()->stringProperty(logicElementId, "port");
+		QString const gyroValue = mNxtGen->api()->stringProperty(logicElementId, "gyroOffset");
+		QString const firstMotorValue = mNxtGen->api()->stringProperty(logicElementId, "port1");
+		QString const secondMotorValue = mNxtGen->api()->stringProperty(logicElementId, "port2");
+		QString const outPowerValue1 = mNxtGen->api()->stringProperty(logicElementId, "pwm1");
+		QString const outPowerValue2 = mNxtGen->api()->stringProperty(logicElementId, "pwm2");
+		result.append(SmartLine(QString("balance_control("), mElementId));
+		result.append(SmartLine(QString("(F32)") + forward + ", ", mElementId));
+		result.append(SmartLine(QString("(F32)") + turn + ", ", mElementId));
+		result.append(SmartLine(QString("(F32)ecrobot_get_gyro_sensor(NXT_PORT_S") + gyroPort + "), ", mElementId));
+		result.append(SmartLine(QString("(F32)") + gyroValue + ", ", mElementId));
+		result.append(SmartLine(QString("(F32)nxt_motor_get_count(NXT_PORT_") + firstMotorValue + "), ", mElementId));
+		result.append(SmartLine(QString("(F32)nxt_motor_get_count(NXT_PORT_") + secondMotorValue + "), ", mElementId));
+		result.append(SmartLine(QString("(F32)ecrobot_get_battery_voltage(), "), mElementId));
+		result.append(SmartLine(QString("&") + outPowerValue1 + ", ", mElementId));
+		result.append(SmartLine(QString("&") + outPowerValue2 + ");", mElementId));
+	} else if (mElementId.element() == "BalanceInit") {
+		result.append(SmartLine("balance_init();", mElementId));
+	} else if (mElementId.element() == "VariableInit") {
+		QString const variableName = mNxtGen->api()->stringProperty(logicElementId, "variable");
+		QString const variableValue = mNxtGen->api()->stringProperty(logicElementId, "value");
+		result.append(SmartLine(variableName + " = " + variableValue + "; \n", mElementId));
 	}
 
 	//for InitialNode returns empty list

@@ -108,6 +108,78 @@
 					</generalizations>
 				</logic>
 			</node>
+                        <node displayedName="Инициализация балансировки" name="BalanceInit">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+					</picture>                                    					
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>	                                              
+					<container/>                         
+				</logic>
+			</node>
+                        <node displayedName="Инициализация переменной" name="VariableInit">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="variable"/>
+						<label x="-60" y="60" text="Переменная:"/>
+						<label x="33" y="80" textBinded="value"/>
+						<label x="-65" y="80" text="Значение:"/>	
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>	
+					<properties>
+						<property displayedName="Переменная" type="string" name="variable">
+							<default>0</default>
+						</property>
+						<property displayedName="Значение" type="string" name="value">
+							<default>0</default>
+						</property>
+					</properties>				
+					<container/>                         
+				</logic>
+			</node>
 			<node displayedName="Неведомая хрень" name="unknown something">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -138,6 +210,46 @@
 					<container/>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Моторы назад" name="EnginesBackward">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="Ports"/>
+						<label x="-5" y="60" text="Порты:"/>
+						<label x="33" y="80" textBinded="Power"/>
+						<label x="-50" y="80" text="Мощность (%):"/>
+						<label x="33" y="100" textBinded="TachoLimit"/>
+						<label x="-100" y="100" text="Предел оборотов (град):"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="EngineMovementCommand"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -245,19 +357,29 @@
 						<parent parentName="EngineMovementCommand"/>
 					</generalizations>
 				</logic>
-			</node>
-			<node displayedName="Моторы назад" name="EnginesBackward">
+			</node> 
+			<node displayedName="Балансировка" name="Balance">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="60" textBinded="Ports"/>
-						<label x="-5" y="60" text="Порты:"/>
-						<label x="33" y="80" textBinded="Power"/>
-						<label x="-50" y="80" text="Мощность (%):"/>
-						<label x="33" y="100" textBinded="TachoLimit"/>
-						<label x="-100" y="100" text="Предел оборотов (град):"/>
+						<label x="33" y="60" textBinded="port"/>
+						<label x="-60" y="60" text="Порт гироскопа:"/>
+						<label x="33" y="80" textBinded="forward"/>
+						<label x="-65" y="80" text="Значение forward:"/>
+						<label x="33" y="100" textBinded="turn"/>
+						<label x="-50" y="100" text="Значение turn:"/>
+						<label x="33" y="120" textBinded="gyroOffset"/>
+						<label x="-105" y="120" text="Значение для калибровки:"/>
+						<label x="33" y="140" textBinded="port1"/>
+						<label x="-80" y="140" text="Порт первого мотора:"/>
+						<label x="33" y="160" textBinded="port2"/>
+						<label x="-80" y="160" text="Порт второго мотора:"/>
+						<label x="33" y="180" textBinded="pwm1"/>
+						<label x="-210" y="180" text="Выходное значение мощности первого мотора:"/>
+						<label x="33" y="200" textBinded="pwm2"/>
+						<label x="-210" y="200" text="Выходное значение мощности второго мотора:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -279,13 +401,34 @@
 					</ports>
 					<nonResizeable/>
 				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="EngineMovementCommand"/>
-					</generalizations>
+				<logic>					
+					<properties>
+						<property displayedName="Значение forward" type="string" name="forward">
+							<default>0</default>
+						</property>
+						<property displayedName="Значение turn" type="string" name="turn">
+							<default>0</default>
+						</property>
+						<property displayedName="Порт гироскопа" type="string" name="port">
+							<default>4</default>
+						</property>
+						<property displayedName="Значение для калибровки (что бы это ни значило)" type="string" name="gyroOffset">
+							<default>0</default>
+						</property>
+						<property displayedName="Порт первого мотора" type="string" name="port1">
+							<default>B</default>
+						</property>
+						<property displayedName="Порт второго мотора" type="string" name="port2">
+							<default>C</default>
+						</property>
+						<property displayedName="Выходное значение мощности первого мотора" type="string" name="pwm1">
+						</property>
+						<property displayedName="Выходное значение мощности второго мотора" type="string" name="pwm2">						</property>
+					</properties>
+					<container/>                         
 				</logic>
 			</node>
+
 			<node displayedName="Моторы стоп" name="EnginesStop">
 				<graphics>
 					<picture sizex="50" sizey="50">
