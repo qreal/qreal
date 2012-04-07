@@ -42,6 +42,7 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	mUi->fontSelectionButton->setVisible(SettingsManager::value("CustomFont", false).toBool());
 
 	mUi->paletteComboBox->setCurrentIndex(SettingsManager::value("PaletteRepresentation", 0).toInt());
+	mUi->paletteSpinBox->setValue(SettingsManager::value("PaletteIconsInARowCount", 1).toInt());
 
 	mFont = SettingsManager::value("CurrentFont", "").toString();
 }
@@ -110,6 +111,7 @@ void PreferencesEditorPage::save()
 	SettingsManager::setValue("ActivateAlignment", mUi->activateAlignmentCheckBox->isChecked());
 	SettingsManager::setValue("CustomFont", mUi->fontCheckBox->isChecked());
 	SettingsManager::setValue("PaletteRepresentation", mUi->paletteComboBox->currentIndex());
+	SettingsManager::setValue("PaletteIconsInARowCount", mUi->paletteSpinBox->value());
 
 	emit paletteRepresentationChanged();
 

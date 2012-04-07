@@ -925,7 +925,7 @@
             <group name="Действия">
                 <element name="Гудок"/>
                 <element name="Играть звук"/>
-                <element name="Моторы вперед"/>
+                <element name="Моторы вперёд"/>
                 <element name="Моторы назад"/>
                 <element name="Моторы стоп"/>
                 <element name="Функция"/>

@@ -59,16 +59,24 @@ public:
 	QComboBox* comboBox() const;
 	QVector<QString> editorsNames() const;
 	Id currentEditor() const;
+
 	/// Set item with such id as active in ComboBox.
 	void setComboBox(Id const &id);
 	void setIconsView(bool iconsView);
 	bool IconsView() const;
+	void setItemsCountInARow(int count);
+	int ItemsCountInARow() const;
 
 	/// Set item with such index as active in ComboBox.
 	void setComboBoxIndex(int index);
 
 	/// Set saved item index as current in ComboBox.
 	void setComboBoxIndex();
+
+	/** Fills palette tree by editors.
+	  @param editorManager Editor manager which all editors with elements are taken from.
+	*/
+	void loadEditors(EditorManager &editorManager);
 	~PaletteTree();
 public slots:
 	/// Collapse all nodes of current tree.
@@ -145,6 +153,13 @@ private:
 	/// Deletes all PaletteTree widgets.
 	void deletePaletteTree();
 
+	/** Adds group of editor's elements to appropriate tree to some top element.
+	  @param tmpList List with sorted group elements.
+	  @param editorTree Editor's tree
+	  @param item Editor's tree node for adding in it tmpList.
+	*/
+	void addItemsRow(IdList &tmpIdList, QTreeWidget *editorTree, QTreeWidgetItem *item);
+
 	/// Hash table with editor ids.
 	QHash<Id, int> mCategories;
 
@@ -177,6 +192,9 @@ private:
 
 	/// Representation flag
 	bool mIconsView;
+
+	/// Count of items in a row in icon's representation
+	int mItemsCountInARow;
 };
 }
 }

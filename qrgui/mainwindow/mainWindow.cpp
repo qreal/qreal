@@ -293,11 +293,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::loadPlugins()
 {
 	mUi->paletteTree->setIconsView(SettingsManager::value("PaletteRepresentation", 0).toBool());
-	foreach (Id const editor, mEditorManager.editors()) {
-		foreach (Id const diagram, mEditorManager.diagrams(editor)) {
-			mUi->paletteTree->addEditorElements(mEditorManager, editor, diagram);
-		}
-	}
+	mUi->paletteTree->setItemsCountInARow(SettingsManager::value("PaletteIconsInARowCount", 1).toInt());
+	mUi->paletteTree->loadEditors(mEditorManager);
 	mUi->paletteTree->initDone();
 	mUi->paletteTree->setComboBoxIndex();
 }
@@ -1873,7 +1870,9 @@ void MainWindow::closeProject()
 }
 void MainWindow::changePaletteRepresentation()
 {
-	if (SettingsManager::value("PaletteRepresentation", 0).toBool() != mUi->paletteTree->IconsView()) {
+	if (SettingsManager::value("PaletteRepresentation", 0).toBool() != mUi->paletteTree->IconsView()
+			|| SettingsManager::value("PaletteIconsInARowCount", 1).toInt() != mUi->paletteTree->ItemsCountInARow())
+	{
 		mUi->paletteTree->recreateTrees();
 		loadPlugins();
 		mUi->paletteTree->setComboBoxIndex();
