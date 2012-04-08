@@ -192,10 +192,9 @@ void PaletteTree::addItemsRow(IdList &tmpIdList, QTreeWidget *editorTree, QTreeW
 		}
 		return;
 	}
-	for (IdList::Iterator it = tmpIdList.begin(); it != tmpIdList.end();) {
+	for (IdList::ConstIterator it = tmpIdList.begin(); it != tmpIdList.end();) {
 		QWidget *field = new QWidget;
 		QHBoxLayout *layout = new QHBoxLayout;
-		layout->setSpacing(0);
 		int count = mItemsCountInARow;
 		for (; it != tmpIdList.end() && count-- > 0; ++it) {
 			DraggableElement *element = new DraggableElement(*it
@@ -206,7 +205,7 @@ void PaletteTree::addItemsRow(IdList &tmpIdList, QTreeWidget *editorTree, QTreeW
 			element->setToolTip(mEditorManager->friendlyName(*it));
 			layout->addWidget(element);
 			if (count > 0) {
-				layout->addStretch(42);
+				layout->addStretch(50);
 			}
 		}
 		field->setLayout(layout);

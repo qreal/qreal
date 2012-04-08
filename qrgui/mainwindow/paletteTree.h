@@ -21,31 +21,31 @@ Q_OBJECT
 public:
 	explicit PaletteTree(QWidget *parent = 0);
 
-	/** Adds item type to some editors tree.
+	/** Adds item type to some editor's tree.
 	  @param id Item id.
 	  @param name Item name.
 	  @param description Item description.
 	  @param icon Item icon.
-	  @param tree Editors tree.
+	  @param tree Editor's tree.
 	  @param parent Parent of item's group.
 	*/
 	void addItemType(Id const &id, QString const &name, QString const &description
 			, QIcon const &icon,QTreeWidget *tree, QTreeWidgetItem *parent);
 
-	/** Adds top item type to some editors tree.
+	/** Adds top item type to some editor's tree.
 	  @param id Item id.
 	  @param name Item name.
 	  @param description Item description.
 	  @param icon Item icon.
-	  @param tree Editors tree.
+	  @param tree Editor's tree.
 	*/
 	void addTopItemType(Id const &id, QString const &name, QString const &description
 			    , QIcon const &icon,QTreeWidget *tree);
 
-	/** Adds all editors elements to appropriate tree.
+	/** Adds all editor's elements to appropriate tree.
 	  @param editorManager Editor manager which all editors with elements are taken from.
 	  @param editor Editor
-	  @param diagram Diagram that corresponds to the chosen editor.
+	  @param diagram Diagram that corresponds to chosen editor.
 	*/
 	void addEditorElements(EditorManager &editorManager, const Id &editor, const Id &diagram);
 
@@ -172,10 +172,10 @@ private:
 	/// Button that expands all nodes of current tree.
 	QPushButton *mExpandAll;
 
-	/// Vector with all editors trees.
+	/// Vector with all editor's trees.
 	QVector <QTreeWidget *> mEditorsTrees;
 
-	/// Vector with all editors names.
+	/// Vector with all editor's names.
 	QVector <QString> mEditorsNames;
 
 	/// Combobox with editors.
