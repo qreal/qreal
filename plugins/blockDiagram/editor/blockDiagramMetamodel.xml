@@ -33,10 +33,10 @@
             </generalizations>
             <container>
               <contains type="BlockDiagram::Action"/>
-              <contains type="BlockDiagram::FinalNode"/>
+              <contains type="BlockDiagram::BlockFinalNode"/>
               <contains type="BlockDiagram::ControlFlow"/>
               <contains type="BlockDiagram::InitialNode"/>
-              <contains type="BlockDiagram::DecisionNode"/>
+              <contains type="BlockDiagram::ConditionNode"/>
             </container>
           </logic>
         </node>

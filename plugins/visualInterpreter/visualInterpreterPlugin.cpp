@@ -280,7 +280,7 @@ void VisualInterpreterPlugin::insertSpecialSemanticsElements(
 			<< "Replacement" << "ControlFlowLocation";
 	
 	mMetamodelGeneratorSupport->appendTypesToElement(
-			elements, container, "constains", diagramName, elementNames);
+			elements, container, "contains", diagramName, elementNames);
 	
 	QDomNodeList semanticsElems = elements.firstChild().childNodes();
 	
