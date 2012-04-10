@@ -40,6 +40,8 @@ PaletteTree::DraggableElement::DraggableElement(const Id &id, const QString &nam
 		modifiedDescription.insert(0, "<body>");  //turns alignment on
 		setToolTip(modifiedDescription);
 	}
+	setCursor(Qt::OpenHandCursor);
+
 }
 
 PaletteTree::PaletteTree(QWidget *parent)
@@ -76,6 +78,7 @@ void PaletteTree::DraggableElement::dropEvent(QDropEvent * /*event*/)
 
 void PaletteTree::DraggableElement::mousePressEvent(QMouseEvent *event)
 {
+
 	QWidget *atMouse = childAt(event->pos());
 	if (!atMouse || atMouse == this) {
 		return;
@@ -224,6 +227,7 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 
 	QTreeWidget *EditorTree = new QTreeWidget(this);
 	EditorTree->setHeaderHidden(true);
+	EditorTree->setSelectionMode(QAbstractItemView::NoSelection);
 
 	IdList list = mEditorManager->elements(diagram);
 	qSort(list.begin(), list.end(), idLessThan);
@@ -321,9 +325,9 @@ void PaletteTree::createPaletteTree()
 	mLayout = new QVBoxLayout(this);
 	mLayout->setSpacing(0);
 
-	QLabel *header = new QLabel("Palette");
-	header->setAlignment(Qt::AlignHCenter);
-	mLayout->addWidget(header);
+	//QLabel *header = new QLabel("Palette");
+	//header->setAlignment(Qt::AlignHCenter);
+	//mLayout->addWidget(header);
 
 	mComboBox = new QComboBox;
 	mComboBox->setGeometry(0,0,300,50);
@@ -401,6 +405,8 @@ void PaletteTree::setIconsView(bool iconsView)
 
 void PaletteTree::loadEditors(EditorManager &editorManager)
 {
+	if (editorManager.editors().empty())
+		return;
 	foreach (Id const editor, editorManager.editors()) {
 		foreach (Id const diagram, editorManager.diagrams(editor)) {
 			addEditorElements(editorManager, editor, diagram);
