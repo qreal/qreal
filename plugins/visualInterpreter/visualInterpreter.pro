@@ -1,3 +1,5 @@
+QT += xml
+
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = ../../bin/plugins/
