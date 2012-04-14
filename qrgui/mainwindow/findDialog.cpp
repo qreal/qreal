@@ -3,7 +3,10 @@
 
 FindDialog::FindDialog(QWidget *parent) : QDialog(parent)
 {
-	mLabel = new QLabel(tr("Element name:"));
+	mCheckBoxes.append(new QCheckBox(tr("by name")));
+	mCheckBoxes.append(new QCheckBox(tr("by type")));
+
+	mLabel = new QLabel(tr("Find:"));
 	mLineEdit = new QLineEdit();
 	mLabel->setBuddy(mLineEdit);
 	mFindButton = new QPushButton(tr("Find"));
@@ -13,16 +16,19 @@ FindDialog::FindDialog(QWidget *parent) : QDialog(parent)
 	connect(mLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(enableFindButton(const QString &)));
 	connect(mFindButton, SIGNAL(clicked()), this, SLOT(findClicked()));
 
-	QHBoxLayout *topLeftLayout = new QHBoxLayout;
-	topLeftLayout->addWidget(mLabel);
-	topLeftLayout->addWidget(mLineEdit);
 	QVBoxLayout *leftLayout = new QVBoxLayout;
-	leftLayout->addLayout(topLeftLayout);
+	leftLayout->addWidget(mLabel);
+	leftLayout->addStretch();
+	QVBoxLayout *middleLayout = new QVBoxLayout;
+	middleLayout->addWidget(mLineEdit);
+	foreach (QCheckBox *current, mCheckBoxes)
+		middleLayout->addWidget(current);
 	QVBoxLayout *rightLayout = new QVBoxLayout;
 	rightLayout->addWidget(mFindButton);
 	rightLayout->addStretch();
 	QHBoxLayout *mainLayout = new QHBoxLayout;
 	mainLayout->addLayout(leftLayout);
+	mainLayout->addLayout(middleLayout);
 	mainLayout->addLayout(rightLayout);
 	setLayout(mainLayout);
 
@@ -39,9 +45,15 @@ FindDialog::~FindDialog()
 
 void FindDialog::findClicked()
 {
-	this->close();
-	QString text = mLineEdit->text();
-	emit findModelByName(text);
+	QStringList searchData;
+	foreach (QCheckBox *current, mCheckBoxes)
+		if (current->isChecked())
+			searchData.append(current->text());
+	if (!searchData.isEmpty()) {
+		searchData.push_front(mLineEdit->text());
+		emit findModelByName(searchData);
+		this->close();
+	}
 }
 
 void FindDialog::enableFindButton(const QString &text)

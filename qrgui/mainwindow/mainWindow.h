@@ -106,8 +106,8 @@ public slots:
 private slots:
 
 	/// handler for find dialog 'button find' pressed
-	/// @param name - line was input to find dialog
-	void handleFindDialog(QString const &name);
+	/// @param searchData - data was input to find dialog
+	void handleFindDialog(QStringList const &searchData);
 
 	/// handler for refs dialog reference chosen
 	/// @param id - id of element that was chosen to show and highlighting
@@ -212,6 +212,15 @@ private slots:
 private:
 
 	QMap<QString, Id> mElementsNamesAndIds;
+
+	/// Finds items by input name and search mode
+	/// @param key - name
+	/// @param currentMode - mode
+	qReal::IdList foundByMode(QString key, QString currentMode);
+
+	/// Finds items by input name and search modes - searchData
+	/// @param searchData - name and search modes
+	QMap<QString, QString> findItems(QStringList const &searchData);
 
 	/// mFindDialog - Dialog for searching elements.
 	FindDialog *mFindDialog;

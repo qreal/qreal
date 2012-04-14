@@ -229,7 +229,7 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
-	connect(mFindDialog, SIGNAL(findModelByName(QString)), this, SLOT(handleFindDialog(QString)));
+	connect(mFindDialog, SIGNAL(findModelByName(QStringList)), this, SLOT(handleFindDialog(QStringList)));
 	connect(mRefWindowDialog, SIGNAL(chosenElement(qReal::Id)), this, SLOT(handleRefsDialog(qReal::Id)));
 }
 
@@ -286,9 +286,34 @@ void MainWindow::handleRefsDialog(qReal::Id const &id)
 	activateItemOrDiagram(id, false, true);
 }
 
-void MainWindow::handleFindDialog(QString const &name)
+qReal::IdList MainWindow::foundByMode(QString key, QString currentMode)
 {
-	IdList found = mModels->repoControlApi().findElementsByName(name);
+	if (currentMode == tr("by name"))
+		return mModels->repoControlApi().findElementsByName(key);
+	if (currentMode == tr("by type"))
+		return mModels->logicalRepoApi().elementsByType(key);
+}
+
+QMap<QString, QString> MainWindow::findItems(QStringList const &searchData)
+{
+	QMap<QString, QString> found;
+	for(int i = 1; i < searchData.length(); i++) {
+		qReal::IdList byMode = foundByMode(searchData.first(), searchData[i]);
+		foreach (qReal::Id currentId, byMode) {
+			if (found.contains(currentId.toString())) {
+				found[currentId.toString()] += tr(", ") + searchData[i];
+				continue;
+			}
+			found.insert(currentId.toString(), tr("   :: ") + searchData[i]);
+		}
+	}
+	return found;
+}
+
+void MainWindow::handleFindDialog(QStringList const &searchData)
+{
+	QMap<QString, QString> found = findItems(searchData);
+
 	if (!found.isEmpty()) {
 		mRefWindowDialog->initIds(found);
 		mRefWindowDialog->show();

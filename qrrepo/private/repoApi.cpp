@@ -470,7 +470,7 @@ IdList RepoApi::elementsByType(QString const &type) const
 {
 	IdList result;
 	foreach (Id id, mClient.elements()) {
-		if (id.element() == type)
+		if (id.element().contains(type))
 			result.append(id);
 	}
 	return result;

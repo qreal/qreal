@@ -17,7 +17,7 @@ class FindDialog : public QDialog
 
 	signals:
 
-		void findModelByName(const QString &str);
+		void findModelByName(const QStringList &searchData);
 
 	private slots:
 
@@ -29,4 +29,5 @@ class FindDialog : public QDialog
 		QLabel *mLabel;
 		QLineEdit *mLineEdit;
 		QPushButton *mFindButton;
+		QList<QCheckBox*> mCheckBoxes;
 };

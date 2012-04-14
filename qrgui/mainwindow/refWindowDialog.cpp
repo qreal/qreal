@@ -3,22 +3,26 @@
 
 RefWindowDialog::RefWindowDialog(qrRepo::LogicalRepoApi const &logicalRepoApi, QWidget *parent)
 	: QDialog(parent)
-	, mApi(logicalRepoApi)
+	, mCommonApi(logicalRepoApi)
 {
 	mListWidget = new QListWidget();
 	mMainLayout = new QHBoxLayout();
 }
 
-void RefWindowDialog::initIds(qReal::IdList ids)
+void RefWindowDialog::initIds(QMap<QString, QString> foundData)
 {
 	mListWidget->clear();
 	mMainLayout->removeWidget(mListWidget);
-	foreach (qReal::Id currentId, ids) {
-		QListWidgetItem *item = new QListWidgetItem();
-		QVariant val = currentId.toString();
-		item->setText(mApi.name(currentId));
-		item->setData(Qt::ToolTipRole, val);
-		mListWidget->addItem(item);
+	foreach (QString currentId, foundData.keys()) {
+		qReal::Id parentId = mCommonApi.parent(qReal::Id::loadFromString(currentId));
+		QString parentName = mCommonApi.name(parentId);
+		if (parentName.contains(" ")) {
+			QListWidgetItem *item = new QListWidgetItem();
+			item->setText(parentName + tr(" / ") +
+				mCommonApi.name(qReal::Id::loadFromString(currentId)) + foundData[currentId]);
+			item->setData(Qt::ToolTipRole, currentId);
+			mListWidget->addItem(item);
+		}
 	}
 
 	QObject::connect(mListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemChosen(QListWidgetItem*)));
