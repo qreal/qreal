@@ -34,11 +34,12 @@ namespace qrRepo {
 			/// Stacks element child before sibling (element id shold be parent of them both)
 			void stackBefore(qReal::Id const &id, qReal::Id const &child, qReal::Id const &sibling);
 
-			void setProperty(const qReal::Id &id, const QString &name, const QVariant &value);
+			void setProperty(const qReal::Id &id, const QString &name, const QVariant &value) const;
 			void copyProperties(const qReal::Id &dest, const qReal::Id &src);
 			QVariant property(const qReal::Id &id, const QString &name) const;
 			bool hasProperty(const qReal::Id &id, const QString &name) const;
 			void removeProperty(const qReal::Id &id, const QString &name);
+			QMapIterator<QString, QVariant> propertiesIterator(qReal::Id const &id) const;
 
 			void setTemporaryRemovedLinks(qReal::Id const &id, QString const &direction, qReal::IdList const &linkIdList);
 			qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const;

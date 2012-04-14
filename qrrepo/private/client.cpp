@@ -136,7 +136,7 @@ void Client::removeChild(const Id &id, const Id &child)
 	}
 }
 
-void Client::setProperty(const Id &id, const QString &name, const QVariant &value )
+void Client::setProperty(const Id &id, const QString &name, const QVariant &value ) const
 {
 	if (mObjects.contains(id)) {
 		Q_ASSERT(mObjects[id]->hasProperty(name)
@@ -352,3 +352,7 @@ qReal::Id Client::logicalId(qReal::Id const &elem) const
 	return mObjects[elem]->logicalId();
 }
 
+QMapIterator<QString, QVariant> Client::propertiesIterator(qReal::Id const &id) const
+{
+	return mObjects[id]->propertiesIterator();
+}

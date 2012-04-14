@@ -58,10 +58,11 @@ namespace qrRepo {
 
 		QVariant property(qReal::Id const &id, QString const &propertyName) const;
 		QString stringProperty(qReal::Id const &id, QString const &propertyName) const;
-		void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value);
+		void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value) const;
 		void removeProperty(qReal::Id const &id, QString const &propertyName);
 		void copyProperties(const qReal::Id &dest, const qReal::Id &src);
 		bool hasProperty(qReal::Id const &id, QString const &propertyName) const;
+		QMapIterator<QString, QVariant> propertiesIterator(qReal::Id const &id) const;
 
 		qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const;
 		void setTemporaryRemovedLinks(qReal::Id const &id, qReal::IdList const &value, QString const &direction);

@@ -15,11 +15,13 @@ HEADERS = \
 	visualInterpreterPlugin.h \
 	visualInterpreterPreferencesPage.h \
 	graphTransformationUnit.h \
+	ruleParser.h \
 
 SOURCES = \
 	visualInterpreterPlugin.cpp \
 	visualInterpreterPreferencesPage.cpp \
 	graphTranformationUnit.cpp \
+	ruleParser.cpp \
 
 FORMS += \
 	visualInterpreterPreferencePage.ui \

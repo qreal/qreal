@@ -1,8 +1,14 @@
 #include "graphTransformationUnit.h"
 
 #include <QEventLoop>
+#include <QSet>
 
 using namespace qReal;
+
+QSet<QString> const defaultProperties = (QSet<QString>()
+		<< "from" << "incomingConnections" << "incomingUsages" << "links"
+		<< "name" << "outgoingConnections" << "outgoingUsages" << "to"
+		<< "semanticsStatus");
 
 GraphTransformationUnit::GraphTransformationUnit(
 		qReal::LogicalModelAssistInterface const &logicalModelApi
@@ -11,6 +17,7 @@ GraphTransformationUnit::GraphTransformationUnit(
 		: mInterpretersInterface(interpretersInterface)
 		, mLogicalModelApi(logicalModelApi)
 		, mGraphicalModelApi(graphicalModelApi)
+		, mRuleParser(new RuleParser(logicalModelApi, graphicalModelApi, interpretersInterface.errorReporter()))
 {
 }
 
@@ -63,15 +70,19 @@ void GraphTransformationUnit::loadSemantics()
 	mDeletedElements = new QHash<QString, IdList*>();
 	mReplacedElements = new QHash<QString, IdList*>();
 	mCreatedElements = new QHash<QString, IdList*>();
-	mElementsWithNewControlMark = new QHash<QString, IdList*>();
-	mElementsWithControlMark = new QHash<QString, IdList*>();
+	mNodesWithNewControlMark = new QHash<QString, IdList*>();
+	mNodesWithDeletedControlMark = new QHash<QString, IdList*>();
+	mNodesWithControlMark = new QHash<QString, IdList*>();
+	
+	mInterpretersInterface.dehighlight();
 	
 	foreach (Id const &rule, rules) {
 		QString ruleName = getProperty(rule, "ruleName").toString();
 		mRules->insert(ruleName, rule);
 		IdList const ruleElements = children(rule);
 		foreach (Id const &ruleElement, ruleElements) {
-			if (ruleElement.element() == "ControlFlowLocation") {
+			if (ruleElement.element() == "ControlFlowLocation"||
+					ruleElement.element() == "Wildcard") {
 				continue;
 			}
 			
@@ -83,14 +94,17 @@ void GraphTransformationUnit::loadSemantics()
 			
 			QString const semanticsStatus = getProperty(ruleElement, "semanticsStatus").toString();
 			if (ruleElement.element() == "ControlFlowMark") {
+				Id const nodeWithControl = getNodeIdWithControlMark(ruleElement);
 				if (semanticsStatus == "" || semanticsStatus == "@deleted@") {
-					Id const nodeWithControl = getNodeIdWithControlMark(ruleElement);
-					putIdIntoMap(mElementsWithControlMark, ruleName, nodeWithControl);
+					putIdIntoMap(mNodesWithControlMark, ruleName, nodeWithControl);
 					if (semanticsStatus == "@deleted@") {
-						putIdIntoMap(mDeletedElements, ruleName, ruleElement);
+						putIdIntoMap(mNodesWithDeletedControlMark, ruleName,
+								nodeWithControl);
 					}
 				} else {
 					putIdIntoMap(mCreatedElements, ruleName, ruleElement);
+					putIdIntoMap(mNodesWithNewControlMark, ruleName,
+							nodeWithControl);
 				}
 				continue;
 			}
@@ -106,15 +120,26 @@ void GraphTransformationUnit::loadSemantics()
 	report("Semantics loaded successfully");
 }
 
+void GraphTransformationUnit::pause(int time)
+{
+	QEventLoop loop;
+	QTimer::singleShot(time, &loop, SLOT(quit()));
+	loop.exec();
+}
+
 void GraphTransformationUnit::interpret()
 {
-	if (findMatch()) {
+	int timeout = SettingsManager::value("debuggerTimeout", 750).toInt();
+	
+	while (findMatch()) {
 		makeStep();
-		highlightMatch();
+		//highlightMatch();
 		report("Rule '" + mMatchedRuleName + "' was applied successfully");
-	} else {
-		report("No rule cannot be applied");
+		
+		pause(timeout);
 	}
+	
+	report("No rule cannot be applied");
 }
 
 void GraphTransformationUnit::highlightMatch()
@@ -123,9 +148,7 @@ void GraphTransformationUnit::highlightMatch()
 		mInterpretersInterface.highlight(mMatch->value(id), false);
 	}
 	
-	QEventLoop loop;
-	QTimer::singleShot(2000, &loop, SLOT(quit()));
-	loop.exec();
+	pause(2000);
 	
 	mInterpretersInterface.dehighlight();
 }
@@ -138,6 +161,7 @@ bool GraphTransformationUnit::findMatch()
 	}
 	
 	foreach (QString const &ruleName, mRules->keys()) {
+		mCurrentRuleName = ruleName;
 		if (checkRuleMatching(mRules->value(ruleName))) {
 			mMatchedRuleName = ruleName;
 			return true;
@@ -155,7 +179,7 @@ bool GraphTransformationUnit::checkRuleMatching(Id const &rule)
 	
 	IdList const elements = getElementsFromActiveDiagram();
 	foreach (Id const &element, elements) {
-		if (compareElementTypes(startElement, element)) {
+		if (compareElements(element, startElement)) {
 			mCurrentMatchedGraphInRule.clear();
 			mNodesHavingOutsideLinks.clear();
 			mMatch->clear();
@@ -276,7 +300,7 @@ IdList GraphTransformationUnit::getLinksToMatchedSubgraph(Id const &nodeInRule) 
 
 Id GraphTransformationUnit::getOutsideLink(Id const &nodeInRule) const
 {
-	IdList linksInRule = links(nodeInRule);
+	IdList const linksInRule = links(nodeInRule);
 	foreach (Id const &linkInRule, linksInRule) {
 		Id const linkEndInRule = getLinkEnd(linkInRule, nodeInRule);
 		if (!mCurrentMatchedGraphInRule.contains(linkEndInRule)) {
@@ -299,9 +323,9 @@ Id GraphTransformationUnit::getLinkEnd(Id const &linkInRule, Id const &nodeInRul
 Id GraphTransformationUnit::getProperLink(Id const &nodeInModel,
 		 Id const &linkInRule, Id const &linkEndInRule) const
 {
-	IdList linksInModel = links(nodeInModel);
+	IdList const linksInModel = links(nodeInModel);
 	foreach (Id const &linkInModel, linksInModel) {
-		if (compareElements(linkInModel, linkInRule)) {
+		if (compareLinks(linkInModel, linkInRule)) {
 			Id const linkEndInModel = getLinkEnd(linkInModel, nodeInModel);
 			if (linkEndInModel == mMatch->value(linkEndInRule)) {
 				return linkInModel;
@@ -316,9 +340,9 @@ IdList GraphTransformationUnit::getProperLinks(Id const &nodeInModel,
 		Id const &linkInRule) const
 {
 	IdList result;
-	IdList linksInModel = links(nodeInModel);
+	IdList const linksInModel = links(nodeInModel);
 	foreach (Id const &linkInModel, linksInModel) {
-		if (compareElements(linkInModel, linkInRule)) {
+		if (compareLinks(linkInModel, linkInRule)) {
 			result.append(linkInModel);
 		}
 	}
@@ -330,7 +354,7 @@ Id GraphTransformationUnit::getStartElement(Id const &rule) const
 	IdList const elementsInRule = children(rule);
 	
 	foreach (Id const &element, elementsInRule) {
-		if (!isEdge(element)) {
+		if (!isEdge(element) && element.element() != "ControlFlowMark") {
 			return element;
 		}
 	}
@@ -340,21 +364,114 @@ Id GraphTransformationUnit::getStartElement(Id const &rule) const
 
 void GraphTransformationUnit::makeStep()
 {
+	if (mNodesWithDeletedControlMark->contains(mMatchedRuleName)) {
+		foreach (Id const &id, *(mNodesWithDeletedControlMark->value(mMatchedRuleName))) {
+			Id const node = mMatch->value(id);
+			mInterpretersInterface.dehighlight(node);
+			mCurrentNodesWithControlMark.removeOne(node);
+		}
+	}
+	
+	if (mNodesWithNewControlMark->contains(mMatchedRuleName)) {
+		foreach (Id const &id, *(mNodesWithNewControlMark->value(mMatchedRuleName))) {
+			Id const node = mMatch->value(id);
+			mInterpretersInterface.highlight(node, false);
+			mCurrentNodesWithControlMark.append(node);
+		}
+	}
+	
+	Id const rule = mRules->value(mMatchedRuleName);
+	QString const ruleProcess = getProperty(rule, "procedure").toString();
+	if (ruleProcess != "") {
+		mRuleParser->setRuleId(mRules->value(mMatchedRuleName));
+		mRuleParser->parseRule(ruleProcess, mMatch);
+	}
 }
 
-bool GraphTransformationUnit::compareElements(Id const &first,Id const &second) const
+bool GraphTransformationUnit::compareLinks(Id const &first,Id const &second) const
 {
-	bool result = compareElementTypes(first, second);
-	if (isEdge(first)) {
-		result = result && compareElementTypes(to(first), to(second))
-				&& compareElementTypes(from(first), from(second));
+	return compareElementTypesAndProperties(first, second)
+			&& compareElements(to(first), to(second))
+			&& compareElements(from(first), from(second));
+}
+
+bool GraphTransformationUnit::compareElements(Id const &first, Id const &second) const
+{
+	bool result = compareElementTypesAndProperties(first, second);
+	
+	if (mNodesWithControlMark->contains(mCurrentRuleName)) {
+		if (mNodesWithControlMark->value(mCurrentRuleName)->contains(second)) {
+			result = result && mCurrentNodesWithControlMark.contains(first);
+		}
+		if (mCurrentNodesWithControlMark.contains(first)) {
+			result = result && mNodesWithControlMark->value(mCurrentRuleName)->contains(second);
+		}
+	} else if (result && mCurrentNodesWithControlMark.contains(first)) {
+		return false;
 	}
+	
 	return result;
 }
 
-bool GraphTransformationUnit::compareElementTypes(Id const &first, Id const &second) const
+bool GraphTransformationUnit::compareElementTypesAndProperties(Id const &first,
+		Id const &second) const
 {
-	return first.element() == second.element() && first.diagram() == second.diagram();
+	if (second.element() == "Wildcard") {
+		return true;
+	}
+	
+	if (first.element() == second.element() && first.diagram() == second.diagram()) {
+		QHash<QString, QVariant> secondProperties = getProperties(second);
+		
+		foreach (QString const &key, secondProperties.keys()) {
+			QVariant const value = secondProperties.value(key);
+			
+			if (value.toString() == "") {
+				continue;
+			}
+			
+			if (!hasProperty(first, key) || getProperty(first, key) != value) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+
+	return false;
+}
+
+bool GraphTransformationUnit::hasProperty(Id const &id, QString const &propertyName) const
+{
+	if (mLogicalModelApi.isLogicalId(id)) {
+		return mLogicalModelApi.logicalRepoApi().hasProperty(id, propertyName);
+	} else {
+		return mLogicalModelApi.logicalRepoApi().hasProperty(
+				mGraphicalModelApi.logicalId(id), propertyName);
+	}
+}
+
+QHash<QString, QVariant> GraphTransformationUnit::getProperties(Id const &id) const
+{
+	QHash<QString, QVariant> res;
+	
+	QMapIterator<QString, QVariant> *properties;
+	if (mLogicalModelApi.isLogicalId(id)) {
+		properties = &mLogicalModelApi.logicalRepoApi().propertiesIterator(id);
+	} else {
+		properties = &mLogicalModelApi.logicalRepoApi().propertiesIterator(
+				mGraphicalModelApi.logicalId(id));
+	}
+	
+	while (properties->hasNext()) {
+		properties->next();
+		
+		if (!defaultProperties.contains(properties->key())) {
+			res.insert(properties->key(), properties->value());
+		}
+	}
+	
+	return res;
 }
 
 bool GraphTransformationUnit::isEdge(Id const &element) const
@@ -363,13 +480,24 @@ bool GraphTransformationUnit::isEdge(Id const &element) const
 			from(element) != Id::rootId();
 }
 
-QVariant GraphTransformationUnit::getProperty(Id const &id, QString const &propertyName)
+QVariant GraphTransformationUnit::getProperty(Id const &id, QString const &propertyName) const
 {
 	if (mLogicalModelApi.isLogicalId(id)) {
 		return mLogicalModelApi.logicalRepoApi().property(id, propertyName);
 	} else {
 		return mLogicalModelApi.logicalRepoApi().property(
-					mGraphicalModelApi.logicalId(id), propertyName);
+				mGraphicalModelApi.logicalId(id), propertyName);
+	}
+}
+
+void GraphTransformationUnit::setProperty(Id const &id, QString const &propertyName
+		, QVariant const &value) const
+{
+	if (mLogicalModelApi.isLogicalId(id)) {
+		return mLogicalModelApi.logicalRepoApi().setProperty(id, propertyName, value);
+	} else {
+		return mLogicalModelApi.logicalRepoApi().setProperty(
+				mGraphicalModelApi.logicalId(id), propertyName, value);
 	}
 }
 
@@ -401,7 +529,14 @@ IdList GraphTransformationUnit::incomingLinks(Id const &id) const
 
 IdList GraphTransformationUnit::links(Id const &id) const
 {
-	return mLogicalModelApi.logicalRepoApi().links(id);
+	IdList result;
+	foreach (Id const &id, mLogicalModelApi.logicalRepoApi().links(id)) {
+		if (id.element() != "Replacement" && id.element() != "ControlFlowLocation") {
+			result.append(id);
+		}
+	}
+	
+	return result;
 }
 
 IdList GraphTransformationUnit::children(Id const &id) const

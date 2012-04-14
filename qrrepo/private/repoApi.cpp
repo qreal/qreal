@@ -246,7 +246,7 @@ QString RepoApi::stringProperty(Id const &id, QString const &propertyName) const
 	return mClient.property(id, propertyName).toString();
 }
 
-void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value)
+void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value) const
 {
 	mClient.setProperty(id, propertyName, value);
 }
@@ -494,4 +494,9 @@ void RepoApi::setTemporaryRemovedLinks(Id const &id, IdList const &value, QStrin
 void RepoApi::removeTemporaryRemovedLinks(Id const &id)
 {
 	mClient.removeTemporaryRemovedLinks(id);
+}
+
+QMapIterator<QString, QVariant> RepoApi::propertiesIterator(qReal::Id const &id) const
+{
+	return mClient.propertiesIterator(id);
 }

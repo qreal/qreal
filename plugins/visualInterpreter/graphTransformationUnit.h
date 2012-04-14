@@ -2,6 +2,7 @@
 
 #include "../../../qrgui/mainwindow/errorReporter.h"
 #include "../../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
+#include "ruleParser.h"
 
 namespace qReal {
 
@@ -92,9 +93,13 @@ private:
 	/// Get first node from rule to start the algo
 	Id getStartElement(Id const &rule) const;
 	
-	QVariant getProperty(Id const &id, QString const &propertyName);
+	QVariant getProperty(Id const &id, QString const &propertyName) const;
+	bool hasProperty(Id const &id, QString const &propertyName) const;
+	void setProperty(Id const &id, QString const &propertyName, QVariant const &value) const;
+	QHash<QString, QVariant> getProperties(Id const &id) const;
+	bool compareLinks(Id const &first, Id const &second) const;
 	bool compareElements(Id const &first, Id const &second) const;
-	bool compareElementTypes(Id const &first, Id const &second) const;
+	bool compareElementTypesAndProperties(Id const &first, Id const &second) const;
 	bool isEdge(Id const &element) const;
 	
 	/// Logical repo api methods for more quick access
@@ -107,6 +112,8 @@ private:
 	
 	/// Reports message to the main system
 	void report(QString const &message) const;
+	
+	void pause(int time);
 	
 	gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	LogicalModelAssistInterface const &mLogicalModelApi;
@@ -122,8 +129,9 @@ private:
 	QHash<QString, IdList*> *mDeletedElements;
 	QHash<QString, IdList*> *mReplacedElements;
 	QHash<QString, IdList*> *mCreatedElements;
-	QHash<QString, IdList*> *mElementsWithNewControlMark;
-	QHash<QString, IdList*> *mElementsWithControlMark;
+	QHash<QString, IdList*> *mNodesWithNewControlMark;
+	QHash<QString, IdList*> *mNodesWithDeletedControlMark;
+	QHash<QString, IdList*> *mNodesWithControlMark;
 	
 	/// Match map: key - id in rule diagram, value - id in diagram
 	/// which will be transformed
@@ -139,6 +147,12 @@ private:
 	int mPos;
 	
 	QString mMatchedRuleName;
+	QString mCurrentRuleName;
+	
+	/// Nodes of model which have control mark
+	IdList mCurrentNodesWithControlMark;
+	
+	RuleParser *mRuleParser;
 };
 
 }
