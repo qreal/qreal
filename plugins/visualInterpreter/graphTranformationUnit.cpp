@@ -77,11 +77,11 @@ void GraphTransformationUnit::loadSemantics()
 	mInterpretersInterface.dehighlight();
 	
 	foreach (Id const &rule, rules) {
-		QString ruleName = getProperty(rule, "ruleName").toString();
+		QString const ruleName = getProperty(rule, "ruleName").toString();
 		mRules->insert(ruleName, rule);
 		IdList const ruleElements = children(rule);
 		foreach (Id const &ruleElement, ruleElements) {
-			if (ruleElement.element() == "ControlFlowLocation"||
+			if (ruleElement.element() == "ControlFlowLocation" ||
 					ruleElement.element() == "Wildcard") {
 				continue;
 			}
@@ -129,7 +129,7 @@ void GraphTransformationUnit::pause(int time)
 
 void GraphTransformationUnit::interpret()
 {
-	int timeout = SettingsManager::value("debuggerTimeout", 750).toInt();
+	int const timeout = SettingsManager::value("debuggerTimeout", 750).toInt();
 	
 	while (findMatch()) {
 		makeStep();

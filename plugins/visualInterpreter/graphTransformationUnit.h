@@ -93,13 +93,18 @@ private:
 	/// Get first node from rule to start the algo
 	Id getStartElement(Id const &rule) const;
 	
+	/// Functions for working with properties of elements on model
 	QVariant getProperty(Id const &id, QString const &propertyName) const;
 	bool hasProperty(Id const &id, QString const &propertyName) const;
-	void setProperty(Id const &id, QString const &propertyName, QVariant const &value) const;
+	void setProperty(Id const &id, QString const &propertyName,
+			QVariant const &value) const;
 	QHash<QString, QVariant> getProperties(Id const &id) const;
+	
+	/// Functions for test elements for equality
 	bool compareLinks(Id const &first, Id const &second) const;
 	bool compareElements(Id const &first, Id const &second) const;
 	bool compareElementTypesAndProperties(Id const &first, Id const &second) const;
+	
 	bool isEdge(Id const &element) const;
 	
 	/// Logical repo api methods for more quick access
@@ -113,6 +118,7 @@ private:
 	/// Reports message to the main system
 	void report(QString const &message) const;
 	
+	/// Stops interpretation for some time in ms
 	void pause(int time);
 	
 	gui::MainWindowInterpretersInterface &mInterpretersInterface;
@@ -152,6 +158,7 @@ private:
 	/// Nodes of model which have control mark
 	IdList mCurrentNodesWithControlMark;
 	
+	/// Rule parser and interpreter to deal with textual part of rules
 	RuleParser *mRuleParser;
 };
 

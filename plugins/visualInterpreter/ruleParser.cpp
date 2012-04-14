@@ -1,7 +1,5 @@
 #include "ruleParser.h"
 
-#include <QMessageBox>
-
 using namespace qReal;
 using namespace utils;
 
@@ -57,16 +55,17 @@ void RuleParser::checkForClosingBracketAndColon(QString const &stream, int &pos)
 	pos++;
 }
 
-void RuleParser::parseRunFunction(QString const &stream, int &pos, QHash<Id, Id> *mMatch)
+void RuleParser::parseRunFunction(QString const &stream, int &pos,
+		QHash<Id, Id> *mMatch)
 {
 	pos += 4;
 	
-	QString name = parseElemName(stream, pos);
+	QString const name = parseElemName(stream, pos);
 	if (hasErrors()) {
 		return;
 	}
 	
-	QString property = parseElemProperty(stream, pos);
+	QString const property = parseElemProperty(stream, pos);
 	if (hasErrors()) {
 		return;
 	}
@@ -80,14 +79,15 @@ void RuleParser::parseRunFunction(QString const &stream, int &pos, QHash<Id, Id>
 	mCurrentId = mRuleId;
 }
 
-void RuleParser::parsePropertyChange(QString const &stream, int &pos, QHash<Id, Id> *mMatch)
+void RuleParser::parsePropertyChange(QString const &stream, int &pos,
+		QHash<Id, Id> *mMatch)
 {
-	QString name = parseElemName(stream, pos);
+	QString const name = parseElemName(stream, pos);
 	if (hasErrors()) {
 		return;
 	}
 	
-	QString property = parseElemProperty(stream, pos);
+	QString const property = parseElemProperty(stream, pos);
 	if (hasErrors()) {
 		return;
 	}
@@ -106,12 +106,12 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos, QHash<Id, 
 		pos += 5;
 		skip(stream, pos);
 		
-		QString condName = parseElemName(stream, pos);
+		QString const condName = parseElemName(stream, pos);
 		if (hasErrors()) {
 			return;
 		}
 		
-		QString condProperty = parseElemProperty(stream, pos);
+		QString const condProperty = parseElemProperty(stream, pos);
 		if (hasErrors()) {
 			return;
 		}
@@ -124,7 +124,8 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos, QHash<Id, 
 		bool value = parseCondition(getProperty(
 				condId, condProperty).toString(), position, condId);
 		
-		setProperty(getElementByName(name, mMatch), property, QString(value ? "true" : "false"));
+		setProperty(getElementByName(name, mMatch), property,
+				QString(value ? "true" : "false"));
 		mCurrentId = mRuleId;
 		
 		return;
@@ -211,7 +212,8 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos, QHash<Id, 
 		}
 		pos++;
 		
-		setProperty(getElementByName(name, mMatch), property, QString(result ? "true" : "false"));
+		setProperty(getElementByName(name, mMatch), property,
+				QString(result ? "true" : "false"));
 	} else {
 		Number result = parseExpression(stream, pos);
 		if (hasErrors()) {
@@ -224,7 +226,8 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos, QHash<Id, 
 		}
 		pos++;
 		
-		setProperty(getElementByName(name, mMatch), property, result.property("Number").toString());
+		setProperty(getElementByName(name, mMatch), property,
+				result.property("Number").toString());
 	}
 	
 }
@@ -234,14 +237,17 @@ bool RuleParser::checkForLogicalConst(QString const &stream, int &pos)
 	return stream.mid(pos, 4) == "true" || stream.mid(pos, 5) == "false";
 }
 
-void RuleParser::parseRuleCommand(QString const &stream, int &pos, QHash<Id, Id> *mMatch)
+void RuleParser::parseRuleCommand(QString const &stream, int &pos,
+		QHash<Id, Id> *mMatch)
 {
 	if (stream.mid(pos, 4) == "run(") {
 		parseRunFunction(stream, pos, mMatch);
 		return;
 	}
 	
-	if (stream.indexOf(".", pos) > 0 && stream.indexOf(".", pos) < stream.indexOf("=", pos)) {
+	if (stream.indexOf(".", pos) > 0 &&
+			stream.indexOf(".", pos) < stream.indexOf("=", pos))
+	{
 		parsePropertyChange(stream, pos, mMatch);
 	} else {
 		parseCommand(stream, pos);
@@ -303,9 +309,11 @@ void RuleParser::parseVarPart(QString const &stream, int &pos)
 		pos += 4;
 		skip(stream, pos);
 		if (!isEndOfStream(stream, pos) &&
-				stream.mid(pos, 4).compare("int ") != 0 && stream.mid(pos, 7).compare("double ") != 0)
+				stream.mid(pos, 4).compare("int ") != 0 &&
+				stream.mid(pos, 7).compare("double ") != 0)
 		{
-			error(unexpectedSymbol, QString::number(pos + 1), tr("int\' or \'double"), stream.at(pos));
+			error(unexpectedSymbol, QString::number(pos + 1),
+					tr("int\' or \'double"), stream.at(pos));
 			return;
 		}
 
