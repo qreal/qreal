@@ -5,6 +5,7 @@ FindDialog::FindDialog(QWidget *parent) : QDialog(parent)
 {
 	mCheckBoxes.append(new QCheckBox(tr("by name")));
 	mCheckBoxes.append(new QCheckBox(tr("by type")));
+	mCheckBoxes.append(new QCheckBox(tr("by property")));
 
 	mLabel = new QLabel(tr("Find:"));
 	mLineEdit = new QLineEdit();

@@ -476,6 +476,11 @@ IdList RepoApi::elementsByType(QString const &type) const
 	return result;
 }
 
+qReal::IdList RepoApi::elementsByProperty(QString const &property) const
+{
+	return mClient.elementsByProperty(property);
+}
+
 int RepoApi::elementsCount() const
 {
 	return mClient.elements().size();

@@ -44,6 +44,18 @@ IdList Client::findElementsByName(const QString &name) const
 	return result;
 }
 
+qReal::IdList Client::elementsByProperty(QString const &property) const
+{
+	IdList result;
+
+	foreach (Object *element, mObjects.values())
+		if ((element->hasProperty(property)) && (!isLogicalId(mObjects.key(element))))
+				result.append(mObjects.key(element));
+
+	return result;
+}
+
+
 IdList Client::children(Id const &id) const
 {
 	if (mObjects.contains(id)) {
