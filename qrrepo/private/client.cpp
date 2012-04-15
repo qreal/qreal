@@ -32,6 +32,45 @@ Client::~Client()
 	}
 }
 
+IdList Client::findElementsByName(const QString &name) const
+{
+	IdList result;
+
+	foreach (Object *element, mObjects.values())
+		if ((element->property("name").toString().contains(name))
+			&& (!isLogicalId(mObjects.key(element))))
+				result.append(mObjects.key(element));
+
+	return result;
+}
+
+qReal::IdList Client::elementsByProperty(QString const &property) const
+{
+	IdList result;
+
+	foreach (Object *element, mObjects.values())
+		if ((element->hasProperty(property)) && (!isLogicalId(mObjects.key(element))))
+				result.append(mObjects.key(element));
+
+	return result;
+}
+
+qReal::IdList Client::elementsByPropertyContent(QString const &propertyValue) const
+{
+	IdList result;
+
+	foreach (Object *element, mObjects.values()) {
+		QMapIterator<QString, QVariant> iterator = element->propertiesIterator();
+		while (iterator.hasNext())
+			if (iterator.next().value().toString().contains(propertyValue)) {
+				result.append(mObjects.key(element));
+				break;
+			}
+	}
+
+	return result;
+}
+
 IdList Client::children(Id const &id) const
 {
 	if (mObjects.contains(id)) {

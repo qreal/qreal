@@ -60,6 +60,8 @@ MainWindow::MainWindow()
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 {
+	mFindDialog = new FindDialog(this);
+
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
 
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
@@ -119,6 +121,8 @@ MainWindow::MainWindow()
 		mSaveFile = saveFile.absoluteFilePath();
 
 	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
+
+	mRefWindowDialog = new RefWindowDialog(mModels->logicalRepoApi(), this);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
@@ -225,6 +229,8 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
+	connect(mFindDialog, SIGNAL(findModelByName(QStringList)), this, SLOT(handleFindDialog(QStringList)));
+	connect(mRefWindowDialog, SIGNAL(chosenElement(qReal::Id)), this, SLOT(handleRefsDialog(qReal::Id)));
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -242,8 +248,10 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 		saveAll();
 	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_W) {
 		closeTab(mUi->tabs->currentIndex());
-	} else if (keyEvent->key() == Qt::Key_F1){
+	} else if (keyEvent->key() == Qt::Key_F1) {
 		showHelp();
+	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_F) {
+		mFindDialog->show();
 	}
 }
 
@@ -258,6 +266,9 @@ MainWindow::~MainWindow()
 	delete mRecentProjectsMapper;
 	delete mGesturesWidget;
 	delete mModels;
+	delete mCodeTabManager;
+	delete mFindDialog;
+	delete mRefWindowDialog;
 }
 
 EditorManager* MainWindow::manager()
@@ -268,6 +279,47 @@ EditorManager* MainWindow::manager()
 void MainWindow::finalClose()
 {
 	mCloseEvent->accept();
+}
+
+void MainWindow::handleRefsDialog(qReal::Id const &id)
+{
+	activateItemOrDiagram(id, false, true);
+}
+
+qReal::IdList MainWindow::foundByMode(QString key, QString currentMode)
+{
+	if (currentMode == tr("by name"))
+		return mModels->repoControlApi().findElementsByName(key);
+	if (currentMode == tr("by type"))
+		return mModels->logicalRepoApi().elementsByType(key);
+	if (currentMode == tr("by property"))
+		return mModels->repoControlApi().elementsByProperty(key);
+	if (currentMode == tr("by property content"))
+		return mModels->repoControlApi().elementsByPropertyContent(key);
+}
+
+QMap<QString, QString> MainWindow::findItems(QStringList const &searchData)
+{
+	QMap<QString, QString> found;
+	for(int i = 1; i < searchData.length(); i++) {
+		qReal::IdList byMode = foundByMode(searchData.first(), searchData[i]);
+		foreach (qReal::Id currentId, byMode) {
+			if (found.contains(currentId.toString())) {
+				found[currentId.toString()] += tr(", ") + searchData[i];
+				continue;
+			}
+			found.insert(currentId.toString(), tr("   :: ") + searchData[i]);
+		}
+	}
+	return found;
+}
+
+void MainWindow::handleFindDialog(QStringList const &searchData)
+{
+	QMap<QString, QString> found = findItems(searchData);
+
+	if ((!found.isEmpty()) && (mRefWindowDialog->initIds(found)))
+		mRefWindowDialog->show();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
