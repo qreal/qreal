@@ -9,7 +9,7 @@ RefWindowDialog::RefWindowDialog(qrRepo::LogicalRepoApi const &logicalRepoApi, Q
 	mMainLayout = new QHBoxLayout();
 }
 
-void RefWindowDialog::initIds(QMap<QString, QString> foundData)
+bool RefWindowDialog::initIds(QMap<QString, QString> foundData)
 {
 	mListWidget->clear();
 	mMainLayout->removeWidget(mListWidget);
@@ -32,6 +32,8 @@ void RefWindowDialog::initIds(QMap<QString, QString> foundData)
 
 	setWindowTitle(tr("Found elements:"));
 	setFixedHeight(sizeHint().height());
+
+	return (!mListWidget->count() == 0);
 }
 
 RefWindowDialog::~RefWindowDialog()

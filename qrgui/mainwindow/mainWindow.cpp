@@ -316,10 +316,8 @@ void MainWindow::handleFindDialog(QStringList const &searchData)
 {
 	QMap<QString, QString> found = findItems(searchData);
 
-	if (!found.isEmpty()) {
-		mRefWindowDialog->initIds(found);
+	if ((!found.isEmpty()) && (mRefWindowDialog->initIds(found)))
 		mRefWindowDialog->show();
-	}
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

@@ -17,7 +17,7 @@ class RefWindowDialog : public QDialog
 
 		RefWindowDialog(qrRepo::LogicalRepoApi const &logicalRepoApi, QWidget *parent = NULL);
 		~RefWindowDialog();
-		void initIds(QMap<QString, QString> foundData);
+		bool initIds(QMap<QString, QString> foundData);
 
 	signals:
 

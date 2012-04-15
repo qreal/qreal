@@ -55,7 +55,6 @@ qReal::IdList Client::elementsByProperty(QString const &property) const
 	return result;
 }
 
-
 IdList Client::children(Id const &id) const
 {
 	if (mObjects.contains(id)) {
