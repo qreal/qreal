@@ -19,6 +19,10 @@ public:
 	/// @param name - string that should be contained by names of elements that have input property
 	virtual qReal::IdList elementsByProperty(QString const &property) const = 0;
 
+	/// virtual, for returning IdList of elements that have input property content
+	/// @param name - string that should be contained by names of elements that have input property content
+	virtual qReal::IdList elementsByPropertyContent(QString const &propertyContent) const = 0;
+
 	/// virtual, for import *.qrs file into current project
 	/// @param importedFile - file to be imported
 	virtual void importFromDisk(QString const &importedFile) = 0;

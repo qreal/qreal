@@ -55,6 +55,22 @@ qReal::IdList Client::elementsByProperty(QString const &property) const
 	return result;
 }
 
+qReal::IdList Client::elementsByPropertyContent(QString const &propertyValue) const
+{
+	IdList result;
+
+	foreach (Object *element, mObjects.values()) {
+		QMapIterator<QString, QVariant> iterator = element->propertiesIterator();
+		while (iterator.hasNext())
+			if (iterator.next().value().toString().contains(propertyValue)) {
+				result.append(mObjects.key(element));
+				break;
+			}
+	}
+
+	return result;
+}
+
 IdList Client::children(Id const &id) const
 {
 	if (mObjects.contains(id)) {

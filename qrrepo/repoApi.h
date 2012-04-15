@@ -25,6 +25,7 @@ namespace qrRepo {
 
 		qReal::IdList findElementsByName(QString const &name) const;
 		qReal::IdList elementsByProperty(QString const &property) const;
+		qReal::IdList elementsByPropertyContent(QString const &propertyContent) const;
 
 		qReal::IdList children(qReal::Id const &id) const;
 		virtual void addChild(qReal::Id const &id, qReal::Id const &child);

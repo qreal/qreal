@@ -32,6 +32,11 @@ IdList RepoApi::findElementsByName(QString const &name) const
 	return mClient.findElementsByName(name);
 }
 
+qReal::IdList RepoApi::elementsByPropertyContent(QString const &propertyContent) const
+{
+	return mClient.elementsByPropertyContent(propertyContent);
+}
+
 void RepoApi::addChild(Id const &id, Id const &child)
 {
 	mClient.addChild(id, child);
@@ -470,7 +475,7 @@ IdList RepoApi::elementsByType(QString const &type) const
 {
 	IdList result;
 	foreach (Id id, mClient.elements()) {
-		if (id.element().contains(type))
+		if (id.element() == type)
 			result.append(id);
 	}
 	return result;

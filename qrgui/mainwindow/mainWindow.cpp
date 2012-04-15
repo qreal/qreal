@@ -294,6 +294,8 @@ qReal::IdList MainWindow::foundByMode(QString key, QString currentMode)
 		return mModels->logicalRepoApi().elementsByType(key);
 	if (currentMode == tr("by property"))
 		return mModels->repoControlApi().elementsByProperty(key);
+	if (currentMode == tr("by property content"))
+		return mModels->repoControlApi().elementsByPropertyContent(key);
 }
 
 QMap<QString, QString> MainWindow::findItems(QStringList const &searchData)
