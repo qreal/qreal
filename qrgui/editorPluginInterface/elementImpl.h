@@ -79,6 +79,7 @@ struct StatLine
   * */
 class ElementImpl {
 public:
+	virtual ~ElementImpl() {}
 	virtual void init(QRectF &contents, QList<StatPoint> &pointPorts,
 					  QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
 					  QList<ElementTitleInterface*> &titles,
