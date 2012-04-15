@@ -1,8 +1,11 @@
 <RCC>
     <qresource prefix="/">
         <file>robotsGenerator_ru.qm</file>
-        <file>nxtOSEK/templates/template.c</file>
-        <file>nxtOSEK/templates/template.makefile</file>
-        <file>nxtOSEK/templates/template.oil</file>
+        <file>nxtOSEK/funcOrientedGenerator/templates/template.c</file>
+        <file>nxtOSEK/funcOrientedGenerator/templates/template.makefile</file>
+        <file>nxtOSEK/funcOrientedGenerator/templates/template.oil</file>
+        <file>nxtOSEK/sequentialGenerator/templates/template.c</file>
+        <file>nxtOSEK/sequentialGenerator/templates/template.makefile</file>
+        <file>nxtOSEK/sequentialGenerator/templates/template.oil</file>
     </qresource>
 </RCC>

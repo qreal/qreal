@@ -67,7 +67,7 @@ void NxtFlashTool::readNxtFlashData()
 	qDebug() << "exit code:" << mFlashProcess.exitCode();
 	qDebug() << output;
 
-	foreach (QString error, output) {
+	foreach (QString const &error, output) {
 		if (error == "NXT not found. Is it properly plugged in via USB?") {
 			mErrorReporter->addError(tr("NXT not found. Check USB connection and make sure the robot is ON"));
 		} else if (error == "NXT found, but not running in reset mode.") {
@@ -113,7 +113,7 @@ void NxtFlashTool::readNxtUploadData()
 	   to determine in which state we are (to show appropriate error if something goes wrong)
 	*/
 
-	foreach (QString error, output) {
+	foreach (QString const &error, output) {
 		if (error.contains("Removing ")) {
 			mUploadState = clean;
 		} else if (error.contains("Compiling ")) {
