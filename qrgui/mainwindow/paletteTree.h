@@ -63,9 +63,9 @@ public:
 	/// Set item with such id as active in ComboBox.
 	void setComboBox(Id const &id);
 	void setIconsView(bool iconsView);
-	bool IconsView() const;
+	bool iconsView() const;
 	void setItemsCountInARow(int count);
-	int ItemsCountInARow() const;
+	int itemsCountInARow() const;
 
 	/// Set item with such index as active in ComboBox.
 	void setComboBoxIndex(int index);
@@ -158,7 +158,7 @@ private:
 	  @param editorTree Editor's tree
 	  @param item Editor's tree node for adding in it tmpList.
 	*/
-	void addItemsRow(IdList &tmpIdList, QTreeWidget *editorTree, QTreeWidgetItem *item);
+	void addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, QTreeWidgetItem *item);
 
 	/// Hash table with editor ids.
 	QHash<Id, int> mCategories;

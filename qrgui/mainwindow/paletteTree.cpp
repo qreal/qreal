@@ -14,14 +14,14 @@ EditorManager * PaletteTree::mEditorManager = NULL;
 PaletteTree::DraggableElement::DraggableElement(const Id &id, const QString &name
 		, const QString &description, const QIcon &icon, bool iconsOnly, QWidget *parent)
 	: QWidget(parent)
-	, mId(id)
+    , mId(id)
 	, mIcon(icon)
 	, mText(name)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(4, 4, 4, 4);
 
-	int size = iconsOnly ? 50 : 30;
+	const int size = iconsOnly ? 50 : 30;
 	QLabel *pic = new QLabel(this);
 	pic->setFixedSize(size, size);  // the frame
 	pic->setPixmap(mIcon.pixmap(size - 2, size - 2));
@@ -41,7 +41,6 @@ PaletteTree::DraggableElement::DraggableElement(const Id &id, const QString &nam
 		setToolTip(modifiedDescription);
 	}
 	setCursor(Qt::OpenHandCursor);
-
 }
 
 PaletteTree::PaletteTree(QWidget *parent)
@@ -78,7 +77,6 @@ void PaletteTree::DraggableElement::dropEvent(QDropEvent * /*event*/)
 
 void PaletteTree::DraggableElement::mousePressEvent(QMouseEvent *event)
 {
-
 	QWidget *atMouse = childAt(event->pos());
 	if (!atMouse || atMouse == this) {
 		return;
@@ -155,10 +153,12 @@ void PaletteTree::collapse()
 
 void PaletteTree::setActiveEditor(int index)
 {
-	mCurrentEditor = index;
-	mTree->hide();
-	mTree = mEditorsTrees[index];
-	mTree->show();
+    if (0 <= index && index < mEditorsTrees.count()) {
+		mCurrentEditor = index;
+		mTree->hide();
+		mTree = mEditorsTrees[index];
+		mTree->show();
+	}
 }
 
 void PaletteTree::setActiveEditor(Id id)
@@ -185,7 +185,7 @@ void PaletteTree::expand()
 	}
 }
 
-void PaletteTree::addItemsRow(IdList &tmpIdList, QTreeWidget *editorTree, QTreeWidgetItem *item)
+void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, QTreeWidgetItem *item)
 {
 	if (mItemsCountInARow == 1 || !mIconsView) {
 		foreach (const Id &element, tmpIdList) {
@@ -255,9 +255,8 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 
 			EditorTree->addTopLevelItem(item);
 
-			if (mSettings->value("Diagram" + mEditorsTrees.count() + group, 0).toBool()) {
+			if (mSettings->value(mEditorManager->friendlyName(diagram) + group, 0).toBool()) {
 				EditorTree->expandItem(item);
-				mSettings->remove("Diagram" + mEditorsTrees.count() + group);
 			}
 		}
 	} else {
@@ -325,10 +324,6 @@ void PaletteTree::createPaletteTree()
 	mLayout = new QVBoxLayout(this);
 	mLayout->setSpacing(0);
 
-	//QLabel *header = new QLabel("Palette");
-	//header->setAlignment(Qt::AlignHCenter);
-	//mLayout->addWidget(header);
-
 	mComboBox = new QComboBox;
 	mComboBox->setGeometry(0,0,300,50);
 	mLayout->addWidget(mComboBox);
@@ -352,22 +347,24 @@ void PaletteTree::createPaletteTree()
 	mTree = new QTreeWidget(this);
 	mTree->setHeaderHidden(true);
 	mLayout->addWidget(mTree);
-	mSettings = new QSettings("Qreal", "PaletteItems");
+	mSettings = new QSettings("QReal", "PaletteItems");
 }
 
 void PaletteTree::deletePaletteTree()
 {
-	for (int i = 0; i < mEditorsTrees.count(); i++) {
-		const QTreeWidget *editorTree = mEditorsTrees[i];
-		for (int j = 0; j < editorTree->topLevelItemCount(); j++) {
-			const QTreeWidgetItem *topItem = editorTree->topLevelItem(j);
-			if (topItem && topItem->isExpanded()) {
-				mSettings->setValue("Diagram" + i + topItem->text(0), 1);
-			}
-		}
-	}
-	mSettings->setValue("CurrentIndex", mComboBox->currentIndex());
+    int diagramIndex = 0;
+    foreach(const QTreeWidget *editorTree, mEditorsTrees) {
+        for (int j = 0; j < editorTree->topLevelItemCount(); j++) {
+            const QTreeWidgetItem *topItem = editorTree->topLevelItem(j);
+            if (topItem && topItem->isExpanded()) {
+                mSettings->setValue(mComboBox->itemText(diagramIndex) + topItem->text(0), 1);
+            }
+        }
+        diagramIndex++;
+    }
+	mSettings->setValue("CurrentIndex", mComboBox->currentIndex() >= 0 ? mComboBox->currentIndex() : 0);
 	mSettings->sync();
+    delete mSettings;
 	delete mCollapseAll;
 	delete mExpandAll;
 	delete mComboBox;
@@ -393,7 +390,7 @@ void PaletteTree::setComboBoxIndex()
 	mComboBox->setCurrentIndex(mSettings->value("CurrentIndex", 0).toInt());
 }
 
-bool PaletteTree::IconsView() const
+bool PaletteTree::iconsView() const
 {
 	return mIconsView;
 }
@@ -405,13 +402,14 @@ void PaletteTree::setIconsView(bool iconsView)
 
 void PaletteTree::loadEditors(EditorManager &editorManager)
 {
-	if (editorManager.editors().empty())
-		return;
 	foreach (Id const editor, editorManager.editors()) {
 		foreach (Id const diagram, editorManager.diagrams(editor)) {
 			addEditorElements(editorManager, editor, diagram);
 		}
 	}
+    const int index = mSettings->value("CurrentIndex", 0).toInt();
+    mSettings->clear();
+    mSettings->setValue("CurrentIndex", index >= 0 ? index : 0);
 }
 
 void PaletteTree::setItemsCountInARow(int count)
@@ -419,7 +417,7 @@ void PaletteTree::setItemsCountInARow(int count)
 	mItemsCountInARow = count;
 }
 
-int PaletteTree::ItemsCountInARow() const
+int PaletteTree::itemsCountInARow() const
 {
 	return mItemsCountInARow;
 }

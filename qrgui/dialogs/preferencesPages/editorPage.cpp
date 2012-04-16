@@ -25,6 +25,8 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	connect(mUi->indexGridSlider, SIGNAL(sliderMoved(int)), this, SLOT(indexGridSliderMoved(int)));
 	connect(mUi->fontCheckBox, SIGNAL(toggled(bool)), this, SLOT(manualFontCheckBoxChecked(bool)));
 	connect(mUi->fontSelectionButton, SIGNAL(clicked()),this, SLOT(fontSelectionButtonClicked()));
+    connect(mUi->paletteComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(paletteComboBoxClicked(int)));
+
 	mUi->indexGridSlider->setVisible(false);
 	mUi->label_20->setVisible(false);
 
@@ -42,6 +44,7 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	mUi->fontSelectionButton->setVisible(SettingsManager::value("CustomFont", false).toBool());
 
 	mUi->paletteComboBox->setCurrentIndex(SettingsManager::value("PaletteRepresentation", 0).toInt());
+    paletteComboBoxClicked(mUi->paletteComboBox->currentIndex());
 	mUi->paletteSpinBox->setValue(SettingsManager::value("PaletteIconsInARowCount", 1).toInt());
 
 	mFont = SettingsManager::value("CurrentFont", "").toString();
@@ -133,4 +136,9 @@ void PreferencesEditorPage::save()
 		mFontWasChanged = false;
 		mFontButtonWasPressed = false;
 	}
+}
+void PreferencesEditorPage::paletteComboBoxClicked(int index)
+{
+    mUi->label_7->setVisible((bool)index);
+    mUi->paletteSpinBox->setVisible((bool)index);
 }

@@ -30,6 +30,7 @@ private slots:
 	void indexGridSliderMoved(int value);
 	void manualFontCheckBoxChecked(bool);
 	void fontSelectionButtonClicked();
+    void paletteComboBoxClicked(int index);
 
 
 private:
