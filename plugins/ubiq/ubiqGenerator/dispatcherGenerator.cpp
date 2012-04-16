@@ -1,10 +1,11 @@
 #include <QtCore/QFile>
 
 #include "dispatcherGenerator.h"
-#include "nameNormalizer.h"
+#include "../../../qrutils/generatorsUtils/nameNormalizer.h"
 
 using namespace ubiq::generator;
 using namespace qReal;
+using namespace generatorsUtils;
 
 DispatcherGenerator::DispatcherGenerator(QString const &templateDirPath
 		, QString const &outputDirPath

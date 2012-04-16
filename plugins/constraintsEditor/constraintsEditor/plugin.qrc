@@ -1,0 +1,43 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file>generated/shapes/AbstractErrorTypeNodeClass.sdf</file>
+	<file>generated/shapes/AbstractErrorTypeNodePorts.sdf</file>
+	<file>generated/shapes/AbstractExistsNodeClass.sdf</file>
+	<file>generated/shapes/AbstractExistsNodePorts.sdf</file>
+	<file>generated/shapes/AbstractNodeForNodeConstraintClass.sdf</file>
+	<file>generated/shapes/AbstractNodeForNodeConstraintPorts.sdf</file>
+	<file>generated/shapes/AbstractSelectionNodeClass.sdf</file>
+	<file>generated/shapes/AbstractSelectionNodePorts.sdf</file>
+	<file>generated/shapes/BeginNodeClass.sdf</file>
+	<file>generated/shapes/BeginNodePorts.sdf</file>
+	<file>generated/shapes/ChildrensClass.sdf</file>
+	<file>generated/shapes/ChildrensPorts.sdf</file>
+	<file>generated/shapes/ConstraintsDiagramClass.sdf</file>
+	<file>generated/shapes/ConstraintsDiagramPorts.sdf</file>
+	<file>generated/shapes/EdgeConstraintClass.sdf</file>
+	<file>generated/shapes/EdgeConstraintPorts.sdf</file>
+	<file>generated/shapes/EdgesConstraintClass.sdf</file>
+	<file>generated/shapes/EdgesConstraintPorts.sdf</file>
+	<file>generated/shapes/EndNodeClass.sdf</file>
+	<file>generated/shapes/EndNodePorts.sdf</file>
+	<file>generated/shapes/IncomingLinksClass.sdf</file>
+	<file>generated/shapes/IncomingLinksPorts.sdf</file>
+	<file>generated/shapes/IncomingNodesClass.sdf</file>
+	<file>generated/shapes/IncomingNodesPorts.sdf</file>
+	<file>generated/shapes/MetamodelConstraintsClass.sdf</file>
+	<file>generated/shapes/MetamodelConstraintsPorts.sdf</file>
+	<file>generated/shapes/NodeConstraintClass.sdf</file>
+	<file>generated/shapes/NodeConstraintPorts.sdf</file>
+	<file>generated/shapes/NodesConstraintClass.sdf</file>
+	<file>generated/shapes/NodesConstraintPorts.sdf</file>
+	<file>generated/shapes/OrClass.sdf</file>
+	<file>generated/shapes/OutgoingLinksClass.sdf</file>
+	<file>generated/shapes/OutgoingLinksPorts.sdf</file>
+	<file>generated/shapes/OutgoingNodesClass.sdf</file>
+	<file>generated/shapes/OutgoingNodesPorts.sdf</file>
+	<file>generated/shapes/ParentClass.sdf</file>
+	<file>generated/shapes/ParentPorts.sdf</file>
+	<file>generated/shapes/PropertyNodeClass.sdf</file>
+	<file>generated/shapes/PropertyNodePorts.sdf</file>
+</qresource>
+</RCC>

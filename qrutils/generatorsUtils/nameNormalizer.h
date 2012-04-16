@@ -2,8 +2,7 @@
 
 #include <QtCore/QString>
 
-namespace ubiq {
-namespace generator {
+namespace generatorsUtils {
 
 /// Helper class that is meant to transform arbitrary string to a correct C++/C# identifier.
 class NameNormalizer
@@ -26,5 +25,4 @@ private:
 	static QString lowerFirst(QString const &string);
 };
 
-}
 }

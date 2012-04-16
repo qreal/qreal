@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+    <namespace>UML 2.0</namespace>
+    <diagram displayedName="Constraints Editor" nodeName="metamodelConstraints" name="ConstraintsEditor">
+        <nonGraphicTypes>
+            <enum displayedName="Error Type" name="errorTypeType">
+                <value>warning</value>
+                <value>critical</value>
+                <value>verification</value>
+            </enum>
+        </nonGraphicTypes>
+        <graphicTypes>
+            <node displayedName="Constraints Diagram" name="constraintsDiagram">
+                <graphics>
+                    <picture sizex="139" sizey="139">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="138" fill-style="none" x2="138"/>
+                    </picture>
+                    <labels/>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Language Name" type="string" name="languageName"/>
+                    </properties>
+                </logic>
+            </node>
+            <node displayedName="Node Constraint" name="nodeConstraint">
+                <graphics>
+                    <picture sizex="247" sizey="196">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="195" fill-style="none" x2="246"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="39a" stroke-width="0" x1="1" y2="39a" fill-style="none" x2="246"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="160" stroke-width="0" x1="0a" y2="160" fill-style="none" x2="245"/>
+                    </picture>
+                    <labels>
+                        <label x="11a" y="10a" textBinded="name"/>
+                        <label x="10a" y="170" textBinded="errorType"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="propertyNode"/>
+                        <contains type="abstractNodeForNodeConstraint"/>
+                    </container>
+                    <generalizations>
+                        <parent parentName="abstractErrorTypeNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Edge Constraint" name="edgeConstraint">
+                <graphics>
+                    <picture sizex="248" sizey="197">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="196" fill-style="none" x2="247"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="39a" stroke-width="0" x1="1" y2="40a" fill-style="none" x2="247"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="160" stroke-width="0" x1="0a" y2="161" fill-style="none" x2="246"/>
+                    </picture>
+                    <labels>
+                        <label x="11a" y="10a" textBinded="name"/>
+                        <label x="10a" y="170" textBinded="errorType"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="propertyNode"/>
+                        <contains type="abstractExistsNode"/>
+                    </container>
+                    <generalizations>
+                        <parent parentName="abstractErrorTypeNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Property" name="propertyNode">
+                <graphics>
+                    <picture sizex="207" sizey="37">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="36" fill-style="none" x2="206"/>
+                    </picture>
+                    <labels>
+                        <label x="4" y="7" textBinded="##property## ##sign## ##value##"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="206" starty="7"/>
+                            <end endx="207" endy="28"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="7"/>
+                            <end endx="0" endy="28"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="32" starty="-1"/>
+                            <end endx="166" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="32" starty="36"/>
+                            <end endx="166" endy="37"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Property" type="string" name="property"/>
+                        <property displayedName="Sign" type="string" name="sign"/>
+                        <property displayedName="Value" type="string" name="value"/>
+                    </properties>
+                </logic>
+            </node>
+            <node displayedName="Incoming Links" name="incomingLinks">
+                <graphics>
+                    <picture sizex="200" sizey="151">
+                        <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2" stroke-width="0" x1="53" y2="148" fill-style="none" x2="197"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="45" stroke-width="0" x1="60" y2="46" fill-style="none" x2="188"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="75" stroke-width="0" x1="1" y2="75" fill-style="none" x2="49"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="61" stroke-width="0" x1="32" y2="74" fill-style="none" x2="50"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="90" stroke-width="0" x1="34" y2="76" fill-style="none" x2="49"/>
+                    </picture>
+                    <labels>
+                        <label x="94" y="18" textBinded="selection"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="0" starty="44"/>
+                            <end endx="0" endy="111"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="199" starty="41"/>
+                            <end endx="199" endy="109"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="172" starty="150"/>
+                            <end endx="86" endy="150"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="168" starty="0"/>
+                            <end endx="88" endy="0"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="propertyNode"/>
+                        <contains type="abstractExistsNode"/>
+                    </container>
+                    <generalizations>
+                        <parent parentName="abstractNodeForNodeConstraint"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Outgoing Links" name="outgoingLinks">
+                <graphics>
+                    <picture sizex="199" sizey="150">
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="79" stroke-width="0" x1="2" y2="80" fill-style="none" x2="52"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="68" stroke-width="0" x1="19" y2="79" fill-style="none" x2="1"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="94" stroke-width="0" x1="21" y2="80" fill-style="none" x2="1"/>
+                        <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2" stroke-width="0" x1="53" y2="147" fill-style="none" x2="196"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="45" stroke-width="0" x1="60" y2="45" fill-style="none" x2="187"/>
+                    </picture>
+                    <labels>
+                        <label x="94" y="18" textBinded="selection"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="-1" starty="44"/>
+                            <end endx="0" endy="110"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="198" starty="41"/>
+                            <end endx="199" endy="108"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="171" starty="149"/>
+                            <end endx="86" endy="150"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="167" starty="-1"/>
+                            <end endx="88" endy="0"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="propertyNode"/>
+                        <contains type="abstractExistsNode"/>
+                    </container>
+                    <generalizations>
+                        <parent parentName="abstractNodeForNodeConstraint"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="abstractSelectionNode">
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Selection" type="string" name="selection">
+                            <default>all</default>
+                        </property>
+                    </properties>
+                </logic>
+            </node>
+            <edge displayedName="Or" name="or">
+                <graphics>
+                    <lineType type="solidLine"/>
+                </graphics>
+                <logic>
+                    <associations endType="empty_arrow" beginType="empty_arrow">
+                        <association beginName="begin" endName="end"/>
+                    </associations>
+                </logic>
+            </edge>
+            <node displayedName="Begin Node" name="beginNode">
+                <graphics>
+                    <picture sizex="149" sizey="149">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#7cfc00" y1="0" stroke-width="3" x1="0" y2="148" fill-style="none" x2="148"/>
+                    </picture>
+                    <labels>
+                        <label x="18" y="20" textBinded="exists"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="-1" starty="13"/>
+                            <end endx="0" endy="134"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="147" starty="14"/>
+                            <end endx="148" endy="135"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="135" starty="-1"/>
+                            <end endx="14" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="134" starty="148"/>
+                            <end endx="13" endy="149"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="propertyNode"/>
+                        <contains type="abstractNodeForNodeConstraint"/>
+                    </container>
+                    <generalizations>
+                        <parent parentName="abstractExistsNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="End Node" name="endNode">
+                <graphics>
+                    <picture sizex="148" sizey="149">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#ff4500" y1="1" stroke-width="3" x1="0" y2="148" fill-style="none" x2="147"/>
+                    </picture>
+                    <labels>
+                        <label x="18" y="21" textBinded="exists"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="0" starty="14"/>
+                            <end endx="1" endy="135"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="134" starty="-1"/>
+                            <end endx="14" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="147" starty="15"/>
+                            <end endx="148" endy="136"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="134" starty="148"/>
+                            <end endx="14" endy="149"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="propertyNode"/>
+                        <contains type="abstractNodeForNodeConstraint"/>
+                    </container>
+                    <generalizations>
+                        <parent parentName="abstractExistsNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Outgoing Nodes" name="outgoingNodes">
+                <graphics>
+                    <picture sizex="202" sizey="150">
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="39" stroke-width="0" x1="53" y2="40" fill-style="none" x2="200"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="75" stroke-width="0" x1="0" y2="76" fill-style="none" x2="50"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="59" stroke-width="0" x1="33" y2="73" fill-style="none" x2="50"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="89" stroke-width="0" x1="36" y2="76" fill-style="none" x2="51"/>
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" stroke-width="0" x1="54" y2="148" fill-style="none" x2="200"/>
+                    </picture>
+                    <labels>
+                        <label x="65" y="12" textBinded="selection"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="-1" starty="45"/>
+                            <end endx="0" endy="109"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="201" starty="15"/>
+                            <end endx="202" endy="134"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="188" starty="149"/>
+                            <end endx="66" endy="150"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="189" starty="-1"/>
+                            <end endx="67" endy="0"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="propertyNode"/>
+                        <contains type="abstractNodeForNodeConstraint"/>
+                    </container>
+                    <generalizations>
+                        <parent parentName="abstractNodeForNodeConstraint"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Incoming Nodes" name="incomingNodes">
+                <graphics>
+                    <picture sizex="202" sizey="151">
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="40" stroke-width="0" x1="55" y2="41" fill-style="none" x2="200"/>
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2" stroke-width="0" x1="54" y2="148" fill-style="none" x2="199"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="79" stroke-width="0" x1="3" y2="80" fill-style="none" x2="51"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="69" stroke-width="0" x1="18" y2="78" fill-style="none" x2="2"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="93" stroke-width="0" x1="20" y2="81" fill-style="none" x2="2"/>
+                    </picture>
+                    <labels>
+                        <label x="66" y="11" textBinded="selection"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="0" starty="46"/>
+                            <end endx="0" endy="109"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="201" starty="16"/>
+                            <end endx="201" endy="134"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="184" starty="150"/>
+                            <end endx="66" endy="150"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="185" starty="0"/>
+                            <end endx="67" endy="0"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="propertyNode"/>
+                        <contains type="abstractNodeForNodeConstraint"/>
+                    </container>
+                    <generalizations>
+                        <parent parentName="abstractNodeForNodeConstraint"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Parent" name="parent">
+                <graphics>
+                    <picture sizex="150" sizey="152">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="2" x1="1" y2="151" fill-style="none" x2="149"/>
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#a9a9a9" y1="10" stroke-width="1" x1="10" y2="143" fill-style="none" x2="140"/>
+                    </picture>
+                    <labels/>
+                    <ports>
+                        <linePort>
+                            <start startx="-1" starty="10"/>
+                            <end endx="0" endy="135"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="148" starty="14"/>
+                            <end endx="149" endy="139"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="139" starty="-1"/>
+                            <end endx="13" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="139" starty="151"/>
+                            <end endx="13" endy="152"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="abstractNodeForNodeConstraint"/>
+                        <contains type="propertyNode"/>
+                    </container>
+                    <generalizations>
+                        <parent parentName="abstractNodeForNodeConstraint"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Childrens" name="childrens">
+                <graphics>
+                    <picture sizex="148" sizey="151">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#a9a9a9" y1="0" stroke-width="1" x1="0" y2="150" fill-style="none" x2="147"/>
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="10" stroke-width="2" x1="9" y2="142" fill-style="none" x2="138"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="44" stroke-width="0" x1="9" y2="45" fill-style="none" x2="137"/>
+                    </picture>
+                    <labels>
+                        <label x="19" y="18" textBinded="selection"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="-1" starty="14"/>
+                            <end endx="0" endy="137"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="135" starty="-1"/>
+                            <end endx="12" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="147" starty="16"/>
+                            <end endx="148" endy="139"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="136" starty="150"/>
+                            <end endx="13" endy="151"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="abstractNodeForNodeConstraint"/>
+                        <contains type="propertyNode"/>
+                    </container>
+                    <generalizations>
+                        <parent parentName="abstractNodeForNodeConstraint"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Nodes Constraint" name="nodesConstraint">
+                <graphics>
+                    <picture sizex="248" sizey="197">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="196" fill-style="none" x2="247"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="39a" stroke-width="0" x1="1" y2="40a" fill-style="none" x2="247"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="160" stroke-width="0" x1="0a" y2="161" fill-style="none" x2="246"/>
+                    </picture>
+                    <labels>
+                        <label x="11a" y="10a" textBinded="selection"/>
+                        <label x="10a" y="170" textBinded="errorType"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="propertyNode"/>
+                        <contains type="abstractNodeForNodeConstraint"/>
+                    </container>
+                    <generalizations>
+                        <parent parentName="abstractSelectionNode"/>
+                        <parent parentName="abstractErrorTypeNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Edges Constraint" name="edgesConstraint">
+                <graphics>
+                    <picture sizex="249" sizey="198">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="197" fill-style="none" x2="248"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="40a" stroke-width="0" x1="1" y2="40a" fill-style="none" x2="248"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="161" stroke-width="0" x1="0a" y2="161" fill-style="none" x2="247"/>
+                    </picture>
+                    <labels>
+                        <label x="11a" y="10a" textBinded="selection"/>
+                        <label x="10a" y="170" textBinded="errorType"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="propertyNode"/>
+                        <contains type="abstractExistsNode"/>
+                    </container>
+                    <generalizations>
+                        <parent parentName="abstractSelectionNode"/>
+                        <parent parentName="abstractErrorTypeNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="abstractErrorTypeNode">
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Error Type" type="errorTypeType" name="errorType">
+                            <default>warning</default>
+                        </property>
+                    </properties>
+                </logic>
+            </node>
+            <node name="abstractExistsNode">
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Exists" type="bool" name="exists">
+                            <default>true</default>
+                        </property>
+                    </properties>
+                </logic>
+            </node>
+            <node name="abstractNodeForNodeConstraint">
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="Metamodel Constraints" name="metamodelConstraints">
+                <graphics>
+                    <picture sizex="88" sizey="79">
+                        <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="78" fill-style="none" x2="87"/>
+                    </picture>
+                    <labels/>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="constraintsDiagram"/>
+                    </container>
+                    <properties>
+                        <property displayedName="Metamodel Name" type="string" name="metamodelName"/>
+                        <property displayedName="Output Dir Path" type="string" name="outputDirPath"/>
+                    </properties>
+                </logic>
+            </node>
+        </graphicTypes>
+    </diagram>
+</metamodel>

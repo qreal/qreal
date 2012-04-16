@@ -2,11 +2,10 @@
 
 #include <QtCore/QDir>
 
-#include "../../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
-#include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+#include "../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
-namespace ubiq {
-namespace generator {
+namespace generatorsUtils {
 
 /// File name for generation utility templates. Searched in templates folder.
 QString const utilsFileName = "utils.template";
@@ -62,6 +61,7 @@ protected:
 	/// A map with utility templates, maps template name to template.
 	QMap<QString, QString> mTemplateUtils;
 
+
 private:
 	/// Loads utility templates from a file whose name in utilsFileName.
 	bool loadUtilsFromFile();
@@ -70,15 +70,14 @@ private:
 	/// This method loads them and puts to mTemplateUtils.
 	bool loadUtilsFromDir();
 
-	/// Directory to place output files to.
-	QString const mOutputDirPath;
-
 	/// Returns a directory by given path or QDir() if there is no such path.
 	QDir getDir(QString const &path);
+
+	/// Directory to place output files to.
+	QString const mOutputDirPath;
 
 	/// Path to a directory with templates.
 	QString const mTemplateDirPath;
 };
 
-}
 }

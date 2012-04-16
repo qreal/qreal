@@ -4,7 +4,7 @@
 #include "abstractGenerator.h"
 #include "nameNormalizer.h"
 
-using namespace ubiq::generator;
+using namespace generatorsUtils;
 using namespace qReal;
 
 AbstractGenerator::AbstractGenerator(QString const &templateDirPath

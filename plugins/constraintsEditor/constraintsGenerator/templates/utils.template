@@ -1,0 +1,60 @@
+@@callingPath@@
+SUBDIRS = \
+	constraints@@metaModelName@@/@@fileNamePRO@@ \
+==========
+@@diagramName@@
+@@languageName@@_@@id@@
+==========
+@@elementNameWithId@@
+@@elementName@@_@@id@@
+==========
+@@constraintsDiagramHFile@@
+	constraints@@diagramName@@.h \
+==========
+@@constraintsDiagramCppFile@@
+	constraints@@diagramName@@.cpp \
+==========
+@@includeConstraintsDiagramFile@@
+#include "constraints@@diagramName@@.h"
+==========
+@@privateFieldOfConstraintsDigram@@
+	Constraints@@diagramName@@ mConstraints@@diagramName@@;
+==========
+@@ifForMainCheckOfConstraintsDiagram@@
+		if (mConstraints@@diagramName@@.languageName() == languageName && mConstraints@@diagramName@@.elementsNames().contains(elementName)) {
+			checkings.append(mConstraints@@diagramName@@.check(element, logicalApi));
+		}
+==========
+@@optionalCheckElemet@@
+	qReal::CheckStatus check@@elementNameWithId@@(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi);
+==========
+@@mainCheckElemet@@
+	qReal::CheckStatus check@@elementName@@(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi);
+==========
+@@addElementInElementsNames@@
+	elementsList.append("@@elementName@@");
+==========
+@@returnCheckStatusOfElementInCheck@@
+	if (element.element() == "@@elementName@@") {
+		return check@@elementName@@(element, logicalApi);
+	}
+==========
+@@countOptionalCheckStatusOfElemet@@
+qReal::CheckStatus Constraints@@diagramName@@::check@@elementNameWithId@@(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi)
+{
+	bool res = true;
+	@@countRealCheckStatusOfElement@@
+	return qReal::CheckStatus(res, "@@errorText@@", qReal::CheckStatus::@@checkStatus@@);
+}
+==========
+@@countMainCheckStatusOfElemet@@
+qReal::CheckStatus Constraints@@diagramName@@::check@@elementName@@(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi)
+{
+	QList<qReal::CheckStatus> checkings;
+@@appendOptionalCheckStatusesOfElement@@
+	return qReal::CheckStatus::resultCheckStatus(checkings);
+}
+==========
+@@appendOptionalCheckStatusOfElement@@
+	checkings.append(check@@elementNameWithId@@(element, logicalApi));
+==========

@@ -8,23 +8,16 @@ OBJECTS_DIR = .obj
 MOC_DIR = .moc
 
 HEADERS = \
-	customizer.h \
-	ubiqGeneratorPlugin.h \
+	constraintsGeneratorPlugin.h \
 	generator.h \
-	messageGenerator.h \
-	customClassGenerator.h \
-#	../../../qrutils/generatorsUtils/abstractGenerator.h \
-#	../../../qrutils/generatorsUtils/nameNormalizer.h \
-	dispatcherGenerator.h
+	concreateGenerator.h \
 
 SOURCES = \
-	ubiqGeneratorPlugin.cpp \
+	constraintsGeneratorPlugin.cpp \
 	generator.cpp \
-	messageGenerator.cpp \
-	customClassGenerator.cpp \
+	concreateGenerator.cpp \
 	../../../qrutils/generatorsUtils/abstractGenerator.cpp \
 	../../../qrutils/generatorsUtils/nameNormalizer.cpp \
-	dispatcherGenerator.cpp
 
 win32 {
 	QMAKE_POST_LINK = "xcopy templates ..\\..\\..\\bin\\templates /s /e /q /y /i "
@@ -32,6 +25,10 @@ win32 {
 else {
 	QMAKE_POST_LINK = "mkdir ../../../bin/templates/ && cp -r templates ../../../bin/templates/ "
 }
+
+
+
+
 
 
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "abstractGenerator.h"
+#include "../../../qrutils/generatorsUtils/abstractGenerator.h"
 
 namespace ubiq {
 namespace generator {
@@ -9,7 +9,7 @@ namespace generator {
   It is able to receive messages from various sources, process them and send the result
   back. It doesn't have state, so is not able to support multiphase protocols.
   */
-class DispatcherGenerator : public AbstractGenerator
+class DispatcherGenerator : public generatorsUtils::AbstractGenerator
 {
 public:
 	/** Constructor.

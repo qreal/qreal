@@ -8,6 +8,7 @@ SUBDIRS	= \
 #	exterminatus/exterminatus.pro \
 	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
+	constraintsEditor/constraintsEditor.pro \
 #	network/network.pro \
 #	orthodoxEditor/orthodoxEditor.pro \
 #	parallel/parallel.pro \

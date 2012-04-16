@@ -1,6 +1,6 @@
 #pragma once
 
-#include "abstractGenerator.h"
+#include "../../../qrutils/generatorsUtils/abstractGenerator.h"
 
 namespace ubiq {
 namespace generator {
@@ -11,7 +11,7 @@ namespace generator {
   a message, and error code, for example, message with type "Turn the camera on",
   containing which camera to turn on as data.
   */
-class MessageGenerator : public AbstractGenerator
+class MessageGenerator : public generatorsUtils::AbstractGenerator
 {
 public:
 	/** Constructor.
