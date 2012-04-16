@@ -18,6 +18,7 @@ void ConstraintsEditorPlugin::initPlugin()
 	initPropertyDefaultsMap();
 	initDescriptionMap();
 	initParentsMap();
+	initPaletteGroupsMap();
 }
 
 void ConstraintsEditorPlugin::initNameMap()
@@ -55,6 +56,10 @@ void ConstraintsEditorPlugin::initNameMap()
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["PropertyNode"]["property"] = QString::fromUtf8("Property");
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["PropertyNode"]["sign"] = QString::fromUtf8("Sign");
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["PropertyNode"]["value"] = QString::fromUtf8("Value");
+}
+
+void ConstraintsEditorPlugin::initPaletteGroupsMap()
+{
 }
 
 void ConstraintsEditorPlugin::initMouseGestureMap()
@@ -132,6 +137,16 @@ void ConstraintsEditorPlugin::initParentsMap()
 QStringList ConstraintsEditorPlugin::diagrams() const
 {
 	return diagramNameMap.keys();
+}
+
+QStringList ConstraintsEditorPlugin::diagramPaletteGroups(QString const &diagram) const
+{
+	return paletteGroupsMap[diagram].keys();
+}
+
+QStringList ConstraintsEditorPlugin::diagramPaletteGroupList(QString const &diagram, QString const &group) const
+{
+	return paletteGroupsMap[diagram][group];
 }
 
 QStringList ConstraintsEditorPlugin::elements(QString const &diagram) const

@@ -983,7 +983,7 @@
 
 		void updateData(ElementRepoInterface *repo) const
 		{
-			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("name")).replace("\n", "<br>"));
+			title_1->setHtml(QString("<b>%1</b>").arg(repo->name()).replace("\n", "<br>"));
 			title_2->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("errorType")).replace("\n", "<br>"));
 		}
 
@@ -1861,7 +1861,7 @@
 
 		void updateData(ElementRepoInterface *repo) const
 		{
-			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("name")).replace("\n", "<br>"));
+			title_1->setHtml(QString("<b>%1</b>").arg(repo->name()).replace("\n", "<br>"));
 			title_2->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("errorType")).replace("\n", "<br>"));
 		}
 

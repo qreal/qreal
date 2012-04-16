@@ -65,7 +65,7 @@ MainWindow::MainWindow()
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
 	timeMeasurer.doNothing(); //to avoid the unused variables problem
 
-	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
+	bool showSplash = SettingsManager::value("Splashscreen", false).toBool();//qwerty_back
 
 	QSplashScreen* splash =
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
@@ -706,7 +706,7 @@ void MainWindow::deleteFromScene(QGraphicsItem *target)
 		if (index.isValid()) {
 			NodeElement* const node = dynamic_cast<NodeElement*>(elem);
 			if (node) {
-				node->highlightEdges();
+				node->disconnectEdges();
 			}
 			EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(elem);
 			NodeElement* source = NULL;
@@ -1608,7 +1608,7 @@ void MainWindow::initToolPlugins()
 			, mModels->logicalModelAssistApi()
 			, *this
 			));
-	
+
 	QList<ActionInfo> const actions = mToolManager.actions();
 	foreach (ActionInfo const action, actions) {
 		if (action.isAction()) {
@@ -1630,7 +1630,7 @@ void MainWindow::initToolPlugins()
 			}
 		}
 	}
-	
+
 	if (mUi->parsersToolbar->actions().isEmpty())
 		mUi->parsersToolbar->hide();
 
@@ -1684,11 +1684,6 @@ void MainWindow::reinitModels()
 	PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
 	pModel->clearModelIndexes();
 	mUi->propertyEditor->setRootIndex(QModelIndex());
-}
-
-QWidget *MainWindow::windowWidget()
-{
-	return this;
 }
 
 QWidget *MainWindow::windowWidget()

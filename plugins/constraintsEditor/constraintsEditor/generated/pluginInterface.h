@@ -22,6 +22,7 @@ public:
 	virtual void initPropertyDefaultsMap();
 	virtual void initDescriptionMap();
 	virtual void initParentsMap();
+	virtual void initPaletteGroupsMap();
 
 	virtual QString id() const { return "ConstraintsEditor"; }
 
@@ -57,6 +58,9 @@ public:
 
 	virtual bool isParentOf(QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const;
 
+	virtual QStringList diagramPaletteGroups(QString const &diagram) const;
+	virtual QStringList diagramPaletteGroupList(QString const &diagram, QString const &group) const;
+
 private:
 	QMap<QString, QIcon> iconMap;
 	QMap<QString, QString> diagramNameMap;
@@ -69,5 +73,6 @@ private:
 	QMap<QString, QMap<QString, QMap<QString, QString> > > propertiesDisplayedNamesMap;
 	QMap<QString, QMap<QString, QString> > elementMouseGesturesMap;
 	QMap<QString, QMap<QString, QList<QPair<QString, QString> > > > parentsMap;  // Maps diagram and element to a list of diagram-element pairs of parents (generalization relation).
+	QMap<QString, QMap<QString, QStringList > > paletteGroupsMap;  // Maps element`s lists of all palette groups.
 };
 
