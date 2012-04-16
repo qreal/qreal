@@ -2155,12 +2155,18 @@ void MainWindow::checkConstraints(QModelIndex const &index)
 {
 	Id const id = mModels->logicalModelAssistApi().idByIndex(index);
 	checkConstraints(id);
+	checkChildrensConstraints(id);
+	checkParentsConstraints(index);
 }
 
-void MainWindow::checkConstraints(IdList const &idList)
+void MainWindow::checkConstraints(IdList const &idList)//qwerty_подумать
 {
 	foreach (Id const &id, idList) {
 		checkConstraints(id);
+		checkChildrensConstraints(id);
+
+		QModelIndex index = mModels->logicalModelAssistApi().indexById(id);
+		checkParentsConstraints(index);
 	}
 }
 
@@ -2171,5 +2177,16 @@ void MainWindow::checkParentsConstraints(QModelIndex const &index)
 	if (mModels->logicalModelAssistApi().isLogicalId(parentId)) {
 		checkConstraints(parentId);
 		checkParentsConstraints(parent);
+	}
+}
+
+void MainWindow::checkChildrensConstraints(Id const &id)
+{
+	IdList childrenList = mModels->logicalModelAssistApi().children(id);
+	foreach (Id const &childrenId, childrenList) {
+		if (mModels->logicalModelAssistApi().isLogicalId(childrenId)) {
+			checkConstraints(childrenId);
+			checkChildrensConstraints(childrenId);
+		}
 	}
 }

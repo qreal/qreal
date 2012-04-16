@@ -7,12 +7,12 @@ namespace qReal {
 class ConstraintsPluginInterface {
 public:
 	virtual CheckStatus check(IdList const &elements, qrRepo::LogicalRepoApi const &logicalApi) = 0;
-	virtual QString languageName() const = 0;
+	virtual QString metamodelName() const = 0;
 
 	bool isCorrectLanguageName(IdList const &elements) const//asd //?? //т.е. совпадает хотя бы с одним элементом
 	{
 		foreach (Id const &element, elements) {
-			if (languageName() == element.editor()) {
+			if (metamodelName() == element.editor()) {
 				return true;
 			}
 		}

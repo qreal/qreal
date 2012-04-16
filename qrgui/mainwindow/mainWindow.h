@@ -221,6 +221,7 @@ private slots:
 private:
 	gui::Error::Severity severityByErrorType(CheckStatus::ErrorType const &errorType); //forCheckConstraints
 	void checkParentsConstraints(QModelIndex const &index);
+	void checkChildrensConstraints(Id const &id);
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on
