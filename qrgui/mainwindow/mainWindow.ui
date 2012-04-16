@@ -165,7 +165,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="qReal::gui::PaletteToolbox" name="paletteToolbox"/>
+      <widget class="qReal::gui::PaletteTree" name="paletteTree"/>
      </item>
     </layout>
    </widget>
@@ -630,9 +630,9 @@
  <layoutdefault spacing="0" margin="0"/>
  <customwidgets>
   <customwidget>
-   <class>qReal::gui::PaletteToolbox</class>
+   <class>qReal::gui::PaletteTree</class>
    <extends>QToolBox</extends>
-   <header>../mainwindow/paletteToolbox.h</header>
+   <header>../mainwindow/paletteTree.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

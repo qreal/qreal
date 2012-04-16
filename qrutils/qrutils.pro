@@ -16,10 +16,16 @@ HEADERS += \
 	outFile.h \
 	utilsDeclSpec.h \
 	xmlUtils.h \
+	ui_watchListWindow.h \
+	watchListWindow.h \
 
 SOURCES += \
 	outFile.cpp \
 	xmlUtils.cpp \
+	watchListWindow.cpp\
+
+FORMS += \
+	watchListWindow.ui
 
 # Files for parsing of expressions on diagrams
 include(expressionsParser/expressionsParser.pri)
