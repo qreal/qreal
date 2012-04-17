@@ -14,7 +14,7 @@ EditorManager * PaletteTree::mEditorManager = NULL;
 PaletteTree::DraggableElement::DraggableElement(const Id &id, const QString &name
 		, const QString &description, const QIcon &icon, bool iconsOnly, QWidget *parent)
 	: QWidget(parent)
-    , mId(id)
+	, mId(id)
 	, mIcon(icon)
 	, mText(name)
 {
@@ -352,19 +352,19 @@ void PaletteTree::createPaletteTree()
 
 void PaletteTree::deletePaletteTree()
 {
-    int diagramIndex = 0;
-    foreach(const QTreeWidget *editorTree, mEditorsTrees) {
-        for (int j = 0; j < editorTree->topLevelItemCount(); j++) {
-            const QTreeWidgetItem *topItem = editorTree->topLevelItem(j);
-            if (topItem && topItem->isExpanded()) {
-                mSettings->setValue(mComboBox->itemText(diagramIndex) + topItem->text(0), 1);
-            }
-        }
-        diagramIndex++;
-    }
+	int diagramIndex = 0;
+	foreach(const QTreeWidget *editorTree, mEditorsTrees) {
+		for (int j = 0; j < editorTree->topLevelItemCount(); j++) {
+			const QTreeWidgetItem *topItem = editorTree->topLevelItem(j);
+			if (topItem && topItem->isExpanded()) {
+				mSettings->setValue(mComboBox->itemText(diagramIndex) + topItem->text(0), 1);
+			}
+		}
+		diagramIndex++;
+	}
 	mSettings->setValue("CurrentIndex", mComboBox->currentIndex() >= 0 ? mComboBox->currentIndex() : 0);
 	mSettings->sync();
-    delete mSettings;
+	delete mSettings;
 	delete mCollapseAll;
 	delete mExpandAll;
 	delete mComboBox;
@@ -407,9 +407,9 @@ void PaletteTree::loadEditors(EditorManager &editorManager)
 			addEditorElements(editorManager, editor, diagram);
 		}
 	}
-    const int index = mSettings->value("CurrentIndex", 0).toInt();
-    mSettings->clear();
-    mSettings->setValue("CurrentIndex", index >= 0 ? index : 0);
+	const int index = mSettings->value("CurrentIndex", 0).toInt();
+	mSettings->clear();
+	mSettings->setValue("CurrentIndex", index >= 0 ? index : 0);
 }
 
 void PaletteTree::setItemsCountInARow(int count)

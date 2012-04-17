@@ -94,9 +94,6 @@ MainWindow::MainWindow()
 	initRecentProjectsMenu();
 	initToolManager();
 	initTabs();
-    FILE *f = fopen("1.txt", "wt");
-    fprintf(f, "1");
-    fclose(f);
 
 	// =========== Step 2: Ui is ready, splash screen shown ===========
 
@@ -110,9 +107,6 @@ MainWindow::MainWindow()
 	progress->setValue(40);
 
 	initDocks();
-    f = fopen("1.txt", "wt");
-    fprintf(f, "2");
-    fclose(f);
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
 	if (!dir.cd(mTempDir))
@@ -136,16 +130,10 @@ MainWindow::MainWindow()
 	loadPlugins();
 	initToolPlugins();
 	showMaximized();
-    f = fopen("1.txt", "wt");
-    fprintf(f, "3");
-    fclose(f);
 
 	// =========== Step 5: Plugins are loaded ===========
 
 	progress->setValue(70);
-    f = fopen("1.txt", "wt");
-    fprintf(f, "4");
-    fclose(f);
 	initWindowTitle();
 
 	if (!SettingsManager::value("maximized", true).toBool()) {
@@ -153,30 +141,15 @@ MainWindow::MainWindow()
 		resize(SettingsManager::value("size", QSize(1024, 800)).toSize());
 		move(SettingsManager::value("pos", QPoint(0, 0)).toPoint());
 	}
-    f = fopen("1.txt", "wt");
-    fprintf(f, "5");
-    fclose(f);
 	// =========== Step 6: Save loaded, models initialized ===========
 
 	progress->setValue(80);
-    f = fopen("1.txt", "wt");
-    fprintf(f, "6");
-    fclose(f);
 	if (!checkPluginsAndReopen(splash))
 		return;
 
 	mGesturesWidget = new GesturesWidget();
-    f = fopen("1.txt", "wt");
-    fprintf(f, "7");
-    fclose(f);
-    initExplorers();
-    f = fopen("1.txt", "wt");
-    fprintf(f, "8");
-    fclose(f);
+	initExplorers();
 	connectActions();
-    f = fopen("1.txt", "wt");
-    fprintf(f, "9");
-    fclose(f);
 	// =========== Step 7: Save consistency checked, interface is initialized with models ===========
 
 	progress->setValue(100);
@@ -452,9 +425,6 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 	bool haveMissingPlugins = !missingPlugins.isEmpty();
 	bool loadingCancelled = false;
-    FILE *f = fopen("1.txt", "wt");
-    fprintf(f, "6.1");
-    fclose(f);
 	while (haveMissingPlugins && !loadingCancelled) {
 
 		QString text = tr("These plugins are not present, but needed to load the save:\n");
@@ -466,15 +436,8 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 
 		QMessageBox::StandardButton const button = QMessageBox::question(this
 				, tr("Some plugins are missing"), text, QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
-        f = fopen("1.txt", "wt");
-        fprintf(f, "6.2");
-        fclose(f);
 		if (splashScreen)
 			splashScreen->close();
-
-        f = fopen("1.txt", "wt");
-        fprintf(f, "6.3");
-        fclose(f);
 
 		if (button == QMessageBox::Yes) {
 			if (!openNewProject())
@@ -485,11 +448,6 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 		missingPlugins = mEditorManager.checkNeededPlugins(
 				mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 		haveMissingPlugins = !missingPlugins.isEmpty();
-
-        f = fopen("1.txt", "wt");
-        fprintf(f, "6.4");
-        fclose(f);
-
 	}
 	if (loadingCancelled) {
 		return false;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>570</height>
+    <width>597</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>350</width>
-    <height>570</height>
+    <height>500</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -44,9 +44,7 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <widget class="QWidget" name="pageContentWigdetPage1">
-      <zorder>listWidget</zorder>
-     </widget>
+     <widget class="QWidget" name="pageContentWigdetPage1"/>
     </widget>
    </item>
    <item row="3" column="2">
