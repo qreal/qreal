@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>562</width>
-    <height>554</height>
+    <width>492</width>
+    <height>586</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -39,16 +39,6 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="showGridCheckBox">
-        <property name="text">
-         <string>Show grid</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="0">
        <widget class="QCheckBox" name="showAlignmentCheckBox">
         <property name="minimumSize">
@@ -149,6 +139,16 @@
         </property>
         <property name="tristate">
          <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="showGridCheckBox">
+        <property name="text">
+         <string>Show grid</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -300,84 +300,56 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="frame_4">
-     <property name="minimumSize">
-      <size>
-       <width>400</width>
-       <height>55</height>
-      </size>
-     </property>
+    <widget class="QFrame" name="frame_9">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <widget class="QLabel" name="label_6">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>0</y>
-        <width>122</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>   Representation   </string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="paletteComboBox">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>10</y>
-        <width>181</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <item>
-       <property name="text">
-        <string>Icons  and names</string>
-       </property>
+     <layout class="QGridLayout" name="gridLayout_7">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>   Representation   </string>
+        </property>
+       </widget>
       </item>
-      <item>
-       <property name="text">
-        <string>Icons</string>
-       </property>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="paletteComboBox">
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <item>
+         <property name="text">
+          <string>Icons  and names</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Icons</string>
+         </property>
+        </item>
+       </widget>
       </item>
-     </widget>
-     <widget class="QLabel" name="label_7">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>30</y>
-        <width>211</width>
-        <height>27</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>   Count of items in a row </string>
-      </property>
-     </widget>
-     <widget class="QSpinBox" name="paletteSpinBox">
-      <property name="geometry">
-       <rect>
-        <x>250</x>
-        <y>36</y>
-        <width>51</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="minimum">
-       <number>1</number>
-      </property>
-      <property name="maximum">
-       <number>6</number>
-      </property>
-     </widget>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>   Count of items in a row </string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="paletteSpinBox">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>6</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>

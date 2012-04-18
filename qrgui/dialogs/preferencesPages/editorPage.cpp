@@ -139,6 +139,5 @@ void PreferencesEditorPage::save()
 }
 void PreferencesEditorPage::paletteComboBoxClicked(int index)
 {
-    mUi->label_7->setVisible((bool)index);
-    mUi->paletteSpinBox->setVisible((bool)index);
+	mUi->paletteSpinBox->setEnabled((bool)index);
 }
