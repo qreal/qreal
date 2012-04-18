@@ -33,6 +33,7 @@ signals:
 	void iconsetChanged();
 	void settingsApplied();
 	void fontChanged();
+	void paletteRepresentationChanged();
 
 private slots:
 	void cancel();

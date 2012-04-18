@@ -2,6 +2,7 @@
 #include "editorPage.h"
 #include "ui_editorPage.h"
 #include <QMessageBox>
+#include "../mainwindow/mainWindow.h"
 
 PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAction * const showAlignmentAction
 		, QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
@@ -24,6 +25,8 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	connect(mUi->indexGridSlider, SIGNAL(sliderMoved(int)), this, SLOT(indexGridSliderMoved(int)));
 	connect(mUi->fontCheckBox, SIGNAL(toggled(bool)), this, SLOT(manualFontCheckBoxChecked(bool)));
 	connect(mUi->fontSelectionButton, SIGNAL(clicked()),this, SLOT(fontSelectionButtonClicked()));
+	connect(mUi->paletteComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(paletteComboBoxClicked(int)));
+
 	mUi->indexGridSlider->setVisible(false);
 	mUi->label_20->setVisible(false);
 
@@ -39,6 +42,10 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	mUi->indexGridSlider->setValue(mIndexGrid);
 	mUi->fontCheckBox->setChecked(SettingsManager::value("CustomFont", false).toBool());
 	mUi->fontSelectionButton->setVisible(SettingsManager::value("CustomFont", false).toBool());
+
+	mUi->paletteComboBox->setCurrentIndex(SettingsManager::value("PaletteRepresentation", 0).toInt());
+	paletteComboBoxClicked(mUi->paletteComboBox->currentIndex());
+	mUi->paletteSpinBox->setValue(SettingsManager::value("PaletteIconsInARowCount", 1).toInt());
 
 	mFont = SettingsManager::value("CurrentFont", "").toString();
 }
@@ -106,6 +113,10 @@ void PreferencesEditorPage::save()
 	SettingsManager::setValue("ActivateGrid", mUi->activateGridCheckBox->isChecked());
 	SettingsManager::setValue("ActivateAlignment", mUi->activateAlignmentCheckBox->isChecked());
 	SettingsManager::setValue("CustomFont", mUi->fontCheckBox->isChecked());
+	SettingsManager::setValue("PaletteRepresentation", mUi->paletteComboBox->currentIndex());
+	SettingsManager::setValue("PaletteIconsInARowCount", mUi->paletteSpinBox->value());
+
+	emit paletteRepresentationChanged();
 
 	mWidthGrid = mUi->gridWidthSlider->value();
 	mIndexGrid = mUi->indexGridSlider->value();
@@ -125,4 +136,8 @@ void PreferencesEditorPage::save()
 		mFontWasChanged = false;
 		mFontButtonWasPressed = false;
 	}
+}
+void PreferencesEditorPage::paletteComboBoxClicked(int index)
+{
+	mUi->paletteSpinBox->setEnabled((bool)index);
 }

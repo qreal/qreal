@@ -23,12 +23,14 @@ protected:
 signals:
 	void gridChanged();
 	void fontChanged();
+	void paletteRepresentationChanged();
 
 private slots:
 	void widthGridSliderMoved(int value);
 	void indexGridSliderMoved(int value);
 	void manualFontCheckBoxChecked(bool);
 	void fontSelectionButtonClicked();
+    void paletteComboBoxClicked(int index);
 
 
 private:
