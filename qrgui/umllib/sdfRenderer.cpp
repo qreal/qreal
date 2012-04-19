@@ -30,6 +30,7 @@ SdfRenderer::~SdfRenderer()
 bool SdfRenderer::load(const QString &filename)
 {
 	QFile file(filename);
+
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 		return false;
 

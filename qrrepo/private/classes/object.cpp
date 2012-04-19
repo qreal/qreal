@@ -120,11 +120,6 @@ void Object::setProperty(const QString &name, const QVariant &value)
 
 QVariant Object::property(const QString &name) const
 {
-	qDebug();
-	QString str;
-	foreach (str, mProperties.keys())
-		qDebug() << str;
-
 	if (mProperties.contains(name)) {
 		return mProperties[name];
 	} else {

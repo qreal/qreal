@@ -1,4 +1,5 @@
 #include "beep.h"
+#include <QDir>
 
 Beep::~Beep()
 {}
@@ -14,8 +15,8 @@ void Beep::init(QRectF &contents, QList<StatPoint> &pointPorts,
 {
 	Q_UNUSED(pointPorts);
 	mRenderer = renderer;
-	mRenderer->load(QString(":/generated/shapes/BeepClass.sdf"));
-	portRenderer->load(QString(":/generated/shapes/BeepPorts.sdf"));
+	mRenderer->load(QDir::currentPath() + "../../plugins/test/generated/shapes/BeepClass.sdf");
+	portRenderer->load(QDir::currentPath() + "../../plugins/test/generated/shapes/BeepPorts.sdf");
 	contents.setWidth(50);
 	contents.setHeight(50);
 	{
