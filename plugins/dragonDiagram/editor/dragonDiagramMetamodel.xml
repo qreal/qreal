@@ -1,4 +1,4 @@
-  <metamodel xmlns="http://schema.real.com/schema/">
+<metamodel xmlns="http://schema.real.com/schema/">
     <include>../../commonMetamodels/kernelMetamodel.xml</include>
     <namespace>UML 2.0</namespace>
     <diagram displayedName="Dragon Diagram" nodeName="DragonDiagramNode" name="DragonDiagram">
@@ -34,28 +34,20 @@
             </container>
           </logic>
         </node>
-        <node displayedName="Action Node" name="ActionNode">
+        <node displayedName="Action Node" name="DragonActionNode">
           <graphics>
             <picture sizex="80" sizey="60">
               <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 10.75 1 C 5.36522 1 1 5.41447 1 10.86 L 1 49.14 C 1 54.5855 5.36522 59 10.75 59 L 69.25 59 C 74.6348 59 79 54.5855 79 49.14 L 79 10.86 C 79 5.41447 74.6348 1 69.25 1 L 10.75 1" fill-style="solid"/>
             </picture>
             <ports>
-              <linePort>
-                <start startx="79" starty="10"/>
-                <end endx="79" endy="50"/>
-              </linePort>
-              <linePort>
-                <start startx="1" starty="10"/>
-                <end endx="1" endy="50"/>
-              </linePort>
-              <linePort>
-                <start startx="10" starty="1"/>
-                <end endx="70" endy="1"/>
-              </linePort>
-              <linePort>
-                <start startx="10" starty="59"/>
-                <end endx="70" endy="59"/>
-              </linePort>
+                <linePort>
+                  <start startx="40" starty="0"/>
+                  <end endx="40" endy="0"/>
+                </linePort>
+                <linePort>
+                  <start startx="40" starty="60"/>
+                  <end endx="40" endy="60"/>
+                </linePort>
             </ports>
             <labels>
               <label textBinded="process" center="true"/>
@@ -67,7 +59,43 @@
             </properties>
           </logic>
         </node>
-        <edge displayedName="Control Flow" name="DragonFlow">
+        <node displayedName="Initial Node" name="DInitialNode">
+          <graphics>
+              <picture sizex="80" sizey="50">
+              <ellipse fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="48" stroke-width="1" x2="78" fill-style="solid"/>
+			</picture>
+            <ports>
+            <linePort>
+              <start startx="40" starty="50"/>
+              <end endx="40" endy="50"/>
+            </linePort>
+            </ports>
+            <labels>
+              <label text="start" center="true"/>
+            </labels>
+          </graphics>
+          <logic>
+          </logic>
+        </node>
+        <node displayedName="Final Node" name="DFinalNode">
+          <graphics>
+		    <picture sizex="60" sizey="30">
+				<ellipse fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="28" stroke-width="1" x2="58" fill-style="solid"/>  
+			</picture>
+            <ports>
+                <linePort>
+                  <start startx="30" starty="0"/>
+                  <end endx="30" endy="0"/>
+                </linePort>
+            </ports>
+            <labels>
+              <label text="end" center="true"/>
+            </labels>
+          </graphics>
+          <logic>
+          </logic>
+        </node>
+		<edge displayedName="Control Flow" name="DragonFlow">
           <graphics>
             <labels>
               <label textBinded="type"/>
