@@ -103,7 +103,7 @@ namespace qrRepo {
 
 		virtual QString workingFile() const;
 
-		// "Р“Р»РѕР±Р°Р»СЊРЅС‹Рµ" РјРµС‚РѕРґС‹, РїРѕР·РІРѕР»СЏСЋС‰РёРµ РґРµР»Р°С‚СЊ Р·Р°РїСЂРѕСЃС‹ Рє РјРѕРґРµР»Рё РІ С†РµР»РѕРј.
+		// "� “� »� ѕ� ±� °� »СЊ� ЅС‹� µ" � ј� µС‚� ѕ� ґС‹, � ї� ѕ� ·� І� ѕ� »СЏСЋС‰� ё� µ � ґ� µ� »� °С‚СЊ � ·� °� їСЂ� ѕСЃС‹ � є � ј� ѕ� ґ� µ� »� ё � І С� � µ� »� ѕ� ј.
 		//Returns all elements with .element() == type.element()
 		virtual qReal::IdList graphicalElements(qReal::Id const &type) const;
 		virtual qReal::IdList logicalElements(qReal::Id const &type) const;
@@ -117,8 +117,8 @@ namespace qrRepo {
 		bool exist(qReal::Id const &id) const;
 
 	private:
-		RepoApi(RepoApi const &other);  // РљРѕРїРёСЂРѕРІР°С‚СЊ РЅРµР»СЊР·СЏ.
-		RepoApi& operator =(RepoApi const &);  // РџСЂРёСЃРІР°РёРІР°С‚СЊ С‚РѕР¶Рµ.
+		RepoApi(RepoApi const &other);  // � љ� ѕ� ї� ёСЂ� ѕ� І� °С‚СЊ � Ѕ� µ� »СЊ� ·СЏ.
+		RepoApi& operator =(RepoApi const &);  // � џСЂ� ёСЃ� І� °� ё� І� °С‚СЊ С‚� ѕ� ¶� µ.
 
 		void addToIdList(qReal::Id const &target, QString const &listName, qReal::Id const &data, QString const &direction = QString());
 		void removeFromList(qReal::Id const &target, QString const &listName, qReal::Id const &data, QString const &direction = QString());
@@ -126,7 +126,7 @@ namespace qrRepo {
 		qReal::IdList links(qReal::Id const &id, QString const &direction) const;
 		void removeLinkEnds(QString const &endName, qReal::Id const &id);
 
-        details::Client getRelevantClient(qReal::Id const &id);
+        details::Client getRelevantClient(qReal::Id const &id) const;
         details::Client getDefaultClient() const;
 
         QList<details::Client> *mClients;

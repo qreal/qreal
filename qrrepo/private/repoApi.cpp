@@ -19,7 +19,7 @@ RepoApi::RepoApi(QString const &workingDirectory)
     mClients->append(*defaultClient);
 }
 
-details::Client RepoApi::getRelevantClient(const qReal::Id &id)
+details::Client RepoApi::getRelevantClient(const qReal::Id &id) const
 {
     for (int i = 0; i < mClients->count(); ++i){
         if(mClients->at(i).exist(id))
@@ -37,7 +37,7 @@ details::Client RepoApi::getDefaultClient() const
 //Multirepos
 QString RepoApi::name(Id const &id) const
 {
-    Client client = getRelevantClient(id);
+    Client client = this->getRelevantClient(id);
     Q_ASSERT(client.property(id, "name").canConvert<QString>());
     return client.property(id, "name").toString();
 }
@@ -80,7 +80,7 @@ void RepoApi::stackBefore(Id const &id, Id const &child, Id const &sibling)
 //Multirepos
 Id RepoApi::copy(qReal::Id const &src)
 {
-    Client client = getRelevantClient(id);
+    Client client = getRelevantClient(src);
     return client.cloneObject(src);
 }
 
@@ -335,7 +335,7 @@ void RepoApi::removeProperty(Id const &id, QString const &propertyName)
 //Multirepos
 void RepoApi::copyProperties(const Id &dest, const Id &src)
 {
-    Client client = getRelevantClient(id);
+    Client client = getRelevantClient(src);
     client.copyProperties(dest, src);
 }
 
@@ -468,8 +468,8 @@ qReal::Id RepoApi::logicalId(qReal::Id const &id) const
 //Multirepos
 void RepoApi::exterminate()
 {
-    foreach (Client client, mClients){
-        client.exterminate();
+    for (int i = 0; i < mClients->count(); ++i){
+        mClients->at(i).exterminate();
     }
 }
 
@@ -478,7 +478,7 @@ void RepoApi::exterminate()
 void RepoApi::open(QString const &saveFile)
 {
     mClients->clear();
-    Client client = new Client(saveFile);
+    Client client(saveFile);
 }
 
 //Multirepos
@@ -487,7 +487,6 @@ void RepoApi::saveAll() const
 {
     Client client = getDefaultClient();
 
-    client.setWorkingFile(workingFile);
     client.saveAll();
 }
 
@@ -506,7 +505,6 @@ void RepoApi::saveTo(QString const &workingFile)
 void RepoApi::importFromDisk(QString const &importedFile)
 {
     Client client = getDefaultClient();
-    client.setWorkingFile(workingFile);
 
     client.importFromDisk(importedFile);
 }
@@ -516,7 +514,6 @@ void RepoApi::importFromDisk(QString const &importedFile)
 void RepoApi::save(qReal::IdList list) const
 {
     Client client = getDefaultClient();
-    client.setWorkingFile(workingFile);
 
     client.save(list);
 }
@@ -526,7 +523,6 @@ void RepoApi::save(qReal::IdList list) const
 QString RepoApi::workingFile() const
 {
     Client client = getDefaultClient();
-    client.setWorkingFile(workingFile);
 
     return client.workingFile();
 }
@@ -628,33 +624,33 @@ IdList RepoApi::elementsByType(QString const &type) const
 int RepoApi::elementsCount() const
 {
     Client client = getDefaultClient();
-	return mClient.elements().size();
+    return client.elements().size();
 }
 
 //Multirepos
 bool RepoApi::exist(Id const &id) const
 {
     Client client = getDefaultClient();
-	return mClient.exist(id);
+    return client.exist(id);
 }
 
 //Multirepos
 IdList RepoApi::temporaryRemovedLinksAt(Id const &id, QString const &direction) const
 {
     Client client = getDefaultClient();
-	return mClient.temporaryRemovedLinksAt(id, direction);
+    return client.temporaryRemovedLinksAt(id, direction);
 }
 
 //Multirepos
 void RepoApi::setTemporaryRemovedLinks(Id const &id, IdList const &value, QString const &direction)
 {
     Client client = getDefaultClient();
-	mClient.setTemporaryRemovedLinks(id, direction, value);
+    client.setTemporaryRemovedLinks(id, direction, value);
 }
 
 //Multirepos
 void RepoApi::removeTemporaryRemovedLinks(Id const &id)
 {
     Client client = getDefaultClient();
-	mClient.removeTemporaryRemovedLinks(id);
+    client.removeTemporaryRemovedLinks(id);
 }
