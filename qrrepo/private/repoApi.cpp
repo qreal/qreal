@@ -469,7 +469,9 @@ qReal::Id RepoApi::logicalId(qReal::Id const &id) const
 void RepoApi::exterminate()
 {
     for (int i = 0; i < mClients->count(); ++i){
-        mClients->at(i).exterminate();
+
+        //dummy!!! beware
+        mClients->at(i).printDebug();
     }
 }
 

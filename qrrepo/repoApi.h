@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "../qrkernel/roles.h"
 #include "private/client.h"
