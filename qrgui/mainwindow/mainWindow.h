@@ -185,6 +185,12 @@ private slots:
     void setDiagramCreateFlag();
     void diagramInCreateListDeselect();
     void diagramInCreateListSelected(int num);
+///////////////////////////////////////////////////////
+    void suggestToCreateDragonDiagram();
+    void prototypeSelected(int num);
+    void prototypeDeselected();
+///////////////////////////////////////////////////////
+
 
     void on_actionNew_Diagram_triggered();
 
@@ -210,11 +216,22 @@ private:
     void setShortcuts(EditorView * const tab);
 
     void createDiagram(QString const &idString);
+    void createDragonPrototype(int num);
 
     void loadPlugins();
 
     QListWidget* createSaveListWidget();
     void suggestToCreateDiagram();
+
+    //*added dragon exterminal
+    int diagramNumber;
+    bool dragonFlag;
+    Id createdForDragon;
+
+    //*/
+
+
+
 
     virtual void closeEvent(QCloseEvent *event);
     void deleteFromExplorer(bool isLogicalModel);
