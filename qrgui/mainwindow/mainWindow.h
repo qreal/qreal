@@ -187,8 +187,8 @@ private slots:
     void diagramInCreateListSelected(int num);
 ///////////////////////////////////////////////////////
     void suggestToCreateDragonDiagram();
-    void prototypeSelected(int num);
-    void prototypeDeselected();
+    void dragonPrototypeTypeSelect(int num);
+    void createDragonPrototype();
 ///////////////////////////////////////////////////////
 
 
@@ -216,7 +216,6 @@ private:
     void setShortcuts(EditorView * const tab);
 
     void createDiagram(QString const &idString);
-    void createDragonPrototype(int num);
 
     void loadPlugins();
 
@@ -224,9 +223,7 @@ private:
     void suggestToCreateDiagram();
 
     //*added dragon exterminal
-    int diagramNumber;
-    bool dragonFlag;
-    Id createdForDragon;
+    int dragonPrototypeType;
 
     //*/
 

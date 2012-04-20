@@ -59,7 +59,49 @@
             </properties>
           </logic>
         </node>
-        <node displayedName="Initial Node" name="DInitialNode">
+        <node displayedName="Field Title Node" name="DragonFieldTitleNode">
+                  <graphics>
+                            <picture sizex="60" sizey="30">
+                                        <g style="fill: none; stroke: black; stroke-width: 2">
+                                                <polygon points="0,0 60,0 60,20 30,30 0,20" />
+                                        </g>
+                                </picture>
+                    <ports>
+                                  <pointPort x="30" y="0"/>
+                      <pointPort x="30" y="30"/>
+                    </ports>
+                    <labels>
+                      <label textBinded="process" center="true"/>
+                    </labels>
+                  </graphics>
+                  <logic>
+                    <properties>
+                      <property type="string" name="process" />
+                    </properties>
+                  </logic>
+                </node>
+        <node displayedName="Field End Node" name="DragonFieldEndNode">
+                  <graphics>
+                            <picture sizex="60" sizey="30">
+                                        <g style="fill: none; stroke: black; stroke-width: 2">
+                                                <polygon points="0,30 0,10 30,0 60,10 60,30" />
+                                        </g>
+                                </picture>
+                    <ports>
+                                  <pointPort x="30" y="0"/>
+                      <pointPort x="30" y="30"/>
+                    </ports>
+                    <labels>
+                      <label textBinded="process" center="true"/>
+                    </labels>
+                  </graphics>
+                  <logic>
+                    <properties>
+                      <property type="string" name="process" />
+                    </properties>
+                  </logic>
+                </node>
+        <node displayedName="Initial Node" name="DragonInitialNode">
           <graphics>
               <picture sizex="80" sizey="50">
               <ellipse fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="48" stroke-width="1" x2="78" fill-style="solid"/>
@@ -77,7 +119,7 @@
           <logic>
           </logic>
         </node>
-        <node displayedName="Final Node" name="DFinalNode">
+        <node displayedName="Final Node" name="DragonFinalNode">
           <graphics>
 		    <picture sizex="60" sizey="30">
 				<ellipse fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="28" stroke-width="1" x2="58" fill-style="solid"/>  
