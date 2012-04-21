@@ -126,10 +126,10 @@ namespace qrRepo {
 		qReal::IdList links(qReal::Id const &id, QString const &direction) const;
 		void removeLinkEnds(QString const &endName, qReal::Id const &id);
 
-        details::Client getRelevantClient(qReal::Id const &id) const;
-        details::Client getDefaultClient() const;
+        details::Client* getRelevantClient(qReal::Id const &id) const;
+        details::Client* getDefaultClient() const;
 
-        QList<details::Client> *mClients;
+        QList<details::Client*> *mClients;
 	};
 
 }
