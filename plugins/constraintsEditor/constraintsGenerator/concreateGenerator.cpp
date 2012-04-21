@@ -33,6 +33,175 @@ ConcreateGenerator::~ConcreateGenerator()
 {
 }
 
+ConcreateGenerator::NeededStringsForConcreateGenerate ConcreateGenerator::generateCommonNeededPartsForElements(QString elementName)
+{
+	QString mainChecksForElemetsH;
+	QString returnCheckStatusesOfElementsInCheckCPP;
+	QString addElementsInElementsNamesCPP;
+
+	QString mainCheckOfElemetH = mTemplateUtils["@@mainCheckElemet@@"];
+	mainCheckOfElemetH.replace("@@elementName@@", elementName);
+	mainChecksForElemetsH += mainCheckOfElemetH;
+
+	QString addElementInElementNames = mTemplateUtils["@@addElementInElementsNames@@"];
+	addElementInElementNames.replace("@@elementName@@", elementName);
+	addElementsInElementsNamesCPP += addElementInElementNames;
+
+	QString returnCheckStatusOfElement = mTemplateUtils["@@returnCheckStatusOfElementInCheck@@"];
+	returnCheckStatusOfElement.replace("@@elementName@@", elementName);
+	returnCheckStatusesOfElementsInCheckCPP += returnCheckStatusOfElement;
+
+	return NeededStringsForConcreateGenerate("", mainChecksForElemetsH, "", "", returnCheckStatusesOfElementsInCheckCPP, addElementsInElementsNamesCPP);
+}
+
+QString ConcreateGenerator::generateMainCheckStatusesForElemetsCPP(QMap<QString, QString> appendOptionalCheckStatusInMainCheckCPP)
+{
+	QString countMainCheckStatusesForElemetsCPP;
+	foreach (QString curElementName, appendOptionalCheckStatusInMainCheckCPP.keys()) {
+		QString appendOptionalCheckStatusOfElement = appendOptionalCheckStatusInMainCheckCPP[curElementName];
+		QString countMainCheckStatusOfElemetCPP = mTemplateUtils["@@countMainCheckStatusOfElemet@@"];
+		countMainCheckStatusOfElemetCPP.replace("@@elementName@@", curElementName);
+		countMainCheckStatusOfElemetCPP.replace("@@appendOptionalCheckStatusesOfElement@@", appendOptionalCheckStatusOfElement);
+
+		countMainCheckStatusesForElemetsCPP += countMainCheckStatusOfElemetCPP;
+	}
+	return countMainCheckStatusesForElemetsCPP;
+}
+
+ConcreateGenerator::NeededStringsForConcreateGenerate ConcreateGenerator::generateNeededPartsForDiagramFiles(Id const &diagram)
+{
+	QString optionalChecksForElemetsH;
+	QString mainChecksForElemetsH;
+	QString countOptionalCheckStatusesForElemetsCPP;
+	QString countMainCheckStatusesForElemetsCPP;
+	QString returnCheckStatusesOfElementsInCheckCPP;
+	QString addElementsInElementsNamesCPP;
+
+	QMap<QString, QString> appendOptionalCheckStatusInMainCheckCPP;//<elementName, appendOptionalCheckStatusOfElement>
+
+	QMap<QString, int> elementCount;
+	QList<Id> elementList= mApi.elementsByType("NodeConstraint");
+	elementList.append(mApi.elementsByType("EdgeConstraint"));
+
+	foreach (Id const &element, elementList) {
+		if (!mApi.isLogicalElement(element) || mApi.parent(element) != diagram) {
+			continue;
+		}
+		QString elementName = mApi.name(element);
+		if (elementName == "(Edge Constraint)" || elementName == "(Node Constraint)") {
+			elementName = "ALL";//на самом деле : вернуть ошибку(или просто проинформировать), что не задано поле "имя" для нода ограничений //qwerty
+		}
+		if (elementCount.contains(elementName)) {
+			elementCount[elementName] ++;
+		} else {
+			elementCount.insert(elementName, 1);
+		}
+
+		int id = elementCount.value(elementName);
+		if (id == 1) {
+			NeededStringsForConcreateGenerate neededString = generateCommonNeededPartsForElements(elementName);
+			mainChecksForElemetsH += neededString.mainChecksForElemetsH;
+			returnCheckStatusesOfElementsInCheckCPP += neededString.returnCheckStatusesOfElementsInCheckCPP;
+			addElementsInElementsNamesCPP += neededString.addElementsInElementsNamesCPP;
+		}
+
+		QString elementNameWithId = mTemplateUtils["@@elementNameWithId@@"];
+		elementNameWithId.replace("@@elementName@@", elementName).replace("@@id@@", QString::number(id));
+		elementNameWithId.truncate(elementNameWithId.size() - 1);
+
+		QString optionalCheckOfElemetH = mTemplateUtils["@@optionalCheckElemet@@"];
+		optionalCheckOfElemetH.replace("@@elementNameWithId@@", elementNameWithId);
+		optionalChecksForElemetsH += optionalCheckOfElemetH;
+
+		QString countOptionalCheckStatusOfElemet = mTemplateUtils["@@countOptionalCheckStatusOfElemet@@"];
+		countOptionalCheckStatusOfElemet.replace("@@elementNameWithId@@", elementNameWithId);
+		countOptionalCheckStatusOfElemet.replace("@@countRealCheckStatusOfElement@@", countRealConstraintOfElement(element));
+		countOptionalCheckStatusOfElemet.replace("@@errorText@@", "fail");
+		countOptionalCheckStatusOfElemet.replace("@@checkStatus@@", mApi.property(element, "errorType").toString());
+		countOptionalCheckStatusesForElemetsCPP += countOptionalCheckStatusOfElemet;
+
+		QString appendOptionalCheckStatusOfElement = mTemplateUtils["@@appendOptionalCheckStatusOfElement@@"];
+		appendOptionalCheckStatusOfElement.replace("@@elementNameWithId@@", elementNameWithId);
+		if (appendOptionalCheckStatusInMainCheckCPP.contains(elementName)) {
+			appendOptionalCheckStatusInMainCheckCPP[elementName] += appendOptionalCheckStatusOfElement;
+		} else {
+			appendOptionalCheckStatusInMainCheckCPP.insert(elementName, appendOptionalCheckStatusOfElement);
+		}
+	}
+	countMainCheckStatusesForElemetsCPP += generateMainCheckStatusesForElemetsCPP(appendOptionalCheckStatusInMainCheckCPP);
+
+	return NeededStringsForConcreateGenerate(optionalChecksForElemetsH, mainChecksForElemetsH, countOptionalCheckStatusesForElemetsCPP
+											, countMainCheckStatusesForElemetsCPP, returnCheckStatusesOfElementsInCheckCPP, addElementsInElementsNamesCPP);
+}
+
+void ConcreateGenerator::generateDiagramFiles(Id const &diagram, QString diagramNameTemplate)
+{
+	QString resultDiagramH;
+	QString resultDiagramCPP;
+	loadTemplateFromFile(fileNameDiagramH, resultDiagramH);
+	loadTemplateFromFile(fileNameDiagramCPP, resultDiagramCPP);
+
+	NeededStringsForConcreateGenerate needeStrings = generateNeededPartsForDiagramFiles(diagram);
+
+	resultDiagramH.replace("@@optionalChecksForElemets@@", needeStrings.optionalChecksForElemetsH);
+	resultDiagramH.replace("@@mainChecksForElemets@@", needeStrings.mainChecksForElemetsH);
+	resultDiagramH.replace("@@diagramName@@", diagramNameTemplate);
+
+	resultDiagramCPP.replace("@@countOptionalCheckStatusesForElemets@@", needeStrings.countOptionalCheckStatusesForElemetsCPP);
+	resultDiagramCPP.replace("@@countMainCheckStatusesForElemets@@", needeStrings.countMainCheckStatusesForElemetsCPP);
+	resultDiagramCPP.replace("@@returnCheckStatusesOfElementsInCheck@@", needeStrings.returnCheckStatusesOfElementsInCheckCPP);
+	resultDiagramCPP.replace("@@addElementsInElementsNames@@", needeStrings.addElementsInElementsNamesCPP);
+	resultDiagramCPP.replace("@@diagramName@@", diagramNameTemplate);
+	resultDiagramCPP.replace("@@languageName@@", mApi.property(diagram, "languageName").toString());
+
+	saveOutputFile(QString("constraints" + diagramNameTemplate + ".h"), resultDiagramH);
+	saveOutputFile(QString("constraints" + diagramNameTemplate + ".cpp"), resultDiagramCPP);
+}
+
+ConcreateGenerator::NeededStringsForCommonGenerate ConcreateGenerator::generateNeededPartsForAllConstraintsDiagram()
+{
+	QString hFiles;
+	QString cppFiles;
+	QString includeFilesPluginH;
+	QString privateFieldsPluginH;
+	QString ifForMainCheckPluginCPP;
+
+	int count = 1;
+	foreach (Id const &diagram, mApi.elementsByType("ConstraintsDiagram")) {
+		if (!mApi.isLogicalElement(diagram)) {
+			continue;
+		}
+		QString diagramNameTemplate = mTemplateUtils["@@diagramName@@"];
+		diagramNameTemplate = replaceLanguageName(diagramNameTemplate, diagram, count);
+		diagramNameTemplate.truncate(diagramNameTemplate.size() - 1);
+
+		QString hFilesTemplate = mTemplateUtils["@@constraintsDiagramHFile@@"];
+		QString cppFilesTemplate = mTemplateUtils["@@constraintsDiagramCppFile@@"];
+		hFilesTemplate.replace("@@diagramName@@", diagramNameTemplate);
+		cppFilesTemplate.replace("@@diagramName@@", diagramNameTemplate);
+
+		QString includeFilesTemplate = mTemplateUtils["@@includeConstraintsDiagramFile@@"];
+		QString privateFieldsTemplate = mTemplateUtils["@@privateFieldOfConstraintsDigram@@"];
+		includeFilesTemplate.replace("@@diagramName@@", diagramNameTemplate);
+		privateFieldsTemplate.replace("@@diagramName@@", diagramNameTemplate);
+
+		QString ifForMainCheckTemplate = mTemplateUtils["@@ifForMainCheckOfConstraintsDiagram@@"];
+		ifForMainCheckTemplate.replace("@@diagramName@@", diagramNameTemplate);
+
+		generateDiagramFiles(diagram, diagramNameTemplate);
+		count++;
+
+		hFiles += hFilesTemplate;
+		cppFiles += cppFilesTemplate;
+
+		includeFilesPluginH += includeFilesTemplate;
+		privateFieldsPluginH += privateFieldsTemplate;
+
+		ifForMainCheckPluginCPP += ifForMainCheckTemplate;
+	}
+	return NeededStringsForCommonGenerate(hFiles, cppFiles, includeFilesPluginH, privateFieldsPluginH, ifForMainCheckPluginCPP);
+}
+
 void ConcreateGenerator::generate()
 {
 	loadUtilsTemplates();
@@ -52,157 +221,15 @@ void ConcreateGenerator::generate()
 	loadTemplateFromFile(fileNamePluginH, resultPluginH);
 	loadTemplateFromFile(fileNamePluginCPP, resultPluginCPP);
 
-	QString hFiles;
-	QString cppFiles;
-	QString includeFilesPluginH;
-	QString privateFieldsPluginH;
-	QString ifForMainCheckPluginCPP;
+	NeededStringsForCommonGenerate neededStrings = generateNeededPartsForAllConstraintsDiagram();
 
-	int count = 1;
-	foreach (Id const &diagram, mApi.elementsByType("ConstraintsDiagram")) {
-		if (!mApi.isLogicalElement(diagram)) {
-			continue;
-		}
+	resultPRO.replace("@@constraintsDiagramHFiles@@", neededStrings.hFiles);
+	resultPRO.replace("@@constraintsDiagramCppFiles@@", neededStrings.cppFiles);
 
-		QString diagramNameTemplate = mTemplateUtils["@@diagramName@@"];
-		diagramNameTemplate = replaceLanguageName(diagramNameTemplate, diagram, count);
-		diagramNameTemplate.truncate(diagramNameTemplate.size() - 1);
+	resultPluginH.replace("@@includeConstraintsDiagramFiles@@", neededStrings.includeFilesPluginH);
+	resultPluginH.replace("@@privateFieldsOfConstraintsDigrams@@", neededStrings.privateFieldsPluginH);
 
-		QString hFilesTemplate = mTemplateUtils["@@constraintsDiagramHFile@@"];
-		QString cppFilesTemplate = mTemplateUtils["@@constraintsDiagramCppFile@@"];
-		hFilesTemplate.replace("@@diagramName@@", diagramNameTemplate);
-		cppFilesTemplate.replace("@@diagramName@@", diagramNameTemplate);
-
-		QString includeFilesTemplate = mTemplateUtils["@@includeConstraintsDiagramFile@@"];
-		QString privateFieldsTemplate = mTemplateUtils["@@privateFieldOfConstraintsDigram@@"];
-		includeFilesTemplate.replace("@@diagramName@@", diagramNameTemplate);
-		privateFieldsTemplate.replace("@@diagramName@@", diagramNameTemplate);
-
-		QString ifForMainCheckTemplate = mTemplateUtils["@@ifForMainCheckOfConstraintsDiagram@@"];
-		ifForMainCheckTemplate.replace("@@diagramName@@", diagramNameTemplate);
-
-		//////begin
-		QString resultDiagramH;
-		QString resultDiagramCPP;
-		loadTemplateFromFile(fileNameDiagramH, resultDiagramH);
-		loadTemplateFromFile(fileNameDiagramCPP, resultDiagramCPP);
-//
-		QString optionalChecksForElemetsH;
-		QString mainChecksForElemetsH;
-		QString countOptionalCheckStatusesForElemetsCPP;
-		QString countMainCheckStatusesForElemetsCPP;
-		QString returnCheckStatusesOfElementsInCheckCPP;
-		QString addElementsInElementsNamesCPP;
-
-		QMap<QString, QString> appendOptionalCheckStatusInMainCheckCPP;//<elementName, appendOptionalCheckStatusOfElement>
-
-		QMap<QString, int> elementCount;
-		QList<Id> elementList= mApi.elementsByType("NodeConstraint");
-		elementList.append(mApi.elementsByType("EdgeConstraint"));
-
-		foreach (Id const &element, elementList) {
-			if (!mApi.isLogicalElement(element) || mApi.parent(element) != diagram) {
-				continue;
-			}
-			QString elementName = mApi.name(element);
-			if (elementName == "(Edge Constraint)" || elementName == "(Node Constraint)") {
-				elementName = "ALL";//на самом деле : вернуть ошибку(или просто проинформировать), что не задано поле "имя" для нода ограничений //qwerty
-			}
-
-			if (elementCount.contains(elementName)) {
-				elementCount[elementName] ++;
-			} else {
-				elementCount.insert(elementName, 1);
-			}
-			int id = elementCount.value(elementName);
-
-			if (id == 1) {
-				QString mainCheckOfElemetH = mTemplateUtils["@@mainCheckElemet@@"];
-				mainCheckOfElemetH.replace("@@elementName@@", elementName);
-				mainChecksForElemetsH += mainCheckOfElemetH;
-
-				/*countMainCheckStatusOfElemetCPP = mTemplateUtils["@@countMainCheckStatusOfElemet@@"];
-				appendOptionalCheckStatusInMainCheckCPP += "";//asd //qwerty
-				countMainCheckStatusOfElemetCPP.replace("@@diagramName@@", diagramNameTemplate);
-				countMainCheckStatusOfElemetCPP.replace("@@elementName@@", elementName);
-				countMainCheckStatusesForElemetsCPP += countMainCheckStatusOfElemetCPP;*/
-
-				QString addElementInElementNames = mTemplateUtils["@@addElementInElementsNames@@"];
-				addElementInElementNames.replace("@@elementName@@", elementName);
-				addElementsInElementsNamesCPP += addElementInElementNames;
-
-				QString returnCheckStatusOfElement = mTemplateUtils["@@returnCheckStatusOfElementInCheck@@"];
-				returnCheckStatusOfElement.replace("@@elementName@@", elementName);
-				returnCheckStatusesOfElementsInCheckCPP += returnCheckStatusOfElement;
-			}
-
-			QString elementNameWithId = mTemplateUtils["@@elementNameWithId@@"];
-			elementNameWithId.replace("@@elementName@@", elementName).replace("@@id@@", QString::number(id));
-			elementNameWithId.truncate(elementNameWithId.size() - 1);
-
-			QString optionalCheckOfElemetH = mTemplateUtils["@@optionalCheckElemet@@"];
-			optionalCheckOfElemetH.replace("@@elementNameWithId@@", elementNameWithId);
-			optionalChecksForElemetsH += optionalCheckOfElemetH;
-
-			QString countOptionalCheckStatusOfElemet = mTemplateUtils["@@countOptionalCheckStatusOfElemet@@"];
-			countOptionalCheckStatusOfElemet.replace("@@elementNameWithId@@", elementNameWithId);
-			countOptionalCheckStatusOfElemet.replace("@@countRealCheckStatusOfElement@@", countRealConstraintOfElement(element));
-			countOptionalCheckStatusOfElemet.replace("@@errorText@@", "fail");
-			countOptionalCheckStatusOfElemet.replace("@@checkStatus@@", mApi.property(element, "errorType").toString());
-			countOptionalCheckStatusesForElemetsCPP += countOptionalCheckStatusOfElemet;
-
-			QString appendOptionalCheckStatusOfElement = mTemplateUtils["@@appendOptionalCheckStatusOfElement@@"];
-			appendOptionalCheckStatusOfElement.replace("@@elementNameWithId@@", elementNameWithId);
-			if (appendOptionalCheckStatusInMainCheckCPP.contains(elementName)) {
-				appendOptionalCheckStatusInMainCheckCPP[elementName] += appendOptionalCheckStatusOfElement;
-			} else {
-				appendOptionalCheckStatusInMainCheckCPP.insert(elementName, appendOptionalCheckStatusOfElement);
-			}
-
-		}
-
-		foreach (QString curElementName, appendOptionalCheckStatusInMainCheckCPP.keys()) {
-			QString appendOptionalCheckStatusOfElement = appendOptionalCheckStatusInMainCheckCPP[curElementName];
-			QString countMainCheckStatusOfElemetCPP = mTemplateUtils["@@countMainCheckStatusOfElemet@@"];
-			countMainCheckStatusOfElemetCPP.replace("@@elementName@@", curElementName);
-			countMainCheckStatusOfElemetCPP.replace("@@appendOptionalCheckStatusesOfElement@@", appendOptionalCheckStatusOfElement);
-
-			countMainCheckStatusesForElemetsCPP += countMainCheckStatusOfElemetCPP;
-		}
-
-		resultDiagramH.replace("@@optionalChecksForElemets@@", optionalChecksForElemetsH);
-		resultDiagramH.replace("@@mainChecksForElemets@@", mainChecksForElemetsH);
-		resultDiagramH.replace("@@diagramName@@", diagramNameTemplate);
-
-		resultDiagramCPP.replace("@@countOptionalCheckStatusesForElemets@@", countOptionalCheckStatusesForElemetsCPP);
-		resultDiagramCPP.replace("@@countMainCheckStatusesForElemets@@", countMainCheckStatusesForElemetsCPP);
-		resultDiagramCPP.replace("@@returnCheckStatusesOfElementsInCheck@@", returnCheckStatusesOfElementsInCheckCPP);
-		resultDiagramCPP.replace("@@addElementsInElementsNames@@", addElementsInElementsNamesCPP);
-		resultDiagramCPP.replace("@@diagramName@@", diagramNameTemplate);
-		resultDiagramCPP.replace("@@languageName@@", mApi.property(diagram, "languageName").toString());
-//
-		saveOutputFile(QString("constraints" + diagramNameTemplate + ".h"), resultDiagramH);
-		saveOutputFile(QString("constraints" + diagramNameTemplate + ".cpp"), resultDiagramCPP);
-		//////
-
-		count++;
-
-		hFiles += hFilesTemplate;
-		cppFiles += cppFilesTemplate;
-
-		includeFilesPluginH += includeFilesTemplate;
-		privateFieldsPluginH += privateFieldsTemplate;
-
-		ifForMainCheckPluginCPP += ifForMainCheckTemplate;
-	}
-
-	resultPRO.replace("@@constraintsDiagramHFiles@@", hFiles);
-	resultPRO.replace("@@constraintsDiagramCppFiles@@", cppFiles);
-
-	resultPluginH.replace("@@includeConstraintsDiagramFiles@@", includeFilesPluginH);
-	resultPluginH.replace("@@privateFieldsOfConstraintsDigrams@@", privateFieldsPluginH);
-
-	resultPluginCPP.replace("@@ifForMainCheckOfConstraintsDiagrams@@", ifForMainCheckPluginCPP);
+	resultPluginCPP.replace("@@ifForMainCheckOfConstraintsDiagrams@@", neededStrings.ifForMainCheckPluginCPP);
 	resultPluginCPP.replace("@@metaModelName@@", mMetamodelName);
 
 	saveOutputFile(fileNamePRO, resultPRO);
@@ -230,37 +257,168 @@ QString ConcreateGenerator::countRealConstraintOfElement(Id const &element)
 	return resString;
 }
 
-QString ConcreateGenerator::countRealConstraintForEdgeElement(Id const &element, QString elementName, QString resultName, int depth, QString addStr)
+QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForBeginNode(Id const &constraint, QString elementName, int depth, QString addStr)
 {
-	IdList list = mApi.children(element);
+	QString resString = "";
+	QList<QString> resBool;
+	QString exists;
+
+	resString += addStr + "qReal::Id newBeginNodeName_" + QString::number(depth) + " = logicalApi.from(" + elementName + ");\n";
+	resString += countRealConstraintForNodeElement(constraint, "newBeginNodeName_" + QString::number(depth) , "beginNodeRes", depth + 1, addStr);
+	resBool.push_back("beginNodeRes_" + QString::number(depth + 1));
+
+	resString += addStr + "bool beginNodeRes_" + QString::number(depth) + " = ";
+	exists = mApi.property(constraint, "exists").toBool() ? "!=" : "==";
+	resString += "(newBeginNodeName_" + QString::number(depth) + " " + exists + "qReal::Id::rootId());\n";
+	resBool.push_back("beginNodeRes_" + QString::number(depth));
+
+	return QPair<QString, QList<QString> >(resString, resBool);
+}
+
+QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForEndNode(Id const &constraint, QString elementName, int depth, QString addStr)
+{
+	QString resString = "";
+	QList<QString> resBool;
+	QString exists;
+
+	resString += addStr + "qReal::Id newEndNodeName_" + QString::number(depth) + " = logicalApi.to(" + elementName + ");\n";
+	resString += countRealConstraintForNodeElement(constraint, "newEndNodeName_" + QString::number(depth), "endNodeRes", depth + 1, addStr);
+	resBool.push_back("endNodeRes_" + QString::number(depth + 1));
+
+	resString += addStr + "bool endNodeRes_" + QString::number(depth) + " = ";
+	exists = mApi.property(constraint, "exists").toBool() ? "!=" : "==";
+	resString += "(newEndNodeName_" + QString::number(depth) + " " + exists + "qReal::Id::rootId());\n";
+	resBool.push_back("endNodeRes_" + QString::number(depth));
+
+	return QPair<QString, QList<QString> >(resString, resBool);
+}
+
+QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForParent(Id const &constraint, QString elementName, int depth, QString addStr)
+{
 	QString resString = "";
 	QList<QString> resBool;
 
-	foreach (Id const &constraint, list) {
-		QString constraintType = constraint.element();
-		QString exists;
-		if (constraintType == "BeginNode") {
-			resString += addStr + "qReal::Id newBeginNodeName_" + QString::number(depth) + " = logicalApi.from(" + elementName + ");\n";
-			resString += countRealConstraintForNodeElement(constraint, "newBeginNodeName_" + QString::number(depth) , "beginNodeRes", depth + 1, addStr);
-			resBool.push_back("beginNodeRes_" + QString::number(depth + 1));
+	resString += addStr + "qReal::Id newParentName_" + QString::number(depth) + " = logicalApi.parent(" + elementName + ");\n";
+	resString += addStr + "bool mainParentRes_" + QString::number(depth) + " = true;\n";
+	resString += addStr + "if (newParentName_" + QString::number(depth) + " != qReal::Id::rootId()) {\n";
+	resString += addStr + countRealConstraintForNodeElement(constraint, "newParentName_" + QString::number(depth) , "parentNodeRes", depth + 1, addStr + "	");
+	resString += addStr + "	mainParentRes_" + QString::number(depth) + " = parentNodeRes_" + QString::number(depth + 1) + ";\n	}\n";
+	resBool.push_back("mainParentRes_" + QString::number(depth));
 
-			resString += addStr + "bool beginNodeRes_" + QString::number(depth) + " = ";
-			exists = mApi.property(constraint, "exists").toBool() ? "!=" : "==";
-			resString += "(newBeginNodeName_" + QString::number(depth) + " " + exists + "qReal::Id::rootId());\n";// && beginNodeRes_" + QString::number(depth + 1) + ";\n";
-			resBool.push_back("beginNodeRes_" + QString::number(depth));
+	return QPair<QString, QList<QString> >(resString, resBool);
+}
 
-		} else if (constraintType == "EndNode") {
-			resString += addStr + "qReal::Id newEndNodeName_" + QString::number(depth) + " = logicalApi.to(" + elementName + ");\n";
-			resString += countRealConstraintForNodeElement(constraint, "newEndNodeName_" + QString::number(depth), "endNodeRes", depth + 1, addStr);
-			resBool.push_back("endNodeRes_" + QString::number(depth + 1));
+QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForListOfElements(Id const &constraint, QString elementName, QString resElementName, QString functionName, QString resType, int depth, QString addStr)
+{
+	QString resString = "";
+	QList<QString> resBool;
 
-			resString += addStr + "bool endNodeRes_" + QString::number(depth) + " = ";
-			exists = mApi.property(constraint, "exists").toBool() ? "!=" : "==";
-			resString += "(newEndNodeName_" + QString::number(depth) + " " + exists + "qReal::Id::rootId());\n";// && endNodeRes_" + QString::number(depth + 1) + ";\n";
-			resBool.push_back("endNodeRes_" + QString::number(depth));
+	resString += addStr + "qReal::IdList new" + resElementName + "NamesList_" + QString::number(depth) + " = logicalApi." + functionName + "(" + elementName + ");\n";
+	resString += addStr + "bool main" + resElementName + "Res_" + QString::number(depth + 1) + " = true;\n";
+	resString += addStr + "foreach (qReal::Id const &" + resType + ", new" + resElementName + "NamesList_" + QString::number(depth) + ") {\n";
+	resString += countRealConstraintForNodeElement(constraint, resType, functionName + "Res", depth + 1, addStr + "	");
+	resString += addStr + "	main" + resElementName + "Res_" + QString::number(depth + 1) + " = main" + resElementName + "Res_" + QString::number(depth + 1) + " && " + functionName + "Res_" + QString::number(depth + 1) + ";\n	}\n";
+	resBool.push_back("main" + resElementName + "Res_" + QString::number(depth + 1));
 
-		}
+	return QPair<QString, QList<QString> >(resString, resBool);
+}
+
+QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForChildrens(Id const &constraint, QString elementName, int depth, QString addStr)
+{
+	QString resString = "";
+	QList<QString> resBool;
+
+	QPair<QString, QList<QString> > resChildrensConstraint = countConstraintForListOfElements(constraint, elementName, "Children" , "children", "node", depth, addStr);
+	resString = resChildrensConstraint.first;
+	resBool = resChildrensConstraint.second;
+
+	return QPair<QString, QList<QString> >(resString, resBool);
+}
+
+QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForOutgoingLinks(Id const &constraint, QString elementName, int depth, QString addStr)
+{
+	QString resString = "";
+	QList<QString> resBool;
+
+	QPair<QString, QList<QString> > resOutgoingLinksConstraint = countConstraintForListOfElements(constraint, elementName, "OutgoingLinks" , "outgoingLinks", "edge", depth, addStr);
+	resString = resOutgoingLinksConstraint.first;
+	resBool = resOutgoingLinksConstraint.second;
+
+	return QPair<QString, QList<QString> >(resString, resBool);
+}
+
+QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForIncomingLinks(Id const &constraint, QString elementName, int depth, QString addStr)
+{
+	QString resString = "";
+	QList<QString> resBool;
+
+	QPair<QString, QList<QString> > resIncomingLinksConstraint = countConstraintForListOfElements(constraint, elementName, "IncomingLinks" , "incomingLinks", "edge", depth, addStr);
+	resString = resIncomingLinksConstraint.first;
+	resBool = resIncomingLinksConstraint.second;
+
+	return QPair<QString, QList<QString> >(resString, resBool);
+}
+
+QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForOutgoingNodes(Id const &constraint, QString elementName, int depth, QString addStr)
+{
+	QString resString = "";
+	QList<QString> resBool;
+
+	QPair<QString, QList<QString> > resOutgoingNodesConstraint = countConstraintForListOfElements(constraint, elementName, "OutgoingNodes" , "outgoingNodes", "node", depth, addStr);
+	resString = resOutgoingNodesConstraint.first;
+	resBool = resOutgoingNodesConstraint.second;
+
+	return QPair<QString, QList<QString> >(resString, resBool);
+}
+
+QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForIncomingNodes(Id const &constraint, QString elementName, int depth, QString addStr)
+{
+	QString resString = "";
+	QList<QString> resBool;
+
+	QPair<QString, QList<QString> > resIncomingNodesConstraint = countConstraintForListOfElements(constraint, elementName, "IncomingNodes" , "incomingNodes", "node", depth, addStr);
+	resString = resIncomingNodesConstraint.first;
+	resBool = resIncomingNodesConstraint.second;
+
+	return QPair<QString, QList<QString> >(resString, resBool);
+}
+
+QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForPropertyNode(Id const &constraint, QString elementName, int depth, QString addStr)
+{
+	QString resString = "";
+	QList<QString> resBool;
+
+	QString property = mApi.property(constraint, "property").toString();
+	QString sign = mApi.property(constraint, "sign").toString();
+	if (sign == "=") {
+		sign += "=";
 	}
+
+	QString value = mApi.property(constraint, "value").toString();
+	bool valueIsInt = false;
+	int intValue = value.toInt(&valueIsInt);
+	Q_UNUSED(intValue);
+
+	resString += addStr + "bool propertyNodeRes_" + QString::number(depth) + " = true;\n";
+	resString += addStr + "if (logicalApi.hasProperty(" + elementName + ", \"" + property + "\")) {\n";
+	resString += addStr + "	propertyNodeRes_" + QString::number(depth) + " = (logicalApi.property(" + elementName + ", \"" + property + "\").";
+
+	if (!valueIsInt) {
+		resString += "toString() " + sign + " \"" + value + "\");\n";
+	} else {
+		resString += "toInt() " + sign + " " + value + ");\n";
+	}
+
+	resString += addStr + "}\n";
+	resBool.push_back("propertyNodeRes_" + QString::number(depth));
+
+	return QPair<QString, QList<QString> >(resString, resBool);
+}
+
+QString ConcreateGenerator::additionalCommonPartForConstraint(QList<QString> resBool, QString resultName, int depth, QString addStr)
+{
+	QString resString = "";
+
 	if (resBool.empty()) {
 		resBool.push_back("true"); //"true";//вернуть ошибку; т.е мы не смогли сгенерить ограничения для элемента
 	}
@@ -274,80 +432,76 @@ QString ConcreateGenerator::countRealConstraintForEdgeElement(Id const &element,
 	return resString;
 }
 
+QString ConcreateGenerator::countRealConstraintForEdgeElement(Id const &element, QString elementName, QString resultName, int depth, QString addStr)
+{
+	IdList list = mApi.children(element);
+	QString resString = "";
+	QList<QString> resBool;
+
+	foreach (Id const &constraint, list) {
+		QString constraintType = constraint.element();
+		if (constraintType == "BeginNode") {
+			QPair<QString, QList<QString> > resBeginNodeConstraint = countConstraintForBeginNode(constraint, elementName, depth, addStr);
+			resString += resBeginNodeConstraint.first;
+			resBool = resBeginNodeConstraint.second;
+
+		} else if (constraintType == "EndNode") {
+			QPair<QString, QList<QString> > resEndNodeConstraint = countConstraintForEndNode(constraint, elementName, depth, addStr);
+			resString += resEndNodeConstraint.first;
+			resBool = resEndNodeConstraint.second;
+		}
+	}
+	resString += additionalCommonPartForConstraint(resBool, resultName, depth, addStr); //сбрасываем resBool в resString
+
+	return resString;
+}
+
 QString ConcreateGenerator::countRealConstraintForNodeElement(Id const &element, QString elementName, QString resultName, int depth, QString addStr)
 {
 	IdList list = mApi.children(element);
-	QString resString = "";//resultName + "_" + QString::number(depth) + " = ";
+	QString resString = "";
 	QList<QString> resBool;
 
 	foreach (Id const &constraint, list) {
 		QString constraintType = constraint.element();
 		if (constraintType == "Parent") {
-			resString += addStr + "qReal::Id newParentName_" + QString::number(depth) + " = logicalApi.parent(" + elementName + ");\n";
-			resString += addStr + "bool mainParentRes_" + QString::number(depth) + " = true;\n";
-			resString += addStr + "if (newParentName_" + QString::number(depth) + " != qReal::Id::rootId()) {\n";
-			resString += addStr + countRealConstraintForNodeElement(constraint, "newParentName_" + QString::number(depth) , "parentNodeRes", depth + 1, addStr + "	");
-			resString += addStr + "	mainParentRes_" + QString::number(depth) + " = parentNodeRes_" + QString::number(depth + 1) + ";\n	}\n";
-			resBool.push_back("mainParentRes_" + QString::number(depth));
+			QPair<QString, QList<QString> > resParentConstraint = countConstraintForParent(constraint, elementName, depth, addStr);
+			resString += resParentConstraint.first;
+			resBool = resParentConstraint.second;
+
 		} else if (constraintType == "Childrens") {
-			resString += addStr + "qReal::IdList newChildrenNamesList_" + QString::number(depth) + " = logicalApi.children(" + elementName + ");\n";
-			resString += addStr + "bool mainChildrenRes_" + QString::number(depth + 1) + " = true;\n";
-			resString += addStr + "foreach (qReal::Id const &node, newChildrenNamesList_" + QString::number(depth) + ") {\n";
-			resString += countRealConstraintForNodeElement(constraint, "node", "childrenRes", depth + 1, addStr + "	");
-			resString += addStr + "	mainChildrenRes_" + QString::number(depth + 1) + " = mainChildrenRes_" + QString::number(depth + 1) + " && childrenRes_" + QString::number(depth + 1) + ";\n	}\n";
-			resBool.push_back("mainChildrenRes_" + QString::number(depth + 1));
-		} else if (constraintType == "outgoingLinks") {
-			resString += addStr + "qReal::IdList newOutgoingLinksNamesList_" + QString::number(depth) + " = logicalApi.outgoingLinks(" + elementName + ");\n";
-			resString += addStr + "bool mainOutgoingLinksRes_" + QString::number(depth + 1) + " = true;\n";
-			resString += addStr + "foreach (qReal::Id const &edge, newOutgoingLinksNamesList_" + QString::number(depth) + ") {\n";
-			resString += countRealConstraintForNodeElement(constraint, "edge", "outgoingLinksRes", depth + 1, addStr + "	");
-			resString += addStr + "	mainOutgoingLinksRes_" + QString::number(depth + 1) + " = mainOutgoingLinksRes_" + QString::number(depth + 1) + " && outgoingLinksRes_" + QString::number(depth + 1) + ";\n	}\n";
-			resBool.push_back("mainOutgoingLinksRes_" + QString::number(depth + 1));
-		} else if (constraintType == "incomingLinks") {
-			resString += addStr + "qReal::IdList newIncomingLinksNamesList_" + QString::number(depth) + " = logicalApi.incomingLinks(" + elementName + ");\n";
-			resString += addStr + "bool mainIncomingLinksRes_" + QString::number(depth + 1) + " = true;\n";
-			resString += addStr + "foreach (qReal::Id const &edge, newIncomingLinksNamesList_" + QString::number(depth) + ") {\n";
-			resString += countRealConstraintForNodeElement(constraint, "edge", "incomingLinksRes", depth + 1, addStr + "	");
-			resString += addStr + "	mainIncomingLinksRes_" + QString::number(depth + 1) + " = mainIncominggLinksRes_" + QString::number(depth + 1) + " && incomingLinksRes_" + QString::number(depth + 1) + ";\n	}\n";
-			resBool.push_back("mainIncomingLinksRes_" + QString::number(depth + 1));
-		} else if (constraintType == "outgoingNodes") {
-			resString += addStr + "qReal::IdList newOutgoingNodesNamesList_" + QString::number(depth) + " = logicalApi.outgoingNodes(" + elementName + ");\n";
-			resString += addStr + "bool mainOutgoingNodesRes_" + QString::number(depth + 1) + " = true;\n";
-			resString += addStr + "foreach (qReal::Id const &node, newOutgoingNodesNamesList_" + QString::number(depth) + ") {\n";
-			resString += countRealConstraintForNodeElement(constraint, "node", "outgoingNodesRes", depth + 1, addStr + "	");
-			resString += addStr + "	mainOutgoingNodesRes_" + QString::number(depth + 1) + " = mainOutgoingNodesRes_" + QString::number(depth + 1) + " && outgoingNodesRes_" + QString::number(depth + 1) + ";\n	}\n";
-			resBool.push_back("mainOutgoingNodesRes_" + QString::number(depth + 1));
-		} else if (constraintType == "incomingNodes") {
-			resString += addStr + "qReal::IdList newIncomingNodesNamesList_" + QString::number(depth) + " = logicalApi.incomingNodes(" + elementName + ");\n";
-			resString += addStr + "bool mainIncomingNodesRes_" + QString::number(depth + 1) + " = true;\n";
-			resString += addStr + "foreach (qReal::Id const &node, newIncomingNodesNamesList_" + QString::number(depth) + ") {\n";
-			resString += countRealConstraintForNodeElement(constraint, "node", "incomingNodesRes", depth + 1, addStr + "	");
-			resString += addStr + "	mainIncomingNodesRes_" + QString::number(depth + 1) + " = mainIncominggNodesRes_" + QString::number(depth + 1) + " && incomingNodesRes_" + QString::number(depth + 1) + ";\n	}\n";
-			resBool.push_back("mainIncomingNodesRes_" + QString::number(depth + 1));
+			QPair<QString, QList<QString> > resChildrensConstraint = countConstraintForChildrens (constraint, elementName, depth, addStr);
+			resString += resChildrensConstraint.first;
+			resBool = resChildrensConstraint.second;
+
+		} else if (constraintType == "OutgoingLinks") {
+			QPair<QString, QList<QString> > resOutgoingLinksConstraint = countConstraintForOutgoingLinks (constraint, elementName, depth, addStr);
+			resString += resOutgoingLinksConstraint.first;
+			resBool = resOutgoingLinksConstraint.second;
+
+		} else if (constraintType == "IncomingLinks") {
+			QPair<QString, QList<QString> > resIncomingLinksConstraint = countConstraintForIncomingLinks (constraint, elementName, depth, addStr);
+			resString += resIncomingLinksConstraint.first;
+			resBool = resIncomingLinksConstraint.second;
+
+		} else if (constraintType == "OutgoingNodes") {
+			QPair<QString, QList<QString> > resOutgoingNodesConstraint = countConstraintForOutgoingNodes (constraint, elementName, depth, addStr);
+			resString += resOutgoingNodesConstraint.first;
+			resBool = resOutgoingNodesConstraint.second;
+
+		} else if (constraintType == "IncomingNodes") {
+			QPair<QString, QList<QString> > resIncomingNodesConstraint = countConstraintForIncomingNodes (constraint, elementName, depth, addStr);
+			resString += resIncomingNodesConstraint.first;
+			resBool = resIncomingNodesConstraint.second;
+
 		} else if (constraintType == "PropertyNode") {
-			QString property = mApi.property(constraint, "property").toString();
-			QString sign = mApi.property(constraint, "sign").toString();
-			if (sign == "=") {
-				sign += "=";
-			}
-			QString value = mApi.property(constraint, "value").toString();
-			resString += addStr + "bool propertyNodeRes_" + QString::number(depth) + " = true;\n";
-			resString += addStr + "if (logicalApi.hasProperty(" + elementName + ", \"" + property + "\")) {\n";
-			resString += addStr + "	propertyNodeRes_" + QString::number(depth) + " = (logicalApi.property(" + elementName + ", \"" + property + "\").toString() " + sign + " \"" + value + "\");\n";
-			resString += addStr + "}\n";
-			resBool.push_back("propertyNodeRes_" + QString::number(depth));
+			QPair<QString, QList<QString> > resPropertyNodeConstraint = countConstraintForPropertyNode (constraint, elementName, depth, addStr);
+			resString += resPropertyNodeConstraint.first;
+			resBool = resPropertyNodeConstraint.second;
 		}
 	}
 
-	if (resBool.empty()) {//asd_copypast
-		resBool.push_back("true");//вернуть ошибку; т.е мы не смогли сгенерить ограничения для элемента
-	}
-	resString += addStr + ("bool " + resultName + "_" + QString::number(depth) + " = " + resBool.first());
-	resBool.pop_front();
-	foreach (QString curBool, resBool) {
-		resString += " && " + curBool;
-	}
-	resString += ";\n";
+	resString += additionalCommonPartForConstraint(resBool, resultName, depth, addStr);
 
 	return resString;
 }
