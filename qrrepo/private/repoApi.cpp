@@ -12,27 +12,30 @@ RepoApi::RepoApi(QString const &workingDirectory)
     /*Considering first in list as main save-file
     others will be appended to latter indexes.
 
-    Methods without comment - "multirepos" will work in legacy mode (only with main save-file)*/
+    Methods without comment - "multirepos" will work in legacy mode (only with main save-file)
+    */
 
-    qDebug() << "initialising repoapi";
     mClients = new QList<details::Client*>();
     Client *defaultClient = new Client(workingDirectory);
     mClients->append(defaultClient);
-    qDebug() << "finished initialising repoapi";
 }
 
+
+/// Searches for client corresponding to passes id
+/// return is link for client, representig save file inclusing requested id
 details::Client* RepoApi::getRelevantClient(const qReal::Id &id) const
 {
-//        for (int i = 0; i < mClients->count(); ++i){
-//        if(mClients->at(i).exist(id))
-//            return mClients->at(i);
-//    }
+        for (int i = 0; i < mClients->count(); ++i){
+        if(mClients->at(i).exist(id))
+            return mClients->at(i);
+    }
     Client *client = mClients->at(0);
     return client;
-    qDebug() << "throwing exception at getRelevantClient";
     throw Exception("RepoApi: Requesting nonexistent object " + id.toString());
 }
 
+/// returns client created at initialization
+/// it is considered as a default one
 details::Client* RepoApi::getDefaultClient() const
 {
     int defaultPosition = 0;
