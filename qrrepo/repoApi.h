@@ -99,6 +99,7 @@ namespace qrRepo {
 		void save(qReal::IdList list) const;
 		void saveTo(QString const &workingFile);
 
+        void RepoApi::loadSaveFile(QString const &saveFile);
 		void open(QString const &saveFile);
 
 		virtual QString workingFile() const;

@@ -22,7 +22,7 @@ RepoApi::RepoApi(QString const &workingDirectory)
 
 
 /// Searches for client corresponding to passes id
-/// return is link for client, representig save file inclusing requested id
+/// @return is link for client, representig save file inclusing requested id
 details::Client* RepoApi::getRelevantClient(const qReal::Id &id) const
 {
         for (int i = 0; i < mClients->count(); ++i){
@@ -34,7 +34,7 @@ details::Client* RepoApi::getRelevantClient(const qReal::Id &id) const
     throw Exception("RepoApi: Requesting nonexistent object " + id.toString());
 }
 
-/// returns client created at initialization
+/// @return client created at initialization
 /// it is considered as a default one
 details::Client* RepoApi::getDefaultClient() const
 {
@@ -42,7 +42,6 @@ details::Client* RepoApi::getDefaultClient() const
     return mClients->at(defaultPosition);
 }
 
-//Multirepos
 QString RepoApi::name(Id const &id) const
 {
     Client *client = this->getRelevantClient(id);
@@ -50,63 +49,61 @@ QString RepoApi::name(Id const &id) const
     return client->property(id, "name").toString();
 }
 
-//Multirepos
 void RepoApi::setName(Id const &id, QString const &name)
 {
     Client *client = getRelevantClient(id);
     client->setProperty(id, "name", name);
 }
 
-//Multirepos
 IdList RepoApi::children(Id const &id) const
 {
     Client *client = getRelevantClient(id);
     return client->children(id);
 }
 
-//Multirepos
+
 void RepoApi::addChild(Id const &id, Id const &child)
 {
     Client *client = getRelevantClient(id);
     client->addChild(id, child);
 }
 
-//Multirepos
+
 void RepoApi::addChild(Id const &id, Id const &child, Id const &logicalId)
 {
     Client *client = getRelevantClient(id);
     client->addChild(id, child, logicalId);
 }
 
-//Multirepos
+
 void RepoApi::stackBefore(Id const &id, Id const &child, Id const &sibling)
 {
     Client *client = getRelevantClient(id);
     client->stackBefore(id, child, sibling);
 }
 
-//Multirepos
+
 Id RepoApi::copy(qReal::Id const &src)
 {
     Client *client = getRelevantClient(src);
     return client->cloneObject(src);
 }
 
-//Multirepos
+
 void RepoApi::removeChild(Id const &id, Id const &child)
 {
     Client *client = getRelevantClient(id);
     client->removeChild(id, child);
 }
 
-//Multirepos
+
 void RepoApi::removeChildren(Id const &id)
 {
 	foreach (Id const child, children(id))
 		removeChild(id, child);
 }
 
-//Multirepos
+
 void RepoApi::removeElement(Id const &id)
 {
 	Q_ASSERT(id != Id::rootId());
@@ -156,7 +153,7 @@ void RepoApi::removeElement(Id const &id)
     client->remove(id);
 }
 
-//Multirepos
+
 void RepoApi::removeLinkEnds(QString const &endName, Id const &id) {
 	if (hasProperty(id, endName)) {
 		Id target = property(id, endName).value<Id>();
@@ -166,14 +163,14 @@ void RepoApi::removeLinkEnds(QString const &endName, Id const &id) {
 	}
 }
 
-//Multirepos
+
 Id RepoApi::parent(Id const &id) const
 {
     Client *client = getRelevantClient(id);
     return client->parent(id);
 }
 
-//Multirepos
+
 void RepoApi::setParent(Id const &id, Id const &parent)
 {
     Client *client = getRelevantClient(id);
@@ -182,7 +179,7 @@ void RepoApi::setParent(Id const &id, Id const &parent)
     client->setParent(id, parent);
 }
 
-//Multirepos
+
 IdList RepoApi::links(Id const &id, QString const &direction) const
 {
     Client *client = getRelevantClient(id);
@@ -196,81 +193,89 @@ IdList RepoApi::links(Id const &id, QString const &direction) const
 	return result;
 }
 
-//Multirepos
+
 IdList RepoApi::outgoingLinks(Id const &id) const
 {
 	return links(id, "from");
 }
 
-//Multirepos
+
 IdList RepoApi::incomingLinks(Id const &id) const
 {
 	return links(id, "to");
 }
 
-//Multirepos
+
 IdList RepoApi::links(Id const &id) const
 {
 	return incomingLinks(id) << outgoingLinks(id);
 }
 
-//Multirepos
+
 qReal::IdList RepoApi::outgoingConnections(qReal::Id const &id) const
 {
     Client *client = getRelevantClient(id);
     return client->property(id, "outgoingConnections").value<IdList>();
 }
 
-//Multirepos
+
 qReal::IdList RepoApi::incomingConnections(qReal::Id const &id) const
 {
     Client *client = getRelevantClient(id);
     return client->property(id, "incomingConnections").value<IdList>();
 }
 
-//Multirepos
+
+/// Creating connection link between entities
+/// @param source is entity where connection starts
+/// @param destination is entity where connection ends
+/// Be aware, problems may occur if entities are from different clients
 void RepoApi::connect(qReal::Id const &source, qReal::Id const &destination)
 {
 	addToIdList(source, "outgoingConnections", destination);
 	addToIdList(destination, "incomingConnections", source);
 }
 
-//Multirepos
+
 void RepoApi::disconnect(qReal::Id const &source, qReal::Id const &destination)
 {
 	removeFromList(source, "outgoingConnections", destination);
 	removeFromList(destination, "incomingConnections", source);
 }
 
-//Multirepos
+
 qReal::IdList RepoApi::outgoingUsages(qReal::Id const &id) const
 {
     Client *client = getRelevantClient(id);
     return client->property(id, "outgoingUsages").value<IdList>();
 }
 
-//Multirepos
+
 qReal::IdList RepoApi::incomingUsages(qReal::Id const &id) const
 {
     Client *client = getRelevantClient(id);
     return client->property(id, "incomingUsages").value<IdList>();
 }
 
-//Multirepos
+
+/// Creating usage link between entities
+/// param source is entity where usage link starts
+/// param destination is entity where usage link ends
+/// Be aware, problems may occur if entities are from different clients
 void RepoApi::addUsage(qReal::Id const &source, qReal::Id const &destination)
 {
 	addToIdList(source, "outgoingUsages", destination);
 	addToIdList(destination, "incomingUsages", source);
 }
 
-//Multirepos
+
 void RepoApi::deleteUsage(qReal::Id const &source, qReal::Id const &destination)
 {
 	removeFromList(source, "outgoingUsages", destination);
 	removeFromList(destination, "incomingUsages", source);
 }
 
-//Multirepos
+
 qReal::IdList RepoApi::connectedElements(qReal::Id const &id) const
 {
 	qReal::IdList result = outgoingConnectedElements(id);
@@ -278,7 +283,7 @@ qReal::IdList RepoApi::connectedElements(qReal::Id const &id) const
 	return result;
 }
 
-//Multirepos
+
 qReal::IdList RepoApi::outgoingConnectedElements(qReal::Id const &id) const
 {
 	qReal::IdList result;
@@ -292,7 +297,7 @@ qReal::IdList RepoApi::outgoingConnectedElements(qReal::Id const &id) const
 	return result;
 }
 
-//Multirepos
+
 qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
 {
 	qReal::IdList result;
@@ -311,14 +316,14 @@ QString RepoApi::typeName(Id const &id) const
 	return id.element();
 }
 
-//Multirepos
+
 QVariant RepoApi::property(Id const &id, QString const &propertyName) const
 {
     Client *client = getRelevantClient(id);
     return client->property(id, propertyName);
 }
 
-//Multirepos
+
 QString RepoApi::stringProperty(Id const &id, QString const &propertyName) const
 {
     Client *client = getRelevantClient(id);
@@ -326,35 +331,35 @@ QString RepoApi::stringProperty(Id const &id, QString const &propertyName) const
     return client->property(id, propertyName).toString();
 }
 
-//Multirepos
+
 void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value)
 {
     Client *client = getRelevantClient(id);
     client->setProperty(id, propertyName, value);
 }
 
-//Multirepos
+
 void RepoApi::removeProperty(Id const &id, QString const &propertyName)
 {
     Client *client = getRelevantClient(id);
     client->removeProperty(id, propertyName);
 }
 
-//Multirepos
+
 void RepoApi::copyProperties(const Id &dest, const Id &src)
 {
     Client *client = getRelevantClient(src);
     client->copyProperties(dest, src);
 }
 
-//Multirepos
+
 bool RepoApi::hasProperty(Id const &id, QString const &propertyName) const
 {
     Client *client = getRelevantClient(id);
     return client->hasProperty(id, propertyName);
 }
 
-//Multirepos
+
 Id RepoApi::from(Id const &id) const
 {
     Client *client = getRelevantClient(id);
@@ -362,7 +367,7 @@ Id RepoApi::from(Id const &id) const
     return client->property(id, "from").value<Id>();
 }
 
-//Multirepos
+
 void RepoApi::setFrom(Id const &id, Id const &from)
 {
     Client *client = getRelevantClient(id);
@@ -374,7 +379,7 @@ void RepoApi::setFrom(Id const &id, Id const &from)
 	addToIdList(from, "links", id, "from");
 }
 
-//Multirepos
+
 Id RepoApi::to(Id const &id) const
 {
     Client *client = getRelevantClient(id);
@@ -382,7 +387,7 @@ Id RepoApi::to(Id const &id) const
     return client->property(id, "to").value<Id>();
 }
 
-//Multirepos
+
 void RepoApi::setTo(Id const &id, Id const &to)
 {
     Client *client = getRelevantClient(id);
@@ -394,7 +399,7 @@ void RepoApi::setTo(Id const &id, Id const &to)
 	addToIdList(to, "links", id, "to");
 }
 
-//Multirepos
+
 double RepoApi::fromPort(Id const &id) const
 {
     Client *client = getRelevantClient(id);
@@ -402,14 +407,14 @@ double RepoApi::fromPort(Id const &id) const
     return client->property(id, "fromPort").value<double>();
 }
 
-//Multirepos
+
 void RepoApi::setFromPort(Id const &id, double fromPort)
 {
     Client *client = getRelevantClient(id);
     client->setProperty(id, "fromPort", fromPort);
 }
 
-//Multirepos
+
 double RepoApi::toPort(Id const &id) const
 {
     Client *client = getRelevantClient(id);
@@ -417,63 +422,64 @@ double RepoApi::toPort(Id const &id) const
     return client->property(id, "toPort").value<double>();
 }
 
-//Multirepos
+
 void RepoApi::setToPort(Id const &id, double toPort)
 {
     Client *client = getRelevantClient(id);
     client->setProperty(id, "toPort", toPort);
 }
 
-//Multirepos
+
 QVariant RepoApi::position(Id const &id) const
 {
     Client *client = getRelevantClient(id);
     return client->property(id, "position");
 }
 
-//Multirepos
+
 QVariant RepoApi::configuration(Id const &id) const
 {
     Client *client = getRelevantClient(id);
     return client->property(id, "configuration");
 }
 
-//Multirepos
+
 void RepoApi::setPosition(Id const &id, QVariant const &position)
 {
     Client *client = getRelevantClient(id);
     client->setProperty(id, "position", position);
 }
 
-//Multirepos
+
 void RepoApi::setConfiguration(Id const &id, QVariant const &configuration)
 {
     Client *client = getRelevantClient(id);
     client->setProperty(id, "configuration", configuration);
 }
 
-//Multirepos
+
 bool RepoApi::isLogicalElement(qReal::Id const &id) const
 {
     Client *client = getRelevantClient(id);
     return client->isLogicalId(id);
 }
 
-//Multirepos
+
 bool RepoApi::isGraphicalElement(qReal::Id const &id) const
 {
     Client *client = getRelevantClient(id);
     return !client->isLogicalId(id);
 }
 
-//Multirepos
+
 qReal::Id RepoApi::logicalId(qReal::Id const &id) const
 {
     Client *client = getRelevantClient(id);
     return client->logicalId(id);
 }
 
-//Multirepos
+
+//investigated
 void RepoApi::exterminate()
 {
     for (int i = 0; i < mClients->count(); i++){
@@ -481,9 +487,9 @@ void RepoApi::exterminate()
     }
 }
 
-//Multirepos
+
 /// Open new project, disregard all previosly opened
-/// TODO!!!
+/// usage scenario is staring work with completely new project
 void RepoApi::open(QString const &saveFile)
 {
     mClients->clear();
@@ -491,8 +497,17 @@ void RepoApi::open(QString const &saveFile)
     mClients->append(openedSaveFile);
 }
 
-//Multirepos
-/// Saving current project in default location
+/// Opens additional save file
+/// original scenario is loading save file consistiong of library files
+/// changes to this files aren't intendent
+void RepoApi::loadSaveFile(QString const &saveFile)
+{
+    Client *saveFileToAppend = new Client(saveFile);
+    mClients->append(saveFileToAppend);
+}
+
+//Default
+/// Saving default project in default location
 void RepoApi::saveAll() const
 {
     Client *client = getDefaultClient();
@@ -500,7 +515,7 @@ void RepoApi::saveAll() const
     client->saveAll();
 }
 
-//Multirepos
+//Default
 /// Saving current project in specified location
 void RepoApi::saveTo(QString const &workingFile)
 {
@@ -510,8 +525,9 @@ void RepoApi::saveTo(QString const &workingFile)
     client->saveAll();
 }
 
-//Multirepos
-/// Importing specified file into current project
+//Default
+/// Importing specified file into default project
+/// usage scenario is pasting saved file into currently opened project
 void RepoApi::importFromDisk(QString const &importedFile)
 {
     Client *client = getDefaultClient();
@@ -519,7 +535,7 @@ void RepoApi::importFromDisk(QString const &importedFile)
     client->importFromDisk(importedFile);
 }
 
-//Multirepos
+//Default
 /// Save selected elements with all of their children into path of current project
 void RepoApi::save(qReal::IdList list) const
 {
@@ -528,7 +544,7 @@ void RepoApi::save(qReal::IdList list) const
     client->save(list);
 }
 
-//Multirepos
+//Default
 /// Get savefile location of current project
 QString RepoApi::workingFile() const
 {
@@ -537,10 +553,10 @@ QString RepoApi::workingFile() const
     return client->workingFile();
 }
 
-//Multirepos
+
 void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data, QString const &direction)
 {
-    Client *client = getDefaultClient();
+    Client *client = getRelevantClient(target);
 
 	if (target == Id::rootId())
 		return;
@@ -561,10 +577,10 @@ void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &d
 	}
 }
 
-//Multirepos
+
 void RepoApi::removeFromList(Id const &target, QString const &listName, Id const &data, QString const &direction)
 {
-    Client *client = getDefaultClient();
+    Client *client = getRelevantClient();
 
 	if (target == Id::rootId())
 		return;
@@ -580,7 +596,7 @@ void RepoApi::removeFromList(Id const &target, QString const &listName, Id const
     client->setTemporaryRemovedLinks(target, direction, temporaryRemovedList);
 }
 
-//Multirepos
+
 Id RepoApi::otherEntityFromLink(Id const &linkId, Id const &firstNode) const
 {
 	Id const fromId = from(linkId);
@@ -590,7 +606,9 @@ Id RepoApi::otherEntityFromLink(Id const &linkId, Id const &firstNode) const
 		return to(linkId);
 }
 
-//Multirepos
+//Default
+// Used in EditorViewScene::createAddConnectionMenu
+// thus doesn't alloved to see clients other than default
 IdList RepoApi::logicalElements(Id const &type) const
 {
 	Q_ASSERT(type.idSize() == 3);
@@ -604,7 +622,7 @@ IdList RepoApi::logicalElements(Id const &type) const
 	return result;
 }
 
-//Multirepos
+//Default
 IdList RepoApi::graphicalElements(Id const &type) const
 {
 	Q_ASSERT(type.idSize() == 3);
@@ -618,7 +636,7 @@ IdList RepoApi::graphicalElements(Id const &type) const
 	return result;
 }
 
-//Multirepos
+//Default
 IdList RepoApi::elementsByType(QString const &type) const
 {
     Client *client = getDefaultClient();
@@ -630,35 +648,35 @@ IdList RepoApi::elementsByType(QString const &type) const
 	return result;
 }
 
-//Multirepos
+//Default
 int RepoApi::elementsCount() const
 {
     Client *client = getDefaultClient();
     return client->elements().size();
 }
 
-//Multirepos
+//Default
 bool RepoApi::exist(Id const &id) const
 {
     Client *client = getDefaultClient();
     return client->exist(id);
 }
 
-//Multirepos
+//Default
 IdList RepoApi::temporaryRemovedLinksAt(Id const &id, QString const &direction) const
 {
     Client *client = getDefaultClient();
     return client->temporaryRemovedLinksAt(id, direction);
 }
 
-//Multirepos
+//Default
 void RepoApi::setTemporaryRemovedLinks(Id const &id, IdList const &value, QString const &direction)
 {
     Client *client = getDefaultClient();
     client->setTemporaryRemovedLinks(id, direction, value);
 }
 
-//Multirepos
+//Default
 void RepoApi::removeTemporaryRemovedLinks(Id const &id)
 {
     Client *client = getDefaultClient();
