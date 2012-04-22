@@ -2,6 +2,7 @@
 
 #include <QTreeWidget>
 #include <QtCore/QHash>
+#include <QtCore/QSettings>
 #include <QtGui/QWidget>
 #include <QtGui/QIcon>
 #include <QPushButton>
@@ -20,31 +21,31 @@ Q_OBJECT
 public:
 	explicit PaletteTree(QWidget *parent = 0);
 
-	/** Adds item type to some editors tree.
+	/** Adds item type to some editor's tree.
 	  @param id Item id.
 	  @param name Item name.
 	  @param description Item description.
 	  @param icon Item icon.
-	  @param tree Editors tree.
+	  @param tree Editor's tree.
 	  @param parent Parent of item's group.
 	*/
 	void addItemType(Id const &id, QString const &name, QString const &description
 			, QIcon const &icon,QTreeWidget *tree, QTreeWidgetItem *parent);
 
-	/** Adds top item type to some editors tree.
+	/** Adds top item type to some editor's tree.
 	  @param id Item id.
 	  @param name Item name.
 	  @param description Item description.
 	  @param icon Item icon.
-	  @param tree Editors tree.
+	  @param tree Editor's tree.
 	*/
 	void addTopItemType(Id const &id, QString const &name, QString const &description
 			    , QIcon const &icon,QTreeWidget *tree);
 
-	/** Adds all editors elements to appropriate tree.
+	/** Adds all editor's elements to appropriate tree.
 	  @param editorManager Editor manager which all editors with elements are taken from.
 	  @param editor Editor
-	  @param diagram Diagram that corresponds to the chosen editor.
+	  @param diagram Diagram that corresponds to chosen editor.
 	*/
 	void addEditorElements(EditorManager &editorManager, const Id &editor, const Id &diagram);
 
@@ -58,11 +59,24 @@ public:
 	QComboBox* comboBox() const;
 	QVector<QString> editorsNames() const;
 	Id currentEditor() const;
+
 	/// Set item with such id as active in ComboBox.
-	void setComboBox(Id id);
+	void setComboBox(Id const &id);
+	void setIconsView(bool iconsView);
+	bool iconsView() const;
+	void setItemsCountInARow(int count);
+	int itemsCountInARow() const;
 
 	/// Set item with such index as active in ComboBox.
 	void setComboBoxIndex(int index);
+
+	/// Set saved item index as current in ComboBox.
+	void setComboBoxIndex();
+
+	/** Fills palette tree by editors.
+	  @param editorManager Editor manager which all editors with elements are taken from.
+	*/
+	void loadEditors(EditorManager &editorManager);
 	~PaletteTree();
 public slots:
 	/// Collapse all nodes of current tree.
@@ -83,7 +97,7 @@ private:
 	public:
 			DraggableElement(Id const &id, QString const &name
 					, QString const &description
-					, QIcon const &icon, QWidget *parent = NULL);
+					, QIcon const &icon, bool iconsOnly, QWidget *parent = NULL);
 
 			QIcon icon() const
 			{
@@ -139,6 +153,13 @@ private:
 	/// Deletes all PaletteTree widgets.
 	void deletePaletteTree();
 
+	/** Adds group of editor's elements to appropriate tree to some top element.
+	  @param tmpList List with sorted group elements.
+	  @param editorTree Editor's tree
+	  @param item Editor's tree node for adding in it tmpList.
+	*/
+	void addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, QTreeWidgetItem *item);
+
 	/// Hash table with editor ids.
 	QHash<Id, int> mCategories;
 
@@ -151,10 +172,10 @@ private:
 	/// Button that expands all nodes of current tree.
 	QPushButton *mExpandAll;
 
-	/// Vector with all editors trees.
+	/// Vector with all editor's trees.
 	QVector <QTreeWidget *> mEditorsTrees;
 
-	/// Vector with all editors names.
+	/// Vector with all editor's names.
 	QVector <QString> mEditorsNames;
 
 	/// Combobox with editors.
@@ -165,6 +186,15 @@ private:
 
 	/// Current editor number.
 	int mCurrentEditor;
+
+	/// Stores info about expanded nodes in tree
+	QSettings *mSettings;
+
+	/// Representation flag
+	bool mIconsView;
+
+	/// Count of items in a row in icon's representation
+	int mItemsCountInARow;
 };
 }
 }
