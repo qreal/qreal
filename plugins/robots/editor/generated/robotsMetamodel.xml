@@ -1044,7 +1044,7 @@
             <node displayedName="Блок инициализации" name="InitialBlock">
                 <graphics>
                     <picture sizex="50" sizey="50">
-                        <image y1="0" name="images/initialBlock.png" x1="0" y2="50" x2="50"/>
+                        <image y1="0" name="images/initialization.png" x1="0" y2="50" x2="50"/>
                     </picture>
                     <labels>
                         <label x="33" y="60" textBinded="port_1"/>
