@@ -15,6 +15,7 @@ namespace qrRepo {
 	class QRREPO_EXPORT RepoApi : public GraphicalRepoApi, public LogicalRepoApi, public RepoControlInterface
 	{
 	public:
+        //TODOEFIM метод, выдаюищй все элементы репозитория
 		explicit RepoApi(QString const &workingDirectory);
 		// Default destructor ok.
 
