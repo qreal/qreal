@@ -1010,6 +1010,10 @@ void MainWindow::centerOn(Id const &id)
 		return;
 
 	EditorView* const view = getCurrentTab();
+	if (!view) {
+		return;
+	}
+
 	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
 	Element* const element = scene->getElem(id);
 

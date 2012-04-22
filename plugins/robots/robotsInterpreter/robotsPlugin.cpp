@@ -9,6 +9,7 @@ using namespace qReal;
 using namespace interpreters::robots;
 
 const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
+const Id oldRobotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "DiagramNode");
 
 RobotsPlugin::RobotsPlugin()
 		: mMainWindowInterpretersInterface(NULL)
@@ -142,7 +143,7 @@ void RobotsPlugin::closeNeededWidget()
 
 void RobotsPlugin::activeTabChanged(Id const & rootElementId)
 {
-	bool const enabled = rootElementId.type() == robotDiagramType;
+	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
 	foreach (ActionInfo const &actionInfo, mActionInfos) {
 		if (needToDisableWhenNotRobotsDiagram(actionInfo.action())) {
 			actionInfo.action()->setEnabled(enabled);
