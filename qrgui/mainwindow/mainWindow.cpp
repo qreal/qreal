@@ -471,6 +471,40 @@ bool MainWindow::import(QString const &fileName)
 	return true;
 }
 
+//No change to the savefile done
+//probaly only possibe usage in current state - loading libraries
+//consider changing name to addLibraryFile
+bool MainWindow::add(const QString &fileName)
+{
+    if (!QFile(fileName).exists() && fileName != "") {
+        return false;
+    }
+
+    refreshRecentProjectsList(fileName);
+
+    mModels->repoControlApi().loadSaveFile(fileName);
+    mModels->reinit();
+
+    if (!checkPluginsAndReopen(NULL))
+        return false;
+    mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
+    mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
+    mUi->logicalModelExplorer->setModel(mModels->logicalModel());
+
+    QString windowTitle = mToolManager.customizer()->windowTitle();
+    if (!fileName.isEmpty()) {
+        setWindowTitle(windowTitle + " - " + mSaveFile);
+    }
+    else
+        setWindowTitle(windowTitle + " - unsaved project");
+    return true;
+}
+
+bool MainWindow::addProject(QString const &fileName)
+{
+    return add(fileName);
+}
+
 bool MainWindow::openNewProject()
 {
 	if (mUnsavedProjectIndicator) {
@@ -543,7 +577,7 @@ bool MainWindow::open(QString const &fileName)
 	connectWindowTitle();
 	mSaveFile = fileName;
 	QString windowTitle = mToolManager.customizer()->windowTitle();
-	if (!fileName.isEmpty()) {
+    if (!fileName.isEmpty()) {
 		setWindowTitle(windowTitle + " - " + mSaveFile);
 	}
 	else
