@@ -28,6 +28,8 @@ namespace qReal {
 
 		IdList editors() const;
 		IdList diagrams(Id const &editor) const;
+		QStringList paletteGroups(Id const &editor, Id const &diagram) const;
+		QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
 		IdList elements(Id const &diagram) const;
 		bool loadPlugin(QString const &pluginName);
 		bool unloadPlugin(QString const &pluginName);

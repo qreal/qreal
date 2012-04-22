@@ -922,5 +922,36 @@
 				</logic>
 			</node>
 		</graphicTypes>
-	</diagram>
+        <palette>
+            <group name="Действия">
+                <element name="Гудок"/>
+                <element name="Играть звук"/>
+                <element name="Моторы вперёд"/>
+                <element name="Моторы назад"/>
+                <element name="Моторы стоп"/>
+                <element name="Функция"/>
+                <element name="Поток управления"/>
+            </group>
+            <group name="Ожидания">
+                <element name="Таймер"/>
+                <element name="Ждать сенсор касания"/>
+                <element name="Ждать сонар"/>
+                <element name="Ждать цвет"/>
+                <element name="Ждать энкодер"/>
+                <element name="Ждать интенсивность цвета"/>
+            </group>
+            <group name="Алгоритмы">
+                <element name="Породить поток"/>
+                <element name="Условие"/>
+                <element name="Цикл"/>
+                <element name="Диаграмма поведения робота"/>
+            </group>
+            <group name="Инициализация">
+                <element name="Начало"/>
+                <element name="Конец"/>
+                <element name="Блок инициализации"/>
+                <element name="Сбросить показания энкодера"/>
+            </group>
+        </palette>
+    </diagram>
 </metamodel>
