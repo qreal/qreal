@@ -477,7 +477,6 @@ bool MainWindow::import(QString const &fileName)
 //consider changing name to addLibraryFile
 bool MainWindow::add(const QString &fileName)
 {
-    qDebug() << "MainWindow add got fileName" << fileName;
     if (!QFile(fileName).exists()) {
         return false;
     }
@@ -506,7 +505,6 @@ bool MainWindow::add(const QString &fileName)
     else
         setWindowTitle(windowTitle + " - unsaved project");
         */
-    qDebug() << "MainWindow::addProject Ran thru everything";
     return true;
 }
 

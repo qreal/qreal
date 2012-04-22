@@ -28,9 +28,10 @@ public:
 	}
 
 	/// Tells if we should show trace connections menu or not
+    //TODO: change back before pull request
 	virtual bool showConnectionRelatedMenus() const
 	{
-		return false;
+        return true;
 	}
 };
 
