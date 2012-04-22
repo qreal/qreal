@@ -46,6 +46,7 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
+    <addaction name="actionAdd"/>
     <addaction name="actionImport"/>
     <addaction name="actionSave_diagram_as_a_picture"/>
     <addaction name="actionCloseProject"/>
@@ -624,6 +625,11 @@
   <action name="actionCloseProject">
    <property name="text">
     <string>Close project</string>
+   </property>
+  </action>
+  <action name="actionAdd">
+   <property name="text">
+    <string>Add...</string>
    </property>
   </action>
  </widget>
