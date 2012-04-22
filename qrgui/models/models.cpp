@@ -61,6 +61,8 @@ qrRepo::GraphicalRepoApi const &Models::graphicalRepoApi() const
 	return mGraphicalModel->api();
 }
 
+//Be aware that in current realisation metohd init() used in reinit() methods
+//taks only default client into account - the one that handles default project savefile
 void Models::reinit()
 {
 	mLogicalModel->reinit();
