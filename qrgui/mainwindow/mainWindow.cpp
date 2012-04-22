@@ -487,14 +487,12 @@ bool MainWindow::add(const QString &fileName)
     mModels->reinit();
 
   //copy-paste from open()
-  //do idea what it does
-    /*
+  //not shure what it does
     if (!checkPluginsAndReopen(NULL))
         return false;
     mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
     mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
     mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-    */
 /*
   //Copy-Paste from method open();
   //title hadling probably should be more complex and mibile

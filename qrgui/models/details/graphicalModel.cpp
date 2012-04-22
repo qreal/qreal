@@ -24,6 +24,7 @@ GraphicalModel::~GraphicalModel()
 	cleanupTree(mRootItem);
 }
 
+// TODO problem - only one client initialized???
 void GraphicalModel::init()
 {
 	mModelItems.insert(Id::rootId(), mRootItem);
