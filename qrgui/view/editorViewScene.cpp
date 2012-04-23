@@ -433,7 +433,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	}
 
 	if (e) {
-		delete e;
+//		delete e;
 	}
 
 	if(newParent && dynamic_cast<NodeElement*>(newParent)){
@@ -459,11 +459,10 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 		if (nextNode != NULL) {
 			mMVIface->graphicalAssistApi()->stackBefore(id, nextNode->id());
 		}
-	}
-	emit elementCreated(id);
+    }
     //////////////////////
-    /*/cutting lincs
-    e = mWindow->manager()->graphicalObject(id);
+    //cutting lincs
+//    e = mWindow->manager()->graphicalObject(id);
  //   parentId = newParent ? newParent->id() : mMVIface->rootId();
     if (dynamic_cast<NodeElement*>(e)) { // check if e is node
         foreach (QGraphicsItem *item, items(scenePos)) {
@@ -489,6 +488,9 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
         }
     }
     ////////////////////*/
+
+
+    emit elementCreated(id);
 
 
 }
