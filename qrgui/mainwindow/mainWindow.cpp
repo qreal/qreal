@@ -1430,7 +1430,6 @@ void MainWindow::dragonPrototypeTypeSelect(int num)
     dragonPrototypeType = num;
 }
 
-
 void MainWindow::createDragonPrototype()
 {
 
@@ -1448,7 +1447,7 @@ void MainWindow::createDragonPrototype()
         Id const final("DragonDiagramMetamodel", "DragonDiagram", "DragonFinalNode", QUuid::createUuid().toString());
         mModels->graphicalModelAssistApi().createElement(created, final, false, "final", QPointF(0,200));
 
-        Id const flow("BlockDiagramMetamodel", "DragonDiagram", "DragonFlow", QUuid::createUuid().toString());
+        Id const flow("DragonDiagramMetamodel", "DragonDiagram", "DragonFlow", QUuid::createUuid().toString());
 
         mModels->graphicalModelAssistApi().createElement(created, flow, false, "flow", QPointF(0,200));
         mModels->graphicalModelAssistApi().setFrom(flow, initial);

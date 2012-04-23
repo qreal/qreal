@@ -421,12 +421,12 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	Id id = Id::loadFromString(uuid);
 
 	// if element is node then we should look for parent for him
-	Element *e = mWindow->manager()->graphicalObject(id);
-	if (dynamic_cast<NodeElement*>(e)) { // check if e is node
+    Element *e = mWindow->manager()->graphicalObject(id);
+    if (dynamic_cast<NodeElement*>(e)) { // check if e is node
 		foreach (QGraphicsItem *item, items(scenePos)) {
 			NodeElement *el = dynamic_cast<NodeElement*>(item);
 			if (el && canBeContainedBy(el->id(), id)) {
-				newParent = el;
+                newParent = el;
 				break;
 			}
 		}
@@ -461,6 +461,36 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 		}
 	}
 	emit elementCreated(id);
+    //////////////////////
+    /*/cutting lincs
+    e = mWindow->manager()->graphicalObject(id);
+ //   parentId = newParent ? newParent->id() : mMVIface->rootId();
+    if (dynamic_cast<NodeElement*>(e)) { // check if e is node
+        foreach (QGraphicsItem *item, items(scenePos)) {
+            EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
+            // add prooving
+            if(dynamic_cast<EdgeElement*>(edge)){
+                NodeElement *oldTo= edge->dst();
+
+                edge->removeLink(oldTo);
+                edge->id();
+                mMVIface->graphicalAssistApi()->setTo(edge->id(), e->id());
+
+                Id parentId = newParent ? newParent->id() : mMVIface->rootId();
+                id = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
+
+                Id const flow("DragonDiagramMetamodel", "DragonDiagram", "DragonFlow", QUuid::createUuid().toString());
+                mMVIface->graphicalAssistApi()->createElement(parentId,flow, false, "flow", QPointF(0,200));
+                mMVIface->graphicalAssistApi()->setFrom(flow, e->id());
+                mMVIface->graphicalAssistApi()->setTo(flow, oldTo->id());
+
+                break;
+            }
+        }
+    }
+    ////////////////////*/
+
+
 }
 
 void EditorViewScene::copy()
@@ -824,7 +854,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 Element *EditorViewScene::getElemAt(QPointF const &position)
 {
-	foreach (QGraphicsItem *item, items(position)) {
+    foreach (QGraphicsItem *item, items(position)) {
 		Element *e = dynamic_cast<Element *>(item);
 		if (e) {
 			return e;
