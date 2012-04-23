@@ -26,7 +26,7 @@ RepoApi::RepoApi(QString const &workingDirectory)
 details::Client* RepoApi::getRelevantClient(const qReal::Id &id) const
 {
         for (int i = 0; i < mClients->count(); ++i){
-        if(mClients->at(i).exist(id))
+        if(mClients->at(i)->exist(id))
             return mClients->at(i);
     }
     Client *client = mClients->at(0);
@@ -580,7 +580,7 @@ void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &d
 
 void RepoApi::removeFromList(Id const &target, QString const &listName, Id const &data, QString const &direction)
 {
-    Client *client = getRelevantClient();
+    Client *client = getRelevantClient(target);
 
 	if (target == Id::rootId())
 		return;
