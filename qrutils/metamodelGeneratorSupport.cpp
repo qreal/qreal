@@ -234,5 +234,9 @@ QString MetamodelGeneratorSupport::mergePaths(QString const &begin, QString cons
 		res += "/" + endPathList[i];
 	}
 	
+	if (res.contains(":")) {
+		res = res.mid(1);
+	}
+	
 	return res;
 }
