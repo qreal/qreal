@@ -6,7 +6,7 @@ SUBDIRS	= \
 	blockDiagram/blockDiagram.pro \
 #	bpel/bpel.pro \
 #	exterminatus/exterminatus.pro \
-	hascol/hascol.pro \
+#	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
 #	network/network.pro \
 #	orthodoxEditor/orthodoxEditor.pro \
@@ -26,4 +26,5 @@ SUBDIRS	= \
 #	umlTimingDiagram/umlTimingDiagram.pro \
 #	umlUseCaseDiagram/umlUseCaseDiagram.pro \
 	visualInterpreter/visualInterpreter.pro \
+	refactoring/refactoring.pro \
 
