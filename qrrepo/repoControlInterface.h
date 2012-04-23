@@ -14,6 +14,7 @@ public:
 	/// virtual, for import *.qrs file into current project
 	/// @param importedFile - file to be imported
 	virtual void importFromDisk(QString const &importedFile) = 0;
+    virtual void loadSaveFile(QString const &importedFile) = 0;
 	virtual void saveAll() const = 0;
 	virtual void save(qReal::IdList list) const = 0;
 	virtual void saveTo(QString const &workingFile) = 0;

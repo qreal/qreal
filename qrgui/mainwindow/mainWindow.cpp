@@ -196,6 +196,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
 	connect(mUi->actionCloseProject, SIGNAL(triggered()), this, SLOT(closeProjectAndSave()));
 	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
+    connect(mUi->actionAdd, SIGNAL(triggered()), this, SLOT(addProject()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 
 	//	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
@@ -471,6 +472,46 @@ bool MainWindow::import(QString const &fileName)
 	return true;
 }
 
+//No change to the savefile done
+//probaly only possibe usage in current state - loading libraries
+//consider changing name to addLibraryFile
+bool MainWindow::add(const QString &fileName)
+{
+    if (!QFile(fileName).exists()) {
+        return false;
+    }
+
+    refreshRecentProjectsList(fileName);
+
+    mModels->repoControlApi().loadSaveFile(fileName);
+    mModels->reinit();
+
+  //copy-paste from open()
+  //not shure what it does
+    if (!checkPluginsAndReopen(NULL))
+        return false;
+    mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
+    mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
+    mUi->logicalModelExplorer->setModel(mModels->logicalModel());
+/*
+  //Copy-Paste from method open();
+  //title hadling probably should be more complex and mibile
+    QString windowTitle = mToolManager.customizer()->windowTitle();
+    if (!fileName.isEmpty()) {
+        setWindowTitle(windowTitle + " - " + mSaveFile);
+    }
+    else
+        setWindowTitle(windowTitle + " - unsaved project");
+        */
+    return true;
+}
+
+bool MainWindow::addProject()
+{
+    return add(getWorkingFile(tr("Select save file to open"), false));
+;
+}
+
 bool MainWindow::openNewProject()
 {
 	if (mUnsavedProjectIndicator) {
@@ -523,7 +564,7 @@ void MainWindow::saveAllAndOpen(QString const &dirName)
 
 bool MainWindow::open(QString const &fileName)
 {
-	if (!QFile(fileName).exists() && fileName != "") {
+    if (!QFile(fileName).exists()) {
 		return false;
 	}
 
@@ -543,7 +584,7 @@ bool MainWindow::open(QString const &fileName)
 	connectWindowTitle();
 	mSaveFile = fileName;
 	QString windowTitle = mToolManager.customizer()->windowTitle();
-	if (!fileName.isEmpty()) {
+    if (!fileName.isEmpty()) {
 		setWindowTitle(windowTitle + " - " + mSaveFile);
 	}
 	else

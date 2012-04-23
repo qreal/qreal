@@ -29,8 +29,6 @@ details::Client* RepoApi::getRelevantClient(const qReal::Id &id) const
         if(mClients->at(i)->exist(id))
             return mClients->at(i);
     }
-    Client *client = mClients->at(0);
-    return client;
     throw Exception("RepoApi: Requesting nonexistent object " + id.toString());
 }
 
