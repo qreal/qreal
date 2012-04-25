@@ -105,7 +105,8 @@ namespace qrRepo {
 		virtual QString workingFile() const;
 
 		// "Ğ â€œĞ Â»Ğ Ñ•Ğ Â±Ğ Â°Ğ Â»Ğ¡ĞŠĞ Ğ…Ğ¡â€¹Ğ Âµ" Ğ Ñ˜Ğ ÂµĞ¡â€šĞ Ñ•Ğ Ò‘Ğ¡â€¹, Ğ Ñ—Ğ Ñ•Ğ Â·Ğ Ğ†Ğ Ñ•Ğ Â»Ğ¡ĞĞ¡Ğ‹Ğ¡â€°Ğ Ñ‘Ğ Âµ Ğ Ò‘Ğ ÂµĞ Â»Ğ Â°Ğ¡â€šĞ¡ĞŠ Ğ Â·Ğ Â°Ğ Ñ—Ğ¡Ğ‚Ğ Ñ•Ğ¡ĞƒĞ¡â€¹ Ğ Ñ” Ğ Ñ˜Ğ Ñ•Ğ Ò‘Ğ ÂµĞ Â»Ğ Ñ‘ Ğ Ğ† Ğ¡â€ Ğ ÂµĞ Â»Ğ Ñ•Ğ Ñ˜.
-        //Returns all elements with .element() == type.element() from default client
+        /// Returns all elements with .element() == type.element() from default client
+        /// @param type - id to compare with
 		virtual qReal::IdList graphicalElements(qReal::Id const &type) const;
 		virtual qReal::IdList logicalElements(qReal::Id const &type) const;
 
@@ -115,6 +116,10 @@ namespace qrRepo {
 		qReal::IdList elementsByType(QString const &type) const;
 		int elementsCount() const;
 
+        /// Checks if id is present in repository
+        /// Should support all clients because work with all of them is intended
+        /// @param id - id of element you are looking for.
+        /// @return true if present, fase otherwise
 		bool exist(qReal::Id const &id) const;
 
 	private:
@@ -124,6 +129,9 @@ namespace qrRepo {
 		void addToIdList(qReal::Id const &target, QString const &listName, qReal::Id const &data, QString const &direction = QString());
 		void removeFromList(qReal::Id const &target, QString const &listName, qReal::Id const &data, QString const &direction = QString());
 
+        /// For debugging purpose
+        /// @return all elements in every loaded client
+        qReal::IdList allElements() const;
 		qReal::IdList links(qReal::Id const &id, QString const &direction) const;
 		void removeLinkEnds(QString const &endName, qReal::Id const &id);
 

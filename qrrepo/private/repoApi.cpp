@@ -29,7 +29,8 @@ details::Client* RepoApi::getRelevantClient(const qReal::Id &id) const
         if(mClients->at(i)->exist(id))
             return mClients->at(i);
     }
-    throw Exception("RepoApi: Requesting nonexistent object " + id.toString());
+    //throw Exception("RepoApi: Requesting nonexistent object " + id.toString());
+    return getDefaultClient();
 }
 
 /// @return client created at initialization
@@ -500,8 +501,10 @@ void RepoApi::open(QString const &saveFile)
 /// changes to this files aren't intendent
 void RepoApi::loadSaveFile(QString const &saveFile)
 {
+    qDebug() << "Repo contain " << allElements().count() << " before adding";
     Client *saveFileToAppend = new Client(saveFile);
     mClients->append(saveFileToAppend);
+    qDebug() << allElements().count() << "after adding";
 }
 
 //Default
@@ -634,6 +637,19 @@ IdList RepoApi::graphicalElements(Id const &type) const
 	return result;
 }
 
+qReal::IdList RepoApi::allElements() const
+{
+
+    IdList result;
+    for (int i = 0; i < mClients->count(); ++i)
+    {
+        foreach (Id id, mClients->at(i)->elements()) {
+            result.append(id);
+        }
+    }
+    return result;
+}
+
 //Default
 IdList RepoApi::elementsByType(QString const &type) const
 {
@@ -653,10 +669,10 @@ int RepoApi::elementsCount() const
     return client->elements().size();
 }
 
-//Default
+// LOOK FOR related bugs
 bool RepoApi::exist(Id const &id) const
 {
-    Client *client = getDefaultClient();
+    Client *client = getRelevantClient(id);
     return client->exist(id);
 }
 
