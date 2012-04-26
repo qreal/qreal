@@ -51,6 +51,8 @@ public:
 	/// @param pluginName Name of a plugin to check (as it will return in id() method)
 	/// @returns True, if plugin is present and loaded
 	virtual bool pluginLoaded(QString const &pluginName) = 0;
+
+	virtual void saveDiagramAsAPictureToFile(QString const &fileName) = 0;
 };
 
 }

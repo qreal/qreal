@@ -87,7 +87,7 @@ void Label::generateCodeForUpdateData(OutFile &out)
 
 	QString resultStr;
 	if (list.count() == 1) {
-		if (list.first() == "name") {
+		if (list.first() == "\"name\"") {
 			resultStr = "repo->name()";
 		} else {
 			resultStr = "repo->logicalProperty(" + list.first() + ")";

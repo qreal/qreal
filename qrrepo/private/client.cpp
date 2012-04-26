@@ -252,7 +252,7 @@ QList<Object*> Client::allChildrenOf(Id id) const
 {
 	QList<Object*> result;
 	result.append(mObjects[id]);
-	foreach(Id childId,mObjects[id]->children())
+	foreach(Id const &childId, mObjects[id]->children())
 		result.append(allChildrenOf(childId));
 	return result;
 }
@@ -270,15 +270,27 @@ void Client::saveAll() const
 void Client::save(IdList list) const
 {
 	QList<Object*> toSave;
-	foreach(Id id, list)
+	foreach(Id const &id, list)
 		toSave.append(allChildrenOf(id));
 
 	serializer.saveToDisk(toSave);
 }
 
+void Client::saveDiagramsById(const QHash<qReal::Id, QString> &diagramIds)
+{
+	QString const currentWorkingFile = mWorkingFile;
+	foreach (qReal::Id const &id, diagramIds.keys()) {
+		QString const wFile = diagramIds[id];
+		setWorkingFile(wFile);
+		qReal::IdList elements = idsOfAllChildrenOf(id);
+		save(elements);
+	}
+	setWorkingFile(currentWorkingFile);
+}
+
 void Client::remove(IdList list) const
 {
-	foreach(Id id, list) {
+	foreach(Id const &id, list) {
 		qDebug() << id.toString();
 		serializer.removeFromDisk(id);
 	}

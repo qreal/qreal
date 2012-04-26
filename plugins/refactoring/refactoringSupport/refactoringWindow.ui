@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>478</width>
+    <width>586</width>
     <height>341</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>QReal Refactorings</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="refactoring.qrc">
+    <normaloff>:/icons/preferences/pencil.png</normaloff>:/icons/preferences/pencil.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
@@ -20,7 +24,7 @@
       <widget class="QListWidget" name="refactoringList">
        <property name="maximumSize">
         <size>
-         <width>150</width>
+         <width>250</width>
          <height>16777215</height>
         </size>
        </property>
@@ -49,6 +53,27 @@
            <height>250</height>
           </size>
          </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>10000000</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>l</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
@@ -74,9 +99,23 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="findAndApplyButton">
+          <widget class="QPushButton" name="findNextButton">
            <property name="text">
-            <string>Find and Apply</string>
+            <string>Find next</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="applyButton">
+           <property name="text">
+            <string>Apply</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="discardButton">
+           <property name="text">
+            <string>Discard</string>
            </property>
           </widget>
          </item>
@@ -88,6 +127,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="refactoring.qrc"/>
+ </resources>
  <connections/>
 </ui>

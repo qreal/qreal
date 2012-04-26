@@ -1577,7 +1577,7 @@ void MainWindow::initToolPlugins()
 			, mModels->logicalModelAssistApi()
 			, *this
 			));
-	
+
 	QList<ActionInfo> const actions = mToolManager.actions();
 	foreach (ActionInfo const action, actions) {
 		if (action.isAction()) {
@@ -1599,7 +1599,7 @@ void MainWindow::initToolPlugins()
 			}
 		}
 	}
-	
+
 	if (mUi->parsersToolbar->actions().isEmpty())
 		mUi->parsersToolbar->hide();
 
@@ -1769,9 +1769,8 @@ void MainWindow::initRecentProjectsMenu()
 	connect(mRecentProjectsMenu, SIGNAL(aboutToShow()), this, SLOT(openRecentProjectsMenu()));
 }
 
-void MainWindow::saveDiagramAsAPicture()
+void MainWindow::saveDiagramAsAPictureToFile(const QString &fileName)
 {
-	QString const fileName = QFileDialog::getSaveFileName(this,  tr("Save File"), "", tr("Images (*.png *.jpg)"));
 	if (fileName.isEmpty())
 		return;
 	QRectF const sceneRect = getCurrentTab()->scene()->itemsBoundingRect();
@@ -1789,6 +1788,12 @@ void MainWindow::saveDiagramAsAPicture()
 
 	getCurrentTab()->scene()->render(&painter);
 	image.save(fileName);
+}
+
+void MainWindow::saveDiagramAsAPicture()
+{
+	QString const fileName = QFileDialog::getSaveFileName(this,  tr("Save File"), "", tr("Images (*.png *.jpg)"));
+	saveDiagramAsAPictureToFile(fileName);
 }
 
 void MainWindow::connectWindowTitle()

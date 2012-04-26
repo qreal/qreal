@@ -34,4 +34,3 @@ void RefactoringPreferencesPage::setQRealSourcesLocation() {
 void RefactoringPreferencesPage::save() {
 	SettingsManager::setValue("qrealSourcesLocation", mUi->qrealSourcesLineEdit->text());
 }
-

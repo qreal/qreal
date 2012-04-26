@@ -33,20 +33,34 @@ public:
 private slots:
 	void generateRefactoringMetamodel();
 	void openRefactoringWindow();
+	void saveRefactoring();
 
 private:
 	void insertRefactoringID(QDomDocument metamodel, QDomNodeList list, bool isNode);
-	void addRefactoringLanguageElements(QDomElement &diagram, QString const &pathToRefactoringMetamodel);
+	void addRefactoringLanguageElements(QString diagramName, QDomDocument metamodel, QDomElement &graphics, QString const &pathToRefactoringMetamodel);
+	QDomElement createPaletteElement(QString const &elementType, QDomDocument metamodel, const QString &displayedName);
+	QDomElement metamodelPaletteGroup(QDomDocument metamodel, QDomNodeList nodeList, QDomNodeList edgeList);
+	void addPalette(QDomDocument metamodel, QDomElement diagram, QDomElement metamodelPaletteGroup);
 
 	qReal::ErrorReporterInterface *mErrorReporter;
 
 	QMenu *mRefactoringMenu;
 	QAction *mGenerateAndLoadRefactoringEditorAction;
 	QAction *mOpenRefactoringWindowAction;
+	QAction *mSaveRefactoringAction;
+
+	LogicalModelAssistInterface *mLogicalModelApi;
+	GraphicalModelAssistInterface *mGraphicalModelApi;
+	qrRepo::RepoControlInterface *mRepoControlIFace;
+	gui::MainWindowInterpretersInterface *mMainWindowIFace;
+
+	QString mQRealSourceFilesPath;
+	QString mPathToRefactoringExamples;
 
 	QList<qReal::ActionInfo> mActionInfos;
+	QStringList mEditorElementNames;
 
-	qReal::RefactoringPreferencesPage *mPreferencesPage;
+	RefactoringPreferencesPage *mPreferencesPage;
 
 	utils::MetamodelGeneratorSupport *mMetamodelGeneratorSupport;
 

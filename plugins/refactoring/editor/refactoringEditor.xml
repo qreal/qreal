@@ -38,6 +38,7 @@
                         <rectangle stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="80" x2="80"/>
                     </picture>
 					<labels>
+						<label x="80" y="0" textBinded="ID"/>
                         <label x="5" y="5" textBinded="name"/>
                     </labels>
                    <ports>
@@ -71,6 +72,7 @@
                         <rectangle fill="#f0ffff" fill-style="solid" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="80" x2="80"/>
                     </picture>
 					<labels>
+						<label x="80" y="0" textBinded="ID"/>
 						<label x="5" y="5" text="&lt;b&gt;SELECTED&lt;/b&gt;"/>
 					</labels>                   
 					<ports>
@@ -99,11 +101,14 @@
             </node>
         <edge displayedName="Link" name="link">
           <graphics>
-            <labels/>
+            <labels>
+				<label x="0" y="0" textBinded="ID"/>
+			</labels>
             <lineType type="solidLine"/>
           </graphics>
           <logic>
             <properties>
+				<property type="string" name="ID"/>		
             </properties>
             <associations endType="open_arrow" beginType="no_arrow">
             </associations>
@@ -122,7 +127,6 @@
               <arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200" stroke-width="3" stroke-style="solid" stroke="#009933"/>
             </picture>
             <labels>
-              <label x="5" y="15" textBinded="name"/>
   			  <label x="5" y="5" text="&lt;b&gt;BEFORE&lt;/b&gt;"/>
             </labels>
             <ports>
@@ -135,6 +139,7 @@
           <logic>
             <container>
 				<contains type="refactoringMetamodel::element"/>
+				<contains type="refactoringMetamodel::selectedSegment"/>
             </container>
           </logic>
         </node>
@@ -151,7 +156,6 @@
               <arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200" stroke-width="3" stroke-style="solid" stroke="#009933"/>
             </picture>
             <labels>
-              <label x="5" y="15" textBinded="name"/>
 			  <label x="5" y="5" text="&lt;b&gt;AFTER&lt;/b&gt;"/>
             </labels>
             <ports>

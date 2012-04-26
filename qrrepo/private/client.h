@@ -66,6 +66,7 @@ namespace qrRepo {
 
 			void saveAll() const;
 			void save(qReal::IdList list) const;
+			void saveDiagramsById(QHash<qReal::Id, QString> const &diagramIds);
 			void remove(qReal::IdList list) const;
 			void setWorkingFile(QString const &workingDir);
 
