@@ -10,6 +10,7 @@
 #include <QtGui/QVBoxLayout>
 #include "../pluginManager/editorManager.h"
 #include "../../qrkernel/ids.h"
+#include <QLabel>
 
 namespace  qReal{
 namespace gui{
@@ -113,15 +114,22 @@ private:
 			{
 				return mId;
 			}
+			void setIconSize(int size);
 
 	private:
 			Id mId;
-		QIcon mIcon;
+			QIcon mIcon;
 			QString mText;
+			QLabel *l;
 			virtual void dragEnterEvent(QDragEnterEvent *event);
 			virtual void dropEvent(QDropEvent *event);
 			virtual void mousePressEvent(QMouseEvent *event);
+			friend class PaletteTree;
 	};
+
+	int maxItemsCountInARow() const;
+	virtual void resizeEvent(QResizeEvent *);
+	void resizeIcons();
 
 	/// EditorManager instance used to sort palette's content.
 	/// Made static to be used inside idLessThan()

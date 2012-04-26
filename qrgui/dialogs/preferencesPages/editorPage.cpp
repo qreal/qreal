@@ -46,7 +46,6 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	mUi->paletteComboBox->setCurrentIndex(SettingsManager::value("PaletteRepresentation", 0).toInt());
 	paletteComboBoxClicked(mUi->paletteComboBox->currentIndex());
 	mUi->paletteSpinBox->setValue(SettingsManager::value("PaletteIconsInARowCount", 1).toInt());
-
 	mFont = SettingsManager::value("CurrentFont", "").toString();
 }
 
