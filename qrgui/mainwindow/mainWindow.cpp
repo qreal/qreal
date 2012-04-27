@@ -37,6 +37,7 @@
 #include "../../qrkernel/settingsManager.h"
 
 #include "../../qrkernel/timeMeasurer.h"
+#include "dotRunner.h"
 
 using namespace qReal;
 
@@ -1872,4 +1873,14 @@ void MainWindow::closeProject()
 		static_cast<EditorViewScene*>(getCurrentTab()->scene())->clearScene();
 	closeAllTabs();
 	setWindowTitle(mToolManager.customizer()->windowTitle());
+}
+
+void qReal::MainWindow::arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles)
+{
+	Id diagramId = activeDiagram();
+	DotRunner *runner = new DotRunner(diagramId,
+		mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi(),
+		mEditorManager, absolutePathToDotFiles);
+	runner->run(algorithm);
+	reinitModels();
 }

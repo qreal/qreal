@@ -9,7 +9,8 @@ HEADERS += \
 	mainwindow/errorListWidget.h \
 	mainwindow/mainWindowInterpretersInterface.h \
 	mainwindow/helpBrowser.h \
-	mainwindow/paletteTree.h
+	mainwindow/paletteTree.h \
+	mainwindow/dotRunner.h
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -19,7 +20,8 @@ SOURCES += \
 	mainwindow/error.cpp \
 	mainwindow/errorListWidget.cpp \
 	mainwindow/helpBrowser.cpp \
-	mainwindow/paletteTree.cpp
+	mainwindow/paletteTree.cpp \
+	mainwindow/dotRunner.cpp
 
 FORMS += \
 	mainwindow/mainWindow.ui

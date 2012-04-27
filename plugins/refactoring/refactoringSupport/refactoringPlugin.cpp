@@ -66,7 +66,18 @@ QList<qReal::ActionInfo> RefactoringPlugin::actions()
 	connect(mSaveRefactoringAction, SIGNAL(triggered()), this, SLOT(saveRefactoring()));
 	mRefactoringMenu->addAction(mSaveRefactoringAction);
 
-	mActionInfos << refactoringMenuInfo;
+	mPlaceMenu = new QMenu(tr("Automatically arrange elements"));
+	ActionInfo placeMenuInfo(mPlaceMenu, "tools");
+
+	mPlaceVerticallyAction = new QAction(tr("Vertically"), NULL);
+	connect(mPlaceVerticallyAction, SIGNAL(triggered()), this, SLOT(arrangeElementsVertically()));
+	mPlaceMenu->addAction(mPlaceVerticallyAction);
+
+	mPlaceHorizontallyAction = new QAction(tr("Horizontally"), NULL);
+	connect(mPlaceHorizontallyAction, SIGNAL(triggered()), this, SLOT(arrangeElementsHorizontally()));
+	mPlaceMenu->addAction(mPlaceHorizontallyAction);
+
+	mActionInfos << refactoringMenuInfo << placeMenuInfo;
 
 	return mActionInfos;
 }
@@ -264,4 +275,19 @@ void RefactoringPlugin::addPaletteGroup(QDomDocument metamodel, QDomElement pale
 		group.appendChild(element);
 	}
 	palette.appendChild(group);
+}
+
+void qReal::refactoring::RefactoringPlugin::arrangeElements(const QString &algorithm)
+{
+	mMainWindowIFace->arrangeElementsByDotRunner(algorithm, mQRealSourceFilesPath + "/qrgui/dotFiles");
+}
+
+void qReal::refactoring::RefactoringPlugin::arrangeElementsVertically()
+{
+	arrangeElements("vertically");
+}
+
+void qReal::refactoring::RefactoringPlugin::arrangeElementsHorizontally()
+{
+	arrangeElements("horizontally");
 }

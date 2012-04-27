@@ -34,6 +34,8 @@ private slots:
 	void generateRefactoringMetamodel();
 	void openRefactoringWindow();
 	void saveRefactoring();
+	void arrangeElementsVertically();
+	void arrangeElementsHorizontally();
 
 private:
 	void insertRefactoringID(QDomDocument metamodel, QDomNodeList list, bool isNode);
@@ -43,12 +45,17 @@ private:
 	void addPalette(QDomDocument metamodel, QDomElement diagram, QDomElement metamodelPaletteGroup);
 	void addPaletteGroup(QDomDocument metamodel, QDomElement palette, QString const &groupName, QStringList const &elementNameList);
 	void addElementsToMetamodelGroup(QDomDocument metamodel, QDomNodeList list, QDomElement metamodelGroup);
+	void arrangeElements(QString const &algorithm);
+
 	qReal::ErrorReporterInterface *mErrorReporter;
 
 	QMenu *mRefactoringMenu;
+	QMenu *mPlaceMenu;
 	QAction *mGenerateAndLoadRefactoringEditorAction;
 	QAction *mOpenRefactoringWindowAction;
 	QAction *mSaveRefactoringAction;
+	QAction *mPlaceVerticallyAction;
+	QAction *mPlaceHorizontallyAction;
 
 	LogicalModelAssistInterface *mLogicalModelApi;
 	GraphicalModelAssistInterface *mGraphicalModelApi;
