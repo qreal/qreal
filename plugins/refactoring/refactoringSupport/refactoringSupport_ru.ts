@@ -37,7 +37,22 @@
         <translation>Сохранить правило рефакторинга</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="81"/>
+        <location filename="refactoringPlugin.cpp" line="69"/>
+        <source>Automatically arrange elements</source>
+        <translation>Автоматически расположить элементы</translation>
+    </message>
+    <message>
+        <location filename="refactoringPlugin.cpp" line="71"/>
+        <source>Vertically</source>
+        <translation>Вертикально</translation>
+    </message>
+    <message>
+        <location filename="refactoringPlugin.cpp" line="75"/>
+        <source>Horizontally</source>
+        <translation>Горизонтально</translation>
+    </message>
+    <message>
+        <location filename="refactoringPlugin.cpp" line="93"/>
         <source>Select xml file to load refactoring metamodel</source>
         <translation>Выберите xml-файл для загрузки метамодели языка рефакторингов</translation>
     </message>
