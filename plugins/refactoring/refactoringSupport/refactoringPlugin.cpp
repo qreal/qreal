@@ -223,42 +223,45 @@ QDomElement RefactoringPlugin::createPaletteElement(QString const &elementType, 
 QDomElement RefactoringPlugin::metamodelPaletteGroup(QDomDocument metamodel, QDomNodeList nodeList, QDomNodeList edgeList)
 {
 	QDomElement metamodelGroup = createPaletteElement("group", metamodel, "Source Metamodel Elements");
-	for (int i = 0; i < nodeList.size(); ++i) {
-		QDomElement element = nodeList.at(i).toElement();
-		QString const displayedName = element.attribute("displayedName", "");
-		QDomElement paletteElement = createPaletteElement("element", metamodel, displayedName);
-		metamodelGroup.appendChild(paletteElement);
-	}
-	for (int i = 0; i < edgeList.size(); ++i) {
-		QDomElement element = edgeList.at(i).toElement();
-		QString const displayedName = element.attribute("displayedName", "");
-		QDomElement paletteElement = createPaletteElement("element", metamodel, displayedName);
-		metamodelGroup.appendChild(paletteElement);
-	}
+	addElementsToMetamodelGroup(metamodel, nodeList, metamodelGroup);
+	addElementsToMetamodelGroup(metamodel, edgeList, metamodelGroup);
 	return metamodelGroup;
+}
+
+void RefactoringPlugin::addElementsToMetamodelGroup(QDomDocument metamodel, QDomNodeList list, QDomElement metamodelGroup)
+{
+	for (int i = 0; i < list.size(); ++i) {
+		QDomElement element = list.at(i).toElement();
+		QString const displayedName = element.attribute("displayedName", "");
+		QDomElement paletteElement = createPaletteElement("element", metamodel, displayedName);
+		metamodelGroup.appendChild(paletteElement);
+	}
 }
 
 void RefactoringPlugin::addPalette(QDomDocument metamodel, QDomElement diagram, QDomElement metamodelPaletteGroup)
 {
+	QStringList patternGroupNamesList;
+	patternGroupNamesList << "Refactoring Diagram"
+			<< "From Before To After"
+			<< "After Block"
+			<< "After Block";
+	QStringList basicGroupNamesList;
+	basicGroupNamesList << "Element"
+			<< "Link"
+			<< "Selected segment";
 	QDomElement palette = metamodel.createElement("palette");
-	QDomElement patternGroup = createPaletteElement("group", metamodel, "Refactoring Rule Elements");
-	QDomElement refactoringDiagramNode = createPaletteElement("element", metamodel, "Refactoring Diagram");
-	patternGroup.appendChild(refactoringDiagramNode);
-	QDomElement fromBeforeToAter = createPaletteElement("element", metamodel, "From Before To After");
-	patternGroup.appendChild(fromBeforeToAter);
-	QDomElement afterBlock = createPaletteElement("element", metamodel, "After Block");
-	patternGroup.appendChild(afterBlock);
-	QDomElement beforeBlock = createPaletteElement("element", metamodel, "Before Block");
-	patternGroup.appendChild(beforeBlock);
-	palette.appendChild(patternGroup);
-	QDomElement basicGroup = createPaletteElement("group", metamodel, "Basic Elements");
-	QDomElement element = createPaletteElement("element", metamodel, "Element");
-	basicGroup.appendChild(element);
-	QDomElement link = createPaletteElement("element", metamodel, "Link");
-	basicGroup.appendChild(link);
-	QDomElement selectedSegment = createPaletteElement("element", metamodel, "Selected segment");
-	basicGroup.appendChild(selectedSegment);
-	palette.appendChild(basicGroup);
+	addPaletteGroup(metamodel, palette, "Refactoring Rule Elements", patternGroupNamesList);
+	addPaletteGroup(metamodel, palette, "Basic Elements", basicGroupNamesList);
 	palette.appendChild(metamodelPaletteGroup);
 	diagram.appendChild(palette);
+}
+
+void RefactoringPlugin::addPaletteGroup(QDomDocument metamodel, QDomElement palette, const QString &groupName, const QStringList &elementNameList)
+{
+	QDomElement group = createPaletteElement("group", metamodel, groupName);
+	foreach (QString const &elementName, elementNameList) {
+		QDomElement element = createPaletteElement("element", metamodel, elementName);
+		group.appendChild(element);
+	}
+	palette.appendChild(group);
 }

@@ -41,7 +41,8 @@ private:
 	QDomElement createPaletteElement(QString const &elementType, QDomDocument metamodel, const QString &displayedName);
 	QDomElement metamodelPaletteGroup(QDomDocument metamodel, QDomNodeList nodeList, QDomNodeList edgeList);
 	void addPalette(QDomDocument metamodel, QDomElement diagram, QDomElement metamodelPaletteGroup);
-
+	void addPaletteGroup(QDomDocument metamodel, QDomElement palette, QString const &groupName, QStringList const &elementNameList);
+	void addElementsToMetamodelGroup(QDomDocument metamodel, QDomNodeList list, QDomElement metamodelGroup);
 	qReal::ErrorReporterInterface *mErrorReporter;
 
 	QMenu *mRefactoringMenu;
