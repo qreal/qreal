@@ -3,7 +3,6 @@
 #include "../../qrkernel/definitions.h"
 #include "paletteTree.h"
 #include <QtCore/QtAlgorithms>
-#include <QtGui/QLabel>
 #include <QtGui/QVBoxLayout>
 
 using namespace qReal;
@@ -22,10 +21,9 @@ PaletteTree::DraggableElement::DraggableElement(const Id &id, const QString &nam
 	layout->setContentsMargins(0, 4, 0, 4);
 
 	const int size = iconsOnly ? 50 : 30;
-	QLabel *pic = new QLabel(this);
-	pic->setPixmap(mIcon.pixmap(size - 2, size - 2));
-	layout->addWidget(pic);
-	l = pic;
+	mLabel = new QLabel(this);
+	mLabel->setPixmap(mIcon.pixmap(size - 2, size - 2));
+	layout->addWidget(mLabel);
 	if (!iconsOnly) {
 		QLabel *text = new QLabel(this);
 		text->setText(mText);
@@ -39,6 +37,11 @@ PaletteTree::DraggableElement::DraggableElement(const Id &id, const QString &nam
 		setToolTip(modifiedDescription);
 	}
 	setCursor(Qt::OpenHandCursor);
+}
+
+void PaletteTree::DraggableElement::setIconSize(int size)
+{
+	mLabel->setPixmap(mIcon.pixmap(size , size));
 }
 
 PaletteTree::PaletteTree(QWidget *parent)
@@ -204,7 +207,7 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 					, mEditorManager->icon(*it)
 					, true);
 			element->setToolTip(mEditorManager->friendlyName(*it));
-			layout->addWidget(element, 50);
+			layout->addWidget(element, count > 0 ? 50 : 0);
 		}
 		field->setLayout(layout);
 		QTreeWidgetItem *leaf = new QTreeWidgetItem;
@@ -221,8 +224,9 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 
 	mComboBox->addItem(mEditorManager->friendlyName(diagram));
 
-	QTreeWidget *EditorTree = new QTreeWidget(this);
-	EditorTree->setHeaderHidden(true);
+	QTreeWidget *editorTree = new QTreeWidget(this);
+	editorTree->setHeaderHidden(true);
+	editorTree->setSelectionMode(QAbstractItemView::NoSelection);
 
 	IdList list = mEditorManager->elements(diagram);
 	qSort(list.begin(), list.end(), idLessThan);
@@ -246,26 +250,26 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 			}
 			qSort(tmpIdList.begin(), tmpIdList.end(), idLessThan);
 
-			addItemsRow(tmpIdList, EditorTree, item);
+			addItemsRow(tmpIdList, editorTree, item);
 
-			EditorTree->addTopLevelItem(item);
+			editorTree->addTopLevelItem(item);
 
 			if (mSettings->value(mEditorManager->friendlyName(diagram) + group, 0).toBool()) {
-				EditorTree->expandItem(item);
+				editorTree->expandItem(item);
 			}
 		}
 	} else {
 		foreach (const Id &element, list) {
 			addTopItemType(element, mEditorManager->friendlyName(element)
 					, mEditorManager->description(element)
-					, mEditorManager->icon(element), EditorTree);
+					, mEditorManager->icon(element), editorTree);
 		}
 	}
-	EditorTree->hide();
+	editorTree->hide();
 
-	mEditorsTrees.push_back(EditorTree);
+	mEditorsTrees.push_back(editorTree);
 
-	mLayout->addWidget(EditorTree);
+	mLayout->addWidget(editorTree);
 }
 
 void PaletteTree::initDone()
@@ -424,8 +428,8 @@ void PaletteTree::resizeIcons()
 		const int iconSize = 48;
 		const int widgetSize = this->size().width() - (iconSize << 1);
 		const int itemsCount = maxItemsCountInARow();
-		const int newSize = widgetSize < itemsCount * iconSize ?
-					widgetSize / itemsCount: iconSize;
+		const int newSize = (widgetSize < itemsCount * iconSize) ?
+					(widgetSize / itemsCount) : iconSize;
 		for (int i = 0; i < mTree->topLevelItemCount(); i++) {
 			for (int j = 0; j < mTree->topLevelItem(i)->childCount(); j++) {
 				QWidget *field = mTree->itemWidget(mTree->topLevelItem(i)->child(j), 0);
@@ -465,9 +469,3 @@ int PaletteTree::maxItemsCountInARow() const
 	}
 	return max ? max : mItemsCountInARow;
 }
-
-void PaletteTree::DraggableElement::setIconSize(int size)
-{
-	l->setPixmap(mIcon.pixmap(size , size));
-}
-

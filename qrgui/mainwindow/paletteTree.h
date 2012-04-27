@@ -10,7 +10,7 @@
 #include <QtGui/QVBoxLayout>
 #include "../pluginManager/editorManager.h"
 #include "../../qrkernel/ids.h"
-#include <QLabel>
+#include <QtGui/QLabel>
 
 namespace  qReal{
 namespace gui{
@@ -114,21 +114,25 @@ private:
 			{
 				return mId;
 			}
+
 			void setIconSize(int size);
 
 	private:
 			Id mId;
 			QIcon mIcon;
 			QString mText;
-			QLabel *l;
+			QLabel *mLabel;
 			virtual void dragEnterEvent(QDragEnterEvent *event);
 			virtual void dropEvent(QDropEvent *event);
 			virtual void mousePressEvent(QMouseEvent *event);
-			friend class PaletteTree;
 	};
 
+	/// Returns maximum count of items in all rows of widget
 	int maxItemsCountInARow() const;
+
 	virtual void resizeEvent(QResizeEvent *);
+
+	/// Change icon's sizes in widget
 	void resizeIcons();
 
 	/// EditorManager instance used to sort palette's content.
