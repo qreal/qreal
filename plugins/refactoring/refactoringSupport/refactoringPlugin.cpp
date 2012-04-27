@@ -67,7 +67,6 @@ QList<qReal::ActionInfo> RefactoringPlugin::actions()
 	mRefactoringMenu->addAction(mSaveRefactoringAction);
 
 	mPlaceMenu = new QMenu(tr("Automatically arrange elements"));
-	ActionInfo placeMenuInfo(mPlaceMenu, "tools");
 
 	mPlaceVerticallyAction = new QAction(tr("Vertically"), NULL);
 	connect(mPlaceVerticallyAction, SIGNAL(triggered()), this, SLOT(arrangeElementsVertically()));
@@ -77,7 +76,9 @@ QList<qReal::ActionInfo> RefactoringPlugin::actions()
 	connect(mPlaceHorizontallyAction, SIGNAL(triggered()), this, SLOT(arrangeElementsHorizontally()));
 	mPlaceMenu->addAction(mPlaceHorizontallyAction);
 
-	mActionInfos << refactoringMenuInfo << placeMenuInfo;
+	mRefactoringMenu->addMenu(mPlaceMenu);
+
+	mActionInfos << refactoringMenuInfo;
 
 	return mActionInfos;
 }

@@ -1883,4 +1883,6 @@ void qReal::MainWindow::arrangeElementsByDotRunner(const QString &algorithm, con
 		mEditorManager, absolutePathToDotFiles);
 	runner->run(algorithm);
 	reinitModels();
+	activateItemOrDiagram(diagramId);
+	mUi->graphicalModelExplorer->setRootIndex(QModelIndex());
 }
