@@ -84,7 +84,7 @@ bool EdgeType::initGraphics()
 		}
 		else {
 			bool success = true;
-			int lineWidthInt = lineWidth.toInt(&success);
+            int lineWidthInt = lineWidth.toInt(&success);
 			if (!success) {
 				qDebug() << "ERROR: line width is not a number";
 				return false;
@@ -133,6 +133,23 @@ bool EdgeType::initGraphics()
 		lineType = "solidLine";
 	mLineType = "Qt::" + lineType.replace(0, 1, lineType.at(0).toUpper());
 	return true;
+}
+
+bool GraphicType::initDissectability()
+{
+    QDomElement dissectabilityElement = mLogic.firstChildElement("dissectability");
+    if (dissectabilityElement.isNull())
+    {
+        return true;
+    }
+    QString IsDissectable = dissectabilityElement.attribute("isDissectable");
+    if (IsDissectable != "true" || IsDissectable != "false")
+    {
+        qDebug() << "ERROR: can't parse dissectability";
+        return false;
+    }
+    mIsDissectable = IsDissectable == "true";
+    return true;
 }
 
 bool EdgeType::initLabel(Label *label, QDomElement const &element, int const &count)
@@ -190,7 +207,8 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\tvoid paint(QPainter *, QRectF &){}\n"
 	<< "\t\tbool isNode() { return false; }\n"
 	<< "\t\tbool isResizeable() { return true; }\n"
-	<< "\t\tbool isContainer() { return false; }\n"
+    << "\t\tbool isContainer() { return false; }\n"
+    << "\t\tbool isDissectable() { return " << mIsDissectable << "; }\n"
 	<< "\t\tbool isSortingContainer() { return false; }\n"
 	<< "\t\tint sizeOfForestalling() { return 0; }\n"
 	<< "\t\tint sizeOfChildrenForestalling() { return 0; }\n"
@@ -211,8 +229,8 @@ void EdgeType::generateCode(OutFile &out)
 	<< mLineColor.green() << ","
 	<< mLineColor.blue()
 	<< "); }\n"
-	<< "\t\tQt::PenStyle getPenStyle() { ";
-	if (mLineType != "")
+    << "\t\tQt::PenStyle getPenStyle() { ";
+    if (mLineType != "")
 		out() << "return " << mLineType << "; }\n";
 	else
 		out() << "return Qt::SolidLine; }\n";
