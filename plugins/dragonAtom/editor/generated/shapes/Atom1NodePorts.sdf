@@ -1,0 +1,10 @@
+<picture sizex="80" sizey="60" >
+	<line x1="79" y1="10" x2="79" y2="50" stroke-width="7" stroke-style="solid" stroke="#c3dcc4" />
+	<line x1="79" y1="10" x2="79" y2="50" stroke-width="1" stroke-style="solid" stroke="#465945" />
+	<line x1="1" y1="10" x2="1" y2="50" stroke-width="7" stroke-style="solid" stroke="#c3dcc4" />
+	<line x1="1" y1="10" x2="1" y2="50" stroke-width="1" stroke-style="solid" stroke="#465945" />
+	<line x1="10" y1="1" x2="70" y2="1" stroke-width="7" stroke-style="solid" stroke="#c3dcc4" />
+	<line x1="10" y1="1" x2="70" y2="1" stroke-width="1" stroke-style="solid" stroke="#465945" />
+	<line x1="10" y1="59" x2="70" y2="59" stroke-width="7" stroke-style="solid" stroke="#c3dcc4" />
+	<line x1="10" y1="59" x2="70" y2="59" stroke-width="1" stroke-style="solid" stroke="#465945" />
+</picture>

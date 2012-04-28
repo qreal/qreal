@@ -418,7 +418,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	Element *newParent = NULL;
 
 	// TODO: make it simpler
-	Id id = Id::loadFromString(uuid);
+    Id id = Id::loadFromString(uuid);
 
 	// if element is node then we should look for parent for him
     Element *e = mWindow->manager()->graphicalObject(id);
@@ -432,9 +432,6 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 		}
 	}
 
-	if (e) {
-//		delete e;
-	}
 
 	if(newParent && dynamic_cast<NodeElement*>(newParent)){
 		if (!canBeContainedBy(newParent->id(), id)) {
@@ -452,8 +449,54 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	QPointF const position = !newParent ? scenePos : newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
 
 	Id parentId = newParent ? newParent->id() : mMVIface->rootId();
-	id = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
-	NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
+    ///////////////////////
+    Id in;
+    Id out;
+    if (id.diagram() == "DragonAtom"){
+        if (id.element() == "Atom1Node"){
+
+        Id node1("DragonDiagramMetamodel", "DragonDiagram", "DragonActionNode", QUuid::createUuid().toString());
+        in = mMVIface->graphicalAssistApi()->createElement(parentId, node1, isFromLogicalModel, "initial", QPointF(position.x(), position.y() - 75));
+
+        Id const flow("DragonDiagramMetamodel", "DragonDiagram", "DragonFlow", QUuid::createUuid().toString());
+        mMVIface->graphicalAssistApi()->createElement(parentId, flow, isFromLogicalModel, "flow", QPointF(0,200));
+
+        Id node2("DragonDiagramMetamodel", "DragonDiagram", "DragonActionNode", QUuid::createUuid().toString());
+        out = mMVIface->graphicalAssistApi()->createElement(parentId, node2, isFromLogicalModel, "initial", QPointF(position.x(), position.y()+ 75));
+
+        mMVIface->graphicalAssistApi()->setFrom(flow, in);
+        mMVIface->graphicalAssistApi()->setTo(flow, out);
+        }
+        if (id.element() == "Atom2Node"){
+
+            Id node1("DragonDiagramMetamodel", "DragonDiagram", "DragonActionNode", QUuid::createUuid().toString());
+            in = mMVIface->graphicalAssistApi()->createElement(parentId, node1, isFromLogicalModel, "node1", QPointF(position.x(), position.y()- 200));
+
+            Id const flow1("DragonDiagramMetamodel", "DragonDiagram", "DragonFlow", QUuid::createUuid().toString());
+            mMVIface->graphicalAssistApi()->createElement(parentId, flow1, isFromLogicalModel, "flow1", QPointF(0,200));
+
+            Id const flow2("DragonDiagramMetamodel", "DragonDiagram", "DragonFlow", QUuid::createUuid().toString());
+            mMVIface->graphicalAssistApi()->createElement(parentId, flow2, isFromLogicalModel, "flow2", QPointF(0,200));
+
+            Id node2("DragonDiagramMetamodel", "DragonDiagram", "DragonActionNode", QUuid::createUuid().toString());
+            mMVIface->graphicalAssistApi()->createElement(parentId, node2, isFromLogicalModel, "node2", position);
+
+            Id node3("DragonDiagramMetamodel", "DragonDiagram", "DragonActionNode", QUuid::createUuid().toString());
+            out = mMVIface->graphicalAssistApi()->createElement(parentId, node3, isFromLogicalModel, "node3", QPointF(position.x(), position.y()+ 100));
+
+            mMVIface->graphicalAssistApi()->setFrom(flow1, in);
+            mMVIface->graphicalAssistApi()->setTo(flow1, node2);
+
+            mMVIface->graphicalAssistApi()->setFrom(flow2, node2);
+            mMVIface->graphicalAssistApi()->setTo(flow2, out);
+            }
+    }
+    else{
+    in = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
+    out = in;}
+    //////////////
+   //what does the folloing code mean?
+    NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
 	if (parentNode != NULL) {
 		Element *nextNode = parentNode->getPlaceholderNextElement();
 		if (nextNode != NULL) {
@@ -461,38 +504,33 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 		}
     }
     //////////////////////
-    //cutting lincs
-//    e = mWindow->manager()->graphicalObject(id);
- //   parentId = newParent ? newParent->id() : mMVIface->rootId();
+    //inserting new icon "into" arrow
     if (dynamic_cast<NodeElement*>(e)) { // check if e is node
         foreach (QGraphicsItem *item, items(scenePos)) {
             EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
-            // add prooving
             if(dynamic_cast<EdgeElement*>(edge)){
                 NodeElement *oldTo= edge->dst();
 
                 edge->removeLink(oldTo);
-                edge->id();
-                mMVIface->graphicalAssistApi()->setTo(edge->id(), e->id());
+                mMVIface->graphicalAssistApi()->setTo(edge->id(), in);
 
                 Id parentId = newParent ? newParent->id() : mMVIface->rootId();
-                id = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
-
                 Id const flow("DragonDiagramMetamodel", "DragonDiagram", "DragonFlow", QUuid::createUuid().toString());
-                mMVIface->graphicalAssistApi()->createElement(parentId,flow, false, "flow", QPointF(0,200));
-                mMVIface->graphicalAssistApi()->setFrom(flow, e->id());
+                mMVIface->graphicalAssistApi()->createElement(parentId, flow, isFromLogicalModel, "flow", QPointF(0,200));
+                mMVIface->graphicalAssistApi()->setFrom(flow, out);
                 mMVIface->graphicalAssistApi()->setTo(flow, oldTo->id());
 
                 break;
             }
         }
     }
-    ////////////////////*/
+
+    if (e) {
+        delete e;
+    }
 
 
     emit elementCreated(id);
-
-
 }
 
 void EditorViewScene::copy()
