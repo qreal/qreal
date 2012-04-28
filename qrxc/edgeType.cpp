@@ -140,6 +140,7 @@ bool EdgeType::initDissectability()
     QDomElement dissectabilityElement = mLogic.firstChildElement("dissectability");
     if (dissectabilityElement.isNull())
     {
+        mIsDissectable = false;
         return true;
     }
     QString IsDissectable = dissectabilityElement.attribute("isDissectable");
