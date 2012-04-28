@@ -15,6 +15,8 @@ public:
 		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent = 0);
 	~PreferencesEditorPage();
 
+	/// Sets value to palette combo box and spin box respectively/
+	void changePaletteParameters();
 	void save();
 
 protected:

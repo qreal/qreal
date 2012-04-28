@@ -4,6 +4,8 @@
 #include "paletteTree.h"
 #include <QtCore/QtAlgorithms>
 #include <QtGui/QVBoxLayout>
+#include "../../qrkernel/settingsManager.h"
+#include "../dialogs/preferencesPages/editorPage.h"
 
 using namespace qReal;
 using namespace gui;
@@ -210,6 +212,7 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 			layout->addWidget(element, count > 0 ? 50 : 0);
 		}
 		field->setLayout(layout);
+		field->setMinimumHeight(80);
 		QTreeWidgetItem *leaf = new QTreeWidgetItem;
 		item->addChild(leaf);
 		editorTree->setItemWidget(leaf, 0, field);
@@ -331,27 +334,43 @@ void PaletteTree::createPaletteTree()
 	QHBoxLayout *hLayout = new QHBoxLayout;
 	hLayout->setSpacing(0);
 
-	mExpandAll  = new QPushButton(this);
-	mExpandAll->setGeometry(0,0,140,50);
-	mExpandAll->setText("Expand All");
+	mExpandAll = new QToolButton;
+	mExpandAll->setGeometry(0,0,30,30);
+	mExpandAll->setIcon(QIcon(":/icons/expandAll.png"));
+	mExpandAll->setToolTip("Expand all");
+	mExpandAll->setIconSize(QSize(30, 30));
 	connect(mExpandAll,SIGNAL(clicked()),this,SLOT(expand()));
 	hLayout->addWidget(mExpandAll);
 
-	mCollapseAll  = new QPushButton(this);
-	mCollapseAll->setGeometry(0,0,140,50);
-	mCollapseAll->setText("Collapse All");
+	mCollapseAll = new QToolButton;
+	mCollapseAll->setGeometry(0,0,30,30);
+	mCollapseAll->setIcon(QIcon(":/icons/collapseAll.png"));
+	mCollapseAll->setToolTip("Collapse all");
+	mCollapseAll->setIconSize(QSize(30, 30));
 	connect(mCollapseAll,SIGNAL(clicked()),this,SLOT(collapse()));
 	hLayout->addWidget(mCollapseAll);
-	mLayout->addLayout(hLayout,0);
+
+	mChangeRepresentation = new QToolButton;
+	mChangeRepresentation->setGeometry(0,0,30,30);
+	mChangeRepresentation->setIcon(QIcon(":/icons/changeRepresentation.png"));
+	mChangeRepresentation->setToolTip("Change representation");
+	mChangeRepresentation->setIconSize(QSize(30, 30));
+	connect(mChangeRepresentation, SIGNAL(clicked()), this, SLOT(changeRepresentation()));
+	hLayout->addWidget(mChangeRepresentation);
+
+	mLayout->addLayout(hLayout);
 
 	mTree = new QTreeWidget(this);
 	mTree->setHeaderHidden(true);
 	mLayout->addWidget(mTree);
 	mSettings = new QSettings("QReal", "PaletteItems");
+	setMinimumWidth(200);
 }
 
 void PaletteTree::deletePaletteTree()
 {
+	SettingsManager::setValue("PaletteRepresentation", mIconsView);
+	SettingsManager::setValue("PaletteIconsInARowCount", mItemsCountInARow);
 	int diagramIndex = 0;
 	foreach(const QTreeWidget *editorTree, mEditorsTrees) {
 		for (int j = 0; j < editorTree->topLevelItemCount(); j++) {
@@ -367,6 +386,7 @@ void PaletteTree::deletePaletteTree()
 	delete mSettings;
 	delete mCollapseAll;
 	delete mExpandAll;
+	delete mChangeRepresentation;
 	delete mComboBox;
 	delete mLayout;
 	qDeleteAll(mEditorsTrees);
@@ -468,4 +488,25 @@ int PaletteTree::maxItemsCountInARow() const
 		}
 	}
 	return max ? max : mItemsCountInARow;
+}
+
+void PaletteTree::changeRepresentation()
+{
+	loadPalette(!mIconsView, mItemsCountInARow, *mEditorManager);
+	SettingsManager::setValue("PaletteRepresentation", mIconsView);
+	SettingsManager::setValue("PaletteIconsInARowCount", mItemsCountInARow);
+	emit paletteParametersChanged();
+}
+
+void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManager &editorManager)
+{
+	if (mEditorManager) {
+		recreateTrees();
+	}
+	mIconsView = isIconsView;
+	mEditorManager = &editorManager;
+	mItemsCountInARow = itemsCount;
+	loadEditors(editorManager);
+	initDone();
+	setComboBoxIndex();
 }
