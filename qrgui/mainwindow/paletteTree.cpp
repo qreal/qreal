@@ -5,7 +5,6 @@
 #include <QtCore/QtAlgorithms>
 #include <QtGui/QVBoxLayout>
 #include "../../qrkernel/settingsManager.h"
-#include "../dialogs/preferencesPages/editorPage.h"
 
 using namespace qReal;
 using namespace gui;

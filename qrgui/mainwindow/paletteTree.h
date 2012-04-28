@@ -5,7 +5,7 @@
 #include <QtCore/QSettings>
 #include <QtGui/QWidget>
 #include <QtGui/QIcon>
-#include <QtGUi/QToolButton>
+#include <QtGui/QToolButton>
 #include <QtGui/QComboBox>
 #include <QtGui/QVBoxLayout>
 #include "../pluginManager/editorManager.h"
