@@ -68,13 +68,21 @@ QList<qReal::ActionInfo> RefactoringPlugin::actions()
 
 	mPlaceMenu = new QMenu(tr("Automatically arrange elements"));
 
-	mPlaceVerticallyAction = new QAction(tr("Vertically"), NULL);
-	connect(mPlaceVerticallyAction, SIGNAL(triggered()), this, SLOT(arrangeElementsVertically()));
-	mPlaceMenu->addAction(mPlaceVerticallyAction);
+	mPlaceTBAction = new QAction(tr("Top-Bottom"), NULL);
+	connect(mPlaceTBAction, SIGNAL(triggered()), this, SLOT(arrangeElementsTB()));
+	mPlaceMenu->addAction(mPlaceTBAction);
 
-	mPlaceHorizontallyAction = new QAction(tr("Horizontally"), NULL);
-	connect(mPlaceHorizontallyAction, SIGNAL(triggered()), this, SLOT(arrangeElementsHorizontally()));
-	mPlaceMenu->addAction(mPlaceHorizontallyAction);
+	mPlaceLRAction = new QAction(tr("Left-Right"), NULL);
+	connect(mPlaceLRAction, SIGNAL(triggered()), this, SLOT(arrangeElementsLR()));
+	mPlaceMenu->addAction(mPlaceLRAction);
+
+	mPlaceBTAction = new QAction(tr("Bottom-Top"), NULL);
+	connect(mPlaceBTAction, SIGNAL(triggered()), this, SLOT(arrangeElementsBT()));
+	mPlaceMenu->addAction(mPlaceBTAction);
+
+	mPlaceRLAction = new QAction(tr("Right-Left"), NULL);
+	connect(mPlaceRLAction, SIGNAL(triggered()), this, SLOT(arrangeElementsRL()));
+	mPlaceMenu->addAction(mPlaceRLAction);
 
 	mRefactoringMenu->addMenu(mPlaceMenu);
 
@@ -283,12 +291,22 @@ void qReal::refactoring::RefactoringPlugin::arrangeElements(const QString &algor
 	mMainWindowIFace->arrangeElementsByDotRunner(algorithm, mQRealSourceFilesPath + "/qrgui/dotFiles");
 }
 
-void qReal::refactoring::RefactoringPlugin::arrangeElementsVertically()
+void qReal::refactoring::RefactoringPlugin::arrangeElementsBT()
 {
-	arrangeElements("vertically");
+	arrangeElements("TB"); // направление оси y противоположное
 }
 
-void qReal::refactoring::RefactoringPlugin::arrangeElementsHorizontally()
+void qReal::refactoring::RefactoringPlugin::arrangeElementsLR()
 {
-	arrangeElements("horizontally");
+	arrangeElements("LR");
 }
+void qReal::refactoring::RefactoringPlugin::arrangeElementsTB()
+{
+	arrangeElements("BT"); // направление оси y противоположное
+}
+
+void qReal::refactoring::RefactoringPlugin::arrangeElementsRL()
+{
+	arrangeElements("RL");
+}
+

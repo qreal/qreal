@@ -34,8 +34,10 @@ private slots:
 	void generateRefactoringMetamodel();
 	void openRefactoringWindow();
 	void saveRefactoring();
-	void arrangeElementsVertically();
-	void arrangeElementsHorizontally();
+	void arrangeElementsBT();
+	void arrangeElementsLR();
+	void arrangeElementsTB();
+	void arrangeElementsRL();
 
 private:
 	void insertRefactoringID(QDomDocument metamodel, QDomNodeList list, bool isNode);
@@ -54,8 +56,10 @@ private:
 	QAction *mGenerateAndLoadRefactoringEditorAction;
 	QAction *mOpenRefactoringWindowAction;
 	QAction *mSaveRefactoringAction;
-	QAction *mPlaceVerticallyAction;
-	QAction *mPlaceHorizontallyAction;
+	QAction *mPlaceLRAction;
+	QAction *mPlaceTBAction;
+	QAction *mPlaceRLAction;
+	QAction *mPlaceBTAction;
 
 	LogicalModelAssistInterface *mLogicalModelApi;
 	GraphicalModelAssistInterface *mGraphicalModelApi;

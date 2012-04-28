@@ -43,16 +43,34 @@
     </message>
     <message>
         <location filename="refactoringPlugin.cpp" line="71"/>
-        <source>Vertically</source>
-        <translation>Вертикально</translation>
+        <source>Top-Bottom</source>
+        <translation>Сверху вниз</translation>
     </message>
     <message>
         <location filename="refactoringPlugin.cpp" line="75"/>
-        <source>Horizontally</source>
-        <translation>Горизонтально</translation>
+        <source>Left-Right</source>
+        <translation>Слева направо</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="93"/>
+        <location filename="refactoringPlugin.cpp" line="79"/>
+        <source>Bottom-Top</source>
+        <translation>Снизу вверх</translation>
+    </message>
+    <message>
+        <location filename="refactoringPlugin.cpp" line="83"/>
+        <source>Right-Left</source>
+        <translation>Справа налево</translation>
+    </message>
+    <message>
+        <source>Vertically</source>
+        <translation type="obsolete">Вертикально</translation>
+    </message>
+    <message>
+        <source>Horizontally</source>
+        <translation type="obsolete">Горизонтально</translation>
+    </message>
+    <message>
+        <location filename="refactoringPlugin.cpp" line="101"/>
         <source>Select xml file to load refactoring metamodel</source>
         <translation>Выберите xml-файл для загрузки метамодели языка рефакторингов</translation>
     </message>

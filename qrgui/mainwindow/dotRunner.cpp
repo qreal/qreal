@@ -31,10 +31,8 @@ void DotRunner::run(const QString &algorithm)
 	if (data.open(QFile::WriteOnly | QFile::Truncate)) {
 		QTextStream outFile(&data);
 		outFile << "digraph G { \n";
-		if (mAlgorithm == "vertically")
-			outFile << "rankdir=BT; \n";
-		else if (mAlgorithm == "horizontally")
-			outFile << "rankdir=LR; \n";
+		if (mAlgorithm != "")
+			outFile << QString("rankdir=%1; \n").arg(mAlgorithm);
 		IdList const childrenId = mGraphicalModelApi.children(mDiagramId);
 		int index = 1;
 		foreach (Id id, childrenId) {
@@ -124,11 +122,11 @@ void DotRunner::parseDOTCoordinates()
 		}
 		qreal x = mDOTCoordinatesOfElements[id].first.x();
 		qreal y = mDOTCoordinatesOfElements[id].first.y();
-		if (mAlgorithm == "vertically") {
+		if (mAlgorithm == "BT" || mAlgorithm == "TB") {
 			x -= width / 4.0;
 			y -= height / 4.0;
 		}
-		else if (mAlgorithm == "horizontally") {
+		else if (mAlgorithm == "LR" || mAlgorithm == "RL") {
 			x /= 3.0; // special for robots diagram
 			x -= height / 4.0;
 			y -= width / 4.0;
@@ -136,6 +134,5 @@ void DotRunner::parseDOTCoordinates()
 
 		mGraphicalModelApi.mutableGraphicalRepoApi().setPosition(id, QPointF(x, y));
 		mGraphicalModelApi.mutableGraphicalRepoApi().setConfiguration(id, QPolygon(QRect(x, y, width, height)));
-	// TODO: учитивать масштабы --- размеры фигур и т.д.
 	}
 }
