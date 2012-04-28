@@ -43,6 +43,9 @@ bool NodeType::initAssociations()
 {
 	return true;
 }
+bool NodeType::initDissectability(){
+    return true;
+}
 
 bool NodeType::initGraphics()
 {

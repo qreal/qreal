@@ -135,7 +135,7 @@ bool EdgeType::initGraphics()
 	return true;
 }
 
-bool GraphicType::initDissectability()
+bool EdgeType::initDissectability()
 {
     QDomElement dissectabilityElement = mLogic.firstChildElement("dissectability");
     if (dissectabilityElement.isNull())

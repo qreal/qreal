@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 {
 	qInstallMsgHandler(myMessageOutput);
 	QCoreApplication app(argc, argv);
-	QStringList args = app.arguments();
+    QStringList args = app.arguments();
 
 	qDebug() << "Running " + args.join(" ");
 
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 	QString const root = args[2];
 
 	XmlCompiler xmlCompiler;
-	if (!xmlCompiler.compile(inputXmlFileName, root))
+    if (!xmlCompiler.compile(inputXmlFileName, root))
 		return 1;
 
 	return 0;

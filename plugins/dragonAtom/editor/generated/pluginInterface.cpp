@@ -230,14 +230,14 @@ int DragonAtomMetamodelPlugin::isNodeOrEdge(QString const &element) const
 QStringList DragonAtomMetamodelPlugin::getEnumValues(QString name) const 
 {
 	QStringList result;
-	if (name == "VisibilityKind")
+	if (name == "ParameterDirectionKind")
+		result << QString::fromUtf8("in") << QString::fromUtf8("inout") << QString::fromUtf8("out") << QString::fromUtf8("return");
+	else if (name == "VisibilityKind")
 		result << QString::fromUtf8("private") << QString::fromUtf8("protected") << QString::fromUtf8("public") << QString::fromUtf8("package");
 	else if (name == "AggregationKind")
 		result << QString::fromUtf8("none") << QString::fromUtf8("shared") << QString::fromUtf8("composite");
 	else if (name == "Bool")
 		result << QString::fromUtf8("false") << QString::fromUtf8("true");
-	else if (name == "ParameterDirectionKind")
-		result << QString::fromUtf8("in") << QString::fromUtf8("inout") << QString::fromUtf8("out") << QString::fromUtf8("return");
 	return result;
 }
 
