@@ -26,7 +26,7 @@ private:
 	QString mLineType;
 	QColor mLineColor;
 	int mLineWidth;
-    bool mIsDissectable;
+    QString mIsDissectable;
 
 	virtual bool initAssociations();
     virtual bool initGraphics();

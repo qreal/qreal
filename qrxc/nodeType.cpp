@@ -341,6 +341,8 @@ void NodeType::generateCode(OutFile &out)
 	<< (mContainerProperties.maximizesChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
 
+    << "\t\tbool isDissectable() { return false; }\n"
+
 	<< "\t\tbool isPort()\n\t\t{\n"
 	<< (mIsPin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"

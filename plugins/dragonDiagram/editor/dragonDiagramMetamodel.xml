@@ -3,7 +3,7 @@
     <namespace>UML 2.0</namespace>
     <diagram displayedName="Dragon Diagram" nodeName="DragonDiagramNode" name="DragonDiagram">
       <graphicTypes>
-        <node displayedName="Dragon Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="DragonDiagramNode">
+	  <node displayedName="Dragon Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="DragonDiagramNode">
           <graphics>
             <picture sizex="200" sizey="200">
               <line y1="0" x1="20" y2="0" x2="180"/>
@@ -145,8 +145,8 @@
           </graphics>
           <logic>
           </logic>
-        </node>
-		<edge displayedName="Control Flow" name="DragonFlow">
+        </node>		
+        <edge displayedName="Control Flow" name="DragonFlow">
           <graphics>
             <labels>
               <label textBinded="type"/>

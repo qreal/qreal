@@ -138,9 +138,10 @@ bool EdgeType::initGraphics()
 bool EdgeType::initDissectability()
 {
     QDomElement dissectabilityElement = mLogic.firstChildElement("dissectability");
+
+    mIsDissectable = "false";
     if (dissectabilityElement.isNull())
     {
-        mIsDissectable = false;
         return true;
     }
     QString IsDissectable = dissectabilityElement.attribute("isDissectable");
@@ -149,7 +150,8 @@ bool EdgeType::initDissectability()
         qDebug() << "ERROR: can't parse dissectability";
         return false;
     }
-    mIsDissectable = IsDissectable == "true";
+    if (IsDissectable == "true"){
+        mIsDissectable = "true";}
     return true;
 }
 
@@ -209,7 +211,7 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\tbool isNode() { return false; }\n"
 	<< "\t\tbool isResizeable() { return true; }\n"
     << "\t\tbool isContainer() { return false; }\n"
-    << "\t\tbool isDissectable() { return true; }\n"
+    << "\t\tbool isDissectable() { return " << mIsDissectable << "; }\n"
 	<< "\t\tbool isSortingContainer() { return false; }\n"
 	<< "\t\tint sizeOfForestalling() { return 0; }\n"
 	<< "\t\tint sizeOfChildrenForestalling() { return 0; }\n"
@@ -224,7 +226,7 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\t\treturn list;\n"
 	<< "\t\t}\n"
 	<< "\t\tbool hasPorts() { return false; }\n"
-	<< "\t\tint getPenWidth() { return " << mLineWidth << "; }\n"
+    << "\t\tint getPenWidth() { return " << mLineWidth << "; }\n"
 	<< "\t\tQColor getPenColor() { return QColor("
 	<< mLineColor.red() << ","
 	<< mLineColor.green() << ","
