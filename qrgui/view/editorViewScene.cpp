@@ -508,7 +508,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
     if (dynamic_cast<NodeElement*>(e)) { // check if e is node
         foreach (QGraphicsItem *item, items(scenePos)) {
             EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
-            if(dynamic_cast<EdgeElement*>(edge)->isDissectable()){
+            if(dynamic_cast<EdgeElement*>(edge) && edge->isDissectable()){
                 NodeElement *oldTo= edge->dst();
 
                 edge->removeLink(oldTo);
@@ -523,7 +523,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
                 break;
             }
         }
-    }
+    }//*/
 
     if (e) {
         delete e;
