@@ -154,6 +154,7 @@
             <lineType type="solidLine"/>
           </graphics>
           <logic>
+			<dissectability isDissectable="true" />
             <properties>
               <property type="string" name="type_number" />
               <property type="bool" name="type" />

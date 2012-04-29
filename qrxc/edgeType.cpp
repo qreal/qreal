@@ -145,7 +145,7 @@ bool EdgeType::initDissectability()
         return true;
     }
     QString IsDissectable = dissectabilityElement.attribute("isDissectable");
-    if (IsDissectable != "true" || IsDissectable != "false")
+    if (IsDissectable != "true" && IsDissectable != "false")
     {
         qDebug() << "ERROR: can't parse dissectability";
         return false;
