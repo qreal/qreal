@@ -209,7 +209,7 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\tbool isNode() { return false; }\n"
 	<< "\t\tbool isResizeable() { return true; }\n"
     << "\t\tbool isContainer() { return false; }\n"
-    << "\t\tbool isDissectable() { return " << mIsDissectable << "; }\n"
+    << "\t\tbool isDissectable() { return true; }\n"
 	<< "\t\tbool isSortingContainer() { return false; }\n"
 	<< "\t\tint sizeOfForestalling() { return 0; }\n"
 	<< "\t\tint sizeOfChildrenForestalling() { return 0; }\n"

@@ -96,8 +96,10 @@ public:
 	virtual void drawStartArrow(QPainter *painter) const = 0;
 	virtual void drawEndArrow(QPainter *painter) const = 0;
 
+    virtual bool isDissectable() = 0;
+
 	/*Container properties*/
-	virtual bool isContainer() = 0;
+    virtual bool isContainer() = 0;
 	virtual bool isSortingContainer() = 0;
 	virtual int sizeOfForestalling() = 0;
 	virtual int sizeOfChildrenForestalling() = 0;

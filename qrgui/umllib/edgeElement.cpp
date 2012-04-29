@@ -34,7 +34,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
-	mPenColor = mElementImpl->getPenColor();
+    mPenColor = mElementImpl->getPenColor();
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
 	// FIXME: draws strangely...
@@ -378,6 +378,10 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		mLastLine = mLine;
 	}
 }
+bool EdgeElement::isDissectable (){
+
+    return mElementImpl->isDissectable();}
+
 
 void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {

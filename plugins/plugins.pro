@@ -3,8 +3,8 @@ TEMPLATE = subdirs
 SUBDIRS	= \
 #	additionsEditor/additionsEditor.pro \
 #	android/android.pro \
-        dragonAtom/dragonAtom.pro \
-#        dragonDiagram/dragonDiagram.pro \
+#        dragonAtom/dragonAtom.pro \
+        dragonDiagram/dragonDiagram.pro \
 #        blockDiagram/blockDiagram.pro \
 #	bpel/bpel.pro \
 #	exterminatus/exterminatus.pro \
