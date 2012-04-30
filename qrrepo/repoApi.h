@@ -15,7 +15,6 @@ namespace qrRepo {
 	class QRREPO_EXPORT RepoApi : public GraphicalRepoApi, public LogicalRepoApi, public RepoControlInterface
 	{
 	public:
-        //TODOEFIM метод, выдаюищй все элементы репозитория
 		explicit RepoApi(QString const &workingDirectory);
 		// Default destructor ok.
 
@@ -106,7 +105,8 @@ namespace qrRepo {
 		virtual QString workingFile() const;
 
 		// "Р вЂњР В»Р С•Р В±Р В°Р В»РЎРЉР Р…РЎвЂ№Р Вµ" Р СР ВµРЎвЂљР С•Р Т‘РЎвЂ№, Р С—Р С•Р В·Р Р†Р С•Р В»РЎРЏРЎР‹РЎвЂ°Р С‘Р Вµ Р Т‘Р ВµР В»Р В°РЎвЂљРЎРЉ Р В·Р В°Р С—РЎР‚Р С•РЎРѓРЎвЂ№ Р С” Р СР С•Р Т‘Р ВµР В»Р С‘ Р Р† РЎвЂ Р ВµР В»Р С•Р С.
-		//Returns all elements with .element() == type.element()
+        /// Returns all elements with .element() == type.element() from default client
+        /// @param type - id to compare with
 		virtual qReal::IdList graphicalElements(qReal::Id const &type) const;
 		virtual qReal::IdList logicalElements(qReal::Id const &type) const;
 
@@ -116,6 +116,10 @@ namespace qrRepo {
 		qReal::IdList elementsByType(QString const &type) const;
 		int elementsCount() const;
 
+        /// Checks if id is present in repository
+        /// Should support all clients because work with all of them is intended
+        /// @param id - id of element you are looking for.
+        /// @return true if present, fase otherwise
 		bool exist(qReal::Id const &id) const;
 
 	private:
@@ -125,6 +129,9 @@ namespace qrRepo {
 		void addToIdList(qReal::Id const &target, QString const &listName, qReal::Id const &data, QString const &direction = QString());
 		void removeFromList(qReal::Id const &target, QString const &listName, qReal::Id const &data, QString const &direction = QString());
 
+        /// For debugging purpose
+        /// @return all elements in every loaded client
+        qReal::IdList allElements() const;
 		qReal::IdList links(qReal::Id const &id, QString const &direction) const;
 		void removeLinkEnds(QString const &endName, qReal::Id const &id);
 

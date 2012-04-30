@@ -472,9 +472,8 @@ bool MainWindow::import(QString const &fileName)
 	return true;
 }
 
-//No change to the savefile done
-//probaly only possibe usage in current state - loading libraries
-//consider changing name to addLibraryFile
+/// Loads specified save-file into repo, representated by setarate tree
+/// @return true if succesfull
 bool MainWindow::add(const QString &fileName)
 {
     if (!QFile(fileName).exists()) {
@@ -487,7 +486,7 @@ bool MainWindow::add(const QString &fileName)
     mModels->reinit();
 
   //copy-paste from open()
-  //not shure what it does
+  //probabaly does nothing because defaul client hadn't changed
     if (!checkPluginsAndReopen(NULL))
         return false;
     mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
@@ -564,7 +563,7 @@ void MainWindow::saveAllAndOpen(QString const &dirName)
 
 bool MainWindow::open(QString const &fileName)
 {
-    if (!QFile(fileName).exists()) {
+    if (!QFile(fileName).exists() && fileName != "") {
 		return false;
 	}
 
@@ -1579,9 +1578,10 @@ void MainWindow::createProject()
 			return;
 		}
 	}
-	open("");
-	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
+    open("");
+    if (SettingsManager::value("diagramCreateSuggestion", true).toBool()){
 		suggestToCreateDiagram();
+    }
 
 }
 
