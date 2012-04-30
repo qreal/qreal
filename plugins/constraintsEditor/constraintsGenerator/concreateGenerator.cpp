@@ -14,6 +14,9 @@ QString const fileNamePluginCPP = "constraintsPlugin.cpp";
 QString const fileNameDiagramH = "constraintsDiagram.h";
 QString const fileNameDiagramCPP = "constraintsDiagram.cpp";
 
+QString const keywordForAllEdges = "AllEdges";
+QString const keywordForAllNodes = "AllNodes";
+
 ConcreateGenerator::ConcreateGenerator(QString const &templateDirPath
 		, QString const &outputDirPath
 		, qReal::LogicalModelAssistInterface const &logicalModel
@@ -23,6 +26,7 @@ ConcreateGenerator::ConcreateGenerator(QString const &templateDirPath
 	: AbstractGenerator(templateDirPath, outputDirPath + QString("constraints" + metamodelName + "\\"), logicalModel, errorReporter)
 		, mMetamodelName(metamodelName)
 {
+	mUsedMetaTypeInCheck = false;
 //	QString temp = outputDirPath; //asd как собирать?
 //	QList<QString> tempList = temp.split("\\");
 //	temp = tempList.at(tempList.size() - 2);
@@ -31,6 +35,11 @@ ConcreateGenerator::ConcreateGenerator(QString const &templateDirPath
 
 ConcreateGenerator::~ConcreateGenerator()
 {
+}
+
+QString ConcreateGenerator::constraintModelFullName()
+{
+	return mOutputDirPath + "constraints" + mMetamodelName + ".pro";
 }
 
 ConcreateGenerator::NeededStringsForConcreateGenerate ConcreateGenerator::generateCommonNeededPartsForElements(QString elementName)
@@ -47,11 +56,25 @@ ConcreateGenerator::NeededStringsForConcreateGenerate ConcreateGenerator::genera
 	addElementInElementNames.replace("@@elementName@@", elementName);
 	addElementsInElementsNamesCPP += addElementInElementNames;
 
-	QString returnCheckStatusOfElement = mTemplateUtils["@@returnCheckStatusOfElementInCheck@@"];
-	returnCheckStatusOfElement.replace("@@elementName@@", elementName);
-	returnCheckStatusesOfElementsInCheckCPP += returnCheckStatusOfElement;
+	if (elementName == keywordForAllNodes || elementName == keywordForAllEdges) {
+		QString metaTypeName = "";
+		mUsedMetaTypeInCheck = true;
+		if (elementName == keywordForAllNodes) {
+			metaTypeName = "node";
+		} else if (elementName == keywordForAllEdges) {
+			metaTypeName = "edge";
+		}
+		QString returnCheckStatusOfElementByMetaType = mTemplateUtils["@@returnCheckStatusOfElementByMetaTypeInCheck@@"];
+		returnCheckStatusOfElementByMetaType.replace("@@elementName@@", elementName);
+		returnCheckStatusOfElementByMetaType.replace("@@metaType@@", metaTypeName);
+		returnCheckStatusesOfElementsInCheckCPP += returnCheckStatusOfElementByMetaType;
+	} else {
+		QString returnCheckStatusOfElement = mTemplateUtils["@@returnCheckStatusOfElementInCheck@@"];
+		returnCheckStatusOfElement.replace("@@elementName@@", elementName);
+		returnCheckStatusesOfElementsInCheckCPP += returnCheckStatusOfElement;
+	}
 
-	return NeededStringsForConcreateGenerate("", mainChecksForElemetsH, "", "", returnCheckStatusesOfElementsInCheckCPP, addElementsInElementsNamesCPP);
+	return NeededStringsForConcreateGenerate("", mainChecksForElemetsH, "", "", "", returnCheckStatusesOfElementsInCheckCPP, addElementsInElementsNamesCPP);
 }
 
 QString ConcreateGenerator::generateMainCheckStatusesForElemetsCPP(QMap<QString, QString> appendOptionalCheckStatusInMainCheckCPP)
@@ -82,6 +105,8 @@ ConcreateGenerator::NeededStringsForConcreateGenerate ConcreateGenerator::genera
 	QMap<QString, int> elementCount;
 	QList<Id> elementList= mApi.elementsByType("NodeConstraint");
 	elementList.append(mApi.elementsByType("EdgeConstraint"));
+	elementList.append(mApi.elementsByType("NodesConstraint"));
+	elementList.append(mApi.elementsByType("EdgesConstraint"));
 
 	foreach (Id const &element, elementList) {
 		if (!mApi.isLogicalElement(element) || mApi.parent(element) != diagram) {
@@ -89,8 +114,17 @@ ConcreateGenerator::NeededStringsForConcreateGenerate ConcreateGenerator::genera
 		}
 		QString elementName = mApi.name(element);
 		if (elementName == "(Edge Constraint)" || elementName == "(Node Constraint)") {
-			elementName = "ALL";//на самом деле : вернуть ошибку(или просто проинформировать), что не задано поле "имя" для нода ограничений //qwerty
+			mErrorReporter.addCritical("Name of constraintNode not found!", element);//qwerty
 		}
+		if (elementName == "(Edges Constraint)"
+				|| (element.element() == "EdgesConstraint" && (elementName.compare("all", Qt::CaseInsensitive)) == 0) ) {
+			elementName = keywordForAllEdges; //по умолчанию; ошибки не надо
+		}
+		if (elementName == "(Nodes Constraint)"
+				|| (element.element() == "NodesConstraint" && (elementName.compare("all", Qt::CaseInsensitive)) == 0) ) {
+			elementName = keywordForAllNodes; //по умолчанию; ошибки не надо
+		}
+
 		if (elementCount.contains(elementName)) {
 			elementCount[elementName] ++;
 		} else {
@@ -128,10 +162,18 @@ ConcreateGenerator::NeededStringsForConcreateGenerate ConcreateGenerator::genera
 			appendOptionalCheckStatusInMainCheckCPP.insert(elementName, appendOptionalCheckStatusOfElement);
 		}
 	}
+
+	QString prefixForReturnCheckStatusesOfElementsInCheckCPP;
+	if (!mUsedMetaTypeInCheck) {
+		prefixForReturnCheckStatusesOfElementsInCheckCPP = mTemplateUtils["@@prefixForReturnCheckStatusOfElementInCheck@@"];
+	} else {
+		prefixForReturnCheckStatusesOfElementsInCheckCPP = mTemplateUtils["@@prefixForReturnCheckStatusOfElementByMetaTypeInCheck@@"];
+	}
+
 	countMainCheckStatusesForElemetsCPP += generateMainCheckStatusesForElemetsCPP(appendOptionalCheckStatusInMainCheckCPP);
 
-	return NeededStringsForConcreateGenerate(optionalChecksForElemetsH, mainChecksForElemetsH, countOptionalCheckStatusesForElemetsCPP
-											, countMainCheckStatusesForElemetsCPP, returnCheckStatusesOfElementsInCheckCPP, addElementsInElementsNamesCPP);
+	return NeededStringsForConcreateGenerate(optionalChecksForElemetsH, mainChecksForElemetsH, countOptionalCheckStatusesForElemetsCPP, countMainCheckStatusesForElemetsCPP
+											, prefixForReturnCheckStatusesOfElementsInCheckCPP, returnCheckStatusesOfElementsInCheckCPP, addElementsInElementsNamesCPP);
 }
 
 void ConcreateGenerator::generateDiagramFiles(Id const &diagram, QString diagramNameTemplate)
@@ -149,6 +191,7 @@ void ConcreateGenerator::generateDiagramFiles(Id const &diagram, QString diagram
 
 	resultDiagramCPP.replace("@@countOptionalCheckStatusesForElemets@@", needeStrings.countOptionalCheckStatusesForElemetsCPP);
 	resultDiagramCPP.replace("@@countMainCheckStatusesForElemets@@", needeStrings.countMainCheckStatusesForElemetsCPP);
+	resultDiagramCPP.replace("@@prefixForReturnCheckStatusesOfElementsInCheck@@", needeStrings.prefixForReturnCheckStatusesOfElementsInCheckCPP);
 	resultDiagramCPP.replace("@@returnCheckStatusesOfElementsInCheck@@", needeStrings.returnCheckStatusesOfElementsInCheckCPP);
 	resultDiagramCPP.replace("@@addElementsInElementsNames@@", needeStrings.addElementsInElementsNamesCPP);
 	resultDiagramCPP.replace("@@diagramName@@", diagramNameTemplate);
@@ -171,6 +214,7 @@ ConcreateGenerator::NeededStringsForCommonGenerate ConcreateGenerator::generateN
 		if (!mApi.isLogicalElement(diagram)) {
 			continue;
 		}
+		mUsedMetaTypeInCheck = false;
 		QString diagramNameTemplate = mTemplateUtils["@@diagramName@@"];
 		diagramNameTemplate = replaceLanguageName(diagramNameTemplate, diagram, count);
 		diagramNameTemplate.truncate(diagramNameTemplate.size() - 1);
@@ -187,6 +231,8 @@ ConcreateGenerator::NeededStringsForCommonGenerate ConcreateGenerator::generateN
 
 		QString ifForMainCheckTemplate = mTemplateUtils["@@ifForMainCheckOfConstraintsDiagram@@"];
 		ifForMainCheckTemplate.replace("@@diagramName@@", diagramNameTemplate);
+		ifForMainCheckTemplate.replace("@@keywordForAllEdges@@", keywordForAllEdges);
+		ifForMainCheckTemplate.replace("@@keywordForAllNodes@@", keywordForAllNodes);
 
 		generateDiagramFiles(diagram, diagramNameTemplate);
 		count++;
@@ -223,18 +269,19 @@ void ConcreateGenerator::generate()
 
 	NeededStringsForCommonGenerate neededStrings = generateNeededPartsForAllConstraintsDiagram();
 
+	resultPRO.replace("@@metamodelName@@", mMetamodelName);
 	resultPRO.replace("@@constraintsDiagramHFiles@@", neededStrings.hFiles);
 	resultPRO.replace("@@constraintsDiagramCppFiles@@", neededStrings.cppFiles);
 
 	resultPluginH.replace("@@includeConstraintsDiagramFiles@@", neededStrings.includeFilesPluginH);
 	resultPluginH.replace("@@privateFieldsOfConstraintsDigrams@@", neededStrings.privateFieldsPluginH);
 
+	resultPluginCPP.replace("@@metamodelName@@", mMetamodelName);
 	resultPluginCPP.replace("@@ifForMainCheckOfConstraintsDiagrams@@", neededStrings.ifForMainCheckPluginCPP);
-	resultPluginCPP.replace("@@metaModelName@@", mMetamodelName);
 
-	saveOutputFile(fileNamePRO, resultPRO);
-	saveOutputFile(fileNamePluginH, resultPluginH);
-	saveOutputFile(fileNamePluginCPP, resultPluginCPP);
+	saveOutputFile(QString("constraints" + mMetamodelName + ".pro"), resultPRO);
+	saveOutputFile(QString("constraints" + mMetamodelName + "Plugin.h"), resultPluginH);
+	saveOutputFile(QString("constraints" + mMetamodelName + "Plugin.cpp"), resultPluginCPP);
 }
 
 QString ConcreateGenerator::replaceLanguageName(QString string, Id const &diagram, int count)
@@ -253,6 +300,12 @@ QString ConcreateGenerator::countRealConstraintOfElement(Id const &element)
 	} else if (element.element() == "NodeConstraint") {
 		resString = countRealConstraintForNodeElement(element, "element", "nodeRes", 1, "	");
 		resString += "	res = nodeRes_1;\n";
+	} else if (element.element() == "EdgesConstraint") {
+		resString = countRealConstraintForEdgeElement(element, "element", "allEdgesRes", 1, "	");
+		resString += "	res = allEdgesRes_1;\n";
+	} else if (element.element() == "NodesConstraint") {
+		resString = countRealConstraintForNodeElement(element, "element", "allNodesRes", 1, "	");
+		resString += "	res = allNodesRes_1;\n";
 	}
 	return resString;
 }
@@ -316,7 +369,11 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForListOfElem
 	resString += addStr + "qReal::IdList new" + resElementName + "NamesList_" + QString::number(depth) + " = logicalApi." + functionName + "(" + elementName + ");\n";
 	resString += addStr + "bool main" + resElementName + "Res_" + QString::number(depth + 1) + " = true;\n";
 	resString += addStr + "foreach (qReal::Id const &" + resType + ", new" + resElementName + "NamesList_" + QString::number(depth) + ") {\n";
-	resString += countRealConstraintForNodeElement(constraint, resType, functionName + "Res", depth + 1, addStr + "	");
+	if (resType == "node") {
+		resString += countRealConstraintForNodeElement(constraint, resType, functionName + "Res", depth + 1, addStr + "	");
+	} else if (resType == "edge") {
+		resString += countRealConstraintForEdgeElement(constraint, resType, functionName + "Res", depth + 1, addStr + "	");
+	}
 	resString += addStr + "	main" + resElementName + "Res_" + QString::number(depth + 1) + " = main" + resElementName + "Res_" + QString::number(depth + 1) + " && " + functionName + "Res_" + QString::number(depth + 1) + ";\n	}\n";
 	resBool.push_back("main" + resElementName + "Res_" + QString::number(depth + 1));
 
@@ -420,7 +477,8 @@ QString ConcreateGenerator::additionalCommonPartForConstraint(QList<QString> res
 	QString resString = "";
 
 	if (resBool.empty()) {
-		resBool.push_back("true"); //"true";//вернуть ошибку; т.е мы не смогли сгенерить ограничения для элемента
+		resBool.push_back("true"); //"true";//если список детей пуст, то нормально всё : true;
+								//вернуть ошибку, только если список детей НЕ пуст; т.е мы не смогли сгенерить ограничения для элемента
 	}
 	resString += addStr + ("	bool " + resultName + "_" + QString::number(depth) + " = " + resBool.first());
 	resBool.pop_front();

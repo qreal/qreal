@@ -870,6 +870,16 @@ bool MainWindow::unloadPlugin(QString const &pluginName)
 	return true;
 }
 
+//bool MainWindow::unloadPlugin(QString const &pluginName) //qwerty_lsd
+//{
+//	if (mConstraintsManager.plugins().contains(Id(pluginName))) {
+//		if (!mConstraintsManager.unloadPlugin(pluginName)) {
+//			return false;
+//		}
+//	}
+//	return true;
+//}
+
 bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 {
 	if (!mEditorManager.loadPlugin(fileName)) {
@@ -1916,10 +1926,8 @@ void MainWindow::checkConstraints(Id const &id)
 {
 	Id const logicalId = mModels->logicalId(id);
 	IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
-	IdList listOfElements;
-	listOfElements.append(logicalId);
 
-	CheckStatus check = mConstraintsManager.check(listOfElements, mModels->logicalModelAssistApi().logicalRepoApi());
+	CheckStatus check = mConstraintsManager.check(logicalId, mModels->logicalModelAssistApi().logicalRepoApi(), mEditorManager);
 	gui::Error::Severity errorSeverity = severityByErrorType(check.errorType());
 
 	if (check.checkStatus()) {

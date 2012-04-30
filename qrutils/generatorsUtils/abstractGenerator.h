@@ -61,6 +61,8 @@ protected:
 	/// A map with utility templates, maps template name to template.
 	QMap<QString, QString> mTemplateUtils;
 
+	/// Directory to place output files to.
+	QString const mOutputDirPath;
 
 private:
 	/// Loads utility templates from a file whose name in utilsFileName.
@@ -72,9 +74,6 @@ private:
 
 	/// Returns a directory by given path or QDir() if there is no such path.
 	QDir getDir(QString const &path);
-
-	/// Directory to place output files to.
-	QString const mOutputDirPath;
 
 	/// Path to a directory with templates.
 	QString const mTemplateDirPath;

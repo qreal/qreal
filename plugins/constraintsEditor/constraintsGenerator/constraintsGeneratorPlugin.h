@@ -21,8 +21,26 @@ public:
 	/// Returns list containing "generate" action, which runs a generator.
 	virtual QList<qReal::ActionInfo> actions();
 
+private slots:
+	void generate();
 private:
+	/// Compiles and loads to QReal new editor plugin
+	void loadNewEditor(
+			QString const &directoryName  ///< Directory where editor was generated (containing .pro file of that editor)
+			, QString const &metamodelName  ///< Metamodel name as set in metamodel
+			, QString const &commandFirst  ///< qmake command
+			, QString const &commandSecond  ///< make command
+			, QString const &extension  ///< Extension of the resulting binary file with editor plugin (.dll/.so)
+			, QString const &prefix  ///< Optional OS-dependent prefix for resulting binary file (lib for linux, for example)
+			);
+
 	Generator mGenerator;
+
+	/// Interface of MainWindow, used, for example, to reinit models when finished parsing
+	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership
+
+	/// Logical model, from which generator takes all information.
+	qReal::LogicalModelAssistInterface const *mLogicalModel;
 };
 
 }

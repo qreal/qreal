@@ -25,6 +25,8 @@ ConstraintsManager::ConstraintsManager()
 			ConstraintsPluginInterface *constraintsPlugin = qobject_cast<ConstraintsPluginInterface *>(plugin);
 			if (constraintsPlugin) {
 				mPlugins << constraintsPlugin;
+//				mPluginsLoaded += constraintsPlugin->id();//qwerty_lsd
+//				mPluginFileName.insert(constraintsPlugin->id(), pluginName);
 //				mLoaders << loader;
 			}
 			else {
@@ -36,12 +38,25 @@ ConstraintsManager::ConstraintsManager()
 	}
 }
 
-CheckStatus ConstraintsManager::check(IdList const &elements, qrRepo::LogicalRepoApi const &logicalApi)
+//bool ConstraintsManager::unloadPlugin(const QString &pluginName)
+//{
+//	QPluginLoader *loader = mLoaders[mPluginFileName[pluginName]];
+//	if (loader != NULL) {
+//		if (!(loader->unload())) {
+//			return false;
+//		}
+//		mPluginsLoaded.removeAll(pluginName);
+//		mPluginFileName.remove(pluginName);
+//		return true;
+//	}
+//	return false;
+//}
+
+CheckStatus ConstraintsManager::check(Id const &element, qrRepo::LogicalRepoApi const &logicalApi, EditorManager const &editorManager)
 {
 	foreach (ConstraintsPluginInterface *constraintsInterface, mPlugins) {
-		if (constraintsInterface->isCorrectLanguageName(elements)) {
-//		if (constraintsInterface->languageName() == elements.at(0).editor()) { //asd //??
-			return constraintsInterface->check(elements, logicalApi);
+		if (constraintsInterface->isCorrectLanguageName(element)) {
+			return constraintsInterface->check(element, logicalApi, editorManager);
 		}
 	}
 	return CheckStatus(true, "", CheckStatus::warning);

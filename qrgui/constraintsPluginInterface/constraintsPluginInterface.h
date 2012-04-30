@@ -1,20 +1,22 @@
 #pragma once
+#include "../pluginManager/editorManagerInterface.h"
 #include "../../qrrepo/logicalRepoApi.h"
 #include "checkStatus.h"
 
 namespace qReal {
 
+const QString keywordForAllLanguages = "AllLanguages";//asd_copypast
+
 class ConstraintsPluginInterface {
 public:
-	virtual CheckStatus check(IdList const &elements, qrRepo::LogicalRepoApi const &logicalApi) = 0;
+	virtual CheckStatus check(Id const &element, qrRepo::LogicalRepoApi const &logicalApi, EditorManagerInterface const &editorManager) = 0;
 	virtual QString metamodelName() const = 0;
 
-	bool isCorrectLanguageName(IdList const &elements) const//asd //?? //т.е. совпадает хотя бы с одним элементом
+	bool isCorrectLanguageName(Id const &element) const//asd
 	{
-		foreach (Id const &element, elements) {
-			if (metamodelName() == element.editor()) {
-				return true;
-			}
+		QString myMetamodelName = metamodelName();
+		if (myMetamodelName == element.editor() || myMetamodelName == keywordForAllLanguages) {
+			return true;
 		}
 		return false;
 	}

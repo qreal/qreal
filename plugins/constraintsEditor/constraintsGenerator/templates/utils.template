@@ -21,9 +21,9 @@ SUBDIRS = \
 	Constraints@@diagramName@@ mConstraints@@diagramName@@;
 ==========
 @@ifForMainCheckOfConstraintsDiagram@@
-		if (mConstraints@@diagramName@@.languageName() == languageName && mConstraints@@diagramName@@.elementsNames().contains(elementName)) {
-			checkings.append(mConstraints@@diagramName@@.check(element, logicalApi));
-		}
+	if (mConstraints@@diagramName@@.languageName() == languageName && (mConstraints@@diagramName@@.elementsNames().contains("@@keywordForAllEdges@@") || mConstraints@@diagramName@@.elementsNames().contains("@@keywordForAllNodes@@") || mConstraints@@diagramName@@.elementsNames().contains(elementName))) {
+		checkings.append(mConstraints@@diagramName@@.check(element, logicalApi, editorManager));
+	}
 ==========
 @@optionalCheckElemet@@
 	qReal::CheckStatus check@@elementNameWithId@@(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi);
@@ -34,8 +34,19 @@ SUBDIRS = \
 @@addElementInElementsNames@@
 	elementsList.append("@@elementName@@");
 ==========
+@@prefixForReturnCheckStatusOfElementInCheck@@
+	Q_UNUSED(editorManager);
+==========
+@@prefixForReturnCheckStatusOfElementByMetaTypeInCheck@@
+	qReal::EditorManagerInterface::MetaType isNodeOrEdge = editorManager.metaTypeOfElement(element);
+==========
 @@returnCheckStatusOfElementInCheck@@
 	if (element.element() == "@@elementName@@") {
+		return check@@elementName@@(element, logicalApi);
+	}
+==========
+@@returnCheckStatusOfElementByMetaTypeInCheck@@
+	if(isNodeOrEdge == qReal::EditorManagerInterface::@@metaType@@) {
 		return check@@elementName@@(element, logicalApi);
 	}
 ==========

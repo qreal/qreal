@@ -1,8 +1,8 @@
-#include "constraintsPlugin.h"
+#include "constraints@@metamodelName@@Plugin.h"
 #include <QtCore/QtPlugin>
 #include <QtCore/QVariant>
 
-Q_EXPORT_PLUGIN2(constraintsPlugin, constraints::ConstraintsPlugin)
+Q_EXPORT_PLUGIN2(constraints@@metamodelName@@Plugin, constraints::ConstraintsPlugin)
 
 using namespace constraints;
 
@@ -14,18 +14,16 @@ ConstraintsPlugin::~ConstraintsPlugin()
 {
 }
 
-qReal::CheckStatus ConstraintsPlugin::check(qReal::IdList const &elements, qrRepo::LogicalRepoApi const &logicalApi) //asd //??
+qReal::CheckStatus ConstraintsPlugin::check(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi, qReal::EditorManagerInterface const &editorManager)
 {
 	QList<qReal::CheckStatus> checkings;
-	foreach (qReal::Id element, elements) {
-		QString const elementName = element.element();
-		QString const languageName = element.diagram();
+	QString const elementName = element.element();
+	QString const languageName = element.diagram();
 @@ifForMainCheckOfConstraintsDiagrams@@
-	}
 	return qReal::CheckStatus::resultCheckStatus(checkings);
 }
 
 QString ConstraintsPlugin::metamodelName() const
 {
-	return "@@metaModelName@@";
+	return "@@metamodelName@@";
 }

@@ -7,6 +7,7 @@
 #include <QtCore/QStringList>
 #include <QtGui/QIcon>
 
+#include "editorManagerInterface.h"
 #include "listenerManager.h"
 #include "../../qrkernel/ids.h"
 #include "../editorPluginInterface/editorInterface.h"
@@ -17,7 +18,7 @@
 class Element;
 
 namespace qReal {
-	class EditorManager : public QObject
+	class EditorManager : public QObject, public EditorManagerInterface
 	{
 		Q_OBJECT
 
@@ -65,6 +66,7 @@ namespace qReal {
 		QList<ListenerInterface *> listeners() const;
 
 		EditorInterface* editorInterface(QString const &editor) const;
+		MetaType metaTypeOfElement(Id const& element) const;
 
 		bool isDiagramNode(Id const &id) const;
 

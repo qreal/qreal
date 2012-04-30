@@ -7,10 +7,11 @@ RCC_DIR = .moc
 LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo
 
 HEADERS += \
-	constraintsPlugin.h \
+	constraints@@metamodelName@@Plugin.h \
+	../../../qrgui/pluginManager/editorManagerInterface.h \
 @@constraintsDiagramHFiles@@
 
 SOURCES += \
-	constraintsPlugin.cpp \
+	constraints@@metamodelName@@Plugin.cpp \
 	../../../qrgui/constraintsPluginInterface/checkStatus.cpp \
 @@constraintsDiagramCppFiles@@

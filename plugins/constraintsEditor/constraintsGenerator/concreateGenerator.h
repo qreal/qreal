@@ -10,7 +10,7 @@ class ConcreateGenerator : public generatorsUtils::AbstractGenerator
 public:
 	/** Constructor.
 	  @param templateDirPath Path to a directory with generation template.
-	  @param outputDirPath Path to a directory where Message.cs shall be generated.
+	  @param outputDirPath Path to a directory.
 	  @param logicalModel Logical model reference.
 	  @param errorReporter Object to return errors to.
 	  */
@@ -25,6 +25,8 @@ public:
 
 	/// Starts generation.
 	void generate();
+
+	QString constraintModelFullName();
 
 private :
 	struct NeededStringsForCommonGenerate {
@@ -45,15 +47,17 @@ private :
 		QString mainChecksForElemetsH;
 		QString countOptionalCheckStatusesForElemetsCPP;
 		QString countMainCheckStatusesForElemetsCPP;
+		QString prefixForReturnCheckStatusesOfElementsInCheckCPP;
 		QString returnCheckStatusesOfElementsInCheckCPP;
 		QString addElementsInElementsNamesCPP;
 
 		NeededStringsForConcreateGenerate(QString curOptionalChecksForElemetsH, QString curMainChecksForElemetsH
 				, QString curCountOptionalCheckStatusesForElemetsCPP, QString curCountMainCheckStatusesForElemetsCPP
-				, QString curReturnCheckStatusesOfElementsInCheckCPP, QString curAddElementsInElementsNamesCPP)
+				, QString curPrefixForReturnCheckStatusesOfElementsInCheckCPP, QString curReturnCheckStatusesOfElementsInCheckCPP, QString curAddElementsInElementsNamesCPP)
 				: optionalChecksForElemetsH(curOptionalChecksForElemetsH), mainChecksForElemetsH(curMainChecksForElemetsH)
 				, countOptionalCheckStatusesForElemetsCPP(curCountOptionalCheckStatusesForElemetsCPP)
 				, countMainCheckStatusesForElemetsCPP(curCountMainCheckStatusesForElemetsCPP)
+				, prefixForReturnCheckStatusesOfElementsInCheckCPP(curPrefixForReturnCheckStatusesOfElementsInCheckCPP)
 				, returnCheckStatusesOfElementsInCheckCPP(curReturnCheckStatusesOfElementsInCheckCPP)
 				, addElementsInElementsNamesCPP(curAddElementsInElementsNamesCPP) {}
 	};
@@ -84,7 +88,10 @@ private :
 	QPair<QString, QList<QString> > countConstraintForPropertyNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
 
 	QString const &mMetamodelName;
-	QString mCallingPath;
+	QString mCallingPath;//qwerty_del
+
+	bool mUsedMetaTypeInCheck; // для генерации ограничений множества элементов в Check;
+							// true = надо использвать мета-тип элемента; false = не надо использовать;
 
 };
 

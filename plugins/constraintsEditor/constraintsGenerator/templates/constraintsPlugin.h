@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../../qrgui/pluginManager/editorManagerInterface.h"
 @@includeConstraintsDiagramFiles@@
 namespace constraints {
 
@@ -12,7 +13,7 @@ public:
 	ConstraintsPlugin();
 	virtual ~ConstraintsPlugin();
 
-	virtual qReal::CheckStatus check(qReal::IdList const &elements, qrRepo::LogicalRepoApi const &logicalApi);
+	virtual qReal::CheckStatus check(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi, qReal::EditorManagerInterface const &editorManager);
 	virtual QString metamodelName() const;
 
 private:

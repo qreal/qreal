@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtCore/QPluginLoader>
+#include "editorManager.h"
 #include "../../qrrepo/logicalRepoApi.h"
 #include "../constraintsPluginInterface/constraintsPluginInterface.h"
 
@@ -9,9 +11,13 @@ class ConstraintsManager
 {
 public:
 	ConstraintsManager();
-	CheckStatus check(IdList const &elements, qrRepo::LogicalRepoApi const &logicalApi);
+	CheckStatus check(Id const &element, qrRepo::LogicalRepoApi const &logicalApi, EditorManager const &editorManager);
 
 private:
+	QStringList mPluginsLoaded;
+	QMap<QString, QString> mPluginFileName;
+	QMap<QString, QPluginLoader *> mLoaders;
+
 	QList<ConstraintsPluginInterface *> mPlugins;
 };
 

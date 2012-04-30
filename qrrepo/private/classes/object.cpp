@@ -185,3 +185,12 @@ QMapIterator<QString, QVariant> Object::propertiesIterator()
 	return QMapIterator<QString, QVariant>(mProperties);
 }
 
+QString Object::metaType() const
+{
+	return mMetaType;
+}
+
+void Object::setMetaType(QString const &type)
+{
+	mMetaType = type;
+}

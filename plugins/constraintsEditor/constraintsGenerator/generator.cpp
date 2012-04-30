@@ -6,6 +6,8 @@ using namespace constraints::generator;
 
 QString templateDir = "./templates";
 
+const QString keywordForAllLanguages = "AllLanguages";//asd_copypast
+
 Generator::Generator()
 {
 }
@@ -21,21 +23,20 @@ void Generator::init(qReal::LogicalModelAssistInterface const &logicalModel
 	mErrorReporter = &errorReporter;
 }
 
-void Generator::generate()
+void Generator::generate(qReal::Id const &metamodel)
 {
-	qDebug() << "count = " << mLogicalModel->logicalRepoApi().elementsCount();
-	qReal::IdList ch = mLogicalModel->logicalRepoApi().children(qReal::Id::rootId());
-	foreach (qReal::Id id, ch) {
-		qDebug() << id;
+	qDebug() << "generate : " << mLogicalModel->propertyByRoleName(metamodel, "outputDirPath").toString();
+	QString metamodelName = mLogicalModel->propertyByRoleName(metamodel, "metamodelName").toString();
+	if ((metamodelName.compare("all", Qt::CaseInsensitive) == 0) || (metamodelName.compare(keywordForAllLanguages, Qt::CaseInsensitive) == 0)) {
+		metamodelName = keywordForAllLanguages;
 	}
+	ConcreateGenerator generator(templateDir, mLogicalModel->propertyByRoleName(metamodel, "outputDirPath").toString()
+								, *mLogicalModel, *mErrorReporter, metamodelName);
+	generator.generate();
+	mConstraintModelFullName = generator.constraintModelFullName();
+}
 
-	foreach (qReal::Id const &metamodel, mLogicalModel->logicalRepoApi().elementsByType("MetamodelConstraints")) {
-		if (!mLogicalModel->logicalRepoApi().isLogicalElement(metamodel)) {
-			continue;
-		}
-		qDebug() << "generate : " << mLogicalModel->propertyByRoleName(metamodel, "outputDirPath").toString();
-		ConcreateGenerator generator(templateDir, mLogicalModel->propertyByRoleName(metamodel, "outputDirPath").toString()
-									, *mLogicalModel, *mErrorReporter, mLogicalModel->propertyByRoleName(metamodel, "metamodelName").toString());
-		generator.generate();
-	}
+QString Generator::constraintModelFullName()
+{
+	return mConstraintModelFullName;
 }

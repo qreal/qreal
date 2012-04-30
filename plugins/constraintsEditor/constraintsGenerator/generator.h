@@ -21,9 +21,10 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			);
 
-public slots:
 	/// Starts generation process.
-	void generate();
+	void generate(qReal::Id const &metamodel);
+
+	QString constraintModelFullName();
 
 private:
 	/// Logical model, from which generator takes all information.
@@ -32,6 +33,7 @@ private:
 	/// Error reporter object, used to show generation errors in output window.
 	qReal::ErrorReporterInterface *mErrorReporter;
 
+	QString mConstraintModelFullName;
 };
 
 }

@@ -429,3 +429,13 @@ QStringList EditorManager::getAllChildrenTypesOf(Id const &parent) const
 	return result;
 }
 
+EditorManagerInterface::MetaType EditorManager::metaTypeOfElement(Id const& element) const
+{
+	int isNodeOrEdge = mPluginIface[element.editor()]->isNodeOrEdge(element.element()); //(-1) means "edge", (+1) means "node"
+	if (isNodeOrEdge == -1) {
+		return EditorManagerInterface::edge;
+	} else if (isNodeOrEdge == 1) {
+		return EditorManagerInterface::node;
+	}
+	return EditorManagerInterface::none;
+}
