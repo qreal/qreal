@@ -21,10 +21,11 @@ ConcreateGenerator::ConcreateGenerator(QString const &templateDirPath
 		, QString const &outputDirPath
 		, qReal::LogicalModelAssistInterface const &logicalModel
 		, qReal::ErrorReporterInterface &errorReporter
-		, QString const &metamodelName
+		, QString const &metamodelLanguageName
+		, QString const &constraintsMetamodelName
 		)
-	: AbstractGenerator(templateDirPath, outputDirPath + QString("constraints" + metamodelName + "\\"), logicalModel, errorReporter)
-		, mMetamodelName(metamodelName)
+	: AbstractGenerator(templateDirPath, outputDirPath + QString("constraints" + metamodelLanguageName + "\\"), logicalModel, errorReporter)
+	, mMetamodelName(metamodelLanguageName), mConstraintsName(constraintsMetamodelName)
 {
 	mUsedMetaTypeInCheck = false;
 //	QString temp = outputDirPath; //asd как собирать?
@@ -278,6 +279,7 @@ void ConcreateGenerator::generate()
 
 	resultPluginCPP.replace("@@metamodelName@@", mMetamodelName);
 	resultPluginCPP.replace("@@ifForMainCheckOfConstraintsDiagrams@@", neededStrings.ifForMainCheckPluginCPP);
+	resultPluginCPP.replace("@@constraintsPluginId@@", mConstraintsName);
 
 	saveOutputFile(QString("constraints" + mMetamodelName + ".pro"), resultPRO);
 	saveOutputFile(QString("constraints" + mMetamodelName + "Plugin.h"), resultPluginH);

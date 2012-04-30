@@ -495,13 +495,3 @@ void RepoApi::removeTemporaryRemovedLinks(Id const &id)
 {
 	mClient.removeTemporaryRemovedLinks(id);
 }
-
-QString RepoApi::metaType(Id const &id) const
-{
-	return mClient.metaType(id);
-}
-
-void RepoApi::setMetaType(Id const &id, QString const& type)
-{
-	mClient.setMetaType(id, type);
-}

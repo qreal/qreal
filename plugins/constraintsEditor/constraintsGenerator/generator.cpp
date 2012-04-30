@@ -31,7 +31,7 @@ void Generator::generate(qReal::Id const &metamodel)
 		metamodelName = keywordForAllLanguages;
 	}
 	ConcreateGenerator generator(templateDir, mLogicalModel->propertyByRoleName(metamodel, "outputDirPath").toString()
-								, *mLogicalModel, *mErrorReporter, metamodelName);
+								 , *mLogicalModel, *mErrorReporter, metamodelName, mLogicalModel->propertyByRoleName(metamodel, "name").toString());
 	generator.generate();
 	mConstraintModelFullName = generator.constraintModelFullName();
 }

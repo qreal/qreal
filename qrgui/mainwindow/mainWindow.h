@@ -80,6 +80,9 @@ public:
 	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
 	virtual bool pluginLoaded(QString const &pluginName);
 
+	virtual bool unloadConstraintsPlugin(QString const &pluginName);
+	virtual bool loadConstraintsPlugin(QString const &fileName);
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();

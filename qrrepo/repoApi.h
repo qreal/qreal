@@ -90,9 +90,6 @@ namespace qrRepo {
 		virtual bool isLogicalElement(qReal::Id const &id) const;
 		virtual bool isGraphicalElement(qReal::Id const &id) const;
 
-		QString metaType(qReal::Id const &id) const;//qwerty
-		void setMetaType(qReal::Id const &id, QString const& type);
-
 		void exterminate();
 
 		/// RepoApi's wrapper for Client.importFromDisk

@@ -870,15 +870,15 @@ bool MainWindow::unloadPlugin(QString const &pluginName)
 	return true;
 }
 
-//bool MainWindow::unloadPlugin(QString const &pluginName) //qwerty_lsd
-//{
-//	if (mConstraintsManager.plugins().contains(Id(pluginName))) {
-//		if (!mConstraintsManager.unloadPlugin(pluginName)) {
-//			return false;
-//		}
-//	}
-//	return true;
-//}
+bool MainWindow::unloadConstraintsPlugin(QString const &pluginName) //qwerty_lsd
+{
+	if (mConstraintsManager.plugins().contains(Id(pluginName))) {
+		if (!mConstraintsManager.unloadPlugin(pluginName)) {
+			return false;
+		}
+	}
+	return true;
+}
 
 bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 {
@@ -890,6 +890,14 @@ bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 		mUi->paletteTree->addEditorElements(mEditorManager, Id(pluginName), diagram);
 	}
 	mUi->paletteTree->initDone();
+	return true;
+}
+
+bool MainWindow::loadConstraintsPlugin(QString const &fileName)//qwerty_lsd
+{
+	if (!mConstraintsManager.loadPlugin(fileName)) {
+		return false;
+	}
 	return true;
 }
 

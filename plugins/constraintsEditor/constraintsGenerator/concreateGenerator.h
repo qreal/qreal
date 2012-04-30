@@ -18,7 +18,8 @@ public:
 			, QString const &outputDirPath
 			, qReal::LogicalModelAssistInterface const &logicalModel
 			, qReal::ErrorReporterInterface &errorReporter
-			, QString const &metamodelName
+			, QString const &metamodelLanguageName
+			, QString const &constraintsMetamodelName
 			);
 
 	virtual ~ConcreateGenerator();
@@ -87,8 +88,8 @@ private :
 	QPair<QString, QList<QString> > countConstraintForIncomingNodes(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
 	QPair<QString, QList<QString> > countConstraintForPropertyNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
 
-	QString const &mMetamodelName;
-	QString mCallingPath;//qwerty_del
+	QString const &mMetamodelName;//имя метамодели языков, для которых напсана эта модель ограничений, по которой генерируется код
+	QString const &mConstraintsName;//настоящее имя модели огранчений, по которой генерируется код
 
 	bool mUsedMetaTypeInCheck; // для генерации ограничений множества элементов в Check;
 							// true = надо использвать мета-тип элемента; false = не надо использовать;

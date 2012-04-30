@@ -351,17 +351,3 @@ qReal::Id Client::logicalId(qReal::Id const &elem) const
 {
 	return mObjects[elem]->logicalId();
 }
-
-QString Client::metaType(qReal::Id const &elem) const
-{
-	return mObjects[elem]->metaType();
-}
-
-void Client::setMetaType(qReal::Id const &elem, QString const& type)
-{
-	if (mObjects.contains(elem)) {
-		mObjects[elem]->setMetaType(type);
-	} else {
-		throw Exception("Client: Setting metaType of nonexistent object " + elem.toString());
-	}
-}

@@ -15,6 +15,7 @@ public:
 
 	virtual qReal::CheckStatus check(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi, qReal::EditorManagerInterface const &editorManager);
 	virtual QString metamodelName() const;
+	virtual QString id() const;
 
 private:
 @@privateFieldsOfConstraintsDigrams@@

@@ -11,6 +11,7 @@ class ConstraintsPluginInterface {
 public:
 	virtual CheckStatus check(Id const &element, qrRepo::LogicalRepoApi const &logicalApi, EditorManagerInterface const &editorManager) = 0;
 	virtual QString metamodelName() const = 0;
+	virtual QString id() const = 0;
 
 	bool isCorrectLanguageName(Id const &element) const//asd
 	{

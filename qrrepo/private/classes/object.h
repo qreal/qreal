@@ -30,8 +30,6 @@ namespace qrRepo {
 			void removeProperty(const QString &name);
 			qReal::Id id() const;
 			qReal::Id logicalId() const;
-			QString metaType() const;//qwerty
-			void setMetaType(QString const &type);
 
 			QMapIterator<QString, QVariant> propertiesIterator();
 			void setTemporaryRemovedLinks(QString const &direction, qReal::IdList const &listValue);
@@ -46,7 +44,6 @@ namespace qrRepo {
 		private:
 			const qReal::Id mId;
 			qReal::Id mLogicalId;
-			QString mMetaType;//qwerty
 			qReal::Id mParent;
 			qReal::IdList mChildren;
 			QMap<QString, QVariant> mProperties;

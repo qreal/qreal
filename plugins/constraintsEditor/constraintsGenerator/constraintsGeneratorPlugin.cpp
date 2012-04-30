@@ -94,7 +94,7 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 	progress->setRange(0, 100);
 	progress->setValue(5);
 
-	if (mMainWindowInterface->unloadPlugin(normalizeDirName)) {
+	if (mMainWindowInterface->unloadConstraintsPlugin(normalizeDirName)) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot unload plugin"));
 		progress->close();
 		delete progress;
@@ -113,7 +113,7 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
 			progress->setValue(80);
 
-			if (mMainWindowInterface->loadPlugin(prefix + metamodelName + "." + extension, normalizeDirName)) {//qwerty_lsd
+			if (mMainWindowInterface->loadConstraintsPlugin(prefix + metamodelName + "." + extension)) {//qwerty_lsd
 				progress->setValue(100);
 			}
 		}

@@ -27,3 +27,8 @@ QString ConstraintsPlugin::metamodelName() const
 {
 	return "@@metamodelName@@";
 }
+
+QString ConstraintsPlugin::id() const
+{
+	return "@@constraintsPluginId@@";
+}

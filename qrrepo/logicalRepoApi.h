@@ -28,8 +28,5 @@ public:
 
 	virtual qReal::IdList elementsByType(QString const &type) const = 0;
 	virtual int elementsCount() const = 0;
-
-	virtual QString metaType(qReal::Id const &id) const = 0;
-	virtual void setMetaType(qReal::Id const &id, QString const& type) = 0;
 };
 }

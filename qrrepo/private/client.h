@@ -48,8 +48,6 @@ namespace qrRepo {
 			qReal::IdList elements() const;
 			bool isLogicalId(qReal::Id const &elem) const;
 			qReal::Id logicalId(qReal::Id const &elem) const;
-			QString metaType(qReal::Id const &elem) const;//qwerty
-			void setMetaType(qReal::Id const &elem, QString const& type);
 
 			void svnUpdate();
 			void svnCommit();
