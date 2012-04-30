@@ -107,6 +107,6 @@ void PreferencesDialog::switchCurrentTab(QString const &tabName)
 void PreferencesDialog::changePaletteParameters()
 {
 	if (mCustomPages.count(tr("Editor")) > 0) {
-		((PreferencesEditorPage*)mCustomPages[tr("Editor")])->changePaletteParameters();
+		static_cast<PreferencesEditorPage*>(mCustomPages[tr("Editor")])->changePaletteParameters();
 	}
 }

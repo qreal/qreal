@@ -29,6 +29,7 @@ PaletteTree::DraggableElement::DraggableElement(const Id &id, const QString &nam
 		QLabel *text = new QLabel(this);
 		text->setText(mText);
 		layout->addWidget(text);
+		layout->addStretch();
 	}
 
 	setLayout(layout);
@@ -336,7 +337,7 @@ void PaletteTree::createPaletteTree()
 	mExpandAll = new QToolButton;
 	mExpandAll->setGeometry(0,0,30,30);
 	mExpandAll->setIcon(QIcon(":/icons/expandAll.png"));
-	mExpandAll->setToolTip("Expand all");
+	mExpandAll->setToolTip(tr("Expand all"));
 	mExpandAll->setIconSize(QSize(30, 30));
 	connect(mExpandAll,SIGNAL(clicked()),this,SLOT(expand()));
 	hLayout->addWidget(mExpandAll);
@@ -344,7 +345,7 @@ void PaletteTree::createPaletteTree()
 	mCollapseAll = new QToolButton;
 	mCollapseAll->setGeometry(0,0,30,30);
 	mCollapseAll->setIcon(QIcon(":/icons/collapseAll.png"));
-	mCollapseAll->setToolTip("Collapse all");
+	mCollapseAll->setToolTip(tr("Collapse all"));
 	mCollapseAll->setIconSize(QSize(30, 30));
 	connect(mCollapseAll,SIGNAL(clicked()),this,SLOT(collapse()));
 	hLayout->addWidget(mCollapseAll);
@@ -352,7 +353,7 @@ void PaletteTree::createPaletteTree()
 	mChangeRepresentation = new QToolButton;
 	mChangeRepresentation->setGeometry(0,0,30,30);
 	mChangeRepresentation->setIcon(QIcon(":/icons/changeRepresentation.png"));
-	mChangeRepresentation->setToolTip("Change representation");
+	mChangeRepresentation->setToolTip(tr("Change representation"));
 	mChangeRepresentation->setIconSize(QSize(30, 30));
 	connect(mChangeRepresentation, SIGNAL(clicked()), this, SLOT(changeRepresentation()));
 	hLayout->addWidget(mChangeRepresentation);
@@ -447,8 +448,8 @@ void PaletteTree::resizeIcons()
 		const int iconSize = 48;
 		const int widgetSize = this->size().width() - (iconSize << 1);
 		const int itemsCount = maxItemsCountInARow();
-		const int newSize = (widgetSize < itemsCount * iconSize) ?
-					(widgetSize / itemsCount) : iconSize;
+		const int newSize = (widgetSize < itemsCount * iconSize)
+				? (widgetSize / itemsCount) : iconSize;
 		for (int i = 0; i < mTree->topLevelItemCount(); i++) {
 			for (int j = 0; j < mTree->topLevelItem(i)->childCount(); j++) {
 				QWidget *field = mTree->itemWidget(mTree->topLevelItem(i)->child(j), 0);
