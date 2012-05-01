@@ -107,6 +107,8 @@ private slots:
 
 	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
 	void getObjectByGesture();
+    void setAsLibEntity(Element *e);
+
 
 private:
 	void getLinkByGesture(NodeElement *parent, NodeElement const &child);
@@ -129,6 +131,7 @@ private:
 			, const char *slot) const;
 
 	void initContextMenu(Element *e, QPointF const &pos);
+
 
 	Element* mLastCreatedWithEdge;
 	NodeElement *mCopiedNode;

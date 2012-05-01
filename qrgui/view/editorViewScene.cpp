@@ -649,7 +649,16 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	}
 	menu.addSeparator();
 	createConnectionSubmenus(menu, e);
+    menu.addSeparator();
+    ContextMenuAction *myTestAction = new ContextMenuAction("change lib status", mWindow);
+    connect(myTestAction, SIGNAL(triggered()), this, SLOT(setAsLibEntity(Element*)));
+    menu.addAction(myTestAction);
 	menu.exec(QCursor::pos());
+}
+
+void EditorViewScene::setAsLibEntity(Element *e)
+{
+    e->setProperty("isLibEntity", "");
 }
 
 void EditorViewScene::getObjectByGesture()
