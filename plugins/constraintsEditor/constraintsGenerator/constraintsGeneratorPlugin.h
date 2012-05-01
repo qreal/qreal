@@ -26,8 +26,9 @@ private slots:
 private:
 	/// Compiles and loads to QReal new editor plugin
 	void loadNewEditor(
-			QString const &directoryName  ///< Directory where editor was generated (containing .pro file of that editor)
-			, QString const &metamodelName  ///< Metamodel name as set in metamodel
+			QString const &directoryName  ///< Directory where editor was generated (containing .pro file of that constraint)
+			, QString const &pluginName /// ConstraintsPluginName
+			, QString const &pluginId /// ConstraintsPluginId
 			, QString const &commandFirst  ///< qmake command
 			, QString const &commandSecond  ///< make command
 			, QString const &extension  ///< Extension of the resulting binary file with editor plugin (.dll/.so)

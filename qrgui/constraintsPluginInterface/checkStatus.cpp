@@ -23,7 +23,7 @@ QString CheckStatus::message() const
 	return mMessage;
 }
 
-CheckStatus CheckStatus::resultCheckStatus(QList<CheckStatus> const& listCheckStatus) //qwerty
+CheckStatus CheckStatus::resultCheckStatus(QList<CheckStatus> const& listCheckStatus)
 {
 	if (listCheckStatus.empty()) {
 		return CheckStatus(true, "none", qReal::CheckStatus::warning);//qwerty : ошибка : скорее всего неправильное имя языка задано для элемента

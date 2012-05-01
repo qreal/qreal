@@ -65,7 +65,7 @@ MainWindow::MainWindow()
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
 	timeMeasurer.doNothing(); //to avoid the unused variables problem
 
-	bool showSplash = SettingsManager::value("Splashscreen", false).toBool();//qwerty_back
+	bool showSplash = SettingsManager::value("Splashscreen", false).toBool();
 
 	QSplashScreen* splash =
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
@@ -183,7 +183,7 @@ MainWindow::MainWindow()
 	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
 	connectWindowTitle();
 
-	connect(&mModels->logicalModelAssistApi(), SIGNAL(propertyChanged(Id)), this, SLOT(checkConstraints(Id)));//asd // TODO: this -> connectForConstraints
+	connect(&mModels->logicalModelAssistApi(), SIGNAL(propertyChanged(Id)), this, SLOT(checkConstraints(Id)));
 	connect(&mPropertyModel, SIGNAL(propertyChangedFromPropertyEditor(QModelIndex)), this, SLOT(checkConstraints(QModelIndex)));
 	connect(&mModels->logicalModelAssistApi(), SIGNAL(parentChanged(IdList)), this, SLOT(checkConstraints(IdList)));
 	connect(&mModels->logicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
@@ -870,10 +870,10 @@ bool MainWindow::unloadPlugin(QString const &pluginName)
 	return true;
 }
 
-bool MainWindow::unloadConstraintsPlugin(QString const &pluginName) //qwerty_lsd
+bool MainWindow::unloadConstraintsPlugin(QString const &pluginId)
 {
-	if (mConstraintsManager.plugins().contains(Id(pluginName))) {
-		if (!mConstraintsManager.unloadPlugin(pluginName)) {
+	if (mConstraintsManager.plugins().contains(Id(pluginId))) {
+		if (!mConstraintsManager.unloadPlugin(pluginId)) {
 			return false;
 		}
 	}
@@ -893,7 +893,7 @@ bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 	return true;
 }
 
-bool MainWindow::loadConstraintsPlugin(QString const &fileName)//qwerty_lsd
+bool MainWindow::loadConstraintsPlugin(QString const &fileName)
 {
 	if (!mConstraintsManager.loadPlugin(fileName)) {
 		return false;

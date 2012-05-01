@@ -25,6 +25,8 @@ public:
 	void generate(qReal::Id const &metamodel);
 
 	QString constraintModelFullName();
+	QString constraintModelName();
+	QString constraintModelId();
 
 private:
 	/// Logical model, from which generator takes all information.
@@ -34,6 +36,8 @@ private:
 	qReal::ErrorReporterInterface *mErrorReporter;
 
 	QString mConstraintModelFullName;
+	QString mConstraintModelName;
+	QString mConstraintModelId;
 };
 
 }

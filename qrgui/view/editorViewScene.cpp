@@ -975,7 +975,7 @@ void EditorViewScene::highlight(Id const &graphicalId, bool exclusive)
 {
 	if (exclusive) {
 		foreach (Element *element, mHighlightedElements) {
-			if(element) {//asd //??
+			if(element) {
 				element->setGraphicsEffect(NULL);
 			}
 		}

@@ -16,6 +16,7 @@ public:
 	  */
 	ConcreateGenerator(QString const &templateDirPath
 			, QString const &outputDirPath
+			, QString const &pathToQReal
 			, qReal::LogicalModelAssistInterface const &logicalModel
 			, qReal::ErrorReporterInterface &errorReporter
 			, QString const &metamodelLanguageName
@@ -28,6 +29,8 @@ public:
 	void generate();
 
 	QString constraintModelFullName();
+	QString constraintModelName();//i.e. pluginName
+	QString constraintModelId();//i.e. pluginId
 
 private :
 	struct NeededStringsForCommonGenerate {
@@ -79,6 +82,7 @@ private :
 	QPair<QString, QList<QString> > countConstraintForEndNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
 
 	QPair<QString, QList<QString> > countConstraintForListOfElements(qReal::Id const &constraint, QString elementName, QString resElementName, QString functionName, QString resType, int depth, QString addStr);
+	QString generateExistsProperty(QString const &resElementName, QString const &elementName, qReal::Id const &constraint, int depth, QString addStr);
 
 	QPair<QString, QList<QString> > countConstraintForParent(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
 	QPair<QString, QList<QString> > countConstraintForChildrens(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
@@ -88,6 +92,7 @@ private :
 	QPair<QString, QList<QString> > countConstraintForIncomingNodes(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
 	QPair<QString, QList<QString> > countConstraintForPropertyNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
 
+	QString mPathToQReal;
 	QString const &mMetamodelName;//имя метамодели языков, для которых напсана эта модель ограничений, по которой генерируется код
 	QString const &mConstraintsName;//настоящее имя модели огранчений, по которой генерируется код
 

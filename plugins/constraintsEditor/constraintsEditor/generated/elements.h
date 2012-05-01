@@ -2495,57 +2495,61 @@
 							SdfRendererInterface *portRenderer)
 		{
 			Q_UNUSED(pointPorts);
-			Q_UNUSED(titles);
-			Q_UNUSED(factory);
 			mRenderer = renderer;
 			mRenderer->load(QString(":/generated/shapes/ParentClass.sdf"));
 			portRenderer->load(QString(":/generated/shapes/ParentPorts.sdf"));
 			contents.setWidth(150);
-			contents.setHeight(152);
+			contents.setHeight(153);
 			{
 				StatLine ln;
-				ln.line = QLineF(-0.00666667, 0.0657895, 0, 0.888158);
+				ln.line = QLineF(0, 0.0718954, 0, 0.882353);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
 				ln.initWidth = 150;
-				ln.initHeight = 152;
+				ln.initHeight = 153;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.986667, 0.0921053, 0.993333, 0.914474);
+				ln.line = QLineF(0.993333, 0.0980392, 0.993333, 0.908497);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
 				ln.initWidth = 150;
-				ln.initHeight = 152;
+				ln.initHeight = 153;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.926667, -0.00657895, 0.0866667, 0);
+				ln.line = QLineF(0.926667, 0, 0.0933333, 0);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
 				ln.initWidth = 150;
-				ln.initHeight = 152;
+				ln.initHeight = 153;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.926667, 0.993421, 0.0866667, 1);
+				ln.line = QLineF(0.926667, 0.993464, 0.0933333, 0.993464);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
 				ln.initWidth = 150;
-				ln.initHeight = 152;
+				ln.initHeight = 153;
 				linePorts << ln;
 			};
+			title_1 = factory.createTitle(0.12, 0.117647, "exists", false);
+			title_1->setBackground(Qt::transparent);
+			title_1->setScaling(false, false);
+			title_1->setFlags(0);
+			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_1);
 		}
 
 		 ElementImpl *clone() { return NULL; }
@@ -2571,7 +2575,7 @@
 
 		void updateData(ElementRepoInterface *repo) const
 		{
-			Q_UNUSED(repo);
+			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("exists")).replace("\n", "<br>"));
 		}
 
 		bool isNode()
@@ -2643,6 +2647,7 @@
 
 	private:
 		SdfRendererInterface *mRenderer;
+		ElementTitleInterface *title_1;
 	};
 
 	class PropertyNode : public ElementImpl

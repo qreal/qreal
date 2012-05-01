@@ -46,27 +46,28 @@ void ConstraintsGeneratorPlugin::generate()
 		mGenerator.generate(metamodel);
 
 		QString const constraintModelFullName =  mGenerator.constraintModelFullName();
-		QFileInfo const constraintModelFileInfo(constraintModelFullName);
-		QString const constraintModelName = constraintModelFileInfo.baseName();
+		QString const constraintModelName = mGenerator.constraintModelName();
+		QString const constraintModelId = mGenerator.constraintModelId();
 
-//		if (!mMainWindowInterface->errorReporter()->wereErrors()) { //qwerty_lsd . ааа...что делать???
-//			if (QMessageBox::question(mMainWindowInterface->windowWidget()
-//									  , tr("loading.."), QString(tr("Do you want to load generated constraints?")),
-//									  QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
-//			{
-//				return;
-//			}
-//			loadNewEditor(constraintModelFullName, constraintModelName
-//						  , SettingsManager::value("pathToQmake", "").toString()
-//						  , SettingsManager::value("pathToMake", "").toString()
-//						  , SettingsManager::value("pluginExtension", "").toString()
-//						  , SettingsManager::value("prefix", "").toString());
-//		}
+		if (!mMainWindowInterface->errorReporter()->wereErrors()) {
+			if (QMessageBox::question(mMainWindowInterface->windowWidget()
+									  , tr("loading.."), QString(tr("Do you want to load generated constraints?")),
+									  QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+			{
+				return;
+			}
+			loadNewEditor(constraintModelFullName, constraintModelName, constraintModelId
+						  , SettingsManager::value("pathToQmake", "").toString()
+						  , SettingsManager::value("pathToMake", "").toString()
+						  , SettingsManager::value("pluginExtension", "").toString()
+						  , SettingsManager::value("prefix", "").toString());
+		}
 	}
 }
 
 void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
-		, QString const &metamodelName
+		, QString const &pluginName
+		, QString const &pluginId
 		, QString const &commandFirst
 		, QString const &commandSecond
 		, QString const &extension
@@ -80,8 +81,6 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 		return;
 	}
 
-	QString const normalizeDirName = metamodelName.at(0).toUpper() + metamodelName.mid(1);
-
 	QProgressBar * const progress = new QProgressBar(mMainWindowInterface->windowWidget());
 	progress->show();
 
@@ -94,7 +93,7 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 	progress->setRange(0, 100);
 	progress->setValue(5);
 
-	if (mMainWindowInterface->unloadConstraintsPlugin(normalizeDirName)) {
+	if (!mMainWindowInterface->unloadConstraintsPlugin(pluginId)) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot unload plugin"));
 		progress->close();
 		delete progress;
@@ -113,7 +112,7 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
 			progress->setValue(80);
 
-			if (mMainWindowInterface->loadConstraintsPlugin(prefix + metamodelName + "." + extension)) {//qwerty_lsd
+			if (mMainWindowInterface->loadConstraintsPlugin(prefix + pluginName + "." + extension)) {
 				progress->setValue(100);
 			}
 		}

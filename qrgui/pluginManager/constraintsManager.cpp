@@ -20,15 +20,15 @@ ConstraintsManager::ConstraintsManager()
 	foreach (QString fileName, mPluginsDir.entryList(QDir::Files)) {
 		// TODO: Free memory
 		QPluginLoader *loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
-		mLoaders.insert(fileName, loader);
 		QObject *plugin = loader->instance();
 
 		if (plugin) {
 			ConstraintsPluginInterface *constraintsPlugin = qobject_cast<ConstraintsPluginInterface *>(plugin);
 			if (constraintsPlugin) {
 				mPlugins << constraintsPlugin;
-				mPluginsLoaded += constraintsPlugin->id();//qwerty_lsd
+				mPluginsLoaded += constraintsPlugin->id();
 				mPluginFileName.insert(constraintsPlugin->id(), fileName);
+				mLoaders.insert(fileName, loader);
 			}
 			else {
 				delete loader;
@@ -42,14 +42,15 @@ ConstraintsManager::ConstraintsManager()
 bool ConstraintsManager::loadPlugin(const QString &pluginName)
 {
 	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
-	mLoaders.insert(pluginName, loader);
 	QObject *plugin = loader->instance();
 
 	if (plugin) {
 		ConstraintsPluginInterface *constraintsPlugin = qobject_cast<ConstraintsPluginInterface *>(plugin);
 		if (constraintsPlugin) {
+			mPlugins << constraintsPlugin;
 			mPluginsLoaded += constraintsPlugin->id();
 			mPluginFileName.insert(constraintsPlugin->id(), pluginName);
+			mLoaders.insert(pluginName, loader);
 			return true;
 		}
 	}
@@ -57,15 +58,17 @@ bool ConstraintsManager::loadPlugin(const QString &pluginName)
 	return false;
 }
 
-bool ConstraintsManager::unloadPlugin(const QString &pluginName)
+bool ConstraintsManager::unloadPlugin(const QString &pluginId)
 {
-	QPluginLoader *loader = mLoaders[mPluginFileName[pluginName]];
+	QString pluginName = mPluginFileName[pluginId];
+	QPluginLoader *loader = mLoaders[pluginName];
 	if (loader != NULL) {
-		if (!(loader->unload())) {
+		bool r = loader->unload();//qwerty_lsd ; don't work, why?
+		if (!(r)) {
 			return false;
 		}
-		mPluginsLoaded.removeAll(pluginName);
-		mPluginFileName.remove(pluginName);
+		mPluginsLoaded.removeAll(pluginId);
+		mPluginFileName.remove(pluginId);
 		return true;
 	}
 	return false;
@@ -74,8 +77,8 @@ bool ConstraintsManager::unloadPlugin(const QString &pluginName)
 IdList ConstraintsManager::plugins() const
 {
 	IdList plugins;
-	foreach (QString plugin, mPluginsLoaded) {
-		plugins.append(Id(plugin));
+	foreach (QString pluginId, mPluginsLoaded) {
+		plugins.append(Id(pluginId));
 	}
 	return plugins;
 }

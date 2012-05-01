@@ -74,11 +74,11 @@ void ErrorReporter::delUniqueError(Error::Severity const &severity, Id const &po
 {
 	QList<Error> tempErrorList = mErrors;
 	mErrors.clear();
-	clear(); //asd_need //??
+	clear();
 	foreach (Error const &curError, tempErrorList) {
 		if (curError.position() != position || curError.severity() != severity) {
 			mErrors.append(curError);
-			showError(curError, mErrorListWidget); //asd_need //??
+			showError(curError, mErrorListWidget);
 		}
 	}
 }

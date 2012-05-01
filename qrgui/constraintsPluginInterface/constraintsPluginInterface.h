@@ -5,7 +5,7 @@
 
 namespace qReal {
 
-const QString keywordForAllLanguages = "AllLanguages";//asd_copypast
+const QString keywordForAllLanguages = "AllLanguages";//qwerty_asd_copypast
 
 class ConstraintsPluginInterface {
 public:
@@ -13,7 +13,7 @@ public:
 	virtual QString metamodelName() const = 0;
 	virtual QString id() const = 0;
 
-	bool isCorrectLanguageName(Id const &element) const//asd
+	bool isCorrectLanguageName(Id const &element) const
 	{
 		QString myMetamodelName = metamodelName();
 		if (myMetamodelName == element.editor() || myMetamodelName == keywordForAllLanguages) {

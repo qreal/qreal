@@ -367,27 +367,29 @@
             </node>
             <node displayedName="Parent" name="parent">
                 <graphics>
-                    <picture sizex="150" sizey="152">
-                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="2" x1="1" y2="151" fill-style="none" x2="149"/>
-                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#a9a9a9" y1="10" stroke-width="1" x1="10" y2="143" fill-style="none" x2="140"/>
+                    <picture sizex="150" sizey="153">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" stroke-width="2" x1="2" y2="151" fill-style="none" x2="149"/>
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#a9a9a9" y1="10" stroke-width="1" x1="12" y2="142" fill-style="none" x2="141"/>
                     </picture>
-                    <labels/>
+                    <labels>
+                        <label x="18" y="18" textBinded="exists"/>
+                    </labels>
                     <ports>
                         <linePort>
-                            <start startx="-1" starty="10"/>
+                            <start startx="0" starty="11"/>
                             <end endx="0" endy="135"/>
                         </linePort>
                         <linePort>
-                            <start startx="148" starty="14"/>
+                            <start startx="149" starty="15"/>
                             <end endx="149" endy="139"/>
                         </linePort>
                         <linePort>
-                            <start startx="139" starty="-1"/>
-                            <end endx="13" endy="0"/>
+                            <start startx="139" starty="0"/>
+                            <end endx="14" endy="0"/>
                         </linePort>
                         <linePort>
-                            <start startx="139" starty="151"/>
-                            <end endx="13" endy="152"/>
+                            <start startx="139" starty="152"/>
+                            <end endx="14" endy="152"/>
                         </linePort>
                     </ports>
                 </graphics>
@@ -398,6 +400,7 @@
                     </container>
                     <generalizations>
                         <parent parentName="abstractNodeForNodeConstraint"/>
+                        <parent parentName="abstractExistsNode"/>
                     </generalizations>
                 </logic>
             </node>
@@ -495,6 +498,9 @@
                         <property displayedName="Error Type" type="errorTypeType" name="errorType">
                             <default>warning</default>
                         </property>
+                        <property displayedName="Text of error" type="string" name="errorText">
+                            <default>fail_text</default>
+                        </property>
                     </properties>
                 </logic>
             </node>
@@ -528,6 +534,7 @@
                     <properties>
                         <property displayedName="Metamodel Name" type="string" name="metamodelName"/>
                         <property displayedName="Output Dir Path" type="string" name="outputDirPath"/>
+                        <property displayedName="Dir Path to QReal" type="string" name="pathToQReal"/>
                     </properties>
                 </logic>
             </node>

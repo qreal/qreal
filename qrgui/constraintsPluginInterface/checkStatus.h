@@ -17,7 +17,7 @@ public:
 	ErrorType errorType() const;
 	QString message() const;
 
-	static CheckStatus resultCheckStatus(QList<CheckStatus> const& listCheckStatus); //qwerty
+	static CheckStatus resultCheckStatus(QList<CheckStatus> const& listCheckStatus);
 
 private:
 	bool mCheckStatus;

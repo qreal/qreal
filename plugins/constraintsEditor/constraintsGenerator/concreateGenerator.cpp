@@ -19,19 +19,16 @@ QString const keywordForAllNodes = "AllNodes";
 
 ConcreateGenerator::ConcreateGenerator(QString const &templateDirPath
 		, QString const &outputDirPath
+		, QString const &pathToQReal
 		, qReal::LogicalModelAssistInterface const &logicalModel
 		, qReal::ErrorReporterInterface &errorReporter
 		, QString const &metamodelLanguageName
 		, QString const &constraintsMetamodelName
 		)
-	: AbstractGenerator(templateDirPath, outputDirPath + QString("constraints" + metamodelLanguageName + "\\"), logicalModel, errorReporter)
-	, mMetamodelName(metamodelLanguageName), mConstraintsName(constraintsMetamodelName)
+	: AbstractGenerator(templateDirPath, outputDirPath + QString("\\constraints" + metamodelLanguageName + "\\"), logicalModel, errorReporter)
+	, mPathToQReal(pathToQReal), mMetamodelName(metamodelLanguageName), mConstraintsName(constraintsMetamodelName)
 {
-	mUsedMetaTypeInCheck = false;
-//	QString temp = outputDirPath; //asd как собирать?
-//	QList<QString> tempList = temp.split("\\");
-//	temp = tempList.at(tempList.size() - 2);
-//	mCallingPath = outputDirPath + temp + QString(".pro");
+	mPathToQReal.replace("\\", "/");
 }
 
 ConcreateGenerator::~ConcreateGenerator()
@@ -40,7 +37,17 @@ ConcreateGenerator::~ConcreateGenerator()
 
 QString ConcreateGenerator::constraintModelFullName()
 {
-	return mOutputDirPath + "constraints" + mMetamodelName + ".pro";
+	return mOutputDirPath;// + "constraints" + mMetamodelName + ".pro";
+}
+
+QString ConcreateGenerator::constraintModelName() //i.e. pliginName
+{
+	return "constraints" + mMetamodelName;
+}
+
+QString ConcreateGenerator::constraintModelId() //i.e. pliginId
+{
+	return mConstraintsName;
 }
 
 ConcreateGenerator::NeededStringsForConcreateGenerate ConcreateGenerator::generateCommonNeededPartsForElements(QString elementName)
@@ -115,7 +122,7 @@ ConcreateGenerator::NeededStringsForConcreateGenerate ConcreateGenerator::genera
 		}
 		QString elementName = mApi.name(element);
 		if (elementName == "(Edge Constraint)" || elementName == "(Node Constraint)") {
-			mErrorReporter.addCritical("Name of constraintNode not found!", element);//qwerty
+			mErrorReporter.addCritical("Name of constraintNode not found!", element);
 		}
 		if (elementName == "(Edges Constraint)"
 				|| (element.element() == "EdgesConstraint" && (elementName.compare("all", Qt::CaseInsensitive)) == 0) ) {
@@ -189,6 +196,7 @@ void ConcreateGenerator::generateDiagramFiles(Id const &diagram, QString diagram
 	resultDiagramH.replace("@@optionalChecksForElemets@@", needeStrings.optionalChecksForElemetsH);
 	resultDiagramH.replace("@@mainChecksForElemets@@", needeStrings.mainChecksForElemetsH);
 	resultDiagramH.replace("@@diagramName@@", diagramNameTemplate);
+	resultDiagramH.replace("@@pathToQReal@@", mPathToQReal);
 
 	resultDiagramCPP.replace("@@countOptionalCheckStatusesForElemets@@", needeStrings.countOptionalCheckStatusesForElemetsCPP);
 	resultDiagramCPP.replace("@@countMainCheckStatusesForElemets@@", needeStrings.countMainCheckStatusesForElemetsCPP);
@@ -253,14 +261,6 @@ void ConcreateGenerator::generate()
 {
 	loadUtilsTemplates();
 
-//	QString callResult; //asd как собирать?
-//	loadTemplateFromFile(mCallingPath, callResult);
-//	QString callPathTemplate = mTemplateUtils["@@callingPath@@"];
-//	callPathTemplate.replace("@@metaModelName@@", mMetamodelName);
-//	callPathTemplate.replace("@@fileNamePRO@@", fileNamePRO);
-//	callResult += callPathTemplate;
-//	saveOutputFile(mCallingPath, callResult);
-
 	QString resultPRO;
 	QString resultPluginH;
 	QString resultPluginCPP;
@@ -270,12 +270,14 @@ void ConcreateGenerator::generate()
 
 	NeededStringsForCommonGenerate neededStrings = generateNeededPartsForAllConstraintsDiagram();
 
+	resultPRO.replace("@@pathToQReal@@", mPathToQReal);
 	resultPRO.replace("@@metamodelName@@", mMetamodelName);
 	resultPRO.replace("@@constraintsDiagramHFiles@@", neededStrings.hFiles);
 	resultPRO.replace("@@constraintsDiagramCppFiles@@", neededStrings.cppFiles);
 
 	resultPluginH.replace("@@includeConstraintsDiagramFiles@@", neededStrings.includeFilesPluginH);
 	resultPluginH.replace("@@privateFieldsOfConstraintsDigrams@@", neededStrings.privateFieldsPluginH);
+	resultPluginH.replace("@@pathToQReal@@", mPathToQReal);
 
 	resultPluginCPP.replace("@@metamodelName@@", mMetamodelName);
 	resultPluginCPP.replace("@@ifForMainCheckOfConstraintsDiagrams@@", neededStrings.ifForMainCheckPluginCPP);
@@ -312,19 +314,27 @@ QString ConcreateGenerator::countRealConstraintOfElement(Id const &element)
 	return resString;
 }
 
+QString ConcreateGenerator::generateExistsProperty(QString const &resElementName, QString const &elementName, Id const &constraint, int depth, QString addStr)
+{
+	QString resString = "";
+	QString exists;
+
+	resString += addStr + "bool " + resElementName + "_" + QString::number(depth) + " = ";
+	exists = mApi.property(constraint, "exists").toBool() ? "!=" : "==";
+	resString += "(" + elementName + "_" + QString::number(depth) + " " + exists + " qReal::Id::rootId());\n";
+	return resString;
+}
+
 QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForBeginNode(Id const &constraint, QString elementName, int depth, QString addStr)
 {
 	QString resString = "";
 	QList<QString> resBool;
-	QString exists;
 
 	resString += addStr + "qReal::Id newBeginNodeName_" + QString::number(depth) + " = logicalApi.from(" + elementName + ");\n";
 	resString += countRealConstraintForNodeElement(constraint, "newBeginNodeName_" + QString::number(depth) , "beginNodeRes", depth + 1, addStr);
 	resBool.push_back("beginNodeRes_" + QString::number(depth + 1));
 
-	resString += addStr + "bool beginNodeRes_" + QString::number(depth) + " = ";
-	exists = mApi.property(constraint, "exists").toBool() ? "!=" : "==";
-	resString += "(newBeginNodeName_" + QString::number(depth) + " " + exists + "qReal::Id::rootId());\n";
+	resString += generateExistsProperty("beginNodeRes", "newBeginNodeName", constraint, depth, addStr);
 	resBool.push_back("beginNodeRes_" + QString::number(depth));
 
 	return QPair<QString, QList<QString> >(resString, resBool);
@@ -334,15 +344,12 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForEndNode(Id
 {
 	QString resString = "";
 	QList<QString> resBool;
-	QString exists;
 
 	resString += addStr + "qReal::Id newEndNodeName_" + QString::number(depth) + " = logicalApi.to(" + elementName + ");\n";
 	resString += countRealConstraintForNodeElement(constraint, "newEndNodeName_" + QString::number(depth), "endNodeRes", depth + 1, addStr);
 	resBool.push_back("endNodeRes_" + QString::number(depth + 1));
 
-	resString += addStr + "bool endNodeRes_" + QString::number(depth) + " = ";
-	exists = mApi.property(constraint, "exists").toBool() ? "!=" : "==";
-	resString += "(newEndNodeName_" + QString::number(depth) + " " + exists + "qReal::Id::rootId());\n";
+	resString += generateExistsProperty("endNodeRes", "newEndNodeName", constraint, depth, addStr);
 	resBool.push_back("endNodeRes_" + QString::number(depth));
 
 	return QPair<QString, QList<QString> >(resString, resBool);
@@ -359,6 +366,9 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForParent(Id 
 	resString += addStr + countRealConstraintForNodeElement(constraint, "newParentName_" + QString::number(depth) , "parentNodeRes", depth + 1, addStr + "	");
 	resString += addStr + "	mainParentRes_" + QString::number(depth) + " = parentNodeRes_" + QString::number(depth + 1) + ";\n	}\n";
 	resBool.push_back("mainParentRes_" + QString::number(depth));
+
+	resString += generateExistsProperty("parentRes", "newParentName", constraint, depth, addStr);
+	resBool.push_back("parentRes_" + QString::number(depth));
 
 	return QPair<QString, QList<QString> >(resString, resBool);
 }
@@ -503,12 +513,12 @@ QString ConcreateGenerator::countRealConstraintForEdgeElement(Id const &element,
 		if (constraintType == "BeginNode") {
 			QPair<QString, QList<QString> > resBeginNodeConstraint = countConstraintForBeginNode(constraint, elementName, depth, addStr);
 			resString += resBeginNodeConstraint.first;
-			resBool = resBeginNodeConstraint.second;
+			resBool.append(resBeginNodeConstraint.second);
 
 		} else if (constraintType == "EndNode") {
 			QPair<QString, QList<QString> > resEndNodeConstraint = countConstraintForEndNode(constraint, elementName, depth, addStr);
 			resString += resEndNodeConstraint.first;
-			resBool = resEndNodeConstraint.second;
+			resBool.append(resEndNodeConstraint.second);
 		}
 	}
 	resString += additionalCommonPartForConstraint(resBool, resultName, depth, addStr); //сбрасываем resBool в resString
@@ -527,37 +537,37 @@ QString ConcreateGenerator::countRealConstraintForNodeElement(Id const &element,
 		if (constraintType == "Parent") {
 			QPair<QString, QList<QString> > resParentConstraint = countConstraintForParent(constraint, elementName, depth, addStr);
 			resString += resParentConstraint.first;
-			resBool = resParentConstraint.second;
+			resBool.append(resParentConstraint.second);
 
 		} else if (constraintType == "Childrens") {
 			QPair<QString, QList<QString> > resChildrensConstraint = countConstraintForChildrens (constraint, elementName, depth, addStr);
 			resString += resChildrensConstraint.first;
-			resBool = resChildrensConstraint.second;
+			resBool.append(resChildrensConstraint.second);
 
 		} else if (constraintType == "OutgoingLinks") {
 			QPair<QString, QList<QString> > resOutgoingLinksConstraint = countConstraintForOutgoingLinks (constraint, elementName, depth, addStr);
 			resString += resOutgoingLinksConstraint.first;
-			resBool = resOutgoingLinksConstraint.second;
+			resBool.append(resOutgoingLinksConstraint.second);
 
 		} else if (constraintType == "IncomingLinks") {
 			QPair<QString, QList<QString> > resIncomingLinksConstraint = countConstraintForIncomingLinks (constraint, elementName, depth, addStr);
 			resString += resIncomingLinksConstraint.first;
-			resBool = resIncomingLinksConstraint.second;
+			resBool.append(resIncomingLinksConstraint.second);
 
 		} else if (constraintType == "OutgoingNodes") {
 			QPair<QString, QList<QString> > resOutgoingNodesConstraint = countConstraintForOutgoingNodes (constraint, elementName, depth, addStr);
 			resString += resOutgoingNodesConstraint.first;
-			resBool = resOutgoingNodesConstraint.second;
+			resBool.append(resOutgoingNodesConstraint.second);
 
 		} else if (constraintType == "IncomingNodes") {
 			QPair<QString, QList<QString> > resIncomingNodesConstraint = countConstraintForIncomingNodes (constraint, elementName, depth, addStr);
 			resString += resIncomingNodesConstraint.first;
-			resBool = resIncomingNodesConstraint.second;
+			resBool.append(resIncomingNodesConstraint.second);
 
 		} else if (constraintType == "PropertyNode") {
 			QPair<QString, QList<QString> > resPropertyNodeConstraint = countConstraintForPropertyNode (constraint, elementName, depth, addStr);
 			resString += resPropertyNodeConstraint.first;
-			resBool = resPropertyNodeConstraint.second;
+			resBool.append(resPropertyNodeConstraint.second);
 		}
 	}
 
