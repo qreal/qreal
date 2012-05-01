@@ -1,5 +1,5 @@
 digraph G { 
-rankdir=BT; 
+rankdir=LR; 
 igbafehadcjaegigjjifbhdgecddjifg -> fjcfafaffcbbebghieabbacfbhgeache;
 fjcfafaffcbbebghieabbacfbhgeache -> dbidbeegefajeceibhfhdcadecfajbjb;
 }

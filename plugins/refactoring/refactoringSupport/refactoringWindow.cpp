@@ -13,6 +13,7 @@ RefactoringWindow::RefactoringWindow(QWidget *parent) :
 	mUi->discardButton->setEnabled(false);
 	mUi->findNextButton->setEnabled(false);
 	connect(mUi->refactoringList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(openPicture(QListWidgetItem*)));
+	connect(mUi->findButton, SIGNAL(clicked()), this, SLOT(findButtonActivate()));
 }
 
 void RefactoringWindow::openPicture(QListWidgetItem *item)
@@ -45,4 +46,20 @@ void RefactoringWindow::updateRefactorings(const QString &dirPath)
 		item->setData(Qt::UserRole, dirPath + "/" + png + ".png");
 		refactoringList->addItem(item);
 	}
+}
+
+void qReal::RefactoringWindow::findButtonActivate()
+{
+	QList<QListWidgetItem*> selectedItems = mUi->refactoringList->selectedItems();
+	if (selectedItems.size() != 1)
+		return;
+	emit findButtonClicked(selectedItems.at(0)->text());
+}
+
+void qReal::RefactoringWindow::activateRestButtons()
+{
+	mUi->applyButton->setEnabled(true);
+	mUi->discardButton->setEnabled(true);
+	mUi->findNextButton->setEnabled(true);
+	mUi->findButton->setEnabled(false);
 }

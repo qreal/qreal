@@ -20,6 +20,7 @@ Q_EXPORT_PLUGIN2(refactoring, qReal::refactoring::RefactoringPlugin)
 
 RefactoringPlugin::RefactoringPlugin()
 	: mPreferencesPage(new RefactoringPreferencesPage())
+	, mRefactoringWindow(new RefactoringWindow(NULL))
 {
 	mAppTranslator.load(":/refactoringSupport_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
@@ -42,6 +43,9 @@ void RefactoringPlugin::init(PluginConfigurator const &configurator)
 	mMainWindowIFace = &configurator.mainWindowInterpretersInterface();
 	mQRealSourceFilesPath = SettingsManager::value("qrealSourcesLocation", "").toString();
 	mPathToRefactoringExamples = mQRealSourceFilesPath + "/plugins/refactoring/refactoringExamples/";
+
+	mRefactoringRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/refactoring/refactoringExamples");
+	connect(mRefactoringWindow, SIGNAL(findButtonClicked(QString)), this, SLOT(findRefactoring(QString)));
 }
 
 QPair<QString, PreferencesPage *> RefactoringPlugin::preferencesPage()
@@ -210,9 +214,8 @@ void RefactoringPlugin::addRefactoringLanguageElements(QString diagramName, QDom
 
 void RefactoringPlugin::openRefactoringWindow()
 {
-	RefactoringWindow *window = new RefactoringWindow(NULL);
-	window->updateRefactorings(mPathToRefactoringExamples);
-	window->show();
+	mRefactoringWindow->updateRefactorings(mPathToRefactoringExamples);
+	mRefactoringWindow->show();
 }
 
 void RefactoringPlugin::saveRefactoring()
@@ -286,27 +289,35 @@ void RefactoringPlugin::addPaletteGroup(QDomDocument metamodel, QDomElement pale
 	palette.appendChild(group);
 }
 
-void qReal::refactoring::RefactoringPlugin::arrangeElements(const QString &algorithm)
+void RefactoringPlugin::arrangeElements(const QString &algorithm)
 {
 	mMainWindowIFace->arrangeElementsByDotRunner(algorithm, mQRealSourceFilesPath + "/qrgui/dotFiles");
 }
 
-void qReal::refactoring::RefactoringPlugin::arrangeElementsBT()
+void RefactoringPlugin::arrangeElementsBT()
 {
 	arrangeElements("TB"); // направление оси y противоположное
 }
 
-void qReal::refactoring::RefactoringPlugin::arrangeElementsLR()
+void RefactoringPlugin::arrangeElementsLR()
 {
 	arrangeElements("LR");
 }
-void qReal::refactoring::RefactoringPlugin::arrangeElementsTB()
+void RefactoringPlugin::arrangeElementsTB()
 {
 	arrangeElements("BT"); // направление оси y противоположное
 }
 
-void qReal::refactoring::RefactoringPlugin::arrangeElementsRL()
+void RefactoringPlugin::arrangeElementsRL()
 {
 	arrangeElements("RL");
+}
+
+void RefactoringPlugin::findRefactoring(const QString &refactoringName)
+{
+	QString refactoringPath = mPathToRefactoringExamples + refactoringName + ".qrs";
+	qDebug() << refactoringPath;
+	mRefactoringRepoApi->importFromDisk(refactoringPath);
+	mRefactoringWindow->activateRestButtons();
 }
 

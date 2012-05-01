@@ -6,7 +6,7 @@ DESTDIR = ../../../bin/plugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
 
-LIBS += -L../../../bin -lqrkernel -lqrutils
+LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo
 
 TRANSLATIONS = refactoringSupport_ru.ts
 

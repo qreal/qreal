@@ -12,6 +12,7 @@
 
 #include "../../../qrutils/metamodelGeneratorSupport.h"
 #include "refactoringPreferencePage.h"
+#include "refactoringWindow.h"
 
 namespace qReal {
 namespace refactoring {
@@ -38,6 +39,7 @@ private slots:
 	void arrangeElementsLR();
 	void arrangeElementsTB();
 	void arrangeElementsRL();
+	void findRefactoring(QString const &refactoringName);
 
 private:
 	void insertRefactoringID(QDomDocument metamodel, QDomNodeList list, bool isNode);
@@ -76,8 +78,10 @@ private:
 
 	utils::MetamodelGeneratorSupport *mMetamodelGeneratorSupport;
 
+	qrRepo::RepoApi *mRefactoringRepoApi;
+	RefactoringWindow *mRefactoringWindow;
+
 	QTranslator mAppTranslator;
 };
-
 }
 }
