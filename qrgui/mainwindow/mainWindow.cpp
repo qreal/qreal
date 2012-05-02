@@ -1911,3 +1911,10 @@ void MainWindow::changePaletteRepresentation()
 		mUi->paletteTree->setComboBoxIndex();
 	}
 }
+
+void MainWindow::setAsLibEntity(Id const &id)
+{
+    qDebug() << "had property before MainWindow::setAsLibEntity" << mModels->mutableLogicalRepoApi().hasProperty(id, "isLibEntity");
+    mModels->mutableLogicalRepoApi().setProperty(id, "isLibEntity", true);
+    qDebug() << "New value of propery isLibEntity" << mModels->mutableLogicalRepoApi().property(id, "isLibEntity");
+}

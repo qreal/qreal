@@ -107,7 +107,7 @@ private slots:
 
 	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
 	void getObjectByGesture();
-    void setAsLibEntity(Element *e);
+    void setAsLibEntity();
 
 
 private:

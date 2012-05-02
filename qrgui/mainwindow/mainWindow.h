@@ -78,6 +78,7 @@ public:
 	virtual bool unloadPlugin(QString const &pluginName);
 	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
 	virtual bool pluginLoaded(QString const &pluginName);
+    void setAsLibEntity(Id const &id);
 
 signals:
 	void gesturesShowed();

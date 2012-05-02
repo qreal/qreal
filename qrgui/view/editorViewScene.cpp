@@ -651,14 +651,22 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	createConnectionSubmenus(menu, e);
     menu.addSeparator();
     ContextMenuAction *myTestAction = new ContextMenuAction("change lib status", mWindow);
-    connect(myTestAction, SIGNAL(triggered()), this, SLOT(setAsLibEntity(Element*)));
+    myTestAction->setData(e->logicalId().toVariant());
+    connect(myTestAction, SIGNAL(triggered()), this, SLOT(setAsLibEntity()));
     menu.addAction(myTestAction);
 	menu.exec(QCursor::pos());
 }
 
-void EditorViewScene::setAsLibEntity(Element *e)
+void EditorViewScene::setAsLibEntity()
 {
-    e->setProperty("isLibEntity", "");
+    qDebug() << "changing lib status";
+    ContextMenuAction *action = static_cast<ContextMenuAction *>(sender());
+    if (!action)
+        qDebug() << "faulte";
+    QVariant variantId = action->data();
+    Id const id = variantId.value<Id>();
+    qDebug() << id.toString();
+    mainWindow()->setAsLibEntity(id);
 }
 
 void EditorViewScene::getObjectByGesture()
