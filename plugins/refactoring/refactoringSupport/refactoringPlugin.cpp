@@ -45,6 +45,11 @@ void RefactoringPlugin::init(PluginConfigurator const &configurator)
 	mPathToRefactoringExamples = mQRealSourceFilesPath + "/plugins/refactoring/refactoringExamples/";
 
 	mRefactoringRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/refactoring/refactoringExamples");
+	mRefactoringFinder = new RefactoringFinder(configurator.logicalModelApi()
+			, configurator.graphicalModelApi()
+			, configurator.mainWindowInterpretersInterface()
+			, mRefactoringRepoApi);
+
 	connect(mRefactoringWindow, SIGNAL(findButtonClicked(QString)), this, SLOT(findRefactoring(QString)));
 }
 
@@ -316,8 +321,8 @@ void RefactoringPlugin::arrangeElementsRL()
 void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 {
 	QString refactoringPath = mPathToRefactoringExamples + refactoringName + ".qrs";
-	qDebug() << refactoringPath;
 	mRefactoringRepoApi->importFromDisk(refactoringPath);
-	mRefactoringWindow->activateRestButtons();
+	mRefactoringFinder->highlightMatch();
+	//mRefactoringWindow->activateRestButtons();
 }
 

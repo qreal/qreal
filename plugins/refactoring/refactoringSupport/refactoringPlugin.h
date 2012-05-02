@@ -13,6 +13,7 @@
 #include "../../../qrutils/metamodelGeneratorSupport.h"
 #include "refactoringPreferencePage.h"
 #include "refactoringWindow.h"
+#include "refactoringFinder.h"
 
 namespace qReal {
 namespace refactoring {
@@ -77,6 +78,7 @@ private:
 	RefactoringPreferencesPage *mPreferencesPage;
 
 	utils::MetamodelGeneratorSupport *mMetamodelGeneratorSupport;
+	RefactoringFinder *mRefactoringFinder;
 
 	qrRepo::RepoApi *mRefactoringRepoApi;
 	RefactoringWindow *mRefactoringWindow;

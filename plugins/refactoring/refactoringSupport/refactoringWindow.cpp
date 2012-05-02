@@ -58,7 +58,7 @@ void qReal::RefactoringWindow::findButtonActivate()
 
 void qReal::RefactoringWindow::activateRestButtons()
 {
-	mUi->applyButton->setEnabled(true);
+	//mUi->applyButton->setEnabled(true);
 	mUi->discardButton->setEnabled(true);
 	mUi->findNextButton->setEnabled(true);
 	mUi->findButton->setEnabled(false);
