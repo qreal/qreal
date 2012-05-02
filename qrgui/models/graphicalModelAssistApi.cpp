@@ -29,6 +29,8 @@ qrRepo::GraphicalRepoApi &GraphicalModelAssistApi::mutableGraphicalRepoApi() con
 	return mGraphicalModel.mutableApi();
 }
 
+/// @return Id that represent logical part of passed graphical Id
+/// @param elem - Id being studied for its logical representation
 Id GraphicalModelAssistApi::logicalId(Id const &elem) const
 {
 	return mGraphicalModel.data(indexById(elem), roles::logicalIdRole).value<Id>();
