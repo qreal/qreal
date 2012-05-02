@@ -315,23 +315,6 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="paletteComboBox">
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <item>
-         <property name="text">
-          <string>Icons  and names</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Icons</string>
-         </property>
-        </item>
-       </widget>
-      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
@@ -345,8 +328,34 @@
          <number>1</number>
         </property>
         <property name="maximum">
-         <number>6</number>
+         <number>5</number>
         </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="paletteComboBox">
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="editable">
+         <bool>false</bool>
+        </property>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <property name="frame">
+         <bool>true</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>Icons  and names</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Icons</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>

@@ -221,6 +221,8 @@ void MainWindow::connectActions()
 
 	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this
 		, SLOT(changePaletteRepresentation()));
+	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged())
+		, &mPreferencesDialog, SLOT(changePaletteParameters()));
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -286,11 +288,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::loadPlugins()
 {
-	mUi->paletteTree->setIconsView(SettingsManager::value("PaletteRepresentation", 0).toBool());
-	mUi->paletteTree->setItemsCountInARow(SettingsManager::value("PaletteIconsInARowCount", 1).toInt());
-	mUi->paletteTree->loadEditors(mEditorManager);
-	mUi->paletteTree->initDone();
-	mUi->paletteTree->setComboBoxIndex();
+	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation", 0).toBool()
+				, SettingsManager::value("PaletteIconsInARowCount", 3).toInt()
+				, mEditorManager);
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -1520,7 +1520,6 @@ void MainWindow::updatePaletteIcons()
 	mUi->logicalModelExplorer->viewport()->update();
 
 	Id const currentId = mUi->paletteTree->currentEditor();
-	mUi->paletteTree->recreateTrees();
 	loadPlugins();
 
 	mUi->paletteTree->setActiveEditor(currentId);
@@ -1904,11 +1903,9 @@ void MainWindow::closeProject()
 void MainWindow::changePaletteRepresentation()
 {
 	if (SettingsManager::value("PaletteRepresentation", 0).toBool() != mUi->paletteTree->iconsView()
-			|| SettingsManager::value("PaletteIconsInARowCount", 1).toInt() != mUi->paletteTree->itemsCountInARow())
+			|| SettingsManager::value("PaletteIconsInARowCount", 3).toInt() != mUi->paletteTree->itemsCountInARow())
 	{
-		mUi->paletteTree->recreateTrees();
 		loadPlugins();
-		mUi->paletteTree->setComboBoxIndex();
 	}
 }
 

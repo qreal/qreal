@@ -3,8 +3,8 @@
 #include "../../qrkernel/definitions.h"
 #include "paletteTree.h"
 #include <QtCore/QtAlgorithms>
-#include <QtGui/QLabel>
 #include <QtGui/QVBoxLayout>
+#include "../../qrkernel/settingsManager.h"
 
 using namespace qReal;
 using namespace gui;
@@ -19,28 +19,31 @@ PaletteTree::DraggableElement::DraggableElement(const Id &id, const QString &nam
 	, mText(name)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setContentsMargins(4, 4, 4, 4);
+	layout->setContentsMargins(0, 4, 0, 4);
 
 	const int size = iconsOnly ? 50 : 30;
-	QLabel *pic = new QLabel(this);
-	pic->setFixedSize(size, size);  // the frame
-	pic->setPixmap(mIcon.pixmap(size - 2, size - 2));
-	layout->addWidget(pic);
-
+	mLabel = new QLabel(this);
+	mLabel->setPixmap(mIcon.pixmap(size - 2, size - 2));
+	layout->addWidget(mLabel);
 	if (!iconsOnly) {
 		QLabel *text = new QLabel(this);
 		text->setText(mText);
 		layout->addWidget(text);
+		layout->addStretch();
 	}
 
 	setLayout(layout);
-
 	QString modifiedDescription = description;
 	if (!modifiedDescription.isEmpty()) {
 		modifiedDescription.insert(0, "<body>");  //turns alignment on
 		setToolTip(modifiedDescription);
 	}
 	setCursor(Qt::OpenHandCursor);
+}
+
+void PaletteTree::DraggableElement::setIconSize(int size)
+{
+	mLabel->setPixmap(mIcon.pixmap(size , size));
 }
 
 PaletteTree::PaletteTree(QWidget *parent)
@@ -64,7 +67,7 @@ void PaletteTree::addTopItemType(const Id &id, const QString &name
 	QTreeWidgetItem *item = new QTreeWidgetItem;
 	DraggableElement *element = new DraggableElement(id, name, description, icon, mIconsView);
 	tree->addTopLevelItem(item);
-	tree->setItemWidget(item,0,element);
+	tree->setItemWidget(item, 0, element);
 }
 
 void PaletteTree::DraggableElement::dragEnterEvent(QDragEnterEvent * /*event*/)
@@ -206,15 +209,14 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 					, mEditorManager->icon(*it)
 					, true);
 			element->setToolTip(mEditorManager->friendlyName(*it));
-			layout->addWidget(element);
-			if (count > 0) {
-				layout->addStretch(50);
-			}
+			layout->addWidget(element, count > 0 ? 50 : 0);
 		}
 		field->setLayout(layout);
+		field->setMinimumHeight(80);
 		QTreeWidgetItem *leaf = new QTreeWidgetItem;
 		item->addChild(leaf);
 		editorTree->setItemWidget(leaf, 0, field);
+
 	}
 }
 
@@ -225,9 +227,9 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 
 	mComboBox->addItem(mEditorManager->friendlyName(diagram));
 
-	QTreeWidget *EditorTree = new QTreeWidget(this);
-	EditorTree->setHeaderHidden(true);
-	EditorTree->setSelectionMode(QAbstractItemView::NoSelection);
+	QTreeWidget *editorTree = new QTreeWidget(this);
+	editorTree->setHeaderHidden(true);
+	editorTree->setSelectionMode(QAbstractItemView::NoSelection);
 
 	IdList list = mEditorManager->elements(diagram);
 	qSort(list.begin(), list.end(), idLessThan);
@@ -251,32 +253,33 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 			}
 			qSort(tmpIdList.begin(), tmpIdList.end(), idLessThan);
 
-			addItemsRow(tmpIdList, EditorTree, item);
+			addItemsRow(tmpIdList, editorTree, item);
 
-			EditorTree->addTopLevelItem(item);
+			editorTree->addTopLevelItem(item);
 
 			if (mSettings->value(mEditorManager->friendlyName(diagram) + group, 0).toBool()) {
-				EditorTree->expandItem(item);
+				editorTree->expandItem(item);
 			}
 		}
 	} else {
 		foreach (const Id &element, list) {
 			addTopItemType(element, mEditorManager->friendlyName(element)
 					, mEditorManager->description(element)
-					, mEditorManager->icon(element), EditorTree);
+					, mEditorManager->icon(element), editorTree);
 		}
 	}
-	EditorTree->hide();
+	editorTree->hide();
 
-	mEditorsTrees.push_back(EditorTree);
+	mEditorsTrees.push_back(editorTree);
 
-	mLayout->addWidget(EditorTree);
+	mLayout->addWidget(editorTree);
 }
 
 void PaletteTree::initDone()
 {
 	connect(mComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setActiveEditor(int)));
 	setActiveEditor(mSettings->value("CurrentIndex", 0).toInt());
+	resizeIcons();
 }
 
 void PaletteTree::setComboBox(Id const &id)
@@ -331,27 +334,43 @@ void PaletteTree::createPaletteTree()
 	QHBoxLayout *hLayout = new QHBoxLayout;
 	hLayout->setSpacing(0);
 
-	mExpandAll  = new QPushButton(this);
-	mExpandAll->setGeometry(0,0,140,50);
-	mExpandAll->setText("Expand All");
+	mExpandAll = new QToolButton;
+	mExpandAll->setGeometry(0,0,30,30);
+	mExpandAll->setIcon(QIcon(":/icons/expandAll.png"));
+	mExpandAll->setToolTip(tr("Expand all"));
+	mExpandAll->setIconSize(QSize(30, 30));
 	connect(mExpandAll,SIGNAL(clicked()),this,SLOT(expand()));
 	hLayout->addWidget(mExpandAll);
 
-	mCollapseAll  = new QPushButton(this);
-	mCollapseAll->setGeometry(0,0,140,50);
-	mCollapseAll->setText("Collapse All");
+	mCollapseAll = new QToolButton;
+	mCollapseAll->setGeometry(0,0,30,30);
+	mCollapseAll->setIcon(QIcon(":/icons/collapseAll.png"));
+	mCollapseAll->setToolTip(tr("Collapse all"));
+	mCollapseAll->setIconSize(QSize(30, 30));
 	connect(mCollapseAll,SIGNAL(clicked()),this,SLOT(collapse()));
 	hLayout->addWidget(mCollapseAll);
-	mLayout->addLayout(hLayout,0);
+
+	mChangeRepresentation = new QToolButton;
+	mChangeRepresentation->setGeometry(0,0,30,30);
+	mChangeRepresentation->setIcon(QIcon(":/icons/changeRepresentation.png"));
+	mChangeRepresentation->setToolTip(tr("Change representation"));
+	mChangeRepresentation->setIconSize(QSize(30, 30));
+	connect(mChangeRepresentation, SIGNAL(clicked()), this, SLOT(changeRepresentation()));
+	hLayout->addWidget(mChangeRepresentation);
+
+	mLayout->addLayout(hLayout);
 
 	mTree = new QTreeWidget(this);
 	mTree->setHeaderHidden(true);
 	mLayout->addWidget(mTree);
 	mSettings = new QSettings("QReal", "PaletteItems");
+	setMinimumWidth(200);
 }
 
 void PaletteTree::deletePaletteTree()
 {
+	SettingsManager::setValue("PaletteRepresentation", mIconsView);
+	SettingsManager::setValue("PaletteIconsInARowCount", mItemsCountInARow);
 	int diagramIndex = 0;
 	foreach(const QTreeWidget *editorTree, mEditorsTrees) {
 		for (int j = 0; j < editorTree->topLevelItemCount(); j++) {
@@ -367,6 +386,7 @@ void PaletteTree::deletePaletteTree()
 	delete mSettings;
 	delete mCollapseAll;
 	delete mExpandAll;
+	delete mChangeRepresentation;
 	delete mComboBox;
 	delete mLayout;
 	qDeleteAll(mEditorsTrees);
@@ -420,4 +440,73 @@ void PaletteTree::setItemsCountInARow(int count)
 int PaletteTree::itemsCountInARow() const
 {
 	return mItemsCountInARow;
+}
+
+void PaletteTree::resizeIcons()
+{
+	if (mIconsView && mItemsCountInARow > 1) {
+		const int iconSize = 48;
+		const int widgetSize = this->size().width() - (iconSize << 1);
+		const int itemsCount = maxItemsCountInARow();
+		const int newSize = (widgetSize < itemsCount * iconSize)
+				? (widgetSize / itemsCount) : iconSize;
+		for (int i = 0; i < mTree->topLevelItemCount(); i++) {
+			for (int j = 0; j < mTree->topLevelItem(i)->childCount(); j++) {
+				QWidget *field = mTree->itemWidget(mTree->topLevelItem(i)->child(j), 0);
+				if (!field) {
+					break;
+				}
+				foreach (QObject *child, field->children()) {
+					DraggableElement *element = dynamic_cast<DraggableElement*>(child);
+					if (element) {
+						element->setIconSize(newSize);
+					}
+				}
+			}
+		}
+	}
+}
+
+void PaletteTree::resizeEvent(QResizeEvent *)
+{
+	resizeIcons();
+}
+
+int PaletteTree::maxItemsCountInARow() const
+{
+	int max = 0;
+	for (int i = 0; i < mTree->topLevelItemCount(); i++) {
+		for (int j = 0; j < mTree->topLevelItem(i)->childCount(); j++) {
+			QWidget *field = mTree->itemWidget(mTree->topLevelItem(i)->child(j), 0);
+			if (!field) {
+				break;
+			}
+			int itemsCount = field->children().count();
+			if (itemsCount > max) {
+				max = itemsCount;
+			}
+		}
+	}
+	return max ? max : mItemsCountInARow;
+}
+
+void PaletteTree::changeRepresentation()
+{
+	loadPalette(!mIconsView, mItemsCountInARow, *mEditorManager);
+	SettingsManager::setValue("PaletteRepresentation", mIconsView);
+	SettingsManager::setValue("PaletteIconsInARowCount", mItemsCountInARow);
+	emit paletteParametersChanged();
+}
+
+void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManager &editorManager)
+{
+	if (mEditorManager) {
+		recreateTrees();
+	}
+	mIconsView = isIconsView;
+	mEditorManager = &editorManager;
+	mItemsCountInARow = itemsCount;
+	loadEditors(editorManager);
+	initDone();
+	setComboBoxIndex();
 }
