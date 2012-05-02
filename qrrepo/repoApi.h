@@ -18,13 +18,27 @@ namespace qrRepo {
 		explicit RepoApi(QString const &workingDirectory);
 		// Default destructor ok.
 
+		/// replacing property values that contains input value with new value
+		/// @param toReplace - id list that contains ids of elements that properties should be replaced
+		/// @param value - input value that should be contained by any property of each element
+		/// @param newValue - string representation of value with what property values should be replaced
+		void replaceProperties(qReal::IdList const &toReplace, QString const value, QString const newValue);
+
 		qReal::Id copy(qReal::Id const &src);
 
 		QString name(qReal::Id const &id) const;
 		void setName(qReal::Id const &id, QString const &name);
 
+		/// returning IdList of elements that names contains input string
+		/// @param name - string that should be contained by names of elements that Id's are in the output list
 		qReal::IdList findElementsByName(QString const &name) const;
+
+		/// returning IdList of elements that have input property
+		/// @param name - string that should be contained by names of elements that have input property
 		qReal::IdList elementsByProperty(QString const &property) const;
+
+		/// returning IdList of elements that have input property content
+		/// @param name - string that should be contained by names of elements that have input property content
 		qReal::IdList elementsByPropertyContent(QString const &propertyContent) const;
 
 		qReal::IdList children(qReal::Id const &id) const;

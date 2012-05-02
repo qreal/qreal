@@ -18,9 +18,11 @@ class FindDialog : public QDialog
 	signals:
 
 		void findModelByName(const QStringList &searchData);
+		void replaceStarted();
 
 	private slots:
 
+		void replaceClicked();
 		void findClicked();
 		void enableFindButton(const QString &text);
 
@@ -29,5 +31,6 @@ class FindDialog : public QDialog
 		QLabel *mLabel;
 		QLineEdit *mLineEdit;
 		QPushButton *mFindButton;
+		QPushButton *mReplaceButton;
 		QList<QCheckBox*> mCheckBoxes;
 };

@@ -12,6 +12,13 @@ Object::Object(const Id &id, const Id &parent)
 	setParent(parent);
 }
 
+void Object::replaceProperties(QString const value, QString newValue)
+{
+	foreach (QVariant val, mProperties.values())
+		if (val.toString().contains(value))
+		mProperties[mProperties.key(val)] = (QVariant)newValue;
+}
+
 Object::Object(const Id &id, const Id &parent, const qReal::Id &logicalId)
 	: mId(id), mLogicalId(logicalId)
 {

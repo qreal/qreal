@@ -23,6 +23,7 @@
 #include "../models/logicalModelAssistApi.h"
 
 #include "findDialog.h"
+#include "findAndReplaceDialog.h"
 #include "refWindowDialog.h"
 
 #include  "paletteTree.h"
@@ -106,11 +107,21 @@ public slots:
 private slots:
 
 	/// handler for find dialog 'button find' pressed
-	/// @param searchData - data was input to find dialog
+	/// @param searchData - data was input to find
 	void handleFindDialog(QStringList const &searchData);
 
+	/// handler for menu 'button find' pressed
+	void showFindDialog();
+
+	/// handler for menu 'button find & replace' pressed
+	void showReplaceDialog();
+
+	/// handler for find & replace dialog 'button replace' pressed
+	/// @param searchData - data was input to find & replace
+	void handleReplaceDialog(QStringList const &searchData);
+
 	/// handler for refs dialog reference chosen
-	/// @param id - id of element that was chosen to show and highlighting
+	/// @param id - id of element that was chosen to show and highlight
 	void handleRefsDialog(qReal::Id const &id);
 
 	void setSceneFont();
@@ -128,7 +139,6 @@ private slots:
 	void checkoutDialogCancel();
 
 	void saveAllAndOpen(QString const &dirName);
-
 
 	/// wrapper for import(QString const &fileName)
 	/// uses getWorkingFile(...)
@@ -211,6 +221,7 @@ private slots:
 
 private:
 
+	/// elements & theirs ids
 	QMap<QString, Id> mElementsNamesAndIds;
 
 	/// Finds items by input name and search mode
@@ -221,6 +232,9 @@ private:
 	/// Finds items by input name and search modes - searchData
 	/// @param searchData - name and search modes
 	QMap<QString, QString> findItems(QStringList const &searchData);
+
+	/// mReplaceDialog - find and replace dialog
+	FindAndReplaceDialog *mReplaceDialog;
 
 	/// mFindDialog - Dialog for searching elements.
 	FindDialog *mFindDialog;

@@ -85,11 +85,19 @@
      <string>Tools</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionFind"/>
+    <addaction name="actionFind_and_replace"/>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
    <addaction name="menuTools"/>
    <addaction name="menuSettings"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuEdit"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="fileToolbar">
@@ -624,6 +632,16 @@
   <action name="actionCloseProject">
    <property name="text">
     <string>Close project</string>
+   </property>
+  </action>
+  <action name="actionFind">
+   <property name="text">
+    <string>Find</string>
+   </property>
+  </action>
+  <action name="actionFind_and_replace">
+   <property name="text">
+    <string>Find and replace</string>
    </property>
   </action>
  </widget>

@@ -12,6 +12,7 @@ HEADERS += \
 	mainwindow/findDialog.h \
 	mainwindow/refWindowDialog.h \
 	mainwindow/paletteTree.h \
+    mainwindow/findAndReplaceDialog.h
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 	mainwindow/findDialog.cpp \
 	mainwindow/refWindowDialog.cpp \
 	mainwindow/paletteTree.cpp \
+    mainwindow/findAndReplaceDialog.cpp
 
 FORMS += \
 	mainwindow/mainWindow.ui \

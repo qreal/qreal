@@ -60,6 +60,8 @@ MainWindow::MainWindow()
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 {
+	mReplaceDialog = new FindAndReplaceDialog(this);
+
 	mFindDialog = new FindDialog(this);
 
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
@@ -229,8 +231,25 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
+	connect (mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
+	connect (mUi->actionFind_and_replace, SIGNAL(triggered()), this, SLOT(showReplaceDialog()));
+
+	connect(mReplaceDialog, SIGNAL(replaceClicked(QStringList)), this, SLOT(handleReplaceDialog(QStringList)));
+	connect(mFindDialog, SIGNAL(replaceStarted()), this, SLOT(showReplaceDialog()));
 	connect(mFindDialog, SIGNAL(findModelByName(QStringList)), this, SLOT(handleFindDialog(QStringList)));
 	connect(mRefWindowDialog, SIGNAL(chosenElement(qReal::Id)), this, SLOT(handleRefsDialog(qReal::Id)));
+}
+
+void MainWindow::showFindDialog()
+{
+	mReplaceDialog->close();
+	mFindDialog->show();
+}
+
+void MainWindow::showReplaceDialog()
+{
+	mFindDialog->close();
+	mReplaceDialog->show();
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -267,8 +286,10 @@ MainWindow::~MainWindow()
 	delete mGesturesWidget;
 	delete mModels;
 	delete mCodeTabManager;
+	delete mReplaceDialog;
 	delete mFindDialog;
 	delete mRefWindowDialog;
+	delete mReplaceDialog;
 }
 
 EditorManager* MainWindow::manager()
@@ -320,6 +341,19 @@ void MainWindow::handleFindDialog(QStringList const &searchData)
 
 	if ((!found.isEmpty()) && (mRefWindowDialog->initIds(found)))
 		mRefWindowDialog->show();
+}
+
+void MainWindow::handleReplaceDialog(QStringList const &searchData)
+{
+	if (searchData.contains(tr("by name"))) {
+		qReal::IdList toRename = foundByMode(searchData.first(), tr("by name"));
+		foreach (qReal::Id currentId, toRename)
+			mModels->mutableLogicalRepoApi().setName(currentId, searchData[1]);
+	}
+	if (searchData.contains(tr("by property content"))) {
+		qReal::IdList toRename = foundByMode(searchData.first(), tr("by property content"));
+		mModels->mutableLogicalRepoApi().replaceProperties(toRename, searchData[0], searchData[1]);
+	}
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

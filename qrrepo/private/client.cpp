@@ -71,6 +71,13 @@ qReal::IdList Client::elementsByPropertyContent(QString const &propertyValue) co
 	return result;
 }
 
+void Client::replaceProperties(qReal::IdList const &toReplace, QString const value, QString const newValue)
+{
+	foreach (qReal::Id currentId, toReplace)
+		//setProperty(currentId, (QString)"name", (QVariant)newValue);
+		mObjects[currentId]->replaceProperties(value, newValue);
+}
+
 IdList Client::children(Id const &id) const
 {
 	if (mObjects.contains(id)) {

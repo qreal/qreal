@@ -1,6 +1,5 @@
 HEADERS += \
 	dialogs/plugindialog.h \
-	dialogs/refWindow.h \
 	dialogs/preferencesDialog.h \
 	dialogs/preferencesPages/behaviourPage.h \
 	dialogs/preferencesPages/debuggerPage.h \
@@ -13,7 +12,6 @@ HEADERS += \
 
 SOURCES += \
 	dialogs/plugindialog.cpp \
-	dialogs/refWindow.cpp \
 	dialogs/preferencesDialog.cpp \
 	dialogs/gesturesShow/gesturesWidget.cpp \
 	dialogs/preferencesPages/behaviourPage.cpp \

@@ -37,6 +37,11 @@ qReal::IdList RepoApi::elementsByPropertyContent(QString const &propertyContent)
 	return mClient.elementsByPropertyContent(propertyContent);
 }
 
+void RepoApi::replaceProperties(qReal::IdList const &toReplace, QString const value, QString const newValue)
+{
+	mClient.replaceProperties(toReplace, value, newValue);
+}
+
 void RepoApi::addChild(Id const &id, Id const &child)
 {
 	mClient.addChild(id, child);

@@ -11,12 +11,16 @@ FindDialog::FindDialog(QWidget *parent) : QDialog(parent)
 	mLabel = new QLabel(tr("Find:"));
 	mLineEdit = new QLineEdit();
 	mLabel->setBuddy(mLineEdit);
+	mReplaceButton = new QPushButton(tr("Find and replace"));
+	mReplaceButton->setDefault(true);
+	mReplaceButton->setEnabled(true);
 	mFindButton = new QPushButton(tr("Find"));
 	mFindButton->setDefault(true);
 	mFindButton->setEnabled(false);
 
 	connect(mLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(enableFindButton(const QString &)));
 	connect(mFindButton, SIGNAL(clicked()), this, SLOT(findClicked()));
+	connect(mReplaceButton, SIGNAL(clicked()), this, SLOT(replaceClicked()));
 
 	QVBoxLayout *leftLayout = new QVBoxLayout;
 	leftLayout->addWidget(mLabel);
@@ -25,6 +29,7 @@ FindDialog::FindDialog(QWidget *parent) : QDialog(parent)
 	middleLayout->addWidget(mLineEdit);
 	foreach (QCheckBox *current, mCheckBoxes)
 		middleLayout->addWidget(current);
+	middleLayout->addWidget(mReplaceButton);
 	QVBoxLayout *rightLayout = new QVBoxLayout;
 	rightLayout->addWidget(mFindButton);
 	rightLayout->addStretch();
@@ -43,6 +48,13 @@ FindDialog::~FindDialog()
 	delete mLabel;
 	delete mLineEdit;
 	delete mFindButton;
+	delete mReplaceButton;
+}
+
+void FindDialog::replaceClicked()
+{
+	this->close();
+	emit replaceStarted();
 }
 
 void FindDialog::findClicked()
