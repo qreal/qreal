@@ -83,9 +83,6 @@ void RefactoringFinder::loadRefactoringRule()
 	mDeletedElements = new IdList();
 	mReplacedElements = new IdList();
 	mCreatedElements = new IdList();
-	mNodesWithNewControlMark = new IdList();
-	mNodesWithDeletedControlMark = new IdList();
-	mNodesWithControlMark = new IdList();
 
 	mInterpretersInterface.dehighlight();
 
@@ -110,7 +107,9 @@ void RefactoringFinder::highlightMatch()
 		for (int i = 0; i < mMatches.size(); ++i) {
 			QHash <Id, Id> currentMatch = mMatches.at(i);
 			foreach (Id const &id, currentMatch.keys()) {
-				mInterpretersInterface.highlight(currentMatch.value(id), false);
+				QColor const color = QColor(SettingsManager::value("refactoringColor"
+						, "green").toString());
+				mInterpretersInterface.highlight(currentMatch.value(id), false, color);
 				pause(500);
 			}
 			pause(500);
@@ -132,7 +131,6 @@ bool RefactoringFinder::findMatch()
 bool RefactoringFinder::checkRuleMatching()
 {
 	mMatch = new QHash<Id, Id>();
-	QHash<Id, Id> currentMatch;
 	bool isMatched = false;
 
 	Id const startElement = getStartElement();
@@ -152,8 +150,6 @@ bool RefactoringFinder::checkRuleMatching()
 
 			if (checkRuleMatchingRecursively()) {
 				isMatched = true;
-				currentMatch = *(mMatch);
-				mMatches.append(currentMatch);
 			}
 		}
 	}
@@ -164,8 +160,12 @@ bool RefactoringFinder::checkRuleMatching()
 bool RefactoringFinder::checkRuleMatchingRecursively()
 {
 	if (mNodesHavingOutsideLinks.length() == mPos) {
+		QHash<Id, Id> currentMatch = *(mMatch);
+		mMatches.append(currentMatch);
 		return true;
 	}
+
+	bool isMatched = false;
 
 	Id const nodeInRule = mNodesHavingOutsideLinks.at(mPos);
 	Id const linkInRule = getOutsideLink(nodeInRule);
@@ -179,14 +179,13 @@ bool RefactoringFinder::checkRuleMatchingRecursively()
 			Id const linkEndInModel = getLinkEndModel(linkInModel, nodeInModel);
 			if (checkNodeForAddingToMatch(linkEndInModel, linkEndInRule)) {
 				if (checkRuleMatchingRecursively()) {
-					return true;
+					isMatched = true;
 				} else {
 					rollback();
 				}
 			}
 		}
-
-		return false;
+		return isMatched;
 	} else {
 		mPos++;
 		return checkRuleMatchingRecursively();
@@ -276,9 +275,9 @@ Id RefactoringFinder::getOutsideLink(Id const &nodeInRule) const
 
 Id RefactoringFinder::getLinkEnd(Id const &linkInRule, Id const &nodeInRule) const
 {
-	Id const linkTo = to(linkInRule);
+	Id const linkTo = toInRule(linkInRule);
 	if (linkTo == nodeInRule) {
-		return from(linkInRule);
+		return fromInRule(linkInRule);
 	}
 	return linkTo;
 }
@@ -286,7 +285,7 @@ Id RefactoringFinder::getLinkEnd(Id const &linkInRule, Id const &nodeInRule) con
 Id RefactoringFinder::getProperLink(Id const &nodeInModel,
 		 Id const &linkInRule, Id const &linkEndInRule) const
 {
-	IdList const linksInModel = links(nodeInModel);
+	IdList const linksInModel = linksModel(nodeInModel);
 	foreach (Id const &linkInModel, linksInModel) {
 		if (compareLinks(linkInModel, linkInRule)) {
 			Id const linkEndInModel = getLinkEndModel(linkInModel, nodeInModel);
@@ -303,7 +302,7 @@ IdList RefactoringFinder::getProperLinks(Id const &nodeInModel,
 		Id const &linkInRule) const
 {
 	IdList result;
-	IdList const linksInModel = links(nodeInModel);
+	IdList const linksInModel = linksModel(nodeInModel);
 	foreach (Id const &linkInModel, linksInModel) {
 		if (compareLinks(linkInModel, linkInRule)) {
 			result.append(linkInModel);
@@ -317,7 +316,7 @@ Id RefactoringFinder::getStartElement() const
 	IdList const before = getElementsFromBeforeBlock();
 
 	foreach (Id const &beforeId, before) {
-		if (!isEdge(beforeId))
+		if (!isEdgeInRule(beforeId))
 			return beforeId;
 	}
 	return Id::rootId();
@@ -326,8 +325,8 @@ Id RefactoringFinder::getStartElement() const
 bool RefactoringFinder::compareLinks(Id const &first,Id const &second) const
 {
 	return compareElementTypesAndProperties(first, second)
-			&& compareElements(mLogicalModelApi.logicalRepoApi().to(first), to(second))
-			&& compareElements(mLogicalModelApi.logicalRepoApi().from(first), from(second));
+			&& compareElements(mLogicalModelApi.logicalRepoApi().to(first), toInRule(second))
+			&& compareElements(mLogicalModelApi.logicalRepoApi().from(first), fromInRule(second));
 }
 
 bool RefactoringFinder::compareElements(Id const &first, Id const &second) const
@@ -338,7 +337,7 @@ bool RefactoringFinder::compareElements(Id const &first, Id const &second) const
 bool RefactoringFinder::compareElementTypesAndProperties(Id const &first,
 		Id const &second) const
 {
-	bool firstIsNode = !isEdgeModel(first);
+	bool firstIsNode = !isEdgeInModel(first);
 	if (second.element() == "Element" && firstIsNode) {
 		QString const elementName = mRefactoringRepoApi->name(second);
 		if (elementName == "(Element)" || elementName.contains("EXIST"))
@@ -402,13 +401,13 @@ QHash<QString, QVariant> RefactoringFinder::getProperties(Id const &id) const
 	return res;
 }
 
-bool RefactoringFinder::isEdge(Id const &element) const
+bool RefactoringFinder::isEdgeInRule(Id const &element) const
 {
-	return to(element) != Id::rootId() ||
-			from(element) != Id::rootId();
+	return toInRule(element) != Id::rootId() ||
+			fromInRule(element) != Id::rootId();
 }
 
-bool RefactoringFinder::isEdgeModel(Id const &element) const
+bool RefactoringFinder::isEdgeInModel(Id const &element) const
 {
 	return mLogicalModelApi.logicalRepoApi().to(element) != Id::rootId() ||
 			mLogicalModelApi.logicalRepoApi().from(element) != Id::rootId();
@@ -429,27 +428,17 @@ QVariant RefactoringFinder::getRefactoringProperty(Id const &id, QString const &
 	return mRefactoringRepoApi->property(id, propertyName);
 }
 
-Id RefactoringFinder::to(Id const &id) const
+Id RefactoringFinder::toInRule(Id const &id) const
 {
 	return mRefactoringRepoApi->to(id);
 }
 
-Id RefactoringFinder::from(Id const &id) const
+Id RefactoringFinder::fromInRule(Id const &id) const
 {
 	return mRefactoringRepoApi->from(id);
 }
 
-IdList RefactoringFinder::outgoingLinks(Id const &id) const
-{
-	return mLogicalModelApi.logicalRepoApi().outgoingLinks(id);
-}
-
-IdList RefactoringFinder::incomingLinks(Id const &id) const
-{
-	return mLogicalModelApi.logicalRepoApi().incomingLinks(id);
-}
-
-IdList RefactoringFinder::links(Id const &id) const
+IdList RefactoringFinder::linksModel(Id const &id) const
 {
 	return mLogicalModelApi.logicalRepoApi().links(id);
 }
@@ -474,4 +463,9 @@ void RefactoringFinder::pause(const int &time)
 	QTimer::singleShot(time, &loop, SLOT(quit()));
 	loop.exec();
 
+}
+
+QList<QHash<Id, Id> > RefactoringFinder::getMatches()
+{
+	return mMatches;
 }

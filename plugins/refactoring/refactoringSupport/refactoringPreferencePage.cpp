@@ -20,6 +20,11 @@ RefactoringPreferencesPage::RefactoringPreferencesPage(QWidget *parent) :
 			binFolder.mid(0, binFolder.lastIndexOf("/"))).toString());
 
 	connect(mUi->qrealSourcesPushButton, SIGNAL(clicked()), this, SLOT(setQRealSourcesLocation()));
+
+	mUi->colorComboBox->addItems(QColor::colorNames());
+	QString curColor = SettingsManager::value("refactoringColor", "green").toString();
+	int curColorIndex = mUi->colorComboBox->findText(curColor);
+	mUi->colorComboBox->setCurrentIndex(curColorIndex);
 }
 
 RefactoringPreferencesPage::~RefactoringPreferencesPage() {
@@ -33,4 +38,16 @@ void RefactoringPreferencesPage::setQRealSourcesLocation() {
 
 void RefactoringPreferencesPage::save() {
 	SettingsManager::setValue("qrealSourcesLocation", mUi->qrealSourcesLineEdit->text());
+	SettingsManager::setValue("refactoringColor", mUi->colorComboBox->currentText());
+}
+
+void RefactoringPreferencesPage::changeEvent(QEvent *e)
+{
+	switch (e->type()) {
+	case QEvent::LanguageChange:
+		mUi->retranslateUi(this);
+		break;
+	default:
+		break;
+	}
 }

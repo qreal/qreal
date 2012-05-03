@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QWidget>
+#include <QtGui/QDialog>
 #include <QtGui/QListWidgetItem>
 
 namespace Ui {
@@ -9,7 +9,7 @@ namespace Ui {
 
 namespace qReal {
 
-class RefactoringWindow: public QWidget
+class RefactoringWindow: public QDialog
 {
 	Q_OBJECT
 
@@ -18,13 +18,18 @@ public:
 	~RefactoringWindow();
 	void updateRefactorings(QString const &dirPath);
 	void activateRestButtons();
+	void discard();
 
 signals:
 	void findButtonClicked(QString const &refactoringName);
+	void findNextButtonClicked();
+	void discardButtonClicked();
 
 private slots:
 	void openPicture(QListWidgetItem *item);
 	void findButtonActivate();
+	void findNextButtonActivate();
+	void discardButtonActivate();
 
 private:
 	Ui::refactoringForm *mUi;

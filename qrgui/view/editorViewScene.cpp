@@ -962,7 +962,7 @@ void EditorViewScene::redraw()
 	}
 }
 
-void EditorViewScene::highlight(Id const &graphicalId, bool exclusive)
+void EditorViewScene::highlight(Id const &graphicalId, bool exclusive, QColor const &color)
 {
 	if (exclusive) {
 		foreach (Element *element, mHighlightedElements) {
@@ -974,8 +974,6 @@ void EditorViewScene::highlight(Id const &graphicalId, bool exclusive)
 	if (!elem) {
 		return;
 	}
-
-	QColor color = QColor(SettingsManager::value("debugColor", "red").toString());
 
 	QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
 	effect->setColor(color);

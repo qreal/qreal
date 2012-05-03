@@ -5,15 +5,18 @@
 using namespace qReal;
 
 RefactoringWindow::RefactoringWindow(QWidget *parent) :
-	QWidget(parent),
+	QDialog(parent),
 	mUi(new Ui::refactoringForm)
 {
 	mUi->setupUi(this);
 	mUi->applyButton->setEnabled(false);
 	mUi->discardButton->setEnabled(false);
 	mUi->findNextButton->setEnabled(false);
+
 	connect(mUi->refactoringList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(openPicture(QListWidgetItem*)));
 	connect(mUi->findButton, SIGNAL(clicked()), this, SLOT(findButtonActivate()));
+	connect(mUi->findNextButton, SIGNAL(clicked()), this, SLOT(findNextButtonActivate()));
+	connect(mUi->discardButton, SIGNAL(clicked()), this, SLOT(discardButtonActivate()));
 }
 
 void RefactoringWindow::openPicture(QListWidgetItem *item)
@@ -46,9 +49,15 @@ void RefactoringWindow::updateRefactorings(const QString &dirPath)
 		item->setData(Qt::UserRole, dirPath + "/" + png + ".png");
 		refactoringList->addItem(item);
 	}
+
+	if (refactoringList->count() > 0) {
+		QListWidgetItem *firstItem = refactoringList->item(0);
+		refactoringList->setCurrentItem(firstItem);
+		openPicture(firstItem);
+	}
 }
 
-void qReal::RefactoringWindow::findButtonActivate()
+void RefactoringWindow::findButtonActivate()
 {
 	QList<QListWidgetItem*> selectedItems = mUi->refactoringList->selectedItems();
 	if (selectedItems.size() != 1)
@@ -56,10 +65,30 @@ void qReal::RefactoringWindow::findButtonActivate()
 	emit findButtonClicked(selectedItems.at(0)->text());
 }
 
-void qReal::RefactoringWindow::activateRestButtons()
+void RefactoringWindow::findNextButtonActivate()
+{
+	emit findNextButtonClicked();
+}
+
+
+void RefactoringWindow::activateRestButtons()
 {
 	//mUi->applyButton->setEnabled(true);
 	mUi->discardButton->setEnabled(true);
 	mUi->findNextButton->setEnabled(true);
 	mUi->findButton->setEnabled(false);
+}
+
+void RefactoringWindow::discard()
+{
+	//mUi->applyButton->setEnabled(false);
+	mUi->discardButton->setEnabled(false);
+	mUi->findNextButton->setEnabled(false);
+	mUi->findButton->setEnabled(true);
+
+}
+
+void RefactoringWindow::discardButtonActivate()
+{
+	emit discardButtonClicked();
 }

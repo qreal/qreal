@@ -20,7 +20,7 @@ Q_EXPORT_PLUGIN2(refactoring, qReal::refactoring::RefactoringPlugin)
 
 RefactoringPlugin::RefactoringPlugin()
 	: mPreferencesPage(new RefactoringPreferencesPage())
-	, mRefactoringWindow(new RefactoringWindow(NULL))
+	, mRefactoringWindow(NULL)
 {
 	mAppTranslator.load(":/refactoringSupport_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
@@ -44,6 +44,9 @@ void RefactoringPlugin::init(PluginConfigurator const &configurator)
 	mQRealSourceFilesPath = SettingsManager::value("qrealSourcesLocation", "").toString();
 	mPathToRefactoringExamples = mQRealSourceFilesPath + "/plugins/refactoring/refactoringExamples/";
 
+	mRefactoringWindow = new RefactoringWindow(mMainWindowIFace->windowWidget());
+	connect(mRefactoringWindow, SIGNAL(rejected()), this, SLOT(discardRefactoring()));
+
 	mRefactoringRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/refactoring/refactoringExamples");
 	mRefactoringFinder = new RefactoringFinder(configurator.logicalModelApi()
 			, configurator.graphicalModelApi()
@@ -51,6 +54,8 @@ void RefactoringPlugin::init(PluginConfigurator const &configurator)
 			, mRefactoringRepoApi);
 
 	connect(mRefactoringWindow, SIGNAL(findButtonClicked(QString)), this, SLOT(findRefactoring(QString)));
+	connect(mRefactoringWindow, SIGNAL(findNextButtonClicked()), this, SLOT(findNextRefactoring()));
+	connect(mRefactoringWindow, SIGNAL(discardButtonClicked()), this, SLOT(discardRefactoring()));
 }
 
 QPair<QString, PreferencesPage *> RefactoringPlugin::preferencesPage()
@@ -322,7 +327,42 @@ void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 {
 	QString refactoringPath = mPathToRefactoringExamples + refactoringName + ".qrs";
 	mRefactoringRepoApi->importFromDisk(refactoringPath);
-	mRefactoringFinder->highlightMatch();
-	//mRefactoringWindow->activateRestButtons();
+	if (mRefactoringFinder->findMatch()) {
+		mMatches = mRefactoringFinder->getMatches();
+		if (mMatches.isEmpty()) {
+			return;
+		}
+		QHash <Id, Id> currentMatch = mMatches.takeFirst();
+		foreach (Id const &id, currentMatch.keys()) {
+			QColor const color = QColor(SettingsManager::value("refactoringColor"
+					, "green").toString());
+			mMainWindowIFace->highlight(currentMatch.value(id), false, color);
+		}
+	}
+	mRefactoringWindow->activateRestButtons();
+}
+
+void qReal::refactoring::RefactoringPlugin::findNextRefactoring()
+{
+	mMainWindowIFace->dehighlight();
+	if (mMatches.isEmpty()) {
+		mMainWindowIFace->errorReporter()->addInformation("No next match");
+		mRefactoringWindow->discard();
+	}
+	else {
+		QHash <Id, Id> currentMatch = mMatches.takeFirst();
+		foreach (Id const &id, currentMatch.keys()) {
+			QColor const color = QColor(SettingsManager::value("refactoringColor"
+					, "green").toString());
+			mMainWindowIFace->highlight(currentMatch.value(id), false, color);
+		}
+	}
+}
+
+void RefactoringPlugin::discardRefactoring()
+{
+	mMainWindowIFace->dehighlight();
+	mMatches.clear();
+	mRefactoringWindow->discard();
 }
 

@@ -34,7 +34,7 @@ void MetamodelGeneratorSupport::saveMetamodelInFile(QDomDocument const &metamode
 {
 	QString const dirPath = metamodelPath.mid(0, metamodelPath.lastIndexOf("/"));
 	QDir().mkpath(dirPath);
-	
+
 	OutFile out(metamodelPath);
 	out() << metamodel.toString();
 	out().flush();
@@ -114,13 +114,13 @@ void MetamodelGeneratorSupport::insertElementsInDiagramSublevel(QDomDocument met
 		QString const &sublevelName, QDomNodeList elements)
 {
 	QDomNodeList sublevels = metamodel.elementsByTagName(sublevelName);
-	
+
 	if (sublevels.length() > 0) {
 		appendElements(sublevels.at(0), elements);
 	} else {
 		QDomElement sublevel = metamodel.createElement(sublevelName);
 		appendElements(sublevel, elements);
-		
+
 		getDiagramElement(metamodel).appendChild(sublevel);
 	}
 }
@@ -129,13 +129,13 @@ void MetamodelGeneratorSupport::insertElementInDiagramSublevel(QDomDocument meta
 		const QString &sublevelName, QDomElement const &element)
 {
 	QDomNodeList sublevels = metamodel.elementsByTagName(sublevelName);
-	
+
 	if (sublevels.length() > 0) {
 		sublevels.at(0).appendChild(element);
 	} else {
 		QDomElement sublevel = metamodel.createElement(sublevelName);
 		sublevel.appendChild(element);
-		
+
 		getDiagramElement(metamodel).appendChild(sublevel);
 	}
 }
@@ -159,11 +159,11 @@ QStringList MetamodelGeneratorSupport::collectAllGraphicTypesInMetamodel(QDomDoc
 {
 	QDomElement diagram = getDiagramElement(metamodel);
 	QDomNodeList graphicTypes = diagram.elementsByTagName("graphicTypes");
-	
+
 	QStringList result;
 	if (graphicTypes.length() > 0) {
 		QDomNodeList children = graphicTypes.at(0).childNodes();
-		for (int i = 0; i < children.length(); i++) {
+		for (unsigned i = 0; i < children.length(); i++) {
 			result.push_back(children.at(i).toElement().attribute("name"));
 		}
 	}
@@ -189,30 +189,30 @@ void MetamodelGeneratorSupport::generateProFile(QDomDocument metamodel,
 		QString const &newEditorPath, QString const &relativeNewEditorPath)
 {
 	QDir().mkpath(newEditorPath);
-	
+
 	OutFile outpro(newEditorPath + "/" + newMetamodelName + ".pro");
 	outpro() << QString("QREAL_XML = %1\n").arg(newMetamodelName + ".xml");
 	QDomNodeList include = metamodel.elementsByTagName("include");
-	
+
 	if (include.length() > 0) {
 		outpro() << "QREAL_XML_DEPENDS = ";
-		for (int i = 0; i < include.length(); i++) {
+		for (unsigned i = 0; i < include.length(); i++) {
 			QString const includePath = ".." +
 					mergePaths(
 							baseMetamodelPath.mid(0, baseMetamodelPath.lastIndexOf("/")),
 							include.at(i).toElement().text()
 					).mid(qrealSourceFilesPath.length() + 8);
-			
+
 			include.at(i).toElement().childNodes().at(0).toText().setNodeValue(includePath);
 			outpro() << includePath;
 			outpro() << " ";
 		}
 	}
-	
+
 	outpro() << "\nQREAL_EDITOR_PATH = " + relativeNewEditorPath + "\n";
 	outpro() << QString("ROOT = ../..\n");
 	outpro() << QString("include (../editorsSdk/editorsCommon.pri)");
-	
+
 	outpro().flush();
 }
 
@@ -220,12 +220,12 @@ QString MetamodelGeneratorSupport::mergePaths(QString const &begin, QString cons
 {
 	QStringList beginPathList = begin.split("/", QString::SkipEmptyParts);
 	QStringList endPathList = end.split("/", QString::SkipEmptyParts);
-	
+
 	int index = 0;
 	while (endPathList[index] == "..") {
 		index++;
 	}
-	
+
 	QString res = "";
 	for (int i = 0; i < beginPathList.length() - index; i++) {
 		res += "/" + beginPathList[i];
@@ -233,10 +233,10 @@ QString MetamodelGeneratorSupport::mergePaths(QString const &begin, QString cons
 	for (int i = index; i < endPathList.length(); i++) {
 		res += "/" + endPathList[i];
 	}
-	
+
 	if (res.contains(":")) {
 		res = res.mid(1);
 	}
-	
+
 	return res;
 }

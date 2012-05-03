@@ -41,6 +41,8 @@ private slots:
 	void arrangeElementsTB();
 	void arrangeElementsRL();
 	void findRefactoring(QString const &refactoringName);
+	void findNextRefactoring();
+	void discardRefactoring();
 
 private:
 	void insertRefactoringID(QDomDocument metamodel, QDomNodeList list, bool isNode);
@@ -82,6 +84,7 @@ private:
 
 	qrRepo::RepoApi *mRefactoringRepoApi;
 	RefactoringWindow *mRefactoringWindow;
+	QList<QHash<Id, Id> > mMatches;
 
 	QTranslator mAppTranslator;
 };

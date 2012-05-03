@@ -49,7 +49,8 @@ public:
 
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
 
-	void highlight(qReal::Id const &graphicalId, bool exclusive = true);
+	void highlight(qReal::Id const &graphicalId, bool exclusive = true
+			, QColor const &color = Qt::red);
 	void dehighlight(qReal::Id const &graphicalId);
 	void dehighlight();
 

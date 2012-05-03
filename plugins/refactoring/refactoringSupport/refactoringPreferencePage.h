@@ -21,6 +21,9 @@ public:
 
 	void save();
 
+protected:
+	void changeEvent(QEvent *e);
+
 private slots:
 	void setQRealSourcesLocation();
 

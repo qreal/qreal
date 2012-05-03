@@ -19,10 +19,10 @@ public:
 	~RefactoringFinder();
 
 	void highlightMatch();
+	bool findMatch();
+	QList<QHash<Id, Id> > getMatches();
 
 private:
-
-	bool findMatch();
 
 	bool checkRuleMatching();
 
@@ -67,14 +67,12 @@ private:
 	bool compareElements(Id const &first, Id const &second) const;
 	bool compareElementTypesAndProperties(Id const &first, Id const &second) const;
 
-	bool isEdge(Id const &element) const;
-	bool isEdgeModel(const Id &element) const;
+	bool isEdgeInRule(Id const &element) const;
+	bool isEdgeInModel(const Id &element) const;
 
-	Id to(Id const &id) const;
-	Id from(Id const &id) const;
-	IdList outgoingLinks(Id const &id) const;
-	IdList incomingLinks(Id const &id) const;
-	IdList links(Id const &id) const;
+	Id toInRule(Id const &id) const;
+	Id fromInRule(Id const &id) const;
+	IdList linksModel(Id const &id) const;
 	IdList children(Id const &id) const;
 
 	void pause(int const &time);
@@ -86,9 +84,6 @@ private:
 	IdList *mDeletedElements;
 	IdList *mReplacedElements;
 	IdList *mCreatedElements;
-	IdList *mNodesWithNewControlMark;
-	IdList *mNodesWithDeletedControlMark;
-	IdList *mNodesWithControlMark;
 
 	QHash<Id, Id> *mMatch;
 	QList<QHash<Id, Id> > mMatches;
@@ -96,7 +91,6 @@ private:
 	IdList mCurrentMatchedGraphInRule;
 	IdList mNodesHavingOutsideLinks;
 	int mPos;
-	IdList mCurrentNodesWithControlMark;
 	qrRepo::RepoApi *mRefactoringRepoApi;
 };
 
