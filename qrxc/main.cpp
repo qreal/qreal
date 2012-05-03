@@ -21,6 +21,7 @@ void myMessageOutput(QtMsgType type, const char *msg)
 			abort();
 	}
 }
+
 int main(int argc, char *argv[])
 {
 	qInstallMsgHandler(myMessageOutput);

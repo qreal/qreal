@@ -154,7 +154,6 @@ bool EdgeType::initDissectability()
 	return true;
 }
 
-
 bool EdgeType::initLabel(Label *label, QDomElement const &element, int const &count)
 {
 	return label->init(element, count, false, mWidth, mHeight);

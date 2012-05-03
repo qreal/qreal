@@ -62,8 +62,7 @@ bool NodeType::initSdf()
 		mHeight = sdfElement.attribute("sizey").toInt();
 		mSdfDomElement = sdfElement;
 		mVisible = true;
-	}
-	else
+	} else
 		mVisible = false;
 	return true;
 }

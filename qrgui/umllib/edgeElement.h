@@ -92,6 +92,8 @@ private slots:
 private:
 
 	QList<PossibleEdge> possibleEdges;
+
+
 	bool mIsDissectable;
 	int getPoint(const QPointF &location);
 	NodeElement *getNodeAt(const QPointF &position);

@@ -189,6 +189,7 @@ private slots:
 	void diagramInCreateListSelected(int num);
 
 	void on_actionNew_Diagram_triggered();
+
 	void updatePaletteIcons();
 
 	void autosave();

@@ -103,5 +103,6 @@ private:
 	bool addProperty(Property *property);
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
+
 	QString mDescription;
 };

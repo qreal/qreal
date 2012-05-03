@@ -95,6 +95,7 @@ void XmlCompiler::generateCode()
 		qDebug() << "ERROR: Main editor xml was not loaded, generation aborted";
 		return;
 	}
+
 	generateElementClasses();
 	generatePluginHeader();
 	generatePluginSource();

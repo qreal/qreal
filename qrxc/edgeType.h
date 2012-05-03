@@ -30,8 +30,8 @@ private:
 
 	virtual bool initAssociations();
 	virtual bool initGraphics();
+	virtual bool initDissectability();
 	void generateGraphics() const;
 	void generateEdgeStyle(QString const &styleString, utils::OutFile &out);
 	virtual bool initLabel(Label *label, QDomElement const &element, int const &count);
-	virtual bool initDissectability();
 };

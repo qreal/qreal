@@ -459,7 +459,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	}
 
 
-	//inserting new node "into" edge;
+	//inserting new node "into" edgeId in;
 	Id in = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
 	Id out = in;
 	if (dynamic_cast<NodeElement*>(e)) {
@@ -467,7 +467,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 			EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
 			if(dynamic_cast<EdgeElement*>(item) && edge->isDissectable()){// check if item is an edge and the edge is dissectable
 				NodeElement *oldTo= edge->dst();
-
+				if (oldTo){//check has edge dst
 				edge->removeLink(oldTo);
 				mMVIface->graphicalAssistApi()->setTo(edge->id(), in);
 
@@ -479,6 +479,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 				edge->connectToPort();
 				oldTo->arrangeLinks();
 				break;
+				}
 			}
 		}
 	}

@@ -35,6 +35,7 @@ private:
 	bool hasPointPorts();
 	bool initSdf();
 	void generateSdf() const;
+
 	bool initPorts();
 	bool initPointPorts(QDomElement const &portsElement);
 	bool initLinePorts(QDomElement const &portsElement);
