@@ -84,7 +84,7 @@ MainWindow::MainWindow()
 	mUi->setupUi(this);
 
 	if (showSplash) {
-        splash->show();
+		splash->show();
 		QApplication::processEvents();
 	}
 	else {
@@ -1322,7 +1322,6 @@ void MainWindow::suggestToCreateDiagram()
 
 	QObject::connect(&okButton, SIGNAL(clicked()), this, SLOT(setDiagramCreateFlag()));
 	QObject::connect(&okButton, SIGNAL(clicked()), &dialog, SLOT(close()));
-//    QObject::connect(&okButton, SIGNAL(clicked()), this, SLOT(suggestToCreateDragonDiagram()));
 
 	diagramsListWidget.setCurrentRow(0);
 	mDiagramCreateFlag = false;
@@ -1368,124 +1367,6 @@ void MainWindow::createDiagram(QString const &idString)
 	mUi->logicalModelExplorer->setCurrentIndex(logicalIndex);
 	openNewTab(index);
 }
-
-void MainWindow::suggestToCreateDragonDiagram()
-{
-	QDialog dialog;
-	QVBoxLayout vLayout;
-	QHBoxLayout hLayout;
-	dialog.setLayout(&vLayout);
-	dialog.setMinimumSize(320, 240);
-	dialog.setMaximumSize(320, 240);
-	dialog.setWindowTitle(tr("Choose one of prototype"));
-
-	QLabel label(tr("Choose diagram's prototype you want work with:"));
-	QListWidget diagramsListWidget;
-	diagramsListWidget.setParent(&dialog);
-
-	diagramsListWidget.addItem("first prototype");
-	diagramsListWidget.addItem("second prototype");
-
-	QPushButton cancelButton;
-	cancelButton.setText(tr("Cancel"));
-	QPushButton okButton;
-	okButton.setText(tr("Ok"));
-
-	QObject::connect(&diagramsListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(dragonPrototypeTypeSelect(int)));
-	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(createDragonPrototype()));
-	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), &dialog, SLOT(close()));
-	QObject::connect(&dialog, SIGNAL(destroyed()), this, SLOT(diagramDeselect()));
-
-	QObject::connect(&cancelButton, SIGNAL(clicked()), this, SLOT(diagramDeselect()));
-	QObject::connect(&cancelButton, SIGNAL(clicked()), &dialog, SLOT(close()));
-
-	QObject::connect(&okButton, SIGNAL(clicked()), this, SLOT(createDragonPrototype()));
-	QObject::connect(&okButton, SIGNAL(clicked()), &dialog, SLOT(close()));
-
-
-	diagramsListWidget.setCurrentRow(0);
-
-	vLayout.addWidget(&label);
-	vLayout.addWidget(&diagramsListWidget);
-	hLayout.addWidget(&okButton);
-	hLayout.addWidget(&cancelButton);
-
-	vLayout.addLayout(&hLayout);
-
-	dialog.exec();
-}
-
-void MainWindow::dragonPrototypeTypeSelect(int num)
-{
-	dragonPrototypeType = num;
-}
-
-void MainWindow::createDragonPrototype()
-{
-	QModelIndex const index = mUi->graphicalModelExplorer->currentIndex();
-	Id const created = mModels->graphicalModelAssistApi().idByIndex(index);
-
- //   Id const initial("DragonDiagramMetamodel", "DragonDiagram", "DInitialNode", QUuid::createUuid().toString());
- //   mModels->graphicalModelAssistApi().createElement(created, initial, false, "initial", QPointF(0,0));
-
- //
-	if (dragonPrototypeType == 0){
-		Id const initial("DragonDiagramMetamodel", "DragonDiagram", "DragonInitialNode", QUuid::createUuid().toString());
-		mModels->graphicalModelAssistApi().createElement(created, initial, false, "initial", QPointF(0,0));
-
-		Id const final("DragonDiagramMetamodel", "DragonDiagram", "DragonFinalNode", QUuid::createUuid().toString());
-		mModels->graphicalModelAssistApi().createElement(created, final, false, "final", QPointF(0,200));
-
-		Id const flow("DragonDiagramMetamodel", "DragonDiagram", "DragonFlow", QUuid::createUuid().toString());
-
-		mModels->graphicalModelAssistApi().createElement(created, flow, false, "flow", QPointF(0,200));
-		mModels->graphicalModelAssistApi().setFrom(flow, initial);
-		mModels->graphicalModelAssistApi().setTo(flow, final);
-		return;
-	  }
-  else{
-		Id const initial("DragonDiagramMetamodel", "DragonDiagram", "DragonInitialNode", QUuid::createUuid().toString());
-		mModels->graphicalModelAssistApi().createElement(created, initial, false, "initial", QPointF(0,0));
-		Id const firstTitle("DragonDiagramMetamodel", "DragonDiagram", "DragonActionNode", QUuid::createUuid().toString());
-	   mModels->graphicalModelAssistApi().createElement(created, firstTitle, false, "firstTitle", QPointF(0,100));
-	   Id const endOfFirstTitle("DragonDiagramMetamodel", "DragonDiagram", "DragonActionNode", QUuid::createUuid().toString());
-	   mModels->graphicalModelAssistApi().createElement(created, endOfFirstTitle, false, "endOfFirstTitle", QPointF(0,200));
-
-	   Id const secondTitle("DragonDiagramMetamodel", "DragonDiagram", "DragonActionNode", QUuid::createUuid().toString());
-	   mModels->graphicalModelAssistApi().createElement(created, secondTitle, false, "secondTitle", QPointF(100,100));
-
-	   Id const final("DragonDiagramMetamodel", "DragonDiagram", "DragonFinalNode", QUuid::createUuid().toString());
-	   mModels->graphicalModelAssistApi().createElement(created, final, false, "final", QPointF(100,200));
-}
-	 /*
-	   Id const flowBetweenInitialAndFirstTitle("BlockDiagramMetamodel", "DragonDiagram", "DragonFlow", QUuid::createUuid().toString());
-	   mModels->graphicalModelAssistApi().createElement(created, flowBetweenInitialAndFirstTitle, false, "flowBetweenInNnFirstTitle", QPointF(0,100));
-	   mModels->graphicalModelAssistApi().setFrom(flowBetweenInitialAndFirstTitle, initial);
-	   mModels->graphicalModelAssistApi().setTo(flowBetweenInitialAndFirstTitle, firstTitle);
-
-	   Id const flowBetweenFirstTitleAndEndFirstTitle("BlockDiagramMetamodel", "DragonDiagram", "DragonFlow", QUuid::createUuid().toString());
-	   mModels->graphicalModelAssistApi().createElement(created, flowBetweenFirstTitleAndEndFirstTitle, false, "flowBetweenFirstTitleAndEndFirstTitle", QPointF(0,200));
-	   mModels->graphicalModelAssistApi().setFrom(flowBetweenFirstTitleAndEndFirstTitle, firstTitle);
-	   mModels->graphicalModelAssistApi().setTo(flowBetweenFirstTitleAndEndFirstTitle, endOfFirstTitle);
-
-	   Id const flowBetweenEndFirstTitleAndFlow("BlockDiagramMetamodel", "DragonDiagram", "DragonFlow", QUuid::createUuid().toString());
-	   mModels->graphicalModelAssistApi().createElement(created, flowBetweenEndFirstTitleAndFlow, false, "flowBetweenEndFirstTitleAndFlow", QPointF(0,100));
-	   mModels->graphicalModelAssistApi().setFrom(flowBetweenEndFirstTitleAndFlow, endOfFirstTitle);
-	   mModels->graphicalModelAssistApi().setTo(flowBetweenEndFirstTitleAndFlow, flowBetweenInitialAndFirstTitle);
-
-	   Id const flowBetweenFlowAndSecondTitle("BlockDiagramMetamodel", "DragonDiagram", "DragonFlow", QUuid::createUuid().toString());
-	   mModels->graphicalModelAssistApi().createElement(created, flowBetweenFlowAndSecondTitle, false, "flowBetweenFlowAndSecondTitle", QPointF(100,100));
-	   mModels->graphicalModelAssistApi().setFrom(flowBetweenFlowAndSecondTitle, flowBetweenInitialAndFirstTitle);
-	   mModels->graphicalModelAssistApi().setTo(flowBetweenFlowAndSecondTitle, secondTitle);
-
-	   Id const flowBetweenSecondTitleAndFinal("BlockDiagramMetamodel", "DragonDiagram", "DragonFlow", QUuid::createUuid().toString());
-	   mModels->graphicalModelAssistApi().createElement(created, flowBetweenSecondTitleAndFinal, false, "flowBetweenSecondTitleAndFinal", QPointF(100,200));
-	   mModels->graphicalModelAssistApi().setFrom(flowBetweenSecondTitleAndFinal, secondTitle);
-	   mModels->graphicalModelAssistApi().setTo(flowBetweenSecondTitleAndFinal, final);
-
-	   }*/
-}//*/
-
 
 void MainWindow::saveAll()
 {
