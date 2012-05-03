@@ -43,7 +43,7 @@ bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &source
 	mCurrentEditor = inputXmlFileInfo.absoluteFilePath();
 	mSourcesRootFolder = sourcesRootFolder;
 	QDir const startingDir = inputXmlFileInfo.dir();
-    if (!loadXmlFile(startingDir, inputXmlFileInfo.fileName()))
+	if (!loadXmlFile(startingDir, inputXmlFileInfo.fileName()))
 		return false;
 	generateCode();
 	return true;
@@ -95,8 +95,7 @@ void XmlCompiler::generateCode()
 		qDebug() << "ERROR: Main editor xml was not loaded, generation aborted";
 		return;
 	}
-
-    generateElementClasses();
+	generateElementClasses();
 	generatePluginHeader();
 	generatePluginSource();
 	generateResourceFile();
@@ -119,7 +118,7 @@ void XmlCompiler::generateElementClasses()
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementTitleHelpers.h\"\n\n"
 		;
 
-    foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values())
 			type->generateCode(out);
 }
@@ -634,7 +633,7 @@ void XmlCompiler::generateNodesAndEdges(utils::OutFile &out)
 
 void XmlCompiler::generateProperties(OutFile &out)
 {
-    generateListMethod(out, "getPropertyNames(QString const &/*diagram*/, QString const &element)", PropertiesGenerator());
+	generateListMethod(out, "getPropertyNames(QString const &/*diagram*/, QString const &element)", PropertiesGenerator());
 }
 
 void XmlCompiler::generateContainedTypes(OutFile &out)
