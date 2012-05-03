@@ -2,6 +2,7 @@
 
 #include <QEventLoop>
 #include <QSet>
+#include <QtCore/QDebug>
 
 using namespace qReal;
 
@@ -109,8 +110,8 @@ void RefactoringFinder::highlightMatch()
 	if (findMatch()) {
 	foreach (Id const &id, mMatch->keys()) {
 		mInterpretersInterface.highlight(mMatch->value(id), false);
+//		qDebug() << id.toString() << mMatch->value(id).toString();
 	}
-
 	QEventLoop loop;
 	QTimer::singleShot(2000, &loop, SLOT(quit()));
 	loop.exec();
