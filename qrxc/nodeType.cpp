@@ -46,7 +46,7 @@ bool NodeType::initAssociations()
 
 bool NodeType::initDissectability()
 {
-    return true;
+	return true;
 }
 
 bool NodeType::initGraphics()
@@ -62,7 +62,8 @@ bool NodeType::initSdf()
 		mHeight = sdfElement.attribute("sizey").toInt();
 		mSdfDomElement = sdfElement;
 		mVisible = true;
-	} else
+	}
+	else
 		mVisible = false;
 	return true;
 }
@@ -343,7 +344,7 @@ void NodeType::generateCode(OutFile &out)
 	<< (mContainerProperties.maximizesChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
 
-    << "\t\tbool isDissectable()\n\t\t{\n\t\t\treturn false;\n\t\t}\n\n"
+	<< "\t\tbool isDissectable()\n\t\t{\n\t\t\treturn false;\n\t\t}\n\n"
 
 	<< "\t\tbool isPort()\n\t\t{\n"
 	<< (mIsPin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")

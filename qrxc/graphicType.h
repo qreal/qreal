@@ -96,13 +96,12 @@ private:
 		, QStringList &resultingList, QString const &fieldName, bool const isNeedToNormalizeAtt) const;
 
 	virtual bool initGraphics() = 0;
-    virtual bool initAssociations() = 0;
-    virtual bool initDissectability() = 0;
+	virtual bool initAssociations() = 0;
+	virtual bool initDissectability() = 0;
 	virtual bool initLabel(Label *label, QDomElement const &element, int const &count) = 0;
 
 	bool addProperty(Property *property);
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
-
 	QString mDescription;
 };

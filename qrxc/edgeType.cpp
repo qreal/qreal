@@ -84,7 +84,7 @@ bool EdgeType::initGraphics()
 		}
 		else {
 			bool success = true;
-            int lineWidthInt = lineWidth.toInt(&success);
+			int lineWidthInt = lineWidth.toInt(&success);
 			if (!success) {
 				qDebug() << "ERROR: line width is not a number";
 				return false;
@@ -137,22 +137,23 @@ bool EdgeType::initGraphics()
 
 bool EdgeType::initDissectability()
 {
-    QDomElement dissectabilityElement = mLogic.firstChildElement("dissectability");
+	QDomElement dissectabilityElement = mLogic.firstChildElement("dissectability");
 
-    mIsDissectable = "false";
-    if (dissectabilityElement.isNull())
-    {
-        return true;
-    }
-    QString IsDissectable = dissectabilityElement.attribute("isDissectable");
-    if (IsDissectable != "true" && IsDissectable != "false")
-    {
-        qDebug() << "ERROR: can't parse dissectability";
-        return false;
-    }
-    mIsDissectable = IsDissectable;
-    return true;
+	mIsDissectable = "false";
+	if (dissectabilityElement.isNull())
+	{
+		return true;
+	}
+	QString IsDissectable = dissectabilityElement.attribute("isDissectable");
+	if (IsDissectable != "true" && IsDissectable != "false")
+	{
+		qDebug() << "ERROR: can't parse dissectability";
+		return false;
+	}
+	mIsDissectable = IsDissectable;
+	return true;
 }
+
 
 bool EdgeType::initLabel(Label *label, QDomElement const &element, int const &count)
 {
@@ -209,8 +210,8 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\tvoid paint(QPainter *, QRectF &){}\n"
 	<< "\t\tbool isNode() { return false; }\n"
 	<< "\t\tbool isResizeable() { return true; }\n"
-    << "\t\tbool isContainer() { return false; }\n"
-    << "\t\tbool isDissectable() { return " << mIsDissectable << "; }\n"
+	<< "\t\tbool isContainer() { return false; }\n"
+	<< "\t\tbool isDissectable() { return " << mIsDissectable << "; }\n"
 	<< "\t\tbool isSortingContainer() { return false; }\n"
 	<< "\t\tint sizeOfForestalling() { return 0; }\n"
 	<< "\t\tint sizeOfChildrenForestalling() { return 0; }\n"
@@ -225,14 +226,14 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\t\treturn list;\n"
 	<< "\t\t}\n"
 	<< "\t\tbool hasPorts() { return false; }\n"
-    << "\t\tint getPenWidth() { return " << mLineWidth << "; }\n"
+	<< "\t\tint getPenWidth() { return " << mLineWidth << "; }\n"
 	<< "\t\tQColor getPenColor() { return QColor("
 	<< mLineColor.red() << ","
 	<< mLineColor.green() << ","
 	<< mLineColor.blue()
 	<< "); }\n"
-    << "\t\tQt::PenStyle getPenStyle() { ";
-    if (mLineType != "")
+	<< "\t\tQt::PenStyle getPenStyle() { ";
+	if (mLineType != "")
 		out() << "return " << mLineType << "; }\n";
 	else
 		out() << "return Qt::SolidLine; }\n";

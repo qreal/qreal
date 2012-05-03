@@ -1317,7 +1317,6 @@ void MainWindow::suggestToCreateDiagram()
 	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), &dialog, SLOT(close()));
 
 	QObject::connect(&dialog, SIGNAL(destroyed()), this, SLOT(diagramInCreateListDeselect()));
-
 	QObject::connect(&cancelButton, SIGNAL(clicked()), &dialog, SLOT(close()));
 
 	QObject::connect(&okButton, SIGNAL(clicked()), this, SLOT(setDiagramCreateFlag()));

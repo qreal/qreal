@@ -29,13 +29,12 @@ private:
 
 	virtual bool initAssociations();
 	virtual bool initGraphics();
-    virtual bool initDissectability();
+	virtual bool initDissectability();
 
 	bool hasLinePorts();
 	bool hasPointPorts();
 	bool initSdf();
 	void generateSdf() const;
-
 	bool initPorts();
 	bool initPointPorts(QDomElement const &portsElement);
 	bool initLinePorts(QDomElement const &portsElement);

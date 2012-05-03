@@ -26,12 +26,12 @@ private:
 	QString mLineType;
 	QColor mLineColor;
 	int mLineWidth;
-    QString mIsDissectable;
+	QString mIsDissectable;
 
 	virtual bool initAssociations();
-    virtual bool initGraphics();
-    virtual bool initDissectability();
+	virtual bool initGraphics();
 	void generateGraphics() const;
 	void generateEdgeStyle(QString const &styleString, utils::OutFile &out);
 	virtual bool initLabel(Label *label, QDomElement const &element, int const &count);
+	virtual bool initDissectability();
 };

@@ -30,7 +30,7 @@ public:
 	virtual bool initPossibleEdges();
 	virtual void initTitles();
 
-    bool isDissectable();
+	bool isDissectable();
 	void adjustLink();
 	bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true, bool jumpsOnly = false);
 	bool shouldReconnect() const;
@@ -64,7 +64,7 @@ public:
 	virtual void setColorRect(bool bl);
 	void breakPointHandler(QPointF const &pos);
 	bool isBreakPointPressed();
-    void breakPointUnpressed();
+	void breakPointUnpressed();
 
 	void highlight(QColor const color = Qt::red);
 
@@ -82,19 +82,17 @@ protected:
 	QString mText;
 	QString mFromMult, mToMult;
 	ArrowType mStartArrowStyle;
-    ArrowType mEndArrowStyle;
+	ArrowType mEndArrowStyle;
 
 private slots:
 	void addPointHandler(QPointF const &pos);
 	void delPointHandler(QPointF const &pos);
 	void squarizeHandler(QPointF const &pos);
-    void minimizeHandler(QPointF const &pos);
+	void minimizeHandler(QPointF const &pos);
 private:
 
 	QList<PossibleEdge> possibleEdges;
-
-
-    bool mIsDissectable;
+	bool mIsDissectable;
 	int getPoint(const QPointF &location);
 	NodeElement *getNodeAt(const QPointF &position);
 	void updateLongestPart();
