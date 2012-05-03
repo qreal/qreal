@@ -338,8 +338,8 @@ void D2RobotModel::countNewCoord()
 
 		mAngle += gammaDegrees;
 	} else {
-		deltaY = averageSpeed * timeInterval * sin(mAngle * M_PI / 180);
-		deltaX = averageSpeed * timeInterval * cos(mAngle * M_PI / 180);
+		deltaY = averageSpeed * timeInterval * sin(mAngle * M_PI / 180)*4;
+		deltaX = averageSpeed * timeInterval * cos(mAngle * M_PI / 180)*4;
 	}
 
 	mPos.setX(mPos.x() + deltaX);
