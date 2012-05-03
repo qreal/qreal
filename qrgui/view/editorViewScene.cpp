@@ -475,17 +475,20 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 
                 Id parentId = newParent ? newParent->id() : mMVIface->rootId();
                 Id const flow("DragonDiagramMetamodel", "DragonDiagram", "DragonFlow", QUuid::createUuid().toString());
-
-                Id flow1;
-                flow1 = mMVIface->graphicalAssistApi()->createElement(parentId, flow, isFromLogicalModel, "flow", QPointF(0,200));
+                mMVIface->graphicalAssistApi()->createElement(parentId, flow, isFromLogicalModel, "flow", scenePos);
                 mMVIface->graphicalAssistApi()->setFrom(flow, out);
                 mMVIface->graphicalAssistApi()->setTo(flow, oldTo->id());
-
                 edge->connectToPort();
-                //EdgeElement *edgeEl = dynamic_cast<EdgeElement*> (mWindow->manager()->graphicalObject(flow1));
-                //edgeEl->connectToPort();
                 oldTo->arrangeLinks();
 
+                //mMVIface->graphicalAssistApi()->createElement(parentId, flow, isFromLogicalModel, "flow", position);
+                //mMVIface->graphicalAssistApi()->setFrom(flow, out);
+                //mMVIface->graphicalAssistApi()->setTo(flow, oldTo->id());
+
+                //edge->connectToPort();
+                //EdgeElement *edgeEl = dynamic_cast<EdgeElement*> (mWindow->manager()->graphicalObject(flow));
+                //edgeEl->connectToPort();
+                //oldTo->arrangeLinks();
                 break;
             }
         }
@@ -494,7 +497,6 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
     if (e) {
         delete e;
     }
-
 
     emit elementCreated(id);
 }
