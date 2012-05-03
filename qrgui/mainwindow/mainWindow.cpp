@@ -1329,7 +1329,7 @@ void MainWindow::suggestToCreateDiagram()
 
     QObject::connect(&okButton, SIGNAL(clicked()), this, SLOT(setDiagramCreateFlag()));
     QObject::connect(&okButton, SIGNAL(clicked()), &dialog, SLOT(close()));
-    QObject::connect(&okButton, SIGNAL(clicked()), this, SLOT(suggestToCreateDragonDiagram()));
+//    QObject::connect(&okButton, SIGNAL(clicked()), this, SLOT(suggestToCreateDragonDiagram()));
 
     diagramsListWidget.setCurrentRow(0);
     mDiagramCreateFlag = false;
@@ -1398,8 +1398,6 @@ void MainWindow::suggestToCreateDragonDiagram()
     QPushButton okButton;
     okButton.setText(tr("Ok"));
 
-// something'll be fixed later
-
     QObject::connect(&diagramsListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(dragonPrototypeTypeSelect(int)));
     QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(createDragonPrototype()));
     QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), &dialog, SLOT(close()));
@@ -1413,7 +1411,6 @@ void MainWindow::suggestToCreateDragonDiagram()
 
 
     diagramsListWidget.setCurrentRow(0);
- //   diagramsListWidget.currentRow();
 
     vLayout.addWidget(&label);
     vLayout.addWidget(&diagramsListWidget);
@@ -1497,15 +1494,10 @@ void MainWindow::createDragonPrototype()
        mModels->graphicalModelAssistApi().setFrom(flowBetweenSecondTitleAndFinal, secondTitle);
        mModels->graphicalModelAssistApi().setTo(flowBetweenSecondTitleAndFinal, final);
 
-       }//*/
-}
+       }*/
+}//*/
 
 
-
-
-
-
-//////////////*/
 void MainWindow::saveAll()
 {
     if (mSaveFile.isEmpty() || mIsNewProject) {
