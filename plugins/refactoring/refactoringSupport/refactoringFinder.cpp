@@ -453,7 +453,7 @@ Id RefactoringFinder::getLinkEndModel(const qReal::Id &linkInModel, const qReal:
 {
 	Id const linkTo = mLogicalModelApi.logicalRepoApi().to(linkInModel);
 	if (linkTo == nodeInModel) {
-		return mLogicalModelApi.logicalRepoApi().to(linkInModel);
+		return mLogicalModelApi.logicalRepoApi().from(linkInModel);
 	}
 	return linkTo;
 }
