@@ -68,6 +68,7 @@ private:
 	bool compareElementTypesAndProperties(Id const &first, Id const &second) const;
 
 	bool isEdge(Id const &element) const;
+	bool isEdgeModel(const Id &element) const;
 
 	Id to(Id const &id) const;
 	Id from(Id const &id) const;
@@ -88,6 +89,7 @@ private:
 	IdList *mNodesWithControlMark;
 
 	QHash<Id, Id> *mMatch;
+	QList<QHash<Id, Id> > mMatches;
 
 	IdList mCurrentMatchedGraphInRule;
 	IdList mNodesHavingOutsideLinks;

@@ -8,8 +8,7 @@ using namespace qReal;
 
 QSet<QString> const defaultProperties = (QSet<QString>()
 		<< "from" << "incomingConnections" << "incomingUsages" << "links"
-		<< "name" << "outgoingConnections" << "outgoingUsages" << "to"
-/*		<< "ID"*/);
+		<< "name" << "outgoingConnections" << "outgoingUsages" << "to");
 
 RefactoringFinder::RefactoringFinder(
 		const LogicalModelAssistInterface &logicalModelApi
@@ -108,15 +107,20 @@ void RefactoringFinder::loadRefactoringRule()
 void RefactoringFinder::highlightMatch()
 {
 	if (findMatch()) {
-	foreach (Id const &id, mMatch->keys()) {
-		mInterpretersInterface.highlight(mMatch->value(id), false);
-//		qDebug() << id.toString() << mMatch->value(id).toString();
-	}
-	QEventLoop loop;
-	QTimer::singleShot(2000, &loop, SLOT(quit()));
-	loop.exec();
+		for (int i = 0; i < mMatches.size(); ++i) {
+			QHash <Id, Id> currentMatch = mMatches.at(i);
+			foreach (Id const &id, currentMatch.keys()) {
+				mInterpretersInterface.highlight(currentMatch.value(id), false);
+			}
+			QEventLoop loop;
+			QTimer::singleShot(500, &loop, SLOT(quit()));
+			loop.exec();
 
-	mInterpretersInterface.dehighlight();
+			mInterpretersInterface.dehighlight();
+			QEventLoop loop1;
+			QTimer::singleShot(500, &loop1, SLOT(quit()));
+			loop1.exec();
+		}
 	}
 	else {
 		mInterpretersInterface.errorReporter()->addInformation("Not Found");
@@ -125,12 +129,15 @@ void RefactoringFinder::highlightMatch()
 
 bool RefactoringFinder::findMatch()
 {
+	mMatches.clear();
 	return checkRuleMatching();
 }
 
 bool RefactoringFinder::checkRuleMatching()
 {
 	mMatch = new QHash<Id, Id>();
+	QHash<Id, Id> currentMatch;
+	bool isMatched = false;
 
 	Id const startElement = getStartElement();
 	mNodesHavingOutsideLinks.append(startElement);
@@ -148,12 +155,15 @@ bool RefactoringFinder::checkRuleMatching()
 			mMatch->insert(startElement, element);
 
 			if (checkRuleMatchingRecursively()) {
-				return true;
+				isMatched = true;
+				currentMatch = *(mMatch);
+				mMatches.append(currentMatch);
+				qDebug() << mMatch->values().at(0);
 			}
 		}
 	}
 
-	return false;
+	return isMatched;
 }
 
 bool RefactoringFinder::checkRuleMatchingRecursively()
@@ -327,24 +337,23 @@ bool RefactoringFinder::compareLinks(Id const &first,Id const &second) const
 
 bool RefactoringFinder::compareElements(Id const &first, Id const &second) const
 {
-	bool result = compareElementTypesAndProperties(first, second);
-
-//	if (mNodesWithControlMark->contains(second)) {
-//			result = result && mCurrentNodesWithControlMark.contains(first);
-//		}
-//		if (mCurrentNodesWithControlMark.contains(first)) {
-//			result = result && mNodesWithControlMark->contains(second);
-//		}
-
-	return result;
+	return compareElementTypesAndProperties(first, second);
 }
 
 bool RefactoringFinder::compareElementTypesAndProperties(Id const &first,
 		Id const &second) const
 {
-	if (second.element() == "Element" || second.element() == "Link") {
+	bool firstIsNode = !isEdgeModel(first);
+	if (second.element() == "Element" && firstIsNode) {
 		QString const elementName = mRefactoringRepoApi->name(second);
-		if (elementName == "(Element)" || elementName == "(Link)" || elementName.contains("EXIST"))
+		if (elementName == "(Element)" || elementName.contains("EXIST"))
+			return true;
+		return (elementName == mGraphicalModelApi.name(first));
+	}
+
+	if (second.element() == "Link" && !firstIsNode) {
+		QString const elementName = mRefactoringRepoApi->name(second);
+		if (elementName == "(Link)" || elementName.contains("EXIST"))
 			return true;
 		return (elementName == mGraphicalModelApi.name(first));
 	}
@@ -402,6 +411,12 @@ bool RefactoringFinder::isEdge(Id const &element) const
 {
 	return to(element) != Id::rootId() ||
 			from(element) != Id::rootId();
+}
+
+bool RefactoringFinder::isEdgeModel(Id const &element) const
+{
+	return mLogicalModelApi.logicalRepoApi().to(element) != Id::rootId() ||
+			mLogicalModelApi.logicalRepoApi().from(element) != Id::rootId();
 }
 
 QVariant RefactoringFinder::getProperty(Id const &id, QString const &propertyName) const
