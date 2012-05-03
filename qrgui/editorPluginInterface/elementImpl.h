@@ -79,6 +79,7 @@ struct StatLine
   * */
 class ElementImpl {
 public:
+	virtual ~ElementImpl() {}
 	virtual void init(QRectF &contents, QList<StatPoint> &pointPorts,
 					  QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
 					  QList<ElementTitleInterface*> &titles,
@@ -95,7 +96,6 @@ public:
 	virtual QColor getPenColor() = 0;
 	virtual void drawStartArrow(QPainter *painter) const = 0;
 	virtual void drawEndArrow(QPainter *painter) const = 0;
-
 	virtual bool isDissectable() = 0;
 
 	/*Container properties*/
@@ -114,4 +114,3 @@ public:
 
 	virtual QStringList bonusContextMenuFields() = 0;
 };
-

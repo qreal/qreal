@@ -97,6 +97,8 @@ public slots:
 
     void showErrors(gui::ErrorReporter const * const errorReporter);
 
+	void changePaletteRepresentation();
+
 private slots:
 
     void setSceneFont();

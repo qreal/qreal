@@ -3,40 +3,47 @@
 #include "../../qrkernel/definitions.h"
 #include "paletteTree.h"
 #include <QtCore/QtAlgorithms>
-#include <QtGui/QLabel>
 #include <QtGui/QVBoxLayout>
+#include "../../qrkernel/settingsManager.h"
 
 using namespace qReal;
 using namespace gui;
 
 EditorManager * PaletteTree::mEditorManager = NULL;
 
-PaletteTree::DraggableElement::DraggableElement(Id const &id, QString const &name
-		, QString const &description, QIcon const &icon, QWidget *parent)
+PaletteTree::DraggableElement::DraggableElement(const Id &id, const QString &name
+		, const QString &description, const QIcon &icon, bool iconsOnly, QWidget *parent)
 	: QWidget(parent)
 	, mId(id)
 	, mIcon(icon)
 	, mText(name)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setContentsMargins(4, 4, 4, 4);
+	layout->setContentsMargins(0, 4, 0, 4);
 
-	QLabel *pic = new QLabel(this);
-	pic->setFixedSize(24, 24);  // the frame
-	pic->setPixmap(mIcon.pixmap(22, 22));
-	layout->addWidget(pic);
-
-	QLabel *text = new QLabel(this);
-	text->setText(mText);
-	layout->addWidget(text);
+	const int size = iconsOnly ? 50 : 30;
+	mLabel = new QLabel(this);
+	mLabel->setPixmap(mIcon.pixmap(size - 2, size - 2));
+	layout->addWidget(mLabel);
+	if (!iconsOnly) {
+		QLabel *text = new QLabel(this);
+		text->setText(mText);
+		layout->addWidget(text);
+		layout->addStretch();
+	}
 
 	setLayout(layout);
-
 	QString modifiedDescription = description;
 	if (!modifiedDescription.isEmpty()) {
 		modifiedDescription.insert(0, "<body>");  //turns alignment on
 		setToolTip(modifiedDescription);
 	}
+	setCursor(Qt::OpenHandCursor);
+}
+
+void PaletteTree::DraggableElement::setIconSize(int size)
+{
+	mLabel->setPixmap(mIcon.pixmap(size , size));
 }
 
 PaletteTree::PaletteTree(QWidget *parent)
@@ -49,7 +56,7 @@ void PaletteTree::addItemType(const Id &id, const QString &name, const QString &
 		, const QIcon &icon, QTreeWidget *tree, QTreeWidgetItem *parent)
 {
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(id, name, description, icon);
+	DraggableElement *element = new DraggableElement(id, name, description, icon, mIconsView);
 	parent->addChild(leaf);
 	tree->setItemWidget(leaf, 0, element);
 }
@@ -58,9 +65,9 @@ void PaletteTree::addTopItemType(const Id &id, const QString &name
 		, const QString &description, const QIcon &icon, QTreeWidget *tree)
 {
 	QTreeWidgetItem *item = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(id, name, description, icon);
+	DraggableElement *element = new DraggableElement(id, name, description, icon, mIconsView);
 	tree->addTopLevelItem(item);
-	tree->setItemWidget(item,0,element);
+	tree->setItemWidget(item, 0, element);
 }
 
 void PaletteTree::DraggableElement::dragEnterEvent(QDragEnterEvent * /*event*/)
@@ -149,10 +156,12 @@ void PaletteTree::collapse()
 
 void PaletteTree::setActiveEditor(int index)
 {
-	mCurrentEditor = index;
-	mTree->hide();
-	mTree = mEditorsTrees[index];
-	mTree->show();
+    if (0 <= index && index < mEditorsTrees.count()) {
+		mCurrentEditor = index;
+		mTree->hide();
+		mTree = mEditorsTrees[index];
+		mTree->show();
+	}
 }
 
 void PaletteTree::setActiveEditor(Id id)
@@ -179,6 +188,38 @@ void PaletteTree::expand()
 	}
 }
 
+void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, QTreeWidgetItem *item)
+{
+	if (mItemsCountInARow == 1 || !mIconsView) {
+		foreach (const Id &element, tmpIdList) {
+			addItemType(element, mEditorManager->friendlyName(element)
+					, mEditorManager->description(element)
+					, mEditorManager->icon(element), editorTree, item);
+		}
+		return;
+	}
+	for (IdList::ConstIterator it = tmpIdList.begin(); it != tmpIdList.end();) {
+		QWidget *field = new QWidget;
+		QHBoxLayout *layout = new QHBoxLayout;
+		int count = mItemsCountInARow;
+		for (; it != tmpIdList.end() && count-- > 0; ++it) {
+			DraggableElement *element = new DraggableElement(*it
+					, mEditorManager->friendlyName(*it)
+					, mEditorManager->description(*it)
+					, mEditorManager->icon(*it)
+					, true);
+			element->setToolTip(mEditorManager->friendlyName(*it));
+			layout->addWidget(element, count > 0 ? 50 : 0);
+		}
+		field->setLayout(layout);
+		field->setMinimumHeight(80);
+		QTreeWidgetItem *leaf = new QTreeWidgetItem;
+		item->addChild(leaf);
+		editorTree->setItemWidget(leaf, 0, field);
+
+	}
+}
+
 void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &editor, const Id &diagram)
 {
 	mEditorManager = &editorManager;
@@ -186,8 +227,9 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 
 	mComboBox->addItem(mEditorManager->friendlyName(diagram));
 
-	QTreeWidget *EditorTree = new QTreeWidget(this);
-	EditorTree->setHeaderHidden(true);
+	QTreeWidget *editorTree = new QTreeWidget(this);
+	editorTree->setHeaderHidden(true);
+	editorTree->setSelectionMode(QAbstractItemView::NoSelection);
 
 	IdList list = mEditorManager->elements(diagram);
 	qSort(list.begin(), list.end(), idLessThan);
@@ -211,34 +253,36 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 			}
 			qSort(tmpIdList.begin(), tmpIdList.end(), idLessThan);
 
-			foreach (const Id &element, tmpIdList) {
-				addItemType(element, mEditorManager->friendlyName(element)
-						, mEditorManager->description(element)
-						, mEditorManager->icon(element), EditorTree, item);
+			addItemsRow(tmpIdList, editorTree, item);
+
+			editorTree->addTopLevelItem(item);
+
+			if (mSettings->value(mEditorManager->friendlyName(diagram) + group, 0).toBool()) {
+				editorTree->expandItem(item);
 			}
-			EditorTree->addTopLevelItem(item);
 		}
 	} else {
 		foreach (const Id &element, list) {
 			addTopItemType(element, mEditorManager->friendlyName(element)
 					, mEditorManager->description(element)
-					, mEditorManager->icon(element), EditorTree);
+					, mEditorManager->icon(element), editorTree);
 		}
 	}
-	EditorTree->hide();
+	editorTree->hide();
 
-	mEditorsTrees.push_back(EditorTree);
+	mEditorsTrees.push_back(editorTree);
 
-	mLayout->addWidget(EditorTree);
+	mLayout->addWidget(editorTree);
 }
 
 void PaletteTree::initDone()
 {
 	connect(mComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setActiveEditor(int)));
-	setActiveEditor(0);
+	setActiveEditor(mSettings->value("CurrentIndex", 0).toInt());
+	resizeIcons();
 }
 
-void PaletteTree::setComboBox(Id id)
+void PaletteTree::setComboBox(Id const &id)
 {
 	mComboBox->setCurrentIndex(mCategories.value(id, -1));
 }
@@ -283,10 +327,6 @@ void PaletteTree::createPaletteTree()
 	mLayout = new QVBoxLayout(this);
 	mLayout->setSpacing(0);
 
-	QLabel *header = new QLabel("Palette");
-	header->setAlignment(Qt::AlignHCenter);
-	mLayout->addWidget(header);
-
 	mComboBox = new QComboBox;
 	mComboBox->setGeometry(0,0,300,50);
 	mLayout->addWidget(mComboBox);
@@ -294,28 +334,59 @@ void PaletteTree::createPaletteTree()
 	QHBoxLayout *hLayout = new QHBoxLayout;
 	hLayout->setSpacing(0);
 
-	mExpandAll  = new QPushButton(this);
-	mExpandAll->setGeometry(0,0,140,50);
-	mExpandAll->setText("Expand All");
+	mExpandAll = new QToolButton;
+	mExpandAll->setGeometry(0,0,30,30);
+	mExpandAll->setIcon(QIcon(":/icons/expandAll.png"));
+	mExpandAll->setToolTip(tr("Expand all"));
+	mExpandAll->setIconSize(QSize(30, 30));
 	connect(mExpandAll,SIGNAL(clicked()),this,SLOT(expand()));
 	hLayout->addWidget(mExpandAll);
 
-	mCollapseAll  = new QPushButton(this);
-	mCollapseAll->setGeometry(0,0,140,50);
-	mCollapseAll->setText("Collapse All");
+	mCollapseAll = new QToolButton;
+	mCollapseAll->setGeometry(0,0,30,30);
+	mCollapseAll->setIcon(QIcon(":/icons/collapseAll.png"));
+	mCollapseAll->setToolTip(tr("Collapse all"));
+	mCollapseAll->setIconSize(QSize(30, 30));
 	connect(mCollapseAll,SIGNAL(clicked()),this,SLOT(collapse()));
 	hLayout->addWidget(mCollapseAll);
-	mLayout->addLayout(hLayout,0);
+
+	mChangeRepresentation = new QToolButton;
+	mChangeRepresentation->setGeometry(0,0,30,30);
+	mChangeRepresentation->setIcon(QIcon(":/icons/changeRepresentation.png"));
+	mChangeRepresentation->setToolTip(tr("Change representation"));
+	mChangeRepresentation->setIconSize(QSize(30, 30));
+	connect(mChangeRepresentation, SIGNAL(clicked()), this, SLOT(changeRepresentation()));
+	hLayout->addWidget(mChangeRepresentation);
+
+	mLayout->addLayout(hLayout);
 
 	mTree = new QTreeWidget(this);
 	mTree->setHeaderHidden(true);
 	mLayout->addWidget(mTree);
+	mSettings = new QSettings("QReal", "PaletteItems");
+	setMinimumWidth(200);
 }
 
 void PaletteTree::deletePaletteTree()
 {
+	SettingsManager::setValue("PaletteRepresentation", mIconsView);
+	SettingsManager::setValue("PaletteIconsInARowCount", mItemsCountInARow);
+	int diagramIndex = 0;
+	foreach(const QTreeWidget *editorTree, mEditorsTrees) {
+		for (int j = 0; j < editorTree->topLevelItemCount(); j++) {
+			const QTreeWidgetItem *topItem = editorTree->topLevelItem(j);
+			if (topItem && topItem->isExpanded()) {
+				mSettings->setValue(mComboBox->itemText(diagramIndex) + topItem->text(0), 1);
+			}
+		}
+		diagramIndex++;
+	}
+	mSettings->setValue("CurrentIndex", mComboBox->currentIndex() >= 0 ? mComboBox->currentIndex() : 0);
+	mSettings->sync();
+	delete mSettings;
 	delete mCollapseAll;
 	delete mExpandAll;
+	delete mChangeRepresentation;
 	delete mComboBox;
 	delete mLayout;
 	qDeleteAll(mEditorsTrees);
@@ -332,4 +403,110 @@ PaletteTree::~PaletteTree()
 void PaletteTree::setComboBoxIndex(int index)
 {
 	mComboBox->setCurrentIndex(index);
+}
+
+void PaletteTree::setComboBoxIndex()
+{
+	mComboBox->setCurrentIndex(mSettings->value("CurrentIndex", 0).toInt());
+}
+
+bool PaletteTree::iconsView() const
+{
+	return mIconsView;
+}
+
+void PaletteTree::setIconsView(bool iconsView)
+{
+	mIconsView = iconsView;
+}
+
+void PaletteTree::loadEditors(EditorManager &editorManager)
+{
+	foreach (Id const editor, editorManager.editors()) {
+		foreach (Id const diagram, editorManager.diagrams(editor)) {
+			addEditorElements(editorManager, editor, diagram);
+		}
+	}
+	const int index = mSettings->value("CurrentIndex", 0).toInt();
+	mSettings->clear();
+	mSettings->setValue("CurrentIndex", index >= 0 ? index : 0);
+}
+
+void PaletteTree::setItemsCountInARow(int count)
+{
+	mItemsCountInARow = count;
+}
+
+int PaletteTree::itemsCountInARow() const
+{
+	return mItemsCountInARow;
+}
+
+void PaletteTree::resizeIcons()
+{
+	if (mIconsView && mItemsCountInARow > 1) {
+		const int iconSize = 48;
+		const int widgetSize = this->size().width() - (iconSize << 1);
+		const int itemsCount = maxItemsCountInARow();
+		const int newSize = (widgetSize < itemsCount * iconSize)
+				? (widgetSize / itemsCount) : iconSize;
+		for (int i = 0; i < mTree->topLevelItemCount(); i++) {
+			for (int j = 0; j < mTree->topLevelItem(i)->childCount(); j++) {
+				QWidget *field = mTree->itemWidget(mTree->topLevelItem(i)->child(j), 0);
+				if (!field) {
+					break;
+				}
+				foreach (QObject *child, field->children()) {
+					DraggableElement *element = dynamic_cast<DraggableElement*>(child);
+					if (element) {
+						element->setIconSize(newSize);
+					}
+				}
+			}
+		}
+	}
+}
+
+void PaletteTree::resizeEvent(QResizeEvent *)
+{
+	resizeIcons();
+}
+
+int PaletteTree::maxItemsCountInARow() const
+{
+	int max = 0;
+	for (int i = 0; i < mTree->topLevelItemCount(); i++) {
+		for (int j = 0; j < mTree->topLevelItem(i)->childCount(); j++) {
+			QWidget *field = mTree->itemWidget(mTree->topLevelItem(i)->child(j), 0);
+			if (!field) {
+				break;
+			}
+			int itemsCount = field->children().count();
+			if (itemsCount > max) {
+				max = itemsCount;
+			}
+		}
+	}
+	return max ? max : mItemsCountInARow;
+}
+
+void PaletteTree::changeRepresentation()
+{
+	loadPalette(!mIconsView, mItemsCountInARow, *mEditorManager);
+	SettingsManager::setValue("PaletteRepresentation", mIconsView);
+	SettingsManager::setValue("PaletteIconsInARowCount", mItemsCountInARow);
+	emit paletteParametersChanged();
+}
+
+void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManager &editorManager)
+{
+	if (mEditorManager) {
+		recreateTrees();
+	}
+	mIconsView = isIconsView;
+	mEditorManager = &editorManager;
+	mItemsCountInARow = itemsCount;
+	loadEditors(editorManager);
+	initDone();
+	setComboBoxIndex();
 }
