@@ -111,15 +111,11 @@ void RefactoringFinder::highlightMatch()
 			QHash <Id, Id> currentMatch = mMatches.at(i);
 			foreach (Id const &id, currentMatch.keys()) {
 				mInterpretersInterface.highlight(currentMatch.value(id), false);
+				pause(500);
 			}
-			QEventLoop loop;
-			QTimer::singleShot(500, &loop, SLOT(quit()));
-			loop.exec();
-
+			pause(500);
 			mInterpretersInterface.dehighlight();
-			QEventLoop loop1;
-			QTimer::singleShot(500, &loop1, SLOT(quit()));
-			loop1.exec();
+			pause(1000);
 		}
 	}
 	else {
@@ -158,7 +154,6 @@ bool RefactoringFinder::checkRuleMatching()
 				isMatched = true;
 				currentMatch = *(mMatch);
 				mMatches.append(currentMatch);
-				qDebug() << mMatch->values().at(0);
 			}
 		}
 	}
@@ -471,4 +466,12 @@ Id RefactoringFinder::getLinkEndModel(const qReal::Id &linkInModel, const qReal:
 		return mLogicalModelApi.logicalRepoApi().from(linkInModel);
 	}
 	return linkTo;
+}
+
+void RefactoringFinder::pause(const int &time)
+{
+	QEventLoop loop;
+	QTimer::singleShot(time, &loop, SLOT(quit()));
+	loop.exec();
+
 }

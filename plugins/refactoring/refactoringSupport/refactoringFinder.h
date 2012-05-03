@@ -77,6 +77,8 @@ private:
 	IdList links(Id const &id) const;
 	IdList children(Id const &id) const;
 
+	void pause(int const &time);
+
 	gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	LogicalModelAssistInterface const &mLogicalModelApi;
 	GraphicalModelAssistInterface const &mGraphicalModelApi;

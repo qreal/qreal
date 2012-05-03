@@ -1,5 +1,10 @@
 digraph G { 
-rankdir=RL; 
-igbafehadcjaegigjjifbhdgecddjifg -> fjcfafaffcbbebghieabbacfbhgeache;
+rankdir=BT; 
 fjcfafaffcbbebghieabbacfbhgeache -> dbidbeegefajeceibhfhdcadecfajbjb;
+jjbcggcfeibdeafaadejdcijeeeaaceg -> fjcfafaffcbbebghieabbacfbhgeache;
+jjbcggcfeibdeafaadejdcijeeeaaceg -> eaccjcedagdeehagjgadfbecfbaiaehe;
+fahcaaefejgeebafidbegffbgaeaadjb -> jjbcggcfeibdeafaadejdcijeeeaaceg;
+fahcaaefejgeebafidbegffbgaeaadjb -> dgafffabhafdecbfibfbfbjjjibjbefd;
+gccadjaebbbfebdejefaefjcabcjhhdf -> fahcaaefejgeebafidbegffbgaeaadjb;
+cdbjbehdcddeeedjbjagbcadcigadijc -> gccadjaebbbfebdejefaefjcabcjhhdf;
 }
