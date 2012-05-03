@@ -459,7 +459,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	}
 
 
-	//inserting new node "into" edgeId in;
+	//inserting new node "into" edge;
 	Id in = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
 	Id out = in;
 	if (dynamic_cast<NodeElement*>(e)) {
