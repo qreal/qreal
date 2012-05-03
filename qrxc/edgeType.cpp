@@ -150,8 +150,7 @@ bool EdgeType::initDissectability()
         qDebug() << "ERROR: can't parse dissectability";
         return false;
     }
-    if (IsDissectable == "true"){
-        mIsDissectable = "true";}
+    mIsDissectable = IsDissectable;
     return true;
 }
 

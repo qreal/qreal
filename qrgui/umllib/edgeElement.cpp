@@ -379,8 +379,8 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 bool EdgeElement::isDissectable (){
-
-    return mElementImpl->isDissectable();}
+    return mElementImpl->isDissectable();
+}
 
 
 void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

@@ -452,7 +452,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
     ///////////////////////
     Id in;
     Id out;
-    if (id.diagram() == "DragonAtom"){
+    /*if (id.diagram() == "DragonAtom"){
         if (id.element() == "Atom1Node"){
 
         Id node1("DragonDiagramMetamodel", "DragonDiagram", "DragonActionNode", QUuid::createUuid().toString());
@@ -490,12 +490,11 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
             mMVIface->graphicalAssistApi()->setFrom(flow2, node2);
             mMVIface->graphicalAssistApi()->setTo(flow2, out);
             }
-    }
-    else{
+    }//*/
+    //else{
     in = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
-    out = in;}
-    //////////////
-   //what does the folloing code mean?
+    out = in;
+    //}
     NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
 	if (parentNode != NULL) {
 		Element *nextNode = parentNode->getPlaceholderNextElement();
@@ -503,7 +502,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 			mMVIface->graphicalAssistApi()->stackBefore(id, nextNode->id());
 		}
     }
-    //////////////////////
+
     //inserting new icon "into" arrow
     if (dynamic_cast<NodeElement*>(e)) { // check if e is node
         foreach (QGraphicsItem *item, items(scenePos)) {
@@ -516,14 +515,21 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 
                 Id parentId = newParent ? newParent->id() : mMVIface->rootId();
                 Id const flow("DragonDiagramMetamodel", "DragonDiagram", "DragonFlow", QUuid::createUuid().toString());
-                mMVIface->graphicalAssistApi()->createElement(parentId, flow, isFromLogicalModel, "flow", QPointF(0,200));
+
+                Id flow1;
+                flow1 = mMVIface->graphicalAssistApi()->createElement(parentId, flow, isFromLogicalModel, "flow", QPointF(0,200));
                 mMVIface->graphicalAssistApi()->setFrom(flow, out);
                 mMVIface->graphicalAssistApi()->setTo(flow, oldTo->id());
+
+                edge->connectToPort();
+                //EdgeElement *edgeEl = dynamic_cast<EdgeElement*> (mWindow->manager()->graphicalObject(flow1));
+                //edgeEl->connectToPort();
+                oldTo->arrangeLinks();
 
                 break;
             }
         }
-    }//*/
+    }
 
     if (e) {
         delete e;
@@ -535,7 +541,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 
 void EditorViewScene::copy()
 {
-	mCopiedNode = dynamic_cast<NodeElement*>(selectedItems()[0]);
+    mCopiedNode = dynamic_cast<NodeElement*>(selectedItems()[0]);
 }
 
 void EditorViewScene::paste()
