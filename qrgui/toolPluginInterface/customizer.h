@@ -28,9 +28,10 @@ public:
 	}
 
 	/// Tells if we should show trace connections menu or not
+    // efimefim change back before pull request
 	virtual bool showConnectionRelatedMenus() const
 	{
-        return false;
+        return true;
 	}
 
     /// Tells if we should show library related menu or not

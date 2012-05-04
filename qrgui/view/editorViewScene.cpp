@@ -601,7 +601,10 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 void EditorViewScene::createLibStatusSubmenus(QMenu &contextMenu, const Element *const element) const
 {
     if (mainWindow()->showLibraryRelatedMenus()) {
-        ContextMenuAction *action = new ContextMenuAction("change lib status", mWindow);
+
+        QMenu *addLibMenu = contextMenu.addMenu("Add to library");
+
+        ContextMenuAction *action = new ContextMenuAction("Change lib status", mWindow);
         QList<QVariant> ids;
         ids << element->logicalId().toVariant() << element->id().toVariant();
 //       ids->append(element->logicalId().toVariant());
@@ -609,7 +612,9 @@ void EditorViewScene::createLibStatusSubmenus(QMenu &contextMenu, const Element 
         //efimefim
         action->setData(ids);
         connect(action, SIGNAL(triggered()), this, SLOT(changeLibStatus()));
-        contextMenu.addAction(action);
+        addLibMenu->addAction(action);
+
+
     }
 }
 
