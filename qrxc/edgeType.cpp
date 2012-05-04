@@ -47,8 +47,8 @@ bool EdgeType::initAssociations()
 		return false;
 	}
 	for (QDomElement element = associationsElement.firstChildElement("association");
-	!element.isNull();
-	element = element.nextSiblingElement("association"))
+		!element.isNull();
+		element = element.nextSiblingElement("association"))
 	{
 		Association *association = new Association();
 		if (!association->init(element))
@@ -144,13 +144,13 @@ bool EdgeType::initDissectability()
 	{
 		return true;
 	}
-	QString IsDissectable = dissectabilityElement.attribute("isDissectable");
-	if (IsDissectable != "true" && IsDissectable != "false")
+	QString isDissectable = dissectabilityElement.attribute("isDissectable");
+	if (isDissectable != "true" && isDissectable != "false")
 	{
 		qDebug() << "ERROR: can't parse dissectability";
 		return false;
 	}
-	mIsDissectable = IsDissectable;
+	mIsDissectable = isDissectable;
 	return true;
 }
 

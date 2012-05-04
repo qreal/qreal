@@ -7,6 +7,11 @@
 #include "../umllib/nodeElement.h"
 #include "gestures/mouseMovementManager.h"
 
+#include "editorViewMVIface.h"
+//#include "editorView.h"
+//#include "../mainwindow/mainWindow.h"
+
+
 //const int indexGrid = 30; // distance between two lines in the grid
 
 namespace qReal {
@@ -129,6 +134,8 @@ private:
 			, const char *slot) const;
 
 	void initContextMenu(Element *e, QPointF const &pos);
+
+	void insertNodeIntoEdge(qReal::Id &insertedNodeId, qReal::Id const &newParent, bool isFromLogicalModel,QPointF const &scenePos);
 
 	Element* mLastCreatedWithEdge;
 	NodeElement *mCopiedNode;

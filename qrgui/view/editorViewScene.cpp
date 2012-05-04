@@ -14,17 +14,17 @@
 using namespace qReal;
 
 EditorViewScene::EditorViewScene(QObject *parent)
-	: QGraphicsScene(parent)
-	, mLastCreatedWithEdge(NULL)
-	, mCopiedNode(NULL)
-	, mRightButtonPressed(false)
-	, mHighlightNode(NULL)
-	, mWindow(NULL)
-	, mPrevParent(0)
-	, mMouseMovementManager(NULL)
-	, mActionSignalMapper(new QSignalMapper(this))
-	, mTimer(new QTimer(this))
-	, mShouldReparentItems(false)
+		: QGraphicsScene(parent)
+		, mLastCreatedWithEdge(NULL)
+		, mCopiedNode(NULL)
+		, mRightButtonPressed(false)
+		, mHighlightNode(NULL)
+		, mWindow(NULL)
+		, mPrevParent(0)
+		, mMouseMovementManager(NULL)
+		, mActionSignalMapper(new QSignalMapper(this))
+		, mTimer(new QTimer(this))
+		, mShouldReparentItems(false)
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid", true).toBool();
 	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth", 10).toInt()) / 100;
@@ -99,8 +99,8 @@ void EditorViewScene::initMouseMoveManager()
 	}
 	QList<qReal::Id> elements = mWindow->manager()->elements(diagram);
 	delete mMouseMovementManager;
-	mMouseMovementManager = new MouseMovementManager(elements
-													 , mWindow->manager(), mWindow->gesturesPainter());
+	mMouseMovementManager = new MouseMovementManager(elements,
+		mWindow->manager(), mWindow->gesturesPainter());
 	connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
 	connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
 }
@@ -432,7 +432,6 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 		}
 	}
 
-
 	if(newParent && dynamic_cast<NodeElement*>(newParent)){
 		if (!canBeContainedBy(newParent->id(), id)) {
 			QString text;
@@ -458,30 +457,10 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 		}
 	}
 
-
-	//inserting new node "into" edgeId in;
-	Id in = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
-	Id out = in;
+	//inserting new node into edge
+	Id insertedNodeId = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
 	if (dynamic_cast<NodeElement*>(e)) {
-		foreach (QGraphicsItem *item, items(scenePos)) {
-			EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
-			if(dynamic_cast<EdgeElement*>(item) && edge->isDissectable()){// check if item is an edge and the edge is dissectable
-				NodeElement *oldTo= edge->dst();
-				if (oldTo){//check has edge dst
-				edge->removeLink(oldTo);
-				mMVIface->graphicalAssistApi()->setTo(edge->id(), in);
-
-				Id parentId = newParent ? newParent->id() : mMVIface->rootId();
-				Id const flow(edge->id().editor(), edge->id().diagram(), edge->id().element(), QUuid::createUuid().toString());
-				mMVIface->graphicalAssistApi()->createElement(parentId, flow, isFromLogicalModel, "flow", scenePos);
-				mMVIface->graphicalAssistApi()->setFrom(flow, out);
-				mMVIface->graphicalAssistApi()->setTo(flow, oldTo->id());
-				edge->connectToPort();
-				oldTo->arrangeLinks();
-				break;
-				}
-			}
-		}
+		insertNodeIntoEdge(insertedNodeId, parentId,isFromLogicalModel,scenePos);
 	}
 
 	if (e) {
@@ -489,6 +468,29 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	}
 
 	emit elementCreated(id);
+}
+
+void EditorViewScene::insertNodeIntoEdge(qReal::Id &insertedNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos){
+	foreach (QGraphicsItem *item, items(scenePos)) {
+		EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
+		if(edge && edge->isDissectable()){// check if item is an edge and the edge is dissectable
+			NodeElement *directedToNodeId = edge->dst();
+			if (directedToNodeId) {//check has edge dst
+				edge->removeLink(directedToNodeId);
+				mMVIface->graphicalAssistApi()->setTo(edge->id(), insertedNodeId);
+
+				Id const newEdge(edge->id().editor(), edge->id().diagram(), edge->id().element(), QUuid::createUuid().toString());
+				mMVIface->graphicalAssistApi()->createElement(parentId, newEdge, isFromLogicalModel, "flow", scenePos);
+				mMVIface->graphicalAssistApi()->setFrom(newEdge, insertedNodeId);
+				mMVIface->graphicalAssistApi()->setTo(newEdge, directedToNodeId->id());
+				edge->connectToPort();
+				directedToNodeId->arrangeLinks();
+				break;
+			}
+		}
+	}
+
+
 }
 
 void EditorViewScene::copy()
@@ -537,9 +539,9 @@ void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &n
 }
 
 void EditorViewScene::createAddConnectionMenu(Element const * const element
-											  , QMenu &contextMenu, QString const &menuName
-											  , IdList const &connectableTypes, IdList const &alreadyConnectedElements
-											  , IdList const &connectableDiagrams, const char *slot) const
+		, QMenu &contextMenu, QString const &menuName
+		, IdList const &connectableTypes, IdList const &alreadyConnectedElements
+		, IdList const &connectableDiagrams, const char *slot) const
 {
 	QMenu *addConnectionMenu = contextMenu.addMenu(menuName);
 
@@ -569,9 +571,9 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 }
 
 void EditorViewScene::createDisconnectMenu(Element const * const element
-										   , QMenu &contextMenu, QString const &menuName
-										   , IdList const &outgoingConnections, IdList const &incomingConnections
-										   , const char *slot) const
+		, QMenu &contextMenu, QString const &menuName
+		, IdList const &outgoingConnections, IdList const &incomingConnections
+		, const char *slot) const
 {
 	QMenu *disconnectMenu = contextMenu.addMenu(menuName);
 	IdList list = outgoingConnections;
@@ -592,30 +594,30 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 		// menu items "connect to"
 		// TODO: move to elements, they can call the model and API themselves
 		createAddConnectionMenu(element, contextMenu, tr("Add connection")
-								, mWindow->manager()->getConnectedTypes(element->id().type())
-								, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
-								, mMVIface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId())
-								, SLOT(connectActionTriggered())
-								);
+				, mWindow->manager()->getConnectedTypes(element->id().type())
+				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
+				, mMVIface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId())
+				, SLOT(connectActionTriggered())
+				);
 
 		createDisconnectMenu(element, contextMenu, tr("Disconnect")
-							 , mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
-							 , mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId())
-							 , SLOT(disconnectActionTriggered())
-							 );
+				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
+				, mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId())
+				, SLOT(disconnectActionTriggered())
+				);
 
 		createAddConnectionMenu(element, contextMenu, tr("Add usage")
-								, mWindow->manager()->getUsedTypes(element->id().type())
-								, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
-								, mMVIface->logicalAssistApi()->diagramsAbleToBeUsedIn(element->logicalId())
-								, SLOT(addUsageActionTriggered())
-								);
+				, mWindow->manager()->getUsedTypes(element->id().type())
+				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
+				, mMVIface->logicalAssistApi()->diagramsAbleToBeUsedIn(element->logicalId())
+				, SLOT(addUsageActionTriggered())
+				);
 
 		createDisconnectMenu(element, contextMenu, tr("Delete usage")
-							 , mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
-							 , mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId())
-							 , SLOT(deleteUsageActionTriggered())
-							 );
+				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
+				, mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId())
+				, SLOT(deleteUsageActionTriggered())
+				);
 
 		QMenu * const goToMenu = contextMenu.addMenu(tr("Go to"));
 

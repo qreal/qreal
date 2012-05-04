@@ -218,14 +218,6 @@ private:
 	QListWidget* createSaveListWidget();
 	void suggestToCreateDiagram();
 
-	//*added dragon exterminal
-	int dragonPrototypeType;
-
-	//*/
-
-
-
-
 	virtual void closeEvent(QCloseEvent *event);
 	void deleteFromExplorer(bool isLogicalModel);
 	void keyPressEvent(QKeyEvent *event);

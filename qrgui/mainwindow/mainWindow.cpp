@@ -1341,7 +1341,6 @@ void MainWindow::setDiagramCreateFlag()
 	mDiagramCreateFlag = true;
 }
 
-
 void MainWindow::diagramInCreateListDeselect()
 {
 	if (!mDiagramCreateFlag) {
