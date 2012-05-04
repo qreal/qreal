@@ -1875,7 +1875,7 @@ void MainWindow::closeProject()
 	setWindowTitle(mToolManager.customizer()->windowTitle());
 }
 
-void qReal::MainWindow::arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles)
+void MainWindow::arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles)
 {
 	Id diagramId = activeDiagram();
 	DotRunner *runner = new DotRunner(diagramId,
@@ -1885,4 +1885,23 @@ void qReal::MainWindow::arrangeElementsByDotRunner(const QString &algorithm, con
 	reinitModels();
 	activateItemOrDiagram(diagramId);
 	mUi->graphicalModelExplorer->setRootIndex(QModelIndex());
+}
+
+IdList MainWindow::selectedElementsOnActiveDiagram()
+{
+	if (!getCurrentTab()) {
+		return IdList();
+	}
+	IdList selected;
+	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
+
+	foreach (QGraphicsItem* item, items) {
+		Element* element = dynamic_cast<Element*>(item);
+		if (element) {
+			if (element->isSelected()) {
+				selected.append(element->id());
+			}
+		}
+	}
+	return selected;
 }

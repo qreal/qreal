@@ -80,6 +80,7 @@ public:
 	virtual bool pluginLoaded(QString const &pluginName);
 	virtual void saveDiagramAsAPictureToFile(const QString &fileName);
 	virtual void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles);
+	virtual IdList selectedElementsOnActiveDiagram();
 
 signals:
 	void gesturesShowed();

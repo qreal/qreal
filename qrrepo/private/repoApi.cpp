@@ -376,7 +376,7 @@ void RepoApi::saveTo(QString const &workingFile)
 	mClient.saveAll();
 }
 
-void RepoApi::saveDiagramsById(const QHash<qReal::Id, QString> &diagramIds)
+void RepoApi::saveDiagramsById(QHash<QString, IdList> const &diagramIds)
 {
 	mClient.saveDiagramsById(diagramIds);
 }

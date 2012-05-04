@@ -6,6 +6,7 @@
 #include <QProgressBar>
 #include <QDesktopWidget>
 #include <QtGui/QApplication>
+#include <QMessageBox>
 
 #include "../../../qrutils/xmlUtils.h"
 #include "../../../qrutils/outFile.h"
@@ -73,10 +74,12 @@ QList<qReal::ActionInfo> RefactoringPlugin::actions()
 	mRefactoringMenu->addAction(mGenerateAndLoadRefactoringEditorAction);
 
 	mOpenRefactoringWindowAction = new QAction(tr("Open Refactoring Window"), NULL);
+	mOpenRefactoringWindowAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_1));
 	connect(mOpenRefactoringWindowAction, SIGNAL(triggered()), this, SLOT(openRefactoringWindow()));
 	mRefactoringMenu->addAction(mOpenRefactoringWindowAction);
 
 	mSaveRefactoringAction = new QAction(tr("Save Refactoring"), NULL);
+	mSaveRefactoringAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
 	connect(mSaveRefactoringAction, SIGNAL(triggered()), this, SLOT(saveRefactoring()));
 	mRefactoringMenu->addAction(mSaveRefactoringAction);
 
@@ -231,19 +234,23 @@ void RefactoringPlugin::openRefactoringWindow()
 void RefactoringPlugin::saveRefactoring()
 {
 	IdList const childrenIDs = mLogicalModelApi->children(Id::rootId());
-	QHash<Id, QString> diagramIds;
+	QHash<QString, IdList> diagramIds;
 	foreach (Id const &childId, childrenIDs) {
 		if (childId.element() == "RefactoringDiagramNode" && childId == mMainWindowIFace->activeDiagram()) {
 			QString elementName = mGraphicalModelApi->name(childId).replace(" ", "")
 					.replace("(", "").replace(")", "");
 			if (elementName != "") {
 				QString fileName = mPathToRefactoringExamples + elementName;
-				diagramIds.insert(childId, fileName + ".qrs");
+				IdList list;
+				list << childId;
+				diagramIds.insert(fileName + ".qrs", list);
 				mMainWindowIFace->saveDiagramAsAPictureToFile(fileName + ".png");
 			}
 		}
 	}
 	mRepoControlIFace->saveDiagramsById(diagramIds);
+	QMessageBox::information(NULL, tr("Information"), tr("Saved successfully"), tr("Ok"));
+
 }
 
 QDomElement RefactoringPlugin::createPaletteElement(QString const &elementType, QDomDocument metamodel, QString const &displayedName)
@@ -326,10 +333,20 @@ void RefactoringPlugin::arrangeElementsRL()
 void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 {
 	QString refactoringPath = mPathToRefactoringExamples + refactoringName + ".qrs";
-	mRefactoringRepoApi->importFromDisk(refactoringPath);
-	if (mRefactoringFinder->findMatch()) {
+	mRefactoringRepoApi->open(refactoringPath);
+	if (mRefactoringFinder->refactoringRuleContainsSelectedSegment()) {
+		IdList selectedElementsOnScene = mMainWindowIFace->selectedElementsOnActiveDiagram();
+		foreach (Id const &selectedElement, selectedElementsOnScene) {
+			QColor const color = QColor(SettingsManager::value("refactoringColor"
+					, "cyan").toString());
+			mMainWindowIFace->highlight(selectedElement, false, color);
+		}
+	}
+	else if (mRefactoringFinder->findMatch()) {
 		mMatches = mRefactoringFinder->getMatches();
 		if (mMatches.isEmpty()) {
+			mMainWindowIFace->errorReporter()->addInformation(tr("No match"));
+			mRefactoringWindow->discard();
 			return;
 		}
 		QHash <Id, Id> currentMatch = mMatches.takeFirst();
@@ -339,6 +356,11 @@ void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 			mMainWindowIFace->highlight(currentMatch.value(id), false, color);
 		}
 	}
+	else {
+		mMainWindowIFace->errorReporter()->addInformation(tr("No match"));
+		mRefactoringWindow->discard();
+		return;
+	}
 	mRefactoringWindow->activateRestButtons();
 }
 
@@ -346,7 +368,7 @@ void qReal::refactoring::RefactoringPlugin::findNextRefactoring()
 {
 	mMainWindowIFace->dehighlight();
 	if (mMatches.isEmpty()) {
-		mMainWindowIFace->errorReporter()->addInformation("No next match");
+		mMainWindowIFace->errorReporter()->addInformation(tr("No next match"));
 		mRefactoringWindow->discard();
 	}
 	else {

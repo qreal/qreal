@@ -61,6 +61,9 @@ public:
 	/// @param algorithm Way of arrangement
 	/// @param absolutePathToDotFiles Path to directory DotFiles
 	virtual void arrangeElementsByDotRunner(QString const &algorithm, QString const &absolutePathToDotFiles) = 0;
+
+	/// returns selected elements on current tab
+	virtual IdList selectedElementsOnActiveDiagram() = 0;
 };
 
 }

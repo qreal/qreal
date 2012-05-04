@@ -242,8 +242,10 @@ void Client::addChildrenToRootObject()
 IdList Client::idsOfAllChildrenOf(Id id) const
 {
 	IdList result;
+	result.clear();
 	result.append(id);
-	foreach(Id childId,mObjects[id]->children())
+	IdList list = mObjects[id]->children();
+	foreach(Id const &childId, list)
 		result.append(idsOfAllChildrenOf(childId));
 	return result;
 }
@@ -254,6 +256,19 @@ QList<Object*> Client::allChildrenOf(Id id) const
 	result.append(mObjects[id]);
 	foreach(Id const &childId, mObjects[id]->children())
 		result.append(allChildrenOf(childId));
+	return result;
+}
+
+QList<Object*> Client::allChildrenOfWithLogicalId(Id id) const
+{
+	QList<Object*> result;
+	result.append(mObjects[id]);
+
+	// along with each ID we also add its logical ID.
+
+	foreach(Id const &childId, mObjects[id]->children())
+		result << allChildrenOf(childId)
+				<< allChildrenOf(logicalId(childId));
 	return result;
 }
 
@@ -276,14 +291,30 @@ void Client::save(IdList list) const
 	serializer.saveToDisk(toSave);
 }
 
-void Client::saveDiagramsById(const QHash<qReal::Id, QString> &diagramIds)
+void Client::saveWithLogicalId(qReal::IdList list) const
+{
+	QList<Object*> toSave;
+	foreach(Id const &id, list)
+		toSave.append(allChildrenOfWithLogicalId(id));
+
+	serializer.saveToDisk(toSave);
+}
+
+void Client::saveDiagramsById(QHash<QString, IdList> const &diagramIds)
 {
 	QString const currentWorkingFile = mWorkingFile;
-	foreach (qReal::Id const &id, diagramIds.keys()) {
-		QString const wFile = diagramIds[id];
-		setWorkingFile(wFile);
-		qReal::IdList elements = idsOfAllChildrenOf(id);
-		save(elements);
+	foreach (QString const &savePath, diagramIds.keys()) {
+		qReal::IdList diagrams = diagramIds[savePath];
+		setWorkingFile(savePath);
+		qReal::IdList elementsToSave;
+		foreach (qReal::Id const &id, diagrams) {
+			elementsToSave += idsOfAllChildrenOf(id);
+			// id is a graphical ID for this diagram
+			// we have to add logical diagram ID
+			// to this list manually
+			elementsToSave += logicalId(id);
+		}
+		saveWithLogicalId(elementsToSave);
 	}
 	setWorkingFile(currentWorkingFile);
 }

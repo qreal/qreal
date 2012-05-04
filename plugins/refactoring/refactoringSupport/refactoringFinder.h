@@ -20,6 +20,7 @@ public:
 
 	void highlightMatch();
 	bool findMatch();
+	bool refactoringRuleContainsSelectedSegment();
 	QList<QHash<Id, Id> > getMatches();
 
 private:

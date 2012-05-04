@@ -1,10 +1,7 @@
 digraph G { 
 rankdir=BT; 
-fjcfafaffcbbebghieabbacfbhgeache -> dbidbeegefajeceibhfhdcadecfajbjb;
-jjbcggcfeibdeafaadejdcijeeeaaceg -> fjcfafaffcbbebghieabbacfbhgeache;
-jjbcggcfeibdeafaadejdcijeeeaaceg -> eaccjcedagdeehagjgadfbecfbaiaehe;
-fahcaaefejgeebafidbegffbgaeaadjb -> jjbcggcfeibdeafaadejdcijeeeaaceg;
-fahcaaefejgeebafidbegffbgaeaadjb -> dgafffabhafdecbfibfbfbjjjibjbefd;
-gccadjaebbbfebdejefaefjcabcjhhdf -> fahcaaefejgeebafidbegffbgaeaadjb;
-cdbjbehdcddeeedjbjagbcadcigadijc -> gccadjaebbbfebdejefaefjcabcjhhdf;
+beaibbbbifafeegfjfahhddihgajbfac -> ddjhbgbhdejbeajbjagdfdfeecaehdjd;
+aaacbcfbaeefecgcicbibbfdcdcdagaf -> fdehedadfbbeefcbiieidacgcfcghbhi;
+aaacbcfbaeefecgcicbibbfdcdcdagaf -> ddjhbgbhdejbeajbjagdfdfeecaehdjd;
+fdehedadfbbeefcbiieidacgcfcghbhi -> gheiadjhchefebcaibccfhfcefeebcba;
 }

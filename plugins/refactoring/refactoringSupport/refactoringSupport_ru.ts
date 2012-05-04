@@ -62,6 +62,17 @@
         <translation>Справа налево</translation>
     </message>
     <message>
+        <location filename="refactoringPlugin.cpp" line="341"/>
+        <location filename="refactoringPlugin.cpp" line="353"/>
+        <source>No match</source>
+        <translation>Место на диаграмме для применения рефакторинга не найдено</translation>
+    </message>
+    <message>
+        <location filename="refactoringPlugin.cpp" line="364"/>
+        <source>No next match</source>
+        <translation>Другого места для применения правила рефакторинга не найдено</translation>
+    </message>
+    <message>
         <source>Vertically</source>
         <translation type="obsolete">Вертикально</translation>
     </message>

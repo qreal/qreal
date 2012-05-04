@@ -96,6 +96,7 @@
                 </graphics>
                 <logic>
 					<properties>
+						<property type="string" name="ID"/>
 					</properties>
                 </logic>
             </node>

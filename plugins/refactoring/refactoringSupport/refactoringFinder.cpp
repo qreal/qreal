@@ -513,3 +513,13 @@ QList<QHash<Id, Id> > RefactoringFinder::getMatches()
 {
 	return mMatches;
 }
+
+bool RefactoringFinder::refactoringRuleContainsSelectedSegment()
+{
+	IdList const before = getElementsFromBeforeBlock();
+	foreach (Id const &beforeId, before) {
+		if (beforeId.element() == "SelectedSegment")
+			return true;
+	}
+	return false;
+}

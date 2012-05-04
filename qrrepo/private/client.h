@@ -66,7 +66,8 @@ namespace qrRepo {
 
 			void saveAll() const;
 			void save(qReal::IdList list) const;
-			void saveDiagramsById(QHash<qReal::Id, QString> const &diagramIds);
+			void saveWithLogicalId(qReal::IdList list) const;
+			void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds);
 			void remove(qReal::IdList list) const;
 			void setWorkingFile(QString const &workingDir);
 
@@ -81,6 +82,7 @@ namespace qrRepo {
 
 			qReal::IdList idsOfAllChildrenOf(qReal::Id id) const;
 			QList<Object*> allChildrenOf(qReal::Id id) const;
+			QList<Object*> allChildrenOfWithLogicalId(qReal::Id id) const;
 
 			QHash<qReal::Id, Object*> mObjects;
 
