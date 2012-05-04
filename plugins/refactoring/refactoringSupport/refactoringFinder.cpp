@@ -108,7 +108,7 @@ void RefactoringFinder::highlightMatch()
 			QHash <Id, Id> currentMatch = mMatches.at(i);
 			foreach (Id const &id, currentMatch.keys()) {
 				QColor const color = QColor(SettingsManager::value("refactoringColor"
-						, "green").toString());
+						, "cyan").toString());
 				mInterpretersInterface.highlight(currentMatch.value(id), false, color);
 				pause(500);
 			}
@@ -175,11 +175,31 @@ bool RefactoringFinder::checkRuleMatchingRecursively()
 		Id const nodeInModel = mMatch->value(nodeInRule);
 		IdList const linksInModel = getProperLinks(nodeInModel, linkInRule);
 
+		QHash<Id, Id> *matchBackup = mMatch;
+		IdList *nodesHavingOutsideLinksBackup = &mNodesHavingOutsideLinks;
+		IdList *currentMatchedGraphInRuleBackup = &mCurrentMatchedGraphInRule;
+		int const posBackup = mPos;
+
 		foreach (Id const &linkInModel, linksInModel) {
 			Id const linkEndInModel = getLinkEndModel(linkInModel, nodeInModel);
 			if (checkNodeForAddingToMatch(linkEndInModel, linkEndInRule)) {
 				if (checkRuleMatchingRecursively()) {
 					isMatched = true;
+					mMatch = new QHash<Id, Id>();
+					foreach (Id const id, matchBackup->keys()) {
+						mMatch->insert(id, matchBackup->value(id));
+					}
+
+					mNodesHavingOutsideLinks = *(new IdList());
+					foreach (Id const id, *nodesHavingOutsideLinksBackup) {
+						mNodesHavingOutsideLinks.append(id);
+					}
+
+					mCurrentMatchedGraphInRule = *(new IdList());
+					foreach (Id const id, *currentMatchedGraphInRuleBackup) {
+						mCurrentMatchedGraphInRule.append(id);
+					}
+					mPos = posBackup;
 				} else {
 					rollback();
 				}
@@ -324,9 +344,23 @@ Id RefactoringFinder::getStartElement() const
 
 bool RefactoringFinder::compareLinks(Id const &first,Id const &second) const
 {
-	return compareElementTypesAndProperties(first, second)
-			&& compareElements(mLogicalModelApi.logicalRepoApi().to(first), toInRule(second))
-			&& compareElements(mLogicalModelApi.logicalRepoApi().from(first), fromInRule(second));
+	Id const idTo1 = mLogicalModelApi.logicalRepoApi().to(first);
+	Id const idTo2 = toInRule(second);
+	Id const idFrom1 = mLogicalModelApi.logicalRepoApi().from(first);
+	Id const idFrom2 = fromInRule(second);
+
+	bool result = compareElementTypesAndProperties(first, second)
+			&& compareElements(idTo1, idTo2)
+			&& compareElements(idFrom1, idFrom2);
+
+	if (mMatch->contains(idTo2)) {
+		result = result && mMatch->value(idTo2) == idTo1;
+	}
+	if (mMatch->contains(idFrom2)) {
+		result = result && mMatch->value(idFrom2) == idFrom1;
+	}
+
+	return result;
 }
 
 bool RefactoringFinder::compareElements(Id const &first, Id const &second) const

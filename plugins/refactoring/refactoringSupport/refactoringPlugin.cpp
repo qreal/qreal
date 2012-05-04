@@ -364,5 +364,6 @@ void RefactoringPlugin::discardRefactoring()
 	mMainWindowIFace->dehighlight();
 	mMatches.clear();
 	mRefactoringWindow->discard();
+	mMainWindowIFace->errorReporter()->clearErrors();
 }
 
