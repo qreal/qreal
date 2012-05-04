@@ -600,18 +600,30 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 
 void EditorViewScene::createLibStatusSubmenus(QMenu &contextMenu, const Element *const element) const
 {
-    if (mainWindow()->showLibraryRelatedMenus()) {
+    if (mWindow->showLibraryRelatedMenus()) {
 
         QMenu *addLibMenu = contextMenu.addMenu("Add to library");
 
         ContextMenuAction *action = new ContextMenuAction("Change lib status", mWindow);
         QList<QVariant> ids;
         ids << element->logicalId().toVariant() << element->id().toVariant();
-//       ids->append(element->logicalId().toVariant());
-//       ids->append(element->id().toVariant());
-        //efimefim
         action->setData(ids);
+
         connect(action, SIGNAL(triggered()), this, SLOT(changeLibStatus()));
+
+        QString captionContent;
+        QString status;
+        //efimefim getter of lib status value
+        if (mMVIface->logicalAssistApi()->logicalRepoApi().isLibEntry(element->logicalId())
+                && mMVIface->logicalAssistApi()->logicalRepoApi().property(element->logicalId(), "isLibEntity").value<bool>()){
+            status.append("on");
+        } else {
+            status.append("off");
+        }
+        captionContent.append("Current status is: ").append(status);
+        ContextMenuAction *caption = new ContextMenuAction(captionContent, mWindow);
+
+        addLibMenu->addAction(caption);
         addLibMenu->addAction(action);
 
 
@@ -683,11 +695,12 @@ void EditorViewScene::changeLibStatus()
     Id const graphicalId = ids[1].value<Id>();
     Id const logicalId = ids[0].value<Id>();
 
-//    qDebug() << "graphical id " << graphicalId.toString();
-//    qDebug() << "logical id " << logicalId.toString();
+    mMVIface->logicalAssistApi()->logicalRepoApi().changeLibStatus(logicalId);
+    mMVIface->graphicalAssistApi()->graphicalRepoApi().changeLibStatus(graphicalId);
+    qDebug() << "New value of propery isLibEntity" << mMVIface->logicalAssistApi()->logicalRepoApi().property(logicalId, "isLibEntity");
 
-    mWindow->changeLibStatus(graphicalId, false);
-    mWindow->changeLibStatus(logicalId, true);
+//    mWindow->changeLibStatus(graphicalId, false);
+//    mWindow->changeLibStatus(logicalId, true);
 }
 
 void EditorViewScene::getObjectByGesture()

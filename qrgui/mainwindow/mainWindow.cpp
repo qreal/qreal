@@ -1914,6 +1914,8 @@ void MainWindow::changePaletteRepresentation()
 	}
 }
 
+/* deprecated
+  efimefim
 // former setAsLibEntity
 void MainWindow::changeLibStatus(Id const &id, bool const isLogical)
 {
@@ -1926,3 +1928,4 @@ void MainWindow::changeLibStatus(Id const &id, bool const isLogical)
         qDebug() << "graphical element have now property before MainWindow::changeLibStatus" << mModels->logicalRepoApi().property(id, "isGraphicalLibEntity");
     }
 }
+*/

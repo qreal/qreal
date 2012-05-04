@@ -81,7 +81,11 @@ public:
 	virtual bool unloadPlugin(QString const &pluginName);
 	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
 	virtual bool pluginLoaded(QString const &pluginName);
+    /*deprecated
+      efimefim
+    //Не вписывается же в идею о назначении mainWindow
     void changeLibStatus(Id const &id, bool const isLogical);
+    */
 
 signals:
 	void gesturesShowed();

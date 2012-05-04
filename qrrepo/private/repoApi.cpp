@@ -494,12 +494,28 @@ bool RepoApi::isGraphicalElement(qReal::Id const &id) const
     return !client->isLogicalId(id);
 }
 
+bool RepoApi::isLibEntry(qReal::Id const &id, bool const isLogical) const
+{
+    if (isLogical){
+        return (hasProperty(id, "isLibEntity")
+                && property(id, "isLibEntity").value<bool>());
+    }
+
+    if (!isLogical) {
+        return (hasProperty(id, "isGraphicalLibEntity")
+                && property(id, "isGraphicalEntity").value<bool>());
+    }
+
+    return false;
+}
 
 qReal::Id RepoApi::logicalId(qReal::Id const &id) const
 {
     Client *client = getRelevantClient(id);
     return client->logicalId(id);
 }
+
+
 
 
 //investigated

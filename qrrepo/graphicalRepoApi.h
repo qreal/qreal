@@ -31,6 +31,7 @@ public:
 	virtual qReal::IdList graphicalElements(qReal::Id const &type) const = 0;
 
 	virtual bool isGraphicalElement(qReal::Id const &id) const = 0;
+    virtual bool isLibEntry(qReal::Id const &id, bool const isLogical = false) const = 0;
 	virtual qReal::Id logicalId(qReal::Id const &id) const = 0;
 
 	virtual qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const = 0;

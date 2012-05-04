@@ -91,6 +91,7 @@ namespace qrRepo {
 
 		virtual bool isLogicalElement(qReal::Id const &id) const;
 		virtual bool isGraphicalElement(qReal::Id const &id) const;
+        virtual bool isLibEntry(qReal::Id const &id, bool const isLogical) const;
 
 		void exterminate();
 
