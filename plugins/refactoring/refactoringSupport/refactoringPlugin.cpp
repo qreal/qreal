@@ -335,7 +335,7 @@ void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 		QHash <Id, Id> currentMatch = mMatches.takeFirst();
 		foreach (Id const &id, currentMatch.keys()) {
 			QColor const color = QColor(SettingsManager::value("refactoringColor"
-					, "green").toString());
+					, "cyan").toString());
 			mMainWindowIFace->highlight(currentMatch.value(id), false, color);
 		}
 	}
@@ -353,7 +353,7 @@ void qReal::refactoring::RefactoringPlugin::findNextRefactoring()
 		QHash <Id, Id> currentMatch = mMatches.takeFirst();
 		foreach (Id const &id, currentMatch.keys()) {
 			QColor const color = QColor(SettingsManager::value("refactoringColor"
-					, "green").toString());
+					, "cyan").toString());
 			mMainWindowIFace->highlight(currentMatch.value(id), false, color);
 		}
 	}
@@ -364,6 +364,5 @@ void RefactoringPlugin::discardRefactoring()
 	mMainWindowIFace->dehighlight();
 	mMatches.clear();
 	mRefactoringWindow->discard();
-	mMainWindowIFace->errorReporter()->clearErrors();
 }
 

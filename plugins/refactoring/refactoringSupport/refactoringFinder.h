@@ -72,6 +72,8 @@ private:
 
 	Id toInRule(Id const &id) const;
 	Id fromInRule(Id const &id) const;
+	Id toInModel(Id const &id) const;
+	Id fromInModel(Id const &id) const;
 	IdList linksModel(Id const &id) const;
 	IdList children(Id const &id) const;
 

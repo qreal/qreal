@@ -22,7 +22,7 @@ RefactoringPreferencesPage::RefactoringPreferencesPage(QWidget *parent) :
 	connect(mUi->qrealSourcesPushButton, SIGNAL(clicked()), this, SLOT(setQRealSourcesLocation()));
 
 	mUi->colorComboBox->addItems(QColor::colorNames());
-	QString curColor = SettingsManager::value("refactoringColor", "green").toString();
+	QString curColor = SettingsManager::value("refactoringColor", "cyan").toString();
 	int curColorIndex = mUi->colorComboBox->findText(curColor);
 	mUi->colorComboBox->setCurrentIndex(curColorIndex);
 }

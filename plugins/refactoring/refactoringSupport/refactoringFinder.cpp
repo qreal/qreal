@@ -344,9 +344,9 @@ Id RefactoringFinder::getStartElement() const
 
 bool RefactoringFinder::compareLinks(Id const &first,Id const &second) const
 {
-	Id const idTo1 = mLogicalModelApi.logicalRepoApi().to(first);
+	Id const idTo1 = toInModel(first);
 	Id const idTo2 = toInRule(second);
-	Id const idFrom1 = mLogicalModelApi.logicalRepoApi().from(first);
+	Id const idFrom1 = fromInModel(first);
 	Id const idFrom2 = fromInRule(second);
 
 	bool result = compareElementTypesAndProperties(first, second)
@@ -443,8 +443,8 @@ bool RefactoringFinder::isEdgeInRule(Id const &element) const
 
 bool RefactoringFinder::isEdgeInModel(Id const &element) const
 {
-	return mLogicalModelApi.logicalRepoApi().to(element) != Id::rootId() ||
-			mLogicalModelApi.logicalRepoApi().from(element) != Id::rootId();
+	return toInModel(element) != Id::rootId() ||
+			fromInModel(element) != Id::rootId();
 }
 
 QVariant RefactoringFinder::getProperty(Id const &id, QString const &propertyName) const
@@ -472,6 +472,16 @@ Id RefactoringFinder::fromInRule(Id const &id) const
 	return mRefactoringRepoApi->from(id);
 }
 
+Id RefactoringFinder::toInModel(Id const &id) const
+{
+	return mLogicalModelApi.logicalRepoApi().to(id);
+}
+
+Id RefactoringFinder::fromInModel(Id const &id) const
+{
+	return mLogicalModelApi.logicalRepoApi().from(id);
+}
+
 IdList RefactoringFinder::linksModel(Id const &id) const
 {
 	return mLogicalModelApi.logicalRepoApi().links(id);
@@ -484,9 +494,9 @@ IdList RefactoringFinder::children(Id const &id) const
 
 Id RefactoringFinder::getLinkEndModel(const qReal::Id &linkInModel, const qReal::Id &nodeInModel) const
 {
-	Id const linkTo = mLogicalModelApi.logicalRepoApi().to(linkInModel);
+	Id const linkTo = toInModel(linkInModel);
 	if (linkTo == nodeInModel) {
-		return mLogicalModelApi.logicalRepoApi().from(linkInModel);
+		return fromInModel(linkInModel);
 	}
 	return linkTo;
 }
