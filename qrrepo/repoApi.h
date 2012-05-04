@@ -50,6 +50,8 @@ namespace qrRepo {
 		void addUsage(qReal::Id const &source, qReal::Id const &destination);
 		void deleteUsage(qReal::Id const &source, qReal::Id const &destination);
 
+        virtual void changeLibStatus(qReal::Id const &id, bool isLogical) const;
+
 		qReal::IdList connectedElements(qReal::Id const &id) const;
 		qReal::IdList outgoingConnectedElements(qReal::Id const &id) const;
 		qReal::IdList incomingConnectedElements(qReal::Id const &id) const;

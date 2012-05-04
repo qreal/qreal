@@ -107,7 +107,7 @@ private slots:
 
 	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
 	void getObjectByGesture();
-    void setAsLibEntity();
+    void changeLibStatus();
 
 
 private:
@@ -119,6 +119,7 @@ private:
 	void drawGrid(QPainter *painter, const QRectF &rect);
 	void redraw();
 	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
+    void createLibStatusSubmenus(QMenu &contextMenu, Element const * const element) const;
 	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
 	void createAddConnectionMenu(Element const * const element
 			, QMenu &contextMenu, QString const &menuName

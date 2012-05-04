@@ -274,6 +274,30 @@ void RepoApi::deleteUsage(qReal::Id const &source, qReal::Id const &destination)
 	removeFromList(destination, "incomingUsages", source);
 }
 
+void RepoApi::changeLibStatus(qReal::Id const &id, bool isLogical) const
+{
+    Client *client = getRelevantClient(id);
+
+    if (hasProperty(id, "isLibEntity")){
+        bool currentValue = property(id, "isLibEntity").toBool();
+        client->setProperty(id, "isLibEntity", !currentValue);
+        return;
+    }
+
+    if (hasProperty(id, "isGraphicalLibEntity")){
+        bool currentValue = property(id, "isGraphicalLibEntity").toBool();
+        client->setProperty(id, "isGraphicalLibEntity", !currentValue);
+        return;
+    }
+
+    // this is called only if calles first time for this element
+    if (isLogical){
+        client->setProperty(id, "isLibEntity", true);
+    } else {
+        client->setProperty(id, "isGraphicalLibEntity", true);
+    }
+}
+
 
 qReal::IdList RepoApi::connectedElements(qReal::Id const &id) const
 {

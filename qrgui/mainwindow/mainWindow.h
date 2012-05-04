@@ -69,6 +69,9 @@ public:
 	/// Tells if we should display trace connections menu or not
 	bool showConnectionRelatedMenus() const;
 
+    /// Tells if "mark as library entry" menu or not
+    bool showLibraryRelatedMenus() const;
+
 	virtual void showInTextEditor(QString const &title, QString const &text);
 
 	virtual void reinitModels();
@@ -78,7 +81,7 @@ public:
 	virtual bool unloadPlugin(QString const &pluginName);
 	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
 	virtual bool pluginLoaded(QString const &pluginName);
-    void setAsLibEntity(Id const &id);
+    void changeLibStatus(Id const &id, bool const isLogical);
 
 signals:
 	void gesturesShowed();

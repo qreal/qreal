@@ -27,6 +27,7 @@ public:
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi() const;
 
 	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
+    qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const;
 
 	void reinit();
 

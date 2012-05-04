@@ -1657,6 +1657,11 @@ bool MainWindow::showConnectionRelatedMenus() const
 	return mToolManager.customizer()->showConnectionRelatedMenus();
 }
 
+bool MainWindow::showLibraryRelatedMenus() const
+{
+    return mToolManager.customizer()->showLibraryRelatedMenus();
+}
+
 void MainWindow::showInTextEditor(QString const &title, QString const &text)
 {
 	if (dynamic_cast<EditorView *>(getCurrentTab()) != NULL) {
@@ -1909,9 +1914,15 @@ void MainWindow::changePaletteRepresentation()
 	}
 }
 
-void MainWindow::setAsLibEntity(Id const &id)
+// former setAsLibEntity
+void MainWindow::changeLibStatus(Id const &id, bool const isLogical)
 {
-    qDebug() << "had property before MainWindow::setAsLibEntity" << mModels->mutableLogicalRepoApi().hasProperty(id, "isLibEntity");
-    mModels->mutableLogicalRepoApi().setProperty(id, "isLibEntity", true);
-    qDebug() << "New value of propery isLibEntity" << mModels->mutableLogicalRepoApi().property(id, "isLibEntity");
+    if (isLogical){
+        qDebug() << "logical element had property before MainWindow::changeLibStatus" << mModels->mutableLogicalRepoApi().hasProperty(id, "isLibEntity");
+        mModels->mutableLogicalRepoApi().changeLibStatus(id);
+        qDebug() << "New value of propery isLibEntity" << mModels->mutableLogicalRepoApi().property(id, "isLibEntity");
+    } else {
+        mModels->mutableGraphicalRepoApi().changeLibStatus(id);
+        qDebug() << "graphical element have now property before MainWindow::changeLibStatus" << mModels->logicalRepoApi().property(id, "isGraphicalLibEntity");
+    }
 }

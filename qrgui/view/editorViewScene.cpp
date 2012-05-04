@@ -598,6 +598,21 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 	}
 }
 
+void EditorViewScene::createLibStatusSubmenus(QMenu &contextMenu, const Element *const element) const
+{
+    if (mainWindow()->showLibraryRelatedMenus()) {
+        ContextMenuAction *action = new ContextMenuAction("change lib status", mWindow);
+        QList<QVariant> ids;
+        ids << element->logicalId().toVariant() << element->id().toVariant();
+//       ids->append(element->logicalId().toVariant());
+//       ids->append(element->id().toVariant());
+        //efimefim
+        action->setData(ids);
+        connect(action, SIGNAL(triggered()), this, SLOT(changeLibStatus()));
+        contextMenu.addAction(action);
+    }
+}
+
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	// Let scene update selection and perform other operations
@@ -650,23 +665,24 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	menu.addSeparator();
 	createConnectionSubmenus(menu, e);
     menu.addSeparator();
-    ContextMenuAction *myTestAction = new ContextMenuAction("change lib status", mWindow);
-    myTestAction->setData(e->logicalId().toVariant());
-    connect(myTestAction, SIGNAL(triggered()), this, SLOT(setAsLibEntity()));
-    menu.addAction(myTestAction);
+    createLibStatusSubmenus(menu, e);
 	menu.exec(QCursor::pos());
 }
 
-void EditorViewScene::setAsLibEntity()
+void EditorViewScene::changeLibStatus()
 {
-    qDebug() << "changing lib status";
     ContextMenuAction *action = static_cast<ContextMenuAction *>(sender());
     if (!action)
         qDebug() << "faulte";
-    QVariant variantId = action->data();
-    Id const id = variantId.value<Id>();
-    qDebug() << id.toString();
-    mainWindow()->setAsLibEntity(id);
+    QList<QVariant> ids = action->data().toList();
+    Id const graphicalId = ids[1].value<Id>();
+    Id const logicalId = ids[0].value<Id>();
+
+//    qDebug() << "graphical id " << graphicalId.toString();
+//    qDebug() << "logical id " << logicalId.toString();
+
+    mWindow->changeLibStatus(graphicalId, false);
+    mWindow->changeLibStatus(logicalId, true);
 }
 
 void EditorViewScene::getObjectByGesture()
