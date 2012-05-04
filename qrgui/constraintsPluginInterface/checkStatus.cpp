@@ -23,15 +23,28 @@ QString CheckStatus::message() const
 	return mMessage;
 }
 
-CheckStatus CheckStatus::resultCheckStatus(QList<CheckStatus> const& listCheckStatus)
+QList<CheckStatus> CheckStatus::resultCheckStatusList(QList<CheckStatus> const& listCheckStatus)
 {
-	if (listCheckStatus.empty()) {
-		return CheckStatus(true, "none", qReal::CheckStatus::warning);//qwerty : ошибка : скорее всего неправильное имя языка задано для элемента
-	}
-	foreach (CheckStatus const checkStatus, listCheckStatus) {
-		if (checkStatus.checkStatus() == false) {
-			return checkStatus;
+	QList<CheckStatus> resCheckStatusList = QList<CheckStatus>();
+	foreach (CheckStatus const& checkStatus, listCheckStatus) {
+		if (!resCheckStatusList.contains(checkStatus)) {
+			resCheckStatusList.append(checkStatus);
 		}
 	}
-	return listCheckStatus.at(0);
+	return resCheckStatusList;
+}
+
+QList<CheckStatus> CheckStatus::defaultCheckStatusAsList()
+{
+	QList<CheckStatus> resList;
+	resList.append(CheckStatus(true, "", CheckStatus::warning));
+	return resList;
+}
+
+bool CheckStatus::operator==(CheckStatus const &element)
+{
+	if (mCheckStatus == element.checkStatus() && mMessage == element.message() && mErrorType == element.errorType()) {
+		return true;
+	}
+	return false;
 }

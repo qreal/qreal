@@ -4,6 +4,8 @@
 	<file>generated/shapes/AbstractErrorTypeNodePorts.sdf</file>
 	<file>generated/shapes/AbstractExistsNodeClass.sdf</file>
 	<file>generated/shapes/AbstractExistsNodePorts.sdf</file>
+	<file>generated/shapes/AbstractListOfElementsNodeClass.sdf</file>
+	<file>generated/shapes/AbstractListOfElementsNodePorts.sdf</file>
 	<file>generated/shapes/AbstractNodeForNodeConstraintClass.sdf</file>
 	<file>generated/shapes/AbstractNodeForNodeConstraintPorts.sdf</file>
 	<file>generated/shapes/AbstractSelectionNodeClass.sdf</file>

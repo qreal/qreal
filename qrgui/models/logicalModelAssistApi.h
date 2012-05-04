@@ -66,11 +66,13 @@ public slots:
 	void propertyChangedSlot(Id const &elem);
 	void parentChangedSlot(IdList const &elements);
 	void nameChangedSlot(Id const &element);
+	void addedElementToModelSlot(Id const &element);
 
 signals:
 	void propertyChanged(Id const &elem);
 	void parentChanged(IdList const &elements);
 	void nameChanged(Id const &element);
+	void addedElementToModel(Id const &element);
 
 private:
 	details::ModelsAssistApi mModelsAssistApi;

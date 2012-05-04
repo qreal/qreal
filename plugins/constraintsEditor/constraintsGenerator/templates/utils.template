@@ -29,16 +29,13 @@ SUBDIRS = \
 	qReal::CheckStatus check@@elementNameWithId@@(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi);
 ==========
 @@mainCheckElemet@@
-	qReal::CheckStatus check@@elementName@@(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi);
+	QList<qReal::CheckStatus> check@@elementName@@(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi);
 ==========
 @@addElementInElementsNames@@
 	elementsList.append("@@elementName@@");
 ==========
-@@prefixForReturnCheckStatusOfElementInCheck@@
-	Q_UNUSED(editorManager);
-==========
 @@prefixForReturnCheckStatusOfElementByMetaTypeInCheck@@
-	qReal::EditorManagerInterface::MetaType isNodeOrEdge = editorManager.metaTypeOfElement(element);
+	qReal::EditorManagerInterface::MetaType isNodeOrEdge = mEditorManager->metaTypeOfElement(element);
 ==========
 @@returnCheckStatusOfElementInCheck@@
 	if (element.element() == "@@elementName@@") {
@@ -59,11 +56,11 @@ qReal::CheckStatus Constraints@@diagramName@@::check@@elementNameWithId@@(qReal:
 }
 ==========
 @@countMainCheckStatusOfElemet@@
-qReal::CheckStatus Constraints@@diagramName@@::check@@elementName@@(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi)
+QList<qReal::CheckStatus> Constraints@@diagramName@@::check@@elementName@@(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi)
 {
 	QList<qReal::CheckStatus> checkings;
 @@appendOptionalCheckStatusesOfElement@@
-	return qReal::CheckStatus::resultCheckStatus(checkings);
+	return qReal::CheckStatus::resultCheckStatusList(checkings);
 }
 ==========
 @@appendOptionalCheckStatusOfElement@@

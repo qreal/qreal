@@ -43,6 +43,7 @@ void ConstraintsEditorPlugin::initNameMap()
 	elementsNameMap["ConstraintsEditor"]["Parent"] = QString::fromUtf8("Parent");
 	elementsNameMap["ConstraintsEditor"]["PropertyNode"] = QString::fromUtf8("Property");
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["BeginNode"]["exists"] = QString::fromUtf8("Exists");
+	propertiesDisplayedNamesMap["ConstraintsEditor"]["Childrens"]["count"] = QString::fromUtf8("Count");
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["ConstraintsDiagram"]["languageName"] = QString::fromUtf8("Language Name");
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["EdgeConstraint"]["errorText"] = QString::fromUtf8("Text of error");
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["EdgeConstraint"]["errorType"] = QString::fromUtf8("Error Type");
@@ -50,6 +51,7 @@ void ConstraintsEditorPlugin::initNameMap()
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["EdgesConstraint"]["errorType"] = QString::fromUtf8("Error Type");
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["EdgesConstraint"]["selection"] = QString::fromUtf8("Selection");
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["EndNode"]["exists"] = QString::fromUtf8("Exists");
+	propertiesDisplayedNamesMap["ConstraintsEditor"]["IncomingLinks"]["count"] = QString::fromUtf8("Count");
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["MetamodelConstraints"]["metamodelName"] = QString::fromUtf8("Metamodel Name");
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["MetamodelConstraints"]["outputDirPath"] = QString::fromUtf8("Output Dir Path");
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["MetamodelConstraints"]["pathToQReal"] = QString::fromUtf8("Dir Path to QReal");
@@ -58,6 +60,8 @@ void ConstraintsEditorPlugin::initNameMap()
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["NodesConstraint"]["errorText"] = QString::fromUtf8("Text of error");
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["NodesConstraint"]["errorType"] = QString::fromUtf8("Error Type");
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["NodesConstraint"]["selection"] = QString::fromUtf8("Selection");
+	propertiesDisplayedNamesMap["ConstraintsEditor"]["OutgoingLinks"]["count"] = QString::fromUtf8("Count");
+	propertiesDisplayedNamesMap["ConstraintsEditor"]["OutgoingNodes"]["count"] = QString::fromUtf8("Count");
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["Parent"]["exists"] = QString::fromUtf8("Exists");
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["PropertyNode"]["property"] = QString::fromUtf8("Property");
 	propertiesDisplayedNamesMap["ConstraintsEditor"]["PropertyNode"]["sign"] = QString::fromUtf8("Sign");
@@ -74,29 +78,33 @@ void ConstraintsEditorPlugin::initMouseGestureMap()
 
 void ConstraintsEditorPlugin::initPropertyMap()
 {
-	propertyTypes["BeginNode"]["exists"] = "Bool";
+	propertyTypes["BeginNode"]["exists"] = "ExistsType";
 	propertyTypes["EdgeConstraint"]["errorType"] = "ErrorTypeType";
 	propertyTypes["EdgesConstraint"]["errorType"] = "ErrorTypeType";
-	propertyTypes["EndNode"]["exists"] = "Bool";
+	propertyTypes["EndNode"]["exists"] = "ExistsType";
 	propertyTypes["NodeConstraint"]["errorType"] = "ErrorTypeType";
 	propertyTypes["NodesConstraint"]["errorType"] = "ErrorTypeType";
-	propertyTypes["Parent"]["exists"] = "Bool";
+	propertyTypes["Parent"]["exists"] = "ExistsType";
 }
 
 void ConstraintsEditorPlugin::initPropertyDefaultsMap()
 {
 	propertyDefault["BeginNode"]["exists"] = QString::fromUtf8("true");
+	propertyDefault["Childrens"]["count"] = QString::fromUtf8(">= 0");
 	propertyDefault["EdgeConstraint"]["errorText"] = QString::fromUtf8("fail_text");
 	propertyDefault["EdgeConstraint"]["errorType"] = QString::fromUtf8("warning");
 	propertyDefault["EdgesConstraint"]["errorText"] = QString::fromUtf8("fail_text");
 	propertyDefault["EdgesConstraint"]["errorType"] = QString::fromUtf8("warning");
 	propertyDefault["EdgesConstraint"]["selection"] = QString::fromUtf8("all");
 	propertyDefault["EndNode"]["exists"] = QString::fromUtf8("true");
+	propertyDefault["IncomingLinks"]["count"] = QString::fromUtf8(">= 0");
 	propertyDefault["NodeConstraint"]["errorText"] = QString::fromUtf8("fail_text");
 	propertyDefault["NodeConstraint"]["errorType"] = QString::fromUtf8("warning");
 	propertyDefault["NodesConstraint"]["errorText"] = QString::fromUtf8("fail_text");
 	propertyDefault["NodesConstraint"]["errorType"] = QString::fromUtf8("warning");
 	propertyDefault["NodesConstraint"]["selection"] = QString::fromUtf8("all");
+	propertyDefault["OutgoingLinks"]["count"] = QString::fromUtf8(">= 0");
+	propertyDefault["OutgoingNodes"]["count"] = QString::fromUtf8(">= 0");
 	propertyDefault["Parent"]["exists"] = QString::fromUtf8("true");
 }
 
@@ -111,6 +119,7 @@ void ConstraintsEditorPlugin::initParentsMap()
 	;
 	parentsMap["ConstraintsEditor"]["Childrens"]
 		<< qMakePair(QString("ConstraintsEditor"), QString("AbstractNodeForNodeConstraint"))
+		<< qMakePair(QString("ConstraintsEditor"), QString("AbstractListOfElementsNode"))
 	;
 	parentsMap["ConstraintsEditor"]["EdgeConstraint"]
 		<< qMakePair(QString("ConstraintsEditor"), QString("AbstractErrorTypeNode"))
@@ -124,6 +133,7 @@ void ConstraintsEditorPlugin::initParentsMap()
 	;
 	parentsMap["ConstraintsEditor"]["IncomingLinks"]
 		<< qMakePair(QString("ConstraintsEditor"), QString("AbstractNodeForNodeConstraint"))
+		<< qMakePair(QString("ConstraintsEditor"), QString("AbstractListOfElementsNode"))
 	;
 	parentsMap["ConstraintsEditor"]["IncomingNodes"]
 		<< qMakePair(QString("ConstraintsEditor"), QString("AbstractNodeForNodeConstraint"))
@@ -137,9 +147,11 @@ void ConstraintsEditorPlugin::initParentsMap()
 	;
 	parentsMap["ConstraintsEditor"]["OutgoingLinks"]
 		<< qMakePair(QString("ConstraintsEditor"), QString("AbstractNodeForNodeConstraint"))
+		<< qMakePair(QString("ConstraintsEditor"), QString("AbstractListOfElementsNode"))
 	;
 	parentsMap["ConstraintsEditor"]["OutgoingNodes"]
 		<< qMakePair(QString("ConstraintsEditor"), QString("AbstractNodeForNodeConstraint"))
+		<< qMakePair(QString("ConstraintsEditor"), QString("AbstractListOfElementsNode"))
 	;
 	parentsMap["ConstraintsEditor"]["Parent"]
 		<< qMakePair(QString("ConstraintsEditor"), QString("AbstractNodeForNodeConstraint"))
@@ -279,7 +291,7 @@ QStringList ConstraintsEditorPlugin::getPropertyNames(QString const &/*diagram*/
 	if (element == "BeginNode")
 		result  << "exists";
 	else if (element == "Childrens")
-;
+		result  << "count";
 	else if (element == "ConstraintsDiagram")
 		result  << "languageName";
 	else if (element == "EdgeConstraint")
@@ -289,7 +301,7 @@ QStringList ConstraintsEditorPlugin::getPropertyNames(QString const &/*diagram*/
 	else if (element == "EndNode")
 		result  << "exists";
 	else if (element == "IncomingLinks")
-;
+		result  << "count";
 	else if (element == "IncomingNodes")
 ;
 	else if (element == "MetamodelConstraints")
@@ -301,9 +313,9 @@ QStringList ConstraintsEditorPlugin::getPropertyNames(QString const &/*diagram*/
 	else if (element == "Or")
 ;
 	else if (element == "OutgoingLinks")
-;
+		result  << "count";
 	else if (element == "OutgoingNodes")
-;
+		result  << "count";
 	else if (element == "Parent")
 		result  << "exists";
 	else if (element == "PropertyNode")
@@ -371,6 +383,8 @@ int ConstraintsEditorPlugin::isNodeOrEdge(QString const &element) const
 		return 1;
 	else if (element == "AbstractExistsNode")
 		return 1;
+	else if (element == "AbstractListOfElementsNode")
+		return 1;
 	else if (element == "AbstractNodeForNodeConstraint")
 		return 1;
 	else if (element == "AbstractSelectionNode")
@@ -388,6 +402,8 @@ int ConstraintsEditorPlugin::isNodeOrEdge(QString const &element) const
 	else if (element == "EndNode")
 		return 1;
 	else if (element == "ErrorTypeType")
+		return 0;
+	else if (element == "ExistsType")
 		return 0;
 	else if (element == "IncomingLinks")
 		return 1;
@@ -414,7 +430,9 @@ int ConstraintsEditorPlugin::isNodeOrEdge(QString const &element) const
 QStringList ConstraintsEditorPlugin::getEnumValues(QString name) const 
 {
 	QStringList result;
-	if (name == "ErrorTypeType")
+	if (name == "ExistsType")
+		result << QString::fromUtf8("false") << QString::fromUtf8("true") << QString::fromUtf8("doesn't matter");
+	else if (name == "ErrorTypeType")
 		result << QString::fromUtf8("warning") << QString::fromUtf8("critical") << QString::fromUtf8("verification");
 	return result;
 }

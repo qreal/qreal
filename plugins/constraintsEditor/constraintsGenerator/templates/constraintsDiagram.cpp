@@ -14,11 +14,12 @@ Constraints@@diagramName@@::~Constraints@@diagramName@@()
 @@countOptionalCheckStatusesForElemets@@
 
 @@countMainCheckStatusesForElemets@@
-qReal::CheckStatus Constraints@@diagramName@@::check(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi, qReal::EditorManagerInterface const &editorManager)
+QList<qReal::CheckStatus> Constraints@@diagramName@@::check(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi, qReal::EditorManagerInterface const &editorManager)
 {
+	mEditorManager = &editorManager;
 @@prefixForReturnCheckStatusesOfElementsInCheck@@
 @@returnCheckStatusesOfElementsInCheck@@
-	return qReal::CheckStatus(true, "", qReal::CheckStatus::warning);
+	return qReal::CheckStatus::defaultCheckStatusAsList();
 }
 
 QString Constraints@@diagramName@@::languageName() const

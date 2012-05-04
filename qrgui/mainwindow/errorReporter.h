@@ -27,7 +27,8 @@ public:
 	bool showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const;
 
 	void addUniqueError(QString const &message, Error::Severity const &severity, Id const &position);
-	void delUniqueError(Error::Severity const &severity, Id const &position);
+	void delUniqueError(QString const &message, Error::Severity const &severity, Id const &position);
+	void delAllErrorOfElement(Id const &position);
 
 	virtual void clear();
 	virtual void clearErrors();

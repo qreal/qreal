@@ -17,7 +17,10 @@ public:
 	ErrorType errorType() const;
 	QString message() const;
 
-	static CheckStatus resultCheckStatus(QList<CheckStatus> const& listCheckStatus);
+	bool operator==(CheckStatus const &element);
+
+	static QList<CheckStatus> resultCheckStatusList(QList<CheckStatus> const& listCheckStatus);
+	static QList<CheckStatus> defaultCheckStatusAsList();
 
 private:
 	bool mCheckStatus;

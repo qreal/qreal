@@ -83,12 +83,12 @@ IdList ConstraintsManager::plugins() const
 	return plugins;
 }
 
-CheckStatus ConstraintsManager::check(Id const &element, qrRepo::LogicalRepoApi const &logicalApi, EditorManager const &editorManager)
+QList<CheckStatus> ConstraintsManager::check(Id const &element, qrRepo::LogicalRepoApi const &logicalApi, EditorManager const &editorManager)
 {
 	foreach (ConstraintsPluginInterface *constraintsInterface, mPlugins) {
 		if (constraintsInterface->isCorrectLanguageName(element)) {
 			return constraintsInterface->check(element, logicalApi, editorManager);
 		}
 	}
-	return CheckStatus(true, "", CheckStatus::warning);
+	return CheckStatus::defaultCheckStatusAsList();
 }

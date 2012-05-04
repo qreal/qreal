@@ -11,7 +11,7 @@ class ConstraintsManager
 {
 public:
 	ConstraintsManager();
-	CheckStatus check(Id const &element, qrRepo::LogicalRepoApi const &logicalApi, EditorManager const &editorManager);
+	QList<CheckStatus> check(Id const &element, qrRepo::LogicalRepoApi const &logicalApi, EditorManager const &editorManager);
 	bool loadPlugin(QString const &pluginName);
 	bool unloadPlugin(QString const &pluginId);
 	IdList plugins() const;

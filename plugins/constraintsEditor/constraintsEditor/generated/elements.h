@@ -243,6 +243,124 @@
 		SdfRendererInterface *mRenderer;
 	};
 
+	class AbstractListOfElementsNode : public ElementImpl
+	{
+	public:
+		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
+
+		void init(QRectF &contents, QList<StatPoint> &pointPorts,
+							QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
+							QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
+							SdfRendererInterface *portRenderer)
+		{
+			Q_UNUSED(pointPorts);
+			Q_UNUSED(linePorts);
+			Q_UNUSED(titles);
+			Q_UNUSED(factory);
+			mRenderer = renderer;
+			mRenderer->load(QString(":/generated/shapes/AbstractListOfElementsNodeClass.sdf"));
+			portRenderer->load(QString(":/generated/shapes/AbstractListOfElementsNodePorts.sdf"));
+			contents.setWidth(-1);
+			contents.setHeight(-1);
+		}
+
+		 ElementImpl *clone() { return NULL; }
+		~AbstractListOfElementsNode() {}
+
+		void paint(QPainter *painter, QRectF &contents)
+		{
+			mRenderer->render(painter, contents);
+		}
+
+		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+
+		int getPenWidth() { return 0; }
+
+		QColor getPenColor() { return QColor(); }
+
+		void drawStartArrow(QPainter *) const {}
+		void drawEndArrow(QPainter *) const {}
+		bool hasPorts()
+		{
+			return true;
+		}
+
+		void updateData(ElementRepoInterface *repo) const
+		{
+			Q_UNUSED(repo);
+		}
+
+		bool isNode()
+		{
+			return true;
+		}
+
+		bool isResizeable()
+		{
+			return true;
+		}
+
+		bool isContainer()
+		{
+			return false;
+		}
+
+		bool isSortingContainer()
+		{
+			return false;
+		}
+
+		int sizeOfForestalling()
+		{
+			return 0;
+		}
+
+		int sizeOfChildrenForestalling()
+		{
+			return 0;
+		}
+
+		bool hasMovableChildren()
+		{
+			return true;
+		}
+
+		bool minimizesToChildren()
+		{
+			return false;
+		}
+
+		bool maximizesChildren()
+		{
+			return false;
+		}
+
+		bool isPort()
+		{
+			return false;
+		}
+
+		bool hasPin()
+		{
+			return false;
+		}
+
+		QList<double> border()
+		{
+			QList<double> list;
+			list << 0 << 0 << 0 << 0;
+			return list;
+		}
+
+		QStringList bonusContextMenuFields()
+		{
+			return QStringList();
+		}
+
+	private:
+		SdfRendererInterface *mRenderer;
+	};
+
 	class AbstractNodeForNodeConstraint : public ElementImpl
 	{
 	public:
@@ -659,58 +777,64 @@
 			mRenderer = renderer;
 			mRenderer->load(QString(":/generated/shapes/ChildrensClass.sdf"));
 			portRenderer->load(QString(":/generated/shapes/ChildrensPorts.sdf"));
-			contents.setWidth(148);
-			contents.setHeight(151);
+			contents.setWidth(149);
+			contents.setHeight(152);
 			{
 				StatLine ln;
-				ln.line = QLineF(-0.00675676, 0.0927152, 0, 0.907285);
+				ln.line = QLineF(0, 0.0986842, 0, 0.901316);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 148;
-				ln.initHeight = 151;
+				ln.initWidth = 149;
+				ln.initHeight = 152;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.912162, -0.00662252, 0.0810811, 0);
+				ln.line = QLineF(0.90604, 0, 0.0872483, 0);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 148;
-				ln.initHeight = 151;
+				ln.initWidth = 149;
+				ln.initHeight = 152;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.993243, 0.10596, 1, 0.92053);
+				ln.line = QLineF(0.993289, 0.111842, 0.993289, 0.914474);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 148;
-				ln.initHeight = 151;
+				ln.initWidth = 149;
+				ln.initHeight = 152;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.918919, 0.993377, 0.0878378, 1);
+				ln.line = QLineF(0.912752, 0.993421, 0.0939597, 0.993421);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 148;
-				ln.initHeight = 151;
+				ln.initWidth = 149;
+				ln.initHeight = 152;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(0.128378, 0.119205, "selection", false);
+			title_1 = factory.createTitle(0.134228, 0.125, "selection", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
+			title_2 = factory.createTitle(0.644295, 0.125, "count", false);
+			title_2->setBackground(Qt::transparent);
+			title_2->setScaling(false, false);
+			title_2->setFlags(0);
+			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_2);
 		}
 
 		 ElementImpl *clone() { return NULL; }
@@ -737,6 +861,7 @@
 		void updateData(ElementRepoInterface *repo) const
 		{
 			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("selection")).replace("\n", "<br>"));
+			title_2->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("count")).replace("\n", "<br>"));
 		}
 
 		bool isNode()
@@ -809,6 +934,7 @@
 	private:
 		SdfRendererInterface *mRenderer;
 		ElementTitleInterface *title_1;
+		ElementTitleInterface *title_2;
 	};
 
 	class ConstraintsDiagram : public ElementImpl
@@ -1371,58 +1497,64 @@
 			mRenderer = renderer;
 			mRenderer->load(QString(":/generated/shapes/IncomingLinksClass.sdf"));
 			portRenderer->load(QString(":/generated/shapes/IncomingLinksPorts.sdf"));
-			contents.setWidth(200);
-			contents.setHeight(151);
+			contents.setWidth(199);
+			contents.setHeight(150);
 			{
 				StatLine ln;
-				ln.line = QLineF(0, 0.291391, 0, 0.735099);
+				ln.line = QLineF(-0.00502513, 0.293333, 0, 0.733333);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 200;
-				ln.initHeight = 151;
+				ln.initWidth = 199;
+				ln.initHeight = 150;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.995, 0.271523, 0.995, 0.721854);
+				ln.line = QLineF(0.994975, 0.273333, 1, 0.72);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 200;
-				ln.initHeight = 151;
+				ln.initWidth = 199;
+				ln.initHeight = 150;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.86, 0.993377, 0.43, 0.993377);
+				ln.line = QLineF(0.859296, 0.993333, 0.432161, 1);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 200;
-				ln.initHeight = 151;
+				ln.initWidth = 199;
+				ln.initHeight = 150;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.84, 0, 0.44, 0);
+				ln.line = QLineF(0.839196, -0.00666667, 0.442211, 0);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 200;
-				ln.initHeight = 151;
+				ln.initWidth = 199;
+				ln.initHeight = 150;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(0.47, 0.119205, "selection", false);
+			title_1 = factory.createTitle(0.396985, 0.126667, "selection", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
+			title_2 = factory.createTitle(0.703518, 0.12, "count", false);
+			title_2->setBackground(Qt::transparent);
+			title_2->setScaling(false, false);
+			title_2->setFlags(0);
+			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_2);
 		}
 
 		 ElementImpl *clone() { return NULL; }
@@ -1449,6 +1581,7 @@
 		void updateData(ElementRepoInterface *repo) const
 		{
 			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("selection")).replace("\n", "<br>"));
+			title_2->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("count")).replace("\n", "<br>"));
 		}
 
 		bool isNode()
@@ -1521,6 +1654,7 @@
 	private:
 		SdfRendererInterface *mRenderer;
 		ElementTitleInterface *title_1;
+		ElementTitleInterface *title_2;
 	};
 
 	class IncomingNodes : public ElementImpl
@@ -1537,58 +1671,64 @@
 			mRenderer = renderer;
 			mRenderer->load(QString(":/generated/shapes/IncomingNodesClass.sdf"));
 			portRenderer->load(QString(":/generated/shapes/IncomingNodesPorts.sdf"));
-			contents.setWidth(202);
-			contents.setHeight(151);
+			contents.setWidth(201);
+			contents.setHeight(150);
 			{
 				StatLine ln;
-				ln.line = QLineF(0, 0.304636, 0, 0.721854);
+				ln.line = QLineF(-0.00497512, 0.306667, 0, 0.72);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 202;
-				ln.initHeight = 151;
+				ln.initWidth = 201;
+				ln.initHeight = 150;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.99505, 0.10596, 0.99505, 0.887417);
+				ln.line = QLineF(0.995025, 0.106667, 1, 0.886667);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 202;
-				ln.initHeight = 151;
+				ln.initWidth = 201;
+				ln.initHeight = 150;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.910891, 0.993377, 0.326733, 0.993377);
+				ln.line = QLineF(0.910448, 0.993333, 0.328358, 1);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 202;
-				ln.initHeight = 151;
+				ln.initWidth = 201;
+				ln.initHeight = 150;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.915842, 0, 0.331683, 0);
+				ln.line = QLineF(0.915423, -0.00666667, 0.333333, 0);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 202;
-				ln.initHeight = 151;
+				ln.initWidth = 201;
+				ln.initHeight = 150;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(0.326733, 0.0728477, "selection", false);
+			title_1 = factory.createTitle(0.328358, 0.0733333, "selection", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
+			title_2 = factory.createTitle(0.771144, 0.0733333, "count", false);
+			title_2->setBackground(Qt::transparent);
+			title_2->setScaling(false, false);
+			title_2->setFlags(0);
+			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_2);
 		}
 
 		 ElementImpl *clone() { return NULL; }
@@ -1615,6 +1755,7 @@
 		void updateData(ElementRepoInterface *repo) const
 		{
 			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("selection")).replace("\n", "<br>"));
+			title_2->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("count")).replace("\n", "<br>"));
 		}
 
 		bool isNode()
@@ -1687,6 +1828,7 @@
 	private:
 		SdfRendererInterface *mRenderer;
 		ElementTitleInterface *title_1;
+		ElementTitleInterface *title_2;
 	};
 
 	class MetamodelConstraints : public ElementImpl
@@ -2166,58 +2308,64 @@
 			mRenderer = renderer;
 			mRenderer->load(QString(":/generated/shapes/OutgoingLinksClass.sdf"));
 			portRenderer->load(QString(":/generated/shapes/OutgoingLinksPorts.sdf"));
-			contents.setWidth(199);
-			contents.setHeight(150);
+			contents.setWidth(200);
+			contents.setHeight(151);
 			{
 				StatLine ln;
-				ln.line = QLineF(-0.00502513, 0.293333, 0, 0.733333);
+				ln.line = QLineF(0, 0.298013, 0, 0.728477);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 199;
-				ln.initHeight = 150;
+				ln.initWidth = 200;
+				ln.initHeight = 151;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.994975, 0.273333, 1, 0.72);
+				ln.line = QLineF(0.995, 0.278146, 0.995, 0.715232);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 199;
-				ln.initHeight = 150;
+				ln.initWidth = 200;
+				ln.initHeight = 151;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.859296, 0.993333, 0.432161, 1);
+				ln.line = QLineF(0.855, 0.993377, 0.435, 0.993377);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 199;
-				ln.initHeight = 150;
+				ln.initWidth = 200;
+				ln.initHeight = 151;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.839196, -0.00666667, 0.442211, 0);
+				ln.line = QLineF(0.835, 0, 0.445, 0);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 199;
-				ln.initHeight = 150;
+				ln.initWidth = 200;
+				ln.initHeight = 151;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(0.472362, 0.12, "selection", false);
+			title_1 = factory.createTitle(0.405, 0.125828, "selection", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
+			title_2 = factory.createTitle(0.72, 0.125828, "count", false);
+			title_2->setBackground(Qt::transparent);
+			title_2->setScaling(false, false);
+			title_2->setFlags(0);
+			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_2);
 		}
 
 		 ElementImpl *clone() { return NULL; }
@@ -2244,6 +2392,7 @@
 		void updateData(ElementRepoInterface *repo) const
 		{
 			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("selection")).replace("\n", "<br>"));
+			title_2->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("count")).replace("\n", "<br>"));
 		}
 
 		bool isNode()
@@ -2316,6 +2465,7 @@
 	private:
 		SdfRendererInterface *mRenderer;
 		ElementTitleInterface *title_1;
+		ElementTitleInterface *title_2;
 	};
 
 	class OutgoingNodes : public ElementImpl
@@ -2332,58 +2482,64 @@
 			mRenderer = renderer;
 			mRenderer->load(QString(":/generated/shapes/OutgoingNodesClass.sdf"));
 			portRenderer->load(QString(":/generated/shapes/OutgoingNodesPorts.sdf"));
-			contents.setWidth(202);
-			contents.setHeight(150);
+			contents.setWidth(203);
+			contents.setHeight(151);
 			{
 				StatLine ln;
-				ln.line = QLineF(-0.0049505, 0.3, 0, 0.726667);
+				ln.line = QLineF(0, 0.304636, 0, 0.721854);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 202;
-				ln.initHeight = 150;
+				ln.initWidth = 203;
+				ln.initHeight = 151;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.99505, 0.1, 1, 0.893333);
+				ln.line = QLineF(0.995074, 0.10596, 0.995074, 0.887417);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 202;
-				ln.initHeight = 150;
+				ln.initWidth = 203;
+				ln.initHeight = 151;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.930693, 0.993333, 0.326733, 1);
+				ln.line = QLineF(0.926108, 0.993377, 0.330049, 0.993377);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 202;
-				ln.initHeight = 150;
+				ln.initWidth = 203;
+				ln.initHeight = 151;
 				linePorts << ln;
 			};
 			{
 				StatLine ln;
-				ln.line = QLineF(0.935644, -0.00666667, 0.331683, 0);
+				ln.line = QLineF(0.931034, 0, 0.334975, 0);
 				ln.prop_x1 = false;
 				ln.prop_y1 = false; 
 				ln.prop_x2 = false; 
 				ln.prop_y2 = false; 
-				ln.initWidth = 202;
-				ln.initHeight = 150;
+				ln.initWidth = 203;
+				ln.initHeight = 151;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(0.321782, 0.08, "selection", false);
+			title_1 = factory.createTitle(0.325123, 0.0860927, "selection", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
+			title_2 = factory.createTitle(0.773399, 0.0860927, "count", false);
+			title_2->setBackground(Qt::transparent);
+			title_2->setScaling(false, false);
+			title_2->setFlags(0);
+			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_2);
 		}
 
 		 ElementImpl *clone() { return NULL; }
@@ -2410,6 +2566,7 @@
 		void updateData(ElementRepoInterface *repo) const
 		{
 			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("selection")).replace("\n", "<br>"));
+			title_2->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("count")).replace("\n", "<br>"));
 		}
 
 		bool isNode()
@@ -2482,6 +2639,7 @@
 	private:
 		SdfRendererInterface *mRenderer;
 		ElementTitleInterface *title_1;
+		ElementTitleInterface *title_2;
 	};
 
 	class Parent : public ElementImpl

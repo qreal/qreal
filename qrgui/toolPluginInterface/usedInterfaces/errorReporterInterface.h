@@ -17,7 +17,8 @@ public:
 	virtual void addCritical(QString const &message, Id const &position = Id::rootId()) = 0;
 
 	virtual void addUniqueError(QString const &message, gui::Error::Severity const &severity, Id const &position) = 0;
-	virtual void delUniqueError(gui::Error::Severity const &severity, Id const &position) = 0;
+	virtual void delUniqueError(QString const &message, gui::Error::Severity const &severity, Id const &position) = 0;
+	virtual void delAllErrorOfElement(Id const &position) = 0;
 
 	virtual void clear() = 0;
 	virtual void clearErrors() = 0;

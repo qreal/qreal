@@ -60,7 +60,7 @@ void ErrorReporter::addError(QString const &message, Id const &position)
 void ErrorReporter::addUniqueError(QString const &message, Error::Severity const &severity, Id const &position)
 {
 	foreach (Error const &curError, mErrors) {
-		if (curError.position() == position && curError.severity() == severity) {
+		if (curError.position() == position && curError.severity() == severity && curError.message() == message) {
 			return;
 		}
 	}
@@ -70,13 +70,26 @@ void ErrorReporter::addUniqueError(QString const &message, Error::Severity const
 	showError(error, mErrorListWidget);
 }
 
-void ErrorReporter::delUniqueError(Error::Severity const &severity, Id const &position)
+void ErrorReporter::delUniqueError(QString const &message, Error::Severity const &severity, Id const &position)
 {
 	QList<Error> tempErrorList = mErrors;
 	mErrors.clear();
 	clear();
 	foreach (Error const &curError, tempErrorList) {
-		if (curError.position() != position || curError.severity() != severity) {
+		if (curError.position() != position || curError.severity() != severity || curError.message() != message) {
+			mErrors.append(curError);
+			showError(curError, mErrorListWidget);
+		}
+	}
+}
+
+void ErrorReporter::delAllErrorOfElement(Id const &position)
+{
+	QList<Error> tempErrorList = mErrors;
+	mErrors.clear();
+	clear();
+	foreach (Error const &curError, tempErrorList) {
+		if (curError.position() != position) {
 			mErrors.append(curError);
 			showError(curError, mErrorListWidget);
 		}

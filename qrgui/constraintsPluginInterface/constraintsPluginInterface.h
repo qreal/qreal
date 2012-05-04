@@ -9,7 +9,7 @@ const QString keywordForAllLanguages = "AllLanguages";//qwerty_asd_copypast
 
 class ConstraintsPluginInterface {
 public:
-	virtual CheckStatus check(Id const &element, qrRepo::LogicalRepoApi const &logicalApi, EditorManagerInterface const &editorManager) = 0;
+	virtual QList<CheckStatus> check(Id const &element, qrRepo::LogicalRepoApi const &logicalApi, EditorManagerInterface const &editorManager) = 0;
 	virtual QString metamodelName() const = 0;
 	virtual QString id() const = 0;
 

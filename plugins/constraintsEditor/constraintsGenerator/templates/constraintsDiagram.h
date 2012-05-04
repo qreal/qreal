@@ -12,10 +12,13 @@ public:
 
 @@optionalChecksForElemets@@
 @@mainChecksForElemets@@
-	qReal::CheckStatus check(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi, qReal::EditorManagerInterface const &editorManager);
+	QList<qReal::CheckStatus> check(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi, qReal::EditorManagerInterface const &editorManager);
 
 	QString languageName() const;
 	QList<QString> elementsNames() const;
+	
+private:
+	qReal::EditorManagerInterface const *mEditorManager;
 };
 
 }

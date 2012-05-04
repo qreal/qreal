@@ -45,6 +45,7 @@ public:
 signals:
 	void parentChanged(IdList const &idList);
 	void nameChanged(Id const &id);
+	void addedElementToModel(Id const &id);
 
 private:
 	GraphicalModelView mGraphicalModelView;

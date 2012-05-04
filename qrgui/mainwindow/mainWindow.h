@@ -206,8 +206,10 @@ private:
 	/// @param mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
 	QMap<EditorView*, CodeArea*> *mCodeTabManager;
 	gui::Error::Severity severityByErrorType(CheckStatus::ErrorType const &errorType); //forCheckConstraints
+	void checkOwnConstraints(Id const &id);
 	void checkParentsConstraints(QModelIndex const &index);
 	void checkChildrensConstraints(Id const &id);
+	void checkLinksConstraints(Id const &id);
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on

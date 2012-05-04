@@ -152,6 +152,7 @@ void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &l
 	} else {
 		newItem = createModelItem(id, parentItem);
 		initializeElement(id, parentItem, newItem, name, position);
+		emit addedElementToModel(id);//qwerty_doubt
 	}
 }
 

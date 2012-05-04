@@ -188,6 +188,7 @@ MainWindow::MainWindow()
 	connect(&mModels->logicalModelAssistApi(), SIGNAL(parentChanged(IdList)), this, SLOT(checkConstraints(IdList)));
 	connect(&mModels->logicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
 	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
+	connect(&mModels->logicalModelAssistApi(), SIGNAL(addedElementToModel(Id)), this, SLOT(checkConstraints(Id)));
 }
 
 void MainWindow::connectActions()
@@ -638,13 +639,15 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	}
 
 	IdList graphicalIdList;
+	QModelIndex parentIndex = mModels->logicalModelAssistApi().indexById(Id::rootId());
 	if (isLogicalModel) {
 		Id const logicalId = mModels->logicalModelAssistApi().idByIndex(index);
 		graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
 
 		if (logicalId != Id::rootId()) {
-			checkParentsConstraints(index); //проверяем на ограничения всех родителей удаляемого элемента в логической модели
+			parentIndex = mModels->logicalModel()->parent(index);
 		}
+		mErrorReporter->delAllErrorOfElement(logicalId);//qwerty
 	} else {
 		Id const graphicalId = mModels->graphicalModelAssistApi().idByIndex(index);
 		graphicalIdList.append(graphicalId);
@@ -686,6 +689,9 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 		if (item) {
 			item->arrangeLinks();
 		}
+	}
+	if (parentIndex != mModels->logicalModelAssistApi().indexById(Id::rootId())) {
+		checkConstraints(parentIndex);//проверяем на ограничения родителя удаляемого элемента в логической модели
 	}
 }
 
@@ -1930,45 +1936,59 @@ gui::Error::Severity MainWindow::severityByErrorType(CheckStatus::ErrorType cons
 	return gui::Error::warning;
 }
 
-void MainWindow::checkConstraints(Id const &id)
+void MainWindow::checkOwnConstraints(Id const &id)
 {
 	Id const logicalId = mModels->logicalId(id);
 	IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
 
-	CheckStatus check = mConstraintsManager.check(logicalId, mModels->logicalModelAssistApi().logicalRepoApi(), mEditorManager);
-	gui::Error::Severity errorSeverity = severityByErrorType(check.errorType());
+	QList<CheckStatus> checkStatusList = mConstraintsManager.check(logicalId, mModels->logicalModelAssistApi().logicalRepoApi(), mEditorManager);
+	bool checkStatus = true;
+	foreach (CheckStatus check, checkStatusList) {
+		gui::Error::Severity errorSeverity = severityByErrorType(check.errorType());
+		QString errorMessage = check.message();
 
-	if (check.checkStatus()) {
+		if (check.checkStatus()) {
+			if (errorSeverity != gui::Error::warning) {
+				mErrorReporter->delUniqueError(errorMessage, errorSeverity, id);
+			}
+		} else {
+			checkStatus = false;
+			if (errorSeverity != gui::Error::warning) {
+				mErrorReporter->addUniqueError(errorMessage, errorSeverity, id);
+			}
+		}
+	}
+
+	if (checkStatus) {
 		foreach (Id const &graphicalId, graphicalIds) {
 			dehighlight(graphicalId);
 		}
-		mErrorReporter->delUniqueError(errorSeverity, id);
 	} else {
 		foreach (Id const &graphicalId, graphicalIds) {
 			highlight(graphicalId, false);
 		}
-		if (errorSeverity != gui::Error::warning) {
-			mErrorReporter->addUniqueError(check.message(), errorSeverity, id);
-		}
 	}
+}
+
+void MainWindow::checkConstraints(Id const &id)
+{
+	QModelIndex index = mModels->logicalModelAssistApi().indexById(id);
+	checkOwnConstraints(id);
+	checkChildrensConstraints(id);
+	checkParentsConstraints(index);
+	checkLinksConstraints(id);
 }
 
 void MainWindow::checkConstraints(QModelIndex const &index)
 {
 	Id const id = mModels->logicalModelAssistApi().idByIndex(index);
 	checkConstraints(id);
-	checkChildrensConstraints(id);
-	checkParentsConstraints(index);
 }
 
-void MainWindow::checkConstraints(IdList const &idList)//qwerty_подумать
+void MainWindow::checkConstraints(IdList const &idList)//qwerty_think over_2
 {
 	foreach (Id const &id, idList) {
 		checkConstraints(id);
-		checkChildrensConstraints(id);
-
-		QModelIndex index = mModels->logicalModelAssistApi().indexById(id);
-		checkParentsConstraints(index);
 	}
 }
 
@@ -1977,7 +1997,7 @@ void MainWindow::checkParentsConstraints(QModelIndex const &index)
 	QModelIndex parent = mModels->logicalModel()->parent(index);
 	Id const parentId = mModels->logicalModelAssistApi().idByIndex(parent);
 	if (mModels->logicalModelAssistApi().isLogicalId(parentId)) {
-		checkConstraints(parentId);
+		checkOwnConstraints(parentId);
 		checkParentsConstraints(parent);
 	}
 }
@@ -1987,8 +2007,19 @@ void MainWindow::checkChildrensConstraints(Id const &id)
 	IdList childrenList = mModels->logicalModelAssistApi().children(id);
 	foreach (Id const &childrenId, childrenList) {
 		if (mModels->logicalModelAssistApi().isLogicalId(childrenId)) {
-			checkConstraints(childrenId);
+			checkOwnConstraints(childrenId);
 			checkChildrensConstraints(childrenId);
+		}
+	}
+}
+
+void MainWindow::checkLinksConstraints(Id const &id)
+{
+	IdList linksList = mModels->logicalRepoApi().incomingLinks(id);
+	linksList.append(mModels->logicalRepoApi().outgoingLinks(id));
+	foreach (Id const &linkId, linksList) {
+		if (mModels->logicalModelAssistApi().isLogicalId(linkId)) {
+			checkOwnConstraints(linkId);
 		}
 	}
 }

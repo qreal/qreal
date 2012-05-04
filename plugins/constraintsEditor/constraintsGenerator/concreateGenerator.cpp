@@ -125,11 +125,13 @@ ConcreateGenerator::NeededStringsForConcreateGenerate ConcreateGenerator::genera
 			mErrorReporter.addCritical("Name of constraintNode not found!", element);
 		}
 		if (elementName == "(Edges Constraint)"
-				|| (element.element() == "EdgesConstraint" && (elementName.compare("all", Qt::CaseInsensitive)) == 0) ) {
+				|| (element.element() == "EdgesConstraint" && ((elementName.compare("all", Qt::CaseInsensitive)) == 0)
+										&& ((elementName.compare("alledges", Qt::CaseInsensitive)) == 0)) ) {
 			elementName = keywordForAllEdges; //по умолчанию; ошибки не надо
 		}
 		if (elementName == "(Nodes Constraint)"
-				|| (element.element() == "NodesConstraint" && (elementName.compare("all", Qt::CaseInsensitive)) == 0) ) {
+				|| (element.element() == "NodesConstraint" && ((elementName.compare("all", Qt::CaseInsensitive)) == 0)
+										&& ((elementName.compare("allnodes", Qt::CaseInsensitive)) == 0)) ) {
 			elementName = keywordForAllNodes; //по умолчанию; ошибки не надо
 		}
 
@@ -158,7 +160,7 @@ ConcreateGenerator::NeededStringsForConcreateGenerate ConcreateGenerator::genera
 		QString countOptionalCheckStatusOfElemet = mTemplateUtils["@@countOptionalCheckStatusOfElemet@@"];
 		countOptionalCheckStatusOfElemet.replace("@@elementNameWithId@@", elementNameWithId);
 		countOptionalCheckStatusOfElemet.replace("@@countRealCheckStatusOfElement@@", countRealConstraintOfElement(element));
-		countOptionalCheckStatusOfElemet.replace("@@errorText@@", "fail");
+		countOptionalCheckStatusOfElemet.replace("@@errorText@@", mApi.property(element, "errorText").toString());
 		countOptionalCheckStatusOfElemet.replace("@@checkStatus@@", mApi.property(element, "errorType").toString());
 		countOptionalCheckStatusesForElemetsCPP += countOptionalCheckStatusOfElemet;
 
@@ -171,10 +173,8 @@ ConcreateGenerator::NeededStringsForConcreateGenerate ConcreateGenerator::genera
 		}
 	}
 
-	QString prefixForReturnCheckStatusesOfElementsInCheckCPP;
-	if (!mUsedMetaTypeInCheck) {
-		prefixForReturnCheckStatusesOfElementsInCheckCPP = mTemplateUtils["@@prefixForReturnCheckStatusOfElementInCheck@@"];
-	} else {
+	QString prefixForReturnCheckStatusesOfElementsInCheckCPP = "";
+	if (mUsedMetaTypeInCheck) {
 		prefixForReturnCheckStatusesOfElementsInCheckCPP = mTemplateUtils["@@prefixForReturnCheckStatusOfElementByMetaTypeInCheck@@"];
 	}
 
@@ -319,9 +319,19 @@ QString ConcreateGenerator::generateExistsProperty(QString const &resElementName
 	QString resString = "";
 	QString exists;
 
+	exists = mApi.property(constraint, "exists").toString();
 	resString += addStr + "bool " + resElementName + "_" + QString::number(depth) + " = ";
-	exists = mApi.property(constraint, "exists").toBool() ? "!=" : "==";
-	resString += "(" + elementName + "_" + QString::number(depth) + " " + exists + " qReal::Id::rootId());\n";
+
+	if (exists == "true" || exists == "false") {
+		if (exists == "true") {
+			exists = "!=";
+		} else if (exists == "false") {
+			exists = "==";
+		}
+		resString += "(" + elementName + "_" + QString::number(depth) + " " + exists + " qReal::Id::rootId());\n";
+	} else {
+		resString += "true;\n";
+	}
 	return resString;
 }
 
@@ -377,8 +387,17 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForListOfElem
 {
 	QString resString = "";
 	QList<QString> resBool;
+	QString count = mApi.property(constraint, "count").toString(); //qwerty_think over_count_1
+	QList<QString> countList = count.split(" ");
 
 	resString += addStr + "qReal::IdList new" + resElementName + "NamesList_" + QString::number(depth) + " = logicalApi." + functionName + "(" + elementName + ");\n";
+
+	if (countList.at(0) != "-1") { //qwerty_think over_count_2
+		resString += addStr + "bool count" + resElementName + "Res_" + QString::number(depth + 1)
+				+ " = (new" + resElementName + "NamesList_" + QString::number(depth) + ".count() " + countList.at(0) + " " + countList.at(1) + ");\n";
+		resBool.push_back("count" + resElementName + "Res_" + QString::number(depth + 1));
+	}
+
 	resString += addStr + "bool main" + resElementName + "Res_" + QString::number(depth + 1) + " = true;\n";
 	resString += addStr + "foreach (qReal::Id const &" + resType + ", new" + resElementName + "NamesList_" + QString::number(depth) + ") {\n";
 	if (resType == "node") {
@@ -464,21 +483,44 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForPropertyNo
 	}
 
 	QString value = mApi.property(constraint, "value").toString();
-	bool valueIsInt = false;
-	int intValue = value.toInt(&valueIsInt);
-	Q_UNUSED(intValue);
-
 	resString += addStr + "bool propertyNodeRes_" + QString::number(depth) + " = true;\n";
-	resString += addStr + "if (logicalApi.hasProperty(" + elementName + ", \"" + property + "\")) {\n";
-	resString += addStr + "	propertyNodeRes_" + QString::number(depth) + " = (logicalApi.property(" + elementName + ", \"" + property + "\").";
 
-	if (!valueIsInt) {
-		resString += "toString() " + sign + " \"" + value + "\");\n";
+	if (property == "TYPE") {
+		resString += addStr + "if (" + elementName + " != qReal::Id::rootId()) {\n";
+		resString += addStr + "	propertyNodeRes_" + QString::number(depth) + " = (" + elementName + ".element() " + sign + " \"" + value + "\");\n";
+		resString += addStr + "}\n";
+
+	} else if (property == "METATYPE") {
+		resString += addStr + "if (" + elementName + " != qReal::Id::rootId()) {\n";
+		resString += addStr + "	qReal::EditorManagerInterface::MetaType isNodeOrEdge = mEditorManager->metaTypeOfElement(" + elementName + ");\n";
+
+		if (value.compare("node", Qt::CaseInsensitive) == 0) {
+			value = "qReal::EditorManagerInterface::node";
+		} else if (value.compare("edge", Qt::CaseInsensitive) == 0) {
+			value = "qReal::EditorManagerInterface::edge";
+		} else {
+			mErrorReporter.addCritical("Metatype \"" + value + "\" is not exist. Select \"node\" or \"edge\".", constraint);
+		}
+
+		resString += addStr + "	propertyNodeRes_" + QString::number(depth) + " = (isNodeOrEdge " + sign + " " + value + ");\n";
+		resString += addStr + "}\n";
+
 	} else {
-		resString += "toInt() " + sign + " " + value + ");\n";
+		bool valueIsInt = false;
+		int intValue = value.toInt(&valueIsInt);
+		Q_UNUSED(intValue);
+
+		resString += addStr + "if (logicalApi.hasProperty(" + elementName + ", \"" + property + "\")) {\n";
+		resString += addStr + "	propertyNodeRes_" + QString::number(depth) + " = (logicalApi.property(" + elementName + ", \"" + property + "\").";
+
+		if (!valueIsInt) {
+			resString += "toString() " + sign + " \"" + value + "\");\n";
+		} else {
+			resString += "toInt() " + sign + " " + value + ");\n";
+		}
+		resString += addStr + "}\n";
 	}
 
-	resString += addStr + "}\n";
 	resBool.push_back("propertyNodeRes_" + QString::number(depth));
 
 	return QPair<QString, QList<QString> >(resString, resBool);
@@ -519,6 +561,10 @@ QString ConcreateGenerator::countRealConstraintForEdgeElement(Id const &element,
 			QPair<QString, QList<QString> > resEndNodeConstraint = countConstraintForEndNode(constraint, elementName, depth, addStr);
 			resString += resEndNodeConstraint.first;
 			resBool.append(resEndNodeConstraint.second);
+		} else if (constraintType == "PropertyNode") {
+			QPair<QString, QList<QString> > resPropertyNodeConstraint = countConstraintForPropertyNode (constraint, elementName, depth, addStr);
+			resString += resPropertyNodeConstraint.first;
+			resBool.append(resPropertyNodeConstraint.second);
 		}
 	}
 	resString += additionalCommonPartForConstraint(resBool, resultName, depth, addStr); //сбрасываем resBool в resString
