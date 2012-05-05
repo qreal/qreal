@@ -1,12 +1,18 @@
 #include <QtGui>
 #include "findDialog.h"
 
-FindDialog::FindDialog(QWidget *parent) : QDialog(parent)
+FindDialog::FindDialog(qrRepo::LogicalRepoApi const &logicalRepoApi, QWidget *parent)
+	: QDialog(parent)
+	, mCommonApi(logicalRepoApi)
 {
+	mListWidget = new QListWidget();
+
 	mCheckBoxes.append(new QCheckBox(tr("by name")));
 	mCheckBoxes.append(new QCheckBox(tr("by type")));
 	mCheckBoxes.append(new QCheckBox(tr("by property")));
 	mCheckBoxes.append(new QCheckBox(tr("by property content")));
+
+	mCheckBoxes.first()->setChecked(true);
 
 	mLabel = new QLabel(tr("Find:"));
 	mLineEdit = new QLineEdit();
@@ -22,6 +28,7 @@ FindDialog::FindDialog(QWidget *parent) : QDialog(parent)
 	connect(mFindButton, SIGNAL(clicked()), this, SLOT(findClicked()));
 	connect(mReplaceButton, SIGNAL(clicked()), this, SLOT(replaceClicked()));
 
+	QVBoxLayout *headLayout = new QVBoxLayout;
 	QVBoxLayout *leftLayout = new QVBoxLayout;
 	leftLayout->addWidget(mLabel);
 	leftLayout->addStretch();
@@ -29,18 +36,19 @@ FindDialog::FindDialog(QWidget *parent) : QDialog(parent)
 	middleLayout->addWidget(mLineEdit);
 	foreach (QCheckBox *current, mCheckBoxes)
 		middleLayout->addWidget(current);
-	middleLayout->addWidget(mReplaceButton);
 	QVBoxLayout *rightLayout = new QVBoxLayout;
 	rightLayout->addWidget(mFindButton);
+	rightLayout->addWidget(mReplaceButton);
 	rightLayout->addStretch();
 	QHBoxLayout *mainLayout = new QHBoxLayout;
 	mainLayout->addLayout(leftLayout);
 	mainLayout->addLayout(middleLayout);
 	mainLayout->addLayout(rightLayout);
-	setLayout(mainLayout);
+	headLayout->addLayout(mainLayout);
+	headLayout->addWidget(mListWidget);
+	setLayout(headLayout);
 
 	setWindowTitle(tr("Search"));
-	setFixedHeight(sizeHint().height());
 }
 
 FindDialog::~FindDialog()
@@ -49,6 +57,7 @@ FindDialog::~FindDialog()
 	delete mLineEdit;
 	delete mFindButton;
 	delete mReplaceButton;
+	delete mListWidget;
 }
 
 void FindDialog::replaceClicked()
@@ -66,7 +75,6 @@ void FindDialog::findClicked()
 	if (!searchData.isEmpty()) {
 		searchData.push_front(mLineEdit->text());
 		emit findModelByName(searchData);
-		this->close();
 	}
 }
 
@@ -75,3 +83,35 @@ void FindDialog::enableFindButton(const QString &text)
 	mFindButton->setEnabled(!text.isEmpty());
 }
 
+void FindDialog::initIds(QMap<QString, QString> foundData)
+{
+	hide();
+	mListWidget->clear();
+	mListWidget->hide();
+	this->layout()->removeWidget(mListWidget);
+	foreach (QString currentId, foundData.keys()) {
+		qReal::Id parentId = mCommonApi.parent(qReal::Id::loadFromString(currentId));
+		QString parentName = mCommonApi.name(parentId);
+		if (parentName.contains(" ")) {
+			QListWidgetItem *item = new QListWidgetItem();
+			item->setText(parentName + tr(" / ") +
+				mCommonApi.name(qReal::Id::loadFromString(currentId)) + foundData[currentId]);
+			item->setData(Qt::ToolTipRole, currentId);
+			mListWidget->addItem(item);
+		}
+	}
+
+	QObject::connect(mListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemChosen(QListWidgetItem*)));
+
+	if (!mListWidget->count() == 0) {
+		layout()->addWidget(mListWidget);
+		mListWidget->show();
+	}
+
+	show();
+}
+
+void FindDialog::itemChosen(QListWidgetItem *item)
+{
+	emit chosenElement(qReal::Id::loadFromString(item->data(Qt::ToolTipRole).toString()));
+}

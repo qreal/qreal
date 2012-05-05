@@ -6,6 +6,8 @@ FindAndReplaceDialog::FindAndReplaceDialog(QWidget *parent) : QDialog(parent)
 	mCheckBoxes.append(new QCheckBox(tr("by name")));
 	mCheckBoxes.append(new QCheckBox(tr("by property content")));
 
+	mCheckBoxes.first()->setChecked(true);
+
 	mFindLabel = new QLabel(tr("Find:"));
 	mFindLineEdit = new QLineEdit();
 	mFindLabel->setBuddy(mFindLabel);
@@ -60,7 +62,6 @@ void FindAndReplaceDialog::replaceHandler()
 		searchData.push_front(mReplaceLineEdit->text());
 		searchData.push_front(mFindLineEdit->text());
 		emit replaceClicked(searchData);
-		this->close();
 	}
 }
 

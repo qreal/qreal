@@ -62,7 +62,7 @@ MainWindow::MainWindow()
 {
 	mReplaceDialog = new FindAndReplaceDialog(this);
 
-	mFindDialog = new FindDialog(this);
+
 
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
 
@@ -124,7 +124,7 @@ MainWindow::MainWindow()
 
 	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
 
-	mRefWindowDialog = new RefWindowDialog(mModels->logicalRepoApi(), this);
+	mFindDialog = new FindDialog(mModels->logicalRepoApi(), this);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
@@ -237,13 +237,13 @@ void MainWindow::connectActions()
 	connect(mReplaceDialog, SIGNAL(replaceClicked(QStringList)), this, SLOT(handleReplaceDialog(QStringList)));
 	connect(mFindDialog, SIGNAL(replaceStarted()), this, SLOT(showReplaceDialog()));
 	connect(mFindDialog, SIGNAL(findModelByName(QStringList)), this, SLOT(handleFindDialog(QStringList)));
-	connect(mRefWindowDialog, SIGNAL(chosenElement(qReal::Id)), this, SLOT(handleRefsDialog(qReal::Id)));
+	connect(mFindDialog, SIGNAL(chosenElement(qReal::Id)), this, SLOT(handleRefsDialog(qReal::Id)));
 }
 
 void MainWindow::showFindDialog()
 {
 	mReplaceDialog->close();
-	mFindDialog->show();
+	mFindDialog->initIds();
 }
 
 void MainWindow::showReplaceDialog()
@@ -270,7 +270,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 	} else if (keyEvent->key() == Qt::Key_F1) {
 		showHelp();
 	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_F) {
-		mFindDialog->show();
+		mFindDialog->initIds();
 	}
 }
 
@@ -288,7 +288,6 @@ MainWindow::~MainWindow()
 	delete mCodeTabManager;
 	delete mReplaceDialog;
 	delete mFindDialog;
-	delete mRefWindowDialog;
 	delete mReplaceDialog;
 }
 
@@ -337,10 +336,7 @@ QMap<QString, QString> MainWindow::findItems(QStringList const &searchData)
 
 void MainWindow::handleFindDialog(QStringList const &searchData)
 {
-	QMap<QString, QString> found = findItems(searchData);
-
-	if ((!found.isEmpty()) && (mRefWindowDialog->initIds(found)))
-		mRefWindowDialog->show();
+	mFindDialog->initIds(findItems(searchData));
 }
 
 void MainWindow::handleReplaceDialog(QStringList const &searchData)

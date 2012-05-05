@@ -93,11 +93,11 @@
     <addaction name="actionFind_and_replace"/>
    </widget>
    <addaction name="menu_File"/>
+   <addaction name="menuEdit"/>
    <addaction name="menu_View"/>
    <addaction name="menuTools"/>
    <addaction name="menuSettings"/>
    <addaction name="menuHelp"/>
-   <addaction name="menuEdit"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="fileToolbar">

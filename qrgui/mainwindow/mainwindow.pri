@@ -9,7 +9,6 @@ HEADERS += \
 	mainwindow/mainWindowInterpretersInterface.h \
 	mainwindow/helpBrowser.h \
 	mainwindow/findDialog.h \
-	mainwindow/refWindowDialog.h \
 	mainwindow/paletteTree.h \
     mainwindow/findAndReplaceDialog.h
 
@@ -21,7 +20,6 @@ SOURCES += \
 	mainwindow/errorListWidget.cpp \
 	mainwindow/helpBrowser.cpp \
 	mainwindow/findDialog.cpp \
-	mainwindow/refWindowDialog.cpp \
 	mainwindow/paletteTree.cpp \
     mainwindow/findAndReplaceDialog.cpp
 

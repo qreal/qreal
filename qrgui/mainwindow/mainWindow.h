@@ -24,7 +24,6 @@
 
 #include "findDialog.h"
 #include "findAndReplaceDialog.h"
-#include "refWindowDialog.h"
 
 #include  "paletteTree.h"
 
@@ -238,9 +237,6 @@ private:
 
 	/// mFindDialog - Dialog for searching elements.
 	FindDialog *mFindDialog;
-
-	/// mRefWindowDialog - Dialog of searched elements.
-	RefWindowDialog *mRefWindowDialog;
 
 	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
 	QMap<EditorView*, CodeArea*> *mCodeTabManager;
