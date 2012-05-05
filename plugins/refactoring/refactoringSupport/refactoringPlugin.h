@@ -43,6 +43,7 @@ private slots:
 	void findRefactoring(QString const &refactoringName);
 	void findNextRefactoring();
 	void discardRefactoring();
+	void createRefactoring();
 
 private:
 	void insertRefactoringID(QDomDocument metamodel, QDomNodeList list, bool isNode);
@@ -61,6 +62,7 @@ private:
 	QAction *mGenerateAndLoadRefactoringEditorAction;
 	QAction *mOpenRefactoringWindowAction;
 	QAction *mSaveRefactoringAction;
+	QAction *mCreateRefactoringAction;
 	QAction *mPlaceLRAction;
 	QAction *mPlaceTBAction;
 	QAction *mPlaceRLAction;

@@ -83,6 +83,11 @@ QList<qReal::ActionInfo> RefactoringPlugin::actions()
 	connect(mSaveRefactoringAction, SIGNAL(triggered()), this, SLOT(saveRefactoring()));
 	mRefactoringMenu->addAction(mSaveRefactoringAction);
 
+	mCreateRefactoringAction = new QAction(tr("Create Refactoring"), NULL);
+	mCreateRefactoringAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_3));
+	connect(mCreateRefactoringAction, SIGNAL(triggered()), this, SLOT(createRefactoring()));
+	mRefactoringMenu->addAction(mCreateRefactoringAction);
+
 	mPlaceMenu = new QMenu(tr("Automatically arrange elements"));
 
 	mPlaceTBAction = new QAction(tr("Top-Bottom"), NULL);
@@ -364,7 +369,7 @@ void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 	mRefactoringWindow->activateRestButtons();
 }
 
-void qReal::refactoring::RefactoringPlugin::findNextRefactoring()
+void RefactoringPlugin::findNextRefactoring()
 {
 	mMainWindowIFace->dehighlight();
 	if (mMatches.isEmpty()) {
@@ -386,5 +391,24 @@ void RefactoringPlugin::discardRefactoring()
 	mMainWindowIFace->dehighlight();
 	mMatches.clear();
 	mRefactoringWindow->discard();
+}
+
+void RefactoringPlugin::createRefactoring()
+{
+	if (mMainWindowIFace->pluginLoaded("RefactoringEditor")) {
+		Id diagramId = Id("RefactoringEditor", "RefactoringDiagram", "RefactoringDiagramNode", QUuid::createUuid().toString());
+		mGraphicalModelApi->createElement(Id::rootId(), diagramId, false, "NewRefactoringRule", QPointF());
+
+		QStringList list;
+		list << "BeforeBlock" << "AfterBlock" << "FromBeforeToAter";
+		Id beforeBlockId = Id("RefactoringEditor", "RefactoringDiagram", "BeforeBlock", QUuid::createUuid().toString());
+		mGraphicalModelApi->createElement(diagramId, beforeBlockId, false, "(Before Block)", QPointF(300, 140));
+		Id afterBlockId = Id("RefactoringEditor", "RefactoringDiagram", "AfterBlock", QUuid::createUuid().toString());
+		mGraphicalModelApi->createElement(diagramId, afterBlockId, false, "(After Block)", QPointF(700, 140));
+		Id fromBeforeToAfterId = Id("RefactoringEditor", "RefactoringDiagram", "FromBeforeToAter", QUuid::createUuid().toString());
+		mGraphicalModelApi->createElement(diagramId, fromBeforeToAfterId, false, "(From Before To After)", QPointF(540, 200));
+
+		mMainWindowIFace->activateItemOrDiagram(diagramId);
+	}
 }
 

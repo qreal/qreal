@@ -64,6 +64,8 @@ public:
 
 	/// returns selected elements on current tab
 	virtual IdList selectedElementsOnActiveDiagram() = 0;
+
+	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true) = 0;
 };
 
 }
