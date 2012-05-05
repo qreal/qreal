@@ -614,8 +614,14 @@ void EditorViewScene::createLibStatusSubmenus(QMenu &contextMenu, const Element 
         QString captionContent;
         QString status;
         //efimefim getter of lib status value
-        if (mMVIface->logicalAssistApi()->logicalRepoApi().isLibEntry(element->logicalId())
-                && mMVIface->logicalAssistApi()->logicalRepoApi().property(element->logicalId(), "isLibEntity").value<bool>()){
+        bool haveProperty = mMVIface->logicalAssistApi()->logicalRepoApi().isLibEntry(element->logicalId());
+        bool propertyValue = false;
+        if (haveProperty)
+            propertyValue = mMVIface->logicalAssistApi()->logicalRepoApi().property(element->logicalId(), "isLibEntity").value<bool>();
+
+        qDebug() << "have property isLibStatus = " << haveProperty;
+        qDebug() << "property value is " << propertyValue;
+        if (haveProperty && propertyValue) {
             status.append("on");
         } else {
             status.append("off");

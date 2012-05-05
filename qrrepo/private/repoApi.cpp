@@ -505,8 +505,14 @@ bool RepoApi::isGraphicalElement(qReal::Id const &id) const
 bool RepoApi::isLibEntry(qReal::Id const &id, bool const isLogical) const
 {
     if (isLogical){
-        return (hasProperty(id, "isLibEntity")
-                && property(id, "isLibEntity").value<bool>());
+        bool haveProperty = hasProperty(id,  "isLibEntity");
+        bool propertyValue = false;
+        if (haveProperty){
+            propertyValue = property(id,  "isLibEntity").value<bool>();
+        }
+        qDebug() << "have property" << haveProperty;
+        qDebug() << "property value" << propertyValue;
+        return (haveProperty && propertyValue);
     }
 
     if (!isLogical) {
