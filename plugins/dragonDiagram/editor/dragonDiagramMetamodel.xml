@@ -97,7 +97,7 @@
 	    <lineType type="solidLine"/>
 	  </graphics>
 	  <logic>
-	    <dissectability isDissectable="true" />
+	    <dissectability isDividable="true" />
 	    <properties>
 	      <property type="string" name="type_number" />
 	      <property type="bool" name="type" />

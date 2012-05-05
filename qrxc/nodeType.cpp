@@ -44,7 +44,7 @@ bool NodeType::initAssociations()
 	return true;
 }
 
-bool NodeType::initDissectability()
+bool NodeType::initDividability()
 {
 	return true;
 }
@@ -343,7 +343,7 @@ void NodeType::generateCode(OutFile &out)
 	<< (mContainerProperties.maximizesChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
 
-	<< "\t\tbool isDissectable()\n\t\t{\n\t\t\treturn false;\n\t\t}\n\n"
+	<< "\t\tbool isDividable()\n\t\t{\n\t\t\treturn false;\n\t\t}\n\n"
 
 	<< "\t\tbool isPort()\n\t\t{\n"
 	<< (mIsPin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")

@@ -378,8 +378,8 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		mLastLine = mLine;
 	}
 }
-bool EdgeElement::isDissectable (){
-	return mElementImpl->isDissectable();
+bool EdgeElement::isDividable (){
+	return mElementImpl->isDividable();
 }
 
 

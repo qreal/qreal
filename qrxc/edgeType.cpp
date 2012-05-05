@@ -135,22 +135,22 @@ bool EdgeType::initGraphics()
 	return true;
 }
 
-bool EdgeType::initDissectability()
+bool EdgeType::initDividability()
 {
-	QDomElement dissectabilityElement = mLogic.firstChildElement("dissectability");
+	QDomElement dividabilityElement = mLogic.firstChildElement("dividability");
 
-	mIsDissectable = "false";
-	if (dissectabilityElement.isNull())
+	mIsDividable = "false";
+	if (dividabilityElement.isNull())
 	{
 		return true;
 	}
-	QString isDissectable = dissectabilityElement.attribute("isDissectable");
-	if (isDissectable != "true" && isDissectable != "false")
+	QString isDividable = dividabilityElement.attribute("isDividable");
+	if (isDividable != "true" && isDividable != "false")
 	{
-		qDebug() << "ERROR: can't parse dissectability";
+		qDebug() << "ERROR: can't parse dividability";
 		return false;
 	}
-	mIsDissectable = isDissectable;
+	mIsDividable = isDividable;
 	return true;
 }
 
@@ -210,7 +210,7 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\tbool isNode() { return false; }\n"
 	<< "\t\tbool isResizeable() { return true; }\n"
 	<< "\t\tbool isContainer() { return false; }\n"
-	<< "\t\tbool isDissectable() { return " << mIsDissectable << "; }\n"
+	<< "\t\tbool isDividable() { return " << mIsDividable << "; }\n"
 	<< "\t\tbool isSortingContainer() { return false; }\n"
 	<< "\t\tint sizeOfForestalling() { return 0; }\n"
 	<< "\t\tint sizeOfChildrenForestalling() { return 0; }\n"
