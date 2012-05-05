@@ -4,7 +4,6 @@ HEADERS += \
 	mainwindow/errorReporter.h \
 	mainwindow/gesturesPainterInterface.h \
 	mainwindow/gesturesPainterInterface.h \
-	mainwindow/buttonRefWindow.h \
 	mainwindow/error.h \
 	mainwindow/errorListWidget.h \
 	mainwindow/mainWindowInterpretersInterface.h \
@@ -18,7 +17,6 @@ SOURCES += \
 	mainwindow/mainWindow.cpp \
 	mainwindow/propertyEditorProxyModel.cpp \
 	mainwindow/errorReporter.cpp \
-	mainwindow/buttonRefWindow.cpp \
 	mainwindow/error.cpp \
 	mainwindow/errorListWidget.cpp \
 	mainwindow/helpBrowser.cpp \
