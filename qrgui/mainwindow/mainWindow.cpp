@@ -579,6 +579,7 @@ bool MainWindow::open(QString const &fileName)
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
+    mUi->libraryExplorer->setModel(mModels->libraryModel());
 
 	connectWindowTitle();
 	mSaveFile = fileName;
@@ -1791,6 +1792,8 @@ void MainWindow::initExplorers()
 
 	mUi->logicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
+
+    mUi->libraryExplorer->setModel(mModels->libraryModel());
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 

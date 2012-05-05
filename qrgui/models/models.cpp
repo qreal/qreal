@@ -7,8 +7,9 @@ Models::Models(QString const &workingCopy, EditorManager const &editorManager)
 {
 	qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(workingCopy);
 	mGraphicalModel = new models::details::GraphicalModel(repoApi, editorManager);
-	mLogicalModel = new models::details::LogicalModel(repoApi, editorManager);
+    mLogicalModel = new models::details::LogicalModel(repoApi, editorManager, false);
 	mRepoApi = repoApi;
+    mLibraryModel = new models::details::LogicalModel(repoApi, editorManager, true);
 
 	mLogicalModel->connectToGraphicalModel(mGraphicalModel);
 	mGraphicalModel->connectToLogicalModel(mLogicalModel);
@@ -30,6 +31,12 @@ QAbstractItemModel* Models::logicalModel() const
 {
 	return mLogicalModel;
 }
+
+QAbstractItemModel* Models::libraryModel() const
+{
+    return mLibraryModel;
+}
+
 
 GraphicalModelAssistApi &Models::graphicalModelAssistApi() const
 {
@@ -72,4 +79,7 @@ void Models::reinit()
 {
 	mLogicalModel->reinit();
 	mGraphicalModel->reinit();
+
+    //efimefim
+    mLibraryModel->reinit();
 }

@@ -60,6 +60,14 @@ IdList RepoApi::children(Id const &id) const
     return client->children(id);
 }
 
+IdList RepoApi::childrenInAllClients(qReal::Id const &id) const
+{
+    IdList result;
+    for (int i = 0; i < mClients->count(); ++i){
+        result.append(mClients->at(i)->children(id));
+    }
+    return result;
+}
 
 void RepoApi::addChild(Id const &id, Id const &child)
 {

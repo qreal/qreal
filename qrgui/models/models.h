@@ -17,6 +17,7 @@ public:
 
 	QAbstractItemModel* graphicalModel() const;
 	QAbstractItemModel* logicalModel() const;
+    QAbstractItemModel* libraryModel() const;
 
 	GraphicalModelAssistApi &graphicalModelAssistApi() const;
 	LogicalModelAssistApi &logicalModelAssistApi() const;
@@ -34,6 +35,7 @@ public:
 private:
 	models::details::GraphicalModel *mGraphicalModel;
 	models::details::LogicalModel *mLogicalModel;
+    models::details::LogicalModel *mLibraryModel;
 	qrRepo::RepoControlInterface *mRepoApi;
 };
 

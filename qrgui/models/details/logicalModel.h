@@ -24,7 +24,7 @@ class LogicalModel : public modelsImplementation::AbstractModel
 	Q_OBJECT;
 
 public:
-	LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const &editorManager);
+    LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const &editorManager, bool mLibEntitiesOnly);// = false);
 	virtual ~LogicalModel();
 
 	void connectToGraphicalModel(GraphicalModel * const graphicalModel);
@@ -48,6 +48,7 @@ private:
 
 	virtual void init();
 	void loadSubtreeFromClient(modelsImplementation::LogicalModelItem * const parent);
+    void loadExtendedSubtreeFromClient(modelsImplementation::LogicalModelItem * const parent);
 	modelsImplementation::LogicalModelItem *loadElement(modelsImplementation::LogicalModelItem *parentItem, Id const &id);
 	void checkProperties(Id const &id);
 
@@ -56,6 +57,8 @@ private:
 						   modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position);
 	QString pathToItem(modelsImplementation::AbstractModelItem const * const item) const;
 	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child);
+
+    bool mLibEntitiesOnly;
 };
 }
 
