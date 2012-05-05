@@ -1,4 +1,4 @@
-#pragma once
+  #pragma once
 
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QAction>

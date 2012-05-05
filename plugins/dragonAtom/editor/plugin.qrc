@@ -1,0 +1,14 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file>generated/shapes/Atom1NodeClass.sdf</file>
+	<file>generated/shapes/Atom1NodePorts.sdf</file>
+	<file>generated/shapes/Atom2NodeClass.sdf</file>
+	<file>generated/shapes/Atom2NodePorts.sdf</file>
+	<file>generated/shapes/Atom3NodeClass.sdf</file>
+	<file>generated/shapes/Atom3NodePorts.sdf</file>
+	<file>generated/shapes/Atom4NodeClass.sdf</file>
+	<file>generated/shapes/Atom4NodePorts.sdf</file>
+	<file>generated/shapes/DragonAtomNodeClass.sdf</file>
+	<file>generated/shapes/DragonAtomNodePorts.sdf</file>
+</qresource>
+</RCC>
