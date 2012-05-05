@@ -67,6 +67,8 @@ public:
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
+	void insertNodeIntoEdge(const qReal::Id &insertedNodeId, const qReal::Id &newParent, bool isFromLogicalModel,QPointF const &scenePos);
+
 public slots:
 	qReal::Id createElement(const QString &type);
 	// TODO: get rid of it here
@@ -113,6 +115,7 @@ private slots:
 	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
 	void getObjectByGesture();
 
+
 private:
 	void getLinkByGesture(NodeElement *parent, NodeElement const &child);
 	void drawGesture();
@@ -135,7 +138,6 @@ private:
 
 	void initContextMenu(Element *e, QPointF const &pos);
 
-	void insertNodeIntoEdge(qReal::Id &insertedNodeId, qReal::Id const &newParent, bool isFromLogicalModel,QPointF const &scenePos);
 
 	Element* mLastCreatedWithEdge;
 	NodeElement *mCopiedNode;

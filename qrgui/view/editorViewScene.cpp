@@ -470,21 +470,25 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	emit elementCreated(id);
 }
 
-void EditorViewScene::insertNodeIntoEdge(qReal::Id &insertedNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos){
+void EditorViewScene::insertNodeIntoEdge(qReal::Id const &insertedNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos)
+{
 	foreach (QGraphicsItem *item, items(scenePos)) {
 		EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
 		if(edge && edge->isDissectable()){// check if item is an edge and the edge is dissectable
 			NodeElement *directedToNodeId = edge->dst();
 			if (directedToNodeId) {//check has edge dst
 				edge->removeLink(directedToNodeId);
-				mMVIface->graphicalAssistApi()->setTo(edge->id(), insertedNodeId);
+				directedToNodeId->delEdge(edge);
 
+				mMVIface->graphicalAssistApi()->setTo(edge->id(), insertedNodeId);
 				Id const newEdge(edge->id().editor(), edge->id().diagram(), edge->id().element(), QUuid::createUuid().toString());
-				mMVIface->graphicalAssistApi()->createElement(parentId, newEdge, isFromLogicalModel, "flow", scenePos);
+				Id realParentId = (parentId == Id::rootId()) ? mMVIface->rootId() : parentId;
+
+				mMVIface->graphicalAssistApi()->createElement(realParentId, newEdge, isFromLogicalModel, "flow", scenePos);
 				mMVIface->graphicalAssistApi()->setFrom(newEdge, insertedNodeId);
 				mMVIface->graphicalAssistApi()->setTo(newEdge, directedToNodeId->id());
-				edge->connectToPort();
-				directedToNodeId->arrangeLinks();
+
+				directedToNodeId->connectLinksToPorts();
 				break;
 			}
 		}
