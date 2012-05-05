@@ -44,6 +44,11 @@ bool NodeType::initAssociations()
 	return true;
 }
 
+bool NodeType::initDividability()
+{
+	return true;
+}
+
 bool NodeType::initGraphics()
 {
 	return initSdf() && initPorts() && initBooleanProperties();
@@ -337,6 +342,8 @@ void NodeType::generateCode(OutFile &out)
 	<< "\t\tbool maximizesChildren()\n\t\t{\n"
 	<< (mContainerProperties.maximizesChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
+
+	<< "\t\tbool isDividable()\n\t\t{\n\t\t\treturn false;\n\t\t}\n\n"
 
 	<< "\t\tbool isPort()\n\t\t{\n"
 	<< (mIsPin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
