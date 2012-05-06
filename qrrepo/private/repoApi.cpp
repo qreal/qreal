@@ -305,7 +305,7 @@ void RepoApi::changeLibStatus(qReal::Id const &id, bool isLogical) const
 	if (isLogical){
 		client->setProperty(id, "isLibEntity", true);
 	} else {
-	client->setProperty(id, "isGraphicalLibEntity", true);
+		client->setProperty(id, "isGraphicalLibEntity", true);
 	}
 }
 
