@@ -151,7 +151,7 @@ bool Serializer::loadProperties(QDomElement const &elem, Object &object)
 			// списками детей/родителей.
 			if (property.attribute("type", "") == "qReal::IdList") {
 				QString key = property.tagName();
-                IdList value = loadIdList(properties, property.tagName());
+				IdList value = loadIdList(properties, property.tagName());
 				object.setProperty(key, IdListHelper::toVariant(value));
 			} else {
 				Q_ASSERT(!"Unknown list type");
@@ -164,7 +164,7 @@ bool Serializer::loadProperties(QDomElement const &elem, Object &object)
 
 			QString valueStr = property.attribute("value", "");
 			QVariant value = parseValue(type, valueStr);
-            qDebug() << "loading" << key << ". It's value is " << value;
+			qDebug() << "loading" << key << ". It's value is " << value;
 			object.setProperty(key, value);
 		}
 		property = property.nextSiblingElement();
@@ -210,7 +210,7 @@ QVariant Serializer::parseValue(QString const &typeName, QString const &valueStr
 	} else if (typeName.toLower() == "double") {
 		return QVariant(valueStr.toDouble());
 	} else if (typeName.toLower() == "bool") {
-        return QVariant(valueStr.toLower() == "1");
+		return QVariant(valueStr.toLower() == "1");
 	} else if (typeName == "QString") {
 		return QVariant(valueStr);
 	} else if (typeName.toLower() == "char") {
@@ -346,7 +346,6 @@ QDomElement Serializer::idListToXml(QString const &attributeName, IdList const &
 
 QDomElement Serializer::propertiesToXml(Object* const object, QDomDocument &doc)
 {
-    qDebug() << "start of property list";
 	QDomElement result = doc.createElement("properties");
 	QMapIterator<QString, QVariant> i = object->propertiesIterator();
 	while (i.hasNext()) {
@@ -356,19 +355,14 @@ QDomElement Serializer::propertiesToXml(Object* const object, QDomDocument &doc)
 			QDomElement list = idListToXml(i.key(), i.value().value<IdList>(), doc);
 			list.setAttribute("type", "qReal::IdList");
 			result.appendChild(list);
-            qDebug() << "IdList";
 		} else {
 			QDomElement property = doc.createElement(i.value().typeName());
-            qDebug() << i.value().typeName();
 			property.setAttribute("key", i.key());
-            qDebug() << i.key();
 			QString value = serializeQVariant(i.value());
-            qDebug() << value;
 			property.setAttribute("value", value);
 			result.appendChild(property);
 		}
 	}
-    qDebug() << "end of property list";
 	return result;
 }
 

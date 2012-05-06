@@ -84,7 +84,7 @@ MainWindow::MainWindow()
 	mUi->setupUi(this);
 
 	if (showSplash) {
-        splash->show();
+	splash->show();
 		QApplication::processEvents();
 	}
 	else {
@@ -196,7 +196,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
 	connect(mUi->actionCloseProject, SIGNAL(triggered()), this, SLOT(closeProjectAndSave()));
 	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
-    connect(mUi->actionAdd, SIGNAL(triggered()), this, SLOT(addProject()));
+	connect(mUi->actionAdd, SIGNAL(triggered()), this, SLOT(addProject()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 
 	//	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
@@ -476,38 +476,30 @@ bool MainWindow::import(QString const &fileName)
 /// @return true if succesfull
 bool MainWindow::add(const QString &fileName)
 {
-    if (!QFile(fileName).exists()) {
-        return false;
-    }
+	if (!QFile(fileName).exists()) {
+		return false;
+}
 
-    refreshRecentProjectsList(fileName);
+//	refreshRecentProjectsList(fileName);
 
-    mModels->repoControlApi().loadSaveFile(fileName);
-    mModels->reinit();
+	mModels->repoControlApi().loadSaveFile(fileName);
+	mModels->reinit();
 
   //copy-paste from open()
   //probabaly does nothing because defaul client hadn't changed
-    if (!checkPluginsAndReopen(NULL))
-        return false;
-    mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
-    mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
-    mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-/*
-  //Copy-Paste from method open();
-  //title hadling probably should be more complex and mibile
-    QString windowTitle = mToolManager.customizer()->windowTitle();
-    if (!fileName.isEmpty()) {
-        setWindowTitle(windowTitle + " - " + mSaveFile);
-    }
-    else
-        setWindowTitle(windowTitle + " - unsaved project");
-        */
-    return true;
+	if (!checkPluginsAndReopen(NULL))
+	return false;
+	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
+	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
+	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
+	mUi->libraryExplorer->setModel(mModels->libraryModel());
+
+	return true;
 }
 
 bool MainWindow::addProject()
 {
-    return add(getWorkingFile(tr("Select save file to open"), false));
+	return add(getWorkingFile(tr("Select save file to open"), false));
 ;
 }
 
@@ -563,7 +555,7 @@ void MainWindow::saveAllAndOpen(QString const &dirName)
 
 bool MainWindow::open(QString const &fileName)
 {
-    if (!QFile(fileName).exists() && fileName != "") {
+	if (!QFile(fileName).exists() && fileName != "") {
 		return false;
 	}
 
@@ -579,12 +571,12 @@ bool MainWindow::open(QString const &fileName)
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-    mUi->libraryExplorer->setModel(mModels->libraryModel());
+	mUi->libraryExplorer->setModel(mModels->libraryModel());
 
 	connectWindowTitle();
 	mSaveFile = fileName;
 	QString windowTitle = mToolManager.customizer()->windowTitle();
-    if (!fileName.isEmpty()) {
+	if (!fileName.isEmpty()) {
 		setWindowTitle(windowTitle + " - " + mSaveFile);
 	}
 	else
@@ -1095,6 +1087,15 @@ void MainWindow::logicalModelExplorerClicked(QModelIndex const &index)
 	}
 }
 
+void MainWindow::libraryModelExplorerClicked(const QModelIndex &index)
+{
+	Id const id = mModels->libraryModelAssistApi().idByIndex(index);
+	setIndexesOfPropertyEditor(id);
+	//openNewTab(index);
+	//centerOn(id);
+}
+
+
 void MainWindow::openNewTab(QModelIndex const &arg)
 {
 	QModelIndex index = arg;
@@ -1461,6 +1462,9 @@ void MainWindow::setIndexesOfPropertyEditor(Id const &id)
 	} else if (mModels->logicalModelAssistApi().isLogicalId(id)) {
 		QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(id);
 		mPropertyModel.setModelIndexes(logicalIndex, QModelIndex());
+	} else if (mModels->libraryModelAssistApi().isLogicalId(id)) {
+	QModelIndex const libraryIndex = mModels->libraryModelAssistApi().indexById((id));
+	mPropertyModel.setModelIndexes(libraryIndex, QModelIndex());
 	} else {
 		mPropertyModel.clearModelIndexes();
 	}
@@ -1578,10 +1582,10 @@ void MainWindow::createProject()
 			return;
 		}
 	}
-    open("");
-    if (SettingsManager::value("diagramCreateSuggestion", true).toBool()){
+	open("");
+	if (SettingsManager::value("diagramCreateSuggestion", true).toBool()){
 		suggestToCreateDiagram();
-    }
+	}
 
 }
 
@@ -1660,7 +1664,7 @@ bool MainWindow::showConnectionRelatedMenus() const
 
 bool MainWindow::showLibraryRelatedMenus() const
 {
-    return mToolManager.customizer()->showLibraryRelatedMenus();
+	return mToolManager.customizer()->showLibraryRelatedMenus();
 }
 
 void MainWindow::showInTextEditor(QString const &title, QString const &text)
@@ -1793,13 +1797,14 @@ void MainWindow::initExplorers()
 	mUi->logicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
-    mUi->libraryExplorer->setModel(mModels->libraryModel());
+	mUi->libraryExplorer->setModel(mModels->libraryModel());
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 
 	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &)), this, SLOT(updateTabName(Id const &)));
 	connect(mUi->graphicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(graphicalModelExplorerClicked(QModelIndex)));
 	connect(mUi->logicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(logicalModelExplorerClicked(QModelIndex)));
+	connect(mUi->libraryExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(libraryModelExplorerClicked(QModelIndex)));
 }
 
 void MainWindow::initRecentProjectsMenu()
@@ -1922,13 +1927,13 @@ void MainWindow::changePaletteRepresentation()
 // former setAsLibEntity
 void MainWindow::changeLibStatus(Id const &id, bool const isLogical)
 {
-    if (isLogical){
-        qDebug() << "logical element had property before MainWindow::changeLibStatus" << mModels->mutableLogicalRepoApi().hasProperty(id, "isLibEntity");
-        mModels->mutableLogicalRepoApi().changeLibStatus(id);
-        qDebug() << "New value of propery isLibEntity" << mModels->mutableLogicalRepoApi().property(id, "isLibEntity");
-    } else {
-        mModels->mutableGraphicalRepoApi().changeLibStatus(id);
-        qDebug() << "graphical element have now property before MainWindow::changeLibStatus" << mModels->logicalRepoApi().property(id, "isGraphicalLibEntity");
-    }
+	if (isLogical){
+	qDebug() << "logical element had property before MainWindow::changeLibStatus" << mModels->mutableLogicalRepoApi().hasProperty(id, "isLibEntity");
+	mModels->mutableLogicalRepoApi().changeLibStatus(id);
+	qDebug() << "New value of propery isLibEntity" << mModels->mutableLogicalRepoApi().property(id, "isLibEntity");
+	} else {
+	mModels->mutableGraphicalRepoApi().changeLibStatus(id);
+	qDebug() << "graphical element have now property before MainWindow::changeLibStatus" << mModels->logicalRepoApi().property(id, "isGraphicalLibEntity");
+	}
 }
 */

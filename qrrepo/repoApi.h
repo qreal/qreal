@@ -24,7 +24,7 @@ namespace qrRepo {
 		void setName(qReal::Id const &id, QString const &name);
 
 		qReal::IdList children(qReal::Id const &id) const;
-        qReal::IdList childrenInAllClients(qReal::Id const &id) const;
+		qReal::IdList childrenInAllClients(qReal::Id const &id) const;
 
 		virtual void addChild(qReal::Id const &id, qReal::Id const &child);
 		virtual void addChild(qReal::Id const &id, qReal::Id const &child, qReal::Id const &logicalId);
@@ -52,7 +52,7 @@ namespace qrRepo {
 		void addUsage(qReal::Id const &source, qReal::Id const &destination);
 		void deleteUsage(qReal::Id const &source, qReal::Id const &destination);
 
-        virtual void changeLibStatus(qReal::Id const &id, bool isLogical) const;
+		virtual void changeLibStatus(qReal::Id const &id, bool isLogical) const;
 
 		qReal::IdList connectedElements(qReal::Id const &id) const;
 		qReal::IdList outgoingConnectedElements(qReal::Id const &id) const;
@@ -93,7 +93,7 @@ namespace qrRepo {
 
 		virtual bool isLogicalElement(qReal::Id const &id) const;
 		virtual bool isGraphicalElement(qReal::Id const &id) const;
-        virtual bool isLibEntry(qReal::Id const &id, bool const isLogical) const;
+		virtual bool isLibEntry(qReal::Id const &id, bool const isLogical) const;
 
 		void exterminate();
 
@@ -104,14 +104,14 @@ namespace qrRepo {
 		void save(qReal::IdList list) const;
 		void saveTo(QString const &workingFile);
 
-        void loadSaveFile(QString const &saveFile);
+		void loadSaveFile(QString const &saveFile);
 		void open(QString const &saveFile);
 
 		virtual QString workingFile() const;
 
 		// "– ‚Äú– ¬ª– —ï– ¬±– ¬∞– ¬ª–°–ä– –Ö–°‚Äπ– ¬µ" – —ò– ¬µ–°‚Äö– —ï– “ë–°‚Äπ, – —ó– —ï– ¬∑– –Ü– —ï– ¬ª–°–è–°–ã–°‚Ä∞– —ë– ¬µ – “ë– ¬µ– ¬ª– ¬∞–°‚Äö–°–ä – ¬∑– ¬∞– —ó–°–Ç– —ï–°–É–°‚Äπ – —î – —ò– —ï– “ë– ¬µ– ¬ª– —ë – –Ü –°‚Ä – ¬µ– ¬ª– —ï– —ò.
-        /// Returns all elements with .element() == type.element() from default client
-        /// @param type - id to compare with
+		/// Returns all elements with .element() == type.element() from default client
+		/// @param type - id to compare with
 		virtual qReal::IdList graphicalElements(qReal::Id const &type) const;
 		virtual qReal::IdList logicalElements(qReal::Id const &type) const;
 
@@ -121,10 +121,10 @@ namespace qrRepo {
 		qReal::IdList elementsByType(QString const &type) const;
 		int elementsCount() const;
 
-        /// Checks if id is present in repository
-        /// Should support all clients because work with all of them is intended
-        /// @param id - id of element you are looking for.
-        /// @return true if present, fase otherwise
+		/// Checks if id is present in repository
+		/// Should support all clients because work with all of them is intended
+		/// @param id - id of element you are looking for.
+		/// @return true if present, fase otherwise
 		bool exist(qReal::Id const &id) const;
 
 	private:
@@ -134,16 +134,16 @@ namespace qrRepo {
 		void addToIdList(qReal::Id const &target, QString const &listName, qReal::Id const &data, QString const &direction = QString());
 		void removeFromList(qReal::Id const &target, QString const &listName, qReal::Id const &data, QString const &direction = QString());
 
-        /// For debugging purpose
-        /// @return all elements in every loaded client
-        qReal::IdList allElements() const;
+		/// For debugging purpose
+		/// @return all elements in every loaded client
+		qReal::IdList allElements() const;
 		qReal::IdList links(qReal::Id const &id, QString const &direction) const;
 		void removeLinkEnds(QString const &endName, qReal::Id const &id);
 
-        details::Client* getRelevantClient(qReal::Id const &id) const;
-        details::Client* getDefaultClient() const;
+		details::Client* getRelevantClient(qReal::Id const &id) const;
+		details::Client* getDefaultClient() const;
 
-        QList<details::Client*> *mClients;
+		QList<details::Client*> *mClients;
 	};
 
 }

@@ -9,15 +9,15 @@ using namespace qrRepo::details;
 using namespace qReal;
 RepoApi::RepoApi(QString const &workingDirectory)
 {
-    /*Considering first in list as main save-file
-    others will be appended to latter indexes.
+	/*Considering first in list as main save-file
+	others will be appended to latter indexes.
 
-    Methods without comment - "multirepos" will work in legacy mode (only with main save-file)
-    */
+	Methods without comment - "multirepos" will work in legacy mode (only with main save-file)
+	*/
 
-    mClients = new QList<details::Client*>();
-    Client *defaultClient = new Client(workingDirectory);
-    mClients->append(defaultClient);
+	mClients = new QList<details::Client*>();
+	Client *defaultClient = new Client(workingDirectory);
+	mClients->append(defaultClient);
 }
 
 
@@ -25,82 +25,85 @@ RepoApi::RepoApi(QString const &workingDirectory)
 /// @return is link for client, representig save file inclusing requested id
 details::Client* RepoApi::getRelevantClient(const qReal::Id &id) const
 {
-        for (int i = 0; i < mClients->count(); ++i){
-        if(mClients->at(i)->exist(id))
-            return mClients->at(i);
-    }
-    //throw Exception("RepoApi: Requesting nonexistent object " + id.toString());
-    return getDefaultClient();
+		for (int i = 0; i < mClients->count(); ++i){
+		if(mClients->at(i)->exist(id))
+			return mClients->at(i);
+	}
+	//throw Exception("RepoApi: Requesting nonexistent object " + id.toString());
+	return getDefaultClient();
 }
 
 /// @return client created at initialization
 /// it is considered as a default one
 details::Client* RepoApi::getDefaultClient() const
 {
-    int defaultPosition = 0;
-    return mClients->at(defaultPosition);
+	int defaultPosition = 0;
+	return mClients->at(defaultPosition);
 }
 
 QString RepoApi::name(Id const &id) const
 {
-    Client *client = this->getRelevantClient(id);
-    Q_ASSERT(client->property(id, "name").canConvert<QString>());
-    return client->property(id, "name").toString();
+	Client *client = this->getRelevantClient(id);
+	Q_ASSERT(client->property(id, "name").canConvert<QString>());
+	return client->property(id, "name").toString();
 }
 
 void RepoApi::setName(Id const &id, QString const &name)
 {
-    Client *client = getRelevantClient(id);
-    client->setProperty(id, "name", name);
+	Client *client = getRelevantClient(id);
+	client->setProperty(id, "name", name);
 }
 
 IdList RepoApi::children(Id const &id) const
 {
-    Client *client = getRelevantClient(id);
-    return client->children(id);
+	Client *client = getRelevantClient(id);
+	return client->children(id);
 }
 
 IdList RepoApi::childrenInAllClients(qReal::Id const &id) const
 {
-    IdList result;
-    for (int i = 0; i < mClients->count(); ++i){
-        result.append(mClients->at(i)->children(id));
-    }
-    return result;
+	IdList result;
+	for (int i = 0; i < mClients->count(); ++i){
+		Client *client = mClients->at(i);
+		if (client->exist(id)) {
+			result.append(client->children(id));
+		}
+	}
+	return result;
 }
 
 void RepoApi::addChild(Id const &id, Id const &child)
 {
-    Client *client = getRelevantClient(id);
-    client->addChild(id, child);
+	Client *client = getRelevantClient(id);
+	client->addChild(id, child);
 }
 
 
 void RepoApi::addChild(Id const &id, Id const &child, Id const &logicalId)
 {
-    Client *client = getRelevantClient(id);
-    client->addChild(id, child, logicalId);
+	Client *client = getRelevantClient(id);
+	client->addChild(id, child, logicalId);
 }
 
 
 void RepoApi::stackBefore(Id const &id, Id const &child, Id const &sibling)
 {
-    Client *client = getRelevantClient(id);
-    client->stackBefore(id, child, sibling);
+	Client *client = getRelevantClient(id);
+	client->stackBefore(id, child, sibling);
 }
 
 
 Id RepoApi::copy(qReal::Id const &src)
 {
-    Client *client = getRelevantClient(src);
-    return client->cloneObject(src);
+	Client *client = getRelevantClient(src);
+	return client->cloneObject(src);
 }
 
 
 void RepoApi::removeChild(Id const &id, Id const &child)
 {
-    Client *client = getRelevantClient(id);
-    client->removeChild(id, child);
+	Client *client = getRelevantClient(id);
+	client->removeChild(id, child);
 }
 
 
@@ -115,7 +118,7 @@ void RepoApi::removeElement(Id const &id)
 {
 	Q_ASSERT(id != Id::rootId());
 
-    Client *client = getRelevantClient(id);
+	Client *client = getRelevantClient(id);
 
 	foreach (Id const child, children(id))
 		removeElement(child);
@@ -157,7 +160,7 @@ void RepoApi::removeElement(Id const &id)
 			deleteUsage(source, id);
 	}
 
-    client->remove(id);
+	client->remove(id);
 }
 
 
@@ -173,27 +176,27 @@ void RepoApi::removeLinkEnds(QString const &endName, Id const &id) {
 
 Id RepoApi::parent(Id const &id) const
 {
-    Client *client = getRelevantClient(id);
-    return client->parent(id);
+	Client *client = getRelevantClient(id);
+	return client->parent(id);
 }
 
 
 void RepoApi::setParent(Id const &id, Id const &parent)
 {
-    Client *client = getRelevantClient(id);
-    Id const oldParent = client->parent(id);
-    client->removeChild(oldParent, id);
-    client->setParent(id, parent);
+	Client *client = getRelevantClient(id);
+	Id const oldParent = client->parent(id);
+	client->removeChild(oldParent, id);
+	client->setParent(id, parent);
 }
 
 
 IdList RepoApi::links(Id const &id, QString const &direction) const
 {
-    Client *client = getRelevantClient(id);
-    IdList links = client->property(id, "links").value<IdList>();
+	Client *client = getRelevantClient(id);
+	IdList links = client->property(id, "links").value<IdList>();
 	IdList result;
 	foreach (Id const link, links) {
-        if (client->property(link, direction).value<Id>() == id) {
+		if (client->property(link, direction).value<Id>() == id) {
 			result.append(link);
 		}
 	}
@@ -221,15 +224,15 @@ IdList RepoApi::links(Id const &id) const
 
 qReal::IdList RepoApi::outgoingConnections(qReal::Id const &id) const
 {
-    Client *client = getRelevantClient(id);
-    return client->property(id, "outgoingConnections").value<IdList>();
+	Client *client = getRelevantClient(id);
+	return client->property(id, "outgoingConnections").value<IdList>();
 }
 
 
 qReal::IdList RepoApi::incomingConnections(qReal::Id const &id) const
 {
-    Client *client = getRelevantClient(id);
-    return client->property(id, "incomingConnections").value<IdList>();
+	Client *client = getRelevantClient(id);
+	return client->property(id, "incomingConnections").value<IdList>();
 }
 
 
@@ -253,15 +256,15 @@ void RepoApi::disconnect(qReal::Id const &source, qReal::Id const &destination)
 
 qReal::IdList RepoApi::outgoingUsages(qReal::Id const &id) const
 {
-    Client *client = getRelevantClient(id);
-    return client->property(id, "outgoingUsages").value<IdList>();
+	Client *client = getRelevantClient(id);
+	return client->property(id, "outgoingUsages").value<IdList>();
 }
 
 
 qReal::IdList RepoApi::incomingUsages(qReal::Id const &id) const
 {
-    Client *client = getRelevantClient(id);
-    return client->property(id, "incomingUsages").value<IdList>();
+	Client *client = getRelevantClient(id);
+	return client->property(id, "incomingUsages").value<IdList>();
 }
 
 
@@ -284,26 +287,26 @@ void RepoApi::deleteUsage(qReal::Id const &source, qReal::Id const &destination)
 
 void RepoApi::changeLibStatus(qReal::Id const &id, bool isLogical) const
 {
-    Client *client = getRelevantClient(id);
+	Client *client = getRelevantClient(id);
 
-    if (hasProperty(id, "isLibEntity")){
-        bool currentValue = property(id, "isLibEntity").toBool();
-        client->setProperty(id, "isLibEntity", !currentValue);
-        return;
-    }
+	if (hasProperty(id, "isLibEntity")){
+		bool currentValue = property(id, "isLibEntity").toBool();
+		client->setProperty(id, "isLibEntity", !currentValue);
+		return;
+	}
 
-    if (hasProperty(id, "isGraphicalLibEntity")){
-        bool currentValue = property(id, "isGraphicalLibEntity").toBool();
-        client->setProperty(id, "isGraphicalLibEntity", !currentValue);
-        return;
-    }
+	if (hasProperty(id, "isGraphicalLibEntity")){
+		bool currentValue = property(id, "isGraphicalLibEntity").toBool();
+		client->setProperty(id, "isGraphicalLibEntity", !currentValue);
+		return;
+	}
 
-    // this is called only if calles first time for this element
-    if (isLogical){
-        client->setProperty(id, "isLibEntity", true);
-    } else {
-        client->setProperty(id, "isGraphicalLibEntity", true);
-    }
+	// this is called only if calles first time for this element
+	if (isLogical){
+		client->setProperty(id, "isLibEntity", true);
+	} else {
+	client->setProperty(id, "isGraphicalLibEntity", true);
+	}
 }
 
 
@@ -350,183 +353,177 @@ QString RepoApi::typeName(Id const &id) const
 
 QVariant RepoApi::property(Id const &id, QString const &propertyName) const
 {
-    Client *client = getRelevantClient(id);
-    return client->property(id, propertyName);
+	Client *client = getRelevantClient(id);
+	return client->property(id, propertyName);
 }
 
 
 QString RepoApi::stringProperty(Id const &id, QString const &propertyName) const
 {
-    Client *client = getRelevantClient(id);
-    Q_ASSERT(client->property(id, propertyName).canConvert<QString>());
-    return client->property(id, propertyName).toString();
+	Client *client = getRelevantClient(id);
+	Q_ASSERT(client->property(id, propertyName).canConvert<QString>());
+	return client->property(id, propertyName).toString();
 }
 
 
 void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value)
 {
-    Client *client = getRelevantClient(id);
-    client->setProperty(id, propertyName, value);
+	Client *client = getRelevantClient(id);
+	client->setProperty(id, propertyName, value);
 }
 
 
 void RepoApi::removeProperty(Id const &id, QString const &propertyName)
 {
-    Client *client = getRelevantClient(id);
-    client->removeProperty(id, propertyName);
+	Client *client = getRelevantClient(id);
+	client->removeProperty(id, propertyName);
 }
 
 
 void RepoApi::copyProperties(const Id &dest, const Id &src)
 {
-    Client *client = getRelevantClient(src);
-    client->copyProperties(dest, src);
+	Client *client = getRelevantClient(src);
+	client->copyProperties(dest, src);
 }
 
 
 bool RepoApi::hasProperty(Id const &id, QString const &propertyName) const
 {
-    Client *client = getRelevantClient(id);
-    return client->hasProperty(id, propertyName);
+	Client *client = getRelevantClient(id);
+	return client->hasProperty(id, propertyName);
 }
 
 
 Id RepoApi::from(Id const &id) const
 {
-    Client *client = getRelevantClient(id);
-    Q_ASSERT(client->property(id, "from").canConvert<Id>());
-    return client->property(id, "from").value<Id>();
+	Client *client = getRelevantClient(id);
+	Q_ASSERT(client->property(id, "from").canConvert<Id>());
+	return client->property(id, "from").value<Id>();
 }
 
 
 void RepoApi::setFrom(Id const &id, Id const &from)
 {
-    Client *client = getRelevantClient(id);
+	Client *client = getRelevantClient(id);
 	if (hasProperty(id, "from")) {
-        Id prev = client->property(id, "from").value<Id>();
+		Id prev = client->property(id, "from").value<Id>();
 		removeFromList(prev, "links", id, "from");
 	}
-    client->setProperty(id, "from", from.toVariant());
+	client->setProperty(id, "from", from.toVariant());
 	addToIdList(from, "links", id, "from");
 }
 
 
 Id RepoApi::to(Id const &id) const
 {
-    Client *client = getRelevantClient(id);
-    Q_ASSERT(client->property(id, "to").canConvert<Id>());
-    return client->property(id, "to").value<Id>();
+	Client *client = getRelevantClient(id);
+	Q_ASSERT(client->property(id, "to").canConvert<Id>());
+	return client->property(id, "to").value<Id>();
 }
 
 
 void RepoApi::setTo(Id const &id, Id const &to)
 {
-    Client *client = getRelevantClient(id);
+	Client *client = getRelevantClient(id);
 	if (hasProperty(id, "to")) {
-        Id prev = client->property(id, "to").value<Id>();
+		Id prev = client->property(id, "to").value<Id>();
 		removeFromList(prev, "links", id, "to");
 	}
-    client->setProperty(id, "to", to.toVariant());
+	client->setProperty(id, "to", to.toVariant());
 	addToIdList(to, "links", id, "to");
 }
 
 
 double RepoApi::fromPort(Id const &id) const
 {
-    Client *client = getRelevantClient(id);
-    Q_ASSERT(client->property(id, "fromPort").canConvert<double>());
-    return client->property(id, "fromPort").value<double>();
+	Client *client = getRelevantClient(id);
+	Q_ASSERT(client->property(id, "fromPort").canConvert<double>());
+	return client->property(id, "fromPort").value<double>();
 }
 
 
 void RepoApi::setFromPort(Id const &id, double fromPort)
 {
-    Client *client = getRelevantClient(id);
-    client->setProperty(id, "fromPort", fromPort);
+	Client *client = getRelevantClient(id);
+	client->setProperty(id, "fromPort", fromPort);
 }
 
 
 double RepoApi::toPort(Id const &id) const
 {
-    Client *client = getRelevantClient(id);
-    Q_ASSERT(client->property(id, "toPort").canConvert<double>());
-    return client->property(id, "toPort").value<double>();
+	Client *client = getRelevantClient(id);
+	Q_ASSERT(client->property(id, "toPort").canConvert<double>());
+	return client->property(id, "toPort").value<double>();
 }
 
 
 void RepoApi::setToPort(Id const &id, double toPort)
 {
-    Client *client = getRelevantClient(id);
-    client->setProperty(id, "toPort", toPort);
+	Client *client = getRelevantClient(id);
+	client->setProperty(id, "toPort", toPort);
 }
 
 
 QVariant RepoApi::position(Id const &id) const
 {
-    Client *client = getRelevantClient(id);
-    return client->property(id, "position");
+	Client *client = getRelevantClient(id);
+	return client->property(id, "position");
 }
 
 
 QVariant RepoApi::configuration(Id const &id) const
 {
-    Client *client = getRelevantClient(id);
-    return client->property(id, "configuration");
+	Client *client = getRelevantClient(id);
+	return client->property(id, "configuration");
 }
 
 
 void RepoApi::setPosition(Id const &id, QVariant const &position)
 {
-    Client *client = getRelevantClient(id);
-    client->setProperty(id, "position", position);
+	Client *client = getRelevantClient(id);
+	client->setProperty(id, "position", position);
 }
 
 
 void RepoApi::setConfiguration(Id const &id, QVariant const &configuration)
 {
-    Client *client = getRelevantClient(id);
-    client->setProperty(id, "configuration", configuration);
+	Client *client = getRelevantClient(id);
+	client->setProperty(id, "configuration", configuration);
 }
 
 
 bool RepoApi::isLogicalElement(qReal::Id const &id) const
 {
-    Client *client = getRelevantClient(id);
-    return client->isLogicalId(id);
+	Client *client = getRelevantClient(id);
+	return client->isLogicalId(id);
 }
 
 
 bool RepoApi::isGraphicalElement(qReal::Id const &id) const
 {
-    Client *client = getRelevantClient(id);
-    return !client->isLogicalId(id);
+	Client *client = getRelevantClient(id);
+	return !client->isLogicalId(id);
 }
 
 bool RepoApi::isLibEntry(qReal::Id const &id, bool const isLogical) const
 {
-    if (isLogical){
-        bool haveProperty = hasProperty(id,  "isLibEntity");
-        bool propertyValue = false;
-        if (haveProperty){
-            propertyValue = property(id,  "isLibEntity").value<bool>();
-        }
-        qDebug() << "have property" << haveProperty;
-        qDebug() << "property value" << propertyValue;
-        return (haveProperty && propertyValue);
-    }
+	if (isLogical){
+		return (hasProperty(id, "isLibEntity")
+				&& property(id, "isLibEntity").value<bool>());
+	}
 
-    if (!isLogical) {
-        return (hasProperty(id, "isGraphicalLibEntity")
-                && property(id, "isGraphicalEntity").value<bool>());
-    }
+	if (!isLogical) {
+		return (hasProperty(id, "isGraphicalLibEntity")
+				&& property(id, "isGraphicalEntity").value<bool>());
+	}
 
-    return false;
+	return false;
 }
 
 qReal::Id RepoApi::logicalId(qReal::Id const &id) const
 {
-    Client *client = getRelevantClient(id);
-    return client->logicalId(id);
+	Client *client = getRelevantClient(id);
+	return client->logicalId(id);
 }
 
 
@@ -535,9 +532,9 @@ qReal::Id RepoApi::logicalId(qReal::Id const &id) const
 //investigated
 void RepoApi::exterminate()
 {
-    for (int i = 0; i < mClients->count(); i++){
-        mClients->at(i)->exterminate();
-    }
+	for (int i = 0; i < mClients->count(); i++){
+		mClients->at(i)->exterminate();
+	}
 }
 
 
@@ -545,9 +542,9 @@ void RepoApi::exterminate()
 /// usage scenario is staring work with completely new project
 void RepoApi::open(QString const &saveFile)
 {
-    mClients->clear();
-    Client *openedSaveFile = new Client(saveFile);
-    mClients->append(openedSaveFile);
+	mClients->clear();
+	Client *openedSaveFile = new Client(saveFile);
+	mClients->append(openedSaveFile);
 }
 
 /// Opens additional save file
@@ -555,29 +552,29 @@ void RepoApi::open(QString const &saveFile)
 /// changes to this files aren't intendent
 void RepoApi::loadSaveFile(QString const &saveFile)
 {
-    qDebug() << "Repo contain " << allElements().count() << " before adding";
-    Client *saveFileToAppend = new Client(saveFile);
-    mClients->append(saveFileToAppend);
-    qDebug() << allElements().count() << "after adding";
+	qDebug() << "Repo contain " << allElements().count() << " before adding";
+	Client *saveFileToAppend = new Client(saveFile);
+	mClients->append(saveFileToAppend);
+	qDebug() << allElements().count() << "after adding";
 }
 
 //Default
 /// Saving default project in default location
 void RepoApi::saveAll() const
 {
-    Client *client = getDefaultClient();
+	Client *client = getDefaultClient();
 
-    client->saveAll();
+	client->saveAll();
 }
 
 //Default
 /// Saving current project in specified location
 void RepoApi::saveTo(QString const &workingFile)
 {
-    Client *client = getDefaultClient();
-    client->setWorkingFile(workingFile);
+	Client *client = getDefaultClient();
+	client->setWorkingFile(workingFile);
 
-    client->saveAll();
+	client->saveAll();
 }
 
 //Default
@@ -585,70 +582,70 @@ void RepoApi::saveTo(QString const &workingFile)
 /// usage scenario is pasting saved file into currently opened project
 void RepoApi::importFromDisk(QString const &importedFile)
 {
-    Client *client = getDefaultClient();
+	Client *client = getDefaultClient();
 
-    client->importFromDisk(importedFile);
+	client->importFromDisk(importedFile);
 }
 
 //Default
 /// Save selected elements with all of their children into path of current project
 void RepoApi::save(qReal::IdList list) const
 {
-    Client *client = getDefaultClient();
+	Client *client = getDefaultClient();
 
-    client->save(list);
+	client->save(list);
 }
 
 //Default
 /// Get savefile location of current project
 QString RepoApi::workingFile() const
 {
-    Client *client = getDefaultClient();
+	Client *client = getDefaultClient();
 
-    return client->workingFile();
+	return client->workingFile();
 }
 
 
 void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data, QString const &direction)
 {
-    Client *client = getRelevantClient(target);
+	Client *client = getRelevantClient(target);
 
 	if (target == Id::rootId())
 		return;
 
-    IdList list = client->property(target, listName).value<IdList>();
+	IdList list = client->property(target, listName).value<IdList>();
 
 	// Ð â€”Ð Ð…Ð Â°Ð¡â€¡Ð ÂµÐ Ð…Ð Ñ‘Ð¡Ð Ð Ð† Ð¡ÐƒÐ Ñ—Ð Ñ‘Ð¡ÐƒÐ Ñ”Ð Âµ Ð Ò‘Ð Ñ•Ð Â»Ð Â¶Ð Ð…Ð¡â€¹ Ð Â±Ð¡â€¹Ð¡â€šÐ¡ÐŠ Ð¡Ñ“Ð Ð…Ð Ñ‘Ð Ñ”Ð Â°Ð Â»Ð¡ÐŠÐ Ð…Ð¡â€¹.
 	if (list.contains(data))
 		return;
 
 	list.append(data);
-    client->setProperty(target, listName, IdListHelper::toVariant(list));
+	client->setProperty(target, listName, IdListHelper::toVariant(list));
 
 	if (listName == "links") {
-        IdList temporaryRemovedList = client->temporaryRemovedLinksAt(target, direction);
+		IdList temporaryRemovedList = client->temporaryRemovedLinksAt(target, direction);
 		temporaryRemovedList.removeAll(data);
-        client->setTemporaryRemovedLinks(target, direction, temporaryRemovedList);
+		client->setTemporaryRemovedLinks(target, direction, temporaryRemovedList);
 	}
 }
 
 
 void RepoApi::removeFromList(Id const &target, QString const &listName, Id const &data, QString const &direction)
 {
-    Client *client = getRelevantClient(target);
+	Client *client = getRelevantClient(target);
 
 	if (target == Id::rootId())
 		return;
 
-    IdList list = client->property(target, listName).value<IdList>();
-    IdList temporaryRemovedList = client->temporaryRemovedLinksAt(target, direction);
+	IdList list = client->property(target, listName).value<IdList>();
+	IdList temporaryRemovedList = client->temporaryRemovedLinksAt(target, direction);
 	if(listName == "links" && list.contains(data)) {
 		temporaryRemovedList.append(data);
 	}
 	list.removeAll(data);
 
-    client->setProperty(target, listName, IdListHelper::toVariant(list));
-    client->setTemporaryRemovedLinks(target, direction, temporaryRemovedList);
+	client->setProperty(target, listName, IdListHelper::toVariant(list));
+	client->setTemporaryRemovedLinks(target, direction, temporaryRemovedList);
 }
 
 
@@ -667,11 +664,11 @@ Id RepoApi::otherEntityFromLink(Id const &linkId, Id const &firstNode) const
 IdList RepoApi::logicalElements(Id const &type) const
 {
 	Q_ASSERT(type.idSize() == 3);
-    Client *client = getDefaultClient();
+	Client *client = getDefaultClient();
 
 	IdList result;
-    foreach (Id id, client->elements()) {
-        if (id.element() == type.element() && client->isLogicalId(id))
+	foreach (Id id, client->elements()) {
+		if (id.element() == type.element() && client->isLogicalId(id))
 			result.append(id);
 	}
 	return result;
@@ -681,11 +678,11 @@ IdList RepoApi::logicalElements(Id const &type) const
 IdList RepoApi::graphicalElements(Id const &type) const
 {
 	Q_ASSERT(type.idSize() == 3);
-    Client *client = getDefaultClient();
+	Client *client = getDefaultClient();
 
 	IdList result;
-    foreach (Id id, client->elements()) {
-        if (id.element() == type.element() && !client->isLogicalId(id))
+	foreach (Id id, client->elements()) {
+		if (id.element() == type.element() && !client->isLogicalId(id))
 			result.append(id);
 	}
 	return result;
@@ -694,22 +691,22 @@ IdList RepoApi::graphicalElements(Id const &type) const
 qReal::IdList RepoApi::allElements() const
 {
 
-    IdList result;
-    for (int i = 0; i < mClients->count(); ++i)
-    {
-        foreach (Id id, mClients->at(i)->elements()) {
-            result.append(id);
-        }
-    }
-    return result;
+	IdList result;
+	for (int i = 0; i < mClients->count(); ++i)
+	{
+		foreach (Id id, mClients->at(i)->elements()) {
+			result.append(id);
+		}
+	}
+	return result;
 }
 
 //Default
 IdList RepoApi::elementsByType(QString const &type) const
 {
-    Client *client = getDefaultClient();
+	Client *client = getDefaultClient();
 	IdList result;
-    foreach (Id id, client->elements()) {
+	foreach (Id id, client->elements()) {
 		if (id.element() == type)
 			result.append(id);
 	}
@@ -719,34 +716,34 @@ IdList RepoApi::elementsByType(QString const &type) const
 //Default
 int RepoApi::elementsCount() const
 {
-    Client *client = getDefaultClient();
-    return client->elements().size();
+	Client *client = getDefaultClient();
+	return client->elements().size();
 }
 
 // LOOK FOR related bugs
 bool RepoApi::exist(Id const &id) const
 {
-    Client *client = getRelevantClient(id);
-    return client->exist(id);
+	Client *client = getRelevantClient(id);
+	return client->exist(id);
 }
 
 //Default
 IdList RepoApi::temporaryRemovedLinksAt(Id const &id, QString const &direction) const
 {
-    Client *client = getDefaultClient();
-    return client->temporaryRemovedLinksAt(id, direction);
+	Client *client = getDefaultClient();
+	return client->temporaryRemovedLinksAt(id, direction);
 }
 
 //Default
 void RepoApi::setTemporaryRemovedLinks(Id const &id, IdList const &value, QString const &direction)
 {
-    Client *client = getDefaultClient();
-    client->setTemporaryRemovedLinks(id, direction, value);
+	Client *client = getDefaultClient();
+	client->setTemporaryRemovedLinks(id, direction, value);
 }
 
 //Default
 void RepoApi::removeTemporaryRemovedLinks(Id const &id)
 {
-    Client *client = getDefaultClient();
-    client->removeTemporaryRemovedLinks(id);
+	Client *client = getDefaultClient();
+	client->removeTemporaryRemovedLinks(id);
 }

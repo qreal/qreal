@@ -17,10 +17,11 @@ public:
 
 	QAbstractItemModel* graphicalModel() const;
 	QAbstractItemModel* logicalModel() const;
-    QAbstractItemModel* libraryModel() const;
+	QAbstractItemModel* libraryModel() const;
 
 	GraphicalModelAssistApi &graphicalModelAssistApi() const;
 	LogicalModelAssistApi &logicalModelAssistApi() const;
+	LogicalModelAssistApi &libraryModelAssistApi() const;
 
 	qrRepo::RepoControlInterface &repoControlApi() const;
 
@@ -28,14 +29,14 @@ public:
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi() const;
 
 	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
-    qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const;
+	qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const;
 
 	void reinit();
 
 private:
 	models::details::GraphicalModel *mGraphicalModel;
 	models::details::LogicalModel *mLogicalModel;
-    models::details::LogicalModel *mLibraryModel;
+	models::details::LogicalModel *mLibraryModel;
 	qrRepo::RepoControlInterface *mRepoApi;
 };
 

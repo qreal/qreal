@@ -13,7 +13,7 @@ public:
 	virtual QString name(qReal::Id const &id) const = 0;
 
 	virtual qReal::IdList children(qReal::Id const &id) const = 0;
-    virtual qReal::IdList childrenInAllClients(qReal::Id const &id) const = 0;
+	virtual qReal::IdList childrenInAllClients(qReal::Id const &id) const = 0;
 	virtual void removeChild(qReal::Id const &id, qReal::Id const &child) = 0;
 	virtual void removeChildren(qReal::Id const &id) = 0;
 

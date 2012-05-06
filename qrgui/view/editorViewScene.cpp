@@ -600,40 +600,36 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 
 void EditorViewScene::createLibStatusSubmenus(QMenu &contextMenu, const Element *const element) const
 {
-    if (mWindow->showLibraryRelatedMenus()) {
+	if (mWindow->showLibraryRelatedMenus()) {
 
-        QMenu *addLibMenu = contextMenu.addMenu("Add to library");
+		QMenu *addLibMenu = contextMenu.addMenu("Add to library");
 
-        ContextMenuAction *action = new ContextMenuAction("Change lib status", mWindow);
-        QList<QVariant> ids;
-        ids << element->logicalId().toVariant() << element->id().toVariant();
-        action->setData(ids);
+		ContextMenuAction *action = new ContextMenuAction("Change lib status", mWindow);
+		QList<QVariant> ids;
+		ids << element->logicalId().toVariant() << element->id().toVariant();
+		action->setData(ids);
 
-        connect(action, SIGNAL(triggered()), this, SLOT(changeLibStatus()));
+		connect(action, SIGNAL(triggered()), this, SLOT(changeLibStatus()));
 
-        QString captionContent;
-        QString status;
-        //efimefim getter of lib status value
-        bool haveProperty = mMVIface->logicalAssistApi()->logicalRepoApi().isLibEntry(element->logicalId());
-        bool propertyValue = false;
-        if (haveProperty)
-            propertyValue = mMVIface->logicalAssistApi()->logicalRepoApi().property(element->logicalId(), "isLibEntity").value<bool>();
+		QString captionContent;
+		QString status;
+		//efimefim getter of lib status value
+		bool haveProperty = mMVIface->logicalAssistApi()->logicalRepoApi().isLibEntry(element->logicalId());
+		bool propertyValue = false;
+	if (haveProperty)
+			propertyValue = mMVIface->logicalAssistApi()->logicalRepoApi().property(element->logicalId(), "isLibEntity").value<bool>();
 
-        qDebug() << "have property isLibStatus = " << haveProperty;
-        qDebug() << "property value is " << propertyValue;
-        if (haveProperty && propertyValue) {
-            status.append("on");
-        } else {
-            status.append("off");
-        }
-        captionContent.append("Current status is: ").append(status);
-        ContextMenuAction *caption = new ContextMenuAction(captionContent, mWindow);
+		if (haveProperty && propertyValue) {
+			status.append("on");
+		} else {
+			status.append("off");
+		}
+		captionContent.append("Current status is: ").append(status);
+		ContextMenuAction *caption = new ContextMenuAction(captionContent, mWindow);
 
-        addLibMenu->addAction(caption);
-        addLibMenu->addAction(action);
-
-
-    }
+		addLibMenu->addAction(caption);
+		addLibMenu->addAction(action);
+	}
 }
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -687,26 +683,23 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	}
 	menu.addSeparator();
 	createConnectionSubmenus(menu, e);
-    menu.addSeparator();
-    createLibStatusSubmenus(menu, e);
+	menu.addSeparator();
+	createLibStatusSubmenus(menu, e);
 	menu.exec(QCursor::pos());
 }
 
 void EditorViewScene::changeLibStatus()
 {
-    ContextMenuAction *action = static_cast<ContextMenuAction *>(sender());
-    if (!action)
-        qDebug() << "faulte";
-    QList<QVariant> ids = action->data().toList();
-    Id const graphicalId = ids[1].value<Id>();
-    Id const logicalId = ids[0].value<Id>();
+	ContextMenuAction *action = static_cast<ContextMenuAction *>(sender());
+	if (!action)
+		qDebug() << "faulte";
+	QList<QVariant> ids = action->data().toList();
+	Id const graphicalId = ids[1].value<Id>();
+	Id const logicalId = ids[0].value<Id>();
 
-    mMVIface->logicalAssistApi()->logicalRepoApi().changeLibStatus(logicalId);
-    mMVIface->graphicalAssistApi()->graphicalRepoApi().changeLibStatus(graphicalId);
-    qDebug() << "New value of propery isLibEntity" << mMVIface->logicalAssistApi()->logicalRepoApi().property(logicalId, "isLibEntity");
-
-//    mWindow->changeLibStatus(graphicalId, false);
-//    mWindow->changeLibStatus(logicalId, true);
+	mMVIface->logicalAssistApi()->logicalRepoApi().changeLibStatus(logicalId);
+	mMVIface->graphicalAssistApi()->graphicalRepoApi().changeLibStatus(graphicalId);
+	qDebug() << "New value of propery isLibEntity" << mMVIface->logicalAssistApi()->logicalRepoApi().property(logicalId, "isLibEntity");
 }
 
 void EditorViewScene::getObjectByGesture()

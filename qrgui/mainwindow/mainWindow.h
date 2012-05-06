@@ -69,8 +69,8 @@ public:
 	/// Tells if we should display trace connections menu or not
 	bool showConnectionRelatedMenus() const;
 
-    /// Tells if "mark as library entry" menu or not
-    bool showLibraryRelatedMenus() const;
+	/// Tells if "mark as library entry" menu or not
+	bool showLibraryRelatedMenus() const;
 
 	virtual void showInTextEditor(QString const &title, QString const &text);
 
@@ -81,11 +81,6 @@ public:
 	virtual bool unloadPlugin(QString const &pluginName);
 	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
 	virtual bool pluginLoaded(QString const &pluginName);
-    /*deprecated
-      efimefim
-    //Не вписывается же в идею о назначении mainWindow
-    void changeLibStatus(Id const &id, bool const isLogical);
-    */
 
 signals:
 	void gesturesShowed();
@@ -136,12 +131,12 @@ private slots:
 	/// @return true - if all ok, false - if not ok
 	bool import(QString const &fileName);
 
-    /// opens project file alongside with currently opened
-    /// @param fileName - *.qrs file to open
-    /// @return true - if all ok, false - if not ok
-    bool add(QString const &fileName);
+	/// opens project file alongside with currently opened
+	/// @param fileName - *.qrs file to open
+	/// @return true - if all ok, false - if not ok
+	bool add(QString const &fileName);
 
-    bool addProject();
+	bool addProject();
 	bool open(QString const &dirName);
 	bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
 	void saveProjectAs();
@@ -184,6 +179,7 @@ private slots:
 	void centerOn(Id const &id);
 	void graphicalModelExplorerClicked(const QModelIndex &index);
 	void logicalModelExplorerClicked(const QModelIndex &index);
+	void libraryModelExplorerClicked(const QModelIndex &index);
 
 	void openNewTab(const QModelIndex &index);
 

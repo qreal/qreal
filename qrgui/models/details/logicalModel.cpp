@@ -9,15 +9,15 @@ using namespace models::details;
 using namespace modelsImplementation;
 
 LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi,
-                           EditorManager const &editorManager,
-                           bool libEntitiesOnly)
-    : AbstractModel(editorManager)
-    , mGraphicalModelView(this)
-    , mApi(*repoApi)
-    , mLibEntitiesOnly(libEntitiesOnly)
+						   EditorManager const &editorManager,
+						   bool libEntitiesOnly)
+	: AbstractModel(editorManager)
+	, mGraphicalModelView(this)
+	, mApi(*repoApi)
+	, mLibEntitiesOnly(libEntitiesOnly)
 {
 	mRootItem = new LogicalModelItem(Id::rootId(), NULL);
-    init();
+	init();
 	mLogicalAssistApi = new LogicalModelAssistApi(*this, editorManager);
 }
 
@@ -33,11 +33,11 @@ void LogicalModel::init()
 	mApi.setName(Id::rootId(), Id::rootId().toString());
 	// Turn off view notification while loading.
 	blockSignals(true);
-    if (!mLibEntitiesOnly) {
-        loadSubtreeFromClient(static_cast<LogicalModelItem *>(mRootItem));
-    } else {
-        loadExtendedSubtreeFromClient(static_cast<LogicalModelItem *>(mRootItem));
-    }
+	if (!mLibEntitiesOnly) {
+		loadSubtreeFromClient(static_cast<LogicalModelItem *>(mRootItem));
+	} else {
+		loadExtendedSubtreeFromClient(static_cast<LogicalModelItem *>(mRootItem));
+	}
 	blockSignals(false);
 }
 
@@ -53,13 +53,13 @@ void LogicalModel::loadSubtreeFromClient(LogicalModelItem * const parent)
 
 void LogicalModel::loadExtendedSubtreeFromClient(LogicalModelItem *const parent)
 {
-    foreach (Id childId, mApi.childrenInAllClients(parent->id())) {
-        if (mApi.isLogicalElement(childId) && mApi.isLibEntry(childId)){
-            LogicalModelItem *child = loadElement(parent, childId);
-            loadExtendedSubtreeFromClient(child);
-        }
+	foreach (Id childId, mApi.childrenInAllClients(parent->id())) {
+		if (mApi.isLogicalElement(childId) && mApi.isLibEntry(childId)){
+			LogicalModelItem *child = loadElement(parent, childId);
+			loadExtendedSubtreeFromClient(child);
+		}
 
-    }
+	}
 }
 
 LogicalModelItem *LogicalModel::loadElement(LogicalModelItem *parentItem, Id const &id)
@@ -67,6 +67,9 @@ LogicalModelItem *LogicalModel::loadElement(LogicalModelItem *parentItem, Id con
 //	if (isDiagram(id)) {
 //		mApi.addOpenedDiagram(id);
 //	}
+	if (mLibEntitiesOnly) {
+		parentItem = static_cast<LogicalModelItem *>(mRootItem);
+	}
 
 	int newRow = parentItem->children().size();
 

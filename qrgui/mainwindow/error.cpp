@@ -14,7 +14,7 @@ Error::Severity Error::severity() const
 
 QString Error::message() const
 {
-    return mMessage;
+	return mMessage;
 }
 
 QString Error::timestamp() const

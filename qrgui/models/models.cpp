@@ -7,9 +7,9 @@ Models::Models(QString const &workingCopy, EditorManager const &editorManager)
 {
 	qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(workingCopy);
 	mGraphicalModel = new models::details::GraphicalModel(repoApi, editorManager);
-    mLogicalModel = new models::details::LogicalModel(repoApi, editorManager, false);
+	mLogicalModel = new models::details::LogicalModel(repoApi, editorManager, false);
+	mLibraryModel = new models::details::LogicalModel(repoApi, editorManager, true);
 	mRepoApi = repoApi;
-    mLibraryModel = new models::details::LogicalModel(repoApi, editorManager, true);
 
 	mLogicalModel->connectToGraphicalModel(mGraphicalModel);
 	mGraphicalModel->connectToLogicalModel(mLogicalModel);
@@ -34,7 +34,7 @@ QAbstractItemModel* Models::logicalModel() const
 
 QAbstractItemModel* Models::libraryModel() const
 {
-    return mLibraryModel;
+	return mLibraryModel;
 }
 
 
@@ -46,6 +46,11 @@ GraphicalModelAssistApi &Models::graphicalModelAssistApi() const
 LogicalModelAssistApi &Models::logicalModelAssistApi() const
 {
 	return mLogicalModel->logicalModelAssistApi();
+}
+
+LogicalModelAssistApi &Models::libraryModelAssistApi() const
+{
+	 return mLibraryModel->logicalModelAssistApi();
 }
 
 qrRepo::RepoControlInterface &Models::repoControlApi() const
@@ -70,7 +75,7 @@ qrRepo::GraphicalRepoApi const &Models::graphicalRepoApi() const
 
 qrRepo::GraphicalRepoApi &Models::mutableGraphicalRepoApi() const
 {
-    return mGraphicalModel->mutableApi();
+	return mGraphicalModel->mutableApi();
 }
 
 //Be aware that in current realisation metohd init() used in reinit() methods
@@ -80,6 +85,6 @@ void Models::reinit()
 	mLogicalModel->reinit();
 	mGraphicalModel->reinit();
 
-    //efimefim
-    mLibraryModel->reinit();
+	//efimefim
+	mLibraryModel->reinit();
 }
