@@ -60,10 +60,6 @@ MainWindow::MainWindow()
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 {
-	mReplaceDialog = new FindAndReplaceDialog(this);
-
-
-
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
 
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
@@ -124,7 +120,9 @@ MainWindow::MainWindow()
 
 	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
 
-	mFindDialog = new FindDialog(mModels->logicalRepoApi(), this);
+	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
+	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(),
+									this, mFindReplaceDialog);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
@@ -188,7 +186,6 @@ MainWindow::MainWindow()
 	setAutoSaveParameters();
 	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
 	connectWindowTitle();
-
 }
 
 void MainWindow::connectActions()
@@ -234,22 +231,21 @@ void MainWindow::connectActions()
 	connect (mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
 	connect (mUi->actionFind_and_replace, SIGNAL(triggered()), this, SLOT(showReplaceDialog()));
 
-	connect(mReplaceDialog, SIGNAL(replaceClicked(QStringList)), this, SLOT(handleReplaceDialog(QStringList)));
-	connect(mFindDialog, SIGNAL(replaceStarted()), this, SLOT(showReplaceDialog()));
-	connect(mFindDialog, SIGNAL(findModelByName(QStringList)), this, SLOT(handleFindDialog(QStringList)));
-	connect(mFindDialog, SIGNAL(chosenElement(qReal::Id)), this, SLOT(handleRefsDialog(qReal::Id)));
+	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)), mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
+	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)), mFindHelper, SLOT(handleFindDialog(QStringList)));
+	connect(mFindReplaceDialog, SIGNAL(chosenElement(qReal::Id)), mFindHelper, SLOT(handleRefsDialog(qReal::Id)));
 }
 
 void MainWindow::showFindDialog()
 {
-	mReplaceDialog->close();
-	mFindDialog->initIds();
+	mFindReplaceDialog->setMode(true);
+	mFindReplaceDialog->show();
 }
 
 void MainWindow::showReplaceDialog()
 {
-	mFindDialog->close();
-	mReplaceDialog->show();
+	mFindReplaceDialog->setMode(false);
+	mFindReplaceDialog->show();
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -270,7 +266,8 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 	} else if (keyEvent->key() == Qt::Key_F1) {
 		showHelp();
 	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_F) {
-		mFindDialog->initIds();
+		mFindReplaceDialog->setMode(true);
+		mFindReplaceDialog->show();
 	}
 }
 
@@ -286,9 +283,8 @@ MainWindow::~MainWindow()
 	delete mGesturesWidget;
 	delete mModels;
 	delete mCodeTabManager;
-	delete mReplaceDialog;
-	delete mFindDialog;
-	delete mReplaceDialog;
+	delete mFindReplaceDialog;
+	delete mFindHelper;
 }
 
 EditorManager* MainWindow::manager()
@@ -299,57 +295,6 @@ EditorManager* MainWindow::manager()
 void MainWindow::finalClose()
 {
 	mCloseEvent->accept();
-}
-
-void MainWindow::handleRefsDialog(qReal::Id const &id)
-{
-	activateItemOrDiagram(id, false, true);
-}
-
-qReal::IdList MainWindow::foundByMode(QString key, QString currentMode)
-{
-	if (currentMode == tr("by name"))
-		return mModels->repoControlApi().findElementsByName(key);
-	if (currentMode == tr("by type"))
-		return mModels->logicalRepoApi().elementsByType(key);
-	if (currentMode == tr("by property"))
-		return mModels->repoControlApi().elementsByProperty(key);
-	if (currentMode == tr("by property content"))
-		return mModels->repoControlApi().elementsByPropertyContent(key);
-}
-
-QMap<QString, QString> MainWindow::findItems(QStringList const &searchData)
-{
-	QMap<QString, QString> found;
-	for(int i = 1; i < searchData.length(); i++) {
-		qReal::IdList byMode = foundByMode(searchData.first(), searchData[i]);
-		foreach (qReal::Id currentId, byMode) {
-			if (found.contains(currentId.toString())) {
-				found[currentId.toString()] += tr(", ") + searchData[i];
-				continue;
-			}
-			found.insert(currentId.toString(), tr("   :: ") + searchData[i]);
-		}
-	}
-	return found;
-}
-
-void MainWindow::handleFindDialog(QStringList const &searchData)
-{
-	mFindDialog->initIds(findItems(searchData));
-}
-
-void MainWindow::handleReplaceDialog(QStringList const &searchData)
-{
-	if (searchData.contains(tr("by name"))) {
-		qReal::IdList toRename = foundByMode(searchData.first(), tr("by name"));
-		foreach (qReal::Id currentId, toRename)
-			mModels->mutableLogicalRepoApi().setName(currentId, searchData[1]);
-	}
-	if (searchData.contains(tr("by property content"))) {
-		qReal::IdList toRename = foundByMode(searchData.first(), tr("by property content"));
-		mModels->mutableLogicalRepoApi().replaceProperties(toRename, searchData[0], searchData[1]);
-	}
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

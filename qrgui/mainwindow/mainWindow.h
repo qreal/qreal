@@ -17,17 +17,17 @@
 #include "mainWindowInterpretersInterface.h"
 #include "../../qrkernel/settingsManager.h"
 #include "../../qrgui/dialogs/preferencesDialog.h"
+
 #include "../textEditor/codeEditor.h"
 #include "helpBrowser.h"
 
 #include "../models/logicalModelAssistApi.h"
 
-#include "findDialog.h"
-#include "findAndReplaceDialog.h"
+#include "../../qrgui/dialogs/findReplaceDialog.h"
+#include "findManager.h"
 
 #include  "paletteTree.h"
 
-class RefWindowDialog;
 
 namespace Ui {
 class MainWindowUi;
@@ -105,23 +105,11 @@ public slots:
 
 private slots:
 
-	/// handler for find dialog 'button find' pressed
-	/// @param searchData - data was input to find
-	void handleFindDialog(QStringList const &searchData);
-
 	/// handler for menu 'button find' pressed
 	void showFindDialog();
 
 	/// handler for menu 'button find & replace' pressed
 	void showReplaceDialog();
-
-	/// handler for find & replace dialog 'button replace' pressed
-	/// @param searchData - data was input to find & replace
-	void handleReplaceDialog(QStringList const &searchData);
-
-	/// handler for refs dialog reference chosen
-	/// @param id - id of element that was chosen to show and highlight
-	void handleRefsDialog(qReal::Id const &id);
 
 	void setSceneFont();
 	void adjustMinimapZoom(int zoom);
@@ -223,20 +211,8 @@ private:
 	/// elements & theirs ids
 	QMap<QString, Id> mElementsNamesAndIds;
 
-	/// Finds items by input name and search mode
-	/// @param key - name
-	/// @param currentMode - mode
-	qReal::IdList foundByMode(QString key, QString currentMode);
-
-	/// Finds items by input name and search modes - searchData
-	/// @param searchData - name and search modes
-	QMap<QString, QString> findItems(QStringList const &searchData);
-
-	/// mReplaceDialog - find and replace dialog
-	FindAndReplaceDialog *mReplaceDialog;
-
 	/// mFindDialog - Dialog for searching elements.
-	FindDialog *mFindDialog;
+	FindReplaceDialog *mFindReplaceDialog;
 
 	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
 	QMap<EditorView*, CodeArea*> *mCodeTabManager;
@@ -347,6 +323,8 @@ private:
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;
 	qReal::gui::PaletteTree *mPaletteTree;
+	FindManager *mFindHelper;
+
 };
 
 }

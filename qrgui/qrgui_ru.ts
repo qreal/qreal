@@ -377,79 +377,136 @@
 <context>
     <name>FindAndReplaceDialog</name>
     <message>
-        <location filename="mainwindow/findAndReplaceDialog.cpp" line="6"/>
         <source>by name</source>
-        <translation>по имени</translation>
+        <translation type="obsolete">по имени</translation>
     </message>
     <message>
-        <location filename="mainwindow/findAndReplaceDialog.cpp" line="7"/>
         <source>by property content</source>
-        <translation>по содержимому свойств</translation>
+        <translation type="obsolete">по содержимому свойств</translation>
     </message>
     <message>
-        <location filename="mainwindow/findAndReplaceDialog.cpp" line="9"/>
         <source>Find:</source>
-        <translation>Искать:</translation>
+        <translation type="obsolete">Искать:</translation>
     </message>
     <message>
-        <location filename="mainwindow/findAndReplaceDialog.cpp" line="12"/>
         <source>
 Replace:</source>
-        <translation>
+        <translation type="obsolete">
 Заменить:</translation>
     </message>
     <message>
-        <location filename="mainwindow/findAndReplaceDialog.cpp" line="15"/>
         <source>Replace</source>
-        <translation>Заменить</translation>
+        <translation type="obsolete">Заменить</translation>
     </message>
     <message>
-        <location filename="mainwindow/findAndReplaceDialog.cpp" line="40"/>
         <source>Find and replace</source>
-        <translation>Поиск и замена</translation>
+        <translation type="obsolete">Поиск и замена</translation>
     </message>
 </context>
 <context>
     <name>FindDialog</name>
     <message>
-        <location filename="mainwindow/findDialog.cpp" line="6"/>
+        <source>by name</source>
+        <translation type="obsolete">по имени</translation>
+    </message>
+    <message>
+        <source>by type</source>
+        <translation type="obsolete">по типу</translation>
+    </message>
+    <message>
+        <source>by property</source>
+        <translation type="obsolete">по свойствам</translation>
+    </message>
+    <message>
+        <source>by property content</source>
+        <translation type="obsolete">по содержимому свойств</translation>
+    </message>
+    <message>
+        <source>Find:</source>
+        <translation type="obsolete">Поиск:</translation>
+    </message>
+    <message>
+        <source>Find and replace</source>
+        <translation type="obsolete">Поиск и замена</translation>
+    </message>
+    <message>
+        <source>Find</source>
+        <translation type="obsolete">Искать</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="obsolete">Поиск</translation>
+    </message>
+</context>
+<context>
+    <name>FindManager</name>
+    <message>
+        <location filename="mainwindow/findManager.cpp" line="40"/>
+        <source>, </source>
+        <translation>, </translation>
+    </message>
+    <message>
+        <location filename="mainwindow/findManager.cpp" line="43"/>
+        <source>   :: </source>
+        <translation>   :: </translation>
+    </message>
+</context>
+<context>
+    <name>FindReplaceDialog</name>
+    <message>
+        <location filename="dialogs/findReplaceDialog.ui" line="14"/>
+        <source>Dialog</source>
+        <translation>Диалог</translation>
+    </message>
+    <message>
+        <location filename="dialogs/findReplaceDialog.ui" line="26"/>
+        <source>Find what:       </source>
+        <translation>Искать:             </translation>
+    </message>
+    <message>
+        <location filename="dialogs/findReplaceDialog.ui" line="36"/>
+        <source>   Find    </source>
+        <translation>   Поиск    </translation>
+    </message>
+    <message>
+        <location filename="dialogs/findReplaceDialog.ui" line="47"/>
+        <source>Replace with:</source>
+        <translation>Заменить на:  </translation>
+    </message>
+    <message>
+        <location filename="dialogs/findReplaceDialog.ui" line="57"/>
+        <source>Replace</source>
+        <translation>Заменить</translation>
+    </message>
+    <message>
+        <location filename="dialogs/findReplaceDialog.ui" line="66"/>
         <source>by name</source>
         <translation>по имени</translation>
     </message>
     <message>
-        <location filename="mainwindow/findDialog.cpp" line="7"/>
+        <location filename="dialogs/findReplaceDialog.ui" line="73"/>
         <source>by type</source>
         <translation>по типу</translation>
     </message>
     <message>
-        <location filename="mainwindow/findDialog.cpp" line="8"/>
+        <location filename="dialogs/findReplaceDialog.ui" line="80"/>
         <source>by property</source>
         <translation>по свойствам</translation>
     </message>
     <message>
-        <location filename="mainwindow/findDialog.cpp" line="9"/>
+        <location filename="dialogs/findReplaceDialog.ui" line="87"/>
         <source>by property content</source>
         <translation>по содержимому свойств</translation>
     </message>
     <message>
-        <location filename="mainwindow/findDialog.cpp" line="11"/>
-        <source>Find:</source>
-        <translation>Поиск:</translation>
-    </message>
-    <message>
-        <location filename="mainwindow/findDialog.cpp" line="14"/>
-        <source>Find and replace</source>
-        <translation>Поиск и замена</translation>
-    </message>
-    <message>
-        <location filename="mainwindow/findDialog.cpp" line="17"/>
-        <source>Find</source>
-        <translation>Искать</translation>
-    </message>
-    <message>
-        <location filename="mainwindow/findDialog.cpp" line="42"/>
+        <location filename="dialogs/findReplaceDialog.cpp" line="23"/>
         <source>Search</source>
         <translation>Поиск</translation>
+    </message>
+    <message>
+        <location filename="dialogs/findReplaceDialog.cpp" line="96"/>
+        <source> / </source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2261,32 +2318,23 @@ Replace:</source>
 <context>
     <name>RefWindow</name>
     <message>
-        <location filename="dialogs/refWindow.ui" line="14"/>
         <source>Reference window</source>
-        <translation>Окно ссылок</translation>
+        <translation type="obsolete">Окно ссылок</translation>
     </message>
     <message>
-        <location filename="dialogs/refWindow.ui" line="20"/>
         <source>&amp;OK</source>
-        <translation>&amp;ОК</translation>
+        <translation type="obsolete">&amp;ОК</translation>
     </message>
     <message>
-        <location filename="dialogs/refWindow.ui" line="27"/>
         <source>&amp;Cancel</source>
-        <translation>О&amp;тмена</translation>
+        <translation type="obsolete">О&amp;тмена</translation>
     </message>
 </context>
 <context>
     <name>RefWindowDialog</name>
     <message>
-        <location filename="mainwindow/refWindowDialog.cpp" line="21"/>
-        <source> / </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow/refWindowDialog.cpp" line="33"/>
         <source>Found elements:</source>
-        <translation>Найдено:</translation>
+        <translation type="obsolete">Найдено:</translation>
     </message>
 </context>
 <context>
@@ -2860,19 +2908,19 @@ Replace:</source>
 <context>
     <name>qReal::MainWindow</name>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="523"/>
+        <location filename="mainwindow/mainWindow.cpp" line="464"/>
         <source>These plugins are not present, but needed to load the save:
 </source>
         <translation>Эти плагины отсутствуют, но нужны для загрузки сохранения:
 </translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="526"/>
+        <location filename="mainwindow/mainWindow.cpp" line="467"/>
         <source>Do you want to create new project?</source>
         <translation>Вы хотите создать новый проект?</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="529"/>
+        <location filename="mainwindow/mainWindow.cpp" line="470"/>
         <source>Some plugins are missing</source>
         <translation>Некоторых плагинов не хватает</translation>
     </message>
@@ -2905,16 +2953,16 @@ Replace:</source>
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="872"/>
-        <location filename="mainwindow/mainWindow.cpp" line="889"/>
-        <location filename="mainwindow/mainWindow.cpp" line="907"/>
+        <location filename="mainwindow/mainWindow.cpp" line="813"/>
+        <location filename="mainwindow/mainWindow.cpp" line="830"/>
+        <location filename="mainwindow/mainWindow.cpp" line="848"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="874"/>
-        <location filename="mainwindow/mainWindow.cpp" line="891"/>
-        <location filename="mainwindow/mainWindow.cpp" line="909"/>
+        <location filename="mainwindow/mainWindow.cpp" line="815"/>
+        <location filename="mainwindow/mainWindow.cpp" line="832"/>
+        <location filename="mainwindow/mainWindow.cpp" line="850"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -2955,23 +3003,23 @@ Replace:</source>
         <translation type="obsolete">Пожалуйста, заполните настройки компиляции (Настройки -&gt; Настройки... -&gt; Компилятор)</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="503"/>
-        <location filename="mainwindow/mainWindow.cpp" line="506"/>
+        <location filename="mainwindow/mainWindow.cpp" line="444"/>
+        <location filename="mainwindow/mainWindow.cpp" line="447"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="554"/>
+        <location filename="mainwindow/mainWindow.cpp" line="495"/>
         <source>Select file with a save to import</source>
         <translation>Выберите файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="578"/>
+        <location filename="mainwindow/mainWindow.cpp" line="519"/>
         <source>Select file with a save to open</source>
         <translation>Выберите файл для открытия</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="821"/>
+        <location filename="mainwindow/mainWindow.cpp" line="762"/>
         <source>About QReal:Robots</source>
         <translation>О QReal:Robots</translation>
     </message>
@@ -2992,93 +3040,75 @@ Replace:</source>
         <translation type="obsolete">Выберите xml-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="312"/>
-        <location filename="mainwindow/mainWindow.cpp" line="348"/>
-        <location filename="mainwindow/mainWindow.cpp" line="349"/>
         <source>by name</source>
-        <translation>по имени</translation>
+        <translation type="obsolete">по имени</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="314"/>
         <source>by type</source>
-        <translation>по типу</translation>
+        <translation type="obsolete">по типу</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="316"/>
         <source>by property</source>
-        <translation>по свойствам</translation>
+        <translation type="obsolete">по свойствам</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="318"/>
-        <location filename="mainwindow/mainWindow.cpp" line="353"/>
-        <location filename="mainwindow/mainWindow.cpp" line="354"/>
         <source>by property content</source>
-        <translation>по содержимому свойств</translation>
+        <translation type="obsolete">по содержимому свойств</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="329"/>
-        <source>, </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow/mainWindow.cpp" line="332"/>
-        <source>   :: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow/mainWindow.cpp" line="822"/>
+        <location filename="mainwindow/mainWindow.cpp" line="763"/>
         <source>&lt;b&gt;QReal:Robots&lt;b&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;http://qreal.ru/&quot;&gt;http://qreal.ru/&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="907"/>
+        <location filename="mainwindow/mainWindow.cpp" line="848"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="909"/>
+        <location filename="mainwindow/mainWindow.cpp" line="850"/>
         <source>Parsing is finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1043"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1051"/>
+        <location filename="mainwindow/mainWindow.cpp" line="984"/>
+        <location filename="mainwindow/mainWindow.cpp" line="992"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1476"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1417"/>
         <source>Select file to save current model to</source>
         <translation>Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1853"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1794"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1860"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1801"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1860"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1801"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1925"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1926"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1866"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1867"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1928"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1869"/>
         <source>Discard</source>
         <translation>Не сохранять</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1929"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1870"/>
         <source>Do you want to save current project?</source>
         <translation>Сохранить текущий проект?</translation>
     </message>
@@ -3087,30 +3117,30 @@ Replace:</source>
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1361"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1302"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1383"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1324"/>
         <source>Choose new diagram</source>
         <translation>Выберите новую диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1385"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1326"/>
         <source>There is no existing diagram,
  choose diagram you want work with:</source>
         <translation>Диаграммы пока не создано,
 укажите диаграмму, с которой хотите работать:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1404"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1927"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1345"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1868"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1406"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1347"/>
         <source>Done</source>
         <translation>Готово</translation>
     </message>

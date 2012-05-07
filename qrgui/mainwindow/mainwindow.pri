@@ -8,9 +8,8 @@ HEADERS += \
 	mainwindow/errorListWidget.h \
 	mainwindow/mainWindowInterpretersInterface.h \
 	mainwindow/helpBrowser.h \
-	mainwindow/findDialog.h \
 	mainwindow/paletteTree.h \
-    mainwindow/findAndReplaceDialog.h
+    mainwindow/findManager.h
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -19,9 +18,8 @@ SOURCES += \
 	mainwindow/error.cpp \
 	mainwindow/errorListWidget.cpp \
 	mainwindow/helpBrowser.cpp \
-	mainwindow/findDialog.cpp \
 	mainwindow/paletteTree.cpp \
-    mainwindow/findAndReplaceDialog.cpp
+    mainwindow/findManager.cpp
 
 FORMS += \
 	mainwindow/mainWindow.ui \
