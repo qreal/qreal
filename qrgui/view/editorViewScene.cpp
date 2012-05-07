@@ -649,13 +649,8 @@ void EditorViewScene::createLibStatusSubmenus(QMenu &contextMenu, const Element 
 
 		QString captionContent;
 		QString status;
-		//efimefim getter of lib status value
-		bool haveProperty = mMVIface->graphicalAssistApi()->graphicalRepoApi().hasProperty(element->id(), "isGraphicalLibEntity");
-		bool propertyValue = false;
-	if (haveProperty)
-		propertyValue = mMVIface->graphicalAssistApi()->graphicalRepoApi().property(element->id(), "isGraphicalLibEntity").value<bool>();
 
-		if (haveProperty && propertyValue) {
+		if (mMVIface->graphicalAssistApi()->graphicalRepoApi().isLibEntry(element->id())) {
 			status.append("on");
 		} else {
 			status.append("off");
@@ -665,6 +660,14 @@ void EditorViewScene::createLibStatusSubmenus(QMenu &contextMenu, const Element 
 
 		addLibMenu->addAction(caption);
 		addLibMenu->addAction(action);
+
+		/*debug purposes
+		*/
+		qDebug() << "dump list of representations ";
+		foreach (Id id, mMVIface->graphicalAssistApi()->graphicalIdsByLogicalId(element->logicalId())) {
+			qDebug() << id.toString();
+		}
+		qDebug() << "end dump /list of representations/";
 	}
 }
 

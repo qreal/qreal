@@ -507,6 +507,16 @@ bool RepoApi::isGraphicalElement(qReal::Id const &id) const
 
 bool RepoApi::isLibEntry(qReal::Id const &id, bool const isLogical) const
 {
+	/*debug purpose
+	qDebug() << "dubp of names and ids";
+	for (int i = 0; i < mClients->count(); ++i) {
+		foreach (Id e, mClients->at(i)->elements()) {
+			qDebug() << name(e) << " has id " << e.toString();
+		}
+	}
+	qDebug() << "end of dump /names and ids/";
+	*/
+
 	if (isLogical){
 		return (hasProperty(id, "isLibEntity")
 				&& property(id, "isLibEntity").value<bool>());
@@ -514,7 +524,7 @@ bool RepoApi::isLibEntry(qReal::Id const &id, bool const isLogical) const
 
 	if (!isLogical) {
 		return (hasProperty(id, "isGraphicalLibEntity")
-				&& property(id, "isGraphicalEntity").value<bool>());
+				&& property(id, "isGraphicalLibEntity").value<bool>());
 	}
 
 	return false;
