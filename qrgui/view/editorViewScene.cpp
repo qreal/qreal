@@ -409,11 +409,13 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	QString name = "";
 	QPointF pos;
 	bool isFromLogicalModel = false;
+	bool isFromLibraryModel = false;
 	in_stream >> uuid;
 	in_stream >> pathToItem;
 	in_stream >> name;
 	in_stream >> pos;
 	in_stream >> isFromLogicalModel;
+	in_stream >> isFromLibraryModel;
 
 	Element *newParent = NULL;
 
@@ -458,9 +460,9 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	}
 
 	//inserting new node into edge
-	Id insertedNodeId = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
+	Id insertedNodeId = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, isFromLibraryModel, name, position);
 	if (dynamic_cast<NodeElement*>(e)) {
-		insertNodeIntoEdge(insertedNodeId, parentId, isFromLogicalModel, scenePos);
+		insertNodeIntoEdge(insertedNodeId, parentId, isFromLogicalModel, isFromLibraryModel, scenePos);
 	}
 
 	if (e) {
@@ -470,7 +472,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	emit elementCreated(id);
 }
 
-void EditorViewScene::insertNodeIntoEdge(qReal::Id const &insertedNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos)
+void EditorViewScene::insertNodeIntoEdge(qReal::Id const &insertedNodeId, qReal::Id const &parentId, bool isFromLogicalModel, bool isFromLibraryModel,QPointF const &scenePos)
 {
 	foreach (QGraphicsItem *item, items(scenePos)) {
 		EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
@@ -484,7 +486,7 @@ void EditorViewScene::insertNodeIntoEdge(qReal::Id const &insertedNodeId, qReal:
 				Id const newEdge(edge->id().editor(), edge->id().diagram(), edge->id().element(), QUuid::createUuid().toString());
 				Id realParentId = (parentId == Id::rootId()) ? mMVIface->rootId() : parentId;
 
-				mMVIface->graphicalAssistApi()->createElement(realParentId, newEdge, isFromLogicalModel, "flow", scenePos);
+				mMVIface->graphicalAssistApi()->createElement(realParentId, newEdge, isFromLogicalModel, isFromLibraryModel, "flow", scenePos);
 				mMVIface->graphicalAssistApi()->setFrom(newEdge, insertedNodeId);
 				mMVIface->graphicalAssistApi()->setTo(newEdge, previouslyConnectedTo->id());
 

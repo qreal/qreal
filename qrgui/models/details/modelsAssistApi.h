@@ -25,7 +25,7 @@ class ModelsAssistApi
 public:
 	ModelsAssistApi(details::modelsImplementation::AbstractModel &model, EditorManager const &editorManager);
 	EditorManager const &editorManager() const;
-	Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);
+	Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, bool isFromLibraryModel, QString const &name, QPointF const &position);
 
 	/// Stacks item element before sibling (they should have the same parent)
 	void stackBefore(Id const &element, Id const &sibling);

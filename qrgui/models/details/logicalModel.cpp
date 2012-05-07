@@ -118,13 +118,9 @@ void LogicalModel::updateElements(Id const &logicalId, QString const &name)
 QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
 {
 	QByteArray data;
-	bool isFromLogicalModel = true;
-	isFromLogicalModel = !mLibEntitiesOnly;
-	/* temporary solution: this will mess up ids a little bit
-		logical Id of logical representation will be stored in graphical elements id
-		this will limit use of library entries by one per scene
-		propable solution: change 'isFromLogicalModel' bool to enum 'source'
-		otherwise cannot differenciate creation of representation of logical element / library entry */
+	bool isFromLogicalModel = !mLibEntitiesOnly ? true : false; //I think it looks much more prettier!
+	bool isFromLibraryModel = mLibEntitiesOnly;
+
 	QDataStream stream(&data, QIODevice::WriteOnly);
 	foreach (QModelIndex index, indexes) {
 		if (index.isValid()) {
@@ -134,12 +130,14 @@ QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
 			stream << mApi.property(item->id(), "name").toString();
 			stream << QPointF();
 			stream << isFromLogicalModel;
+			stream << isFromLibraryModel;
 		} else {
 			stream << Id::rootId().toString();
 			stream << QString();
 			stream << QString();
 			stream << QPointF();
 			stream << isFromLogicalModel;
+			stream << isFromLibraryModel;
 		}
 	}
 

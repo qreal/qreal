@@ -36,9 +36,9 @@ Id LogicalModelAssistApi::createElement(Id const &parent, Id const &type)
 	return newElementId;
 }
 
-Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
+Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, bool isFromLibraryModel, QString const &name, QPointF const &position)
 {
-	return mModelsAssistApi.createElement(parent, id, isFromLogicalModel, name, position);
+	return mModelsAssistApi.createElement(parent, id, isFromLogicalModel, isFromLibraryModel, name, position);
 }
 
 void LogicalModelAssistApi::stackBefore(const Id &element, const Id &sibling)

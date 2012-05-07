@@ -102,6 +102,7 @@ void PaletteTree::DraggableElement::mousePressEvent(QMouseEvent *event)
 
 	QByteArray itemData;
 	bool isFromLogicalModel = false;
+	bool isFromLibraryModel = false;
 
 	QDataStream stream(&itemData, QIODevice::WriteOnly);
 	stream << elementId.toString();  // uuid
@@ -109,6 +110,7 @@ void PaletteTree::DraggableElement::mousePressEvent(QMouseEvent *event)
 	stream << QString("(" + child->text() + ")");
 	stream << QPointF(0, 0);
 	stream << isFromLogicalModel;
+	stream << isFromLibraryModel;
 
 	QMimeData *mimeData = new QMimeData;
 	mimeData->setData("application/x-real-uml-data", itemData);

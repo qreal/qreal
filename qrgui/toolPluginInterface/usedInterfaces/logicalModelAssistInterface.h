@@ -17,7 +17,7 @@ public:
 	virtual qrRepo::LogicalRepoApi &mutableLogicalRepoApi() = 0;
 
 	virtual Id createElement(Id const &parent, Id const &type) = 0;
-	virtual Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position) = 0;
+	virtual Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, bool isFromLibraryModel, QString const &name, QPointF const &position) = 0;
 	virtual IdList children(Id const &element) const = 0;
 	virtual void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF()) = 0;
 

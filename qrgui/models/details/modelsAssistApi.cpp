@@ -16,7 +16,7 @@ EditorManager const &ModelsAssistApi::editorManager() const
 	return mEditorManager;
 }
 
-Id ModelsAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
+Id ModelsAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, bool isFromLibraryModel, QString const &name, QPointF const &position)
 {
 	Q_ASSERT(parent.idSize() == 4);
 	Id logicalId = Id::rootId();
@@ -25,6 +25,7 @@ Id ModelsAssistApi::createElement(Id const &parent, Id const &id, bool isFromLog
 		logicalId = id;
 		newId = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
 	}
+	Q_UNUSED(isFromLibraryModel);//efimefim make it happen
 	mModel.addElementToModel(parent, newId, logicalId, name, position);
 	return newId;
 }
