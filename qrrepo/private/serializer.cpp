@@ -164,7 +164,6 @@ bool Serializer::loadProperties(QDomElement const &elem, Object &object)
 
 			QString valueStr = property.attribute("value", "");
 			QVariant value = parseValue(type, valueStr);
-			qDebug() << "loading" << key << ". It's value is " << value;
 			object.setProperty(key, value);
 		}
 		property = property.nextSiblingElement();

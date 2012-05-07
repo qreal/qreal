@@ -84,7 +84,7 @@ MainWindow::MainWindow()
 	mUi->setupUi(this);
 
 	if (showSplash) {
-	splash->show();
+		splash->show();
 		QApplication::processEvents();
 	}
 	else {
@@ -1093,6 +1093,15 @@ void MainWindow::libraryModelExplorerClicked(const QModelIndex &index)
 	setIndexesOfPropertyEditor(id);
 	//openNewTab(index);
 	//centerOn(id);
+	IdList graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(id);
+	if (!graphicalIds.empty()) {
+		// By now we will select first graphical representation of selected element.
+		// In the future it may be needed to make this more intellectual, like
+		// selecting the representation in current tab.
+		Id const graphicalId = graphicalIds.first();
+		QModelIndex const graphicalIndex = mModels->graphicalModelAssistApi().indexById(graphicalId);
+		graphicalModelExplorerClicked(graphicalIndex);
+	}
 }
 
 
@@ -1357,8 +1366,8 @@ void MainWindow::suggestToCreateDiagram()
 	QObject::connect(&diagramsListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(diagramInCreateListSelected(int)));
 	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(setDiagramCreateFlag()));
 	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), &dialog, SLOT(close()));
-	QObject::connect(&dialog, SIGNAL(destroyed()), this, SLOT(diagramInCreateListDeselect()));
 
+	QObject::connect(&dialog, SIGNAL(destroyed()), this, SLOT(diagramInCreateListDeselect()));
 	QObject::connect(&cancelButton, SIGNAL(clicked()), &dialog, SLOT(close()));
 
 	QObject::connect(&okButton, SIGNAL(clicked()), this, SLOT(setDiagramCreateFlag()));
@@ -1614,7 +1623,7 @@ void MainWindow::initToolPlugins()
 			, mModels->logicalModelAssistApi()
 			, *this
 			));
-	
+
 	QList<ActionInfo> const actions = mToolManager.actions();
 	foreach (ActionInfo const action, actions) {
 		if (action.isAction()) {
@@ -1636,7 +1645,7 @@ void MainWindow::initToolPlugins()
 			}
 		}
 	}
-	
+
 	if (mUi->parsersToolbar->actions().isEmpty())
 		mUi->parsersToolbar->hide();
 
@@ -1908,6 +1917,7 @@ void MainWindow::closeProject()
 	static_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
 	mUi->graphicalModelExplorer->setModel(NULL);
 	mUi->logicalModelExplorer->setModel(NULL);
+	mUi->libraryExplorer->setModel(NULL);
 	if (getCurrentTab())
 		static_cast<EditorViewScene*>(getCurrentTab()->scene())->clearScene();
 	closeAllTabs();
@@ -1921,19 +1931,3 @@ void MainWindow::changePaletteRepresentation()
 		loadPlugins();
 	}
 }
-
-/* deprecated
-  efimefim
-// former setAsLibEntity
-void MainWindow::changeLibStatus(Id const &id, bool const isLogical)
-{
-	if (isLogical){
-	qDebug() << "logical element had property before MainWindow::changeLibStatus" << mModels->mutableLogicalRepoApi().hasProperty(id, "isLibEntity");
-	mModels->mutableLogicalRepoApi().changeLibStatus(id);
-	qDebug() << "New value of propery isLibEntity" << mModels->mutableLogicalRepoApi().property(id, "isLibEntity");
-	} else {
-	mModels->mutableGraphicalRepoApi().changeLibStatus(id);
-	qDebug() << "graphical element have now property before MainWindow::changeLibStatus" << mModels->logicalRepoApi().property(id, "isGraphicalLibEntity");
-	}
-}
-*/

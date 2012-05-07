@@ -119,6 +119,12 @@ QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
 {
 	QByteArray data;
 	bool isFromLogicalModel = true;
+	isFromLogicalModel = !mLibEntitiesOnly;
+	/* temporary solution: this will mess up ids a little bit
+		logical Id of logical representation will be stored in graphical elements id
+		this will limit use of library entries by one per scene
+		propable solution: change 'isFromLogicalModel' bool to enum 'source'
+		otherwise cannot differenciate creation of representation of logical element / library entry */
 	QDataStream stream(&data, QIODevice::WriteOnly);
 	foreach (QModelIndex index, indexes) {
 		if (index.isValid()) {
