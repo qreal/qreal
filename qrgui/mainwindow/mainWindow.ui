@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>843</width>
-    <height>527</height>
+    <height>668</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>843</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -115,8 +115,8 @@
   <widget class="QDockWidget" name="minimapDock">
    <property name="minimumSize">
     <size>
-     <width>80</width>
-     <height>118</height>
+     <width>91</width>
+     <height>138</height>
     </size>
    </property>
    <property name="windowTitle">
@@ -159,8 +159,8 @@
   <widget class="QDockWidget" name="paletteDock">
    <property name="minimumSize">
     <size>
-     <width>80</width>
-     <height>38</height>
+     <width>91</width>
+     <height>42</height>
     </size>
    </property>
    <property name="windowTitle">
@@ -255,8 +255,8 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>102</width>
-     <height>127</height>
+     <width>111</width>
+     <height>137</height>
     </size>
    </property>
    <property name="maximumSize">
@@ -316,7 +316,7 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>80</width>
+     <width>91</width>
      <height>100</height>
     </size>
    </property>
@@ -372,7 +372,7 @@
   <widget class="QDockWidget" name="libraryDock">
    <property name="minimumSize">
     <size>
-     <width>80</width>
+     <width>91</width>
      <height>70</height>
     </size>
    </property>
@@ -389,7 +389,7 @@
        <x>10</x>
        <y>10</y>
        <width>256</width>
-       <height>192</height>
+       <height>31</height>
       </rect>
      </property>
     </widget>

@@ -311,7 +311,7 @@ void RepoApi::changeLibStatus(qReal::Id const &id, bool isLogical) const
 
 bool RepoApi::isLibEntry(qReal::Id const &id, bool const isLogical) const
 {
-	// names of library should not ba mentioned anywhere but here
+	/* names of library should not ba mentioned anywhere but here
 	//debug purpose
 	qDebug() << "dubp of names and ids";
 	for (int i = 0; i < mClients->count(); ++i) {
@@ -320,7 +320,7 @@ bool RepoApi::isLibEntry(qReal::Id const &id, bool const isLogical) const
 		}
 	}
 	qDebug() << "end of dump /names and ids/";
-	//
+	*/
 
 	if (isLogical){
 		return (hasProperty(id, "isLibEntity")
@@ -343,6 +343,7 @@ bool RepoApi::isLibAvatar(const qReal::Id &id) const
 void RepoApi::setLibAvatarTarget(const qReal::Id &id, const qReal::Id &targetId) const
 {
 	Client *client = getRelevantClient(id);
+	qDebug() << "very hard tried to connect to" << targetId.toString();
 	client->setProperty(id, "isAvatarForId", targetId.toVariant());
 }
 

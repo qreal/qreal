@@ -651,23 +651,19 @@ void EditorViewScene::createLibStatusSubmenus(QMenu &contextMenu, const Element 
 		QString status;
 
 		if (mMVIface->graphicalAssistApi()->graphicalRepoApi().isLibEntry(element->id())) {
-			status.append("on");
+			status.append("lib entry");
+		} else if (mMVIface->graphicalAssistApi()->graphicalRepoApi().isLibAvatar(element->id())){
+			status.append("avatar");
+			qDebug() << "avatar status is:" << mMVIface->graphicalAssistApi()->graphicalRepoApi().hasProperty(element->id(), "isAvatarForId");
+			qDebug() << "avatar linked to:" << mMVIface->graphicalAssistApi()->graphicalRepoApi().property(element->id(), "isAvatarForId").value<qReal::Id>();
 		} else {
-			status.append("off");
+			status.append("off library");
 		}
 		captionContent.append("Current status is: ").append(status);
 		ContextMenuAction *caption = new ContextMenuAction(captionContent, mWindow);
 
 		addLibMenu->addAction(caption);
 		addLibMenu->addAction(action);
-
-		/*debug purposes
-		*/
-		qDebug() << "dump list of representations ";
-		foreach (Id id, mMVIface->graphicalAssistApi()->graphicalIdsByLogicalId(element->logicalId())) {
-			qDebug() << id.toString();
-		}
-		qDebug() << "end dump /list of representations/";
 	}
 }
 

@@ -19,7 +19,7 @@ EditorManager const &ModelsAssistApi::editorManager() const
 Id ModelsAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, bool isFromLibraryModel, QString const &name, QPointF const &position)
 {
 	Q_ASSERT(parent.idSize() == 4);
-	Q_ASSERT_X(isFromLibraryModel && isFromLibraryModel, "createElement", "bool flags in MIME Data are ambiguous");
+	Q_ASSERT_X((!isFromLibraryModel || !isFromLogicalModel), "createElement", "bool flags in MIME Data are ambiguous");
 	Id logicalId = Id::rootId();
 	Id newId = id;
 	if (isFromLogicalModel) {
