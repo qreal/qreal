@@ -19,13 +19,19 @@ EditorManager const &ModelsAssistApi::editorManager() const
 Id ModelsAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, bool isFromLibraryModel, QString const &name, QPointF const &position)
 {
 	Q_ASSERT(parent.idSize() == 4);
+	Q_ASSERT_X(isFromLibraryModel && isFromLibraryModel, "createElement", "bool flags in MIME Data are ambiguous");
 	Id logicalId = Id::rootId();
 	Id newId = id;
 	if (isFromLogicalModel) {
 		logicalId = id;
 		newId = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
 	}
-	Q_UNUSED(isFromLibraryModel);//efimefim make it happen
+
+	if (isFromLibraryModel) {
+		newId = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
+		//requesting all new Uuid for graphcial and logical representations
+	}
+	Q_UNUSED(isFromLibraryModel);
 	mModel.addElementToModel(parent, newId, logicalId, name, position);
 	return newId;
 }

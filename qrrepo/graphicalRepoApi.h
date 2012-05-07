@@ -27,11 +27,14 @@ public:
 	virtual void setConfiguration(qReal::Id const &id, QVariant const &configuration) = 0;
 
 	virtual void changeLibStatus(qReal::Id const &id, bool isLogical = false) const = 0;
+	virtual bool isLibEntry(qReal::Id const &id, bool const isLogical = false) const = 0;
+	virtual bool isLibAvatar(qReal::Id const &id) const = 0;
+	virtual void setLibAvatarTarget(qReal::Id const &id, qReal::Id const &targetId) const = 0;
+	virtual qReal::Id getLibAvatarTarget(qReal::Id const &id) const = 0;
 
 	virtual qReal::IdList graphicalElements(qReal::Id const &type) const = 0;
 
 	virtual bool isGraphicalElement(qReal::Id const &id) const = 0;
-	virtual bool isLibEntry(qReal::Id const &id, bool const isLogical = false) const = 0;
 	virtual qReal::Id logicalId(qReal::Id const &id) const = 0;
 
 	virtual qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const = 0;

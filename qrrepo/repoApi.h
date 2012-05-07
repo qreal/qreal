@@ -52,8 +52,6 @@ namespace qrRepo {
 		void addUsage(qReal::Id const &source, qReal::Id const &destination);
 		void deleteUsage(qReal::Id const &source, qReal::Id const &destination);
 
-		virtual void changeLibStatus(qReal::Id const &id, bool isLogical) const;
-
 		qReal::IdList connectedElements(qReal::Id const &id) const;
 		qReal::IdList outgoingConnectedElements(qReal::Id const &id) const;
 		qReal::IdList incomingConnectedElements(qReal::Id const &id) const;
@@ -93,7 +91,12 @@ namespace qrRepo {
 
 		virtual bool isLogicalElement(qReal::Id const &id) const;
 		virtual bool isGraphicalElement(qReal::Id const &id) const;
+
+		virtual void changeLibStatus(qReal::Id const &id, bool isLogical) const;
 		virtual bool isLibEntry(qReal::Id const &id, bool const isLogical) const;
+		virtual bool isLibAvatar(qReal::Id const &id) const;
+		virtual void setLibAvatarTarget(qReal::Id const &id, qReal::Id const &targetId) const;
+		virtual qReal::Id getLibAvatarTarget(qReal::Id const &id) const;
 
 		void exterminate();
 

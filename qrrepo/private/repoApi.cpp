@@ -309,6 +309,47 @@ void RepoApi::changeLibStatus(qReal::Id const &id, bool isLogical) const
 	}
 }
 
+bool RepoApi::isLibEntry(qReal::Id const &id, bool const isLogical) const
+{
+	// names of library should not ba mentioned anywhere but here
+	/*debug purpose
+	qDebug() << "dubp of names and ids";
+	for (int i = 0; i < mClients->count(); ++i) {
+		foreach (Id e, mClients->at(i)->elements()) {
+			qDebug() << name(e) << " has id " << e.toString();
+		}
+	}
+	qDebug() << "end of dump /names and ids/";
+	*/
+
+	if (isLogical){
+		return (hasProperty(id, "isLibEntity")
+				&& property(id, "isLibEntity").value<bool>());
+	}
+
+	if (!isLogical) {
+		return (hasProperty(id, "isGraphicalLibEntity")
+				&& property(id, "isGraphicalLibEntity").value<bool>());
+	}
+
+	return false;
+}
+
+bool RepoApi::isLibAvatar(const qReal::Id &id) const
+{
+	return hasProperty(id, "isAvatarForId");
+}
+
+void RepoApi::setLibAvatarTarget(const qReal::Id &id, const qReal::Id &targetId) const
+{
+	Client *client = getRelevantClient(id);
+	client->setProperty(id, "isAvatarForId", targetId.toVariant());
+}
+
+qReal::Id RepoApi::getLibAvatarTarget(const qReal::Id &id) const
+{
+	return property(id, "isAvatarForId").value<qReal::Id>();
+}
 
 qReal::IdList RepoApi::connectedElements(qReal::Id const &id) const
 {
@@ -503,31 +544,6 @@ bool RepoApi::isGraphicalElement(qReal::Id const &id) const
 {
 	Client *client = getRelevantClient(id);
 	return !client->isLogicalId(id);
-}
-
-bool RepoApi::isLibEntry(qReal::Id const &id, bool const isLogical) const
-{
-	/*debug purpose
-	qDebug() << "dubp of names and ids";
-	for (int i = 0; i < mClients->count(); ++i) {
-		foreach (Id e, mClients->at(i)->elements()) {
-			qDebug() << name(e) << " has id " << e.toString();
-		}
-	}
-	qDebug() << "end of dump /names and ids/";
-	*/
-
-	if (isLogical){
-		return (hasProperty(id, "isLibEntity")
-				&& property(id, "isLibEntity").value<bool>());
-	}
-
-	if (!isLogical) {
-		return (hasProperty(id, "isGraphicalLibEntity")
-				&& property(id, "isGraphicalLibEntity").value<bool>());
-	}
-
-	return false;
 }
 
 qReal::Id RepoApi::logicalId(qReal::Id const &id) const

@@ -69,6 +69,8 @@ public:
 	void setFrom(Id const &elem, Id const &newValue);
 	Id from(Id const &elem) const;
 
+
+
 	QModelIndex indexById(Id const &id) const;
 	Id idByIndex(QModelIndex const &index) const;
 	QPersistentModelIndex rootIndex() const;

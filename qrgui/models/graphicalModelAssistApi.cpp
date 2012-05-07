@@ -60,7 +60,11 @@ Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &type)
 
 Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, bool isFromLibraryModel, QString const &name, QPointF const &position)
 {
-	return mModelsAssistApi.createElement(parent, id, isFromLogicalModel, isFromLibraryModel, name, position);
+	Id newId = mModelsAssistApi.createElement(parent, id, isFromLogicalModel, isFromLibraryModel, name, position);
+	if (isFromLibraryModel) {
+		this->graphicalRepoApi().setLibAvatarTarget(newId, id);
+	}
+	return newId;
 }
 
 Id GraphicalModelAssistApi::copyElement(Id const &source)

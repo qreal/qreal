@@ -113,7 +113,7 @@ void PaletteTree::DraggableElement::mousePressEvent(QMouseEvent *event)
 	stream << isFromLibraryModel;
 
 	QMimeData *mimeData = new QMimeData;
-	mimeData->setData("application/x-real-uml-data", itemData);
+	mimeData->setData(DEFAULT_MIME_TYPE, itemData);
 
 	QDrag *drag = new QDrag(this);
 	drag->setMimeData(mimeData);
