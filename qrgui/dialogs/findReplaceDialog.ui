@@ -16,47 +16,55 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QGridLayout" name="mMainLayout">
-     <item row="0" column="0">
+     <item row="0" column="1">
       <layout class="QVBoxLayout" name="mCentralLayout">
        <item>
-        <layout class="QHBoxLayout" name="mFindLayout">
+        <layout class="QHBoxLayout" name="mRequestLayout">
          <item>
-          <widget class="QLabel" name="mFindLabel">
-           <property name="text">
-            <string>Find what:       </string>
-           </property>
-          </widget>
+          <layout class="QVBoxLayout" name="mLabelLayout">
+           <item>
+            <widget class="QLabel" name="mFindLabel">
+             <property name="text">
+              <string>Find what:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="mReplaceLabel">
+             <property name="text">
+              <string>Replace with:</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QLineEdit" name="mFindEdit"/>
+          <layout class="QVBoxLayout" name="mEditLayout">
+           <item>
+            <widget class="QLineEdit" name="mFindEdit"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="mReplaceEdit"/>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QPushButton" name="mFindButton">
-           <property name="text">
-            <string>   Find    </string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="mReplaceLayout">
-         <item>
-          <widget class="QLabel" name="mReplaceLabel">
-           <property name="text">
-            <string>Replace with:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="mReplaceEdit"/>
-         </item>
-         <item>
-          <widget class="QPushButton" name="mReplaceButton">
-           <property name="text">
-            <string>Replace</string>
-           </property>
-          </widget>
+          <layout class="QVBoxLayout" name="mButtonLayout">
+           <item>
+            <widget class="QPushButton" name="mFindButton">
+             <property name="text">
+              <string>Find</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="mReplaceButton">
+             <property name="text">
+              <string>Replace</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>

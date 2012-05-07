@@ -98,6 +98,7 @@ public slots:
 	void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
 	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 	virtual void selectItem(Id const &id);
+	virtual void selectItemOrDiagram(Id const &graphicalId);
 
 	void selectItemWithError(Id const &id);
 
@@ -107,9 +108,6 @@ private slots:
 
 	/// handler for menu 'button find' pressed
 	void showFindDialog();
-
-	/// handler for menu 'button find & replace' pressed
-	void showReplaceDialog();
 
 	void setSceneFont();
 	void adjustMinimapZoom(int zoom);

@@ -19,7 +19,7 @@ public:
 
 	explicit FindReplaceDialog(qrRepo::LogicalRepoApi const &logicalRepoApi, QWidget *parent = NULL);
 	void initIds(QMap<QString, QString> foundData = QMap<QString, QString>());
-	void setMode(bool visibility);
+	void stateClear();
 	~FindReplaceDialog();
 
 signals:
@@ -33,6 +33,7 @@ private slots:
 	void replaceHandler();
 	void findClicked();
 	void itemChosen(QListWidgetItem *item);
+	void tryEnableReplaceButton();
 
 private:
 

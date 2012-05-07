@@ -15,27 +15,32 @@ FindReplaceDialog::FindReplaceDialog(qrRepo::LogicalRepoApi const &logicalRepoAp
 
 	mCheckBoxes.first()->setChecked(true);
 
+	foreach (QCheckBox *current, mCheckBoxes)
+		connect(current, SIGNAL(clicked()), this, SLOT(tryEnableReplaceButton()));
+
 	connect(mUi->mFindButton, SIGNAL(clicked()), this, SLOT(findClicked()));
 	connect(mUi->mReplaceButton, SIGNAL(clicked()), this, SLOT(replaceHandler()));
 
-	setMode(true);
+	stateClear();
 
 	setWindowTitle(tr("Search"));
 }
 
-void FindReplaceDialog::setMode(bool visibility)
+void FindReplaceDialog::tryEnableReplaceButton()
+{
+	mUi->mReplaceButton->setEnabled((mUi->mByNameBox->isChecked() || mUi->mByContentBox->isChecked()) &&
+		(!mUi->mByPropertyBox->isChecked()) && (!mUi->mByTypeBox->isChecked()));
+}
+
+void FindReplaceDialog::stateClear()
 {
 	mUi->mFindEdit->clear();
 	mUi->mReplaceEdit->clear();
-	mUi->mReplaceEdit->setVisible(!visibility);
-	mUi->mReplaceLabel->setVisible(!visibility);
 	mCheckBoxes[0]->setChecked(true);
 	mCheckBoxes[1]->setChecked(false);
 	mCheckBoxes[2]->setChecked(false);
 	mCheckBoxes[3]->setChecked(false);
-	mCheckBoxes[1]->setVisible(visibility);
-	mCheckBoxes[2]->setVisible(visibility);
-	mUi->mListWidget->setVisible(true);
+	mUi->mReplaceButton->setEnabled(true);
 	mUi->mListWidget->clear();
 }
 
@@ -46,8 +51,6 @@ FindReplaceDialog::~FindReplaceDialog()
 
 void FindReplaceDialog::findClicked()
 {
-	if (mUi->mReplaceEdit->isVisible())
-		setMode(true);
 	if (mUi->mFindEdit->text().length() != 0) {
 		QStringList searchData;
 		foreach (QCheckBox *current, mCheckBoxes)
@@ -62,8 +65,6 @@ void FindReplaceDialog::findClicked()
 
 void FindReplaceDialog::replaceHandler()
 {
-	if (!mUi->mReplaceEdit->isVisible())
-		setMode(false);
 	if ((mUi->mFindEdit->text().length() != 0) && (mUi->mReplaceEdit->text().length() != 0)) {
 		QStringList searchData;
 		foreach (QCheckBox *current, mCheckBoxes)

@@ -90,7 +90,6 @@
      <string>Edit</string>
     </property>
     <addaction name="actionFind"/>
-    <addaction name="actionFind_and_replace"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menuEdit"/>

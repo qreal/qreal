@@ -15,18 +15,18 @@ FindManager::FindManager(qrRepo::RepoControlInterface &controlApi,
 
 void FindManager::handleRefsDialog(qReal::Id const &id)
 {
-	mMainWindow->selectItem(id);
+	mMainWindow->selectItemOrDiagram(id);
 }
 
 qReal::IdList FindManager::foundByMode(QString key, QString currentMode)
 {
-	if (currentMode == ("by name"))
+	if (currentMode == tr("by name"))
 		return mControlApi.findElementsByName(key);
-	if (currentMode == ("by type"))
+	if (currentMode == tr("by type"))
 		return mLogicalApi.elementsByType(key);
-	if (currentMode == ("by property"))
+	if (currentMode == tr("by property"))
 		return mControlApi.elementsByProperty(key);
-	if (currentMode == ("by property content"))
+	if (currentMode == tr("by property content"))
 		return mControlApi.elementsByPropertyContent(key);
 }
 
@@ -53,13 +53,13 @@ void FindManager::handleFindDialog(QStringList const &searchData)
 
 void FindManager::handleReplaceDialog(QStringList &searchData)
 {
-	if (searchData.contains("by name")) {
-		qReal::IdList toRename = foundByMode(searchData.first(), "by name");
+	if (searchData.contains(tr("by name"))) {
+		qReal::IdList toRename = foundByMode(searchData.first(), tr("by name"));
 		foreach (qReal::Id currentId, toRename)
 			mLogicalApi.setName(currentId, searchData[1]);
 	}
-	if (searchData.contains("by property content")) {
-		qReal::IdList toRename = foundByMode(searchData.first(), "by property content");
+	if (searchData.contains(tr("by property content"))) {
+		qReal::IdList toRename = foundByMode(searchData.first(), tr("by property content"));
 		mLogicalApi.replaceProperties(toRename, searchData[0], searchData[1]);
 	}
 }

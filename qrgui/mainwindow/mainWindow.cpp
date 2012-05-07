@@ -229,7 +229,6 @@ void MainWindow::connectActions()
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connect (mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
-	connect (mUi->actionFind_and_replace, SIGNAL(triggered()), this, SLOT(showReplaceDialog()));
 
 	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)), mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
 	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)), mFindHelper, SLOT(handleFindDialog(QStringList)));
@@ -238,13 +237,7 @@ void MainWindow::connectActions()
 
 void MainWindow::showFindDialog()
 {
-	mFindReplaceDialog->setMode(true);
-	mFindReplaceDialog->show();
-}
-
-void MainWindow::showReplaceDialog()
-{
-	mFindReplaceDialog->setMode(false);
+	mFindReplaceDialog->stateClear();
 	mFindReplaceDialog->show();
 }
 
@@ -266,7 +259,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 	} else if (keyEvent->key() == Qt::Key_F1) {
 		showHelp();
 	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_F) {
-		mFindReplaceDialog->setMode(true);
+		mFindReplaceDialog->stateClear();
 		mFindReplaceDialog->show();
 	}
 }
@@ -347,6 +340,11 @@ void MainWindow::selectItem(Id const &id)
 
 	setIndexesOfPropertyEditor(id);
 	centerOn(id);
+}
+
+void MainWindow::selectItemOrDiagram(Id const &graphicalId)
+{
+	activateItemOrDiagram(graphicalId, false, true);
 }
 
 void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool bl, bool isSetSel)
