@@ -3,6 +3,8 @@
 #include "ui_editorPage.h"
 #include <QMessageBox>
 
+using namespace qReal;
+
 PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAction * const showAlignmentAction
 		, QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
 		: PreferencesPage(parent)

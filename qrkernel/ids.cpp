@@ -38,19 +38,19 @@ Id Id::rootId()
 }
 
 Id::Id(QString const &editor, QString  const &diagram, QString  const &element, QString  const &id)
-	: mEditor(editor)
-	, mDiagram(diagram)
-	, mElement(element)
-	, mId(id)
+		: mEditor(editor)
+		, mDiagram(diagram)
+		, mElement(element)
+		, mId(id)
 {
 	Q_ASSERT(checkIntegrity());
 }
 
 Id::Id(Id const &base, QString const &additional)
-	: mEditor(base.mEditor)
-	, mDiagram(base.mDiagram)
-	, mElement(base.mElement)
-	, mId(base.mId)
+		: mEditor(base.mEditor)
+		, mDiagram(base.mDiagram)
+		, mElement(base.mElement)
+		, mId(base.mId)
 {
 	unsigned const baseSize = base.idSize();
 	switch (baseSize) {
