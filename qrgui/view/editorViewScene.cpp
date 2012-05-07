@@ -738,8 +738,6 @@ void EditorViewScene::changeLibStatus()
 
 	mMVIface->logicalAssistApi()->logicalRepoApi().changeLibStatus(logicalId);
 	mMVIface->graphicalAssistApi()->graphicalRepoApi().changeLibStatus(graphicalId);
-	qDebug() << "graphical id " << graphicalId;
-	qDebug() << "logical id " << logicalId.toString();
 }
 
 void EditorViewScene::getObjectByGesture()

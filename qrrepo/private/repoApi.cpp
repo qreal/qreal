@@ -312,7 +312,7 @@ void RepoApi::changeLibStatus(qReal::Id const &id, bool isLogical) const
 bool RepoApi::isLibEntry(qReal::Id const &id, bool const isLogical) const
 {
 	// names of library should not ba mentioned anywhere but here
-	/*debug purpose
+	//debug purpose
 	qDebug() << "dubp of names and ids";
 	for (int i = 0; i < mClients->count(); ++i) {
 		foreach (Id e, mClients->at(i)->elements()) {
@@ -320,7 +320,7 @@ bool RepoApi::isLibEntry(qReal::Id const &id, bool const isLogical) const
 		}
 	}
 	qDebug() << "end of dump /names and ids/";
-	*/
+	//
 
 	if (isLogical){
 		return (hasProperty(id, "isLibEntity")
