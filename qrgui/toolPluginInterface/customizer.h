@@ -36,7 +36,7 @@ public:
 	/// Tells if we should show library related menu or not
 	virtual bool showLibraryRelatedMenus() const
 	{
-		return true;
+		return false;
 	}
 };
 
