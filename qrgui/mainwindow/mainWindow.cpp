@@ -1746,6 +1746,7 @@ void MainWindow::initToolManager()
 	if (mToolManager.customizer()) {
 		setWindowTitle(mToolManager.customizer()->windowTitle());
 		mUi->logicalModelDock->setVisible(mToolManager.customizer()->showLogicalModelExplorer());
+		mUi->libraryDock->setVisible(mToolManager.customizer()->showLibraryRelatedMenus());
 		setWindowIcon(mToolManager.customizer()->applicationIcon());
 	}
 }

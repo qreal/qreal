@@ -497,7 +497,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="380"/>
         <source>Library Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Обозреватель библиотеки</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="592"/>
@@ -553,7 +553,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="672"/>
         <source>Add...</source>
-        <translation type="unfinished"></translation>
+        <translation>Подключить библиотечный файл...</translation>
     </message>
     <message>
         <source>Recent projects</source>
