@@ -7,8 +7,8 @@ using namespace qReal;
 using namespace qrRepo;
 using namespace qrRepo::details;
 
-Client::Client(QString const &workingFile)
-	: mWorkingFile(workingFile), serializer(workingFile)
+Client::Client(QString const &workingFile, bool isLibProcessed)
+	: mWorkingFile(workingFile), serializer(workingFile, isLibProcessed)
 {
 	init();
 	loadFromDisk();

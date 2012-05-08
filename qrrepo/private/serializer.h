@@ -15,7 +15,7 @@ namespace qrRepo {
 
 		class Serializer {
 		public:
-			Serializer(QString const& saveDirName);
+			Serializer(QString const& saveDirName, bool isLibProcessed);
 			void clearWorkingDir() const;
 			void setWorkingFile(QString const& workingDir);
 
@@ -49,6 +49,8 @@ namespace qrRepo {
 			QString mWorkingFile;
 
 			QMap<QString, QFile*> files;
+
+			bool mIsLibProcessed;
 		};
 
 	}

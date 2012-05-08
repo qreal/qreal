@@ -580,7 +580,7 @@ void RepoApi::open(QString const &saveFile)
 void RepoApi::loadSaveFile(QString const &saveFile)
 {
 	qDebug() << "Repo contain " << allElements().count() << " before adding";
-	Client *saveFileToAppend = new Client(saveFile);
+	Client *saveFileToAppend = new Client(saveFile, true);
 	mClients->append(saveFileToAppend);
 	qDebug() << allElements().count() << "after adding";
 }

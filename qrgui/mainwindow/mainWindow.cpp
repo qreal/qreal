@@ -480,8 +480,6 @@ bool MainWindow::add(const QString &fileName)
 		return false;
 }
 
-//	refreshRecentProjectsList(fileName);
-
 	mModels->repoControlApi().loadSaveFile(fileName);
 	mModels->reinit();
 
@@ -499,8 +497,11 @@ bool MainWindow::add(const QString &fileName)
 
 bool MainWindow::addProject()
 {
-	return add(getWorkingFile(tr("Select save file to open"), false));
-;
+	QString fileName;
+	QDir const lastSaveDir = QFileInfo(mSaveFile).absoluteDir();
+	fileName = QFileDialog::getOpenFileName(this, tr("Select save file to open")
+			, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
+	return add(fileName);
 }
 
 bool MainWindow::openNewProject()

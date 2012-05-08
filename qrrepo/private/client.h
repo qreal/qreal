@@ -15,7 +15,7 @@ namespace qrRepo {
 		class Client
 		{
 		public:
-			QRREPO_EXPORT Client(QString const &workingFile);
+			QRREPO_EXPORT Client(QString const &workingFile, bool isLibProcessed = false);
 			QRREPO_EXPORT ~Client();
 			qReal::IdList children(const qReal::Id &id) const;
 			qReal::Id parent(const qReal::Id &id) const;

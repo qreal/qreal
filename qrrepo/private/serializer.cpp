@@ -14,10 +14,14 @@ using namespace details;
 using namespace utils;
 using namespace qReal;
 
-Serializer::Serializer(QString const& saveDirName)
-	: mWorkingDir(SettingsManager::value("temp", "").toString())
-	, mWorkingFile(saveDirName)
+Serializer::Serializer(QString const& saveDirName, bool isLibProcessed)
+	: mWorkingFile(saveDirName)
+	, mIsLibProcessed(isLibProcessed)
 {
+	mWorkingDir = SettingsManager::value("temp", "").toString();
+	// make proper value of SettingsManager
+	if (mIsLibProcessed)
+		mWorkingDir.append("Lib");
 	clearWorkingDir();
 }
 
@@ -61,7 +65,8 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 	QFileInfo fileInfo(mWorkingFile);
 	QString fileName = fileInfo.baseName();
 
-	QDir compressDir(SettingsManager::value("temp", "").toString());
+	QDir compressDir(mWorkingDir);
+//	QDir compressDir(SettingsManager::value("temp", "").toString());
 	QDir dir = fileInfo.absolutePath();
 
 	QFile previousSave(dir.absolutePath() + "/" + fileName +".qrs");
@@ -78,7 +83,8 @@ void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash)
 	clearWorkingDir();
 	if (!mWorkingFile.isEmpty())
 		decompressFile(mWorkingFile);
-	loadFromDisk(SettingsManager::value("temp", "").toString(), objectsHash);
+//	loadFromDisk(SettingsManager::value("temp", "").toString(), objectsHash);
+	loadFromDisk(mWorkingDir, objectsHash);
 }
 
 void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object*> &objectsHash)
