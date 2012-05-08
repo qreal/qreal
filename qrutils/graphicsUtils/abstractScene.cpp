@@ -82,7 +82,7 @@ void AbstractScene::reshapeItem(QGraphicsSceneMouseEvent *event,graphicsUtils::A
 void AbstractScene::setMoveFlag(QGraphicsSceneMouseEvent *event)
 {
 	QList<QGraphicsItem *> list = items(event->scenePos());
-	foreach (QGraphicsItem *graphicsItem, list){
+	foreach (QGraphicsItem *graphicsItem, list) {
 		AbstractItem *item = dynamic_cast<graphicsUtils::AbstractItem *>(graphicsItem);
 		if (item != NULL)
 			graphicsItem->setFlag(QGraphicsItem::ItemIsMovable, true);

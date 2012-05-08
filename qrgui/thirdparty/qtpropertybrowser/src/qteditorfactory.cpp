@@ -1974,7 +1974,7 @@ QWidget *QtEnumEditorFactory::createEditor(QtEnumPropertyManager *manager, QtPro
     editor->view()->setTextElideMode(Qt::ElideRight);
     QStringList enumNamesUnfiltered = manager->enumNames(property);
     QStringList enumNames;
-    foreach(QString name, enumNamesUnfiltered){
+	foreach(QString name, enumNamesUnfiltered) {
         enumNames << name.replace("&lt;", "<");
     }
     editor->addItems(enumNames);

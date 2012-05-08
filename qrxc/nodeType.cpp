@@ -202,7 +202,7 @@ void NodeType::generateLinePorts(QDomElement const &portsElement, OutFile &out) 
 
 bool NodeType::hasPointPorts()
 {
-	foreach (Port *port, mPorts){
+	foreach (Port *port, mPorts) {
 		if (dynamic_cast<PointPort*>(port))
 			return true;
 	}
@@ -211,7 +211,7 @@ bool NodeType::hasPointPorts()
 
 bool NodeType::hasLinePorts()
 {
-	foreach (Port *port, mPorts){
+	foreach (Port *port, mPorts) {
 		if (dynamic_cast<LinePort*>(port))
 			return true;
 	}

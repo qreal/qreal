@@ -220,7 +220,7 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
 		}
 
-		if (mEdge){
+		if (mEdge) {
 			QPointF point = mapToItem(master, event->pos());
 			mEdge->placeStartTo(mEdge->mapFromItem(master, master->getNearestPort(point)));
 			mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));

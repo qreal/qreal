@@ -153,7 +153,7 @@ QStringList PropertyEditorModel::enumValues(const QModelIndex &index) const
 //QString PropertyEditorModel::typeName(const QModelIndex &index) const
 //{
 //	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
-//	if (im){
+//	if (im) {
 //		return im->getTypeName(targetObject, roleByIndex(index.row()));
 //	}
 //	return QString();

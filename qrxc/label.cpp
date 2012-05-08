@@ -58,7 +58,7 @@ QStringList Label::getReformedList(QStringList const &list) const
 {
 	QStringList result;
 	int counter = 1;
-	foreach (QString const &str, list){
+	foreach (QString const &str, list) {
 		if (counter % 2 == 0) {
 			result.append(str);
 		} else {

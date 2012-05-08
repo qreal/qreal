@@ -25,8 +25,8 @@ RepoApi::RepoApi(QString const &workingDirectory)
 /// @return is link for client, representig save file inclusing requested id
 details::Client* RepoApi::getRelevantClient(const qReal::Id &id) const
 {
-		for (int i = 0; i < mClients->count(); ++i){
-		if(mClients->at(i)->exist(id))
+		for (int i = 0; i < mClients->count(); ++i) {
+		if (mClients->at(i)->exist(id))
 			return mClients->at(i);
 	}
 	//throw Exception("RepoApi: Requesting nonexistent object " + id.toString());
@@ -63,7 +63,7 @@ IdList RepoApi::children(Id const &id) const
 IdList RepoApi::childrenInAllClients(qReal::Id const &id) const
 {
 	IdList result;
-	for (int i = 0; i < mClients->count(); ++i){
+	for (int i = 0; i < mClients->count(); ++i) {
 		Client *client = mClients->at(i);
 		if (client->exist(id)) {
 			result.append(client->children(id));
@@ -289,20 +289,20 @@ void RepoApi::changeLibStatus(qReal::Id const &id, bool isLogical) const
 {
 	Client *client = getRelevantClient(id);
 
-	if (hasProperty(id, "isLibEntity")){
+	if (hasProperty(id, "isLibEntity")) {
 		bool currentValue = property(id, "isLibEntity").toBool();
 		client->setProperty(id, "isLibEntity", !currentValue);
 		return;
 	}
 
-	if (hasProperty(id, "isGraphicalLibEntity")){
+	if (hasProperty(id, "isGraphicalLibEntity")) {
 		bool currentValue = property(id, "isGraphicalLibEntity").toBool();
 		client->setProperty(id, "isGraphicalLibEntity", !currentValue);
 		return;
 	}
 
 	// this is called only if calles first time for this element
-	if (isLogical){
+	if (isLogical) {
 		client->setProperty(id, "isLibEntity", true);
 	} else {
 		client->setProperty(id, "isGraphicalLibEntity", true);
@@ -322,7 +322,7 @@ bool RepoApi::isLibEntry(qReal::Id const &id, bool const isLogical) const
 	qDebug() << "end of dump /names and ids/";
 	*/
 
-	if (isLogical){
+	if (isLogical) {
 		return (hasProperty(id, "isLibEntity")
 				&& property(id, "isLibEntity").value<bool>());
 	}
@@ -558,7 +558,7 @@ qReal::Id RepoApi::logicalId(qReal::Id const &id) const
 //investigated
 void RepoApi::exterminate()
 {
-	for (int i = 0; i < mClients->count(); i++){
+	for (int i = 0; i < mClients->count(); i++) {
 		mClients->at(i)->exterminate();
 	}
 }

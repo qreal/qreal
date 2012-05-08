@@ -95,7 +95,7 @@ void EdgeType::generateArrows(QString &edgeClass) const
 	QString endType;
 	IdList children = mApi->children(mId);
 
-	foreach (Id child, children){
+	foreach (Id child, children) {
 		if (child.element() == metaEntityAssociation) {
 			beginType = mApi->stringProperty(child, "beginType");
 			endType = mApi->stringProperty(child, "endType");

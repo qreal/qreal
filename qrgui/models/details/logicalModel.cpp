@@ -54,7 +54,7 @@ void LogicalModel::loadSubtreeFromClient(LogicalModelItem * const parent)
 void LogicalModel::loadExtendedSubtreeFromClient(LogicalModelItem *const parent)
 {
 	foreach (Id childId, mApi.childrenInAllClients(parent->id())) {
-		if (mApi.isLogicalElement(childId) && mApi.isLibEntry(childId)){
+		if (mApi.isLogicalElement(childId) && mApi.isLibEntry(childId)) {
 			LogicalModelItem *child = loadElement(parent, childId);
 			loadExtendedSubtreeFromClient(child);
 		}

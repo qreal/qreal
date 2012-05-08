@@ -102,7 +102,7 @@ void NodeType::generateContainerStuff(QString &classTemplate) const
 {
 	IdList children = mApi->children(mId);
 	bool foundChild = false;
-	foreach(Id child, children){
+	foreach(Id child, children) {
 		if (!mApi->isLogicalElement(child))
 			continue;
 
@@ -129,7 +129,7 @@ void NodeType::generateContainerStuff(QString &classTemplate) const
 
 void NodeType::generateContextMenuItems(QString &classTemplate, MetaCompiler *compiler) const
 {
-	if (mContextMenuItems.isEmpty()){
+	if (mContextMenuItems.isEmpty()) {
 		classTemplate.replace(nodeConstructorTag, "")
 				.replace(itemsList, compiler->getTemplateUtils(itemsInvalidList));
 		return;
@@ -137,7 +137,7 @@ void NodeType::generateContextMenuItems(QString &classTemplate, MetaCompiler *co
 
 	QString constructor = compiler->getTemplateUtils(nodeConstructorTag);
 	QString items;
-	foreach(QString item, mContextMenuItems){
+	foreach(QString item, mContextMenuItems) {
 		items += " << \"" + item + "\"";
 	}
 	constructor.replace(contextMenuItems, items);

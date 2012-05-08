@@ -1271,7 +1271,7 @@ void NodeElement::sortChildren()
 
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if(mPlaceholder != NULL && childItem == mPlaceholder){
+		if(mPlaceholder != NULL && childItem == mPlaceholder) {
 			QRectF rect(mElementImpl->sizeOfForestalling(), curChildY,
 				maxChildrenWidth, mPlaceholder->rect().height());
 			mPlaceholder->setRect(rect);
@@ -1315,7 +1315,7 @@ void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 	erasePlaceholder(false);
 	mPlaceholder = placeholder;
 	mPlaceholder->setParentItem(this);
-	if(nextItem != NULL){
+	if(nextItem != NULL) {
 		mPlaceholder->stackBefore(nextItem);
 	}
 
@@ -1344,11 +1344,11 @@ Element* NodeElement::getPlaceholderNextElement()
 void NodeElement::erasePlaceholder(bool redraw)
 {
 	setOpacity(1);
-	if(mPlaceholder != NULL){
+	if(mPlaceholder != NULL) {
 		delete mPlaceholder;
 		mPlaceholder = NULL;
 	}
-	if(redraw){
+	if(redraw) {
 		resize(QRectF());
 	}
 }

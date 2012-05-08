@@ -243,7 +243,7 @@ bool Shape::hasLabels() const
 
 bool Shape::hasPointPorts() const
 {
-	foreach (Port *port, mPorts){
+	foreach (Port *port, mPorts) {
 		if (dynamic_cast<PointPort*>(port))
 			return true;
 	}
@@ -252,7 +252,7 @@ bool Shape::hasPointPorts() const
 
 bool Shape::hasLinePorts() const
 {
-	foreach (Port *port, mPorts){
+	foreach (Port *port, mPorts) {
 		if (dynamic_cast<LinePort*>(port))
 			return true;
 	}

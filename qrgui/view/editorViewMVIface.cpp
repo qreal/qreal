@@ -213,7 +213,7 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 {
 	for (int row = start; row <= end; ++row) {
 		QModelIndex curr = model()->index(row, 0, parent);
-		if( item(curr) ){
+		if (item(curr)) {
 			mScene->removeItem(item(curr));
 			delete item(curr);
 		}

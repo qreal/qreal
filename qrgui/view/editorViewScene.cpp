@@ -196,7 +196,7 @@ void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 	NodeElement *node = NULL;
 	foreach (QGraphicsItem *item, elements) {
 		NodeElement *el = dynamic_cast<NodeElement*>(item);
-		if(el != NULL){
+		if(el != NULL) {
 			if (canBeContainedBy(el->id(), id)) {
 				node = el;
 				break;
@@ -296,7 +296,7 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 bool EditorViewScene::canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const
 {
 	bool allowed = false;
-	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container.type())){
+	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container.type())) {
 		allowed = allowed || mWindow->manager()->isParentOf(candidate, type);
 	}
 	return allowed;
@@ -320,7 +320,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node, QPoint
 	QSignalMapper *menuSignalMapper = new QSignalMapper();
 	toDelete.append(menuSignalMapper);
 
-	foreach(PossibleEdge pEdge, edge->getPossibleEdges()){
+	foreach(PossibleEdge pEdge, edge->getPossibleEdges()) {
 		QString target;
 		// if pEdge.first.first is parent of node->id(), then add all children of pEdge.first.second to the list
 		// and vice versa
@@ -434,7 +434,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 		}
 	}
 
-	if(newParent && dynamic_cast<NodeElement*>(newParent)){
+	if(newParent && dynamic_cast<NodeElement*>(newParent)) {
 		if (!canBeContainedBy(newParent->id(), id)) {
 			QString text;
 			text += "Element of type \"" + id.element() + "\" can not be a child of \"" + newParent->id().element() + "\"";
@@ -476,7 +476,7 @@ void EditorViewScene::insertNodeIntoEdge(qReal::Id const &insertedNodeId, qReal:
 {
 	foreach (QGraphicsItem *item, items(scenePos)) {
 		EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
-		if(edge && edge->isDividable()){// check if item is an edge and the edge is dissectable
+		if(edge && edge->isDividable()) {// check if item is an edge and the edge is dissectable
 			NodeElement *previouslyConnectedTo = edge->dst();
 			if (previouslyConnectedTo) {//check has edge dst
 				edge->removeLink(previouslyConnectedTo);
@@ -652,7 +652,7 @@ void EditorViewScene::createLibStatusSubmenus(QMenu &contextMenu, const Element 
 
 		if (mMVIface->graphicalAssistApi()->graphicalRepoApi().isLibEntry(element->id())) {
 			status.append(tr("lib entry"));
-		} else if (mMVIface->graphicalAssistApi()->graphicalRepoApi().isLibAvatar(element->id())){
+		} else if (mMVIface->graphicalAssistApi()->graphicalRepoApi().isLibAvatar(element->id())) {
 			status.append(tr("avatar"));
 		} else {
 			status.append(tr("off library"));

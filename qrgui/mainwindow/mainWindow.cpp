@@ -240,7 +240,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 		saveAll();
 	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_W) {
 		closeTab(mUi->tabs->currentIndex());
-	} else if (keyEvent->key() == Qt::Key_F1){
+	} else if (keyEvent->key() == Qt::Key_F1) {
 		showHelp();
 	}
 }
@@ -751,7 +751,7 @@ void MainWindow::deleteFromDiagram()
 }
 void MainWindow::editWindowTitle()
 {
-	if (!mUnsavedProjectIndicator){
+	if (!mUnsavedProjectIndicator) {
 		setWindowTitle(windowTitle() + " [modified]");
 		mUnsavedProjectIndicator = true;
 	}
@@ -1593,7 +1593,7 @@ void MainWindow::createProject()
 		}
 	}
 	open("");
-	if (SettingsManager::value("diagramCreateSuggestion", true).toBool()){
+	if (SettingsManager::value("diagramCreateSuggestion", true).toBool()) {
 		suggestToCreateDiagram();
 	}
 

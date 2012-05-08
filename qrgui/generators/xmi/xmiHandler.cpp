@@ -109,7 +109,7 @@ void XmiHandler::serializeObject(QDomElement &parent, Id const &id, Id const &pa
 		} else
 			addError("unable to serrialize object " + objectType + " with id: " + id.toString() + ". Move it inside some cnClass");
 	} else if (objectType == "cnClassField") {
-		if (parentType == "cnClass"){
+		if (parentType == "cnClass") {
 			typeOfTag = "ownedAttribute";
 			typeOfElem = "uml:Property";
 		} else
@@ -291,7 +291,7 @@ QDomElement XmiHandler::serializeLink(Id const &id)
 
 			result.appendChild(toOwnedEnd);
 		}
-	} else if (linkType == "ceDependency"){
+	} else if (linkType == "ceDependency") {
 		result.setAttribute("xmi:type", "uml:Dependency");
 
 		if (!visibility.isEmpty())
