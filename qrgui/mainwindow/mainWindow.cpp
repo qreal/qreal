@@ -876,9 +876,9 @@ bool MainWindow::unloadPlugin(QString const &pluginName)
 	return true;
 }
 
-bool MainWindow::unloadConstraintsPlugin(QString const &pluginId)
+bool MainWindow::unloadConstraintsPlugin(QString const &pluginName, QString const &pluginId)
 {
-	if (mConstraintsManager.plugins().contains(Id(pluginId))) {
+	if (mConstraintsManager.pluginsIds().contains(Id(pluginId)) && mConstraintsManager.pluginsNames().contains(pluginName)) {
 		if (!mConstraintsManager.unloadPlugin(pluginId)) {
 			return false;
 		}

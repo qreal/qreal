@@ -25,10 +25,11 @@ ConstraintsManager::ConstraintsManager()
 		if (plugin) {
 			ConstraintsPluginInterface *constraintsPlugin = qobject_cast<ConstraintsPluginInterface *>(plugin);
 			if (constraintsPlugin) {
-				mPlugins << constraintsPlugin;
+//				mPlugins << constraintsPlugin;
 				mPluginsLoaded += constraintsPlugin->id();
 				mPluginFileName.insert(constraintsPlugin->id(), fileName);
 				mLoaders.insert(fileName, loader);
+				mPluginIface[constraintsPlugin->id()] = constraintsPlugin;
 			}
 			else {
 				delete loader;
@@ -47,10 +48,11 @@ bool ConstraintsManager::loadPlugin(const QString &pluginName)
 	if (plugin) {
 		ConstraintsPluginInterface *constraintsPlugin = qobject_cast<ConstraintsPluginInterface *>(plugin);
 		if (constraintsPlugin) {
-			mPlugins << constraintsPlugin;
+//			mPlugins << constraintsPlugin;
 			mPluginsLoaded += constraintsPlugin->id();
 			mPluginFileName.insert(constraintsPlugin->id(), pluginName);
 			mLoaders.insert(pluginName, loader);
+			mPluginIface[constraintsPlugin->id()] = constraintsPlugin;
 			return true;
 		}
 	}
@@ -74,7 +76,7 @@ bool ConstraintsManager::unloadPlugin(const QString &pluginId)
 	return false;
 }
 
-IdList ConstraintsManager::plugins() const
+IdList ConstraintsManager::pluginsIds() const
 {
 	IdList plugins;
 	foreach (QString pluginId, mPluginsLoaded) {
@@ -83,12 +85,18 @@ IdList ConstraintsManager::plugins() const
 	return plugins;
 }
 
+QList<QString> ConstraintsManager::pluginsNames() const
+{
+	return mPluginFileName.values();
+}
+
 QList<CheckStatus> ConstraintsManager::check(Id const &element, qrRepo::LogicalRepoApi const &logicalApi, EditorManager const &editorManager)
 {
-	foreach (ConstraintsPluginInterface *constraintsInterface, mPlugins) {
-		if (constraintsInterface->isCorrectLanguageName(element)) {
-			return constraintsInterface->check(element, logicalApi, editorManager);
+	QList<qReal::CheckStatus> checkings;
+	foreach (ConstraintsPluginInterface *constraintsInterface, mPluginIface.values()) {
+		if (constraintsInterface->isCorrectMetamodelName(element)) {
+			checkings.append(constraintsInterface->check(element, logicalApi, editorManager));
 		}
 	}
-	return CheckStatus::defaultCheckStatusAsList();
+	return checkings;
 }

@@ -25,7 +25,7 @@ QString CheckStatus::message() const
 
 QList<CheckStatus> CheckStatus::resultCheckStatusList(QList<CheckStatus> const& listCheckStatus)
 {
-	QList<CheckStatus> resCheckStatusList = QList<CheckStatus>();
+	QList<CheckStatus> resCheckStatusList = defaultCheckStatusAsList();
 	foreach (CheckStatus const& checkStatus, listCheckStatus) {
 		if (!resCheckStatusList.contains(checkStatus)) {
 			resCheckStatusList.append(checkStatus);

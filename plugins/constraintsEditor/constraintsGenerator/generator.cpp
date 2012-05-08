@@ -6,7 +6,7 @@ using namespace constraints::generator;
 
 QString templateDir = "./templates";
 
-const QString keywordForAllLanguages = "AllLanguages";//qwerty_asd_copypast
+const QString keywordForAllMetamodels = "AllMetamodels";//qwerty_asd_copypast
 
 Generator::Generator()
 {
@@ -32,8 +32,8 @@ void Generator::generate(qReal::Id const &metamodel)
 		return;
 	}
 	QString metamodelName = mLogicalModel->propertyByRoleName(metamodel, "metamodelName").toString();
-	if ((metamodelName.compare("all", Qt::CaseInsensitive) == 0) || (metamodelName.compare(keywordForAllLanguages, Qt::CaseInsensitive) == 0)) {
-		metamodelName = keywordForAllLanguages;
+	if ((metamodelName.compare("all", Qt::CaseInsensitive) == 0) || (metamodelName.compare(keywordForAllMetamodels, Qt::CaseInsensitive) == 0)) {
+		metamodelName = keywordForAllMetamodels;
 	}
 	ConcreateGenerator generator(templateDir, mLogicalModel->propertyByRoleName(metamodel, "outputDirPath").toString()
 								, mLogicalModel->propertyByRoleName(metamodel, "pathToQReal").toString(), *mLogicalModel, *mErrorReporter

@@ -93,7 +93,7 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 	progress->setRange(0, 100);
 	progress->setValue(5);
 
-	if (!mMainWindowInterface->unloadConstraintsPlugin(pluginId)) {
+	if (!mMainWindowInterface->unloadConstraintsPlugin(pluginName, pluginId)) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot unload plugin"));
 		progress->close();
 		delete progress;

@@ -21,7 +21,7 @@ SUBDIRS = \
 	Constraints@@diagramName@@ mConstraints@@diagramName@@;
 ==========
 @@ifForMainCheckOfConstraintsDiagram@@
-	if (mConstraints@@diagramName@@.languageName() == languageName && (mConstraints@@diagramName@@.elementsNames().contains("@@keywordForAllEdges@@") || mConstraints@@diagramName@@.elementsNames().contains("@@keywordForAllNodes@@") || mConstraints@@diagramName@@.elementsNames().contains(elementName))) {
+	if (((mConstraints@@diagramName@@.languageName() == languageName) || (mConstraints@@diagramName@@.languageName() == "@@keywordForAllLanguages@@")) && (mConstraints@@diagramName@@.elementsNames().contains("@@keywordForAllEdges@@") || mConstraints@@diagramName@@.elementsNames().contains("@@keywordForAllNodes@@") || mConstraints@@diagramName@@.elementsNames().contains(elementName))) {
 		checkings.append(mConstraints@@diagramName@@.check(element, logicalApi, editorManager));
 	}
 ==========

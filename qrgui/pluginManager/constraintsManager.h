@@ -14,7 +14,8 @@ public:
 	QList<CheckStatus> check(Id const &element, qrRepo::LogicalRepoApi const &logicalApi, EditorManager const &editorManager);
 	bool loadPlugin(QString const &pluginName);
 	bool unloadPlugin(QString const &pluginId);
-	IdList plugins() const;
+	IdList pluginsIds() const;
+	QList<QString> pluginsNames() const;
 
 private:
 	QStringList mPluginsLoaded;
@@ -22,7 +23,8 @@ private:
 	QMap<QString, QPluginLoader *> mLoaders;
 	QDir mPluginsDir;
 
-	QList<ConstraintsPluginInterface *> mPlugins;
+//	QList<ConstraintsPluginInterface *> mPlugins;
+	QMap<QString, ConstraintsPluginInterface *> mPluginIface;
 };
 
 }

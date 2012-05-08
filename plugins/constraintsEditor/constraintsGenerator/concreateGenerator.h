@@ -72,6 +72,7 @@ private :
 	void generateDiagramFiles(qReal::Id const &diagram, QString diagramNameTemplate);
 	NeededStringsForCommonGenerate generateNeededPartsForAllConstraintsDiagram();
 	QString replaceLanguageName(QString string, qReal::Id const &diagram, int count);
+	QString correctedLanguageName(qReal::Id const &diagram);
 
 	QString countRealConstraintOfElement(qReal::Id const &element);
 	QString countRealConstraintForEdgeElement(qReal::Id const &element, QString elementName, QString resultName, int depth, QString addStr);
@@ -91,6 +92,7 @@ private :
 	QPair<QString, QList<QString> > countConstraintForOutgoingNodes(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
 	QPair<QString, QList<QString> > countConstraintForIncomingNodes(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
 	QPair<QString, QList<QString> > countConstraintForPropertyNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
+	QPair<QString, QString > countPropertyCharacteristicForConstraintElement(qReal::Id const &constraint, QString const &characteristicName, QString const &defaultValue, QString property, QString sign, QString value,  QString elementName, int depth, QString addStr);
 
 	QString mPathToQReal;
 	QString const &mMetamodelName;//имя метамодели языков, для которых напсана эта модель ограничений, по которой генерируется код

@@ -374,6 +374,7 @@
                     </container>
                     <generalizations>
                         <parent parentName="abstractNodeForNodeConstraint"/>
+                        <parent parentName="abstractListOfElementsNode"/>
                     </generalizations>
                 </logic>
             </node>
@@ -556,10 +557,11 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property displayedName="Count" type="string" name="count">
-                            <default>>= 0</default>
-                        </property>
+                        <property displayedName="Count" type="string" name="count"/>
                     </properties>
+                    <generalizations>
+                        <parent parentName="abstractSelectionNode"/>
+                    </generalizations>
                 </logic>
             </node>
         </graphicTypes>

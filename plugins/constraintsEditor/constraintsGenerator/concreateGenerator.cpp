@@ -16,6 +16,7 @@ QString const fileNameDiagramCPP = "constraintsDiagram.cpp";
 
 QString const keywordForAllEdges = "AllEdges";
 QString const keywordForAllNodes = "AllNodes";
+QString const keywordForAllLanguages = "AllLanguages";
 
 ConcreateGenerator::ConcreateGenerator(QString const &templateDirPath
 		, QString const &outputDirPath
@@ -204,7 +205,7 @@ void ConcreateGenerator::generateDiagramFiles(Id const &diagram, QString diagram
 	resultDiagramCPP.replace("@@returnCheckStatusesOfElementsInCheck@@", needeStrings.returnCheckStatusesOfElementsInCheckCPP);
 	resultDiagramCPP.replace("@@addElementsInElementsNames@@", needeStrings.addElementsInElementsNamesCPP);
 	resultDiagramCPP.replace("@@diagramName@@", diagramNameTemplate);
-	resultDiagramCPP.replace("@@languageName@@", mApi.property(diagram, "languageName").toString());
+	resultDiagramCPP.replace("@@languageName@@", correctedLanguageName(diagram));
 
 	saveOutputFile(QString("constraints" + diagramNameTemplate + ".h"), resultDiagramH);
 	saveOutputFile(QString("constraints" + diagramNameTemplate + ".cpp"), resultDiagramCPP);
@@ -242,6 +243,7 @@ ConcreateGenerator::NeededStringsForCommonGenerate ConcreateGenerator::generateN
 		ifForMainCheckTemplate.replace("@@diagramName@@", diagramNameTemplate);
 		ifForMainCheckTemplate.replace("@@keywordForAllEdges@@", keywordForAllEdges);
 		ifForMainCheckTemplate.replace("@@keywordForAllNodes@@", keywordForAllNodes);
+		ifForMainCheckTemplate.replace("@@keywordForAllLanguages@@", keywordForAllLanguages);
 
 		generateDiagramFiles(diagram, diagramNameTemplate);
 		count++;
@@ -288,28 +290,59 @@ void ConcreateGenerator::generate()
 	saveOutputFile(QString("constraints" + mMetamodelName + "Plugin.cpp"), resultPluginCPP);
 }
 
+QString ConcreateGenerator::correctedLanguageName(Id const &diagram)
+{
+	QString languageName = mApi.property(diagram, "languageName").toString();
+	if ((languageName.compare("all", Qt::CaseInsensitive) == 0) || (languageName.compare(keywordForAllLanguages, Qt::CaseInsensitive) == 0)) {
+		languageName = keywordForAllLanguages;
+	}
+	return languageName;
+}
+
 QString ConcreateGenerator::replaceLanguageName(QString string, Id const &diagram, int count)
 {
-	string.replace("@@languageName@@", mApi.property(diagram, "languageName").toString())
+	string.replace("@@languageName@@", correctedLanguageName(diagram))
 			.replace("@@id@@", QString::number(count));
 	return string;
 }
 
 QString ConcreateGenerator::countRealConstraintOfElement(Id const &element)
 {
-	QString resString;
+	QString resString = "";
+	bool neededSelection  = false;
+	if (mApi.hasProperty(element, "selection")) {
+		QString selection = mApi.property(element, "selection").toString();
+		neededSelection  = (!selection.isEmpty()) && (selection.compare("all", Qt::CaseInsensitive) != 0);
+		if (neededSelection) {
+			QList<QString> selectionList = selection.split(" ");
+			QPair<QString, QString > selectionRes = countPropertyCharacteristicForConstraintElement(element, "allElementsSelection", "false"
+														 , selectionList.at(0), selectionList.at(1), selectionList.at(2), "element", 1, "	");
+			resString += selectionRes.first;
+			resString += "	if (" + selectionRes.second + ") {\n";
+		}
+	}
+
 	if (element.element() == "EdgeConstraint") {
-		resString = countRealConstraintForEdgeElement(element, "element", "edgeRes", 1, "	");
+		resString += countRealConstraintForEdgeElement(element, "element", "edgeRes", 1, "	");
 		resString += "	res = edgeRes_1;\n";
+
 	} else if (element.element() == "NodeConstraint") {
-		resString = countRealConstraintForNodeElement(element, "element", "nodeRes", 1, "	");
+		resString += countRealConstraintForNodeElement(element, "element", "nodeRes", 1, "	");
 		resString += "	res = nodeRes_1;\n";
+
 	} else if (element.element() == "EdgesConstraint") {
-		resString = countRealConstraintForEdgeElement(element, "element", "allEdgesRes", 1, "	");
+		resString += countRealConstraintForEdgeElement(element, "element", "allEdgesRes", 1, "		");
 		resString += "	res = allEdgesRes_1;\n";
+		if (neededSelection) {
+			resString += "	}\n";
+		}
+
 	} else if (element.element() == "NodesConstraint") {
-		resString = countRealConstraintForNodeElement(element, "element", "allNodesRes", 1, "	");
+		resString += countRealConstraintForNodeElement(element, "element", "allNodesRes", 1, "		");
 		resString += "	res = allNodesRes_1;\n";
+		if (neededSelection) {
+			resString += "	}\n";
+		}
 	}
 	return resString;
 }
@@ -374,7 +407,8 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForParent(Id 
 	resString += addStr + "bool mainParentRes_" + QString::number(depth) + " = true;\n";
 	resString += addStr + "if (newParentName_" + QString::number(depth) + " != qReal::Id::rootId()) {\n";
 	resString += addStr + countRealConstraintForNodeElement(constraint, "newParentName_" + QString::number(depth) , "parentNodeRes", depth + 1, addStr + "	");
-	resString += addStr + "	mainParentRes_" + QString::number(depth) + " = parentNodeRes_" + QString::number(depth + 1) + ";\n	}\n";
+	resString += addStr + "	mainParentRes_" + QString::number(depth) + " = parentNodeRes_" + QString::number(depth + 1) + ";\n";
+	resString += addStr + "	}\n";
 	resBool.push_back("mainParentRes_" + QString::number(depth));
 
 	resString += generateExistsProperty("parentRes", "newParentName", constraint, depth, addStr);
@@ -388,25 +422,56 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForListOfElem
 	QString resString = "";
 	QList<QString> resBool;
 	QString count = mApi.property(constraint, "count").toString(); //qwerty_think over_count_1
-	QList<QString> countList = count.split(" ");
+	bool neededCount  = (!count.isEmpty());
+
+	QString selection = mApi.property(constraint, "selection").toString();
+	bool neededSelection  = (!selection.isEmpty()) && (selection.compare("all", Qt::CaseInsensitive) != 0);
+
+	if (neededCount) { //qwerty_think over_count_2
+		resString += addStr + "int tempCount" + resElementName + "_" + QString::number(depth) + " = 0;\n";
+	}
 
 	resString += addStr + "qReal::IdList new" + resElementName + "NamesList_" + QString::number(depth) + " = logicalApi." + functionName + "(" + elementName + ");\n";
 
-	if (countList.at(0) != "-1") { //qwerty_think over_count_2
-		resString += addStr + "bool count" + resElementName + "Res_" + QString::number(depth + 1)
-				+ " = (new" + resElementName + "NamesList_" + QString::number(depth) + ".count() " + countList.at(0) + " " + countList.at(1) + ");\n";
-		resBool.push_back("count" + resElementName + "Res_" + QString::number(depth + 1));
+	resString += addStr + "bool main" + resElementName + "Res_" + QString::number(depth + 1) + " = true;\n";
+	QString curElementOfList = resType + resElementName + "_" +QString::number(depth);
+	resString += addStr + "foreach (qReal::Id const &" + curElementOfList + ", new" + resElementName + "NamesList_" + QString::number(depth) + ") {\n";
+	if (neededSelection) {
+		QList<QString> selectionList = selection.split(" ");
+		QPair<QString, QString > selectionRes = countPropertyCharacteristicForConstraintElement(constraint, resElementName.at(0).toLower() + resElementName.mid(1) + "Selection", "false"
+													 , selectionList.at(0), selectionList.at(1), selectionList.at(2), curElementOfList, depth, addStr + "	");
+		resString += selectionRes.first;
+		resString += addStr + "	if (" + selectionRes.second + ") {\n";
 	}
 
-	resString += addStr + "bool main" + resElementName + "Res_" + QString::number(depth + 1) + " = true;\n";
-	resString += addStr + "foreach (qReal::Id const &" + resType + ", new" + resElementName + "NamesList_" + QString::number(depth) + ") {\n";
 	if (resType == "node") {
-		resString += countRealConstraintForNodeElement(constraint, resType, functionName + "Res", depth + 1, addStr + "	");
+		resString += countRealConstraintForNodeElement(constraint, curElementOfList, functionName + "Res", depth + 1, addStr + "	");
 	} else if (resType == "edge") {
-		resString += countRealConstraintForEdgeElement(constraint, resType, functionName + "Res", depth + 1, addStr + "	");
+		resString += countRealConstraintForEdgeElement(constraint, curElementOfList, functionName + "Res", depth + 1, addStr + "	");
 	}
-	resString += addStr + "	main" + resElementName + "Res_" + QString::number(depth + 1) + " = main" + resElementName + "Res_" + QString::number(depth + 1) + " && " + functionName + "Res_" + QString::number(depth + 1) + ";\n	}\n";
+	resString += addStr + "	main" + resElementName + "Res_" + QString::number(depth + 1) + " = main" + resElementName + "Res_" + QString::number(depth + 1) + " && " + functionName + "Res_" + QString::number(depth + 1) + ";\n";
+
+	if (neededCount) { //qwerty_think over_count_2
+		resString += addStr + "	tempCount" + resElementName + "_" + QString::number(depth) + "++;\n";
+	}
+
+	if (neededSelection) {
+		resString += addStr + "	}\n";
+	}
+
+	resString += addStr + "}\n";
 	resBool.push_back("main" + resElementName + "Res_" + QString::number(depth + 1));
+
+	if (neededCount) { //qwerty_think over_count_2
+		QList<QString> countList = count.split(" ");
+		QString sign = countList.at(0);
+		if (sign == "=") {
+			sign += "=";
+		}
+		resString += addStr + "bool count" + resElementName + "Res_" + QString::number(depth)
+				+ " = (tempCount" + resElementName + "_" + QString::number(depth) + " " + sign + " " + countList.at(1) + ");\n";
+		resBool.push_back("count" + resElementName + "Res_" + QString::number(depth));
+	}
 
 	return QPair<QString, QList<QString> >(resString, resBool);
 }
@@ -471,26 +536,24 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForIncomingNo
 	return QPair<QString, QList<QString> >(resString, resBool);
 }
 
-QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForPropertyNode(Id const &constraint, QString elementName, int depth, QString addStr)
+QPair<QString, QString > ConcreateGenerator::countPropertyCharacteristicForConstraintElement(Id const &constraint, QString const &characteristicName, QString const &defaultValue
+													, QString property, QString sign, QString value
+													, QString elementName, int depth, QString addStr)
 {
 	QString resString = "";
-	QList<QString> resBool;
 
-	QString property = mApi.property(constraint, "property").toString();
-	QString sign = mApi.property(constraint, "sign").toString();
 	if (sign == "=") {
 		sign += "=";
 	}
 
-	QString value = mApi.property(constraint, "value").toString();
-	resString += addStr + "bool propertyNodeRes_" + QString::number(depth) + " = true;\n";
+	resString += addStr + "bool " + characteristicName + "Res_" + QString::number(depth) + " = " + defaultValue + ";\n";
 
-	if (property == "TYPE") {
+	if (property.compare("TYPE", Qt::CaseInsensitive) == 0) {
 		resString += addStr + "if (" + elementName + " != qReal::Id::rootId()) {\n";
-		resString += addStr + "	propertyNodeRes_" + QString::number(depth) + " = (" + elementName + ".element() " + sign + " \"" + value + "\");\n";
+		resString += addStr + "	" + characteristicName + "Res_" + QString::number(depth) + " = (" + elementName + ".element() " + sign + " \"" + value + "\");\n";
 		resString += addStr + "}\n";
 
-	} else if (property == "METATYPE") {
+	} else if (property.compare("METATYPE", Qt::CaseInsensitive) == 0) {
 		resString += addStr + "if (" + elementName + " != qReal::Id::rootId()) {\n";
 		resString += addStr + "	qReal::EditorManagerInterface::MetaType isNodeOrEdge = mEditorManager->metaTypeOfElement(" + elementName + ");\n";
 
@@ -502,7 +565,7 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForPropertyNo
 			mErrorReporter.addCritical("Metatype \"" + value + "\" is not exist. Select \"node\" or \"edge\".", constraint);
 		}
 
-		resString += addStr + "	propertyNodeRes_" + QString::number(depth) + " = (isNodeOrEdge " + sign + " " + value + ");\n";
+		resString += addStr + "	" + characteristicName + "Res_" + QString::number(depth) + " = (isNodeOrEdge " + sign + " " + value + ");\n";
 		resString += addStr + "}\n";
 
 	} else {
@@ -511,7 +574,7 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForPropertyNo
 		Q_UNUSED(intValue);
 
 		resString += addStr + "if (logicalApi.hasProperty(" + elementName + ", \"" + property + "\")) {\n";
-		resString += addStr + "	propertyNodeRes_" + QString::number(depth) + " = (logicalApi.property(" + elementName + ", \"" + property + "\").";
+		resString += addStr + "	" + characteristicName + "Res_" + QString::number(depth) + " = (logicalApi.property(" + elementName + ", \"" + property + "\").";
 
 		if (!valueIsInt) {
 			resString += "toString() " + sign + " \"" + value + "\");\n";
@@ -521,9 +584,21 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForPropertyNo
 		resString += addStr + "}\n";
 	}
 
-	resBool.push_back("propertyNodeRes_" + QString::number(depth));
+	QString resBool = characteristicName + "Res_" + QString::number(depth);
 
-	return QPair<QString, QList<QString> >(resString, resBool);
+	return QPair<QString, QString>(resString, resBool);
+}
+
+QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForPropertyNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr)
+{
+	QString property = mApi.property(constraint, "property").toString();
+	QString sign = mApi.property(constraint, "sign").toString();
+	QString value = mApi.property(constraint, "value").toString();
+	QPair<QString, QString> res = countPropertyCharacteristicForConstraintElement(constraint, "propertyNode", "true", property, sign, value, elementName, depth, addStr);
+	QList<QString> resBool;
+	resBool.push_back(res.second);
+
+	return QPair<QString, QList<QString> >(res.first, resBool);
 }
 
 QString ConcreateGenerator::additionalCommonPartForConstraint(QList<QString> resBool, QString resultName, int depth, QString addStr)
