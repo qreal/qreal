@@ -201,5 +201,18 @@
 			</logic>
 		</node>
       </graphicTypes>
+	    <palette>
+   <group name="Refactoring Rule Elements">
+    <element name="Refactoring Diagram"/>
+    <element name="From Before To After"/>
+    <element name="After Block"/>
+    <element name="After Block"/>
+   </group>
+   <group name="Basic Elements">
+    <element name="Element"/>
+    <element name="Link"/>
+    <element name="Selected segment"/>
+   </group>
+  </palette>
     </diagram>
   </metamodel>

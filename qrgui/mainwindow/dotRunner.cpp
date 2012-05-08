@@ -123,6 +123,7 @@ void DotRunner::parseDOTCoordinates()
 		qreal x = mDOTCoordinatesOfElements[id].first.x();
 		qreal y = mDOTCoordinatesOfElements[id].first.y();
 		if (mAlgorithm == "BT" || mAlgorithm == "TB") {
+			x /= 3.0;
 			x -= width / 4.0;
 			y -= height / 4.0;
 		}

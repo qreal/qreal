@@ -38,52 +38,57 @@
     </message>
     <message>
         <location filename="refactoringPlugin.cpp" line="86"/>
+        <source>Create Refactoring</source>
+        <translation>Создать правило рефакторинга</translation>
+    </message>
+    <message>
+        <location filename="refactoringPlugin.cpp" line="91"/>
         <source>Automatically arrange elements</source>
         <translation>Автоматически расположить элементы</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="88"/>
+        <location filename="refactoringPlugin.cpp" line="93"/>
         <source>Top-Bottom</source>
         <translation>Сверху вниз</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="92"/>
+        <location filename="refactoringPlugin.cpp" line="97"/>
         <source>Left-Right</source>
         <translation>Слева направо</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="96"/>
+        <location filename="refactoringPlugin.cpp" line="101"/>
         <source>Bottom-Top</source>
         <translation>Снизу вверх</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="100"/>
+        <location filename="refactoringPlugin.cpp" line="105"/>
         <source>Right-Left</source>
         <translation>Справа налево</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="252"/>
+        <location filename="refactoringPlugin.cpp" line="257"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="252"/>
+        <location filename="refactoringPlugin.cpp" line="257"/>
         <source>Saved successfully</source>
         <translation>Успешно сохранено</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="252"/>
+        <location filename="refactoringPlugin.cpp" line="257"/>
         <source>Ok</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="348"/>
-        <location filename="refactoringPlugin.cpp" line="360"/>
+        <location filename="refactoringPlugin.cpp" line="353"/>
+        <location filename="refactoringPlugin.cpp" line="365"/>
         <source>No match</source>
         <translation>Место на диаграмме для применения рефакторинга не найдено</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="371"/>
+        <location filename="refactoringPlugin.cpp" line="376"/>
         <source>No next match</source>
         <translation>Другого места для применения правила рефакторинга не найдено</translation>
     </message>
@@ -96,7 +101,7 @@
         <translation type="obsolete">Горизонтально</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="118"/>
+        <location filename="refactoringPlugin.cpp" line="123"/>
         <source>Select xml file to load refactoring metamodel</source>
         <translation>Выберите xml-файл для загрузки метамодели языка рефакторингов</translation>
     </message>

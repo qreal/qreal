@@ -399,15 +399,16 @@ void RefactoringPlugin::createRefactoring()
 		Id diagramId = Id("RefactoringEditor", "RefactoringDiagram", "RefactoringDiagramNode", QUuid::createUuid().toString());
 		mGraphicalModelApi->createElement(Id::rootId(), diagramId, false, "NewRefactoringRule", QPointF());
 
-		QStringList list;
-		list << "BeforeBlock" << "AfterBlock" << "FromBeforeToAter";
-		Id beforeBlockId = Id("RefactoringEditor", "RefactoringDiagram", "BeforeBlock", QUuid::createUuid().toString());
-		mGraphicalModelApi->createElement(diagramId, beforeBlockId, false, "(Before Block)", QPointF(300, 140));
-		Id afterBlockId = Id("RefactoringEditor", "RefactoringDiagram", "AfterBlock", QUuid::createUuid().toString());
-		mGraphicalModelApi->createElement(diagramId, afterBlockId, false, "(After Block)", QPointF(700, 140));
-		Id fromBeforeToAfterId = Id("RefactoringEditor", "RefactoringDiagram", "FromBeforeToAter", QUuid::createUuid().toString());
-		mGraphicalModelApi->createElement(diagramId, fromBeforeToAfterId, false, "(From Before To After)", QPointF(540, 200));
+		QStringList listOfElementTypes;
+		listOfElementTypes << "BeforeBlock" << "AfterBlock" << "FromBeforeToAter";
+		QList<QPointF> listOfElementPositions;
+		listOfElementPositions << QPointF(300, 140) << QPointF(700, 140) << QPointF(540, 200);
 
+		for (int i = 0; i < listOfElementTypes.size(); ++i) {
+			QString const name = listOfElementTypes.at(i);
+			Id elementId = Id("RefactoringEditor", "RefactoringDiagram", name, QUuid::createUuid().toString());
+			mGraphicalModelApi->createElement(diagramId, elementId, false, name, listOfElementPositions.at(i));
+		}
 		mMainWindowIFace->activateItemOrDiagram(diagramId);
 	}
 }
