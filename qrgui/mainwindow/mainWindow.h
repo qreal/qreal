@@ -101,6 +101,7 @@ public slots:
 
 private slots:
 
+	void openAutoLayoutWindow();
 	void setSceneFont();
 	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);

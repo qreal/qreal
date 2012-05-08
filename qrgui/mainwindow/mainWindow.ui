@@ -183,6 +183,7 @@
    <addaction name="actionZoom_In"/>
    <addaction name="actionZoom_Out"/>
    <addaction name="separator"/>
+   <addaction name="actionAutoLayout"/>
    <addaction name="actionFullscreen"/>
   </widget>
   <widget class="QDockWidget" name="logicalModelDock">
@@ -626,15 +627,14 @@
     <string>Close project</string>
    </property>
   </action>
+  <action name="actionAutoLayout">
+   <property name="text">
+    <string>Auto Layout</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="0" margin="0"/>
  <customwidgets>
-  <customwidget>
-   <class>qReal::gui::PaletteTree</class>
-   <extends>QToolBox</extends>
-   <header>../mainwindow/paletteTree.h</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>ErrorListWidget</class>
    <extends>QListWidget</extends>
@@ -644,6 +644,12 @@
    <class>PropertyEditorView</class>
    <extends>QWidget</extends>
    <header>../view/propertyEditorView.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>qReal::gui::PaletteTree</class>
+   <extends>QToolBox</extends>
+   <header>../mainwindow/paletteTree.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

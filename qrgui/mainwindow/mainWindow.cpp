@@ -38,6 +38,8 @@
 
 #include "../../qrkernel/timeMeasurer.h"
 
+#include "../dialogs/autoLayoutDialog.h"
+
 using namespace qReal;
 
 QString const unsavedDir = "unsaved";
@@ -84,7 +86,7 @@ MainWindow::MainWindow()
 	mUi->setupUi(this);
 
 	if (showSplash) {
-        splash->show();
+		splash->show();
 		QApplication::processEvents();
 	}
 	else {
@@ -195,6 +197,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
 	connect(mUi->actionCloseProject, SIGNAL(triggered()), this, SLOT(closeProjectAndSave()));
+	connect(mUi->actionAutoLayout, SIGNAL(triggered()), this, SLOT(openAutoLayoutWindow()));
 	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 
@@ -1569,7 +1572,7 @@ void MainWindow::initToolPlugins()
 			, mModels->logicalModelAssistApi()
 			, *this
 			));
-	
+
 	QList<ActionInfo> const actions = mToolManager.actions();
 	foreach (ActionInfo const action, actions) {
 		if (action.isAction()) {
@@ -1591,7 +1594,7 @@ void MainWindow::initToolPlugins()
 			}
 		}
 	}
-	
+
 	if (mUi->parsersToolbar->actions().isEmpty())
 		mUi->parsersToolbar->hide();
 
@@ -1869,4 +1872,23 @@ void MainWindow::changePaletteRepresentation()
 		loadPlugins();
 		mUi->paletteTree->setComboBoxIndex();
 	}
+}
+
+void MainWindow::openAutoLayoutWindow()
+{
+	EditorViewMViface *mvIface = getCurrentTab()->mvIface();
+	models::GraphicalModelAssistApi *gAPI = mvIface->graphicalAssistApi();
+	EditorViewScene *scene = mvIface->scene();
+
+	QList<Element *> elements;
+
+	foreach (Id const &id, gAPI->children(scene->rootItemId())) {
+		Element *e = scene->getElem(id);
+		if (e == NULL) continue;
+		elements.push_back(e);
+	}
+
+	AutoLayoutDialog dialog;
+	dialog.setElements(elements);
+	dialog.exec();
 }

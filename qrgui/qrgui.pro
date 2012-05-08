@@ -3,7 +3,7 @@ DESTDIR = ../bin
 QT += svg xml
 CONFIG += rpath_libdirs help
 macx {
-	CONFIG -= app_bundle
+    CONFIG -= app_bundle
 }
 
 RESOURCES = qrgui.qrc
@@ -17,7 +17,7 @@ TRANSLATIONS = qrgui_ru.ts
 # workaround для http://bugreports.qt.nokia.com/browse/QTBUG-8110
 # как только поправят, можно будет юзать QMAKE_LFLAGS_RPATH
 !macx {
-	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)/../bin/"
+    QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)/../bin/"
 }
 
 OBJECTS_DIR = .obj
@@ -26,13 +26,20 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 
 if (equals(QMAKE_CXX, "g++") : !macx) {
-	QMAKE_LFLAGS += -Wl,-E
+    QMAKE_LFLAGS += -Wl,-E
 }
 
 LIBS += -L../bin -lqrrepo -lqrkernel -lqrutils #-lqrmc
 
-unix:DEFINES   = _TTY_POSIX_
-win32:DEFINES  = _TTY_WIN_
+!system(pkg-config --exists gvc):NO_GRAPHVIZ = TRUE
+
+isEmpty(NO_GRAPHVIZ) {
+    DEFINES += GRAPHVIZ_INSTALLED
+    LIBS += -lgvc -lgraph -lcdt
+}
+
+unix:DEFINES   += _TTY_POSIX_
+win32:DEFINES  += _TTY_WIN_
 
 
 # Graphical elements
