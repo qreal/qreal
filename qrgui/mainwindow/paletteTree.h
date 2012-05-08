@@ -5,11 +5,12 @@
 #include <QtCore/QSettings>
 #include <QtGui/QWidget>
 #include <QtGui/QIcon>
-#include <QPushButton>
-#include <QComboBox>
+#include <QtGui/QToolButton>
+#include <QtGui/QComboBox>
 #include <QtGui/QVBoxLayout>
 #include "../pluginManager/editorManager.h"
 #include "../../qrkernel/ids.h"
+#include <QtGui/QLabel>
 
 namespace  qReal{
 namespace gui{
@@ -40,7 +41,7 @@ public:
 	  @param tree Editor's tree.
 	*/
 	void addTopItemType(Id const &id, QString const &name, QString const &description
-			    , QIcon const &icon,QTreeWidget *tree);
+			, QIcon const &icon,QTreeWidget *tree);
 
 	/** Adds all editor's elements to appropriate tree.
 	  @param editorManager Editor manager which all editors with elements are taken from.
@@ -73,11 +74,15 @@ public:
 	/// Set saved item index as current in ComboBox.
 	void setComboBoxIndex();
 
-	/** Fills palette tree by editors.
+	/** Load palette and set some representation.
+	  @param isIconsView This variable corresponds to representation.
+	  @param itemsCount Items count in a row.
 	  @param editorManager Editor manager which all editors with elements are taken from.
 	*/
-	void loadEditors(EditorManager &editorManager);
+	void loadPalette(bool isIconsView, int itemsCount, EditorManager &editorManager);
 	~PaletteTree();
+signals:
+	void paletteParametersChanged();
 public slots:
 	/// Collapse all nodes of current tree.
 	void collapse();
@@ -89,6 +94,9 @@ public slots:
 
 	/// Recreate PaletteTree.
 	void recreateTrees();
+
+	/// Changes widget representation.
+	void changeRepresentation();
 private:
 
 	/// Class for representing editor elements.
@@ -114,14 +122,25 @@ private:
 				return mId;
 			}
 
+			void setIconSize(int size);
+
 	private:
 			Id mId;
-		QIcon mIcon;
+			QIcon mIcon;
 			QString mText;
+			QLabel *mLabel;
 			virtual void dragEnterEvent(QDragEnterEvent *event);
 			virtual void dropEvent(QDropEvent *event);
 			virtual void mousePressEvent(QMouseEvent *event);
 	};
+
+	/// Returns maximum count of items in all rows of widget
+	int maxItemsCountInARow() const;
+
+	virtual void resizeEvent(QResizeEvent *);
+
+	/// Change icon's sizes in widget
+	void resizeIcons();
 
 	/// EditorManager instance used to sort palette's content.
 	/// Made static to be used inside idLessThan()
@@ -160,6 +179,11 @@ private:
 	*/
 	void addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, QTreeWidgetItem *item);
 
+	/** Fills palette tree by editors.
+	  @param editorManager Editor manager which all editors with elements are taken from.
+	*/
+	void loadEditors(EditorManager &editorManager);
+
 	/// Hash table with editor ids.
 	QHash<Id, int> mCategories;
 
@@ -167,10 +191,13 @@ private:
 	QTreeWidget *mTree;
 
 	/// Button that collapses all nodes of current tree.
-	QPushButton *mCollapseAll;
+	QToolButton *mCollapseAll;
 
 	/// Button that expands all nodes of current tree.
-	QPushButton *mExpandAll;
+	QToolButton *mExpandAll;
+
+	/// Button that changes palette representation.
+	QToolButton *mChangeRepresentation;
 
 	/// Vector with all editor's trees.
 	QVector <QTreeWidget *> mEditorsTrees;

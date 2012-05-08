@@ -30,6 +30,7 @@ public:
 	virtual bool initPossibleEdges();
 	virtual void initTitles();
 
+	bool isDividable();
 	void adjustLink();
 	bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true, bool jumpsOnly = false);
 	bool shouldReconnect() const;
@@ -92,6 +93,8 @@ private:
 
 	QList<PossibleEdge> possibleEdges;
 
+
+	bool mIsDissectable;
 	int getPoint(const QPointF &location);
 	NodeElement *getNodeAt(const QPointF &position);
 	void updateLongestPart();
