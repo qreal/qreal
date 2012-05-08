@@ -640,7 +640,7 @@ void EditorViewScene::createLibStatusSubmenus(QMenu &contextMenu, const Element 
 
 		QMenu *addLibMenu = contextMenu.addMenu("Add to library");
 
-		ContextMenuAction *action = new ContextMenuAction("Change lib status", mWindow);
+		ContextMenuAction *action = new ContextMenuAction("add/remove", mWindow);
 		QList<QVariant> ids;
 		ids << element->logicalId().toVariant() << element->id().toVariant();
 		action->setData(ids);
