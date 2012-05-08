@@ -638,9 +638,9 @@ void EditorViewScene::createLibStatusSubmenus(QMenu &contextMenu, const Element 
 {
 	if (mWindow->showLibraryRelatedMenus()) {
 
-		QMenu *addLibMenu = contextMenu.addMenu("Add to library");
+		QMenu *addLibMenu = contextMenu.addMenu(tr("Add to library"));
 
-		ContextMenuAction *action = new ContextMenuAction("add/remove", mWindow);
+		ContextMenuAction *action = new ContextMenuAction(tr("add/remove"), mWindow);
 		QList<QVariant> ids;
 		ids << element->logicalId().toVariant() << element->id().toVariant();
 		action->setData(ids);
@@ -651,13 +651,13 @@ void EditorViewScene::createLibStatusSubmenus(QMenu &contextMenu, const Element 
 		QString status;
 
 		if (mMVIface->graphicalAssistApi()->graphicalRepoApi().isLibEntry(element->id())) {
-			status.append("lib entry");
+			status.append(tr("lib entry"));
 		} else if (mMVIface->graphicalAssistApi()->graphicalRepoApi().isLibAvatar(element->id())){
-			status.append("avatar");
+			status.append(tr("avatar"));
 		} else {
-			status.append("off library");
+			status.append(tr("off library"));
 		}
-		captionContent.append("Current status is: ").append(status);
+		captionContent.append(tr("Current status is: ")).append(status);
 		ContextMenuAction *caption = new ContextMenuAction(captionContent, mWindow);
 
 		addLibMenu->addAction(caption);
