@@ -74,9 +74,10 @@ private :
 	QString replaceLanguageName(QString string, qReal::Id const &diagram, int count);
 	QString correctedLanguageName(qReal::Id const &diagram);
 
-	QString countRealConstraintOfElement(qReal::Id const &element);
-	QString countRealConstraintForEdgeElement(qReal::Id const &element, QString elementName, QString resultName, int depth, QString addStr);
-	QString countRealConstraintForNodeElement(qReal::Id const &element, QString elementName, QString resultName, int depth, QString addStr);
+	QString countRealConstraintOfElement(qReal::Id const &constraintElement);
+	QString countRealConstraintForEdgeElement(qReal::Id const &constraintElement, QString elementName, QString resultName, int depth, QString addStr);
+	QString countRealConstraintForNodeElement(qReal::Id const &constraintElement, QString elementName, QString resultName, int depth, QString addStr);
+	QPair<bool, QString> handleConstraintsSelection(qReal::Id const &constraintElement);
 	QString additionalCommonPartForConstraint(QList<QString> resBool, QString resultName, int depth, QString addStr);
 
 	QPair<QString, QList<QString> > countConstraintForBeginNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr);

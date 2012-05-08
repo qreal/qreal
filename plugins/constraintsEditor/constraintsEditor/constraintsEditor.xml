@@ -460,13 +460,13 @@
             </node>
             <node displayedName="Nodes Constraint" name="nodesConstraint">
                 <graphics>
-                    <picture sizex="248" sizey="197">
-                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="196" fill-style="none" x2="247"/>
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="39a" stroke-width="0" x1="1" y2="40a" fill-style="none" x2="247"/>
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="160" stroke-width="0" x1="0a" y2="161" fill-style="none" x2="246"/>
+                    <picture sizex="246" sizey="195">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="194" fill-style="none" x2="245"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="38a" stroke-width="0" x1="1" y2="39a" fill-style="none" x2="245"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="159" stroke-width="0" x1="0a" y2="160" fill-style="none" x2="244"/>
                     </picture>
                     <labels>
-                        <label x="11a" y="10a" textBinded="selection"/>
+                        <label x="9a" y="9a" textBinded="##name## ##selection##"/>
                         <label x="10a" y="170" textBinded="errorType"/>
                     </labels>
                     <ports/>
@@ -484,13 +484,13 @@
             </node>
             <node displayedName="Edges Constraint" name="edgesConstraint">
                 <graphics>
-                    <picture sizex="249" sizey="198">
-                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="197" fill-style="none" x2="248"/>
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="40a" stroke-width="0" x1="1" y2="40a" fill-style="none" x2="248"/>
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="161" stroke-width="0" x1="0a" y2="161" fill-style="none" x2="247"/>
+                    <picture sizex="248" sizey="197">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="196" fill-style="none" x2="247"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="39a" stroke-width="0" x1="1" y2="40a" fill-style="none" x2="247"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="160" stroke-width="0" x1="0a" y2="161" fill-style="none" x2="246"/>
                     </picture>
                     <labels>
-                        <label x="11a" y="10a" textBinded="selection"/>
+                        <label x="11a" y="10a" textBinded="##name## ##selection##"/>
                         <label x="10a" y="170" textBinded="errorType"/>
                     </labels>
                     <ports/>
