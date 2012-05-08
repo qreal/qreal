@@ -408,7 +408,7 @@
     <message>
         <location filename="view/editorViewScene.cpp" line="660"/>
         <source>Current status is: </source>
-        <translation>Состояние элемента</translation>
+        <translation>Состояние элемента:</translation>
     </message>
 </context>
 <context>
@@ -548,7 +548,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="657"/>
         <source>Import QReal project into current.</source>
-        <translation>Импортировать проект QReal в текущий</translation>
+        <translation>Импортировать проект QReal в текущий.</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="672"/>
