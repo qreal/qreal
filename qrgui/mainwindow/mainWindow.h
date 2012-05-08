@@ -132,9 +132,10 @@ private slots:
 	bool import(QString const &fileName);
 
 	/// opens project file alongside with currently opened
+	/// By loading specified save-file into repo, representated by separate tree
 	/// @param fileName - *.qrs file to open
 	/// @return true - if all ok, false - if not ok
-	bool add(QString const &fileName);
+	bool loadProject(QString const &fileName);
 
 	bool addProject();
 	bool open(QString const &dirName);

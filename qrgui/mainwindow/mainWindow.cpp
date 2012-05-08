@@ -472,25 +472,17 @@ bool MainWindow::import(QString const &fileName)
 	return true;
 }
 
-/// Loads specified save-file into repo, representated by setarate tree
-/// @return true if succesfull
-bool MainWindow::add(const QString &fileName)
+bool MainWindow::loadProject(const QString &fileName)
 {
 	if (!QFile(fileName).exists()) {
 		return false;
-}
+	}
 
 	mModels->repoControlApi().loadSaveFile(fileName);
 	mModels->reinit();
 
-  //copy-paste from open()
-  //probabaly does nothing because defaul client hadn't changed
 	if (!checkPluginsAndReopen(NULL))
-	return false;
-	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
-	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
-	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-	mUi->libraryExplorer->setModel(mModels->libraryModel());
+		return false;
 
 	return true;
 }
@@ -501,7 +493,7 @@ bool MainWindow::addProject()
 	QDir const lastSaveDir = QFileInfo(mSaveFile).absoluteDir();
 	fileName = QFileDialog::getOpenFileName(this, tr("Select save file to open")
 			, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
-	return add(fileName);
+	return loadProject(fileName);
 }
 
 bool MainWindow::openNewProject()
@@ -1473,8 +1465,8 @@ void MainWindow::setIndexesOfPropertyEditor(Id const &id)
 		QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(id);
 		mPropertyModel.setModelIndexes(logicalIndex, QModelIndex());
 	} else if (mModels->libraryModelAssistApi().isLogicalId(id)) {
-	QModelIndex const libraryIndex = mModels->libraryModelAssistApi().indexById((id));
-	mPropertyModel.setModelIndexes(libraryIndex, QModelIndex());
+		QModelIndex const libraryIndex = mModels->libraryModelAssistApi().indexById((id));
+		mPropertyModel.setModelIndexes(libraryIndex, QModelIndex());
 	} else {
 		mPropertyModel.clearModelIndexes();
 	}
