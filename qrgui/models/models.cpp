@@ -84,7 +84,5 @@ void Models::reinit()
 {
 	mLogicalModel->reinit();
 	mGraphicalModel->reinit();
-
-	//efimefim
 	mLibraryModel->reinit();
 }

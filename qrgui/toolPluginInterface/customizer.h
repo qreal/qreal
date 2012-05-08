@@ -34,10 +34,9 @@ public:
 	}
 
 	/// Tells if we should show library related menu or not
-	//efimefim change back before pull request
 	virtual bool showLibraryRelatedMenus() const
 	{
-		return true;
+		return false;
 	}
 };
 
