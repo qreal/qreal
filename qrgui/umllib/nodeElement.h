@@ -96,6 +96,7 @@ public:
 	void arrangeLinks();
 
 	virtual void checkConnectionsToPort();
+	virtual void connectLinksToPorts();
 
 	/** @brief Drawing placeholder at the appropriate position (calculated using event data) */
 	void drawPlaceholder(QGraphicsRectItem *placeholder, QPointF scenePos);

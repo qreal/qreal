@@ -36,6 +36,8 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 
 	connect(editorPage, SIGNAL(gridChanged()), this, SIGNAL(gridChanged()));
 	connect(editorPage, SIGNAL(fontChanged()), this, SIGNAL(fontChanged()));
+	connect(editorPage, SIGNAL(paletteRepresentationChanged()), this,
+		SIGNAL(paletteRepresentationChanged()));
 	connect(miscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
 
 	registerPage(tr("Behaviour"), behaviourPage);
@@ -100,5 +102,11 @@ void PreferencesDialog::switchCurrentTab(QString const &tabName)
 		int const currentIndex = mCustomPages.keys().indexOf(tabName);
 		ui->listWidget->setCurrentRow(currentIndex);
 		ui->pageContentWigdet->setCurrentIndex(currentIndex + 1);
+	}
+}
+void PreferencesDialog::changePaletteParameters()
+{
+	if (mCustomPages.count(tr("Editor")) > 0) {
+		static_cast<PreferencesEditorPage*>(mCustomPages[tr("Editor")])->changePaletteParameters();
 	}
 }

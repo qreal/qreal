@@ -107,7 +107,6 @@ MainWindow::MainWindow()
 	progress->setValue(40);
 
 	initDocks();
-
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
 	if (!dir.cd(mTempDir))
@@ -135,7 +134,6 @@ MainWindow::MainWindow()
 	// =========== Step 5: Plugins are loaded ===========
 
 	progress->setValue(70);
-
 	initWindowTitle();
 
 	if (!SettingsManager::value("maximized", true).toBool()) {
@@ -143,20 +141,15 @@ MainWindow::MainWindow()
 		resize(SettingsManager::value("size", QSize(1024, 800)).toSize());
 		move(SettingsManager::value("pos", QPoint(0, 0)).toPoint());
 	}
-
 	// =========== Step 6: Save loaded, models initialized ===========
 
 	progress->setValue(80);
-
 	if (!checkPluginsAndReopen(splash))
 		return;
 
 	mGesturesWidget = new GesturesWidget();
-
 	initExplorers();
-
 	connectActions();
-
 	// =========== Step 7: Save consistency checked, interface is initialized with models ===========
 
 	progress->setValue(100);
@@ -231,6 +224,10 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
+	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this
+		, SLOT(changePaletteRepresentation()));
+	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged())
+		, &mPreferencesDialog, SLOT(changePaletteParameters()));
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -296,12 +293,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::loadPlugins()
 {
-	foreach (Id const editor, mEditorManager.editors()) {
-		foreach (Id const diagram, mEditorManager.diagrams(editor)) {
-			mUi->paletteTree->addEditorElements(mEditorManager, editor, diagram);
-		}
-	}
-	mUi->paletteTree->initDone();
+	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation", 0).toBool()
+				, SettingsManager::value("PaletteIconsInARowCount", 3).toInt()
+				, mEditorManager);
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -437,7 +431,6 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 	bool haveMissingPlugins = !missingPlugins.isEmpty();
 	bool loadingCancelled = false;
-
 	while (haveMissingPlugins && !loadingCancelled) {
 
 		QString text = tr("These plugins are not present, but needed to load the save:\n");
@@ -445,9 +438,10 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 			text += id.editor() + "\n";
 		text += tr("Do you want to create new project?");
 
+
+
 		QMessageBox::StandardButton const button = QMessageBox::question(this
 				, tr("Some plugins are missing"), text, QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
-
 		if (splashScreen)
 			splashScreen->close();
 
@@ -461,7 +455,6 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 				mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 		haveMissingPlugins = !missingPlugins.isEmpty();
 	}
-
 	if (loadingCancelled) {
 		return false;
 	}
@@ -1377,8 +1370,8 @@ void MainWindow::suggestToCreateDiagram()
 	QObject::connect(&diagramsListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(diagramInCreateListSelected(int)));
 	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(setDiagramCreateFlag()));
 	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), &dialog, SLOT(close()));
-	QObject::connect(&dialog, SIGNAL(destroyed()), this, SLOT(diagramInCreateListDeselect()));
 
+	QObject::connect(&dialog, SIGNAL(destroyed()), this, SLOT(diagramInCreateListDeselect()));
 	QObject::connect(&cancelButton, SIGNAL(clicked()), &dialog, SLOT(close()));
 
 	QObject::connect(&okButton, SIGNAL(clicked()), this, SLOT(setDiagramCreateFlag()));
@@ -1542,8 +1535,6 @@ void MainWindow::updatePaletteIcons()
 	mUi->logicalModelExplorer->viewport()->update();
 
 	Id const currentId = mUi->paletteTree->currentEditor();
-	mUi->paletteTree->recreateTrees();
-
 	loadPlugins();
 
 	mUi->paletteTree->setActiveEditor(currentId);
@@ -1922,6 +1913,14 @@ void MainWindow::closeProject()
 		static_cast<EditorViewScene*>(getCurrentTab()->scene())->clearScene();
 	closeAllTabs();
 	setWindowTitle(mToolManager.customizer()->windowTitle());
+}
+void MainWindow::changePaletteRepresentation()
+{
+	if (SettingsManager::value("PaletteRepresentation", 0).toBool() != mUi->paletteTree->iconsView()
+			|| SettingsManager::value("PaletteIconsInARowCount", 3).toInt() != mUi->paletteTree->itemsCountInARow())
+	{
+		loadPlugins();
+	}
 }
 
 gui::Error::Severity MainWindow::severityByErrorType(CheckStatus::ErrorType const &errorType)

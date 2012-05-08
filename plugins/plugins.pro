@@ -3,11 +3,12 @@ TEMPLATE = subdirs
 SUBDIRS	= \
 #	additionsEditor/additionsEditor.pro \
 #	android/android.pro \
+#	dragonDiagram/dragonDiagram.pro \
 	blockDiagram/blockDiagram.pro \
 #	bpel/bpel.pro \
 #	exterminatus/exterminatus.pro \
-	hascol/hascol.pro \
-	metaEditor/metaEditor.pro \
+#	hascol/hascol.pro \
+#	metaEditor/metaEditor.pro \
 	constraintsEditor/constraintsEditor.pro \
 #	network/network.pro \
 #	orthodoxEditor/orthodoxEditor.pro \

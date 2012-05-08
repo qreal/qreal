@@ -7,6 +7,11 @@
 #include "../umllib/nodeElement.h"
 #include "gestures/mouseMovementManager.h"
 
+#include "editorViewMVIface.h"
+//#include "editorView.h"
+//#include "../mainwindow/mainWindow.h"
+
+
 //const int indexGrid = 30; // distance between two lines in the grid
 
 namespace qReal {
@@ -64,6 +69,8 @@ public:
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
+	void insertNodeIntoEdge(const qReal::Id &insertedNodeId, const qReal::Id &newParent, bool isFromLogicalModel,QPointF const &scenePos);
+
 public slots:
 	qReal::Id createElement(const QString &type);
 	// TODO: get rid of it here
@@ -110,6 +117,7 @@ private slots:
 	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
 	void getObjectByGesture();
 
+
 private:
 	void getLinkByGesture(NodeElement *parent, NodeElement const &child);
 	void drawGesture();
@@ -131,6 +139,7 @@ private:
 			, const char *slot) const;
 
 	void initContextMenu(Element *e, QPointF const &pos);
+
 
 	Element* mLastCreatedWithEdge;
 	NodeElement *mCopiedNode;

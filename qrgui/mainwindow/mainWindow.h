@@ -101,6 +101,8 @@ public slots:
 
 	void showErrors(gui::ErrorReporter const * const errorReporter);
 
+	void changePaletteRepresentation();
+
 	void checkConstraints(Id const &id);
 	void checkConstraints(QModelIndex const &index);
 	void checkConstraints(IdList const &idList);

@@ -99,8 +99,8 @@ void EditorViewScene::initMouseMoveManager()
 	}
 	QList<qReal::Id> elements = mWindow->manager()->elements(diagram);
 	delete mMouseMovementManager;
-	mMouseMovementManager = new MouseMovementManager(elements
-			, mWindow->manager(), mWindow->gesturesPainter());
+	mMouseMovementManager = new MouseMovementManager(elements,
+		mWindow->manager(), mWindow->gesturesPainter());
 	connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
 	connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
 }
@@ -432,10 +432,6 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 		}
 	}
 
-	if (e) {
-		delete e;
-	}
-
 	if(newParent && dynamic_cast<NodeElement*>(newParent)){
 		if (!canBeContainedBy(newParent->id(), id)) {
 			QString text;
@@ -452,7 +448,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	QPointF const position = !newParent ? scenePos : newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
 
 	Id parentId = newParent ? newParent->id() : mMVIface->rootId();
-	id = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
+
 	NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
 	if (parentNode != NULL) {
 		Element *nextNode = parentNode->getPlaceholderNextElement();
@@ -460,7 +456,45 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 			mMVIface->graphicalAssistApi()->stackBefore(id, nextNode->id());
 		}
 	}
+
+	//inserting new node into edge
+	Id insertedNodeId = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
+	if (dynamic_cast<NodeElement*>(e)) {
+		insertNodeIntoEdge(insertedNodeId, parentId, isFromLogicalModel, scenePos);
+	}
+
+	if (e) {
+		delete e;
+	}
+
 	emit elementCreated(id);
+}
+
+void EditorViewScene::insertNodeIntoEdge(qReal::Id const &insertedNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos)
+{
+	foreach (QGraphicsItem *item, items(scenePos)) {
+		EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
+		if(edge && edge->isDividable()){// check if item is an edge and the edge is dissectable
+			NodeElement *previouslyConnectedTo = edge->dst();
+			if (previouslyConnectedTo) {//check has edge dst
+				edge->removeLink(previouslyConnectedTo);
+				previouslyConnectedTo->delEdge(edge);
+
+				mMVIface->graphicalAssistApi()->setTo(edge->id(), insertedNodeId);
+				Id const newEdge(edge->id().editor(), edge->id().diagram(), edge->id().element(), QUuid::createUuid().toString());
+				Id realParentId = (parentId == Id::rootId()) ? mMVIface->rootId() : parentId;
+
+				mMVIface->graphicalAssistApi()->createElement(realParentId, newEdge, isFromLogicalModel, "flow", scenePos);
+				mMVIface->graphicalAssistApi()->setFrom(newEdge, insertedNodeId);
+				mMVIface->graphicalAssistApi()->setTo(newEdge, previouslyConnectedTo->id());
+
+				previouslyConnectedTo->connectLinksToPorts();
+				break;
+			}
+		}
+	}
+
+
 }
 
 void EditorViewScene::copy()
@@ -669,9 +703,9 @@ void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &c
 	QList<QString> allLinks;
 	foreach (PossibleEdge const &possibleEdge, edges) {
 		if (possibleEdge.first.second.editor() == child.id().editor()
-			&& possibleEdge.first.second.diagram() == child.id().diagram()
-			&& editorInterface->isParentOf(child.id().diagram(), possibleEdge.first.second.element(), child.id().diagram(), child.id().element()))
-			{
+				&& possibleEdge.first.second.diagram() == child.id().diagram()
+				&& editorInterface->isParentOf(child.id().diagram(), possibleEdge.first.second.element(), child.id().diagram(), child.id().element()))
+		{
 			allLinks.push_back(possibleEdge.second.second.toString());
 		}
 	}
@@ -696,7 +730,7 @@ void EditorViewScene::createEdgeMenu(const QList<QString> &ids)
 	}
 
 	QObject::connect(menuSignalMapper, SIGNAL(mapped(const QString &)), this,
-			SLOT(createEdge(QString)));
+					 SLOT(createEdge(QString)));
 	edgeMenu->exec(QCursor::pos());
 }
 
