@@ -343,7 +343,6 @@ bool RepoApi::isLibAvatar(const qReal::Id &id) const
 void RepoApi::setLibAvatarTarget(const qReal::Id &id, const qReal::Id &targetId) const
 {
 	Client *client = getRelevantClient(id);
-	qDebug() << "very hard tried to connect to" << targetId.toString();
 	client->setProperty(id, "isAvatarForId", targetId.toVariant());
 }
 
@@ -579,10 +578,8 @@ void RepoApi::open(QString const &saveFile)
 /// changes to this files aren't intendent
 void RepoApi::loadSaveFile(QString const &saveFile)
 {
-	qDebug() << "Repo contain " << allElements().count() << " before adding";
 	Client *saveFileToAppend = new Client(saveFile, true);
 	mClients->append(saveFileToAppend);
-	qDebug() << allElements().count() << "after adding";
 }
 
 //Default

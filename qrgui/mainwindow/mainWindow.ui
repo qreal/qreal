@@ -385,7 +385,14 @@
    <widget class="QWidget" name="dockWidgetContents">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QTreeView" name="libraryExplorer"/>
+      <widget class="QTreeView" name="libraryExplorer">
+       <property name="acceptDrops">
+        <bool>true</bool>
+       </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::DragOnly</enum>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>

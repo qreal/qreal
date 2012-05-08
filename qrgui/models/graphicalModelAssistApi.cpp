@@ -62,7 +62,6 @@ Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id, bool i
 {
 	Id newId = mModelsAssistApi.createElement(parent, id, isFromLogicalModel, isFromLibraryModel, name, position);
 	if (isFromLibraryModel) {
-		qDebug() << "tried to link to " << id.toString();
 		this->graphicalRepoApi().setLibAvatarTarget(newId, id);
 	}
 	return newId;

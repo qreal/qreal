@@ -654,8 +654,6 @@ void EditorViewScene::createLibStatusSubmenus(QMenu &contextMenu, const Element 
 			status.append("lib entry");
 		} else if (mMVIface->graphicalAssistApi()->graphicalRepoApi().isLibAvatar(element->id())){
 			status.append("avatar");
-			qDebug() << "avatar status is:" << mMVIface->graphicalAssistApi()->graphicalRepoApi().hasProperty(element->id(), "isAvatarForId");
-			qDebug() << "avatar linked to:" << mMVIface->graphicalAssistApi()->graphicalRepoApi().property(element->id(), "isAvatarForId").value<qReal::Id>();
 		} else {
 			status.append("off library");
 		}
