@@ -115,8 +115,8 @@ bool Block::boolProperty(QString const &propertyName) const
 
 QVariant Block::property(Id const &id, QString const &propertyName) const
 {
-	//taking properties thru models api won't allow to use libraries
-	//because lib elements are not in models
+	//taking properties thru models api probaly won't allow to use libraries
+	//don't really remember why
 	/*
 	Id const logicalId = mGraphicalModelApi->logicalId(id);
 	return mLogicalModelApi->propertyByRoleName(logicalId, propertyName);

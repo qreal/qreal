@@ -11,12 +11,12 @@ class Customizer : public qReal::Customizer
 public:
 	virtual bool showLogicalModelExplorer() const
 	{
-		return true;
+		return false;
 	}
 
 	virtual bool showLibraryRelatedMenus() const
 	{
-		return true;
+		return false;
 	}
 
 	virtual QString windowTitle() const
