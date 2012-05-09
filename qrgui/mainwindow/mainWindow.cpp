@@ -478,6 +478,7 @@ bool MainWindow::loadProject(const QString &fileName)
 		return false;
 	}
 
+	closeAllTabs();
 	mModels->repoControlApi().loadSaveFile(fileName);
 	mModels->reinit();
 
