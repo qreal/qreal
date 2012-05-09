@@ -99,6 +99,11 @@
 			return false;
 		}
 
+		bool isDividable()
+		{
+			return false;
+		}
+
 		bool isPort()
 		{
 			return false;
@@ -213,6 +218,11 @@
 		}
 
 		bool maximizesChildren()
+		{
+			return false;
+		}
+
+		bool isDividable()
 		{
 			return false;
 		}
@@ -335,6 +345,11 @@
 			return false;
 		}
 
+		bool isDividable()
+		{
+			return false;
+		}
+
 		bool isPort()
 		{
 			return false;
@@ -453,6 +468,11 @@
 			return false;
 		}
 
+		bool isDividable()
+		{
+			return false;
+		}
+
 		bool isPort()
 		{
 			return false;
@@ -567,6 +587,11 @@
 		}
 
 		bool maximizesChildren()
+		{
+			return false;
+		}
+
+		bool isDividable()
 		{
 			return false;
 		}
@@ -732,6 +757,11 @@
 		}
 
 		bool maximizesChildren()
+		{
+			return false;
+		}
+
+		bool isDividable()
 		{
 			return false;
 		}
@@ -909,6 +939,11 @@
 			return false;
 		}
 
+		bool isDividable()
+		{
+			return false;
+		}
+
 		bool isPort()
 		{
 			return false;
@@ -1025,6 +1060,11 @@
 		}
 
 		bool maximizesChildren()
+		{
+			return false;
+		}
+
+		bool isDividable()
 		{
 			return false;
 		}
@@ -1158,6 +1198,11 @@
 			return false;
 		}
 
+		bool isDividable()
+		{
+			return false;
+		}
+
 		bool isPort()
 		{
 			return false;
@@ -1201,17 +1246,17 @@
 			mRenderer = renderer;
 			mRenderer->load(QString(":/generated/shapes/EdgesConstraintClass.sdf"));
 			portRenderer->load(QString(":/generated/shapes/EdgesConstraintPorts.sdf"));
-			contents.setWidth(248);
-			contents.setHeight(197);
-			title_1 = factory.createTitle(0.0443548, 0.0507614, "##name## ##selection##", true);
+			contents.setWidth(245);
+			contents.setHeight(194);
+			title_1 = factory.createTitle(0.0408163, 0.876289, "errorType", false);
 			title_1->setBackground(Qt::transparent);
-			title_1->setScaling(true, true);
+			title_1->setScaling(true, false);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createTitle(0.0403226, 0.862944, "errorType", false);
+			title_2 = factory.createTitle(0.0367347, 0.0515464, "##name## : ##selection##", true);
 			title_2->setBackground(Qt::transparent);
-			title_2->setScaling(true, false);
+			title_2->setScaling(true, true);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
@@ -1240,8 +1285,8 @@
 
 		void updateData(ElementRepoInterface *repo) const
 		{
-			title_1->setHtml(QString("<b>%1</b>").arg(QString::fromUtf8("") + repo->logicalProperty("name") + QString::fromUtf8(" ") + repo->logicalProperty("selection") + QString::fromUtf8("")).replace("\n", "<br>"));
-			title_2->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("errorType")).replace("\n", "<br>"));
+			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("errorType")).replace("\n", "<br>"));
+			title_2->setHtml(QString("<b>%1</b>").arg(QString::fromUtf8("") + repo->logicalProperty("name") + QString::fromUtf8(" : ") + repo->logicalProperty("selection") + QString::fromUtf8("")).replace("\n", "<br>"));
 		}
 
 		bool isNode()
@@ -1285,6 +1330,11 @@
 		}
 
 		bool maximizesChildren()
+		{
+			return false;
+		}
+
+		bool isDividable()
 		{
 			return false;
 		}
@@ -1452,6 +1502,11 @@
 		}
 
 		bool maximizesChildren()
+		{
+			return false;
+		}
+
+		bool isDividable()
 		{
 			return false;
 		}
@@ -1625,6 +1680,11 @@
 		}
 
 		bool maximizesChildren()
+		{
+			return false;
+		}
+
+		bool isDividable()
 		{
 			return false;
 		}
@@ -1803,6 +1863,11 @@
 			return false;
 		}
 
+		bool isDividable()
+		{
+			return false;
+		}
+
 		bool isPort()
 		{
 			return false;
@@ -1919,6 +1984,11 @@
 		}
 
 		bool maximizesChildren()
+		{
+			return false;
+		}
+
+		bool isDividable()
 		{
 			return false;
 		}
@@ -2052,6 +2122,11 @@
 			return false;
 		}
 
+		bool isDividable()
+		{
+			return false;
+		}
+
 		bool isPort()
 		{
 			return false;
@@ -2095,17 +2170,17 @@
 			mRenderer = renderer;
 			mRenderer->load(QString(":/generated/shapes/NodesConstraintClass.sdf"));
 			portRenderer->load(QString(":/generated/shapes/NodesConstraintPorts.sdf"));
-			contents.setWidth(246);
-			contents.setHeight(195);
-			title_1 = factory.createTitle(0.0365854, 0.0461538, "##name## ##selection##", true);
+			contents.setWidth(244);
+			contents.setHeight(193);
+			title_1 = factory.createTitle(0.0409836, 0.880829, "errorType", false);
 			title_1->setBackground(Qt::transparent);
-			title_1->setScaling(true, true);
+			title_1->setScaling(true, false);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createTitle(0.0406504, 0.871795, "errorType", false);
+			title_2 = factory.createTitle(0.045082, 0.0466321, "##name## : ##selection##", true);
 			title_2->setBackground(Qt::transparent);
-			title_2->setScaling(true, false);
+			title_2->setScaling(true, true);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
@@ -2134,8 +2209,8 @@
 
 		void updateData(ElementRepoInterface *repo) const
 		{
-			title_1->setHtml(QString("<b>%1</b>").arg(QString::fromUtf8("") + repo->logicalProperty("name") + QString::fromUtf8(" ") + repo->logicalProperty("selection") + QString::fromUtf8("")).replace("\n", "<br>"));
-			title_2->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("errorType")).replace("\n", "<br>"));
+			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("errorType")).replace("\n", "<br>"));
+			title_2->setHtml(QString("<b>%1</b>").arg(QString::fromUtf8("") + repo->logicalProperty("name") + QString::fromUtf8(" : ") + repo->logicalProperty("selection") + QString::fromUtf8("")).replace("\n", "<br>"));
 		}
 
 		bool isNode()
@@ -2179,6 +2254,11 @@
 		}
 
 		bool maximizesChildren()
+		{
+			return false;
+		}
+
+		bool isDividable()
 		{
 			return false;
 		}
@@ -2230,6 +2310,7 @@
 		bool isNode() { return false; }
 		bool isResizeable() { return true; }
 		bool isContainer() { return false; }
+		bool isDividable() { return false; }
 		bool isSortingContainer() { return false; }
 		int sizeOfForestalling() { return 0; }
 		int sizeOfChildrenForestalling() { return 0; }
@@ -2440,6 +2521,11 @@
 			return false;
 		}
 
+		bool isDividable()
+		{
+			return false;
+		}
+
 		bool isPort()
 		{
 			return false;
@@ -2614,6 +2700,11 @@
 			return false;
 		}
 
+		bool isDividable()
+		{
+			return false;
+		}
+
 		bool isPort()
 		{
 			return false;
@@ -2781,6 +2872,11 @@
 			return false;
 		}
 
+		bool isDividable()
+		{
+			return false;
+		}
+
 		bool isPort()
 		{
 			return false;
@@ -2943,6 +3039,11 @@
 		}
 
 		bool maximizesChildren()
+		{
+			return false;
+		}
+
+		bool isDividable()
 		{
 			return false;
 		}
