@@ -153,9 +153,16 @@ bool Block::isCall() const
 
 blocks::Block * Block::getCallEntryPoint() const
 {
-	Q_ASSERT(isCall());
-	Id entryPointId = mGraphicalModelApi->mutableGraphicalRepoApi().getLibAvatarTarget(mGraphicalId);
-	return mBlocksTable->block(entryPointId);
+	blocks::Block *entryPoint = mBlocksTable->block(mGraphicalId); //propaply only way to return *this
+
+	if (isCall()) {
+		Id entryPointId = mGraphicalModelApi->mutableGraphicalRepoApi().getLibAvatarTarget(mGraphicalId);
+
+		if (entryPointId != Id::rootId()) {
+			entryPoint = mBlocksTable->block(entryPointId);
+		}
+	}
+	return entryPoint;
 }
 
 QList<Block::SensorPortPair> Block::usedSensors() const

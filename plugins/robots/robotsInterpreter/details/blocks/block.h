@@ -32,6 +32,11 @@ public:
 	Id const id() const;
 
 	bool isCall() const;
+	/** @brief if block isCall() then return graphical element that it stands for.
+	  if library wasn't loaded or element is not an avatar then return block itself
+	  this will enshure backward compatibility of libraries technology
+	  @return block to evaluate next
+	  */
 	blocks::Block * getCallEntryPoint() const;
 
 	virtual QList<SensorPortPair> usedSensors() const;
