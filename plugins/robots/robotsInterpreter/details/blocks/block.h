@@ -31,6 +31,9 @@ public:
 	void setIdleStatus();
 	Id const id() const;
 
+	bool isCall() const;
+	blocks::Block * getCallEntryPoint() const;
+
 	virtual QList<SensorPortPair> usedSensors() const;
 
 	virtual void stopActiveTimerInBlock();

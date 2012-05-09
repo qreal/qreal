@@ -348,7 +348,18 @@ void RepoApi::setLibAvatarTarget(const qReal::Id &id, const qReal::Id &targetId)
 
 qReal::Id RepoApi::getLibAvatarTarget(const qReal::Id &id) const
 {
-	return property(id, "isAvatarForId").value<qReal::Id>();
+	Q_ASSERT(isLibAvatar(id));
+	//following functionality is present in GraphicalModelAssistApi::graphicalIdsByLogicalId
+	//cannot access it from here so it will be reimplemented
+	Id logicalId = property(id, "isAvatarForId").value<qReal::Id>();
+	Id avatarTargetId = Id::rootId();
+	foreach (Id graphicalId, graphicalElementsAllClients(logicalId)) {
+		if (isLibEntry(graphicalId, false)) {
+			avatarTargetId = graphicalId;
+		}
+	}
+
+	return avatarTargetId;
 }
 
 qReal::IdList RepoApi::connectedElements(qReal::Id const &id) const
@@ -701,8 +712,22 @@ IdList RepoApi::logicalElements(Id const &type) const
 //Default
 IdList RepoApi::graphicalElements(Id const &type) const
 {
-	Q_ASSERT(type.idSize() == 3);
 	Client *client = getDefaultClient();
+	return graphicalElementsOfClient(type, client);
+}
+
+IdList RepoApi::graphicalElementsAllClients(Id const &type) const
+{
+	IdList result;
+	for (int i = 0; i < mClients->count(); ++i) {
+		result.append(graphicalElementsOfClient(type, mClients->at(i)));
+	}
+	return result;
+}
+
+IdList RepoApi::graphicalElementsOfClient(Id const &type, details::Client const *client) const
+{
+	Q_ASSERT(type.idSize() >= 3);
 
 	IdList result;
 	foreach (Id id, client->elements()) {

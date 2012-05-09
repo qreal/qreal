@@ -116,6 +116,7 @@ namespace qrRepo {
 		/// Returns all elements with .element() == type.element() from default client
 		/// @param type - id to compare with
 		virtual qReal::IdList graphicalElements(qReal::Id const &type) const;
+		virtual qReal::IdList graphicalElementsAllClients(qReal::Id const &type) const;
 		virtual qReal::IdList logicalElements(qReal::Id const &type) const;
 
 		virtual qReal::Id logicalId(qReal::Id const &id) const;
@@ -145,6 +146,8 @@ namespace qrRepo {
 
 		details::Client* getRelevantClient(qReal::Id const &id) const;
 		details::Client* getDefaultClient() const;
+
+		qReal::IdList graphicalElementsOfClient(qReal::Id const &type, details::Client const *client) const;
 
 		QList<details::Client*> *mClients;
 	};

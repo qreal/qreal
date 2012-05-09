@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QStack>
 
 #include "../../../../qrkernel/ids.h"
 #include "../../../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
@@ -35,6 +36,7 @@ private:
 	gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	blocks::Block *mCurrentBlock;  // Doesn't have ownership
 	BlocksTable &mBlocksTable;
+	QStack<blocks::Block*> *mCallStack;
 };
 
 }

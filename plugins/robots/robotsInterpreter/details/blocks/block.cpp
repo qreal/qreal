@@ -115,8 +115,14 @@ bool Block::boolProperty(QString const &propertyName) const
 
 QVariant Block::property(Id const &id, QString const &propertyName) const
 {
+	//taking properties thru models api won't allow to use libraries
+	//because lib elements are not in models
+	/*
 	Id const logicalId = mGraphicalModelApi->logicalId(id);
 	return mLogicalModelApi->propertyByRoleName(logicalId, propertyName);
+	*/
+	Id const logicalId = mGraphicalModelApi->graphicalRepoApi().logicalId(id);
+	return mLogicalModelApi->logicalRepoApi().property(logicalId, propertyName);
 }
 
 QString Block::stringProperty(Id const &id, QString const &propertyName) const
@@ -138,6 +144,18 @@ void Block::error(QString const &message)
 {
 	mErrorReporter->addError(message, id());
 	emit failure();
+}
+
+bool Block::isCall() const
+{
+	return mGraphicalModelApi->graphicalRepoApi().isLibAvatar(mGraphicalId);
+}
+
+blocks::Block * Block::getCallEntryPoint() const
+{
+	Q_ASSERT(isCall());
+	Id entryPointId = mGraphicalModelApi->mutableGraphicalRepoApi().getLibAvatarTarget(mGraphicalId);
+	return mBlocksTable->block(entryPointId);
 }
 
 QList<Block::SensorPortPair> Block::usedSensors() const

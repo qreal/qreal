@@ -9,6 +9,7 @@ Thread::Thread(gui::MainWindowInterpretersInterface &interpretersInterface, Bloc
 	: mInterpretersInterface(interpretersInterface)
 	, mCurrentBlock(NULL)
 	, mBlocksTable(blocksTable)
+	, mCallStack(new QStack<blocks::Block *>())
 {
 	mCurrentBlock = blocksTable.block(initialNode);
 }
@@ -17,6 +18,8 @@ Thread::~Thread()
 {
 	if (mCurrentBlock != NULL)
 		mInterpretersInterface.dehighlight(mCurrentBlock->id());
+
+	delete mCallStack;
 }
 
 void Thread::interpret()
@@ -37,9 +40,19 @@ void Thread::nextBlock(blocks::Block * const block)
 	mInterpretersInterface.dehighlight(mCurrentBlock->id());
 
 	mCurrentBlock = block;
+
 	if (!mCurrentBlock) {
-		emit stopped();
-		return;
+		if (!mCallStack->isEmpty()) {
+			mCurrentBlock = mCallStack->pop();
+		} else {
+			emit stopped();
+			return;
+		}
+	}
+
+	if (block && block->isCall()) {
+		mCallStack->push(block);
+		mCurrentBlock = block->getCallEntryPoint();
 	}
 
 	mInterpretersInterface.highlight(mCurrentBlock->id(), false);
