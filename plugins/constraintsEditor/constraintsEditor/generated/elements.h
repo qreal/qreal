@@ -1246,15 +1246,15 @@
 			mRenderer = renderer;
 			mRenderer->load(QString(":/generated/shapes/EdgesConstraintClass.sdf"));
 			portRenderer->load(QString(":/generated/shapes/EdgesConstraintPorts.sdf"));
-			contents.setWidth(245);
-			contents.setHeight(194);
-			title_1 = factory.createTitle(0.0408163, 0.876289, "errorType", false);
+			contents.setWidth(244);
+			contents.setHeight(193);
+			title_1 = factory.createTitle(0.0409836, 0.880829, "errorType", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(true, false);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createTitle(0.0367347, 0.0515464, "##name## : ##selection##", true);
+			title_2 = factory.createTitle(0.0368852, 0.0518135, "##name## : ##selection##", true);
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(true, true);
 			title_2->setFlags(0);
@@ -1286,7 +1286,7 @@
 		void updateData(ElementRepoInterface *repo) const
 		{
 			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("errorType")).replace("\n", "<br>"));
-			title_2->setHtml(QString("<b>%1</b>").arg(QString::fromUtf8("") + repo->logicalProperty("name") + QString::fromUtf8(" : ") + repo->logicalProperty("selection") + QString::fromUtf8("")).replace("\n", "<br>"));
+			title_2->setHtml(QString("<b>%1</b>").arg(QString::fromUtf8("") + repo->name() + QString::fromUtf8(" : ") + repo->logicalProperty("selection") + QString::fromUtf8("")).replace("\n", "<br>"));
 		}
 
 		bool isNode()
@@ -2210,7 +2210,7 @@
 		void updateData(ElementRepoInterface *repo) const
 		{
 			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("errorType")).replace("\n", "<br>"));
-			title_2->setHtml(QString("<b>%1</b>").arg(QString::fromUtf8("") + repo->logicalProperty("name") + QString::fromUtf8(" : ") + repo->logicalProperty("selection") + QString::fromUtf8("")).replace("\n", "<br>"));
+			title_2->setHtml(QString("<b>%1</b>").arg(QString::fromUtf8("") + repo->name() + QString::fromUtf8(" : ") + repo->logicalProperty("selection") + QString::fromUtf8("")).replace("\n", "<br>"));
 		}
 
 		bool isNode()

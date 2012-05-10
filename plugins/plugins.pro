@@ -8,8 +8,9 @@ SUBDIRS	= \
 #	bpel/bpel.pro \
 #	exterminatus/exterminatus.pro \
 #	hascol/hascol.pro \
-#	metaEditor/metaEditor.pro \
+	metaEditor/metaEditor.pro \
 	constraintsEditor/constraintsEditor.pro \
+	constraintsAllMetamodels/constraintsAllMetamodels.pro \
 #	network/network.pro \
 #	orthodoxEditor/orthodoxEditor.pro \
 #	parallel/parallel.pro \

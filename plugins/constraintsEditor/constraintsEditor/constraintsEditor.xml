@@ -484,10 +484,10 @@
             </node>
             <node displayedName="Edges Constraint" name="edgesConstraint">
                 <graphics>
-                    <picture sizex="245" sizey="194">
-                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="193" fill-style="none" x2="244"/>
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="38a" stroke-width="0" x1="1" y2="38a" fill-style="none" x2="244"/>
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="159" stroke-width="0" x1="0a" y2="159" fill-style="none" x2="243"/>
+                    <picture sizex="244" sizey="193">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="192" fill-style="none" x2="243"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="37a" stroke-width="0" x1="1" y2="38a" fill-style="none" x2="243"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="158" stroke-width="0" x1="0a" y2="159" fill-style="none" x2="242"/>
                     </picture>
                     <labels>
                         <label x="10a" y="170" textBinded="errorType"/>
