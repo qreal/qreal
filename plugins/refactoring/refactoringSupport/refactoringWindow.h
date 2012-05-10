@@ -24,12 +24,14 @@ signals:
 	void findButtonClicked(QString const &refactoringName);
 	void findNextButtonClicked();
 	void discardButtonClicked();
+	void applyButtonClicked();
 
 private slots:
 	void openPicture(QListWidgetItem *item);
 	void findButtonActivate();
 	void findNextButtonActivate();
 	void discardButtonActivate();
+	void applyButtonActivate();
 
 private:
 	Ui::refactoringForm *mUi;

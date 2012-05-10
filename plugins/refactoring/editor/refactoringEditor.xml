@@ -206,7 +206,7 @@
     <element name="Refactoring Diagram"/>
     <element name="From Before To After"/>
     <element name="After Block"/>
-    <element name="After Block"/>
+    <element name="Before Block"/>
    </group>
    <group name="Basic Elements">
     <element name="Element"/>

@@ -15,6 +15,7 @@ HEADERS = \
 	refactoringWindow.h \
 	refactoringPreferencePage.h \
 	refactoringFinder.h \
+	refactoringApplier.h \
 	../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
 
 
@@ -23,6 +24,7 @@ SOURCES = \
 	refactoringWindow.cpp \
 	refactoringPreferencePage.cpp \
 	refactoringFinder.cpp \
+	refactoringApplier.cpp \
 
 
 FORMS += \

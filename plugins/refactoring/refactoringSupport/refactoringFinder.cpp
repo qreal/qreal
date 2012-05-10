@@ -8,7 +8,7 @@ using namespace qReal;
 
 QSet<QString> const defaultProperties = (QSet<QString>()
 		<< "from" << "incomingConnections" << "incomingUsages" << "links"
-		<< "name" << "outgoingConnections" << "outgoingUsages" << "to");
+		<< "name" << "outgoingConnections" << "outgoingUsages" << "to" << "ID");
 
 RefactoringFinder::RefactoringFinder(
 		const LogicalModelAssistInterface &logicalModelApi
@@ -74,32 +74,6 @@ void RefactoringFinder::addElement(Id const &id, IdList *idList)
 	if (!idList->contains(id))
 		idList->append(id);
 }
-
-void RefactoringFinder::loadRefactoringRule()
-{
-	IdList const before = getElementsFromBeforeBlock();
-	IdList const after = getElementsFromAfterBlock();
-
-	mDeletedElements = new IdList();
-	mReplacedElements = new IdList();
-	mCreatedElements = new IdList();
-
-	mInterpretersInterface.dehighlight();
-
-	foreach (Id const &beforeId, before) {
-		QString const beforeElementID = getRefactoringProperty(beforeId, "ID").toString();
-		if (containElementWithID(beforeElementID, after))
-			addElement(beforeId, mReplacedElements);
-		else
-			addElement(beforeId, mDeletedElements);
-	}
-	foreach (Id const &afterId, after) {
-		QString const afterElementID = getRefactoringProperty(afterId, "ID").toString();
-		if (!containElementWithID(afterElementID, before))
-			addElement(afterId, mCreatedElements);
-	}
-}
-
 
 void RefactoringFinder::highlightMatch()
 {
@@ -387,7 +361,7 @@ bool RefactoringFinder::compareElementTypesAndProperties(Id const &first,
 	}
 
 	if (first.element() == second.element() && first.diagram() == second.diagram()) {
-		QHash<QString, QVariant> secondProperties = getProperties(second);
+		QHash<QString, QVariant> secondProperties = getProperties(mRefactoringRepoApi->logicalId(second));
 
 		foreach (QString const &key, secondProperties.keys()) {
 			QVariant const value = secondProperties.value(key);

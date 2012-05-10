@@ -14,6 +14,7 @@
 #include "refactoringPreferencePage.h"
 #include "refactoringWindow.h"
 #include "refactoringFinder.h"
+#include "refactoringApplier.h"
 
 namespace qReal {
 namespace refactoring {
@@ -44,6 +45,7 @@ private slots:
 	void findNextRefactoring();
 	void discardRefactoring();
 	void createRefactoring();
+	void applyRefactoring();
 
 private:
 	void insertRefactoringID(QDomDocument metamodel, QDomNodeList list, bool isNode);
@@ -83,10 +85,12 @@ private:
 
 	utils::MetamodelGeneratorSupport *mMetamodelGeneratorSupport;
 	RefactoringFinder *mRefactoringFinder;
+	RefactoringApplier *mRefactoringApplier;
 
 	qrRepo::RepoApi *mRefactoringRepoApi;
 	RefactoringWindow *mRefactoringWindow;
 	QList<QHash<Id, Id> > mMatches;
+	QHash <Id, Id> mCurrentMatch;
 
 	QTranslator mAppTranslator;
 };

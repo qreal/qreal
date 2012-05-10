@@ -29,8 +29,6 @@ private:
 
 	bool checkRuleMatchingRecursively();
 
-	void loadRefactoringRule();
-
 	bool checkNodeForAddingToMatch(Id const &nodeInModel, Id const &nodeInRule);
 	void addElement(const Id &id, IdList *idList);
 
@@ -83,10 +81,6 @@ private:
 	gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	LogicalModelAssistInterface const &mLogicalModelApi;
 	GraphicalModelAssistInterface const &mGraphicalModelApi;
-
-	IdList *mDeletedElements;
-	IdList *mReplacedElements;
-	IdList *mCreatedElements;
 
 	QHash<Id, Id> *mMatch;
 	QList<QHash<Id, Id> > mMatches;

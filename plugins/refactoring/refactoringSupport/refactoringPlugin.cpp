@@ -57,6 +57,13 @@ void RefactoringPlugin::init(PluginConfigurator const &configurator)
 	connect(mRefactoringWindow, SIGNAL(findButtonClicked(QString)), this, SLOT(findRefactoring(QString)));
 	connect(mRefactoringWindow, SIGNAL(findNextButtonClicked()), this, SLOT(findNextRefactoring()));
 	connect(mRefactoringWindow, SIGNAL(discardButtonClicked()), this, SLOT(discardRefactoring()));
+	connect(mRefactoringWindow, SIGNAL(applyButtonClicked()), this, SLOT(applyRefactoring()));
+
+	mRefactoringApplier = new RefactoringApplier(configurator.logicalModelApi()
+			, configurator.graphicalModelApi()
+			, configurator.mainWindowInterpretersInterface()
+			, mRefactoringRepoApi
+			, &mCurrentMatch);
 }
 
 QPair<QString, PreferencesPage *> RefactoringPlugin::preferencesPage()
@@ -289,7 +296,7 @@ void RefactoringPlugin::addPalette(QDomDocument metamodel, QDomElement diagram, 
 	patternGroupNamesList << "Refactoring Diagram"
 			<< "From Before To After"
 			<< "After Block"
-			<< "After Block";
+			<< "Before Block";
 	QStringList basicGroupNamesList;
 	basicGroupNamesList << "Element"
 			<< "Link"
@@ -354,11 +361,11 @@ void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 			mRefactoringWindow->discard();
 			return;
 		}
-		QHash <Id, Id> currentMatch = mMatches.takeFirst();
-		foreach (Id const &id, currentMatch.keys()) {
+		mCurrentMatch = mMatches.takeFirst();
+		foreach (Id const &id, mCurrentMatch.keys()) {
 			QColor const color = QColor(SettingsManager::value("refactoringColor"
 					, "cyan").toString());
-			mMainWindowIFace->highlight(currentMatch.value(id), false, color);
+			mMainWindowIFace->highlight(mCurrentMatch.value(id), false, color);
 		}
 	}
 	else {
@@ -377,11 +384,11 @@ void RefactoringPlugin::findNextRefactoring()
 		mRefactoringWindow->discard();
 	}
 	else {
-		QHash <Id, Id> currentMatch = mMatches.takeFirst();
-		foreach (Id const &id, currentMatch.keys()) {
+		mCurrentMatch = mMatches.takeFirst();
+		foreach (Id const &id, mCurrentMatch.keys()) {
 			QColor const color = QColor(SettingsManager::value("refactoringColor"
 					, "cyan").toString());
-			mMainWindowIFace->highlight(currentMatch.value(id), false, color);
+			mMainWindowIFace->highlight(mCurrentMatch.value(id), false, color);
 		}
 	}
 }
@@ -411,5 +418,12 @@ void RefactoringPlugin::createRefactoring()
 		}
 		mMainWindowIFace->activateItemOrDiagram(diagramId);
 	}
+}
+
+void RefactoringPlugin::applyRefactoring()
+{
+	mRefactoringApplier->applyRefactoringRule();
+	arrangeElementsBT();
+	discardRefactoring();
 }
 

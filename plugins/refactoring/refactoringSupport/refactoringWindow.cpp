@@ -17,6 +17,7 @@ RefactoringWindow::RefactoringWindow(QWidget *parent) :
 	connect(mUi->findButton, SIGNAL(clicked()), this, SLOT(findButtonActivate()));
 	connect(mUi->findNextButton, SIGNAL(clicked()), this, SLOT(findNextButtonActivate()));
 	connect(mUi->discardButton, SIGNAL(clicked()), this, SLOT(discardButtonActivate()));
+	connect(mUi->applyButton, SIGNAL(clicked()), this, SLOT(applyButtonActivate()));
 }
 
 void RefactoringWindow::openPicture(QListWidgetItem *item)
@@ -73,7 +74,7 @@ void RefactoringWindow::findNextButtonActivate()
 
 void RefactoringWindow::activateRestButtons()
 {
-	//mUi->applyButton->setEnabled(true);
+	mUi->applyButton->setEnabled(true);
 	mUi->discardButton->setEnabled(true);
 	mUi->findNextButton->setEnabled(true);
 	mUi->findButton->setEnabled(false);
@@ -81,7 +82,7 @@ void RefactoringWindow::activateRestButtons()
 
 void RefactoringWindow::discard()
 {
-	//mUi->applyButton->setEnabled(false);
+	mUi->applyButton->setEnabled(false);
 	mUi->discardButton->setEnabled(false);
 	mUi->findNextButton->setEnabled(false);
 	mUi->findButton->setEnabled(true);
@@ -91,4 +92,9 @@ void RefactoringWindow::discard()
 void RefactoringWindow::discardButtonActivate()
 {
 	emit discardButtonClicked();
+}
+
+void RefactoringWindow::applyButtonActivate()
+{
+	emit applyButtonClicked();
 }
