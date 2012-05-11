@@ -107,6 +107,21 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->port2Box, SIGNAL(activated(int)), mUi->port2AddButton, SLOT(click()));
 	connect(mUi->port3Box, SIGNAL(activated(int)), mUi->port3AddButton, SLOT(click()));
 	connect(mUi->port4Box, SIGNAL(activated(int)), mUi->port4AddButton, SLOT(click()));
+	connect(mUi->speedComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeSpeed(int)));
+}
+
+void D2ModelWidget::changeSpeed(int curIndex)
+{
+	switch(curIndex){
+	case 0:
+		mRobotModel->speed(1);
+		break;
+	case 1:
+		mRobotModel->speed(2);
+		break;
+	case 2:
+		mRobotModel->speed(4);
+	}
 }
 
 void D2ModelWidget::init(bool isActive)

@@ -338,8 +338,10 @@ void D2RobotModel::countNewCoord()
 
 		mAngle += gammaDegrees;
 	} else {
-		deltaY = averageSpeed * timeInterval * sin(mAngle * M_PI / 180)*4;
-		deltaX = averageSpeed * timeInterval * cos(mAngle * M_PI / 180)*4;
+		deltaY = averageSpeed * timeInterval * sin(mAngle * M_PI / 180);
+		deltaX = averageSpeed * timeInterval * cos(mAngle * M_PI / 180);
+		deltaY *= mSpeed;
+		deltaX *= mSpeed;
 	}
 
 	mPos.setX(mPos.x() + deltaX);
@@ -389,4 +391,9 @@ void D2RobotModel::rotateOn(double angle)
 double D2RobotModel::rotateAngle() const
 {
 	return mAngle;
+}
+
+void D2RobotModel::speed(qreal speedMul)
+{
+	mSpeed = speedMul;
 }
