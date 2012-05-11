@@ -103,10 +103,11 @@ void D2ModelWidget::connectUiButtons()
 
 	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(addPort(int)));
 
-	connect(mUi->port1Box, SIGNAL(activated(int)), mUi->port1AddButton, SLOT(click()));
-	connect(mUi->port2Box, SIGNAL(activated(int)), mUi->port2AddButton, SLOT(click()));
-	connect(mUi->port3Box, SIGNAL(activated(int)), mUi->port3AddButton, SLOT(click()));
-	connect(mUi->port4Box, SIGNAL(activated(int)), mUi->port4AddButton, SLOT(click()));
+//	connect(mUi->port1Box, SIGNAL(activated(int)), mUi->port1AddButton, SLOT(click()));
+//	connect(mUi->port2Box, SIGNAL(activated(int)), mUi->port2AddButton, SLOT(click()));
+//	connect(mUi->port3Box, SIGNAL(activated(int)), mUi->port3AddButton, SLOT(click()));
+//	connect(mUi->port4Box, SIGNAL(activated(int)), mUi->port4AddButton, SLOT(click()));
+
 	connect(mUi->speedComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeSpeed(int)));
 }
 
@@ -123,6 +124,8 @@ void D2ModelWidget::changeSpeed(int curIndex)
 		mRobotModel->speed(4);
 	}
 }
+
+
 
 void D2ModelWidget::init(bool isActive)
 {
@@ -169,6 +172,8 @@ QPointF D2ModelWidget::robotPos() const
 {
 	return mRobot ? mRobot->pos() : QPointF(0,0);
 }
+
+
 
 void D2ModelWidget::close()
 {
@@ -380,7 +385,7 @@ void D2ModelWidget::addPort(int const port)
 
 	setActiveButton(port);
 
-	mDrawingAction = drawingAction::port;
+	//mDrawingAction = drawingAction::port;
 
 	switch (currentComboBox()->currentIndex()){
 	case 0:
@@ -396,6 +401,13 @@ void D2ModelWidget::addPort(int const port)
 		mCurrentSensorType = sensorType::unused;
 		break;
 	}
+	QPointF newpos = mRobot->mapFromScene(mRobotModel->robotPos());
+	mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0);
+
+	reinitSensor(mCurrentPort);
+
+	resetButtons();
+
 }
 
 void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
@@ -462,15 +474,7 @@ void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 		mMouseClicksCount++;
 	}
 		break;
-	case drawingAction::port: {
-		QPointF newpos = mRobot->mapFromScene(mouseEvent->scenePos());
-		mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0);
 
-		reinitSensor(mCurrentPort);
-
-		resetButtons();
-	}
-		break;
 	case drawingAction::none: {
 		mMouseClicksCount = 0;
 		mScene->forPressResize(mouseEvent);

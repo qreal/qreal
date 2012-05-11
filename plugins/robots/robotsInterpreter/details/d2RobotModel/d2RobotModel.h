@@ -42,6 +42,8 @@ public:
 	virtual void rotateOn(double angle);
 	virtual double rotateAngle() const;
 
+	QPointF robotPos();
+
 	enum ATime {
 		DoInf,
 		Do,

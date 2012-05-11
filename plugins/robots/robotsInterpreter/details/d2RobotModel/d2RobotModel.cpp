@@ -397,3 +397,8 @@ void D2RobotModel::speed(qreal speedMul)
 {
 	mSpeed = speedMul;
 }
+
+QPointF D2RobotModel::robotPos()
+{
+	return this->mPos;
+}
