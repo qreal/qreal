@@ -23,6 +23,7 @@ public:
 	~SdfRenderer();
 
 	bool load (const QString &filename);
+	bool load(QDomDocument &document);
 	void render(QPainter *painter, const QRectF &bounds);
 	void noScale();
 

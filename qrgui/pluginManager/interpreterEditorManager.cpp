@@ -10,6 +10,7 @@
 #include "../umllib/edgeElement.h"
 #include "../../qrkernel/exception/exception.h"
 #include "beep.h"
+#include "interpreterElementImpl.h"
 
 using namespace qReal;
 
@@ -74,18 +75,34 @@ QString InterpreterEditorManager::friendlyName(const Id &id) const
 
 bool InterpreterEditorManager::hasElement(Id const &elementId) const
 {
-	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values())
-		if (repo->exist(elementId))
-			return true;
+	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
+		foreach (Id editor, repo->elementsByType("MetamodelDiagram")) {
+			foreach (Id diagram, repo->children(editor)) {
+				foreach (Id element, repo->children(diagram)) {
+					if (elementId.element() == repo->name(element)) {
+						return true;
+					}
+				}
+			}
+		}
+	}
 	return false;
 }
 
 QString InterpreterEditorManager::propertyDescription(const Id &id, const QString &propertyName) const
 {
 	QString property = "";
-	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values())
-		if (repo->exist(id))
-			property = repo->stringProperty(id, propertyName);
+	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
+		foreach (Id editor, repo->elementsByType("MetamodelDiagram")) {
+			foreach (Id diagram, repo->children(editor)) {
+				foreach (Id element, repo->children(diagram)) {
+					if (id.element() == repo->name(element)) {
+						property = repo->stringProperty(element, propertyName);
+					}
+				}
+			}
+		}
+	}
 	return property;
 }
 
@@ -93,9 +110,17 @@ QStringList InterpreterEditorManager::getAllChildrenTypesOf(Id const &parent) co
 {
 	QStringList result;
 	qrRepo::RepoApi *repoMetaModel;
-	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values())
-		if (repo->exist(parent))
-			repoMetaModel = repo;
+	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
+		foreach (Id editor, repo->elementsByType("MetamodelDiagram")) {
+			foreach (Id diagram, repo->children(editor)) {
+				foreach (Id element, repo->children(diagram)) {
+					if (parent.element() == repo->name(element)) {
+						repoMetaModel = repo;
+					}
+				}
+			}
+		}
+	}
 	foreach (Id child, repoMetaModel->children(parent))
 		result << repoMetaModel->typeName(child);
 	return result;
@@ -103,11 +128,44 @@ QStringList InterpreterEditorManager::getAllChildrenTypesOf(Id const &parent) co
 
 bool InterpreterEditorManager::isParentOf(Id const &child, Id const &parent) const // child — EnginesForware, parent — AbstractNode
 {
-	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values())
-		if (repo->exist(child) && repo->exist(parent))
-			return (repo->name(repo->parent(child)) == repo->name(parent));
+	qrRepo::RepoApi *repoMetaModelChild = NULL;
+	Id repoChild;
+	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
+		foreach (Id editor, repo->elementsByType("MetamodelDiagram")) {
+			foreach (Id diagram, repo->children(editor)) {
+				foreach (Id element, repo->children(diagram)) {
+					if (child.element() == repo->name(element)) {
+						repoChild = element;
+						repoMetaModelChild = repo;
+					}
+				}
+			}
+		}
+	}
+	Id repoParent;
+	qrRepo::RepoApi *repoMetaModelParent = NULL;
+	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
+		foreach (Id editor, repo->elementsByType("MetamodelDiagram")) {
+			foreach (Id diagram, repo->children(editor)) {
+				foreach (Id element, repo->children(diagram)) {
+					if (parent.element() == repo->name(element)) {
+						repoParent = element;
+						repoMetaModelParent = repo;
+					}
+				}
+			}
+		}
+	}
+	if (repoMetaModelChild != repoMetaModelParent)
+		return false;
+	foreach(Id link ,repoMetaModelParent->links(parent)) {
+		if (repoMetaModelChild->typeName(link) == "Container") {
+			if((repoMetaModelChild->from(repoParent) == repoMetaModelChild->to(repoChild) || repoMetaModelChild->from(repoChild) == repoMetaModelChild->to(repoParent))) {
+				return true;
+			}
+		}
+	}
 	return false;
-	//return (repoMetaModel->parent(child) == parent);
 }
 
 IdList InterpreterEditorManager::getConnectedTypes(const Id &id) const
@@ -217,11 +275,33 @@ QIcon InterpreterEditorManager::icon(Id const &id) const
 {
 	return QIcon();
 }
-//TODO:
+
 Element* InterpreterEditorManager::graphicalObject(Id const &id) const
 {
-	Beep * beep = new Beep();
-	return new NodeElement(beep);
+	qrRepo::RepoApi *repoMetaModel = NULL;
+	Id metaId;
+	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
+		foreach (Id editor, repo->elementsByType("MetamodelDiagram")) {
+			foreach (Id diagram, repo->children(editor)) {
+				foreach (Id element, repo->children(diagram)) {
+					if (id.element() == repo->name(element)) {
+						repoMetaModel = repo;
+						metaId = element;
+					}
+				}
+			}
+		}
+	}
+
+	InterpreterElementImpl *impl = new InterpreterElementImpl(repoMetaModel, metaId);
+	if( !impl ){
+		qDebug() << "no impl";
+		return 0;
+	}
+	if (impl->isNode())
+		return new NodeElement(impl);
+
+	return  new EdgeElement(impl);
 }
 
 IdList InterpreterEditorManager::getContainedTypes(const Id &id) const

@@ -48,6 +48,16 @@ bool SdfRenderer::load(const QString &filename)
 	return true;
 }
 
+bool SdfRenderer::load(QDomDocument &document)
+{
+	doc = document;
+	QDomElement docElem = document.documentElement();
+	first_size_x = docElem.attribute("sizex").toInt();
+	first_size_y = docElem.attribute("sizey").toInt();
+
+	return true;
+}
+
 void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
 {
 	current_size_x = static_cast<int>(bounds.width());
