@@ -81,6 +81,9 @@ public:
 	int childrenOfDiagram(const Id &parent) const;
 signals:
 	void nameChanged(Id const &id);
+	void propertyChangedForOnlyGraphicalLanguages(Id const &elem);
+	void parentChangedForOnlyGraphicalLanguages(IdList const &elements);
+	void addedElementToModelForOnlyGraphicalLanguages(Id const &element);
 
 private:
 	GraphicalModelAssistApi(GraphicalModelAssistApi const &);

@@ -118,6 +118,7 @@ bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &valu
 			break;
 		case graphicalAttribute:
 			mTargetGraphicalModel->setData(mTargetGraphicalObject, value, mFields[index.row()].role);
+			emit propertyChangedFromPropertyEditorForOnlyGraphicalLanguages(mTargetGraphicalObject);//qwerty_hardcode
 			break;
 		case namePseudoattribute:
 			mTargetLogicalModel->setData(mTargetLogicalObject, value, Qt::DisplayRole);

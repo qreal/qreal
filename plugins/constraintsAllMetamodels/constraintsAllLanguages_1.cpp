@@ -14,8 +14,11 @@ ConstraintsAllLanguages_1::~ConstraintsAllLanguages_1()
 qReal::CheckStatus ConstraintsAllLanguages_1::checkAllEdges_1(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi)
 {
 	bool res = true;
-			qReal::Id newEndNodeName_1 = logicalApi.to(element);
-			bool endNodeRes_2 = true;
+	qReal::Id newEndNodeName_1 = qReal::Id::rootId();
+	if (logicalApi.hasProperty(element, "to")) {
+			newEndNodeName_1 = logicalApi.to(element);
+	}
+		bool endNodeRes_2 = true;
 		bool endNodeRes_1 = (newEndNodeName_1 != qReal::Id::rootId());
 		qReal::Id newBeginNodeName_1 = logicalApi.from(element);
 			bool beginNodeRes_2 = true;

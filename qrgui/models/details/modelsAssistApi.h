@@ -55,7 +55,7 @@ public:
 	int roleIndexByName(Id const &elem, QString const &roleName) const;
 
 signals:
-	void propertyChanged(Id const &elem);
+	void propertyChangedInModelApi(Id const &elem);
 
 private:
 

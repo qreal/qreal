@@ -40,6 +40,9 @@ namespace qrRepo {
 		qReal::IdList incomingLinks(qReal::Id const &id) const;
 		qReal::IdList links(qReal::Id const &id) const;
 
+		qReal::IdList outgoingNodes(qReal::Id const &id) const;
+		qReal::IdList incomingNodes(qReal::Id const &id) const;
+
 		qReal::IdList outgoingConnections(qReal::Id const &id) const;
 		qReal::IdList incomingConnections(qReal::Id const &id) const;
 		void connect(qReal::Id const &source, qReal::Id const &destination);

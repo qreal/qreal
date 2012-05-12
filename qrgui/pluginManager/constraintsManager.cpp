@@ -100,3 +100,14 @@ QList<CheckStatus> ConstraintsManager::check(Id const &element, qrRepo::LogicalR
 	}
 	return checkings;
 }
+
+QList<CheckStatus> ConstraintsManager::checkForOnlyGraphicalLanguages(Id const &element, qrRepo::GraphicalRepoApi const &graphicalApi, EditorManager const &editorManager)
+{
+	QList<qReal::CheckStatus> checkings;
+	foreach (ConstraintsPluginInterface *constraintsInterface, mPluginIface.values()) {
+		if (constraintsInterface->isCorrectMetamodelName(element)) {
+			checkings.append(constraintsInterface->check(element, graphicalApi, editorManager));
+		}
+	}
+	return checkings;
+}

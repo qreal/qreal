@@ -198,6 +198,8 @@ void ConcreateGenerator::generateDiagramFiles(Id const &diagram, QString diagram
 	resultDiagramH.replace("@@mainChecksForElemets@@", needeStrings.mainChecksForElemetsH);
 	resultDiagramH.replace("@@diagramName@@", diagramNameTemplate);
 	resultDiagramH.replace("@@pathToQReal@@", mPathToQReal);
+	resultDiagramH.replace("logical", "graphical"); //qwerty_hardcode_temp
+	resultDiagramH.replace("Logical", "Graphical"); //qwerty_hardcode_temp
 
 	resultDiagramCPP.replace("@@countOptionalCheckStatusesForElemets@@", needeStrings.countOptionalCheckStatusesForElemetsCPP);
 	resultDiagramCPP.replace("@@countMainCheckStatusesForElemets@@", needeStrings.countMainCheckStatusesForElemetsCPP);
@@ -206,6 +208,8 @@ void ConcreateGenerator::generateDiagramFiles(Id const &diagram, QString diagram
 	resultDiagramCPP.replace("@@addElementsInElementsNames@@", needeStrings.addElementsInElementsNamesCPP);
 	resultDiagramCPP.replace("@@diagramName@@", diagramNameTemplate);
 	resultDiagramCPP.replace("@@languageName@@", correctedLanguageName(diagram));
+	resultDiagramCPP.replace("logical", "graphical"); //qwerty_hardcode_temp
+	resultDiagramCPP.replace("Logical", "Graphical"); //qwerty_hardcode_temp
 
 	saveOutputFile(QString("constraints" + diagramNameTemplate + ".h"), resultDiagramH);
 	saveOutputFile(QString("constraints" + diagramNameTemplate + ".cpp"), resultDiagramCPP);
@@ -280,10 +284,14 @@ void ConcreateGenerator::generate()
 	resultPluginH.replace("@@includeConstraintsDiagramFiles@@", neededStrings.includeFilesPluginH);
 	resultPluginH.replace("@@privateFieldsOfConstraintsDigrams@@", neededStrings.privateFieldsPluginH);
 	resultPluginH.replace("@@pathToQReal@@", mPathToQReal);
+	resultPluginH.replace("logical", "graphical"); //qwerty_hardcode_temp
+	resultPluginH.replace("Logical", "Graphical"); //qwerty_hardcode_temp
 
 	resultPluginCPP.replace("@@metamodelName@@", mMetamodelName);
 	resultPluginCPP.replace("@@ifForMainCheckOfConstraintsDiagrams@@", neededStrings.ifForMainCheckPluginCPP);
 	resultPluginCPP.replace("@@constraintsPluginId@@", mConstraintsName);
+	resultPluginCPP.replace("logical", "graphical"); //qwerty_hardcode_temp
+	resultPluginCPP.replace("Logical", "Graphical"); //qwerty_hardcode_temp
 
 	saveOutputFile(QString("constraints" + mMetamodelName + ".pro"), resultPRO);
 	saveOutputFile(QString("constraints" + mMetamodelName + "Plugin.h"), resultPluginH);
@@ -340,6 +348,10 @@ QPair<bool, QString> ConcreateGenerator::handleConstraintsSelection(Id const &co
 QString ConcreateGenerator::countRealConstraintOfElement(Id const &constraintElement)
 {
 	QString resString = "";
+
+	foreach (QString nameOfConstrainElement, mCountsOfConstraintElementsInOneConstraint.keys()) { // иницилизируем счетчики для элементов внутри одного основного блока ограничений
+		mCountsOfConstraintElementsInOneConstraint[nameOfConstrainElement] = 0;
+	}
 
 	QPair<bool, QString> selectionResult = handleConstraintsSelection(constraintElement);
 	if (selectionResult.first) {
@@ -491,6 +503,8 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForListOfElem
 		if (sign == "=") {
 			sign += "=";
 		}
+		sign.replace("&lt;", "<");
+
 		resString += addStr + "bool count" + resElementName + "Res_" + QString::number(depth)
 				+ " = (tempCount" + resElementName + "_" + QString::number(depth) + " " + sign + " " + countList.at(1) + ");\n";
 		resBool.push_back("count" + resElementName + "Res_" + QString::number(depth));
@@ -568,6 +582,7 @@ QPair<QString, QString > ConcreateGenerator::countPropertyCharacteristicForConst
 	if (sign == "=") {
 		sign += "=";
 	}
+	sign.replace("&lt;", "<");
 
 	resString += addStr + "bool " + characteristicName + "Res_" + QString::number(depth) + " = " + defaultValue + ";\n";
 
@@ -650,20 +665,27 @@ QString ConcreateGenerator::countRealConstraintForEdgeElement(Id const &constrai
 
 	foreach (Id const &constraint, list) {
 		QString constraintType = constraint.element();
+		if (!mCountsOfConstraintElementsInOneConstraint.contains(constraintType)) {
+			mCountsOfConstraintElementsInOneConstraint.insert(constraintType, 0);
+		}
+		int additionalDepth = mCountsOfConstraintElementsInOneConstraint[constraintType];
+
 		if (constraintType == "BeginNode") {
-			QPair<QString, QList<QString> > resBeginNodeConstraint = countConstraintForBeginNode(constraint, elementName, depth, addStr);
+			QPair<QString, QList<QString> > resBeginNodeConstraint = countConstraintForBeginNode(constraint, elementName, depth + additionalDepth, addStr);
 			resString += resBeginNodeConstraint.first;
 			resBool.append(resBeginNodeConstraint.second);
 
 		} else if (constraintType == "EndNode") {
-			QPair<QString, QList<QString> > resEndNodeConstraint = countConstraintForEndNode(constraint, elementName, depth, addStr);
+			QPair<QString, QList<QString> > resEndNodeConstraint = countConstraintForEndNode(constraint, elementName, depth + additionalDepth, addStr);
 			resString += resEndNodeConstraint.first;
 			resBool.append(resEndNodeConstraint.second);
 		} else if (constraintType == "PropertyNode") {
-			QPair<QString, QList<QString> > resPropertyNodeConstraint = countConstraintForPropertyNode (constraint, elementName, depth, addStr);
+			QPair<QString, QList<QString> > resPropertyNodeConstraint = countConstraintForPropertyNode (constraint, elementName, depth + additionalDepth, addStr);
 			resString += resPropertyNodeConstraint.first;
 			resBool.append(resPropertyNodeConstraint.second);
 		}
+
+		mCountsOfConstraintElementsInOneConstraint[constraintType] ++;
 	}
 	resString += additionalCommonPartForConstraint(resBool, resultName, depth, addStr); //сбрасываем resBool в resString
 
@@ -678,41 +700,48 @@ QString ConcreateGenerator::countRealConstraintForNodeElement(Id const &constrai
 
 	foreach (Id const &constraint, list) {
 		QString constraintType = constraint.element();
+		if (!mCountsOfConstraintElementsInOneConstraint.contains(constraintType)) {
+			mCountsOfConstraintElementsInOneConstraint.insert(constraintType, 0);
+		}
+		int additionalDepth = mCountsOfConstraintElementsInOneConstraint[constraintType];
+
 		if (constraintType == "Parent") {
-			QPair<QString, QList<QString> > resParentConstraint = countConstraintForParent(constraint, elementName, depth, addStr);
+			QPair<QString, QList<QString> > resParentConstraint = countConstraintForParent(constraint, elementName, depth + additionalDepth, addStr);
 			resString += resParentConstraint.first;
 			resBool.append(resParentConstraint.second);
 
 		} else if (constraintType == "Childrens") {
-			QPair<QString, QList<QString> > resChildrensConstraint = countConstraintForChildrens (constraint, elementName, depth, addStr);
+			QPair<QString, QList<QString> > resChildrensConstraint = countConstraintForChildrens (constraint, elementName, depth + additionalDepth, addStr);
 			resString += resChildrensConstraint.first;
 			resBool.append(resChildrensConstraint.second);
 
 		} else if (constraintType == "OutgoingLinks") {
-			QPair<QString, QList<QString> > resOutgoingLinksConstraint = countConstraintForOutgoingLinks (constraint, elementName, depth, addStr);
+			QPair<QString, QList<QString> > resOutgoingLinksConstraint = countConstraintForOutgoingLinks (constraint, elementName, depth + additionalDepth, addStr);
 			resString += resOutgoingLinksConstraint.first;
 			resBool.append(resOutgoingLinksConstraint.second);
 
 		} else if (constraintType == "IncomingLinks") {
-			QPair<QString, QList<QString> > resIncomingLinksConstraint = countConstraintForIncomingLinks (constraint, elementName, depth, addStr);
+			QPair<QString, QList<QString> > resIncomingLinksConstraint = countConstraintForIncomingLinks (constraint, elementName, depth + additionalDepth, addStr);
 			resString += resIncomingLinksConstraint.first;
 			resBool.append(resIncomingLinksConstraint.second);
 
 		} else if (constraintType == "OutgoingNodes") {
-			QPair<QString, QList<QString> > resOutgoingNodesConstraint = countConstraintForOutgoingNodes (constraint, elementName, depth, addStr);
+			QPair<QString, QList<QString> > resOutgoingNodesConstraint = countConstraintForOutgoingNodes (constraint, elementName, depth + additionalDepth, addStr);
 			resString += resOutgoingNodesConstraint.first;
 			resBool.append(resOutgoingNodesConstraint.second);
 
 		} else if (constraintType == "IncomingNodes") {
-			QPair<QString, QList<QString> > resIncomingNodesConstraint = countConstraintForIncomingNodes (constraint, elementName, depth, addStr);
+			QPair<QString, QList<QString> > resIncomingNodesConstraint = countConstraintForIncomingNodes (constraint, elementName, depth + additionalDepth, addStr);
 			resString += resIncomingNodesConstraint.first;
 			resBool.append(resIncomingNodesConstraint.second);
 
 		} else if (constraintType == "PropertyNode") {
-			QPair<QString, QList<QString> > resPropertyNodeConstraint = countConstraintForPropertyNode (constraint, elementName, depth, addStr);
+			QPair<QString, QList<QString> > resPropertyNodeConstraint = countConstraintForPropertyNode (constraint, elementName, depth + additionalDepth, addStr);
 			resString += resPropertyNodeConstraint.first;
 			resBool.append(resPropertyNodeConstraint.second);
 		}
+
+		mCountsOfConstraintElementsInOneConstraint[constraintType] ++;
 	}
 
 	resString += additionalCommonPartForConstraint(resBool, resultName, depth, addStr);

@@ -101,6 +101,7 @@ private :
 
 	bool mUsedMetaTypeInCheck; // для генерации ограничений множества элементов в Check;
 							// true = надо использвать мета-тип элемента; false = не надо использовать;
+	QMap<QString, int> mCountsOfConstraintElementsInOneConstraint;
 
 };
 

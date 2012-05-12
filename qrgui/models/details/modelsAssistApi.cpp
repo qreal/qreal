@@ -37,7 +37,7 @@ Id ModelsAssistApi::createElement(Id const &parent, Id const &id, bool isFromLog
 void ModelsAssistApi::setProperty(Id const &elem, QVariant const &newValue, int const role)
 {
 	mModel.setData(indexById(elem), newValue, role);
-	emit propertyChanged(elem);
+	emit propertyChangedInModelApi(elem);
 }
 
 void ModelsAssistApi::stackBefore(Id const &element, Id const &sibling)

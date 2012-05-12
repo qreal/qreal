@@ -12,7 +12,13 @@ GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel,
 		: mGraphicalModel(graphicalModel), mModelsAssistApi(graphicalModel, editorManager, constraintsManager)
 {
 	connect(&graphicalModel, SIGNAL(nameChanged(Id)), this, SIGNAL(nameChanged(Id)));
+
+	// < qwerty_hardcode > :
+	connect(&mModelsAssistApi, SIGNAL(propertyChangedInModelApi(Id)), this, SIGNAL(propertyChangedForOnlyGraphicalLanguages(Id)));
+	connect(&mGraphicalModel, SIGNAL(parentChangedForOnlyGraphicalLanguages(IdList)), this, SIGNAL(parentChangedForOnlyGraphicalLanguages(IdList)));
+	connect(&mGraphicalModel, SIGNAL(addedElementToModelForOnlyGraphicalLanguages(Id)), this, SIGNAL(addedElementToModelForOnlyGraphicalLanguages(Id)));
 }
+// <\ qwerty_hardcode >
 
 EditorManager const &GraphicalModelAssistApi::editorManager() const
 {

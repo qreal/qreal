@@ -24,6 +24,9 @@ public:
 	virtual qReal::IdList links(qReal::Id const &id) const = 0;
 	virtual qReal::Id otherEntityFromLink(qReal::Id const &linkId, qReal::Id const &firstNode) const = 0;
 
+	virtual qReal::IdList outgoingNodes(qReal::Id const &id) const = 0;
+	virtual qReal::IdList incomingNodes(qReal::Id const &id) const = 0;
+
 	virtual QVariant property(qReal::Id const &id, QString const &propertyName) const = 0;
 	virtual QString stringProperty(qReal::Id const &id, QString const &propertyName) const = 0;
 	virtual void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value) = 0;

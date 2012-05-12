@@ -182,6 +182,14 @@ MainWindow::MainWindow()
 	connect(&mModels->logicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
 	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
 	connect(&mModels->logicalModelAssistApi(), SIGNAL(addedElementToModel(Id)), this, SLOT(checkConstraints(Id)));
+
+	// < qwerty_hardcode > :
+	connect(&mModels->graphicalModelAssistApi(), SIGNAL(propertyChangedForOnlyGraphicalLanguages(Id)), this, SLOT(checkConstraintsForOnlyGraphicalLanguages(Id)));
+	connect(&mPropertyModel, SIGNAL(propertyChangedFromPropertyEditorForOnlyGraphicalLanguages(QModelIndex)), this, SLOT(checkConstraintsForOnlyGraphicalLanguages(QModelIndex)));
+	connect(&mModels->graphicalModelAssistApi(), SIGNAL(parentChangedForOnlyGraphicalLanguages(IdList)), this, SLOT(checkConstraintsForOnlyGraphicalLanguages(IdList)));
+	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraintsForOnlyGraphicalLanguages(Id)));
+	connect(&mModels->graphicalModelAssistApi(), SIGNAL(addedElementToModelForOnlyGraphicalLanguages(Id)), this, SLOT(checkConstraintsForOnlyGraphicalLanguages(Id)));
+	// < qwerty_hardcode > :
 }
 
 void MainWindow::connectActions()
@@ -684,7 +692,7 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 		}
 	}
 	if (parentIndex != mModels->logicalModelAssistApi().indexById(Id::rootId())) {
-		checkConstraints(parentIndex);//ïðîâåðÿåì íà îãðàíè÷åíèÿ ðîäèòåëÿ óäàëÿåìîãî ýëåìåíòà â ëîãè÷åñêîé ìîäåëè
+		checkConstraints(parentIndex);//Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð½Ð° Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ñ Ñ€Ð¾Ð´Ð¸Ñ‚ÐµÐ»Ñ ÑƒÐ´Ð°Ð»ÑÐµÐ¼Ð¾Ð³Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð° Ð² Ð»Ð¾Ð³Ð¸Ñ‡ÐµÑÐºÐ¾Ð¹ Ð¼Ð¾Ð´ÐµÐ»Ð¸
 	}
 }
 
@@ -1971,11 +1979,14 @@ void MainWindow::checkOwnConstraints(Id const &id)
 
 void MainWindow::checkConstraints(Id const &id)
 {
-	QModelIndex index = mModels->logicalModelAssistApi().indexById(id);
+	EditorManagerInterface::MetaType metaType = mEditorManager.metaTypeOfElement(id);
 	checkOwnConstraints(id);
-	checkChildrensConstraints(id);
-	checkParentsConstraints(index);
-	checkLinksConstraints(id);
+	if (metaType == EditorManagerInterface::node) {
+		QModelIndex index = mModels->logicalModelAssistApi().indexById(id);
+		checkChildrensConstraints(id);
+		checkParentsConstraints(index);
+		checkLinksConstraints(id);
+	}
 }
 
 void MainWindow::checkConstraints(QModelIndex const &index)
@@ -2014,11 +2025,102 @@ void MainWindow::checkChildrensConstraints(Id const &id)
 
 void MainWindow::checkLinksConstraints(Id const &id)
 {
-	IdList linksList = mModels->logicalRepoApi().incomingLinks(id);
-	linksList.append(mModels->logicalRepoApi().outgoingLinks(id));
+	IdList linksList = mModels->logicalRepoApi().links(id);
 	foreach (Id const &linkId, linksList) {
 		if (mModels->logicalModelAssistApi().isLogicalId(linkId)) {
 			checkOwnConstraints(linkId);
 		}
 	}
 }
+
+// < qwerty_hardcode >
+void MainWindow::checkOwnConstraintsForOnlyGraphicalLanguages(Id const &id)
+{
+	IdList const graphicalIds = mModels->graphicalIds(id);
+
+	foreach (Id const &graphicalId, graphicalIds) {
+		QList<CheckStatus> checkStatusList = mConstraintsManager.checkForOnlyGraphicalLanguages(graphicalId, mModels->graphicalModelAssistApi().graphicalRepoApi(), mEditorManager);
+		bool checkStatus = true;
+		foreach (CheckStatus check, checkStatusList) {
+			gui::Error::Severity errorSeverity = severityByErrorType(check.errorType());
+			QString errorMessage = check.message();
+
+			if (check.checkStatus()) {
+				if (errorSeverity != gui::Error::warning) {
+					mErrorReporter->delUniqueError(errorMessage, errorSeverity, id);
+				}
+			} else {
+				checkStatus = false;
+				if (errorSeverity != gui::Error::warning) {
+					mErrorReporter->addUniqueError(errorMessage, errorSeverity, id);
+				}
+			}
+		}
+
+		if (checkStatus) {
+			dehighlight(graphicalId);
+		} else {
+			highlight(graphicalId, false);
+		}
+	}
+}
+
+void MainWindow::checkConstraintsForOnlyGraphicalLanguages(QModelIndex const &index)
+{
+	Id const id = mModels->logicalModelAssistApi().idByIndex(index);
+	checkConstraintsForOnlyGraphicalLanguages(id);
+}
+
+void MainWindow::checkConstraintsForOnlyGraphicalLanguages(IdList const &idList)
+{
+	foreach (Id const &id, idList) {
+		checkConstraintsForOnlyGraphicalLanguages(id);
+	}
+}
+
+void MainWindow::checkParentsConstraintsForOnlyGraphicalLanguages(QModelIndex const &index)
+{
+	QModelIndex parent = mModels->graphicalModel()->parent(index);
+	Id const parentId = mModels->graphicalModelAssistApi().idByIndex(parent);
+	if (mModels->graphicalModelAssistApi().isGraphicalId(parentId)) {
+		checkOwnConstraintsForOnlyGraphicalLanguages(parentId);
+		checkParentsConstraintsForOnlyGraphicalLanguages(parent);
+	}
+}
+
+void MainWindow::checkChildrensConstraintsForOnlyGraphicalLanguages(Id const &id)
+{
+	IdList childrenList = mModels->graphicalRepoApi().children(id);
+	foreach (Id const &childrenId, childrenList) {
+		if (mModels->graphicalModelAssistApi().isGraphicalId(childrenId)) {
+			checkOwnConstraintsForOnlyGraphicalLanguages(childrenId);
+			checkChildrensConstraintsForOnlyGraphicalLanguages(childrenId);
+		}
+	}
+}
+
+void MainWindow::checkLinksConstraintsForOnlyGraphicalLanguages(Id const &id)
+{
+	IdList linksList = mModels->graphicalRepoApi().links(id);
+	foreach (Id const &linkId, linksList) {
+		if (mModels->graphicalModelAssistApi().isGraphicalId(linkId)) {
+			checkOwnConstraintsForOnlyGraphicalLanguages(linkId);
+		}
+	}
+}
+
+void MainWindow::checkConstraintsForOnlyGraphicalLanguages(Id const &id)
+{
+	bool neededLogicalModel = mToolManager.customizer()->showLogicalModelExplorer();
+	if (!neededLogicalModel) {
+		EditorManagerInterface::MetaType metaType = mEditorManager.metaTypeOfElement(id);
+		checkOwnConstraintsForOnlyGraphicalLanguages(id);
+		if (metaType == EditorManagerInterface::node) {
+			QModelIndex index = mModels->graphicalModelAssistApi().indexById(id);
+			checkChildrensConstraintsForOnlyGraphicalLanguages(id);
+			checkParentsConstraintsForOnlyGraphicalLanguages(index);
+			checkLinksConstraintsForOnlyGraphicalLanguages(id);
+		}
+	}
+}
+// < qwerty_hardcode >
