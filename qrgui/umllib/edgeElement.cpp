@@ -13,6 +13,7 @@
 #include "../view/editorViewScene.h"
 #include "../editorPluginInterface/editorInterface.h"
 #include "../pluginManager/constraintsManager.h"
+#include "../mainwindow/mainWindow.h"
 
 using namespace qReal;
 
@@ -270,6 +271,8 @@ void EdgeElement::connectToPort()
 
 	mMoving = true;
 
+	IdList nodesForCheckConstraints;
+
 	// Now we check whether start or end have been connected
 	NodeElement *newSrc = getNodeAt(mLine.first());
 	NodeElement *newDst = getNodeAt(mLine.last());
@@ -294,11 +297,13 @@ void EdgeElement::connectToPort()
 	mPortFrom = newSrc ? newSrc->getPortId(mapToItem(newSrc, mLine.first())) : -1.0;
 
 	if (mSrc) {
+		nodesForCheckConstraints.push_back(mSrc->logicalId());
 		mSrc->delEdge(this);
 		mSrc = 0;
 	}
 
 	if (mPortFrom >= 0.0) {
+		nodesForCheckConstraints.push_back(newSrc->logicalId());
 		mSrc = newSrc;
 		mSrc->addEdge(this);
 	}
@@ -310,11 +315,13 @@ void EdgeElement::connectToPort()
 	mPortTo = newDst ? newDst->getPortId(mapToItem(newDst, mLine.last())) : -1.0;
 
 	if (mDst) {
+		nodesForCheckConstraints.push_back(mDst->logicalId());
 		mDst->delEdge(this);
 		mDst = 0;
 	}
 
 	if (mPortTo >= 0.0) {
+		nodesForCheckConstraints.push_back(newDst->logicalId());
 		mDst = newDst;
 		mDst->addEdge(this);
 	}
@@ -333,6 +340,9 @@ void EdgeElement::connectToPort()
 		squarizeHandler(QPointF());
 	adjustLink();
 	arrangeSrcAndDst();
+
+	MainWindow *mainWindow = (dynamic_cast<EditorViewScene*>(scene()))->mainWindow();//qwerty_forCheckConstraints
+	mainWindow->checkConstraints(nodesForCheckConstraints);
 }
 
 bool EdgeElement::initPossibleEdges()
@@ -889,11 +899,24 @@ void EdgeElement::updateData()
 
 void EdgeElement::removeLink(NodeElement const *from)
 {
-	if (mSrc == from)
-		mSrc = NULL;
+	IdList nodesForCheckConstraints;
+	if (mSrc) {
+		nodesForCheckConstraints.push_back(mSrc->logicalId());
+	}
+	if (mDst) {
+		nodesForCheckConstraints.push_back(mDst->logicalId());
+	}
 
-	if (mDst == from)
+	if (mSrc == from) {
+		mSrc = NULL;
+	}
+
+	if (mDst == from) {
 		mDst = NULL;
+	}
+
+	MainWindow *mainWindow = (dynamic_cast<EditorViewScene*>(scene()))->mainWindow();//qwerty_forCheckConstraints
+	mainWindow->checkConstraints(nodesForCheckConstraints);
 }
 
 void EdgeElement::placeStartTo(QPointF const &place)

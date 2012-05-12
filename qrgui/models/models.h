@@ -30,7 +30,6 @@ public:
 	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
 
 	Id logicalId(Id const &element) const;
-	IdList graphicalIds(Id const &element) const;
 
 	void reinit();
 

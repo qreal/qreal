@@ -41,8 +41,6 @@ public:
 
 signals:
 	void nameChanged(Id const &id);
-	void parentChangedForOnlyGraphicalLanguages(IdList const &idList);
-	void addedElementToModelForOnlyGraphicalLanguages(Id const &id);
 
 private:
 	LogicalModelView mLogicalModelView;

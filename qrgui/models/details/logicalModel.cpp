@@ -227,14 +227,17 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 			break;
 		case roles::fromRole:
 			mApi.setFrom(item->id(), value.value<Id>());
+			emit fromChanged(item->id());//qwerty_temp
 			break;
 		case roles::toRole:
 			mApi.setTo(item->id(), value.value<Id>());
+			emit toChanged(item->id());//qwerty_temp
 			break;
 		default:
 			if (role >= roles::customPropertiesBeginRole) {
 				QString selectedProperty = findPropertyName(item->id(), role);
 				mApi.setProperty(item->id(), selectedProperty, value);
+				emit propertyChanged(item->id());//qwerty_doubt
 				break;
 			}
 			Q_ASSERT(role < Qt::UserRole);

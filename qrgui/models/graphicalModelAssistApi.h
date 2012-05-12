@@ -79,11 +79,12 @@ public:
 	bool hasRootDiagrams() const;
 	int childrenOfRootDiagram() const;
 	int childrenOfDiagram(const Id &parent) const;
+
+public slots:
+	void nameChangedSlot(Id const &element);
+
 signals:
 	void nameChanged(Id const &id);
-	void propertyChangedForOnlyGraphicalLanguages(Id const &elem);
-	void parentChangedForOnlyGraphicalLanguages(IdList const &elements);
-	void addedElementToModelForOnlyGraphicalLanguages(Id const &element);
 
 private:
 	GraphicalModelAssistApi(GraphicalModelAssistApi const &);

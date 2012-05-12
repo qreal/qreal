@@ -99,7 +99,6 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id
 		newGraphicalModelItem = new GraphicalModelItem(id, logicalId, graphicalParentItem);
 	}
 	initializeElement(id, actualLogicalId, parentItem, newGraphicalModelItem, name, position);
-	emit addedElementToModelForOnlyGraphicalLanguages(id);//qwerty_hardcode
 }
 
 void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem
@@ -226,11 +225,6 @@ void GraphicalModel::changeParent(QModelIndex const &element, QModelIndex const 
 		mApi.setPosition(elementItem->id(), position);
 		mApi.setConfiguration(elementItem->id(), configuration);
 		endMoveRows();
-
-		IdList elements;
-		elements.append(elementItem->id());
-		elements.append(parentItem->id());
-		emit parentChangedForOnlyGraphicalLanguages(elements); //qwerty_hardcode
 	}
 }
 

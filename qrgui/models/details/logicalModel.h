@@ -46,6 +46,9 @@ signals:
 	void parentChanged(IdList const &idList);
 	void nameChanged(Id const &id);
 	void addedElementToModel(Id const &id);
+	void toChanged(Id const &id);//qwerty_temp
+	void fromChanged(Id const &id);
+	void propertyChanged(Id const &id);//qwerty_doubt
 
 private:
 	GraphicalModelView mGraphicalModelView;

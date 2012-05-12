@@ -75,14 +75,3 @@ Id Models::logicalId(Id const &element) const
 		return mGraphicalModel->graphicalModelAssistApi().logicalId(element);
 	}
 }
-
-IdList Models::graphicalIds(Id const &element) const
-{
-	IdList res;
-	if (mGraphicalModel->graphicalModelAssistApi().isGraphicalId(element)) {
-		res.push_back(element);
-		return res;
-	} else {
-		return mGraphicalModel->graphicalModelAssistApi().graphicalIdsByLogicalId(element);
-	}
-}

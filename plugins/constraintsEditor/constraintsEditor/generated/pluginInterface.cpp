@@ -441,10 +441,10 @@ int ConstraintsEditorPlugin::isNodeOrEdge(QString const &element) const
 QStringList ConstraintsEditorPlugin::getEnumValues(QString name) const 
 {
 	QStringList result;
-	if (name == "ErrorTypeType")
-		result << QString::fromUtf8("warning") << QString::fromUtf8("critical") << QString::fromUtf8("verification");
-	else if (name == "ExistsType")
+	if (name == "ExistsType")
 		result << QString::fromUtf8("false") << QString::fromUtf8("true") << QString::fromUtf8("doesn't matter");
+	else if (name == "ErrorTypeType")
+		result << QString::fromUtf8("warning") << QString::fromUtf8("critical") << QString::fromUtf8("verification");
 	return result;
 }
 

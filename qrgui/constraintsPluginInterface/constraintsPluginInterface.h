@@ -10,21 +10,7 @@ const QString keywordForAllMetamodels = "AllMetamodels";//qwerty_asd_copypast
 
 class ConstraintsPluginInterface {
 public:
-	virtual QList<CheckStatus> check(Id const &element, qrRepo::LogicalRepoApi const &logicalApi, EditorManagerInterface const &editorManager)
-	{
-		Q_UNUSED(element)
-		Q_UNUSED(logicalApi)
-		Q_UNUSED(editorManager)
-		return CheckStatus::defaultCheckStatusAsList();
-	}
-	virtual QList<CheckStatus> check(Id const &element, qrRepo::GraphicalRepoApi const &graphicalApi, EditorManagerInterface const &editorManager) //qwerty_harcode
-	{
-		Q_UNUSED(element)
-		Q_UNUSED(graphicalApi)
-		Q_UNUSED(editorManager)
-		return CheckStatus::defaultCheckStatusAsList();
-	}
-
+	virtual QList<CheckStatus> check(Id const &element, qrRepo::LogicalRepoApi const &logicalApi, EditorManagerInterface const &editorManager) = 0;
 	virtual QString metamodelName() const = 0;
 	virtual QString id() const = 0;
 

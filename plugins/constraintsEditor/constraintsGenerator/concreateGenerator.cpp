@@ -198,8 +198,6 @@ void ConcreateGenerator::generateDiagramFiles(Id const &diagram, QString diagram
 	resultDiagramH.replace("@@mainChecksForElemets@@", needeStrings.mainChecksForElemetsH);
 	resultDiagramH.replace("@@diagramName@@", diagramNameTemplate);
 	resultDiagramH.replace("@@pathToQReal@@", mPathToQReal);
-	resultDiagramH.replace("logical", "graphical"); //qwerty_hardcode_temp
-	resultDiagramH.replace("Logical", "Graphical"); //qwerty_hardcode_temp
 
 	resultDiagramCPP.replace("@@countOptionalCheckStatusesForElemets@@", needeStrings.countOptionalCheckStatusesForElemetsCPP);
 	resultDiagramCPP.replace("@@countMainCheckStatusesForElemets@@", needeStrings.countMainCheckStatusesForElemetsCPP);
@@ -208,8 +206,6 @@ void ConcreateGenerator::generateDiagramFiles(Id const &diagram, QString diagram
 	resultDiagramCPP.replace("@@addElementsInElementsNames@@", needeStrings.addElementsInElementsNamesCPP);
 	resultDiagramCPP.replace("@@diagramName@@", diagramNameTemplate);
 	resultDiagramCPP.replace("@@languageName@@", correctedLanguageName(diagram));
-	resultDiagramCPP.replace("logical", "graphical"); //qwerty_hardcode_temp
-	resultDiagramCPP.replace("Logical", "Graphical"); //qwerty_hardcode_temp
 
 	saveOutputFile(QString("constraints" + diagramNameTemplate + ".h"), resultDiagramH);
 	saveOutputFile(QString("constraints" + diagramNameTemplate + ".cpp"), resultDiagramCPP);
@@ -284,14 +280,10 @@ void ConcreateGenerator::generate()
 	resultPluginH.replace("@@includeConstraintsDiagramFiles@@", neededStrings.includeFilesPluginH);
 	resultPluginH.replace("@@privateFieldsOfConstraintsDigrams@@", neededStrings.privateFieldsPluginH);
 	resultPluginH.replace("@@pathToQReal@@", mPathToQReal);
-	resultPluginH.replace("logical", "graphical"); //qwerty_hardcode_temp
-	resultPluginH.replace("Logical", "Graphical"); //qwerty_hardcode_temp
 
 	resultPluginCPP.replace("@@metamodelName@@", mMetamodelName);
 	resultPluginCPP.replace("@@ifForMainCheckOfConstraintsDiagrams@@", neededStrings.ifForMainCheckPluginCPP);
 	resultPluginCPP.replace("@@constraintsPluginId@@", mConstraintsName);
-	resultPluginCPP.replace("logical", "graphical"); //qwerty_hardcode_temp
-	resultPluginCPP.replace("Logical", "Graphical"); //qwerty_hardcode_temp
 
 	saveOutputFile(QString("constraints" + mMetamodelName + ".pro"), resultPRO);
 	saveOutputFile(QString("constraints" + mMetamodelName + "Plugin.h"), resultPluginH);

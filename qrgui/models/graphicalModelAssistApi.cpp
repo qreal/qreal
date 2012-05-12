@@ -11,14 +11,13 @@ using namespace models::details;
 GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel, EditorManager const &editorManager, ConstraintsManager const &constraintsManager)
 		: mGraphicalModel(graphicalModel), mModelsAssistApi(graphicalModel, editorManager, constraintsManager)
 {
-	connect(&graphicalModel, SIGNAL(nameChanged(Id)), this, SIGNAL(nameChanged(Id)));
-
-	// < qwerty_hardcode > :
-	connect(&mModelsAssistApi, SIGNAL(propertyChangedInModelApi(Id)), this, SIGNAL(propertyChangedForOnlyGraphicalLanguages(Id)));
-	connect(&mGraphicalModel, SIGNAL(parentChangedForOnlyGraphicalLanguages(IdList)), this, SIGNAL(parentChangedForOnlyGraphicalLanguages(IdList)));
-	connect(&mGraphicalModel, SIGNAL(addedElementToModelForOnlyGraphicalLanguages(Id)), this, SIGNAL(addedElementToModelForOnlyGraphicalLanguages(Id)));
+	connect(&mGraphicalModel, SIGNAL(nameChanged(Id)), this, SLOT(nameChangedSlot(Id)));
 }
-// <\ qwerty_hardcode >
+
+void GraphicalModelAssistApi::nameChangedSlot(Id const &element)
+{
+	emit nameChanged(element);
+}
 
 EditorManager const &GraphicalModelAssistApi::editorManager() const
 {

@@ -107,10 +107,6 @@ public slots:
 	void checkConstraints(QModelIndex const &index);
 	void checkConstraints(IdList const &idList);
 
-	void checkConstraintsForOnlyGraphicalLanguages(Id const &id);
-	void checkConstraintsForOnlyGraphicalLanguages(QModelIndex const &index);
-	void checkConstraintsForOnlyGraphicalLanguages(IdList const &idList);
-
 private slots:
 	void setSceneFont();
 	void adjustMinimapZoom(int zoom);
@@ -216,11 +212,6 @@ private:
 	void checkParentsConstraints(QModelIndex const &index);
 	void checkChildrensConstraints(Id const &id);
 	void checkLinksConstraints(Id const &id);
-
-	void checkOwnConstraintsForOnlyGraphicalLanguages(Id const &id);
-	void checkParentsConstraintsForOnlyGraphicalLanguages(QModelIndex const &index);
-	void checkChildrensConstraintsForOnlyGraphicalLanguages(Id const &id);
-	void checkLinksConstraintsForOnlyGraphicalLanguages(Id const &id);
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on
