@@ -31,7 +31,7 @@ if (equals(QMAKE_CXX, "g++") : !macx) {
 
 LIBS += -L../bin -lqrrepo -lqrkernel -lqrutils #-lqrmc
 
-!system(pkg-config --exists gvc):NO_GRAPHVIZ = TRUE
+!system(pkg-config --exists libgvc):NO_GRAPHVIZ = TRUE
 
 isEmpty(NO_GRAPHVIZ) {
     DEFINES += GRAPHVIZ_INSTALLED
