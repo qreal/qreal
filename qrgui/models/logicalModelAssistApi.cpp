@@ -8,16 +8,14 @@ using namespace models::details;
 LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel, EditorManager const &editorManager, ConstraintsManager const &constraintsManager)
 	: mModelsAssistApi(logicalModel, editorManager, constraintsManager), mLogicalModel(logicalModel)
 {
-	QObject::connect(&mModelsAssistApi, SIGNAL(propertyChangedInModelApi(Id)), this, SLOT(propertyChangedSlot(Id)));//qwerty_doubt
+	QObject::connect(&mModelsAssistApi, SIGNAL(propertyChangedInModelApi(Id)), this, SLOT(propertyChangedSlot(Id)));
 	QObject::connect(&mLogicalModel, SIGNAL(parentChanged(IdList)), this, SLOT(parentChangedSlot(IdList)));
 	QObject::connect(&mLogicalModel, SIGNAL(nameChanged(Id)), this, SLOT(nameChangedSlot(Id)));
 	QObject::connect(&mLogicalModel, SIGNAL(addedElementToModel(Id)), this, SLOT(addedElementToModelSlot(Id)));
-	QObject::connect(&mLogicalModel, SIGNAL(toChanged(Id)), this, SLOT(toChangedSlot(Id)));//qwerty_temp
-	QObject::connect(&mLogicalModel, SIGNAL(fromChanged(Id)), this, SLOT(fromChangedSlot(Id)));
-	QObject::connect(&mLogicalModel, SIGNAL(propertyChanged(Id)), this, SLOT(propertyChangedSlot(Id)));//qwerty_doubt
+	QObject::connect(&mLogicalModel, SIGNAL(propertyChanged(Id)), this, SLOT(propertyChangedSlot(Id)));
 }
 
-void LogicalModelAssistApi::propertyChangedSlot(Id const &elem)//qwerty_doubt
+void LogicalModelAssistApi::propertyChangedSlot(Id const &elem)
 {
 	emit propertyChanged(elem);
 }
@@ -35,15 +33,6 @@ void LogicalModelAssistApi::nameChangedSlot(Id const &element)
 void LogicalModelAssistApi::addedElementToModelSlot(Id const &element)
 {
 	emit addedElementToModel(element);
-}
-
-void LogicalModelAssistApi::toChangedSlot(Id const &element)//qwerty_temp
-{
-	emit toChanged(element);
-}
-void LogicalModelAssistApi::fromChangedSlot(Id const &element)
-{
-	emit fromChanged(element);
 }
 
 EditorManager const &LogicalModelAssistApi::editorManager() const
@@ -169,7 +158,7 @@ void LogicalModelAssistApi::setPropertyByRoleName(Id const &elem, QVariant const
 	if (roleIndex < roles::customPropertiesBeginRole)
 		return;
 	mModelsAssistApi.setProperty(elem, newValue, roleIndex);
-	emit propertyChanged(elem);//qwerty_doubt
+	emit propertyChanged(elem);
 }
 
 QVariant LogicalModelAssistApi::propertyByRoleName(Id const &elem, QString const &roleName) const

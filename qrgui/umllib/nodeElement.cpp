@@ -1202,15 +1202,11 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 void NodeElement::addEdge(EdgeElement *edge)
 {
 	mEdgeList << edge;
-//	qReal::MainWindow *mainWindow = (dynamic_cast<EditorViewScene*>(scene()))->mainWindow();//qwerty_forCheckConstraints
-//	mainWindow->checkConstraints(logicalId());
 }
 
 void NodeElement::delEdge(EdgeElement *edge)
 {
 	mEdgeList.removeAt(mEdgeList.indexOf(edge));
-//	MainWindow *mainWindow = (dynamic_cast<EditorViewScene*>(scene()))->mainWindow();//qwerty_forCheckConstraints
-//	mainWindow->checkConstraints(logicalId());
 }
 
 void NodeElement::changeFoldState()

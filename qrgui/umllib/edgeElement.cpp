@@ -341,7 +341,7 @@ void EdgeElement::connectToPort()
 	adjustLink();
 	arrangeSrcAndDst();
 
-	MainWindow *mainWindow = (dynamic_cast<EditorViewScene*>(scene()))->mainWindow();//qwerty_forCheckConstraints
+	MainWindow *mainWindow = (dynamic_cast<EditorViewScene*>(scene()))->mainWindow();//qwerty_checkConstraints
 	mainWindow->checkConstraints(nodesForCheckConstraints);
 }
 
@@ -915,7 +915,7 @@ void EdgeElement::removeLink(NodeElement const *from)
 		mDst = NULL;
 	}
 
-	MainWindow *mainWindow = (dynamic_cast<EditorViewScene*>(scene()))->mainWindow();//qwerty_forCheckConstraints
+	MainWindow *mainWindow = (dynamic_cast<EditorViewScene*>(scene()))->mainWindow();//qwerty_checkConstraints
 	mainWindow->checkConstraints(nodesForCheckConstraints);
 }
 

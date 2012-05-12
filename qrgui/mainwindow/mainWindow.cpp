@@ -182,8 +182,6 @@ MainWindow::MainWindow()
 	connect(&mModels->logicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
 	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
 	connect(&mModels->logicalModelAssistApi(), SIGNAL(addedElementToModel(Id)), this, SLOT(checkConstraints(Id)));
-//	connect(&mModels->logicalModelAssistApi(), SIGNAL(toChanged(Id)), this, SLOT(checkConstraints(Id)));//qwerty_temp
-//	connect(&mModels->logicalModelAssistApi(), SIGNAL(fromChanged(Id)), this, SLOT(checkConstraints(Id)));
 }
 
 void MainWindow::connectActions()
@@ -642,7 +640,7 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 		if (logicalId != Id::rootId()) {
 			parentIndex = mModels->logicalModel()->parent(index);
 		}
-		mErrorReporter->delAllErrorOfElement(logicalId);//qwerty
+		mErrorReporter->delAllErrorOfElement(logicalId);
 	} else {
 		Id const graphicalId = mModels->graphicalModelAssistApi().idByIndex(index);
 		graphicalIdList.append(graphicalId);
@@ -683,11 +681,11 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	foreach (NodeElement *item, itemsToArrangeLinks) {
 		if (item) {
 			item->arrangeLinks();
-			checkConstraints(item->logicalId());//проверяем на ограничения связанные элементы удаляемого линка в логической модели //qwerty_checkConstraints
+			checkConstraints(item->logicalId());//проверяем на ограничения связанные элементы удаляемого линка в логической модели
 		}
 	}
 	if (parentIndex != mModels->logicalModelAssistApi().indexById(Id::rootId())) {
-		checkConstraints(parentIndex);//проверяем на ограничения родителя удаляемого элемента в логической модели //qwerty_checkConstraints
+		checkConstraints(parentIndex);//проверяем на ограничения родителя удаляемого элемента в логической модели
 	}
 }
 
@@ -1990,7 +1988,7 @@ void MainWindow::checkConstraints(QModelIndex const &index)
 	checkConstraints(id);
 }
 
-void MainWindow::checkConstraints(IdList const &idList)//qwerty_think over_2
+void MainWindow::checkConstraints(IdList const &idList)
 {
 	foreach (Id const &id, idList) {
 		checkConstraints(id);

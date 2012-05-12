@@ -448,13 +448,13 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForListOfElem
 {
 	QString resString = "";
 	QList<QString> resBool;
-	QString count = mApi.property(constraint, "count").toString(); //qwerty_think over_count_1
+	QString count = mApi.property(constraint, "count").toString(); //qwerty_think over_count
 	bool neededCount  = (!count.isEmpty());
 
 	QString selection = mApi.property(constraint, "selection").toString();
 	bool neededSelection  = (!selection.isEmpty()) && (selection.compare("all", Qt::CaseInsensitive) != 0);
 
-	if (neededCount) { //qwerty_think over_count_2
+	if (neededCount) {
 		resString += addStr + "int tempCount" + resElementName + "_" + QString::number(depth) + " = 0;\n";
 	}
 
@@ -478,7 +478,7 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForListOfElem
 	}
 	resString += addStr + "	main" + resElementName + "Res_" + QString::number(depth + 1) + " = main" + resElementName + "Res_" + QString::number(depth + 1) + " && " + functionName + "Res_" + QString::number(depth + 1) + ";\n";
 
-	if (neededCount) { //qwerty_think over_count_2
+	if (neededCount) {
 		resString += addStr + "	tempCount" + resElementName + "_" + QString::number(depth) + "++;\n";
 	}
 
@@ -489,7 +489,7 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForListOfElem
 	resString += addStr + "}\n";
 	resBool.push_back("main" + resElementName + "Res_" + QString::number(depth + 1));
 
-	if (neededCount) { //qwerty_think over_count_2
+	if (neededCount) {
 		QList<QString> countList = count.split(" ");
 		QString sign = countList.at(0);
 		if (sign == "=") {
