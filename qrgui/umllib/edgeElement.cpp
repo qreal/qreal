@@ -899,14 +899,6 @@ void EdgeElement::updateData()
 
 void EdgeElement::removeLink(NodeElement const *from)
 {
-	IdList nodesForCheckConstraints;
-	if (mSrc) {
-		nodesForCheckConstraints.push_back(mSrc->logicalId());
-	}
-	if (mDst) {
-		nodesForCheckConstraints.push_back(mDst->logicalId());
-	}
-
 	if (mSrc == from) {
 		mSrc = NULL;
 	}
@@ -914,9 +906,6 @@ void EdgeElement::removeLink(NodeElement const *from)
 	if (mDst == from) {
 		mDst = NULL;
 	}
-
-	MainWindow *mainWindow = (dynamic_cast<EditorViewScene*>(scene()))->mainWindow();//qwerty_checkConstraints
-	mainWindow->checkConstraints(nodesForCheckConstraints);
 }
 
 void EdgeElement::placeStartTo(QPointF const &place)
