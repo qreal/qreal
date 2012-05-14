@@ -6,9 +6,6 @@
 #include <QLineF>
 #include <QTime>
 #include <QDebug>
-#include "../../qrutils/outFile.h"
-
-using namespace utils;
 
 SdfRenderer::SdfRenderer()
 	: mStartX(0), mStartY(0), mNeedScale(true)
