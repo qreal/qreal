@@ -6,6 +6,9 @@
 #include <QLineF>
 #include <QTime>
 #include <QDebug>
+#include "../../qrutils/outFile.h"
+
+using namespace utils;
 
 SdfRenderer::SdfRenderer()
 	: mStartX(0), mStartY(0), mNeedScale(true)
@@ -51,7 +54,7 @@ bool SdfRenderer::load(const QString &filename)
 bool SdfRenderer::load(QDomDocument &document)
 {
 	doc = document;
-	QDomElement docElem = document.documentElement();
+	QDomElement docElem = doc.firstChildElement("picture");
 	first_size_x = docElem.attribute("sizex").toInt();
 	first_size_y = docElem.attribute("sizey").toInt();
 
