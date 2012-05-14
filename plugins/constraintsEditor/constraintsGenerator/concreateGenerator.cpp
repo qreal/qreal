@@ -293,6 +293,10 @@ void ConcreateGenerator::generate()
 QString ConcreateGenerator::correctedLanguageName(Id const &diagram)
 {
 	QString languageName = mApi.property(diagram, "languageName").toString();
+	if (languageName.isEmpty()) {
+		mErrorReporter.addCritical("LanguageName of conatraints diagram not found.", diagram);
+		return;
+	}
 	if ((languageName.compare("all", Qt::CaseInsensitive) == 0) || (languageName.compare(keywordForAllLanguages, Qt::CaseInsensitive) == 0)) {
 		languageName = keywordForAllLanguages;
 	}

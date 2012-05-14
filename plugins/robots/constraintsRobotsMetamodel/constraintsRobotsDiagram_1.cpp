@@ -11,28 +11,6 @@ ConstraintsRobotsDiagram_1::~ConstraintsRobotsDiagram_1()
 {
 }
 
-qReal::CheckStatus ConstraintsRobotsDiagram_1::checkEnginesStop_1(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi)
-{
-	bool res = true;
-		qReal::IdList newIncomingNodesNamesList_1 = logicalApi.incomingNodes(element);
-	bool mainIncomingNodesRes_2 = true;
-	foreach (qReal::Id const &nodeIncomingNodes_1, newIncomingNodesNamesList_1) {
-		bool propertyNodeRes_2 = true;
-		if (nodeIncomingNodes_1 != qReal::Id::rootId()) {
-			propertyNodeRes_2 = (nodeIncomingNodes_1.element() != "EnginesForward");
-		}
-		bool propertyNodeRes_3 = true;
-		if (nodeIncomingNodes_1 != qReal::Id::rootId()) {
-			propertyNodeRes_3 = (nodeIncomingNodes_1.element() != "EnginesBackward");
-		}
-			bool incomingNodesRes_2 = propertyNodeRes_2 && propertyNodeRes_3;
-		mainIncomingNodesRes_2 = mainIncomingNodesRes_2 && incomingNodesRes_2;
-	}
-		bool nodeRes_1 = mainIncomingNodesRes_2;
-	res = nodeRes_1;
-
-	return qReal::CheckStatus(res, "fail_stopRobots", qReal::CheckStatus::critical);
-}
 qReal::CheckStatus ConstraintsRobotsDiagram_1::checkRobotsDiagramNode_1(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi)
 {
 	bool res = true;
@@ -56,6 +34,28 @@ qReal::CheckStatus ConstraintsRobotsDiagram_1::checkRobotsDiagramNode_1(qReal::I
 
 	return qReal::CheckStatus(res, "fail_robotDiagram", qReal::CheckStatus::critical);
 }
+qReal::CheckStatus ConstraintsRobotsDiagram_1::checkEnginesStop_1(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi)
+{
+	bool res = true;
+		qReal::IdList newIncomingNodesNamesList_1 = logicalApi.incomingNodes(element);
+	bool mainIncomingNodesRes_2 = true;
+	foreach (qReal::Id const &nodeIncomingNodes_1, newIncomingNodesNamesList_1) {
+		bool propertyNodeRes_2 = true;
+		if (nodeIncomingNodes_1 != qReal::Id::rootId()) {
+			propertyNodeRes_2 = (nodeIncomingNodes_1.element() != "EnginesForward");
+		}
+		bool propertyNodeRes_3 = true;
+		if (nodeIncomingNodes_1 != qReal::Id::rootId()) {
+			propertyNodeRes_3 = (nodeIncomingNodes_1.element() != "EnginesBackward");
+		}
+			bool incomingNodesRes_2 = propertyNodeRes_2 && propertyNodeRes_3;
+		mainIncomingNodesRes_2 = mainIncomingNodesRes_2 && incomingNodesRes_2;
+	}
+		bool nodeRes_1 = mainIncomingNodesRes_2;
+	res = nodeRes_1;
+
+	return qReal::CheckStatus(res, "fail_stopRobots", qReal::CheckStatus::critical);
+}
 
 
 QList<qReal::CheckStatus> ConstraintsRobotsDiagram_1::checkEnginesStop(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi)
@@ -77,11 +77,11 @@ QList<qReal::CheckStatus> ConstraintsRobotsDiagram_1::check(qReal::Id const &ele
 {
 	mEditorManager = &editorManager;
 
-	if (element.element() == "EnginesStop") {
-		return checkEnginesStop(element, logicalApi);
-	}
 	if (element.element() == "RobotsDiagramNode") {
 		return checkRobotsDiagramNode(element, logicalApi);
+	}
+	if (element.element() == "EnginesStop") {
+		return checkEnginesStop(element, logicalApi);
 	}
 
 	return qReal::CheckStatus::defaultCheckStatusAsList();
@@ -95,8 +95,8 @@ QString ConstraintsRobotsDiagram_1::languageName() const
 QList<QString> ConstraintsRobotsDiagram_1::elementsNames() const
 {
 	QList<QString> elementsList;
-	elementsList.append("EnginesStop");
 	elementsList.append("RobotsDiagramNode");
+	elementsList.append("EnginesStop");
 
 	return elementsList;
 }

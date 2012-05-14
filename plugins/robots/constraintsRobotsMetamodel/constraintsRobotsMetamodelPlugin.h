@@ -1,7 +1,8 @@
 #pragma once
 
-#include "D:/My_EDUCATION/Qt4/YearlyProject/qreal/qreal/qrgui/pluginManager/editorManagerInterface.h"
+#include "../../../qrgui/pluginManager/editorManagerInterface.h"
 #include "constraintsRobotsDiagram_1.h"
+#include "constraintsRobotsDiagram_2.h"
 
 namespace constraints {
 
@@ -20,6 +21,7 @@ public:
 
 private:
 	ConstraintsRobotsDiagram_1 mConstraintsRobotsDiagram_1;
+	ConstraintsRobotsDiagram_2 mConstraintsRobotsDiagram_2;
 
 };
 

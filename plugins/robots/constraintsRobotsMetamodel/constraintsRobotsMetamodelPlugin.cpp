@@ -22,6 +22,9 @@ QList<qReal::CheckStatus> ConstraintsPlugin::check(qReal::Id const &element, qrR
 	if (((mConstraintsRobotsDiagram_1.languageName() == languageName) || (mConstraintsRobotsDiagram_1.languageName() == "AllLanguages")) && (mConstraintsRobotsDiagram_1.elementsNames().contains("AllEdges") || mConstraintsRobotsDiagram_1.elementsNames().contains("AllNodes") || mConstraintsRobotsDiagram_1.elementsNames().contains(elementName))) {
 		checkings.append(mConstraintsRobotsDiagram_1.check(element, logicalApi, editorManager));
 	}
+	if (((mConstraintsRobotsDiagram_2.languageName() == languageName) || (mConstraintsRobotsDiagram_2.languageName() == "AllLanguages")) && (mConstraintsRobotsDiagram_2.elementsNames().contains("AllEdges") || mConstraintsRobotsDiagram_2.elementsNames().contains("AllNodes") || mConstraintsRobotsDiagram_2.elementsNames().contains(elementName))) {
+		checkings.append(mConstraintsRobotsDiagram_2.check(element, logicalApi, editorManager));
+	}
 
 	return qReal::CheckStatus::resultCheckStatusList(checkings);
 }
