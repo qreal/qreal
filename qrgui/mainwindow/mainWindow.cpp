@@ -1882,9 +1882,10 @@ void MainWindow::arrangeElementsByDotRunner(const QString &algorithm, const QStr
 		mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi(),
 		mEditorManager, absolutePathToDotFiles);
 	runner->run(algorithm);
-	reinitModels();
-	activateItemOrDiagram(diagramId);
-	mUi->graphicalModelExplorer->setRootIndex(QModelIndex());
+	updateActiveDiagram();
+//	reinitModels();
+//	activateItemOrDiagram(diagramId);
+//	mUi->graphicalModelExplorer->setRootIndex(QModelIndex());
 }
 
 IdList MainWindow::selectedElementsOnActiveDiagram()
@@ -1904,4 +1905,12 @@ IdList MainWindow::selectedElementsOnActiveDiagram()
 		}
 	}
 	return selected;
+}
+
+void MainWindow::updateActiveDiagram()
+{
+	Id const diagramId = activeDiagram();
+	reinitModels();
+	activateItemOrDiagram(diagramId);
+	mUi->graphicalModelExplorer->setRootIndex(QModelIndex());
 }

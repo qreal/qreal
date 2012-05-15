@@ -1,7 +1,7 @@
 digraph G { 
-rankdir=TB; 
-beaibbbbifafeegfjfahhddihgajbfac -> ddjhbgbhdejbeajbjagdfdfeecaehdjd;
-aaacbcfbaeefecgcicbibbfdcdcdagaf -> fdehedadfbbeefcbiieidacgcfcghbhi;
-aaacbcfbaeefecgcicbibbfdcdcdagaf -> ddjhbgbhdejbeajbjagdfdfeecaehdjd;
-fdehedadfbbeefcbiieidacgcfcghbhi -> gheiadjhchefebcaibccfhfcefeebcba;
+rankdir=BT; 
+edeedfcgaaffehggaeeigcbcideceadf -> idecfchdbjgeeadfbfcjdgbfdhegaahc;
+iccbbiafdfahejfeigbbidfcgejifijd -> edaffccddeifefehafefdhgfdbfefdbi;
+fcdcfdfghhgfeedaadbgjhdhfddgeige -> edaffccddeifefehafefdhgfdbfefdbi;
+fcdcfdfghhgfeedaadbgjhdhfddgeige -> idecfchdbjgeeadfbfcjdgbfdhegaahc;
 }

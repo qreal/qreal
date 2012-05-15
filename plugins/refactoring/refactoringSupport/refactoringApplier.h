@@ -14,7 +14,7 @@ class RefactoringApplier : public QObject
 	Q_OBJECT
 
 public:
-	RefactoringApplier(LogicalModelAssistInterface const &logicalModelApi
+	RefactoringApplier(LogicalModelAssistInterface &logicalModelApi
 			, GraphicalModelAssistInterface &graphicalModelApi
 			, gui::MainWindowInterpretersInterface &interpretersInterface
 			, qrRepo::RepoApi *refactoringRepoApi
@@ -26,13 +26,10 @@ public:
 private:
 	bool hasProperty(const Id &id, const QString &propertyName) const;
 	QHash<QString, QVariant> getProperties(const Id &id) const;
-	IdList getElementsFromBeforeBlock() const;
-	IdList getElementsFromAfterBlock() const;
-	IdList getElementsFromBlock(const QString &blockType) const;
-	IdList getElementsFromActiveDiagram() const;
+	IdList getElementsFromBeforeBlock();
+	IdList getElementsFromAfterBlock();
+	IdList getElementsFromBlock(const QString &blockType);
 	Id idElementWithID(const QString &IDValue, const IdList &idList);
-	void addElement(const Id &id, IdList *idList);
-	bool isEdgeInModel(const Id &element) const;
 	QVariant getProperty(const Id &id, const QString &propertyName) const;
 
 	void setProperty(const Id &id, const QString &propertyName, const QVariant &value) const;
@@ -42,27 +39,28 @@ private:
 	void changePropertiesInModel(const Id &changeFromId, const Id &changeToId);
 	void changeElementInModel(const Id &changeFromId, const Id &changeToId);
 
-	Id getLinkEndModel(const qReal::Id &linkInModel, const qReal::Id &nodeInModel) const;
-	IdList children(const Id &id) const;
-	IdList linksModel(const Id &id) const;
+	QVariant getRefactoringProperty(const Id &id, const QString &propertyName) const;
+
+	void loadRefactoringRule();
+
+	IdList getApplyElementsTo();
+	void changeNamesRefactoring();
+	void changeElement(const Id &changeFromId, const Id &changeToId);
+	void changeElementName(const Id &changeFromId, const Id &changeToId);
+
 	Id fromInModel(const Id &id) const;
 	Id toInModel(const Id &id) const;
 	Id fromInRule(const Id &id) const;
 	Id toInRule(const Id &id) const;
-	QVariant getRefactoringProperty(const Id &id, const QString &propertyName) const;
 
-	void loadRefactoringRule();
-	bool compareLinks(Id const &first, Id const &second) const;
-	bool compareElements(Id const &first, Id const &second) const;
-	bool compareElementTypesAndProperties(Id const &first, Id const &second) const;
+	bool isNodeInModel(const Id &id);
+	bool isNodeInRule(const Id &id);
 
-	IdList getApplyElementsTo();
-	Id getStartElement();
-	void changeNamesRefactoring();
-	void changeElement(const Id &changeFromId, const Id &changeToId);
+	QString propertyID(const Id &id);
+	void checkDirection(const Id &changeFromId, const Id &changeToId, const Id &beforeId);
 
 	gui::MainWindowInterpretersInterface &mInterpretersInterface;
-	LogicalModelAssistInterface const &mLogicalModelApi;
+	LogicalModelAssistInterface &mLogicalModelApi;
 	GraphicalModelAssistInterface &mGraphicalModelApi;
 
 	QList<QPair<Id, Id> > *mRule;
@@ -71,5 +69,4 @@ private:
 	qrRepo::RepoApi *mRefactoringRepoApi;
 	QHash<Id, Id> *mMatch;
 };
-
 }

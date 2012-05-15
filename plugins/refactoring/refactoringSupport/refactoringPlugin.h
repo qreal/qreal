@@ -56,6 +56,8 @@ private:
 	void addPaletteGroup(QDomDocument metamodel, QDomElement palette, QString const &groupName, QStringList const &elementNameList);
 	void addElementsToMetamodelGroup(QDomDocument metamodel, QDomNodeList list, QDomElement metamodelGroup);
 	void arrangeElements(QString const &algorithm);
+	QList<QPair<Id, QPair<Id, bool> > > findOutsideSelectionLinks();
+	void removeUnnecessaryLinksFromSelected();
 
 	qReal::ErrorReporterInterface *mErrorReporter;
 
@@ -91,6 +93,7 @@ private:
 	RefactoringWindow *mRefactoringWindow;
 	QList<QHash<Id, Id> > mMatches;
 	QHash <Id, Id> mCurrentMatch;
+	IdList mSelectedElementsOnActiveDiagram;
 
 	QTranslator mAppTranslator;
 };

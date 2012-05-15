@@ -81,6 +81,7 @@ public:
 	virtual void saveDiagramAsAPictureToFile(const QString &fileName);
 	virtual void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles);
 	virtual IdList selectedElementsOnActiveDiagram();
+	virtual void updateActiveDiagram();
 
 signals:
 	void gesturesShowed();

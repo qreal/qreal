@@ -22,11 +22,7 @@ RefactoringWindow::RefactoringWindow(QWidget *parent) :
 
 void RefactoringWindow::openPicture(QListWidgetItem *item)
 {
-	QImage image;
 	QString const fileName = item->data(Qt::UserRole).toString();
-	image.load(fileName);
-	if (image.isNull())
-		return;
 	mUi->label->setScaledContents(true);
 	mUi->label->setPixmap(QPixmap(fileName));
 }
@@ -47,7 +43,7 @@ void RefactoringWindow::updateRefactorings(const QString &dirPath)
 	foreach (QString png, pngFiles) {
 		png.chop(4);
 		QListWidgetItem *item = new QListWidgetItem(png);
-		item->setData(Qt::UserRole, dirPath + "/" + png + ".png");
+		item->setData(Qt::UserRole, dirPath + png + ".png");
 		refactoringList->addItem(item);
 	}
 

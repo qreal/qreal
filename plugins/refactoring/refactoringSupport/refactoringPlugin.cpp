@@ -347,8 +347,8 @@ void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 	QString refactoringPath = mPathToRefactoringExamples + refactoringName + ".qrs";
 	mRefactoringRepoApi->open(refactoringPath);
 	if (mRefactoringFinder->refactoringRuleContainsSelectedSegment()) {
-		IdList selectedElementsOnScene = mMainWindowIFace->selectedElementsOnActiveDiagram();
-		foreach (Id const &selectedElement, selectedElementsOnScene) {
+		mSelectedElementsOnActiveDiagram = mMainWindowIFace->selectedElementsOnActiveDiagram();
+		foreach (Id const &selectedElement, mSelectedElementsOnActiveDiagram) {
 			QColor const color = QColor(SettingsManager::value("refactoringColor"
 					, "cyan").toString());
 			mMainWindowIFace->highlight(selectedElement, false, color);
@@ -397,6 +397,8 @@ void RefactoringPlugin::discardRefactoring()
 {
 	mMainWindowIFace->dehighlight();
 	mMatches.clear();
+	mCurrentMatch.clear();
+	mSelectedElementsOnActiveDiagram.clear();
 	mRefactoringWindow->discard();
 }
 
@@ -406,15 +408,14 @@ void RefactoringPlugin::createRefactoring()
 		Id diagramId = Id("RefactoringEditor", "RefactoringDiagram", "RefactoringDiagramNode", QUuid::createUuid().toString());
 		mGraphicalModelApi->createElement(Id::rootId(), diagramId, false, "NewRefactoringRule", QPointF());
 
-		QStringList listOfElementTypes;
-		listOfElementTypes << "BeforeBlock" << "AfterBlock" << "FromBeforeToAter";
-		QList<QPointF> listOfElementPositions;
-		listOfElementPositions << QPointF(300, 140) << QPointF(700, 140) << QPointF(540, 200);
+		QHash<QString, QPointF> elementTypesAndPositions;
+		elementTypesAndPositions.insert("BeforeBlock", QPointF(300, 140));
+		elementTypesAndPositions.insert("AfterBlock", QPointF(700, 140));
+		elementTypesAndPositions.insert("FromBeforeToAter", QPointF(540, 200));
 
-		for (int i = 0; i < listOfElementTypes.size(); ++i) {
-			QString const name = listOfElementTypes.at(i);
+		foreach(QString const name, elementTypesAndPositions.keys()) {
 			Id elementId = Id("RefactoringEditor", "RefactoringDiagram", name, QUuid::createUuid().toString());
-			mGraphicalModelApi->createElement(diagramId, elementId, false, name, listOfElementPositions.at(i));
+			mGraphicalModelApi->createElement(diagramId, elementId, false, name, elementTypesAndPositions[name]);
 		}
 		mMainWindowIFace->activateItemOrDiagram(diagramId);
 	}
@@ -422,8 +423,60 @@ void RefactoringPlugin::createRefactoring()
 
 void RefactoringPlugin::applyRefactoring()
 {
-	mRefactoringApplier->applyRefactoringRule();
-	arrangeElementsBT();
+	if (mSelectedElementsOnActiveDiagram.isEmpty())
+		mRefactoringApplier->applyRefactoringRule();
+	else
+	{
+		removeUnnecessaryLinksFromSelected();
+		Id const activeDiagramId = mMainWindowIFace->activeDiagram();
+		Id newDiagramId = Id(activeDiagramId.editor(), activeDiagramId.diagram(),
+				activeDiagramId.element(), QUuid::createUuid().toString());
+		mGraphicalModelApi->createElement(Id::rootId(), newDiagramId, false, "subprogram", QPointF());
+		foreach (Id const &id, mSelectedElementsOnActiveDiagram) {
+			mGraphicalModelApi->changeParent(id, newDiagramId, mGraphicalModelApi->position(id));
+		}
+		QList<QPair<Id, QPair<Id, bool> > > const outsideLinks = findOutsideSelectionLinks();
+		Id subprogramId = Id("RefactoringEditor", "RefactoringDiagramNode", "Subprogram", QUuid::createUuid().toString());
+		mGraphicalModelApi->createElement(activeDiagramId, subprogramId, false, "subprogram", mGraphicalModelApi->position(outsideLinks.first().second.first));
+		for (int i = 0; i <outsideLinks.size(); ++i) {
+			if (outsideLinks.at(i).second.second)
+				mGraphicalModelApi->setTo(outsideLinks.at(i).first, subprogramId);
+			else
+				mGraphicalModelApi->setFrom(outsideLinks.at(i).first, subprogramId);
+		}
+		mLogicalModelApi->addUsage(mGraphicalModelApi->logicalId(subprogramId), mGraphicalModelApi->logicalId(newDiagramId));
+	}
 	discardRefactoring();
+	mMainWindowIFace->updateActiveDiagram();
 }
 
+QList<QPair<Id, QPair<Id, bool> > > RefactoringPlugin::findOutsideSelectionLinks()
+{
+	QList<QPair<Id, QPair<Id, bool> > > result;
+	foreach (Id const &id, mSelectedElementsOnActiveDiagram) {
+		IdList const currentIdList = mGraphicalModelApi->graphicalRepoApi().links(id);
+		foreach (Id const currentId, currentIdList) {
+			Id const toId = mGraphicalModelApi->to(currentId);
+			Id const fromId = mGraphicalModelApi->from(currentId);
+			if (mSelectedElementsOnActiveDiagram.contains(toId) && !(mSelectedElementsOnActiveDiagram.contains(fromId)))
+				result.append(QPair<Id, QPair<Id, bool> > (currentId, QPair<Id, bool>(toId, true)));
+			if (mSelectedElementsOnActiveDiagram.contains(fromId) && !(mSelectedElementsOnActiveDiagram.contains(toId)))
+				result.append(QPair<Id, QPair<Id, bool> > (currentId, QPair<Id, bool>(fromId, false)));
+		}
+	}
+	return result;
+}
+
+void RefactoringPlugin::removeUnnecessaryLinksFromSelected()
+{
+	foreach (Id const &id, mSelectedElementsOnActiveDiagram) {
+		if (mGraphicalModelApi->to(id) == Id::rootId()
+				&& mGraphicalModelApi->from(id) == Id::rootId())
+			continue;
+		Id const toId = mGraphicalModelApi->to(id);
+		Id const fromId = mGraphicalModelApi->from(id);
+		if ((mSelectedElementsOnActiveDiagram.contains(toId) && !(mSelectedElementsOnActiveDiagram.contains(fromId)))
+		|| (mSelectedElementsOnActiveDiagram.contains(fromId) && !(mSelectedElementsOnActiveDiagram.contains(toId))))
+			mSelectedElementsOnActiveDiagram.removeAll(id);
+	}
+}

@@ -90,7 +90,5 @@ namespace qrRepo {
 			QString mWorkingFile;
 			Serializer serializer;
 		};
-
 	}
-
 }
