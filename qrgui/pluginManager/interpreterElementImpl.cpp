@@ -42,6 +42,20 @@ void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
 		QDomDocument portsDoc;
 		QDomNode portsPicture = portsDoc.importNode(sdfElement, false);
 		for (int i = 0; i < pointPortsList.size(); i++) {
+			QDomElement portsElement1 = portsDoc.createElement("point");
+			portsElement1.setAttribute("stroke-width", 11);
+			portsElement1.setAttribute("stroke-style", "solid");
+			portsElement1.setAttribute("stroke", "#c3dcc4");
+			portsElement1.setAttribute("x1", pointPortsList.at(i).toElement().attribute("x"));
+			portsElement1.setAttribute("y1", pointPortsList.at(i).toElement().attribute("y"));
+			portsPicture.appendChild(portsElement1);
+			QDomElement portsElement2 = portsDoc.createElement("point");
+			portsElement2.setAttribute("stroke-width", 3);
+			portsElement2.setAttribute("stroke-style", "solid");
+			portsElement2.setAttribute("stroke", "#465945");
+			portsElement2.setAttribute("x1", pointPortsList.at(i).toElement().attribute("x"));
+			portsElement2.setAttribute("y1", pointPortsList.at(i).toElement().attribute("y"));
+			portsPicture.appendChild(portsElement2);
 			StatPoint pt;
 			QString x = pointPortsList.at(i).toElement().attribute("x");
 			if(x.endsWith("a")) {
@@ -61,25 +75,27 @@ void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
 			pt.initWidth = width;
 			pt.initHeight = height;
 			pointPorts << pt;
-			QDomElement portsElement1 = portsDoc.createElement("point");
-			portsElement1.setAttribute("stroke-width", 11);
-			portsElement1.setAttribute("stroke-style", "solid");
-			portsElement1.setAttribute("stroke", "#c3dcc4");
-			portsElement1.setAttribute("x1", x);
-			portsElement1.setAttribute("y1", y);
-			portsPicture.appendChild(portsElement1);
-			QDomElement portsElement2 = portsDoc.createElement("point");
-			portsElement2.setAttribute("stroke-width", 3);
-			portsElement2.setAttribute("stroke-style", "solid");
-			portsElement2.setAttribute("stroke", "#465945");
-			portsElement2.setAttribute("x1", x);
-			portsElement2.setAttribute("y1", y);
-			portsPicture.appendChild(portsElement2);
 		}
 
 		for (int i = 0; i < linePortsList.size(); i++) {
-			OutFile out1("ololoLinePorts.txt");
-			linePortsList.at(i).toElement().save(out1(), 1);
+			QDomElement lineElement1 = portsDoc.createElement("line");
+			lineElement1.setAttribute("x1", linePortsList.at(i).firstChildElement("start").attribute("startx"));
+			lineElement1.setAttribute("y1", linePortsList.at(i).firstChildElement("start").attribute("starty"));
+			lineElement1.setAttribute("x2", linePortsList.at(i).firstChildElement("end").attribute("endx"));
+			lineElement1.setAttribute("y2", linePortsList.at(i).firstChildElement("end").attribute("endy"));
+			lineElement1.setAttribute("stroke-width", 7);
+			lineElement1.setAttribute("stroke-style", "solid");
+			lineElement1.setAttribute("stroke", "#c3dcc4");
+			portsPicture.appendChild(lineElement1);
+			QDomElement lineElement2 = portsDoc.createElement("line");
+			lineElement2.setAttribute("x1", linePortsList.at(i).firstChildElement("start").attribute("startx"));
+			lineElement2.setAttribute("y1", linePortsList.at(i).firstChildElement("start").attribute("starty"));
+			lineElement2.setAttribute("x2", linePortsList.at(i).firstChildElement("end").attribute("endx"));
+			lineElement2.setAttribute("y2", linePortsList.at(i).firstChildElement("end").attribute("endy"));
+			lineElement2.setAttribute("stroke-width", 1);
+			lineElement2.setAttribute("stroke-style", "solid");
+			lineElement2.setAttribute("stroke", "#465945");
+			portsPicture.appendChild(lineElement2);
 			StatLine ln;
 			QString x1 = linePortsList.at(i).firstChildElement("start").attribute("startx");
 			if(x1.endsWith("a")) {
@@ -113,24 +129,6 @@ void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
 			ln.initWidth = width;
 			ln.initHeight = height;
 			linePorts << ln;
-			QDomElement lineElement1 = portsDoc.createElement("line");
-			lineElement1.setAttribute("x1", x1);
-			lineElement1.setAttribute("y1", y1);
-			lineElement1.setAttribute("x2", x2);
-			lineElement1.setAttribute("y2", y2);
-			lineElement1.setAttribute("stroke-width", 7);
-			lineElement1.setAttribute("stroke-style", "solid");
-			lineElement1.setAttribute("stroke", "#c3dcc4");
-			portsPicture.appendChild(lineElement1);
-			QDomElement lineElement2 = portsDoc.createElement("line");
-			lineElement2.setAttribute("x1", x1);
-			lineElement2.setAttribute("y1", y1);
-			lineElement2.setAttribute("x2", x2);
-			lineElement2.setAttribute("y2", y2);
-			lineElement2.setAttribute("stroke-width", 1);
-			lineElement2.setAttribute("stroke-style", "solid");
-			lineElement2.setAttribute("stroke", "#465945");
-			portsPicture.appendChild(lineElement2);
 		}
 
 		portsDoc.appendChild(portsPicture);
@@ -384,33 +382,70 @@ void InterpreterElementImpl::drawEndArrow(QPainter *painter) const
 
 bool InterpreterElementImpl::isContainer()
 {
-	return mEditorRepoApi->typeName(mId) == "Container";
+	QDomElement propertiesElement = mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
+	if (propertiesElement.hasChildNodes()) {
+		if (!propertiesElement.firstChildElement("container").isNull()) {
+			return true;
+		}
+	}
+	return false;
 }
 
 bool InterpreterElementImpl::isSortingContainer()
 {
-	return true; //(mEditorRepoApi->stringProperty(mId, "sortContainer") == "true");
+	QDomElement propertiesElement = mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
+	if (propertiesElement.hasChildNodes()) {
+		if (!propertiesElement.firstChildElement("sortContainer").isNull()) {
+			return true;
+		}
+	}
+	return false;
 }
 
 int InterpreterElementImpl::sizeOfForestalling()
 {
-	return mEditorRepoApi->stringProperty(mId, "forestallingSize").toInt();
+	int size = 0;
+	QDomElement propertiesElement = mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
+	if (propertiesElement.hasChildNodes()) {
+		if (!propertiesElement.firstChildElement("forestallingSize").isNull()) {
+			size = propertiesElement.firstChildElement("forestallingSize").attribute("size").toInt();
+		}
+	}
+	return size;
 }
 
 int InterpreterElementImpl::sizeOfChildrenForestalling()
 {
-	return mEditorRepoApi->stringProperty(mId, "childrenForestallingSize").toInt();
+	int size = 0;
+	QDomElement propertiesElement = mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
+	if (propertiesElement.hasChildNodes()) {
+		if (!propertiesElement.firstChildElement("childrenForestallingSize").isNull()) {
+			size = propertiesElement.firstChildElement("childrenForestallingSize").attribute("size").toInt();
+		}
+	}
+	return size;
 }
 
 bool InterpreterElementImpl::hasMovableChildren()
 {
-	return (mEditorRepoApi->stringProperty(mId, "banChildrenMove") == "false");
+	QDomElement propertiesElement = mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
+	if (propertiesElement.hasChildNodes()) {
+		if (!propertiesElement.firstChildElement("banChildrenMove").isNull()) {
+			return true;
+		}
+	}
+	return false;
 }
 
 bool InterpreterElementImpl::minimizesToChildren()
 {
-	return (mEditorRepoApi->stringProperty(mId, "minimizeToChildren") == "true");
-
+	QDomElement propertiesElement = mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
+	if (propertiesElement.hasChildNodes()) {
+		if (!propertiesElement.firstChildElement("minimizeToChildren").isNull()) {
+			return true;
+		}
+	}
+	return false;
 }
 
 bool InterpreterElementImpl::maximizesChildren()
