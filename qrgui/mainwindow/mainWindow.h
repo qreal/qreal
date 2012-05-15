@@ -28,7 +28,6 @@
 
 #include  "paletteTree.h"
 
-
 namespace Ui {
 class MainWindowUi;
 }

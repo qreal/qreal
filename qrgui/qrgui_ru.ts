@@ -442,8 +442,8 @@ Replace:</source>
     <name>FindManager</name>
     <message>
         <location filename="mainwindow/findManager.cpp" line="23"/>
-        <location filename="mainwindow/findManager.cpp" line="56"/>
-        <location filename="mainwindow/findManager.cpp" line="57"/>
+        <location filename="mainwindow/findManager.cpp" line="62"/>
+        <location filename="mainwindow/findManager.cpp" line="63"/>
         <source>by name</source>
         <translation>по имени</translation>
     </message>
@@ -459,18 +459,26 @@ Replace:</source>
     </message>
     <message>
         <location filename="mainwindow/findManager.cpp" line="29"/>
-        <location filename="mainwindow/findManager.cpp" line="61"/>
-        <location filename="mainwindow/findManager.cpp" line="62"/>
+        <location filename="mainwindow/findManager.cpp" line="69"/>
+        <location filename="mainwindow/findManager.cpp" line="70"/>
         <source>by property content</source>
         <translation>по содержимому свойств</translation>
     </message>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="40"/>
+        <location filename="mainwindow/findManager.cpp" line="39"/>
+        <location filename="mainwindow/findManager.cpp" line="41"/>
+        <location filename="mainwindow/findManager.cpp" line="64"/>
+        <location filename="mainwindow/findManager.cpp" line="71"/>
+        <source>case sensitivity</source>
+        <translation>чувствительность к регистру</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/findManager.cpp" line="45"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="43"/>
+        <location filename="mainwindow/findManager.cpp" line="48"/>
         <source>   :: </source>
         <translation>   :: </translation>
     </message>
@@ -531,12 +539,17 @@ Replace:</source>
         <translation>по содержимому свойств</translation>
     </message>
     <message>
-        <location filename="dialogs/findReplaceDialog.cpp" line="26"/>
+        <location filename="dialogs/findReplaceDialog.ui" line="109"/>
+        <source>case sensitivity</source>
+        <translation>чувствительность к регистру</translation>
+    </message>
+    <message>
+        <location filename="dialogs/findReplaceDialog.cpp" line="28"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="dialogs/findReplaceDialog.cpp" line="97"/>
+        <location filename="dialogs/findReplaceDialog.cpp" line="103"/>
         <source> / </source>
         <translation></translation>
     </message>
@@ -2940,19 +2953,19 @@ Replace:</source>
 <context>
     <name>qReal::MainWindow</name>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="457"/>
+        <location filename="mainwindow/mainWindow.cpp" line="462"/>
         <source>These plugins are not present, but needed to load the save:
 </source>
         <translation>Эти плагины отсутствуют, но нужны для загрузки сохранения:
 </translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="460"/>
+        <location filename="mainwindow/mainWindow.cpp" line="465"/>
         <source>Do you want to create new project?</source>
         <translation>Вы хотите создать новый проект?</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="463"/>
+        <location filename="mainwindow/mainWindow.cpp" line="468"/>
         <source>Some plugins are missing</source>
         <translation>Некоторых плагинов не хватает</translation>
     </message>
@@ -2985,16 +2998,16 @@ Replace:</source>
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="806"/>
-        <location filename="mainwindow/mainWindow.cpp" line="823"/>
-        <location filename="mainwindow/mainWindow.cpp" line="841"/>
+        <location filename="mainwindow/mainWindow.cpp" line="811"/>
+        <location filename="mainwindow/mainWindow.cpp" line="828"/>
+        <location filename="mainwindow/mainWindow.cpp" line="846"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="808"/>
-        <location filename="mainwindow/mainWindow.cpp" line="825"/>
-        <location filename="mainwindow/mainWindow.cpp" line="843"/>
+        <location filename="mainwindow/mainWindow.cpp" line="813"/>
+        <location filename="mainwindow/mainWindow.cpp" line="830"/>
+        <location filename="mainwindow/mainWindow.cpp" line="848"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3035,23 +3048,23 @@ Replace:</source>
         <translation type="obsolete">Пожалуйста, заполните настройки компиляции (Настройки -&gt; Настройки... -&gt; Компилятор)</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="437"/>
-        <location filename="mainwindow/mainWindow.cpp" line="440"/>
+        <location filename="mainwindow/mainWindow.cpp" line="442"/>
+        <location filename="mainwindow/mainWindow.cpp" line="445"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="488"/>
+        <location filename="mainwindow/mainWindow.cpp" line="493"/>
         <source>Select file with a save to import</source>
         <translation>Выберите файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="512"/>
+        <location filename="mainwindow/mainWindow.cpp" line="517"/>
         <source>Select file with a save to open</source>
         <translation>Выберите файл для открытия</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="755"/>
+        <location filename="mainwindow/mainWindow.cpp" line="760"/>
         <source>About QReal:Robots</source>
         <translation>О QReal:Robots</translation>
     </message>
@@ -3088,59 +3101,59 @@ Replace:</source>
         <translation type="obsolete">по содержимому свойств</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="756"/>
+        <location filename="mainwindow/mainWindow.cpp" line="761"/>
         <source>&lt;b&gt;QReal:Robots&lt;b&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;http://qreal.ru/&quot;&gt;http://qreal.ru/&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="841"/>
+        <location filename="mainwindow/mainWindow.cpp" line="846"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="843"/>
+        <location filename="mainwindow/mainWindow.cpp" line="848"/>
         <source>Parsing is finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="977"/>
-        <location filename="mainwindow/mainWindow.cpp" line="985"/>
+        <location filename="mainwindow/mainWindow.cpp" line="982"/>
+        <location filename="mainwindow/mainWindow.cpp" line="990"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1410"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1415"/>
         <source>Select file to save current model to</source>
         <translation>Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1787"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1792"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1794"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1799"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1794"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1799"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1859"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1860"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1864"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1865"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1862"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1867"/>
         <source>Discard</source>
         <translation>Не сохранять</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1863"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1868"/>
         <source>Do you want to save current project?</source>
         <translation>Сохранить текущий проект?</translation>
     </message>
@@ -3149,30 +3162,30 @@ Replace:</source>
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1295"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1300"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1317"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1322"/>
         <source>Choose new diagram</source>
         <translation>Выберите новую диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1319"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1324"/>
         <source>There is no existing diagram,
  choose diagram you want work with:</source>
         <translation>Диаграммы пока не создано,
 укажите диаграмму, с которой хотите работать:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1338"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1861"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1343"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1866"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1340"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1345"/>
         <source>Done</source>
         <translation>Готово</translation>
     </message>

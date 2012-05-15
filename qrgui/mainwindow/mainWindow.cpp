@@ -121,8 +121,8 @@ MainWindow::MainWindow()
 	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
 
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
-	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(),
-									this, mFindReplaceDialog);
+	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi()
+			, this, mFindReplaceDialog);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());

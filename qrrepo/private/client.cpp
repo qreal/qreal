@@ -32,37 +32,53 @@ Client::~Client()
 	}
 }
 
-IdList Client::findElementsByName(const QString &name) const
+IdList Client::findElementsByName(const QString &name, bool sensitivity) const
 {
+	Qt::CaseSensitivity caseSensitivity;
+
+	if (sensitivity) {
+		caseSensitivity = Qt::CaseSensitive;
+	} else {
+		caseSensitivity = Qt::CaseInsensitive;
+	}
+
 	IdList result;
 
 	foreach (Object *element, mObjects.values())
-		if ((element->property("name").toString().contains(name))
+		if ((element->property("name").toString().contains(name, caseSensitivity))
 			&& (!isLogicalId(mObjects.key(element))))
 				result.append(mObjects.key(element));
 
 	return result;
 }
 
-qReal::IdList Client::elementsByProperty(QString const &property) const
+qReal::IdList Client::elementsByProperty(QString const &property, bool sensitivity) const
 {
 	IdList result;
 
 	foreach (Object *element, mObjects.values())
-		if ((element->hasProperty(property)) && (!isLogicalId(mObjects.key(element))))
+		if ((element->hasProperty(property, sensitivity)) && (!isLogicalId(mObjects.key(element))))
 				result.append(mObjects.key(element));
 
 	return result;
 }
 
-qReal::IdList Client::elementsByPropertyContent(QString const &propertyValue) const
+qReal::IdList Client::elementsByPropertyContent(QString const &propertyValue, bool sensitivity) const
 {
+	Qt::CaseSensitivity caseSensitivity;
+
+	if (sensitivity) {
+		caseSensitivity = Qt::CaseSensitive;
+	} else {
+		caseSensitivity = Qt::CaseInsensitive;
+	}
+
 	IdList result;
 
 	foreach (Object *element, mObjects.values()) {
 		QMapIterator<QString, QVariant> iterator = element->propertiesIterator();
 		while (iterator.hasNext())
-			if (iterator.next().value().toString().contains(propertyValue)) {
+			if (iterator.next().value().toString().contains(propertyValue, caseSensitivity)) {
 				result.append(mObjects.key(element));
 				break;
 			}
@@ -73,9 +89,9 @@ qReal::IdList Client::elementsByPropertyContent(QString const &propertyValue) co
 
 void Client::replaceProperties(qReal::IdList const &toReplace, QString const value, QString const newValue)
 {
-	foreach (qReal::Id currentId, toReplace)
-		//setProperty(currentId, (QString)"name", (QVariant)newValue);
+	foreach (qReal::Id currentId, toReplace) {
 		mObjects[currentId]->replaceProperties(value, newValue);
+	}
 }
 
 IdList Client::children(Id const &id) const
@@ -217,10 +233,10 @@ void Client::removeProperty( const Id &id, const QString &name )
 	}
 }
 
-bool Client::hasProperty(const Id &id, const QString &name) const
+bool Client::hasProperty(const Id &id, const QString &name, bool sensitivity) const
 {
 	if (mObjects.contains(id)) {
-		return mObjects[id]->hasProperty(name);
+		return mObjects[id]->hasProperty(name, sensitivity);
 	} else {
 		throw Exception("Client: Checking the existence of a property '" + name + "' of nonexistent object " + id.toString());
 	}

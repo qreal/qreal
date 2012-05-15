@@ -97,6 +97,20 @@
         </widget>
        </item>
        <item>
+        <widget class="Line" name="mLine">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="mSensitivity">
+         <property name="text">
+          <string>case sensitivity</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QListWidget" name="mListWidget"/>
        </item>
       </layout>

@@ -3,8 +3,8 @@
 
 FindReplaceDialog::FindReplaceDialog(qrRepo::LogicalRepoApi const &logicalRepoApi, QWidget *parent)
 	: QDialog(parent)
-	, mUi(new Ui::FindReplaceDialog)
 	, mCommonApi(logicalRepoApi)
+	, mUi(new Ui::FindReplaceDialog)
 {
 	mUi->setupUi(this);
 
@@ -12,11 +12,13 @@ FindReplaceDialog::FindReplaceDialog(qrRepo::LogicalRepoApi const &logicalRepoAp
 	mCheckBoxes.append(mUi->mByTypeBox);
 	mCheckBoxes.append(mUi->mByPropertyBox);
 	mCheckBoxes.append(mUi->mByContentBox);
+	mCheckBoxes.append(mUi->mSensitivity);
 
 	mCheckBoxes.first()->setChecked(true);
 
-	foreach (QCheckBox *current, mCheckBoxes)
+	foreach (QCheckBox *current, mCheckBoxes) {
 		connect(current, SIGNAL(clicked()), this, SLOT(tryEnableReplaceButton()));
+	}
 
 	connect(mUi->mFindButton, SIGNAL(clicked()), this, SLOT(findClicked()));
 	connect(mUi->mReplaceButton, SIGNAL(clicked()), this, SLOT(replaceHandler()));
@@ -28,8 +30,8 @@ FindReplaceDialog::FindReplaceDialog(qrRepo::LogicalRepoApi const &logicalRepoAp
 
 void FindReplaceDialog::tryEnableReplaceButton()
 {
-	mUi->mReplaceButton->setEnabled((mUi->mByNameBox->isChecked() || mUi->mByContentBox->isChecked()) &&
-		(!mUi->mByPropertyBox->isChecked()) && (!mUi->mByTypeBox->isChecked()));
+	mUi->mReplaceButton->setEnabled((mUi->mByNameBox->isChecked() || mUi->mByContentBox->isChecked())
+			&& (!mUi->mByPropertyBox->isChecked()) && (!mUi->mByTypeBox->isChecked()));
 }
 
 void FindReplaceDialog::stateClear()
@@ -53,9 +55,11 @@ void FindReplaceDialog::findClicked()
 {
 	if (mUi->mFindEdit->text().length() != 0) {
 		QStringList searchData;
-		foreach (QCheckBox *current, mCheckBoxes)
-			if (current->isChecked())
+		foreach (QCheckBox *current, mCheckBoxes) {
+			if (current->isChecked()) {
 				searchData.append(current->text());
+			}
+		}
 		if (!searchData.isEmpty()) {
 			searchData.push_front(mUi->mFindEdit->text());
 			emit findModelByName(searchData);
@@ -67,9 +71,11 @@ void FindReplaceDialog::replaceHandler()
 {
 	if ((mUi->mFindEdit->text().length() != 0) && (mUi->mReplaceEdit->text().length() != 0)) {
 		QStringList searchData;
-		foreach (QCheckBox *current, mCheckBoxes)
-			if (current->isChecked())
+		foreach (QCheckBox *current, mCheckBoxes) {
+			if (current->isChecked()) {
 				searchData.append(current->text());
+			}
+		}
 		if (!searchData.isEmpty()) {
 			searchData.push_front(mUi->mReplaceEdit->text());
 			searchData.push_front(mUi->mFindEdit->text());

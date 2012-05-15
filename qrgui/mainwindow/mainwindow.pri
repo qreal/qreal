@@ -9,7 +9,7 @@ HEADERS += \
 	mainwindow/mainWindowInterpretersInterface.h \
 	mainwindow/helpBrowser.h \
 	mainwindow/paletteTree.h \
-    mainwindow/findManager.h
+	mainwindow/findManager.h
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -19,7 +19,7 @@ SOURCES += \
 	mainwindow/errorListWidget.cpp \
 	mainwindow/helpBrowser.cpp \
 	mainwindow/paletteTree.cpp \
-    mainwindow/findManager.cpp
+	mainwindow/findManager.cpp
 
 FORMS += \
 	mainwindow/mainWindow.ui \

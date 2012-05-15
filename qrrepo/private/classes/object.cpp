@@ -14,9 +14,10 @@ Object::Object(const Id &id, const Id &parent)
 
 void Object::replaceProperties(QString const value, QString newValue)
 {
-	foreach (QVariant val, mProperties.values())
+	foreach (QVariant val, mProperties.values()) {
 		if (val.toString().contains(value))
-		mProperties[mProperties.key(val)] = (QVariant)newValue;
+		mProperties[mProperties.key(val)] = newValue;
+	}
 }
 
 Object::Object(const Id &id, const Id &parent, const qReal::Id &logicalId)
@@ -163,9 +164,19 @@ void Object::removeTemporaryRemovedLinks()
 	temporaryRemovedLinksAt(QString());
 }
 
-bool Object::hasProperty(const QString &name) const
+bool Object::hasProperty(const QString &name, bool sensitivity) const
 {
-	return mProperties.contains(name);
+	QStringList properties = mProperties.keys();
+
+	Qt::CaseSensitivity caseSensitivity;
+
+	if (sensitivity) {
+		caseSensitivity = Qt::CaseSensitive;
+	} else {
+		caseSensitivity = Qt::CaseInsensitive;
+	}
+
+	return properties.contains(name, caseSensitivity);
 }
 
 void Object::removeProperty(const QString &name)

@@ -9,7 +9,7 @@ HEADERS += \
 	dialogs/checkoutdialog.h \
 	dialogs/preferencesPages/featuresPage.h \
 	dialogs/preferencesPages/preferencesPage.h \
-    dialogs/findReplaceDialog.h
+	dialogs/findReplaceDialog.h
 
 SOURCES += \
 	dialogs/plugindialog.cpp \
@@ -21,7 +21,7 @@ SOURCES += \
 	dialogs/preferencesPages/miscellaniousPage.cpp \
 	dialogs/checkoutdialog.cpp \
 	dialogs/preferencesPages/featuresPage.cpp \
-    dialogs/findReplaceDialog.cpp
+	dialogs/findReplaceDialog.cpp
 
 FORMS += \
 	dialogs/editorGeneratorDialog.ui \
@@ -32,4 +32,4 @@ FORMS += \
 	dialogs/preferencesPages/debuggerPage.ui \
 	dialogs/preferencesPages/behaviourPage.ui \
 	dialogs/preferencesPages/featuresPage.ui \
-    dialogs/findReplaceDialog.ui
+	dialogs/findReplaceDialog.ui
