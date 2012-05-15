@@ -42,36 +42,91 @@ void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
 		QDomDocument portsDoc;
 		QDomNode portsPicture = portsDoc.importNode(sdfElement, false);
 		for (int i = 0; i < pointPortsList.size(); i++) {
+			StatPoint pt;
+			QString x = pointPortsList.at(i).toElement().attribute("x");
+			if(x.endsWith("a")) {
+				pt.prop_x = true;
+				x.chop(1);
+			} else {
+				pt.prop_x = false;
+			}
+			QString y = pointPortsList.at(i).toElement().attribute("y");
+			if(y.endsWith("a")) {
+				pt.prop_y = true;
+				y.chop(1);
+			} else {
+				pt.prop_y = false;
+			}
+			pt.point = QPointF(x.toDouble() / static_cast<double>(width), y.toDouble() / static_cast<double>(height));
+			pt.initWidth = width;
+			pt.initHeight = height;
+			pointPorts << pt;
 			QDomElement portsElement1 = portsDoc.createElement("point");
 			portsElement1.setAttribute("stroke-width", 11);
 			portsElement1.setAttribute("stroke-style", "solid");
 			portsElement1.setAttribute("stroke", "#c3dcc4");
-			portsElement1.setAttribute("x1", pointPortsList.at(i).toElement().attribute("x"));
-			portsElement1.setAttribute("y1", pointPortsList.at(i).toElement().attribute("y"));
+			portsElement1.setAttribute("x1", x);
+			portsElement1.setAttribute("y1", y);
 			portsPicture.appendChild(portsElement1);
 			QDomElement portsElement2 = portsDoc.createElement("point");
 			portsElement2.setAttribute("stroke-width", 3);
 			portsElement2.setAttribute("stroke-style", "solid");
 			portsElement2.setAttribute("stroke", "#465945");
-			portsElement2.setAttribute("x1", pointPortsList.at(i).toElement().attribute("x"));
-			portsElement2.setAttribute("y1", pointPortsList.at(i).toElement().attribute("y"));
+			portsElement2.setAttribute("x1", x);
+			portsElement2.setAttribute("y1", y);
 			portsPicture.appendChild(portsElement2);
 		}
-		for (int i = 0; i < linePortsList.size(); i + 2) {
+
+		for (int i = 0; i < linePortsList.size(); i++) {
+			OutFile out1("ololoLinePorts.txt");
+			linePortsList.at(i).toElement().save(out1(), 1);
+			StatLine ln;
+			QString x1 = linePortsList.at(i).firstChildElement("start").attribute("startx");
+			if(x1.endsWith("a")) {
+				ln.prop_x1 = true;
+				x1.chop(1);
+			} else {
+				ln.prop_x1 = false;
+			}
+			QString y1 = linePortsList.at(i).firstChildElement("start").attribute("starty");
+			if(y1.endsWith("a")) {
+				ln.prop_y1 = true;
+				y1.chop(1);
+			} else {
+				ln.prop_y1 = false;
+			}
+			QString x2 = linePortsList.at(i).firstChildElement("end").attribute("endx");
+			if(x2.endsWith("a")) {
+				ln.prop_x2 = true;
+				x2.chop(1);
+			} else {
+				ln.prop_x2 = false;
+			}
+			QString y2 = linePortsList.at(i).firstChildElement("end").attribute("endy");
+			if(y2.endsWith("a")) {
+				ln.prop_y2 = true;
+				y2.chop(1);
+			} else {
+				ln.prop_y2 = false;
+			}
+			ln.line = QLineF(x1.toDouble() / static_cast<double>(width), y1.toDouble() / static_cast<double>(height), x2.toDouble() / static_cast<double>(width), y2.toDouble() / static_cast<double>(height));
+			ln.initWidth = width;
+			ln.initHeight = height;
+			linePorts << ln;
 			QDomElement lineElement1 = portsDoc.createElement("line");
-			lineElement1.setAttribute("x1", linePortsList.at(i).toElement().attribute("startx"));
-			lineElement1.setAttribute("y1", linePortsList.at(i).toElement().attribute("starty"));
-			lineElement1.setAttribute("x2", linePortsList.at(i+1).toElement().attribute("endx"));
-			lineElement1.setAttribute("y2", linePortsList.at(i+1).toElement().attribute("endy"));
+			lineElement1.setAttribute("x1", x1);
+			lineElement1.setAttribute("y1", y1);
+			lineElement1.setAttribute("x2", x2);
+			lineElement1.setAttribute("y2", y2);
 			lineElement1.setAttribute("stroke-width", 7);
 			lineElement1.setAttribute("stroke-style", "solid");
 			lineElement1.setAttribute("stroke", "#c3dcc4");
 			portsPicture.appendChild(lineElement1);
 			QDomElement lineElement2 = portsDoc.createElement("line");
-			lineElement2.setAttribute("x1", linePortsList.at(i).toElement().attribute("startx"));
-			lineElement2.setAttribute("y1", linePortsList.at(i).toElement().attribute("starty"));
-			lineElement2.setAttribute("x2", linePortsList.at(i+1).toElement().attribute("endx"));
-			lineElement2.setAttribute("y2", linePortsList.at(i+1).toElement().attribute("endy"));
+			lineElement2.setAttribute("x1", x1);
+			lineElement2.setAttribute("y1", y1);
+			lineElement2.setAttribute("x2", x2);
+			lineElement2.setAttribute("y2", y2);
 			lineElement2.setAttribute("stroke-width", 1);
 			lineElement2.setAttribute("stroke-style", "solid");
 			lineElement2.setAttribute("stroke", "#465945");
