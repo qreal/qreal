@@ -1,6 +1,6 @@
 #pragma once
 
-#include "D:/My_EDUCATION/Qt4/YearlyProject/qreal/qreal/qrgui/pluginManager/editorManagerInterface.h"
+#include "../../qrgui/pluginManager/editorManagerInterface.h"
 #include "constraintsAllLanguages_1.h"
 
 namespace constraints {

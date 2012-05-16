@@ -295,7 +295,6 @@ QString ConcreateGenerator::correctedLanguageName(Id const &diagram)
 	QString languageName = mApi.property(diagram, "languageName").toString();
 	if (languageName.isEmpty()) {
 		mErrorReporter.addCritical("LanguageName of conatraints diagram not found.", diagram);
-		return;
 	}
 	if ((languageName.compare("all", Qt::CaseInsensitive) == 0) || (languageName.compare(keywordForAllLanguages, Qt::CaseInsensitive) == 0)) {
 		languageName = keywordForAllLanguages;
@@ -675,6 +674,7 @@ QString ConcreateGenerator::countRealConstraintForEdgeElement(Id const &constrai
 			QPair<QString, QList<QString> > resEndNodeConstraint = countConstraintForEndNode(constraint, elementName, depth + additionalDepth, addStr);
 			resString += resEndNodeConstraint.first;
 			resBool.append(resEndNodeConstraint.second);
+
 		} else if (constraintType == "PropertyNode") {
 			QPair<QString, QList<QString> > resPropertyNodeConstraint = countConstraintForPropertyNode (constraint, elementName, depth + additionalDepth, addStr);
 			resString += resPropertyNodeConstraint.first;
