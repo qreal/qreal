@@ -306,3 +306,17 @@ void RefactoringApplier::checkDirection(Id const &changeFromId, Id const &change
 	mGraphicalModelApi.setFrom(changeFromId, oldTo);
 	mGraphicalModelApi.setTo(changeFromId, oldFrom);
 }
+
+Id RefactoringApplier::subprogramElementId()
+{
+	IdList result;
+	IdList const after = getElementsFromAfterBlock();
+	foreach (Id const &id, after) {
+		if (mRefactoringRepoApi->isGraphicalElement(id)
+				&& (isNodeInRule(id)))
+			result.append(id);
+	}
+	if (result.size() == 1)
+		return result.first();
+	return Id::rootId();
+}

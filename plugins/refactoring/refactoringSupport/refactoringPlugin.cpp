@@ -427,27 +427,47 @@ void RefactoringPlugin::applyRefactoring()
 		mRefactoringApplier->applyRefactoringRule();
 	else
 	{
-		removeUnnecessaryLinksFromSelected();
-		Id const activeDiagramId = mMainWindowIFace->activeDiagram();
-		Id newDiagramId = Id(activeDiagramId.editor(), activeDiagramId.diagram(),
-				activeDiagramId.element(), QUuid::createUuid().toString());
-		mGraphicalModelApi->createElement(Id::rootId(), newDiagramId, false, "subprogram", QPointF());
-		foreach (Id const &id, mSelectedElementsOnActiveDiagram) {
-			mGraphicalModelApi->changeParent(id, newDiagramId, mGraphicalModelApi->position(id));
-		}
-		QList<QPair<Id, QPair<Id, bool> > > const outsideLinks = findOutsideSelectionLinks();
-		Id subprogramId = Id("RefactoringEditor", "RefactoringDiagramNode", "Subprogram", QUuid::createUuid().toString());
-		mGraphicalModelApi->createElement(activeDiagramId, subprogramId, false, "subprogram", mGraphicalModelApi->position(outsideLinks.first().second.first));
-		for (int i = 0; i <outsideLinks.size(); ++i) {
-			if (outsideLinks.at(i).second.second)
-				mGraphicalModelApi->setTo(outsideLinks.at(i).first, subprogramId);
-			else
-				mGraphicalModelApi->setFrom(outsideLinks.at(i).first, subprogramId);
-		}
-		mLogicalModelApi->addUsage(mGraphicalModelApi->logicalId(subprogramId), mGraphicalModelApi->logicalId(newDiagramId));
+		makeSubprogramHARDCODE();
 	}
 	discardRefactoring();
 	mMainWindowIFace->updateActiveDiagram();
+}
+
+void RefactoringPlugin::makeSubprogramHARDCODE()
+{
+	removeUnnecessaryLinksFromSelected();
+	Id const activeDiagramId = mMainWindowIFace->activeDiagram();
+	Id newDiagramId = Id(activeDiagramId.editor(), activeDiagramId.diagram(),
+			activeDiagramId.element(), QUuid::createUuid().toString());
+	Id subprogramElementInRuleId = mRefactoringApplier->subprogramElementId();
+	if (subprogramElementInRuleId == Id::rootId())
+		return;
+	QString const newDiagramName = mGraphicalModelApi->name(activeDiagramId)
+			+ "_Subprogram_" + mRefactoringRepoApi->name(subprogramElementInRuleId);
+	mGraphicalModelApi->createElement(Id::rootId(), newDiagramId, false, newDiagramName, QPointF());
+	foreach (Id const &id, mSelectedElementsOnActiveDiagram) {
+		mGraphicalModelApi->changeParent(id, newDiagramId, mGraphicalModelApi->position(id));
+	}
+	QList<QPair<Id, QPair<Id, bool> > > const outsideLinks = findOutsideSelectionLinks();
+//	int const indexOfRefactorings = subprogramElementInRuleId.editor().indexOf("Refactorings");
+//	QString const subprogramName = (indexOfRefactorings == -1)
+//			? subprogramElementInRuleId.editor()
+//			: subprogramElementInRuleId.editor().mid(0, indexOfRefactorings);
+//	qDebug() << subprogramName;
+	Id subprogramId = Id(subprogramElementInRuleId.editor(),
+			subprogramElementInRuleId.diagram(),
+			subprogramElementInRuleId.element(),
+			QUuid::createUuid().toString());
+	mGraphicalModelApi->createElement(activeDiagramId, subprogramId, false, mRefactoringRepoApi->name(subprogramElementInRuleId)
+			, mGraphicalModelApi->position(outsideLinks.first().second.first));
+	for (int i = 0; i <outsideLinks.size(); ++i) {
+		if (outsideLinks.at(i).second.second)
+			mGraphicalModelApi->setTo(outsideLinks.at(i).first, subprogramId);
+		else
+			mGraphicalModelApi->setFrom(outsideLinks.at(i).first, subprogramId);
+	}
+	mLogicalModelApi->connect(mGraphicalModelApi->logicalId(subprogramId),
+			mGraphicalModelApi->logicalId(newDiagramId));
 }
 
 QList<QPair<Id, QPair<Id, bool> > > RefactoringPlugin::findOutsideSelectionLinks()

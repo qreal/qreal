@@ -66,39 +66,6 @@
 					</properties>
                 </logic>
             </node>
-			<node displayedName="Subprogram" name="subprogram">
-                <graphics>
-            <picture sizex="100" sizey="100">
-              <image y1="6" name="images/subprogram.png" x1="1" y2="90" x2="90"/>
-            </picture>
-			<labels>
-              <label x="5" y="95" textBinded="name"/>
-            </labels>
-              <ports>
-                <linePort>
-                  <start startx="30" starty="0"/>
-                  <end endx="70" endy="0"/>
-                </linePort>
-                <linePort>
-                  <start startx="0" starty="30"/>
-                  <end endx="0" endy="70"/>
-                </linePort>
-                <linePort>
-                  <start startx="100" starty="30"/>
-                  <end endx="100" endy="70"/>
-                </linePort>
-                <linePort>
-                  <start startx="30" starty="100"/>
-                  <end endx="70" endy="100"/>
-                </linePort>
-              </ports>
-             </graphics>
-                <logic>
-					<properties>
-						<property type="string" name="ID"/>
-					</properties>
-                </logic>
-            </node>
 			<node displayedName="Selected segment" name="selectedSegment">
                 <graphics>
                     <picture sizex="80" sizey="80">
@@ -250,7 +217,6 @@
     <element name="Element"/>
     <element name="Link"/>
     <element name="Selected segment"/>
-	<element name="Subprogram"/>
    </group>
   </palette>
     </diagram>

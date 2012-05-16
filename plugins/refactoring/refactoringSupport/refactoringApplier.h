@@ -22,6 +22,7 @@ public:
 	~RefactoringApplier();
 
 	void applyRefactoringRule();
+	Id subprogramElementId();
 
 private:
 	bool hasProperty(const Id &id, const QString &propertyName) const;
