@@ -15,8 +15,9 @@ Object::Object(const Id &id, const Id &parent)
 void Object::replaceProperties(QString const value, QString newValue)
 {
 	foreach (QVariant val, mProperties.values()) {
-		if (val.toString().contains(value))
-		mProperties[mProperties.key(val)] = newValue;
+		if (val.toString().contains(value)) {
+			mProperties[mProperties.key(val)] = newValue;
+		}
 	}
 }
 
