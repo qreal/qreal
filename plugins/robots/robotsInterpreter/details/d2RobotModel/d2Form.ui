@@ -217,6 +217,11 @@
       <widget class="QComboBox" name="port1Box">
        <item>
         <property name="text">
+         <string>empty</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>touch</string>
         </property>
        </item>
@@ -235,8 +240,13 @@
      <item row="2" column="1">
       <widget class="QComboBox" name="port3Box">
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
+       <item>
+        <property name="text">
+         <string>empty</string>
+        </property>
+       </item>
        <item>
         <property name="text">
          <string>touch</string>
@@ -257,8 +267,13 @@
      <item row="1" column="1">
       <widget class="QComboBox" name="port2Box">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
+       <item>
+        <property name="text">
+         <string>empty</string>
+        </property>
+       </item>
        <item>
         <property name="text">
          <string>touch</string>
@@ -274,36 +289,6 @@
          <string>sonar</string>
         </property>
        </item>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="port1AddButton">
-       <property name="text">
-        <string>add</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="port2AddButton">
-       <property name="text">
-        <string>add</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QPushButton" name="port3AddButton">
-       <property name="text">
-        <string>add</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
       </widget>
      </item>
      <item row="3" column="0">
@@ -317,6 +302,11 @@
       <widget class="QComboBox" name="port4Box">
        <item>
         <property name="text">
+         <string>empty</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>touch</string>
         </property>
        </item>
@@ -330,16 +320,6 @@
          <string>sonar</string>
         </property>
        </item>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QPushButton" name="port4AddButton">
-       <property name="text">
-        <string>add</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
       </widget>
      </item>
     </layout>
