@@ -49,20 +49,22 @@ QPair<QString, PreferencesPage *> VisualInterpreterPlugin::preferencesPage()
 
 QList<qReal::ActionInfo> VisualInterpreterPlugin::actions()
 {
+	mVisualInterpreterMenu = new QMenu(tr("Visual interpret"));
+	ActionInfo visualInterpreterMenu(mVisualInterpreterMenu, "tools");
+	
 	mGenerateAndLoadSemanticsEditorAction = new QAction(tr("Generate and load semantics editor"), NULL);
-	ActionInfo generateSemanticsMetamodelActionInfo(mGenerateAndLoadSemanticsEditorAction, "semantics", "tools");
 	connect(mGenerateAndLoadSemanticsEditorAction, SIGNAL(triggered()), this, SLOT(generateSemanticsMetamodel()));
+	mVisualInterpreterMenu->addAction(mGenerateAndLoadSemanticsEditorAction);
 	
 	mLoadSemanticsAction = new QAction(tr("Load semantics model"), NULL);
-	ActionInfo loadSemanticsActionInfo(mLoadSemanticsAction, "semantics", "tools");
 	connect(mLoadSemanticsAction, SIGNAL(triggered()), this, SLOT(loadSemantics()));
+	mVisualInterpreterMenu->addAction(mLoadSemanticsAction);
 	
 	mInterpretAction = new QAction(tr("Interpret"), NULL);
-	ActionInfo interpretActionInfo(mInterpretAction, "semantics", "tools");
 	connect(mInterpretAction, SIGNAL(triggered()), this, SLOT(interpret()));
+	mVisualInterpreterMenu->addAction(mInterpretAction);
 	
-	mActionInfos << generateSemanticsMetamodelActionInfo << loadSemanticsActionInfo
-			<< interpretActionInfo;
+	mActionInfos << visualInterpreterMenu;
 	
 	return mActionInfos;
 }
@@ -146,7 +148,7 @@ void VisualInterpreterPlugin::insertSematicsStatePropertyInSpecificElemType(
 		
 		QDomElement graphics = elem.elementsByTagName("graphics").at(0).toElement();
 		QDomNodeList labels = graphics.elementsByTagName("labels");
-		QString x = graphics.elementsByTagName("picture").at(0).toElement().attribute("sizex");
+		QString const x = graphics.elementsByTagName("picture").at(0).toElement().attribute("sizex");
 		
 		QDomElement label = metamodel.createElement("label");
 		if (isNode) {
@@ -181,7 +183,7 @@ void VisualInterpreterPlugin::insertSematicsStatePropertyInSpecificElemType(
 void VisualInterpreterPlugin::insertSpecialSemanticsElements(
 		QDomDocument metamodel, QString const &diagramName)
 {
-	QString elementsXml = 
+	QString const elementsXml = 
 	"<semanticElements>"
 	"<node displayedName=\"Semantics Rule\" name=\"SemanticsRule\">"
 		"<graphics>"

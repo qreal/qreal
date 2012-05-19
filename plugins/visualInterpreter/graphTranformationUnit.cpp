@@ -117,7 +117,7 @@ void GraphTransformationUnit::loadSemantics()
 		}
 	}
 
-	report("Semantics loaded successfully");
+	report(tr("Semantics loaded successfully"));
 }
 
 void GraphTransformationUnit::pause(int time)
@@ -134,12 +134,12 @@ void GraphTransformationUnit::interpret()
 	while (findMatch()) {
 		makeStep();
 		//highlightMatch();
-		report("Rule '" + mMatchedRuleName + "' was applied successfully");
+		report(tr("Rule '") + mMatchedRuleName + tr("' was applied successfully"));
 
 		pause(timeout);
 	}
 
-	report("No rule cannot be applied");
+	report(tr("No rule cannot be applied"));
 }
 
 void GraphTransformationUnit::highlightMatch()
@@ -158,7 +158,7 @@ void GraphTransformationUnit::highlightMatch()
 bool GraphTransformationUnit::findMatch()
 {
 	if (mRules == NULL) {
-		report("Semantics not loaded");
+		report(tr("Semantics not loaded"));
 		return false;
 	}
 

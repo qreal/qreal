@@ -68,6 +68,8 @@ private:
 	QAction *mLoadSemanticsAction;
 	QAction *mInterpretAction;
 	
+	QMenu *mVisualInterpreterMenu;
+	
 	QList<qReal::ActionInfo> mActionInfos;
 	
 	qReal::VisualInterpreterPreferencesPage *mPreferencesPage;
