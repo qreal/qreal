@@ -18,6 +18,7 @@ class LogicalModelAssistApi : public qReal::LogicalModelAssistInterface
 {
 public:
 	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManager const &editorManager);
+	virtual ~LogicalModelAssistApi() {}
 	EditorManager const &editorManager() const;
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const;
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi();

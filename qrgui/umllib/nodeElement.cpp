@@ -660,12 +660,14 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		Element::mouseReleaseEvent(event);
 	}
 
+	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
+	evScene->insertNodeIntoEdge(id(), Id::rootId(), false, event->scenePos());
+
 	// we should use mHighlightedNode to determine if there is a highlighted node
 	// insert current element into them and set mHighlightedNode to NULL
 	// but because of mouseRelease twice triggering we can't do it
 	// This may cause more bugs
 	if (!isPort() && (flags() & ItemIsMovable)) {
-		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 		if (mHighlightedNode != NULL) {
 			NodeElement *newParent = mHighlightedNode;
 			Element *insertBefore = mHighlightedNode->getPlaceholderNextElement();
@@ -1549,6 +1551,12 @@ void NodeElement::checkConnectionsToPort()
 
 	// i have no idea what this method does, but it is called when the element
 	// is dropped on scene. so i'll just leave this code here for now.
+	connectLinksToPorts();
+
+}
+
+void NodeElement::connectLinksToPorts()
+{
 	QList<QGraphicsItem *>  items = scene()->items(scenePos());
 	EdgeElement *edge = NULL;
 	foreach (QGraphicsItem *item, items) {

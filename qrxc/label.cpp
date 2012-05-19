@@ -84,7 +84,6 @@ void Label::generateCodeForUpdateData(OutFile &out)
 
 	QStringList list = getListOfStr(mTextBinded);
 
-
 	QString resultStr;
 	if (list.count() == 1) {
 		if (list.first() == "\"name\"") {
@@ -97,7 +96,7 @@ void Label::generateCodeForUpdateData(OutFile &out)
 		foreach (QString const &listElement, list) {
 			QString field;
 			if (counter % 2 == 0) {
-				if (listElement == "name") {
+				if (listElement == "\"name\"") {
 					field = "repo->name()";
 				} else {
 					field = "repo->logicalProperty(\"" + listElement + "\")";

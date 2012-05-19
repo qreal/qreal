@@ -15,6 +15,8 @@ public:
 		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent = 0);
 	~PreferencesEditorPage();
 
+	/// Sets value to palette combo box and spin box respectively/
+	void changePaletteParameters();
 	void save();
 
 protected:
@@ -23,12 +25,14 @@ protected:
 signals:
 	void gridChanged();
 	void fontChanged();
+	void paletteRepresentationChanged();
 
 private slots:
 	void widthGridSliderMoved(int value);
 	void indexGridSliderMoved(int value);
 	void manualFontCheckBoxChecked(bool);
 	void fontSelectionButtonClicked();
+	void paletteComboBoxClicked(int index);
 
 
 private:
