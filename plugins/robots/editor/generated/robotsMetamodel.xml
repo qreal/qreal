@@ -108,11 +108,11 @@
 					</generalizations>
 				</logic>
 			</node>
-                        <node displayedName="Инициализация балансировки" name="BalanceInit">
+						<node displayedName="Инициализация балансировки" name="BalanceInit">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
-					</picture>                                    					
+					</picture>
 					<ports>
 						<linePort>
 							<start startx="0" starty="5"/>
@@ -133,11 +133,11 @@
 					</ports>
 					<nonResizeable/>
 				</graphics>
-				<logic>	                                              
-					<container/>                         
+				<logic>
+					<container/>
 				</logic>
 			</node>
-                        <node displayedName="Инициализация переменной" name="VariableInit">
+						<node displayedName="Инициализация переменной" name="VariableInit">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
@@ -146,7 +146,7 @@
 						<label x="33" y="60" textBinded="variable"/>
 						<label x="-60" y="60" text="Переменная:"/>
 						<label x="33" y="80" textBinded="value"/>
-						<label x="-65" y="80" text="Значение:"/>	
+						<label x="-65" y="80" text="Значение:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -168,7 +168,7 @@
 					</ports>
 					<nonResizeable/>
 				</graphics>
-				<logic>	
+				<logic>
 					<properties>
 						<property displayedName="Переменная" type="string" name="variable">
 							<default>0</default>
@@ -176,8 +176,8 @@
 						<property displayedName="Значение" type="string" name="value">
 							<default>0</default>
 						</property>
-					</properties>				
-					<container/>                         
+					</properties>
+					<container/>
 				</logic>
 			</node>
 			<node displayedName="Неведомая хрень" name="unknown something">
@@ -357,7 +357,7 @@
 						<parent parentName="EngineMovementCommand"/>
 					</generalizations>
 				</logic>
-			</node> 
+			</node>
 			<node displayedName="Балансировка" name="Balance">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -401,7 +401,7 @@
 					</ports>
 					<nonResizeable/>
 				</graphics>
-				<logic>					
+				<logic>
 					<properties>
 						<property displayedName="Значение forward" type="string" name="forward">
 							<default>0</default>
@@ -425,7 +425,7 @@
 						</property>
 						<property displayedName="Выходное значение мощности второго мотора" type="string" name="pwm2">						</property>
 					</properties>
-					<container/>                         
+					<container/>
 				</logic>
 			</node>
 
@@ -879,6 +879,54 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Ждать свет" name="WaitForLight">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="Port"/>
+						<label x="0" y="60" text="Порт:"/>
+						<label x="33" y="80" textBinded="Percents"/>
+						<label x="-26" y="80" text="Проценты:"/>
+						<label x="33" y="100" textBinded="Sign"/>
+						<label x="-80" y="100" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Проценты" type="string" name="Percents">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>равно</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Ждать энкодер" name="WaitForEncoder">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -915,6 +963,7 @@
 					<properties>
 						<property displayedName="Порт" type="string" name="Port"/>
 						<property displayedName="Предел оборотов" type="string" name="TachoLimit"/>
+<<<<<<< HEAD
                     </properties>
                     <generalizations>
                         <parent parentName="AbstractNode"/>
@@ -1099,4 +1148,222 @@
             </node>
         </graphicTypes>
     </diagram>
+=======
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Сбросить показания энкодера" name="NullificationEncoder">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="Port"/>
+						<label x="0" y="60" text="Порт:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Порт" type="string" name="Port"/>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Функция" name="Function">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/functionBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-37" y="60" text="Функция:"/>
+						<label x="15" y="60" textBinded="Body"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Тело функции" type="string" name="Body"/>
+						<property displayedName="Инициализация" type="bool" name="Init"/>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Условие" name="IfBlock">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/ifBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="Condition"/>
+						<label x="-25" y="60" text="Условие:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Условие" type="string" name="Condition">
+							<default>0</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Блок инициализации" name="InitialBlock">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/initialBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="port_1"/>
+						<label x="-10" y="60" text="Порт 1:"/>
+						<label x="33" y="80" textBinded="port_2"/>
+						<label x="-10" y="80" text="Порт 2:"/>
+						<label x="33" y="100" textBinded="port_3"/>
+						<label x="-10" y="100" text="Порт 3:"/>
+						<label x="33" y="120" textBinded="port_4"/>
+						<label x="-10" y="120" text="Порт 4:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Порт 1" type="Sensors" name="port_1">
+							<default>Не используется</default>
+						</property>
+						<property displayedName="Порт 2" type="Sensors" name="port_2">
+							<default>Не используется</default>
+						</property>
+						<property displayedName="Порт 3" type="Sensors" name="port_3">
+							<default>Не используется</default>
+						</property>
+						<property displayedName="Порт 4" type="Sensors" name="port_4">
+							<default>Не используется</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+		</graphicTypes>
+		<palette>
+			<group name="Действия">
+				<element name="Гудок"/>
+				<element name="Играть звук"/>
+				<element name="Моторы вперёд"/>
+				<element name="Моторы назад"/>
+				<element name="Моторы стоп"/>
+				<element name="Функция"/>
+				<element name="Поток управления"/>
+			</group>
+			<group name="Ожидания">
+				<element name="Таймер"/>
+				<element name="Ждать сенсор касания"/>
+				<element name="Ждать сонар"/>
+				<element name="Ждать цвет"/>
+				<element name="Ждать энкодер"/>
+				<element name="Ждать интенсивность цвета"/>
+				<element name="Ждать свет"/>
+			</group>
+			<group name="Алгоритмы">
+				<element name="Породить поток"/>
+				<element name="Условие"/>
+				<element name="Цикл"/>
+				<element name="Диаграмма поведения робота"/>
+			</group>
+			<group name="Инициализация">
+				<element name="Начало"/>
+				<element name="Конец"/>
+				<element name="Блок инициализации"/>
+				<element name="Сбросить показания энкодера"/>
+			</group>
+		</palette>
+	</diagram>
+>>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
 </metamodel>

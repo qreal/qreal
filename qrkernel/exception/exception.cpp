@@ -1,9 +1,11 @@
 #include "exception.h"
-#include <QDebug>
+
+#include <QtCore/QDebug>
 
 using namespace qReal;
 
-Exception::Exception(QString const &message) : mMessage(message)
+Exception::Exception(QString const &message)
+		: mMessage(message)
 {
 	qDebug() << "QReal exception: " << message;
 }

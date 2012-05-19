@@ -6,6 +6,8 @@
 #include "preferencesPages/miscellaniousPage.h"
 #include "preferencesPages/featuresPage.h"
 
+using namespace qReal;
+
 PreferencesDialog::PreferencesDialog(QWidget *parent)
 		: QDialog(parent)
 		, ui(new Ui::PreferencesDialog)
@@ -36,6 +38,8 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 
 	connect(editorPage, SIGNAL(gridChanged()), this, SIGNAL(gridChanged()));
 	connect(editorPage, SIGNAL(fontChanged()), this, SIGNAL(fontChanged()));
+	connect(editorPage, SIGNAL(paletteRepresentationChanged()), this,
+		SIGNAL(paletteRepresentationChanged()));
 	connect(miscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
 
 	registerPage(tr("Behaviour"), behaviourPage);

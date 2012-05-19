@@ -7,6 +7,8 @@
 #include <QTime>
 #include <QDebug>
 
+using namespace qReal;
+
 SdfRenderer::SdfRenderer()
 	: mStartX(0), mStartY(0), mNeedScale(true)
 {

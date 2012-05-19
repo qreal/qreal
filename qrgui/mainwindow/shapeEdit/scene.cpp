@@ -7,6 +7,8 @@
 
 #include <limits>
 
+using namespace qReal;
+
 Scene::Scene(graphicsUtils::AbstractView *view, QObject * parent)
 	:  AbstractScene(view, parent)
 	, mItemType(none)
