@@ -23,13 +23,6 @@ public:
 private:
 	QWidget *mSettingsPage;
 	Ui::gvizNeatoSettingsForm *mSettingsUi;
-
-//	QString mMode;
-//	int mSep;
-
-//private slots:
-//	void configModeChanged(QString);
-//	void configSepChanged(int);
 };
 
 #endif // GVIZNEATOLAYOUTHELPER_H

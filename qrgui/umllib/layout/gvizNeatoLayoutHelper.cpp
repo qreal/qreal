@@ -24,11 +24,11 @@ QMap<Graph::VertexId, QPointF> gvizNeatoLayoutHelper::arrange(Graph const &graph
 	QHash<Graph::VertexId, Agnode_t*> h;
 	GVC_t *gvc = gvContext();
 	Agraph_t *G = agopen("", AGDIGRAPH);
-	agraphattr(G, "dpi", "1");
 	agraphattr(G, "overlap", overlap.data());
 	agraphattr(G, "normalize", "true");
 	agraphattr(G, "mode", mode.data());
 	agraphattr(G, "sep", sep.data());
+	agraphattr(G, "splines", "false");
 
 	foreach (Graph::VertexId const vertex, graph.getVertices()) {
 		QString number = QString("%1").arg(vertex);
@@ -37,24 +37,28 @@ QMap<Graph::VertexId, QPointF> gvizNeatoLayoutHelper::arrange(Graph const &graph
 			QRectF const &rect = graphGeometry[vertex];
 			QString xPos = QString("%1").arg(rect.x());
 			QString yPos = QString("%1").arg(rect.y());
-			QString width = QString("%1").arg(rect.width());
-			QString height = QString("%1").arg(rect.height());
 
-			agset(node, "x", xPos.toAscii().data());
-			agset(node, "y", yPos.toAscii().data());
+			// width and height should be in inches
+			QString width = QString("%1").arg(rect.width() / 48.);
+			QString height = QString("%1").arg(rect.height() / 48.);
+
+			agattr(node, "x", xPos.toAscii().data());
+			agattr(node, "y", yPos.toAscii().data());
+
 			agset(node, "width", width.toAscii().data());
 			agset(node, "height", height.toAscii().data());
-			agset(node, "fixedsize", "true");
-			agset(node, "shape", "rect");
+			agattr(node, "width", width.toAscii().data());
+			agattr(node, "height", height.toAscii().data());
+
+			agattr(node, "fixedsize", "true");
+			agattr(node, "shape", "rect");
 		}
 		h[vertex] = node;
 	}
 
-	foreach (Graph::EdgeId const edge, graph.getEdges()) {
-		const QPair<Graph::VertexId, Graph::VertexId>& v = graph.getAdjacentVertices(edge);
+	foreach (Graph::EdgeId const edgeId, graph.getEdges()) {
+		const QPair<Graph::VertexId, Graph::VertexId>& v = graph.getAdjacentVertices(edgeId);
 		Agedge_t *edge = agedge(G, h[v.first], h[v.second]);
-//		agset(edge, "minlen", "1000");
-//		agset(edge, "len", "1000");
 	}
 
 	gvLayout(gvc, G, "neato");
