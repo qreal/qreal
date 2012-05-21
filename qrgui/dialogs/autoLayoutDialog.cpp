@@ -46,10 +46,6 @@ void AutoLayoutDialog::addLayoutHelper(AbstractLayoutHelper *layoutHelper)
 
 void AutoLayoutDialog::methodSelected(QString methodName)
 {
-//	if (methodIdx == 0) {
-//		mUi->methodSettingsContainer->hide();
-//		return;
-//	}
 	foreach (AbstractLayoutHelper *lh, mLayoutHelpers) {
 		lh->settingsPage()->hide();
 	}
@@ -60,8 +56,6 @@ void AutoLayoutDialog::methodSelected(QString methodName)
 			break;
 		}
 	}
-//	mUi->methodSettingsContainer->show();
-//	mUi->methodSettingsContainer->setCurrentIndex(methodIdx);
 }
 
 void AutoLayoutDialog::runMethod()
@@ -107,6 +101,7 @@ void AutoLayoutDialog::runMethod()
 		Graph::VertexId vertex = map[e];
 		QPointF pos = positionData[vertex];
 		e->setPos(pos);
+
 		NodeElement *node = dynamic_cast<NodeElement *>(e);
 		node->adjustLinks();
 		node->arrangeLinks();

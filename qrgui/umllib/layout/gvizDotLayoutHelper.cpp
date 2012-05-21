@@ -19,7 +19,8 @@ gvizDotLayoutHelper::gvizDotLayoutHelper()
 QMap<Graph::VertexId, QPointF> gvizDotLayoutHelper::arrange(Graph const &graph
 		, QMap<Graph::VertexId, QRectF> const &graphGeometry)
 {
-	QByteArray nodeSep = QString("%1").arg(mSettingsUi->doubleSpinBox->value()).toAscii();
+	QByteArray nodeSep = QString("%1").arg(mSettingsUi->nodeSep->value()).toAscii();
+	QByteArray minLen = QString("%1").arg(mSettingsUi->minLen->value()).toAscii();
 
 	GVC_t *gvc = gvContext();
 	Agraph_t *G = agopen("", AGDIGRAPH);
@@ -62,6 +63,7 @@ QMap<Graph::VertexId, QPointF> gvizDotLayoutHelper::arrange(Graph const &graph
 	foreach (Graph::EdgeId const edgeId, graph.getEdges()) {
 		const QPair<Graph::VertexId, Graph::VertexId>& v = graph.getAdjacentVertices(edgeId);
 		Agedge_t *edge = agedge(G, vertex2gvNode[v.first], vertex2gvNode[v.second]);
+		agattr(edge, "minlen", minLen.data());
 		Q_UNUSED(edge);
 	}
 
