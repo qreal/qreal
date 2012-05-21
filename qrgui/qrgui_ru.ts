@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.0" language="ru_RU">
 <context>
@@ -242,7 +242,7 @@
     <message>
         <location filename="umllib/edgeElement.cpp" line="30"/>
         <source>Squarize</source>
-        <translation>Сделать квадратным</translation>
+        <translation>Перерисовать под прямым углом</translation>
     </message>
     <message>
         <location filename="umllib/edgeElement.cpp" line="31"/>
@@ -2517,7 +2517,7 @@
     </message>
     <message>
         <source>Squarize</source>
-        <translation type="obsolete">Сделать квадратным</translation>
+        <translation type="obsolete">Перерисовать под прямым углом</translation>
     </message>
 </context>
 <context>

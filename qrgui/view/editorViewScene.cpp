@@ -1013,3 +1013,12 @@ void EditorViewScene::selectAll()
 		element->setSelected(true);
 	}
 }
+
+void EditorViewScene::updateEdgeElements()
+{
+	foreach (QGraphicsItem *item, items()) {
+		EdgeElement* element = dynamic_cast<EdgeElement*>(item);
+		if (element)
+			element->redrawing(QPoint());
+	}
+}

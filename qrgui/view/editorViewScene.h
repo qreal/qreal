@@ -71,6 +71,8 @@ public slots:
 
 	/// selects all elements on the current scene
 	void selectAll();
+	/// update all links
+	void updateEdgeElements();
 
 signals:
 	void elementCreated(qReal::Id const &id);

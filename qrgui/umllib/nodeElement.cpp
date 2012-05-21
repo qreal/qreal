@@ -680,6 +680,10 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		}
 	}
 
+	foreach (EdgeElement *edge, mEdgeList) {
+		edge->setGraphicApi(QPointF());
+	}
+
 	mDragState = None;
 	setZValue(0);
 }

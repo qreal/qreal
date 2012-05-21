@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>262</height>
+    <height>303</height>
    </rect>
   </property>
   <widget class="QFrame" name="frame_5">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>200</y>
+     <y>190</y>
      <width>400</width>
      <height>51</height>
     </rect>
@@ -53,7 +53,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>180</y>
+     <y>170</y>
      <width>151</width>
      <height>16</height>
     </rect>
@@ -66,7 +66,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>120</y>
+     <y>110</y>
      <width>400</width>
      <height>51</height>
     </rect>
@@ -82,7 +82,7 @@
      <rect>
       <x>10</x>
       <y>5</y>
-      <width>380</width>
+      <width>191</width>
       <height>20</height>
      </rect>
     </property>
@@ -92,18 +92,31 @@
    </widget>
    <widget class="QCheckBox" name="squareLineModeCheckBox">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>25</y>
       <width>381</width>
-      <height>22</height>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
      <string>Square Line Mode</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="loopsModeCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>5</y>
+      <width>181</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>To allow loops</string>
     </property>
    </widget>
   </widget>
@@ -113,7 +126,7 @@
      <x>10</x>
      <y>30</y>
      <width>400</width>
-     <height>61</height>
+     <height>51</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -126,7 +139,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>5</y>
       <width>380</width>
       <height>20</height>
      </rect>
@@ -139,7 +152,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>30</y>
+      <y>25</y>
       <width>380</width>
       <height>20</height>
      </rect>
@@ -166,7 +179,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>100</y>
+     <y>90</y>
      <width>151</width>
      <height>16</height>
     </rect>

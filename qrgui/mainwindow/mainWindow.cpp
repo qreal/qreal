@@ -1936,8 +1936,14 @@ void MainWindow::updatePaletteIcons()
 
 void MainWindow::applySettings()
 {
-	getCurrentTab()->invalidateScene();
-	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
+	for (int i = 0; i < mUi->tabs->count(); i++) {
+		EditorView * const tab = (static_cast<EditorView *>(mUi->tabs->widget(i)));
+		EditorViewScene *scene = dynamic_cast <EditorViewScene *> (tab->scene());
+		if (SettingsManager::value("SquareLine", false).toBool() || (!SettingsManager::value("ToPermitLoops", false).toBool()))
+			scene->updateEdgeElements();
+		scene->invalidate();
+	}
+		mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 }
 
 void MainWindow::hideDockWidget(QDockWidget *dockWidget, QString name)

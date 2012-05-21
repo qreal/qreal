@@ -67,6 +67,9 @@ public:
 
 	void highlight(QColor const color = Qt::red);
 
+	// redrawing of this edgeElement in squarize
+	void redrawing(QPointF const &pos);
+
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -83,11 +86,17 @@ protected:
 	ArrowType mStartArrowStyle;
 	ArrowType mEndArrowStyle;
 
+public slots:
+	void setGraphicApi(QPointF const &pos);
+
 private slots:
 	void addPointHandler(QPointF const &pos);
 	void delPointHandler(QPointF const &pos);
 	void squarizeHandler(QPointF const &pos);
 	void minimizeHandler(QPointF const &pos);
+	// delete Segment with nearest with pos ends
+	void deleteSegment(QPointF const &pos);
+
 private:
 
 	QList<PossibleEdge> possibleEdges;
@@ -99,9 +108,20 @@ private:
 
 	void drawPort(QPainter *painter) const;
 
-	void removeUnneededPoints(int startingPoint);
+	qreal lengthOfSegment(QPointF const &pos1, QPointF const &pos2);
 
+	void delCloseLinePoints();
+
+	void delClosePoints();
+
+	bool removeOneLinePoints(int startingPoint);
+
+	// after mouseRealise
 	void deleteUnneededPoints();
+
+	void deleteLoops();
+	void deleteLoop(int startPos);
+	QPointF* haveIntersection(QPointF const &pos1, QPointF const &pos2, QPointF const &pos3, QPointF const &pos4);
 
 	NodeElement *mSrc;
 	NodeElement *mDst;
@@ -123,6 +143,7 @@ private:
 	ContextMenuAction mDelPointAction;
 	ContextMenuAction mSquarizeAction;
 	ContextMenuAction mMinimizeAction;
+	ContextMenuAction mDelSegmentAction;
 
 	bool mChaoticEdition;
 
