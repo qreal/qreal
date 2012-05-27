@@ -103,6 +103,8 @@ public slots:
 
 	void showErrors(gui::ErrorReporter const * const errorReporter);
 
+	void changePaletteRepresentation();
+
 private slots:
 
 	/// handler for menu 'button find' pressed

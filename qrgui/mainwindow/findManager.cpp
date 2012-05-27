@@ -20,6 +20,7 @@ void FindManager::handleRefsDialog(qReal::Id const &id)
 
 qReal::IdList FindManager::foundByMode(QString key, QString currentMode, bool sensitivity)
 {
+	// TODO: replace mode string with modifiers
 	if (currentMode == tr("by name")) {
 		return mControlApi.findElementsByName(key, sensitivity);
 	} else if (currentMode == tr("by type")) {
