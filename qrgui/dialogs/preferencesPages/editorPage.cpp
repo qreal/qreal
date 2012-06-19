@@ -47,8 +47,7 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 
 	mUi->paletteComboBox->setCurrentIndex(SettingsManager::value("PaletteRepresentation", 0).toInt());
 	paletteComboBoxClicked(mUi->paletteComboBox->currentIndex());
-	mUi->paletteSpinBox->setValue(SettingsManager::value("PaletteIconsInARowCount", 1).toInt());
-
+	mUi->paletteSpinBox->setValue(SettingsManager::value("PaletteIconsInARowCount", 3).toInt());
 	mFont = SettingsManager::value("CurrentFont", "").toString();
 }
 
@@ -84,6 +83,7 @@ void PreferencesEditorPage::fontSelectionButtonClicked() {
 
 void PreferencesEditorPage::changeEvent(QEvent *e)
 {
+
 	switch (e->type()) {
 	case QEvent::LanguageChange:
 		mUi->retranslateUi(this);
@@ -142,4 +142,10 @@ void PreferencesEditorPage::save()
 void PreferencesEditorPage::paletteComboBoxClicked(int index)
 {
 	mUi->paletteSpinBox->setEnabled((bool)index);
+}
+
+void PreferencesEditorPage::changePaletteParameters()
+{
+	mUi->paletteComboBox->setCurrentIndex(SettingsManager::value("PaletteRepresentation", 0).toInt());
+	mUi->paletteSpinBox->setValue(SettingsManager::value("PaletteIconsInARowCount", 3).toInt());
 }

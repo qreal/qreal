@@ -97,6 +97,7 @@ private:
 
 	virtual bool initGraphics() = 0;
 	virtual bool initAssociations() = 0;
+	virtual bool initDividability() = 0;
 	virtual bool initLabel(Label *label, QDomElement const &element, int const &count) = 0;
 
 	bool addProperty(Property *property);

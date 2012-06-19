@@ -84,7 +84,7 @@ MainWindow::MainWindow()
 	mUi->setupUi(this);
 
 	if (showSplash) {
-        splash->show();
+		splash->show();
 		QApplication::processEvents();
 	}
 	else {
@@ -118,6 +118,10 @@ MainWindow::MainWindow()
 		mSaveFile = saveFile.absoluteFilePath();
 
 	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
+
+	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
+	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi()
+			, this, mFindReplaceDialog);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
@@ -175,7 +179,6 @@ MainWindow::MainWindow()
 	setAutoSaveParameters();
 	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
 	connectWindowTitle();
-
 }
 
 void MainWindow::connectActions()
@@ -218,8 +221,22 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
+	connect (mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
+
+	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)), mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
+	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)), mFindHelper, SLOT(handleFindDialog(QStringList)));
+	connect(mFindReplaceDialog, SIGNAL(chosenElement(qReal::Id)), mFindHelper, SLOT(handleRefsDialog(qReal::Id)));
+
 	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this
 		, SLOT(changePaletteRepresentation()));
+	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged())
+		, &mPreferencesDialog, SLOT(changePaletteParameters()));
+}
+
+void MainWindow::showFindDialog()
+{
+	mFindReplaceDialog->stateClear();
+	mFindReplaceDialog->show();
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -237,8 +254,11 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 		saveAll();
 	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_W) {
 		closeTab(mUi->tabs->currentIndex());
-	} else if (keyEvent->key() == Qt::Key_F1){
+	} else if (keyEvent->key() == Qt::Key_F1) {
 		showHelp();
+	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_F) {
+		mFindReplaceDialog->stateClear();
+		mFindReplaceDialog->show();
 	}
 }
 
@@ -253,6 +273,9 @@ MainWindow::~MainWindow()
 	delete mRecentProjectsMapper;
 	delete mGesturesWidget;
 	delete mModels;
+	delete mCodeTabManager;
+	delete mFindReplaceDialog;
+	delete mFindHelper;
 }
 
 EditorManager* MainWindow::manager()
@@ -285,11 +308,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::loadPlugins()
 {
-	mUi->paletteTree->setIconsView(SettingsManager::value("PaletteRepresentation", 0).toBool());
-	mUi->paletteTree->setItemsCountInARow(SettingsManager::value("PaletteIconsInARowCount", 1).toInt());
-	mUi->paletteTree->loadEditors(mEditorManager);
-	mUi->paletteTree->initDone();
-	mUi->paletteTree->setComboBoxIndex();
+	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation", 0).toBool()
+				, SettingsManager::value("PaletteIconsInARowCount", 3).toInt()
+				, mEditorManager);
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -314,6 +335,11 @@ void MainWindow::selectItem(Id const &id)
 
 	setIndexesOfPropertyEditor(id);
 	centerOn(id);
+}
+
+void MainWindow::selectItemOrDiagram(Id const &graphicalId)
+{
+	activateItemOrDiagram(graphicalId, false, true);
 }
 
 void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool bl, bool isSetSel)
@@ -1319,8 +1345,8 @@ void MainWindow::suggestToCreateDiagram()
 	QObject::connect(&diagramsListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(diagramInCreateListSelected(int)));
 	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(setDiagramCreateFlag()));
 	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), &dialog, SLOT(close()));
-	QObject::connect(&dialog, SIGNAL(destroyed()), this, SLOT(diagramInCreateListDeselect()));
 
+	QObject::connect(&dialog, SIGNAL(destroyed()), this, SLOT(diagramInCreateListDeselect()));
 	QObject::connect(&cancelButton, SIGNAL(clicked()), &dialog, SLOT(close()));
 
 	QObject::connect(&okButton, SIGNAL(clicked()), this, SLOT(setDiagramCreateFlag()));
@@ -1484,7 +1510,6 @@ void MainWindow::updatePaletteIcons()
 	mUi->logicalModelExplorer->viewport()->update();
 
 	Id const currentId = mUi->paletteTree->currentEditor();
-	mUi->paletteTree->recreateTrees();
 	loadPlugins();
 
 	mUi->paletteTree->setActiveEditor(currentId);
@@ -1573,7 +1598,7 @@ void MainWindow::initToolPlugins()
 			, mModels->logicalModelAssistApi()
 			, *this
 			));
-	
+
 	QList<ActionInfo> const actions = mToolManager.actions();
 	foreach (ActionInfo const action, actions) {
 		if (action.isAction()) {
@@ -1595,7 +1620,7 @@ void MainWindow::initToolPlugins()
 			}
 		}
 	}
-	
+
 	if (mUi->parsersToolbar->actions().isEmpty())
 		mUi->parsersToolbar->hide();
 
@@ -1867,10 +1892,8 @@ void MainWindow::closeProject()
 void MainWindow::changePaletteRepresentation()
 {
 	if (SettingsManager::value("PaletteRepresentation", 0).toBool() != mUi->paletteTree->iconsView()
-			|| SettingsManager::value("PaletteIconsInARowCount", 1).toInt() != mUi->paletteTree->itemsCountInARow())
+			|| SettingsManager::value("PaletteIconsInARowCount", 3).toInt() != mUi->paletteTree->itemsCountInARow())
 	{
-		mUi->paletteTree->recreateTrees();
 		loadPlugins();
-		mUi->paletteTree->setComboBoxIndex();
 	}
 }

@@ -106,3 +106,9 @@ void PreferencesDialog::switchCurrentTab(QString const &tabName)
 		ui->pageContentWigdet->setCurrentIndex(currentIndex + 1);
 	}
 }
+void PreferencesDialog::changePaletteParameters()
+{
+	if (mCustomPages.count(tr("Editor")) > 0) {
+		static_cast<PreferencesEditorPage*>(mCustomPages[tr("Editor")])->changePaletteParameters();
+	}
+}
