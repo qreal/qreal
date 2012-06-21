@@ -76,11 +76,11 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 		dir.mkpath(metamodelFullName);
 		QFileInfo const metamodelFileInfo(metamodelFullName);
 		QString const metamodelName = metamodelFileInfo.baseName();
-		editorGenerator.generateEditor(key, metamodelFullName, pathToQRealRoot);
+		QString const editorFileBaseName = editorGenerator.generateEditor(key, metamodelFullName, pathToQRealRoot);
 
 		if (!mMainWindowInterface->errorReporter()->wereErrors()) {
 			if (QMessageBox::question(mMainWindowInterface->windowWidget()
-					, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelName),
+					, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(editorFileBaseName),
 					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 			{
 				return;

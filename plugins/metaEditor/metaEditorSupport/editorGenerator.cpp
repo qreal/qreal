@@ -51,27 +51,9 @@ QHash<Id, QPair<QString,QString> > EditorGenerator::getMetamodelList()
 	return metamodelList;
 }
 
-void EditorGenerator::generateEditor(Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource)
+QString EditorGenerator::generateEditor(Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource)
 {
 	QString const editorPath = calculateEditorPath(pathToFile, pathToQRealSource);
-
-	// find the path to the folder specified by the user for the new editor from the folder "plugins"
-//	QStringList pathList = pathToQRealSource.split("/", QString::SkipEmptyParts);
-//	QString editorPath = "..";
-//	int index = pathList.length() - 1;
-//	while ((index >= 0) && (pathList[index] != "..")) {
-//		editorPath += "/..";
-//		index--;
-//	}
-//	index++;
-//	QStringList directoryPathList = pathToFile.split("/", QString::SkipEmptyParts);
-
-//	int first = directoryPathList.length() - index - 1;
-//	int last = directoryPathList.length() - 1;
-
-//	for (int i = first; i < last; ++i) {
-//		editorPath += "/" + directoryPathList[i];
-//	}
 
 	QDomElement metamodel = mDocument.createElement("metamodel");
 	metamodel.setAttribute("xmlns", "http://schema.real.com/schema/");
@@ -119,27 +101,27 @@ void EditorGenerator::generateEditor(Id const &metamodelId, QString const &pathT
 	mDocument.clear();
 
 	copyImages(pathToFile);
+
+	return fileBaseName;
 }
 
 QString EditorGenerator::calculateEditorPath(QString const &pathToFile, QString const &pathToQRealSource)
 {
 	QFileInfo const pluginDir(pathToFile);
-	qDebug() << pluginDir.absoluteFilePath();
-
-	qDebug() << pathToFile + "/" + pathToQRealSource;
 	QFileInfo const sourcesDir(pathToFile + "/" + pathToQRealSource);
-	qDebug() << sourcesDir.absoluteFilePath();
-
 	QFileInfo const qRealPluginsDir(sourcesDir.absoluteFilePath() + "/plugins/");
-	qDebug() << qRealPluginsDir.absoluteFilePath();
 
 	int const levels = qRealPluginsDir.absoluteFilePath().split("/", QString::SkipEmptyParts).count();
 	QString result;
 	for (int i = 0; i < levels; ++i) {
 		result += "/..";
 	}
-	result += pluginDir.absoluteFilePath().remove(0, 2);
-	qDebug() << result;
+
+	if (pluginDir.absoluteFilePath().count() > 2 && pluginDir.absoluteFilePath()[1] == ':') {
+		// Remove drive letter on Windows.
+		result += pluginDir.absoluteFilePath().remove(0, 2);
+	}
+
 	return result;
 }
 
