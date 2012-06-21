@@ -14,7 +14,6 @@ HEADERS = \
 	messageGenerator.h \
 	customClassGenerator.h \
 	abstractGenerator.h \
-	nameNormalizer.h \
 	dispatcherGenerator.h
 
 SOURCES = \
@@ -23,14 +22,13 @@ SOURCES = \
 	messageGenerator.cpp \
 	customClassGenerator.cpp \
 	abstractGenerator.cpp \
-	nameNormalizer.cpp \
 	dispatcherGenerator.cpp
 
 win32 {
-    QMAKE_POST_LINK = "xcopy templates ..\\..\\..\\bin\\templates /s /e /q /y /i "
+	QMAKE_POST_LINK = "xcopy templates ..\\..\\..\\bin\\templates /s /e /q /y /i "
 }
 else {
-    QMAKE_POST_LINK = "mkdir ../../../bin/templates/ && cp -r templates ../../../bin/templates/ "
+	QMAKE_POST_LINK = "mkdir ../../../bin/templates/ && cp -r templates ../../../bin/templates/ "
 }
 
 

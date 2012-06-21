@@ -2,10 +2,11 @@
 #include <QtCore/QDebug>
 
 #include "abstractGenerator.h"
-#include "nameNormalizer.h"
+#include "../../../qrutils/nameNormalizer.h"
 
 using namespace ubiq::generator;
 using namespace qReal;
+using namespace utils;
 
 AbstractGenerator::AbstractGenerator(QString const &templateDirPath
 		, QString const &outputDirPath

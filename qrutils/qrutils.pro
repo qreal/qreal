@@ -18,11 +18,13 @@ HEADERS += \
 	xmlUtils.h \
 	ui_watchListWindow.h \
 	watchListWindow.h \
+	nameNormalizer.h \
 
 SOURCES += \
 	outFile.cpp \
 	xmlUtils.cpp \
 	watchListWindow.cpp\
+	nameNormalizer.cpp \
 
 FORMS += \
 	watchListWindow.ui

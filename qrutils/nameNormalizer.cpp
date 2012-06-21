@@ -2,7 +2,7 @@
 
 #include <QtCore/QStringList>
 
-using namespace ubiq::generator;
+using namespace utils;
 
 QString NameNormalizer::normalize(QString const &name, bool const isUpperFirst)
 {
