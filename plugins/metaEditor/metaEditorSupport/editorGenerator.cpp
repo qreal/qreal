@@ -10,6 +10,7 @@
 #include "../../../qrkernel/roles.h"
 
 #include "../../../qrutils/outFile.h"
+#include "../../../qrutils/nameNormalizer.h"
 
 #include "../../../qrkernel/settingsManager.h"
 
@@ -52,23 +53,25 @@ QHash<Id, QPair<QString,QString> > EditorGenerator::getMetamodelList()
 
 void EditorGenerator::generateEditor(Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource)
 {
+	QString const editorPath = calculateEditorPath(pathToFile, pathToQRealSource);
+
 	// find the path to the folder specified by the user for the new editor from the folder "plugins"
-	QStringList pathList = pathToQRealSource.split("/", QString::SkipEmptyParts);
-	QString editorPath = "..";
-	int index = pathList.length() - 1;
-	while ((index >= 0) && (pathList[index] != "..")) {
-		editorPath += "/..";
-		index--;
-	}
-	index++;
-	QStringList directoryPathList = pathToFile.split("/", QString::SkipEmptyParts);
+//	QStringList pathList = pathToQRealSource.split("/", QString::SkipEmptyParts);
+//	QString editorPath = "..";
+//	int index = pathList.length() - 1;
+//	while ((index >= 0) && (pathList[index] != "..")) {
+//		editorPath += "/..";
+//		index--;
+//	}
+//	index++;
+//	QStringList directoryPathList = pathToFile.split("/", QString::SkipEmptyParts);
 
-	int first = directoryPathList.length() - index - 1;
-	int last = directoryPathList.length() - 1;
+//	int first = directoryPathList.length() - index - 1;
+//	int last = directoryPathList.length() - 1;
 
-	for (int i = first; i < last; ++i) {
-		editorPath += "/" + directoryPathList[i];
-	}
+//	for (int i = first; i < last; ++i) {
+//		editorPath += "/" + directoryPathList[i];
+//	}
 
 	QDomElement metamodel = mDocument.createElement("metamodel");
 	metamodel.setAttribute("xmlns", "http://schema.real.com/schema/");
@@ -92,12 +95,11 @@ void EditorGenerator::generateEditor(Id const &metamodelId, QString const &pathT
 
 	createDiagrams(metamodel, metamodelId);
 
-	QFileInfo const fileName(pathToFile);
-	QString const baseName = fileName.baseName();
+	QString const fileBaseName = NameNormalizer::normalize(mApi.name(metamodelId), false);
 
 	try {
-		OutFile outpro(pathToFile + ".pro");
-		outpro() << QString("QREAL_XML = %1\n").arg(baseName + ".xml");
+		OutFile outpro(pathToFile + "/" + fileBaseName + ".pro");
+		outpro() << QString("QREAL_XML = %1\n").arg(fileBaseName + ".xml");
 		if (includeProList != "") {
 			outpro() << QString("QREAL_XML_DEPENDS = %1\n").arg(includeProList);
 		}
@@ -110,13 +112,35 @@ void EditorGenerator::generateEditor(Id const &metamodelId, QString const &pathT
 		mErrorReporter.addCritical(QObject::tr("incorrect file name"));
 	}
 
-	OutFile outxml(pathToFile + ".xml");
+	OutFile outxml(pathToFile + "/" + fileBaseName + ".xml");
 	QDomNode const header = mDocument.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"utf-8\"");
 	mDocument.insertBefore(header, mDocument.firstChild());
 	mDocument.save(outxml(), 4);
 	mDocument.clear();
 
 	copyImages(pathToFile);
+}
+
+QString EditorGenerator::calculateEditorPath(QString const &pathToFile, QString const &pathToQRealSource)
+{
+	QFileInfo const pluginDir(pathToFile);
+	qDebug() << pluginDir.absoluteFilePath();
+
+	qDebug() << pathToFile + "/" + pathToQRealSource;
+	QFileInfo const sourcesDir(pathToFile + "/" + pathToQRealSource);
+	qDebug() << sourcesDir.absoluteFilePath();
+
+	QFileInfo const qRealPluginsDir(sourcesDir.absoluteFilePath() + "/plugins/");
+	qDebug() << qRealPluginsDir.absoluteFilePath();
+
+	int const levels = qRealPluginsDir.absoluteFilePath().split("/", QString::SkipEmptyParts).count();
+	QString result;
+	for (int i = 0; i < levels; ++i) {
+		result += "/..";
+	}
+	result += pluginDir.absoluteFilePath().remove(0, 2);
+	qDebug() << result;
+	return result;
 }
 
 void EditorGenerator::copyImages(QString const &pathToFile)

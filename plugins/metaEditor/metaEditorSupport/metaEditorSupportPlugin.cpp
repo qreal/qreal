@@ -76,7 +76,7 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 		dir.mkpath(metamodelFullName);
 		QFileInfo const metamodelFileInfo(metamodelFullName);
 		QString const metamodelName = metamodelFileInfo.baseName();
-		editorGenerator.generateEditor(key, metamodelFullName + "/" + metamodelName, pathToQRealRoot);
+		editorGenerator.generateEditor(key, metamodelFullName, pathToQRealRoot);
 
 		if (!mMainWindowInterface->errorReporter()->wereErrors()) {
 			if (QMessageBox::question(mMainWindowInterface->windowWidget()
