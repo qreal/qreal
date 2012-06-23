@@ -14,7 +14,7 @@ DotRunner::DotRunner(Id const &diagramId,
 	, mLogicalModelApi(logicalModelApi)
 	, mEditorManager(editorManager)
 	, mAlgorithm("")
-	, mAbsoluteFilesToDotFiles(absolutePathToDotFiles)
+	, mAbsolutePathToDotFiles(absolutePathToDotFiles)
 {
 	QObject::connect(&mProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(readFromProcess()));
 }
@@ -27,7 +27,7 @@ void DotRunner::readFromProcess()
 void DotRunner::run(const QString &algorithm)
 {
 	mAlgorithm = algorithm;
-	QFile data(mAbsoluteFilesToDotFiles + "/graph1.dot");
+	QFile data(mAbsolutePathToDotFiles + "/graph1.dot");
 	if (data.open(QFile::WriteOnly | QFile::Truncate)) {
 		QTextStream outFile(&data);
 		outFile << "digraph G { \n";
@@ -43,7 +43,7 @@ void DotRunner::run(const QString &algorithm)
 		}
 		outFile << "}";
 		data.close();
-		mProcess.setWorkingDirectory(mAbsoluteFilesToDotFiles);
+		mProcess.setWorkingDirectory(mAbsolutePathToDotFiles);
 		mProcess.start("dot.exe graph1.dot");
 		if (!mProcess.waitForFinished())
 			return;

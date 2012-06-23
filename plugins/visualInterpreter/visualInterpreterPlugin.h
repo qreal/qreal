@@ -12,7 +12,7 @@
 #include "../../../qrkernel/ids.h"
 
 #include "../../../qrutils/metamodelGeneratorSupport.h"
-#include "graphTransformationUnit.h"
+#include "visualInterpreterUnit.h"
 
 namespace qReal {
 namespace visualInterpreter {
@@ -74,7 +74,7 @@ private:
 	
 	qReal::VisualInterpreterPreferencesPage *mPreferencesPage;
 	
-	qReal::GraphTransformationUnit *mGraphTransformationUnit;
+	qReal::VisualInterpreterUnit *mVisualInterpreterUnit;
 	utils::MetamodelGeneratorSupport *mMetamodelGeneratorSupport;
 	
 	QTranslator mAppTranslator;

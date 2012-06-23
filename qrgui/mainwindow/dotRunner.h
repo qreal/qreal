@@ -39,6 +39,6 @@ private:
 	QHash <QString, Id> mElementNamesForDOT;
 	QHash <Id, QPair<QPointF, QPair<qreal, qreal> > > mDOTCoordinatesOfElements;
 	QString mAlgorithm;
-	QString mAbsoluteFilesToDotFiles;
+	QString mAbsolutePathToDotFiles;
 };
 }

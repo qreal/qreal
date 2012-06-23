@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../blockDiagram/visualDebugSupport/interpreter/blockParser.h"
+#include "../../../qrutils/expressionsParser/expressionsParser.h"
+#include "../../../qrgui/mainwindow/errorReporter.h"
 
 namespace qReal {
 

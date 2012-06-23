@@ -1,43 +1,33 @@
 #pragma once
 
-#include "../../../qrgui/mainwindow/errorReporter.h"
-#include "../../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
-#include "ruleParser.h"
+#include "../../qrgui/mainwindow/errorReporter.h"
+#include "../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
 
 namespace qReal {
 
 /// Graph transformation unit performs different transformation of graphic model
 /// according to contained rules which can contain creation, removal, replacement
 /// (etc) of elements.
-class GraphTransformationUnit : public QObject
+class BaseGraphTransformationUnit : public QObject
 {
 	Q_OBJECT
 
 public:
-	GraphTransformationUnit(LogicalModelAssistInterface const &logicalModelApi
+	BaseGraphTransformationUnit(LogicalModelAssistInterface const &logicalModelApi
 			, GraphicalModelAssistInterface const &graphicalModelApi
 			, gui::MainWindowInterpretersInterface &interpretersInterface);
-	~GraphTransformationUnit();
-	
-	/// Load semantics model from current open diagram
-	void loadSemantics();
-	
-	/// Make one step according to semantics (find match, delete,
-	/// create and replace elements)
-	void interpret();
-	
-private:
-	/// For debug uses only
-	void highlightMatch();
-	
-	/// Checks current diagram for being semantics model
-	bool isSemanticsEditor();
-	
+	~BaseGraphTransformationUnit();
+
 	/// True if match was found
-	bool findMatch();
+	virtual bool findMatch() = 0;
+	
+	/// Get all matches of selected rule
+	QList<QHash<Id, Id> > getMatches();
+	
+protected:
 	
 	/// Fixes first element and starts checking process
-	bool checkRuleMatching(Id const &rule);
+	bool checkRuleMatching();
 	
 	/// Checks rule matching recursively accordingly to given initial data
 	bool checkRuleMatchingRecursively();
@@ -59,7 +49,8 @@ private:
 	Id getOutsideLink(Id const &nodeInRule) const;
 	
 	/// Get second link end
-	Id getLinkEnd(Id const &linkInRule, Id const &nodeInRule) const;
+	Id getLinkEndInModel(Id const &linkInModel, Id const &nodeInModel) const;
+	Id getLinkEndInRule(Id const &linkInRule, Id const &nodeInRule) const;
 	
 	/// Returns link id in model which has one of its ends given node in model
 	/// and correspond to link in rule and its ends and 
@@ -74,74 +65,58 @@ private:
 	/// Get all links from given node in rule to current matched subgraph
 	IdList getLinksToMatchedSubgraph(Id const &nodeInRule) const;
 	
-	/// Perform all transformations
-	void makeStep();
-	
-	/// Fill rules information with this
-	void putIdIntoMap(QHash<QString ,IdList*> *map, QString const &ruleName,
-			Id const &id);
-	
-	/// Obtain an element id with the corresponding control flow mark
-	Id getNodeIdWithControlMark(Id const &controlMarkId) const;
-	
 	/// Get all elements from active diagram
 	IdList getElementsFromActiveDiagram() const;
 	
-	/// Get all rules from semantics model
-	IdList getRules() const;
-	
 	/// Get first node from rule to start the algo
-	Id getStartElement(Id const &rule) const;
+	virtual Id getStartElement() const = 0;
 	
 	/// Functions for working with properties of elements on model
 	QVariant getProperty(Id const &id, QString const &propertyName) const;
+	virtual QMapIterator<QString, QVariant> getPropertiesIterator(Id const &id) const;
 	bool hasProperty(Id const &id, QString const &propertyName) const;
 	void setProperty(Id const &id, QString const &propertyName,
 			QVariant const &value) const;
 	QHash<QString, QVariant> getProperties(Id const &id) const;
 	
 	/// Functions for test elements for equality
-	bool compareLinks(Id const &first, Id const &second) const;
-	bool compareElements(Id const &first, Id const &second) const;
-	bool compareElementTypesAndProperties(Id const &first, Id const &second) const;
+	virtual bool compareLinks(Id const &first, Id const &second) const;
+	virtual bool compareElements(Id const &first, Id const &second) const;
+	virtual bool compareElementTypesAndProperties(Id const &first, Id const &second) const;
 	
-	bool isEdge(Id const &element) const;
+	bool isEdgeInModel(Id const &element) const;
+	bool isEdgeInRule(Id const &element) const;
 	
 	/// Logical repo api methods for more quick access
-	Id to(Id const &id) const;
-	Id from(Id const &id) const;
+	Id toInModel(Id const &id) const;
+	Id fromInModel(Id const &id) const;
+	IdList linksInModel(Id const &id) const;
+	virtual Id toInRule(Id const &id) const;
+	virtual Id fromInRule(Id const &id) const;
+	virtual IdList linksInRule(Id const &id) const = 0;
+	
 	IdList outgoingLinks(Id const &id) const;
 	IdList incomingLinks(Id const &id) const;
-	IdList links(Id const &id) const;
 	IdList children(Id const &id) const;
 	
 	/// Reports message to the main system
 	void report(QString const &message) const;
 	
-	/// Stops interpretation for some time in ms
-	void pause(int time);
+	/// Hold highligth for some time in ms
+	void pause(int const &time);
 	
 	gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	LogicalModelAssistInterface const &mLogicalModelApi;
 	GraphicalModelAssistInterface const &mGraphicalModelApi;
 	
-	/// Metamodel name which loaded semantics is for
-	QString mMetamodelName;
-	
-	/// All rules in map with key - rule name and value - rule id on diagram
-	QHash<QString, Id> *mRules;
-	
-	/// All maps below has the format: key - rule name, value - list of ids
-	QHash<QString, IdList*> *mDeletedElements;
-	QHash<QString, IdList*> *mReplacedElements;
-	QHash<QString, IdList*> *mCreatedElements;
-	QHash<QString, IdList*> *mNodesWithNewControlMark;
-	QHash<QString, IdList*> *mNodesWithDeletedControlMark;
-	QHash<QString, IdList*> *mNodesWithControlMark;
+	Id ruleToFind;
 	
 	/// Match map: key - id in rule diagram, value - id in diagram
 	/// which will be transformed
 	QHash<Id, Id> *mMatch;
+	
+	/// List contains all matches of rule
+	QList<QHash<Id, Id> > mMatches;
 	
 	/// Nodes of rule subgraph which matched model subgraph at current step
 	IdList mCurrentMatchedGraphInRule;
@@ -152,14 +127,8 @@ private:
 	/// Current position in mNodesHavingOutsideLinks for quicker access
 	int mPos;
 	
-	QString mMatchedRuleName;
-	QString mCurrentRuleName;
-	
-	/// Nodes of model which have control mark
-	IdList mCurrentNodesWithControlMark;
-	
-	/// Rule parser and interpreter to deal with textual part of rules
-	RuleParser *mRuleParser;
+	/// Set of properties that will not be checked in compare elements
+	QSet<QString> defaultProperties;
 };
 
 }

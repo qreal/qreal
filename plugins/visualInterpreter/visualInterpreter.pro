@@ -14,14 +14,14 @@ HEADERS = \
 	../../qrgui/dialogs/preferencesPages/preferencesPage.h \
 	visualInterpreterPlugin.h \
 	visualInterpreterPreferencesPage.h \
-	graphTransformationUnit.h \
 	ruleParser.h \
+    visualInterpreterUnit.h
 
 SOURCES = \
 	visualInterpreterPlugin.cpp \
 	visualInterpreterPreferencesPage.cpp \
-	graphTranformationUnit.cpp \
 	ruleParser.cpp \
+    visualInterpreterUnit.cpp
 
 FORMS += \
 	visualInterpreterPreferencePage.ui \

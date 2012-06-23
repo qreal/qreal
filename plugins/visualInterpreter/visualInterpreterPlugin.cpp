@@ -37,7 +37,7 @@ void VisualInterpreterPlugin::init(PluginConfigurator const &configurator)
 			configurator.mainWindowInterpretersInterface().errorReporter(),
 			&configurator.mainWindowInterpretersInterface());
 	
-	mGraphTransformationUnit = new GraphTransformationUnit(configurator.logicalModelApi()
+	mVisualInterpreterUnit = new VisualInterpreterUnit(configurator.logicalModelApi()
 			, configurator.graphicalModelApi()
 			, configurator.mainWindowInterpretersInterface());
 }
@@ -307,10 +307,10 @@ void VisualInterpreterPlugin::removeDirectory(QString dirName) {
 
 void VisualInterpreterPlugin::loadSemantics()
 {
-	mGraphTransformationUnit->loadSemantics();
+	mVisualInterpreterUnit->loadSemantics();
 }
 
 void VisualInterpreterPlugin::interpret()
 {
-	mGraphTransformationUnit->interpret();
+	mVisualInterpreterUnit->interpret();
 }
