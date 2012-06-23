@@ -46,30 +46,6 @@ void PaletteTree::DraggableElement::setIconSize(int size)
 	mLabel->setPixmap(mIcon.pixmap(size , size));
 }
 
-PaletteTree::PaletteTree(QWidget *parent)
-	:QWidget(parent), mCurrentEditor(0)
-{
-	createPaletteTree();
-}
-
-void PaletteTree::addItemType(const Id &id, const QString &name, const QString &description
-		, const QIcon &icon, QTreeWidget *tree, QTreeWidgetItem *parent)
-{
-	QTreeWidgetItem *leaf = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(id, name, description, icon, mIconsView);
-	parent->addChild(leaf);
-	tree->setItemWidget(leaf, 0, element);
-}
-
-void PaletteTree::addTopItemType(const Id &id, const QString &name
-		, const QString &description, const QIcon &icon, QTreeWidget *tree)
-{
-	QTreeWidgetItem *item = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(id, name, description, icon, mIconsView);
-	tree->addTopLevelItem(item);
-	tree->setItemWidget(item, 0, element);
-}
-
 void PaletteTree::DraggableElement::dragEnterEvent(QDragEnterEvent * /*event*/)
 {
 }
@@ -129,6 +105,32 @@ void PaletteTree::DraggableElement::mousePressEvent(QMouseEvent *event)
 	}
 }
 
+PaletteTree::PaletteTree(QWidget *parent)
+	: QWidget(parent)
+	, mCurrentEditor(0)
+{
+	createPaletteTree();
+}
+
+void PaletteTree::addItemType(const Id &id, const QString &name, const QString &description
+		, const QIcon &icon, QTreeWidget *tree, QTreeWidgetItem *parent)
+{
+	QTreeWidgetItem *leaf = new QTreeWidgetItem;
+	DraggableElement *element = new DraggableElement(id, name, description, icon, mIconsView);
+	parent->addChild(leaf);
+	tree->setItemWidget(leaf, 0, element);
+}
+
+void PaletteTree::addTopItemType(const Id &id, const QString &name
+		, const QString &description, const QIcon &icon, QTreeWidget *tree)
+{
+	QTreeWidgetItem *item = new QTreeWidgetItem;
+	DraggableElement *element = new DraggableElement(id, name, description, icon, mIconsView);
+	tree->addTopLevelItem(item);
+	tree->setItemWidget(item, 0, element);
+}
+
+
 bool PaletteTree::idLessThan(const Id &s1, const Id &s2)
 {
 	return mEditorManager->friendlyName(s1).toLower() <
@@ -156,7 +158,7 @@ void PaletteTree::collapse()
 
 void PaletteTree::setActiveEditor(int index)
 {
-    if (0 <= index && index < mEditorsTrees.count()) {
+	if (0 <= index && index < mEditorsTrees.count()) {
 		mCurrentEditor = index;
 		mTree->hide();
 		mTree = mEditorsTrees[index];

@@ -4,8 +4,6 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QIcon>
 
-#include <QtCore/QtDebug>
-
 #include "../../qrkernel/ids.h"
 
 #include "../../qrrepo/repoApi.h"
@@ -28,7 +26,6 @@ EditorManager::EditorManager(QObject *parent)
 
 	foreach (QString fileName, mPluginsDir.entryList(QDir::Files)) {
 		QPluginLoader *loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
-		mLoaders.insert(fileName, loader);
 		QObject *plugin = loader->instance();
 
 		if (plugin) {
@@ -37,11 +34,15 @@ EditorManager::EditorManager(QObject *parent)
 				mPluginsLoaded += iEditor->id();
 				mPluginFileName.insert(iEditor->id(), fileName);
 				mPluginIface[iEditor->id()] = iEditor;
+				mLoaders.insert(fileName, loader);
+			} else {
+				loader->unload();
+				delete loader;
 			}
 		} else {
 			qDebug() << "Plugin loading failed: " << loader->errorString();
-			// Keep silent.
-			// QMessageBox::warning(0, "QReal Plugin", loader->errorString() );
+			loader->unload();
+			delete loader;
 		}
 	}
 }
@@ -83,7 +84,7 @@ bool EditorManager::unloadPlugin(const QString &pluginName)
 {
 	QPluginLoader *loader = mLoaders[mPluginFileName[pluginName]];
 	if (loader != NULL) {
-		if (!(loader->unload())) {
+		if (!loader->unload()) {
 			return false;
 		}
 		mPluginsLoaded.removeAll(pluginName);

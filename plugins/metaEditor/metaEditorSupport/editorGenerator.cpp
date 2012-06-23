@@ -26,10 +26,8 @@ EditorGenerator::EditorGenerator(qrRepo::LogicalRepoApi const &api, ErrorReporte
 
 QHash<Id, QPair<QString,QString> > EditorGenerator::getMetamodelList()
 {
-	Id repoId = Id::rootId();
-
-	IdList const metamodels = mApi.children(repoId);
-	QHash<Id, QPair<QString,QString> > metamodelList;
+	IdList const metamodels = mApi.children(Id::rootId());
+	QHash<Id, QPair<QString, QString> > metamodelList;
 
 	foreach (Id const key, metamodels) {
 		QString const objectType = key.element();
@@ -37,7 +35,7 @@ QHash<Id, QPair<QString,QString> > EditorGenerator::getMetamodelList()
 			// Now the user must specify the full path to the directory and the relative path to source files of QReal
 			QString const directoryName = mApi.stringProperty(key, "name of the directory");
 			QString const pathToQRealRoot = mApi.stringProperty(key, "relative path to QReal Source Files");
-			if ((!directoryName.isEmpty()) && (!pathToQRealRoot.isEmpty())) {
+			if (!directoryName.isEmpty() && !pathToQRealRoot.isEmpty()) {
 				QPair<QString, QString> savingData;
 				savingData.first = directoryName;
 				savingData.second = pathToQRealRoot;
@@ -102,7 +100,7 @@ QString EditorGenerator::generateEditor(Id const &metamodelId, QString const &pa
 
 	copyImages(pathToFile);
 
-	return fileBaseName;
+	return mApi.name(metamodelId);
 }
 
 QString EditorGenerator::calculateEditorPath(QString const &pathToFile, QString const &pathToQRealSource)

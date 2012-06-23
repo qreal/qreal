@@ -71,21 +71,19 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 
 	QHash<Id, QPair<QString, QString> > metamodelList = editorGenerator.getMetamodelList();
 	foreach (Id const &key, metamodelList.keys()) {
-		QString const metamodelFullName = metamodelList[key].first;
+		QString const nameOfTheDirectory = metamodelList[key].first;
 		QString const pathToQRealRoot = metamodelList[key].second;
-		dir.mkpath(metamodelFullName);
-		QFileInfo const metamodelFileInfo(metamodelFullName);
-		QString const metamodelName = metamodelFileInfo.baseName();
-		QString const editorFileBaseName = editorGenerator.generateEditor(key, metamodelFullName, pathToQRealRoot);
+		dir.mkpath(nameOfTheDirectory);
+		QString const metamodelName = editorGenerator.generateEditor(key, nameOfTheDirectory, pathToQRealRoot);
 
 		if (!mMainWindowInterface->errorReporter()->wereErrors()) {
 			if (QMessageBox::question(mMainWindowInterface->windowWidget()
-					, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(editorFileBaseName),
+					, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelName),
 					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 			{
 				return;
 			}
-			loadNewEditor(metamodelFullName, metamodelName
+			loadNewEditor(nameOfTheDirectory, metamodelName
 					, SettingsManager::value("pathToQmake", "").toString()
 					, SettingsManager::value("pathToMake", "").toString()
 					, SettingsManager::value("pluginExtension", "").toString()
@@ -251,7 +249,7 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 	progress->setRange(0, 100);
 	progress->setValue(5);
 
-	if (mMainWindowInterface->unloadPlugin(normalizeDirName)) {
+	if (!mMainWindowInterface->unloadPlugin(normalizeDirName)) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot unload plugin"));
 		progress->close();
 		delete progress;
