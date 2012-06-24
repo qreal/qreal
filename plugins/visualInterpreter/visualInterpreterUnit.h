@@ -7,7 +7,7 @@
 
 namespace qReal {
 
-/// Graph transformation unit performs different transformation of graphic model
+/// Visual interpreter unit performs different transformation of graphic model
 /// according to contained rules which can contain creation, removal, replacement
 /// (etc) of elements.
 class VisualInterpreterUnit : public BaseGraphTransformationUnit

@@ -17,12 +17,17 @@
 #include "mainWindowInterpretersInterface.h"
 #include "../../qrkernel/settingsManager.h"
 #include "../../qrgui/dialogs/preferencesDialog.h"
+
 #include "../textEditor/codeEditor.h"
 #include "helpBrowser.h"
 
 #include "../models/logicalModelAssistApi.h"
 
+#include "../../qrgui/dialogs/findReplaceDialog.h"
+#include "findManager.h"
+
 #include  "paletteTree.h"
+
 namespace Ui {
 class MainWindowUi;
 }
@@ -96,6 +101,7 @@ public slots:
 	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
 	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 	virtual void selectItem(Id const &id);
+	virtual void selectItemOrDiagram(Id const &graphicalId);
 
 	void selectItemWithError(Id const &id);
 
@@ -104,6 +110,9 @@ public slots:
 	void changePaletteRepresentation();
 
 private slots:
+
+	/// handler for menu 'button find' pressed
+	void showFindDialog();
 
 	void setSceneFont();
 	void adjustMinimapZoom(int zoom);
@@ -120,7 +129,6 @@ private slots:
 	void checkoutDialogCancel();
 
 	void saveAllAndOpen(QString const &dirName);
-
 
 	/// wrapper for import(QString const &fileName)
 	/// uses getWorkingFile(...)
@@ -202,7 +210,14 @@ private slots:
 	void closeProjectAndSave();
 
 private:
-	/// @param mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
+
+	/// elements & theirs ids
+	QMap<QString, Id> mElementsNamesAndIds;
+
+	/// mFindDialog - Dialog for searching elements.
+	FindReplaceDialog *mFindReplaceDialog;
+
+	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
 	QMap<EditorView*, CodeArea*> *mCodeTabManager;
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
@@ -311,6 +326,8 @@ private:
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;
 	qReal::gui::PaletteTree *mPaletteTree;
+	FindManager *mFindHelper;
+
 };
 
 }

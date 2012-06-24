@@ -73,14 +73,14 @@ bool BaseGraphTransformationUnit::checkRuleMatchingRecursively()
 	if (linkInRule != Id::rootId()) {
 		Id const linkEndInRule = getLinkEndInRule(linkInRule, nodeInRule);
 		Id const nodeInModel = mMatch->value(nodeInRule);
-		IdList const linksInModel = getProperLinks(nodeInModel, linkInRule);
+		IdList const lnksInModel = getProperLinks(nodeInModel, linkInRule);
 
 		QHash<Id, Id> *matchBackup = mMatch;
 		IdList *nodesHavingOutsideLinksBackup = &mNodesHavingOutsideLinks;
 		IdList *currentMatchedGraphInRuleBackup = &mCurrentMatchedGraphInRule;
 		int const posBackup = mPos;
 
-		foreach (Id const &linkInModel, linksInModel) {
+		foreach (Id const &linkInModel, lnksInModel) {
 			Id const linkEndInModel = getLinkEndInModel(linkInModel, nodeInModel);
 			if (checkNodeForAddingToMatch(linkEndInModel, linkEndInRule)) {
 				if (checkRuleMatchingRecursively()) {
@@ -372,6 +372,11 @@ Id BaseGraphTransformationUnit::fromInRule(Id const &id) const
 }
 
 IdList BaseGraphTransformationUnit::linksInModel(Id const &id) const
+{
+	return mLogicalModelApi.logicalRepoApi().links(id);
+}
+
+IdList BaseGraphTransformationUnit::linksInRule(Id const &id) const
 {
 	return mLogicalModelApi.logicalRepoApi().links(id);
 }

@@ -4,6 +4,7 @@
 
 #include <QMap>
 #include <QVariant>
+#include <QString>
 
 namespace qrRepo {
 
@@ -13,6 +14,12 @@ namespace qrRepo {
 		{
 		public:
 			explicit Object(const qReal::Id &id);
+
+			/// replacing property values that contains input value with new value
+			/// @param value - input value that should be contained by any property of element
+			/// @param newValue - string representation of value with what property values should be replaced
+			void replaceProperties(QString const value, QString newValue);
+
 			Object(const qReal::Id &id, const qReal::Id &parent);
 			Object(const qReal::Id &id, const qReal::Id &parent, const qReal::Id &logicalId);
 			Object *clone(QHash<qReal::Id, Object*> &objHash) const;
@@ -25,7 +32,7 @@ namespace qrRepo {
 			qReal::IdList children() const;
 			qReal::Id parent() const;
 			QVariant property(const QString &name) const;
-			bool hasProperty(const QString &name) const;
+			bool hasProperty(const QString &name, bool sensitivity = false) const;
 			void setProperty(const QString &name, const QVariant &value);
 			void removeProperty(const QString &name);
 			qReal::Id id() const;

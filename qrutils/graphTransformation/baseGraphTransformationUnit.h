@@ -5,9 +5,8 @@
 
 namespace qReal {
 
-/// Graph transformation unit performs different transformation of graphic model
-/// according to contained rules which can contain creation, removal, replacement
-/// (etc) of elements.
+/// Base graph transformation unit can find all matches of specific rule
+/// in given graph.
 class BaseGraphTransformationUnit : public QObject
 {
 	Q_OBJECT
@@ -93,7 +92,7 @@ protected:
 	IdList linksInModel(Id const &id) const;
 	virtual Id toInRule(Id const &id) const;
 	virtual Id fromInRule(Id const &id) const;
-	virtual IdList linksInRule(Id const &id) const = 0;
+	virtual IdList linksInRule(Id const &id) const;
 	
 	IdList outgoingLinks(Id const &id) const;
 	IdList incomingLinks(Id const &id) const;
@@ -102,7 +101,7 @@ protected:
 	/// Reports message to the main system
 	void report(QString const &message) const;
 	
-	/// Hold highligth for some time in ms
+	/// Hold highlight for some time in ms
 	void pause(int const &time);
 	
 	gui::MainWindowInterpretersInterface &mInterpretersInterface;

@@ -120,6 +120,10 @@ MainWindow::MainWindow()
 
 	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
 
+	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
+	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi()
+			, this, mFindReplaceDialog);
+
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 
@@ -176,7 +180,6 @@ MainWindow::MainWindow()
 	setAutoSaveParameters();
 	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
 	connectWindowTitle();
-
 }
 
 void MainWindow::connectActions()
@@ -219,10 +222,22 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
+	connect (mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
+
+	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)), mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
+	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)), mFindHelper, SLOT(handleFindDialog(QStringList)));
+	connect(mFindReplaceDialog, SIGNAL(chosenElement(qReal::Id)), mFindHelper, SLOT(handleRefsDialog(qReal::Id)));
+
 	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this
 		, SLOT(changePaletteRepresentation()));
 	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged())
 		, &mPreferencesDialog, SLOT(changePaletteParameters()));
+}
+
+void MainWindow::showFindDialog()
+{
+	mFindReplaceDialog->stateClear();
+	mFindReplaceDialog->show();
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -240,8 +255,11 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 		saveAll();
 	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_W) {
 		closeTab(mUi->tabs->currentIndex());
-	} else if (keyEvent->key() == Qt::Key_F1){
+	} else if (keyEvent->key() == Qt::Key_F1) {
 		showHelp();
+	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_F) {
+		mFindReplaceDialog->stateClear();
+		mFindReplaceDialog->show();
 	}
 }
 
@@ -256,6 +274,9 @@ MainWindow::~MainWindow()
 	delete mRecentProjectsMapper;
 	delete mGesturesWidget;
 	delete mModels;
+	delete mCodeTabManager;
+	delete mFindReplaceDialog;
+	delete mFindHelper;
 }
 
 EditorManager* MainWindow::manager()
@@ -315,6 +336,11 @@ void MainWindow::selectItem(Id const &id)
 
 	setIndexesOfPropertyEditor(id);
 	centerOn(id);
+}
+
+void MainWindow::selectItemOrDiagram(Id const &graphicalId)
+{
+	activateItemOrDiagram(graphicalId, false, true);
 }
 
 void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool bl, bool isSetSel)

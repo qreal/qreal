@@ -4,27 +4,27 @@ HEADERS += \
 	mainwindow/errorReporter.h \
 	mainwindow/gesturesPainterInterface.h \
 	mainwindow/gesturesPainterInterface.h \
-	mainwindow/buttonRefWindow.h \
 	mainwindow/error.h \
 	mainwindow/errorListWidget.h \
 	mainwindow/mainWindowInterpretersInterface.h \
 	mainwindow/helpBrowser.h \
 	mainwindow/paletteTree.h \
-	mainwindow/dotRunner.h
+	mainwindow/dotRunner.h \
+	mainwindow/findManager.h \
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
 	mainwindow/propertyEditorProxyModel.cpp \
 	mainwindow/errorReporter.cpp \
-	mainwindow/buttonRefWindow.cpp \
 	mainwindow/error.cpp \
 	mainwindow/errorListWidget.cpp \
 	mainwindow/helpBrowser.cpp \
 	mainwindow/paletteTree.cpp \
-	mainwindow/dotRunner.cpp
+	mainwindow/dotRunner.cpp \
+	mainwindow/findManager.cpp \
 
 FORMS += \
-	mainwindow/mainWindow.ui
+	mainwindow/mainWindow.ui \
 
 # Shape editor
 HEADERS += \
