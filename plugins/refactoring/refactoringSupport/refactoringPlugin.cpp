@@ -349,9 +349,7 @@ void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 	if (mRefactoringFinder->refactoringRuleContainsSelectedSegment()) {
 		mSelectedElementsOnActiveDiagram = mMainWindowIFace->selectedElementsOnActiveDiagram();
 		foreach (Id const &selectedElement, mSelectedElementsOnActiveDiagram) {
-			QColor const color = QColor(SettingsManager::value("refactoringColor"
-					, "cyan").toString());
-			mMainWindowIFace->highlight(selectedElement, false, color);
+			mMainWindowIFace->highlight(selectedElement, false);
 		}
 	}
 	else if (mRefactoringFinder->findMatch()) {
@@ -363,9 +361,7 @@ void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 		}
 		mCurrentMatch = mMatches.takeFirst();
 		foreach (Id const &id, mCurrentMatch.keys()) {
-			QColor const color = QColor(SettingsManager::value("refactoringColor"
-					, "cyan").toString());
-			mMainWindowIFace->highlight(mCurrentMatch.value(id), false, color);
+			mMainWindowIFace->highlight(mCurrentMatch.value(id), false);
 		}
 	}
 	else {
@@ -386,9 +382,7 @@ void RefactoringPlugin::findNextRefactoring()
 	else {
 		mCurrentMatch = mMatches.takeFirst();
 		foreach (Id const &id, mCurrentMatch.keys()) {
-			QColor const color = QColor(SettingsManager::value("refactoringColor"
-					, "cyan").toString());
-			mMainWindowIFace->highlight(mCurrentMatch.value(id), false, color);
+			mMainWindowIFace->highlight(mCurrentMatch.value(id), false);
 		}
 	}
 }

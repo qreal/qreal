@@ -122,9 +122,7 @@ void VisualInterpreterUnit::interpret()
 void VisualInterpreterUnit::highlightMatch()
 {
 	foreach (Id const &id, mMatch->keys()) {
-		QColor const color = QColor(SettingsManager::value("debugColor"
-				, "red").toString());
-		mInterpretersInterface.highlight(mMatch->value(id), false, color);
+		mInterpretersInterface.highlight(mMatch->value(id), false);
 	}
 
 	pause(2000);
@@ -179,9 +177,7 @@ void VisualInterpreterUnit::makeStep()
 	if (mNodesWithNewControlMark->contains(mMatchedRuleName)) {
 		foreach (Id const &id, *(mNodesWithNewControlMark->value(mMatchedRuleName))) {
 			Id const node = firstMatch.value(id);
-			QColor const color = QColor(SettingsManager::value("debugColor"
-					, "red").toString());
-			mInterpretersInterface.highlight(node, false, color);
+			mInterpretersInterface.highlight(node, false);
 			mCurrentNodesWithControlMark.append(node);
 		}
 	}

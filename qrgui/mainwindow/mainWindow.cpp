@@ -1466,7 +1466,7 @@ void qReal::MainWindow::on_actionNew_Diagram_triggered()
 	createDiagram(diagram.type().toString());
 }
 
-void MainWindow::highlight(Id const &graphicalId, bool exclusive, QColor const &color)
+void MainWindow::highlight(Id const &graphicalId, bool exclusive)
 {
 	EditorView* const view = getCurrentTab();
 	if (!view)
@@ -1474,7 +1474,7 @@ void MainWindow::highlight(Id const &graphicalId, bool exclusive, QColor const &
 
 	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
 	Element* const element = scene->getElem(graphicalId);
-	scene->highlight(graphicalId, exclusive, color);
+	scene->highlight(graphicalId, exclusive);
 	view->ensureElementVisible(element);
 }
 

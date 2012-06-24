@@ -61,7 +61,7 @@ public:
 
 	QAction *actionDeleteFromDiagram() const;
 
-	virtual void highlight(Id const &graphicalId, bool exclusive = true, QColor const &color = Qt::red);
+	virtual void highlight(Id const &graphicalId, bool exclusive = true);
 	virtual void dehighlight(Id const &graphicalId);
 	virtual void dehighlight();
 	virtual ErrorReporterInterface *errorReporter();

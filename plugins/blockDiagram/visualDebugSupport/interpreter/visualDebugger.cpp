@@ -541,10 +541,7 @@ Id VisualDebugger::getIdByLine(int line)
 
 void VisualDebugger::highlight(Id const &id)
 {
-	QColor const color = QColor(SettingsManager::value("debugColor"
-			, "red").toString());
-
-	mInterpretersInterface.highlight(id, true, color);
+	mInterpretersInterface.highlight(id, true);
 }
 
 void VisualDebugger::dehighlight()

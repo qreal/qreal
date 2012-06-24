@@ -66,9 +66,7 @@ void RefactoringFinder::highlightMatch()
 		for (int i = 0; i < mMatches.size(); ++i) {
 			QHash <Id, Id> currentMatch = mMatches.at(i);
 			foreach (Id const &id, currentMatch.keys()) {
-				QColor const color = QColor(SettingsManager::value("refactoringColor"
-						, "cyan").toString());
-				mInterpretersInterface.highlight(currentMatch.value(id), false, color);
+				mInterpretersInterface.highlight(currentMatch.value(id), false);
 				pause(500);
 			}
 			pause(500);
