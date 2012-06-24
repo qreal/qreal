@@ -308,9 +308,7 @@ void PaletteTree::deleteEditor(const Id &id)
 			mTree = NULL;
 		}
 
-		QObject *w = mComboBox->children().value(mCategories[id]);
 		mComboBox->removeItem(mCategories[id]);
-		delete w;
 		mEditorsNames.remove(mCategories[id]);
 		mEditorsTrees.remove(mCategories[id]);
 
@@ -380,7 +378,7 @@ void PaletteTree::deletePaletteTree()
 	SettingsManager::setValue("PaletteRepresentation", mIconsView);
 	SettingsManager::setValue("PaletteIconsInARowCount", mItemsCountInARow);
 	int diagramIndex = 0;
-	foreach(const QTreeWidget *editorTree, mEditorsTrees) {
+	foreach (const QTreeWidget *editorTree, mEditorsTrees) {
 		for (int j = 0; j < editorTree->topLevelItemCount(); j++) {
 			const QTreeWidgetItem *topItem = editorTree->topLevelItem(j);
 			if (topItem && topItem->isExpanded()) {
