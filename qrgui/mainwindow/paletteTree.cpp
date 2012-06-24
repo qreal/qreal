@@ -130,7 +130,6 @@ void PaletteTree::addTopItemType(const Id &id, const QString &name
 	tree->setItemWidget(item, 0, element);
 }
 
-
 bool PaletteTree::idLessThan(const Id &s1, const Id &s2)
 {
 	return mEditorManager->friendlyName(s1).toLower() <
@@ -160,7 +159,10 @@ void PaletteTree::setActiveEditor(int index)
 {
 	if (0 <= index && index < mEditorsTrees.count()) {
 		mCurrentEditor = index;
-		mTree->hide();
+		if (mTree != NULL) {
+			mTree->hide();
+		}
+
 		mTree = mEditorsTrees[index];
 		mTree->show();
 	}
@@ -218,7 +220,6 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 		QTreeWidgetItem *leaf = new QTreeWidgetItem;
 		item->addChild(leaf);
 		editorTree->setItemWidget(leaf, 0, field);
-
 	}
 }
 
@@ -236,7 +237,7 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 	IdList list = mEditorManager->elements(diagram);
 	qSort(list.begin(), list.end(), idLessThan);
 
-	mCategories[diagram] = mEditorsTrees.size() - 1;
+	mCategories[diagram] = mEditorsTrees.size();
 
 	if (!mEditorManager->paletteGroups(editor, diagram).empty()) {
 		foreach (const QString &group, mEditorManager->paletteGroups(editor, diagram)) {
@@ -303,11 +304,16 @@ void PaletteTree::deleteEditor(const Id &id)
 {
 	if (mCategories.contains(id)) {
 		QTreeWidget * tree = mEditorsTrees[mCategories[id]];
+		if (mTree == tree) {
+			mTree = NULL;
+		}
+
 		QObject *w = mComboBox->children().value(mCategories[id]);
 		mComboBox->removeItem(mCategories[id]);
 		delete w;
 		mEditorsNames.remove(mCategories[id]);
 		mEditorsTrees.remove(mCategories[id]);
+
 		delete tree;
 		mCategories.remove(id);
 	}
