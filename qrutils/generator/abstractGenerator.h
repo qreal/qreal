@@ -2,8 +2,8 @@
 
 #include <QtCore/QDir>
 
-#include "../../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
-#include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+#include "../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 namespace ubiq {
 namespace generator {
