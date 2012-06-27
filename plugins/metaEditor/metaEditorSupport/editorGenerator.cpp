@@ -396,7 +396,7 @@ void EditorGenerator::setAssociations(QDomElement &parent, const Id &id)
 	IdList const childElems = mApi.children(id);
 
 	foreach (Id const idChild, childElems) {
-		QString const objectType = idChild.editor();
+		QString const objectType = idChild.element();
 		if (objectType == "MetaEntityAssociation") {
 			QDomElement associationTag = mDocument.createElement("associations");
 			ensureCorrectness(idChild, associationTag, "beginType", mApi.stringProperty(idChild, "beginType"));
@@ -489,9 +489,9 @@ void EditorGenerator::setContainer(QDomElement &parent, const Id &id)
 
 	IdList inLinks = mApi.outgoingLinks(id);
 	foreach (Id const inLink, inLinks) {
-		if (inLink.editor() == "Container") {
+		if (inLink.element() == "Container") {
 			Id const elementId = mApi.to(inLink);
-			QString const typeName = elementId.editor();
+			QString const typeName = elementId.element();
 			if (typeName == "MetaEntityNode") {
 				QDomElement contains = mDocument.createElement("contains");
 				ensureCorrectness(elementId, contains, "type", mApi.name(elementId));
@@ -512,7 +512,7 @@ void EditorGenerator::setContainerProperties(QDomElement &parent, Id const &id)
 	IdList elements = mApi.children(id);
 
 	foreach (Id const idChild, elements) {
-		if (idChild.editor() == "MetaEntityPropertiesAsContainer") {
+		if (idChild.element() == "MetaEntityPropertiesAsContainer") {
 			QDomElement properties = mDocument.createElement("properties");
 			parent.appendChild(properties);
 
