@@ -1,6 +1,6 @@
 TEMPLATE = lib
 CONFIG += plugin
-DESTDIR = ../../../../bin/plugins/
+DESTDIR = ../../../bin/plugins/
 
 LIBS += -L../../../bin -lqrkernel -lqrutils
 
