@@ -1,8 +1,8 @@
 #include "dataObjectGenerator.h"
 
-QString const sbtDiagram = "SbtReportsEditor";
+QString const sbtDiagram = "SbtReportsDiagramNode";
 QString const dataObjectName = "DataObject";
-QString const fileName = "DataObject.cs";
+QString const fileName = "DataObject";
 
 using namespace utils;
 
@@ -18,11 +18,13 @@ void DataObjectGenerator::generate()
 {
 	QString result;
 
-	loadTemplateFromFile(fileName, result);
-	loadUtilsTemplates();
+	qDebug() << fileName;
+	loadTemplateFromFile(fileName + ".cs", result);
+	//loadUtilsTemplates();
 
   foreach (Id const &diagram, mApi.elementsByType(sbtDiagram)) {
-	  if (!mApi.isLogicalElement(diagram)) {
+	qDebug() << "diagram!!";
+	if (!mApi.isLogicalElement(diagram)) {
 		  continue;
 	  }
 
@@ -30,12 +32,12 @@ void DataObjectGenerator::generate()
 		  if (!mApi.isLogicalElement(element)) {
 			  continue;
 		  }
-
 		  if (element.element() == dataObjectName) {
-			  result.replace("@@DataObject@@", mApi.name(element))
+			QString res = result;
+				res.replace("@@DataObject@@", mApi.name(element))
 					.replace("@@ListOfProperties@@", generatePropertiesCode(element));
+				saveOutputFile(fileName + mApi.name(element) + ".cs", res);
 		  }
-		saveOutputFile(fileName + mApi.name(element), result);
 	  }
   }
 }

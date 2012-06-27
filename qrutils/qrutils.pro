@@ -19,12 +19,14 @@ HEADERS += \
 	ui_watchListWindow.h \
 	watchListWindow.h \
 	nameNormalizer.h \
+	generator/abstractGenerator.h
 
 SOURCES += \
 	outFile.cpp \
 	xmlUtils.cpp \
 	watchListWindow.cpp\
 	nameNormalizer.cpp \
+	generator/abstractGenerator.cpp
 
 FORMS += \
 	watchListWindow.ui

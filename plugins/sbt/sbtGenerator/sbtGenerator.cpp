@@ -1,5 +1,6 @@
 #include "sbtGenerator.h"
 #include "dataObjectGenerator.h"
+#include "Qdir"
 
 #include <QtCore/QDebug>
 
@@ -21,7 +22,12 @@ void SbtGenerator::init(qReal::LogicalModelAssistInterface const &logicalModel
 
 void SbtGenerator::generate()
 {
-	DataObjectGenerator dataObjectGenerator("./templates", "./output", *mLogicalModel, *mErrorReporter);
+	QString path = "plugins/sbt/sbtGenerator";
+	if (QDir::currentPath().endsWith("bin")) {
+	  path = "../" + path;
+	}
+	DataObjectGenerator dataObjectGenerator(path + "/template/",
+			path + "/output/", *mLogicalModel, *mErrorReporter);
 	dataObjectGenerator.generate();
 
 //	CustomClassSbtGenerator customClassSbtGenerator("./templates/", "./output/", *mLogicalModel, *mErrorReporter);
