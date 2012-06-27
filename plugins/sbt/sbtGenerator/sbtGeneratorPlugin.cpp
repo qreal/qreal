@@ -14,7 +14,7 @@ SbtGeneratorPlugin::~SbtGeneratorPlugin()
 
 void SbtGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
-    //mGenerator.init(configurator.logicalModelApi(), *configurator.mainWindowInterpretersInterface().errorReporter());
+	mGenerator.init(configurator.logicalModelApi(), *configurator.mainWindowInterpretersInterface().errorReporter());
 }
 
 //qReal::Customizer* SbtGeneratorPlugin::customizationInterface()
@@ -24,9 +24,9 @@ void SbtGeneratorPlugin::init(PluginConfigurator const &configurator)
 
 QList<ActionInfo> SbtGeneratorPlugin::actions()
 {
-    QAction * const generateAction = new QAction(QObject::tr("generate for sbt"), NULL);
-    ActionInfo generateActionInfo(generateAction, "interpreters", "tools");
-    //QObject::connect(generateAction, SIGNAL(triggered()), &mGenerator, SLOT(generate()));
+	QAction * const generateAction = new QAction(QObject::tr("generate for sbt"), NULL);
+	ActionInfo generateActionInfo(generateAction, "interpreters", "tools");
+	//QObject::connect(generateAction, SIGNAL(triggered()), &mGenerator, SLOT(generate()));
 
-    return QList<ActionInfo>() << generateActionInfo;
+	return QList<ActionInfo>() << generateActionInfo;
 }

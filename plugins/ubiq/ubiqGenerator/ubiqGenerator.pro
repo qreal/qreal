@@ -13,7 +13,7 @@ HEADERS = \
 	generator.h \
 	messageGenerator.h \
 	customClassGenerator.h \
-	abstractGenerator.h \
+	#abstractGenerator.h \
 	dispatcherGenerator.h
 
 SOURCES = \
@@ -21,7 +21,7 @@ SOURCES = \
 	generator.cpp \
 	messageGenerator.cpp \
 	customClassGenerator.cpp \
-	abstractGenerator.cpp \
+	#abstractGenerator.cpp \
 	dispatcherGenerator.cpp
 
 win32 {

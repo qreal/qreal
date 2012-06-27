@@ -17,21 +17,21 @@ Generator::~Generator()
 }
 
 void Generator::init(qReal::LogicalModelAssistInterface const &logicalModel
-		, qReal::ErrorReporterInterface &errorReporter
-		)
+        , qReal::ErrorReporterInterface &errorReporter
+        )
 {
-	mLogicalModel = &logicalModel;
-	mErrorReporter = &errorReporter;
+    mLogicalModel = &logicalModel;
+    mErrorReporter = &errorReporter;
 }
 
 void Generator::generate()
 {
-	MessageGenerator generator("./templates", "./output", *mLogicalModel, *mErrorReporter);
-	generator.generate();
+    MessageGenerator generator("./templates", "./output", *mLogicalModel, *mErrorReporter);
+    generator.generate();
 
-	CustomClassGenerator customClassGenerator("./templates/", "./output/", *mLogicalModel, *mErrorReporter);
-	customClassGenerator.generate();
+    CustomClassGenerator customClassGenerator("./templates/", "./output/", *mLogicalModel, *mErrorReporter);
+    customClassGenerator.generate();
 
-	DispatcherGenerator dispatcherGenerator("./templates", "./output", *mLogicalModel, *mErrorReporter);
-	dispatcherGenerator.generate();
+    DispatcherGenerator dispatcherGenerator("./templates", "./output", *mLogicalModel, *mErrorReporter);
+    dispatcherGenerator.generate();
 }
