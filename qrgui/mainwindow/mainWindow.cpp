@@ -61,6 +61,7 @@ MainWindow::MainWindow()
 		, mRecentProjectsMapper(new QSignalMapper())
 {
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
+	mOpenedTabsWithEditor = new QHash<EditorView *, QPair<CodeArea*, QPair<QPersistentModelIndex, int> > >();
 
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
 	timeMeasurer.doNothing(); //to avoid the unused variables problem
@@ -910,6 +911,21 @@ void qReal::MainWindow::closeTab(int index)
 			deletingCodeTab = diagram;
 	if (deletingCodeTab != NULL)
 		mCodeTabManager->remove(deletingCodeTab);
+	QPersistentModelIndex pIndex;
+	int role;
+	foreach (EditorView *diagram, mOpenedTabsWithEditor->keys()) {
+		QPair<CodeArea *, QPair<QPersistentModelIndex, int> > value =
+				mOpenedTabsWithEditor->value(diagram);
+		if (value.first == possibleCodeTab) {
+			deletingCodeTab = diagram;
+			pIndex = value.second.first;
+			role = value.second.second;
+		}
+	}
+	if (deletingCodeTab != NULL) {
+		setShape(possibleCodeTab->toPlainText(), pIndex, role);
+		mOpenedTabsWithEditor->remove(deletingCodeTab);
+	}
 	mUi->tabs->removeTab(index);
 	delete widget;
 }
@@ -1662,6 +1678,24 @@ void MainWindow::showInTextEditor(QString const &title, QString const &text)
 		}
 		else
 			mUi->tabs->setCurrentWidget(mCodeTabManager->value(getCurrentTab()));
+	}
+}
+
+void MainWindow::showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index, int const &role)
+{
+	if (dynamic_cast<EditorView *>(getCurrentTab()) != NULL) {
+		if (!mOpenedTabsWithEditor->contains(getCurrentTab())) {
+			CodeArea * area = new CodeArea();
+			area->document()->setPlainText(text);
+
+			area->show();
+
+			QPair<CodeArea *, QPair<QPersistentModelIndex, int> > placeToSave = qMakePair(area, qMakePair(index, role));
+			mOpenedTabsWithEditor->insert(getCurrentTab(), placeToSave);
+
+			mUi->tabs->addTab(area, title);
+			mUi->tabs->setCurrentWidget(area);
+		}
 	}
 }
 
