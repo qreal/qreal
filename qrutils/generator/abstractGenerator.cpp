@@ -2,9 +2,8 @@
 #include <QtCore/QDebug>
 
 #include "abstractGenerator.h"
-#include "../../../qrutils/nameNormalizer.h"
+#include "../nameNormalizer.h"
 
-using namespace ubiq::generator;
 using namespace qReal;
 using namespace utils;
 
@@ -43,6 +42,7 @@ bool AbstractGenerator::loadTemplateFromFile(QString const &templateFileName, QS
 	}
 
 	QString const fileName = dir.absoluteFilePath(templateFileName);
+	qDebug() << fileName;
 	QFile file(fileName);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		qDebug() << "cannot load file \"" << fileName << "\"";

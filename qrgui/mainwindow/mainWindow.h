@@ -67,6 +67,7 @@ public:
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram();
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
+	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index, int const &role);
 	virtual void openSettingsDialog(QString const &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);
@@ -215,6 +216,8 @@ private:
 
 	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
 	QMap<EditorView*, CodeArea*> *mCodeTabManager;
+
+	QHash<EditorView*, QPair<CodeArea *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on

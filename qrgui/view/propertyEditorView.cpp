@@ -93,7 +93,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
 		} else {
-			if (name == "shape") { // hack
+			if (name == "shape" || name == "description") { // hack
 				isButton = true;
 			}
 		}
@@ -150,7 +150,11 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 	QPersistentModelIndex const actualIndex = mModel->modelIndex(index.row());
 	int role = mModel->roleByIndex(index.row());
 
-	mMainWindow->openShapeEditor(actualIndex, role, propertyValue);
+	QString const name = property->propertyName();
+	if (name == "shape")
+		mMainWindow->openShapeEditor(actualIndex, role, propertyValue);
+	else if (name == "description")
+		mMainWindow->showAndEditPropertyInTextEditor(name, propertyValue, actualIndex, role);
 }
 
 void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)

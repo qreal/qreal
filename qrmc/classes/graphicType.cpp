@@ -35,6 +35,9 @@ bool GraphicType::init(QString const &context)
 	if (mApi->hasProperty(mId, "shape"))
 		mIsVisible = !mApi->stringProperty(mId, "shape").isEmpty();
 
+	if (mApi->hasProperty(mId, "description"))
+		mIsVisible = !mApi->stringProperty(mId, "description").isEmpty();
+
 	mContains << (mApi->hasProperty(mId, "container")
 					  ? mApi->stringProperty(mId, "container").split(",", QString::SkipEmptyParts)
 					  : QStringList());

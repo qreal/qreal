@@ -1,6 +1,8 @@
 #pragma once
 
-#include "abstractGenerator.h"
+#include "../../../qrutils/generator/abstractGenerator.h"
+
+using namespace utils;
 
 namespace ubiq {
 namespace generator {
