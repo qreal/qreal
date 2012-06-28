@@ -9,17 +9,18 @@
 using namespace qReal;
 using namespace utils;
 
-class DataIntegratorGenerator : public AbstractGenerator
+class ProjectGenerator : public AbstractGenerator
 {
 public:
-  DataIntegratorGenerator(QString const &templateDirPath
+  ProjectGenerator(QString const &templateDirPath
 					, QString const &outputDirPath
 					, qReal::LogicalModelAssistInterface const &logicalModel
 					, qReal::ErrorReporterInterface &errorReporter
 					);
-	QList<QString> getFiles();
-	void generate();
+  void generate();
+  void setFilesName(QList<QString> const & files);
+
 private:
-QList<QString> mFiles;
+	QString mFiles;
 };
 

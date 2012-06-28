@@ -36,7 +36,13 @@ void DataObjectGenerator::generate()
 				res.replace("@@DataObject@@", mApi.name(element))
 					.replace("@@ListOfProperties@@", generatePropertiesCode(element));
 				saveOutputFile(fileName + mApi.name(element) + ".cs", res);
+				mFiles.append(fileName + mApi.name(element) + ".cs");
 		  }
 	  }
   }
+}
+
+QList<QString> DataObjectGenerator::getFiles()
+{
+  return mFiles;
 }
