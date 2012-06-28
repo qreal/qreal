@@ -1,6 +1,7 @@
 #include "sbtGenerator.h"
 #include "dataObjectGenerator.h"
 #include "Qdir"
+#include "dataIntegratorGenerator.h"
 
 #include <QtCore/QDebug>
 
@@ -29,6 +30,9 @@ void SbtGenerator::generate()
 	DataObjectGenerator dataObjectGenerator(path + "/template/",
 			path + "/output/", *mLogicalModel, *mErrorReporter);
 	dataObjectGenerator.generate();
+	DataIntegratorGenerator dataIntegratorGenerator(path + "/template/",
+			path + "/output/", *mLogicalModel, *mErrorReporter);
+	dataIntegratorGenerator.generate();
 
 //	CustomClassSbtGenerator customClassSbtGenerator("./templates/", "./output/", *mLogicalModel, *mErrorReporter);
 //	customClassSbtGenerator.generate();

@@ -23,7 +23,6 @@ void DataObjectGenerator::generate()
 	//loadUtilsTemplates();
 
   foreach (Id const &diagram, mApi.elementsByType(sbtDiagram)) {
-	qDebug() << "diagram!!";
 	if (!mApi.isLogicalElement(diagram)) {
 		  continue;
 	  }

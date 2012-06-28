@@ -10,12 +10,14 @@ MOC_DIR = .moc
 HEADERS = \
 	sbtGeneratorPlugin.h \
     sbtGenerator.h \
-    dataObjectGenerator.h
+    dataObjectGenerator.h \
+    dataIntegratorGenerator.h
 
 SOURCES = \
 	sbtGeneratorPlugin.cpp \
     sbtGenerator.cpp \
-    dataObjectGenerator.cpp
+    dataObjectGenerator.cpp \
+    dataIntegratorGenerator.cpp
 
 win32 {
 	QMAKE_POST_LINK = "xcopy templates ..\\..\\..\\bin\\templates /s /e /q /y /i "
