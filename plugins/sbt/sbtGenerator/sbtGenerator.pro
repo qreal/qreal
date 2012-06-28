@@ -11,13 +11,15 @@ HEADERS = \
 	sbtGeneratorPlugin.h \
     sbtGenerator.h \
     dataObjectGenerator.h \
-    dataIntegratorGenerator.h
+    dataIntegratorGenerator.h \
+    projectGenerator.h
 
 SOURCES = \
 	sbtGeneratorPlugin.cpp \
     sbtGenerator.cpp \
     dataObjectGenerator.cpp \
-    dataIntegratorGenerator.cpp
+    dataIntegratorGenerator.cpp \
+    projectGenerator.cpp
 
 win32 {
 	QMAKE_POST_LINK = "xcopy templates ..\\..\\..\\bin\\templates /s /e /q /y /i "

@@ -1,5 +1,6 @@
 #pragma once
 #include "QString"
+#include "QList"
 
 #include "../../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
 #include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
@@ -17,8 +18,9 @@ public:
 					, qReal::ErrorReporterInterface &errorReporter
 					);
   void generate();
+  QList<QString> getFiles();
 
 private:
-
+QList<QString> mFiles;
 };
 

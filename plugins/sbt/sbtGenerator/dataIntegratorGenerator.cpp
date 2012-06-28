@@ -55,7 +55,13 @@ void DataIntegratorGenerator::generate()
 				res.replace("@@DataIntegrator@@", mApi.name(element) + "DI")
 					.replace("@@queryString@@", mApi.stringProperty(element, "RequestBody"));
 				saveOutputFile(fileName + mApi.name(element) + ".cs", res);
-			}
-	   }
-	}
+				mFiles.append(fileName + mApi.name(element) + ".cs");
+		  }
+	  }
+  }
+}
+
+QList<QString> DataIntegratorGenerator::getFiles()
+{
+  return mFiles;
 }
