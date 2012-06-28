@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-sbtGenerator
+	sbtGenerator
 

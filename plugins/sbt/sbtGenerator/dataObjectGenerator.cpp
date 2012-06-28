@@ -23,7 +23,6 @@ void DataObjectGenerator::generate()
 	//loadUtilsTemplates();
 
   foreach (Id const &diagram, mApi.elementsByType(sbtDiagram)) {
-	qDebug() << "diagram!!";
 	if (!mApi.isLogicalElement(diagram)) {
 		  continue;
 	  }
@@ -37,7 +36,13 @@ void DataObjectGenerator::generate()
 				res.replace("@@DataObject@@", mApi.name(element))
 					.replace("@@ListOfProperties@@", generatePropertiesCode(element));
 				saveOutputFile(fileName + mApi.name(element) + ".cs", res);
+				mFiles.append(fileName + mApi.name(element) + ".cs");
 		  }
 	  }
   }
+}
+
+QList<QString> DataObjectGenerator::getFiles()
+{
+  return mFiles;
 }
