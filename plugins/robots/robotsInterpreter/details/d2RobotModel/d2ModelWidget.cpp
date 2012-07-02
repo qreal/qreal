@@ -89,25 +89,50 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changePenWidth(int)));
 	connect(mUi->penColorComboBox, SIGNAL(activated(const QString &)), this, SLOT(changePenColor(const QString &)));
 
-	connect(mUi->port1AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
-	mPortsMapper.setMapping(mUi->port1AddButton, inputPort::port1);
-	connect(mUi->port2AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
-	mPortsMapper.setMapping(mUi->port2AddButton, inputPort::port2);
-	connect(mUi->port3AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
-	mPortsMapper.setMapping(mUi->port3AddButton, inputPort::port3);
-	connect(mUi->port4AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
-	mPortsMapper.setMapping(mUi->port4AddButton, inputPort::port4);
+	//connect(mUi->port1AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
+	//mPortsMapper.setMapping(mUi->port1AddButton, inputPort::port1);
+	//connect(mUi->port2AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
+	//mPortsMapper.setMapping(mUi->port2AddButton, inputPort::port2);
+	//connect(mUi->port3AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
+	//mPortsMapper.setMapping(mUi->port3AddButton, inputPort::port3);
+	//connect(mUi->port4AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
+	//mPortsMapper.setMapping(mUi->port4AddButton, inputPort::port4);
 
 	connect(mUi->saveWorldModelPushButton, SIGNAL(clicked()), this, SLOT(saveWorldModel()));
 	connect(mUi->loadWorldModelPushButton, SIGNAL(clicked()), this, SLOT(loadWorldModel()));
 
 	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(addPort(int)));
 
-	connect(mUi->port1Box, SIGNAL(activated(int)), mUi->port1AddButton, SLOT(click()));
-	connect(mUi->port2Box, SIGNAL(activated(int)), mUi->port2AddButton, SLOT(click()));
-	connect(mUi->port3Box, SIGNAL(activated(int)), mUi->port3AddButton, SLOT(click()));
-	connect(mUi->port4Box, SIGNAL(activated(int)), mUi->port4AddButton, SLOT(click()));
+	connect(mUi->port1Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
+	mPortsMapper.setMapping(mUi->port1Box, inputPort::port1);
+	connect(mUi->port2Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
+	mPortsMapper.setMapping(mUi->port2Box, inputPort::port2);
+	connect(mUi->port3Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
+	mPortsMapper.setMapping(mUi->port3Box, inputPort::port3);
+	connect(mUi->port4Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
+	mPortsMapper.setMapping(mUi->port4Box, inputPort::port4);
+
+	connect(mUi->speedComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeSpeed(int)));
 }
+
+void D2ModelWidget::changeSpeed(int curIndex)
+{
+	switch(curIndex){
+	case 0:
+		mRobotModel->speed(1);
+		break;
+	case 1:
+		mRobotModel->speed(2);
+		break;
+	case 2:
+		mRobotModel->speed(4);
+		break;
+	default:
+		mRobotModel->speed(1);
+	}
+}
+
+
 
 void D2ModelWidget::init(bool isActive)
 {
@@ -154,6 +179,8 @@ QPointF D2ModelWidget::robotPos() const
 {
 	return mRobot ? mRobot->pos() : QPointF(0,0);
 }
+
+
 
 void D2ModelWidget::close()
 {
@@ -258,7 +285,7 @@ void D2ModelWidget::addWall(bool on)
 		return;
 	}
 
-	setActiveButton(4);
+//	setActiveButton(4);
 	mDrawingAction = drawingAction::wall;
 }
 
@@ -269,7 +296,7 @@ void D2ModelWidget::addLine(bool on)
 		mMouseClicksCount = 0;
 		return;
 	}
-	setActiveButton(5);
+//	setActiveButton(5);
 	mDrawingAction = drawingAction::line;
 }
 
@@ -280,11 +307,11 @@ void D2ModelWidget::addStylus(bool on)
 		mMouseClicksCount = 0;
 		return;
 	}
-	setActiveButton(6);
+//	setActiveButton(6);
 	mDrawingAction = drawingAction::stylus;
 }
 
-void D2ModelWidget::setActiveButton(int active)
+/*void D2ModelWidget::setActiveButton(int active)
 {
 	mButtonFlags.clear();
 	for (int i = 0; i < mButtonsCount; i++)
@@ -301,7 +328,7 @@ void D2ModelWidget::setActiveButton(int active)
 	mUi->stylusButton->setChecked(mButtonFlags.at(6));
 
 }
-
+*/
 void D2ModelWidget::clearScene()
 {
 	mWorldModel->clearScene();
@@ -322,7 +349,7 @@ void D2ModelWidget::resetButtons()
 	mCurrentStylus = NULL;
 	mMouseClicksCount = 0;
 	mDrawingAction = drawingAction::none;
-	setActiveButton(mButtonsCount - 1);
+//	setActiveButton(mButtonsCount - 1);
 }
 
 QComboBox *D2ModelWidget::currentComboBox()
@@ -342,45 +369,53 @@ QComboBox *D2ModelWidget::currentComboBox()
 	return NULL;
 }
 
-QPushButton *D2ModelWidget::currentPortButton()
+/*QPushButton *D2ModelWidget::currentPortButton()
 {
 	switch (mCurrentPort){
 	case inputPort::port1:
-		return mUi->port1AddButton;
+		return mUi->port1Box;
 	case inputPort::port2:
-		return mUi->port2AddButton;
+		return mUi->port2Box;
 	case inputPort::port3:
-		return mUi->port3AddButton;
+		return mUi->port3Box;
 	case inputPort::port4:
-		return mUi->port4AddButton;
+		return mUi->port4Box;
 	case inputPort::none:
 		break;
 	}
 	return NULL;
 }
-
+*/
 void D2ModelWidget::addPort(int const port)
 {
 	mCurrentPort = static_cast<inputPort::InputPortEnum>(port);
 
-	setActiveButton(port);
+//	setActiveButton(port);
 
-	mDrawingAction = drawingAction::port;
+	//mDrawingAction = drawingAction::port;
 
 	switch (currentComboBox()->currentIndex()){
 	case 0:
-		mCurrentSensorType = sensorType::touchBoolean;
-		break;
-	case 1:
-		mCurrentSensorType = sensorType::colorFull;
-		break;
-	case 2:
-		mCurrentSensorType = sensorType::sonar;
-		break;
-	default:
 		mCurrentSensorType = sensorType::unused;
 		break;
+	case 1:
+		mCurrentSensorType = sensorType::touchBoolean;
+		break;
+	case 2:
+		mCurrentSensorType = sensorType::colorFull;
+		break;
+	case 3:
+		mCurrentSensorType = sensorType::sonar;
+		break;
+
 	}
+	QPointF newpos = mRobot->mapFromScene(mRobot->boundingRect().center());
+	mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0);
+
+	reinitSensor(mCurrentPort);
+
+	resetButtons();
+
 }
 
 void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
@@ -447,15 +482,7 @@ void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 		mMouseClicksCount++;
 	}
 		break;
-	case drawingAction::port: {
-		QPointF newpos = mRobot->mapFromScene(mouseEvent->scenePos());
-		mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0);
 
-		reinitSensor(mCurrentPort);
-
-		resetButtons();
-	}
-		break;
 	case drawingAction::none: {
 		mMouseClicksCount = 0;
 		mScene->forPressResize(mouseEvent);

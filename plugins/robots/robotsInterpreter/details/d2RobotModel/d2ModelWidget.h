@@ -96,6 +96,8 @@ private slots:
 	void changePenColor(const QString &text);
 	void changePalette();
 
+	void changeSpeed(int curIndex);
+
 private:
 	void connectUiButtons();
 	void drawWalls();
