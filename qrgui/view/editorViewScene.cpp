@@ -449,18 +449,18 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 
 	Id parentId = newParent ? newParent->id() : mMVIface->rootId();
 
+	//inserting new node into edge
+	Id insertedNodeId = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
+	if (dynamic_cast<NodeElement*>(e)) {
+		insertNodeIntoEdge(insertedNodeId, parentId, isFromLogicalModel, scenePos);
+	}
+
 	NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
 	if (parentNode != NULL) {
 		Element *nextNode = parentNode->getPlaceholderNextElement();
 		if (nextNode != NULL) {
 			mMVIface->graphicalAssistApi()->stackBefore(id, nextNode->id());
 		}
-	}
-
-	//inserting new node into edge
-	Id insertedNodeId = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
-	if (dynamic_cast<NodeElement*>(e)) {
-		insertNodeIntoEdge(insertedNodeId, parentId, isFromLogicalModel, scenePos);
 	}
 
 	if (e) {
