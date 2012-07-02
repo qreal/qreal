@@ -1877,14 +1877,18 @@ void MainWindow::closeProjectAndSave()
 
 void MainWindow::closeProject()
 {
-	static_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
+	if (mUi->propertyEditor->model() != NULL) {
+		static_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
+	}
 	mUi->graphicalModelExplorer->setModel(NULL);
 	mUi->logicalModelExplorer->setModel(NULL);
-	if (getCurrentTab())
+	if (getCurrentTab()) {
 		static_cast<EditorViewScene*>(getCurrentTab()->scene())->clearScene();
+	}
 	closeAllTabs();
 	setWindowTitle(mToolManager.customizer()->windowTitle());
 }
+
 void MainWindow::changePaletteRepresentation()
 {
 	if (SettingsManager::value("PaletteRepresentation", 0).toBool() != mUi->paletteTree->iconsView()
