@@ -57,6 +57,8 @@ private:
 	//! Set of already generated strings united for take a same critical places position (start of loop etc)
 	QList< QList<SmartLine> > mGeneratedStringSet;
 	QList<SmartLine> mInitCode;
+	QList<SmartLine> mTerminateCode;
+
 
 	QByteArray mPortValue1;
 	QByteArray mPortValue2;
