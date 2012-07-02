@@ -35,8 +35,8 @@ bool GraphicType::init(QString const &context)
 	if (mApi->hasProperty(mId, "shape"))
 		mIsVisible = !mApi->stringProperty(mId, "shape").isEmpty();
 
-	if (mApi->hasProperty(mId, "description"))
-		mIsVisible = !mApi->stringProperty(mId, "description").isEmpty();
+	if (mApi->hasProperty(mId, "RequestBody"))
+		mIsVisible = !mApi->stringProperty(mId, "RequestBody").isEmpty();
 
 	mContains << (mApi->hasProperty(mId, "container")
 					  ? mApi->stringProperty(mId, "container").split(",", QString::SkipEmptyParts)
