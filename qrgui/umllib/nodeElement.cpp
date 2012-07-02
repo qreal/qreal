@@ -656,12 +656,12 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 	arrangeLinks();
 
-	qDebug() << "A";
+	//qDebug() << "A";
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	qDebug() << "B" << mId.toString();
+	//qDebug() << "B" << mId.toString();
 
 	if (event->button() == Qt::RightButton) {
 		event->accept();
