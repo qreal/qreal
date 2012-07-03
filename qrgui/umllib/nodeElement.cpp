@@ -532,6 +532,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			// Determing parent using corner position, not mouse coordinates
 			QPointF newParentInnerPoint = event->scenePos();
 			/*
+			 * AAAA!!! Who knows why is this code here????!!!
+			 *
 			switch (mDragState) {
 			case TopLeft:
 				newParentInnerPoint = scenePos();
@@ -655,14 +657,10 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	arrangeLinks();
-
-	//qDebug() << "A";
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	//qDebug() << "B" << mId.toString();
-
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
@@ -670,12 +668,16 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	delUnusedLines();
 
 	/*
+	 * This code may become necessary.
+	 * Now it exists for experiments.
+	 *
 	if (mElementImpl->minimizesToChildren()) {
 		resize(mContents);
 	}
+	
+	mContents = mContents.normalized();
 	*/
 
-	//mContents = mContents.normalized();
 	storeGeometry();
 
 	setVisibleEmbeddedLinkers(true);
