@@ -42,7 +42,7 @@ QHash<Id, QPair<QString,QString> > EditorGenerator::getMetamodelList()
 				metamodelList.insert(key, savingData);
 			}
 			else {
-				mErrorReporter.addError("no name of the directory or relative path to QReal Source Files", key);
+				mErrorReporter.addError("no directory to generated code or relative path to QReal Source Files", key);
 			}
 		}
 	}
