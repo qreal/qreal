@@ -43,6 +43,10 @@ void GraphicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex con
 		Id const logicalId = current.data(roles::logicalIdRole).value<Id>();
 		static_cast<LogicalModel *>(mModel)->updateElements(logicalId, current.data(Qt::DisplayRole).toString());
 	}
+	Id const parentLogicalId = topLeft.sibling(topLeft.row(), 0).data(roles::logicalIdRole).value<Id>();
+	Id const childLogicalId = bottomRight.sibling(bottomRight.row(), 0).data(roles::logicalIdRole).value<Id>();
+	if (parentLogicalId != childLogicalId)
+		static_cast<LogicalModel *>(mModel)->changeParent(parentLogicalId, childLogicalId);
 }
 
 void GraphicalModelView::rowsAboutToBeRemoved(QModelIndex const &parent, int start, int end)

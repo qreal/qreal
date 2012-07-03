@@ -225,6 +225,8 @@ void GraphicalModel::changeParent(QModelIndex const &element, QModelIndex const 
 		mApi.setPosition(elementItem->id(), position);
 		mApi.setConfiguration(elementItem->id(), configuration);
 		endMoveRows();
+		if (parent.row() < element.row())
+			emit dataChanged(parent, element);
 	}
 }
 

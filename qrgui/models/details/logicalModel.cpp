@@ -86,6 +86,8 @@ AbstractModelItem *LogicalModel::createModelItem(Id const &id, AbstractModelItem
 
 void LogicalModel::updateElements(Id const &logicalId, QString const &name)
 {
+	if (logicalId == Id())
+		return;
 	if (mApi.name(logicalId) == name)
 		return;
 	mApi.setName(logicalId, name);
@@ -265,6 +267,13 @@ void LogicalModel::changeParent(QModelIndex const &element, QModelIndex const &p
 
 		endMoveRows();
 	}
+}
+
+void LogicalModel::changeParent(const Id &parentId, const Id &childId)
+{
+	QModelIndex parentIndex = mLogicalAssistApi->indexById(parentId);
+	QModelIndex childIndex = mLogicalAssistApi->indexById(childId);
+	changeParent(childIndex, parentIndex, QPointF());
 }
 
 void LogicalModel::stackBefore(const QModelIndex &element, const QModelIndex &sibling)
