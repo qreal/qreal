@@ -149,7 +149,7 @@ MainWindow::MainWindow()
 
 	progress->setValue(80);
 	if (!checkPluginsAndReopen(splash)) {
-	//	return;
+		return;
 	}
 
 	mGesturesWidget = new GesturesWidget();
@@ -548,10 +548,11 @@ void MainWindow::saveAllAndOpen(QString const &dirName)
 	open(dirName);
 }
 
-bool MainWindow::open(QString const &fileName)
+bool MainWindow::open(QString fileName)
 {
 	if (!QFile(fileName).exists() && fileName != "") {
-		return false;
+	//	return false;
+		fileName = "";
 	}
 
 	refreshRecentProjectsList(fileName);
