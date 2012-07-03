@@ -7,6 +7,11 @@ LIBS += -L../../../bin -lqrkernel -lqrutils
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
 
+TRANSLATIONS = sbtGeneratorPlugin_ru.ts
+
+RESOURCES = sbtGeneratorPlugin.qrc
+
+
 HEADERS = \
 	sbtGeneratorPlugin.h \
     sbtGenerator.h \
