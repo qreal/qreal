@@ -47,6 +47,8 @@ private:
 			, QString const &prefix  ///< Optional OS-dependent prefix for resulting binary file (lib for linux, for example)
 			);
 
+	void deleteGeneratedFiles(QString const &directoryName, QString const &fileBaseName);//qwerty_deleteFiles
+
 	/// Action that starts generation of .xml file with metamodel for qrxc
 	QAction mGenerateEditorForQrxcAction;
 

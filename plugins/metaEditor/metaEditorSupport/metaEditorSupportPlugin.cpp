@@ -220,6 +220,15 @@ void MetaEditorSupportPlugin::parseEditorXml()
 	mMainWindowInterface->reinitModels();
 }
 
+void MetaEditorSupportPlugin::deleteGeneratedFiles(QString const &directoryName, QString const &fileBaseName)
+{
+	QFile filePro(fileBaseName + ".pro");
+	QFile fileXml(fileBaseName + ".xml");
+	QDir::setCurrent(directoryName);
+	filePro.remove();
+	fileXml.remove();
+}
+
 void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 		, QPair<QString, QString> const &metamodelNames
 		, QString const &commandFirst
@@ -254,13 +263,7 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 
 	if (!mMainWindowInterface->unloadPlugin(normalizeDirName)) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot unload plugin"));
-
-		QFile filePro(normalizerMetamodelName + ".pro"); //qwerty_deleteFiles
-		QFile fileXml(normalizerMetamodelName + ".xml");
-		QDir::setCurrent(directoryName);
-		filePro.remove();
-		fileXml.remove();
-
+		deleteGeneratedFiles(directoryName, normalizerMetamodelName);
 		progress->close();
 		delete progress;
 		return;
@@ -286,12 +289,7 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 
 	if (progress->value() != 100) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot load new editor"));
-
-		QFile filePro(normalizerMetamodelName + ".pro"); //qwerty_deleteFiles
-		QFile fileXml(normalizerMetamodelName + ".xml");
-		QDir::setCurrent(directoryName);
-		filePro.remove();
-		fileXml.remove();
+		deleteGeneratedFiles(directoryName, normalizerMetamodelName);
 	}
 	progress->setValue(100);
 	progress->close();
