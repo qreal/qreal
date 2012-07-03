@@ -80,7 +80,7 @@ void DebuggerConnector::run()
 
 void DebuggerConnector::startDebugger()
 {
-	setDebuggerPath(SettingsManager::value("debuggerPath", "gdb").toString());
+	setDebuggerPath(SettingsManager::value("debuggerPath").toString());
 
 	if (QFile::exists(mDebuggerPath) || mDebuggerPath == "gdb") {
 		mDebuggerProcess->start(mDebuggerPath);
@@ -147,10 +147,10 @@ void DebuggerConnector::sendCommand(QString const &command)
 
 void DebuggerConnector::build()
 {
-	setBuilderPath(SettingsManager::value("builderPath", "gcc").toString());
-	setBuildedFileName(SettingsManager::value("buildedFileName", "builded").toString());
-	setCodeFileName(SettingsManager::value("codeFileName", "code.c").toString());
-	setWorkDir(SettingsManager::value("debugWorkingDirectory", "").toString());
+	setBuilderPath(SettingsManager::value("builderPath").toString());
+	setBuildedFileName(SettingsManager::value("buildedFileName").toString());
+	setCodeFileName(SettingsManager::value("codeFileName").toString());
+	setWorkDir(SettingsManager::value("debugWorkingDirectory").toString());
 
 	QStringList args;
 	args.append("-g");

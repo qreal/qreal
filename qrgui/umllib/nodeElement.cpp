@@ -53,7 +53,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 
 	mGrid = new SceneGridHandler(this);
 	mUmlPortHandler = new UmlPortHandler(this);
-	switchGrid(SettingsManager::value("ActivateGrid", true).toBool());
+	switchGrid(SettingsManager::value("ActivateGrid").toBool());
 }
 
 NodeElement::~NodeElement()
