@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <metamodel xmlns="http://schema.real.com/schema/">
 	<include>../../commonMetamodels/kernelMetamodel.xml</include>
 	<namespace>UML 2.0</namespace>
@@ -528,5 +529,34 @@
 				</logic>
 			</node>
 		</graphicTypes>
+				<palette>
+			<group name="DSL Elements">
+				<element name="Node"/>
+				<element name="Edge"/>
+				<element name="Enum"/>
+				<element name="Import"/>
+			</group>
+			<group name="Root Diagrams">
+				<element name="Metamodel Diagram"/>
+				<element name="Meta Editor Diagram"/>
+				<element name="Package Diagram"/>
+			</group>
+			<group name="Node Properties">
+				<element name="Property"/>
+				<element name="Properties as Container"/>
+				<element name="Possible Edge"/>
+			</group>
+			<group name="Enum Properties">
+				<element name="Value"/>
+			</group>
+			<group name="Edge Properties">
+				<element name="Property"/>
+				<element name="Assotiation"/>
+			</group>
+			<group name="Relationship">
+				<element name="Inheritance"/>
+				<element name="Container"/>
+			</group>
+		</palette>
 	</diagram>
 </metamodel>
