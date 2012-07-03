@@ -1686,7 +1686,7 @@ void MainWindow::showAndEditPropertyInTextEditor(QString const &title, QString c
 {
 	if (dynamic_cast<EditorView *>(getCurrentTab()) != NULL) {
 		if (!mOpenedTabsWithEditor->contains(getCurrentTab())) {
-			CodeArea * area = new CodeArea();
+			CodeArea * area = new CodeArea(NULL, sql);
 			area->document()->setPlainText(text);
 
 			area->show();
