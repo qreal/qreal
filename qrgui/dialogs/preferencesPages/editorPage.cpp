@@ -27,6 +27,8 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	connect(mUi->fontSelectionButton, SIGNAL(clicked()),this, SLOT(fontSelectionButtonClicked()));
 	connect(mUi->paletteComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(paletteComboBoxClicked(int)));
 
+	connect(mShowGridAction, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
+	connect(mShowAlignmentAction, SIGNAL(toggled(bool)), this, SLOT(showAlignment(bool)));
 	mUi->indexGridSlider->setVisible(false);
 	mUi->label_20->setVisible(false);
 
@@ -146,4 +148,16 @@ void PreferencesEditorPage::changePaletteParameters()
 {
 	mUi->paletteComboBox->setCurrentIndex(SettingsManager::value("PaletteRepresentation").toInt());
 	mUi->paletteSpinBox->setValue(SettingsManager::value("PaletteIconsInARowCount").toInt());
+}
+
+void PreferencesEditorPage::showGrid(bool show)
+{
+	SettingsManager::setValue("ShowGrid", show);
+	mUi->showGridCheckBox->setChecked(show);
+}
+
+void PreferencesEditorPage::showAlignment(bool show)
+{
+	SettingsManager::setValue("ShowAlignment", show);
+	mUi->showAlignmentCheckBox->setChecked(show);
 }
