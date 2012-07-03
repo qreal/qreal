@@ -148,8 +148,9 @@ MainWindow::MainWindow()
 	// =========== Step 6: Save loaded, models initialized ===========
 
 	progress->setValue(80);
-	if (!checkPluginsAndReopen(splash))
-		return;
+	if (!checkPluginsAndReopen(splash)) {
+	//	return;
+	}
 
 	mGesturesWidget = new GesturesWidget();
 	initExplorers();
