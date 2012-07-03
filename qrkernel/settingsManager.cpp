@@ -70,7 +70,7 @@ void SettingsManager::load()
 
 void SettingsManager::initDefaultValues()
 {
-	QSettings values("../qrkernel/settingsDefaultValues", QSettings::NativeFormat);
+	QSettings values(":/settingsDefaultValues", QSettings::NativeFormat);
 
 	foreach (QString key, values.allKeys()) {
 		mDefaultValues.insert(key, values.value(key));
