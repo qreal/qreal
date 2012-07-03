@@ -31,7 +31,7 @@ namespace qrRepo {
 
 		/// returning IdList of elements that names contains input string
 		/// @param name - string that should be contained by names of elements that Id's are in the output list
-		qReal::IdList findElementsByName(QString const &name, bool sensitivity) const;
+        qReal::IdList findElementsByName(QString const &name, bool sensitivity, bool regExpression) const;
 
 		/// returning IdList of elements that have input property
 		/// @param name - string that should be contained by names of elements that have input property

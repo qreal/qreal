@@ -27,12 +27,13 @@ IdList RepoApi::children(Id const &id) const
 	return mClient.children(id);
 }
 
-IdList RepoApi::findElementsByName(QString const &name, bool sensitivity) const
+IdList RepoApi::findElementsByName(QString const &name, bool sensitivity, bool regExpression) const
 {
-	return mClient.findElementsByName(name, sensitivity);
+    return mClient.findElementsByName(name, sensitivity, regExpression);
 }
 
-qReal::IdList RepoApi::elementsByPropertyContent(QString const &propertyContent, bool sensitivity) const
+qReal::IdList RepoApi::elementsByPropertyContent(QString const &propertyContent, bool sensitivity,
+        bool regExp) const
 {
 	return mClient.elementsByPropertyContent(propertyContent, sensitivity);
 }

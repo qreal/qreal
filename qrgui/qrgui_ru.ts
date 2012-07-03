@@ -43,32 +43,39 @@
 <context>
     <name>CheckoutDialog</name>
     <message>
+        <location filename="dialogs/checkoutdialog.cpp" line="20"/>
         <source>&amp;Browse...</source>
-        <translation type="obsolete">&amp;Просмотр...</translation>
+        <translation type="unfinished">&amp;Просмотр...</translation>
     </message>
     <message>
+        <location filename="dialogs/checkoutdialog.cpp" line="21"/>
         <source>Subversion place</source>
-        <translation type="obsolete">Место в SVNе</translation>
+        <translation type="unfinished">Место в SVNе</translation>
     </message>
     <message>
+        <location filename="dialogs/checkoutdialog.cpp" line="22"/>
         <source>Checkout to directory:</source>
-        <translation type="obsolete">Чекаут в папку:</translation>
+        <translation type="unfinished">Чекаут в папку:</translation>
     </message>
     <message>
+        <location filename="dialogs/checkoutdialog.cpp" line="25"/>
         <source>Ok</source>
-        <translation type="obsolete">ОК</translation>
+        <translation type="unfinished">ОК</translation>
     </message>
     <message>
+        <location filename="dialogs/checkoutdialog.cpp" line="26"/>
         <source>Cancel</source>
-        <translation type="obsolete">Отмена</translation>
+        <translation type="unfinished">Отмена</translation>
     </message>
     <message>
+        <location filename="dialogs/checkoutdialog.cpp" line="45"/>
         <source>Checkout options</source>
-        <translation type="obsolete">Настройки чекаута</translation>
+        <translation type="unfinished">Настройки чекаута</translation>
     </message>
     <message>
+        <location filename="dialogs/checkoutdialog.cpp" line="51"/>
         <source>Select directory</source>
-        <translation type="obsolete">Выбор папки</translation>
+        <translation type="unfinished">Выбор папки</translation>
     </message>
 </context>
 <context>
@@ -377,44 +384,44 @@
 <context>
     <name>FindManager</name>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="23"/>
-        <location filename="mainwindow/findManager.cpp" line="62"/>
+        <location filename="mainwindow/findManager.cpp" line="24"/>
         <location filename="mainwindow/findManager.cpp" line="63"/>
+        <location filename="mainwindow/findManager.cpp" line="64"/>
         <source>by name</source>
         <translation>по имени</translation>
     </message>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="25"/>
+        <location filename="mainwindow/findManager.cpp" line="26"/>
         <source>by type</source>
         <translation>по типу</translation>
     </message>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="27"/>
+        <location filename="mainwindow/findManager.cpp" line="28"/>
         <source>by property</source>
         <translation>по свойствам</translation>
     </message>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="29"/>
-        <location filename="mainwindow/findManager.cpp" line="69"/>
+        <location filename="mainwindow/findManager.cpp" line="30"/>
         <location filename="mainwindow/findManager.cpp" line="70"/>
+        <location filename="mainwindow/findManager.cpp" line="71"/>
         <source>by property content</source>
         <translation>по содержимому свойств</translation>
     </message>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="39"/>
-        <location filename="mainwindow/findManager.cpp" line="41"/>
-        <location filename="mainwindow/findManager.cpp" line="64"/>
-        <location filename="mainwindow/findManager.cpp" line="71"/>
+        <location filename="mainwindow/findManager.cpp" line="40"/>
+        <location filename="mainwindow/findManager.cpp" line="42"/>
+        <location filename="mainwindow/findManager.cpp" line="65"/>
+        <location filename="mainwindow/findManager.cpp" line="72"/>
         <source>case sensitivity</source>
         <translation>чувствительность к регистру</translation>
     </message>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="45"/>
+        <location filename="mainwindow/findManager.cpp" line="46"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="48"/>
+        <location filename="mainwindow/findManager.cpp" line="49"/>
         <source>   :: </source>
         <translation>   ::    </translation>
     </message>
@@ -468,16 +475,21 @@
     </message>
     <message>
         <location filename="dialogs/findReplaceDialog.ui" line="109"/>
+        <source>by regular expression</source>
+        <translation>используя регулярные выражения</translation>
+    </message>
+    <message>
+        <location filename="dialogs/findReplaceDialog.ui" line="116"/>
         <source>case sensitivity</source>
         <translation>чувствительность к регистру</translation>
     </message>
     <message>
-        <location filename="dialogs/findReplaceDialog.cpp" line="28"/>
+        <location filename="dialogs/findReplaceDialog.cpp" line="29"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="dialogs/findReplaceDialog.cpp" line="103"/>
+        <location filename="dialogs/findReplaceDialog.cpp" line="104"/>
         <source> / </source>
         <translation> / </translation>
     </message>
@@ -3128,12 +3140,14 @@
 <context>
     <name>qReal::PluginDialog</name>
     <message>
+        <location filename="dialogs/plugindialog.cpp" line="26"/>
         <source>OK</source>
-        <translation type="obsolete">ОК</translation>
+        <translation type="unfinished">ОК</translation>
     </message>
     <message>
+        <location filename="dialogs/plugindialog.cpp" line="51"/>
         <source>Plugin Information</source>
-        <translation type="obsolete">Информация о плагинах</translation>
+        <translation type="unfinished">Информация о плагинах</translation>
     </message>
 </context>
 <context>

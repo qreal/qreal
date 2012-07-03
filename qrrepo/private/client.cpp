@@ -32,9 +32,11 @@ Client::~Client()
 	}
 }
 
-IdList Client::findElementsByName(const QString &name, bool sensitivity) const
+IdList Client::findElementsByName(const QString &name, bool sensitivity,
+                                  bool regExpression) const
 {
 	Qt::CaseSensitivity caseSensitivity;
+    QRegExp regExp = new QRegExp(name);
 
 	if (sensitivity) {
 		caseSensitivity = Qt::CaseSensitive;
@@ -42,12 +44,22 @@ IdList Client::findElementsByName(const QString &name, bool sensitivity) const
 		caseSensitivity = Qt::CaseInsensitive;
 	}
 
+    regExp.setCaseSensitivity(caseSensitivity);
+
 	IdList result;
 
-	foreach (Object *element, mObjects.values())
-		if ((element->property("name").toString().contains(name, caseSensitivity))
-			&& (!isLogicalId(mObjects.key(element))))
-				result.append(mObjects.key(element));
+    if (regExpression){
+        foreach (Object *element, mObjects.values())
+            if ((element->property("name").toString().contains(regExp))
+                && (!isLogicalId(mObjects.key(element))))
+                    result.append(mObjects.key(element));
+    } else {
+        foreach (Object *element, mObjects.values())
+            if ((element->property("name").toString().contains(name, caseSensitivity))
+                && (!isLogicalId(mObjects.key(element))))
+                    result.append(mObjects.key(element));
+
+    }
 
 	return result;
 }

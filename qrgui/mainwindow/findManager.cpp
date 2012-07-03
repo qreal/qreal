@@ -18,18 +18,19 @@ void FindManager::handleRefsDialog(qReal::Id const &id)
 	mMainWindow->selectItemOrDiagram(id);
 }
 
-qReal::IdList FindManager::foundByMode(QString key, QString currentMode, bool sensitivity)
+qReal::IdList FindManager::foundByMode(QString key, bool sensitivity,
+                                       bool regExpression)
 {
 	// TODO: replace mode string with modifiers
 	if (currentMode == tr("by name")) {
-		return mControlApi.findElementsByName(key, sensitivity);
+        return mControlApi.findElementsByName(key, sensitivity, regExpression);
 	} else if (currentMode == tr("by type")) {
-		return mLogicalApi.elementsByType(key, sensitivity);
+        return mLogicalApi.elementsByType(key, sensitivity, regExpression);
 	} else if (currentMode == tr("by property")) {
-		return mControlApi.elementsByProperty(key, sensitivity);
+        return mControlApi.elementsByProperty(key, sensitivity, regExpression);
 	} else if (currentMode == tr("by property content")) {
-		return mControlApi.elementsByPropertyContent(key, sensitivity);
-	} else {
+        return mControlApi.elementsByPropertyContent(key, sensitivity, regExpression);
+    } else {
 		return qReal::IdList();
 	}
 }
@@ -37,7 +38,8 @@ qReal::IdList FindManager::foundByMode(QString key, QString currentMode, bool se
 QMap<QString, QString> FindManager::findItems(QStringList const &searchData)
 {
 	QMap<QString, QString> found;
-	bool sensitivity = searchData.contains(tr("case sensitivity"));
+    bool sensitivity = searchData.contains(tr("case sensitivity"));
+    bool byRegExp ;
 	for(int i = 1; i < searchData.length(); i++) {
 		if (searchData[i] != tr("case sensitivity")) {
 			qReal::IdList byMode = foundByMode(searchData.first(), searchData[i], sensitivity);
