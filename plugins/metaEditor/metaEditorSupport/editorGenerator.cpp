@@ -49,8 +49,10 @@ QHash<Id, QPair<QString,QString> > EditorGenerator::getMetamodelList()
 	return metamodelList;
 }
 
-QString EditorGenerator::generateEditor(Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource)
+QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource)
 {
+	mErrorReporter.clear();
+	mErrorReporter.clearErrors();
 	QString const editorPath = calculateEditorPath(pathToFile, pathToQRealSource);
 
 	QDomElement metamodel = mDocument.createElement("metamodel");
@@ -77,6 +79,13 @@ QString EditorGenerator::generateEditor(Id const &metamodelId, QString const &pa
 
 	QString const fileBaseName = NameNormalizer::normalize(mApi.name(metamodelId), false);
 
+	QRegExp patten;
+	patten.setPattern("[A-Za-z]+([A-Za-z0-9]*)");
+	if (!patten.exactMatch(fileBaseName) || fileBaseName.isEmpty()) {
+		mErrorReporter.addError(QObject::tr("wrong name\n"), metamodelId);
+		return QPair<QString, QString>("", "");
+	}
+
 	try {
 		OutFile outpro(pathToFile + "/" + fileBaseName + ".pro");
 		outpro() << QString("QREAL_XML = %1\n").arg(fileBaseName + ".xml");
@@ -100,7 +109,7 @@ QString EditorGenerator::generateEditor(Id const &metamodelId, QString const &pa
 
 	copyImages(pathToFile);
 
-	return mApi.name(metamodelId);
+	return QPair<QString, QString>(mApi.name(metamodelId), fileBaseName);
 }
 
 QString EditorGenerator::calculateEditorPath(QString const &pathToFile, QString const &pathToQRealSource)

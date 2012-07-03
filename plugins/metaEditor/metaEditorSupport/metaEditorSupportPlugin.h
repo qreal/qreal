@@ -40,7 +40,7 @@ private:
 	/// Compiles and loads to QReal new editor plugin
 	void loadNewEditor(
 			QString const &directoryName  ///< Directory where editor was generated (containing .pro file of that editor)
-			, QString const &metamodelName  ///< Metamodel name as set in metamodel
+			, QPair<QString, QString> const &metamodelNames  ///< Metamodel name as set in metamodel
 			, QString const &commandFirst  ///< qmake command
 			, QString const &commandSecond  ///< make command
 			, QString const &extension  ///< Extension of the resulting binary file with editor plugin (.dll/.so)
