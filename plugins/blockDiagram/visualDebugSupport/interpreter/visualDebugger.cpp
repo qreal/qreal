@@ -64,7 +64,8 @@ void VisualDebugger::setDebugColor(QString const &color)
 	mDebugColor = QColor(color);
 }
 
-void VisualDebugger::setCurrentDiagram() {
+void VisualDebugger::setCurrentDiagram()
+{
 	Id const currentDiagram = mInterpretersInterface.activeDiagram();
 	if (currentDiagram == mCurrentDiagram || Id::rootId() == mCurrentDiagram
 			|| Id::rootId() == mCurrentId)
@@ -304,7 +305,7 @@ void VisualDebugger::debug()
 void VisualDebugger::debugSingleStep()
 {
 	mDebugType = VisualDebugger::singleStepDebug;
-	setDebugColor(SettingsManager::value("debugColor").toString());
+	setDebugColor(SettingsManager::value("DebugColor").toString());
 
 	if (mCurrentId == Id::rootId()) {
 		if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {

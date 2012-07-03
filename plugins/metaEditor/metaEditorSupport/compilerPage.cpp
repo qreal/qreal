@@ -53,8 +53,8 @@ void PreferencesCompilerPage::changeSystem()
 	}
 }
 
-void PreferencesCompilerPage::initCompilersSettings(const QString &pathToQmake,
-		const QString &pathToMake, const QString &pluginExtension, const QString &prefix)
+void PreferencesCompilerPage::initCompilersSettings(QString const &pathToQmake,
+		QString const &pathToMake, QString const &pluginExtension, QString const &prefix)
 {
 	mUi->pathToQmake->setText(pathToQmake);
 	mUi->pathToMake->setText(pathToMake);

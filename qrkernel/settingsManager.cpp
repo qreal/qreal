@@ -13,17 +13,17 @@ SettingsManager::SettingsManager() : mSettings("SPbSU", "QReal")
 	load();
 }
 
-void SettingsManager:: setValue(QString name, QVariant value)
+void SettingsManager:: setValue(QString const &name, QVariant const &value)
 {
 	instance()->set(name, value);
 }
 
-QVariant SettingsManager::value(QString key, QVariant defaultValue)
+QVariant SettingsManager::value(QString const &key, QVariant const &defaultValue)
 {
 	return instance()->get(key, defaultValue);
 }
 
-QVariant SettingsManager::value(QString key)
+QVariant SettingsManager::value(QString const &key)
 {
 	return instance()->get(key);
 }
@@ -37,12 +37,12 @@ SettingsManager* SettingsManager::instance()
 	return mInstance;
 }
 
-void SettingsManager::set(QString name, QVariant value)
+void SettingsManager::set(QString const &name, QVariant const &value)
 {
 	mData[name] = value;
 }
 
-QVariant SettingsManager::get(const QString &name, const QVariant &defaultValue) const
+QVariant SettingsManager::get(QString const &name, QVariant const &defaultValue) const
 {
 	if (mData.contains(name)) {
 		return mData[name];
@@ -55,8 +55,7 @@ QVariant SettingsManager::get(const QString &name, const QVariant &defaultValue)
 
 void SettingsManager::saveData()
 {
-	foreach (QString name, mData.keys())
-	{
+	foreach (QString name, mData.keys()) {
 		mSettings.setValue(name, mData[name]);
 	}
 	mSettings.sync();
@@ -64,26 +63,16 @@ void SettingsManager::saveData()
 
 void SettingsManager::load()
 {
-	foreach (QString name, mSettings.allKeys())
-	{
+	foreach (QString name, mSettings.allKeys()) {
 		mData[name] = mSettings.value(name);
 	}
 }
 
 void SettingsManager::initDefaultValues()
 {
-	QFile values("../qrkernel/settingsDefaultValues");
-	if (!values.open(QIODevice::ReadOnly)) {
-		return;
-	}
+	QSettings values("../qrkernel/settingsDefaultValues", QSettings::NativeFormat);
 
-	QTextStream in(&values);
-	QString property;
-	QString value;
-
-	while (!in.atEnd()) {
-		in >> property;
-		value = in.readLine();
-		mDefaultValues.insert(property, value);
+	foreach (QString key, values.allKeys()) {
+		mDefaultValues.insert(key, values.value(key));
 	}
 }

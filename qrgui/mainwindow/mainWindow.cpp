@@ -142,8 +142,8 @@ MainWindow::MainWindow()
 
 	if (!SettingsManager::value("maximized").toBool()) {
 		showNormal();
-		resize(SettingsManager::value("size", QSize(1024, 800)).toSize());
-		move(SettingsManager::value("pos", QPoint(0, 0)).toPoint());
+		resize(SettingsManager::value("size").toSize());
+		move(SettingsManager::value("pos").toPoint());
 	}
 	// =========== Step 6: Save loaded, models initialized ===========
 

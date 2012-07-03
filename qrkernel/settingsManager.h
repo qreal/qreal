@@ -15,17 +15,17 @@ class QRKERNEL_EXPORT SettingsManager
 {
 public:
 
-	static QVariant value(QString key);
-	static QVariant value(QString key, QVariant defaultValue);
-	static void setValue(QString name, QVariant value = QVariant());
+	static QVariant value(QString const &key);
+	static QVariant value(QString const &key, QVariant const &defaultValue);
+	static void setValue(QString const &name, QVariant const &value = QVariant());
 	void saveData();
 	void load();
 
 	static SettingsManager* instance();
 
 private:
-	void set(QString name, QVariant value);
-	QVariant get(const QString &key, const QVariant &defaultValue = QVariant()) const;
+	void set(QString const &name, QVariant const &value);
+	QVariant get(QString const &key, QVariant const &defaultValue = QVariant()) const;
 
 	void initDefaultValues();
 
