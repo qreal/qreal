@@ -22,8 +22,9 @@ void GraphicalModelView::rowsInserted(QModelIndex const &parent, int start, int 
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex const current = model()->index(row, 0, parent);
 		Id const logicalId = current.data(roles::logicalIdRole).value<Id>();
-		if (parentLogicalId == Id())
+		if (parentLogicalId == Id() || parentLogicalId.editor() != "MetaEditor" || logicalId.editor() != "MetaEditor") {
 			parentLogicalId = Id::rootId();
+		}
 		QString const name = current.data(Qt::DisplayRole).toString();
 		if (logicalId == Id())
 			// No logical Id for this item, so logical model shouldn't care
@@ -50,8 +51,9 @@ void GraphicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex con
 	}
 	Id const parentLogicalId = topLeft.sibling(topLeft.row(), 0).data(roles::logicalIdRole).value<Id>();
 	Id const childLogicalId = bottomRight.sibling(bottomRight.row(), 0).data(roles::logicalIdRole).value<Id>();
-	if (parentLogicalId != childLogicalId)
+	if (parentLogicalId.editor() == "MetaEditor" && childLogicalId.editor() == "MetaEditor" && parentLogicalId != childLogicalId) {
 		static_cast<LogicalModel *>(mModel)->changeParent(parentLogicalId, childLogicalId);
+	}
 }
 
 void GraphicalModelView::rowsAboutToBeRemoved(QModelIndex const &parent, int start, int end)
