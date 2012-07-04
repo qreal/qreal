@@ -268,9 +268,19 @@ bool BaseGraphTransformationUnit::compareLinks(Id const &first,Id const &second)
 	Id const idFrom1 = fromInModel(first);
 	Id const idFrom2 = fromInRule(second);
 
-	return compareElementTypesAndProperties(first, second)
+	bool result = compareElementTypesAndProperties(first, second)
 			&& compareElements(idTo1, idTo2)
 			&& compareElements(idFrom1, idFrom2);
+	
+	if (mMatch->contains(idTo2)) {
+		result = result && mMatch->value(idTo2) == idTo1;
+	}
+	
+	if (mMatch->contains(idFrom2)) {
+		result = result && mMatch->value(idFrom2) == idFrom1;
+	}
+	
+	return result;
 }
 
 bool BaseGraphTransformationUnit::compareElements(Id const &first, Id const &second) const

@@ -99,25 +99,6 @@ Id RefactoringFinder::startElement() const
 	return Id::rootId();
 }
 
-bool RefactoringFinder::compareLinks(Id const &first,Id const &second) const
-{
-	Id const idTo1 = toInModel(first);
-	Id const idTo2 = toInRule(second);
-	Id const idFrom1 = fromInModel(first);
-	Id const idFrom2 = fromInRule(second);
-
-	bool result = BaseGraphTransformationUnit::compareLinks(first, second);
-
-	if (mMatch->contains(idTo2)) {
-		result = result && mMatch->value(idTo2) == idTo1;
-	}
-	if (mMatch->contains(idFrom2)) {
-		result = result && mMatch->value(idFrom2) == idFrom1;
-	}
-
-	return result;
-}
-
 bool RefactoringFinder::compareElements(Id const &first, Id const &second) const
 {
 	return compareElementTypesAndProperties(first, second);
@@ -126,6 +107,10 @@ bool RefactoringFinder::compareElements(Id const &first, Id const &second) const
 bool RefactoringFinder::compareElementTypesAndProperties(Id const &first,
 		Id const &second) const
 {
+	if (first == Id::rootId()) {
+		return false;
+	}
+	
 	bool firstIsNode = !isEdgeInModel(first);
 	if (second.element() == "Element" && firstIsNode) {
 		QString const elementName = mRefactoringRepoApi->name(second);

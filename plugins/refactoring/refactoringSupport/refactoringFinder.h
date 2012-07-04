@@ -35,7 +35,6 @@ private:
 	QVariant refactoringProperty(const Id &id, const QString &propertyName) const;
 	bool containElementWithID(const QString &idValue, const IdList &idList);
 
-	bool compareLinks(Id const &first, Id const &second) const;
 	bool compareElements(Id const &first, Id const &second) const;
 	bool compareElementTypesAndProperties(Id const &first, Id const &second) const;
 
