@@ -130,6 +130,10 @@ bool BaseGraphTransformationUnit::checkRuleMatchingRecursively()
 bool BaseGraphTransformationUnit::checkNodeForAddingToMatch(Id const &nodeInModel,
 		Id const &nodeInRule)
 {
+	if (nodeInModel == Id::rootId()) {
+		return false;
+	}
+	
 	QHash<Id, Id> *linksToAddToMatch = new QHash<Id, Id>();
 
 	bool res = checkExistingLinks(nodeInModel, nodeInRule, linksToAddToMatch);

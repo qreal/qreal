@@ -25,15 +25,15 @@ public:
 private:
 	void addElement(const Id &id, IdList *idList);
 
-	IdList getElementsFromBlock(const QString &blockType) const;
-	IdList getElementsFromAfterBlock() const;
-	IdList getElementsFromBeforeBlock() const;
+	IdList elementsFromBlock(const QString &blockType) const;
+	IdList elementsFromAfterBlock() const;
+	IdList elementsFromBeforeBlock() const;
 
 	Id startElement() const;
 
 	QMapIterator<QString, QVariant> propertiesIterator(Id const &id) const;
-	QVariant getRefactoringProperty(const Id &id, const QString &propertyName) const;
-	bool containElementWithID(const QString &IDValue, const IdList &idList);
+	QVariant refactoringProperty(const Id &id, const QString &propertyName) const;
+	bool containElementWithID(const QString &idValue, const IdList &idList);
 
 	bool compareLinks(Id const &first, Id const &second) const;
 	bool compareElements(Id const &first, Id const &second) const;

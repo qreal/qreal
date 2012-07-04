@@ -17,17 +17,17 @@ RefactoringFinder::RefactoringFinder(
 	mDefaultProperties.insert("ID");
 }
 
-IdList RefactoringFinder::getElementsFromBeforeBlock() const
+IdList RefactoringFinder::elementsFromBeforeBlock() const
 {
-	return getElementsFromBlock("BeforeBlock");
+	return elementsFromBlock("BeforeBlock");
 }
 
-IdList RefactoringFinder::getElementsFromAfterBlock() const
+IdList RefactoringFinder::elementsFromAfterBlock() const
 {
-	return getElementsFromBlock("AfterBlock");
+	return elementsFromBlock("AfterBlock");
 }
 
-IdList RefactoringFinder::getElementsFromBlock(QString const &blockType) const
+IdList RefactoringFinder::elementsFromBlock(QString const &blockType) const
 {
 	IdList list;
 	IdList const refactoringElements = mRefactoringRepoApi->children(Id::rootId());
@@ -36,8 +36,9 @@ IdList RefactoringFinder::getElementsFromBlock(QString const &blockType) const
 			if (refactoringElement.element() == "RefactoringDiagramNode") {
 				list = mRefactoringRepoApi->children(refactoringElement);
 				foreach (Id const &id, list) {
-					if (id.element() == blockType)
+					if (id.element() == blockType) {
 						return mRefactoringRepoApi->children(id);
+					}
 				}
 			}
 		}
@@ -45,19 +46,21 @@ IdList RefactoringFinder::getElementsFromBlock(QString const &blockType) const
 	return IdList();
 }
 
-bool RefactoringFinder::containElementWithID(QString const &IDValue, IdList const &idList)
+bool RefactoringFinder::containElementWithID(QString const &idValue, IdList const &idList)
 {
 	foreach (Id const &id, idList) {
-		if (mRefactoringRepoApi->property(id, "ID").toString() == IDValue)
+		if (mRefactoringRepoApi->property(id, "ID").toString() == idValue) {
 			return true;
+		}
 	}
 	return false;
 }
 
 void RefactoringFinder::addElement(Id const &id, IdList *idList)
 {
-	if (!idList->contains(id))
+	if (!idList->contains(id)) {
 		idList->append(id);
+	}
 }
 
 void RefactoringFinder::highlightMatch()
@@ -73,8 +76,7 @@ void RefactoringFinder::highlightMatch()
 			mInterpretersInterface.dehighlight();
 			pause(1000);
 		}
-	}
-	else {
+	} else {
 		mInterpretersInterface.errorReporter()->addInformation("Not Found");
 	}
 }
@@ -87,11 +89,12 @@ bool RefactoringFinder::findMatch()
 
 Id RefactoringFinder::startElement() const
 {
-	IdList const before = getElementsFromBeforeBlock();
+	IdList const before = elementsFromBeforeBlock();
 
 	foreach (Id const &beforeId, before) {
-		if (!isEdgeInRule(beforeId))
+		if (!isEdgeInRule(beforeId)) {
 			return beforeId;
+		}
 	}
 	return Id::rootId();
 }
@@ -126,15 +129,17 @@ bool RefactoringFinder::compareElementTypesAndProperties(Id const &first,
 	bool firstIsNode = !isEdgeInModel(first);
 	if (second.element() == "Element" && firstIsNode) {
 		QString const elementName = mRefactoringRepoApi->name(second);
-		if (elementName == "(Element)" || elementName.contains("EXIST"))
+		if (elementName == "(Element)" || elementName.contains("EXIST")) {
 			return true;
+		}
 		return (elementName == mGraphicalModelApi.name(first));
 	}
 
 	if (second.element() == "Link" && !firstIsNode) {
 		QString const elementName = mRefactoringRepoApi->name(second);
-		if (elementName == "(Link)" || elementName.contains("EXIST"))
+		if (elementName == "(Link)" || elementName.contains("EXIST")) {
 			return true;
+		}
 		return (elementName == mGraphicalModelApi.name(first));
 	}
 
@@ -146,7 +151,7 @@ QMapIterator<QString, QVariant> RefactoringFinder::propertiesIterator(Id const &
 	return mRefactoringRepoApi->propertiesIterator(id);
 }
 
-QVariant RefactoringFinder::getRefactoringProperty(Id const &id, QString const &propertyName) const
+QVariant RefactoringFinder::refactoringProperty(Id const &id, QString const &propertyName) const
 {
 	return mRefactoringRepoApi->property(id, propertyName);
 }
@@ -168,10 +173,11 @@ IdList RefactoringFinder::linksInRule(Id const &id) const
 
 bool RefactoringFinder::refactoringRuleContainsSelectedSegment()
 {
-	IdList const before = getElementsFromBeforeBlock();
+	IdList const before = elementsFromBeforeBlock();
 	foreach (Id const &beforeId, before) {
-		if (beforeId.element() == "SelectedSegment")
+		if (beforeId.element() == "SelectedSegment") {
 			return true;
+		}
 	}
 	return false;
 }

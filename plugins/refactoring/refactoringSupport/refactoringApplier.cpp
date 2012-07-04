@@ -28,17 +28,17 @@ RefactoringApplier::~RefactoringApplier()
 {
 }
 
-IdList RefactoringApplier::getElementsFromBeforeBlock()
+IdList RefactoringApplier::elementsFromBeforeBlock()
 {
-	return getElementsFromBlock("BeforeBlock");
+	return elementsFromBlock("BeforeBlock");
 }
 
-IdList RefactoringApplier::getElementsFromAfterBlock()
+IdList RefactoringApplier::elementsFromAfterBlock()
 {
-	return getElementsFromBlock("AfterBlock");
+	return elementsFromBlock("AfterBlock");
 }
 
-IdList RefactoringApplier::getElementsFromBlock(QString const &blockType)
+IdList RefactoringApplier::elementsFromBlock(QString const &blockType)
 {
 	IdList list;
 	IdList resultList;
@@ -55,8 +55,10 @@ IdList RefactoringApplier::getElementsFromBlock(QString const &blockType)
 				}
 				foreach (Id const &id, list) {
 					if (id.element() == "Link" && resultList.contains(toInRule(id))
-					&& resultList.contains(fromInRule(id)))
+							&& resultList.contains(fromInRule(id)))
+					{
 						resultList.append(id);
+					}
 				}
 			}
 		}
@@ -64,11 +66,12 @@ IdList RefactoringApplier::getElementsFromBlock(QString const &blockType)
 	return resultList;
 }
 
-Id RefactoringApplier::idElementWithID(QString const &IDValue, IdList const &idList)
+Id RefactoringApplier::idElementWithID(QString const &idValue, IdList const &idList)
 {
 	foreach (Id const &id, idList) {
-		if (propertyID(id) == IDValue)
+		if (propertyID(id) == idValue) {
 			return id;
+		}
 	}
 	return Id::rootId();
 }
@@ -81,7 +84,7 @@ QString RefactoringApplier::propertyID(Id const &id)
 void RefactoringApplier::loadRefactoringRule()
 {
 	IdList const before = mMatch->keys();
-	IdList const after = getElementsFromAfterBlock();
+	IdList const after = elementsFromAfterBlock();
 
 	mRule = new QList<QPair<Id, Id> >;
 	mApply = new QList<QPair<Id, Id> >;
@@ -89,15 +92,18 @@ void RefactoringApplier::loadRefactoringRule()
 	mInterpretersInterface.dehighlight();
 
 	foreach (Id const &beforeId, before) {
-		QString const beforeElementID = getRefactoringProperty(mRefactoringRepoApi->logicalId(beforeId), "ID").toString();
-		if (beforeElementID == "noThisProperty")
+		QString const beforeElementID =
+				refactoringProperty(mRefactoringRepoApi->logicalId(beforeId), "ID").toString();
+		if (beforeElementID == "noThisProperty") {
 			continue;
+		}
 		Id const elementAfterId = idElementWithID(beforeElementID, after);
 		mRule->append(qMakePair(beforeId, elementAfterId));
 		mApply->append(qMakePair(elementAfterId, mMatch->value(beforeId)));
 	}
 	foreach (Id const &afterId, after) {
-		QString const afterElementID = getRefactoringProperty(mRefactoringRepoApi->logicalId(afterId), "ID").toString();
+		QString const afterElementID =
+				refactoringProperty(mRefactoringRepoApi->logicalId(afterId), "ID").toString();
 		Id const elementBeforeId = idElementWithID(afterElementID, before);
 		if (elementBeforeId == Id::rootId()) {
 			mRule->append(qMakePair(elementBeforeId, afterId));
@@ -116,14 +122,15 @@ bool RefactoringApplier::hasProperty(Id const &id, QString const &propertyName) 
 	}
 }
 
-QVariant RefactoringApplier::getRefactoringProperty(Id const &id, QString const &propertyName) const
+QVariant RefactoringApplier::refactoringProperty(Id const &id, QString const &propertyName) const
 {
-	if (mRefactoringRepoApi->hasProperty(id, propertyName))
+	if (mRefactoringRepoApi->hasProperty(id, propertyName)) {
 		return mRefactoringRepoApi->property(id, propertyName);
+	}
 	return "noThisProperty";
 }
 
-QVariant RefactoringApplier::getProperty(Id const &id, QString const &propertyName) const
+QVariant RefactoringApplier::property(Id const &id, QString const &propertyName) const
 {
 	if (mRefactoringRepoApi->isLogicalElement(id)) {
 		return mRefactoringRepoApi->property(id, propertyName);
@@ -139,7 +146,7 @@ void RefactoringApplier::applyRefactoringRule()
 	changeNamesRefactoring();
 }
 
-IdList RefactoringApplier::getApplyElementsTo()
+IdList RefactoringApplier::applyElementsTo()
 {
 	IdList result;
 	for (int i = 0; i < mApply->size(); ++i) {
@@ -161,31 +168,36 @@ void RefactoringApplier::changeElement(Id const &changeFromId, Id const &changeT
 	Id const beforeId = beforeIdInRule(changeToId);
 	if (isElementTypesInRuleIdentical(beforeId, changeToId)) {
 		if (changeToId.element() == "Element") {
-			if (mRefactoringRepoApi->name(changeToId) == "(Element)")
+			if (mRefactoringRepoApi->name(changeToId) == "(Element)") {
 				return;
+			}
 			changeElementName(changeFromId, changeToId);
 		}
 		else if (changeToId.element() == "Link") {
-			if (mRefactoringRepoApi->name(changeToId) != "(Link)")
+			if (mRefactoringRepoApi->name(changeToId) != "(Link)") {
 				changeElementName(changeFromId, changeToId);
+			}
 			checkDirection(changeFromId, changeToId, beforeId);
 		}
 		else {
 			changePropertiesInModel(changeFromId, changeToId);
-			if (!isNodeInRule(beforeId) && !isNodeInRule(changeToId))
+			if (!isNodeInRule(beforeId) && !isNodeInRule(changeToId)) {
 				checkDirection(changeFromId, changeToId, beforeId);
+			}
 		}
 	}
-	else
+	else {
 		changeElementInModel(changeFromId, changeToId);
+	}
 }
 
 Id RefactoringApplier::beforeIdInRule(Id const &id)
 {
 	for (int i = 0; i < mRule->size(); ++i) {
 		QPair<Id, Id> pair = mRule->at(i);
-		if (pair.second == id)
+		if (pair.second == id) {
 			return pair.first;
+		}
 	}
 	return Id::rootId();
 }
@@ -199,26 +211,27 @@ void RefactoringApplier::changePropertiesInModel(Id const &changeFromId, Id cons
 {
 	changeElementName(changeFromId, changeToId);
 
-	QHash<QString, QVariant> currentProperties = getProperties(changeFromId);
+	QHash<QString, QVariant> currentProperties = properties(changeFromId);
 
 	foreach (QString const &key, currentProperties.keys()) {
 		QVariant const value = currentProperties.value(key);
 
 		if (hasProperty(changeToId, key)) {
-			QVariant propertyValue = getProperty(changeToId, key);
-			if (propertyValue.toString().contains("EXIST"))
-				setProperty(changeFromId, key, propertyValue.toString().replace("EXIST", value.toString()));
-			else
+			QVariant propertyValue = property(changeToId, key);
+			if (propertyValue.toString().contains("EXIST")) {
+				setProperty(changeFromId, key,
+						propertyValue.toString().replace("EXIST", value.toString()));
+			} else {
 				setProperty(changeFromId, key, propertyValue);
 			}
 		}
+	}
 }
 
 void RefactoringApplier::changeElementInModel(const Id &changeFromId, const Id &changeToId)
 {
 	Q_UNUSED(changeFromId);
 	Q_UNUSED(changeToId);
-
 }
 
 void RefactoringApplier::setProperty(Id const &id, QString const &propertyName
@@ -232,7 +245,7 @@ void RefactoringApplier::setProperty(Id const &id, QString const &propertyName
 	}
 }
 
-QHash<QString, QVariant> RefactoringApplier::getProperties(Id const &id) const
+QHash<QString, QVariant> RefactoringApplier::properties(Id const &id) const
 {
 	QHash<QString, QVariant> result;
 
@@ -260,8 +273,7 @@ void RefactoringApplier::changeElementName(const Id &changeFromId, const Id &cha
 		QString const currentFromName = mGraphicalModelApi.name(changeFromId);
 		QString const actualName = currentToName.replace("EXIST", currentFromName);
 		mGraphicalModelApi.setName(changeFromId, actualName);
-	}
-	else {
+	} else {
 		mGraphicalModelApi.setName(changeFromId, currentToName);
 	}
 }
@@ -297,7 +309,8 @@ Id RefactoringApplier::fromInModel(Id const &id) const
 	return mLogicalModelApi.logicalRepoApi().from(id);
 }
 
-void RefactoringApplier::checkDirection(Id const &changeFromId, Id const &changeToId, Id const &beforeId)
+void RefactoringApplier::checkDirection(Id const &changeFromId,
+		Id const &changeToId, Id const &beforeId)
 {
 	if (propertyID(toInRule(beforeId)) == propertyID(toInRule(changeToId)))
 		return;
@@ -310,7 +323,7 @@ void RefactoringApplier::checkDirection(Id const &changeFromId, Id const &change
 Id RefactoringApplier::subprogramElementId()
 {
 	IdList result;
-	IdList const after = getElementsFromAfterBlock();
+	IdList const after = elementsFromAfterBlock();
 	foreach (Id const &id, after) {
 		if (mRefactoringRepoApi->isGraphicalElement(id)
 				&& (isNodeInRule(id)))

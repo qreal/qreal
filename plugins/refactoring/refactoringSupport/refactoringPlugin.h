@@ -94,14 +94,22 @@ private:
 	/// @param metamodel metamodel for integranion with refactoring language
 	/// @param graphics xml-element, refactoring elements will be its children
 	/// @param pathToRefactoringMetamodel absolute path to Refactoring Metmaodel
-	void addRefactoringLanguageElements(QString diagramName, QDomDocument metamodel, QDomElement &graphics, QString const &pathToRefactoringMetamodel);
+	void addRefactoringLanguageElements(QString diagramName, QDomDocument metamodel,
+			QDomElement &graphics, QString const &pathToRefactoringMetamodel);
 
 
-	QDomElement createPaletteElement(QString const &elementType, QDomDocument metamodel, const QString &displayedName);
-	QDomElement metamodelPaletteGroup(QDomDocument metamodel, QDomNodeList nodeList, QDomNodeList edgeList);
-	void addPalette(QDomDocument metamodel, QDomElement diagram, QDomElement metamodelPaletteGroup);
-	void addPaletteGroup(QDomDocument metamodel, QDomElement palette, QString const &groupName, QStringList const &elementNameList);
-	void addElementsToMetamodelGroup(QDomDocument metamodel, QDomNodeList list, QDomElement metamodelGroup);
+	QDomElement createPaletteElement(QString const &elementType,
+			QDomDocument metamodel, const QString &displayedName);
+	QDomElement metamodelPaletteGroup(QDomDocument metamodel,
+			QDomNodeList nodeList, QDomNodeList edgeList);
+	
+	void addPalette(QDomDocument metamodel, QDomElement diagram,
+			QDomElement metamodelPaletteGroup);
+	void addPaletteGroup(QDomDocument metamodel, QDomElement palette,
+			QString const &groupName, QStringList const &elementNameList);
+	void addElementsToMetamodelGroup(QDomDocument metamodel, QDomNodeList list,
+			QDomElement metamodelGroup);
+	
 	void arrangeElements(QString const &algorithm);
 	QList<QPair<Id, QPair<Id, bool> > > findOutsideSelectionLinks();
 	void removeUnnecessaryLinksFromSelected();

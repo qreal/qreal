@@ -25,26 +25,28 @@ public:
 	Id subprogramElementId();
 
 private:
+	IdList elementsFromBeforeBlock();
+	IdList elementsFromAfterBlock();
+	IdList elementsFromBlock(const QString &blockType);
+	
+	Id idElementWithID(const QString &idValue, const IdList &idList);
+	
 	bool hasProperty(const Id &id, const QString &propertyName) const;
-	QHash<QString, QVariant> getProperties(const Id &id) const;
-	IdList getElementsFromBeforeBlock();
-	IdList getElementsFromAfterBlock();
-	IdList getElementsFromBlock(const QString &blockType);
-	Id idElementWithID(const QString &IDValue, const IdList &idList);
-	QVariant getProperty(const Id &id, const QString &propertyName) const;
-
+	QVariant property(const Id &id, const QString &propertyName) const;
+	QHash<QString, QVariant> properties(const Id &id) const;
 	void setProperty(const Id &id, const QString &propertyName, const QVariant &value) const;
+	
 	Id beforeIdInRule(const Id &id);
 	bool isElementTypesInRuleIdentical(const Id &beforeId, const Id &afterId);
 
 	void changePropertiesInModel(const Id &changeFromId, const Id &changeToId);
 	void changeElementInModel(const Id &changeFromId, const Id &changeToId);
 
-	QVariant getRefactoringProperty(const Id &id, const QString &propertyName) const;
+	QVariant refactoringProperty(const Id &id, const QString &propertyName) const;
 
 	void loadRefactoringRule();
 
-	IdList getApplyElementsTo();
+	IdList applyElementsTo();
 	void changeNamesRefactoring();
 	void changeElement(const Id &changeFromId, const Id &changeToId);
 	void changeElementName(const Id &changeFromId, const Id &changeToId);
