@@ -10,14 +10,15 @@ VisualInterpreterUnit::VisualInterpreterUnit(
 		, qReal::GraphicalModelAssistInterface const &graphicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface)
 		: BaseGraphTransformationUnit(logicalModelApi, graphicalModelApi, interpretersInterface)
+		, isSemanticsLoaded(false)
 		, mRuleParser(new RuleParser(logicalModelApi, graphicalModelApi, interpretersInterface.errorReporter()))
 {
-	defaultProperties.insert("semanticsStatus");
+	mDefaultProperties.insert("semanticsStatus");
 }
 
-IdList VisualInterpreterUnit::getRules() const
+IdList VisualInterpreterUnit::allRules() const
 {
-	IdList const elements = getElementsFromActiveDiagram();
+	IdList const elements = elementsFromActiveDiagram();
 	IdList result;
 	foreach (Id const &element, elements) {
 		if (element.element() == "SemanticsRule") {
@@ -41,15 +42,7 @@ bool VisualInterpreterUnit::isSemanticsEditor()
 	return mInterpretersInterface.activeDiagram().editor().contains("Semantics");
 }
 
-void VisualInterpreterUnit::loadSemantics()
-{
-	if (!isSemanticsEditor()) {
-		report("Current diagram is not for semantics. Select proper model.");
-		return;
-	}
-
-	IdList const rules = getRules();
-
+void VisualInterpreterUnit::initBeforeSemanticsLoading() {
 	mRules = new QHash<QString, Id>();
 	mDeletedElements = new QHash<QString, IdList*>();
 	mReplacedElements = new QHash<QString, IdList*>();
@@ -57,13 +50,42 @@ void VisualInterpreterUnit::loadSemantics()
 	mNodesWithNewControlMark = new QHash<QString, IdList*>();
 	mNodesWithDeletedControlMark = new QHash<QString, IdList*>();
 	mNodesWithControlMark = new QHash<QString, IdList*>();
+}
 
+void VisualInterpreterUnit::initBeforeInterpretation() {
+	mCurrentNodesWithControlMark.clear();
+	mInterpretersInterface.dehighlight();
+	mRuleParser->clear();
+	mRuleParser->setErrorReporter(mInterpretersInterface.errorReporter());
+	resetRuleSyntaxCheck();
+}
+
+void VisualInterpreterUnit::loadSemantics()
+{
+	if (!isSemanticsEditor()) {
+		semanticsLoadingError(tr("Current diagram is not for semantics. Select proper model."));
+		return;
+	}
+
+	IdList const rules = allRules();
+	initBeforeSemanticsLoading();
 	mInterpretersInterface.dehighlight();
 
 	foreach (Id const &rule, rules) {
-		QString const ruleName = getProperty(rule, "ruleName").toString();
-		mRules->insert(ruleName, rule);
+		QString const ruleName = property(rule, "ruleName").toString();
+		if (ruleName == "") {
+			semanticsLoadingError(tr("One of the rules doesn't have a name."));
+			return;
+		}
+		
 		IdList const ruleElements = children(rule);
+		
+		if (ruleElements.size() == 0) {
+			semanticsLoadingError(tr("One of the rules is empty."));
+			return;
+		}
+		
+		mRules->insert(ruleName, rule);
 		foreach (Id const &ruleElement, ruleElements) {
 			if (ruleElement.element() == "ControlFlowLocation" ||
 					ruleElement.element() == "Wildcard") {
@@ -76,9 +98,16 @@ void VisualInterpreterUnit::loadSemantics()
 				continue;
 			}
 
-			QString const semanticsStatus = getProperty(ruleElement, "semanticsStatus").toString();
+			QString const semanticsStatus = property(ruleElement, "semanticsStatus").toString();
 			if (ruleElement.element() == "ControlFlowMark") {
-				Id const nodeWithControl = getNodeIdWithControlMark(ruleElement);
+				Id const nodeWithControl = nodeIdWithControlMark(ruleElement);
+				
+				if (nodeWithControl == Id::rootId()) {
+					semanticsLoadingError(tr("Control flow mark in rule '")
+							+ ruleName + tr("' isn't connected properly."));
+					return;
+				}
+				
 				if (semanticsStatus == "" || semanticsStatus == "@deleted@") {
 					putIdIntoMap(mNodesWithControlMark, ruleName, nodeWithControl);
 					if (semanticsStatus == "@deleted@") {
@@ -101,22 +130,38 @@ void VisualInterpreterUnit::loadSemantics()
 		}
 	}
 
-	report(tr("Semantics loaded successfully"));
+	isSemanticsLoaded = true;
+	report(tr("Semantics loaded successfully"), false);
 }
 
 void VisualInterpreterUnit::interpret()
 {
+	if (!isSemanticsLoaded) {
+		report(tr("Semantics not loaded"), true);
+		return;
+	}
+	
+	initBeforeInterpretation();
 	int const timeout = SettingsManager::value("debuggerTimeout", 750).toInt();
-
+	
 	while (findMatch()) {
-		makeStep();
-		//highlightMatch();
-		report(tr("Rule '") + mMatchedRuleName + tr("' was applied successfully"));
-
+		if (hasRuleSyntaxError()) {
+			report(tr("Rule '") +mMatchedRuleName +
+					tr("' cannot be applied because semantics has syntax errors"), true);
+			return;
+		}
+		
+		if (!makeStep()) {
+			report(tr("Rule '") +mMatchedRuleName + tr("' applying failed"), true);
+			return;
+		}
+		
+		report(tr("Rule '") + mMatchedRuleName + tr("' was applied successfully"), false);
 		pause(timeout);
 	}
-
-	report(tr("No rule cannot be applied"));
+	if (!hasRuleSyntaxError()) {
+		report(tr("No rule cannot be applied"), false);
+	}
 }
 
 void VisualInterpreterUnit::highlightMatch()
@@ -132,14 +177,9 @@ void VisualInterpreterUnit::highlightMatch()
 
 bool VisualInterpreterUnit::findMatch()
 {
-	if (mRules == NULL) {
-		report(tr("Semantics not loaded"));
-		return false;
-	}
-
 	foreach (QString const &ruleName, mRules->keys()) {
 		mCurrentRuleName = ruleName;
-		ruleToFind = mRules->value(ruleName);
+		mRuleToFind = mRules->value(ruleName);
 		if (checkRuleMatching()) {
 			mMatchedRuleName = ruleName;
 			return true;
@@ -149,9 +189,9 @@ bool VisualInterpreterUnit::findMatch()
 	return false;
 }
 
-Id VisualInterpreterUnit::getStartElement() const
+Id VisualInterpreterUnit::startElement() const
 {
-	IdList const elementsInRule = children(ruleToFind);
+	IdList const elementsInRule = children(mRuleToFind);
 
 	foreach (Id const &element, elementsInRule) {
 		if (!isEdgeInRule(element) && element.element() != "ControlFlowMark") {
@@ -162,7 +202,7 @@ Id VisualInterpreterUnit::getStartElement() const
 	return Id::rootId();
 }
 
-void VisualInterpreterUnit::makeStep()
+bool VisualInterpreterUnit::makeStep()
 {
 	QHash<Id, Id> firstMatch = mMatches.at(0);
 	
@@ -183,13 +223,15 @@ void VisualInterpreterUnit::makeStep()
 	}
 
 	Id const rule = mRules->value(mMatchedRuleName);
-	QString const ruleProcess = getProperty(rule, "procedure").toString();
+	QString const ruleProcess = property(rule, "procedure").toString();
+	bool result = true;
 	if (ruleProcess != "") {
 		mRuleParser->setRuleId(rule);
-		mRuleParser->parseRule(ruleProcess, &firstMatch);
+		result = mRuleParser->parseRule(ruleProcess, &firstMatch);
 	}
 	
 	mMatches.clear();
+	return result;
 }
 
 bool VisualInterpreterUnit::compareElements(Id const &first, Id const &second) const
@@ -221,9 +263,14 @@ bool VisualInterpreterUnit::compareElementTypesAndProperties(Id const &first,
 			second);
 }
 
-Id VisualInterpreterUnit::getNodeIdWithControlMark(Id const &controlMarkId) const
+Id VisualInterpreterUnit::nodeIdWithControlMark(Id const &controlMarkId) const
 {
-	Id const link = outgoingLinks(controlMarkId).at(0);
+	IdList const outLinks = outgoingLinks(controlMarkId);
+	if (outLinks.size() == 0) {
+		return Id::rootId();
+	}
+	
+	Id const link = outLinks.at(0);
 	return toInRule(link);
 }
 
@@ -239,7 +286,8 @@ IdList VisualInterpreterUnit::linksInRule(Id const &id) const
 	return result;
 }
 
-void VisualInterpreterUnit::report(QString const &message) const
+void VisualInterpreterUnit::semanticsLoadingError(QString const &message)
 {
-	mInterpretersInterface.errorReporter()->addInformation(message);
+	report(message + tr(" Semantics loading failed."), true);
+	isSemanticsLoaded = false;
 }

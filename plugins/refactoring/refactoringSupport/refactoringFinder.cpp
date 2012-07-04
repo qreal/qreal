@@ -14,7 +14,7 @@ RefactoringFinder::RefactoringFinder(
 		: BaseGraphTransformationUnit(logicalModelApi, graphicalModelApi, interpretersInterface)
 		, mRefactoringRepoApi(refactoringRepoApi)
 {
-	defaultProperties.insert("ID");
+	mDefaultProperties.insert("ID");
 }
 
 IdList RefactoringFinder::getElementsFromBeforeBlock() const
@@ -85,7 +85,7 @@ bool RefactoringFinder::findMatch()
 	return checkRuleMatching();
 }
 
-Id RefactoringFinder::getStartElement() const
+Id RefactoringFinder::startElement() const
 {
 	IdList const before = getElementsFromBeforeBlock();
 
@@ -141,7 +141,7 @@ bool RefactoringFinder::compareElementTypesAndProperties(Id const &first,
 	return BaseGraphTransformationUnit::compareElementTypesAndProperties(first, second);
 }
 
-QMapIterator<QString, QVariant> RefactoringFinder::getPropertiesIterator(Id const &id) const
+QMapIterator<QString, QVariant> RefactoringFinder::propertiesIterator(Id const &id) const
 {
 	return mRefactoringRepoApi->propertiesIterator(id);
 }

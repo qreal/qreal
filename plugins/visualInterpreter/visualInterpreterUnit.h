@@ -33,24 +33,30 @@ protected:
 	/// For debug uses only
 	void highlightMatch();
 	
+	/// Fields initialization before loading semantics
+	void initBeforeSemanticsLoading();
+	
+	/// Fields initialization before interpretation
+	void initBeforeInterpretation();
+	
 	/// Checks current diagram for being semantics model
 	bool isSemanticsEditor();
 	
 	/// Perform all transformations
-	void makeStep();
+	bool makeStep();
 	
 	/// Fill rules information with this
 	void putIdIntoMap(QHash<QString ,IdList*> *map, QString const &ruleName,
 			Id const &id);
 	
 	/// Obtain an element id with the corresponding control flow mark
-	Id getNodeIdWithControlMark(Id const &controlMarkId) const;
+	Id nodeIdWithControlMark(Id const &controlMarkId) const;
 	
 	/// Get all rules from semantics model
-	IdList getRules() const;
+	IdList allRules() const;
 	
 	/// Get first node from rule to start the algo
-	Id getStartElement() const;
+	Id startElement() const;
 	
 	/// Functions for test elements for equality
 	bool compareElements(Id const &first, Id const &second) const;
@@ -59,8 +65,11 @@ protected:
 	/// Logical repo api methods for more quick access
 	IdList linksInRule(Id const &id) const;
 	
-	/// Reports message to the main system
-	void report(QString const &message) const;
+	/// Reports if semantics loading failed
+	void semanticsLoadingError(QString const &message);
+	
+	/// Is semantics loaded successfully
+	bool isSemanticsLoaded;
 	
 	/// Metamodel name which loaded semantics is for
 	QString mMetamodelName;

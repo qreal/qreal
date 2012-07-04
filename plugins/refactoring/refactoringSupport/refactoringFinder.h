@@ -29,9 +29,9 @@ private:
 	IdList getElementsFromAfterBlock() const;
 	IdList getElementsFromBeforeBlock() const;
 
-	Id getStartElement() const;
+	Id startElement() const;
 
-	QMapIterator<QString, QVariant> getPropertiesIterator(Id const &id) const;
+	QMapIterator<QString, QVariant> propertiesIterator(Id const &id) const;
 	QVariant getRefactoringProperty(const Id &id, const QString &propertyName) const;
 	bool containElementWithID(const QString &IDValue, const IdList &idList);
 

@@ -648,6 +648,14 @@ void ExpressionsParser::error(const ParseErrorType &type, const QString &pos, co
 		mHasParseErrors = true;
 		mErrorReporter->addWarning(QObject::tr("Unexpected symbol after the end of expression"), mCurrentId);
 		break;
+	case unknownElementProperty:
+		mHasParseErrors = true;
+		mErrorReporter->addCritical(QObject::tr("Unknown element property used"), mCurrentId);
+		break;
+	case unknownElementName:
+		mHasParseErrors = true;
+		mErrorReporter->addCritical(QObject::tr("Unknown element name used"), mCurrentId);
+		break;
 	}
 }
 

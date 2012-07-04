@@ -16,7 +16,7 @@ public:
 
 	/// Parse and interpret textual part of rule and perform changes
 	/// on model elements by using match hash map
-	void parseRule(QString const &stream, QHash<Id, Id> *mMatch);
+	bool parseRule(QString const &stream, QHash<Id, Id> *mMatch);
 	
 	/// Set matched rule id for showing if its textual part has errors
 	void setRuleId(Id const &id);
@@ -49,11 +49,11 @@ private:
 	
 	/// Gets id of element in model which corresponds to element
 	/// in rule which has given name
-	Id getElementByName(QString const &name, QHash<Id, Id> *mMatch);
+	Id elementByName(QString const &name, QHash<Id, Id> *mMatch);
 	
 	/// Functions for working with properties of elements on model
 	void setProperty(Id const &id, QString const &propertyName, QVariant const &value);
-	QVariant getProperty(Id const &id, QString const &propertyName);
+	QVariant property(Id const &id, QString const &propertyName);
 	
 	LogicalModelAssistInterface const &mLogicalModelApi;
 	GraphicalModelAssistInterface const &mGraphicalModelApi;

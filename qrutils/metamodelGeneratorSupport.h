@@ -70,7 +70,7 @@ public:
 			QStringList const &elementTypes ///< Element types w/o prefix
 	);
 	
-	QDomElement getDiagramElement(QDomDocument const &metamodel) const;
+	QDomElement diagramElement(QDomDocument const &metamodel) const;
 	
 private:
 	

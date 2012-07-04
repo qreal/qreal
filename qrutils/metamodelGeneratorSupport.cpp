@@ -93,19 +93,21 @@ void MetamodelGeneratorSupport::loadPlugin(QString const &directoryName
 					+ extension, normalizeDirName))
 			{
 				progress->setValue(100);
+			} else {
+				mErrorReporter->addWarning(tr("Cannot load new editor"));
 			}
 		}
 	}
 
-	if (progress->value() != 100) {
-		mErrorReporter->addWarning(tr("Cannot load new editor"));
+	if (progress->value() < 80) {
+		mErrorReporter->addWarning(tr("Cannot build new editor"));
 	}
 	progress->setValue(100);
 	progress->close();
 	delete progress;
 }
 
-QDomElement MetamodelGeneratorSupport::getDiagramElement(QDomDocument const &metamodel) const
+QDomElement MetamodelGeneratorSupport::diagramElement(QDomDocument const &metamodel) const
 {
 	return metamodel.elementsByTagName("diagram").at(0).toElement();
 }
@@ -121,7 +123,7 @@ void MetamodelGeneratorSupport::insertElementsInDiagramSublevel(QDomDocument met
 		QDomElement sublevel = metamodel.createElement(sublevelName);
 		appendElements(sublevel, elements);
 
-		getDiagramElement(metamodel).appendChild(sublevel);
+		diagramElement(metamodel).appendChild(sublevel);
 	}
 }
 
@@ -136,7 +138,7 @@ void MetamodelGeneratorSupport::insertElementInDiagramSublevel(QDomDocument meta
 		QDomElement sublevel = metamodel.createElement(sublevelName);
 		sublevel.appendChild(element);
 
-		getDiagramElement(metamodel).appendChild(sublevel);
+		diagramElement(metamodel).appendChild(sublevel);
 	}
 }
 
@@ -157,7 +159,7 @@ QDomDocument MetamodelGeneratorSupport::loadElementsFromString(QString const &el
 
 QStringList MetamodelGeneratorSupport::collectAllGraphicTypesInMetamodel(QDomDocument const &metamodel) const
 {
-	QDomElement diagram = getDiagramElement(metamodel);
+	QDomElement diagram = diagramElement(metamodel);
 	QDomNodeList graphicTypes = diagram.elementsByTagName("graphicTypes");
 
 	QStringList result;

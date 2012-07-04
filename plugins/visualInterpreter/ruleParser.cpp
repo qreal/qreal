@@ -65,15 +65,20 @@ void RuleParser::parseRunFunction(QString const &stream, int &pos,
 		return;
 	}
 	
-	QString const property = parseElemProperty(stream, pos);
+	QString const prop = parseElemProperty(stream, pos);
 	if (hasErrors()) {
 		return;
 	}
 	
 	checkForClosingBracketAndColon(stream, pos);
 	
-	Id const elem = getElementByName(name, mMatch);
-	QString const process = getProperty(elem, property).toString();
+	Id const elem = elementByName(name, mMatch);
+	if (elem == Id::rootId()) {
+		error(unknownElementName);
+		return;
+	}
+	
+	QString const process = property(elem, prop).toString();
 	int position = 0;
 	parseProcess(process, position, elem);
 	mCurrentId = mRuleId;
@@ -87,7 +92,7 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos,
 		return;
 	}
 	
-	QString const property = parseElemProperty(stream, pos);
+	QString const prop = parseElemProperty(stream, pos);
 	if (hasErrors()) {
 		return;
 	}
@@ -118,14 +123,24 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos,
 	
 		checkForClosingBracketAndColon(stream, pos);
 		
-		Id const condId = getElementByName(condName, mMatch);
+		Id const condId = elementByName(condName, mMatch);
+		if (condId == Id::rootId()) {
+			error(unknownElementName);
+			return;
+		}
+		
 		int position = 0;
 		
-		bool value = parseCondition(getProperty(
-				condId, condProperty).toString(), position, condId);
+		bool value = parseCondition(property(condId, condProperty).toString(),
+				position, condId);
 		
-		setProperty(getElementByName(name, mMatch), property,
-				QString(value ? "true" : "false"));
+		Id const id = elementByName(name, mMatch);
+		if (id == Id::rootId()) {
+			error(unknownElementName);
+			return;
+		}
+		
+		setProperty(id, prop, QString(value ? "true" : "false"));
 		mCurrentId = mRuleId;
 		
 		return;
@@ -142,7 +157,13 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos,
 			return;
 		}
 		
-		setProperty(getElementByName(name, mMatch), property, value);
+		Id const id = elementByName(name, mMatch);
+		if (id == Id::rootId()) {
+			error(unknownElementName);
+			return;
+		}
+		
+		setProperty(id, prop, value);
 		
 		pos++;
 		skip(stream, pos);
@@ -178,7 +199,13 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos,
 			}
 			pos++;
 			
-			setProperty(getElementByName(name, mMatch), property, value);
+			Id const id = elementByName(name, mMatch);
+			if (id == Id::rootId()) {
+				error(unknownElementName);
+				return;
+			}
+			
+			setProperty(id, prop, value);
 			return;
 		}
 	}
@@ -192,8 +219,12 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos,
 		}
 		pos++;
 		
-		Id const elem = getElementByName(name, mMatch);
-		setProperty(elem, property, QVariant(getProperty(elem, property).type()));
+		Id const elem = elementByName(name, mMatch);
+		if (elem == Id::rootId()) {
+			error(unknownElementName);
+			return;
+		}
+		setProperty(elem, prop, QVariant(property(elem, prop).type()));
 		return;
 	}
 	
@@ -212,8 +243,13 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos,
 		}
 		pos++;
 		
-		setProperty(getElementByName(name, mMatch), property,
-				QString(result ? "true" : "false"));
+		Id const id = elementByName(name, mMatch);
+		if (id == Id::rootId()) {
+			error(unknownElementName);
+			return;
+		}
+		
+		setProperty(id, prop, QString(result ? "true" : "false"));
 	} else {
 		Number result = parseExpression(stream, pos);
 		if (hasErrors()) {
@@ -226,8 +262,13 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos,
 		}
 		pos++;
 		
-		setProperty(getElementByName(name, mMatch), property,
-				result.property("Number").toString());
+		Id const id = elementByName(name, mMatch);
+		if (id == Id::rootId()) {
+			error(unknownElementName);
+			return;
+		}
+		
+		setProperty(id, prop, result.property("Number").toString());
 	}
 	
 }
@@ -254,23 +295,25 @@ void RuleParser::parseRuleCommand(QString const &stream, int &pos,
 	}
 }
 
-void RuleParser::parseRule(QString const &stream, QHash<Id, Id> *mMatch)
+bool RuleParser::parseRule(QString const &stream, QHash<Id, Id> *mMatch)
 {
 	mCurrentId = mRuleId;
 	int pos = 0;
 	
 	parseVarPart(stream, pos);
 	if (hasErrors()) {
-		return;
+		return false;
 	}
 	
 	while (pos < stream.length() && !hasErrors()) {
 		parseRuleCommand(stream, pos, mMatch);
 		skip(stream, pos);
 	}
+	
+	return !hasErrors();
 }
 
-Id RuleParser::getElementByName(QString const &name, QHash<Id, Id> *mMatch)
+Id RuleParser::elementByName(QString const &name, QHash<Id, Id> *mMatch)
 {
 	foreach (Id const &elem, mMatch->keys()) {
 		if (mLogicalModelApi.logicalRepoApi().name(elem) == name) {
@@ -285,21 +328,39 @@ void RuleParser::setProperty(Id const &id, QString const &propertyName,
 		QVariant const &value)
 {
 	if (mLogicalModelApi.isLogicalId(id)) {
-		return mLogicalModelApi.logicalRepoApi().setProperty(id, propertyName, value);
+		if (mLogicalModelApi.logicalRepoApi().hasProperty(id, propertyName)) {
+			mLogicalModelApi.logicalRepoApi().setProperty(id, propertyName, value);
+		} else {
+			error(unknownElementProperty);
+		}
 	} else {
-		return mLogicalModelApi.logicalRepoApi().setProperty(
-				mGraphicalModelApi.logicalId(id), propertyName, value);
+		Id const logId = mGraphicalModelApi.logicalId(id);
+		if (mLogicalModelApi.logicalRepoApi().hasProperty(logId, propertyName)) {
+			mLogicalModelApi.logicalRepoApi().setProperty(logId, propertyName, value);
+		} else {
+			error(unknownElementProperty);
+		}
 	}
 }
 
-QVariant RuleParser::getProperty(Id const &id, QString const &propertyName)
+QVariant RuleParser::property(Id const &id, QString const &propertyName)
 {
 	if (mLogicalModelApi.isLogicalId(id)) {
-		return mLogicalModelApi.logicalRepoApi().property(id, propertyName);
+		if (mLogicalModelApi.logicalRepoApi().hasProperty(id, propertyName)) {
+			return mLogicalModelApi.logicalRepoApi().property(id, propertyName);
+		} else {
+			error(unknownElementProperty);
+		}
 	} else {
-		return mLogicalModelApi.logicalRepoApi().property(
-				mGraphicalModelApi.logicalId(id), propertyName);
+		Id const logId = mGraphicalModelApi.logicalId(id);
+		if (mLogicalModelApi.logicalRepoApi().hasProperty(logId, propertyName)) {
+			return mLogicalModelApi.logicalRepoApi().property(logId, propertyName);
+		} else {
+			error(unknownElementProperty);
+		}
 	}
+	
+	return QVariant();
 }
 
 void RuleParser::parseVarPart(QString const &stream, int &pos)

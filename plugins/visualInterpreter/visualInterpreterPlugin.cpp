@@ -80,7 +80,7 @@ void VisualInterpreterPlugin::generateSemanticsMetamodel() {
 	
 	QDomDocument metamodel = mMetamodelGeneratorSupport->loadMetamodelFromFile(editorMetamodelFilePath);
 	
-	QDomElement diagram = mMetamodelGeneratorSupport->getDiagramElement(metamodel);
+	QDomElement diagram = mMetamodelGeneratorSupport->diagramElement(metamodel);
 	QString diagramName = diagram.attribute("name");
 	QString displayedName = diagram.attribute("displayedName");
 	if (displayedName == "") {
@@ -102,7 +102,8 @@ void VisualInterpreterPlugin::generateSemanticsMetamodel() {
 			editorPath, relativeEditorPath
 	);
 	
-	mMetamodelGeneratorSupport->saveMetamodelInFile(metamodel, editorPath + "/" + metamodelName + ".xml");
+	mMetamodelGeneratorSupport->saveMetamodelInFile(metamodel, editorPath +
+			"/" + metamodelName + ".xml");
 	
 	mMetamodelGeneratorSupport->loadPlugin(editorPath, metamodelName
 			, SettingsManager::value("pathToQmake", "").toString()

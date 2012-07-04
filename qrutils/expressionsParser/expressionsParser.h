@@ -37,7 +37,9 @@ protected:
 		usingReservedVariable,
 		noExpression,
 		incorrectVariableDeclaration,
-		unexpectedSymbolAfterTheEndOfExpression
+		unexpectedSymbolAfterTheEndOfExpression,
+		unknownElementProperty,
+		unknownElementName
 	};
 
 protected:

@@ -12,8 +12,9 @@ BaseGraphTransformationUnit::BaseGraphTransformationUnit(
 		: mInterpretersInterface(interpretersInterface)
 		, mLogicalModelApi(logicalModelApi)
 		, mGraphicalModelApi(graphicalModelApi)
+		, mHasRuleSyntaxErr(false)
 {
-	defaultProperties = (QSet<QString>()
+	mDefaultProperties = (QSet<QString>()
 				<< "from" << "incomingConnections" << "incomingUsages" << "links"
 				<< "name" << "outgoingConnections" << "outgoingUsages" << "to");
 }
@@ -22,7 +23,7 @@ BaseGraphTransformationUnit::~BaseGraphTransformationUnit()
 {
 }
 
-IdList BaseGraphTransformationUnit::getElementsFromActiveDiagram() const
+IdList BaseGraphTransformationUnit::elementsFromActiveDiagram() const
 {
 	Id const activeDiagram = mInterpretersInterface.activeDiagram();
 	return children(activeDiagram);
@@ -33,20 +34,27 @@ bool BaseGraphTransformationUnit::checkRuleMatching()
 	mMatch = new QHash<Id, Id>();
 	bool isMatched = false;
 
-	Id const startElement = getStartElement();
-	mNodesHavingOutsideLinks.append(startElement);
+	Id const startElem = startElement();
+	if (startElem == Id::rootId()) {
+		report(tr("Rule '") + property(mRuleToFind, "ruleName").toString() +
+				tr("' has not any appropriate nodes"), true);
+		mHasRuleSyntaxErr = true;
+		return false;
+	}
+	
+	mNodesHavingOutsideLinks.append(startElem);
 
-	IdList const elements = getElementsFromActiveDiagram();
+	IdList const elements = elementsFromActiveDiagram();
 	foreach (Id const &element, elements) {
-		if (compareElements(element, startElement)) {
+		if (compareElements(element, startElem)) {
 			mCurrentMatchedGraphInRule.clear();
 			mNodesHavingOutsideLinks.clear();
 			mMatch->clear();
 			mPos = 0;
 
-			mCurrentMatchedGraphInRule.append(startElement);
-			mNodesHavingOutsideLinks.append(startElement);
-			mMatch->insert(startElement, element);
+			mCurrentMatchedGraphInRule.append(startElem);
+			mNodesHavingOutsideLinks.append(startElem);
+			mMatch->insert(startElem, element);
 
 			if (checkRuleMatchingRecursively()) {
 				isMatched = true;
@@ -68,12 +76,19 @@ bool BaseGraphTransformationUnit::checkRuleMatchingRecursively()
 	bool isMatched = false;
 
 	Id const nodeInRule = mNodesHavingOutsideLinks.at(mPos);
-	Id const linkInRule = getOutsideLink(nodeInRule);
+	Id const linkInRule = outsideLink(nodeInRule);
 
 	if (linkInRule != Id::rootId()) {
-		Id const linkEndInRule = getLinkEndInRule(linkInRule, nodeInRule);
+		Id const linkEndInR = linkEndInRule(linkInRule, nodeInRule);
+		if (linkEndInR == Id::rootId()) {
+			report(tr("Rule '") + property(mRuleToFind, "ruleName").toString() +
+					tr("' has unconnected link"), true);
+			mHasRuleSyntaxErr = true;
+			return false;
+		}
+		
 		Id const nodeInModel = mMatch->value(nodeInRule);
-		IdList const lnksInModel = getProperLinks(nodeInModel, linkInRule);
+		IdList const lnksInModel = properLinks(nodeInModel, linkInRule);
 
 		QHash<Id, Id> *matchBackup = mMatch;
 		IdList *nodesHavingOutsideLinksBackup = &mNodesHavingOutsideLinks;
@@ -81,8 +96,8 @@ bool BaseGraphTransformationUnit::checkRuleMatchingRecursively()
 		int const posBackup = mPos;
 
 		foreach (Id const &linkInModel, lnksInModel) {
-			Id const linkEndInModel = getLinkEndInModel(linkInModel, nodeInModel);
-			if (checkNodeForAddingToMatch(linkEndInModel, linkEndInRule)) {
+			Id const linkEndInM = linkEndInModel(linkInModel, nodeInModel);
+			if (checkNodeForAddingToMatch(linkEndInM, linkEndInR)) {
 				if (checkRuleMatchingRecursively()) {
 					isMatched = true;
 					mMatch = new QHash<Id, Id>();
@@ -135,10 +150,10 @@ bool BaseGraphTransformationUnit::checkExistingLinks(Id const &nodeInModel,
 	IdList const lnksInRule = linksInRule(nodeInRule);
 
 	foreach (Id const &linkInRule, lnksInRule) {
-		Id const linkEndInRule = getLinkEndInRule(linkInRule, nodeInRule);
-		if (mCurrentMatchedGraphInRule.contains(linkEndInRule)) {
-			Id const properLinkInModel = getProperLink(nodeInModel, linkInRule,
-					linkEndInRule);
+		Id const linkEndInR = linkEndInRule(linkInRule, nodeInRule);
+		if (mCurrentMatchedGraphInRule.contains(linkEndInR)) {
+			Id const properLinkInModel = properLink(nodeInModel, linkInRule,
+					linkEndInR);
 			if (properLinkInModel == Id::rootId()) {
 				return false;
 			} else {
@@ -161,18 +176,18 @@ void BaseGraphTransformationUnit::rollback()
 		mPos--;
 	}
 
-	IdList const links = getLinksToMatchedSubgraph(nodeToRemove);
+	IdList const links = linksToMatchedSubgraph(nodeToRemove);
 	foreach (Id const &link, links) {
 		mMatch->remove(link);
 	}
 }
 
-IdList BaseGraphTransformationUnit::getLinksToMatchedSubgraph(Id const &nodeInRule) const
+IdList BaseGraphTransformationUnit::linksToMatchedSubgraph(Id const &nodeInRule) const
 {
 	IdList result;
 	IdList const lnksInRule = linksInRule(nodeInRule);
 	foreach (Id const &link, lnksInRule) {
-		Id const linkEnd = getLinkEndInRule(link, nodeInRule);
+		Id const linkEnd = linkEndInRule(link, nodeInRule);
 		if (mCurrentMatchedGraphInRule.contains(linkEnd)) {
 			result.append(link);
 		}
@@ -180,12 +195,12 @@ IdList BaseGraphTransformationUnit::getLinksToMatchedSubgraph(Id const &nodeInRu
 	return result;
 }
 
-Id BaseGraphTransformationUnit::getOutsideLink(Id const &nodeInRule) const
+Id BaseGraphTransformationUnit::outsideLink(Id const &nodeInRule) const
 {
 	IdList const lnksInRule = linksInRule(nodeInRule);
 	foreach (Id const &linkInRule, lnksInRule) {
-		Id const linkEndInRule = getLinkEndInRule(linkInRule, nodeInRule);
-		if (!mCurrentMatchedGraphInRule.contains(linkEndInRule)) {
+		Id const linkEndInR = linkEndInRule(linkInRule, nodeInRule);
+		if (!mCurrentMatchedGraphInRule.contains(linkEndInR)) {
 			return linkInRule;
 		}
 	}
@@ -193,7 +208,7 @@ Id BaseGraphTransformationUnit::getOutsideLink(Id const &nodeInRule) const
 	return Id::rootId();
 }
 
-Id BaseGraphTransformationUnit::getLinkEndInModel(Id const &linkInModel,
+Id BaseGraphTransformationUnit::linkEndInModel(Id const &linkInModel,
 		Id const &nodeInModel) const
 {
 	Id const linkTo = toInModel(linkInModel);
@@ -203,7 +218,7 @@ Id BaseGraphTransformationUnit::getLinkEndInModel(Id const &linkInModel,
 	return linkTo;
 }
 
-Id BaseGraphTransformationUnit::getLinkEndInRule(Id const &linkInRule,
+Id BaseGraphTransformationUnit::linkEndInRule(Id const &linkInRule,
 		Id const &nodeInRule) const
 {
 	Id const linkTo = toInRule(linkInRule);
@@ -213,14 +228,14 @@ Id BaseGraphTransformationUnit::getLinkEndInRule(Id const &linkInRule,
 	return linkTo;
 }
 
-Id BaseGraphTransformationUnit::getProperLink(Id const &nodeInModel,
-		 Id const &linkInRule, Id const &linkEndInRule) const
+Id BaseGraphTransformationUnit::properLink(Id const &nodeInModel,
+		 Id const &linkInRule, Id const &linkEndInR) const
 {
 	IdList const lnksInModel = linksInModel(nodeInModel);
 	foreach (Id const &linkInModel, lnksInModel) {
 		if (compareLinks(linkInModel, linkInRule)) {
-			Id const linkEndInModel = getLinkEndInModel(linkInModel, nodeInModel);
-			if (linkEndInModel == mMatch->value(linkEndInRule)) {
+			Id const linkEndInM = linkEndInModel(linkInModel, nodeInModel);
+			if (linkEndInM == mMatch->value(linkEndInR)) {
 				return linkInModel;
 			}
 		}
@@ -229,7 +244,7 @@ Id BaseGraphTransformationUnit::getProperLink(Id const &nodeInModel,
 	return Id::rootId();
 }
 
-IdList BaseGraphTransformationUnit::getProperLinks(Id const &nodeInModel,
+IdList BaseGraphTransformationUnit::properLinks(Id const &nodeInModel,
 		Id const &linkInRule) const
 {
 	IdList result;
@@ -263,7 +278,7 @@ bool BaseGraphTransformationUnit::compareElementTypesAndProperties(Id const &fir
 		Id const &second) const
 {
 	if (first.element() == second.element() && first.diagram() == second.diagram()) {
-		QHash<QString, QVariant> secondProperties = getProperties(second);
+		QHash<QString, QVariant> secondProperties = properties(second);
 
 		foreach (QString const &key, secondProperties.keys()) {
 			QVariant const value = secondProperties.value(key);
@@ -272,7 +287,7 @@ bool BaseGraphTransformationUnit::compareElementTypesAndProperties(Id const &fir
 				continue;
 			}
 
-			if (!hasProperty(first, key) || getProperty(first, key) != value) {
+			if (!hasProperty(first, key) || property(first, key) != value) {
 				return false;
 			}
 		}
@@ -293,24 +308,26 @@ bool BaseGraphTransformationUnit::hasProperty(Id const &id, QString const &prope
 	}
 }
 
-QHash<QString, QVariant> BaseGraphTransformationUnit::getProperties(Id const &id) const
+QHash<QString, QVariant> BaseGraphTransformationUnit::properties(Id const &id) const
 {
 	QHash<QString, QVariant> res;
 
-	QMapIterator<QString, QVariant> properties = getPropertiesIterator(id);
-
-	while (properties.hasNext()) {
-		properties.next();
-
-		if (!defaultProperties.contains(properties.key())) {
-			res.insert(properties.key(), properties.value());
+	if (id != Id::rootId()) {
+		QMapIterator<QString, QVariant> properties = propertiesIterator(id);
+	
+		while (properties.hasNext()) {
+			properties.next();
+	
+			if (!mDefaultProperties.contains(properties.key())) {
+				res.insert(properties.key(), properties.value());
+			}
 		}
 	}
 
 	return res;
 }
 
-QMapIterator<QString, QVariant> BaseGraphTransformationUnit::getPropertiesIterator(Id const &id) const
+QMapIterator<QString, QVariant> BaseGraphTransformationUnit::propertiesIterator(Id const &id) const
 {
 	return (mLogicalModelApi.isLogicalId(id))
 			? mLogicalModelApi.logicalRepoApi().propertiesIterator(id)
@@ -318,7 +335,7 @@ QMapIterator<QString, QVariant> BaseGraphTransformationUnit::getPropertiesIterat
 					mGraphicalModelApi.logicalId(id));
 }
 
-QVariant BaseGraphTransformationUnit::getProperty(Id const &id, QString const &propertyName) const
+QVariant BaseGraphTransformationUnit::property(Id const &id, QString const &propertyName) const
 {
 	if (mLogicalModelApi.isLogicalId(id)) {
 		return mLogicalModelApi.logicalRepoApi().property(id, propertyName);
@@ -396,12 +413,16 @@ IdList BaseGraphTransformationUnit::children(Id const &id) const
 	return mGraphicalModelApi.graphicalRepoApi().children(id);
 }
 
-void BaseGraphTransformationUnit::report(QString const &message) const
+void BaseGraphTransformationUnit::report(QString const &message, bool isError) const
 {
-	mInterpretersInterface.errorReporter()->addInformation(message);
+	if (isError) {
+		mInterpretersInterface.errorReporter()->addCritical(message);
+	} else {
+		mInterpretersInterface.errorReporter()->addInformation(message);
+	}
 }
 
-QList<QHash<Id, Id> > BaseGraphTransformationUnit::getMatches()
+QList<QHash<Id, Id> > BaseGraphTransformationUnit::matches()
 {
 	return mMatches;
 }
@@ -411,4 +432,14 @@ void BaseGraphTransformationUnit::pause(int const &time)
 	QEventLoop loop;
 	QTimer::singleShot(time, &loop, SLOT(quit()));
 	loop.exec();
+}
+
+bool BaseGraphTransformationUnit::hasRuleSyntaxError()
+{
+	return mHasRuleSyntaxErr;
+}
+
+void BaseGraphTransformationUnit::resetRuleSyntaxCheck()
+{
+	mHasRuleSyntaxErr = false;
 }

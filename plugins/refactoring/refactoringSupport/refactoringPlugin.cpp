@@ -137,7 +137,7 @@ void RefactoringPlugin::generateRefactoringMetamodel()
 
 	QDomDocument metamodel = mMetamodelGeneratorSupport->loadMetamodelFromFile(editorMetamodelFilePath);
 
-	QDomElement diagram = mMetamodelGeneratorSupport->getDiagramElement(metamodel);
+	QDomElement diagram = mMetamodelGeneratorSupport->diagramElement(metamodel);
 	QDomElement graphics = metamodel.elementsByTagName("graphicTypes").at(0).toElement();
 	QString diagramName = diagram.attribute("name").replace(" ", "_");
 	QString displayedName = diagram.attribute("displayedName");
@@ -353,7 +353,7 @@ void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 		}
 	}
 	else if (mRefactoringFinder->findMatch()) {
-		mMatches = mRefactoringFinder->getMatches();
+		mMatches = mRefactoringFinder->matches();
 		if (mMatches.isEmpty()) {
 			mMainWindowIFace->errorReporter()->addInformation(tr("No match"));
 			mRefactoringWindow->discard();
