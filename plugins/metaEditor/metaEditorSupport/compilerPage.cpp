@@ -16,13 +16,13 @@ PreferencesCompilerPage::PreferencesCompilerPage(QWidget *parent)
 	connect(mUi->windowsButton, SIGNAL(clicked()), this, SLOT(changeSystem()));
 	connect(mUi->otherButton, SIGNAL(clicked()), this, SLOT(changeSystem()));
 
-	mUi->windowsButton->setChecked(SettingsManager::value("windowsButton", false).toBool());
-	mUi->linuxButton->setChecked(SettingsManager::value("linuxButton", false).toBool());
-	mUi->otherButton->setChecked(SettingsManager::value("otherButton", false).toBool());
-	mUi->pathToQmake->setText(SettingsManager::value("pathToQmake", "").toString());
-	mUi->pathToMake->setText(SettingsManager::value("pathToMake", "").toString());
-	mUi->pluginExtension->setText(SettingsManager::value("pluginExtension", "").toString());
-	mUi->prefix->setText(SettingsManager::value("prefix", "").toString());
+	mUi->windowsButton->setChecked(SettingsManager::value("windowsButton").toBool());
+	mUi->linuxButton->setChecked(SettingsManager::value("linuxButton").toBool());
+	mUi->otherButton->setChecked(SettingsManager::value("otherButton").toBool());
+	mUi->pathToQmake->setText(SettingsManager::value("pathToQmake").toString());
+	mUi->pathToMake->setText(SettingsManager::value("pathToMake").toString());
+	mUi->pluginExtension->setText(SettingsManager::value("pluginExtension").toString());
+	mUi->prefix->setText(SettingsManager::value("prefix").toString());
 }
 
 PreferencesCompilerPage::~PreferencesCompilerPage()
@@ -54,8 +54,8 @@ void PreferencesCompilerPage::changeSystem()
 	}
 }
 
-void PreferencesCompilerPage::initCompilersSettings(const QString &pathToQmake,
-		const QString &pathToMake, const QString &pluginExtension, const QString &prefix)
+void PreferencesCompilerPage::initCompilersSettings(QString const &pathToQmake,
+		QString const &pathToMake, QString const &pluginExtension, QString const &prefix)
 {
 	mUi->pathToQmake->setText(pathToQmake);
 	mUi->pathToMake->setText(pathToMake);

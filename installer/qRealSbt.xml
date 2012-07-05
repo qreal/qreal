@@ -74,7 +74,7 @@
                         </distributionFile>
                         <distributionFile>
                             <origin>../plugins/sbt/sbtReportsEditor/balanceDiagram.qrs</origin>
-	                </distributionFile>               
+                        </distributionFile>
 
                         <distributionFile>
                             <origin>%2/QtCore4.dll</origin>

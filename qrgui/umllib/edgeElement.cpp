@@ -50,7 +50,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	connect(&mSquarizeAction, SIGNAL(triggered(QPointF const &)), SLOT(squarizeHandler(QPointF const &)));
 	connect(&mMinimizeAction, SIGNAL(triggered(QPointF const &)), SLOT(minimizeHandler(QPointF const &)));
 
-	mChaoticEdition = SettingsManager::value("ChaoticEdition", false).toBool();
+	mChaoticEdition = SettingsManager::value("ChaoticEdition").toBool();
 
 	ElementTitleFactory factory;
 
@@ -328,7 +328,7 @@ void EdgeElement::connectToPort()
 	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
 
 	mMoving = false;
-	if (SettingsManager::value("SquareLine", false).toBool())
+	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
 	adjustLink();
 	arrangeSrcAndDst();
@@ -483,7 +483,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	else
 		mDragPoint = -1;
 
-	if (SettingsManager::value("SquareLine", false).toBool()) {
+	if (SettingsManager::value("SquareLine").toBool()) {
 		squarizeHandler(QPointF());
 		deleteUnneededPoints();//wtf
 	}
@@ -740,7 +740,7 @@ void EdgeElement::adjustLink()
 	updateLongestPart();
 	for (int i = 0; i < mLine.size() - 2; i++)
 		removeUnneededPoints(i);
-	if (SettingsManager::value("SquareLine", false).toBool())
+	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
 }
 
@@ -885,7 +885,7 @@ void EdgeElement::updateData()
 	mPortTo = mGraphicalAssistApi->toPort(id());
 
 	adjustLink();
-	if (SettingsManager::value("SquareLine", false).toBool())
+	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
 	mElementImpl->updateData(this);
 	update();
@@ -904,7 +904,7 @@ void EdgeElement::placeStartTo(QPointF const &place)
 {
 	mLine[0] = place;
 	updateLongestPart();
-	if (SettingsManager::value("SquareLine", false).toBool())
+	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
 	adjustLink();
 
@@ -914,7 +914,7 @@ void EdgeElement::placeEndTo(QPointF const &place)
 {
 	mLine[mLine.size() - 1] = place;
 	updateLongestPart();
-	if (SettingsManager::value("SquareLine", false).toBool())
+	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
 	//	adjustLink();
 }
