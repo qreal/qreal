@@ -23,7 +23,7 @@
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
-			<node name="PackageDiagram" displayedName="Package Diagram">
+			<node name="PackageDiagram" displayedName="Package Diagram" description="Предназначен для описания связей между метамоделями. Также может быть корневым элементом метамодели">
 				<graphics>
 					<picture sizex="150" sizey="130">
 						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="0a" x1="0a" y2="0a" stroke-width="1" x2="100a" fill-style="solid"/>
@@ -55,7 +55,7 @@
 					<properties/>
 				</logic>
 			</node>
-			<node name="MetamodelDiagram" displayedName="Metamodel Diagram">
+			<node name="MetamodelDiagram" displayedName="Metamodel Diagram" description="Корневой элемент метамодели языка. В его свойствах указываются необходимые для сборки параметры">
 				<graphics>
 					<picture sizex="30" sizey="30">
 						<ellipse fill="#ffffff" stroke-style="dot" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="30" fill-style="solid"/>
@@ -84,7 +84,7 @@
 					</connections>
 				</logic>
 			</node>
-			<node name="MetaEditorDiagramNode" displayedName="Meta Editor Diagram">
+			<node name="MetaEditorDiagramNode" displayedName="Meta Editor Diagram" description="Элемент для описания конкретного редактора создаваемого языка. Должен вкладываться в Metamodel Diagram">
 				<graphics>
 					<picture sizex="200" sizey="200">
 						<line x1="0" y1="40" x2="0" y2="160"/>
@@ -125,7 +125,7 @@
 					</container>
 				</logic>
 			</node>
-			<node name="MetaEntityNode" displayedName="Node">
+			<node name="MetaEntityNode" displayedName="Node" description="Элемент для описания нового узла диаграммы создаваемого языка. Должен вкладываться в Meta Editor Diagram">
 				<graphics>
 					<picture sizex="150" sizey="100">
 						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid"/>
@@ -192,7 +192,7 @@
 					</container>
 				</logic>
 			</node>
-			<node name="MetaEntityEdge" displayedName="Edge">
+			<node name="MetaEntityEdge" displayedName="Edge" description="Элемент для описания новой связи на диаграмме создаваемого языка. Должен вкладываться в Meta Editor Diagram">
 				<graphics>
 					<picture sizex="100" sizey="100">
 						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="10" y2="50" stroke-width="2" x2="0" fill-style="solid"/>
@@ -250,7 +250,7 @@
 					</container>
 				</logic>
 			</node>
-			<node name="MetaEntityEnum" displayedName="Enum">
+			<node name="MetaEntityEnum" displayedName="Enum" description="Элемент для описания перечисляемого типа данных для создаваемого языка (см. Value). Вкладывается в Meta Editor Diagram">
 				<graphics>
 					<picture sizex="100" sizey="100">
 						<line fill="#000000" stroke-style="dot" stroke="#2f4f4f" y1="0" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid"/>
@@ -290,7 +290,7 @@
 					</container>
 				</logic>
 			</node>
-			<node name="MetaEntity Attribute" displayedName="Property">
+			<node name="MetaEntity Attribute" displayedName="Property" description="Сущность для описания нового свойства элемента. Вкладывается в соответствующий элемент Node или Edge">
 				<graphics>
 					<picture sizex="140" sizey="16">
 					</picture>
@@ -309,7 +309,7 @@
 					<containers/>
 				</logic>
 			</node>
-			<node name="MetaEntityImport" displayedName="Import">
+			<node name="MetaEntityImport" displayedName="Import" description="Сущность для добавления в создаваемый язык элемента из другого визуального языка. Должен вкладываться в Metamodel Diagram.">
 				<graphics>
 					<picture sizex="100" sizey="100">
 						<rectangle fill="#bbbbbb" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="0" y2="100" stroke-width="1" x2="100" fill-style="solid"/>
@@ -339,7 +339,7 @@
 					<containers/>
 				</logic>
 			</node>
-			<node name="MetaEntityValue" displayedName="Value">
+			<node name="MetaEntityValue" displayedName="Value" description="Сущность для описания конкретного значения для создаваемого перечисляемого типа (см. Enum). Должен вкладываться в Enum">
 				<graphics>
 					<picture sizex="140" sizey="12">
 					</picture>
@@ -356,7 +356,7 @@
 					<containers/>
 				</logic>
 			</node>
-			<node name="MetaEntityConnection" displayedName="Connection">
+			<node name="MetaEntityConnection" displayedName="Connection" description="Не поддерживается">
 				<graphics>
 					<picture sizex="120" sizey="40">
 						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="0" y2="20" stroke-width="1" x2="120" fill-style="solid"/>
@@ -376,7 +376,7 @@
 					<containers/>
 				</logic>
 			</node>
-			<node name="MetaEntityAssociation" displayedName="Assotiation">
+			<node name="MetaEntityAssociation" displayedName="Assotiation" description="Элемент для указания типов и имен начала и конца связи (см. Edge). Вкладывается в соответствующий элемент Edge">
 				<graphics>
 					<picture sizex="120" sizey="40">
 						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="0" y2="20" stroke-width="1" x2="120" fill-style="solid"/>
@@ -401,7 +401,7 @@
 					<containers/>
 				</logic>
 			</node>
-			<node name="MetaEntityUsage" displayedName="Usage">
+			<node name="MetaEntityUsage" displayedName="Usage" description="Не поддерживается">
 				<graphics>
 					<picture sizex="120" sizey="40">
 						<line fill="#000000" stroke-style="dot" stroke="#2f4f4f" y1="20" x1="0" y2="20" stroke-width="1" x2="120" fill-style="solid"/>
@@ -421,7 +421,7 @@
 					<containers/>
 				</logic>
 			</node>
-			<edge name="Inheritance" displayedName="Inheritance">
+			<edge name="Inheritance" displayedName="Inheritance" description="Связь, указывающая отношение наследования между элементами (направление – от дочернего элемента к предку)">
 				<graphics>
 					<lineType type="solidLine"/>
 				</graphics>
@@ -434,7 +434,7 @@
 					</generalizations>
 				</logic>
 			</edge>
-			<edge name="Container" displayedName="Container">
+			<edge name="Container" displayedName="Container" description="Связь, указывающая отношение вложенности между элементами (направления – от вкладываемого элемента к тому, в который вкладывается)">
 				<graphics>
 					<lineType type="solidLine"/>
 				</graphics>
@@ -447,7 +447,7 @@
 					</generalizations>
 				</logic>
 			</edge>
-			<node name="MetaEntityPossibleEdge" displayedName="Possible Edge">
+			<node name="MetaEntityPossibleEdge" displayedName="Possible Edge" description="Сущность для указания элементов, которые можно присоединять к данному с помощью «вытягивания» из него связей. Вкладывается в соответствующий элемент Node">
 				<graphics>
 					<picture sizex="25" sizey="25">
 						<ellipse fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="0" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
@@ -466,7 +466,7 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="MetaEntityPropertiesAsContainer" displayedName="Properties as Container">
+			<node name="MetaEntityPropertiesAsContainer" displayedName="Properties as Container" description="Сущность для указания дополнительной функциональности элемента создаваемого языка, являющегося контейнером (см. Container). Вкладывается в соответствующий элемент типа Node">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<rectangle fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="0" stroke-width="1" x1="20" y2="30" fill-style="none" x2="50"/>
@@ -497,7 +497,7 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="MetaEntityContextMenuField" displayedName="Context Menu Field">
+			<node name="MetaEntityContextMenuField" displayedName="Context Menu Field" description="Не поддерживается">
 				<graphics>
 					<picture sizex="100" sizey="30">
 						<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="100" fill-style="solid"/>
@@ -510,7 +510,7 @@
 				<properties/>
 				</logic>
 			</node>
-			<node name="Listener" displayedName="Listener">
+			<node name="Listener" displayedName="Listener" description="Не поддерживается">
 				<graphics>
 					<picture sizex="250" sizey="80">
 						<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="80" stroke-width="1" x2="250" fill-style="solid"/>
