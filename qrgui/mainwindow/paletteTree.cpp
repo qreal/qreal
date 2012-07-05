@@ -55,18 +55,15 @@ PaletteTree::PaletteTree(QWidget *parent)
 void PaletteTree::addItemType(const Id &id, const QString &name, const QString &description
 		, const QIcon &icon, QTreeWidget *tree, QTreeWidgetItem *parent)
 {
-	QTreeWidgetItem *leaf = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(id, name, description, icon, mIconsView);
-	parent->addChild(leaf);
-	tree->setItemWidget(leaf, 0, element);
-}
-
-void PaletteTree::addTopItemType(const Id &id, const QString &name
-		, const QString &description, const QIcon &icon, QTreeWidget *tree)
-{
 	QTreeWidgetItem *item = new QTreeWidgetItem;
 	DraggableElement *element = new DraggableElement(id, name, description, icon, mIconsView);
-	tree->addTopLevelItem(item);
+
+	if (parent != NULL) {
+		parent->addChild(item);
+	} else {
+		tree->addTopLevelItem(item);
+	}
+
 	tree->setItemWidget(item, 0, element);
 }
 
@@ -263,7 +260,7 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 		}
 	} else {
 		foreach (const Id &element, list) {
-			addTopItemType(element, mEditorManager->friendlyName(element)
+			addItemType(element, mEditorManager->friendlyName(element)
 					, mEditorManager->description(element)
 					, mEditorManager->icon(element), editorTree);
 		}

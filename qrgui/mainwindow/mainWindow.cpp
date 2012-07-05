@@ -1458,8 +1458,9 @@ QAction *MainWindow::actionDeleteFromDiagram() const
 
 void qReal::MainWindow::on_actionNew_Diagram_triggered()
 {
-	if (getCurrentTab() == NULL || getCurrentTab()->mvIface() == NULL)
+	if (getCurrentTab() == NULL || getCurrentTab()->mvIface() == NULL) {
 		return;
+	}
 
 	Id const diagram = getCurrentTab()->mvIface()->rootId();  // Or some other way to find current diagram. For example, by current tab in palette.
 	createDiagram(diagram.type().toString());
