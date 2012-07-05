@@ -48,6 +48,9 @@ private:
 	/// Gets parameter value or specified default value if parameter is not set.
 	QVariant get(QString const &key, QVariant const &defaultValue = QVariant()) const;
 
+	void initDefaultValues();
+
+	QMap<QString, QVariant> mDefaultValues;
 	/// Singleton sole instance.
 	static SettingsManager* mInstance;
 
