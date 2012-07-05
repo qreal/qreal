@@ -1,11 +1,11 @@
 #pragma once
-
 #include <QSyntaxHighlighter>
 
-class TextHighlighter : public QSyntaxHighlighter {
-	public:
-		TextHighlighter(QTextDocument *document);
-		void highlightBlock(const QString& text);
+class SQLHighlighter : public QSyntaxHighlighter
+{
+public:
+	SQLHighlighter(QTextDocument *document);
+	void highlightBlock(const QString& text);
 private:
 	struct HighlightingRule
 	{
@@ -18,10 +18,9 @@ private:
 	QRegExp mCommentEndExpression;
 
 	QTextCharFormat mKeywordFormat;
-	QTextCharFormat mClassFormat;
+	QTextCharFormat mDigitalFormat;
+	QTextCharFormat mStringFormat;
 	QTextCharFormat mSingleLineCommentFormat;
 	QTextCharFormat mMultiLineCommentFormat;
-	QTextCharFormat mQuotationFormat;
-	QTextCharFormat mFunctionFormat;
-	QTextCharFormat mFigitsFormat;
+	QTextCharFormat mSignFormat;
 };

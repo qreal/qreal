@@ -243,6 +243,7 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 		foreach (const QString &group, mEditorManager->paletteGroups(editor, diagram)) {
 			QTreeWidgetItem *item = new QTreeWidgetItem;
 			item->setText(0, group);
+			item->setToolTip(0, mEditorManager->paletteGroupDescription(editor, diagram, group));
 
 			IdList tmpIdList;
 

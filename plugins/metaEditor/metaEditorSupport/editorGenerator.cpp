@@ -42,15 +42,17 @@ QHash<Id, QPair<QString,QString> > EditorGenerator::getMetamodelList()
 				metamodelList.insert(key, savingData);
 			}
 			else {
-				mErrorReporter.addError("no name of the directory or relative path to QReal Source Files", key);
+				mErrorReporter.addError(QObject::tr("no directory to generated code or relative path to QReal Source Files"), key);
 			}
 		}
 	}
 	return metamodelList;
 }
 
-QString EditorGenerator::generateEditor(Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource)
+QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource)
 {
+	mErrorReporter.clear();
+	mErrorReporter.clearErrors();
 	QString const editorPath = calculateEditorPath(pathToFile, pathToQRealSource);
 
 	QDomElement metamodel = mDocument.createElement("metamodel");
@@ -77,6 +79,13 @@ QString EditorGenerator::generateEditor(Id const &metamodelId, QString const &pa
 
 	QString const fileBaseName = NameNormalizer::normalize(mApi.name(metamodelId), false);
 
+	QRegExp patten;
+	patten.setPattern("[A-Za-z]+([A-Za-z0-9]*)");
+	if (!patten.exactMatch(fileBaseName) || fileBaseName.isEmpty()) {
+		mErrorReporter.addError(QObject::tr("wrong name\n"), metamodelId);
+		return QPair<QString, QString>("", "");
+	}
+
 	try {
 		OutFile outpro(pathToFile + "/" + fileBaseName + ".pro");
 		outpro() << QString("QREAL_XML = %1\n").arg(fileBaseName + ".xml");
@@ -100,7 +109,7 @@ QString EditorGenerator::generateEditor(Id const &metamodelId, QString const &pa
 
 	copyImages(pathToFile);
 
-	return mApi.name(metamodelId);
+	return QPair<QString, QString>(mApi.name(metamodelId), fileBaseName);
 }
 
 QString EditorGenerator::calculateEditorPath(QString const &pathToFile, QString const &pathToQRealSource)
@@ -210,7 +219,7 @@ void EditorGenerator::createImport(QDomElement &parent, const Id &id)
 	if ((mApi.stringProperty(id, "importedFrom") != "") && (mApi.name(id) != "")) {
 		ensureCorrectness(id, import, "name", mApi.stringProperty(id, "importedFrom") + "::" + mApi.name(id));
 	} else {
-		mErrorReporter.addWarning(QString ("not filled name/importedFrom"), id);
+		mErrorReporter.addWarning(QObject::tr("not filled name/importedFrom"), id);
 		import.setAttribute("name", "");
 	}
 	ensureCorrectness(id, import, "displayedName", mApi.stringProperty(id, "displayedName"));
@@ -281,7 +290,7 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 			} else if (labelType == "Dynamic text") {
 				label.setAttribute("textBinded", labelText);
 			} else {
-				mErrorReporter.addWarning("Incorrect label type", id);
+				mErrorReporter.addWarning(QObject::tr("Incorrect label type"), id);
 			}
 		}
 	}
@@ -550,7 +559,7 @@ void EditorGenerator::ensureCorrectness(Id const &id, QDomElement element, QStri
 	if (value.isEmpty() && tag == "displayedName") {
 		return;
 	} else if (value.isEmpty()) {
-		mErrorReporter.addWarning(QString ("not filled %1\n").arg(tagName), id);
+		mErrorReporter.addWarning(QString (QObject::tr("not filled %1\n")).arg(tagName), id);
 		element.setAttribute(tagName, "");
 	} else if (tag == "name") {
 		QRegExp patten;
@@ -558,7 +567,7 @@ void EditorGenerator::ensureCorrectness(Id const &id, QDomElement element, QStri
 		if (patten.exactMatch(value)) {
 			element.setAttribute(tagName, value);
 		} else {
-			mErrorReporter.addWarning("wrong name\n", id);
+			mErrorReporter.addWarning(QObject::tr("wrong name\n"), id);
 			element.setAttribute(tagName, value);
 		}
 	}

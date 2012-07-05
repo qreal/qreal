@@ -1,3 +1,5 @@
+#include <QtGui/QApplication>
+
 #include "sbtGeneratorPlugin.h"
 
 Q_EXPORT_PLUGIN2(sbtGeneratorPlugin, SbtGeneratorPlugin)
@@ -6,6 +8,8 @@ using namespace qReal;
 
 SbtGeneratorPlugin::SbtGeneratorPlugin()
 {
+	mAppTranslator.load(":/sbtGeneratorPlugin_" + QLocale::system().name());
+	QApplication::installTranslator(&mAppTranslator);
 }
 
 SbtGeneratorPlugin::~SbtGeneratorPlugin()

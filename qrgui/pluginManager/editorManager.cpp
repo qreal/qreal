@@ -133,6 +133,11 @@ QStringList EditorManager::paletteGroupList(Id const &editor, const Id &diagram,
 	return mPluginIface[editor.editor()]->diagramPaletteGroupList(diagram.diagram(), group);
 }
 
+QString EditorManager::paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const
+{
+	return mPluginIface[editor.editor()]->diagramPaletteGroupDescription(diagram.diagram(), group);
+}
+
 IdList EditorManager::elements(Id const &diagram) const
 {
 	IdList elements;

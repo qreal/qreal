@@ -275,6 +275,7 @@ MainWindow::~MainWindow()
 	delete mGesturesWidget;
 	delete mModels;
 	delete mCodeTabManager;
+	delete mOpenedTabsWithEditor;
 	delete mFindReplaceDialog;
 	delete mFindHelper;
 }
@@ -586,7 +587,7 @@ void MainWindow::closeAllTabs()
 	disconnectWindowTitle();
 }
 
-void MainWindow::setShape(QString const &data, QPersistentModelIndex const &index, int const &role)
+void MainWindow::setProperty(QString const &data, QPersistentModelIndex const &index, int const &role)
 {
 	// const_cast here is ok, since we need to set a shape in a correct model, and
 	// not going to use this index anymore.
@@ -923,7 +924,7 @@ void qReal::MainWindow::closeTab(int index)
 		}
 	}
 	if (deletingCodeTab != NULL) {
-		setShape(possibleCodeTab->toPlainText(), pIndex, role);
+		setProperty(possibleCodeTab->toPlainText(), pIndex, role);
 		mOpenedTabsWithEditor->remove(deletingCodeTab);
 	}
 	mUi->tabs->removeTab(index);
@@ -987,7 +988,7 @@ void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, Q
 	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
 	model->setData(index, propertyValue, role);
 	connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)),
-			this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
+			this, SLOT(setProperty(QString, QPersistentModelIndex const &, int const &)));
 
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
@@ -1685,7 +1686,7 @@ void MainWindow::showAndEditPropertyInTextEditor(QString const &title, QString c
 {
 	if (dynamic_cast<EditorView *>(getCurrentTab()) != NULL) {
 		if (!mOpenedTabsWithEditor->contains(getCurrentTab())) {
-			CodeArea * area = new CodeArea();
+			CodeArea * area = new CodeArea(NULL, sql);
 			area->document()->setPlainText(text);
 
 			area->show();

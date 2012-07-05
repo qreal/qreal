@@ -1,7 +1,6 @@
 #include "propertyEditorView.h"
 #include "../mainwindow/mainWindow.h"
 
-
 PropertyEditorView::PropertyEditorView(QWidget *parent)
 		: QWidget(parent), mChangingPropertyValue(false)
 		, mModel(NULL), mPropertyEditor(new QtTreePropertyBrowser(this))
@@ -94,7 +93,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
 		} else {
-			if (name == "shape" || name == "description") { // hack
+			if (name == "shape" || name == QString::fromUtf8("Код запроса")/*"RequestBody"*/) { // hack
 				isButton = true;
 			}
 		}
@@ -154,7 +153,7 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 	QString const name = property->propertyName();
 	if (name == "shape")
 		mMainWindow->openShapeEditor(actualIndex, role, propertyValue);
-	else if (name == "description")
+	else if (name == QString::fromUtf8("Код запроса")/*"RequestBody"*/)
 		mMainWindow->showAndEditPropertyInTextEditor(name, propertyValue, actualIndex, role);
 }
 

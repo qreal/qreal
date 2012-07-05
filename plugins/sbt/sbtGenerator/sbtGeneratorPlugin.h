@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtCore/QTranslator>
+
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
 #include "sbtGenerator.h"
@@ -28,5 +30,9 @@ private:
 
 	/// Generator main object, directs generation.
 	SbtGenerator mGenerator;
+
+	/// Thanslator object for this plugin, provides localisation
+	QTranslator mAppTranslator;
+
 };
 
