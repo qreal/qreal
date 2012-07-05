@@ -357,6 +357,11 @@ void NodeElement::moveChildren(QPointF const &moving)
 	moveChildren(moving.x(), moving.y());
 }
 
+void NodeElement::resize()
+{
+	resize(mContents, mPos);
+}
+
 void NodeElement::resize(QRectF newContents)
 {
 	resize(newContents, mPos);
@@ -370,7 +375,7 @@ void NodeElement::resize(QRectF newContents, QPointF newPos)
 	}
 
 	if (mElementImpl->minimizesToChildren()) {
-		newContents = QRectF(0, 0, 0, 0);
+		newContents = QRectF();
 	}
 
 	//childrenMoving - negative shift of children from the point (SIZE_OF_FORESTALLING, SIZE_OF_FORESTALLING)
@@ -446,10 +451,11 @@ void NodeElement::resize(QRectF newContents, QPointF newPos)
 
 	newContents.moveTo(newPos);
 	setGeometry(newContents);
+	storeGeometry();
 
 	NodeElement *parItem = dynamic_cast<NodeElement*>(parentItem());
 	if (parItem) {
-		parItem->resize(parItem->mContents); // recursive expansion of parents
+		parItem->resize(); // recursive expansion of parents
 	}
 }
 
@@ -523,6 +529,12 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
+	}
+
+	// Folded elements can't be resized.
+	// So drag state isn't important.
+	if (mIsFolded) {
+		mDragState = None;
 	}
 
 	scene()->invalidate();
@@ -645,6 +657,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 
 		resize(newContents, newPos);
+
 	}
 
 	if (isPort()) {
@@ -672,13 +685,13 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	 * Now it exists for experiments.
 	 *
 	if (mElementImpl->minimizesToChildren()) {
-		resize(mContents);
+		resize();
 	}
 	
 	mContents = mContents.normalized();
 	*/
-
-	storeGeometry();
+	
+	//storeGeometry();
 
 	setVisibleEmbeddedLinkers(true);
 
@@ -708,7 +721,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				mGraphicalAssistApi->stackBefore(id(), insertBefore->id());
 			}
 
-			newParent->resize(newParent->mContents);
+			newParent->resize();
 
 			while (newParent != NULL) {
 				newParent->mContents = newParent->mContents.normalized();
@@ -1259,7 +1272,7 @@ void NodeElement::changeFoldState()
 
 	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
 	if (parent) {
-		parent->resize(parent->mContents);
+		parent->resize();
 	}
 }
 
@@ -1345,7 +1358,7 @@ void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 		mPlaceholder->stackBefore(nextItem);
 	}
 
-	resize(QRectF());
+	resize();
 }
 
 Element* NodeElement::getPlaceholderNextElement()
@@ -1375,7 +1388,7 @@ void NodeElement::erasePlaceholder(bool redraw)
 		mPlaceholder = NULL;
 	}
 	if(redraw){
-		resize(QRectF());
+		resize();
 	}
 }
 
@@ -1511,7 +1524,7 @@ void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 	newContents = newContents.united(itemContents);
 	resize(mContents.unite(newContents));
  */
-	resize(mContents);
+	resize();
 }
 
 void NodeElement::updateByNewParent()
