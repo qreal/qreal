@@ -193,8 +193,6 @@ private slots:
 	void openShapeEditor();
 
 	void setDiagramCreateFlag();
-	void diagramInCreateListDeselect();
-	void diagramInCreateListSelected(int num);
 
 	void on_actionNew_Diagram_triggered();
 
@@ -204,6 +202,9 @@ private slots:
 	void setAutoSaveParameters();
 	void closeProject();
 	void closeProjectAndSave();
+
+	void saveDiagramNumber(int n);
+	void diagramCreationFromList();
 
 private:
 
@@ -296,7 +297,6 @@ private:
 	GesturesWidget *mGesturesWidget;
 
 	QVector<bool> mSaveListChecked;
-	bool mDiagramCreateFlag;
 
 	QStringList mDiagramsList;
 	QModelIndex mRootIndex;
@@ -323,6 +323,8 @@ private:
 	QMenu *mRecentProjectsMenu;
 	qReal::gui::PaletteTree *mPaletteTree;
 	FindManager *mFindHelper;
+
+	size_t mDiagramNumber;
 
 };
 
