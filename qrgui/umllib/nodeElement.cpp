@@ -403,10 +403,12 @@ void NodeElement::resize(QRectF newContents, QPointF newPos)
 				childrenMoving.setY(curItemPos.y() - mElementImpl->sizeOfForestalling());
 			}
 		}
+	}
 
-//		setPos(pos() + childrenMoving);
-		moveChildren(-childrenMoving);
+//	setPos(pos() + childrenMoving);
+	moveChildren(-childrenMoving);
 
+	if (!mIsFolded) {
 		foreach (QGraphicsItem* childItem, childItems()) {
 			QRectF curChildItemBoundingRect;
 			if(childItem == mPlaceholder) {
@@ -648,11 +650,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			newContents.setHeight(size);
 		}
 
-		if (!mIsFolded) {
-			resize(newContents, newPos);
-		} else {
-			resize(mFoldedContents, newPos);
-		}
+		resize(newContents, newPos);
 	}
 
 	if (isPort()) {
