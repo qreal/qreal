@@ -156,9 +156,12 @@ private:
 	QLineF newTransform(const StatLine& port) const;
 	QPointF newTransform(const StatPoint& port) const;
 
-	void resize(); // newContents = mContents
-	void resize(QRectF newContents); // newPos = mPos
 	void resize(QRectF newContents, QPointF newPos);
+	// newPos = mPos
+	void resize(QRectF newContents);
+	// newContents = mContents
+	void resize();
+	
 	void updateByChild(NodeElement* item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
 
