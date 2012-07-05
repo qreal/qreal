@@ -28,6 +28,8 @@
 
 #include  "paletteTree.h"
 
+#include "../dialogs/startDialog/startDialog.h"
+
 namespace Ui {
 class MainWindowUi;
 }
@@ -179,6 +181,7 @@ private slots:
 	void logicalModelExplorerClicked(const QModelIndex &index);
 
 	void openNewTab(const QModelIndex &index);
+	void suggestToCreateDiagram();
 
 	/// Called after current tab was changed somehow --- opened, closed, switched to other
 	/// @param newIndex Index of a new active tab, -1 if there is none
@@ -231,7 +234,6 @@ private:
 	void loadPlugins();
 
 	QListWidget* createSaveListWidget();
-	void suggestToCreateDiagram();
 
 	virtual void closeEvent(QCloseEvent *event);
 	void deleteFromExplorer(bool isLogicalModel);
@@ -323,6 +325,8 @@ private:
 	QMenu *mRecentProjectsMenu;
 	qReal::gui::PaletteTree *mPaletteTree;
 	FindManager *mFindHelper;
+
+	StartDialog *mStartDialog;
 
 };
 

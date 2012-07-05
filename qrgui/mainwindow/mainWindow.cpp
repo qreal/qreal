@@ -59,6 +59,7 @@ MainWindow::MainWindow()
 		, mUnsavedProjectIndicator(false)
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
+		, mStartDialog(new StartDialog(this))
 {
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
 
@@ -151,6 +152,7 @@ MainWindow::MainWindow()
 	if (!checkPluginsAndReopen(splash)) {
 		return;
 	}
+	mStartDialog->exec();
 
 	mGesturesWidget = new GesturesWidget();
 	initExplorers();
@@ -198,6 +200,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
+	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), this, SLOT(suggestToCreateDiagram()));
 	connect(mUi->actionCloseProject, SIGNAL(triggered()), this, SLOT(closeProjectAndSave()));
 	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
