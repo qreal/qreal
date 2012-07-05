@@ -1459,9 +1459,6 @@ QAction *MainWindow::actionDeleteFromDiagram() const
 void qReal::MainWindow::on_actionNew_Diagram_triggered()
 {
 	if (getCurrentTab() == NULL || getCurrentTab()->mvIface() == NULL) {
-		//EditorView *ew = new EditorView(this);
-		///QString t = ew->mvIface()->rootId().type().toString();
-		//createDiagram(ew->mvIface()->rootId().type().toString());
 		return;
 	}
 
