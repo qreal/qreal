@@ -57,7 +57,13 @@ void PaletteTree::addItemType(const Id &id, const QString &name, const QString &
 {
 	QTreeWidgetItem *item = new QTreeWidgetItem;
 	DraggableElement *element = new DraggableElement(id, name, description, icon, mIconsView);
-	parent ? parent->addChild(item) : tree->addTopLevelItem(item);
+
+	if (parent != NULL) {
+		parent->addChild(item);
+	} else {
+		tree->addTopLevelItem(item);
+	}
+
 	tree->setItemWidget(item, 0, element);
 }
 
