@@ -60,7 +60,8 @@ public:
 	/// Appends all childrens to parent
 	void appendElements(QDomNode parent, QDomNodeList children);
 	
-	QStringList collectAllGraphicTypesInMetamodel(QDomDocument const &metamodel) const;
+	QStringList collectAllGraphicTypesInMetamodel(QDomDocument const &metamodel,
+			bool isDisplayedName) const;
 	
 	/// Appends types to specified child of element for creating container or smth
 	void appendTypesToElement(

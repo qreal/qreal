@@ -58,6 +58,9 @@ private:
 	void insertSpecialSemanticsElements(QDomDocument metamodel,
 			QString const &diagramName);
 	
+	/// Groups elements in semantics editor
+	void insertPaletteGroups(QDomDocument metamodel, QString const &diagramDisplayedName);
+	
 	/// Delete directory (which was used for generate and compile semantics editor)
 	void removeDirectory(QString dirName);
 	

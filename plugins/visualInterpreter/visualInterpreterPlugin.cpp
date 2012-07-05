@@ -91,6 +91,7 @@ void VisualInterpreterPlugin::generateSemanticsMetamodel() {
 	
 	insertSemanticsStatesEnum(metamodel);
 	insertSematicsStateProperty(metamodel);
+	insertPaletteGroups(metamodel, displayedName);
 	insertSpecialSemanticsElements(metamodel, diagramName);
 	
 	QString metamodelName = diagramName + "SemanticsMetamodel";
@@ -277,7 +278,8 @@ void VisualInterpreterPlugin::insertSpecialSemanticsElements(
 	QDomDocument elements = mMetamodelGeneratorSupport->loadElementsFromString(elementsXml);
 	QDomElement container = elements.elementsByTagName("container").at(0).toElement();
 
-	QStringList elementNames = mMetamodelGeneratorSupport->collectAllGraphicTypesInMetamodel(metamodel);
+	QStringList elementNames =
+			mMetamodelGeneratorSupport->collectAllGraphicTypesInMetamodel(metamodel, false);
 	
 	elementNames << "Wildcard" << "ControlFlowMark"
 			<< "Replacement" << "ControlFlowLocation";
@@ -289,6 +291,43 @@ void VisualInterpreterPlugin::insertSpecialSemanticsElements(
 	
 	mMetamodelGeneratorSupport->insertElementsInDiagramSublevel(
 			metamodel, "graphicTypes", semanticsElems);
+}
+
+void VisualInterpreterPlugin::insertPaletteGroups(QDomDocument metamodel,
+		QString const &diagramDisplayedName)
+{
+	QString const elementsXml = 
+	"<palette>"
+		"<group name=\"Semantics Elements\">"
+			"<element name=\"Semantics Rule\"/>"
+			"<element name=\"Wildcard\"/>"
+			"<element name=\"Control Flow Mark\"/>"
+			"<element name=\"Replacement\"/>"
+			"<element name=\"Control Flow Location\"/>"
+		"</group>"
+	"</palette>";
+	
+	QDomDocument elements = mMetamodelGeneratorSupport->loadElementsFromString(elementsXml);
+	QDomElement groups = elements.elementsByTagName("palette").at(0).toElement();
+
+	QStringList elementNames =
+			mMetamodelGeneratorSupport->collectAllGraphicTypesInMetamodel(metamodel, true);
+	
+	QDomElement editorGroup = metamodel.createElement("group");
+	editorGroup.setAttribute("name", diagramDisplayedName);
+	
+	foreach (QString const &elemName, elementNames) {
+		QDomElement el = metamodel.createElement("element");
+		el.setAttribute("name", elemName);
+		editorGroup.appendChild(el);
+	}
+	elements.firstChild().appendChild(editorGroup);
+	
+	QDomNodeList palette = elements.childNodes();
+	
+	mMetamodelGeneratorSupport->insertElementsInDiagramSublevel(
+			metamodel, "diagram", palette);
+	
 }
 
 void VisualInterpreterPlugin::removeDirectory(QString dirName) {

@@ -157,16 +157,19 @@ QDomDocument MetamodelGeneratorSupport::loadElementsFromString(QString const &el
 	return elements;
 }
 
-QStringList MetamodelGeneratorSupport::collectAllGraphicTypesInMetamodel(QDomDocument const &metamodel) const
+QStringList MetamodelGeneratorSupport::collectAllGraphicTypesInMetamodel(QDomDocument const &metamodel,
+		bool isDisplayedName) const
 {
 	QDomElement diagram = diagramElement(metamodel);
 	QDomNodeList graphicTypes = diagram.elementsByTagName("graphicTypes");
+	
+	QString type = isDisplayedName ? "displayedName" : "name";
 
 	QStringList result;
 	if (graphicTypes.length() > 0) {
 		QDomNodeList children = graphicTypes.at(0).childNodes();
 		for (unsigned i = 0; i < children.length(); i++) {
-			result.push_back(children.at(i).toElement().attribute("name"));
+			result.push_back(children.at(i).toElement().attribute(type));
 		}
 	}
 
