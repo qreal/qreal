@@ -130,13 +130,14 @@ void PropertyEditorView::dataChanged(const QModelIndex &, const QModelIndex &)
 		QModelIndex const &valueIndex = mModel->index(i, 1);
 		QtVariantProperty *property = dynamic_cast<QtVariantProperty*>(mPropertyEditor->properties().at(i));
 		QVariant value = valueIndex.data();
+		QString toolTip = mModel->data(mModel->index(i, 0), Qt::ToolTipRole).toString();
 		if (property) {
 			if (property->propertyType() == QtVariantPropertyManager::enumTypeId()) {
 				value = enumPropertyIndexOf(valueIndex, value.toString());
 			}
 
 			setPropertyValue(property, value);
-			property->setToolTip(value.toString());
+			property->setToolTip(toolTip);
 		}
 	}
 }
