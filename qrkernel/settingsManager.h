@@ -51,6 +51,7 @@ private:
 	void initDefaultValues();
 
 	QMap<QString, QVariant> mDefaultValues;
+
 	/// Singleton sole instance.
 	static SettingsManager* mInstance;
 
