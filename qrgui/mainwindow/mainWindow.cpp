@@ -65,7 +65,7 @@ MainWindow::MainWindow()
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
 	timeMeasurer.doNothing(); //to avoid the unused variables problem
 
-	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
+	bool showSplash = SettingsManager::value("Splashscreen").toBool();
 
 	QSplashScreen* splash =
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
@@ -124,7 +124,7 @@ MainWindow::MainWindow()
 			, this, mFindReplaceDialog);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
-	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
+	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
 
 	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 
@@ -140,10 +140,10 @@ MainWindow::MainWindow()
 	progress->setValue(70);
 	initWindowTitle();
 
-	if (!SettingsManager::value("maximized", true).toBool()) {
+	if (!SettingsManager::value("maximized").toBool()) {
 		showNormal();
-		resize(SettingsManager::value("size", QSize(1024, 800)).toSize());
-		move(SettingsManager::value("pos", QPoint(0, 0)).toPoint());
+		resize(SettingsManager::value("size").toSize());
+		move(SettingsManager::value("pos").toPoint());
 	}
 	// =========== Step 6: Save loaded, models initialized ===========
 
@@ -169,7 +169,7 @@ MainWindow::MainWindow()
 		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
 	}
 
-	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
+	if (SettingsManager::value("diagramCreateSuggestion").toBool())
 		suggestToCreateDiagram();
 
 	mDocksVisibility.clear();
@@ -184,10 +184,10 @@ MainWindow::MainWindow()
 
 void MainWindow::connectActions()
 {
-	mUi->actionShow_grid->setChecked(SettingsManager::value("ShowGrid", true).toBool());
-	mUi->actionShow_alignment->setChecked(SettingsManager::value("ShowAlignment", true).toBool());
-	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid", true).toBool());
-	mUi->actionSwitch_on_alignment->setChecked(SettingsManager::value("ActivateAlignment", true).toBool());
+	mUi->actionShow_grid->setChecked(SettingsManager::value("ShowGrid").toBool());
+	mUi->actionShow_alignment->setChecked(SettingsManager::value("ShowAlignment").toBool());
+	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid").toBool());
+	mUi->actionSwitch_on_alignment->setChecked(SettingsManager::value("ActivateAlignment").toBool());
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
 	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
@@ -309,8 +309,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::loadPlugins()
 {
-	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation", 0).toBool()
-				, SettingsManager::value("PaletteIconsInARowCount", 3).toInt()
+	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
+				, SettingsManager::value("PaletteIconsInARowCount").toInt()
 				, mEditorManager);
 }
 
@@ -1107,7 +1107,7 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 	}
 
 	// changing of palette active editor
-	if (SettingsManager::value("PaletteTabSwitching", true).toBool()) {
+	if (SettingsManager::value("PaletteTabSwitching").toBool()) {
 		int i = 0;
 		foreach (const QString &name, mUi->paletteTree->editorsNames()) {
 			Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
@@ -1517,7 +1517,7 @@ void MainWindow::updatePaletteIcons()
 void MainWindow::applySettings()
 {
 	getCurrentTab()->invalidateScene();
-	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
+	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
 }
 
 void MainWindow::hideDockWidget(QDockWidget *dockWidget, const QString &name)
@@ -1566,7 +1566,7 @@ void MainWindow::createProject()
 		}
 	}
 	open("");
-	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
+	if (SettingsManager::value("diagramCreateSuggestion").toBool())
 		suggestToCreateDiagram();
 
 }
@@ -1681,12 +1681,12 @@ QWidget *MainWindow::windowWidget()
 
 void MainWindow::setAutoSaveParameters()
 {
-	if (!SettingsManager::value("autoSave", true).toBool()) {
+	if (!SettingsManager::value("autoSave").toBool()) {
 		mAutoSaveTimer.stop();
 		return;
 	}
 
-	mAutoSaveTimer.setInterval(SettingsManager::value("autoSaveInterval", 60 * 10).toInt() * 1000); // in ms
+	mAutoSaveTimer.setInterval(SettingsManager::value("autoSaveInterval").toInt() * 1000); // in ms
 	mAutoSaveTimer.start();
 }
 
@@ -1743,10 +1743,10 @@ void MainWindow::initDocks()
 void MainWindow::initGridProperties()
 {
 	mUi->actionSwitch_on_grid->blockSignals(false);
-	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid", true).toBool());
+	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid").toBool());
 
 	mUi->actionShow_grid->blockSignals(false);
-	mUi->actionShow_grid->setChecked(SettingsManager::value("ShowGrid", true).toBool());
+	mUi->actionShow_grid->setChecked(SettingsManager::value("ShowGrid").toBool());
 }
 
 void MainWindow::initWindowTitle()
@@ -1893,8 +1893,8 @@ void MainWindow::closeProject()
 
 void MainWindow::changePaletteRepresentation()
 {
-	if (SettingsManager::value("PaletteRepresentation", 0).toBool() != mUi->paletteTree->iconsView()
-			|| SettingsManager::value("PaletteIconsInARowCount", 3).toInt() != mUi->paletteTree->itemsCountInARow())
+	if (SettingsManager::value("PaletteRepresentation").toBool() != mUi->paletteTree->iconsView()
+			|| SettingsManager::value("PaletteIconsInARowCount").toInt() != mUi->paletteTree->itemsCountInARow())
 	{
 		loadPlugins();
 	}
