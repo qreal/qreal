@@ -357,6 +357,11 @@ void NodeElement::moveChildren(QPointF const &moving)
 	moveChildren(moving.x(), moving.y());
 }
 
+void NodeElement::resize()
+{
+	resize(mContents, mPos);
+}
+
 void NodeElement::resize(QRectF newContents)
 {
 	resize(newContents, mPos);
@@ -370,7 +375,7 @@ void NodeElement::resize(QRectF newContents, QPointF newPos)
 	}
 
 	if (mElementImpl->minimizesToChildren()) {
-		newContents = QRectF(0, 0, 0, 0);
+		newContents = QRectF();
 	}
 
 	//childrenMoving - negative shift of children from the point (SIZE_OF_FORESTALLING, SIZE_OF_FORESTALLING)
@@ -1345,7 +1350,7 @@ void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 		mPlaceholder->stackBefore(nextItem);
 	}
 
-	resize(QRectF());
+	resize();
 }
 
 Element* NodeElement::getPlaceholderNextElement()
@@ -1375,7 +1380,7 @@ void NodeElement::erasePlaceholder(bool redraw)
 		mPlaceholder = NULL;
 	}
 	if(redraw){
-		resize(QRectF());
+		resize();
 	}
 }
 
