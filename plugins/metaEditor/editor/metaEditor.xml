@@ -530,30 +530,30 @@
 			</node>
 		</graphicTypes>
 				<palette>
-			<group name="DSL Elements">
+			<group name="DSL Elements" description="Элементы метаязыка для описания узлов и связей создаваемого языка">
 				<element name="Node"/>
 				<element name="Edge"/>
 				<element name="Enum"/>
 				<element name="Import"/>
 			</group>
-			<group name="Root Diagrams">
+			<group name="Root Diagrams" description="Корневые элементы">
 				<element name="Metamodel Diagram"/>
 				<element name="Meta Editor Diagram"/>
 				<element name="Package Diagram"/>
 			</group>
-			<group name="Node Properties">
+			<group name="Node Properties" description="Элементы метаязыка для указания свойств узлов создаваемого языка">
 				<element name="Property"/>
 				<element name="Properties as Container"/>
 				<element name="Possible Edge"/>
 			</group>
-			<group name="Enum Properties">
+			<group name="Enum Properties" description="Элементы метаязыка для указания свойств перечисляемого типа создаваемого языка">
 				<element name="Value"/>
 			</group>
-			<group name="Edge Properties">
+			<group name="Edge Properties" description="Элементы метаязыка для указания свойств связей создаваемого языка">
 				<element name="Property"/>
 				<element name="Assotiation"/>
 			</group>
-			<group name="Relationship">
+			<group name="Relationship" description="Связи метаязыка для описания вызимоотношений между элементами создаваемого языка">
 				<element name="Inheritance"/>
 				<element name="Container"/>
 			</group>
