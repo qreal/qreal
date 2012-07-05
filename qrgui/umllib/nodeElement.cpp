@@ -531,6 +531,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
+	// Folded elements can't be resized.
+	// So drag state isn't important.
 	if (mIsFolded) {
 		mDragState = None;
 	}
