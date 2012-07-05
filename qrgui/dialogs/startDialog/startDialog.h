@@ -2,16 +2,24 @@
 #include <QtGui/QDialog>
 #include <QtGui/QTabWidget>
 
+namespace qReal {
+
 class MainWindow;
+
+}
+
+namespace qReal {
 
 class StartDialog : public QDialog
 {
 	Q_OBJECT
 	
 public:
-	explicit StartDialog(QWidget *parent = 0);
+	explicit StartDialog(MainWindow *mainWindow, QWidget *parent = 0);
 
 private:
-	QTabWidget *mTabWidget;
 	MainWindow *mMainWindow;
+	QTabWidget *mTabWidget;
 };
+
+}

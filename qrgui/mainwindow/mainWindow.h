@@ -328,6 +328,8 @@ private:
 
 	StartDialog *mStartDialog;
 
+friend class StartDialog;
+friend class SuggestToCreateDiagramWidget;
 };
 
 }

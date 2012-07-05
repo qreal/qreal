@@ -5,41 +5,36 @@
 #include <QtCore/QDebug>
 #include "suggestToCreateDiagramWidget.h"
 #include "../../../qrkernel/ids.h"
+#include "../mainwindow/mainWindow.h"
 
-SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(QWidget *parent)
+qReal::SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *mainWindow, QDialog *parent)
 	: QWidget(parent)
+	, mMainWindow(mainWindow)
+	, mDiagramsListWidget(new QListWidget(this))
 {
-
-	QVBoxLayout vLayout;
-	QHBoxLayout hLayout;
-	setLayout(&vLayout);
-	setMinimumSize(320, 240);
-	setMaximumSize(320, 240);
-
-	QListWidget diagramsListWidget(this);
 	int i = 0;
-//	foreach(Id editor, manager()->editors()) {
-//		foreach(Id diagram, manager()->diagrams(Id::loadFromString("qrm:/" + editor.editor()))) {
-//			QString const diagramName = mEditorManager.editorInterface(editor.editor())->diagramName(diagram.diagram());
-//			QString const diagramNodeName = mEditorManager.editorInterface(editor.editor())->diagramNodeName(diagram.diagram());
-//			if (diagramNodeName.isEmpty()) {
-//				continue;
-//			}
-//			mDiagramsList.append("qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
-//			diagramsListWidget.addItem(diagramName);
-//			diagramsListWidget.addItem(diagramName);
-//			i++;
-//		}
-//	}
+	foreach(Id editor, mMainWindow->manager()->editors()) {
+		foreach(Id diagram, mMainWindow->manager()->diagrams(Id::loadFromString("qrm:/" + editor.editor()))) {
+			QString const diagramName = mMainWindow->mEditorManager.editorInterface(editor.editor())->diagramName(diagram.diagram());
+			QString const diagramNodeName = mMainWindow->mEditorManager.editorInterface(editor.editor())->diagramNodeName(diagram.diagram());
+			if (diagramNodeName.isEmpty()) {
+				continue;
+			}
+			mMainWindow->mDiagramsList.append("qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
+			mDiagramsListWidget->addItem(diagramName);
+			i++;
+		}
+	}
+	mDiagramsListWidget->setCurrentRow(0);
 
-	QPushButton cancelButton;
-	cancelButton.setText(tr("&Cancel"));
-	QPushButton okButton;
-	okButton.setText(tr("&OK"));
+//	QPushButton cancelButton;
+//	cancelButton.setText(tr("&Cancel"));
+//	QPushButton okButton;
+//	okButton.setText(tr("&OK"));
 
-//	QObject::connect(&diagramsListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(diagramInCreateListSelected(int)));
-//	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(setDiagramCreateFlag()));
-//	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), &widget, SLOT(close()));
+	QObject::connect(mDiagramsListWidget, SIGNAL(currentRowChanged(int)), mMainWindow, SLOT(diagramInCreateListSelected(int)));
+	QObject::connect(mDiagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), mMainWindow, SLOT(setDiagramCreateFlag()));
+	QObject::connect(mDiagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), parent, SLOT(close()));
 
 //	QObject::connect(&widget, SIGNAL(destroyed()), this, SLOT(diagramInCreateListDeselect()));
 //	QObject::connect(&cancelButton, SIGNAL(clicked()), &widget, SLOT(close()));
@@ -47,15 +42,18 @@ SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(QWidget *parent)
 //	QObject::connect(&okButton, SIGNAL(clicked()), this, SLOT(setDiagramCreateFlag()));
 //	QObject::connect(&okButton, SIGNAL(clicked()), &widget, SLOT(close()));
 
-	diagramsListWidget.setCurrentRow(0);
-//	mDiagramCreateFlag = false;
+	QVBoxLayout *vLayout = new QVBoxLayout;
+//	QHBoxLayout hLayout;
 
-	QLabel label(tr("Choose new diagram"));
-	vLayout.addWidget(&label);
-	vLayout.addWidget(&diagramsListWidget);
+//	QLabel label(tr("Choose new diagram"));
+//	vLayout.addWidget(&label);
+	vLayout->addWidget(mDiagramsListWidget);
 
-	hLayout.addWidget(&okButton);
-	hLayout.addWidget(&cancelButton);
+//	hLayout.addWidget(&okButton);
+//	hLayout.addWidget(&cancelButton);
 
-	vLayout.addLayout(&hLayout);
+//	vLayout.addLayout(&hLayout);
+	setLayout(vLayout);
+
+	mMainWindow->mDiagramCreateFlag = false;
 }
