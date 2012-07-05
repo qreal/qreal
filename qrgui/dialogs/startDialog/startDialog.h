@@ -2,6 +2,8 @@
 #include <QtGui/QDialog>
 #include <QtGui/QTabWidget>
 
+class MainWindow;
+
 class StartDialog : public QDialog
 {
 	Q_OBJECT
@@ -11,4 +13,5 @@ public:
 
 private:
 	QTabWidget *mTabWidget;
+	MainWindow *mMainWindow;
 };
