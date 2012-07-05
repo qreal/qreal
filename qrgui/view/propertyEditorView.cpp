@@ -79,6 +79,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 		QModelIndex const &valueCell = mModel->index(i, 1);
 		QString name = mModel->data(mModel->index(i, 0)).toString();
 		QVariant const &value = mModel->data(valueCell);
+		QString toolTip = mModel->data(mModel->index(i, 0), Qt::ToolTipRole).toString();
 
 		int type = QVariant::String;
 		QString typeName = mModel->typeName(valueCell).toLower();
@@ -105,7 +106,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			QtVariantProperty *vItem = mVariantManager->addProperty(type, name);
 
 			vItem->setValue(value);
-			vItem->setToolTip(value.toString());
+			vItem->setToolTip(toolTip);
 			if (!values.isEmpty()) {
 				vItem->setAttribute("enumNames", values);
 				QVariant idx(enumPropertyIndexOf(valueCell, value.toString()));

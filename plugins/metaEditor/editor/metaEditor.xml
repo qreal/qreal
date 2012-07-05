@@ -74,8 +74,10 @@
 					<properties>
 						<property type="string" name="displayedName"/>
 						<property type="string" name="include"/>
-						<property type="string" name="name of the directory" displayedName="Directory to generated code"/>
-						<property type="string" name="relative path to QReal Source Files"/>
+						<property type="string" name="name of the directory" displayedName="directory to generated code"/>
+						<property type="string" name="relative path to QReal Source Files">
+						<description>path to QReal Source Files relatively to directory to generated code</description>
+						</property>
 					</properties>
 					<containers/>
 					<connections>

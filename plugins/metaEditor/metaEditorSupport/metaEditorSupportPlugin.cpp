@@ -46,16 +46,18 @@ QList<ActionInfo> MetaEditorSupportPlugin::actions()
 	ActionInfo generateEditorForQrxcActionInfo(&mGenerateEditorForQrxcAction, "generators", "tools");
 	connect(&mGenerateEditorForQrxcAction, SIGNAL(triggered()), this, SLOT(generateEditorForQrxc()));
 
-	mGenerateEditorWithQrmcAction.setText(tr("Generate editor (qrmc)"));
+	/*mGenerateEditorWithQrmcAction.setText(tr("Generate editor (qrmc)"));
 	ActionInfo generateEditorWithQrmcActionInfo(&mGenerateEditorWithQrmcAction, "generators", "tools");
 	connect(&mGenerateEditorWithQrmcAction, SIGNAL(triggered()), this, SLOT(generateEditorWithQrmc()));
 
 	mParseEditorXmlAction.setText(tr("Parse editor xml"));
 	ActionInfo parseEditorXmlActionInfo(&mParseEditorXmlAction, "generators", "tools");
 	connect(&mParseEditorXmlAction, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
+	*/
 
-	return QList<ActionInfo>() << generateEditorForQrxcActionInfo << generateEditorWithQrmcActionInfo
-			<< parseEditorXmlActionInfo;
+	return QList<ActionInfo>() << generateEditorForQrxcActionInfo;
+	//<< generateEditorWithQrmcActionInfo
+	//<< parseEditorXmlActionInfo;
 }
 
 QPair<QString, PreferencesPage *> MetaEditorSupportPlugin::preferencesPage()
