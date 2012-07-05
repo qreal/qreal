@@ -531,6 +531,10 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
+	if (mIsFolded) {
+		mDragState = None;
+	}
+
 	scene()->invalidate();
 	if (mDragState == None) {
 		if (!isPort() && (flags() & ItemIsMovable)) {
@@ -651,6 +655,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 
 		resize(newContents, newPos);
+
 	}
 
 	if (isPort()) {
