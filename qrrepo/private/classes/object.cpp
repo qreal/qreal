@@ -165,7 +165,7 @@ void Object::removeTemporaryRemovedLinks()
 	temporaryRemovedLinksAt(QString());
 }
 
-bool Object::hasProperty(const QString &name, bool sensitivity) const
+bool Object::hasProperty(const QString &name, bool sensitivity, bool regExpression) const
 {
 	QStringList properties = mProperties.keys();
 
@@ -176,6 +176,8 @@ bool Object::hasProperty(const QString &name, bool sensitivity) const
 	} else {
 		caseSensitivity = Qt::CaseInsensitive;
 	}
+
+    Qt::QRegExp regExp = new QRegExp();
 
 	return properties.contains(name, caseSensitivity);
 }

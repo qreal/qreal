@@ -64,12 +64,12 @@ IdList Client::findElementsByName(const QString &name, bool sensitivity,
 	return result;
 }
 
-qReal::IdList Client::elementsByProperty(QString const &property, bool sensitivity) const
+qReal::IdList Client::elementsByProperty(QString const &property, bool sensitivity, bool regExpression) const
 {
 	IdList result;
 
 	foreach (Object *element, mObjects.values())
-		if ((element->hasProperty(property, sensitivity)) && (!isLogicalId(mObjects.key(element))))
+        if ((element->hasProperty(property, sensitivity, regExpression)) && (!isLogicalId(mObjects.key(element))))
 				result.append(mObjects.key(element));
 
 	return result;
