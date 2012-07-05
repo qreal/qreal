@@ -9,6 +9,8 @@
 
 namespace qReal {
 
+/// Refactoring applier performs different operations on logical and graphical models
+/// according to refactoring
 class RefactoringApplier : public QObject
 {
 	Q_OBJECT

@@ -9,6 +9,8 @@ namespace Ui {
 
 namespace qReal {
 
+/// Window to work with available refactorings. Allows you to choose refactoring,
+/// find all its occurrences and apply it
 class RefactoringWindow: public QDialog
 {
 	Q_OBJECT

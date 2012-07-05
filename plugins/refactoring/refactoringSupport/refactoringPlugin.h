@@ -19,6 +19,10 @@
 namespace qReal {
 namespace refactoring {
 
+/// Refactoring plugin allows you to automatically arrange elements,
+/// create refactorings editor based on specified metamodel or use default, 
+/// save created refactorings and apply 3 predefined refactorings
+/// (change element names, direction of edges, cut the selected block of elements in the procedure)
 class RefactoringPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT

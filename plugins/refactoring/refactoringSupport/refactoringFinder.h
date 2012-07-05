@@ -8,6 +8,8 @@
 
 namespace qReal {
 
+/// Refactoring finder correctly looks for all refactoring occurrences and
+/// can highlight match
 class RefactoringFinder : public BaseGraphTransformationUnit
 {
 	Q_OBJECT
