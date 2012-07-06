@@ -30,7 +30,7 @@ public:
 	/// Tells if we should show trace connections menu or not
 	virtual bool showConnectionRelatedMenus() const
 	{
-		return false;
+		return true;
 	}
 };
 
