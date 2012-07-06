@@ -30,8 +30,8 @@ public:
 
 	void clearScene();
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos);
-	virtual qReal::Id createElement(const QString &, QPointF const &scenePos);
-	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos);
+	virtual qReal::Id createElement(const QString &, QPointF const &scenePos, bool searchForParents = true);
+	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos, bool searchForParents = true);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
@@ -140,7 +140,7 @@ private:
 
 
 	Element* mLastCreatedWithEdge;
-	NodeElement *mCopiedNode;
+	QList<NodeElement*> mCopiedNodes;
 
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)

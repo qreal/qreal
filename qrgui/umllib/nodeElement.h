@@ -30,7 +30,7 @@ public:
 	NodeElement(ElementImpl *impl);
 	virtual ~NodeElement();
 
-	NodeElement *clone(bool toCursorPos = false);
+	NodeElement *clone(bool toCursorPos = false, bool searchForParents = true);
 	void copyChildren(NodeElement *source);
 	void copyEdges(NodeElement *source);
 	void copyProperties(NodeElement *source);
@@ -113,7 +113,7 @@ public slots:
 	virtual void singleSelectionState(const bool singleSelected);
 	virtual void selectionState(const bool selected);
 	void switchGrid(bool isChecked);
-	void copyAndPlaceOnDiagram();
+	void copyAndPlaceOnDiagram(QPointF const &offset);
 
 private:
 	enum DragState {

@@ -78,12 +78,12 @@ NodeElement::~NodeElement()
 	delete mUmlPortHandler;
 }
 
-NodeElement *NodeElement::clone(bool toCursorPos)
+NodeElement *NodeElement::clone(bool toCursorPos, bool searchForParents)
 {
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
 
 	qReal::Id typeId = id().type();
-	qReal::Id resultId = evscene->createElement(typeId.toString(), QPointF());
+	qReal::Id resultId = evscene->createElement(typeId.toString(), QPointF(), searchForParents);
 
 	NodeElement *result = dynamic_cast<NodeElement*>(evscene->getElem(resultId));
 
@@ -101,9 +101,11 @@ NodeElement *NodeElement::clone(bool toCursorPos)
 	return result;
 }
 
-void NodeElement::copyAndPlaceOnDiagram()
+void NodeElement::copyAndPlaceOnDiagram(QPointF const &offset)
 {
-	clone(true);
+	NodeElement* node = clone(false, false);
+	QPointF pos = node->scenePos();
+	node->setPos(pos.x() + offset.x(), pos.y() + offset.y());
 }
 
 void NodeElement::copyChildren(NodeElement *source)

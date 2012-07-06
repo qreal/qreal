@@ -16,7 +16,6 @@ using namespace qReal;
 EditorViewScene::EditorViewScene(QObject *parent)
 		: QGraphicsScene(parent)
 		, mLastCreatedWithEdge(NULL)
-		, mCopiedNode(NULL)
 		, mRightButtonPressed(false)
 		, mHighlightNode(NULL)
 		, mWindow(NULL)
@@ -372,7 +371,7 @@ qReal::Id EditorViewScene::createElement(const QString &str)
 	return result;
 }
 
-qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scenePos)
+qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scenePos, bool searchForParents)
 {
 	Id typeId = Id::loadFromString(str);
 	Id objectId(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
@@ -393,13 +392,13 @@ qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scen
 	stream << isFromLogicalModel;
 
 	mimeData->setData(mimeType, data);
-	createElement(mimeData, scenePos);
+	createElement(mimeData, scenePos, searchForParents);
 	delete mimeData;
 
 	return objectId;
 }
 
-void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &scenePos)
+void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &scenePos, bool searchForParents)
 {
 	QByteArray itemData = mimeData->data("application/x-real-uml-data");
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
@@ -416,12 +415,14 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	in_stream >> isFromLogicalModel;
 
 	Element *newParent = NULL;
+	Element *e = NULL;
 
 	// TODO: make it simpler
 	Id id = Id::loadFromString(uuid);
 
+	if (searchForParents) {
 	// if element is node then we should look for parent for him
-	Element *e = mWindow->manager()->graphicalObject(id);
+	e = mWindow->manager()->graphicalObject(id);
 	if (dynamic_cast<NodeElement*>(e)) { // check if e is node
 		foreach (QGraphicsItem *item, items(scenePos)) {
 			NodeElement *el = dynamic_cast<NodeElement*>(item);
@@ -443,6 +444,8 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 		//temporary solution for chaotic changes of coordinates of created elements with edge menu
 		if (dynamic_cast<EdgeElement*>(newParent))
 			newParent = NULL;
+	}
+
 	}
 
 	QPointF const position = !newParent ? scenePos : newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
@@ -499,15 +502,35 @@ void EditorViewScene::insertNodeIntoEdge(qReal::Id const &insertedNodeId, qReal:
 
 void EditorViewScene::copy()
 {
-	mCopiedNode = dynamic_cast<NodeElement*>(selectedItems()[0]);
+	mCopiedNodes.clear();
+	foreach (QGraphicsItem* item, selectedItems()) {
+		NodeElement* node = dynamic_cast<NodeElement*>(item);
+		if (node) {
+			mCopiedNodes.append(node);
+		}
+	}
+	foreach (NodeElement* node, mCopiedNodes) {
+		QList<QGraphicsItem*> children = node->childItems();
+		foreach (QGraphicsItem* child, children) {
+			NodeElement* childNode = dynamic_cast<NodeElement*>(child);
+			if (childNode) {
+				mCopiedNodes.removeAll(childNode);
+			}
+		}
+	}
 }
 
 void EditorViewScene::paste()
 {
-	if (mCopiedNode)
+/*	if (mCopiedNode)
 		mCopiedNode->copyAndPlaceOnDiagram();
 	else
 		qDebug() << "paste attempt on NULL";
+*/
+	QPointF offset = getMousePos() - mCopiedNodes[0]->scenePos();
+	foreach (NodeElement* node, mCopiedNodes) {
+		node->copyAndPlaceOnDiagram(offset);
+	}
 }
 
 Element *EditorViewScene::getLastCreated()
