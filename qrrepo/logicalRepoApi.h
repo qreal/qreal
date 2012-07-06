@@ -26,7 +26,8 @@ public:
 	virtual qReal::IdList logicalElements(qReal::Id const &type) const = 0;
 	virtual bool isLogicalElement(qReal::Id const &id) const = 0;
 
-	virtual qReal::IdList elementsByType(QString const &type, bool sensitivity = false) const = 0;
+    virtual qReal::IdList elementsByType(QString const &type, bool sensitivity = false,
+                                         bool regExpression = false) const = 0;
 	virtual int elementsCount() const = 0;
 };
 }
