@@ -32,7 +32,7 @@ qReal::CheckStatus ConstraintsRobotsDiagram_1::checkRobotsDiagramNode_1(qReal::I
 		bool nodeRes_1 = mainChildrenRes_2 && countChildrenRes_1;
 	res = nodeRes_1;
 
-	return qReal::CheckStatus(res, "fail_robotDiagram", qReal::CheckStatus::critical);
+	return qReal::CheckStatus(res, "Expected no more than one InitialBlock on the RobotsDiagram", qReal::CheckStatus::critical);
 }
 qReal::CheckStatus ConstraintsRobotsDiagram_1::checkEnginesStop_1(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi)
 {
@@ -54,7 +54,7 @@ qReal::CheckStatus ConstraintsRobotsDiagram_1::checkEnginesStop_1(qReal::Id cons
 		bool nodeRes_1 = mainIncomingNodesRes_2;
 	res = nodeRes_1;
 
-	return qReal::CheckStatus(res, "fail_stopRobots", qReal::CheckStatus::critical);
+	return qReal::CheckStatus(res, "Before EnginesStop you can't have EnginesBackward or EnginesForward", qReal::CheckStatus::critical);
 }
 
 
