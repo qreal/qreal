@@ -121,7 +121,7 @@ void EditorGenerator::generateEditor(Id const &metamodelId, QString const &pathT
 
 void EditorGenerator::copyImages(QString const &pathToFile)
 {
-	QString const workingDirName = SettingsManager::value("workingDir", "./save").toString();
+	QString const workingDirName = SettingsManager::value("workingDir").toString();
 	QDir sourceDir(workingDirName);
 	sourceDir.cd("images");
 	if (!sourceDir.exists()) {
@@ -470,7 +470,8 @@ void EditorGenerator::setAction(QDomElement &parent, const Id &id)
 	setStatusElement(parent, id, "action", "isAction");
 }
 
-void EditorGenerator::setStatusElement(QDomElement &parent, const Id &id, const QString &tagName, const QString &propertyName)
+void EditorGenerator::setStatusElement(
+		QDomElement &parent, Id const &id, QString const &tagName, QString const &propertyName)
 {
 	if (mApi.stringProperty(id, propertyName) == "true") {
 		QDomElement statusElement = mDocument.createElement(tagName);
@@ -478,7 +479,7 @@ void EditorGenerator::setStatusElement(QDomElement &parent, const Id &id, const 
 	}
 }
 
-void EditorGenerator::setContainer(QDomElement &parent, const Id &id)
+void EditorGenerator::setContainer(QDomElement &parent, Id const &id)
 {
 	QDomElement container = mDocument.createElement("container");
 	parent.appendChild(container);
@@ -540,7 +541,8 @@ void EditorGenerator::setBoolValuesForContainer(QString const &propertyName, QDo
 	}
 }
 
-void EditorGenerator::ensureCorrectness(Id const &id, QDomElement element, QString const &tagName, QString const &value)
+void EditorGenerator::ensureCorrectness(
+		Id const &id, QDomElement element, QString const &tagName, QString const &value)
 {
 	QString const tag = tagName;
 	if (value.isEmpty() && tag == "displayedName") {

@@ -64,7 +64,8 @@ void VisualDebugger::setDebugColor(QString const &color)
 	mDebugColor = QColor(color);
 }
 
-void VisualDebugger::setCurrentDiagram() {
+void VisualDebugger::setCurrentDiagram()
+{
 	Id const currentDiagram = mInterpretersInterface.activeDiagram();
 	if (currentDiagram == mCurrentDiagram || Id::rootId() == mCurrentDiagram
 			|| Id::rootId() == mCurrentId)
@@ -237,7 +238,7 @@ void VisualDebugger::processAction()
 void VisualDebugger::debug()
 {
 	mDebugType = VisualDebugger::fullDebug;
-	setTimeout(SettingsManager::value("debuggerTimeout", 750).toInt());
+	setTimeout(SettingsManager::value("debuggerTimeout").toInt());
 	setDebugColor(SettingsManager::value("debugColor").toString());
 
 
@@ -304,7 +305,7 @@ void VisualDebugger::debug()
 void VisualDebugger::debugSingleStep()
 {
 	mDebugType = VisualDebugger::singleStepDebug;
-	setDebugColor(SettingsManager::value("debugColor").toString());
+	setDebugColor(SettingsManager::value("DebugColor").toString());
 
 	if (mCurrentId == Id::rootId()) {
 		if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
@@ -372,8 +373,8 @@ void VisualDebugger::generateCode()
 {
 	mHasCodeGenerationError = false;
 
-	setCodeFileName(SettingsManager::value("codeFileName", "code.c").toString());
-	setWorkDir(SettingsManager::value("debugWorkingDirectory", "").toString());
+	setCodeFileName(SettingsManager::value("codeFileName").toString());
+	setWorkDir(SettingsManager::value("debugWorkingDirectory").toString());
 
 	QFile codeFile(mWorkDir + mCodeFileName);
 	codeFile.open(QIODevice::WriteOnly);
