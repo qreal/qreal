@@ -7,6 +7,7 @@
     <logoImage>logo.png</logoImage>
     <defaultLanguage>ru</defaultLanguage>
     <width>600</width>
+    <outputDirectory>.</outputDirectory>
     <componentList>
         <component>
             <name>default</name>
@@ -62,6 +63,9 @@
                             <origin>../bin/qrutils.dll</origin>
                         </distributionFile>
                         <distributionFile>
+                            <origin>../bin/qrmc.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
                             <origin>../plugins/sbt/sbtReportsEditor/sbtReportsEditor.qrs</origin>
                         </distributionFile>
                         <distributionFile>
@@ -78,13 +82,13 @@
                             <origin>%2/QtSvg4.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/mingwm10.dll</origin>
+                            <origin>%2/../../../../../mingw/bin/mingwm10.dll</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>%2/QtXml4.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/libgcc_s_dw2-1.dll</origin>
+                            <origin>%2/../../../../../mingw/bin/libgcc_s_dw2-1.dll</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>icon.ico</origin>
