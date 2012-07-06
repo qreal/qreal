@@ -27,6 +27,21 @@ IdList RepoApi::children(Id const &id) const
 	return mClient.children(id);
 }
 
+IdList RepoApi::findElementsByName(QString const &name, bool sensitivity) const
+{
+	return mClient.findElementsByName(name, sensitivity);
+}
+
+qReal::IdList RepoApi::elementsByPropertyContent(QString const &propertyContent, bool sensitivity) const
+{
+	return mClient.elementsByPropertyContent(propertyContent, sensitivity);
+}
+
+void RepoApi::replaceProperties(qReal::IdList const &toReplace, QString const value, QString const newValue)
+{
+	mClient.replaceProperties(toReplace, value, newValue);
+}
+
 void RepoApi::addChild(Id const &id, Id const &child)
 {
 	mClient.addChild(id, child);
@@ -479,14 +494,27 @@ IdList RepoApi::graphicalElements(Id const &type) const
 	return result;
 }
 
-IdList RepoApi::elementsByType(QString const &type) const
+IdList RepoApi::elementsByType(QString const &type, bool sensitivity) const
 {
+	Qt::CaseSensitivity caseSensitivity;
+
+	if (sensitivity) {
+		caseSensitivity = Qt::CaseSensitive;
+	} else {
+		caseSensitivity = Qt::CaseInsensitive;
+	}
+
 	IdList result;
 	foreach (Id id, mClient.elements()) {
-		if (id.element() == type)
+		if (id.element().contains(type, caseSensitivity))
 			result.append(id);
 	}
 	return result;
+}
+
+qReal::IdList RepoApi::elementsByProperty(QString const &property, bool sensitivity) const
+{
+	return mClient.elementsByProperty(property, sensitivity);
 }
 
 int RepoApi::elementsCount() const

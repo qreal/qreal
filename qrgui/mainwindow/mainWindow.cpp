@@ -65,7 +65,7 @@ MainWindow::MainWindow()
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
 	timeMeasurer.doNothing(); //to avoid the unused variables problem
 
-	bool showSplash = SettingsManager::value("Splashscreen", false).toBool();
+	bool showSplash = SettingsManager::value("Splashscreen").toBool();
 
 	QSplashScreen* splash =
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
@@ -119,8 +119,12 @@ MainWindow::MainWindow()
 
 	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager, mConstraintsManager);
 
+	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
+	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi()
+			, this, mFindReplaceDialog);
+
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
-	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
+	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
 
 	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 
@@ -136,10 +140,10 @@ MainWindow::MainWindow()
 	progress->setValue(70);
 	initWindowTitle();
 
-	if (!SettingsManager::value("maximized", true).toBool()) {
+	if (!SettingsManager::value("maximized").toBool()) {
 		showNormal();
-		resize(SettingsManager::value("size", QSize(1024, 800)).toSize());
-		move(SettingsManager::value("pos", QPoint(0, 0)).toPoint());
+		resize(SettingsManager::value("size").toSize());
+		move(SettingsManager::value("pos").toPoint());
 	}
 	// =========== Step 6: Save loaded, models initialized ===========
 
@@ -164,7 +168,7 @@ MainWindow::MainWindow()
 		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
 	}
 
-	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
+	if (SettingsManager::value("diagramCreateSuggestion").toBool())
 		suggestToCreateDiagram();
 
 	mDocksVisibility.clear();
@@ -175,7 +179,6 @@ MainWindow::MainWindow()
 	setAutoSaveParameters();
 	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
 	connectWindowTitle();
-
 	connect(&mModels->logicalModelAssistApi(), SIGNAL(propertyChanged(Id)), this, SLOT(checkConstraints(Id)));
 	connect(&mPropertyModel, SIGNAL(propertyChangedFromPropertyEditor(QModelIndex)), this, SLOT(checkConstraints(QModelIndex)));
 	connect(&mModels->logicalModelAssistApi(), SIGNAL(parentChanged(IdList)), this, SLOT(checkConstraints(IdList)));
@@ -186,10 +189,10 @@ MainWindow::MainWindow()
 
 void MainWindow::connectActions()
 {
-	mUi->actionShow_grid->setChecked(SettingsManager::value("ShowGrid", true).toBool());
-	mUi->actionShow_alignment->setChecked(SettingsManager::value("ShowAlignment", true).toBool());
-	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid", true).toBool());
-	mUi->actionSwitch_on_alignment->setChecked(SettingsManager::value("ActivateAlignment", true).toBool());
+	mUi->actionShow_grid->setChecked(SettingsManager::value("ShowGrid").toBool());
+	mUi->actionShow_alignment->setChecked(SettingsManager::value("ShowAlignment").toBool());
+	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid").toBool());
+	mUi->actionSwitch_on_alignment->setChecked(SettingsManager::value("ActivateAlignment").toBool());
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
 	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
@@ -224,10 +227,22 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
+	connect (mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
+
+	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)), mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
+	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)), mFindHelper, SLOT(handleFindDialog(QStringList)));
+	connect(mFindReplaceDialog, SIGNAL(chosenElement(qReal::Id)), mFindHelper, SLOT(handleRefsDialog(qReal::Id)));
+
 	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this
 		, SLOT(changePaletteRepresentation()));
 	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged())
 		, &mPreferencesDialog, SLOT(changePaletteParameters()));
+}
+
+void MainWindow::showFindDialog()
+{
+	mFindReplaceDialog->stateClear();
+	mFindReplaceDialog->show();
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -245,8 +260,11 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 		saveAll();
 	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_W) {
 		closeTab(mUi->tabs->currentIndex());
-	} else if (keyEvent->key() == Qt::Key_F1){
+	} else if (keyEvent->key() == Qt::Key_F1) {
 		showHelp();
+	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_F) {
+		mFindReplaceDialog->stateClear();
+		mFindReplaceDialog->show();
 	}
 }
 
@@ -261,6 +279,9 @@ MainWindow::~MainWindow()
 	delete mRecentProjectsMapper;
 	delete mGesturesWidget;
 	delete mModels;
+	delete mCodeTabManager;
+	delete mFindReplaceDialog;
+	delete mFindHelper;
 }
 
 EditorManager* MainWindow::manager()
@@ -293,8 +314,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::loadPlugins()
 {
-	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation", 0).toBool()
-				, SettingsManager::value("PaletteIconsInARowCount", 3).toInt()
+	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
+				, SettingsManager::value("PaletteIconsInARowCount").toInt()
 				, mEditorManager);
 }
 
@@ -320,6 +341,11 @@ void MainWindow::selectItem(Id const &id)
 
 	setIndexesOfPropertyEditor(id);
 	centerOn(id);
+}
+
+void MainWindow::selectItemOrDiagram(Id const &graphicalId)
+{
+	activateItemOrDiagram(graphicalId, false, true);
 }
 
 void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool bl, bool isSetSel)
@@ -681,11 +707,11 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	foreach (NodeElement *item, itemsToArrangeLinks) {
 		if (item) {
 			item->arrangeLinks();
-			checkConstraints(item->logicalId());//Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð½Ð° Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ñ ÑÐ²ÑÐ·Ð°Ð½Ð½Ñ‹Ðµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹ ÑƒÐ´Ð°Ð»ÑÐµÐ¼Ð¾Ð³Ð¾ Ð»Ð¸Ð½ÐºÐ° Ð² Ð»Ð¾Ð³Ð¸Ñ‡ÐµÑÐºÐ¾Ð¹ Ð¼Ð¾Ð´ÐµÐ»Ð¸
+			checkConstraints(item->logicalId());//ïðîâåðÿåì íà îãðàíè÷åíèÿ ñâÿçàííûå ýëåìåíòû óäàëÿåìîãî ëèíêà â ëîãè÷åñêîé ìîäåëè
 		}
 	}
 	if (parentIndex != mModels->logicalModelAssistApi().indexById(Id::rootId())) {
-		checkConstraints(parentIndex);//Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð½Ð° Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ñ Ñ€Ð¾Ð´Ð¸Ñ‚ÐµÐ»Ñ ÑƒÐ´Ð°Ð»ÑÐµÐ¼Ð¾Ð³Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð° Ð² Ð»Ð¾Ð³Ð¸Ñ‡ÐµÑÐºÐ¾Ð¹ Ð¼Ð¾Ð´ÐµÐ»Ð¸
+		checkConstraints(parentIndex);//ïðîâåðÿåì íà îãðàíè÷åíèÿ ðîäèòåëÿ óäàëÿåìîãî ýëåìåíòà â ëîãè÷åñêîé ìîäåëè
 	}
 }
 
@@ -1135,7 +1161,7 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 	}
 
 	// changing of palette active editor
-	if (SettingsManager::value("PaletteTabSwitching", true).toBool()) {
+	if (SettingsManager::value("PaletteTabSwitching").toBool()) {
 		int i = 0;
 		foreach (const QString &name, mUi->paletteTree->editorsNames()) {
 			Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
@@ -1545,7 +1571,7 @@ void MainWindow::updatePaletteIcons()
 void MainWindow::applySettings()
 {
 	getCurrentTab()->invalidateScene();
-	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
+	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
 }
 
 void MainWindow::hideDockWidget(QDockWidget *dockWidget, const QString &name)
@@ -1594,7 +1620,7 @@ void MainWindow::createProject()
 		}
 	}
 	open("");
-	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
+	if (SettingsManager::value("diagramCreateSuggestion").toBool())
 		suggestToCreateDiagram();
 
 }
@@ -1709,12 +1735,12 @@ QWidget *MainWindow::windowWidget()
 
 void MainWindow::setAutoSaveParameters()
 {
-	if (!SettingsManager::value("autoSave", true).toBool()) {
+	if (!SettingsManager::value("autoSave").toBool()) {
 		mAutoSaveTimer.stop();
 		return;
 	}
 
-	mAutoSaveTimer.setInterval(SettingsManager::value("autoSaveInterval", 60 * 10).toInt() * 1000); // in ms
+	mAutoSaveTimer.setInterval(SettingsManager::value("autoSaveInterval").toInt() * 1000); // in ms
 	mAutoSaveTimer.start();
 }
 
@@ -1771,10 +1797,10 @@ void MainWindow::initDocks()
 void MainWindow::initGridProperties()
 {
 	mUi->actionSwitch_on_grid->blockSignals(false);
-	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid", true).toBool());
+	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid").toBool());
 
 	mUi->actionShow_grid->blockSignals(false);
-	mUi->actionShow_grid->setChecked(SettingsManager::value("ShowGrid", true).toBool());
+	mUi->actionShow_grid->setChecked(SettingsManager::value("ShowGrid").toBool());
 }
 
 void MainWindow::initWindowTitle()
@@ -1907,18 +1933,22 @@ void MainWindow::closeProjectAndSave()
 
 void MainWindow::closeProject()
 {
-	static_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
+	if (mUi->propertyEditor->model() != NULL) {
+		static_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
+	}
 	mUi->graphicalModelExplorer->setModel(NULL);
 	mUi->logicalModelExplorer->setModel(NULL);
-	if (getCurrentTab())
+	if (getCurrentTab()) {
 		static_cast<EditorViewScene*>(getCurrentTab()->scene())->clearScene();
+	}
 	closeAllTabs();
 	setWindowTitle(mToolManager.customizer()->windowTitle());
 }
+
 void MainWindow::changePaletteRepresentation()
 {
-	if (SettingsManager::value("PaletteRepresentation", 0).toBool() != mUi->paletteTree->iconsView()
-			|| SettingsManager::value("PaletteIconsInARowCount", 3).toInt() != mUi->paletteTree->itemsCountInARow())
+	if (SettingsManager::value("PaletteRepresentation").toBool() != mUi->paletteTree->iconsView()
+			|| SettingsManager::value("PaletteIconsInARowCount").toInt() != mUi->paletteTree->itemsCountInARow())
 	{
 		loadPlugins();
 	}
