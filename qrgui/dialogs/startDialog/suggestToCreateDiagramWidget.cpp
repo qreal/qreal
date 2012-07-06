@@ -27,32 +27,30 @@ qReal::SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *ma
 	}
 	mDiagramsListWidget->setCurrentRow(0);
 
-//	QPushButton cancelButton;
-//	cancelButton.setText(tr("&Cancel"));
-//	QPushButton okButton;
-//	okButton.setText(tr("&OK"));
+	QPushButton *cancelButton = new QPushButton(tr("&Cancel"));
+	QPushButton *okButton = new QPushButton(tr("&OK"));
 
 	QObject::connect(mDiagramsListWidget, SIGNAL(currentRowChanged(int)), mMainWindow, SLOT(diagramInCreateListSelected(int)));
 	QObject::connect(mDiagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), mMainWindow, SLOT(setDiagramCreateFlag()));
 	QObject::connect(mDiagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), parent, SLOT(close()));
 
-//	QObject::connect(&widget, SIGNAL(destroyed()), this, SLOT(diagramInCreateListDeselect()));
-//	QObject::connect(&cancelButton, SIGNAL(clicked()), &widget, SLOT(close()));
+	QObject::connect(parent, SIGNAL(destroyed()), mMainWindow, SLOT(diagramInCreateListDeselect()));
+	QObject::connect(cancelButton, SIGNAL(clicked()), parent, SLOT(close()));
 
-//	QObject::connect(&okButton, SIGNAL(clicked()), this, SLOT(setDiagramCreateFlag()));
-//	QObject::connect(&okButton, SIGNAL(clicked()), &widget, SLOT(close()));
+	QObject::connect(okButton, SIGNAL(clicked()), mMainWindow, SLOT(setDiagramCreateFlag()));
+	QObject::connect(okButton, SIGNAL(clicked()), parent, SLOT(close()));
 
 	QVBoxLayout *vLayout = new QVBoxLayout;
-//	QHBoxLayout hLayout;
 
 //	QLabel label(tr("Choose new diagram"));
 //	vLayout.addWidget(&label);
 	vLayout->addWidget(mDiagramsListWidget);
 
-//	hLayout.addWidget(&okButton);
-//	hLayout.addWidget(&cancelButton);
+	QHBoxLayout *hLayout = new QHBoxLayout;
+	hLayout->addWidget(okButton);
+	hLayout->addWidget(cancelButton);
 
-//	vLayout.addLayout(&hLayout);
+	vLayout->addLayout(hLayout);
 	setLayout(vLayout);
 
 	mMainWindow->mDiagramCreateFlag = false;

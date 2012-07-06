@@ -113,6 +113,7 @@ MainWindow::MainWindow()
 	if (!dir.cd(mTempDir))
 		QDir().mkdir(mTempDir);
 
+	SettingsManager::setValue("saveFile");
 	QFileInfo saveFile(SettingsManager::value("saveFile", mSaveFile).toString());
 
 	if (saveFile.exists())
@@ -149,10 +150,9 @@ MainWindow::MainWindow()
 	// =========== Step 6: Save loaded, models initialized ===========
 
 	progress->setValue(80);
-	if (!checkPluginsAndReopen(splash)) {
-		return;
-	}
-	mStartDialog->exec();
+//	if (!checkPluginsAndReopen(splash)) {
+//		return;
+//	}
 
 	mGesturesWidget = new GesturesWidget();
 	initExplorers();
@@ -167,21 +167,23 @@ MainWindow::MainWindow()
 
 	mIsNewProject = (mSaveFile.isEmpty() || mSaveFile == mTempDir + ".qrs");
 
-	if (mModels->graphicalModel()->rowCount() > 0) {
-		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
-	}
+//	if (mModels->graphicalModel()->rowCount() > 0) {
+//		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
+//	}
 
-	if (SettingsManager::value("diagramCreateSuggestion").toBool())
-		suggestToCreateDiagram();
+//	if (SettingsManager::value("diagramCreateSuggestion").toBool())
+//		suggestToCreateDiagram();
 
 	mDocksVisibility.clear();
 
-	if (mIsNewProject)
-		saveAs(mTempDir);
+//	if (mIsNewProject)
+//		saveAs(mTempDir);
 
 	setAutoSaveParameters();
 	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
 	connectWindowTitle();
+
+	mStartDialog->exec();
 }
 
 void MainWindow::connectActions()
@@ -636,6 +638,7 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 			: (mUi->graphicalModelExplorer->currentIndex());
 
 	if (!index.isValid()) {
+		qDebug() << "Index in deleteFromExplorer(); isn't valid";
 		return;
 	}
 	EditorView const * const view = getCurrentTab();
@@ -1309,15 +1312,14 @@ GesturesPainterInterface * MainWindow::gesturesPainter()
 
 void MainWindow::suggestToCreateDiagram()
 {
-	if (mModels->logicalModel()->rowCount() > 0)
-		return;
+//	if (mModels->logicalModel()->rowCount() > 0)
+//		return;
 
 	QDialog dialog;
 	QVBoxLayout vLayout;
 	QHBoxLayout hLayout;
 	dialog.setLayout(&vLayout);
-	dialog.setMinimumSize(320, 240);
-	dialog.setMaximumSize(320, 240);
+	dialog.setFixedSize(320, 240);
 	dialog.setWindowTitle(tr("Choose new diagram"));
 
 	QLabel label(tr("There is no existing diagram,\n choose diagram you want work with:"));
