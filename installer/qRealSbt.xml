@@ -6,6 +6,7 @@
     <leftImage>left.png</leftImage>
     <logoImage>logo.png</logoImage>
     <defaultLanguage>ru</defaultLanguage>
+    <width>600</width>
     <componentList>
         <component>
             <name>default</name>
@@ -59,15 +60,6 @@
                         </distributionFile>
                         <distributionFile>
                             <origin>../bin/qrutils.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../bin/plugins/metaEditor.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../bin/plugins/metaEditorSupport.dll</origin>
-                        </distributionFile> 
-                        <distributionFile>
-                            <origin>../bin/plugins/sbtMetamodel.dll</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>../plugins/sbt/sbtReportsEditor/sbtReportsEditor.qrs</origin>
