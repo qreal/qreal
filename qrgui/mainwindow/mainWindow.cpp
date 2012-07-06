@@ -38,6 +38,9 @@
 
 #include "../../qrkernel/timeMeasurer.h"
 
+#include "../dialogs/startDialog/startDialog.h"
+#include "../dialogs/startDialog/suggestToCreateDiagramWidget.h"
+
 using namespace qReal;
 
 QString const unsavedDir = "unsaved";
@@ -1316,56 +1319,8 @@ void MainWindow::suggestToCreateDiagram()
 //		return;
 
 	QDialog dialog;
-	QVBoxLayout vLayout;
-	QHBoxLayout hLayout;
-	dialog.setLayout(&vLayout);
+	SuggestToCreateDiagramWidget suggestWidget(this, &dialog);
 	dialog.setFixedSize(320, 240);
-	dialog.setWindowTitle(tr("Choose new diagram"));
-
-	QLabel label(tr("There is no existing diagram,\n choose diagram you want work with:"));
-	QListWidget diagramsListWidget;
-	diagramsListWidget.setParent(&dialog);
-
-	int i = 0;
-	foreach(Id editor, manager()->editors()) {
-		foreach(Id diagram, manager()->diagrams(Id::loadFromString("qrm:/" + editor.editor()))) {
-			QString const diagramName = mEditorManager.editorInterface(editor.editor())->diagramName(diagram.diagram());
-			QString const diagramNodeName = mEditorManager.editorInterface(editor.editor())->diagramNodeName(diagram.diagram());
-			if (diagramNodeName.isEmpty()) {
-				continue;
-			}
-			mDiagramsList.append("qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
-			diagramsListWidget.addItem(diagramName);
-			i++;
-		}
-	}
-
-	QPushButton cancelButton;
-	cancelButton.setText(tr("Cancel"));
-	QPushButton okButton;
-	okButton.setText(tr("Done"));
-
-	QObject::connect(&diagramsListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(diagramInCreateListSelected(int)));
-	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(setDiagramCreateFlag()));
-	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), &dialog, SLOT(close()));
-
-	QObject::connect(&dialog, SIGNAL(destroyed()), this, SLOT(diagramInCreateListDeselect()));
-	QObject::connect(&cancelButton, SIGNAL(clicked()), &dialog, SLOT(close()));
-
-	QObject::connect(&okButton, SIGNAL(clicked()), this, SLOT(setDiagramCreateFlag()));
-	QObject::connect(&okButton, SIGNAL(clicked()), &dialog, SLOT(close()));
-
-	diagramsListWidget.setCurrentRow(0);
-	mDiagramCreateFlag = false;
-
-	vLayout.addWidget(&label);
-	vLayout.addWidget(&diagramsListWidget);
-
-	hLayout.addWidget(&okButton);
-	hLayout.addWidget(&cancelButton);
-
-	vLayout.addLayout(&hLayout);
-
 	dialog.exec();
 }
 

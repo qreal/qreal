@@ -11,7 +11,8 @@ HEADERS += \
 	dialogs/preferencesPages/preferencesPage.h \
 	dialogs/findReplaceDialog.h \
     dialogs/startDialog/startDialog.h \
-    dialogs/startDialog/suggestToCreateDiagramWidget.h
+    dialogs/startDialog/suggestToCreateDiagramWidget.h \
+    dialogs/startDialog/recentProjectsListWidget.h
 
 SOURCES += \
 	dialogs/plugindialog.cpp \
@@ -25,7 +26,8 @@ SOURCES += \
 	dialogs/preferencesPages/featuresPage.cpp \
 	dialogs/findReplaceDialog.cpp \
     dialogs/startDialog/startDialog.cpp \
-    dialogs/startDialog/suggestToCreateDiagramWidget.cpp
+    dialogs/startDialog/suggestToCreateDiagramWidget.cpp \
+    dialogs/startDialog/recentProjectsListWidget.cpp
 
 FORMS += \
 	dialogs/editorGeneratorDialog.ui \
