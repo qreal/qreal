@@ -1,7 +1,7 @@
 <project>
-    <shortName>QRealSbt</shortName>
-    <fullName>QReal Sbt</fullName>
-    <version>0.2.0</version>
+    <shortName>QRealReports</shortName>
+    <fullName>QReal:Reports</fullName>
+    <version>%version%</version>
     <licenseFile>gpl-3.0.txt</licenseFile>
     <leftImage>left.png</leftImage>
     <logoImage>logo.png</logoImage>
@@ -26,7 +26,7 @@
                             <comment>Uninstall</comment>
                             <exec>${installdir}/${uninstallerName}</exec>
                             <icon></icon>
-                            <name>Uninstall QRealSbt</name>
+                            <name>Uninstall QRealReports</name>
                             <path>${installdir}</path>
                             <platforms>windows</platforms>
                             <runAsAdmin>0</runAsAdmin>
@@ -71,7 +71,6 @@
                         <distributionFile>
                             <origin>../plugins/sbt/sbtReportsEditor/balanceDiagram.qrs</origin>
                         </distributionFile>
-
                         <distributionFile>
                             <origin>%2/QtCore4.dll</origin>
                         </distributionFile>
@@ -99,13 +98,16 @@
                         <distributionDirectory>
                             <origin>../docs/</origin>
                         </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>../plugins/sbt/sbtGenerator/template/</origin>
+                        </distributionDirectory>
                     </distributionFileList>
                     <shortcutList>
                         <shortcut>
                             <comment></comment>
                             <exec></exec>
                             <icon>${installdir}/icon.ico</icon>
-                            <name>Run QRealSbt</name>
+                            <name>Run QRealReports</name>
                             <path></path>
                             <platforms>windows</platforms>
                             <runAsAdmin>0</runAsAdmin>
@@ -118,6 +120,26 @@
                     </shortcutList>
                 </folder>
                 <folder>
+                    <description>Plugins</description>
+                    <destination>${installdir}/plugins</destination>
+                    <name>pluginswindows</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>../bin/plugins/metaEditor.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../bin/plugins/metaEditorSupport.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../bin/plugins/sbtGenerator.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../bin/plugins/sbtMetamodel.dll</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
                     <description>Program Files</description>
                     <destination>${installdir}</destination>
                     <name>programfilesosx</name>
@@ -126,8 +148,8 @@
             </folderList>
             <startMenuShortcutList>
                 <startMenuShortcut>
-                    <comment>Uninstall QRealSbt</comment>
-                    <name>Uninstall QRealSbt</name>
+                    <comment>Uninstall QRealReports</comment>
+                    <name>Uninstall QRealReports</name>
                     <runAsAdmin>0</runAsAdmin>
                     <runInTerminal>0</runInTerminal>
                     <windowsExec>${installdir}/${uninstallerName}.exe</windowsExec>
@@ -136,8 +158,8 @@
                     <windowsPath>${installdir}/</windowsPath>
                 </startMenuShortcut>
                 <startMenuShortcut>
-                    <comment></comment>
-                    <name>Run QRealSbt</name>
+                    <comment>Run QRealReports</comment>
+                    <name>Run QRealReports</name>
                     <runAsAdmin>0</runAsAdmin>
                     <runInTerminal>0</runInTerminal>
                     <windowsExec>${installdir}/qrgui.exe</windowsExec>
@@ -150,8 +172,8 @@
     </componentList>
     <postInstallationActionList>
         <copyFile>
-            <destination>${windows_folder_desktopdirectory}/QRealSbt.lnk</destination>
-            <origin>${installdir}/Run QRealSbt.lnk</origin>
+            <destination>${windows_folder_desktopdirectory}/QRealReports.lnk</destination>
+            <origin>${installdir}/Run QRealReports.lnk</origin>
         </copyFile>
         <registrySet>
             <key>HKEY_CURRENT_USER\Software\SPbSU\QReal</key>
@@ -162,7 +184,7 @@
     </postInstallationActionList>
     <postUninstallationActionList>
         <deleteFile>
-            <path>${windows_folder_desktopdirectory}/QRealSbt.lnk</path>
+            <path>${windows_folder_desktopdirectory}/QRealReports.lnk</path>
         </deleteFile>
         <registryDelete>
             <key>HKEY_CURRENT_USER\Software\SPbSU\QReal</key>
@@ -172,12 +194,12 @@
     <enableRollback>0</enableRollback>
     <enableTimestamp>1</enableTimestamp>
     <requireInstallationByRootUser>1</requireInstallationByRootUser>
-    <vendor>SPbSU</vendor>
+    <vendor>Lanit-Tercom</vendor>
     <finalPageActionList>
         <runProgram>
             <program>${installdir}/qrgui.exe</program>
             <programArguments></programArguments>
-            <progressText>Запустить QReal Sbt</progressText>
+            <progressText>Запустить QReal:Reports</progressText>
         </runProgram>
     </finalPageActionList>
     <parameterList>
@@ -194,5 +216,6 @@
             <width>40</width>
         </directoryParameter>
     </parameterList>
+    <startMenuGroupName>QRealReports</startMenuGroupName>
 </project>
 

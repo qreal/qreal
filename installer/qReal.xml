@@ -1,7 +1,7 @@
 <project>
     <shortName>QReal</shortName>
     <fullName>QReal</fullName>
-    <version>0.1.0</version>
+    <version>%version%</version>
     <licenseFile>gpl-3.0.txt</licenseFile>
     <leftImage>left.png</leftImage>
     <logoImage>logo.png</logoImage>
