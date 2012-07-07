@@ -687,11 +687,11 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (mElementImpl->minimizesToChildren()) {
 		resize();
 	}
-	
+
 	mContents = mContents.normalized();
 	*/
-	
-	//storeGeometry();
+
+	storeGeometry();
 
 	setVisibleEmbeddedLinkers(true);
 
@@ -1314,7 +1314,7 @@ void NodeElement::sortChildren()
 			mPlaceholder->setRect(rect);
 			curChildY += mPlaceholder->rect().height() + childSpacing;
 		}
-		
+
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
 			QRectF rect(mElementImpl->sizeOfForestalling(), curChildY, 0, curItem->mContents.height());
