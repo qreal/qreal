@@ -32,7 +32,7 @@ public:
 		then element will be added to the top level of the tree)
 	*/
 	void addItemType(Id const &id, QString const &name, QString const &description
-			, QIcon const &icon,QTreeWidget *tree, QTreeWidgetItem *parent = 0);
+			, QIcon const &icon, QTreeWidget *tree, QTreeWidgetItem *parent = 0);
 
 	/** Adds all editor's elements to appropriate tree.
 	  @param editorManager Editor manager which all editors with elements are taken from.

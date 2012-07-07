@@ -324,7 +324,7 @@ private:
 	qReal::gui::PaletteTree *mPaletteTree;
 	FindManager *mFindHelper;
 
-	size_t mDiagramNumber;
+	int mDiagramNumber;
 
 };
 
