@@ -224,9 +224,8 @@ void MetaEditorSupportPlugin::parseEditorXml()
 
 void MetaEditorSupportPlugin::deleteGeneratedFiles(QString const &directoryName, QString const &fileBaseName)
 {
-	QFile filePro(fileBaseName + ".pro");
-	QFile fileXml(fileBaseName + ".xml");
-	QDir::setCurrent(directoryName);
+	QFile filePro(directoryName + "/" + fileBaseName + ".pro");
+	QFile fileXml(directoryName + "/" + fileBaseName + ".xml");
 	filePro.remove();
 	fileXml.remove();
 }
