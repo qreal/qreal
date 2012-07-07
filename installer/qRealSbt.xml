@@ -78,7 +78,19 @@
                             <origin>%2/QtGui4.dll</origin>
                         </distributionFile>
                         <distributionFile>
+                            <origin>%2/QtHelp4.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
                             <origin>%2/QtSvg4.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/QtCLucene4.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/QtNetwork4.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/QtSql4.dll</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>%2/../../../../../mingw/bin/mingwm10.dll</origin>
@@ -136,6 +148,16 @@
                         </distributionFile>
                         <distributionFile>
                             <origin>../bin/plugins/sbtMetamodel.dll</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <destination>${installdir}/sqldrivers</destination>
+                    <name>sqldriverswindows</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>%2/../plugins/sqldrivers/qsqlite4.dll</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
