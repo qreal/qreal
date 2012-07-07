@@ -98,6 +98,14 @@
             <lineType type="solidLine"/>
           </graphics>
           <logic>
+            <possibleEdges>
+              <possibleEdge beginName="InitialNode" directed="true" endName="ConditionNode"/>
+              <possibleEdge beginName="InitialNode" directed="true" endName="BlockFinalNode"/>
+              <possibleEdge beginName="InitialNode" directed="true" endName="Action"/>
+              <possibleEdge beginName="Action" directed="true" endName="Action"/>
+              <possibleEdge beginName="Action" directed="true" endName="ConditionNode"/>
+              <possibleEdge beginName="Action" directed="true" endName="BlockFinalNode"/>
+            </possibleEdges>
             <associations endType="open_arrow" beginType="no_arrow" />
           </logic>
         </edge>
@@ -114,6 +122,11 @@
                 <default>false</default>
               </property>
             </properties>
+            <possibleEdges>
+              <possibleEdge beginName="ConditionNode" directed="true" endName="ConditionNode"/>
+              <possibleEdge beginName="ConditionNode" directed="true" endName="Action"/>
+              <possibleEdge beginName="ConditionNode" directed="true" endName="BlockFinalNode"/>
+            </possibleEdges>
             <associations endType="open_arrow" beginType="no_arrow" />
           </logic>
         </edge>
