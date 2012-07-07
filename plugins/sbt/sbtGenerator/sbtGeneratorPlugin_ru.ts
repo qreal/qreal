@@ -6,7 +6,7 @@
     <message>
         <location filename="sbtGeneratorPlugin.cpp" line="31"/>
         <source>generate for sbt</source>
-        <translation>Сгенерировать (SBT)</translation>
+        <translation>Сгенерировать генератор отчётов</translation>
     </message>
 </context>
 </TS>

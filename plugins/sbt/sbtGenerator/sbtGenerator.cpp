@@ -24,7 +24,7 @@ void SbtGenerator::init(qReal::LogicalModelAssistInterface const &logicalModel
 
 void SbtGenerator::generate()
 {
-	QString path = "plugins/sbt/sbtGenerator";
+	QString path = ".";
 	if (QDir::currentPath().endsWith("bin")) {
 	  path = "../" + path;
 	}
