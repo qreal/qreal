@@ -74,10 +74,12 @@
 					<generalizations/>
 					<properties>
 						<property type="string" name="displayedName"/>
-						<property type="string" name="include"/>
+						<property type="string" name="include">
+						<description>xml-файлы, которые следует подключить к создаваемой метамодели</description>
+						</property>
 						<property type="string" name="name of the directory" displayedName="directory to generated code"/>
 						<property type="string" name="relative path to QReal Source Files">
-						<description>path to QReal Source Files relatively to directory to generated code</description>
+						<description>путь до исходных файлов QReal относительно пути до сгенерированного кода</description>
 						</property>
 					</properties>
 					<containers/>
@@ -116,7 +118,9 @@
 					</generalizations>
 					<properties>
 						<property type="string" name="displayedName"/>
-						<property type="string" name="nodeName"/>
+						<property type="string" name="nodeName">
+						<description>имя элемента, который будет корневым для диаграмм на создаваемом языке</description>
+						</property>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntityNode"/>
@@ -231,10 +235,12 @@
 						<property type="string" name="displayedName"/>
 						<property type="labelTypes" name="labelType">
 							<default>Dynamic text</default>
+							<description>тип текста(статический, динамический)</description>
 						</property>
 						<property type="string" name="labelText"/>
 						<property type="lineTypes" name="lineType">
 							<default>solidLine</default>
+							<description>тип линии (прямая, пунктирная и т.д.)</description>
 						</property>	
 					</properties>
 					<container>
