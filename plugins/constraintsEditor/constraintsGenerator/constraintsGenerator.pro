@@ -7,6 +7,8 @@ LIBS += -L../../../bin -lqrkernel -lqrutils
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
 
+TRANSLATIONS = constraintsGenerator_ru.ts
+
 HEADERS = \
 	constraintsGeneratorPlugin.h \
 	generator.h \

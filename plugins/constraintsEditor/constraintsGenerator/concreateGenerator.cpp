@@ -27,7 +27,7 @@ ConcreateGenerator::ConcreateGenerator(QString const &templateDirPath
 		, QString const &constraintsMetamodelName
 		)
 	: AbstractGenerator(templateDirPath, outputDirPath + QString("\\constraints" + metamodelLanguageName + "\\"), logicalModel, errorReporter)
-	, mPathToQReal(pathToQReal), mMetamodelName(metamodelLanguageName), mConstraintsName(constraintsMetamodelName)
+	, mPathToQReal(pathToQReal + "/.."), mMetamodelName(metamodelLanguageName), mConstraintsName(constraintsMetamodelName)
 {
 	mPathToQReal.replace("\\", "/");
 }
@@ -123,7 +123,7 @@ ConcreateGenerator::NeededStringsForConcreateGenerate ConcreateGenerator::genera
 		}
 		QString elementName = mApi.name(element);
 		if (elementName == "(Edge Constraint)" || elementName == "(Node Constraint)") {
-			mErrorReporter.addCritical("Name of constraintNode not found!", element);
+			mErrorReporter.addCritical(QObject::tr("Name of constraintNode not found!"), element);
 		}
 		if (elementName == "(Edges Constraint)"
 				|| (element.element() == "EdgesConstraint" && ((elementName.compare("all", Qt::CaseInsensitive)) == 0)
@@ -294,7 +294,7 @@ QString ConcreateGenerator::correctedLanguageName(Id const &diagram)
 {
 	QString languageName = mApi.property(diagram, "languageName").toString();
 	if (languageName.isEmpty()) {
-		mErrorReporter.addCritical("LanguageName of conatraints diagram not found.", diagram);
+		mErrorReporter.addCritical(QObject::tr("LanguageName of conatraints diagram not found."), diagram);
 	}
 	if ((languageName.compare("all", Qt::CaseInsensitive) == 0) || (languageName.compare(keywordForAllLanguages, Qt::CaseInsensitive) == 0)) {
 		languageName = keywordForAllLanguages;
@@ -595,7 +595,7 @@ QPair<QString, QString > ConcreateGenerator::countPropertyCharacteristicForConst
 		} else if (value.compare("edge", Qt::CaseInsensitive) == 0) {
 			value = "qReal::EditorManagerInterface::edge";
 		} else {
-			mErrorReporter.addCritical("Metatype \"" + value + "\" is not exist. Select \"node\" or \"edge\".", constraint);
+			mErrorReporter.addCritical(QObject::tr("Metatype \"%1\" is not exist. Select \"node\" or \"edge\".").arg(value), constraint);
 		}
 
 		resString += addStr + "	" + characteristicName + "Res_" + QString::number(depth) + " = (isNodeOrEdge " + sign + " " + value + ");\n";

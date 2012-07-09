@@ -15,7 +15,7 @@
             </enum>
         </nonGraphicTypes>
         <graphicTypes>
-            <node displayedName="Constraints Diagram" name="constraintsDiagram">
+            <node displayedName="Constraints Diagram" name="constraintsDiagram" description="Элемент для описания ограничений на конкретный язык. В его свойствах указывается имя соответсвующего языка. Должен вкладываться в Metamodel Constraints">
                 <graphics>
                     <picture sizex="139" sizey="139">
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="138" fill-style="none" x2="138"/>
@@ -30,7 +30,7 @@
                     </properties>
                 </logic>
             </node>
-            <node displayedName="Node Constraint" name="nodeConstraint">
+            <node displayedName="Node Constraint" name="nodeConstraint" description="Элемент для задания ограничения на один конкретный узел рассматриваемого языка. Должен вкладываться в Constraints Diagram">
                 <graphics>
                     <picture sizex="247" sizey="196">
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="195" fill-style="none" x2="246"/>
@@ -53,7 +53,7 @@
                     </generalizations>
                 </logic>
             </node>
-            <node displayedName="Edge Constraint" name="edgeConstraint">
+            <node displayedName="Edge Constraint" name="edgeConstraint" description="Элемент для задания ограничения на одну конкретную связь рассматриваемого языка. Должен вкладываться в Constraints Diagram">
                 <graphics>
                     <picture sizex="248" sizey="197">
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="196" fill-style="none" x2="247"/>
@@ -76,7 +76,7 @@
                     </generalizations>
                 </logic>
             </node>
-            <node displayedName="Property" name="propertyNode">
+            <node displayedName="Property" name="propertyNode" description="Сущность для задания ограничения на некоторое свойство узла или связи рассматриваемого языка. Должен вкладываться в элементы задания ограничений на узлы или связи">
                 <graphics>
                     <picture sizex="207" sizey="37">
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="36" fill-style="none" x2="206"/>
@@ -112,7 +112,7 @@
                     </properties>
                 </logic>
             </node>
-            <node displayedName="Incoming Links" name="incomingLinks">
+            <node displayedName="Incoming Links" name="incomingLinks" description="Сущность для задания ограничения на набор связей рассматриваемого языка, входящих в некоторый элемент. Должен вкладываться в элементы задания ограничений на узлы">
                 <graphics>
                     <picture sizex="199" sizey="150">
                         <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2" stroke-width="0" x1="53" y2="147" fill-style="none" x2="196"/>
@@ -155,7 +155,7 @@
                     </generalizations>
                 </logic>
             </node>
-            <node displayedName="Outgoing Links" name="outgoingLinks">
+            <node displayedName="Outgoing Links" name="outgoingLinks" description="Сущность для задания ограничения на набор связей рассматриваемого языка, исходящих из некоторого элемента. Должен вкладываться в элементы задания ограничений на узлы">
                 <graphics>
                     <picture sizex="200" sizey="151">
                         <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="80" stroke-width="0" x1="3" y2="80" fill-style="none" x2="52"/>
@@ -208,7 +208,7 @@
                     </properties>
                 </logic>
             </node>
-            <edge displayedName="Or" name="or">
+            <edge displayedName="Or" name="or" description="Связь, означающая логическое ИЛИ между элементарными ограничениями. Должен вкладываться в элементы задания ограничений на узлы или связи">
                 <graphics>
                     <lineType type="solidLine"/>
                 </graphics>
@@ -218,7 +218,7 @@
                     </associations>
                 </logic>
             </edge>
-            <node displayedName="Begin Node" name="beginNode">
+            <node displayedName="Begin Node" name="beginNode" description="Сущность для задания ограничения на узел, находящийся в начале некоторой связи. Должен вкладываться в элементы задания ограничений на связи">
                 <graphics>
                     <picture sizex="149" sizey="149">
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#7cfc00" y1="0" stroke-width="3" x1="0" y2="148" fill-style="none" x2="148"/>
@@ -255,7 +255,7 @@
                     </generalizations>
                 </logic>
             </node>
-            <node displayedName="End Node" name="endNode">
+            <node displayedName="End Node" name="endNode" description="Сущность для задания ограничения на узел, находящийся в конце некоторой связи. Должен вкладываться в элементы задания ограничений на связи">
                 <graphics>
                     <picture sizex="148" sizey="149">
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#ff4500" y1="1" stroke-width="3" x1="0" y2="148" fill-style="none" x2="147"/>
@@ -292,7 +292,7 @@
                     </generalizations>
                 </logic>
             </node>
-            <node displayedName="Outgoing Nodes" name="outgoingNodes">
+            <node displayedName="Outgoing Nodes" name="outgoingNodes" description="Сущность для задания ограничения на набор узлов рассматриваемого языка, находящихся на других концах исходящих из некоторого элемента связей. Должен вкладываться в элементы задания ограничений на узлы">
                 <graphics>
                     <picture sizex="203" sizey="151">
                         <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="40" stroke-width="0" x1="54" y2="40" fill-style="none" x2="200"/>
@@ -335,7 +335,7 @@
                     </generalizations>
                 </logic>
             </node>
-            <node displayedName="Incoming Nodes" name="incomingNodes">
+            <node displayedName="Incoming Nodes" name="incomingNodes" description="Сущность для задания ограничения на набор узлов рассматриваемого языка, находящихся на других концах входящих в некоторый элемент связей. Должен вкладываться в элементы задания ограничений на узлы">
                 <graphics>
                     <picture sizex="201" sizey="150">
                         <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="40" stroke-width="0" x1="55" y2="40" fill-style="none" x2="199"/>
@@ -378,7 +378,7 @@
                     </generalizations>
                 </logic>
             </node>
-            <node displayedName="Parent" name="parent">
+            <node displayedName="Parent" name="parent" description="Сущность для задания ограничения на родителя (в смысле контейнеров) некоторого элемента рассматриваемого языка. Должен вкладываться в элементы задания ограничений на узлы">
                 <graphics>
                     <picture sizex="150" sizey="153">
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" stroke-width="2" x1="2" y2="151" fill-style="none" x2="149"/>
@@ -417,7 +417,7 @@
                     </generalizations>
                 </logic>
             </node>
-            <node displayedName="Childrens" name="childrens">
+            <node displayedName="Childrens" name="childrens" description="Сущность для задания ограничения на детей (в смысле контейнеров) некоторого элемента рассматриваемого языка. Должен вкладываться в элементы задания ограничений на узлы">
                 <graphics>
                     <picture sizex="149" sizey="152">
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#a9a9a9" y1="1" stroke-width="1" x1="1" y2="150" fill-style="none" x2="147"/>
@@ -458,7 +458,7 @@
                     </generalizations>
                 </logic>
             </node>
-            <node displayedName="Nodes Constraint" name="nodesConstraint">
+            <node displayedName="Nodes Constraint" name="nodesConstraint" description="Элемент для задания ограничения на некоторый набор узлов рассматриваемого языка. Должен вкладываться в Constraints Diagram">
                 <graphics>
                     <picture sizex="244" sizey="193">
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="192" fill-style="none" x2="243"/>
@@ -482,7 +482,7 @@
                     </generalizations>
                 </logic>
             </node>
-            <node displayedName="Edges Constraint" name="edgesConstraint">
+            <node displayedName="Edges Constraint" name="edgesConstraint" description="Элемент для задания ограничения на некоторый набор связей рассматриваемого языка. Должен вкладываться в Constraints Diagram">
                 <graphics>
                     <picture sizex="244" sizey="193">
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="192" fill-style="none" x2="243"/>
@@ -534,7 +534,7 @@
                     <container/>
                 </logic>
             </node>
-            <node displayedName="Metamodel Constraints" name="metamodelConstraints">
+            <node displayedName="Metamodel Constraints" name="metamodelConstraints" description="Корневой элемент модели ограничений на метамодель. В его свойствах указываются имя метамодели, на которые накладываются ограничения, и необходимые для сборки параметры">
                 <graphics>
                     <picture sizex="88" sizey="79">
                         <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="78" fill-style="none" x2="87"/>
@@ -565,5 +565,34 @@
                 </logic>
             </node>
         </graphicTypes>
+        <palette>
+          <group name="Root Diagrams">
+            <element name="Metamodel Constraints"/>
+            <element name="Constraints Diagram"/>
+          </group>
+          <group name="DSL Constraints Elements">
+            <element name="Node Constraint"/>
+            <element name="Edge Constraint"/>
+            <element name="Nodes Constraint"/>
+            <element name="Edges Constraint"/>
+          </group>
+          <group name="Node Constraints Properties">
+            <element name="Property"/>
+            <element name="Parent"/>
+            <element name="Childrens"/>
+            <element name="Incoming Nodes"/>
+            <element name="Outgoing Nodes"/>
+            <element name="Incoming Links"/>
+            <element name="Outgoing Links"/>
+          </group>
+          <group name="Edge Constraints Properties">
+            <element name="Property"/>
+            <element name="Begin Node"/>
+            <element name="End Node"/>
+          </group>
+          <group name="Relationship">
+            <element name="Or"/>
+          </group>
+        </palette>
     </diagram>
 </metamodel>
