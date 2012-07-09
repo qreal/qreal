@@ -329,8 +329,8 @@ void NodeElement::storeGeometry()
 		mGraphicalAssistApi->setPosition(id(), pos());
 	}
 
-	if (QPolygon(mContents.toAlignedRect()) != mGraphicalAssistApi->configuration(id())) { // check if it's been changed
-		mGraphicalAssistApi->setConfiguration(id(), QPolygon(contents.toAlignedRect()));
+	if (QPolygonF(mContents) != mGraphicalAssistApi->configuration(id())) { // check if it's been changed
+		mGraphicalAssistApi->setConfiguration(id(), QPolygonF(contents));
 	}
 }
 
@@ -501,6 +501,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	setZValue(1);
 }
 
+
 void NodeElement::alignToGrid()
 {
 	mGrid->alignToGrid();
@@ -508,6 +509,7 @@ void NodeElement::alignToGrid()
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
@@ -631,7 +633,22 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 	arrangeLinks();
 }
-
+/*
+void NodeElement::shift(QPointF const &pos, EdgeElement* called) {
+	foreach (EdgeElement *edge, mEdgeList) {
+		if (edge->isSelected() && (edge != called))
+		{
+			if ((edge->dst() == NULL) || (edge->src() == NULL))
+			{
+				edge->shift(pos);
+			} else if ((edge->dst()->isSelected()) && (edge->src()->isSelected()))
+			{
+				edge->shift(pos);
+			}
+		}
+	}
+}
+*/
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (event->button() == Qt::RightButton) {
@@ -826,7 +843,7 @@ void NodeElement::updateData()
 	Element::updateData();
 	if (mMoving == 0) {
 		QPointF newpos = mGraphicalAssistApi->position(id());
-		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
+		QPolygonF newpoly = mGraphicalAssistApi->configuration(id());
 		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
 		if (!newpoly.isEmpty()) {

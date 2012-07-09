@@ -136,9 +136,6 @@ private:
 	QPolygonF mLine; // holds coordinates of polygon points in coordinate system with center in first point
 	QColor mColor;
 
-	NodeElement *mBeginning;
-	NodeElement *mEnding;
-
 	ContextMenuAction mAddPointAction;
 	ContextMenuAction mDelPointAction;
 	ContextMenuAction mSquarizeAction;
@@ -151,9 +148,9 @@ private:
 
 	QPointF mLastPos;
 	QPolygonF mLastLine;
+	QPolygonF mSavedLineForMove;
 	int mLastDragPoint;
 
 	bool mBreakPointPressed;
-
 };
 

@@ -51,6 +51,7 @@ public:
 
 	void storeGeometry();
 	virtual void setName(QString name);
+	//void shift(QPointF const &pos, EdgeElement* called);
 
 	const QPointF getPortPos(qreal id) const;
 	static int portId(qreal id);
