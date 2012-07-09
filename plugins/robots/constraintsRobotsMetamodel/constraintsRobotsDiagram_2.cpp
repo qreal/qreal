@@ -25,8 +25,9 @@ qReal::CheckStatus ConstraintsRobotsDiagram_2::checkEnginesForward_1(qReal::Id c
 		bool nodeRes_1 = propertyNodeRes_1 && propertyNodeRes_2;
 	res = nodeRes_1;
 
-	return qReal::CheckStatus(res, "fail_text", qReal::CheckStatus::warning);
+	return qReal::CheckStatus(res, QObject::tr("EnginesForward must have Power between -100 and 100"), qReal::CheckStatus::warning);
 }
+
 qReal::CheckStatus ConstraintsRobotsDiagram_2::checkEnginesBackward_1(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi)
 {
 	bool res = true;
@@ -41,9 +42,8 @@ qReal::CheckStatus ConstraintsRobotsDiagram_2::checkEnginesBackward_1(qReal::Id 
 		bool nodeRes_1 = propertyNodeRes_1 && propertyNodeRes_2;
 	res = nodeRes_1;
 
-	return qReal::CheckStatus(res, "fail_text", qReal::CheckStatus::warning);
+	return qReal::CheckStatus(res, QObject::tr("EnginesBackward must have Power between -100 and 100"), qReal::CheckStatus::warning);
 }
-
 
 QList<qReal::CheckStatus> ConstraintsRobotsDiagram_2::checkEnginesBackward(qReal::Id const &element, qrRepo::LogicalRepoApi const &logicalApi)
 {

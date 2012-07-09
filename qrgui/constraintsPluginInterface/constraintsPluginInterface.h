@@ -6,7 +6,7 @@
 
 namespace qReal {
 
-const QString keywordForAllMetamodels = "AllMetamodels";//qwerty_asd_copypast
+const QString keywordForAllMetamodels = "AllMetamodels";//qwerty_copypast
 
 class ConstraintsPluginInterface {
 public:

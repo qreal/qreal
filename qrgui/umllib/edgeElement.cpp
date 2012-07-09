@@ -341,7 +341,7 @@ void EdgeElement::connectToPort()
 	adjustLink();
 	arrangeSrcAndDst();
 
-	MainWindow *mainWindow = (dynamic_cast<EditorViewScene*>(scene()))->mainWindow();//qwerty_checkConstraints
+	MainWindow *mainWindow = (dynamic_cast<EditorViewScene*>(scene()))->mainWindow();
 	mainWindow->checkConstraints(nodesForCheckConstraints);
 }
 

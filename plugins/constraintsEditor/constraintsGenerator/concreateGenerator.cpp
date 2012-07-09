@@ -451,7 +451,7 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForListOfElem
 {
 	QString resString = "";
 	QList<QString> resBool;
-	QString count = mApi.property(constraint, "count").toString(); //qwerty_think over_count
+	QString count = mApi.property(constraint, "count").toString();
 	bool neededCount  = (!count.isEmpty());
 
 	QString selection = mApi.property(constraint, "selection").toString();
