@@ -4,7 +4,6 @@
 #include <QtCore/QUuid>
 #include <QtCore/QDebug>
 
-
 using namespace qReal;
 using namespace models;
 using namespace models::details;
@@ -13,7 +12,6 @@ GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel,
 		: mGraphicalModel(graphicalModel), mModelsAssistApi(graphicalModel, editorManager)
 {
 	connect(&graphicalModel, SIGNAL(nameChanged(Id)), this, SIGNAL(nameChanged(Id)));
-	qRegisterMetaType<QPolygonF>("QPolygonF");
 }
 
 EditorManager const &GraphicalModelAssistApi::editorManager() const
@@ -88,16 +86,14 @@ void GraphicalModelAssistApi::stackBefore(const Id &element, const Id &sibling)
 	mModelsAssistApi.stackBefore(element, sibling);
 }
 
-void GraphicalModelAssistApi::setConfiguration(Id const &elem, QPolygonF const &newValue)
+void GraphicalModelAssistApi::setConfiguration(Id const &elem, QPolygon const &newValue)
 {
-	QVariant variant;
-	variant.setValue(newValue);
-	mModelsAssistApi.setProperty(elem, variant, roles::configurationRole);
+	mModelsAssistApi.setProperty(elem, QVariant(newValue), roles::configurationRole);
 }
 
-QPolygonF GraphicalModelAssistApi::configuration(Id const &elem) const
+QPolygon GraphicalModelAssistApi::configuration(Id const &elem) const
 {
-	return mModelsAssistApi.property(elem, roles::configurationRole).value<QPolygonF>();
+	return mModelsAssistApi.property(elem, roles::configurationRole).value<QPolygon>();
 }
 
 void GraphicalModelAssistApi::setPosition(Id const &elem, QPointF const &newValue)

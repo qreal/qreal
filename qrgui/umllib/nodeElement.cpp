@@ -329,8 +329,8 @@ void NodeElement::storeGeometry()
 		mGraphicalAssistApi->setPosition(id(), pos());
 	}
 
-	if (QPolygonF(mContents) != mGraphicalAssistApi->configuration(id())) { // check if it's been changed
-		mGraphicalAssistApi->setConfiguration(id(), QPolygonF(contents));
+	if (QPolygon(mContents.toAlignedRect()) != mGraphicalAssistApi->configuration(id())) { // check if it's been changed
+		mGraphicalAssistApi->setConfiguration(id(), QPolygon(contents.toAlignedRect()));
 	}
 }
 
@@ -843,7 +843,7 @@ void NodeElement::updateData()
 	Element::updateData();
 	if (mMoving == 0) {
 		QPointF newpos = mGraphicalAssistApi->position(id());
-		QPolygonF newpoly = mGraphicalAssistApi->configuration(id());
+		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
 		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
 		if (!newpoly.isEmpty()) {

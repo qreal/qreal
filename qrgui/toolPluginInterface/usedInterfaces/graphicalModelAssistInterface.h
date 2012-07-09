@@ -3,7 +3,6 @@
 #include "../../../qrkernel/ids.h"
 #include "details/modelsAssistInterface.h"
 #include "../../../qrrepo/graphicalRepoApi.h"
-#include <QPolygonF>
 
 namespace qReal {
 
@@ -23,8 +22,8 @@ public:
 	virtual IdList temporaryRemovedLinksNone(Id const &elem) const = 0;
 	virtual void removeTemporaryRemovedLinks(Id const &elem) = 0;
 
-	virtual void setConfiguration(Id const &elem, QPolygonF const &newValue) = 0;
-	virtual QPolygonF configuration(Id const &elem) const = 0;
+	virtual void setConfiguration(Id const &elem, QPolygon const &newValue) = 0;
+	virtual QPolygon configuration(Id const &elem) const = 0;
 
 	virtual void setPosition(Id const &elem, QPointF const &newValue) = 0;
 	virtual QPointF position(Id const &elem) const = 0;
@@ -48,5 +47,3 @@ public:
 };
 
 }
-
-Q_DECLARE_METATYPE(QPolygonF)

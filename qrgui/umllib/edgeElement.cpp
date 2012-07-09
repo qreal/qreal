@@ -287,7 +287,7 @@ void EdgeElement::connectToPort()
 			mLine = mLastLine;
 
 		mGraphicalAssistApi->setPosition(id(), mLastPos);
-		mGraphicalAssistApi->setConfiguration(id(), mLine);
+		mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
 
 		mMoving = false;
 		updateData();
@@ -330,7 +330,7 @@ void EdgeElement::connectToPort()
 	setFlag(ItemIsMovable, !(mDst || mSrc));
 
 	mGraphicalAssistApi->setPosition(id(), pos());
-	mGraphicalAssistApi->setConfiguration(id(), mLine);
+	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
 
 	mMoving = false;
 
@@ -683,7 +683,7 @@ void EdgeElement::delPointHandler(QPointF const &pos)
 		prepareGeometryChange();
 		mLine.remove(pointIndex);
 		updateLongestPart();
-		mGraphicalAssistApi->setConfiguration(id(), mLine);
+		mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
 		update();
 	}
 }
@@ -810,7 +810,7 @@ void EdgeElement::minimizeHandler(const QPointF &pos) {
 	newMLine << mLine.first() << mLine.last();
 	mLine = newMLine;
 	updateLongestPart();
-	mGraphicalAssistApi->setConfiguration(id(), mLine);
+	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
 }
 
 void EdgeElement::adjustLink()
@@ -1057,7 +1057,7 @@ void EdgeElement::redrawing(QPointF const &pos)
 		deleteLoops();
 	if (SettingsManager::value("SquareLine", false).toBool())
 		squarizeHandler(QPointF());
-	mGraphicalAssistApi->setConfiguration(id(), mLine);
+	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
 
 }
 
@@ -1155,5 +1155,5 @@ void EdgeElement::deleteSegment(QPointF const &pos)
 void EdgeElement::setGraphicApi(QPointF const &pos)
 {
 	Q_UNUSED(pos);
-	mGraphicalAssistApi->setConfiguration(id(), mLine); // если кто-то будет править этот баг, удалите преобразование (во всех методах) mLine = mGraphicalAssistApi->configuration(id());
+	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon()); // если кто-то будет править этот баг, удалите преобразование (во всех методах) mLine = mGraphicalAssistApi->configuration(id());
 }

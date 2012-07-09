@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QtCore/QObject>
-#include <QPolygonF>
 
 #include "../../qrkernel/ids.h"
 #include "details/graphicalModel.h"
@@ -41,8 +40,8 @@ public:
 	IdList temporaryRemovedLinksNone(Id const &elem) const;
 	void removeTemporaryRemovedLinks(Id const &elem);
 
-	void setConfiguration(Id const &elem, QPolygonF const &newValue);
-	QPolygonF configuration(Id const &elem) const;
+	void setConfiguration(Id const &elem, QPolygon const &newValue);
+	QPolygon configuration(Id const &elem) const;
 
 	void setPosition(Id const &elem, QPointF const &newValue);
 	QPointF position(Id const &elem) const;
