@@ -37,6 +37,7 @@
 #include "../../qrkernel/settingsManager.h"
 
 #include "../../qrkernel/timeMeasurer.h"
+#include "splashScreen.h"
 
 using namespace qReal;
 
@@ -44,6 +45,7 @@ QString const unsavedDir = "unsaved";
 
 MainWindow::MainWindow()
 		: mUi(new Ui::MainWindowUi)
+		, mCodeTabManager(new QMap<EditorView*, CodeArea*>())
 		, mCloseEvent(NULL)
 		, mModels(NULL)
 		, mListenerManager(NULL)
@@ -60,17 +62,9 @@ MainWindow::MainWindow()
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 {
-	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
+	mUi->setupUi(this);
 
-	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
-	timeMeasurer.doNothing(); //to avoid the unused variables problem
-
-	bool showSplash = SettingsManager::value("Splashscreen").toBool();
-
-	QSplashScreen* splash =
-			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
-
-	QProgressBar *progress = createProgressBar(splash);
+	SplashScreen splashScreen(true || SettingsManager::value("Splashscreen").toBool());
 
 	QDir imagesDir(SettingsManager::value("pathToImages", "/someWeirdDirectoryName").toString());
 	if (!imagesDir.exists()) {
@@ -79,17 +73,7 @@ MainWindow::MainWindow()
 
 	// =========== Step 1: splash screen loaded, progress bar initialized ===========
 
-	progress->setValue(5);
-
-	mUi->setupUi(this);
-
-	if (showSplash) {
-		splash->show();
-		QApplication::processEvents();
-	}
-	else {
-		mUi->actionShowSplash->setChecked(false);
-	}
+	splashScreen.setProgress(5);
 
 	initRecentProjectsMenu();
 	initToolManager();
@@ -97,14 +81,14 @@ MainWindow::MainWindow()
 
 	// =========== Step 2: Ui is ready, splash screen shown ===========
 
-	progress->setValue(20);
+	splashScreen.setProgress(20);
 
 	initMiniMap();
 	initGridProperties();
 
 	// =========== Step 3: Ui connects are done ===========
 
-	progress->setValue(40);
+	splashScreen.setProgress(40);
 
 	initDocks();
 	SettingsManager::setValue("temp", mTempDir);
@@ -130,14 +114,14 @@ MainWindow::MainWindow()
 
 	// =========== Step 4: Property editor and model explorers are initialized ===========
 
-	progress->setValue(60);
+	splashScreen.setProgress(60);
 	loadPlugins();
 	initToolPlugins();
 	showMaximized();
 
 	// =========== Step 5: Plugins are loaded ===========
 
-	progress->setValue(70);
+	splashScreen.setProgress(70);
 	initWindowTitle();
 
 	if (!SettingsManager::value("maximized").toBool()) {
@@ -147,20 +131,16 @@ MainWindow::MainWindow()
 	}
 	// =========== Step 6: Save loaded, models initialized ===========
 
-	progress->setValue(80);
-	if (!checkPluginsAndReopen(splash))
-		return;
+	splashScreen.setProgress(80);
+//	if (!checkPluginsAndReopen(splash))
+//		return;
 
 	mGesturesWidget = new GesturesWidget();
 	initExplorers();
 	connectActions();
 	// =========== Step 7: Save consistency checked, interface is initialized with models ===========
 
-	progress->setValue(100);
-
-	if (showSplash)
-		splash->close();
-	delete splash;
+	splashScreen.setProgress(100);
 
 	mIsNewProject = (mSaveFile.isEmpty() || mSaveFile == mTempDir + ".qrs");
 
@@ -179,6 +159,8 @@ MainWindow::MainWindow()
 	setAutoSaveParameters();
 	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
 	connectWindowTitle();
+
+	qDebug() << "MainWindow::MainWindow is done";
 }
 
 void MainWindow::connectActions()
@@ -196,7 +178,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()), this, SLOT(saveDiagramAsAPicture()));
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
-	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
+	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(openNewProject()));
 	connect(mUi->actionCloseProject, SIGNAL(triggered()), this, SLOT(closeProjectAndSave()));
 	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
@@ -1552,6 +1534,7 @@ void MainWindow::fullscreen()
 	}
 }
 
+/*
 void MainWindow::createProject()
 {
 	if (mUnsavedProjectIndicator) {
@@ -1568,6 +1551,7 @@ void MainWindow::createProject()
 		suggestToCreateDiagram();
 
 }
+*/
 
 QString MainWindow::getNextDirName(QString const &name)
 {
@@ -1696,7 +1680,7 @@ void MainWindow::autosave()
 		saveAll();
 }
 
-QProgressBar *MainWindow::createProgressBar(QSplashScreen* splash)
+QProgressBar *MainWindow::createProgressBarWithSplashScreen(QSplashScreen *splash)
 {
 	QProgressBar *progress = new QProgressBar(splash);
 	progress->move(20, 270);

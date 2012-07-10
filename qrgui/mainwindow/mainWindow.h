@@ -142,7 +142,6 @@ private slots:
 	void fullscreen();
 	void openRecentProjectsMenu();
 	bool openNewProject();
-	void createProject();
 
 	void saveDiagramAsAPicture();
 
@@ -206,16 +205,6 @@ private slots:
 	void closeProjectAndSave();
 
 private:
-
-	/// elements & theirs ids
-	QMap<QString, Id> mElementsNamesAndIds;
-
-	/// mFindDialog - Dialog for searching elements.
-	FindReplaceDialog *mFindReplaceDialog;
-
-	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
-	QMap<EditorView*, CodeArea*> *mCodeTabManager;
-
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on
 	/// @param tab Tab to be initialized
@@ -271,7 +260,7 @@ private:
 
 	void initToolPlugins();
 
-	QProgressBar *createProgressBar(QSplashScreen* splash);
+	QProgressBar *createProgressBarWithSplashScreen(QSplashScreen *splash);
 	void initMiniMap();
 	void initToolManager();
 	void initTabs();
@@ -286,6 +275,15 @@ private:
 	int openSaveOfferDialog();
 
 	Ui::MainWindowUi *mUi;
+
+	/// elements & theirs ids
+	QMap<QString, Id> mElementsNamesAndIds;
+
+	/// mFindDialog - Dialog for searching elements.
+	FindReplaceDialog *mFindReplaceDialog;
+
+	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
+	QMap<EditorView*, CodeArea*> *mCodeTabManager;
 
 	QCloseEvent *mCloseEvent;
 	models::Models *mModels;
@@ -323,7 +321,6 @@ private:
 	QMenu *mRecentProjectsMenu;
 	qReal::gui::PaletteTree *mPaletteTree;
 	FindManager *mFindHelper;
-
 };
 
 }
