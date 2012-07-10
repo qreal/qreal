@@ -17,6 +17,9 @@ class StartDialog : public QDialog
 public:
 	explicit StartDialog(MainWindow *mainWindow, QWidget *parent = 0);
 
+public slots:
+	void createNewProject();
+
 private:
 	MainWindow *mMainWindow;
 	QTabWidget *mTabWidget;

@@ -18,9 +18,6 @@ class SuggestToCreateDiagramWidget : public QWidget
 public:
 	explicit SuggestToCreateDiagramWidget(MainWindow *mainWindow, QDialog *parent = 0);
 
-signals:
-	void diagramCreated();
-
 private:
 	MainWindow *mMainWindow;
 	QListWidget *mDiagramsListWidget;

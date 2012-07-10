@@ -1525,8 +1525,9 @@ void MainWindow::createProject()
 			return;
 		}
 	}
-	open("");
-	if (SettingsManager::value("diagramCreateSuggestion").toBool())
+//	open("");
+	open(getWorkingFile(tr("Create new project"), true));
+//	if (SettingsManager::value("diagramCreateSuggestion").toBool())
 		suggestToCreateDiagram();
 
 }

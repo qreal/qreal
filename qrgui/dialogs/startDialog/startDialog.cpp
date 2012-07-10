@@ -32,7 +32,15 @@ qReal::StartDialog::StartDialog(MainWindow *mainWindow, QWidget *parent)
 
 	setLayout(mainLayout);
 
-	connect(createNewProjectLink, SIGNAL(clicked()), mMainWindow, SLOT(createProject()));
+	connect(createNewProjectLink, SIGNAL(clicked()), this, SLOT(createNewProject()));
 	connect(helpLink, SIGNAL(clicked()), mMainWindow, SLOT(showHelp()));
 	connect(quitLink, SIGNAL(clicked()), qApp, SLOT(quit()));
+}
+
+void qReal::StartDialog::createNewProject()
+{
+	mMainWindow->createProject();
+	if (mMainWindow->mDiagramCreateFlag) {
+		close();
+	}
 }

@@ -32,7 +32,7 @@ qReal::SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *ma
 
 	QObject::connect(mDiagramsListWidget, SIGNAL(currentRowChanged(int)), mMainWindow, SLOT(diagramInCreateListSelected(int)));
 	QObject::connect(mDiagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), mMainWindow, SLOT(setDiagramCreateFlag()));
-	QObject::connect(mDiagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SIGNAL(diagramCreated()));
+	QObject::connect(mDiagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), parent, SIGNAL(close()));
 
 	QObject::connect(this, SIGNAL(destroyed()), mMainWindow, SLOT(diagramInCreateListDeselect()));
 	QObject::connect(cancelButton, SIGNAL(clicked()), parent, SLOT(close()));

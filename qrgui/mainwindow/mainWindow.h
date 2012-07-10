@@ -55,7 +55,7 @@ public:
 	MainWindow();
 	~MainWindow();
 
-	EditorManager* manager();
+	EditorManager *manager();
 	EditorView *getCurrentTab();
 	ListenerManager *listenerManager();
 	GesturesPainterInterface *gesturesPainter();
