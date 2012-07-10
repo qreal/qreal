@@ -4,8 +4,6 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QIcon>
 
-#include <QtCore/QtDebug>
-
 #include "../../qrkernel/ids.h"
 
 #include "../../qrrepo/repoApi.h"
@@ -428,4 +426,15 @@ QStringList EditorManager::getAllChildrenTypesOf(Id const &parent) const
 	}
 	return result;
 }
+
+bool EditorManager::isGraphicalElementNode(const Id &id) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	ElementImpl *impl = mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
+	if( !impl ){
+		return false;
+	}
+	return impl->isNode();
+}
+
 

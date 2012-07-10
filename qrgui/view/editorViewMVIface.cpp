@@ -231,8 +231,8 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 {
 	Q_UNUSED(sourceEnd);
 	Q_ASSERT(sourceStart == sourceEnd);  // only one element is permitted to be moved
-	QPersistentModelIndex movedElementIndex = sourceParent.child(sourceStart, 0),
-		newSiblingIndex = destinationParent.child(destinationRow, 0);
+	QPersistentModelIndex movedElementIndex = sourceParent.child(sourceStart, 0);
+	QPersistentModelIndex newSiblingIndex = destinationParent.child(destinationRow, 0);
 
 	Element *movedElement = item(movedElementIndex),
 		*sibling = item(newSiblingIndex);

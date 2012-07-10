@@ -37,7 +37,7 @@ void VisualDebuggerPlugin::init(PluginConfigurator const &configurator)
 			configurator.mainWindowInterpretersInterface(),
 			mParser
 	);
-	
+
 	mDebuggerConnector = new DebuggerConnector(this);
 }
 
@@ -54,31 +54,31 @@ QList<qReal::ActionInfo> VisualDebuggerPlugin::actions()
 	mDebugAction = new QAction(tr("Interpret (automatic)"), NULL);
 	connect(mDebugAction, SIGNAL(triggered()), this, SLOT(debug()));
 	mVisualDebugMenu->addAction(mDebugAction);
-	
+
 	mDebugSingleStepAction = new QAction(tr("Interpret (one step)"), NULL);
 	connect(mDebugSingleStepAction, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
 	mVisualDebugMenu->addAction(mDebugSingleStepAction);
-	
+
 	mWatchListAction = new QAction(tr("Show watch list"), NULL);
 	connect(mWatchListAction, SIGNAL(triggered()), this, SLOT(showWatchList()));
 	mVisualDebugMenu->addAction(mWatchListAction);
-	
-	
+
+
 	mVisualDebugWithGdbMenu = new QMenu(tr("Visual debug (with gdb)"));
 	ActionInfo visualDebugWithGdbMenuInfo(mVisualDebugWithGdbMenu, "tools");
-	
+
 	mGenerateAndBuildAction = new QAction(tr("Generate and build"), NULL);
 	connect(mGenerateAndBuildAction, SIGNAL(triggered()), this, SLOT(generateAndBuild()));
 	mVisualDebugWithGdbMenu->addAction(mGenerateAndBuildAction);
-	
+
 	mStartDebuggerAction = new QAction(tr("Start debugger (gdb)"), NULL);
 	connect(mStartDebuggerAction, SIGNAL(triggered()), this, SLOT(startDebugger()));
 	mVisualDebugWithGdbMenu->addAction(mStartDebuggerAction);
-	
+
 	mConfigureAction = new QAction(tr("Configure"), NULL);
 	connect(mConfigureAction, SIGNAL(triggered()), this, SLOT(configureDebugger()));
 	mVisualDebugWithGdbMenu->addAction(mConfigureAction);
-	
+
 	mSetBreakpointsAction = new QAction(tr("Set breakpoints on each element"), NULL);
 	connect(mSetBreakpointsAction, SIGNAL(triggered()), this, SLOT(placeBreakpointsInDebugger()));
 	mVisualDebugWithGdbMenu->addAction(mSetBreakpointsAction);
@@ -86,36 +86,36 @@ QList<qReal::ActionInfo> VisualDebuggerPlugin::actions()
 	mBreakMainAction = new QAction(tr("Set breakpoint at start"), NULL);
 	connect(mBreakMainAction, SIGNAL(triggered()), this, SLOT(setBreakpointAtStart()));
 	mVisualDebugWithGdbMenu->addAction(mBreakMainAction);
-	
+
 	mRunAction = new QAction(tr("run"), NULL);
 	connect(mRunAction, SIGNAL(triggered()), this, SLOT(runProgramWithDebugger()));
 	mVisualDebugWithGdbMenu->addAction(mRunAction);
-	
+
 	mNextAction = new QAction(tr("next"), NULL);
 	connect(mNextAction, SIGNAL(triggered()), this, SLOT(goToNextInstruction()));
 	mVisualDebugWithGdbMenu->addAction(mNextAction);
-	
+
 	mContAction = new QAction(tr("cont"), NULL);
 	connect(mContAction, SIGNAL(triggered()), this, SLOT(goToNextBreakpoint()));
 	mVisualDebugWithGdbMenu->addAction(mContAction);
-	
+
 	mKillAction = new QAction(tr("kill"), NULL);
 	connect(mKillAction, SIGNAL(triggered()), this, SLOT(killProgramWithDebugger()));
 	mVisualDebugWithGdbMenu->addAction(mKillAction);
-	
+
 	mStartDebuggingAction = new QAction(tr("Start debug (automatic)"), NULL);
 	connect(mStartDebuggingAction, SIGNAL(triggered()), this, SLOT(startDebugging()));
 	mVisualDebugWithGdbMenu->addAction(mStartDebuggingAction);
-	
+
 	mCloseAllAction = new QAction(tr("Cancel debug"), NULL);
 	connect(mCloseAllAction, SIGNAL(triggered()), this, SLOT(closeDebuggerProcessAndThread()));
 	mVisualDebugWithGdbMenu->addAction(mCloseAllAction);
-	
+
 	connect(mDebuggerConnector, SIGNAL(readyReadStdOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
 	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerErrOutput(QString)));
-	
+
 	mActionInfos << visualDebugMenuInfo << visualDebugWithGdbMenuInfo;
-	
+
 	return mActionInfos;
 }
 
@@ -182,7 +182,7 @@ void VisualDebuggerPlugin::generateAndBuild()
 void VisualDebuggerPlugin::startDebugger()
 {
 	mErrorReporter->clear();
-	
+
 	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)
 		&& !mDebuggerConnector->isDebuggerRunning())
 	{
@@ -232,7 +232,7 @@ void VisualDebuggerPlugin::placeBreakpointsInDebugger()
 		mVisualDebugger->createIdByLineCorrelation();
 		if (mVisualDebugger->canComputeBreakpoints()) {
 			QList<int>* breakpoints = mVisualDebugger->computeBreakpoints();
-			
+
 			foreach (int const &breakpoint, *breakpoints) {
 				mDebuggerConnector->sendCommand("break " + QString::number(breakpoint) + "\n");
 			}
@@ -268,7 +268,7 @@ void VisualDebuggerPlugin::closeDebuggerProcessAndThread()
 void VisualDebuggerPlugin::startDebugging()
 {
 	mErrorReporter->clear();
-	
+
 	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)) {
 		generateAndBuild();
 		startDebugger();
@@ -287,7 +287,7 @@ void VisualDebuggerPlugin::drawDebuggerStdOutput(QString const &output)
 		Id const idToLigth = mVisualDebugger->getIdByLine(output.mid(0,index).toInt());
 		mVisualDebugger->highlight(idToLigth);
 	} else {
-		QString const fileName = SettingsManager::value("codeFileName", "code.c").toString();
+		QString const fileName = SettingsManager::value("codeFileName").toString();
 
 		int index = output.indexOf(fileName + ":");
 		if (index > -1) {
