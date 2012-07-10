@@ -21,7 +21,7 @@ public:
 
 public slots:
 	/// handler for find dialog 'button find' pressed
-	/// @param searchData - data was input to find
+    /// @param searchData - data was input to find
 	void handleFindDialog(QStringList const &searchData);
 
 	/// handler for refs dialog reference chosen
@@ -36,7 +36,7 @@ private:
 	/// Finds items by input name and search mode
 	/// @param key - name
 	/// @param currentMode - mode
-	qReal::IdList foundByMode(QString key, QString currentMode, bool sensitivity);
+    qReal::IdList foundByMode(QString key, QString currentMode, bool sensitivity, bool regExpression);
 
 	/// Finds items by input name and search modes - searchData
 	/// @param searchData - name and search modes

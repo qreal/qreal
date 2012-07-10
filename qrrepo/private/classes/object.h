@@ -32,7 +32,7 @@ namespace qrRepo {
 			qReal::IdList children() const;
 			qReal::Id parent() const;
 			QVariant property(const QString &name) const;
-			bool hasProperty(const QString &name, bool sensitivity = false) const;
+            bool hasProperty(const QString &name, bool sensitivity = false, bool regExpression = false) const;
 			void setProperty(const QString &name, const QVariant &value);
 			void removeProperty(const QString &name);
 			qReal::Id id() const;

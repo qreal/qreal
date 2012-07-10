@@ -27,3 +27,10 @@ SUBDIRS	= \
 #	umlTimingDiagram/umlTimingDiagram.pro \
 #	umlUseCaseDiagram/umlUseCaseDiagram.pro \
 
+
+
+
+
+
+
+
