@@ -37,25 +37,27 @@ IdList Client::findElementsByName(const QString &name, bool sensitivity,
 {
 	Qt::CaseSensitivity caseSensitivity;
 
-	if (sensitivity) {
+    if (sensitivity) {
 		caseSensitivity = Qt::CaseSensitive;
 	} else {
 		caseSensitivity = Qt::CaseInsensitive;
-	}
+    }
 
     QRegExp *regExp = new QRegExp(name, caseSensitivity);
+    qDebug() << regExp->caseSensitivity();
 	IdList result;
 
     if (regExpression){
         foreach (Object *element, mObjects.values())
             if ((element->property("name").toString().contains(*regExp))
                 && (!isLogicalId(mObjects.key(element))))
-                    result.append(mObjects.key(element));
+                //qDebug() << element->property("name").toString().contains(*regExp);
+                result.append(mObjects.key(element));
     } else {
         foreach (Object *element, mObjects.values())
             if ((element->property("name").toString().contains(name, caseSensitivity))
                 && (!isLogicalId(mObjects.key(element))))
-                    result.append(mObjects.key(element));
+                result.append(mObjects.key(element));
     }
 
 	return result;

@@ -40,7 +40,8 @@ QMap<QString, QString> FindManager::findItems(QStringList const &searchData)
     bool sensitivity = searchData.contains(tr("case sensitivity"));
     bool regExpression = searchData.contains(tr("by regular expression"));
 
-	for(int i = 1; i < searchData.length(); i++) {
+
+    for(int i = 1; i < searchData.length(); i++) {
         if (searchData[i] != tr("case sensitivity") && searchData[i] != tr("by regular expression")) {
             qReal::IdList byMode = foundByMode(searchData.first(), searchData[i], sensitivity, regExpression);
 			foreach (qReal::Id currentId, byMode) {
@@ -49,9 +50,9 @@ QMap<QString, QString> FindManager::findItems(QStringList const &searchData)
 					continue;
 				}
 				found.insert(currentId.toString(), tr("   :: ") + searchData[i]);
-			}
-		}
-	}
+            }
+        }
+    }
 	return found;
 }
 

@@ -385,8 +385,8 @@
     <name>FindManager</name>
     <message>
         <location filename="mainwindow/findManager.cpp" line="24"/>
-        <location filename="mainwindow/findManager.cpp" line="63"/>
-        <location filename="mainwindow/findManager.cpp" line="64"/>
+        <location filename="mainwindow/findManager.cpp" line="69"/>
+        <location filename="mainwindow/findManager.cpp" line="70"/>
         <source>by name</source>
         <translation>по имени</translation>
     </message>
@@ -402,26 +402,36 @@
     </message>
     <message>
         <location filename="mainwindow/findManager.cpp" line="30"/>
-        <location filename="mainwindow/findManager.cpp" line="70"/>
-        <location filename="mainwindow/findManager.cpp" line="71"/>
+        <location filename="mainwindow/findManager.cpp" line="77"/>
+        <location filename="mainwindow/findManager.cpp" line="78"/>
         <source>by property content</source>
         <translation>по содержимому свойств</translation>
     </message>
     <message>
         <location filename="mainwindow/findManager.cpp" line="40"/>
-        <location filename="mainwindow/findManager.cpp" line="42"/>
-        <location filename="mainwindow/findManager.cpp" line="65"/>
-        <location filename="mainwindow/findManager.cpp" line="72"/>
+        <location filename="mainwindow/findManager.cpp" line="43"/>
+        <location filename="mainwindow/findManager.cpp" line="48"/>
+        <location filename="mainwindow/findManager.cpp" line="71"/>
+        <location filename="mainwindow/findManager.cpp" line="79"/>
         <source>case sensitivity</source>
         <translation>чувствительность к регистру</translation>
     </message>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="46"/>
+        <location filename="mainwindow/findManager.cpp" line="41"/>
+        <location filename="mainwindow/findManager.cpp" line="42"/>
+        <location filename="mainwindow/findManager.cpp" line="48"/>
+        <location filename="mainwindow/findManager.cpp" line="72"/>
+        <location filename="mainwindow/findManager.cpp" line="80"/>
+        <source>by regular expression</source>
+        <translation>используя регулярные выражения</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/findManager.cpp" line="52"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="49"/>
+        <location filename="mainwindow/findManager.cpp" line="55"/>
         <source>   :: </source>
         <translation>   ::    </translation>
     </message>
