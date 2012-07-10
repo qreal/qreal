@@ -29,6 +29,10 @@ public:
 	virtual void saveAll() const = 0;
 	virtual void save(qReal::IdList list) const = 0;
 	virtual void saveTo(QString const &workingFile) = 0;
+	/// saves choosen diagrams to target directory and file
+	/// @param diagramIds - map of the following structure:
+	/// key is a file path to save into, value is a list of diagrams to save
+	virtual void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds) = 0;
 
 	virtual void open(QString const &workingFile) = 0;
 

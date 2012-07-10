@@ -250,7 +250,7 @@ Number ExpressionsParser::parseTerm(const QString &stream, int &pos)
 			}
 		} else {
 			error(unexpectedSymbol, QString::number(pos+1),
-				  "digit\'' or \'letter\' or \'bracket\' or \'sign", QString(stream.at(pos)));
+				  "\'digit\' or \'letter\' or \'bracket\' or \'sign\'", QString(stream.at(pos)));
 		}
 		break;
 	}
@@ -455,7 +455,7 @@ bool ExpressionsParser::parseDisjunction(const QString &stream, int &pos)
 			res = parseSingleComprasion(stream, pos);
 		} else {
 			error(unexpectedSymbol, QString::number(pos+1),
-				  "digit\' or \'letter\' or \'sign", QString(stream.at(pos)));
+				  "\'digit\' or \'letter\' or \'sign\'", QString(stream.at(pos)));
 		}
 		break;
 	}
@@ -647,6 +647,14 @@ void ExpressionsParser::error(const ParseErrorType &type, const QString &pos, co
 	case unexpectedSymbolAfterTheEndOfExpression:
 		mHasParseErrors = true;
 		mErrorReporter->addWarning(QObject::tr("Unexpected symbol after the end of expression"), mCurrentId);
+		break;
+	case unknownElementProperty:
+		mHasParseErrors = true;
+		mErrorReporter->addCritical(QObject::tr("Unknown element property used"), mCurrentId);
+		break;
+	case unknownElementName:
+		mHasParseErrors = true;
+		mErrorReporter->addCritical(QObject::tr("Unknown element name used"), mCurrentId);
 		break;
 	}
 }

@@ -542,7 +542,7 @@ Id VisualDebugger::getIdByLine(int line)
 
 void VisualDebugger::highlight(Id const &id)
 {
-	mInterpretersInterface.highlight(id);
+	mInterpretersInterface.highlight(id, true);
 }
 
 void VisualDebugger::dehighlight()
