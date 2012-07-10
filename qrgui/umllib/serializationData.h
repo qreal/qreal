@@ -21,12 +21,11 @@ struct NodeData
 {
 	qReal::Id mId;
 	qReal::Id mLogicalId;
-//	QMap<QString, QVariant> mProperties;
+	QMap<QString, QVariant> mProperties;
 	qReal::Id mParentId;
 	QPointF mPos;
 	QRectF mContents;
 };
-Q_DECLARE_METATYPE(NodeData)
 
 QDataStream& operator<< (QDataStream &out, NodeData const &data);
 QDataStream& operator>> (QDataStream &in, NodeData &data);

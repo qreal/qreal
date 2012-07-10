@@ -22,7 +22,7 @@
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"
 
-#include "copypaste.h"
+#include "serializationData.h"
 
 class NodeElement : public Element
 {

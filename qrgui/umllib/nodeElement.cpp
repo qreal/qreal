@@ -1600,7 +1600,7 @@ NodeData NodeElement::data()
 	NodeData d;
 	d.mId = id();
 	d.mLogicalId = logicalId();
-//	d.mProperties = properties();
+	d.mProperties = properties();
 	d.mPos = mPos;
 	d.mContents = mContents;
 

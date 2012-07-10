@@ -37,9 +37,6 @@ EditorViewScene::EditorViewScene(QObject *parent)
 	setEnabled(false);
 
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
-
-	qRegisterMetaType<NodeData>("NodeData");
-	qRegisterMetaTypeStreamOperators<NodeData>("NodeData");
 }
 
 void EditorViewScene::drawForeground(QPainter *painter, QRectF const &rect)
@@ -518,7 +515,7 @@ void EditorViewScene::copy()
 	stream << edgesData;
 
 	QMimeData* mimeData = new QMimeData();
-	mimeData->setData("", data);
+	mimeData->setData("application/x-real-uml-model-data", data);
 
 	QClipboard* clipboard = QApplication::clipboard();
 	clipboard->setMimeData(mimeData);
@@ -568,7 +565,7 @@ void EditorViewScene::paste()
 	QClipboard* clipboard = QApplication::clipboard();
 	const QMimeData* mimeData = clipboard->mimeData();
 
-	QByteArray data = mimeData->data("");
+	QByteArray data = mimeData->data("application/x-real-uml-model-data");
 	QDataStream stream(&data, QIODevice::ReadOnly);
 
 	QList<NodeData> nodesData;
@@ -577,12 +574,18 @@ void EditorViewScene::paste()
 	stream >> nodesData;
 	stream >> edgesData;
 
+	if (nodesData.isEmpty()) {
+		return;
+	}
+
+	QPointF offset = getMousePos() - getElem(nodesData[0].mId)->scenePos();
+
 	QHash<Id, Id> copiedIds;
 	copiedIds.insert(Id::rootId(), Id::rootId());
 
 	while (!nodesData.isEmpty()) {
 		NodeData nextToPaste = nodesData[0];
-		Id copy = pasteNode(nextToPaste, copiedIds);
+		Id copy = pasteNode(nextToPaste, copiedIds, offset);
 		copiedIds.insert(nextToPaste.mId, copy);
 		nodesData.removeAll(nextToPaste);
 	}
@@ -592,23 +595,19 @@ void EditorViewScene::paste()
 	}
 }
 
-Id EditorViewScene::pasteNode(NodeData const &nodeData, QHash<Id, Id> const &copiedIds)
+Id EditorViewScene::pasteNode(NodeData const &nodeData,
+		QHash<Id, Id> const &copiedIds, QPointF const &offset)
 {
 	QPointF newPos = nodeData.mPos;
 	if (nodeData.mParentId == Id::rootId()) {
-		newPos += QPointF(10, 20);
+		newPos += offset;
 	}
 
 	Id typeId = nodeData.mId.type();
 	Id newId = createElement(typeId.toString(), QPointF());
 	NodeElement* newNode = dynamic_cast<NodeElement*>(getElem(newId));
-/*
-	QStringList properties = nodeData.mProperties.keys();
-	foreach (QString property, properties) {
-		mMVIface->graphicalAssistApi()->setProperty(
-				property, nodeData.mProperties[property]);
-	}
-*/
+
+	mMVIface->graphicalAssistApi()->setProperties(newId, nodeData.mProperties);
 
 	if (nodeData.mParentId != Id::rootId()) {
 		mMVIface->graphicalAssistApi()->changeParent(

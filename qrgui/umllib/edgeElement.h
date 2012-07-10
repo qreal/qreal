@@ -5,7 +5,7 @@
 
 #include "element.h"
 #include "../editorPluginInterface/elementImpl.h"
-#include "copypaste.h"
+#include "serializationData.h"
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
