@@ -7,7 +7,8 @@ HEADERS += umllib/edgeElement.h \
 	umllib/sceneGridHandler.h \
 	umllib/umlPortHandler.h \
 	umllib/embedded/linkers/embeddedLinker.h \
-	umllib/embedded/linkers/embeddedLinkers.h
+	umllib/embedded/linkers/embeddedLinkers.h \
+	umllib/copypaste.h
 
 SOURCES += umllib/edgeElement.cpp \
 	umllib/element.cpp \
@@ -18,4 +19,5 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/sceneGridHandler.cpp \
 	umllib/umlPortHandler.cpp \
 	umllib/embedded/linkers/embeddedLinker.cpp \
-	umllib/embedded/linkers/embeddedLinkers.cpp
+	umllib/embedded/linkers/embeddedLinkers.cpp \
+    umllib/copypaste.cpp

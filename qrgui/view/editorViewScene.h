@@ -138,9 +138,17 @@ private:
 
 	void initContextMenu(Element *e, QPointF const &pos);
 
+	QList<NodeElement*> getNodesForCopying();
+	QList<EdgeData> getEdgesData(QList<NodeElement*> const &nodes);
+
+	void addChildren(NodeElement* node, QList<NodeElement*> &nodes);
+
+	qReal::Id pasteNode(NodeData const &nodeData, QHash<qReal::Id, qReal::Id> const &copiedIds);
+	qReal::Id pasteEdge(EdgeData const &edgeData, QHash<qReal::Id, qReal::Id> const &copiedIds);
 
 	Element* mLastCreatedWithEdge;
 	QList<NodeElement*> mCopiedNodes;
+	QList<EdgeElement*> mCopiedEdges;
 
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)

@@ -276,6 +276,16 @@ void RepoApi::copyProperties(const Id &dest, const Id &src)
 	mClient.copyProperties(dest, src);
 }
 
+QMap<QString, QVariant> RepoApi::properties(Id const &id)
+{
+	return mClient.properties(id);
+}
+
+void RepoApi::setProperties(Id const &id, QMap<QString, QVariant> const &properties)
+{
+	mClient.setProperties(id, properties);
+}
+
 bool RepoApi::hasProperty(Id const &id, QString const &propertyName) const
 {
 	return mClient.hasProperty(id, propertyName);

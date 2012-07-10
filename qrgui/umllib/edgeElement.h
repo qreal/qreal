@@ -5,6 +5,7 @@
 
 #include "element.h"
 #include "../editorPluginInterface/elementImpl.h"
+#include "copypaste.h"
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
@@ -67,6 +68,8 @@ public:
 	void breakPointUnpressed();
 
 	void highlight(QColor const color = Qt::red);
+
+	EdgeData data();
 
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);

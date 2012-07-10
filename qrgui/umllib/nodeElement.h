@@ -22,6 +22,8 @@
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"
 
+#include "copypaste.h"
+
 class NodeElement : public Element
 {
 	Q_OBJECT
@@ -34,6 +36,8 @@ public:
 	void copyChildren(NodeElement *source);
 	void copyEdges(NodeElement *source);
 	void copyProperties(NodeElement *source);
+
+	QMap<QString, QVariant> properties();
 
 	virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w, SdfRenderer *portrenderer);
 	virtual void paint(QPainter *,  const QStyleOptionGraphicsItem *, QWidget *);
@@ -60,6 +64,8 @@ public:
 
 	void addEdge(EdgeElement *edge);
 	void delEdge(EdgeElement *edge);
+
+	NodeData data();
 
 	virtual bool initPossibleEdges();
 	QList<PossibleEdge> getPossibleEdges();
@@ -113,7 +119,7 @@ public slots:
 	virtual void singleSelectionState(const bool singleSelected);
 	virtual void selectionState(const bool selected);
 	void switchGrid(bool isChecked);
-	void copyAndPlaceOnDiagram(QPointF const &offset);
+	NodeElement* copyAndPlaceOnDiagram(QPointF const &offset);
 
 private:
 	enum DragState {

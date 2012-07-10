@@ -962,3 +962,15 @@ void EdgeElement::highlight(QColor const color)
 	mColor = color;
 	update();
 }
+
+EdgeData EdgeElement::data()
+{
+	EdgeData d;
+	d.mId = id();
+	d.mLogicalId = logicalId();
+	d.mSrcId = src()->id();
+	d.mDstId = dst()->id();
+	d.mPortFrom = mPortFrom;
+	d.mPortTo = mPortTo;
+	return d;
+}

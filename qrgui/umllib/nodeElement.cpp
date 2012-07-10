@@ -101,11 +101,13 @@ NodeElement *NodeElement::clone(bool toCursorPos, bool searchForParents)
 	return result;
 }
 
-void NodeElement::copyAndPlaceOnDiagram(QPointF const &offset)
+NodeElement* NodeElement::copyAndPlaceOnDiagram(QPointF const &offset)
 {
-	NodeElement* node = clone(false, false);
-	QPointF pos = node->scenePos();
-	node->setPos(pos.x() + offset.x(), pos.y() + offset.y());
+	NodeElement* copy = clone(false, false);
+	QPointF pos = copy->scenePos();
+	copy->setPos(pos.x() + offset.x(), pos.y() + offset.y());
+
+	return copy;
 }
 
 void NodeElement::copyChildren(NodeElement *source)
@@ -122,6 +124,11 @@ void NodeElement::copyChildren(NodeElement *source)
 void NodeElement::copyProperties(NodeElement *source)
 {
 	mGraphicalAssistApi->copyProperties(id(), source->id());
+}
+
+QMap<QString, QVariant> NodeElement::properties()
+{
+	return mGraphicalAssistApi->properties(id());
 }
 
 void NodeElement::copyEdges(NodeElement *source)
@@ -1586,4 +1593,22 @@ void NodeElement::highlightEdges()
 {
 	foreach (EdgeElement *edge, mEdgeList)
 		edge->highlight();
+}
+
+NodeData NodeElement::data()
+{
+	NodeData d;
+	d.mId = id();
+	d.mLogicalId = logicalId();
+//	d.mProperties = properties();
+	d.mPos = mPos;
+	d.mContents = mContents;
+
+	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
+	if (parent) {
+		d.mParentId = parent->id();
+	} else {
+		d.mParentId = Id::rootId();
+	}
+	return d;
 }

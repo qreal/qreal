@@ -56,6 +56,8 @@ namespace qrRepo {
 			void setProperty(const qReal::Id &id, const QString &name, const QVariant &value);
 			void copyProperties(const qReal::Id &dest, const qReal::Id &src);
 			QVariant property(const qReal::Id &id, const QString &name) const;
+			QMap<QString, QVariant> properties(qReal::Id const &id);
+			void setProperties(qReal::Id const &id, QMap<QString, QVariant> const &properties);
 			bool hasProperty(const qReal::Id &id, const QString &name, bool sensitivity = false) const;
 			void removeProperty(const qReal::Id &id, const QString &name);
 
