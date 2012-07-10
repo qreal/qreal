@@ -43,26 +43,26 @@ protected:
 	};
 
 protected:
-	virtual bool isLetter(QChar const &c);
+	virtual bool isLetter(QChar const &c) const;
 
-	bool isDigit(QChar const &c);
-	bool isSign(QChar const &c);
-	bool isExp(QChar const &c);
-	bool isPoint(QChar const &c);
-	bool isRoundBracket(QChar const &c);
-	bool isDisjunction(QChar const &c);
-	bool isConjunction(QChar const &c);
-	bool isComparison(QChar const &c);
-	bool isArithmeticalMinusOrPlus(QChar const &c);
-	bool isMultiplicationOrDivision(QChar const &c);
-	bool isDelimiter(QChar const &c);
-	bool isAssignment(QChar const &c);
+	bool isDigit(QChar const &c) const;
+	bool isSign(QChar const &c) const;
+	bool isExp(QChar const &c) const;
+	bool isPoint(QChar const &c) const;
+	bool isRoundBracket(QChar const &c) const;
+	bool isDisjunction(QChar const &c) const;
+	bool isConjunction(QChar const &c) const;
+	bool isComparison(QChar const &c) const;
+	bool isArithmeticalMinusOrPlus(QChar const &c) const;
+	bool isMultiplicationOrDivision(QChar const &c) const;
+	bool isDelimiter(QChar const &c) const;
+	bool isAssignment(QChar const &c) const;
 
-	bool isHtmlBrTag(QString const &stream, int &pos);
+	bool isHtmlBrTag(QString const &stream, int &pos) const;
 
 	QString parseIdentifier(QString const &stream, int &pos);
 	Number parseNumber(QString const &stream, int &pos);
-	void skip(QString const &stream, int &pos);
+	void skip(QString const &stream, int &pos) const;
 
 	Number parseTerm(QString const &stream, int &pos);
 	Number parseMult(QString const &stream, int&pos);
@@ -81,7 +81,7 @@ protected:
 	bool checkForOpeningBracket(QString const &stream, int &pos);
 	bool checkForClosingBracket(QString const &stream, int &pos);
 	bool checkForColon(QString const &stream, int &pos);
-	bool isEmpty(QString const &stream, int &pos);
+	bool isEmpty(QString const &stream, int &pos) const;
 	bool checkForEqual(QString const &stream, int pos);
 
 	virtual bool checkForUsingReservedVariables(QString const &nameOfVariable);

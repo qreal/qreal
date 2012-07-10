@@ -1,10 +1,9 @@
 #pragma once
 
 #include "../../../qrkernel/ids.h"
-
+#include "../../../qrutils/graphTransformation/baseGraphTransformationUnit.h"
 #include "../../../qrgui/mainwindow/errorReporter.h"
 #include "../../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
-#include "../../../qrutils/graphTransformation/baseGraphTransformationUnit.h"
 
 namespace qReal {
 
@@ -25,7 +24,7 @@ public:
 	bool refactoringRuleContainsSelectedSegment();
 
 private:
-	void addElement(const Id &id, IdList *idList);
+	void addElement(const Id &id, IdList *idList) const;
 
 	IdList elementsFromBlock(const QString &blockType) const;
 	IdList elementsFromAfterBlock() const;

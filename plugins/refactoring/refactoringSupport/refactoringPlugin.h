@@ -3,14 +3,12 @@
 #include <QtCore/QTranslator>
 #include <QtGui/QMenu>
 
+#include "../../../qrkernel/ids.h"
+#include "../../../qrutils/metamodelGeneratorSupport.h"
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
-
 #include "../../../qrgui/mainwindow/errorReporter.h"
 
-#include "../../../qrkernel/ids.h"
-
-#include "../../../qrutils/metamodelGeneratorSupport.h"
 #include "refactoringPreferencePage.h"
 #include "refactoringWindow.h"
 #include "refactoringFinder.h"
@@ -20,7 +18,7 @@ namespace qReal {
 namespace refactoring {
 
 /// Refactoring plugin allows you to automatically arrange elements,
-/// create refactorings editor based on specified metamodel or use default, 
+/// create refactorings editor based on specified metamodel or use default,
 /// save created refactorings and apply 3 predefined refactorings
 /// (change element names, direction of edges, cut the selected block of elements in the procedure)
 class RefactoringPlugin : public QObject, public qReal::ToolPluginInterface
@@ -90,7 +88,7 @@ private:
 	/// @param list list of the elements for adding property "ID"
 	/// @param isNode true, if all elements in list are Nodes, false, if
 	/// all elements in list are Edges
-	void insertRefactoringID(QDomDocument metamodel, QDomNodeList list, bool isNode);
+	void insertRefactoringID(QDomDocument metamodel, const QDomNodeList &list, bool isNode);
 
 	/// add to chosen metamodel refactoring elements and make all elements source metamodel
 	/// children of containers "Before" and "After"
@@ -98,22 +96,22 @@ private:
 	/// @param metamodel metamodel for integranion with refactoring language
 	/// @param graphics xml-element, refactoring elements will be its children
 	/// @param pathToRefactoringMetamodel absolute path to Refactoring Metmaodel
-	void addRefactoringLanguageElements(QString diagramName, QDomDocument metamodel,
-			QDomElement &graphics, QString const &pathToRefactoringMetamodel);
+	void addRefactoringLanguageElements(const QString &diagramName, QDomDocument metamodel
+			, QDomElement &graphics, QString const &pathToRefactoringMetamodel);
 
 
-	QDomElement createPaletteElement(QString const &elementType,
-			QDomDocument metamodel, const QString &displayedName);
-	QDomElement metamodelPaletteGroup(QDomDocument metamodel,
-			QDomNodeList nodeList, QDomNodeList edgeList);
-	
-	void addPalette(QDomDocument metamodel, QDomElement diagram,
-			QDomElement metamodelPaletteGroup);
-	void addPaletteGroup(QDomDocument metamodel, QDomElement palette,
-			QString const &groupName, QStringList const &elementNameList);
-	void addElementsToMetamodelGroup(QDomDocument metamodel, QDomNodeList list,
-			QDomElement metamodelGroup);
-	
+	QDomElement createPaletteElement(QString const &elementType
+			, QDomDocument metamodel, const QString &displayedName);
+	QDomElement metamodelPaletteGroup(QDomDocument metamodel
+			, const QDomNodeList &nodeList, const QDomNodeList &edgeList);
+
+	void addPalette(QDomDocument metamodel, QDomElement diagram
+			, const QDomElement &metamodelPaletteGroup);
+	void addPaletteGroup(QDomDocument metamodel, QDomElement palette
+			, QString const &groupName, QStringList const &elementNameList);
+	void addElementsToMetamodelGroup(QDomDocument metamodel, const QDomNodeList &list
+			, QDomElement &metamodelGroup);
+
 	void arrangeElements(QString const &algorithm);
 	QList<QPair<Id, QPair<Id, bool> > > findOutsideSelectionLinks();
 	void removeUnnecessaryLinksFromSelected();

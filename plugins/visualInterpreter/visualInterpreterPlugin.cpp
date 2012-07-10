@@ -1,15 +1,11 @@
 #include "visualInterpreterPlugin.h"
 
-#include <QFileDialog>
-#include <QProcess>
-#include <QApplication>
-#include <QProgressBar>
-#include <QDesktopWidget>
+#include <QtCore/QProcess>
 #include <QtGui/QApplication>
+#include <QtGui/QFileDialog>
 
 #include "../../../qrutils/xmlUtils.h"
 #include "../../../qrutils/outFile.h"
-
 #include "../../../qrkernel/settingsManager.h"
 
 Q_EXPORT_PLUGIN2(visualInterpreter, qReal::visualInterpreter::VisualInterpreterPlugin)
@@ -32,11 +28,11 @@ VisualInterpreterPlugin::~VisualInterpreterPlugin()
 void VisualInterpreterPlugin::init(PluginConfigurator const &configurator)
 {
 	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
-	
+
 	mMetamodelGeneratorSupport = new MetamodelGeneratorSupport(
-			configurator.mainWindowInterpretersInterface().errorReporter(),
-			&configurator.mainWindowInterpretersInterface());
-	
+			configurator.mainWindowInterpretersInterface().errorReporter()
+			, &configurator.mainWindowInterpretersInterface());
+
 	mVisualInterpreterUnit = new VisualInterpreterUnit(configurator.logicalModelApi()
 			, configurator.graphicalModelApi()
 			, configurator.mainWindowInterpretersInterface());
@@ -51,107 +47,103 @@ QList<qReal::ActionInfo> VisualInterpreterPlugin::actions()
 {
 	mVisualInterpreterMenu = new QMenu(tr("Visual interpret"));
 	ActionInfo visualInterpreterMenu(mVisualInterpreterMenu, "tools");
-	
+
 	mGenerateAndLoadSemanticsEditorAction = new QAction(tr("Generate and load semantics editor"), NULL);
 	connect(mGenerateAndLoadSemanticsEditorAction, SIGNAL(triggered()), this, SLOT(generateSemanticsMetamodel()));
 	mVisualInterpreterMenu->addAction(mGenerateAndLoadSemanticsEditorAction);
-	
+
 	mLoadSemanticsAction = new QAction(tr("Load semantics model"), NULL);
 	connect(mLoadSemanticsAction, SIGNAL(triggered()), this, SLOT(loadSemantics()));
 	mVisualInterpreterMenu->addAction(mLoadSemanticsAction);
-	
+
 	mInterpretAction = new QAction(tr("Interpret"), NULL);
 	connect(mInterpretAction, SIGNAL(triggered()), this, SLOT(interpret()));
 	mVisualInterpreterMenu->addAction(mInterpretAction);
-	
+
 	mActionInfos << visualInterpreterMenu;
-	
+
 	return mActionInfos;
 }
 
-void VisualInterpreterPlugin::generateSemanticsMetamodel() {
+void VisualInterpreterPlugin::generateSemanticsMetamodel() const
+{
 	QString editorMetamodelFilePath =
 			QFileDialog::getOpenFileName(NULL, tr("Specify editor metamodel:"));
 	QString qrealSourceFilesPath = SettingsManager::value("qrealSourcesLocation", "").toString();
-	
-	if (editorMetamodelFilePath == "" || qrealSourceFilesPath == "") {
+
+	if (editorMetamodelFilePath.isEmpty() || qrealSourceFilesPath.isEmpty()) {
 		return;
 	}
-	
-	QDomDocument metamodel = mMetamodelGeneratorSupport->loadMetamodelFromFile(editorMetamodelFilePath);
-	
+
+	QDomDocument const metamodel = mMetamodelGeneratorSupport->loadMetamodelFromFile(editorMetamodelFilePath);
+
 	QDomElement diagram = mMetamodelGeneratorSupport->diagramElement(metamodel);
-	QString diagramName = diagram.attribute("name");
-	QString displayedName = diagram.attribute("displayedName");
-	if (displayedName == "") {
-		displayedName = diagramName;
-	}
-	
+	QString const diagramName = diagram.attribute("name");
+	QString const displayedName = diagram.attribute("displayedName").isEmpty()
+			? diagramName
+			:diagram.attribute("displayedName");
+
 	diagram.setAttribute("displayedName", displayedName + " Semantics");
-	
+
 	insertSemanticsStatesEnum(metamodel);
 	insertSematicsStateProperty(metamodel);
 	insertPaletteGroups(metamodel, displayedName);
 	insertSpecialSemanticsElements(metamodel, diagramName);
-	
-	QString metamodelName = diagramName + "SemanticsMetamodel";
-	QString relativeEditorPath = diagramName + "SemanticsEditor";
-	QString editorPath = qrealSourceFilesPath + "/plugins/" + relativeEditorPath;
-	
-	mMetamodelGeneratorSupport->generateProFile(metamodel,
-			editorMetamodelFilePath, qrealSourceFilesPath, metamodelName,
-			editorPath, relativeEditorPath
-	);
-	
-	mMetamodelGeneratorSupport->saveMetamodelInFile(metamodel, editorPath +
-			"/" + metamodelName + ".xml");
-	
+
+	QString const metamodelName = diagramName + "SemanticsMetamodel";
+	QString const relativeEditorPath = diagramName + "SemanticsEditor";
+	QString const editorPath = qrealSourceFilesPath + "/plugins/" + relativeEditorPath;
+
+	mMetamodelGeneratorSupport->generateProFile(metamodel
+			, editorMetamodelFilePath, qrealSourceFilesPath, metamodelName
+			, editorPath, relativeEditorPath);
+
+	mMetamodelGeneratorSupport->saveMetamodelInFile(metamodel, editorPath
+			+ "/" + metamodelName + ".xml");
+
 	mMetamodelGeneratorSupport->loadPlugin(editorPath, metamodelName
 			, SettingsManager::value("pathToQmake", "").toString()
 			, SettingsManager::value("pathToMake", "").toString()
 			, SettingsManager::value("pluginExtension", "").toString()
 			, SettingsManager::value("prefix", "").toString());
-	
-	//removeDirectory(editorPath);
 }
 
-void VisualInterpreterPlugin::insertSemanticsStatesEnum(QDomDocument metamodel) {
+void VisualInterpreterPlugin::insertSemanticsStatesEnum(QDomDocument metamodel) const
+{
 	QDomElement semanticsEnum = metamodel.createElement("enum");
 	semanticsEnum.setAttribute("name", "SemanticsStatus");
 
 	QDomElement semanticsStatusNew = metamodel.createElement("value");
 	QDomText newText = metamodel.createTextNode("@new@");
 	semanticsStatusNew.appendChild(newText);
-	
+
 	QDomElement semanticsStatusDeleted = metamodel.createElement("value");
 	QDomText deletedText = metamodel.createTextNode("@deleted@");
 	semanticsStatusDeleted.appendChild(deletedText);
-	
+
 	semanticsEnum.appendChild(semanticsStatusNew);
 	semanticsEnum.appendChild(semanticsStatusDeleted);
-	
-	mMetamodelGeneratorSupport->insertElementInDiagramSublevel(metamodel,
-			"nonGraphicTypes", semanticsEnum);
+
+	mMetamodelGeneratorSupport->insertElementInDiagramSublevel(metamodel
+			, "nonGraphicTypes", semanticsEnum);
 }
 
-void VisualInterpreterPlugin::insertSematicsStateProperty(QDomDocument metamodel) {
-	insertSematicsStatePropertyInSpecificElemType(metamodel, 
-			metamodel.elementsByTagName("node"), true);
-	insertSematicsStatePropertyInSpecificElemType(metamodel, 
-			metamodel.elementsByTagName("edge"), false);
-
-}
-
-void VisualInterpreterPlugin::insertSematicsStatePropertyInSpecificElemType(
-		QDomDocument metamodel ,QDomNodeList nodes, bool isNode)
+void VisualInterpreterPlugin::insertSematicsStateProperty(QDomDocument metamodel) const
 {
-	for (int i = 0; i < nodes.length(); i++) {
-		QDomElement elem = nodes.at(i).toElement();
-		
+	insertSematicsStatePropertyInSpecificElemType(metamodel, metamodel.elementsByTagName("node"), true);
+	insertSematicsStatePropertyInSpecificElemType(metamodel, metamodel.elementsByTagName("edge"), false);
+}
+
+void VisualInterpreterPlugin::insertSematicsStatePropertyInSpecificElemType(QDomDocument metamodel
+		, QDomNodeList const &nodes, bool isNode) const
+{
+	for (unsigned i = 0; i < nodes.length(); i++) {
+		QDomElement const elem = nodes.at(i).toElement();
+
 		QDomElement graphics = elem.elementsByTagName("graphics").at(0).toElement();
 		QDomNodeList labels = graphics.elementsByTagName("labels");
 		QString const x = graphics.elementsByTagName("picture").at(0).toElement().attribute("sizex");
-		
+
 		QDomElement label = metamodel.createElement("label");
 		if (isNode) {
 			label.setAttribute("x", x);
@@ -165,10 +157,10 @@ void VisualInterpreterPlugin::insertSematicsStatePropertyInSpecificElemType(
 			labelsElem.appendChild(label);
 			graphics.appendChild(labelsElem);
 		}
-		
+
 		QDomElement logic = elem.elementsByTagName("logic").at(0).toElement();
 		QDomNodeList properties = logic.elementsByTagName("properties");
-		
+
 		QDomElement property = metamodel.createElement("property");
 		property.setAttribute("type", "SemanticsStatus");
 		property.setAttribute("name", "semanticsStatus");
@@ -182,10 +174,9 @@ void VisualInterpreterPlugin::insertSematicsStatePropertyInSpecificElemType(
 	}
 }
 
-void VisualInterpreterPlugin::insertSpecialSemanticsElements(
-		QDomDocument metamodel, QString const &diagramName)
+void VisualInterpreterPlugin::insertSpecialSemanticsElements(QDomDocument metamodel, QString const &diagramName) const
 {
-	QString const elementsXml = 
+	QString const elementsXml =
 	"<semanticElements>"
 	"<node displayedName=\"Semantics Rule\" name=\"SemanticsRule\">"
 		"<graphics>"
@@ -274,29 +265,23 @@ void VisualInterpreterPlugin::insertSpecialSemanticsElements(
 		"</logic>"
 	"</edge>"
 	"</semanticElements>";
-	
-	QDomDocument elements = mMetamodelGeneratorSupport->loadElementsFromString(elementsXml);
-	QDomElement container = elements.elementsByTagName("container").at(0).toElement();
 
-	QStringList elementNames =
-			mMetamodelGeneratorSupport->collectAllGraphicTypesInMetamodel(metamodel, false);
-	
-	elementNames << "Wildcard" << "ControlFlowMark"
-			<< "Replacement" << "ControlFlowLocation";
-	
-	mMetamodelGeneratorSupport->appendTypesToElement(
-			elements, container, "contains", diagramName, elementNames);
-	
-	QDomNodeList semanticsElems = elements.firstChild().childNodes();
-	
-	mMetamodelGeneratorSupport->insertElementsInDiagramSublevel(
-			metamodel, "graphicTypes", semanticsElems);
+	QDomDocument const elements = mMetamodelGeneratorSupport->loadElementsFromString(elementsXml);
+	QDomElement const container = elements.elementsByTagName("container").at(0).toElement();
+
+	QStringList elementNames = mMetamodelGeneratorSupport->collectAllGraphicTypesInMetamodel(metamodel, false);
+	elementNames << "Wildcard" << "ControlFlowMark" << "Replacement" << "ControlFlowLocation";
+
+	mMetamodelGeneratorSupport->appendTypesToElement(elements, container
+			, "contains", diagramName, elementNames);
+
+	QDomNodeList const semanticsElems = elements.firstChild().childNodes();
+	mMetamodelGeneratorSupport->insertElementsInDiagramSublevel(metamodel, "graphicTypes", semanticsElems);
 }
 
-void VisualInterpreterPlugin::insertPaletteGroups(QDomDocument metamodel,
-		QString const &diagramDisplayedName)
+void VisualInterpreterPlugin::insertPaletteGroups(QDomDocument metamodel, QString const &diagramDisplayedName) const
 {
-	QString const elementsXml = 
+	QString const elementsXml =
 	"<palette>"
 		"<group name=\"Semantics Elements\">"
 			"<element name=\"Semantics Rule\"/>"
@@ -306,35 +291,33 @@ void VisualInterpreterPlugin::insertPaletteGroups(QDomDocument metamodel,
 			"<element name=\"Control Flow Location\"/>"
 		"</group>"
 	"</palette>";
-	
-	QDomDocument elements = mMetamodelGeneratorSupport->loadElementsFromString(elementsXml);
-	QDomElement groups = elements.elementsByTagName("palette").at(0).toElement();
 
-	QStringList elementNames =
+	QDomDocument elements = mMetamodelGeneratorSupport->loadElementsFromString(elementsXml);
+	QStringList const elementNames =
 			mMetamodelGeneratorSupport->collectAllGraphicTypesInMetamodel(metamodel, true);
-	
+
 	QDomElement editorGroup = metamodel.createElement("group");
 	editorGroup.setAttribute("name", diagramDisplayedName);
-	
+
 	foreach (QString const &elemName, elementNames) {
 		QDomElement el = metamodel.createElement("element");
 		el.setAttribute("name", elemName);
 		editorGroup.appendChild(el);
 	}
 	elements.firstChild().appendChild(editorGroup);
-	
-	QDomNodeList palette = elements.childNodes();
-	
+
+	QDomNodeList const palette = elements.childNodes();
 	mMetamodelGeneratorSupport->insertElementsInDiagramSublevel(
 			metamodel, "diagram", palette);
-	
 }
 
-void VisualInterpreterPlugin::removeDirectory(QString dirName) {
-	QDir dir(dirName);
-	
-	foreach (QFileInfo info, dir.entryInfoList(QDir::Hidden |
-			QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files, QDir::DirsFirst)) {
+void VisualInterpreterPlugin::removeDirectory(QString const &dirName)
+{
+	QDir const dir(dirName);
+
+	foreach (QFileInfo info, dir.entryInfoList(QDir::Hidden
+			| QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files, QDir::DirsFirst))
+	{
 		if (info.isDir()) {
 			removeDirectory(info.absoluteFilePath());
 		} else {

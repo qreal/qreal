@@ -1,8 +1,5 @@
 #include "visualInterpreterUnit.h"
 
-#include <QEventLoop>
-#include <QSet>
-
 using namespace qReal;
 
 VisualInterpreterUnit::VisualInterpreterUnit(
@@ -28,8 +25,7 @@ IdList VisualInterpreterUnit::allRules() const
 	return result;
 }
 
-void VisualInterpreterUnit::putIdIntoMap(QHash<QString, IdList*> *map,
-		QString const &ruleName, Id const &id)
+void VisualInterpreterUnit::putIdIntoMap(QHash<QString, IdList*> *map, QString const &ruleName, Id const &id)
 {
 	if (!map->contains(ruleName)) {
 		map->insert(ruleName, new IdList());
@@ -37,13 +33,14 @@ void VisualInterpreterUnit::putIdIntoMap(QHash<QString, IdList*> *map,
 	map->value(ruleName)->append(id);
 }
 
-bool VisualInterpreterUnit::isSemanticsEditor()
+bool VisualInterpreterUnit::isSemanticsEditor() const
 {
 	return mInterpretersInterface.activeDiagram().editor().contains("Semantics");
 }
 
-void VisualInterpreterUnit::initBeforeSemanticsLoading() {
-	mRules = new QHash<QString, Id>();
+void VisualInterpreterUnit::initBeforeSemanticsLoading()
+{
+	mRules = new QHash<QString, Id>(); // FIXME: delete
 	mDeletedElements = new QHash<QString, IdList*>();
 	mReplacedElements = new QHash<QString, IdList*>();
 	mCreatedElements = new QHash<QString, IdList*>();
@@ -52,7 +49,8 @@ void VisualInterpreterUnit::initBeforeSemanticsLoading() {
 	mNodesWithControlMark = new QHash<QString, IdList*>();
 }
 
-void VisualInterpreterUnit::initBeforeInterpretation() {
+void VisualInterpreterUnit::initBeforeInterpretation()
+{
 	mCurrentNodesWithControlMark.clear();
 	mInterpretersInterface.dehighlight();
 	mRuleParser->clear();
@@ -77,18 +75,17 @@ void VisualInterpreterUnit::loadSemantics()
 			semanticsLoadingError(tr("One of the rules doesn't have a name."));
 			return;
 		}
-		
+
 		IdList const ruleElements = children(rule);
-		
+
 		if (ruleElements.size() == 0) {
 			semanticsLoadingError(tr("One of the rules is empty."));
 			return;
 		}
-		
+
 		mRules->insert(ruleName, rule);
 		foreach (Id const &ruleElement, ruleElements) {
-			if (ruleElement.element() == "ControlFlowLocation" ||
-					ruleElement.element() == "Wildcard") {
+			if (ruleElement.element() == "ControlFlowLocation" || ruleElement.element() == "Wildcard") {
 				continue;
 			}
 
@@ -101,23 +98,21 @@ void VisualInterpreterUnit::loadSemantics()
 			QString const semanticsStatus = property(ruleElement, "semanticsStatus").toString();
 			if (ruleElement.element() == "ControlFlowMark") {
 				Id const nodeWithControl = nodeIdWithControlMark(ruleElement);
-				
+
 				if (nodeWithControl == Id::rootId()) {
 					semanticsLoadingError(tr("Control flow mark in rule '")
 							+ ruleName + tr("' isn't connected properly."));
 					return;
 				}
-				
-				if (semanticsStatus == "" || semanticsStatus == "@deleted@") {
+
+				if (semanticsStatus.isEmpty() || semanticsStatus == "@deleted@") {
 					putIdIntoMap(mNodesWithControlMark, ruleName, nodeWithControl);
 					if (semanticsStatus == "@deleted@") {
-						putIdIntoMap(mNodesWithDeletedControlMark, ruleName,
-								nodeWithControl);
+						putIdIntoMap(mNodesWithDeletedControlMark, ruleName, nodeWithControl);
 					}
 				} else {
 					putIdIntoMap(mCreatedElements, ruleName, ruleElement);
-					putIdIntoMap(mNodesWithNewControlMark, ruleName,
-							nodeWithControl);
+					putIdIntoMap(mNodesWithNewControlMark, ruleName, nodeWithControl);
 				}
 				continue;
 			}
@@ -140,22 +135,22 @@ void VisualInterpreterUnit::interpret()
 		report(tr("Semantics not loaded"), true);
 		return;
 	}
-	
+
 	initBeforeInterpretation();
 	int const timeout = SettingsManager::value("debuggerTimeout", 750).toInt();
-	
+
 	while (findMatch()) {
 		if (hasRuleSyntaxError()) {
-			report(tr("Rule '") +mMatchedRuleName +
-					tr("' cannot be applied because semantics has syntax errors"), true);
+			report(tr("Rule '") +mMatchedRuleName
+					+ tr("' cannot be applied because semantics has syntax errors"), true);
 			return;
 		}
-		
+
 		if (!makeStep()) {
 			report(tr("Rule '") +mMatchedRuleName + tr("' applying failed"), true);
 			return;
 		}
-		
+
 		report(tr("Rule '") + mMatchedRuleName + tr("' was applied successfully"), false);
 		pause(timeout);
 	}
@@ -185,7 +180,7 @@ bool VisualInterpreterUnit::findMatch()
 			return true;
 		}
 	}
-	
+
 	return false;
 }
 
@@ -205,7 +200,7 @@ Id VisualInterpreterUnit::startElement() const
 bool VisualInterpreterUnit::makeStep()
 {
 	QHash<Id, Id> firstMatch = mMatches.at(0);
-	
+
 	if (mNodesWithDeletedControlMark->contains(mMatchedRuleName)) {
 		foreach (Id const &id, *(mNodesWithDeletedControlMark->value(mMatchedRuleName))) {
 			Id const node = firstMatch.value(id);
@@ -225,11 +220,11 @@ bool VisualInterpreterUnit::makeStep()
 	Id const rule = mRules->value(mMatchedRuleName);
 	QString const ruleProcess = property(rule, "procedure").toString();
 	bool result = true;
-	if (ruleProcess != "") {
+	if (!ruleProcess.isEmpty()) {
 		mRuleParser->setRuleId(rule);
 		result = mRuleParser->parseRule(ruleProcess, &firstMatch);
 	}
-	
+
 	mMatches.clear();
 	return result;
 }
@@ -252,15 +247,13 @@ bool VisualInterpreterUnit::compareElements(Id const &first, Id const &second) c
 	return result;
 }
 
-bool VisualInterpreterUnit::compareElementTypesAndProperties(Id const &first,
-		Id const &second) const
+bool VisualInterpreterUnit::compareElementTypesAndProperties(Id const &first, Id const &second) const
 {
 	if (second.element() == "Wildcard") {
 		return true;
 	}
 
-	return BaseGraphTransformationUnit::compareElementTypesAndProperties(first,
-			second);
+	return BaseGraphTransformationUnit::compareElementTypesAndProperties(first, second);
 }
 
 Id VisualInterpreterUnit::nodeIdWithControlMark(Id const &controlMarkId) const
@@ -269,9 +262,8 @@ Id VisualInterpreterUnit::nodeIdWithControlMark(Id const &controlMarkId) const
 	if (outLinks.size() == 0) {
 		return Id::rootId();
 	}
-	
-	Id const link = outLinks.at(0);
-	return toInRule(link);
+
+	return toInRule(outLinks.at(0));
 }
 
 IdList VisualInterpreterUnit::linksInRule(Id const &id) const

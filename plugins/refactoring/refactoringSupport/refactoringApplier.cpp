@@ -1,9 +1,5 @@
 #include "refactoringApplier.h"
 
-#include <QEventLoop>
-#include <QSet>
-#include <QtCore/QDebug>
-
 using namespace qReal;
 
 QSet<QString> const defaultProperties = (QSet<QString>()
@@ -28,17 +24,17 @@ RefactoringApplier::~RefactoringApplier()
 {
 }
 
-IdList RefactoringApplier::elementsFromBeforeBlock()
+IdList RefactoringApplier::elementsFromBeforeBlock() const
 {
 	return elementsFromBlock("BeforeBlock");
 }
 
-IdList RefactoringApplier::elementsFromAfterBlock()
+IdList RefactoringApplier::elementsFromAfterBlock() const
 {
 	return elementsFromBlock("AfterBlock");
 }
 
-IdList RefactoringApplier::elementsFromBlock(QString const &blockType)
+IdList RefactoringApplier::elementsFromBlock(QString const &blockType) const
 {
 	IdList list;
 	IdList resultList;
@@ -278,12 +274,12 @@ void RefactoringApplier::changeElementName(const Id &changeFromId, const Id &cha
 	}
 }
 
-bool RefactoringApplier::isNodeInModel(Id const &id)
+bool RefactoringApplier::isNodeInModel(Id const &id) const
 {
 	return (toInModel(id) == Id::rootId() && fromInModel(id) == Id::rootId());
 }
 
-bool RefactoringApplier::isNodeInRule(Id const &id)
+bool RefactoringApplier::isNodeInRule(Id const &id) const
 {
 	return (toInRule(id) == Id::rootId() && fromInRule(id) == Id::rootId());
 }
@@ -309,8 +305,8 @@ Id RefactoringApplier::fromInModel(Id const &id) const
 	return mLogicalModelApi.logicalRepoApi().from(id);
 }
 
-void RefactoringApplier::checkDirection(Id const &changeFromId,
-		Id const &changeToId, Id const &beforeId)
+void RefactoringApplier::checkDirection(Id const &changeFromId
+		, Id const &changeToId, Id const &beforeId)
 {
 	if (propertyID(toInRule(beforeId)) == propertyID(toInRule(changeToId)))
 		return;
@@ -320,7 +316,7 @@ void RefactoringApplier::checkDirection(Id const &changeFromId,
 	mGraphicalModelApi.setTo(changeFromId, oldFrom);
 }
 
-Id RefactoringApplier::subprogramElementId()
+Id RefactoringApplier::subprogramElementId() const
 {
 	IdList result;
 	IdList const after = elementsFromAfterBlock();

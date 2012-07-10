@@ -4,9 +4,9 @@
 
 using namespace qReal;
 
-RefactoringWindow::RefactoringWindow(QWidget *parent) :
-	QDialog(parent),
-	mUi(new Ui::refactoringForm)
+RefactoringWindow::RefactoringWindow(QWidget *parent)
+		: QDialog(parent)
+		, mUi(new Ui::refactoringForm)
 {
 	mUi->setupUi(this);
 	mUi->applyButton->setEnabled(false);
@@ -57,8 +57,9 @@ void RefactoringWindow::updateRefactorings(const QString &dirPath)
 void RefactoringWindow::findButtonActivate()
 {
 	QList<QListWidgetItem*> selectedItems = mUi->refactoringList->selectedItems();
-	if (selectedItems.size() != 1)
+	if (selectedItems.size() != 1) {
 		return;
+	}
 	emit findButtonClicked(selectedItems.at(0)->text());
 }
 

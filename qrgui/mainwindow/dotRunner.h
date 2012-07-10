@@ -10,14 +10,15 @@
 
 namespace qReal {
 
+// TODO: comments are required
 class DotRunner : public QObject
 {
 	Q_OBJECT
 public:
-	explicit DotRunner(Id const &diagramId,
-			models::GraphicalModelAssistApi const &graphicalModelApi,
-			models::LogicalModelAssistApi const &logicalModelApi,
-			EditorManager const &editorManager, QString const &absolutePathToDotFiles);
+	explicit DotRunner(Id const &diagramId
+			, models::GraphicalModelAssistApi const &graphicalModelApi
+			, models::LogicalModelAssistApi const &logicalModelApi
+			, EditorManager const &editorManager, QString const &absolutePathToDotFiles);
 
 	void run(QString const &algorithm);
 

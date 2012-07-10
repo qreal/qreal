@@ -7,17 +7,17 @@
 
 using namespace qReal;
 
-RefactoringPreferencesPage::RefactoringPreferencesPage(QWidget *parent) :
-	PreferencesPage(parent),
-	mUi(new Ui::refactoringPreferencesPage)
+RefactoringPreferencesPage::RefactoringPreferencesPage(QWidget *parent)
+		: PreferencesPage(parent)
+		, mUi(new Ui::refactoringPreferencesPage)
 {
 	mIcon = QIcon(":/icons/preferences/pencil.png");
 	mUi->setupUi(this);
 
 	QString binFolder = qApp->applicationDirPath();
 
-	mUi->qrealSourcesLineEdit->setText(SettingsManager::value("qrealSourcesLocation",
-			binFolder.mid(0, binFolder.lastIndexOf("/"))).toString());
+	mUi->qrealSourcesLineEdit->setText(SettingsManager::value("qrealSourcesLocation"
+			, binFolder.mid(0, binFolder.lastIndexOf("/"))).toString());
 
 	connect(mUi->qrealSourcesPushButton, SIGNAL(clicked()), this, SLOT(setQRealSourcesLocation()));
 
@@ -27,16 +27,19 @@ RefactoringPreferencesPage::RefactoringPreferencesPage(QWidget *parent) :
 	mUi->colorComboBox->setCurrentIndex(curColorIndex);
 }
 
-RefactoringPreferencesPage::~RefactoringPreferencesPage() {
+RefactoringPreferencesPage::~RefactoringPreferencesPage()
+{
 	delete mUi;
 }
 
-void RefactoringPreferencesPage::setQRealSourcesLocation() {
+void RefactoringPreferencesPage::setQRealSourcesLocation()
+{
 	QString location = QFileDialog::getExistingDirectory(this, tr("Specify directory:"));
 	mUi->qrealSourcesLineEdit->setText(location);
 }
 
-void RefactoringPreferencesPage::save() {
+void RefactoringPreferencesPage::save()
+{
 	SettingsManager::setValue("qrealSourcesLocation", mUi->qrealSourcesLineEdit->text());
 	SettingsManager::setValue("refactoringColor", mUi->colorComboBox->currentText());
 }

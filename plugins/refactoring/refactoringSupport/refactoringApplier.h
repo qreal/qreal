@@ -1,11 +1,10 @@
 #pragma once
 
-#include "../../../qrkernel/ids.h"
+#include <QtCore/QPair>
 
+#include "../../../qrkernel/ids.h"
 #include "../../../qrgui/mainwindow/errorReporter.h"
 #include "../../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
-
-#include <QtCore/QPair>
 
 namespace qReal {
 
@@ -24,20 +23,20 @@ public:
 	~RefactoringApplier();
 
 	void applyRefactoringRule();
-	Id subprogramElementId();
+	Id subprogramElementId() const;
 
 private:
-	IdList elementsFromBeforeBlock();
-	IdList elementsFromAfterBlock();
-	IdList elementsFromBlock(const QString &blockType);
-	
+	IdList elementsFromBeforeBlock() const;
+	IdList elementsFromAfterBlock() const;
+	IdList elementsFromBlock(const QString &blockType) const;
+
 	Id idElementWithID(const QString &idValue, const IdList &idList);
-	
+
 	bool hasProperty(const Id &id, const QString &propertyName) const;
 	QVariant property(const Id &id, const QString &propertyName) const;
 	QHash<QString, QVariant> properties(const Id &id) const;
 	void setProperty(const Id &id, const QString &propertyName, const QVariant &value) const;
-	
+
 	Id beforeIdInRule(const Id &id);
 	bool isElementTypesInRuleIdentical(const Id &beforeId, const Id &afterId);
 
@@ -58,8 +57,8 @@ private:
 	Id fromInRule(const Id &id) const;
 	Id toInRule(const Id &id) const;
 
-	bool isNodeInModel(const Id &id);
-	bool isNodeInRule(const Id &id);
+	bool isNodeInModel(const Id &id) const;
+	bool isNodeInRule(const Id &id) const;
 
 	QString propertyID(const Id &id);
 	void checkDirection(const Id &changeFromId, const Id &changeToId, const Id &beforeId);

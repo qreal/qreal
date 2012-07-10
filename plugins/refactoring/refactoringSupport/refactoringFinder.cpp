@@ -56,7 +56,7 @@ bool RefactoringFinder::containElementWithID(QString const &idValue, IdList cons
 	return false;
 }
 
-void RefactoringFinder::addElement(Id const &id, IdList *idList)
+void RefactoringFinder::addElement(Id const &id, IdList *idList) const
 {
 	if (!idList->contains(id)) {
 		idList->append(id);
@@ -110,7 +110,7 @@ bool RefactoringFinder::compareElementTypesAndProperties(Id const &first,
 	if (first == Id::rootId()) {
 		return false;
 	}
-	
+
 	bool firstIsNode = !isEdgeInModel(first);
 	if (second.element() == "Element" && firstIsNode) {
 		QString const elementName = mRefactoringRepoApi->name(second);

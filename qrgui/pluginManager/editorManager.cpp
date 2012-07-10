@@ -4,8 +4,6 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QIcon>
 
-#include <QtCore/QtDebug>
-
 #include "../../qrkernel/ids.h"
 
 #include "../../qrrepo/repoApi.h"
@@ -434,7 +432,6 @@ bool EditorManager::isGraphicalElementNode(const Id &id) const
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	ElementImpl *impl = mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
 	if( !impl ){
-		qDebug() << "no impl";
 		return false;
 	}
 	return impl->isNode();

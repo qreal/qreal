@@ -1906,15 +1906,12 @@ void MainWindow::changePaletteRepresentation()
 
 void MainWindow::arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles)
 {
-	Id diagramId = activeDiagram();
-	DotRunner *runner = new DotRunner(diagramId,
-		mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi(),
-		mEditorManager, absolutePathToDotFiles);
+	Id const diagramId = activeDiagram();
+	DotRunner *runner = new DotRunner(diagramId
+			, mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi()
+			, mEditorManager, absolutePathToDotFiles);
 	runner->run(algorithm);
 	updateActiveDiagram();
-//	reinitModels();
-//	activateItemOrDiagram(diagramId);
-//	mUi->graphicalModelExplorer->setRootIndex(QModelIndex());
 }
 
 IdList MainWindow::selectedElementsOnActiveDiagram()
@@ -1922,9 +1919,9 @@ IdList MainWindow::selectedElementsOnActiveDiagram()
 	if (!getCurrentTab()) {
 		return IdList();
 	}
-	IdList selected;
 	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
 
+	IdList selected;
 	foreach (QGraphicsItem* item, items) {
 		Element* element = dynamic_cast<Element*>(item);
 		if (element) {

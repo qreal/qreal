@@ -3,7 +3,6 @@
 #include <QProcess>
 #include <QApplication>
 #include <QProgressBar>
-#include <QDesktopWidget>
 
 #include "xmlUtils.h"
 #include "outFile.h"
@@ -162,7 +161,7 @@ QStringList MetamodelGeneratorSupport::collectAllGraphicTypesInMetamodel(QDomDoc
 {
 	QDomElement diagram = diagramElement(metamodel);
 	QDomNodeList graphicTypes = diagram.elementsByTagName("graphicTypes");
-	
+
 	QString type = isDisplayedName ? "displayedName" : "name";
 
 	QStringList result;
