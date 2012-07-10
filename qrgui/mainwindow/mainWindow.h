@@ -171,7 +171,9 @@ private slots:
 
 	void showPreferencesDialog();
 
+	void initSettingManager();
 	void connectActions();
+	void initActionsFromSettings();
 
 	void centerOn(Id const &id);
 	void graphicalModelExplorerClicked(const QModelIndex &index);

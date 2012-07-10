@@ -64,15 +64,9 @@ MainWindow::MainWindow()
 {
 	mUi->setupUi(this);
 
-	SplashScreen splashScreen(true || SettingsManager::value("Splashscreen").toBool());
-
-	QDir imagesDir(SettingsManager::value("pathToImages", "/someWeirdDirectoryName").toString());
-	if (!imagesDir.exists()) {
-		SettingsManager::setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
-	}
+	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 
 	// =========== Step 1: splash screen loaded, progress bar initialized ===========
-
 	splashScreen.setProgress(5);
 
 	initRecentProjectsMenu();
@@ -80,21 +74,15 @@ MainWindow::MainWindow()
 	initTabs();
 
 	// =========== Step 2: Ui is ready, splash screen shown ===========
-
 	splashScreen.setProgress(20);
 
 	initMiniMap();
 	initGridProperties();
 
 	// =========== Step 3: Ui connects are done ===========
-
 	splashScreen.setProgress(40);
 
 	initDocks();
-	SettingsManager::setValue("temp", mTempDir);
-	QDir dir(qApp->applicationDirPath());
-	if (!dir.cd(mTempDir))
-		QDir().mkdir(mTempDir);
 
 	QFileInfo saveFile(SettingsManager::value("saveFile", mSaveFile).toString());
 
@@ -137,7 +125,10 @@ MainWindow::MainWindow()
 
 	mGesturesWidget = new GesturesWidget();
 	initExplorers();
+	initSettingManager();
 	connectActions();
+	initActionsFromSettings();
+
 	// =========== Step 7: Save consistency checked, interface is initialized with models ===========
 
 	splashScreen.setProgress(100);
@@ -212,7 +203,12 @@ void MainWindow::connectActions()
 	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this
 		, SLOT(changePaletteRepresentation()));
 	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged())
-		, &mPreferencesDialog, SLOT(changePaletteParameters()));
+			, &mPreferencesDialog, SLOT(changePaletteParameters()));
+}
+
+void MainWindow::initActionsFromSettings()
+{
+	mUi->actionShowSplash->setChecked(SettingsManager::value("Splashscreen").toBool());
 }
 
 void MainWindow::showFindDialog()
@@ -921,6 +917,19 @@ void MainWindow::showPreferencesDialog()
 	mPreferencesDialog.exec();
 	mToolManager.updateSettings();
 	setAutoSaveParameters();
+}
+
+void MainWindow::initSettingManager()
+{
+	QDir imagesDir(SettingsManager::value("pathToImages", "/someWeirdDirectoryName").toString());
+	if (!imagesDir.exists()) {
+		SettingsManager::setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
+	}
+
+	SettingsManager::setValue("temp", mTempDir);
+	QDir dir(qApp->applicationDirPath());
+	if (!dir.cd(mTempDir))
+		QDir().mkdir(mTempDir);
 }
 
 void MainWindow::openSettingsDialog(QString const &tab)
