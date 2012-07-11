@@ -257,6 +257,7 @@ MainWindow::~MainWindow()
 	delete mCodeTabManager;
 	delete mFindReplaceDialog;
 	delete mFindHelper;
+	delete mStartDialog;
 }
 
 EditorManager* MainWindow::manager()
@@ -557,7 +558,7 @@ void MainWindow::saveAllAndOpen(QString const &dirName)
 	open(dirName);
 }
 
-bool MainWindow::open(QString fileName)
+bool MainWindow::open(QString const &fileName)
 {
 	refreshRecentProjectsList(fileName);
 

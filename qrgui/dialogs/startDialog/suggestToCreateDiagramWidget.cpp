@@ -12,17 +12,19 @@ qReal::SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *ma
 	, mMainWindow(mainWindow)
 	, mDiagramsListWidget(new QListWidget(this))
 {
-	int i = 0;
 	foreach(Id editor, mMainWindow->manager()->editors()) {
-		foreach(Id diagram, mMainWindow->manager()->diagrams(Id::loadFromString("qrm:/" + editor.editor()))) {
-			QString const diagramName = mMainWindow->mEditorManager.editorInterface(editor.editor())->diagramName(diagram.diagram());
-			QString const diagramNodeName = mMainWindow->mEditorManager.editorInterface(editor.editor())->diagramNodeName(diagram.diagram());
+		foreach(Id diagram, mMainWindow->manager()->diagrams(
+					Id::loadFromString("qrm:/" + editor.editor()))) {
+			QString const diagramName = mMainWindow->mEditorManager.editorInterface(
+					editor.editor())->diagramName(diagram.diagram());
+			QString const diagramNodeName = mMainWindow->mEditorManager.editorInterface(
+					editor.editor())->diagramNodeName(diagram.diagram());
 			if (diagramNodeName.isEmpty()) {
 				continue;
 			}
-			mMainWindow->mDiagramsList.append("qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
+			mMainWindow->mDiagramsList.append(
+					"qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
 			mDiagramsListWidget->addItem(diagramName);
-			i++;
 		}
 	}
 //	mDiagramsListWidget->setCurrentRow(0);

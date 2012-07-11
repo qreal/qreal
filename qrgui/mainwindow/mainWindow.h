@@ -137,7 +137,7 @@ private slots:
 	/// @param fileName - *.qrs file to import
 	/// @return true - if all ok, false - if not ok
 	bool import(QString const &fileName);
-	bool open(QString dirName);
+	bool open(QString const &fileName);
 	bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
 	void saveProjectAs();
 	virtual void saveAll();
