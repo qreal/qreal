@@ -8,7 +8,7 @@
 using namespace qReal;
 
 StartDialog::StartDialog(MainWindow *mainWindow, QWidget *parent)
-	: QDialog(parent)
+	: QDialog(parent, Qt::WindowMaximizeButtonHint)
 	, mMainWindow(mainWindow)
 	, mTabWidget(new QTabWidget)
 {
@@ -20,11 +20,10 @@ StartDialog::StartDialog(MainWindow *mainWindow, QWidget *parent)
 	mTabWidget->addTab(diagrams, tr("New project with diagram"));
 
 	QCommandLinkButton *quitLink = new QCommandLinkButton(tr("&Quit QReal"));
-	QCommandLinkButton *helpLink = new QCommandLinkButton(tr("&Help - not implemented yet"));
-	helpLink->setDisabled(true);
+	QCommandLinkButton *openLink = new QCommandLinkButton(tr("&Open existing project"));
 
 	QHBoxLayout *commandLinksLayout = new QHBoxLayout;
-	commandLinksLayout->addWidget(helpLink);
+	commandLinksLayout->addWidget(openLink);
 	commandLinksLayout->addWidget(quitLink);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -33,7 +32,9 @@ StartDialog::StartDialog(MainWindow *mainWindow, QWidget *parent)
 
 	setLayout(mainLayout);
 
-	connect(quitLink, SIGNAL(clicked()), qApp, SLOT(quit()));
+	connect(openLink, SIGNAL(clicked()), this, SLOT(openExistingProject()));
+	connect(quitLink, SIGNAL(clicked()), mMainWindow, SLOT(close()));
+	connect(quitLink, SIGNAL(clicked()), this, SLOT(close()));
 	connect(recentProjects, SIGNAL(userDataSelected(QString)), this, SLOT(openRecentProject(QString)));
 	connect(diagrams, SIGNAL(userDataSelected(QString)), this, SLOT(createProjectWithDiagram(QString)));
 }
@@ -41,6 +42,13 @@ StartDialog::StartDialog(MainWindow *mainWindow, QWidget *parent)
 void StartDialog::openRecentProject(QString const &fileName)
 {
 	mMainWindow->open(fileName);
+}
+
+void StartDialog::openExistingProject()
+{
+	if (mMainWindow->openExistingProject()) {
+		close();
+	}
 }
 
 void StartDialog::createProjectWithDiagram(const QString &idString)

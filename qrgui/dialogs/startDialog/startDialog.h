@@ -19,6 +19,7 @@ public:
 
 public slots:
 	void openRecentProject(QString const &fileName);
+	void openExistingProject();
 	void createProjectWithDiagram(QString const &idString);
 
 private:
