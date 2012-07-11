@@ -560,8 +560,6 @@ void MainWindow::saveAllAndOpen(QString const &dirName)
 
 bool MainWindow::open(QString const &fileName)
 {
-	refreshRecentProjectsList(fileName);
-
 	closeProject();
 
 	mModels->repoControlApi().open(fileName);
@@ -581,6 +579,7 @@ bool MainWindow::open(QString const &fileName)
 		setWindowTitle(windowTitle + " - unsaved project");
 	} else {
 		setWindowTitle(windowTitle + " - " + fileName);
+		refreshRecentProjectsList(fileName);
 	}
 	mSaveFile = fileName;
 
