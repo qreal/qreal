@@ -217,7 +217,8 @@ void MainWindow::connectActions()
 	connect(mUi->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
 	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
-	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
+//	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
+	connect (mUi->actionShowGestures, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
@@ -231,7 +232,14 @@ void MainWindow::connectActions()
 		, SLOT(changePaletteRepresentation()));
 	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged())
 		, &mPreferencesDialog, SLOT(changePaletteParameters()));
+
+//	connect(mUi->actionMouse_gestures, SIGNAL(triggered()), this, SLOT(showGesturesDialog()));
 }
+
+/*void MainWindow::showGesturesDialog()
+{
+	cout << "ololo psh psh psh";
+}*/
 
 void MainWindow::showFindDialog()
 {

@@ -84,6 +84,7 @@
     <property name="title">
      <string>Tools</string>
     </property>
+    <addaction name="actionShowGestures"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -653,6 +654,11 @@
   <action name="actionFind_and_replace">
    <property name="text">
     <string>Find and replace</string>
+   </property>
+  </action>
+  <action name="actionShowGestures">
+   <property name="text">
+    <string>Mouse gestures</string>
    </property>
   </action>
  </widget>
