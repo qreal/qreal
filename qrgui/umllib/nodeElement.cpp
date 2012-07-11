@@ -739,7 +739,11 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-	Q_UNUSED(event)
+	Q_UNUSED(event);
+	
+	if (mElementImpl->isContainer()) {
+		changeFoldState();
+	}
 }
 
 void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
