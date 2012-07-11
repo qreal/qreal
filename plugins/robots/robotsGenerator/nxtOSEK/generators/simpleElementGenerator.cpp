@@ -76,7 +76,7 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 
 	} else if (mElementId.element() == "FinalNode") {
 		result.append(SmartLine(
-					"return;",
+					"TerminateTask();",
 					mElementId));
 
 	} else if (mElementId.element() == "NullificationEncoder") {

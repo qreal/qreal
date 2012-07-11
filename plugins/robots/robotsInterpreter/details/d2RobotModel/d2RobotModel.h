@@ -43,6 +43,8 @@ public:
 	virtual void rotateOn(double angle);
 	virtual double rotateAngle() const;
 
+	QPointF robotPos();
+
 	enum ATime {
 		DoInf,
 		Do,
@@ -79,7 +81,9 @@ private:
 	QHash<int, qreal> mTurnoverMotors;  // stores how many degrees the motor rotated on
 	SensorsConfiguration mSensorsConfiguration;
 	WorldModel mWorldModel;
+	qreal mSpeed;
 
+	void speed(qreal speedMul);
 	void initPosition();
 	Motor* initMotor(int radius, int speed, long unsigned int degrees, int port);
 	void countNewCoord();
