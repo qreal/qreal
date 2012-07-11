@@ -419,40 +419,15 @@ QString MainWindow::getWorkingFile(QString const &dialogWindowTitle, bool save)
 	return fileName;
 }
 
-bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
+QString MainWindow::missingPluginNames()
 {
-	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
-	bool haveMissingPlugins = !missingPlugins.isEmpty();
-	bool loadingCancelled = false;
-	while (haveMissingPlugins && !loadingCancelled) {
-
-		QString text = tr("These plugins are not present, but needed to load the save:\n");
-		foreach (Id const id, missingPlugins)
-			text += id.editor() + "\n";
-		text += tr("Do you want to create new project?");
-
-
-
-		QMessageBox::StandardButton const button = QMessageBox::question(this
-				, tr("Some plugins are missing"), text, QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
-		if (splashScreen)
-			splashScreen->close();
-
-		if (button == QMessageBox::Yes) {
-			if (!openEmptyProject())
-				loadingCancelled = true;
-		}
-		else
-			loadingCancelled = true;
-		missingPlugins = mEditorManager.checkNeededPlugins(
-				mModels->logicalRepoApi(), mModels->graphicalRepoApi());
-		haveMissingPlugins = !missingPlugins.isEmpty();
+	IdList missingPlugins = mEditorManager.checkNeededPlugins(
+			mModels->logicalRepoApi(), mModels->graphicalRepoApi());
+	QString result;
+	foreach (Id const id, missingPlugins) {
+		result += id.editor() + "\n";
 	}
-	if (loadingCancelled) {
-		return false;
-	}
-
-	return true;
+	return result;
 }
 
 bool MainWindow::importProject()
@@ -542,14 +517,20 @@ void MainWindow::saveAllAndOpen(QString const &dirName)
 
 bool MainWindow::open(QString const &fileName)
 {
+	if (!missingPluginNames().isEmpty()) {
+		QMessageBox thereAreMissingPluginsMessage(
+				QMessageBox::Information, tr("There are missing plugins"),
+				tr("These plugins are not present, but needed to load the save:\n") +
+						missingPluginNames(),
+				QMessageBox::Ok);
+		thereAreMissingPluginsMessage.exec();
+		return false;
+	}
 	closeProject();
 
 	mModels->repoControlApi().open(fileName);
 	mModels->reinit();
 
-	if (!checkPluginsAndReopen(NULL)) {
-		return false;
-	}
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
@@ -945,6 +926,16 @@ void MainWindow::initSettingsManager()
 	QDir dir(qApp->applicationDirPath());
 	if (!dir.cd(mTempDir))
 		QDir().mkdir(mTempDir);
+
+	// Removal from the list of recent projects of non-existent files
+	QString recentExistProjects;
+	foreach (QString const &fileName, SettingsManager::value("recentProjects")
+			.toString().split(";", QString::SkipEmptyParts)) {
+		if (QFile::exists(fileName)) {
+			recentExistProjects += fileName + ";";
+		}
+	}
+	SettingsManager::setValue("recentProjects", recentExistProjects);
 }
 
 void MainWindow::openSettingsDialog(QString const &tab)

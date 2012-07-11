@@ -85,6 +85,7 @@ public:
 	virtual bool unloadPlugin(QString const &pluginName);
 	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
 	virtual bool pluginLoaded(QString const &pluginName);
+	QString missingPluginNames();
 
 signals:
 	void gesturesShowed();
@@ -138,7 +139,6 @@ private slots:
 	/// @return true - if all ok, false - if not ok
 	bool import(QString const &fileName);
 	bool open(QString const &fileName);
-	bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
 	void saveProjectAs();
 	virtual void saveAll();
 	void fullscreen();

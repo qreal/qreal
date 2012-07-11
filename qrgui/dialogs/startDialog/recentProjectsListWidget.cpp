@@ -10,6 +10,4 @@ RecentProjectsListWidget::RecentProjectsListWidget(QDialog *parent)
 	foreach (QString const &project, recentProjects.split(";", QString::SkipEmptyParts)) {
 		addItem(project.split("/").last().split("\\").last(),	project);
 	}
-
-	connect(this, SIGNAL(userDataSelected(QString)), parent, SLOT(close()));
 }

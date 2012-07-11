@@ -13,7 +13,7 @@ SUBDIRS	= \
 #	orthodoxEditor/orthodoxEditor.pro \
 #	parallel/parallel.pro \
 #	requirements/requirements.pro \
-#	robots/robots.pro \
+	robots/robots.pro \
 #	testEditor/testEditor.pro \
 #	ubiq/ubiq.pro \
 #	umlActivityDiagram/umlActivityDiagram.pro \

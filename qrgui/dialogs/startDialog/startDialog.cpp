@@ -41,7 +41,16 @@ StartDialog::StartDialog(MainWindow *mainWindow, QWidget *parent)
 
 void StartDialog::openRecentProject(QString const &fileName)
 {
-	mMainWindow->open(fileName);
+	if (!QFile::exists(fileName)) {
+		QMessageBox fileNotFoundMessage(QMessageBox::Information, tr("File not found"),
+				tr("File ") + fileName + tr(" not found. Try again"),
+				QMessageBox::Ok, this);
+		fileNotFoundMessage.exec();
+		return;
+	}
+	if (mMainWindow->open(fileName)) {
+		close();
+	}
 }
 
 void StartDialog::openExistingProject()
