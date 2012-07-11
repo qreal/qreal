@@ -146,7 +146,7 @@ private:
 	qReal::Id pasteNode(NodeData const &nodeData, QHash<qReal::Id,
 			qReal::Id> const &copiedIds, QPointF const &offset);
 	qReal::Id pasteEdge(EdgeData const &edgeData, QHash<qReal::Id,
-			qReal::Id> const &copiedIds);
+			qReal::Id> const &copiedIds, QPointF const &offset);
 
 	Element* mLastCreatedWithEdge;
 	QList<NodeElement*> mCopiedNodes;

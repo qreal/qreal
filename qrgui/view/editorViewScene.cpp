@@ -581,7 +581,7 @@ void EditorViewScene::paste()
 	QPointF offset = getMousePos() - getElem(nodesData[0].mId)->scenePos();
 
 	QHash<Id, Id> copiedIds;
-	copiedIds.insert(Id::rootId(), Id::rootId());
+//	copiedIds.insert(Id::rootId(), Id::rootId());
 
 	while (!nodesData.isEmpty()) {
 		NodeData nextToPaste = nodesData[0];
@@ -591,7 +591,7 @@ void EditorViewScene::paste()
 	}
 
 	foreach (EdgeData data, edgesData) {
-		pasteEdge(data, copiedIds);
+		pasteEdge(data, copiedIds, offset);
 	}
 }
 
@@ -599,39 +599,44 @@ Id EditorViewScene::pasteNode(NodeData const &nodeData,
 		QHash<Id, Id> const &copiedIds, QPointF const &offset)
 {
 	QPointF newPos = nodeData.mPos;
-	if (nodeData.mParentId == Id::rootId()) {
+	if (!copiedIds.contains(nodeData.mParentId)) {
 		newPos += offset;
 	}
 
 	Id typeId = nodeData.mId.type();
-	Id newId = createElement(typeId.toString(), QPointF());
+	Id newId = createElement(typeId.toString(), newPos);
 	NodeElement* newNode = dynamic_cast<NodeElement*>(getElem(newId));
 
 	mMVIface->graphicalAssistApi()->setProperties(newId, nodeData.mProperties);
 
-	if (nodeData.mParentId != Id::rootId()) {
+	newNode->setGeometry(nodeData.mContents.translated(newPos));
+	newNode->storeGeometry();
+
+	if (!copiedIds.contains(nodeData.mParentId)) {
+		mMVIface->graphicalAssistApi()->changeParent(newId, Id::rootId(), newPos);
+	} else {
 		mMVIface->graphicalAssistApi()->changeParent(
 				newId, copiedIds[nodeData.mParentId], newPos);
 	}
 
-	newNode->setGeometry(nodeData.mContents.translated(newPos));
-	newNode->storeGeometry();
-
-	newNode->checkConnectionsToPort();
-	newNode->initPossibleEdges();
-	newNode->updateData();
-	newNode->initTitles();
+//	mMVIface->graphicalAssistApi()->setConfiguration(newId, nodeData.mConfiguration);
+//	mMVIface->graphicalAssistApi()->setPosition(newId, newPos);
 
 	return newId;
 }
 
-Id EditorViewScene::pasteEdge(EdgeData const &edgeData, QHash<Id, Id> const &copiedIds)
+Id EditorViewScene::pasteEdge(
+		EdgeData const &edgeData, QHash<Id, Id> const &copiedIds, QPointF const &offset)
 {
 	Id typeId = edgeData.mId.type();
 	Id newId = createElement(typeId.toString(), QPointF());
 
 	Id newSrcId = copiedIds[edgeData.mSrcId];
 	Id newDstId = copiedIds[edgeData.mDstId];
+
+	QPointF newPos = edgeData.mPos + offset;
+	mMVIface->graphicalAssistApi()->setPosition(newId, newPos);
+	mMVIface->graphicalAssistApi()->setConfiguration(newId, edgeData.mConfiguration);
 
 	mMVIface->graphicalAssistApi()->setFrom(newId, newSrcId);
 	mMVIface->graphicalAssistApi()->setTo(newId, newDstId);

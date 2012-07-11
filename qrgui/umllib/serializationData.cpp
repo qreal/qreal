@@ -3,28 +3,30 @@
 QDataStream& operator<< (QDataStream &out, NodeData const &data)
 {
 	out << data.mId << data.mLogicalId  << data.mParentId
-			<< data.mPos << data.mContents << data.mProperties;
+			<< data.mPos << data.mContents << data.mProperties << data.mConfiguration;
 	return out;
 }
 
 QDataStream& operator>> (QDataStream &in, NodeData &data)
 {
 	in >> data.mId >> data.mLogicalId >> data.mParentId >> data.mPos
-		>> data.mContents >> data.mProperties;
+		>> data.mContents >> data.mProperties >> data.mConfiguration;
 	return in;
 }
 
 QDataStream& operator<< (QDataStream &out, EdgeData const &data)
 {
 	out << data.mId << data.mLogicalId << data.mSrcId
-			<< data.mDstId << data.mPortFrom << data.mPortTo;
+			<< data.mDstId << data.mPortFrom << data.mPortTo
+			<< data.mConfiguration << data.mPos;
 	return out;
 }
 
 QDataStream& operator>> (QDataStream &in, EdgeData &data)
 {
 	in >> data.mId >> data.mLogicalId >> data.mSrcId
-			>> data.mDstId >> data.mPortFrom >> data.mPortTo;
+			>> data.mDstId >> data.mPortFrom >> data.mPortTo
+			>> data.mConfiguration >> data.mPos;
 	return in;
 }
 

@@ -3,6 +3,7 @@
 #include <QtCore>
 #include <QMap>
 #include <QDataStream>
+#include <QPolygon>
 #include "../qrkernel/ids.h"
 
 struct EdgeData
@@ -15,6 +16,9 @@ struct EdgeData
 
 	qreal mPortFrom;
 	qreal mPortTo;
+
+	QPolygon mConfiguration;
+	QPointF mPos;
 };
 
 struct NodeData
@@ -25,6 +29,7 @@ struct NodeData
 	qReal::Id mParentId;
 	QPointF mPos;
 	QRectF mContents;
+	QPolygon mConfiguration;
 };
 
 QDataStream& operator<< (QDataStream &out, NodeData const &data);

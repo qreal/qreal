@@ -1610,5 +1610,7 @@ NodeData NodeElement::data()
 	} else {
 		d.mParentId = Id::rootId();
 	}
+
+	d.mConfiguration = mGraphicalAssistApi->configuration(mId);
 	return d;
 }

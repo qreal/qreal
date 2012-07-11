@@ -972,5 +972,7 @@ EdgeData EdgeElement::data()
 	d.mDstId = dst()->id();
 	d.mPortFrom = mPortFrom;
 	d.mPortTo = mPortTo;
+	d.mConfiguration = mGraphicalAssistApi->configuration(mId);
+	d.mPos = mGraphicalAssistApi->position(mId);
 	return d;
 }
