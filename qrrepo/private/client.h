@@ -53,13 +53,14 @@ namespace qrRepo {
 			/// Stacks element child before sibling (element id shold be parent of them both)
 			void stackBefore(qReal::Id const &id, qReal::Id const &child, qReal::Id const &sibling);
 
-			void setProperty(const qReal::Id &id, const QString &name, const QVariant &value);
+			void setProperty(const qReal::Id &id, const QString &name, const QVariant &value) const;
 			void copyProperties(const qReal::Id &dest, const qReal::Id &src);
 			QVariant property(const qReal::Id &id, const QString &name) const;
 			QMap<QString, QVariant> properties(qReal::Id const &id);
 			void setProperties(qReal::Id const &id, QMap<QString, QVariant> const &properties);
 			bool hasProperty(const qReal::Id &id, const QString &name, bool sensitivity = false) const;
 			void removeProperty(const qReal::Id &id, const QString &name);
+			QMapIterator<QString, QVariant> propertiesIterator(qReal::Id const &id) const;
 
 			void setTemporaryRemovedLinks(qReal::Id const &id, QString const &direction, qReal::IdList const &linkIdList);
 			qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const;
@@ -86,6 +87,8 @@ namespace qrRepo {
 
 			void saveAll() const;
 			void save(qReal::IdList list) const;
+			void saveWithLogicalId(qReal::IdList list) const;
+			void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds);
 			void remove(qReal::IdList list) const;
 			void setWorkingFile(QString const &workingDir);
 
@@ -100,6 +103,7 @@ namespace qrRepo {
 
 			qReal::IdList idsOfAllChildrenOf(qReal::Id id) const;
 			QList<Object*> allChildrenOf(qReal::Id id) const;
+			QList<Object*> allChildrenOfWithLogicalId(qReal::Id id) const;
 
 			QHash<qReal::Id, Object*> mObjects;
 
@@ -107,7 +111,5 @@ namespace qrRepo {
 			QString mWorkingFile;
 			Serializer serializer;
 		};
-
 	}
-
 }

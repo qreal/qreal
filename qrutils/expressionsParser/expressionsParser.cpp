@@ -26,76 +26,76 @@ QMap<QString, QString>* ExpressionsParser::getVariablesForWatch() const
 	return result;
 }
 
-bool ExpressionsParser::isDigit(const QChar &c)
+bool ExpressionsParser::isDigit(const QChar &c) const
 {
 	char symbol = c.toAscii();
 	return '0' <= symbol && symbol <= '9';
 }
 
-bool ExpressionsParser::isSign(const QChar &c)
+bool ExpressionsParser::isSign(const QChar &c) const
 {
 	char symbol = c.toAscii();
 	return symbol == '-' || symbol == '+';
 }
 
-bool ExpressionsParser::isLetter(const QChar &c)
+bool ExpressionsParser::isLetter(const QChar &c) const
 {
 	char symbol = c.toAscii();
 	return ('A' <= symbol && symbol <= 'Z') || ('a'<= symbol && symbol <= 'z');
 }
 
-bool ExpressionsParser::isExp(const QChar &c)
+bool ExpressionsParser::isExp(const QChar &c) const
 {
 	char symbol = c.toAscii();
 	return symbol == 'e' || symbol == 'E';
 }
 
-bool ExpressionsParser::isPoint(const QChar &c)
+bool ExpressionsParser::isPoint(const QChar &c) const
 {
 	return c.toAscii() == '.';
 }
 
-bool ExpressionsParser::isRoundBracket(const QChar &c)
+bool ExpressionsParser::isRoundBracket(const QChar &c) const
 {
 	char symbol = c.toAscii();
 	return symbol == '(' || symbol == ')';
 }
 
-bool ExpressionsParser::isDisjunction(const QChar &c)
+bool ExpressionsParser::isDisjunction(const QChar &c) const
 {
 	return c.toAscii() == '|';
 }
 
-bool ExpressionsParser::isConjunction(const QChar &c)
+bool ExpressionsParser::isConjunction(const QChar &c) const
 {
 	return c.toAscii() == '&';
 }
 
-bool ExpressionsParser::isComparison(const QChar &c)
+bool ExpressionsParser::isComparison(const QChar &c) const
 {
 	char symbol = c.toAscii();
 	return symbol == '<' || symbol == '>';
 }
 
-bool ExpressionsParser::isArithmeticalMinusOrPlus(const QChar &c)
+bool ExpressionsParser::isArithmeticalMinusOrPlus(const QChar &c) const
 {
 	char symbol = c.toAscii();
 	return symbol == '-' || symbol == '+';
 }
 
-bool ExpressionsParser::isMultiplicationOrDivision(const QChar &c)
+bool ExpressionsParser::isMultiplicationOrDivision(const QChar &c) const
 {
 	char symbol = c.toAscii();
 	return symbol == '*' || symbol == '/';
 }
 
-bool ExpressionsParser::isDelimiter(const QChar &c)
+bool ExpressionsParser::isDelimiter(const QChar &c) const
 {
 	char symbol = c.toAscii();
 	return symbol == '\n' || symbol == '\r' || symbol == ' ' || symbol == '\t';
 }
 
-bool ExpressionsParser::isAssignment(const QChar &c)
+bool ExpressionsParser::isAssignment(const QChar &c) const
 {
 	return c.toAscii() == '=';
 }
@@ -167,7 +167,7 @@ QString ExpressionsParser::parseIdentifier(const QString &stream, int &pos)
 	return "";
 }
 
-void ExpressionsParser::skip(const QString &stream, int &pos)
+void ExpressionsParser::skip(const QString &stream, int &pos) const
 {
 	while (pos < stream.length() &&
 		   (isDelimiter(stream.at(pos)) || stream.at(pos).toAscii() == '<' ))
@@ -183,13 +183,13 @@ void ExpressionsParser::skip(const QString &stream, int &pos)
 	}
 }
 
-bool ExpressionsParser::isHtmlBrTag(const QString &stream, int &pos)
+bool ExpressionsParser::isHtmlBrTag(const QString &stream, int &pos) const
 {
 	if (pos + 3 < stream.length()) {
-		return stream.at(pos).toAscii() == '<' &&
-				stream.at(pos + 1).toAscii() == 'b' &&
-				stream.at(pos + 2).toAscii() == 'r' &&
-				stream.at(pos + 3).toAscii() == '>';
+		return stream.at(pos).toAscii() == '<'
+				&& stream.at(pos + 1).toAscii() == 'b'
+				&& stream.at(pos + 2).toAscii() == 'r'
+				&& stream.at(pos + 3).toAscii() == '>';
 	} else {
 		return false;
 	}
@@ -250,7 +250,7 @@ Number ExpressionsParser::parseTerm(const QString &stream, int &pos)
 			}
 		} else {
 			error(unexpectedSymbol, QString::number(pos+1),
-				  "digit\'' or \'letter\' or \'bracket\' or \'sign", QString(stream.at(pos)));
+				  "\'digit\' or \'letter\' or \'bracket\' or \'sign\'", QString(stream.at(pos)));
 		}
 		break;
 	}
@@ -455,7 +455,7 @@ bool ExpressionsParser::parseDisjunction(const QString &stream, int &pos)
 			res = parseSingleComprasion(stream, pos);
 		} else {
 			error(unexpectedSymbol, QString::number(pos+1),
-				  "digit\' or \'letter\' or \'sign", QString(stream.at(pos)));
+				  "\'digit\' or \'letter\' or \'sign\'", QString(stream.at(pos)));
 		}
 		break;
 	}
@@ -602,7 +602,7 @@ bool ExpressionsParser::checkForEqual(const QString &stream, int pos)
 	return true;
 }
 
-bool ExpressionsParser::isEmpty(const QString &stream, int &pos)
+bool ExpressionsParser::isEmpty(const QString &stream, int &pos) const
 {
 	skip(stream, pos);
 	return pos == stream.length();
@@ -647,6 +647,14 @@ void ExpressionsParser::error(const ParseErrorType &type, const QString &pos, co
 	case unexpectedSymbolAfterTheEndOfExpression:
 		mHasParseErrors = true;
 		mErrorReporter->addWarning(QObject::tr("Unexpected symbol after the end of expression"), mCurrentId);
+		break;
+	case unknownElementProperty:
+		mHasParseErrors = true;
+		mErrorReporter->addCritical(QObject::tr("Unknown element property used"), mCurrentId);
+		break;
+	case unknownElementName:
+		mHasParseErrors = true;
+		mErrorReporter->addCritical(QObject::tr("Unknown element name used"), mCurrentId);
 		break;
 	}
 }

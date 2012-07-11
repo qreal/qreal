@@ -83,6 +83,10 @@ public:
 	virtual bool unloadPlugin(QString const &pluginName);
 	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
 	virtual bool pluginLoaded(QString const &pluginName);
+	virtual void saveDiagramAsAPictureToFile(const QString &fileName);
+	virtual void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles);
+	virtual IdList selectedElementsOnActiveDiagram();
+	virtual void updateActiveDiagram();
 
 signals:
 	void gesturesShowed();
@@ -94,7 +98,7 @@ public slots:
 	void editWindowTitle();
 	void propertyEditorScrollTo(QModelIndex const &index);
 
-	void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
+	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
 	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 	virtual void selectItem(Id const &id);
 	virtual void selectItemOrDiagram(Id const &graphicalId);

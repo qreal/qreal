@@ -18,11 +18,13 @@ HEADERS += \
 	xmlUtils.h \
 	ui_watchListWindow.h \
 	watchListWindow.h \
+	metamodelGeneratorSupport.h \
 
 SOURCES += \
 	outFile.cpp \
 	xmlUtils.cpp \
 	watchListWindow.cpp\
+	metamodelGeneratorSupport.cpp \
 
 FORMS += \
 	watchListWindow.ui
@@ -32,3 +34,6 @@ include(expressionsParser/expressionsParser.pri)
 
 # Graphical scene framework used in qrgui and plugins
 include(graphicsUtils/graphicsUtils.pri)
+
+# Stuff connected with graph transformation
+include(graphTransformation/graphTransformation.pri)

@@ -76,12 +76,13 @@ namespace qrRepo {
 
 		QVariant property(qReal::Id const &id, QString const &propertyName) const;
 		QString stringProperty(qReal::Id const &id, QString const &propertyName) const;
-		void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value);
+		void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value) const;
 		void removeProperty(qReal::Id const &id, QString const &propertyName);
 		void copyProperties(const qReal::Id &dest, const qReal::Id &src);
 		QMap<QString, QVariant> properties(qReal::Id const &id);
 		void setProperties(qReal::Id const &id, QMap<QString, QVariant> const &properties);
 		bool hasProperty(qReal::Id const &id, QString const &propertyName) const;
+		QMapIterator<QString, QVariant> propertiesIterator(qReal::Id const &id) const;
 
 		qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const;
 		void setTemporaryRemovedLinks(qReal::Id const &id, qReal::IdList const &value, QString const &direction);
@@ -118,7 +119,7 @@ namespace qrRepo {
 		void saveAll() const;
 		void save(qReal::IdList list) const;
 		void saveTo(QString const &workingFile);
-
+		void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds);
 		void open(QString const &saveFile);
 
 		virtual QString workingFile() const;
