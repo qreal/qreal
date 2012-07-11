@@ -605,7 +605,8 @@ Id EditorViewScene::pasteNode(NodeData const &nodeData,
 		newPos += offset;
 	}
 
-	Id newId = createElement(nodeData.mTypeId.toString(), newPos);
+	Id typeId = nodeData.mId.type();
+	Id newId = createElement(typeId.toString(), newPos);
 	NodeElement* newNode = dynamic_cast<NodeElement*>(getElem(newId));
 
 	mMVIface->graphicalAssistApi()->setProperties(newId, nodeData.mProperties);
@@ -626,7 +627,8 @@ Id EditorViewScene::pasteNode(NodeData const &nodeData,
 Id EditorViewScene::pasteEdge(
 		EdgeData const &edgeData, QHash<Id, Id> const &copiedIds, QPointF const &offset)
 {
-	Id newId = createElement(edgeData.mTypeId.toString(), QPointF());
+	Id typeId = edgeData.mId.type();
+	Id newId = createElement(typeId.toString(), QPointF());
 
 	Id newSrcId = copiedIds[edgeData.mSrcId];
 	Id newDstId = copiedIds[edgeData.mDstId];

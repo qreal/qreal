@@ -968,7 +968,6 @@ EdgeData EdgeElement::data()
 	EdgeData d;
 	d.mId = id();
 	d.mLogicalId = logicalId();
-	d.mTypeId = mId.type();
 	d.mSrcId = src()->id();
 	d.mDstId = dst()->id();
 	d.mPortFrom = mPortFrom;

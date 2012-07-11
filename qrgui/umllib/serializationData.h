@@ -13,7 +13,6 @@ struct EdgeData
 {
 	qReal::Id mId;
 	qReal::Id mLogicalId;
-	qReal::Id mTypeId;
 
 	qReal::Id mSrcId;
 	qReal::Id mDstId;
@@ -32,7 +31,6 @@ struct NodeData
 {
 	qReal::Id mId;
 	qReal::Id mLogicalId;
-	qReal::Id mTypeId;
 
 	QMap<QString, QVariant> mProperties;
 
