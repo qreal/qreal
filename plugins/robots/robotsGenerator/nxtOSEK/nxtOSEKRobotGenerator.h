@@ -56,13 +56,13 @@ private:
 	void deleteResidualLabels(QString projectName);
 	void generateMakeFile(bool toGenerateIsEmpty, QString projectName, QString projectDir);
 	void generateFilesForBalancer(QString projectDir);
-	QString addTabAndEndOfLine(QList<SmartLine> lineList, QString resultCode);
+	QString addTabAndEndOfLine(QList<SmartLine> const &lineList, QString resultCode);
 	QString generateVariableString();
 
-	QString resultOIL;
-	QString resultString;
-	int curTabNumber;
-	QString taskTemplate;
+	QString mResultOIL;
+	QString mResultString;
+	int mCurTabNumber;
+	QString mTaskTemplate;
 
 	qrRepo::RepoApi *mApi;
 	bool mIsNeedToDeleteMApi;
@@ -72,7 +72,6 @@ private:
 	QList< QList<SmartLine> > mGeneratedStringSet;
 	QList<SmartLine> mInitCode;
 	QList<SmartLine> mTerminateCode;
-
 
 	QByteArray mPortValue1;
 	QByteArray mPortValue2;

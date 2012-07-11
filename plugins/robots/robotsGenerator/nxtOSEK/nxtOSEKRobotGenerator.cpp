@@ -64,20 +64,19 @@ QString NxtOSEKRobotGenerator::generateVariableString()
 	return res;
 }
 
-
-QString NxtOSEKRobotGenerator::addTabAndEndOfLine(QList<SmartLine> lineList, QString resultCode)
+QString NxtOSEKRobotGenerator::addTabAndEndOfLine(QList<SmartLine> const &lineList, QString resultCode)
 {
-	foreach (SmartLine curLine, lineList) {
+	foreach (SmartLine const &curLine, lineList) {
 		if ( (curLine.indentLevelChange() == SmartLine::decrease)
 			|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
 		{
-			curTabNumber--;
+			mCurTabNumber--;
 		}
-		resultCode += QString(curTabNumber, '\t') + curLine.text() + "\n";
+		resultCode += QString(mCurTabNumber, '\t') + curLine.text() + "\n";
 		if ( (curLine.indentLevelChange() == SmartLine::increase)
 			|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
 		{
-			curTabNumber++;
+			mCurTabNumber++;
 		}
 	}
 	return resultCode;
@@ -116,20 +115,20 @@ void NxtOSEKRobotGenerator::insertCode(
 		QString resultTerminateCode,
 		QString curInitialNodeNumber)
 {
-	resultString.replace("@@CODE@@", resultCode +"\n" + "@@CODE@@");
-	taskTemplate.replace("@@NUMBER@@", curInitialNodeNumber);
-	resultOIL.replace("@@TASK@@", taskTemplate + "\n" + "@@TASK@@");
-	resultString.replace("@@VARIABLES@@", generateVariableString() + "\n" + "@@VARIABLES@@");
-	resultString.replace("@@INITHOOKS@@", resultInitCode);
-	resultString.replace("@@TERMINATEHOOKS@@", resultTerminateCode);
+	mResultString.replace("@@CODE@@", resultCode +"\n" + "@@CODE@@");
+	mTaskTemplate.replace("@@NUMBER@@", curInitialNodeNumber);
+	mResultOIL.replace("@@TASK@@", mTaskTemplate + "\n" + "@@TASK@@");
+	mResultString.replace("@@VARIABLES@@", generateVariableString() + "\n" + "@@VARIABLES@@");
+	mResultString.replace("@@INITHOOKS@@", resultInitCode);
+	mResultString.replace("@@TERMINATEHOOKS@@", resultTerminateCode);
 }
 
 void NxtOSEKRobotGenerator::deleteResidualLabels(QString projectName)
 {
-	resultOIL.replace("@@TASK@@", "");
-	resultString.replace("@@VARIABLES@@", "");
-	resultString.replace("@@CODE@@", "");
-	resultString.replace("@@PROJECT_NAME@@", projectName);
+	mResultOIL.replace("@@TASK@@", "");
+	mResultString.replace("@@VARIABLES@@", "");
+	mResultString.replace("@@CODE@@", "");
+	mResultString.replace("@@PROJECT_NAME@@", projectName);
 }
 
 void NxtOSEKRobotGenerator::generateFilesForBalancer(QString projectDir)
@@ -176,7 +175,7 @@ void NxtOSEKRobotGenerator::generate()
 	}
 
 	QTextStream templateCStream(&templateCFile);
-	resultString = templateCStream.readAll();
+	mResultString = templateCStream.readAll();
 	templateCFile.close();
 
 	// Generate OIL file
@@ -193,7 +192,7 @@ void NxtOSEKRobotGenerator::generate()
 		return;
 	}
 
-	resultOIL = templateOILFile.readAll();
+	mResultOIL = templateOILFile.readAll();
 	templateOILFile.close();
 
 	// Task template file
@@ -208,7 +207,7 @@ void NxtOSEKRobotGenerator::generate()
 
 	foreach (Id const &curInitialNode, toGenerate) {
 
-		taskTemplate = resultTaskTemplate;
+		mTaskTemplate = resultTaskTemplate;
 		if (!mApi->isGraphicalElement(curInitialNode)) {
 			continue;
 		}
@@ -233,14 +232,14 @@ void NxtOSEKRobotGenerator::generate()
 
 		// Result code in .c file
 		QString resultCode;
-		curTabNumber = 0;
+		mCurTabNumber = 0;
 		foreach (QList<SmartLine> lineList, mGeneratedStringSet) {
 			 resultCode = addTabAndEndOfLine(lineList, resultCode);
 		}
 		// Code init block in .c file
-		resultCode = addTabAndEndOfLine(mInitCode, resultCode);
+		resultInitCode = addTabAndEndOfLine(mInitCode, resultInitCode);
 		// Code terminate block in .c file
-		resultCode = addTabAndEndOfLine(mTerminateCode, resultCode);
+		resultTerminateCode = addTabAndEndOfLine(mTerminateCode, resultTerminateCode);
 		resultCode = "TASK(OSEK_Task_Number_" + QString::number(curInitialNodeNumber) +")\n{\n" + resultCode + "}";
 		insertCode(resultCode, resultInitCode, resultTerminateCode, QString::number(curInitialNodeNumber));
 		curInitialNodeNumber++;
@@ -255,12 +254,12 @@ void NxtOSEKRobotGenerator::generate()
 
 	//Output in the .c and .oil file
 	QTextStream outC(&resultCFile);
-	outC << resultString;
+	outC << mResultString;
 	outC.flush();
 	resultCFile.close();
 
 	QTextStream outOIL(&resultOILFile);
-	outOIL << resultOIL;
+	outOIL << mResultOIL;
 	outOIL.flush();
 	resultOILFile.close();
 
