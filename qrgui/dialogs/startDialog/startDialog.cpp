@@ -65,3 +65,10 @@ void StartDialog::createProjectWithDiagram(const QString &idString)
 	mMainWindow->openEmptyProject();
 	mMainWindow->createDiagram(idString);
 }
+
+void StartDialog::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() != Qt::Key_Escape) {
+		QDialog::keyPressEvent(event);
+	}
+}

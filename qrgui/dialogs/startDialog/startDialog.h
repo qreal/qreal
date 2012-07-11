@@ -16,6 +16,7 @@ class StartDialog : public QDialog
 	
 public:
 	explicit StartDialog(MainWindow *mainWindow, QWidget *parent = 0);
+	void keyPressEvent(QKeyEvent *event);
 
 public slots:
 	void openRecentProject(QString const &fileName);
