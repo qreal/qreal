@@ -6,10 +6,14 @@
 #include <QPolygon>
 #include "../qrkernel/ids.h"
 
+/** @struct EdgeData
+  * @brief EdgeElement serialization data for copy/paste
+  */
 struct EdgeData
 {
 	qReal::Id mId;
 	qReal::Id mLogicalId;
+	qReal::Id mTypeId;
 
 	qReal::Id mSrcId;
 	qReal::Id mDstId;
@@ -21,12 +25,19 @@ struct EdgeData
 	QPointF mPos;
 };
 
+/** @struct NodeData
+  * @brief NodeElement serialization data for copy/paste
+  */
 struct NodeData
 {
 	qReal::Id mId;
 	qReal::Id mLogicalId;
+	qReal::Id mTypeId;
+
 	QMap<QString, QVariant> mProperties;
+
 	qReal::Id mParentId;
+
 	QPointF mPos;
 	QRectF mContents;
 	QPolygon mConfiguration;

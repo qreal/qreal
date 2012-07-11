@@ -578,10 +578,12 @@ void EditorViewScene::paste()
 		return;
 	}
 
-	QPointF offset = getMousePos() - getElem(nodesData[0].mId)->scenePos();
+	QPointF offset;
+	if (getElem(nodesData[0].mId)) { // prevent from segfault when copying between diagrams
+		offset = getMousePos() - getElem(nodesData[0].mId)->scenePos();
+	}
 
 	QHash<Id, Id> copiedIds;
-//	copiedIds.insert(Id::rootId(), Id::rootId());
 
 	while (!nodesData.isEmpty()) {
 		NodeData nextToPaste = nodesData[0];
@@ -603,8 +605,7 @@ Id EditorViewScene::pasteNode(NodeData const &nodeData,
 		newPos += offset;
 	}
 
-	Id typeId = nodeData.mId.type();
-	Id newId = createElement(typeId.toString(), newPos);
+	Id newId = createElement(nodeData.mTypeId.toString(), newPos);
 	NodeElement* newNode = dynamic_cast<NodeElement*>(getElem(newId));
 
 	mMVIface->graphicalAssistApi()->setProperties(newId, nodeData.mProperties);
@@ -619,17 +620,13 @@ Id EditorViewScene::pasteNode(NodeData const &nodeData,
 				newId, copiedIds[nodeData.mParentId], newPos);
 	}
 
-//	mMVIface->graphicalAssistApi()->setConfiguration(newId, nodeData.mConfiguration);
-//	mMVIface->graphicalAssistApi()->setPosition(newId, newPos);
-
 	return newId;
 }
 
 Id EditorViewScene::pasteEdge(
 		EdgeData const &edgeData, QHash<Id, Id> const &copiedIds, QPointF const &offset)
 {
-	Id typeId = edgeData.mId.type();
-	Id newId = createElement(typeId.toString(), QPointF());
+	Id newId = createElement(edgeData.mTypeId.toString(), QPointF());
 
 	Id newSrcId = copiedIds[edgeData.mSrcId];
 	Id newDstId = copiedIds[edgeData.mDstId];
