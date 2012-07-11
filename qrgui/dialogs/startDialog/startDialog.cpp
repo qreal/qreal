@@ -52,12 +52,10 @@ void StartDialog::createNewProject()
 void StartDialog::openRecentProject(QString const &fileName)
 {
 	mMainWindow->open(fileName);
-	close();
 }
 
 void StartDialog::createProjectWithDiagram(const QString &idString)
 {
 	mMainWindow->openEmptyProject();
 	mMainWindow->createDiagram(idString);
-	close();
 }

@@ -67,7 +67,7 @@ MainWindow::MainWindow()
 		, mStartDialog(new StartDialog(this))
 {
 	mUi->setupUi(this);
-	initSettingManager();
+	initSettingsManager();
 
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 
@@ -85,7 +85,6 @@ MainWindow::MainWindow()
 	initGridProperties();
 
 	// =========== Step 3: Ui connects are done ===========
-
 	splashScreen.setProgress(40);
 
 	initDocks();
@@ -101,15 +100,15 @@ MainWindow::MainWindow()
 	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 
 	// =========== Step 4: Property editor and model explorers are initialized ===========
-
 	splashScreen.setProgress(60);
+
 	loadPlugins();
 	initToolPlugins();
 	showMaximized();
 
 	// =========== Step 5: Plugins are loaded ===========
-
 	splashScreen.setProgress(70);
+
 	initWindowTitle();
 
 	if (!SettingsManager::value("maximized").toBool()) {
@@ -117,11 +116,9 @@ MainWindow::MainWindow()
 		resize(SettingsManager::value("size").toSize());
 		move(SettingsManager::value("pos").toPoint());
 	}
-	// =========== Step 6: Save loaded, models initialized ===========
 
+	// =========== Step 6: Save loaded, models initialized ===========
 	splashScreen.setProgress(80);
-//	if (!checkPluginsAndReopen(splash))
-//		return;
 
 	mGesturesWidget = new GesturesWidget();
 	initExplorers();
@@ -129,29 +126,15 @@ MainWindow::MainWindow()
 	initActionsFromSettings();
 
 	// =========== Step 7: Save consistency checked, interface is initialized with models ===========
-
 	splashScreen.setProgress(100);
 
 	mIsNewProject = (mSaveFile.isEmpty() || mSaveFile == mTempDir + ".qrs");
-
-//	if (mModels->graphicalModel()->rowCount() > 0) {
-//		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
-//	}
-
-//	if (SettingsManager::value("diagramCreateSuggestion").toBool())
-//		suggestToCreateDiagram();
-
 	mDocksVisibility.clear();
-
-//	if (mIsNewProject)
-//		saveAs(mTempDir);
-
 	setAutoSaveParameters();
 	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
 	connectWindowTitle();
 
 	mStartDialog->exec();
-	qDebug() << "MainWindow::MainWindow is done";
 }
 
 void MainWindow::connectActions()
@@ -952,7 +935,7 @@ void MainWindow::showPreferencesDialog()
 	setAutoSaveParameters();
 }
 
-void MainWindow::initSettingManager()
+void MainWindow::initSettingsManager()
 {
 	QDir imagesDir(SettingsManager::value("pathToImages", "/someWeirdDirectoryName").toString());
 	if (!imagesDir.exists()) {
@@ -963,10 +946,6 @@ void MainWindow::initSettingManager()
 	QDir dir(qApp->applicationDirPath());
 	if (!dir.cd(mTempDir))
 		QDir().mkdir(mTempDir);
-
-	QFileInfo saveFile(SettingsManager::value("saveFile", mSaveFile).toString());
-	if (saveFile.exists())
-		mSaveFile = saveFile.absoluteFilePath();
 }
 
 void MainWindow::openSettingsDialog(QString const &tab)
@@ -1332,39 +1311,12 @@ GesturesPainterInterface * MainWindow::gesturesPainter()
 
 void MainWindow::suggestToCreateDiagram()
 {
-//	if (mModels->logicalModel()->rowCount() > 0)
-//		return;
-
 	QDialog dialog;
+	dialog.setFixedSize(275, 240);
 	SuggestToCreateDiagramWidget suggestWidget(this, &dialog);
-	dialog.setFixedSize(320, 240);
+	connect(&suggestWidget, SIGNAL(userDataSelected(QString)), this, SLOT(createDiagram(QString)));
 	dialog.exec();
 }
-
-/*
-void MainWindow::setDiagramCreateFlag()
-{
-	mDiagramCreateFlag = true;
-}
-*/
-
-/*
-void MainWindow::diagramInCreateListDeselect()
-{
-	if (!mDiagramCreateFlag) {
-		deleteFromExplorer(true);
-	}
-}
-*/
-
-/*
-void MainWindow::diagramInCreateListSelected(int num)
-{
-	deleteFromExplorer(false);
-	deleteFromExplorer(true);
-	createDiagram(mDiagramsList.at(num));
-}
-*/
 
 void MainWindow::createDiagram(QString const &idString)
 {

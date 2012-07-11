@@ -144,6 +144,7 @@ private slots:
 	void fullscreen();
 	void openRecentProjectsMenu();
 	bool openEmptyProject();
+	void createDiagram(QString const &idString);
 	bool openExistingProject();
 	bool suggestToSaveChangesOrCancel();
 
@@ -175,7 +176,7 @@ private slots:
 
 	void showPreferencesDialog();
 
-	void initSettingManager();
+	void initSettingsManager();
 	void connectActions();
 	void initActionsFromSettings();
 
@@ -222,7 +223,6 @@ private:
 	/// @param tab Tab to be initialized with shortcuts
 	void setShortcuts(EditorView * const tab);
 
-	void createDiagram(QString const &idString);
 
 	void loadPlugins();
 

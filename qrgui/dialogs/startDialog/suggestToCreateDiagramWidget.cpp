@@ -29,4 +29,5 @@ SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *mainWindo
 					"qrm:/" +	editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
 		}
 	}
+	connect(this, SIGNAL(userDataSelected(QString)), parent, SLOT(close()));
 }
