@@ -69,7 +69,7 @@ QList<SmartLine> LoopElementGenerator::loopPrefixCode()
 	QList<SmartLine> result;
 
 	qReal::Id logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
-	result << SmartLine("for (int __iter__ = ; __iter__ < " +
+	result << SmartLine("for (int __iter__ = 0; __iter__ < " +
 			mNxtGen->api()->property(logicElementId, "Iterations").toString()
 				+ "; __iter__++) {", mElementId, SmartLine::increase); //TODO
 	return result;

@@ -65,7 +65,6 @@ Interpreter::~Interpreter()
 
 void Interpreter::interpret()
 {
-	qDebug() << "Interpreter::interpret()";
 	Tracer::debug(tracer::initialization, "Interpreter::interpret", "Preparing for interpretation");
 
 	mInterpretersInterface->errorReporter()->clear();
