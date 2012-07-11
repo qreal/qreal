@@ -1,9 +1,13 @@
 #include "recentProjectsListWidget.h"
 #include "../../qrkernel/settingsManager.h"
 
-qReal::RecentProjectsListWidget::RecentProjectsListWidget(QDialog *parent)
-	: QListWidget(parent)
+using namespace qReal;
+
+RecentProjectsListWidget::RecentProjectsListWidget(QDialog *parent)
+	: ListWidget(parent)
 {
 	QStringList recentProjects = SettingsManager::value("recentProjects").toString().split(";");
-	addItems(recentProjects);
+	foreach (QString const &project, recentProjects) {
+		addItem(project.split("/").last().split("\\").last(),	project);
+	}
 }

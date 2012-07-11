@@ -2,6 +2,7 @@
 #include <QtGui/QWidget>
 #include <QtGui/QPushButton>
 #include <QtGui/QListWidget>
+#include "listWidget.h"
 
 namespace qReal {
 

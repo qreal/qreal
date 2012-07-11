@@ -1,10 +1,11 @@
 #pragma once
 #include <QtGui/QListWidget>
 #include <QtGui/QDialog>
+#include "listWidget.h"
 
 namespace qReal {
 
-class RecentProjectsListWidget : public QListWidget
+class RecentProjectsListWidget : public ListWidget
 {
 	Q_OBJECT
 

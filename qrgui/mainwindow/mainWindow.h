@@ -300,7 +300,6 @@ private:
 	GesturesWidget *mGesturesWidget;
 
 	QVector<bool> mSaveListChecked;
-	bool mDiagramCreateFlag;
 
 	QStringList mDiagramsList;
 	QModelIndex mRootIndex;

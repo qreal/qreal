@@ -19,6 +19,7 @@ public:
 
 public slots:
 	void createNewProject();
+	void openRecentProject(QString const &fileName);
 
 private:
 	MainWindow *mMainWindow;

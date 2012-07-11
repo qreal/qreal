@@ -7,7 +7,9 @@
 #include "../../../qrkernel/ids.h"
 #include "../mainwindow/mainWindow.h"
 
-qReal::SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *mainWindow, QDialog *parent)
+using namespace qReal;
+
+SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *mainWindow, QDialog *parent)
 	: QWidget(parent)
 	, mMainWindow(mainWindow)
 	, mDiagramsListWidget(new QListWidget(this))
@@ -27,33 +29,16 @@ qReal::SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *ma
 			mDiagramsListWidget->addItem(diagramName);
 		}
 	}
-//	mDiagramsListWidget->setCurrentRow(0);
+	mDiagramsListWidget->setCurrentRow(0);
 
-	QPushButton *cancelButton = new QPushButton(tr("&Cancel"), this);
 	QPushButton *okButton = new QPushButton(tr("&OK"), this);
-
-//	QObject::connect(mDiagramsListWidget, SIGNAL(currentRowChanged(int)), mMainWindow, SLOT(diagramInCreateListSelected(int)));
-//	QObject::connect(mDiagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), mMainWindow, SLOT(setDiagramCreateFlag()));
 	QObject::connect(mDiagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), parent, SIGNAL(close()));
-
-//	QObject::connect(this, SIGNAL(destroyed()), mMainWindow, SLOT(diagramInCreateListDeselect()));
-	QObject::connect(cancelButton, SIGNAL(clicked()), parent, SLOT(close()));
-
 	QObject::connect(okButton, SIGNAL(clicked()), mMainWindow, SLOT(setDiagramCreateFlag()));
 	QObject::connect(okButton, SIGNAL(clicked()), parent, SLOT(close()));
 
 	QVBoxLayout *vLayout = new QVBoxLayout;
-
-//	QLabel label(tr("Choose new diagram"));
-//	vLayout.addWidget(&label);
 	vLayout->addWidget(mDiagramsListWidget);
+	vLayout->addWidget(okButton);
 
-	QHBoxLayout *hLayout = new QHBoxLayout;
-	hLayout->addWidget(okButton);
-	hLayout->addWidget(cancelButton);
-
-	vLayout->addLayout(hLayout);
 	setLayout(vLayout);
-
-	mMainWindow->mDiagramCreateFlag = false;
 }

@@ -12,7 +12,8 @@ HEADERS += \
 	dialogs/findReplaceDialog.h \
 	dialogs/startDialog/startDialog.h \
 	dialogs/startDialog/suggestToCreateDiagramWidget.h \
-	dialogs/startDialog/recentProjectsListWidget.h
+	dialogs/startDialog/recentProjectsListWidget.h \
+    dialogs/startDialog/listWidget.h
 
 SOURCES += \
 	dialogs/plugindialog.cpp \
@@ -27,7 +28,8 @@ SOURCES += \
 	dialogs/findReplaceDialog.cpp \
 	dialogs/startDialog/startDialog.cpp \
 	dialogs/startDialog/suggestToCreateDiagramWidget.cpp \
-	dialogs/startDialog/recentProjectsListWidget.cpp
+	dialogs/startDialog/recentProjectsListWidget.cpp \
+    dialogs/startDialog/listWidget.cpp
 
 FORMS += \
 	dialogs/editorGeneratorDialog.ui \
