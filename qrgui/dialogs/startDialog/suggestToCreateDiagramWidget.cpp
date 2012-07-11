@@ -30,11 +30,11 @@ qReal::SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *ma
 	QPushButton *cancelButton = new QPushButton(tr("&Cancel"), this);
 	QPushButton *okButton = new QPushButton(tr("&OK"), this);
 
-	QObject::connect(mDiagramsListWidget, SIGNAL(currentRowChanged(int)), mMainWindow, SLOT(diagramInCreateListSelected(int)));
-	QObject::connect(mDiagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), mMainWindow, SLOT(setDiagramCreateFlag()));
+//	QObject::connect(mDiagramsListWidget, SIGNAL(currentRowChanged(int)), mMainWindow, SLOT(diagramInCreateListSelected(int)));
+//	QObject::connect(mDiagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), mMainWindow, SLOT(setDiagramCreateFlag()));
 	QObject::connect(mDiagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), parent, SIGNAL(close()));
 
-	QObject::connect(this, SIGNAL(destroyed()), mMainWindow, SLOT(diagramInCreateListDeselect()));
+//	QObject::connect(this, SIGNAL(destroyed()), mMainWindow, SLOT(diagramInCreateListDeselect()));
 	QObject::connect(cancelButton, SIGNAL(clicked()), parent, SLOT(close()));
 
 	QObject::connect(okButton, SIGNAL(clicked()), mMainWindow, SLOT(setDiagramCreateFlag()));

@@ -39,7 +39,7 @@ qReal::StartDialog::StartDialog(MainWindow *mainWindow, QWidget *parent)
 
 void qReal::StartDialog::createNewProject()
 {
-	mMainWindow->createProject();
+	mMainWindow->openEmptyProject();
 	if (mMainWindow->mDiagramCreateFlag) {
 		close();
 	}

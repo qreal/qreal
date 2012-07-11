@@ -37,6 +37,7 @@
 #include "../../qrkernel/settingsManager.h"
 
 #include "../../qrkernel/timeMeasurer.h"
+#include "splashScreen.h"
 
 #include "../dialogs/startDialog/startDialog.h"
 #include "../dialogs/startDialog/suggestToCreateDiagramWidget.h"
@@ -47,6 +48,7 @@ QString const unsavedDir = "unsaved";
 
 MainWindow::MainWindow()
 		: mUi(new Ui::MainWindowUi)
+		, mCodeTabManager(new QMap<EditorView*, CodeArea*>())
 		, mCloseEvent(NULL)
 		, mModels(NULL)
 		, mListenerManager(NULL)
@@ -64,65 +66,30 @@ MainWindow::MainWindow()
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mStartDialog(new StartDialog(this))
 {
-	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
+	mUi->setupUi(this);
+	initSettingManager();
 
-	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
-	timeMeasurer.doNothing(); //to avoid the unused variables problem
-
-	bool showSplash = SettingsManager::value("Splashscreen").toBool();
-
-	QSplashScreen* splash =
-			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
-
-	QProgressBar *progress = createProgressBar(splash);
-
-	QDir imagesDir(SettingsManager::value("pathToImages", "/someWeirdDirectoryName").toString());
-	if (!imagesDir.exists()) {
-		SettingsManager::setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
-	}
+	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 
 	// =========== Step 1: splash screen loaded, progress bar initialized ===========
-
-	progress->setValue(5);
-
-	mUi->setupUi(this);
-
-	if (showSplash) {
-		splash->show();
-		QApplication::processEvents();
-	}
-	else {
-		mUi->actionShowSplash->setChecked(false);
-	}
+	splashScreen.setProgress(5);
 
 	initRecentProjectsMenu();
 	initToolManager();
 	initTabs();
 
 	// =========== Step 2: Ui is ready, splash screen shown ===========
-
-	progress->setValue(20);
+	splashScreen.setProgress(20);
 
 	initMiniMap();
 	initGridProperties();
 
 	// =========== Step 3: Ui connects are done ===========
 
-	progress->setValue(40);
+	splashScreen.setProgress(40);
 
 	initDocks();
-	SettingsManager::setValue("temp", mTempDir);
-	QDir dir(qApp->applicationDirPath());
-	if (!dir.cd(mTempDir))
-		QDir().mkdir(mTempDir);
-
-	SettingsManager::setValue("saveFile");
-	QFileInfo saveFile(SettingsManager::value("saveFile", mSaveFile).toString());
-
-	if (saveFile.exists())
-		mSaveFile = saveFile.absoluteFilePath();
-
-	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
+	mModels = new models::Models(mSaveFile, mEditorManager);
 
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi()
@@ -135,14 +102,14 @@ MainWindow::MainWindow()
 
 	// =========== Step 4: Property editor and model explorers are initialized ===========
 
-	progress->setValue(60);
+	splashScreen.setProgress(60);
 	loadPlugins();
 	initToolPlugins();
 	showMaximized();
 
 	// =========== Step 5: Plugins are loaded ===========
 
-	progress->setValue(70);
+	splashScreen.setProgress(70);
 	initWindowTitle();
 
 	if (!SettingsManager::value("maximized").toBool()) {
@@ -152,21 +119,18 @@ MainWindow::MainWindow()
 	}
 	// =========== Step 6: Save loaded, models initialized ===========
 
-	progress->setValue(80);
-//	if (!checkPluginsAndReopen(splash)) {
+	splashScreen.setProgress(80);
+//	if (!checkPluginsAndReopen(splash))
 //		return;
-//	}
 
 	mGesturesWidget = new GesturesWidget();
 	initExplorers();
 	connectActions();
+	initActionsFromSettings();
+
 	// =========== Step 7: Save consistency checked, interface is initialized with models ===========
 
-	progress->setValue(100);
-
-	if (showSplash)
-		splash->close();
-	delete splash;
+	splashScreen.setProgress(100);
 
 	mIsNewProject = (mSaveFile.isEmpty() || mSaveFile == mTempDir + ".qrs");
 
@@ -187,6 +151,7 @@ MainWindow::MainWindow()
 	connectWindowTitle();
 
 	mStartDialog->exec();
+	qDebug() << "MainWindow::MainWindow is done";
 }
 
 void MainWindow::connectActions()
@@ -198,23 +163,22 @@ void MainWindow::connectActions()
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
 	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
-	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(openNewProject()));
+	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(openExistingProject()));
 	connect(mUi->actionSave, SIGNAL(triggered()), this, SLOT(saveAll()));
 	connect(mUi->actionSave_as, SIGNAL(triggered()), this, SLOT(saveProjectAs()));
-	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()), this, SLOT(saveDiagramAsAPicture()));
+	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()),
+			this, SLOT(saveDiagramAsAPicture()));
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
-	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
+
 	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), this, SLOT(suggestToCreateDiagram()));
+	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(openEmptyProject()));
 	connect(mUi->actionCloseProject, SIGNAL(triggered()), this, SLOT(closeProjectAndSave()));
+
 	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 
-	//	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
-	//	connect(mUi->actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
-
-	//	connect(mUi->actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
 
 	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 	connect(mUi->actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
@@ -232,14 +196,22 @@ void MainWindow::connectActions()
 
 	connect (mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
 
-	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)), mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
-	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)), mFindHelper, SLOT(handleFindDialog(QStringList)));
-	connect(mFindReplaceDialog, SIGNAL(chosenElement(qReal::Id)), mFindHelper, SLOT(handleRefsDialog(qReal::Id)));
+	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)),
+			mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
+	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)),
+			mFindHelper, SLOT(handleFindDialog(QStringList)));
+	connect(mFindReplaceDialog, SIGNAL(chosenElement(qReal::Id)),
+			mFindHelper, SLOT(handleRefsDialog(qReal::Id)));
 
-	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this
-		, SLOT(changePaletteRepresentation()));
-	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged())
-		, &mPreferencesDialog, SLOT(changePaletteParameters()));
+	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this,
+			SLOT(changePaletteRepresentation()));
+	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged()),
+			&mPreferencesDialog, SLOT(changePaletteParameters()));
+}
+
+void MainWindow::initActionsFromSettings()
+{
+	mUi->actionShowSplash->setChecked(SettingsManager::value("Splashscreen").toBool());
 }
 
 void MainWindow::showFindDialog()
@@ -441,16 +413,24 @@ QString MainWindow::getWorkingFile(QString const &dialogWindowTitle, bool save)
 	QString fileName;
 	QDir const lastSaveDir = QFileInfo(mSaveFile).absoluteDir();
 
-	if (save)
-		fileName = QFileDialog::getSaveFileName(this, dialogWindowTitle
-				, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
-	else
-		fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle
-				, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
-	SettingsManager::setValue("saveFile", fileName);
-	mSaveFile = fileName;
+	if (save) {
+		fileName = QFileDialog::getSaveFileName(this, dialogWindowTitle,
+				lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
+	} else {
+		fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle,
+				lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
 
+		if (fileName != "" && !QFile::exists(fileName)) {
+			QMessageBox fileNotFoundMessage(QMessageBox::Information, tr("File not found"),
+					tr("File ") + fileName + tr(" not found. Try again"),	QMessageBox::Ok, this);
+			fileNotFoundMessage.exec();
+
+			fileName = getWorkingFile(dialogWindowTitle, save);
+		}
+	}
+	SettingsManager::setValue("saveFile", fileName);
 	refreshRecentProjectsList(fileName);
+	mSaveFile = fileName;
 
 	return fileName;
 }
@@ -475,7 +455,7 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 			splashScreen->close();
 
 		if (button == QMessageBox::Yes) {
-			if (!openNewProject())
+			if (!openEmptyProject())
 				loadingCancelled = true;
 		}
 		else
@@ -506,18 +486,39 @@ bool MainWindow::import(QString const &fileName)
 	return true;
 }
 
-bool MainWindow::openNewProject()
+bool MainWindow::suggestToSaveChangesOrCancel()
 {
-	if (mUnsavedProjectIndicator) {
-		switch (openSaveOfferDialog()) {
-		case QMessageBox::AcceptRole:
-			saveAll();
-			break;
-		case QMessageBox::RejectRole:
-			return false;
-		}
+	if (!mUnsavedProjectIndicator) {
+		return true;
 	}
-	return open(getWorkingFile(tr("Select file with a save to open"), false));
+	switch (openSaveOfferDialog()) {
+	case QMessageBox::AcceptRole:
+		saveAll();
+		break;
+	case QMessageBox::RejectRole:
+		return false;
+	}
+	return true;
+}
+
+bool MainWindow::openEmptyProject()
+{
+	if (!suggestToSaveChangesOrCancel()) {
+		return false;
+	}
+	return open("");
+}
+
+bool MainWindow::openExistingProject()
+{
+	if (!suggestToSaveChangesOrCancel()) {
+		return false;
+	}
+	QString fileName = getWorkingFile(tr("Open existing project"), false);
+	if (fileName == "") {
+		return false;
+	}
+	return open(fileName);
 }
 
 void MainWindow::refreshRecentProjectsList(QString const &fileName)
@@ -558,11 +559,6 @@ void MainWindow::saveAllAndOpen(QString const &dirName)
 
 bool MainWindow::open(QString fileName)
 {
-	if (!QFile(fileName).exists() && fileName != "") {
-	//	return false;
-		fileName = "";
-	}
-
 	refreshRecentProjectsList(fileName);
 
 	closeProject();
@@ -570,28 +566,32 @@ bool MainWindow::open(QString fileName)
 	mModels->repoControlApi().open(fileName);
 	mModels->reinit();
 
-	if (!checkPluginsAndReopen(NULL))
+	if (!checkPluginsAndReopen(NULL)) {
 		return false;
+	}
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
 	connectWindowTitle();
-	mSaveFile = fileName;
+
 	QString windowTitle = mToolManager.customizer()->windowTitle();
-	if (!fileName.isEmpty()) {
-		setWindowTitle(windowTitle + " - " + mSaveFile);
-	}
-	else
+	if (fileName.isEmpty()) {
 		setWindowTitle(windowTitle + " - unsaved project");
+	} else {
+		setWindowTitle(windowTitle + " - " + fileName);
+	}
+	mSaveFile = fileName;
+
 	return true;
 }
 
 void MainWindow::closeAllTabs()
 {
 	int const tabCount = mUi->tabs->count();
-	for (int i = 0; i < tabCount; i++)
+	for (int i = 0; i < tabCount; i++) {
 		closeTab(i);
+	}
 	disconnectWindowTitle();
 }
 
@@ -950,6 +950,23 @@ void MainWindow::showPreferencesDialog()
 	mPreferencesDialog.exec();
 	mToolManager.updateSettings();
 	setAutoSaveParameters();
+}
+
+void MainWindow::initSettingManager()
+{
+	QDir imagesDir(SettingsManager::value("pathToImages", "/someWeirdDirectoryName").toString());
+	if (!imagesDir.exists()) {
+		SettingsManager::setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
+	}
+
+	SettingsManager::setValue("temp", mTempDir);
+	QDir dir(qApp->applicationDirPath());
+	if (!dir.cd(mTempDir))
+		QDir().mkdir(mTempDir);
+
+	QFileInfo saveFile(SettingsManager::value("saveFile", mSaveFile).toString());
+	if (saveFile.exists())
+		mSaveFile = saveFile.absoluteFilePath();
 }
 
 void MainWindow::openSettingsDialog(QString const &tab)
@@ -1324,24 +1341,30 @@ void MainWindow::suggestToCreateDiagram()
 	dialog.exec();
 }
 
+/*
 void MainWindow::setDiagramCreateFlag()
 {
 	mDiagramCreateFlag = true;
 }
+*/
 
+/*
 void MainWindow::diagramInCreateListDeselect()
 {
 	if (!mDiagramCreateFlag) {
 		deleteFromExplorer(true);
 	}
 }
+*/
 
+/*
 void MainWindow::diagramInCreateListSelected(int num)
 {
 	deleteFromExplorer(false);
 	deleteFromExplorer(true);
 	createDiagram(mDiagramsList.at(num));
 }
+*/
 
 void MainWindow::createDiagram(QString const &idString)
 {
@@ -1416,15 +1439,6 @@ void MainWindow::setIndexesOfPropertyEditor(Id const &id)
 QAction *MainWindow::actionDeleteFromDiagram() const
 {
 	return mUi->actionDeleteFromDiagram;
-}
-
-void qReal::MainWindow::on_actionNew_Diagram_triggered()
-{
-	if (getCurrentTab() == NULL || getCurrentTab()->mvIface() == NULL)
-		return;
-
-	Id const diagram = getCurrentTab()->mvIface()->rootId();  // Or some other way to find current diagram. For example, by current tab in palette.
-	createDiagram(diagram.type().toString());
 }
 
 void MainWindow::highlight(Id const &graphicalId, bool exclusive)
@@ -1512,24 +1526,6 @@ void MainWindow::fullscreen()
 		showDockWidget(mUi->propertyDock, "propertyEditor");
 		showDockWidget(mUi->errorDock, "errorReporter");
 	}
-}
-
-void MainWindow::createProject()
-{
-	if (mUnsavedProjectIndicator) {
-		switch (openSaveOfferDialog()) {
-		case QMessageBox::AcceptRole:
-			saveAll();
-			break;
-		case QMessageBox::RejectRole:
-			return;
-		}
-	}
-//	open("");
-	open(getWorkingFile(tr("Create new project"), true));
-//	if (SettingsManager::value("diagramCreateSuggestion").toBool())
-		suggestToCreateDiagram();
-
 }
 
 QString MainWindow::getNextDirName(QString const &name)
@@ -1659,7 +1655,7 @@ void MainWindow::autosave()
 		saveAll();
 }
 
-QProgressBar *MainWindow::createProgressBar(QSplashScreen* splash)
+QProgressBar *MainWindow::createProgressBarWithSplashScreen(QSplashScreen *splash)
 {
 	QProgressBar *progress = new QProgressBar(splash);
 	progress->move(20, 270);

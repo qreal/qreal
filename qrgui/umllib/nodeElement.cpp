@@ -691,7 +691,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	mContents = mContents.normalized();
 	*/
 	
-	//storeGeometry();
+	storeGeometry();
 
 	setVisibleEmbeddedLinkers(true);
 
