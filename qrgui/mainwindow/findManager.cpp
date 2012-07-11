@@ -67,7 +67,7 @@ void FindManager::handleReplaceDialog(QStringList &searchData)
 	if (searchData.contains(tr("by name"))) {
 		qReal::IdList toRename = foundByMode(searchData.first(), tr("by name")
 				, searchData.contains(tr("case sensitivity"))
-				,searchData.contains(tr("by regular expression")));
+				, searchData.contains(tr("by regular expression")));
 		foreach (qReal::Id currentId, toRename) {
 			mLogicalApi.setName(currentId, searchData[1]);
 		}
