@@ -6,8 +6,8 @@ using namespace qReal;
 RecentProjectsListWidget::RecentProjectsListWidget(QDialog *parent)
 	: ListWidget(parent)
 {
-	QStringList recentProjects = SettingsManager::value("recentProjects").toString().split(";");
-	foreach (QString const &project, recentProjects) {
+	QString recentProjects = SettingsManager::value("recentProjects").toString();
+	foreach (QString const &project, recentProjects.split(";", QString::SkipEmptyParts)) {
 		addItem(project.split("/").last().split("\\").last(),	project);
 	}
 

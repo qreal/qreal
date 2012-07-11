@@ -522,7 +522,6 @@ void MainWindow::refreshRecentProjectsList(QString const &fileName)
 
 void MainWindow::openRecentProjectsMenu()
 {
-	//SettingsManager::setValue("recentProjects", (QString) "");
 	mRecentProjectsMenu->clear();
 	QString const stringList = SettingsManager::value("recentProjects").toString();
 	QStringList const recentProjects = stringList.split(";", QString::SkipEmptyParts);
