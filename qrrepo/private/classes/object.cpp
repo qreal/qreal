@@ -176,13 +176,13 @@ bool Object::hasProperty(const QString &name, bool sensitivity, bool regExpressi
 		caseSensitivity = Qt::CaseInsensitive;
 	}
 
-    QRegExp *regExp = new QRegExp(name, caseSensitivity);
+	QRegExp *regExp = new QRegExp(name, caseSensitivity);
 
-    if (regExpression) {
-        return !properties.filter(*regExp).isEmpty();
-    } else {
-        return properties.contains(name, caseSensitivity);
-    }
+	if (regExpression) {
+		return !properties.filter(*regExp).isEmpty();
+	} else {
+		return properties.contains(name, caseSensitivity);
+	}
 }
 
 void Object::removeProperty(const QString &name)

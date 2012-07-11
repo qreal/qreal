@@ -31,15 +31,15 @@ namespace qrRepo {
 
 		/// returning IdList of elements that names contains input string
 		/// @param name - string that should be contained by names of elements that Id's are in the output list
-        qReal::IdList findElementsByName(QString const &name, bool sensitivity, bool regExpression) const;
+		qReal::IdList findElementsByName(QString const &name, bool sensitivity, bool regExpression) const;
 
 		/// returning IdList of elements that have input property
 		/// @param name - string that should be contained by names of elements that have input property
-        qReal::IdList elementsByProperty(QString const &property, bool sensitivity, bool regExpression) const;
+		qReal::IdList elementsByProperty(QString const &property, bool sensitivity, bool regExpression) const;
 
 		/// returning IdList of elements that have input property content
 		/// @param name - string that should be contained by names of elements that have input property content
-        qReal::IdList elementsByPropertyContent(QString const &propertyContent, bool sensitivity, bool regExpression) const;
+		qReal::IdList elementsByPropertyContent(QString const &propertyContent, bool sensitivity, bool regExpression) const;
 
 		qReal::IdList children(qReal::Id const &id) const;
 		virtual void addChild(qReal::Id const &id, qReal::Id const &child);
@@ -129,7 +129,7 @@ namespace qrRepo {
 		virtual qReal::Id logicalId(qReal::Id const &id) const;
 
 		/// Returns all elements with .element() == type
-        qReal::IdList elementsByType(QString const &type, bool sensitivity = false, bool regExpression = false) const;
+		qReal::IdList elementsByType(QString const &type, bool sensitivity = false, bool regExpression = false) const;
 		int elementsCount() const;
 
 		bool exist(qReal::Id const &id) const;

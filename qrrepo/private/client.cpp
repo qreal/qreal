@@ -33,48 +33,7 @@ Client::~Client()
 }
 
 IdList Client::findElementsByName(const QString &name, bool sensitivity,
-                                  bool regExpression) const
-{
-	Qt::CaseSensitivity caseSensitivity;
-
-    if (sensitivity) {
-		caseSensitivity = Qt::CaseSensitive;
-	} else {
-		caseSensitivity = Qt::CaseInsensitive;
-    }
-
-    QRegExp *regExp = new QRegExp(name, caseSensitivity);
-    qDebug() << regExp->caseSensitivity();
-	IdList result;
-
-    if (regExpression){
-        foreach (Object *element, mObjects.values())
-            if ((element->property("name").toString().contains(*regExp))
-                && (!isLogicalId(mObjects.key(element))))
-                //qDebug() << element->property("name").toString().contains(*regExp);
-                result.append(mObjects.key(element));
-    } else {
-        foreach (Object *element, mObjects.values())
-            if ((element->property("name").toString().contains(name, caseSensitivity))
-                && (!isLogicalId(mObjects.key(element))))
-                result.append(mObjects.key(element));
-    }
-
-	return result;
-}
-
-qReal::IdList Client::elementsByProperty(QString const &property, bool sensitivity, bool regExpression) const
-{
-	IdList result;
-
-	foreach (Object *element, mObjects.values())
-        if ((element->hasProperty(property, sensitivity, regExpression)) && (!isLogicalId(mObjects.key(element))))
-				result.append(mObjects.key(element));
-
-	return result;
-}
-
-qReal::IdList Client::elementsByPropertyContent(QString const &propertyValue, bool sensitivity, bool regExpression) const
+								  bool regExpression) const
 {
 	Qt::CaseSensitivity caseSensitivity;
 
@@ -84,24 +43,66 @@ qReal::IdList Client::elementsByPropertyContent(QString const &propertyValue, bo
 		caseSensitivity = Qt::CaseInsensitive;
 	}
 
-    QRegExp *regExp = new QRegExp(propertyValue, caseSensitivity);
+	QRegExp *regExp = new QRegExp(name, caseSensitivity);
+	IdList result;
+
+	if (regExpression){
+		foreach (Object *element, mObjects.values())
+			if (element->property("name").toString().contains(*regExp)
+					&& !isLogicalId(mObjects.key(element)))
+				result.append(mObjects.key(element));
+	} else {
+		foreach (Object *element, mObjects.values())
+			if (element->property("name").toString().contains(name, caseSensitivity)
+					&& !isLogicalId(mObjects.key(element)))
+				result.append(mObjects.key(element));
+	}
+
+	return result;
+}
+
+qReal::IdList Client::elementsByProperty(QString const &property, bool sensitivity
+		, bool regExpression) const
+{
+	IdList result;
+
+	foreach (Object *element, mObjects.values())
+		if ((element->hasProperty(property, sensitivity, regExpression))
+				&& (!isLogicalId(mObjects.key(element))))
+			result.append(mObjects.key(element));
+
+	return result;
+}
+
+qReal::IdList Client::elementsByPropertyContent(QString const &propertyValue, bool sensitivity
+		, bool regExpression) const
+{
+	Qt::CaseSensitivity caseSensitivity;
+
+	if (sensitivity) {
+		caseSensitivity = Qt::CaseSensitive;
+	} else {
+		caseSensitivity = Qt::CaseInsensitive;
+	}
+
+	QRegExp *regExp = new QRegExp(propertyValue, caseSensitivity);
 	IdList result;
 
 	foreach (Object *element, mObjects.values()) {
 		QMapIterator<QString, QVariant> iterator = element->propertiesIterator();
-        if (regExpression) {
-            while (iterator.hasNext())
-                if (iterator.next().value().toString().contains(*regExp)) {
-                    result.append(mObjects.key(element));
-                    break;
-                }
-        } else {
-            while (iterator.hasNext())
-                if (iterator.next().value().toString().contains(propertyValue, caseSensitivity)) {
-                    result.append(mObjects.key(element));
-                    break;
-                }
-        }
+		if (regExpression) {
+			while (iterator.hasNext())
+				if (iterator.next().value().toString().contains(*regExp)) {
+					result.append(mObjects.key(element));
+					break;
+				}
+		} else {
+			while (iterator.hasNext())
+				if (iterator.next().value().toString().contains(propertyValue, caseSensitivity)) {
+					result.append(mObjects.key(element));
+					break;
+				}
+		}
 	}
 
 	return result;
@@ -256,7 +257,7 @@ void Client::removeProperty( const Id &id, const QString &name )
 bool Client::hasProperty(const Id &id, const QString &name, bool sensitivity, bool regExpression) const
 {
 	if (mObjects.contains(id)) {
-        return mObjects[id]->hasProperty(name, sensitivity, regExpression);
+		return mObjects[id]->hasProperty(name, sensitivity, regExpression);
 	} else {
 		throw Exception("Client: Checking the existence of a property '" + name + "' of nonexistent object " + id.toString());
 	}

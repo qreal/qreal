@@ -29,13 +29,13 @@ IdList RepoApi::children(Id const &id) const
 
 IdList RepoApi::findElementsByName(QString const &name, bool sensitivity, bool regExpression) const
 {
-    return mClient.findElementsByName(name, sensitivity, regExpression);
+	return mClient.findElementsByName(name, sensitivity, regExpression);
 }
 
 qReal::IdList RepoApi::elementsByPropertyContent(QString const &propertyContent, bool sensitivity,
-        bool regExpression) const
+		bool regExpression) const
 {
-    return mClient.elementsByPropertyContent(propertyContent, sensitivity, regExpression);
+	return mClient.elementsByPropertyContent(propertyContent, sensitivity, regExpression);
 }
 
 void RepoApi::replaceProperties(qReal::IdList const &toReplace, QString const value, QString const newValue)
@@ -488,27 +488,27 @@ IdList RepoApi::elementsByType(QString const &type, bool sensitivity, bool regEx
 		caseSensitivity = Qt::CaseInsensitive;
 	}
 
-    QRegExp *regExp = new QRegExp(type,caseSensitivity);
+	QRegExp *regExp = new QRegExp(type,caseSensitivity);
 
 	IdList result;
 
-    if (regExpression) {
-        foreach (Id id, mClient.elements()) {
-            if (id.element().contains(*regExp))
-                result.append(id);
-        }
-    } else {
-        foreach (Id id, mClient.elements()) {
-            if (id.element().contains(type, caseSensitivity))
-                result.append(id);
-        }
-    }
+	if (regExpression) {
+		foreach (Id id, mClient.elements()) {
+			if (id.element().contains(*regExp))
+				result.append(id);
+		}
+	} else {
+		foreach (Id id, mClient.elements()) {
+			if (id.element().contains(type, caseSensitivity))
+				result.append(id);
+		}
+	}
 	return result;
 }
 
 qReal::IdList RepoApi::elementsByProperty(QString const &property, bool sensitivity, bool regExpression) const
 {
-    return mClient.elementsByProperty(property, sensitivity, regExpression);
+	return mClient.elementsByProperty(property, sensitivity, regExpression);
 }
 
 int RepoApi::elementsCount() const

@@ -18,7 +18,8 @@ void FindManager::handleRefsDialog(qReal::Id const &id)
 	mMainWindow->selectItemOrDiagram(id);
 }
 
-qReal::IdList FindManager::foundByMode(QString key, QString currentMode, bool sensitivity, bool regExpression)
+qReal::IdList FindManager::foundByMode(QString key, QString currentMode, bool sensitivity
+		, bool regExpression)
 {
 	// TODO: replace mode string with modifiers
 	if (currentMode == tr("by name")) {
@@ -40,10 +41,10 @@ QMap<QString, QString> FindManager::findItems(QStringList const &searchData)
 	bool sensitivity = searchData.contains(tr("case sensitivity"));
 	bool regExpression = searchData.contains(tr("by regular expression"));
 
-
 	for(int i = 1; i < searchData.length(); i++) {
 		if (searchData[i] != tr("case sensitivity") && searchData[i] != tr("by regular expression")) {
-			qReal::IdList byMode = foundByMode(searchData.first(), searchData[i], sensitivity, regExpression);
+			qReal::IdList byMode = foundByMode(searchData.first(), searchData[i], sensitivity
+					, regExpression);
 			foreach (qReal::Id currentId, byMode) {
 				if (found.contains(currentId.toString())) {
 					found[currentId.toString()] += tr(", ") + searchData[i];
@@ -65,16 +66,16 @@ void FindManager::handleReplaceDialog(QStringList &searchData)
 {
 	if (searchData.contains(tr("by name"))) {
 		qReal::IdList toRename = foundByMode(searchData.first(), tr("by name")
-											 , searchData.contains(tr("case sensitivity")),
-											 searchData.contains(tr("by regular expression")));
+				, searchData.contains(tr("case sensitivity"))
+				,searchData.contains(tr("by regular expression")));
 		foreach (qReal::Id currentId, toRename) {
 			mLogicalApi.setName(currentId, searchData[1]);
 		}
 	}
 	if (searchData.contains(tr("by property content"))) {
 		qReal::IdList toRename = foundByMode(searchData.first(), tr("by property content")
-						, searchData.contains(tr("case sensitivity")),
-											 searchData.contains(tr("by regular expression")));
+				, searchData.contains(tr("case sensitivity"))
+				, searchData.contains(tr("by regular expression")));
 		mLogicalApi.replaceProperties(toRename, searchData[0], searchData[1]);
 	}
 }

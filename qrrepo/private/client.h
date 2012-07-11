@@ -26,15 +26,15 @@ namespace qrRepo {
 
 			/// returning IdList of elements that names contains input string
 			/// @param name - string that should be contained by names of elements that Id's are in the output list
-            qReal::IdList findElementsByName(QString const &name, bool sensitivity, bool regExpression) const;
+			qReal::IdList findElementsByName(QString const &name, bool sensitivity, bool regExpression) const;
 
 			/// returning IdList of elements that have input property
 			/// @param name - string that should be contained by names of elements that have input property
-            qReal::IdList elementsByProperty(QString const &property, bool sensitivity, bool regExpression) const;
+			qReal::IdList elementsByProperty(QString const &property, bool sensitivity, bool regExpression) const;
 
 			/// returning IdList of elements that have input property content
 			/// @param name - string that should be contained by names of elements that have input property content
-            qReal::IdList elementsByPropertyContent(QString const &property, bool sensitivity, bool regExpression) const;
+			qReal::IdList elementsByPropertyContent(QString const &property, bool sensitivity, bool regExpression) const;
 
 			qReal::IdList children(const qReal::Id &id) const;
 			qReal::Id parent(const qReal::Id &id) const;
@@ -56,8 +56,8 @@ namespace qrRepo {
 			void setProperty(const qReal::Id &id, const QString &name, const QVariant &value);
 			void copyProperties(const qReal::Id &dest, const qReal::Id &src);
 			QVariant property(const qReal::Id &id, const QString &name) const;
-            bool hasProperty(const qReal::Id &id, const QString &name, bool sensitivity = false,
-                             bool regExpression = false) const;
+			bool hasProperty(const qReal::Id &id, const QString &name, bool sensitivity = false
+					, bool regExpression = false) const;
 			void removeProperty(const qReal::Id &id, const QString &name);
 
 			void setTemporaryRemovedLinks(qReal::Id const &id, QString const &direction, qReal::IdList const &linkIdList);
