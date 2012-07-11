@@ -137,6 +137,12 @@ void VisualDebugger::error(ErrorType e)
 			mInterpretersInterface.errorReporter()->addCritical(
 					tr("Code generation failed"));
 			mHasCodeGenerationError = true;
+			break;
+		case incorrectUseOfLink:
+			mInterpretersInterface.errorReporter()->addCritical(
+						tr("Incorrect type of link used"),
+						mCurrentId);
+			break;
 		case noErrors:
 			return;
 			break;
@@ -165,6 +171,10 @@ Id const VisualDebugger::findValidLink()
 	bool condition = mBlockParser->parseCondition(conditionStr, pos, mCurrentId);
 
 	foreach (Id const &link, outLinks) {
+		if (checkForIncorrectUseOfLink(link, "ControlFlow")) {
+			return Id::rootId();
+		}
+		
 		bool type = getProperty(link, "type").toBool();
 		if (type == condition) {
 			return link;
@@ -266,6 +276,10 @@ void VisualDebugger::debug()
 				return;
 			}
 		} else {
+			if (checkForIncorrectUseOfLink(outLinks.at(0), "ConditionControlFlow")) {
+				return;
+			}
+			
 			doStep(outLinks.at(0));
 			if (mBlockParser->hasErrors()) {
 				deinitialize();
@@ -279,7 +293,7 @@ void VisualDebugger::debug()
 			error(VisualDebugger::missingEndOfLinkNode);
 			return;
 		}
-
+		
 		doStep(mLogicalModelApi.logicalRepoApi().to(mCurrentId));
 		if (mBlockParser->hasErrors()) {
 			deinitialize();
@@ -314,7 +328,9 @@ void VisualDebugger::debugSingleStep()
 	} else {
 		mBlockParser->setErrorReporter(mInterpretersInterface.errorReporter());
 
-		if (mCurrentId.element() == "ControlFlow") {
+		if (mCurrentId.element() == "ControlFlow" || 
+				mCurrentId.element() == "ConditionControlFlow")
+		{
 			if (!hasEndOfLinkNode(mCurrentId)) {
 				error(VisualDebugger::missingEndOfLinkNode);
 				return;
@@ -351,7 +367,12 @@ void VisualDebugger::debugSingleStep()
 				return;
 			}
 		} else {
-			doStep(mLogicalModelApi.logicalRepoApi().outgoingLinks(mCurrentId).at(0));
+			IdList outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(mCurrentId);
+			if (checkForIncorrectUseOfLink(outLinks.at(0), "ConditionControlFlow")) {
+				return;
+			}
+			
+			doStep(outLinks.at(0));
 
 			if (mBlockParser->hasErrors()) {
 				deinitialize();
@@ -397,6 +418,11 @@ void VisualDebugger::generateCode()
 void VisualDebugger::getConditionLinks(IdList const &outLinks, Id &falseEdge, Id &trueEdge)
 {
 	foreach (Id const &outLink, outLinks) {
+		if (checkForIncorrectUseOfLink(outLink, "ControlFlow")) {
+			error(codeGenerationError);
+			return;
+		}
+		
 		bool type = getProperty(outLink, "type").toBool();
 		if (type) {
 			trueEdge = outLink;
@@ -419,6 +445,11 @@ void VisualDebugger::generateCode(Id const &id, QFile &codeFile)
 		codeFile.write("\n");
 		if (mLogicalModelApi.logicalRepoApi().outgoingLinks(id).count() != 0) {
 			Id const nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(id).at(0);
+			if (checkForIncorrectUseOfLink(nextEdge, "ConditionControlFlow")) {
+				error(codeGenerationError);
+				return;
+			}
+			
 			generateCode(nextEdge, codeFile);
 		} else {
 			error(VisualDebugger::missingEndNode);
@@ -436,6 +467,10 @@ void VisualDebugger::generateCode(Id const &id, QFile &codeFile)
 
 			getConditionLinks(outLinks, falseEdge, trueEdge);
 
+			if (mHasCodeGenerationError) {
+				return;
+			}
+			
 			if (trueEdge == trueEdge.rootId()) {
 				error(VisualDebugger::missingValidLink);
 				error(codeGenerationError);
@@ -452,6 +487,10 @@ void VisualDebugger::generateCode(Id const &id, QFile &codeFile)
 			}
 	} else if (id.element() == "InitialNode") {
 		Id const nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(id).at(0);
+		if (checkForIncorrectUseOfLink(nextEdge, "ConditionControlFlow")) {
+			error(codeGenerationError);
+			return;
+		}
 		generateCode(nextEdge, codeFile);
 	} else if (id.element() == "BlockFinalNode") {
 		return;
@@ -478,6 +517,10 @@ void VisualDebugger::createIdByLineCorrelation(Id const &id, int& line)
 
 		if (mLogicalModelApi.logicalRepoApi().outgoingLinks(id).count() != 0) {
 			Id const nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(id).at(0);
+			if (checkForIncorrectUseOfLink(nextEdge, "ConditionControlFlow")) {
+				error(codeGenerationError);
+				return;
+			}
 			createIdByLineCorrelation(nextEdge, line);
 		} else {
 			error(missingEndNode);
@@ -491,6 +534,10 @@ void VisualDebugger::createIdByLineCorrelation(Id const &id, int& line)
 		Id trueEdge = trueEdge.rootId();
 
 		getConditionLinks(outLinks, falseEdge, trueEdge);
+		
+		if (mHasCodeGenerationError) {
+			return;
+		}
 
 		createIdByLineCorrelation(trueEdge, line);
 		line++;
@@ -502,6 +549,10 @@ void VisualDebugger::createIdByLineCorrelation(Id const &id, int& line)
 		}
 	} else if (id.element() == "InitialNode") {
 		Id const nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(id).at(0);
+		if (checkForIncorrectUseOfLink(nextEdge, "ConditionControlFlow")) {
+			error(codeGenerationError);
+			return;
+		}
 		createIdByLineCorrelation(nextEdge, line);
 	} else if (id.element() == "BlockFinalNode") {
 		mIdByLineCorrelation[line] = id;
@@ -542,7 +593,7 @@ Id VisualDebugger::getIdByLine(int line)
 
 void VisualDebugger::highlight(Id const &id)
 {
-	mInterpretersInterface.highlight(id);
+	mInterpretersInterface.highlight(id, true);
 }
 
 void VisualDebugger::dehighlight()
@@ -570,4 +621,13 @@ void VisualDebugger::setWorkDir(QString const &path)
 	if (path != "") {
 		mWorkDir = path + "/";
 	}
+}
+
+bool VisualDebugger::checkForIncorrectUseOfLink(Id const &link, QString const &type)
+{
+	bool res = link.element() == type;
+	if (res) {
+		error(incorrectUseOfLink);
+	}
+	return res;
 }

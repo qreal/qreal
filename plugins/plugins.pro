@@ -26,4 +26,6 @@ SUBDIRS	= \
 #	umlStateMachinesDiagram/umlStateMachinesDiagram.pro \
 #	umlTimingDiagram/umlTimingDiagram.pro \
 #	umlUseCaseDiagram/umlUseCaseDiagram.pro \
+	visualInterpreter/visualInterpreter.pro \
+	refactoring/refactoring.pro \
 

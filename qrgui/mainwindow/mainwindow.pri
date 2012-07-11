@@ -10,6 +10,7 @@ HEADERS += \
 	mainwindow/helpBrowser.h \
 	mainwindow/paletteTree.h \
 	mainwindow/findManager.h \
+	mainwindow/dotRunner.h \
 	mainwindow/splashScreen.h
 
 SOURCES += \
@@ -21,6 +22,7 @@ SOURCES += \
 	mainwindow/helpBrowser.cpp \
 	mainwindow/paletteTree.cpp \
 	mainwindow/findManager.cpp \
+	mainwindow/dotRunner.cpp \
 	mainwindow/splashScreen.cpp
 
 FORMS += \

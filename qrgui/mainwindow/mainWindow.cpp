@@ -37,10 +37,12 @@
 #include "../../qrkernel/settingsManager.h"
 
 #include "../../qrkernel/timeMeasurer.h"
-#include "splashScreen.h"
 
+#include "splashScreen.h"
 #include "../dialogs/startDialog/startDialog.h"
 #include "../dialogs/startDialog/suggestToCreateDiagramWidget.h"
+
+#include "dotRunner.h"
 
 using namespace qReal;
 
@@ -1693,9 +1695,8 @@ void MainWindow::initRecentProjectsMenu()
 	connect(mRecentProjectsMenu, SIGNAL(aboutToShow()), this, SLOT(openRecentProjectsMenu()));
 }
 
-void MainWindow::saveDiagramAsAPicture()
+void MainWindow::saveDiagramAsAPictureToFile(const QString &fileName)
 {
-	QString const fileName = QFileDialog::getSaveFileName(this,  tr("Save File"), "", tr("Images (*.png *.jpg)"));
 	if (fileName.isEmpty())
 		return;
 	QRectF const sceneRect = getCurrentTab()->scene()->itemsBoundingRect();
@@ -1713,6 +1714,12 @@ void MainWindow::saveDiagramAsAPicture()
 
 	getCurrentTab()->scene()->render(&painter);
 	image.save(fileName);
+}
+
+void MainWindow::saveDiagramAsAPicture()
+{
+	QString const fileName = QFileDialog::getSaveFileName(this,  tr("Save File"), "", tr("Images (*.png *.jpg)"));
+	saveDiagramAsAPictureToFile(fileName);
 }
 
 void MainWindow::connectWindowTitle()
@@ -1803,4 +1810,41 @@ void MainWindow::changePaletteRepresentation()
 	{
 		loadPlugins();
 	}
+}
+
+void MainWindow::arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles)
+{
+	Id const diagramId = activeDiagram();
+	DotRunner *runner = new DotRunner(diagramId
+			, mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi()
+			, mEditorManager, absolutePathToDotFiles);
+	runner->run(algorithm);
+	updateActiveDiagram();
+}
+
+IdList MainWindow::selectedElementsOnActiveDiagram()
+{
+	if (!getCurrentTab()) {
+		return IdList();
+	}
+	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
+
+	IdList selected;
+	foreach (QGraphicsItem* item, items) {
+		Element* element = dynamic_cast<Element*>(item);
+		if (element) {
+			if (element->isSelected()) {
+				selected.append(element->id());
+			}
+		}
+	}
+	return selected;
+}
+
+void MainWindow::updateActiveDiagram()
+{
+	Id const diagramId = activeDiagram();
+	reinitModels();
+	activateItemOrDiagram(diagramId);
+	mUi->graphicalModelExplorer->setRootIndex(QModelIndex());
 }
