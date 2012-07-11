@@ -162,7 +162,8 @@ void MainWindow::connectActions()
 	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(openExistingProject()));
 	connect(mUi->actionSave, SIGNAL(triggered()), this, SLOT(saveAll()));
 	connect(mUi->actionSave_as, SIGNAL(triggered()), this, SLOT(saveProjectAs()));
-	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()), this, SLOT(saveDiagramAsAPicture()));
+	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()),
+			this, SLOT(saveDiagramAsAPicture()));
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(openEmptyProject()));
@@ -170,11 +171,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 
-	//	connect(mUi->actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
-	//	connect(mUi->actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
-
-	//	connect(mUi->actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
 
 	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 	connect(mUi->actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
@@ -192,14 +189,17 @@ void MainWindow::connectActions()
 
 	connect (mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
 
-	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)), mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
-	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)), mFindHelper, SLOT(handleFindDialog(QStringList)));
-	connect(mFindReplaceDialog, SIGNAL(chosenElement(qReal::Id)), mFindHelper, SLOT(handleRefsDialog(qReal::Id)));
+	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)),
+			mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
+	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)),
+			mFindHelper, SLOT(handleFindDialog(QStringList)));
+	connect(mFindReplaceDialog, SIGNAL(chosenElement(qReal::Id)),
+			mFindHelper, SLOT(handleRefsDialog(qReal::Id)));
 
-	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this
-		, SLOT(changePaletteRepresentation()));
-	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged())
-			, &mPreferencesDialog, SLOT(changePaletteParameters()));
+	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this,
+			SLOT(changePaletteRepresentation()));
+	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged()),
+			&mPreferencesDialog, SLOT(changePaletteParameters()));
 }
 
 void MainWindow::initActionsFromSettings()
