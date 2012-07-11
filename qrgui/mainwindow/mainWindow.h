@@ -144,6 +144,7 @@ private slots:
 	void fullscreen();
 	void openRecentProjectsMenu();
 	bool openEmptyProject();
+	bool openNewProject();
 	void createDiagram(QString const &idString);
 	bool openExistingProject();
 	bool suggestToSaveChangesOrCancel();
@@ -317,7 +318,6 @@ private:
 	PreferencesDialog mPreferencesDialog;
 
 	HelpBrowser *mHelpBrowser;
-	bool mIsNewProject;
 	bool mUnsavedProjectIndicator;
 	QTimer mAutoSaveTimer;
 

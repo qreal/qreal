@@ -60,7 +60,6 @@ MainWindow::MainWindow()
 		, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
 		, mPreferencesDialog(this)
 		, mHelpBrowser(NULL)
-		, mIsNewProject(true)
 		, mUnsavedProjectIndicator(false)
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
@@ -128,7 +127,6 @@ MainWindow::MainWindow()
 	// =========== Step 7: Save consistency checked, interface is initialized with models ===========
 	splashScreen.setProgress(100);
 
-	mIsNewProject = (mSaveFile.isEmpty() || mSaveFile == mTempDir + ".qrs");
 	mDocksVisibility.clear();
 	setAutoSaveParameters();
 	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
@@ -155,7 +153,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
 	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), this, SLOT(suggestToCreateDiagram()));
-	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(openEmptyProject()));
+	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(openNewProject()));
 	connect(mUi->actionCloseProject, SIGNAL(triggered()), this, SLOT(closeProjectAndSave()));
 
 	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
@@ -466,6 +464,15 @@ bool MainWindow::openEmptyProject()
 		return false;
 	}
 	return open("");
+}
+
+bool MainWindow::openNewProject()
+{
+	if(!openEmptyProject()) {
+		return false;
+	}
+	suggestToCreateDiagram();
+	return true;
 }
 
 bool MainWindow::openExistingProject()
@@ -1321,7 +1328,7 @@ void MainWindow::createDiagram(QString const &idString)
 
 void MainWindow::saveAll()
 {
-	if (mSaveFile.isEmpty() || mIsNewProject) {
+	if (mSaveFile.isEmpty()) {
 		saveProjectAs();
 		return;
 	}
@@ -1343,7 +1350,6 @@ void MainWindow::saveAs(QString const &fileName)
 	}
 	mSaveFile = fileName;
 	mUnsavedProjectIndicator = false;
-	mIsNewProject = (mSaveFile == mTempDir);
 	mModels->repoControlApi().saveTo(mSaveFile);
 	if (!mSaveFile.endsWith(".qrs", Qt::CaseInsensitive))
 		mSaveFile += ".qrs";
@@ -1591,7 +1597,7 @@ void MainWindow::setAutoSaveParameters()
 
 void MainWindow::autosave()
 {
-	if (mIsNewProject)
+	if (mSaveFile == "")
 		saveAs(mTempDir);
 	else
 		saveAll();
