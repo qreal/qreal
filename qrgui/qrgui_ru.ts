@@ -1097,222 +1097,214 @@
         <translation>Отмена</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="dialogs/preferencesDialog.cpp" line="44"/>
-=======
-        <location filename="dialogs/preferencesDialog.cpp" line="46"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
-        <source>Editor</source>
-        <translation>Редактор</translation>
-    </message>
-    <message>
-        <source>Features</source>
-        <translation type="obsolete">Возможности</translation>
-    </message>
-    <message>
-        <source>Robot Settings</source>
-        <translation type="obsolete">Робот</translation>
-    </message>
-    <message>
-        <source>Show grid</source>
-        <translation type="obsolete">Показывать сетку</translation>
-    </message>
-    <message>
-        <source>Activate grid</source>
-        <translation type="obsolete">Активировать сетку</translation>
-    </message>
-    <message>
-        <source>Width</source>
-        <translation type="obsolete">Ширина</translation>
-    </message>
-    <message>
-        <source>Cell size</source>
-        <translation type="obsolete">Размер ячейки</translation>
-    </message>
-    <message>
-        <source>Activate alignment</source>
-        <translation type="obsolete">Активировать направляющие</translation>
-    </message>
-    <message>
-        <source>Show alignment</source>
-        <translation type="obsolete">Показать направляющие</translation>
-    </message>
-    <message>
-        <source>Grid</source>
-        <translation type="obsolete">Сетка</translation>
-    </message>
-    <message>
-        <source>Embedded Linkers</source>
-        <translation type="obsolete">Встроенные линкеры</translation>
-    </message>
-    <message>
-        <source>Size</source>
-        <translation type="obsolete">Размер</translation>
-    </message>
-    <message>
-        <source>Indent</source>
-        <translation type="obsolete">Отступ</translation>
-    </message>
-    <message>
-        <source>Zoom factor</source>
-        <translation type="obsolete">Фактор увеличения</translation>
-    </message>
-    <message>
-        <source>Zoom</source>
-        <translation type="obsolete">Увеличение</translation>
-    </message>
-    <message>
-<<<<<<< HEAD
-        <location filename="dialogs/preferencesDialog.cpp" line="43"/>
-=======
-        <location filename="dialogs/preferencesDialog.cpp" line="45"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
-        <source>Miscellanious</source>
-        <translation>Разное</translation>
-    </message>
-    <message>
-        <source>Antialiasing</source>
-        <translation type="obsolete">Антиалиасинг</translation>
-    </message>
-    <message>
-        <source>OpenGL rendering</source>
-        <translation type="obsolete">Рендеринг OpenGL</translation>
-    </message>
-    <message>
-        <source>Graphics</source>
-        <translation type="obsolete">Графика</translation>
-    </message>
-    <message>
-        <source>Other</source>
-        <translation type="obsolete">Прочее</translation>
-    </message>
-    <message>
-        <source>Show splashscreen</source>
-        <translation type="obsolete">Показывать сплешскрин</translation>
-    </message>
-    <message>
-        <source>Chaotic Edition</source>
-        <translatorcomment>ПаДиТе НиЦ пЕрЕд ЛиКоМ хАоСа, СмЕрТнЫе!1!</translatorcomment>
-        <translation type="obsolete">Режим, угодный богам Хаоса</translation>
-    </message>
-    <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="41"/>
-        <source>Behaviour</source>
-        <translation>Поведение</translation>
-    </message>
-    <message>
-        <source>Palette tab switching</source>
-        <translation type="obsolete">Перелючение табов в палитре</translation>
-    </message>
-    <message>
-        <source>Automatics</source>
-        <translation type="obsolete">Автоматизация</translation>
-    </message>
-    <message>
-        <source>New diagram creating</source>
-        <translation type="obsolete">Создание новой диаграммы</translation>
-    </message>
-    <message>
-        <source>Save on exit</source>
-        <translation type="obsolete">Сохраняться при выходе</translation>
-    </message>
-    <message>
-        <source>Choose diagrams to save</source>
-        <translation type="obsolete">Предлагать выбор диаграмм для сохранения</translation>
-    </message>
-    <message>
-        <source>Suggestions</source>
-        <translation type="obsolete">Предложения</translation>
-    </message>
-    <message>
-        <source>Warning window</source>
-        <translation type="obsolete">Окно предупреждений</translation>
-    </message>
-    <message>
-        <source>Show window</source>
-        <translation type="obsolete">Показать окно</translation>
-    </message>
-    <message>
-        <source>Compiler</source>
-        <translation type="obsolete">Компилятор</translation>
-    </message>
-    <message>
-        <source>Windows</source>
-        <translation type="obsolete">Windows</translation>
-    </message>
-    <message>
-        <source>Linux</source>
-        <translation type="obsolete">Linux</translation>
-    </message>
-    <message>
-        <source>path to qmake</source>
-        <translation type="obsolete">Путь к qmake</translation>
-    </message>
-    <message>
-        <source>path to make</source>
-        <translation type="obsolete">Путь к make</translation>
-    </message>
-    <message>
-        <source>plugin file extension</source>
-        <translation type="obsolete">Расширение файла с плагином</translation>
-    </message>
-    <message>
-        <source>prefix</source>
-        <translation type="obsolete">Префикс</translation>
-    </message>
-    <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="44"/>
-        <source>Debugger</source>
-        <translation>Отладчик</translation>
-    </message>
-    <message>
-        <source>Presentation</source>
-        <translation type="obsolete">Представление</translation>
-    </message>
-    <message>
-        <source>Debug timeout (ms):</source>
-        <translation type="obsolete">Задержка при отладке:</translation>
-    </message>
-    <message>
-        <source>Color of highlight:</source>
-        <translation type="obsolete">Цвет подсветки:</translation>
-    </message>
-    <message>
-        <source>Unused</source>
-        <translation type="obsolete">Не используется</translation>
-    </message>
-    <message>
-        <source>Touch sensor (boolean value)</source>
-        <translation type="obsolete">Сенсор нажатия (булево значение)</translation>
-    </message>
-    <message>
-        <source>Touch sensor (raw value)</source>
-        <translation type="obsolete">Сенсор нажатия (сырое значение)</translation>
-    </message>
-    <message>
-        <source>Sonar sensor</source>
-        <translation type="obsolete">Ультразвуковой сенсор</translation>
-    </message>
-    <message>
-        <source>Color sensor (full colors)</source>
-        <translation type="obsolete">Сенсор цвета (полные цвета)</translation>
-    </message>
-    <message>
-        <source>Color sensor (red)</source>
-        <translation type="obsolete">Сенсор цвета (красный)</translation>
-    </message>
-    <message>
-        <source>Color sensor (green)</source>
-        <translation type="obsolete">Сенсор цвета (зелёный)</translation>
-    </message>
-    <message>
-        <source>Color sensor (blue)</source>
-        <translation type="obsolete">Сенсор цвета (синий)</translation>
-    </message>
-    <message>
-        <source>Color sensor (passive)</source>
-        <translation type="obsolete">Сенсор цвета (пассивный)</translation>
-    </message>
+		<location filename="dialogs/preferencesDialog.cpp" line="46"/>
+		<source>Editor</source>
+		<translation>Редактор</translation>
+	</message>
+	<message>
+		<source>Features</source>
+		<translation type="obsolete">Возможности</translation>
+	</message>
+	<message>
+		<source>Robot Settings</source>
+		<translation type="obsolete">Робот</translation>
+	</message>
+	<message>
+		<source>Show grid</source>
+		<translation type="obsolete">Показывать сетку</translation>
+	</message>
+	<message>
+		<source>Activate grid</source>
+		<translation type="obsolete">Активировать сетку</translation>
+	</message>
+	<message>
+		<source>Width</source>
+		<translation type="obsolete">Ширина</translation>
+	</message>
+	<message>
+		<source>Cell size</source>
+		<translation type="obsolete">Размер ячейки</translation>
+	</message>
+	<message>
+		<source>Activate alignment</source>
+		<translation type="obsolete">Активировать направляющие</translation>
+	</message>
+	<message>
+		<source>Show alignment</source>
+		<translation type="obsolete">Показать направляющие</translation>
+	</message>
+	<message>
+		<source>Grid</source>
+		<translation type="obsolete">Сетка</translation>
+	</message>
+	<message>
+		<source>Embedded Linkers</source>
+		<translation type="obsolete">Встроенные линкеры</translation>
+	</message>
+	<message>
+		<source>Size</source>
+		<translation type="obsolete">Размер</translation>
+	</message>
+	<message>
+		<source>Indent</source>
+		<translation type="obsolete">Отступ</translation>
+	</message>
+	<message>
+		<source>Zoom factor</source>
+		<translation type="obsolete">Фактор увеличения</translation>
+	</message>
+	<message>
+		<source>Zoom</source>
+		<translation type="obsolete">Увеличение</translation>
+	</message>
+	<message>
+		<location filename="dialogs/preferencesDialog.cpp" line="45"/>
+		<source>Miscellanious</source>
+		<translation>Разное</translation>
+	</message>
+	<message>
+		<source>Antialiasing</source>
+		<translation type="obsolete">Антиалиасинг</translation>
+	</message>
+	<message>
+		<source>OpenGL rendering</source>
+		<translation type="obsolete">Рендеринг OpenGL</translation>
+	</message>
+	<message>
+		<source>Graphics</source>
+		<translation type="obsolete">Графика</translation>
+	</message>
+	<message>
+		<source>Other</source>
+		<translation type="obsolete">Прочее</translation>
+	</message>
+	<message>
+		<source>Show splashscreen</source>
+		<translation type="obsolete">Показывать сплешскрин</translation>
+	</message>
+	<message>
+		<source>Chaotic Edition</source>
+		<translatorcomment>ПаДиТе НиЦ пЕрЕд ЛиКоМ хАоСа, СмЕрТнЫе!1!</translatorcomment>
+		<translation type="obsolete">Режим, угодный богам Хаоса</translation>
+	</message>
+	<message>
+		<location filename="dialogs/preferencesDialog.cpp" line="41"/>
+		<source>Behaviour</source>
+		<translation>Поведение</translation>
+	</message>
+	<message>
+		<source>Palette tab switching</source>
+		<translation type="obsolete">Перелючение табов в палитре</translation>
+	</message>
+	<message>
+		<source>Automatics</source>
+		<translation type="obsolete">Автоматизация</translation>
+	</message>
+	<message>
+		<source>New diagram creating</source>
+		<translation type="obsolete">Создание новой диаграммы</translation>
+	</message>
+	<message>
+		<source>Save on exit</source>
+		<translation type="obsolete">Сохраняться при выходе</translation>
+	</message>
+	<message>
+		<source>Choose diagrams to save</source>
+		<translation type="obsolete">Предлагать выбор диаграмм для сохранения</translation>
+	</message>
+	<message>
+		<source>Suggestions</source>
+		<translation type="obsolete">Предложения</translation>
+	</message>
+	<message>
+		<source>Warning window</source>
+		<translation type="obsolete">Окно предупреждений</translation>
+	</message>
+	<message>
+		<source>Show window</source>
+		<translation type="obsolete">Показать окно</translation>
+	</message>
+	<message>
+		<source>Compiler</source>
+		<translation type="obsolete">Компилятор</translation>
+	</message>
+	<message>
+		<source>Windows</source>
+		<translation type="obsolete">Windows</translation>
+	</message>
+	<message>
+		<source>Linux</source>
+		<translation type="obsolete">Linux</translation>
+	</message>
+	<message>
+		<source>path to qmake</source>
+		<translation type="obsolete">Путь к qmake</translation>
+	</message>
+	<message>
+		<source>path to make</source>
+		<translation type="obsolete">Путь к make</translation>
+	</message>
+	<message>
+		<source>plugin file extension</source>
+		<translation type="obsolete">Расширение файла с плагином</translation>
+	</message>
+	<message>
+		<source>prefix</source>
+		<translation type="obsolete">Префикс</translation>
+	</message>
+	<message>
+		<location filename="dialogs/preferencesDialog.cpp" line="44"/>
+		<source>Debugger</source>
+		<translation>Отладчик</translation>
+	</message>
+	<message>
+		<source>Presentation</source>
+		<translation type="obsolete">Представление</translation>
+	</message>
+	<message>
+		<source>Debug timeout (ms):</source>
+		<translation type="obsolete">Задержка при отладке:</translation>
+	</message>
+	<message>
+		<source>Color of highlight:</source>
+		<translation type="obsolete">Цвет подсветки:</translation>
+	</message>
+	<message>
+		<source>Unused</source>
+		<translation type="obsolete">Не используется</translation>
+	</message>
+	<message>
+		<source>Touch sensor (boolean value)</source>
+		<translation type="obsolete">Сенсор нажатия (булево значение)</translation>
+	</message>
+	<message>
+		<source>Touch sensor (raw value)</source>
+		<translation type="obsolete">Сенсор нажатия (сырое значение)</translation>
+	</message>
+	<message>
+		<source>Sonar sensor</source>
+		<translation type="obsolete">Ультразвуковой сенсор</translation>
+	</message>
+	<message>
+		<source>Color sensor (full colors)</source>
+		<translation type="obsolete">Сенсор цвета (полные цвета)</translation>
+	</message>
+	<message>
+		<source>Color sensor (red)</source>
+		<translation type="obsolete">Сенсор цвета (красный)</translation>
+	</message>
+	<message>
+		<source>Color sensor (green)</source>
+		<translation type="obsolete">Сенсор цвета (зелёный)</translation>
+	</message>
+	<message>
+		<source>Color sensor (blue)</source>
+		<translation type="obsolete">Сенсор цвета (синий)</translation>
+	</message>
+	<message>
+		<source>Color sensor (passive)</source>
+		<translation type="obsolete">Сенсор цвета (пассивный)</translation>
+	</message>
 </context>
 <context>
     <name>PreferencesEditorPage</name>
