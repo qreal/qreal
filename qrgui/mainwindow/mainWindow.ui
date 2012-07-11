@@ -84,7 +84,7 @@
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionShowGestures"/>
+    <addaction name="actionShow"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -524,7 +524,7 @@
   </action>
   <action name="actionShow">
    <property name="text">
-    <string>Show</string>
+    <string>Mouse gestures</string>
    </property>
   </action>
   <action name="actionPreferences">
@@ -654,11 +654,6 @@
   <action name="actionFind_and_replace">
    <property name="text">
     <string>Find and replace</string>
-   </property>
-  </action>
-  <action name="actionShowGestures">
-   <property name="text">
-    <string>Mouse gestures</string>
    </property>
   </action>
  </widget>

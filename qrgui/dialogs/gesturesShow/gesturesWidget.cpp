@@ -21,6 +21,7 @@ GesturesWidget::~GesturesWidget()
 	delete ui;
 }
 
+//сделать, чтобы работало от листа листа точек, эта штука лежит в тулзах в PaintManager::drawPath
 void GesturesWidget::draw(QList<QPoint> const & path)
 {
 	mCurrentPointNumber = 0;
