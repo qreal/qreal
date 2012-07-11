@@ -63,6 +63,7 @@ MainWindow::MainWindow()
 		, mRecentProjectsMapper(new QSignalMapper())
 {
 	mUi->setupUi(this);
+	initSettingManager();
 
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 
@@ -80,16 +81,12 @@ MainWindow::MainWindow()
 	initGridProperties();
 
 	// =========== Step 3: Ui connects are done ===========
+
 	splashScreen.setProgress(40);
 
 	initDocks();
 
-	QFileInfo saveFile(SettingsManager::value("saveFile", mSaveFile).toString());
-
-	if (saveFile.exists())
-		mSaveFile = saveFile.absoluteFilePath();
-
-	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
+	mModels = new models::Models(mSaveFile, mEditorManager);
 
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi()
@@ -125,7 +122,6 @@ MainWindow::MainWindow()
 
 	mGesturesWidget = new GesturesWidget();
 	initExplorers();
-	initSettingManager();
 	connectActions();
 	initActionsFromSettings();
 
@@ -163,13 +159,13 @@ void MainWindow::connectActions()
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
 	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
-	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(openNewProject()));
+	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(openExistingProject()));
 	connect(mUi->actionSave, SIGNAL(triggered()), this, SLOT(saveAll()));
 	connect(mUi->actionSave_as, SIGNAL(triggered()), this, SLOT(saveProjectAs()));
 	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()), this, SLOT(saveDiagramAsAPicture()));
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
-	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(openNewProject()));
+	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(openEmptyProject()));
 	connect(mUi->actionCloseProject, SIGNAL(triggered()), this, SLOT(closeProjectAndSave()));
 	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
@@ -410,16 +406,24 @@ QString MainWindow::getWorkingFile(QString const &dialogWindowTitle, bool save)
 	QString fileName;
 	QDir const lastSaveDir = QFileInfo(mSaveFile).absoluteDir();
 
-	if (save)
-		fileName = QFileDialog::getSaveFileName(this, dialogWindowTitle
-				, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
-	else
-		fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle
-				, lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
-	SettingsManager::setValue("saveFile", fileName);
-	mSaveFile = fileName;
+	if (save) {
+		fileName = QFileDialog::getSaveFileName(this, dialogWindowTitle,
+				lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
+	} else {
+		fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle,
+				lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
 
+		if (fileName != "" && !QFile::exists(fileName)) {
+			QMessageBox fileNotFoundMessage(QMessageBox::Information, tr("File not found"),
+					tr("File ") + fileName + tr(" not found. Try again"),	QMessageBox::Ok, this);
+			fileNotFoundMessage.exec();
+
+			fileName = getWorkingFile(dialogWindowTitle, save);
+		}
+	}
+	SettingsManager::setValue("saveFile", fileName);
 	refreshRecentProjectsList(fileName);
+	mSaveFile = fileName;
 
 	return fileName;
 }
@@ -444,7 +448,7 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 			splashScreen->close();
 
 		if (button == QMessageBox::Yes) {
-			if (!openNewProject())
+			if (!openEmptyProject())
 				loadingCancelled = true;
 		}
 		else
@@ -475,18 +479,39 @@ bool MainWindow::import(QString const &fileName)
 	return true;
 }
 
-bool MainWindow::openNewProject()
+bool MainWindow::suggestToSaveChangesOrCancel()
 {
-	if (mUnsavedProjectIndicator) {
-		switch (openSaveOfferDialog()) {
-		case QMessageBox::AcceptRole:
-			saveAll();
-			break;
-		case QMessageBox::RejectRole:
-			return false;
-		}
+	if (!mUnsavedProjectIndicator) {
+		return true;
 	}
-	return open(getWorkingFile(tr("Select file with a save to open"), false));
+	switch (openSaveOfferDialog()) {
+	case QMessageBox::AcceptRole:
+		saveAll();
+		break;
+	case QMessageBox::RejectRole:
+		return false;
+	}
+	return true;
+}
+
+bool MainWindow::openEmptyProject()
+{
+	if (!suggestToSaveChangesOrCancel()) {
+		return false;
+	}
+	return open("");
+}
+
+bool MainWindow::openExistingProject()
+{
+	if (!suggestToSaveChangesOrCancel()) {
+		return false;
+	}
+	QString fileName = getWorkingFile(tr("Open existing project"), false);
+	if (fileName == "") {
+		return false;
+	}
+	return open(fileName);
 }
 
 void MainWindow::refreshRecentProjectsList(QString const &fileName)
@@ -527,10 +552,6 @@ void MainWindow::saveAllAndOpen(QString const &dirName)
 
 bool MainWindow::open(QString const &fileName)
 {
-	if (!QFile(fileName).exists() && fileName != "") {
-		return false;
-	}
-
 	refreshRecentProjectsList(fileName);
 
 	closeProject();
@@ -538,28 +559,32 @@ bool MainWindow::open(QString const &fileName)
 	mModels->repoControlApi().open(fileName);
 	mModels->reinit();
 
-	if (!checkPluginsAndReopen(NULL))
+	if (!checkPluginsAndReopen(NULL)) {
 		return false;
+	}
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
 	connectWindowTitle();
-	mSaveFile = fileName;
+
 	QString windowTitle = mToolManager.customizer()->windowTitle();
-	if (!fileName.isEmpty()) {
-		setWindowTitle(windowTitle + " - " + mSaveFile);
-	}
-	else
+	if (fileName.isEmpty()) {
 		setWindowTitle(windowTitle + " - unsaved project");
+	} else {
+		setWindowTitle(windowTitle + " - " + fileName);
+	}
+	mSaveFile = fileName;
+
 	return true;
 }
 
 void MainWindow::closeAllTabs()
 {
 	int const tabCount = mUi->tabs->count();
-	for (int i = 0; i < tabCount; i++)
+	for (int i = 0; i < tabCount; i++) {
 		closeTab(i);
+	}
 	disconnectWindowTitle();
 }
 
@@ -930,6 +955,10 @@ void MainWindow::initSettingManager()
 	QDir dir(qApp->applicationDirPath());
 	if (!dir.cd(mTempDir))
 		QDir().mkdir(mTempDir);
+
+	QFileInfo saveFile(SettingsManager::value("saveFile", mSaveFile).toString());
+	if (saveFile.exists())
+		mSaveFile = saveFile.absoluteFilePath();
 }
 
 void MainWindow::openSettingsDialog(QString const &tab)
@@ -1542,25 +1571,6 @@ void MainWindow::fullscreen()
 		showDockWidget(mUi->errorDock, "errorReporter");
 	}
 }
-
-/*
-void MainWindow::createProject()
-{
-	if (mUnsavedProjectIndicator) {
-		switch (openSaveOfferDialog()) {
-		case QMessageBox::AcceptRole:
-			saveAll();
-			break;
-		case QMessageBox::RejectRole:
-			return;
-		}
-	}
-	open("");
-	if (SettingsManager::value("diagramCreateSuggestion").toBool())
-		suggestToCreateDiagram();
-
-}
-*/
 
 QString MainWindow::getNextDirName(QString const &name)
 {

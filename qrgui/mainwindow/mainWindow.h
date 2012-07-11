@@ -141,7 +141,9 @@ private slots:
 	virtual void saveAll();
 	void fullscreen();
 	void openRecentProjectsMenu();
-	bool openNewProject();
+	bool openEmptyProject();
+	bool openExistingProject();
+	bool suggestToSaveChangesOrCancel();
 
 	void saveDiagramAsAPicture();
 
