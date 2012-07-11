@@ -75,7 +75,7 @@ void BluetoothRobotCommunicationThread::connect(QString const &portName)
 
 	emit connected(response != QByteArray());
 
-	mKeepAliveTimer->start(1000);
+	mKeepAliveTimer->start(500);
 }
 
 void BluetoothRobotCommunicationThread::reconnect(QString const &portName)

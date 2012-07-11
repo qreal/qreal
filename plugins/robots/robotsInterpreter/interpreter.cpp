@@ -6,7 +6,7 @@
 #include "details/robotCommunication/usbRobotCommunicationThread.h"
 #include "details/tracer.h"
 #include "details/debugHelper.h"
-
+#include "QtCore/QDebug"
 #include <QtGui/QAction>
 
 using namespace qReal;
@@ -65,6 +65,7 @@ Interpreter::~Interpreter()
 
 void Interpreter::interpret()
 {
+	qDebug() << "Interpreter::interpret()";
 	Tracer::debug(tracer::initialization, "Interpreter::interpret", "Preparing for interpretation");
 
 	mInterpretersInterface->errorReporter()->clear();
@@ -105,9 +106,6 @@ void Interpreter::stopRobot()
 		mThreads.removeAll(thread);
 	}
 	mBlocksTable->setFailure();
-	/*mBlocksTable->clear();
-	mThreads.clear();
-	mTimer->stop();*/
 }
 
 void Interpreter::showWatchList() {
@@ -228,7 +226,8 @@ void Interpreter::configureSensors(sensorType::SensorTypeEnum const &port1
 		, sensorType::SensorTypeEnum const &port3
 		, sensorType::SensorTypeEnum const &port4)
 {
-	mRobotModel->configureSensors(port1, port2, port3, port4);
+	if (mConnected)
+		mRobotModel->configureSensors(port1, port2, port3, port4);
 }
 
 void Interpreter::addThread(details::Thread * const thread)
@@ -332,6 +331,10 @@ void Interpreter::connectToRobot()
 		mRobotModel->disconnectFromRobot();
 	} else {
 		mRobotModel->init();
+		configureSensors(static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
+						 , static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
+						 , static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
+						 , static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt()));
 	}
 	mActionConnectToRobot->setChecked(mConnected);
 }
@@ -357,8 +360,7 @@ void Interpreter::setCommunicator(QString const &valueOfCommunication, QString c
 
 	mRobotCommunication->setRobotCommunicationThreadObject(communicator);
 	mRobotCommunication->setPortName(portName);
-
-	disconnectSlot();
+	connectToRobot();
 }
 
 void Interpreter::setConnectRobotAction(QAction *actionConnect)

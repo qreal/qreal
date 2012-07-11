@@ -9,6 +9,7 @@
 #include "sonarSensor.h"
 #include "colorSensor.h"
 #include "encoderSensor.h"
+#include "lightSensor.h"
 #include "../../sensorConstants.h"
 #include "../robotImplementations/abstractRobotModelImplementation.h"
 
@@ -43,6 +44,7 @@ public:
 	robotParts::Brick &brick();
 	robotParts::TouchSensor *touchSensor(inputPort::InputPortEnum const &port) const;
 	robotParts::SonarSensor *sonarSensor(inputPort::InputPortEnum const &port) const;
+	robotParts::LightSensor *lightSensor(inputPort::InputPortEnum const &port) const;
 	robotParts::Sensor *sensor(inputPort::InputPortEnum const &port) const;
 	robotParts::ColorSensor *colorSensor(inputPort::InputPortEnum const &port) const;
 

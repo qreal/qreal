@@ -13,7 +13,7 @@
 				<value>4</value>
 			</enum>
 			<enum name="GuardType">
-				<value>повторение</value>
+				<value>итерация</value>
 				<value></value>
 				<value>меньше 0</value>
 				<value>больше 0</value>
@@ -590,7 +590,7 @@
 					</picture>
 					<labels>
 						<label x="33" y="60" textBinded="Iterations"/>
-						<label x="-37" y="60" text="Повторений:"/>
+						<label x="-37" y="60" text="Итераций:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -615,7 +615,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Повторения" type="string" name="Iterations">
+						<property displayedName="Итерации" type="string" name="Iterations">
 							<default>10</default>
 						</property>
 					</properties>

@@ -277,6 +277,12 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> countsColor, int
 	return (allWhite / static_cast<qreal>(n)) * 100.0;
 }
 
+int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
+{
+	Q_UNUSED(port)
+	return 0;
+}
+
 void D2RobotModel::startInit()
 {
 	initPosition();

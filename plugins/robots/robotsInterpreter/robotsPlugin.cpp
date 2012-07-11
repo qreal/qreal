@@ -21,8 +21,8 @@ RobotsPlugin::RobotsPlugin()
 		, mWatchListAction(NULL)
 		, mAppTranslator(new QTranslator())
 {
-	details::Tracer::enableCategory(details::tracer::robotCommunication);
-//	details::Tracer::enableAll();
+	//details::Tracer::enableCategory(details::tracer::robotCommunication);
+	//details::Tracer::enableAll();
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
 	mAppTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(mAppTranslator);
@@ -116,6 +116,9 @@ void RobotsPlugin::updateSettings()
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Updating settings, model and sensors are going to be reinitialized...");
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
 	mInterpreter.setRobotModelType(typeOfRobotModel);
+	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication", "bluetooth").toString();
+	QString const portName = SettingsManager::value("bluetoothPortName", "").toString();
+	mInterpreter.setCommunicator(typeOfCommunication, portName);
 	mInterpreter.configureSensors(
 			static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
 			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
@@ -130,9 +133,6 @@ void RobotsPlugin::updateSettings()
 		mInterpreter.showD2ModelWidget(false);
 	}
 
-	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication", "bluetooth").toString();
-	QString const portName = SettingsManager::value("bluetoothPortName", "").toString();
-	mInterpreter.setCommunicator(typeOfCommunication, portName);
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Done updating settings");
 }
 

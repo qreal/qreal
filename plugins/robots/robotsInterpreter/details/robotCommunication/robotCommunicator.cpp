@@ -2,9 +2,9 @@
 
 #include "../../thirdparty/qextserialport/src/qextserialenumerator.h"
 #include "../../thirdparty/qextserialport/src/qextserialport.h"
-
 using namespace qReal::interpreters::robots;
 
+#include <QDebug>
 RobotCommunicator::RobotCommunicator(QString const &portName)
 		: mPortName(portName)
 		, mRobotCommunicationThreadObject(NULL)

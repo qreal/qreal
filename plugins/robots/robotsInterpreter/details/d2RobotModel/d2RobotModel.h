@@ -36,6 +36,7 @@ public:
 	bool readTouchSensor(inputPort::InputPortEnum const port);
 	int readSonarSensor(inputPort::InputPortEnum const port) const;
 	int readColorSensor(inputPort::InputPortEnum const port) const;
+	int readLightSensor(inputPort::InputPortEnum const port) const;
 
 	void showModelWidget();
 

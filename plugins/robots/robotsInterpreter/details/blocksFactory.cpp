@@ -21,6 +21,7 @@
 #include "blocks/ifBlock.h"
 #include "blocks/waitForEncoderBlock.h"
 #include "blocks/nullificationEncoderBlock.h"
+#include "blocks/waitForLightSensorBlock.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details;
@@ -86,6 +87,8 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new WaitForEncoderBlock(mRobotModel);
 	else if (elementMetatypeIs(element, "NullificationEncoder"))
 		newBlock = new NullificationEncoderBlock(mRobotModel);
+	else if (elementMetatypeIs(element, "WaitForLight"))
+		newBlock = new WaitForLightSensorBlock(mRobotModel);
 	else
 		newBlock = new DummyBlock();
 
