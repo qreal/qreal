@@ -44,7 +44,7 @@ NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator()
 	if (mApi && mIsNeedToDeleteMApi)
 		delete mApi;
 }
-// mmm!!!
+
 void NxtOSEKRobotGenerator::addToGeneratedStringSetVariableInit()
 {
 	/*foreach (SmartLine curVariable, mVariables) {
@@ -64,6 +64,83 @@ QString NxtOSEKRobotGenerator::generateVariableString()
 	return res;
 }
 
+QString NxtOSEKRobotGenerator::addTabAndEndOfLine(QList<SmartLine> const &lineList, QString resultCode)
+{
+	foreach (SmartLine const &curLine, lineList) {
+		if ( (curLine.indentLevelChange() == SmartLine::decrease)
+			|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
+		{
+			mCurTabNumber--;
+		}
+		resultCode += QString(mCurTabNumber, '\t') + curLine.text() + "\n";
+		if ( (curLine.indentLevelChange() == SmartLine::increase)
+			|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
+		{
+			mCurTabNumber++;
+		}
+	}
+	return resultCode;
+}
+
+void NxtOSEKRobotGenerator::generateMakeFile(bool toGenerateIsEmpty, QString projectName, QString projectDir)
+{
+	QFile templateMakeFile(":/nxtOSEK/templates/template.makefile");
+	if (!templateMakeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		mErrorReporter.addError("cannot open \"" + templateMakeFile.fileName() + "\"");
+		return;
+	}
+
+	QFile resultMakeFile(projectDir + "/makefile");
+	if (!resultMakeFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		mErrorReporter.addError("cannot open \"" + resultMakeFile.fileName() + "\"");
+		return;
+	}
+
+	QTextStream outMake(&resultMakeFile);
+	outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8());
+	templateMakeFile.close();
+
+	outMake.flush();
+	resultMakeFile.close();
+
+	if (toGenerateIsEmpty) {
+		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node or Initial Block"));
+	}
+
+}
+
+void NxtOSEKRobotGenerator::insertCode(
+		QString resultCode,
+		QString resultInitCode,
+		QString resultTerminateCode,
+		QString curInitialNodeNumber)
+{
+	mResultString.replace("@@CODE@@", resultCode +"\n" + "@@CODE@@");
+	mTaskTemplate.replace("@@NUMBER@@", curInitialNodeNumber);
+	mResultOIL.replace("@@TASK@@", mTaskTemplate + "\n" + "@@TASK@@");
+	mResultString.replace("@@VARIABLES@@", generateVariableString() + "\n" + "@@VARIABLES@@");
+	mResultString.replace("@@INITHOOKS@@", resultInitCode);
+	mResultString.replace("@@TERMINATEHOOKS@@", resultTerminateCode);
+}
+
+void NxtOSEKRobotGenerator::deleteResidualLabels(QString projectName)
+{
+	mResultOIL.replace("@@TASK@@", "");
+	mResultString.replace("@@VARIABLES@@", "");
+	mResultString.replace("@@CODE@@", "");
+	mResultString.replace("@@PROJECT_NAME@@", projectName);
+}
+
+void NxtOSEKRobotGenerator::generateFilesForBalancer(QString projectDir)
+{
+	QFile::copy(":/nxtOSEK/templates/balancer/balancer_param.c", projectDir + "/" + "balancer_param.c");
+	QFile::copy(":/nxtOSEK/templates/balancer/balancer.h", projectDir + "/" +"balancer.h");
+	QFile::copy(":/nxtOSEK/templates/balancer/balancer_types.h", projectDir + "/" + "balancer_types.h");
+	QFile::copy(":/nxtOSEK/templates/balancer/libnxtway_gs_balancer.a", projectDir + "/" + "libnxtway_gs_balancer.a");
+	QFile::copy(":/nxtOSEK/templates/balancer/rt_SATURATE.h", projectDir + "/" + "rt_SATURATE.h");
+	QFile::copy(":/nxtOSEK/templates/balancer/rtwtypes.h", projectDir + "/" + "rtwtypes.h");
+}
+
 void NxtOSEKRobotGenerator::generate()
 {
 	if (mDiagram == Id()) {
@@ -80,7 +157,7 @@ void NxtOSEKRobotGenerator::generate()
 	QString resultTerminateCode;
 
 	//QDir projectsDir; //TODO: use user path to projects
-	QString projectName = "example" + QString::number(curInitialNodeNumber); // прилично назвать
+	QString projectName = "example" + QString::number(curInitialNodeNumber);
 	QString projectDir = "nxt-tools/" + projectName;
 
 	//Create project directory
@@ -98,7 +175,7 @@ void NxtOSEKRobotGenerator::generate()
 	}
 
 	QTextStream templateCStream(&templateCFile);
-	QString resultString = templateCStream.readAll();
+	mResultString = templateCStream.readAll();
 	templateCFile.close();
 
 	// Generate OIL file
@@ -115,7 +192,7 @@ void NxtOSEKRobotGenerator::generate()
 		return;
 	}
 
-	QString resultOIL = templateOILFile.readAll();
+	mResultOIL = templateOILFile.readAll();
 	templateOILFile.close();
 
 	// Task template file
@@ -128,9 +205,9 @@ void NxtOSEKRobotGenerator::generate()
 	QString resultTaskTemplate = taskTemplateFile.readAll();
 	taskTemplateFile.close();
 
-	foreach (Id curInitialNode, toGenerate) {
+	foreach (Id const &curInitialNode, toGenerate) {
 
-		QString taskTemplate = resultTaskTemplate;
+		mTaskTemplate = resultTaskTemplate;
 		if (!mApi->isGraphicalElement(curInitialNode)) {
 			continue;
 		}
@@ -155,78 +232,19 @@ void NxtOSEKRobotGenerator::generate()
 
 		// Result code in .c file
 		QString resultCode;
-		int curTabNumber = 1;
+		mCurTabNumber = 0;
 		foreach (QList<SmartLine> lineList, mGeneratedStringSet) {
-			foreach (SmartLine curLine, lineList) {
-				if ( (curLine.indentLevelChange() == SmartLine::decrease)
-						|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
-				{
-					curTabNumber--;
-				}
-
-				resultCode += QString(curTabNumber, '\t') + curLine.text() + "\n";
-
-				if ( (curLine.indentLevelChange() == SmartLine::increase)
-						|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
-				{
-					curTabNumber++;
-				}
-			}
+			 resultCode = addTabAndEndOfLine(lineList, resultCode);
 		}
-
 		// Code init block in .c file
-		foreach (SmartLine curLine, mInitCode) {
-			if ( (curLine.indentLevelChange() == SmartLine::decrease)
-					|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
-			{
-				curTabNumber--;
-			}
-
-			resultInitCode += QString(curTabNumber, '\t') + curLine.text() + "\n";
-
-			if ( (curLine.indentLevelChange() == SmartLine::increase)
-					|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
-			{
-				curTabNumber++;
-			}
-		}
-
-		// Code init block in .c file
-		foreach (SmartLine curLine, mTerminateCode) {
-			if ( (curLine.indentLevelChange() == SmartLine::decrease)
-					|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
-			{
-				curTabNumber--;
-			}
-
-			resultTerminateCode += QString(curTabNumber, '\t') + curLine.text() + "\n";
-
-			if ( (curLine.indentLevelChange() == SmartLine::increase)
-					|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
-			{
-				curTabNumber++;
-			}
-		}
-
+		resultInitCode = addTabAndEndOfLine(mInitCode, resultInitCode);
+		// Code terminate block in .c file
+		resultTerminateCode = addTabAndEndOfLine(mTerminateCode, resultTerminateCode);
 		resultCode = "TASK(OSEK_Task_Number_" + QString::number(curInitialNodeNumber) +")\n{\n" + resultCode + "}";
-		resultString.replace("@@CODE@@", resultCode +"\n" + "@@CODE@@");
-
-		taskTemplate.replace("@@NUMBER@@", QString::number(curInitialNodeNumber));
-		resultOIL.replace("@@TASK@@", taskTemplate + "\n" + "@@TASK@@");
-
-		resultString.replace("@@VARIABLES@@", generateVariableString() + "\n" + "@@VARIABLES@@");
-		resultString.replace("@@INITHOOKS@@", resultInitCode);
-		resultString.replace("@@TERMINATEHOOKS@@", resultTerminateCode);
-
+		insertCode(resultCode, resultInitCode, resultTerminateCode, QString::number(curInitialNodeNumber));
 		curInitialNodeNumber++;
 	}
-
-	resultOIL.replace("@@TASK@@", "");
-	resultString.replace("@@VARIABLES@@", "");
-	resultString.replace("@@CODE@@", "");
-	resultString.replace("@@PROJECT_NAME@@", projectName);
-
-
+	deleteResidualLabels(projectName);
 
 	QFile resultCFile(projectDir + "/" + projectName + ".c");
 	if (!resultCFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -236,49 +254,17 @@ void NxtOSEKRobotGenerator::generate()
 
 	//Output in the .c and .oil file
 	QTextStream outC(&resultCFile);
-	outC << resultString;
+	outC << mResultString;
 	outC.flush();
 	resultCFile.close();
 
 	QTextStream outOIL(&resultOILFile);
-	outOIL << resultOIL;
+	outOIL << mResultOIL;
 	outOIL.flush();
 	resultOILFile.close();
 
-	/* Generate files for balancer */ // rfrf
-	QFile::copy(":/nxtOSEK/templates/balancer/balancer_param.c", projectDir + "/" + "balancer_param.c");
-	QFile::copy(":/nxtOSEK/templates/balancer/balancer.h", projectDir + "/" +"balancer.h");
-	QFile::copy(":/nxtOSEK/templates/balancer/balancer_types.h", projectDir + "/" + "balancer_types.h");
-	QFile::copy(":/nxtOSEK/templates/balancer/libnxtway_gs_balancer.a", projectDir + "/" + "libnxtway_gs_balancer.a");
-	QFile::copy(":/nxtOSEK/templates/balancer/rt_SATURATE.h", projectDir + "/" + "rt_SATURATE.h");
-	QFile::copy(":/nxtOSEK/templates/balancer/rtwtypes.h", projectDir + "/" + "rtwtypes.h");
-	/**/
-
-	// Generate makefile
-	QFile templateMakeFile(":/nxtOSEK/templates/template.makefile");
-	if (!templateMakeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		mErrorReporter.addError("cannot open \"" + templateMakeFile.fileName() + "\"");
-		return;
-	}
-
-	QFile resultMakeFile(projectDir + "/makefile");
-	if (!resultMakeFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		mErrorReporter.addError("cannot open \"" + resultMakeFile.fileName() + "\"");
-		return;
-	}
-
-	QTextStream outMake(&resultMakeFile);
-	outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8());
-	templateMakeFile.close();
-
-	outMake.flush();
-	resultMakeFile.close();
-
-	if (toGenerate.isEmpty()) {
-		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node or Initial Block"));
-	}
-
-	// End generate makefile
+	generateFilesForBalancer(projectDir);
+	generateMakeFile(toGenerate.isEmpty(), projectName, projectDir);
 }
 
 QList<SmartLine> &NxtOSEKRobotGenerator::variables()

@@ -2,7 +2,7 @@
 #include "editorPage.h"
 #include "ui_editorPage.h"
 #include <QMessageBox>
-#include "../mainwindow/mainWindow.h"
+#include "../../mainwindow/mainWindow.h"
 
 using namespace qReal;
 

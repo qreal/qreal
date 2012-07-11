@@ -45,7 +45,7 @@ bool AbstractElementGenerator::generate()
 		mNxtGen->mGeneratedStringSet << loopElementGen->loopPostfixCode();
 
 		return true;
-	}
+}
 
 	//in case element has more than 1 incoming connection
 	//means that element has incoming connections from another elements, we haven`t already observed

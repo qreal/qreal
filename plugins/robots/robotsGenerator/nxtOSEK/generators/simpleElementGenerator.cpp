@@ -39,51 +39,52 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 			result.append(SmartLine(cmds.at(i) + ";", mElementId));
 		foreach (QString enginePort, portsToEngineNames(mNxtGen->api()->stringProperty(logicElementId, "Ports"))) {
 			result.append(SmartLine(
-						"nxt_motor_set_speed(" + enginePort + ", " + cmds.last() + ", 1);",
-						mElementId));
+				"nxt_motor_set_speed(" + enginePort + ", " + cmds.last() + ", 1);",
+				mElementId));
 		}
 
 	} else if (mElementId.element() == "EnginesBackward") {
 		foreach (QString enginePort, portsToEngineNames(mNxtGen->api()->stringProperty(logicElementId, "Ports"))) {
 			result.append(SmartLine(
-						"nxt_motor_set_speed(" + enginePort + ", "
-							+ "-" + mNxtGen->api()->stringProperty(logicElementId, "Power") + ", 1);",
-						mElementId));
+				"nxt_motor_set_speed(" + enginePort + ", "
+				+ "-" + mNxtGen->api()->stringProperty(logicElementId, "Power") + ", 1);",
+				mElementId));
 		}
 
 	} else if (mElementId.element() == "EnginesStop") {
 		foreach (QString enginePort, portsToEngineNames(mNxtGen->api()->stringProperty(logicElementId, "Ports"))) {
 			result.append(SmartLine(
-						"nxt_motor_set_speed(" + enginePort + ", 0, 1);",
-						mElementId));
+				"nxt_motor_set_speed(" + enginePort + ", 0, 1);",
+				mElementId));
 		}
 
 	} else if (mElementId.element() == "Timer") {
 		result.append(SmartLine(
-					"systick_wait_ms(" + mNxtGen->api()->stringProperty(logicElementId, "Delay") + ");",
-					mElementId));
+				"systick_wait_ms(" + mNxtGen->api()->stringProperty(logicElementId, "Delay") + ");",
+				mElementId));
 
 	} else if (mElementId.element() == "Beep") {
 		result.append(SmartLine(
-					"ecrobot_sound_tone(1000, 100, 50);", //TODO: change sound to smth
-					mElementId));
+				"ecrobot_sound_tone(1000, 100, " + mNxtGen->api()->stringProperty(logicElementId, "Volume") + ");", //TODO: change sound to smth
+				mElementId));
 
 	} else if (mElementId.element() == "PlayTone") {
 		result.append(SmartLine(
-					"ecrobot_sound_tone(" + mNxtGen->api()->stringProperty(logicElementId, "Frequency") + ", "
-						+ mNxtGen->api()->stringProperty(logicElementId, "Duration") + ", 50);", //50 - volume of a sound
-					mElementId));
+				"ecrobot_sound_tone(" + mNxtGen->api()->stringProperty(logicElementId, "Frequency") + ", "
+				 + mNxtGen->api()->stringProperty(logicElementId, "Duration") + ", "
+				 + mNxtGen->api()->stringProperty(logicElementId, "Volume") + ");",
+				 mElementId));
 
 	} else if (mElementId.element() == "FinalNode") {
 		result.append(SmartLine(
-					"TerminateTask();",
-					mElementId));
+				"TerminateTask();",
+				mElementId));
 
 	} else if (mElementId.element() == "NullificationEncoder") {
 		QString port = mNxtGen->api()->stringProperty(logicElementId, "Port");
 		result.append(SmartLine(
-					"nxt_motor_set_count(NXT_PORT_" + port + ", 0);",
-					mElementId));
+				"nxt_motor_set_count(NXT_PORT_" + port + ", 0);",
+				mElementId));
 
 	} else if (mElementId.element() == "InitialBlock") {
 		for (int i = 1; i <= 4; i++) {
@@ -108,36 +109,39 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 
 			if (portValue == "Ультразвуковой сенсор") {
 				mInitCode.append(SmartLine(
-						"ecrobot_init_sonar_sensor(NXT_PORT_S" + QString::number(i) + ")",
+						"ecrobot_init_sonar_sensor(NXT_PORT_S" + QString::number(i) + ");",
 						mElementId));
-
+				mTerminateCode.append(SmartLine(
+						"ecrobot_term_sonar_sensor(NXT_PORT_S" + QString::number(i) + ");",
+						mElementId));
 			//in nxtOSEK there are no instructions to initiate touch sensors
 			//} else if (portValue == "Сенсор нажатия (булево значение)") {
 			//} else if (portValue == "Сенсор нажатия (сырое значение)") {
 
 			} else if (portValue == "Сенсор цвета (полные цвета)") {
-				mInitCode.append(SmartLine(
-						"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_LIGHTSENSOR_WHITE)",
-						mElementId));
+					mInitCode.append(SmartLine(
+							"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_LIGHTSENSOR_WHITE);",
+							mElementId));
 
 			} else if (portValue == "Сенсор цвета (красный)") {
-				mInitCode.append(SmartLine(
-						"ecrobot_set_light_sensor_active(NXT_PORT_S" + QString::number(i) + ");", mElementId));
+					mInitCode.append(SmartLine(
+							"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ",  NXT_LIGHTSENSOR_RED);",
+							mElementId));
 
 			} else if (portValue == "Сенсор цвета (зеленый)") {
-				mInitCode.append(SmartLine(
-						"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_LIGHTSENSOR_GREEN)",
-						mElementId));
+					mInitCode.append(SmartLine(
+							"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_LIGHTSENSOR_GREEN);",
+							mElementId));
 
 			} else if (portValue == "Сенсор цвета (синий)") {
-				mInitCode.append(SmartLine(
-						"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_LIGHTSENSOR_BLUE)",
-						mElementId));
+					mInitCode.append(SmartLine(
+							"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_LIGHTSENSOR_BLUE);",
+							mElementId));
 
 			} else if (portValue == "Сенсор цвета (пассивный)") {
-				mInitCode.append(SmartLine(
-						"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_COLORSENSOR)",
-						mElementId));
+					mInitCode.append(SmartLine(
+							"ecrobot_init_nxtcolorsensor(NXT_PORT_S" + QString::number(i) + ", NXT_COLORSENSOR);",
+							mElementId));
 			}
 		}
 
@@ -181,6 +185,21 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 		QString inequalitySign = transformSign(QString(mNxtGen->api()->stringProperty(logicElementId, "Sign").toUtf8()));
 
 		QString condition = inequalitySign + " " + intensity;
+
+		result.append(SmartLine(
+				"while (!(ecrobot_get_nxtcolorsensor_light(NXT_PORT_S" + QString::number(port)
+					+ ") " + condition + "))",
+				mElementId));
+		result.append(SmartLine("{", mElementId));
+		result.append(SmartLine("}", mElementId));
+
+	} else if (mElementId.element() == "WaitForLight"){
+		int port = mNxtGen->api()->stringProperty(logicElementId, "Port").toInt();
+
+		QString percents = mNxtGen->api()->stringProperty(logicElementId,  "Percents");
+		QString inequalitySign = transformSign(QString(mNxtGen->api()->stringProperty(logicElementId, "Sign").toUtf8()));
+
+		QString condition = inequalitySign + " " + percents;
 
 		result.append(SmartLine(
 				"while (!(ecrobot_get_nxtcolorsensor_light(NXT_PORT_S" + QString::number(port)
@@ -248,7 +267,6 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 	}
 
 	//for InitialNode returns empty list
-
 	return result;
 }
 

@@ -48,7 +48,21 @@ private:
 	friend class ElementGeneratorFactory;
 
 	void addToGeneratedStringSetVariableInit();
+	void insertCode(
+			QString resultCode,
+			QString resultInitCode,
+			QString resultTerminateCode,
+			QString curInitialNodeNumber);
+	void deleteResidualLabels(QString projectName);
+	void generateMakeFile(bool toGenerateIsEmpty, QString projectName, QString projectDir);
+	void generateFilesForBalancer(QString projectDir);
+	QString addTabAndEndOfLine(QList<SmartLine> const &lineList, QString resultCode);
 	QString generateVariableString();
+
+	QString mResultOIL;
+	QString mResultString;
+	int mCurTabNumber;
+	QString mTaskTemplate;
 
 	qrRepo::RepoApi *mApi;
 	bool mIsNeedToDeleteMApi;
@@ -58,7 +72,6 @@ private:
 	QList< QList<SmartLine> > mGeneratedStringSet;
 	QList<SmartLine> mInitCode;
 	QList<SmartLine> mTerminateCode;
-
 
 	QByteArray mPortValue1;
 	QByteArray mPortValue2;

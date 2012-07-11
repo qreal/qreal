@@ -108,7 +108,7 @@
 					</generalizations>
 				</logic>
 			</node>
-						<node displayedName="Инициализация балансировки" name="BalanceInit">
+			<node displayedName="Инициализация балансировки" name="BalanceInit">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
@@ -137,7 +137,7 @@
 					<container/>
 				</logic>
 			</node>
-						<node displayedName="Инициализация переменной" name="VariableInit">
+			<node displayedName="Инициализация переменной" name="VariableInit">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
@@ -548,8 +548,10 @@
 						<image y1="0" name="images/beepBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-90" y="60" text="Ждать завершения:"/>
-						<label x="30" y="60" textBinded="WaitForCompletion"/>
+						<label x="-90" y="60" text="Громкость:"/>
+						<label x="-90" y="80" text="Ждать завершения:"/>
+						<label x="30" y="60" textBinded="Volume"/>
+						<label x="30" y="80" textBinded="WaitForCompletion"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -576,6 +578,9 @@
 					<properties>
 						<property displayedName="Ждать завершения" type="bool" name="WaitForCompletion">
 							<default>true</default>
+						</property>
+						<property displayedName="Громкость" type="string" name="Volume">
+							<default>50</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -664,11 +669,14 @@
 					</picture>
 					<labels>
 						<label x="-67" y="60" text="Частота (Гц):"/>
-						<label x="-68" y="80" text="Длительность (мс):"/>
-						<label x="45" y="61" textBinded="Frequency"/>
-						<label x="45" y="84" textBinded="Duration"/>
-						<label x="-68" y="100" text="Ждать завершения:"/>
-						<label x="45" y="100" textBinded="WaitForCompletion"/>
+						<label x="-68" y="80" text="Громкость:"/>
+						<label x="-68" y="100" text="Длительность (мс):"/>
+						<label x="-68" y="120" text="Ждать завершения:"/>
+						<label x="45" y="60" textBinded="Frequency"/>
+						<label x="45" y="80" textBinded="Volume"/>
+						<label x="45" y="100" textBinded="Duration"/>
+						<label x="45" y="120" textBinded="WaitForCompletion"/>
+					
 					</labels>
 					<ports>
 						<linePort>
@@ -693,14 +701,17 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Ждать завершения" type="bool" name="WaitForCompletion">
-							<default>true</default>
-						</property>
 						<property displayedName="Частота" type="string" name="Frequency">
 							<default>1000</default>
 						</property>
+						<property displayedName="Громкость" type="string" name="Volume">
+							<default>50</default>
+						</property>
 						<property displayedName="Длительность" type="string" name="Duration">
 							<default>1000</default>
+						</property>
+						<property displayedName="Ждать завершения" type="bool" name="WaitForCompletion">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1166,9 +1177,10 @@
 				<element name="Ждать свет"/>
 			</group>
 			<group name="Алгоритмы">
-				<element name="Породить поток"/>
-				<element name="Условие"/>
 				<element name="Цикл"/>
+				<element name="Условие"/>
+				<element name="Линия соединения"/>
+				<element name="Породить поток"/>		
 				<element name="Диаграмма поведения робота"/>
 			</group>
 			<group name="Инициализация">
@@ -1176,6 +1188,11 @@
 				<element name="Конец"/>
 				<element name="Блок инициализации"/>
 				<element name="Сбросить показания энкодера"/>
+			</group>
+			<group name="Сегвей">
+				<element name="Инициализация балансировки"/>
+				<element name="Инициализация переменной"/>
+				<element name="Балансировка"/>
 			</group>
 		</palette>
 	</diagram>

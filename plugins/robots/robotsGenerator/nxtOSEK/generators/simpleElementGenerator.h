@@ -27,6 +27,7 @@ protected:
 private:
 	QString transformSign(QString const &inequalitySign);
 	QList<SmartLine> mInitCode;
+	QList<SmartLine> mTerminateCode;
 };
 
 }
