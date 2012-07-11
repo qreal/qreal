@@ -2,8 +2,6 @@
 
 #include "../tracer.h"
 
-#include <QtCore/QDebug>
-
 using namespace qReal::interpreters::robots;
 using namespace qReal::interpreters::robots::details;
 using namespace qReal::interpreters::robots::details::robotImplementations;

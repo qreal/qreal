@@ -57,7 +57,7 @@ void RealMotorImplementation::setOutputState(int speed, int mode
 	command[12] = tachoLimit >> 16;  // TachoLimit
 	command[13] = tachoLimit >> 24;  // TachoLimit
 	command[14] = 0;                 // TachoLimit, suddenly
-	//mRobotCommunicationInterface->send(this, command, 3);
+	mRobotCommunicationInterface->send(this, command, 3);
 }
 
 void RealMotorImplementation::resetMotorPosition(bool relative)

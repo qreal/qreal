@@ -5,77 +5,77 @@
     <name>BehaviourForm</name>
     <message>
         <source>Form</source>
-        <translation type="obsolete">Р¤РѕСЂРјР° Рћ_Рѕ</translation>
+        <translation type="obsolete">Форма О_о</translation>
     </message>
     <message>
         <source>Automatics</source>
-        <translation type="obsolete">РђРІС‚РѕРјР°С‚РёР·Р°С†РёСЏ</translation>
+        <translation type="obsolete">Автоматизация</translation>
     </message>
     <message>
         <source>Palette tab switching</source>
-        <translation type="obsolete">РџРµСЂРµР»СЋС‡РµРЅРёРµ С‚Р°Р±РѕРІ РІ РїР°Р»РёС‚СЂРµ</translation>
+        <translation type="obsolete">Перелючение табов в палитре</translation>
     </message>
     <message>
         <source>New diagram creating</source>
-        <translation type="obsolete">РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕР№ РґРёР°РіСЂР°РјРјС‹</translation>
+        <translation type="obsolete">Создание новой диаграммы</translation>
     </message>
     <message>
         <source>Save on exit</source>
-        <translation type="obsolete">РЎРѕС…СЂР°РЅСЏС‚СЊСЃСЏ РїСЂРё РІС‹С…РѕРґРµ</translation>
+        <translation type="obsolete">Сохраняться при выходе</translation>
     </message>
     <message>
         <source>Choose diagrams to save</source>
-        <translation type="obsolete">РџСЂРµРґР»Р°РіР°С‚СЊ РІС‹Р±РѕСЂ РґРёР°РіСЂР°РјРј РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ</translation>
+        <translation type="obsolete">Предлагать выбор диаграмм для сохранения</translation>
     </message>
     <message>
         <source>Suggestions</source>
-        <translation type="obsolete">РџСЂРµРґР»РѕР¶РµРЅРёСЏ</translation>
+        <translation type="obsolete">Предложения</translation>
     </message>
     <message>
         <source>Show window</source>
-        <translation type="obsolete">РџРѕРєР°Р·Р°С‚СЊ РѕРєРЅРѕ</translation>
+        <translation type="obsolete">Показать окно</translation>
     </message>
     <message>
         <source>Warning window</source>
-        <translation type="obsolete">РћРєРЅРѕ РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёР№</translation>
+        <translation type="obsolete">Окно предупреждений</translation>
     </message>
 </context>
 <context>
     <name>CheckoutDialog</name>
     <message>
         <source>&amp;Browse...</source>
-        <translation type="obsolete">&amp;РџСЂРѕСЃРјРѕС‚СЂ...</translation>
+        <translation type="obsolete">&amp;Просмотр...</translation>
     </message>
     <message>
         <source>Subversion place</source>
-        <translation type="obsolete">РњРµСЃС‚Рѕ РІ SVNРµ</translation>
+        <translation type="obsolete">Место в SVNе</translation>
     </message>
     <message>
         <source>Checkout to directory:</source>
-        <translation type="obsolete">Р§РµРєР°СѓС‚ РІ РїР°РїРєСѓ:</translation>
+        <translation type="obsolete">Чекаут в папку:</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="obsolete">РћРљ</translation>
+        <translation type="obsolete">ОК</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="obsolete">РћС‚РјРµРЅР°</translation>
+        <translation type="obsolete">Отмена</translation>
     </message>
     <message>
         <source>Checkout options</source>
-        <translation type="obsolete">РќР°СЃС‚СЂРѕР№РєРё С‡РµРєР°СѓС‚Р°</translation>
+        <translation type="obsolete">Настройки чекаута</translation>
     </message>
     <message>
         <source>Select directory</source>
-        <translation type="obsolete">Р’С‹Р±РѕСЂ РїР°РїРєРё</translation>
+        <translation type="obsolete">Выбор папки</translation>
     </message>
 </context>
 <context>
     <name>CompilerForm</name>
     <message>
         <source>Form</source>
-        <translation type="obsolete">РћРїСЏС‚СЊ С„РѕСЂРјР°</translation>
+        <translation type="obsolete">Опять форма</translation>
     </message>
     <message>
         <source>Linux</source>
@@ -83,7 +83,7 @@
     </message>
     <message>
         <source>Other</source>
-        <translation type="obsolete">РџСЂРѕС‡РµРµ</translation>
+        <translation type="obsolete">Прочее</translation>
     </message>
     <message>
         <source>Windows</source>
@@ -91,133 +91,133 @@
     </message>
     <message>
         <source>path to qmake</source>
-        <translation type="obsolete">РџСѓС‚СЊ Рє qmake</translation>
+        <translation type="obsolete">Путь к qmake</translation>
     </message>
     <message>
         <source>path to make</source>
-        <translation type="obsolete">РџСѓС‚СЊ Рє make</translation>
+        <translation type="obsolete">Путь к make</translation>
     </message>
     <message>
         <source>plugin file extension</source>
-        <translation type="obsolete">Р Р°СЃС€РёСЂРµРЅРёРµ С„Р°Р№Р»Р° СЃ РїР»Р°РіРёРЅРѕРј</translation>
+        <translation type="obsolete">Расширение файла с плагином</translation>
     </message>
     <message>
         <source>prefix</source>
-        <translation type="obsolete">РџСЂРµС„РёРєСЃ</translation>
+        <translation type="obsolete">Префикс</translation>
     </message>
 </context>
 <context>
     <name>D2Form</name>
     <message>
         <source>2D Robot Model</source>
-        <translation type="obsolete">Р”РІСѓС…РјРµСЂРЅР°СЏ РјРѕРґРµР»СЊ</translation>
+        <translation type="obsolete">Двухмерная модель</translation>
     </message>
     <message>
         <source>do nothing</source>
-        <translation type="obsolete">РќРёС‡РµРіРѕ РЅРµ РґРµР»Р°С‚СЊ</translation>
+        <translation type="obsolete">Ничего не делать</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="obsolete">РћС‡РёСЃС‚РёС‚СЊ</translation>
+        <translation type="obsolete">Очистить</translation>
     </message>
     <message>
         <source>Wall</source>
-        <translation type="obsolete">РЎС‚РµРЅР°</translation>
+        <translation type="obsolete">Стена</translation>
     </message>
     <message>
         <source>Port 1:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 1:</translation>
+        <translation type="obsolete">Порт 1:</translation>
     </message>
     <message>
         <source>Port 2:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 2:</translation>
+        <translation type="obsolete">Порт 2:</translation>
     </message>
     <message>
         <source>Port 3:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 3:</translation>
+        <translation type="obsolete">Порт 3:</translation>
     </message>
     <message>
         <source>touch</source>
-        <translation type="obsolete">РґР°С‚С‡РёРє РєР°СЃР°РЅРёСЏ</translation>
+        <translation type="obsolete">датчик касания</translation>
     </message>
     <message>
         <source>color</source>
-        <translation type="obsolete">РґР°С‚С‡РёРє С†РІРµС‚Р°</translation>
+        <translation type="obsolete">датчик цвета</translation>
     </message>
     <message>
         <source>sonar</source>
-        <translation type="obsolete">РґР°С‚С‡РёРє СЂР°СЃСЃС‚РѕСЏРЅРёСЏ</translation>
+        <translation type="obsolete">датчик расстояния</translation>
     </message>
     <message>
         <source>add</source>
-        <translation type="obsolete">РґРѕР±Р°РІРёС‚СЊ</translation>
+        <translation type="obsolete">добавить</translation>
     </message>
     <message>
         <source>Port 4:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 4:</translation>
+        <translation type="obsolete">Порт 4:</translation>
     </message>
     <message>
         <source>Save World Model</source>
-        <translation type="obsolete">РЎРѕС…СЂР°РЅРёС‚СЊ РјРѕРґРµР»СЊ РѕРєСЂСѓР¶РµРЅРёСЏ</translation>
+        <translation type="obsolete">Сохранить модель окружения</translation>
     </message>
     <message>
         <source>Load World Model</source>
-        <translation type="obsolete">Р—Р°РіСЂСѓР·РёС‚СЊ РјРѕРґРµР»СЊ РѕРєСЂСѓР¶РµРЅРёСЏ</translation>
+        <translation type="obsolete">Загрузить модель окружения</translation>
     </message>
     <message>
         <source>Run program</source>
-        <translation type="obsolete">Р—Р°РїСѓСЃС‚РёС‚СЊ РїСЂРѕРіСЂР°РјРјСѓ</translation>
+        <translation type="obsolete">Запустить программу</translation>
     </message>
     <message>
         <source>Stop program</source>
-        <translation type="obsolete">РћСЃС‚Р°РЅРѕРІРёС‚СЊ РїСЂРѕРіСЂР°РјРјСѓ</translation>
+        <translation type="obsolete">Остановить программу</translation>
     </message>
 </context>
 <context>
     <name>DebuggerForm</name>
     <message>
         <source>Form</source>
-        <translation type="obsolete">Р”Р° С‡С‚Рѕ Р¶ С‚Р°РєРѕРµ</translation>
+        <translation type="obsolete">Да что ж такое</translation>
     </message>
     <message>
         <source>Debugger path:</source>
-        <translation type="obsolete">РџСѓС‚СЊ РґРѕ РѕС‚Р»Р°РґС‡РёРєР°:</translation>
+        <translation type="obsolete">Путь до отладчика:</translation>
     </message>
     <message>
         <source>Builder path:</source>
-        <translation type="obsolete">РџСѓС‚СЊ РґРѕ СЃР±РѕСЂС‰РёРєР°:</translation>
+        <translation type="obsolete">Путь до сборщика:</translation>
     </message>
     <message>
         <source>Generated code file name:</source>
-        <translation type="obsolete">РРјСЏ С„Р°Р№Р»Р° СЃРѕ СЃРіРµРЅРµСЂРёСЂРѕРІР°РЅРЅС‹Рј РєРѕРґРѕРј:</translation>
+        <translation type="obsolete">Имя файла со сгенерированным кодом:</translation>
     </message>
     <message>
         <source>Builded file name:</source>
-        <translation type="obsolete">РРјСЏ СЃРѕР±СЂР°РЅРЅРѕРіРѕ С„Р°Р№Р»Р°:</translation>
+        <translation type="obsolete">Имя собранного файла:</translation>
     </message>
     <message>
         <source>Browse...</source>
-        <translation type="obsolete">РџСЂРѕСЃРјРѕС‚СЂ...</translation>
+        <translation type="obsolete">Просмотр...</translation>
     </message>
     <message>
         <source>Working directory:</source>
-        <translation type="obsolete">Р Р°Р±РѕС‡Р°СЏ РїР°РїРєР°:</translation>
+        <translation type="obsolete">Рабочая папка:</translation>
     </message>
     <message>
         <source>Debug timeout (ms):</source>
-        <translation type="obsolete">Р—Р°РґРµСЂР¶РєР° РїСЂРё РѕС‚Р»Р°РґРєРµ:</translation>
+        <translation type="obsolete">Задержка при отладке:</translation>
     </message>
     <message>
         <source>Color of highlight:</source>
-        <translation type="obsolete">Р¦РІРµС‚ РїРѕРґСЃРІРµС‚РєРё:</translation>
+        <translation type="obsolete">Цвет подсветки:</translation>
     </message>
     <message>
         <source>Presentation</source>
-        <translation type="obsolete">РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ</translation>
+        <translation type="obsolete">Представление</translation>
     </message>
     <message>
         <source>Configuration</source>
-        <translation type="obsolete">РљРѕРЅС„РёРіСѓСЂР°С†РёСЏ</translation>
+        <translation type="obsolete">Конфигурация</translation>
     </message>
 </context>
 <context>
@@ -225,81 +225,81 @@
     <message>
         <location filename="umllib/edgeElement.cpp" line="28"/>
         <source>Add point</source>
-        <translation>Р”РѕР±Р°РІРёС‚СЊ С‚РѕС‡РєСѓ</translation>
+        <translation>Добавить точку</translation>
     </message>
     <message>
         <location filename="umllib/edgeElement.cpp" line="29"/>
         <source>Delete point</source>
-        <translation>РЈРґР°Р»РёС‚СЊ С‚РѕС‡РєСѓ</translation>
+        <translation>Удалить точку</translation>
     </message>
     <message>
         <location filename="umllib/edgeElement.cpp" line="30"/>
         <source>Squarize</source>
-        <translation>РЎРґРµР»Р°С‚СЊ РєРІР°РґСЂР°С‚РЅС‹Рј</translation>
+        <translation>Сделать квадратным</translation>
     </message>
     <message>
         <location filename="umllib/edgeElement.cpp" line="31"/>
         <source>Remove all points</source>
-        <translation>РЈРґР°Р»РёС‚СЊ РІСЃРµ С‚РѕС‡РєРё</translation>
+        <translation>Удалить все точки</translation>
     </message>
     <message>
         <source>Minimize</source>
-        <translation type="obsolete">РЈРґР°Р»РёС‚СЊ РІСЃРµ С‚РѕС‡РєРё</translation>
+        <translation type="obsolete">Удалить все точки</translation>
     </message>
 </context>
 <context>
     <name>EditorForm</name>
     <message>
         <source>Form</source>
-        <translation type="obsolete">Р‘РёР»РёРЅРµР№РЅР°СЏ С„РѕСЂРјР°</translation>
+        <translation type="obsolete">Билинейная форма</translation>
     </message>
     <message>
         <source>Embedded Linkers</source>
-        <translation type="obsolete">Р’СЃС‚СЂРѕРµРЅРЅС‹Рµ Р»РёРЅРєРµСЂС‹</translation>
+        <translation type="obsolete">Встроенные линкеры</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="obsolete">Р Р°Р·РјРµСЂ</translation>
+        <translation type="obsolete">Размер</translation>
     </message>
     <message>
         <source>Indent</source>
-        <translation type="obsolete">РћС‚СЃС‚СѓРї</translation>
+        <translation type="obsolete">Отступ</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="obsolete">РЎРµС‚РєР°</translation>
+        <translation type="obsolete">Сетка</translation>
     </message>
     <message>
         <source>Zoom</source>
-        <translation type="obsolete">РЈРІРµР»РёС‡РµРЅРёРµ</translation>
+        <translation type="obsolete">Увеличение</translation>
     </message>
     <message>
         <source>Zoom factor</source>
-        <translation type="obsolete">Р¤Р°РєС‚РѕСЂ СѓРІРµР»РёС‡РµРЅРёСЏ</translation>
+        <translation type="obsolete">Фактор увеличения</translation>
     </message>
     <message>
         <source>Show grid</source>
-        <translation type="obsolete">РџРѕРєР°Р·Р°С‚СЊ СЃРµС‚РєСѓ</translation>
+        <translation type="obsolete">Показать сетку</translation>
     </message>
     <message>
         <source>Activate grid</source>
-        <translation type="obsolete">РђРєС‚РёРІРёСЂРѕРІР°С‚СЊ СЃРµС‚РєСѓ</translation>
+        <translation type="obsolete">Активировать сетку</translation>
     </message>
     <message>
         <source>Width</source>
-        <translation type="obsolete">РЁРёСЂРёРЅР°</translation>
+        <translation type="obsolete">Ширина</translation>
     </message>
     <message>
         <source>Cell size</source>
-        <translation type="obsolete">Р Р°Р·РјРµСЂ СЏС‡РµР№РєРё</translation>
+        <translation type="obsolete">Размер ячейки</translation>
     </message>
     <message>
         <source>Activate alignment</source>
-        <translation type="obsolete">РђРєС‚РёРІРёСЂРѕРІР°С‚СЊ РЅР°РїСЂР°РІР»СЏСЋС‰РёРµ</translation>
+        <translation type="obsolete">Активировать направляющие</translation>
     </message>
     <message>
         <source>Show alignment</source>
-        <translation type="obsolete">РџРѕРєР°Р·Р°С‚СЊ РЅР°РїСЂР°РІР»СЏСЋС‰РёРµ</translation>
+        <translation type="obsolete">Показать направляющие</translation>
     </message>
 </context>
 <context>
@@ -307,12 +307,12 @@
     <message>
         <location filename="dialogs/editorGeneratorDialog.ui" line="14"/>
         <source>meta_generator</source>
-        <translation>РњРµС‚Р°РіРµРЅРµСЂР°С‚РѕСЂ</translation>
+        <translation>Метагенератор</translation>
     </message>
     <message>
         <location filename="dialogs/editorGeneratorDialog.ui" line="36"/>
         <source>Generate!</source>
-        <translation>Р“РµРЅРµСЂРёСЂРѕРІР°С‚СЊ!</translation>
+        <translation>Генерировать!</translation>
     </message>
 </context>
 <context>
@@ -321,57 +321,57 @@
         <location filename="view/editorViewScene.cpp" line="314"/>
         <location filename="view/editorViewScene.cpp" line="357"/>
         <source>Discard</source>
-        <translation>РЈР±СЂР°С‚СЊ РјРµРЅСЋ</translation>
+        <translation>Убрать меню</translation>
     </message>
     <message>
         <location filename="view/editorViewScene.cpp" line="317"/>
         <source>Create new element</source>
-        <translation>РЎРѕР·РґР°С‚СЊ РЅРѕРІС‹Р№ СЌР»РµРјРµРЅС‚</translation>
+        <translation>Создать новый элемент</translation>
     </message>
     <message>
         <location filename="view/editorViewScene.cpp" line="566"/>
         <source>Add connection</source>
-        <translation>Р”РѕР±Р°РІРёС‚СЊ РїСЂРѕРІСЏР·РєСѓ</translation>
+        <translation>Добавить провязку</translation>
     </message>
     <message>
         <location filename="view/editorViewScene.cpp" line="573"/>
         <source>Disconnect</source>
-        <translation>РЈР±СЂР°С‚СЊ РїСЂРѕРІСЏР·РєСѓ</translation>
+        <translation>Убрать провязку</translation>
     </message>
     <message>
         <location filename="view/editorViewScene.cpp" line="579"/>
         <source>Add usage</source>
-        <translation>Р”РѕР±Р°РІРёС‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ</translation>
+        <translation>Добавить использование</translation>
     </message>
     <message>
         <location filename="view/editorViewScene.cpp" line="586"/>
         <source>Delete usage</source>
-        <translation>РЈР±СЂР°С‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ</translation>
+        <translation>Убрать использование</translation>
     </message>
     <message>
         <location filename="view/editorViewScene.cpp" line="592"/>
         <source>Go to</source>
-        <translation>РџРµСЂРµР№С‚Рё</translation>
+        <translation>Перейти</translation>
     </message>
     <message>
         <location filename="view/editorViewScene.cpp" line="594"/>
         <source>Forward connection</source>
-        <translation>РџРѕ РїСЂРѕРІСЏР·РєРµ РІРїРµСЂС‘Рґ</translation>
+        <translation>По провязке вперёд</translation>
     </message>
     <message>
         <location filename="view/editorViewScene.cpp" line="595"/>
         <source>Backward connection</source>
-        <translation>РџРѕ РїСЂРѕРІСЏР·РєРµ РЅР°Р·Р°Рґ</translation>
+        <translation>По провязке назад</translation>
     </message>
     <message>
         <location filename="view/editorViewScene.cpp" line="596"/>
         <source>Uses</source>
-        <translation>РСЃРїРѕР»СЊР·СѓРµС‚</translation>
+        <translation>Использует</translation>
     </message>
     <message>
         <location filename="view/editorViewScene.cpp" line="597"/>
         <source>Used in</source>
-        <translation>РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ</translation>
+        <translation>Используется в</translation>
     </message>
 </context>
 <context>
@@ -379,17 +379,17 @@
     <message>
         <location filename="dialogs/gesturesShow/gesturesWidget.ui" line="14"/>
         <source>Form</source>
-        <translation>Р–РµСЃС‚С‹</translation>
+        <translation>Жесты</translation>
     </message>
     <message>
         <location filename="dialogs/gesturesShow/gesturesWidget.ui" line="46"/>
         <source>List of mouse gestures</source>
-        <translation>РЎРїРёСЃРѕРє Р¶РµСЃС‚РѕРІ РјС‹С€СЊСЋ</translation>
+        <translation>Список жестов мышью</translation>
     </message>
     <message>
         <location filename="dialogs/gesturesShow/gesturesWidget.ui" line="59"/>
         <source>Click to see how to draw it:</source>
-        <translation>РљР»РёРєРЅРёС‚Рµ, С‡С‚РѕР±С‹ РїРѕСЃРјРѕС‚СЂРµС‚СЊ, РєР°Рє СЂРёСЃРѕРІР°С‚СЊ Р¶РµСЃС‚:</translation>
+        <translation>Кликните, чтобы посмотреть, как рисовать жест:</translation>
     </message>
 </context>
 <context>
@@ -402,26 +402,26 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="44"/>
         <source>&amp;File</source>
-        <translation>Р¤&amp;Р°Р№Р»</translation>
+        <translation>Ф&amp;айл</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="57"/>
         <source>&amp;View</source>
-        <translation>&amp;Р’РёРґ</translation>
+        <translation>&amp;Вид</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="66"/>
         <source>&amp;Help</source>
-        <translation>&amp;РЎРїСЂР°РІРєР°</translation>
+        <translation>&amp;Справка</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="75"/>
         <source>&amp;Settings</source>
-        <translation>РќР°СЃС‚СЂРѕР№РєРё</translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <source>Mouse gestures</source>
-        <translation type="obsolete">Р–РµСЃС‚С‹ РјС‹С€СЊСЋ</translation>
+        <translation type="obsolete">Жесты мышью</translation>
     </message>
     <message>
         <source>Svn</source>
@@ -430,37 +430,37 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="85"/>
         <source>Tools</source>
-        <translation>РРЅСЃС‚СЂСѓРјРµРЅС‚С‹</translation>
+        <translation>Инструменты</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="97"/>
         <source>File Toolbar</source>
-        <translation>РџР°РЅРµР»СЊ РёРЅСЃС‚СЂСѓРјРµРЅС‚РѕРІ &quot;Р¤Р°Р№Р»&quot;</translation>
+        <translation>Панель инструментов &quot;Файл&quot;</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="116"/>
         <source>Mini Map</source>
-        <translation>РњРёРЅРёРєР°СЂС‚Р°</translation>
+        <translation>Миникарта</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="154"/>
         <source>Palette</source>
-        <translation>РџР°Р»РёС‚СЂР°</translation>
+        <translation>Палитра</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="175"/>
         <source>View Toolbar</source>
-        <translation>РџР°РЅРµР»СЊ РёРЅСЃС‚СЂСѓРјРµРЅС‚РѕРІ &quot;Р’РёРґ&quot;</translation>
+        <translation>Панель инструментов &quot;Вид&quot;</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="262"/>
         <source>Output</source>
-        <translation>Р’С‹РІРѕРґ</translation>
+        <translation>Вывод</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="551"/>
         <source>Generate and build</source>
-        <translation>РЎРіРµРЅРµСЂРёСЂРѕРІР°С‚СЊ Рё СЃРѕР±СЂР°С‚СЊ</translation>
+        <translation>Сгенерировать и собрать</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="554"/>
@@ -471,7 +471,7 @@
         <location filename="mainwindow/mainWindow.ui" line="559"/>
         <location filename="mainwindow/mainWindow.ui" line="562"/>
         <source>Set breakpoints</source>
-        <translation>РўРѕС‡РєРё РѕСЃС‚Р°РЅРѕРІР°</translation>
+        <translation>Точки останова</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="565"/>
@@ -481,7 +481,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="570"/>
         <source>Cont</source>
-        <translation>РџСЂРѕРґРѕР»Р¶РёС‚СЊ</translation>
+        <translation>Продолжить</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="573"/>
@@ -491,7 +491,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="578"/>
         <source>Configure</source>
-        <translation>РЎРєРѕРЅС„РёРіСѓСЂРёСЂРѕРІР°С‚СЊ</translation>
+        <translation>Сконфигурировать</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="581"/>
@@ -501,31 +501,31 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="613"/>
         <source>Import...</source>
-        <translation>РРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ...</translation>
+        <translation>Импортировать...</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="616"/>
         <source>Import QReal project into current.</source>
-        <translation>РРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РїСЂРѕРµРєС‚ QReal РІ С‚РµРєСѓС‰РёР№</translation>
+        <translation>Импортировать проект QReal в текущий</translation>
     </message>
     <message>
         <source>Recent projects</source>
-        <translation type="obsolete">РџРѕСЃР»РµРґРЅРёРµ РїСЂРѕРµРєС‚С‹</translation>
+        <translation type="obsolete">Последние проекты</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="621"/>
         <source>Save diagram as a picture...</source>
-        <translation>РЎРѕС…СЂР°РЅРёС‚СЊ РґРёР°РіСЂР°РјРјСѓ РєР°Рє РєР°СЂС‚РёРЅРєСѓ...</translation>
+        <translation>Сохранить диаграмму как картинку...</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="626"/>
         <source>Close project</source>
-        <translation>Р—Р°РєСЂС‹С‚СЊ РїСЂРѕРµРєС‚</translation>
+        <translation>Закрыть проект</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="193"/>
         <source>Logical Model Explorer</source>
-        <translation>РћР±РѕР·СЂРµРІР°С‚РµР»СЊ Р»РѕРіРёС‡РµСЃРєРѕР№ РјРѕРґРµР»Рё</translation>
+        <translation>Обозреватель логической модели</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="14"/>
@@ -536,86 +536,86 @@
         <location filename="mainwindow/mainWindow.ui" line="227"/>
         <location filename="mainwindow/mainWindow.ui" line="350"/>
         <source>toolBar</source>
-        <translation>РџР°РЅРµР»СЊ РёРЅСЃС‚СЂСѓРјРµРЅС‚РѕРІ &quot;Р“РµРЅРµСЂР°С‚РѕСЂС‹&quot;</translation>
+        <translation>Панель инструментов &quot;Генераторы&quot;</translation>
     </message>
     <message>
         <source>Error List</source>
-        <translation type="obsolete">РЎРїРёСЃРѕРє РѕС€РёР±РѕРє</translation>
+        <translation type="obsolete">Список ошибок</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="277"/>
         <source>Graphical Model Explorer</source>
-        <translation>РћР±РѕР·СЂРµРІР°С‚РµР»СЊ РіСЂР°С„РёС‡РµСЃРєРѕР№ РјРѕРґРµР»Рё</translation>
+        <translation>Обозреватель графической модели</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="311"/>
         <source>Property Editor</source>
-        <translation>Р РµРґР°РєС‚РѕСЂ СЃРІРѕР№СЃС‚РІ</translation>
+        <translation>Редактор свойств</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="339"/>
         <source>Interpreter Toolbar</source>
-        <translation>РџР°РЅРµР»СЊ РёРЅСЃС‚СЂСѓРјРµРЅС‚РѕРІ &quot;РРЅС‚РµСЂРїСЂРµС‚Р°С‚РѕСЂ&quot;</translation>
+        <translation>Панель инструментов &quot;Интерпретатор&quot;</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="364"/>
         <source>&amp;Quit</source>
-        <translation>Р’С‹С…РѕРґ</translation>
+        <translation>Выход</translation>
     </message>
     <message>
         <source>&amp;Connect</source>
-        <translation type="obsolete">РџРѕРґРєР»СЋС‡РёС‚СЊСЃСЏ</translation>
+        <translation type="obsolete">Подключиться</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="373"/>
         <source>Zoom In</source>
-        <translation>РџСЂРёР±Р»РёР·РёС‚СЊ</translation>
+        <translation>Приблизить</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="382"/>
         <source>Zoom Out</source>
-        <translation>РћС‚РґР°Р»РёС‚СЊ</translation>
+        <translation>Отдалить</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="393"/>
         <source>Antialiasing</source>
-        <translation>РђРЅС‚РёР°Р»РёР°СЃРёРЅРі</translation>
+        <translation>Антиалиасинг</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="401"/>
         <source>OpenGL Renderer</source>
-        <translation>Р РµРЅРґРµСЂРµСЂ OpenGL</translation>
+        <translation>Рендерер OpenGL</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="410"/>
         <source>Print</source>
-        <translation>РџРµС‡Р°С‚СЊ</translation>
+        <translation>Печать</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="415"/>
         <source>Export to SVG</source>
-        <translation>Р­РєСЃРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РІ SVG</translation>
+        <translation>Экспортировать в SVG</translation>
     </message>
     <message>
         <source>&amp;Disconnect</source>
-        <translation type="obsolete">РћС‚РєР»СЋС‡РёС‚СЊСЃСЏ</translation>
+        <translation type="obsolete">Отключиться</translation>
     </message>
     <message>
         <source>Begin Transaction</source>
-        <translation type="obsolete">РќР°С‡Р°С‚СЊ С‚СЂР°РЅР·Р°РєС†РёСЋ</translation>
+        <translation type="obsolete">Начать транзакцию</translation>
     </message>
     <message>
         <source>Commit Transaction</source>
-        <translation type="obsolete">Р—Р°РєРѕРјРјРёС‚РёС‚СЊ С‚СЂР°РЅР·Р°РєС†РёСЋ</translation>
+        <translation type="obsolete">Закоммитить транзакцию</translation>
     </message>
     <message>
         <source>Rollback Transaction</source>
-        <translation type="obsolete">РћС‚РєР°С‚РёС‚СЊ С‚СЂР°РЅР·Р°РєС†РёСЋ</translation>
+        <translation type="obsolete">Откатить транзакцию</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="420"/>
         <source>Delete</source>
-        <translation>РЈРґР°Р»РёС‚СЊ</translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="423"/>
@@ -625,143 +625,143 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="431"/>
         <source>Open in new tab</source>
-        <translation>РћС‚РєСЂС‹С‚СЊ РІ РЅРѕРІРѕР№ РІРєР»Р°РґРєРµ</translation>
+        <translation>Открыть в новой вкладке</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="436"/>
         <source>Small Help</source>
-        <translation>РџРѕРјРѕС‰СЊ</translation>
+        <translation>Помощь</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="441"/>
         <source>About...</source>
-        <translation>Рћ РїСЂРѕРіСЂР°РјРјРµ...</translation>
+        <translation>О программе...</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="446"/>
         <source>About Qt...</source>
-        <translation>Рћ Qt...</translation>
+        <translation>О Qt...</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="454"/>
         <source>Plugins...</source>
-        <translation>РџР»Р°РіРёРЅС‹...</translation>
+        <translation>Плагины...</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="465"/>
         <source>Show splashscreen</source>
-        <translation>РџРѕРєР°Р·С‹РІР°С‚СЊ СЃРїР»РµС€СЃРєСЂРёРЅ</translation>
+        <translation>Показывать сплешскрин</translation>
     </message>
     <message>
         <source>Exterminatus</source>
-        <translation type="obsolete">Р­РєСЃС‚РµСЂРјРёРЅР°С‚СѓСЃ</translation>
+        <translation type="obsolete">Экстерминатус</translation>
     </message>
     <message>
         <source>Export to XMI</source>
-        <translation type="obsolete">Р­РєСЃРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РІ XMI</translation>
+        <translation type="obsolete">Экспортировать в XMI</translation>
     </message>
     <message>
         <source>Generate to Java</source>
-        <translation type="obsolete">Р“РµРЅРµСЂРёСЂРѕРІР°С‚СЊ РІ Java</translation>
+        <translation type="obsolete">Генерировать в Java</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="470"/>
         <source>Save</source>
-        <translation>РЎРѕС…СЂР°РЅРёС‚СЊ</translation>
+        <translation>Сохранить</translation>
     </message>
     <message>
         <source>Generate editor</source>
-        <translation type="obsolete">Р“РµРЅРµСЂРёСЂРѕРІР°С‚СЊ СЂРµРґР°РєС‚РѕСЂ</translation>
+        <translation type="obsolete">Генерировать редактор</translation>
     </message>
     <message>
         <source>Generate to Hascol</source>
-        <translation type="obsolete">Р“РµРЅРµСЂРёСЂРѕРІР°С‚СЊ РІ Hascol</translation>
+        <translation type="obsolete">Генерировать в Hascol</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="475"/>
         <source>Save as...</source>
-        <translation>РЎРѕС…СЂР°РЅРёС‚СЊ РєР°Рє...</translation>
+        <translation>Сохранить как...</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="480"/>
         <source>Open...</source>
-        <translation>РћС‚РєСЂС‹С‚СЊ...</translation>
+        <translation>Открыть...</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="483"/>
         <source>Open</source>
-        <translation>РћС‚РєСЂС‹С‚СЊ</translation>
+        <translation>Открыть</translation>
     </message>
     <message>
         <source>Parse Hascol sources</source>
-        <translation type="obsolete">РРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РёСЃС…РѕРґРЅРёРєРё Hascol</translation>
+        <translation type="obsolete">Импортировать исходники Hascol</translation>
     </message>
     <message>
         <source>Build diagrams from existing Hascol sources</source>
-        <translation type="obsolete">РџРѕСЃС‚СЂРѕРёС‚СЊ РґРёР°РіСЂР°РјРјС‹ РёР· СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёС… РёСЃС…РѕРґРЅРёРєРѕРІ Hascol</translation>
+        <translation type="obsolete">Построить диаграммы из существующих исходников Hascol</translation>
     </message>
     <message>
         <source>Parse Java Libraries</source>
-        <translation type="obsolete">РРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ Р±РёР±Р»РёРѕС‚РµРєРё Java</translation>
+        <translation type="obsolete">Импортировать библиотеки Java</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="494"/>
         <source>Show grid</source>
-        <translation>РџРѕРєР°Р·Р°С‚СЊ СЃРµС‚РєСѓ</translation>
+        <translation>Показать сетку</translation>
     </message>
     <message>
         <source>Shape Editor</source>
-        <translation type="obsolete">Р РµРґР°РєС‚РѕСЂ С„РѕСЂРјС‹ С„РёРіСѓСЂ</translation>
+        <translation type="obsolete">Редактор формы фигур</translation>
     </message>
     <message>
         <source>Generate Editor</source>
-        <translation type="obsolete">Р“РµРЅРµСЂРёСЂРѕРІР°С‚СЊ СЂРµРґР°РєС‚РѕСЂ</translation>
+        <translation type="obsolete">Генерировать редактор</translation>
     </message>
     <message>
         <source>Parse Editor xml</source>
-        <translation type="obsolete">РРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ xml СЃ РјРµС‚Р°РјРѕРґРµР»СЊСЋ</translation>
+        <translation type="obsolete">Импортировать xml с метамоделью</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="502"/>
         <source>Switch on grid</source>
-        <translation>Р’РєР»СЋС‡РёС‚СЊ СЃРµС‚РєСѓ</translation>
+        <translation>Включить сетку</translation>
     </message>
     <message>
         <source>Commit</source>
-        <translation type="obsolete">Р—Р°РєРѕРјРјРёС‚РёС‚СЊ</translation>
+        <translation type="obsolete">Закоммитить</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="507"/>
         <source>Show</source>
-        <translation>РџРѕРєР°Р·Р°С‚СЊ</translation>
+        <translation>Показать</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="512"/>
         <source>Preferences...</source>
-        <translation>РќР°СЃС‚СЂРѕР№РєРё...</translation>
+        <translation>Настройки...</translation>
     </message>
     <message>
         <source>Checkout...</source>
-        <translation type="obsolete">Р—Р°С‡РµРєР°СѓС‚РёС‚СЊ...</translation>
+        <translation type="obsolete">Зачекаутить...</translation>
     </message>
     <message>
         <source>Generate Editor (qrmc)</source>
-        <translation type="obsolete">Р“РµРЅРµСЂРёСЂРѕРІР°С‚СЊ СЂРµРґР°РєС‚РѕСЂ (qrmc)</translation>
+        <translation type="obsolete">Генерировать редактор (qrmc)</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="523"/>
         <source>Switch on alignment</source>
-        <translation>Р’РєР»СЋС‡РёС‚СЊ РЅР°РїСЂР°РІР»СЏСЋС‰РёРµ</translation>
+        <translation>Включить направляющие</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="534"/>
         <source>Show alignment</source>
-        <translation>РџРѕРєР°Р·Р°С‚СЊ РЅР°РїСЂР°РІР»СЏСЋС‰РёРµ</translation>
+        <translation>Показать направляющие</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="539"/>
         <source>Debug</source>
-        <translation>РћС‚Р»Р°РґРєР°</translation>
+        <translation>Отладка</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="542"/>
@@ -770,7 +770,7 @@
     </message>
     <message>
         <source>Debug (Single step)</source>
-        <translation type="obsolete">РћС‚Р»Р°РґРєР° (РѕРґРёРЅ С€Р°Рі)</translation>
+        <translation type="obsolete">Отладка (один шаг)</translation>
     </message>
     <message>
         <source>F10</source>
@@ -778,11 +778,11 @@
     </message>
     <message>
         <source>Run</source>
-        <translation type="obsolete">Р’С‹РїРѕР»РЅРёС‚СЊ</translation>
+        <translation type="obsolete">Выполнить</translation>
     </message>
     <message>
         <source>Run current diagram on a robot using existing Bluetooth connection</source>
-        <translation type="obsolete">Р’С‹РїРѕР»РЅРёС‚СЊ С‚РµРєСѓС‰СѓСЋ РґРёР°РіСЂР°РјРјСѓ РЅР° СЂРѕР±РѕС‚Рµ, РёСЃРїРѕР»СЊР·СѓСЏ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРµ СЃРѕРµРґРёРЅРµРЅРёРµ РїРѕ Bluetooth</translation>
+        <translation type="obsolete">Выполнить текущую диаграмму на роботе, используя существующее соединение по Bluetooth</translation>
     </message>
     <message>
         <source>F5</source>
@@ -790,33 +790,33 @@
     </message>
     <message>
         <source>Robot Settings...</source>
-        <translation type="obsolete">РќР°СЃС‚СЂРѕР№РєРё СЂРѕР±РѕС‚Р°...</translation>
+        <translation type="obsolete">Настройки робота...</translation>
     </message>
     <message>
         <source>Stop Running</source>
-        <translation type="obsolete">РџСЂРµСЂРІР°С‚СЊ РІС‹РїРѕР»РЅРµРЅРёРµ</translation>
+        <translation type="obsolete">Прервать выполнение</translation>
     </message>
     <message>
         <source>Stop Robot</source>
-        <translation type="obsolete">РћС‚РєР»СЋС‡РёС‚СЊ СЂРѕР±РѕС‚Р°</translation>
+        <translation type="obsolete">Отключить робота</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="586"/>
         <source>New Diagram</source>
-        <translation>РќРѕРІР°СЏ РґРёР°РіСЂР°РјРјР°</translation>
+        <translation>Новая диаграмма</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="589"/>
         <source>Create new diagram in a current model</source>
-        <translation>РЎРѕР·РґР°С‚СЊ РЅРѕРІСѓСЋ РґРёР°РіСЂР°РјРјСѓ РІ С‚РµРєСѓС‰РµР№ РјРѕРґРµР»Рё</translation>
+        <translation>Создать новую диаграмму в текущей модели</translation>
     </message>
     <message>
         <source>2D model</source>
-        <translation type="obsolete">2D-РјРѕРґРµР»СЊ</translation>
+        <translation type="obsolete">2D-модель</translation>
     </message>
     <message>
         <source>Show 2D model</source>
-        <translation type="obsolete">РџРѕРєР°Р·Р°С‚СЊ 2D-РјРѕРґРµР»СЊ</translation>
+        <translation type="obsolete">Показать 2D-модель</translation>
     </message>
     <message>
         <source>Ctrl+Shift+F12</source>
@@ -825,7 +825,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="605"/>
         <source>New Project</source>
-        <translation>РќРѕРІС‹Р№ РїСЂРѕРµРєС‚</translation>
+        <translation>Новый проект</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="608"/>
@@ -834,35 +834,35 @@
     </message>
     <message>
         <source>Connect To Robot</source>
-        <translation type="obsolete">РџРѕРґРєР»СЋС‡РёС‚СЊСЃСЏ Рє СЂРѕР±РѕС‚Сѓ</translation>
+        <translation type="obsolete">Подключиться к роботу</translation>
     </message>
     <message>
         <source>Code</source>
-        <translation type="obsolete">РљРѕРґ</translation>
+        <translation type="obsolete">Код</translation>
     </message>
     <message>
         <source>Generate source code for robot</source>
-        <translation type="obsolete">РЎРіРµРЅРµСЂРёСЂРѕРІР°С‚СЊ РёСЃС…РѕРґРЅС‹Р№ РєРѕРґ РґР»СЏ СЂРѕР±РѕС‚Р°</translation>
+        <translation type="obsolete">Сгенерировать исходный код для робота</translation>
     </message>
     <message>
         <source>Upload</source>
-        <translation type="obsolete">Р—Р°РіСЂСѓР·РёС‚СЊ</translation>
+        <translation type="obsolete">Загрузить</translation>
     </message>
     <message>
         <source>Upload program into robot</source>
-        <translation type="obsolete">Р—Р°РіСЂСѓР·РёС‚СЊ РїСЂРѕРіСЂР°РјРјСѓ РЅР° СЂРѕР±РѕС‚</translation>
+        <translation type="obsolete">Загрузить программу на робот</translation>
     </message>
     <message>
         <source>Flash</source>
-        <translation type="obsolete">РџСЂРѕС€РёС‚СЊ</translation>
+        <translation type="obsolete">Прошить</translation>
     </message>
     <message>
         <source>Flash nxtOSEK into robot</source>
-        <translation type="obsolete">РџСЂРѕС€РёС‚СЊ nxtOSEK РЅР° СЂРѕР±РѕС‚</translation>
+        <translation type="obsolete">Прошить nxtOSEK на робот</translation>
     </message>
     <message>
         <source>Start debugging</source>
-        <translation type="obsolete">РќР°С‡Р°С‚СЊ РѕС‚Р»Р°РґРєСѓ</translation>
+        <translation type="obsolete">Начать отладку</translation>
     </message>
     <message>
         <source>Ctrl+F10</source>
@@ -872,7 +872,7 @@
         <location filename="mainwindow/mainWindow.ui" line="594"/>
         <location filename="mainwindow/mainWindow.ui" line="597"/>
         <source>Fullscreen Mode</source>
-        <translation>РџРѕР»РЅС‹Р№ СЌРєСЂР°РЅ</translation>
+        <translation>Полный экран</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="600"/>
@@ -884,39 +884,39 @@
     <name>MiscellaniousForm</name>
     <message>
         <source>Form</source>
-        <translation type="obsolete">Р¤РѕСЂРјР°</translation>
+        <translation type="obsolete">Форма</translation>
     </message>
     <message>
         <source>Show splashscreen</source>
-        <translation type="obsolete">РџРѕРєР°Р·С‹РІР°С‚СЊ СЃРїР»РµС€СЃРєСЂРёРЅ</translation>
+        <translation type="obsolete">Показывать сплешскрин</translation>
     </message>
     <message>
         <source>Chaotic Edition</source>
-        <translation type="obsolete">Р РµР¶РёРј, СѓРіРѕРґРЅС‹Р№ Р±РѕРіР°Рј РҐР°РѕСЃР°</translation>
+        <translation type="obsolete">Режим, угодный богам Хаоса</translation>
     </message>
     <message>
         <source>Antialiasing</source>
-        <translation type="obsolete">РђРЅС‚РёР°Р»РёР°СЃРёРЅРі</translation>
+        <translation type="obsolete">Антиалиасинг</translation>
     </message>
     <message>
         <source>OpenGL rendering</source>
-        <translation type="obsolete">Р РµРЅРґРµСЂРёРЅРі OpenGL</translation>
+        <translation type="obsolete">Рендеринг OpenGL</translation>
     </message>
     <message>
         <source>Graphics</source>
-        <translation type="obsolete">Р“СЂР°С„РёРєР°</translation>
+        <translation type="obsolete">Графика</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="obsolete">РџСЂРѕС‡РµРµ</translation>
+        <translation type="obsolete">Прочее</translation>
     </message>
     <message>
         <source>Browse</source>
-        <translation type="obsolete">Р’С‹Р±СЂР°С‚СЊ</translation>
+        <translation type="obsolete">Выбрать</translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="obsolete">РР·РѕР±СЂР°Р¶РµРЅРёСЏ</translation>
+        <translation type="obsolete">Изображения</translation>
     </message>
 </context>
 <context>
@@ -924,7 +924,7 @@
     <message>
         <location filename="umllib/nodeElement.cpp" line="20"/>
         <source>Switch on grid</source>
-        <translation>Р’РєР»СЋС‡РёС‚СЊ СЃРµС‚РєСѓ</translation>
+        <translation>Включить сетку</translation>
     </message>
 </context>
 <context>
@@ -932,84 +932,84 @@
     <message>
         <location filename="dialogs/preferencesPages/behaviourPage.ui" line="164"/>
         <source>Show window</source>
-        <translation>РџРѕРєР°Р·С‹РІР°С‚СЊ РѕРєРЅРѕ РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёР№</translation>
+        <translation>Показывать окно предупреждений</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/behaviourPage.ui" line="23"/>
         <source>Automatics</source>
-        <translation>РђРІС‚РѕРјР°С‚РёР·Р°С†РёСЏ</translation>
+        <translation>Автоматизация</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/behaviourPage.ui" line="45"/>
         <source>Palette tab switching</source>
-        <translation>РџРµСЂРµР»СЋС‡РµРЅРёРµ С‚Р°Р±РѕРІ РІ РїР°Р»РёС‚СЂРµ</translation>
+        <translation>Перелючение табов в палитре</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/behaviourPage.ui" line="85"/>
         <source>Arrange Links</source>
-        <translation>РЈРїРѕСЂСЏРґРѕС‡РёРІР°С‚СЊ СЃРІСЏР·Рё</translation>
+        <translation>Упорядочивать связи</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/behaviourPage.ui" line="52"/>
         <source>Autosave</source>
-        <translation>РђРІС‚РѕСЃРѕС…СЂР°РЅРµРЅРёРµ</translation>
+        <translation>Автосохранение</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/behaviourPage.ui" line="78"/>
         <source>sec</source>
-        <translation>СЃРµРє</translation>
+        <translation>сек</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/behaviourPage.ui" line="112"/>
         <source>msec</source>
-        <translation>РјСЃРµРє</translation>
+        <translation>мсек</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/behaviourPage.ui" line="95"/>
         <source>Delay after gesture</source>
-        <translation>Р—Р°РґРµСЂР¶РєР° РїРѕСЃР»Рµ Р¶РµСЃС‚Р°</translation>
+        <translation>Задержка после жеста</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/behaviourPage.ui" line="148"/>
         <source>Warning window</source>
-        <translation>РћРєРЅРѕ РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёР№</translation>
+        <translation>Окно предупреждений</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/behaviourPage.ui" line="138"/>
         <source>New diagram creating</source>
-        <translation>РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕР№ РґРёР°РіСЂР°РјРјС‹</translation>
+        <translation>Создание новой диаграммы</translation>
     </message>
     <message>
         <source>Save on exit</source>
-        <translation type="obsolete">РЎРѕС…СЂР°РЅСЏС‚СЊСЃСЏ РїСЂРё РІС‹С…РѕРґРµ</translation>
+        <translation type="obsolete">Сохраняться при выходе</translation>
     </message>
     <message>
         <source>Choose diagrams to save</source>
-        <translation type="obsolete">РџСЂРµРґР»Р°РіР°С‚СЊ РІС‹Р±РѕСЂ РґРёР°РіСЂР°РјРј РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ</translation>
+        <translation type="obsolete">Предлагать выбор диаграмм для сохранения</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/behaviourPage.ui" line="122"/>
         <source>Suggestions</source>
-        <translation>РџСЂРµРґР»РѕР¶РµРЅРёСЏ</translation>
+        <translation>Предложения</translation>
     </message>
 </context>
 <context>
     <name>PreferencesCompilerPage</name>
     <message>
         <source>path to qmake</source>
-        <translation type="obsolete">РџСѓС‚СЊ Рє qmake</translation>
+        <translation type="obsolete">Путь к qmake</translation>
     </message>
     <message>
         <source>path to make</source>
-        <translation type="obsolete">РџСѓС‚СЊ Рє make</translation>
+        <translation type="obsolete">Путь к make</translation>
     </message>
     <message>
         <source>plugin file extension</source>
-        <translation type="obsolete">Р Р°СЃС€РёСЂРµРЅРёРµ С„Р°Р№Р»Р° СЃ РїР»Р°РіРёРЅРѕРј</translation>
+        <translation type="obsolete">Расширение файла с плагином</translation>
     </message>
     <message>
         <source>prefix</source>
-        <translation type="obsolete">РџСЂРµС„РёРєСЃ</translation>
+        <translation type="obsolete">Префикс</translation>
     </message>
     <message>
         <source>Linux</source>
@@ -1017,7 +1017,7 @@
     </message>
     <message>
         <source>Other</source>
-        <translation type="obsolete">РџСЂРѕС‡РµРµ</translation>
+        <translation type="obsolete">Прочее</translation>
     </message>
     <message>
         <source>Windows</source>
@@ -1028,50 +1028,50 @@
     <name>PreferencesDebuggerPage</name>
     <message>
         <source>Configuration</source>
-        <translation type="obsolete">РљРѕРЅС„РёРіСѓСЂР°С†РёСЏ</translation>
+        <translation type="obsolete">Конфигурация</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/debuggerPage.ui" line="39"/>
         <source>Debug timeout (ms):</source>
-        <translation>Р—Р°РґРµСЂР¶РєР° РїСЂРё РѕС‚Р»Р°РґРєРµ:</translation>
+        <translation>Задержка при отладке:</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/debuggerPage.ui" line="49"/>
         <source>Color of highlighting:</source>
-        <translation>Р¦РІРµС‚ РїРѕРґСЃРІРµС‚РєРё:</translation>
+        <translation>Цвет подсветки:</translation>
     </message>
     <message>
         <source>Color of highlight:</source>
-        <translation type="obsolete">Р¦РІРµС‚ РїРѕРґСЃРІРµС‚РєРё:</translation>
+        <translation type="obsolete">Цвет подсветки:</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/debuggerPage.ui" line="23"/>
         <source>Presentation</source>
-        <translation>РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ</translation>
+        <translation>Представление</translation>
     </message>
     <message>
         <source>Debugger path:</source>
-        <translation type="obsolete">РџСѓС‚СЊ РґРѕ РѕС‚Р»Р°РґС‡РёРєР°:</translation>
+        <translation type="obsolete">Путь до отладчика:</translation>
     </message>
     <message>
         <source>Builder path:</source>
-        <translation type="obsolete">РџСѓС‚СЊ РґРѕ СЃР±РѕСЂС‰РёРєР°:</translation>
+        <translation type="obsolete">Путь до сборщика:</translation>
     </message>
     <message>
         <source>Generated code file name:</source>
-        <translation type="obsolete">РРјСЏ С„Р°Р№Р»Р° СЃРѕ СЃРіРµРЅРµСЂРёСЂРѕРІР°РЅРЅС‹Рј РєРѕРґРѕРј:</translation>
+        <translation type="obsolete">Имя файла со сгенерированным кодом:</translation>
     </message>
     <message>
         <source>Builded file name:</source>
-        <translation type="obsolete">РРјСЏ СЃРѕР±СЂР°РЅРЅРѕРіРѕ С„Р°Р№Р»Р°:</translation>
+        <translation type="obsolete">Имя собранного файла:</translation>
     </message>
     <message>
         <source>Browse...</source>
-        <translation type="obsolete">РџСЂРѕСЃРјРѕС‚СЂ...</translation>
+        <translation type="obsolete">Просмотр...</translation>
     </message>
     <message>
         <source>Working directory:</source>
-        <translation type="obsolete">Р Р°Р±РѕС‡Р°СЏ РїР°РїРєР°:</translation>
+        <translation type="obsolete">Рабочая папка:</translation>
     </message>
 </context>
 <context>
@@ -1079,22 +1079,22 @@
     <message>
         <location filename="dialogs/preferencesDialog.ui" line="32"/>
         <source>Preferences</source>
-        <translation>РќР°СЃС‚СЂРѕР№РєРё</translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesDialog.ui" line="92"/>
         <source>OK</source>
-        <translation>РћРљ</translation>
+        <translation>ОК</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesDialog.ui" line="85"/>
         <source>Apply</source>
-        <translation>РџСЂРёРјРµРЅРёС‚СЊ</translation>
+        <translation>Применить</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesDialog.ui" line="78"/>
         <source>Cancel</source>
-        <translation>РћС‚РјРµРЅР°</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
 <<<<<<< HEAD
@@ -1103,63 +1103,63 @@
         <location filename="dialogs/preferencesDialog.cpp" line="46"/>
 >>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Editor</source>
-        <translation>Р РµРґР°РєС‚РѕСЂ</translation>
+        <translation>Редактор</translation>
     </message>
     <message>
         <source>Features</source>
-        <translation type="obsolete">Р’РѕР·РјРѕР¶РЅРѕСЃС‚Рё</translation>
+        <translation type="obsolete">Возможности</translation>
     </message>
     <message>
         <source>Robot Settings</source>
-        <translation type="obsolete">Р РѕР±РѕС‚</translation>
+        <translation type="obsolete">Робот</translation>
     </message>
     <message>
         <source>Show grid</source>
-        <translation type="obsolete">РџРѕРєР°Р·С‹РІР°С‚СЊ СЃРµС‚РєСѓ</translation>
+        <translation type="obsolete">Показывать сетку</translation>
     </message>
     <message>
         <source>Activate grid</source>
-        <translation type="obsolete">РђРєС‚РёРІРёСЂРѕРІР°С‚СЊ СЃРµС‚РєСѓ</translation>
+        <translation type="obsolete">Активировать сетку</translation>
     </message>
     <message>
         <source>Width</source>
-        <translation type="obsolete">РЁРёСЂРёРЅР°</translation>
+        <translation type="obsolete">Ширина</translation>
     </message>
     <message>
         <source>Cell size</source>
-        <translation type="obsolete">Р Р°Р·РјРµСЂ СЏС‡РµР№РєРё</translation>
+        <translation type="obsolete">Размер ячейки</translation>
     </message>
     <message>
         <source>Activate alignment</source>
-        <translation type="obsolete">РђРєС‚РёРІРёСЂРѕРІР°С‚СЊ РЅР°РїСЂР°РІР»СЏСЋС‰РёРµ</translation>
+        <translation type="obsolete">Активировать направляющие</translation>
     </message>
     <message>
         <source>Show alignment</source>
-        <translation type="obsolete">РџРѕРєР°Р·Р°С‚СЊ РЅР°РїСЂР°РІР»СЏСЋС‰РёРµ</translation>
+        <translation type="obsolete">Показать направляющие</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="obsolete">РЎРµС‚РєР°</translation>
+        <translation type="obsolete">Сетка</translation>
     </message>
     <message>
         <source>Embedded Linkers</source>
-        <translation type="obsolete">Р’СЃС‚СЂРѕРµРЅРЅС‹Рµ Р»РёРЅРєРµСЂС‹</translation>
+        <translation type="obsolete">Встроенные линкеры</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="obsolete">Р Р°Р·РјРµСЂ</translation>
+        <translation type="obsolete">Размер</translation>
     </message>
     <message>
         <source>Indent</source>
-        <translation type="obsolete">РћС‚СЃС‚СѓРї</translation>
+        <translation type="obsolete">Отступ</translation>
     </message>
     <message>
         <source>Zoom factor</source>
-        <translation type="obsolete">Р¤Р°РєС‚РѕСЂ СѓРІРµР»РёС‡РµРЅРёСЏ</translation>
+        <translation type="obsolete">Фактор увеличения</translation>
     </message>
     <message>
         <source>Zoom</source>
-        <translation type="obsolete">РЈРІРµР»РёС‡РµРЅРёРµ</translation>
+        <translation type="obsolete">Увеличение</translation>
     </message>
     <message>
 <<<<<<< HEAD
@@ -1168,73 +1168,73 @@
         <location filename="dialogs/preferencesDialog.cpp" line="45"/>
 >>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Miscellanious</source>
-        <translation>Р Р°Р·РЅРѕРµ</translation>
+        <translation>Разное</translation>
     </message>
     <message>
         <source>Antialiasing</source>
-        <translation type="obsolete">РђРЅС‚РёР°Р»РёР°СЃРёРЅРі</translation>
+        <translation type="obsolete">Антиалиасинг</translation>
     </message>
     <message>
         <source>OpenGL rendering</source>
-        <translation type="obsolete">Р РµРЅРґРµСЂРёРЅРі OpenGL</translation>
+        <translation type="obsolete">Рендеринг OpenGL</translation>
     </message>
     <message>
         <source>Graphics</source>
-        <translation type="obsolete">Р“СЂР°С„РёРєР°</translation>
+        <translation type="obsolete">Графика</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="obsolete">РџСЂРѕС‡РµРµ</translation>
+        <translation type="obsolete">Прочее</translation>
     </message>
     <message>
         <source>Show splashscreen</source>
-        <translation type="obsolete">РџРѕРєР°Р·С‹РІР°С‚СЊ СЃРїР»РµС€СЃРєСЂРёРЅ</translation>
+        <translation type="obsolete">Показывать сплешскрин</translation>
     </message>
     <message>
         <source>Chaotic Edition</source>
-        <translatorcomment>РџР°Р”РёРўРµ РќРёР¦ РїР•СЂР•Рґ Р›РёРљРѕРњ С…РђРѕРЎР°, РЎРјР•СЂРўРЅР«Рµ!1!</translatorcomment>
-        <translation type="obsolete">Р РµР¶РёРј, СѓРіРѕРґРЅС‹Р№ Р±РѕРіР°Рј РҐР°РѕСЃР°</translation>
+        <translatorcomment>ПаДиТе НиЦ пЕрЕд ЛиКоМ хАоСа, СмЕрТнЫе!1!</translatorcomment>
+        <translation type="obsolete">Режим, угодный богам Хаоса</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesDialog.cpp" line="41"/>
         <source>Behaviour</source>
-        <translation>РџРѕРІРµРґРµРЅРёРµ</translation>
+        <translation>Поведение</translation>
     </message>
     <message>
         <source>Palette tab switching</source>
-        <translation type="obsolete">РџРµСЂРµР»СЋС‡РµРЅРёРµ С‚Р°Р±РѕРІ РІ РїР°Р»РёС‚СЂРµ</translation>
+        <translation type="obsolete">Перелючение табов в палитре</translation>
     </message>
     <message>
         <source>Automatics</source>
-        <translation type="obsolete">РђРІС‚РѕРјР°С‚РёР·Р°С†РёСЏ</translation>
+        <translation type="obsolete">Автоматизация</translation>
     </message>
     <message>
         <source>New diagram creating</source>
-        <translation type="obsolete">РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕР№ РґРёР°РіСЂР°РјРјС‹</translation>
+        <translation type="obsolete">Создание новой диаграммы</translation>
     </message>
     <message>
         <source>Save on exit</source>
-        <translation type="obsolete">РЎРѕС…СЂР°РЅСЏС‚СЊСЃСЏ РїСЂРё РІС‹С…РѕРґРµ</translation>
+        <translation type="obsolete">Сохраняться при выходе</translation>
     </message>
     <message>
         <source>Choose diagrams to save</source>
-        <translation type="obsolete">РџСЂРµРґР»Р°РіР°С‚СЊ РІС‹Р±РѕСЂ РґРёР°РіСЂР°РјРј РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ</translation>
+        <translation type="obsolete">Предлагать выбор диаграмм для сохранения</translation>
     </message>
     <message>
         <source>Suggestions</source>
-        <translation type="obsolete">РџСЂРµРґР»РѕР¶РµРЅРёСЏ</translation>
+        <translation type="obsolete">Предложения</translation>
     </message>
     <message>
         <source>Warning window</source>
-        <translation type="obsolete">РћРєРЅРѕ РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёР№</translation>
+        <translation type="obsolete">Окно предупреждений</translation>
     </message>
     <message>
         <source>Show window</source>
-        <translation type="obsolete">РџРѕРєР°Р·Р°С‚СЊ РѕРєРЅРѕ</translation>
+        <translation type="obsolete">Показать окно</translation>
     </message>
     <message>
         <source>Compiler</source>
-        <translation type="obsolete">РљРѕРјРїРёР»СЏС‚РѕСЂ</translation>
+        <translation type="obsolete">Компилятор</translation>
     </message>
     <message>
         <source>Windows</source>
@@ -1246,76 +1246,72 @@
     </message>
     <message>
         <source>path to qmake</source>
-        <translation type="obsolete">РџСѓС‚СЊ Рє qmake</translation>
+        <translation type="obsolete">Путь к qmake</translation>
     </message>
     <message>
         <source>path to make</source>
-        <translation type="obsolete">РџСѓС‚СЊ Рє make</translation>
+        <translation type="obsolete">Путь к make</translation>
     </message>
     <message>
         <source>plugin file extension</source>
-        <translation type="obsolete">Р Р°СЃС€РёСЂРµРЅРёРµ С„Р°Р№Р»Р° СЃ РїР»Р°РіРёРЅРѕРј</translation>
+        <translation type="obsolete">Расширение файла с плагином</translation>
     </message>
     <message>
         <source>prefix</source>
-        <translation type="obsolete">РџСЂРµС„РёРєСЃ</translation>
+        <translation type="obsolete">Префикс</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="dialogs/preferencesDialog.cpp" line="42"/>
-=======
         <location filename="dialogs/preferencesDialog.cpp" line="44"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Debugger</source>
-        <translation>РћС‚Р»Р°РґС‡РёРє</translation>
+        <translation>Отладчик</translation>
     </message>
     <message>
         <source>Presentation</source>
-        <translation type="obsolete">РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ</translation>
+        <translation type="obsolete">Представление</translation>
     </message>
     <message>
         <source>Debug timeout (ms):</source>
-        <translation type="obsolete">Р—Р°РґРµСЂР¶РєР° РїСЂРё РѕС‚Р»Р°РґРєРµ:</translation>
+        <translation type="obsolete">Задержка при отладке:</translation>
     </message>
     <message>
         <source>Color of highlight:</source>
-        <translation type="obsolete">Р¦РІРµС‚ РїРѕРґСЃРІРµС‚РєРё:</translation>
+        <translation type="obsolete">Цвет подсветки:</translation>
     </message>
     <message>
         <source>Unused</source>
-        <translation type="obsolete">РќРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ</translation>
+        <translation type="obsolete">Не используется</translation>
     </message>
     <message>
         <source>Touch sensor (boolean value)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ РЅР°Р¶Р°С‚РёСЏ (Р±СѓР»РµРІРѕ Р·РЅР°С‡РµРЅРёРµ)</translation>
+        <translation type="obsolete">Сенсор нажатия (булево значение)</translation>
     </message>
     <message>
         <source>Touch sensor (raw value)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ РЅР°Р¶Р°С‚РёСЏ (СЃС‹СЂРѕРµ Р·РЅР°С‡РµРЅРёРµ)</translation>
+        <translation type="obsolete">Сенсор нажатия (сырое значение)</translation>
     </message>
     <message>
         <source>Sonar sensor</source>
-        <translation type="obsolete">РЈР»СЊС‚СЂР°Р·РІСѓРєРѕРІРѕР№ СЃРµРЅСЃРѕСЂ</translation>
+        <translation type="obsolete">Ультразвуковой сенсор</translation>
     </message>
     <message>
         <source>Color sensor (full colors)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° (РїРѕР»РЅС‹Рµ С†РІРµС‚Р°)</translation>
+        <translation type="obsolete">Сенсор цвета (полные цвета)</translation>
     </message>
     <message>
         <source>Color sensor (red)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° (РєСЂР°СЃРЅС‹Р№)</translation>
+        <translation type="obsolete">Сенсор цвета (красный)</translation>
     </message>
     <message>
         <source>Color sensor (green)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° (Р·РµР»С‘РЅС‹Р№)</translation>
+        <translation type="obsolete">Сенсор цвета (зелёный)</translation>
     </message>
     <message>
         <source>Color sensor (blue)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° (СЃРёРЅРёР№)</translation>
+        <translation type="obsolete">Сенсор цвета (синий)</translation>
     </message>
     <message>
         <source>Color sensor (passive)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° (РїР°СЃСЃРёРІРЅС‹Р№)</translation>
+        <translation type="obsolete">Сенсор цвета (пассивный)</translation>
     </message>
 </context>
 <context>
@@ -1323,117 +1319,117 @@
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="190"/>
         <source>Size</source>
-        <translation>Р Р°Р·РјРµСЂ</translation>
+        <translation>Размер</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="210"/>
         <source>Indent</source>
-        <translation>РћС‚СЃС‚СѓРї</translation>
+        <translation>Отступ</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="45"/>
         <source>Show grid</source>
-        <translation>РџРѕРєР°Р·Р°С‚СЊ СЃРµС‚РєСѓ</translation>
+        <translation>Показать сетку</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="61"/>
         <source>Activate grid</source>
-        <translation>Р’С‹СЂР°РІРЅРёРІР°РЅРёРµ РїРѕ СЃРµС‚РєРµ</translation>
+        <translation>Выравнивание по сетке</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="122"/>
         <source>Width</source>
-        <translation>РўРѕР»С‰РёРЅР° СЃРµС‚РєРё</translation>
+        <translation>Толщина сетки</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="151"/>
         <source>Cell size</source>
-        <translation>Р Р°Р·РјРµСЂ СЏС‡РµР№РєРё</translation>
+        <translation>Размер ячейки</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="298"/>
         <source>Palette</source>
-        <translation>РџР°Р»РёС‚СЂР°</translation>
+        <translation>Палитра</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="326"/>
         <source>   Representation   </source>
-        <translation>РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ</translation>
+        <translation>Представление</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="340"/>
         <source>Icons  and names</source>
-        <translation>РРєРѕРЅРєРё Рё РЅР°Р·РІР°РЅРёСЏ</translation>
+        <translation>Иконки и названия</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="345"/>
         <source>Icons</source>
-        <translation>РРєРѕРЅРєРё</translation>
+        <translation>Иконки</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="359"/>
         <source>   Count of items in a row </source>
-        <translation>РљРѕР»РёС‡РµСЃС‚РІРѕ РёРєРѕРЅРѕРє РІ СЃС‚СЂРѕРєРµ</translation>
+        <translation>Количество иконок в строке</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="93"/>
         <source>Activate alignment</source>
-        <translation>Р’С‹СЂР°РІРЅРёРІР°РЅРёРµ РїРѕ РЅР°РїСЂР°РІР»СЏСЋС‰РёРј</translation>
+        <translation>Выравнивание по направляющим</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="77"/>
         <source>Show alignment</source>
-        <translation>РџРѕРєР°Р·Р°С‚СЊ РЅР°РїСЂР°РІР»СЏСЋС‰РёРµ</translation>
+        <translation>Показать направляющие</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="23"/>
         <source>Grid</source>
-        <translation>РЎРµС‚РєР°</translation>
+        <translation>Сетка</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="161"/>
         <source>Embedded Linkers</source>
-        <translation>Р’СЃС‚СЂРѕРµРЅРЅС‹Рµ Р»РёРЅРєРµСЂС‹</translation>
+        <translation>Встроенные линкеры</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="255"/>
         <source>Zoom factor</source>
-        <translation>РљРѕСЌС„С„РёС†РёРµРЅС‚ РјР°СЃС€С‚Р°Р±РёСЂРѕРІР°РЅРёСЏ</translation>
+        <translation>Коэффициент масштабирования</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="220"/>
         <source>Zoom</source>
-        <translation>РЈРІРµР»РёС‡РµРЅРёРµ</translation>
+        <translation>Увеличение</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="265"/>
         <source>Font</source>
-        <translation>РЁСЂРёС„С‚</translation>
+        <translation>Шрифт</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="288"/>
         <source>Use some of system fonts</source>
-        <translation>РСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СЃРёСЃС‚РµРјРЅС‹Р№ С€СЂРёС„С‚</translation>
+        <translation>Использовать системный шрифт</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="281"/>
         <source>Choose Font</source>
-        <translation>Р’С‹Р±СЂР°С‚СЊ С€СЂРёС„С‚</translation>
+        <translation>Выбрать шрифт</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.cpp" line="134"/>
         <source>Information</source>
-        <translation>РРЅС„РѕСЂРјР°С†РёСЏ</translation>
+        <translation>Информация</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.cpp" line="134"/>
         <source>You should restart QReal:Robots to apply changes</source>
-        <translation>РџРµСЂРµР·Р°РїСѓСЃС‚РёС‚Рµ РїСЂРѕРіСЂР°РјРјСѓ, С‡С‚РѕР±С‹ РїСЂРёРјРµРЅРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ</translation>
+        <translation>Перезапустите программу, чтобы применить изменения</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.cpp" line="134"/>
         <source>Ok</source>
-        <translation>РћРљ</translation>
+        <translation>ОК</translation>
     </message>
 </context>
 <context>
@@ -1441,33 +1437,33 @@
     <message>
         <location filename="dialogs/preferencesPages/featuresPage.ui" line="39"/>
         <source>Gestures</source>
-        <translation>Р–РµСЃС‚С‹</translation>
+        <translation>Жесты</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/featuresPage.ui" line="60"/>
         <source>Embedded Linkers</source>
-        <translation>Р’СЃС‚СЂРѕРµРЅРЅС‹Рµ Р»РёРЅРєРµСЂС‹</translation>
+        <translation>Встроенные линкеры</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/featuresPage.ui" line="74"/>
         <source>Embedded Controls</source>
-        <translation>Р’СЃС‚СЂРѕРµРЅРЅС‹Рµ РєРѕРЅС‚СЂРѕР»С‹</translation>
+        <translation>Встроенные контролы</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/featuresPage.ui" line="46"/>
         <location filename="dialogs/preferencesPages/featuresPage.ui" line="53"/>
         <source>fast linking with mouse</source>
-        <translation>Р‘С‹СЃС‚СЂРѕРµ СЃРІСЏР·С‹РІР°РЅРёРµ РјС‹С€СЊСЋ</translation>
+        <translation>Быстрое связывание мышью</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/featuresPage.ui" line="67"/>
         <source>fast property editing</source>
-        <translation>Р‘РІСЃС‚СЂРѕРµ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ СЃРІРѕР№СЃС‚РІ</translation>
+        <translation>Бвстрое редактирование свойств</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/featuresPage.ui" line="23"/>
         <source>Element controls</source>
-        <translation>РЈРїСЂР°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р°РјРё</translation>
+        <translation>Управление элементами</translation>
     </message>
 </context>
 <context>
@@ -1475,189 +1471,189 @@
     <message>
         <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="111"/>
         <source>Browse</source>
-        <translation>Р’С‹Р±СЂР°С‚СЊ</translation>
+        <translation>Выбрать</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="92"/>
         <source>Images</source>
-        <translation>РР·РѕР±СЂР°Р¶РµРЅРёСЏ</translation>
+        <translation>Изображения</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="72"/>
         <source>Show splashscreen</source>
-        <translation>РџРѕРєР°Р·С‹РІР°С‚СЊ СЃРїР»РµС€СЃРєСЂРёРЅ</translation>
+        <translation>Показывать сплешскрин</translation>
     </message>
     <message>
         <source>Chaotic Edition</source>
-        <translation type="obsolete">Р РµР¶РёРј, СѓРіРѕРґРЅС‹Р№ Р±РѕРіР°Рј РҐР°РѕСЃР°</translation>
+        <translation type="obsolete">Режим, угодный богам Хаоса</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="82"/>
         <source>Square Line Mode</source>
-        <translation>Р РµР¶РёРј РїРµСЂРїРµРЅРґРёРєСѓР»СЏСЂРЅС‹С… Р»РёРЅРёР№</translation>
+        <translation>Режим перпендикулярных линий</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="39"/>
         <source>Antialiasing</source>
-        <translation>РђРЅС‚РёР°Р»РёР°СЃРёРЅРі</translation>
+        <translation>Антиалиасинг</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="46"/>
         <source>OpenGL rendering</source>
-        <translation>Р РµРЅРґРµСЂРёРЅРі OpenGL</translation>
+        <translation>Рендеринг OpenGL</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="23"/>
         <source>Graphics</source>
-        <translation>Р“СЂР°С„РёРєР°</translation>
+        <translation>Графика</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="56"/>
         <source>Other</source>
-        <translation>РџСЂРѕС‡РµРµ</translation>
+        <translation>Прочее</translation>
     </message>
 </context>
 <context>
     <name>PreferencesRobotSettingsPage</name>
     <message>
         <source>Unused</source>
-        <translation type="obsolete">РќРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ</translation>
+        <translation type="obsolete">Не используется</translation>
     </message>
     <message>
         <source>Touch sensor (boolean value)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ РЅР°Р¶Р°С‚РёСЏ (Р±СѓР»РµРІРѕ Р·РЅР°С‡РµРЅРёРµ)</translation>
+        <translation type="obsolete">Сенсор нажатия (булево значение)</translation>
     </message>
     <message>
         <source>Touch sensor (raw value)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ РЅР°Р¶Р°С‚РёСЏ (СЃС‹СЂРѕРµ Р·РЅР°С‡РµРЅРёРµ)</translation>
+        <translation type="obsolete">Сенсор нажатия (сырое значение)</translation>
     </message>
     <message>
         <source>Sonar sensor</source>
-        <translation type="obsolete">РЈР»СЊС‚СЂР°Р·РІСѓРєРѕРІРѕР№ СЃРµРЅСЃРѕСЂ</translation>
+        <translation type="obsolete">Ультразвуковой сенсор</translation>
     </message>
     <message>
         <source>Color sensor (full colors)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° (РїРѕР»РЅС‹Рµ С†РІРµС‚Р°)</translation>
+        <translation type="obsolete">Сенсор цвета (полные цвета)</translation>
     </message>
     <message>
         <source>Color sensor (red)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° (РєСЂР°СЃРЅС‹Р№)</translation>
+        <translation type="obsolete">Сенсор цвета (красный)</translation>
     </message>
     <message>
         <source>Color sensor (green)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° (Р·РµР»С‘РЅС‹Р№)</translation>
+        <translation type="obsolete">Сенсор цвета (зелёный)</translation>
     </message>
     <message>
         <source>Color sensor (blue)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° (СЃРёРЅРёР№)</translation>
+        <translation type="obsolete">Сенсор цвета (синий)</translation>
     </message>
     <message>
         <source>Color sensor (passive)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° (РїР°СЃСЃРёРІРЅС‹Р№)</translation>
+        <translation type="obsolete">Сенсор цвета (пассивный)</translation>
     </message>
     <message>
         <source>Type of Robot Model</source>
-        <translation type="obsolete">РўРёРї РјРѕРґРµР»Рё СЂРѕР±РѕС‚Р°</translation>
+        <translation type="obsolete">Тип модели робота</translation>
     </message>
     <message>
         <source>Null model</source>
-        <translation type="obsolete">РџСѓСЃС‚Р°СЏ РјРѕРґРµР»СЊ</translation>
+        <translation type="obsolete">Пустая модель</translation>
     </message>
     <message>
         <source>2D robot model</source>
-        <translation type="obsolete">Р”РІСѓС…РјРµСЂРЅР°СЏ РјРѕРґРµР»СЊ</translation>
+        <translation type="obsolete">Двухмерная модель</translation>
     </message>
     <message>
         <source>Real robot</source>
-        <translation type="obsolete">Р РµР°Р»СЊРЅС‹Р№ СЂРѕР±РѕС‚</translation>
+        <translation type="obsolete">Реальный робот</translation>
     </message>
     <message>
         <source>Sensors Settings</source>
-        <translation type="obsolete">РќР°СЃС‚СЂРѕР№РєРё СЃРµРЅСЃРѕСЂРѕРІ</translation>
+        <translation type="obsolete">Настройки сенсоров</translation>
     </message>
     <message>
         <source>Port 1:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 1:</translation>
+        <translation type="obsolete">Порт 1:</translation>
     </message>
     <message>
         <source>Port 2:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 2:</translation>
+        <translation type="obsolete">Порт 2:</translation>
     </message>
     <message>
         <source>Port 3:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 3:</translation>
+        <translation type="obsolete">Порт 3:</translation>
     </message>
     <message>
         <source>Port 4:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 4:</translation>
+        <translation type="obsolete">Порт 4:</translation>
     </message>
     <message>
         <source>Bluetooth Settings</source>
-        <translation type="obsolete">РќР°СЃС‚СЂРѕР№РєРё Bluetooth</translation>
+        <translation type="obsolete">Настройки Bluetooth</translation>
     </message>
     <message>
         <source>COM Port:</source>
-        <translation type="obsolete">COM-РїРѕСЂС‚:</translation>
+        <translation type="obsolete">COM-порт:</translation>
     </message>
     <message>
         <source>No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3</source>
-        <translation type="obsolete">COM-РїРѕСЂС‚С‹ РЅРµ РЅР°Р№РґРµРЅС‹. Р•СЃР»Рё РµСЃС‚СЊ СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅРѕРµ Bluetooth-СЃРѕРµРґРёРЅРµРЅРёРµ СЃ Р°РєС‚РёРІРЅС‹Рј COM-РїРѕСЂС‚РѕРј, РІРІРµРґРёС‚Рµ РµРіРѕ РёРјСЏ. РќР°РїСЂРёРјРµСЂ, COM3</translation>
+        <translation type="obsolete">COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
     </message>
     <message>
         <source>Specify COM port manually</source>
-        <translation type="obsolete">РЈРєР°Р·Р°С‚СЊ COM-РїРѕСЂС‚ РІСЂСѓС‡РЅСѓСЋ</translation>
+        <translation type="obsolete">Указать COM-порт вручную</translation>
     </message>
 </context>
 <context>
     <name>PropertyEditorModel</name>
     <message>
         <source>Debugger path:</source>
-        <translation type="obsolete">РџСѓС‚СЊ РґРѕ РѕС‚Р»Р°РґС‡РёРєР°:</translation>
+        <translation type="obsolete">Путь до отладчика:</translation>
     </message>
     <message>
         <source>Builder path:</source>
-        <translation type="obsolete">РџСѓС‚СЊ РґРѕ СЃР±РѕСЂС‰РёРєР°:</translation>
+        <translation type="obsolete">Путь до сборщика:</translation>
     </message>
     <message>
         <source>Generated code file name:</source>
-        <translation type="obsolete">РРјСЏ С„Р°Р№Р»Р° СЃРѕ СЃРіРµРЅРµСЂРёСЂРѕРІР°РЅРЅС‹Рј РєРѕРґРѕРј:</translation>
+        <translation type="obsolete">Имя файла со сгенерированным кодом:</translation>
     </message>
     <message>
         <source>Builded file name:</source>
-        <translation type="obsolete">РРјСЏ СЃРѕР±СЂР°РЅРЅРѕРіРѕ С„Р°Р№Р»Р°:</translation>
+        <translation type="obsolete">Имя собранного файла:</translation>
     </message>
     <message>
         <source>Browse...</source>
-        <translation type="obsolete">РџСЂРѕСЃРјРѕС‚СЂ...</translation>
+        <translation type="obsolete">Просмотр...</translation>
     </message>
     <message>
         <source>Working directory:</source>
-        <translation type="obsolete">Р Р°Р±РѕС‡Р°СЏ РїР°РїРєР°:</translation>
+        <translation type="obsolete">Рабочая папка:</translation>
     </message>
     <message>
         <source>Configuration</source>
-        <translation type="obsolete">РљРѕРЅС„РёРіСѓСЂР°С†РёСЏ</translation>
+        <translation type="obsolete">Конфигурация</translation>
     </message>
     <message>
         <source>name</source>
-        <translation type="obsolete">РёРјСЏ</translation>
+        <translation type="obsolete">имя</translation>
     </message>
     <message>
         <location filename="mainwindow/propertyEditorProxyModel.cpp" line="200"/>
         <source>Name</source>
-        <translation>РРјСЏ</translation>
+        <translation>Имя</translation>
     </message>
     <message>
         <source>Logical Id</source>
-        <translation type="obsolete">Р›РѕРіРёС‡РµСЃРєРёР№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ</translation>
+        <translation type="obsolete">Логический идентификатор</translation>
     </message>
     <message>
         <source>Graphical Id</source>
-        <translation type="obsolete">Р“СЂР°С„РёС‡РµСЃРєРёР№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ</translation>
+        <translation type="obsolete">Графический идентификатор</translation>
     </message>
     <message>
         <source>Metatype</source>
-        <translation type="obsolete">РњРµС‚Р°С‚РёРї</translation>
+        <translation type="obsolete">Метатип</translation>
     </message>
 </context>
 <context>
@@ -1665,110 +1661,110 @@
     <message>
         <location filename="view/pushButtonProperty.cpp" line="22"/>
         <source>Click to choose</source>
-        <translation>РљР»РёРєРЅРёС‚Рµ РґР»СЏ РІС‹Р±РѕСЂР°</translation>
+        <translation>Кликните для выбора</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>loading..</source>
-        <translation type="obsolete">Р—Р°РіСЂСѓР·РєР°...</translation>
+        <translation type="obsolete">Загрузка...</translation>
     </message>
     <message>
         <source>Sensor configuration conflict, please check that sensor ports are used consistently in a program</source>
-        <translation type="obsolete">РљРѕРЅС„Р»РёРєС‚ РєРѕРЅС„РёРіСѓСЂР°С†РёРё СЃРµРЅСЃРѕСЂРѕРІ, РїРѕР¶Р°Р»СѓР№СЃС‚Р°, РїСЂРѕРІРµСЂСЊС‚Рµ, С‡С‚Рѕ РїРѕСЂС‚С‹ РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ РІ РїСЂРѕРіСЂР°РјРјРµ СЃРѕРіР»Р°СЃРѕРІР°РЅРЅРѕ</translation>
+        <translation type="obsolete">Конфликт конфигурации сенсоров, пожалуйста, проверьте, что порты используются в программе согласованно</translation>
     </message>
     <message>
         <source>Using reserved variables %1</source>
-        <translation type="obsolete">РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ Р·Р°СЂРµР·РµСЂРІРёСЂРѕРІР°РЅРЅР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ &apos;%1&apos;</translation>
+        <translation type="obsolete">Используется зарезервированная переменная &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Using reserved variable %1</source>
-        <translation type="obsolete">РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ Р·Р°СЂРµР·РµСЂРІРёСЂРѕРІР°РЅРЅР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ &apos;%1&apos;</translation>
+        <translation type="obsolete">Используется зарезервированная переменная &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Sensor</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ</translation>
+        <translation type="obsolete">Сенсор</translation>
     </message>
     <message>
         <source>SensorRaw</source>
-        <translation type="obsolete">РЎС‹СЂРѕР№РЎРµРЅСЃРѕСЂ</translation>
+        <translation type="obsolete">СыройСенсор</translation>
     </message>
     <message>
         <source>digit&apos;&apos; or &apos;letter&apos; or &apos;bracket&apos; or &apos;sign</source>
-        <translation type="obsolete">С†РёС„СЂР° РёР»Рё Р±СѓРєРІР° РёР»Рё СЃРєРѕР±РєР° РёР»Рё Р·РЅР°Рє</translation>
+        <translation type="obsolete">цифра или буква или скобка или знак</translation>
     </message>
     <message>
         <source>Unexpected end of stream at %1. Maybe you forget &apos;;&apos;?</source>
-        <translation type="obsolete">РќРµСЂР°СЃРїРѕР·РЅР°РІР°РµРјС‹Р№ СЃРёРјРІРѕР» РІ РїРѕР·РёС†РёРё %1. Р’РѕР·РјРѕР¶РЅРѕ, РїСЂРѕРїСѓС‰РµРЅ СЃРёРјРІРѕР»  &apos;;&apos;?</translation>
+        <translation type="obsolete">Нераспознаваемый символ в позиции %1. Возможно, пропущен символ  &apos;;&apos;?</translation>
     </message>
     <message>
         <source>Unexpected symbol at %1 : expected &apos;%2&apos;, got &apos;%3&apos;</source>
-        <translation type="obsolete">РќРµСЂР°СЃРїРѕР·РЅР°РІР°РµРјС‹Р№ СЃРёРјРІРѕР» РЅР° РїРѕР·РёС†РёРё %1: РѕР¶РёРґР°РµС‚СЃСЏ СЃРёРјРІРѕР» &apos;%2&apos;, Р° РїРѕР»СѓС‡РµРЅ СЃРёРјРІРѕР» &apos;%3&apos;</translation>
+        <translation type="obsolete">Нераспознаваемый символ на позиции %1: ожидается символ &apos;%2&apos;, а получен символ &apos;%3&apos;</translation>
     </message>
     <message>
         <source>Types mismatch at %1: %2  = %3. Possible loss of data</source>
-        <translation type="obsolete">РќРµСЃРѕРіР»Р°СЃРѕРІР°РЅС‹ С‚РёРїС‹ РІ РїРѕР·РёС†РёРё %1: %2 = %3. Р’РѕР·РјРѕР¶РЅРѕ, РїСЂРѕРїСѓС‰РµРЅС‹ Р·РЅР°С‡РµРЅРёСЏ</translation>
+        <translation type="obsolete">Несогласованы типы в позиции %1: %2 = %3. Возможно, пропущены значения</translation>
     </message>
     <message>
         <source>Unknown identifier at %1 &apos;%2&apos;</source>
-        <translation type="obsolete">РќРµРѕРїСЂРµРґРµР»РµРЅРЅР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ РІ РїРѕР·РёС†РёРё %1 &apos;%2&apos;</translation>
+        <translation type="obsolete">Неопределенная переменная в позиции %1 &apos;%2&apos;</translation>
     </message>
     <message>
         <source>Unexpected end of stream at %1. Mb you forget &apos;;&apos;?</source>
-        <translation type="obsolete">РќРµРІРµСЂРЅРѕРµ Р·Р°РІРµСЂС€РµРЅРёРµ СЃС‚СЂРѕРєРё РІ РїРѕР·РёС†РёРё %1. Р’РѕР·РјРѕР¶РЅРѕ, РїСЂРѕРїСѓС‰РµРЅ СЃРёРјРІРѕР» &apos;;&apos;?</translation>
+        <translation type="obsolete">Неверное завершение строки в позиции %1. Возможно, пропущен символ &apos;;&apos;?</translation>
     </message>
     <message>
         <source>Unexpected symbol at %1 : expected %2, got %3</source>
-        <translation type="obsolete">РќРµСЂР°СЃРїРѕР·РЅР°РІР°РµРјС‹Р№ СЃРёРјРІРѕР» РІ РїРѕР·РёС†РёРё %1: РѕР¶РёРґР°РµС‚СЃСЏ %2, РїРѕР»СѓС‡РµРЅ %3</translation>
+        <translation type="obsolete">Нераспознаваемый символ в позиции %1: ожидается %2, получен %3</translation>
     </message>
     <message>
         <source>Types mismatch at %1: %2 = %3. Possible loss of data</source>
-        <translation type="obsolete">РќРµСЃРѕРІРјРµСЃС‚РёРјРѕСЃС‚СЊ С‚РёРїРѕРІ РІ РїРѕР·РёС†РёРё %1: %2 = %3. Р’РѕР·РёРѕР¶РЅР° РїРѕС‚РµСЂСЏ РґР°РЅРЅС‹С…</translation>
+        <translation type="obsolete">Несовместимость типов в позиции %1: %2 = %3. Возиожна потеря данных</translation>
     </message>
     <message>
         <source>Unknown identifier at %1 &apos; %2 &apos;</source>
-        <translation type="obsolete">РќРµРѕР±СЉСЏРІР»РµРЅРЅР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ РІ РїРѕР·РёС†РёРё %1 &apos;%2&apos;</translation>
+        <translation type="obsolete">Необъявленная переменная в позиции %1 &apos;%2&apos;</translation>
     </message>
     <message>
         <source>Empty process is unnecessary</source>
-        <translation type="obsolete">РџСѓСЃС‚РѕРµ РїРѕР»Рµ Р·РЅР°С‡РµРЅРёСЏ СЌР»РµРјРµРЅС‚Р°</translation>
+        <translation type="obsolete">Пустое поле значения элемента</translation>
     </message>
     <message>
         <source>Condition can&apos;t be empty</source>
-        <translation type="obsolete">РЈСЃР»РѕРІРёРµ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїСѓСЃС‚С‹Рј</translation>
+        <translation type="obsolete">Условие не может быть пустым</translation>
     </message>
     <message>
         <source>No value of expression</source>
-        <translation type="obsolete">РћС‚СЃСѓС‚РІСѓРµС‚ РІС‹СЂР°Р¶РµРЅРёРµ РґР»СЏ РїРѕРґСЃС‡РµС‚Р° Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ</translation>
+        <translation type="obsolete">Отсутвует выражение для подсчета значения поля</translation>
     </message>
     <message>
         <source>Incorrect variable declaration: use function block for it</source>
-        <translation type="obsolete">РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ РѕР±СЉСЏРІР»РµРЅРёРµ РїРµСЂРµРјРµРЅРЅС‹С…: РёСЃРїРѕР»СЊР·СѓР№С‚Рµ РґР»СЏ СЌС‚РѕРіРѕ Р±Р»РѕРє &quot;Р¤СѓРЅРєС†РёСЏ&quot;</translation>
+        <translation type="obsolete">Некорректное объявление переменных: используйте для этого блок &quot;Функция&quot;</translation>
     </message>
     <message>
         <source>Unexpected symbol after the end of expression</source>
-        <translation type="obsolete">РќРµСЂР°СЃРїРѕР·РЅР°РІР°РµРјС‹Р№ СЃРёРјРІРѕР» РїРѕСЃР»Рµ РѕРєРѕРЅС‡Р°РЅРёСЏ РІС‹СЂР°Р¶РµРЅРёСЏ</translation>
+        <translation type="obsolete">Нераспознаваемый символ после окончания выражения</translation>
     </message>
     <message>
         <source>Sensor1</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ1</translation>
+        <translation type="obsolete">Сенсор1</translation>
     </message>
     <message>
         <source>Sensor2</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ2</translation>
+        <translation type="obsolete">Сенсор2</translation>
     </message>
     <message>
         <source>Sensor3</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ3</translation>
+        <translation type="obsolete">Сенсор3</translation>
     </message>
     <message>
         <source>Sensor4</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ4</translation>
+        <translation type="obsolete">Сенсор4</translation>
     </message>
     <message>
         <source>incorrect file name</source>
-        <translation type="obsolete">РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ РёРјСЏ С„Р°Р№Р»Р°</translation>
+        <translation type="obsolete">Некорректное имя файла</translation>
     </message>
 </context>
 <context>
@@ -1805,7 +1801,7 @@
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="1601"/>
         <source>Clear Char</source>
-        <translation>РћС‡РёСЃС‚РёС‚СЊ</translation>
+        <translation>Очистить</translation>
     </message>
 </context>
 <context>
@@ -1821,22 +1817,22 @@
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6259"/>
         <source>Red</source>
-        <translation>РљСЂР°СЃРЅС‹Р№</translation>
+        <translation>Красный</translation>
     </message>
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6267"/>
         <source>Green</source>
-        <translation>Р—РµР»С‘РЅС‹Р№</translation>
+        <translation>Зелёный</translation>
     </message>
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6275"/>
         <source>Blue</source>
-        <translation>РЎРёРЅРёР№</translation>
+        <translation>Синий</translation>
     </message>
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6283"/>
         <source>Alpha</source>
-        <translation>РџСЂРѕР·СЂР°С‡РЅРѕСЃС‚СЊ</translation>
+        <translation>Прозрачность</translation>
     </message>
 </context>
 <context>
@@ -1947,7 +1943,7 @@
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="2448"/>
         <source>Select Font</source>
-        <translation>Р’С‹Р±СЂР°С‚СЊ С€СЂРёС„С‚</translation>
+        <translation>Выбрать шрифт</translation>
     </message>
 </context>
 <context>
@@ -1955,37 +1951,37 @@
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5933"/>
         <source>Family</source>
-        <translation>РЎРµРјРµР№СЃС‚РІРѕ</translation>
+        <translation>Семейство</translation>
     </message>
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5946"/>
         <source>Point Size</source>
-        <translation>Р Р°Р·РјРµСЂ</translation>
+        <translation>Размер</translation>
     </message>
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5954"/>
         <source>Bold</source>
-        <translation>РџРѕР»СѓР¶РёСЂРЅС‹Р№</translation>
+        <translation>Полужирный</translation>
     </message>
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5961"/>
         <source>Italic</source>
-        <translation>РќР°РєР»РѕРЅРЅС‹Р№</translation>
+        <translation>Наклонный</translation>
     </message>
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5968"/>
         <source>Underline</source>
-        <translation>РџРѕРґС‡С‘СЂРєРЅСѓС‚С‹Р№</translation>
+        <translation>Подчёркнутый</translation>
     </message>
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5975"/>
         <source>Strikeout</source>
-        <translation>Р—Р°С‡С‘СЂРєРЅСѓС‚С‹Р№</translation>
+        <translation>Зачёркнутый</translation>
     </message>
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5982"/>
         <source>Kerning</source>
-        <translation>РљРµСЂРЅРёРЅРі</translation>
+        <translation>Кернинг</translation>
     </message>
 </context>
 <context>
@@ -1993,7 +1989,7 @@
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="323"/>
         <source>Clear Shortcut</source>
-        <translation>РћС‡РёСЃС‚РёС‚СЊ</translation>
+        <translation>Очистить</translation>
     </message>
 </context>
 <context>
@@ -2006,12 +2002,12 @@
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2502"/>
         <source>Language</source>
-        <translation>РЇР·С‹Рє</translation>
+        <translation>Язык</translation>
     </message>
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2510"/>
         <source>Country</source>
-        <translation>РЎС‚СЂР°РЅР°</translation>
+        <translation>Страна</translation>
     </message>
 </context>
 <context>
@@ -2083,12 +2079,12 @@
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4596"/>
         <source>Width</source>
-        <translation>РЁРёСЂРёРЅР°</translation>
+        <translation>Ширина</translation>
     </message>
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4605"/>
         <source>Height</source>
-        <translation>Р’С‹СЃРѕС‚Р°</translation>
+        <translation>Высота</translation>
     </message>
 </context>
 <context>
@@ -2111,12 +2107,12 @@
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4128"/>
         <source>Width</source>
-        <translation>РЁРёСЂРёРЅР°</translation>
+        <translation>Ширина</translation>
     </message>
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4136"/>
         <source>Height</source>
-        <translation>Р’С‹СЃРѕС‚Р°</translation>
+        <translation>Высота</translation>
     </message>
 </context>
 <context>
@@ -2129,12 +2125,12 @@
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3732"/>
         <source>Width</source>
-        <translation>РЁРёСЂРёРЅР°</translation>
+        <translation>Ширина</translation>
     </message>
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3741"/>
         <source>Height</source>
-        <translation>Р’С‹СЃРѕС‚Р°</translation>
+        <translation>Высота</translation>
     </message>
 </context>
 <context>
@@ -2181,12 +2177,12 @@
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3334"/>
         <source>Width</source>
-        <translation>РЁРёСЂРёРЅР°</translation>
+        <translation>Ширина</translation>
     </message>
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3342"/>
         <source>Height</source>
-        <translation>Р’С‹СЃРѕС‚Р°</translation>
+        <translation>Высота</translation>
     </message>
 </context>
 <context>
@@ -2194,12 +2190,12 @@
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qttreepropertybrowser.cpp" line="476"/>
         <source>Property</source>
-        <translation>РЎРІРѕР№СЃС‚РІРѕ</translation>
+        <translation>Свойство</translation>
     </message>
     <message>
         <location filename="thirdparty/qtpropertybrowser/src/qttreepropertybrowser.cpp" line="477"/>
         <source>Value</source>
-        <translation>Р—РЅР°С‡РµРЅРёРµ</translation>
+        <translation>Значение</translation>
     </message>
 </context>
 <context>
@@ -2207,139 +2203,139 @@
     <message>
         <location filename="dialogs/refWindow.ui" line="14"/>
         <source>Reference window</source>
-        <translation>РћРєРЅРѕ СЃСЃС‹Р»РѕРє</translation>
+        <translation>Окно ссылок</translation>
     </message>
     <message>
         <location filename="dialogs/refWindow.ui" line="20"/>
         <source>&amp;OK</source>
-        <translation>&amp;РћРљ</translation>
+        <translation>&amp;ОК</translation>
     </message>
     <message>
         <location filename="dialogs/refWindow.ui" line="27"/>
         <source>&amp;Cancel</source>
-        <translation>Рћ&amp;С‚РјРµРЅР°</translation>
+        <translation>О&amp;тмена</translation>
     </message>
 </context>
 <context>
     <name>RobotSettingsDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="obsolete">РќР°СЃС‚СЂРѕР№РєРё СЂРѕР±РѕС‚Р°</translation>
+        <translation type="obsolete">Настройки робота</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="obsolete">РћРљ</translation>
+        <translation type="obsolete">ОК</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="obsolete">РћС‚РјРµРЅР°</translation>
+        <translation type="obsolete">Отмена</translation>
     </message>
     <message>
         <source>Bluetooth Settings</source>
-        <translation type="obsolete">РќР°СЃС‚СЂРѕР№РєРё Bluetooth</translation>
+        <translation type="obsolete">Настройки Bluetooth</translation>
     </message>
     <message>
         <source>COM Port:</source>
-        <translation type="obsolete">COM-РїРѕСЂС‚:</translation>
+        <translation type="obsolete">COM-порт:</translation>
     </message>
     <message>
         <source>No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3</source>
-        <translation type="obsolete">COM-РїРѕСЂС‚С‹ РЅРµ РЅР°Р№РґРµРЅС‹. Р•СЃР»Рё РµСЃС‚СЊ СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅРѕРµ Bluetooth-СЃРѕРµРґРёРЅРµРЅРёРµ СЃ Р°РєС‚РёРІРЅС‹Рј COM-РїРѕСЂС‚РѕРј, РІРІРµРґРёС‚Рµ РµРіРѕ РёРјСЏ. РќР°РїСЂРёРјРµСЂ, COM3</translation>
+        <translation type="obsolete">COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
     </message>
     <message>
         <source>Specify COM port manually</source>
-        <translation type="obsolete">РЈРєР°Р·Р°С‚СЊ COM-РїРѕСЂС‚ РІСЂСѓС‡РЅСѓСЋ</translation>
+        <translation type="obsolete">Указать COM-порт вручную</translation>
     </message>
     <message>
         <source>Sensors Settings</source>
-        <translation type="obsolete">РќР°СЃС‚СЂРѕР№РєРё СЃРµРЅСЃРѕСЂРѕРІ</translation>
+        <translation type="obsolete">Настройки сенсоров</translation>
     </message>
     <message>
         <source>Port 1:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 1:</translation>
+        <translation type="obsolete">Порт 1:</translation>
     </message>
     <message>
         <source>Port 2:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 2:</translation>
+        <translation type="obsolete">Порт 2:</translation>
     </message>
     <message>
         <source>Port 3:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 3:</translation>
+        <translation type="obsolete">Порт 3:</translation>
     </message>
     <message>
         <source>Port 4:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 4:</translation>
+        <translation type="obsolete">Порт 4:</translation>
     </message>
     <message>
         <source>Type of Robot Model</source>
-        <translation type="obsolete">РўРёРї РјРѕРґРµР»Рё СЂРѕР±РѕС‚Р°</translation>
+        <translation type="obsolete">Тип модели робота</translation>
     </message>
     <message>
         <source>Null model</source>
-        <translation type="obsolete">РџСѓСЃС‚Р°СЏ РјРѕРґРµР»СЊ</translation>
+        <translation type="obsolete">Пустая модель</translation>
     </message>
     <message>
         <source>Real robot</source>
-        <translation type="obsolete">Р РµР°Р»СЊРЅС‹Р№ СЂРѕР±РѕС‚</translation>
+        <translation type="obsolete">Реальный робот</translation>
     </message>
     <message>
         <source>2D robot model</source>
-        <translation type="obsolete">Р”РІСѓС…РјРµСЂРЅР°СЏ РјРѕРґРµР»СЊ</translation>
+        <translation type="obsolete">Двухмерная модель</translation>
     </message>
 </context>
 <context>
     <name>RobotSettingsForm</name>
     <message>
         <source>Bluetooth Settings</source>
-        <translation type="obsolete">РќР°СЃС‚СЂРѕР№РєРё Bluetooth</translation>
+        <translation type="obsolete">Настройки Bluetooth</translation>
     </message>
     <message>
         <source>COM Port:</source>
-        <translation type="obsolete">COM-РїРѕСЂС‚:</translation>
+        <translation type="obsolete">COM-порт:</translation>
     </message>
     <message>
         <source>No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3</source>
-        <translation type="obsolete">COM-РїРѕСЂС‚С‹ РЅРµ РЅР°Р№РґРµРЅС‹. Р•СЃР»Рё РµСЃС‚СЊ СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅРѕРµ Bluetooth-СЃРѕРµРґРёРЅРµРЅРёРµ СЃ Р°РєС‚РёРІРЅС‹Рј COM-РїРѕСЂС‚РѕРј, РІРІРµРґРёС‚Рµ РµРіРѕ РёРјСЏ. РќР°РїСЂРёРјРµСЂ, COM3</translation>
+        <translation type="obsolete">COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
     </message>
     <message>
         <source>Specify COM port manually</source>
-        <translation type="obsolete">РЈРєР°Р·Р°С‚СЊ COM-РїРѕСЂС‚ РІСЂСѓС‡РЅСѓСЋ</translation>
+        <translation type="obsolete">Указать COM-порт вручную</translation>
     </message>
     <message>
         <source>Type of Robot Model</source>
-        <translation type="obsolete">РўРёРї РјРѕРґРµР»Рё СЂРѕР±РѕС‚Р°</translation>
+        <translation type="obsolete">Тип модели робота</translation>
     </message>
     <message>
         <source>Null model</source>
-        <translation type="obsolete">РџСѓСЃС‚Р°СЏ РјРѕРґРµР»СЊ</translation>
+        <translation type="obsolete">Пустая модель</translation>
     </message>
     <message>
         <source>2D robot model</source>
-        <translation type="obsolete">Р”РІСѓС…РјРµСЂРЅР°СЏ РјРѕРґРµР»СЊ</translation>
+        <translation type="obsolete">Двухмерная модель</translation>
     </message>
     <message>
         <source>Real robot</source>
-        <translation type="obsolete">Р РµР°Р»СЊРЅС‹Р№ СЂРѕР±РѕС‚</translation>
+        <translation type="obsolete">Реальный робот</translation>
     </message>
     <message>
         <source>Sensors Settings</source>
-        <translation type="obsolete">РќР°СЃС‚СЂРѕР№РєРё СЃРµРЅСЃРѕСЂРѕРІ</translation>
+        <translation type="obsolete">Настройки сенсоров</translation>
     </message>
     <message>
         <source>Port 1:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 1:</translation>
+        <translation type="obsolete">Порт 1:</translation>
     </message>
     <message>
         <source>Port 2:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 2:</translation>
+        <translation type="obsolete">Порт 2:</translation>
     </message>
     <message>
         <source>Port 3:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 3:</translation>
+        <translation type="obsolete">Порт 3:</translation>
     </message>
     <message>
         <source>Port 4:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 4:</translation>
+        <translation type="obsolete">Порт 4:</translation>
     </message>
 </context>
 <context>
@@ -2347,245 +2343,245 @@
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="14"/>
         <source>Form</source>
-        <translation>Р РµРґР°РєС‚РѕСЂ С„РѕСЂРјС‹ С„РёРіСѓСЂ</translation>
+        <translation>Редактор формы фигур</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1034"/>
         <source>Draw line</source>
-        <translation>Р РёСЃРѕРІР°С‚СЊ Р»РёРЅРёСЋ</translation>
+        <translation>Рисовать линию</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="29"/>
         <source>Draw curve</source>
-        <translation>Р РёСЃРѕРІР°С‚СЊ РєСЂРёРІСѓСЋ</translation>
+        <translation>Рисовать кривую</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="86"/>
         <source>Draw rectangle</source>
-        <translation>Р РёСЃРѕРІР°С‚СЊ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє</translation>
+        <translation>Рисовать прямоугольник</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="127"/>
         <source>Draw ellipse</source>
-        <translation>Р РёСЃРѕРІР°С‚СЊ СЌР»Р»РёРїСЃ</translation>
+        <translation>Рисовать эллипс</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="168"/>
         <source>Add static text</source>
-        <translation>Р”РѕР±Р°РІРёС‚СЊ СЃС‚Р°С‚РёС‡РµСЃРєРёР№ С‚РµРєСЃС‚</translation>
+        <translation>Добавить статический текст</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="209"/>
         <source>Add dynamic text</source>
-        <translation>Р”РѕР±Р°РІРёС‚СЊ РґРёРЅР°РјРёС‡РµСЃРєРёР№ С‚РµРєСЃС‚</translation>
+        <translation>Добавить динамический текст</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="272"/>
         <source>Stylus</source>
-        <translation>РЎС‚РёР»СѓСЃ</translation>
+        <translation>Стилус</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="313"/>
         <source>Add picture text</source>
-        <translation>Р”РѕР±Р°РІРёС‚СЊ С‚РµРєСЃС‚-РєР°СЂС‚РёРЅРєСѓ</translation>
+        <translation>Добавить текст-картинку</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="345"/>
         <source>Add line port</source>
-        <translation>Р”РѕР±Р°РІРёС‚СЊ Р»РёРЅРµР№РЅС‹Р№ РїРѕСЂС‚</translation>
+        <translation>Добавить линейный порт</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="392"/>
         <source>Add point port</source>
-        <translation>Р”РѕР±Р°РІРёС‚СЊ С‚РѕС‡РµС‡РЅС‹Р№ РїРѕСЂС‚</translation>
+        <translation>Добавить точечный порт</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="454"/>
         <source>Font</source>
-        <translation>РЁСЂРёС„С‚</translation>
+        <translation>Шрифт</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="481"/>
         <source>Family</source>
-        <translation>РЎРµРјРµР№СЃС‚РІРѕ</translation>
+        <translation>Семейство</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="530"/>
         <source>Size</source>
-        <translation>Р Р°Р·РјРµСЂ</translation>
+        <translation>Размер</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="572"/>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="854"/>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="993"/>
         <source>Color</source>
-        <translation>Р¦РІРµС‚</translation>
+        <translation>Цвет</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="593"/>
         <source>Text format</source>
-        <translation>Р¤РѕСЂРјР°С‚ С‚РµРєСЃС‚Р°</translation>
+        <translation>Формат текста</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="605"/>
         <source>Italic</source>
-        <translation>РќР°РєР»РѕРЅРЅС‹Р№</translation>
+        <translation>Наклонный</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="618"/>
         <source> Bold</source>
-        <translation>РџРѕР»СѓР¶РёСЂРЅС‹Р№</translation>
+        <translation>Полужирный</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="631"/>
         <source>Underline</source>
-        <translation>РџРѕРґС‡С‘СЂРєРЅСѓС‚С‹Р№</translation>
+        <translation>Подчёркнутый</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="653"/>
         <source>Name</source>
-        <translation>РРјСЏ</translation>
+        <translation>Имя</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="673"/>
         <source>Open</source>
-        <translation>РћС‚РєСЂС‹С‚СЊ</translation>
+        <translation>Открыть</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="680"/>
         <source>Save to Xml</source>
-        <translation>РЎРѕС…СЂР°РЅРёС‚СЊ РІ Xml</translation>
+        <translation>Сохранить в Xml</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="690"/>
         <source>Save</source>
-        <translation>РЎРѕС…СЂР°РЅРёС‚СЊ</translation>
+        <translation>Сохранить</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="703"/>
         <source>Delete Item</source>
-        <translation>РЈРґР°Р»РёС‚СЊ СЌР»РµРјРµРЅС‚</translation>
+        <translation>Удалить элемент</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="716"/>
         <source>Clear</source>
-        <translation>РћС‡РёСЃС‚РёС‚СЊ</translation>
+        <translation>Очистить</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="723"/>
         <source>Save as picture</source>
-        <translation>РЎРѕС…СЂР°РЅРёС‚СЊ РєР°Рє РєР°СЂС‚РёРЅРєСѓ</translation>
+        <translation>Сохранить как картинку</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="766"/>
         <source>Pen</source>
-        <translation>РџРµСЂРѕ</translation>
+        <translation>Перо</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="806"/>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="951"/>
         <source>Style</source>
-        <translation>РЎС‚РёР»СЊ</translation>
+        <translation>Стиль</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="896"/>
         <source>Width</source>
-        <translation>РЁРёСЂРёРЅР°</translation>
+        <translation>Ширина</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="914"/>
         <source>Brush</source>
-        <translation>РљРёСЃС‚СЊ</translation>
+        <translation>Кисть</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="obsolete">РќРёС‡РµРіРѕ</translation>
+        <translation type="obsolete">Ничего</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1015"/>
         <source>Image</source>
-        <translation>РљР°СЂС‚РёРЅРєР°</translation>
+        <translation>Картинка</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.cpp" line="264"/>
         <source>Saving</source>
-        <translation>РЎРѕС…СЂР°РЅРµРЅРёРµ</translation>
+        <translation>Сохранение</translation>
     </message>
 </context>
 <context>
     <name>UML::EdgeElement</name>
     <message>
         <source>Add point</source>
-        <translation type="obsolete">Р”РѕР±Р°РІРёС‚СЊ С‚РѕС‡РєСѓ</translation>
+        <translation type="obsolete">Добавить точку</translation>
     </message>
     <message>
         <source>Delete point</source>
-        <translation type="obsolete">РЈРґР°Р»РёС‚СЊ С‚РѕС‡РєСѓ</translation>
+        <translation type="obsolete">Удалить точку</translation>
     </message>
     <message>
         <source>Squarize</source>
-        <translation type="obsolete">РЎРґРµР»Р°С‚СЊ РєРІР°РґСЂР°С‚РЅС‹Рј</translation>
+        <translation type="obsolete">Сделать квадратным</translation>
     </message>
 </context>
 <context>
     <name>UML::NodeElement</name>
     <message>
         <source>Switch on grid</source>
-        <translation type="obsolete">Р’РєР»СЋС‡РёС‚СЊ СЃРµС‚РєСѓ</translation>
+        <translation type="obsolete">Включить сетку</translation>
     </message>
 </context>
 <context>
     <name>preferencesBehaviourPage</name>
     <message>
         <source>Show window</source>
-        <translation type="obsolete">РџРѕРєР°Р·Р°С‚СЊ РѕРєРЅРѕ</translation>
+        <translation type="obsolete">Показать окно</translation>
     </message>
     <message>
         <source>Automatics</source>
-        <translation type="obsolete">РђРІС‚РѕРјР°С‚РёР·Р°С†РёСЏ</translation>
+        <translation type="obsolete">Автоматизация</translation>
     </message>
     <message>
         <source>Palette tab switching</source>
-        <translation type="obsolete">РџРµСЂРµР»СЋС‡РµРЅРёРµ С‚Р°Р±РѕРІ РІ РїР°Р»РёС‚СЂРµ</translation>
+        <translation type="obsolete">Перелючение табов в палитре</translation>
     </message>
     <message>
         <source>Warning window</source>
-        <translation type="obsolete">РћРєРЅРѕ РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёР№</translation>
+        <translation type="obsolete">Окно предупреждений</translation>
     </message>
     <message>
         <source>New diagram creating</source>
-        <translation type="obsolete">РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕР№ РґРёР°РіСЂР°РјРјС‹</translation>
+        <translation type="obsolete">Создание новой диаграммы</translation>
     </message>
     <message>
         <source>Save on exit</source>
-        <translation type="obsolete">РЎРѕС…СЂР°РЅСЏС‚СЊСЃСЏ РїСЂРё РІС‹С…РѕРґРµ</translation>
+        <translation type="obsolete">Сохраняться при выходе</translation>
     </message>
     <message>
         <source>Choose diagrams to save</source>
-        <translation type="obsolete">РџСЂРµРґР»Р°РіР°С‚СЊ РІС‹Р±РѕСЂ РґРёР°РіСЂР°РјРј РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ</translation>
+        <translation type="obsolete">Предлагать выбор диаграмм для сохранения</translation>
     </message>
     <message>
         <source>Suggestions</source>
-        <translation type="obsolete">РџСЂРµРґР»РѕР¶РµРЅРёСЏ</translation>
+        <translation type="obsolete">Предложения</translation>
     </message>
 </context>
 <context>
     <name>preferencesCompilerPage</name>
     <message>
         <source>path to qmake</source>
-        <translation type="obsolete">РџСѓС‚СЊ Рє qmake</translation>
+        <translation type="obsolete">Путь к qmake</translation>
     </message>
     <message>
         <source>path to make</source>
-        <translation type="obsolete">РџСѓС‚СЊ Рє make</translation>
+        <translation type="obsolete">Путь к make</translation>
     </message>
     <message>
         <source>plugin file extension</source>
-        <translation type="obsolete">Р Р°СЃС€РёСЂРµРЅРёРµ С„Р°Р№Р»Р° СЃ РїР»Р°РіРёРЅРѕРј</translation>
+        <translation type="obsolete">Расширение файла с плагином</translation>
     </message>
     <message>
         <source>prefix</source>
-        <translation type="obsolete">РџСЂРµС„РёРєСЃ</translation>
+        <translation type="obsolete">Префикс</translation>
     </message>
     <message>
         <source>Linux</source>
@@ -2593,7 +2589,7 @@
     </message>
     <message>
         <source>Other</source>
-        <translation type="obsolete">РџСЂРѕС‡РµРµ</translation>
+        <translation type="obsolete">Прочее</translation>
     </message>
     <message>
         <source>Windows</source>
@@ -2604,385 +2600,323 @@
     <name>preferencesDebuggerPage</name>
     <message>
         <source>Configuration</source>
-        <translation type="obsolete">РљРѕРЅС„РёРіСѓСЂР°С†РёСЏ</translation>
+        <translation type="obsolete">Конфигурация</translation>
     </message>
     <message>
         <source>Debug timeout (ms):</source>
-        <translation type="obsolete">Р—Р°РґРµСЂР¶РєР° РїСЂРё РѕС‚Р»Р°РґРєРµ:</translation>
+        <translation type="obsolete">Задержка при отладке:</translation>
     </message>
     <message>
         <source>Color of highlighting:</source>
-        <translation type="obsolete">Р¦РІРµС‚ РїРѕРґСЃРІРµС‚РєРё:</translation>
+        <translation type="obsolete">Цвет подсветки:</translation>
     </message>
     <message>
         <source>Presentation</source>
-        <translation type="obsolete">РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ</translation>
+        <translation type="obsolete">Представление</translation>
     </message>
     <message>
         <source>Debugger path:</source>
-        <translation type="obsolete">РџСѓС‚СЊ РґРѕ РѕС‚Р»Р°РґС‡РёРєР°:</translation>
+        <translation type="obsolete">Путь до отладчика:</translation>
     </message>
     <message>
         <source>Builder path:</source>
-        <translation type="obsolete">РџСѓС‚СЊ РґРѕ СЃР±РѕСЂС‰РёРєР°:</translation>
+        <translation type="obsolete">Путь до сборщика:</translation>
     </message>
     <message>
         <source>Generated code file name:</source>
-        <translation type="obsolete">РРјСЏ С„Р°Р№Р»Р° СЃРѕ СЃРіРµРЅРµСЂРёСЂРѕРІР°РЅРЅС‹Рј РєРѕРґРѕРј:</translation>
+        <translation type="obsolete">Имя файла со сгенерированным кодом:</translation>
     </message>
     <message>
         <source>Builded file name:</source>
-        <translation type="obsolete">РРјСЏ СЃРѕР±СЂР°РЅРЅРѕРіРѕ С„Р°Р№Р»Р°:</translation>
+        <translation type="obsolete">Имя собранного файла:</translation>
     </message>
     <message>
         <source>Browse...</source>
-        <translation type="obsolete">РџСЂРѕСЃРјРѕС‚СЂ...</translation>
+        <translation type="obsolete">Просмотр...</translation>
     </message>
     <message>
         <source>Working directory:</source>
-        <translation type="obsolete">Р Р°Р±РѕС‡Р°СЏ РїР°РїРєР°:</translation>
+        <translation type="obsolete">Рабочая папка:</translation>
     </message>
 </context>
 <context>
     <name>preferencesEditorPage</name>
     <message>
         <source>Size</source>
-        <translation type="obsolete">Р Р°Р·РјРµСЂ</translation>
+        <translation type="obsolete">Размер</translation>
     </message>
     <message>
         <source>Indent</source>
-        <translation type="obsolete">РћС‚СЃС‚СѓРї</translation>
+        <translation type="obsolete">Отступ</translation>
     </message>
     <message>
         <source>Show grid</source>
-        <translation type="obsolete">РџРѕРєР°Р·Р°С‚СЊ СЃРµС‚РєСѓ</translation>
+        <translation type="obsolete">Показать сетку</translation>
     </message>
     <message>
         <source>Activate grid</source>
-        <translation type="obsolete">РђРєС‚РёРІРёСЂРѕРІР°С‚СЊ СЃРµС‚РєСѓ</translation>
+        <translation type="obsolete">Активировать сетку</translation>
     </message>
     <message>
         <source>Width</source>
-        <translation type="obsolete">РЁРёСЂРёРЅР°</translation>
+        <translation type="obsolete">Ширина</translation>
     </message>
     <message>
         <source>Cell size</source>
-        <translation type="obsolete">Р Р°Р·РјРµСЂ СЏС‡РµР№РєРё</translation>
+        <translation type="obsolete">Размер ячейки</translation>
     </message>
     <message>
         <source>Activate alignment</source>
-        <translation type="obsolete">РђРєС‚РёРІРёСЂРѕРІР°С‚СЊ РЅР°РїСЂР°РІР»СЏСЋС‰РёРµ</translation>
+        <translation type="obsolete">Активировать направляющие</translation>
     </message>
     <message>
         <source>Show alignment</source>
-        <translation type="obsolete">РџРѕРєР°Р·Р°С‚СЊ РЅР°РїСЂР°РІР»СЏСЋС‰РёРµ</translation>
+        <translation type="obsolete">Показать направляющие</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="obsolete">РЎРµС‚РєР°</translation>
+        <translation type="obsolete">Сетка</translation>
     </message>
     <message>
         <source>Embedded Linkers</source>
-        <translation type="obsolete">Р’СЃС‚СЂРѕРµРЅРЅС‹Рµ Р»РёРЅРєРµСЂС‹</translation>
+        <translation type="obsolete">Встроенные линкеры</translation>
     </message>
     <message>
         <source>Zoom factor</source>
-        <translation type="obsolete">Р¤Р°РєС‚РѕСЂ СѓРІРµР»РёС‡РµРЅРёСЏ</translation>
+        <translation type="obsolete">Фактор увеличения</translation>
     </message>
     <message>
         <source>Zoom</source>
-        <translation type="obsolete">РЈРІРµР»РёС‡РµРЅРёРµ</translation>
+        <translation type="obsolete">Увеличение</translation>
     </message>
 </context>
 <context>
     <name>preferencesMiscellaniousPage</name>
     <message>
         <source>Browse</source>
-        <translation type="obsolete">Р’С‹Р±СЂР°С‚СЊ</translation>
+        <translation type="obsolete">Выбрать</translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="obsolete">РР·РѕР±СЂР°Р¶РµРЅРёСЏ</translation>
+        <translation type="obsolete">Изображения</translation>
     </message>
     <message>
         <source>Show splashscreen</source>
-        <translation type="obsolete">РџРѕРєР°Р·С‹РІР°С‚СЊ СЃРїР»РµС€СЃРєСЂРёРЅ</translation>
+        <translation type="obsolete">Показывать сплешскрин</translation>
     </message>
     <message>
         <source>Chaotic Edition</source>
-        <translation type="obsolete">Р РµР¶РёРј, СѓРіРѕРґРЅС‹Р№ Р±РѕРіР°Рј РҐР°РѕСЃР°</translation>
+        <translation type="obsolete">Режим, угодный богам Хаоса</translation>
     </message>
     <message>
         <source>Square Line Mode</source>
-        <translation type="obsolete">Р РµР¶РёРј РїРµСЂРїРµРЅРґРёРєСѓР»СЏСЂРЅС‹С… Р»РёРЅРёР№</translation>
+        <translation type="obsolete">Режим перпендикулярных линий</translation>
     </message>
     <message>
         <source>Antialiasing</source>
-        <translation type="obsolete">РђРЅС‚РёР°Р»РёР°СЃРёРЅРі</translation>
+        <translation type="obsolete">Антиалиасинг</translation>
     </message>
     <message>
         <source>OpenGL rendering</source>
-        <translation type="obsolete">Р РµРЅРґРµСЂРёРЅРі OpenGL</translation>
+        <translation type="obsolete">Рендеринг OpenGL</translation>
     </message>
     <message>
         <source>Graphics</source>
-        <translation type="obsolete">Р“СЂР°С„РёРєР°</translation>
+        <translation type="obsolete">Графика</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="obsolete">РџСЂРѕС‡РµРµ</translation>
+        <translation type="obsolete">Прочее</translation>
     </message>
 </context>
 <context>
     <name>preferencesRobotSettingsPage</name>
     <message>
         <source>Type of Robot Model</source>
-        <translation type="obsolete">РўРёРї РјРѕРґРµР»Рё СЂРѕР±РѕС‚Р°</translation>
+        <translation type="obsolete">Тип модели робота</translation>
     </message>
     <message>
         <source>Null model</source>
-        <translation type="obsolete">РџСѓСЃС‚Р°СЏ РјРѕРґРµР»СЊ</translation>
+        <translation type="obsolete">Пустая модель</translation>
     </message>
     <message>
         <source>2D robot model</source>
-        <translation type="obsolete">Р”РІСѓС…РјРµСЂРЅР°СЏ РјРѕРґРµР»СЊ</translation>
+        <translation type="obsolete">Двухмерная модель</translation>
     </message>
     <message>
         <source>Real robot</source>
-        <translation type="obsolete">Р РµР°Р»СЊРЅС‹Р№ СЂРѕР±РѕС‚</translation>
+        <translation type="obsolete">Реальный робот</translation>
     </message>
     <message>
         <source>Sensors Settings</source>
-        <translation type="obsolete">РќР°СЃС‚СЂРѕР№РєРё СЃРµРЅСЃРѕСЂРѕРІ</translation>
+        <translation type="obsolete">Настройки сенсоров</translation>
     </message>
     <message>
         <source>Port 1:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 1:</translation>
+        <translation type="obsolete">Порт 1:</translation>
     </message>
     <message>
         <source>Port 2:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 2:</translation>
+        <translation type="obsolete">Порт 2:</translation>
     </message>
     <message>
         <source>Port 3:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 3:</translation>
+        <translation type="obsolete">Порт 3:</translation>
     </message>
     <message>
         <source>Port 4:</source>
-        <translation type="obsolete">РџРѕСЂС‚ 4:</translation>
+        <translation type="obsolete">Порт 4:</translation>
     </message>
     <message>
         <source>Bluetooth Settings</source>
-        <translation type="obsolete">РќР°СЃС‚СЂРѕР№РєРё Bluetooth</translation>
+        <translation type="obsolete">Настройки Bluetooth</translation>
     </message>
     <message>
         <source>COM Port:</source>
-        <translation type="obsolete">COM-РїРѕСЂС‚:</translation>
+        <translation type="obsolete">COM-порт:</translation>
     </message>
     <message>
         <source>No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3</source>
-        <translation type="obsolete">COM-РїРѕСЂС‚С‹ РЅРµ РЅР°Р№РґРµРЅС‹. Р•СЃР»Рё РµСЃС‚СЊ СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅРѕРµ Bluetooth-СЃРѕРµРґРёРЅРµРЅРёРµ СЃ Р°РєС‚РёРІРЅС‹Рј COM-РїРѕСЂС‚РѕРј, РІРІРµРґРёС‚Рµ РµРіРѕ РёРјСЏ. РќР°РїСЂРёРјРµСЂ, COM3</translation>
+        <translation type="obsolete">COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
     </message>
     <message>
         <source>Specify COM port manually</source>
-        <translation type="obsolete">РЈРєР°Р·Р°С‚СЊ COM-РїРѕСЂС‚ РІСЂСѓС‡РЅСѓСЋ</translation>
+        <translation type="obsolete">Указать COM-порт вручную</translation>
     </message>
 </context>
 <context>
     <name>qReal::MainWindow</name>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="459"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="460"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>These plugins are not present, but needed to load the save:
 </source>
-        <translation>Р­С‚Рё РїР»Р°РіРёРЅС‹ РѕС‚СЃСѓС‚СЃС‚РІСѓСЋС‚, РЅРѕ РЅСѓР¶РЅС‹ РґР»СЏ Р·Р°РіСЂСѓР·РєРё СЃРѕС…СЂР°РЅРµРЅРёСЏ:
+        <translation>Эти плагины отсутствуют, но нужны для загрузки сохранения:
 </translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="462"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="463"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Do you want to create new project?</source>
-        <translation>Р’С‹ С…РѕС‚РёС‚Рµ СЃРѕР·РґР°С‚СЊ РЅРѕРІС‹Р№ РїСЂРѕРµРєС‚?</translation>
+        <translation>Вы хотите создать новый проект?</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="465"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="468"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Some plugins are missing</source>
-        <translation>РќРµРєРѕС‚РѕСЂС‹С… РїР»Р°РіРёРЅРѕРІ РЅРµ С…РІР°С‚Р°РµС‚</translation>
+        <translation>Некоторых плагинов не хватает</translation>
     </message>
     <message>
         <source>Select directory with a save to open</source>
-        <translation type="obsolete">Р’С‹Р±РµСЂРёС‚Рµ РїР°РїРєСѓ СЃ СЃРѕС…СЂР°РЅРµРЅРёРµРј, РєРѕС‚РѕСЂРѕРµ С…РѕС‚РёС‚Рµ РѕС‚РєСЂС‹С‚СЊ</translation>
+        <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
         <source>About QReal</source>
-        <translation type="obsolete">Рћ QReal</translation>
+        <translation type="obsolete">О QReal</translation>
     </message>
     <message>
         <source>&lt;center&gt;This is &lt;b&gt;QReal&lt;/b&gt;&lt;br&gt;Just another CASE tool&lt;/center&gt;</source>
-        <translation type="obsolete">&lt;center&gt;Р­С‚Рѕ &lt;b&gt;QReal&lt;/b&gt;&lt;br&gt;РџСЂРѕСЃС‚Рѕ РµС‰С‘ РѕРґРЅРѕ CASE-СЃСЂРµРґСЃС‚РІРѕ&lt;/center&gt;</translation>
+        <translation type="obsolete">&lt;center&gt;Это &lt;b&gt;QReal&lt;/b&gt;&lt;br&gt;Просто ещё одно CASE-средство&lt;/center&gt;</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="obsolete">РџРѕРјРѕС‰СЊ</translation>
+        <translation type="obsolete">Помощь</translation>
     </message>
     <message>
         <source>To begin:
 1. To add items to diagrams, drag &amp; drop them from Palette to editor
 2. Get more help from author :)</source>
-        <translation type="obsolete">Р”Р»СЏ РЅР°С‡Р°Р»Р°:
-1. Р§С‚РѕР±С‹ РґРѕР±Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚С‹ РЅР° РґРёР°РіСЂР°РјРјСѓ, РїРµСЂРµС‚Р°С‰РёС‚Рµ РёС… РёР· РїР°Р»РёС‚СЂС‹ РІ СЂРµРґР°РєС‚РѕСЂ
-2. РџРѕРїСЂРѕСЃРёС‚Рµ РїРѕРјРѕС‰Рё Сѓ Р°РІС‚РѕСЂРѕРІ :)</translation>
+        <translation type="obsolete">Для начала:
+1. Чтобы добавить элементы на диаграмму, перетащите их из палитры в редактор
+2. Попросите помощи у авторов :)</translation>
     </message>
     <message>
         <source>Select directory to commit</source>
-        <translation type="obsolete">Р’С‹Р±РµСЂРёС‚Рµ РїР°РїРєСѓ РґР»СЏ РєРѕРјРјРёС‚Р°</translation>
+        <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="808"/>
-        <location filename="mainwindow/mainWindow.cpp" line="825"/>
-        <location filename="mainwindow/mainWindow.cpp" line="843"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="821"/>
         <location filename="mainwindow/mainWindow.cpp" line="838"/>
         <location filename="mainwindow/mainWindow.cpp" line="856"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>errors</source>
-        <translation>РћС€РёР±РєРё</translation>
+        <translation>Ошибки</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="810"/>
-        <location filename="mainwindow/mainWindow.cpp" line="827"/>
-        <location filename="mainwindow/mainWindow.cpp" line="845"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="823"/>
         <location filename="mainwindow/mainWindow.cpp" line="840"/>
         <location filename="mainwindow/mainWindow.cpp" line="858"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>finished</source>
-        <translation>Р—Р°РєРѕРЅС‡РµРЅРѕ</translation>
+        <translation>Закончено</translation>
     </message>
     <message>
         <source>error</source>
-        <translation type="obsolete">РћС€РёР±РєР°</translation>
+        <translation type="obsolete">Ошибка</translation>
     </message>
     <message>
         <source>Cannot find the directory for saving</source>
-        <translation type="obsolete">РќРµ СѓРґР°Р»РѕСЃСЊ РЅР°Р№С‚Рё РїР°РїРєСѓ РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ</translation>
+        <translation type="obsolete">Не удалось найти папку для сохранения</translation>
     </message>
     <message>
         <source>loading..</source>
-        <translation type="obsolete">Р—Р°РіСЂСѓР·РєР°..</translation>
+        <translation type="obsolete">Загрузка..</translation>
     </message>
     <message>
         <source>Do you want to load generated editor %1?</source>
-        <translation type="obsolete">Р’С‹ С…РѕС‚РёС‚Рµ Р·Р°РіСЂСѓР·РёС‚СЊ СЃРіРµРЅРµСЂРёСЂРѕРІР°РЅРЅС‹Р№ СЂРµРґР°РєС‚РѕСЂ %1?</translation>
+        <translation type="obsolete">Вы хотите загрузить сгенерированный редактор %1?</translation>
     </message>
     <message>
         <source>Do you want to compile and load editor %1?</source>
-        <translation type="obsolete">Р’С‹ С…РѕС‚РёС‚Рµ СЃРѕР±СЂР°С‚СЊ Рё Р·Р°РіСЂСѓР·РёС‚СЊ СЂРµРґР°РєС‚РѕСЂ %1?</translation>
+        <translation type="obsolete">Вы хотите собрать и загрузить редактор %1?</translation>
     </message>
     <message>
         <source>Cannot generate source code for editor </source>
-        <translation type="obsolete">РќРµ СѓРґР°Р»РѕСЃСЊ СЃРіРµРЅРµСЂРёСЂРѕРІР°С‚СЊ РёСЃС…РѕРґРЅС‹Р№ РєРѕРґ СЂРµРґР°РєС‚РѕСЂР°</translation>
+        <translation type="obsolete">Не удалось сгенерировать исходный код редактора</translation>
     </message>
     <message>
         <source>cannot unload plugin </source>
-        <translation type="obsolete">РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹РіСЂСѓР·РёС‚СЊ РїР»Р°РіРёРЅ</translation>
+        <translation type="obsolete">Не удалось выгрузить плагин</translation>
     </message>
     <message>
         <source>cannot load new editor</source>
-        <translation type="obsolete">РќРµРІРѕР·РјРѕР¶РЅРѕ Р·Р°РіСЂСѓР·РёС‚СЊ РЅРѕРІС‹Р№ СЂРµРґР°РєС‚РѕСЂ</translation>
+        <translation type="obsolete">Невозможно загрузить новый редактор</translation>
     </message>
     <message>
         <source>please, fill compiler settings</source>
-        <translation type="obsolete">РџРѕР¶Р°Р»СѓР№СЃС‚Р°, Р·Р°РїРѕР»РЅРёС‚Рµ РЅР°СЃС‚СЂРѕР№РєРё РєРѕРјРїРёР»СЏС†РёРё (РќР°СЃС‚СЂРѕР№РєРё -&gt; РќР°СЃС‚СЂРѕР№РєРё... -&gt; РљРѕРјРїРёР»СЏС‚РѕСЂ)</translation>
+        <translation type="obsolete">Пожалуйста, заполните настройки компиляции (Настройки -&gt; Настройки... -&gt; Компилятор)</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="439"/>
-        <location filename="mainwindow/mainWindow.cpp" line="442"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="438"/>
         <location filename="mainwindow/mainWindow.cpp" line="441"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>QReal Save File(*.qrs)</source>
-        <translation>Р¤Р°Р№Р»С‹ СЃРѕС…СЂР°РЅРµРЅРёСЏ QReal (*.qrs)</translation>
+        <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="490"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="503"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Select file with a save to import</source>
-        <translation>Р’С‹Р±РµСЂРёС‚Рµ С„Р°Р№Р» РґР»СЏ РёРјРїРѕСЂС‚Р°</translation>
+        <translation>Выберите файл для импорта</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="514"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="527"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Select file with a save to open</source>
-        <translation>Р’С‹Р±РµСЂРёС‚Рµ С„Р°Р№Р» РґР»СЏ РѕС‚РєСЂС‹С‚РёСЏ</translation>
+        <translation>Выберите файл для открытия</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="757"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="770"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>About QReal:Robots</source>
-        <translation>Рћ QReal:Robots</translation>
+        <translation>О QReal:Robots</translation>
     </message>
     <message>
         <source>Contacts:&lt;br&gt;&lt;br&gt;se.math.spbu.ru/SE/qreal</source>
-        <translation type="obsolete">РљРѕРЅС‚Р°РєС‚С‹:&lt;br&gt;&lt;br&gt;se.math.spbu.ru/SE/qreal</translation>
+        <translation type="obsolete">Контакты:&lt;br&gt;&lt;br&gt;se.math.spbu.ru/SE/qreal</translation>
     </message>
     <message>
         <source>cannot unload plugin</source>
-        <translation type="obsolete">РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹РіСЂСѓР·РёС‚СЊ РїР»Р°РіРёРЅ</translation>
+        <translation type="obsolete">Не удалось выгрузить плагин</translation>
     </message>
     <message>
         <source>required plugin is not loaded</source>
-        <translation type="obsolete">РўСЂРµР±СѓРµРјС‹Р№ РїР»Р°РіРёРЅ РЅРµ Р·Р°РіСЂСѓР¶РµРЅ</translation>
+        <translation type="obsolete">Требуемый плагин не загружен</translation>
     </message>
     <message>
         <source>Select xml file to parse</source>
-        <translation type="obsolete">Р’С‹Р±РµСЂРёС‚Рµ xml-С„Р°Р№Р» РґР»СЏ РёРјРїРѕСЂС‚Р°</translation>
-<<<<<<< HEAD
-    </message>
-    <message>
-        <location filename="mainwindow/mainWindow.cpp" line="758"/>
-        <source>&lt;b&gt;QReal:Robots&lt;b&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;http://qreal.ru/&quot;&gt;http://qreal.ru/&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow/mainWindow.cpp" line="843"/>
-        <source>Some errors occured. Export may be incorrect. Errors list:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow/mainWindow.cpp" line="845"/>
-        <source>Parsing is finished</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow/mainWindow.cpp" line="973"/>
-        <location filename="mainwindow/mainWindow.cpp" line="981"/>
-=======
+        <translation type="obsolete">Выберите xml-файл для импорта</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.cpp" line="771"/>
@@ -3002,142 +2936,91 @@
     <message>
         <location filename="mainwindow/mainWindow.cpp" line="992"/>
         <location filename="mainwindow/mainWindow.cpp" line="1000"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Shape Editor</source>
-        <translation>Р РµРґР°РєС‚РѕСЂ С„РѕСЂРјС‹ С„РёРіСѓСЂ</translation>
+        <translation>Редактор формы фигур</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="1410"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="1425"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Select file to save current model to</source>
-        <translation>Р’С‹Р±РµСЂРёС‚Рµ С„Р°Р№Р» РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ</translation>
+        <translation>Выберите файл для сохранения</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="1985"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="1801"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Recent projects</source>
-        <translation>РќРµРґР°РІРЅРёРµ РїСЂРѕРµРєС‚С‹</translation>
+        <translation>Недавние проекты</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="1992"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="1808"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Save File</source>
-        <translation>РЎРѕС…СЂР°РЅРёС‚СЊ С„Р°Р№Р»</translation>
+        <translation>Сохранить файл</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="1992"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="1808"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Images (*.png *.jpg)</source>
-        <translation>РР·РѕР±СЂР°Р¶РµРЅРёСЏ (*.png *.jpg)</translation>
+        <translation>Изображения (*.png *.jpg)</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="2057"/>
-        <location filename="mainwindow/mainWindow.cpp" line="2058"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="1873"/>
         <location filename="mainwindow/mainWindow.cpp" line="1874"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Save</source>
-        <translation>РЎРѕС…СЂР°РЅРёС‚СЊ</translation>
+        <translation>Сохранить</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="2060"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="1876"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Discard</source>
-        <translation>РќРµ СЃРѕС…СЂР°РЅСЏС‚СЊ</translation>
+        <translation>Не сохранять</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="2061"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="1877"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Do you want to save current project?</source>
-        <translation>РЎРѕС…СЂР°РЅРёС‚СЊ С‚РµРєСѓС‰РёР№ РїСЂРѕРµРєС‚?</translation>
+        <translation>Сохранить текущий проект?</translation>
     </message>
     <message>
         <source>Select Hascol files to parse</source>
-        <translation type="obsolete">Р’С‹Р±РµСЂРёС‚Рµ Hascol-С„Р°Р№Р» РґР»СЏ РёРјРїРѕСЂС‚Р°</translation>
+        <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="1295"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="1310"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Gestures Show</source>
-        <translation>Р–РµСЃС‚С‹ РјС‹С€СЊСЋ</translation>
+        <translation>Жесты мышью</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="1317"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="1332"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Choose new diagram</source>
-        <translation>Р’С‹Р±РµСЂРёС‚Рµ РЅРѕРІСѓСЋ РґРёР°РіСЂР°РјРјСѓ</translation>
+        <translation>Выберите новую диаграмму</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="1319"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="1334"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>There is no existing diagram,
  choose diagram you want work with:</source>
-        <translation>Р”РёР°РіСЂР°РјРјС‹ РїРѕРєР° РЅРµ СЃРѕР·РґР°РЅРѕ,
-СѓРєР°Р¶РёС‚Рµ РґРёР°РіСЂР°РјРјСѓ, СЃ РєРѕС‚РѕСЂРѕР№ С…РѕС‚РёС‚Рµ СЂР°Р±РѕС‚Р°С‚СЊ:</translation>
+        <translation>Диаграммы пока не создано,
+укажите диаграмму, с которой хотите работать:</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="1338"/>
-        <location filename="mainwindow/mainWindow.cpp" line="2059"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="1353"/>
         <location filename="mainwindow/mainWindow.cpp" line="1875"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Cancel</source>
-        <translation>РћС‚РјРµРЅР°</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="mainwindow/mainWindow.cpp" line="1340"/>
-=======
         <location filename="mainwindow/mainWindow.cpp" line="1355"/>
->>>>>>> cc80444f0e16c1de37963a019bf94ce55d79896c
         <source>Done</source>
-        <translation>Р“РѕС‚РѕРІРѕ</translation>
+        <translation>Готово</translation>
     </message>
     <message>
         <source>Select directory to save current model to</source>
-        <translation type="obsolete">Р’С‹Р±РµСЂРёС‚Рµ РїР°РїРєСѓ, РІ РєРѕС‚РѕСЂСѓСЋ СЃРѕС…СЂР°РЅРёС‚СЊ С‚РµРєСѓС‰СѓСЋ РјРѕРґРµР»СЊ</translation>
+        <translation type="obsolete">Выберите папку, в которую сохранить текущую модель</translation>
     </message>
 </context>
 <context>
     <name>qReal::PluginDialog</name>
     <message>
         <source>OK</source>
-        <translation type="obsolete">РћРљ</translation>
+        <translation type="obsolete">ОК</translation>
     </message>
     <message>
         <source>Plugin Information</source>
-        <translation type="obsolete">РРЅС„РѕСЂРјР°С†РёСЏ Рѕ РїР»Р°РіРёРЅР°С…</translation>
+        <translation type="obsolete">Информация о плагинах</translation>
     </message>
 </context>
 <context>
@@ -3145,299 +3028,299 @@
     <message>
         <location filename="mainwindow/errorReporter.cpp" line="142"/>
         <source>INFORMATION:</source>
-        <translation>РРќР¤РћР РњРђР¦РРЇ:</translation>
+        <translation>ИНФОРМАЦИЯ:</translation>
     </message>
     <message>
         <location filename="mainwindow/errorReporter.cpp" line="144"/>
         <source>WARNING:</source>
-        <translation>РџР Р•Р”РЈРџР Р•Р–Р”Р•РќРР•:</translation>
+        <translation>ПРЕДУПРЕЖДЕНИЕ:</translation>
     </message>
     <message>
         <location filename="mainwindow/errorReporter.cpp" line="146"/>
         <source>ERROR:</source>
-        <translation>РћРЁРР‘РљРђ:</translation>
+        <translation>ОШИБКА:</translation>
     </message>
     <message>
         <location filename="mainwindow/errorReporter.cpp" line="148"/>
         <source>CRITICAL:</source>
-        <translation>РљР РРўРР§Р•РЎРљРђРЇ РћРЁРР‘РљРђ:</translation>
+        <translation>КРИТИЧЕСКАЯ ОШИБКА:</translation>
     </message>
 </context>
 <context>
     <name>qReal::gui::RobotSettingsDialog</name>
     <message>
         <source>No COM ports found</source>
-        <translation type="obsolete">COM-РїРѕСЂС‚С‹ РЅРµ РЅР°Р№РґРµРЅС‹</translation>
+        <translation type="obsolete">COM-порты не найдены</translation>
     </message>
     <message>
         <source>No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3</source>
-        <translation type="obsolete">COM-РїРѕСЂС‚С‹ РЅРµ РЅР°Р№РґРµРЅС‹. Р•СЃР»Рё РµСЃС‚СЊ СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅРѕРµ Bluetooth-СЃРѕРµРґРёРЅРµРЅРёРµ СЃ Р°РєС‚РёРІРЅС‹Рј COM-РїРѕСЂС‚РѕРј, РІРІРµРґРёС‚Рµ РµРіРѕ РёРјСЏ. РќР°РїСЂРёРјРµСЂ, COM3</translation>
+        <translation type="obsolete">COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
     </message>
     <message>
         <source>Unused</source>
-        <translation type="obsolete">РќРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ</translation>
+        <translation type="obsolete">Не используется</translation>
     </message>
     <message>
         <source>Touch sensor (boolean value)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ РЅР°Р¶Р°С‚РёСЏ (Р±СѓР»РµРІРѕ Р·РЅР°С‡РµРЅРёРµ)</translation>
+        <translation type="obsolete">Сенсор нажатия (булево значение)</translation>
     </message>
     <message>
         <source>Touch sensor (raw value)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ РЅР°Р¶Р°С‚РёСЏ (СЃС‹СЂРѕРµ Р·РЅР°С‡РµРЅРёРµ)</translation>
+        <translation type="obsolete">Сенсор нажатия (сырое значение)</translation>
     </message>
     <message>
         <source>Sonar sensor</source>
-        <translation type="obsolete">РЈР»СЊС‚СЂР°Р·РІСѓРєРѕРІРѕР№ СЃРµРЅСЃРѕСЂ</translation>
+        <translation type="obsolete">Ультразвуковой сенсор</translation>
     </message>
     <message>
         <source>Color sensor (full colors)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° (РїРѕР»РЅС‹Рµ С†РІРµС‚Р°)</translation>
+        <translation type="obsolete">Сенсор цвета (полные цвета)</translation>
     </message>
     <message>
         <source>Color sensor (red)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° (РєСЂР°СЃРЅС‹Р№)</translation>
+        <translation type="obsolete">Сенсор цвета (красный)</translation>
     </message>
     <message>
         <source>Color sensor (green)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° (Р·РµР»С‘РЅС‹Р№)</translation>
+        <translation type="obsolete">Сенсор цвета (зелёный)</translation>
     </message>
     <message>
         <source>Color sensor (blue)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° (СЃРёРЅРёР№)</translation>
+        <translation type="obsolete">Сенсор цвета (синий)</translation>
     </message>
     <message>
         <source>Color sensor (passive)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° (РїР°СЃСЃРёРІРЅС‹Р№)</translation>
+        <translation type="obsolete">Сенсор цвета (пассивный)</translation>
     </message>
     <message>
         <source>Sonar sensor)</source>
-        <translation type="obsolete">РЎРѕРЅР°СЂ</translation>
+        <translation type="obsolete">Сонар</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::Interpreter</name>
     <message>
         <source>No connection to robot</source>
-        <translation type="obsolete">РЎРѕРµРґРёРЅРµРЅРёРµ СЃ СЂРѕР±РѕС‚РѕРј РЅРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ</translation>
+        <translation type="obsolete">Соединение с роботом не установлено</translation>
     </message>
     <message>
         <source>Interpreter is already running</source>
-        <translation type="obsolete">РРЅС‚РµСЂРїСЂРµС‚Р°С‚РѕСЂ СѓР¶Рµ РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ</translation>
+        <translation type="obsolete">Интерпретатор уже выполняется</translation>
     </message>
     <message>
         <source>No entry point found, please add Initial Node to a diagram</source>
-        <translation type="obsolete">РќРµ РЅР°Р№РґРµРЅРѕ РЅР°С‡Р°Р»Рѕ РїСЂРѕРіСЂР°РјРјС‹. РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РґРѕР±Р°РІСЊС‚Рµ Р±Р»РѕРє &quot;РќР°С‡Р°Р»Рѕ&quot;.</translation>
+        <translation type="obsolete">Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;.</translation>
     </message>
     <message>
         <source>Connected successfully</source>
-        <translation type="obsolete">РџРѕРґРєР»СЋС‡РµРЅРёРµ Рє СЂРѕР±РѕС‚Сѓ РІС‹РїРѕР»РЅРµРЅРѕ</translation>
+        <translation type="obsolete">Подключение к роботу выполнено</translation>
     </message>
     <message>
         <source>Can&apos;t connect to a robot.</source>
-        <translation type="obsolete">РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕРґРєР»СЋС‡РёС‚СЊСЃСЏ Рє СЂРѕР±РѕС‚Сѓ.</translation>
+        <translation type="obsolete">Не удалось подключиться к роботу.</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::Block</name>
     <message>
         <source>Too many outgoing links</source>
-        <translation type="obsolete">РЎР»РёС€РєРѕРј РјРЅРѕРіРѕ РёСЃС…РѕРґСЏС‰РёС… СЃРІСЏР·РµР№</translation>
+        <translation type="obsolete">Слишком много исходящих связей</translation>
     </message>
     <message>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
-        <translation type="obsolete">РќРµС‚ РёСЃС…РѕРґСЏС‰РёС… СЃРІСЏР·РµР№. РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РїРѕРґРєР»СЋС‡РёС‚Рµ СЌС‚РѕС‚ Р±Р»РѕРє Рє С‡РµРјСѓ-РЅРёР±СѓРґСЊ РёР»Рё РёСЃРїРѕР»СЊР·СѓР№С‚Рµ Р±Р»РѕРє &quot;РљРѕРЅРµС†&quot;, С‡С‚РѕР±С‹ Р·Р°РІРµСЂС€РёС‚СЊ РІС‹РїРѕР»РЅРµРЅРёРµ РїСЂРѕРіСЂР°РјРјС‹</translation>
+        <translation type="obsolete">Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
     </message>
     <message>
         <source>Outgoing link is not connected</source>
-        <translation type="obsolete">РСЃС…РѕРґСЏС‰Р°СЏ СЃРІСЏР·СЊ РЅРё Рє С‡РµРјСѓ РЅРµ РїРѕРґРєР»СЋС‡РµРЅР°</translation>
+        <translation type="obsolete">Исходящая связь ни к чему не подключена</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::ForkBlock</name>
     <message>
         <source>Outgoing link is not connected</source>
-        <translation type="obsolete">РСЃС…РѕРґСЏС‰Р°СЏ СЃРІСЏР·СЊ РЅРё Рє С‡РµРјСѓ РЅРµ РїРѕРґРєР»СЋС‡РµРЅР°</translation>
+        <translation type="obsolete">Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
         <source>There must be an outgoing link, use &quot;End&quot; block to finish a program</source>
-        <translation type="obsolete">Р”РѕР»Р¶РЅР° Р±С‹С‚СЊ РёСЃС…РѕРґСЏС‰Р°СЏ СЃРІСЏР·СЊ, РёСЃРїРѕР»СЊР·СѓР№С‚Рµ Р±Р»РѕРє &quot;РљРѕРЅРµС†&quot;, С‡С‚РѕР±С‹ Р·Р°РєРѕРЅС‡РёС‚СЊ РїСЂРѕРіСЂР°РјРјСѓ</translation>
+        <translation type="obsolete">Должна быть исходящая связь, используйте блок &quot;Конец&quot;, чтобы закончить программу</translation>
     </message>
     <message>
         <source>There must be at least two outgoing links</source>
-        <translation type="obsolete">Р”РѕР»Р¶РЅРѕ Р±С‹С‚СЊ РєР°Рє РјРёРЅРёРјСѓРј РґРІРµ РёСЃС…РѕРґСЏС‰РёРµ СЃРІСЏР·Рё</translation>
+        <translation type="obsolete">Должно быть как минимум две исходящие связи</translation>
     </message>
     <message>
         <source>other</source>
-        <translation type="obsolete">РґСЂСѓРіРѕР№</translation>
+        <translation type="obsolete">другой</translation>
     </message>
     <message>
         <source>Two links marked as &quot;other&quot; found</source>
-        <translation type="obsolete">РќР°Р№РґРµРЅРѕ РґРІРµ СЃРІСЏР·Рё, РїРѕРјРµС‡РµРЅРЅС‹Рµ РєР°Рє &quot;РґСЂСѓРіРѕР№&quot;</translation>
+        <translation type="obsolete">Найдено две связи, помеченные как &quot;другой&quot;</translation>
     </message>
     <message>
         <source>Two outgoing links to a next element found</source>
-        <translation type="obsolete">РќР°Р№РґРµРЅРѕ РґРІРµ РёСЃС…РѕРґСЏС‰РёРµ СЃРІСЏР·Рё Рє СЃР»РµРґСѓСЋС‰РµРјСѓ СЌР»РµРјРµРЅС‚Сѓ</translation>
+        <translation type="obsolete">Найдено две исходящие связи к следующему элементу</translation>
     </message>
     <message>
         <source>There must be a link with property &quot;Guard&quot; set as &quot;other&quot;</source>
-        <translation type="obsolete">Р”РѕР»Р¶РЅР° Р±С‹С‚СЊ СЃРІСЏР·СЊ СЃРѕ СЃРІРѕР№СЃС‚РІРѕРј &quot;РЈСЃР»РѕРІРёРµ&quot; СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅС‹Рј РІ &quot;РґСЂСѓРіРѕР№&quot;</translation>
+        <translation type="obsolete">Должна быть связь со свойством &quot;Условие&quot; установленным в &quot;другой&quot;</translation>
     </message>
     <message>
         <source>There must be a non-marked outgoing link</source>
-        <translation type="obsolete">Р”РѕР»Р¶РЅР° Р±С‹С‚СЊ РЅРµРїРѕРјРµС‡РµРЅРЅР°СЏ РёСЃС…РѕРґСЏС‰Р°СЏ СЃРІСЏР·СЊ</translation>
+        <translation type="obsolete">Должна быть непомеченная исходящая связь</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::IfBlock</name>
     <message>
         <source>less than 0</source>
-        <translation type="obsolete">РјРµРЅСЊС€Рµ 0</translation>
+        <translation type="obsolete">меньше 0</translation>
     </message>
     <message>
         <source>greater than 0</source>
-        <translation type="obsolete">Р±РѕР»СЊС€Рµ 0</translation>
+        <translation type="obsolete">больше 0</translation>
     </message>
     <message>
         <source>equals to 0</source>
-        <translation type="obsolete">СЂР°РІРЅРѕ 0</translation>
+        <translation type="obsolete">равно 0</translation>
     </message>
     <message>
         <source>Outgoing link is not connected</source>
-        <translation type="obsolete">РСЃС…РѕРґСЏС‰Р°СЏ СЃРІСЏР·СЊ РЅРё Рє С‡РµРјСѓ РЅРµ РїРѕРґРєР»СЋС‡РµРЅР°</translation>
+        <translation type="obsolete">Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
         <source>Two links marked with condition found</source>
-        <translation type="obsolete">РќР°Р№РґРµРЅРѕ РґРІРµ СЃРІСЏР·Рё, РїРѕРјРµС‡РµРЅРЅС‹Рµ СѓСЃР»РѕРІРёРµРј</translation>
+        <translation type="obsolete">Найдено две связи, помеченные условием</translation>
     </message>
     <message>
         <source>Two outgoing links to a next element found</source>
-        <translation type="obsolete">РќР°Р№РґРµРЅРѕ РґРІРµ РёСЃС…РѕРґСЏС‰РёРµ СЃРІСЏР·Рё Рє СЃР»РµРґСѓСЋС‰РµРјСѓ СЌР»РµРјРµРЅС‚Сѓ</translation>
+        <translation type="obsolete">Найдено две исходящие связи к следующему элементу</translation>
     </message>
     <message>
         <source>There must be a link with property &quot;Guard&quot; set to one of the conditions</source>
-        <translation type="obsolete">Р”РѕР»Р¶РЅР° Р±С‹С‚СЊ СЃРІСЏР·СЊ СЃРѕ СЃРІРѕР№СЃС‚РІРѕРј &quot;РЈСЃР»РѕРІРёРµ&quot; СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅС‹Рј РІ РѕРґРЅРѕ РёР· СѓСЃР»РѕРІРёР№</translation>
+        <translation type="obsolete">Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
     </message>
     <message>
         <source>There must be a non-marked outgoing link</source>
-        <translation type="obsolete">Р”РѕР»Р¶РЅР° Р±С‹С‚СЊ РЅРµРїРѕРјРµС‡РµРЅРЅР°СЏ РёСЃС…РѕРґСЏС‰Р°СЏ СЃРІСЏР·СЊ</translation>
+        <translation type="obsolete">Должна быть непомеченная исходящая связь</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::InitialBlock</name>
     <message>
         <source>Can&apos;t connect to a robot.</source>
-        <translation type="obsolete">РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕРґРєР»СЋС‡РёС‚СЊСЃСЏ Рє СЂРѕР±РѕС‚Сѓ</translation>
+        <translation type="obsolete">Не удалось подключиться к роботу</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::InitialBlockWithPorts</name>
     <message>
         <source>Can&apos;t connect to a robot.</source>
-        <translation type="obsolete">РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕРґРєР»СЋС‡РёС‚СЊСЃСЏ Рє СЂРѕР±РѕС‚Сѓ.</translation>
+        <translation type="obsolete">Не удалось подключиться к роботу.</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::LoopBlock</name>
     <message>
         <source>Outgoing link is not connected</source>
-        <translation type="obsolete">РСЃС…РѕРґСЏС‰Р°СЏ СЃРІСЏР·СЊ РЅРё Рє С‡РµРјСѓ РЅРµ РїРѕРґРєР»СЋС‡РµРЅР°</translation>
+        <translation type="obsolete">Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
         <source>iteration</source>
-        <translation type="obsolete">РёС‚РµСЂР°С†РёСЏ</translation>
+        <translation type="obsolete">итерация</translation>
     </message>
     <message>
         <source>Two links marked as &quot;iteration&quot; found</source>
-        <translation type="obsolete">РќР°Р№РґРµРЅРѕ РґРІРµ СЃРІСЏР·Рё, РїРѕРјРµС‡РµРЅРЅС‹Рµ РєР°Рє &quot;РёС‚РµСЂР°С†РёСЏ&quot;</translation>
+        <translation type="obsolete">Найдено две связи, помеченные как &quot;итерация&quot;</translation>
     </message>
     <message>
         <source>Two outgoing links to a next element found</source>
-        <translation type="obsolete">РќР°Р№РґРµРЅРѕ РґРІРµ РёСЃС…РѕРґСЏС‰РёРµ СЃРІСЏР·Рё Рє СЃР»РµРґСѓСЋС‰РµРјСѓ СЌР»РµРјРµРЅС‚Сѓ</translation>
+        <translation type="obsolete">Найдено две исходящие связи к следующему элементу</translation>
     </message>
     <message>
         <source>There must be a link with property &quot;Guard&quot; set as &quot;iteration&quot;</source>
-        <translation type="obsolete">Р”РѕР»Р¶РЅР° Р±С‹С‚СЊ СЃРІСЏР·СЊ СЃРѕ СЃРІРѕР№СЃС‚РІРѕРј &quot;РЈСЃР»РѕРІРёРµ&quot; СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅС‹Рј РІ &quot;РёС‚РµСЂР°С†РёСЏ&quot;</translation>
+        <translation type="obsolete">Должна быть связь со свойством &quot;Условие&quot; установленным в &quot;итерация&quot;</translation>
     </message>
     <message>
         <source>There must be a non-marked outgoing link</source>
-        <translation type="obsolete">Р”РѕР»Р¶РЅР° Р±С‹С‚СЊ РЅРµРїРѕРјРµС‡РµРЅРЅР°СЏ РёСЃС…РѕРґСЏС‰Р°СЏ СЃРІСЏР·СЊ</translation>
+        <translation type="obsolete">Должна быть непомеченная исходящая связь</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::NullificationEncoderBlock</name>
     <message>
         <source>Wrong port to nullificate Encoder</source>
-        <translation type="obsolete">РќРµРїСЂР°РІРёР»СЊРЅС‹Р№ РїРѕСЂС‚ РґР»СЏ СЃР±СЂРѕСЃР° СЌРЅРєРѕРґРµСЂР°</translation>
+        <translation type="obsolete">Неправильный порт для сброса энкодера</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForColorBlock</name>
     <message>
         <source>Color sensor is not configured on this port or it is configured in a wrong mode (&quot;Full color&quot; mode needed)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° РЅРµ СЃРєРѕРЅС„РёРіСѓСЂРёСЂРѕРІР°РЅ РЅР° РґР°РЅРЅРѕРј РїРѕСЂС‚Сѓ, РёР»Рё СЃРєРѕРЅС„РёРіСѓСЂРёСЂРѕРІР°РЅ РІ РЅРµРїРѕРґС…РѕРґСЏС‰РµРј СЂРµР¶РёРјРµ (РЅСѓР¶РµРЅ СЂРµР¶РёРј &quot;РїРѕР»РЅС‹Рµ С†РІРµС‚Р°&quot;)</translation>
+        <translation type="obsolete">Сенсор цвета не сконфигурирован на данном порту, или сконфигурирован в неподходящем режиме (нужен режим &quot;полные цвета&quot;)</translation>
     </message>
     <message>
         <source>Black</source>
-        <translation type="obsolete">Р§С‘СЂРЅС‹Р№</translation>
+        <translation type="obsolete">Чёрный</translation>
     </message>
     <message>
         <source>Blue</source>
-        <translation type="obsolete">РЎРёРЅРёР№</translation>
+        <translation type="obsolete">Синий</translation>
     </message>
     <message>
         <source>Green</source>
-        <translation type="obsolete">Р—РµР»С‘РЅС‹Р№</translation>
+        <translation type="obsolete">Зелёный</translation>
     </message>
     <message>
         <source>Yellow</source>
-        <translation type="obsolete">Р–С‘Р»С‚С‹Р№</translation>
+        <translation type="obsolete">Жёлтый</translation>
     </message>
     <message>
         <source>Red</source>
-        <translation type="obsolete">РљСЂР°СЃРЅС‹Р№</translation>
+        <translation type="obsolete">Красный</translation>
     </message>
     <message>
         <source>White</source>
-        <translation type="obsolete">Р‘РµР»С‹Р№</translation>
+        <translation type="obsolete">Белый</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForColorIntensityBlock</name>
     <message>
         <source>Color sensor is not configured on this port or it is configured in a wrong mode (not &quot;Full color&quot; mode needed)</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ С†РІРµС‚Р° РЅРµ СЃРєРѕРЅС„РёРіСѓСЂРёСЂРѕРІР°РЅ РЅР° РґР°РЅРЅРѕРј РїРѕСЂС‚Сѓ, РёР»Рё СЃРєРѕРЅС„РёРіСѓСЂРёСЂРѕРІР°РЅ РІ РЅРµРїРѕРґС…РѕРґСЏС‰РµРј СЂРµР¶РёРјРµ (РЅСѓР¶РµРЅ СЂРµР¶РёРј РќР• &quot;РїРѕР»РЅС‹Рµ С†РІРµС‚Р°&quot;)</translation>
+        <translation type="obsolete">Сенсор цвета не сконфигурирован на данном порту, или сконфигурирован в неподходящем режиме (нужен режим НЕ &quot;полные цвета&quot;)</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForEncoderBlock</name>
     <message>
         <source>Encoder sensor is not configured on this port </source>
-        <translation type="obsolete">РќРµРІРµСЂРЅРѕ СѓРєР°Р·Р°РЅ РїРѕСЂС‚ РґР»СЏ СЃС‡РёС‚С‹РІР°РЅРёСЏ РїРѕРєР°Р·Р°РЅРёР№ РґР°С‚С‡РёРєР°</translation>
+        <translation type="obsolete">Неверно указан порт для считывания показаний датчика</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForSonarDistanceBlock</name>
     <message>
         <source>Sonar sensor is not configured on this port</source>
-        <translation type="obsolete">РЎРѕРЅР°СЂ РЅРµ СЃРєРѕРЅС„РёРіСѓСЂРёСЂРѕРІР°РЅ РЅР° СЌС‚РѕРј РїРѕСЂС‚Сѓ</translation>
+        <translation type="obsolete">Сонар не сконфигурирован на этом порту</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForTouchSensorBlock</name>
     <message>
         <source>Touch sensor is not configured on this port</source>
-        <translation type="obsolete">РЎРµРЅСЃРѕСЂ РЅР°Р¶Р°С‚РёСЏ РЅРµ СЃРєРѕРЅС„РёРіСѓСЂРёСЂРѕРІР°РЅ РЅР° СЌС‚РѕРј РїРѕСЂС‚Сѓ</translation>
+        <translation type="obsolete">Сенсор нажатия не сконфигурирован на этом порту</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
         <source>Saving world and robot model</source>
-        <translation type="obsolete">РЎРѕС…СЂР°РЅРµРЅРёРµ РјРѕРґРµР»Рё СЂРѕР±РѕС‚Р° Рё РѕРєСЂСѓР¶РµРЅРёСЏ</translation>
+        <translation type="obsolete">Сохранение модели робота и окружения</translation>
     </message>
     <message>
         <source>2D model saves (*.xml)</source>
-        <translation type="obsolete">РЎРѕС…СЂР°РЅРµРЅРёСЏ 2D-РјРѕРґРµР»Рё (*.xml)</translation>
+        <translation type="obsolete">Сохранения 2D-модели (*.xml)</translation>
     </message>
 </context>
 </TS>

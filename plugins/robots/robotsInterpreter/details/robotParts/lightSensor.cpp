@@ -1,7 +1,5 @@
 #include "lightSensor.h"
 
-#include <QtCore/QDebug>
-
 using namespace qReal::interpreters::robots;
 using namespace details::robotParts;
 

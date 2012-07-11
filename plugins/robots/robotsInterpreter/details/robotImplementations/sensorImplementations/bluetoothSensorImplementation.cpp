@@ -1,8 +1,7 @@
 #include "bluetoothSensorImplementation.h"
 #include "../../robotParts/robotModel.h"
-
 #include "../../tracer.h"
-#include <QDebug>
+
 using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace robotImplementations::sensorImplementations;
@@ -79,4 +78,3 @@ void BluetoothSensorImplementation::configure()
 	command[6] = mSensorMode;
 	mRobotCommunicationInterface->send(this, command, 5);
 }
-

@@ -6,7 +6,6 @@
 #include "details/robotCommunication/usbRobotCommunicationThread.h"
 #include "details/tracer.h"
 #include "details/debugHelper.h"
-#include "QtCore/QDebug"
 #include <QtGui/QAction>
 
 using namespace qReal;
