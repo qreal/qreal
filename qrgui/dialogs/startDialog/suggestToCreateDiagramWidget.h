@@ -12,7 +12,7 @@ class MainWindow;
 
 namespace qReal {
 
-class SuggestToCreateDiagramWidget : public QWidget
+class SuggestToCreateDiagramWidget : public ListWidget
 {
 	Q_OBJECT
 
@@ -21,7 +21,6 @@ public:
 
 private:
 	MainWindow *mMainWindow;
-	QListWidget *mDiagramsListWidget;
 };
 
 }

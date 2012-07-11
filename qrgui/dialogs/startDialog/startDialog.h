@@ -20,6 +20,7 @@ public:
 public slots:
 	void createNewProject();
 	void openRecentProject(QString const &fileName);
+	void createProjectWithDiagram(QString const &idString);
 
 private:
 	MainWindow *mMainWindow;

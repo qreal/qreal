@@ -41,6 +41,7 @@ StartDialog::StartDialog(MainWindow *mainWindow, QWidget *parent)
 	connect(helpLink, SIGNAL(clicked()), mMainWindow, SLOT(showHelp()));
 	connect(quitLink, SIGNAL(clicked()), qApp, SLOT(quit()));
 	connect(recentProjects, SIGNAL(userDataSelected(QString)), this, SLOT(openRecentProject(QString)));
+	connect(diagrams, SIGNAL(userDataSelected(QString)), this, SLOT(createProjectWithDiagram(QString)));
 }
 
 void StartDialog::createNewProject()
@@ -51,5 +52,12 @@ void StartDialog::createNewProject()
 void StartDialog::openRecentProject(QString const &fileName)
 {
 	mMainWindow->open(fileName);
+	close();
+}
+
+void StartDialog::createProjectWithDiagram(const QString &idString)
+{
+	mMainWindow->openEmptyProject();
+	mMainWindow->createDiagram(idString);
 	close();
 }
