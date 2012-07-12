@@ -766,7 +766,9 @@ void MainWindow::showHelp()
 	QSplitter * const helpPanel = new QSplitter(Qt::Horizontal);
 	helpPanel->setGeometry(QRect(50, 50, 1000, 800));
 	helpPanel->setWindowTitle("QReal:Robots Help Center");
-
+	QIcon icon;
+	icon.addFile(QString::fromUtf8(":/icons/qreal.png"), QSize(), QIcon::Normal, QIcon::Off);
+	helpPanel->setWindowIcon(icon);
 	helpPanel->insertWidget(0, helpEngine->contentWidget());
 	helpPanel->insertWidget(1, mHelpBrowser);
 	helpPanel->setStretchFactor(1, 1);
