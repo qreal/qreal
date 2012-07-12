@@ -516,7 +516,9 @@ void MainWindow::openRecentProjectsMenu()
 
 void MainWindow::saveAllAndOpen(QString const &dirName)
 {
-	saveAll();
+	if (!suggestToSaveChangesOrCancel()) {
+		return;
+	}
 	open(dirName);
 }
 
