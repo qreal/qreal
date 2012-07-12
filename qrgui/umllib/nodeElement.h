@@ -162,22 +162,28 @@ private:
 	// newContents = mContents
 	void resize();
 
-	// methods are used by resize()
-	void resizePreinit(QRectF& newContents);
-	void childrenResizePart(QRectF& newContents, QPointF& newPos);
-	void normalizeSize(QRectF& newContents);
+	/// Resizes newContents and moves newPos according to children
+	void resizeAccordingToChildren(QRectF& newContents, QPointF& newPos);
+	/// Changes contents to size that not smaller than mFoldedContents
+	void normalizeSize(QRectF& contents);
+	/// Calls resize() method for parent item
 	void parentResizeCall();
 	QRectF childBoundingRect(QGraphicsItem* childItem, QRectF const &newContents);	
 	void expandByChildren(QRectF& newContents);
-	QPointF calculateChildrenMoving();
-	
+	QPointF calculateChildrenMoving();	
+	/// Gripes contents to QRectF() in case of minimizesToChildren
+	/// container property
+	gripeIfMinimizesToChildrenContainer(QRectF& contents);
+
 	void updateByChild(NodeElement* item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
 
 	void moveChildren(qreal dx, qreal dy);
 	void moveChildren(QPointF const &moving);
 
-	void sortChildren();
+	/// Sorts child items in case of sortChildren
+	/// container property
+	void sortChildrenIfNeeded();
 
 	qreal minDistanceFromLinePort(int linePortNumber, const QPointF &location) const;
 	qreal distanceFromPointPort(int pointPortNumber, const QPointF &location) const;
@@ -190,7 +196,6 @@ private:
 
 	ContextMenuAction mSwitchGridAction;
 	static int const objectMinSize = 10;
-	//static int const sizeOfForestalling = 25;//TODO: must be used mElementImpl->sizeOfForestalling
 
 	bool mPortsVisible;
 

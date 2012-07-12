@@ -340,15 +340,17 @@ void NodeElement::moveChildren(qreal dx, qreal dy)
 {
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem && !curItem->isPort()) {
-			curItem->moveBy(dx, dy);
-			///returns object to the parent area
-			if (curItem->pos().x() < mElementImpl->sizeOfForestalling()) {
-				curItem->setPos(mElementImpl->sizeOfForestalling(), curItem->pos().y());
-			}
-			if (curItem->pos().y() < mElementImpl->sizeOfForestalling()) {
-				curItem->setPos(curItem->pos().x(), mElementImpl->sizeOfForestalling());
-			}
+		if (!curItem || !curItem->isPort()) {
+			continue;
+		}
+
+		curItem->moveBy(dx, dy);
+		///returns object to the parent area
+		if (curItem->pos().x() < mElementImpl->sizeOfForestalling()) {
+			curItem->setPos(mElementImpl->sizeOfForestalling(), curItem->pos().y());
+		}
+		if (curItem->pos().y() < mElementImpl->sizeOfForestalling()) {
+			curItem->setPos(curItem->pos().x(), mElementImpl->sizeOfForestalling());
 		}
 	}
 }
@@ -368,37 +370,53 @@ void NodeElement::resize(QRectF newContents)
 	resize(newContents, mPos);
 }
 
-void NodeElement::resizePreinit(QRectF& newContents) {
+void NodeElement::resize(QRectF newContents, QPointF newPos)
+{
 	newContents.moveTo(0, 0);
-	if (mElementImpl->isSortingContainer()) {
-		sortChildren();
+
+	sortChildrenIfNeeded();
+	gripeIfMinimizesToChildrenContainer(newContents);
+
+	if (!mIsFolded) {
+		resizeAccordingToChildren(newContents, newPos);
 	}
 
+	normalizeSize(newContents);
+
+	newContents.moveTo(newPos);
+	setGeometry(newContents);
+	storeGeometry();
+
+	parentResizeCall();
+}
+
+void NodeElement::gripeIfMinimizesToChildrenContainer(QRectF& contents) {
 	if (mElementImpl->minimizesToChildren()) {
 		newContents = QRectF();
 	}
 }
 
-void NodeElement::childrenResizePart(QRectF& newContents, QPointF& newPos) {
+void NodeElement::resizeAccordingToChildren(QRectF& newContents, QPointF& newPos) {
+	/* 
+	* AAAA!!! Who knows why is this code existed????!!!
+	*
 	foreach (QGraphicsItem *childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem && curItem->isPort() && newContents != mContents) {
 			curItem->resizeChild(newContents, mContents);
 		}
 	}
+	*/
 
 	//childrenMoving - negative shift of children from the point (sizeOfForestalling, sizeOfForestalling)
 	//whatever it means :)
 	QPointF childrenMoving = calculateChildrenMoving();
 
-	//setPos(pos() + childrenMoving);
 	moveChildren(-childrenMoving);
 	//newPos += childrenMoving;
 
 	qDebug() << "&&&" << childrenMoving;
-
 	expandByChildren(newContents);
-	qDebug() << "!!!" << childrenMoving;
 }
 
 QPointF NodeElement::calculateChildrenMoving() {
@@ -481,22 +499,7 @@ QRectF NodeElement::childBoundingRect(QGraphicsItem* childItem, QRectF const &ne
 	return boundingRect;
 }
 
-void NodeElement::resize(QRectF newContents, QPointF newPos)
-{
-	resizePreinit(newContents);
 
-	if (!mIsFolded) {
-		childrenResizePart(newContents, newPos);
-	}
-
-	normalizeSize(newContents);
-
-	newContents.moveTo(newPos);
-	setGeometry(newContents);
-	storeGeometry();
-
-	parentResizeCall();
-}
 
 void NodeElement::normalizeSize(QRectF& newContents) {
 	if (newContents.width() < objectMinSize) {
@@ -1361,6 +1364,10 @@ void NodeElement::setLinksVisible(bool isVisible)
 
 void NodeElement::sortChildren()
 {
+	if (!mElementImpl->isSortingContainer()) {
+		return;
+	}
+
 	qreal curChildY = mElementImpl->sizeOfForestalling() + titlePadding;
 	qreal maxChildrenWidth = 0;
 
