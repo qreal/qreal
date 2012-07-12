@@ -6,6 +6,7 @@ using namespace interpreters::robots::details::blocks;
 LoopBlock::LoopBlock()
 	: mIterationStartBlock(NULL)
 	, mIterations(0)
+	, mFirstRun(true)
 {
 }
 
@@ -13,9 +14,12 @@ void LoopBlock::run()
 {
 	--mIterations;
 	if (mIterations <= 0)
+	{
+		mFirstRun = true;
 		emit done(mNextBlock);
-	else
+	} else {
 		emit done(mIterationStartBlock);
+	}
 }
 
 bool LoopBlock::initNextBlocks()
@@ -60,6 +64,11 @@ bool LoopBlock::initNextBlocks()
 	if (!nextFound) {
 		error(tr("There must be a non-marked outgoing link"));
 		return false;
+	}
+
+	if (mFirstRun) {
+		additionalInit();
+		mFirstRun = false;
 	}
 
 	return true;

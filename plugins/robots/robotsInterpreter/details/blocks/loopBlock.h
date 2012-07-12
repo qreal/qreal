@@ -21,6 +21,7 @@ public:
 private:
 	Block *mIterationStartBlock;
 	int mIterations;
+	bool mFirstRun;
 
 	virtual bool initNextBlocks();
 	virtual void additionalInit();
