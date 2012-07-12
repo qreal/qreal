@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../../qrgui/mainwindow/errorReporter.h"
-#include "../../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
-#include "../../../qrutils/graphTransformation/baseGraphTransformationUnit.h"
+#include "../../qrgui/mainwindow/errorReporter.h"
+#include "../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
+#include "../../qrutils/graphTransformation/baseGraphTransformationUnit.h"
 #include "ruleParser.h"
 
 namespace qReal {
@@ -15,8 +15,8 @@ class VisualInterpreterUnit : public BaseGraphTransformationUnit
 	Q_OBJECT
 
 public:
-	VisualInterpreterUnit(LogicalModelAssistInterface const &logicalModelApi
-			, GraphicalModelAssistInterface const &graphicalModelApi
+	VisualInterpreterUnit(LogicalModelAssistInterface &logicalModelApi
+			, GraphicalModelAssistInterface &graphicalModelApi
 			, gui::MainWindowInterpretersInterface &interpretersInterface);
 
 	/// Load semantics model from current open diagram
@@ -26,8 +26,14 @@ public:
 	/// create and replace elements)
 	void interpret();
 
+	/// Stops interpretation
+	void stopInterpretation();
+	
 	/// True if match was found
 	bool findMatch();
+	
+	/// Get rule parser for watch list
+	utils::ExpressionsParser* ruleParser();
 
 protected:
 	/// For debug uses only
@@ -38,13 +44,44 @@ protected:
 
 	/// Fields initialization before interpretation
 	void initBeforeInterpretation();
+	
+	/// Clear memory from current semantics
+	void deinit();
 
 	/// Checks current diagram for being semantics model
 	bool isSemanticsEditor() const;
 
 	/// Perform all transformations
 	bool makeStep();
-
+	
+	/// Delete elements according to rule. True if at least one element was deleted
+	bool deleteElements();
+	
+	/// Create elements according to rule. True if at least one element was created
+	bool createElements();
+	
+	/// Create elements to replace with according to rule. True if at least
+	/// one element was created
+	bool createElementsToReplace();
+	
+	/// Replace elements according to rule
+	void replaceElements();
+	
+	/// Performs control flow changes
+	void moveControlFlow();
+	
+	/// Interpret rule reaction
+	bool interpretReaction();
+	
+	/// Arranges connections between newly created elements
+	void arrangeConnections();
+	
+	/// Copy properties from element in rule to element in model
+	void copyProperties(Id const &elemInModel, Id const &elemInRule);
+	
+	/// Generates position for new element
+	QPointF* position();
+	
 	/// Fill rules information with this
 	void putIdIntoMap(QHash<QString ,IdList*> *map, QString const &ruleName,
 			Id const &id);
@@ -69,8 +106,10 @@ protected:
 	void semanticsLoadingError(QString const &message);
 
 	/// Is semantics loaded successfully
-	bool isSemanticsLoaded;
-
+	bool mIsSemanticsLoaded;
+	
+	bool mNeedToStopInterpretation;
+	
 	/// Metamodel name which loaded semantics is for
 	QString mMetamodelName;
 
@@ -79,12 +118,14 @@ protected:
 
 	/// All maps below has the format: key - rule name, value - list of ids
 	QHash<QString, IdList*> *mDeletedElements;
-	QHash<QString, IdList*> *mReplacedElements;
+	QHash<QString, QHash<Id, Id>* > *mReplacedElements;
 	QHash<QString, IdList*> *mCreatedElements;
 	QHash<QString, IdList*> *mNodesWithNewControlMark;
 	QHash<QString, IdList*> *mNodesWithDeletedControlMark;
 	QHash<QString, IdList*> *mNodesWithControlMark;
-
+	QHash<Id, Id> *mReplacedElementsPairs;
+	QHash<Id, Id> *mCreatedElementsPairs;
+	
 	QString mMatchedRuleName;
 	QString mCurrentRuleName;
 

@@ -3,8 +3,8 @@
 using namespace qReal;
 
 BaseGraphTransformationUnit::BaseGraphTransformationUnit(
-		qReal::LogicalModelAssistInterface const &logicalModelApi
-		, qReal::GraphicalModelAssistInterface const &graphicalModelApi
+		qReal::LogicalModelAssistInterface &logicalModelApi
+		, qReal::GraphicalModelAssistInterface &graphicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface)
 		: mInterpretersInterface(interpretersInterface)
 		, mLogicalModelApi(logicalModelApi)

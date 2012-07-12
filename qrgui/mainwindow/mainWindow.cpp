@@ -625,6 +625,17 @@ void MainWindow::settingsPlugins()
 	dialog.exec();
 }
 
+void MainWindow::deleteElementFromDiagram(Id const &id)
+{
+	bool isLogical = mModels->logicalModelAssistApi().isLogicalId(id);
+	if (isLogical) {
+		mUi->logicalModelExplorer->setCurrentIndex(mModels->logicalModelAssistApi().indexById(id));
+	} else {
+		mUi->graphicalModelExplorer->setCurrentIndex(mModels->graphicalModelAssistApi().indexById(id));
+	}
+	deleteFromExplorer(isLogical);
+}
+
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
 	QModelIndex const index = isLogicalModel

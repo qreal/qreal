@@ -87,6 +87,7 @@ public:
 	virtual void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles);
 	virtual IdList selectedElementsOnActiveDiagram();
 	virtual void updateActiveDiagram();
+	virtual void deleteElementFromDiagram(Id const &id);
 
 signals:
 	void gesturesShowed();
