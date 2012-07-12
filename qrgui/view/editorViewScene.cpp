@@ -688,11 +688,13 @@ void EditorViewScene::moveSelectedItems(int direction)
 		if (!item->parentItem()) {
 			newPos += offset;
 		}
+
 		Element* element = dynamic_cast<Element*>(item);
 		if (element) {
 			mMVIface->graphicalAssistApi()->setPosition(element->id(), newPos);
 		}
 		element->setPos(newPos);
+
 		NodeElement* node = dynamic_cast<NodeElement*>(item);
 		if (node) {
 			node->alignToGrid();
@@ -704,7 +706,7 @@ QPointF EditorViewScene::offsetByDirection(int direction)
 {
 	int offset = arrowMoveOffset;
 	if (SettingsManager::value("ActivateGrid").toBool()) {
-		offset = mRealIndexGrid;
+		offset = SettingsManager::value("IndexGrid").toInt();
 	}
 	switch (direction) {
 		case Qt::Key_Left:
@@ -855,24 +857,40 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 {
 	QMenu menu;
+
+	if (!e) {
+		mWindow->actionDeleteFromDiagram()->setEnabled(false);
+		mWindow->actionCopyElementsOnDiagram()->setEnabled(false);
+	}
+
 	menu.addAction(mWindow->actionDeleteFromDiagram());
-	QList<ContextMenuAction*> elementActions = e->contextMenuActions();
+	menu.addAction(mWindow->actionCopyElementsOnDiagram());
+	menu.addAction(mWindow->actionPasteOnDiagram());
 
-	if (!elementActions.isEmpty()) {
+	if (e) {
+		QList<ContextMenuAction*> elementActions = e->contextMenuActions();
+
+		if (!elementActions.isEmpty()) {
+			menu.addSeparator();
+		}
+
+		foreach (ContextMenuAction*action, elementActions) {
+			action->setEventPos(e->mapFromScene(pos));
+			menu.addAction(action);
+
+			connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()),
+					Qt::UniqueConnection);
+			mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
+		}
 		menu.addSeparator();
+		createConnectionSubmenus(menu, e);
 	}
 
-	foreach (ContextMenuAction*action, elementActions) {
-		action->setEventPos(e->mapFromScene(pos));
-		menu.addAction(action);
-
-		connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()),
-				Qt::UniqueConnection);
-		mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
-	}
-	menu.addSeparator();
-	createConnectionSubmenus(menu, e);
 	menu.exec(QCursor::pos());
+
+	mWindow->actionDeleteFromDiagram()->setEnabled(true);
+	mWindow->actionCopyElementsOnDiagram()->setEnabled(true);
+
 }
 
 void EditorViewScene::getObjectByGesture()
@@ -961,7 +979,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				return;
 			}
 		}
-		if (element && !mMouseMovementManager->wasMoving()) {
+		if (!mMouseMovementManager->wasMoving()) {
 			deleteGesture();
 			if (element && !element->isSelected()) {
 				element->setSelected(true);
@@ -970,6 +988,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			clearSelection();
 			return;
 		}
+
 		QPointF const start = mMouseMovementManager->firstPoint();
 		QPointF const end = mMouseMovementManager->lastPoint();
 		NodeElement *parent = dynamic_cast<NodeElement *>(getElemAt(start));
