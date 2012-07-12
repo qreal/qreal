@@ -502,16 +502,22 @@ void MainWindow::refreshRecentProjectsList(QString const &fileName)
 
 void MainWindow::openRecentProjectsMenu()
 {
+	delete mRecentProjectsMapper;
+	mRecentProjectsMapper = new QSignalMapper;
+
 	mRecentProjectsMenu->clear();
 	QString const stringList = SettingsManager::value("recentProjects").toString();
 	QStringList const recentProjects = stringList.split(";", QString::SkipEmptyParts);
 	foreach (QString projectPath, recentProjects) {
 		mRecentProjectsMenu->addAction(projectPath);
-		QObject::connect(mRecentProjectsMenu->actions().last(), SIGNAL(triggered()), mRecentProjectsMapper, SLOT(map()));
+		QObject::connect(mRecentProjectsMenu->actions().last(), SIGNAL(triggered())
+				, mRecentProjectsMapper, SLOT(map()));
 		mRecentProjectsMapper->setMapping(mRecentProjectsMenu->actions().last(), projectPath);
 	}
 
-	QObject::connect(mRecentProjectsMapper, SIGNAL(mapped(const QString &)), this, SLOT(saveAllAndOpen(const QString &)));
+	QObject::connect(mRecentProjectsMapper, SIGNAL(mapped(const QString &))
+			, this, SLOT(saveAllAndOpen(const QString &)));
+
 }
 
 void MainWindow::saveAllAndOpen(QString const &dirName)
@@ -1594,16 +1600,6 @@ void MainWindow::autosave()
 		saveAll();
 }
 
-QProgressBar *MainWindow::createProgressBarWithSplashScreen(QSplashScreen *splash)
-{
-	QProgressBar *progress = new QProgressBar(splash);
-	progress->move(20, 270);
-	progress->setFixedWidth(600);
-	progress->setFixedHeight(15);
-	progress->setRange(0, 100);
-	return progress;
-}
-
 void MainWindow::initToolManager()
 {
 	if (mToolManager.customizer()) {
@@ -1672,9 +1668,12 @@ void MainWindow::initExplorers()
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 
-	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &)), this, SLOT(updateTabName(Id const &)));
-	connect(mUi->graphicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(graphicalModelExplorerClicked(QModelIndex)));
-	connect(mUi->logicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(logicalModelExplorerClicked(QModelIndex)));
+	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &))
+			, this, SLOT(updateTabName(Id const &)));
+	connect(mUi->graphicalModelExplorer, SIGNAL(clicked(QModelIndex const &))
+			, this, SLOT(graphicalModelExplorerClicked(QModelIndex)));
+	connect(mUi->logicalModelExplorer, SIGNAL(clicked(QModelIndex const &))
+			, this, SLOT(logicalModelExplorerClicked(QModelIndex)));
 }
 
 void MainWindow::initRecentProjectsMenu()
@@ -1686,8 +1685,9 @@ void MainWindow::initRecentProjectsMenu()
 
 void MainWindow::saveDiagramAsAPictureToFile(const QString &fileName)
 {
-	if (fileName.isEmpty())
+	if (fileName.isEmpty()) {
 		return;
+	}
 	QRectF const sceneRect = getCurrentTab()->scene()->itemsBoundingRect();
 
 	QImage image(sceneRect.size().toSize(), QImage::Format_RGB32);

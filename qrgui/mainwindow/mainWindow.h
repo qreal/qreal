@@ -269,7 +269,6 @@ private:
 
 	void initToolPlugins();
 
-	QProgressBar *createProgressBarWithSplashScreen(QSplashScreen *splash);
 	void initMiniMap();
 	void initToolManager();
 	void initTabs();
