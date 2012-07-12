@@ -21,7 +21,6 @@ public:
 	void keyPressEvent(QKeyEvent *event);
 
 private:
-	SuggestToCreateDiagramWidget *mSuggestWidget;
 	bool mIsNonClosable;
 };
 

@@ -18,8 +18,6 @@ public:
 	explicit StartDialog(MainWindow *mainWindow);
 	void keyPressEvent(QKeyEvent *event);
 
-	static const QSize dialogSize;
-
 public slots:
 	void openRecentProject(QString const &fileName);
 	void openExistingProject();

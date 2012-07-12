@@ -8,15 +8,11 @@
 
 using namespace qReal;
 
-const QSize StartDialog::dialogSize = QSize(380, 300);
-
 StartDialog::StartDialog(MainWindow *mainWindow)
 	: QDialog(mainWindow, Qt::WindowMaximizeButtonHint)
 	, mMainWindow(mainWindow)
 	, mTabWidget(new QTabWidget)
 {
-	mTabWidget->setFixedSize(dialogSize);
-
 	RecentProjectsListWidget *recentProjects = new RecentProjectsListWidget(this);
 	mTabWidget->addTab(recentProjects, tr("Recent projects"));
 	SuggestToCreateDiagramWidget *diagrams = new SuggestToCreateDiagramWidget(mMainWindow, this);

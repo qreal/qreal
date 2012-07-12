@@ -1,3 +1,5 @@
+#include <QtGui/QVBoxLayout>
+
 #include "suggestToCreateDiagramDialog.h"
 #include "mainwindow/mainWindow.h"
 
@@ -5,11 +7,15 @@ using namespace qReal;
 
 SuggestToCreateDiagramDialog::SuggestToCreateDiagramDialog(MainWindow *mainWindow, bool isNonClosable)
 	: QDialog(mainWindow, isNonClosable ? Qt::WindowMinimizeButtonHint : Qt::Dialog)
-	, mSuggestWidget(new SuggestToCreateDiagramWidget(mainWindow, this))
 	, mIsNonClosable(isNonClosable)
 {
-	setFixedSize(275, 240);
-	connect(mSuggestWidget, SIGNAL(userDataSelected(QString)), mainWindow, SLOT(createDiagram(QString)));
+	SuggestToCreateDiagramWidget *suggestWidget = new SuggestToCreateDiagramWidget(mainWindow, this);
+
+	QVBoxLayout *mainLayout = new QVBoxLayout;
+	mainLayout->addWidget(suggestWidget);
+	setLayout(mainLayout);
+
+	connect(suggestWidget, SIGNAL(userDataSelected(QString)), mainWindow, SLOT(createDiagram(QString)));
 }
 
 void SuggestToCreateDiagramDialog::keyPressEvent(QKeyEvent *event)
