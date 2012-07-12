@@ -155,13 +155,11 @@ void PreferencesEditorPage::changePaletteParameters()
 
 void PreferencesEditorPage::showGrid(bool show)
 {
-//	SettingsManager::setValue("ShowGrid", show);
 	mUi->showGridCheckBox->setChecked(show);
 }
 
 void PreferencesEditorPage::showAlignment(bool show)
 {
-//	SettingsManager::setValue("ShowAlignment", show);
 	mUi->showAlignmentCheckBox->setChecked(show);
 }
 
