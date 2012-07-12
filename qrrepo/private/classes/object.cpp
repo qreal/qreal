@@ -127,6 +127,11 @@ void Object::setProperty(const QString &name, const QVariant &value)
 	mProperties.insert(name,value);
 }
 
+void Object::setProperties(QMap<QString, QVariant> const &properties)
+{
+	mProperties = properties;
+}
+
 QVariant Object::property(const QString &name) const
 {
 	if (mProperties.contains(name)) {
@@ -204,3 +209,7 @@ QMapIterator<QString, QVariant> Object::propertiesIterator()
 	return QMapIterator<QString, QVariant>(mProperties);
 }
 
+QMap<QString, QVariant> Object::properties()
+{
+	return mProperties;
+}
