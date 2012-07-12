@@ -1,0 +1,25 @@
+#pragma once
+#include <QtCore/QObject>
+#include <QtCore/QString>
+
+namespace qReal {
+
+class MainWindow;
+
+}
+
+namespace qReal {
+
+class ProjectManager : public QObject
+{
+	Q_OBJECT
+
+public:
+	explicit ProjectManager(MainWindow *mainWindow);
+	bool open(const QString &fileName);
+
+private:
+	MainWindow *mMainWindow;
+};
+
+}

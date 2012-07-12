@@ -29,6 +29,7 @@
 #include  "paletteTree.h"
 
 #include "../dialogs/startDialog/startDialog.h"
+#include "projectManager/projectManager.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -140,7 +141,6 @@ private slots:
 	/// @param fileName - *.qrs file to import
 	/// @return true - if all ok, false - if not ok
 	bool import(QString const &fileName);
-	bool open(QString const &fileName);
 	void saveProjectAs();
 	virtual void saveAll();
 	void fullscreen();
@@ -328,10 +328,12 @@ private:
 	qReal::gui::PaletteTree *mPaletteTree;
 	FindManager *mFindHelper;
 
+	ProjectManager *mProjectManager;
 	StartDialog *mStartDialog;
 
 friend class StartDialog;
 friend class SuggestToCreateDiagramWidget;
+friend class ProjectManager;
 };
 
 }

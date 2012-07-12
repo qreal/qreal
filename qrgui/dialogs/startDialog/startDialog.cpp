@@ -41,7 +41,7 @@ StartDialog::StartDialog(MainWindow *mainWindow)
 
 void StartDialog::openRecentProject(QString const &fileName)
 {
-	if (mMainWindow->open(fileName)) {
+	if (mMainWindow->mProjectManager->open(fileName)) {
 		close();
 	}
 }
