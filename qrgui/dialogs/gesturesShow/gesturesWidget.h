@@ -2,6 +2,7 @@
 
 #include <QWidget>
 #include <QGraphicsScene>
+#include <QGraphicsItem>
 #include <QTimer>
 #include <QList>
 #include <QPoint>
@@ -19,7 +20,7 @@ class GesturesWidget : public QWidget, public GesturesPainterInterface
 public:
 	explicit GesturesWidget(QWidget *parent = 0);
 	~GesturesWidget();
-	void draw(QList<QPoint> const & path);
+	void draw(PathVector const &paths);
 	QString currentElement();
 	void setElements(QList<QString> const & elements);
 
@@ -29,13 +30,12 @@ signals:
 private:
 	Ui::GesturesWidget *ui;
 	QGraphicsScene *mGestureScene;
-	QTimer *mTimer;
-	QList<QPoint> mPath;
+	//QTimer *mTimer;
+	PathVector mPaths;
 	static const int pointsAtSegment = 5;
 	int mCurrentPointNumber;
 	static int coord(int previous, int next, int part);
 
 private slots:
-	void drawGesture();
-
+	//void drawGesture();
 };

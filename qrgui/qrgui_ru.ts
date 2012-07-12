@@ -514,7 +514,7 @@
     <message>
         <location filename="dialogs/gesturesShow/gesturesWidget.ui" line="46"/>
         <source>List of mouse gestures</source>
-        <translation>Список жестов мышью</translation>
+        <translation type="unfinished">Тип модели робота</translation>
     </message>
     <message>
         <location filename="dialogs/gesturesShow/gesturesWidget.ui" line="59"/>
@@ -3117,7 +3117,7 @@
     <message>
         <location filename="mainwindow/mainWindow.cpp" line="1294"/>
         <source>Gestures Show</source>
-        <translation>Жесты мышью</translation>
+        <translation>Жесты</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.cpp" line="1316"/>

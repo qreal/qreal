@@ -34,8 +34,8 @@ void MouseMovementManager::drawIdealPath()
 	QString currentElement = mGesturesPaintMan->currentElement();
 	foreach (qReal::Id element, mElements) {
 		if (element.element() == currentElement) {
-			QString path = mEditorManager->mouseGesture(element);
-			//mGesturesPaintMan->draw(stringToPath(path)); // раскомментировать, чтоб пахало
+			QString paths = mEditorManager->mouseGesture(element);
+			mGesturesPaintMan->draw(stringToPath(paths));
 		}
 	}
 }

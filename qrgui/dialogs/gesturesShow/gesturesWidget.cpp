@@ -1,6 +1,8 @@
 #include "gesturesWidget.h"
 #include "ui_gesturesWidget.h"
 
+const int minBoarder = -1000;
+
 GesturesWidget::GesturesWidget(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::GesturesWidget)
@@ -10,27 +12,49 @@ GesturesWidget::GesturesWidget(QWidget *parent) :
 	ui->graphicsView->setScene(mGestureScene);
 	connect(ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
 			this, SIGNAL(currentElementChanged()));
-	mTimer = new QTimer(this);
-	QObject::connect(mTimer, SIGNAL(timeout()), this, SLOT(drawGesture()));
-	mTimer->start(5);
+//	mTimer = new QTimer(this);
+//	QObject::connect(mTimer, SIGNAL(timeout()), this, SLOT(drawGesture()));
+//	mTimer->start(5);
 }
 
 GesturesWidget::~GesturesWidget()
 {
-	delete mTimer;
+//	delete mTimer;
 	delete ui;
 }
 
 //сделать, чтобы работало от листа листа точек, эта штука лежит в тулзах в PaintManager::drawPath
-void GesturesWidget::draw(QList<QPoint> const & path)
+void GesturesWidget::draw(PathVector const &paths)
 {
+	mGestureScene->clear();
+
+	foreach (PointVector path, paths)
+	{
+		QPointF previousPoint(minBoarder, minBoarder);
+
+		QPen pen(Qt::blue);
+		pen.setWidth(3);
+
+		if (path.isEmpty())
+			return;
+		foreach (QPointF currentPoint, path)
+		{
+			if (previousPoint.x() != minBoarder && previousPoint.y() != minBoarder) {
+				mGestureScene->addLine(QLineF(previousPoint, currentPoint), pen);
+			}
+			else
+				mGestureScene->addLine(QLineF(currentPoint, currentPoint), pen);
+			previousPoint = currentPoint;
+		}
+	}
+	/*
 	mCurrentPointNumber = 0;
 	mGestureScene->clear();
 	mPath = path;
-
+	*/
 }
 
-void GesturesWidget::drawGesture()
+/*void GesturesWidget::drawGesture()
 {
 	if (mPath.isEmpty())
 		return;
@@ -45,8 +69,8 @@ void GesturesWidget::drawGesture()
 
 	QPoint lastPaintedPoint = mPath.at(verticeIndex);
 	QPoint nextPoint = mPath.at(verticeIndex + 1);
-	QPoint currentPoint(coord(lastPaintedPoint.x(), nextPoint.x(), segmentNumber),
-			coord(lastPaintedPoint.y(), nextPoint.y(), segmentNumber));
+	QPoint currentPoint(coord(lastPaintedPoint.x(), nextPoint.x(), segmentNumber)
+			, coord(lastPaintedPoint.y(), nextPoint.y(), segmentNumber));
 
 	QPen pen(Qt::blue);
 	pen.setWidth(3);
@@ -57,7 +81,8 @@ void GesturesWidget::drawGesture()
 	mGestureScene->addLine(QLine(lastPaintedPoint, currentPoint), pen);
 
 	mCurrentPointNumber++;
-}
+}*/
+
 
 int GesturesWidget::coord(int previous, int next, int part)
 {
@@ -74,3 +99,4 @@ void GesturesWidget::setElements(const QList<QString> &elements)
 	ui->listWidget->clear();
 	ui->listWidget->addItems(elements);
 }
+
