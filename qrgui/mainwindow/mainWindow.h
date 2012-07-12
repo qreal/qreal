@@ -234,6 +234,8 @@ private:
 
 	void loadPlugins();
 
+	void registerMetaTypes();
+
 	QListWidget* createSaveListWidget();
 	void suggestToCreateDiagram();
 
