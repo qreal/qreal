@@ -693,20 +693,28 @@ void EditorViewScene::moveSelectedItems(int direction)
 			mMVIface->graphicalAssistApi()->setPosition(element->id(), newPos);
 		}
 		element->setPos(newPos);
+		NodeElement* node = dynamic_cast<NodeElement*>(item);
+		if (node) {
+			node->alignToGrid();
+		}
 	}
 }
 
 QPointF EditorViewScene::offsetByDirection(int direction)
 {
+	int offset = arrowMoveOffset;
+	if (SettingsManager::value("ActivateGrid").toBool()) {
+		offset = mRealIndexGrid;
+	}
 	switch (direction) {
 		case Qt::Key_Left:
-			return QPointF(-arrowMoveOffset, 0);
+			return QPointF(-offset, 0);
 		case Qt::Key_Right:
-			return QPointF(arrowMoveOffset, 0);
+			return QPointF(offset, 0);
 		case Qt::Key_Down:
-			return QPointF(0, arrowMoveOffset);
+			return QPointF(0, offset);
 		case Qt::Key_Up:
-			return QPointF(0, -arrowMoveOffset);
+			return QPointF(0, -offset);
 		default:
 			qDebug() << "Incorrect direction";
 			return QPointF(0, 0);
