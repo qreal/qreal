@@ -640,6 +640,9 @@ Id EditorViewScene::pasteEdge(EdgeData const &edgeData
 	mMVIface->graphicalAssistApi()->setFromPort(newId, edgeData.portFrom);
 	mMVIface->graphicalAssistApi()->setToPort(newId, edgeData.portTo);
 
+	EdgeElement* newEdge = dynamic_cast<EdgeElement*>(getElem(newId));
+	newEdge->connectToPort();
+
 	return newId;
 }
 
