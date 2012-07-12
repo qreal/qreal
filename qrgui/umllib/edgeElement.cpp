@@ -38,7 +38,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	mPenColor = mElementImpl->getPenColor();
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
-	// FIXME: draws strangely...
+	// FIXME: draws strangely... // что это? к чему это?
 	setFlag(ItemClipsToShape, false);
 	setFlag(ItemClipsChildrenToShape, false);
 
@@ -488,9 +488,11 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (mDst)
 		mDst->setPortsVisible(false);
 
-	arrangeSrcAndDst();
+	delCloseLinePoints();
 
-	//delCloseLinePoints();
+	arrangeSrcAndDst(); // в отладчике при окончании действия пробегается 2 раза.
+
+	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
 }
 
 void EdgeElement::deleteUnneededPoints()
@@ -550,80 +552,91 @@ void EdgeElement::deleteUnneededPoints()
 	}
 }
 
-qreal EdgeElement::lengthOfSegment(QPointF const &pos1, QPointF const &pos2)
+qreal EdgeElement::lengthOfSegment(QPointF const &pos1, QPointF const &pos2) const
 {
-	return sqrt(((pos1.x() - pos2.x())*(pos1.x() - pos2.x())) + ((pos1.y() - pos2.y())* (pos1.y() - pos2.y())));
+	qreal len = sqrt(((pos1.x() - pos2.x()) * (pos1.x() - pos2.x())) + ((pos1.y() - pos2.y()) * (pos1.y() - pos2.y())));
+	return len;
 }
 
-void EdgeElement::delClosePoints()
+void EdgeElement::delClosePoints() // мб rad = kvadratik
 {
-	int const rad = kvadratik + 1;
+	int const rad = kvadratik * 3;
 	for (int i = 0; i < mLine.size() - 1; i++) {
 		if (lengthOfSegment(mLine[i], mLine[i + 1]) < rad) {
 			if (i != mLine.size() - 2) {
 				mLine.remove(i + 1);
+				setGraphicApi(QPointF());
 				i--;
 			} else if (i != 0){
 				mLine.remove(i);
+				setGraphicApi(QPointF());
 				i = i - 2;
 			}
 		}
 	}
 }
 
-void EdgeElement::delCloseLinePoints() //FIXME
+void EdgeElement::delCloseLinePoints() // мб  width = kvadratik // надо оптимизировать создание path
 {
 	prepareGeometryChange();
 
-	int width = kvadratik;
+	int const width = kvadratik * 4;
 
-	setGraphicApi(QPointF()); // because mLine convert in QPolygon from QPolygonF // мб и не надо
-	mLine = mGraphicalAssistApi->configuration(id()); // чтоб не было разногласий
+	//setGraphicApi(QPointF()); // because mLine convert in QPolygon from QPolygonF // мб и не надо
+	//mLine = mGraphicalAssistApi->configuration(id()); // чтоб не было разногласий
 
 	delClosePoints();
 
-	QPainterPath path;
-	QPainterPathStroker neighbourhood;
-	neighbourhood.setWidth(width);
-
 	for (int i = 0; i < mLine.size() - 2; i++) {
-		path.closeSubpath();
-		path.moveTo(mLine[i]);
-		path.lineTo(mLine[i + 2]);
-		if (path.contains(mLine[i + 1])) {
-			mLine.remove(i + 1);
-			i--;
-		}
-	}
-
-	for (int i = 0; i < mLine.size() - 2; i++) {
-		path.closeSubpath();
-		path.moveTo(mLine[i + 1]);
-		path.lineTo(mLine[i + 2]);
-		if (path.contains(mLine[i])) {
-			mLine.remove(i + 1);
-			i--;
-		}
-	}
-
-	for (int i = 0; i < mLine.size() - 2; i++) {
-		QPainterPath path1;
+		QPainterPath path;
 		QPainterPathStroker neighbourhood;
 		neighbourhood.setWidth(width);
-		path1.moveTo(mLine[i]);
-		path1.lineTo(mLine[i + 1]);
-		if (path1.contains(mLine[i + 2])) {
+		path.moveTo(mLine[i]);
+		path.lineTo(mLine[i + 2]);
+		if (neighbourhood.createStroke(path).contains(mLine[i + 1])) {
 			mLine.remove(i + 1);
+			setGraphicApi(QPointF());
+			i--;
+		}
+	}
+
+	for (int i = 0; i < mLine.size() - 2; i++) {
+		QPainterPath path;
+		QPainterPathStroker neighbourhood;
+		neighbourhood.setWidth(width);
+		path.moveTo(mLine[i + 1]);
+		path.lineTo(mLine[i + 2]);
+		if (neighbourhood.createStroke(path).contains(mLine[i])) {
+			mLine.remove(i + 1);
+			setGraphicApi(QPointF()); // если не будет этой строчки, фунция почему-то не пашет, надо понять, почему и везде ли где надо она прописана.
+			i--;
+		}
+	}
+
+	for (int i = 0; i < mLine.size() - 2; i++) {
+		QPainterPath path;
+		QPainterPathStroker neighbourhood;
+		neighbourhood.setWidth(width);
+		path.moveTo(mLine[i]);
+		path.lineTo(mLine[i + 1]);
+		if (neighbourhood.createStroke(path).contains(mLine[i + 2])) {
+			mLine.remove(i + 1);
+			setGraphicApi(QPointF());
+			i--; // мб и не надо в самом деле
 			// unneeds i-- because exist previous deletes
 		}
 	}
 
+	updateLongestPart();
+
+	/*
 	if (!SettingsManager::value("ToPermitLoops", false).toBool())
 		deleteLoops();
 	if (SettingsManager::value("SquareLine", false).toBool())
 		squarizeHandler(QPointF());
 
 	setGraphicApi(QPointF());
+	*/
 }
 
 bool EdgeElement::removeOneLinePoints(int startingPoint)
@@ -643,7 +656,7 @@ bool EdgeElement::removeOneLinePoints(int startingPoint)
 	}
 }
 
-NodeElement *EdgeElement::getNodeAt(QPointF const &position) // вот тут он может выдать неправильный ноде при наложении
+NodeElement *EdgeElement::getNodeAt(QPointF const &position) // вот тут он может выдать неправильный ноде при наложении. // пока не поправлено.
 {
 	QPainterPath circlePath;
 	circlePath.addEllipse(mapToScene(position), 12, 12);
@@ -669,7 +682,7 @@ QList<ContextMenuAction*> EdgeElement::contextMenuActions()
 	return result;
 }
 
-QList<PossibleEdge> EdgeElement::getPossibleEdges()
+QList<PossibleEdge> EdgeElement::getPossibleEdges() // что даёт этот метод?
 {
 	return possibleEdges;
 }
@@ -683,26 +696,25 @@ void EdgeElement::delPointHandler(QPointF const &pos)
 		prepareGeometryChange();
 		mLine.remove(pointIndex);
 		updateLongestPart();
-		mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
+		mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon()); // аналогично addPointHandler возможна ошибка
 		update();
 	}
 }
 
-void EdgeElement::addPointHandler(QPointF const &pos)
+void EdgeElement::addPointHandler(QPointF const &pos) // при добавлении происходит смещение, так как контексттное меню выскакивает не на середине линии. как-то править.
 {
+	QPainterPath path;
+	QPainterPathStroker ps;
+	ps.setWidth(kvadratik >> 1); // -5
 	for (int i = 0; i < mLine.size() - 1; ++i) {
-		QPainterPath path;
-		QPainterPathStroker ps;
-		ps.setWidth(kvadratik - 5);
-
 		path.moveTo(mLine[i]);
 		path.lineTo(mLine[i + 1]);
-		if (ps.createStroke(path).contains(pos)) {
+		if (ps.createStroke(path).contains(pos)) { // а не может ли 2 линии содержать 1 точку?
 			mLine.insert(i + 1, pos);
 			updateLongestPart();
 			mDragPoint = i + 1;
-			update();
 			//mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
+			update(); // посмотреть, в каких метода он есть и делает ли он хоть что-нибудь. (по-моему, нет)
 			//because the second parameter is not QPolygonF (else it will be bug)
 			break;
 		}
@@ -733,7 +745,7 @@ void EdgeElement::breakPointHandler(QPointF const &pos)
 	}
 }
 
-void EdgeElement::squarizeHandler(QPointF const &pos)
+void EdgeElement::squarizeHandler(QPointF const &pos) // тут Женя говорил есть какие-то проблемки
 {
 	Q_UNUSED(pos);
 	prepareGeometryChange();
@@ -1026,21 +1038,9 @@ void EdgeElement::drawEndArrow(QPainter *painter) const
 		mElementImpl->drawEndArrow(painter);
 }
 
-void EdgeElement::setColorRect(bool bl)
+void EdgeElement::setColorRect(bool bl) // "пустая" функция
 {
 	Q_UNUSED(bl);
-}
-
-// strange function
-QPointF EdgeElement::from() const
-{
-	return mLine.first() + pos();
-}
-
-// strange function
-QPointF EdgeElement::to() const
-{
-	return mLine.last() + pos();
 }
 
 void EdgeElement::highlight(QColor const color)
@@ -1052,11 +1052,13 @@ void EdgeElement::highlight(QColor const color)
 void EdgeElement::redrawing(QPointF const &pos)
 {
 	Q_UNUSED(pos);
-//	delCloseLinePoints();
+	//mLine = mGraphicalAssistApi->configuration(id()); // надо ли?
+	delCloseLinePoints();
 	if (!SettingsManager::value("ToPermitLoops", false).toBool())
 		deleteLoops();
 	if (SettingsManager::value("SquareLine", false).toBool())
 		squarizeHandler(QPointF());
+	arrangeSrcAndDst();
 	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
 
 }
@@ -1135,13 +1137,13 @@ void EdgeElement::deleteSegment(QPointF const &pos)
 {
 	prepareGeometryChange();
 	mLine = mGraphicalAssistApi->configuration(id());
+	QPainterPath path;
+	QPainterPathStroker ps;
+	ps.setWidth(kvadratik / 3);
 	for (int i = 0; i < mLine.size() - 1; ++i) {
-		QPainterPath path;
-		QPainterPathStroker ps;
-		ps.setWidth(kvadratik / 3);
 		path.moveTo(mLine[i]);
 		path.lineTo(mLine[i + 1]);
-		if (ps.createStroke(path).contains(pos) && i != 0 && (i + 1 != mLine.size() - 1)) {
+		if (ps.createStroke(path).contains(pos) && i != 0 && (i + 1 != mLine.size() - 1)) { // вот тут разобраться, будет ли "лишнее вхождение" одной точки в 2 сегмента
 			delPointHandler(mLine[i]);
 			delPointHandler(mLine[i]);
 			if (SettingsManager::value("SquareLine", false).toBool())

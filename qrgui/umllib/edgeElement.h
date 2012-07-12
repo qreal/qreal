@@ -108,7 +108,7 @@ private:
 
 	void drawPort(QPainter *painter) const;
 
-	qreal lengthOfSegment(QPointF const &pos1, QPointF const &pos2);
+	qreal lengthOfSegment(QPointF const &pos1, QPointF const &pos2) const;
 
 	void delCloseLinePoints();
 
