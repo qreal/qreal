@@ -22,21 +22,27 @@ ListWidget::ListWidget(QWidget *parent)
 			this, SLOT(doubleClickHandler(QListWidgetItem*)));
 }
 
-void ListWidget::addItem(QString const &text, QString const &userData)
+void ListWidget::addItem(QString const &text, QString const &userData, QString const &toolTip)
 {
 	QListWidgetItem *currentItem = new QListWidgetItem(text, mListWidget);
-	currentItem->setToolTip(userData);
+	currentItem->setData(Qt::UserRole, userData);
+	currentItem->setToolTip(toolTip);
 	mListWidget->addItem(currentItem);
 }
 
 void ListWidget::okButtonHandler()
 {
-	emit userDataSelected(mListWidget->currentItem()->toolTip());
+	emit userDataSelected(userData(mListWidget->currentItem()));
 }
 
 void ListWidget::doubleClickHandler(QListWidgetItem *item)
 {
-	emit userDataSelected(item->toolTip());
+	emit userDataSelected(userData(item));
+}
+
+QString ListWidget::userData(QListWidgetItem *item)
+{
+	return item->data(Qt::UserRole).toString();
 }
 
 void ListWidget::okActivate()

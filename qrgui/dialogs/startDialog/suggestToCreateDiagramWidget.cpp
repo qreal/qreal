@@ -13,21 +13,26 @@ SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *mainWindo
 	: ListWidget(parent)
 	, mMainWindow(mainWindow)
 {
-	foreach(Id editor,
-			mMainWindow->manager()->editors()) {
-		foreach(Id diagram,
-				mMainWindow->manager()->diagrams(Id::loadFromString("qrm:/" + editor.editor()))) {
-
-			EditorInterface *editorInterface = mMainWindow->mEditorManager.editorInterface(editor.editor());
-			QString const diagramName = editorInterface->diagramName(diagram.diagram());
-			QString const diagramNodeName = editorInterface->diagramNodeName(diagram.diagram());
-
-			if (diagramNodeName.isEmpty()) {
-				continue;
-			}
-			addItem(diagramName,
-					"qrm:/" +	editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
+	foreach(Id const &editor, mMainWindow->manager()->editors()) {
+		Id editorTmpId = Id::loadFromString("qrm:/" + editor.editor());
+		foreach(Id const &diagram, mMainWindow->manager()->diagrams(editorTmpId)) {
+			addItem(editor, diagram);
 		}
 	}
 	connect(this, SIGNAL(userDataSelected(QString)), parent, SLOT(close()));
+}
+
+void SuggestToCreateDiagramWidget::addItem(const Id &editor, const Id &diagram)
+{
+	EditorInterface *editorInterface = mMainWindow->mEditorManager.editorInterface(editor.editor());
+
+	QString const diagramName = editorInterface->diagramName(diagram.diagram());
+	QString const diagramNodeName = editorInterface->diagramNodeName(diagram.diagram());
+
+	if (diagramNodeName.isEmpty()) {
+		return;
+	}
+	ListWidget::addItem(diagramName,
+			"qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName,
+			"editor: " + editor.editor() + ", diagram: " + diagram.diagram());
 }

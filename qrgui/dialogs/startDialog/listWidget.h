@@ -11,7 +11,7 @@ class ListWidget : public QWidget
 
 public:
 	explicit ListWidget(QWidget *parent = 0);
-	void addItem(QString const &text, QString const &userData);
+	void addItem(QString const &text, QString const &userData, const QString &toolTip = "");
 	
 signals:
 	void userDataSelected(QString const &userData);
@@ -22,6 +22,8 @@ private slots:
 	void doubleClickHandler(QListWidgetItem *item);
 
 private:
+	QString userData(QListWidgetItem *item);
+
 	QListWidget *mListWidget;
 	QPushButton *mOkButton;
 };
