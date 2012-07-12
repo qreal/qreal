@@ -169,8 +169,9 @@ MainWindow::MainWindow()
 		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
 	}
 
-	if (SettingsManager::value("diagramCreateSuggestion").toBool())
+	if (SettingsManager::value("diagramCreateSuggestion").toBool()) {
 		suggestToCreateDiagram();
+	}
 
 	mDocksVisibility.clear();
 
@@ -1303,11 +1304,18 @@ GesturesPainterInterface * MainWindow::gesturesPainter()
 	return mGesturesWidget;
 }
 
+void MainWindow::saveDiagramNumber(int n)
+{
+	mDiagramNumber = n;
+}
+
+void MainWindow::diagramCreationFromList()
+{
+	createDiagram(mDiagramsList.at(mDiagramNumber));
+}
+
 void MainWindow::suggestToCreateDiagram()
 {
-	if (mModels->logicalModel()->rowCount() > 0)
-		return;
-
 	QDialog dialog;
 	QVBoxLayout vLayout;
 	QHBoxLayout hLayout;
@@ -1339,18 +1347,19 @@ void MainWindow::suggestToCreateDiagram()
 	QPushButton okButton;
 	okButton.setText(tr("Done"));
 
-	QObject::connect(&diagramsListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(diagramInCreateListSelected(int)));
-	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(setDiagramCreateFlag()));
-	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), &dialog, SLOT(close()));
+	QObject::connect(&diagramsListWidget, SIGNAL(currentRowChanged(int)), this,
+					 SLOT(saveDiagramNumber(int)));
+	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+					 this, SLOT(diagramCreationFromList()));
+	QObject::connect(&diagramsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+					 &dialog, SLOT(close()));
 
-	QObject::connect(&dialog, SIGNAL(destroyed()), this, SLOT(diagramInCreateListDeselect()));
 	QObject::connect(&cancelButton, SIGNAL(clicked()), &dialog, SLOT(close()));
 
-	QObject::connect(&okButton, SIGNAL(clicked()), this, SLOT(setDiagramCreateFlag()));
+	QObject::connect(&okButton, SIGNAL(clicked()), this, SLOT(diagramCreationFromList()));
 	QObject::connect(&okButton, SIGNAL(clicked()), &dialog, SLOT(close()));
 
 	diagramsListWidget.setCurrentRow(0);
-	mDiagramCreateFlag = false;
 
 	vLayout.addWidget(&label);
 	vLayout.addWidget(&diagramsListWidget);
@@ -1365,22 +1374,9 @@ void MainWindow::suggestToCreateDiagram()
 
 void MainWindow::setDiagramCreateFlag()
 {
-	mDiagramCreateFlag = true;
+	createDiagram(mDiagramsList.at(mDiagramNumber));
 }
 
-void MainWindow::diagramInCreateListDeselect()
-{
-	if (!mDiagramCreateFlag) {
-		deleteFromExplorer(true);
-	}
-}
-
-void MainWindow::diagramInCreateListSelected(int num)
-{
-	deleteFromExplorer(false);
-	deleteFromExplorer(true);
-	createDiagram(mDiagramsList.at(num));
-}
 
 void MainWindow::createDiagram(QString const &idString)
 {
@@ -1459,11 +1455,7 @@ QAction *MainWindow::actionDeleteFromDiagram() const
 
 void qReal::MainWindow::on_actionNew_Diagram_triggered()
 {
-	if (getCurrentTab() == NULL || getCurrentTab()->mvIface() == NULL)
-		return;
-
-	Id const diagram = getCurrentTab()->mvIface()->rootId();  // Or some other way to find current diagram. For example, by current tab in palette.
-	createDiagram(diagram.type().toString());
+	suggestToCreateDiagram();
 }
 
 void MainWindow::highlight(Id const &graphicalId, bool exclusive)

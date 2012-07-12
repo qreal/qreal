@@ -28,20 +28,11 @@ public:
 	  @param description Item description.
 	  @param icon Item icon.
 	  @param tree Editor's tree.
-	  @param parent Parent of item's group.
+	  @param parent Parent of item's group.(if this argument is null,
+		then element will be added to the top level of the tree)
 	*/
 	void addItemType(Id const &id, QString const &name, QString const &description
-			, QIcon const &icon,QTreeWidget *tree, QTreeWidgetItem *parent);
-
-	/** Adds top item type to some editor's tree.
-	  @param id Item id.
-	  @param name Item name.
-	  @param description Item description.
-	  @param icon Item icon.
-	  @param tree Editor's tree.
-	*/
-	void addTopItemType(Id const &id, QString const &name, QString const &description
-			, QIcon const &icon,QTreeWidget *tree);
+			, QIcon const &icon, QTreeWidget *tree, QTreeWidgetItem *parent = 0);
 
 	/** Adds all editor's elements to appropriate tree.
 	  @param editorManager Editor manager which all editors with elements are taken from.
