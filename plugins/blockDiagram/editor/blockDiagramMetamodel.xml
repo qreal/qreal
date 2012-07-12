@@ -95,6 +95,22 @@
         </node>
         <edge displayedName="Control Flow" name="ControlFlow">
           <graphics>
+            <lineType type="solidLine"/>
+          </graphics>
+          <logic>
+            <possibleEdges>
+              <possibleEdge beginName="InitialNode" directed="true" endName="ConditionNode"/>
+              <possibleEdge beginName="InitialNode" directed="true" endName="BlockFinalNode"/>
+              <possibleEdge beginName="InitialNode" directed="true" endName="Action"/>
+              <possibleEdge beginName="Action" directed="true" endName="Action"/>
+              <possibleEdge beginName="Action" directed="true" endName="ConditionNode"/>
+              <possibleEdge beginName="Action" directed="true" endName="BlockFinalNode"/>
+            </possibleEdges>
+            <associations endType="open_arrow" beginType="no_arrow" />
+          </logic>
+        </edge>
+        <edge displayedName="Condition Control Flow" name="ConditionControlFlow">
+          <graphics>
             <labels>
               <label textBinded="type"/>
             </labels>
@@ -102,8 +118,15 @@
           </graphics>
           <logic>
             <properties>
-              <property type="bool" name="type" />
+              <property type="bool" name="type">
+                <default>false</default>
+              </property>
             </properties>
+            <possibleEdges>
+              <possibleEdge beginName="ConditionNode" directed="true" endName="ConditionNode"/>
+              <possibleEdge beginName="ConditionNode" directed="true" endName="Action"/>
+              <possibleEdge beginName="ConditionNode" directed="true" endName="BlockFinalNode"/>
+            </possibleEdges>
             <associations endType="open_arrow" beginType="no_arrow" />
           </logic>
         </edge>
