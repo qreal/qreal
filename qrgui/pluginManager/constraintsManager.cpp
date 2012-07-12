@@ -32,9 +32,12 @@ ConstraintsManager::ConstraintsManager()
 				mPluginIface[constraintsPlugin->id()] = constraintsPlugin;
 			}
 			else {
+				loader->unload();
 				delete loader;
 			}
 		} else {
+			qDebug() << "Plugin loading failed: " << loader->errorString();
+			loader->unload();
 			delete loader;
 		}
 	}

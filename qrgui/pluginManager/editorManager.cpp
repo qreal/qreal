@@ -36,12 +36,12 @@ EditorManager::EditorManager(QObject *parent)
 				mPluginIface[iEditor->id()] = iEditor;
 				mLoaders.insert(fileName, loader);
 			} else {
-//				loader->unload();
+				loader->unload();
 				delete loader;
 			}
 		} else {
 			qDebug() << "Plugin loading failed: " << loader->errorString();
-//			loader->unload();
+			loader->unload();
 			delete loader;
 		}
 	}
@@ -175,8 +175,10 @@ QString EditorManager::friendlyName(const Id &id) const
 		return mPluginIface[id.editor()]->editorName();
 	case 2:
 		return mPluginIface[id.editor()]->diagramName(id.diagram());
-	case 3:
-		return mPluginIface[id.editor()]->elementName(id.diagram(), id.element());
+	case 3: {
+		QString elementName = id.element();
+		return mPluginIface[id.editor()]->elementName(id.diagram(), elementName.at(0).toUpper() + elementName.mid(1));
+	}
 	default:
 		Q_ASSERT(!"Malformed Id");
 		return "";
