@@ -5,12 +5,23 @@
 
 namespace qReal {
 
+/**
+ * @brief List with button for confirm choice. The selected data is sent through a signal.
+ *
+ * List in which you can add element together with associated with it the string data.
+ * Selecting an item by either double clicking or by using the supporting buttons.
+ * The selected string data sent through the signal userDataSelected(QString const &userData).
+ */
 class ListWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
 	explicit ListWidget(QWidget *parent = 0);
+
+	/// @param text - item label
+	/// @param userData - associated with item the string data
+	/// @param toolTip - item tooltip
 	void addItem(QString const &text, QString const &userData, QString const &toolTip = "");
 	
 signals:
