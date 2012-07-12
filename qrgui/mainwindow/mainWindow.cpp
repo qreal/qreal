@@ -1910,8 +1910,9 @@ void MainWindow::arrangeElementsByDotRunner(const QString &algorithm, const QStr
 	DotRunner *runner = new DotRunner(diagramId
 			, mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi()
 			, mEditorManager, absolutePathToDotFiles);
-	runner->run(algorithm);
-	updateActiveDiagram();
+	if (runner->run(algorithm)) {
+		updateActiveDiagram();
+	}
 }
 
 IdList MainWindow::selectedElementsOnActiveDiagram()
