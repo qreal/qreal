@@ -1,11 +1,5 @@
-#include <QtGui/QLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QListWidget>
-#include <QtGui/QPushButton>
-#include <QtCore/QDebug>
 #include "suggestToCreateDiagramWidget.h"
-#include "../../../qrkernel/ids.h"
-#include "../mainwindow/mainWindow.h"
+#include "mainwindow/mainWindow.h"
 
 using namespace qReal;
 
@@ -22,7 +16,7 @@ SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *mainWindo
 	connect(this, SIGNAL(userDataSelected(QString)), parent, SLOT(close()));
 }
 
-void SuggestToCreateDiagramWidget::addItem(const Id &editor, const Id &diagram)
+void SuggestToCreateDiagramWidget::addItem(Id const &editor, Id const &diagram)
 {
 	EditorInterface *editorInterface = mMainWindow->mEditorManager.editorInterface(editor.editor());
 
@@ -32,7 +26,7 @@ void SuggestToCreateDiagramWidget::addItem(const Id &editor, const Id &diagram)
 	if (diagramNodeName.isEmpty()) {
 		return;
 	}
-	ListWidget::addItem(diagramName,
-			"qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName,
-			"editor: " + editor.editor() + ", diagram: " + diagram.diagram());
+	ListWidget::addItem(diagramName
+			, "qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName
+			, tr("editor: ") + editor.editor() + tr(", diagram: ") + diagram.diagram());
 }

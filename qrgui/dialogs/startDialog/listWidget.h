@@ -11,7 +11,7 @@ class ListWidget : public QWidget
 
 public:
 	explicit ListWidget(QWidget *parent = 0);
-	void addItem(QString const &text, QString const &userData, const QString &toolTip = "");
+	void addItem(QString const &text, QString const &userData, QString const &toolTip = "");
 	
 signals:
 	void userDataSelected(QString const &userData);

@@ -7,12 +7,14 @@
 
 using namespace qReal;
 
-StartDialog::StartDialog(MainWindow *mainWindow, QWidget *parent)
-	: QDialog(parent, Qt::WindowMaximizeButtonHint)
+const QSize StartDialog::dialogSize = QSize(380, 300);
+
+StartDialog::StartDialog(MainWindow *mainWindow)
+	: QDialog(mainWindow, Qt::WindowMaximizeButtonHint)
 	, mMainWindow(mainWindow)
 	, mTabWidget(new QTabWidget)
 {
-	mTabWidget->setFixedSize(380, 300);
+	mTabWidget->setFixedSize(dialogSize);
 
 	RecentProjectsListWidget *recentProjects = new RecentProjectsListWidget(this);
 	mTabWidget->addTab(recentProjects, tr("Recent projects"));
@@ -33,8 +35,7 @@ StartDialog::StartDialog(MainWindow *mainWindow, QWidget *parent)
 	setLayout(mainLayout);
 
 	connect(openLink, SIGNAL(clicked()), this, SLOT(openExistingProject()));
-	connect(quitLink, SIGNAL(clicked()), mMainWindow, SLOT(close()));
-	connect(quitLink, SIGNAL(clicked()), this, SLOT(close()));
+	connect(quitLink, SIGNAL(clicked()), qApp, SLOT(closeAllWindows()));
 	connect(recentProjects, SIGNAL(userDataSelected(QString)), this, SLOT(openRecentProject(QString)));
 	connect(diagrams, SIGNAL(userDataSelected(QString)), this, SLOT(createProjectWithDiagram(QString)));
 }
@@ -42,9 +43,9 @@ StartDialog::StartDialog(MainWindow *mainWindow, QWidget *parent)
 void StartDialog::openRecentProject(QString const &fileName)
 {
 	if (!QFile::exists(fileName)) {
-		QMessageBox fileNotFoundMessage(QMessageBox::Information, tr("File not found"),
-				tr("File ") + fileName + tr(" not found. Try again"),
-				QMessageBox::Ok, this);
+		QMessageBox fileNotFoundMessage(QMessageBox::Information, tr("File not found")
+				, tr("File ") + fileName + tr(" not found. Try again")
+				, QMessageBox::Ok, this);
 		fileNotFoundMessage.exec();
 		return;
 	}

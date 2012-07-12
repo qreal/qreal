@@ -5,8 +5,8 @@ using namespace qReal;
 
 ListWidget::ListWidget(QWidget *parent)
 	: QWidget(parent)
-	, mListWidget(new QListWidget(this))
-	, mOkButton(new QPushButton(tr("&OK"), this))
+	, mListWidget(new QListWidget())
+	, mOkButton(new QPushButton(tr("&OK")))
 {
 	mOkButton->setDisabled(true);
 
@@ -18,8 +18,8 @@ ListWidget::ListWidget(QWidget *parent)
 
 	connect(mListWidget, SIGNAL(itemSelectionChanged()), this, SLOT(okActivate()));
 	connect(mOkButton, SIGNAL(clicked()), this, SLOT(okButtonHandler()));
-	connect(mListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
-			this, SLOT(doubleClickHandler(QListWidgetItem*)));
+	connect(mListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*))
+			, this, SLOT(doubleClickHandler(QListWidgetItem*)));
 }
 
 void ListWidget::addItem(QString const &text, QString const &userData, QString const &toolTip)

@@ -19,9 +19,6 @@ public:
 	explicit SuggestToCreateDiagramDialog(MainWindow *mainWindow, bool isNonClosable = false);
 	void keyPressEvent(QKeyEvent *event);
 
-signals:
-	void userDataSelected(QString const &userData);
-
 private:
 	SuggestToCreateDiagramWidget *mSuggestWidget;
 	bool mIsNonClosable;

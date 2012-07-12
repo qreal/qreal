@@ -1306,7 +1306,6 @@ GesturesPainterInterface * MainWindow::gesturesPainter()
 void MainWindow::suggestToCreateDiagram(bool isNonClosable)
 {
 	SuggestToCreateDiagramDialog suggestDialog(this, isNonClosable);
-	connect(&suggestDialog, SIGNAL(userDataSelected(QString)), this, SLOT(createDiagram(QString)));
 	suggestDialog.exec();
 }
 

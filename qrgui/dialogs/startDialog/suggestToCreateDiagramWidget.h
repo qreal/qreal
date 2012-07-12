@@ -1,6 +1,4 @@
 #pragma once
-#include <QtGui/QWidget>
-#include <QtGui/QPushButton>
 #include <QtGui/QListWidget>
 #include "../qrkernel/ids.h"
 #include "listWidget.h"

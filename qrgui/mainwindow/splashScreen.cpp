@@ -18,10 +18,6 @@ SplashScreen::SplashScreen(bool isVisible)
 	QApplication::processEvents();
 }
 
-SplashScreen::~SplashScreen()
-{
-}
-
 void SplashScreen::setProgress(int progress)
 {
 	mProgressBar->setValue(progress);

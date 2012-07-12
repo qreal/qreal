@@ -15,8 +15,10 @@ class StartDialog : public QDialog
 	Q_OBJECT
 	
 public:
-	explicit StartDialog(MainWindow *mainWindow, QWidget *parent = 0);
+	explicit StartDialog(MainWindow *mainWindow);
 	void keyPressEvent(QKeyEvent *event);
+
+	static const QSize dialogSize;
 
 public slots:
 	void openRecentProject(QString const &fileName);
