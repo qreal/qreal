@@ -17,6 +17,7 @@ class ProjectManager : public QObject
 public:
 	explicit ProjectManager(MainWindow *mainWindow);
 	bool open(QString const &fileName);
+	void close();
 
 private:
 	bool saveFileExists(QString const &fileName);

@@ -1,6 +1,8 @@
 #include "../mainWindow.h"
 #include "ui_mainWindow.h"
 #include "../models/models.h"
+#include "../view/editorViewScene.h"
+#include "../view/editorView.h"
 #include "projectManager.h"
 
 using namespace qReal;
@@ -20,7 +22,7 @@ bool ProjectManager::open(QString const &fileName)
 	}
 	// There is no way to verify sufficiency plugins without initializing repository
 	// that is stored in the save file. Iinitializing is impossible without closing current project.
-	mMainWindow->closeProject();
+	close();
 	mMainWindow->mModels->repoControlApi().open(fileName);
 	mMainWindow->mModels->reinit();
 
@@ -85,4 +87,19 @@ QString ProjectManager::missingPluginNames()
 		result += id.editor() + "\n";
 	}
 	return result;
+}
+
+void ProjectManager::close()
+{
+	if (mMainWindow->mUi->propertyEditor->model() != NULL) {
+		static_cast<PropertyEditorModel *>(mMainWindow->mUi->propertyEditor->model())->clearModelIndexes();
+	}
+	mMainWindow->mUi->graphicalModelExplorer->setModel(NULL);
+	mMainWindow->mUi->logicalModelExplorer->setModel(NULL);
+
+	if (mMainWindow->getCurrentTab()) {
+		static_cast<EditorViewScene *>(mMainWindow->getCurrentTab()->scene())->clearScene();
+	}
+	mMainWindow->closeAllTabs();
+	mMainWindow->setWindowTitle(mMainWindow->mToolManager.customizer()->windowTitle());
 }

@@ -212,7 +212,6 @@ private slots:
 
 	void autosave();
 	void setAutoSaveParameters();
-	void closeProject();
 	void closeProjectAndSave();
 
 private:

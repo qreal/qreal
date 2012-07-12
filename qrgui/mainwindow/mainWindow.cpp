@@ -1743,21 +1743,7 @@ void MainWindow::closeProjectAndSave()
 			return;
 		}
 	}
-	closeProject();
-}
-
-void MainWindow::closeProject()
-{
-	if (mUi->propertyEditor->model() != NULL) {
-		static_cast<PropertyEditorModel*>(mUi->propertyEditor->model())->clearModelIndexes();
-	}
-	mUi->graphicalModelExplorer->setModel(NULL);
-	mUi->logicalModelExplorer->setModel(NULL);
-	if (getCurrentTab()) {
-		static_cast<EditorViewScene*>(getCurrentTab()->scene())->clearScene();
-	}
-	closeAllTabs();
-	setWindowTitle(mToolManager.customizer()->windowTitle());
+	mProjectManager->close();
 }
 
 void MainWindow::changePaletteRepresentation()
