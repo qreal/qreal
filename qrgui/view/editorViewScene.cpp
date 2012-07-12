@@ -663,8 +663,53 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 		paste();
 	} else if (event->matches(QKeySequence::Copy)) {
 		copy();
+	} else if (isArrow(event->key())) {
+		moveSelectedItems(event->key());
 	} else {
 		QGraphicsScene::keyPressEvent(event);
+	}
+}
+
+inline bool EditorViewScene::isArrow(int key)
+{
+	return key == Qt::Key_Left || key == Qt::Key_Right
+			|| key == Qt::Key_Down || key == Qt::Key_Up;
+}
+
+void EditorViewScene::moveSelectedItems(int direction)
+{
+	QPointF offset = offsetByDirection(direction);
+	if (offset == QPointF(0, 0)) {
+		return;
+	}
+
+	foreach (QGraphicsItem* item, selectedItems()) {
+		QPointF newPos = item->pos();
+		if (!item->parentItem()) {
+			newPos += offset;
+		}
+		Element* element = dynamic_cast<Element*>(item);
+		if (element) {
+			mMVIface->graphicalAssistApi()->setPosition(element->id(), newPos);
+		}
+		element->setPos(newPos);
+	}
+}
+
+QPointF EditorViewScene::offsetByDirection(int direction)
+{
+	switch (direction) {
+		case Qt::Key_Left:
+			return QPointF(-arrowMoveOffset, 0);
+		case Qt::Key_Right:
+			return QPointF(arrowMoveOffset, 0);
+		case Qt::Key_Down:
+			return QPointF(0, arrowMoveOffset);
+		case Qt::Key_Up:
+			return QPointF(0, -arrowMoveOffset);
+		default:
+			qDebug() << "Incorrect direction";
+			return QPointF(0, 0);
 	}
 }
 

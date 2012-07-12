@@ -13,6 +13,7 @@
 
 
 //const int indexGrid = 30; // distance between two lines in the grid
+const int arrowMoveOffset = 5;
 
 namespace qReal {
 class EditorViewMViface;
@@ -148,6 +149,11 @@ private:
 			, qReal::Id> const &copiedIds, QPointF const &offset);
 	qReal::Id pasteEdge(EdgeData const &edgeData, QHash<qReal::Id
 			, qReal::Id> const &copiedIds, QPointF const &offset);
+
+	inline bool isArrow(int key);
+
+	void moveSelectedItems(int direction);
+	QPointF offsetByDirection(int direction);
 
 	Element* mLastCreatedWithEdge;
 	QList<NodeElement*> mCopiedNodes;
