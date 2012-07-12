@@ -1,5 +1,6 @@
 #include <QtGui/QTabWidget>
 #include <QtGui/QCommandLinkButton>
+
 #include "startDialog.h"
 #include "suggestToCreateDiagramWidget.h"
 #include "recentProjectsListWidget.h"

@@ -1,6 +1,7 @@
 #pragma once
 #include <QtGui/QListWidget>
 #include <QtGui/QDialog>
+
 #include "listWidget.h"
 
 namespace qReal {

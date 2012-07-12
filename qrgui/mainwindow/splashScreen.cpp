@@ -1,4 +1,5 @@
 #include <QtGui/QApplication>
+
 #include "splashScreen.h"
 
 using namespace qReal;

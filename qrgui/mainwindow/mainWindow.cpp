@@ -1,6 +1,3 @@
-#include "mainWindow.h"
-#include "ui_mainWindow.h"
-
 #include <QtCore/QProcess>
 #include <QtGui/QDialog>
 #include <QtGui/QPrinter>
@@ -13,11 +10,12 @@
 #include <QtGui/QProgressBar>
 #include <QtGui/QListWidgetItem>
 #include <QtCore/QPluginLoader>
-
 #include <QtSvg/QSvgGenerator>
-
 #include <QtCore/QDebug>
-#include <QAbstractButton>
+#include <QtGui/QAbstractButton>
+
+#include "mainWindow.h"
+#include "ui_mainWindow.h"
 
 #include "errorReporter.h"
 
@@ -36,11 +34,8 @@
 #include "../pluginManager/listenerManager.h"
 #include "../../qrkernel/settingsManager.h"
 
-#include "../../qrkernel/timeMeasurer.h"
-
 #include "splashScreen.h"
 #include "../dialogs/startDialog/startDialog.h"
-#include "../dialogs/startDialog/suggestToCreateDiagramWidget.h"
 #include "../dialogs/suggestToCreateDiagramDialog.h"
 
 #include "dotRunner.h"

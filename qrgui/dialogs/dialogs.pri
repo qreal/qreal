@@ -14,7 +14,7 @@ HEADERS += \
 	dialogs/startDialog/suggestToCreateDiagramWidget.h \
 	dialogs/startDialog/recentProjectsListWidget.h \
 	dialogs/startDialog/listWidget.h \
-    dialogs/suggestToCreateDiagramDialog.h
+	dialogs/suggestToCreateDiagramDialog.h
 
 SOURCES += \
 	dialogs/plugindialog.cpp \
@@ -31,7 +31,7 @@ SOURCES += \
 	dialogs/startDialog/suggestToCreateDiagramWidget.cpp \
 	dialogs/startDialog/recentProjectsListWidget.cpp \
 	dialogs/startDialog/listWidget.cpp \
-    dialogs/suggestToCreateDiagramDialog.cpp
+	dialogs/suggestToCreateDiagramDialog.cpp
 
 FORMS += \
 	dialogs/editorGeneratorDialog.ui \

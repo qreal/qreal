@@ -1,6 +1,7 @@
 #pragma once
 #include <QDialog>
 #include <QKeyEvent>
+
 #include "startDialog/suggestToCreateDiagramWidget.h"
 
 namespace qReal {
