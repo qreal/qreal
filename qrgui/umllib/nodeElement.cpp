@@ -1634,20 +1634,17 @@ void NodeElement::highlightEdges()
 		edge->highlight();
 }
 
-NodeData NodeElement::data()
+NodeData& NodeElement::data()
 {
-	NodeData d;
-	d.mId = id();
-	d.mProperties = properties();
-	d.mPos = mPos;
-	d.mContents = mContents;
+	mData.id = id();
+	mData.properties = properties();
+	mData.pos = mPos;
+	mData.contents = mContents;
 
 	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
 	if (parent) {
-		d.mParentId = parent->id();
-	} else {
-		d.mParentId = Id::rootId();
+		mData.parentId = parent->id();
 	}
 
-	return d;
+	return mData;
 }

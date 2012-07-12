@@ -65,7 +65,7 @@ public:
 	void addEdge(EdgeElement *edge);
 	void delEdge(EdgeElement *edge);
 
-	NodeData data();
+	NodeData& data();
 
 	virtual bool initPossibleEdges();
 	QList<PossibleEdge> getPossibleEdges();
@@ -167,7 +167,7 @@ private:
 	void resize(QRectF newContents);
 	// newContents = mContents
 	void resize();
-	
+
 	void updateByChild(NodeElement* item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
 
@@ -233,4 +233,6 @@ private:
 
 	QGraphicsRectItem *mPlaceholder;
 	NodeElement *mHighlightedNode;
+
+	NodeData mData;
 };

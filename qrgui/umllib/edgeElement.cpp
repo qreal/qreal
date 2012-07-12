@@ -963,18 +963,17 @@ void EdgeElement::highlight(QColor const color)
 	update();
 }
 
-EdgeData EdgeElement::data()
+EdgeData& EdgeElement::data()
 {
-	EdgeData d;
-	d.mId = id();
-	d.mSrcId = src()->id();
-	d.mDstId = dst()->id();
+	mData.id = id();
+	mData.srcId = src()->id();
+	mData.dstId = dst()->id();
 
-	d.mPortFrom = mPortFrom;
-	d.mPortTo = mPortTo;
+	mData.portFrom = mPortFrom;
+	mData.portTo = mPortTo;
 
-	d.mConfiguration = mGraphicalAssistApi->configuration(mId);
-	d.mPos = mGraphicalAssistApi->position(mId);
+	mData.configuration = mGraphicalAssistApi->configuration(mId);
+	mData.pos = mGraphicalAssistApi->position(mId);
 
-	return d;
+	return mData;
 }

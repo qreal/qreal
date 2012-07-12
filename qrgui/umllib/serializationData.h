@@ -6,36 +6,50 @@
 #include <QPolygon>
 #include "../qrkernel/ids.h"
 
-/** @struct EdgeData
+using namespace qReal;
+
+/** @class EdgeData
   * @brief EdgeElement serialization data for copy/paste
   */
-struct EdgeData
+class EdgeData
 {
-	qReal::Id mId;
+public:
+	EdgeData()
+		: id(Id::rootId()), srcId(Id::rootId()), dstId(Id::rootId())
+		, pos(QPointF(0, 0))
+	{}
 
-	qReal::Id mSrcId;
-	qReal::Id mDstId;
+	Id id;
+	Id srcId;
+	Id dstId;
 
-	qreal mPortFrom;
-	qreal mPortTo;
+	qreal portFrom;
+	qreal portTo;
 
-	QPolygon mConfiguration;
-	QPointF mPos;
+	QPolygon configuration;
+	QPointF pos;
+
 };
 
-/** @struct NodeData
+/** @class NodeData
   * @brief NodeElement serialization data for copy/paste
   */
-struct NodeData
+class NodeData
 {
-	qReal::Id mId;
+public:
+	NodeData()
+		: id(Id::rootId()), parentId(Id::rootId()), pos(QPointF(0, 0))
+	{}
 
-	QMap<QString, QVariant> mProperties;
+	qReal::Id id;
 
-	qReal::Id mParentId;
+	QMap<QString, QVariant> properties;
 
-	QPointF mPos;
-	QRectF mContents;
+	qReal::Id parentId;
+
+	QPointF pos;
+	QRectF contents;
+
 };
 
 QDataStream& operator<< (QDataStream &out, NodeData const &data);

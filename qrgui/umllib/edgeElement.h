@@ -69,7 +69,7 @@ public:
 
 	void highlight(QColor const color = Qt::red);
 
-	EdgeData data();
+	EdgeData& data();
 
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -139,6 +139,8 @@ private:
 	int mLastDragPoint;
 
 	bool mBreakPointPressed;
+
+	EdgeData mData;
 
 };
 

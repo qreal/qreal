@@ -2,37 +2,37 @@
 
 QDataStream& operator<< (QDataStream &out, NodeData const &data)
 {
-	out << data.mId << data.mParentId << data.mPos
-			<< data.mContents << data.mProperties;
+	out << data.id << data.parentId << data.pos
+			<< data.contents << data.properties;
 	return out;
 }
 
 QDataStream& operator>> (QDataStream &in, NodeData &data)
 {
-	in >> data.mId >> data.mParentId >> data.mPos
-			>> data.mContents >> data.mProperties;
+	in >> data.id >> data.parentId >> data.pos
+			>> data.contents >> data.properties;
 	return in;
 }
 
 QDataStream& operator<< (QDataStream &out, EdgeData const &data)
 {
-	out << data.mId << data.mSrcId << data.mDstId
-			<< data.mPortFrom << data.mPortTo
-			<< data.mConfiguration << data.mPos;
+	out << data.id << data.srcId << data.dstId
+			<< data.portFrom << data.portTo
+			<< data.configuration << data.pos;
 	return out;
 }
 
 QDataStream& operator>> (QDataStream &in, EdgeData &data)
 {
-	in >> data.mId >> data.mSrcId >> data.mDstId
-			>> data.mPortFrom >> data.mPortTo
-			>> data.mConfiguration >> data.mPos;
+	in >> data.id >> data.srcId >> data.dstId
+			>> data.portFrom >> data.portTo
+			>> data.configuration >> data.pos;
 	return in;
 }
 
 bool operator== (NodeData const &first, NodeData const &second)
 {
-	return first.mId == second.mId && first.mParentId == second.mParentId
-			&& first.mPos == second.mPos && first.mProperties == second.mProperties
-			&& first.mContents == second.mContents;
+	return first.id == second.id && first.parentId == second.parentId
+			&& first.pos == second.pos && first.properties == second.properties
+			&& first.contents == second.contents;
 }
