@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru_RU">
+<TS version="2.0" language="ru_RU" sourcelanguage="en">
 <context>
     <name>BehaviourForm</name>
     <message>
@@ -2920,31 +2920,38 @@
     </message>
 </context>
 <context>
+    <name>qReal::ListWidget</name>
+    <message>
+        <location filename="dialogs/startDialog/listWidget.cpp" line="10"/>
+        <source>&amp;OK</source>
+        <translation>&amp;Выбрать</translation>
+    </message>
+</context>
+<context>
     <name>qReal::MainWindow</name>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="470"/>
+        <location filename="mainwindow/mainWindow.cpp" line="553"/>
         <source>These plugins are not present, but needed to load the save:
 </source>
         <translation>Эти плагины отсутствуют, но нужны для загрузки сохранения:
 </translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="473"/>
         <source>Do you want to create new project?</source>
-        <translation>Вы хотите создать новый проект?</translation>
+        <translation type="obsolete">Вы хотите создать новый проект?</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="478"/>
         <source>Some plugins are missing</source>
-        <translation>Некоторых плагинов не хватает</translation>
+        <translation type="obsolete">Некоторых плагинов не хватает</translation>
     </message>
     <message>
         <source>Select directory with a save to open</source>
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
+        <location filename="mainwindow/mainWindow.cpp" line="772"/>
         <source>About QReal</source>
-        <translation type="obsolete">О QReal</translation>
+        <translation type="unfinished">О QReal</translation>
     </message>
     <message>
         <source>&lt;center&gt;This is &lt;b&gt;QReal&lt;/b&gt;&lt;br&gt;Just another CASE tool&lt;/center&gt;</source>
@@ -2967,16 +2974,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="836"/>
-        <location filename="mainwindow/mainWindow.cpp" line="853"/>
-        <location filename="mainwindow/mainWindow.cpp" line="871"/>
+        <location filename="mainwindow/mainWindow.cpp" line="817"/>
+        <location filename="mainwindow/mainWindow.cpp" line="834"/>
+        <location filename="mainwindow/mainWindow.cpp" line="852"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="838"/>
-        <location filename="mainwindow/mainWindow.cpp" line="855"/>
-        <location filename="mainwindow/mainWindow.cpp" line="873"/>
+        <location filename="mainwindow/mainWindow.cpp" line="819"/>
+        <location filename="mainwindow/mainWindow.cpp" line="836"/>
+        <location filename="mainwindow/mainWindow.cpp" line="854"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3017,25 +3024,41 @@
         <translation type="obsolete">Пожалуйста, заполните настройки компиляции (Настройки -&gt; Настройки... -&gt; Компилятор)</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="451"/>
-        <location filename="mainwindow/mainWindow.cpp" line="454"/>
+        <location filename="mainwindow/mainWindow.cpp" line="403"/>
+        <location filename="mainwindow/mainWindow.cpp" line="406"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="501"/>
+        <location filename="mainwindow/mainWindow.cpp" line="409"/>
+        <location filename="mainwindow/mainWindow.cpp" line="538"/>
+        <source>File not found</source>
+        <translation>Файл не найден</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="410"/>
+        <location filename="mainwindow/mainWindow.cpp" line="539"/>
+        <source>File </source>
+        <translation>Файл </translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="410"/>
+        <location filename="mainwindow/mainWindow.cpp" line="539"/>
+        <source> not found. Try again</source>
+        <translation> не найден. Укажите существующий файл</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="435"/>
         <source>Select file with a save to import</source>
         <translation>Выберите файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="525"/>
         <source>Select file with a save to open</source>
-        <translation>Выберите файл для открытия</translation>
+        <translation type="obsolete">Выберите файл для открытия</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="785"/>
         <source>About QReal:Robots</source>
-        <translation>О QReal:Robots</translation>
+        <translation type="obsolete">О QReal:Robots</translation>
     </message>
     <message>
         <source>Contacts:&lt;br&gt;&lt;br&gt;se.math.spbu.ru/SE/qreal</source>
@@ -3054,59 +3077,69 @@
         <translation type="obsolete">Выберите xml-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="786"/>
-        <source>&lt;b&gt;QReal:Robots&lt;b&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;http://qreal.ru/&quot;&gt;http://qreal.ru/&lt;/a&gt;</source>
-        <translation></translation>
+        <location filename="mainwindow/mainWindow.cpp" line="485"/>
+        <source>Open existing project</source>
+        <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="871"/>
+        <location filename="mainwindow/mainWindow.cpp" line="552"/>
+        <source>There are missing plugins</source>
+        <translation>Не хватает плагинов</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="773"/>
+        <source>&lt;b&gt;QReal&lt;b&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;http://qreal.ru/&quot;&gt;http://qreal.ru/&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="852"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="873"/>
+        <location filename="mainwindow/mainWindow.cpp" line="854"/>
         <source>Parsing is finished</source>
-        <translation type="unfinished"></translation>
+        <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1007"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1015"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1011"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1019"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1440"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1371"/>
         <source>Select file to save current model to</source>
         <translation>Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1829"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1735"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1857"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1764"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1857"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1764"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1906"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1907"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1813"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1814"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1909"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1816"/>
         <source>Discard</source>
         <translation>Не сохранять</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1910"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1817"/>
         <source>Do you want to save current project?</source>
         <translation>Сохранить текущий проект?</translation>
     </message>
@@ -3115,32 +3148,28 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1325"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1329"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1347"/>
         <source>Choose new diagram</source>
-        <translation>Выберите новую диаграмму</translation>
+        <translation type="obsolete">Выберите новую диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1349"/>
         <source>There is no existing diagram,
  choose diagram you want work with:</source>
-        <translation>Диаграммы пока не создано,
+        <translation type="obsolete">Диаграммы пока не создано,
 укажите диаграмму, с которой хотите работать:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1368"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1908"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1815"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1370"/>
         <source>Done</source>
-        <translation>Готово</translation>
+        <translation type="obsolete">Готово</translation>
     </message>
     <message>
         <source>Select directory to save current model to</source>
@@ -3156,6 +3185,76 @@
     <message>
         <source>Plugin Information</source>
         <translation type="obsolete">Информация о плагинах</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::StartDialog</name>
+    <message>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="34"/>
+        <source>Start page</source>
+        <oldsource>Start Page</oldsource>
+        <translation>Начальная страница</translation>
+    </message>
+    <message>
+        <source>Recent projects</source>
+        <translation type="obsolete">Недавние проекты</translation>
+    </message>
+    <message>
+        <source>New project with diagram</source>
+        <translation type="obsolete">Новый проект на базе диаграммы</translation>
+    </message>
+    <message>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="18"/>
+        <source>&amp;Recent projects</source>
+        <translation>&amp;Недавние проекты</translation>
+    </message>
+    <message>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="20"/>
+        <source>&amp;New project with diagram</source>
+        <translation>Новый проект на базе &amp;диаграммы</translation>
+    </message>
+    <message>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="22"/>
+        <source>&amp;Quit QReal</source>
+        <translation>&amp;Выйти из QReal</translation>
+    </message>
+    <message>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="23"/>
+        <source>&amp;Open existing project</source>
+        <translation>&amp;Открыть проект</translation>
+    </message>
+    <message>
+        <source>File not found</source>
+        <translation type="obsolete">Файл не найден</translation>
+    </message>
+    <message>
+        <source>File </source>
+        <translation type="obsolete">Файл </translation>
+    </message>
+    <message>
+        <source> not found. Try again</source>
+        <translation type="obsolete"> не найден. Укажите существующий файл</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::SuggestToCreateDiagramDialog</name>
+    <message>
+        <location filename="dialogs/suggestToCreateDiagramDialog.cpp" line="17"/>
+        <source>Create diagram</source>
+        <translation>Создание диаграммы</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::SuggestToCreateDiagramWidget</name>
+    <message>
+        <location filename="dialogs/startDialog/suggestToCreateDiagramWidget.cpp" line="31"/>
+        <source>editor: </source>
+        <translation>редактор: </translation>
+    </message>
+    <message>
+        <location filename="dialogs/startDialog/suggestToCreateDiagramWidget.cpp" line="31"/>
+        <source>, diagram: </source>
+        <translation>, диаграмма: </translation>
     </message>
 </context>
 <context>

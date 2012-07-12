@@ -4,7 +4,7 @@
 <context>
     <name>qReal::RefactoringPreferencesPage</name>
     <message>
-        <location filename="refactoringPreferencePage.cpp" line="35"/>
+        <location filename="refactoringPreferencePage.cpp" line="37"/>
         <source>Specify directory:</source>
         <translation>Определите директорию:</translation>
     </message>
@@ -12,83 +12,83 @@
 <context>
     <name>qReal::refactoring::RefactoringPlugin</name>
     <message>
-        <location filename="refactoringPlugin.cpp" line="64"/>
+        <location filename="refactoringPlugin.cpp" line="68"/>
         <source>Refactorings</source>
         <translation>Рефакторинги</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="69"/>
+        <location filename="refactoringPlugin.cpp" line="73"/>
         <source>Refactoring</source>
         <translation>Рефакторинг</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="72"/>
+        <location filename="refactoringPlugin.cpp" line="76"/>
         <source>Generate and load refactoring editor</source>
         <translation>Сгенерировать и загрузить язык задания рефакторингов</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="76"/>
+        <location filename="refactoringPlugin.cpp" line="80"/>
         <source>Open Refactoring Window</source>
         <translation>Открыть диалог работы с рефакторингами</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="81"/>
+        <location filename="refactoringPlugin.cpp" line="84"/>
         <source>Save Refactoring</source>
         <translation>Сохранить правило рефакторинга</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="86"/>
+        <location filename="refactoringPlugin.cpp" line="88"/>
         <source>Create Refactoring</source>
         <translation>Создать правило рефакторинга</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="91"/>
+        <location filename="refactoringPlugin.cpp" line="92"/>
         <source>Automatically arrange elements</source>
         <translation>Автоматически расположить элементы</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="93"/>
+        <location filename="refactoringPlugin.cpp" line="94"/>
         <source>Top-Bottom</source>
         <translation>Сверху вниз</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="97"/>
+        <location filename="refactoringPlugin.cpp" line="98"/>
         <source>Left-Right</source>
         <translation>Слева направо</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="101"/>
+        <location filename="refactoringPlugin.cpp" line="102"/>
         <source>Bottom-Top</source>
         <translation>Снизу вверх</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="105"/>
+        <location filename="refactoringPlugin.cpp" line="106"/>
         <source>Right-Left</source>
         <translation>Справа налево</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="257"/>
+        <location filename="refactoringPlugin.cpp" line="259"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="257"/>
+        <location filename="refactoringPlugin.cpp" line="259"/>
         <source>Saved successfully</source>
         <translation>Успешно сохранено</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="257"/>
+        <location filename="refactoringPlugin.cpp" line="259"/>
         <source>Ok</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="353"/>
-        <location filename="refactoringPlugin.cpp" line="365"/>
+        <location filename="refactoringPlugin.cpp" line="357"/>
+        <location filename="refactoringPlugin.cpp" line="367"/>
         <source>No match</source>
         <translation>Место на диаграмме для применения рефакторинга не найдено</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="376"/>
+        <location filename="refactoringPlugin.cpp" line="378"/>
         <source>No next match</source>
         <translation>Другого места для применения правила рефакторинга не найдено</translation>
     </message>
@@ -101,7 +101,7 @@
         <translation type="obsolete">Горизонтально</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="123"/>
+        <location filename="refactoringPlugin.cpp" line="124"/>
         <source>Select xml file to load refactoring metamodel</source>
         <translation>Выберите xml-файл для загрузки метамодели языка рефакторингов</translation>
     </message>
