@@ -530,6 +530,14 @@ void MainWindow::saveAllAndOpen(QString const &dirName)
 
 bool MainWindow::open(QString const &fileName)
 {
+	if (!QFile::exists(fileName) && fileName != "") {
+		QMessageBox fileNotFoundMessage(QMessageBox::Information, tr("File not found")
+				, tr("File ") + fileName + tr(" not found. Try again")
+				, QMessageBox::Ok, this);
+		fileNotFoundMessage.exec();
+		return false;
+	}
+
 	closeProject();
 
 	mModels->repoControlApi().open(fileName);
