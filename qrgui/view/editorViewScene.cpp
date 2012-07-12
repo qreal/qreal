@@ -547,7 +547,8 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 		, IdList const &connectableTypes, IdList const &alreadyConnectedElements
 		, IdList const &connectableDiagrams, const char *slot) const
 {
-	QMenu *addConnectionMenu = contextMenu.addMenu(menuName);
+	bool hasAnyActions = false;
+	QMenu *addConnectionMenu = new QMenu(menuName);//contextMenu.addMenu(menuName);
 
 	foreach (Id type, connectableTypes) {
 		foreach (Id elementId, mMVIface->logicalAssistApi()->logicalRepoApi().logicalElements(type)) {
@@ -555,6 +556,7 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 				continue;
 			}
 			QAction *action = addConnectionMenu->addAction(mMVIface->logicalAssistApi()->logicalRepoApi().name(elementId));
+			hasAnyActions = true;
 			connect(action, SIGNAL(triggered()), slot);
 			QList<QVariant> tag;
 			tag << element->logicalId().toVariant() << elementId.toVariant();
@@ -567,10 +569,15 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 		QString name = mMVIface->logicalAssistApi()->editorManager().friendlyName(diagramType);
 		QString editorName = mMVIface->logicalAssistApi()->editorManager().friendlyName(Id(diagramType.editor()));
 		QAction *action = addConnectionMenu->addAction("New " + editorName + "/" + name);
+		hasAnyActions = true;
 		connect(action, SIGNAL(triggered()), slot);
 		QList<QVariant> tag;
 		tag << element->logicalId().toVariant() << diagramType.toVariant();
 		action->setData(tag);
+	}
+	if (hasAnyActions || !connectableDiagrams.empty())
+	{
+		contextMenu.addMenu(addConnectionMenu);
 	}
 }
 
@@ -579,7 +586,7 @@ void EditorViewScene::createDisconnectMenu(Element const * const element
 		, IdList const &outgoingConnections, IdList const &incomingConnections
 		, const char *slot) const
 {
-	QMenu *disconnectMenu = contextMenu.addMenu(menuName);
+	QMenu *disconnectMenu = new QMenu(menuName);//contextMenu.addMenu(menuName);
 	IdList list = outgoingConnections;
 	list.append(incomingConnections);
 
@@ -589,6 +596,10 @@ void EditorViewScene::createDisconnectMenu(Element const * const element
 		QList<QVariant> tag;
 		tag << element->logicalId().toVariant() << elementId.toVariant();
 		action->setData(tag);
+	}
+	if (!list.empty())
+	{
+		contextMenu.addMenu(disconnectMenu);
 	}
 }
 
