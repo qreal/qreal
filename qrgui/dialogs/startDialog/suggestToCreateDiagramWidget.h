@@ -5,9 +5,7 @@
 #include "listWidget.h"
 
 namespace qReal {
-
 class MainWindow;
-
 }
 
 namespace qReal {

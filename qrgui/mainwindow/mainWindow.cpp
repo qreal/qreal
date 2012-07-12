@@ -10,6 +10,7 @@
 #include <QtGui/QProgressBar>
 #include <QtGui/QListWidgetItem>
 #include <QtCore/QPluginLoader>
+#include <QtCore/QMetaType>
 #include <QtSvg/QSvgGenerator>
 #include <QtCore/QDebug>
 #include <QtGui/QAbstractButton>
@@ -65,23 +66,20 @@ MainWindow::MainWindow()
 {
 	mUi->setupUi(this);
 	initSettingsManager();
+	registerMetaTypes();
 
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
-
-	// =========== Step 1: splash screen loaded, progress bar initialized ===========
 	splashScreen.setProgress(5);
 
 	initRecentProjectsMenu();
 	initToolManager();
 	initTabs();
 
-	// =========== Step 2: Ui is ready, splash screen shown ===========
 	splashScreen.setProgress(20);
 
 	initMiniMap();
 	initGridProperties();
 
-	// =========== Step 3: Ui connects are done ===========
 	splashScreen.setProgress(40);
 
 	initDocks();
@@ -96,14 +94,12 @@ MainWindow::MainWindow()
 
 	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 
-	// =========== Step 4: Property editor and model explorers are initialized ===========
 	splashScreen.setProgress(60);
 
 	loadPlugins();
 	initToolPlugins();
 	showMaximized();
 
-	// =========== Step 5: Plugins are loaded ===========
 	splashScreen.setProgress(70);
 
 	initWindowTitle();
@@ -114,7 +110,6 @@ MainWindow::MainWindow()
 		move(SettingsManager::value("pos").toPoint());
 	}
 
-	// =========== Step 6: Save loaded, models initialized ===========
 	splashScreen.setProgress(80);
 
 	mGesturesWidget = new GesturesWidget();
@@ -122,7 +117,6 @@ MainWindow::MainWindow()
 	connectActions();
 	initActionsFromSettings();
 
-	// =========== Step 7: Save consistency checked, interface is initialized with models ===========
 	splashScreen.setProgress(100);
 
 	mDocksVisibility.clear();
@@ -192,6 +186,14 @@ void MainWindow::connectActions()
 void MainWindow::initActionsFromSettings()
 {
 	mUi->actionShowSplash->setChecked(SettingsManager::value("Splashscreen").toBool());
+}
+
+void MainWindow::registerMetaTypes()
+{
+	qRegisterMetaType<Id>();
+	qRegisterMetaTypeStreamOperators<Id>();
+	qRegisterMetaType<IdList>();
+	qRegisterMetaTypeStreamOperators<IdList>();
 }
 
 void MainWindow::showFindDialog()

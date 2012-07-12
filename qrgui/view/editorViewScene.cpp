@@ -16,7 +16,6 @@ using namespace qReal;
 EditorViewScene::EditorViewScene(QObject *parent)
 		: QGraphicsScene(parent)
 		, mLastCreatedWithEdge(NULL)
-		, mCopiedNode(NULL)
 		, mRightButtonPressed(false)
 		, mHighlightNode(NULL)
 		, mWindow(NULL)
@@ -372,7 +371,7 @@ qReal::Id EditorViewScene::createElement(const QString &str)
 	return result;
 }
 
-qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scenePos)
+qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scenePos, bool searchForParents)
 {
 	Id typeId = Id::loadFromString(str);
 	Id objectId(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
@@ -393,13 +392,13 @@ qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scen
 	stream << isFromLogicalModel;
 
 	mimeData->setData(mimeType, data);
-	createElement(mimeData, scenePos);
+	createElement(mimeData, scenePos, searchForParents);
 	delete mimeData;
 
 	return objectId;
 }
 
-void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &scenePos)
+void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &scenePos, bool searchForParents)
 {
 	QByteArray itemData = mimeData->data("application/x-real-uml-data");
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
@@ -416,33 +415,38 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	in_stream >> isFromLogicalModel;
 
 	Element *newParent = NULL;
+	Element *e = NULL;
 
 	// TODO: make it simpler
 	Id id = Id::loadFromString(uuid);
 
-	// if element is node then we should look for parent for him
-	Element *e = mWindow->manager()->graphicalObject(id);
-	if (dynamic_cast<NodeElement*>(e)) { // check if e is node
-		foreach (QGraphicsItem *item, items(scenePos)) {
-			NodeElement *el = dynamic_cast<NodeElement*>(item);
-			if (el && canBeContainedBy(el->id(), id)) {
-				newParent = el;
-				break;
+	if (searchForParents) {
+		// if element is node then we should look for parent for him
+		e = mWindow->manager()->graphicalObject(id);
+		if (dynamic_cast<NodeElement*>(e)) { // check if e is node
+			foreach (QGraphicsItem *item, items(scenePos)) {
+				NodeElement *el = dynamic_cast<NodeElement*>(item);
+				if (el && canBeContainedBy(el->id(), id)) {
+					newParent = el;
+					break;
+				}
 			}
 		}
-	}
 
-	if(newParent && dynamic_cast<NodeElement*>(newParent)){
-		if (!canBeContainedBy(newParent->id(), id)) {
-			QString text;
-			text += "Element of type \"" + id.element() + "\" can not be a child of \"" + newParent->id().element() + "\"";
-			QMessageBox::critical(0, "Error!", text);
-			return;
+		if(newParent && dynamic_cast<NodeElement*>(newParent)){
+			if (!canBeContainedBy(newParent->id(), id)) {
+				QString text;
+				text += "Element of type \"" + id.element() + "\" can not be a child of \"" + newParent->id().element() + "\"";
+				QMessageBox::critical(0, "Error!", text);
+				return;
+			}
+
+			//temporary solution for chaotic changes of coordinates of created elements with edge menu
+			if (dynamic_cast<EdgeElement*>(newParent)) {
+				newParent = NULL;
+			}
 		}
 
-		//temporary solution for chaotic changes of coordinates of created elements with edge menu
-		if (dynamic_cast<EdgeElement*>(newParent))
-			newParent = NULL;
 	}
 
 	QPointF const position = !newParent ? scenePos : newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
@@ -493,21 +497,153 @@ void EditorViewScene::insertNodeIntoEdge(qReal::Id const &insertedNodeId, qReal:
 			}
 		}
 	}
-
-
 }
 
 void EditorViewScene::copy()
 {
-	mCopiedNode = dynamic_cast<NodeElement*>(selectedItems()[0]);
+	QByteArray data;
+	QDataStream stream(&data, QIODevice::WriteOnly);
+
+	QList<NodeElement*> nodes = getNodesForCopying();
+	QList<NodeData> nodesData;
+	foreach (NodeElement* node, nodes) {
+		nodesData << node->data();
+	}
+	QList<EdgeData> edgesData = getEdgesData(nodes);
+
+	stream << nodesData;
+	stream << edgesData;
+
+	QMimeData* mimeData = new QMimeData();
+	mimeData->setData("application/x-real-uml-model-data", data);
+
+	QClipboard* clipboard = QApplication::clipboard();
+	clipboard->setMimeData(mimeData);
+}
+
+QList<NodeElement*> EditorViewScene::getNodesForCopying()
+{
+	QList<NodeElement*> nodes;
+	foreach (QGraphicsItem* item, selectedItems()) {
+		NodeElement* node = dynamic_cast<NodeElement*>(item);
+		if (node && !selectedItems().contains(node->parentItem())) {
+			nodes << node;
+		}
+	}
+	foreach (NodeElement* node, nodes) {
+		addChildren(node, nodes);
+	}
+
+	return nodes;
+}
+
+void EditorViewScene::addChildren(NodeElement* node, QList<NodeElement*> &nodes)
+{
+	foreach (QGraphicsItem* item, node->childItems()) {
+		NodeElement* child = dynamic_cast<NodeElement*>(item);
+		if (child && !nodes.contains(child)) {
+			nodes << child;
+			addChildren(child, nodes);
+		}
+	}
+}
+
+QList<EdgeData> EditorViewScene::getEdgesData(QList<NodeElement*> const &nodes)
+{
+	QList<EdgeData> edgesData;
+	foreach (QGraphicsItem* item, selectedItems()) {
+		EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
+		if (edge && nodes.contains(edge->src()) && nodes.contains(edge->dst())) {
+			edgesData << edge->data();
+		}
+	}
+	return edgesData;
 }
 
 void EditorViewScene::paste()
 {
-	if (mCopiedNode)
-		mCopiedNode->copyAndPlaceOnDiagram();
-	else
-		qDebug() << "paste attempt on NULL";
+	QClipboard* clipboard = QApplication::clipboard();
+	const QMimeData* mimeData = clipboard->mimeData();
+
+	QByteArray data = mimeData->data("application/x-real-uml-model-data");
+	QDataStream stream(&data, QIODevice::ReadOnly);
+
+	QList<NodeData> nodesData;
+	QList<EdgeData> edgesData;
+
+	stream >> nodesData;
+	stream >> edgesData;
+
+	if (nodesData.isEmpty()) {
+		return;
+	}
+
+	QPointF offset = getMousePos() - nodesData[0].pos;
+
+	QHash<Id, Id> copiedIds;
+
+	while (!nodesData.isEmpty()) {
+		NodeData& nextToPaste = nodesData[0];
+		Id copy = pasteNode(nextToPaste, copiedIds, offset);
+		copiedIds.insert(nextToPaste.id, copy);
+		nodesData.removeAll(nextToPaste);
+	}
+
+	foreach (EdgeData data, edgesData) {
+		pasteEdge(data, copiedIds, offset);
+	}
+}
+
+Id EditorViewScene::pasteNode(NodeData const &nodeData,
+		QHash<Id, Id> const &copiedIds, QPointF const &offset)
+{
+	QPointF newPos = nodeData.pos;
+	if (!copiedIds.contains(nodeData.parentId)) {
+		newPos += offset;
+	}
+
+	Id typeId = nodeData.id.type();
+	Id newId = createElement(typeId.toString(), newPos);
+	NodeElement* newNode = dynamic_cast<NodeElement*>(getElem(newId));
+
+	mMVIface->graphicalAssistApi()->setProperties(newId, nodeData.properties);
+
+	newNode->setGeometry(nodeData.contents.translated(newPos));
+	newNode->storeGeometry();
+
+	if (!copiedIds.contains(nodeData.parentId)) {
+		mMVIface->graphicalAssistApi()->changeParent(newId, Id::rootId(), newPos);
+	} else {
+		mMVIface->graphicalAssistApi()->changeParent(
+				newId, copiedIds[nodeData.parentId], newPos);
+	}
+
+	return newId;
+}
+
+Id EditorViewScene::pasteEdge(EdgeData const &edgeData
+		, QHash<Id, Id> const &copiedIds, QPointF const &offset)
+{
+	Id typeId = edgeData.id.type();
+	Id newId = createElement(typeId.toString(), QPointF());
+
+	Id newSrcId = copiedIds[edgeData.srcId];
+	Id newDstId = copiedIds[edgeData.dstId];
+
+	QPointF newPos = edgeData.pos + offset;
+	mMVIface->graphicalAssistApi()->setPosition(newId, newPos);
+	mMVIface->graphicalAssistApi()->setConfiguration(newId, edgeData.configuration);
+
+	mMVIface->graphicalAssistApi()->setFrom(newId, newSrcId);
+	mMVIface->graphicalAssistApi()->setTo(newId, newDstId);
+
+	mMVIface->graphicalAssistApi()->setFromPort(newId, edgeData.portFrom);
+	mMVIface->graphicalAssistApi()->setToPort(newId, edgeData.portTo);
+
+	EdgeElement* newEdge = dynamic_cast<EdgeElement*>(getElem(newId));
+	newEdge->connectToPort();
+
+	return newId;
 }
 
 Element *EditorViewScene::getLastCreated()
@@ -527,8 +663,61 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 		paste();
 	} else if (event->matches(QKeySequence::Copy)) {
 		copy();
+	} else if (isArrow(event->key())) {
+		moveSelectedItems(event->key());
 	} else {
 		QGraphicsScene::keyPressEvent(event);
+	}
+}
+
+inline bool EditorViewScene::isArrow(int key)
+{
+	return key == Qt::Key_Left || key == Qt::Key_Right
+			|| key == Qt::Key_Down || key == Qt::Key_Up;
+}
+
+void EditorViewScene::moveSelectedItems(int direction)
+{
+	QPointF offset = offsetByDirection(direction);
+	if (offset == QPointF(0, 0)) {
+		return;
+	}
+
+	foreach (QGraphicsItem* item, selectedItems()) {
+		QPointF newPos = item->pos();
+		if (!item->parentItem()) {
+			newPos += offset;
+		}
+		Element* element = dynamic_cast<Element*>(item);
+		if (element) {
+			mMVIface->graphicalAssistApi()->setPosition(element->id(), newPos);
+		}
+		element->setPos(newPos);
+		NodeElement* node = dynamic_cast<NodeElement*>(item);
+		if (node) {
+			node->alignToGrid();
+		}
+	}
+}
+
+QPointF EditorViewScene::offsetByDirection(int direction)
+{
+	int offset = arrowMoveOffset;
+	if (SettingsManager::value("ActivateGrid").toBool()) {
+		offset = mRealIndexGrid;
+	}
+	switch (direction) {
+		case Qt::Key_Left:
+			return QPointF(-offset, 0);
+		case Qt::Key_Right:
+			return QPointF(offset, 0);
+		case Qt::Key_Down:
+			return QPointF(0, offset);
+		case Qt::Key_Up:
+			return QPointF(0, -offset);
+		default:
+			qDebug() << "Incorrect direction";
+			return QPointF(0, 0);
 	}
 }
 

@@ -78,12 +78,12 @@ NodeElement::~NodeElement()
 	delete mUmlPortHandler;
 }
 
-NodeElement *NodeElement::clone(bool toCursorPos)
+NodeElement *NodeElement::clone(bool toCursorPos, bool searchForParents)
 {
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
 
 	qReal::Id typeId = id().type();
-	qReal::Id resultId = evscene->createElement(typeId.toString(), QPointF());
+	qReal::Id resultId = evscene->createElement(typeId.toString(), QPointF(), searchForParents);
 
 	NodeElement *result = dynamic_cast<NodeElement*>(evscene->getElem(resultId));
 
@@ -101,9 +101,13 @@ NodeElement *NodeElement::clone(bool toCursorPos)
 	return result;
 }
 
-void NodeElement::copyAndPlaceOnDiagram()
+NodeElement* NodeElement::copyAndPlaceOnDiagram(QPointF const &offset)
 {
-	clone(true);
+	NodeElement* copy = clone(false, false);
+	QPointF pos = copy->scenePos();
+	copy->setPos(pos.x() + offset.x(), pos.y() + offset.y());
+
+	return copy;
 }
 
 void NodeElement::copyChildren(NodeElement *source)
@@ -120,6 +124,11 @@ void NodeElement::copyChildren(NodeElement *source)
 void NodeElement::copyProperties(NodeElement *source)
 {
 	mGraphicalAssistApi->copyProperties(id(), source->id());
+}
+
+QMap<QString, QVariant> NodeElement::properties()
+{
+	return mGraphicalAssistApi->properties(id());
 }
 
 void NodeElement::copyEdges(NodeElement *source)
@@ -687,10 +696,10 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (mElementImpl->minimizesToChildren()) {
 		resize();
 	}
-	
+
 	mContents = mContents.normalized();
 	*/
-	
+
 	storeGeometry();
 
 	setVisibleEmbeddedLinkers(true);
@@ -1314,7 +1323,7 @@ void NodeElement::sortChildren()
 			mPlaceholder->setRect(rect);
 			curChildY += mPlaceholder->rect().height() + childSpacing;
 		}
-		
+
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
 			QRectF rect(mElementImpl->sizeOfForestalling(), curChildY, 0, curItem->mContents.height());
@@ -1623,4 +1632,19 @@ void NodeElement::highlightEdges()
 {
 	foreach (EdgeElement *edge, mEdgeList)
 		edge->highlight();
+}
+
+NodeData& NodeElement::data()
+{
+	mData.id = id();
+	mData.properties = properties();
+	mData.pos = mPos;
+	mData.contents = mContents;
+
+	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
+	if (parent) {
+		mData.parentId = parent->id();
+	}
+
+	return mData;
 }

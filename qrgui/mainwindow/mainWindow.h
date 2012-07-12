@@ -229,6 +229,8 @@ private:
 
 	void loadPlugins();
 
+	void registerMetaTypes();
+
 	QListWidget* createSaveListWidget();
 
 	virtual void closeEvent(QCloseEvent *event);
