@@ -276,7 +276,7 @@ void NodeElement::arrangeLinearPorts() {
 		}
 
 		//by now, edges of this port are sorted by their optimal slope.
-		int N = sortedEdges.size();
+		int const N = sortedEdges.size();
 		int i = 0;
 		foreach (EdgeElement* edge, sortedEdges) {
 			qreal newId = lpId + (1.0 + i++) / (N + 1);
@@ -380,26 +380,39 @@ void NodeElement::resizePreinit(QRectF& newContents) {
 }
 
 void NodeElement::childrenResizePart(QRectF& newContents, QPointF& newPos) {
-	//childrenMoving - negative shift of children from the point (sizeOfForestalling, sizeOfForestalling)
-	//whatever it means :)
-	QPointF childrenMoving = QPointF(0, 0);
-	QPointF moveForInContainerElements = QPointF(0, 0);
-	int sizeOfForestalling = mElementImpl->sizeOfForestalling();
-
-	//QPointF forestalledPos = scenePos() - QPointF(sizeOfForestalling, sizeOfForestalling);
-
 	foreach (QGraphicsItem *childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem && curItem->isPort() && newContents != mContents) {
 			curItem->resizeChild(newContents, mContents);
 		}
+	}
+
+	//childrenMoving - negative shift of children from the point (sizeOfForestalling, sizeOfForestalling)
+	//whatever it means :)
+	QPointF childrenMoving = calculateChildrenMoving();
+
+	//setPos(pos() + childrenMoving);
+	moveChildren(-childrenMoving);
+	//newPos += childrenMoving;
+
+	qDebug() << "&&&" << childrenMoving;
+
+	expandByChildren(newContents);
+	qDebug() << "!!!" << childrenMoving;
+}
+
+QPointF NodeElement::calculateChildrenMoving() {
+	QPointF childrenMoving = QPointF(0, 0);
+	int const sizeOfForestalling = mElementImpl->sizeOfForestalling();
+
+	foreach (QGraphicsItem *childItem, childItems()) {
+		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 
 		if (!curItem || curItem->isPort()) {
 			continue;
 		}
 
 		QPointF curItemPos = childItem->pos();
-
 		childrenMoving.setX(
 				std::min(curItemPos.x() - sizeOfForestalling, childrenMoving.x())
 				);
@@ -408,49 +421,64 @@ void NodeElement::childrenResizePart(QRectF& newContents, QPointF& newPos) {
 				);
 	}
 
-	//setPos(pos() + childrenMoving);
-	moveChildren(-childrenMoving);
-	//newPos += moveForInContainerElements;
-	newPos += childrenMoving;
-	newContents.setBottomRight(newContents.bottomRight() + moveForInContainerElements);
+	return childrenMoving;
+}
 
-	qDebug() << "&&&" << childrenMoving;
-	qDebug() << "###" << sizeOfForestalling << "\n";
+void NodeElement::expandByChildren(QRectF& newContents) {
+	int const sizeOfForestalling = mElementImpl->sizeOfForestalling();
 
 	foreach (QGraphicsItem* childItem, childItems()) {
-		QRectF curChildItemBoundingRect;
-		if (childItem == mPlaceholder) {
-			curChildItemBoundingRect = childItem->boundingRect();
-			curChildItemBoundingRect.setLeft(newContents.left() + sizeOfForestalling);
-			curChildItemBoundingRect.setRight(newContents.right() - sizeOfForestalling);
-		} else {
-			NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-			if (!curItem || curItem->isPort()) {
-				continue;
-			}
-			curChildItemBoundingRect = curItem->mContents;
+		QRectF curChildItemBoundingRect = childBoundingRect(childItem, newContents);
+
+		if (
+			curChildItemBoundingRect.width() == 0
+			||
+			curChildItemBoundingRect.height() == 0
+		) {
+			continue;
 		}
 
 		// it seems to be more appropriate to use childItem->pos() but it causes
 		// bad behaviour when dropping one element to another
 		curChildItemBoundingRect.translate(childItem->scenePos() - scenePos());
 
-		if (curChildItemBoundingRect.left() < newContents.left() + sizeOfForestalling) {
+		if (curChildItemBoundingRect.left() - sizeOfForestalling < newContents.left()) {
 			newContents.setLeft(curChildItemBoundingRect.left() - sizeOfForestalling);
 		}
 
-		if (curChildItemBoundingRect.right() > newContents.right() - sizeOfForestalling) {
+		if (curChildItemBoundingRect.right() + sizeOfForestalling > newContents.right()) {
 			newContents.setRight(curChildItemBoundingRect.right() + sizeOfForestalling);
 		}
 
-		if (curChildItemBoundingRect.top() < newContents.top() + sizeOfForestalling) {
+		if (curChildItemBoundingRect.top() - sizeOfForestalling < newContents.top()){
 			newContents.setTop(curChildItemBoundingRect.top() - sizeOfForestalling);
 		}
 
-		if (curChildItemBoundingRect.bottom() > newContents.bottom() - sizeOfForestalling) {
+		if (curChildItemBoundingRect.bottom() + sizeOfForestalling > newContents.bottom()) {
 			newContents.setBottom(curChildItemBoundingRect.bottom() + sizeOfForestalling);
 		}
 	}
+}
+
+QRectF NodeElement::childBoundingRect(QGraphicsItem* childItem, QRectF const &newContents) {
+	QRectF boundingRect;
+
+	if (childItem == mPlaceholder) {
+		boundingRect = childItem->boundingRect();
+
+		int const sizeOfForestalling = mElementImpl->sizeOfForestalling();
+		boundingRect.setLeft(newContents.left() + sizeOfForestalling);
+		boundingRect.setRight(newContents.right() - sizeOfForestalling);
+		
+		return boundingRect;
+	}
+
+	NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
+	if (curItem && !curItem->isPort()) {
+		boundingRect = curItem->mContents;
+	}
+
+	return boundingRect;
 }
 
 void NodeElement::resize(QRectF newContents, QPointF newPos)
@@ -1515,41 +1543,39 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 	double xVert = list[2];
 	double yVert = list[3];
 	QPointF posi = pos();
+
+	double x = mPos.x() - oldContents.x();
+	double y = mPos.y() - oldContents.y();
+
 	if (mParentNodeElement->checkLowerBorder(posi, xHor, yHor+5)) {
-		double x = mPos.x() - oldContents.x();
 		double a = oldContents.x() + oldContents.width();
 		double b = newContents.x() + newContents.width();
 		double dy = newContents.height() - oldContents.height();
 		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
-		setPos(mPos);
 	}
 
 	if (mParentNodeElement->checkUpperBorder(posi, xHor, yHor)) {
-		double x = mPos.x() - oldContents.x();
 		double a = oldContents.x() + oldContents.width();
 		double b = newContents.x() + newContents.width();
 		double dy = 0;
 		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
-		setPos(mPos);
 	}
 
 	if (mParentNodeElement->checkRightBorder(posi, xVert+5, yVert)) {
-		double y = mPos.y() - oldContents.y();
 		double a = oldContents.y() + oldContents.height();
 		double b = newContents.y() + newContents.height();
 		double dx = newContents.width() - oldContents.width();
 		mPos = QPointF(mPos.x()+dx, newContents.y() + y*b/a);
-		setPos(mPos);
 	}
 	if (mParentNodeElement->checkLeftBorder(posi, xVert, yVert))
 	{
-		double y = mPos.y() - oldContents.y();
 		double a = oldContents.y() + oldContents.height();
 		double b = newContents.y() + newContents.height();
 		double dx = 0;
 		mPos = QPointF(mPos.x()+dx, newContents.y() + y*b/a);
-		setPos(mPos);
 	}
+	
+	setPos(mPos);
 	storeGeometry();
 	return;
 }

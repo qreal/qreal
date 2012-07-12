@@ -166,7 +166,10 @@ private:
 	void resizePreinit(QRectF& newContents);
 	void childrenResizePart(QRectF& newContents, QPointF& newPos);
 	void normalizeSize(QRectF& newContents);
-	void parentResizeCall();	
+	void parentResizeCall();
+	QRectF childBoundingRect(QGraphicsItem* childItem, QRectF const &newContents);	
+	void expandByChildren(QRectF& newContents);
+	QPointF calculateChildrenMoving();
 	
 	void updateByChild(NodeElement* item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
