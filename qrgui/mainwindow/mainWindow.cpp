@@ -135,6 +135,7 @@ MainWindow::MainWindow()
 	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
 	connectWindowTitle();
 
+	splashScreen.close();
 	mStartDialog->exec();
 }
 
@@ -415,7 +416,6 @@ QString MainWindow::getWorkingFile(QString const &dialogWindowTitle, bool save)
 	}
 	SettingsManager::setValue("saveFile", fileName);
 	refreshRecentProjectsList(fileName);
-	mSaveFile = fileName;
 
 	return fileName;
 }
@@ -539,6 +539,7 @@ bool MainWindow::open(QString const &fileName)
 						missingPluginNames(),
 				QMessageBox::Ok, this);
 		thereAreMissingPluginsMessage.exec();
+		open(mSaveFile);
 		return false;
 	}
 
