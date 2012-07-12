@@ -18,10 +18,14 @@ public:
 	virtual void dehighlight(Id const &graphicalId) = 0;
 	virtual void dehighlight() = 0;
 	virtual ErrorReporterInterface *errorReporter() = 0;
+
+	/// Gets graphical Id of diagram currently opened in editor.
+	/// @returns Id of opened diagram, empty Id if there is none.
 	virtual Id activeDiagram() = 0;
+
 	virtual void openSettingsDialog(QString const &tab) = 0;
 
-	/// Save currently opened model
+	/// Save currently opened model.
 	virtual void saveAll() = 0;
 
 	/// Opens new tab with text editor and shows a text in it

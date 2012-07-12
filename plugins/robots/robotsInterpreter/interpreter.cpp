@@ -127,6 +127,10 @@ void Interpreter::closeD2ModelWidget()
 void Interpreter::showD2ModelWidget(bool isVisible)
 {
 	mD2ModelWidget->init(isVisible);
+	if (isVisible) {
+		mD2ModelWidget->activateWindow();
+		mD2ModelWidget->showNormal();
+	}
 }
 
 void Interpreter::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)

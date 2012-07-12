@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QFile>
-#include <QTextStream>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
 
 #include "utilsDeclSpec.h"
 

@@ -4,5 +4,11 @@
         <file>nxtOSEK/templates/template.c</file>
         <file>nxtOSEK/templates/template.makefile</file>
         <file>nxtOSEK/templates/template.oil</file>
+	<file>nxtOSEK/templates/balancer/balancer_param.c</file>
+	<file>nxtOSEK/templates/balancer/balancer.h</file>
+	<file>nxtOSEK/templates/balancer/balancer_types.h</file>
+	<file>nxtOSEK/templates/balancer/libnxtway_gs_balancer.a</file>
+	<file>nxtOSEK/templates/balancer/rt_SATURATE.h</file>
+	<file>nxtOSEK/templates/balancer/rtwtypes.h</file>
     </qresource>
 </RCC>

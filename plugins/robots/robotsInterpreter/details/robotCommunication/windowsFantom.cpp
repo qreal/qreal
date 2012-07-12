@@ -93,3 +93,13 @@ void Fantom::nFANTOM100_iNXT_findDeviceInFirmwareDownloadMode(char resString[], 
 	else
 		throw RobotCommunicationException("Fantom driver is not available");
 }
+
+void Fantom::nFANTOM100_destroyNXT(unsigned long nxtHandle, int &status)
+{
+	NFANTOM100_destroyNXT nFANTOM100_destroyNXT
+			= (NFANTOM100_destroyNXT)(mFantomLibrary.resolve("nFANTOM100_destroyNXT"));
+	if (nFANTOM100_destroyNXT)
+		nFANTOM100_destroyNXT(nxtHandle,status);
+	else
+		throw RobotCommunicationException("Fantom driver is not available");
+}

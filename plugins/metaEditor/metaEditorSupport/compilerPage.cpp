@@ -2,6 +2,7 @@
 #include "compilerPage.h"
 #include "ui_compilerPage.h"
 
+using namespace qReal;
 using namespace metaEditor;
 
 PreferencesCompilerPage::PreferencesCompilerPage(QWidget *parent)

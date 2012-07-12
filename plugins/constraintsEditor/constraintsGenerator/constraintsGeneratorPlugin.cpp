@@ -15,6 +15,8 @@ using namespace qReal;
 
 ConstraintsGeneratorPlugin::ConstraintsGeneratorPlugin()
 {
+	mAppTranslator.load(":/constraintsGenerator_" + QLocale::system().name());
+	QApplication::installTranslator(&mAppTranslator);
 }
 
 ConstraintsGeneratorPlugin::~ConstraintsGeneratorPlugin()

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QtCore/QTranslator>
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 #include "generator.h"
 
@@ -42,6 +43,9 @@ private:
 
 	/// Logical model, from which generator takes all information.
 	qReal::LogicalModelAssistInterface const *mLogicalModel;
+
+	/// Thanslator object for this plugin, provides localisation
+	QTranslator mAppTranslator;
 };
 
 }

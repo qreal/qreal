@@ -46,16 +46,18 @@ QList<ActionInfo> MetaEditorSupportPlugin::actions()
 	ActionInfo generateEditorForQrxcActionInfo(&mGenerateEditorForQrxcAction, "generators", "tools");
 	connect(&mGenerateEditorForQrxcAction, SIGNAL(triggered()), this, SLOT(generateEditorForQrxc()));
 
-	mGenerateEditorWithQrmcAction.setText(tr("Generate editor (qrmc)"));
+	/*mGenerateEditorWithQrmcAction.setText(tr("Generate editor (qrmc)"));
 	ActionInfo generateEditorWithQrmcActionInfo(&mGenerateEditorWithQrmcAction, "generators", "tools");
 	connect(&mGenerateEditorWithQrmcAction, SIGNAL(triggered()), this, SLOT(generateEditorWithQrmc()));
 
 	mParseEditorXmlAction.setText(tr("Parse editor xml"));
 	ActionInfo parseEditorXmlActionInfo(&mParseEditorXmlAction, "generators", "tools");
 	connect(&mParseEditorXmlAction, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
+	*/
 
-	return QList<ActionInfo>() << generateEditorForQrxcActionInfo << generateEditorWithQrmcActionInfo
-			<< parseEditorXmlActionInfo;
+	return QList<ActionInfo>() << generateEditorForQrxcActionInfo;
+	//<< generateEditorWithQrmcActionInfo
+	//<< parseEditorXmlActionInfo;
 }
 
 QPair<QString, PreferencesPage *> MetaEditorSupportPlugin::preferencesPage()
@@ -71,21 +73,19 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 
 	QHash<Id, QPair<QString, QString> > metamodelList = editorGenerator.getMetamodelList();
 	foreach (Id const &key, metamodelList.keys()) {
-		QString const metamodelFullName = metamodelList[key].first;
+		QString const nameOfTheDirectory = metamodelList[key].first;
 		QString const pathToQRealRoot = metamodelList[key].second;
-		dir.mkpath(metamodelFullName);
-		QFileInfo const metamodelFileInfo(metamodelFullName);
-		QString const metamodelName = metamodelFileInfo.baseName();
-		editorGenerator.generateEditor(key, metamodelFullName + "/" + metamodelName, pathToQRealRoot);
+		dir.mkpath(nameOfTheDirectory);
+		QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key, nameOfTheDirectory, pathToQRealRoot);
 
 		if (!mMainWindowInterface->errorReporter()->wereErrors()) {
 			if (QMessageBox::question(mMainWindowInterface->windowWidget()
-					, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelName),
+					, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelNames.first),
 					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 			{
 				return;
 			}
-			loadNewEditor(metamodelFullName, metamodelName
+			loadNewEditor(nameOfTheDirectory, metamodelNames
 					, SettingsManager::value("pathToQmake").toString()
 					, SettingsManager::value("pathToMake").toString()
 					, SettingsManager::value("pluginExtension").toString()
@@ -118,7 +118,7 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 	int forEditor = 60 / metamodels.size();
 
 	foreach (Id const &key, metamodels) {
-		QString const objectType = mLogicalRepoApi->typeName(key);
+		QString const objectType = key.element();
 		if (objectType == "MetamodelDiagram") {
 			QString name = mLogicalRepoApi->stringProperty(key, "name of the directory");
 			if (QMessageBox::question(mMainWindowInterface->windowWidget()
@@ -222,8 +222,16 @@ void MetaEditorSupportPlugin::parseEditorXml()
 	mMainWindowInterface->reinitModels();
 }
 
+void MetaEditorSupportPlugin::deleteGeneratedFiles(QString const &directoryName, QString const &fileBaseName)
+{
+	QFile filePro(directoryName + "/" + fileBaseName + ".pro");
+	QFile fileXml(directoryName + "/" + fileBaseName + ".xml");
+	filePro.remove();
+	fileXml.remove();
+}
+
 void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
-		, QString const &metamodelName
+		, QPair<QString, QString> const &metamodelNames
 		, QString const &commandFirst
 		, QString const &commandSecond
 		, QString const &extension
@@ -231,6 +239,9 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 {
 	int const progressBarWidth = 240;
 	int const progressBarHeight = 20;
+
+	QString const metamodelName = metamodelNames.first;
+	QString const normalizerMetamodelName = metamodelNames.second;
 
 	if ((commandFirst == "") || (commandSecond == "") || (extension == "")) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("please, fill compiler settings"));
@@ -251,8 +262,9 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 	progress->setRange(0, 100);
 	progress->setValue(5);
 
-	if (mMainWindowInterface->unloadPlugin(normalizeDirName)) {
+	if (!mMainWindowInterface->unloadPlugin(normalizeDirName)) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot unload plugin"));
+		deleteGeneratedFiles(directoryName, normalizerMetamodelName);
 		progress->close();
 		delete progress;
 		return;
@@ -278,6 +290,7 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 
 	if (progress->value() != 100) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot load new editor"));
+		deleteGeneratedFiles(directoryName, normalizerMetamodelName);
 	}
 	progress->setValue(100);
 	progress->close();

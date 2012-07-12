@@ -11,14 +11,14 @@
 
 namespace metaEditor {
 
-/// Generates metamodel in .xml format to be compile into C++ sources by qrxc tool
+/// Generates metamodel in .xml format to be compiled into C++ sources by qrxc tool
 class EditorGenerator
 {
 public:
 	explicit EditorGenerator(qrRepo::LogicalRepoApi const &api, qReal::ErrorReporterInterface &errorReporter);
 
 	QHash<qReal::Id, QPair<QString, QString> > getMetamodelList();
-	void generateEditor(qReal::Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource);
+	QPair<QString, QString> generateEditor(qReal::Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource);
 
 private:
 	void serializeObjects(QDomElement &parent, qReal::Id const &idParent);
@@ -46,6 +46,7 @@ private:
 	void setBoolValuesForContainer(QString const &propertyName, QDomElement &properties, qReal::Id const &id);
 	void setSizesForContainer(QString const &propertyName, QDomElement &properties, qReal::Id const &id);
 	static void copyImages(QString const &pathToFile);
+	static QString calculateEditorPath(QString const &pathToFile, QString const &pathToQRealSource);
 
 	qrRepo::LogicalRepoApi const &mApi;
 	QDomDocument mDocument;

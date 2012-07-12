@@ -1,7 +1,7 @@
 <project>
     <shortName>QReal</shortName>
     <fullName>QReal</fullName>
-    <version>0.1.0</version>
+    <version>%version%</version>
     <licenseFile>gpl-3.0.txt</licenseFile>
     <leftImage>left.png</leftImage>
     <logoImage>logo.png</logoImage>
@@ -62,22 +62,22 @@
                         </distributionFile>
                         
                         <distributionFile>
-                            <origin>%1/QtCore4.dll</origin>
+                            <origin>%2/QtCore4.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%1/QtGui4.dll</origin>
+                            <origin>%2/QtGui4.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%1/QtSvg4.dll</origin>
+                            <origin>%2/QtSvg4.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%1/mingwm10.dll</origin>
+                            <origin>%2/mingwm10.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%1/QtXml4.dll</origin>
+                            <origin>%2/QtXml4.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%1/libgcc_s_dw2-1.dll</origin>
+                            <origin>%2/libgcc_s_dw2-1.dll</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>icon.ico</origin>

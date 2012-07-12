@@ -2,6 +2,7 @@
 
 #include <QtCore/QString>
 #include <QtCore/QThread>
+#include <QtCore/QTimer>
 
 #include "robotCommunicationThreadInterface.h"
 #include "../robotCommandConstants.h"
@@ -35,11 +36,18 @@ private:
 	bool isOpen();
 	static void debugPrint(QByteArray const &buffer, bool out);
 
-	void send(QByteArray const &buffer, unsigned const responseSize, QObject *addressee);
+	void send(QByteArray const &buffer, unsigned const responseSize, QByteArray &outputBuffer);
 
 	bool mActive;
 	unsigned long mNXTHandle;
 	robotsInterpreter::robotCommunication::Fantom mFantom;
+
+	/// Timer that sends messages to robot to check that connection is still alive
+	QTimer *mKeepAliveTimer;
+
+private slots:
+	/// Checks if robot is connected
+	void checkForConnection();
 };
 
 }

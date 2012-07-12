@@ -9,11 +9,15 @@ using namespace details;
 
 UsbRobotCommunicationThread::UsbRobotCommunicationThread():
 	mActive(false), mNXTHandle(0)
+	, mKeepAliveTimer(new QTimer(this))
 {
+	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
 }
 
 UsbRobotCommunicationThread::~UsbRobotCommunicationThread()
 {
+	int status = 0;
+	mFantom.nFANTOM100_destroyNXT(mNXTHandle, status);
 }
 
 bool UsbRobotCommunicationThread::isOpen()
@@ -46,29 +50,34 @@ void UsbRobotCommunicationThread::connect(QString const &portName)
 		mFantom.nFANTOM100_destroyNXTIterator(nxtIterator, status);
 	}
 	emit connected(mActive);
+
+	if (mActive)
+		mKeepAliveTimer->start(1000);
 }
 
 void UsbRobotCommunicationThread::send(QObject *addressee
 		, QByteArray const &buffer, unsigned const responseSize)
 {
-	send(buffer, responseSize, addressee);
+	QByteArray outputBuffer;
+	outputBuffer.resize(responseSize);
+	send(buffer, responseSize, outputBuffer);
+	if (buffer[2] != 0)
+		emit response(addressee, QByteArray());
+	else
+		emit response(addressee, outputBuffer);
 }
 
-void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const responseSize, QObject *addressee)
+void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const responseSize, QByteArray &outputBuffer)
 {
 	Tracer::debug(tracer::robotCommunication, "UsbRobotCommunicationThread::send", "Sending:");
-	debugPrint(buffer, true);
 
 	int status = 0;
 	QByteArray newBuffer;
-	for (int i = 3; i < buffer.length() - 1; i++)
+	for (int i = 3; i < buffer.length(); i++)
 		newBuffer[i - 3] = buffer[i];
 
-	QByteArray outputBuffer;
-	outputBuffer.resize(responseSize);
 	if (buffer[2] != 0) {
 		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, false, newBuffer, newBuffer.length(), NULL, 0, status);
-		emit response(addressee, QByteArray());
 	} else {
 		char *outputBufferPtr2 = new char[200];
 		for (int i = 0; i < 200; i++) {
@@ -88,6 +97,7 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const 
 			command[4] = port;
 
 			mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, command, 2, outputBufferPtr2, 2, status);
+
 		}
 
 		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, newBuffer, newBuffer.length(), outputBufferPtr2, responseSize - 3, status);
@@ -95,12 +105,11 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const 
 		outputBuffer[0] = responseSize - 2;
 		outputBuffer[1] = 0;
 		outputBuffer[2] = 2;
-		for (unsigned i = 0; i < responseSize - 3; i++) {
+		for (unsigned  i = 0; i < responseSize - 3; i++) {
 			outputBuffer[i + 3] = outputBufferPtr2[i];
 		}
 		delete outputBufferPtr2;
 		debugPrint(outputBuffer, false);
-		emit response(addressee, outputBuffer);
 	}
 }
 
@@ -111,6 +120,10 @@ void UsbRobotCommunicationThread::reconnect(QString const &portName)
 
 void UsbRobotCommunicationThread::disconnect()
 {
+	mKeepAliveTimer->stop();
+	int status = 0;
+	mFantom.nFANTOM100_destroyNXT(mNXTHandle, status);
+	mActive = false;
 	emit disconnected();
 }
 
@@ -132,4 +145,21 @@ void UsbRobotCommunicationThread::debugPrint(QByteArray const &buffer, bool out)
 		tmp += " ";
 	}
 	Tracer::debug(tracer::robotCommunication, "UsbRobotCommunicationThread::debugPrint", (out ? ">" : "<") + tmp);
+}
+
+void UsbRobotCommunicationThread::checkForConnection()
+{
+	QByteArray command(4, 0);
+
+	command[3] = commandCode::KEEPALIVE;
+
+	int const keepAliveResponseSize = 9;
+
+	QByteArray response;
+	response.resize(keepAliveResponseSize);
+
+	send(command, keepAliveResponseSize, response);
+
+	if (response[3] == '\0')
+		emit disconnected();
 }

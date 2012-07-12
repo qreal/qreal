@@ -28,9 +28,11 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 				mLoaders << loader;
 			}
 			else {
+				loader->unload();
 				delete loader;
 			}
 		} else {
+			loader->unload();
 			delete loader;
 		}
 	}

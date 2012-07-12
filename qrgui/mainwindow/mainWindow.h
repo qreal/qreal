@@ -68,6 +68,7 @@ public:
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram();
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
+	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index, int const &role);
 	virtual void openSettingsDialog(QString const &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);
@@ -195,7 +196,7 @@ private slots:
 	void showAlignment(bool isChecked);
 	void switchGrid(bool isChecked);
 	void switchAlignment(bool isChecked);
-	void setShape(QString const &data, QPersistentModelIndex const &index, int const &role);
+	void setProperty(QString const &data, QPersistentModelIndex const &index, int const &role);
 
 	void openShapeEditor();
 
@@ -227,6 +228,8 @@ private:
 	void checkParentsConstraints(QModelIndex const &index);
 	void checkChildrensConstraints(Id const &id);
 	void checkLinksConstraints(Id const &id);
+
+	QHash<EditorView*, QPair<CodeArea *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on

@@ -14,6 +14,7 @@ RobotsGeneratorPlugin::RobotsGeneratorPlugin()
 		, mFlashRobotAction(NULL)
 		, mUploadProgramAction(NULL)
 		, mNxtToolsPresent(false)
+		, mFlashTool(NULL)
 {
 	mAppTranslator.load(":/robotsGenerator_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
@@ -57,16 +58,18 @@ void RobotsGeneratorPlugin::generateRobotSourceCode()
 {
 	mMainWindowInterface->saveAll();
 
-	robots::generator::NxtOSEKRobotGenerator gen(*mRepoControlApi, *mMainWindowInterface->errorReporter());
+	robots::generator::NxtOSEKRobotGenerator gen(mMainWindowInterface->activeDiagram(), *mRepoControlApi, *mMainWindowInterface->errorReporter());
 	gen.generate();
 
 	QFile file("nxt-tools/example0/example0.c");
 	QTextStream *inStream = NULL;
-	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text))
+	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		inStream = new QTextStream(&file);
+	}
 
-	if (inStream)
+	if (inStream) {
 		mMainWindowInterface->showInTextEditor("example0", inStream->readAll());
+	}
 }
 
 void RobotsGeneratorPlugin::flashRobot()

@@ -340,7 +340,7 @@ void NodeElement::moveChildren(qreal dx, qreal dy)
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem && !curItem->isPort()) {
-			curItem->moveBy(dx, dy);
+			//curItem->moveBy(dx, dy);//qwerty_temp
 			///returns object to the parent area
 			if (curItem->pos().x() < mElementImpl->sizeOfForestalling()) {
 				curItem->setPos(mElementImpl->sizeOfForestalling(), curItem->pos().y());

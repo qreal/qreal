@@ -75,8 +75,6 @@ namespace qrRepo {
 		qReal::IdList outgoingConnectedElements(qReal::Id const &id) const;
 		qReal::IdList incomingConnectedElements(qReal::Id const &id) const;
 
-		QString typeName(qReal::Id const &id) const;
-
 		QVariant property(qReal::Id const &id, QString const &propertyName) const;
 		QString stringProperty(qReal::Id const &id, QString const &propertyName) const;
 		void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value);

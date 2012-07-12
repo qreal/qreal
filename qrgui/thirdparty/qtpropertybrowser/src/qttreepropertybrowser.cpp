@@ -622,36 +622,40 @@ void QtTreePropertyBrowserPrivate::updateItem(QTreeWidgetItem *item)
         QString toolTip = property->toolTip();
         if (toolTip.isEmpty())
             toolTip = property->displayText();
-        item->setToolTip(1, toolTip);
-        item->setIcon(1, property->valueIcon());
-        property->displayText().isEmpty() ? item->setText(1, property->valueText()) : item->setText(1, property->displayText());
-    } else if (markPropertiesWithoutValue() && !m_treeWidget->rootIsDecorated()) {
-        expandIcon = m_expandIcon;
-    }
-    item->setIcon(0, expandIcon);
-    item->setFirstColumnSpanned(!property->hasValue());
-    item->setToolTip(0, property->propertyName());
-    item->setStatusTip(0, property->statusTip());
-    item->setWhatsThis(0, property->whatsThis());
-    item->setText(0, property->propertyName());
-    bool wasEnabled = item->flags() & Qt::ItemIsEnabled;
-    bool isEnabled = wasEnabled;
-    if (property->isEnabled()) {
-        QTreeWidgetItem *parent = item->parent();
-        if (!parent || (parent->flags() & Qt::ItemIsEnabled))
-            isEnabled = true;
-        else
-            isEnabled = false;
-    } else {
-        isEnabled = false;
-    }
-    if (wasEnabled != isEnabled) {
-        if (isEnabled)
-            enableItem(item);
-        else
-            disableItem(item);
-    }
-    m_treeWidget->viewport()->update();
+		item->setToolTip(1, toolTip);
+		item->setIcon(1, property->valueIcon());
+		property->displayText().isEmpty() ? item->setText(1, property->valueText()) : item->setText(1, property->displayText());
+	} else if (markPropertiesWithoutValue() && !m_treeWidget->rootIsDecorated()) {
+		expandIcon = m_expandIcon;
+	}
+	item->setIcon(0, expandIcon);
+	item->setFirstColumnSpanned(!property->hasValue());
+	if (property->toolTip().isEmpty()) {
+		item->setToolTip(0, property->propertyName());
+	} else {
+		item->setToolTip(0, property->toolTip());
+	}
+	item->setStatusTip(0, property->statusTip());
+	item->setWhatsThis(0, property->whatsThis());
+	item->setText(0, property->propertyName());
+	bool wasEnabled = item->flags() & Qt::ItemIsEnabled;
+	bool isEnabled = wasEnabled;
+	if (property->isEnabled()) {
+		QTreeWidgetItem *parent = item->parent();
+		if (!parent || (parent->flags() & Qt::ItemIsEnabled))
+			isEnabled = true;
+		else
+			isEnabled = false;
+	} else {
+		isEnabled = false;
+	}
+	if (wasEnabled != isEnabled) {
+		if (isEnabled)
+			enableItem(item);
+		else
+			disableItem(item);
+	}
+	m_treeWidget->viewport()->update();
 }
 
 QColor QtTreePropertyBrowserPrivate::calculatedBackgroundColor(QtBrowserItem *item) const

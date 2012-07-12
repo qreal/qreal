@@ -2,6 +2,34 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="ru_RU">
 <context>
+    <name>QObject</name>
+    <message>
+        <location filename="hascolParser.cpp" line="55"/>
+        <source>Hascol preprocessor crashed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="hascolParser.cpp" line="57"/>
+        <source>Hascol preprocessor finished with error code %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="hascolParser.cpp" line="60"/>
+        <source>Preprocessed file %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="hascolParser.cpp" line="63"/>
+        <source>Output stream: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="hascolParser.cpp" line="67"/>
+        <source>Error stream: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>hascol::HascolSupportPlugin</name>
     <message>
         <location filename="hascolSupportPlugin.cpp" line="34"/>

@@ -1,4 +1,4 @@
-#include "mainWindow.h"
+ï»¿#include "mainWindow.h"
 #include "ui_mainWindow.h"
 
 #include <QtCore/QProcess>
@@ -61,6 +61,7 @@ MainWindow::MainWindow()
 		, mRecentProjectsMapper(new QSignalMapper())
 {
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
+	mOpenedTabsWithEditor = new QHash<EditorView *, QPair<CodeArea*, QPair<QPersistentModelIndex, int> > >();
 
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
 	timeMeasurer.doNothing(); //to avoid the unused variables problem
@@ -280,6 +281,7 @@ MainWindow::~MainWindow()
 	delete mGesturesWidget;
 	delete mModels;
 	delete mCodeTabManager;
+	delete mOpenedTabsWithEditor;
 	delete mFindReplaceDialog;
 	delete mFindHelper;
 }
@@ -591,7 +593,7 @@ void MainWindow::closeAllTabs()
 	disconnectWindowTitle();
 }
 
-void MainWindow::setShape(QString const &data, QPersistentModelIndex const &index, int const &role)
+void MainWindow::setProperty(QString const &data, QPersistentModelIndex const &index, int const &role)
 {
 	// const_cast here is ok, since we need to set a shape in a correct model, and
 	// not going to use this index anymore.
@@ -707,11 +709,11 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	foreach (NodeElement *item, itemsToArrangeLinks) {
 		if (item) {
 			item->arrangeLinks();
-			checkConstraints(item->logicalId());//ïðîâåðÿåì íà îãðàíè÷åíèÿ ñâÿçàííûå ýëåìåíòû óäàëÿåìîãî ëèíêà â ëîãè÷åñêîé ìîäåëè
+			checkConstraints(item->logicalId());//Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð½Ð° Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ñ ÑÐ²ÑÐ·Ð°Ð½Ð½Ñ‹Ðµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹ ÑƒÐ´Ð°Ð»ÑÐµÐ¼Ð¾Ð³Ð¾ Ð»Ð¸Ð½ÐºÐ° Ð² Ð»Ð¾Ð³Ð¸Ñ‡ÐµÑÐºÐ¾Ð¹ Ð¼Ð¾Ð´ÐµÐ»Ð¸
 		}
 	}
 	if (parentIndex != mModels->logicalModelAssistApi().indexById(Id::rootId())) {
-		checkConstraints(parentIndex);//ïðîâåðÿåì íà îãðàíè÷åíèÿ ðîäèòåëÿ óäàëÿåìîãî ýëåìåíòà â ëîãè÷åñêîé ìîäåëè
+		checkConstraints(parentIndex);//Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð½Ð° Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ñ Ñ€Ð¾Ð´Ð¸Ñ‚ÐµÐ»Ñ ÑƒÐ´Ð°Ð»ÑÐµÐ¼Ð¾Ð³Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð° Ð² Ð»Ð¾Ð³Ð¸Ñ‡ÐµÑÐºÐ¾Ð¹ Ð¼Ð¾Ð´ÐµÐ»Ð¸
 	}
 }
 
@@ -966,6 +968,21 @@ void qReal::MainWindow::closeTab(int index)
 			deletingCodeTab = diagram;
 	if (deletingCodeTab != NULL)
 		mCodeTabManager->remove(deletingCodeTab);
+	QPersistentModelIndex pIndex;
+	int role;
+	foreach (EditorView *diagram, mOpenedTabsWithEditor->keys()) {
+		QPair<CodeArea *, QPair<QPersistentModelIndex, int> > value =
+				mOpenedTabsWithEditor->value(diagram);
+		if (value.first == possibleCodeTab) {
+			deletingCodeTab = diagram;
+			pIndex = value.second.first;
+			role = value.second.second;
+		}
+	}
+	if (deletingCodeTab != NULL) {
+		setProperty(possibleCodeTab->toPlainText(), pIndex, role);
+		mOpenedTabsWithEditor->remove(deletingCodeTab);
+	}
 	mUi->tabs->removeTab(index);
 	delete widget;
 }
@@ -1027,7 +1044,7 @@ void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, Q
 	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
 	model->setData(index, propertyValue, role);
 	connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)),
-			this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
+			this, SLOT(setProperty(QString, QPersistentModelIndex const &, int const &)));
 
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
@@ -1092,6 +1109,10 @@ void MainWindow::centerOn(Id const &id)
 		return;
 
 	EditorView* const view = getCurrentTab();
+	if (!view) {
+		return;
+	}
+
 	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
 	Element* const element = scene->getElem(id);
 
@@ -1714,6 +1735,24 @@ void MainWindow::showInTextEditor(QString const &title, QString const &text)
 		}
 		else
 			mUi->tabs->setCurrentWidget(mCodeTabManager->value(getCurrentTab()));
+	}
+}
+
+void MainWindow::showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index, int const &role)
+{
+	if (dynamic_cast<EditorView *>(getCurrentTab()) != NULL) {
+		if (!mOpenedTabsWithEditor->contains(getCurrentTab())) {
+			CodeArea * area = new CodeArea(NULL, sql);
+			area->document()->setPlainText(text);
+
+			area->show();
+
+			QPair<CodeArea *, QPair<QPersistentModelIndex, int> > placeToSave = qMakePair(area, qMakePair(index, role));
+			mOpenedTabsWithEditor->insert(getCurrentTab(), placeToSave);
+
+			mUi->tabs->addTab(area, title);
+			mUi->tabs->setCurrentWidget(area);
+		}
 	}
 }
 

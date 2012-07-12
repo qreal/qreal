@@ -1,7 +1,7 @@
 <project>
     <shortName>QRealRobots</shortName>
     <fullName>QReal Robots</fullName>
-    <version>1.5</version>
+    <version>%version%</version>
     <licenseFile>%1/installer/gpl-3.0.txt</licenseFile>
     <leftImage>%1/installer/left.png</leftImage>
     <logoImage>%1/installer/logo.png</logoImage>
@@ -96,13 +96,13 @@
                             <origin>%2/QtSvg4.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/mingwm10.dll</origin>
+                            <origin>%2/../../../../../mingw/bin/mingwm10.dll</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>%2/QtXml4.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/libgcc_s_dw2-1.dll</origin>
+                            <origin>%2/../../../../../mingw/bin/libgcc_s_dw2-1.dll</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>%1/installer/icon.ico</origin>

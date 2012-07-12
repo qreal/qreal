@@ -2,6 +2,8 @@
 
 #include "../../../qrutils/generatorsUtils/abstractGenerator.h"
 
+
+
 namespace ubiq {
 namespace generator {
 

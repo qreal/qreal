@@ -9,6 +9,9 @@ MOC_DIR = .moc
 
 TRANSLATIONS = constraintsGenerator_ru.ts
 
+RESOURCES = \
+	constraintsGenerator.qrc \
+
 HEADERS = \
 	constraintsGeneratorPlugin.h \
 	generator.h \

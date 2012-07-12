@@ -9,6 +9,7 @@ using namespace qReal;
 using namespace interpreters::robots;
 
 const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
+const Id oldRobotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "DiagramNode");
 
 RobotsPlugin::RobotsPlugin()
 		: mMainWindowInterpretersInterface(NULL)
@@ -20,6 +21,7 @@ RobotsPlugin::RobotsPlugin()
 		, mWatchListAction(NULL)
 		, mAppTranslator(new QTranslator())
 {
+	details::Tracer::enableCategory(details::tracer::robotCommunication);
 //	details::Tracer::enableAll();
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
 	mAppTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
@@ -121,6 +123,7 @@ void RobotsPlugin::updateSettings()
 			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt())
 	);
 	m2dModelAction->setVisible(typeOfRobotModel == robotModelType::unreal);
+	mConnectToRobotAction->setVisible(typeOfRobotModel == robotModelType::real);
 	if (typeOfRobotModel == robotModelType::unreal) {
 		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopRobotAction);
 	} else {
@@ -140,7 +143,7 @@ void RobotsPlugin::closeNeededWidget()
 
 void RobotsPlugin::activeTabChanged(Id const & rootElementId)
 {
-	bool const enabled = rootElementId.type() == robotDiagramType;
+	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
 	foreach (ActionInfo const &actionInfo, mActionInfos) {
 		if (needToDisableWhenNotRobotsDiagram(actionInfo.action())) {
 			actionInfo.action()->setEnabled(enabled);

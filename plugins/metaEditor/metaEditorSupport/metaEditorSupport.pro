@@ -17,13 +17,14 @@ HEADERS += \
 	editorGenerator.h \
 	xmlParser.h \
 	compilerPage.h \
-	../../../qrgui/dialogs/preferencesPages/preferencesPage.h
+	../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
 
 SOURCES += \
 	metaEditorSupportPlugin.cpp \
 	editorGenerator.cpp \
 	xmlParser.cpp \
 	compilerPage.cpp \
+	../../../qrutils/generatorsUtils/nameNormalizer.cpp \
 
 FORMS += \
 	compilerPage.ui \
