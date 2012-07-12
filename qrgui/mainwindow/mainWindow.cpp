@@ -748,8 +748,8 @@ void MainWindow::editWindowTitle()
 
 void MainWindow::showAbout()
 {
-	QMessageBox::about(this, tr("About QReal:Robots"),
-			tr("<b>QReal:Robots<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>"));
+	QMessageBox::about(this, tr("About QReal"),
+			tr("<b>QReal<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>"));
 }
 
 void MainWindow::showHelp()
