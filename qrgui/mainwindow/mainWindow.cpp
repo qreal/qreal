@@ -14,6 +14,8 @@
 #include <QtGui/QListWidgetItem>
 #include <QtCore/QPluginLoader>
 
+#include <QtCore/QMetaType>
+
 #include <QtSvg/QSvgGenerator>
 
 #include <QtCore/QDebug>
@@ -61,6 +63,7 @@ MainWindow::MainWindow()
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 {
+	registerMetaTypes();
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
 
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
@@ -232,6 +235,14 @@ void MainWindow::connectActions()
 		, SLOT(changePaletteRepresentation()));
 	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged())
 		, &mPreferencesDialog, SLOT(changePaletteParameters()));
+}
+
+void MainWindow::registerMetaTypes()
+{
+	qRegisterMetaType<Id>();
+	qRegisterMetaTypeStreamOperators<Id>();
+	qRegisterMetaType<IdList>();
+	qRegisterMetaTypeStreamOperators<IdList>();
 }
 
 void MainWindow::showFindDialog()

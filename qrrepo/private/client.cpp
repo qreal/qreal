@@ -215,6 +215,16 @@ void Client::copyProperties(const Id &dest, const Id &src)
 	mObjects[dest]->copyPropertiesFrom(*mObjects[src]);
 }
 
+QMap<QString, QVariant> Client::properties(Id const &id)
+{
+	return mObjects[id]->properties();
+}
+
+void Client::setProperties(Id const &id, QMap<QString, QVariant> const &properties)
+{
+	mObjects[id]->setProperties(properties);
+}
+
 QVariant Client::property( const Id &id, const QString &name ) const
 {
 	if (mObjects.contains(id)) {

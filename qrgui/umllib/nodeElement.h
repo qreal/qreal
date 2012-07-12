@@ -22,6 +22,8 @@
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"
 
+#include "serializationData.h"
+
 class NodeElement : public Element
 {
 	Q_OBJECT
@@ -30,10 +32,12 @@ public:
 	NodeElement(ElementImpl *impl);
 	virtual ~NodeElement();
 
-	NodeElement *clone(bool toCursorPos = false);
+	NodeElement *clone(bool toCursorPos = false, bool searchForParents = true);
 	void copyChildren(NodeElement *source);
 	void copyEdges(NodeElement *source);
 	void copyProperties(NodeElement *source);
+
+	QMap<QString, QVariant> properties();
 
 	virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w, SdfRenderer *portrenderer);
 	virtual void paint(QPainter *,  const QStyleOptionGraphicsItem *, QWidget *);
@@ -60,6 +64,8 @@ public:
 
 	void addEdge(EdgeElement *edge);
 	void delEdge(EdgeElement *edge);
+
+	NodeData& data();
 
 	virtual bool initPossibleEdges();
 	QList<PossibleEdge> getPossibleEdges();
@@ -113,7 +119,7 @@ public slots:
 	virtual void singleSelectionState(const bool singleSelected);
 	virtual void selectionState(const bool selected);
 	void switchGrid(bool isChecked);
-	void copyAndPlaceOnDiagram();
+	NodeElement* copyAndPlaceOnDiagram(QPointF const &offset);
 
 private:
 	enum DragState {
@@ -161,7 +167,7 @@ private:
 	void resize(QRectF newContents);
 	// newContents = mContents
 	void resize();
-	
+
 	void updateByChild(NodeElement* item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
 
@@ -227,4 +233,6 @@ private:
 
 	QGraphicsRectItem *mPlaceholder;
 	NodeElement *mHighlightedNode;
+
+	NodeData mData;
 };
