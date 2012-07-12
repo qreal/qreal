@@ -3165,28 +3165,36 @@
 <context>
     <name>qReal::StartDialog</name>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="16"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="34"/>
         <source>Start page</source>
         <oldsource>Start Page</oldsource>
         <translation>Начальная страница</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="19"/>
         <source>Recent projects</source>
-        <translation>Недавние проекты</translation>
+        <translation type="obsolete">Недавние проекты</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="21"/>
         <source>New project with diagram</source>
-        <translation>Новый проект на базе диаграммы</translation>
+        <translation type="obsolete">Новый проект на базе диаграммы</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="23"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="18"/>
+        <source>&amp;Recent projects</source>
+        <translation>&amp;Недавние проекты</translation>
+    </message>
+    <message>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="20"/>
+        <source>&amp;New project with diagram</source>
+        <translation>Новый проект на базе &amp;диаграммы</translation>
+    </message>
+    <message>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="22"/>
         <source>&amp;Quit QReal</source>
         <translation>&amp;Выйти из QReal</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="24"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="23"/>
         <source>&amp;Open existing project</source>
         <translation>&amp;Открыть проект</translation>
     </message>
@@ -3209,7 +3217,7 @@
 <context>
     <name>qReal::SuggestToCreateDiagramDialog</name>
     <message>
-        <location filename="dialogs/suggestToCreateDiagramDialog.cpp" line="12"/>
+        <location filename="dialogs/suggestToCreateDiagramDialog.cpp" line="17"/>
         <source>Create diagram</source>
         <translation>Создание диаграммы</translation>
     </message>

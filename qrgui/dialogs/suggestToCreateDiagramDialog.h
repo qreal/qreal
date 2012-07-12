@@ -12,6 +12,11 @@ class MainWindow;
 
 namespace qReal {
 
+/**
+ * @brief Dialog for create a diagram
+ *
+ * This dialog prompts the user to create one of the available diagrams
+ */
 class SuggestToCreateDiagramDialog : public QDialog
 {
 	Q_OBJECT

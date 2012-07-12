@@ -11,14 +11,13 @@ using namespace qReal;
 StartDialog::StartDialog(MainWindow *mainWindow)
 	: QDialog(mainWindow, Qt::WindowMaximizeButtonHint)
 	, mMainWindow(mainWindow)
-	, mTabWidget(new QTabWidget)
 {
-	setWindowTitle(tr("Start page"));
+	QTabWidget *tabWidget = new QTabWidget;
 
 	RecentProjectsListWidget *recentProjects = new RecentProjectsListWidget(this);
-	mTabWidget->addTab(recentProjects, tr("Recent projects"));
+	tabWidget->addTab(recentProjects, tr("&Recent projects"));
 	SuggestToCreateDiagramWidget *diagrams = new SuggestToCreateDiagramWidget(mMainWindow, this);
-	mTabWidget->addTab(diagrams, tr("New project with diagram"));
+	tabWidget->addTab(diagrams, tr("&New project with diagram"));
 
 	QCommandLinkButton *quitLink = new QCommandLinkButton(tr("&Quit QReal"));
 	QCommandLinkButton *openLink = new QCommandLinkButton(tr("&Open existing project"));
@@ -28,10 +27,11 @@ StartDialog::StartDialog(MainWindow *mainWindow)
 	commandLinksLayout->addWidget(quitLink);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
-	mainLayout->addWidget(mTabWidget);
+	mainLayout->addWidget(tabWidget);
 	mainLayout->addLayout(commandLinksLayout);
 
 	setLayout(mainLayout);
+	setWindowTitle(tr("Start page"));
 
 	connect(openLink, SIGNAL(clicked()), this, SLOT(openExistingProject()));
 	connect(quitLink, SIGNAL(clicked()), qApp, SLOT(closeAllWindows()));
@@ -64,6 +64,7 @@ void StartDialog::createProjectWithDiagram(const QString &idString)
 {
 	mMainWindow->openEmptyProject();
 	mMainWindow->createDiagram(idString);
+	// This dialog will be closed by the SuggestToCreateDiagramWidget
 }
 
 void StartDialog::keyPressEvent(QKeyEvent *event)
