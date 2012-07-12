@@ -43,7 +43,7 @@ public:
 
 	virtual void updateData();
 	void setGeometry(QRectF const &geom);
-	void setPos(const QPointF &pos);
+	void setPos(QPointF const &pos);
 	void setPos(qreal x, qreal y);
 
 	/// Aligning the element to grid
@@ -56,7 +56,7 @@ public:
 	static int portId(qreal id);
 	const QPointF getNearestPort(QPointF const &location) const;
 
-	qreal getPortId(const QPointF &location) const;
+	qreal getPortId(QPointF const &location) const;
 
 	void addEdge(EdgeElement *edge);
 	void delEdge(EdgeElement *edge);
@@ -73,14 +73,14 @@ public:
 
 	QList<double> borderValues();
 
-	bool checkLowerBorder(QPointF& point, double x, double y) const;
-	bool checkUpperBorder(QPointF& point, double x, double y) const;
-	bool checkLeftBorder(QPointF& point, double x, double y) const;
-	bool checkRightBorder(QPointF& point, double x, double y) const;
-	bool checkNoBorderX(QPointF& point, double x, double y) const; // TODO: rename
-	bool checkNoBorderY(QPointF& point, double x, double y) const;
+	bool checkLowerBorder(QPointF const &point, double x, double y) const;
+	bool checkUpperBorder(QPointF const &point, double x, double y) const;
+	bool checkLeftBorder(QPointF const &point, double x, double y) const;
+	bool checkRightBorder(QPointF const &point, double x, double y) const;
+	bool checkNoBorderX(QPointF const &point, double x, double y) const; // TODO: rename
+	bool checkNoBorderY(QPointF const &point, double x, double y) const;
 
-	void resizeChild(QRectF newContents, QRectF oldContents);
+	void resizeChild(QRectF const &newContents, QRectF const &oldContents);
 
 	virtual QList<ContextMenuAction*> contextMenuActions();
 	void switchAlignment(bool isSwitchedOn);
@@ -110,8 +110,8 @@ public:
 	void highlightEdges();
 
 public slots:
-	virtual void singleSelectionState(const bool singleSelected);
-	virtual void selectionState(const bool selected);
+	virtual void singleSelectionState(bool const singleSelected);
+	virtual void selectionState(bool const selected);
 	void switchGrid(bool isChecked);
 	void copyAndPlaceOnDiagram();
 
@@ -135,7 +135,7 @@ private:
 	static int const childSpacing = 10;
 
 	void delUnusedLines();
-	PossibleEdge toPossibleEdge(const StringPossibleEdge & strPossibleEdge);
+	PossibleEdge toPossibleEdge(StringPossibleEdge const &strPossibleEdge);
 
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -146,15 +146,15 @@ private:
 	virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 	virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
-	virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
 	void changeFoldState();
 	void setLinksVisible(bool);
 
-	NodeElement *getNodeAt(const QPointF &position);
+	NodeElement* getNodeAt(QPointF const &position);
 
-	QLineF newTransform(const StatLine& port) const;
-	QPointF newTransform(const StatPoint& port) const;
+	QLineF newTransform(StatLine const &port) const;
+	QPointF newTransform(StatPoint const &port) const;
 
 	void resize(QRectF newContents, QPointF newPos);
 	// newPos = mPos
@@ -173,7 +173,7 @@ private:
 	QPointF calculateChildrenMoving();	
 	/// Gripes contents to QRectF() in case of minimizesToChildren
 	/// container property
-	gripeIfMinimizesToChildrenContainer(QRectF& contents);
+	void gripeIfMinimizesToChildrenContainer(QRectF& contents);
 
 	void updateByChild(NodeElement* item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
@@ -185,12 +185,12 @@ private:
 	/// container property
 	void sortChildrenIfNeeded();
 
-	qreal minDistanceFromLinePort(int linePortNumber, const QPointF &location) const;
-	qreal distanceFromPointPort(int pointPortNumber, const QPointF &location) const;
-	qreal getNearestPointOfLinePort(int linePortNumber, const QPointF &location) const;
+	qreal minDistanceFromLinePort(int const linePortNumber, QPointF const &location) const;
+	qreal distanceFromPointPort(int const pointPortNumber, QPointF const &location) const;
+	qreal getNearestPointOfLinePort(int const linePortNumber, QPointF const &location) const;
 
 	void initEmbeddedLinkers();
-	void setVisibleEmbeddedLinkers(const bool show);
+	void setVisibleEmbeddedLinkers(bool const show);
 
 	void connectTemporaryRemovedLinksToPort(qReal::IdList const &rtemporaryRemovedLinks, QString const &direction);
 

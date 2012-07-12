@@ -392,7 +392,7 @@ void NodeElement::resize(QRectF newContents, QPointF newPos)
 
 void NodeElement::gripeIfMinimizesToChildrenContainer(QRectF& contents) {
 	if (mElementImpl->minimizesToChildren()) {
-		newContents = QRectF();
+		contents = QRectF();
 	}
 }
 
@@ -1362,7 +1362,7 @@ void NodeElement::setLinksVisible(bool isVisible)
 	}
 }
 
-void NodeElement::sortChildren()
+void NodeElement::sortChildrenIfNeeded()
 {
 	if (!mElementImpl->isSortingContainer()) {
 		return;
@@ -1482,7 +1482,7 @@ bool NodeElement::canHavePorts()
 	return mElementImpl->hasPin();
 }
 
-bool NodeElement::checkLowerBorder(QPointF& point, double x, double y) const
+bool NodeElement::checkLowerBorder(QPointF const &point, double x, double y) const
 {
 	double currentX = point.x();
 	double currentY = point.y();
@@ -1491,7 +1491,7 @@ bool NodeElement::checkLowerBorder(QPointF& point, double x, double y) const
 			&& (currentY <= rc.y() + rc.height() + y);
 }
 
-bool NodeElement::checkUpperBorder(QPointF& point, double x, double y) const
+bool NodeElement::checkUpperBorder(QPointF const &point, double x, double y) const
 {
 	double currentX = point.x();
 	double currentY = point.y();
@@ -1500,7 +1500,7 @@ bool NodeElement::checkUpperBorder(QPointF& point, double x, double y) const
 			&& (currentY <= rc.y() + y);
 }
 
-bool NodeElement::checkLeftBorder(QPointF& point, double x, double y) const
+bool NodeElement::checkLeftBorder(QPointF const &point, double x, double y) const
 {
 	double currentX = point.x();
 	double currentY = point.y();
@@ -1509,7 +1509,7 @@ bool NodeElement::checkLeftBorder(QPointF& point, double x, double y) const
 			&& (currentY <= rc.y() + rc.height() - y);
 }
 
-bool NodeElement::checkRightBorder(QPointF& point, double x, double y) const
+bool NodeElement::checkRightBorder(QPointF const &point, double x, double y) const
 {
 	double currentX = point.x();
 	double currentY = point.y();
@@ -1518,23 +1518,23 @@ bool NodeElement::checkRightBorder(QPointF& point, double x, double y) const
 			&& (currentY <= rc.y() + rc.height() - y);
 }
 
-bool NodeElement::checkNoBorderX(QPointF& point, double x, double y) const
+bool NodeElement::checkNoBorderX(QPointF const &point, double x, double y) const
 {
 	Q_UNUSED(x);
-	double currentY = point.ry();
+	double currentY = point.y();
 	QRectF rc = boundingRect();
 	return (currentY >= rc.y() + y) && (currentY <= rc.y() + rc.height() - y);
 }
 
-bool NodeElement::checkNoBorderY(QPointF& point, double x, double y) const
+bool NodeElement::checkNoBorderY(QPointF const &point, double x, double y) const
 {
 	Q_UNUSED(y);
-	double currentX = point.rx();
+	double currentX = point.x();
 	QRectF rc = boundingRect();
 	return (currentX >= rc.x() + x) && (currentX <= rc.x() + rc.width() - x);
 }
 
-void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
+void NodeElement::resizeChild(QRectF const &newContents, QRectF const &oldContents)
 {
 	if (!mParentNodeElement) {
 		QGraphicsItem* item = parentItem();
