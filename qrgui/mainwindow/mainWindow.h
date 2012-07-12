@@ -60,6 +60,8 @@ public:
 	QModelIndex rootIndex() const;
 
 	QAction *actionDeleteFromDiagram() const;
+	QAction *actionCopyElementsOnDiagram() const;
+	QAction *actionPasteOnDiagram() const;
 
 	virtual void highlight(Id const &graphicalId, bool exclusive = true);
 	virtual void dehighlight(Id const &graphicalId);
@@ -167,6 +169,9 @@ private slots:
 	void deleteFromScene(QGraphicsItem *target);
 
 	void deleteFromDiagram();
+	void copyElementsOnDiagram();
+	void pasteOnDiagram();
+
 	void changeMiniMapSource(int index);
 	void closeTab(int index);
 
