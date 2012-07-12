@@ -16,9 +16,14 @@ class ProjectManager : public QObject
 
 public:
 	explicit ProjectManager(MainWindow *mainWindow);
-	bool open(const QString &fileName);
+	bool open(QString const &fileName);
 
 private:
+	bool saveFileExists(QString const &fileName);
+	bool pluginsEnough();
+	QString missingPluginNames();
+	void refreshWindowTitleAccordingToSaveFile();
+
 	MainWindow *mMainWindow;
 };
 
