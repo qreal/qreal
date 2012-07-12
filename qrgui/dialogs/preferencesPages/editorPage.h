@@ -34,7 +34,8 @@ private slots:
 	void fontSelectionButtonClicked();
 	void paletteComboBoxClicked(int index);
 
-
+	void showGrid(bool);
+	void showAlignment(bool);
 private:
 	Ui::PreferencesEditorPage *mUi;
 	bool mFontWasChanged;

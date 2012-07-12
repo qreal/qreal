@@ -12,15 +12,15 @@ VisualDebuggerPreferencesPage::VisualDebuggerPreferencesPage(QWidget *parent)
 		mUi(new Ui::VisualDebuggerPreferencesPage)
 {
 	mIcon = QIcon(":/icons/preferences/bug.png");
-	
+
 	mUi->setupUi(this);
-	
-	mUi->builderPathLineEdit->setText(SettingsManager::value("builderPath", "gcc").toString());
-	mUi->buildedFileNameLineEdit->setText(SettingsManager::value("buildedFileName", "builded").toString());
-	mUi->codeFileNameLineEdit->setText(SettingsManager::value("codeFileName", "code.c").toString());
-	mUi->visDebWorkDirLineEdit->setText(SettingsManager::value("debugWorkingDirectory", "").toString());
-	mUi->debuggerPathLineEdit->setText(SettingsManager::value("debuggerPath", "gdb").toString());
-	
+
+	mUi->builderPathLineEdit->setText(SettingsManager::value("builderPath").toString());
+	mUi->buildedFileNameLineEdit->setText(SettingsManager::value("buildedFileName").toString());
+	mUi->codeFileNameLineEdit->setText(SettingsManager::value("codeFileName").toString());
+	mUi->visDebWorkDirLineEdit->setText(SettingsManager::value("debugWorkingDirectory").toString());
+	mUi->debuggerPathLineEdit->setText(SettingsManager::value("debuggerPath").toString());
+
 	connect(mUi->builderPathPushButton, SIGNAL(clicked()), this, SLOT(setBuilderPath()));
 	connect(mUi->debuggerPathPushButton, SIGNAL(clicked()), this, SLOT(setDebuggerPath()));
 	connect(mUi->visDebWorkDirPushButton, SIGNAL(clicked()), this, SLOT(setWorkDir()));
@@ -36,7 +36,7 @@ QString VisualDebuggerPreferencesPage::choosePath(bool isFolder)
 	if (isFolder) {
 		return QFileDialog::getExistingDirectory(this, tr("Specify directory:"));
 	}
-	
+
 	return QFileDialog::getOpenFileName(this, tr("Specify file:"));
 }
 
