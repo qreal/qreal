@@ -12,7 +12,6 @@
 struct EdgeData
 {
 	qReal::Id mId;
-	qReal::Id mLogicalId;
 
 	qReal::Id mSrcId;
 	qReal::Id mDstId;
@@ -30,7 +29,6 @@ struct EdgeData
 struct NodeData
 {
 	qReal::Id mId;
-	qReal::Id mLogicalId;
 
 	QMap<QString, QVariant> mProperties;
 
@@ -38,7 +36,6 @@ struct NodeData
 
 	QPointF mPos;
 	QRectF mContents;
-	QPolygon mConfiguration;
 };
 
 QDataStream& operator<< (QDataStream &out, NodeData const &data);

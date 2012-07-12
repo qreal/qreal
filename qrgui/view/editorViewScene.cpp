@@ -578,10 +578,7 @@ void EditorViewScene::paste()
 		return;
 	}
 
-	QPointF offset;
-	if (getElem(nodesData[0].mId)) { // prevent from segfault when copying between diagrams
-		offset = getMousePos() - getElem(nodesData[0].mId)->scenePos();
-	}
+	QPointF offset = getMousePos() - nodesData[0].mPos;
 
 	QHash<Id, Id> copiedIds;
 

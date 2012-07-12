@@ -967,12 +967,14 @@ EdgeData EdgeElement::data()
 {
 	EdgeData d;
 	d.mId = id();
-	d.mLogicalId = logicalId();
 	d.mSrcId = src()->id();
 	d.mDstId = dst()->id();
+
 	d.mPortFrom = mPortFrom;
 	d.mPortTo = mPortTo;
+
 	d.mConfiguration = mGraphicalAssistApi->configuration(mId);
 	d.mPos = mGraphicalAssistApi->position(mId);
+
 	return d;
 }

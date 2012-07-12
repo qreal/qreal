@@ -696,10 +696,10 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (mElementImpl->minimizesToChildren()) {
 		resize();
 	}
-	
+
 	mContents = mContents.normalized();
 	*/
-	
+
 	storeGeometry();
 
 	setVisibleEmbeddedLinkers(true);
@@ -1323,7 +1323,7 @@ void NodeElement::sortChildren()
 			mPlaceholder->setRect(rect);
 			curChildY += mPlaceholder->rect().height() + childSpacing;
 		}
-		
+
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
 			QRectF rect(mElementImpl->sizeOfForestalling(), curChildY, 0, curItem->mContents.height());
@@ -1638,7 +1638,6 @@ NodeData NodeElement::data()
 {
 	NodeData d;
 	d.mId = id();
-	d.mLogicalId = logicalId();
 	d.mProperties = properties();
 	d.mPos = mPos;
 	d.mContents = mContents;
@@ -1650,6 +1649,5 @@ NodeData NodeElement::data()
 		d.mParentId = Id::rootId();
 	}
 
-	d.mConfiguration = mGraphicalAssistApi->configuration(mId);
 	return d;
 }
