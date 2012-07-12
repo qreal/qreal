@@ -41,6 +41,7 @@
 #include "splashScreen.h"
 #include "../dialogs/startDialog/startDialog.h"
 #include "../dialogs/startDialog/suggestToCreateDiagramWidget.h"
+#include "../dialogs/suggestToCreateDiagramDialog.h"
 
 #include "dotRunner.h"
 
@@ -473,7 +474,7 @@ bool MainWindow::openNewProject()
 	if(!openEmptyProject()) {
 		return false;
 	}
-	suggestToCreateDiagram();
+	suggestToCreateDiagram(true);
 	return true;
 }
 
@@ -526,19 +527,20 @@ void MainWindow::saveAllAndOpen(QString const &dirName)
 
 bool MainWindow::open(QString const &fileName)
 {
+	closeProject();
+
+	mModels->repoControlApi().open(fileName);
+	mModels->reinit();
+
 	if (!missingPluginNames().isEmpty()) {
 		QMessageBox thereAreMissingPluginsMessage(
 				QMessageBox::Information, tr("There are missing plugins"),
 				tr("These plugins are not present, but needed to load the save:\n") +
 						missingPluginNames(),
-				QMessageBox::Ok);
+				QMessageBox::Ok, this);
 		thereAreMissingPluginsMessage.exec();
 		return false;
 	}
-	closeProject();
-
-	mModels->repoControlApi().open(fileName);
-	mModels->reinit();
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
@@ -764,14 +766,6 @@ void MainWindow::showHelp()
 void MainWindow::toggleShowSplash(bool show)
 {
 	SettingsManager::setValue("Splashscreen", show);
-}
-
-void MainWindow::checkoutDialogOk()
-{
-}
-
-void MainWindow::checkoutDialogCancel()
-{
 }
 
 void MainWindow::exportToXmi()
@@ -1308,13 +1302,11 @@ GesturesPainterInterface * MainWindow::gesturesPainter()
 	return mGesturesWidget;
 }
 
-void MainWindow::suggestToCreateDiagram()
+void MainWindow::suggestToCreateDiagram(bool isNonClosable)
 {
-	QDialog dialog;
-	dialog.setFixedSize(275, 240);
-	SuggestToCreateDiagramWidget suggestWidget(this, &dialog);
-	connect(&suggestWidget, SIGNAL(userDataSelected(QString)), this, SLOT(createDiagram(QString)));
-	dialog.exec();
+	SuggestToCreateDiagramDialog suggestDialog(this, isNonClosable);
+	connect(&suggestDialog, SIGNAL(userDataSelected(QString)), this, SLOT(createDiagram(QString)));
+	suggestDialog.exec();
 }
 
 void MainWindow::createDiagram(QString const &idString)

@@ -22,6 +22,7 @@ public:
 
 private:
 	void addItem(Id const &editor, Id const &diagram);
+
 	MainWindow *mMainWindow;
 };
 

@@ -129,9 +129,6 @@ private slots:
 	void showAbout();
 	void showHelp();
 
-	void checkoutDialogOk();
-	void checkoutDialogCancel();
-
 	void saveAllAndOpen(QString const &dirName);
 
 	/// wrapper for import(QString const &fileName)
@@ -191,7 +188,7 @@ private slots:
 	void logicalModelExplorerClicked(const QModelIndex &index);
 
 	void openNewTab(const QModelIndex &index);
-	void suggestToCreateDiagram();
+	void suggestToCreateDiagram(bool isNonClosable = false);
 
 	/// Called after current tab was changed somehow --- opened, closed, switched to other
 	/// @param newIndex Index of a new active tab, -1 if there is none
