@@ -9,6 +9,7 @@ SuggestToCreateDiagramDialog::SuggestToCreateDiagramDialog(MainWindow *mainWindo
 	: QDialog(mainWindow, isNonClosable ? Qt::WindowMinimizeButtonHint : Qt::Dialog)
 	, mIsNonClosable(isNonClosable)
 {
+	setWindowTitle(tr("Create diagram"));
 	SuggestToCreateDiagramWidget *suggestWidget = new SuggestToCreateDiagramWidget(mainWindow, this);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;

@@ -13,6 +13,8 @@ StartDialog::StartDialog(MainWindow *mainWindow)
 	, mMainWindow(mainWindow)
 	, mTabWidget(new QTabWidget)
 {
+	setWindowTitle(tr("Start page"));
+
 	RecentProjectsListWidget *recentProjects = new RecentProjectsListWidget(this);
 	mTabWidget->addTab(recentProjects, tr("Recent projects"));
 	SuggestToCreateDiagramWidget *diagrams = new SuggestToCreateDiagramWidget(mMainWindow, this);
