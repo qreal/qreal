@@ -13,6 +13,7 @@
 #include <QtGui/QGraphicsDropShadowEffect>
 
 #include <math.h>
+#include <algorithm>
 
 using namespace qReal;
 
@@ -367,8 +368,7 @@ void NodeElement::resize(QRectF newContents)
 	resize(newContents, mPos);
 }
 
-void NodeElement::resize(QRectF newContents, QPointF newPos)
-{
+void NodeElement::resizePreinit(QRectF& newContents) {
 	newContents.moveTo(0, 0);
 	if (mElementImpl->isSortingContainer()) {
 		sortChildren();
@@ -377,82 +377,110 @@ void NodeElement::resize(QRectF newContents, QPointF newPos)
 	if (mElementImpl->minimizesToChildren()) {
 		newContents = QRectF();
 	}
+}
 
-	//childrenMoving - negative shift of children from the point (SIZE_OF_FORESTALLING, SIZE_OF_FORESTALLING)
+void NodeElement::childrenResizePart(QRectF& newContents, QPointF& newPos) {
+	//childrenMoving - negative shift of children from the point (sizeOfForestalling, sizeOfForestalling)
 	//whatever it means :)
 	QPointF childrenMoving = QPointF(0, 0);
+	QPointF moveForInContainerElements = QPointF(0, 0);
+	int sizeOfForestalling = mElementImpl->sizeOfForestalling();
 
-	if (!mIsFolded) {
-		foreach (QGraphicsItem *childItem, childItems()) {
+	//QPointF forestalledPos = scenePos() - QPointF(sizeOfForestalling, sizeOfForestalling);
+
+	foreach (QGraphicsItem *childItem, childItems()) {
+		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
+		if (curItem && curItem->isPort() && newContents != mContents) {
+			curItem->resizeChild(newContents, mContents);
+		}
+
+		if (!curItem || curItem->isPort()) {
+			continue;
+		}
+
+		QPointF curItemPos = childItem->pos();
+
+		childrenMoving.setX(
+				std::min(curItemPos.x() - sizeOfForestalling, childrenMoving.x())
+				);
+		childrenMoving.setY(
+				std::min(curItemPos.y() - sizeOfForestalling, childrenMoving.y())
+				);
+	}
+
+	//setPos(pos() + childrenMoving);
+	moveChildren(-childrenMoving);
+	//newPos += moveForInContainerElements;
+	newPos += childrenMoving;
+	newContents.setBottomRight(newContents.bottomRight() + moveForInContainerElements);
+
+	qDebug() << "&&&" << childrenMoving;
+	qDebug() << "###" << sizeOfForestalling << "\n";
+
+	foreach (QGraphicsItem* childItem, childItems()) {
+		QRectF curChildItemBoundingRect;
+		if (childItem == mPlaceholder) {
+			curChildItemBoundingRect = childItem->boundingRect();
+			curChildItemBoundingRect.setLeft(newContents.left() + sizeOfForestalling);
+			curChildItemBoundingRect.setRight(newContents.right() - sizeOfForestalling);
+		} else {
 			NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-			if (curItem && curItem->isPort() && newContents != mContents) {
-				curItem->resizeChild(newContents, mContents);
-			}
-
 			if (!curItem || curItem->isPort()) {
 				continue;
 			}
+			curChildItemBoundingRect = curItem->mContents;
+		}
 
-			QPointF curItemPos = childItem->pos();
+		// it seems to be more appropriate to use childItem->pos() but it causes
+		// bad behaviour when dropping one element to another
+		curChildItemBoundingRect.translate(childItem->scenePos() - scenePos());
 
-			if (curItemPos.x() < childrenMoving.x() + mElementImpl->sizeOfForestalling()) {
-				childrenMoving.setX(curItemPos.x() - mElementImpl->sizeOfForestalling());
-			}
+		if (curChildItemBoundingRect.left() < newContents.left() + sizeOfForestalling) {
+			newContents.setLeft(curChildItemBoundingRect.left() - sizeOfForestalling);
+		}
 
-			if (curItemPos.y() < childrenMoving.y() + mElementImpl->sizeOfForestalling()) {
-				childrenMoving.setY(curItemPos.y() - mElementImpl->sizeOfForestalling());
-			}
+		if (curChildItemBoundingRect.right() > newContents.right() - sizeOfForestalling) {
+			newContents.setRight(curChildItemBoundingRect.right() + sizeOfForestalling);
+		}
+
+		if (curChildItemBoundingRect.top() < newContents.top() + sizeOfForestalling) {
+			newContents.setTop(curChildItemBoundingRect.top() - sizeOfForestalling);
+		}
+
+		if (curChildItemBoundingRect.bottom() > newContents.bottom() - sizeOfForestalling) {
+			newContents.setBottom(curChildItemBoundingRect.bottom() + sizeOfForestalling);
 		}
 	}
+}
 
-//	setPos(pos() + childrenMoving);
-	moveChildren(-childrenMoving);
+void NodeElement::resize(QRectF newContents, QPointF newPos)
+{
+	resizePreinit(newContents);
 
 	if (!mIsFolded) {
-		foreach (QGraphicsItem* childItem, childItems()) {
-			QRectF curChildItemBoundingRect;
-			if(childItem == mPlaceholder) {
-				curChildItemBoundingRect = childItem->boundingRect();
-				curChildItemBoundingRect.setLeft(newContents.left() + mElementImpl->sizeOfForestalling());
-				curChildItemBoundingRect.setRight(newContents.right() - mElementImpl->sizeOfForestalling());
-			} else {
-				NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-				if (!curItem || curItem->isPort()) {
-					continue;
-				}
-				curChildItemBoundingRect = curItem->mContents;
-			}
-
-			// it seems to be more appropriate to use childItem->pos() but it causes
-			// bad behaviour when dropping one element to another
-			curChildItemBoundingRect.translate(childItem->scenePos() - scenePos());
-
-			if (curChildItemBoundingRect.left() < newContents.left() + mElementImpl->sizeOfForestalling()) {
-				newContents.setLeft(curChildItemBoundingRect.left() - mElementImpl->sizeOfForestalling());
-			}
-
-			if (curChildItemBoundingRect.right() > newContents.right() - mElementImpl->sizeOfForestalling()) {
-				newContents.setRight(curChildItemBoundingRect.right() + mElementImpl->sizeOfForestalling());
-			}
-
-			if (curChildItemBoundingRect.top() < newContents.top() + mElementImpl->sizeOfForestalling()) {
-				newContents.setTop(curChildItemBoundingRect.top() - mElementImpl->sizeOfForestalling());
-			}
-
-			if (curChildItemBoundingRect.bottom() > newContents.bottom() - mElementImpl->sizeOfForestalling()) {
-				newContents.setBottom(curChildItemBoundingRect.bottom() + mElementImpl->sizeOfForestalling());
-			}
-		}
+		childrenResizePart(newContents, newPos);
 	}
 
-	if ((newContents.width() < objectMinSize) || (newContents.height() < objectMinSize)) {
-		newContents = mFoldedContents;
-	}
+	normalizeSize(newContents);
 
 	newContents.moveTo(newPos);
 	setGeometry(newContents);
 	storeGeometry();
 
+	parentResizeCall();
+}
+
+void NodeElement::normalizeSize(QRectF& newContents) {
+	if (newContents.width() < objectMinSize) {
+		newContents.setWidth(mFoldedContents.width());
+	}
+
+	if (newContents.height() < objectMinSize) {
+		newContents.setHeight(mFoldedContents.height());
+	}
+}
+
+void NodeElement::parentResizeCall() {
 	NodeElement *parItem = dynamic_cast<NodeElement*>(parentItem());
 	if (parItem) {
 		parItem->resize(); // recursive expansion of parents
@@ -594,6 +622,11 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		Element::mouseMoveEvent(event);
 		mGrid->mouseMoveEvent(event);
 
+		NodeElement *parItem = dynamic_cast<NodeElement*>(parentItem());
+		if (parItem) {
+			parItem->resize();
+		}
+
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
 
@@ -714,8 +747,12 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			// commented because of bug with double event sending (see #204)
 	//		mHighlightedNode = NULL;
 
+			//qDebug() << "Before:" << pos();
+
 			mGraphicalAssistApi->changeParent(id(), newParent->id(),
 				mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
+			
+			//qDebug() << "After:" << pos();
 
 			if (insertBefore != NULL) {
 				mGraphicalAssistApi->stackBefore(id(), insertBefore->id());
@@ -1301,10 +1338,12 @@ void NodeElement::sortChildren()
 
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem) {
-			if (curItem->mContents.width() > maxChildrenWidth) {
-				maxChildrenWidth = curItem->mContents.width();
-			}
+		if (!curItem) {
+			continue;
+		}
+			
+		if (curItem->mContents.width() > maxChildrenWidth) {
+			maxChildrenWidth = curItem->mContents.width();
 		}
 	}
 	if (maxChildrenWidth == 0) {
@@ -1320,17 +1359,19 @@ void NodeElement::sortChildren()
 		}
 		
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem) {
-			QRectF rect(mElementImpl->sizeOfForestalling(), curChildY, 0, curItem->mContents.height());
-			if (mElementImpl->maximizesChildren()) {
-				rect.setWidth(maxChildrenWidth);
-			} else {
-				rect.setWidth(curItem->mContents.width());
-			}
-			curItem->setGeometry(rect);
-			curItem->storeGeometry();
-			curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling() + childSpacing;
+		if (!curItem) {
+			continue;
 		}
+
+		QRectF rect(mElementImpl->sizeOfForestalling(), curChildY, 0, curItem->mContents.height());
+		if (mElementImpl->maximizesChildren()) {
+			rect.setWidth(maxChildrenWidth);
+		} else {
+			rect.setWidth(curItem->mContents.width());
+		}
+		curItem->setGeometry(rect);
+		curItem->storeGeometry();
+		curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling() + childSpacing;
 	}
 }
 

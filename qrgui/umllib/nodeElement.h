@@ -161,6 +161,12 @@ private:
 	void resize(QRectF newContents);
 	// newContents = mContents
 	void resize();
+
+	// methods are used by resize()
+	void resizePreinit(QRectF& newContents);
+	void childrenResizePart(QRectF& newContents, QPointF& newPos);
+	void normalizeSize(QRectF& newContents);
+	void parentResizeCall();	
 	
 	void updateByChild(NodeElement* item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
