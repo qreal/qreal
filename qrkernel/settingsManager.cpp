@@ -13,7 +13,7 @@ SettingsManager::SettingsManager() : mSettings("SPbSU", "QReal")
 	load();
 }
 
-void SettingsManager:: setValue(QString const &name, QVariant const &value)
+void SettingsManager::setValue(QString const &name, QVariant const &value)
 {
 	instance()->set(name, value);
 }
@@ -59,6 +59,7 @@ void SettingsManager::saveData()
 		mSettings.setValue(name, mData[name]);
 	}
 	mSettings.sync();
+
 }
 
 void SettingsManager::load()
