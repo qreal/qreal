@@ -14,7 +14,6 @@
 class QRKERNEL_EXPORT SettingsManager
 {
 public:
-
 	static QVariant value(QString const &key);
 	static QVariant value(QString const &key, QVariant const &defaultValue);
 	static void setValue(QString const &name, QVariant const &value = QVariant());
@@ -38,5 +37,3 @@ private:
 	QSettings mSettings;
 
 };
-
-

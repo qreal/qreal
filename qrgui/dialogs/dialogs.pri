@@ -9,7 +9,12 @@ HEADERS += \
 	dialogs/checkoutdialog.h \
 	dialogs/preferencesPages/featuresPage.h \
 	dialogs/preferencesPages/preferencesPage.h \
-	dialogs/findReplaceDialog.h
+	dialogs/findReplaceDialog.h \
+	dialogs/startDialog/startDialog.h \
+	dialogs/startDialog/suggestToCreateDiagramWidget.h \
+	dialogs/startDialog/recentProjectsListWidget.h \
+	dialogs/startDialog/listWidget.h \
+	dialogs/suggestToCreateDiagramDialog.h
 
 SOURCES += \
 	dialogs/plugindialog.cpp \
@@ -21,7 +26,12 @@ SOURCES += \
 	dialogs/preferencesPages/miscellaniousPage.cpp \
 	dialogs/checkoutdialog.cpp \
 	dialogs/preferencesPages/featuresPage.cpp \
-	dialogs/findReplaceDialog.cpp
+	dialogs/findReplaceDialog.cpp \
+	dialogs/startDialog/startDialog.cpp \
+	dialogs/startDialog/suggestToCreateDiagramWidget.cpp \
+	dialogs/startDialog/recentProjectsListWidget.cpp \
+	dialogs/startDialog/listWidget.cpp \
+	dialogs/suggestToCreateDiagramDialog.cpp
 
 FORMS += \
 	dialogs/editorGeneratorDialog.ui \

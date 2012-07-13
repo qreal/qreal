@@ -27,145 +27,145 @@
 <context>
     <name>qReal::RuleParser</name>
     <message>
-        <location filename="ruleParser.cpp" line="377"/>
+        <location filename="ruleParser.cpp" line="374"/>
         <source>int&apos; or &apos;double</source>
-        <translation type="unfinished">int&apos; или &apos;double</translation>
+        <translation>int&apos; или &apos;double</translation>
     </message>
     <message>
-        <location filename="ruleParser.cpp" line="424"/>
+        <location filename="ruleParser.cpp" line="421"/>
         <source>&apos;letter</source>
-        <translation type="unfinished">&apos;буква</translation>
+        <translation>&apos;буква</translation>
     </message>
 </context>
 <context>
     <name>qReal::VisualInterpreterPreferencesPage</name>
     <message>
-        <location filename="visualInterpreterPreferencesPage.cpp" line="30"/>
+        <location filename="visualInterpreterPreferencesPage.cpp" line="32"/>
         <source>Specify directory:</source>
-        <translation type="unfinished">Выберите каталог:</translation>
+        <translation>Выберите каталог:</translation>
     </message>
 </context>
 <context>
     <name>qReal::VisualInterpreterUnit</name>
     <message>
-        <location filename="visualInterpreterUnit.cpp" line="68"/>
+        <location filename="visualInterpreterUnit.cpp" line="82"/>
         <source>Current diagram is not for semantics. Select proper model.</source>
-        <translation type="unfinished">Данная диаграмма не является семантикой языка. Выберите правильную модель.</translation>
+        <translation>Данная диаграмма не является семантикой языка. Выберите правильную модель.</translation>
     </message>
     <message>
-        <location filename="visualInterpreterUnit.cpp" line="79"/>
+        <location filename="visualInterpreterUnit.cpp" line="93"/>
         <source>One of the rules doesn&apos;t have a name.</source>
-        <translation type="unfinished">Одно из правил не имеет имени.</translation>
+        <translation>Одно из правил не имеет имени.</translation>
     </message>
     <message>
-        <location filename="visualInterpreterUnit.cpp" line="86"/>
+        <location filename="visualInterpreterUnit.cpp" line="100"/>
         <source>One of the rules is empty.</source>
-        <translation type="unfinished">Одно из правил пусто.</translation>
+        <translation>Одно из правил пусто.</translation>
     </message>
     <message>
-        <location filename="visualInterpreterUnit.cpp" line="102"/>
+        <location filename="visualInterpreterUnit.cpp" line="115"/>
         <source>Incorrect replacement in rule &apos;</source>
-        <translation type="unfinished">Некорректная замена элемента в правиле &apos;</translation>
+        <translation>Некорректная замена элемента в правиле &apos;</translation>
     </message>
     <message>
-        <location filename="visualInterpreterUnit.cpp" line="119"/>
+        <location filename="visualInterpreterUnit.cpp" line="132"/>
         <source>Control flow mark in rule &apos;</source>
-        <translation type="unfinished">Маркер потока исполнения в правиле &apos;</translation>
+        <translation>Маркер потока исполнения в правиле &apos;</translation>
     </message>
     <message>
-        <location filename="visualInterpreterUnit.cpp" line="120"/>
+        <location filename="visualInterpreterUnit.cpp" line="133"/>
         <source>&apos; isn&apos;t connected properly.</source>
-        <translation type="unfinished">&apos; присоединён неправильно.</translation>
+        <translation>&apos; присоединён неправильно.</translation>
     </message>
     <message>
-        <location filename="visualInterpreterUnit.cpp" line="147"/>
+        <location filename="visualInterpreterUnit.cpp" line="158"/>
         <source>Semantics loaded successfully</source>
-        <translation type="unfinished">Семантика загружена успешно</translation>
+        <translation>Семантика загружена успешно</translation>
     </message>
     <message>
-        <location filename="visualInterpreterUnit.cpp" line="155"/>
+        <location filename="visualInterpreterUnit.cpp" line="166"/>
         <source>Semantics not loaded</source>
-        <translation type="unfinished">Семантика не загружена</translation>
+        <translation>Семантика не загружена</translation>
     </message>
     <message>
-        <location filename="visualInterpreterUnit.cpp" line="164"/>
+        <location filename="visualInterpreterUnit.cpp" line="175"/>
         <source>Interpretation stopped manually</source>
-        <translation type="unfinished">Интерпретация завершена вручную</translation>
+        <translation>Интерпретация завершена вручную</translation>
     </message>
     <message>
-        <location filename="visualInterpreterUnit.cpp" line="169"/>
-        <location filename="visualInterpreterUnit.cpp" line="175"/>
-        <location filename="visualInterpreterUnit.cpp" line="179"/>
+        <location filename="visualInterpreterUnit.cpp" line="180"/>
+        <location filename="visualInterpreterUnit.cpp" line="186"/>
+        <location filename="visualInterpreterUnit.cpp" line="190"/>
         <source>Rule &apos;</source>
-        <translation type="unfinished">Правило &apos;</translation>
+        <translation>Правило &apos;</translation>
     </message>
     <message>
-        <location filename="visualInterpreterUnit.cpp" line="170"/>
+        <location filename="visualInterpreterUnit.cpp" line="181"/>
         <source>&apos; cannot be applied because semantics has syntax errors</source>
-        <translation type="unfinished">&apos; не может быть применено из-за того, что в семантике есть синтаксические ошибки</translation>
+        <translation>&apos; не может быть применено из-за того, что в семантике есть синтаксические ошибки</translation>
     </message>
     <message>
-        <location filename="visualInterpreterUnit.cpp" line="175"/>
+        <location filename="visualInterpreterUnit.cpp" line="186"/>
         <source>&apos; applying failed</source>
-        <translation type="unfinished">&apos; не смогло быть применено корректно</translation>
+        <translation>&apos; не смогло быть применено корректно</translation>
     </message>
     <message>
-        <location filename="visualInterpreterUnit.cpp" line="179"/>
+        <location filename="visualInterpreterUnit.cpp" line="190"/>
         <source>&apos; was applied successfully</source>
-        <translation type="unfinished">&apos; было применено успешно</translation>
+        <translation>&apos; было применено успешно</translation>
     </message>
     <message>
-        <location filename="visualInterpreterUnit.cpp" line="183"/>
+        <location filename="visualInterpreterUnit.cpp" line="194"/>
         <source>No rule cannot be applied</source>
-        <translation type="unfinished">Ни одно правило не может быть применено</translation>
+        <translation>Ни одно правило не может быть применено</translation>
     </message>
     <message>
-        <location filename="visualInterpreterUnit.cpp" line="490"/>
+        <location filename="visualInterpreterUnit.cpp" line="502"/>
         <source> Semantics loading failed.</source>
-        <translation type="unfinished">Загрузка семантики завершилась ошибкой.</translation>
+        <translation>Загрузка семантики завершилась ошибкой.</translation>
     </message>
 </context>
 <context>
     <name>qReal::visualInterpreter::VisualInterpreterPlugin</name>
     <message>
-        <location filename="visualInterpreterPlugin.cpp" line="48"/>
+        <location filename="visualInterpreterPlugin.cpp" line="44"/>
         <source>Visual Interpreter</source>
-        <translation type="unfinished">Визуальный интерпретатор</translation>
+        <translation>Визуальный интерпретатор</translation>
     </message>
     <message>
-        <location filename="visualInterpreterPlugin.cpp" line="53"/>
+        <location filename="visualInterpreterPlugin.cpp" line="49"/>
         <source>Visual interpret</source>
-        <translation type="unfinished">Визуальная интерпретация</translation>
+        <translation>Визуальная интерпретация</translation>
+    </message>
+    <message>
+        <location filename="visualInterpreterPlugin.cpp" line="52"/>
+        <source>Generate and load semantics editor</source>
+        <translation>Создать и загрузить редактор семантики</translation>
     </message>
     <message>
         <location filename="visualInterpreterPlugin.cpp" line="56"/>
-        <source>Generate and load semantics editor</source>
-        <translation type="unfinished">Создать и загрузить редактор семантики</translation>
+        <source>Load semantics model</source>
+        <translation>Загрузить модель семантики</translation>
     </message>
     <message>
         <location filename="visualInterpreterPlugin.cpp" line="60"/>
-        <source>Load semantics model</source>
-        <translation type="unfinished">Загрузить модель семантики</translation>
-    </message>
-    <message>
-        <location filename="visualInterpreterPlugin.cpp" line="65"/>
         <source>Interpret</source>
-        <translation type="unfinished">Интерпретировать</translation>
+        <translation>Интерпретировать</translation>
     </message>
     <message>
-        <location filename="visualInterpreterPlugin.cpp" line="70"/>
+        <location filename="visualInterpreterPlugin.cpp" line="64"/>
         <source>Stop interpretation</source>
-        <translation type="unfinished">Остановить интерпретацию</translation>
+        <translation>Остановить интерпретацию</translation>
     </message>
     <message>
-        <location filename="visualInterpreterPlugin.cpp" line="75"/>
+        <location filename="visualInterpreterPlugin.cpp" line="68"/>
         <source>Show watch list</source>
-        <translation type="unfinished">Показать список переменных</translation>
+        <translation>Показать список переменных</translation>
     </message>
     <message>
-        <location filename="visualInterpreterPlugin.cpp" line="86"/>
+        <location filename="visualInterpreterPlugin.cpp" line="80"/>
         <source>Specify editor metamodel:</source>
-        <translation type="unfinished">Выберите путь до метамодели:</translation>
+        <translation>Выберите путь до метамодели:</translation>
     </message>
 </context>
 <context>
@@ -173,17 +173,17 @@
     <message>
         <location filename="visualInterpreterPreferencePage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished">Форма</translation>
+        <translation>Форма</translation>
     </message>
     <message>
         <location filename="visualInterpreterPreferencePage.ui" line="26"/>
         <source>QReal sources location:</source>
-        <translation type="unfinished">Расположение исходных файлов QReal:</translation>
+        <translation>Расположение исходных файлов QReal:</translation>
     </message>
     <message>
         <location filename="visualInterpreterPreferencePage.ui" line="49"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
 </context>
 </TS>

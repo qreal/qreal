@@ -9,8 +9,9 @@ HEADERS += \
 	mainwindow/mainWindowInterpretersInterface.h \
 	mainwindow/helpBrowser.h \
 	mainwindow/paletteTree.h \
-	mainwindow/dotRunner.h \
 	mainwindow/findManager.h \
+	mainwindow/dotRunner.h \
+	mainwindow/splashScreen.h
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -20,8 +21,9 @@ SOURCES += \
 	mainwindow/errorListWidget.cpp \
 	mainwindow/helpBrowser.cpp \
 	mainwindow/paletteTree.cpp \
-	mainwindow/dotRunner.cpp \
 	mainwindow/findManager.cpp \
+	mainwindow/dotRunner.cpp \
+	mainwindow/splashScreen.cpp
 
 FORMS += \
 	mainwindow/mainWindow.ui \

@@ -13,15 +13,15 @@ public:
 
 	/// virtual, for returning IdList of elements that names contains input string
 	/// @param name - string that should be contained by names of elements that Id's are in the output list
-	virtual qReal::IdList findElementsByName(QString const &name, bool sensitivity) const = 0;
+	virtual qReal::IdList findElementsByName(QString const &name, bool sensitivity, bool regExp) const = 0;
 
 	/// virtual, for returning IdList of elements that have input property
 	/// @param name - string that should be contained by names of elements that have input property
-	virtual qReal::IdList elementsByProperty(QString const &property, bool sensitivity) const = 0;
+	virtual qReal::IdList elementsByProperty(QString const &property, bool sensitivity, bool regExp) const = 0;
 
 	/// virtual, for returning IdList of elements that have input property content
 	/// @param name - string that should be contained by names of elements that have input property content
-	virtual qReal::IdList elementsByPropertyContent(QString const &propertyContent, bool sensitivity) const = 0;
+	virtual qReal::IdList elementsByPropertyContent(QString const &propertyContent, bool sensitivity, bool regExp) const = 0;
 
 	/// virtual, for import *.qrs file into current project
 	/// @param importedFile - file to be imported

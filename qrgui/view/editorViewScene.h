@@ -13,6 +13,7 @@
 
 
 //const int indexGrid = 30; // distance between two lines in the grid
+const int arrowMoveOffset = 5;
 
 namespace qReal {
 class EditorViewMViface;
@@ -30,8 +31,8 @@ public:
 
 	void clearScene();
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos);
-	virtual qReal::Id createElement(const QString &, QPointF const &scenePos);
-	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos);
+	virtual qReal::Id createElement(const QString &, QPointF const &scenePos, bool searchForParents = true);
+	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos, bool searchForParents = true);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
@@ -139,9 +140,24 @@ private:
 
 	void initContextMenu(Element *e, QPointF const &pos);
 
+	QList<NodeElement*> getNodesForCopying();
+	QList<EdgeData> getEdgesData(QList<NodeElement*> const &nodes);
+
+	void addChildren(NodeElement* node, QList<NodeElement*> &nodes);
+
+	qReal::Id pasteNode(NodeData const &nodeData, QHash<qReal::Id
+			, qReal::Id> const &copiedIds, QPointF const &offset);
+	qReal::Id pasteEdge(EdgeData const &edgeData, QHash<qReal::Id
+			, qReal::Id> const &copiedIds, QPointF const &offset);
+
+	inline bool isArrow(int key);
+
+	void moveSelectedItems(int direction);
+	QPointF offsetByDirection(int direction);
 
 	Element* mLastCreatedWithEdge;
-	NodeElement *mCopiedNode;
+	QList<NodeElement*> mCopiedNodes;
+	QList<EdgeElement*> mCopiedEdges;
 
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
