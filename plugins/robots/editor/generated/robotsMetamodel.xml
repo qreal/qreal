@@ -135,6 +135,9 @@
 				</graphics>
 				<logic>
 					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
 				</logic>
 			</node>
 			<node displayedName="Инициализация переменной" name="VariableInit">
@@ -177,6 +180,9 @@
 							<default>0</default>
 						</property>
 					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
 					<container/>
 				</logic>
 			</node>
@@ -423,8 +429,12 @@
 						</property>
 						<property displayedName="Выходное значение мощности первого мотора" type="string" name="pwm1">
 						</property>
-						<property displayedName="Выходное значение мощности второго мотора" type="string" name="pwm2">						</property>
+						<property displayedName="Выходное значение мощности второго мотора" type="string" name="pwm2">						
+						</property>
 					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
 					<container/>
 				</logic>
 			</node>

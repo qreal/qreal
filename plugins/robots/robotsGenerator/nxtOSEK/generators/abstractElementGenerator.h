@@ -33,6 +33,7 @@ protected:
 
 	NxtOSEKRobotGenerator *mNxtGen;
 	qReal::Id mElementId;
+
 };
 
 }
