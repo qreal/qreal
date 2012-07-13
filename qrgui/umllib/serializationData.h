@@ -4,7 +4,7 @@
 #include <QMap>
 #include <QDataStream>
 #include <QPolygon>
-#include "../qrkernel/ids.h"
+#include "../../qrkernel/ids.h"
 
 using namespace qReal;
 
