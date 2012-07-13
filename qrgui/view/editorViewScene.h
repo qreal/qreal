@@ -75,7 +75,7 @@ public slots:
 	qReal::Id createElement(const QString &type);
 	// TODO: get rid of it here
 	void copy();
-	void paste();
+	void paste(bool logicalCopy);
 
 	/// selects all elements on the current scene
 	void selectAll();
@@ -145,10 +145,10 @@ private:
 
 	void addChildren(NodeElement* node, QList<NodeElement*> &nodes);
 
-	qReal::Id pasteNode(NodeData const &nodeData, QHash<qReal::Id
-			, qReal::Id> const &copiedIds, QPointF const &offset);
-	qReal::Id pasteEdge(EdgeData const &edgeData, QHash<qReal::Id
-			, qReal::Id> const &copiedIds, QPointF const &offset);
+	qReal::Id pasteNode(NodeData const &nodeData, bool logicalCopy
+			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
+	qReal::Id pasteEdge(EdgeData const &edgeData, bool logicalCopy
+			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
 
 	inline bool isArrow(int key);
 
