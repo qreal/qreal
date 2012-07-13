@@ -6,7 +6,6 @@ HEADERS += \
 	dialogs/preferencesPages/editorPage.h \
 	dialogs/preferencesPages/miscellaniousPage.h \
 	dialogs/gesturesShow/gesturesWidget.h \
-	dialogs/checkoutdialog.h \
 	dialogs/preferencesPages/featuresPage.h \
 	dialogs/preferencesPages/preferencesPage.h \
 	dialogs/findReplaceDialog.h \
@@ -24,7 +23,6 @@ SOURCES += \
 	dialogs/preferencesPages/debuggerPage.cpp \
 	dialogs/preferencesPages/editorPage.cpp \
 	dialogs/preferencesPages/miscellaniousPage.cpp \
-	dialogs/checkoutdialog.cpp \
 	dialogs/preferencesPages/featuresPage.cpp \
 	dialogs/findReplaceDialog.cpp \
 	dialogs/startDialog/startDialog.cpp \

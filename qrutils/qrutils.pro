@@ -35,5 +35,8 @@ include(expressionsParser/expressionsParser.pri)
 # Graphical scene framework used in qrgui and plugins
 include(graphicsUtils/graphicsUtils.pri)
 
+# Stuff used in VCS plugins
+include(versioningUtils/versioningUtils.pri)
+
 # Stuff connected with graph transformation
 include(graphTransformation/graphTransformation.pri)

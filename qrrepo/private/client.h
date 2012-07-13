@@ -72,8 +72,10 @@ namespace qrRepo {
 			bool isLogicalId(qReal::Id const &elem) const;
 			qReal::Id logicalId(qReal::Id const &elem) const;
 
-			void svnUpdate();
-			void svnCommit();
+			void setWorkingCopyInspector(versioning::WorkingCopyInspectionInterface *inspector);
+
+			void prepareWorkingCopy(const QString &workingCopyPath);
+			void processWorkingCopy(const QString &workingCopyPath, QString const &targetProject = QString());
 
 			void printDebug() const;
 
@@ -86,9 +88,9 @@ namespace qrRepo {
 			/// @param importedFile - name of file to be imported
 			void importFromDisk(QString const &importedFile);
 
-			void saveAll() const;
-			void save(qReal::IdList list) const;
-			void saveWithLogicalId(qReal::IdList list) const;
+			void saveAll();
+			void save(qReal::IdList list);
+			void saveWithLogicalId(qReal::IdList list);
 			void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds);
 			void remove(qReal::IdList list) const;
 			void setWorkingFile(QString const &workingDir);
@@ -110,7 +112,7 @@ namespace qrRepo {
 
 			/// This term keeps name of current save file for project
 			QString mWorkingFile;
-			Serializer serializer;
+			Serializer mSerializer;
 		};
 	}
 }

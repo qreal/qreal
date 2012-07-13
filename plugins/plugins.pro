@@ -15,6 +15,7 @@ SUBDIRS	= \
 #	requirements/requirements.pro \
 #	robots/robots.pro \
 #	testEditor/testEditor.pro \
+	subversionClient/subversionClient.pro \
 #	ubiq/ubiq.pro \
 #	umlActivityDiagram/umlActivityDiagram.pro \
 #	umlClassDiagram/umlClassDiagram.pro \

@@ -67,3 +67,6 @@ include (toolPluginInterface/toolPluginInterface.pri)
 
 # Text Editor
 include (textEditor/textEditor.pri)
+
+# Versioning clients interfaces and managers
+include (versioning/versioning.pri)

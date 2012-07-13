@@ -116,13 +116,18 @@ namespace qrRepo {
 		/// RepoApi's wrapper for Client.importFromDisk
 		/// @param importedFile - file to be imported
 		void importFromDisk(QString const &importedFile);
-		void saveAll() const;
-		void save(qReal::IdList list) const;
+		void saveAll();
+		void save(qReal::IdList list);
 		void saveTo(QString const &workingFile);
 		void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds);
 		void open(QString const &saveFile);
 
 		virtual QString workingFile() const;
+
+		void setWorkingCopyInspector(versioning::WorkingCopyInspectionInterface *inspector);
+
+		void prepareWorkingCopy(const QString &workingCopyPath);
+		void processWorkingCopy(const QString &workingCopyPath, QString const &targetProject = QString());
 
 		// "Глобальные" методы, позволяющие делать запросы к модели в целом.
 		//Returns all elements with .element() == type.element()

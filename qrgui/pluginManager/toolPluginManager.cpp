@@ -95,3 +95,8 @@ void ToolPluginManager::activeTabChanged(Id const & rootElementId)
 		toolPlugin->activeTabChanged(rootElementId);
 	}
 }
+
+QListIterator<ToolPluginInterface *> ToolPluginManager::pluginsIterator() const
+{
+	return QListIterator<ToolPluginInterface *>(mPlugins);
+}

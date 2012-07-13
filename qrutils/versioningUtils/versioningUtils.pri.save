@@ -1,0 +1,10 @@
+HEADERS += \
+	versioning/versioningPluginsManager.h \
+	versioning/versioningPluginInterface.h \
+	versioning/briefVersioningInterface.h \
+    versioning/externalClientPluginBase.h
+
+SOURCES += \
+	versioning/versioningPluginsManager.cpp \
+
+

@@ -29,7 +29,6 @@
 #include "../view/editorView.h"
 #include "../umllib/element.h"
 #include "../dialogs/pluginDialog.h"
-#include "../dialogs/checkoutDialog.h"
 #include "../generators/xmi/xmiHandler.h"
 #include "../generators/java/javaHandler.h"
 #include "../pluginManager/listenerManager.h"
@@ -231,13 +230,13 @@ MainWindow::~MainWindow()
 {
 	QDir().rmdir(mTempDir);
 	delete mListenerManager;
-	delete mErrorReporter;
 	delete mHelpBrowser;
 	SettingsManager::instance()->saveData();
 	delete mRecentProjectsMenu;
 	delete mRecentProjectsMapper;
 	delete mGesturesWidget;
 	delete mModels;
+	delete mErrorReporter;
 	delete mCodeTabManager;
 	delete mFindReplaceDialog;
 	delete mFindHelper;
@@ -1575,6 +1574,8 @@ void MainWindow::initToolPlugins()
 	typedef QPair<QString, PreferencesPage *> PageDescriptor;
 	foreach (PageDescriptor const page, preferencesPages)
 		mPreferencesDialog.registerPage(page.first, page.second);
+
+	mVersioningManager = new versioning::VersioningPluginsManager(mToolManager, &(mModels->repoControlApi()), mErrorReporter);
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
@@ -1635,10 +1636,11 @@ void MainWindow::setAutoSaveParameters()
 
 void MainWindow::autosave()
 {
-	if (mSaveFile == "")
+	if (mSaveFile == "") {
 		saveAs(mTempDir);
-	else
+	} else {
 		saveAll();
+	}
 }
 
 void MainWindow::initToolManager()

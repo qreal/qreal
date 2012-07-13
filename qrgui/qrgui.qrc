@@ -32,6 +32,7 @@
         <file>icons/collapseAll.png</file>
         <file>icons/expandAll.png</file>
         <file>icons/changeRepresentation.png</file>
+        <file>icons/preferences/versioning.png</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>

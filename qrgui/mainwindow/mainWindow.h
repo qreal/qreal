@@ -11,6 +11,7 @@
 
 #include "../pluginManager/editorManager.h"
 #include "../pluginManager/toolPluginManager.h"
+#include "../versioning/versioningPluginsManager.h"
 #include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
@@ -304,6 +305,7 @@ private:
 	models::Models *mModels;
 	EditorManager mEditorManager;
 	ToolPluginManager mToolManager;
+	versioning::VersioningPluginsManager *mVersioningManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
 	GesturesWidget *mGesturesWidget;

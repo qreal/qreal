@@ -17,11 +17,12 @@ using namespace qReal;
 Serializer::Serializer(QString const& saveDirName)
 	: mWorkingDir(SettingsManager::value("temp").toString())
 	, mWorkingFile(saveDirName)
+	, mWorkingCopyInspector(NULL)
 {
 	clearWorkingDir();
 }
 
-void Serializer::clearWorkingDir() const
+void Serializer::clearWorkingDir()
 {
 	clearDir(mWorkingDir);
 }
@@ -37,8 +38,50 @@ void Serializer::setWorkingFile(QString const &workingFile)
 	mWorkingFile = workingFile;
 }
 
-void Serializer::saveToDisk(QList<Object*> const &objects) const
+void Serializer::setWorkingCopyInspector(versioning::WorkingCopyInspectionInterface *inspector)
 {
+	mWorkingCopyInspector = inspector;
+}
+
+void Serializer::prepareSaving()
+{
+	mSavedDirectories.clear();
+	mSavedFiles.clear();
+
+	clearDir(mWorkingDir);
+	if (QFileInfo(mWorkingFile).exists()) {
+		decompressFile(mWorkingFile);
+	}
+}
+
+bool Serializer::reportAdded(const QString &fileName)
+{
+	if (mWorkingCopyInspector) {
+		return mWorkingCopyInspector->onFileAdded(fileName, mWorkingDir);
+	}
+	return true;
+}
+
+bool Serializer::reportRemoved(const QString &fileName)
+{
+	if (mWorkingCopyInspector) {
+		return mWorkingCopyInspector->onFileRemoved(fileName, mWorkingDir);
+	}
+	return true;
+}
+
+bool Serializer::reportChanged(const QString &fileName)
+{
+	if (mWorkingCopyInspector) {
+		return mWorkingCopyInspector->onFileChanged(fileName, mWorkingDir);
+	}
+	return true;
+}
+
+void Serializer::saveToDisk(QList<Object*> const &objects)
+{
+	prepareSaving();
+
 	foreach (Object *object, objects) {
 		QString filePath = createDirectory(object->id(), object->logicalId());
 
@@ -46,17 +89,31 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 		QDomElement root = doc.createElement("object");
 		doc.appendChild(root);
 		root.setAttribute("id", object->id().toString());
-		if (object->logicalId() != Id())
+		if (object->logicalId() != Id()) {
 			root.setAttribute("logicalId", object->logicalId().toString());
+		}
 
 		root.setAttribute("parent", object->parent().toString());
 
 		root.appendChild(idListToXml("children", object->children(), doc));
 		root.appendChild(propertiesToXml(object, doc));
 
+		QFileInfo fileInfo(filePath);
+		bool fileExists = fileInfo.exists();
+		if (fileExists) {
+			QDir().remove(filePath);
+		}
 		OutFile out(filePath);
 		doc.save(out(), 2);
+		mSavedFiles << filePath;
+		if (!fileExists) {
+			reportAdded(filePath);
+		} else {
+			reportChanged(filePath);
+		}
 	}
+
+	removeUnsaved(mWorkingDir);
 
 	QFileInfo fileInfo(mWorkingFile);
 	QString fileName = fileInfo.baseName();
@@ -65,8 +122,9 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 	QDir dir = fileInfo.absolutePath();
 
 	QFile previousSave(dir.absolutePath() + "/" + fileName +".qrs");
-	if (previousSave.exists())
+	if (previousSave.exists()) {
 		previousSave.remove();
+	}
 
 	FolderCompressor().compressFolder(compressDir.absolutePath(), fileInfo.absolutePath() + "/" + fileName + ".qrs");
 
@@ -76,8 +134,9 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash)
 {
 	clearWorkingDir();
-	if (!mWorkingFile.isEmpty())
+	if (!mWorkingFile.isEmpty()) {
 		decompressFile(mWorkingFile);
+	}
 	loadFromDisk(SettingsManager::value("temp").toString(), objectsHash);
 }
 
@@ -90,6 +149,23 @@ void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, Objec
 		dir.cd("graphical");
 		loadModel(dir, objectsHash);
 	}
+}
+
+void Serializer::prepareWorkingCopy(const QString &workingCopyPath)
+{
+	clearDir(workingCopyPath);
+	if (QFileInfo(mWorkingFile).exists()) {
+		FolderCompressor().decompressFolder(mWorkingFile, workingCopyPath);
+	}
+}
+
+void Serializer::processWorkingCopy(const QString &workingCopyPath, QString const &targetProject)
+{
+	QString targetProjectPath = targetProject.isEmpty() ? mWorkingFile : targetProject;
+	if (QDir(workingCopyPath).exists()) {
+		FolderCompressor().compressFolder(workingCopyPath, targetProjectPath);
+	}
+	clearDir(workingCopyPath);
 }
 
 void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHash)
@@ -243,7 +319,7 @@ void Serializer::clearDir(QString const &path)
 {
 	QDir dir(path);
 	if (dir.exists()) {
-		foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+		foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::Hidden | QDir::NoDotAndDotDot)) {
 			if (fileInfo.isDir()) {
 				clearDir(fileInfo.filePath());
 				dir.rmdir(fileInfo.fileName());
@@ -311,25 +387,62 @@ QString Serializer::pathToElement(Id const &id) const
 	return dirName + "/" + partsList[partsList.size() - 1];
 }
 
-QString Serializer::createDirectory(Id const &id, Id const &logicalId) const
+QString Serializer::createDirectory(Id const &id, Id const &logicalId)
 {
+	mSavedDirectories << QFileInfo(mWorkingDir).filePath();
 	QString dirName = mWorkingDir + "/tree";
+	mSavedDirectories << QFileInfo(dirName).filePath();
 	if (logicalId == Id()) {
 		dirName += "/logical";
 	} else {
 		dirName += "/graphical";
 	}
+	mSavedDirectories << QFileInfo(dirName).filePath();
 	QStringList const partsList = id.toString().split('/');
 	Q_ASSERT(partsList.size() >= 1 && partsList.size() <= 5);
 	for (int i = 1; i < partsList.size() - 1; ++i) {
 		dirName += "/" + partsList[i];
+		QDir dir(dirName);
+		if (!dir.exists()) {
+			dir.mkpath(dirName);
+		}
+		mSavedDirectories << QFileInfo(dirName).filePath();
 	}
 
-	QDir dir;
-	dir.rmdir(mWorkingDir);
-	dir.mkpath(dirName);
+//Todo: understand if we need this
+//	QDir dir;
+	//dir.rmdir(mWorkingDir);
+	//dir.mkpath(dirName);
 
 	return dirName + "/" + partsList[partsList.size() - 1];
+}
+
+bool Serializer::removeUnsaved(const QString &path)
+{
+	bool result = true;
+	QDir dir(path);
+	if (dir.exists()) {
+		foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+			if (fileInfo.isDir()) {
+				if (mSavedDirectories.contains(fileInfo.filePath())) {
+					if (!removeUnsaved(fileInfo.filePath())) {
+						result = false;
+					}
+				} else {
+					if (!reportRemoved(fileInfo.filePath())) {
+						result = false;
+					}
+				}
+			} else {
+				if (!mSavedFiles.contains(fileInfo.filePath())) {
+					if(!reportRemoved(fileInfo.filePath())) {
+						result = false;
+					}
+				}
+			}
+		}
+	}
+	return result;
 }
 
 QDomElement Serializer::idListToXml(QString const &attributeName, IdList const &idList, QDomDocument &doc)
@@ -369,4 +482,3 @@ void Serializer::decompressFile(QString fileName)
 {
 	FolderCompressor().decompressFolder(fileName, mWorkingDir);
 }
-

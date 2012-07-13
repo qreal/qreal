@@ -30,8 +30,9 @@ bool FolderCompressor::compress(QString const &sourceFolder, QString const &pref
 		return false;
 	}
 
-	// 1 - list all folders inside the current folder
-	dir.setFilter(QDir::NoDotAndDotDot | QDir::Dirs);
+	// 1 - list all folders inside the current folder including hidden
+	//      ones, like '.svn/' and '.git/' needed for correct versioning
+	dir.setFilter(QDir::NoDotAndDotDot | QDir::Dirs | QDir::Hidden);
 	QFileInfoList foldersList = dir.entryInfoList();
 
 	// 2 - For each folder in list: call the same function with folders' paths
@@ -46,7 +47,16 @@ bool FolderCompressor::compress(QString const &sourceFolder, QString const &pref
 	dir.setFilter(QDir::NoDotAndDotDot | QDir::Files);
 	QFileInfoList filesList = dir.entryInfoList();
 
-	// 4- For each mFile in list: add mFile path and compressed binary data
+	// 4 - If folder is empty it also needs to be compressed.
+	//       Writing '/' character to the end of path to distinguish it from files
+	//       (else we can have issue with subversion)
+	if (filesList.empty())
+	{
+		mDataStream << QString(prefix + "/");
+		mDataStream << QString(); //empty data part, need for correct decompression
+		return true;
+	}
+	// 5- Else: for each mFile in list: add mFile path and compressed binary data
 	foreach (QFileInfo const &fileInfo, filesList) {
 		QFile file(dir.absolutePath() + "/" + fileInfo.fileName());
 		if (!file.open(QIODevice::ReadOnly)) { // couldn't open file
@@ -97,13 +107,18 @@ bool FolderCompressor::decompressFolder(QString const &sourceFile, QString const
 			}
 		}
 
-		QFile outFile(destinationFolder + "/" + fileName);
-		if (!outFile.open(QIODevice::WriteOnly)) {
-			mFile.close();
-			return false;
+		if (!fileName.endsWith('/'))
+		{
+			//we have an empty directory (see part 4 of compression),
+			// it was create earlier, continue
+			QFile outFile(destinationFolder + "/" + fileName);
+			if (!outFile.open(QIODevice::WriteOnly)) {
+				mFile.close();
+				return false;
+			}
+			outFile.write(qUncompress(data));
+			outFile.close();
 		}
-		outFile.write(qUncompress(data));
-		outFile.close();
 	}
 
 	mFile.close();
