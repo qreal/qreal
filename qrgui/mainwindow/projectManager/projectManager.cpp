@@ -53,7 +53,6 @@ bool ProjectManager::open(QString const &fileName)
 		open(mMainWindow->mSaveFile);
 		return false;
 	}
-	mMainWindow->refreshRecentProjectsList(fileName);
 
 	mMainWindow->mPropertyModel.setSourceModels(mMainWindow->mModels->logicalModel()
 			, mMainWindow->mModels->graphicalModel());
@@ -148,9 +147,6 @@ void ProjectManager::saveAs(QString const &fileName)
 
 	if (workingFileName.isEmpty()) {
 		return;
-	}
-	if (!workingFileName.endsWith(".qrs", Qt::CaseInsensitive)) {
-		workingFileName += ".qrs";
 	}
 	mMainWindow->mModels->repoControlApi().saveTo(workingFileName);
 	mMainWindow->mSaveFile = workingFileName;

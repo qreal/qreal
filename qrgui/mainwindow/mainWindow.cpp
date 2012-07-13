@@ -399,10 +399,12 @@ QString MainWindow::getWorkingFile(QString const &dialogWindowTitle, bool save)
 	if (save) {
 		fileName = QFileDialog::getSaveFileName(this, dialogWindowTitle,
 				lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
+		if (!fileName.endsWith(".qrs", Qt::CaseInsensitive)) {
+			fileName += ".qrs";
+		}
 	} else {
 		fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle,
 				lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
-
 		if (fileName != "" && !QFile::exists(fileName)) {
 			QMessageBox fileNotFoundMessage(QMessageBox::Information, tr("File not found"),
 					tr("File ") + fileName + tr(" not found. Try again"),	QMessageBox::Ok, this);
