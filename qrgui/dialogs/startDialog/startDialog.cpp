@@ -48,14 +48,14 @@ void StartDialog::openRecentProject(QString const &fileName)
 
 void StartDialog::openExistingProject()
 {
-	if (mMainWindow->openExistingProject()) {
+	if (mMainWindow->mProjectManager->suggestToOpenExisting()) {
 		close();
 	}
 }
 
 void StartDialog::createProjectWithDiagram(const QString &idString)
 {
-	mMainWindow->mProjectManager->openEmptyProject();
+	mMainWindow->mProjectManager->openEmptyWithSuggestToSaveChanges();
 	mMainWindow->createDiagram(idString);
 	// This dialog will be closed by the SuggestToCreateDiagramWidget
 }
