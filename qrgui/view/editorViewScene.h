@@ -169,6 +169,8 @@ private:
 
 	QPointF getNewPos(NodeData const &nodeData
 			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
+	QPointF getNewPosForLogicalCopy(NodeData const &nodeData
+			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
 
 	inline bool isArrow(int key);
 

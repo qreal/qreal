@@ -621,7 +621,9 @@ QHash<Id, Id> EditorViewScene::pasteNodes(QList<NodeData> &nodesData
 Id EditorViewScene::pasteNode(NodeData const &nodeData, bool logicalCopy
 		, QHash<Id, Id> const &copiedIds, QPointF const &offset)
 {
-	QPointF newPos = getNewPos(nodeData, copiedIds, offset);
+	QPointF newPos = logicalCopy ?
+			getNewPosForLogicalCopy(nodeData, copiedIds, offset) :
+			getNewPos(nodeData, copiedIds, offset);
 
 	NodeElement* newNode = NULL;
 
@@ -647,11 +649,7 @@ NodeElement* EditorViewScene::pasteCopyOfLogicalNode(const NodeData &nodeData, c
 	newNode->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());
 	newNode->setId(newId);
 
-	if (nodeData.parentId == Id::rootId()) {
-		addItem(newNode);
-	} else {
-		newNode->setParentItem(getElem(nodeData.parentId));
-	}
+	newNode->setParentItem(getElem(nodeData.parentId));
 
 	return newNode;
 }
@@ -668,11 +666,25 @@ NodeElement* EditorViewScene::pasteNewNode(const NodeData &data, const QPointF &
 QPointF EditorViewScene::getNewPos(const NodeData &nodeData
 		, const QHash<Id, Id> &copiedIds, QPointF const &offset)
 {
-	QPointF newPos = nodeData.pos;
 	if (!copiedIds.contains(nodeData.parentId)) {
-		newPos += offset;
+		return nodeData.pos + offset;
 	}
-	return newPos;
+	return nodeData.pos;
+}
+
+QPointF EditorViewScene::getNewPosForLogicalCopy(const NodeData &nodeData
+		, const QHash<Id, Id> &copiedIds, const QPointF &offset)
+{
+	if (nodeData.parentId == rootItemId()) {
+		return nodeData.pos + offset;
+	}
+	if (copiedIds.contains(nodeData.parentId)) {
+		return nodeData.pos;
+	}
+	if (getElem(nodeData.parentId)->contains(getMousePos())) {
+		return nodeData.pos + offset;
+	}
+	return nodeData.pos;
 }
 
 void EditorViewScene::restoreNode(NodeElement *node, const NodeData &nodeData
