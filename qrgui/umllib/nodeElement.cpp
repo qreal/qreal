@@ -458,7 +458,9 @@ void NodeElement::expandByChildren(QRectF& newContents) {
 
 		// it seems to be more appropriate to use childItem->pos() but it causes
 		// bad behaviour when dropping one element to another
+		qDebug() << "111" << curChildItemBoundingRect.topLeft();
 		curChildItemBoundingRect.translate(childItem->scenePos() - scenePos());
+		qDebug() << "222" << curChildItemBoundingRect.topLeft();
 
 		if (curChildItemBoundingRect.left() - sizeOfForestalling < newContents.left()) {
 			newContents.setLeft(curChildItemBoundingRect.left() - sizeOfForestalling);
