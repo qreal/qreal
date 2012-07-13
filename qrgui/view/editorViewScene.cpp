@@ -638,7 +638,8 @@ Id EditorViewScene::pasteNode(NodeData const &nodeData, bool logicalCopy
 
 	}
 
-NodeElement* EditorViewScene::pasteCopyOfLogicalNode(const NodeData &nodeData, const QPointF &newPos)
+NodeElement* EditorViewScene::pasteCopyOfLogicalNode(const NodeData &nodeData
+		, const QPointF &newPos)
 {
 	QString name = mMVIface->graphicalAssistApi()->name(nodeData.id);
 
@@ -648,8 +649,6 @@ NodeElement* EditorViewScene::pasteCopyOfLogicalNode(const NodeData &nodeData, c
 
 	newNode->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());
 	newNode->setId(newId);
-
-	newNode->setParentItem(getElem(nodeData.parentId));
 
 	return newNode;
 }
@@ -681,7 +680,7 @@ QPointF EditorViewScene::getNewPosForLogicalCopy(const NodeData &nodeData
 	if (copiedIds.contains(nodeData.parentId)) {
 		return nodeData.pos;
 	}
-	if (getElem(nodeData.parentId)->contains(getMousePos())) {
+	if (getElem(nodeData.parentId)->contains(getMousePos())) { // doesnt work yet
 		return nodeData.pos + offset;
 	}
 	return nodeData.pos;
