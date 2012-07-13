@@ -43,8 +43,9 @@ void MouseMovementManager::drawIdealPath()
 void MouseMovementManager::printElements()
 {
 	QList<QString> elements;
-	foreach (qReal::Id element, mElements)
+	foreach (qReal::Id element, mElements) {
 		elements.push_back(element.element());
+	}
 	mGesturesPaintMan->setElements(elements);
 }
 
@@ -79,11 +80,13 @@ void MouseMovementManager::setElements(const QList<qReal::Id> &elements)
 
 void MouseMovementManager::recountCentre()
 {
-	if (mPath.empty() || mPath.back().empty())
+	if (mPath.empty() || mPath.back().empty()) {
 		return;
+	}
 	int count = 0;
-	foreach (PointVector path, mPath)
+	foreach (PointVector path, mPath) {
 		count += path.size();
+	}
 	mCentre = ((count - 1) * mCentre + mPath.back().back()) / count;
 }
 
@@ -152,15 +155,17 @@ qReal::Id MouseMovementManager::getObject()
 
 QPointF MouseMovementManager::firstPoint()
 {
-	if (!mPath.isEmpty() && !mPath.at(0).empty())
+	if (!mPath.isEmpty() && !mPath.at(0).empty()) {
 		return QPointF(mPath.at(0).at(0));
+	}
 	return QPointF(0, 0);
 }
 
 QPointF MouseMovementManager::lastPoint()
 {
-	if (!mPath.isEmpty() && !mPath.back().empty())
+	if (!mPath.isEmpty() && !mPath.back().empty()) {
 		return QPointF(mPath.back().back());
+	}
 	return QPointF(0, 0);
 }
 

@@ -2,8 +2,7 @@
 #include <QString>
 #include <QList>
 #include <QPoint>
-//#include <../../qrgui/view/gestures/GeometricForms.h>
-#include <C:\Users\Maestro\qreal\qrgui\view\gestures\GeometricForms.h>
+#include "../../qrgui/view/gestures/GeometricForms.h"
 
 class GesturesPainterInterface
 {
