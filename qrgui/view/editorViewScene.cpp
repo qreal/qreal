@@ -680,7 +680,7 @@ QPointF EditorViewScene::getNewPosForLogicalCopy(const NodeData &nodeData
 	if (copiedIds.contains(nodeData.parentId)) {
 		return nodeData.pos;
 	}
-	if (getElem(nodeData.parentId)->contains(getMousePos())) { // doesnt work yet
+	if (getElem(nodeData.parentId)->isUnderMouse()) {
 		return nodeData.pos + offset;
 	}
 	return nodeData.pos;
