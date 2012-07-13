@@ -289,12 +289,12 @@ void NodeType::generateCode(OutFile &out)
 
 	out() << "\t\t}\n\n";
 
-	out() << "\t\tQt::PenStyle getPenStyle() { return Qt::SolidLine; }\n\n"
-	<< "\t\tint getPenWidth() { return 0; }\n\n"
-	<< "\t\tQColor getPenColor() { return QColor(); }\n\n"
+	out() << "\t\tQt::PenStyle getPenStyle() const { return Qt::SolidLine; }\n\n"
+	<< "\t\tint getPenWidth() const { return 0; }\n\n"
+	<< "\t\tQColor getPenColor() const { return QColor(); }\n\n"
 	<< "\t\tvoid drawStartArrow(QPainter *) const {}\n"
 	<< "\t\tvoid drawEndArrow(QPainter *) const {}\n"
-	<< "\t\tbool hasPorts()\n\t\t{\n";
+	<< "\t\tbool hasPorts() const\n\t\t{\n";
 
 	out() << (hasPorts ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
@@ -307,53 +307,53 @@ void NodeType::generateCode(OutFile &out)
 			label->generateCodeForUpdateData(out);
 
 	out() << "\t\t}\n\n"
-	<< "\t\tbool isNode()\n\t\t{\n"
+	<< "\t\tbool isNode() const\n\t\t{\n"
 	<< "\t\t\treturn true;\n"
 	<< "\t\t}\n\n"
 
-	<< "\t\tbool isResizeable()\n\t\t{\n"
+	<< "\t\tbool isResizeable() const\n\t\t{\n"
 	<< "\t\t\treturn " << (mIsResizeable ? "true" : "false") << ";\n"
 	<< "\t\t}\n\n"
 
-	<< "\t\tbool isContainer()\n\t\t{\n"
+	<< "\t\tbool isContainer() const\n\t\t{\n"
 	<< (!mContains.empty() ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
 
-	<< "\t\tbool isSortingContainer()\n\t\t{\n"
+	<< "\t\tbool isSortingContainer() const\n\t\t{\n"
 	<< (mContainerProperties.isSortingContainer ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
 
-	<< "\t\tint sizeOfForestalling()\n\t\t{\n"
+	<< "\t\tint sizeOfForestalling() const\n\t\t{\n"
 	<< "\t\t\treturn " + QString::number(mContainerProperties.sizeOfForestalling) + ";\n"
 	<< "\t\t}\n\n"
 
-	<< "\t\tint sizeOfChildrenForestalling()\n\t\t{\n"
+	<< "\t\tint sizeOfChildrenForestalling() const\n\t\t{\n"
 	<< "\t\t\treturn " << QString::number(mContainerProperties.sizeOfChildrenForestalling) << ";\n"
 	<< "\t\t}\n\n"
 
-	<< "\t\tbool hasMovableChildren()\n\t\t{\n"
+	<< "\t\tbool hasMovableChildren() const\n\t\t{\n"
 	<< (mContainerProperties.hasMovableChildren ?  "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
 
-	<< "\t\tbool minimizesToChildren()\n\t\t{\n"
+	<< "\t\tbool minimizesToChildren() const\n\t\t{\n"
 	<< (mContainerProperties.minimizesToChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
 
-	<< "\t\tbool maximizesChildren()\n\t\t{\n"
+	<< "\t\tbool maximizesChildren() const\n\t\t{\n"
 	<< (mContainerProperties.maximizesChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
 
-	<< "\t\tbool isDividable()\n\t\t{\n\t\t\treturn false;\n\t\t}\n\n"
+	<< "\t\tbool isDividable() const\n\t\t{\n\t\t\treturn false;\n\t\t}\n\n"
 
-	<< "\t\tbool isPort()\n\t\t{\n"
+	<< "\t\tbool isPort() const\n\t\t{\n"
 	<< (mIsPin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
 
-	<< "\t\tbool hasPin()\n\t\t{\n"
+	<< "\t\tbool hasPin() const\n\t\t{\n"
 	<< (mIsHavePin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n";
 
-	out() << "\t\tQList<double> border()\n\t\t{\n"
+	out() << "\t\tQList<double> border() const\n\t\t{\n"
 	<< "\t\t\tQList<double> list;\n";
 	if (mIsHavePin)
 		out() << "\t\t\tlist << 30 << 15 << 15 << 25;\n";
@@ -362,7 +362,7 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\t\t\treturn list;\n"
 	<< "\t\t}\n\n";
 
-	out() << "\t\tQStringList bonusContextMenuFields()\n\t\t{\n" << "\t\t\treturn ";
+	out() << "\t\tQStringList bonusContextMenuFields() const\n\t\t{\n" << "\t\t\treturn ";
 	if (!mBonusContextMenuFields.empty())
 		out() << "mBonusContextMenuFields;";
 	else

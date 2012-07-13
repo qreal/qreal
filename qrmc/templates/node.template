@@ -24,11 +24,11 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return @@NodeHasPorts@@;
 		}
@@ -38,64 +38,64 @@
 @@UpdateData@@
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return @@IsNode@@;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return @@IsContainer@@;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return @@IsSortContainer@@;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return @@SizeOfForestalling@@;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return @@SizeOfChildrenForestalling@@;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return @@MinimizesToChildren@@;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return @@HasMovableChildren@@;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return @@MaximizesChildren@@;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return @@IsPort@@;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return @@HasPin@@;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 @@NodeBorder@@
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return @@ItemsList@@;
 		}
