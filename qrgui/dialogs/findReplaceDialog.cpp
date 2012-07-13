@@ -109,5 +109,5 @@ void FindReplaceDialog::initIds(QMap<QString, QString> foundData)
 	}
 
 	QObject::connect(mUi->mListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this
-			,SLOT(itemChosen(QListWidgetItem*)));
+			, SLOT(itemChosen(QListWidgetItem*)));
 }

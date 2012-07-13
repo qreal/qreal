@@ -494,13 +494,15 @@ IdList RepoApi::elementsByType(QString const &type, bool sensitivity, bool regEx
 
 	if (regExpression) {
 		foreach (Id id, mClient.elements()) {
-			if (id.element().contains(*regExp))
+			if (id.element().contains(*regExp)) {
 				result.append(id);
+			}
 		}
 	} else {
 		foreach (Id id, mClient.elements()) {
-			if (id.element().contains(type, caseSensitivity))
+			if (id.element().contains(type, caseSensitivity)) {
 				result.append(id);
+			}
 		}
 	}
 	return result;

@@ -33,7 +33,7 @@ Client::~Client()
 }
 
 IdList Client::findElementsByName(const QString &name, bool sensitivity,
-								  bool regExpression) const
+		bool regExpression) const
 {
 	Qt::CaseSensitivity caseSensitivity;
 
@@ -47,15 +47,19 @@ IdList Client::findElementsByName(const QString &name, bool sensitivity,
 	IdList result;
 
 	if (regExpression){
-		foreach (Object *element, mObjects.values())
+		foreach (Object *element, mObjects.values()) {
 			if (element->property("name").toString().contains(*regExp)
-					&& !isLogicalId(mObjects.key(element)))
+					&& !isLogicalId(mObjects.key(element))) {
 				result.append(mObjects.key(element));
+			}
+		}
 	} else {
-		foreach (Object *element, mObjects.values())
+		foreach (Object *element, mObjects.values()) {
 			if (element->property("name").toString().contains(name, caseSensitivity)
-					&& !isLogicalId(mObjects.key(element)))
+					&& !isLogicalId(mObjects.key(element))) {
 				result.append(mObjects.key(element));
+			}
+		}
 	}
 
 	return result;
@@ -66,10 +70,12 @@ qReal::IdList Client::elementsByProperty(QString const &property, bool sensitivi
 {
 	IdList result;
 
-	foreach (Object *element, mObjects.values())
+	foreach (Object *element, mObjects.values()) {
 		if ((element->hasProperty(property, sensitivity, regExpression))
-				&& (!isLogicalId(mObjects.key(element))))
+				&& (!isLogicalId(mObjects.key(element)))) {
 			result.append(mObjects.key(element));
+		}
+	}
 
 	return result;
 }
@@ -91,17 +97,19 @@ qReal::IdList Client::elementsByPropertyContent(QString const &propertyValue, bo
 	foreach (Object *element, mObjects.values()) {
 		QMapIterator<QString, QVariant> iterator = element->propertiesIterator();
 		if (regExpression) {
-			while (iterator.hasNext())
+			while (iterator.hasNext()) {
 				if (iterator.next().value().toString().contains(*regExp)) {
 					result.append(mObjects.key(element));
 					break;
 				}
+			}
 		} else {
-			while (iterator.hasNext())
+			while (iterator.hasNext()) {
 				if (iterator.next().value().toString().contains(propertyValue, caseSensitivity)) {
 					result.append(mObjects.key(element));
 					break;
 				}
+			}
 		}
 	}
 
