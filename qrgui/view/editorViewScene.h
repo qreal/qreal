@@ -141,13 +141,33 @@ private:
 	void initContextMenu(Element *e, QPointF const &pos);
 
 	QList<NodeElement*> getNodesForCopying();
+	QList<NodeData> getNodesData(QList<NodeElement*> const &nodes);
 	QList<EdgeData> getEdgesData(QList<NodeElement*> const &nodes);
 
 	void addChildren(NodeElement* node, QList<NodeElement*> &nodes);
 
+	void pushDataToClipboard(QList<NodeData> const &nodesData, QList<EdgeData> const &edgesData);
+	void pullDataFromClipboard(QList<NodeData> &nodesData, QList<EdgeData> &edgesData);
+
+	QHash<qReal::Id, qReal::Id> pasteNodes(QList<NodeData> &nodesData
+			, QPointF const &offset, bool logicalCopy);
 	qReal::Id pasteNode(NodeData const &nodeData, bool logicalCopy
 			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
+
+	NodeElement* pasteCopyOfLogicalNode(NodeData const &nodeData, QPointF const &newPos);
+	NodeElement* pasteNewNode(NodeData const &data, QPointF const &newPos);
+
 	qReal::Id pasteEdge(EdgeData const &edgeData, bool logicalCopy
+			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
+	EdgeElement* pasteCopyOfLogicalEdge(EdgeData const &edgeData);
+	EdgeElement* pasteNewEdge(EdgeData const &edgeData);
+
+	void restoreNode(NodeElement* node, NodeData const &nodeData
+			, QHash<qReal::Id, qReal::Id> const &copiedIdsMap, QPointF const &pos);
+	void restoreEdge(EdgeElement* edge, EdgeData const &edgeData
+			, QHash<qReal::Id, qReal::Id> const &copiedIdsMap, QPointF const &pos);
+
+	QPointF getNewPos(NodeData const &nodeData
 			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
 
 	inline bool isArrow(int key);
