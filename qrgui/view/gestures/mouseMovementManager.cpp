@@ -43,7 +43,7 @@ void MouseMovementManager::drawIdealPath()
 void MouseMovementManager::printElements()
 {
 	QList<QString> elements;
-	foreach (qReal::Id element, mElements) {
+	foreach (qReal::Id const &element, mElements) {
 		elements.push_back(element.element());
 	}
 	mGesturesPaintMan->setElements(elements);
@@ -67,7 +67,7 @@ QLineF MouseMovementManager::newLine()
 void MouseMovementManager::setElements(const QList<qReal::Id> &elements)
 {
 	QMap<QString, PathVector> gestures;
-	foreach (qReal::Id element, elements) {
+	foreach (qReal::Id const &element, elements) {
 		QString pathStr = mEditorManager->mouseGesture(element);
 		if (!pathStr.isEmpty()) {
 			PathVector path = stringToPath(pathStr);
@@ -84,7 +84,7 @@ void MouseMovementManager::recountCentre()
 		return;
 	}
 	int count = 0;
-	foreach (PointVector path, mPath) {
+	foreach (PointVector const &path, mPath) {
 		count += path.size();
 	}
 	mCentre = ((count - 1) * mCentre + mPath.back().back()) / count;

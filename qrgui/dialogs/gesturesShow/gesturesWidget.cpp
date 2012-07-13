@@ -1,7 +1,9 @@
 #include "gesturesWidget.h"
 #include "ui_gesturesWidget.h"
 
-const int minBoarder = -1000;
+int const minBoarder = -1000;
+QColor const gestColor(Qt::blue);
+short const gestWidth(3);
 
 GesturesWidget::GesturesWidget(QWidget *parent) :
 	QWidget(parent),
@@ -23,17 +25,17 @@ void GesturesWidget::draw(PathVector const &paths)
 {
 	mGestureScene->clear();
 
-	foreach (PointVector path, paths)
+	foreach (PointVector const &path, paths)
 	{
 		QPointF previousPoint(minBoarder, minBoarder);
 
-		QPen pen(Qt::blue);
-		pen.setWidth(3);
+		QPen pen(gestColor);
+		pen.setWidth(gestWidth);
 
 		if (path.isEmpty()) {
 			return;
 		}
-		foreach (QPointF currentPoint, path)
+		foreach (QPointF const &currentPoint, path)
 		{
 			if (previousPoint.x() != minBoarder && previousPoint.y() != minBoarder) {
 				mGestureScene->addLine(QLineF(previousPoint, currentPoint), pen);

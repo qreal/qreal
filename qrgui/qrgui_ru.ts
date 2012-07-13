@@ -514,7 +514,8 @@
     <message>
         <location filename="dialogs/gesturesShow/gesturesWidget.ui" line="46"/>
         <source>List of mouse gestures</source>
-        <translation>Спискок жестов</translation>
+        <translation>Список жестов мышью
+</translation>
     </message>
     <message>
         <location filename="dialogs/gesturesShow/gesturesWidget.ui" line="59"/>
