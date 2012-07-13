@@ -310,7 +310,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Порты" type="string" name="Ports">
-							<default>A, B</default>
+							<default>B, C</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -676,7 +676,7 @@
 						<label x="45" y="80" textBinded="Volume"/>
 						<label x="45" y="100" textBinded="Duration"/>
 						<label x="45" y="120" textBinded="WaitForCompletion"/>
-					
+
 					</labels>
 					<ports>
 						<linePort>
@@ -1180,7 +1180,7 @@
 				<element name="Цикл"/>
 				<element name="Условие"/>
 				<element name="Линия соединения"/>
-				<element name="Породить поток"/>		
+				<element name="Породить поток"/>
 				<element name="Диаграмма поведения робота"/>
 			</group>
 			<group name="Инициализация">

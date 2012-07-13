@@ -97,7 +97,10 @@ void NxtOSEKRobotGenerator::generateMakeFile(bool toGenerateIsEmpty, QString pro
 	}
 
 	QTextStream outMake(&resultMakeFile);
-	outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8());
+	if (mBalancerIsActivated)
+		outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8()).replace("@@BALANCER@@", "balancer_param.c \\").replace("@@BALANCER_LIB@@", "USER_LIB = nxtway_gs_balancer");
+	else
+		outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8()).replace("@@BALANCER@@", "").replace("@@BALANCER_LIB@@", "");
 	templateMakeFile.close();
 
 	outMake.flush();
@@ -115,6 +118,11 @@ void NxtOSEKRobotGenerator::insertCode(
 		QString resultTerminateCode,
 		QString curInitialNodeNumber)
 {
+	if (mBalancerIsActivated) {
+		mResultString.replace("@@BALANCER@@", "#include \"balancer.h\"");
+	} else {
+		mResultString.replace("@@BALANCER@@", "");
+	}
 	mResultString.replace("@@CODE@@", resultCode +"\n" + "@@CODE@@");
 	mTaskTemplate.replace("@@NUMBER@@", curInitialNodeNumber);
 	mResultOIL.replace("@@TASK@@", mTaskTemplate + "\n" + "@@TASK@@");
@@ -133,12 +141,14 @@ void NxtOSEKRobotGenerator::deleteResidualLabels(QString projectName)
 
 void NxtOSEKRobotGenerator::generateFilesForBalancer(QString projectDir)
 {
-	QFile::copy(":/nxtOSEK/templates/balancer/balancer_param.c", projectDir + "/" + "balancer_param.c");
-	QFile::copy(":/nxtOSEK/templates/balancer/balancer.h", projectDir + "/" +"balancer.h");
-	QFile::copy(":/nxtOSEK/templates/balancer/balancer_types.h", projectDir + "/" + "balancer_types.h");
-	QFile::copy(":/nxtOSEK/templates/balancer/libnxtway_gs_balancer.a", projectDir + "/" + "libnxtway_gs_balancer.a");
-	QFile::copy(":/nxtOSEK/templates/balancer/rt_SATURATE.h", projectDir + "/" + "rt_SATURATE.h");
-	QFile::copy(":/nxtOSEK/templates/balancer/rtwtypes.h", projectDir + "/" + "rtwtypes.h");
+	if (mBalancerIsActivated) {
+		QFile::copy(":/nxtOSEK/templates/balancer/balancer_param.c", projectDir + "/" + "balancer_param.c");
+		QFile::copy(":/nxtOSEK/templates/balancer/balancer.h", projectDir + "/" +"balancer.h");
+		QFile::copy(":/nxtOSEK/templates/balancer/balancer_types.h", projectDir + "/" + "balancer_types.h");
+		QFile::copy(":/nxtOSEK/templates/balancer/libnxtway_gs_balancer.a", projectDir + "/" + "libnxtway_gs_balancer.a");
+		QFile::copy(":/nxtOSEK/templates/balancer/rt_SATURATE.h", projectDir + "/" + "rt_SATURATE.h");
+		QFile::copy(":/nxtOSEK/templates/balancer/rtwtypes.h", projectDir + "/" + "rtwtypes.h");
+	}
 }
 
 void NxtOSEKRobotGenerator::generate()
@@ -226,6 +236,7 @@ void NxtOSEKRobotGenerator::generate()
 		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(this, curInitialNode, *mApi);
 		mPreviousElement = curInitialNode;
 
+		mBalancerIsActivated = false;
 		gen->generate(); //may throws a exception
 		delete gen;
 		addToGeneratedStringSetVariableInit();

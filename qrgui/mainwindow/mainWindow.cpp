@@ -84,7 +84,7 @@ MainWindow::MainWindow()
 	mUi->setupUi(this);
 
 	if (showSplash) {
-        splash->show();
+		splash->show();
 		QApplication::processEvents();
 	}
 	else {
@@ -267,6 +267,11 @@ void MainWindow::finalClose()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	QList<ToolPluginInterface *> toolPlugins = mToolManager.getPlugins();
+	foreach (ToolPluginInterface *toolPlugin, toolPlugins) {
+		toolPlugin->closeNeededWidget();
+	}
+
 	if (mUnsavedProjectIndicator) {
 		switch (openSaveOfferDialog()) {
 		case QMessageBox::AcceptRole:
@@ -1573,7 +1578,7 @@ void MainWindow::initToolPlugins()
 			, mModels->logicalModelAssistApi()
 			, *this
 			));
-	
+
 	QList<ActionInfo> const actions = mToolManager.actions();
 	foreach (ActionInfo const action, actions) {
 		if (action.isAction()) {
@@ -1595,7 +1600,7 @@ void MainWindow::initToolPlugins()
 			}
 		}
 	}
-	
+
 	if (mUi->parsersToolbar->actions().isEmpty())
 		mUi->parsersToolbar->hide();
 
