@@ -31,6 +31,19 @@ void ListWidget::addItem(QString const &text, QString const &userData, QString c
 	mListWidget->addItem(currentItem);
 }
 
+void ListWidget::highlightFirstItem()
+{
+	if (count() == 0) {
+		return;
+	}
+	mListWidget->setCurrentRow(0);
+}
+
+int ListWidget::count()
+{
+	return mListWidget->count();
+}
+
 void ListWidget::okButtonHandler()
 {
 	emit userDataSelected(userData(mListWidget->currentItem()));

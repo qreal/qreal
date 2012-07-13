@@ -10,4 +10,5 @@ RecentProjectsListWidget::RecentProjectsListWidget(QDialog *parent)
 	foreach (QString const &project, recentProjects.split(";", QString::SkipEmptyParts)) {
 		addItem(project.split("/").last().split("\\").last(), project, project);
 	}
+	highlightFirstItem();
 }
