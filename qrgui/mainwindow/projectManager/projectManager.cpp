@@ -13,12 +13,41 @@ ProjectManager::ProjectManager(MainWindow *mainWindow)
 {
 }
 
-bool ProjectManager::openEmptyProject()
+bool ProjectManager::openNewWithDiagram()
+{
+	if(!openEmptyWithSuggestToSaveChanges()) {
+		return false;
+	}
+	mMainWindow->suggestToCreateDiagram(true);
+	return true;
+}
+
+bool ProjectManager::openEmptyWithSuggestToSaveChanges()
 {
 	if (!suggestToSaveChangesOrCancel()) {
 		return false;
 	}
 	return open();
+}
+
+bool ProjectManager::openExisting(QString const &fileName)
+{
+	if (!suggestToSaveChangesOrCancel()) {
+		return false;
+	}
+	return open(fileName);
+}
+
+bool ProjectManager::suggestToOpenExisting()
+{
+	if (!suggestToSaveChangesOrCancel()) {
+		return false;
+	}
+	QString fileName = mMainWindow->getWorkingFile(tr("Open existing project"), false);
+	if (fileName.isEmpty()) {
+		return false;
+	}
+	return open(fileName);
 }
 
 bool ProjectManager::suggestToSaveChangesOrCancel()

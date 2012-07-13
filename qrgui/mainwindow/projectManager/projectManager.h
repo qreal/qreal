@@ -17,28 +17,27 @@ class ProjectManager : public QObject
 public:
 	explicit ProjectManager(MainWindow *mainWindow);
 
-	bool openEmptyProject();
-	bool open(QString const &fileName = "");
+public slots:
+	bool openNewWithDiagram();
+	bool openExisting(const QString &fileName);
+	bool suggestToOpenExisting();
+
 	void close();
 
-	void saveAs(const QString &fileName);
-
-	// openEmptyProject()
-	bool suggestToSaveChangesOrCancel();
-
-public slots:
 	void saveAll();
+	void saveAs(const QString &fileName);
 	void suggestToSaveAs();
 
-private:
+public:
+	bool openEmptyWithSuggestToSaveChanges();
+	bool open(QString const &fileName = "");
 
-	// open(...)
+private:
+	bool suggestToSaveChangesOrCancel();
 	bool saveFileExists(QString const &fileName);
 	bool pluginsEnough();
 	QString missingPluginNames();
 	void refreshWindowTitleAccordingToSaveFile();
-
-	// saveAll(), saveAs(...)
 	void refreshApplicationStateAfterSave();
 
 	MainWindow *mMainWindow;

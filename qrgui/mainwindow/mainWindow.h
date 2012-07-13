@@ -130,8 +130,6 @@ private slots:
 	void showAbout();
 	void showHelp();
 
-	void saveAllAndOpen(QString const &dirName);
-
 	/// wrapper for import(QString const &fileName)
 	/// uses getWorkingFile(...)
 	/// @return true - if all ok, false - if not ok
@@ -143,9 +141,7 @@ private slots:
 	bool import(QString const &fileName);
 	void fullscreen();
 	void openRecentProjectsMenu();
-	bool openNewProject();
 	void createDiagram(QString const &idString);
-	bool openExistingProject();
 
 	void saveDiagramAsAPicture();
 

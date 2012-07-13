@@ -144,7 +144,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
 	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
-	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(openExistingProject()));
+	connect(mUi->actionOpen, SIGNAL(triggered()), mProjectManager, SLOT(suggestToOpen()));
 	connect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveAll()));
 	connect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
 	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()),
@@ -153,7 +153,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
 	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), this, SLOT(suggestToCreateDiagram()));
-	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(openNewProject()));
+	connect(mUi->actionNewProject, SIGNAL(triggered()), mProjectManager, SLOT(openNew()));
 	connect(mUi->actionCloseProject, SIGNAL(triggered()), this, SLOT(closeProjectAndSave()));
 
 	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
@@ -445,27 +445,6 @@ bool MainWindow::import(QString const &fileName)
 	return true;
 }
 
-bool MainWindow::openNewProject()
-{
-	if(!mProjectManager->openEmptyProject()) {
-		return false;
-	}
-	suggestToCreateDiagram(true);
-	return true;
-}
-
-bool MainWindow::openExistingProject()
-{
-	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
-		return false;
-	}
-	QString fileName = getWorkingFile(tr("Open existing project"), false);
-	if (fileName == "") {
-		return false;
-	}
-	return mProjectManager->open(fileName);
-}
-
 void MainWindow::refreshRecentProjectsList(QString const &fileName)
 {
 	QString previousString =  SettingsManager::value("recentProjects").toString();
@@ -497,16 +476,8 @@ void MainWindow::openRecentProjectsMenu()
 	}
 
 	QObject::connect(mRecentProjectsMapper, SIGNAL(mapped(const QString &))
-			, this, SLOT(saveAllAndOpen(const QString &)));
+			, mProjectManager, SLOT(openExisting(QString const &)));
 
-}
-
-void MainWindow::saveAllAndOpen(QString const &dirName)
-{
-	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
-		return;
-	}
-	mProjectManager->open(dirName);
 }
 
 void MainWindow::closeAllTabs()
@@ -1675,8 +1646,8 @@ int MainWindow::suggestToSaveProject()
 	QMessageBox offerSave(this);
 	offerSave.setWindowTitle(tr("Save"));
 	offerSave.addButton(tr("&Save"), QMessageBox::AcceptRole);
-	offerSave.addButton(tr("&Discard"), QMessageBox::DestructiveRole);
 	offerSave.addButton(tr("&Cancel"), QMessageBox::RejectRole);
+	offerSave.addButton(tr("&Discard"), QMessageBox::DestructiveRole);
 	offerSave.setText(tr("Do you want to save current project?"));
 	return offerSave.exec();
 }
