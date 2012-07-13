@@ -19,9 +19,9 @@ class ListWidget : public QWidget
 public:
 	explicit ListWidget(QWidget *parent = 0);
 
-	/// @param text - item label
-	/// @param userData - associated with item the string data
-	/// @param toolTip - item tooltip
+	/// @param text Item label
+	/// @param userData Associated with item the string data
+	/// @param toolTip Item tooltip
 	void addItem(QString const &text, QString const &userData, QString const &toolTip = "");
 	
 signals:
