@@ -36,6 +36,7 @@ bool AbstractElementGenerator::generate()
 		if (!mNxtGen->mPreviousLoopElements.empty()){
 			loopElement = mNxtGen->mPreviousLoopElements.pop();
 		}
+
 		//loopElement must create loop code
 		AbstractElementGenerator *loopElementGen = ElementGeneratorFactory::generator(mNxtGen, loopElement, *mNxtGen->mApi);
 

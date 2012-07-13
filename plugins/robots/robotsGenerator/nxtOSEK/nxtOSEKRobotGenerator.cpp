@@ -72,7 +72,7 @@ QString NxtOSEKRobotGenerator::addTabAndEndOfLine(QList<SmartLine> const &lineLi
 		{
 			mCurTabNumber--;
 		}
-		resultCode += QString(mCurTabNumber, '\t') + curLine.text() + "\n";
+		resultCode += '\t' + QString(mCurTabNumber, '\t') + curLine.text() + "\n";
 		if ( (curLine.indentLevelChange() == SmartLine::increase)
 			|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
 		{
@@ -215,7 +215,7 @@ void NxtOSEKRobotGenerator::generate()
 	QString resultTaskTemplate = taskTemplateFile.readAll();
 	taskTemplateFile.close();
 
-	foreach (Id const &curInitialNode, toGenerate) {
+	foreach (Id const &curInitialNode, toGenerate) {// идем по отдельным цепочкам из элементов
 
 		mTaskTemplate = resultTaskTemplate;
 		if (!mApi->isGraphicalElement(curInitialNode)) {
@@ -273,7 +273,6 @@ void NxtOSEKRobotGenerator::generate()
 	outOIL << mResultOIL;
 	outOIL.flush();
 	resultOILFile.close();
-
 	generateFilesForBalancer(projectDir);
 	generateMakeFile(toGenerate.isEmpty(), projectName, projectDir);
 }
