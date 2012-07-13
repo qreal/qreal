@@ -32,7 +32,7 @@ public:
 	qReal::IdList children() const;
 	qReal::Id parent() const;
 	QVariant property(const QString &name) const;
-	bool hasProperty(const QString &name, bool sensitivity = false) const;
+	bool hasProperty(const QString &name, bool sensitivity = false, bool regExpression = false) const;
 	void setProperty(const QString &name, const QVariant &value);
 	void setProperties(QMap<QString, QVariant> const &properties);
 	void removeProperty(const QString &name);
