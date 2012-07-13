@@ -139,8 +139,8 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 	connect(mUi->actionOpen, SIGNAL(triggered()), this, SLOT(openExistingProject()));
-	connect(mUi->actionSave, SIGNAL(triggered()), this, SLOT(saveAll()));
-	connect(mUi->actionSave_as, SIGNAL(triggered()), this, SLOT(saveProjectAs()));
+	connect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveAll()));
+	connect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
 	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()),
 			this, SLOT(saveDiagramAsAPicture()));
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
@@ -217,7 +217,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 	} else if (keyEvent->key() == Qt::Key_F2
 			|| (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
 	{
-		saveAll();
+		mProjectManager->saveAll();
 	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_W) {
 		closeTab(mUi->tabs->currentIndex());
 	} else if (keyEvent->key() == Qt::Key_F1) {
@@ -259,9 +259,9 @@ void MainWindow::finalClose()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
 	if (mUnsavedProjectIndicator) {
-		switch (openSaveOfferDialog()) {
+		switch (suggestToSaveProject()) {
 		case QMessageBox::AcceptRole:
-			saveAll();
+			mProjectManager->saveAll();
 			break;
 		case QMessageBox::RejectRole:
 			event->ignore();
@@ -403,10 +403,12 @@ QString MainWindow::getWorkingFile(QString const &dialogWindowTitle, bool save)
 	if (save) {
 		fileName = QFileDialog::getSaveFileName(this, dialogWindowTitle,
 				lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
+		if (!fileName.endsWith(".qrs", Qt::CaseInsensitive)) {
+			fileName += ".qrs";
+		}
 	} else {
 		fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle,
 				lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
-
 		if (fileName != "" && !QFile::exists(fileName)) {
 			QMessageBox fileNotFoundMessage(QMessageBox::Information, tr("File not found"),
 					tr("File ") + fileName + tr(" not found. Try again"),	QMessageBox::Ok, this);
@@ -447,32 +449,9 @@ bool MainWindow::import(QString const &fileName)
 	return true;
 }
 
-bool MainWindow::suggestToSaveChangesOrCancel()
-{
-	if (!mUnsavedProjectIndicator) {
-		return true;
-	}
-	switch (openSaveOfferDialog()) {
-	case QMessageBox::AcceptRole:
-		saveAll();
-		break;
-	case QMessageBox::RejectRole:
-		return false;
-	}
-	return true;
-}
-
-bool MainWindow::openEmptyProject()
-{
-	if (!suggestToSaveChangesOrCancel()) {
-		return false;
-	}
-	return mProjectManager->open("");
-}
-
 bool MainWindow::openNewProject()
 {
-	if(!openEmptyProject()) {
+	if(!mProjectManager->openEmptyProject()) {
 		return false;
 	}
 	suggestToCreateDiagram(true);
@@ -481,7 +460,7 @@ bool MainWindow::openNewProject()
 
 bool MainWindow::openExistingProject()
 {
-	if (!suggestToSaveChangesOrCancel()) {
+	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
 		return false;
 	}
 	QString fileName = getWorkingFile(tr("Open existing project"), false);
@@ -528,7 +507,7 @@ void MainWindow::openRecentProjectsMenu()
 
 void MainWindow::saveAllAndOpen(QString const &dirName)
 {
-	if (!suggestToSaveChangesOrCancel()) {
+	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
 		return;
 	}
 	mProjectManager->open(dirName);
@@ -1312,37 +1291,6 @@ void MainWindow::createDiagram(QString const &idString)
 	openNewTab(index);
 }
 
-void MainWindow::saveAll()
-{
-	if (mSaveFile.isEmpty()) {
-		saveProjectAs();
-		return;
-	}
-	mModels->repoControlApi().saveAll();
-	mUnsavedProjectIndicator = false;
-	setWindowTitle(mToolManager.customizer()->windowTitle() + " - " + mSaveFile);
-	SettingsManager::setValue("saveFile", mSaveFile);
-}
-
-void MainWindow::saveProjectAs()
-{
-	saveAs(getWorkingFile(tr("Select file to save current model to"), true));
-}
-
-void MainWindow::saveAs(QString const &fileName)
-{
-	if (fileName.isEmpty()) {
-		return;
-	}
-	mSaveFile = fileName;
-	mUnsavedProjectIndicator = false;
-	mModels->repoControlApi().saveTo(mSaveFile);
-	if (!mSaveFile.endsWith(".qrs", Qt::CaseInsensitive))
-		mSaveFile += ".qrs";
-	setWindowTitle(mToolManager.customizer()->windowTitle() + " - " + mSaveFile);
-	SettingsManager::setValue("saveFile", mSaveFile);
-}
-
 int MainWindow::getTabIndex(const QModelIndex &index)
 {
 	for (int i = 0; i < mUi->tabs->count(); ++i) {
@@ -1593,10 +1541,11 @@ void MainWindow::setAutoSaveParameters()
 
 void MainWindow::autosave()
 {
-	if (mSaveFile == "")
-		saveAs(mTempDir);
-	else
-		saveAll();
+	if (mSaveFile == "") {
+		mProjectManager->saveAs(mTempDir);
+	} else {
+		mProjectManager->saveAll();
+	}
 }
 
 void MainWindow::initToolManager()
@@ -1756,13 +1705,13 @@ void MainWindow::disconnectWindowTitle()
 	mUnsavedProjectIndicator = false;
 }
 
-int MainWindow::openSaveOfferDialog()
+int MainWindow::suggestToSaveProject()
 {
 	QMessageBox offerSave(this);
 	offerSave.setWindowTitle(tr("Save"));
-	offerSave.addButton(tr("Save"), QMessageBox::AcceptRole);
-	offerSave.addButton(tr("Cancel"), QMessageBox::RejectRole);
-	offerSave.addButton(tr("Discard"), QMessageBox::DestructiveRole);
+	offerSave.addButton(tr("&Save"), QMessageBox::AcceptRole);
+	offerSave.addButton(tr("&Discard"), QMessageBox::DestructiveRole);
+	offerSave.addButton(tr("&Cancel"), QMessageBox::RejectRole);
 	offerSave.setText(tr("Do you want to save current project?"));
 	return offerSave.exec();
 }
@@ -1770,9 +1719,9 @@ int MainWindow::openSaveOfferDialog()
 void MainWindow::closeProjectAndSave()
 {
 	if (mUnsavedProjectIndicator) {
-		switch (openSaveOfferDialog()) {
+		switch (suggestToSaveProject()) {
 		case QMessageBox::AcceptRole:
-			saveAll();
+			mProjectManager->saveAll();
 			break;
 		case QMessageBox::RejectRole:
 			return;
