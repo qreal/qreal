@@ -319,7 +319,12 @@ void RefactoringPlugin::addPaletteGroup(QDomDocument metamodel
 
 void RefactoringPlugin::arrangeElements(const QString &algorithm)
 {
-	mMainWindowIFace->arrangeElementsByDotRunner(algorithm, mQRealSourceFilesPath + "/qrgui/dotFiles");
+	if (SettingsManager::value("pathToDot").toString().isEmpty()) {
+		mErrorReporter->addCritical(tr("Path to dot is not specified"));
+		return;
+	}
+	
+	mMainWindowIFace->arrangeElementsByDotRunner(algorithm, mQRealSourceFilesPath + "/bin");
 }
 
 void RefactoringPlugin::arrangeElementsBT()

@@ -152,6 +152,8 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
+	connect(mUi->actionCopyElementsOnDiagram, SIGNAL(triggered()), this, SLOT(copyElementsOnDiagram()));
+	connect(mUi->actionPasteOnDiagram, SIGNAL(triggered()), this, SLOT(pasteOnDiagram()));
 
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
@@ -698,6 +700,23 @@ void MainWindow::deleteFromDiagram()
 		getCurrentTab()->scene()->invalidate();
 	}
 }
+
+void MainWindow::copyElementsOnDiagram()
+{
+	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(getCurrentTab()->scene());
+	if (scene) {
+		scene->copy();
+	}
+}
+
+void MainWindow::pasteOnDiagram()
+{
+	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(getCurrentTab()->scene());
+	if (scene) {
+		scene->paste();
+	}
+}
+
 void MainWindow::editWindowTitle()
 {
 	if (!mUnsavedProjectIndicator){
@@ -1356,6 +1375,16 @@ QAction *MainWindow::actionDeleteFromDiagram() const
 	return mUi->actionDeleteFromDiagram;
 }
 
+QAction *MainWindow::actionCopyElementsOnDiagram() const
+{
+	return mUi->actionCopyElementsOnDiagram;
+}
+
+QAction *MainWindow::actionPasteOnDiagram() const
+{
+	return mUi->actionPasteOnDiagram;
+}
+
 void MainWindow::highlight(Id const &graphicalId, bool exclusive)
 {
 	EditorView* const view = getCurrentTab();
@@ -1631,9 +1660,13 @@ void MainWindow::initExplorers()
 	mUi->propertyEditor->setModel(&mPropertyModel);
 
 	mUi->graphicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
+	mUi->graphicalModelExplorer->addAction(mUi->actionCopyElementsOnDiagram);
+	mUi->graphicalModelExplorer->addAction(mUi->actionPasteOnDiagram);
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 
 	mUi->logicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
+	mUi->logicalModelExplorer->addAction(mUi->actionCopyElementsOnDiagram);
+	mUi->logicalModelExplorer->addAction(mUi->actionPasteOnDiagram);
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
@@ -1763,8 +1796,9 @@ void MainWindow::arrangeElementsByDotRunner(const QString &algorithm, const QStr
 	DotRunner *runner = new DotRunner(diagramId
 			, mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi()
 			, mEditorManager, absolutePathToDotFiles);
-	runner->run(algorithm);
-	updateActiveDiagram();
+	if (runner->run(algorithm)) {
+		updateActiveDiagram();
+	}
 }
 
 IdList MainWindow::selectedElementsOnActiveDiagram()
