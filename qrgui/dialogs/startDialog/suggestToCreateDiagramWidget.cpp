@@ -13,6 +13,7 @@ SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *mainWindo
 			addItem(editor, diagram);
 		}
 	}
+	highlightFirstItem();
 	connect(this, SIGNAL(userDataSelected(QString)), parent, SLOT(close()));
 }
 
