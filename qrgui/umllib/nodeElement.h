@@ -74,7 +74,7 @@ public:
 
 	void hideEmbeddedLinkers();
 
-	bool isPort();
+	bool isPort() const;
 	bool canHavePorts();
 
 	QList<double> borderValues();
@@ -138,8 +138,8 @@ private:
 	 */
 	class ResizeHandler {
 	public:
-		/// Constructs a ResizeHandler
-		/// @param resizingNode Node that is actually dealt with
+		/// Constructs a ResizeHandler.
+		/// @param resizingNode Node that is actually dealt with.
 		ResizeHandler(NodeElement* const resizingNode);
 
 		/// Resizes node trying to use newContents as new shape
@@ -147,32 +147,79 @@ private:
 		/// node to newPos.
 		/// These parameters are corrected by child configuration
 		/// in most cases.
-		/// @param newContents Recommendation for new shape of node
-		/// @param newPos Recommendation for new position of node
+		/// @param newContents Recommendation for new shape of node.
+		/// @param newPos Recommendation for new position of node.
 		void resize(QRectF newContents, QPointF newPos) const;
 
-		/// Calls resize(QRectF newContents, QPointF newPos) with
-		/// newPos equals to current position of node.
-		/// @param newContents Recommendation for new shape of node	
-		void resize(QRectF newContents) const;
-
-		/// Calls resize(QRectF newContents, QPointF newPos) with
-		/// newPos equals to current position of node and
-		/// newContents equals to current shape (mContents).
-		void resize() const;
-
 	private:
-		/// Sorts child items in case of node has
-		/// sortChildren container property 
+		/// Sorts child items in case node has
+		/// sortChildren container property.
 		void sortChildrenIfNeeded() const;
 
-		/// Returns maximum of child item widths
-		/// @return Maximum of child widths
+		/// Returns maximum of child item widths.
+		/// @return Maximum of child widths.
 		qreal maxChildWidth() const;
+	
+		/// Gripes contents to QRectF() in case node has
+		/// minimizesToChildren container property.
+		/// @param contents It would be gripped to QRectF() in case
+		/// node has minimizesToChildren container property.
+		void gripeIfMinimizesToChildrenContainer(QRectF& contents) const;
+
+		/// Calls resize() method for parent item.
+		void parentResizeCall() const;
+	
+		/// Changes contents to size that not smaller than folded contents.
+		/// @param contents It will be not smaller than folded contents.
+		void normalizeSize(QRectF& contents) const;
+
+		/// Resizes newContents and moves newPos according to child configuration.
+		/// @param newContents It will be modified according to children.
+		/// @param newPos It will be modified according to children.
+		void resizeAccordingToChildren(QRectF& newContents, QPointF& newPos) const;
+	
+		/// Returns vector of minimum negative XY child deflection from top left corner.
+		/// @return Vector of minimum negative XY child deflection from top left corner.
+		QPointF childDeflection() const;
+
+		/// Moves children with shift with
+		/// controling child position (it can't be upper
+		/// or more left than (sizeOfForestalling, sizeOfForestalling)).
+		/// @param shift Child shift.
+		void moveChildren(QPointF const &shift) const;
+
+		/// Returns bounding rectangle for childItem.
+		/// @param childItem For this item bounding rectangle will be returned.
+		/// @param contents It will be used for place holder bounding calculating.
+		/// @return Bounding rectangle for childItem.
+		QRectF childBoundingRect(QGraphicsItem* childItem, QRectF const &contents) const;
+
+		/// Expands contents according to child configuration.
+		/// @param contents It will be expanded according to child configuration.
+		void expandByChildren(QRectF& contents) const;
 
 		/// Node that is actually dealt with
 		NodeElement* const mResizingNode;
 	};
+
+	/// Resizes node trying to use newContents as new shape
+	/// of node (ignoring newContents position) and to move
+	/// node to newPos.
+	/// These parameters are corrected by child configuration
+	/// in most cases.
+	/// @param newContents Recommendation for new shape of node.
+	/// @param newPos Recommendation for new position of node.
+	void resize(QRectF newContents, QPointF newPos);
+
+	/// Calls resize(QRectF newContents, QPointF newPos) with
+	/// newPos equals to current position of node.
+	/// @param newContents Recommendation for new shape of node.
+	void resize(QRectF newContents);
+
+	/// Calls resize(QRectF newContents, QPointF newPos) with
+	/// newPos equals to current position of node and
+	/// newContents equals to current shape (mContents).
+	void resize();
 
 	/** @brief Padding that reserves space for title */
 	static int const titlePadding = 25;
@@ -201,25 +248,8 @@ private:
 	QLineF newTransform(StatLine const &port) const;
 	QPointF newTransform(StatPoint const &port) const;
 
-	/// Resizes newContents and moves newPos according to children
-	void resizeAccordingToChildren(QRectF& newContents, QPointF& newPos);
-	/// Changes contents to size that not smaller than mFoldedContents
-	void normalizeSize(QRectF& contents);
-	/// Calls resize() method for parent item
-	void parentResizeCall();
-	QRectF childBoundingRect(QGraphicsItem* childItem, QRectF const &newContents);	
-	void expandByChildren(QRectF& newContents);
-	QPointF calculateChildrenMoving();	
-	/// Gripes contents to QRectF() in case of minimizesToChildren
-	/// container property
-	void gripeIfMinimizesToChildrenContainer(QRectF& contents);
-
 	void updateByChild(NodeElement* item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
-
-	void moveChildren(qreal dx, qreal dy);
-	void moveChildren(QPointF const &moving);
-
 
 	qreal minDistanceFromLinePort(int const linePortNumber, QPointF const &location) const;
 	qreal distanceFromPointPort(int const pointPortNumber, QPointF const &location) const;
