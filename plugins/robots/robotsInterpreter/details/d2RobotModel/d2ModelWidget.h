@@ -66,6 +66,8 @@ public:
 	D2ModelScene* scene();
 	void setSensorVisible(inputPort::InputPortEnum port, bool isVisible);
 
+	void closeEvent(QCloseEvent *event);
+
 public slots:
 	void update();
 
@@ -97,6 +99,9 @@ private slots:
 	void changePalette();
 
 	void changeSpeed(int curIndex);
+
+signals:
+	void d2WasClosed();
 
 private:
 	void connectUiButtons();

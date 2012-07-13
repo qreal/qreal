@@ -180,8 +180,6 @@ QPointF D2ModelWidget::robotPos() const
 	return mRobot ? mRobot->pos() : QPointF(0,0);
 }
 
-
-
 void D2ModelWidget::close()
 {
 	if (mRobot != NULL) {
@@ -778,4 +776,9 @@ void D2ModelWidget::enableRunStopButtons()
 void D2ModelWidget::disableRunStopButtons()
 {
 	mUi->runButton->setEnabled(false);
+}
+
+void D2ModelWidget::closeEvent(QCloseEvent *event)
+{
+	emit d2WasClosed();
 }
