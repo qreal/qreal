@@ -13,13 +13,13 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
 
 	connect(mUi->autoSaveCheckBox, SIGNAL(clicked(bool)), this, SLOT(showAutoSaveBox(bool)));
 
-	mUi->warningWindowBox->setChecked(SettingsManager::value("warningWindow", true).toBool());
-	mUi->arrangeLinksCheckBox->setChecked(SettingsManager::value("arrangeLinks", true).toBool());
-	mUi->paletteTabCheckBox->setChecked(SettingsManager::value("PaletteTabSwitching", true).toBool());
-	mUi->diagramCreateCheckBox->setChecked(SettingsManager::value("diagramCreateSuggestion", true).toBool());
-	mUi->autoSaveCheckBox->setChecked(SettingsManager::value("autoSave", true).toBool());
-	mUi->autoSaveSpinBox->setValue(SettingsManager::value("autoSaveInterval", 60 * 10).toInt());
-	mUi->gestureDelaySpinBox->setValue(SettingsManager::value("gestureDelay", 1000).toInt());
+	mUi->warningWindowBox->setChecked(SettingsManager::value("warningWindow").toBool());
+	mUi->arrangeLinksCheckBox->setChecked(SettingsManager::value("arrangeLinks").toBool());
+	mUi->paletteTabCheckBox->setChecked(SettingsManager::value("paletteTabSwitching").toBool());
+	mUi->diagramCreateCheckBox->setChecked(SettingsManager::value("diagramCreateSuggestion").toBool());
+	mUi->autoSaveCheckBox->setChecked(SettingsManager::value("autoSave").toBool());
+	mUi->autoSaveSpinBox->setValue(SettingsManager::value("autoSaveInterval").toInt());
+	mUi->gestureDelaySpinBox->setValue(SettingsManager::value("gestureDelay").toInt());
 
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
 }

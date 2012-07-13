@@ -13,6 +13,7 @@ class MainWindowInterpretersInterface
 public:
 	virtual ~MainWindowInterpretersInterface() {}
 	virtual void selectItem(Id const &graphicalId) = 0;
+	virtual void selectItemOrDiagram(Id const &graphicalId) = 0;
 	virtual void highlight(Id const &graphicalId, bool exclusive = true) = 0;
 	virtual void dehighlight(Id const &graphicalId) = 0;
 	virtual void dehighlight() = 0;
@@ -55,6 +56,22 @@ public:
 	/// @param pluginName Name of a plugin to check (as it will return in id() method)
 	/// @returns True, if plugin is present and loaded
 	virtual bool pluginLoaded(QString const &pluginName) = 0;
+
+	/// Saves active diagram to .png with chosen file name
+	/// @param fileName Name for saving
+	virtual void saveDiagramAsAPictureToFile(QString const &fileName) = 0;
+
+	/// automatically arrange elements on active diagram
+	/// @param algorithm Way of arrangement
+	/// @param absolutePathToDotFiles Path to directory DotFiles
+	virtual void arrangeElementsByDotRunner(QString const &algorithm, QString const &absolutePathToDotFiles) = 0;
+
+	/// returns selected elements on current tab
+	virtual IdList selectedElementsOnActiveDiagram() = 0;
+
+	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true) = 0;
+
+	virtual void updateActiveDiagram() = 0;
 };
 
 }

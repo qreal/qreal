@@ -3,10 +3,11 @@ TEMPLATE = subdirs
 SUBDIRS	= \
 #	additionsEditor/additionsEditor.pro \
 #	android/android.pro \
+#	dragonDiagram/dragonDiagram.pro \
 	blockDiagram/blockDiagram.pro \
 #	bpel/bpel.pro \
 #	exterminatus/exterminatus.pro \
-	hascol/hascol.pro \
+#	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
 #	network/network.pro \
 #	orthodoxEditor/orthodoxEditor.pro \
@@ -25,4 +26,6 @@ SUBDIRS	= \
 #	umlStateMachinesDiagram/umlStateMachinesDiagram.pro \
 #	umlTimingDiagram/umlTimingDiagram.pro \
 #	umlUseCaseDiagram/umlUseCaseDiagram.pro \
+	visualInterpreter/visualInterpreter.pro \
+	refactoring/refactoring.pro \
 

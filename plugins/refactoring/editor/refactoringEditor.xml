@@ -1,0 +1,223 @@
+  <metamodel xmlns="http://schema.real.com/schema/">
+    <namespace>UML 2.0</namespace>
+    <diagram displayedName="Refactoring Diagram" nodeName="refactoringDiagramNode" name="RefactoringDiagram">
+      <graphicTypes>
+        <node displayedName="Refactoring Diagram" name="refactoringDiagramNode">
+          <graphics>
+            <picture sizex="100" sizey="100">
+              <image y1="6" name="images/pencil1.png" x1="1" y2="90" x2="90"/>
+            </picture>
+			<labels>
+              <label x="5" y="95" textBinded="name"/>
+            </labels>
+              <ports>
+                <linePort>
+                  <start startx="30" starty="0"/>
+                  <end endx="70" endy="0"/>
+                </linePort>
+                <linePort>
+                  <start startx="0" starty="30"/>
+                  <end endx="0" endy="70"/>
+                </linePort>
+                <linePort>
+                  <start startx="100" starty="30"/>
+                  <end endx="100" endy="70"/>
+                </linePort>
+                <linePort>
+                  <start startx="30" starty="100"/>
+                  <end endx="70" endy="100"/>
+                </linePort>
+              </ports>
+            </graphics>
+			<logic>
+			</logic>
+		</node>
+        <node displayedName="Element" name="element">
+                <graphics>
+                    <picture sizex="80" sizey="80">
+                        <rectangle stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="80" x2="80"/>
+                    </picture>
+					<labels>
+						<label x="80" y="0" textBinded="ID"/>
+                        <label x="5" y="5" textBinded="name"/>
+                    </labels>
+                   <ports>
+                        <linePort>
+                            <start startx="0" starty="10"/>
+                            <end endx="0" endy="70"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="0"/>
+                            <end endx="70" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="10"/>
+                            <end endx="80" endy="70"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="80"/>
+                            <end endx="70" endy="80"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+					<properties>
+						<property type="string" name="ID"/>
+					</properties>
+                </logic>
+            </node>
+			<node displayedName="Selected segment" name="selectedSegment">
+                <graphics>
+                    <picture sizex="80" sizey="80">
+                        <rectangle fill="#f0ffff" fill-style="solid" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="80" x2="80"/>
+                    </picture>
+					<labels>
+						<label x="80" y="0" textBinded="ID"/>
+						<label x="5" y="5" text="&lt;b&gt;SELECTED&lt;/b&gt;"/>
+					</labels>                   
+					<ports>
+                        <linePort>
+                            <start startx="0" starty="10"/>
+                            <end endx="0" endy="70"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="0"/>
+                            <end endx="70" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="10"/>
+                            <end endx="80" endy="70"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="80"/>
+                            <end endx="70" endy="80"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+					<properties>
+						<property type="string" name="ID"/>
+					</properties>
+                </logic>
+            </node>
+        <edge displayedName="Link" name="link">
+          <graphics>
+            <labels>
+				<label x="0" y="0" textBinded="ID"/>
+			</labels>
+            <lineType type="solidLine"/>
+          </graphics>
+          <logic>
+            <properties>
+				<property type="string" name="ID"/>		
+            </properties>
+            <associations endType="open_arrow" beginType="no_arrow">
+            </associations>
+          </logic>
+        </edge>
+        <node displayedName="Before Block" name="beforeBlock">
+              <graphics>
+            <picture sizex="200" sizey="200">
+              <line y1="0" x1="20" y2="0" x2="180" stroke-style="solid" stroke-width="3" stroke="#009933"/>
+              <line y1="200" x1="20" y2="200" x2="180" stroke-style="solid" stroke-width="3" stroke="#009933"/>
+              <line y1="20" x1="0" y2="180" x2="0" stroke-style="solid" stroke-width="3" stroke="#009933"/>
+              <line y1="20" x1="200" y2="180" x2="200" stroke-style="solid" stroke-width="3" stroke="#009933"/>
+              <arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="40" x2="40" stroke-width="3" stroke-style="solid" stroke="#009933"/>
+              <arc spanAngle="1440" startAngle="0" y1="0" x1="160" y2="40" x2="200" stroke-width="3" stroke-style="solid" stroke="#009933"/>
+              <arc spanAngle="1440" startAngle="2880" y1="160" x1="0" y2="200" x2="40" stroke-width="3" stroke-style="solid" stroke="#009933"/>
+              <arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200" stroke-width="3" stroke-style="solid" stroke="#009933"/>
+            </picture>
+            <labels>
+  			  <label x="5" y="5" text="&lt;b&gt;BEFORE&lt;/b&gt;"/>
+            </labels>
+            <ports>
+              <pointPort x="0" y="100"/>
+              <pointPort x="100" y="0"/>
+              <pointPort x="200" y="100"/>
+              <pointPort x="100" y="200"/>
+            </ports>
+          </graphics>
+          <logic>
+            <container>
+				<contains type="refactoringMetamodel::element"/>
+				<contains type="refactoringMetamodel::selectedSegment"/>
+				<contains type="refactoringMetamodel::link"/>
+				<contains type="refactoringMetamodel::subprogram"/>
+            </container>
+          </logic>
+        </node>
+		        <node displayedName="After Block"  name="afterBlock">
+              <graphics>
+            <picture sizex="200" sizey="200">
+              <line y1="0" x1="20" y2="0" x2="180" stroke-style="solid" stroke-width="3" stroke="#009933"/>
+              <line y1="200" x1="20" y2="200" x2="180" stroke-style="solid" stroke-width="3" stroke="#009933"/>
+              <line y1="20" x1="0" y2="180" x2="0" stroke-style="solid" stroke-width="3" stroke="#009933"/>
+              <line y1="20" x1="200" y2="180" x2="200" stroke-style="solid" stroke-width="3" stroke="#009933"/>
+              <arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="40" x2="40" stroke-style="solid" stroke-width="3" stroke="#009933"/>
+              <arc spanAngle="1440" startAngle="0" y1="0" x1="160" y2="40" x2="200" stroke-style="solid" stroke-width="3" stroke="#009933"/>
+              <arc spanAngle="1440" startAngle="2880" y1="160" x1="0" y2="200" x2="40" stroke-style="solid" stroke-width="3" stroke="#009933"/>
+              <arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200" stroke-width="3" stroke-style="solid" stroke="#009933"/>
+            </picture>
+            <labels>
+			  <label x="5" y="5" text="&lt;b&gt;AFTER&lt;/b&gt;"/>
+            </labels>
+            <ports>
+              <pointPort x="0" y="100"/>
+              <pointPort x="100" y="0"/>
+              <pointPort x="200" y="100"/>
+              <pointPort x="100" y="200"/>
+            </ports>
+          </graphics>
+          <logic>
+            <container>
+				<contains type="refactoringMetamodel::element"/>
+				<contains type="refactoringMetamodel::link"/>
+				<contains type="refactoringMetamodel::subprogram"/>
+            </container>
+          </logic>
+        </node>
+        <node displayedName="From Before To After" name="fromBeforeToAter">
+          <graphics>
+            <picture sizex="100" sizey="100">
+              <image y1="6" name="images/arrow3.png" x1="1" y2="90" x2="90"/>
+            </picture>
+			<labels/>
+              <ports>
+                <linePort>
+                  <start startx="30" starty="0"/>
+                  <end endx="70" endy="0"/>
+                </linePort>
+                <linePort>
+                  <start startx="0" starty="30"/>
+                  <end endx="0" endy="70"/>
+                </linePort>
+                <linePort>
+                  <start startx="100" starty="30"/>
+                  <end endx="100" endy="70"/>
+                </linePort>
+                <linePort>
+                  <start startx="30" starty="100"/>
+                  <end endx="70" endy="100"/>
+                </linePort>
+              </ports>
+             <nonResizeable/>
+            </graphics>
+			<logic>
+			</logic>
+		</node>
+      </graphicTypes>
+	    <palette>
+   <group name="Refactoring Rule Elements">
+    <element name="Refactoring Diagram"/>
+    <element name="From Before To After"/>
+    <element name="After Block"/>
+    <element name="Before Block"/>
+   </group>
+   <group name="Basic Elements">
+    <element name="Element"/>
+    <element name="Link"/>
+    <element name="Selected segment"/>
+   </group>
+  </palette>
+    </diagram>
+  </metamodel>

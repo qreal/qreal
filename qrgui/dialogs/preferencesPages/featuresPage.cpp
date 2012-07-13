@@ -14,9 +14,9 @@ PreferencesFeaturesPage::PreferencesFeaturesPage(QWidget *parent)
 	mIcon = QIcon(":/icons/preferences/features.png");
 	mUi->setupUi(this);
 
-	mUi->gesturesCheckBox->setChecked(SettingsManager::value("Gestures", true).toBool());
-	mUi->embeddedLinkersCheckBox->setChecked(SettingsManager::value("EmbeddedLinkers", true).toBool());
-	mUi->embeddedControlsCheckBox->setChecked(SettingsManager::value("EmbeddedControls", false).toBool());
+	mUi->gesturesCheckBox->setChecked(SettingsManager::value("Gestures").toBool());
+	mUi->embeddedLinkersCheckBox->setChecked(SettingsManager::value("EmbeddedLinkers").toBool());
+	mUi->embeddedControlsCheckBox->setChecked(SettingsManager::value("EmbeddedControls").toBool());
 }
 
 PreferencesFeaturesPage::~PreferencesFeaturesPage()

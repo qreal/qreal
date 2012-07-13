@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1188</width>
-    <height>641</height>
+    <width>843</width>
+    <height>559</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,8 +35,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1188</width>
-     <height>21</height>
+     <width>843</width>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -85,7 +85,14 @@
      <string>Tools</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionFind"/>
+   </widget>
    <addaction name="menu_File"/>
+   <addaction name="menuEdit"/>
    <addaction name="menu_View"/>
    <addaction name="menuTools"/>
    <addaction name="menuSettings"/>
@@ -112,6 +119,12 @@
    <addaction name="actionSave"/>
   </widget>
   <widget class="QDockWidget" name="minimapDock">
+   <property name="minimumSize">
+    <size>
+     <width>80</width>
+     <height>138</height>
+    </size>
+   </property>
    <property name="windowTitle">
     <string>Mini Map</string>
    </property>
@@ -150,6 +163,12 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="paletteDock">
+   <property name="minimumSize">
+    <size>
+     <width>80</width>
+     <height>41</height>
+    </size>
+   </property>
    <property name="windowTitle">
     <string>Palette</string>
    </property>
@@ -624,6 +643,38 @@
   <action name="actionCloseProject">
    <property name="text">
     <string>Close project</string>
+   </property>
+  </action>
+  <action name="actionFind">
+   <property name="text">
+    <string>Find</string>
+   </property>
+  </action>
+  <action name="actionFind_and_replace">
+   <property name="text">
+    <string>Find and replace</string>
+   </property>
+  </action>
+  <action name="actionCopyElementsOnDiagram">
+   <property name="text">
+    <string>Copy</string>
+   </property>
+   <property name="toolTip">
+    <string>Copy</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionPasteOnDiagram">
+   <property name="text">
+    <string>Paste</string>
+   </property>
+   <property name="toolTip">
+    <string>Paste</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
    </property>
   </action>
  </widget>

@@ -429,7 +429,7 @@
 						</property>
 						<property displayedName="Выходное значение мощности первого мотора" type="string" name="pwm1">
 						</property>
-						<property displayedName="Выходное значение мощности второго мотора" type="string" name="pwm2">						
+						<property displayedName="Выходное значение мощности второго мотора" type="string" name="pwm2">
 						</property>
 					</properties>
 					<generalizations>
@@ -1166,6 +1166,41 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Подпрограмма" name="SubprogramRobots">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/subprogramRobots.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="5" y="60" textBinded="name"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 		</graphicTypes>
 		<palette>
 			<group name="Действия">
@@ -1183,14 +1218,15 @@
 				<element name="Ждать сонар"/>
 				<element name="Ждать цвет"/>
 				<element name="Ждать энкодер"/>
-				<element name="Ждать интенсивность цвета"/>
 				<element name="Ждать свет"/>
+				<element name="Ждать интенсивность цвета"/>
 			</group>
 			<group name="Алгоритмы">
-				<element name="Цикл"/>
-				<element name="Условие"/>
-				<element name="Линия соединения"/>
 				<element name="Породить поток"/>
+				<element name="Условие"/>
+				<element name="Цикл"/>
+				<element name="Подпрограмма"/>
+				<element name="Линия соединения"/>
 				<element name="Диаграмма поведения робота"/>
 			</group>
 			<group name="Инициализация">

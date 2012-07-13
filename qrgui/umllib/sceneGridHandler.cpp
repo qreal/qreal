@@ -15,9 +15,9 @@ SceneGridHandler::SceneGridHandler(NodeElement *node)
 		: mNode(node), mGuidesPixmap(NULL)
 {
 	mGuidesPen = QPen(QColor(0, 0, 0, 42), 1, Qt::DashLine);
-	mShowAlignment = SettingsManager::value("ShowAlignment", true).toBool();
-	mSwitchGrid = SettingsManager::value("ActivateGrid", true).toBool();
-	mSwitchAlignment = SettingsManager::value("ActivateAlignment", true).toBool();
+	mShowAlignment = SettingsManager::value("ShowAlignment").toBool();
+	mSwitchGrid = SettingsManager::value("ActivateGrid").toBool();
+	mSwitchAlignment = SettingsManager::value("ActivateAlignment").toBool();
 }
 
 SceneGridHandler::~SceneGridHandler()
@@ -170,7 +170,7 @@ void SceneGridHandler::makeGridMovingY(qreal myY, int coef, int indexGrid)
 
 qreal SceneGridHandler::makeGridAlignment(qreal coord)
 {
-	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
+	int const indexGrid = SettingsManager::value("IndexGrid").toInt();
 	int const coef = static_cast<int>(coord) / indexGrid;
 	return alignedCoordinate(coord, coef, indexGrid);
 }
@@ -213,7 +213,7 @@ void SceneGridHandler::alignToGrid()
 	if (!mSwitchGrid || mNode->parentItem()) {
 		return;
 	}
-	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
+	int const indexGrid = SettingsManager::value("IndexGrid").toInt();
 
 	QPointF const nodeScenePos = mNode->scenePos();
 	QRectF const contentsRect = mNode->contentsRect();

@@ -21,16 +21,16 @@ const double pi = 3.14159265358979;
 // static bool moving = false;
 
 EdgeElement::EdgeElement(ElementImpl *impl)
-: mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
-, mSrc(NULL), mDst(NULL)
-, mPortFrom(0), mPortTo(0)
-, mDragPoint(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL)
-, mAddPointAction(tr("Add point"), this)
-, mDelPointAction(tr("Delete point"), this)
-, mSquarizeAction(tr("Squarize"), this)
-, mMinimizeAction(tr("Remove all points"), this)
-, mElementImpl(impl)
-, mLastDragPoint(-1)
+		: mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
+		, mSrc(NULL), mDst(NULL)
+		, mPortFrom(0), mPortTo(0)
+		, mDragPoint(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL)
+		, mAddPointAction(tr("Add point"), this)
+		, mDelPointAction(tr("Delete point"), this)
+		, mSquarizeAction(tr("Squarize"), this)
+		, mMinimizeAction(tr("Remove all points"), this)
+		, mElementImpl(impl)
+		, mLastDragPoint(-1)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
@@ -50,7 +50,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	connect(&mSquarizeAction, SIGNAL(triggered(QPointF const &)), SLOT(squarizeHandler(QPointF const &)));
 	connect(&mMinimizeAction, SIGNAL(triggered(QPointF const &)), SLOT(minimizeHandler(QPointF const &)));
 
-	mChaoticEdition = SettingsManager::value("ChaoticEdition", false).toBool();
+	mChaoticEdition = SettingsManager::value("ChaoticEdition").toBool();
 
 	ElementTitleFactory factory;
 
@@ -328,7 +328,7 @@ void EdgeElement::connectToPort()
 	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
 
 	mMoving = false;
-	if (SettingsManager::value("SquareLine", false).toBool())
+	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
 	adjustLink();
 	arrangeSrcAndDst();
@@ -378,6 +378,10 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		mLastLine = mLine;
 	}
 }
+bool EdgeElement::isDividable (){
+	return mElementImpl->isDividable();
+}
+
 
 void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -479,7 +483,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	else
 		mDragPoint = -1;
 
-	if (SettingsManager::value("SquareLine", false).toBool()) {
+	if (SettingsManager::value("SquareLine").toBool()) {
 		squarizeHandler(QPointF());
 		deleteUnneededPoints();//wtf
 	}
@@ -736,7 +740,7 @@ void EdgeElement::adjustLink()
 	updateLongestPart();
 	for (int i = 0; i < mLine.size() - 2; i++)
 		removeUnneededPoints(i);
-	if (SettingsManager::value("SquareLine", false).toBool())
+	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
 }
 
@@ -881,7 +885,7 @@ void EdgeElement::updateData()
 	mPortTo = mGraphicalAssistApi->toPort(id());
 
 	adjustLink();
-	if (SettingsManager::value("SquareLine", false).toBool())
+	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
 	mElementImpl->updateData(this);
 	update();
@@ -900,7 +904,7 @@ void EdgeElement::placeStartTo(QPointF const &place)
 {
 	mLine[0] = place;
 	updateLongestPart();
-	if (SettingsManager::value("SquareLine", false).toBool())
+	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
 	adjustLink();
 
@@ -910,7 +914,7 @@ void EdgeElement::placeEndTo(QPointF const &place)
 {
 	mLine[mLine.size() - 1] = place;
 	updateLongestPart();
-	if (SettingsManager::value("SquareLine", false).toBool())
+	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
 	//	adjustLink();
 }
@@ -957,4 +961,19 @@ void EdgeElement::highlight(QColor const color)
 {
 	mColor = color;
 	update();
+}
+
+EdgeData& EdgeElement::data()
+{
+	mData.id = id();
+	mData.srcId = src()->id();
+	mData.dstId = dst()->id();
+
+	mData.portFrom = mPortFrom;
+	mData.portTo = mPortTo;
+
+	mData.configuration = mGraphicalAssistApi->configuration(mId);
+	mData.pos = mGraphicalAssistApi->position(mId);
+
+	return mData;
 }

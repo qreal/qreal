@@ -47,7 +47,7 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	registerPage(tr("Miscellanious"), miscellaniousPage);
 	registerPage(tr("Editor"), editorPage);
 
-	int currentTab = SettingsManager::value("currentPreferencesTab", 0).toInt();
+	int currentTab = SettingsManager::value("currentPreferencesTab").toInt();
 	ui->listWidget->setCurrentRow(currentTab);
 	chooseTab(ui->listWidget->currentIndex());
 }
@@ -104,5 +104,11 @@ void PreferencesDialog::switchCurrentTab(QString const &tabName)
 		int const currentIndex = mCustomPages.keys().indexOf(tabName);
 		ui->listWidget->setCurrentRow(currentIndex);
 		ui->pageContentWigdet->setCurrentIndex(currentIndex + 1);
+	}
+}
+void PreferencesDialog::changePaletteParameters()
+{
+	if (mCustomPages.count(tr("Editor")) > 0) {
+		static_cast<PreferencesEditorPage*>(mCustomPages[tr("Editor")])->changePaletteParameters();
 	}
 }
