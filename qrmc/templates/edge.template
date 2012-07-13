@@ -12,26 +12,26 @@
 		virtual ~@@ElementName@@() {}
 
 		void paint(QPainter *, QRectF &){}
-		bool isNode() { return false; }
-		bool isContainer() { return false; }
-		bool isSortingContainer() { return false; }
-		int sizeOfForestalling() { return 0; }
-		int sizeOfChildrenForestalling() { return 0; }
-		bool hasMovableChildren() { return false; }
-		bool minimizesToChildren() { return false; }
-		bool isClass() { return false; }
-		bool maximizesChildren() { return false; }
-		bool isPort() { return false; }
-		bool hasPin() { return false; }
-		QList<double> border()
+		bool isNode() const { return false; }
+		bool isContainer() const { return false; }
+		bool isSortingContainer() const { return false; }
+		int sizeOfForestalling() const { return 0; }
+		int sizeOfChildrenForestalling() const { return 0; }
+		bool hasMovableChildren() const { return false; }
+		bool minimizesToChildren() const { return false; }
+		bool isClass() const { return false; }
+		bool maximizesChildren() const { return false; }
+		bool isPort() const { return false; }
+		bool hasPin() const { return false; }
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
-		bool hasPorts() { return false; }
-		Qt::PenStyle getPenStyle() { return @@LineType@@; }
-		QStringList bonusContextMenuFields()
+		bool hasPorts() const { return false; }
+		Qt::PenStyle getPenStyle() const { return @@LineType@@; }
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
