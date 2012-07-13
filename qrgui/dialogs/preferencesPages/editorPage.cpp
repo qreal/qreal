@@ -29,6 +29,9 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 
 	connect(mShowGridAction, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
 	connect(mShowAlignmentAction, SIGNAL(toggled(bool)), this, SLOT(showAlignment(bool)));
+	connect(mActivateGridAction, SIGNAL(toggled(bool)), this, SLOT(activateGrid(bool)));
+	connect(mActivateAlignmentAction, SIGNAL(toggled(bool)), this, SLOT(activateAlignment(bool)));
+
 	mUi->indexGridSlider->setVisible(false);
 	mUi->label_20->setVisible(false);
 
@@ -152,12 +155,20 @@ void PreferencesEditorPage::changePaletteParameters()
 
 void PreferencesEditorPage::showGrid(bool show)
 {
-	SettingsManager::setValue("ShowGrid", show);
 	mUi->showGridCheckBox->setChecked(show);
 }
 
 void PreferencesEditorPage::showAlignment(bool show)
 {
-	SettingsManager::setValue("ShowAlignment", show);
 	mUi->showAlignmentCheckBox->setChecked(show);
+}
+
+void PreferencesEditorPage::activateGrid(bool activate)
+{
+	mUi->activateGridCheckBox->setChecked(activate);
+}
+
+void PreferencesEditorPage::activateAlignment(bool activate)
+{
+	mUi->activateAlignmentCheckBox->setChecked(activate);
 }

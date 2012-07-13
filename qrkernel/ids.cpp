@@ -162,3 +162,17 @@ QVariant IdListHelper::toVariant(IdList const &list)
 	v.setValue(list);
 	return v;
 }
+
+QDataStream& operator<< (QDataStream &out, Id const &id)
+{
+	out << id.toString();
+	return out;
+}
+
+QDataStream& operator>> (QDataStream &in, Id &id)
+{
+	QString idString;
+	in >> idString;
+	id = Id::loadFromString(idString);
+	return in;
+}

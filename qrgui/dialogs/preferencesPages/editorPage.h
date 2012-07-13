@@ -36,6 +36,9 @@ private slots:
 
 	void showGrid(bool);
 	void showAlignment(bool);
+	void activateGrid(bool);
+	void activateAlignment(bool);
+
 private:
 	Ui::PreferencesEditorPage *mUi;
 	bool mFontWasChanged;

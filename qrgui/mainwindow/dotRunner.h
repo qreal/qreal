@@ -20,7 +20,7 @@ public:
 			, models::LogicalModelAssistApi const &logicalModelApi
 			, EditorManager const &editorManager, QString const &absolutePathToDotFiles);
 
-	void run(QString const &algorithm);
+	bool run(QString const &algorithm);
 
 public slots:
 	void readFromProcess();
