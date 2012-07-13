@@ -276,7 +276,7 @@ bool VisualInterpreterUnit::createElements()
 					, createdId
 					, false
 					, id.element()
-					, *position());
+					, position());
 
 			mCreatedElementsPairs->insert(id, createdElem);
 			firstMatch->insert(id, createdElem);
@@ -310,7 +310,7 @@ void VisualInterpreterUnit::arrangeConnections()
 	delete mCreatedElementsPairs;
 }
 
-QPointF* VisualInterpreterUnit::position()
+QPointF VisualInterpreterUnit::position()
 {
 	IdList const elements = elementsFromActiveDiagram();
 	int x = 0;
@@ -320,7 +320,7 @@ QPointF* VisualInterpreterUnit::position()
 		x = pos.x() > x ? pos.x() : x;
 	}
 	x += 50;
-	return new QPointF(x, y);
+	return QPointF(x, y);
 }
 
 bool VisualInterpreterUnit::createElementsToReplace()
@@ -417,7 +417,7 @@ void VisualInterpreterUnit::copyProperties(Id const &elemInModel, Id const &elem
 	foreach (QString const &key, ruleProperties.keys()) {
 		QVariant const value = ruleProperties.value(key);
 
-		if (value.toString() == "") {
+		if (value.toString().isEmpty()) {
 			continue;
 		}
 

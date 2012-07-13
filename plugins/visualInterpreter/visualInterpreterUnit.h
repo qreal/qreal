@@ -80,7 +80,7 @@ protected:
 	void copyProperties(Id const &elemInModel, Id const &elemInRule);
 	
 	/// Generates position for new element
-	QPointF* position();
+	QPointF position();
 	
 	/// Fill rules information with this
 	void putIdIntoMap(QHash<QString ,IdList*> *map, QString const &ruleName,
