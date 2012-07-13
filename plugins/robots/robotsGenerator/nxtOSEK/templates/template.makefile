@@ -2,11 +2,11 @@
 TARGET = @@PROJECT_NAME@@_OSEK
 TARGET_SOURCES = \
 	@@PROJECT_NAME@@.c \
-	balancer_param.c \
+	@@BALANCER@@
 
 TOPPERS_OSEK_OIL_SOURCE = ./@@PROJECT_NAME@@.oil
 
-USER_LIB = nxtway_gs_balancer
+@@BALANCER_LIB@@
 
 # Don't modify below part
 O_PATH ?= build

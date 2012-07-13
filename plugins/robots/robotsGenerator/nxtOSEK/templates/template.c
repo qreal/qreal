@@ -1,7 +1,7 @@
 #include "kernel.h"
 #include "ecrobot_interface.h"
 
-#include "balancer.h" 
+@@BALANCER@@
 
 @@VARIABLES@@
 

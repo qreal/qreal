@@ -258,8 +258,10 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 		result.append(SmartLine(QString("(F32)ecrobot_get_battery_voltage(), "), mElementId));
 		result.append(SmartLine(QString("&") + outPowerValue1 + ", ", mElementId));
 		result.append(SmartLine(QString("&") + outPowerValue2 + ");", mElementId));
+		mNxtGen->mBalancerIsActivated = true;
 	} else if (mElementId.element() == "BalanceInit") {
 		result.append(SmartLine("balance_init();", mElementId));
+		mNxtGen->mBalancerIsActivated = true;
 	} else if (mElementId.element() == "VariableInit") {
 		QString const variableName = mNxtGen->api()->stringProperty(logicElementId, "variable");
 		QString const variableValue = mNxtGen->api()->stringProperty(logicElementId, "value");
