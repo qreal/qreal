@@ -1,7 +1,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "suggestToCreateDiagramDialog.h"
-#include "mainwindow/mainWindow.h"
+#include "../mainwindow/mainWindow.h"
 
 using namespace qReal;
 
