@@ -62,4 +62,5 @@ QString ListWidget::userData(QListWidgetItem *item)
 void ListWidget::okActivate()
 {
 	mOkButton->setEnabled(true);
+	mOkButton->setDefault(true);
 }
