@@ -10,6 +10,7 @@
 #include <QtGui/QProgressBar>
 #include <QtGui/QListWidgetItem>
 #include <QtCore/QPluginLoader>
+#include <QtCore/QMetaType>
 #include <QtSvg/QSvgGenerator>
 #include <QtCore/QDebug>
 #include <QtGui/QAbstractButton>
@@ -66,23 +67,20 @@ MainWindow::MainWindow()
 {
 	mUi->setupUi(this);
 	initSettingsManager();
+	registerMetaTypes();
 
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
-
-	// =========== Step 1: splash screen loaded, progress bar initialized ===========
 	splashScreen.setProgress(5);
 
 	initRecentProjectsMenu();
 	initToolManager();
 	initTabs();
 
-	// =========== Step 2: Ui is ready, splash screen shown ===========
 	splashScreen.setProgress(20);
 
 	initMiniMap();
 	initGridProperties();
 
-	// =========== Step 3: Ui connects are done ===========
 	splashScreen.setProgress(40);
 
 	initDocks();
@@ -97,14 +95,12 @@ MainWindow::MainWindow()
 
 	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 
-	// =========== Step 4: Property editor and model explorers are initialized ===========
 	splashScreen.setProgress(60);
 
 	loadPlugins();
 	initToolPlugins();
 	showMaximized();
 
-	// =========== Step 5: Plugins are loaded ===========
 	splashScreen.setProgress(70);
 
 	initWindowTitle();
@@ -115,7 +111,6 @@ MainWindow::MainWindow()
 		move(SettingsManager::value("pos").toPoint());
 	}
 
-	// =========== Step 6: Save loaded, models initialized ===========
 	splashScreen.setProgress(80);
 
 	mGesturesWidget = new GesturesWidget();
@@ -123,7 +118,6 @@ MainWindow::MainWindow()
 	connectActions();
 	initActionsFromSettings();
 
-	// =========== Step 7: Save consistency checked, interface is initialized with models ===========
 	splashScreen.setProgress(100);
 
 	mDocksVisibility.clear();
@@ -158,6 +152,8 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
+	connect(mUi->actionCopyElementsOnDiagram, SIGNAL(triggered()), this, SLOT(copyElementsOnDiagram()));
+	connect(mUi->actionPasteOnDiagram, SIGNAL(triggered()), this, SLOT(pasteOnDiagram()));
 
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
@@ -193,6 +189,14 @@ void MainWindow::connectActions()
 void MainWindow::initActionsFromSettings()
 {
 	mUi->actionShowSplash->setChecked(SettingsManager::value("Splashscreen").toBool());
+}
+
+void MainWindow::registerMetaTypes()
+{
+	qRegisterMetaType<Id>();
+	qRegisterMetaTypeStreamOperators<Id>();
+	qRegisterMetaType<IdList>();
+	qRegisterMetaTypeStreamOperators<IdList>();
 }
 
 void MainWindow::showFindDialog()
@@ -696,6 +700,23 @@ void MainWindow::deleteFromDiagram()
 		getCurrentTab()->scene()->invalidate();
 	}
 }
+
+void MainWindow::copyElementsOnDiagram()
+{
+	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(getCurrentTab()->scene());
+	if (scene) {
+		scene->copy();
+	}
+}
+
+void MainWindow::pasteOnDiagram()
+{
+	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(getCurrentTab()->scene());
+	if (scene) {
+		scene->paste();
+	}
+}
+
 void MainWindow::editWindowTitle()
 {
 	if (!mUnsavedProjectIndicator){
@@ -1354,6 +1375,16 @@ QAction *MainWindow::actionDeleteFromDiagram() const
 	return mUi->actionDeleteFromDiagram;
 }
 
+QAction *MainWindow::actionCopyElementsOnDiagram() const
+{
+	return mUi->actionCopyElementsOnDiagram;
+}
+
+QAction *MainWindow::actionPasteOnDiagram() const
+{
+	return mUi->actionPasteOnDiagram;
+}
+
 void MainWindow::highlight(Id const &graphicalId, bool exclusive)
 {
 	EditorView* const view = getCurrentTab();
@@ -1629,9 +1660,13 @@ void MainWindow::initExplorers()
 	mUi->propertyEditor->setModel(&mPropertyModel);
 
 	mUi->graphicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
+	mUi->graphicalModelExplorer->addAction(mUi->actionCopyElementsOnDiagram);
+	mUi->graphicalModelExplorer->addAction(mUi->actionPasteOnDiagram);
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 
 	mUi->logicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
+	mUi->logicalModelExplorer->addAction(mUi->actionCopyElementsOnDiagram);
+	mUi->logicalModelExplorer->addAction(mUi->actionPasteOnDiagram);
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
@@ -1775,8 +1810,9 @@ void MainWindow::arrangeElementsByDotRunner(const QString &algorithm, const QStr
 	DotRunner *runner = new DotRunner(diagramId
 			, mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi()
 			, mEditorManager, absolutePathToDotFiles);
-	runner->run(algorithm);
-	updateActiveDiagram();
+	if (runner->run(algorithm)) {
+		updateActiveDiagram();
+	}
 }
 
 IdList MainWindow::selectedElementsOnActiveDiagram()

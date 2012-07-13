@@ -87,3 +87,6 @@ namespace qReal {
 Q_DECLARE_METATYPE(qReal::Id)
 
 Q_DECLARE_METATYPE(qReal::IdList)
+
+QRKERNEL_EXPORT QDataStream& operator<< (QDataStream &out, qReal::Id const &id);
+QRKERNEL_EXPORT QDataStream& operator>> (QDataStream &in, qReal::Id &id);

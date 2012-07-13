@@ -2,9 +2,7 @@
 #include <QtGui/QDialog>
 
 namespace qReal {
-
 class MainWindow;
-
 }
 
 namespace qReal {

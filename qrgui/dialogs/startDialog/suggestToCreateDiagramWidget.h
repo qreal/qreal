@@ -1,13 +1,11 @@
 #pragma once
 #include <QtGui/QListWidget>
 
-#include "../qrkernel/ids.h"
+#include "../../../qrkernel/ids.h"
 #include "listWidget.h"
 
 namespace qReal {
-
 class MainWindow;
-
 }
 
 namespace qReal {
