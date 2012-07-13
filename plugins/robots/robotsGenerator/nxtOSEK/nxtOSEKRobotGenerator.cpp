@@ -215,7 +215,6 @@ void NxtOSEKRobotGenerator::generate()
 	QString resultTaskTemplate = taskTemplateFile.readAll();
 	taskTemplateFile.close();
 
-	bool balancerBlockExist = false;
 	foreach (Id const &curInitialNode, toGenerate) {// идем по отдельным цепочкам из элементов
 
 		mTaskTemplate = resultTaskTemplate;
