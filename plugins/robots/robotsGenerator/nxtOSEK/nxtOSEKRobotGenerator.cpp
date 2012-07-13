@@ -273,6 +273,7 @@ void NxtOSEKRobotGenerator::generate()
 	outOIL << mResultOIL;
 	outOIL.flush();
 	resultOILFile.close();
+	generateFilesForBalancer(projectDir);
 	generateMakeFile(toGenerate.isEmpty(), projectName, projectDir);
 }
 
