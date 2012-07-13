@@ -27,14 +27,15 @@ IdList RepoApi::children(Id const &id) const
 	return mClient.children(id);
 }
 
-IdList RepoApi::findElementsByName(QString const &name, bool sensitivity) const
+IdList RepoApi::findElementsByName(QString const &name, bool sensitivity, bool regExpression) const
 {
-	return mClient.findElementsByName(name, sensitivity);
+	return mClient.findElementsByName(name, sensitivity, regExpression);
 }
 
-qReal::IdList RepoApi::elementsByPropertyContent(QString const &propertyContent, bool sensitivity) const
+qReal::IdList RepoApi::elementsByPropertyContent(QString const &propertyContent, bool sensitivity,
+		bool regExpression) const
 {
-	return mClient.elementsByPropertyContent(propertyContent, sensitivity);
+	return mClient.elementsByPropertyContent(propertyContent, sensitivity, regExpression);
 }
 
 void RepoApi::replaceProperties(qReal::IdList const &toReplace, QString const value, QString const newValue)
@@ -491,9 +492,10 @@ IdList RepoApi::graphicalElements(Id const &type) const
 	return result;
 }
 
-IdList RepoApi::elementsByType(QString const &type, bool sensitivity) const
+IdList RepoApi::elementsByType(QString const &type, bool sensitivity, bool regExpression) const
 {
 	Qt::CaseSensitivity caseSensitivity;
+
 
 	if (sensitivity) {
 		caseSensitivity = Qt::CaseSensitive;
@@ -501,17 +503,29 @@ IdList RepoApi::elementsByType(QString const &type, bool sensitivity) const
 		caseSensitivity = Qt::CaseInsensitive;
 	}
 
+	QRegExp *regExp = new QRegExp(type,caseSensitivity);
+
 	IdList result;
-	foreach (Id id, mClient.elements()) {
-		if (id.element().contains(type, caseSensitivity))
-			result.append(id);
+
+	if (regExpression) {
+		foreach (Id id, mClient.elements()) {
+			if (id.element().contains(*regExp)) {
+				result.append(id);
+			}
+		}
+	} else {
+		foreach (Id id, mClient.elements()) {
+			if (id.element().contains(type, caseSensitivity)) {
+				result.append(id);
+			}
+		}
 	}
 	return result;
 }
 
-qReal::IdList RepoApi::elementsByProperty(QString const &property, bool sensitivity) const
+qReal::IdList RepoApi::elementsByProperty(QString const &property, bool sensitivity, bool regExpression) const
 {
-	return mClient.elementsByProperty(property, sensitivity);
+	return mClient.elementsByProperty(property, sensitivity, regExpression);
 }
 
 int RepoApi::elementsCount() const

@@ -26,6 +26,8 @@ protected:
 
 private slots:
 	void setQRealSourcesLocation();
+	void changeDefaultDotPath();
+	void setDotPathManually();
 
 private:
 	Ui::refactoringPreferencesPage *mUi;

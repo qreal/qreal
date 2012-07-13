@@ -377,44 +377,52 @@
 <context>
     <name>FindManager</name>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="24"/>
-        <location filename="mainwindow/findManager.cpp" line="63"/>
-        <location filename="mainwindow/findManager.cpp" line="64"/>
+        <location filename="mainwindow/findManager.cpp" line="25"/>
+        <location filename="mainwindow/findManager.cpp" line="66"/>
+        <location filename="mainwindow/findManager.cpp" line="67"/>
         <source>by name</source>
         <translation>по имени</translation>
     </message>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="26"/>
+        <location filename="mainwindow/findManager.cpp" line="27"/>
         <source>by type</source>
         <translation>по типу</translation>
     </message>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="28"/>
+        <location filename="mainwindow/findManager.cpp" line="29"/>
         <source>by property</source>
         <translation>по свойствам</translation>
     </message>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="30"/>
-        <location filename="mainwindow/findManager.cpp" line="70"/>
-        <location filename="mainwindow/findManager.cpp" line="71"/>
+        <location filename="mainwindow/findManager.cpp" line="31"/>
+        <location filename="mainwindow/findManager.cpp" line="74"/>
+        <location filename="mainwindow/findManager.cpp" line="75"/>
         <source>by property content</source>
         <translation>по содержимому свойств</translation>
     </message>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="40"/>
-        <location filename="mainwindow/findManager.cpp" line="42"/>
-        <location filename="mainwindow/findManager.cpp" line="65"/>
-        <location filename="mainwindow/findManager.cpp" line="72"/>
+        <location filename="mainwindow/findManager.cpp" line="41"/>
+        <location filename="mainwindow/findManager.cpp" line="44"/>
+        <location filename="mainwindow/findManager.cpp" line="68"/>
+        <location filename="mainwindow/findManager.cpp" line="76"/>
         <source>case sensitivity</source>
         <translation>чувствительность к регистру</translation>
     </message>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="46"/>
+        <location filename="mainwindow/findManager.cpp" line="42"/>
+        <location filename="mainwindow/findManager.cpp" line="44"/>
+        <location filename="mainwindow/findManager.cpp" line="69"/>
+        <location filename="mainwindow/findManager.cpp" line="77"/>
+        <source>by regular expression</source>
+        <translation>используя регулярные выражения</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/findManager.cpp" line="49"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="mainwindow/findManager.cpp" line="49"/>
+        <location filename="mainwindow/findManager.cpp" line="52"/>
         <source>   :: </source>
         <translation>   ::    </translation>
     </message>
@@ -468,16 +476,21 @@
     </message>
     <message>
         <location filename="dialogs/findReplaceDialog.ui" line="109"/>
+        <source>by regular expression</source>
+        <translation>используя регулярные выражения</translation>
+    </message>
+    <message>
+        <location filename="dialogs/findReplaceDialog.ui" line="116"/>
         <source>case sensitivity</source>
         <translation>чувствительность к регистру</translation>
     </message>
     <message>
-        <location filename="dialogs/findReplaceDialog.cpp" line="28"/>
+        <location filename="dialogs/findReplaceDialog.cpp" line="29"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="dialogs/findReplaceDialog.cpp" line="103"/>
+        <location filename="dialogs/findReplaceDialog.cpp" line="104"/>
         <source> / </source>
         <translation> / </translation>
     </message>
