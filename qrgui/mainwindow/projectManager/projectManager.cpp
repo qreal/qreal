@@ -13,8 +13,31 @@ ProjectManager::ProjectManager(MainWindow *mainWindow)
 {
 }
 
+bool ProjectManager::openEmptyProject()
+{
+	if (!suggestToSaveChangesOrCancel()) {
+		return false;
+	}
+	return open();
+}
+
+bool ProjectManager::suggestToSaveChangesOrCancel()
+{
+	if (!mMainWindow->mUnsavedProjectIndicator) {
+		return true;
+	}
+	switch (mMainWindow->suggestToSaveProject()) {
+	case QMessageBox::DestructiveRole:
+		return true;
+	case QMessageBox::RejectRole:
+		return false;
+	}
+	saveAll();
+	return true;  // QMessageBox::AcceptRole
+}
+
 /// Try to open save file with name fileName, show messages is file non exist or plugins are missing and
-/// return false, or return true otherwise. fileName == "" will be create an empty project.
+/// return false, or return true otherwise. fileName == "" (default value) will be create an empty project.
 bool ProjectManager::open(QString const &fileName)
 {
 	if (fileName != "" && !saveFileExists(fileName)) {
@@ -41,17 +64,6 @@ bool ProjectManager::open(QString const &fileName)
 	refreshWindowTitleAccordingToSaveFile();
 
 	return true;
-}
-
-void ProjectManager::refreshWindowTitleAccordingToSaveFile()
-{
-	mMainWindow->connectWindowTitle();
-	QString windowTitle = mMainWindow->mToolManager.customizer()->windowTitle();
-	if (mMainWindow->mSaveFile.isEmpty()) {
-		mMainWindow->setWindowTitle(windowTitle + " - unsaved project");
-	} else {
-		mMainWindow->setWindowTitle(windowTitle + " - " + mMainWindow->mSaveFile);
-	}
 }
 
 bool ProjectManager::saveFileExists(QString const &fileName)
@@ -89,6 +101,17 @@ QString ProjectManager::missingPluginNames()
 	return result;
 }
 
+void ProjectManager::refreshWindowTitleAccordingToSaveFile()
+{
+	mMainWindow->connectWindowTitle();
+	QString windowTitle = mMainWindow->mToolManager.customizer()->windowTitle();
+	if (mMainWindow->mSaveFile.isEmpty()) {
+		mMainWindow->setWindowTitle(windowTitle + " - unsaved project");
+	} else {
+		mMainWindow->setWindowTitle(windowTitle + " - " + mMainWindow->mSaveFile);
+	}
+}
+
 void ProjectManager::close()
 {
 	if (mMainWindow->mUi->propertyEditor->model() != NULL) {
@@ -102,4 +125,41 @@ void ProjectManager::close()
 	}
 	mMainWindow->closeAllTabs();
 	mMainWindow->setWindowTitle(mMainWindow->mToolManager.customizer()->windowTitle());
+}
+
+void ProjectManager::saveAll()
+{
+	if (mMainWindow->mSaveFile.isEmpty()) {
+		suggestToSaveAs();
+		return;
+	}
+	mMainWindow->mModels->repoControlApi().saveAll();
+	refreshApplicationStateAfterSave();
+}
+
+void ProjectManager::suggestToSaveAs()
+{
+	saveAs(mMainWindow->getWorkingFile(tr("Select file to save current model to"), true));
+}
+
+void ProjectManager::saveAs(QString const &fileName)
+{
+	QString workingFileName = fileName;
+
+	if (workingFileName.isEmpty()) {
+		return;
+	}
+	if (!workingFileName.endsWith(".qrs", Qt::CaseInsensitive)) {
+		workingFileName += ".qrs";
+	}
+	mMainWindow->mModels->repoControlApi().saveTo(workingFileName);
+	mMainWindow->mSaveFile = workingFileName;
+	refreshApplicationStateAfterSave();
+}
+
+void ProjectManager::refreshApplicationStateAfterSave()
+{
+	mMainWindow->mUnsavedProjectIndicator = false;
+	refreshWindowTitleAccordingToSaveFile();
+	SettingsManager::setValue("saveFile", mMainWindow->mSaveFile);
 }

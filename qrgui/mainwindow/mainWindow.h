@@ -141,15 +141,11 @@ private slots:
 	/// @param fileName - *.qrs file to import
 	/// @return true - if all ok, false - if not ok
 	bool import(QString const &fileName);
-	void saveProjectAs();
-	virtual void saveAll();
 	void fullscreen();
 	void openRecentProjectsMenu();
-	bool openEmptyProject();
 	bool openNewProject();
 	void createDiagram(QString const &idString);
 	bool openExistingProject();
-	bool suggestToSaveChangesOrCancel();
 
 	void saveDiagramAsAPicture();
 
@@ -233,6 +229,7 @@ private:
 	virtual void closeEvent(QCloseEvent *event);
 	void deleteFromExplorer(bool isLogicalModel);
 	void keyPressEvent(QKeyEvent *event);
+
 	QString getWorkingFile(QString const &dialogWindowTitle, bool save);
 
 	int getTabIndex(const QModelIndex &index);
@@ -276,10 +273,8 @@ private:
 	void initExplorers();
 	void initRecentProjectsMenu();
 
-	void saveAs(QString const &saveName);
-
 	void refreshRecentProjectsList(QString const &fileName);
-	int openSaveOfferDialog();
+	int suggestToSaveProject();
 
 	Ui::MainWindowUi *mUi;
 

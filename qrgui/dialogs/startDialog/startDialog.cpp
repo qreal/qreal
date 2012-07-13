@@ -55,7 +55,7 @@ void StartDialog::openExistingProject()
 
 void StartDialog::createProjectWithDiagram(const QString &idString)
 {
-	mMainWindow->openEmptyProject();
+	mMainWindow->mProjectManager->openEmptyProject();
 	mMainWindow->createDiagram(idString);
 	// This dialog will be closed by the SuggestToCreateDiagramWidget
 }
