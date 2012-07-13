@@ -62,6 +62,7 @@ MainWindow::MainWindow()
 		, mUnsavedProjectIndicator(false)
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
+		, mProjectManager(new ProjectManager(this))
 		, mStartDialog(new StartDialog(this))
 {
 	mUi->setupUi(this);
@@ -241,6 +242,7 @@ MainWindow::~MainWindow()
 	delete mCodeTabManager;
 	delete mFindReplaceDialog;
 	delete mFindHelper;
+	delete mProjectManager;
 	delete mStartDialog;
 }
 
@@ -465,7 +467,7 @@ bool MainWindow::openEmptyProject()
 	if (!suggestToSaveChangesOrCancel()) {
 		return false;
 	}
-	return open("");
+	return mProjectManager->open("");
 }
 
 bool MainWindow::openNewProject()
@@ -486,7 +488,7 @@ bool MainWindow::openExistingProject()
 	if (fileName == "") {
 		return false;
 	}
-	return open(fileName);
+	return mProjectManager->open(fileName);
 }
 
 void MainWindow::refreshRecentProjectsList(QString const &fileName)
@@ -529,51 +531,7 @@ void MainWindow::saveAllAndOpen(QString const &dirName)
 	if (!suggestToSaveChangesOrCancel()) {
 		return;
 	}
-	open(dirName);
-}
-
-bool MainWindow::open(QString const &fileName)
-{
-	if (!QFile::exists(fileName) && fileName != "") {
-		QMessageBox fileNotFoundMessage(QMessageBox::Information, tr("File not found")
-				, tr("File ") + fileName + tr(" not found. Try again")
-				, QMessageBox::Ok, this);
-		fileNotFoundMessage.exec();
-		return false;
-	}
-
-	closeProject();
-
-	mModels->repoControlApi().open(fileName);
-	mModels->reinit();
-
-	if (!missingPluginNames().isEmpty()) {
-		QMessageBox thereAreMissingPluginsMessage(
-				QMessageBox::Information, tr("There are missing plugins"),
-				tr("These plugins are not present, but needed to load the save:\n") +
-						missingPluginNames(),
-				QMessageBox::Ok, this);
-		thereAreMissingPluginsMessage.exec();
-		open(mSaveFile);
-		return false;
-	}
-
-	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
-	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
-	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-
-	connectWindowTitle();
-
-	QString windowTitle = mToolManager.customizer()->windowTitle();
-	if (fileName.isEmpty()) {
-		setWindowTitle(windowTitle + " - unsaved project");
-	} else {
-		setWindowTitle(windowTitle + " - " + fileName);
-		refreshRecentProjectsList(fileName);
-	}
-	mSaveFile = fileName;
-
-	return true;
+	mProjectManager->open(dirName);
 }
 
 void MainWindow::closeAllTabs()

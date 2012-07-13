@@ -19,6 +19,10 @@ StartDialog::StartDialog(MainWindow *mainWindow)
 	SuggestToCreateDiagramWidget *diagrams = new SuggestToCreateDiagramWidget(mMainWindow, this);
 	tabWidget->addTab(diagrams, tr("&New project with diagram"));
 
+	if (recentProjects->count() == 0) {
+		tabWidget->setCurrentWidget(diagrams);
+	}
+
 	QCommandLinkButton *quitLink = new QCommandLinkButton(tr("&Quit QReal"));
 	QCommandLinkButton *openLink = new QCommandLinkButton(tr("&Open existing project"));
 
@@ -41,7 +45,7 @@ StartDialog::StartDialog(MainWindow *mainWindow)
 
 void StartDialog::openRecentProject(QString const &fileName)
 {
-	if (mMainWindow->open(fileName)) {
+	if (mMainWindow->mProjectManager->open(fileName)) {
 		close();
 	}
 }
