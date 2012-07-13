@@ -134,6 +134,45 @@ private:
 		BottomRight
 	};
 
+	/** @brief Provides functions for container resizing. 
+	 */
+	class ResizeHandler {
+	public:
+		/// Constructs a ResizeHandler
+		/// @param resizingNode Node that is actually dealt with
+		ResizeHandler(NodeElement* const resizingNode);
+
+		/// Resizes node trying to use newContents as new shape
+		/// of node (ignoring newContents position) and to move
+		/// node to newPos.
+		/// These parameters are corrected by child configuration
+		/// in most cases.
+		/// @param newContents Recommendation for new shape of node
+		/// @param newPos Recommendation for new position of node
+		void resize(QRectF newContents, QPointF newPos) const;
+
+		/// Calls resize(QRectF newContents, QPointF newPos) with
+		/// newPos equals to current position of node.
+		/// @param newContents Recommendation for new shape of node	
+		void resize(QRectF newContents) const;
+
+		/// Calls resize(QRectF newContents, QPointF newPos) with
+		/// newPos equals to current position of node and
+		/// newContents equals to current shape (mContents).
+		void resize() const;
+
+	private:
+		/// Sorts child items in case of node has
+		/// sortChildren container property 
+		void sortChildrenIfNeeded() const;
+
+		/// Returns maximum of child item widths
+		/// @return Maximum of child widths
+		qreal maxChildWidth() const;
+
+		/// Node that is actually dealt with
+		NodeElement* const mResizingNode;
+	};
 
 	/** @brief Padding that reserves space for title */
 	static int const titlePadding = 25;
@@ -162,12 +201,6 @@ private:
 	QLineF newTransform(StatLine const &port) const;
 	QPointF newTransform(StatPoint const &port) const;
 
-	void resize(QRectF newContents, QPointF newPos);
-	// newPos = mPos
-	void resize(QRectF newContents);
-	// newContents = mContents
-	void resize();
-
 	/// Resizes newContents and moves newPos according to children
 	void resizeAccordingToChildren(QRectF& newContents, QPointF& newPos);
 	/// Changes contents to size that not smaller than mFoldedContents
@@ -187,9 +220,6 @@ private:
 	void moveChildren(qreal dx, qreal dy);
 	void moveChildren(QPointF const &moving);
 
-	/// Sorts child items in case of sortChildren
-	/// container property
-	void sortChildrenIfNeeded();
 
 	qreal minDistanceFromLinePort(int const linePortNumber, QPointF const &location) const;
 	qreal distanceFromPointPort(int const pointPortNumber, QPointF const &location) const;

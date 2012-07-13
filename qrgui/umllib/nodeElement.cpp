@@ -369,42 +369,6 @@ void NodeElement::moveChildren(QPointF const &moving)
 	moveChildren(moving.x(), moving.y());
 }
 
-void NodeElement::resize()
-{
-	resize(mContents, mPos);
-}
-
-void NodeElement::resize(QRectF newContents)
-{
-	resize(newContents, mPos);
-}
-
-void NodeElement::resize(QRectF newContents, QPointF newPos)
-{
-	newContents.moveTo(0, 0);
-
-	sortChildrenIfNeeded();
-	gripeIfMinimizesToChildrenContainer(newContents);
-
-	if (!mIsFolded) {
-		resizeAccordingToChildren(newContents, newPos);
-	}
-
-	normalizeSize(newContents);
-
-	newContents.moveTo(newPos);
-	setGeometry(newContents);
-	storeGeometry();
-
-	parentResizeCall();
-}
-
-void NodeElement::gripeIfMinimizesToChildrenContainer(QRectF& contents) {
-	if (mElementImpl->minimizesToChildren()) {
-		contents = QRectF();
-	}
-}
-
 void NodeElement::resizeAccordingToChildren(QRectF& newContents, QPointF& newPos) {
 	/* 
 	* AAAA!!! Who knows why is this code existed????!!!
@@ -1373,54 +1337,6 @@ void NodeElement::setLinksVisible(bool isVisible)
 	}
 }
 
-void NodeElement::sortChildrenIfNeeded()
-{
-	if (!mElementImpl->isSortingContainer()) {
-		return;
-	}
-
-	qreal curChildY = mElementImpl->sizeOfForestalling() + titlePadding;
-	qreal maxChildrenWidth = 0;
-
-	foreach (QGraphicsItem* childItem, childItems()) {
-		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (!curItem) {
-			continue;
-		}
-			
-		if (curItem->mContents.width() > maxChildrenWidth) {
-			maxChildrenWidth = curItem->mContents.width();
-		}
-	}
-	if (maxChildrenWidth == 0) {
-		maxChildrenWidth = childrenBoundingRect().width();
-	}
-
-	foreach (QGraphicsItem* childItem, childItems()) {
-		if(mPlaceholder != NULL && childItem == mPlaceholder){
-			QRectF rect(mElementImpl->sizeOfForestalling(), curChildY,
-				maxChildrenWidth, mPlaceholder->rect().height());
-			mPlaceholder->setRect(rect);
-			curChildY += mPlaceholder->rect().height() + childSpacing;
-		}
-
-		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (!curItem) {
-			continue;
-		}
-
-		QRectF rect(mElementImpl->sizeOfForestalling(), curChildY, 0, curItem->mContents.height());
-		if (mElementImpl->maximizesChildren()) {
-			rect.setWidth(maxChildrenWidth);
-		} else {
-			rect.setWidth(curItem->mContents.width());
-		}
-		curItem->setGeometry(rect);
-		curItem->storeGeometry();
-		curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling() + childSpacing;
-	}
-}
-
 void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 {
 	// for non-sorting containers no need for drawing placeholder so just make them marked
@@ -1727,4 +1643,103 @@ NodeData& NodeElement::data()
 	}
 
 	return mData;
+}
+
+NodeElement::ResizeHandler(NodeElement* const resizingNode)
+	: mResizingNode(resizingNode)
+{
+}
+
+void NodeElement::ResizeHandler::resize() const
+{
+	resize(mResizingNode->mContents, mResizingNode->pos());
+}
+
+void NodeElement::ResizeHandler::resize(QRectF newContents)
+{
+	//resize(newContents, mPos);
+	resize(mResizingNode->newContents, mResizingNode->pos());
+}
+
+void NodeElement::ResizeHandler::resize(QRectF newContents, QPointF newPos)
+{
+	newContents.moveTo(0, 0);
+
+	sortChildrenIfNeeded();
+	gripeIfMinimizesToChildrenContainer(newContents);
+
+	if (!mIsFolded) {
+		resizeAccordingToChildren(newContents, newPos);
+	}
+
+	normalizeSize(newContents);
+
+	newContents.moveTo(newPos);
+	setGeometry(newContents);
+	storeGeometry();
+
+	parentResizeCall();
+}
+
+qreal NodeElement::ResizeHandler::maxChildWidth() const
+{
+	qreal maxChildWidthValue = 0;
+
+	foreach (const QGraphicsItem* const childItem, mResizingNode->childItems()) {
+		const NodeElement* const curItem = dynamic_cast<const NodeElement* const>(childItem);
+		if (!curItem) {
+			continue;
+		}
+		
+		maxChildWidthValue = std::max(maxChildWidthValue, curItem->mContents.width());
+	}
+	if (maxChildWidthValue == 0) {
+		maxChildWidthValue = mResizingNode->childrenBoundingRect().width();
+	}
+
+	return maxChildWidthValue;
+}
+
+void NodeElement::ResizeHandler::sortChildrenIfNeeded() const
+{
+	ElementImpl* const elementImpl = mResizingNode->mElementImpl;
+	if (!elementImpl->isSortingContainer()) {
+		return;
+	}
+
+	int const sizeOfForestalling = elementImpl->sizeOfForestalling();
+	qreal curChildY = sizeOfForestalling + titlePadding;
+	qreal maxChildWidthValue = maxChildWidth();
+
+	foreach (QGraphicsItem* const childItem, mResizingNode->childItems()) {
+		QGraphicsRectItem* const placeHolder = mResizingNode->mPlaceholder;
+
+		if(placeholder != NULL && childItem == placeholder){
+			QRectF const rect(sizeOfForestalling, curChildY,
+				maxChildWidthValue, placeholder->rect().height());
+			placeholder->setRect(rect);
+			curChildY += placeholder->rect().height() + childSpacing;
+		}
+
+		NodeElement* const curItem = dynamic_cast<NodeElement* const>(childItem);
+		if (!curItem) {
+			continue;
+		}
+
+		qreal const neededWidth =
+			elementImpl->maximizesChildren()
+			? maxChildWidthValue
+			: curItem->mContents.width();
+		QRectF const rect(sizeOfForestalling, curChildY, neededWidth, curItem->mContents.height());
+
+		curItem->setGeometry(rect);
+		curItem->storeGeometry();
+		curChildY += curItem->mContents.height() + elementImpl->sizeOfChildrenForestalling() + childSpacing;
+	}
+}
+
+void NodeElement::ResizeHandler::gripeIfMinimizesToChildrenContainer(QRectF& contents) {
+	if (mResizingNode->mElementImpl->minimizesToChildren()) {
+		contents = QRectF();
+	}
 }
