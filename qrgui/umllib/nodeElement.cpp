@@ -466,6 +466,10 @@ void NodeElement::resize(QRectF newContents, QPointF newPos)
 	if (parItem) {
 		parItem->resize(); // recursive expansion of parents
 	}
+
+	if (SettingsManager::value("ActivateGrid").toBool()) {
+		alignToGrid();
+	}
 }
 
 QList<ContextMenuAction*> NodeElement::contextMenuActions()
