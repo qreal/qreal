@@ -151,6 +151,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 	connect(mUi->actionCopyElementsOnDiagram, SIGNAL(triggered()), this, SLOT(copyElementsOnDiagram()));
 	connect(mUi->actionPasteOnDiagram, SIGNAL(triggered()), this, SLOT(pasteOnDiagram()));
+	connect(mUi->actionPasteReference, SIGNAL(triggered()), this, SLOT(pasteCopyOfLogical()));
 
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
@@ -466,6 +467,17 @@ void MainWindow::settingsPlugins()
 	dialog.exec();
 }
 
+void MainWindow::deleteElementFromDiagram(Id const &id)
+{
+	bool isLogical = mModels->logicalModelAssistApi().isLogicalId(id);
+	if (isLogical) {
+		mUi->logicalModelExplorer->setCurrentIndex(mModels->logicalModelAssistApi().indexById(id));
+	} else {
+		mUi->graphicalModelExplorer->setCurrentIndex(mModels->graphicalModelAssistApi().indexById(id));
+	}
+	deleteFromExplorer(isLogical);
+}
+
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
 	QModelIndex const index = isLogicalModel
@@ -597,7 +609,15 @@ void MainWindow::pasteOnDiagram()
 {
 	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(getCurrentTab()->scene());
 	if (scene) {
-		scene->paste();
+		scene->paste(false);
+	}
+}
+
+void MainWindow::pasteCopyOfLogical()
+{
+	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(getCurrentTab()->scene());
+	if (scene) {
+		scene->paste(true);
 	}
 }
 
@@ -1224,6 +1244,11 @@ QAction *MainWindow::actionPasteOnDiagram() const
 	return mUi->actionPasteOnDiagram;
 }
 
+QAction *MainWindow::actionPasteCopyOfLogical() const
+{
+	return mUi->actionPasteReference;
+}
+
 void MainWindow::highlight(Id const &graphicalId, bool exclusive)
 {
 	EditorView* const view = getCurrentTab();
@@ -1502,11 +1527,13 @@ void MainWindow::initExplorers()
 	mUi->graphicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
 	mUi->graphicalModelExplorer->addAction(mUi->actionCopyElementsOnDiagram);
 	mUi->graphicalModelExplorer->addAction(mUi->actionPasteOnDiagram);
+	mUi->graphicalModelExplorer->addAction(mUi->actionPasteReference);
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 
 	mUi->logicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionCopyElementsOnDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionPasteOnDiagram);
+	mUi->logicalModelExplorer->addAction(mUi->actionPasteReference);
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());

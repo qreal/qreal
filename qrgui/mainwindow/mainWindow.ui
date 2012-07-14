@@ -676,6 +676,17 @@
     <string>Ctrl+V</string>
    </property>
   </action>
+  <action name="actionPasteReference">
+   <property name="text">
+    <string>Paste only graphical copy</string>
+   </property>
+   <property name="toolTip">
+    <string>Paste only graphical copy</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+V</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="0" margin="0"/>
  <customwidgets>

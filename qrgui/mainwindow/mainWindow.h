@@ -66,6 +66,7 @@ public:
 	QAction *actionDeleteFromDiagram() const;
 	QAction *actionCopyElementsOnDiagram() const;
 	QAction *actionPasteOnDiagram() const;
+	QAction *actionPasteCopyOfLogical() const;
 
 	virtual void highlight(Id const &graphicalId, bool exclusive = true);
 	virtual void dehighlight(Id const &graphicalId);
@@ -94,6 +95,7 @@ public:
 	virtual void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles);
 	virtual IdList selectedElementsOnActiveDiagram();
 	virtual void updateActiveDiagram();
+	virtual void deleteElementFromDiagram(Id const &id);
 
 signals:
 	void gesturesShowed();
@@ -159,6 +161,7 @@ private slots:
 	void deleteFromDiagram();
 	void copyElementsOnDiagram();
 	void pasteOnDiagram();
+	void pasteCopyOfLogical();
 
 	void changeMiniMapSource(int index);
 	void closeTab(int index);

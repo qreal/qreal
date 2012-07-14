@@ -65,6 +65,8 @@ public:
 	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true) = 0;
 
 	virtual void updateActiveDiagram() = 0;
+	
+	virtual void deleteElementFromDiagram(Id const &id) = 0;
 };
 
 }
