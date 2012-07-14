@@ -36,3 +36,11 @@ bool operator== (NodeData const &first, NodeData const &second)
 			&& first.pos == second.pos && first.properties == second.properties
 			&& first.contents == second.contents && first.logicalId == second.logicalId;
 }
+
+bool operator== (EdgeData const &first, EdgeData const &second)
+{
+	return first.id == second.id && first.logicalId == second.logicalId
+			&& first.srcId == second.srcId && first.dstId == second.dstId
+			&& first.portFrom == second.portFrom && first.portTo == second.portTo
+			&& first.configuration == second.configuration && first.pos == second.pos;
+}

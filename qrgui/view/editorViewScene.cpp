@@ -548,10 +548,13 @@ void EditorViewScene::addChildren(NodeElement* node, QList<NodeElement*> &nodes)
 QList<EdgeData> EditorViewScene::getEdgesData(QList<NodeElement*> const &nodes)
 {
 	QList<EdgeData> edgesData;
-	foreach (QGraphicsItem* item, selectedItems()) {
-		EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
-		if (edge && nodes.contains(edge->src()) && nodes.contains(edge->dst())) {
-			edgesData << edge->data();
+	foreach (NodeElement* node, nodes) {
+		foreach (EdgeElement* edge, node->getEdges()) {
+			EdgeData& data = edge->data();
+			if (nodes.contains(edge->src()) && nodes.contains(edge->dst())
+					&& !edgesData.contains(data)) {
+				edgesData << data;
+			}
 		}
 	}
 	return edgesData;

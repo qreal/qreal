@@ -64,3 +64,4 @@ QDataStream& operator<< (QDataStream &out, EdgeData const &data);
 QDataStream& operator>> (QDataStream &in, EdgeData &data);
 
 bool operator== (NodeData const &first, NodeData const &second);
+bool operator== (EdgeData const &first, EdgeData const &second);

@@ -1247,6 +1247,11 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 	}
 }
 
+QList<EdgeElement*> NodeElement::getEdges()
+{
+	return mEdgeList;
+}
+
 void NodeElement::addEdge(EdgeElement *edge)
 {
 	mEdgeList << edge;
