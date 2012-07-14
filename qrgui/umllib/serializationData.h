@@ -4,18 +4,21 @@
 #include <QMap>
 #include <QDataStream>
 #include <QPolygon>
+
 #include "../../qrkernel/ids.h"
 
 using namespace qReal;
 
-/** @class EdgeData
-  * @brief EdgeElement serialization data for copy/paste
-  */
+/**
+ * @brief EdgeElement serialization data for copy/paste
+ */
 class EdgeData
 {
 public:
 	EdgeData()
-		: id(Id::rootId()), srcId(Id::rootId()), dstId(Id::rootId())
+		: id(Id::rootId())
+		, srcId(Id::rootId())
+		, dstId(Id::rootId())
 		, pos(QPointF(0, 0))
 	{}
 
@@ -31,14 +34,16 @@ public:
 
 };
 
-/** @class NodeData
-  * @brief NodeElement serialization data for copy/paste
-  */
+/**
+ * @brief NodeElement serialization data for copy/paste
+ */
 class NodeData
 {
 public:
 	NodeData()
-		: id(Id::rootId()), parentId(Id::rootId()), pos(QPointF(0, 0))
+		: id(Id::rootId())
+		, parentId(Id::rootId())
+		, pos(QPointF(0, 0))
 	{}
 
 	qReal::Id id;

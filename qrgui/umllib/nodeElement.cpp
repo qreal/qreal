@@ -1173,13 +1173,13 @@ NodeElement *NodeElement::getNodeAt(QPointF const &position)
 	return 0;
 }
 
-void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget)
+void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *w)
 {
 	mElementImpl->paint(painter, mContents);
 	if (mElementImpl->hasPorts()) {
-		paint(painter, style, widget, mPortRenderer);
+		paint(painter, style, w, mPortRenderer);
 	} else {
-		paint(painter, style, widget, 0);
+		paint(painter, style, w, 0);
 	}
 
 	if (mSelectionNeeded) {
