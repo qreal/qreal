@@ -603,7 +603,7 @@ void EditorViewScene::pullDataFromClipboard(QList<NodeData> &nodesData, QList<Ed
 	stream >> edgesData;
 }
 
-QHash<Id, Id> EditorViewScene::pasteNodes(QList<NodeData> &nodesData
+QHash<Id, Id> EditorViewScene::pasteNodes(QList<NodeData> nodesData
 		, QPointF const &offset, bool logicalCopy)
 {
 	QHash<Id, Id> copiedIds;
@@ -621,22 +621,21 @@ QHash<Id, Id> EditorViewScene::pasteNodes(QList<NodeData> &nodesData
 Id EditorViewScene::pasteNode(NodeData const &nodeData, bool logicalCopy
 		, QHash<Id, Id> const &copiedIds, QPointF const &offset)
 {
-	QPointF newPos = logicalCopy ?
-			getNewPosForLogicalCopy(nodeData, copiedIds, offset) :
-			getNewPos(nodeData, copiedIds, offset);
-
+	QPointF newPos;
 	NodeElement* newNode = NULL;
 
 	if (logicalCopy) {
+		newPos = getNewPosForLogicalCopy(nodeData, copiedIds, offset);
 		newNode = pasteCopyOfLogicalNode(nodeData, newPos);
 	} else {
+		newPos = getNewPos(nodeData, copiedIds, offset);
 		newNode = pasteNewNode(nodeData, newPos);
 	}
 
 	restoreNode(newNode, nodeData, copiedIds, newPos);
-	return newNode->id();
 
-	}
+	return newNode->id();
+}
 
 NodeElement* EditorViewScene::pasteCopyOfLogicalNode(const NodeData &nodeData
 		, const QPointF &newPos)
@@ -693,9 +692,7 @@ void EditorViewScene::restoreNode(NodeElement *node, const NodeData &nodeData
 
 	mMVIface->graphicalAssistApi()->setProperties(nodeId, nodeData.properties);
 
-	node->setGeometry(nodeData.contents.translated(pos));
-	node->storeGeometry();
-
+	node->setPos(pos);
 	mMVIface->graphicalAssistApi()->changeParent(nodeId, copiedIdsMap[nodeData.parentId], pos);
 }
 
