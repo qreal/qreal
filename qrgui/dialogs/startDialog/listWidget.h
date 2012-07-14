@@ -23,6 +23,8 @@ public:
 	/// @param userData - associated with item the string data
 	/// @param toolTip - item tooltip
 	void addItem(QString const &text, QString const &userData, QString const &toolTip = "");
+	void highlightFirstItem();
+	int count();
 	
 signals:
 	void userDataSelected(QString const &userData);

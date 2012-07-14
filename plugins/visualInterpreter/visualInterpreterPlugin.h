@@ -2,11 +2,12 @@
 
 #include <QtCore/QTranslator>
 
-#include "../../../qrkernel/ids.h"
-#include "../../../qrutils/metamodelGeneratorSupport.h"
-#include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
-#include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
-#include "../../../qrgui/mainwindow/errorReporter.h"
+#include "../../qrkernel/ids.h"
+#include "../../qrutils/metamodelGeneratorSupport.h"
+#include "../../qrutils/watchListWindow.h"
+#include "../../qrgui/toolPluginInterface/toolPluginInterface.h"
+#include "../../qrgui/toolPluginInterface/pluginConfigurator.h"
+#include "../../qrgui/mainwindow/errorReporter.h"
 
 #include "visualInterpreterPreferencesPage.h"
 #include "visualInterpreterUnit.h"
@@ -39,6 +40,13 @@ private slots:
 
 	/// Make one step according to semantics (find match, delete, create and replace elements)
 	void interpret();
+	
+	/// Stops interpretation
+	void stopInterpretation();
+	
+	/// Show watch list with all declared variables and its values. List updates
+	/// dynamically
+	void showWatchList();
 
 private:
 	/// Insert possible semantics state of elements into semantics metamodel
@@ -58,13 +66,15 @@ private:
 	void insertPaletteGroups(QDomDocument metamodel, QString const &diagramDisplayedName) const;
 
 	/// Delete directory (which was used for generate and compile semantics editor)
-	void removeDirectory(const QString &dirName);
+	void removeDirectory(QString const &dirName);
 
 	qReal::ErrorReporterInterface *mErrorReporter;
 
 	QAction *mGenerateAndLoadSemanticsEditorAction;
 	QAction *mLoadSemanticsAction;
 	QAction *mInterpretAction;
+	QAction *mStopInterpretationAction;
+	QAction *mWatchListAction;
 
 	QMenu *mVisualInterpreterMenu;
 
@@ -74,6 +84,7 @@ private:
 
 	qReal::VisualInterpreterUnit *mVisualInterpreterUnit;
 	utils::MetamodelGeneratorSupport *mMetamodelGeneratorSupport;
+	utils::watchListWindow *mWatchListWindow;
 
 	QTranslator mAppTranslator;
 };

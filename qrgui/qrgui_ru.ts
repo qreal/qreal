@@ -672,7 +672,7 @@
         <source>Paste only graphical copy</source>
         <oldsource>Paste copy of logical element</oldsource>
         <translation>Вставить только графическую копию</translation>
-    </message>
+	</message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="688"/>
         <source>Ctrl+Shift+V</source>

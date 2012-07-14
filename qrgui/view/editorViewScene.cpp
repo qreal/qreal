@@ -754,11 +754,7 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 		// Delete selected elements from scene
 		mainWindow()->deleteFromScene();
 	} else if (event->matches(QKeySequence::Paste)) {
-		if (event->modifiers() == Qt::ShiftModifier) {
-			paste(true);
-		} else {
-			paste(false);
-		}
+		paste(event->modifiers() == Qt::ShiftModifier);
 	} else if (event->matches(QKeySequence::Copy)) {
 		copy();
 	} else if (isArrow(event->key())) {
