@@ -970,15 +970,8 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 {
 	QMenu menu;
 
-	if (!e) {
-		mWindow->actionDeleteFromDiagram()->setEnabled(false);
-		mWindow->actionCopyElementsOnDiagram()->setEnabled(false);
-	}
-
-	menu.addAction(mWindow->actionDeleteFromDiagram());
-	menu.addAction(mWindow->actionCopyElementsOnDiagram());
-	menu.addAction(mWindow->actionPasteOnDiagram());
-	menu.addAction(mWindow->actionPasteCopyOfLogical());
+	disableActions(e);
+	menu.addActions(mContextMenuActions);
 
 	if (e) {
 		QList<ContextMenuAction*> elementActions = e->contextMenuActions();
@@ -987,7 +980,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 			menu.addSeparator();
 		}
 
-		foreach (ContextMenuAction*action, elementActions) {
+		foreach (ContextMenuAction* action, elementActions) {
 			action->setEventPos(e->mapFromScene(pos));
 			menu.addAction(action);
 
@@ -1001,9 +994,34 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 
 	menu.exec(QCursor::pos());
 
+	enableActions();
+}
+
+void EditorViewScene::disableActions(Element *focusElement)
+{
+	if (!focusElement) {
+		mWindow->actionDeleteFromDiagram()->setEnabled(false);
+		mWindow->actionCopyElementsOnDiagram()->setEnabled(false);
+	}
+	if (isEmptyClipboard()) {
+		mWindow->actionPasteOnDiagram()->setEnabled(false);
+		mWindow->actionPasteCopyOfLogical()->setEnabled(false);
+	}
+}
+
+void EditorViewScene::enableActions()
+{
 	mWindow->actionDeleteFromDiagram()->setEnabled(true);
 	mWindow->actionCopyElementsOnDiagram()->setEnabled(true);
+	mWindow->actionPasteOnDiagram()->setEnabled(true);
+	mWindow->actionPasteCopyOfLogical()->setEnabled(true);
+}
 
+bool EditorViewScene::isEmptyClipboard()
+{
+	QClipboard* clipboard = QApplication::clipboard();
+	const QMimeData* mimeData = clipboard->mimeData();
+	return mimeData->data("application/x-real-uml-model-data").isEmpty();
 }
 
 void EditorViewScene::getObjectByGesture()
@@ -1197,6 +1215,9 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
 	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
+	mContextMenuActions << mWindow->actionDeleteFromDiagram()
+			<< mWindow->actionCopyElementsOnDiagram()
+			<< mWindow->actionPasteOnDiagram() << mWindow->actionPasteCopyOfLogical();
 	//	connect(this, SIGNAL(elementCreated(qReal::Id)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::Id)));
 	//	connect(mActionSignalMapper, SIGNAL(mapped(QString)), mainWindow->listenerManager(), SIGNAL(contextMenuActionTriggered(QString)));
 }

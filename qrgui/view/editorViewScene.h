@@ -139,6 +139,10 @@ private:
 			, const char *slot) const;
 
 	void initContextMenu(Element *e, QPointF const &pos);
+	bool isEmptyClipboard();
+
+	void disableActions(Element *focusElement);
+	void enableActions();
 
 	QList<NodeElement*> getNodesForCopying();
 	QList<NodeData> getNodesData(QList<NodeElement*> const &nodes);
@@ -196,6 +200,8 @@ private:
 	qReal::EditorView *mView;
 
 	qReal::MainWindow *mWindow;
+
+	QList<QAction*> mContextMenuActions;
 
 	QPointF mPrevPosition;
 	QPointF mCurrentMousePos;
