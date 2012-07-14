@@ -1664,9 +1664,9 @@ QPointF NodeElement::ResizeHandler::childDeflection() const
 
 void NodeElement::ResizeHandler::moveChildren(QPointF const &shift) const
 {
-	int const sizeOfForestalling = mResizingNode->mElementImpl->sizeOfForestalling();
+	qreal const sizeOfForestalling = mResizingNode->mElementImpl->sizeOfForestalling();
 
-	foreach (QGraphicsItem* const childItem, childItems()) {
+	foreach (QGraphicsItem* const childItem, mResizingNode->childItems()) {
 		NodeElement* const curItem = dynamic_cast<NodeElement* const>(childItem);
 		if (!curItem || !curItem->isPort()) {
 			continue;
@@ -1700,7 +1700,7 @@ void NodeElement::ResizeHandler::expandByChildren(QRectF& contents) const
 
 		// it seems to be more appropriate to use childItem->pos() but it causes
 		// bad behaviour when dropping one element to another
-		curChildItemBoundingRect.translate(childItem->scenePos() - scenePos());
+		curChildItemBoundingRect.translate(childItem->scenePos() - mResizingNode->scenePos());
 
 		contents.setLeft(
 				std::min(curChildItemBoundingRect.left() - sizeOfForestalling

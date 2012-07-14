@@ -192,7 +192,7 @@ private:
 		/// @param childItem For this item bounding rectangle will be returned.
 		/// @param contents It will be used for place holder bounding calculating.
 		/// @return Bounding rectangle for childItem.
-		QRectF childBoundingRect(QGraphicsItem* childItem, QRectF const &contents) const;
+		QRectF childBoundingRect(const QGraphicsItem* const childItem, QRectF const &contents) const;
 
 		/// Expands contents according to child configuration.
 		/// @param contents It will be expanded according to child configuration.
