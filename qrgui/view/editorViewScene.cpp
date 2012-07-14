@@ -680,8 +680,6 @@ void EditorViewScene::restoreNode(NodeElement *node, const NodeData &nodeData
 
 	if (copiedIdsMap.contains(nodeData.parentId)) {
 		mMVIface->graphicalAssistApi()->changeParent(nodeId, copiedIdsMap[nodeData.parentId], pos);
-	} else {
-		mMVIface->graphicalAssistApi()->changeParent(nodeId, rootItemId(), pos);
 	}
 }
 
