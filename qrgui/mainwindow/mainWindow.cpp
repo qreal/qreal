@@ -48,7 +48,6 @@ QString const unsavedDir = "unsaved";
 MainWindow::MainWindow()
 		: mUi(new Ui::MainWindowUi)
 		, mCodeTabManager(new QMap<EditorView*, CodeArea*>())
-		, mCloseEvent(NULL)
 		, mModels(NULL)
 		, mListenerManager(NULL)
 		, mPropertyModel(mEditorManager)
@@ -251,24 +250,12 @@ EditorManager* MainWindow::manager()
 	return &mEditorManager;
 }
 
-void MainWindow::finalClose()
-{
-	mCloseEvent->accept();
-}
-
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	if (mUnsavedProjectIndicator) {
-		switch (suggestToSaveProject()) {
-		case QMessageBox::AcceptRole:
-			mProjectManager->saveAll();
-			break;
-		case QMessageBox::RejectRole:
-			event->ignore();
-			return;
-		}
+	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
+		event->ignore();
+		return;
 	}
-	mCloseEvent = event;
 	SettingsManager::setValue("maximized", isMaximized());
 	SettingsManager::setValue("size", size());
 	SettingsManager::setValue("pos", pos());
@@ -277,8 +264,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::loadPlugins()
 {
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
-				, SettingsManager::value("PaletteIconsInARowCount").toInt()
-				, mEditorManager);
+			, SettingsManager::value("PaletteIconsInARowCount").toInt()
+			, mEditorManager);
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -289,8 +276,9 @@ void MainWindow::adjustMinimapZoom(int zoom)
 
 void MainWindow::selectItemWithError(Id const &id)
 {
-	if (id == Id::rootId())
+	if (id == Id::rootId()) {
 		return;
+	}
 
 	setIndexesOfPropertyEditor(id);
 	centerOn(id);
@@ -298,8 +286,9 @@ void MainWindow::selectItemWithError(Id const &id)
 
 void MainWindow::selectItem(Id const &id)
 {
-	if (id == Id::rootId())
+	if (id == Id::rootId()) {
 		return;
+	}
 
 	setIndexesOfPropertyEditor(id);
 	centerOn(id);
@@ -315,10 +304,11 @@ void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool bl, bool isS
 	QModelIndex const parent = idx.parent();
 	int const numTab = getTabIndex(idx);
 
-	if (numTab != -1)
+	if (numTab != -1) {
 		mUi->tabs->setCurrentIndex(numTab);
-	else
+	} else {
 		openNewTab(idx);
+	}
 
 	if (mUi->tabs->isEnabled()) {
 		if (parent == mModels->graphicalModelAssistApi().rootIndex()) {
@@ -403,7 +393,7 @@ QString MainWindow::getWorkingFile(QString const &dialogWindowTitle, bool save)
 	if (save) {
 		fileName = QFileDialog::getSaveFileName(this, dialogWindowTitle,
 				lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
-		if (!fileName.endsWith(".qrs", Qt::CaseInsensitive)) {
+		if (fileName != "" && !fileName.endsWith(".qrs", Qt::CaseInsensitive)) {
 			fileName += ".qrs";
 		}
 	} else {

@@ -61,8 +61,8 @@ bool ProjectManager::suggestToSaveChangesOrCancel()
 	case QMessageBox::RejectRole:
 		return false;
 	}
-	saveAll();
-	return true;  // QMessageBox::AcceptRole
+	// QMessageBox::AcceptRole
+	return saveAll();
 }
 
 /// Try to open save file with name fileName, show messages is file non exist or plugins are missing and
@@ -156,31 +156,32 @@ void ProjectManager::close()
 	mMainWindow->setWindowTitle(mMainWindow->mToolManager.customizer()->windowTitle());
 }
 
-void ProjectManager::saveAll()
+bool ProjectManager::saveAll()
 {
 	if (mMainWindow->mSaveFile.isEmpty()) {
-		suggestToSaveAs();
-		return;
+		return suggestToSaveAs();
 	}
 	mMainWindow->mModels->repoControlApi().saveAll();
 	refreshApplicationStateAfterSave();
+	return true;
 }
 
-void ProjectManager::suggestToSaveAs()
+bool ProjectManager::suggestToSaveAs()
 {
-	saveAs(mMainWindow->getWorkingFile(tr("Select file to save current model to"), true));
+	return saveAs(mMainWindow->getWorkingFile(tr("Select file to save current model to"), true));
 }
 
-void ProjectManager::saveAs(QString const &fileName)
+bool ProjectManager::saveAs(QString const &fileName)
 {
 	QString workingFileName = fileName;
 
 	if (workingFileName.isEmpty()) {
-		return;
+		return false;
 	}
 	mMainWindow->mModels->repoControlApi().saveTo(workingFileName);
 	mMainWindow->mSaveFile = workingFileName;
 	refreshApplicationStateAfterSave();
+	return true;
 }
 
 void ProjectManager::refreshApplicationStateAfterSave()

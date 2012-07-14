@@ -24,16 +24,16 @@ public slots:
 
 	void close();
 
-	void saveAll();
-	void saveAs(const QString &fileName);
-	void suggestToSaveAs();
+	bool saveAll();
+	bool saveAs(const QString &fileName);
+	bool suggestToSaveAs();
 
 public:
 	bool openEmptyWithSuggestToSaveChanges();
 	bool open(QString const &fileName = "");
+	bool suggestToSaveChangesOrCancel();
 
 private:
-	bool suggestToSaveChangesOrCancel();
 	bool saveFileExists(QString const &fileName);
 	bool pluginsEnough();
 	QString missingPluginNames();

@@ -151,7 +151,6 @@ private slots:
 	void makeSvg();
 	void showGrid(bool isChecked);
 
-	void finalClose();
 	void closeAllTabs();
 
 	void sceneSelectionChanged();
@@ -290,7 +289,6 @@ private:
 	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
 	QMap<EditorView*, CodeArea*> *mCodeTabManager;
 
-	QCloseEvent *mCloseEvent;
 	models::Models *mModels;
 	EditorManager mEditorManager;
 	ToolPluginManager mToolManager;
