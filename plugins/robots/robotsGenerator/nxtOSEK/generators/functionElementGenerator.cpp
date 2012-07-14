@@ -2,8 +2,8 @@
 
 using namespace robots::generator;
 
-FunctionElementGenerator::FunctionElementGenerator(NxtOSEKRobotGenerator *generator,
-		qReal::Id elementId, bool generateToInit)
+FunctionElementGenerator::FunctionElementGenerator(NxtOSEKRobotGenerator *generator
+		, qReal::Id const &elementId, bool generateToInit)
 		: SimpleElementGenerator(generator, elementId), mGenerateToInit(generateToInit)
 {
 }
@@ -47,20 +47,22 @@ QByteArray FunctionElementGenerator::replaceSensorVariables(QByteArray portValue
 			|| (portValue == "Сенсор цвета (зеленый)")
 			|| (portValue == "Сенсор цвета (синий)")
 			|| (portValue == "Сенсор цвета (полные цвета)")
-			|| (portValue == "Сенсор цвета (пассивный)"))
+			|| (portValue == "Сенсор цвета (пассивный)")) {
 		return "ecrobot_get_light_sensor(NXT_PORT_S";
-	else
-		if (portValue == "Ультразвуковой сенсор")
+	} else {
+		if (portValue == "Ультразвуковой сенсор") {
 			return "ecrobot_get_sonar_sensor(NXT_PORT_S";
-		else
+		} else {
 			return "ecrobot_get_touch_sensor(NXT_PORT_S";
+		}
+	}
 }
 
 QList<SmartLine> FunctionElementGenerator::simpleCode()
 {
 	QList<SmartLine> result;
 
-	qReal::Id logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
+	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 
 	QByteArray byteFuncCode = mNxtGen->api()->stringProperty(logicElementId, "Body").toUtf8();
 

@@ -34,7 +34,7 @@ bool AbstractElementGenerator::generate()
 		//if we have already observed this element with more than 1 incoming connection
 
 		qReal::Id loopElement = mElementId;
-		if (!mNxtGen->mPreviousLoopElements.empty()){
+		if (!mNxtGen->mPreviousLoopElements.empty()) {
 			loopElement = mNxtGen->mPreviousLoopElements.pop();
 		}
 

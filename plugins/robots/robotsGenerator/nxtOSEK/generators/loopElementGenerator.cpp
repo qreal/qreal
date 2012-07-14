@@ -6,8 +6,8 @@
 using namespace qReal;
 using namespace robots::generator;
 
-LoopElementGenerator::LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-		qReal::Id elementId): AbstractElementGenerator(emboxGen, elementId)
+LoopElementGenerator::LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen
+		, qReal::Id const &elementId): AbstractElementGenerator(emboxGen, elementId)
 {
 }
 
@@ -40,8 +40,9 @@ bool LoopElementGenerator::nextElementsGeneration()
 
 	mNxtGen->previousElement() = mElementId;
 	mNxtGen->previousLoopElements().push(mElementId);
-	if (!loopGen->generate())
+	if (!loopGen->generate()) {
 		return false;
+	}
 	delete loopGen;
 
 	//generate next blocks
@@ -57,8 +58,9 @@ bool LoopElementGenerator::nextElementsGeneration()
 
 	mNxtGen->previousElement() = mElementId;
 	mNxtGen->previousLoopElements().push(mElementId);
-	if (!nextBlocksGen->generate())
+	if (!nextBlocksGen->generate()) {
 		return false;
+	}
 	delete nextBlocksGen;
 
 	return true;
@@ -68,7 +70,7 @@ QList<SmartLine> LoopElementGenerator::loopPrefixCode()
 {
 	QList<SmartLine> result;
 
-	qReal::Id logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
+	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 	result << SmartLine("for (int __iter__ = 0; __iter__ < " +
 			mNxtGen->api()->property(logicElementId, "Iterations").toString()
 				+ "; __iter__++) {", mElementId, SmartLine::increase); //TODO
@@ -90,8 +92,9 @@ bool LoopElementGenerator::preGenerationCheck()
 		( (mNxtGen->api()->property(mNxtGen->api()->logicalId(outgoingLinks.at(0)), "Guard").toString() == "итерация")
 		  &&
 		  (mNxtGen->api()->property(mNxtGen->api()->logicalId(outgoingLinks.at(1)), "Guard").toString() == "итерация") )
-	)
+	) {
 		return false;
+	}
 
 	return true;
 }

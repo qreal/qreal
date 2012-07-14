@@ -6,8 +6,8 @@
 using namespace qReal;
 using namespace robots::generator;
 
-SimpleElementGenerator::SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-		qReal::Id elementId): AbstractElementGenerator(emboxGen, elementId)
+SimpleElementGenerator::SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen
+		, qReal::Id const &elementId): AbstractElementGenerator(emboxGen, elementId)
 {
 }
 
@@ -16,12 +16,15 @@ QList<QString> SimpleElementGenerator::portsToEngineNames(QString const &portsPr
 	QList<QString> result;
 
 	//port {A, B, C} -> NXT_PORT_{A, B, C}
-	if (portsProperty.contains("A"))
+	if (portsProperty.contains("A")) {
 		result.append("NXT_PORT_A");
-	if (portsProperty.contains("B"))
+	}
+	if (portsProperty.contains("B")) {
 		result.append("NXT_PORT_B");
-	if (portsProperty.contains("C"))
+	}
+	if (portsProperty.contains("C")) {
 		result.append("NXT_PORT_C");
+	}
 
 	return result;
 }
@@ -30,13 +33,14 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 {
 	QList<SmartLine> result;
 
-	qReal::Id logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
+	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 
 	//TODO: to make "break mode" to do smth
 	if (mElementId.element() == "EnginesForward") {
 		QStringList cmds = mNxtGen->api()->stringProperty(logicElementId, "Power").split(";", QString::SkipEmptyParts);
-		for (int i = 0; i < cmds.size() - 1; ++i)
+		for (int i = 0; i < cmds.size() - 1; ++i) {
 			result.append(SmartLine(cmds.at(i) + ";", mElementId));
+		}
 		foreach (QString enginePort, portsToEngineNames(mNxtGen->api()->stringProperty(logicElementId, "Ports"))) {
 			result.append(SmartLine(
 				"nxt_motor_set_speed(" + enginePort + ", " + cmds.last() + ", 1);",
@@ -81,7 +85,7 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 				mElementId));
 
 	} else if (mElementId.element() == "NullificationEncoder") {
-		QString port = mNxtGen->api()->stringProperty(logicElementId, "Port");
+		QString const port = mNxtGen->api()->stringProperty(logicElementId, "Port");
 		result.append(SmartLine(
 				"nxt_motor_set_count(NXT_PORT_" + port + ", 0);",
 				mElementId));
@@ -89,7 +93,7 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 	} else if (mElementId.element() == "InitialBlock") {
 		for (int i = 1; i <= 4; i++) {
 			//4 - number of ports on nxt robot
-			QString curPort = "port_" + QString::number(i);
+			QString const curPort = "port_" + QString::number(i);
 			QByteArray portValue = mNxtGen->api()->stringProperty(logicElementId, curPort).toUtf8();
 
 			switch (i) {
@@ -146,8 +150,8 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 		}
 
 	} else if (mElementId.element() == "WaitForColor") {
-		int port = mNxtGen->api()->stringProperty(logicElementId, "Port").toInt();
-		QByteArray colorStr = mNxtGen->api()->stringProperty(logicElementId, "Color").toUtf8();
+		int const port = mNxtGen->api()->stringProperty(logicElementId, "Port").toInt();
+		QByteArray const colorStr = mNxtGen->api()->stringProperty(logicElementId, "Color").toUtf8();
 
 		QString colorNxtType;
 
@@ -180,9 +184,9 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 		}
 
 	} else if (mElementId.element() == "WaitForColorIntensity") {
-		int port = mNxtGen->api()->stringProperty(logicElementId, "Port").toInt();
-		QString intensity = mNxtGen->api()->stringProperty(logicElementId,  "Intensity");
-		QString inequalitySign = transformSign(QString(mNxtGen->api()->stringProperty(logicElementId, "Sign").toUtf8()));
+		int const port = mNxtGen->api()->stringProperty(logicElementId, "Port").toInt();
+		QString const intensity = mNxtGen->api()->stringProperty(logicElementId,  "Intensity");
+		QString const inequalitySign = transformSign(QString(mNxtGen->api()->stringProperty(logicElementId, "Sign").toUtf8()));
 
 		QString condition = inequalitySign + " " + intensity;
 
@@ -194,10 +198,10 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 		result.append(SmartLine("}", mElementId));
 
 	} else if (mElementId.element() == "WaitForLight"){
-		int port = mNxtGen->api()->stringProperty(logicElementId, "Port").toInt();
+		int const port = mNxtGen->api()->stringProperty(logicElementId, "Port").toInt();
 
-		QString percents = mNxtGen->api()->stringProperty(logicElementId,  "Percents");
-		QString inequalitySign = transformSign(QString(mNxtGen->api()->stringProperty(logicElementId, "Sign").toUtf8()));
+		QString const percents = mNxtGen->api()->stringProperty(logicElementId,  "Percents");
+		QString const inequalitySign = transformSign(QString(mNxtGen->api()->stringProperty(logicElementId, "Sign").toUtf8()));
 
 		QString condition = inequalitySign + " " + percents;
 
@@ -209,7 +213,7 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 		result.append(SmartLine("}", mElementId));
 
 	} else if (mElementId.element() == "WaitForTouchSensor") {
-		int port = mNxtGen->api()->stringProperty(logicElementId, "Port").toInt();
+		int const port = mNxtGen->api()->stringProperty(logicElementId, "Port").toInt();
 
 		result.append(SmartLine(
 				"while (!ecrobot_get_touch_sensor(NXT_PORT_S" + QString::number(port) + "))",
@@ -218,10 +222,10 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 		result.append(SmartLine("}", mElementId));
 
 	} else if (mElementId.element() == "WaitForSonarDistance") {
-		int port = mNxtGen->api()->stringProperty(logicElementId, "Port").toInt();
-		QString distance = mNxtGen->api()->stringProperty(logicElementId, "Distance");
-		QString inequalitySign = transformSign(QString(mNxtGen->api()->stringProperty(logicElementId, "Sign").toUtf8()));
-		QString condition = inequalitySign + " " + distance;
+		int const port = mNxtGen->api()->stringProperty(logicElementId, "Port").toInt();
+		QString const distance = mNxtGen->api()->stringProperty(logicElementId, "Distance");
+		QString const inequalitySign = transformSign(QString(mNxtGen->api()->stringProperty(logicElementId, "Sign").toUtf8()));
+		QString const condition = inequalitySign + " " + distance;
 
 		result.append(SmartLine(
 				"while (!(ecrobot_get_sonar_sensor(NXT_PORT_S" + QString::number(port) + ") " + condition + "))",
@@ -230,8 +234,8 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 		result.append(SmartLine("}", mElementId));
 
 	} else if (mElementId.element() == "WaitForEncoder") {
-		QString port = mNxtGen->api()->stringProperty(logicElementId, "Port");
-		QString tachoLimit = mNxtGen->api()->stringProperty(logicElementId, "TachoLimit");
+		QString const port = mNxtGen->api()->stringProperty(logicElementId, "Port");
+		QString const tachoLimit = mNxtGen->api()->stringProperty(logicElementId, "TachoLimit");
 		result.append(SmartLine(
 				"while (nxt_motor_get_count(NXT_PORT_" + port + ") < " + tachoLimit + ")",
 				mElementId));
@@ -306,16 +310,17 @@ QString SimpleElementGenerator::transformSign(QString const &sign)
 {
 	qDebug() << sign;
 
-	if (sign == "меньше")
+	if (sign == "меньше") {
 		return "<";
-	else if (sign == "больше")
+	} else if (sign == "больше"){
 		return ">";
-	else if (sign == "не меньше")
+	} else if (sign == "не меньше") {
 		return ">=";
-	else if (sign == "не больше")
+	} else if (sign == "не больше") {
 		return "<=";
-	else if (sign == "равно")
+	} else if (sign == "равно") {
 		return "==";
+	}
 	return "";
 }
 
@@ -335,7 +340,7 @@ QList<SmartLine> SimpleElementGenerator::loopPostfixCode()
 
 bool SimpleElementGenerator::preGenerationCheck()
 {
-	IdList outgoingConnectedElements = mNxtGen->api()->outgoingConnectedElements(mElementId);
+	IdList const outgoingConnectedElements = mNxtGen->api()->outgoingConnectedElements(mElementId);
 	if (outgoingConnectedElements.size() > 1) {
 		//case of error in diagram
 		mNxtGen->errorReporter().addError(QObject::tr("There are more than 1 outgoing connected elements with simple robot element!"), mElementId);

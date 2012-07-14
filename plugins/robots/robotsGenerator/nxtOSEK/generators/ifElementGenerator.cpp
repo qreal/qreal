@@ -6,8 +6,8 @@
 using namespace qReal;
 using namespace robots::generator;
 
-IfElementGenerator::IfElementGenerator(NxtOSEKRobotGenerator *emboxGen,
-		qReal::Id elementId): AbstractElementGenerator(emboxGen, elementId)
+IfElementGenerator::IfElementGenerator(NxtOSEKRobotGenerator *emboxGen
+		, qReal::Id const &elementId): AbstractElementGenerator(emboxGen, elementId)
 {
 }
 
@@ -31,7 +31,7 @@ QList<SmartLine> IfElementGenerator::loopPostfixCode()
 
 bool IfElementGenerator::preGenerationCheck()
 {
-	IdList outgoingLinks = mNxtGen->api()->outgoingLinks(mElementId);
+	IdList const outgoingLinks = mNxtGen->api()->outgoingLinks(mElementId);
 
 	//TODO: append checking arrows
 	return (outgoingLinks.size() == 2);
@@ -39,7 +39,7 @@ bool IfElementGenerator::preGenerationCheck()
 
 bool IfElementGenerator::generateBranch(int branchNumber)
 {
-	IdList outgoingLinks = mNxtGen->api()->outgoingLinks(mElementId);
+	IdList const outgoingLinks = mNxtGen->api()->outgoingLinks(mElementId);
 
 	Id branchElement = mNxtGen->api()->to(outgoingLinks.at(branchNumber));
 	if (branchElement == Id::rootId()) {
@@ -53,8 +53,9 @@ bool IfElementGenerator::generateBranch(int branchNumber)
 
 	mNxtGen->previousElement() = mElementId;
 
-	if (!nextBlocksGen->generate())
+	if (!nextBlocksGen->generate()) {
 		return false;
+	}
 	delete nextBlocksGen;
 
 	return true;
@@ -72,12 +73,14 @@ QPair<bool, qReal::Id> IfElementGenerator::checkBranchForBackArrows(qReal::Id co
 {
 	// TODO: Why the hell it is using logical model when in other places there is graphical?
 	qReal::Id logicElementId = curElementId;
-	if (!mNxtGen->api()->isLogicalElement(curElementId))
+	if (!mNxtGen->api()->isLogicalElement(curElementId)) {
 		logicElementId = mNxtGen->api()->logicalId(curElementId);
+	}
 
-	if (checkedElements->contains(logicElementId))
+	if (checkedElements->contains(logicElementId)) {
 		//if we have already observed this element by checkBranchForBackArrows function
 		return QPair<bool, qReal::Id>(false, qReal::Id());
+	}
 
 	//if we have observed this element and generated code of this element
 	foreach (QString observedElementString, mNxtGen->elementToStringListNumbers().keys()) {
@@ -85,8 +88,9 @@ QPair<bool, qReal::Id> IfElementGenerator::checkBranchForBackArrows(qReal::Id co
 		qReal::Id observedElementLogicId = mNxtGen->api()->logicalId(observedElementId);
 
 		if ((logicElementId == observedElementId)
-				|| (logicElementId == observedElementLogicId))
+			|| (logicElementId == observedElementLogicId)) {
 			return QPair<bool, qReal::Id>(true, logicElementId);
+		}
 	}
 
 	//add element to list
@@ -101,8 +105,9 @@ QPair<bool, qReal::Id> IfElementGenerator::checkBranchForBackArrows(qReal::Id co
 		}
 
 		QPair<bool, qReal::Id> childResult = checkBranchForBackArrows(childId, checkedElements);
-		if (childResult.first)
+		if (childResult.first) {
 			return childResult;
+		}
 	}
 
 	//release element to list
@@ -174,8 +179,9 @@ bool IfElementGenerator::nextElementsGeneration()
 
 	if (isPositiveBranchReturnsToBackElems != isNegativeBranchReturnsToBackElems) {
 		int cycleBlock = isPositiveBranchReturnsToBackElems ? conditionArrowNum : 1 - conditionArrowNum;
-		if (conditionArrowNum == cycleBlock)
+		if (conditionArrowNum == cycleBlock) {
 			condition = "!" + condition;
+		}
 
 		QList<SmartLine> ifBlock;
 		ifBlock << SmartLine("if (" + condition + ") {", mElementId, SmartLine::increase);

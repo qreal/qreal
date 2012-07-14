@@ -11,7 +11,7 @@ namespace generator {
 /// Realization of AbstractElementGenerator for Function.
 class FunctionElementGenerator: public SimpleElementGenerator {
 public:
-	explicit FunctionElementGenerator(NxtOSEKRobotGenerator *generator, qReal::Id elementId, bool generateToInit);
+	explicit FunctionElementGenerator(NxtOSEKRobotGenerator *generator, qReal::Id const &elementId, bool generateToInit);
 
 protected:
 	virtual QList<SmartLine> simpleCode();

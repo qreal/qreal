@@ -11,7 +11,7 @@ namespace generator {
 /// Realization of AbstractElementGenerator for If block.
 class IfElementGenerator : public AbstractElementGenerator {
 public:
-	explicit IfElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id elementId);
+	explicit IfElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id const &elementId);
 
 protected:
 	virtual QList<SmartLine> loopPrefixCode();

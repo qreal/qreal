@@ -41,8 +41,9 @@ NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo
 
 NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator()
 {
-	if (mApi && mIsNeedToDeleteMApi)
+	if (mApi && mIsNeedToDeleteMApi) {
 		delete mApi;
+	}
 }
 
 void NxtOSEKRobotGenerator::addToGeneratedStringSetVariableInit()
@@ -97,11 +98,12 @@ void NxtOSEKRobotGenerator::generateMakeFile(bool toGenerateIsEmpty, QString pro
 	}
 
 	QTextStream outMake(&resultMakeFile);
-	if (mBalancerIsActivated)
+	if (mBalancerIsActivated) {
 		outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8()).replace("@@BALANCER@@", "balancer_param.c \\").replace("@@BALANCER_LIB@@", "USER_LIB = nxtway_gs_balancer");
-	else
+	} else {
 		outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8()).replace("@@BALANCER@@", "").replace("@@BALANCER_LIB@@", "");
 	templateMakeFile.close();
+	}
 
 	outMake.flush();
 	resultMakeFile.close();
@@ -172,8 +174,9 @@ void NxtOSEKRobotGenerator::generate()
 
 	//Create project directory
 	if (!QDir(projectDir).exists()) {
-		if (!QDir("nxt-tools/").exists())
+		if (!QDir("nxt-tools/").exists()) {
 			QDir().mkdir("nxt-tools/");
+		}
 		QDir().mkdir(projectDir);
 	}
 
