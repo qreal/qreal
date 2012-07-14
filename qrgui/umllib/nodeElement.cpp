@@ -1647,7 +1647,7 @@ NodeData& NodeElement::data()
 	mData.pos = mPos;
 	mData.contents = mContents;
 
-	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
+	NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
 	if (parent) {
 		mData.parentId = parent->id();
 	} else {

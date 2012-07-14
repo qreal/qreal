@@ -144,36 +144,34 @@ private:
 	void disableActions(Element *focusElement);
 	void enableActions();
 
-	QList<NodeElement*> getNodesForCopying();
-	QList<NodeData> getNodesData(QList<NodeElement*> const &nodes);
-	QList<EdgeData> getEdgesData(QList<NodeElement*> const &nodes);
+	QList<NodeElement *> getNodesForCopying();
+	QList<NodeData> getNodesData(QList<NodeElement *> const &nodes);
+	QList<EdgeData> getEdgesData(QList<NodeElement *> const &nodes);
 
-	void addChildren(NodeElement* node, QList<NodeElement*> &nodes);
+	void addChildren(NodeElement *node, QList<NodeElement *> &nodes);
 
 	void pushDataToClipboard(QList<NodeData> const &nodesData, QList<EdgeData> const &edgesData);
 	void pullDataFromClipboard(QList<NodeData> &nodesData, QList<EdgeData> &edgesData);
 
 	QHash<qReal::Id, qReal::Id> pasteNodes(QList<NodeData> &nodesData
-			, QPointF const &offset, bool logicalCopy);
-	qReal::Id pasteNode(NodeData const &nodeData, bool logicalCopy
+			, QPointF const &offset, bool isGraphicalCopy);
+	qReal::Id pasteNode(NodeData const &nodeData, bool isGraphicalCopy
 			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
 
-	NodeElement* pasteCopyOfLogicalNode(NodeData const &nodeData, QPointF const &newPos);
+	NodeElement* pasteGraphicalCopyOfNode(NodeData const &nodeData, QPointF const &newPos);
 	NodeElement* pasteNewNode(NodeData const &data, QPointF const &newPos);
 
-	qReal::Id pasteEdge(EdgeData const &edgeData, bool logicalCopy
+	qReal::Id pasteEdge(EdgeData const &edgeData, bool isGraphicalCopy
 			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
-	EdgeElement* pasteCopyOfLogicalEdge(EdgeData const &edgeData);
+	EdgeElement* pasteGraphicalCopyOfEdge(EdgeData const &edgeData);
 	EdgeElement* pasteNewEdge(EdgeData const &edgeData);
 
-	void restoreNode(NodeElement* node, NodeData const &nodeData
+	void restoreNode(NodeElement *node, NodeData const &nodeData
 			, QHash<qReal::Id, qReal::Id> const &copiedIdsMap, QPointF const &pos);
-	void restoreEdge(EdgeElement* edge, EdgeData const &edgeData
+	void restoreEdge(EdgeElement *edge, EdgeData const &edgeData
 			, QHash<qReal::Id, qReal::Id> const &copiedIdsMap, QPointF const &pos);
 
 	QPointF getNewPos(NodeData const &nodeData
-			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
-	QPointF getNewPosForLogicalCopy(NodeData const &nodeData
 			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
 
 	inline bool isArrow(int key);
@@ -181,7 +179,7 @@ private:
 	void moveSelectedItems(int direction);
 	QPointF offsetByDirection(int direction);
 
-	Element* mLastCreatedWithEdge;
+	Element *mLastCreatedWithEdge;
 
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
@@ -192,16 +190,16 @@ private:
 	NodeElement *mHighlightNode;
 	QPointF newElementsPosition;
 
-	QList<QGraphicsItem*> mGesture;
+	QList<QGraphicsItem *> mGesture;
 	/// list of pixmaps to be drawn on scene's foreground
-	QList<QPixmap*> mForegroundPixmaps;
+	QList<QPixmap *> mForegroundPixmaps;
 
 	qReal::EditorViewMViface *mMVIface;
 	qReal::EditorView *mView;
 
 	qReal::MainWindow *mWindow;
 
-	QList<QAction*> mContextMenuActions;
+	QList<QAction *> mContextMenuActions;
 
 	QPointF mPrevPosition;
 	QPointF mCurrentMousePos;
@@ -209,12 +207,12 @@ private:
 
 	QPointF mCreatePoint;
 
-	MouseMovementManager * mMouseMovementManager;
+	MouseMovementManager *mMouseMovementManager;
 
 	QSignalMapper *mActionSignalMapper;
 
 	QSet<Element *> mHighlightedElements;
-	QTimer * mTimer;
+	QTimer *mTimer;
 
 	/** @brief Is "true" when we just select items on scene, and "false" when we drag selected items */
 	bool mShouldReparentItems;
