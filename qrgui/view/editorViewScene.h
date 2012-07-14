@@ -149,7 +149,7 @@ private:
 	void pushDataToClipboard(QList<NodeData> const &nodesData, QList<EdgeData> const &edgesData);
 	void pullDataFromClipboard(QList<NodeData> &nodesData, QList<EdgeData> &edgesData);
 
-	QHash<qReal::Id, qReal::Id> pasteNodes(QList<NodeData> nodesData
+	QHash<qReal::Id, qReal::Id> pasteNodes(QList<NodeData> &nodesData
 			, QPointF const &offset, bool logicalCopy);
 	qReal::Id pasteNode(NodeData const &nodeData, bool logicalCopy
 			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);

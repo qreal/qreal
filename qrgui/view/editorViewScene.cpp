@@ -603,7 +603,7 @@ void EditorViewScene::pullDataFromClipboard(QList<NodeData> &nodesData, QList<Ed
 	stream >> edgesData;
 }
 
-QHash<Id, Id> EditorViewScene::pasteNodes(QList<NodeData> nodesData
+QHash<Id, Id> EditorViewScene::pasteNodes(QList<NodeData> &nodesData
 		, QPointF const &offset, bool logicalCopy)
 {
 	QHash<Id, Id> copiedIds;
