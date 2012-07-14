@@ -624,14 +624,12 @@ QHash<Id, Id> EditorViewScene::pasteNodes(QList<NodeData> &nodesData
 Id EditorViewScene::pasteNode(NodeData const &nodeData, bool logicalCopy
 		, QHash<Id, Id> const &copiedIds, QPointF const &offset)
 {
-	QPointF newPos;
+	QPointF newPos = getNewPos(nodeData, copiedIds, offset);
 	NodeElement* newNode = NULL;
 
 	if (logicalCopy) {
-		newPos = getNewPosForLogicalCopy(nodeData, copiedIds, offset);
 		newNode = pasteCopyOfLogicalNode(nodeData, newPos);
 	} else {
-		newPos = getNewPos(nodeData, copiedIds, offset);
 		newNode = pasteNewNode(nodeData, newPos);
 	}
 
@@ -646,7 +644,7 @@ NodeElement* EditorViewScene::pasteCopyOfLogicalNode(const NodeData &nodeData
 	QString name = mMVIface->graphicalAssistApi()->name(nodeData.id);
 
 	Id newId = mMVIface->graphicalAssistApi()->createElement(
-			nodeData.parentId, nodeData.logicalId, true, name, newPos);
+			rootItemId(), nodeData.logicalId, true, name, newPos);
 	NodeElement* newNode = dynamic_cast<NodeElement*>(mainWindow()->manager()->graphicalObject(newId));
 
 	newNode->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());
@@ -673,21 +671,6 @@ QPointF EditorViewScene::getNewPos(const NodeData &nodeData
 	return nodeData.pos;
 }
 
-QPointF EditorViewScene::getNewPosForLogicalCopy(const NodeData &nodeData
-		, const QHash<Id, Id> &copiedIds, const QPointF &offset)
-{
-	if (nodeData.parentId == rootItemId()) {
-		return nodeData.pos + offset;
-	}
-	if (copiedIds.contains(nodeData.parentId)) {
-		return nodeData.pos;
-	}
-	if (getElem(nodeData.parentId)->isUnderMouse()) {
-		return nodeData.pos + offset;
-	}
-	return nodeData.pos;
-}
-
 void EditorViewScene::restoreNode(NodeElement *node, const NodeData &nodeData
 		, const QHash<Id, Id> &copiedIdsMap, QPointF const &pos)
 {
@@ -695,8 +678,11 @@ void EditorViewScene::restoreNode(NodeElement *node, const NodeData &nodeData
 
 	mMVIface->graphicalAssistApi()->setProperties(nodeId, nodeData.properties);
 
-	node->setPos(pos);
-	mMVIface->graphicalAssistApi()->changeParent(nodeId, copiedIdsMap[nodeData.parentId], pos);
+	if (copiedIdsMap.contains(nodeData.parentId)) {
+		mMVIface->graphicalAssistApi()->changeParent(nodeId, copiedIdsMap[nodeData.parentId], pos);
+	} else {
+		mMVIface->graphicalAssistApi()->changeParent(nodeId, rootItemId(), pos);
+	}
 }
 
 Id EditorViewScene::pasteEdge(EdgeData const &edgeData, bool logicalCopy
