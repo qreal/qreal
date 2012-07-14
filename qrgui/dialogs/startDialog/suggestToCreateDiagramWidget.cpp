@@ -1,5 +1,5 @@
 #include "suggestToCreateDiagramWidget.h"
-#include "mainwindow/mainWindow.h"
+#include "../../mainwindow/mainWindow.h"
 
 using namespace qReal;
 
@@ -13,6 +13,7 @@ SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *mainWindo
 			addItem(editor, diagram);
 		}
 	}
+	highlightFirstItem();
 	connect(this, SIGNAL(userDataSelected(QString)), parent, SLOT(close()));
 }
 
