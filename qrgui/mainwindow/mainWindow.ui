@@ -679,10 +679,10 @@
   </action>
   <action name="actionPasteReference">
    <property name="text">
-    <string>Paste as a reference</string>
+    <string>Paste only graphical copy</string>
    </property>
    <property name="toolTip">
-    <string>Paste as a reference</string>
+    <string>Paste only graphical copy</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+V</string>
