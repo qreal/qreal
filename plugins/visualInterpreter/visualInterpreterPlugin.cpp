@@ -16,6 +16,7 @@ using namespace utils;
 
 VisualInterpreterPlugin::VisualInterpreterPlugin()
 	: mPreferencesPage(new VisualInterpreterPreferencesPage())
+	, mWatchListWindow(NULL)
 {
 	mAppTranslator.load(":/visualInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
@@ -59,7 +60,15 @@ QList<qReal::ActionInfo> VisualInterpreterPlugin::actions()
 	mInterpretAction = new QAction(tr("Interpret"), NULL);
 	connect(mInterpretAction, SIGNAL(triggered()), this, SLOT(interpret()));
 	mVisualInterpreterMenu->addAction(mInterpretAction);
-
+	
+	mStopInterpretationAction = new QAction(tr("Stop interpretation"), NULL);
+	connect(mStopInterpretationAction, SIGNAL(triggered()), this, SLOT(stopInterpretation()));
+	mVisualInterpreterMenu->addAction(mStopInterpretationAction);
+	
+	mWatchListAction = new QAction(tr("Show watch list"), NULL);
+	connect(mWatchListAction, SIGNAL(triggered()), this, SLOT(showWatchList()));
+	mVisualInterpreterMenu->addAction(mWatchListAction);
+	
 	mActionInfos << visualInterpreterMenu;
 
 	return mActionInfos;
@@ -81,7 +90,7 @@ void VisualInterpreterPlugin::generateSemanticsMetamodel() const
 	QString const diagramName = diagram.attribute("name");
 	QString const displayedName = diagram.attribute("displayedName").isEmpty()
 			? diagramName
-			:diagram.attribute("displayedName");
+			: diagram.attribute("displayedName");
 
 	diagram.setAttribute("displayedName", displayedName + " Semantics");
 
@@ -336,4 +345,18 @@ void VisualInterpreterPlugin::loadSemantics()
 void VisualInterpreterPlugin::interpret()
 {
 	mVisualInterpreterUnit->interpret();
+}
+
+void VisualInterpreterPlugin::stopInterpretation()
+{
+	mVisualInterpreterUnit->stopInterpretation();
+}
+
+void VisualInterpreterPlugin::showWatchList()
+{
+	if (mWatchListWindow != NULL) {
+		mWatchListWindow->close();
+	}
+	mWatchListWindow = new watchListWindow(mVisualInterpreterUnit->ruleParser());
+	mWatchListWindow->show();
 }
