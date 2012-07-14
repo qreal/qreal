@@ -1647,13 +1647,9 @@ NodeData& NodeElement::data()
 	mData.pos = mPos;
 	mData.contents = mContents;
 
-	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
-	EditorViewScene *editorScene = dynamic_cast<EditorViewScene *>(scene());
-
+	NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
 	if (parent) {
 		mData.parentId = parent->id();
-	} else if (editorScene) {
-		mData.parentId = editorScene->rootItemId();
 	} else {
 		mData.parentId = Id::rootId();
 	}
