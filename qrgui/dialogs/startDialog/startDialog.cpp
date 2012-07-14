@@ -11,6 +11,7 @@ using namespace qReal;
 StartDialog::StartDialog(MainWindow *mainWindow)
 	: QDialog(mainWindow, Qt::WindowMaximizeButtonHint)
 	, mMainWindow(mainWindow)
+	, mProjectManager(mainWindow->projectManager())
 {
 	QTabWidget *tabWidget = new QTabWidget;
 
@@ -45,21 +46,21 @@ StartDialog::StartDialog(MainWindow *mainWindow)
 
 void StartDialog::openRecentProject(QString const &fileName)
 {
-	if (mMainWindow->mProjectManager->open(fileName)) {
+	if (mProjectManager->open(fileName)) {
 		close();
 	}
 }
 
 void StartDialog::openExistingProject()
 {
-	if (mMainWindow->mProjectManager->suggestToOpenExisting()) {
+	if (mProjectManager->suggestToOpenExisting()) {
 		close();
 	}
 }
 
 void StartDialog::createProjectWithDiagram(const QString &idString)
 {
-	mMainWindow->mProjectManager->openEmptyWithSuggestToSaveChanges();
+	mProjectManager->openEmptyWithSuggestToSaveChanges();
 	mMainWindow->createDiagram(idString);
 	// This dialog will be closed by the SuggestToCreateDiagramWidget
 }

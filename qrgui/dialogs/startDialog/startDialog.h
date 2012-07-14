@@ -1,6 +1,8 @@
 #pragma once
 #include <QtGui/QDialog>
 
+#include "../../mainwindow/projectManager/projectManager.h"
+
 namespace qReal {
 class MainWindow;
 }
@@ -29,6 +31,7 @@ private slots:
 
 private:
 	MainWindow *mMainWindow;
+	ProjectManager *mProjectManager;
 };
 
 }

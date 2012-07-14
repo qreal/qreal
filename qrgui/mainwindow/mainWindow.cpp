@@ -37,7 +37,6 @@
 
 #include "splashScreen.h"
 #include "../dialogs/startDialog/startDialog.h"
-#include "../dialogs/suggestToCreateDiagramDialog.h"
 
 #include "dotRunner.h"
 
@@ -145,11 +144,10 @@ void MainWindow::connectActions()
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
-	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), this, SLOT(suggestToCreateDiagram()));
+	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), mProjectManager, SLOT(openNewWithDiagram()));
-	connect(mUi->actionCloseProject, SIGNAL(triggered()), this, SLOT(closeProjectAndSave()));
 
-	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
+	connect(mUi->actionImport, SIGNAL(triggered()), mProjectManager, SLOT(suggestToimport()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 	connect(mUi->actionCopyElementsOnDiagram, SIGNAL(triggered()), this, SLOT(copyElementsOnDiagram()));
 	connect(mUi->actionPasteOnDiagram, SIGNAL(triggered()), this, SLOT(pasteOnDiagram()));
@@ -385,60 +383,6 @@ void MainWindow::sceneSelectionChanged()
 	}
 }
 
-QString MainWindow::getWorkingFile(QString const &dialogWindowTitle, bool save)
-{
-	QString fileName;
-	QDir const lastSaveDir = QFileInfo(mSaveFile).absoluteDir();
-
-	if (save) {
-		fileName = QFileDialog::getSaveFileName(this, dialogWindowTitle,
-				lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
-		if (fileName != "" && !fileName.endsWith(".qrs", Qt::CaseInsensitive)) {
-			fileName += ".qrs";
-		}
-	} else {
-		fileName = QFileDialog::getOpenFileName(this, dialogWindowTitle,
-				lastSaveDir.absolutePath(), tr("QReal Save File(*.qrs)"));
-		if (fileName != "" && !QFile::exists(fileName)) {
-			QMessageBox fileNotFoundMessage(QMessageBox::Information, tr("File not found"),
-					tr("File ") + fileName + tr(" not found. Try again"),	QMessageBox::Ok, this);
-			fileNotFoundMessage.exec();
-
-			fileName = getWorkingFile(dialogWindowTitle, save);
-		}
-	}
-	SettingsManager::setValue("saveFile", fileName);
-	refreshRecentProjectsList(fileName);
-
-	return fileName;
-}
-
-QString MainWindow::missingPluginNames()
-{
-	IdList missingPlugins = mEditorManager.checkNeededPlugins(
-			mModels->logicalRepoApi(), mModels->graphicalRepoApi());
-	QString result;
-	foreach (Id const id, missingPlugins) {
-		result += id.editor() + "\n";
-	}
-	return result;
-}
-
-bool MainWindow::importProject()
-{
-	return import(getWorkingFile(tr("Select file with a save to import"), false));
-}
-
-bool MainWindow::import(QString const &fileName)
-{
-	if (!QFile(fileName).exists()) {
-		return false;
-	}
-	mModels->repoControlApi().importFromDisk(fileName);
-	mModels->reinit();
-	return true;
-}
-
 void MainWindow::refreshRecentProjectsList(QString const &fileName)
 {
 	QString previousString =  SettingsManager::value("recentProjects").toString();
@@ -659,7 +603,7 @@ void MainWindow::pasteOnDiagram()
 
 void MainWindow::editWindowTitle()
 {
-	if (!mUnsavedProjectIndicator){
+	if (!mUnsavedProjectIndicator) {
 		setWindowTitle(windowTitle() + " [modified]");
 		mUnsavedProjectIndicator = true;
 	}
@@ -823,19 +767,6 @@ void qReal::MainWindow::closeTab(int index)
 	mUi->tabs->removeTab(index);
 	delete widget;
 }
-
-/*
-void MainWindow::exterminate()
-{
- closeAllTabs();
- mModels->repoControlApi().exterminate();
- mModels->reinit();
-
- PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
- pModel->clearModelIndexes();
- mUi->propertyEditor->setRootIndex(QModelIndex());
-}
-*/
 
 void MainWindow::showPreferencesDialog()
 {
@@ -1143,6 +1074,11 @@ ListenerManager *MainWindow::listenerManager()
 	return mListenerManager;
 }
 
+ProjectManager *MainWindow::projectManager()
+{
+	return mProjectManager;
+}
+
 void MainWindow::showGrid(bool isChecked)
 {
 	SettingsManager::setValue("ShowGrid", isChecked);
@@ -1233,12 +1169,6 @@ void MainWindow::showGestures()
 GesturesPainterInterface * MainWindow::gesturesPainter()
 {
 	return mGesturesWidget;
-}
-
-void MainWindow::suggestToCreateDiagram(bool isNonClosable)
-{
-	SuggestToCreateDiagramDialog suggestDialog(this, isNonClosable);
-	suggestDialog.exec();
 }
 
 void MainWindow::createDiagram(QString const &idString)
@@ -1502,7 +1432,7 @@ void MainWindow::setAutoSaveParameters()
 
 void MainWindow::autosave()
 {
-	if (mSaveFile == "") {
+	if (mSaveFile.isEmpty()) {
 		mProjectManager->saveAs(mTempDir);
 	} else {
 		mProjectManager->saveAll();
@@ -1675,20 +1605,6 @@ int MainWindow::suggestToSaveProject()
 	offerSave.addButton(tr("&Discard"), QMessageBox::DestructiveRole);
 	offerSave.setText(tr("Do you want to save current project?"));
 	return offerSave.exec();
-}
-
-void MainWindow::closeProjectAndSave()
-{
-	if (mUnsavedProjectIndicator) {
-		switch (suggestToSaveProject()) {
-		case QMessageBox::AcceptRole:
-			mProjectManager->saveAll();
-			break;
-		case QMessageBox::RejectRole:
-			return;
-		}
-	}
-	mProjectManager->close();
 }
 
 void MainWindow::changePaletteRepresentation()

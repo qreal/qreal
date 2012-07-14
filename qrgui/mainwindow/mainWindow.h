@@ -59,6 +59,7 @@ public:
 	EditorManager *manager();
 	EditorView *getCurrentTab();
 	ListenerManager *listenerManager();
+	ProjectManager *projectManager();
 	GesturesPainterInterface *gesturesPainter();
 	QModelIndex rootIndex() const;
 
@@ -88,7 +89,6 @@ public:
 	virtual bool unloadPlugin(QString const &pluginName);
 	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
 	virtual bool pluginLoaded(QString const &pluginName);
-	QString missingPluginNames();
 
 	virtual void saveDiagramAsAPictureToFile(const QString &fileName);
 	virtual void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles);
@@ -132,15 +132,9 @@ private slots:
 	void showAbout();
 	void showHelp();
 
-	/// wrapper for import(QString const &fileName)
-	/// uses getWorkingFile(...)
-	/// @return true - if all ok, false - if not ok
-	bool importProject();
-
 	/// checks parameters for integrity,then importing it
 	/// @param fileName - *.qrs file to import
 	/// @return true - if all ok, false - if not ok
-	bool import(QString const &fileName);
 	void fullscreen();
 	void openRecentProjectsMenu();
 	void createDiagram(QString const &idString);
@@ -184,7 +178,6 @@ private slots:
 	void logicalModelExplorerClicked(const QModelIndex &index);
 
 	void openNewTab(const QModelIndex &index);
-	void suggestToCreateDiagram(bool isNonClosable = false);
 
 	/// Called after current tab was changed somehow --- opened, closed, switched to other
 	/// @param newIndex Index of a new active tab, -1 if there is none
@@ -208,7 +201,6 @@ private slots:
 
 	void autosave();
 	void setAutoSaveParameters();
-	void closeProjectAndSave();
 
 private:
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
@@ -232,6 +224,8 @@ private:
 	void deleteFromExplorer(bool isLogicalModel);
 	void keyPressEvent(QKeyEvent *event);
 
+	QString getSaveFileName(const QString &dialogWindowTitle);
+	QString getOpenFileName(const QString &dialogWindowTitle);
 	QString getWorkingFile(QString const &dialogWindowTitle, bool save);
 
 	int getTabIndex(const QModelIndex &index);
@@ -321,8 +315,8 @@ private:
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;
 	qReal::gui::PaletteTree *mPaletteTree;
-	FindManager *mFindHelper;
 
+	FindManager *mFindHelper;
 	ProjectManager *mProjectManager;
 	StartDialog *mStartDialog;
 

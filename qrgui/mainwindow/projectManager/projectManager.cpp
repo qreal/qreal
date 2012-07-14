@@ -3,6 +3,7 @@
 #include "../models/models.h"
 #include "../view/editorViewScene.h"
 #include "../view/editorView.h"
+#include "../dialogs/suggestToCreateDiagramDialog.h"
 #include "projectManager.h"
 
 using namespace qReal;
@@ -11,23 +12,6 @@ ProjectManager::ProjectManager(MainWindow *mainWindow)
 	: QObject(mainWindow)
 	, mMainWindow(mainWindow)
 {
-}
-
-bool ProjectManager::openNewWithDiagram()
-{
-	if(!openEmptyWithSuggestToSaveChanges()) {
-		return false;
-	}
-	mMainWindow->suggestToCreateDiagram(true);
-	return true;
-}
-
-bool ProjectManager::openEmptyWithSuggestToSaveChanges()
-{
-	if (!suggestToSaveChangesOrCancel()) {
-		return false;
-	}
-	return open();
 }
 
 bool ProjectManager::openExisting(QString const &fileName)
@@ -43,7 +27,7 @@ bool ProjectManager::suggestToOpenExisting()
 	if (!suggestToSaveChangesOrCancel()) {
 		return false;
 	}
-	QString fileName = mMainWindow->getWorkingFile(tr("Open existing project"), false);
+	QString fileName = getOpenFileName(tr("Open existing project"));
 	if (fileName.isEmpty()) {
 		return false;
 	}
@@ -90,8 +74,23 @@ bool ProjectManager::open(QString const &fileName)
 	mMainWindow->mUi->logicalModelExplorer->setModel(mMainWindow->mModels->logicalModel());
 
 	mMainWindow->mSaveFile = fileName;
-	refreshWindowTitleAccordingToSaveFile();
+	refreshApplicationStateAfterOpen();
 
+	return true;
+}
+
+bool ProjectManager::suggestToimport()
+{
+	return import(getOpenFileName(tr("Select file with a save to import")));
+}
+
+bool ProjectManager::import(QString const &fileName)
+{
+	if (!QFile(fileName).exists()) {
+		return false;
+	}
+	mMainWindow->mModels->repoControlApi().importFromDisk(fileName);
+	mMainWindow->mModels->reinit();
 	return true;
 }
 
@@ -111,7 +110,7 @@ bool ProjectManager::pluginsEnough()
 	if (!missingPluginNames().isEmpty()) {
 		QMessageBox thereAreMissingPluginsMessage(QMessageBox::Information, tr("There are missing plugins"),
 				tr("These plugins are not present, but needed to load the save:\n") +
-						mMainWindow->missingPluginNames(),
+						missingPluginNames(),
 				QMessageBox::Ok, mMainWindow);
 		thereAreMissingPluginsMessage.exec();
 		return false;
@@ -130,6 +129,22 @@ QString ProjectManager::missingPluginNames()
 	return result;
 }
 
+void ProjectManager::refreshApplicationStateAfterSave()
+{
+	mMainWindow->mUnsavedProjectIndicator = false;
+
+	refreshWindowTitleAccordingToSaveFile();
+	mMainWindow->refreshRecentProjectsList(mMainWindow->mSaveFile);
+	SettingsManager::setValue("saveFile", mMainWindow->mSaveFile);
+}
+
+void ProjectManager::refreshApplicationStateAfterOpen()
+{
+	refreshWindowTitleAccordingToSaveFile();
+	mMainWindow->refreshRecentProjectsList(mMainWindow->mSaveFile);
+	SettingsManager::setValue("saveFile", mMainWindow->mSaveFile);
+}
+
 void ProjectManager::refreshWindowTitleAccordingToSaveFile()
 {
 	mMainWindow->connectWindowTitle();
@@ -139,6 +154,29 @@ void ProjectManager::refreshWindowTitleAccordingToSaveFile()
 	} else {
 		mMainWindow->setWindowTitle(windowTitle + " - " + mMainWindow->mSaveFile);
 	}
+}
+
+bool ProjectManager::openNewWithDiagram()
+{
+	if(!openEmptyWithSuggestToSaveChanges()) {
+		return false;
+	}
+	suggestToCreateDiagram(true);
+	return true;
+}
+
+bool ProjectManager::openEmptyWithSuggestToSaveChanges()
+{
+	if (!suggestToSaveChangesOrCancel()) {
+		return false;
+	}
+	return open();
+}
+
+void ProjectManager::suggestToCreateDiagram(bool isNonClosable)
+{
+	SuggestToCreateDiagramDialog suggestDialog(mMainWindow, isNonClosable);
+	suggestDialog.exec();
 }
 
 void ProjectManager::close()
@@ -168,7 +206,7 @@ bool ProjectManager::saveAll()
 
 bool ProjectManager::suggestToSaveAs()
 {
-	return saveAs(mMainWindow->getWorkingFile(tr("Select file to save current model to"), true));
+	return saveAs(getSaveFileName(tr("Select file to save current model to")));
 }
 
 bool ProjectManager::saveAs(QString const &fileName)
@@ -184,9 +222,28 @@ bool ProjectManager::saveAs(QString const &fileName)
 	return true;
 }
 
-void ProjectManager::refreshApplicationStateAfterSave()
+QString ProjectManager::getOpenFileName(QString const &dialogWindowTitle)
 {
-	mMainWindow->mUnsavedProjectIndicator = false;
-	refreshWindowTitleAccordingToSaveFile();
-	SettingsManager::setValue("saveFile", mMainWindow->mSaveFile);
+	QString fileName = QFileDialog::getOpenFileName(mMainWindow, dialogWindowTitle
+			, QFileInfo(mMainWindow->mSaveFile).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"));
+
+	if (!fileName.isEmpty() && !QFile::exists(fileName)) {
+		QMessageBox fileNotFoundMessage(QMessageBox::Information, tr("File not found"),
+				tr("File ") + fileName + tr(" not found. Try again"), QMessageBox::Ok, mMainWindow);
+		fileNotFoundMessage.exec();
+
+		fileName = getOpenFileName(dialogWindowTitle);
+	}
+	return fileName;
+}
+
+QString ProjectManager::getSaveFileName(QString const &dialogWindowTitle)
+{
+	QString fileName = QFileDialog::getSaveFileName(mMainWindow, dialogWindowTitle
+			, QFileInfo(mMainWindow->mSaveFile).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"));
+
+	if (!fileName.isEmpty() && !fileName.endsWith(".qrs", Qt::CaseInsensitive)) {
+		fileName += ".qrs";
+	}
+	return fileName;
 }
