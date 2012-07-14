@@ -331,7 +331,7 @@
 					</picture>
 					<labels>
 						<label x="33" y="60" textBinded="Ports"/>
-						<label x="-5" y="60" text="Порты:"/>
+						<label x="-8" y="60" text="Порты:"/>
 						<label x="33" y="80" textBinded="Power"/>
 						<label x="-50" y="80" text="Мощность (%):"/>
 						<label x="33" y="100" textBinded="TachoLimit"/>
@@ -371,21 +371,21 @@
 					</picture>
 					<labels>
 						<label x="33" y="60" textBinded="port"/>
-						<label x="-60" y="60" text="Порт гироскопа:"/>
+						<label x="-57" y="60" text="Порт гироскопа:"/>
 						<label x="33" y="80" textBinded="forward"/>
 						<label x="-65" y="80" text="Значение forward:"/>
 						<label x="33" y="100" textBinded="turn"/>
-						<label x="-50" y="100" text="Значение turn:"/>
+						<label x="-47" y="100" text="Значение turn:"/>
 						<label x="33" y="120" textBinded="gyroOffset"/>
-						<label x="-105" y="120" text="Значение для калибровки:"/>
+						<label x="-108" y="120" text="Значение для калибровки:"/>
 						<label x="33" y="140" textBinded="port1"/>
-						<label x="-80" y="140" text="Порт первого мотора:"/>
+						<label x="-84" y="140" text="Порт первого мотора:"/>
 						<label x="33" y="160" textBinded="port2"/>
-						<label x="-80" y="160" text="Порт второго мотора:"/>
+						<label x="-84" y="160" text="Порт второго мотора:"/>
 						<label x="33" y="180" textBinded="pwm1"/>
-						<label x="-210" y="180" text="Выходное значение мощности первого мотора:"/>
+						<label x="-213" y="180" text="Выходное значение мощности первого мотора:"/>
 						<label x="33" y="200" textBinded="pwm2"/>
-						<label x="-210" y="200" text="Выходное значение мощности второго мотора:"/>
+						<label x="-213" y="200" text="Выходное значение мощности второго мотора:"/>
 					</labels>
 					<ports>
 						<linePort>

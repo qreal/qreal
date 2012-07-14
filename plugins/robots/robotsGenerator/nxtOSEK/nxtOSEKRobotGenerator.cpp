@@ -21,10 +21,10 @@ NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(
 		)
 		: mDestinationPath(destinationPath)
 		, mErrorReporter(errorReporter)
+		, mDiagram(diagram)
 {
 	mIsNeedToDeleteMApi = false;
 	mApi = dynamic_cast<qrRepo::RepoApi *>(&api);  // TODO: remove unneeded dynamic_cast or provide strong argumentation why it is needed.
-	mDiagram = diagram;
 }
 
 NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo

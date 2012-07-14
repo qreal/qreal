@@ -14,17 +14,19 @@ void FunctionElementGenerator::variableAnalysis(QByteArray const &code)
 
 	foreach (QByteArray block, funcBlocks) {
 			//Only one possible place for first variable appear
-		int firstEqualSignPos = block.indexOf('=');
-		if (firstEqualSignPos == -1)
+		int const firstEqualSignPos = block.indexOf('=');
+		if (firstEqualSignPos == -1) {
 			continue;
+		}
 
 		//must be a normal variable name
 		QByteArray leftPart = block.left(firstEqualSignPos);
 
 		leftPart = leftPart.trimmed();
-		QString forbiddenLastSimbols = "+-=*/><";
-		if (forbiddenLastSimbols.contains((leftPart.at(leftPart.length() - 1))))
+		QString const forbiddenLastSimbols = "+-=*/><";
+		if (forbiddenLastSimbols.contains((leftPart.at(leftPart.length() - 1)))) {
 			continue;
+		}
 
 		bool isVariableExisted = false;
 		foreach (SmartLine curVariable, mNxtGen->variables()) {
@@ -33,8 +35,9 @@ void FunctionElementGenerator::variableAnalysis(QByteArray const &code)
 				break;
 			}
 		}
-		if (!isVariableExisted)
+		if (!isVariableExisted) {
 			mNxtGen->variables().append(SmartLine(QString::fromUtf8(leftPart), mElementId));
+		}
 	}
 }
 

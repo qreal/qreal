@@ -117,9 +117,10 @@ bool IfElementGenerator::nextElementsGeneration()
 	Q_ASSERT(outgoingLinks.size() == 2);
 
 	//we search for arrow with condition
-	int conditionArrowNum =
-			mNxtGen->api()->property(mNxtGen->api()->logicalId(outgoingLinks.at(0)), "Guard").toString().isEmpty()
-			? 1 : 0;
+	qReal::Id graphicalId = outgoingLinks.at(0);
+	qReal::Id logicalId = mNxtGen->api()->logicalId(graphicalId);
+	QVariant guardProperty = mNxtGen->api()->property(logicalId, "Guard");
+	int conditionArrowNum = guardProperty.toString().isEmpty() ? 1 : 0;
 
 	qReal::Id logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 

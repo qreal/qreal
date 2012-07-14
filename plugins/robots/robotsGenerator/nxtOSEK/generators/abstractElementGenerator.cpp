@@ -6,8 +6,8 @@
 
 using namespace robots::generator;
 
-AbstractElementGenerator::AbstractElementGenerator(NxtOSEKRobotGenerator *mainGenerator,
-		qReal::Id const &elementId): mNxtGen(mainGenerator), mElementId(elementId)
+AbstractElementGenerator::AbstractElementGenerator(NxtOSEKRobotGenerator *mainGenerator
+		, qReal::Id const &elementId): mNxtGen(mainGenerator), mElementId(elementId)
 {
 }
 
@@ -26,8 +26,9 @@ void AbstractElementGenerator::createListsForIncomingConnections()
 
 bool AbstractElementGenerator::generate()
 {
-	if (!preGenerationCheck())
+	if (!preGenerationCheck()) {
 		return false;
+	}
 
 	if (mNxtGen->mElementToStringListNumbers.contains(mElementId.toString())) {
 		//if we have already observed this element with more than 1 incoming connection
