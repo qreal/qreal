@@ -329,47 +329,47 @@
         <translation>Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="824"/>
+        <location filename="view/editorViewScene.cpp" line="889"/>
         <source>Add connection</source>
         <translation>Добавить провязку</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="831"/>
+        <location filename="view/editorViewScene.cpp" line="896"/>
         <source>Disconnect</source>
         <translation>Убрать провязку</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="837"/>
+        <location filename="view/editorViewScene.cpp" line="902"/>
         <source>Add usage</source>
         <translation>Добавить использование</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="844"/>
+        <location filename="view/editorViewScene.cpp" line="909"/>
         <source>Delete usage</source>
         <translation>Убрать использование</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="850"/>
+        <location filename="view/editorViewScene.cpp" line="915"/>
         <source>Go to</source>
         <translation>Перейти</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="852"/>
+        <location filename="view/editorViewScene.cpp" line="917"/>
         <source>Forward connection</source>
         <translation>По провязке вперёд</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="853"/>
+        <location filename="view/editorViewScene.cpp" line="918"/>
         <source>Backward connection</source>
         <translation>По провязке назад</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="854"/>
+        <location filename="view/editorViewScene.cpp" line="919"/>
         <source>Uses</source>
         <translation>Использует</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="855"/>
+        <location filename="view/editorViewScene.cpp" line="920"/>
         <source>Used in</source>
         <translation>Используется в</translation>
     </message>
@@ -669,8 +669,9 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="682"/>
         <location filename="mainwindow/mainWindow.ui" line="685"/>
-        <source>Paste copy of logical element</source>
-        <translation>Вставить копию логического элемента</translation>
+        <source>Paste only graphical copy</source>
+        <oldsource>Paste copy of logical element</oldsource>
+        <translation>Вставить только графическую копию</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="688"/>

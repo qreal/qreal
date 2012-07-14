@@ -679,10 +679,10 @@
   </action>
   <action name="actionPasteCopyOfLogicalElement">
    <property name="text">
-    <string>Paste copy of logical element</string>
+    <string>Paste only graphical copy</string>
    </property>
    <property name="toolTip">
-    <string>Paste copy of logical element</string>
+    <string>Paste only graphical copy</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+V</string>
