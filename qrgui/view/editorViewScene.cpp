@@ -638,7 +638,7 @@ Id EditorViewScene::pasteNode(NodeData const &nodeData, bool isGraphicalCopy
 	return newNode->id();
 }
 
-NodeElement* EditorViewScene::pasteGraphicalCopyOfNode(NodeData const &nodeData
+NodeElement *EditorViewScene::pasteGraphicalCopyOfNode(NodeData const &nodeData
 		, QPointF const &newPos)
 {
 	QString name = mMVIface->graphicalAssistApi()->name(nodeData.id);
@@ -652,7 +652,7 @@ NodeElement* EditorViewScene::pasteGraphicalCopyOfNode(NodeData const &nodeData
 	return newNode;
 }
 
-NodeElement* EditorViewScene::pasteNewNode(NodeData const &data, QPointF const &newPos)
+NodeElement *EditorViewScene::pasteNewNode(NodeData const &data, QPointF const &newPos)
 {
 	Id typeId = data.id.type();
 	Id newId = createElement(typeId.toString(), newPos);
@@ -697,7 +697,7 @@ Id EditorViewScene::pasteEdge(EdgeData const &edgeData, bool isGraphicalCopy
 	return newEdge->id();
 }
 
-EdgeElement* EditorViewScene::pasteGraphicalCopyOfEdge(EdgeData const &edgeData)
+EdgeElement *EditorViewScene::pasteGraphicalCopyOfEdge(EdgeData const &edgeData)
 {
 	QString name = mMVIface->graphicalAssistApi()->name(edgeData.id);
 
@@ -711,7 +711,7 @@ EdgeElement* EditorViewScene::pasteGraphicalCopyOfEdge(EdgeData const &edgeData)
 	return newEdge;
 }
 
-EdgeElement* EditorViewScene::pasteNewEdge(EdgeData const &edgeData)
+EdgeElement *EditorViewScene::pasteNewEdge(EdgeData const &edgeData)
 {
 	Id typeId = edgeData.id.type();
 	Id newId = createElement(typeId.toString(), QPointF());
@@ -740,7 +740,7 @@ void EditorViewScene::restoreEdge(EdgeElement *edge, EdgeData const &edgeData
 	mMVIface->graphicalAssistApi()->setToPort(edgeId, edgeData.portTo);
 }
 
-Element* EditorViewScene::getLastCreated()
+Element *EditorViewScene::getLastCreated()
 {
 	return mLastCreatedWithEdge;
 }
