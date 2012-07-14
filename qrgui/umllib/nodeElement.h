@@ -62,6 +62,7 @@ public:
 
 	qreal getPortId(const QPointF &location) const;
 
+	QList<EdgeElement*> getEdges();
 	void addEdge(EdgeElement *edge);
 	void delEdge(EdgeElement *edge);
 

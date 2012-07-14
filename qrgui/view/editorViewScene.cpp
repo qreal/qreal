@@ -501,24 +501,21 @@ void EditorViewScene::insertNodeIntoEdge(qReal::Id const &insertedNodeId, qReal:
 
 void EditorViewScene::copy()
 {
-	QByteArray data;
-	QDataStream stream(&data, QIODevice::WriteOnly);
-
 	QList<NodeElement*> nodes = getNodesForCopying();
+
+	QList<NodeData> nodesData = getNodesData(nodes);
+	QList<EdgeData> edgesData = getEdgesData(nodes);
+
+	pushDataToClipboard(nodesData, edgesData);
+}
+
+QList<NodeData> EditorViewScene::getNodesData(QList<NodeElement*> const &nodes)
+{
 	QList<NodeData> nodesData;
 	foreach (NodeElement* node, nodes) {
 		nodesData << node->data();
 	}
-	QList<EdgeData> edgesData = getEdgesData(nodes);
-
-	stream << nodesData;
-	stream << edgesData;
-
-	QMimeData* mimeData = new QMimeData();
-	mimeData->setData("application/x-real-uml-model-data", data);
-
-	QClipboard* clipboard = QApplication::clipboard();
-	clipboard->setMimeData(mimeData);
+	return nodesData;
 }
 
 QList<NodeElement*> EditorViewScene::getNodesForCopying()
@@ -551,28 +548,38 @@ void EditorViewScene::addChildren(NodeElement* node, QList<NodeElement*> &nodes)
 QList<EdgeData> EditorViewScene::getEdgesData(QList<NodeElement*> const &nodes)
 {
 	QList<EdgeData> edgesData;
-	foreach (QGraphicsItem* item, selectedItems()) {
-		EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
-		if (edge && nodes.contains(edge->src()) && nodes.contains(edge->dst())) {
-			edgesData << edge->data();
+	foreach (NodeElement* node, nodes) {
+		foreach (EdgeElement* edge, node->getEdges()) {
+			EdgeData& data = edge->data();
+			if (nodes.contains(edge->src()) && nodes.contains(edge->dst())
+					&& !edgesData.contains(data)) {
+				edgesData << data;
+			}
 		}
 	}
 	return edgesData;
 }
 
-void EditorViewScene::paste()
+void EditorViewScene::pushDataToClipboard(const QList<NodeData> &nodesData, const QList<EdgeData> &edgesData)
 {
+	QByteArray data;
+	QDataStream stream(&data, QIODevice::WriteOnly);
+
+	stream << nodesData;
+	stream << edgesData;
+
+	QMimeData* mimeData = new QMimeData();
+	mimeData->setData("application/x-real-uml-model-data", data);
+
 	QClipboard* clipboard = QApplication::clipboard();
-	const QMimeData* mimeData = clipboard->mimeData();
+	clipboard->setMimeData(mimeData);
+}
 
-	QByteArray data = mimeData->data("application/x-real-uml-model-data");
-	QDataStream stream(&data, QIODevice::ReadOnly);
-
+void EditorViewScene::paste(bool logicalCopy)
+{
 	QList<NodeData> nodesData;
 	QList<EdgeData> edgesData;
-
-	stream >> nodesData;
-	stream >> edgesData;
+	pullDataFromClipboard(nodesData, edgesData);
 
 	if (nodesData.isEmpty()) {
 		return;
@@ -580,70 +587,174 @@ void EditorViewScene::paste()
 
 	QPointF offset = getMousePos() - nodesData[0].pos;
 
+	QHash<Id, Id> copiedIds = pasteNodes(nodesData, offset, logicalCopy);
+
+	foreach (EdgeData data, edgesData) {
+		pasteEdge(data, logicalCopy, copiedIds, offset);
+	}
+}
+
+void EditorViewScene::pullDataFromClipboard(QList<NodeData> &nodesData, QList<EdgeData> &edgesData)
+{
+	QClipboard* clipboard = QApplication::clipboard();
+	const QMimeData* mimeData = clipboard->mimeData();
+
+	QByteArray data = mimeData->data("application/x-real-uml-model-data");
+	QDataStream stream(&data, QIODevice::ReadOnly);
+
+	stream >> nodesData;
+	stream >> edgesData;
+}
+
+QHash<Id, Id> EditorViewScene::pasteNodes(QList<NodeData> &nodesData
+		, QPointF const &offset, bool logicalCopy)
+{
 	QHash<Id, Id> copiedIds;
 
 	while (!nodesData.isEmpty()) {
 		NodeData& nextToPaste = nodesData[0];
-		Id copy = pasteNode(nextToPaste, copiedIds, offset);
+		Id copy = pasteNode(nextToPaste, logicalCopy, copiedIds, offset);
 		copiedIds.insert(nextToPaste.id, copy);
 		nodesData.removeAll(nextToPaste);
 	}
 
-	foreach (EdgeData data, edgesData) {
-		pasteEdge(data, copiedIds, offset);
-	}
+	return copiedIds;
 }
 
-Id EditorViewScene::pasteNode(NodeData const &nodeData,
-		QHash<Id, Id> const &copiedIds, QPointF const &offset)
+Id EditorViewScene::pasteNode(NodeData const &nodeData, bool logicalCopy
+		, QHash<Id, Id> const &copiedIds, QPointF const &offset)
 {
-	QPointF newPos = nodeData.pos;
-	if (!copiedIds.contains(nodeData.parentId)) {
-		newPos += offset;
+	QPointF newPos;
+	NodeElement* newNode = NULL;
+
+	if (logicalCopy) {
+		newPos = getNewPosForLogicalCopy(nodeData, copiedIds, offset);
+		newNode = pasteCopyOfLogicalNode(nodeData, newPos);
+	} else {
+		newPos = getNewPos(nodeData, copiedIds, offset);
+		newNode = pasteNewNode(nodeData, newPos);
 	}
 
-	Id typeId = nodeData.id.type();
+	restoreNode(newNode, nodeData, copiedIds, newPos);
+
+	return newNode->id();
+}
+
+NodeElement* EditorViewScene::pasteCopyOfLogicalNode(const NodeData &nodeData
+		, const QPointF &newPos)
+{
+	QString name = mMVIface->graphicalAssistApi()->name(nodeData.id);
+
+	Id newId = mMVIface->graphicalAssistApi()->createElement(
+			nodeData.parentId, nodeData.logicalId, true, name, newPos);
+	NodeElement* newNode = dynamic_cast<NodeElement*>(mainWindow()->manager()->graphicalObject(newId));
+
+	newNode->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());
+	newNode->setId(newId);
+
+	return newNode;
+}
+
+NodeElement* EditorViewScene::pasteNewNode(const NodeData &data, const QPointF &newPos)
+{
+	Id typeId = data.id.type();
 	Id newId = createElement(typeId.toString(), newPos);
 	NodeElement* newNode = dynamic_cast<NodeElement*>(getElem(newId));
 
-	mMVIface->graphicalAssistApi()->setProperties(newId, nodeData.properties);
-
-	newNode->setGeometry(nodeData.contents.translated(newPos));
-	newNode->storeGeometry();
-
-	if (!copiedIds.contains(nodeData.parentId)) {
-		mMVIface->graphicalAssistApi()->changeParent(newId, Id::rootId(), newPos);
-	} else {
-		mMVIface->graphicalAssistApi()->changeParent(
-				newId, copiedIds[nodeData.parentId], newPos);
-	}
-
-	return newId;
+	return newNode;
 }
 
-Id EditorViewScene::pasteEdge(EdgeData const &edgeData
+QPointF EditorViewScene::getNewPos(const NodeData &nodeData
+		, const QHash<Id, Id> &copiedIds, QPointF const &offset)
+{
+	if (!copiedIds.contains(nodeData.parentId)) {
+		return nodeData.pos + offset;
+	}
+	return nodeData.pos;
+}
+
+QPointF EditorViewScene::getNewPosForLogicalCopy(const NodeData &nodeData
+		, const QHash<Id, Id> &copiedIds, const QPointF &offset)
+{
+	if (nodeData.parentId == rootItemId()) {
+		return nodeData.pos + offset;
+	}
+	if (copiedIds.contains(nodeData.parentId)) {
+		return nodeData.pos;
+	}
+	if (getElem(nodeData.parentId)->isUnderMouse()) {
+		return nodeData.pos + offset;
+	}
+	return nodeData.pos;
+}
+
+void EditorViewScene::restoreNode(NodeElement *node, const NodeData &nodeData
+		, const QHash<Id, Id> &copiedIdsMap, QPointF const &pos)
+{
+	Id nodeId = node->id();
+
+	mMVIface->graphicalAssistApi()->setProperties(nodeId, nodeData.properties);
+
+	node->setPos(pos);
+	mMVIface->graphicalAssistApi()->changeParent(nodeId, copiedIdsMap[nodeData.parentId], pos);
+}
+
+Id EditorViewScene::pasteEdge(EdgeData const &edgeData, bool logicalCopy
 		, QHash<Id, Id> const &copiedIds, QPointF const &offset)
+{
+	EdgeElement* newEdge;
+
+	if (logicalCopy) {
+		newEdge = pasteCopyOfLogicalEdge(edgeData);
+	} else {
+		newEdge = pasteNewEdge(edgeData);
+	}
+
+	restoreEdge(newEdge, edgeData, copiedIds, edgeData.pos + offset);
+	return newEdge->id();
+}
+
+EdgeElement* EditorViewScene::pasteCopyOfLogicalEdge(const EdgeData &edgeData)
+{
+	QString name = mMVIface->graphicalAssistApi()->name(edgeData.id);
+
+	Id newId = mMVIface->graphicalAssistApi()->createElement(
+			rootItemId(), edgeData.logicalId, true, name, edgeData.pos);
+
+	EdgeElement* newEdge = dynamic_cast<EdgeElement*>(mainWindow()->manager()->graphicalObject(newId));
+	newEdge->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());
+	newEdge->setId(newId);
+
+	return newEdge;
+}
+
+EdgeElement* EditorViewScene::pasteNewEdge(const EdgeData &edgeData)
 {
 	Id typeId = edgeData.id.type();
 	Id newId = createElement(typeId.toString(), QPointF());
 
-	Id newSrcId = copiedIds[edgeData.srcId];
-	Id newDstId = copiedIds[edgeData.dstId];
-
-	QPointF newPos = edgeData.pos + offset;
-	mMVIface->graphicalAssistApi()->setPosition(newId, newPos);
-	mMVIface->graphicalAssistApi()->setConfiguration(newId, edgeData.configuration);
-
-	mMVIface->graphicalAssistApi()->setFrom(newId, newSrcId);
-	mMVIface->graphicalAssistApi()->setTo(newId, newDstId);
-
-	mMVIface->graphicalAssistApi()->setFromPort(newId, edgeData.portFrom);
-	mMVIface->graphicalAssistApi()->setToPort(newId, edgeData.portTo);
-
 	EdgeElement* newEdge = dynamic_cast<EdgeElement*>(getElem(newId));
 	newEdge->connectToPort();
 
-	return newId;
+	return newEdge;
+}
+
+void EditorViewScene::restoreEdge(EdgeElement *edge, const EdgeData &edgeData
+		, const QHash<Id, Id> &copiedIdsMap, QPointF const &pos)
+{
+	Id edgeId = edge->id();
+
+	Id newSrcId = copiedIdsMap[edgeData.srcId];
+	Id newDstId = copiedIdsMap[edgeData.dstId];
+
+	mMVIface->graphicalAssistApi()->setPosition(edgeId, pos);
+	mMVIface->graphicalAssistApi()->setConfiguration(edgeId, edgeData.configuration);
+
+	mMVIface->graphicalAssistApi()->setFrom(edgeId, newSrcId);
+	mMVIface->graphicalAssistApi()->setTo(edgeId, newDstId);
+
+	mMVIface->graphicalAssistApi()->setFromPort(edgeId, edgeData.portFrom);
+	mMVIface->graphicalAssistApi()->setToPort(edgeId, edgeData.portTo);
 }
 
 Element *EditorViewScene::getLastCreated()
@@ -660,7 +771,11 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 		// Delete selected elements from scene
 		mainWindow()->deleteFromScene();
 	} else if (event->matches(QKeySequence::Paste)) {
-		paste();
+		if (event->modifiers() == Qt::ShiftModifier) {
+			paste(true);
+		} else {
+			paste(false);
+		}
 	} else if (event->matches(QKeySequence::Copy)) {
 		copy();
 	} else if (isArrow(event->key())) {
@@ -858,14 +973,8 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 {
 	QMenu menu;
 
-	if (!e) {
-		mWindow->actionDeleteFromDiagram()->setEnabled(false);
-		mWindow->actionCopyElementsOnDiagram()->setEnabled(false);
-	}
-
-	menu.addAction(mWindow->actionDeleteFromDiagram());
-	menu.addAction(mWindow->actionCopyElementsOnDiagram());
-	menu.addAction(mWindow->actionPasteOnDiagram());
+	disableActions(e);
+	menu.addActions(mContextMenuActions);
 
 	if (e) {
 		QList<ContextMenuAction*> elementActions = e->contextMenuActions();
@@ -874,7 +983,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 			menu.addSeparator();
 		}
 
-		foreach (ContextMenuAction*action, elementActions) {
+		foreach (ContextMenuAction* action, elementActions) {
 			action->setEventPos(e->mapFromScene(pos));
 			menu.addAction(action);
 
@@ -888,9 +997,34 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 
 	menu.exec(QCursor::pos());
 
+	enableActions();
+}
+
+void EditorViewScene::disableActions(Element *focusElement)
+{
+	if (!focusElement) {
+		mWindow->actionDeleteFromDiagram()->setEnabled(false);
+		mWindow->actionCopyElementsOnDiagram()->setEnabled(false);
+	}
+	if (isEmptyClipboard()) {
+		mWindow->actionPasteOnDiagram()->setEnabled(false);
+		mWindow->actionPasteCopyOfLogical()->setEnabled(false);
+	}
+}
+
+void EditorViewScene::enableActions()
+{
 	mWindow->actionDeleteFromDiagram()->setEnabled(true);
 	mWindow->actionCopyElementsOnDiagram()->setEnabled(true);
+	mWindow->actionPasteOnDiagram()->setEnabled(true);
+	mWindow->actionPasteCopyOfLogical()->setEnabled(true);
+}
 
+bool EditorViewScene::isEmptyClipboard()
+{
+	QClipboard* clipboard = QApplication::clipboard();
+	const QMimeData* mimeData = clipboard->mimeData();
+	return mimeData->data("application/x-real-uml-model-data").isEmpty();
 }
 
 void EditorViewScene::getObjectByGesture()
@@ -1084,6 +1218,9 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
 	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
+	mContextMenuActions << mWindow->actionDeleteFromDiagram()
+			<< mWindow->actionCopyElementsOnDiagram()
+			<< mWindow->actionPasteOnDiagram() << mWindow->actionPasteCopyOfLogical();
 	//	connect(this, SIGNAL(elementCreated(qReal::Id)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::Id)));
 	//	connect(mActionSignalMapper, SIGNAL(mapped(QString)), mainWindow->listenerManager(), SIGNAL(contextMenuActionTriggered(QString)));
 }

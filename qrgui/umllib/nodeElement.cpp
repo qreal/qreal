@@ -1247,6 +1247,11 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 	}
 }
 
+QList<EdgeElement*> NodeElement::getEdges()
+{
+	return mEdgeList;
+}
+
 void NodeElement::addEdge(EdgeElement *edge)
 {
 	mEdgeList << edge;
@@ -1637,13 +1642,20 @@ void NodeElement::highlightEdges()
 NodeData& NodeElement::data()
 {
 	mData.id = id();
+	mData.logicalId = logicalId();
 	mData.properties = properties();
 	mData.pos = mPos;
 	mData.contents = mContents;
 
 	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
+	EditorViewScene *editorScene = dynamic_cast<EditorViewScene *>(scene());
+
 	if (parent) {
 		mData.parentId = parent->id();
+	} else if (editorScene) {
+		mData.parentId = editorScene->rootItemId();
+	} else {
+		mData.parentId = Id::rootId();
 	}
 
 	return mData;

@@ -966,6 +966,7 @@ void EdgeElement::highlight(QColor const color)
 EdgeData& EdgeElement::data()
 {
 	mData.id = id();
+	mData.logicalId = logicalId();
 	mData.srcId = src()->id();
 	mData.dstId = dst()->id();
 
