@@ -2,7 +2,7 @@
 
 #include <algorithm>
 	
-NodeElement::ResizeHandler::ResizeHandler(
+ResizeHandler::ResizeHandler(
 		NodeElement* const resizingNode
 		, ElementImpl* const elementImpl
 		)
@@ -11,7 +11,7 @@ NodeElement::ResizeHandler::ResizeHandler(
 {
 }
 
-void NodeElement::ResizeHandler::resize(QRectF newContents, QPointF newPos) const
+void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
 {
 	newContents.moveTo(0, 0);
 
@@ -35,7 +35,7 @@ void NodeElement::ResizeHandler::resize(QRectF newContents, QPointF newPos) cons
 	}
 }
 
-qreal NodeElement::ResizeHandler::maxChildWidth() const
+qreal ResizeHandler::maxChildWidth() const
 {
 	qreal maxChildWidthValue = 0;
 
@@ -54,7 +54,7 @@ qreal NodeElement::ResizeHandler::maxChildWidth() const
 	return maxChildWidthValue;
 }
 
-void NodeElement::ResizeHandler::sortChildrenIfNeeded() const
+void ResizeHandler::sortChildrenIfNeeded() const
 {
 	if (!mElementImpl->isSortingContainer()) {
 		return;
@@ -91,14 +91,14 @@ void NodeElement::ResizeHandler::sortChildrenIfNeeded() const
 	}
 }
 
-void NodeElement::ResizeHandler::gripeIfMinimizesToChildrenContainer(QRectF& contents) const
+void ResizeHandler::gripeIfMinimizesToChildrenContainer(QRectF& contents) const
 {
 	if (mElementImpl->minimizesToChildren()) {
 		contents = QRectF();
 	}
 }
 
-void NodeElement::ResizeHandler::parentResizeCall() const {
+void ResizeHandler::parentResizeCall() const {
 	NodeElement* const parItem = dynamic_cast<NodeElement* const>(mResizingNode->parentItem());
 	if (parItem) {
 		ResizeHandler handler(parItem, parItem->elementImpl());
@@ -106,17 +106,17 @@ void NodeElement::ResizeHandler::parentResizeCall() const {
 	}
 }
 
-void NodeElement::ResizeHandler::normalizeSize(QRectF& newContents) const {
-	if (newContents.width() < objectMinSize) {
+void ResizeHandler::normalizeSize(QRectF& newContents) const {
+	if (newContents.width() < mMinSize) {
 		newContents.setWidth(mResizingNode->foldedContents().width());
 	}
 
-	if (newContents.height() < objectMinSize) {
+	if (newContents.height() < mMinSize) {
 		newContents.setHeight(mResizingNode->foldedContents().height());
 	}
 }
 
-void NodeElement::ResizeHandler::resizeAccordingToChildren(QRectF& newContents, QPointF& newPos) const {
+void ResizeHandler::resizeAccordingToChildren(QRectF& newContents, QPointF& newPos) const {
 	/* 
 	* AAAA!!! Who knows why is this code existed????!!!
 	*
@@ -137,7 +137,7 @@ void NodeElement::ResizeHandler::resizeAccordingToChildren(QRectF& newContents, 
 	expandByChildren(newContents);
 }
 
-QPointF NodeElement::ResizeHandler::childDeflection() const
+QPointF ResizeHandler::childDeflection() const
 {
 	QPointF childDeflectionVector = QPointF(0, 0);
 	int const sizeOfForestalling = mElementImpl->sizeOfForestalling();
@@ -159,7 +159,7 @@ QPointF NodeElement::ResizeHandler::childDeflection() const
 	return childDeflectionVector;
 }
 
-void NodeElement::ResizeHandler::moveChildren(QPointF const &shift) const
+void ResizeHandler::moveChildren(QPointF const &shift) const
 {
 	qreal const sizeOfForestalling = mElementImpl->sizeOfForestalling();
 
@@ -180,7 +180,7 @@ void NodeElement::ResizeHandler::moveChildren(QPointF const &shift) const
 	}
 }
 
-void NodeElement::ResizeHandler::expandByChildren(QRectF& contents) const
+void ResizeHandler::expandByChildren(QRectF& contents) const
 {
 	int const sizeOfForestalling = mElementImpl->sizeOfForestalling();
 
@@ -221,7 +221,7 @@ void NodeElement::ResizeHandler::expandByChildren(QRectF& contents) const
 	}
 }
 
-QRectF NodeElement::ResizeHandler::childBoundingRect(const QGraphicsItem* const childItem, QRectF const &contents) const
+QRectF ResizeHandler::childBoundingRect(const QGraphicsItem* const childItem, QRectF const &contents) const
 {
 	QRectF boundingRect;
 

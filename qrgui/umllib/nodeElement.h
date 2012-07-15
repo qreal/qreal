@@ -144,10 +144,6 @@ private:
 		BottomRight
 	};
 
-	/** @brief Provides methods for container resizing. 
-	 */
-	class ResizeHandler;
-
 	/// Resizes node trying to use newContents as new shape
 	/// of node (ignoring newContents position) and to move
 	/// node to newPos.
@@ -202,7 +198,6 @@ private:
 	void connectTemporaryRemovedLinksToPort(qReal::IdList const &rtemporaryRemovedLinks, QString const &direction);
 
 	ContextMenuAction mSwitchGridAction;
-	static int const objectMinSize = 10;
 
 	bool mPortsVisible;
 

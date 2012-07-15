@@ -6,7 +6,7 @@
 
 #include "nodeElement.h"
 
-class NodeElement::ResizeHandler {
+class ResizeHandler {
 public:
 	/// Constructs a ResizeHandler.
 	/// @param resizingNode Node that is actually dealt with.
@@ -23,10 +23,12 @@ public:
 	void resize(QRectF newContents, QPointF newPos) const;
 
 private:
-	/** @brief Padding that reserves space for title */
+	/// Padding that reserves space for title.
 	static int const mTitlePadding = 25;
-	/** @brief Space between children inside sorting containers */
+	/// Space between children inside sorting containers.
 	static int const mChildSpacing = 10;
+	/// Minimum size of node
+	static int const mMinSize = 10;
 
 	/// Sorts child items in case node has
 	/// sortChildren container property.
