@@ -796,7 +796,8 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		QPointF const end = mMouseMovementManager->lastPoint();
 		NodeElement *parent = dynamic_cast<NodeElement *>(getElemAt(start));
 		NodeElement *child = dynamic_cast<NodeElement *>(getElemAt(end));
-		if (parent && child && mMouseMovementManager->isEdgeCandidate()) {
+		if (parent && child && mMouseMovementManager->isEdgeCandidate()
+				&& parent->id() != child->id()) {
 			getLinkByGesture(parent, *child);
 			deleteGesture();
 		} else {
