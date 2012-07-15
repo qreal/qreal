@@ -105,6 +105,7 @@ public:
 	virtual IdList selectedElementsOnActiveDiagram();
 	virtual void updateActiveDiagram();
 	virtual void deleteElementFromDiagram(Id const &id);
+	virtual void openAutoLayoutWindow();
 
 signals:
 	void gesturesShowed();
@@ -136,7 +137,6 @@ private slots:
 	/// handler for menu 'button find' pressed
 	void showFindDialog();
 
-	void openAutoLayoutWindow();
 	void setSceneFont();
 	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);

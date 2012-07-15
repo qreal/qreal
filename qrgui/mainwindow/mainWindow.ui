@@ -201,7 +201,6 @@
    <addaction name="actionZoom_In"/>
    <addaction name="actionZoom_Out"/>
    <addaction name="separator"/>
-   <addaction name="actionAutoLayout"/>
    <addaction name="actionFullscreen"/>
   </widget>
   <widget class="QDockWidget" name="logicalModelDock">
@@ -675,11 +674,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+V</string>
-   </property>
-  </action>
-  <action name="actionAutoLayout">
-   <property name="text">
-    <string>Auto Layout</string>
    </property>
   </action>
   <action name="actionPasteReference">

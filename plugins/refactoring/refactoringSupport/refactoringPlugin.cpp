@@ -91,6 +91,10 @@ QList<qReal::ActionInfo> RefactoringPlugin::actions()
 
 	mPlaceMenu = new QMenu(tr("Automatically arrange elements"));
 
+	mOpenAutoLayoutDialogAction = new QAction(tr("Auto Layout Manager"), NULL);
+	connect(mOpenAutoLayoutDialogAction, SIGNAL(triggered()), this, SLOT(openAutoLayoutDialog()));
+	mPlaceMenu->addAction(mOpenAutoLayoutDialogAction);
+
 	mPlaceTBAction = new QAction(tr("Top-Bottom"), NULL);
 	connect(mPlaceTBAction, SIGNAL(triggered()), this, SLOT(arrangeElementsTB()));
 	mPlaceMenu->addAction(mPlaceTBAction);
@@ -510,4 +514,9 @@ void RefactoringPlugin::removeUnnecessaryLinksFromSelected()
 			mSelectedElementsOnActiveDiagram.removeAll(id);
 		}
 	}
+}
+
+void RefactoringPlugin::openAutoLayoutDialog()
+{
+	mMainWindowIFace->openAutoLayoutWindow();
 }
