@@ -7,6 +7,7 @@
 #include <QtGui/QMenu>
 #include <QDebug>
 #include <math.h>
+#include <limits>
 
 #include "edgeElement.h"
 #include "nodeElement.h"
@@ -574,14 +575,21 @@ void EdgeElement::removeUnneededPoints(int startingPoint)
 NodeElement *EdgeElement::getNodeAt(QPointF const &position)
 {
 	QPainterPath circlePath;
-	circlePath.addEllipse(mapToScene(position), 12, 12);
+	QPointF pos = mapToScene(position);
+	circlePath.addEllipse(pos, 12, 12);
+	NodeElement *intersectedElement = NULL;
+	qreal norm = std::numeric_limits<qreal>::max();
 	foreach (QGraphicsItem *item, scene()->items(circlePath)) {
 		NodeElement *e = dynamic_cast<NodeElement *>(item);
 		if (e) {
-			return e;
+			QPointF nearestPort = e->getNearestPort(mapToItem(e, pos));
+			if ((pos - nearestPort).manhattanLength() < norm) {
+				norm = (position - nearestPort).manhattanLength();
+				intersectedElement = e;
+			}
 		}
 	}
-	return NULL;
+	return intersectedElement;
 }
 
 QList<ContextMenuAction*> EdgeElement::contextMenuActions()
