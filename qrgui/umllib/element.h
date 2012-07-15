@@ -57,6 +57,7 @@ public:
 	void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
 			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
+	/// Perform element-specific actions before being deleted
 	virtual void deleteFromScene() = 0;
 
 public slots:

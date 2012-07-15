@@ -1,6 +1,6 @@
 #include "../repoApi.h"
 
-#include <QDebug>
+#include <QtCore/QDebug>
 
 using namespace qrRepo;
 using namespace qrRepo::details;
@@ -76,6 +76,8 @@ void RepoApi::removeChildren(Id const &id)
 
 void RepoApi::removeElement(Id const &id)
 {
+	qDebug() << "removed " << id;
+
 	Q_ASSERT(id != Id::rootId());
 
 	foreach (Id const child, children(id))

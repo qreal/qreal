@@ -144,6 +144,8 @@ private:
 	/** @brief Space between children inside sorting containers */
 	static int const childSpacing = 10;
 
+	void disconnectEdges();
+
 	void delUnusedLines();
 	PossibleEdge toPossibleEdge(const StringPossibleEdge & strPossibleEdge);
 

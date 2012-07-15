@@ -572,18 +572,15 @@ void MainWindow::deleteFromScene(QGraphicsItem *target)
 
 	QPersistentModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
 	if (index.isValid()) {
-		NodeElement * const node = dynamic_cast<NodeElement *>(elem);
-		EdgeElement * const edge = dynamic_cast<EdgeElement *>(elem);
-		if (node) {
-			node->deleteFromScene();
-			deleteElementFromScene(index);
-		} else if (edge) {
-			deleteElementFromScene(index);
-			edge->deleteFromScene();
+		Element * const element = dynamic_cast<Element *>(elem);
+		if (element) {
+			element->deleteFromScene();
 		}
+		deleteElementFromScene(index);
 	}
-	if (getCurrentTab() != NULL && getCurrentTab()->scene() != NULL)
+	if (getCurrentTab() != NULL && getCurrentTab()->scene() != NULL) {
 		getCurrentTab()->scene()->invalidate();
+	}
 }
 
 void MainWindow::deleteFromDiagram()
