@@ -1,4 +1,3 @@
-#include <QtCore/QDebug>
 #include <QtGui/QVBoxLayout>
 
 #include "listWidget.h"
