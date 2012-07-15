@@ -4,10 +4,8 @@
 #include "../../mainwindow/projectManager/projectManager.h"
 
 namespace qReal {
-class MainWindow;
-}
 
-namespace qReal {
+class MainWindow;
 
 /**
  * @brief Start page dialog
@@ -35,3 +33,4 @@ private:
 };
 
 }
+

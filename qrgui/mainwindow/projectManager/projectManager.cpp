@@ -144,18 +144,14 @@ QString ProjectManager::missingPluginNames()
 
 void ProjectManager::refreshApplicationStateAfterSave()
 {
+	refreshApplicationStateAfterOpen();
 	setUnsavedIndicator(false);
-
-	refreshWindowTitleAccordingToSaveFile();
-	mMainWindow->refreshRecentProjectsList(mSaveFilePath);
-	SettingsManager::setValue("saveFile", mSaveFilePath);
 }
 
 void ProjectManager::refreshApplicationStateAfterOpen()
 {
 	refreshWindowTitleAccordingToSaveFile();
 	mMainWindow->refreshRecentProjectsList(mSaveFilePath);
-	SettingsManager::setValue("saveFile", mSaveFilePath);
 }
 
 void ProjectManager::refreshWindowTitleAccordingToSaveFile()
@@ -163,9 +159,9 @@ void ProjectManager::refreshWindowTitleAccordingToSaveFile()
 	mMainWindow->connectWindowTitle();
 	QString windowTitle = mMainWindow->toolManager().customizer()->windowTitle();
 	if (mSaveFilePath.isEmpty()) {
-		mMainWindow->setWindowTitle(windowTitle + " - unsaved project");
+		mMainWindow->setWindowTitle(windowTitle + " unsaved project");
 	} else {
-		mMainWindow->setWindowTitle(windowTitle + " - " + mSaveFilePath);
+		mMainWindow->setWindowTitle(windowTitle + " " + mSaveFilePath);
 	}
 }
 
@@ -272,7 +268,7 @@ QString ProjectManager::getSaveFileName(QString const &dialogWindowTitle)
 void ProjectManager::setUnsavedIndicator(bool isUnsaved)
 {
 	if (isUnsaved && !mUnsavedIndicator) {
-		mMainWindow->setWindowTitle(mMainWindow->windowTitle() + " [modified]");
+		mMainWindow->setWindowTitle(mMainWindow->windowTitle() + tr(" [modified]"));
 	}
 	mUnsavedIndicator = isUnsaved;
 }
