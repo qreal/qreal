@@ -64,6 +64,7 @@ MainWindow::MainWindow()
 		, mStartDialog(new StartDialog(this))
 {
 	mUi->setupUi(this);
+	setWindowTitle("QReal");
 	initSettingsManager();
 	registerMetaTypes();
 
@@ -82,7 +83,7 @@ MainWindow::MainWindow()
 	splashScreen.setProgress(40);
 
 	initDocks();
-	mModels = new models::Models(mSaveFile, mEditorManager);
+	mModels = new models::Models("", mEditorManager);
 
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi()
@@ -91,7 +92,8 @@ MainWindow::MainWindow()
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
 
-	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
+	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
+							, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 
 	splashScreen.setProgress(60);
 
@@ -100,8 +102,6 @@ MainWindow::MainWindow()
 	showMaximized();
 
 	splashScreen.setProgress(70);
-
-	initWindowTitle();
 
 	if (!SettingsManager::value("maximized").toBool()) {
 		showNormal();
@@ -119,8 +119,6 @@ MainWindow::MainWindow()
 	splashScreen.setProgress(100);
 
 	mDocksVisibility.clear();
-	setAutoSaveParameters();
-	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
 	connectWindowTitle();
 
 	splashScreen.close();
@@ -799,7 +797,7 @@ void MainWindow::showPreferencesDialog()
 	}
 	mPreferencesDialog.exec();
 	mToolManager.updateSettings();
-	setAutoSaveParameters();
+	mProjectManager->reinitAutosaver();
 }
 
 void MainWindow::initSettingsManager()
@@ -1444,26 +1442,6 @@ QWidget *MainWindow::windowWidget()
 	return this;
 }
 
-void MainWindow::setAutoSaveParameters()
-{
-	if (!SettingsManager::value("autoSave").toBool()) {
-		mAutoSaveTimer.stop();
-		return;
-	}
-
-	mAutoSaveTimer.setInterval(SettingsManager::value("autoSaveInterval").toInt() * 1000); // in ms
-	mAutoSaveTimer.start();
-}
-
-void MainWindow::autosave()
-{
-	if (mSaveFile.isEmpty()) {
-		mProjectManager->saveAs(mTempDir);
-	} else {
-		mProjectManager->saveOrSuggestToSaveAs();
-	}
-}
-
 void MainWindow::initToolManager()
 {
 	if (mToolManager.customizer()) {
@@ -1503,20 +1481,6 @@ void MainWindow::initGridProperties()
 
 	mUi->actionShow_grid->blockSignals(false);
 	mUi->actionShow_grid->setChecked(SettingsManager::value("ShowGrid").toBool());
-}
-
-void MainWindow::initWindowTitle()
-{
-	QString windowTitle = mToolManager.customizer()->windowTitle();
-	if (windowTitle.isEmpty())
-		windowTitle = "QReal";
-
-	if (mSaveFile.isEmpty()) {
-		setWindowTitle(windowTitle + " - " + "unsaved project");
-	}
-	else {
-		setWindowTitle(windowTitle + " - " + mSaveFile);
-	}
 }
 
 void MainWindow::initExplorers()

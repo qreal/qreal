@@ -194,16 +194,7 @@ private slots:
 
 	void openShapeEditor();
 
-//	void setDiagramCreateFlag();
-//	void diagramInCreateListDeselect();
-//	void diagramInCreateListSelected(int num);
-
-//	void on_actionNew_Diagram_triggered();
-
 	void updatePaletteIcons();
-
-	void autosave();
-	void setAutoSaveParameters();
 
 private:
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
@@ -268,7 +259,6 @@ private:
 	void initToolManager();
 	void initTabs();
 	void initDocks();
-	void initWindowTitle();
 	void initExplorers();
 	void initRecentProjectsMenu();
 
@@ -312,7 +302,6 @@ private:
 
 	HelpBrowser *mHelpBrowser;
 	bool mUnsavedProjectIndicator;
-	QTimer mAutoSaveTimer;
 
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;

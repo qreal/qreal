@@ -256,3 +256,8 @@ QString ProjectManager::getSaveFileName(QString const &dialogWindowTitle)
 	}
 	return fileName;
 }
+
+void ProjectManager::reinitAutosaver()
+{
+	mAutosaver->reinit();
+}
