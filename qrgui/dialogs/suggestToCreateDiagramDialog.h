@@ -8,10 +8,6 @@ namespace qReal {
 
 class MainWindow;
 
-}
-
-namespace qReal {
-
 /**
  * @brief Dialog for create a diagram
  *

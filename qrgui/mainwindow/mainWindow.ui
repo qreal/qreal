@@ -48,7 +48,6 @@
     <addaction name="actionSave_as"/>
     <addaction name="actionImport"/>
     <addaction name="actionSave_diagram_as_a_picture"/>
-    <addaction name="actionCloseProject"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
