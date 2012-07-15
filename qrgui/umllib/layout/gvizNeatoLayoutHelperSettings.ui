@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>gvizNeatoSettingsForm</class>
+ <widget class="QWidget" name="gvizNeatoSettingsForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>380</width>
+    <height>170</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="modeLabel">
+     <property name="text">
+      <string>Variation of layout:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QComboBox" name="modeBox">
+     <item>
+      <property name="text">
+       <string>hier</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>major</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>KK</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="sepLabel">
+     <property name="text">
+      <string>Factor to increase nodes
+when removing overlap:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QSpinBox" name="spinBox">
+     <property name="value">
+      <number>1</number>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="overlapLabel">
+     <property name="text">
+      <string>Specify if and how to
+remove node overlaps:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="overlapBox">
+     <item>
+      <property name="text">
+       <string notr="true">true</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string notr="true">false</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string notr="true">scalexy</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string notr="true">prism</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string notr="true">compress</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string notr="true">scale</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

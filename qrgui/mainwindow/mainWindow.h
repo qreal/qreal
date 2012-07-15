@@ -30,6 +30,8 @@
 
 #include "../dialogs/startDialog/startDialog.h"
 
+#include "../dialogs/autoLayoutDialog.h"
+
 namespace Ui {
 class MainWindowUi;
 }
@@ -120,6 +122,7 @@ private slots:
 	/// handler for menu 'button find' pressed
 	void showFindDialog();
 
+	void openAutoLayoutWindow();
 	void setSceneFont();
 	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);
@@ -336,6 +339,8 @@ private:
 	FindManager *mFindHelper;
 
 	StartDialog *mStartDialog;
+	
+	AutoLayoutDialog *mAutoLayoutDialog;
 
 friend class StartDialog;
 friend class SuggestToCreateDiagramWidget;

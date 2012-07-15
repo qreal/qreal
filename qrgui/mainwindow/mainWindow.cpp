@@ -63,6 +63,7 @@ MainWindow::MainWindow()
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mStartDialog(new StartDialog(this))
+		, mAutoLayoutDialog(new AutoLayoutDialog(this))
 {
 	mUi->setupUi(this);
 	initSettingsManager();
@@ -149,6 +150,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(openNewProject()));
 	connect(mUi->actionCloseProject, SIGNAL(triggered()), this, SLOT(closeProjectAndSave()));
 
+	connect(mUi->actionAutoLayout, SIGNAL(triggered()), this, SLOT(openAutoLayoutWindow()));
 	connect(mUi->actionImport, SIGNAL(triggered()), this, SLOT(importProject()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 	connect(mUi->actionCopyElementsOnDiagram, SIGNAL(triggered()), this, SLOT(copyElementsOnDiagram()));
@@ -242,6 +244,7 @@ MainWindow::~MainWindow()
 	delete mFindReplaceDialog;
 	delete mFindHelper;
 	delete mStartDialog;
+	delete mAutoLayoutDialog;
 }
 
 EditorManager* MainWindow::manager()
@@ -1882,4 +1885,11 @@ void MainWindow::updateActiveDiagram()
 	reinitModels();
 	activateItemOrDiagram(diagramId);
 	mUi->graphicalModelExplorer->setRootIndex(QModelIndex());
+}
+	
+void MainWindow::openAutoLayoutWindow()
+{
+	EditorViewMViface *mvIface = getCurrentTab()->mvIface();
+	mAutoLayoutDialog->setMvIface(mvIface);
+	mAutoLayoutDialog->show();
 }
