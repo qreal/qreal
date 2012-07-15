@@ -62,11 +62,9 @@ int ProjectManager::suggestToSaveOrCancelMessage()
 	return offerSave.exec();
 }
 
-/// Try to open save file with name fileName, show messages is file non exist or plugins are missing and
-/// return false, or return true otherwise. fileName == "" (default value) will be create an empty project.
 bool ProjectManager::open(QString const &fileName)
 {
-	if (fileName != "" && !saveFileExists(fileName)) {
+	if (!fileName.isEmpty() && !saveFileExists(fileName)) {
 		return false;
 	}
 	// There is no way to verify sufficiency plugins without initializing repository
