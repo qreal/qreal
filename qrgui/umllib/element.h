@@ -18,17 +18,18 @@
 /** @brief size of a point port */
 const int kvadratik = 10;
 
-/** @class Element
- * 	@brief base class for an element on a diagram
-  * */
+/**
+ * @brief base class for an element on a diagram
+ */
 class Element : public QObject, public QGraphicsItem, public ElementRepoInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(QGraphicsItem)
+
 public:
 
 	Element();
-	virtual ~Element(){}
+	virtual ~Element() {}
 
 	void setId(qReal::Id &id);
 
@@ -42,7 +43,7 @@ public:
 
 	virtual void connectToPort() {}  // for edge
 	virtual void checkConnectionsToPort() {}  // for node
-	virtual QList<ContextMenuAction*> contextMenuActions();
+	virtual QList<ContextMenuAction *> contextMenuActions();
 
 	virtual bool initPossibleEdges() = 0;
 	virtual void initTitles();
@@ -53,11 +54,12 @@ public:
 
 	virtual void setColorRect(bool bl) = 0;
 
-	void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi);
+	void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
+			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
 public slots:
-	virtual void singleSelectionState(const bool singleSelected);
-	virtual void selectionState(const bool selected);
+	virtual void singleSelectionState(bool const singleSelected);
+	virtual void selectionState(bool const selected);
 
 signals:
 	void switchFolding(bool);
@@ -66,11 +68,11 @@ protected:
 
 	bool mMoving;
 	qReal::Id mId;
-	ElementImpl* mElementImpl;
-	QList<ElementTitle*> mTitles;
+	ElementImpl *mElementImpl;
+	QList<ElementTitle *> mTitles;
 
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
 	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
 
-	void initTitlesBy(QRectF const& contents);
+	void initTitlesBy(QRectF const &contents);
 };

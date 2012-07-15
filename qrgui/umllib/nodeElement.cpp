@@ -466,6 +466,10 @@ void NodeElement::resize(QRectF newContents, QPointF newPos)
 	if (parItem) {
 		parItem->resize(); // recursive expansion of parents
 	}
+
+	if (SettingsManager::value("ActivateGrid").toBool()) {
+		alignToGrid();
+	}
 }
 
 QList<ContextMenuAction*> NodeElement::contextMenuActions()
@@ -1173,13 +1177,13 @@ NodeElement *NodeElement::getNodeAt(QPointF const &position)
 	return 0;
 }
 
-void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget)
+void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *w)
 {
 	mElementImpl->paint(painter, mContents);
 	if (mElementImpl->hasPorts()) {
-		paint(painter, style, widget, mPortRenderer);
+		paint(painter, style, w, mPortRenderer);
 	} else {
-		paint(painter, style, widget, 0);
+		paint(painter, style, w, 0);
 	}
 
 	if (mSelectionNeeded) {
@@ -1245,6 +1249,11 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 			painter->restore();
 		}
 	}
+}
+
+QList<EdgeElement*> NodeElement::getEdges()
+{
+	return mEdgeList;
 }
 
 void NodeElement::addEdge(EdgeElement *edge)
@@ -1637,13 +1646,16 @@ void NodeElement::highlightEdges()
 NodeData& NodeElement::data()
 {
 	mData.id = id();
+	mData.logicalId = logicalId();
 	mData.properties = properties();
 	mData.pos = mPos;
 	mData.contents = mContents;
 
-	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
+	NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
 	if (parent) {
 		mData.parentId = parent->id();
+	} else {
+		mData.parentId = Id::rootId();
 	}
 
 	return mData;

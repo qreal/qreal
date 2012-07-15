@@ -87,10 +87,6 @@
         <translation>ОК</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="refactoringPlugin.cpp" line="357"/>
-        <location filename="refactoringPlugin.cpp" line="367"/>
-=======
         <location filename="refactoringPlugin.cpp" line="323"/>
         <source>Path to dot is not specified</source>
         <translation>Путь к компоненте dot пакета graphviz не определён</translation>
@@ -98,16 +94,11 @@
     <message>
         <location filename="refactoringPlugin.cpp" line="362"/>
         <location filename="refactoringPlugin.cpp" line="372"/>
->>>>>>> f8f730196ffd27edae9c5d8cf8216f8e7a8362ba
         <source>No match</source>
         <translation>Место на диаграмме для применения рефакторинга не найдено</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="refactoringPlugin.cpp" line="378"/>
-=======
         <location filename="refactoringPlugin.cpp" line="383"/>
->>>>>>> f8f730196ffd27edae9c5d8cf8216f8e7a8362ba
         <source>No next match</source>
         <translation>Другого места для применения правила рефакторинга не найдено</translation>
     </message>
@@ -165,43 +156,43 @@
         <translation>QReal рефакторинги</translation>
     </message>
     <message>
-        <location filename="refactoringPreferencePage.ui" line="35"/>
+        <location filename="refactoringPreferencePage.ui" line="29"/>
         <source>Refactoring</source>
         <translation>Рефакторинг</translation>
     </message>
     <message>
-        <location filename="refactoringPreferencePage.ui" line="41"/>
+        <location filename="refactoringPreferencePage.ui" line="38"/>
         <source>QReal sources location:</source>
         <translation>Путь до исходных файлов QReal:</translation>
     </message>
     <message>
-        <location filename="refactoringPreferencePage.ui" line="51"/>
-        <location filename="refactoringPreferencePage.ui" line="127"/>
+        <location filename="refactoringPreferencePage.ui" line="48"/>
+        <location filename="refactoringPreferencePage.ui" line="114"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="refactoringPreferencePage.ui" line="58"/>
+        <location filename="refactoringPreferencePage.ui" line="55"/>
         <source>Highlight color</source>
         <translation>Цвет подсветки:</translation>
     </message>
     <message>
-        <location filename="refactoringPreferencePage.ui" line="90"/>
+        <location filename="refactoringPreferencePage.ui" line="84"/>
         <source>Auto layout</source>
         <translation>Автораскладка</translation>
     </message>
     <message>
-        <location filename="refactoringPreferencePage.ui" line="96"/>
+        <location filename="refactoringPreferencePage.ui" line="104"/>
         <source>Windows</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="refactoringPreferencePage.ui" line="103"/>
+        <location filename="refactoringPreferencePage.ui" line="97"/>
         <source>Linux</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="refactoringPreferencePage.ui" line="110"/>
+        <location filename="refactoringPreferencePage.ui" line="90"/>
         <source>choose manually</source>
         <translation>выбрать вручную</translation>
     </message>
@@ -210,7 +201,7 @@
         <translation type="obsolete">другие</translation>
     </message>
     <message>
-        <location filename="refactoringPreferencePage.ui" line="117"/>
+        <location filename="refactoringPreferencePage.ui" line="128"/>
         <source>Path to dot:</source>
         <translation>Путь к dot:</translation>
     </message>
