@@ -87,10 +87,6 @@
         <translation>ОК</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="refactoringPlugin.cpp" line="357"/>
-        <location filename="refactoringPlugin.cpp" line="367"/>
-=======
         <location filename="refactoringPlugin.cpp" line="323"/>
         <source>Path to dot is not specified</source>
         <translation>Путь к компоненте dot пакета graphviz не определён</translation>
@@ -98,16 +94,11 @@
     <message>
         <location filename="refactoringPlugin.cpp" line="362"/>
         <location filename="refactoringPlugin.cpp" line="372"/>
->>>>>>> f8f730196ffd27edae9c5d8cf8216f8e7a8362ba
         <source>No match</source>
         <translation>Место на диаграмме для применения рефакторинга не найдено</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="refactoringPlugin.cpp" line="378"/>
-=======
         <location filename="refactoringPlugin.cpp" line="383"/>
->>>>>>> f8f730196ffd27edae9c5d8cf8216f8e7a8362ba
         <source>No next match</source>
         <translation>Другого места для применения правила рефакторинга не найдено</translation>
     </message>
