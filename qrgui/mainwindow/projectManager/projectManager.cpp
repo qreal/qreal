@@ -229,7 +229,6 @@ bool ProjectManager::suggestToSaveAs()
 bool ProjectManager::saveAs(QString const &fileName)
 {
 	QString workingFileName = fileName;
-
 	if (workingFileName.isEmpty()) {
 		return false;
 	}

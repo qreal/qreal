@@ -22,6 +22,8 @@ public:
 	explicit StartDialog(MainWindow *mainWindow);
 	void keyPressEvent(QKeyEvent *event);
 
+	static const QSize minimumSize;
+
 private slots:
 	void openRecentProject(QString const &fileName);
 	void openExistingProject();

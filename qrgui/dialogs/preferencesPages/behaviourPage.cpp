@@ -13,7 +13,7 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
 
 	mUi->warningWindowBox->setChecked(SettingsManager::value("warningWindow").toBool());
 	mUi->arrangeLinksCheckBox->setChecked(SettingsManager::value("arrangeLinks").toBool());
-	mUi->paletteTabCheckBox->setChecked(SettingsManager::value("paletteTabSwitching").toBool());
+	mUi->paletteTabCheckBox->setChecked(SettingsManager::value("PaletteTabSwitching").toBool());
 	mUi->diagramCreateCheckBox->setChecked(SettingsManager::value("diagramCreateSuggestion").toBool());
 	mUi->autoSaveCheckBox->setChecked(SettingsManager::value("Autosave").toBool());
 	mUi->autoSaveSpinBox->setValue(SettingsManager::value("AutosaveInterval").toInt());

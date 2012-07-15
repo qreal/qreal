@@ -982,6 +982,7 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 		mUi->tabs->setCurrentWidget(view);
 	}
 
+	qDebug() << SettingsManager::value("PaletteTabSwitching").toBool();
 	// changing of palette active editor
 	if (SettingsManager::value("PaletteTabSwitching").toBool()) {
 		int i = 0;

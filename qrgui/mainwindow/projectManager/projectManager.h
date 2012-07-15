@@ -8,6 +8,9 @@ namespace qReal {
 
 class MainWindow;
 
+/**
+ * @brief Class that provides all of the work load project from a file, stored in the project file, and so on
+ */
 class ProjectManager : public QObject
 {
 	Q_OBJECT
