@@ -1673,6 +1673,8 @@ NodeData& NodeElement::data()
 	mData.id = id();
 	mData.logicalId = logicalId();
 	mData.properties = properties();
+	// new element should not have references to links connected to original source element
+	mData.properties["links"] = IdListHelper::toVariant(IdList());
 	mData.pos = mPos;
 	mData.contents = mContents;
 
