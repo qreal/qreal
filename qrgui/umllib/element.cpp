@@ -4,10 +4,8 @@
 
 using namespace qReal;
 
-//Element::Element()
 Element::Element(ElementImpl* elementImpl)
 	: mMoving(false)
-	//, mElementImpl(NULL)
 	, mElementImpl(elementImpl)
 	, mLogicalAssistApi(NULL)
 	, mGraphicalAssistApi(NULL)

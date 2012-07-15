@@ -30,7 +30,6 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 		, mDelPointAction(tr("Delete point"), this)
 		, mSquarizeAction(tr("Squarize"), this)
 		, mMinimizeAction(tr("Remove all points"), this)
-		//, mElementImpl(impl)
 		, mLastDragPoint(-1)
 {
 	mPenStyle = mElementImpl->getPenStyle();

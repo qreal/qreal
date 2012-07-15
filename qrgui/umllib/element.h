@@ -26,7 +26,6 @@ class Element : public QObject, public QGraphicsItem, public ElementRepoInterfac
 	Q_OBJECT
 	Q_INTERFACES(QGraphicsItem)
 public:
-	//Element();
 	Element(ElementImpl* elementImpl);
 	
 	virtual ~Element(){}
@@ -64,6 +63,7 @@ signals:
 	void switchFolding(bool);
 
 protected:
+	void initTitlesBy(QRectF const& contents);
 
 	bool mMoving;
 	qReal::Id mId;
@@ -72,6 +72,4 @@ protected:
 
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
 	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
-
-	void initTitlesBy(QRectF const& contents);
 };

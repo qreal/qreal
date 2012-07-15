@@ -779,7 +779,7 @@ QRectF NodeElement::boundingRect() const
 void NodeElement::updateData()
 {
 	Element::updateData();
-	if (mMoving == 0) {
+	if (!mMoving) {
 		QPointF newpos = mGraphicalAssistApi->position(id());
 		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
 		QRectF newRect; // Use default ((0,0)-(0,0))
