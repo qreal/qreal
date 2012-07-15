@@ -158,13 +158,13 @@ private:
 	qReal::Id pasteNode(NodeData const &nodeData, bool isGraphicalCopy
 			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
 
-	NodeElement* pasteGraphicalCopyOfNode(NodeData const &nodeData, QPointF const &newPos);
-	NodeElement* pasteNewNode(NodeData const &data, QPointF const &newPos);
+	NodeElement *pasteGraphicalCopyOfNode(NodeData const &nodeData, QPointF const &newPos);
+	NodeElement *pasteNewNode(NodeData const &data, QPointF const &newPos);
 
 	qReal::Id pasteEdge(EdgeData const &edgeData, bool isGraphicalCopy
 			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
-	EdgeElement* pasteGraphicalCopyOfEdge(EdgeData const &edgeData);
-	EdgeElement* pasteNewEdge(EdgeData const &edgeData);
+	EdgeElement *pasteGraphicalCopyOfEdge(EdgeData const &edgeData);
+	EdgeElement *pasteNewEdge(EdgeData const &edgeData);
 
 	void restoreNode(NodeElement *node, NodeData const &nodeData
 			, QHash<qReal::Id, qReal::Id> const &copiedIdsMap, QPointF const &pos);
