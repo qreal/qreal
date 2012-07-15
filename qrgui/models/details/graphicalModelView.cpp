@@ -23,8 +23,8 @@ void GraphicalModelView::rowsInserted(QModelIndex const &parent, int start, int 
 		QPersistentModelIndex const current = model()->index(row, 0, parent);
 		Id const logicalId = current.data(roles::logicalIdRole).value<Id>();
 		if (parentLogicalId == Id()
-				|| (parentLogicalId.editor() != "MetaEditor" && parentLogicalId.editor() != "ConstraintsEditor")
-				|| (logicalId.editor() != "MetaEditor" && logicalId.editor() != "ConstraintsEditor")) {
+				|| (parentLogicalId.editor() != "MetaEditor" && parentLogicalId.editor() != "ConstraintsMetamodel")
+				|| (logicalId.editor() != "MetaEditor" && logicalId.editor() != "ConstraintsMetamodel")) {
 			parentLogicalId = Id::rootId();
 		}
 		QString const name = current.data(Qt::DisplayRole).toString();
@@ -54,7 +54,7 @@ void GraphicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex con
 	Id const parentLogicalId = topLeft.sibling(topLeft.row(), 0).data(roles::logicalIdRole).value<Id>();
 	Id const childLogicalId = bottomRight.sibling(bottomRight.row(), 0).data(roles::logicalIdRole).value<Id>();
 	if (((parentLogicalId.editor() == "MetaEditor" && childLogicalId.editor() == "MetaEditor")
-			|| (parentLogicalId.editor() == "ConstraintsEditor" && childLogicalId.editor() == "ConstraintsEditor"))
+			|| (parentLogicalId.editor() == "ConstraintsMetamodel" && childLogicalId.editor() == "ConstraintsMetamodel"))
 			&& parentLogicalId != childLogicalId) {
 		static_cast<LogicalModel *>(mModel)->changeParent(parentLogicalId, childLogicalId);
 	}
