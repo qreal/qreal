@@ -69,7 +69,6 @@ public:
 	ToolPluginManager &toolManager();
 
 
-
 	GesturesPainterInterface *gesturesPainter();
 	QModelIndex rootIndex() const;
 
@@ -130,6 +129,7 @@ public slots:
 	void refreshRecentProjectsList(QString const &fileName);
 	void connectWindowTitle();
 	void disconnectWindowTitle();
+	void createDiagram(QString const &idString);
 
 private slots:
 
@@ -152,7 +152,6 @@ private slots:
 	/// @return true - if all ok, false - if not ok
 	void fullscreen();
 	void openRecentProjectsMenu();
-	void createDiagram(QString const &idString);
 
 	void saveDiagramAsAPicture();
 
@@ -314,9 +313,6 @@ private:
 	FindManager *mFindHelper;
 	ProjectManager *mProjectManager;
 	StartDialog *mStartDialog;
-
-friend class StartDialog;
-friend class SuggestToCreateDiagramWidget;
 };
 
 }
