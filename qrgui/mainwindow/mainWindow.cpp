@@ -536,43 +536,52 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 
 void MainWindow::deleteFromScene()
 {
-	foreach (QGraphicsItem *item, getCurrentTab()->scene()->selectedItems())
-		deleteFromScene(item);
+	QList<QGraphicsItem *> itemsToDelete = getCurrentTab()->scene()->selectedItems();
+	// QGraphicsScene::selectedItems() returns items in no particular order,
+	// so we should handle parent-child relationships manually
+
+	while (!itemsToDelete.isEmpty()) {
+		QGraphicsItem *currentItem = itemsToDelete.at(0);
+
+		// delete possible children
+		foreach (QGraphicsItem *child, currentItem->childItems()) {
+			itemsToDelete.removeAll(child);
+			deleteFromScene(child);
+		}
+
+		// delete the item itself
+		itemsToDelete.removeAll(currentItem);
+		deleteFromScene(currentItem);
+	}
+}
+
+void MainWindow::deleteElementFromScene(QPersistentModelIndex const &index)
+{
+	PropertyEditorModel* propertyEditorModel = static_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
+	if (propertyEditorModel->isCurrentIndex(index)) {
+		propertyEditorModel->clearModelIndexes();
+	}
+	mUi->propertyEditor->setRootIndex(QModelIndex());
+	mModels->graphicalModel()->removeRow(index.row(), index.parent());
 }
 
 void MainWindow::deleteFromScene(QGraphicsItem *target)
 {
 	Element *elem = dynamic_cast<Element *>(target);
-	if (elem) {
-		QPersistentModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
-		if (index.isValid()) {
-			NodeElement* const node = dynamic_cast<NodeElement*>(elem);
-			if (node) {
-				node->highlightEdges();
-			}
-			EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(elem);
-			NodeElement* source = NULL;
-			NodeElement* destination = NULL;
-			if (edge) {
-				source = edge->src();
-				destination = edge->dst();
-			}
-			PropertyEditorModel* propertyEditorModel = static_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
-			if (propertyEditorModel->isCurrentIndex(index))
-				propertyEditorModel->clearModelIndexes();
-			mUi->propertyEditor->setRootIndex(QModelIndex());
-			mModels->graphicalModel()->removeRow(index.row(), index.parent());
-			if (edge) {
-				if (source) {
-					source->arrangeLinks();
-				}
-				if (destination) {
-					destination->arrangeLinks();
-				}
-			}
+	if (!elem) {
+		return;
+	}
+
+	QPersistentModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
+	if (index.isValid()) {
+		Element * const element = dynamic_cast<Element *>(elem);
+		if (element) {
+			element->deleteFromScene();
 		}
-		if (getCurrentTab() != NULL && getCurrentTab()->scene() != NULL)
-			getCurrentTab()->scene()->invalidate();
+		deleteElementFromScene(index);
+	}
+	if (getCurrentTab() != NULL && getCurrentTab()->scene() != NULL) {
+		getCurrentTab()->scene()->invalidate();
 	}
 }
 
