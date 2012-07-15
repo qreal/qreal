@@ -13,6 +13,7 @@
 #include "../pluginManager/toolPluginManager.h"
 #include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
+#include "../view/propertyEditorView.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
 #include "mainWindowInterpretersInterface.h"
 #include "../../qrkernel/settingsManager.h"
@@ -60,6 +61,15 @@ public:
 	EditorView *getCurrentTab();
 	ListenerManager *listenerManager();
 	ProjectManager *projectManager();
+	models::Models *models();
+	PropertyEditorView *propertyEditor();
+	QTreeView *graphicalModelExplorer();
+	QTreeView *logicalModelExplorer();
+	PropertyEditorModel &propertyModel();
+	ToolPluginManager &toolManager();
+
+
+
 	GesturesPainterInterface *gesturesPainter();
 	QModelIndex rootIndex() const;
 
@@ -113,10 +123,13 @@ public slots:
 	virtual void selectItemOrDiagram(Id const &graphicalId);
 
 	void selectItemWithError(Id const &id);
-
 	void showErrors(gui::ErrorReporter const * const errorReporter);
 
 	void changePaletteRepresentation();
+	void closeAllTabs();
+	void refreshRecentProjectsList(QString const &fileName);
+	void connectWindowTitle();
+	void disconnectWindowTitle();
 
 private slots:
 
@@ -146,8 +159,6 @@ private slots:
 	void print();
 	void makeSvg();
 	void showGrid(bool isChecked);
-
-	void closeAllTabs();
 
 	void sceneSelectionChanged();
 
@@ -231,8 +242,6 @@ private:
 	void connectActionZoomTo(QWidget* widget);
 	void setConnectActionZoomTo(QWidget* widget);
 	void clickErrorListWidget();
-	void connectWindowTitle();
-	void disconnectWindowTitle();
 
 	void setShowGrid(bool isChecked);
 	void setShowAlignment(bool isChecked);
@@ -261,8 +270,6 @@ private:
 	void initDocks();
 	void initExplorers();
 	void initRecentProjectsMenu();
-
-	void refreshRecentProjectsList(QString const &fileName);
 
 	Ui::MainWindowUi *mUi;
 
@@ -310,7 +317,6 @@ private:
 
 friend class StartDialog;
 friend class SuggestToCreateDiagramWidget;
-friend class ProjectManager;
 };
 
 }

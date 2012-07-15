@@ -72,8 +72,8 @@ bool ProjectManager::open(QString const &fileName)
 	// There is no way to verify sufficiency plugins without initializing repository
 	// that is stored in the save file. Iinitializing is impossible without closing current project.
 	close();
-	mMainWindow->mModels->repoControlApi().open(fileName);
-	mMainWindow->mModels->reinit();
+	mMainWindow->models()->repoControlApi().open(fileName);
+	mMainWindow->models()->reinit();
 
 	if (!pluginsEnough()) {
 		// restoring the session
@@ -81,10 +81,10 @@ bool ProjectManager::open(QString const &fileName)
 		return false;
 	}
 
-	mMainWindow->mPropertyModel.setSourceModels(mMainWindow->mModels->logicalModel()
-			, mMainWindow->mModels->graphicalModel());
-	mMainWindow->mUi->graphicalModelExplorer->setModel(mMainWindow->mModels->graphicalModel());
-	mMainWindow->mUi->logicalModelExplorer->setModel(mMainWindow->mModels->logicalModel());
+	mMainWindow->propertyModel().setSourceModels(mMainWindow->models()->logicalModel()
+			, mMainWindow->models()->graphicalModel());
+	mMainWindow->graphicalModelExplorer()->setModel(mMainWindow->models()->graphicalModel());
+	mMainWindow->logicalModelExplorer()->setModel(mMainWindow->models()->logicalModel());
 
 	mSaveFilePath = fileName;
 	refreshApplicationStateAfterOpen();
@@ -102,8 +102,8 @@ bool ProjectManager::import(QString const &fileName)
 	if (!QFile(fileName).exists()) {
 		return false;
 	}
-	mMainWindow->mModels->repoControlApi().importFromDisk(fileName);
-	mMainWindow->mModels->reinit();
+	mMainWindow->models()->repoControlApi().importFromDisk(fileName);
+	mMainWindow->models()->reinit();
 	return true;
 }
 
@@ -133,8 +133,8 @@ bool ProjectManager::pluginsEnough()
 
 QString ProjectManager::missingPluginNames()
 {
-	IdList missingPlugins = mMainWindow->mEditorManager.checkNeededPlugins(
-			mMainWindow->mModels->logicalRepoApi(), mMainWindow->mModels->graphicalRepoApi());
+	IdList missingPlugins = mMainWindow->manager()->checkNeededPlugins(
+			mMainWindow->models()->logicalRepoApi(), mMainWindow->models()->graphicalRepoApi());
 	QString result;
 	foreach (Id const &id, missingPlugins) {
 		result += id.editor() + "\n";
@@ -161,7 +161,7 @@ void ProjectManager::refreshApplicationStateAfterOpen()
 void ProjectManager::refreshWindowTitleAccordingToSaveFile()
 {
 	mMainWindow->connectWindowTitle();
-	QString windowTitle = mMainWindow->mToolManager.customizer()->windowTitle();
+	QString windowTitle = mMainWindow->toolManager().customizer()->windowTitle();
 	if (mSaveFilePath.isEmpty()) {
 		mMainWindow->setWindowTitle(windowTitle + " - unsaved project");
 	} else {
@@ -194,17 +194,17 @@ void ProjectManager::suggestToCreateDiagram(bool isNonClosable)
 
 void ProjectManager::close()
 {
-	if (mMainWindow->mUi->propertyEditor->model() != NULL) {
-		static_cast<PropertyEditorModel *>(mMainWindow->mUi->propertyEditor->model())->clearModelIndexes();
+	if (mMainWindow->propertyEditor()->model() != NULL) {
+		static_cast<PropertyEditorModel *>(mMainWindow->propertyEditor()->model())->clearModelIndexes();
 	}
-	mMainWindow->mUi->graphicalModelExplorer->setModel(NULL);
-	mMainWindow->mUi->logicalModelExplorer->setModel(NULL);
+	mMainWindow->graphicalModelExplorer()->setModel(NULL);
+	mMainWindow->logicalModelExplorer()->setModel(NULL);
 
 	if (mMainWindow->getCurrentTab()) {
 		static_cast<EditorViewScene *>(mMainWindow->getCurrentTab()->scene())->clearScene();
 	}
 	mMainWindow->closeAllTabs();
-	mMainWindow->setWindowTitle(mMainWindow->mToolManager.customizer()->windowTitle());
+	mMainWindow->setWindowTitle(mMainWindow->toolManager().customizer()->windowTitle());
 }
 
 bool ProjectManager::save()
@@ -212,7 +212,7 @@ bool ProjectManager::save()
 	if (mSaveFilePath.isEmpty()) {
 		return false;
 	}
-	mMainWindow->mModels->repoControlApi().saveAll();
+	mMainWindow->models()->repoControlApi().saveAll();
 	refreshApplicationStateAfterSave();
 	return true;
 }
@@ -237,7 +237,7 @@ bool ProjectManager::saveAs(QString const &fileName)
 	if (workingFileName.isEmpty()) {
 		return false;
 	}
-	mMainWindow->mModels->repoControlApi().saveTo(workingFileName);
+	mMainWindow->models()->repoControlApi().saveTo(workingFileName);
 	mSaveFilePath = workingFileName;
 	refreshApplicationStateAfterSave();
 	return true;

@@ -241,7 +241,7 @@ MainWindow::~MainWindow()
 	delete mStartDialog;
 }
 
-EditorManager* MainWindow::manager()
+EditorManager *MainWindow::manager()
 {
 	return &mEditorManager;
 }
@@ -1091,6 +1091,36 @@ ListenerManager *MainWindow::listenerManager()
 ProjectManager *MainWindow::projectManager()
 {
 	return mProjectManager;
+}
+
+models::Models *MainWindow::models()
+{
+	return mModels;
+}
+
+PropertyEditorView *MainWindow::propertyEditor()
+{
+	return mUi->propertyEditor;
+}
+
+QTreeView *MainWindow::graphicalModelExplorer()
+{
+	return mUi->graphicalModelExplorer;
+}
+
+QTreeView *MainWindow::logicalModelExplorer()
+{
+	return mUi->logicalModelExplorer;
+}
+
+PropertyEditorModel &MainWindow::propertyModel()
+{
+	return mPropertyModel;
+}
+
+ToolPluginManager &MainWindow::toolManager()
+{
+	return mToolManager;
 }
 
 void MainWindow::showGrid(bool isChecked)
