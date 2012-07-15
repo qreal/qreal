@@ -60,14 +60,12 @@ public:
 	EditorManager *manager();
 	EditorView *getCurrentTab();
 	ListenerManager *listenerManager();
-	ProjectManager *projectManager();
 	models::Models *models();
 	PropertyEditorView *propertyEditor();
 	QTreeView *graphicalModelExplorer();
 	QTreeView *logicalModelExplorer();
 	PropertyEditorModel &propertyModel();
 	ToolPluginManager &toolManager();
-
 
 	GesturesPainterInterface *gesturesPainter();
 	QModelIndex rootIndex() const;

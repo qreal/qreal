@@ -9,10 +9,10 @@
 using namespace qReal;
 
 ProjectManager::ProjectManager(MainWindow *mainWindow)
-	: QObject(mainWindow)
-	, mMainWindow(mainWindow)
-	, mAutosaver(new Autosaver(this))
-	, mUnsavedIndicator(false)
+		: QObject(mainWindow)
+		, mMainWindow(mainWindow)
+		, mAutosaver(new Autosaver(this))
+		, mUnsavedIndicator(false)
 {
 }
 
@@ -29,7 +29,7 @@ bool ProjectManager::suggestToOpenExisting()
 	if (!suggestToSaveChangesOrCancel()) {
 		return false;
 	}
-	QString fileName = getOpenFileName(tr("Open existing project"));
+	QString const fileName = getOpenFileName(tr("Open existing project"));
 	if (fileName.isEmpty()) {
 		return false;
 	}
@@ -119,10 +119,9 @@ bool ProjectManager::saveFileExists(QString const &fileName)
 bool ProjectManager::pluginsEnough()
 {
 	if (!missingPluginNames().isEmpty()) {
-		QMessageBox thereAreMissingPluginsMessage(QMessageBox::Information, tr("There are missing plugins"),
-				tr("These plugins are not present, but needed to load the save:\n") +
-						missingPluginNames(),
-				QMessageBox::Ok, mMainWindow);
+		QMessageBox thereAreMissingPluginsMessage(QMessageBox::Information, tr("There are missing plugins")
+				, tr("These plugins are not present, but needed to load the save:\n") + missingPluginNames()
+				, QMessageBox::Ok, mMainWindow);
 		thereAreMissingPluginsMessage.exec();
 		return false;
 	}
@@ -155,7 +154,7 @@ void ProjectManager::refreshApplicationStateAfterOpen()
 void ProjectManager::refreshWindowTitleAccordingToSaveFile()
 {
 	mMainWindow->connectWindowTitle();
-	QString windowTitle = mMainWindow->toolManager().customizer()->windowTitle();
+	QString const windowTitle = mMainWindow->toolManager().customizer()->windowTitle();
 	if (mSaveFilePath.isEmpty()) {
 		mMainWindow->setWindowTitle(windowTitle + " unsaved project");
 	} else {
@@ -226,7 +225,7 @@ bool ProjectManager::suggestToSaveAs()
 
 bool ProjectManager::saveAs(QString const &fileName)
 {
-	QString workingFileName = fileName;
+	QString const workingFileName = fileName;
 	if (workingFileName.isEmpty()) {
 		return false;
 	}
@@ -242,8 +241,8 @@ QString ProjectManager::getOpenFileName(QString const &dialogWindowTitle)
 			, QFileInfo(mSaveFilePath).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"));
 
 	if (!fileName.isEmpty() && !QFile::exists(fileName)) {
-		QMessageBox fileNotFoundMessage(QMessageBox::Information, tr("File not found"),
-				tr("File ") + fileName + tr(" not found. Try again"), QMessageBox::Ok, mMainWindow);
+		QMessageBox fileNotFoundMessage(QMessageBox::Information, tr("File not found")
+				, tr("File ") + fileName + tr(" not found. Try again"), QMessageBox::Ok, mMainWindow);
 		fileNotFoundMessage.exec();
 
 		fileName = getOpenFileName(dialogWindowTitle);

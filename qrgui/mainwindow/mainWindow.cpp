@@ -60,7 +60,7 @@ MainWindow::MainWindow()
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this))
-		, mStartDialog(new StartDialog(this))
+		, mStartDialog(new StartDialog(this, mProjectManager))
 {
 	mUi->setupUi(this);
 	setWindowTitle("QReal");
@@ -1086,11 +1086,6 @@ bool MainWindow::closeTab(QModelIndex const &graphicsIndex)
 ListenerManager *MainWindow::listenerManager()
 {
 	return mListenerManager;
-}
-
-ProjectManager *MainWindow::projectManager()
-{
-	return mProjectManager;
 }
 
 models::Models *MainWindow::models()
