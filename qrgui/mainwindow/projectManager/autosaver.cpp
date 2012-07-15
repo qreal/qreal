@@ -44,13 +44,13 @@ QString Autosaver::filePath()
 {
 	QString result;
 	if (SettingsManager::value("AutosaveFileName").toString().isEmpty()) {
-		result = QApplication::applicationFilePath() + ".qrs";
-	} else {
-		result = SettingsManager::value("AutosaveDirPath").toString();
-		if (result.isEmpty()) {
-			result = QApplication::applicationDirPath();
-		}
-		result += "/" + SettingsManager::value("AutosaveFileName").toString();
+		return QApplication::applicationFilePath() + ".qrs";
 	}
+
+	result = SettingsManager::value("AutosaveDirPath").toString();
+	if (result.isEmpty()) {
+		result = QApplication::applicationDirPath();
+	}
+	result += "/" + SettingsManager::value("AutosaveFileName").toString();
 	return result;
 }

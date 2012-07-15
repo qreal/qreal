@@ -8,14 +8,14 @@
 
 using namespace qReal;
 
-const QSize StartDialog::minimumSize = QSize(350, 200);
+const QSize StartDialog::mMinimumSize = QSize(350, 200);
 
-StartDialog::StartDialog(MainWindow *mainWindow)
+StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
 	: QDialog(mainWindow, Qt::WindowMaximizeButtonHint)
 	, mMainWindow(mainWindow)
-	, mProjectManager(mainWindow->projectManager())
+	, mProjectManager(projectManager)
 {
-	setMinimumSize(minimumSize);
+	setMinimumSize(mMinimumSize);
 	QTabWidget *tabWidget = new QTabWidget;
 
 	RecentProjectsListWidget *recentProjects = new RecentProjectsListWidget(this);
