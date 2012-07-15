@@ -1,18 +1,3 @@
-/**
- ******************************************************************************
- **	ファイル名 : balancer.h
- **
- ** モデル関連情報:
- **   モデル名   : balancer.mdl
- **   バージョン : 1.893
- **   履歴       : y_yama - Tue Sep 25 11:37:09 2007
- **                takashic - Sun Sep 28 17:50:53 2008
- **
- ** Copyright (c) 2009-2011 MathWorks, Inc.
- ** All rights reserved.
- ******************************************************************************
- **/
-
 #ifndef RTW_HEADER_balancer_h_
 #define RTW_HEADER_balancer_h_
 #ifndef balancer_COMMON_INCLUDES_
@@ -36,9 +21,9 @@
 # define rtmGetStopRequested(rtm)      ((void*) 0)
 #endif
 
-#define CMD_MAX                        100.0F                    /* 前進/旋回命令絶対最大値 */
-#define DEG2RAD                        0.01745329238F            /* 角度単位変換係数(=pi/180) */
-#define EXEC_PERIOD                    0.00400000019F            /* バランス制御実行周期(秒) */
+#define CMD_MAX                        100.0F
+#define DEG2RAD                        0.01745329238F
+#define EXEC_PERIOD                    0.00400000019F
 
 /* Model entry point functions */
 extern void balance_init(void);
@@ -77,21 +62,4 @@ extern void balance_control(F32 args_cmd_forward, F32 args_cmd_turn,
  * '<S11>'  : balancer/Control/Cal_x1/LowPathFilter
  */
 #endif                                 /* RTW_HEADER_balancer_h_ */
-
-/*======================== TOOL VERSION INFORMATION ==========================*
- * MATLAB 7.7 (R2008b)30-Jun-2008                                             *
- * Simulink 7.2 (R2008b)30-Jun-2008                                           *
- * Real-Time Workshop 7.2 (R2008b)30-Jun-2008                                 *
- * Real-Time Workshop Embedded Coder 5.2 (R2008b)30-Jun-2008                  *
- * Stateflow 7.2 (R2008b)30-Jun-2008                                          *
- * Stateflow Coder 7.2 (R2008b)30-Jun-2008                                    *
- * Simulink Fixed Point 6.0 (R2008b)30-Jun-2008                               *
- *============================================================================*/
-
-/*======================= LICENSE IN USE INFORMATION =========================*
- * matlab                                                                     *
- * real-time_workshop                                                         *
- * rtw_embedded_coder                                                         *
- * simulink                                                                   *
- *============================================================================*/
 /******************************** END OF FILE ********************************/
