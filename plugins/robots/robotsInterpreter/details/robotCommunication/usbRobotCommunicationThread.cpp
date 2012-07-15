@@ -40,8 +40,9 @@ void UsbRobotCommunicationThread::connect(QString const &portName)
 			int status2 = 0;
 			mFantom.nFANTOM100_iNXTIterator_getName(nxtIterator, resNamePC, status2);
 			QString resName = QString(resNamePC);
-			if (resName.toUpper().contains("USB"))
+			if (resName.toUpper().contains("USB")) {
 				break;
+			}
 		}
 		if (status == kStatusNoError) {
 			mNXTHandle = mFantom.nFANTOM100_iNXTIterator_getNXT(nxtIterator, status);
@@ -51,8 +52,9 @@ void UsbRobotCommunicationThread::connect(QString const &portName)
 	}
 	emit connected(mActive);
 
-	if (mActive)
-		mKeepAliveTimer->start(1000);
+	if (mActive) {
+		mKeepAliveTimer->start(500);
+	}
 }
 
 void UsbRobotCommunicationThread::send(QObject *addressee
@@ -61,10 +63,11 @@ void UsbRobotCommunicationThread::send(QObject *addressee
 	QByteArray outputBuffer;
 	outputBuffer.resize(responseSize);
 	send(buffer, responseSize, outputBuffer);
-	if (buffer[2] != 0)
+	if (buffer[2] != 0) {
 		emit response(addressee, QByteArray());
-	else
+	} else {
 		emit response(addressee, outputBuffer);
+	}
 }
 
 void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const responseSize, QByteArray &outputBuffer)
@@ -73,8 +76,9 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const 
 
 	int status = 0;
 	QByteArray newBuffer;
-	for (int i = 3; i < buffer.length(); i++)
+	for (int i = 3; i < buffer.length(); i++) {
 		newBuffer[i - 3] = buffer[i];
+	}
 
 	if (buffer[2] != 0) {
 		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, false, newBuffer, newBuffer.length(), NULL, 0, status);
@@ -160,6 +164,7 @@ void UsbRobotCommunicationThread::checkForConnection()
 
 	send(command, keepAliveResponseSize, response);
 
-	if (response[3] == '\0')
+	if (response[3] == '\0') {
 		emit disconnected();
+	}
 }

@@ -55,11 +55,9 @@ QList<QextPortInfo> QextSerialEnumerator::getPorts()
 
 		if (str.contains("ttyS")) {
 			inf.friendName = "Serial port "+str.remove(0, 4);
-		}
-		else if (str.contains("ttyUSB")) {
+		} else if (str.contains("ttyUSB")) {
 			inf.friendName = "USB-serial adapter "+str.remove(0, 6);
-		}
-		else if (str.contains("rfcomm")) {
+		} else if (str.contains("rfcomm")) {
 			inf.friendName = "Bluetooth-serial adapter "+str.remove(0, 6);
 		}
 		inf.enumName = "/dev"; // is there a more helpful name for this?

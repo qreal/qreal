@@ -58,8 +58,9 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 
 Interpreter::~Interpreter()
 {
-	foreach (Thread * const thread, mThreads)
+	foreach (Thread * const thread, mThreads) {
 		delete thread;
+	}
 	delete mBlocksTable;
 }
 
@@ -92,8 +93,9 @@ void Interpreter::interpret()
 	}
 
 	Autoconfigurer configurer(*mGraphicalModelApi, mBlocksTable, mInterpretersInterface->errorReporter(), mRobotModel);
-	if (!configurer.configure(currentDiagramId))
+	if (!configurer.configure(currentDiagramId)) {
 		return;
+	}
 }
 
 void Interpreter::stopRobot()
@@ -117,8 +119,9 @@ void Interpreter::showWatchList() {
 
 void Interpreter::closeD2ModelWidget()
 {
-	if (mD2ModelWidget)
+	if (mD2ModelWidget) {
 		mD2ModelWidget->close();
+	}
 }
 
 void Interpreter::showD2ModelWidget(bool isVisible)
@@ -152,8 +155,9 @@ void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum impl
 			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, mRobotCommunication, mD2RobotModel);
 	setRobotImplementation(robotImpl);
 	mImplementationType = implementationType;
-	if (mImplementationType != robotModelType::real)
+	if (mImplementationType != robotModelType::real) {
 		mRobotModel->init();
+	}
 }
 
 void Interpreter::connectedSlot(bool success)
@@ -195,8 +199,9 @@ Id const Interpreter::findStartingElement(Id const &diagram) const
 	IdList const children = mGraphicalModelApi->graphicalRepoApi().children(diagram);
 
 	foreach (Id const child, children) {
-		if (child.type() == startingElementType || child.type() == startingElementType1)
+		if (child.type() == startingElementType || child.type() == startingElementType1) {
 			return child;
+		}
 	}
 
 	return Id();
@@ -225,8 +230,9 @@ void Interpreter::configureSensors(sensorType::SensorTypeEnum const &port1
 		, sensorType::SensorTypeEnum const &port3
 		, sensorType::SensorTypeEnum const &port4)
 {
-	if (mConnected)
+	if (mConnected) {
 		mRobotModel->configureSensors(port1, port2, port3, port4);
+	}
 }
 
 void Interpreter::addThread(details::Thread * const thread)
@@ -251,8 +257,9 @@ void Interpreter::setRobotModel(details::RobotModel * const robotModel)
 void Interpreter::setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl)
 {
 	mRobotModel->setRobotImplementation(robotImpl);
-	if (robotImpl)
+	if (robotImpl) {
 		connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(runTimer()));
+	}
 }
 
 void Interpreter::runTimer()
@@ -279,17 +286,22 @@ void Interpreter::runTimer()
 
 void Interpreter::readSensorValues()
 {
-	if (mState == idle)
+	if (mState == idle) {
 		return;
+	}
 
-	if (mRobotModel->sensor(inputPort::port1))
+	if (mRobotModel->sensor(inputPort::port1)) {
 		mRobotModel->sensor(inputPort::port1)->read();
-	if (mRobotModel->sensor(inputPort::port2))
+	}
+	if (mRobotModel->sensor(inputPort::port2)) {
 		mRobotModel->sensor(inputPort::port2)->read();
-	if (mRobotModel->sensor(inputPort::port3))
+	}
+	if (mRobotModel->sensor(inputPort::port3)) {
 		mRobotModel->sensor(inputPort::port3)->read();
-	if (mRobotModel->sensor(inputPort::port4))
+	}
+	if (mRobotModel->sensor(inputPort::port4)) {
 		mRobotModel->sensor(inputPort::port4)->read();
+	}
 }
 
 void Interpreter::slotFailure()
@@ -352,10 +364,11 @@ void Interpreter::setRobotModelType(robotModelType::robotModelTypeEnum robotMode
 void Interpreter::setCommunicator(QString const &valueOfCommunication, QString const &portName)
 {
 	RobotCommunicationThreadInterface *communicator = NULL;
-	if (valueOfCommunication == "bluetooth")
+	if (valueOfCommunication == "bluetooth") {
 		communicator = new BluetoothRobotCommunicationThread();
-	else
+	} else {
 		communicator = new UsbRobotCommunicationThread();
+	}
 
 	mRobotCommunication->setRobotCommunicationThreadObject(communicator);
 	mRobotCommunication->setPortName(portName);

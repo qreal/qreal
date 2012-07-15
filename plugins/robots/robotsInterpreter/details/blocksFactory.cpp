@@ -49,48 +49,49 @@ RobotsBlockParser * BlocksFactory::getParser()
 Block *BlocksFactory::block(Id const &element)
 {
 	Block * newBlock = NULL;
-	if (elementMetatypeIs(element, "InitialNode"))
+	if (elementMetatypeIs(element, "InitialNode")) {
 		newBlock = new InitialBlock(*mRobotModel);
-	else if (elementMetatypeIs(element, "InitialBlock"))
+	} else if (elementMetatypeIs(element, "InitialBlock")) {
 		newBlock = new InitialBlockWithPorts(*mRobotModel);
-	else if (elementMetatypeIs(element, "FinalNode"))
+	} else if (elementMetatypeIs(element, "FinalNode")) {
 		newBlock = new FinalBlock();
-	else if (elementMetatypeIs(element, "Beep"))
+	} else if (elementMetatypeIs(element, "Beep")) {
 		newBlock = new BeepBlock(mRobotModel->brick());
-	else if (elementMetatypeIs(element, "Timer"))
+	} else if (elementMetatypeIs(element, "Timer")) {
 		newBlock = new TimerBlock();
-	else if (elementMetatypeIs(element, "WaitForTouchSensor"))
+	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
 		newBlock = new WaitForTouchSensorBlock(mRobotModel);
-	else if (elementMetatypeIs(element, "WaitForSonarDistance"))
+	} else if (elementMetatypeIs(element, "WaitForSonarDistance")) {
 		newBlock = new WaitForSonarDistanceBlock(mRobotModel);
-	else if (elementMetatypeIs(element, "EnginesForward"))
+	} else if (elementMetatypeIs(element, "EnginesForward")) {
 		newBlock = new EnginesForwardBlock(mRobotModel->motorA(), mRobotModel->motorB(), mRobotModel->motorC());
-	else if (elementMetatypeIs(element, "EnginesBackward"))
+	} else if (elementMetatypeIs(element, "EnginesBackward")) {
 		newBlock = new EnginesBackwardBlock(mRobotModel->motorA(), mRobotModel->motorB(), mRobotModel->motorC());
-	else if (elementMetatypeIs(element, "EnginesStop"))
+	} else if (elementMetatypeIs(element, "EnginesStop")) {
 		newBlock = new EnginesStopBlock(mRobotModel->motorA(), mRobotModel->motorB(), mRobotModel->motorC());
-	else if (elementMetatypeIs(element, "Loop"))
+	} else if (elementMetatypeIs(element, "Loop")) {
 		newBlock = new LoopBlock();
-	else if (elementMetatypeIs(element, "Fork"))
+	} else if (elementMetatypeIs(element, "Fork")) {
 		newBlock = new ForkBlock();
-	else if (elementMetatypeIs(element, "PlayTone"))
+	} else if (elementMetatypeIs(element, "PlayTone")) {
 		newBlock = new PlayToneBlock(mRobotModel->brick());
-	else if (elementMetatypeIs(element, "Function"))
+	} else if (elementMetatypeIs(element, "Function")) {
 		newBlock = new FunctionBlock();
-	else if (elementMetatypeIs(element, "WaitForColor"))
+	} else if (elementMetatypeIs(element, "WaitForColor")) {
 		newBlock = new WaitForColorBlock(mRobotModel);
-	else if (elementMetatypeIs(element, "WaitForColorIntensity"))
+	} else if (elementMetatypeIs(element, "WaitForColorIntensity")) {
 		newBlock = new WaitForColorIntensityBlock(mRobotModel);
-	else if (elementMetatypeIs(element, "IfBlock"))
+	} else if (elementMetatypeIs(element, "IfBlock")) {
 		newBlock = new IfBlock();
-	else if (elementMetatypeIs(element, "WaitForEncoder"))
+	} else if (elementMetatypeIs(element, "WaitForEncoder")) {
 		newBlock = new WaitForEncoderBlock(mRobotModel);
-	else if (elementMetatypeIs(element, "NullificationEncoder"))
+	} else if (elementMetatypeIs(element, "NullificationEncoder")) {
 		newBlock = new NullificationEncoderBlock(mRobotModel);
-	else if (elementMetatypeIs(element, "WaitForLight"))
+	} else if (elementMetatypeIs(element, "WaitForLight")) {
 		newBlock = new WaitForLightSensorBlock(mRobotModel);
-	else
+	} else {
 		newBlock = new DummyBlock();
+	}
 
 	newBlock->init(element, mGraphicalModelApi, mLogicalModelApi, *mBlocksTable, mErrorReporter, mParser);
 	return newBlock;
