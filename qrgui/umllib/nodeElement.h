@@ -116,6 +116,8 @@ public:
 	Element *getPlaceholderNextElement();
 	void highlightEdges();
 
+	bool isFolded() const;
+
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
 	virtual void selectionState(bool const selected);
@@ -157,11 +159,6 @@ private:
 	/// newPos equals to current position of node and
 	/// newContents equals to current shape (mContents).
 	void resize();
-
-	/** @brief Padding that reserves space for title */
-	static int const titlePadding = 25;
-	/** @brief Space between children inside sorting containers */
-	static int const childSpacing = 10;
 
 	void delUnusedLines();
 	PossibleEdge toPossibleEdge(StringPossibleEdge const &strPossibleEdge);

@@ -1524,6 +1524,11 @@ void NodeElement::resize(QRectF newContents)
 
 void NodeElement::resize(QRectF newContents, QPointF newPos)
 {
-	ResizeHandler handler(this);
+	ResizeHandler handler(this, mElementImpl);
 	handler.resize(newContents, newPos);
+}
+
+bool NodeElement::isFolded() const
+{
+	return mIsFolded;
 }

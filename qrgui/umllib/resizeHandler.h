@@ -10,7 +10,8 @@ class NodeElement::ResizeHandler {
 public:
 	/// Constructs a ResizeHandler.
 	/// @param resizingNode Node that is actually dealt with.
-	ResizeHandler(NodeElement* const resizingNode);
+	/// @param elementImpl ElementImpl of resizingNode.
+	ResizeHandler(NodeElement* const resizingNode, ElementImpl* const elementImpl);
 
 	/// Resizes node trying to use newContents as new shape
 	/// of node (ignoring newContents position) and to move
@@ -22,6 +23,11 @@ public:
 	void resize(QRectF newContents, QPointF newPos) const;
 
 private:
+	/** @brief Padding that reserves space for title */
+	static int const mTitlePadding = 25;
+	/** @brief Space between children inside sorting containers */
+	static int const mChildSpacing = 10;
+
 	/// Sorts child items in case node has
 	/// sortChildren container property.
 	void sortChildrenIfNeeded() const;
@@ -68,7 +74,10 @@ private:
 	/// @param contents It will be expanded according to child configuration.
 	void expandByChildren(QRectF& contents) const;
 
-	/// Node that is actually dealt with
+	/// Node that is actually dealt with.
 	NodeElement* const mResizingNode;
+
+	/// ElementImpl of node that is actually dealt with.
+	ElementImpl* const mElementImpl;
 };
 
