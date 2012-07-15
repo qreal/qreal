@@ -978,3 +978,13 @@ EdgeData& EdgeElement::data()
 
 	return mData;
 }
+
+void EdgeElement::deleteFromScene()
+{
+	if (mSrc) {
+		mSrc->arrangeLinks();
+	}
+	if (mDst) {
+		mDst->arrangeLinks();
+	}
+}

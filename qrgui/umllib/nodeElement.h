@@ -117,6 +117,8 @@ public:
 	Element *getPlaceholderNextElement();
 	void highlightEdges();
 
+	virtual void deleteFromScene();
+
 public slots:
 	virtual void singleSelectionState(const bool singleSelected);
 	virtual void selectionState(const bool selected);

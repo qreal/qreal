@@ -1643,6 +1643,11 @@ void NodeElement::highlightEdges()
 		edge->highlight();
 }
 
+void NodeElement::deleteFromScene()
+{
+	highlightEdges();
+}
+
 NodeData& NodeElement::data()
 {
 	mData.id = id();

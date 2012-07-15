@@ -57,6 +57,8 @@ public:
 	void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
 			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
+	virtual void deleteFromScene() = 0;
+
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
 	virtual void selectionState(bool const selected);
