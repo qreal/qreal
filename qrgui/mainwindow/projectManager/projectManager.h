@@ -33,22 +33,25 @@ public:
 	bool openEmptyWithSuggestToSaveChanges();
 	bool open(QString const &fileName = "");
 	bool suggestToSaveChangesOrCancel();
+	void setUnsavedIndicator(bool isUnsaved);
 	void reinitAutosaver();
 
-	int suggestToSaveOrCancelMessage();
 private:
 	bool import(const QString &fileName);
 	bool saveFileExists(QString const &fileName);
 	bool pluginsEnough();
 	QString missingPluginNames();
+
 	void refreshWindowTitleAccordingToSaveFile();
 	void refreshApplicationStateAfterSave();
 	void refreshApplicationStateAfterOpen();
+	int suggestToSaveOrCancelMessage();
 	QString getOpenFileName(const QString &dialogWindowTitle);
 	QString getSaveFileName(const QString &dialogWindowTitle);
 
 	MainWindow *mMainWindow;
 	Autosaver *mAutosaver;
+	bool mUnsavedIndicator;
 	QString mSaveFilePath;
 };
 

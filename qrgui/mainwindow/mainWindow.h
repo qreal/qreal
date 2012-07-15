@@ -104,7 +104,7 @@ signals:
 
 public slots:
 	void deleteFromScene();
-	void editWindowTitle();
+	void modelsAreChanged();
 	void propertyEditorScrollTo(QModelIndex const &index);
 
 	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
@@ -299,8 +299,6 @@ private:
 	PreferencesDialog mPreferencesDialog;
 
 	HelpBrowser *mHelpBrowser;
-	bool mUnsavedProjectIndicator;
-
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;

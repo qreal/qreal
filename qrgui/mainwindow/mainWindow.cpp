@@ -57,7 +57,6 @@ MainWindow::MainWindow()
 		, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
 		, mPreferencesDialog(this)
 		, mHelpBrowser(NULL)
-		, mUnsavedProjectIndicator(false)
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this))
@@ -619,12 +618,9 @@ void MainWindow::pasteCopyOfLogical()
 	}
 }
 
-void MainWindow::editWindowTitle()
+void MainWindow::modelsAreChanged()
 {
-	if (!mUnsavedProjectIndicator) {
-		setWindowTitle(windowTitle() + " [modified]");
-		mUnsavedProjectIndicator = true;
-	}
+	mProjectManager->setUnsavedIndicator(true);
 }
 
 void MainWindow::showAbout()
@@ -1548,44 +1544,45 @@ void MainWindow::saveDiagramAsAPicture()
 void MainWindow::connectWindowTitle()
 {
 	connect(mModels->graphicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex))
-			, this, SLOT(editWindowTitle()));
+			, this, SLOT(modelsAreChanged()));
 	connect(mModels->logicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex))
-			, this, SLOT(editWindowTitle()));
+			, this, SLOT(modelsAreChanged()));
 	connect(mModels->graphicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int))
-			, this, SLOT(editWindowTitle()));
+			, this, SLOT(modelsAreChanged()));
 	connect(mModels->logicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int))
-			, this, SLOT(editWindowTitle()));
+			, this, SLOT(modelsAreChanged()));
 	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(const QModelIndex, int, int, const QModelIndex &, int ))
-			, this, SLOT(editWindowTitle()));
+			, this, SLOT(modelsAreChanged()));
 	connect(mModels->logicalModel(), SIGNAL(rowsMoved(const QModelIndex, int, int, const QModelIndex &, int ))
-			, this, SLOT(editWindowTitle()));
+			, this, SLOT(modelsAreChanged()));
 	connect(mModels->graphicalModel(), SIGNAL(rowsRemoved(const QModelIndex, int, int ))
-			, this, SLOT(editWindowTitle()));
+			, this, SLOT(modelsAreChanged()));
 	connect(mModels->logicalModel(), SIGNAL(rowsRemoved (const QModelIndex &, int , int ))
-			, this, SLOT(editWindowTitle()));
+			, this, SLOT(modelsAreChanged()));
 }
 
 void MainWindow::disconnectWindowTitle()
 {
 	disconnect(mModels->graphicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex))
-			, this, SLOT(editWindowTitle()));
+			, this, SLOT(modelsAreChanged()));
 	disconnect(mModels->logicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex))
-			, this, SLOT(editWindowTitle()));
+			, this, SLOT(modelsAreChanged()));
 	disconnect(mModels->graphicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int))
-			, this, SLOT(editWindowTitle()));
+			, this, SLOT(modelsAreChanged()));
 	disconnect(mModels->logicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int))
-			, this, SLOT(editWindowTitle()));
+			, this, SLOT(modelsAreChanged()));
 	disconnect(mModels->graphicalModel(), SIGNAL(rowsMoved(const QModelIndex, int, int, const QModelIndex &, int ))
-			, this, SLOT(editWindowTitle()));
+			, this, SLOT(modelsAreChanged()));
 	disconnect(mModels->logicalModel(), SIGNAL(rowsMoved(const QModelIndex, int, int, const QModelIndex &, int ))
-			, this, SLOT(editWindowTitle()));
+			, this, SLOT(modelsAreChanged()));
 	disconnect(mModels->graphicalModel(), SIGNAL(rowsRemoved(const QModelIndex, int, int ))
-			, this, SLOT(editWindowTitle()));
+			, this, SLOT(modelsAreChanged()));
 	disconnect(mModels->logicalModel(), SIGNAL(rowsRemoved (const QModelIndex &, int , int ))
-			, this, SLOT(editWindowTitle()));
+			, this, SLOT(modelsAreChanged()));
 
-	mUnsavedProjectIndicator = false;
+	mProjectManager->setUnsavedIndicator(false);
 }
+
 
 void MainWindow::changePaletteRepresentation()
 {

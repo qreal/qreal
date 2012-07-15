@@ -12,6 +12,7 @@ ProjectManager::ProjectManager(MainWindow *mainWindow)
 	: QObject(mainWindow)
 	, mMainWindow(mainWindow)
 	, mAutosaver(new Autosaver(this))
+	, mUnsavedIndicator(false)
 {
 }
 
@@ -37,7 +38,7 @@ bool ProjectManager::suggestToOpenExisting()
 
 bool ProjectManager::suggestToSaveChangesOrCancel()
 {
-	if (!mMainWindow->mUnsavedProjectIndicator) {
+	if (!mUnsavedIndicator) {
 		return true;
 	}
 	switch (suggestToSaveOrCancelMessage()) {
@@ -143,7 +144,7 @@ QString ProjectManager::missingPluginNames()
 
 void ProjectManager::refreshApplicationStateAfterSave()
 {
-	mMainWindow->mUnsavedProjectIndicator = false;
+	setUnsavedIndicator(false);
 
 	refreshWindowTitleAccordingToSaveFile();
 	mMainWindow->refreshRecentProjectsList(mSaveFilePath);
@@ -266,6 +267,14 @@ QString ProjectManager::getSaveFileName(QString const &dialogWindowTitle)
 		fileName += ".qrs";
 	}
 	return fileName;
+}
+
+void ProjectManager::setUnsavedIndicator(bool isUnsaved)
+{
+	if (isUnsaved && !mUnsavedIndicator) {
+		mMainWindow->setWindowTitle(mMainWindow->windowTitle() + " [modified]");
+	}
+	mUnsavedIndicator = isUnsaved;
 }
 
 void ProjectManager::reinitAutosaver()
