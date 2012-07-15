@@ -117,6 +117,13 @@ public:
 	void highlightEdges();
 
 	bool isFolded() const;
+	QGraphicsRectItem* placeholder() const;
+
+	/// Current value of mContents
+	QRectF contents() const;
+
+	/// Folded contents of node
+	QRectF foldedContents() const;
 
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);

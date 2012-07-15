@@ -55,6 +55,8 @@ public:
 
 	void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
+	ElementImpl* elementImpl() const;
+
 public slots:
 	virtual void singleSelectionState(const bool singleSelected);
 	virtual void selectionState(const bool selected);

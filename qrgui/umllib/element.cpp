@@ -91,3 +91,8 @@ void Element::selectionState(const bool selected) {
 		singleSelectionState(false);
 	}
 }
+
+ElementImpl* Element::elementImpl() const
+{
+	return mElementImpl;
+}

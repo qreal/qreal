@@ -45,7 +45,7 @@ qreal NodeElement::ResizeHandler::maxChildWidth() const
 			continue;
 		}
 		
-		maxChildWidthValue = std::max(maxChildWidthValue, curItem->mContents.width());
+		maxChildWidthValue = std::max(maxChildWidthValue, curItem->contents().width());
 	}
 	if (maxChildWidthValue == 0) {
 		maxChildWidthValue = mResizingNode->childrenBoundingRect().width();
@@ -65,7 +65,7 @@ void NodeElement::ResizeHandler::sortChildrenIfNeeded() const
 	qreal maxChildWidthValue = maxChildWidth();
 
 	foreach (QGraphicsItem* const childItem, mResizingNode->childItems()) {
-		QGraphicsRectItem* const placeholder = mResizingNode->mPlaceholder;
+		QGraphicsRectItem* const placeholder = mResizingNode->placeholder();
 
 		if(placeholder != NULL && childItem == placeholder){
 			QRectF const rect(sizeOfForestalling, curChildY,
@@ -82,12 +82,12 @@ void NodeElement::ResizeHandler::sortChildrenIfNeeded() const
 		qreal const necessaryWidth =
 			mElementImpl->maximizesChildren()
 			? maxChildWidthValue
-			: curItem->mContents.width();
-		QRectF const rect(sizeOfForestalling, curChildY, necessaryWidth, curItem->mContents.height());
+			: curItem->contents().width();
+		QRectF const rect(sizeOfForestalling, curChildY, necessaryWidth, curItem->contents().height());
 
 		curItem->setGeometry(rect);
 		curItem->storeGeometry();
-		curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling() + mChildSpacing;
+		curChildY += curItem->contents().height() + mElementImpl->sizeOfChildrenForestalling() + mChildSpacing;
 	}
 }
 
@@ -101,17 +101,18 @@ void NodeElement::ResizeHandler::gripeIfMinimizesToChildrenContainer(QRectF& con
 void NodeElement::ResizeHandler::parentResizeCall() const {
 	NodeElement* const parItem = dynamic_cast<NodeElement* const>(mResizingNode->parentItem());
 	if (parItem) {
-		parItem->resize();
+		ResizeHandler handler(parItem, parItem->elementImpl());
+		handler.resize(parItem->contents(), parItem->pos());
 	}
 }
 
 void NodeElement::ResizeHandler::normalizeSize(QRectF& newContents) const {
 	if (newContents.width() < objectMinSize) {
-		newContents.setWidth(mResizingNode->mFoldedContents.width());
+		newContents.setWidth(mResizingNode->foldedContents().width());
 	}
 
 	if (newContents.height() < objectMinSize) {
-		newContents.setHeight(mResizingNode->mFoldedContents.height());
+		newContents.setHeight(mResizingNode->foldedContents().height());
 	}
 }
 
@@ -224,7 +225,7 @@ QRectF NodeElement::ResizeHandler::childBoundingRect(const QGraphicsItem* const 
 {
 	QRectF boundingRect;
 
-	if (childItem == mResizingNode->mPlaceholder) {
+	if (childItem == mResizingNode->placeholder()) {
 		boundingRect = childItem->boundingRect();
 
 		int const sizeOfForestalling = mElementImpl->sizeOfForestalling();
@@ -236,7 +237,7 @@ QRectF NodeElement::ResizeHandler::childBoundingRect(const QGraphicsItem* const 
 
 	const NodeElement* const curItem = dynamic_cast<const NodeElement* const>(childItem);
 	if (curItem && !curItem->isPort()) {
-		boundingRect = curItem->mContents;
+		boundingRect = curItem->contents();
 	}
 
 	return boundingRect;

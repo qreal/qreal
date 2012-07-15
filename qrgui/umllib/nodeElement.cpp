@@ -1532,3 +1532,18 @@ bool NodeElement::isFolded() const
 {
 	return mIsFolded;
 }
+
+QGraphicsRectItem* NodeElement::placeholder() const
+{
+	return mPlaceholder;
+}
+
+QRectF NodeElement::contents() const
+{
+	return mContents;
+}
+
+QRectF NodeElement::foldedContents() const
+{
+	return mFoldedContents;
+}
