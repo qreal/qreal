@@ -117,6 +117,8 @@ public:
 	Element *getPlaceholderNextElement();
 	void highlightEdges();
 
+	virtual void deleteFromScene();
+
 public slots:
 	virtual void singleSelectionState(const bool singleSelected);
 	virtual void selectionState(const bool selected);
@@ -141,6 +143,8 @@ private:
 	static int const titlePadding = 25;
 	/** @brief Space between children inside sorting containers */
 	static int const childSpacing = 10;
+
+	void disconnectEdges();
 
 	void delUnusedLines();
 	PossibleEdge toPossibleEdge(const StringPossibleEdge & strPossibleEdge);
