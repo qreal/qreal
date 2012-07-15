@@ -53,52 +53,57 @@
     </message>
     <message>
         <location filename="refactoringPlugin.cpp" line="94"/>
+        <source>Auto Layout Manager</source>
+        <translation>Открыть диалог работы с автораскладками</translation>
+    </message>
+    <message>
+        <location filename="refactoringPlugin.cpp" line="98"/>
         <source>Top-Bottom</source>
         <translation>Сверху вниз</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="98"/>
+        <location filename="refactoringPlugin.cpp" line="102"/>
         <source>Left-Right</source>
         <translation>Слева направо</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="102"/>
+        <location filename="refactoringPlugin.cpp" line="106"/>
         <source>Bottom-Top</source>
         <translation>Снизу вверх</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="106"/>
+        <location filename="refactoringPlugin.cpp" line="110"/>
         <source>Right-Left</source>
         <translation>Справа налево</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="259"/>
+        <location filename="refactoringPlugin.cpp" line="263"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="259"/>
+        <location filename="refactoringPlugin.cpp" line="263"/>
         <source>Saved successfully</source>
         <translation>Успешно сохранено</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="259"/>
+        <location filename="refactoringPlugin.cpp" line="263"/>
         <source>Ok</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="323"/>
+        <location filename="refactoringPlugin.cpp" line="327"/>
         <source>Path to dot is not specified</source>
         <translation>Путь к компоненте dot пакета graphviz не определён</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="362"/>
-        <location filename="refactoringPlugin.cpp" line="372"/>
+        <location filename="refactoringPlugin.cpp" line="366"/>
+        <location filename="refactoringPlugin.cpp" line="376"/>
         <source>No match</source>
         <translation>Место на диаграмме для применения рефакторинга не найдено</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="383"/>
+        <location filename="refactoringPlugin.cpp" line="387"/>
         <source>No next match</source>
         <translation>Другого места для применения правила рефакторинга не найдено</translation>
     </message>
@@ -111,7 +116,7 @@
         <translation type="obsolete">Горизонтально</translation>
     </message>
     <message>
-        <location filename="refactoringPlugin.cpp" line="124"/>
+        <location filename="refactoringPlugin.cpp" line="128"/>
         <source>Select xml file to load refactoring metamodel</source>
         <translation>Выберите xml-файл для загрузки метамодели языка рефакторингов</translation>
     </message>

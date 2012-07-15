@@ -39,7 +39,7 @@ nodes, in inches:</string>
     <widget class="QLabel" name="minLenLabel">
      <property name="text">
       <string>Minimum rank distance
-betweenhead and tail:</string>
+between head and tail:</string>
      </property>
     </widget>
    </item>

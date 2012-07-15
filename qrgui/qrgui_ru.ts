@@ -2,6 +2,24 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="ru_RU" sourcelanguage="en">
 <context>
+    <name>AutoLayoutDialog</name>
+    <message>
+        <location filename="dialogs/autoLayoutDialog.ui" line="20"/>
+        <source>Auto Layout Manager</source>
+        <translation>Автораскладывание элементов</translation>
+    </message>
+    <message>
+        <location filename="dialogs/autoLayoutDialog.ui" line="30"/>
+        <source> - Select layout method -</source>
+        <translation> - Выберите метод раскладки - </translation>
+    </message>
+    <message>
+        <location filename="dialogs/autoLayoutDialog.ui" line="38"/>
+        <source>Method settings</source>
+        <translation>Опции метода</translation>
+    </message>
+</context>
+<context>
     <name>BehaviourForm</name>
     <message>
         <source>Form</source>
@@ -2691,6 +2709,97 @@
     </message>
 </context>
 <context>
+    <name>gvizDotSettingsForm</name>
+    <message>
+        <location filename="umllib/layout/gvizDotLayoutHelperSettings.ui" line="14"/>
+        <source>Form</source>
+        <translation>Форма</translation>
+    </message>
+    <message>
+        <location filename="umllib/layout/gvizDotLayoutHelperSettings.ui" line="20"/>
+        <source>Separation between
+nodes, in inches:</source>
+        <translation>Взаимное разделение
+узлов в дюймах:</translation>
+    </message>
+    <message>
+        <location filename="umllib/layout/gvizDotLayoutHelperSettings.ui" line="41"/>
+        <source>Minimum rank distance
+between head and tail:</source>
+        <oldsource>Minimum rank distance
+betweenhead and tail:</oldsource>
+        <translation>Минимальное расстояние
+между началом и
+концом ребра:</translation>
+    </message>
+    <message>
+        <location filename="umllib/layout/gvizDotLayoutHelperSettings.ui" line="59"/>
+        <source>Sense of layout:</source>
+        <translation>Направление раскладки:</translation>
+    </message>
+    <message>
+        <location filename="umllib/layout/gvizDotLayoutHelperSettings.ui" line="67"/>
+        <source>Top to Bottom</source>
+        <translation>Сверху вних</translation>
+    </message>
+    <message>
+        <location filename="umllib/layout/gvizDotLayoutHelperSettings.ui" line="72"/>
+        <source>Bottom to Top</source>
+        <translation>Снизу вверх</translation>
+    </message>
+    <message>
+        <location filename="umllib/layout/gvizDotLayoutHelperSettings.ui" line="77"/>
+        <source>Left to Right</source>
+        <translation>Слева направо</translation>
+    </message>
+    <message>
+        <location filename="umllib/layout/gvizDotLayoutHelperSettings.ui" line="82"/>
+        <source>Right to Left</source>
+        <translation>Справа налево</translation>
+    </message>
+</context>
+<context>
+    <name>gvizNeatoSettingsForm</name>
+    <message>
+        <location filename="umllib/layout/gvizNeatoLayoutHelperSettings.ui" line="14"/>
+        <source>Form</source>
+        <translation>Форма</translation>
+    </message>
+    <message>
+        <location filename="umllib/layout/gvizNeatoLayoutHelperSettings.ui" line="20"/>
+        <source>Variation of layout:</source>
+        <translation>Оптимизация раскладки:</translation>
+    </message>
+    <message>
+        <location filename="umllib/layout/gvizNeatoLayoutHelperSettings.ui" line="28"/>
+        <source>hier</source>
+        <translation>hier</translation>
+    </message>
+    <message>
+        <location filename="umllib/layout/gvizNeatoLayoutHelperSettings.ui" line="33"/>
+        <source>major</source>
+        <translation>major</translation>
+    </message>
+    <message>
+        <location filename="umllib/layout/gvizNeatoLayoutHelperSettings.ui" line="38"/>
+        <source>KK</source>
+        <translation>KK</translation>
+    </message>
+    <message>
+        <location filename="umllib/layout/gvizNeatoLayoutHelperSettings.ui" line="46"/>
+        <source>Factor to increase nodes
+when removing overlap:</source>
+        <translation>Фактор увеличения узлов
+при удалении накрытий:</translation>
+    </message>
+    <message>
+        <location filename="umllib/layout/gvizNeatoLayoutHelperSettings.ui" line="61"/>
+        <source>Specify if and how to
+remove node overlaps:</source>
+        <translation>Удаление накрытий узлов:</translation>
+    </message>
+</context>
+<context>
     <name>preferencesBehaviourPage</name>
     <message>
         <source>Show window</source>
@@ -2973,7 +3082,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="628"/>
+        <location filename="mainwindow/mainWindow.cpp" line="639"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -2998,16 +3107,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="673"/>
-        <location filename="mainwindow/mainWindow.cpp" line="690"/>
-        <location filename="mainwindow/mainWindow.cpp" line="708"/>
+        <location filename="mainwindow/mainWindow.cpp" line="684"/>
+        <location filename="mainwindow/mainWindow.cpp" line="701"/>
+        <location filename="mainwindow/mainWindow.cpp" line="719"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="675"/>
-        <location filename="mainwindow/mainWindow.cpp" line="692"/>
-        <location filename="mainwindow/mainWindow.cpp" line="710"/>
+        <location filename="mainwindow/mainWindow.cpp" line="686"/>
+        <location filename="mainwindow/mainWindow.cpp" line="703"/>
+        <location filename="mainwindow/mainWindow.cpp" line="721"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3112,23 +3221,23 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="629"/>
+        <location filename="mainwindow/mainWindow.cpp" line="640"/>
         <source>&lt;b&gt;QReal&lt;b&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;http://qreal.ru/&quot;&gt;http://qreal.ru/&lt;/a&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="708"/>
+        <location filename="mainwindow/mainWindow.cpp" line="719"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="710"/>
+        <location filename="mainwindow/mainWindow.cpp" line="721"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="854"/>
-        <location filename="mainwindow/mainWindow.cpp" line="862"/>
+        <location filename="mainwindow/mainWindow.cpp" line="865"/>
+        <location filename="mainwindow/mainWindow.cpp" line="873"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3137,17 +3246,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1541"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1547"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1570"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1576"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1570"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1576"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3168,7 +3277,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1207"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1213"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -3239,53 +3348,53 @@
         <translation>Сохранить текущий проект?</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="97"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="95"/>
         <source>Select file with a save to import</source>
         <translation>Выберите файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="113"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="248"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="111"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="244"/>
         <source>File not found</source>
         <translation>Файл не найден</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="114"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="249"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="112"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="245"/>
         <source>File </source>
         <translation>Файл </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="114"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="249"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="112"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="245"/>
         <source> not found. Try again</source>
         <translation> не найден. Укажите существующий файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="124"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="122"/>
         <source>There are missing plugins</source>
         <translation>Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="125"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="123"/>
         <source>These plugins are not present, but needed to load the save:
 </source>
         <translation>Эти плагины отсутствуют, но нужны для загрузки сохранения:
 </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="226"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="223"/>
         <source>Select file to save current model to</source>
         <translation>Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="245"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="260"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="241"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="256"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="271"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="267"/>
         <source> [modified]</source>
         <translation> [изменён]</translation>
     </message>
@@ -3293,7 +3402,7 @@
 <context>
     <name>qReal::StartDialog</name>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="39"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="42"/>
         <source>Start page</source>
         <oldsource>Start Page</oldsource>
         <translation>Начальная страница</translation>
@@ -3307,22 +3416,22 @@
         <translation type="obsolete">Новый проект на базе диаграммы</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="19"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="22"/>
         <source>&amp;Recent projects</source>
         <translation>&amp;Недавние проекты</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="21"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="24"/>
         <source>&amp;New project with diagram</source>
         <translation>Новый проект на базе &amp;диаграммы</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="27"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="30"/>
         <source>&amp;Quit QReal</source>
         <translation>&amp;Выйти из QReal</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="28"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="31"/>
         <source>&amp;Open existing project</source>
         <translation>&amp;Открыть проект</translation>
     </message>
