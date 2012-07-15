@@ -35,6 +35,7 @@ public:
 	bool suggestToSaveChangesOrCancel();
 	void reinitAutosaver();
 
+	int suggestToSaveOrCancelMessage();
 private:
 	bool import(const QString &fileName);
 	bool saveFileExists(QString const &fileName);
@@ -48,6 +49,7 @@ private:
 
 	MainWindow *mMainWindow;
 	Autosaver *mAutosaver;
+	QString mSaveFilePath;
 };
 
 }

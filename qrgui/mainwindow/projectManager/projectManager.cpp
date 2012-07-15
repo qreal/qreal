@@ -40,7 +40,7 @@ bool ProjectManager::suggestToSaveChangesOrCancel()
 	if (!mMainWindow->mUnsavedProjectIndicator) {
 		return true;
 	}
-	switch (mMainWindow->suggestToSaveProject()) {
+	switch (suggestToSaveOrCancelMessage()) {
 	case QMessageBox::DestructiveRole:
 		return true;
 	case QMessageBox::RejectRole:
@@ -48,6 +48,17 @@ bool ProjectManager::suggestToSaveChangesOrCancel()
 	}
 	// QMessageBox::AcceptRole
 	return saveOrSuggestToSaveAs();
+}
+
+int ProjectManager::suggestToSaveOrCancelMessage()
+{
+	QMessageBox offerSave(mMainWindow);
+	offerSave.setWindowTitle(tr("Save"));
+	offerSave.addButton(tr("&Save"), QMessageBox::AcceptRole);
+	offerSave.addButton(tr("&Cancel"), QMessageBox::RejectRole);
+	offerSave.addButton(tr("&Discard"), QMessageBox::DestructiveRole);
+	offerSave.setText(tr("Do you want to save current project?"));
+	return offerSave.exec();
 }
 
 /// Try to open save file with name fileName, show messages is file non exist or plugins are missing and
@@ -65,7 +76,7 @@ bool ProjectManager::open(QString const &fileName)
 
 	if (!pluginsEnough()) {
 		// restoring the session
-		open(mMainWindow->mSaveFile);
+		open(mSaveFilePath);
 		return false;
 	}
 
@@ -74,7 +85,7 @@ bool ProjectManager::open(QString const &fileName)
 	mMainWindow->mUi->graphicalModelExplorer->setModel(mMainWindow->mModels->graphicalModel());
 	mMainWindow->mUi->logicalModelExplorer->setModel(mMainWindow->mModels->logicalModel());
 
-	mMainWindow->mSaveFile = fileName;
+	mSaveFilePath = fileName;
 	refreshApplicationStateAfterOpen();
 
 	return true;
@@ -135,25 +146,25 @@ void ProjectManager::refreshApplicationStateAfterSave()
 	mMainWindow->mUnsavedProjectIndicator = false;
 
 	refreshWindowTitleAccordingToSaveFile();
-	mMainWindow->refreshRecentProjectsList(mMainWindow->mSaveFile);
-	SettingsManager::setValue("saveFile", mMainWindow->mSaveFile);
+	mMainWindow->refreshRecentProjectsList(mSaveFilePath);
+	SettingsManager::setValue("saveFile", mSaveFilePath);
 }
 
 void ProjectManager::refreshApplicationStateAfterOpen()
 {
 	refreshWindowTitleAccordingToSaveFile();
-	mMainWindow->refreshRecentProjectsList(mMainWindow->mSaveFile);
-	SettingsManager::setValue("saveFile", mMainWindow->mSaveFile);
+	mMainWindow->refreshRecentProjectsList(mSaveFilePath);
+	SettingsManager::setValue("saveFile", mSaveFilePath);
 }
 
 void ProjectManager::refreshWindowTitleAccordingToSaveFile()
 {
 	mMainWindow->connectWindowTitle();
 	QString windowTitle = mMainWindow->mToolManager.customizer()->windowTitle();
-	if (mMainWindow->mSaveFile.isEmpty()) {
+	if (mSaveFilePath.isEmpty()) {
 		mMainWindow->setWindowTitle(windowTitle + " - unsaved project");
 	} else {
-		mMainWindow->setWindowTitle(windowTitle + " - " + mMainWindow->mSaveFile);
+		mMainWindow->setWindowTitle(windowTitle + " - " + mSaveFilePath);
 	}
 }
 
@@ -197,7 +208,7 @@ void ProjectManager::close()
 
 bool ProjectManager::save()
 {
-	if (mMainWindow->mSaveFile.isEmpty()) {
+	if (mSaveFilePath.isEmpty()) {
 		return false;
 	}
 	mMainWindow->mModels->repoControlApi().saveAll();
@@ -226,7 +237,7 @@ bool ProjectManager::saveAs(QString const &fileName)
 		return false;
 	}
 	mMainWindow->mModels->repoControlApi().saveTo(workingFileName);
-	mMainWindow->mSaveFile = workingFileName;
+	mSaveFilePath = workingFileName;
 	refreshApplicationStateAfterSave();
 	return true;
 }
@@ -234,7 +245,7 @@ bool ProjectManager::saveAs(QString const &fileName)
 QString ProjectManager::getOpenFileName(QString const &dialogWindowTitle)
 {
 	QString fileName = QFileDialog::getOpenFileName(mMainWindow, dialogWindowTitle
-			, QFileInfo(mMainWindow->mSaveFile).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"));
+			, QFileInfo(mSaveFilePath).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"));
 
 	if (!fileName.isEmpty() && !QFile::exists(fileName)) {
 		QMessageBox fileNotFoundMessage(QMessageBox::Information, tr("File not found"),
@@ -249,7 +260,7 @@ QString ProjectManager::getOpenFileName(QString const &dialogWindowTitle)
 QString ProjectManager::getSaveFileName(QString const &dialogWindowTitle)
 {
 	QString fileName = QFileDialog::getSaveFileName(mMainWindow, dialogWindowTitle
-			, QFileInfo(mMainWindow->mSaveFile).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"));
+			, QFileInfo(mSaveFilePath).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"));
 
 	if (!fileName.isEmpty() && !fileName.endsWith(".qrs", Qt::CaseInsensitive)) {
 		fileName += ".qrs";

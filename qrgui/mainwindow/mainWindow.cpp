@@ -93,7 +93,7 @@ MainWindow::MainWindow()
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
 
 	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
-							, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
+			, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 
 	splashScreen.setProgress(60);
 
@@ -1585,17 +1585,6 @@ void MainWindow::disconnectWindowTitle()
 			, this, SLOT(editWindowTitle()));
 
 	mUnsavedProjectIndicator = false;
-}
-
-int MainWindow::suggestToSaveProject()
-{
-	QMessageBox offerSave(this);
-	offerSave.setWindowTitle(tr("Save"));
-	offerSave.addButton(tr("&Save"), QMessageBox::AcceptRole);
-	offerSave.addButton(tr("&Cancel"), QMessageBox::RejectRole);
-	offerSave.addButton(tr("&Discard"), QMessageBox::DestructiveRole);
-	offerSave.setText(tr("Do you want to save current project?"));
-	return offerSave.exec();
 }
 
 void MainWindow::changePaletteRepresentation()
