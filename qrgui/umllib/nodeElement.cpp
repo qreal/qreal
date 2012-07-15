@@ -18,11 +18,18 @@
 using namespace qReal;
 
 NodeElement::NodeElement(ElementImpl* impl)
-	: mSwitchGridAction(tr("Switch on grid"), this),
-	mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
-	mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)),
-	mSelectionNeeded(false), mConnectionInProgress(false),
-	mPlaceholder(NULL), mHighlightedNode(NULL)
+	: Element(impl)
+	, mSwitchGridAction(tr("Switch on grid"), this)
+	, mPortsVisible(false)
+	, mDragState(None)
+	, mIsFolded(false)
+	, mLeftPressed(false)
+	, mParentNodeElement(NULL)
+	, mPos(QPointF(0,0))
+	, mSelectionNeeded(false)
+	, mConnectionInProgress(false)
+	, mPlaceholder(NULL)
+	, mHighlightedNode(NULL)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);

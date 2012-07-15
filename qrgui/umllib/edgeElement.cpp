@@ -21,7 +21,8 @@ const double pi = 3.14159265358979;
 // static bool moving = false;
 
 EdgeElement::EdgeElement(ElementImpl *impl)
-		: mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
+		: Element(impl)
+		, mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
 		, mSrc(NULL), mDst(NULL)
 		, mPortFrom(0), mPortTo(0)
 		, mDragPoint(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL)
@@ -29,7 +30,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 		, mDelPointAction(tr("Delete point"), this)
 		, mSquarizeAction(tr("Squarize"), this)
 		, mMinimizeAction(tr("Remove all points"), this)
-		, mElementImpl(impl)
+		//, mElementImpl(impl)
 		, mLastDragPoint(-1)
 {
 	mPenStyle = mElementImpl->getPenStyle();

@@ -26,8 +26,9 @@ class Element : public QObject, public QGraphicsItem, public ElementRepoInterfac
 	Q_OBJECT
 	Q_INTERFACES(QGraphicsItem)
 public:
-
-	Element();
+	//Element();
+	Element(ElementImpl* elementImpl);
+	
 	virtual ~Element(){}
 
 	void setId(qReal::Id &id);
@@ -66,7 +67,7 @@ protected:
 
 	bool mMoving;
 	qReal::Id mId;
-	ElementImpl* mElementImpl;
+	ElementImpl* const mElementImpl;
 	QList<ElementTitle*> mTitles;
 
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;

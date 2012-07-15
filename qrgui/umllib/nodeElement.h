@@ -219,8 +219,6 @@ private:
 
 	QTransform mTransform;
 
-	ElementImpl* mElementImpl;
-
 	SdfRenderer *mPortRenderer;
 	SdfRenderer *mRenderer;
 
