@@ -137,7 +137,7 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 	connect(mUi->actionOpen, SIGNAL(triggered()), mProjectManager, SLOT(suggestToOpenExisting()));
-	connect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveAll()));
+	connect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveOrSuggestToSaveAs()));
 	connect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
 	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()),
 			this, SLOT(saveDiagramAsAPicture()));
@@ -215,7 +215,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 	} else if (keyEvent->key() == Qt::Key_F2
 			|| (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
 	{
-		mProjectManager->saveAll();
+		mProjectManager->saveOrSuggestToSaveAs();
 	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_W) {
 		closeTab(mUi->tabs->currentIndex());
 	} else if (keyEvent->key() == Qt::Key_F1) {
@@ -1460,7 +1460,7 @@ void MainWindow::autosave()
 	if (mSaveFile.isEmpty()) {
 		mProjectManager->saveAs(mTempDir);
 	} else {
-		mProjectManager->saveAll();
+		mProjectManager->saveOrSuggestToSaveAs();
 	}
 }
 

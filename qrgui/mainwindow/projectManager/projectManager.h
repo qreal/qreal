@@ -26,9 +26,10 @@ public slots:
 
 	void close();
 
-	bool saveAll();
+	bool save();
 	bool saveAs(const QString &fileName);
 	bool suggestToSaveAs();
+	bool saveOrSuggestToSaveAs();
 
 public:
 	bool openEmptyWithSuggestToSaveChanges();

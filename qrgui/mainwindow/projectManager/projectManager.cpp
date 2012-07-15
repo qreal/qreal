@@ -46,7 +46,7 @@ bool ProjectManager::suggestToSaveChangesOrCancel()
 		return false;
 	}
 	// QMessageBox::AcceptRole
-	return saveAll();
+	return saveOrSuggestToSaveAs();
 }
 
 /// Try to open save file with name fileName, show messages is file non exist or plugins are missing and
@@ -194,13 +194,21 @@ void ProjectManager::close()
 	mMainWindow->setWindowTitle(mMainWindow->mToolManager.customizer()->windowTitle());
 }
 
-bool ProjectManager::saveAll()
+bool ProjectManager::save()
 {
 	if (mMainWindow->mSaveFile.isEmpty()) {
-		return suggestToSaveAs();
+		return false;
 	}
 	mMainWindow->mModels->repoControlApi().saveAll();
 	refreshApplicationStateAfterSave();
+	return true;
+}
+
+bool ProjectManager::saveOrSuggestToSaveAs()
+{
+	if (!save()) {
+		return suggestToSaveAs();
+	}
 	return true;
 }
 
