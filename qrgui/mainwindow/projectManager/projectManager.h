@@ -2,13 +2,11 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
+#include "autosaver.h"
+
 namespace qReal {
 
 class MainWindow;
-
-}
-
-namespace qReal {
 
 class ProjectManager : public QObject
 {
@@ -35,6 +33,7 @@ public:
 	bool openEmptyWithSuggestToSaveChanges();
 	bool open(QString const &fileName = "");
 	bool suggestToSaveChangesOrCancel();
+	void reinitAutosaver();
 
 private:
 	bool import(const QString &fileName);
@@ -48,6 +47,7 @@ private:
 	QString getSaveFileName(const QString &dialogWindowTitle);
 
 	MainWindow *mMainWindow;
+	Autosaver *mAutosaver;
 };
 
 }

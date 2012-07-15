@@ -11,6 +11,7 @@ using namespace qReal;
 ProjectManager::ProjectManager(MainWindow *mainWindow)
 	: QObject(mainWindow)
 	, mMainWindow(mainWindow)
+	, mAutosaver(new Autosaver(this))
 {
 }
 
