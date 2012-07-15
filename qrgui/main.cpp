@@ -11,9 +11,12 @@ int main(int argc, char *argv[])
 	QApplication app(argc, argv);
 
 	QTranslator appTranslator;
+	QTranslator qtTranslator;
 	if (app.arguments().count() <= 1 || app.arguments().at(1) != "--no-locale") {
 		appTranslator.load(":/qrgui_" + QLocale::system().name());
+		qtTranslator.load(":/qt_" + QLocale::system().name());
 		app.installTranslator(&appTranslator);
+		app.installTranslator(&qtTranslator);
 	}
 
 #ifndef NO_STYLE_WINDOWSMODERN

@@ -135,8 +135,6 @@ void Diagram::initPaletteGroups(const QDomElement &paletteGroupsElement)
 		QString description = element.attribute("description", "");
 		mPaletteGroupsDescriptions[name] = description;
 
-		FILE *f = fopen("1.txt", "wt");
-		fprintf(f, "%s\n", element.attribute("name").toStdString().c_str());
 		for (QDomElement groupElement = element.firstChildElement("element");
 			!groupElement.isNull();
 			groupElement = groupElement.nextSiblingElement("element"))

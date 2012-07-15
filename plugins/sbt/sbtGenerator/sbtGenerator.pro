@@ -13,22 +13,22 @@ RESOURCES = sbtGeneratorPlugin.qrc
 
 
 HEADERS = \
-	sbtGeneratorPlugin.h \
+    sbtGeneratorPlugin.h \
     sbtGenerator.h \
     dataObjectGenerator.h \
     dataIntegratorGenerator.h \
     projectGenerator.h
 
 SOURCES = \
-	sbtGeneratorPlugin.cpp \
+    sbtGeneratorPlugin.cpp \
     sbtGenerator.cpp \
     dataObjectGenerator.cpp \
     dataIntegratorGenerator.cpp \
     projectGenerator.cpp
 
 win32 {
-	QMAKE_POST_LINK = "xcopy template ..\\..\\..\\bin\\template /s /e /q /y /i "
+    QMAKE_POST_LINK = "xcopy template ..\\..\\..\\bin\\template /s /e /q /y /i "
 }
 else {
-	QMAKE_POST_LINK = "mkdir ../../../bin/template/ && cp -r template ../../../bin/template/ "
+    QMAKE_POST_LINK = "mkdir ../../../bin/template/ && cp -r template ../../../bin/template/ "
 }

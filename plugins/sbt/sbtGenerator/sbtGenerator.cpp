@@ -24,10 +24,7 @@ void SbtGenerator::init(qReal::LogicalModelAssistInterface const &logicalModel
 
 void SbtGenerator::generate()
 {
-	QString path = "plugins/sbt/sbtGenerator";
-	if (QDir::currentPath().endsWith("bin")) {
-	  path = "../" + path;
-	}
+	QString path = ".";
 	QList<QString> files;
 	DataObjectGenerator dataObjectGenerator(path + "/template/",
 			path + "/output/", *mLogicalModel, *mErrorReporter);
@@ -38,13 +35,7 @@ void SbtGenerator::generate()
 	dataIntegratorGenerator.generate();
 	files.append(dataIntegratorGenerator.getFiles());
 	ProjectGenerator prGen(path + "/template/",
-						   path + "/output/", *mLogicalModel, *mErrorReporter);
+			path + "/output/", *mLogicalModel, *mErrorReporter);
 	prGen.setFilesName(files);
 	prGen.generate();
-
-//	CustomClassSbtGenerator customClassSbtGenerator("./templates/", "./output/", *mLogicalModel, *mErrorReporter);
-//	customClassSbtGenerator.generate();
-
-//	DispatcherSbtGenerator dispatcherSbtGenerator("./templates", "./output", *mLogicalModel, *mErrorReporter);
-//	dispatcherSbtGenerator.generate();
 }

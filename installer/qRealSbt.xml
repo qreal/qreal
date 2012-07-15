@@ -1,13 +1,13 @@
 <project>
-    <shortName>QRealRobots</shortName>
-    <fullName>QReal Robots</fullName>
+    <shortName>QRealReports</shortName>
+    <fullName>QReal:Reports</fullName>
     <version>%version%</version>
-    <licenseFile>%1/installer/gpl-3.0.txt</licenseFile>
-    <leftImage>%1/installer/left.png</leftImage>
-    <logoImage>%1/installer/logo.png</logoImage>
+    <licenseFile>gpl-3.0.txt</licenseFile>
+    <leftImage>left.png</leftImage>
+    <logoImage>logo.png</logoImage>
     <defaultLanguage>ru</defaultLanguage>
-    <outputDirectory>.</outputDirectory>
     <width>600</width>
+    <outputDirectory>.</outputDirectory>
     <componentList>
         <component>
             <name>default</name>
@@ -26,7 +26,7 @@
                             <comment>Uninstall</comment>
                             <exec>${installdir}/${uninstallerName}</exec>
                             <icon></icon>
-                            <name>Uninstall QReal-Robots</name>
+                            <name>Uninstall QRealReports</name>
                             <path>${installdir}</path>
                             <platforms>windows</platforms>
                             <runAsAdmin>0</runAsAdmin>
@@ -51,40 +51,25 @@
                     <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>%1/bin/qextserialport.dll</origin>
+                            <origin>../bin/qrgui.exe</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%1/bin/qrgui.exe</origin>
+                            <origin>../bin/qrkernel.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%1/bin/qrkernel.dll</origin>
+                            <origin>../bin/qrrepo.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%1/bin/qrrepo.dll</origin>
+                            <origin>../bin/qrutils.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%1/bin/qrutils.dll</origin>
+                            <origin>../bin/qrmc.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%1/plugins/robots/editor/doc/qreal-robots.qhc</origin>
+                            <origin>../plugins/sbt/sbtReportsEditor/sbtReportsEditor.qrs</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%1/plugins/robots/editor/doc/qreal-robots.qch</origin>
-                        </distributionFile>
-                        <distributionDirectory>
-                            <origin>%1/bin/plugins</origin>
-                        </distributionDirectory>
-                        <distributionFile>
-                            <origin>%2/QtNetwork4.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/QtCLucene4.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/QtHelp4.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/QtSql4.dll</origin>
+                            <origin>../plugins/sbt/sbtReportsEditor/balanceDiagram.qrs</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>%2/QtCore4.dll</origin>
@@ -93,7 +78,19 @@
                             <origin>%2/QtGui4.dll</origin>
                         </distributionFile>
                         <distributionFile>
+                            <origin>%2/QtHelp4.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
                             <origin>%2/QtSvg4.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/QtCLucene4.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/QtNetwork4.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/QtSql4.dll</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>%2/../../../../../mingw/bin/mingwm10.dll</origin>
@@ -105,10 +102,16 @@
                             <origin>%2/../../../../../mingw/bin/libgcc_s_dw2-1.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%1/installer/icon.ico</origin>
+                            <origin>icon.ico</origin>
                         </distributionFile>
                         <distributionDirectory>
-                            <origin>%1/plugins/robots/editor/images</origin>
+                            <origin>../bin/plugins/</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>../docs/</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>../plugins/sbt/sbtGenerator/template/</origin>
                         </distributionDirectory>
                     </distributionFileList>
                     <shortcutList>
@@ -116,7 +119,7 @@
                             <comment></comment>
                             <exec></exec>
                             <icon>${installdir}/icon.ico</icon>
-                            <name>Run QReal-Robots</name>
+                            <name>Run QRealReports</name>
                             <path></path>
                             <platforms>windows</platforms>
                             <runAsAdmin>0</runAsAdmin>
@@ -129,10 +132,24 @@
                     </shortcutList>
                 </folder>
                 <folder>
-                    <description>Program Files</description>
-                    <destination>${installdir}</destination>
-                    <name>programfilesosx</name>
-                    <platforms>osx</platforms>
+                    <description>Plugins</description>
+                    <destination>${installdir}/plugins</destination>
+                    <name>pluginswindows</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>../bin/plugins/metaEditor.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../bin/plugins/metaEditorSupport.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../bin/plugins/sbtGenerator.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../bin/plugins/sbtMetamodel.dll</origin>
+                        </distributionFile>
+                    </distributionFileList>
                 </folder>
                 <folder>
                     <destination>${installdir}/sqldrivers</destination>
@@ -145,26 +162,16 @@
                     </distributionFileList>
                 </folder>
                 <folder>
-                    <destination>${installdir}/examples</destination>
-                    <name>examples</name>
-                    <platforms>windows</platforms>
-                    <distributionFileList>
-                        <distributionFile>
-                            <origin>%1/plugins/robots/examples/2dModelExample.qrs</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%1/plugins/robots/examples/simultaneousSensorReading.qrs</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%1/plugins/robots/examples/touchObstacle.qrs</origin>
-                        </distributionFile>
-                    </distributionFileList>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfilesosx</name>
+                    <platforms>osx</platforms>
                 </folder>
             </folderList>
             <startMenuShortcutList>
                 <startMenuShortcut>
-                    <comment>Uninstall QReal</comment>
-                    <name>Uninstall QReal-Robots</name>
+                    <comment>Uninstall QRealReports</comment>
+                    <name>Uninstall QRealReports</name>
                     <runAsAdmin>0</runAsAdmin>
                     <runInTerminal>0</runInTerminal>
                     <windowsExec>${installdir}/${uninstallerName}.exe</windowsExec>
@@ -173,8 +180,8 @@
                     <windowsPath>${installdir}/</windowsPath>
                 </startMenuShortcut>
                 <startMenuShortcut>
-                    <comment></comment>
-                    <name>Run QReal-Robots</name>
+                    <comment>Run QRealReports</comment>
+                    <name>Run QRealReports</name>
                     <runAsAdmin>0</runAsAdmin>
                     <runInTerminal>0</runInTerminal>
                     <windowsExec>${installdir}/qrgui.exe</windowsExec>
@@ -187,8 +194,8 @@
     </componentList>
     <postInstallationActionList>
         <copyFile>
-            <destination>${windows_folder_desktopdirectory}/QReal-Robots.lnk</destination>
-            <origin>${installdir}/Run QReal-Robots.lnk</origin>
+            <destination>${windows_folder_desktopdirectory}/QRealReports.lnk</destination>
+            <origin>${installdir}/Run QRealReports.lnk</origin>
         </copyFile>
         <registrySet>
             <key>HKEY_CURRENT_USER\Software\SPbSU\QReal</key>
@@ -199,7 +206,7 @@
     </postInstallationActionList>
     <postUninstallationActionList>
         <deleteFile>
-            <path>${windows_folder_desktopdirectory}/QReal-Robots.lnk</path>
+            <path>${windows_folder_desktopdirectory}/QRealReports.lnk</path>
         </deleteFile>
         <registryDelete>
             <key>HKEY_CURRENT_USER\Software\SPbSU\QReal</key>
@@ -209,12 +216,12 @@
     <enableRollback>0</enableRollback>
     <enableTimestamp>1</enableTimestamp>
     <requireInstallationByRootUser>1</requireInstallationByRootUser>
-    <vendor>SPbSU</vendor>
+    <vendor>Lanit-Tercom</vendor>
     <finalPageActionList>
         <runProgram>
             <program>${installdir}/qrgui.exe</program>
             <programArguments></programArguments>
-            <progressText>Запустить QReal:Robots</progressText>
+            <progressText>Запустить QReal:Reports</progressText>
         </runProgram>
     </finalPageActionList>
     <parameterList>
@@ -231,5 +238,6 @@
             <width>40</width>
         </directoryParameter>
     </parameterList>
+    <startMenuGroupName>QRealReports</startMenuGroupName>
 </project>
 

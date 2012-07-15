@@ -86,10 +86,10 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 				return;
 			}
 			loadNewEditor(nameOfTheDirectory, metamodelNames
-					, SettingsManager::value("pathToQmake", "").toString()
-					, SettingsManager::value("pathToMake", "").toString()
-					, SettingsManager::value("pluginExtension", "").toString()
-					, SettingsManager::value("prefix", "").toString());
+					, SettingsManager::value("pathToQmake").toString()
+					, SettingsManager::value("pathToMake").toString()
+					, SettingsManager::value("pluginExtension").toString()
+					, SettingsManager::value("prefix").toString());
 		}
 	}
 	if (metamodelList.isEmpty()) {
@@ -142,12 +142,12 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 
 			QProcess builder;
 			builder.setWorkingDirectory("../qrmc/plugins");
-			builder.start(SettingsManager::value("pathToQmake", "").toString());
+			builder.start(SettingsManager::value("pathToQmake").toString());
 			qDebug()  << "qmake";
 			if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
 				progress->setValue(40);
 
-				builder.start(SettingsManager::value("pathToMake", "").toString());
+				builder.start(SettingsManager::value("pathToMake").toString());
 
 				bool finished = builder.waitForFinished(100000);
 				qDebug()  << "make";
@@ -168,10 +168,10 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 						}
 					}
 
-					QString const generatedPluginFileName = SettingsManager::value("prefix", "").toString()
+					QString const generatedPluginFileName = SettingsManager::value("prefix").toString()
 							+ name
 							+ "."
-							+ SettingsManager::value("pluginExtension", "").toString()
+							+ SettingsManager::value("pluginExtension").toString()
 							;
 					if (mMainWindowInterface->loadPlugin(generatedPluginFileName, normalizedName)) {
 						progress->setValue(progress->value() + forEditor / 2);
@@ -224,9 +224,8 @@ void MetaEditorSupportPlugin::parseEditorXml()
 
 void MetaEditorSupportPlugin::deleteGeneratedFiles(QString const &directoryName, QString const &fileBaseName)
 {
-	QFile filePro(fileBaseName + ".pro");
-	QFile fileXml(fileBaseName + ".xml");
-	QDir::setCurrent(directoryName);
+	QFile filePro(directoryName + "/" + fileBaseName + ".pro");
+	QFile fileXml(directoryName + "/" + fileBaseName + ".xml");
 	filePro.remove();
 	fileXml.remove();
 }

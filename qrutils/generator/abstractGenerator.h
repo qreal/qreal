@@ -13,9 +13,8 @@ QString const utilsFileName = "utils.template";
 /// Separator used in utility templates file to separate templates.
 QString const utilsSeparator = "==========";
 
-/** Base class for all generators, contains common methods and infrastructure to
-  generate one file.
-  */
+/// Base class for all generators, contains common methods and infrastructure to
+/// generate one file.
 class QRUTILS_EXPORT AbstractGenerator
 {
 public:

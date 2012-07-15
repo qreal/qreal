@@ -23,4 +23,5 @@ private:
 	QTextCharFormat mSingleLineCommentFormat;
 	QTextCharFormat mMultiLineCommentFormat;
 	QTextCharFormat mSignFormat;
+	QTextCharFormat mSomeStringFormat;
 };

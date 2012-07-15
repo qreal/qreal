@@ -2,8 +2,9 @@
 
 public class @@DataObject@@
 {
-	public @@DataObject@@()
-	{
-	}
+    public @@DataObject@@()
+    {
+    }
+    
     @@ListOfProperties@@
 }

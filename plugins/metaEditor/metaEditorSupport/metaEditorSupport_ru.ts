@@ -47,34 +47,35 @@
         <translation>не указана папка для сгенерированного редактора или относительный путь до исходных файлов QReal</translation>
     </message>
     <message>
-        <location filename="editorGenerator.cpp" line="92"/>
+        <location filename="editorGenerator.cpp" line="101"/>
         <source>incorrect file name</source>
         <translation>Неверное имя файла</translation>
     </message>
     <message>
-        <location filename="editorGenerator.cpp" line="213"/>
+        <location filename="editorGenerator.cpp" line="222"/>
         <source>not filled name/importedFrom</source>
         <translation>Не заполнено имя</translation>
     </message>
     <message>
-        <location filename="editorGenerator.cpp" line="284"/>
+        <location filename="editorGenerator.cpp" line="293"/>
         <source>Incorrect label type</source>
         <translation>Некорректый тип записи</translation>
     </message>
     <message>
-        <location filename="editorGenerator.cpp" line="553"/>
+        <location filename="editorGenerator.cpp" line="564"/>
         <source>not filled %1
 </source>
         <translation>Не заполнено поле %1</translation>
     </message>
     <message>
-        <location filename="editorGenerator.cpp" line="561"/>
+        <location filename="editorGenerator.cpp" line="85"/>
+        <location filename="editorGenerator.cpp" line="572"/>
         <source>wrong name
 </source>
         <translation>Неверное имя</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="63"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="65"/>
         <source>Compiler</source>
         <translation>Компилятор</translation>
     </message>
@@ -92,80 +93,78 @@
         <translation>Генерировать редактор</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="49"/>
         <source>Generate editor (qrmc)</source>
-        <translation>Генерировать редактор (QRMC)</translation>
+        <translation type="obsolete">Генерировать редактор (QRMC)</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="53"/>
         <source>Parse editor xml</source>
-        <translation>Импортировать xml с редактором</translation>
+        <translation type="obsolete">Импортировать xml с редактором</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="81"/>
-        <location filename="metaEditorSupportPlugin.cpp" line="123"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="83"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="125"/>
         <source>loading..</source>
         <translation>Загрузка..</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="81"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="83"/>
         <source>Do you want to load generated editor %1?</source>
         <translation>Вы хотите загрузить сгенерированный редактор %1?</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="94"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="96"/>
         <source>There is nothing to generate</source>
         <translation>Метамоделей для генерации не найдено</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="124"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="126"/>
         <source>Do you want to compile and load editor %1?</source>
         <translation>Вы хотите скомпилировать и загрузить редактор %1?</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="135"/>
-        <location filename="metaEditorSupportPlugin.cpp" line="161"/>
-        <location filename="metaEditorSupportPlugin.cpp" line="183"/>
-        <location filename="metaEditorSupportPlugin.cpp" line="193"/>
-        <location filename="metaEditorSupportPlugin.cpp" line="234"/>
-        <location filename="metaEditorSupportPlugin.cpp" line="253"/>
-        <location filename="metaEditorSupportPlugin.cpp" line="278"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="137"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="163"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="185"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="195"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="248"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="267"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="293"/>
         <source>error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="136"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="138"/>
         <source>Cannot generate source code for editor </source>
         <translation>Не удалось сгенерировать исходный код для редактора</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="162"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="164"/>
         <source>cannot unload plugin </source>
         <translation>Не удалось выгрузить старый плагин</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="193"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="195"/>
         <source>required plugin (MetaEditor) is not loaded</source>
         <translation>Требуемый плагин (метаредактор) не загружен</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="207"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="209"/>
         <source>Select xml file to parse</source>
         <translation>Выберите .xml для импорта</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="234"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="248"/>
         <source>please, fill compiler settings</source>
         <translation>Пожалуйста, заполните настройки компилятора в окне &quot;Настройки&quot;</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="253"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="267"/>
         <source>cannot unload plugin</source>
         <translation>Не удалось выгрузить старый плагин</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="183"/>
-        <location filename="metaEditorSupportPlugin.cpp" line="278"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="185"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="293"/>
         <source>cannot load new editor</source>
         <translation>Не удалось загрузить новый редактор</translation>
     </message>

@@ -244,9 +244,9 @@ void GraphicalModel::stackBefore(const QModelIndex &element, const QModelIndex &
 	}
 
 	if (beginMoveRows(element.parent(), element.row(), element.row(), element.parent(), sibling.row())) {
-		AbstractModelItem *parent = static_cast<AbstractModelItem *>(element.parent().internalPointer()),
-			*item = static_cast<AbstractModelItem *>(element.internalPointer()),
-			*siblingItem = static_cast<AbstractModelItem *>(sibling.internalPointer());
+		AbstractModelItem *parent = static_cast<AbstractModelItem *>(element.parent().internalPointer());
+		AbstractModelItem *item = static_cast<AbstractModelItem *>(element.internalPointer());
+		AbstractModelItem *siblingItem = static_cast<AbstractModelItem *>(sibling.internalPointer());
 
 		parent->stackBefore(item, siblingItem);
 		mApi.stackBefore(parent->id(), item->id(), siblingItem->id());

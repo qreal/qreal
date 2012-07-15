@@ -23,4 +23,12 @@ SOURCES += \
 	settingsManager.cpp \
 	timeMeasurer.cpp \
 
+OTHER_FILES +=
+
+RESOURCES += \
+    qrkernel.qrc
+
+
+
+
 

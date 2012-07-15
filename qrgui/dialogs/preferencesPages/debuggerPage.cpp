@@ -12,9 +12,9 @@ PreferencesDebuggerPage::PreferencesDebuggerPage(QWidget *parent)
 	mIcon = QIcon(":/icons/preferences/bug.png");
 	mUi->setupUi(this);
 
-	mUi->timeoutLineEdit->setText(SettingsManager::value("debuggerTimeout", 750).toString());
+	mUi->timeoutLineEdit->setText(SettingsManager::value("debuggerTimeout").toString());
 	mUi->colorComboBox->addItems(QColor::colorNames());
-	QString curColor = SettingsManager::value("debugColor", "red").toString();
+	QString curColor = SettingsManager::value("debugColor").toString();
 	int curColorIndex = mUi->colorComboBox->findText(curColor);
 	mUi->colorComboBox->setCurrentIndex(curColorIndex);
 }

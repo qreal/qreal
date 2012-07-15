@@ -17,6 +17,7 @@ AbstractGenerator::AbstractGenerator(QString const &templateDirPath
 		, mOutputDirPath(outputDirPath)
 		, mTemplateDirPath(templateDirPath)
 {
+	loadUtilsTemplates();
 }
 
 AbstractGenerator::~AbstractGenerator()
@@ -182,7 +183,7 @@ QString AbstractGenerator::generatePropertiesCode(Id const &element)
 		QString propertyTemplate = mTemplateUtils["@@Property@@"];
 		QString const name = mApi.name(property);
 		propertyTemplate.replace("@@Name@@", NameNormalizer::normalize(name))
-				.replace("@@Type@@", mApi.stringProperty(property, "type"));
+				.replace("@@Type@@", mApi.stringProperty(property, "Type"));
 
 		properties += propertyTemplate;
 	}

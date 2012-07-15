@@ -26,13 +26,13 @@ EditorViewScene::EditorViewScene(QObject *parent)
 		, mTimer(new QTimer(this))
 		, mShouldReparentItems(false)
 {
-	mNeedDrawGrid = SettingsManager::value("ShowGrid", true).toBool();
-	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth", 10).toInt()) / 100;
-	mRealIndexGrid = SettingsManager::value("IndexGrid", 50).toInt();
+	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
+	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth").toInt()) / 100;
+	mRealIndexGrid = SettingsManager::value("IndexGrid").toInt();
 
-	mNeedDrawGrid = SettingsManager::value("ShowGrid", true).toBool();
-	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth", 10).toInt()) / 100;
-	mRealIndexGrid = SettingsManager::value("IndexGrid", 50).toInt();
+	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
+	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth").toInt()) / 100;
+	mRealIndexGrid = SettingsManager::value("IndexGrid").toInt();
 
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
@@ -107,7 +107,7 @@ void EditorViewScene::initMouseMoveManager()
 
 void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 {
-	int const indexGrid = SettingsManager::value("IndexGrid", 50).toInt();
+	int const indexGrid = SettingsManager::value("IndexGrid").toInt();
 	qreal const sceneX = rect.x();
 	qreal const sceneY = rect.y();
 
@@ -449,18 +449,18 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 
 	Id parentId = newParent ? newParent->id() : mMVIface->rootId();
 
+	//inserting new node into edge
+	Id insertedNodeId = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
+	if (dynamic_cast<NodeElement*>(e)) {
+		insertNodeIntoEdge(insertedNodeId, parentId, isFromLogicalModel, scenePos);
+	}
+
 	NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
 	if (parentNode != NULL) {
 		Element *nextNode = parentNode->getPlaceholderNextElement();
 		if (nextNode != NULL) {
 			mMVIface->graphicalAssistApi()->stackBefore(id, nextNode->id());
 		}
-	}
-
-	//inserting new node into edge
-	Id insertedNodeId = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
-	if (dynamic_cast<NodeElement*>(e)) {
-		insertNodeIntoEdge(insertedNodeId, parentId, isFromLogicalModel, scenePos);
 	}
 
 	if (e) {
@@ -547,7 +547,8 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 		, IdList const &connectableTypes, IdList const &alreadyConnectedElements
 		, IdList const &connectableDiagrams, const char *slot) const
 {
-	QMenu *addConnectionMenu = contextMenu.addMenu(menuName);
+	bool hasAnyActions = false;
+	QMenu *addConnectionMenu = new QMenu(menuName);//contextMenu.addMenu(menuName);
 
 	foreach (Id type, connectableTypes) {
 		foreach (Id elementId, mMVIface->logicalAssistApi()->logicalRepoApi().logicalElements(type)) {
@@ -555,6 +556,7 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 				continue;
 			}
 			QAction *action = addConnectionMenu->addAction(mMVIface->logicalAssistApi()->logicalRepoApi().name(elementId));
+			hasAnyActions = true;
 			connect(action, SIGNAL(triggered()), slot);
 			QList<QVariant> tag;
 			tag << element->logicalId().toVariant() << elementId.toVariant();
@@ -567,10 +569,15 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 		QString name = mMVIface->logicalAssistApi()->editorManager().friendlyName(diagramType);
 		QString editorName = mMVIface->logicalAssistApi()->editorManager().friendlyName(Id(diagramType.editor()));
 		QAction *action = addConnectionMenu->addAction("New " + editorName + "/" + name);
+		hasAnyActions = true;
 		connect(action, SIGNAL(triggered()), slot);
 		QList<QVariant> tag;
 		tag << element->logicalId().toVariant() << diagramType.toVariant();
 		action->setData(tag);
+	}
+	if (hasAnyActions || !connectableDiagrams.empty())
+	{
+		contextMenu.addMenu(addConnectionMenu);
 	}
 }
 
@@ -579,7 +586,7 @@ void EditorViewScene::createDisconnectMenu(Element const * const element
 		, IdList const &outgoingConnections, IdList const &incomingConnections
 		, const char *slot) const
 {
-	QMenu *disconnectMenu = contextMenu.addMenu(menuName);
+	QMenu *disconnectMenu = new QMenu(menuName);//contextMenu.addMenu(menuName);
 	IdList list = outgoingConnections;
 	list.append(incomingConnections);
 
@@ -589,6 +596,10 @@ void EditorViewScene::createDisconnectMenu(Element const * const element
 		QList<QVariant> tag;
 		tag << element->logicalId().toVariant() << elementId.toVariant();
 		action->setData(tag);
+	}
+	if (!list.empty())
+	{
+		contextMenu.addMenu(disconnectMenu);
 	}
 }
 
@@ -789,7 +800,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			getLinkByGesture(parent, *child);
 			deleteGesture();
 		} else {
-			mTimer->start(SettingsManager::value("gestureDelay", 1000).toInt());
+			mTimer->start(SettingsManager::value("gestureDelay").toInt());
 		}
 		return;
 	}
@@ -940,7 +951,7 @@ void EditorViewScene::deleteUsageActionTriggered()
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
 	if (mNeedDrawGrid) {
-		mWidthOfGrid = SettingsManager::value("GridWidth", 10).toDouble() / 100;
+		mWidthOfGrid = SettingsManager::value("GridWidth").toDouble() / 100;
 
 		painter->setPen(QPen(Qt::black, mWidthOfGrid));
 		drawGrid(painter, rect);
