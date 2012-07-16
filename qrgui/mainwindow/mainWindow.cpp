@@ -430,7 +430,7 @@ void MainWindow::sceneSelectionChanged()
 	}
 }
 
-void MainWindow::selectItemInLogicalModel(const Id &id)
+void MainWindow::selectItemInLogicalModel(Id const &id)
 {
 	Id const logicalId = mModels->graphicalModelAssistApi().logicalId(id);
 	QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalId);
