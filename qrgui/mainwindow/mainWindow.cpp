@@ -425,8 +425,16 @@ void MainWindow::sceneSelectionChanged()
 		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(singleSelected->id());
 		if (index.isValid()) {
 			mUi->graphicalModelExplorer->setCurrentIndex(index);
+			selectItemInLogicalModel(singleSelected->id());
 		}
 	}
+}
+
+void MainWindow::selectItemInLogicalModel(const Id &id)
+{
+	Id const logicalId = mModels->graphicalModelAssistApi().logicalId(id);
+	QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalId);
+	mUi->logicalModelExplorer->setCurrentIndex(logicalIndex);
 }
 
 QString MainWindow::getWorkingFile(QString const &dialogWindowTitle, bool save)
@@ -1078,6 +1086,7 @@ void MainWindow::graphicalModelExplorerClicked(QModelIndex const &index)
 	setIndexesOfPropertyEditor(id);
 	openNewTab(index);
 	centerOn(id);
+	selectItemInLogicalModel(id);
 }
 
 void MainWindow::logicalModelExplorerClicked(QModelIndex const &index)

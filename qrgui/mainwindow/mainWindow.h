@@ -241,6 +241,7 @@ private:
 	void keyPressEvent(QKeyEvent *event);
 	QString getWorkingFile(QString const &dialogWindowTitle, bool save);
 
+	void selectItemInLogicalModel(Id const &id);
 	int getTabIndex(const QModelIndex &index);
 
 	void initGridProperties();
