@@ -78,6 +78,4 @@ protected:
 
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
 	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
-
-	void initTitlesBy(QRectF const &contents);
 };
