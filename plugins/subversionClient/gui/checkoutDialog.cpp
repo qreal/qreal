@@ -1,5 +1,5 @@
 #include "checkoutDialog.h"
-#include "../../qrkernel/settingsManager.h"
+#include "../../../qrkernel/settingsManager.h"
 
 using namespace versioning::ui;
 
@@ -53,10 +53,9 @@ QComboBox *CheckoutDialog::createComboBox(const QString &text)
 
 void CheckoutDialog::browse()
 {
-	QString saveFile =
-			QFileDialog::getSaveFileName(this, tr("Select project"),
-										 QDir::currentPath(),
-										 tr("QReal Save File(*.qrs)"));
+	QString saveFile = QFileDialog::getSaveFileName(this
+			, tr("Select project") , QDir::currentPath()
+			, tr("QReal Save File(*.qrs)"));
 	if (!saveFile.isNull()) {
 		mPathComboBox->addItem(saveFile);
 		mPathComboBox->setCurrentIndex(mPathComboBox->findText(saveFile));

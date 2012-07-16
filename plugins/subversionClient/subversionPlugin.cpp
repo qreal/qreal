@@ -1,7 +1,7 @@
 #include "subversionPlugin.h"
 #include "../../qrkernel/settingsManager.h"
 
-#include <QApplication>
+#include <QtGui/QApplication>
 
 Q_EXPORT_PLUGIN2(subversion, versioning::SubversionPlugin)
 
@@ -12,8 +12,8 @@ QString const tempFolderName = "tempSvn";
 int const defaultTimeout = 30000;
 
 SubversionPlugin::SubversionPlugin()
-	: mViewInteraction(new details::ViewInteraction(this)),
-	  mTempCheckoutDir(qApp->applicationDirPath() + "/" + tempFolderName)
+	: mViewInteraction(new details::ViewInteraction(this))
+	, mTempCheckoutDir(qApp->applicationDirPath() + "/" + tempFolderName)
 
 {
 	SettingsManager::instance()->setValue("svnTempDir", mTempCheckoutDir);
@@ -46,7 +46,7 @@ QList<qReal::ActionInfo> SubversionPlugin::actions()
 
 void SubversionPlugin::init(qReal::PluginConfigurator const &configurator)
 {
-	qReal::versioning::ExternalClientPluginBase::init(configurator);
+	ExternalClientPluginBase::init(configurator);
 	mViewInteraction->init(configurator);
 }
 
@@ -75,8 +75,9 @@ bool SubversionPlugin::onFileChanged(const QString &filePath, const QString &wor
 	return true;
 }
 
-bool SubversionPlugin::downloadWorkingCopy(QString const &repoAddress,
-		QString const &targetProject, int revisionNumber)
+bool SubversionPlugin::downloadWorkingCopy(QString const &repoAddress
+		, QString const &targetProject
+		, int revisionNumber)
 {
 	Q_UNUSED(revisionNumber)
 	//TODO: get revision
@@ -113,7 +114,7 @@ bool SubversionPlugin::isMyWorkingCopy(QString const &directory)
 	// If svn info worked well then it is our dir
 	QStringList infoArgs;
 	infoArgs << "info" << (directory.isEmpty() ? tempFolder() : directory);
-	return doOperation(infoArgs, false, false);
+	return invokeOperation(infoArgs, false, false, QString(), false);
 }
 
 int SubversionPlugin::timeout() const
@@ -132,7 +133,7 @@ bool SubversionPlugin::doCheckout(const QString &from, const QString &targetProj
 	QStringList arguments;
 	arguments << "checkout" << from << checkoutDist;
 	arguments << authenticationArgs();
-	bool result = doOperation(arguments, false, true, targetProject);
+	bool result = invokeOperation(arguments, false, true, targetProject);
 	emit checkoutComplete(result);
 	emit operationComplete("checkout", result);
 	return result;
@@ -144,7 +145,7 @@ bool SubversionPlugin::doUpdate(const QString &to)
 	QStringList arguments;
 	arguments << "update" << targetDir;
 	arguments << authenticationArgs();
-	bool result = doOperation(arguments);
+	bool result = invokeOperation(arguments);
 	emit updateComplete(result);
 	emit operationComplete("update", result);
 	return result;
@@ -156,7 +157,7 @@ bool SubversionPlugin::doCommit(const QString &message, const QString &from)
 	QStringList arguments;
 	arguments << "commit" << targetDir << "-m" << message;
 	arguments << authenticationArgs();
-	bool result = doOperation(arguments);
+	bool result = invokeOperation(arguments);
 	emit commitComplete(result);
 	emit operationComplete("commit", result);
 	return result;
@@ -167,7 +168,7 @@ bool SubversionPlugin::doCleanUp(const QString &what)
 	QStringList arguments;
 	QString targetDir = what.isEmpty() ? tempFolder() : what;
 	arguments << "cleanup" << targetDir;
-	bool result = doOperation(arguments);
+	bool result = invokeOperation(arguments);
 	emit cleanUpComplete(result);
 	emit operationComplete("cleanup", result);
 	return result;
@@ -179,7 +180,7 @@ bool SubversionPlugin::doRevert(const QString &what)
 	QString targetDir = what.isEmpty() ? tempFolder() : what;
 	// TODO: Add different variants
 	arguments << "revert" << "-R" << targetDir;
-	bool result = doOperation(arguments);
+	bool result = invokeOperation(arguments);
 	emit cleanUpComplete(result);
 	emit operationComplete("revert", result);
 	return result;
@@ -194,7 +195,7 @@ bool SubversionPlugin::doAdd(const QString &what, bool force)
 	}
 	// This feature requires svn with version >= 1.5
 	arguments << "--parents";
-	bool result = doOperation(arguments);
+	bool result = invokeOperation(arguments);
 	addComplete(result);
 	operationComplete("add", result);
 	return result;
@@ -207,7 +208,7 @@ bool SubversionPlugin::doRemove(const QString &what, bool force)
 	if (force) {
 		arguments << "--force";
 	}
-	bool result = doOperation(arguments);
+	bool result = invokeOperation(arguments);
 	removeComplete(result);
 	operationComplete("remove", result);
 	return result;
@@ -218,7 +219,7 @@ QString SubversionPlugin::info(const QString &target)
 	QString targetDir = target.isEmpty() ? tempFolder() : target;
 	QStringList arguments;
 	arguments << "info" << targetDir;
-	if (!doOperation(arguments)) {
+	if (!invokeOperation(arguments)) {
 		return "";
 	}
 	return standartOutput();
@@ -227,7 +228,7 @@ QString SubversionPlugin::info(const QString &target)
 QString SubversionPlugin::repoUrl(QString const &target)
 {
 	QString repoInfo = info(target);
-	if (repoInfo == "") {
+	if (repoInfo.isEmpty()) {
 		return "";
 	}
 	return infoToRepoUrl(repoInfo);
@@ -235,8 +236,8 @@ QString SubversionPlugin::repoUrl(QString const &target)
 
 int SubversionPlugin::currentRevision(QString const &target)
 {
-	QString repoInfo = info(target);
-	if (repoInfo == "") {
+	QString const repoInfo = info(target);
+	if (repoInfo.isEmpty()) {
 		return -1;
 	}
 	return infoToRevision(repoInfo);
@@ -247,13 +248,13 @@ QString SubversionPlugin::infoToRepoUrl(QString &repoInfo)
 	//TODO: make it ok
 	int ind = repoInfo.indexOf("Repository Root: ");
 	if (ind == -1) {
-		onErrorOccured("Can`t find repository root in svn info");
+		onErrorOccured(tr("Can`t find repository root in svn info"));
 		return "";
 	}
 	repoInfo = repoInfo.mid(ind + QString("Repository Root: ").length());
 	ind = repoInfo.indexOf("Repository UUID: ");
 	if (ind == -1) {
-		onErrorOccured("Can`t find repository UUID in svn info");
+		onErrorOccured(tr("Can`t find repository UUID in svn info"));
 		return "";
 	}
 	// TODO: count default string end width
@@ -261,12 +262,12 @@ QString SubversionPlugin::infoToRepoUrl(QString &repoInfo)
 	return repoInfo;
 }
 
-int SubversionPlugin::infoToRevision(QString &repoInfo)
+int SubversionPlugin::infoToRevision(QString const &repoInfo)
 {
 	// TODO: make it ok
 	int ind = repoInfo.indexOf("Revision: ");
 	if (ind == -1) {
-		onErrorOccured("Can`t find revision number in svn info");
+		onErrorOccured(tr("Can`t find revision number in svn info"));
 		return -1;
 	}
 	ind += QString("Revision: ").length();
@@ -285,10 +286,9 @@ QStringList SubversionPlugin::authenticationArgs() const
 	if (!authenticationEnabled) {
 		return result;
 	}
-	QString username = SettingsManager::value("svnUsername", false).toString();
-	QString password = SettingsManager::value("svnPassword", false).toString();
-	if (username == "")
-	{
+	QString const username = SettingsManager::value("svnUsername", false).toString();
+	QString const password = SettingsManager::value("svnPassword", false).toString();
+	if (username.isEmpty()) {
 		return result;
 	}
 	result << "--username";

@@ -6,7 +6,7 @@
 #include "gui/commitDialog.h"
 #include "gui/versioningPage.h"
 
-#include <QObject>
+#include <QtCore/QObject>
 
 namespace versioning
 {

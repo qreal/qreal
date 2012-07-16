@@ -1,14 +1,14 @@
 #include "viewInteraction.h"
 #include "subversionPlugin.h"
-#include "../../../qrkernel/settingsManager.h"
-#include "../../../qrutils/versioningUtils/versionSelector.h"
+#include "../../qrkernel/settingsManager.h"
+#include "../../qrutils/versioningUtils/versionSelector.h"
 
 using namespace versioning::details;
 using namespace versioning::ui;
 
 ViewInteraction::ViewInteraction(SubversionPlugin *pluginInstance)
-	: mPlugin(pluginInstance),
-	  mPreferencesPage(new PreferencesVersioningPage())
+	: mPlugin(pluginInstance)
+	, mPreferencesPage(new PreferencesVersioningPage())
 {
 	initActions();
 }
@@ -60,8 +60,8 @@ void ViewInteraction::checkoutClicked()
 		return;
 	}
 	// TODO: Show execution indicator
-	QString target = dialog->target();
-	QString url = dialog->url();
+	QString const target = dialog->target();
+	QString const url = dialog->url();
 
 	if (mPlugin->doCheckout(url, target)) {
 		// TODO: Open 'target' project
@@ -76,9 +76,10 @@ void ViewInteraction::updateClicked()
 {
 	// TODO: Show execution indicator
 	if (mPlugin->doUpdate()) {
-//		mMainWindowIface->reinitModels();
 		int revision = mPlugin->currentRevision();
-		QString message = (revision < 0) ? tr("Updated successfully.") : tr("Updated to revision ") + QString::number(revision);
+		QString const message = (revision < 0)
+				? tr("Updated successfully")
+				: tr("Updated to revision ") + QString::number(revision);
 		showMessage(message);
 	}
 	// TODO: hide execution indicator

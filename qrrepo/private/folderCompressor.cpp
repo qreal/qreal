@@ -50,8 +50,7 @@ bool FolderCompressor::compress(QString const &sourceFolder, QString const &pref
 	// 4 - If folder is empty it also needs to be compressed.
 	//       Writing '/' character to the end of path to distinguish it from files
 	//       (else we can have issue with subversion)
-	if (filesList.empty())
-	{
+	if (filesList.empty()) {
 		mDataStream << QString(prefix + "/");
 		mDataStream << QString(); //empty data part, need for correct decompression
 		return true;
@@ -99,16 +98,14 @@ bool FolderCompressor::decompressFolder(QString const &sourceFile, QString const
 		QString subfolder; // create any needed folder
 		for(int i = fileName.length() - 1; i > 0; i--) {
 			if((QString(fileName.at(i)) == QString("\\"))
-					|| (QString(fileName.at(i)) == QString("/")))
-			{
+					|| (QString(fileName.at(i)) == QString("/"))) {
 				subfolder = fileName.left(i);
 				dir.mkpath(destinationFolder+"/"+subfolder);
 				break;
 			}
 		}
 
-		if (!fileName.endsWith('/'))
-		{
+		if (!fileName.endsWith('/')) {
 			//we have an empty directory (see part 4 of compression),
 			// it was create earlier, continue
 			QFile outFile(destinationFolder + "/" + fileName);

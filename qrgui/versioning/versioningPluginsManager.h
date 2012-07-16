@@ -10,7 +10,10 @@ namespace qReal
 namespace versioning
 {
 
-class VersioningPluginsManager : public QObject, public qrRepo::versioning::WorkingCopyInspectionInterface
+class VersioningPluginsManager
+		: public QObject
+		, public qrRepo::versioning::WorkingCopyInspectionInterface
+		, public BriefVersioningInterface
 {
 public:
 	/// Inits plugin list using loaded by plugin manager ones
@@ -23,10 +26,21 @@ public:
 	bool onFileRemoved(QString const &filePath, QString const &workingDir);
 	bool onFileChanged(QString const &filePath, QString const &workingDir);
 
+	bool downloadWorkingCopy(
+			  QString const &repoAddress
+			, QString const &targetProject
+			, int revisionNumber = -1);
+	bool updateWorkingCopy();
+	bool submitChanges(QString const &description);
+	bool reinitWorkingCopy();
+	QString information();
+	int revisionNumber();
+	bool isMyWorkingCopy(QString const &directory = "");
+
 private:
 	void initFromToolPlugins(QListIterator<ToolPluginInterface *> iterator);
-	VersioningPluginInterface *activePlugin(QString const &workingDir) const;
-	WorkingCopyInspectionInterface *activeWorkingCopyInspector(QString const &workingDir);
+	VersioningPluginInterface *activePlugin(QString const &workingDir = "") const;
+	WorkingCopyInspectionInterface *activeWorkingCopyInspector(QString const &workingDir = "");
 
 	void reportError(QString const &message);
 	void reportErrors(QStringList const &messages);

@@ -1,13 +1,13 @@
 #include "authenticationSettingsWidget.h"
 #include "../../qrkernel/settingsManager.h"
 
-#include <QGridLayout>
-#include <QLabel>
+#include <QtGui/QGridLayout>
+#include <QtGui/QLabel>
 
 using namespace versioning::ui;
 
-AuthenticationSettingsWidget::AuthenticationSettingsWidget(QWidget *parent) :
-	QWidget(parent)
+AuthenticationSettingsWidget::AuthenticationSettingsWidget(QWidget *parent)
+	: QWidget(parent)
 {
 	QFrame *frame = new QFrame;
 	frame->setFrameShape(QFrame::StyledPanel);

@@ -1,8 +1,7 @@
 #include "externalClientPluginBase.h"
 
-#include <QTextCodec>
-#include <QCoreApplication>
-#include <QApplication>
+#include <QtCore/QTextCodec>
+#include <QtGui/QApplication>
 
 using namespace qReal::versioning;
 
@@ -40,81 +39,82 @@ void ExternalClientPluginBase::onErrorOccured(QString const &errorMessage)
 
 void ExternalClientPluginBase::onErrorsOccured(QStringList const &errorMessages)
 {
-	foreach (QString const &errorMessage, errorMessages)
-	{
+	foreach (QString const &errorMessage, errorMessages) {
 		onErrorOccured(errorMessage);
 	}
 }
 
-bool ExternalClientPluginBase::doOperation(const QStringList &args, bool needPreparation,
-	bool needProcessing, QString const &targetProject)
+bool ExternalClientPluginBase::invokeOperation(const QStringList &args
+	, bool needPreparation, bool needProcessing
+	, QString const &targetProject, bool reportErrors)
 {
 	if (needPreparation && mWorkingCopyManager) {
 		mWorkingCopyManager->prepareWorkingCopy(tempFolder());
 	}
-	if (!startProcess(args)) {
+	if (!startProcess(args, reportErrors)) {
 		return false;
 	}
-	if (!waitForClient()) {
+	if (!waitForClient(reportErrors)) {
 		return false;
 	}
-	bool result = processErrors();
+	bool result = processErrors(reportErrors);
 	if (needProcessing && mWorkingCopyManager) {
 		mWorkingCopyManager->processWorkingCopy(tempFolder(), targetProject);
 	}
 	return result;
 }
 
-QString ExternalClientPluginBase::standartOutput()
+QString ExternalClientPluginBase::standartOutput() const
 {
-	QString output = mClientProcess->readAllStandardOutput();
+	QString const output = mClientProcess->readAllStandardOutput();
 	return QString::fromLocal8Bit(output.toStdString().c_str());
 }
 
-bool ExternalClientPluginBase::startProcess(const QStringList &args)
+bool ExternalClientPluginBase::startProcess(const QStringList &args, bool reportErrors)
 {
-	if (!checkClientPath()) {
+	if (!checkClientPath(reportErrors)) {
 		return false;
 	}
 	mClientProcess->start(mPathToClient, args);
 	if (!mClientProcess->waitForStarted()) {
-		// TODO: translate
-		onErrorOccured("An error occured while starting versioning client process (maybe path is not correct?)");
+		if (reportErrors) {
+			onErrorOccured(tr("An error occured while starting versioning client process (maybe path is not correct?)"));
+		}
 		return false;
 	}
 	QCoreApplication::processEvents();
 	return true;
 }
 
-bool ExternalClientPluginBase::checkClientPath()
+bool ExternalClientPluginBase::checkClientPath(bool reportErrors)
 {
 	if (mPathToClient.isEmpty()) {
-		// TODO: translate
-		onErrorOccured("Path to versioning client is empty");
+		if (reportErrors) {
+			onErrorOccured(tr("Path to versioning client is empty"));
+		}
 		return false;
 	}
 	return true;
 }
 
-bool ExternalClientPluginBase::processErrors()
+bool ExternalClientPluginBase::processErrors(bool reportErrors)
 {
 	QByteArray error = mClientProcess->readAllStandardError();
-	if (error.size() > 0) {
+	if (error.size() > 0 && reportErrors) {
 		onErrorOccured(QString(error));
 	}
 	return error.isEmpty();
 }
 
-bool ExternalClientPluginBase::waitForClient()
+bool ExternalClientPluginBase::waitForClient(bool reportErrors)
 {
-	QCoreApplication::processEvents();
 	int waitingTimeout = timeout();
-	QCoreApplication::processEvents();
 	if (mClientProcess->state() == QProcess::Running) {
 		if (!mClientProcess->waitForFinished(waitingTimeout)) {
 			mClientProcess->kill();
-			// TODO: translate
-			onErrorOccured("Versioning client timeout");
+			if (reportErrors) {
+				onErrorOccured(tr("Versioning client timeout"));
+			}
 			processErrors();
 			return false;
 		}

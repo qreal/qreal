@@ -32,15 +32,6 @@ public:
 	void decompressFile(QString fileName);
 
 private:
-
-	QString mWorkingDir;
-	QString mWorkingFile;
-
-	versioning::WorkingCopyInspectionInterface *mWorkingCopyInspector;
-	QSet<QString> mSavedFiles;
-	QSet<QString> mSavedDirectories;
-	QMap<QString, QFile*> mFiles;
-
 	void loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object*> &objectsHash);
 	void loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHash);
 
@@ -70,6 +61,14 @@ private:
 	static QDomElement idListToXml(QString const &attributeName, qReal::IdList const &idList, QDomDocument &doc);
 	static QDomElement propertiesToXml(Object * const object, QDomDocument &doc);
 
+
+	QString mWorkingDir;
+	QString mWorkingFile;
+
+	versioning::WorkingCopyInspectionInterface *mWorkingCopyInspector;
+	QSet<QString> mSavedFiles;
+	QSet<QString> mSavedDirectories;
+	QMap<QString, QFile*> mFiles;
 };
 
 }

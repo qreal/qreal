@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QString>
+#include <QtCore/QString>
 
 namespace qReal
 {
@@ -19,9 +19,9 @@ public:
 	/// @param repoAddress Repository URL
 	/// @param targetProject Path to target project
 	/// @param revisionNumber Order number of the required revision. If negative value specified, fetching last revision.
-	virtual bool downloadWorkingCopy(QString const &repoAddress,
-									 QString const &targetProject,
-									 int revisionNumber = -1) = 0;
+	virtual bool downloadWorkingCopy(QString const &repoAddress
+			, QString const &targetProject
+			, int revisionNumber = -1) = 0;
 
 	/// Tries to update specified project to last revision.
 	/// Examples: svn update, git pull, etc...
@@ -48,7 +48,7 @@ public:
 	/// Implementation must determine if specified working copy
 	/// is versioned with this VCS.
 	/// @param directory Path to interested directory
-	virtual bool isMyWorkingCopy(QString const &directory) = 0;
+	virtual bool isMyWorkingCopy(QString const &directory = "") = 0;
 
 };
 

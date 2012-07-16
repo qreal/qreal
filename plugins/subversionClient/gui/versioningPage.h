@@ -5,7 +5,7 @@
 #include "../../../qrutils/versioningUtils/networkSettingsWidget.h"
 
 namespace Ui {
-class PreferencesVersioningPage;
+	class PreferencesVersioningPage;
 }
 
 namespace versioning
@@ -29,7 +29,6 @@ protected:
 private:
 	Ui::PreferencesVersioningPage *mUi;
 	AuthenticationSettingsWidget *mAuthenticationSettings;
-	NetworkSettingsWidget *mNetworkSettings;
 
 private slots:
 	void on_browseSvnClientButton_clicked();

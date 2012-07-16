@@ -2,9 +2,9 @@
 
 #include "../utilsDeclSpec.h"
 
-#include <QDialog>
-#include <QSpinBox>
-#include <QRadioButton>
+#include <QtGui/QDialog>
+#include <QtGui/QSpinBox>
+#include <QtGui/QRadioButton>
 
 namespace versioning
 {
@@ -20,7 +20,6 @@ public:
 
 	/// Returns version number of -1 if HEAD revision specified
 	int revision() const;
-
 
 private:
 	QSpinBox *mRevisionSelector;

@@ -2,10 +2,10 @@
 
 #include "../utilsDeclSpec.h"
 
-#include <QWidget>
-#include <QLineEdit>
-#include <QSpinBox>
-#include <QCheckBox>
+#include <QtGui/QWidget>
+#include <QtGui/QLineEdit>
+#include <QtGui/QSpinBox>
+#include <QtGui/QCheckBox>
 
 namespace versioning
 {

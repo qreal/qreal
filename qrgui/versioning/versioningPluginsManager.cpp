@@ -39,9 +39,6 @@ qrRepo::versioning::WorkingCopyInspectionInterface *VersioningPluginsManager::ac
 {
 	WorkingCopyInspectionInterface *activeInspector =
 			dynamic_cast<WorkingCopyInspectionInterface *>(activeClient(workingDir));
-//	if (!activeInspector) {
-//		reportWarning(tr("Current working copy versioned by unknown version control system"));
-//	}
 	return activeInspector;
 }
 
@@ -77,6 +74,69 @@ bool VersioningPluginsManager::onFileChanged(const QString &filePath, const QStr
 	return activeInspector->onFileChanged(filePath, workingDir);
 }
 
+bool VersioningPluginsManager::downloadWorkingCopy(
+		  QString const &repoAddress
+		, QString const &targetProject
+		, int revisionNumber)
+{
+	BriefVersioningInterface *activeVcs = activePlugin();
+	if (!activeVcs) {
+		return NULL;
+	}
+	return activeVcs->downloadWorkingCopy(repoAddress, targetProject, revisionNumber);
+}
+
+bool VersioningPluginsManager::updateWorkingCopy()
+{
+	BriefVersioningInterface *activeVcs = activePlugin();
+	if (!activeVcs) {
+		return NULL;
+	}
+	return activeVcs->updateWorkingCopy();
+}
+
+bool VersioningPluginsManager::submitChanges(QString const &description)
+{
+	BriefVersioningInterface *activeVcs = activePlugin();
+	if (!activeVcs) {
+		return NULL;
+	}
+	return activeVcs->submitChanges(description);
+}
+
+bool VersioningPluginsManager::reinitWorkingCopy()
+{
+	BriefVersioningInterface *activeVcs = activePlugin();
+	if (!activeVcs) {
+		return NULL;
+	}
+	return activeVcs->reinitWorkingCopy();
+}
+
+QString VersioningPluginsManager::information()
+{
+	BriefVersioningInterface *activeVcs = activePlugin();
+	if (!activeVcs) {
+		return NULL;
+	}
+	return activeVcs->information();
+}
+
+int VersioningPluginsManager::revisionNumber()
+{
+	BriefVersioningInterface *activeVcs = activePlugin();
+	if (!activeVcs) {
+		return -1;
+	}
+	return activeVcs->revisionNumber();
+}
+
+bool VersioningPluginsManager::isMyWorkingCopy(QString const &directory)
+{
+	return activePlugin(directory) != NULL;
+}
+
+
 void VersioningPluginsManager::reportError(const QString &message)
 {
 	mErrorReporter->addError(message);
@@ -84,8 +144,7 @@ void VersioningPluginsManager::reportError(const QString &message)
 
 void VersioningPluginsManager::reportErrors(const QStringList &messages)
 {
-	foreach (QString const &message, messages)
-	{
+	foreach (QString const &message, messages) {
 		reportError(message);
 	}
 }
@@ -97,8 +156,7 @@ void VersioningPluginsManager::reportWarning(const QString &message)
 
 void VersioningPluginsManager::reportWarnings(const QStringList &messages)
 {
-	foreach (QString const &message, messages)
-	{
+	foreach (QString const &message, messages) {
 		reportWarning(message);
 	}
 }

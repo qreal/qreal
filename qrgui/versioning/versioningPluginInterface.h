@@ -16,10 +16,10 @@ namespace versioning
 /// component to maintain working copy in correct state.
 /// Brief interface provides a number of actions that each VCS
 /// should be able to invoke by definition.
-class VersioningPluginInterface :
-		public ToolPluginInterface,
-		public BriefVersioningInterface,
-		public qrRepo::versioning::WorkingCopyInspectionInterface
+class VersioningPluginInterface
+		: public ToolPluginInterface
+		, public BriefVersioningInterface
+		, public qrRepo::versioning::WorkingCopyInspectionInterface
 {
 public:
 	virtual ~VersioningPluginInterface() {}

@@ -1,12 +1,12 @@
 #include "versionSelector.h"
 
-#include <QHBoxLayout>
-#include <QPushButton>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QPushButton>
 
 using namespace versioning::ui;
 
-VersionSelector::VersionSelector(QWidget *parent) :
-	QDialog(parent)
+VersionSelector::VersionSelector(QWidget *parent)
+	: QDialog(parent)
 {
 	setWindowTitle(tr("Select revision"));
 

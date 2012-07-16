@@ -7,7 +7,7 @@
 namespace versioning
 {
 
-class SubversionPlugin : public QObject, public qReal::versioning::ExternalClientPluginBase
+class SubversionPlugin : public qReal::versioning::ExternalClientPluginBase
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
@@ -39,12 +39,14 @@ public:
 	virtual bool reinitWorkingCopy();
 	virtual QString information();
 	virtual int revisionNumber();
-	virtual bool isMyWorkingCopy(QString const &directory);
+	virtual bool isMyWorkingCopy(QString const &directory = "");
 
 	void editProxyConfiguration();
 
 public slots:
-	bool doCheckout(QString const &from, QString const &targetProject = "", QString const &targetFolder = "");
+	bool doCheckout(QString const &from
+			, QString const &targetProject = ""
+			, QString const &targetFolder = "");
 	bool doUpdate(QString const &to = "");
 	bool doCommit(QString const &message = "", QString const &from = "");
 	bool doCleanUp(QString const &what = "");
@@ -72,7 +74,7 @@ protected:
 
 private:
 	QString infoToRepoUrl(QString &repoInfo);
-	int infoToRevision(QString &repoInfo);
+	int infoToRevision(QString const &repoInfo);
 
 	QStringList authenticationArgs() const;
 

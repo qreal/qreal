@@ -1,13 +1,13 @@
 #include "networkSettingsWidget.h"
 #include "../../qrkernel/settingsManager.h"
 
-#include <QGridLayout>
-#include <QLabel>
+#include <QtGui/QGridLayout>
+#include <QtGui/QLabel>
 
 using namespace versioning::ui;
 
-NetworkSettingsWidget::NetworkSettingsWidget(QWidget *parent) :
-	QWidget(parent)
+NetworkSettingsWidget::NetworkSettingsWidget(QWidget *parent)
+	: QWidget(parent)
 {
 	QFrame *frame = new QFrame;
 	frame->setFrameShape(QFrame::StyledPanel);
@@ -63,7 +63,6 @@ void NetworkSettingsWidget::init()
 	mTimeoutEditor->setValue(SettingsManager::value(timeoutSettingsName(), 0).toInt());
 
 	onEnableChecked();
-
 }
 
 void NetworkSettingsWidget::save()

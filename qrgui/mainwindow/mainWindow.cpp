@@ -1575,7 +1575,8 @@ void MainWindow::initToolPlugins()
 	foreach (PageDescriptor const page, preferencesPages)
 		mPreferencesDialog.registerPage(page.first, page.second);
 
-	mVersioningManager = new versioning::VersioningPluginsManager(mToolManager, &(mModels->repoControlApi()), mErrorReporter);
+	mVersioningManager = new versioning::VersioningPluginsManager(mToolManager
+				, &(mModels->repoControlApi()), mErrorReporter);
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
@@ -1636,7 +1637,7 @@ void MainWindow::setAutoSaveParameters()
 
 void MainWindow::autosave()
 {
-	if (mSaveFile == "") {
+	if (mSaveFile.isEmpty()) {
 		saveAs(mTempDir);
 	} else {
 		saveAll();

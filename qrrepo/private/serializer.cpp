@@ -161,7 +161,7 @@ void Serializer::prepareWorkingCopy(const QString &workingCopyPath)
 
 void Serializer::processWorkingCopy(const QString &workingCopyPath, QString const &targetProject)
 {
-	QString targetProjectPath = targetProject.isEmpty() ? mWorkingFile : targetProject;
+	QString const targetProjectPath = targetProject.isEmpty() ? mWorkingFile : targetProject;
 	if (QDir(workingCopyPath).exists()) {
 		FolderCompressor().compressFolder(workingCopyPath, targetProjectPath);
 	}
@@ -422,7 +422,7 @@ bool Serializer::removeUnsaved(const QString &path)
 	bool result = true;
 	QDir dir(path);
 	if (dir.exists()) {
-		foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+		foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
 			if (fileInfo.isDir()) {
 				if (mSavedDirectories.contains(fileInfo.filePath())) {
 					if (!removeUnsaved(fileInfo.filePath())) {
