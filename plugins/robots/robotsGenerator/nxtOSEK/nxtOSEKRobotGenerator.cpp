@@ -180,8 +180,8 @@ void NxtOSEKRobotGenerator::generate()
 	QString resultTerminateCode;
 	int curInitialNodeNumber = 0;
 	//QDir projectsDir; //TODO: use user path to projects
-	QString projectName = "example" + QString::number(curInitialNodeNumber);
-	QString projectDir = "nxt-tools/" + projectName;
+	QString const projectName = "example" + QString::number(curInitialNodeNumber);
+	QString const projectDir = "nxt-tools/" + projectName;
 	createProjectDir(projectDir);
 
 	utils::InFile templateC(":/nxtOSEK/templates/template.c");
@@ -212,7 +212,7 @@ void NxtOSEKRobotGenerator::generate()
 		mElementToStringListNumbers.clear();
 		mVariables.clear();
 
-		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(this, curInitialNode, *mApi);
+		AbstractElementGenerator* const gen = ElementGeneratorFactory::generator(this, curInitialNode, *mApi);
 		mPreviousElement = curInitialNode;
 		mBalancerIsActivated = false;
 		gen->generate(); //may throws a exception

@@ -37,7 +37,7 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 
 	//TODO: to make "break mode" to do smth
 	if (mElementId.element() == "EnginesForward") {
-		QStringList cmds = mNxtGen->api()->stringProperty(logicElementId, "Power").split(";", QString::SkipEmptyParts);
+		QStringList const cmds = mNxtGen->api()->stringProperty(logicElementId, "Power").split(";", QString::SkipEmptyParts);
 		for (int i = 0; i < cmds.size() - 1; ++i) {
 			result.append(SmartLine(cmds.at(i) + ";", mElementId));
 		}
@@ -184,7 +184,7 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 		QString const intensity = mNxtGen->api()->stringProperty(logicElementId,  "Intensity");
 		QString const inequalitySign = transformSign(QString(mNxtGen->api()->stringProperty(logicElementId, "Sign").toUtf8()));
 
-		QString condition = inequalitySign + " " + intensity;
+		QString const condition = inequalitySign + " " + intensity;
 
 		result.append(SmartLine(
 				"while (!(ecrobot_get_nxtcolorsensor_light(NXT_PORT_S" + QString::number(port)
@@ -199,7 +199,7 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 		QString const percents = mNxtGen->api()->stringProperty(logicElementId,  "Percents");
 		QString const inequalitySign = transformSign(QString(mNxtGen->api()->stringProperty(logicElementId, "Sign").toUtf8()));
 
-		QString condition = inequalitySign + " " + percents;
+		QString const condition = inequalitySign + " " + percents;
 
 		result.append(SmartLine(
 				"while (!(ecrobot_get_nxtcolorsensor_light(NXT_PORT_S" + QString::number(port)
@@ -274,7 +274,7 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 
 bool SimpleElementGenerator::nextElementsGeneration()
 {
-	IdList outgoingConnectedElements = mNxtGen->api()->outgoingConnectedElements(mElementId);
+	IdList const outgoingConnectedElements = mNxtGen->api()->outgoingConnectedElements(mElementId);
 	mNxtGen->generatedStringSet() << simpleCode();
 	mNxtGen->initCode().append(mInitCode);
 
@@ -286,7 +286,7 @@ bool SimpleElementGenerator::nextElementsGeneration()
 			return false;
 		}
 
-		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(mNxtGen, outgoingConnectedElements.at(0), *mNxtGen->api());
+		AbstractElementGenerator* const gen = ElementGeneratorFactory::generator(mNxtGen, outgoingConnectedElements.at(0), *mNxtGen->api());
 		mNxtGen->previousElement() = mElementId;
 		gen->generate();
 		delete gen;

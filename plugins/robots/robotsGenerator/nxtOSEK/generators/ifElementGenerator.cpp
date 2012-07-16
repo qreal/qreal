@@ -15,7 +15,7 @@ QList<SmartLine> IfElementGenerator::loopPrefixCode()
 {
 	QList<SmartLine> result;
 
-	qReal::Id logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
+	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 	result << SmartLine("while (" +
 			mNxtGen->api()->property(logicElementId, "Condition").toString()
 				+ ") {", mElementId, SmartLine::increase); //TODO
@@ -41,7 +41,7 @@ bool IfElementGenerator::generateBranch(int branchNumber)
 {
 	IdList const outgoingLinks = mNxtGen->api()->outgoingLinks(mElementId);
 
-	Id branchElement = mNxtGen->api()->to(outgoingLinks.at(branchNumber));
+	Id const branchElement = mNxtGen->api()->to(outgoingLinks.at(branchNumber));
 	if (branchElement == Id::rootId()) {
 		mNxtGen->errorReporter().addError("If block " + mElementId.toString() + " has no 2 correct branches!"\
 				" May be you need to connect one of them to some diagram element.", mElementId);
@@ -122,17 +122,17 @@ bool IfElementGenerator::nextElementsGeneration()
 	Q_ASSERT(outgoingLinks.size() == 2);
 
 	//we search for arrow with condition
-	qReal::Id graphicalId = outgoingLinks.at(0);
-	qReal::Id logicalId = mNxtGen->api()->logicalId(graphicalId);
-	QVariant guardProperty = mNxtGen->api()->property(logicalId, "Guard");
-	int conditionArrowNum = guardProperty.toString().isEmpty() ? 1 : 0;
+	qReal::Id const graphicalId = outgoingLinks.at(0);
+	qReal::Id const logicalId = mNxtGen->api()->logicalId(graphicalId);
+	QVariant const guardProperty = mNxtGen->api()->property(logicalId, "Guard");
+	int const conditionArrowNum = guardProperty.toString().isEmpty() ? 1 : 0;
 
-	qReal::Id logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
+	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 
 	//TODO: save number of new created list
 	QString condition = "(" + mNxtGen->api()->property(logicElementId, "Condition").toString() + ")";
 
-	QByteArray conditionOnArrow =
+	QByteArray const conditionOnArrow =
 		mNxtGen->api()->stringProperty(mNxtGen->api()->logicalId(outgoingLinks.at(conditionArrowNum)), "Guard").toUtf8();
 	if (conditionOnArrow == "меньше 0") {
 		condition += " < 0";
@@ -143,26 +143,26 @@ bool IfElementGenerator::nextElementsGeneration()
 	}
 
 	//check for back arrows
-	Id positiveBranchElement = mNxtGen->api()->to(mNxtGen->api()->logicalId(outgoingLinks.at(conditionArrowNum)));
+	Id const positiveBranchElement = mNxtGen->api()->to(mNxtGen->api()->logicalId(outgoingLinks.at(conditionArrowNum)));
 	if (positiveBranchElement == Id::rootId()) {
 		mNxtGen->errorReporter().addError("If block " + mElementId.toString() + " has no 2 correct branches!"\
 				" May be you need to connect one of them to some diagram element.", mElementId);
 		return false;
 	}
 
-	QPair<bool, qReal::Id> positiveBranchCheck = checkBranchForBackArrows(positiveBranchElement);
-	bool isPositiveBranchReturnsToBackElems = positiveBranchCheck.first;
+	QPair<bool, qReal::Id> const positiveBranchCheck = checkBranchForBackArrows(positiveBranchElement);
+	bool const isPositiveBranchReturnsToBackElems = positiveBranchCheck.first;
 
-	Id negativeBranchElement = mNxtGen->api()->to(outgoingLinks.at(1 - conditionArrowNum));
+	Id const negativeBranchElement = mNxtGen->api()->to(outgoingLinks.at(1 - conditionArrowNum));
 	if (negativeBranchElement == Id::rootId()) {
 		mNxtGen->errorReporter().addError("If block " + mElementId.toString() + " has no 2 correct branches!"\
 				" May be you need to connect one of them to some diagram element.", mElementId);
 		return false;
 	}
 
-	QPair<bool, qReal::Id> negativeBranchCheck = checkBranchForBackArrows(negativeBranchElement);
+	QPair<bool, qReal::Id> const negativeBranchCheck = checkBranchForBackArrows(negativeBranchElement);
 
-	bool isNegativeBranchReturnsToBackElems = negativeBranchCheck.first;
+	bool const isNegativeBranchReturnsToBackElems = negativeBranchCheck.first;
 
 	if (isPositiveBranchReturnsToBackElems && isNegativeBranchReturnsToBackElems) {
 		if (positiveBranchCheck.second != negativeBranchCheck.second) {

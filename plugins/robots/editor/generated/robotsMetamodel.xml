@@ -1218,7 +1218,6 @@
 				<element name="Ждать сонар"/>
 				<element name="Ждать цвет"/>
 				<element name="Ждать энкодер"/>
-				<element name="Ждать свет"/>
 				<element name="Ждать интенсивность цвета"/>
 			</group>
 			<group name="Алгоритмы">

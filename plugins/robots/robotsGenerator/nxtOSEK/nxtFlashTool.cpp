@@ -62,7 +62,7 @@ void NxtFlashTool::nxtFlashingFinished(int exitCode, QProcess::ExitStatus exitSt
 
 void NxtFlashTool::readNxtFlashData()
 {
-	QStringList output = QString(mFlashProcess.readAll()).split("\n", QString::SkipEmptyParts);
+	QStringList const output = QString(mFlashProcess.readAll()).split("\n", QString::SkipEmptyParts);
 
 	qDebug() << "exit code:" << mFlashProcess.exitCode();
 	qDebug() << output;
@@ -104,7 +104,7 @@ void NxtFlashTool::nxtUploadingFinished(int exitCode, QProcess::ExitStatus exitS
 
 void NxtFlashTool::readNxtUploadData()
 {
-	QStringList output = QString(mUploadProcess.readAll()).split("\n", QString::SkipEmptyParts);
+	QStringList const output = QString(mUploadProcess.readAll()).split("\n", QString::SkipEmptyParts);
 
 	qDebug() << "exit code:" << mUploadProcess.exitCode();
 	qDebug() << output;
