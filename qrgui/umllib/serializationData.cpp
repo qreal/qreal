@@ -1,20 +1,20 @@
 #include "serializationData.h"
 
-QDataStream& operator<< (QDataStream &out, NodeData const &data)
+QDataStream &operator<< (QDataStream &out, NodeData const &data)
 {
 	out << data.id << data.logicalId << data.parentId << data.pos
 			<< data.contents << data.properties;
 	return out;
 }
 
-QDataStream& operator>> (QDataStream &in, NodeData &data)
+QDataStream &operator>> (QDataStream &in, NodeData &data)
 {
 	in >> data.id >> data.logicalId >> data.parentId >> data.pos
 			>> data.contents >> data.properties;
 	return in;
 }
 
-QDataStream& operator<< (QDataStream &out, EdgeData const &data)
+QDataStream &operator<< (QDataStream &out, EdgeData const &data)
 {
 	out << data.id << data.logicalId << data.srcId << data.dstId
 			<< data.portFrom << data.portTo
@@ -22,7 +22,7 @@ QDataStream& operator<< (QDataStream &out, EdgeData const &data)
 	return out;
 }
 
-QDataStream& operator>> (QDataStream &in, EdgeData &data)
+QDataStream &operator>> (QDataStream &in, EdgeData &data)
 {
 	in >> data.id >> data.logicalId >> data.srcId >> data.dstId
 			>> data.portFrom >> data.portTo

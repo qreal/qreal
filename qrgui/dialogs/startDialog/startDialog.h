@@ -1,11 +1,11 @@
 #pragma once
 #include <QtGui/QDialog>
 
-namespace qReal {
-class MainWindow;
-}
+#include "../../mainwindow/projectManager/projectManager.h"
 
 namespace qReal {
+
+class MainWindow;
 
 /**
  * @brief Start page dialog
@@ -19,8 +19,9 @@ class StartDialog : public QDialog
 	Q_OBJECT
 
 public:
-	explicit StartDialog(MainWindow *mainWindow);
+	explicit StartDialog(MainWindow *mainWindow, ProjectManager *projectManager);
 	void keyPressEvent(QKeyEvent *event);
+
 
 private slots:
 	void openRecentProject(QString const &fileName);
@@ -28,7 +29,11 @@ private slots:
 	void createProjectWithDiagram(QString const &idString);
 
 private:
+	static const QSize mMinimumSize;
+
 	MainWindow *mMainWindow;
+	ProjectManager *mProjectManager;
 };
 
 }
+

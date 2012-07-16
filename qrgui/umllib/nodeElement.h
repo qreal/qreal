@@ -1,6 +1,6 @@
 
 /** @file nodeElement.h
- * 	@brief class for an element object on a diagram
+ *  @brief class for an element object on a diagram
  * */
 
 #pragma once
@@ -39,8 +39,8 @@ public:
 
 	QMap<QString, QVariant> properties();
 
-	virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w, SdfRenderer *portrenderer);
-	virtual void paint(QPainter *,  const QStyleOptionGraphicsItem *, QWidget *);
+	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w, SdfRenderer *portrenderer);
+	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w);
 
 	QRectF boundingRect() const;
 	QRectF contentsRect() const;
@@ -89,7 +89,7 @@ public:
 
 	void resizeChild(QRectF const &newContents, QRectF const &oldContents);
 
-	virtual QList<ContextMenuAction*> contextMenuActions();
+	virtual QList<ContextMenuAction *> contextMenuActions();
 	void switchAlignment(bool isSwitchedOn);
 	void showAlignment(bool isChecked);
 
@@ -110,9 +110,9 @@ public:
 	void erasePlaceholder(bool);
 
 	/**
-	*   @brief Returns element that follows placeholder
-	*   @return element or NULL
-	* */
+	* @brief Returns element that follows placeholder
+	* @return element or NULL
+	*/
 	Element *getPlaceholderNextElement();
 	void highlightEdges();
 
@@ -124,12 +124,13 @@ public:
 
 	/// Folded contents of node
 	QRectF foldedContents() const;
+	virtual void deleteFromScene();
 
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
 	virtual void selectionState(bool const selected);
 	void switchGrid(bool isChecked);
-	NodeElement* copyAndPlaceOnDiagram(QPointF const &offset);
+	NodeElement *copyAndPlaceOnDiagram(QPointF const &offset);
 
 private:
 	enum DragState {
@@ -163,6 +164,8 @@ private:
 	/// newContents equals to current shape (mContents).
 	void resize();
 
+	void disconnectEdges();
+
 	void delUnusedLines();
 	PossibleEdge toPossibleEdge(StringPossibleEdge const &strPossibleEdge);
 
@@ -180,12 +183,12 @@ private:
 	void changeFoldState();
 	void setLinksVisible(bool);
 
-	NodeElement* getNodeAt(QPointF const &position);
+	NodeElement *getNodeAt(QPointF const &position);
 
 	QLineF newTransform(StatLine const &port) const;
 	QPointF newTransform(StatPoint const &port) const;
 
-	void updateByChild(NodeElement* item, bool isItemAddedOrDeleted);
+	void updateByChild(NodeElement *item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
 
 	qreal minDistanceFromLinePort(int const linePortNumber, QPointF const &location) const;
@@ -201,7 +204,7 @@ private:
 
 	bool mPortsVisible;
 
-	QList<NodeElement*> childs;
+	QList<NodeElement *> childs;
 
 	QList<StatPoint> mPointPorts;
 	QList<StatLine> mLinePorts;
@@ -211,7 +214,7 @@ private:
 
 	DragState mDragState;
 
-	QList<EmbeddedLinker*> mEmbeddedLinkers;
+	QList<EmbeddedLinker *> mEmbeddedLinkers;
 
 	QSet<PossibleEdge> mPossibleEdges;
 	QSet<PossibleEdgeType> mPossibleEdgeTypes;
@@ -227,14 +230,14 @@ private:
 
 	bool mLeftPressed;
 
-	NodeElement* mParentNodeElement;
+	NodeElement *mParentNodeElement;
 
 	QPointF mPos;
 	bool mSelectionNeeded;
 
 	bool mConnectionInProgress;
 
-	QList<ContextMenuAction*> mBonusContextMenuActions;
+	QList<ContextMenuAction *> mBonusContextMenuActions;
 
 	SceneGridHandler *mGrid;
 	UmlPortHandler *mUmlPortHandler;
