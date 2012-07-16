@@ -41,9 +41,9 @@ bool AbstractElementGenerator::generate()
 		//loopElement must create loop code
 		AbstractElementGenerator *loopElementGen = ElementGeneratorFactory::generator(mNxtGen, loopElement, *mNxtGen->api());
 
-		int o = mNxtGen->elementToStringListNumbersPop(loopElement.toString());
-		QList<SmartLine> set = mNxtGen->generatedStringSet()[o] + loopElementGen->loopPrefixCode();
-		mNxtGen->setGeneratedStringSet(o, set);
+		int num = mNxtGen->elementToStringListNumbersPop(loopElement.toString());
+		QList<SmartLine> set = mNxtGen->generatedStringSet()[num] + loopElementGen->loopPrefixCode();
+		mNxtGen->setGeneratedStringSet(num, set);
 		mNxtGen->generatedStringSet() << loopElementGen->loopPostfixCode();
 
 		return true;

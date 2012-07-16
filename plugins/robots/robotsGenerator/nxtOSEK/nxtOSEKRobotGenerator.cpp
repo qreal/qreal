@@ -186,9 +186,11 @@ void NxtOSEKRobotGenerator::generate()
 
 	utils::InFile templateC(":/nxtOSEK/templates/template.c");
 	templateC() >> mResultString;
+	qDebug() << mResultString;
 
 	utils::InFile readTemplateOilFile(":/nxtOSEK/templates/template.oil");
 	readTemplateOilFile() >> mResultOil;
+	qDebug() << mResultOil;
 
 	utils::InFile readTaskTemplateFile(":/nxtOSEK/templates/taskTemplate.oil");
 	QString resultTaskTemplate;

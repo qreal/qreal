@@ -7,14 +7,14 @@ OutFile::OutFile(QString const &fileName)
 {
 	mFile.setFileName(fileName);
 	mFile.open(QIODevice::WriteOnly | QIODevice::Text);
-	if (!mFile.isOpen()){
+	if (!mFile.isOpen()) {
 		throw qReal::Exception("File open operation failed");
 	}
 	mOut.setDevice(&mFile);
 	mOut.setCodec("UTF-8");
 }
 
-QTextStream& OutFile::operator()()
+QTextStream &OutFile::operator()()
 {
 	return mOut;
 }
