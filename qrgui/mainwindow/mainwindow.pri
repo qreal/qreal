@@ -12,7 +12,7 @@ HEADERS += \
 	mainwindow/findManager.h \
 	mainwindow/dotRunner.h \
 	mainwindow/splashScreen.h \
-    mainwindow/miniMap.h
+	mainwindow/miniMap.h
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -25,7 +25,7 @@ SOURCES += \
 	mainwindow/findManager.cpp \
 	mainwindow/dotRunner.cpp \
 	mainwindow/splashScreen.cpp \
-    mainwindow/miniMap.cpp
+	mainwindow/miniMap.cpp
 
 FORMS += \
 	mainwindow/mainWindow.ui \

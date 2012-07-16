@@ -11,7 +11,6 @@ class MiniMap : public QGraphicsView
 {
 	Q_OBJECT
 public:
-	explicit MiniMap(QGraphicsScene *scene, QWidget *parent = 0);
 	explicit MiniMap(QWidget *parent = 0);
 
 	void init(qReal::MainWindow *window);

@@ -693,8 +693,8 @@
   </customwidget>
   <customwidget>
    <class>MiniMap</class>
-   <extends>QWidget</extends>
-   <header>minimap.h</header>
+   <extends>QGraphicsView</extends>
+   <header>../mainwindow/miniMap.h</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -1,9 +1,5 @@
 #include "miniMap.h"
 
-MiniMap::MiniMap(QGraphicsScene *scene, QWidget *parent)
-	: QGraphicsView(scene, parent)
-{}
-
 MiniMap::MiniMap(QWidget *parent)
 	: QGraphicsView(parent)
 {}
