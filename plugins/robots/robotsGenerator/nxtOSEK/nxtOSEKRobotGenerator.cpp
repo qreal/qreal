@@ -157,7 +157,7 @@ void NxtOSEKRobotGenerator::generateFilesForBalancer(QString const &projectDir)
 	}
 }
 
-void NxtOSEKRobotGenerator::createProjectDir(QString const&projectDir)
+void NxtOSEKRobotGenerator::createProjectDir(QString const &projectDir)
 {
 	if (!QDir(projectDir).exists()) {
 		if (!QDir("nxt-tools/").exists()) {
@@ -185,14 +185,14 @@ void NxtOSEKRobotGenerator::generate()
 	createProjectDir(projectDir);
 
 	utils::InFile templateC(":/nxtOSEK/templates/template.c");
-	templateC() << mResultString;
+	templateC() >> mResultString;
 
 	utils::InFile readTemplateOilFile(":/nxtOSEK/templates/template.oil");
-	readTemplateOilFile() << mResultOil;
+	readTemplateOilFile() >> mResultOil;
 
 	utils::InFile readTaskTemplateFile(":/nxtOSEK/templates/taskTemplate.oil");
 	QString resultTaskTemplate;
-	readTaskTemplateFile() << resultTaskTemplate;
+	readTaskTemplateFile() >> resultTaskTemplate;
 
 	foreach (Id const &curInitialNode, toGenerate) {
 
@@ -223,7 +223,7 @@ void NxtOSEKRobotGenerator::generate()
 		// Result code in .c file
 		QString resultCode;
 		mCurTabNumber = 0;
-		foreach (QList<SmartLine> const&lineList, mGeneratedStringSet) {
+		foreach (QList<SmartLine> const &lineList, mGeneratedStringSet) {
 			 resultCode = addTabAndEndOfLine(lineList, resultCode);
 		}
 		// Code init block in .c file

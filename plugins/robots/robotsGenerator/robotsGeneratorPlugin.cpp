@@ -57,12 +57,11 @@ void RobotsGeneratorPlugin::generateRobotSourceCode()
 {
 	mMainWindowInterface->saveAll();
 
-
 	robots::generator::NxtOSEKRobotGenerator gen(mMainWindowInterface->activeDiagram(),
 			 *mRepoControlApi,
 			 *mMainWindowInterface->errorReporter());
 	gen.generate();
-	if ((mMainWindowInterface)->errorReporter()->wereErrors()) {
+	if (mMainWindowInterface->errorReporter()->wereErrors()) {
 		return;
 	}
 

@@ -110,7 +110,7 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 				mNxtGen->portValue4() = portValue;
 				break;
 			}
-			const QString initEcrobotColorSensorPortS = "ecrobot_init_nxtcolorsensor(NXT_PORT_S";
+			QString const initEcrobotColorSensorPortS = "ecrobot_init_nxtcolorsensor(NXT_PORT_S";
 			if (portValue == "Ультразвуковой сенсор") {
 				mInitCode.append(SmartLine(
 						"ecrobot_init_sonar_sensor(NXT_PORT_S" + QString::number(i) + ");",

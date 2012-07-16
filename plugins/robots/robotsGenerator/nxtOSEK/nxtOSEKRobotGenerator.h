@@ -48,7 +48,7 @@ public:
 
 private:
 	void addToGeneratedStringSetVariableInit();
-	void createProjectDir(QString const&projectDir);
+	void createProjectDir(QString const &projectDir);
 	void insertCode(
 			QString const &resultCode,
 			QString const &resultInitCode,
