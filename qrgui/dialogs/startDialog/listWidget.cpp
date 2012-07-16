@@ -10,6 +10,7 @@ ListWidget::ListWidget(QWidget *parent)
 	, mOkButton(new QPushButton(tr("&OK")))
 {
 	mOkButton->setDisabled(true);
+	mOkButton->setMinimumHeight(mOkButtonMinimumHeight);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 	mainLayout->addWidget(mListWidget);

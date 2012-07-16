@@ -37,6 +37,8 @@ private slots:
 private:
 	QString userData(QListWidgetItem *item);
 
+	static const int mOkButtonMinimumHeight = 32;
+
 	QListWidget *mListWidget;
 	QPushButton *mOkButton;
 };
