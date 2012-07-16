@@ -13,7 +13,7 @@ LoopElementGenerator::LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen
 
 bool LoopElementGenerator::nextElementsGeneration()
 {
-	IdList outgoingLinks = mNxtGen->api()->outgoingLinks(mElementId);
+	IdList const outgoingLinks = mNxtGen->api()->outgoingLinks(mElementId);
 	Q_ASSERT(outgoingLinks.size() == 2);
 
 	int elementConnectedByIterationEdgeNumber = -1;
@@ -28,14 +28,14 @@ bool LoopElementGenerator::nextElementsGeneration()
 	}
 
 	//generate loop
-	Id loopNextElement = mNxtGen->api()->to(outgoingLinks.at(elementConnectedByIterationEdgeNumber));
+	Id const loopNextElement = mNxtGen->api()->to(outgoingLinks.at(elementConnectedByIterationEdgeNumber));
 	if (loopNextElement == Id::rootId()) {
 		mNxtGen->errorReporter().addError("Loop block " + mElementId.toString() + " has no correct loop branch!"\
 				" May be you need to connect it to some diagram element.", mElementId);
 		return false;
 	}
 
-	AbstractElementGenerator* loopGen = ElementGeneratorFactory::generator(mNxtGen,
+	AbstractElementGenerator* const loopGen = ElementGeneratorFactory::generator(mNxtGen,
 			loopNextElement, *mNxtGen->api());
 
 	mNxtGen->previousElement() = mElementId;
@@ -46,7 +46,7 @@ bool LoopElementGenerator::nextElementsGeneration()
 	delete loopGen;
 
 	//generate next blocks
-	Id nextBlockElement = mNxtGen->api()->to(outgoingLinks.at(afterLoopElementNumber));
+	Id const nextBlockElement = mNxtGen->api()->to(outgoingLinks.at(afterLoopElementNumber));
 	if (nextBlockElement == Id::rootId()) {
 		mNxtGen->errorReporter().addError("Loop block " + mElementId.toString() + " has no correct next block branch!"\
 				" May be you need to connect it to some diagram element.", mElementId);
@@ -86,7 +86,7 @@ QList<SmartLine> LoopElementGenerator::loopPostfixCode()
 
 bool LoopElementGenerator::preGenerationCheck()
 {
-	IdList outgoingLinks = mNxtGen->api()->outgoingLinks(mElementId);
+	IdList const outgoingLinks = mNxtGen->api()->outgoingLinks(mElementId);
 
 	if ((outgoingLinks.size() != 2) ||
 		( (mNxtGen->api()->property(mNxtGen->api()->logicalId(outgoingLinks.at(0)), "Guard").toString() == "итерация")

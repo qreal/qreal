@@ -169,8 +169,8 @@ void NxtOSEKRobotGenerator::generate()
 	QString resultTerminateCode;
 
 	//QDir projectsDir; //TODO: use user path to projects
-	QString projectName = "example" + QString::number(curInitialNodeNumber);
-	QString projectDir = "nxt-tools/" + projectName;
+	QString const projectName = "example" + QString::number(curInitialNodeNumber);
+	QString const projectDir = "nxt-tools/" + projectName;
 
 	//Create project directory
 	if (!QDir(projectDir).exists()) {
@@ -215,7 +215,7 @@ void NxtOSEKRobotGenerator::generate()
 		return;
 	}
 
-	QString resultTaskTemplate = taskTemplateFile.readAll();
+	QString const resultTaskTemplate = taskTemplateFile.readAll();
 	taskTemplateFile.close();
 
 	foreach (Id const &curInitialNode, toGenerate) {// идем по отдельным цепочкам из элементов
@@ -236,7 +236,7 @@ void NxtOSEKRobotGenerator::generate()
 		mElementToStringListNumbers.clear();
 		mVariables.clear();
 
-		AbstractElementGenerator* gen = ElementGeneratorFactory::generator(this, curInitialNode, *mApi);
+		AbstractElementGenerator* const gen = ElementGeneratorFactory::generator(this, curInitialNode, *mApi);
 		mPreviousElement = curInitialNode;
 
 		mBalancerIsActivated = false;

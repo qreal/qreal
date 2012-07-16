@@ -10,7 +10,7 @@ FunctionElementGenerator::FunctionElementGenerator(NxtOSEKRobotGenerator *genera
 
 void FunctionElementGenerator::variableAnalysis(QByteArray const &code)
 {
-	QList<QByteArray> funcBlocks = code.split(';');
+	QList<QByteArray> const funcBlocks = code.split(';');
 
 	foreach (QByteArray block, funcBlocks) {
 			//Only one possible place for first variable appear
@@ -72,7 +72,7 @@ QList<SmartLine> FunctionElementGenerator::simpleCode()
 	byteFuncCode.replace("Сенсор4", replaceSensorVariables(mNxtGen->portValue4()) + "4)");
 
 	variableAnalysis(byteFuncCode);
-	QString funcCode = QString::fromUtf8(byteFuncCode);
+	QString const funcCode = QString::fromUtf8(byteFuncCode);
 
 	foreach (QString str, funcCode.split(';')) {
 		result.append(SmartLine(str.trimmed() + ";", mElementId));
