@@ -42,25 +42,25 @@ public:
 	QList<QList<SmartLine> > &generatedStringSet();
 	QMap<QString, QStack<int> > &elementToStringListNumbers();
 	QStack<qReal::Id> &previousLoopElements();
+	qReal::Id previousLoopElementsPop();
+	int elementToStringListNumbersPop(QString const &key);
+	void setGeneratedStringSet(int key, QList<SmartLine> const &list);
 
 private:
-	friend class AbstractElementGenerator;
-
-	friend class ElementGeneratorFactory;
-
 	void addToGeneratedStringSetVariableInit();
+	void createProjectDir(QString const&projectDir);
 	void insertCode(
-			QString resultCode,
-			QString resultInitCode,
-			QString resultTerminateCode,
-			QString curInitialNodeNumber);
-	void deleteResidualLabels(QString projectName);
-	void generateMakeFile(bool toGenerateIsEmpty, QString projectName, QString projectDir);
-	void generateFilesForBalancer(QString projectDir);
+			QString const &resultCode,
+			QString const &resultInitCode,
+			QString const &resultTerminateCode,
+			QString const &curInitialNodeNumber);
+	void deleteResidualLabels(QString const &projectName);
+	void generateMakeFile(bool const &toGenerateIsEmpty, QString const &projectName, QString const &projectDir);
+	void generateFilesForBalancer(QString const &projectDir);
 	QString addTabAndEndOfLine(QList<SmartLine> const &lineList, QString resultCode);
 	QString generateVariableString();
 
-	QString mResultOIL;
+	QString mResultOil;
 	QString mResultString;
 	int mCurTabNumber;
 	QString mTaskTemplate;

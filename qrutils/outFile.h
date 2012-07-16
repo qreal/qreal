@@ -14,14 +14,9 @@ public:
 	~OutFile();
 	QTextStream& operator()();
 
-	void incIndent();
-	void decIndent();
 private:
-	QString indent() const;
-
 	QTextStream mOut;
 	QFile mFile;
-	int mIndent;
 };
 
 }

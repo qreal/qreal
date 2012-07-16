@@ -12,9 +12,7 @@ class NxtOSEKRobotGenerator;
 class AbstractElementGenerator {
 public:
 	explicit AbstractElementGenerator(NxtOSEKRobotGenerator *mainGenerator, qReal::Id const &elementId);
-
 	virtual ~AbstractElementGenerator();
-
 	virtual bool generate();
 
 protected:
@@ -27,13 +25,11 @@ protected:
 	 * in case element have more than 1 incoming connection.
 	*/
 	virtual void createListsForIncomingConnections();
-
 	virtual bool preGenerationCheck() = 0;
 	virtual bool nextElementsGeneration() = 0;
 
 	NxtOSEKRobotGenerator *mNxtGen;
 	qReal::Id mElementId;
-
 };
 
 }

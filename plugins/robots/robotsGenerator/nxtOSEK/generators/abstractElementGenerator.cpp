@@ -18,9 +18,9 @@ AbstractElementGenerator::~AbstractElementGenerator()
 void AbstractElementGenerator::createListsForIncomingConnections()
 {
 	//connects string lists in mGeneratedStringSet with mElementId in mElementToStringListNumbers
-	for (int i = 1; i < mNxtGen->mApi->incomingConnectedElements(mElementId).size(); i++) {
-		mNxtGen->mGeneratedStringSet << QList<SmartLine>();
-		mNxtGen->mElementToStringListNumbers[mElementId.toString()] << mNxtGen->mGeneratedStringSet.size() - 1;
+	for (int i = 1; i < mNxtGen->api()->incomingConnectedElements(mElementId).size(); i++) {
+		mNxtGen->generatedStringSet() << QList<SmartLine>();
+		mNxtGen->elementToStringListNumbers()[mElementId.toString()] << mNxtGen->generatedStringSet().size() - 1;
 	}
 }
 
@@ -30,24 +30,24 @@ bool AbstractElementGenerator::generate()
 		return false;
 	}
 
-	if (mNxtGen->mElementToStringListNumbers.contains(mElementId.toString())) {
+	if (mNxtGen->elementToStringListNumbers().contains(mElementId.toString())) {
 		//if we have already observed this element with more than 1 incoming connection
 
 		qReal::Id loopElement = mElementId;
-		if (!mNxtGen->mPreviousLoopElements.empty()) {
-			loopElement = mNxtGen->mPreviousLoopElements.pop();
+		if (!mNxtGen->previousLoopElements().empty()) {
+			loopElement = mNxtGen->previousLoopElementsPop();
 		}
 
 		//loopElement must create loop code
-		AbstractElementGenerator *loopElementGen = ElementGeneratorFactory::generator(mNxtGen, loopElement, *mNxtGen->mApi);
+		AbstractElementGenerator *loopElementGen = ElementGeneratorFactory::generator(mNxtGen, loopElement, *mNxtGen->api());
 
-		mNxtGen->mGeneratedStringSet[mNxtGen->mElementToStringListNumbers[loopElement.toString()].pop()]
-			+= loopElementGen->loopPrefixCode();
-
-		mNxtGen->mGeneratedStringSet << loopElementGen->loopPostfixCode();
+		int o = mNxtGen->elementToStringListNumbersPop(loopElement.toString());
+		QList<SmartLine> set = mNxtGen->generatedStringSet()[o] + loopElementGen->loopPrefixCode();
+		mNxtGen->setGeneratedStringSet(o, set);
+		mNxtGen->generatedStringSet() << loopElementGen->loopPostfixCode();
 
 		return true;
-}
+	}
 
 	//in case element has more than 1 incoming connection
 	//means that element has incoming connections from another elements, we haven`t already observed

@@ -62,7 +62,7 @@ void RobotsGeneratorPlugin::generateRobotSourceCode()
 			 *mRepoControlApi,
 			 *mMainWindowInterface->errorReporter());
 	gen.generate();
-	if ((mMainWindowInterface)->errorReporter()->wereErrors()){
+	if ((mMainWindowInterface)->errorReporter()->wereErrors()) {
 		return;
 	}
 
