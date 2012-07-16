@@ -1,3 +1,4 @@
+#include <QtCore/QDebug>
 #include <QtGui/QVBoxLayout>
 
 #include "listWidget.h"
@@ -31,6 +32,19 @@ void ListWidget::addItem(QString const &text, QString const &userData, QString c
 	mListWidget->addItem(currentItem);
 }
 
+int ListWidget::count()
+{
+	return mListWidget->count();
+}
+
+void ListWidget::highlightFirstItem()
+{
+	if (count() == 0) {
+		return;
+	}
+	mListWidget->setCurrentRow(0);
+}
+
 void ListWidget::okButtonHandler()
 {
 	emit userDataSelected(userData(mListWidget->currentItem()));
@@ -49,4 +63,5 @@ QString ListWidget::userData(QListWidgetItem *item)
 void ListWidget::okActivate()
 {
 	mOkButton->setEnabled(true);
+	mOkButton->setDefault(true);
 }

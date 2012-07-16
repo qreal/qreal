@@ -404,9 +404,9 @@ void Client::save(IdList list)
 void Client::saveWithLogicalId(qReal::IdList list)
 {
 	QList<Object*> toSave;
-	foreach(Id const &id, list)
+	foreach(Id const &id, list) {
 		toSave.append(allChildrenOfWithLogicalId(id));
-
+	}
 	mSerializer.saveToDisk(toSave);
 }
 

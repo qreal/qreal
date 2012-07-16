@@ -5,10 +5,9 @@
 #include "listWidget.h"
 
 namespace qReal {
-class MainWindow;
-}
 
-namespace qReal {
+class MainWindow;
+
 /**
  * @brief ListWidget filled with available diagram types
  *
@@ -29,3 +28,4 @@ private:
 };
 
 }
+

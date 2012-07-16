@@ -14,8 +14,8 @@ class QRUTILS_EXPORT BaseGraphTransformationUnit : public QObject
 	Q_OBJECT
 
 public:
-	BaseGraphTransformationUnit(LogicalModelAssistInterface const &logicalModelApi
-			, GraphicalModelAssistInterface const &graphicalModelApi
+	BaseGraphTransformationUnit(LogicalModelAssistInterface &logicalModelApi
+			, GraphicalModelAssistInterface &graphicalModelApi
 			, gui::MainWindowInterpretersInterface &interpretersInterface);
 	~BaseGraphTransformationUnit();
 
@@ -113,8 +113,8 @@ protected:
 	void pause(int const &time);
 	
 	gui::MainWindowInterpretersInterface &mInterpretersInterface;
-	LogicalModelAssistInterface const &mLogicalModelApi;
-	GraphicalModelAssistInterface const &mGraphicalModelApi;
+	LogicalModelAssistInterface &mLogicalModelApi;
+	GraphicalModelAssistInterface &mGraphicalModelApi;
 	
 	Id mRuleToFind;
 	

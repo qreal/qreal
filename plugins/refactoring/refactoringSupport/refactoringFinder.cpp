@@ -7,8 +7,8 @@
 using namespace qReal;
 
 RefactoringFinder::RefactoringFinder(
-		const LogicalModelAssistInterface &logicalModelApi
-		, const GraphicalModelAssistInterface &graphicalModelApi
+		LogicalModelAssistInterface &logicalModelApi
+		, GraphicalModelAssistInterface &graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
 		, qrRepo::RepoApi *refactoringRepoApi)
 		: BaseGraphTransformationUnit(logicalModelApi, graphicalModelApi, interpretersInterface)
