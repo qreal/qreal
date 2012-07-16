@@ -22,7 +22,6 @@ public:
 	explicit StartDialog(MainWindow *mainWindow, ProjectManager *projectManager);
 	void keyPressEvent(QKeyEvent *event);
 
-
 private slots:
 	void openRecentProject(QString const &fileName);
 	void openExistingProject();
