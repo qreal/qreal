@@ -48,7 +48,7 @@ QString ConcreateGenerator::constraintModelName() //i.e. pliginName
 
 QString ConcreateGenerator::constraintNormalizerModelName()
 {
-	NameNormalizer::normalize(constraintModelName(), false);
+	return NameNormalizer::normalize(constraintModelName(), false);
 }
 
 QString ConcreateGenerator::constraintModelId() //i.e. pliginId
@@ -290,9 +290,10 @@ void ConcreateGenerator::generate()
 	resultPluginCPP.replace("@@ifForMainCheckOfConstraintsDiagrams@@", neededStrings.ifForMainCheckPluginCPP);
 	resultPluginCPP.replace("@@constraintsPluginId@@", mConstraintsName);
 
-	saveOutputFile(QString(constraintNormalizerModelName() + ".pro"), resultPRO);
-	saveOutputFile(QString(constraintNormalizerModelName()+ "Plugin.h"), resultPluginH);
-	saveOutputFile(QString(constraintNormalizerModelName() + "Plugin.cpp"), resultPluginCPP);
+	QString fileBaseName = constraintNormalizerModelName();
+	saveOutputFile(QString(fileBaseName + ".pro"), resultPRO);
+	saveOutputFile(QString(fileBaseName+ "Plugin.h"), resultPluginH);
+	saveOutputFile(QString(fileBaseName + "Plugin.cpp"), resultPluginCPP);
 }
 
 QString ConcreateGenerator::correctedLanguageName(Id const &diagram)
