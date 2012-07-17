@@ -32,9 +32,10 @@ public:
 
 	virtual QVariant property(qReal::Id const &id, QString const &propertyName) const = 0;
 	virtual QString stringProperty(qReal::Id const &id, QString const &propertyName) const = 0;
-	virtual void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value) = 0;
+	virtual void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value) const = 0;
 	virtual void removeProperty(qReal::Id const &id, QString const &propertyName) = 0;
 	virtual bool hasProperty(qReal::Id const &id, QString const &propertyName) const = 0;
+	virtual QMapIterator<QString, QVariant> propertiesIterator(qReal::Id const &id) const = 0;
 
 	virtual bool exist(qReal::Id const &id) const = 0;
 	virtual void removeElement(qReal::Id const &id) = 0;

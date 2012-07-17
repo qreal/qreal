@@ -55,9 +55,9 @@ void EditorView::zoomIn()
 {
 	if (mWheelPressed)
 		return;
-	double zoomFactor = static_cast<double>(SettingsManager::value("zoomFactor", 2).toInt()) / 10 + 1;
+	double zoomFactor = static_cast<double>(SettingsManager::value("zoomFactor").toInt()) / 10 + 1;
 	scale(zoomFactor, zoomFactor);
-	if (SettingsManager::value("ShowGrid", true).toBool()) {
+	if (SettingsManager::value("ShowGrid").toBool()) {
 		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
 	}
 	checkGrid();
@@ -67,9 +67,9 @@ void EditorView::zoomOut()
 {
 	if (mWheelPressed)
 		return;
-	double zoomFactor = 1 / (static_cast<double>(SettingsManager::value("zoomFactor", 2).toInt()) / 10 + 1);
+	double zoomFactor = 1 / (static_cast<double>(SettingsManager::value("zoomFactor").toInt()) / 10 + 1);
 	scale(zoomFactor, zoomFactor);
-	if (SettingsManager::value("ShowGrid", true).toBool()) {
+	if (SettingsManager::value("ShowGrid").toBool()) {
 		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
 	}
 	checkGrid();
@@ -77,7 +77,7 @@ void EditorView::zoomOut()
 
 void EditorView::checkGrid()
 {
-	if (SettingsManager::value("ShowGrid", true).toBool()) {
+	if (SettingsManager::value("ShowGrid").toBool()) {
 		if(mScene->realIndexGrid() < 2 || mScene->realIndexGrid() > 380) {
 			mScene->setNeedDrawGrid(false);
 		}

@@ -13,6 +13,7 @@
 #include "../pluginManager/toolPluginManager.h"
 #include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
+#include "../view/propertyEditorView.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
 #include "mainWindowInterpretersInterface.h"
 #include "../../qrkernel/settingsManager.h"
@@ -27,6 +28,9 @@
 #include "findManager.h"
 
 #include  "paletteTree.h"
+
+#include "../dialogs/startDialog/startDialog.h"
+#include "projectManager/projectManager.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -53,13 +57,23 @@ public:
 	MainWindow();
 	~MainWindow();
 
-	EditorManager* manager();
+	EditorManager *manager();
 	EditorView *getCurrentTab();
 	ListenerManager *listenerManager();
+	models::Models *models();
+	PropertyEditorView *propertyEditor();
+	QTreeView *graphicalModelExplorer();
+	QTreeView *logicalModelExplorer();
+	PropertyEditorModel &propertyModel();
+	ToolPluginManager &toolManager();
+
 	GesturesPainterInterface *gesturesPainter();
 	QModelIndex rootIndex() const;
 
 	QAction *actionDeleteFromDiagram() const;
+	QAction *actionCopyElementsOnDiagram() const;
+	QAction *actionPasteOnDiagram() const;
+	QAction *actionPasteCopyOfLogical() const;
 
 	virtual void highlight(Id const &graphicalId, bool exclusive = true);
 	virtual void dehighlight(Id const &graphicalId);
@@ -84,6 +98,12 @@ public:
 	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
 	virtual bool pluginLoaded(QString const &pluginName);
 
+	virtual void saveDiagramAsAPictureToFile(const QString &fileName);
+	virtual void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles);
+	virtual IdList selectedElementsOnActiveDiagram();
+	virtual void updateActiveDiagram();
+	virtual void deleteElementFromDiagram(Id const &id);
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -91,19 +111,23 @@ signals:
 
 public slots:
 	void deleteFromScene();
-	void editWindowTitle();
+	void modelsAreChanged();
 	void propertyEditorScrollTo(QModelIndex const &index);
 
-	void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
+	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
 	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 	virtual void selectItem(Id const &id);
 	virtual void selectItemOrDiagram(Id const &graphicalId);
 
 	void selectItemWithError(Id const &id);
-
 	void showErrors(gui::ErrorReporter const * const errorReporter);
 
 	void changePaletteRepresentation();
+	void closeAllTabs();
+	void refreshRecentProjectsList(QString const &fileName);
+	void connectWindowTitle();
+	void disconnectWindowTitle();
+	void createDiagram(QString const &idString);
 
 private slots:
 
@@ -121,37 +145,17 @@ private slots:
 	void showAbout();
 	void showHelp();
 
-	void checkoutDialogOk();
-	void checkoutDialogCancel();
-
-	void saveAllAndOpen(QString const &dirName);
-
-	/// wrapper for import(QString const &fileName)
-	/// uses getWorkingFile(...)
-	/// @return true - if all ok, false - if not ok
-	bool importProject();
-
 	/// checks parameters for integrity,then importing it
 	/// @param fileName - *.qrs file to import
 	/// @return true - if all ok, false - if not ok
-	bool import(QString const &fileName);
-	bool open(QString const &dirName);
-	bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
-	void saveProjectAs();
-	virtual void saveAll();
 	void fullscreen();
 	void openRecentProjectsMenu();
-	bool openNewProject();
-	void createProject();
 
 	void saveDiagramAsAPicture();
 
 	void print();
 	void makeSvg();
 	void showGrid(bool isChecked);
-
-	void finalClose();
-	void closeAllTabs();
 
 	void sceneSelectionChanged();
 
@@ -163,6 +167,10 @@ private slots:
 	void deleteFromScene(QGraphicsItem *target);
 
 	void deleteFromDiagram();
+	void copyElementsOnDiagram();
+	void pasteOnDiagram();
+	void pasteCopyOfLogical();
+
 	void changeMiniMapSource(int index);
 	void closeTab(int index);
 
@@ -172,7 +180,9 @@ private slots:
 
 	void showPreferencesDialog();
 
+	void initSettingsManager();
 	void connectActions();
+	void initActionsFromSettings();
 
 	void centerOn(Id const &id);
 	void graphicalModelExplorerClicked(const QModelIndex &index);
@@ -192,30 +202,10 @@ private slots:
 
 	void openShapeEditor();
 
-	void setDiagramCreateFlag();
-	void diagramInCreateListDeselect();
-	void diagramInCreateListSelected(int num);
-
-	void on_actionNew_Diagram_triggered();
-
 	void updatePaletteIcons();
 
-	void autosave();
-	void setAutoSaveParameters();
-	void closeProject();
-	void closeProjectAndSave();
-
 private:
-
-	/// elements & theirs ids
-	QMap<QString, Id> mElementsNamesAndIds;
-
-	/// mFindDialog - Dialog for searching elements.
-	FindReplaceDialog *mFindReplaceDialog;
-
-	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
-	QMap<EditorView*, CodeArea*> *mCodeTabManager;
-
+	void deleteElementFromScene(QPersistentModelIndex const &index);
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on
 	/// @param tab Tab to be initialized
@@ -226,16 +216,19 @@ private:
 	/// @param tab Tab to be initialized with shortcuts
 	void setShortcuts(EditorView * const tab);
 
-	void createDiagram(QString const &idString);
 
 	void loadPlugins();
 
+	void registerMetaTypes();
+
 	QListWidget* createSaveListWidget();
-	void suggestToCreateDiagram();
 
 	virtual void closeEvent(QCloseEvent *event);
 	void deleteFromExplorer(bool isLogicalModel);
 	void keyPressEvent(QKeyEvent *event);
+
+	QString getSaveFileName(const QString &dialogWindowTitle);
+	QString getOpenFileName(const QString &dialogWindowTitle);
 	QString getWorkingFile(QString const &dialogWindowTitle, bool save);
 
 	int getTabIndex(const QModelIndex &index);
@@ -247,8 +240,6 @@ private:
 	void connectActionZoomTo(QWidget* widget);
 	void setConnectActionZoomTo(QWidget* widget);
 	void clickErrorListWidget();
-	void connectWindowTitle();
-	void disconnectWindowTitle();
 
 	void setShowGrid(bool isChecked);
 	void setShowAlignment(bool isChecked);
@@ -271,23 +262,24 @@ private:
 
 	void initToolPlugins();
 
-	QProgressBar *createProgressBar(QSplashScreen* splash);
 	void initMiniMap();
 	void initToolManager();
 	void initTabs();
 	void initDocks();
-	void initWindowTitle();
 	void initExplorers();
 	void initRecentProjectsMenu();
 
-	void saveAs(QString const &saveName);
-
-	void refreshRecentProjectsList(QString const &fileName);
-	int openSaveOfferDialog();
-
 	Ui::MainWindowUi *mUi;
 
-	QCloseEvent *mCloseEvent;
+	/// elements & theirs ids
+	QMap<QString, Id> mElementsNamesAndIds;
+
+	/// mFindDialog - Dialog for searching elements.
+	FindReplaceDialog *mFindReplaceDialog;
+
+	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
+	QMap<EditorView*, CodeArea*> *mCodeTabManager;
+
 	models::Models *mModels;
 	EditorManager mEditorManager;
 	ToolPluginManager mToolManager;
@@ -296,7 +288,6 @@ private:
 	GesturesWidget *mGesturesWidget;
 
 	QVector<bool> mSaveListChecked;
-	bool mDiagramCreateFlag;
 
 	QStringList mDiagramsList;
 	QModelIndex mRootIndex;
@@ -309,21 +300,18 @@ private:
 	/// Internal map table to store info what widgets should we hide/show
 	QMap<QString, bool> mDocksVisibility;
 
-	QString mSaveFile;
 	QString mTempDir;
 	PreferencesDialog mPreferencesDialog;
 
 	HelpBrowser *mHelpBrowser;
-	bool mIsNewProject;
-	bool mUnsavedProjectIndicator;
-	QTimer mAutoSaveTimer;
-
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;
 	qReal::gui::PaletteTree *mPaletteTree;
-	FindManager *mFindHelper;
 
+	FindManager *mFindHelper;
+	ProjectManager *mProjectManager;
+	StartDialog *mStartDialog;
 };
 
 }

@@ -5,6 +5,7 @@
 
 #include "element.h"
 #include "../editorPluginInterface/elementImpl.h"
+#include "serializationData.h"
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
@@ -67,6 +68,10 @@ public:
 	void breakPointUnpressed();
 
 	void highlight(QColor const color = Qt::red);
+
+	EdgeData& data();
+
+	virtual void deleteFromScene();
 
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -136,6 +141,8 @@ private:
 	int mLastDragPoint;
 
 	bool mBreakPointPressed;
+
+	EdgeData mData;
 
 };
 

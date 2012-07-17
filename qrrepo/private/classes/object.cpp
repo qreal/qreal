@@ -127,6 +127,11 @@ void Object::setProperty(const QString &name, const QVariant &value)
 	mProperties.insert(name,value);
 }
 
+void Object::setProperties(QMap<QString, QVariant> const &properties)
+{
+	mProperties = properties;
+}
+
 QVariant Object::property(const QString &name) const
 {
 	if (mProperties.contains(name)) {
@@ -176,13 +181,13 @@ bool Object::hasProperty(const QString &name, bool sensitivity, bool regExpressi
 		caseSensitivity = Qt::CaseInsensitive;
 	}
 
-    QRegExp *regExp = new QRegExp(name, caseSensitivity);
+	QRegExp *regExp = new QRegExp(name, caseSensitivity);
 
-    if (regExpression) {
-        return !properties.filter(*regExp).isEmpty();
-    } else {
-        return properties.contains(name, caseSensitivity);
-    }
+	if (regExpression) {
+		return !properties.filter(*regExp).isEmpty();
+	} else {
+		return properties.contains(name, caseSensitivity);
+	}
 }
 
 void Object::removeProperty(const QString &name)
@@ -209,3 +214,7 @@ QMapIterator<QString, QVariant> Object::propertiesIterator()
 	return QMapIterator<QString, QVariant>(mProperties);
 }
 
+QMap<QString, QVariant> Object::properties()
+{
+	return mProperties;
+}

@@ -34,6 +34,10 @@ private slots:
 	void fontSelectionButtonClicked();
 	void paletteComboBoxClicked(int index);
 
+	void showGrid(bool);
+	void showAlignment(bool);
+	void activateGrid(bool);
+	void activateAlignment(bool);
 
 private:
 	Ui::PreferencesEditorPage *mUi;

@@ -37,7 +37,7 @@ void VisualDebuggerPlugin::init(PluginConfigurator const &configurator)
 			configurator.mainWindowInterpretersInterface(),
 			mParser
 	);
-	
+
 	mDebuggerConnector = new DebuggerConnector(this);
 }
 
@@ -52,70 +52,84 @@ QList<qReal::ActionInfo> VisualDebuggerPlugin::actions()
 	ActionInfo visualDebugMenuInfo(mVisualDebugMenu, "tools");
 
 	mDebugAction = new QAction(tr("Interpret (automatic)"), NULL);
+	mDebugAction->setShortcut(QKeySequence(Qt::Key_F5));
 	connect(mDebugAction, SIGNAL(triggered()), this, SLOT(debug()));
 	mVisualDebugMenu->addAction(mDebugAction);
-	
+
 	mDebugSingleStepAction = new QAction(tr("Interpret (one step)"), NULL);
+	mDebugSingleStepAction->setShortcut(QKeySequence(Qt::Key_F6));
 	connect(mDebugSingleStepAction, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
 	mVisualDebugMenu->addAction(mDebugSingleStepAction);
-	
+
 	mWatchListAction = new QAction(tr("Show watch list"), NULL);
+	mWatchListAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_I));
 	connect(mWatchListAction, SIGNAL(triggered()), this, SLOT(showWatchList()));
 	mVisualDebugMenu->addAction(mWatchListAction);
-	
-	
+
+
 	mVisualDebugWithGdbMenu = new QMenu(tr("Visual debug (with gdb)"));
 	ActionInfo visualDebugWithGdbMenuInfo(mVisualDebugWithGdbMenu, "tools");
-	
+
 	mGenerateAndBuildAction = new QAction(tr("Generate and build"), NULL);
+	mGenerateAndBuildAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F5));
 	connect(mGenerateAndBuildAction, SIGNAL(triggered()), this, SLOT(generateAndBuild()));
 	mVisualDebugWithGdbMenu->addAction(mGenerateAndBuildAction);
-	
+
 	mStartDebuggerAction = new QAction(tr("Start debugger (gdb)"), NULL);
+	mStartDebuggerAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F6));
 	connect(mStartDebuggerAction, SIGNAL(triggered()), this, SLOT(startDebugger()));
 	mVisualDebugWithGdbMenu->addAction(mStartDebuggerAction);
-	
+
 	mConfigureAction = new QAction(tr("Configure"), NULL);
+	mConfigureAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F6));
 	connect(mConfigureAction, SIGNAL(triggered()), this, SLOT(configureDebugger()));
 	mVisualDebugWithGdbMenu->addAction(mConfigureAction);
-	
+
+	mBreakMainAction = new QAction(tr("Set breakpoint at start"), NULL);
+	mBreakMainAction->setShortcut(QKeySequence(Qt::Key_F9));
+	connect(mBreakMainAction, SIGNAL(triggered()), this, SLOT(setBreakpointAtStart()));
+	mVisualDebugWithGdbMenu->addAction(mBreakMainAction);
+
 	mSetBreakpointsAction = new QAction(tr("Set breakpoints on each element"), NULL);
+	mSetBreakpointsAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F9));
 	connect(mSetBreakpointsAction, SIGNAL(triggered()), this, SLOT(placeBreakpointsInDebugger()));
 	mVisualDebugWithGdbMenu->addAction(mSetBreakpointsAction);
 
-	mBreakMainAction = new QAction(tr("Set breakpoint at start"), NULL);
-	connect(mBreakMainAction, SIGNAL(triggered()), this, SLOT(setBreakpointAtStart()));
-	mVisualDebugWithGdbMenu->addAction(mBreakMainAction);
-	
 	mRunAction = new QAction(tr("run"), NULL);
+	mRunAction->setShortcut(QKeySequence(Qt::Key_F8));
 	connect(mRunAction, SIGNAL(triggered()), this, SLOT(runProgramWithDebugger()));
 	mVisualDebugWithGdbMenu->addAction(mRunAction);
-	
+
 	mNextAction = new QAction(tr("next"), NULL);
+	mNextAction->setShortcut(QKeySequence(Qt::Key_F10));
 	connect(mNextAction, SIGNAL(triggered()), this, SLOT(goToNextInstruction()));
 	mVisualDebugWithGdbMenu->addAction(mNextAction);
-	
+
 	mContAction = new QAction(tr("cont"), NULL);
+	mContAction->setShortcut(QKeySequence(Qt::Key_F11));
 	connect(mContAction, SIGNAL(triggered()), this, SLOT(goToNextBreakpoint()));
 	mVisualDebugWithGdbMenu->addAction(mContAction);
-	
+
 	mKillAction = new QAction(tr("kill"), NULL);
+	mKillAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_K));
 	connect(mKillAction, SIGNAL(triggered()), this, SLOT(killProgramWithDebugger()));
 	mVisualDebugWithGdbMenu->addAction(mKillAction);
-	
+
 	mStartDebuggingAction = new QAction(tr("Start debug (automatic)"), NULL);
+	mStartDebuggingAction->setShortcut(QKeySequence(Qt::Key_F7));
 	connect(mStartDebuggingAction, SIGNAL(triggered()), this, SLOT(startDebugging()));
 	mVisualDebugWithGdbMenu->addAction(mStartDebuggingAction);
-	
+
 	mCloseAllAction = new QAction(tr("Cancel debug"), NULL);
+	mCloseAllAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F12));
 	connect(mCloseAllAction, SIGNAL(triggered()), this, SLOT(closeDebuggerProcessAndThread()));
 	mVisualDebugWithGdbMenu->addAction(mCloseAllAction);
-	
+
 	connect(mDebuggerConnector, SIGNAL(readyReadStdOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
 	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerErrOutput(QString)));
-	
+
 	mActionInfos << visualDebugMenuInfo << visualDebugWithGdbMenuInfo;
-	
+
 	return mActionInfos;
 }
 
@@ -182,7 +196,7 @@ void VisualDebuggerPlugin::generateAndBuild()
 void VisualDebuggerPlugin::startDebugger()
 {
 	mErrorReporter->clear();
-	
+
 	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)
 		&& !mDebuggerConnector->isDebuggerRunning())
 	{
@@ -232,7 +246,7 @@ void VisualDebuggerPlugin::placeBreakpointsInDebugger()
 		mVisualDebugger->createIdByLineCorrelation();
 		if (mVisualDebugger->canComputeBreakpoints()) {
 			QList<int>* breakpoints = mVisualDebugger->computeBreakpoints();
-			
+
 			foreach (int const &breakpoint, *breakpoints) {
 				mDebuggerConnector->sendCommand("break " + QString::number(breakpoint) + "\n");
 			}
@@ -268,7 +282,7 @@ void VisualDebuggerPlugin::closeDebuggerProcessAndThread()
 void VisualDebuggerPlugin::startDebugging()
 {
 	mErrorReporter->clear();
-	
+
 	if (mVisualDebugger->canDebug(VisualDebugger::debugWithDebugger)) {
 		generateAndBuild();
 		startDebugger();
@@ -287,7 +301,7 @@ void VisualDebuggerPlugin::drawDebuggerStdOutput(QString const &output)
 		Id const idToLigth = mVisualDebugger->getIdByLine(output.mid(0,index).toInt());
 		mVisualDebugger->highlight(idToLigth);
 	} else {
-		QString const fileName = SettingsManager::value("codeFileName", "code.c").toString();
+		QString const fileName = SettingsManager::value("codeFileName").toString();
 
 		int index = output.indexOf(fileName + ":");
 		if (index > -1) {

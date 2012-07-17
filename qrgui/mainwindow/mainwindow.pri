@@ -9,7 +9,11 @@ HEADERS += \
 	mainwindow/mainWindowInterpretersInterface.h \
 	mainwindow/helpBrowser.h \
 	mainwindow/paletteTree.h \
-	mainwindow/findManager.h
+	mainwindow/findManager.h \
+	mainwindow/dotRunner.h \
+	mainwindow/splashScreen.h \
+	mainwindow/projectManager/projectManager.h \
+	mainwindow/projectManager/autosaver.h
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -19,7 +23,11 @@ SOURCES += \
 	mainwindow/errorListWidget.cpp \
 	mainwindow/helpBrowser.cpp \
 	mainwindow/paletteTree.cpp \
-	mainwindow/findManager.cpp
+	mainwindow/findManager.cpp \
+	mainwindow/dotRunner.cpp \
+	mainwindow/splashScreen.cpp \
+	mainwindow/projectManager/projectManager.cpp \
+	mainwindow/projectManager/autosaver.cpp
 
 FORMS += \
 	mainwindow/mainWindow.ui \

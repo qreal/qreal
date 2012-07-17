@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>843</width>
-    <height>527</height>
+    <height>559</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,7 +48,6 @@
     <addaction name="actionSave_as"/>
     <addaction name="actionImport"/>
     <addaction name="actionSave_diagram_as_a_picture"/>
-    <addaction name="actionCloseProject"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -123,7 +122,7 @@
    <property name="minimumSize">
     <size>
      <width>80</width>
-     <height>118</height>
+     <height>138</height>
     </size>
    </property>
    <property name="windowTitle">
@@ -167,7 +166,7 @@
    <property name="minimumSize">
     <size>
      <width>80</width>
-     <height>38</height>
+     <height>41</height>
     </size>
    </property>
    <property name="windowTitle">
@@ -654,6 +653,39 @@
   <action name="actionFind_and_replace">
    <property name="text">
     <string>Find and replace</string>
+   </property>
+  </action>
+  <action name="actionCopyElementsOnDiagram">
+   <property name="text">
+    <string>Copy</string>
+   </property>
+   <property name="toolTip">
+    <string>Copy</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionPasteOnDiagram">
+   <property name="text">
+    <string>Paste</string>
+   </property>
+   <property name="toolTip">
+    <string>Paste</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionPasteReference">
+   <property name="text">
+    <string>Paste only graphical copy</string>
+   </property>
+   <property name="toolTip">
+    <string>Paste only graphical copy</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+V</string>
    </property>
   </action>
  </widget>
