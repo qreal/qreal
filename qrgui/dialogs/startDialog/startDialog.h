@@ -16,22 +16,22 @@ class MainWindow;
  */
 class StartDialog : public ManagedClosableDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit StartDialog(MainWindow *mainWindow, ProjectManager *projectManager);
+	explicit StartDialog(MainWindow *mainWindow, ProjectManager *projectManager);
 
 private slots:
-    void openRecentProject(QString const &fileName);
-    void openExistingProject();
-    void createProjectWithDiagram(QString const &idString);
-    void exitApp();
+	void openRecentProject(QString const &fileName);
+	void openExistingProject();
+	void createProjectWithDiagram(QString const &idString);
+	void exitApp();
 
 private:
-    static const QSize mMinimumSize;
+	static const QSize mMinimumSize;
 
-    MainWindow *mMainWindow;
-    ProjectManager *mProjectManager;
+	MainWindow *mMainWindow;
+	ProjectManager *mProjectManager;
 };
 
 }

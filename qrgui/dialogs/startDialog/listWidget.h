@@ -25,7 +25,7 @@ public:
 	void addItem(QString const &text, QString const &userData, QString const &toolTip = "");
 	int count();
 	void highlightFirstItem();
-	
+
 signals:
 	void userDataSelected(QString const &userData);
 

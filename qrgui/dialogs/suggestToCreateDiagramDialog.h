@@ -14,10 +14,10 @@ class MainWindow;
  */
 class SuggestToCreateDiagramDialog : public ManagedClosableDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit SuggestToCreateDiagramDialog(MainWindow *mainWindow, bool isClosable = true);
+	explicit SuggestToCreateDiagramDialog(MainWindow *mainWindow, bool isClosable = true);
 };
 
 }

@@ -6,15 +6,15 @@
 using namespace qReal;
 
 SuggestToCreateDiagramDialog::SuggestToCreateDiagramDialog(MainWindow *mainWindow, bool isClosable)
-        : ManagedClosableDialog(mainWindow, isClosable)
+		: ManagedClosableDialog(mainWindow, isClosable)
 {
-    SuggestToCreateDiagramWidget *suggestWidget = new SuggestToCreateDiagramWidget(mainWindow, this);
+	SuggestToCreateDiagramWidget *suggestWidget = new SuggestToCreateDiagramWidget(mainWindow, this);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->addWidget(suggestWidget);
-    setLayout(mainLayout);
-    setWindowTitle(tr("Create diagram"));
+	QVBoxLayout *mainLayout = new QVBoxLayout;
+	mainLayout->addWidget(suggestWidget);
+	setLayout(mainLayout);
+	setWindowTitle(tr("Create diagram"));
 
-    connect(suggestWidget, SIGNAL(userDataSelected(QString)), mainWindow, SLOT(createDiagram(QString)));
-    connect(suggestWidget, SIGNAL(userDataSelected(QString)), this, SLOT(close()));
+	connect(suggestWidget, SIGNAL(userDataSelected(QString)), mainWindow, SLOT(createDiagram(QString)));
+	connect(suggestWidget, SIGNAL(userDataSelected(QString)), this, SLOT(close()));
 }
