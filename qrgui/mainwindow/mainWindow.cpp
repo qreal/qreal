@@ -225,7 +225,6 @@ void MainWindow::connectActions()
 	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
 	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
-
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connect (mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
@@ -1046,7 +1045,8 @@ void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, Q
 	connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)),
 			this, SLOT(setProperty(QString, QPersistentModelIndex const &, int const &)));
 
-	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
+	QString elementName = model->data(index, Qt::DisplayRole).toString();
+	mUi->tabs->addTab(shapeEdit, tr("Shape Editor : %1").arg(elementName));
 	mUi->tabs->setCurrentWidget(shapeEdit);
 	setConnectActionZoomTo(shapeEdit);
 }
