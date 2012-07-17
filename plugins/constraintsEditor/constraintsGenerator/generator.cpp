@@ -53,6 +53,8 @@ void Generator::generate(qReal::Id const &metamodel)
 		return;
 	}
 
+
+	outputDirPath.replace("\\", "/");
 	ConcreateGenerator generator(templateDir, outputDirPath
 								 , pathToQReal, *mLogicalModel, *mErrorReporter
 								, metamodelName, constraintMetamodelName);

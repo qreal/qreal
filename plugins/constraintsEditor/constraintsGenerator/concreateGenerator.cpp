@@ -26,7 +26,7 @@ ConcreateGenerator::ConcreateGenerator(QString const &templateDirPath
 		, QString const &metamodelLanguageName
 		, QString const &constraintsMetamodelName
 		)
-	: AbstractGenerator(templateDirPath, outputDirPath + QString("\\constraints" + metamodelLanguageName + "\\"), logicalModel, errorReporter)
+	: AbstractGenerator(templateDirPath, outputDirPath + QString("/constraints" + metamodelLanguageName + "/"), logicalModel, errorReporter)
 	, mPathToQReal(pathToQReal + "/.."), mMetamodelName(metamodelLanguageName), mConstraintsName(constraintsMetamodelName)
 {
 	mPathToQReal.replace("\\", "/");
