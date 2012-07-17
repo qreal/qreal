@@ -143,7 +143,7 @@ void AbstractGenerator::saveOutputFile(QString const &fileName, QString const &c
 	QDir dir;
 
 	if (!dir.exists(mOutputDirPath)) {
-		QString messageText = QObject::tr("Can't create directory %1").arg(mOutputDirPath);
+		QString messageText = QObject::tr("Cannot create directory %1").arg(mOutputDirPath);
 		if (!dir.mkdir(mOutputDirPath)) {
 			mErrorReporter.addUniqueError(messageText);
 		} else {
