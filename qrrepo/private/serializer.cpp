@@ -39,6 +39,10 @@ void Serializer::setWorkingFile(QString const &workingFile)
 
 void Serializer::saveToDisk(QList<Object*> const &objects) const
 {
+	Q_ASSERT_X(!mWorkingFile.isEmpty()
+			, "Serializer::saveToDisk(...)"
+			, "may be Client of RepoApi (see Models constructor also) has been initialised with empty file?");
+
 	foreach (Object *object, objects) {
 		QString filePath = createDirectory(object->id(), object->logicalId());
 
@@ -76,8 +80,9 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash)
 {
 	clearWorkingDir();
-	if (!mWorkingFile.isEmpty())
+	if (!mWorkingFile.isEmpty()) {
 		decompressFile(mWorkingFile);
+	}
 	loadFromDisk(SettingsManager::value("temp").toString(), objectsHash);
 }
 

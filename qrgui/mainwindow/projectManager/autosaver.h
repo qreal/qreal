@@ -19,17 +19,16 @@ class Autosaver : public QObject
 public:
 	explicit Autosaver(ProjectManager *projectManager);
 	void reinit();
-
-	// if option AutosaveInterval in not specified
+	QString filePath();
 
 private slots:
 	void save();
 
 private:
 	uint interval();
-	QString filePath();
 
 	static uint const defaultInterval = 600;
+	// if option AutosaveInterval in not specified
 
 	ProjectManager *mProjectManager;
 	QTimer *mTimer;

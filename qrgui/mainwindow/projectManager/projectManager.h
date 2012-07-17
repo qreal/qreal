@@ -51,6 +51,7 @@ public:
 	bool suggestToSaveChangesOrCancel();
 	void setUnsavedIndicator(bool isUnsaved);
 	void reinitAutosaver();
+	QString saveFilePath();
 
 private:
 	bool import(const QString &fileName);
@@ -67,8 +68,8 @@ private:
 
 	MainWindow *mMainWindow;
 	Autosaver *mAutosaver;
-	bool mUnsavedIndicator;
 	QString mSaveFilePath;
+	bool mUnsavedIndicator;
 };
 
 }
