@@ -55,7 +55,7 @@ void BluetoothSensorImplementation::processResponse(QByteArray const &reading)
 		QByteArray command(5, 0);
 		command[0] = 0x03;
 		command[1] = 0x00;
-		command[2] = telegramType::directCommandNoResponse;
+		command[2] = telegramType::directCommandResponseRequired;
 		command[3] = commandCode::RESETINPUTSCALEDVALUE;
 		command[4] = mPort;
 		mRobotCommunicationInterface->send(this, command, 5);

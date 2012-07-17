@@ -60,12 +60,15 @@ public:
 	bool needsConnection() const;
 	void startInterpretation();
 
+	void nextBlockAfterInitial(bool success);
 signals:
 	void sensorsConfigured();
 	void connected(bool success);
 
 	/// Is emitted if robot is disconnected
 	void disconnected();
+
+	void goToNextBlock(bool success);
 
 private slots:
 	void sensorsConfiguredSlot();

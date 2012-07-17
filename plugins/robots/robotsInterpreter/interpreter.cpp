@@ -181,6 +181,8 @@ void Interpreter::sensorsConfiguredSlot()
 	mConnected = true;
 	mActionConnectToRobot->setChecked(mConnected);
 
+	mRobotModel->nextBlockAfterInitial(mConnected);
+
 	if (mState == waitingForSensorsConfiguredToLaunch) {
 		mState = interpreting;
 

@@ -24,8 +24,9 @@ RobotModel::RobotModel()
 RobotModel::~RobotModel()
 {
 	delete mRobotImpl;
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < 4; ++i) {
 		delete mSensors[i];
+	}
 }
 
 robotParts::Brick &RobotModel::brick()
@@ -232,4 +233,9 @@ void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModel
 			}
 		}
 	}
+}
+
+void RobotModel::nextBlockAfterInitial(bool success)
+{
+	emit goToNextBlock(success);
 }
