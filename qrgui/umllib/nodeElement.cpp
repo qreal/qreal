@@ -487,6 +487,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		Element::mouseMoveEvent(event);
 		mGrid->mouseMoveEvent(event);
 
+
+		qDebug() << "mouse pos: " << event->scenePos();
 		NodeElement *parItem = dynamic_cast<NodeElement*>(parentItem());
 		if (parItem) {
 			parItem->resize();
@@ -549,7 +551,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 
 		if (event->modifiers() & Qt::ShiftModifier) {
-			qreal size = std::max(newContents.width(), newContents.height());
+			qreal const size = qMax(newContents.width(), newContents.height());
 			newContents.setWidth(size);
 			newContents.setHeight(size);
 		}

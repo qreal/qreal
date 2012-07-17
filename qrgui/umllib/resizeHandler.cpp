@@ -13,6 +13,7 @@ ResizeHandler::ResizeHandler(
 
 void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
 {
+	qDebug() << mResizingNode->mId;
 	newContents.moveTo(0, 0);
 
 	sortChildrenIfNeeded();
@@ -25,14 +26,17 @@ void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
 	normalizeSize(newContents);
 
 	newContents.moveTo(newPos);
+
 	mResizingNode->setGeometry(newContents);
 	mResizingNode->storeGeometry();
 
 	parentResizeCall();
 
+	/*
 	if (SettingsManager::value("ActivateGrid").toBool()) {
 		mResizingNode->alignToGrid();
 	}
+	*/
 }
 
 qreal ResizeHandler::maxChildWidth() const
@@ -120,7 +124,7 @@ void ResizeHandler::normalizeSize(QRectF& newContents) const
 
 void ResizeHandler::resizeAccordingToChildren(QRectF& newContents, QPointF& newPos) const
 {
-	Q_UNUSED(newPos);
+	//Q_UNUSED(newPos);
 
 	/* 
 	* AAAA!!! Who knows why is this code existed????!!!
@@ -137,7 +141,11 @@ void ResizeHandler::resizeAccordingToChildren(QRectF& newContents, QPointF& newP
 	QPointF const childDeflectionVector = childDeflection();
 
 	moveChildren(-childDeflectionVector);
-	//newPos += childDeflectionVector;
+	
+	printChildPos();	
+	qDebug() << newPos;
+	newPos += childDeflectionVector;
+	qDebug() << newPos;
 
 	expandByChildren(newContents);
 }
@@ -160,13 +168,25 @@ QPointF ResizeHandler::childDeflection() const
 	return childDeflectionVector;
 }
 
+void ResizeHandler::printChildPos() const
+{
+	foreach (const QGraphicsItem* const childItem, mResizingNode->childItems()) {
+		const NodeElement* const curItem = dynamic_cast<const NodeElement* const>(childItem);
+		if (!curItem || curItem->isPort()) {
+			continue;
+		}
+		
+		qDebug() << "child pos: " << curItem->pos();
+	}
+}
+
 void ResizeHandler::moveChildren(QPointF const &shift) const
 {
 	qreal const sizeOfForestalling = mElementImpl->sizeOfForestalling();
 
 	foreach (QGraphicsItem* const childItem, mResizingNode->childItems()) {
 		NodeElement* const curItem = dynamic_cast<NodeElement* const>(childItem);
-		if (!curItem || !curItem->isPort()) {
+		if (!curItem || curItem->isPort()) {
 			continue;
 		}
 

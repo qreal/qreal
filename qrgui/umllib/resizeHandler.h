@@ -98,6 +98,12 @@ private:
 	 */
 	void expandByChildren(QRectF& contents) const;
 
+	/**
+	 * Prints position of child NodeElement items.
+	 * It used for debug purposes.
+	 */
+	void printChildPos() const;
+
 	/// Node that is actually dealt with.
 	NodeElement* const mResizingNode;
 
