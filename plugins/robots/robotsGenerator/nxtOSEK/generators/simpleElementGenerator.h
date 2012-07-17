@@ -14,7 +14,6 @@ public:
 
 protected:
 	virtual QList<SmartLine> loopPrefixCode();
-
 	virtual QList<SmartLine> loopPostfixCode();
 
 	virtual bool preGenerationCheck();

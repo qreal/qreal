@@ -1,22 +1,22 @@
 #pragma once
 
 #include <QtCore/QFile>
+#include <QtCore/QDir>
 #include <QtCore/QTextStream>
 
 #include "utilsDeclSpec.h"
 
 namespace utils {
 
-class QRUTILS_EXPORT OutFile
+class QRUTILS_EXPORT InFile
 {
 public:
-	explicit OutFile(QString const &fileName);
-	~OutFile();
+	explicit InFile(QString const &fileName);
 	QTextStream &operator()();
+	~InFile();
 
 private:
-	QTextStream mOut;
 	QFile mFile;
+	QTextStream mInput;
 };
-
 }

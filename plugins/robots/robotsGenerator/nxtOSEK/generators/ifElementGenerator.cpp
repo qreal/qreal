@@ -205,7 +205,7 @@ bool IfElementGenerator::nextElementsGeneration()
 		//generate true/false blocks
 		generateBranch(conditionArrowNum);
 		QList<SmartLine> elseBlock;
-		elseBlock << SmartLine("} else {", mElementId, SmartLine::increaseDecrease);
+		elseBlock << SmartLine("} else {", mElementId, SmartLine::decreaseOnlyThisLine);
 		mNxtGen->generatedStringSet() << elseBlock;
 		generateBranch(1 - conditionArrowNum);
 

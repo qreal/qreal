@@ -134,7 +134,7 @@ void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorLi
 		item->setIcon(QIcon(":/icons/critical.png"));
 		break;
 	default:
-	throw new Exception("Incorrect total severity");
+		throw new Exception("Incorrect total severity");
 	}
 	item->setText(" " + message.trimmed());
 	item->setTextAlignment(Qt::AlignVCenter);

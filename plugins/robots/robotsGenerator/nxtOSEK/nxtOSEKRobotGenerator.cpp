@@ -1,13 +1,14 @@
-﻿#include "nxtOSEKRobotGenerator.h"
-
-#include <QTextStream>
+﻿#include <QTextStream>
 #include <cmath>
 #include <QtCore/QObject>
 #include <QDir>
 
 #include "../../../../qrkernel/exception/exception.h"
 #include "../../../../qrkernel/settingsManager.h"
+#include "../../../../qrutils/inFile.h"
+#include "../../../../qrutils/outFile.h"
 
+#include "nxtOSEKRobotGenerator.h"
 #include "elementGeneratorFactory.h"
 
 using namespace qReal;
@@ -57,7 +58,7 @@ void NxtOSEKRobotGenerator::addToGeneratedStringSetVariableInit()
 QString NxtOSEKRobotGenerator::generateVariableString()
 {
 	QString res;
-	foreach (SmartLine curVariable, mVariables) {
+	foreach (SmartLine const &curVariable, mVariables) {
 		if (!curVariable.text().contains(" ")) {
 			res = res + "static int " + curVariable.text() + ";\n";
 		}
@@ -68,14 +69,14 @@ QString NxtOSEKRobotGenerator::generateVariableString()
 QString NxtOSEKRobotGenerator::addTabAndEndOfLine(QList<SmartLine> const &lineList, QString resultCode)
 {
 	foreach (SmartLine const &curLine, lineList) {
-		if ( (curLine.indentLevelChange() == SmartLine::decrease)
-			|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
+		if (curLine.indentLevelChange() == SmartLine::decrease
+			|| curLine.indentLevelChange() == SmartLine::decreaseOnlyThisLine)
 		{
 			mCurTabNumber--;
 		}
 		resultCode += '\t' + QString(mCurTabNumber, '\t') + curLine.text() + "\n";
-		if ( (curLine.indentLevelChange() == SmartLine::increase)
-			|| (curLine.indentLevelChange() == SmartLine::increaseDecrease) )
+		if (curLine.indentLevelChange() == SmartLine::increase
+			|| curLine.indentLevelChange() == SmartLine::decreaseOnlyThisLine)
 		{
 			mCurTabNumber++;
 		}
@@ -83,7 +84,10 @@ QString NxtOSEKRobotGenerator::addTabAndEndOfLine(QList<SmartLine> const &lineLi
 	return resultCode;
 }
 
-void NxtOSEKRobotGenerator::generateMakeFile(bool toGenerateIsEmpty, QString projectName, QString projectDir)
+void NxtOSEKRobotGenerator::generateMakeFile(
+		bool const &toGenerateIsEmpty
+		, QString const &projectName
+		, QString const &projectDir)
 {
 	QFile templateMakeFile(":/nxtOSEK/templates/template.makefile");
 	if (!templateMakeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -115,10 +119,10 @@ void NxtOSEKRobotGenerator::generateMakeFile(bool toGenerateIsEmpty, QString pro
 }
 
 void NxtOSEKRobotGenerator::insertCode(
-		QString resultCode,
-		QString resultInitCode,
-		QString resultTerminateCode,
-		QString curInitialNodeNumber)
+		QString const &resultCode,
+		QString const &resultInitCode,
+		QString const &resultTerminateCode,
+		QString const &curInitialNodeNumber)
 {
 	if (mBalancerIsActivated) {
 		mResultString.replace("@@BALANCER@@", "#include \"balancer.h\"");
@@ -127,21 +131,21 @@ void NxtOSEKRobotGenerator::insertCode(
 	}
 	mResultString.replace("@@CODE@@", resultCode +"\n" + "@@CODE@@");
 	mTaskTemplate.replace("@@NUMBER@@", curInitialNodeNumber);
-	mResultOIL.replace("@@TASK@@", mTaskTemplate + "\n" + "@@TASK@@");
+	mResultOil.replace("@@TASK@@", mTaskTemplate + "\n" + "@@TASK@@");
 	mResultString.replace("@@VARIABLES@@", generateVariableString() + "\n" + "@@VARIABLES@@");
 	mResultString.replace("@@INITHOOKS@@", resultInitCode);
 	mResultString.replace("@@TERMINATEHOOKS@@", resultTerminateCode);
 }
 
-void NxtOSEKRobotGenerator::deleteResidualLabels(QString projectName)
+void NxtOSEKRobotGenerator::deleteResidualLabels(QString const &projectName)
 {
-	mResultOIL.replace("@@TASK@@", "");
+	mResultOil.replace("@@TASK@@", "");
 	mResultString.replace("@@VARIABLES@@", "");
 	mResultString.replace("@@CODE@@", "");
 	mResultString.replace("@@PROJECT_NAME@@", projectName);
 }
 
-void NxtOSEKRobotGenerator::generateFilesForBalancer(QString projectDir)
+void NxtOSEKRobotGenerator::generateFilesForBalancer(QString const &projectDir)
 {
 	if (mBalancerIsActivated) {
 		QFile::copy(":/nxtOSEK/templates/balancer/balancer_param.c", projectDir + "/" + "balancer_param.c");
@@ -150,6 +154,16 @@ void NxtOSEKRobotGenerator::generateFilesForBalancer(QString projectDir)
 		QFile::copy(":/nxtOSEK/templates/balancer/libnxtway_gs_balancer.a", projectDir + "/" + "libnxtway_gs_balancer.a");
 		QFile::copy(":/nxtOSEK/templates/balancer/rt_SATURATE.h", projectDir + "/" + "rt_SATURATE.h");
 		QFile::copy(":/nxtOSEK/templates/balancer/rtwtypes.h", projectDir + "/" + "rtwtypes.h");
+	}
+}
+
+void NxtOSEKRobotGenerator::createProjectDir(QString const &projectDir)
+{
+	if (!QDir(projectDir).exists()) {
+		if (!QDir("nxt-tools/").exists()) {
+			QDir().mkdir("nxt-tools/");
+		}
+		QDir().mkdir(projectDir);
 	}
 }
 
@@ -162,63 +176,27 @@ void NxtOSEKRobotGenerator::generate()
 
 	IdList toGenerate = mApi->elementsByType("InitialNode");
 	toGenerate << mApi->elementsByType("InitialBlock");
-
-	int curInitialNodeNumber = 0;
-
 	QString resultInitCode;
 	QString resultTerminateCode;
-
+	int curInitialNodeNumber = 0;
 	//QDir projectsDir; //TODO: use user path to projects
 	QString const projectName = "example" + QString::number(curInitialNodeNumber);
 	QString const projectDir = "nxt-tools/" + projectName;
+	createProjectDir(projectDir);
 
-	//Create project directory
-	if (!QDir(projectDir).exists()) {
-		if (!QDir("nxt-tools/").exists()) {
-			QDir().mkdir("nxt-tools/");
-		}
-		QDir().mkdir(projectDir);
-	}
+	utils::InFile templateC(":/nxtOSEK/templates/template.c");
+	templateC() >> mResultString;
+	qDebug() << mResultString;
 
-	// Template C file
-	QFile templateCFile(":/nxtOSEK/templates/template.c");
-	if (!templateCFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		mErrorReporter.addError("cannot open \"" + templateCFile.fileName() + "\"");
-		return;
-	}
+	utils::InFile readTemplateOilFile(":/nxtOSEK/templates/template.oil");
+	readTemplateOilFile() >> mResultOil;
+	qDebug() << mResultOil;
 
-	QTextStream templateCStream(&templateCFile);
-	mResultString = templateCStream.readAll();
-	templateCFile.close();
+	utils::InFile readTaskTemplateFile(":/nxtOSEK/templates/taskTemplate.oil");
+	QString resultTaskTemplate;
+	readTaskTemplateFile() >> resultTaskTemplate;
 
-	// Generate OIL file
-	QFile resultOILFile(projectDir + "/" + projectName + ".oil");
-	if (!resultOILFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		mErrorReporter.addError("cannot open \"" + resultOILFile.fileName() + "\"");
-		return;
-	}
-
-	// Template OIL file
-	QFile templateOILFile(":/nxtOSEK/templates/template.oil");
-	if (!templateOILFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		mErrorReporter.addError("cannot open \"" + templateOILFile.fileName() + "\"");
-		return;
-	}
-
-	mResultOIL = templateOILFile.readAll();
-	templateOILFile.close();
-
-	// Task template file
-	QFile taskTemplateFile(":/nxtOSEK/templates/taskTemplate.oil");
-	if (!taskTemplateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		mErrorReporter.addError("cannot open \"" + taskTemplateFile.fileName() + "\"");
-		return;
-	}
-
-	QString const resultTaskTemplate = taskTemplateFile.readAll();
-	taskTemplateFile.close();
-
-	foreach (Id const &curInitialNode, toGenerate) {// идем по отдельным цепочкам из элементов
+	foreach (Id const &curInitialNode, toGenerate) {
 
 		mTaskTemplate = resultTaskTemplate;
 		if (!mApi->isGraphicalElement(curInitialNode)) {
@@ -238,16 +216,16 @@ void NxtOSEKRobotGenerator::generate()
 
 		AbstractElementGenerator* const gen = ElementGeneratorFactory::generator(this, curInitialNode, *mApi);
 		mPreviousElement = curInitialNode;
-
 		mBalancerIsActivated = false;
 		gen->generate(); //may throws a exception
 		delete gen;
+
 		addToGeneratedStringSetVariableInit();
 
 		// Result code in .c file
 		QString resultCode;
 		mCurTabNumber = 0;
-		foreach (QList<SmartLine> lineList, mGeneratedStringSet) {
+		foreach (QList<SmartLine> const &lineList, mGeneratedStringSet) {
 			 resultCode = addTabAndEndOfLine(lineList, resultCode);
 		}
 		// Code init block in .c file
@@ -258,24 +236,14 @@ void NxtOSEKRobotGenerator::generate()
 		insertCode(resultCode, resultInitCode, resultTerminateCode, QString::number(curInitialNodeNumber));
 		curInitialNodeNumber++;
 	}
+
 	deleteResidualLabels(projectName);
-
-	QFile resultCFile(projectDir + "/" + projectName + ".c");
-	if (!resultCFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		mErrorReporter.addError("cannot open \"" + resultCFile.fileName() + "\"");
-		return;
-	}
-
 	//Output in the .c and .oil file
-	QTextStream outC(&resultCFile);
-	outC << mResultString;
-	outC.flush();
-	resultCFile.close();
+	utils::OutFile outC(projectDir + "/" + projectName + ".c");
+	outC() << mResultString;
+	utils::OutFile outOil(projectDir + "/" + projectName + ".oil");
+	outOil() << mResultOil;
 
-	QTextStream outOIL(&resultOILFile);
-	outOIL << mResultOIL;
-	outOIL.flush();
-	resultOILFile.close();
 	generateFilesForBalancer(projectDir);
 	generateMakeFile(toGenerate.isEmpty(), projectName, projectDir);
 }
@@ -330,12 +298,28 @@ QList<QList<SmartLine> > &NxtOSEKRobotGenerator::generatedStringSet()
 	return mGeneratedStringSet;
 }
 
+
+void NxtOSEKRobotGenerator::setGeneratedStringSet(int key, QList<SmartLine> const &list)
+{
+	mGeneratedStringSet[key] = list;
+}
+
 QMap<QString, QStack<int> > &NxtOSEKRobotGenerator::elementToStringListNumbers()
 {
 	return mElementToStringListNumbers;
 }
 
+int NxtOSEKRobotGenerator::elementToStringListNumbersPop(QString const &key)
+{
+	return mElementToStringListNumbers[key].pop();
+}
+
 QStack<qReal::Id> &NxtOSEKRobotGenerator::previousLoopElements()
 {
 	return mPreviousLoopElements;
+}
+
+qReal::Id NxtOSEKRobotGenerator::previousLoopElementsPop()
+{
+	return mPreviousLoopElements.pop();
 }

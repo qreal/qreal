@@ -17,7 +17,7 @@ public:
 		increase, //!< increases indent WITHOUT this line
 		decrease, //!< decreases indent WITH this line
 		withoutChange, //!< doesn't change indent
-		increaseDecrease //!< decreases indent only for this line
+		decreaseOnlyThisLine //!< decreases indent only for this line
 	};
 
 	SmartLine(QString const &text, qReal::Id const &elementId, IndentChangeType indentLevelChange = withoutChange);
