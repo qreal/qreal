@@ -140,12 +140,15 @@ void ResizeHandler::resizeAccordingToChildren(QRectF& newContents, QPointF& newP
 	/// Vector of minimum negative XY child deflection from top left corner.
 	QPointF const childDeflectionVector = childDeflection();
 
+	qDebug() << "childDeflection: " << childDeflectionVector;
+
 	moveChildren(-childDeflectionVector);
-	
-	printChildPos();	
-	qDebug() << newPos;
 	newPos += childDeflectionVector;
-	qDebug() << newPos;
+
+	QPointF topLeft = childDeflectionVector;
+	QPointF bottomRight = newContents.bottomRight();
+	newContents = QRectF(topLeft, bottomRight);
+	newContents.moveTo(0, 0);
 
 	expandByChildren(newContents);
 }

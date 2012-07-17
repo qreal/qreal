@@ -222,6 +222,7 @@ private:
 	QList<EdgeElement *> mEdgeList;
 
 	DragState mDragState;
+	QPointF mDragPosition;
 
 	QList<EmbeddedLinker *> mEmbeddedLinkers;
 

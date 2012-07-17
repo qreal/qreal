@@ -404,6 +404,8 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		} else {
 			Element::mousePressEvent(event);
 		}
+
+		mDragPosition = event->scenePos() - scenePos();
 	} else {
 		Element::mousePressEvent(event);
 	}
@@ -429,6 +431,9 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	if (mIsFolded) {
 		mDragState = None;
 	}
+
+	QRectF newContents = mContents;
+	QPointF newPos = mPos;
 
 	scene()->invalidate();
 	if (mDragState == None) {
@@ -484,20 +489,23 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			}
 		}
 
-		Element::mouseMoveEvent(event);
+		//Element::mouseMoveEvent(event);
+
+		newPos += (event->scenePos() - scenePos()) - mDragPosition;
 		mGrid->mouseMoveEvent(event);
 
-
+		/*
 		qDebug() << "mouse pos: " << event->scenePos();
 		NodeElement *parItem = dynamic_cast<NodeElement*>(parentItem());
 		if (parItem) {
 			parItem->resize();
 		}
+		*/
 
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
 
-		QRectF newContents = mContents;
+		//QRectF newContents = mContents;
 		QPointF parentPos = QPointF(0, 0);
 		QGraphicsItem *parItem = parentItem();
 		if (parItem) {
@@ -507,7 +515,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		qreal const newX = mGrid->makeGridAlignment(event->pos().x());
 		qreal const newY = mGrid->makeGridAlignment(event->pos().y());
 
-		QPointF newPos = mPos;
+		//QPointF newPos = mPos;
 		switch (mDragState) {
 		case TopLeft: {
 			newContents.setTopLeft(QPoint(newX, newY));
@@ -556,9 +564,11 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			newContents.setHeight(size);
 		}
 
-		resize(newContents, newPos);
+		//resize(newContents, newPos);
 
 	}
+
+	resize(newContents, newPos);
 
 	if (isPort()) {
 		mUmlPortHandler->handleMoveEvent(
