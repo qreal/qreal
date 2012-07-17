@@ -37,7 +37,7 @@ public:
 	QByteArray portValue4() const;
 
 	bool mBalancerIsActivated;
-	qReal::ErrorReporterInterface &errorReporter() const;
+	qReal::ErrorReporterInterface &errorReporter();
 	qReal::Id &previousElement();
 	QList<QList<SmartLine> > &generatedStringSet();
 	QMap<QString, QStack<int> > &elementToStringListNumbers();

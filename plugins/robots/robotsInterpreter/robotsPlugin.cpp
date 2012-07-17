@@ -150,6 +150,7 @@ void RobotsPlugin::activeTabChanged(Id const & rootElementId)
 		}
 	}
 	if (enabled) {
+		qDebug() << "oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
 		mInterpreter.enableD2ModelWidgetRunStopButtons();
 	} else {
 		mInterpreter.disableD2ModelWidgetRunStopButtons();

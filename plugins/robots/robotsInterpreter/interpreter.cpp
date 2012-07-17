@@ -1,3 +1,5 @@
+#include <QtGui/QAction>
+
 #include "interpreter.h"
 
 #include "details/autoconfigurer.h"
@@ -6,7 +8,6 @@
 #include "details/robotCommunication/usbRobotCommunicationThread.h"
 #include "details/tracer.h"
 #include "details/debugHelper.h"
-#include <QtGui/QAction>
 
 using namespace qReal;
 using namespace interpreters::robots;
@@ -33,7 +34,8 @@ Interpreter::Interpreter()
 
 	mD2RobotModel = new d2Model::D2RobotModel();
 	mD2ModelWidget = mD2RobotModel->createModelWidget();
-
+	connect(mD2ModelWidget, SIGNAL(runButtonEnable()), mD2RobotModel, SLOT(run()));
+	connect(mD2ModelWidget, SIGNAL(runButtonDisable()), mD2RobotModel, SLOT(stopRun()));
 	connect(mRobotModel, SIGNAL(disconnected()), this, SLOT(disconnectSlot()));
 	connect(mRobotModel, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
 	connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
@@ -158,6 +160,11 @@ void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum impl
 	if (mImplementationType != robotModelType::real) {
 		mRobotModel->init();
 	}
+}
+
+Interpreter::InterpreterState Interpreter::state() const
+{
+	return mState;
 }
 
 void Interpreter::connectedSlot(bool success)

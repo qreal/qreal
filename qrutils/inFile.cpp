@@ -3,23 +3,23 @@
 
 using namespace utils;
 
-InFile::InFile(QString const &fileName)
+InFile::InFile()
 {
-	mFile.setFileName(fileName);
-	mFile.open(QIODevice::ReadOnly| QIODevice::Text);
-	if (!mFile.isOpen()) {
-		throw qReal::Exception("File open operation failed");
-	}
-	mInput.setDevice(&mFile);
-	mInput.setCodec("UTF-8");
 }
 
-QTextStream &InFile::operator()()
-{
-	return mInput;
+QString InFile::readAll(QString const &fileName) {
+	QFile file(fileName);
+	file.open(QIODevice::ReadOnly | QIODevice::Text);
+	if (!file.isOpen()) {
+		throw qReal::Exception("File open operation failed");
+	}
+	QTextStream input;
+	input.setDevice(&file);
+	input.setCodec("UTF-8");
+	file.close();
+	return input.readAll();
 }
 
 InFile::~InFile()
 {
-	mFile.close();
 }

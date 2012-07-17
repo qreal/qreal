@@ -50,7 +50,9 @@ public:
 		Do,
 		End
 	};
-
+public slots:
+	void run();
+	void stopRun();
 
 private slots:
 	void nextFragment();

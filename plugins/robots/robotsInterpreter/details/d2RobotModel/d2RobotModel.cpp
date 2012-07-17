@@ -1,5 +1,8 @@
+#include <QtCore/QDebug>
+
 #include "d2RobotModel.h"
 #include "../tracer.h"
+#include "../interpreter.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details;
@@ -20,7 +23,6 @@ D2RobotModel::D2RobotModel(QObject *parent)
 {
 	mAngle = 0;
 	mTimer = new QTimer(this);
-	connect(mTimer, SIGNAL(timeout()), this, SLOT(nextFragment()));
 	initPosition();
 }
 
@@ -75,8 +77,7 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 	mMotors[port]->degrees = degrees;
 	if (degrees == 0) {
 		mMotors[port]->activeTime = QPair<ATime, qreal>(DoInf , 0);
-	}
-	else {
+	} else {
 		qreal activeTime = degrees * 1.0 / 1.0 * speed ;
 		mMotors[port]->activeTime = QPair<ATime, qreal>(Do , activeTime);
 	}
@@ -286,13 +287,14 @@ int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 void D2RobotModel::startInit()
 {
 	initPosition();
-	mTimer->start(timeInterval);
+	mTimer->start(500);
 }
 
 void D2RobotModel::stopRobot()
 {
 	mMotorA->speed = 0;
 	mMotorB->speed = 0;
+	mMotorC->speed = 0;
 }
 
 void D2RobotModel::countBeep()
@@ -305,9 +307,20 @@ void D2RobotModel::countBeep()
 }
 
 void D2RobotModel::countNewCoord()
-{
-	qreal const vSpeed = mMotorA->speed * 2 * M_PI * mMotorA->radius * 1.0 / 120000;
-	qreal const uSpeed = mMotorB->speed * 2 * M_PI * mMotorB->radius * 1.0 / 120000;
+{//{mMotors.value(1);
+	Motor *motor1 = mMotorA;
+	Motor *motor2 = mMotorB;
+
+	qDebug() << " first " << mMotorA->activeTime.first;
+	qDebug() << " second " << mMotorA->activeTime.second;
+	if (mMotorA->activeTime.first == End) {
+		qDebug() << "if (mMotorA->activeTime.first == End) {" ;
+		motor1 = mMotorC;
+	}
+
+	qreal const vSpeed = motor1->speed * 2 * M_PI * motor1->radius * 1.0 / 120000;
+	qreal const uSpeed = motor2->speed * 2 * M_PI * motor2->radius * 1.0 / 120000;
+
 	qreal deltaY = 0;
 	qreal deltaX = 0;
 	qreal const averageSpeed = (vSpeed + uSpeed) / 2;
@@ -364,8 +377,19 @@ void D2RobotModel::countNewCoord()
 	}
 }
 
+void D2RobotModel::run()
+{
+	QObject::connect(mTimer, SIGNAL(timeout()), this, SLOT(nextFragment()));
+}
+
+void D2RobotModel::stopRun()
+{
+	mTimer->stop();
+}
+
 void D2RobotModel::nextFragment()
 {
+	qDebug() << "D2RobotModel::nextFragment()";
 	// do nothing until robot gets back on the ground
 	if (!mD2ModelWidget->isRobotOnTheGround())
 		return;
