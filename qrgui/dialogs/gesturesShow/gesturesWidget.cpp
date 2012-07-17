@@ -1,10 +1,6 @@
 #include "gesturesWidget.h"
 #include "ui_gesturesWidget.h"
 
-int const minBoarder = -1000;
-QColor const gestColor(Qt::blue);
-short const gestWidth(3);
-
 GesturesWidget::GesturesWidget(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::GesturesWidget)
@@ -12,8 +8,8 @@ GesturesWidget::GesturesWidget(QWidget *parent) :
 	ui->setupUi(this);
 	mGestureScene = new QGraphicsScene(ui->graphicsView);
 	ui->graphicsView->setScene(mGestureScene);
-	connect(ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-			this, SIGNAL(currentElementChanged()));
+	connect(ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*))
+			, this, SIGNAL(currentElementChanged()));
 }
 
 GesturesWidget::~GesturesWidget()

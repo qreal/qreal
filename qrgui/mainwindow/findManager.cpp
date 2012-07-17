@@ -40,18 +40,11 @@ QMap<QString, QString> FindManager::findItems(QStringList const &searchData)
 	QMap<QString, QString> found;
 	bool sensitivity = searchData.contains(tr("case sensitivity"));
 	bool regExpression = searchData.contains(tr("by regular expression"));
-<<<<<<< HEAD
 
-
-	for(int i = 1; i < searchData.length(); i++) {
-		if (searchData[i] != tr("case sensitivity") && searchData[i] != tr("by regular expression")) {
-			qReal::IdList byMode = foundByMode(searchData.first(), searchData[i], sensitivity, regExpression);
-=======
 	for(int i = 1; i < searchData.length(); i++) {
 		if (searchData[i] != tr("case sensitivity") && searchData[i] != tr("by regular expression")) {
 			qReal::IdList byMode = foundByMode(searchData.first(), searchData[i], sensitivity
 					, regExpression);
->>>>>>> b673230cefc10fc4d32a1fa4a3ab0af824a33e7b
 			foreach (qReal::Id currentId, byMode) {
 				if (found.contains(currentId.toString())) {
 					found[currentId.toString()] += tr(", ") + searchData[i];
@@ -73,26 +66,17 @@ void FindManager::handleReplaceDialog(QStringList &searchData)
 {
 	if (searchData.contains(tr("by name"))) {
 		qReal::IdList toRename = foundByMode(searchData.first(), tr("by name")
-<<<<<<< HEAD
-											 , searchData.contains(tr("case sensitivity")),
-											 searchData.contains(tr("by regular expression")));
-=======
 				, searchData.contains(tr("case sensitivity"))
 				, searchData.contains(tr("by regular expression")));
->>>>>>> b673230cefc10fc4d32a1fa4a3ab0af824a33e7b
 		foreach (qReal::Id currentId, toRename) {
 			mLogicalApi.setName(currentId, searchData[1]);
 		}
 	}
+
 	if (searchData.contains(tr("by property content"))) {
 		qReal::IdList toRename = foundByMode(searchData.first(), tr("by property content")
-<<<<<<< HEAD
-						, searchData.contains(tr("case sensitivity")),
-											 searchData.contains(tr("by regular expression")));
-=======
 				, searchData.contains(tr("case sensitivity"))
 				, searchData.contains(tr("by regular expression")));
->>>>>>> b673230cefc10fc4d32a1fa4a3ab0af824a33e7b
 		mLogicalApi.replaceProperties(toRename, searchData[0], searchData[1]);
 	}
 }

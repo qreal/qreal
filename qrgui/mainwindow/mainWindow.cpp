@@ -163,7 +163,6 @@ void MainWindow::connectActions()
 	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
 	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
-//	connect (mUi->actionShowGestures, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
