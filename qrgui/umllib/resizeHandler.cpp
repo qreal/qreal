@@ -144,8 +144,10 @@ void ResizeHandler::resizeAccordingToChildren(QRectF& newContents, QPointF& newP
 
 	moveChildren(-childDeflectionVector);
 	newPos += childDeflectionVector;
-	newContents.setWidth(newContents.width() - childDeflectionVector.x());
-	newContents.setHeight(newContents.height() - childDeflectionVector.y());
+
+	qDebug() << "newContents: " << newContents;
+	newContents.setBottomRight(newContents.bottomRight() - childDeflectionVector);
+	qDebug() << "newContents: " << newContents;
 
 	expandByChildren(newContents);
 }

@@ -489,23 +489,12 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			}
 		}
 
-		//Element::mouseMoveEvent(event);
-
 		newPos += (event->scenePos() - scenePos()) - mDragPosition;
 		mGrid->mouseMoveEvent(event);
-
-		/*
-		qDebug() << "mouse pos: " << event->scenePos();
-		NodeElement *parItem = dynamic_cast<NodeElement*>(parentItem());
-		if (parItem) {
-			parItem->resize();
-		}
-		*/
 
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
 
-		//QRectF newContents = mContents;
 		QPointF parentPos = QPointF(0, 0);
 		QGraphicsItem *parItem = parentItem();
 		if (parItem) {
@@ -515,7 +504,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		qreal const newX = mGrid->makeGridAlignment(event->pos().x());
 		qreal const newY = mGrid->makeGridAlignment(event->pos().y());
 
-		//QPointF newPos = mPos;
 		switch (mDragState) {
 		case TopLeft: {
 			newContents.setTopLeft(QPoint(newX, newY));
@@ -563,8 +551,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			newContents.setWidth(size);
 			newContents.setHeight(size);
 		}
-
-		//resize(newContents, newPos);
 
 	}
 
@@ -890,72 +876,37 @@ const QPointF NodeElement::getNearestPort(QPointF const &location) const
 
 QLineF NodeElement::newTransform(StatLine const &port) const
 {
-	float x1 = 0.0;
-	float x2 = 0.0;
-	float y1 = 0.0;
-	float y2 = 0.0;
+	qreal const x1 = port.line.x1() * (port.prop_x1 ? port.initWidth : contentsRect().width());	
+	qreal const y1 = port.line.y1() * (port.prop_y1 ? port.initHeight : contentsRect().height());
 
-	if (port.prop_x1) {
-		x1 = port.line.x1() * port.initWidth;
-	} else {
-		x1 = port.line.x1() * contentsRect().width();
-	}
-
-	if (port.prop_y1) {
-		y1 = port.line.y1() * port.initHeight;
-	} else {
-		y1 = port.line.y1() * contentsRect().height();
-	}
-
-	if (port.prop_x2) {
-		x2 = port.line.x2() * port.initWidth;
-	} else {
-		x2 = port.line.x2() * contentsRect().width();
-	}
-
-	if (port.prop_y2) {
-		y2 = port.line.y2() * port.initHeight;
-	} else {
-		y2 = port.line.y2() * contentsRect().height();
-	}
+	qreal const x2 = port.line.x2() * (port.prop_x2 ? port.initWidth : contentsRect().width());	
+	qreal const y2 = port.line.y2() * (port.prop_y2 ? port.initHeight : contentsRect().height());
 
 	return QLineF(x1, y1, x2, y2);
 }
 
 QPointF NodeElement::newTransform(StatPoint const &port) const
 {
-	qreal x = 0;
-	qreal y = 0;
-
-	if (port.prop_x) {
-		x = port.point.x() * port.initWidth;
-	} else {
-		x = port.point.x() * contentsRect().width();
-	}
-
-	if (port.prop_y) {
-		y = port.point.y() * port.initHeight;
-	} else {
-		y = port.point.y() * contentsRect().height();
-	}
+	qreal const x = port.point.x() * (port.prop_x ? port.initWidth : contentsRect().width());
+	qreal const y = port.point.y() * (port.prop_y ? port.initHeight : contentsRect().height());
 
 	return QPointF(x, y);
 }
 
 qreal NodeElement::minDistanceFromLinePort(int linePortNumber, QPointF const &location) const
 {
-	QLineF linePort = newTransform(mLinePorts[linePortNumber]);
-	qreal a = linePort.length();
-	qreal b = QLineF(linePort.p1(), location).length();
-	qreal c = QLineF(linePort.p2(), location).length();
+	QLineF const linePort = newTransform(mLinePorts[linePortNumber]);
+	qreal const a = linePort.length();
+	qreal const b = QLineF(linePort.p1(), location).length();
+	qreal const c = QLineF(linePort.p2(), location).length();
 
-	qreal nearestPointOfLinePort = getNearestPointOfLinePort(linePortNumber, location);
+	qreal const nearestPointOfLinePort = getNearestPointOfLinePort(linePortNumber, location);
 	if ((nearestPointOfLinePort < 0) || (nearestPointOfLinePort > 0.9999)) {
 		return qMin(b, c);
 	} else {
-		qreal p = (a + b + c) / 2;
-		qreal triangleSquare = sqrt(p * (p - a) * (p - b) * (p - c));
-		qreal minDistance = 2 * triangleSquare / a;
+		qreal const p = (a + b + c) / 2;
+		qreal const triangleSquare = sqrt(p * (p - a) * (p - b) * (p - c));
+		qreal const minDistance = 2 * triangleSquare / a;
 		return minDistance;
 	}
 }
