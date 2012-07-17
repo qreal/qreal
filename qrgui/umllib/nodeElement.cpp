@@ -612,12 +612,8 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			// commented because of bug with double event sending (see #204)
 	//		mHighlightedNode = NULL;
 
-			//qDebug() << "Before:" << pos();
-
 			mGraphicalAssistApi->changeParent(id(), newParent->id(),
 				mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
-			
-			//qDebug() << "After:" << pos();
 
 			if (insertBefore != NULL) {
 				mGraphicalAssistApi->stackBefore(id(), insertBefore->id());
@@ -1336,40 +1332,40 @@ void NodeElement::resizeChild(QRectF const &newContents, QRectF const &oldConten
 		mPos = pos();
 	}
 	QList<double> list = mParentNodeElement->borderValues();
-	double xHor = list[0];
-	double yHor = list[1];
-	double xVert = list[2];
-	double yVert = list[3];
-	QPointF posi = pos();
+	double const xHor = list[0];
+	double const yHor = list[1];
+	double const xVert = list[2];
+	double const yVert = list[3];
+	QPointF const posi = pos();
 
-	double x = mPos.x() - oldContents.x();
-	double y = mPos.y() - oldContents.y();
+	double const x = mPos.x() - oldContents.x();
+	double const y = mPos.y() - oldContents.y();
 
 	if (mParentNodeElement->checkLowerBorder(posi, xHor, yHor+5)) {
-		double a = oldContents.x() + oldContents.width();
-		double b = newContents.x() + newContents.width();
-		double dy = newContents.height() - oldContents.height();
+		double const a = oldContents.x() + oldContents.width();
+		double const b = newContents.x() + newContents.width();
+		double const dy = newContents.height() - oldContents.height();
 		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
 	}
 
 	if (mParentNodeElement->checkUpperBorder(posi, xHor, yHor)) {
-		double a = oldContents.x() + oldContents.width();
-		double b = newContents.x() + newContents.width();
-		double dy = 0;
+		double const a = oldContents.x() + oldContents.width();
+		double const b = newContents.x() + newContents.width();
+		double const dy = 0;
 		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
 	}
 
 	if (mParentNodeElement->checkRightBorder(posi, xVert+5, yVert)) {
-		double a = oldContents.y() + oldContents.height();
-		double b = newContents.y() + newContents.height();
-		double dx = newContents.width() - oldContents.width();
+		double const a = oldContents.y() + oldContents.height();
+		double const b = newContents.y() + newContents.height();
+		double const dx = newContents.width() - oldContents.width();
 		mPos = QPointF(mPos.x()+dx, newContents.y() + y*b/a);
 	}
 	if (mParentNodeElement->checkLeftBorder(posi, xVert, yVert))
 	{
-		double a = oldContents.y() + oldContents.height();
-		double b = newContents.y() + newContents.height();
-		double dx = 0;
+		double const a = oldContents.y() + oldContents.height();
+		double const b = newContents.y() + newContents.height();
+		double const dx = 0;
 		mPos = QPointF(mPos.x()+dx, newContents.y() + y*b/a);
 	}
 	
