@@ -1263,7 +1263,7 @@ void NodeElement::addEdge(EdgeElement *edge)
 
 void NodeElement::delEdge(EdgeElement *edge)
 {
-	mEdgeList.removeAt(mEdgeList.indexOf(edge));
+	mEdgeList.removeAll(edge);
 }
 
 void NodeElement::changeFoldState()
@@ -1639,8 +1639,33 @@ void NodeElement::selectionState(bool const selected)
 
 void NodeElement::highlightEdges()
 {
-	foreach (EdgeElement *edge, mEdgeList)
+	foreach (EdgeElement *edge, mEdgeList) {
 		edge->highlight();
+	}
+}
+
+void NodeElement::disconnectEdges()
+{
+	foreach (EdgeElement *edge, mEdgeList) {
+		if (edge->src() == this) {
+			mGraphicalAssistApi->setFrom(edge->id(), Id::rootId());
+			mLogicalAssistApi->setFrom(edge->logicalId(), Id::rootId());
+		}
+
+		if (edge->dst() == this) {
+			mGraphicalAssistApi->setTo(edge->id(), Id::rootId());
+			mLogicalAssistApi->setTo(edge->logicalId(), Id::rootId());
+		}
+
+		edge->removeLink(this);
+	}
+	mEdgeList.clear();
+}
+
+void NodeElement::deleteFromScene()
+{
+	highlightEdges();
+	disconnectEdges();
 }
 
 NodeData& NodeElement::data()
@@ -1648,6 +1673,8 @@ NodeData& NodeElement::data()
 	mData.id = id();
 	mData.logicalId = logicalId();
 	mData.properties = properties();
+	// new element should not have references to links connected to original source element
+	mData.properties["links"] = IdListHelper::toVariant(IdList());
 	mData.pos = mPos;
 	mData.contents = mContents;
 
