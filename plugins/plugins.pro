@@ -28,4 +28,3 @@ SUBDIRS	= \
 #	umlUseCaseDiagram/umlUseCaseDiagram.pro \
 	visualInterpreter/visualInterpreter.pro \
 	refactoring/refactoring.pro \
-

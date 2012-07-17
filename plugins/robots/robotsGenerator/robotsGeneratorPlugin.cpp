@@ -55,7 +55,7 @@ QList<ActionInfo> RobotsGeneratorPlugin::actions()
 
 void RobotsGeneratorPlugin::generateRobotSourceCode()
 {
-	mMainWindowInterface->saveAll();
+	//mMainWindowInterface->saveAll();
 
 	robots::generator::NxtOSEKRobotGenerator gen(mMainWindowInterface->activeDiagram(),
 			 *mRepoControlApi,
