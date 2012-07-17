@@ -29,6 +29,8 @@ EditorView::EditorView(QWidget *parent)
 	setMouseTracking(true);
 
 	setAlignment(Qt::AlignCenter);
+
+	zoom = 0;
 }
 
 EditorView::~EditorView()
@@ -53,10 +55,11 @@ void EditorView::toggleOpenGL(bool checked)
 
 void EditorView::zoomIn()
 {
-	if (mWheelPressed)
+	if (mWheelPressed || zoom >= SettingsManager::value("maxZoom").toInt())
 		return;
 	double zoomFactor = static_cast<double>(SettingsManager::value("zoomFactor").toInt()) / 10 + 1;
 	scale(zoomFactor, zoomFactor);
+	zoom++;
 	if (SettingsManager::value("ShowGrid").toBool()) {
 		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
 	}
@@ -65,10 +68,11 @@ void EditorView::zoomIn()
 
 void EditorView::zoomOut()
 {
-	if (mWheelPressed)
+	if (mWheelPressed || zoom <= SettingsManager::value("minZoom").toInt())
 		return;
 	double zoomFactor = 1 / (static_cast<double>(SettingsManager::value("zoomFactor").toInt()) / 10 + 1);
 	scale(zoomFactor, zoomFactor);
+	zoom--;
 	if (SettingsManager::value("ShowGrid").toBool()) {
 		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
 	}
