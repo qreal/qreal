@@ -4,8 +4,7 @@
 #include <QtGui/QWidget>
 #include <QtGui/QIcon>
 
-#include "../pluginManager/editorManager.h"
-#include "../pluginManager/interpreterEditorManager.h"
+#include "../pluginManager/editorManagerInterface.h"
 #include "../../qrkernel/ids.h"
 
 class QVBoxLayout;
@@ -33,7 +32,7 @@ public:
 	QComboBox* getComboBox();
 
 	/// Gets item types of diagram, sorts by displayed name and shows them
-	void addSortedItemTypes(InterpreterEditorManager &editorManager, const Id &diagram);
+	void addSortedItemTypes(EditorManagerInterface *editorManagerInterface, const Id &diagram);
 	QVector<QString> getTabNames();
 
 	Id currentTab();
@@ -100,7 +99,7 @@ private:
 	int mCurrentTab;
 
 	/// EditorManager instance used to sort palette's content. Made static to be used inside idLessThan()
-	static InterpreterEditorManager *mEditorManager;
+	static EditorManagerInterface *mEditorManagerInter;
 
 };
 

@@ -8,12 +8,12 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, InterpreterEditorManager const &editorManager)
-	: AbstractModel(editorManager), mGraphicalModelView(this), mApi(*repoApi)
+LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManagerInterface const *editorManagerInter)
+	: AbstractModel(editorManagerInter), mGraphicalModelView(this), mApi(*repoApi)
 {
 	mRootItem = new LogicalModelItem(Id::rootId(), NULL);
 	init();
-	mLogicalAssistApi = new LogicalModelAssistApi(*this, editorManager);
+	mLogicalAssistApi = new LogicalModelAssistApi(*this, editorManagerInter);
 }
 
 LogicalModel::~LogicalModel()
@@ -62,9 +62,9 @@ LogicalModelItem *LogicalModel::loadElement(LogicalModelItem *parentItem, Id con
 
 void LogicalModel::checkProperties(Id const &id)
 {
-	if (!mEditorManager.hasElement(id.type()))
+	if (!mEditorManagerInter->hasElement(id.type()))
 		return;
-	QStringList const propertiesThatShallBe = mEditorManager.getPropertyNames(id.type());
+	QStringList const propertiesThatShallBe = mEditorManagerInter->getPropertyNames(id.type());
 	foreach (QString const property, propertiesThatShallBe)
 		if (!api().hasProperty(id, property))
 			mApi.setProperty(id, property, "");  // There shall be default value.
@@ -174,10 +174,10 @@ void LogicalModel::initializeElement(const Id &id, modelsImplementation::Abstrac
 	mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
 	mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
 
-	QStringList const properties = mEditorManager.getPropertyNames(id.type());
+	QStringList const properties = mEditorManagerInter->getPropertyNames(id.type());
 	foreach (QString const property, properties) {
 		// for those properties that doesn't have default values, plugin will return empty string
-		mApi.setProperty(id, property, mEditorManager.getDefaultPropertyValue(id, property));
+		mApi.setProperty(id, property, mEditorManagerInter->getDefaultPropertyValue(id, property));
 	}
 
 	mModelItems.insert(id, item);

@@ -12,15 +12,14 @@
 
 #include "../../../qrrepo/repoApi.h"
 #include "../../../qrutils/xmlUtils.h"
-#include "../../pluginManager/editorManager.h"
-#include "../../pluginManager/interpreterEditorManager.h"
+#include "../../pluginManager/editorManagerInterface.h"
 #include "../../../qrkernel/exception/exception.h"
 
 using namespace qReal;
 using namespace parsers;
 
-XmlParser::XmlParser(qrRepo::LogicalRepoApi &api, InterpreterEditorManager const &editorManager)
-	: mApi(api), mEditorManager(editorManager), mElementsColumn(0), mElementCurrentColumn(0),
+XmlParser::XmlParser(qrRepo::LogicalRepoApi &api, EditorManagerInterface const *editorManagerInter)
+	: mApi(api), mEditorManagerInter(editorManagerInter), mElementsColumn(0), mElementCurrentColumn(0),
 	  mMoveWidth(180), mMoveHeight(100), mCurrentWidth(0), mCurrentHeight(0), mParentPositionX(280)
 {
 }
@@ -719,7 +718,7 @@ void XmlParser::manageParents(const IdList &parents)
 void XmlParser::setStandartConfigurations(Id const &id, Id const &parent,
 										  const QString &name, const QString &displayedName)
 {
-	if (!mEditorManager.hasElement(id.type()))
+	if (!mEditorManagerInter->hasElement(id.type()))
 		throw Exception(QString("%1 doesn't exist").arg(id.type().toString()));
 	mApi.addChild(parent, id);
 	mApi.setProperty(id, "name", name);

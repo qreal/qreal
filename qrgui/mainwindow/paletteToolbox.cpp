@@ -12,7 +12,7 @@
 using namespace qReal;
 using namespace qReal::gui;
 
-InterpreterEditorManager * PaletteToolbox::mEditorManager = NULL;
+EditorManagerInterface * PaletteToolbox::mEditorManagerInter = NULL;
 
 PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &name
 		, QString const &description, QIcon const &icon, QWidget *parent
@@ -128,23 +128,23 @@ void PaletteToolbox::addItemType(Id const &id, QString const &name, QString cons
 	tab->layout()->addWidget(element);
 }
 
-void PaletteToolbox::addSortedItemTypes(InterpreterEditorManager &editman, const Id &diagram)
+void PaletteToolbox::addSortedItemTypes(EditorManagerInterface *editman, const Id &diagram)
 {
-	mEditorManager = &editman;
+	mEditorManagerInter = editman;
 
-	IdList list = editman.elements(diagram);
+	IdList list = editman->elements(diagram);
 
 	qSort(list.begin(), list.end(), idLessThan);
 
 	foreach (const Id element, list)
-		addItemType(element, editman.friendlyName(element)
-				, editman.description(element), editman.icon(element));
+		addItemType(element, editman->friendlyName(element)
+				, editman->description(element), editman->icon(element));
 }
 
 bool PaletteToolbox::idLessThan(const Id &s1, const Id &s2)
 {
-	return mEditorManager->friendlyName(s1).toLower() <
-			mEditorManager->friendlyName(s2).toLower();
+	return mEditorManagerInter->friendlyName(s1).toLower() <
+			mEditorManagerInter->friendlyName(s2).toLower();
 }
 
 void PaletteToolbox::deleteDiagramType(const Id &id)

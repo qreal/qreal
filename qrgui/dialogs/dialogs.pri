@@ -11,6 +11,7 @@ HEADERS += \
 	dialogs/gesturesShow/gesturesWidget.h \
 	dialogs/checkoutdialog.h \
 	dialogs/preferencesPages/featuresPage.h \
+    dialogs/suggestToCreateDiagramDialog.h
 
 SOURCES += \
 	dialogs/plugindialog.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 	dialogs/preferencesPages/miscellaniousPage.cpp \
 	dialogs/checkoutdialog.cpp \
 	dialogs/preferencesPages/featuresPage.cpp \
+    dialogs/suggestToCreateDiagramDialog.cpp
 
 FORMS += \
 	dialogs/editorGeneratorDialog.ui \
@@ -36,3 +38,11 @@ FORMS += \
 	dialogs/preferencesPages/behaviourPage.ui \
 	dialogs/refWindow.ui \
 	dialogs/preferencesPages/featuresPage.ui
+
+
+
+
+
+
+
+

@@ -24,7 +24,7 @@ namespace qReal {
 		Q_OBJECT
 
 	public:
-		explicit InterpreterEditorManager(QObject *parent = NULL);
+		explicit InterpreterEditorManager(QString fileName, QObject *parent = NULL);
 
 		IdList editors() const;
 		IdList diagrams(Id const &editor) const;

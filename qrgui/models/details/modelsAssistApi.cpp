@@ -6,14 +6,14 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-ModelsAssistApi::ModelsAssistApi(AbstractModel &model, InterpreterEditorManager const &editorManager)
-	: mModel(model), mEditorManager(editorManager)
+ModelsAssistApi::ModelsAssistApi(AbstractModel &model, EditorManagerInterface const *editorManagerInter)
+	: mModel(model), mEditorManagerInter(editorManagerInter)
 {
 }
 
-EditorManagerInterface const &ModelsAssistApi::editorManager() const
+EditorManagerInterface const *ModelsAssistApi::editorManagerInter() const
 {
-	return mEditorManager;
+	return mEditorManagerInter;
 }
 
 Id ModelsAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
@@ -46,7 +46,7 @@ QVariant ModelsAssistApi::property(Id const &elem, int const role) const
 
 int ModelsAssistApi::roleIndexByName(Id const &elem, QString const &roleName) const
 {
-	QStringList const properties = editorManager().getPropertyNames(elem.type());
+	QStringList const properties = editorManagerInter()->getPropertyNames(elem.type());
 	return properties.indexOf(roleName) + roles::customPropertiesBeginRole;
 }
 

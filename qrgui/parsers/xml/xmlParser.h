@@ -7,7 +7,7 @@
 
 #include "../../../qrkernel/ids.h"
 #include "../../../qrrepo/logicalRepoApi.h"
-#include "../../../pluginManager/interpreterEditorManager.h"
+#include "../../../pluginManager/editorManagerInterface.h"
 
 namespace qrRepo {
 	class RepoApi;
@@ -22,14 +22,14 @@ namespace qReal {
 		class XmlParser
 		{
 		public:
-			explicit XmlParser(qrRepo::LogicalRepoApi &api, InterpreterEditorManager const &editorManager);
+			explicit XmlParser(qrRepo::LogicalRepoApi &api, EditorManagerInterface const *editorManagerInter);
 
 			void parseFile(QString const &fileName);
 			void loadIncludeList(QString const &fileName);
 
 		private:
 			qrRepo::LogicalRepoApi &mApi;
-			InterpreterEditorManager const &mEditorManager;
+			EditorManagerInterface const *mEditorManagerInter;
 			Id mMetamodel;
 			QHash<QString, Id> mElements;
 			QHash<Id, QStringList> mParents;

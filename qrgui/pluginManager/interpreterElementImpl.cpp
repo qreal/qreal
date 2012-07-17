@@ -6,7 +6,9 @@ using namespace utils;
 
 InterpreterElementImpl::InterpreterElementImpl(qrRepo::RepoApi *repo, Id id)
 	: mEditorRepoApi(repo), mId(id)
-{}
+{
+	qDebug() << "InterpreterElementImpl::InterpreterElementImpl: " << mId;
+}
 //TODO:
 void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts,
 								  QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,

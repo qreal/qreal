@@ -10,7 +10,7 @@ HEADERS += \
 	mainwindow/errorListWidget.h \
 	mainwindow/mainWindowInterpretersInterface.h \
 	mainwindow/nxtFlashTool.h \
-	mainwindow/helpBrowser.h \
+	mainwindow/helpBrowser.h
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -21,7 +21,7 @@ SOURCES += \
 	mainwindow/error.cpp \
 	mainwindow/errorListWidget.cpp \
 	mainwindow/nxtFlashTool.cpp \
-	mainwindow/helpBrowser.cpp \
+	mainwindow/helpBrowser.cpp
 
 FORMS += \
 	mainwindow/mainWindow.ui
@@ -69,3 +69,7 @@ SOURCES += \
 
 FORMS += \
 	mainwindow/shapeEdit/shapeEdit.ui \
+
+
+
+

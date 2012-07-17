@@ -19,6 +19,7 @@ public:
 	virtual void saveTo(QString const &workingDir) = 0;
 
 	virtual void open(QString const &workingDir) = 0;
+	virtual void printDebug() const = 0;
 };
 
 }

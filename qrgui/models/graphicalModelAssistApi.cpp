@@ -8,15 +8,15 @@ using namespace qReal;
 using namespace models;
 using namespace models::details;
 
-GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel, InterpreterEditorManager const &editorManager)
-		: mGraphicalModel(graphicalModel), mModelsAssistApi(graphicalModel, editorManager)
+GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel, EditorManagerInterface const *editorManagerInter)
+		: mGraphicalModel(graphicalModel), mModelsAssistApi(graphicalModel, editorManagerInter)
 {
 	connect(&graphicalModel, SIGNAL(nameChanged(Id)), this, SIGNAL(nameChanged(Id)));
 }
 
-EditorManagerInterface const &GraphicalModelAssistApi::editorManager() const
+EditorManagerInterface const *GraphicalModelAssistApi::editorManagerInter() const
 {
-	return mModelsAssistApi.editorManager();
+	return mModelsAssistApi.editorManagerInter();
 }
 
 qrRepo::GraphicalRepoApi const &GraphicalModelAssistApi::graphicalRepoApi() const
@@ -51,7 +51,7 @@ Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &type)
 	Q_ASSERT(parent.idSize() == 4);
 
 	Id const newElementId(type, QUuid::createUuid().toString());
-	QString const elementFriendlyName = mModelsAssistApi.editorManager().friendlyName(type);
+	QString const elementFriendlyName = mModelsAssistApi.editorManagerInter()->friendlyName(type);
 	mGraphicalModel.addElementToModel(parent, newElementId, Id::rootId(), "(" + elementFriendlyName + ")", QPointF(0, 0));
 	return newElementId;
 }

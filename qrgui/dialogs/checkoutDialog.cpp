@@ -48,7 +48,7 @@ CheckoutDialog::CheckoutDialog(QWidget *parent) : QDialog(parent)
 void CheckoutDialog::browse()
 {
 	QString directory = QFileDialog::getExistingDirectory(this,
-						tr("Select directory"), QDir::currentPath());
+														  tr("Select directory"), QDir::currentPath());
 	if (!directory.isNull()) {
 		directoryComboBox->addItem(directory);
 		directoryComboBox->setCurrentIndex(directoryComboBox->findText(directory));

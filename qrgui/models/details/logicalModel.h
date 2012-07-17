@@ -4,7 +4,7 @@
 #include <QDebug>
 
 #include "../../../qrrepo/repoApi.h"
-#include "../../pluginManager/editorManager.h"
+#include "../../pluginManager/editorManagerInterface.h"
 #include "modelsImplementation/logicalModelItem.h"
 #include "modelsImplementation/abstractModel.h"
 #include "graphicalModelView.h"
@@ -24,7 +24,7 @@ class LogicalModel : public modelsImplementation::AbstractModel
 	Q_OBJECT;
 
 public:
-	LogicalModel(qrRepo::LogicalRepoApi *repoApi, InterpreterEditorManager const &editorManager);
+	LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManagerInterface const *editorManagerInter);
 	virtual ~LogicalModel();
 
 	void connectToGraphicalModel(GraphicalModel * const graphicalModel);

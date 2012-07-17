@@ -6,8 +6,8 @@
 using namespace qReal;
 using namespace models::details::modelsImplementation;
 
-AbstractModel::AbstractModel(const InterpreterEditorManager &editorManager)
-	: mEditorManager(editorManager)
+AbstractModel::AbstractModel(const EditorManagerInterface *editorManagerInter)
+	: mEditorManagerInter(editorManagerInter)
 {
 }
 
@@ -100,7 +100,7 @@ QString AbstractModel::findPropertyName(Id const &id, int const role) const
 	//In case of a property described in element itself (in metamodel),
 	// role is simply an index of a property in a list of propertires.
 	// This convention must be obeyed everywhere, otherwise roles will shift.
-	QStringList properties = mEditorManager.getPropertyNames(id.type());
+	QStringList properties = mEditorManagerInter->getPropertyNames(id.type());
 	Q_ASSERT(role - roles::customPropertiesBeginRole < properties.count());
 	return properties[role - roles::customPropertiesBeginRole];
 }
@@ -117,9 +117,9 @@ QStringList AbstractModel::mimeTypes() const
 	return types;
 }
 
-EditorManagerInterface const &AbstractModel::editorManager() const
+EditorManagerInterface const *AbstractModel::editorManagerInter() const
 {
-	return mEditorManager;
+	return mEditorManagerInter;
 }
 
 QModelIndex AbstractModel::indexById(Id const &id) const

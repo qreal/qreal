@@ -720,13 +720,13 @@ bool NodeElement::initPossibleEdges()
 		return true;
 	}
 
-	foreach (QString elementName, mGraphicalAssistApi->editorManager().elements(id().editor(),id().diagram())) {
-		int ne = mGraphicalAssistApi->editorManager().isNodeOrEdge(id().editor(), elementName);
+	foreach (QString elementName, mGraphicalAssistApi->editorManagerInter()->elements(id().editor(),id().diagram())) {
+		int ne = mGraphicalAssistApi->editorManagerInter()->isNodeOrEdge(id().editor(), elementName);
 		if (ne == -1) {
-			QList<StringPossibleEdge> list =  mGraphicalAssistApi->editorManager().getPossibleEdges(id().editor(), elementName);
+			QList<StringPossibleEdge> list =  mGraphicalAssistApi->editorManagerInter()->getPossibleEdges(id().editor(), elementName);
 			foreach(StringPossibleEdge pEdge, list) {
-				if (mGraphicalAssistApi->editorManager().isParentOf(id().editor(), id().diagram(), pEdge.first.first, id().diagram(), id().element())
-						|| (mGraphicalAssistApi->editorManager().isParentOf(id().editor(), id().diagram(), pEdge.first.second, id().diagram(), id().element()) && !pEdge.second.first))
+				if (mGraphicalAssistApi->editorManagerInter()->isParentOf(id().editor(), id().diagram(), pEdge.first.first, id().diagram(), id().element())
+						|| (mGraphicalAssistApi->editorManagerInter()->isParentOf(id().editor(), id().diagram(), pEdge.first.second, id().diagram(), id().element()) && !pEdge.second.first))
 				{
 					PossibleEdge possibleEdge = toPossibleEdge(pEdge);
 					mPossibleEdges.insert(possibleEdge);

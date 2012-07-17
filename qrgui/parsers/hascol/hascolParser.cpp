@@ -1,6 +1,6 @@
 #include "hascolParser.h"
 
-#include "../../pluginManager/editorManager.h"
+#include "../../pluginManager/editorManagerInterface.h"
 
 #include <QtCore/QDebug>
 #include <QtCore/QUuid>
@@ -15,8 +15,8 @@ using namespace qReal;
 using namespace parsers;
 using gui::ErrorReporter;
 
-HascolParser::HascolParser(qrRepo::LogicalRepoApi &api, InterpreterEditorManager const &editorManager)
-	: mApi(api), mEditorManager(editorManager), mErrorReporter()
+HascolParser::HascolParser(qrRepo::LogicalRepoApi &api, EditorManagerInterface const *editorManagerInter)
+	: mApi(api), mEditorManagerInter(editorManagerInter), mErrorReporter()
 {
 }
 

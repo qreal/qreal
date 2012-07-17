@@ -6,8 +6,10 @@
 #include <QSplashScreen>
 #include <QtGui>
 
+#include "../pluginManager/editorManagerInterface.h"
 #include "../pluginManager/editorManager.h"
 #include "../pluginManager/interpreterEditorManager.h"
+#include "../pluginManager/proxyEditorManager.h"
 #include "../pluginManager/toolPluginManager.h"
 #include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
@@ -21,6 +23,7 @@
 #include "helpBrowser.h"
 
 #include "../models/logicalModelAssistApi.h"
+#include "../dialogs/suggestToCreateDiagramDialog.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -49,7 +52,7 @@ public:
 	MainWindow();
 	~MainWindow();
 
-	EditorManagerInterface* manager();
+	ProxyEditorManager* manager();
 	EditorView *getCurrentTab();
 	ListenerManager *listenerManager();
 	GesturesPainterInterface *gesturesPainter();
@@ -198,6 +201,7 @@ private slots:
 	void diagramInCreateListDeselect();
 	void diagramInCreateListSelected(int num);
 
+
 	void on_actionNew_Diagram_triggered();
 
 	void updatePaletteIcons();
@@ -275,9 +279,10 @@ private:
 
 	Ui::MainWindowUi *mUi;
 
+	SuggestToCreateDiagramDialog mDialog;
 	QCloseEvent *mCloseEvent;
 	models::Models *mModels;
-	InterpreterEditorManager mEditorManager;
+	ProxyEditorManager *mEditorManagerProxy;
 	ToolPluginManager mToolManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;

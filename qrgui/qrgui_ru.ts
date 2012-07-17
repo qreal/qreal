@@ -325,51 +325,60 @@
 <context>
     <name>EditorViewScene</name>
     <message>
-        <location filename="view/editorViewScene.cpp" line="280"/>
-        <location filename="view/editorViewScene.cpp" line="326"/>
+        <location filename="view/editorViewScene.cpp" line="299"/>
+        <location filename="view/editorViewScene.cpp" line="345"/>
         <source>Discard</source>
         <translation>Убрать меню</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="283"/>
+        <location filename="view/editorViewScene.cpp" line="302"/>
         <source>Create new element</source>
         <translation>Создать новый элемент</translation>
     </message>
     <message>
+        <location filename="view/editorViewScene.cpp" line="557"/>
         <source>Add connection</source>
-        <translation type="obsolete">Добавить провязку</translation>
+        <translation type="unfinished">Добавить провязку</translation>
     </message>
     <message>
+        <location filename="view/editorViewScene.cpp" line="564"/>
         <source>Disconnect</source>
-        <translation type="obsolete">Убрать провязку</translation>
+        <translation type="unfinished">Убрать провязку</translation>
     </message>
     <message>
+        <location filename="view/editorViewScene.cpp" line="570"/>
         <source>Add usage</source>
-        <translation type="obsolete">Добавить использование</translation>
+        <translation type="unfinished">Добавить использование</translation>
     </message>
     <message>
+        <location filename="view/editorViewScene.cpp" line="577"/>
         <source>Delete usage</source>
-        <translation type="obsolete">Убрать использование</translation>
+        <translation type="unfinished">Убрать использование</translation>
     </message>
     <message>
+        <location filename="view/editorViewScene.cpp" line="583"/>
         <source>Go to</source>
-        <translation type="obsolete">Перейти</translation>
+        <translation type="unfinished">Перейти</translation>
     </message>
     <message>
+        <location filename="view/editorViewScene.cpp" line="585"/>
         <source>Forward connection</source>
-        <translation type="obsolete">По провязке вперёд</translation>
+        <translation type="unfinished">По провязке вперёд</translation>
     </message>
     <message>
+        <location filename="view/editorViewScene.cpp" line="586"/>
         <source>Backward connection</source>
-        <translation type="obsolete">По провязке назад</translation>
+        <translation type="unfinished">По провязке назад</translation>
     </message>
     <message>
+        <location filename="view/editorViewScene.cpp" line="587"/>
         <source>Uses</source>
-        <translation type="obsolete">Использует</translation>
+        <translation type="unfinished">Использует</translation>
     </message>
     <message>
+        <location filename="view/editorViewScene.cpp" line="588"/>
         <source>Used in</source>
-        <translation type="obsolete">Используется в</translation>
+        <translation type="unfinished">Используется в</translation>
     </message>
 </context>
 <context>
@@ -2497,6 +2506,31 @@
     </message>
 </context>
 <context>
+    <name>SuggestToCreateDiagramDialog</name>
+    <message>
+        <location filename="dialogs/suggestToCreateDiagramDialog.cpp" line="5"/>
+        <source>There is no existing diagram,
+ choose diagram you want work with:</source>
+        <translation>Диаграммы пока не создано,
+укажите диаграмму, с которой хотите работать</translation>
+    </message>
+    <message>
+        <location filename="dialogs/suggestToCreateDiagramDialog.cpp" line="15"/>
+        <source>Choose new diagram</source>
+        <translation>Выберите новую диаграмму</translation>
+    </message>
+    <message>
+        <location filename="dialogs/suggestToCreateDiagramDialog.cpp" line="19"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="dialogs/suggestToCreateDiagramDialog.cpp" line="20"/>
+        <source>Done</source>
+        <translation>Готово</translation>
+    </message>
+</context>
+<context>
     <name>UML::EdgeElement</name>
     <message>
         <source>Add point</source>
@@ -2516,6 +2550,21 @@
     <message>
         <source>Switch on grid</source>
         <translation type="obsolete">Включить сетку</translation>
+    </message>
+</context>
+<context>
+    <name>checkMetamodelDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="obsolete">Настройки робота</translation>
+    </message>
+    <message>
+        <source>Browse</source>
+        <translation type="obsolete">Выбрать</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="obsolete">ОК</translation>
     </message>
 </context>
 <context>
@@ -2775,19 +2824,19 @@
 <context>
     <name>qReal::MainWindow</name>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="517"/>
+        <location filename="mainwindow/mainWindow.cpp" line="505"/>
         <source>These plugins are not present, but needed to load the save:
 </source>
         <translation>Эти плагины отсутствуют, но нужны для загрузки сохранения:
 </translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="520"/>
+        <location filename="mainwindow/mainWindow.cpp" line="508"/>
         <source>Do you want to create new project?</source>
         <translation>Вы хотите создать новый проект?</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="523"/>
+        <location filename="mainwindow/mainWindow.cpp" line="511"/>
         <source>Some plugins are missing</source>
         <translation>Некоторых плагинов не хватает</translation>
     </message>
@@ -2820,24 +2869,24 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="864"/>
-        <location filename="mainwindow/mainWindow.cpp" line="881"/>
-        <location filename="mainwindow/mainWindow.cpp" line="898"/>
+        <location filename="mainwindow/mainWindow.cpp" line="853"/>
+        <location filename="mainwindow/mainWindow.cpp" line="870"/>
+        <location filename="mainwindow/mainWindow.cpp" line="887"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="866"/>
-        <location filename="mainwindow/mainWindow.cpp" line="883"/>
-        <location filename="mainwindow/mainWindow.cpp" line="900"/>
+        <location filename="mainwindow/mainWindow.cpp" line="855"/>
+        <location filename="mainwindow/mainWindow.cpp" line="872"/>
+        <location filename="mainwindow/mainWindow.cpp" line="889"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1047"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1069"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1100"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1109"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1036"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1058"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1089"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1098"/>
         <source>error</source>
         <translation>Ошибка</translation>
     </message>
@@ -2846,12 +2895,12 @@
         <translation type="obsolete">Не удалось найти папку для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="929"/>
+        <location filename="mainwindow/mainWindow.cpp" line="918"/>
         <source>loading..</source>
         <translation>Загрузка..</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="929"/>
+        <location filename="mainwindow/mainWindow.cpp" line="918"/>
         <source>Do you want to load generated editor %1?</source>
         <translation>Вы хотите загрузить сгенерированный редактор %1?</translation>
     </message>
@@ -2868,125 +2917,135 @@
         <translation type="obsolete">Не удалось выгрузить плагин</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1100"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1089"/>
         <source>cannot load new editor</source>
         <translation>Невозможно загрузить новый редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1047"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1036"/>
         <source>please, fill compiler settings</source>
         <translation>Пожалуйста, заполните настройки компиляции (Настройки -&gt; Настройки... -&gt; Компилятор)</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="497"/>
-        <location filename="mainwindow/mainWindow.cpp" line="500"/>
+        <location filename="mainwindow/mainWindow.cpp" line="485"/>
+        <location filename="mainwindow/mainWindow.cpp" line="488"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="549"/>
+        <location filename="mainwindow/mainWindow.cpp" line="537"/>
         <source>Select file with a save to import</source>
         <translation>Выберите файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="573"/>
+        <location filename="mainwindow/mainWindow.cpp" line="561"/>
         <source>Select file with a save to open</source>
         <translation>Выберите файл для открытия</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="774"/>
+        <location filename="mainwindow/mainWindow.cpp" line="763"/>
         <source>About QReal:Robots</source>
         <translation>О QReal:Robots</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="775"/>
+        <location filename="mainwindow/mainWindow.cpp" line="764"/>
         <source>Contacts:&lt;br&gt;&lt;br&gt;se.math.spbu.ru/SE/qreal</source>
         <translation>Контакты:&lt;br&gt;&lt;br&gt;se.math.spbu.ru/SE/qreal</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1069"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1058"/>
         <source>cannot unload plugin</source>
         <translation>Не удалось выгрузить плагин</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1109"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1098"/>
         <source>required plugin is not loaded</source>
         <translation>Требуемый плагин не загружен</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1122"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1111"/>
         <source>Select xml file to parse</source>
         <translation>Выберите xml-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1240"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1248"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1229"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1237"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1629"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1562"/>
+        <source>Select file with metamodel to open</source>
+        <translation>Выберите файл метамодели для интерпретации</translation>
+    </message>
+    <message>
+        <source>Integrated diagram</source>
+        <translation type="obsolete">Интерпретируемая диаграмма</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="1594"/>
         <source>Select file to save current model to</source>
         <translation>Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2251"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2221"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2251"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2221"/>
         <source>Images (*.png *.jpg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2315"/>
-        <location filename="mainwindow/mainWindow.cpp" line="2316"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2286"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2287"/>
         <source>Save</source>
         <translation type="unfinished">Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2318"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2289"/>
         <source>Discard</source>
         <translation type="unfinished">Убрать меню</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2319"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2290"/>
         <source>Do you want to save current project?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1182"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1171"/>
         <source>Select Hascol files to parse</source>
         <translation>Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1516"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1505"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1538"/>
         <source>Choose new diagram</source>
-        <translation>Выберите новую диаграмму</translation>
+        <translation type="obsolete">Выберите новую диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1540"/>
         <source>There is no existing diagram,
  choose diagram you want work with:</source>
-        <translation>Диаграммы пока не создано,
+        <translation type="obsolete">Диаграммы пока не создано,
 укажите диаграмму, с которой хотите работать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1558"/>
-        <location filename="mainwindow/mainWindow.cpp" line="2317"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1534"/>
+        <source>Interpreted diagram</source>
+        <translation>Интерпретируемая диаграмма</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="2288"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1560"/>
         <source>Done</source>
-        <translation>Готово</translation>
+        <translation type="obsolete">Готово</translation>
     </message>
     <message>
         <source>Select directory to save current model to</source>

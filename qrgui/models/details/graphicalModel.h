@@ -1,8 +1,7 @@
 #pragma once
 
 #include "../../../qrrepo/repoApi.h"
-#include "../../pluginManager/editorManager.h"
-#include "../../pluginManager/interpreterEditorManager.h"
+#include "../../pluginManager/editorManagerInterface.h"
 #include "modelsImplementation/graphicalModelItem.h"
 #include "modelsImplementation/abstractModel.h"
 #include "logicalModelView.h"
@@ -22,7 +21,7 @@ class GraphicalModel : public modelsImplementation::AbstractModel
 	Q_OBJECT
 
 public:
-	GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, InterpreterEditorManager const &editorManager);
+	GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, EditorManagerInterface const *editorManagerInter);
 	virtual ~GraphicalModel();
 
 	void connectToLogicalModel(LogicalModel * const logicalModel);

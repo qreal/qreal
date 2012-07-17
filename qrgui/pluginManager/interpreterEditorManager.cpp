@@ -14,10 +14,11 @@
 
 using namespace qReal;
 
-InterpreterEditorManager::InterpreterEditorManager(QObject *parent)
+InterpreterEditorManager::InterpreterEditorManager(QString fileName, QObject *parent)
 	: QObject(parent)
 {
-	qrRepo::RepoApi *repo = new qrRepo::RepoApi("testMetamodel.qrs");
+	//qrRepo::RepoApi *repo = new qrRepo::RepoApi("../metamodel/testMetamodel.qrs");
+	qrRepo::RepoApi *repo = new qrRepo::RepoApi(fileName);
 	mEditorRepoApi.insert("test", repo);
 }
 
@@ -284,6 +285,8 @@ Element* InterpreterEditorManager::graphicalObject(Id const &id) const
 		foreach (Id editor, repo->elementsByType("MetamodelDiagram")) {
 			foreach (Id diagram, repo->children(editor)) {
 				foreach (Id element, repo->children(diagram)) {
+					QString idElem = id.element();
+					QString repoElem = repo->name(element);
 					if (id.element() == repo->name(element)) {
 						repoMetaModel = repo;
 						metaId = element;

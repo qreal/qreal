@@ -54,10 +54,12 @@ QString const unsavedDir = "unsaved";
 
 MainWindow::MainWindow()
 		: mUi(new Ui::MainWindowUi)
+		, mDialog(this)
 		, mCloseEvent(NULL)
 		, mModels(NULL)
+		, mEditorManagerProxy(new ProxyEditorManager(new EditorManager()))
 		, mListenerManager(NULL)
-		, mPropertyModel(mEditorManager)
+		, mPropertyModel(mEditorManagerProxy)
 		, mGesturesWidget(NULL)
 		, mRootIndex(QModelIndex())
 		, mVisualDebugger(NULL)
@@ -129,7 +131,7 @@ MainWindow::MainWindow()
 		mSaveFile = saveFile.absoluteFilePath();
 
 
-	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
+	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManagerProxy);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
@@ -185,6 +187,13 @@ MainWindow::MainWindow()
 		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
 	}
 
+	connect(&mDialog,SIGNAL(diagramsListCurrentRowChanged(int)),this,SLOT(diagramInCreateListSelected(int)));
+	connect(&mDialog,SIGNAL(diagramsListItemDoubleClicked(QListWidgetItem*)),this,SLOT(setDiagramCreateFlag()));
+	connect(&mDialog,SIGNAL(diagramsListItemDoubleClicked(QListWidgetItem*)),&mDialog,SLOT(close()));
+	connect(&mDialog,SIGNAL(destroyed()),this,SLOT(diagramInCreateListDeselect()));
+	connect(&mDialog,SIGNAL(cancelButtonClicked()),&mDialog,SLOT(close()));
+	connect(&mDialog,SIGNAL(okButtonClicked()),this,SLOT(setDiagramCreateFlag()));
+	connect(&mDialog,SIGNAL(okButtonClicked()),&mDialog,SLOT(close()));
 	if (SettingsManager::value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 
@@ -202,7 +211,6 @@ MainWindow::MainWindow()
 	setAutoSaveParameters();
 	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
 	connectWindowTitle();
-
 }
 
 void MainWindow::connectActions()
@@ -319,9 +327,9 @@ MainWindow::~MainWindow()
 	delete mRecentProjectsMapper;
 }
 
-EditorManagerInterface* MainWindow::manager()
+ProxyEditorManager* MainWindow::manager()
 {
-	return &mEditorManager;
+	return mEditorManagerProxy;
 }
 
 void MainWindow::finalClose()
@@ -349,10 +357,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::loadPlugins()
 {
-	foreach (Id const editor, mEditorManager.editors()) {
-		foreach (Id const diagram, mEditorManager.diagrams(editor)) {
-			mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-			mUi->paletteToolbox->addSortedItemTypes(mEditorManager, diagram);
+	foreach (Id const editor, mEditorManagerProxy->editors()) {
+		foreach (Id const diagram, mEditorManagerProxy->diagrams(editor)) {
+			mUi->paletteToolbox->addDiagramType(diagram, mEditorManagerProxy->friendlyName(diagram));
+			mUi->paletteToolbox->addSortedItemTypes(mEditorManagerProxy, diagram);
 		}
 	}
 	mUi->paletteToolbox->initDone();
@@ -488,7 +496,7 @@ QString MainWindow::getWorkingFile(QString const &dialogWindowTitle, bool save)
 
 bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 {
-	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
+	IdList missingPlugins = mEditorManagerProxy->checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 	bool haveMissingPlugins = !missingPlugins.isEmpty();
 	bool loadingCancelled = false;
 
@@ -511,7 +519,7 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 		}
 		else
 			loadingCancelled = true;
-		missingPlugins = mEditorManager.checkNeededPlugins(
+		missingPlugins = mEditorManagerProxy->checkNeededPlugins(
 				mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 		haveMissingPlugins = !missingPlugins.isEmpty();
 	}
@@ -662,7 +670,7 @@ void MainWindow::makeSvg()
 
 void MainWindow::settingsPlugins()
 {
-	PluginDialog dialog(mEditorManager , this);
+	PluginDialog dialog(mEditorManagerProxy, this);
 	dialog.exec();
 }
 
@@ -956,7 +964,7 @@ void MainWindow::generateEditorWithQRMC()
 
    if (!metaCompiler.compile(name)) { // generating source code for all metamodels
  QMessageBox::warning(this, tr("error"), tr("Cannot generate source code for editor ") + name);
- qDebug() << "compilation failed";
+// qDebug() << "compilation failed";
  continue;
    }
    progress->setValue(20);
@@ -987,7 +995,7 @@ void MainWindow::generateEditorWithQRMC()
   QMessageBox::warning(this, tr("error"), tr("cannot unload plugin ") + normalizedName);
   progress->close();
   delete progress;
-  continue;
+  continue;b
  }
    }
 
@@ -1043,10 +1051,10 @@ void MainWindow::loadNewEditor(const QString &directoryName
 	progress->setRange(0, 100);
 	progress->setValue(5);
 
-	if (mEditorManager.editors().contains(Id(normalizeDirName))) {
-		IdList const diagrams = mEditorManager.diagrams(Id(normalizeDirName));
+	if (mEditorManagerProxy->editors().contains(Id(normalizeDirName))) {
+		IdList const diagrams = mEditorManagerProxy->diagrams(Id(normalizeDirName));
 
-		if (!mEditorManager.unloadPlugin(normalizeDirName)) {
+		if (!mEditorManagerProxy->unloadPlugin(normalizeDirName)) {
 			QMessageBox::warning(this, tr("error"), tr("cannot unload plugin"));
 			progress->close();
 			delete progress;
@@ -1066,10 +1074,10 @@ void MainWindow::loadNewEditor(const QString &directoryName
 		builder.start(commandSecond);
 		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
 			progress->setValue(80);
-			if (mEditorManager.loadPlugin(prefix + metamodelName + "." + extension)) {
-				foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName))) {
-					mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-					mUi->paletteToolbox->addSortedItemTypes(mEditorManager, diagram);
+			if (mEditorManagerProxy->loadPlugin(prefix + metamodelName + "." + extension)) {
+				foreach (Id const diagram, mEditorManagerProxy->diagrams(Id(normalizeDirName))) {
+					mUi->paletteToolbox->addDiagramType(diagram, mEditorManagerProxy->friendlyName(diagram));
+					mUi->paletteToolbox->addSortedItemTypes(mEditorManagerProxy, diagram);
 				}
 				mUi->paletteToolbox->initDone();
 				progress->setValue(100);
@@ -1086,7 +1094,7 @@ void MainWindow::loadNewEditor(const QString &directoryName
 
 void MainWindow::parseEditorXml()
 {
-	if (!mEditorManager.editors().contains(Id("MetaEditor"))) {
+	if (!mEditorManagerProxy->editors().contains(Id("MetaEditor"))) {
 		QMessageBox::warning(this, tr("error"), tr("required plugin is not loaded"));
 		return;
 	}
@@ -1104,7 +1112,7 @@ void MainWindow::parseEditorXml()
 	if (fileName == "")
 		return;
 
-	parsers::XmlParser parser(mModels->mutableLogicalRepoApi(), mEditorManager);
+	parsers::XmlParser parser(mModels->mutableLogicalRepoApi(), mEditorManagerProxy);
 
 	parser.parseFile(fileName);
 
@@ -1164,7 +1172,7 @@ void MainWindow::parseHascol()
 	if (fileNames.empty())
 		return;
 
-	parsers::HascolParser parser(mModels->mutableLogicalRepoApi(), mEditorManager);
+	parsers::HascolParser parser(mModels->mutableLogicalRepoApi(), mEditorManagerProxy);
 	gui::ErrorReporter& errors = parser.parse(fileNames);
 
 	errors.showErrors(mUi->errorListWidget, mUi->errorDock);
@@ -1277,7 +1285,7 @@ void MainWindow::setConnectActionZoomTo(QWidget* widget)
 
 void MainWindow::centerOn(Id const &id)
 {
-	if (mEditorManager.isDiagramNode(id))
+	if (mEditorManagerProxy->isDiagramNode(id))
 		return;
 
 	EditorView* const view = getCurrentTab();
@@ -1354,7 +1362,7 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 		foreach(QString name, mUi->paletteToolbox->getTabNames()) {
 			Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
 			Id const diagramId = Id(id.editor(), id.diagram());
-			QString const diagramName = mEditorManager.friendlyName(diagramId);
+			QString const diagramName = mEditorManagerProxy->friendlyName(diagramId);
 			if (diagramName == name) {
 				mUi->paletteToolbox->getComboBox()->setCurrentIndex(i);
 				break;
@@ -1510,58 +1518,23 @@ void MainWindow::suggestToCreateDiagram()
 	if (mModels->logicalModel()->rowCount() > 0)
 		return;
 
-	QDialog dialog;
-	QVBoxLayout vLayout;
-	QHBoxLayout hLayout;
-	dialog.setLayout(&vLayout);
-	dialog.setMinimumSize(320, 240);
-	dialog.setMaximumSize(320, 240);
-	dialog.setWindowTitle(tr("Choose new diagram"));
-
-	QLabel label(tr("There is no existing diagram,\n choose diagram you want work with:"));
-	QListWidget diagramsListWidget;
-	diagramsListWidget.setParent(&dialog);
-
 	int i = 0;
 	foreach(Id editor, manager()->editors()) {
 		foreach(Id diagram, manager()->diagrams(Id::loadFromString("qrm:/" + editor.editor()))) {
-			QString const diagramName = mEditorManager.diagramName(editor.editor(), diagram.diagram());
-			QString const diagramNodeName = mEditorManager.diagramNodeName(editor.editor(), diagram.diagram());
+			QString const diagramName = mEditorManagerProxy->diagramName(editor.editor(), diagram.diagram());
+			QString const diagramNodeName = mEditorManagerProxy->diagramNodeName(editor.editor(), diagram.diagram());
 			if (diagramNodeName.isEmpty())
 				continue;
 			mDiagramsList.append("qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
-			diagramsListWidget.addItem(diagramName);
+			mDialog.addItemToDiagramsList(diagramName);
 			i++;
 		}
 	}
-
-	QPushButton cancelButton;
-	cancelButton.setText(tr("Cancel"));
-	QPushButton okButton;
-	okButton.setText(tr("Done"));
-
-	QObject::connect(&diagramsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(diagramInCreateListSelected(int)));
-	QObject::connect(&diagramsListWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(setDiagramCreateFlag()));
-	QObject::connect(&diagramsListWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),&dialog,SLOT(close()));
-	QObject::connect(&dialog,SIGNAL(destroyed()),this,SLOT(diagramInCreateListDeselect()));
-
-	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-
-	QObject::connect(&okButton,SIGNAL(clicked()),this,SLOT(setDiagramCreateFlag()));
-	QObject::connect(&okButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-
-	diagramsListWidget.setCurrentRow(0);
+	mDiagramsList.append("Interpreted diagram");
+	mDialog.addItemToDiagramsList(tr("Interpreted diagram"));
+	mDialog.diagramsListSetCurrentRow(0);
 	mDiagramCreateFlag = false;
-
-	vLayout.addWidget(&label);
-	vLayout.addWidget(&diagramsListWidget);
-
-	hLayout.addWidget(&okButton);
-	hLayout.addWidget(&cancelButton);
-
-	vLayout.addLayout(&hLayout);
-
-	dialog.exec();
+	mDialog.exec();
 }
 
 void MainWindow::setDiagramCreateFlag()
@@ -1584,13 +1557,47 @@ void MainWindow::diagramInCreateListSelected(int num)
 
 void MainWindow::createDiagram(QString const &idString)
 {
-	Id const created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), Id::loadFromString(idString));
-	QModelIndex const index = mModels->graphicalModelAssistApi().indexById(created);
-	mUi->graphicalModelExplorer->setCurrentIndex(index);
-	Id const logicalIdCreated = mModels->graphicalModelAssistApi().logicalId(created);
-	QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalIdCreated);
-	mUi->logicalModelExplorer->setCurrentIndex(logicalIndex);
-	openNewTab(index);
+	if (idString == "Interpreted diagram") {
+		mDialog.hide();
+		QString fileName = getWorkingFile(tr("Select file with metamodel to open"), false);
+		if (open(fileName)) {
+			mDialog.close();
+			mModels->repoControlApi().printDebug();
+			mEditorManagerProxy->setProxyManager(new InterpreterEditorManager(fileName));
+			QStringList interpreterDiagramsList;
+			foreach(Id editor, mEditorManagerProxy->editors()) {
+				foreach(Id diagram, mEditorManagerProxy->diagrams(editor)) {
+					QString const diagramNodeName = mEditorManagerProxy->diagramNodeName(editor.editor(), diagram.diagram());
+					if (diagramNodeName.isEmpty())
+						continue;
+					interpreterDiagramsList.append("qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
+				}
+			}
+			foreach(QString interpreterIdString, interpreterDiagramsList) {
+				mModels->repoControlApi().exterminate();
+				mModels->reinit();
+				mModels->repoControlApi().printDebug();
+				Id const created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), Id::loadFromString(interpreterIdString));
+				QModelIndex const index = mModels->graphicalModelAssistApi().indexById(created);
+				mUi->graphicalModelExplorer->setCurrentIndex(index);
+				Id const logicalIdCreated = mModels->graphicalModelAssistApi().logicalId(created);
+				QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalIdCreated);
+				mUi->logicalModelExplorer->setCurrentIndex(logicalIndex);
+				openNewTab(index);
+			}
+		} else {
+			mDialog.diagramsListSetCurrentRow(0);
+			mDialog.show();
+		}
+	} else {
+		Id const created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), Id::loadFromString(idString));
+		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(created);
+		mUi->graphicalModelExplorer->setCurrentIndex(index);
+		Id const logicalIdCreated = mModels->graphicalModelAssistApi().logicalId(created);
+		QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalIdCreated);
+		mUi->logicalModelExplorer->setCurrentIndex(logicalIndex);
+		openNewTab(index);
+	}
 }
 
 void MainWindow::saveAll()
