@@ -144,11 +144,8 @@ void ResizeHandler::resizeAccordingToChildren(QRectF& newContents, QPointF& newP
 
 	moveChildren(-childDeflectionVector);
 	newPos += childDeflectionVector;
-
-	QPointF topLeft = childDeflectionVector;
-	QPointF bottomRight = newContents.bottomRight();
-	newContents = QRectF(topLeft, bottomRight);
-	newContents.moveTo(0, 0);
+	newContents.setWidth(newContents.width() - childDeflectionVector.x());
+	newContents.setHeight(newContents.height() - childDeflectionVector.y());
 
 	expandByChildren(newContents);
 }
@@ -209,7 +206,7 @@ void ResizeHandler::expandByChildren(QRectF& contents) const
 	foreach (const QGraphicsItem* const childItem, mResizingNode->childItems()) {
 		QRectF curChildItemBoundingRect = childBoundingRect(childItem, contents);
 
-		if (curChildItemBoundingRect.width() == 0 ||curChildItemBoundingRect.height() == 0) {
+		if (curChildItemBoundingRect.width() == 0 || curChildItemBoundingRect.height() == 0) {
 			continue;
 		}
 
