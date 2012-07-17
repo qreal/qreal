@@ -145,23 +145,29 @@ private:
 		BottomRight
 	};
 
-	/// Resizes node trying to use newContents as new shape
-	/// of node (ignoring newContents position) and to move
-	/// node to newPos.
-	/// These parameters are corrected by child configuration
-	/// in most cases.
-	/// @param newContents Recommendation for new shape of node.
-	/// @param newPos Recommendation for new position of node.
+	/** 
+	 * Resizes node trying to use newContents as new shape
+	 * of node (ignoring newContents position) and to move
+	 * node to newPos.
+	 * These parameters are corrected by child configuration
+	 * in most cases.
+	 * @param newContents Recommendation for new shape of node.
+	 * @param newPos Recommendation for new position of node.
+	 */
 	void resize(QRectF newContents, QPointF newPos);
 
-	/// Calls resize(QRectF newContents, QPointF newPos) with
-	/// newPos equals to current position of node.
-	/// @param newContents Recommendation for new shape of node.
+	/**
+	 * Calls resize(QRectF newContents, QPointF newPos) with
+	 * newPos equals to current position of node.
+	 * @param newContents Recommendation for new shape of node.
+	 */
 	void resize(QRectF newContents);
 
-	/// Calls resize(QRectF newContents, QPointF newPos) with
-	/// newPos equals to current position of node and
-	/// newContents equals to current shape (mContents).
+	/**
+	 * Calls resize(QRectF newContents, QPointF newPos) with
+	 * newPos equals to current position of node and
+	 * newContents equals to current shape (mContents).
+	 */
 	void resize();
 
 	void disconnectEdges();
