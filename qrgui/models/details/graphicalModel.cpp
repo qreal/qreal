@@ -159,6 +159,33 @@ QVariant GraphicalModel::data(const QModelIndex &index, int role) const
 	}
 }
 
+QMimeData* GraphicalModel::mimeData(QModelIndexList const &indexes) const
+{
+	QByteArray data;
+	DragFrom dragFrom = fromGraphicalModel;
+	QDataStream stream(&data, QIODevice::WriteOnly);
+	foreach (QModelIndex index, indexes) {
+		if (index.isValid()) {
+			AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
+			stream << item->id().toString();
+			stream << QString();
+			stream << mApi.property(static_cast<GraphicalModelItem *>(item)->logicalId(), "name").toString();
+			stream << QPointF();
+			stream << dragFrom;
+		} else {
+			stream << Id::rootId().toString();
+			stream << QString();
+			stream << QString();
+			stream << QPointF();
+			stream << dragFrom;
+		}
+	}
+
+	QMimeData *mimeData = new QMimeData();
+	mimeData->setData(DEFAULT_MIME_TYPE, data);
+	return mimeData;
+}
+
 bool GraphicalModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
 	if (index.isValid()) {

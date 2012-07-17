@@ -3,6 +3,12 @@
 #include "ids.h"
 #include "roles.h"
 
+enum DragFrom {
+	fromLogicalModel = 1,
+	fromGraphicalModel = 2,
+	fromPalette = 3
+};
+
 namespace qReal {
 
 	const char ID_PATH_DIVIDER = '#';

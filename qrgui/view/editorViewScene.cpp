@@ -384,12 +384,12 @@ qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scen
 	QString pathToItem = Id::rootId().toString();
 	QString name = "(" + mWindow->manager()->friendlyName(typeId) + ")";
 	QPointF pos = QPointF(0, 0);
-	bool isFromLogicalModel = false;
+	DragFrom dragFrom = fromLogicalModel;
 	stream << uuid;
 	stream << pathToItem;
 	stream << name;
 	stream << pos;
-	stream << isFromLogicalModel;
+	stream << dragFrom;
 
 	mimeData->setData(mimeType, data);
 	createElement(mimeData, scenePos, searchForParents);
@@ -407,12 +407,14 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	QString pathToItem = "";
 	QString name = "";
 	QPointF pos;
-	bool isFromLogicalModel = false;
+	DragFrom dragFrom = fromLogicalModel;
+	int dragFromInt = 0;
 	in_stream >> uuid;
 	in_stream >> pathToItem;
 	in_stream >> name;
 	in_stream >> pos;
-	in_stream >> isFromLogicalModel;
+	in_stream >> dragFromInt;
+	dragFrom = static_cast<DragFrom>(dragFromInt);
 
 	Element *newParent = NULL;
 	Element *e = NULL;
@@ -454,9 +456,9 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	Id parentId = newParent ? newParent->id() : mMVIface->rootId();
 
 	//inserting new node into edge
-	Id insertedNodeId = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
+	Id insertedNodeId = mMVIface->graphicalAssistApi()->createElement(parentId, id, dragFrom, name, position);
 	if (dynamic_cast<NodeElement*>(e)) {
-		insertNodeIntoEdge(insertedNodeId, parentId, isFromLogicalModel, scenePos);
+		insertNodeIntoEdge(insertedNodeId, parentId, dragFrom, scenePos);
 	}
 
 	NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
@@ -474,7 +476,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	emit elementCreated(id);
 }
 
-void EditorViewScene::insertNodeIntoEdge(qReal::Id const &insertedNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos)
+void EditorViewScene::insertNodeIntoEdge(qReal::Id const &insertedNodeId, qReal::Id const &parentId, DragFrom dragFrom,QPointF const &scenePos)
 {
 	foreach (QGraphicsItem *item, items(scenePos)) {
 		EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
@@ -488,7 +490,7 @@ void EditorViewScene::insertNodeIntoEdge(qReal::Id const &insertedNodeId, qReal:
 				Id const newEdge(edge->id().editor(), edge->id().diagram(), edge->id().element(), QUuid::createUuid().toString());
 				Id realParentId = (parentId == Id::rootId()) ? mMVIface->rootId() : parentId;
 
-				mMVIface->graphicalAssistApi()->createElement(realParentId, newEdge, isFromLogicalModel, "flow", scenePos);
+				mMVIface->graphicalAssistApi()->createElement(realParentId, newEdge, dragFrom, "flow", scenePos);
 				mMVIface->graphicalAssistApi()->setFrom(newEdge, insertedNodeId);
 				mMVIface->graphicalAssistApi()->setTo(newEdge, previouslyConnectedTo->id());
 
@@ -643,7 +645,7 @@ NodeElement *EditorViewScene::pasteGraphicalCopyOfNode(NodeData const &nodeData
 {
 	QString name = mMVIface->graphicalAssistApi()->name(nodeData.id);
 
-	Id newId = mMVIface->graphicalAssistApi()->createElement(rootItemId(), nodeData.logicalId, true, name, newPos);
+	Id newId = mMVIface->graphicalAssistApi()->createElement(rootItemId(), nodeData.logicalId, fromLogicalModel, name, newPos);
 	NodeElement *newNode = dynamic_cast<NodeElement *>(mainWindow()->manager()->graphicalObject(newId));
 
 	newNode->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());
@@ -702,7 +704,7 @@ EdgeElement *EditorViewScene::pasteGraphicalCopyOfEdge(EdgeData const &edgeData)
 	QString name = mMVIface->graphicalAssistApi()->name(edgeData.id);
 
 	Id newId = mMVIface->graphicalAssistApi()->createElement(
-			rootItemId(), edgeData.logicalId, true, name, edgeData.pos);
+			rootItemId(), edgeData.logicalId, fromLogicalModel, name, edgeData.pos);
 
 	EdgeElement *newEdge = dynamic_cast<EdgeElement *>(mainWindow()->manager()->graphicalObject(newId));
 	newEdge->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());

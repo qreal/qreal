@@ -101,14 +101,14 @@ void PaletteTree::DraggableElement::mousePressEvent(QMouseEvent *event)
 	Id elementId(child->id(), QUuid::createUuid().toString());
 
 	QByteArray itemData;
-	bool isFromLogicalModel = false;
+	DragFrom dragFrom = fromPalette;
 
 	QDataStream stream(&itemData, QIODevice::WriteOnly);
 	stream << elementId.toString();  // uuid
 	stream << Id::rootId().toString();  // pathToItem
 	stream << QString("(" + child->text() + ")");
 	stream << QPointF(0, 0);
-	stream << isFromLogicalModel;
+	stream << dragFrom;
 
 	QMimeData *mimeData = new QMimeData;
 	mimeData->setData("application/x-real-uml-data", itemData);
@@ -156,7 +156,7 @@ void PaletteTree::collapse()
 
 void PaletteTree::setActiveEditor(int index)
 {
-    if (0 <= index && index < mEditorsTrees.count()) {
+	if (0 <= index && index < mEditorsTrees.count()) {
 		mCurrentEditor = index;
 		mTree->hide();
 		mTree = mEditorsTrees[index];

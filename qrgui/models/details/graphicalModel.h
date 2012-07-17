@@ -28,6 +28,7 @@ public:
 	void updateElements(Id const &logicalId, QString const &name);
 	void addElementToModel(Id const &parent, Id const &id,Id const &logicalId, QString const &name, QPointF const &position);
 	virtual QVariant data(const QModelIndex &index, int role) const;
+	virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
 	virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
 	qrRepo::GraphicalRepoApi const &api() const;

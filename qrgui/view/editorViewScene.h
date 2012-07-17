@@ -69,7 +69,7 @@ public:
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
-	void insertNodeIntoEdge(const qReal::Id &insertedNodeId, const qReal::Id &newParent, bool isFromLogicalModel,QPointF const &scenePos);
+	void insertNodeIntoEdge(const qReal::Id &insertedNodeId, const qReal::Id &newParent, DragFrom dragFrom, QPointF const &scenePos);
 
 public slots:
 	qReal::Id createElement(const QString &type);

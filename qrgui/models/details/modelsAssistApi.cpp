@@ -1,5 +1,4 @@
 #include "modelsAssistApi.h"
-#include "modelsImplementation/abstractModel.h"
 
 using namespace qReal;
 using namespace models;
@@ -16,12 +15,14 @@ EditorManager const &ModelsAssistApi::editorManager() const
 	return mEditorManager;
 }
 
-Id ModelsAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
+Id ModelsAssistApi::createElement(Id const &parent, Id const &id, DragFrom dragFrom, QString const &name, QPointF const &position)
 {
 	Q_ASSERT(parent.idSize() == 4);
+	if (dragFrom == fromGraphicalModel)
+		return Id::rootId();
 	Id logicalId = Id::rootId();
 	Id newId = id;
-	if (isFromLogicalModel) {
+	if (dragFrom == fromLogicalModel) {
 		logicalId = id;
 		newId = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
 	}

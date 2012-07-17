@@ -56,9 +56,9 @@ Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &type)
 	return newElementId;
 }
 
-Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
+Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id, DragFrom dragFrom, QString const &name, QPointF const &position)
 {
-	return mModelsAssistApi.createElement(parent, id, isFromLogicalModel, name, position);
+	return mModelsAssistApi.createElement(parent, id, dragFrom, name, position);
 }
 
 Id GraphicalModelAssistApi::copyElement(Id const &source)
