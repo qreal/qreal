@@ -45,7 +45,7 @@ qreal ResizeHandler::maxChildWidth() const
 			continue;
 		}
 		
-		maxChildWidthValue = std::max(maxChildWidthValue, curItem->contents().width());
+		maxChildWidthValue = qMax(maxChildWidthValue, curItem->contents().width());
 	}
 	if (maxChildWidthValue == 0) {
 		maxChildWidthValue = mResizingNode->childrenBoundingRect().width();
@@ -98,7 +98,8 @@ void ResizeHandler::gripeIfMinimizesToChildrenContainer(QRectF& contents) const
 	}
 }
 
-void ResizeHandler::parentResizeCall() const {
+void ResizeHandler::parentResizeCall() const
+{
 	NodeElement* const parItem = dynamic_cast<NodeElement* const>(mResizingNode->parentItem());
 	if (parItem) {
 		ResizeHandler handler(parItem, parItem->elementImpl());
@@ -106,7 +107,8 @@ void ResizeHandler::parentResizeCall() const {
 	}
 }
 
-void ResizeHandler::normalizeSize(QRectF& newContents) const {
+void ResizeHandler::normalizeSize(QRectF& newContents) const
+{
 	if (newContents.width() < mMinSize) {
 		newContents.setWidth(mResizingNode->foldedContents().width());
 	}
@@ -116,7 +118,8 @@ void ResizeHandler::normalizeSize(QRectF& newContents) const {
 	}
 }
 
-void ResizeHandler::resizeAccordingToChildren(QRectF& newContents, QPointF& newPos) const {
+void ResizeHandler::resizeAccordingToChildren(QRectF& newContents, QPointF& newPos) const
+{
 	/* 
 	* AAAA!!! Who knows why is this code existed????!!!
 	*
@@ -149,10 +152,10 @@ QPointF ResizeHandler::childDeflection() const
 		}
 
 		childDeflectionVector.setX(
-				std::min(curItem->pos().x() - sizeOfForestalling, childDeflectionVector.x())
+				qMin(curItem->pos().x() - sizeOfForestalling, childDeflectionVector.x())
 				);
 		childDeflectionVector.setY(
-				std::min(curItem->pos().y() - sizeOfForestalling, childDeflectionVector.y())
+				qMin(curItem->pos().y() - sizeOfForestalling, childDeflectionVector.y())
 				);
 	}
 
@@ -172,8 +175,8 @@ void ResizeHandler::moveChildren(QPointF const &shift) const
 		curItem->moveBy(shift.x(), shift.y());
 	
 		QPointF pos(
-				std::max(curItem->pos().x(), sizeOfForestalling)
-				, std::max(curItem->pos().y(), sizeOfForestalling)
+				qMax(curItem->pos().x(), sizeOfForestalling)
+				, qMax(curItem->pos().y(), sizeOfForestalling)
 			);
 		///returns object to the parent area
 		curItem->setPos(pos);
@@ -200,22 +203,22 @@ void ResizeHandler::expandByChildren(QRectF& contents) const
 		curChildItemBoundingRect.translate(childItem->scenePos() - mResizingNode->scenePos());
 
 		contents.setLeft(
-				std::min(curChildItemBoundingRect.left() - sizeOfForestalling
+				qMin(curChildItemBoundingRect.left() - sizeOfForestalling
 				       	, contents.left())
 				);
 
 		contents.setRight(
-				std::max(curChildItemBoundingRect.right() + sizeOfForestalling
+				qMax(curChildItemBoundingRect.right() + sizeOfForestalling
 				       	, contents.right())
 				);
 
 		contents.setTop(
-				std::min(curChildItemBoundingRect.top() - sizeOfForestalling
+				qMin(curChildItemBoundingRect.top() - sizeOfForestalling
 				       	, contents.top())
 				);
 
 		contents.setBottom(
-				std::max(curChildItemBoundingRect.bottom() + sizeOfForestalling
+				qMax(curChildItemBoundingRect.bottom() + sizeOfForestalling
 				       	, contents.bottom())
 				);
 	}
