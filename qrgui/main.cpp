@@ -8,8 +8,6 @@ using namespace qReal;
 
 int main(int argc, char *argv[])
 {
-	int ERROR = trololo;
-
 	QApplication app(argc, argv);
 
 	QTranslator appTranslator;
