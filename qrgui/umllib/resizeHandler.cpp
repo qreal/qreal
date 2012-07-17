@@ -62,14 +62,14 @@ void ResizeHandler::sortChildrenIfNeeded() const
 
 	int const sizeOfForestalling = mElementImpl->sizeOfForestalling();
 	qreal curChildY = sizeOfForestalling + mTitlePadding;
-	qreal maxChildWidthValue = maxChildWidth();
+	qreal const maxChildWidthValue = maxChildWidth();
 
 	foreach (QGraphicsItem* const childItem, mResizingNode->childItems()) {
 		QGraphicsRectItem* const placeholder = mResizingNode->placeholder();
 
-		if(placeholder != NULL && childItem == placeholder){
+		if(placeholder != NULL && childItem == placeholder) {
 			QRectF const rect(sizeOfForestalling, curChildY,
-				maxChildWidthValue, placeholder->rect().height());
+					maxChildWidthValue, placeholder->rect().height());
 			placeholder->setRect(rect);
 			curChildY += placeholder->rect().height() + mChildSpacing;
 		}
@@ -80,9 +80,9 @@ void ResizeHandler::sortChildrenIfNeeded() const
 		}
 
 		qreal const necessaryWidth =
-			mElementImpl->maximizesChildren()
-			? maxChildWidthValue
-			: curItem->contents().width();
+				mElementImpl->maximizesChildren()
+				? maxChildWidthValue
+				: curItem->contents().width();
 		QRectF const rect(sizeOfForestalling, curChildY, necessaryWidth, curItem->contents().height());
 
 		curItem->setGeometry(rect);
@@ -120,6 +120,8 @@ void ResizeHandler::normalizeSize(QRectF& newContents) const
 
 void ResizeHandler::resizeAccordingToChildren(QRectF& newContents, QPointF& newPos) const
 {
+	Q_UNUSED(newPos);
+
 	/* 
 	* AAAA!!! Who knows why is this code existed????!!!
 	*
@@ -151,12 +153,8 @@ QPointF ResizeHandler::childDeflection() const
 			continue;
 		}
 
-		childDeflectionVector.setX(
-				qMin(curItem->pos().x() - sizeOfForestalling, childDeflectionVector.x())
-				);
-		childDeflectionVector.setY(
-				qMin(curItem->pos().y() - sizeOfForestalling, childDeflectionVector.y())
-				);
+		childDeflectionVector.setX(qMin(curItem->pos().x() - sizeOfForestalling, childDeflectionVector.x()));
+		childDeflectionVector.setY(qMin(curItem->pos().y() - sizeOfForestalling, childDeflectionVector.y()));
 	}
 
 	return childDeflectionVector;
@@ -174,10 +172,8 @@ void ResizeHandler::moveChildren(QPointF const &shift) const
 
 		curItem->moveBy(shift.x(), shift.y());
 	
-		QPointF pos(
-				qMax(curItem->pos().x(), sizeOfForestalling)
-				, qMax(curItem->pos().y(), sizeOfForestalling)
-			);
+		QPointF pos(qMax(curItem->pos().x(), sizeOfForestalling)
+				, qMax(curItem->pos().y(), sizeOfForestalling));
 		///returns object to the parent area
 		curItem->setPos(pos);
 	}
@@ -190,11 +186,7 @@ void ResizeHandler::expandByChildren(QRectF& contents) const
 	foreach (const QGraphicsItem* const childItem, mResizingNode->childItems()) {
 		QRectF curChildItemBoundingRect = childBoundingRect(childItem, contents);
 
-		if (
-			curChildItemBoundingRect.width() == 0
-			||
-			curChildItemBoundingRect.height() == 0
-		) {
+		if (curChildItemBoundingRect.width() == 0 ||curChildItemBoundingRect.height() == 0) {
 			continue;
 		}
 
@@ -202,25 +194,14 @@ void ResizeHandler::expandByChildren(QRectF& contents) const
 		// bad behaviour when dropping one element to another
 		curChildItemBoundingRect.translate(childItem->scenePos() - mResizingNode->scenePos());
 
-		contents.setLeft(
-				qMin(curChildItemBoundingRect.left() - sizeOfForestalling
-				       	, contents.left())
-				);
-
-		contents.setRight(
-				qMax(curChildItemBoundingRect.right() + sizeOfForestalling
-				       	, contents.right())
-				);
-
-		contents.setTop(
-				qMin(curChildItemBoundingRect.top() - sizeOfForestalling
-				       	, contents.top())
-				);
-
-		contents.setBottom(
-				qMax(curChildItemBoundingRect.bottom() + sizeOfForestalling
-				       	, contents.bottom())
-				);
+		contents.setLeft(qMin(curChildItemBoundingRect.left() - sizeOfForestalling
+				       	, contents.left()));
+		contents.setRight(qMax(curChildItemBoundingRect.right() + sizeOfForestalling
+				       	, contents.right()));
+		contents.setTop(qMin(curChildItemBoundingRect.top() - sizeOfForestalling
+				       	, contents.top()));
+		contents.setBottom(qMax(curChildItemBoundingRect.bottom() + sizeOfForestalling
+				       	, contents.bottom()));
 	}
 }
 

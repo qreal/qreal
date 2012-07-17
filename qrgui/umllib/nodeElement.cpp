@@ -292,10 +292,10 @@ void NodeElement::arrangeLinearPorts() {
 		}
 
 		//by now, edges of this port are sorted by their optimal slope.
-		int const N = sortedEdges.size();
+		int const n = sortedEdges.size();
 		int i = 0;
 		foreach (EdgeElement* edge, sortedEdges) {
-			qreal newId = lpId + (1.0 + i++) / (N + 1);
+			qreal newId = lpId + (1.0 + i++) / (n + 1);
 			//qDebug() << "-" << edge->uuid().toString() << newId;
 			edge->moveConnection(this, newId);
 		}
