@@ -46,6 +46,11 @@ QString ConcreateGenerator::constraintModelName() //i.e. pliginName
 	return "constraints" + mMetamodelName;
 }
 
+QString ConcreateGenerator::constraintNormalizerModelName()
+{
+	NameNormalizer::normalize(constraintModelName(), false);
+}
+
 QString ConcreateGenerator::constraintModelId() //i.e. pliginId
 {
 	return mConstraintsName;
@@ -285,9 +290,9 @@ void ConcreateGenerator::generate()
 	resultPluginCPP.replace("@@ifForMainCheckOfConstraintsDiagrams@@", neededStrings.ifForMainCheckPluginCPP);
 	resultPluginCPP.replace("@@constraintsPluginId@@", mConstraintsName);
 
-	saveOutputFile(QString("constraints" + mMetamodelName + ".pro"), resultPRO);
-	saveOutputFile(QString("constraints" + mMetamodelName + "Plugin.h"), resultPluginH);
-	saveOutputFile(QString("constraints" + mMetamodelName + "Plugin.cpp"), resultPluginCPP);
+	saveOutputFile(QString(constraintNormalizerModelName() + ".pro"), resultPRO);
+	saveOutputFile(QString(constraintNormalizerModelName()+ "Plugin.h"), resultPluginH);
+	saveOutputFile(QString(constraintNormalizerModelName() + "Plugin.cpp"), resultPluginCPP);
 }
 
 QString ConcreateGenerator::correctedLanguageName(Id const &diagram)

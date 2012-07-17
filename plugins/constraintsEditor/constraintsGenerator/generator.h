@@ -26,6 +26,7 @@ public:
 
 	QString constraintModelFullName();
 	QString constraintModelName();
+	QString constraintNormalizerModelName();
 	QString constraintModelId();
 
 private:
@@ -37,6 +38,7 @@ private:
 
 	QString mConstraintModelFullName;
 	QString mConstraintModelName;
+	QString mConstraintNormalizerModelName;
 	QString mConstraintModelId;
 };
 

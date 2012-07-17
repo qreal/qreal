@@ -30,6 +30,7 @@ public:
 
 	QString constraintModelFullName();
 	QString constraintModelName();//i.e. pluginName
+	QString constraintNormalizerModelName();//i.e. normalizerPluginName
 	QString constraintModelId();//i.e. pluginId
 
 private :

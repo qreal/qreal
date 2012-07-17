@@ -28,13 +28,15 @@ private:
 	/// Compiles and loads to QReal new editor plugin
 	void loadNewEditor(
 			QString const &directoryName  ///< Directory where editor was generated (containing .pro file of that constraint)
-			, QString const &pluginName /// ConstraintsPluginName
+			, QPair<QString, QString> const &pluginsNames /// ConstraintsPluginNames
 			, QString const &pluginId /// ConstraintsPluginId
 			, QString const &commandFirst  ///< qmake command
 			, QString const &commandSecond  ///< make command
 			, QString const &extension  ///< Extension of the resulting binary file with editor plugin (.dll/.so)
 			, QString const &prefix  ///< Optional OS-dependent prefix for resulting binary file (lib for linux, for example)
 			);
+
+	void deleteGeneratedFiles(QString const &directoryName, QString const &fileBaseName);//qwerty_deleteFiles
 
 	Generator mGenerator;
 
