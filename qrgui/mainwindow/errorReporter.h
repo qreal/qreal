@@ -26,8 +26,8 @@ public:
 	void addCritical(QString const &message, Id const &position = Id::rootId());
 	bool showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const;
 
-	void addUniqueError(QString const &message, Error::Severity const &severity, Id const &position);
-	void delUniqueError(QString const &message, Error::Severity const &severity, Id const &position);
+	void addUniqueError(QString const &message, Error::Severity const &severity = Error::error, Id const &position = Id::rootId());
+	void delUniqueError(QString const &message, Error::Severity const &severity = Error::error, Id const &position = Id::rootId());
 	void delAllErrorOfElement(Id const &position);
 
 	virtual void clear();
