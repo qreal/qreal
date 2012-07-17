@@ -1,7 +1,6 @@
-#include "robotsGeneratorPlugin.h"
-
 #include <QtGui/QApplication>
 
+#include "robotsGeneratorPlugin.h"
 #include "nxtOSEK/nxtOSEKRobotGenerator.h"
 
 Q_EXPORT_PLUGIN2(robotsGeneratorPlugin, robots::generator::RobotsGeneratorPlugin)
@@ -64,7 +63,7 @@ void RobotsGeneratorPlugin::generateRobotSourceCode()
 	if (mMainWindowInterface->errorReporter()->wereErrors()) {
 		return;
 	}
-
+	mMainWindowInterface->errorReporter()->clearErrors();
 	QFile file("nxt-tools/example0/example0.c");
 	QTextStream *inStream = NULL;
 	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {

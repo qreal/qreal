@@ -1,7 +1,7 @@
-﻿#include <QTextStream>
+﻿#include <QtCore/QTextStream>
 #include <cmath>
 #include <QtCore/QObject>
-#include <QDir>
+#include <QtCore/QDir>
 
 #include "../../../../qrkernel/exception/exception.h"
 #include "../../../../qrkernel/settingsManager.h"
@@ -184,17 +184,13 @@ void NxtOSEKRobotGenerator::generate()
 	QString const projectDir = "nxt-tools/" + projectName;
 	createProjectDir(projectDir);
 
-	utils::InFile templateC(":/nxtOSEK/templates/template.c");
-	templateC() >> mResultString;
+	mResultString = utils::InFile::readAll(":/nxtOSEK/templates/template.c");
 	qDebug() << mResultString;
 
-	utils::InFile readTemplateOilFile(":/nxtOSEK/templates/template.oil");
-	readTemplateOilFile() >> mResultOil;
+	mResultOil = utils::InFile::readAll(":/nxtOSEK/templates/template.oil");
 	qDebug() << mResultOil;
 
-	utils::InFile readTaskTemplateFile(":/nxtOSEK/templates/taskTemplate.oil");
-	QString resultTaskTemplate;
-	readTaskTemplateFile() >> resultTaskTemplate;
+	QString resultTaskTemplate = utils::InFile::readAll(":/nxtOSEK/templates/taskTemplate.oil");
 
 	foreach (Id const &curInitialNode, toGenerate) {
 
@@ -283,7 +279,7 @@ QByteArray NxtOSEKRobotGenerator::portValue4() const
 	return mPortValue4;
 }
 
-ErrorReporterInterface &NxtOSEKRobotGenerator::errorReporter() const
+ErrorReporterInterface &NxtOSEKRobotGenerator::errorReporter()
 {
 	return mErrorReporter;
 }
@@ -297,7 +293,6 @@ QList<QList<SmartLine> > &NxtOSEKRobotGenerator::generatedStringSet()
 {
 	return mGeneratedStringSet;
 }
-
 
 void NxtOSEKRobotGenerator::setGeneratedStringSet(int key, QList<SmartLine> const &list)
 {

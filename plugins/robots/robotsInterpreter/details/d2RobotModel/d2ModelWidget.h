@@ -102,6 +102,8 @@ private slots:
 
 signals:
 	void d2WasClosed();
+	void runButtonEnable();
+	void runButtonDisable();
 
 private:
 	void connectUiButtons();
