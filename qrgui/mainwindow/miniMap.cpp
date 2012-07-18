@@ -9,7 +9,6 @@ MiniMap::MiniMap(QWidget *parent)
 void MiniMap::init(qReal::MainWindow *window)
 {
 	mWindow = window;
-	mEditorViewRect = QRectF();
 
 	setRenderHint(QPainter::Antialiasing, true);
 
