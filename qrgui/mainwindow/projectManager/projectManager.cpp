@@ -84,6 +84,9 @@ int ProjectManager::suggestToSaveOrCancelMessage()
 
 bool ProjectManager::open(QString const &fileName)
 {
+	// 1. If Autosaver have time to save the state repository at the time of testing the sufficiency of plugins to open
+	// the project, the autosave file may become incompatible with the application. This will lead to a fail on the
+	// next start. 2. autosavePauser was first starts a timer of Autosaver
 	Autosaver::Pauser autosavePauser = mAutosaver->pauser();
 
 	if (!fileName.isEmpty() && !saveFileExists(fileName)) {
@@ -118,10 +121,16 @@ bool ProjectManager::suggestToimport()
 
 bool ProjectManager::import(QString const &fileName)
 {
-	if (!QFile(fileName).exists()) {
+	if (fileName.isEmpty()) {
 		return false;
 	}
-	mMainWindow->models()->repoControlApi().importFromDisk(fileName);
+	QString currentSaveFilePath = saveFilePath();
+	if (!open(fileName)) {
+		return open(currentSaveFilePath);
+	}
+	// In the hope that while the user selects a file nobody substitute for the current project with project, which
+	// has diagrams for which there are no plugins
+	mMainWindow->models()->repoControlApi().importFromDisk(currentSaveFilePath);
 	mMainWindow->models()->reinit();
 	return true;
 }
