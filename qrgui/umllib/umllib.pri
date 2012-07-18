@@ -11,6 +11,8 @@ HEADERS += umllib/edgeElement.h \
 	umllib/serializationData.h \
 	umllib/layout/abstractLayoutHelper.h \
 	umllib/layout/graph.h \
+	umllib/layout/gvizNeatoLayoutHelper.h \
+	umllib/layout/gvizDotLayoutHelper.h \
 
 SOURCES += umllib/edgeElement.cpp \
 	umllib/element.cpp \
@@ -24,18 +26,9 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/embedded/linkers/embeddedLinkers.cpp \
 	umllib/serializationData.cpp \
 	umllib/layout/graph.cpp \
+	umllib/layout/gvizNeatoLayoutHelper.cpp \
+	umllib/layout/gvizDotLayoutHelper.cpp \
 
-isEmpty(NO_GRAPHVIZ) {
-	HEADERS += \
-		umllib/layout/gvizNeatoLayoutHelper.h \
-		umllib/layout/gvizDotLayoutHelper.h \
-
-	SOURCES += \
-		umllib/layout/gvizNeatoLayoutHelper.cpp \
-		umllib/layout/gvizDotLayoutHelper.cpp \
-
-
-	FORMS += \
-		umllib/layout/gvizDotLayoutHelperSettings.ui \
-		umllib/layout/gvizNeatoLayoutHelperSettings.ui \
-}
+FORMS += \
+	umllib/layout/gvizDotLayoutHelperSettings.ui \
+	umllib/layout/gvizNeatoLayoutHelperSettings.ui \

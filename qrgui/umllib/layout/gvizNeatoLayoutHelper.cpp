@@ -1,8 +1,8 @@
 #include <QtCore/QRectF>
 #include <QtCore/QPointF>
 
-#include <graphviz/gvc.h>
-#include <graphviz/graph.h>
+#include "graphviz/gvc.h"
+#include "graphviz/graph.h"
 
 #include "gvizNeatoLayoutHelper.h"
 #include "ui_gvizNeatoLayoutHelperSettings.h"
@@ -30,15 +30,28 @@ QMap<Graph::VertexId, QPointF> GvizNeatoLayoutHelper::arrange(Graph const &graph
 	QByteArray overlap = mSettingsUi->overlapBox->currentText().toAscii();
 
 	QHash<Graph::VertexId, Agnode_t *> vertexToAgnode;
-	GVC_t *gvzContext = gvContext();
+	
+	extern gvplugin_library_t gvplugin_neato_layout_LTX_library;
+	extern gvplugin_library_t gvplugin_core_LTX_library;
+
+	lt_symlist_t ltPreloadedSymbols[] =
+	{
+		{ "gvplugin_neato_layout_LTX_library", &gvplugin_neato_layout_LTX_library }
+		, { "gvplugin_core_LTX_library", &gvplugin_core_LTX_library }
+		, { 0, 0 }
+	};
+
+	GVC_t *gvzContext = gvContextPlugins(ltPreloadedSymbols, 1);
+
 	Agraph_t *aggraph = agopen("", AGDIGRAPH);
+
 	agraphattr(aggraph, "overlap", overlap.data());
 	agraphattr(aggraph, "normalize", "true");
 	agraphattr(aggraph, "mode", mode.data());
 	agraphattr(aggraph, "sep", sep.data());
 	agraphattr(aggraph, "splines", "false");
 
-	foreach (Graph::VertexId const &vertex, graph.getVertices()) {
+	foreach (Graph::VertexId const &vertex, graph.vertices()) {
 		QString const number = QString::number(vertex);
 		Agnode_t *node = agnode(aggraph, number.toAscii().data());
 		if (graphGeometry.contains(vertex)) {
@@ -64,8 +77,8 @@ QMap<Graph::VertexId, QPointF> GvizNeatoLayoutHelper::arrange(Graph const &graph
 		vertexToAgnode[vertex] = node;
 	}
 
-	foreach (Graph::EdgeId const &edgeId, graph.getEdges()) {
-		QPair<Graph::VertexId, Graph::VertexId> const adjVertices = graph.getAdjacentVertices(edgeId);
+	foreach (Graph::EdgeId const &edgeId, graph.edges()) {
+		QPair<Graph::VertexId, Graph::VertexId> const adjVertices = graph.adjacentVertices(edgeId);
 		Agedge_t *edge = agedge(aggraph, vertexToAgnode[adjVertices.first], vertexToAgnode[adjVertices.second]);
 		Q_UNUSED(edge);
 	}
@@ -74,7 +87,7 @@ QMap<Graph::VertexId, QPointF> GvizNeatoLayoutHelper::arrange(Graph const &graph
 	gvRender(gvzContext, aggraph, "dot", NULL);
 
 	QMap<Graph::VertexId, QPointF> positionData;
-	foreach (Graph::VertexId const &vertex, graph.getVertices()) {
+	foreach (Graph::VertexId const &vertex, graph.vertices()) {
 		Agnode_t *node = vertexToAgnode[vertex];
 		positionData[vertex] = QPointF(node->u.coord.x, node->u.coord.y);
 	}

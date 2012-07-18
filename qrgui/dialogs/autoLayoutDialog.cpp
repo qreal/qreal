@@ -18,10 +18,8 @@ AutoLayoutDialog::AutoLayoutDialog(QWidget *parent)
 	QPushButton *applyButton = mUi->buttonBox->button(QDialogButtonBox::Apply);
 	connect(applyButton, SIGNAL(clicked()), this, SLOT(prepareAndRunMethod()));
 
-#ifdef GRAPHVIZ_INSTALLED
 	addLayoutHelper(new GvizDotLayoutHelper());
 	addLayoutHelper(new GvizNeatoLayoutHelper());
-#endif
 }
 
 AutoLayoutDialog::~AutoLayoutDialog()

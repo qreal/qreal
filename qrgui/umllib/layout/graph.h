@@ -19,11 +19,11 @@ public:
 	VertexId addVertex();
 	EdgeId addEdge(VertexId from, VertexId to);
 
-	const QList<EdgeId> &getEdges() const;
-	const QList<VertexId> &getVertices() const;
+	const QList<EdgeId> &edges() const;
+	const QList<VertexId> &vertices() const;
 
-	const QList<EdgeId> &getAdjacentEdges(VertexId v) const;
-	const QPair<VertexId, VertexId> &getAdjacentVertices(EdgeId e) const;
+	const QList<EdgeId> &adjacentEdges(VertexId v) const;
+	const QPair<VertexId, VertexId> &adjacentVertices(EdgeId e) const;
 
 private:
 	QList<VertexId> mVertices;

@@ -21,22 +21,22 @@ Graph::EdgeId Graph::addEdge(VertexId from, VertexId to)
 	return edge;
 }
 
-const QList<Graph::EdgeId> &Graph::getEdges() const
+const QList<Graph::EdgeId> &Graph::edges() const
 {
 	return mEdges;
 }
 
-const QList<Graph::VertexId> &Graph::getVertices() const
+const QList<Graph::VertexId> &Graph::vertices() const
 {
 	return mVertices;
 }
 
-const QList<Graph::EdgeId> &Graph::getAdjacentEdges(VertexId v) const
+const QList<Graph::EdgeId> &Graph::adjacentEdges(VertexId v) const
 {
 	return mVertexEdges.value(v);
 }
 
-const QPair<Graph::VertexId, Graph::VertexId> &Graph::getAdjacentVertices(EdgeId e) const
+const QPair<Graph::VertexId, Graph::VertexId> &Graph::adjacentVertices(EdgeId e) const
 {
 	return mEdgeVertices.value(e);
 }

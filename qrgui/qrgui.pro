@@ -31,16 +31,14 @@ if (equals(QMAKE_CXX, "g++") : !macx) {
 
 LIBS += -L../bin -lqrrepo -lqrkernel -lqrutils #-lqrmc
 
-!system(pkg-config --exists libgvc):NO_GRAPHVIZ = TRUE
-
-isEmpty(NO_GRAPHVIZ) {
-	DEFINES += GRAPHVIZ_INSTALLED
-	LIBS += -lgvc -lgraph -lcdt
-}
+# Auto layout libs
+unix:LIBS += -L./graphvizFiles/linuxLibs
+win32:LIBS += -L./graphvizFiles/winLibs
+LIBS += -lpathplan -lgvc -lcdt -lgraph -lgvplugin_dot_layout -lgvplugin_neato_layout -lgvplugin_core
+INCLUDEPATH += ./graphvizFiles
 
 unix:DEFINES   += _TTY_POSIX_
 win32:DEFINES  += _TTY_WIN_
-
 
 # Graphical elements
 include (umllib/umllib.pri)
