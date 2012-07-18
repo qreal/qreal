@@ -116,7 +116,7 @@ MainWindow::MainWindow()
 	}
 	splashScreen.close();
 
-	mModels = new models::Models("", mEditorManager);
+	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManager);
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi()
 			, this, mFindReplaceDialog);

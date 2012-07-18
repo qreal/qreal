@@ -8,7 +8,8 @@ using namespace qrRepo;
 using namespace qrRepo::details;
 
 Client::Client(QString const &workingFile)
-	: mWorkingFile(workingFile), serializer(workingFile)
+		: mWorkingFile(workingFile)
+		, serializer(workingFile)
 {
 	init();
 	loadFromDisk();

@@ -12,6 +12,7 @@ ProjectManager::ProjectManager(MainWindow *mainWindow)
 		: QObject(mainWindow)
 		, mMainWindow(mainWindow)
 		, mAutosaver(new Autosaver(this))
+		, mSaveFilePath(mAutosaver->filePath())
 		, mUnsavedIndicator(false)
 {
 }
@@ -236,9 +237,9 @@ bool ProjectManager::suggestToSaveAs()
 bool ProjectManager::saveAs(QString const &fileName)
 {
 	QString const workingFileName = fileName;
-	if (workingFileName.isEmpty()) {
-		return false;
-	}
+//	if (workingFileName.isEmpty()) {
+//		return false;
+//	}
 	mMainWindow->models()->repoControlApi().saveTo(workingFileName);
 	mSaveFilePath = workingFileName;
 	refreshApplicationStateAfterSave();
@@ -282,4 +283,9 @@ void ProjectManager::setUnsavedIndicator(bool isUnsaved)
 void ProjectManager::reinitAutosaver()
 {
 	mAutosaver->reinit();
+}
+
+QString ProjectManager::saveFilePath()
+{
+	return mSaveFilePath;
 }
