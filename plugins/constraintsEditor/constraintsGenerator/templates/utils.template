@@ -39,12 +39,12 @@ SUBDIRS = \
 ==========
 @@returnCheckStatusOfElementInCheck@@
 	if (element.element() == "@@elementName@@") {
-		return check@@elementName@@(element, logicalApi);
+		checkings.append(check@@elementName@@(element, logicalApi));
 	}
 ==========
 @@returnCheckStatusOfElementByMetaTypeInCheck@@
 	if(isNodeOrEdge == qReal::EditorManagerInterface::@@metaType@@) {
-		return check@@elementName@@(element, logicalApi);
+		checkings.append(check@@elementName@@(element, logicalApi));
 	}
 ==========
 @@countOptionalCheckStatusOfElemet@@

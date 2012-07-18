@@ -101,7 +101,7 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 	progress->setRange(0, 100);
 	progress->setValue(5);
 
-	if (!mMainWindowInterface->unloadConstraintsPlugin(pluginName, pluginId)) {
+	if (!mMainWindowInterface->unloadConstraintsPlugin(pluginName + "." + extension, pluginId)) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot unload plugin"));
 		deleteGeneratedFiles(directoryName, normalizerPluginName);
 		progress->close();
@@ -139,7 +139,5 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 void ConstraintsGeneratorPlugin::deleteGeneratedFiles(QString const &directoryName, QString const &fileBaseName)
 {
 	QFile filePro(directoryName + "/" + fileBaseName + ".pro");
-	QFile fileXml(directoryName + "/" + fileBaseName + ".xml");
 	filePro.remove();
-	fileXml.remove();
 }

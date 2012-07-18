@@ -25,6 +25,8 @@ void Generator::init(qReal::LogicalModelAssistInterface const &logicalModel
 
 void Generator::generate(qReal::Id const &metamodel)
 {
+	mErrorReporter->clear();
+	mErrorReporter->clearErrors();
 	QString outputDirPath = mLogicalModel->propertyByRoleName(metamodel, "outputDirPath").toString();
 	if (outputDirPath.isEmpty()) {
 		mErrorReporter->addCritical(tr("OutputDirPath of constraints model not found"), metamodel);
@@ -52,7 +54,6 @@ void Generator::generate(qReal::Id const &metamodel)
 		mErrorReporter->addCritical(tr("PathToQReal of constraints model not found"), metamodel);
 		return;
 	}
-
 
 	outputDirPath.replace("\\", "/");
 	ConcreateGenerator generator(templateDir, outputDirPath

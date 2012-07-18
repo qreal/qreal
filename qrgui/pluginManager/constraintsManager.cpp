@@ -46,6 +46,7 @@ ConstraintsManager::ConstraintsManager()
 bool ConstraintsManager::loadPlugin(const QString &pluginName)
 {
 	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
+	loader->load();
 	QObject *plugin = loader->instance();
 
 	if (plugin) {
@@ -60,6 +61,8 @@ bool ConstraintsManager::loadPlugin(const QString &pluginName)
 		}
 	}
 	QMessageBox::warning(0, "QReal Plugin", loader->errorString());
+	loader->unload();
+	delete loader;
 	return false;
 }
 
@@ -68,12 +71,13 @@ bool ConstraintsManager::unloadPlugin(const QString &pluginId)
 	QString pluginName = mPluginFileName[pluginId];
 	QPluginLoader *loader = mLoaders[pluginName];
 	if (loader != NULL) {
-		bool r = loader->unload();//qwerty_lsd ; don't work, why?
-		if (!(r)) {
+		if (!(loader->unload())) {
+			delete loader;
 			return false;
 		}
 		mPluginsLoaded.removeAll(pluginId);
 		mPluginFileName.remove(pluginId);
+		delete loader;
 		return true;
 	}
 	return false;
