@@ -59,6 +59,7 @@ void MiniMap::adjustToItems()
 
 void MiniMap::ensureVisible(QList<QRectF> region)
 {
+	setSceneRect(scene()->sceneRect());
 	foreach (QRectF rect, region) {
 		fitInView(rect, Qt::KeepAspectRatio);
 	}
@@ -117,5 +118,27 @@ void MiniMap::drawForeground(QPainter *painter, QRectF const &rect)
 	painter->setPen(Qt::yellow);
 
 	mEditorViewRect = getNewRect();
+	drawNonExistentAreas(painter, rect);
 	painter->drawRect(mEditorViewRect);
+}
+
+void MiniMap::drawNonExistentAreas(QPainter *painter, QRectF const &rect)
+{
+	QList<QRectF> areas = getNonExistentAreas(rect);
+	foreach (QRectF area, areas) {
+		painter->fillRect(area, Qt::lightGray);
+	}
+}
+
+QList<QRectF> MiniMap::getNonExistentAreas(QRectF const &rect)
+{
+	QRectF existent = rect.intersected(sceneRect());
+
+	QList<QRectF> areas;
+	areas << QRectF(rect.topLeft(), existent.bottomLeft())
+			<< QRectF(rect.topLeft(), QPointF(rect.right(), existent.top()))
+			<< QRectF(existent.topRight(), rect.bottomRight())
+			<< QRectF(QPointF(rect.left(), existent.bottom()), rect.bottomRight());
+
+	return areas;
 }

@@ -117,7 +117,6 @@ private slots:
 	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
 	void getObjectByGesture();
 
-
 private:
 	void getLinkByGesture(NodeElement *parent, NodeElement const &child);
 	void drawGesture();

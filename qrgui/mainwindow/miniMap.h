@@ -20,9 +20,6 @@ public:
 
 	void setScene(QGraphicsScene *scene);
 
-signals:
-	void editorViewRectChanged(QRectF);
-
 public slots:
 	void adjustToItems();
 	void ensureVisible(QList<QRectF> region);
@@ -34,6 +31,8 @@ protected:
 	void mouseReleaseEvent(QMouseEvent *event);
 
 	void drawForeground(QPainter *painter, QRectF const &rect);
+	void drawNonExistentAreas(QPainter *painter, QRectF const &rect);
+	QList<QRectF> getNonExistentAreas(QRectF const &rect);
 
 private:
 	void setCurrentScene();
