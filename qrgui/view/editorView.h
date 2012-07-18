@@ -46,7 +46,7 @@ namespace qReal {
 		QPointF mMouseOldPosition;
 		bool mWheelPressed;
 		void checkGrid();
-		int zoom;
+		int mZoom;
 	};
 
 }
