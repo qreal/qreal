@@ -1,12 +1,15 @@
 #include "miniMap.h"
 
 MiniMap::MiniMap(QWidget *parent)
-	: QGraphicsView(parent)
+		: QGraphicsView(parent)
+		, mEditorView(NULL)
+		, mMode(None)
 {}
 
 void MiniMap::init(qReal::MainWindow *window)
 {
 	mWindow = window;
+	mEditorViewRect = QRectF();
 
 	setRenderHint(QPainter::Antialiasing, true);
 
@@ -17,6 +20,7 @@ void MiniMap::init(qReal::MainWindow *window)
 
 void MiniMap::changeSource(int index)
 {
+	clear();
 	if (index != -1) {
 		setCurrentScene();
 	} else {
@@ -26,12 +30,12 @@ void MiniMap::changeSource(int index)
 
 void MiniMap::setCurrentScene()
 {
-	EditorView *editorView = mWindow->getCurrentTab();
-	if (editorView == NULL) {
+	mEditorView = mWindow->getCurrentTab();
+	if (mEditorView == NULL) {
 		return;
 	}
 
-	EditorViewScene *editorViewScene = static_cast<EditorViewScene *>(editorView->scene());
+	EditorViewScene *editorViewScene = static_cast<EditorViewScene *>(mEditorView->scene());
 	if (editorViewScene->mainWindow() != NULL) {
 		setScene(editorViewScene);
 		// can affect zoom - need to change it if we make another desision about it
@@ -42,14 +46,15 @@ void MiniMap::setCurrentScene()
 void MiniMap::setScene(QGraphicsScene *scene)
 {
 	QGraphicsView::setScene(scene);
-	adjustToItems();
-	redrawEditorViewRect();
+	if (scene != NULL) {
+		adjustToItems();
+	}
 }
 
 void MiniMap::adjustToItems()
 {
-	resetTransform();
-	fitInView(scene()->itemsBoundingRect(), Qt::KeepAspectRatio);
+	setSceneRect(scene()->itemsBoundingRect());
+	fitInView(sceneRect(), Qt::KeepAspectRatio);
 }
 
 void MiniMap::ensureVisible(QList<QRectF> region)
@@ -59,7 +64,58 @@ void MiniMap::ensureVisible(QList<QRectF> region)
 	}
 }
 
-void MiniMap::redrawEditorViewRect()
+void MiniMap::clear()
 {
+	mEditorViewRect = QRectF();
+	mEditorView = NULL;
+}
 
+QRectF MiniMap::getNewRect()
+{
+	QRect visibleRect = mEditorView->viewport()->rect();
+	QRectF newRect = mEditorView->mapToScene(visibleRect).boundingRect();
+
+	newRect.setTopLeft(newRect.topLeft() - QPointF(2, 2));
+	newRect.setBottomRight(newRect.bottomRight() + QPointF(2, 2));
+
+	return newRect;
+}
+
+void MiniMap::wheelEvent(QWheelEvent *event)
+{
+	setInteractive(true);
+	QGraphicsView::wheelEvent(event);
+	setInteractive(false);
+}
+
+void MiniMap::mousePressEvent(QMouseEvent *event)
+{
+	if (mEditorView != NULL) {
+		mMode = Drag;
+		mEditorView->centerOn(mapToScene(event->pos()));
+	}
+	QGraphicsView::mousePressEvent(event);
+}
+
+void MiniMap::mouseMoveEvent(QMouseEvent *event)
+{
+	if (mEditorView != NULL && mMode == Drag) {
+		mEditorView->centerOn(mapToScene(event->pos()));
+	}
+	QGraphicsView::mouseMoveEvent(event);
+}
+
+void MiniMap::mouseReleaseEvent(QMouseEvent *event)
+{
+	mMode = None;
+	QGraphicsView::mouseReleaseEvent(event);
+}
+
+void MiniMap::drawForeground(QPainter *painter, QRectF const &rect)
+{
+	QGraphicsView::drawForeground(painter, rect);
+	painter->setPen(Qt::yellow);
+
+	mEditorViewRect = getNewRect();
+	painter->drawRect(mEditorViewRect);
 }

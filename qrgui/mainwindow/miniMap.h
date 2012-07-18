@@ -11,6 +11,8 @@ class MiniMap : public QGraphicsView
 {
 	Q_OBJECT
 public:
+	enum Mode { None, Drag };
+
 	explicit MiniMap(QWidget *parent = 0);
 
 	void init(qReal::MainWindow *window);
@@ -23,13 +25,27 @@ signals:
 
 public slots:
 	void adjustToItems();
-	void redrawEditorViewRect();
 	void ensureVisible(QList<QRectF> region);
+
+protected:
+	void wheelEvent(QWheelEvent *event);
+	void mousePressEvent(QMouseEvent *event);
+	void mouseMoveEvent(QMouseEvent *event);
+	void mouseReleaseEvent(QMouseEvent *event);
+
+	void drawForeground(QPainter *painter, QRectF const &rect);
 
 private:
 	void setCurrentScene();
+	void clear();
+	QRectF getNewRect();
+
+	bool isInEditorRect(QPoint const &point);
 
 	qReal::MainWindow *mWindow;
 
-	QRectF editorViewRect;
+	EditorView *mEditorView;
+	QRectF mEditorViewRect;
+
+	Mode mMode;
 };
