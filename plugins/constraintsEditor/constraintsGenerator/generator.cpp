@@ -23,6 +23,17 @@ void Generator::init(qReal::LogicalModelAssistInterface const &logicalModel
 	mErrorReporter = &errorReporter;
 }
 
+bool Generator::isCorrectedName(QString const &name)
+{
+	QRegExp patten;
+	patten.setPattern("[A-Za-z]+([A-Za-z_0-9]*)");
+	if (patten.exactMatch(name)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 void Generator::generate(qReal::Id const &metamodel)
 {
 	mErrorReporter->clear();
@@ -37,6 +48,9 @@ void Generator::generate(qReal::Id const &metamodel)
 	QString constraintMetamodelName = mLogicalModel->logicalRepoApi().name(metamodel);
 	if (constraintMetamodelName.isEmpty() || (constraintMetamodelName.compare("(Metamodel Constraints)") == 0) ) {
 		mErrorReporter->addCritical(tr("Name of constraints model not found.\n"), metamodel);
+		return;
+	} else if (!isCorrectedName(constraintMetamodelName)) {
+		mErrorReporter->addCritical(tr("Name of constraints model is not correct.\n"), metamodel);
 		return;
 	}
 
@@ -58,7 +72,7 @@ void Generator::generate(qReal::Id const &metamodel)
 	outputDirPath.replace("\\", "/");
 	ConcreateGenerator generator(templateDir, outputDirPath
 								 , pathToQReal, *mLogicalModel, *mErrorReporter
-								, metamodelName, constraintMetamodelName);
+								 , metamodelName, constraintMetamodelName);
 	generator.generate();
 	mConstraintModelFullName = generator.constraintModelFullName();
 	mConstraintModelName = generator.constraintModelName();

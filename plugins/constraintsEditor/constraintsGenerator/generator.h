@@ -30,6 +30,8 @@ public:
 	QString constraintModelId();
 
 private:
+	bool isCorrectedName(QString const &name);
+
 	/// Logical model, from which generator takes all information.
 	qReal::LogicalModelAssistInterface const *mLogicalModel;
 
