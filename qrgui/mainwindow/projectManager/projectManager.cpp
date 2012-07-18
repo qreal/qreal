@@ -240,6 +240,9 @@ void ProjectManager::close()
 
 void ProjectManager::save()
 {
+	// Do not change the method to saveAll - in the current implementation, an empty project in the repository is
+	// created to initialize the file name with an empty string, which allows the internal state of the file
+	// name = "" Attempt to save the project in this case result in trash
 	mMainWindow->models()->repoControlApi().saveTo(mSaveFilePath);
 	refreshApplicationStateAfterSave();
 }
