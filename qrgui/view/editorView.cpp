@@ -18,6 +18,7 @@ EditorView::EditorView(QWidget *parent)
 	connect(mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
 
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+	setResizeAnchor(QGraphicsView::AnchorUnderMouse);
 
 	mMVIface = new EditorViewMViface(this, mScene);
 	setScene(mScene);
@@ -55,6 +56,7 @@ void EditorView::zoomIn()
 {
 	if (mWheelPressed)
 		return;
+	setSceneRect(mScene->sceneRect());
 	double zoomFactor = static_cast<double>(SettingsManager::value("zoomFactor").toInt()) / 10 + 1;
 	scale(zoomFactor, zoomFactor);
 	if (SettingsManager::value("ShowGrid").toBool()) {
@@ -67,6 +69,7 @@ void EditorView::zoomOut()
 {
 	if (mWheelPressed)
 		return;
+	setSceneRect(mScene->sceneRect());
 	double zoomFactor = 1 / (static_cast<double>(SettingsManager::value("zoomFactor").toInt()) / 10 + 1);
 	scale(zoomFactor, zoomFactor);
 	if (SettingsManager::value("ShowGrid").toBool()) {

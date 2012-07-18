@@ -758,25 +758,6 @@ EditorView * MainWindow::getCurrentTab()
 	return dynamic_cast<EditorView *>(mUi->tabs->currentWidget());
 }
 
-void MainWindow::changeMiniMapSource(int index)
-{
-	if (index != -1) {
-		mUi->tabs->setEnabled(true);
-		EditorView *editorView = getCurrentTab();
-		setConnectActionZoomTo(mUi->tabs->currentWidget());
-
-		if (editorView != NULL && (static_cast<EditorViewScene*>(editorView->scene()))->mainWindow() != NULL) {
-			mUi->minimapView->setScene(editorView->scene());
-			getCurrentTab()->mvIface()->setModel(mModels->graphicalModel());
-			getCurrentTab()->mvIface()->setLogicalModel(mModels->logicalModel());
-			mRootIndex = editorView->mvIface()->rootIndex();
-		}
-	} else {
-		mUi->tabs->setEnabled(false);
-		mUi->minimapView->setScene(0);;
-	}
-}
-
 void qReal::MainWindow::closeTab(int index)
 {
 	QWidget *widget = mUi->tabs->widget(index);
@@ -1052,7 +1033,8 @@ void MainWindow::setShortcuts(EditorView * const tab)
 
 void MainWindow::currentTabChanged(int newIndex)
 {
-	changeMiniMapSource(newIndex);
+	switchToTab(newIndex);
+	mUi->minimapView->changeSource(newIndex);
 
 	bool const isEditorTab = getCurrentTab() != NULL;
 
@@ -1067,6 +1049,24 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->actionZoom_Out->setEnabled(isEditorTab);
 
 	emit rootDiagramChanged();
+}
+
+void MainWindow::switchToTab(int index)
+{
+	if (index != -1) {
+		mUi->tabs->setEnabled(true);
+		EditorView *editorView = getCurrentTab();
+		setConnectActionZoomTo(mUi->tabs->currentWidget());
+
+		if (editorView != NULL && (static_cast<EditorViewScene*>(editorView->scene()))->mainWindow() != NULL) {
+			getCurrentTab()->mvIface()->setModel(mModels->graphicalModel());
+			getCurrentTab()->mvIface()->setLogicalModel(mModels->logicalModel());
+			mRootIndex = editorView->mvIface()->rootIndex();
+		}
+	} else {
+		mUi->tabs->setEnabled(false);
+	}
+
 }
 
 void MainWindow::updateTabName(Id const &id)
@@ -1483,9 +1483,10 @@ void MainWindow::initToolManager()
 
 void MainWindow::initMiniMap()
 {
-	connect(mUi->minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));
-	mUi->minimapView->setRenderHint(QPainter::Antialiasing, true);
-	adjustMinimapZoom(mUi->minimapZoomSlider->value());
+//	connect(mUi->minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));
+//	mUi->minimapView->setRenderHint(QPainter::Antialiasing, true);
+//	adjustMinimapZoom(mUi->minimapZoomSlider->value());
+	mUi->minimapView->init(this);
 }
 
 void MainWindow::initTabs()
