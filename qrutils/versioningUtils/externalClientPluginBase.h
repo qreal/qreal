@@ -14,12 +14,14 @@ namespace versioning
 /// in some external process
 class QRUTILS_EXPORT ExternalClientPluginBase : public QObject, public VersioningPluginInterface
 {
+	Q_OBJECT
+
 public:
 	void setWorkingCopyManager(qrRepo::versioning::WorkingCopyManagementInterface *workingCopyManager);
 
 	virtual void init(PluginConfigurator const &configurator);
 
-	/// Starts process which executable`s path specified in by setPathToClient() method
+	/// Starts process which executable`s path specified by setPathToClient() method and waits for its finish.
 	/// @param args Startup arguments
 	/// @param needPreparation Specifies if working copy must be fetchced from current project
 	/// @param needPreparation Specifies if changes in working copy must be registered in current project
