@@ -7,10 +7,6 @@
 #include <QString>
 #include "../../mainwindow/gesturesPainterInterface.h"
 
-int const minBoarder = -1000;
-QColor const gestColor(Qt::blue);
-short const gestWidth(3);
-
 namespace Ui {
 	class GesturesWidget;
 }
@@ -33,7 +29,10 @@ private:
 	Ui::GesturesWidget *ui;
 	QGraphicsScene *mGestureScene;
 	PathVector mPaths;
-	static const int pointsAtSegment = 5;
+	QColor gestColor;
+	static int const pointsAtSegment = 5;
 	int mCurrentPointNumber;
 	static int coord(int previous, int next, int part);
+	static short const minBoarder = -1000;
+	static short const gestWidth = 3;
 };

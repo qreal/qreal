@@ -32,7 +32,7 @@ void MouseMovementManager::setGesturesPainter(GesturesPainterInterface *gestures
 void MouseMovementManager::drawIdealPath()
 {
 	QString currentElement = mGesturesPaintMan->currentElement();
-	foreach (qReal::Id element, mElements) {
+	foreach (qReal::Id const &element, mElements) {
 		if (element.element() == currentElement) {
 			QString paths = mEditorManager->mouseGesture(element);
 			mGesturesPaintMan->draw(stringToPath(paths));
