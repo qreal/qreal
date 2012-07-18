@@ -47,17 +47,21 @@ QMap<Graph::VertexId, QPointF> GvizDotLayoutHelper::arrange(Graph const &graph
 		break;
 	}
 
-	extern gvplugin_library_t gvplugin_dot_layout_LTX_library;
-	extern gvplugin_library_t gvplugin_core_LTX_library;
+	#ifndef Q_OS_WIN32
+		extern gvplugin_library_t gvplugin_dot_layout_LTX_library;
+		extern gvplugin_library_t gvplugin_core_LTX_library;
 
-	lt_symlist_t ltPreloadedSymbols[] =
-	{
-		{ "gvplugin_dot_layout_LTX_library", &gvplugin_dot_layout_LTX_library }
-		, { "gvplugin_core_LTX_library", &gvplugin_core_LTX_library }
-		, { 0, 0 }
-	};
+		lt_symlist_t ltPreloadedSymbols[] =
+		{
+			{ "gvplugin_dot_layout_LTX_library", &gvplugin_dot_layout_LTX_library }
+			, { "gvplugin_core_LTX_library", &gvplugin_core_LTX_library }
+			, { 0, 0 }
+		};
 
-	GVC_t *gvzContext = gvContextPlugins(ltPreloadedSymbols, 1);
+		GVC_t *gvzContext = gvContextPlugins(ltPreloadedSymbols, 1);
+	#else
+		GVC_t *gvzContext = gvContext();
+	#endif
 
 	Agraph_t *aggraph = agopen("", AGDIGRAPH);
 

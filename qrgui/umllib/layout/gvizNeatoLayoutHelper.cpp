@@ -30,18 +30,22 @@ QMap<Graph::VertexId, QPointF> GvizNeatoLayoutHelper::arrange(Graph const &graph
 	QByteArray overlap = mSettingsUi->overlapBox->currentText().toAscii();
 
 	QHash<Graph::VertexId, Agnode_t *> vertexToAgnode;
-	
-	extern gvplugin_library_t gvplugin_neato_layout_LTX_library;
-	extern gvplugin_library_t gvplugin_core_LTX_library;
 
-	lt_symlist_t ltPreloadedSymbols[] =
-	{
-		{ "gvplugin_neato_layout_LTX_library", &gvplugin_neato_layout_LTX_library }
-		, { "gvplugin_core_LTX_library", &gvplugin_core_LTX_library }
-		, { 0, 0 }
-	};
+	#ifndef Q_OS_WIN32
+		extern gvplugin_library_t gvplugin_neato_layout_LTX_library;
+		extern gvplugin_library_t gvplugin_core_LTX_library;
 
-	GVC_t *gvzContext = gvContextPlugins(ltPreloadedSymbols, 1);
+		lt_symlist_t ltPreloadedSymbols[] =
+		{
+			{ "gvplugin_neato_layout_LTX_library", &gvplugin_neato_layout_LTX_library }
+			, { "gvplugin_core_LTX_library", &gvplugin_core_LTX_library }
+			, { 0, 0 }
+		};
+
+		GVC_t *gvzContext = gvContextPlugins(ltPreloadedSymbols, 1);
+	#else
+		GVC_t *gvzContext = gvContext();
+	#endif
 
 	Agraph_t *aggraph = agopen("", AGDIGRAPH);
 
