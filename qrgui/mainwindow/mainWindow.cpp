@@ -366,6 +366,13 @@ void MainWindow::loadPlugins()
 	mUi->paletteToolbox->initDone();
 }
 
+void MainWindow::loadMetamodel()
+{
+	//mUi->paletteToolbox->deleteDiagramType();
+	//mUi->paletteToolbox->createPalette();
+	loadPlugins();
+}
+
 void MainWindow::adjustMinimapZoom(int zoom)
 {
 	mUi->minimapView->resetMatrix();
@@ -1562,7 +1569,6 @@ void MainWindow::createDiagram(QString const &idString)
 		QString fileName = getWorkingFile(tr("Select file with metamodel to open"), false);
 		if (open(fileName)) {
 			mDialog.close();
-			mModels->repoControlApi().printDebug();
 			mEditorManagerProxy->setProxyManager(new InterpreterEditorManager(fileName));
 			QStringList interpreterDiagramsList;
 			foreach(Id editor, mEditorManagerProxy->editors()) {
@@ -1576,7 +1582,8 @@ void MainWindow::createDiagram(QString const &idString)
 			foreach(QString interpreterIdString, interpreterDiagramsList) {
 				mModels->repoControlApi().exterminate();
 				mModels->reinit();
-				mModels->repoControlApi().printDebug();
+				//mModels->repoControlApi().printDebug();
+				loadMetamodel();
 				Id const created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), Id::loadFromString(interpreterIdString));
 				QModelIndex const index = mModels->graphicalModelAssistApi().indexById(created);
 				mUi->graphicalModelExplorer->setCurrentIndex(index);
@@ -1586,6 +1593,7 @@ void MainWindow::createDiagram(QString const &idString)
 				openNewTab(index);
 			}
 		} else {
+			mEditorManagerProxy->setProxyManager(new EditorManager());
 			mDialog.diagramsListSetCurrentRow(0);
 			mDialog.show();
 		}

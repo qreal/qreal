@@ -217,6 +217,7 @@ private:
 			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
 
 	void loadPlugins();
+	void loadMetamodel();
 
 	QListWidget* createSaveListWidget();
 	void suggestToCreateDiagram();

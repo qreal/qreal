@@ -62,15 +62,30 @@ IdList InterpreterEditorManager::elements(const Id &diagram) const
 
 QString InterpreterEditorManager::friendlyName(const Id &id) const
 {
-	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values())
-		foreach (Id editor,  repo->elementsByType("MetamodelDiagram"))
-			if (id.editor() == repo->name(editor) && repo->isLogicalElement(editor))
-				foreach (Id editorChild, repo->children(editor))
-					if (editorChild.element() == "MetaEditorDiagramNode")
-						if(id.diagram() == repo->name(editorChild))
-							foreach (Id diagramChild, repo->children(editorChild))
-								if(id.element() == repo->name(diagramChild))
-									return repo->stringProperty(diagramChild, "displayedName");
+	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
+		foreach (Id editor,  repo->elementsByType("MetamodelDiagram")) {
+			if (id.editor() == repo->name(editor) && repo->isLogicalElement(editor)) {
+				if (id.diagram() != "") {
+					foreach (Id editorChild, repo->children(editor)) {
+						if (editorChild.element() == "MetaEditorDiagramNode") {
+							if(id.diagram() == repo->name(editorChild)) {
+								if (id.element() != "") {
+									foreach (Id diagramChild, repo->children(editorChild)) {
+										if(id.element() == repo->name(diagramChild))
+											return repo->stringProperty(diagramChild, "displayedName");
+									}
+								} else {
+									return repo->stringProperty(editorChild, "displayedName");
+								}
+							}
+						}
+					}
+				} else {
+					return repo->stringProperty(editor, "displayedName");
+				}
+			}
+		}
+	}
 	return "";
 }
 
