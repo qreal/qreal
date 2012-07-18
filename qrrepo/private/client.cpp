@@ -476,9 +476,9 @@ void Client::exterminate()
 
 void Client::open(QString const &saveFile)
 {
-	serializer.setWorkingFile(saveFile);
 	mObjects.clear();
 	init();
+	serializer.setWorkingFile(saveFile);
 	loadFromDisk();
 }
 

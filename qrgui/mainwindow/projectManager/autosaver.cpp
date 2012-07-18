@@ -12,7 +12,6 @@ Autosaver::Autosaver(ProjectManager *projectManager)
 	, mTimer(new QTimer(this))
 {
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(save()));
-	reinit();
 }
 
 void Autosaver::reinit()
@@ -22,6 +21,11 @@ void Autosaver::reinit()
 	} else {
 		mTimer->stop();
 	}
+}
+
+void Autosaver::stop()
+{
+	mTimer->stop();
 }
 
 uint Autosaver::interval()
@@ -35,9 +39,7 @@ uint Autosaver::interval()
 
 void Autosaver::save()
 {
-	if (!mProjectManager->save()) {
-		mProjectManager->saveAs(filePath());
-	}
+	mProjectManager->save();
 }
 
 QString Autosaver::filePath()
@@ -53,4 +55,20 @@ QString Autosaver::filePath()
 	}
 	result += "/" + SettingsManager::value("AutosaveFileName").toString();
 	return result;
+}
+
+Autosaver::Pauser::Pauser(Autosaver *autosaver)
+		:mAutosaver(autosaver)
+{
+	autosaver->stop();
+}
+
+Autosaver::Pauser::~Pauser()
+{
+	mAutosaver->reinit();
+}
+
+Autosaver::Pauser Autosaver::pauser()
+{
+	return Pauser(this);
 }

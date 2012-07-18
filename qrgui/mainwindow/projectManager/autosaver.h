@@ -17,9 +17,21 @@ class Autosaver : public QObject
 	Q_OBJECT
 
 public:
+	class Pauser
+	{
+	public:
+		Pauser(Autosaver *autosaver);
+		~Pauser();
+
+	private:
+		Autosaver *mAutosaver;
+	};
+
 	explicit Autosaver(ProjectManager *projectManager);
 	void reinit();
+	void stop();
 	QString filePath();
+	Pauser pauser();
 
 private slots:
 	void save();
@@ -27,8 +39,8 @@ private slots:
 private:
 	uint interval();
 
-	static uint const defaultInterval = 600;
 	// if option AutosaveInterval in not specified
+	static uint const defaultInterval = 600;
 
 	ProjectManager *mProjectManager;
 	QTimer *mTimer;

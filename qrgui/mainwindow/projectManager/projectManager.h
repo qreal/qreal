@@ -33,8 +33,8 @@ public slots:
 
 	void close();
 
-	/// Save the project in the file, if it specified. Otherwise return false only.
-	bool save();
+	/// Save the project in the user file, if it specified. Otherwise save to autosave file
+	void save();
 	/// Save the project in the file with the name fileName, if it not empty (fileName). Otherwise return false only.
 	bool saveAs(const QString &fileName);
 	/// Similarly saveAs(...), but offers the user specified file location (by a dialog)
@@ -52,6 +52,7 @@ public:
 	void setUnsavedIndicator(bool isUnsaved);
 	void reinitAutosaver();
 	QString saveFilePath();
+	void setSaveFilePath(QString const &filePath = "");
 
 private:
 	bool import(const QString &fileName);
@@ -60,6 +61,7 @@ private:
 	QString missingPluginNames();
 
 	void refreshWindowTitleAccordingToSaveFile();
+	void refreshTitleModifiedSuffix();
 	void refreshApplicationStateAfterSave();
 	void refreshApplicationStateAfterOpen();
 	int suggestToSaveOrCancelMessage();
@@ -68,8 +70,8 @@ private:
 
 	MainWindow *mMainWindow;
 	Autosaver *mAutosaver;
-	QString mSaveFilePath;
 	bool mUnsavedIndicator;
+	QString mSaveFilePath;
 };
 
 }
