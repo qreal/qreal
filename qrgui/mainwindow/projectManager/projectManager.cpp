@@ -132,6 +132,7 @@ bool ProjectManager::import(QString const &fileName)
 	// has diagrams for which there are no plugins
 	mMainWindow->models()->repoControlApi().importFromDisk(currentSaveFilePath);
 	mMainWindow->models()->reinit();
+	setUnsavedIndicator(true);
 	return true;
 }
 
