@@ -1669,6 +1669,10 @@ void MainWindow::updateActiveDiagram()
 	
 void MainWindow::openAutoLayoutWindow()
 {
+	EditorView *curEditorView = getCurrentTab();
+	if (curEditorView == NULL) {
+		return;
+	}
 	EditorViewMViface *mvIface = getCurrentTab()->mvIface();
 	mAutoLayoutDialog->setMvIface(mvIface);
 	mAutoLayoutDialog->show();
