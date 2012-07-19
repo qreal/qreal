@@ -171,6 +171,8 @@ private slots:
 	void pasteOnDiagram();
 	void pasteCopyOfLogical();
 
+	void cropSceneToItems();
+
 	void closeTab(int index);
 
 	/// Closes the appropriate tab if the specified index corresponds to the diagram on one of the tabs

@@ -45,20 +45,18 @@ void MiniMap::setCurrentScene()
 void MiniMap::setScene(QGraphicsScene *scene)
 {
 	QGraphicsView::setScene(scene);
-	if (scene != NULL) {
-		adjustToItems();
-	}
+	showScene();
 }
 
-void MiniMap::adjustToItems()
+void MiniMap::showScene()
 {
-	setSceneRect(scene()->itemsBoundingRect());
-	fitInView(sceneRect(), Qt::KeepAspectRatio);
+	if (scene() != NULL) {
+		fitInView(sceneRect(), Qt::KeepAspectRatio);
+	}
 }
 
 void MiniMap::ensureVisible(QList<QRectF> region)
 {
-	setSceneRect(scene()->sceneRect());
 	foreach (QRectF rect, region) {
 		fitInView(rect, Qt::KeepAspectRatio);
 	}
@@ -109,6 +107,12 @@ void MiniMap::mouseReleaseEvent(QMouseEvent *event)
 {
 	mMode = None;
 	QGraphicsView::mouseReleaseEvent(event);
+}
+
+void MiniMap::resizeEvent(QResizeEvent *event)
+{
+	showScene();
+	QGraphicsView::resizeEvent(event);
 }
 
 void MiniMap::drawForeground(QPainter *painter, QRectF const &rect)

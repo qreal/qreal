@@ -139,7 +139,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="MiniMap" name="minimapView" native="true"/>
+      <widget class="MiniMap" name="minimapView"/>
      </item>
     </layout>
    </widget>

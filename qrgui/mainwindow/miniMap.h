@@ -29,7 +29,7 @@ public:
 
 public slots:
 	/// makes the minimap display only items of the scene
-	void adjustToItems();
+	void showScene();
 	void ensureVisible(QList<QRectF> region);
 
 protected:
@@ -37,6 +37,7 @@ protected:
 	void mousePressEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
+	void resizeEvent(QResizeEvent *event);
 
 	void drawForeground(QPainter *painter, QRectF const &rect);
 	/// painting out the areas which aren't to be painted on the minimap (not in the scene rect)

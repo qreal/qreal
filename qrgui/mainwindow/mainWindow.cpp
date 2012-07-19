@@ -166,7 +166,7 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
-	connect (mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
+	connect(mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
 
 	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)),
 			mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
@@ -1090,6 +1090,18 @@ bool MainWindow::closeTab(QModelIndex const &graphicsIndex)
 		}
 	}
 	return false;
+}
+
+void MainWindow::cropSceneToItems()
+{
+	EditorView *view = getCurrentTab();
+	if (view == NULL) {
+		return;
+	}
+	EditorViewScene *scene = dynamic_cast<EditorViewScene *>(view->scene());
+	if (scene != NULL) {
+		scene->cropToItems();
+	}
 }
 
 ListenerManager *MainWindow::listenerManager()

@@ -14,6 +14,7 @@ EditorView::EditorView(QWidget *parent)
 	setRenderHint(QPainter::Antialiasing, true);
 
 	mScene = new EditorViewScene(this);
+
 	connect(mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
 	connect(mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
 
