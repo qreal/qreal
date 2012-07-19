@@ -171,7 +171,8 @@ private slots:
 	void pasteOnDiagram();
 	void pasteCopyOfLogical();
 
-	void changeMiniMapSource(int index);
+	void cropSceneToItems();
+
 	void closeTab(int index);
 
 	/// Closes the appropriate tab if the specified index corresponds to the diagram on one of the tabs
@@ -231,6 +232,7 @@ private:
 	QString getOpenFileName(const QString &dialogWindowTitle);
 	QString getWorkingFile(QString const &dialogWindowTitle, bool save);
 
+	void switchToTab(int index);
 	int getTabIndex(const QModelIndex &index);
 
 	void initGridProperties();

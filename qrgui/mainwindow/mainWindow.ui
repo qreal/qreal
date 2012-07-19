@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>843</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -140,24 +140,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QGraphicsView" name="minimapView">
-       <property name="dragMode">
-        <enum>QGraphicsView::ScrollHandDrag</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QSlider" name="minimapZoomSlider">
-       <property name="maximum">
-        <number>50</number>
-       </property>
-       <property name="value">
-        <number>25</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
+      <widget class="MiniMap" name="minimapView"/>
      </item>
     </layout>
    </widget>
@@ -707,6 +690,11 @@
    <extends>QWidget</extends>
    <header>../view/propertyEditorView.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MiniMap</class>
+   <extends>QGraphicsView</extends>
+   <header>../mainwindow/miniMap.h</header>
   </customwidget>
  </customwidgets>
  <resources>
