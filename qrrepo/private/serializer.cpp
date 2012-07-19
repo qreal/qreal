@@ -264,7 +264,7 @@ QString Serializer::serializeQVariant(QVariant const &v)
 {
 	switch (v.type()) {
 	case QVariant::Int:
-	return QString::number(v.toInt());
+		return QString::number(v.toInt());
 	case QVariant::UInt:
 		return QString::number(v.toUInt());
 	case QVariant::Double:
@@ -280,9 +280,10 @@ QString Serializer::serializeQVariant(QVariant const &v)
 	case QVariant::Polygon:
 		return serializeQPolygon(v.value<QPolygon>());
 	case QVariant::UserType:
-		if (v.userType() == QMetaType::type("qReal::Id"))
+		if (v.userType() == QMetaType::type("qReal::Id")) {
 			return v.value<qReal::Id>().toString();
-		// Если нет, идём в default и там ругаемся.
+		}
+		// something bad
 	default:
 		qDebug() << v;
 		Q_ASSERT(!"Unsupported QVariant type.");
