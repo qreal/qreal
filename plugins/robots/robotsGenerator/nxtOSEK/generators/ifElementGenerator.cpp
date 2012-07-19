@@ -16,8 +16,8 @@ QList<SmartLine> IfElementGenerator::loopPrefixCode()
 	QList<SmartLine> result;
 
 	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
-	result << SmartLine("while (" +
-			mNxtGen->api()->property(logicElementId, "Condition").toString()
+	result << SmartLine("while ("
+			+ mNxtGen->api()->property(logicElementId, "Condition").toString()
 				+ ") {", mElementId, SmartLine::increase); //TODO
 	return result;
 }
@@ -48,8 +48,8 @@ bool IfElementGenerator::generateBranch(int branchNumber)
 		return false;
 	}
 
-	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mNxtGen,
-			branchElement, *mNxtGen->api());
+	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mNxtGen
+			, branchElement, *mNxtGen->api());
 
 	mNxtGen->previousElement() = mElementId;
 
@@ -68,8 +68,8 @@ QPair<bool, qReal::Id> IfElementGenerator::checkBranchForBackArrows(qReal::Id co
 	return checkBranchForBackArrows(curElementId, &emptyList);
 }
 
-QPair<bool, qReal::Id> IfElementGenerator::checkBranchForBackArrows(qReal::Id const &curElementId,
-		qReal::IdList* checkedElements)
+QPair<bool, qReal::Id> IfElementGenerator::checkBranchForBackArrows(qReal::Id const &curElementId
+		, qReal::IdList* checkedElements)
 {
 	// TODO: Why the hell it is using logical model when in other places there is graphical?
 	qReal::Id logicElementId = curElementId;
@@ -212,8 +212,6 @@ bool IfElementGenerator::nextElementsGeneration()
 		QList<SmartLine> ifBlockPostfix;
 		ifBlockPostfix << SmartLine("}", mElementId, SmartLine::decrease);
 		mNxtGen->generatedStringSet() << ifBlockPostfix;
-
-		return true;
 	}
 
 	return true;

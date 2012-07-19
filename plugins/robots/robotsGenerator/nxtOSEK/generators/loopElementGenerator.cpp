@@ -35,8 +35,8 @@ bool LoopElementGenerator::nextElementsGeneration()
 		return false;
 	}
 
-	AbstractElementGenerator* const loopGen = ElementGeneratorFactory::generator(mNxtGen,
-			loopNextElement, *mNxtGen->api());
+	AbstractElementGenerator* const loopGen = ElementGeneratorFactory::generator(mNxtGen
+			, loopNextElement, *mNxtGen->api());
 
 	mNxtGen->previousElement() = mElementId;
 	mNxtGen->previousLoopElements().push(mElementId);
@@ -53,8 +53,8 @@ bool LoopElementGenerator::nextElementsGeneration()
 		return false;
 	}
 
-	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mNxtGen,
-			nextBlockElement, *mNxtGen->api());
+	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mNxtGen
+			, nextBlockElement, *mNxtGen->api());
 
 	mNxtGen->previousElement() = mElementId;
 	mNxtGen->previousLoopElements().push(mElementId);
@@ -71,8 +71,8 @@ QList<SmartLine> LoopElementGenerator::loopPrefixCode()
 	QList<SmartLine> result;
 
 	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
-	result << SmartLine("for (int __iter__ = 0; __iter__ < " +
-			mNxtGen->api()->property(logicElementId, "Iterations").toString()
+	result << SmartLine("for (int __iter__ = 0; __iter__ < "
+			+ mNxtGen->api()->property(logicElementId, "Iterations").toString()
 				+ "; __iter__++) {", mElementId, SmartLine::increase); //TODO
 	return result;
 }

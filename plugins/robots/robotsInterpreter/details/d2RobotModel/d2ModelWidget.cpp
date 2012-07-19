@@ -308,6 +308,11 @@ void D2ModelWidget::clearScene()
 	removeSensor(inputPort::port2);
 	removeSensor(inputPort::port3);
 	removeSensor(inputPort::port4);
+	int const noneSensorIndex = 0;
+	mUi->port1Box->setCurrentIndex(noneSensorIndex);
+	mUi->port2Box->setCurrentIndex(noneSensorIndex);
+	mUi->port3Box->setCurrentIndex(noneSensorIndex);
+	mUi->port4Box->setCurrentIndex(noneSensorIndex);
 	mRobotModel->clear();
 	mScene->clear();
 	mRobotPath.clear();

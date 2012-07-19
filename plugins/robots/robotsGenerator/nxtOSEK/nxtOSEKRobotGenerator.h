@@ -36,7 +36,6 @@ public:
 	QByteArray portValue3() const;
 	QByteArray portValue4() const;
 
-	bool mBalancerIsActivated;
 	qReal::ErrorReporterInterface &errorReporter() const;
 	qReal::Id &previousElement();
 	QList<QList<SmartLine> > &generatedStringSet();
@@ -46,8 +45,9 @@ public:
 	int elementToStringListNumbersPop(QString const &key);
 	void setGeneratedStringSet(int key, QList<SmartLine> const &list);
 
+	bool mBalancerIsActivated;
+
 private:
-	void addToGeneratedStringSetVariableInit();
 	void createProjectDir(QString const &projectDir);
 	void insertCode(
 			QString const &resultCode,

@@ -91,8 +91,8 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 				mElementId));
 
 	} else if (mElementId.element() == "InitialBlock") {
-		for (int i = 1; i <= 4; i++) {
-			//4 - number of ports on nxt robot
+		int const numberOfPorts = 4;
+		for (int i = 1; i <= numberOfPorts; i++) {
 			QString const curPort = "port_" + QString::number(i);
 			QByteArray portValue = mNxtGen->api()->stringProperty(logicElementId, curPort).toUtf8();
 
@@ -197,7 +197,8 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 		int const port = mNxtGen->api()->stringProperty(logicElementId, "Port").toInt();
 
 		QString const percents = mNxtGen->api()->stringProperty(logicElementId,  "Percents");
-		QString const inequalitySign = transformSign(QString(mNxtGen->api()->stringProperty(logicElementId, "Sign").toUtf8()));
+		QString const inequalitySign = transformSign(QString(mNxtGen->api()->stringProperty(logicElementId
+				, "Sign").toUtf8()));
 
 		QString const condition = inequalitySign + " " + percents;
 
@@ -220,7 +221,8 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 	} else if (mElementId.element() == "WaitForSonarDistance") {
 		int const port = mNxtGen->api()->stringProperty(logicElementId, "Port").toInt();
 		QString const distance = mNxtGen->api()->stringProperty(logicElementId, "Distance");
-		QString const inequalitySign = transformSign(QString(mNxtGen->api()->stringProperty(logicElementId, "Sign").toUtf8()));
+		QString const inequalitySign = transformSign(QString(mNxtGen->api()->stringProperty(logicElementId
+				, "Sign").toUtf8()));
 		QString const condition = inequalitySign + " " + distance;
 
 		result.append(SmartLine(
@@ -286,7 +288,8 @@ bool SimpleElementGenerator::nextElementsGeneration()
 			return false;
 		}
 
-		AbstractElementGenerator* const gen = ElementGeneratorFactory::generator(mNxtGen, outgoingConnectedElements.at(0), *mNxtGen->api());
+		AbstractElementGenerator* const gen = ElementGeneratorFactory::generator(mNxtGen
+				, outgoingConnectedElements.at(0), *mNxtGen->api());
 		mNxtGen->previousElement() = mElementId;
 		gen->generate();
 		delete gen;
@@ -295,7 +298,8 @@ bool SimpleElementGenerator::nextElementsGeneration()
 		return true;
 	} else {
 		//case of error end of diagram
-		mNxtGen->errorReporter().addError(QObject::tr("There is no outgoing connected element with no final node!"), mElementId);
+		mNxtGen->errorReporter().addError(QObject::tr("There is no outgoing connected element with no final node!")
+				, mElementId);
 		return false;
 	}
 

@@ -18,8 +18,8 @@ protected:
 	void variableAnalysis(QByteArray const &code);
 
 private:
-	bool mGenerateToInit;
 	QByteArray replaceSensorVariables(QByteArray portValue);
+	bool mGenerateToInit;
 };
 
 }

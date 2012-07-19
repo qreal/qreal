@@ -47,8 +47,9 @@ void SensorItem::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *sty
 
 void SensorItem::drawExtractionForItem(QPainter *painter)
 {
-	if (!isSelected())
+	if (!isSelected()) {
 		return;
+	}
 	QPen pen = QPen(Qt::black);
 	painter->setPen(pen);
 	painter->drawEllipse(boundingRect());
@@ -177,8 +178,9 @@ void SensorItem::setRotater(Rotater *rotater)
 
 void SensorItem::checkSelection()
 {
-	if(isSelected())
+	if(isSelected()) {
 		mRotater->setVisible(true);
-	else
+	} else {
 		mRotater->setVisible(false);
+	}
 }

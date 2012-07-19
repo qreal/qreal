@@ -1,7 +1,7 @@
-﻿#include <QTextStream>
+﻿#include <QtCore/QTextStream>
 #include <cmath>
 #include <QtCore/QObject>
-#include <QDir>
+#include <QtCore/QDir>
 
 #include "../../../../qrkernel/exception/exception.h"
 #include "../../../../qrkernel/settingsManager.h"
@@ -45,14 +45,6 @@ NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator()
 	if (mApi && mIsNeedToDeleteMApi) {
 		delete mApi;
 	}
-}
-
-void NxtOSEKRobotGenerator::addToGeneratedStringSetVariableInit()
-{
-	/*foreach (SmartLine curVariable, mVariables) {
-		mGeneratedStringSet[mVariablePlaceInGenStrSet].append(
-				SmartLine("int " + curVariable.text() + ";", curVariable.elementId()));
-	}*/
 }
 
 QString NxtOSEKRobotGenerator::generateVariableString()
@@ -106,7 +98,7 @@ void NxtOSEKRobotGenerator::generateMakeFile(
 		outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8()).replace("@@BALANCER@@", "balancer_param.c \\").replace("@@BALANCER_LIB@@", "USER_LIB = nxtway_gs_balancer");
 	} else {
 		outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8()).replace("@@BALANCER@@", "").replace("@@BALANCER_LIB@@", "");
-	templateMakeFile.close();
+		templateMakeFile.close();
 	}
 
 	outMake.flush();
@@ -119,10 +111,10 @@ void NxtOSEKRobotGenerator::generateMakeFile(
 }
 
 void NxtOSEKRobotGenerator::insertCode(
-		QString const &resultCode,
-		QString const &resultInitCode,
-		QString const &resultTerminateCode,
-		QString const &curInitialNodeNumber)
+		QString const &resultCode
+		, QString const &resultInitCode
+		, QString const &resultTerminateCode
+		, QString const &curInitialNodeNumber)
 {
 	if (mBalancerIsActivated) {
 		mResultString.replace("@@BALANCER@@", "#include \"balancer.h\"");
@@ -176,8 +168,7 @@ void NxtOSEKRobotGenerator::generate()
 
 	IdList toGenerate = mApi->elementsByType("InitialNode");
 	toGenerate << mApi->elementsByType("InitialBlock");
-	QString resultInitCode;
-	QString resultTerminateCode;
+
 	int curInitialNodeNumber = 0;
 	//QDir projectsDir; //TODO: use user path to projects
 	QString const projectName = "example" + QString::number(curInitialNodeNumber);
@@ -220,8 +211,6 @@ void NxtOSEKRobotGenerator::generate()
 		gen->generate(); //may throws a exception
 		delete gen;
 
-		addToGeneratedStringSetVariableInit();
-
 		// Result code in .c file
 		QString resultCode;
 		mCurTabNumber = 0;
@@ -229,8 +218,10 @@ void NxtOSEKRobotGenerator::generate()
 			 resultCode = addTabAndEndOfLine(lineList, resultCode);
 		}
 		// Code init block in .c file
+		QString resultInitCode;
 		resultInitCode = addTabAndEndOfLine(mInitCode, resultInitCode);
 		// Code terminate block in .c file
+		QString resultTerminateCode;
 		resultTerminateCode = addTabAndEndOfLine(mTerminateCode, resultTerminateCode);
 		resultCode = "TASK(OSEK_Task_Number_" + QString::number(curInitialNodeNumber) +")\n{\n" + resultCode + "}";
 		insertCode(resultCode, resultInitCode, resultTerminateCode, QString::number(curInitialNodeNumber));
