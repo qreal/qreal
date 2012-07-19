@@ -78,8 +78,14 @@ private :
 	QString countRealConstraintOfElement(qReal::Id const &constraintElement);
 	QString countRealConstraintForEdgeElement(qReal::Id const &constraintElement, QString elementName, QString resultName, int depth, QString addStr);
 	QString countRealConstraintForNodeElement(qReal::Id const &constraintElement, QString elementName, QString resultName, int depth, QString addStr);
+	QPair<QString, QList<QString> > countRealConstraintForOneEdgeElement(qReal::Id const &constraint, qReal::IdList &usedElements, QString elementName, int depth, QString addStr);
+	QPair<QString, QList<QString> > countRealConstraintForOneNodeElement(qReal::Id const &constraint, qReal::IdList &usedElements, QString elementName, int depth, QString addStr);
+	QPair<QString, QList<QString> > countNeighborsEdgesByOr(qReal::Id const &constraint, QString resConstraintBool, qReal::IdList &usedElements, QString elementName, int depth, QString addStr);
+	QPair<QString, QList<QString> > countNeighborsNodesByOr(qReal::Id const &constraint, QString resConstraintBool, qReal::IdList &usedElements, QString elementName, int depth, QString addStr);
 	QPair<bool, QString> handleConstraintsSelection(qReal::Id const &constraintElement);
+	QString pushResBoolInResStringByAnd(QList<QString> resBool);
 	QString additionalCommonPartForConstraint(QList<QString> resBool, QString resultName, int depth, QString addStr);
+	qReal::IdList neighborNodesByOr(qReal::Id const &element);
 
 	QPair<QString, QList<QString> > countConstraintForBeginNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
 	QPair<QString, QList<QString> > countConstraintForEndNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
