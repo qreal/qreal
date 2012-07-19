@@ -7,55 +7,39 @@ GesturesWidget::GesturesWidget(QWidget *parent) :
 {
 	ui->setupUi(this);
 	mGestureScene = new QGraphicsScene(ui->graphicsView);
+	gestColor = Qt::blue;
 	ui->graphicsView->setScene(mGestureScene);
-	connect(ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-			this, SIGNAL(currentElementChanged()));
-	mTimer = new QTimer(this);
-	QObject::connect(mTimer, SIGNAL(timeout()), this, SLOT(drawGesture()));
-	mTimer->start(5);
+	connect(ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem *,QListWidgetItem *))
+			, this, SIGNAL(currentElementChanged()));
 }
 
 GesturesWidget::~GesturesWidget()
 {
-	delete mTimer;
 	delete ui;
 }
 
-void GesturesWidget::draw(QList<QPoint> const & path)
+void GesturesWidget::draw(PathVector const &paths)
 {
-	mCurrentPointNumber = 0;
 	mGestureScene->clear();
-	mPath = path;
 
-}
+	foreach (PointVector const &path, paths) {
+		QPointF previousPoint(minBoarder, minBoarder);
 
-void GesturesWidget::drawGesture()
-{
-	if (mPath.isEmpty())
-		return;
-	int verticeIndex = (mCurrentPointNumber / pointsAtSegment) % mPath.size();
-	int segmentNumber = mCurrentPointNumber % pointsAtSegment + 1;
-	if (verticeIndex == mPath.size() - 1)
-	{
-		mGestureScene->clear();
-		mCurrentPointNumber = 0;
-		return;
+		QPen pen(gestColor);
+		pen.setWidth(gestWidth);
+
+		if (path.isEmpty()) {
+			return;
+		}
+		foreach (QPointF const &currentPoint, path) {
+			if (previousPoint.x() != minBoarder && previousPoint.y() != minBoarder) {
+				mGestureScene->addLine(QLineF(previousPoint, currentPoint), pen);
+			} else {
+				mGestureScene->addLine(QLineF(currentPoint, currentPoint), pen);
+			}
+			previousPoint = currentPoint;
+		}
 	}
-
-	QPoint lastPaintedPoint = mPath.at(verticeIndex);
-	QPoint nextPoint = mPath.at(verticeIndex + 1);
-	QPoint currentPoint(coord(lastPaintedPoint.x(), nextPoint.x(), segmentNumber),
-			coord(lastPaintedPoint.y(), nextPoint.y(), segmentNumber));
-
-	QPen pen(Qt::blue);
-	pen.setWidth(3);
-
-	if (mCurrentPointNumber == 0)
-		mGestureScene->addEllipse(QRect(currentPoint, currentPoint).adjusted(-3, -3, 2, 2), pen);
-
-	mGestureScene->addLine(QLine(lastPaintedPoint, currentPoint), pen);
-
-	mCurrentPointNumber++;
 }
 
 int GesturesWidget::coord(int previous, int next, int part)
@@ -73,3 +57,4 @@ void GesturesWidget::setElements(const QList<QString> &elements)
 	ui->listWidget->clear();
 	ui->listWidget->addItems(elements);
 }
+
