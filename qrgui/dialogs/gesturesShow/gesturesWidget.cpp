@@ -9,7 +9,7 @@ GesturesWidget::GesturesWidget(QWidget *parent) :
 	mGestureScene = new QGraphicsScene(ui->graphicsView);
 	gestColor = Qt::blue;
 	ui->graphicsView->setScene(mGestureScene);
-	connect(ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*))
+	connect(ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem *,QListWidgetItem *))
 			, this, SIGNAL(currentElementChanged()));
 }
 
@@ -34,8 +34,7 @@ void GesturesWidget::draw(PathVector const &paths)
 		foreach (QPointF const &currentPoint, path) {
 			if (previousPoint.x() != minBoarder && previousPoint.y() != minBoarder) {
 				mGestureScene->addLine(QLineF(previousPoint, currentPoint), pen);
-			}
-			else {
+			} else {
 				mGestureScene->addLine(QLineF(currentPoint, currentPoint), pen);
 			}
 			previousPoint = currentPoint;
