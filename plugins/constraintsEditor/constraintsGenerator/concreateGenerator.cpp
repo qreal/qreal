@@ -165,7 +165,7 @@ ConcreateGenerator::NeededStringsForConcreateGenerate ConcreateGenerator::genera
 
 		QString countOptionalCheckStatusOfElemet = mTemplateUtils["@@countOptionalCheckStatusOfElemet@@"];
 		countOptionalCheckStatusOfElemet.replace("@@elementNameWithId@@", elementNameWithId);
-		countOptionalCheckStatusOfElemet.replace("@@countRealCheckStatusOfElement@@", countRealConstraintOfElement(element));
+		countOptionalCheckStatusOfElemet.replace("@@countRealCheckStatusOfElement@@", countRealConstraintOfDiagramElement(element));
 		countOptionalCheckStatusOfElemet.replace("@@errorText@@", mApi.property(element, "errorText").toString());
 		countOptionalCheckStatusOfElemet.replace("@@checkStatus@@", mApi.property(element, "errorType").toString());
 		countOptionalCheckStatusesForElemetsCPP += countOptionalCheckStatusOfElemet;
@@ -346,7 +346,7 @@ QPair<bool, QString> ConcreateGenerator::handleConstraintsSelection(Id const &co
 	}
 }
 
-QString ConcreateGenerator::countRealConstraintOfElement(Id const &constraintElement)
+QString ConcreateGenerator::countRealConstraintOfDiagramElement(Id const &constraintElement)
 {
 	QString resString = "";
 
@@ -736,7 +736,33 @@ bool ConcreateGenerator::linksContainsByType(Id const &element, QString const &t
 	return false;
 }
 
-QString ConcreateGenerator::countRealConstraintForEdgeElement(Id const &constraintElement, QString elementName, QString resultName, int depth, QString addStr)
+QPair<QString, QList<QString> > ConcreateGenerator::countNeighborsElementsByOr(Id const &constraint, QString resConstraintBool, IdList &usedElements, metaType const &type, QString elementName, int depth, QString addStr)
+{
+	QString resString = "";
+	QList<QString> resBool;
+
+	IdList neighborNodes = neighborNodesByType(constraint, "Or");
+	if (!neighborNodes.isEmpty()) {
+		foreach (Id neighbor, neighborNodes) {
+			if (!usedElements.contains(neighbor)) {
+				usedElements.append(neighbor);
+				QPair<QString, QList<QString> > resNeighborsConstraint;
+				if (type == edge) {
+					resNeighborsConstraint = countRealConstraintForOneEdgeElement(neighbor, usedElements, elementName, depth, addStr);
+				} else if (type == node) {
+					resNeighborsConstraint = countRealConstraintForOneNodeElement(neighbor, usedElements, elementName, depth, addStr);
+				}
+
+				resString += resNeighborsConstraint.first;
+				resBool.append(QString("( " + resConstraintBool + " || " + pushResBoolInResStringByAnd(resNeighborsConstraint.second) + " )"));
+			}
+		}
+	}
+
+	return QPair<QString, QList<QString> >(resString, resBool);
+}
+
+QString ConcreateGenerator::countRealConstraintForElement(Id const &constraintElement, metaType const &type, QString elementName, QString resultName, int depth, QString addStr)
 {
 	IdList list = mApi.children(constraintElement);
 	QString resString = "";
@@ -745,14 +771,29 @@ QString ConcreateGenerator::countRealConstraintForEdgeElement(Id const &constrai
 
 	foreach (Id const &constraint, list) {
 		if (!usedElements.contains(constraint)) {
-			QPair<QString, QList<QString> > resOneEdgeConstraint = countRealConstraintForOneEdgeElement(constraint, usedElements, elementName, depth, addStr);
-			resString += resOneEdgeConstraint.first;
-			resBool.append(resOneEdgeConstraint.second);
+			QPair<QString, QList<QString> > resOneConstraint;
+			if (type == edge) {
+				resOneConstraint = countRealConstraintForOneEdgeElement(constraint, usedElements, elementName, depth, addStr);
+			} else if (type == node) {
+				resOneConstraint = countRealConstraintForOneNodeElement(constraint, usedElements, elementName, depth, addStr);
+			}
+			resString += resOneConstraint.first;
+			resBool.append(resOneConstraint.second);
 		}
 	}
 	resString += additionalCommonPartForConstraint(resBool, resultName, depth, addStr); //сбрасываем resBool в resString
 
 	return resString;
+}
+
+QString ConcreateGenerator::countRealConstraintForEdgeElement(Id const &constraintElement, QString elementName, QString resultName, int depth, QString addStr)
+{
+	return countRealConstraintForElement(constraintElement, edge, elementName, resultName, depth, addStr);
+}
+
+QString ConcreateGenerator::countRealConstraintForNodeElement(Id const &constraintElement, QString elementName, QString resultName, int depth, QString addStr)
+{
+	return countRealConstraintForElement(constraintElement, node, elementName, resultName, depth, addStr);
 }
 
 QPair<QString, QList<QString> > ConcreateGenerator::countRealConstraintForOneEdgeElement(Id const &constraint, IdList &usedElements, QString elementName, int depth, QString addStr, bool isMultiOr)
@@ -790,53 +831,13 @@ QPair<QString, QList<QString> > ConcreateGenerator::countRealConstraintForOneEdg
 
 	mCountsOfConstraintElementsInOneConstraint[constraintType] ++;
 
-	QPair<QString, QList<QString> > resNeighborsNodes = countNeighborsEdgesByOr(constraint, pushResBoolInResStringByAnd(resBool), usedElements, elementName, depth + additionalDepth, addStr);
+	QPair<QString, QList<QString> > resNeighborsNodes = countNeighborsElementsByOr(constraint, pushResBoolInResStringByAnd(resBool), usedElements, edge, elementName, depth + additionalDepth, addStr);
 	resString += resNeighborsNodes.first;
 	if (!resNeighborsNodes.second.isEmpty()) {
 		resBool.append(resNeighborsNodes.second);
 	}
 
 	return QPair<QString, QList<QString> >(resString, resBool);
-}
-
-QPair<QString, QList<QString> > ConcreateGenerator::countNeighborsEdgesByOr(Id const &constraint, QString resConstraintBool, IdList &usedElements, QString elementName, int depth, QString addStr)
-{
-	QString resString = "";
-	QList<QString> resBool;
-
-	IdList neighborNodes = neighborNodesByType(constraint, "Or");
-	if (!neighborNodes.isEmpty()) {
-		foreach (Id neighbor, neighborNodes) {
-			if (!usedElements.contains(neighbor)) {
-				usedElements.append(neighbor);
-				QPair<QString, QList<QString> > resNeighborsConstraint = countRealConstraintForOneEdgeElement(neighbor, usedElements, elementName, depth, addStr);
-				resString += resNeighborsConstraint.first;
-				resBool.append(QString("( " + resConstraintBool + " || " + pushResBoolInResStringByAnd(resNeighborsConstraint.second) + " )"));
-			}
-		}
-	}
-
-	return QPair<QString, QList<QString> >(resString, resBool);
-}
-
-QString ConcreateGenerator::countRealConstraintForNodeElement(Id const &constraintElement, QString elementName, QString resultName, int depth, QString addStr)
-{
-	IdList list = mApi.children(constraintElement);
-	QString resString = "";
-	QList<QString> resBool;
-	IdList usedElements;
-
-	foreach (Id const &constraint, list) {
-		if (!usedElements.contains(constraint)) {
-			usedElements.append(constraint);
-			QPair<QString, QList<QString> > resOneNodeConstraint = countRealConstraintForOneNodeElement(constraint, usedElements, elementName, depth, addStr);
-			resString += resOneNodeConstraint.first;
-			resBool.append(resOneNodeConstraint.second);
-		}
-	}
-	resString += additionalCommonPartForConstraint(resBool, resultName, depth, addStr);
-
-	return resString;
 }
 
 QPair<QString, QList<QString> > ConcreateGenerator::countRealConstraintForOneNodeElement(Id const &constraint, IdList &usedElements, QString elementName, int depth, QString addStr, bool isMultiOr)
@@ -895,30 +896,10 @@ QPair<QString, QList<QString> > ConcreateGenerator::countRealConstraintForOneNod
 
 	mCountsOfConstraintElementsInOneConstraint[constraintType] ++;
 
-	QPair<QString, QList<QString> > resNeighborsNodes = countNeighborsNodesByOr(constraint, pushResBoolInResStringByAnd(resBool), usedElements, elementName, depth + additionalDepth, addStr);
+	QPair<QString, QList<QString> > resNeighborsNodes = countNeighborsElementsByOr(constraint, pushResBoolInResStringByAnd(resBool), usedElements, node, elementName, depth + additionalDepth, addStr);
 	resString += resNeighborsNodes.first;
 	if (!resNeighborsNodes.second.isEmpty()) {
 		resBool = resNeighborsNodes.second;
-	}
-
-	return QPair<QString, QList<QString> >(resString, resBool);
-}
-
-QPair<QString, QList<QString> > ConcreateGenerator::countNeighborsNodesByOr(Id const &constraint, QString resConstraintBool, IdList &usedElements, QString elementName, int depth, QString addStr)
-{
-	QString resString = "";
-	QList<QString> resBool;
-
-	IdList neighborNodes = neighborNodesByType(constraint, "Or");
-	if (!neighborNodes.isEmpty()) {
-		foreach (Id neighbor, neighborNodes) {
-			if (!usedElements.contains(neighbor)) {
-				usedElements.append(neighbor);
-				QPair<QString, QList<QString> > resNeighborsConstraint = countRealConstraintForOneNodeElement(neighbor, usedElements, elementName, depth, addStr);
-				resString += resNeighborsConstraint.first;
-				resBool.append(QString("( " + resConstraintBool + " || " + pushResBoolInResStringByAnd(resNeighborsConstraint.second) + " )"));
-			}
-		}
 	}
 
 	return QPair<QString, QList<QString> >(resString, resBool);

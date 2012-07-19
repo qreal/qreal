@@ -82,13 +82,13 @@ private :
 	QString replaceLanguageName(QString string, qReal::Id const &diagram, int count);
 	QString correctedLanguageName(qReal::Id const &diagram);
 
-	QString countRealConstraintOfElement(qReal::Id const &constraintElement);
+	QString countRealConstraintOfDiagramElement(qReal::Id const &constraintElement);
+	QString countRealConstraintForElement(qReal::Id const &constraintElement, metaType const &type, QString elementName, QString resultName, int depth, QString addStr);
 	QString countRealConstraintForEdgeElement(qReal::Id const &constraintElement, QString elementName, QString resultName, int depth, QString addStr);
 	QString countRealConstraintForNodeElement(qReal::Id const &constraintElement, QString elementName, QString resultName, int depth, QString addStr);
 	QPair<QString, QList<QString> > countRealConstraintForOneEdgeElement(qReal::Id const &constraint, qReal::IdList &usedElements, QString elementName, int depth, QString addStr, bool isMultiOr = false);
 	QPair<QString, QList<QString> > countRealConstraintForOneNodeElement(qReal::Id const &constraint, qReal::IdList &usedElements, QString elementName, int depth, QString addStr, bool isMultiOr = false);
-	QPair<QString, QList<QString> > countNeighborsEdgesByOr(qReal::Id const &constraint, QString resConstraintBool, qReal::IdList &usedElements, QString elementName, int depth, QString addStr);
-	QPair<QString, QList<QString> > countNeighborsNodesByOr(qReal::Id const &constraint, QString resConstraintBool, qReal::IdList &usedElements, QString elementName, int depth, QString addStr);
+	QPair<QString, QList<QString> > countNeighborsElementsByOr(qReal::Id const &constraint, QString resConstraintBool, qReal::IdList &usedElements, metaType const &type, QString elementName, int depth, QString addStr);
 	QPair<bool, QString> handleConstraintsSelection(qReal::Id const &constraintElement);
 	QString additionalCommonPartForConstraint(QList<QString> resBool, QString resultName, int depth, QString addStr);
 
