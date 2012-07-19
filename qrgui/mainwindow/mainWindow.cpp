@@ -37,6 +37,7 @@
 
 #include "splashScreen.h"
 #include "../dialogs/startDialog/startDialog.h"
+#include "../dialogs/progressDialog/progressDialog.h"
 
 #include "dotRunner.h"
 
@@ -473,6 +474,12 @@ void MainWindow::deleteElementFromDiagram(Id const &id)
 		mUi->graphicalModelExplorer->setCurrentIndex(mModels->graphicalModelAssistApi().indexById(id));
 	}
 	deleteFromExplorer(isLogical);
+}
+
+void MainWindow::reportOperation(invocation::LongOperation *operation)
+{
+	ProgressDialog *progressDialog = new ProgressDialog(this);
+	progressDialog->connectOperation(operation);
 }
 
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
