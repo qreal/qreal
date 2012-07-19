@@ -9,7 +9,7 @@
 using namespace qReal;
 
 EditorView::EditorView(QWidget *parent)
-	: QGraphicsView(parent), mMouseOldPosition(), mWheelPressed(false)
+	: QGraphicsView(parent), mMouseOldPosition(), mWheelPressed(false), mZoom(0)
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
@@ -29,8 +29,6 @@ EditorView::EditorView(QWidget *parent)
 	setMouseTracking(true);
 
 	setAlignment(Qt::AlignCenter);
-
-	mZoom = 0;
 }
 
 EditorView::~EditorView()
@@ -55,8 +53,9 @@ void EditorView::toggleOpenGL(bool checked)
 
 void EditorView::zoomIn()
 {
-	if (mWheelPressed || mZoom >= SettingsManager::value("maxZoom").toInt())
+	if (mWheelPressed || mZoom >= SettingsManager::value("maxZoom").toInt()){
 		return;
+	}
 	double zoomFactor = static_cast<double>(SettingsManager::value("zoomFactor").toInt()) / 10 + 1;
 	scale(zoomFactor, zoomFactor);
 	mZoom++;
@@ -68,8 +67,9 @@ void EditorView::zoomIn()
 
 void EditorView::zoomOut()
 {
-	if (mWheelPressed || mZoom <= SettingsManager::value("minZoom").toInt())
+	if (mWheelPressed || mZoom <= SettingsManager::value("minZoom").toInt()){
 		return;
+	}
 	double zoomFactor = 1 / (static_cast<double>(SettingsManager::value("zoomFactor").toInt()) / 10 + 1);
 	scale(zoomFactor, zoomFactor);
 	mZoom--;
