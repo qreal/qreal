@@ -19,9 +19,13 @@ void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
 	sortChildrenIfNeeded();
 	gripeIfMinimizesToChildrenContainer(newContents);
 
+	QRectF con = newContents;
 	if (!mResizingNode->isFolded()) {
 		resizeAccordingToChildren(newContents, newPos);
 	}
+	qDebug() << (con == newContents);
+	qDebug() << con;
+	qDebug() << newContents;
 
 	normalizeSize(newContents);
 
@@ -145,11 +149,7 @@ void ResizeHandler::resizeAccordingToChildren(QRectF& newContents, QPointF& newP
 	moveChildren(-childDeflectionVector);
 	newPos += childDeflectionVector;
 
-	QPointF topLeft = childDeflectionVector;
-	QPointF bottomRight = newContents.bottomRight();
-	newContents = QRectF(topLeft, bottomRight);
-	newContents.moveTo(0, 0);
-
+	newContents.setBottomRight(newContents.bottomRight() - childDeflectionVector);
 	expandByChildren(newContents);
 }
 
