@@ -15,7 +15,9 @@ HEADERS += \
 	dialogs/startDialog/recentProjectsListWidget.h \
 	dialogs/startDialog/listWidget.h \
 	dialogs/suggestToCreateDiagramDialog.h \
-	dialogs/managedClosableDialog.h
+	dialogs/managedClosableDialog.h \
+	dialogs/progressDialog/progressBar.h \
+	dialogs/progressDialog/progressDialog.h
 
 SOURCES += \
 	dialogs/plugindialog.cpp \
@@ -33,7 +35,9 @@ SOURCES += \
 	dialogs/startDialog/recentProjectsListWidget.cpp \
 	dialogs/startDialog/listWidget.cpp \
 	dialogs/suggestToCreateDiagramDialog.cpp \
-	dialogs/managedClosableDialog.cpp
+	dialogs/managedClosableDialog.cpp \
+	dialogs/progressDialog/progressBar.cpp \
+	dialogs/progressDialog/progressDialog.cpp
 
 FORMS += \
 	dialogs/editorGeneratorDialog.ui \

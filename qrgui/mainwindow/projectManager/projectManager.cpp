@@ -9,8 +9,7 @@
 using namespace qReal;
 
 ProjectManager::ProjectManager(MainWindow *mainWindow)
-		: QObject(mainWindow)
-		, mMainWindow(mainWindow)
+		: mMainWindow(mainWindow)
 		, mAutosaver(new Autosaver(this))
 		, mUnsavedIndicator(false)
 {
@@ -93,7 +92,7 @@ bool ProjectManager::open(QString const &fileName)
 		return false;
 	}
 	// There is no way to verify sufficiency plugins without initializing repository
-	// that is stored in the save file. Iinitializing is impossible without closing current project.
+	// that is stored in the save file. Initializing is impossible without closing current project.
 	close();
 	mMainWindow->models()->repoControlApi().open(fileName);
 	mMainWindow->models()->reinit();
@@ -114,7 +113,7 @@ bool ProjectManager::open(QString const &fileName)
 	return true;
 }
 
-bool ProjectManager::suggestToimport()
+bool ProjectManager::suggestToImport()
 {
 	return import(getOpenFileName(tr("Select file with a save to import")));
 }
