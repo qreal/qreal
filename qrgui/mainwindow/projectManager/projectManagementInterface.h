@@ -8,9 +8,7 @@
 namespace qReal
 {
 
-/**
- * @brief Provides all of the work load project from a file, stored in the project file, and so on
- */
+/// Interfase that provides all of the work load project from a file, stored in the project file, and so on
 class ProjectManagementInterface : public QObject
 {
 	Q_OBJECT
@@ -34,13 +32,13 @@ public slots:
 	/// Closes current project without suggestion to save it
 	virtual void close() = 0;
 
-	/// Save the project in the file, if it specified. Otherwise return false only.
-	virtual bool save() = 0;
+	/// Save the project in the user file, if it specified. Otherwise save to autosave file
+	virtual void save() = 0;
 	/// Save the project in the file with the name fileName, if it not empty (fileName). Otherwise return false only.
 	virtual bool saveAs(const QString &fileName) = 0;
-	/// Similarly saveAs(...), but offers the user specified file location (by a dialog)
+	/// Similarly @see saveAs(const QString &fileName), but offers the user specified file location (by a dialog)
 	virtual bool suggestToSaveAs() = 0;
-	/// Similarly save(), if specified project-file, similarly suggestToSaveAs(...) o/w
+	/// Similarly @see save(), if specified project-file, similarly @see suggestToSaveAs() o/w
 	virtual bool saveOrSuggestToSaveAs() = 0;
 
 public:
