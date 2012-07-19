@@ -43,39 +43,32 @@
 <context>
     <name>CheckoutDialog</name>
     <message>
-        <location filename="dialogs/checkoutdialog.cpp" line="20"/>
         <source>&amp;Browse...</source>
-        <translation type="unfinished">&amp;Просмотр...</translation>
+        <translation type="obsolete">&amp;Просмотр...</translation>
     </message>
     <message>
-        <location filename="dialogs/checkoutdialog.cpp" line="21"/>
         <source>Subversion place</source>
-        <translation type="unfinished">Место в SVNе</translation>
+        <translation type="obsolete">Место в SVNе</translation>
     </message>
     <message>
-        <location filename="dialogs/checkoutdialog.cpp" line="22"/>
         <source>Checkout to directory:</source>
-        <translation type="unfinished">Чекаут в папку:</translation>
+        <translation type="obsolete">Чекаут в папку:</translation>
     </message>
     <message>
-        <location filename="dialogs/checkoutdialog.cpp" line="25"/>
         <source>Ok</source>
-        <translation type="unfinished">ОК</translation>
+        <translation type="obsolete">ОК</translation>
     </message>
     <message>
-        <location filename="dialogs/checkoutdialog.cpp" line="26"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation type="obsolete">Отмена</translation>
     </message>
     <message>
-        <location filename="dialogs/checkoutdialog.cpp" line="45"/>
         <source>Checkout options</source>
-        <translation type="unfinished">Настройки чекаута</translation>
+        <translation type="obsolete">Настройки чекаута</translation>
     </message>
     <message>
-        <location filename="dialogs/checkoutdialog.cpp" line="51"/>
         <source>Select directory</source>
-        <translation type="unfinished">Выбор папки</translation>
+        <translation type="obsolete">Выбор папки</translation>
     </message>
 </context>
 <context>
@@ -2980,7 +2973,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="637"/>
+        <location filename="mainwindow/mainWindow.cpp" line="644"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3005,16 +2998,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="682"/>
-        <location filename="mainwindow/mainWindow.cpp" line="699"/>
-        <location filename="mainwindow/mainWindow.cpp" line="717"/>
+        <location filename="mainwindow/mainWindow.cpp" line="689"/>
+        <location filename="mainwindow/mainWindow.cpp" line="706"/>
+        <location filename="mainwindow/mainWindow.cpp" line="724"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="684"/>
-        <location filename="mainwindow/mainWindow.cpp" line="701"/>
-        <location filename="mainwindow/mainWindow.cpp" line="719"/>
+        <location filename="mainwindow/mainWindow.cpp" line="691"/>
+        <location filename="mainwindow/mainWindow.cpp" line="708"/>
+        <location filename="mainwindow/mainWindow.cpp" line="726"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3119,23 +3112,23 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="638"/>
+        <location filename="mainwindow/mainWindow.cpp" line="645"/>
         <source>&lt;b&gt;QReal&lt;b&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;http://qreal.ru/&quot;&gt;http://qreal.ru/&lt;/a&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="717"/>
+        <location filename="mainwindow/mainWindow.cpp" line="724"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="719"/>
+        <location filename="mainwindow/mainWindow.cpp" line="726"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="863"/>
-        <location filename="mainwindow/mainWindow.cpp" line="871"/>
+        <location filename="mainwindow/mainWindow.cpp" line="870"/>
+        <location filename="mainwindow/mainWindow.cpp" line="878"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3144,17 +3137,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1545"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1552"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1574"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1581"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1574"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1581"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3175,7 +3168,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1211"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1218"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -3205,14 +3198,33 @@
 <context>
     <name>qReal::PluginDialog</name>
     <message>
-        <location filename="dialogs/plugindialog.cpp" line="26"/>
         <source>OK</source>
-        <translation type="unfinished">ОК</translation>
+        <translation type="obsolete">ОК</translation>
     </message>
     <message>
-        <location filename="dialogs/plugindialog.cpp" line="51"/>
         <source>Plugin Information</source>
-        <translation type="unfinished">Информация о плагинах</translation>
+        <translation type="obsolete">Информация о плагинах</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::ProgressBar</name>
+    <message>
+        <location filename="dialogs/progressDialog/progressBar.cpp" line="103"/>
+        <source>%p% - canceled</source>
+        <translation>%p% - отменено</translation>
+    </message>
+    <message>
+        <location filename="dialogs/progressDialog/progressBar.cpp" line="104"/>
+        <source>canceled</source>
+        <translation>отменено</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::ProgressDialog</name>
+    <message>
+        <location filename="dialogs/progressDialog/progressDialog.cpp" line="12"/>
+        <source>Please wait...</source>
+        <translation>Пожалуйста подождите...</translation>
     </message>
 </context>
 <context>
