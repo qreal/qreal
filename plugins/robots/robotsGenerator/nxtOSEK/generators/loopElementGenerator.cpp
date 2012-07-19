@@ -89,9 +89,8 @@ bool LoopElementGenerator::preGenerationCheck()
 	IdList const outgoingLinks = mNxtGen->api()->outgoingLinks(mElementId);
 
 	if ((outgoingLinks.size() != 2) ||
-		( (mNxtGen->api()->property(mNxtGen->api()->logicalId(outgoingLinks.at(0)), "Guard").toString() == "итерация")
-		  &&
-		  (mNxtGen->api()->property(mNxtGen->api()->logicalId(outgoingLinks.at(1)), "Guard").toString() == "итерация") )
+		((mNxtGen->api()->property(mNxtGen->api()->logicalId(outgoingLinks.at(0)), "Guard").toString() == "итерация")
+		&& (mNxtGen->api()->property(mNxtGen->api()->logicalId(outgoingLinks.at(1)), "Guard").toString() == "итерация") )
 	) {
 		return false;
 	}

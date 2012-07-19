@@ -95,9 +95,11 @@ void NxtOSEKRobotGenerator::generateMakeFile(
 
 	QTextStream outMake(&resultMakeFile);
 	if (mBalancerIsActivated) {
-		outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8()).replace("@@BALANCER@@", "balancer_param.c \\").replace("@@BALANCER_LIB@@", "USER_LIB = nxtway_gs_balancer");
+		outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8()).replace("@@BALANCER@@"
+				, "balancer_param.c \\").replace("@@BALANCER_LIB@@", "USER_LIB = nxtway_gs_balancer");
 	} else {
-		outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8()).replace("@@BALANCER@@", "").replace("@@BALANCER_LIB@@", "");
+		outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8()).replace("@@BALANCER@@"
+				, "").replace("@@BALANCER_LIB@@", "");
 		templateMakeFile.close();
 	}
 
@@ -121,20 +123,17 @@ void NxtOSEKRobotGenerator::insertCode(
 	} else {
 		mResultString.replace("@@BALANCER@@", "");
 	}
-	mResultString.replace("@@CODE@@", resultCode +"\n" + "@@CODE@@");
+	mResultString.replace("@@CODE@@", resultCode +"\n" + "@@CODE@@").replace("@@VARIABLES@@"
+			, generateVariableString() + "\n" + "@@VARIABLES@@").replace("@@INITHOOKS@@"
+			, resultInitCode).replace("@@TERMINATEHOOKS@@", resultTerminateCode);
 	mTaskTemplate.replace("@@NUMBER@@", curInitialNodeNumber);
 	mResultOil.replace("@@TASK@@", mTaskTemplate + "\n" + "@@TASK@@");
-	mResultString.replace("@@VARIABLES@@", generateVariableString() + "\n" + "@@VARIABLES@@");
-	mResultString.replace("@@INITHOOKS@@", resultInitCode);
-	mResultString.replace("@@TERMINATEHOOKS@@", resultTerminateCode);
 }
 
 void NxtOSEKRobotGenerator::deleteResidualLabels(QString const &projectName)
 {
 	mResultOil.replace("@@TASK@@", "");
-	mResultString.replace("@@VARIABLES@@", "");
-	mResultString.replace("@@CODE@@", "");
-	mResultString.replace("@@PROJECT_NAME@@", projectName);
+	mResultString.replace("@@VARIABLES@@", "").replace("@@CODE@@", "").replace("@@PROJECT_NAME@@", projectName);
 }
 
 void NxtOSEKRobotGenerator::generateFilesForBalancer(QString const &projectDir)

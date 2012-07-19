@@ -250,16 +250,15 @@ QList<SmartLine> SimpleElementGenerator::simpleCode()
 		QString const secondMotorValue = mNxtGen->api()->stringProperty(logicElementId, "port2");
 		QString const outPowerValue1 = mNxtGen->api()->stringProperty(logicElementId, "pwm1");
 		QString const outPowerValue2 = mNxtGen->api()->stringProperty(logicElementId, "pwm2");
-		result.append(SmartLine(QString("balance_control("), mElementId));
-		result.append(SmartLine(QString("(F32)") + forward + ", ", mElementId));
-		result.append(SmartLine(QString("(F32)") + turn + ", ", mElementId));
-		result.append(SmartLine(QString("(F32)ecrobot_get_gyro_sensor(NXT_PORT_S") + gyroPort + "), ", mElementId));
-		result.append(SmartLine(QString("(F32)") + gyroValue + ", ", mElementId));
-		result.append(SmartLine(QString("(F32)nxt_motor_get_count(NXT_PORT_") + firstMotorValue + "), ", mElementId));
-		result.append(SmartLine(QString("(F32)nxt_motor_get_count(NXT_PORT_") + secondMotorValue + "), ", mElementId));
-		result.append(SmartLine(QString("(F32)ecrobot_get_battery_voltage(), "), mElementId));
-		result.append(SmartLine(QString("&") + outPowerValue1 + ", ", mElementId));
-		result.append(SmartLine(QString("&") + outPowerValue2 + ");", mElementId));
+		result << (SmartLine(QString("balance_control("), mElementId)) << (SmartLine(QString("(F32)") + forward + ", "
+				, mElementId)) << (SmartLine(QString("(F32)") + turn + ", ", mElementId))
+				<< (SmartLine(QString("(F32)ecrobot_get_gyro_sensor(NXT_PORT_S") + gyroPort + "), ", mElementId))
+				<< (SmartLine(QString("(F32)") + gyroValue + ", ", mElementId))
+				<< (SmartLine(QString("(F32)nxt_motor_get_count(NXT_PORT_") + firstMotorValue + "), ", mElementId))
+				<< (SmartLine(QString("(F32)nxt_motor_get_count(NXT_PORT_") + secondMotorValue + "), ", mElementId))
+				<< (SmartLine(QString("(F32)ecrobot_get_battery_voltage(), "), mElementId))
+				<< (SmartLine(QString("&") + outPowerValue1 + ", ", mElementId))
+				<< (SmartLine(QString("&") + outPowerValue2 + ");", mElementId));
 		mNxtGen->mBalancerIsActivated = true;
 	} else if (mElementId.element() == "BalanceInit") {
 		result.append(SmartLine("balance_init();", mElementId));
