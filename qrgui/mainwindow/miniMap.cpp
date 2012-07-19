@@ -39,6 +39,7 @@ void MiniMap::setCurrentScene()
 		setScene(editorViewScene);
 		// can affect zoom - need to change it if we make another desision about it
 		connect(editorViewScene, SIGNAL(changed(QList<QRectF>)), this, SLOT(ensureVisible(QList<QRectF>)));
+		connect(editorViewScene, SIGNAL(sceneRectChanged(QRectF)), this, SLOT(showScene()));
 	}
 }
 
@@ -51,6 +52,7 @@ void MiniMap::setScene(QGraphicsScene *scene)
 void MiniMap::showScene()
 {
 	if (scene() != NULL) {
+		setSceneRect(scene()->sceneRect());
 		fitInView(sceneRect(), Qt::KeepAspectRatio);
 	}
 }
