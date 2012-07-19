@@ -39,7 +39,7 @@ public:
 	QMap<QString, QVariant> properties();
 	qReal::Id id() const;
 	qReal::Id logicalId() const;
-	QMapIterator<QString, QVariant> propertiesIterator();
+	QMapIterator<QString, QVariant> propertiesIterator() const;
 	void setTemporaryRemovedLinks(QString const &direction, qReal::IdList const &listValue);
 	qReal::IdList temporaryRemovedLinksAt(QString const &direction) const;
 	qReal::IdList temporaryRemovedLinks() const;
