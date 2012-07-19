@@ -740,14 +740,11 @@ void D2ModelWidget::setSensorVisible(inputPort::InputPortEnum port, bool isVisib
 void D2ModelWidget::enableRunStopButtons()
 {
 	mUi->runButton->setEnabled(true);
-	emit runButtonEnable();
 }
 
 void D2ModelWidget::disableRunStopButtons()
 {
-	qDebug() << "disableRunStopButtons()assssssssssssssыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыы";
 	mUi->runButton->setEnabled(false);
-	emit runButtonDisable();
 }
 
 void D2ModelWidget::closeEvent(QCloseEvent *event)
