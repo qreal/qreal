@@ -24,6 +24,8 @@ EditorViewScene::EditorViewScene(QObject *parent)
 		, mActionSignalMapper(new QSignalMapper(this))
 		, mTimer(new QTimer(this))
 		, mShouldReparentItems(false)
+		, mTopLeftCorner(new QGraphicsRectItem(0, 0, 1, 1))
+		, mBottomRightCorner(new QGraphicsRectItem(0, 0, 1, 1))
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
 	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth").toInt()) / 100;
@@ -35,6 +37,8 @@ EditorViewScene::EditorViewScene(QObject *parent)
 
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
+
+	initCorners();
 
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 }
@@ -147,7 +151,7 @@ void EditorViewScene::clearScene()
 {
 	foreach (QGraphicsItem *item, items()) {
 		// looks really insane, but some elements were alreadt deleted together with their parent
-		if (items().contains(item)) {
+		if (items().contains(item) && !(item == mTopLeftCorner || item == mBottomRightCorner)) {
 			removeItem(item);
 		}
 	}
@@ -779,9 +783,7 @@ void EditorViewScene::moveSelectedItems(int direction)
 
 	foreach (QGraphicsItem* item, selectedItems()) {
 		QPointF newPos = item->pos();
-		if (!item->parentItem()) {
-			newPos += offset;
-		}
+		newPos += offset;
 
 		Element* element = dynamic_cast<Element*>(item);
 		if (element) {
@@ -1365,4 +1367,34 @@ void EditorViewScene::selectAll()
 	foreach (QGraphicsItem *element, items()) {
 		element->setSelected(true);
 	}
+}
+
+void EditorViewScene::initCorners()
+{
+	mTopLeftCorner->setVisible(false);
+	mBottomRightCorner->setVisible(false);
+
+	setCorners(QPointF(0, 0), QPointF(1000, 1000));
+}
+
+void EditorViewScene::setCorners(QPointF const &topLeft, QPointF const &bottomRight)
+{
+	mTopLeftCorner->setPos(topLeft);
+	mBottomRightCorner->setPos(bottomRight);
+
+	addItem(mTopLeftCorner);
+	addItem(mBottomRightCorner);
+}
+
+// this needs to do something with it: make the behavior of sceneRect adequate
+void EditorViewScene::cropToItems()
+{
+	removeItem(mTopLeftCorner);
+	removeItem(mBottomRightCorner);
+
+	QRectF newRect = itemsBoundingRect();
+
+	setSceneRect(newRect);
+	mView->setSceneRect(newRect);
+	setCorners(newRect.topLeft(), newRect.bottomRight());
 }

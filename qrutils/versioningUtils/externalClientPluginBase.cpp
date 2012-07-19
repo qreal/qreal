@@ -1,7 +1,7 @@
-#include "externalClientPluginBase.h"
-
 #include <QtCore/QTextCodec>
 #include <QtGui/QApplication>
+
+#include "externalClientPluginBase.h"
 
 using namespace qReal::versioning;
 
@@ -62,6 +62,20 @@ bool ExternalClientPluginBase::invokeOperation(const QStringList &args
 		mWorkingCopyManager->processWorkingCopy(tempFolder(), targetProject);
 	}
 	return result;
+}
+
+bool ExternalClientPluginBase::invokeOperationAsync(const QStringList &args
+	, bool needPreparation
+	, bool needProcessing
+	, const QString &targetProject
+	, bool reportErrors)
+{
+	// TODO: implement this using new utils
+	Q_UNUSED(args)
+	Q_UNUSED(needPreparation)
+	Q_UNUSED(needProcessing)
+	Q_UNUSED(targetProject)
+	Q_UNUSED(reportErrors)
 }
 
 QString ExternalClientPluginBase::standartOutput() const

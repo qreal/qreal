@@ -1,7 +1,7 @@
+#include <QDebug>
+
 #include "object.h"
 #include "../../../qrkernel/exception/exception.h"
-
-#include <QDebug>
 
 using namespace qrRepo::details;
 using namespace qReal;

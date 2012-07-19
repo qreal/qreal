@@ -1,8 +1,8 @@
+#include <QtCore/QDebug>
+
 #include "client.h"
 #include "../../qrkernel/exception/exception.h"
 #include "../../qrkernel/settingsManager.h"
-
-#include <QtCore/QDebug>
 
 using namespace qReal;
 using namespace qrRepo;

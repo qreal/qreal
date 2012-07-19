@@ -1,12 +1,12 @@
 #pragma once
 
+#include <QHash>
+
 #include "../../qrkernel/definitions.h"
 #include "../../qrkernel/ids.h"
 #include "classes/object.h"
 #include "qrRepoGlobal.h"
 #include "serializer.h"
-
-#include <QHash>
 
 namespace qrRepo {
 

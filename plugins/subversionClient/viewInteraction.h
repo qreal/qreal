@@ -1,12 +1,12 @@
 #pragma once
 
+#include <QtCore/QObject>
+
 #include "../../qrgui/toolPluginInterface/toolPluginInterface.h"
 #include "../../qrgui/toolPluginInterface/pluginConfigurator.h"
 #include "gui/checkoutDialog.h"
 #include "gui/commitDialog.h"
 #include "gui/versioningPage.h"
-
-#include <QtCore/QObject>
 
 namespace versioning
 {

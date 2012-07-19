@@ -133,7 +133,7 @@ bool SubversionPlugin::doCheckout(const QString &from, const QString &targetProj
 	QStringList arguments;
 	arguments << "checkout" << from << checkoutDist;
 	arguments << authenticationArgs();
-	bool result = invokeOperation(arguments, false, true, targetProject);
+	bool const result = invokeOperation(arguments, false, true, targetProject);
 	emit checkoutComplete(result);
 	emit operationComplete("checkout", result);
 	return result;
@@ -145,7 +145,7 @@ bool SubversionPlugin::doUpdate(const QString &to)
 	QStringList arguments;
 	arguments << "update" << targetDir;
 	arguments << authenticationArgs();
-	bool result = invokeOperation(arguments);
+	bool const result = invokeOperation(arguments);
 	emit updateComplete(result);
 	emit operationComplete("update", result);
 	return result;
@@ -157,7 +157,7 @@ bool SubversionPlugin::doCommit(const QString &message, const QString &from)
 	QStringList arguments;
 	arguments << "commit" << targetDir << "-m" << message;
 	arguments << authenticationArgs();
-	bool result = invokeOperation(arguments);
+	bool const result = invokeOperation(arguments);
 	emit commitComplete(result);
 	emit operationComplete("commit", result);
 	return result;
@@ -168,7 +168,7 @@ bool SubversionPlugin::doCleanUp(const QString &what)
 	QStringList arguments;
 	QString targetDir = what.isEmpty() ? tempFolder() : what;
 	arguments << "cleanup" << targetDir;
-	bool result = invokeOperation(arguments);
+	bool const result = invokeOperation(arguments);
 	emit cleanUpComplete(result);
 	emit operationComplete("cleanup", result);
 	return result;
@@ -180,7 +180,7 @@ bool SubversionPlugin::doRevert(const QString &what)
 	QString targetDir = what.isEmpty() ? tempFolder() : what;
 	// TODO: Add different variants
 	arguments << "revert" << "-R" << targetDir;
-	bool result = invokeOperation(arguments);
+	bool const result = invokeOperation(arguments);
 	emit cleanUpComplete(result);
 	emit operationComplete("revert", result);
 	return result;
@@ -195,7 +195,7 @@ bool SubversionPlugin::doAdd(const QString &what, bool force)
 	}
 	// This feature requires svn with version >= 1.5
 	arguments << "--parents";
-	bool result = invokeOperation(arguments);
+	bool const result = invokeOperation(arguments);
 	addComplete(result);
 	operationComplete("add", result);
 	return result;
@@ -208,7 +208,7 @@ bool SubversionPlugin::doRemove(const QString &what, bool force)
 	if (force) {
 		arguments << "--force";
 	}
-	bool result = invokeOperation(arguments);
+	bool const result = invokeOperation(arguments);
 	removeComplete(result);
 	operationComplete("remove", result);
 	return result;

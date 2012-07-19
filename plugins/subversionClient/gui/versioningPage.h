@@ -26,12 +26,13 @@ public:
 protected:
 	void changeEvent(QEvent *e);
 
+private slots:
+	void on_browseSvnClientButton_clicked();
+
 private:
 	Ui::PreferencesVersioningPage *mUi;
 	AuthenticationSettingsWidget *mAuthenticationSettings;
 
-private slots:
-	void on_browseSvnClientButton_clicked();
 };
 
 }

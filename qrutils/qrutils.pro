@@ -4,6 +4,8 @@ QT += xml
 
 DESTDIR = ../bin
 
+TRANSLATIONS += qrutils_ru.ts
+
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
 RCC_DIR = .moc
@@ -40,3 +42,6 @@ include(versioningUtils/versioningUtils.pri)
 
 # Stuff connected with graph transformation
 include(graphTransformation/graphTransformation.pri)
+
+# Stuff for running long operations in different modes
+include(invocationUtils/invocationUtils.pri)

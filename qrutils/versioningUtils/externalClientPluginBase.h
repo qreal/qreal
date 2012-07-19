@@ -1,9 +1,9 @@
 #pragma once
 
+#include <QtCore/QProcess>
+
 #include "../utilsDeclSpec.h"
 #include "../../qrgui/versioning/versioningPluginInterface.h"
-
-#include <QtCore/QProcess>
 
 namespace qReal
 {
@@ -28,6 +28,16 @@ public:
 	/// @param targetProject A path to project whicth will recieve chages in working copy after processing.
 	///                      If empty value speified, target project will be working one
 	bool invokeOperation(QStringList const &args, bool needPreparation = true
+			, bool needProcessing = true, QString const &targetProject = QString()
+			, bool reportErrors = true);
+
+	/// Starts process which executable`s path specified by setPathToClient() method in separate thread.
+	/// @param args Startup arguments
+	/// @param needPreparation Specifies if working copy must be fetchced from current project
+	/// @param needPreparation Specifies if changes in working copy must be registered in current project
+	/// @param targetProject A path to project whicth will recieve chages in working copy after processing.
+	///                      If empty value speified, target project will be working one
+	bool invokeOperationAsync(QStringList const &args, bool needPreparation = true
 			, bool needProcessing = true, QString const &targetProject = QString()
 			, bool reportErrors = true);
 

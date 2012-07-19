@@ -55,7 +55,7 @@ bool FolderCompressor::compress(QString const &sourceFolder, QString const &pref
 		mDataStream << QString(); //empty data part, need for correct decompression
 		return true;
 	}
-	// 5- Else: for each mFile in list: add mFile path and compressed binary data
+	// 5 - Else: for each mFile in list: add mFile path and compressed binary data
 	foreach (QFileInfo const &fileInfo, filesList) {
 		QFile file(dir.absolutePath() + "/" + fileInfo.fileName());
 		if (!file.open(QIODevice::ReadOnly)) { // couldn't open file

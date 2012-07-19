@@ -1,58 +1,57 @@
 #include "authenticationSettingsWidget.h"
+#include "ui_authenticationSettingsWidget.h"
 #include "../../qrkernel/settingsManager.h"
-
-#include <QtGui/QGridLayout>
-#include <QtGui/QLabel>
 
 using namespace versioning::ui;
 
 AuthenticationSettingsWidget::AuthenticationSettingsWidget(QWidget *parent)
 	: QWidget(parent)
+	, mUi(new Ui::AuthenticationSettingsWidget)
 {
-	QFrame *frame = new QFrame;
-	frame->setFrameShape(QFrame::StyledPanel);
-	frame->setFrameShadow(QFrame::Raised);
-	QGridLayout *layout = new QGridLayout;
-	QLabel *userLabel = new QLabel(tr("Username:"));
-	QLabel *passwordLabel = new QLabel(tr("Password:"));
-	mUserEditor = new QLineEdit;
-	mPasswordEditor = new QLineEdit;
-	mPasswordEditor->setEchoMode(QLineEdit::Password);
-	layout->addWidget(userLabel, 0, 0);
-	layout->addWidget(passwordLabel, 1, 0);
-	layout->addWidget(mUserEditor, 0, 1);
-	layout->addWidget(mPasswordEditor, 1, 1);
-	frame->setLayout(layout);
-
-	mEnabledCheckBox = new QCheckBox(tr("Enable authentication"));
-	connect(mEnabledCheckBox, SIGNAL(clicked()), this, SLOT(onEnableChecked()));
-	QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-	mainLayout->setMargin(0);
-	mainLayout->addWidget(mEnabledCheckBox);
-	mainLayout->addWidget(frame);
-	setLayout(mainLayout);
+	mUi->setupUi(this);
+	reinit();
 }
 
-void AuthenticationSettingsWidget::init()
+AuthenticationSettingsWidget::AuthenticationSettingsWidget(const QString &settingsPrefix
+		, QWidget *parent)
+	: QWidget(parent)
+	, mUi(new Ui::AuthenticationSettingsWidget)
+	, mSettingsPrefix(settingsPrefix)
 {
-	mEnabledCheckBox->setChecked(SettingsManager::value(enabledSettingsName(), false).toBool());
-	mUserEditor->setText(SettingsManager::value(usernameSettingsName()).toString());
-	mPasswordEditor->setText(SettingsManager::value(passwordSettingsName()).toString());
+	mUi->setupUi(this);
+	reinit();
+}
+
+AuthenticationSettingsWidget::~AuthenticationSettingsWidget()
+{
+	delete mUi;
+}
+
+void AuthenticationSettingsWidget::retranslate()
+{
+	mUi->retranslateUi(this);
+}
+
+void AuthenticationSettingsWidget::reinit()
+{
+	mUi->enabledCheckBox->setChecked(SettingsManager::value(enabledSettingsName(), false).toBool());
+	mUi->userEditor->setText(SettingsManager::value(usernameSettingsName()).toString());
+	mUi->passwordEditor->setText(SettingsManager::value(passwordSettingsName()).toString());
 
 	onEnableChecked();
 }
 
 void AuthenticationSettingsWidget::save()
 {
-	SettingsManager::setValue(enabledSettingsName(), mEnabledCheckBox->isChecked());
-	SettingsManager::setValue(usernameSettingsName(), mUserEditor->text());
-	SettingsManager::setValue(passwordSettingsName(), mPasswordEditor->text());
+	SettingsManager::setValue(enabledSettingsName(), mUi->enabledCheckBox->isChecked());
+	SettingsManager::setValue(usernameSettingsName(), mUi->userEditor->text());
+	SettingsManager::setValue(passwordSettingsName(), mUi->passwordEditor->text());
 }
 
 void AuthenticationSettingsWidget::onEnableChecked()
 {
-	mUserEditor->setEnabled(mEnabledCheckBox->isChecked());
-	mPasswordEditor->setEnabled(mEnabledCheckBox->isChecked());
+	mUi->userEditor->setEnabled(mUi->enabledCheckBox->isChecked());
+	mUi->passwordEditor->setEnabled(mUi->enabledCheckBox->isChecked());
 }
 
 void AuthenticationSettingsWidget::setSettingsPrefix(const QString &prefix)
@@ -60,17 +59,32 @@ void AuthenticationSettingsWidget::setSettingsPrefix(const QString &prefix)
 	mSettingsPrefix = prefix;
 }
 
+QString AuthenticationSettingsWidget::enabledSettingsName(const QString &prefix)
+{
+	return prefix + "AuthenticationEnabled";
+}
+
+QString AuthenticationSettingsWidget::usernameSettingsName(const QString &prefix)
+{
+	return prefix + "Username";
+}
+
+QString AuthenticationSettingsWidget::passwordSettingsName(const QString &prefix)
+{
+	return prefix + "Password";
+}
+
 QString AuthenticationSettingsWidget::enabledSettingsName() const
 {
-	return mSettingsPrefix + "AuthenticationEnabled";
+	return enabledSettingsName(mSettingsPrefix);
 }
 
 QString AuthenticationSettingsWidget::usernameSettingsName() const
 {
-	return mSettingsPrefix + "Username";
+	return usernameSettingsName(mSettingsPrefix);
 }
 
 QString AuthenticationSettingsWidget::passwordSettingsName() const
 {
-	return mSettingsPrefix + "Password";
+	return passwordSettingsName(mSettingsPrefix);
 }

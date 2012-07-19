@@ -1,11 +1,11 @@
-#include "serializer.h"
-#include "folderCompressor.h"
 #include <QtCore/QDir>
 #include <QtCore/QDebug>
 #include <QtCore/QPointF>
 #include <QtGui/QPolygon>
-#include "../../qrkernel/settingsManager.h"
 
+#include "serializer.h"
+#include "folderCompressor.h"
+#include "../../qrkernel/settingsManager.h"
 #include "../../qrutils/outFile.h"
 #include "../../qrutils/xmlUtils.h"
 
@@ -409,37 +409,27 @@ QString Serializer::createDirectory(Id const &id, Id const &logicalId)
 		mSavedDirectories << QFileInfo(dirName).filePath();
 	}
 
-//Todo: understand if we need this
-//	QDir dir;
-	//dir.rmdir(mWorkingDir);
-	//dir.mkpath(dirName);
-
 	return dirName + "/" + partsList[partsList.size() - 1];
 }
 
 bool Serializer::removeUnsaved(const QString &path)
 {
-	bool result = true;
 	QDir dir(path);
-	if (dir.exists()) {
-		foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
-			if (fileInfo.isDir()) {
-				if (mSavedDirectories.contains(fileInfo.filePath())) {
-					if (!removeUnsaved(fileInfo.filePath())) {
-						result = false;
-					}
-				} else {
-					if (!reportRemoved(fileInfo.filePath())) {
-						result = false;
-					}
-				}
-			} else {
-				if (!mSavedFiles.contains(fileInfo.filePath())) {
-					if(!reportRemoved(fileInfo.filePath())) {
-						result = false;
-					}
-				}
-			}
+	if (!dir.exists()) {
+		return true;
+	}
+	bool result = true;
+	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+		if (fileInfo.isDir()) {
+			bool const invocationResult =
+					mSavedDirectories.contains(fileInfo.filePath())
+						? removeUnsaved(fileInfo.filePath())
+						: reportRemoved(fileInfo.filePath());
+			result = result & invocationResult;
+		} else {
+			result = mSavedFiles.contains(fileInfo.filePath())
+					? result
+					: (reportRemoved(fileInfo.filePath()) && result);
 		}
 	}
 	return result;

@@ -13,9 +13,7 @@ PreferencesVersioningPage::PreferencesVersioningPage(QWidget *parent)
 	mIcon = QIcon(":/icons/preferences/versioning.png");
 	mUi->setupUi(this);
 
-	mAuthenticationSettings = new AuthenticationSettingsWidget;
-	mAuthenticationSettings->setSettingsPrefix("svn");
-	mAuthenticationSettings->init();
+	mAuthenticationSettings = new AuthenticationSettingsWidget("svn");
 	// The last widget in layout must remain spacer
 	mUi->verticalLayout->insertWidget(mUi->verticalLayout->count() - 1, mAuthenticationSettings);
 
@@ -33,6 +31,7 @@ void PreferencesVersioningPage::changeEvent(QEvent *e)
 	switch (e->type()) {
 	case QEvent::LanguageChange:
 		mUi->retranslateUi(this);
+		mAuthenticationSettings->retranslate();
 		break;
 	default:
 		break;

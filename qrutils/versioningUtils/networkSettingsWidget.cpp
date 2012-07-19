@@ -1,87 +1,66 @@
 #include "networkSettingsWidget.h"
+#include "ui_networkSettingsWidget.h"
 #include "../../qrkernel/settingsManager.h"
-
-#include <QtGui/QGridLayout>
-#include <QtGui/QLabel>
 
 using namespace versioning::ui;
 
 NetworkSettingsWidget::NetworkSettingsWidget(QWidget *parent)
 	: QWidget(parent)
+	, mUi(new Ui::NetworkSettingsWidget)
 {
-	QFrame *frame = new QFrame;
-	frame->setFrameShape(QFrame::StyledPanel);
-	frame->setFrameShadow(QFrame::Raised);
-	QGridLayout *layout = new QGridLayout;
-	QLabel *serverAddressLabel = new QLabel(tr("Server address:"));
-	QLabel *serverPortLabel = new QLabel(tr("Server port:"));
-	QLabel *userLabel = new QLabel(tr("Username:"));
-	QLabel *passwordLabel = new QLabel(tr("Password:"));
-	QLabel *timeoutLabel = new QLabel(tr("Timeout in sec:"));
-	mServerAddressEditor = new QLineEdit;
-	mServerPortEditor = new QSpinBox;
-	mServerPortEditor->setMinimum(0);
-	mServerPortEditor->setMaximum(65535);
-	mServerPortEditor->setAccelerated(true);
-	mUserEditor = new QLineEdit;
-	mPasswordEditor = new QLineEdit;
-	mPasswordEditor->setEchoMode(QLineEdit::Password);
-	mTimeoutEditor = new QSpinBox;
-	mTimeoutEditor->setMinimum(0);
-	mTimeoutEditor->setMaximum(1000);
-	mTimeoutEditor->setAccelerated(true);
-	layout->setColumnStretch(0, 30);
-	layout->setColumnStretch(1, 50);
-	layout->addWidget(serverAddressLabel, 0, 0);
-	layout->addWidget(serverPortLabel, 1, 0);
-	layout->addWidget(userLabel, 2, 0);
-	layout->addWidget(passwordLabel, 3, 0);
-	layout->addWidget(timeoutLabel, 4, 0);
-	layout->addWidget(mServerAddressEditor, 0, 1);
-	layout->addWidget(mServerPortEditor, 1, 1);
-	layout->addWidget(mUserEditor, 2, 1);
-	layout->addWidget(mPasswordEditor, 3, 1);
-	layout->addWidget(mTimeoutEditor, 4, 1);
-	frame->setLayout(layout);
-
-	mEnabledCheckBox = new QCheckBox(tr("Enable proxy"));
-	connect(mEnabledCheckBox, SIGNAL(clicked()), this, SLOT(onEnableChecked()));
-	QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-	mainLayout->setMargin(0);
-	mainLayout->addWidget(mEnabledCheckBox);
-	mainLayout->addWidget(frame);
-	setLayout(mainLayout);
+	mUi->setupUi(this);
+	reinit();
 }
 
-void NetworkSettingsWidget::init()
+NetworkSettingsWidget::NetworkSettingsWidget(const QString &settingsPrefix
+		, QWidget *parent)
+	: QWidget(parent)
+	, mUi(new Ui::NetworkSettingsWidget)
+	, mSettingsPrefix(settingsPrefix)
 {
-	mEnabledCheckBox->setChecked(SettingsManager::value(enabledSettingsName(), false).toBool());
-	mServerAddressEditor->setText(SettingsManager::value(addressSettingsName()).toString());
-	mServerPortEditor->setValue(SettingsManager::value(portSettingsName(), 0).toInt());
-	mUserEditor->setText(SettingsManager::value(usernameSettingsName()).toString());
-	mPasswordEditor->setText(SettingsManager::value(passwordSettingsName()).toString());
-	mTimeoutEditor->setValue(SettingsManager::value(timeoutSettingsName(), 0).toInt());
+	mUi->setupUi(this);
+	reinit();
+}
+
+NetworkSettingsWidget::~NetworkSettingsWidget()
+{
+	delete mUi;
+}
+
+void NetworkSettingsWidget::retranslate()
+{
+	mUi->retranslateUi(this);
+}
+
+void NetworkSettingsWidget::reinit()
+{
+	mUi->enabledCheckBox->setChecked(SettingsManager::value(enabledSettingsName(), false).toBool());
+	mUi->addressEditor->setText(SettingsManager::value(addressSettingsName()).toString());
+	mUi->portEditor->setValue(SettingsManager::value(portSettingsName(), 0).toInt());
+	mUi->userEditor->setText(SettingsManager::value(usernameSettingsName()).toString());
+	mUi->passwordEditor->setText(SettingsManager::value(passwordSettingsName()).toString());
+	mUi->timeoutEditor->setValue(SettingsManager::value(timeoutSettingsName(), 0).toInt());
 
 	onEnableChecked();
 }
 
 void NetworkSettingsWidget::save()
 {
-	SettingsManager::setValue(enabledSettingsName(), mEnabledCheckBox->isChecked());
-	SettingsManager::setValue(addressSettingsName(), mServerAddressEditor->text());
-	SettingsManager::setValue(portSettingsName(), mServerPortEditor->value());
-	SettingsManager::setValue(usernameSettingsName(), mUserEditor->text());
-	SettingsManager::setValue(passwordSettingsName(), mPasswordEditor->text());
-	SettingsManager::setValue(timeoutSettingsName(), mTimeoutEditor->value());
+	SettingsManager::setValue(enabledSettingsName(), mUi->enabledCheckBox->isChecked());
+	SettingsManager::setValue(addressSettingsName(), mUi->addressEditor->text());
+	SettingsManager::setValue(portSettingsName(), mUi->portEditor->value());
+	SettingsManager::setValue(usernameSettingsName(), mUi->userEditor->text());
+	SettingsManager::setValue(passwordSettingsName(), mUi->passwordEditor->text());
+	SettingsManager::setValue(timeoutSettingsName(), mUi->timeoutEditor->value());
 }
 
 void NetworkSettingsWidget::onEnableChecked()
 {
-	mServerAddressEditor->setEnabled(mEnabledCheckBox->isChecked());
-	mServerPortEditor->setEnabled(mEnabledCheckBox->isChecked());
-	mUserEditor->setEnabled(mEnabledCheckBox->isChecked());
-	mPasswordEditor->setEnabled(mEnabledCheckBox->isChecked());
-	mTimeoutEditor->setEnabled(mEnabledCheckBox->isChecked());
+	mUi->addressEditor->setEnabled(mUi->enabledCheckBox->isChecked());
+	mUi->portEditor->setEnabled(mUi->enabledCheckBox->isChecked());
+	mUi->userEditor->setEnabled(mUi->enabledCheckBox->isChecked());
+	mUi->passwordEditor->setEnabled(mUi->enabledCheckBox->isChecked());
+	mUi->timeoutEditor->setEnabled(mUi->enabledCheckBox->isChecked());
 }
 
 void NetworkSettingsWidget::setSettingsPrefix(const QString &prefix)
@@ -89,32 +68,62 @@ void NetworkSettingsWidget::setSettingsPrefix(const QString &prefix)
 	mSettingsPrefix = prefix;
 }
 
+QString NetworkSettingsWidget::enabledSettingsName(const QString &prefix)
+{
+	return prefix + "ProxyEnabled";
+}
+
+QString NetworkSettingsWidget::addressSettingsName(const QString &prefix)
+{
+	return prefix + "ProxyServer";
+}
+
+QString NetworkSettingsWidget::portSettingsName(const QString &prefix)
+{
+	return prefix + "ProxyPort";
+}
+
+QString NetworkSettingsWidget::usernameSettingsName(const QString &prefix)
+{
+	return prefix + "ProxyUsername";
+}
+
+QString NetworkSettingsWidget::passwordSettingsName(const QString &prefix)
+{
+	return prefix + "ProxyPassword";
+}
+
+QString NetworkSettingsWidget::timeoutSettingsName(const QString &prefix)
+{
+	return prefix + "ProxyTimeout";
+}
+
 QString NetworkSettingsWidget::enabledSettingsName() const
 {
-	return mSettingsPrefix + "ProxyEnabled";
+	return enabledSettingsName(mSettingsPrefix);
 }
 
 QString NetworkSettingsWidget::addressSettingsName() const
 {
-	return mSettingsPrefix + "ProxyServer";
+	return addressSettingsName(mSettingsPrefix);
 }
 
 QString NetworkSettingsWidget::portSettingsName() const
 {
-	return mSettingsPrefix + "ProxyPort";
+	return portSettingsName(mSettingsPrefix);
 }
 
 QString NetworkSettingsWidget::usernameSettingsName() const
 {
-	return mSettingsPrefix + "ProxyUsername";
+	return usernameSettingsName(mSettingsPrefix);
 }
 
 QString NetworkSettingsWidget::passwordSettingsName() const
 {
-	return mSettingsPrefix + "ProxyPassword";
+	return passwordSettingsName(mSettingsPrefix);
 }
 
 QString NetworkSettingsWidget::timeoutSettingsName() const
 {
-	return mSettingsPrefix + "ProxyTimeout";
+	return timeoutSettingsName(mSettingsPrefix);
 }
