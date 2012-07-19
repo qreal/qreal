@@ -34,6 +34,13 @@ public:
 	QString constraintModelId();//i.e. pluginId
 
 private :
+
+	enum metaType {
+		node,
+		edge,
+		empty
+	};
+
 	struct NeededStringsForCommonGenerate {
 		QString hFiles;
 		QString cppFiles;
@@ -78,14 +85,17 @@ private :
 	QString countRealConstraintOfElement(qReal::Id const &constraintElement);
 	QString countRealConstraintForEdgeElement(qReal::Id const &constraintElement, QString elementName, QString resultName, int depth, QString addStr);
 	QString countRealConstraintForNodeElement(qReal::Id const &constraintElement, QString elementName, QString resultName, int depth, QString addStr);
-	QPair<QString, QList<QString> > countRealConstraintForOneEdgeElement(qReal::Id const &constraint, qReal::IdList &usedElements, QString elementName, int depth, QString addStr);
-	QPair<QString, QList<QString> > countRealConstraintForOneNodeElement(qReal::Id const &constraint, qReal::IdList &usedElements, QString elementName, int depth, QString addStr);
+	QPair<QString, QList<QString> > countRealConstraintForOneEdgeElement(qReal::Id const &constraint, qReal::IdList &usedElements, QString elementName, int depth, QString addStr, bool isMultiOr = false);
+	QPair<QString, QList<QString> > countRealConstraintForOneNodeElement(qReal::Id const &constraint, qReal::IdList &usedElements, QString elementName, int depth, QString addStr, bool isMultiOr = false);
 	QPair<QString, QList<QString> > countNeighborsEdgesByOr(qReal::Id const &constraint, QString resConstraintBool, qReal::IdList &usedElements, QString elementName, int depth, QString addStr);
 	QPair<QString, QList<QString> > countNeighborsNodesByOr(qReal::Id const &constraint, QString resConstraintBool, qReal::IdList &usedElements, QString elementName, int depth, QString addStr);
 	QPair<bool, QString> handleConstraintsSelection(qReal::Id const &constraintElement);
-	QString pushResBoolInResStringByAnd(QList<QString> resBool);
 	QString additionalCommonPartForConstraint(QList<QString> resBool, QString resultName, int depth, QString addStr);
-	qReal::IdList neighborNodesByOr(qReal::Id const &element);
+
+	QString pushResBoolInResStringByAnd(QList<QString> resBool);
+	QString pushResBoolInResStringByOr(QList<QString> resBool);
+	qReal::IdList neighborNodesByType(qReal::Id const &element, QString const &type);
+	bool linksContainsByType(qReal::Id const &element, QString const &type);
 
 	QPair<QString, QList<QString> > countConstraintForBeginNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
 	QPair<QString, QList<QString> > countConstraintForEndNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
@@ -101,6 +111,7 @@ private :
 	QPair<QString, QList<QString> > countConstraintForIncomingNodes(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
 	QPair<QString, QList<QString> > countConstraintForPropertyNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
 	QPair<QString, QString > countPropertyCharacteristicForConstraintElement(qReal::Id const &constraint, QString const &characteristicName, QString const &defaultValue, QString property, QString sign, QString value,  QString elementName, int depth, QString addStr);
+	QPair<QString, QList<QString> > countConstraintForMultiOrNode(qReal::Id const &constraint, qReal::IdList &usedElements, metaType const &type, QString elementName, int depth, QString addStr);
 
 	QString mPathToQReal;
 	QString const &mMetamodelName;//имя метамодели языков, для которых напсана эта модель ограничений, по которой генерируется код
