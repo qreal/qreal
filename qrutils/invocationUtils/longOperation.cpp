@@ -1,6 +1,6 @@
 #include "longOperation.h"
 
-using namespace invokation;
+using namespace invocation;
 
 LongOperation::LongOperation(int timeout)
 	: mThread(NULL)
@@ -21,31 +21,31 @@ bool LongOperation::hasProgress() const
 	return mIsOperationWithProgress;
 }
 
-invokation::Progress *LongOperation::progress() const
+invocation::Progress *LongOperation::progress() const
 {
 	return (mIsOperationWithProgress) ? mProgress : NULL;
 }
 
 bool LongOperation::isRunning() const
 {
-	return mInvokationResult == Invoking;
+	return mInvocationResult == Invocing;
 }
 
-invokation::InvokationState LongOperation::invokationResult() const
+invocation::InvocationState LongOperation::invocationResult() const
 {
-	return mInvokationResult;
+	return mInvocationResult;
 }
 
-void LongOperation::invokeSync(QThread::Priority priority)
+void LongOperation::invoceSync(QThread::Priority priority)
 {
   // TODO: start timer in another thread to get timeouts work
-	startInvokation(priority);
+	startInvocation(priority);
 	mThread->wait();
 }
 
-void LongOperation::invokeAsync(QThread::Priority priority)
+void LongOperation::invoceAsync(QThread::Priority priority)
 {
-	startInvokation(priority);
+	startInvocation(priority);
 }
 
 void LongOperation::cancel()
@@ -55,19 +55,19 @@ void LongOperation::cancel()
 
 void LongOperation::onThreadFinished()
 {
-	if (mInvokationResult == Canceled) {
+	if (mInvocationResult == Canceled) {
 		return; // We already emited terminated signal
 	}
-	mInvokationResult = FinishedNormally;
+	mInvocationResult = FinishedNormally;
 	stopTimer();
-	emit finished(mInvokationResult);
+	emit finished(mInvocationResult);
 }
 
 void LongOperation::onThreadTerminated()
 {
-	mInvokationResult = Canceled;
+	mInvocationResult = Canceled;
 	stopTimer();
-	emit finished(mInvokationResult);
+	emit finished(mInvocationResult);
 }
 
 void LongOperation::stopTimer()
@@ -80,7 +80,7 @@ void LongOperation::stopTimer()
 	}
 }
 
-void LongOperation::startInvokation(QThread::Priority priority)
+void LongOperation::startInvocation(QThread::Priority priority)
 {
 	connect(mThread, SIGNAL(finished()), this, SLOT(onThreadFinished()));
 	connect(mThread, SIGNAL(terminated()), this, SLOT(onThreadTerminated()));
@@ -88,7 +88,7 @@ void LongOperation::startInvokation(QThread::Priority priority)
 	mTimer = new QTimer;
 	mTimer->connect(mTimer, SIGNAL(timeout()), mThread, SLOT(terminate()));
 
-	mInvokationResult = Invoking;
+	mInvocationResult = Invocing;
 	emit beforeStarted();
 
 	mTimer->start(mTimeout);

@@ -4,7 +4,7 @@
 
 #include "../utilsDeclSpec.h"
 
-namespace invokation
+namespace invocation
 {
 
 /// @brief Represents operation execution progress

@@ -8,14 +8,14 @@
 #include "progress.h"
 #include "../utilsDeclSpec.h"
 
-namespace invokation
+namespace invocation
 {
 
-/// @brief Representing operation invokation state
-enum InvokationState
+/// @brief Representing operation invocation state
+enum InvocationState
 {
-	/// Operation is invoking
-	Invoking = 0
+	/// Operation is invocing
+	Invocing = 0
 	/// Operation finished its execution itself
 	, FinishedNormally
 	/// Operation was canceled by user or timeout occured
@@ -23,7 +23,7 @@ enum InvokationState
 };
 
 /// Base class for all operations that can execute for a
-/// rather long time and must be invoked in another thread.
+/// rather long time and must be invoced in another thread.
 class QRUTILS_EXPORT LongOperation : public QObject
 {
 	Q_OBJECT
@@ -31,8 +31,8 @@ class QRUTILS_EXPORT LongOperation : public QObject
 public:
 	/// Returns if operation is running at the moment
 	bool isRunning() const;
-	/// Returns operation invokation state
-	InvokationState invokationResult() const;
+	/// Returns operation invocation state
+	InvocationState invocationResult() const;
 
 	/// Returns operation timeout. NOTE: timeout works only
 	/// in asynchronious case
@@ -48,11 +48,11 @@ public:
 	/// the caller thread till operation finished.
 	/// NOTE: timeout doesn`t work in this case
 	/// @param priority The OS sheduller parameter
-	void invokeSync(QThread::Priority priority = QThread::NormalPriority);
+	void invoceSync(QThread::Priority priority = QThread::NormalPriority);
 	/// Starts operation in another thread. When operation is finished
 	/// finished(...) signal is emitted
 	/// @param priority The OS sheduller parameter
-	void invokeAsync(QThread::Priority priority = QThread::NormalPriority);
+	void invoceAsync(QThread::Priority priority = QThread::NormalPriority);
 	/// Terminates operation thread
 	void cancel();
 
@@ -63,7 +63,7 @@ signals:
 	/// caller thread
 	void afterStarted();
 	/// Emitted when operation finished itself or was canceled
-	void finished(invokation::InvokationState invokationResult);
+	void finished(invocation::InvocationState invocationResult);
 
 protected:
 	// This class itself mustn`t be instantiated because of
@@ -71,7 +71,7 @@ protected:
 	explicit LongOperation(int timeout = INT_MAX);
 	virtual ~LongOperation() {}
 
-	virtual void startInvokation(QThread::Priority priority = QThread::NormalPriority);
+	virtual void startInvocation(QThread::Priority priority = QThread::NormalPriority);
 
 	QThread *mThread;
 	bool mIsOperationWithProgress;
@@ -86,7 +86,7 @@ private:
 
 	int mTimeout;
 	QTimer *mTimer;
-	InvokationState mInvokationResult;
+	InvocationState mInvocationResult;
 };
 
 }

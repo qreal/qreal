@@ -13,7 +13,7 @@ ProgressDialog::ProgressDialog(QWidget *parent)
 	setLabelText(text);
 }
 
-invokation::LongOperation *ProgressDialog::operation() const
+invocation::LongOperation *ProgressDialog::operation() const
 {
 	return mProgressBar->operation();
 }
@@ -23,11 +23,11 @@ bool ProgressDialog::isOperationConnected() const
 	return mProgressBar->isOperationConnected();
 }
 
-void ProgressDialog::connectOperation(invokation::LongOperation *operation)
+void ProgressDialog::connectOperation(invocation::LongOperation *operation)
 {
 	mProgressBar->connectOperation(operation);
 	connect(operation, SIGNAL(afterStarted()), this, SLOT(exec()));
-	connect(operation, SIGNAL(finished(invokation::InvokationState))
+	connect(operation, SIGNAL(finished(invocation::InvocationState))
 			, this, SLOT(close()));
 }
 

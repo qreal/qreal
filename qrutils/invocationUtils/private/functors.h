@@ -3,7 +3,7 @@
 #include <QtCore/qglobal.h>
 #include "QtCore/qtconcurrentcompilertest.h"
 
-namespace invokation
+namespace invocation
 {
 namespace details
 {

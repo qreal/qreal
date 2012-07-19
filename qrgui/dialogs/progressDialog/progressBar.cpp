@@ -8,7 +8,7 @@ ProgressBar::ProgressBar(QWidget *parent)
 	reset();
 }
 
-invokation::LongOperation *ProgressBar::operation() const
+invocation::LongOperation *ProgressBar::operation() const
 {
 	return mOperation;
 }
@@ -24,7 +24,7 @@ void ProgressBar::reset()
 	setFormat("%p%");
 }
 
-void ProgressBar::connectOperation(invokation::LongOperation *operation)
+void ProgressBar::connectOperation(invocation::LongOperation *operation)
 {
 	reset();
 	if (mOperation) {
@@ -37,10 +37,10 @@ void ProgressBar::connectOperation(invokation::LongOperation *operation)
 void ProgressBar::connectOperation()
 {
 	connect(mOperation, SIGNAL(beforeStarted()), this, SLOT(onBeforeStart()));
-	connect(mOperation, SIGNAL(finished(invokation::InvokationState)), this, SLOT(onOperationComplete(invokation::InvokationState)));
+	connect(mOperation, SIGNAL(finished(invocation::InvocationState)), this, SLOT(onOperationComplete(invocation::InvocationState)));
 	setTextVisible(mOperation->hasProgress());
 	if (mOperation->hasProgress()) {
-		invokation::Progress *progress = mOperation->progress();
+		invocation::Progress *progress = mOperation->progress();
 		setMinimum(progress->minimum());
 		setMaximum(progress->maximum());
 		setValue(progress->value());
@@ -53,9 +53,9 @@ void ProgressBar::connectOperation()
 void ProgressBar::disconnectOperation()
 {
 	mOperation->disconnect(this, SLOT(reset()));
-	mOperation->disconnect(this, SLOT(onOperationComplete(invokation::InvokationState)));
+	mOperation->disconnect(this, SLOT(onOperationComplete(invocation::InvocationState)));
 	if (mOperation->hasProgress()) {
-		invokation::Progress *progress = mOperation->progress();
+		invocation::Progress *progress = mOperation->progress();
 		progress->disconnect(this, SLOT(setMinimum(int)));
 		progress->disconnect(this, SLOT(setMaximum(int)));
 		progress->disconnect(this, SLOT(setValue(int)));
@@ -71,16 +71,16 @@ void ProgressBar::onBeforeStart()
 	}
 }
 
-void ProgressBar::onOperationComplete(invokation::InvokationState result)
+void ProgressBar::onOperationComplete(invocation::InvocationState result)
 {
 	if (!mOperation->hasProgress()) {
 		setMaximum(100);
 	}
 	switch(result) {
-	case invokation::FinishedNormally:
+	case invocation::FinishedNormally:
 		onOperationFinishedNormally();
 		break;
-	case invokation::Canceled:
+	case invocation::Canceled:
 		onOperationCanceled();
 		break;
 	default:
@@ -92,7 +92,7 @@ void ProgressBar::onOperationComplete(invokation::InvokationState result)
 void ProgressBar::onOperationFinishedNormally()
 {
 	if (mOperation->hasProgress()) {
-		invokation::Progress *progress = mOperation->progress();
+		invocation::Progress *progress = mOperation->progress();
 		progress->setValue(progress->maximum());
 	}
 }

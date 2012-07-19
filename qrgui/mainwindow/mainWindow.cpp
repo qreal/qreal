@@ -476,7 +476,7 @@ void MainWindow::deleteElementFromDiagram(Id const &id)
 	deleteFromExplorer(isLogical);
 }
 
-void MainWindow::reportOperation(invokation::LongOperation *operation)
+void MainWindow::reportOperation(invocation::LongOperation *operation)
 {
 	ProgressDialog *progressDialog = new ProgressDialog(this);
 	progressDialog->connectOperation(operation);

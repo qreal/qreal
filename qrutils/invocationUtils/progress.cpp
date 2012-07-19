@@ -1,6 +1,6 @@
 #include "progress.h"
 
-using namespace invokation;
+using namespace invocation;
 
 Progress::Progress(int minimum, int maximum)
 	: mMinimum(INT_MIN), mMaximum(INT_MAX) // for setMin/Max function worked correctly
