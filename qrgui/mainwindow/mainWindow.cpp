@@ -144,7 +144,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), mProjectManager, SLOT(openNewWithDiagram()));
 
-	connect(mUi->actionImport, SIGNAL(triggered()), mProjectManager, SLOT(suggestToimport()));
+	connect(mUi->actionImport, SIGNAL(triggered()), mProjectManager, SLOT(suggestToImport()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 	connect(mUi->actionCopyElementsOnDiagram, SIGNAL(triggered()), this, SLOT(copyElementsOnDiagram()));
 	connect(mUi->actionPasteOnDiagram, SIGNAL(triggered()), this, SLOT(pasteOnDiagram()));
@@ -1400,6 +1400,7 @@ void MainWindow::initToolPlugins()
 			, mModels->graphicalModelAssistApi()
 			, mModels->logicalModelAssistApi()
 			, *this
+			, *mProjectManager
 			));
 
 	QList<ActionInfo> const actions = mToolManager.actions();
