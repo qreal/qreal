@@ -38,7 +38,6 @@ void MiniMap::setCurrentScene()
 	if (editorViewScene->mainWindow() != NULL) {
 		setScene(editorViewScene);
 		// can affect zoom - need to change it if we make another desision about it
-		connect(editorViewScene, SIGNAL(changed(QList<QRectF>)), this, SLOT(ensureVisible(QList<QRectF>)));
 		connect(editorViewScene, SIGNAL(sceneRectChanged(QRectF)), this, SLOT(showScene()));
 	}
 }

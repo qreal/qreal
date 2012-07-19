@@ -783,9 +783,7 @@ void EditorViewScene::moveSelectedItems(int direction)
 
 	foreach (QGraphicsItem* item, selectedItems()) {
 		QPointF newPos = item->pos();
-		if (!item->parentItem()) {
-			newPos += offset;
-		}
+		newPos += offset;
 
 		Element* element = dynamic_cast<Element*>(item);
 		if (element) {
