@@ -1495,9 +1495,6 @@ void MainWindow::initToolManager()
 
 void MainWindow::initMiniMap()
 {
-//	connect(mUi->minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));
-//	mUi->minimapView->setRenderHint(QPainter::Antialiasing, true);
-//	adjustMinimapZoom(mUi->minimapZoomSlider->value());
 	mUi->minimapView->init(this);
 }
 
