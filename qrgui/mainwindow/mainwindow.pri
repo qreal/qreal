@@ -13,7 +13,8 @@ HEADERS += \
 	mainwindow/dotRunner.h \
 	mainwindow/splashScreen.h \
 	mainwindow/projectManager/projectManager.h \
-	mainwindow/projectManager/autosaver.h
+	mainwindow/projectManager/autosaver.h \
+	mainwindow/tabWidget.h
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -27,7 +28,8 @@ SOURCES += \
 	mainwindow/dotRunner.cpp \
 	mainwindow/splashScreen.cpp \
 	mainwindow/projectManager/projectManager.cpp \
-	mainwindow/projectManager/autosaver.cpp
+	mainwindow/projectManager/autosaver.cpp \
+	mainwindow/tabWidget.cpp
 
 FORMS += \
 	mainwindow/mainWindow.ui \

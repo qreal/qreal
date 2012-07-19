@@ -26,7 +26,7 @@
      <number>0</number>
     </property>
     <item row="0" column="0">
-     <widget class="QTabWidget" name="tabs"/>
+     <widget class="qReal::gui::TabWidget" name="tabs"/>
     </item>
    </layout>
   </widget>
@@ -705,6 +705,12 @@
    <class>PropertyEditorView</class>
    <extends>QWidget</extends>
    <header>../view/propertyEditorView.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>../mainwindow/tabWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
