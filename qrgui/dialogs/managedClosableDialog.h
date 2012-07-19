@@ -1,26 +1,24 @@
 #pragma once
-#include <QDialog>
+#include <QtGui/QDialog>
 
 namespace qReal {
 
-/**
- * @brief Dialog with managed closability
- */
+/// Dialog with managed closability
 class ManagedClosableDialog : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit ManagedClosableDialog(QWidget *parent = 0, bool isClosable = true);
-    bool forceClose();
-    void closeEvent(QCloseEvent *event);
-    void keyPressEvent(QKeyEvent *event);
+	explicit ManagedClosableDialog(QWidget *parent = 0, bool isClosable = true);
+	bool forceClose();
+	void closeEvent(QCloseEvent *event);
+	void keyPressEvent(QKeyEvent *event);
 
 public slots:
-    void setClosability(bool isClosable);
+	void setClosability(bool isClosable);
 
 private:
-    bool mIsClosable;
+	bool mIsClosable;
 };
 
 }

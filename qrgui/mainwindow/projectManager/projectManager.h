@@ -8,9 +8,7 @@ namespace qReal {
 
 class MainWindow;
 
-/**
- * @brief Class that provides all of the work load project from a file, stored in the project file, and so on
- */
+/// Class that provides all of the work load project from a file, stored in the project file, and so on
 class ProjectManager : public QObject
 {
 	Q_OBJECT
@@ -51,14 +49,14 @@ public:
 	bool suggestToSaveChangesOrCancel();
 	void setUnsavedIndicator(bool isUnsaved);
 	void reinitAutosaver();
-	QString saveFilePath();
+	QString saveFilePath() const;
 	void setSaveFilePath(QString const &filePath = "");
 
 private:
 	bool import(const QString &fileName);
 	bool saveFileExists(QString const &fileName);
 	bool pluginsEnough();
-	QString missingPluginNames();
+	QString missingPluginNames() const;
 
 	void refreshWindowTitleAccordingToSaveFile();
 	void refreshTitleModifiedSuffix();

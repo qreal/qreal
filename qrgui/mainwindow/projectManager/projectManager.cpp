@@ -17,7 +17,7 @@ ProjectManager::ProjectManager(MainWindow *mainWindow)
 	setSaveFilePath();
 }
 
-void ProjectManager::setSaveFilePath(const QString &filePath /* = "" */)
+void ProjectManager::setSaveFilePath(QString const &filePath /* = "" */)
 {
 	if (filePath.isEmpty()) {
 		mSaveFilePath = mAutosaver->filePath();
@@ -26,7 +26,7 @@ void ProjectManager::setSaveFilePath(const QString &filePath /* = "" */)
 	}
 }
 
-QString ProjectManager::saveFilePath()
+QString ProjectManager::saveFilePath() const
 {
 	return mSaveFilePath;
 }
@@ -159,7 +159,7 @@ bool ProjectManager::pluginsEnough()
 	return true;
 }
 
-QString ProjectManager::missingPluginNames()
+QString ProjectManager::missingPluginNames() const
 {
 	IdList missingPlugins = mMainWindow->manager()->checkNeededPlugins(
 			mMainWindow->models()->logicalRepoApi(), mMainWindow->models()->graphicalRepoApi());

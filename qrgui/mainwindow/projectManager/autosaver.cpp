@@ -28,7 +28,7 @@ void Autosaver::stop()
 	mTimer->stop();
 }
 
-uint Autosaver::interval()
+uint Autosaver::interval() const
 {
 	uint result = SettingsManager::value("AutosaveInterval").toUInt();
 	if (result == 0) {
@@ -42,7 +42,7 @@ void Autosaver::save()
 	mProjectManager->save();
 }
 
-QString Autosaver::filePath()
+QString Autosaver::filePath() const
 {
 	QString result;
 	if (SettingsManager::value("AutosaveFileName").toString().isEmpty()) {
@@ -57,18 +57,18 @@ QString Autosaver::filePath()
 	return result;
 }
 
-Autosaver::Pauser::Pauser(Autosaver *autosaver)
-		:mAutosaver(autosaver)
+Autosaver::Pauser::Pauser(Autosaver &autosaver)
+		: mAutosaver(autosaver)
 {
-	autosaver->stop();
+	autosaver.stop();
 }
 
 Autosaver::Pauser::~Pauser()
 {
-	mAutosaver->reinit();
+	mAutosaver.reinit();
 }
 
 Autosaver::Pauser Autosaver::pauser()
 {
-	return Pauser(this);
+	return Pauser(*this);
 }
