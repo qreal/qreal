@@ -150,6 +150,7 @@ void RobotsPlugin::activeTabChanged(Id const & rootElementId)
 	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
 	changeActiveTab(mActionInfos, enabled);
 	if (enabled) {
+		qDebug() << "oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
 		mInterpreter.enableD2ModelWidgetRunStopButtons();
 	} else {
 		mInterpreter.disableD2ModelWidgetRunStopButtons();

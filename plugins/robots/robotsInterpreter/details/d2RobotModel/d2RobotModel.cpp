@@ -393,6 +393,7 @@ void D2RobotModel::start()
 
 void D2RobotModel::nextFragment()
 {
+	qDebug() << "D2RobotModel::nextFragment()";
 	// do nothing until robot gets back on the ground
 	if (!mD2ModelWidget->isRobotOnTheGround())
 		return;

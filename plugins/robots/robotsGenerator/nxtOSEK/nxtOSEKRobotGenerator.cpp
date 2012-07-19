@@ -189,6 +189,7 @@ void NxtOSEKRobotGenerator::generate()
 
 	QString resultTaskTemplate = utils::InFile::readAll(":/nxtOSEK/templates/taskTemplate.oil");
 
+	QString resultTaskTemplate = utils::InFile::readAll(":/nxtOSEK/templates/taskTemplate.oil");
 	foreach (Id const &curInitialNode, toGenerate) {
 
 		mTaskTemplate = resultTaskTemplate;
