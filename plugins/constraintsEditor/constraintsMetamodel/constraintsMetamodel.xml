@@ -65,6 +65,7 @@
                     <container>
                         <contains type="propertyNode"/>
                         <contains type="abstractNodeForNodeConstraint"/>
+                        <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
                         <parent parentName="abstractErrorTypeNode"/>
@@ -88,6 +89,7 @@
                     <container>
                         <contains type="propertyNode"/>
                         <contains type="abstractExistsNode"/>
+                        <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
                         <parent parentName="abstractErrorTypeNode"/>
@@ -166,6 +168,7 @@
                     <container>
                         <contains type="propertyNode"/>
                         <contains type="abstractExistsNode"/>
+                        <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
                         <parent parentName="abstractNodeForNodeConstraint"/>
@@ -209,6 +212,7 @@
                     <container>
                         <contains type="propertyNode"/>
                         <contains type="abstractExistsNode"/>
+                        <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
                         <parent parentName="abstractNodeForNodeConstraint"/>
@@ -226,7 +230,7 @@
                     </properties>
                 </logic>
             </node>
-            <edge displayedName="Or" name="or" description="Связь, означающая логическое ИЛИ между элементарными ограничениями. Должен вкладываться в элементы задания ограничений на узлы или связи">
+            <edge displayedName="Or" name="or" description="Связь, означающая логическое ИЛИ между двумя элементарными ограничениями. Должен вкладываться в элементы задания ограничений на узлы или связи">
                 <graphics>
                     <lineType type="solidLine"/>
                 </graphics>
@@ -267,6 +271,7 @@
                     <container>
                         <contains type="propertyNode"/>
                         <contains type="abstractNodeForNodeConstraint"/>
+                        <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
                         <parent parentName="abstractExistsNode"/>
@@ -304,6 +309,7 @@
                     <container>
                         <contains type="propertyNode"/>
                         <contains type="abstractNodeForNodeConstraint"/>
+                        <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
                         <parent parentName="abstractExistsNode"/>
@@ -346,6 +352,7 @@
                     <container>
                         <contains type="propertyNode"/>
                         <contains type="abstractNodeForNodeConstraint"/>
+                        <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
                         <parent parentName="abstractNodeForNodeConstraint"/>
@@ -389,6 +396,7 @@
                     <container>
                         <contains type="propertyNode"/>
                         <contains type="abstractNodeForNodeConstraint"/>
+                        <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
                         <parent parentName="abstractNodeForNodeConstraint"/>
@@ -428,10 +436,11 @@
                     <container>
                         <contains type="abstractNodeForNodeConstraint"/>
                         <contains type="propertyNode"/>
+                        <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractExistsNode"/>
                         <parent parentName="abstractNodeForNodeConstraint"/>
+                        <parent parentName="abstractExistsNode"/>
                     </generalizations>
                 </logic>
             </node>
@@ -469,6 +478,7 @@
                     <container>
                         <contains type="abstractNodeForNodeConstraint"/>
                         <contains type="propertyNode"/>
+                        <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
                         <parent parentName="abstractNodeForNodeConstraint"/>
@@ -491,8 +501,9 @@
                 </graphics>
                 <logic>
                     <container>
-                        <contains type="propertyNode"/>
                         <contains type="abstractNodeForNodeConstraint"/>
+                        <contains type="MultiOrNode"/>
+                        <contains type="propertyNode"/>
                     </container>
                     <generalizations>
                         <parent parentName="abstractSelectionNode"/>
@@ -517,6 +528,7 @@
                     <container>
                         <contains type="propertyNode"/>
                         <contains type="abstractExistsNode"/>
+                        <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
                         <parent parentName="abstractSelectionNode"/>
@@ -582,8 +594,35 @@
                     </generalizations>
                 </logic>
             </node>
+            <edge displayedName="Multi Or Edge" name="MultiOrEdge" description="Связь, позволяющий задавать логическое ИЛИ между группой элементарных ограничений через узел 'Multi Or Node'. Должен вкладываться в элементы задания ограничений на узлы или связи">
+                <graphics>
+                    <lineType type="dashLine"/>
+                </graphics>
+                <logic>
+                    <associations endType="no_arrow" beginType="no_arrow">
+                        <association beginName="begin" endName="end"/>
+                    </associations>
+                </logic>
+            </edge>
+            <node displayedName="Multi Or Node" name="MultiOrNode" description="Элемент, позволяющий задавать логическое ИЛИ между группой элементарных ограничений при помощи связи 'Multi Or Edge'. Должен вкладываться в элементы задания ограничений на узлы или связи">
+                <graphics>
+                    <picture sizex="42" sizey="44">
+                        <ellipse fill="#faebd7" stroke-style="solid" stroke="#faebd7" y1="2" stroke-width="0" x1="1" y2="41" fill-style="solid" x2="40"/>
+                    </picture>
+                    <labels/>
+                    <ports>
+                        <pointPort x="2" y="23"/>
+                        <pointPort x="40" y="22"/>
+                        <pointPort x="21" y="2"/>
+                        <pointPort x="22" y="42"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
         </graphicTypes>
-                <palette>
+		<palette>
           <group name="Root Diagrams" description="Корневые элементы">
             <element name="Metamodel Constraints"/>
             <element name="Constraints Diagram"/>
@@ -610,6 +649,8 @@
           </group>
           <group name="Relationship" description="Связи для описания взаимоотношений между элементарными ограничениями">
             <element name="Or"/>
+			<element name="Multi Or Edge"/>
+			<element name="Multi Or Node"/>
           </group>
         </palette>
     </diagram>
