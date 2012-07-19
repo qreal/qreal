@@ -650,7 +650,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
 	Q_UNUSED(event);
-	
+
 	if (mElementImpl->isContainer()) {
 		changeFoldState();
 	}
@@ -1380,7 +1380,7 @@ void NodeElement::resizeChild(QRectF const &newContents, QRectF const &oldConten
 		double const dx = 0;
 		mPos = QPointF(mPos.x()+dx, newContents.y() + y*b/a);
 	}
-	
+
 	setPos(mPos);
 	storeGeometry();
 	return;
@@ -1573,12 +1573,7 @@ QGraphicsRectItem* NodeElement::placeholder() const
 	return mPlaceholder;
 }
 
-QRectF NodeElement::contents() const
-{
-	return mContents;
-}
-
-QRectF NodeElement::foldedContents() const
+QRectF NodeElement::foldedContentsRect() const
 {
 	return mFoldedContents;
 }
