@@ -25,7 +25,7 @@ public:
 	void addItem(QString const &text, QString const &userData, QString const &toolTip = "");
 	int count();
 	void highlightFirstItem();
-	
+
 signals:
 	void userDataSelected(QString const &userData);
 
@@ -36,6 +36,8 @@ private slots:
 
 private:
 	QString userData(QListWidgetItem *item);
+
+	static const int mOkButtonMinimumHeight = 32;
 
 	QListWidget *mListWidget;
 	QPushButton *mOkButton;

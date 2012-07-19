@@ -12,6 +12,7 @@ ProjectManager::ProjectManager(MainWindow *mainWindow)
 		: QObject(mainWindow)
 		, mMainWindow(mainWindow)
 		, mAutosaver(new Autosaver(this))
+		, mSaveFilePath(mAutosaver->filePath())
 		, mUnsavedIndicator(false)
 {
 }
@@ -64,13 +65,26 @@ int ProjectManager::suggestToSaveOrCancelMessage()
 
 bool ProjectManager::open(QString const &fileName)
 {
+	close();
+	mMainWindow->models()->repoControlApi().open("");
+	if (!import(fileName)) {
+		open(mSaveFilePath);
+		return false;
+	}
+	mSaveFilePath = fileName;
+	refreshApplicationStateAfterOpen();
+	return true;
+}
+
+bool ProjectManager::import(QString const &fileName)
+{
 	if (!fileName.isEmpty() && !saveFileExists(fileName)) {
 		return false;
 	}
 	// There is no way to verify sufficiency plugins without initializing repository
 	// that is stored in the save file. Iinitializing is impossible without closing current project.
 	close();
-	mMainWindow->models()->repoControlApi().open(fileName);
+	mMainWindow->models()->repoControlApi().importFromDisk(fileName);
 	mMainWindow->models()->reinit();
 
 	if (!pluginsEnough()) {
@@ -78,15 +92,10 @@ bool ProjectManager::open(QString const &fileName)
 		open(mSaveFilePath);
 		return false;
 	}
-
 	mMainWindow->propertyModel().setSourceModels(mMainWindow->models()->logicalModel()
 			, mMainWindow->models()->graphicalModel());
 	mMainWindow->graphicalModelExplorer()->setModel(mMainWindow->models()->graphicalModel());
 	mMainWindow->logicalModelExplorer()->setModel(mMainWindow->models()->logicalModel());
-
-	mSaveFilePath = fileName;
-	refreshApplicationStateAfterOpen();
-
 	return true;
 }
 
@@ -95,6 +104,7 @@ bool ProjectManager::suggestToimport()
 	return import(getOpenFileName(tr("Select file with a save to import")));
 }
 
+/*
 bool ProjectManager::import(QString const &fileName)
 {
 	if (!QFile(fileName).exists()) {
@@ -104,6 +114,7 @@ bool ProjectManager::import(QString const &fileName)
 	mMainWindow->models()->reinit();
 	return true;
 }
+*/
 
 bool ProjectManager::saveFileExists(QString const &fileName)
 {
@@ -179,9 +190,9 @@ bool ProjectManager::openEmptyWithSuggestToSaveChanges()
 	return open();
 }
 
-void ProjectManager::suggestToCreateDiagram(bool isNonClosable)
+void ProjectManager::suggestToCreateDiagram(bool isClosable)
 {
-	SuggestToCreateDiagramDialog suggestDialog(mMainWindow, isNonClosable);
+	SuggestToCreateDiagramDialog suggestDialog(mMainWindow, isClosable);
 	suggestDialog.exec();
 }
 
@@ -226,9 +237,9 @@ bool ProjectManager::suggestToSaveAs()
 bool ProjectManager::saveAs(QString const &fileName)
 {
 	QString const workingFileName = fileName;
-	if (workingFileName.isEmpty()) {
-		return false;
-	}
+//	if (workingFileName.isEmpty()) {
+//		return false;
+//	}
 	mMainWindow->models()->repoControlApi().saveTo(workingFileName);
 	mSaveFilePath = workingFileName;
 	refreshApplicationStateAfterSave();
@@ -272,4 +283,9 @@ void ProjectManager::setUnsavedIndicator(bool isUnsaved)
 void ProjectManager::reinitAutosaver()
 {
 	mAutosaver->reinit();
+}
+
+QString ProjectManager::saveFilePath()
+{
+	return mSaveFilePath;
 }

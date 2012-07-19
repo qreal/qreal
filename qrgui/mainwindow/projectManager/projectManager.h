@@ -27,7 +27,7 @@ public slots:
 	/// Creating a new project
 	bool openNewWithDiagram();
 	/// Creating a new diagramm
-	void suggestToCreateDiagram(bool isNonClosable = false);
+	void suggestToCreateDiagram(bool isClosable = true);
 	/// Offers the user select a file (by a dialog) and import all diagrams from it into the current project.
 	bool suggestToimport();
 
@@ -51,6 +51,7 @@ public:
 	bool suggestToSaveChangesOrCancel();
 	void setUnsavedIndicator(bool isUnsaved);
 	void reinitAutosaver();
+	QString saveFilePath();
 
 private:
 	bool import(const QString &fileName);
@@ -67,8 +68,8 @@ private:
 
 	MainWindow *mMainWindow;
 	Autosaver *mAutosaver;
-	bool mUnsavedIndicator;
 	QString mSaveFilePath;
+	bool mUnsavedIndicator;
 };
 
 }
