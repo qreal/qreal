@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../utilsDeclSpec.h"
-
 #include <QtCore/QObject>
+
+#include "../utilsDeclSpec.h"
 
 namespace invokation
 {

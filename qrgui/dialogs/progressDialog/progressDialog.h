@@ -1,8 +1,8 @@
 #pragma once
 
-#include "progressBar.h"
-
 #include <QtGui/QProgressDialog>
+
+#include "progressBar.h"
 
 namespace qReal
 {

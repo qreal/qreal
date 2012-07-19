@@ -1,11 +1,12 @@
 #pragma once
 
-#include "progress.h"
-#include "../utilsDeclSpec.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
+
+#include "progress.h"
+#include "../utilsDeclSpec.h"
 
 namespace invokation
 {
@@ -67,7 +68,7 @@ signals:
 protected:
 	// This class itself mustn`t be instantiated because of
 	// thread initialization lack. Must be determined in child classes
-	LongOperation(int timeout = INT_MAX);
+	explicit LongOperation(int timeout = INT_MAX);
 	virtual ~LongOperation() {}
 
 	virtual void startInvokation(QThread::Priority priority = QThread::NormalPriority);

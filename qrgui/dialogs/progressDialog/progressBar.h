@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../../qrutils/invokationUtils/longOperation.h"
-
 #include <QtGui/QProgressBar>
+
+#include "../../../qrutils/invokationUtils/longOperation.h"
 
 namespace qReal
 {

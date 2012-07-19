@@ -1,10 +1,10 @@
 #pragma once
 
-#include "longOperation.h"
-#include "private/functors.h"
-
 #include <QtCore/QObject>
 #include <QtCore/QThread>
+
+#include "longOperation.h"
+#include "private/functors.h"
 
 using namespace invokation::details;
 
@@ -43,7 +43,7 @@ class QRUTILS_EXPORT FunctorOperation : public LongOperation
 {
 public:
 	/// @param timeout Operation timeout
-	FunctorOperation(int timeout = INT_MAX)
+	explicit FunctorOperation(int timeout = INT_MAX)
 		: LongOperation(timeout)
 	{
 	}
