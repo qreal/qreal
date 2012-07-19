@@ -1,6 +1,6 @@
 #include "../repoApi.h"
 
-#include <QDebug>
+#include <QtCore/QDebug>
 
 using namespace qrRepo;
 using namespace qrRepo::details;

@@ -71,6 +71,8 @@ public:
 
 	EdgeData& data();
 
+	virtual void deleteFromScene();
+
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

@@ -147,7 +147,19 @@ void D2ModelWidget::init(bool isActive)
 void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
 {
 	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()));
+	connect(mUi->runButton, SIGNAL(clicked()), this, SLOT(start()));
 	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()));
+	connect(mUi->stopButton, SIGNAL(clicked()), this, SLOT(stop()));
+}
+
+void D2ModelWidget::start()
+{
+	mRobotModel->start();
+}
+
+void D2ModelWidget::stop()
+{
+	mRobotModel->stop();
 }
 
 void D2ModelWidget::drawInitialRobot()
@@ -728,14 +740,11 @@ void D2ModelWidget::setSensorVisible(inputPort::InputPortEnum port, bool isVisib
 void D2ModelWidget::enableRunStopButtons()
 {
 	mUi->runButton->setEnabled(true);
-	emit runButtonEnable();
 }
 
 void D2ModelWidget::disableRunStopButtons()
 {
-	qDebug() << "disableRunStopButtons()assssssssssssssыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыы";
 	mUi->runButton->setEnabled(false);
-	emit runButtonDisable();
 }
 
 void D2ModelWidget::closeEvent(QCloseEvent *event)

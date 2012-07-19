@@ -27,35 +27,39 @@ AbstractRobotModelImplementation::~AbstractRobotModelImplementation()
 
 NullRobotModelImplementation *AbstractRobotModelImplementation::nullRobotModel()
 {
-	if (mNullRobotModel == NULL)
+	if (mNullRobotModel == NULL) {
 		mNullRobotModel = new NullRobotModelImplementation();
+	}
 	return mNullRobotModel;
 }
 
 RealRobotModelImplementation *AbstractRobotModelImplementation::realRobotModel(RobotCommunicator * const robotCommunicationInterface)
 {
-	if (mRealRobotModel == NULL)
+	if (mRealRobotModel == NULL) {
 		mRealRobotModel = new RealRobotModelImplementation(robotCommunicationInterface);
+	}
 	return mRealRobotModel;
 }
 
 UnrealRobotModelImplementation *AbstractRobotModelImplementation::unrealRobotModel(d2Model::D2RobotModel *d2RobotModel)
 {
-	if (mUnrealRobotModel == NULL)
+	if (mUnrealRobotModel == NULL) {
 		mUnrealRobotModel = new UnrealRobotModelImplementation(d2RobotModel);
+	}
 	return mUnrealRobotModel;
 }
 
 AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(robotModelType::robotModelTypeEnum type, RobotCommunicator * const robotCommunication, d2Model::D2RobotModel *d2RobotModel)
 {
-	if (type == robotModelType::null)
+	if (type == robotModelType::null) {
 		return nullRobotModel();
-	else if (type == robotModelType::unreal)
+	} else if (type == robotModelType::unreal) {
 		return unrealRobotModel(d2RobotModel);
-	else if (type == robotModelType::real)
+	} else if (type == robotModelType::real) {
 		return realRobotModel(robotCommunication);
-	else
+	} else {
 		throw Exception("AbstractRobotModelImplementation::robotModel tried to create unknown robot model");
+	}
 }
 
 sensorImplementations::AbstractSensorImplementation * AbstractRobotModelImplementation::sensor(inputPort::InputPortEnum const &port)

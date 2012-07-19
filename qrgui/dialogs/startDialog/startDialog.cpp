@@ -8,16 +8,24 @@
 
 using namespace qReal;
 
-StartDialog::StartDialog(MainWindow *mainWindow)
+const QSize StartDialog::mMinimumSize = QSize(350, 200);
+
+StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
 	: QDialog(mainWindow, Qt::WindowMaximizeButtonHint)
 	, mMainWindow(mainWindow)
+	, mProjectManager(projectManager)
 {
+	setMinimumSize(mMinimumSize);
 	QTabWidget *tabWidget = new QTabWidget;
 
 	RecentProjectsListWidget *recentProjects = new RecentProjectsListWidget(this);
 	tabWidget->addTab(recentProjects, tr("&Recent projects"));
 	SuggestToCreateDiagramWidget *diagrams = new SuggestToCreateDiagramWidget(mMainWindow, this);
 	tabWidget->addTab(diagrams, tr("&New project with diagram"));
+
+	if (recentProjects->count() == 0) {
+		tabWidget->setCurrentWidget(diagrams);
+	}
 
 	QCommandLinkButton *quitLink = new QCommandLinkButton(tr("&Quit QReal"));
 	QCommandLinkButton *openLink = new QCommandLinkButton(tr("&Open existing project"));
@@ -41,21 +49,21 @@ StartDialog::StartDialog(MainWindow *mainWindow)
 
 void StartDialog::openRecentProject(QString const &fileName)
 {
-	if (mMainWindow->open(fileName)) {
+	if (mProjectManager->open(fileName)) {
 		close();
 	}
 }
 
 void StartDialog::openExistingProject()
 {
-	if (mMainWindow->openExistingProject()) {
+	if (mProjectManager->suggestToOpenExisting()) {
 		close();
 	}
 }
 
 void StartDialog::createProjectWithDiagram(const QString &idString)
 {
-	mMainWindow->openEmptyProject();
+	mProjectManager->openEmptyWithSuggestToSaveChanges();
 	mMainWindow->createDiagram(idString);
 	// This dialog will be closed by the SuggestToCreateDiagramWidget
 }

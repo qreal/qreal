@@ -114,6 +114,7 @@ private:
 	Id const findStartingElement(Id const &diagram) const;
 	void addThread(details::Thread * const thread);
 	void updateSensorValues (QString const &sensorVariableName, int sensorValue);
+	void init();
 };
 
 }

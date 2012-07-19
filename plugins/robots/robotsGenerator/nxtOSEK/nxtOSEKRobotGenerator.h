@@ -1,16 +1,15 @@
 #pragma once
 
-#include <QString>
-#include <QPair>
-#include <QMap>
-#include <QStack>
+#include <QtCore/QString>
+#include <QtCore/QPair>
+#include <QtCore/QMap>
+#include <QtCore/QStack>
 
 #include "../../../../qrkernel/ids.h"
 #include "../../../../qrrepo/repoApi.h"
 #include "../../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 #include "generators/abstractElementGenerator.h"
-
 #include "smartLine.h"
 
 namespace robots {

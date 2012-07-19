@@ -6,6 +6,7 @@
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
 #include "nxtOSEK/nxtFlashTool.h"
 
+
 namespace robots {
 namespace generator {
 
@@ -40,6 +41,9 @@ private:
 	/// Method that checks presense of nxt-tools (shall be installed to nxt-tools
 	/// subfolder of QReal installation), and sets mNxtToolsPresent flag.
 	void checkNxtTools();
+
+	/// Disable/enable tab in QList<ActionInfo> info
+	void changeActiveTab(QList<qReal::ActionInfo> const &info, bool const &trigger);
 
 	/// Action that launches code generator
 	QAction mGenerateCodeAction;

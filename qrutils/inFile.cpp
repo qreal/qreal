@@ -16,8 +16,9 @@ QString InFile::readAll(QString const &fileName) {
 	QTextStream input;
 	input.setDevice(&file);
 	input.setCodec("UTF-8");
+	QString text = input.readAll();
 	file.close();
-	return input.readAll();
+	return text;
 }
 
 InFile::~InFile()

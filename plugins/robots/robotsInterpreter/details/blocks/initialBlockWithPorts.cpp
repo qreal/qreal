@@ -6,7 +6,7 @@ using namespace interpreters::robots::details::blocks;
 InitialBlockWithPorts::InitialBlockWithPorts(details::RobotModel &robotModel)
 	: mRobotModel(robotModel)
 {
-	connect(&mRobotModel, SIGNAL(connected(bool)), this, SLOT(connected(bool)));
+	connect(&mRobotModel, SIGNAL(goToNextBlock(bool)), this, SLOT(goToNextBlockSlot(bool)));
 }
 
 void InitialBlockWithPorts::run()
@@ -16,26 +16,31 @@ void InitialBlockWithPorts::run()
 
 QList<Block::SensorPortPair> InitialBlockWithPorts::sensorToPair(QString const port1Sensor, inputPort::InputPortEnum const &port) const
 {
-	QString ololo = QString::fromUtf8("Ультразвуковой сенсор");
-//	int y = QString::compare(port1Sensor, QString::fromUtf8("Ультразвуковой сенсор"));
-//	bool x = (port1Sensor == QString::fromUtf8("Ультразвуковой сенсор"));
 	QList<SensorPortPair> result;
-	if (port1Sensor == QString::fromUtf8("Сенсор нажатия (булево значение)"))
+	if (port1Sensor == QString::fromUtf8("Сенсор нажатия (булево значение)")) {
 		result << qMakePair(sensorType::touchBoolean, static_cast<int>(port));
-	if (port1Sensor == QString::fromUtf8("Сенсор нажатия (сырое значение)"))
+	}
+	if (port1Sensor == QString::fromUtf8("Сенсор нажатия (сырое значение)")) {
 		result << qMakePair(sensorType::touchRaw, static_cast<int>(port));
-	if (port1Sensor == QString::fromUtf8("Ультразвуковой сенсор"))
+	}
+	if (port1Sensor == QString::fromUtf8("Ультразвуковой сенсор")) {
 		result << qMakePair(sensorType::sonar, static_cast<int>(port));
-	if (port1Sensor == QString::fromUtf8("Сенсор цвета (полные цвета)"))
+	}
+	if (port1Sensor == QString::fromUtf8("Сенсор цвета (полные цвета)")) {
 		result << qMakePair(sensorType::colorFull, static_cast<int>(port));
-	if (port1Sensor == QString::fromUtf8("Сенсор цвета (красный)"))
+	}
+	if (port1Sensor == QString::fromUtf8("Сенсор цвета (красный)")) {
 		result << qMakePair(sensorType::colorRed, static_cast<int>(port));
-	if (port1Sensor == QString::fromUtf8("Сенсор цвета (зеленый)"))
+	}
+	if (port1Sensor == QString::fromUtf8("Сенсор цвета (зеленый)")) {
 		result << qMakePair(sensorType::colorGreen, static_cast<int>(port));
-	if (port1Sensor == QString::fromUtf8("Сенсор цвета (синий)"))
+	}
+	if (port1Sensor == QString::fromUtf8("Сенсор цвета (синий)")) {
 		result << qMakePair(sensorType::colorBlue, static_cast<int>(port));
-	if (port1Sensor == QString::fromUtf8("Сенсор цвета (пассивный)"))
+	}
+	if (port1Sensor == QString::fromUtf8("Сенсор цвета (пассивный)")) {
 		result << qMakePair(sensorType::colorNone, static_cast<int>(port));
+	}
 
 	return result;
 }
@@ -48,11 +53,11 @@ QList<Block::SensorPortPair> InitialBlockWithPorts::usedSensors() const
 									<< sensorToPair(stringProperty("port_4"), inputPort::port4);
 }
 
-void InitialBlockWithPorts::connected(bool success)
+void InitialBlockWithPorts::goToNextBlockSlot(bool success)
 {
-	if (success)
+	if (success) {
 		emit done(mNextBlock);
-	else {
+	 } else {
 		error(tr("Can't connect to a robot."));
 	}
 }

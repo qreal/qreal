@@ -25,9 +25,6 @@ public:
 
 	virtual void openSettingsDialog(QString const &tab) = 0;
 
-	/// Save currently opened model.
-	virtual void saveAll() = 0;
-
 	/// Opens new tab with text editor and shows a text in it
 	/// @param title A title of the tab
 	/// @param text A text that should be shown in an editor
@@ -72,6 +69,8 @@ public:
 	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true) = 0;
 
 	virtual void updateActiveDiagram() = 0;
+
+	virtual void deleteElementFromDiagram(Id const &id) = 0;
 };
 
 }

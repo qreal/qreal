@@ -75,6 +75,8 @@ protected:
 	void changeEvent(QEvent *e);
 
 private slots:
+	void start();
+	void stop();
 	void addWall(bool on);
 	void addLine(bool on);
 	void addStylus(bool on);

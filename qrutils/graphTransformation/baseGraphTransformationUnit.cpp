@@ -4,7 +4,7 @@ using namespace qReal;
 
 BaseGraphTransformationUnit::BaseGraphTransformationUnit(
 		qReal::LogicalModelAssistInterface &logicalModelApi
-		, qReal::GraphicalModelAssistInterface const &graphicalModelApi
+		, qReal::GraphicalModelAssistInterface &graphicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface)
 		: mInterpretersInterface(interpretersInterface)
 		, mLogicalModelApi(logicalModelApi)

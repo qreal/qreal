@@ -558,7 +558,7 @@
 						<image y1="0" name="images/beepBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-90" y="60" text="Громкость:"/>
+						<label x="-90" y="60" text="Громкость (%):"/>
 						<label x="-90" y="80" text="Ждать завершения:"/>
 						<label x="30" y="60" textBinded="Volume"/>
 						<label x="30" y="80" textBinded="WaitForCompletion"/>
@@ -679,7 +679,7 @@
 					</picture>
 					<labels>
 						<label x="-67" y="60" text="Частота (Гц):"/>
-						<label x="-68" y="80" text="Громкость:"/>
+						<label x="-68" y="80" text="Громкость (%):"/>
 						<label x="-68" y="100" text="Длительность (мс):"/>
 						<label x="-68" y="120" text="Ждать завершения:"/>
 						<label x="45" y="60" textBinded="Frequency"/>

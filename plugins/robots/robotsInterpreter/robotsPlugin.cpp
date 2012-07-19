@@ -1,7 +1,7 @@
+#include <QtGui/QApplication>
+
 #include "robotsPlugin.h"
 #include "details/tracer.h"
-
-#include <QtGui/QApplication>
 
 Q_EXPORT_PLUGIN2(robotsPlugin, qReal::interpreters::robots::RobotsPlugin)
 
@@ -28,9 +28,7 @@ RobotsPlugin::RobotsPlugin()
 	QApplication::installTranslator(mAppTranslator);
 
 	mRobotSettingsPage = new PreferencesRobotSettingsPage();
-
 	initActions();
-
 }
 
 RobotsPlugin::~RobotsPlugin()
@@ -73,6 +71,12 @@ void RobotsPlugin::initActions()
 	mActionInfos << d2ModelActionInfo << runActionInfo << stopRobotActionInfo
 			<< connectToRobotActionInfo << separatorActionInfo << robotSettingsActionInfo
 			<< separatorActionInfo << watchListActionInfo;
+
+	//Set tabs, unused at the opening, enabled
+	QList<ActionInfo> unusedTab;
+	unusedTab << d2ModelActionInfo << runActionInfo << stopRobotActionInfo << connectToRobotActionInfo << watchListActionInfo;
+	bool isTabEnable = false;
+	changeActiveTab(unusedTab, isTabEnable);
 }
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
@@ -144,16 +148,18 @@ void RobotsPlugin::closeNeededWidget()
 void RobotsPlugin::activeTabChanged(Id const & rootElementId)
 {
 	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
-	foreach (ActionInfo const &actionInfo, mActionInfos) {
-		if (needToDisableWhenNotRobotsDiagram(actionInfo.action())) {
-			actionInfo.action()->setEnabled(enabled);
-		}
-	}
+	changeActiveTab(mActionInfos, enabled);
 	if (enabled) {
-		qDebug() << "oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
 		mInterpreter.enableD2ModelWidgetRunStopButtons();
 	} else {
 		mInterpreter.disableD2ModelWidgetRunStopButtons();
+	}
+}
+
+void RobotsPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)
+{
+	foreach (ActionInfo const &actionInfo, info) {
+			actionInfo.action()->setEnabled(trigger);
 	}
 }
 

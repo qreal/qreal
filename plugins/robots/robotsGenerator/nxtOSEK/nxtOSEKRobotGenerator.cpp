@@ -185,10 +185,7 @@ void NxtOSEKRobotGenerator::generate()
 	createProjectDir(projectDir);
 
 	mResultString = utils::InFile::readAll(":/nxtOSEK/templates/template.c");
-	qDebug() << mResultString;
-
 	mResultOil = utils::InFile::readAll(":/nxtOSEK/templates/template.oil");
-	qDebug() << mResultOil;
 
 	QString resultTaskTemplate = utils::InFile::readAll(":/nxtOSEK/templates/taskTemplate.oil");
 

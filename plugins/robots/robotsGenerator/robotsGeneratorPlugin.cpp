@@ -48,14 +48,25 @@ QList<ActionInfo> RobotsGeneratorPlugin::actions()
 
 	checkNxtTools();
 
+	/*
+	/// Set tabs, unused at the opening, enabled
+	QList<ActionInfo> unusedAtTheOpeningTab;
+	unusedAtTheOpeningTab << generateCodeActionInfo;
+	changeActiveTab(unusedAtTheOpeningTab, false);
+	*/
 	return QList<ActionInfo>() << generateCodeActionInfo << flashRobotActionInfo
 			<< uploadProgramActionInfo;
 }
 
+void RobotsGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)
+{
+	foreach (ActionInfo const &actionInfo, info) {
+			actionInfo.action()->setEnabled(trigger);
+	}
+}
+
 void RobotsGeneratorPlugin::generateRobotSourceCode()
 {
-	mMainWindowInterface->saveAll();
-
 	robots::generator::NxtOSEKRobotGenerator gen(mMainWindowInterface->activeDiagram(),
 			 *mRepoControlApi,
 			 *mMainWindowInterface->errorReporter());
