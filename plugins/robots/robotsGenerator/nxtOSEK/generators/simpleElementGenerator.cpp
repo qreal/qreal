@@ -307,8 +307,6 @@ bool SimpleElementGenerator::nextElementsGeneration()
 
 QString SimpleElementGenerator::transformSign(QString const &sign)
 {
-	qDebug() << sign;
-
 	if (sign == "меньше") {
 		return "<";
 	} else if (sign == "больше"){

@@ -30,8 +30,8 @@ public:
 	virtual SensorsConfiguration &configuration();
 	D2ModelWidget *createModelWidget();
 
-	int readEncoder(int/*inputPort::InputPortEnum*/  const port) const;
-	void resetEncoder(int/*inputPort::InputPortEnum*/  const port);
+	int readEncoder(int const port) const;
+	void resetEncoder(int const port);
 
 	bool readTouchSensor(inputPort::InputPortEnum const port);
 	int readSonarSensor(inputPort::InputPortEnum const port) const;
