@@ -1250,50 +1250,20 @@ GesturesPainterInterface * MainWindow::gesturesPainter()
 	return mGesturesWidget;
 }
 
+ProxyEditorManager *MainWindow::proxyManager()
+{
+	return mEditorManagerProxy;
+}
+
 void MainWindow::createDiagram(QString const &idString)
 {
-	if (idString == "Interpreted diagram") {
-//		mDialog.hide();
-		QString fileName = mProjectManager->getOpenFileName(tr("Select file with metamodel to open"));
-		if (mProjectManager->open(fileName)) {
-//			mDialog.close();
-			mEditorManagerProxy->setProxyManager(new InterpreterEditorManager(fileName));
-			QStringList interpreterDiagramsList;
-			foreach(Id editor, mEditorManagerProxy->editors()) {
-				foreach(Id diagram, mEditorManagerProxy->diagrams(editor)) {
-					QString const diagramNodeName = mEditorManagerProxy->diagramNodeName(editor.editor(), diagram.diagram());
-					if (diagramNodeName.isEmpty())
-						continue;
-					interpreterDiagramsList.append("qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
-				}
-			}
-			foreach(QString interpreterIdString, interpreterDiagramsList) {
-				mModels->repoControlApi().exterminate();
-				mModels->reinit();
-				//mModels->repoControlApi().printDebug();
-				loadMetamodel();
-				Id const created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), Id::loadFromString(interpreterIdString));
-				QModelIndex const index = mModels->graphicalModelAssistApi().indexById(created);
-				mUi->graphicalModelExplorer->setCurrentIndex(index);
-				Id const logicalIdCreated = mModels->graphicalModelAssistApi().logicalId(created);
-				QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalIdCreated);
-				mUi->logicalModelExplorer->setCurrentIndex(logicalIndex);
-				openNewTab(index);
-			}
-		} else {
-			mEditorManagerProxy->setProxyManager(new EditorManager());
-//			mDialog.diagramsListSetCurrentRow(0);
-//			mDialog.show();
-		}
-	} else {
-		Id const created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), Id::loadFromString(idString));
-		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(created);
-		mUi->graphicalModelExplorer->setCurrentIndex(index);
-		Id const logicalIdCreated = mModels->graphicalModelAssistApi().logicalId(created);
-		QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalIdCreated);
-		mUi->logicalModelExplorer->setCurrentIndex(logicalIndex);
-		openNewTab(index);
-	}
+	Id const created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), Id::loadFromString(idString));
+	QModelIndex const index = mModels->graphicalModelAssistApi().indexById(created);
+	mUi->graphicalModelExplorer->setCurrentIndex(index);
+	Id const logicalIdCreated = mModels->graphicalModelAssistApi().logicalId(created);
+	QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalIdCreated);
+	mUi->logicalModelExplorer->setCurrentIndex(logicalIndex);
+	openNewTab(index);
 }
 
 int MainWindow::getTabIndex(const QModelIndex &index)

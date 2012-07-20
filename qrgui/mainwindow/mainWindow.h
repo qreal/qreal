@@ -110,6 +110,8 @@ public:
 
 	virtual void reportOperation(invocation::LongOperation *operation);
 
+	ProxyEditorManager *proxyManager();
+	void loadMetamodel();
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -225,7 +227,6 @@ private:
 
 
 	void loadPlugins();
-	void loadMetamodel();
 
 	void registerMetaTypes();
 

@@ -27,6 +27,7 @@ private slots:
 	void openExistingProject();
 	void createProjectWithDiagram(QString const &idString);
 	void exitApp();
+	void openInterpretedDiagram();
 
 private:
 	static const QSize mMinimumSize;

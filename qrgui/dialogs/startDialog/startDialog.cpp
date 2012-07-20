@@ -5,6 +5,7 @@
 #include "suggestToCreateDiagramWidget.h"
 #include "recentProjectsListWidget.h"
 #include "../mainwindow/mainWindow.h"
+#include "../models/models.h"
 
 using namespace qReal;
 
@@ -29,6 +30,10 @@ StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
 
 	QCommandLinkButton *quitLink = new QCommandLinkButton(tr("&Quit QReal"));
 	QCommandLinkButton *openLink = new QCommandLinkButton(tr("&Open existing project"));
+	QCommandLinkButton *openIDLink = new QCommandLinkButton(tr("&Open interpreted diagram"));
+
+	QHBoxLayout *openIDLinkLayout = new QHBoxLayout;
+	openIDLinkLayout->addWidget(openIDLink);
 
 	QHBoxLayout *commandLinksLayout = new QHBoxLayout;
 	commandLinksLayout->addWidget(openLink);
@@ -36,6 +41,7 @@ StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 	mainLayout->addWidget(tabWidget);
+	mainLayout->addLayout(openIDLinkLayout);
 	mainLayout->addLayout(commandLinksLayout);
 
 	setLayout(mainLayout);
@@ -43,6 +49,7 @@ StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
 
 	connect(openLink, SIGNAL(clicked()), this, SLOT(openExistingProject()));
 	connect(quitLink, SIGNAL(clicked()), this, SLOT(exitApp()));
+	connect(openIDLink, SIGNAL(clicked()), this, SLOT(openInterpretedDiagram()));
 	connect(recentProjects, SIGNAL(userDataSelected(QString)), this, SLOT(openRecentProject(QString)));
 	connect(diagrams, SIGNAL(userDataSelected(QString)), this, SLOT(createProjectWithDiagram(QString)));
 }
@@ -72,4 +79,31 @@ void StartDialog::exitApp()
 {
 	forceClose();
 	qApp->closeAllWindows();
+}
+
+void StartDialog::openInterpretedDiagram()
+{
+	QString fileName = mProjectManager->getOpenFileName(tr("Select file with metamodel to open"));
+	ProxyEditorManager *editorManagerProxy = mMainWindow->proxyManager();
+	if (mProjectManager->open(fileName)) {
+		editorManagerProxy->setProxyManager(new InterpreterEditorManager(fileName));
+		QStringList interpreterDiagramsList;
+		foreach(Id editor, editorManagerProxy->editors()) {
+			foreach(Id diagram, editorManagerProxy->diagrams(editor)) {
+				QString const diagramNodeName = editorManagerProxy->diagramNodeName(editor.editor(), diagram.diagram());
+				if (diagramNodeName.isEmpty())
+					continue;
+				interpreterDiagramsList.append("qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
+			}
+		}
+		foreach(QString interpreterIdString, interpreterDiagramsList) {
+			mMainWindow->models()->repoControlApi().exterminate();
+			mMainWindow->models()->reinit();
+			mMainWindow->loadMetamodel();
+			mMainWindow->createDiagram(interpreterIdString);
+		}
+		forceClose();
+	} else {
+		editorManagerProxy->setProxyManager(new EditorManager());
+	}
 }
