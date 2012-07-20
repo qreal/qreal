@@ -204,7 +204,7 @@ bool ProjectManager::openNewWithDiagram()
 	if(!openEmptyWithSuggestToSaveChanges()) {
 		return false;
 	}
-	suggestToCreateDiagram(true);
+	suggestToCreateDiagram(false);
 	return true;
 }
 
