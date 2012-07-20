@@ -71,6 +71,10 @@ void MiniMap::clear()
 
 QRectF MiniMap::getNewRect()
 {
+	if (!mEditorView) {
+		return QRectF();
+	}
+
 	QRect visibleRect = mEditorView->viewport()->rect();
 	QRectF newRect = mEditorView->mapToScene(visibleRect).boundingRect();
 
@@ -118,6 +122,10 @@ void MiniMap::resizeEvent(QResizeEvent *event)
 
 void MiniMap::drawForeground(QPainter *painter, QRectF const &rect)
 {
+	if (!mEditorView) {
+		return;
+	}
+
 	QGraphicsView::drawForeground(painter, rect);
 	painter->setPen(Qt::yellow);
 
