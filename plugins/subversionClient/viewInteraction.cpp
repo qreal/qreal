@@ -162,8 +162,8 @@ void ViewInteraction::onRevertComplete(const bool success)
 
 void ViewInteraction::reopenWithoutSavings()
 {
-//	QString const currentProject = mRepoApi->workingFile();
-	//TODO: obtain current project name
+	//	TODO: obtain current project name correctly
+	QString const currentProject = mRepoApi->workingFile();
 	mProjectManager->close();
 	mProjectManager->openExisting(currentProject);
 }

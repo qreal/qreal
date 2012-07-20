@@ -29,7 +29,7 @@ public:
 	void prepareWorkingCopy(const QString &workingCopyPath);
 	void processWorkingCopy(const QString &workingCopyPath, QString const &targetProject = QString());
 
-	void decompressFile(QString fileName);
+	void decompressFile(QString const &fileName);
 
 private:
 	void loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object*> &objectsHash);
@@ -59,7 +59,7 @@ private:
 	static QString serializeQPointF(QPointF const &p);
 	static QString serializeQPolygon(QPolygon const &p);
 	static QDomElement idListToXml(QString const &attributeName, qReal::IdList const &idList, QDomDocument &doc);
-	static QDomElement propertiesToXml(Object * const object, QDomDocument &doc);
+	static QDomElement propertiesToXml(Object const *object, QDomDocument &doc);
 
 
 	QString mWorkingDir;
@@ -71,6 +71,5 @@ private:
 	QMap<QString, QFile*> mFiles;
 };
 
-}
 }
 }
