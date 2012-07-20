@@ -10,10 +10,10 @@ using namespace qReal;
 
 const QSize StartDialog::mMinimumSize = QSize(350, 200);
 
-StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager, EditorManagerInterface const *editorManagerProxy)
-	: QDialog(mainWindow, Qt::WindowMaximizeButtonHint)
-	, mMainWindow(mainWindow)
-	, mProjectManager(projectManager)
+StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
+		: ManagedClosableDialog(mainWindow, false)
+		, mMainWindow(mainWindow)
+		, mProjectManager(projectManager)
 {
 	setMinimumSize(mMinimumSize);
 	QTabWidget *tabWidget = new QTabWidget;
@@ -42,7 +42,7 @@ StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager,
 	setWindowTitle(tr("Start page"));
 
 	connect(openLink, SIGNAL(clicked()), this, SLOT(openExistingProject()));
-	connect(quitLink, SIGNAL(clicked()), qApp, SLOT(closeAllWindows()));
+	connect(quitLink, SIGNAL(clicked()), this, SLOT(exitApp()));
 	connect(recentProjects, SIGNAL(userDataSelected(QString)), this, SLOT(openRecentProject(QString)));
 	connect(diagrams, SIGNAL(userDataSelected(QString)), this, SLOT(createProjectWithDiagram(QString)));
 }
@@ -50,14 +50,14 @@ StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager,
 void StartDialog::openRecentProject(QString const &fileName)
 {
 	if (mProjectManager->open(fileName)) {
-		close();
+		forceClose();
 	}
 }
 
 void StartDialog::openExistingProject()
 {
 	if (mProjectManager->suggestToOpenExisting()) {
-		close();
+		forceClose();
 	}
 }
 
@@ -65,12 +65,11 @@ void StartDialog::createProjectWithDiagram(const QString &idString)
 {
 	mProjectManager->openEmptyWithSuggestToSaveChanges();
 	mMainWindow->createDiagram(idString);
-	// This dialog will be closed by the SuggestToCreateDiagramWidget
+	forceClose();
 }
 
-void StartDialog::keyPressEvent(QKeyEvent *event)
+void StartDialog::exitApp()
 {
-	if (event->key() != Qt::Key_Escape) {
-		QDialog::keyPressEvent(event);
-	}
+	forceClose();
+	qApp->closeAllWindows();
 }

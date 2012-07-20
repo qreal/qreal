@@ -17,8 +17,7 @@
 class MouseMovementManager
 {
 public:
-	MouseMovementManager(QList<qReal::Id> elements,
-						 qReal::EditorManagerInterface *editorManagerInter,
+	MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManagerInterface *editorManagerInter,
 						 GesturesPainterInterface *gesturesPaintManager);
 
 	~MouseMovementManager();
