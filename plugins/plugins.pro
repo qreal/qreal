@@ -3,11 +3,7 @@ TEMPLATE = subdirs
 SUBDIRS	= \
 #	additionsEditor/additionsEditor.pro \
 #	android/android.pro \
-#	blockDiagram/blockDiagram.pro \
-#	android/android.pro \
-#	blockDiagram/blockDiagram.pro \
-#	bpel/bpel.pro \
-#	android/android.pro \
+#	dragonDiagram/dragonDiagram.pro \
 	blockDiagram/blockDiagram.pro \
 #	bpel/bpel.pro \
 #	exterminatus/exterminatus.pro \
@@ -19,6 +15,7 @@ SUBDIRS	= \
 #	requirements/requirements.pro \
 #	robots/robots.pro \
 #	testEditor/testEditor.pro \
+#	ubiq/ubiq.pro \
 #	umlActivityDiagram/umlActivityDiagram.pro \
 #	umlClassDiagram/umlClassDiagram.pro \
 #	umlCommunicationDiagram/umlCommunicationDiagram.pro \
@@ -29,5 +26,5 @@ SUBDIRS	= \
 #	umlStateMachinesDiagram/umlStateMachinesDiagram.pro \
 #	umlTimingDiagram/umlTimingDiagram.pro \
 #	umlUseCaseDiagram/umlUseCaseDiagram.pro \
-	ubiq/ubiq.pro \
-
+	visualInterpreter/visualInterpreter.pro \
+	refactoring/refactoring.pro \

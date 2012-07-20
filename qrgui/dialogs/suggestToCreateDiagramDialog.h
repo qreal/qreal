@@ -1,27 +1,28 @@
 #pragma once
-
 #include <QDialog>
-#include <QtGui>
+#include <QKeyEvent>
 
+#include "startDialog/suggestToCreateDiagramWidget.h"
+
+namespace qReal {
+
+class MainWindow;
+
+/**
+ * @brief Dialog for create a diagram
+ *
+ * This dialog prompts the user to create one of the available diagrams
+ */
 class SuggestToCreateDiagramDialog : public QDialog
 {
 	Q_OBJECT
+
 public:
-	SuggestToCreateDiagramDialog(QWidget *parent);
-	void addItemToDiagramsList(QString diagramName);
-	void diagramsListSetCurrentRow(int num);
-signals:
-	void diagramsListCurrentRowChanged(int num);
-	void diagramsListItemDoubleClicked(QListWidgetItem* item);
-	void diagramsListDestroyed();
-	void cancelButtonClicked();
-	void okButtonClicked();
+	explicit SuggestToCreateDiagramDialog(MainWindow *mainWindow, bool isNonClosable = false);
+	void keyPressEvent(QKeyEvent *event);
+
 private:
-	QLabel mLabel;
-	QListWidget mDiagramsListWidget;
-	QPushButton mCancelButton;
-	QPushButton mOkButton;
-	QVBoxLayout *mVLayout;
-	QHBoxLayout *mHLayout;
+	bool mIsNonClosable;
 };
 
+}

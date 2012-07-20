@@ -18,8 +18,8 @@ EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	, mGraphicalAssistApi(NULL)
 	, mLogicalAssistApi(NULL)
 {
-	mScene->mv_iface = this;
-	mScene->view = mView;
+	mScene->mMVIface = this;
+	mScene->mView = mView;
 }
 
 EditorViewMViface::~EditorViewMViface()
@@ -111,7 +111,7 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 
 Id EditorViewMViface::rootId()
 {
-	return mGraphicalAssistApi->idByIndex(rootIndex());
+	return mGraphicalAssistApi ? mGraphicalAssistApi->idByIndex(rootIndex()) : Id();
 }
 
 void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int end)
@@ -134,7 +134,9 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		}
 
 		Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentId);
-		elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
+		if (elem) {
+			elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
+		}
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
@@ -229,8 +231,8 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 {
 	Q_UNUSED(sourceEnd);
 	Q_ASSERT(sourceStart == sourceEnd);  // only one element is permitted to be moved
-	QPersistentModelIndex movedElementIndex = sourceParent.child(sourceStart, 0),
-		newSiblingIndex = destinationParent.child(destinationRow, 0);
+	QPersistentModelIndex movedElementIndex = sourceParent.child(sourceStart, 0);
+	QPersistentModelIndex newSiblingIndex = destinationParent.child(destinationRow, 0);
 
 	Element *movedElement = item(movedElementIndex),
 		*sibling = item(newSiblingIndex);

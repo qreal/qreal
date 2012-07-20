@@ -157,6 +157,11 @@ bool ProxyEditorManager::isParentOf(Id const &child, Id const &parent) const
 	return mProxyManager->isParentOf(child, parent);
 }
 
+bool ProxyEditorManager::isGraphicalElementNode(const Id &id) const
+{
+	return mProxyManager->isGraphicalElementNode(id);
+}
+
 //new methods:
 QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > ProxyEditorManager::getPossibleEdges(QString const &editor, QString const &element) const
 {
@@ -188,6 +193,18 @@ QString ProxyEditorManager::diagramNodeName(QString const &editor, QString const
 	return mProxyManager->diagramNodeName(editor, diagram);
 }
 
-void ProxyEditorManager::setProxyManager(EditorManagerInterface *editorManagerInter) {
+void ProxyEditorManager::setProxyManager(EditorManagerInterface *editorManagerInter)
+{
 	mProxyManager = editorManagerInter;
+}
+
+//unsupported methods:
+QStringList ProxyEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
+{
+	return mProxyManager->paletteGroups(editor, diagram);
+}
+
+QStringList ProxyEditorManager::paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const
+{
+	return mProxyManager->paletteGroupList(editor, diagram, group);
 }

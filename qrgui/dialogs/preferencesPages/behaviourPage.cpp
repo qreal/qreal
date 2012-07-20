@@ -2,21 +2,22 @@
 #include "behaviourPage.h"
 #include "ui_behaviourPage.h"
 
-PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent) :
-	PreferencesPage(parent),
-	mUi(new Ui::PreferencesBehaviourPage)
+PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
+		: PreferencesPage(parent)
+		, mUi(new Ui::PreferencesBehaviourPage)
 {
+	mIcon = QIcon(":/icons/preferences/behaviour.png");
 	mUi->setupUi(this);
 
 	connect(mUi->autoSaveCheckBox, SIGNAL(clicked(bool)), this, SLOT(showAutoSaveBox(bool)));
 
-	mUi->warningWindowBox->setChecked(SettingsManager::value("warningWindow", true).toBool());
-	mUi->arrangeLinksCheckBox->setChecked(SettingsManager::value("arrangeLinks", true).toBool());
-	mUi->paletteTabCheckBox->setChecked(SettingsManager::value("PaletteTabSwitching", true).toBool());
-	mUi->diagramCreateCheckBox->setChecked(SettingsManager::value("diagramCreateSuggestion", true).toBool());
-	mUi->autoSaveCheckBox->setChecked(SettingsManager::value("autoSave", true).toBool());
-	mUi->autoSaveSpinBox->setValue(SettingsManager::value("autoSaveInterval", 60 * 10).toInt());
-	mUi->gestureDelaySpinBox->setValue(SettingsManager::value("gestureDelay", 1000).toInt());
+	mUi->warningWindowBox->setChecked(SettingsManager::value("warningWindow").toBool());
+	mUi->arrangeLinksCheckBox->setChecked(SettingsManager::value("arrangeLinks").toBool());
+	mUi->paletteTabCheckBox->setChecked(SettingsManager::value("PaletteTabSwitching").toBool());
+	mUi->diagramCreateCheckBox->setChecked(SettingsManager::value("diagramCreateSuggestion").toBool());
+	mUi->autoSaveCheckBox->setChecked(SettingsManager::value("Autosave").toBool());
+	mUi->autoSaveSpinBox->setValue(SettingsManager::value("AutosaveInterval").toInt());
+	mUi->gestureDelaySpinBox->setValue(SettingsManager::value("gestureDelay").toInt());
 
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
 }
@@ -43,8 +44,8 @@ void PreferencesBehaviourPage::save()
 	SettingsManager::setValue("PaletteTabSwitching", mUi->paletteTabCheckBox->isChecked());
 	SettingsManager::setValue("arrangeLinks", mUi->arrangeLinksCheckBox->isChecked());
 	SettingsManager::setValue("warningWindow", mUi->warningWindowBox->isChecked());
-	SettingsManager::setValue("autoSave", mUi->autoSaveCheckBox->isChecked());
-	SettingsManager::setValue("autoSaveInterval", mUi->autoSaveSpinBox->value());
+	SettingsManager::setValue("Autosave", mUi->autoSaveCheckBox->isChecked());
+	SettingsManager::setValue("AutosaveInterval", mUi->autoSaveSpinBox->value());
 	SettingsManager::setValue("gestureDelay", mUi->gestureDelaySpinBox->value());
 }
 

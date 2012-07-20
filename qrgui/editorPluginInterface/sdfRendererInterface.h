@@ -4,7 +4,7 @@
 #include <QtCore/QString>
 #include <QtGui/QPainter>
 #include <QtGui/QIconEngineV2>
-#include <QDomDocument>
+#include <QtXml/QDomDocument>
 
 class SdfRendererInterface : public QObject
 {

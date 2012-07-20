@@ -1,10 +1,8 @@
 #pragma once
 
-#include "../../../qrgui/dialogs/preferencesPages/page.h"
+#include "../../../../qrgui/dialogs/preferencesPages/preferencesPage.h"
 
 #include "sensorConstants.h"
-
-using namespace qReal::interpreters::robots;
 
 namespace Ui {
 	class PreferencesRobotSettingsPage;
@@ -14,6 +12,7 @@ namespace qReal {
 namespace interpreters {
 namespace robots {
 
+/// Preferences page for robots interpreter plugin
 class PreferencesRobotSettingsPage : public PreferencesPage
 {
 	Q_OBJECT
@@ -23,6 +22,7 @@ public:
 	~PreferencesRobotSettingsPage();
 
 	void save();
+
 	QString selectedPortName() const;
 	QString selectedCommunication() const;
 

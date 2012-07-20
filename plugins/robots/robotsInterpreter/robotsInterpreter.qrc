@@ -4,6 +4,7 @@
         <file>icons/kroki.png</file>
         <file>icons/wall.png</file>
         <file>icons/preferences/robot.png</file>
+        <file>icons/kcron.png</file>
+        <file>icons/robot.png</file>
     </qresource>
 </RCC>
-

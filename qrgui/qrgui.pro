@@ -50,9 +50,6 @@ include (view/view.pri)
 # "Встроенные" генераторы
 include (generators/generators.pri)
 
-# "Встроенные" средства реверс-инжиниринга
-include (parsers/parsers.pri)
-
 # Код, скачанный из интернета.
 include (thirdparty/thirdparty.pri)
 
@@ -67,9 +64,6 @@ include (editorPluginInterface/editorPluginInterface.pri)
 
 # Interfaces for tool plugins, used in handcoded tools.
 include (toolPluginInterface/toolPluginInterface.pri)
-
-# Interpreters: visual debugger and robots
-include (interpreters/interpreters.pri)
 
 # Text Editor
 include (textEditor/textEditor.pri)

@@ -9,6 +9,12 @@ class CommonRepoApi
 public:
 	virtual ~CommonRepoApi() {}
 
+	/// virtual for replacing property values that contains input value with new value
+	/// @param toReplace - id list that contains ids of elements that properties should be replaced
+	/// @param value - input value that should be contained by any property of each element
+	/// @param newValue - string representation of value with what property values should be replaced
+	virtual void replaceProperties(qReal::IdList const &toReplace, QString const value, QString const newValue) = 0;
+
 	virtual void setName(qReal::Id const &id, QString const &name) = 0;
 	virtual QString name(qReal::Id const &id) const = 0;
 
@@ -26,9 +32,10 @@ public:
 
 	virtual QVariant property(qReal::Id const &id, QString const &propertyName) const = 0;
 	virtual QString stringProperty(qReal::Id const &id, QString const &propertyName) const = 0;
-	virtual void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value) = 0;
+	virtual void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value) const = 0;
 	virtual void removeProperty(qReal::Id const &id, QString const &propertyName) = 0;
 	virtual bool hasProperty(qReal::Id const &id, QString const &propertyName) const = 0;
+	virtual QMapIterator<QString, QVariant> propertiesIterator(qReal::Id const &id) const = 0;
 
 	virtual bool exist(qReal::Id const &id) const = 0;
 	virtual void removeElement(qReal::Id const &id) = 0;

@@ -1,39 +1,28 @@
+#include <QtGui/QVBoxLayout>
+
 #include "suggestToCreateDiagramDialog.h"
+#include "../mainwindow/mainWindow.h"
 
-SuggestToCreateDiagramDialog::SuggestToCreateDiagramDialog(QWidget *parent)
-	: QDialog(parent)
-	, mLabel(tr("There is no existing diagram,\n choose diagram you want work with:"))
-	, mDiagramsListWidget(new QListWidget)
-	, mCancelButton(new QPushButton)
-	, mOkButton(new QPushButton)
-	, mVLayout(new QVBoxLayout)
-	, mHLayout(new QHBoxLayout)
+using namespace qReal;
+
+SuggestToCreateDiagramDialog::SuggestToCreateDiagramDialog(MainWindow *mainWindow, bool isNonClosable)
+	: QDialog(mainWindow, isNonClosable ? Qt::WindowMinimizeButtonHint : Qt::Dialog)
+	, mIsNonClosable(isNonClosable)
 {
-	this->setLayout(mVLayout);
-	this->setMinimumSize(320, 240);
-	this->setMaximumSize(320, 240);
-	this->setWindowTitle(tr("Choose new diagram"));
-	mDiagramsListWidget.setParent(this);
-	mCancelButton.setText(tr("Cancel"));
-	mOkButton.setText(tr("Done"));
+	SuggestToCreateDiagramWidget *suggestWidget = new SuggestToCreateDiagramWidget(mainWindow, this);
 
-	QObject::connect(&mDiagramsListWidget,SIGNAL(currentRowChanged(int)),this,SIGNAL(diagramsListCurrentRowChanged(int)));
-	QObject::connect(&mDiagramsListWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SIGNAL(diagramsListItemDoubleClicked(QListWidgetItem*)));
-	QObject::connect(&mDiagramsListWidget,SIGNAL(destroyed()),this,SIGNAL(diagramsListDestroyed()));
-	QObject::connect(&mCancelButton,SIGNAL(clicked()),this,SIGNAL(cancelButtonClicked()));
-	QObject::connect(&mOkButton,SIGNAL(clicked()),this,SIGNAL(okButtonClicked()));
+	QVBoxLayout *mainLayout = new QVBoxLayout;
+	mainLayout->addWidget(suggestWidget);
+	setLayout(mainLayout);
+	setWindowTitle(tr("Create diagram"));
 
-	mVLayout->addWidget(&mLabel);
-	mVLayout->addWidget(&mDiagramsListWidget);
-	mHLayout->addWidget(&mOkButton);
-	mHLayout->addWidget(&mCancelButton);
-	mVLayout->addLayout(mHLayout);
+	connect(suggestWidget, SIGNAL(userDataSelected(QString)), mainWindow, SLOT(createDiagram(QString)));
 }
 
-void SuggestToCreateDiagramDialog::addItemToDiagramsList(QString diagramName) {
-	mDiagramsListWidget.addItem(diagramName);
-}
-
-void SuggestToCreateDiagramDialog::diagramsListSetCurrentRow(int num) {
-	mDiagramsListWidget.setCurrentRow(num, QItemSelectionModel::Select);
+void SuggestToCreateDiagramDialog::keyPressEvent(QKeyEvent *event)
+{
+	if (mIsNonClosable && event->key() == Qt::Key_Escape) {
+		return;
+	}
+	QDialog::keyPressEvent(event);
 }

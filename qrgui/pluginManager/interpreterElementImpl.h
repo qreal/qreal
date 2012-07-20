@@ -30,30 +30,33 @@ namespace qReal {
 						  QList<ElementTitleInterface*> &titles);
 		void paint(QPainter *painter, QRectF &contents);
 		void updateData(ElementRepoInterface *repo) const;
-		bool isNode();
-		bool hasPorts();
-		bool isResizeable();
-		Qt::PenStyle getPenStyle();
-		int getPenWidth();
-		QColor getPenColor();
+		bool isNode() const;
+		bool hasPorts() const;
+		bool isResizeable() const;
+		Qt::PenStyle getPenStyle() const;
+		int getPenWidth() const;
+		QColor getPenColor() const;
 		void drawStartArrow(QPainter *painter) const;
 		void drawEndArrow(QPainter *painter) const;
 
+		//unsupported methods:
+		bool isDividable() const;
+
 		/*Container properties*/
-		bool isContainer();
-		bool isSortingContainer();
-		int sizeOfForestalling();
-		int sizeOfChildrenForestalling();
-		bool hasMovableChildren();
-		bool minimizesToChildren();
-		bool maximizesChildren();
+		bool isContainer() const;
+		bool isSortingContainer() const;
+		int sizeOfForestalling() const;
+		int sizeOfChildrenForestalling() const;
+		bool hasMovableChildren() const;
+		bool minimizesToChildren() const;
+		bool maximizesChildren() const;
 
-		bool isPort();
-		bool hasPin();
+		bool isPort() const;
+		bool hasPin() const;
 
-		QList<double> border();
+		QList<double> border() const;
 
-		QStringList bonusContextMenuFields();
+		QStringList bonusContextMenuFields() const;
 	private:
 		qrRepo::RepoApi* mEditorRepoApi;
 		Id mId;

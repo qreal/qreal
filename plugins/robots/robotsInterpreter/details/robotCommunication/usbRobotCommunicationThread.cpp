@@ -70,17 +70,35 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const 
 		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, false, newBuffer, newBuffer.length(), NULL, 0, status);
 		emit response(addressee, QByteArray());
 	} else {
-		char *outputBufferPtr2 = new char [200];
+		char *outputBufferPtr2 = new char[200];
 		for (int i = 0; i < 200; i++) {
 			outputBufferPtr2[i] = 0;
 		}
+
+		// TODO: Sending RESETINPUTSCALEDVALUE for every sensor before reading their values.
+		// It is a dirty hack and will surely break some sensor functionality related to
+		// accumulated some values, but without it after nearly every command
+		// sensors start to return some random sh~ instead of correct value.
+		// Note that even RESETINPUTSCALEDVALUE will return 0xC0 (data contains out-of-range values)
+		// as status byte. Something very bad is going on in our interface to Fantom driver
+		// or in driver itself. Further investigation required.
+		for (int port = 0; port < 4; ++port) {
+			QByteArray command(2, 0);
+			command[3] = commandCode::RESETINPUTSCALEDVALUE;
+			command[4] = port;
+
+			mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, command, 2, outputBufferPtr2, 2, status);
+		}
+
 		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, newBuffer, newBuffer.length(), outputBufferPtr2, responseSize - 3, status);
-		outputBuffer[0] = responseSize;
+
+		outputBuffer[0] = responseSize - 2;
 		outputBuffer[1] = 0;
 		outputBuffer[2] = 2;
 		for (unsigned i = 0; i < responseSize - 3; i++) {
 			outputBuffer[i + 3] = outputBufferPtr2[i];
 		}
+		delete outputBufferPtr2;
 		debugPrint(outputBuffer, false);
 		emit response(addressee, outputBuffer);
 	}
@@ -110,7 +128,7 @@ void UsbRobotCommunicationThread::debugPrint(QByteArray const &buffer, bool out)
 {
 	QString tmp = "";
 	for (int i = 0; i < buffer.length(); i++) {
-		tmp += QString::number((char)buffer[i]);
+		tmp += QString::number(static_cast<unsigned char>(buffer[i]));
 		tmp += " ";
 	}
 	Tracer::debug(tracer::robotCommunication, "UsbRobotCommunicationThread::debugPrint", (out ? ">" : "<") + tmp);

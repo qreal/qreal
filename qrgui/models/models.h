@@ -15,8 +15,8 @@ public:
 	explicit Models(QString const &workingCopy, EditorManagerInterface const *editorManagerProxy);
 	~Models();
 
-	QAbstractItemModel* graphicalModel() const;
-	QAbstractItemModel* logicalModel() const;
+	QAbstractItemModel *graphicalModel() const;
+	QAbstractItemModel *logicalModel() const;
 
 	GraphicalModelAssistApi &graphicalModelAssistApi() const;
 	LogicalModelAssistApi &logicalModelAssistApi() const;

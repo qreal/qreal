@@ -25,8 +25,12 @@ namespace qReal {
 	public:
 		explicit EditorManager(QObject *parent = NULL);
 
+		~EditorManager();
+
 		IdList editors() const;
 		IdList diagrams(Id const &editor) const;
+		QStringList paletteGroups(Id const &editor, Id const &diagram) const;
+		QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
 		IdList elements(Id const &diagram) const;
 		bool loadPlugin(QString const &pluginName);
 		bool unloadPlugin(QString const &pluginName);
@@ -64,6 +68,7 @@ namespace qReal {
 		bool isDiagramNode(Id const &id) const;
 
 		bool isParentOf(Id const &child, Id const &parent) const;
+		bool isGraphicalElementNode(const Id &id) const;
 
 		//new methods:
 		QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &editor, QString const &element) const;

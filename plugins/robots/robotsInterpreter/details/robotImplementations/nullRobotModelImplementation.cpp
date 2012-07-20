@@ -70,11 +70,7 @@ void NullRobotModelImplementation::timerTimeout()
 
 void NullRobotModelImplementation::sensorConfigurationDoneSlot()
 {
-	if (!mIsConnected) {
-		mIsConnected = true;
-		emit connected(true);
-	}
-	emit sensorsConfigured();
+	connectRobot();
 }
 
 void NullRobotModelImplementation::stopRobot()

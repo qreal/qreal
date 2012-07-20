@@ -19,6 +19,11 @@ MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::Edi
 	setElements(elements);
 }
 
+MouseMovementManager::~MouseMovementManager()
+{
+	delete mGesturesManager;
+}
+
 void MouseMovementManager::setGesturesPainter(GesturesPainterInterface *gesturesPainter)
 {
 	mGesturesPaintMan = gesturesPainter;
@@ -130,7 +135,6 @@ QPoint MouseMovementManager::parsePoint(QString const &str)
 
 qReal::Id MouseMovementManager::getObject()
 {
-	qDebug() << "try to recognize";
 	qReal::Id recognizedObject;
 	mGesturesManager->setKey(mPath);
 	mPath.clear();
@@ -138,13 +142,11 @@ qReal::Id MouseMovementManager::getObject()
 	foreach (qReal::Id object, mElements) {
 		minDist = std::min(minDist, mGesturesManager->getMaxDistance(object.toString()));
 		double dist = mGesturesManager->getDistance(object.toString());
-		qDebug() << object << dist;
 		if (dist < minDist) {
 			minDist = dist;
 			recognizedObject = object;
 		}
 	}
-	qDebug() << "found object";
 	return recognizedObject;
 }
 

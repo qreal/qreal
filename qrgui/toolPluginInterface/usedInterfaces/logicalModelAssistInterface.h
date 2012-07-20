@@ -10,7 +10,12 @@ namespace qReal {
 class LogicalModelAssistInterface: public details::ModelsAssistInterface
 {
 public:
+	/// Returns reference to a constant logical repository.
 	virtual qrRepo::LogicalRepoApi const &logicalRepoApi() const = 0;
+
+	/// Returns reference to a mutable logical repository.
+	virtual qrRepo::LogicalRepoApi &mutableLogicalRepoApi() = 0;
+
 	virtual Id createElement(Id const &parent, Id const &type) = 0;
 	virtual Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position) = 0;
 	virtual IdList children(Id const &element) const = 0;

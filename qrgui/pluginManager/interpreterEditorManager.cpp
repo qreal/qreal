@@ -300,8 +300,6 @@ Element* InterpreterEditorManager::graphicalObject(Id const &id) const
 		foreach (Id editor, repo->elementsByType("MetamodelDiagram")) {
 			foreach (Id diagram, repo->children(editor)) {
 				foreach (Id element, repo->children(diagram)) {
-					QString idElem = id.element();
-					QString repoElem = repo->name(element);
 					if (id.element() == repo->name(element)) {
 						repoMetaModel = repo;
 						metaId = element;
@@ -421,6 +419,11 @@ bool InterpreterEditorManager::isDiagramNode(Id const &id) const
 	return false;
 }
 
+bool InterpreterEditorManager::isGraphicalElementNode(const Id &id) const
+{
+	return false;
+}
+
 //TODO: functional realization below
 QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > InterpreterEditorManager::getPossibleEdges(QString const &editor, QString const &element) const
 {
@@ -523,4 +526,14 @@ QString InterpreterEditorManager::diagramNodeName(QString const &editor, QString
 					}
 				}
 	return diagramNodeName;
+}
+//unsupported method
+QStringList InterpreterEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
+{
+	return *new QStringList();
+}
+
+QStringList InterpreterEditorManager::paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const
+{
+	return *new QStringList();
 }

@@ -23,10 +23,104 @@ void Client::init()
 
 Client::~Client()
 {
-	delete mObjects[Id::rootId()];
-	mObjects.remove(Id::rootId());
 	serializer.saveToDisk(mObjects.values());
 	serializer.clearWorkingDir();
+
+	foreach (Id id, mObjects.keys()) {
+		delete mObjects[id];
+		mObjects.remove(id);
+	}
+}
+
+IdList Client::findElementsByName(const QString &name, bool sensitivity,
+		bool regExpression) const
+{
+	Qt::CaseSensitivity caseSensitivity;
+
+	if (sensitivity) {
+		caseSensitivity = Qt::CaseSensitive;
+	} else {
+		caseSensitivity = Qt::CaseInsensitive;
+	}
+
+	QRegExp *regExp = new QRegExp(name, caseSensitivity);
+	IdList result;
+
+	if (regExpression){
+		foreach (Object *element, mObjects.values()) {
+			if (element->property("name").toString().contains(*regExp)
+					&& !isLogicalId(mObjects.key(element))) {
+				result.append(mObjects.key(element));
+			}
+		}
+	} else {
+		foreach (Object *element, mObjects.values()) {
+			if (element->property("name").toString().contains(name, caseSensitivity)
+					&& !isLogicalId(mObjects.key(element))) {
+				result.append(mObjects.key(element));
+			}
+		}
+	}
+
+	return result;
+}
+
+qReal::IdList Client::elementsByProperty(QString const &property, bool sensitivity
+		, bool regExpression) const
+{
+	IdList result;
+
+	foreach (Object *element, mObjects.values()) {
+		if ((element->hasProperty(property, sensitivity, regExpression))
+				&& (!isLogicalId(mObjects.key(element)))) {
+			result.append(mObjects.key(element));
+		}
+	}
+
+	return result;
+}
+
+qReal::IdList Client::elementsByPropertyContent(QString const &propertyValue, bool sensitivity
+		, bool regExpression) const
+{
+	Qt::CaseSensitivity caseSensitivity;
+
+	if (sensitivity) {
+		caseSensitivity = Qt::CaseSensitive;
+	} else {
+		caseSensitivity = Qt::CaseInsensitive;
+	}
+
+	QRegExp *regExp = new QRegExp(propertyValue, caseSensitivity);
+	IdList result;
+
+	foreach (Object *element, mObjects.values()) {
+		QMapIterator<QString, QVariant> iterator = element->propertiesIterator();
+		if (regExpression) {
+			while (iterator.hasNext()) {
+				if (iterator.next().value().toString().contains(*regExp)) {
+					result.append(mObjects.key(element));
+					break;
+				}
+			}
+		} else {
+			while (iterator.hasNext()) {
+				if (iterator.next().value().toString().contains(propertyValue, caseSensitivity)) {
+					result.append(mObjects.key(element));
+					break;
+				}
+			}
+		}
+	}
+
+	return result;
+}
+
+void Client::replaceProperties(qReal::IdList const &toReplace, QString const value, QString const newValue)
+{
+	foreach (qReal::Id currentId, toReplace) {
+		mObjects[currentId]->replaceProperties(value, newValue);
+	}
 }
 
 IdList Client::children(Id const &id) const
@@ -133,7 +227,7 @@ void Client::removeChild(const Id &id, const Id &child)
 	}
 }
 
-void Client::setProperty(const Id &id, const QString &name, const QVariant &value )
+void Client::setProperty(const Id &id, const QString &name, const QVariant &value ) const
 {
 	if (mObjects.contains(id)) {
 		Q_ASSERT(mObjects[id]->hasProperty(name)
@@ -148,6 +242,16 @@ void Client::setProperty(const Id &id, const QString &name, const QVariant &valu
 void Client::copyProperties(const Id &dest, const Id &src)
 {
 	mObjects[dest]->copyPropertiesFrom(*mObjects[src]);
+}
+
+QMap<QString, QVariant> Client::properties(Id const &id)
+{
+	return mObjects[id]->properties();
+}
+
+void Client::setProperties(Id const &id, QMap<QString, QVariant> const &properties)
+{
+	mObjects[id]->setProperties(properties);
 }
 
 QVariant Client::property( const Id &id, const QString &name ) const
@@ -168,10 +272,10 @@ void Client::removeProperty( const Id &id, const QString &name )
 	}
 }
 
-bool Client::hasProperty(const Id &id, const QString &name) const
+bool Client::hasProperty(const Id &id, const QString &name, bool sensitivity, bool regExpression) const
 {
 	if (mObjects.contains(id)) {
-		return mObjects[id]->hasProperty(name);
+		return mObjects[id]->hasProperty(name, sensitivity, regExpression);
 	} else {
 		throw Exception("Client: Checking the existence of a property '" + name + "' of nonexistent object " + id.toString());
 	}
@@ -239,8 +343,10 @@ void Client::addChildrenToRootObject()
 IdList Client::idsOfAllChildrenOf(Id id) const
 {
 	IdList result;
+	result.clear();
 	result.append(id);
-	foreach(Id childId,mObjects[id]->children())
+	IdList list = mObjects[id]->children();
+	foreach(Id const &childId, list)
 		result.append(idsOfAllChildrenOf(childId));
 	return result;
 }
@@ -249,8 +355,21 @@ QList<Object*> Client::allChildrenOf(Id id) const
 {
 	QList<Object*> result;
 	result.append(mObjects[id]);
-	foreach(Id childId,mObjects[id]->children())
+	foreach(Id const &childId, mObjects[id]->children())
 		result.append(allChildrenOf(childId));
+	return result;
+}
+
+QList<Object*> Client::allChildrenOfWithLogicalId(Id id) const
+{
+	QList<Object*> result;
+	result.append(mObjects[id]);
+
+	// along with each ID we also add its logical ID.
+
+	foreach(Id const &childId, mObjects[id]->children())
+		result << allChildrenOf(childId)
+				<< allChildrenOf(logicalId(childId));
 	return result;
 }
 
@@ -267,15 +386,43 @@ void Client::saveAll() const
 void Client::save(IdList list) const
 {
 	QList<Object*> toSave;
-	foreach(Id id, list)
+	foreach(Id const &id, list)
 		toSave.append(allChildrenOf(id));
 
 	serializer.saveToDisk(toSave);
 }
 
+void Client::saveWithLogicalId(qReal::IdList list) const
+{
+	QList<Object*> toSave;
+	foreach(Id const &id, list)
+		toSave.append(allChildrenOfWithLogicalId(id));
+
+	serializer.saveToDisk(toSave);
+}
+
+void Client::saveDiagramsById(QHash<QString, IdList> const &diagramIds)
+{
+	QString const currentWorkingFile = mWorkingFile;
+	foreach (QString const &savePath, diagramIds.keys()) {
+		qReal::IdList diagrams = diagramIds[savePath];
+		setWorkingFile(savePath);
+		qReal::IdList elementsToSave;
+		foreach (qReal::Id const &id, diagrams) {
+			elementsToSave += idsOfAllChildrenOf(id);
+			// id is a graphical ID for this diagram
+			// we have to add logical diagram ID
+			// to this list manually
+			elementsToSave += logicalId(id);
+		}
+		saveWithLogicalId(elementsToSave);
+	}
+	setWorkingFile(currentWorkingFile);
+}
+
 void Client::remove(IdList list) const
 {
-	foreach(Id id, list) {
+	foreach(Id const &id, list) {
 		qDebug() << id.toString();
 		serializer.removeFromDisk(id);
 	}
@@ -295,6 +442,11 @@ void Client::setWorkingFile(QString const &workingFile)
 {
 	serializer.setWorkingFile(workingFile);
 	mWorkingFile = workingFile;
+}
+
+QString Client::workingFile() const
+{
+	return mWorkingFile;
 }
 
 void Client::printDebug() const
@@ -344,3 +496,7 @@ qReal::Id Client::logicalId(qReal::Id const &elem) const
 	return mObjects[elem]->logicalId();
 }
 
+QMapIterator<QString, QVariant> Client::propertiesIterator(qReal::Id const &id) const
+{
+	return mObjects[id]->propertiesIterator();
+}

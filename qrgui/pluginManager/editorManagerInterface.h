@@ -60,6 +60,7 @@ public:
 	virtual bool isDiagramNode(Id const &id) const = 0;
 
 	virtual bool isParentOf(Id const &child, Id const &parent) const = 0;
+	virtual bool isGraphicalElementNode(const Id &id) const = 0;
 
 	//new methods:
 	virtual QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &editor, QString const &element) const = 0;
@@ -68,6 +69,10 @@ public:
 	virtual bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const = 0;
 	virtual QString diagramName(QString const &editor, QString const &diagram) const = 0;
 	virtual QString diagramNodeName(QString const &editor, QString const &diagram) const = 0;
+
+	//unsupported methods:
+	virtual QStringList paletteGroups(Id const &editor, Id const &diagram) const = 0;
+	virtual QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const = 0;
 };
 
 }

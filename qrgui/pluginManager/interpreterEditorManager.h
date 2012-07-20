@@ -66,6 +66,7 @@ namespace qReal {
 		bool isDiagramNode(Id const &id) const;
 
 		bool isParentOf(Id const &child, Id const &parent) const;
+		bool isGraphicalElementNode(const Id &id) const;
 
 		//new methods:
 		QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &editor, QString const &element) const;
@@ -74,6 +75,11 @@ namespace qReal {
 		bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const;
 		QString diagramName(QString const &editor, QString const &diagram) const;
 		QString diagramNodeName(QString const &editor, QString const &diagram) const;
+
+		//unsupported methods:
+		QStringList paletteGroups(Id const &editor, Id const &diagram) const;
+		QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
+
 	private:
 		QMap<QString, qrRepo::RepoApi*> mEditorRepoApi;
 

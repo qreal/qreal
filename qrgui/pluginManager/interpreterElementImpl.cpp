@@ -196,12 +196,12 @@ void InterpreterElementImpl::updateData(ElementRepoInterface *repo) const
 	}
 }
 
-bool InterpreterElementImpl::isNode()
+bool InterpreterElementImpl::isNode() const
 {
 	return mEditorRepoApi->typeName(mId) == "MetaEntityNode";
 }
 
-bool InterpreterElementImpl::hasPorts()
+bool InterpreterElementImpl::hasPorts() const
 {
 	if (mEditorRepoApi->typeName(mId) == "MetaEntityNode") {
 		QDomDocument portsDoc;
@@ -216,7 +216,7 @@ bool InterpreterElementImpl::hasPorts()
 	return false;
 }
 
-bool InterpreterElementImpl::isResizeable()
+bool InterpreterElementImpl::isResizeable() const
 {
 	if (mEditorRepoApi->typeName(mId) == "MetaEntityNode") {
 		if (mEditorRepoApi->stringProperty(mId, "isResizeable") == "false")
@@ -227,7 +227,7 @@ bool InterpreterElementImpl::isResizeable()
 	return true;
 }
 
-Qt::PenStyle InterpreterElementImpl::getPenStyle()
+Qt::PenStyle InterpreterElementImpl::getPenStyle() const
 {
 	if (mEditorRepoApi->typeName(mId) == "MetaEntityEdge") {
 		QString QtStyle = "Qt::" + mEditorRepoApi->stringProperty(mId, "lineType").replace(0, 1, mEditorRepoApi->stringProperty(mId, "lineType").at(0).toUpper());
@@ -251,7 +251,7 @@ Qt::PenStyle InterpreterElementImpl::getPenStyle()
 	return Qt::SolidLine;
 }
 
-int InterpreterElementImpl::getPenWidth()
+int InterpreterElementImpl::getPenWidth() const
 {
 	if (mEditorRepoApi->typeName(mId) == "MetaEntityEdge") {
 		QDomElement lineWidthElement = mGraphics.firstChildElement("lineWidth");
@@ -284,7 +284,7 @@ int InterpreterElementImpl::getPenWidth()
 	return 0;
 }
 
-QColor InterpreterElementImpl::getPenColor()
+QColor InterpreterElementImpl::getPenColor() const
 {
 	QColor lineColor;
 	if (mEditorRepoApi->typeName(mId) == "MetaEntityEdge")
@@ -382,7 +382,13 @@ void InterpreterElementImpl::drawEndArrow(QPainter *painter) const
 	}
 }
 
-bool InterpreterElementImpl::isContainer()
+//unsupported methods:
+bool InterpreterElementImpl::isDividable() const
+{
+	return true;
+}
+
+bool InterpreterElementImpl::isContainer() const
 {
 	QDomElement propertiesElement = mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
 	if (propertiesElement.hasChildNodes()) {
@@ -393,7 +399,7 @@ bool InterpreterElementImpl::isContainer()
 	return false;
 }
 
-bool InterpreterElementImpl::isSortingContainer()
+bool InterpreterElementImpl::isSortingContainer() const
 {
 	QDomElement propertiesElement = mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
 	if (propertiesElement.hasChildNodes()) {
@@ -404,7 +410,7 @@ bool InterpreterElementImpl::isSortingContainer()
 	return false;
 }
 
-int InterpreterElementImpl::sizeOfForestalling()
+int InterpreterElementImpl::sizeOfForestalling() const
 {
 	int size = 0;
 	QDomElement propertiesElement = mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
@@ -416,7 +422,7 @@ int InterpreterElementImpl::sizeOfForestalling()
 	return size;
 }
 
-int InterpreterElementImpl::sizeOfChildrenForestalling()
+int InterpreterElementImpl::sizeOfChildrenForestalling() const
 {
 	int size = 0;
 	QDomElement propertiesElement = mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
@@ -428,7 +434,7 @@ int InterpreterElementImpl::sizeOfChildrenForestalling()
 	return size;
 }
 
-bool InterpreterElementImpl::hasMovableChildren()
+bool InterpreterElementImpl::hasMovableChildren() const
 {
 	QDomElement propertiesElement = mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
 	if (propertiesElement.hasChildNodes()) {
@@ -439,7 +445,7 @@ bool InterpreterElementImpl::hasMovableChildren()
 	return false;
 }
 
-bool InterpreterElementImpl::minimizesToChildren()
+bool InterpreterElementImpl::minimizesToChildren() const
 {
 	QDomElement propertiesElement = mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
 	if (propertiesElement.hasChildNodes()) {
@@ -450,22 +456,22 @@ bool InterpreterElementImpl::minimizesToChildren()
 	return false;
 }
 
-bool InterpreterElementImpl::maximizesChildren()
+bool InterpreterElementImpl::maximizesChildren() const
 {
 	return (mEditorRepoApi->stringProperty(mId, "maximizeChildren") == "true");
 }
 
-bool InterpreterElementImpl::isPort()
+bool InterpreterElementImpl::isPort() const
 {
 	return (mEditorRepoApi->stringProperty(mId, "isPin") == "true");
 }
 
-bool InterpreterElementImpl::hasPin()
+bool InterpreterElementImpl::hasPin() const
 {
 	return (mEditorRepoApi->stringProperty(mId, "isAction") == "true");
 }
 
-QList<double> InterpreterElementImpl::border()
+QList<double> InterpreterElementImpl::border() const
 {
 	QList<double> list;
 	if (mEditorRepoApi->stringProperty(mId, "isAction") == "true")
@@ -475,7 +481,7 @@ QList<double> InterpreterElementImpl::border()
 	return list;
 }
 //TODO:
-QStringList InterpreterElementImpl::bonusContextMenuFields()
+QStringList InterpreterElementImpl::bonusContextMenuFields() const
 {
 	return QStringList();
 }
