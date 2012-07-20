@@ -71,10 +71,6 @@ void MiniMap::clear()
 
 QRectF MiniMap::getNewRect()
 {
-	if (!mEditorView) {
-		return QRectF();
-	}
-
 	QRect visibleRect = mEditorView->viewport()->rect();
 	QRectF newRect = mEditorView->mapToScene(visibleRect).boundingRect();
 
