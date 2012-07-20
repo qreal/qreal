@@ -13,7 +13,8 @@ namespace qrRepo {
 
 namespace details {
 
-class Serializer {
+class Serializer
+{
 public:
 	Serializer(QString const& saveDirName);
 	void clearWorkingDir();
@@ -70,5 +71,6 @@ private:
 	QMap<QString, QFile*> mFiles;
 };
 
+}
 }
 }

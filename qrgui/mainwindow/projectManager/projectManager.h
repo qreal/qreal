@@ -6,9 +6,7 @@ namespace qReal {
 
 class MainWindow;
 
-/**
- * @brief Class that provides all of the work load project from a file, stored in the project file, and so on
- */
+/// ProjectManagementInterface implementation
 class ProjectManager : public ProjectManagementInterface
 {
 	Q_OBJECT
@@ -20,12 +18,12 @@ public slots:
 	bool openExisting(const QString &fileName);
 	bool suggestToOpenExisting();
 	bool openNewWithDiagram();
-	void suggestToCreateDiagram(bool isNonClosable = false);
+	void suggestToCreateDiagram(bool isClosable = true);
 	bool suggestToImport();
 
 	void close();
 
-	bool save();
+	void save();
 	bool saveAs(const QString &fileName);
 	bool suggestToSaveAs();
 	bool saveOrSuggestToSaveAs();
@@ -36,14 +34,17 @@ public:
 	bool suggestToSaveChangesOrCancel();
 	void setUnsavedIndicator(bool isUnsaved);
 	void reinitAutosaver();
+	QString saveFilePath() const;
+	void setSaveFilePath(QString const &filePath = "");
 
 private:
 	bool import(const QString &fileName);
 	bool saveFileExists(QString const &fileName);
 	bool pluginsEnough();
-	QString missingPluginNames();
+	QString missingPluginNames() const;
 
 	void refreshWindowTitleAccordingToSaveFile();
+	void refreshTitleModifiedSuffix();
 	void refreshApplicationStateAfterSave();
 	void refreshApplicationStateAfterOpen();
 	int suggestToSaveOrCancelMessage();
