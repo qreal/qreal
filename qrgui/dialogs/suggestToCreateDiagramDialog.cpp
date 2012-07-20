@@ -16,5 +16,5 @@ SuggestToCreateDiagramDialog::SuggestToCreateDiagramDialog(MainWindow *mainWindo
 	setWindowTitle(tr("Create diagram"));
 
 	connect(suggestWidget, SIGNAL(userDataSelected(QString)), mainWindow, SLOT(createDiagram(QString)));
-	connect(suggestWidget, SIGNAL(userDataSelected(QString)), this, SLOT(close()));
+	connect(suggestWidget, SIGNAL(userDataSelected(QString)), this, SLOT(forceClose()));
 }
