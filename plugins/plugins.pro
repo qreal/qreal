@@ -16,7 +16,7 @@ SUBDIRS	= \
 #	robots/robots.pro \
 	subversionClient/subversionClient.pro \
 #	testEditor/testEditor.pro \
-	testInvocation/testInvocation.pro \
+#	testInvocation/testInvocation.pro \
 #	ubiq/ubiq.pro \
 #	umlActivityDiagram/umlActivityDiagram.pro \
 #	umlClassDiagram/umlClassDiagram.pro \
