@@ -10,12 +10,12 @@ class ManagedClosableDialog : public QDialog
 
 public:
 	explicit ManagedClosableDialog(QWidget *parent = 0, bool isClosable = true);
-	bool forceClose();
 	void closeEvent(QCloseEvent *event);
 	void keyPressEvent(QKeyEvent *event);
 
 public slots:
 	void setClosability(bool isClosable);
+	bool forceClose();
 
 private:
 	bool mIsClosable;
