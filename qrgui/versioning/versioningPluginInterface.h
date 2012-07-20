@@ -17,8 +17,8 @@ namespace versioning
 /// Brief interface provides a number of actions that each VCS
 /// should be able to invoke by definition.
 class VersioningPluginInterface
-		: public ToolPluginInterface
-		, public BriefVersioningInterface
+		: public BriefVersioningInterface
+		, public ToolPluginInterface
 		, public qrRepo::versioning::WorkingCopyInspectionInterface
 {
 public:

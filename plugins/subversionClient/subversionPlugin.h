@@ -26,16 +26,16 @@ public:
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 
 	// Working copy inspection
-	virtual bool onFileAdded(const QString &filePath, const QString &workingDir);
-	virtual bool onFileRemoved(const QString &filePath, const QString &workingDir);
-	virtual bool onFileChanged(const QString &filePath, const QString &workingDir);
+	virtual bool onFileAdded(QString const &filePath, QString const &workingDir);
+	virtual bool onFileRemoved(QString const &filePath, QString const &workingDir);
+	virtual bool onFileChanged(QString const &filePath, QString const &workingDir);
 
 	// Brief VCS interface
-	virtual bool downloadWorkingCopy(QString const &repoAddress,
+	virtual void beginWorkingCopyDownloading(QString const &repoAddress,
 									 QString const &targetProject,
 									 int revisionNumber = -1);
-	virtual bool updateWorkingCopy();
-	virtual bool submitChanges(const QString &description);
+	virtual void beginWorkingCopyUpdating();
+	virtual void beginChangesSubmitting(const QString &description);
 	virtual bool reinitWorkingCopy();
 	virtual QString information();
 	virtual int revisionNumber();
@@ -44,28 +44,32 @@ public:
 	void editProxyConfiguration();
 
 public slots:
-	bool doCheckout(QString const &from
+	void startCheckout(QString const &from
 			, QString const &targetProject = ""
 			, QString const &targetFolder = "");
-	bool doUpdate(QString const &to = "");
-	bool doCommit(QString const &message = "", QString const &from = "");
+	void startUpdate(QString const &to = "");
+	void startCommit(QString const &message = "", QString const &from = "");
 	bool doCleanUp(QString const &what = "");
-	bool doRevert(QString const &what = "");
+	void startRevert(QString const &what = "");
 	bool doAdd(QString const &what, bool force = true);
 	bool doRemove(QString const &what, bool force = true);
-	QString info(QString const &target = "");
-	QString repoUrl(QString const &target = "");
-	int currentRevision(QString const &target = "");
+	QString info(QString const &target = "", bool const reportErrors = true);
+	QString repoUrl(QString const &target = "", bool const reportErrors = false);
+	int currentRevision(QString const &target = "", bool const reportErrors = false);
 
 signals:
-	void checkoutComplete(bool success);
-	void updateComplete(bool success);
-	void commitComplete(bool success);
-	void revertComplete(bool success);
-	void cleanUpComplete(bool success);
-	void addComplete(bool success);
-	void removeComplete(bool success);
-	void operationComplete(QString const &name, bool success);
+	void workingCopyDownloaded(const bool success);
+	void workingCopyUpdated(const bool success);
+	void changesSubmitted(const bool success);
+
+	void checkoutComplete(bool const success, QString const &targetProject);
+	void updateComplete(bool const success);
+	void commitComplete(bool const success);
+	void revertComplete(bool const success);
+	void cleanUpComplete(bool const success);
+	void addComplete(bool const success);
+	void removeComplete(bool const success);
+	void operationComplete(QString const &name, bool const success);
 
 protected:
 	// External client overloads
@@ -75,6 +79,11 @@ protected:
 private:
 	QString infoToRepoUrl(QString &repoInfo);
 	int infoToRevision(QString const &repoInfo);
+
+	void onCheckoutComplete(bool const result, QString const &targetProject);
+	void onUpdateComplete(bool const result);
+	void onCommitComplete(bool const result);
+	void onRevertComplete(bool const result);
 
 	QStringList authenticationArgs() const;
 

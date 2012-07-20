@@ -35,13 +35,23 @@ public slots:
 	void cleanUpClicked();
 	void infoClicked();
 
+private slots:
+	void onCheckoutComplete(bool const success, QString const &targetProject);
+	void onUpdateComplete(bool const success);
+	void onCommitComplete(bool const success);
+	void onRevertComplete(bool const success);
+
 private:
 	void initActions();
 	void showMessage(QString const &message);
 
+	void reopenWithoutSavings();
+
 	QList<qReal::ActionInfo> mMenu;
 	SubversionPlugin *mPlugin;
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowIface;
+	qReal::ProjectManagementInterface *mProjectManager;
+	qrRepo::RepoControlInterface *mRepoApi;
 
 	ui::PreferencesVersioningPage *mPreferencesPage;
 };

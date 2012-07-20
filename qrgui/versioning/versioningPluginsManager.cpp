@@ -21,6 +21,12 @@ void VersioningPluginsManager::initFromToolPlugins(QListIterator<qReal::ToolPlug
 		if (versioningPlugin) {
 			mPlugins.append(versioningPlugin);
 			versioningPlugin->setWorkingCopyManager(mRepoApi);
+			connect(versioningPlugin, SIGNAL(workingCopyDownloaded(bool const))
+					, this, SLOT(onWorkingCopyDownloaded(bool const)));
+			connect(versioningPlugin, SIGNAL(workingCopyUpdated(bool const))
+					, this, SLOT(onWorkingCopyUpdated(bool const)));
+			connect(versioningPlugin, SIGNAL(changesSubmitted(bool const))
+					, this, SLOT(onChangesSubmitted(bool const)));
 		}
 	}
 }
@@ -51,7 +57,7 @@ bool VersioningPluginsManager::onFileAdded(const QString &filePath, const QStrin
 {
 	WorkingCopyInspectionInterface *activeInspector = activeWorkingCopyInspector(workingDir);
 	if (!activeInspector) {
-		return false;
+		return true;
 	}
 	return activeInspector->onFileAdded(filePath, workingDir);
 }
@@ -60,7 +66,7 @@ bool VersioningPluginsManager::onFileRemoved(const QString &filePath, const QStr
 {
 	WorkingCopyInspectionInterface *activeInspector = activeWorkingCopyInspector(workingDir);
 	if (!activeInspector) {
-		return false;
+		return true;
 	}
 	return activeInspector->onFileRemoved(filePath, workingDir);
 }
@@ -69,46 +75,46 @@ bool VersioningPluginsManager::onFileChanged(const QString &filePath, const QStr
 {
 	WorkingCopyInspectionInterface *activeInspector = activeWorkingCopyInspector(workingDir);
 	if (!activeInspector) {
-		return false;
+		return true;
 	}
 	return activeInspector->onFileChanged(filePath, workingDir);
 }
 
-bool VersioningPluginsManager::downloadWorkingCopy(
+void VersioningPluginsManager::beginWorkingCopyDownloading(
 		  QString const &repoAddress
 		, QString const &targetProject
 		, int revisionNumber)
 {
 	BriefVersioningInterface *activeVcs = activePlugin();
 	if (!activeVcs) {
-		return NULL;
+		return;
 	}
-	return activeVcs->downloadWorkingCopy(repoAddress, targetProject, revisionNumber);
+	return activeVcs->beginWorkingCopyDownloading(repoAddress, targetProject, revisionNumber);
 }
 
-bool VersioningPluginsManager::updateWorkingCopy()
+void VersioningPluginsManager::beginWorkingCopyUpdating()
 {
 	BriefVersioningInterface *activeVcs = activePlugin();
 	if (!activeVcs) {
-		return NULL;
+		return;
 	}
-	return activeVcs->updateWorkingCopy();
+	return activeVcs->beginWorkingCopyUpdating();
 }
 
-bool VersioningPluginsManager::submitChanges(QString const &description)
+void VersioningPluginsManager::beginChangesSubmitting(QString const &description)
 {
 	BriefVersioningInterface *activeVcs = activePlugin();
 	if (!activeVcs) {
-		return NULL;
+		return;
 	}
-	return activeVcs->submitChanges(description);
+	return activeVcs->beginChangesSubmitting(description);
 }
 
 bool VersioningPluginsManager::reinitWorkingCopy()
 {
 	BriefVersioningInterface *activeVcs = activePlugin();
 	if (!activeVcs) {
-		return NULL;
+		return true;
 	}
 	return activeVcs->reinitWorkingCopy();
 }
@@ -117,7 +123,7 @@ QString VersioningPluginsManager::information()
 {
 	BriefVersioningInterface *activeVcs = activePlugin();
 	if (!activeVcs) {
-		return NULL;
+		return QString();
 	}
 	return activeVcs->information();
 }
@@ -159,4 +165,19 @@ void VersioningPluginsManager::reportWarnings(const QStringList &messages)
 	foreach (QString const &message, messages) {
 		reportWarning(message);
 	}
+}
+
+void VersioningPluginsManager::onWorkingCopyDownloaded(const bool success)
+{
+	emit workingCopyDownloaded(success);
+}
+
+void VersioningPluginsManager::onWorkingCopyUpdated(const bool success)
+{
+	emit workingCopyUpdated(success);
+}
+
+void VersioningPluginsManager::onChangesSubmitted(const bool success)
+{
+	emit changesSubmitted(success);
 }

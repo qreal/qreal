@@ -14,7 +14,7 @@ namespace invocation
 /// @brief Representing operation invocation state
 enum InvocationState
 {
-	/// Operation is invocing
+	/// Operation is invoking
 	Invocing = 0
 	/// Operation finished its execution itself
 	, FinishedNormally
@@ -23,7 +23,7 @@ enum InvocationState
 };
 
 /// Base class for all operations that can execute for a
-/// rather long time and must be invoced in another thread.
+/// rather long time and must be invoked in another thread.
 class QRUTILS_EXPORT LongOperation : public QObject
 {
 	Q_OBJECT
@@ -32,7 +32,7 @@ public:
 	/// Returns if operation is running at the moment
 	bool isRunning() const;
 	/// Returns operation invocation state
-	InvocationState invocationResult() const;
+	InvocationState invocationState() const;
 
 	/// Returns operation timeout. NOTE: timeout works only
 	/// in asynchronious case
@@ -48,11 +48,11 @@ public:
 	/// the caller thread till operation finished.
 	/// NOTE: timeout doesn`t work in this case
 	/// @param priority The OS sheduller parameter
-	void invoceSync(QThread::Priority priority = QThread::NormalPriority);
+	void invokeSync(QThread::Priority priority = QThread::NormalPriority);
 	/// Starts operation in another thread. When operation is finished
 	/// finished(...) signal is emitted
 	/// @param priority The OS sheduller parameter
-	void invoceAsync(QThread::Priority priority = QThread::NormalPriority);
+	void invokeAsync(QThread::Priority priority = QThread::NormalPriority);
 	/// Terminates operation thread
 	void cancel();
 
@@ -62,8 +62,14 @@ signals:
 	/// Emitted after operation thread started and control returned to
 	/// caller thread
 	void afterStarted();
-	/// Emitted when operation finished itself or was canceled
-	void finished(invocation::InvocationState invocationResult);
+	/// Emitted when operation finished or was canceled. Use this
+	/// overload when you know exactly what operation finished or
+	/// it plays no role
+	/// @param invocationResult The result
+	void finished(invocation::InvocationState invocationState);
+	/// Emitted when operation finished or was canceled. Use this
+	/// overload when you do not know exactly what operation finished
+	void finished(invocation::LongOperation *operation);
 
 protected:
 	// This class itself mustn`t be instantiated because of
@@ -86,7 +92,7 @@ private:
 
 	int mTimeout;
 	QTimer *mTimer;
-	InvocationState mInvocationResult;
+	InvocationState mInvocationState;
 };
 
 }

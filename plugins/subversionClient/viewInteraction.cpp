@@ -11,10 +11,20 @@ ViewInteraction::ViewInteraction(SubversionPlugin *pluginInstance)
 	, mPreferencesPage(new PreferencesVersioningPage())
 {
 	initActions();
+	connect(mPlugin, SIGNAL(checkoutComplete(bool,QString))
+			, this, SLOT(onCheckoutComplete(bool,QString)));
+	connect(mPlugin, SIGNAL(updateComplete(bool))
+			, this, SLOT(onUpdateComplete(bool)));
+	connect(mPlugin, SIGNAL(commitComplete(bool))
+			, this, SLOT(onCommitComplete(bool)));
+	connect(mPlugin, SIGNAL(revertComplete(bool))
+			, this, SLOT(onRevertComplete(bool)));
 }
 
 void ViewInteraction::initActions()
 {
+	// TODO: Add menu enabling/disabling when current project changed
+
 	QMenu *svnMenu = new QMenu(tr("Subversion"));
 
 	QAction *checkoutAction = svnMenu->addAction(tr("Checkout..."));
@@ -51,6 +61,8 @@ QPair<QString, PreferencesPage *> ViewInteraction::preferencesPage() const
 void ViewInteraction::init(const qReal::PluginConfigurator &configurator)
 {
 	mMainWindowIface = &(configurator.mainWindowInterpretersInterface());
+	mProjectManager = &(configurator.projectManager());
+	mRepoApi = &(configurator.repoControlInterface());
 }
 
 void ViewInteraction::checkoutClicked()
@@ -59,30 +71,18 @@ void ViewInteraction::checkoutClicked()
 	if (QDialog::Accepted != dialog->exec()) {
 		return;
 	}
-	// TODO: Show execution indicator
 	QString const target = dialog->target();
 	QString const url = dialog->url();
 
-	if (mPlugin->doCheckout(url, target)) {
-		// TODO: Open 'target' project
-		showMessage(tr("Checkout succeeded. Working project was set to ") + target);
-		SettingsManager::setValue("checkoutTarget", target);
-		SettingsManager::setValue("checkoutUrl", url);
-	}
-	// TODO: hide execution indicator
+	SettingsManager::setValue("checkoutTarget", target);
+	SettingsManager::setValue("checkoutUrl", url);
+
+	mPlugin->startCheckout(url, target);
 }
 
 void ViewInteraction::updateClicked()
 {
-	// TODO: Show execution indicator
-	if (mPlugin->doUpdate()) {
-		int revision = mPlugin->currentRevision();
-		QString const message = (revision < 0)
-				? tr("Updated successfully")
-				: tr("Updated to revision ") + QString::number(revision);
-		showMessage(message);
-	}
-	// TODO: hide execution indicator
+	mPlugin->startUpdate();
 }
 
 void ViewInteraction::commitClicked()
@@ -96,29 +96,19 @@ void ViewInteraction::commitClicked()
 		message = "<no message>";
 	}
 
-	// TODO: Show execution indicator
-	if (mPlugin->doCommit(message)) {
-		showMessage(tr("Commited succcessfully!"));
-	}
-	// TODO: hide execution indicator
+	mPlugin->startCommit(message);
 }
 
 void ViewInteraction::revertClicked()
 {
-	// TODO: Show execution indicator
-	if (mPlugin->doRevert()) {
-		showMessage(tr("Reverted successfully"));
-	}
-	// TODO: hide execution indicator
+	mPlugin->startRevert();
 }
 
 void ViewInteraction::cleanUpClicked()
 {
-	// TODO: Show execution indicator
 	if (mPlugin->doCleanUp()) {
 		showMessage(tr("Clean Up success"));
 	}
-	// TODO: hide execution indicator
 }
 
 void ViewInteraction::infoClicked()
@@ -132,4 +122,48 @@ void ViewInteraction::infoClicked()
 void ViewInteraction::showMessage(const QString &message)
 {
 	mMainWindowIface->errorReporter()->addInformation(message);
+}
+
+void ViewInteraction::onCheckoutComplete(const bool success, const QString &targetProject)
+{
+	if (success) {
+		mProjectManager->openExisting(targetProject);
+		showMessage(tr("Checkout succeeded. Working project was set to ") + targetProject);
+	}
+}
+
+void ViewInteraction::onUpdateComplete(const bool success)
+{
+	if (success) {
+		int revision = mPlugin->currentRevision();
+		QString const message = (revision < 0)
+				? tr("Updated successfully")
+				: tr("Updated to revision ") + QString::number(revision);
+		showMessage(message);
+		reopenWithoutSavings();
+	}
+}
+
+void ViewInteraction::onCommitComplete(const bool success)
+{
+	if (success) {
+		showMessage(tr("Commited successfully"));
+		reopenWithoutSavings();
+	}
+}
+
+void ViewInteraction::onRevertComplete(const bool success)
+{
+	if (success) {
+		showMessage(tr("Reverted successfully"));
+		reopenWithoutSavings();
+	}
+}
+
+void ViewInteraction::reopenWithoutSavings()
+{
+//	QString const currentProject = mRepoApi->workingFile();
+	//TODO: obtain current project name
+	mProjectManager->close();
+	mProjectManager->openExisting(currentProject);
 }

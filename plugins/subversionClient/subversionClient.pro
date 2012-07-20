@@ -7,6 +7,8 @@ RCC_DIR = .rcc
 UI_DIR = .ui
 OBJECTS_DIR = .obj
 
+TRANSLATIONS += subversionClient_ru.ts
+
 HEADERS = \
 	subversionPlugin.h \
 	viewInteraction.h \

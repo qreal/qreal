@@ -11,10 +11,11 @@ namespace versioning
 {
 
 class VersioningPluginsManager
-		: public QObject
+		: public BriefVersioningInterface
 		, public qrRepo::versioning::WorkingCopyInspectionInterface
-		, public BriefVersioningInterface
 {
+	Q_OBJECT
+
 public:
 	/// Inits plugin list using loaded by plugin manager ones
 	VersioningPluginsManager(ToolPluginManager const &pluginManager,
@@ -26,16 +27,22 @@ public:
 	bool onFileRemoved(QString const &filePath, QString const &workingDir);
 	bool onFileChanged(QString const &filePath, QString const &workingDir);
 
-	bool downloadWorkingCopy(
+public slots:
+	void beginWorkingCopyDownloading(
 			  QString const &repoAddress
 			, QString const &targetProject
 			, int revisionNumber = -1);
-	bool updateWorkingCopy();
-	bool submitChanges(QString const &description);
+	void beginWorkingCopyUpdating();
+	void beginChangesSubmitting(QString const &description);
 	bool reinitWorkingCopy();
 	QString information();
 	int revisionNumber();
 	bool isMyWorkingCopy(QString const &directory = "");
+
+private slots:
+	void onWorkingCopyDownloaded(bool const success);
+	void onWorkingCopyUpdated(bool const success);
+	void onChangesSubmitted(bool const success);
 
 private:
 	void initFromToolPlugins(QListIterator<ToolPluginInterface *> iterator);

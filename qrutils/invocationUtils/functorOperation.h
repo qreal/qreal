@@ -23,7 +23,7 @@ namespace invocation
 ///		FunctorOperation<void> *operation = new FunctorOperation<void>(30000);
 ///		operation->setInvocationTarget(this, &SampleClass::doOperation, 5, true); // Class-member usage
 ///		connect(operation, SIGNAL(finished(invocation::InvocationResult)), this, SLOT(onOperationComplete(invocation::InvocationResult)));
-///		operation->invoceAsync();
+///		operation->invokeAsync();
 /// The second one  represents operation without progress providing.
 /// For this got worked your function must accept Progress * type as
 /// the first argument. Then you just call setInvocationTargetWithProgress(...)
@@ -36,7 +36,7 @@ namespace invocation
 ///		FunctorOperation<void> *operation = new FunctorOperation<void>(30000);
 ///		operation->setInvocationTargetWithProgress(this, &SampleClass::doOperation, 5, QString("some string"));
 ///		connect(operation, SIGNAL(finished(invocation::InvocationResult)), this, SLOT(onOperationComplete(invocation::InvocationResult)));
-///		operation->invoceAsync();
+///		operation->invokeAsync();
 /// @param TResult Must be function return value type
 template<typename TResult>
 class QRUTILS_EXPORT FunctorOperation : public LongOperation
@@ -553,21 +553,23 @@ public:
 	/// Returns value returned by specified function.
 	/// In case when function returns nothing (void)
 	/// the behaviour is unknown
-	TResult *result() const
+	TResult result() const
 	{
-		return mResult;
+		if (mFunctor->returnsSomething()) {
+			return mFunctor->result();
+		}
 	}
 
 signals:
 	void beforeStarted();
-	void finished(InvocationState invocationResult);
+	void finished(InvocationState invocationState);
 
 private:
-	virtual void onThreadFinished()
-	{
-		mResult = (dynamic_cast<FunctorThread *>(mThread))->result();
-		LongOperation::onThreadFinished();
-	}
+//	virtual void onThreadFinished()
+//	{
+//		mResult = &((dynamic_cast<FunctorThread *>(mThread))->result());
+//		LongOperation::onThreadFinished();
+//	}
 
 	virtual void startInvocation(QThread::Priority priority = QThread::NormalPriority)
 	{
@@ -583,11 +585,6 @@ private:
 		{
 		}
 
-		TResult *result() const
-		{
-			return mResult;
-		}
-
 		void run()
 		{
 			mFunctor->runFunctor();
@@ -595,11 +592,9 @@ private:
 
 	private:
 		Functor<TResult> *mFunctor;
-		TResult *mResult;
 	};
 
 	Functor<TResult> *mFunctor;
-	TResult *mResult;
 };
 
 }

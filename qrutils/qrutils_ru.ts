@@ -165,17 +165,22 @@
 <context>
     <name>qReal::versioning::ExternalClientPluginBase</name>
     <message>
-        <location filename="versioningUtils/externalClientPluginBase.cpp" line="95"/>
+        <location filename="versioningUtils/externalClientPluginBase.cpp" line="119"/>
+        <source> is not a working copy</source>
+        <translation> не является рабочей копией</translation>
+    </message>
+    <message>
+        <location filename="versioningUtils/externalClientPluginBase.cpp" line="153"/>
         <source>An error occured while starting versioning client process (maybe path is not correct?)</source>
         <translation>Во время запуска стороннего процесса клиента системы контроля версий произошла ошика (может быть Вы указали невеный путь до него?)</translation>
     </message>
     <message>
-        <location filename="versioningUtils/externalClientPluginBase.cpp" line="107"/>
+        <location filename="versioningUtils/externalClientPluginBase.cpp" line="165"/>
         <source>Path to versioning client is empty</source>
         <translation>Путь до клиента системы конроля версий не задан</translation>
     </message>
     <message>
-        <location filename="versioningUtils/externalClientPluginBase.cpp" line="130"/>
+        <location filename="versioningUtils/externalClientPluginBase.cpp" line="188"/>
         <source>Versioning client timeout</source>
         <translation>Таймуат</translation>
     </message>
