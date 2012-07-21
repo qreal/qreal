@@ -36,6 +36,7 @@ public:
 	virtual void generateNameMapping(utils::OutFile &out) = 0;
 	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst) = 0;
+	virtual bool generateReferenceProperties(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual bool generateConnections(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual bool generateUsages(utils::OutFile &out, bool isNotFirst) = 0;

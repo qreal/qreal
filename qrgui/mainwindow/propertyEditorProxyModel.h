@@ -42,6 +42,7 @@ public:
 	// Methods for use in delegate, allow to determine where in actual models to put data
 	QModelIndex modelIndex(int row) const;
 	int roleByIndex(int row) const;
+	bool isReference(QModelIndex const &index, QString const &propertyName);
 
 	const QModelIndex& logicalModelIndex() const;
 	const QModelIndex& graphicalModelIndex() const;

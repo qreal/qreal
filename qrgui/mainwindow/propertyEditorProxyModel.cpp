@@ -270,3 +270,18 @@ QString PropertyEditorModel::typeName(QModelIndex const &index) const
 	}
 	return mEditorManager.getTypeName(id, mFields[index.row()].fieldName);
 }
+
+bool PropertyEditorModel::isReference(QModelIndex const &index, QString const &propertyName)
+{
+	Id id;
+	switch (mFields[index.row()].attributeClass) {
+	case logicalAttribute:
+		id = mTargetLogicalObject.data(roles::idRole).value<Id>();
+		break;
+	case graphicalAttribute:
+		id = mTargetGraphicalObject.data(roles::idRole).value<Id>();
+	default:
+		return false;
+	}
+	return mEditorManager.getReferenceProperties(id).contains(propertyName);
+}

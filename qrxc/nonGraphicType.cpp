@@ -46,6 +46,13 @@ bool NonGraphicType::generateProperties(OutFile &out, bool isNotFirst)
 	return false;
 }
 
+bool NonGraphicType::generateReferenceProperties(OutFile &out, bool isNotFirst)
+{
+	Q_UNUSED(out)
+	Q_UNUSED(isNotFirst)
+	return false;
+}
+
 bool NonGraphicType::generateContainedTypes(OutFile &out, bool isNotFirst)
 {
 	Q_UNUSED(out)

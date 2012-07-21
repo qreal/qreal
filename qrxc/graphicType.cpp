@@ -489,6 +489,50 @@ bool GraphicType::generateProperties(OutFile &out, bool isNotFirst)
 	return false;
 }
 
+bool GraphicType::generateReferenceProperties(OutFile &out, bool isNotFirst)
+{
+	if (mVisible) {
+		generateOneCase(out, isNotFirst);
+
+		QString propertiesString;
+		bool isFirstProperty = true;
+
+		foreach (Property *property, mProperties) {
+			// Хак: не генерить предопределённые свойства, иначе они затрут
+			// настоящие и линки будут цепляться к чему попало.
+			if (property->name() == "fromPort" || property->name() == "toPort"
+				|| property->name() == "from" || property->name() == "to"
+				|| property->name() == "name")
+			{
+				qDebug() << "ERROR: predefined property" << property->name()
+					<< "shall not appear in .xml, ignored";
+				continue;
+			}
+
+			if (property->isReferenceProperty()) {
+				if (isFirstProperty) {
+					out() << "\t\tresult ";
+					isFirstProperty = false;
+				}
+
+				propertiesString += QString(" << \"" + property->name() + "\"");
+				if (propertiesString.length() >= maxLineLength) {
+					out() << propertiesString;
+					propertiesString = "\n\t\t";
+				}
+			}
+		}
+
+		if (!propertiesString.trimmed().isEmpty()) {
+			out() << propertiesString;
+		}
+
+		out() << ";\n";
+		return true;
+	}
+	return false;
+}
+
 void GraphicType::generatePropertyTypes(OutFile &out)
 {
 	if (!mVisible)

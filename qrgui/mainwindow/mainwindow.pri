@@ -14,7 +14,8 @@ HEADERS += \
 	mainwindow/splashScreen.h \
 	mainwindow/projectManager/projectManager.h \
 	mainwindow/projectManager/autosaver.h \
-	mainwindow/miniMap.h
+	mainwindow/miniMap.h \
+	mainwindow/referenceList.h
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -29,10 +30,12 @@ SOURCES += \
 	mainwindow/splashScreen.cpp \
 	mainwindow/projectManager/projectManager.cpp \
 	mainwindow/projectManager/autosaver.cpp \
-	mainwindow/miniMap.cpp
+	mainwindow/miniMap.cpp \
+	mainwindow/referenceList.cpp
 
 FORMS += \
 	mainwindow/mainWindow.ui \
+	mainwindow/referenceList.ui
 
 # Shape editor
 HEADERS += \

@@ -35,6 +35,8 @@
 #include "../pluginManager/listenerManager.h"
 #include "../../qrkernel/settingsManager.h"
 
+#include "referenceList.h"
+
 #include "splashScreen.h"
 #include "../dialogs/startDialog/startDialog.h"
 
@@ -425,7 +427,7 @@ void MainWindow::closeAllTabs()
 	disconnectWindowTitle();
 }
 
-void MainWindow::setShape(QString const &data, QPersistentModelIndex const &index, int const &role)
+void MainWindow::setData(QString const &data, QPersistentModelIndex const &index, int const &role)
 {
 	// const_cast here is ok, since we need to set a shape in a correct model, and
 	// not going to use this index anymore.
@@ -839,7 +841,7 @@ void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, Q
 	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
 	model->setData(index, propertyValue, role);
 	connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)),
-			this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
+			this, SLOT(setData(QString, QPersistentModelIndex const &, int const &)));
 
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
@@ -852,6 +854,15 @@ void MainWindow::openShapeEditor()
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
 	setConnectActionZoomTo(shapeEdit);
+}
+
+void MainWindow::openReferenceList(QPersistentModelIndex const &index
+		, QString const &referenceType,	QString const &propertyValue, int role)
+{
+	ReferenceList referenceList(this, index, referenceType, propertyValue, role);
+	connect(&referenceList, SIGNAL(referenceSet(QString, QPersistentModelIndex, int))
+			, this, SLOT(setData(QString, QPersistentModelIndex, int)));
+	referenceList.exec();
 }
 
 void MainWindow::disconnectZoom(QGraphicsView* view)

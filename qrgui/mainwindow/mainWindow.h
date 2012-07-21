@@ -32,6 +32,8 @@
 #include "../dialogs/startDialog/startDialog.h"
 #include "projectManager/projectManager.h"
 
+#include "referenceList.h"
+
 namespace Ui {
 class MainWindowUi;
 }
@@ -81,6 +83,8 @@ public:
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram();
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
+	void openReferenceList(QPersistentModelIndex const &index
+			, QString const &referenceType, QString const &propertyValue, int role);
 	virtual void openSettingsDialog(QString const &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);
@@ -199,7 +203,7 @@ private slots:
 	void showAlignment(bool isChecked);
 	void switchGrid(bool isChecked);
 	void switchAlignment(bool isChecked);
-	void setShape(QString const &data, QPersistentModelIndex const &index, int const &role);
+	void setData(QString const &data, QPersistentModelIndex const &index, int const &role);
 
 	void openShapeEditor();
 
