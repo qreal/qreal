@@ -11,6 +11,10 @@ namespace Ui {
 class ReferenceList;
 }
 
+/** @brief ReferenceList is a widget which allows to edit reference properties
+  *
+  * Shows all the logical elements of needed type and sets reference property to chosen value
+  */
 class ReferenceList : public QDialog
 {
 	Q_OBJECT
@@ -21,6 +25,7 @@ public:
 	~ReferenceList();
 
 signals:
+	/// emitted when OK pressed
 	void referenceSet(QString const &newValue, QPersistentModelIndex const &index, int role);
 
 private slots:

@@ -52,6 +52,8 @@ public:
 
 	bool isCurrentIndex(QModelIndex const &index) const;
 
+	qReal::Id idByIndex(QModelIndex const &index) const;
+
 private slots:
 	void rereadData(QModelIndex const &, QModelIndex const &);
 
