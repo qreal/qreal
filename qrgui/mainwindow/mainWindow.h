@@ -108,6 +108,8 @@ public:
 	virtual void updateActiveDiagram();
 	virtual void deleteElementFromDiagram(Id const &id);
 
+	virtual void reportOperation(invocation::LongOperation *operation);
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();

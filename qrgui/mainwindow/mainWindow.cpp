@@ -39,6 +39,7 @@
 
 #include "splashScreen.h"
 #include "../dialogs/startDialog/startDialog.h"
+#include "../dialogs/progressDialog/progressDialog.h"
 
 #include "dotRunner.h"
 
@@ -50,6 +51,7 @@ MainWindow::MainWindow()
 		: mUi(new Ui::MainWindowUi)
 		, mCodeTabManager(new QMap<EditorView*, CodeArea*>())
 		, mModels(NULL)
+		, mEditorManager()
 		, mListenerManager(NULL)
 		, mPropertyModel(mEditorManager)
 		, mGesturesWidget(NULL)
@@ -84,11 +86,6 @@ MainWindow::MainWindow()
 	splashScreen.setProgress(40);
 
 	initDocks();
-	mModels = new models::Models("", mEditorManager);
-
-	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
-	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi()
-			, this, mFindReplaceDialog);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
@@ -96,33 +93,41 @@ MainWindow::MainWindow()
 	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
 			, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 
+
 	splashScreen.setProgress(60);
 
 	loadPlugins();
-	initToolPlugins();
-	showMaximized();
+
 
 	splashScreen.setProgress(70);
 
-	if (!SettingsManager::value("maximized").toBool()) {
-		showNormal();
-		resize(SettingsManager::value("size").toSize());
-		move(SettingsManager::value("pos").toPoint());
-	}
+	mDocksVisibility.clear();
+
 
 	splashScreen.setProgress(80);
 
 	mGesturesWidget = new GesturesWidget();
-	initExplorers();
-	connectActions();
 	initActionsFromSettings();
 
 	splashScreen.setProgress(100);
-
-	mDocksVisibility.clear();
-	connectWindowTitle();
-
+	if (!SettingsManager::value("maximized").toBool()) {
+		showNormal();
+		resize(SettingsManager::value("size").toSize());
+		move(SettingsManager::value("pos").toPoint());
+	} else {
+		showMaximized();
+	}
 	splashScreen.close();
+
+	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManager);
+	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
+	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi()
+			, this, mFindReplaceDialog);
+	initToolPlugins();
+	connectWindowTitle();
+	connectActions();
+	initExplorers();
+
 	mStartDialog->exec();
 }
 
@@ -146,7 +151,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), mProjectManager, SLOT(openNewWithDiagram()));
 
-	connect(mUi->actionImport, SIGNAL(triggered()), mProjectManager, SLOT(suggestToimport()));
+	connect(mUi->actionImport, SIGNAL(triggered()), mProjectManager, SLOT(suggestToImport()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 	connect(mUi->actionCopyElementsOnDiagram, SIGNAL(triggered()), this, SLOT(copyElementsOnDiagram()));
 	connect(mUi->actionPasteOnDiagram, SIGNAL(triggered()), this, SLOT(pasteOnDiagram()));
@@ -475,6 +480,12 @@ void MainWindow::deleteElementFromDiagram(Id const &id)
 		mUi->graphicalModelExplorer->setCurrentIndex(mModels->graphicalModelAssistApi().indexById(id));
 	}
 	deleteFromExplorer(isLogical);
+}
+
+void MainWindow::reportOperation(invocation::LongOperation *operation)
+{
+	ProgressDialog *progressDialog = new ProgressDialog(this);
+	progressDialog->connectOperation(operation);
 }
 
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
@@ -1411,6 +1422,7 @@ void MainWindow::initToolPlugins()
 			, mModels->graphicalModelAssistApi()
 			, mModels->logicalModelAssistApi()
 			, *this
+			, *mProjectManager
 			));
 
 	QList<ActionInfo> const actions = mToolManager.actions();

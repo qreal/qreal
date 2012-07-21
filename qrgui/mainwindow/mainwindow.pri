@@ -12,6 +12,7 @@ HEADERS += \
 	mainwindow/findManager.h \
 	mainwindow/dotRunner.h \
 	mainwindow/splashScreen.h \
+	mainwindow/projectManager/projectManagementInterface.h \
 	mainwindow/projectManager/projectManager.h \
 	mainwindow/projectManager/autosaver.h \
 	mainwindow/miniMap.h \
