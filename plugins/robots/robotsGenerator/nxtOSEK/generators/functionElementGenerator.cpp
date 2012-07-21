@@ -58,7 +58,7 @@ QByteArray FunctionElementGenerator::replaceSensorVariables(QByteArray portValue
 	}
 }
 
-QList<SmartLine> FunctionElementGenerator::simpleCode()
+QList<SmartLine> FunctionElementGenerator::convertBlockIntoCode()
 {
 	QList<SmartLine> result;
 
@@ -66,10 +66,10 @@ QList<SmartLine> FunctionElementGenerator::simpleCode()
 
 	QByteArray byteFuncCode = mNxtGen->api()->stringProperty(logicElementId, "Body").toUtf8();
 
-	byteFuncCode.replace("Сенсор1", replaceSensorVariables(mNxtGen->portValue1()) + "1)");
-	byteFuncCode.replace("Сенсор2", replaceSensorVariables(mNxtGen->portValue2()) + "2)");
-	byteFuncCode.replace("Сенсор3", replaceSensorVariables(mNxtGen->portValue3()) + "3)");
-	byteFuncCode.replace("Сенсор4", replaceSensorVariables(mNxtGen->portValue4()) + "4)");
+	byteFuncCode.replace("Sensor1", replaceSensorVariables(mNxtGen->portValue1()) + "1)");
+	byteFuncCode.replace("Sensor2", replaceSensorVariables(mNxtGen->portValue2()) + "2)");
+	byteFuncCode.replace("Sensor3", replaceSensorVariables(mNxtGen->portValue3()) + "3)");
+	byteFuncCode.replace("Sensor4", replaceSensorVariables(mNxtGen->portValue4()) + "4)");
 
 	variableAnalysis(byteFuncCode);
 	QString const funcCode = QString::fromUtf8(byteFuncCode);

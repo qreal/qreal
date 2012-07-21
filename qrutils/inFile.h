@@ -11,12 +11,8 @@ namespace utils {
 class QRUTILS_EXPORT InFile
 {
 public:
-	explicit InFile(QString const &fileName);
-	QTextStream &operator()();
+	explicit InFile();
+	static QString readAll(QString const &nameFile);
 	~InFile();
-
-private:
-	QFile mFile;
-	QTextStream mInput;
 };
 }

@@ -160,82 +160,77 @@ void NxtOSEKRobotGenerator::createProjectDir(QString const &projectDir)
 
 void NxtOSEKRobotGenerator::generate()
 {
-	if (mDiagram == Id()) {
-		mErrorReporter.addCritical(QObject::tr("There is no opened diagram"));
-		return;
+	{
+		if (mDiagram == Id()) {
+			mErrorReporter.addCritical(QObject::tr("There is no opened diagram"));
+			return;
+		}
+
+		IdList toGenerate = mApi->elementsByType("InitialNode");
+		toGenerate << mApi->elementsByType("InitialBlock");
+
+		int curInitialNodeNumber = 0;
+		//QDir projectsDir; //TODO: use user path to projects
+		QString const projectName = "example" + QString::number(curInitialNodeNumber);
+		QString const projectDir = "nxt-tools/" + projectName;
+		createProjectDir(projectDir);
+
+		mResultString = utils::InFile::readAll(":/nxtOSEK/templates/template.c");
+
+		mResultOil = utils::InFile::readAll(":/nxtOSEK/templates/template.oil");
+
+		QString resultTaskTemplate = utils::InFile::readAll(":/nxtOSEK/templates/taskTemplate.oil");
+
+		foreach (Id const &curInitialNode, toGenerate) {
+			mTaskTemplate = resultTaskTemplate;
+			if (!mApi->isGraphicalElement(curInitialNode)) {
+				continue;
+			}
+
+			if (mApi->parent(curInitialNode) != mDiagram) {
+				continue;
+			}
+
+			mGeneratedStringSet.clear();
+			mGeneratedStringSet.append(QList<SmartLine>()); //first list for variable initialization
+			mVariablePlaceInGenStrSet = 0;
+
+			mElementToStringListNumbers.clear();
+			mVariables.clear();
+
+			AbstractElementGenerator* const gen = ElementGeneratorFactory::generator(this, curInitialNode, *mApi);
+			mPreviousElement = curInitialNode;
+			mBalancerIsActivated = false;
+			gen->generate(); //may throws a exception
+			delete gen;
+
+			// Result code in .c file
+			QString resultCode;
+			mCurTabNumber = 0;
+			foreach (QList<SmartLine> const &lineList, mGeneratedStringSet) {
+				 resultCode = addTabAndEndOfLine(lineList, resultCode);
+			}
+			// Code init block in .c file
+			QString resultInitCode;
+			resultInitCode = addTabAndEndOfLine(mInitCode, resultInitCode);
+			// Code terminate block in .c file
+			QString resultTerminateCode;
+			resultTerminateCode = addTabAndEndOfLine(mTerminateCode, resultTerminateCode);
+			resultCode = "TASK(OSEK_Task_Number_" + QString::number(curInitialNodeNumber) +")\n{\n" + resultCode + "}";
+			insertCode(resultCode, resultInitCode, resultTerminateCode, QString::number(curInitialNodeNumber));
+			curInitialNodeNumber++;
+		}
+
+		deleteResidualLabels(projectName);
+		//Output in the .c and .oil file
+		utils::OutFile outC(projectDir + "/" + projectName + ".c");
+		outC() << mResultString;
+		utils::OutFile outOil(projectDir + "/" + projectName + ".oil");
+		outOil() << mResultOil;
+
+		generateFilesForBalancer(projectDir);
+		generateMakeFile(toGenerate.isEmpty(), projectName, projectDir);
 	}
-
-	IdList toGenerate = mApi->elementsByType("InitialNode");
-	toGenerate << mApi->elementsByType("InitialBlock");
-
-	int curInitialNodeNumber = 0;
-	//QDir projectsDir; //TODO: use user path to projects
-	QString const projectName = "example" + QString::number(curInitialNodeNumber);
-	QString const projectDir = "nxt-tools/" + projectName;
-	createProjectDir(projectDir);
-
-	utils::InFile templateC(":/nxtOSEK/templates/template.c");
-	templateC() >> mResultString;
-	qDebug() << mResultString;
-
-	utils::InFile readTemplateOilFile(":/nxtOSEK/templates/template.oil");
-	readTemplateOilFile() >> mResultOil;
-	qDebug() << mResultOil;
-
-	utils::InFile readTaskTemplateFile(":/nxtOSEK/templates/taskTemplate.oil");
-	QString resultTaskTemplate;
-	readTaskTemplateFile() >> resultTaskTemplate;
-
-	foreach (Id const &curInitialNode, toGenerate) {
-
-		mTaskTemplate = resultTaskTemplate;
-		if (!mApi->isGraphicalElement(curInitialNode)) {
-			continue;
-		}
-
-		if (mApi->parent(curInitialNode) != mDiagram) {
-			continue;
-		}
-
-		mGeneratedStringSet.clear();
-		mGeneratedStringSet.append(QList<SmartLine>()); //first list for variable initialization
-		mVariablePlaceInGenStrSet = 0;
-
-		mElementToStringListNumbers.clear();
-		mVariables.clear();
-
-		AbstractElementGenerator* const gen = ElementGeneratorFactory::generator(this, curInitialNode, *mApi);
-		mPreviousElement = curInitialNode;
-		mBalancerIsActivated = false;
-		gen->generate(); //may throws a exception
-		delete gen;
-
-		// Result code in .c file
-		QString resultCode;
-		mCurTabNumber = 0;
-		foreach (QList<SmartLine> const &lineList, mGeneratedStringSet) {
-			 resultCode = addTabAndEndOfLine(lineList, resultCode);
-		}
-		// Code init block in .c file
-		QString resultInitCode;
-		resultInitCode = addTabAndEndOfLine(mInitCode, resultInitCode);
-		// Code terminate block in .c file
-		QString resultTerminateCode;
-		resultTerminateCode = addTabAndEndOfLine(mTerminateCode, resultTerminateCode);
-		resultCode = "TASK(OSEK_Task_Number_" + QString::number(curInitialNodeNumber) +")\n{\n" + resultCode + "}";
-		insertCode(resultCode, resultInitCode, resultTerminateCode, QString::number(curInitialNodeNumber));
-		curInitialNodeNumber++;
-	}
-
-	deleteResidualLabels(projectName);
-	//Output in the .c and .oil file
-	utils::OutFile outC(projectDir + "/" + projectName + ".c");
-	outC() << mResultString;
-	utils::OutFile outOil(projectDir + "/" + projectName + ".oil");
-	outOil() << mResultOil;
-
-	generateFilesForBalancer(projectDir);
-	generateMakeFile(toGenerate.isEmpty(), projectName, projectDir);
 }
 
 QList<SmartLine> &NxtOSEKRobotGenerator::variables()
@@ -273,7 +268,7 @@ QByteArray NxtOSEKRobotGenerator::portValue4() const
 	return mPortValue4;
 }
 
-ErrorReporterInterface &NxtOSEKRobotGenerator::errorReporter() const
+ErrorReporterInterface &NxtOSEKRobotGenerator::errorReporter()
 {
 	return mErrorReporter;
 }
@@ -312,4 +307,24 @@ QStack<qReal::Id> &NxtOSEKRobotGenerator::previousLoopElements()
 qReal::Id NxtOSEKRobotGenerator::previousLoopElementsPop()
 {
 	return mPreviousLoopElements.pop();
+}
+
+void NxtOSEKRobotGenerator::setPortValue1(QByteArray portValue)
+{
+	mPortValue1 = portValue;
+}
+
+void NxtOSEKRobotGenerator::setPortValue2(QByteArray portValue)
+{
+	mPortValue2 = portValue;
+}
+
+void NxtOSEKRobotGenerator::setPortValue3(QByteArray portValue)
+{
+	mPortValue3 = portValue;
+}
+
+void NxtOSEKRobotGenerator::setPortValue4(QByteArray portValue)
+{
+	mPortValue4 = portValue;
 }

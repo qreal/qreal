@@ -65,6 +65,7 @@ void RobotsGeneratorPlugin::generateRobotSourceCode()
 		return;
 	}
 
+	mMainWindowInterface->errorReporter()->clearErrors();
 	QFile file("nxt-tools/example0/example0.c");
 	QTextStream *inStream = NULL;
 	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {

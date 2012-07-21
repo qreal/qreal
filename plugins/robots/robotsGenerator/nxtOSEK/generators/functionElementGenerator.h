@@ -14,7 +14,7 @@ public:
 	explicit FunctionElementGenerator(NxtOSEKRobotGenerator *generator, qReal::Id const &elementId, bool generateToInit);
 
 protected:
-	virtual QList<SmartLine> simpleCode();
+	virtual QList<SmartLine> convertBlockIntoCode();
 	void variableAnalysis(QByteArray const &code);
 
 private:
