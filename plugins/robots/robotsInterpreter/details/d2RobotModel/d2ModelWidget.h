@@ -104,8 +104,6 @@ private slots:
 
 signals:
 	void d2WasClosed();
-	void runButtonEnable();
-	void runButtonDisable();
 
 private:
 	void connectUiButtons();
@@ -135,8 +133,8 @@ private:
 	void reshapeLine(QGraphicsSceneMouseEvent *event);
 	void reshapeStylus(QGraphicsSceneMouseEvent *event);
 
-		void setValuePenColorComboBox(QColor penColor);
-		void setValuePenWidthSpinBox(int width);
+	void setValuePenColorComboBox(QColor penColor);
+	void setValuePenWidthSpinBox(int width);
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
 	void setNoPalette();
 
