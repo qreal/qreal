@@ -26,7 +26,6 @@ bool SimpleElementGenerator::nextElementsGeneration()
 {
 	IdList const outgoingConnectedElements = mNxtGen->api()->outgoingConnectedElements(mElementId);
 	mNxtGen->generatedStringSet() << convertBlockIntoCode();
-	mNxtGen->initCode().append(mInitCode);
 
 	if (outgoingConnectedElements.size() == 1) {
 		if (outgoingConnectedElements.at(0) == Id::rootId()) {

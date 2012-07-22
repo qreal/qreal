@@ -243,6 +243,11 @@ QList<SmartLine> &NxtOSEKRobotGenerator::initCode()
 	return mInitCode;
 }
 
+QList<SmartLine> &NxtOSEKRobotGenerator::terminateCode()
+{
+	return mTerminateCode;
+}
+
 qrRepo::RepoApi const * const NxtOSEKRobotGenerator::api() const
 {
 	return mApi;

@@ -20,10 +20,6 @@ protected:
 	virtual bool nextElementsGeneration();
 
 	virtual QList<SmartLine> convertBlockIntoCode();
-
-private:
-	QList<SmartLine> mInitCode;
-	QList<SmartLine> mTerminateCode;
 };
 
 }

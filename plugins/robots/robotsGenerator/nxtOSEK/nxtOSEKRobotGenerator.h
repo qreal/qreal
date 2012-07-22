@@ -29,6 +29,7 @@ public:
 
 	QList<SmartLine> &variables();
 	QList<SmartLine> &initCode();
+	QList<SmartLine> &terminateCode();
 	qrRepo::RepoApi const * const api() const;
 
 	QByteArray portValue1() const;
