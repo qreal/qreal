@@ -131,16 +131,7 @@ bool IfElementGenerator::nextElementsGeneration()
 
 	//TODO: save number of new created list
 	QString condition = "(" + mNxtGen->api()->property(logicElementId, "Condition").toString() + ")";
-
-	QByteArray const conditionOnArrow =
-		mNxtGen->api()->stringProperty(mNxtGen->api()->logicalId(outgoingLinks.at(conditionArrowNum)), "Guard").toUtf8();
-	if (conditionOnArrow == "меньше 0") {
-		condition += " < 0";
-	} else if (conditionOnArrow == "больше 0") {
-		condition += " > 0";
-	} else {
-		condition += " == 0";
-	}
+	addNeededCondition(condition, outgoingLinks, conditionArrowNum);
 
 	//check for back arrows
 	Id const positiveBranchElement = mNxtGen->api()->to(mNxtGen->api()->logicalId(outgoingLinks.at(conditionArrowNum)));
@@ -161,58 +152,86 @@ bool IfElementGenerator::nextElementsGeneration()
 	}
 
 	QPair<bool, qReal::Id> const negativeBranchCheck = checkBranchForBackArrows(negativeBranchElement);
-
 	bool const isNegativeBranchReturnsToBackElems = negativeBranchCheck.first;
 
 	if (isPositiveBranchReturnsToBackElems && isNegativeBranchReturnsToBackElems) {
-		if (positiveBranchCheck.second != negativeBranchCheck.second) {
-			mNxtGen->errorReporter().addError(
-					"This diagram isn't structed diagram,"\
-					" because there are IF block with 2 back arrows!", mElementId);
-			return false;
-		}
-
-		//TODO: repair for case with merged branches
-		mNxtGen->errorReporter().addError("Generator JUST does not work in this case.", mElementId);
+		displaysSuitableError(positiveBranchCheck, negativeBranchCheck);
 		return false;
 	}
 
 	if (isPositiveBranchReturnsToBackElems != isNegativeBranchReturnsToBackElems) {
-		int cycleBlock = isPositiveBranchReturnsToBackElems ? conditionArrowNum : 1 - conditionArrowNum;
-		if (conditionArrowNum == cycleBlock) {
-			condition = "!" + condition;
-		}
-
-		QList<SmartLine> ifBlock;
-		ifBlock << SmartLine("if (" + condition + ") {", mElementId, SmartLine::increase);
-		ifBlock << SmartLine("break;", mElementId, SmartLine::withoutChange);
-		ifBlock << SmartLine("}", mElementId, SmartLine::decrease);
-		mNxtGen->generatedStringSet() << ifBlock;
-		generateBranch(cycleBlock);
-
-		QList<SmartLine> ifBlockPostfix;
-		generateBranch(1 - cycleBlock);
-		mNxtGen->generatedStringSet() << ifBlockPostfix;
-
+		generateIfBlock(isPositiveBranchReturnsToBackElems, conditionArrowNum, condition);
 		return true;
 	}
 
 	if (!isPositiveBranchReturnsToBackElems && !isNegativeBranchReturnsToBackElems) {
-		QList<SmartLine> ifBlockPrefix;
-		ifBlockPrefix << SmartLine("if (" + condition + ") {", mElementId, SmartLine::increase);
-		mNxtGen->generatedStringSet() << ifBlockPrefix;
-
-		//generate true/false blocks
-		generateBranch(conditionArrowNum);
-		QList<SmartLine> elseBlock;
-		elseBlock << SmartLine("} else {", mElementId, SmartLine::decreaseOnlyThisLine);
-		mNxtGen->generatedStringSet() << elseBlock;
-		generateBranch(1 - conditionArrowNum);
-
-		QList<SmartLine> ifBlockPostfix;
-		ifBlockPostfix << SmartLine("}", mElementId, SmartLine::decrease);
-		mNxtGen->generatedStringSet() << ifBlockPostfix;
+		generateBlockIfElseIs(condition, conditionArrowNum);
 	}
 
 	return true;
 }
+
+void IfElementGenerator::addNeededCondition(QString condition, IdList outgoingLinks, int conditionArrowNum)
+{
+	QByteArray const conditionOnArrow =
+		mNxtGen->api()->stringProperty(mNxtGen->api()->logicalId(outgoingLinks.at(conditionArrowNum)), "Guard").toUtf8();
+	if (conditionOnArrow == "меньше 0") {
+		condition += " < 0";
+	} else if (conditionOnArrow == "больше 0") {
+		condition += " > 0";
+	} else {
+		condition += " == 0";
+	}
+}
+
+void IfElementGenerator::displaysSuitableError(QPair<bool, qReal::Id> const positiveBranchCheck
+		, QPair<bool, qReal::Id> const negativeBranchCheck)
+{
+	if (positiveBranchCheck.second != negativeBranchCheck.second) {
+		mNxtGen->errorReporter().addError(
+				"This diagram isn't structed diagram,"\
+				" because there are IF block with 2 back arrows!", mElementId);
+	} else {
+	//TODO: repair for case with merged branches
+	mNxtGen->errorReporter().addError("Generator JUST does not work in this case.", mElementId);
+	}
+}
+
+void IfElementGenerator::generateIfBlock(bool isPositiveBranchReturnsToBackElems, int const conditionArrowNum
+		, QString condition)
+{
+	int cycleBlock = isPositiveBranchReturnsToBackElems ? conditionArrowNum : 1 - conditionArrowNum;
+	if (conditionArrowNum == cycleBlock) {
+		condition = "!" + condition;
+	}
+
+	QList<SmartLine> ifBlock;
+	ifBlock << SmartLine("if (" + condition + ") {", mElementId, SmartLine::increase);
+	ifBlock << SmartLine("break;", mElementId, SmartLine::withoutChange);
+	ifBlock << SmartLine("}", mElementId, SmartLine::decrease);
+	mNxtGen->generatedStringSet() << ifBlock;
+	generateBranch(cycleBlock);
+
+	QList<SmartLine> ifBlockPostfix;
+	generateBranch(1 - cycleBlock);
+	mNxtGen->generatedStringSet() << ifBlockPostfix;
+}
+
+void IfElementGenerator::generateBlockIfElseIs(QString condition, int conditionArrowNum)
+{
+	QList<SmartLine> ifBlockPrefix;
+	ifBlockPrefix << SmartLine("if (" + condition + ") {", mElementId, SmartLine::increase);
+	mNxtGen->generatedStringSet() << ifBlockPrefix;
+
+	//generate true/false blocks
+	generateBranch(conditionArrowNum);
+	QList<SmartLine> elseBlock;
+	elseBlock << SmartLine("} else {", mElementId, SmartLine::decreaseOnlyThisLine);
+	mNxtGen->generatedStringSet() << elseBlock;
+	generateBranch(1 - conditionArrowNum);
+
+	QList<SmartLine> ifBlockPostfix;
+	ifBlockPostfix << SmartLine("}", mElementId, SmartLine::decrease);
+	mNxtGen->generatedStringSet() << ifBlockPostfix;
+}
+
