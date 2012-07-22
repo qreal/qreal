@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <metamodel xmlns="http://schema.real.com/schema/">
 	<include>../../commonMetamodels/kernelMetamodel.xml</include>
 	<namespace>UML 2.0</namespace>
@@ -22,7 +23,7 @@
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
-			<node name="PackageDiagram" displayedName="Package Diagram">
+			<node name="PackageDiagram" displayedName="Package Diagram" description="РџСЂРµРґРЅР°Р·РЅР°С‡РµРЅ РґР»СЏ РѕРїРёСЃР°РЅРёСЏ СЃРІСЏР·РµР№ РјРµР¶РґСѓ РјРµС‚Р°РјРѕРґРµР»СЏРјРё. РўР°РєР¶Рµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РєРѕСЂРЅРµРІС‹Рј СЌР»РµРјРµРЅС‚РѕРј РјРµС‚Р°РјРѕРґРµР»Рё">
 				<graphics>
 					<picture sizex="150" sizey="130">
 						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="0a" x1="0a" y2="0a" stroke-width="1" x2="100a" fill-style="solid"/>
@@ -54,7 +55,7 @@
 					<properties/>
 				</logic>
 			</node>
-			<node name="MetamodelDiagram" displayedName="Metamodel Diagram">
+			<node name="MetamodelDiagram" displayedName="Metamodel Diagram" description="РљРѕСЂРЅРµРІРѕР№ СЌР»РµРјРµРЅС‚ РјРµС‚Р°РјРѕРґРµР»Рё СЏР·С‹РєР°. Р’ РµРіРѕ СЃРІРѕР№СЃС‚РІР°С… СѓРєР°Р·С‹РІР°СЋС‚СЃСЏ РЅРµРѕР±С…РѕРґРёРјС‹Рµ РґР»СЏ СЃР±РѕСЂРєРё РїР°СЂР°РјРµС‚СЂС‹">
 				<graphics>
 					<picture sizex="30" sizey="30">
 						<ellipse fill="#ffffff" stroke-style="dot" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="30" fill-style="solid"/>
@@ -73,9 +74,13 @@
 					<generalizations/>
 					<properties>
 						<property type="string" name="displayedName"/>
-						<property type="string" name="include"/>
-						<property type="string" name="name of the directory"/>
-						<property type="string" name="relative path to QReal Source Files"/>
+						<property type="string" name="include">
+						<description>xml-С„Р°Р№Р»С‹, РєРѕС‚РѕСЂС‹Рµ СЃР»РµРґСѓРµС‚ РїРѕРґРєР»СЋС‡РёС‚СЊ Рє СЃРѕР·РґР°РІР°РµРјРѕР№ РјРµС‚Р°РјРѕРґРµР»Рё</description>
+						</property>
+						<property type="string" name="name of the directory" displayedName="directory to generated code"/>
+						<property type="string" name="relative path to QReal Source Files">
+						<description>РїСѓС‚СЊ РґРѕ РёСЃС…РѕРґРЅС‹С… С„Р°Р№Р»РѕРІ QReal РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ РїСѓС‚Рё РґРѕ СЃРіРµРЅРµСЂРёСЂРѕРІР°РЅРЅРѕРіРѕ РєРѕРґР°</description>
+						</property>
 					</properties>
 					<containers/>
 					<connections>
@@ -83,7 +88,7 @@
 					</connections>
 				</logic>
 			</node>
-			<node name="MetaEditorDiagramNode" displayedName="Meta Editor Diagram">
+			<node name="MetaEditorDiagramNode" displayedName="Meta Editor Diagram" description="Р­Р»РµРјРµРЅС‚ РґР»СЏ РѕРїРёСЃР°РЅРёСЏ РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ СЂРµРґР°РєС‚РѕСЂР° СЃРѕР·РґР°РІР°РµРјРѕРіРѕ СЏР·С‹РєР°. Р”РѕР»Р¶РµРЅ РІРєР»Р°РґС‹РІР°С‚СЊСЃСЏ РІ Metamodel Diagram">
 				<graphics>
 					<picture sizex="200" sizey="200">
 						<line x1="0" y1="40" x2="0" y2="160"/>
@@ -113,7 +118,9 @@
 					</generalizations>
 					<properties>
 						<property type="string" name="displayedName"/>
-						<property type="string" name="nodeName"/>
+						<property type="string" name="nodeName">
+						<description>РёРјСЏ СЌР»РµРјРµРЅС‚Р°, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ РєРѕСЂРЅРµРІС‹Рј РґР»СЏ РґРёР°РіСЂР°РјРј РЅР° СЃРѕР·РґР°РІР°РµРјРѕРј СЏР·С‹РєРµ</description>
+						</property>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntityNode"/>
@@ -124,7 +131,7 @@
 					</container>
 				</logic>
 			</node>
-			<node name="MetaEntityNode" displayedName="Node">
+			<node name="MetaEntityNode" displayedName="Node" description="Р­Р»РµРјРµРЅС‚ РґР»СЏ РѕРїРёСЃР°РЅРёСЏ РЅРѕРІРѕРіРѕ СѓР·Р»Р° РґРёР°РіСЂР°РјРјС‹ СЃРѕР·РґР°РІР°РµРјРѕРіРѕ СЏР·С‹РєР°. Р”РѕР»Р¶РµРЅ РІРєР»Р°РґС‹РІР°С‚СЊСЃСЏ РІ Meta Editor Diagram">
 				<graphics>
 					<picture sizex="150" sizey="100">
 						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid"/>
@@ -191,7 +198,7 @@
 					</container>
 				</logic>
 			</node>
-			<node name="MetaEntityEdge" displayedName="Edge">
+			<node name="MetaEntityEdge" displayedName="Edge" description="Р­Р»РµРјРµРЅС‚ РґР»СЏ РѕРїРёСЃР°РЅРёСЏ РЅРѕРІРѕР№ СЃРІСЏР·Рё РЅР° РґРёР°РіСЂР°РјРјРµ СЃРѕР·РґР°РІР°РµРјРѕРіРѕ СЏР·С‹РєР°. Р”РѕР»Р¶РµРЅ РІРєР»Р°РґС‹РІР°С‚СЊСЃСЏ РІ Meta Editor Diagram">
 				<graphics>
 					<picture sizex="100" sizey="100">
 						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="10" y2="50" stroke-width="2" x2="0" fill-style="solid"/>
@@ -228,10 +235,12 @@
 						<property type="string" name="displayedName"/>
 						<property type="labelTypes" name="labelType">
 							<default>Dynamic text</default>
+							<description>С‚РёРї С‚РµРєСЃС‚Р°(СЃС‚Р°С‚РёС‡РµСЃРєРёР№, РґРёРЅР°РјРёС‡РµСЃРєРёР№)</description>
 						</property>
 						<property type="string" name="labelText"/>
 						<property type="lineTypes" name="lineType">
 							<default>solidLine</default>
+							<description>С‚РёРї Р»РёРЅРёРё (РїСЂСЏРјР°СЏ, РїСѓРЅРєС‚РёСЂРЅР°СЏ Рё С‚.Рґ.)</description>
 						</property>	
 					</properties>
 					<container>
@@ -249,7 +258,7 @@
 					</container>
 				</logic>
 			</node>
-			<node name="MetaEntityEnum" displayedName="Enum">
+			<node name="MetaEntityEnum" displayedName="Enum" description="Р­Р»РµРјРµРЅС‚ РґР»СЏ РѕРїРёСЃР°РЅРёСЏ РїРµСЂРµС‡РёСЃР»СЏРµРјРѕРіРѕ С‚РёРїР° РґР°РЅРЅС‹С… РґР»СЏ СЃРѕР·РґР°РІР°РµРјРѕРіРѕ СЏР·С‹РєР° (СЃРј. Value). Р’РєР»Р°РґС‹РІР°РµС‚СЃСЏ РІ Meta Editor Diagram">
 				<graphics>
 					<picture sizex="100" sizey="100">
 						<line fill="#000000" stroke-style="dot" stroke="#2f4f4f" y1="0" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid"/>
@@ -289,7 +298,7 @@
 					</container>
 				</logic>
 			</node>
-			<node name="MetaEntity Attribute" displayedName="Property">
+			<node name="MetaEntity Attribute" displayedName="Property" description="РЎСѓС‰РЅРѕСЃС‚СЊ РґР»СЏ РѕРїРёСЃР°РЅРёСЏ РЅРѕРІРѕРіРѕ СЃРІРѕР№СЃС‚РІР° СЌР»РµРјРµРЅС‚Р°. Р’РєР»Р°РґС‹РІР°РµС‚СЃСЏ РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёР№ СЌР»РµРјРµРЅС‚ Node РёР»Рё Edge">
 				<graphics>
 					<picture sizex="140" sizey="16">
 					</picture>
@@ -308,7 +317,7 @@
 					<containers/>
 				</logic>
 			</node>
-			<node name="MetaEntityImport" displayedName="Import">
+			<node name="MetaEntityImport" displayedName="Import" description="РЎСѓС‰РЅРѕСЃС‚СЊ РґР»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ РІ СЃРѕР·РґР°РІР°РµРјС‹Р№ СЏР·С‹Рє СЌР»РµРјРµРЅС‚Р° РёР· РґСЂСѓРіРѕРіРѕ РІРёР·СѓР°Р»СЊРЅРѕРіРѕ СЏР·С‹РєР°. Р”РѕР»Р¶РµРЅ РІРєР»Р°РґС‹РІР°С‚СЊСЃСЏ РІ Metamodel Diagram.">
 				<graphics>
 					<picture sizex="100" sizey="100">
 						<rectangle fill="#bbbbbb" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="0" y2="100" stroke-width="1" x2="100" fill-style="solid"/>
@@ -338,7 +347,7 @@
 					<containers/>
 				</logic>
 			</node>
-			<node name="MetaEntityValue" displayedName="Value">
+			<node name="MetaEntityValue" displayedName="Value" description="РЎСѓС‰РЅРѕСЃС‚СЊ РґР»СЏ РѕРїРёСЃР°РЅРёСЏ РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ РґР»СЏ СЃРѕР·РґР°РІР°РµРјРѕРіРѕ РїРµСЂРµС‡РёСЃР»СЏРµРјРѕРіРѕ С‚РёРїР° (СЃРј. Enum). Р”РѕР»Р¶РµРЅ РІРєР»Р°РґС‹РІР°С‚СЊСЃСЏ РІ Enum">
 				<graphics>
 					<picture sizex="140" sizey="12">
 					</picture>
@@ -355,7 +364,7 @@
 					<containers/>
 				</logic>
 			</node>
-			<node name="MetaEntityConnection" displayedName="Connection">
+			<node name="MetaEntityConnection" displayedName="Connection" description="РќРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ">
 				<graphics>
 					<picture sizex="120" sizey="40">
 						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="0" y2="20" stroke-width="1" x2="120" fill-style="solid"/>
@@ -375,7 +384,7 @@
 					<containers/>
 				</logic>
 			</node>
-			<node name="MetaEntityAssociation" displayedName="Assotiation">
+			<node name="MetaEntityAssociation" displayedName="Assotiation" description="Р­Р»РµРјРµРЅС‚ РґР»СЏ СѓРєР°Р·Р°РЅРёСЏ С‚РёРїРѕРІ Рё РёРјРµРЅ РЅР°С‡Р°Р»Р° Рё РєРѕРЅС†Р° СЃРІСЏР·Рё (СЃРј. Edge). Р’РєР»Р°РґС‹РІР°РµС‚СЃСЏ РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёР№ СЌР»РµРјРµРЅС‚ Edge">
 				<graphics>
 					<picture sizex="120" sizey="40">
 						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="0" y2="20" stroke-width="1" x2="120" fill-style="solid"/>
@@ -400,7 +409,7 @@
 					<containers/>
 				</logic>
 			</node>
-			<node name="MetaEntityUsage" displayedName="Usage">
+			<node name="MetaEntityUsage" displayedName="Usage" description="РќРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ">
 				<graphics>
 					<picture sizex="120" sizey="40">
 						<line fill="#000000" stroke-style="dot" stroke="#2f4f4f" y1="20" x1="0" y2="20" stroke-width="1" x2="120" fill-style="solid"/>
@@ -420,7 +429,7 @@
 					<containers/>
 				</logic>
 			</node>
-			<edge name="Inheritance" displayedName="Inheritance">
+			<edge name="Inheritance" displayedName="Inheritance" description="РЎРІСЏР·СЊ, СѓРєР°Р·С‹РІР°СЋС‰Р°СЏ РѕС‚РЅРѕС€РµРЅРёРµ РЅР°СЃР»РµРґРѕРІР°РЅРёСЏ РјРµР¶РґСѓ СЌР»РµРјРµРЅС‚Р°РјРё (РЅР°РїСЂР°РІР»РµРЅРёРµ вЂ“ РѕС‚ РґРѕС‡РµСЂРЅРµРіРѕ СЌР»РµРјРµРЅС‚Р° Рє РїСЂРµРґРєСѓ)">
 				<graphics>
 					<lineType type="solidLine"/>
 				</graphics>
@@ -433,7 +442,7 @@
 					</generalizations>
 				</logic>
 			</edge>
-			<edge name="Container" displayedName="Container">
+			<edge name="Container" displayedName="Container" description="РЎРІСЏР·СЊ, СѓРєР°Р·С‹РІР°СЋС‰Р°СЏ РѕС‚РЅРѕС€РµРЅРёРµ РІР»РѕР¶РµРЅРЅРѕСЃС‚Рё РјРµР¶РґСѓ СЌР»РµРјРµРЅС‚Р°РјРё (РЅР°РїСЂР°РІР»РµРЅРёСЏ вЂ“ РѕС‚ РІРєР»Р°РґС‹РІР°РµРјРѕРіРѕ СЌР»РµРјРµРЅС‚Р° Рє С‚РѕРјСѓ, РІ РєРѕС‚РѕСЂС‹Р№ РІРєР»Р°РґС‹РІР°РµС‚СЃСЏ)">
 				<graphics>
 					<lineType type="solidLine"/>
 				</graphics>
@@ -446,7 +455,7 @@
 					</generalizations>
 				</logic>
 			</edge>
-			<node name="MetaEntityPossibleEdge" displayedName="Possible Edge">
+			<node name="MetaEntityPossibleEdge" displayedName="Possible Edge" description="РЎСѓС‰РЅРѕСЃС‚СЊ РґР»СЏ СѓРєР°Р·Р°РЅРёСЏ СЌР»РµРјРµРЅС‚РѕРІ, РєРѕС‚РѕСЂС‹Рµ РјРѕР¶РЅРѕ РїСЂРёСЃРѕРµРґРёРЅСЏС‚СЊ Рє РґР°РЅРЅРѕРјСѓ СЃ РїРѕРјРѕС‰СЊСЋ В«РІС‹С‚СЏРіРёРІР°РЅРёСЏВ» РёР· РЅРµРіРѕ СЃРІСЏР·РµР№. Р’РєР»Р°РґС‹РІР°РµС‚СЃСЏ РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёР№ СЌР»РµРјРµРЅС‚ Node">
 				<graphics>
 					<picture sizex="25" sizey="25">
 						<ellipse fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="0" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
@@ -465,7 +474,7 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="MetaEntityPropertiesAsContainer" displayedName="Properties as Container">
+			<node name="MetaEntityPropertiesAsContainer" displayedName="Properties as Container" description="РЎСѓС‰РЅРѕСЃС‚СЊ РґР»СЏ СѓРєР°Р·Р°РЅРёСЏ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕР№ С„СѓРЅРєС†РёРѕРЅР°Р»СЊРЅРѕСЃС‚Рё СЌР»РµРјРµРЅС‚Р° СЃРѕР·РґР°РІР°РµРјРѕРіРѕ СЏР·С‹РєР°, СЏРІР»СЏСЋС‰РµРіРѕСЃСЏ РєРѕРЅС‚РµР№РЅРµСЂРѕРј (СЃРј. Container). Р’РєР»Р°РґС‹РІР°РµС‚СЃСЏ РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёР№ СЌР»РµРјРµРЅС‚ С‚РёРїР° Node">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<rectangle fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="0" stroke-width="1" x1="20" y2="30" fill-style="none" x2="50"/>
@@ -496,7 +505,7 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="MetaEntityContextMenuField" displayedName="Context Menu Field">
+			<node name="MetaEntityContextMenuField" displayedName="Context Menu Field" description="РќРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ">
 				<graphics>
 					<picture sizex="100" sizey="30">
 						<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="100" fill-style="solid"/>
@@ -509,7 +518,7 @@
 				<properties/>
 				</logic>
 			</node>
-			<node name="Listener" displayedName="Listener">
+			<node name="Listener" displayedName="Listener" description="РќРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ">
 				<graphics>
 					<picture sizex="250" sizey="80">
 						<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="80" stroke-width="1" x2="250" fill-style="solid"/>
@@ -528,5 +537,34 @@
 				</logic>
 			</node>
 		</graphicTypes>
+				<palette>
+			<group name="DSL Elements" description="Р­Р»РµРјРµРЅС‚С‹ РјРµС‚Р°СЏР·С‹РєР° РґР»СЏ РѕРїРёСЃР°РЅРёСЏ СѓР·Р»РѕРІ Рё СЃРІСЏР·РµР№ СЃРѕР·РґР°РІР°РµРјРѕРіРѕ СЏР·С‹РєР°">
+				<element name="MetaEntityNode"/>
+				<element name="MetaEntityEdge"/>
+				<element name="MetaEntityEnum"/>
+				<element name="MetaEntityImport"/>
+			</group>
+			<group name="Root Diagrams" description="РљРѕСЂРЅРµРІС‹Рµ СЌР»РµРјРµРЅС‚С‹">
+				<element name="MetamodelDiagram"/>
+				<element name="MetaEditorDiagramNode"/>
+				<element name="PackageDiagram"/>
+			</group>
+			<group name="Node Properties" description="Р­Р»РµРјРµРЅС‚С‹ РјРµС‚Р°СЏР·С‹РєР° РґР»СЏ СѓРєР°Р·Р°РЅРёСЏ СЃРІРѕР№СЃС‚РІ СѓР·Р»РѕРІ СЃРѕР·РґР°РІР°РµРјРѕРіРѕ СЏР·С‹РєР°">
+				<element name="MetaEntity Attribute"/>
+				<element name="MetaEntityPropertiesAsContainer"/>
+				<element name="MetaEntityPossibleEdge"/>
+			</group>
+			<group name="Enum Properties" description="Р­Р»РµРјРµРЅС‚С‹ РјРµС‚Р°СЏР·С‹РєР° РґР»СЏ СѓРєР°Р·Р°РЅРёСЏ СЃРІРѕР№СЃС‚РІ РїРµСЂРµС‡РёСЃР»СЏРµРјРѕРіРѕ С‚РёРїР° СЃРѕР·РґР°РІР°РµРјРѕРіРѕ СЏР·С‹РєР°">
+				<element name="MetaEntityValue"/>
+			</group>
+			<group name="Edge Properties" description="Р­Р»РµРјРµРЅС‚С‹ РјРµС‚Р°СЏР·С‹РєР° РґР»СЏ СѓРєР°Р·Р°РЅРёСЏ СЃРІРѕР№СЃС‚РІ СЃРІСЏР·РµР№ СЃРѕР·РґР°РІР°РµРјРѕРіРѕ СЏР·С‹РєР°">
+				<element name="MetaEntity Attribute"/>
+				<element name="MetaEntityAssociation"/>
+			</group>
+			<group name="Relationship" description="РЎРІСЏР·Рё РјРµС‚Р°СЏР·С‹РєР° РґР»СЏ РѕРїРёСЃР°РЅРёСЏ РІС‹Р·РёРјРѕРѕС‚РЅРѕС€РµРЅРёР№ РјРµР¶РґСѓ СЌР»РµРјРµРЅС‚Р°РјРё СЃРѕР·РґР°РІР°РµРјРѕРіРѕ СЏР·С‹РєР°">
+				<element name="Inheritance"/>
+				<element name="Container"/>
+			</group>
+		</palette>
 	</diagram>
 </metamodel>
