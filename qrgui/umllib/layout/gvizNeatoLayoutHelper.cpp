@@ -28,6 +28,7 @@ QMap<Graph::VertexId, QPointF> GvizNeatoLayoutHelper::arrange(Graph const &graph
 	QByteArray sep = QString("+%1").arg(mSettingsUi->spinBox->value()).toAscii();
 	QByteArray mode = mSettingsUi->modeBox->currentText().toAscii();
 	QByteArray overlap = mSettingsUi->overlapBox->currentText().toAscii();
+	QByteArray len = QString::number(mSettingsUi->lenDoubleSpinBox->value()).toAscii();
 
 	QHash<Graph::VertexId, Agnode_t *> vertexToAgnode;
 
@@ -84,7 +85,7 @@ QMap<Graph::VertexId, QPointF> GvizNeatoLayoutHelper::arrange(Graph const &graph
 	foreach (Graph::EdgeId const &edgeId, graph.edges()) {
 		QPair<Graph::VertexId, Graph::VertexId> const adjVertices = graph.adjacentVertices(edgeId);
 		Agedge_t *edge = agedge(aggraph, vertexToAgnode[adjVertices.first], vertexToAgnode[adjVertices.second]);
-		Q_UNUSED(edge);
+		agattr(edge, "len", len.data());
 	}
 
 	gvLayout(gvzContext, aggraph, "neato");

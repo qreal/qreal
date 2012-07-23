@@ -2803,6 +2803,12 @@ when removing overlap:</source>
 remove node overlaps:</source>
         <translation>Удаление накрытий узлов:</translation>
     </message>
+    <message>
+        <location filename="umllib/layout/gvizNeatoLayoutHelperSettings.ui" line="116"/>
+        <source>Preferred edge length:</source>
+        <translation>Предпочтительная длина
+ребра:</translation>
+    </message>
 </context>
 <context>
     <name>preferencesBehaviourPage</name>
