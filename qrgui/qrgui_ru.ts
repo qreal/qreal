@@ -587,7 +587,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="480"/>
         <source>Ctrl+Shift+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+S</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="556"/>
@@ -2382,6 +2382,14 @@
     </message>
 </context>
 <context>
+    <name>ReferenceList</name>
+    <message>
+        <location filename="mainwindow/referenceList.ui" line="14"/>
+        <source>Choose a reference value</source>
+        <translation>Выберите значение</translation>
+    </message>
+</context>
+<context>
     <name>RobotSettingsDialog</name>
     <message>
         <source>Dialog</source>
@@ -2978,7 +2986,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="648"/>
+        <location filename="mainwindow/mainWindow.cpp" line="691"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3003,16 +3011,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="693"/>
-        <location filename="mainwindow/mainWindow.cpp" line="710"/>
-        <location filename="mainwindow/mainWindow.cpp" line="728"/>
+        <location filename="mainwindow/mainWindow.cpp" line="736"/>
+        <location filename="mainwindow/mainWindow.cpp" line="753"/>
+        <location filename="mainwindow/mainWindow.cpp" line="771"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="695"/>
-        <location filename="mainwindow/mainWindow.cpp" line="712"/>
-        <location filename="mainwindow/mainWindow.cpp" line="730"/>
+        <location filename="mainwindow/mainWindow.cpp" line="738"/>
+        <location filename="mainwindow/mainWindow.cpp" line="755"/>
+        <location filename="mainwindow/mainWindow.cpp" line="773"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3117,23 +3125,23 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="649"/>
+        <location filename="mainwindow/mainWindow.cpp" line="692"/>
         <source>&lt;b&gt;QReal&lt;b&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;http://qreal.ru/&quot;&gt;http://qreal.ru/&lt;/a&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="728"/>
+        <location filename="mainwindow/mainWindow.cpp" line="771"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="730"/>
+        <location filename="mainwindow/mainWindow.cpp" line="773"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="855"/>
-        <location filename="mainwindow/mainWindow.cpp" line="863"/>
+        <location filename="mainwindow/mainWindow.cpp" line="898"/>
+        <location filename="mainwindow/mainWindow.cpp" line="906"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3142,17 +3150,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1570"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1638"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1599"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1667"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1599"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1667"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3173,7 +3181,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1234"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1286"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
