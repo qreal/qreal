@@ -11,8 +11,10 @@
 #include "../../qrkernel/exception/exception.h"
 #include "beep.h"
 #include "interpreterElementImpl.h"
+#include "../../qrutils/outFile.h"
 
 using namespace qReal;
+using namespace utils;
 
 InterpreterEditorManager::InterpreterEditorManager(QString fileName, QObject *parent)
 	: QObject(parent)
@@ -225,14 +227,7 @@ QString InterpreterEditorManager::mouseGesture(Id const &id) const
 			mouseGes = repo->stringProperty(id, "path");
 	return mouseGes;
 }
-////////////////////////////////////////////////////////////
-
-//QIcon InterpreterEditorManager::icon(const Id &id) const
-//{
-//	SdfIconEngineV2 *engine = new SdfIconEngineV2(":/generated/shapes/" + id.element() + "Class.sdf");
-//	// QIcon will take ownership of engine, no need for us to delete
-//	return QIcon(engine);
-//}
+//////////////////////////////////////////////////////////
 
 QString InterpreterEditorManager::propertyDisplayedName(Id const &id, QString const &propertyName) const
 {
@@ -286,10 +281,49 @@ QString InterpreterEditorManager::description(Id const &id) const
 {
 	return "";
 }
-//TODO:
+
 QIcon InterpreterEditorManager::icon(Id const &id) const
 {
-	return QIcon();
+	qrRepo::RepoApi *repoMetaModel = NULL;
+	Id metaId;
+	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
+		foreach (Id editor, repo->elementsByType("MetamodelDiagram")) {
+			foreach (Id diagram, repo->children(editor)) {
+				foreach (Id element, repo->children(diagram)) {
+					if (id.element() == repo->name(element)) {
+						repoMetaModel = repo;
+						metaId = element;
+					}
+				}
+			}
+		}
+	}
+	QDomDocument classDoc;
+	QDomElement sdfElement;
+	if(repoMetaModel->typeName(metaId) == "MetaEntityEdge") {
+		sdfElement = classDoc.createElement("picture");
+		sdfElement.setAttribute("sizex", 100);
+		sdfElement.setAttribute("sizey", 60);
+		QDomElement lineElement = classDoc.createElement("line");
+		lineElement.setAttribute("fill", "#000000");
+		QString lineType = repoMetaModel->stringProperty(metaId, "lineType").remove("Line");
+		lineElement.setAttribute("stroke-style", lineType);
+		lineElement.setAttribute("stroke", "#000000");
+		lineElement.setAttribute("y1", 0);
+		lineElement.setAttribute("x1", 0);
+		lineElement.setAttribute("y2", 60);
+		lineElement.setAttribute("stroke-width", 2);
+		lineElement.setAttribute("x2", 100);
+		lineElement.setAttribute("fill-style", "solid");
+		sdfElement.appendChild(lineElement);
+	} else {
+		QDomDocument graphics;
+		graphics.setContent(repoMetaModel->stringProperty(metaId, "shape"));
+		sdfElement = graphics.firstChildElement("graphics").firstChildElement("picture");
+	}
+	classDoc.appendChild(classDoc.importNode(sdfElement, true));
+	SdfIconEngineV2 *engine = new SdfIconEngineV2(classDoc);
+	return QIcon(engine);
 }
 
 Element* InterpreterEditorManager::graphicalObject(Id const &id) const

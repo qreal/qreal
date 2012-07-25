@@ -38,7 +38,6 @@ public:
 
 	/// Returns current working file name, to which model is saved
 	virtual QString workingFile() const = 0;
-	virtual void printDebug() const = 0;
 };
 
 }

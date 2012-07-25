@@ -714,6 +714,12 @@ SdfIconEngineV2::SdfIconEngineV2(QString const &file)
 	mRenderer.noScale();
 }
 
+SdfIconEngineV2::SdfIconEngineV2(QDomDocument &document)
+{
+	mRenderer.load(document);
+	mRenderer.noScale();
+}
+
 void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
 	QIcon::Mode mode, QIcon::State state)
 {

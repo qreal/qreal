@@ -538,11 +538,6 @@ bool RepoApi::exist(Id const &id) const
 	return mClient.exist(id);
 }
 
-void RepoApi::printDebug() const
-{
-	mClient.printDebug();
-}
-
 IdList RepoApi::temporaryRemovedLinksAt(Id const &id, QString const &direction) const
 {
 	return mClient.temporaryRemovedLinksAt(id, direction);
