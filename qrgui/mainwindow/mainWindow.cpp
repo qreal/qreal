@@ -942,13 +942,13 @@ void qReal::MainWindow::closeTab(int index)
 /*
 void MainWindow::exterminate()
 {
- closeAllTabs();
- mModels->repoControlApi().exterminate();
- mModels->reinit();
+	closeAllTabs();
+	mModels->repoControlApi().exterminate();
+	mModels->reinit();
 
- PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
- pModel->clearModelIndexes();
- mUi->propertyEditor->setRootIndex(QModelIndex());
+	PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
+	pModel->clearModelIndexes();
+	mUi->propertyEditor->setRootIndex(QModelIndex());
 }
 */
 

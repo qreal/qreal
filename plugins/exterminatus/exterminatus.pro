@@ -6,8 +6,6 @@ RCC_DIR = .moc
 
 HEADERS = \
 	exterminatusPlugin.h \
-	exterminatusTool.h \
 
 SOURCES = \
 	exterminatusPlugin.cpp \
-	exterminatusTool.cpp \

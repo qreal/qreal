@@ -2,8 +2,6 @@
 
 #include "../../qrgui/toolPluginInterface/toolPluginInterface.h"
 
-#include "exterminatusTool.h"
-
 namespace exterminatus {
 
 class ExterminatusPlugin : public QObject, public qReal::ToolPluginInterface
@@ -15,11 +13,18 @@ public:
 	ExterminatusPlugin();
 	virtual ~ExterminatusPlugin();
 
-	void initPlugin(qrRepo::RepoControlInterface *repo);
-	QList<qReal::CustomToolInterface *> toolInterfaces();
-private:
+	virtual QList<qReal::ActionInfo> actions();
 
-	ExterminatusTool mExterminatusTool;
+	virtual void init(qReal::PluginConfigurator const &configurator);
+
+private slots:
+	void exterminate();
+
+private:
+	qrRepo::RepoControlInterface *mRepo;  // Doesn't have ownership
+	QAction mAction;
+	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;
+
 };
 
 }
