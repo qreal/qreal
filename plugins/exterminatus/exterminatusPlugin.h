@@ -4,8 +4,7 @@
 
 namespace exterminatus {
 
-/// Plugin to exterminate biosphere of the planet
-/// and all elements from repository.
+/// Plugin to exterminate biosphere of the planet and all elements from repository.
 class ExterminatusPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
@@ -20,7 +19,7 @@ public:
 	virtual void init(qReal::PluginConfigurator const &configurator);
 
 private slots:
-	/// deletion of all items from repository
+	/// Deletion of all items from repository.
 	void exterminate();
 
 private:
