@@ -18,7 +18,7 @@ public slots:
 	bool openExisting(const QString &fileName);
 	bool suggestToOpenExisting();
 	bool openNewWithDiagram();
-	void suggestToCreateDiagram(bool isNonClosable = false);
+	void suggestToCreateDiagram(bool isClosable = true);
 	bool suggestToImport();
 
 	void close();

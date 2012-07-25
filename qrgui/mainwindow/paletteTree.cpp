@@ -245,7 +245,7 @@ void PaletteTree::addEditorElements(EditorManagerInterface *editorManagerProxy, 
 
 			foreach (const QString &elementName, mEditorManagerProxy->paletteGroupList(editor, diagram, group)) {
 				foreach (const Id &element, list) {
-					if (mEditorManagerProxy->friendlyName(element) == elementName) {
+					if (element.element() == elementName) {
 						tmpIdList.append (element);
 						break;
 					}
