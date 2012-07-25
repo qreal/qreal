@@ -12,7 +12,7 @@ QList<SmartLine> EnginesForwardGenerator::convertElememtIntoDirectCommand(NxtOSE
 {
 	QList<SmartLine> result;
 	foreach (QString enginePort, portsToEngineNames(nxtGen->api()->stringProperty(logicElementId, "Ports"))) {
-		result.append(SmartLine("nxt_motor_set_speed(" + enginePort + ", " + "-"
+		result.append(SmartLine("nxt_motor_set_speed(" + enginePort + ", "
 				+ nxtGen->api()->stringProperty(logicElementId, "Power") + ", 1);", elementId));
 	}
 

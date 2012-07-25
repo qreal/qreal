@@ -171,7 +171,7 @@ bool IfElementGenerator::nextElementsGeneration()
 	return true;
 }
 
-void IfElementGenerator::addNeededCondition(QString condition, IdList outgoingLinks, int conditionArrowNum)
+void IfElementGenerator::addNeededCondition(QString &condition, IdList outgoingLinks, int conditionArrowNum)
 {
 	QByteArray const conditionOnArrow =
 		mNxtGen->api()->stringProperty(mNxtGen->api()->logicalId(outgoingLinks.at(conditionArrowNum)), "Guard").toUtf8();

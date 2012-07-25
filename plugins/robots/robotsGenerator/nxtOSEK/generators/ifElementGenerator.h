@@ -31,7 +31,7 @@ private:
 			, QPair<bool, qReal::Id> const negativeBranchCheck);
 	virtual void generateIfBlock(bool isPositiveBranchReturnsToBackElems, int const conditionArrowNum, QString condition);
 	virtual void generateBlockIfElseIs(QString condition, int conditionArrowNum);
-	virtual void addNeededCondition(QString condition, qReal::IdList outgoingLinks, int conditionArrowNum);
+	virtual void addNeededCondition(QString &condition, qReal::IdList outgoingLinks, int conditionArrowNum);
 };
 
 }

@@ -65,6 +65,10 @@ private:
 	void generateFilesForBalancer(QString const &projectDir);
 	QString addTabAndEndOfLine(QList<SmartLine> const &lineList, QString resultCode);
 	QString generateVariableString();
+	void addResultCodeInCFile(int curInitialNodeNumber);
+	void outputInCAndOilFile(QString const projectName, QString const projectDir, qReal::IdList toGenerate);
+	void initializeFields(QString resultTaskTemplate, qReal::Id curInitialNode);
+
 
 	QString mResultOil;
 	QString mResultString;
