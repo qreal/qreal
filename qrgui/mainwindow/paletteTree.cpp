@@ -196,7 +196,7 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 {
 	if (mItemsCountInARow == 1 || !mIconsView) {
 		foreach (const Id &element, tmpIdList) {
-			addItemType(element, element.element()
+			addItemType(element, mEditorManager->friendlyName(element)
 					, mEditorManager->description(element)
 					, mEditorManager->icon(element), editorTree, item);
 		}
@@ -208,7 +208,7 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 		int count = mItemsCountInARow;
 		for (; it != tmpIdList.end() && count-- > 0; ++it) {
 			DraggableElement *element = new DraggableElement(*it
-					, (*it).element()
+					, mEditorManager->friendlyName(*it)
 					, mEditorManager->description(*it)
 					, mEditorManager->icon(*it)
 					, true);
@@ -267,7 +267,7 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 		}
 	} else {
 		foreach (const Id &element, list) {
-			addTopItemType(element, element.element()
+			addTopItemType(element, mEditorManager->friendlyName(element)
 					, mEditorManager->description(element)
 					, mEditorManager->icon(element), editorTree);
 		}
