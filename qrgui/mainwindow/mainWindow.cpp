@@ -434,7 +434,7 @@ void MainWindow::closeAllTabs()
 
 void MainWindow::setReference(QString const &data, QPersistentModelIndex const &index, int const &role)
 {
-	removeBackReference(index, role);
+	removeOldBackReference(index, role);
 	setData(data, index, role);
 	if (data != "") {
 		setBackReference(index, data);
@@ -558,19 +558,17 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 
 void MainWindow::removeReferences(Id const &id)
 {
+	removeReferencesTo(id);
+	removeReferencesFrom(id);
+}
+
+void MainWindow::removeReferencesTo(Id const &id)
+{
 	IdList backReferences = mModels->logicalRepoApi().property(id, "backReferences").value<IdList>();
+
 	foreach (Id const &reference, backReferences) {
 		mModels->logicalRepoApi().removeBackReference(id, reference);
 		removeReference(reference, id);
-	}
-
-	QStringList referenceProperties = mEditorManager.getReferenceProperties(id.type());
-	foreach (QString const &property, referenceProperties) {
-		QString propertyString = mModels->logicalRepoApi().property(id, property).toString();
-		if (propertyString != "") {
-			Id propertyValue = Id::loadFromString(propertyString);
-			mModels->logicalRepoApi().removeBackReference(propertyValue, id);
-		}
 	}
 }
 
@@ -582,6 +580,19 @@ void MainWindow::removeReference(Id const &id, Id const &reference)
 		QString stringData = mModels->logicalRepoApi().property(id, propertyName).toString();
 		if (stringData == reference.toString()) {
 			mModels->logicalRepoApi().setProperty(id, propertyName, "");
+		}
+	}
+}
+
+void MainWindow::removeReferencesFrom(const Id &id)
+{
+	QStringList referenceProperties = mEditorManager.getReferenceProperties(id.type());
+
+	foreach (QString const &property, referenceProperties) {
+		QString propertyString = mModels->logicalRepoApi().property(id, property).toString();
+		if (propertyString != "") {
+			Id propertyValue = Id::loadFromString(propertyString);
+			mModels->logicalRepoApi().removeBackReference(propertyValue, id);
 		}
 	}
 }
@@ -1412,7 +1423,7 @@ void MainWindow::setBackReference(QPersistentModelIndex const &index, QString co
 	mModels->logicalRepoApi().setBackReference(id, indexId);
 }
 
-void MainWindow::removeBackReference(QPersistentModelIndex const &index, int const role)
+void MainWindow::removeOldBackReference(QPersistentModelIndex const &index, int const role)
 {
 	QString data = index.data(role).toString();
 	if (data == "") {
