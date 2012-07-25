@@ -6,7 +6,7 @@ SUBDIRS	= \
 #	dragonDiagram/dragonDiagram.pro \
 #	blockDiagram/blockDiagram.pro \
 #	bpel/bpel.pro \
-#	exterminatus/exterminatus.pro \
+	exterminatus/exterminatus.pro \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
 #	network/network.pro \
