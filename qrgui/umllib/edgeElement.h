@@ -152,5 +152,7 @@ private:
 	int mLastDragPoint;
 
 	bool mBreakPointPressed;
+
+	bool mModelUpdateIsCalled;
 };
 
