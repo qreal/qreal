@@ -366,7 +366,6 @@ void D2ModelWidget::addPort(int const port)
 	}
 	QPointF newpos = mRobot->mapFromScene(mRobot->boundingRect().center());
 	mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0);
-
 	reinitSensor(mCurrentPort);
 
 	resetButtons();
@@ -583,16 +582,6 @@ void D2ModelWidget::removeSensor(inputPort::InputPortEnum port)
 		mRobot->removeSensor(mSensors[port]);
 		mScene->removeItem(mSensors[port]);
 		mScene->removeItem(mSensorRotaters[port]);
-		int const noneSensorIndex = 0;
-		if (port == 0) {
-			mUi->port1Box->setCurrentIndex(noneSensorIndex);
-		} else if (port == 1) {
-			mUi->port2Box->setCurrentIndex(noneSensorIndex);
-		} else if (port == 2) {
-			mUi->port3Box->setCurrentIndex(noneSensorIndex);
-		} else {
-			mUi->port4Box->setCurrentIndex(noneSensorIndex);
-		}
 		delete mSensors[port];
 		delete mSensorRotaters[port];
 		mSensors[port] = NULL;
