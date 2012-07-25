@@ -292,6 +292,16 @@ bool RepoApi::hasProperty(Id const &id, QString const &propertyName) const
 	return mClient.hasProperty(id, propertyName);
 }
 
+void RepoApi::setBackReference(Id const &id, Id const &reference) const
+{
+	mClient.setBackReference(id, reference);
+}
+
+void RepoApi::removeBackReference(Id const &id, Id const &reference) const
+{
+	mClient.removeBackReference(id, reference);
+}
+
 Id RepoApi::from(Id const &id) const
 {
 	Q_ASSERT(mClient.property(id, "from").canConvert<Id>());

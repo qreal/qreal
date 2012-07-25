@@ -63,6 +63,9 @@ public:
 	void removeProperty(const qReal::Id &id, const QString &name);
 	QMapIterator<QString, QVariant> propertiesIterator(qReal::Id const &id) const;
 
+	void setBackReference(qReal::Id const &id, qReal::Id const &reference) const;
+	void removeBackReference(qReal::Id const &id, qReal::Id const &reference) const;
+
 	void setTemporaryRemovedLinks(qReal::Id const &id, QString const &direction, qReal::IdList const &linkIdList);
 	qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const;
 	qReal::IdList temporaryRemovedLinks(qReal::Id const &id) const;

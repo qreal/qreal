@@ -6,17 +6,15 @@ ReferenceList::ReferenceList(qReal::MainWindow *mainWindow, QPersistentModelInde
 	: QDialog(parent)
 	, mUi(new Ui::ReferenceList)
 	, mIndex(index)
-	, mValue(currentValue)
 	, mRole(role)
 	, mWindow(mainWindow)
 {
 	mUi->setupUi(this);
-	loadList(refType);
-	highlightCurrentValue();
 
-	connect(mUi->listWidget, SIGNAL(itemClicked(QListWidgetItem*))
-			, this, SLOT(changeValue(QListWidgetItem*)));
-	connect(this, SIGNAL(accepted()), this, SLOT(valueChanged()));
+	loadList(refType);
+	highlightCurrentValue(currentValue);
+
+	initConnections();
 }
 
 ReferenceList::~ReferenceList()
@@ -43,22 +41,47 @@ void ReferenceList::addItem(qReal::Id const &element)
 	item->setData(Qt::UserRole, element.toString());
 }
 
-void ReferenceList::highlightCurrentValue()
+void ReferenceList::highlightCurrentValue(QString const &currentValue)
 {
 	for (int i = 0; i < mUi->listWidget->count(); i++) {
 		QListWidgetItem* currItem = mUi->listWidget->item(i);
-		if (currItem->data(Qt::UserRole) == mValue) {
+		if (currItem->data(Qt::UserRole) == currentValue) {
 			currItem->setSelected(true);
 		}
 	}
 }
 
-void ReferenceList::changeValue(QListWidgetItem *item)
+void ReferenceList::initConnections()
 {
-	mValue = item->data(Qt::UserRole).toString();
+	connect(mUi->listWidget, SIGNAL(itemClicked(QListWidgetItem*))
+			, this, SLOT(activateElement(QListWidgetItem*)));
+	connect(this, SIGNAL(accepted()), this, SLOT(valueChanged()));
+	connect(this, SIGNAL(finished(int)), this, SLOT(restoreSelected()));
+}
+
+void ReferenceList::activateElement(QListWidgetItem *item)
+{
+	qReal::Id id = qReal::Id::loadFromString(item->data(Qt::UserRole).toString());
+	mWindow->activateItemOrDiagram(id, false, true);
 }
 
 void ReferenceList::valueChanged()
 {
-	emit referenceSet(mValue, mIndex, mRole);
+	QString newValue = getNewValue();
+	emit referenceSet(newValue, mIndex, mRole);
+}
+
+QString ReferenceList::getNewValue()
+{
+	QString newValue = "";
+	if (!mUi->listWidget->selectedItems().isEmpty()) {
+		newValue = mUi->listWidget->selectedItems()[0]->data(Qt::UserRole).toString();
+	}
+	return newValue;
+}
+
+void ReferenceList::restoreSelected()
+{
+	qReal::Id indexId = mWindow->models()->logicalModelAssistApi().idByIndex(mIndex);
+	mWindow->activateItemOrDiagram(indexId, false, true);
 }

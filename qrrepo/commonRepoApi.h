@@ -37,6 +37,9 @@ public:
 	virtual bool hasProperty(qReal::Id const &id, QString const &propertyName) const = 0;
 	virtual QMapIterator<QString, QVariant> propertiesIterator(qReal::Id const &id) const = 0;
 
+	virtual void setBackReference(qReal::Id const &id, qReal::Id const &reference) const = 0;
+	virtual void removeBackReference(qReal::Id const &id, qReal::Id const &reference) const = 0;
+
 	virtual bool exist(qReal::Id const &id) const = 0;
 	virtual void removeElement(qReal::Id const &id) = 0;
 

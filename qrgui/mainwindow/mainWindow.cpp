@@ -432,9 +432,18 @@ void MainWindow::closeAllTabs()
 	disconnectWindowTitle();
 }
 
+void MainWindow::setReference(QString const &data, QPersistentModelIndex const &index, int const &role)
+{
+	removeBackReference(index, role);
+	setData(data, index, role);
+	if (data != "") {
+		setBackReference(index, data);
+	}
+}
+
 void MainWindow::setData(QString const &data, QPersistentModelIndex const &index, int const &role)
 {
-	// const_cast here is ok, since we need to set a shape in a correct model, and
+	// const_cast here is ok, since we need to set data in a correct model, and
 	// not going to use this index anymore.
 	QAbstractItemModel * const model = const_cast<QAbstractItemModel *>(index.model());
 	model->setData(index, data, role);
@@ -498,6 +507,7 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 		qDebug() << "Index in deleteFromExplorer(); isn't valid";
 		return;
 	}
+
 	EditorView const * const view = getCurrentTab();
 	EditorViewScene* scene = NULL;
 	if (view) {
@@ -508,6 +518,7 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	if (isLogicalModel) {
 		Id const logicalId = mModels->logicalModelAssistApi().idByIndex(index);
 		graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
+		removeReferences(logicalId);
 	} else {
 		Id const graphicalId = mModels->graphicalModelAssistApi().idByIndex(index);
 		graphicalIdList.append(graphicalId);
@@ -541,6 +552,36 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	foreach (NodeElement *item, itemsToArrangeLinks) {
 		if (item) {
 			item->arrangeLinks();
+		}
+	}
+}
+
+void MainWindow::removeReferences(Id const &id)
+{
+	IdList backReferences = mModels->logicalRepoApi().property(id, "backReferences").value<IdList>();
+	foreach (Id const &reference, backReferences) {
+		mModels->logicalRepoApi().removeBackReference(id, reference);
+		removeReference(reference, id);
+	}
+
+	QStringList referenceProperties = mEditorManager.getReferenceProperties(id.type());
+	foreach (QString const &property, referenceProperties) {
+		QString propertyString = mModels->logicalRepoApi().property(id, property).toString();
+		if (propertyString != "") {
+			Id propertyValue = Id::loadFromString(propertyString);
+			mModels->logicalRepoApi().removeBackReference(propertyValue, id);
+		}
+	}
+}
+
+void MainWindow::removeReference(Id const &id, Id const &reference)
+{
+	QStringList referenceProperties = mEditorManager.getReferenceProperties(id.type());
+
+	foreach (QString const &propertyName, referenceProperties) {
+		QString stringData = mModels->logicalRepoApi().property(id, propertyName).toString();
+		if (stringData == reference.toString()) {
+			mModels->logicalRepoApi().setProperty(id, propertyName, "");
 		}
 	}
 }
@@ -872,7 +913,7 @@ void MainWindow::openReferenceList(QPersistentModelIndex const &index
 {
 	ReferenceList referenceList(this, index, referenceType, propertyValue, role);
 	connect(&referenceList, SIGNAL(referenceSet(QString, QPersistentModelIndex, int))
-			, this, SLOT(setData(QString, QPersistentModelIndex, int)));
+			, this, SLOT(setReference(QString, QPersistentModelIndex, int)));
 	referenceList.exec();
 }
 
@@ -1362,6 +1403,25 @@ void MainWindow::applySettings()
 {
 	getCurrentTab()->invalidateScene();
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
+}
+
+void MainWindow::setBackReference(QPersistentModelIndex const &index, QString const &data)
+{
+	Id id = Id::loadFromString(data);
+	Id indexId = mModels->logicalModelAssistApi().idByIndex(index);
+	mModels->logicalRepoApi().setBackReference(id, indexId);
+}
+
+void MainWindow::removeBackReference(QPersistentModelIndex const &index, int const role)
+{
+	QString data = index.data(role).toString();
+	if (data == "") {
+		return;
+	}
+
+	Id id = Id::loadFromString(data);
+	Id indexId = mModels->logicalModelAssistApi().idByIndex(index);
+	mModels->logicalRepoApi().removeBackReference(id, indexId);
 }
 
 void MainWindow::hideDockWidget(QDockWidget *dockWidget, const QString &name)

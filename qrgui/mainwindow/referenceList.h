@@ -24,24 +24,29 @@ public:
 			, QString const &refType, QString const &currentValue, int role, QWidget *parent = 0);
 	~ReferenceList();
 
+public slots:
+	void activateElement(QListWidgetItem *);
+
 signals:
 	/// emitted when OK pressed
 	void referenceSet(QString const &newValue, QPersistentModelIndex const &index, int role);
 
 private slots:
-	void changeValue(QListWidgetItem *);
 	void valueChanged();
+	void restoreSelected();
 
 private:
 	void loadList(QString const &refType);
 	void addItem(qReal::Id const &element);
 
-	void highlightCurrentValue();
+	void highlightCurrentValue(QString const &currentValue);
+	QString getNewValue();
+
+	void initConnections();
 
 	Ui::ReferenceList *mUi;
 
 	QPersistentModelIndex mIndex;
-	QString mValue;
 	int mRole;
 
 	qReal::MainWindow *mWindow;
