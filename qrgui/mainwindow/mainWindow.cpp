@@ -382,6 +382,7 @@ void MainWindow::sceneSelectionChanged()
 		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(singleSelected->id());
 		if (index.isValid()) {
 			mUi->graphicalModelExplorer->setCurrentIndex(index);
+			mUi->graphicalModelExplorer->setFocus();
 		}
 	}
 }
@@ -911,9 +912,6 @@ void MainWindow::setConnectActionZoomTo(QWidget* widget)
 
 void MainWindow::centerOn(Id const &id)
 {
-	if (mEditorManager.isDiagramNode(id))
-		return;
-
 	EditorView* const view = getCurrentTab();
 	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
 	Element* const element = scene->getElem(id);
