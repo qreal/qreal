@@ -558,43 +558,8 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 
 void MainWindow::removeReferences(Id const &id)
 {
-	removeReferencesTo(id);
-	removeReferencesFrom(id);
-}
-
-void MainWindow::removeReferencesTo(Id const &id)
-{
-	IdList backReferences = mModels->logicalRepoApi().property(id, "backReferences").value<IdList>();
-
-	foreach (Id const &reference, backReferences) {
-		mModels->logicalRepoApi().removeBackReference(id, reference);
-		removeReference(reference, id);
-	}
-}
-
-void MainWindow::removeReference(Id const &id, Id const &reference)
-{
-	QStringList referenceProperties = mEditorManager.getReferenceProperties(id.type());
-
-	foreach (QString const &propertyName, referenceProperties) {
-		QString stringData = mModels->logicalRepoApi().property(id, propertyName).toString();
-		if (stringData == reference.toString()) {
-			mModels->logicalRepoApi().setProperty(id, propertyName, "");
-		}
-	}
-}
-
-void MainWindow::removeReferencesFrom(const Id &id)
-{
-	QStringList referenceProperties = mEditorManager.getReferenceProperties(id.type());
-
-	foreach (QString const &property, referenceProperties) {
-		QString propertyString = mModels->logicalRepoApi().property(id, property).toString();
-		if (propertyString != "") {
-			Id propertyValue = Id::loadFromString(propertyString);
-			mModels->logicalRepoApi().removeBackReference(propertyValue, id);
-		}
-	}
+	mModels->logicalModelAssistApi().removeReferencesTo(id);
+	mModels->logicalModelAssistApi().removeReferencesFrom(id);
 }
 
 void MainWindow::deleteFromScene()

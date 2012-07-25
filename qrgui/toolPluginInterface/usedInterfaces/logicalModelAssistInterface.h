@@ -35,6 +35,10 @@ public:
 	virtual QVariant propertyByRoleName(Id const &elem, QString const &roleName) const = 0;
 
 	virtual bool isLogicalId(Id const &id) const = 0;
+
+	virtual void removeReferencesTo(Id const &id) const = 0;
+	virtual void removeReferencesFrom(Id const &id) const = 0;
+	virtual void removeReference(Id const &id, Id const &reference) const = 0;
 };
 
 }

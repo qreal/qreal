@@ -261,9 +261,6 @@ private:
 	void removeOldBackReference(QPersistentModelIndex const &index, int const role);
 
 	void removeReferences(Id const &id);
-	void removeReferencesTo(Id const &id);
-	void removeReferencesFrom(Id const &id);
-	void removeReference(Id const &id, Id const &reference);
 
 	/// Check if we need to hide widget in fullscreen mode or not. If we do, hide it
 	/// @param dockWidget QDockWidget to hide
