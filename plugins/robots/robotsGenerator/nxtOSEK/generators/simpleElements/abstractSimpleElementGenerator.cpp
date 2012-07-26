@@ -24,7 +24,7 @@ QList<SmartLine> AbstractSimpleElementGenerator::convertedCode(NxtOSEKRobotGener
 	return result;
 }
 
-QList<QString> AbstractSimpleElementGenerator::portsToEngineNames(const QString &portsProperty)
+QList<QString> AbstractSimpleElementGenerator::portsToEngineNames(QString const &portsProperty)
 {
 	QList<QString> result;
 

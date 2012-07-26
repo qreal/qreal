@@ -10,7 +10,6 @@
 #include "../../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 #include "generators/abstractElementGenerator.h"
-
 #include "smartLine.h"
 
 namespace robots {
@@ -26,7 +25,6 @@ public:
 
 	/// main method that starts a code generation.
 	void generate();
-
 	QList<SmartLine> &variables();
 	QList<SmartLine> &initCode();
 	QList<SmartLine> &terminateCode();
@@ -37,11 +35,6 @@ public:
 	QByteArray portValue3() const;
 	QByteArray portValue4() const;
 
-	void setPortValue1(QByteArray portValue);
-	void setPortValue2(QByteArray portValue);
-	void setPortValue3(QByteArray portValue);
-	void setPortValue4(QByteArray portValue);
-
 	qReal::ErrorReporterInterface &errorReporter();
 	qReal::Id &previousElement();
 	QList<QList<SmartLine> > &generatedStringSet();
@@ -50,7 +43,6 @@ public:
 	qReal::Id previousLoopElementsPop();
 	int elementToStringListNumbersPop(QString const &key);
 	void setGeneratedStringSet(int key, QList<SmartLine> const &list);
-
 	bool mBalancerIsActivated;
 
 private:

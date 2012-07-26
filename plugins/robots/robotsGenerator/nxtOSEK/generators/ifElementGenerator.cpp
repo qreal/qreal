@@ -234,4 +234,3 @@ void IfElementGenerator::generateBlockIfElseIs(QString condition, int conditionA
 	ifBlockPostfix << SmartLine("}", mElementId, SmartLine::decrease);
 	mNxtGen->generatedStringSet() << ifBlockPostfix;
 }
-

@@ -1,6 +1,6 @@
-#include "toolPluginManager.h"
-
 #include <QtGui/QApplication>
+
+#include "toolPluginManager.h"
 
 using namespace qReal;
 

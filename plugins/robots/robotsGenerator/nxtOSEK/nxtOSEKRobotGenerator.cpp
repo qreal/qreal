@@ -55,7 +55,7 @@ QString NxtOSEKRobotGenerator::generateVariableString()
 			res = res + "static int " + curVariable.text() + ";\n";
 		}
 	}
-	return res;
+	return "\n" + res;
 }
 
 QString NxtOSEKRobotGenerator::addTabAndEndOfLine(QList<SmartLine> const &lineList, QString resultCode)
@@ -109,7 +109,6 @@ void NxtOSEKRobotGenerator::generateMakeFile(
 	if (toGenerateIsEmpty) {
 		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node or Initial Block"));
 	}
-
 }
 
 void NxtOSEKRobotGenerator::insertCode(
@@ -165,7 +164,8 @@ void NxtOSEKRobotGenerator::generate()
 		return;
 	}
 
-	IdList toGenerate = mApi->elementsByType("InitialNode");
+	IdList toGenerate;
+	toGenerate << mApi->elementsByType("InitialNode");
 	toGenerate << mApi->elementsByType("InitialBlock");
 
 	int curInitialNodeNumber = 0;
@@ -279,26 +279,6 @@ QStack<qReal::Id> &NxtOSEKRobotGenerator::previousLoopElements()
 qReal::Id NxtOSEKRobotGenerator::previousLoopElementsPop()
 {
 	return mPreviousLoopElements.pop();
-}
-
-void NxtOSEKRobotGenerator::setPortValue1(QByteArray portValue)
-{
-	mPortValue1 = portValue;
-}
-
-void NxtOSEKRobotGenerator::setPortValue2(QByteArray portValue)
-{
-	mPortValue2 = portValue;
-}
-
-void NxtOSEKRobotGenerator::setPortValue3(QByteArray portValue)
-{
-	mPortValue3 = portValue;
-}
-
-void NxtOSEKRobotGenerator::setPortValue4(QByteArray portValue)
-{
-	mPortValue4 = portValue;
 }
 
 void NxtOSEKRobotGenerator::addResultCodeInCFile(int curInitialNodeNumber)

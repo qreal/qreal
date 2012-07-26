@@ -887,6 +887,7 @@ void NodeElement::updateData()
 {
 	Element::updateData();
 	if (mMoving == 0) {
+		storeGeometry();
 		QPointF newpos = mGraphicalAssistApi->position(id());
 		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
 		QRectF newRect; // Use default ((0,0)-(0,0))
@@ -895,7 +896,7 @@ void NodeElement::updateData()
 			int minx = newpoly[0].x();
 			int miny = newpoly[0].y();
 			int maxx = newpoly[0].x();
-			int maxy = newpoly[0].y();;
+			int maxy = newpoly[0].y();
 			for (int i = 1; i < newpoly.size(); ++i) {
 				if (minx > newpoly[i].x()) {
 					minx = newpoly[i].x();

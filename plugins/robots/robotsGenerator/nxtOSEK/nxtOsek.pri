@@ -9,8 +9,6 @@ HEADERS += \
 	nxtOSEK/generators/loopElementGenerator.h \
 	nxtOSEK/generators/simpleElementGenerator.h \
 	nxtOSEK/generators/simpleElements/abstractSimpleElementGenerator.h \
-	nxtOSEK/generators/simpleElements/enginesForwardGenerator.h \
-	nxtOSEK/generators/simpleElements/enginesBackwardGenerator.h \
 	nxtOSEK/generators/simpleElements/enginesStopGenerator.h \
 	nxtOSEK/generators/simpleElements/timerGenerator.h \
 	nxtOSEK/generators/simpleElements/beepGenerator.h \
@@ -28,7 +26,9 @@ HEADERS += \
 	nxtOSEK/generators/simpleElements/variableInitGenerator.h \
 	nxtOSEK/generators/simpleElements/balanceInitGenerator.h \
 	nxtOSEK/generators/simpleElementFactory.h \
-	nxtOSEK/generators/simpleElements/initialNodeGenerator.h
+	nxtOSEK/generators/simpleElements/initialNodeGenerator.h \
+    nxtOSEK/generators/simpleElements/enginesGenerator.h \
+    nxtOSEK/generators/listsmartline.h
 
 SOURCES += \
 	nxtOSEK/elementGeneratorFactory.cpp \
@@ -41,8 +41,6 @@ SOURCES += \
 	nxtOSEK/generators/loopElementGenerator.cpp \
 	nxtOSEK/generators/simpleElementGenerator.cpp \
 	nxtOSEK/generators/simpleElements/abstractSimpleElementGenerator.cpp \
-	nxtOSEK/generators/simpleElements/enginesForwardGenerator.cpp \
-	nxtOSEK/generators/simpleElements/enginesBackwardGenerator.cpp \
 	nxtOSEK/generators/simpleElements/enginesStopGenerator.cpp \
 	nxtOSEK/generators/simpleElements/timerGenerator.cpp \
 	nxtOSEK/generators/simpleElements/beepGenerator.cpp \
@@ -60,4 +58,6 @@ SOURCES += \
 	nxtOSEK/generators/simpleElements/variableInitGenerator.cpp \
 	nxtOSEK/generators/simpleElements/balanceInitGenerator.cpp \
 	nxtOSEK/generators/simpleElementFactory.cpp \
-	nxtOSEK/generators/simpleElements/initialNodeGenerator.cpp
+	nxtOSEK/generators/simpleElements/initialNodeGenerator.cpp \
+    nxtOSEK/generators/simpleElements/enginesGenerator.cpp \
+    nxtOSEK/generators/listsmartline.cpp

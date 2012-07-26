@@ -1,7 +1,5 @@
 #include "simpleElementFactory.h"
-
-#include "simpleElements/enginesForwardGenerator.h"
-#include "simpleElements/enginesBackwardGenerator.h"
+#include "simpleElements/enginesGenerator.h"
 #include "simpleElements/enginesStopGenerator.h"
 #include "simpleElements/timerGenerator.h"
 #include "simpleElements/beepGenerator.h"
@@ -24,10 +22,8 @@ using namespace robots::generator;
 
 AbstractSimpleElementGenerator* SimpleElementFactory::generator(QString const elementType)
 {
-	if (elementType == "EnginesForward") {
-		return new EnginesForwardGenerator();
-	} else if (elementType == "EnginesBackward") {
-		return new EnginesBackwardGenerator();
+	if (elementType == "EnginesForward" || elementType == "EnginesBackward") {
+		return new EnginesGenerator(elementType);
 	} else if (elementType == "EnginesStop") {
 		return new EnginesStopGenerator();
 	} else if (elementType == "Timer") {

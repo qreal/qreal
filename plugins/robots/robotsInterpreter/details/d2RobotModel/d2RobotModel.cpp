@@ -296,8 +296,8 @@ void D2RobotModel::startInit()
 
 void D2RobotModel::stopRobot()
 {
-	mMotorA->speed = 0;
 	mMotorB->speed = 0;
+	mMotorC->speed = 0;
 }
 
 void D2RobotModel::countBeep()
@@ -311,8 +311,8 @@ void D2RobotModel::countBeep()
 
 void D2RobotModel::countNewCoord()
 {
-	qreal const vSpeed = mMotorA->speed * 2 * M_PI * mMotorA->radius * 1.0 / 120000;
-	qreal const uSpeed = mMotorB->speed * 2 * M_PI * mMotorB->radius * 1.0 / 120000;
+	qreal const vSpeed = mMotorB->speed * 2 * M_PI * mMotorA->radius * 1.0 / 12000;
+	qreal const uSpeed = mMotorC->speed * 2 * M_PI * mMotorB->radius * 1.0 / 12000;
 	qreal deltaY = 0;
 	qreal deltaX = 0;
 	qreal const averageSpeed = (vSpeed + uSpeed) / 2;

@@ -15,4 +15,5 @@ public:
 	static QString readAll(QString const &nameFile);
 	~InFile();
 };
+
 }

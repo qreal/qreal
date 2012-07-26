@@ -26,7 +26,7 @@ QList<Block::SensorPortPair> InitialBlockWithPorts::sensorToPair(QString const p
 	if (port1Sensor == QString::fromUtf8("Ультразвуковой сенсор")) {
 		result << qMakePair(sensorType::sonar, static_cast<int>(port));
 	}
-	if (port1Sensor == QString::fromUtf8("Сенсор цвета (полные цвета)")) {
+	if (port1Sensor == QString::fromUtf8("Сенсор цвета (все цвета)")) {
 		result << qMakePair(sensorType::colorFull, static_cast<int>(port));
 	}
 	if (port1Sensor == QString::fromUtf8("Сенсор цвета (красный)")) {

@@ -1,8 +1,6 @@
 #include "kernel.h"
 #include "ecrobot_interface.h"
-
 @@BALANCER@@
-
 @@VARIABLES@@
 
 void ecrobot_device_initialize(void)
@@ -19,4 +17,3 @@ void ecrobot_device_terminate(void)
 void user_1ms_isr_type2(void){ /* do nothing */ }
 
 @@CODE@@
-

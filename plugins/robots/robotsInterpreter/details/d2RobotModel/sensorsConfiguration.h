@@ -30,7 +30,7 @@ public:
 	sensorType::SensorTypeEnum type(inputPort::InputPortEnum const &port) const;
 	void clearSensor(inputPort::InputPortEnum const &port);
 
-	QDomElement  serialize(QDomDocument &document) const;
+	QDomElement serialize(QDomDocument &document) const;
 	void deserialize(QDomElement const &element);
 
 private:
