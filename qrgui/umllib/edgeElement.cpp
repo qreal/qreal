@@ -39,7 +39,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	mPenColor = mElementImpl->getPenColor();
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
-	// FIXME: draws strangely... // что это? к чему это?
+	// FIXME: draws strangely...
 	setFlag(ItemClipsToShape, false);
 	setFlag(ItemClipsChildrenToShape, false);
 
@@ -429,7 +429,7 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	 //deleteUnneededPoints(); // delCloseLinePoints включает ли?
+	 //deleteUnneededPoints(); // delCloseLinePoints include this
 
 	if (mDragPoint == -1)
 		Element::mouseReleaseEvent(event);
@@ -448,6 +448,8 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	adjustLink();
 	arrangeSrcAndDst();
+
+	updateLongestPart();
 
 	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
@@ -580,8 +582,7 @@ void EdgeElement::delCloseLinePoints()
 
 	updateLongestPart();
 
-
-	setGraphicApi(QPointF());
+	//setGraphicApi(QPointF());
 }
 
 bool EdgeElement::removeOneLinePoints(int startingPoint)
@@ -627,7 +628,7 @@ QList<ContextMenuAction*> EdgeElement::contextMenuActions()
 	return result;
 }
 
-QList<PossibleEdge> EdgeElement::getPossibleEdges() // что даёт этот метод?
+QList<PossibleEdge> EdgeElement::getPossibleEdges()
 {
 	return possibleEdges;
 }
@@ -641,7 +642,7 @@ void EdgeElement::delPointHandler(QPointF const &pos)
 		prepareGeometryChange();
 		mLine.remove(pointIndex);
 		updateLongestPart();
-		//mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon()); // аналогично addPointHandler возможна ошибка
+		//mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon()); // сообщаем об изменениях на "верхних" уровнях
 		update();
 	}
 }
@@ -659,8 +660,7 @@ void EdgeElement::addPointHandler(QPointF const &pos) // при добавлении происход
 			updateLongestPart();
 			mDragPoint = i + 1;
 			//mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
-			update(); // посмотреть, в каких метода он есть и делает ли он хоть что-нибудь. (по-моему, нет)
-			//because the second parameter is not QPolygonF (else it will be bug)
+			update();
 			break;
 		}
 	}
@@ -779,6 +779,7 @@ void EdgeElement::minimizeHandler(const QPointF &pos) {
 void EdgeElement::adjustLink()
 {
 	prepareGeometryChange();
+
 	if (mSrc)
 		mLine.first() = mapFromItem(mSrc, mSrc->getPortPos(mPortFrom));
 	if (mDst)
@@ -787,12 +788,16 @@ void EdgeElement::adjustLink()
 		if (removeOneLinePoints(i))
 			i--;
 	}
+
+	delCloseLinePoints();
+
 	if (!SettingsManager::value("ToPermitLoops").toBool())
 		deleteLoops();
 	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
 
-	setGraphicApi(QPointF());
+	//setGraphicApi(QPointF()); //ВАЖНО: если оставить, будет лагать при переносе многих элементов (вместе с линками).
+	//если убрать, обновления будут при mouseRelease, не при mouseMove
 
 	updateLongestPart();
 }
@@ -969,17 +974,27 @@ void EdgeElement::removeLink(NodeElement const *from)
 void EdgeElement::placeStartTo(QPointF const &place)
 {
 	mLine[0] = place;
-	updateLongestPart();
+	if (!SettingsManager::value("ToPermitLoops").toBool())
+		deleteLoops();
 	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
+
+	setGraphicApi(QPointF());
+
+	updateLongestPart();
 }
 
 void EdgeElement::placeEndTo(QPointF const &place)
 {
 	mLine[mLine.size() - 1] = place;
-	updateLongestPart();
+	if (!SettingsManager::value("ToPermitLoops").toBool())
+		deleteLoops();
 	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
+
+	setGraphicApi(QPointF());
+
+	updateLongestPart();
 }
 
 void EdgeElement::moveConnection(NodeElement *node, qreal const portId) {
@@ -1021,15 +1036,16 @@ void EdgeElement::highlight(QColor const color)
 void EdgeElement::redrawing(QPointF const &pos)
 {
 	Q_UNUSED(pos);
-	//mLine = mGraphicalAssistApi->configuration(id()); // надо ли?
-	delCloseLinePoints();
-	if (!SettingsManager::value("ToPermitLoops").toBool())
-		deleteLoops();
-	if (SettingsManager::value("SquareLine").toBool())
-		squarizeHandler(QPointF());
+
+	adjustLink();
 	arrangeSrcAndDst();
-	mModelUpdateIsCalled = true;
-	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
+
+	delCloseLinePoints();
+
+
+	updateLongestPart();
+
+	setGraphicApi(QPointF());
 }
 
 //желательно проводить проверку на наличие совпадающих линий
@@ -1156,11 +1172,12 @@ void EdgeElement::deleteSegment(QPointF const &pos)
 			break;
 		}
 	}
+	setGraphicApi(QPointF());
 }
 
 void EdgeElement::setGraphicApi(QPointF const &pos)
 {
 	Q_UNUSED(pos);
-	mModelUpdateIsCalled = true;
+	mModelUpdateIsCalled = true; // flag for the infinite updateData()-s liquidating
 	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
 }

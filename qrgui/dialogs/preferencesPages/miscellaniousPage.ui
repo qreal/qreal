@@ -89,7 +89,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Allow loops</string>
+         <string>To allow Loops</string>
         </property>
         <property name="checked">
          <bool>false</bool>

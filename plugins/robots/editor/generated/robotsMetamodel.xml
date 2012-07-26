@@ -958,34 +958,34 @@
         </graphicTypes>
         <palette>
             <group name="Действия">
-                <element name="Гудок"/>
-                <element name="Играть звук"/>
-                <element name="Моторы вперёд"/>
-                <element name="Моторы назад"/>
-                <element name="Моторы стоп"/>
-                <element name="Функция"/>
-                <element name="Поток управления"/>
+                <element name="Beep"/>
+                <element name="PlayTone"/>
+                <element name="EnginesForward"/>
+                <element name="EnginesBackward"/>
+                <element name="EnginesStop"/>
+                <element name="Function"/>
+                <element name="ControlFlow"/>
             </group>
             <group name="Ожидания">
-                <element name="Таймер"/>
-                <element name="Ждать сенсор касания"/>
-                <element name="Ждать сонар"/>
-                <element name="Ждать цвет"/>
-                <element name="Ждать энкодер"/>
-                <element name="Ждать интенсивность цвета"/>
+                <element name="Timer"/>
+                <element name="WaitForTouchSensor"/>
+                <element name="WaitForSonarDistance"/>
+                <element name="WaitForColor"/>
+                <element name="WaitForEncoder"/>
+                <element name="WaitForColorIntensity"/>
             </group>
             <group name="Алгоритмы">
-                <element name="Породить поток"/>
-                <element name="Условие"/>
-                <element name="Цикл"/>
-				<element name="Подпрограмма"/>
-                <element name="Диаграмма поведения робота"/>
+                <element name="Fork"/>
+                <element name="Condition"/>
+                <element name="Loop"/>
+				<element name="SubprogramRobots"/>
+                <element name="RobotsDiagramNode"/>
             </group>
             <group name="Инициализация">
-                <element name="Начало"/>
-                <element name="Конец"/>
-                <element name="Блок инициализации"/>
-                <element name="Сбросить показания энкодера"/>
+                <element name="InitialNode"/>
+                <element name="FinalNode"/>
+                <element name="InitialBlock"/>
+                <element name="NullificationEncoder"/>
             </group>
         </palette>
     </diagram>
