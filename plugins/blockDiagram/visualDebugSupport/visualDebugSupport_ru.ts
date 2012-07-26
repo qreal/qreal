@@ -9,17 +9,17 @@
         <translation type="unfinished">Настройки визуального отладчика</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPreferencesPage.ui" line="26"/>
+        <location filename="visualDebuggerPreferencesPage.ui" line="58"/>
         <source>Builder path:</source>
         <translation type="unfinished">Путь к компилятору:</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPreferencesPage.ui" line="48"/>
+        <location filename="visualDebuggerPreferencesPage.ui" line="84"/>
         <source>Debugger path:</source>
         <translation type="unfinished">Путь к отладчику:</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPreferencesPage.ui" line="61"/>
+        <location filename="visualDebuggerPreferencesPage.ui" line="30"/>
         <source>Visual debugger working
 directory:</source>
         <oldsource>Visual debugger
@@ -28,7 +28,7 @@ working directory:</oldsource>
 визуального отладчика:</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPreferencesPage.ui" line="75"/>
+        <location filename="visualDebuggerPreferencesPage.ui" line="51"/>
         <source>Generated code file name:</source>
         <oldsource>Generated
 code file name:</oldsource>
@@ -36,15 +36,15 @@ code file name:</oldsource>
 файла с исходниками:</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPreferencesPage.ui" line="88"/>
+        <location filename="visualDebuggerPreferencesPage.ui" line="94"/>
         <source>Builded file name:</source>
         <translation type="unfinished">Название скомпилирован-
 ного исполняемого файла:</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPreferencesPage.ui" line="151"/>
-        <location filename="visualDebuggerPreferencesPage.ui" line="164"/>
-        <location filename="visualDebuggerPreferencesPage.ui" line="177"/>
+        <location filename="visualDebuggerPreferencesPage.ui" line="23"/>
+        <location filename="visualDebuggerPreferencesPage.ui" line="44"/>
+        <location filename="visualDebuggerPreferencesPage.ui" line="71"/>
         <source>...</source>
         <translation type="unfinished">...</translation>
     </message>

@@ -5,13 +5,10 @@
 
 namespace qReal {
 
-/**
- * @brief List with button for confirm choice. The selected data is sent through a signal.
- *
- * List in which you can add element together with associated with it the string data.
- * Selecting an item by either double clicking or by using the supporting buttons.
- * The selected string data sent through the signal userDataSelected(QString const &userData).
- */
+/// @brief List with button for confirm choice. The selected data is sent through a signal.
+/// List in which you can add element together with associated with it the string data.
+/// Selecting an item by either double clicking or by using the supporting buttons.
+/// The selected string data sent through the signal userDataSelected(QString const &userData).
 class ListWidget : public QWidget
 {
 	Q_OBJECT
@@ -19,13 +16,13 @@ class ListWidget : public QWidget
 public:
 	explicit ListWidget(QWidget *parent = 0);
 
-	/// @param text - item label
-	/// @param userData - associated with item the string data
-	/// @param toolTip - item tooltip
+	/// @param text Item label
+	/// @param userData Associated with item the string data
+	/// @param toolTip Item tooltip
 	void addItem(QString const &text, QString const &userData, QString const &toolTip = "");
-	void highlightFirstItem();
 	int count();
-	
+	void highlightFirstItem();
+
 signals:
 	void userDataSelected(QString const &userData);
 
@@ -36,6 +33,8 @@ private slots:
 
 private:
 	QString userData(QListWidgetItem *item);
+
+	static int const mOkButtonMinimumHeight = 32;
 
 	QListWidget *mListWidget;
 	QPushButton *mOkButton;

@@ -5,10 +5,11 @@
 using namespace qReal;
 
 ListWidget::ListWidget(QWidget *parent)
-	: QWidget(parent)
-	, mListWidget(new QListWidget())
-	, mOkButton(new QPushButton(tr("&OK")))
+		: QWidget(parent)
+		, mListWidget(new QListWidget())
+		, mOkButton(new QPushButton(tr("&OK")))
 {
+	mOkButton->setMinimumHeight(mOkButtonMinimumHeight);
 	mOkButton->setDisabled(true);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -31,17 +32,17 @@ void ListWidget::addItem(QString const &text, QString const &userData, QString c
 	mListWidget->addItem(currentItem);
 }
 
+int ListWidget::count()
+{
+	return mListWidget->count();
+}
+
 void ListWidget::highlightFirstItem()
 {
 	if (count() == 0) {
 		return;
 	}
 	mListWidget->setCurrentRow(0);
-}
-
-int ListWidget::count()
-{
-	return mListWidget->count();
 }
 
 void ListWidget::okButtonHandler()

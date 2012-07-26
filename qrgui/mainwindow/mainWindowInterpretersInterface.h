@@ -2,6 +2,7 @@
 
 #include "../../qrkernel/ids.h"
 #include "../toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "../../qrutils/invocationUtils/longOperation.h"
 
 namespace qReal {
 namespace gui {
@@ -20,9 +21,6 @@ public:
 	virtual ErrorReporterInterface *errorReporter() = 0;
 	virtual Id activeDiagram() = 0;
 	virtual void openSettingsDialog(QString const &tab) = 0;
-
-	/// Save currently opened model
-	virtual void saveAll() = 0;
 
 	/// Opens new tab with text editor and shows a text in it
 	/// @param title A title of the tab
@@ -70,6 +68,11 @@ public:
 	virtual void updateActiveDiagram() = 0;
 	
 	virtual void deleteElementFromDiagram(Id const &id) = 0;
+
+	/// Must be called before some long operation start.
+	/// Shows progress bar on operation start
+	/// @param operation Operation that going to be invoced
+	virtual void reportOperation(invocation::LongOperation *operation) = 0;
 };
 
 }

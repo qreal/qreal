@@ -866,18 +866,22 @@ void EdgeElement::updateData()
 	qReal::Id idFrom = mGraphicalAssistApi->from(id());
 	qReal::Id idTo = mGraphicalAssistApi->to(id());
 
-	if (mSrc)
+	if (mSrc) {
 		mSrc->delEdge(this);
-	if (mDst)
+	}
+	if (mDst) {
 		mDst->delEdge(this);
+	}
 
 	mSrc = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(idFrom));
 	mDst = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(idTo));
 
-	if (mSrc)
+	if (mSrc) {
 		mSrc->addEdge(this);
-	if (mDst)
+	}
+	if (mDst) {
 		mDst->addEdge(this);
+	}
 
 	setFlag(ItemIsMovable, !(mDst || mSrc));
 
@@ -893,11 +897,13 @@ void EdgeElement::updateData()
 
 void EdgeElement::removeLink(NodeElement const *from)
 {
-	if (mSrc == from)
+	if (mSrc == from) {
 		mSrc = NULL;
+	}
 
-	if (mDst == from)
+	if (mDst == from) {
 		mDst = NULL;
+	}
 }
 
 void EdgeElement::placeStartTo(QPointF const &place)
@@ -966,6 +972,7 @@ void EdgeElement::highlight(QColor const color)
 EdgeData& EdgeElement::data()
 {
 	mData.id = id();
+	mData.logicalId = logicalId();
 	mData.srcId = src()->id();
 	mData.dstId = dst()->id();
 
@@ -976,4 +983,21 @@ EdgeData& EdgeElement::data()
 	mData.pos = mGraphicalAssistApi->position(mId);
 
 	return mData;
+}
+
+void EdgeElement::deleteFromScene()
+{
+	if (mSrc) {
+		mSrc->delEdge(this);
+		mSrc->arrangeLinks();
+		mGraphicalAssistApi->setFrom(id(), Id::rootId());
+		mLogicalAssistApi->setFrom(logicalId(), Id::rootId());
+	}
+
+	if (mDst) {
+		mDst->delEdge(this);
+		mDst->arrangeLinks();
+		mGraphicalAssistApi->setTo(id(), Id::rootId());
+		mLogicalAssistApi->setTo(logicalId(), Id::rootId());
+	}
 }

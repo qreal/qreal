@@ -466,6 +466,10 @@ void NodeElement::resize(QRectF newContents, QPointF newPos)
 	if (parItem) {
 		parItem->resize(); // recursive expansion of parents
 	}
+
+	if (SettingsManager::value("ActivateGrid").toBool()) {
+		alignToGrid();
+	}
 }
 
 QList<ContextMenuAction*> NodeElement::contextMenuActions()
@@ -602,6 +606,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 		Element::mouseMoveEvent(event);
 		mGrid->mouseMoveEvent(event);
+		alignToGrid();
 
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
@@ -883,15 +888,16 @@ void NodeElement::updateData()
 {
 	Element::updateData();
 	if (mMoving == 0) {
+		storeGeometry();
 		QPointF newpos = mGraphicalAssistApi->position(id());
-		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
+		QPolygon newpoly = mGraphicalAssistApi->configuration(id()); // why is it empty?
 		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
 		if (!newpoly.isEmpty()) {
 			int minx = newpoly[0].x();
 			int miny = newpoly[0].y();
 			int maxx = newpoly[0].x();
-			int maxy = newpoly[0].y();;
+			int maxy = newpoly[0].y();
 			for (int i = 1; i < newpoly.size(); ++i) {
 				if (minx > newpoly[i].x()) {
 					minx = newpoly[i].x();
@@ -910,7 +916,6 @@ void NodeElement::updateData()
 		}
 		setGeometry(newRect.translated(newpos));
 	}
-
 	mElementImpl->updateData(this);
 	update();
 }
@@ -1173,13 +1178,13 @@ NodeElement *NodeElement::getNodeAt(QPointF const &position)
 	return 0;
 }
 
-void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget)
+void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *w)
 {
 	mElementImpl->paint(painter, mContents);
 	if (mElementImpl->hasPorts()) {
-		paint(painter, style, widget, mPortRenderer);
+		paint(painter, style, w, mPortRenderer);
 	} else {
-		paint(painter, style, widget, 0);
+		paint(painter, style, w, 0);
 	}
 
 	if (mSelectionNeeded) {
@@ -1247,6 +1252,11 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 	}
 }
 
+QList<EdgeElement*> NodeElement::getEdges()
+{
+	return mEdgeList;
+}
+
 void NodeElement::addEdge(EdgeElement *edge)
 {
 	mEdgeList << edge;
@@ -1254,7 +1264,7 @@ void NodeElement::addEdge(EdgeElement *edge)
 
 void NodeElement::delEdge(EdgeElement *edge)
 {
-	mEdgeList.removeAt(mEdgeList.indexOf(edge));
+	mEdgeList.removeAll(edge);
 }
 
 void NodeElement::changeFoldState()
@@ -1630,20 +1640,50 @@ void NodeElement::selectionState(bool const selected)
 
 void NodeElement::highlightEdges()
 {
-	foreach (EdgeElement *edge, mEdgeList)
+	foreach (EdgeElement *edge, mEdgeList) {
 		edge->highlight();
+	}
+}
+
+void NodeElement::disconnectEdges()
+{
+	foreach (EdgeElement *edge, mEdgeList) {
+		if (edge->src() == this) {
+			mGraphicalAssistApi->setFrom(edge->id(), Id::rootId());
+			mLogicalAssistApi->setFrom(edge->logicalId(), Id::rootId());
+		}
+
+		if (edge->dst() == this) {
+			mGraphicalAssistApi->setTo(edge->id(), Id::rootId());
+			mLogicalAssistApi->setTo(edge->logicalId(), Id::rootId());
+		}
+
+		edge->removeLink(this);
+	}
+	mEdgeList.clear();
+}
+
+void NodeElement::deleteFromScene()
+{
+	highlightEdges();
+	disconnectEdges();
 }
 
 NodeData& NodeElement::data()
 {
 	mData.id = id();
+	mData.logicalId = logicalId();
 	mData.properties = properties();
+	// new element should not have references to links connected to original source element
+	mData.properties["links"] = IdListHelper::toVariant(IdList());
 	mData.pos = mPos;
 	mData.contents = mContents;
 
-	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
+	NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
 	if (parent) {
 		mData.parentId = parent->id();
+	} else {
+		mData.parentId = Id::rootId();
 	}
 
 	return mData;

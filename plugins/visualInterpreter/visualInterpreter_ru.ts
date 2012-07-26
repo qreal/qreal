@@ -176,12 +176,12 @@
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="visualInterpreterPreferencePage.ui" line="26"/>
+        <location filename="visualInterpreterPreferencePage.ui" line="22"/>
         <source>QReal sources location:</source>
         <translation>Расположение исходных файлов QReal:</translation>
     </message>
     <message>
-        <location filename="visualInterpreterPreferencePage.ui" line="49"/>
+        <location filename="visualInterpreterPreferencePage.ui" line="32"/>
         <source>...</source>
         <translation>...</translation>
     </message>

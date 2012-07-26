@@ -11,7 +11,11 @@ HEADERS += \
 	mainwindow/paletteTree.h \
 	mainwindow/findManager.h \
 	mainwindow/dotRunner.h \
-	mainwindow/splashScreen.h
+	mainwindow/splashScreen.h \
+	mainwindow/projectManager/projectManagementInterface.h \
+	mainwindow/projectManager/projectManager.h \
+	mainwindow/projectManager/autosaver.h \
+	mainwindow/miniMap.h \
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -23,7 +27,10 @@ SOURCES += \
 	mainwindow/paletteTree.cpp \
 	mainwindow/findManager.cpp \
 	mainwindow/dotRunner.cpp \
-	mainwindow/splashScreen.cpp
+	mainwindow/splashScreen.cpp \
+	mainwindow/projectManager/projectManager.cpp \
+	mainwindow/projectManager/autosaver.cpp \
+	mainwindow/miniMap.cpp \
 
 FORMS += \
 	mainwindow/mainWindow.ui \
