@@ -390,7 +390,7 @@ void MainWindow::sceneSelectionChanged()
 
 void MainWindow::refreshRecentProjectsList(QString const &fileName)
 {
-	QString previousString =  SettingsManager::value("recentProjects").toString();
+	QString previousString = SettingsManager::value("recentProjects").toString();
 	QStringList previousList = previousString.split(";", QString::SkipEmptyParts);
 	previousList.removeOne(fileName);
 	if (previousList.size() == mRecentProjectsLimit) {
@@ -815,7 +815,6 @@ void MainWindow::showPreferencesDialog()
 		connect(&mPreferencesDialog, SIGNAL(settingsApplied()), this, SLOT(applySettings()));
 		connect(&mPreferencesDialog, SIGNAL(fontChanged()), this, SLOT(setSceneFont()));
 	}
-	qDebug() << "Show";
 	mPreferencesDialog.exec();
 	mToolManager.updateSettings();
 	mProjectManager->reinitAutosaver();
@@ -1642,9 +1641,9 @@ void MainWindow::disconnectWindowTitle()
 			, this, SLOT(modelsAreChanged()));
 	disconnect(mModels->logicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex))
 			, this, SLOT(modelsAreChanged()));
-	disconnect(mModels->graphicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int))
+	disconnect(mModels->graphicalModel(), SIGNAL(rowsInserted (const QModelIndex &, int, int))
 			, this, SLOT(modelsAreChanged()));
-	disconnect(mModels->logicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int))
+	disconnect(mModels->logicalModel(), SIGNAL(rowsInserted (const QModelIndex &, int, int))
 			, this, SLOT(modelsAreChanged()));
 	disconnect(mModels->graphicalModel(), SIGNAL(rowsMoved(const QModelIndex, int, int, const QModelIndex &, int ))
 			, this, SLOT(modelsAreChanged()));

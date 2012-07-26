@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QString>
+#include <QtCore/QString>
 #include "../../../../qrkernel/ids.h"
 
 namespace robots {
@@ -26,8 +26,8 @@ public:
 	qReal::Id elementId() const;
 	IndentChangeType indentLevelChange() const;
 
-	void setText(QString const &);
-	void setElementId(qReal::Id const &);
+	void setText(QString const &text);
+	void setElementId(qReal::Id const &id);
 	void setIndentChange(IndentChangeType);
 
 private:

@@ -3,7 +3,7 @@
 using namespace robots::generator;
 
 FunctionElementGenerator::FunctionElementGenerator(NxtOSEKRobotGenerator *generator
-		, qReal::Id const &elementId, bool generateToInit)
+		, qReal::Id const &elementId, bool const &generateToInit)
 		: SimpleElementGenerator(generator, elementId), mGenerateToInit(generateToInit)
 {
 }
@@ -12,7 +12,7 @@ void FunctionElementGenerator::variableAnalysis(QByteArray const &code)
 {
 	QList<QByteArray> const funcBlocks = code.split(';');
 
-	foreach (QByteArray block, funcBlocks) {
+	foreach (QByteArray const &block, funcBlocks) {
 			//Only one possible place for first variable appear
 		int const firstEqualSignPos = block.indexOf('=');
 		if (firstEqualSignPos == -1) {
@@ -29,7 +29,7 @@ void FunctionElementGenerator::variableAnalysis(QByteArray const &code)
 		}
 
 		bool isVariableExisted = false;
-		foreach (SmartLine curVariable, mNxtGen->variables()) {
+		foreach (SmartLine const &curVariable, mNxtGen->variables()) {
 			if (curVariable.text() == QString::fromUtf8(leftPart)) {
 				isVariableExisted = true;
 				break;
@@ -41,24 +41,22 @@ void FunctionElementGenerator::variableAnalysis(QByteArray const &code)
 	}
 }
 
-QByteArray FunctionElementGenerator::replaceSensorVariables(QByteArray portValue)
+QByteArray FunctionElementGenerator::replaceSensorVariables(QByteArray portValue) const
 {
 	if ((portValue == "Сенсор цвета (красный)")
 			|| (portValue == "Сенсор цвета (зеленый)")
 			|| (portValue == "Сенсор цвета (синий)")
-			|| (portValue == "Сенсор цвета (полные цвета)")
+			|| (portValue == "Сенсор цвета (все цвета)")
 			|| (portValue == "Сенсор цвета (пассивный)")) {
 		return "ecrobot_get_light_sensor(NXT_PORT_S";
+	} else if (portValue == "Ультразвуковой сенсор") {
+			 return "ecrobot_get_sonar_sensor(NXT_PORT_S";
 	} else {
-		if (portValue == "Ультразвуковой сенсор") {
-			return "ecrobot_get_sonar_sensor(NXT_PORT_S";
-		} else {
-			return "ecrobot_get_touch_sensor(NXT_PORT_S";
-		}
+			 return "ecrobot_get_touch_sensor(NXT_PORT_S";
 	}
 }
 
-QList<SmartLine> FunctionElementGenerator::simpleCode()
+QList<SmartLine> FunctionElementGenerator::convertBlockIntoCode()
 {
 	QList<SmartLine> result;
 
@@ -66,15 +64,15 @@ QList<SmartLine> FunctionElementGenerator::simpleCode()
 
 	QByteArray byteFuncCode = mNxtGen->api()->stringProperty(logicElementId, "Body").toUtf8();
 
-	byteFuncCode.replace("Сенсор1", replaceSensorVariables(mNxtGen->portValue1()) + "1)");
-	byteFuncCode.replace("Сенсор2", replaceSensorVariables(mNxtGen->portValue2()) + "2)");
-	byteFuncCode.replace("Сенсор3", replaceSensorVariables(mNxtGen->portValue3()) + "3)");
-	byteFuncCode.replace("Сенсор4", replaceSensorVariables(mNxtGen->portValue4()) + "4)");
+	byteFuncCode.replace("Sensor1", replaceSensorVariables(mNxtGen->portValue1()) + "1)");
+	byteFuncCode.replace("Sensor2", replaceSensorVariables(mNxtGen->portValue2()) + "2)");
+	byteFuncCode.replace("Sensor3", replaceSensorVariables(mNxtGen->portValue3()) + "3)");
+	byteFuncCode.replace("Sensor4", replaceSensorVariables(mNxtGen->portValue4()) + "4)");
 
 	variableAnalysis(byteFuncCode);
 	QString const funcCode = QString::fromUtf8(byteFuncCode);
 
-	foreach (QString str, funcCode.split(';')) {
+	foreach (QString const &str, funcCode.split(';')) {
 		result.append(SmartLine(str.trimmed() + ";", mElementId));
 	}
 

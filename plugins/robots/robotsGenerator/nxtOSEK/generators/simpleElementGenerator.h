@@ -19,14 +19,7 @@ protected:
 	virtual bool preGenerationCheck();
 	virtual bool nextElementsGeneration();
 
-	virtual QList<SmartLine> simpleCode();
-
-	QList<QString> portsToEngineNames(QString const &portsProperty);
-
-private:
-	QString transformSign(QString const &inequalitySign);
-	QList<SmartLine> mInitCode;
-	QList<SmartLine> mTerminateCode;
+	virtual QList<SmartLine> convertBlockIntoCode();
 };
 
 }
