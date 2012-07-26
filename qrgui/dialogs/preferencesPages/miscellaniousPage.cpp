@@ -57,7 +57,7 @@ void PreferencesMiscellaniousPage::save()
 	SettingsManager::setValue("SquareLine", mUi->squareLineModeCheckBox->isChecked());
 //	SettingsManager::setValue("ChaoticEdition", mUi->chaoticEditionCheckBox->isChecked());
 	SettingsManager::setValue("pathToImages", mUi->imagesPathEdit->text());
-	SettingsManager::setValue("ToPermitLoops", mUi->loopsModeCheckBox->isChecked());
+//	SettingsManager::setValue("ToPermitLoops", mUi->loopsModeCheckBox->isChecked());
 
 	if (mLastIconsetPath != mUi->imagesPathEdit->text()) {
 		emit iconsetChanged();
