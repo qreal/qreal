@@ -66,7 +66,7 @@ bool LoopElementGenerator::nextElementsGeneration()
 	return true;
 }
 
-QList<SmartLine> LoopElementGenerator::loopPrefixCode()
+QList<SmartLine> LoopElementGenerator::addLoopCodeInPrefixForm()
 {
 	QList<SmartLine> result;
 
@@ -77,7 +77,7 @@ QList<SmartLine> LoopElementGenerator::loopPrefixCode()
 	return result;
 }
 
-QList<SmartLine> LoopElementGenerator::loopPostfixCode()
+QList<SmartLine> LoopElementGenerator::addLoopCodeInPostfixForm()
 {
 	QList<SmartLine> result;
 	result << SmartLine("}", mElementId, SmartLine::decrease);

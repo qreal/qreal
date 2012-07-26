@@ -7,7 +7,7 @@ WaitForTouchSensorBlockGenerator::WaitForTouchSensorBlockGenerator()
 {
 }
 
-QList<SmartLine> WaitForTouchSensorBlockGenerator::convertElememtIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> WaitForTouchSensorBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;

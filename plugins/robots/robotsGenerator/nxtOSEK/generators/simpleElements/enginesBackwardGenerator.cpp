@@ -7,7 +7,7 @@ EnginesBackwardGenerator::EnginesBackwardGenerator()
 {
 }
 
-QList<SmartLine> EnginesBackwardGenerator::convertElememtIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> EnginesBackwardGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;

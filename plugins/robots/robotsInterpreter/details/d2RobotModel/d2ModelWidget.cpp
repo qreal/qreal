@@ -33,6 +33,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mCurrentPort(inputPort::none)
 		, mCurrentSensorType(sensorType::unused)
 		, mButtonsCount(8) // magic numbers are baaad, mkay?
+		, mWidth(15)
 {
 	setWindowIcon(QIcon(":/icons/kcron.png"));
 
@@ -66,7 +67,7 @@ void D2ModelWidget::initWidget()
 	mUi->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
 	move(0, 0);
 
-	mUi->penWidthSpinBox->setRange(6, 13);
+	mUi->penWidthSpinBox->setRange(1, 30);
 
 	QStringList colorNames;
 	colorNames.push_back("Black");
@@ -175,7 +176,7 @@ QPointF D2ModelWidget::robotPos() const
 
 void D2ModelWidget::close()
 {
-	if (mRobot != NULL) {
+	if (mRobot) {
 		mRobot->resetTransform();
 		mRobotPath.clear();
 		mScene->clear();
@@ -658,6 +659,7 @@ QList<AbstractItem *> D2ModelWidget::selectedColorItems()
 void D2ModelWidget::changePenWidth(int width)
 {
 	mScene->setPenWidthItems(width);
+	mWidth = width;
 	foreach (AbstractItem *item, selectedColorItems()) {
 		item->setPenWidth(width);
 	}
@@ -712,7 +714,7 @@ void D2ModelWidget::setItemPalette(QPen const &penItem, QBrush const &brushItem)
 
 void D2ModelWidget::setNoPalette()
 {
-	mUi->penWidthSpinBox->setValue(6);
+	mUi->penWidthSpinBox->setValue(mWidth);
 	mUi->penColorComboBox->setColor(QColor("black"));
 }
 
@@ -740,5 +742,6 @@ void D2ModelWidget::disableRunStopButtons()
 
 void D2ModelWidget::closeEvent(QCloseEvent *event)
 {
+	Q_UNUSED(event)
 	emit d2WasClosed();
 }

@@ -7,7 +7,7 @@ WaitForSonarBlockGenerator::WaitForSonarBlockGenerator()
 {
 }
 
-QList<SmartLine> WaitForSonarBlockGenerator::convertElememtIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> WaitForSonarBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;

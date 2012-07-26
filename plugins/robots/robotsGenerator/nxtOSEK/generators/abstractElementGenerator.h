@@ -16,8 +16,8 @@ public:
 	virtual bool generate();
 
 protected:
-	virtual QList<SmartLine> loopPrefixCode() = 0;
-	virtual QList<SmartLine> loopPostfixCode() = 0;
+	virtual QList<SmartLine> addLoopCodeInPrefixForm() = 0;
+	virtual QList<SmartLine> addLoopCodeInPostfixForm() = 0;
 
 	/**
 	 * Creates new lists in mGeneratedStringSet

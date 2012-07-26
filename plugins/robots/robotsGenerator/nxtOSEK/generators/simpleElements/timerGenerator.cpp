@@ -7,7 +7,7 @@ TimerGenerator::TimerGenerator()
 {
 }
 
-QList<SmartLine> TimerGenerator::convertElememtIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> TimerGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;

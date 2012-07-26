@@ -148,12 +148,17 @@ QPair<QPoint, qreal> D2RobotModel::countPositionAndDirection(inputPort::InputPor
 	return countPositionAndDirection(mSensorsConfiguration.position(port), mSensorsConfiguration.direction(port));
 }
 
-bool D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
+int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 {
 	QPair<QPoint, qreal> neededPosDir = countPositionAndDirection(port);
 	bool res = mWorldModel.touchSensorReading(neededPosDir.first, neededPosDir.second, port);
 	// TODO: Add checks of sensor type.
-	return res;
+
+	if (res) {
+		return 1;
+	}
+
+	return 0;
 }
 
 int D2RobotModel::readSonarSensor(inputPort::InputPortEnum const port) const

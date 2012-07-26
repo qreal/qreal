@@ -7,7 +7,7 @@ BeepGenerator::BeepGenerator()
 {
 }
 
-QList<SmartLine> BeepGenerator::convertElememtIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> BeepGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;

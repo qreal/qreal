@@ -7,7 +7,7 @@ BalanceInitGenerator::BalanceInitGenerator()
 {
 }
 
-QList<SmartLine> BalanceInitGenerator::convertElememtIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> BalanceInitGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	Q_UNUSED(logicElementId)

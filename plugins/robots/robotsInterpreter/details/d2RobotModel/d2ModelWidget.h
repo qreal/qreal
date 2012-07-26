@@ -198,6 +198,8 @@ private:
 	Rotater *mRotater;
 	QVector<Rotater *> mSensorRotaters;
 
+	int mWidth;
+
 };
 
 }

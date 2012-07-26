@@ -96,10 +96,13 @@ void Interpreter::interpret()
 	if (!configurer.configure(currentDiagramId)) {
 		return;
 	}
+
+	runTimer();
 }
 
 void Interpreter::stopRobot()
 {
+	mTimer->stop();
 	mRobotModel->stopRobot();
 	mState = idle;
 	foreach (Thread *thread, mThreads) {
@@ -109,12 +112,17 @@ void Interpreter::stopRobot()
 	mBlocksTable->setFailure();
 }
 
-void Interpreter::showWatchList() {
-	if (mWatchListWindow != NULL) {
-		mWatchListWindow->close();
-	}
+void Interpreter::showWatchList()
+{
 	mWatchListWindow = new watchListWindow(mParser);
 	mWatchListWindow->show();
+}
+
+void Interpreter::closeWatchList()
+{
+	if (mWatchListWindow) {
+		mWatchListWindow->setVisible(false);
+	}
 }
 
 void Interpreter::closeD2ModelWidget()
@@ -180,6 +188,8 @@ void Interpreter::sensorsConfiguredSlot()
 
 	mConnected = true;
 	mActionConnectToRobot->setChecked(mConnected);
+
+	resetVariables();
 
 	mRobotModel->nextBlockAfterInitial(mConnected);
 
@@ -313,28 +323,37 @@ void Interpreter::slotFailure()
 
 void Interpreter::responseSlot1(int sensorValue)
 {
-	updateSensorValues(QObject::tr("Sensor1"), sensorValue);
+	updateSensorValues("Sensor1", sensorValue);
 }
 
 void Interpreter::responseSlot2(int sensorValue)
 {
-	updateSensorValues(QObject::tr("Sensor2"), sensorValue);
+	updateSensorValues("Sensor2", sensorValue);
 }
 
 void Interpreter::responseSlot3(int sensorValue)
 {
-	updateSensorValues(QObject::tr("Sensor3"), sensorValue);
+	updateSensorValues("Sensor3", sensorValue);
 }
 
 void Interpreter::responseSlot4(int sensorValue)
 {
-	updateSensorValues(QObject::tr("Sensor4"), sensorValue);
+	updateSensorValues("Sensor4", sensorValue);
 }
 
 void Interpreter::updateSensorValues(QString const &sensorVariableName, int sensorValue)
 {
 	(*(mParser->getVariables()))[sensorVariableName] = utils::Number(sensorValue, utils::Number::intType);
 	Tracer::debug(tracer::autoupdatedSensorValues, "Interpreter::updateSensorValues", sensorVariableName + QString::number(sensorValue));
+}
+
+void Interpreter::resetVariables()
+{
+	int const resetValue = 0;
+	responseSlot1(resetValue);
+	responseSlot2(resetValue);
+	responseSlot3(resetValue);
+	responseSlot4(resetValue);
 }
 
 void Interpreter::connectToRobot()

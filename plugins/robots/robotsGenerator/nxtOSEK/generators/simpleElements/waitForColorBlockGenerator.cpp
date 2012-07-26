@@ -7,7 +7,7 @@ WaitForColorBlockGenerator::WaitForColorBlockGenerator()
 {
 }
 
-QList<SmartLine> WaitForColorBlockGenerator::convertElememtIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> WaitForColorBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;

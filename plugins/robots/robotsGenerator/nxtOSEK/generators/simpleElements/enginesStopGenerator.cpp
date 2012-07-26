@@ -7,7 +7,7 @@ EnginesStopGenerator::EnginesStopGenerator()
 {
 }
 
-QList<SmartLine> EnginesStopGenerator::convertElememtIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> EnginesStopGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;

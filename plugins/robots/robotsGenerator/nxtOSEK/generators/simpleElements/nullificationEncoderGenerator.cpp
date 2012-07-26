@@ -7,7 +7,7 @@ NullificationEncoderGenerator::NullificationEncoderGenerator()
 {
 }
 
-QList<SmartLine> NullificationEncoderGenerator::convertElememtIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> NullificationEncoderGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;

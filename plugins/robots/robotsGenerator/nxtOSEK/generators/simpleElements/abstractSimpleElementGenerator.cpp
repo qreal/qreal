@@ -20,7 +20,7 @@ QList<SmartLine> AbstractSimpleElementGenerator::convertedCode(NxtOSEKRobotGener
 	QString const elementType = elementId.element();
 	AbstractSimpleElementGenerator *currentSimpleElement = SimpleElementFactory::generator(elementType);
 
-	QList<SmartLine> result = currentSimpleElement->convertElememtIntoDirectCommand(nxtGen, elementId, logicElementId);
+	QList<SmartLine> result = currentSimpleElement->convertElementIntoDirectCommand(nxtGen, elementId, logicElementId);
 	return result;
 }
 

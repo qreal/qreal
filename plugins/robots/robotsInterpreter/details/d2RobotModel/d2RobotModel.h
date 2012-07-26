@@ -33,7 +33,7 @@ public:
 	int readEncoder(int const port) const;
 	void resetEncoder(int const port);
 
-	bool readTouchSensor(inputPort::InputPortEnum const port);
+	int readTouchSensor(inputPort::InputPortEnum const port);
 	int readSonarSensor(inputPort::InputPortEnum const port) const;
 	int readColorSensor(inputPort::InputPortEnum const port) const;
 	int readLightSensor(inputPort::InputPortEnum const port) const;

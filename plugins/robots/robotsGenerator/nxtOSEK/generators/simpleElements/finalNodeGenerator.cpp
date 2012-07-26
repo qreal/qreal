@@ -7,7 +7,7 @@ FinalNodeGenerator::FinalNodeGenerator()
 {
 }
 
-QList<SmartLine> FinalNodeGenerator::convertElememtIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> FinalNodeGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	Q_UNUSED(nxtGen)

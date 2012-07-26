@@ -7,7 +7,7 @@ WaitForEncoderBlockGenerator::WaitForEncoderBlockGenerator()
 {
 }
 
-QList<SmartLine> WaitForEncoderBlockGenerator::convertElememtIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> WaitForEncoderBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;

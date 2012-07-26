@@ -30,7 +30,6 @@ RobotsPlugin::RobotsPlugin()
 	mRobotSettingsPage = new PreferencesRobotSettingsPage();
 
 	initActions();
-
 }
 
 RobotsPlugin::~RobotsPlugin()
@@ -139,6 +138,7 @@ void RobotsPlugin::updateSettings()
 void RobotsPlugin::closeNeededWidget()
 {
 	mInterpreter.closeD2ModelWidget();
+	mInterpreter.closeWatchList();
 }
 
 void RobotsPlugin::activeTabChanged(Id const & rootElementId)

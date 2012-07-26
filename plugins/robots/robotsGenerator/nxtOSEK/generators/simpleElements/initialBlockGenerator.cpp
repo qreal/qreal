@@ -7,7 +7,7 @@ InitialBlockGenerator::InitialBlockGenerator()
 {
 }
 
-QList<SmartLine> InitialBlockGenerator::convertElememtIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> InitialBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;

@@ -7,7 +7,7 @@ WaitForLightBlockGenerator::WaitForLightBlockGenerator()
 {
 }
 
-QList<SmartLine> WaitForLightBlockGenerator::convertElememtIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> WaitForLightBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;
