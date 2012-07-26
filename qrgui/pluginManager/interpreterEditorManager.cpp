@@ -214,8 +214,13 @@ QString InterpreterEditorManager::getTypeName(const Id &id, const QString &name)
 {
 	QString propertyType = "";
 	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values())
-		if (repo->exist(id))
-			propertyType = repo->property(id, name).typeName();
+			foreach (Id editor, repo->elementsByType("MetamodelDiagram"))
+				foreach (Id diagram, repo->children(editor))
+					foreach (Id element, repo->children(diagram))
+						if (id.element() == repo->name(element) && repo->isLogicalElement(element))
+							foreach (Id property, repo->children(element))
+								if (repo->name(property) == name)
+									propertyType = repo->stringProperty(property, "attributeType");
 	return propertyType;
 }
 
@@ -236,7 +241,7 @@ QString InterpreterEditorManager::propertyDisplayedName(Id const &id, QString co
 			foreach (Id editor, repo->elementsByType("MetamodelDiagram"))
 				foreach (Id diagram, repo->children(editor))
 					foreach (Id element, repo->children(diagram))
-						if (element == id)
+						if (id.element() == repo->name(element) && repo->isLogicalElement(element))
 							foreach (Id child, repo->children(element))
 								if (repo->name(child) == propertyName)
 									displayedName = repo->stringProperty(child, "displayedName");
@@ -245,13 +250,16 @@ QString InterpreterEditorManager::propertyDisplayedName(Id const &id, QString co
 
 QString InterpreterEditorManager::getDefaultPropertyValue(Id const &id, QString name) const
 {
-	QString defaultProperty;
+	QString defaultProperty = "";
 	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values())
-		if (repo->exist(id))
-			foreach(Id child, repo->children(id)) {
-				if (repo->name(child) == name)
-					defaultProperty = repo->stringProperty(child, "defaultValue");
-			}
+		foreach (Id editor, repo->elementsByType("MetamodelDiagram"))
+			foreach (Id diagram, repo->children(editor))
+				foreach (Id element, repo->children(diagram))
+					if (id.element() == repo->name(element) && repo->isLogicalElement(element))
+						foreach (Id child, repo->children(element))
+							if (repo->name(child) == name)
+								defaultProperty = repo->stringProperty(child, "defaultValue");
+
 	return defaultProperty;
 }
 
@@ -403,10 +411,10 @@ QStringList InterpreterEditorManager::getPropertyNames(Id const &id) const
 			foreach (Id editor, repo->elementsByType("MetamodelDiagram"))
 				foreach (Id diagram, repo->children(editor))
 					foreach (Id element, repo->children(diagram))
-						if (element == id)
+						if (id.element() == repo->name(element) && repo->isLogicalElement(element))
 							foreach (Id child, repo->children(element))
-								if (repo->name(child) == "MetaEntity Attribute")
-									result << repo->stringProperty(id, "displayedName");
+								if (repo->typeName(child) == "MetaEntity_Attribute")
+									result << repo->name(child);
 	return result;
 }
 
@@ -418,9 +426,9 @@ QStringList InterpreterEditorManager::getPropertiesWithDefaultValues(Id const &i
 			foreach (Id editor, repo->elementsByType("MetamodelDiagram"))
 				foreach (Id diagram, repo->children(editor))
 					foreach (Id element, repo->children(diagram))
-						if (element == id)
+						if (id.element() == repo->name(element) && repo->isLogicalElement(element))
 							foreach (Id prop, repo->children(element))
-								if(repo->hasProperty(prop, "defaultName"))
+								if (repo->hasProperty(prop, "defaultName"))
 									result.append(repo->name(prop));
 	return result;
 }
@@ -472,7 +480,7 @@ QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > InterpreterEditorM
 								if (repo->name(prop) == "possibleEdge")
 									foreach (Id propChild, repo->children(prop)) {
 										bool bparam = false;
-										if(repo->stringProperty(propChild, "directed") == "true")
+										if (repo->stringProperty(propChild, "directed") == "true")
 											bparam = true;
 										result.append(qMakePair(qMakePair(repo->stringProperty(propChild, "beginName"),repo->stringProperty(propChild, "endName")), qMakePair(bparam,repo->name(elem))));
 									}
@@ -501,11 +509,11 @@ int InterpreterEditorManager::isNodeOrEdge(QString const &editor, QString const 
 			if (editor == repo->name(edit))
 				foreach (Id diagram, repo->children(edit))
 					foreach (Id elem, repo->children(diagram))
-						if(element == repo->name(elem))
+						if (element == repo->name(elem))
 						{
-							if(repo->typeName(elem) == "MetaEntityEdge")
+							if (repo->typeName(elem) == "MetaEntityEdge")
 								return -1;
-							else if(repo->typeName(elem) == "MetaEntityNode")
+							else if (repo->typeName(elem) == "MetaEntityNode")
 								return 1;
 						}
 		}
@@ -523,8 +531,8 @@ bool InterpreterEditorManager::isParentOf(QString const &editor, QString const &
 				foreach (Id diagram, repo->children(edit))
 					if (childDiagram == repo->name(diagram)) {
 						foreach (Id element, repo->children(diagram))
-							if(childElement == repo->name(element)) {
-								if(parentElement == repo->name(repo->parent(element)))
+							if (childElement == repo->name(element)) {
+								if (parentElement == repo->name(repo->parent(element)))
 									return true;
 								else
 									return false;
