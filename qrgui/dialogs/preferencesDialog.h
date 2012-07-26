@@ -33,18 +33,17 @@ signals:
 	void iconsetChanged();
 	void settingsApplied();
 	void fontChanged();
+	void paletteRepresentationChanged();
 
+public slots:
+	void changePaletteParameters();
 private slots:
 	void cancel();
 	void applyChanges();
 	void saveAndClose();
-
 	void chooseTab(const QModelIndex &);
 
 private:
 	Ui::PreferencesDialog *ui;
-
 	QMap<QString, PreferencesPage *> mCustomPages;
-
-	void hidePages();
 };

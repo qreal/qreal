@@ -1,7 +1,6 @@
 #include "preferencesDialog.h"
 #include "ui_preferencesDialog.h"
 #include "preferencesPages/behaviourPage.h"
-#include "preferencesPages/compilerPage.h"
 #include "preferencesPages/debuggerPage.h"
 #include "preferencesPages/editorPage.h"
 #include "preferencesPages/miscellaniousPage.h"
@@ -17,12 +16,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
 PreferencesDialog::~PreferencesDialog()
 {
 	SettingsManager::setValue("currentPreferencesTab", ui->listWidget->currentRow());
-
-	foreach (PreferencesPage *page, mCustomPages.values()) {
-		page->setParent(NULL);
-		delete page;
-	}
-
 	delete ui;
 }
 
@@ -30,7 +23,6 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	,QAction * const activateGridAction, QAction * const activateAlignmentAction)
 {
 	PreferencesPage *behaviourPage = new PreferencesBehaviourPage(ui->pageContentWigdet);
-	PreferencesPage *compilerPage = new PreferencesCompilerPage(ui->pageContentWigdet);
 	PreferencesPage *debuggerPage = new PreferencesDebuggerPage(ui->pageContentWigdet);
 	PreferencesPage *miscellaniousPage = new PreferencesMiscellaniousPage(ui->pageContentWigdet);
 //	PreferencesPage *featuresPage = new PreferencesFeaturesPage(ui->pageContentWigdet);
@@ -44,15 +36,16 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 
 	connect(editorPage, SIGNAL(gridChanged()), this, SIGNAL(gridChanged()));
 	connect(editorPage, SIGNAL(fontChanged()), this, SIGNAL(fontChanged()));
+	connect(editorPage, SIGNAL(paletteRepresentationChanged()), this,
+		SIGNAL(paletteRepresentationChanged()));
 	connect(miscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
 
 	registerPage(tr("Behaviour"), behaviourPage);
-	registerPage(tr("Compiler"), compilerPage);
 	registerPage(tr("Debugger"), debuggerPage);
 	registerPage(tr("Miscellanious"), miscellaniousPage);
 	registerPage(tr("Editor"), editorPage);
 
-	int currentTab = SettingsManager::value("currentPreferencesTab", 0).toInt();
+	int currentTab = SettingsManager::value("currentPreferencesTab").toInt();
 	ui->listWidget->setCurrentRow(currentTab);
 	chooseTab(ui->listWidget->currentIndex());
 }
@@ -90,25 +83,15 @@ void PreferencesDialog::cancel()
 	close();
 }
 
-void PreferencesDialog::chooseTab(const QModelIndex &index)
+void PreferencesDialog::chooseTab(QModelIndex const &index)
 {
-	hidePages();
-	QString const name = index.data().toString();
-	if (mCustomPages.contains(name)) {
-		mCustomPages[name]->show();
-	}
-}
-
-
-void PreferencesDialog::hidePages()
-{
-	foreach (PreferencesPage *page, mCustomPages.values())
-		page->hide();
+	ui->listWidget->setCurrentRow(index.row());
+	ui->pageContentWigdet->setCurrentIndex(index.row() + 1);
 }
 
 void PreferencesDialog::registerPage(QString const &pageName, PreferencesPage * const page)
 {
-	page->setParent(ui->pageContentWigdet);
+	ui->pageContentWigdet->addWidget(page);
 	mCustomPages.insert(pageName, page);
 	ui->listWidget->addItem(new QListWidgetItem(QIcon(page->getIcon()), pageName));
 }
@@ -116,8 +99,14 @@ void PreferencesDialog::registerPage(QString const &pageName, PreferencesPage * 
 void PreferencesDialog::switchCurrentTab(QString const &tabName)
 {
 	if (mCustomPages.contains(tabName)) {
-		ui->listWidget->setCurrentRow(mCustomPages.keys().indexOf(tabName));  // count of current pages
-		hidePages();
-		mCustomPages[tabName]->show();
+		int const currentIndex = mCustomPages.keys().indexOf(tabName);
+		ui->listWidget->setCurrentRow(currentIndex);
+		ui->pageContentWigdet->setCurrentIndex(currentIndex + 1);
+	}
+}
+void PreferencesDialog::changePaletteParameters()
+{
+	if (mCustomPages.count(tr("Editor")) > 0) {
+		static_cast<PreferencesEditorPage*>(mCustomPages[tr("Editor")])->changePaletteParameters();
 	}
 }

@@ -2,35 +2,37 @@
 #include "ui_d2Form.h"
 
 #include <QtGui/QFileDialog>
-#include <QRegion>
-#include <qmath.h>
+#include <QtGui/QRegion>
+#include <QtCore/qmath.h>
 
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
 #include "rotater.h"
 #include "../../../../../qrutils/outFile.h"
 #include "../../../../../qrutils/xmlUtils.h"
+#include "../../../../../qrkernel/settingsManager.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
 
 D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel, QWidget *parent)
-	: QWidget(parent)
-	, mUi(new Ui::D2Form)
-	, mScene(NULL)
-	, mRobot(NULL)
-	, mPolygon(NULL)
-	, mRobotModel(robotModel)
-	, mWorldModel(worldModel)
-	, mDrawingAction(drawingAction::none)
-	, mMouseClicksCount(0)
-	, mCurrentWall(NULL)
-	, mCurrentLine(NULL)
-	, mCurrentStylus(NULL)
-	, mCurrentPort(inputPort::none)
-	, mCurrentSensorType(sensorType::unused)
-	, mButtonsCount(8) // magic numbers are baaad, mkay?
+		: QWidget(parent)
+		, mUi(new Ui::D2Form)
+		, mScene(NULL)
+		, mRobot(NULL)
+		, mDrawCyclesCount(0)
+		, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements", 500).toInt())
+		, mRobotModel(robotModel)
+		, mWorldModel(worldModel)
+		, mDrawingAction(drawingAction::none)
+		, mMouseClicksCount(0)
+		, mCurrentWall(NULL)
+		, mCurrentLine(NULL)
+		, mCurrentStylus(NULL)
+		, mCurrentPort(inputPort::none)
+		, mCurrentSensorType(sensorType::unused)
+		, mButtonsCount(8) // magic numbers are baaad, mkay?
 {
 	setWindowIcon(QIcon(":/icons/kcron.png"));
 
@@ -48,7 +50,6 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 
 D2ModelWidget::~D2ModelWidget()
 {
-	delete mPolygon;
 	delete mRobot;
 	delete mScene;
 	delete mUi;
@@ -146,8 +147,6 @@ void D2ModelWidget::drawInitialRobot()
 	mRobot->setRotater(mRotater);
 	mRobot->setRobotModel(mRobotModel);
 
-	mLine.startsWith(mRobot->mapToScene(mRobot->boundingRect().center()));
-	mPolygon = mScene->addPolygon(mLine, QPen(Qt::black));
 	mUi->graphicsView->centerOn(mRobot);
 }
 
@@ -160,10 +159,9 @@ void D2ModelWidget::close()
 {
 	if (mRobot != NULL) {
 		mRobot->resetTransform();
-		mLine.clear();
+		mRobotPath.clear();
 		mScene->clear();
 		mRobot = NULL;
-		mPolygon = NULL;
 	}
 	mUi->graphicsView->setVisible(false);
 	setVisible(false);
@@ -199,12 +197,30 @@ void D2ModelWidget::draw(QPointF newCoord, qreal angle, QPointF dPoint)
 	mRotatePointOld = dPoint;
 	mRobot->setPos(newCoord);
 	mRobot->setTransform(QTransform().translate(dPoint.x(), dPoint.y()).rotate(angle).translate(-dPoint.x(), -dPoint.y()));
-	mLine.push_back(mRobot->mapToScene(mRobot->boundingRect().center()));
-	mPolygon->setPolygon(mLine);
 
-	QPoint relativeCoords = mUi->graphicsView->mapFromScene(mRobot->pos());
-	if (!mUi->graphicsView->rect().contains(relativeCoords))
+	++mDrawCyclesCount;
+
+	if (mDrawCyclesCount > mMaxDrawCyclesBetweenPathElements) {
+		// Here we place a green circle in a center of a robot
+
+		QPointF const robotCenterPos = mRobot->sceneBoundingRect().center();
+
+		// This is a rectangle where the circle will be located, first placing its top-left corner in robot center, then moving it
+		// so that its center becomes robot center
+		QRectF const pathElementRect = QRectF(robotCenterPos, robotCenterPos + QPointF(4, 4)).translated(QPointF(-2, -2));
+		QGraphicsItem * const pathElement = mScene->addEllipse(pathElementRect, QPen(Qt::green), QBrush(Qt::green));
+
+		// Adding resulting element to a path
+		mRobotPath << pathElement;
+		mDrawCyclesCount = 0;
+	}
+
+	QRectF const viewPortRect = mUi->graphicsView->mapToScene(mUi->graphicsView->viewport()->rect()).boundingRect();
+	if (!viewPortRect.contains(mRobot->sceneBoundingRect().toRect())) {
+		QRectF const requiredViewPort = viewPortRect.translated(mRobot->scenePos() - viewPortRect.center());
+		mScene->setSceneRect(mScene->itemsBoundingRect().united(requiredViewPort));
 		mUi->graphicsView->centerOn(mRobot);
+	}
 }
 
 void D2ModelWidget::drawWalls()
@@ -224,7 +240,6 @@ void D2ModelWidget::drawColorFields()
 void D2ModelWidget::drawBeep(QColor const &color)
 {
 	Q_UNUSED(color)
-	//	mRobot->setPen(QPen(color));
 }
 
 QPolygonF const D2ModelWidget::robotBoundingPolygon(QPointF const &coord, qreal const &angle) const
@@ -292,11 +307,8 @@ void D2ModelWidget::clearScene()
 	mWorldModel->clearScene();
 	mRobot->clearSensors();
 	mRobotModel->clear();
-	mLine.clear();
-	foreach (SensorItem *sensor, mSensors) {
-		mScene->removeItem(sensor);
-	}
 	mScene->clear();
+	mRobotPath.clear();
 	drawInitialRobot();
 }
 
@@ -453,7 +465,6 @@ void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 	update();
 }
 
-
 void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	mRobot->checkSelection();
@@ -467,13 +478,11 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 	case drawingAction::wall:
 		reshapeWall(mouseEvent);
 		break;
-	case drawingAction::line: {
+	case drawingAction::line:
 		reshapeLine(mouseEvent);
-	}
 		break;
-	case drawingAction::stylus: {
+	case drawingAction::stylus:
 		reshapeStylus(mouseEvent);
-	}
 		break;
 	default:
 		mScene->forMoveResize(mouseEvent);
@@ -571,8 +580,9 @@ void D2ModelWidget::loadWorldModel()
 
 void D2ModelWidget::handleNewRobotPosition()
 {
-	mLine.clear();
-	mPolygon->setPolygon(mLine);
+	foreach (QGraphicsItem * const item, mRobotPath) {
+		mScene->removeItem(item);
+	}
 }
 
 void D2ModelWidget::removeSensor(inputPort::InputPortEnum port)
@@ -595,8 +605,9 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 {
 	removeSensor(port);
 
-	if (mRobotModel->configuration().type(port) == sensorType::unused)
+	if (mRobotModel->configuration().type(port) == sensorType::unused) {
 		return;
+	}
 
 	SensorItem *sensor = mRobotModel->configuration().type(port) == sensorType::sonar
 			? new SonarSensorItem(*mWorldModel, mRobotModel->configuration(), port)
@@ -606,7 +617,7 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 	mRobot->addSensor(sensor);
 	mScene->addItem(sensor);
 
-	/*назначаем ротатер*/
+	// Setting sensor rotaters
 	mSensorRotaters[port] = new Rotater();
 	mSensorRotaters[port]->setMasterItem(sensor);
 	mSensorRotaters[port]->setVisible(false);
@@ -614,18 +625,21 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 
 	sensor->setBasePosition(mRobot->basePoint(), mRobot->rotateAngle()/*, rotatePoint*/);
 	mScene->addItem(mSensorRotaters[port]);
+
 	mSensors[port] = sensor;
 }
 
 void D2ModelWidget::deleteItem(QGraphicsItem *item)
 {
 	SensorItem * const sensor = dynamic_cast<SensorItem *>(item);
-	if (!sensor)
+	if (!sensor) {
 		return;
+	}
 
 	int const port = mSensors.indexOf(sensor);
-	if (port != -1)
+	if (port != -1) {
 		removeSensor(static_cast<inputPort::InputPortEnum>(port));
+	}
 }
 
 bool D2ModelWidget::isColorItem(AbstractItem *item)
@@ -656,16 +670,18 @@ QList<AbstractItem *> D2ModelWidget::selectedColorItems()
 void D2ModelWidget::changePenWidth(int width)
 {
 	mScene->setPenWidthItems(width);
-	foreach (AbstractItem *item, selectedColorItems())
+	foreach (AbstractItem *item, selectedColorItems()) {
 		item->setPenWidth(width);
+	}
 	mScene->update();
 }
 
 void D2ModelWidget::changePenColor(const QString &text)
 {
 	mScene->setPenColorItems(text);
-	foreach (AbstractItem *item, selectedColorItems())
+	foreach (AbstractItem *item, selectedColorItems()) {
 		item->setPenColor(text);
+	}
 	mScene->update();
 }
 
@@ -722,4 +738,14 @@ void D2ModelWidget::setSensorVisible(inputPort::InputPortEnum port, bool isVisib
 	if (mSensors[port]) {
 		mSensors[port]->setVisible(isVisible);
 	}
+}
+
+void D2ModelWidget::enableRunStopButtons()
+{
+	mUi->runButton->setEnabled(true);
+}
+
+void D2ModelWidget::disableRunStopButtons()
+{
+	mUi->runButton->setEnabled(false);
 }

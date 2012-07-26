@@ -12,7 +12,7 @@ class BluetoothTouchSensorImplementation : public BluetoothSensorImplementation
 {
 	Q_OBJECT
 public:
-	BluetoothTouchSensorImplementation(RobotCommunication *robotCommunicationInterface
+	BluetoothTouchSensorImplementation(RobotCommunicator *robotCommunicationInterface
 			, inputPort::InputPortEnum const &port);
 	virtual void read();
 protected:

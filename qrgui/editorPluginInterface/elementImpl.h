@@ -79,6 +79,7 @@ struct StatLine
   * */
 class ElementImpl {
 public:
+	virtual ~ElementImpl() {}
 	virtual void init(QRectF &contents, QList<StatPoint> &pointPorts,
 					  QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
 					  QList<ElementTitleInterface*> &titles,
@@ -87,29 +88,29 @@ public:
 					  QList<ElementTitleInterface*> &titles) = 0;
 	virtual void paint(QPainter *painter, QRectF &contents) = 0;
 	virtual void updateData(ElementRepoInterface *repo) const = 0;
-	virtual bool isNode() = 0;
-	virtual bool hasPorts() = 0;
-	virtual bool isResizeable() = 0;
-	virtual Qt::PenStyle getPenStyle() = 0;
-	virtual int getPenWidth() = 0;
-	virtual QColor getPenColor() = 0;
+	virtual bool isNode() const = 0;
+	virtual bool hasPorts() const = 0;
+	virtual bool isResizeable() const = 0;
+	virtual Qt::PenStyle getPenStyle() const = 0;
+	virtual int getPenWidth() const = 0; //
+	virtual QColor getPenColor() const = 0;
 	virtual void drawStartArrow(QPainter *painter) const = 0;
 	virtual void drawEndArrow(QPainter *painter) const = 0;
+	virtual bool isDividable() const = 0;
 
 	/*Container properties*/
-	virtual bool isContainer() = 0;
-	virtual bool isSortingContainer() = 0;
-	virtual int sizeOfForestalling() = 0;
-	virtual int sizeOfChildrenForestalling() = 0;
-	virtual bool hasMovableChildren() = 0;
-	virtual bool minimizesToChildren() = 0;
-	virtual bool maximizesChildren() = 0;
+	virtual bool isContainer() const = 0;
+	virtual bool isSortingContainer() const = 0;
+	virtual int sizeOfForestalling() const = 0;
+	virtual int sizeOfChildrenForestalling() const = 0;
+	virtual bool hasMovableChildren() const = 0;
+	virtual bool minimizesToChildren() const = 0;
+	virtual bool maximizesChildren() const = 0;
 
-	virtual bool isPort() = 0;
-	virtual bool hasPin() = 0;
+	virtual bool isPort() const = 0;
+	virtual bool hasPin() const = 0;
 
-	virtual QList<double> border() = 0;
+	virtual QList<double> border() const = 0;
 
-	virtual QStringList bonusContextMenuFields() = 0;
+	virtual QStringList bonusContextMenuFields() const = 0;
 };
-

@@ -8,6 +8,7 @@ namespace qrmc {
 	class Port
 	{
 	public:
+		virtual ~Port() {};
 		virtual bool init(QDomElement const &element, int width, int height) = 0;
 		virtual Port *clone() const = 0;
 

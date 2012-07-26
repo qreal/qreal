@@ -88,11 +88,7 @@ void UnrealRobotModelImplementation::timerTimeout()
 void UnrealRobotModelImplementation::sensorConfigurationDoneSlot()
 {
 	Tracer::debug(tracer::initialization, "UnrealRobotModelImplementation::sensorConfigurationDoneSlot", "");
-	if (!mIsConnected) {
-		mIsConnected = true;
-		emit connected(true);
-	}
-	emit sensorsConfigured();
+	connectRobot();
 }
 
 void UnrealRobotModelImplementation::stopRobot()
@@ -136,4 +132,5 @@ sensorImplementations::UnrealEncoderImplementation &UnrealRobotModelImplementati
 void UnrealRobotModelImplementation::startInterpretation()
 {
 	mD2Model->showModelWidget();
+	mD2Model->startInit();
 }

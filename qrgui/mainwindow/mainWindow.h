@@ -1,25 +1,36 @@
 #pragma once
 
-#include <QtGui/QMainWindow>
-#include <QtSql/QSqlDatabase>
+#include <QtCore/QSignalMapper>
+#include <QtCore/QTranslator>
 #include <QtCore/QDir>
-#include <QSplashScreen>
-#include <QtGui>
+#include <QtGui/QMainWindow>
+#include <QtGui/QSplashScreen>
+#include <QtGui/QProgressBar>
+#include <QtGui/QListWidget>
+#include <QtSql/QSqlDatabase>
 
 #include "../pluginManager/editorManager.h"
 #include "../pluginManager/toolPluginManager.h"
 #include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
+#include "../view/propertyEditorView.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
-#include "../interpreters/visualDebugger/debuggerConnector.h"
 #include "mainWindowInterpretersInterface.h"
 #include "../../qrkernel/settingsManager.h"
 #include "../../qrgui/dialogs/preferencesDialog.h"
+
 #include "../textEditor/codeEditor.h"
-#include "nxtFlashTool.h"
 #include "helpBrowser.h"
 
 #include "../models/logicalModelAssistApi.h"
+
+#include "../../qrgui/dialogs/findReplaceDialog.h"
+#include "findManager.h"
+
+#include  "paletteTree.h"
+
+#include "../dialogs/startDialog/startDialog.h"
+#include "projectManager/projectManager.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -29,7 +40,6 @@ namespace qReal {
 
 class EditorView;
 class ListenerManager;
-class VisualDebugger;
 
 namespace models {
 class Models;
@@ -37,7 +47,6 @@ class Models;
 
 namespace gui {
 class ErrorReporter;
-class NxtFlashTool;
 }
 
 class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpretersInterface
@@ -48,13 +57,23 @@ public:
 	MainWindow();
 	~MainWindow();
 
-	EditorManager* manager();
+	EditorManager *manager();
 	EditorView *getCurrentTab();
 	ListenerManager *listenerManager();
+	models::Models *models();
+	PropertyEditorView *propertyEditor();
+	QTreeView *graphicalModelExplorer();
+	QTreeView *logicalModelExplorer();
+	PropertyEditorModel &propertyModel();
+	ToolPluginManager &toolManager();
+
 	GesturesPainterInterface *gesturesPainter();
 	QModelIndex rootIndex() const;
 
 	QAction *actionDeleteFromDiagram() const;
+	QAction *actionCopyElementsOnDiagram() const;
+	QAction *actionPasteOnDiagram() const;
+	QAction *actionPasteCopyOfLogical() const;
 
 	virtual void highlight(Id const &graphicalId, bool exclusive = true);
 	virtual void dehighlight(Id const &graphicalId);
@@ -69,6 +88,24 @@ public:
 	/// Tells if we should display trace connections menu or not
 	bool showConnectionRelatedMenus() const;
 
+	virtual void showInTextEditor(QString const &title, QString const &text);
+
+	virtual void reinitModels();
+
+	virtual QWidget *windowWidget();
+
+	virtual bool unloadPlugin(QString const &pluginName);
+	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
+	virtual bool pluginLoaded(QString const &pluginName);
+
+	virtual void saveDiagramAsAPictureToFile(const QString &fileName);
+	virtual void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles);
+	virtual IdList selectedElementsOnActiveDiagram();
+	virtual void updateActiveDiagram();
+	virtual void deleteElementFromDiagram(Id const &id);
+
+	virtual void reportOperation(invocation::LongOperation *operation);
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -76,18 +113,28 @@ signals:
 
 public slots:
 	void deleteFromScene();
-	void editWindowTitle();
+	void modelsAreChanged();
 	void propertyEditorScrollTo(QModelIndex const &index);
 
-	void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
+	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
 	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 	virtual void selectItem(Id const &id);
+	virtual void selectItemOrDiagram(Id const &graphicalId);
 
 	void selectItemWithError(Id const &id);
-
 	void showErrors(gui::ErrorReporter const * const errorReporter);
 
+	void changePaletteRepresentation();
+	void closeAllTabs();
+	void refreshRecentProjectsList(QString const &fileName);
+	void connectWindowTitle();
+	void disconnectWindowTitle();
+	void createDiagram(QString const &idString);
+
 private slots:
+
+	/// handler for menu 'button find' pressed
+	void showFindDialog();
 
 	void setSceneFont();
 	void adjustMinimapZoom(int zoom);
@@ -100,29 +147,11 @@ private slots:
 	void showAbout();
 	void showHelp();
 
-	void checkoutDialogOk();
-	void checkoutDialogCancel();
-
-	void saveAllAndOpen(QString const &dirName);
-
-
-	/// wrapper for import(QString const &fileName)
-	/// uses getWorkingFile(...)
-	/// @return true - if all ok, false - if not ok
-	bool importProject();
-
 	/// checks parameters for integrity,then importing it
 	/// @param fileName - *.qrs file to import
 	/// @return true - if all ok, false - if not ok
-	bool import(QString const &fileName);
-	bool open(QString const &dirName);
-	bool checkPluginsAndReopen(QSplashScreen* const splashScreen);
-	void saveProjectAs();
-	void saveAll();
 	void fullscreen();
 	void openRecentProjectsMenu();
-	bool openNewProject();
-	void createProject();
 
 	void saveDiagramAsAPicture();
 
@@ -130,13 +159,8 @@ private slots:
 	void makeSvg();
 	void showGrid(bool isChecked);
 
-	void finalClose();
-	void closeAllTabs();
-
 	void sceneSelectionChanged();
 
-	void doCheckout();
-	void doCommit();
 	void exportToXmi();
 	void generateToJava();
 	void parseJavaLibraries();
@@ -144,46 +168,34 @@ private slots:
 
 	void deleteFromScene(QGraphicsItem *target);
 
-	void debug();
-	void debugSingleStep();
-	void drawDebuggerStdOutput(QString output);
-	void drawDebuggerErrOutput(QString output);
-	void generateAndBuild();
-	void startDebugger();
-	void runProgramWithDebugger();
-	void killProgramWithDebugger();
-	void closeDebuggerProcessAndThread();
-	void placeBreakpointsInDebugger();
-	void goToNextBreakpoint();
-	void goToNextInstruction();
-	void configureDebugger();
-	void setBreakpointAtStart();
-	void startDebugging();
-	void checkEditorForDebug(int index);
-
 	void deleteFromDiagram();
-	void changeMiniMapSource(int index);
+	void copyElementsOnDiagram();
+	void pasteOnDiagram();
+	void pasteCopyOfLogical();
+
+	void cropSceneToItems();
+
 	void closeTab(int index);
-	void closeTab(QModelIndex const &graphicsIndex);
-	void generateEditor();
-	void parseEditorXml();
-	void generateToHascol();
-	void parseHascol();
+
+	/// Closes the appropriate tab if the specified index corresponds to the diagram on one of the tabs
+	/// @return true if one of the tabs was closed
+	bool closeTab(QModelIndex const &graphicsIndex);
+
 	void showPreferencesDialog();
 
-	void generateRobotSourceCode();
-	void flashRobot();
-	void uploadProgram();
-
+	void initSettingsManager();
 	void connectActions();
-	void connectDebugActions();
+	void initActionsFromSettings();
 
 	void centerOn(Id const &id);
 	void graphicalModelExplorerClicked(const QModelIndex &index);
 	void logicalModelExplorerClicked(const QModelIndex &index);
 
 	void openNewTab(const QModelIndex &index);
-	void initCurrentTab(const QModelIndex &rootIndex);
+
+	/// Called after current tab was changed somehow --- opened, closed, switched to other
+	/// @param newIndex Index of a new active tab, -1 if there is none
+	void currentTabChanged(int newIndex);
 
 	void showGestures();
 	void showAlignment(bool isChecked);
@@ -193,34 +205,36 @@ private slots:
 
 	void openShapeEditor();
 
-	void setDiagramCreateFlag();
-	void diagramInCreateListDeselect();
-	void diagramInCreateListSelected(int num);
-
-	void on_actionNew_Diagram_triggered();
-
 	void updatePaletteIcons();
 
-	void autosave();
-	void setAutoSaveParameters();
-	void closeProject();
-	void closeProjectAndSave();
-
 private:
-	void createDiagram(const QString &idString);
-	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
-			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
+	void deleteElementFromScene(QPersistentModelIndex const &index);
+	/// Initializes a tab if it is a diagram --- sets its logical and graphical
+	/// models, connects to various main window actions and so on
+	/// @param tab Tab to be initialized
+	/// @param rootIndex Index of a graphical model element that will be root of a diagram shown in this tab
+	void initCurrentTab(EditorView * const tab, const QModelIndex &rootIndex);
+
+	/// Sets shortcuts for a given tab which don`t have own buttons anywhere
+	/// @param tab Tab to be initialized with shortcuts
+	void setShortcuts(EditorView * const tab);
+
 
 	void loadPlugins();
 
+	void registerMetaTypes();
+
 	QListWidget* createSaveListWidget();
-	void suggestToCreateDiagram();
 
 	virtual void closeEvent(QCloseEvent *event);
 	void deleteFromExplorer(bool isLogicalModel);
 	void keyPressEvent(QKeyEvent *event);
+
+	QString getSaveFileName(const QString &dialogWindowTitle);
+	QString getOpenFileName(const QString &dialogWindowTitle);
 	QString getWorkingFile(QString const &dialogWindowTitle, bool save);
 
+	void switchToTab(int index);
 	int getTabIndex(const QModelIndex &index);
 
 	void initGridProperties();
@@ -230,54 +244,46 @@ private:
 	void connectActionZoomTo(QWidget* widget);
 	void setConnectActionZoomTo(QWidget* widget);
 	void clickErrorListWidget();
-	void connectWindowTitle();
-	void disconnectWindowTitle();
 
 	void setShowGrid(bool isChecked);
 	void setShowAlignment(bool isChecked);
 	void setSwitchGrid(bool isChecked);
 	void setSwitchAlignment(bool isChecked);
 
-	/// sets shortcuts which don`t have own buttons anywhere
-	void setUnmenuShortcuts();
-
 	void setIndexesOfPropertyEditor(Id const &id);
 
-	/** @brief Check if we need to hide widget in fullscreen mode or not. If we do, hide it
-		@param dockWidget QDockWidget to hide
-		@param name Widget's name in internal map
-	*/
-	void hideDockWidget(QDockWidget *dockWidget, QString name);
+	/// Check if we need to hide widget in fullscreen mode or not. If we do, hide it
+	/// @param dockWidget QDockWidget to hide
+	/// @param name Widget's name in internal map
+	void hideDockWidget(QDockWidget *dockWidget, QString const &name);
 
-	/** @brief Check if we need to show widget in fullscreen mode or not. If we do, show it
-		@param dockWidget QDockWidget to show
-		@param name Widget's name in internal map
-	*/
-	void showDockWidget(QDockWidget *dockWidget, QString name);
+	/// Check if we need to show widget in fullscreen mode or not. If we do, show it
+	/// @param dockWidget QDockWidget to show
+	/// @param name Widget's name in internal map
+	void showDockWidget(QDockWidget *dockWidget, QString const &name);
 
 	QString getNextDirName(QString const &name);
 
 	void initToolPlugins();
-	void checkNxtTools();
 
-	QProgressBar *createProgressBar(QSplashScreen* splash);
 	void initMiniMap();
 	void initToolManager();
 	void initTabs();
 	void initDocks();
-	void initWindowTitle();
-	void initDebugger();
 	void initExplorers();
 	void initRecentProjectsMenu();
 
-	void saveAs(QString const &saveName);
-
-	void refreshRecentProjectsList(QString const &fileName);
-	int openSaveOfferDialog();
-
 	Ui::MainWindowUi *mUi;
 
-	QCloseEvent *mCloseEvent;
+	/// elements & theirs ids
+	QMap<QString, Id> mElementsNamesAndIds;
+
+	/// mFindDialog - Dialog for searching elements.
+	FindReplaceDialog *mFindReplaceDialog;
+
+	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
+	QMap<EditorView*, CodeArea*> *mCodeTabManager;
+
 	models::Models *mModels;
 	EditorManager mEditorManager;
 	ToolPluginManager mToolManager;
@@ -286,13 +292,10 @@ private:
 	GesturesWidget *mGesturesWidget;
 
 	QVector<bool> mSaveListChecked;
-	bool mDiagramCreateFlag;
 
 	QStringList mDiagramsList;
 	QModelIndex mRootIndex;
 
-	DebuggerConnector *mDebuggerConnector;
-	VisualDebugger *mVisualDebugger;
 	gui::ErrorReporter *mErrorReporter;  // Has ownership
 
 	/// Fullscreen mode flag
@@ -301,21 +304,18 @@ private:
 	/// Internal map table to store info what widgets should we hide/show
 	QMap<QString, bool> mDocksVisibility;
 
-	QString mSaveFile;
 	QString mTempDir;
 	PreferencesDialog mPreferencesDialog;
 
-	gui::NxtFlashTool *mFlashTool;
-
-	bool mNxtToolsPresent;
 	HelpBrowser *mHelpBrowser;
-	bool mIsNewProject;
-	bool mUnsavedProjectIndicator;
-	QTimer mAutoSaveTimer;
-
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;
+	qReal::gui::PaletteTree *mPaletteTree;
+
+	FindManager *mFindHelper;
+	ProjectManager *mProjectManager;
+	StartDialog *mStartDialog;
 };
 
 }

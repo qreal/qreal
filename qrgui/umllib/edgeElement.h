@@ -5,6 +5,7 @@
 
 #include "element.h"
 #include "../editorPluginInterface/elementImpl.h"
+#include "serializationData.h"
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
@@ -30,6 +31,7 @@ public:
 	virtual bool initPossibleEdges();
 	virtual void initTitles();
 
+	bool isDividable();
 	void adjustLink();
 	bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true, bool jumpsOnly = false);
 	bool shouldReconnect() const;
@@ -67,6 +69,10 @@ public:
 
 	void highlight(QColor const color = Qt::red);
 
+	EdgeData& data();
+
+	virtual void deleteFromScene();
+
 	// redrawing of this edgeElement in squarize
 	void redrawing(QPointF const &pos);
 
@@ -101,6 +107,8 @@ private:
 
 	QList<PossibleEdge> possibleEdges;
 
+
+	bool mIsDissectable;
 	int getPoint(const QPointF &location);
 	NodeElement *getNodeAt(const QPointF &position);
 	void updateLongestPart();
@@ -152,6 +160,8 @@ private:
 	int mLastDragPoint;
 
 	bool mBreakPointPressed;
+
+	EdgeData mData;
 
 	bool mModelUpdateIsCalled;
 };

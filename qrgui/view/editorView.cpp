@@ -9,15 +9,17 @@
 using namespace qReal;
 
 EditorView::EditorView(QWidget *parent)
-	: QGraphicsView(parent), mMouseOldPosition(), mWheelPressed(false)
+	: QGraphicsView(parent), mMouseOldPosition(), mWheelPressed(false), mZoom(0)
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
 	mScene = new EditorViewScene(this);
+
 	connect(mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
 	connect(mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
 
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+	setResizeAnchor(QGraphicsView::AnchorUnderMouse);
 
 	mMVIface = new EditorViewMViface(this, mScene);
 	setScene(mScene);
@@ -28,7 +30,7 @@ EditorView::EditorView(QWidget *parent)
 
 	setMouseTracking(true);
 
-	setAlignment(Qt::AlignLeft | Qt::AlignTop); //чтобы фокус был по левому верхнему углу
+	setAlignment(Qt::AlignCenter);
 }
 
 EditorView::~EditorView()
@@ -53,11 +55,14 @@ void EditorView::toggleOpenGL(bool checked)
 
 void EditorView::zoomIn()
 {
-	if (mWheelPressed)
+	if (mWheelPressed || mZoom >= SettingsManager::value("maxZoom").toInt()){
 		return;
-	double zoomFactor = static_cast<double>(SettingsManager::value("zoomFactor", 2).toInt()) / 10 + 1;
+	}
+	setSceneRect(mScene->sceneRect());
+	double zoomFactor = static_cast<double>(SettingsManager::value("zoomFactor").toInt()) / 10 + 1;
 	scale(zoomFactor, zoomFactor);
-	if (SettingsManager::value("ShowGrid", true).toBool()) {
+	mZoom++;
+	if (SettingsManager::value("ShowGrid").toBool()) {
 		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
 	}
 	checkGrid();
@@ -65,11 +70,14 @@ void EditorView::zoomIn()
 
 void EditorView::zoomOut()
 {
-	if (mWheelPressed)
+	if (mWheelPressed || mZoom <= SettingsManager::value("minZoom").toInt()){
 		return;
-	double zoomFactor = 1 / (static_cast<double>(SettingsManager::value("zoomFactor", 2).toInt()) / 10 + 1);
+	}
+	setSceneRect(mScene->sceneRect());
+	double zoomFactor = 1 / (static_cast<double>(SettingsManager::value("zoomFactor").toInt()) / 10 + 1);
 	scale(zoomFactor, zoomFactor);
-	if (SettingsManager::value("ShowGrid", true).toBool()) {
+	mZoom--;
+	if (SettingsManager::value("ShowGrid").toBool()) {
 		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
 	}
 	checkGrid();
@@ -77,7 +85,7 @@ void EditorView::zoomOut()
 
 void EditorView::checkGrid()
 {
-	if (SettingsManager::value("ShowGrid", true).toBool()) {
+	if (SettingsManager::value("ShowGrid").toBool()) {
 		if(mScene->realIndexGrid() < 2 || mScene->realIndexGrid() > 380) {
 			mScene->setNeedDrawGrid(false);
 		}

@@ -47,8 +47,8 @@ bool EdgeType::initAssociations()
 		return false;
 	}
 	for (QDomElement element = associationsElement.firstChildElement("association");
-	!element.isNull();
-	element = element.nextSiblingElement("association"))
+		!element.isNull();
+		element = element.nextSiblingElement("association"))
 	{
 		Association *association = new Association();
 		if (!association->init(element))
@@ -135,6 +135,25 @@ bool EdgeType::initGraphics()
 	return true;
 }
 
+bool EdgeType::initDividability()
+{
+	QDomElement dividabilityElement = mLogic.firstChildElement("dividability");
+
+	mIsDividable = "false";
+	if (dividabilityElement.isNull())
+	{
+		return true;
+	}
+	QString isDividable = dividabilityElement.attribute("isDividable");
+	if (isDividable != "true" && isDividable != "false")
+	{
+		qDebug() << "ERROR: can't parse dividability";
+		return false;
+	}
+	mIsDividable = isDividable;
+	return true;
+}
+
 bool EdgeType::initLabel(Label *label, QDomElement const &element, int const &count)
 {
 	return label->init(element, count, false, mWidth, mHeight);
@@ -188,35 +207,36 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\tvirtual ~" << className << "() {}\n\n"
 	<< "\t\tElementImpl *clone() { return NULL; }\n"
 	<< "\t\tvoid paint(QPainter *, QRectF &){}\n"
-	<< "\t\tbool isNode() { return false; }\n"
-	<< "\t\tbool isResizeable() { return true; }\n"
-	<< "\t\tbool isContainer() { return false; }\n"
-	<< "\t\tbool isSortingContainer() { return false; }\n"
-	<< "\t\tint sizeOfForestalling() { return 0; }\n"
-	<< "\t\tint sizeOfChildrenForestalling() { return 0; }\n"
-	<< "\t\tbool hasMovableChildren() { return false; }\n"
-	<< "\t\tbool minimizesToChildren() { return false; }\n"
-	<< "\t\tbool maximizesChildren() { return false; }\n"
-	<< "\t\tbool isPort() { return false; }\n"
-	<< "\t\tbool hasPin() { return false; }\n"
-	<< "\t\tQList<double> border()\n\t\t{\n"
+	<< "\t\tbool isNode() const { return false; }\n"
+	<< "\t\tbool isResizeable() const { return true; }\n"
+	<< "\t\tbool isContainer() const { return false; }\n"
+	<< "\t\tbool isDividable() const { return " << mIsDividable << "; }\n"
+	<< "\t\tbool isSortingContainer() const { return false; }\n"
+	<< "\t\tint sizeOfForestalling() const { return 0; }\n"
+	<< "\t\tint sizeOfChildrenForestalling() const { return 0; }\n"
+	<< "\t\tbool hasMovableChildren() const { return false; }\n"
+	<< "\t\tbool minimizesToChildren() const { return false; }\n"
+	<< "\t\tbool maximizesChildren() const { return false; }\n"
+	<< "\t\tbool isPort() const { return false; }\n"
+	<< "\t\tbool hasPin() const { return false; }\n"
+	<< "\t\tQList<double> border() const\n\t\t{\n"
 	<< "\t\t\tQList<double> list;\n"
 	<< "\t\t\tlist << 0 << 0 << 0 << 0;\n"
 	<< "\t\t\treturn list;\n"
 	<< "\t\t}\n"
-	<< "\t\tbool hasPorts() { return false; }\n"
-	<< "\t\tint getPenWidth() { return " << mLineWidth << "; }\n"
-	<< "\t\tQColor getPenColor() { return QColor("
+	<< "\t\tbool hasPorts() const { return false; }\n"
+	<< "\t\tint getPenWidth() const { return " << mLineWidth << "; }\n"
+	<< "\t\tQColor getPenColor() const { return QColor("
 	<< mLineColor.red() << ","
 	<< mLineColor.green() << ","
 	<< mLineColor.blue()
 	<< "); }\n"
-	<< "\t\tQt::PenStyle getPenStyle() { ";
+	<< "\t\tQt::PenStyle getPenStyle() const { ";
 	if (mLineType != "")
 		out() << "return " << mLineType << "; }\n";
 	else
 		out() << "return Qt::SolidLine; }\n";
-	out() << "\t\tQStringList bonusContextMenuFields()\n\t\t{\n" << "\t\t\treturn ";
+	out() << "\t\tQStringList bonusContextMenuFields() const\n\t\t{\n" << "\t\t\treturn ";
 	if (!mBonusContextMenuFields.empty())
 		out() << "mBonusContextMenuFields;";
 	else

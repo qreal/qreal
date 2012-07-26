@@ -12,6 +12,15 @@ Object::Object(const Id &id, const Id &parent)
 	setParent(parent);
 }
 
+void Object::replaceProperties(QString const value, QString newValue)
+{
+	foreach (QVariant val, mProperties.values()) {
+		if (val.toString().contains(value)) {
+			mProperties[mProperties.key(val)] = newValue;
+		}
+	}
+}
+
 Object::Object(const Id &id, const Id &parent, const qReal::Id &logicalId)
 	: mId(id), mLogicalId(logicalId)
 {
@@ -118,6 +127,11 @@ void Object::setProperty(const QString &name, const QVariant &value)
 	mProperties.insert(name,value);
 }
 
+void Object::setProperties(QMap<QString, QVariant> const &properties)
+{
+	mProperties = properties;
+}
+
 QVariant Object::property(const QString &name) const
 {
 	if (mProperties.contains(name)) {
@@ -156,9 +170,24 @@ void Object::removeTemporaryRemovedLinks()
 	temporaryRemovedLinksAt(QString());
 }
 
-bool Object::hasProperty(const QString &name) const
+bool Object::hasProperty(const QString &name, bool sensitivity, bool regExpression) const
 {
-	return mProperties.contains(name);
+	QStringList properties = mProperties.keys();
+	Qt::CaseSensitivity caseSensitivity;
+
+	if (sensitivity) {
+		caseSensitivity = Qt::CaseSensitive;
+	} else {
+		caseSensitivity = Qt::CaseInsensitive;
+	}
+
+	QRegExp *regExp = new QRegExp(name, caseSensitivity);
+
+	if (regExpression) {
+		return !properties.filter(*regExp).isEmpty();
+	} else {
+		return properties.contains(name, caseSensitivity);
+	}
 }
 
 void Object::removeProperty(const QString &name)
@@ -180,8 +209,12 @@ Id Object::logicalId() const
 	return mLogicalId;
 }
 
-QMapIterator<QString, QVariant> Object::propertiesIterator()
+QMapIterator<QString, QVariant> Object::propertiesIterator() const
 {
 	return QMapIterator<QString, QVariant>(mProperties);
 }
 
+QMap<QString, QVariant> Object::properties()
+{
+	return mProperties;
+}

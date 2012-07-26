@@ -2,7 +2,7 @@
 #include "abstractSensorImplementation.h"
 #include "../../robotCommandConstants.h"
 #include "../../robotCommunication/robotCommunicationThreadInterface.h"
-#include "../../robotCommunication/robotCommunication.h"
+#include "../../robotCommunication/robotCommunicator.h"
 
 namespace qReal {
 namespace interpreters {
@@ -16,7 +16,7 @@ class BluetoothSensorImplementation : public AbstractSensorImplementation
 	Q_OBJECT
 
 public:
-	BluetoothSensorImplementation(RobotCommunication *robotCommunicationInterface
+	BluetoothSensorImplementation(RobotCommunicator *robotCommunicationInterface
 		, sensorType::SensorTypeEnum const &sensorType
 		, lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
 		, sensorMode::SensorModeEnum const &sensorMode
@@ -30,7 +30,7 @@ protected slots:
 	void readingDone(QObject *addressee, QByteArray const &reading);
 
 protected:
-	RobotCommunication *mRobotCommunicationInterface;
+	RobotCommunicator *mRobotCommunicationInterface;
 	lowLevelSensorType::SensorTypeEnum mLowLevelSensorType;
 	sensorMode::SensorModeEnum mSensorMode;
 	bool mIsConfigured;

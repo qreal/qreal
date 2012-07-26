@@ -4,11 +4,20 @@
 
 using namespace graphicsUtils;
 
-AbstractScene::AbstractScene(AbstractView *view, QObject *parent) :
-	QGraphicsScene(parent), mGraphicsItem(NULL)
+AbstractScene::AbstractScene(AbstractView *view, QObject *parent)
+		: QGraphicsScene(parent)
+		, mView(view)
+		, mGraphicsItem(NULL)
+		, mX1(0)
+		, mX2(0)
+		, mY1(0)
+		, mY2(0)
+		, mSizeEmptyRectX(0)
+		, mSizeEmptyRectY(0)
+		, mPenWidthItems(0)
+		, mFirstPenWidth(0)
+		, mEmptyRect(NULL)
 {
-	mView = view;
-        mFirstPenWidth = 0;
 }
 
 void AbstractScene::setEmptyRect(int x, int y, int w, int h)
@@ -24,8 +33,8 @@ QRect AbstractScene::realItemsBoundingRect() const
 	int minY = static_cast<int>(rect.bottom());
 	int minX = static_cast<int>(rect.right());
 	QList<QGraphicsItem *> list = items();
-	foreach (QGraphicsItem *graphicsItem, list) {
 
+	foreach (QGraphicsItem *graphicsItem, list) {
 		AbstractItem* item = dynamic_cast<AbstractItem*>(graphicsItem);
 		if (item != NULL) {
 			QRectF itemRect = item->realBoundingRect();
@@ -113,7 +122,7 @@ void AbstractScene::forPressResize(QGraphicsSceneMouseEvent *event)
 	update();
 }
 
-void AbstractScene::forMoveResize( QGraphicsSceneMouseEvent *event)
+void AbstractScene::forMoveResize(QGraphicsSceneMouseEvent *event)
 {
 	reshapeItem(event);
 	update();
@@ -134,7 +143,7 @@ bool AbstractScene::compareItems(AbstractItem* first, AbstractItem* second)
 void AbstractScene::setEmptyPenBrushItems()
 {
 	mPenStyleItems = "Solid";
-        mPenWidthItems = mFirstPenWidth;
+	mPenWidthItems = mFirstPenWidth;
 	mPenColorItems = "black";
 	mBrushStyleItems = "None";
 	mBrushColorItems = "white";

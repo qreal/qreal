@@ -62,4 +62,8 @@ private:
 	QtTreePropertyBrowser *mPropertyEditor;
 	qReal::MainWindow *mMainWindow;
 	qReal::models::LogicalModelAssistApi *mLogicalModelAssistApi;
+	QtVariantPropertyManager *mVariantManager;
+	QtVariantEditorFactory *mVariantFactory;
+	PushButtonPropertyManager *mButtonManager;
+	PushButtonFactory *mButtonFactory;
 };

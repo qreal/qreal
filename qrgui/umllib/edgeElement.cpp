@@ -21,25 +21,25 @@ const double pi = 3.14159265358979;
 // static bool moving = false;
 
 EdgeElement::EdgeElement(ElementImpl *impl)
-: mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
-, mSrc(NULL), mDst(NULL)
-, mPortFrom(0), mPortTo(0)
-, mDragPoint(-1), mLongPart(0)
-, mAddPointAction(tr("Add point"), this)
-, mDelPointAction(tr("Delete point"), this)
-, mSquarizeAction(tr("Squarize"), this)
-, mMinimizeAction(tr("Remove all points"), this)
-, mDelSegmentAction(tr("Remove segment"), this)
-, mElementImpl(impl)
-, mLastDragPoint(-1)
-, mModelUpdateIsCalled(false)
+		: mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
+		, mSrc(NULL), mDst(NULL)
+		, mPortFrom(0), mPortTo(0)
+		, mDragPoint(-1), mLongPart(0)
+		, mAddPointAction(tr("Add point"), this)
+		, mDelPointAction(tr("Delete point"), this)
+		, mSquarizeAction(tr("Squarize"), this)
+		, mMinimizeAction(tr("Remove all points"), this)
+		, mDelSegmentAction(tr("Remove segment"), this)
+		, mElementImpl(impl)
+		, mLastDragPoint(-1)
+		, mModelUpdateIsCalled(false)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
 	mPenColor = mElementImpl->getPenColor();
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
-	// FIXME: draws strangely... // С‡С‚Рѕ СЌС‚Рѕ? Рє С‡РµРјСѓ СЌС‚Рѕ?
+	// FIXME: draws strangely... // что это? к чему это?
 	setFlag(ItemClipsToShape, false);
 	setFlag(ItemClipsChildrenToShape, false);
 
@@ -56,7 +56,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	connect(&mMinimizeAction, SIGNAL(triggered(QPointF const &)), SLOT(minimizeHandler(QPointF const &)));
 	connect(&mDelSegmentAction, SIGNAL(triggered(QPointF const &)), SLOT(deleteSegment(QPointF const &)));
 
-	mChaoticEdition = SettingsManager::value("ChaoticEdition", false).toBool();
+	mChaoticEdition = SettingsManager::value("ChaoticEdition").toBool();
 
 	ElementTitleFactory factory;
 
@@ -401,6 +401,10 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			mLastLine = mLine;
 		}
 }
+bool EdgeElement::isDividable (){
+	return mElementImpl->isDividable();
+}
+
 
 void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -415,9 +419,9 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		prepareGeometryChange();
 		//mSavedLineForMove = mLine;
 		mLine[mDragPoint] = event->pos();
-		//if (SettingsManager::value("SquareLine", false).toBool())
+		//if (SettingsManager::value("SquareLine").toBool())
 		//	squarizeHandler(QPointF());
-		//if (!SettingsManager::value("ToPermitLoops", false).toBool())
+		//if (!SettingsManager::value("ToPermitLoops").toBool())
 		//	deleteLoops();
 		updateLongestPart();
 	}
@@ -425,7 +429,7 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	 //deleteUnneededPoints(); // delCloseLinePoints РІРєР»СЋС‡Р°РµС‚ Р»Рё?
+	 //deleteUnneededPoints(); // delCloseLinePoints включает ли?
 
 	if (mDragPoint == -1)
 		Element::mouseReleaseEvent(event);
@@ -569,7 +573,7 @@ void EdgeElement::delCloseLinePoints()
 		path.lineTo(mLine[i + 1]);
 		if (neighbourhood.createStroke(path).contains(mLine[i + 2])) {
 			mLine.remove(i + 1);
-			i--; // РјР± Рё РЅРµ РЅР°РґРѕ РІ СЃР°РјРѕРј РґРµР»Рµ
+			i--; // мб и не надо в самом деле
 			// unneeds i-- because exist previous deletes
 		}
 	}
@@ -597,7 +601,7 @@ bool EdgeElement::removeOneLinePoints(int startingPoint)
 	}
 }
 
-NodeElement *EdgeElement::getNodeAt(QPointF const &position) // РІРѕС‚ С‚СѓС‚ РѕРЅ РјРѕР¶РµС‚ РІС‹РґР°С‚СЊ РЅРµРїСЂР°РІРёР»СЊРЅС‹Р№ РЅРѕРґРµ РїСЂРё РЅР°Р»РѕР¶РµРЅРёРё. // РїРѕРєР° РЅРµ РїРѕРїСЂР°РІР»РµРЅРѕ.
+NodeElement *EdgeElement::getNodeAt(QPointF const &position) // вот тут он может выдать неправильный ноде при наложении. // пока не поправлено.
 {
 	QPainterPath circlePath;
 	circlePath.addEllipse(mapToScene(position), 12, 12);
@@ -613,7 +617,7 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position) // РІРѕС‚ С‚СѓС‚ Рѕ
 QList<ContextMenuAction*> EdgeElement::contextMenuActions()
 {
 	QList<ContextMenuAction*> result;
-	if (!SettingsManager::value("SquareLine", false).toBool()) {
+	if (!SettingsManager::value("SquareLine").toBool()) {
 		result.push_back(&mDelPointAction);
 		result.push_back(&mSquarizeAction);
 	}
@@ -623,7 +627,7 @@ QList<ContextMenuAction*> EdgeElement::contextMenuActions()
 	return result;
 }
 
-QList<PossibleEdge> EdgeElement::getPossibleEdges() // С‡С‚Рѕ РґР°С‘С‚ СЌС‚РѕС‚ РјРµС‚РѕРґ?
+QList<PossibleEdge> EdgeElement::getPossibleEdges() // что даёт этот метод?
 {
 	return possibleEdges;
 }
@@ -637,12 +641,12 @@ void EdgeElement::delPointHandler(QPointF const &pos)
 		prepareGeometryChange();
 		mLine.remove(pointIndex);
 		updateLongestPart();
-		//mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon()); // Р°РЅР°Р»РѕРіРёС‡РЅРѕ addPointHandler РІРѕР·РјРѕР¶РЅР° РѕС€РёР±РєР°
+		//mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon()); // аналогично addPointHandler возможна ошибка
 		update();
 	}
 }
 
-void EdgeElement::addPointHandler(QPointF const &pos) // РїСЂРё РґРѕР±Р°РІР»РµРЅРёРё РїСЂРѕРёСЃС…РѕРґРёС‚ СЃРјРµС‰РµРЅРёРµ, С‚Р°Рє РєР°Рє РєРѕРЅС‚РµРєСЃС‚С‚РЅРѕРµ РјРµРЅСЋ РІС‹СЃРєР°РєРёРІР°РµС‚ РЅРµ РЅР° СЃРµСЂРµРґРёРЅРµ Р»РёРЅРёРё. РєР°Рє-С‚Рѕ РїСЂР°РІРёС‚СЊ.
+void EdgeElement::addPointHandler(QPointF const &pos) // при добавлении происходит смещение, так как контексттное меню выскакивает не на середине линии. как-то править.
 {
 	QPainterPath path;
 	QPainterPathStroker ps;
@@ -650,12 +654,12 @@ void EdgeElement::addPointHandler(QPointF const &pos) // РїСЂРё РґРѕР±Р°РІР»РµРЅ
 	for (int i = 0; i < mLine.size() - 1; ++i) {
 		path.moveTo(mLine[i]);
 		path.lineTo(mLine[i + 1]);
-		if (ps.createStroke(path).contains(pos)) { // Р° РЅРµ РјРѕРіСѓС‚ Р»Рё 2 Р»РёРЅРёРё СЃРѕРґРµСЂР¶Р°С‚СЊ 1 С‚РѕС‡РєСѓ?
+		if (ps.createStroke(path).contains(pos)) { // а не могут ли 2 линии содержать 1 точку?
 			mLine.insert(i + 1, pos);
 			updateLongestPart();
 			mDragPoint = i + 1;
 			//mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
-			update(); // РїРѕСЃРјРѕС‚СЂРµС‚СЊ, РІ РєР°РєРёС… РјРµС‚РѕРґР° РѕРЅ РµСЃС‚СЊ Рё РґРµР»Р°РµС‚ Р»Рё РѕРЅ С…РѕС‚СЊ С‡С‚Рѕ-РЅРёР±СѓРґСЊ. (РїРѕ-РјРѕРµРјСѓ, РЅРµС‚)
+			update(); // посмотреть, в каких метода он есть и делает ли он хоть что-нибудь. (по-моему, нет)
 			//because the second parameter is not QPolygonF (else it will be bug)
 			break;
 		}
@@ -696,7 +700,7 @@ void EdgeElement::squarizeHandler(QPointF const &pos)
 	int i = 0;
 	while (i + 1 < mLine.size()) {
 
-		//don't make new point between first-second & (last-1)-last. just drag them. // РІРѕС‚ С‚СѓС‚ СЃР»РµРґСѓРµС‚ РґРѕРїРѕР»РЅРёС‚СЊ РЅР° drag segment
+		//don't make new point between first-second & (last-1)-last. just drag them. // вот тут следует дополнить на drag segment
 		if (i == 0 && mLine.size() > 2) {
 			if (mLine[i + 1].y() == mLine[i + 2].y()) {
 				mLine[i + 1].setX(mLine[i].x());
@@ -721,11 +725,11 @@ void EdgeElement::squarizeHandler(QPointF const &pos)
 			}
 		}
 
-		//if 3 points have same X or Y coordinate delete point between them. // РјР± i++ РґР»РµР°С‚СЊ Рё РЅРµ РЅР°РґРѕ
+		//if 3 points have same X or Y coordinate delete point between them. // мб i++ длеать и не надо
 		if (i < mLine.size() - 3) {
 			if (mLine[i + 1].x() == mLine[i].x() && mLine[i + 2].x() == mLine[i].x()) {
 				mLine.remove(i + 1);
-				i++; // С‚Р°Рє РєР°Рє РјРѕР¶РµС‚ Р±С‹С‚СЊ РЅРµСЃРєРѕР»СЊРєРѕ С‚РѕС‡РµРє РїРѕРґСЂСЏРґ, С‚Рѕ Р»СѓС‡С€Рµ СѓР±СЂР°С‚СЊ, РЅРѕ РѕРЅРё СѓРґР°Р»СЏСЋС‚СЃСЏ РїСЂРё adjust
+				i++; // так как может быть несколько точек подряд, то лучше убрать, но они удаляются при adjust
 				continue;
 			}
 			if (mLine[i + 1].y() == mLine[i].y() && mLine[i + 2].y() == mLine[i].y()) {
@@ -742,12 +746,12 @@ void EdgeElement::squarizeHandler(QPointF const &pos)
 			i++;
 			continue;
 		}
-		insPoint.setX(mLine[i + 1].x()); // РјРѕР¶РµС‚ РєР°Рє-С‚Рѕ СЃРґРµР»Р°С‚СЊ, С‡С‚РѕР± Р±С‹Р» РІС‹Р±РѕСЂ Рё СЃ y?
+		insPoint.setX(mLine[i + 1].x()); // может как-то сделать, чтоб был выбор и с y?
 /*		if (mLine[i].x() == insPoint.x() && mLine[i].y() == insPoint.y()) {
 			i++;
 			continue;
 		}
-*/ // Р±РµСЃРїРѕР»РµР·РЅС‹Рµ СЃС‚СЂРѕС‡РєРё
+*/ // бесполезные строчки
 		mLine.insert(i + 1, insPoint); //insert new point to make right angle
 		i += 2;
 	}
@@ -756,7 +760,7 @@ void EdgeElement::squarizeHandler(QPointF const &pos)
 
 	updateLongestPart();
 
-	update(); // РЅРµ РїРѕРЅСЏС‚РЅРѕ, РґР»СЏ С‡РµРіРѕ СЌС‚Рѕ РЅСѓР¶РЅРѕ.
+	update();
 }
 
 void EdgeElement::minimizeHandler(const QPointF &pos) {
@@ -779,13 +783,13 @@ void EdgeElement::adjustLink()
 		mLine.first() = mapFromItem(mSrc, mSrc->getPortPos(mPortFrom));
 	if (mDst)
 		mLine.last() = mapFromItem(mDst, mDst->getPortPos(mPortTo));
-	for (int i = 0; i < mLine.size() - 2; i++) { // РІРѕР·РјРѕР¶РЅРѕ, СЌС‚РѕС‚ РјРµС‚РѕРґ СЃС‚РѕРёС‚ СѓРґР°Р»РёС‚СЊ, С‚Р°Рє РєР°Рє РµСЃС‚СЊ "Р±РѕР»РµРµ РїСЂРѕРґРІРёРЅСѓС‚С‹Р№" delCloseLinePoints
+	for (int i = 0; i < mLine.size() - 2; i++) { // возможно, этот метод стоит удалить, так как есть "более продвинутый" delCloseLinePoints
 		if (removeOneLinePoints(i))
 			i--;
 	}
-	if (!SettingsManager::value("ToPermitLoops", false).toBool())
+	if (!SettingsManager::value("ToPermitLoops").toBool())
 		deleteLoops();
-	if (SettingsManager::value("SquareLine", false).toBool())
+	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
 
 	setGraphicApi(QPointF());
@@ -922,18 +926,22 @@ void EdgeElement::updateData()
 	qReal::Id idFrom = mGraphicalAssistApi->from(id());
 	qReal::Id idTo = mGraphicalAssistApi->to(id());
 
-	if (mSrc)
+	if (mSrc) {
 		mSrc->delEdge(this);
-	if (mDst)
+	}
+	if (mDst) {
 		mDst->delEdge(this);
+	}
 
 	mSrc = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(idFrom));
 	mDst = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(idTo));
 
-	if (mSrc)
+	if (mSrc) {
 		mSrc->addEdge(this);
-	if (mDst)
+	}
+	if (mDst) {
 		mDst->addEdge(this);
+	}
 
 	setFlag(ItemIsMovable, !(mDst || mSrc));
 
@@ -949,18 +957,20 @@ void EdgeElement::updateData()
 
 void EdgeElement::removeLink(NodeElement const *from)
 {
-	if (mSrc == from)
+	if (mSrc == from) {
 		mSrc = NULL;
+	}
 
-	if (mDst == from)
+	if (mDst == from) {
 		mDst = NULL;
+	}
 }
 
 void EdgeElement::placeStartTo(QPointF const &place)
 {
 	mLine[0] = place;
 	updateLongestPart();
-	if (SettingsManager::value("SquareLine", false).toBool())
+	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
 }
 
@@ -968,7 +978,7 @@ void EdgeElement::placeEndTo(QPointF const &place)
 {
 	mLine[mLine.size() - 1] = place;
 	updateLongestPart();
-	if (SettingsManager::value("SquareLine", false).toBool())
+	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
 }
 
@@ -997,7 +1007,7 @@ void EdgeElement::drawEndArrow(QPainter *painter) const
 		mElementImpl->drawEndArrow(painter);
 }
 
-void EdgeElement::setColorRect(bool bl) // "РїСѓСЃС‚Р°СЏ" С„СѓРЅРєС†РёСЏ
+void EdgeElement::setColorRect(bool bl) // "пустая" функция
 {
 	Q_UNUSED(bl);
 }
@@ -1011,18 +1021,18 @@ void EdgeElement::highlight(QColor const color)
 void EdgeElement::redrawing(QPointF const &pos)
 {
 	Q_UNUSED(pos);
-	//mLine = mGraphicalAssistApi->configuration(id()); // РЅР°РґРѕ Р»Рё?
+	//mLine = mGraphicalAssistApi->configuration(id()); // надо ли?
 	delCloseLinePoints();
-	if (!SettingsManager::value("ToPermitLoops", false).toBool())
+	if (!SettingsManager::value("ToPermitLoops").toBool())
 		deleteLoops();
-	if (SettingsManager::value("SquareLine", false).toBool())
+	if (SettingsManager::value("SquareLine").toBool())
 		squarizeHandler(QPointF());
 	arrangeSrcAndDst();
 	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
 }
 
-//Р¶РµР»Р°С‚РµР»СЊРЅРѕ РїСЂРѕРІРѕРґРёС‚СЊ РїСЂРѕРІРµСЂРєСѓ РЅР° РЅР°Р»РёС‡РёРµ СЃРѕРІРїР°РґР°СЋС‰РёС… Р»РёРЅРёР№
+//желательно проводить проверку на наличие совпадающих линий
 QPointF* EdgeElement::haveIntersection(QPointF const &pos1, QPointF const &pos2, QPointF const &pos3, QPointF const &pos4)
 {
 	// use equation of line for solution
@@ -1059,6 +1069,40 @@ QPointF* EdgeElement::haveIntersection(QPointF const &pos1, QPointF const &pos2,
 	return NULL;
 
 }
+
+EdgeData& EdgeElement::data()
+{
+	mData.id = id();
+	mData.logicalId = logicalId();
+	mData.srcId = src()->id();
+	mData.dstId = dst()->id();
+
+	mData.portFrom = mPortFrom;
+	mData.portTo = mPortTo;
+
+	mData.configuration = mGraphicalAssistApi->configuration(mId);
+	mData.pos = mGraphicalAssistApi->position(mId);
+
+	return mData;
+}
+
+void EdgeElement::deleteFromScene()
+{
+	if (mSrc) {
+		mSrc->delEdge(this);
+		mSrc->arrangeLinks();
+		mGraphicalAssistApi->setFrom(id(), Id::rootId());
+		mLogicalAssistApi->setFrom(logicalId(), Id::rootId());
+	}
+
+	if (mDst) {
+		mDst->delEdge(this);
+		mDst->arrangeLinks();
+		mGraphicalAssistApi->setTo(id(), Id::rootId());
+		mLogicalAssistApi->setTo(logicalId(), Id::rootId());
+	}
+}
+
 
 void EdgeElement::deleteLoop(int startPos)
 {
@@ -1102,10 +1146,10 @@ void EdgeElement::deleteSegment(QPointF const &pos)
 	for (int i = 0; i < mLine.size() - 1; ++i) {
 		path.moveTo(mLine[i]);
 		path.lineTo(mLine[i + 1]);
-		if (ps.createStroke(path).contains(pos) && i != 0 && (i + 1 != mLine.size() - 1)) { // РІРѕС‚ С‚СѓС‚ СЂР°Р·РѕР±СЂР°С‚СЊСЃСЏ, Р±СѓРґРµС‚ Р»Рё "Р»РёС€РЅРµРµ РІС…РѕР¶РґРµРЅРёРµ" РѕРґРЅРѕР№ С‚РѕС‡РєРё РІ 2 СЃРµРіРјРµРЅС‚Р°
+		if (ps.createStroke(path).contains(pos) && i != 0 && (i + 1 != mLine.size() - 1)) { // вот тут разобраться, будет ли "лишнее вхождение" одной точки в 2 сегмента
 			delPointHandler(mLine[i]);
 			delPointHandler(mLine[i]);
-			if (SettingsManager::value("SquareLine", false).toBool())
+			if (SettingsManager::value("SquareLine").toBool())
 				squarizeHandler(QPointF());
 			delCloseLinePoints();
 			updateLongestPart();

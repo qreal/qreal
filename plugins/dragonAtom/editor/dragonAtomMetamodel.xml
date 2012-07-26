@@ -1,0 +1,171 @@
+  <metamodel xmlns="http://schema.real.com/schema/">
+    <include>../../commonMetamodels/kernelMetamodel.xml</include>
+    <namespace>UML 2.0</namespace>
+    <diagram displayedName="Dragon Atom" nodeName="DragonAtomNode" name="DragonAtom">
+      <graphicTypes>
+        <node displayedName="Dragon Atom" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="DragonAtomNode">
+          <graphics>
+            <picture sizex="200" sizey="200">
+              <line y1="0" x1="20" y2="0" x2="180"/>
+              <line y1="200" x1="20" y2="200" x2="180"/>
+              <line y1="20" x1="0" y2="180" x2="0"/>
+              <line y1="20" x1="200" y2="180" x2="200"/>
+              <arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="40" x2="40"/>
+              <arc spanAngle="1440" startAngle="0" y1="0" x1="160" y2="40" x2="200"/>
+              <arc spanAngle="1440" startAngle="2880" y1="160" x1="0" y2="200" x2="40"/>
+              <arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200"/>
+            </picture>
+            <labels>
+              <label x="40" y="10" textBinded="name"/>
+            </labels>
+            <ports>
+              <pointPort x="0" y="100"/>
+              <pointPort x="100" y="0"/>
+              <pointPort x="200" y="100"/>
+              <pointPort x="100" y="200"/>
+            </ports>
+          </graphics>
+          <logic>
+            <generalizations>
+              <parent parentName="KernelDiagram::Diagram"/>
+            </generalizations>
+            <container>
+              <contains type="DragonDiagram::Action"/>
+            </container>
+          </logic>
+        </node>
+        <node displayedName="Atom1 Node" name="Atom1Node">
+          <graphics>
+            <picture sizex="80" sizey="60">
+              <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 10.75 1 C 5.36522 1 1 5.41447 1 10.86 L 1 49.14 C 1 54.5855 5.36522 59 10.75 59 L 69.25 59 C 74.6348 59 79 54.5855 79 49.14 L 79 10.86 C 79 5.41447 74.6348 1 69.25 1 L 10.75 1" fill-style="solid"/>
+            </picture>
+            <ports>
+              <linePort>
+                <start startx="79" starty="10"/>
+                <end endx="79" endy="50"/>
+              </linePort>
+              <linePort>
+                <start startx="1" starty="10"/>
+                <end endx="1" endy="50"/>
+              </linePort>
+              <linePort>
+                <start startx="10" starty="1"/>
+                <end endx="70" endy="1"/>
+              </linePort>
+              <linePort>
+                <start startx="10" starty="59"/>
+                <end endx="70" endy="59"/>
+              </linePort>
+            </ports>
+            <labels>
+              <label textBinded="process" center="true"/>
+            </labels>
+          </graphics>
+          <logic>
+            <properties>
+              <property type="string" name="process" />
+            </properties>
+          </logic>
+        </node>
+		<node displayedName="Atom2 Node" name="Atom2Node">
+          <graphics>
+            <picture sizex="80" sizey="60">
+              <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 10.75 1 C 5.36522 1 1 5.41447 1 10.86 L 1 49.14 C 1 54.5855 5.36522 59 10.75 59 L 69.25 59 C 74.6348 59 79 54.5855 79 49.14 L 79 10.86 C 79 5.41447 74.6348 1 69.25 1 L 10.75 1" fill-style="solid"/>
+            </picture>
+            <ports>
+              <linePort>
+                <start startx="79" starty="10"/>
+                <end endx="79" endy="50"/>
+              </linePort>
+              <linePort>
+                <start startx="1" starty="10"/>
+                <end endx="1" endy="50"/>
+              </linePort>
+              <linePort>
+                <start startx="10" starty="1"/>
+                <end endx="70" endy="1"/>
+              </linePort>
+              <linePort>
+                <start startx="10" starty="59"/>
+                <end endx="70" endy="59"/>
+              </linePort>
+            </ports>
+            <labels>
+              <label textBinded="process" center="true"/>
+            </labels>
+          </graphics>
+          <logic>
+            <properties>
+              <property type="string" name="process" />
+            </properties>
+          </logic>
+        </node>
+		<node displayedName="Atom3 Node" name="Atom3Node">
+          <graphics>
+            <picture sizex="80" sizey="60">
+              <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 10.75 1 C 5.36522 1 1 5.41447 1 10.86 L 1 49.14 C 1 54.5855 5.36522 59 10.75 59 L 69.25 59 C 74.6348 59 79 54.5855 79 49.14 L 79 10.86 C 79 5.41447 74.6348 1 69.25 1 L 10.75 1" fill-style="solid"/>
+            </picture>
+            <ports>
+              <linePort>
+                <start startx="79" starty="10"/>
+                <end endx="79" endy="50"/>
+              </linePort>
+              <linePort>
+                <start startx="1" starty="10"/>
+                <end endx="1" endy="50"/>
+              </linePort>
+              <linePort>
+                <start startx="10" starty="1"/>
+                <end endx="70" endy="1"/>
+              </linePort>
+              <linePort>
+                <start startx="10" starty="59"/>
+                <end endx="70" endy="59"/>
+              </linePort>
+            </ports>
+            <labels>
+              <label textBinded="process" center="true"/>
+            </labels>
+          </graphics>
+          <logic>
+            <properties>
+              <property type="string" name="process" />
+            </properties>
+          </logic>
+        </node>
+		<node displayedName="Atom4 Node" name="Atom4Node">
+          <graphics>
+            <picture sizex="80" sizey="60">
+              <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 10.75 1 C 5.36522 1 1 5.41447 1 10.86 L 1 49.14 C 1 54.5855 5.36522 59 10.75 59 L 69.25 59 C 74.6348 59 79 54.5855 79 49.14 L 79 10.86 C 79 5.41447 74.6348 1 69.25 1 L 10.75 1" fill-style="solid"/>
+            </picture>
+            <ports>
+              <linePort>
+                <start startx="79" starty="10"/>
+                <end endx="79" endy="50"/>
+              </linePort>
+              <linePort>
+                <start startx="1" starty="10"/>
+                <end endx="1" endy="50"/>
+              </linePort>
+              <linePort>
+                <start startx="10" starty="1"/>
+                <end endx="70" endy="1"/>
+              </linePort>
+              <linePort>
+                <start startx="10" starty="59"/>
+                <end endx="70" endy="59"/>
+              </linePort>
+            </ports>
+            <labels>
+              <label textBinded="process" center="true"/>
+            </labels>
+          </graphics>
+          <logic>
+            <properties>
+              <property type="string" name="process" />
+            </properties>
+          </logic>
+        </node>
+         </graphicTypes>
+    </diagram>
+  </metamodel>
