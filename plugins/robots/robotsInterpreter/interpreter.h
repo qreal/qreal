@@ -54,13 +54,6 @@ public:
 
 	/// Disable Run and Stop buttons on 2d model widget, when running current diagram is impossible
 	void disableD2ModelWidgetRunStopButtons();
-	enum InterpreterState {
-		interpreting
-		, waitingForSensorsConfiguredToLaunch
-		, idle
-	};
-
-	InterpreterState state() const;
 
 public slots:
 	void connectToRobot();
@@ -87,6 +80,12 @@ private slots:
 	void disconnectSlot();
 
 private:
+	enum InterpreterState {
+		interpreting
+		, waitingForSensorsConfiguredToLaunch
+		, idle
+	};
+
 	GraphicalModelAssistInterface const *mGraphicalModelApi;
 	LogicalModelAssistInterface const *mLogicalModelApi;
 	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;
@@ -114,7 +113,6 @@ private:
 	Id const findStartingElement(Id const &diagram) const;
 	void addThread(details::Thread * const thread);
 	void updateSensorValues (QString const &sensorVariableName, int sensorValue);
-	void init();
 };
 
 }

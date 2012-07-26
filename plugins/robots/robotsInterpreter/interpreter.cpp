@@ -34,6 +34,7 @@ Interpreter::Interpreter()
 
 	mD2RobotModel = new d2Model::D2RobotModel();
 	mD2ModelWidget = mD2RobotModel->createModelWidget();
+
 	connect(mRobotModel, SIGNAL(disconnected()), this, SLOT(disconnectSlot()));
 	connect(mRobotModel, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
 	connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
@@ -82,7 +83,6 @@ void Interpreter::interpret()
 	}
 
 	mState = waitingForSensorsConfiguredToLaunch;
-
 	mBlocksTable->setIdleForBlocks();
 
 	Id const startingElement = findStartingElement(currentDiagramId);
@@ -96,6 +96,7 @@ void Interpreter::interpret()
 	if (!configurer.configure(currentDiagramId)) {
 		return;
 	}
+	mD2RobotModel->start();
 }
 
 void Interpreter::stopRobot()
@@ -158,11 +159,6 @@ void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum impl
 	if (mImplementationType != robotModelType::real) {
 		mRobotModel->init();
 	}
-}
-
-Interpreter::InterpreterState Interpreter::state() const
-{
-	return mState;
 }
 
 void Interpreter::connectedSlot(bool success)

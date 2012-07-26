@@ -173,7 +173,7 @@ int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 	int n = image.numBytes() / 4;
 	for (int i = 0; i < n; ++i) {
 		unsigned long color = data[i];
-		countsColor[color] ++;
+		countsColor[color]++;
 	}
 
 	switch (mSensorsConfiguration.type(port)) {
@@ -264,7 +264,7 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> countsColor, int
 	double allWhite = static_cast<double>(countsColor[white]);
 
 	QHashIterator<unsigned long, int> i(countsColor);
-	while(i.hasNext()) {
+	while (i.hasNext()) {
 		i.next();
 		unsigned long color = i.key();
 		if (color != white) {
@@ -304,8 +304,9 @@ void D2RobotModel::countBeep()
 	if (mBeep.time > 0) {
 		mD2ModelWidget->drawBeep(QColor(Qt::red));
 		mBeep.time -= timeInterval;
-	} else
+	} else {
 		mD2ModelWidget->drawBeep(QColor(Qt::green));
+	}
 }
 
 void D2RobotModel::countNewCoord()
@@ -322,8 +323,8 @@ void D2RobotModel::countNewCoord()
 		motor1 = mMotorC;
 	}
 
-	qreal const vSpeed = motor1->speed * 2 * M_PI * motor1->radius * 1.0 / 12000;
-	qreal const uSpeed = motor2->speed * 2 * M_PI * motor2->radius * 1.0 / 12000;
+	qreal const vSpeed = motor1->speed * 2 * M_PI * motor1->radius * 1.0 / 44000;
+	qreal const uSpeed = motor2->speed * 2 * M_PI * motor2->radius * 1.0 / 44000;
 
 	qreal deltaY = 0;
 	qreal deltaX = 0;
@@ -370,7 +371,7 @@ void D2RobotModel::countNewCoord()
 	mPos.setX(mPos.x() + deltaX);
 	mPos.setY(mPos.y() + deltaY);
 
-	if(mAngle > 360) {
+	if (mAngle > 360) {
 		mAngle -= 360;
 	}
 
@@ -388,7 +389,7 @@ void D2RobotModel::stop()
 
 void D2RobotModel::start()
 {
-	mTimer->start(5);
+	mTimer->start(timeInterval);
 }
 
 void D2RobotModel::nextFragment()
