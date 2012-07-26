@@ -2,7 +2,7 @@
 
 #include "../../../../../qrkernel/ids.h"
 #include "../nxtOSEKRobotGenerator.h"
-#include "simpleElements/abstractsimpleelementgenerator.h"
+#include "simpleElements/abstractSimpleElementGenerator.h"
 
 namespace robots {
 namespace generator {
@@ -10,7 +10,7 @@ namespace generator {
 /// Element generator factory that returns generator for diagram element Id.
 class SimpleElementFactory {
 public:
-	static AbstractSimpleElementGenerator* generator(QString const elementType);
+	static abstractSimpleElementGenerator* generator(QString const elementType);
 };
 
 }

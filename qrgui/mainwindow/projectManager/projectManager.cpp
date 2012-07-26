@@ -5,6 +5,7 @@
 #include "../view/editorView.h"
 #include "../dialogs/suggestToCreateDiagramDialog.h"
 #include "projectManager.h"
+#include "../../../../qrutils/outFile.h"
 
 using namespace qReal;
 
@@ -208,6 +209,12 @@ bool ProjectManager::save()
 	mMainWindow->models()->repoControlApi().saveAll();
 	refreshApplicationStateAfterSave();
 	return true;
+}
+
+void ProjectManager::saveGenCode(QString const &text)
+{
+	utils::OutFile out("nxt-tools/example0/example0.c");
+	out() << text;
 }
 
 bool ProjectManager::saveOrSuggestToSaveAs()

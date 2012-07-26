@@ -51,6 +51,7 @@ public:
 	bool suggestToSaveChangesOrCancel();
 	void setUnsavedIndicator(bool isUnsaved);
 	void reinitAutosaver();
+	void saveGenCode(QString const &text);
 
 private:
 	bool import(const QString &fileName);

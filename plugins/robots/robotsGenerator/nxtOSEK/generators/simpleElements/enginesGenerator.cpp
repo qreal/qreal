@@ -38,7 +38,7 @@ QList<SmartLine> EnginesGenerator::convertElementIntoDirectCommand(NxtOSEKRobotG
 	} else if (brakeMode.compare("тормозить")){
 		brakeMode = "1";
 	} else {
-		brakeMode = "ololo-trollolo";
+		brakeMode = "1";
 	}
 
 	QString signRotate = "";

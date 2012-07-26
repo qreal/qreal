@@ -4,6 +4,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
+#include <QtCore/QtDebug>
 
 #include <limits>
 
@@ -180,6 +181,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		mWaitMove = true;
 		break;
 	case rectangle :
+		qDebug() << "rect";
 		setX1andY1(event);
 		mRectangle = new Rectangle(mX1, mY1, mX1, mY1, NULL);
 		mRectangle->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);

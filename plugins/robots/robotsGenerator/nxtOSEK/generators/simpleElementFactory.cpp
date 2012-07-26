@@ -20,7 +20,7 @@
 
 using namespace robots::generator;
 
-AbstractSimpleElementGenerator* SimpleElementFactory::generator(QString const elementType)
+abstractSimpleElementGenerator* SimpleElementFactory::generator(QString const elementType)
 {
 	if (elementType == "EnginesForward" || elementType == "EnginesBackward") {
 		return new EnginesGenerator(elementType);

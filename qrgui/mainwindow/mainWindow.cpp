@@ -212,6 +212,10 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 	} else if (keyEvent->key() == Qt::Key_F2
 			|| (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
 	{
+		CodeArea *area = dynamic_cast<CodeArea*>(mUi->tabs->currentWidget());
+		if (area != NULL) {
+			mProjectManager->saveGenCode(area->toPlainText());
+		}
 		mProjectManager->saveOrSuggestToSaveAs();
 	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_W) {
 		closeTab(mUi->tabs->currentIndex());
@@ -308,6 +312,8 @@ void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool bl, bool isS
 
 	if (numTab != -1) {
 		mUi->tabs->setCurrentIndex(numTab);
+		Id const currentTabId = getCurrentTab()->mvIface()->rootId();
+		mToolManager.activeTabChanged(currentTabId);
 	} else {
 		openNewTab(idx);
 	}
@@ -1483,15 +1489,16 @@ void MainWindow::showInTextEditor(QString const &title, QString const &text)
 		if (!mCodeTabManager->contains(getCurrentTab())) {
 			CodeArea * const area = new CodeArea();
 			area->document()->setPlainText(text);
-
 			area->show();
-
 			mCodeTabManager->insert(getCurrentTab(), area);
 
 			mUi->tabs->addTab(area, title);
 			mUi->tabs->setCurrentWidget(area);
 		} else {
-			mUi->tabs->setCurrentWidget(mCodeTabManager->value(getCurrentTab()));
+			CodeArea * const area = mCodeTabManager->value(getCurrentTab());
+			area->document()->setPlainText(text);
+			area->show();
+			mUi->tabs->setCurrentWidget(area);
 		}
 	}
 }

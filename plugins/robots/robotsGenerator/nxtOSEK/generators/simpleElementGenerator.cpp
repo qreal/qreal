@@ -2,7 +2,7 @@
 
 #include "../nxtOSEKRobotGenerator.h"
 #include "../elementGeneratorFactory.h"
-#include "simpleElements/abstractsimpleelementgenerator.h"
+#include "simpleElements/abstractSimpleElementGenerator.h"
 
 using namespace qReal;
 using namespace robots::generator;
@@ -18,7 +18,7 @@ QList<SmartLine> SimpleElementGenerator::convertBlockIntoCode()
 
 	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 
-	result = AbstractSimpleElementGenerator::convertedCode(mNxtGen, mElementId, logicElementId);
+	result = abstractSimpleElementGenerator::convertedCode(mNxtGen, mElementId, logicElementId);
 	return result;
 }
 

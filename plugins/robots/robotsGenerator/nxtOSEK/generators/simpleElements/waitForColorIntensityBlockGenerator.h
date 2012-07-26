@@ -1,12 +1,12 @@
 #include "../../../../../../qrkernel/ids.h"
-#include "abstractsimpleelementgenerator.h"
+#include "abstractSimpleElementGenerator.h"
 #include "../abstractElementGenerator.h"
 
 namespace robots {
 namespace generator {
 class NxtOSEKRobotGenerator;
 
-class WaitForColorIntensityBlockGenerator: public AbstractSimpleElementGenerator {
+class WaitForColorIntensityBlockGenerator: public abstractSimpleElementGenerator {
 public:
 	WaitForColorIntensityBlockGenerator();
 
