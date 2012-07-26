@@ -3145,26 +3145,21 @@
         <translation>Редактор формы фигур</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1257"/>
-        <source>Select file with metamodel to open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Select file to save current model to</source>
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1613"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1583"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1642"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1612"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1642"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1612"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3333,7 +3328,7 @@
 <context>
     <name>qReal::StartDialog</name>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="47"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="48"/>
         <source>Start page</source>
         <oldsource>Start Page</oldsource>
         <translation>Начальная страница</translation>
@@ -3347,29 +3342,34 @@
         <translation type="obsolete">Новый проект на базе диаграммы</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="22"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="23"/>
         <source>&amp;Recent projects</source>
         <translation>&amp;Недавние проекты</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="24"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="25"/>
         <source>&amp;New project with diagram</source>
         <translation>Новый проект на базе &amp;диаграммы</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="30"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="31"/>
         <source>&amp;Quit QReal</source>
         <translation>&amp;Выйти из QReal</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="31"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="32"/>
         <source>&amp;Open existing project</source>
         <translation>&amp;Открыть проект</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="32"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="33"/>
         <source>&amp;Open interpreted diagram</source>
         <translation>Открыть интерпретируемую диаграмму</translation>
+    </message>
+    <message>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="86"/>
+        <source>Select file with metamodel to open</source>
+        <translation>Выберите файл метамодели для интерпретации</translation>
     </message>
     <message>
         <source>File not found</source>

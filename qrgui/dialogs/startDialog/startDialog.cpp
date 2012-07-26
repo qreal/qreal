@@ -83,9 +83,10 @@ void StartDialog::exitApp()
 
 void StartDialog::openInterpretedDiagram()
 {
+	hide();
 	QString fileName = mProjectManager->getOpenFileName(tr("Select file with metamodel to open"));
 	ProxyEditorManager *editorManagerProxy = mMainWindow->proxyManager();
-	if (mProjectManager->open(fileName)) {
+	if (!fileName.isEmpty() && mProjectManager->open(fileName)) {
 		editorManagerProxy->setProxyManager(new InterpreterEditorManager(fileName));
 		QStringList interpreterDiagramsList;
 		foreach(Id editor, editorManagerProxy->editors()) {
@@ -104,6 +105,7 @@ void StartDialog::openInterpretedDiagram()
 		}
 		forceClose();
 	} else {
+		show();
 		editorManagerProxy->setProxyManager(new EditorManager());
 	}
 }
