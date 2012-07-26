@@ -59,5 +59,4 @@ AbstractSimpleElementGenerator* SimpleElementFactory::generator(QString const el
 	}
 
 	return new InitialNodeGenerator();
-
 }

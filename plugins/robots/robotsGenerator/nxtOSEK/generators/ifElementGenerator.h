@@ -25,6 +25,13 @@ protected:
 
 	QPair<bool, qReal::Id> checkBranchForBackArrows(qReal::Id const &curElementId); //initial step of checking
 	QPair<bool, qReal::Id> checkBranchForBackArrows(qReal::Id const &curElementId, qReal::IdList* checkedElements);
+
+private:
+	virtual void displaysSuitableError(QPair<bool, qReal::Id> const positiveBranchCheck
+			, QPair<bool, qReal::Id> const negativeBranchCheck);
+	virtual void generateIfBlock(bool isPositiveBranchReturnsToBackElems, int const conditionArrowNum, QString condition);
+	virtual void generateBlockIfElseIs(QString condition, int conditionArrowNum);
+	virtual void addNeededCondition(QString &condition, qReal::IdList outgoingLinks, int conditionArrowNum);
 };
 
 }

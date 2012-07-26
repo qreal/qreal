@@ -374,7 +374,6 @@ void D2ModelWidget::addPort(int const port)
     }
     QPointF newpos = mRobot->mapFromScene(mRobot->boundingRect().center());
     mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0);
-
     reinitSensor(mCurrentPort);
 
     resetButtons();

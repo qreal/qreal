@@ -180,7 +180,6 @@ void NxtOSEKRobotGenerator::generate()
 	QString resultTaskTemplate = utils::InFile::readAll(":/nxtOSEK/templates/taskTemplate.oil");
 
 	foreach (Id const &curInitialNode, toGenerate) {
-		mTaskTemplate = resultTaskTemplate;
 		if (!mApi->isGraphicalElement(curInitialNode)) {
 			continue;
 		}
@@ -189,46 +188,17 @@ void NxtOSEKRobotGenerator::generate()
 			continue;
 		}
 
-		mGeneratedStringSet.clear();
-		mGeneratedStringSet.append(QList<SmartLine>()); //first list for variable initialization
-		mVariablePlaceInGenStrSet = 0;
-
-		mElementToStringListNumbers.clear();
-		mVariables.clear();
+		initializeFields(resultTaskTemplate, curInitialNode);
 
 		AbstractElementGenerator* const gen = ElementGeneratorFactory::generator(this, curInitialNode, *mApi);
-		mPreviousElement = curInitialNode;
-		mBalancerIsActivated = false;
 		gen->generate(); //may throws a exception
 		delete gen;
 
-		// Result code in .c file
-		QString resultCode;
-		mCurTabNumber = 0;
-		foreach (QList<SmartLine> const &lineList, mGeneratedStringSet) {
-			 resultCode = addTabAndEndOfLine(lineList, resultCode);
-		}
-		// Code init block in .c file
-		QString resultInitCode;
-		resultInitCode = addTabAndEndOfLine(mInitCode, resultInitCode);
-		// Code terminate block in .c file
-		QString resultTerminateCode;
-		resultTerminateCode = addTabAndEndOfLine(mTerminateCode, resultTerminateCode);
-		resultCode = "TASK(OSEK_Task_Number_" + QString::number(curInitialNodeNumber) +")\n{\n" + resultCode + "}" + "\n";
-		insertCode(resultCode, resultInitCode, resultTerminateCode, QString::number(curInitialNodeNumber));
+		addResultCodeInCFile(curInitialNodeNumber);
 		curInitialNodeNumber++;
 	}
 
-	deleteResidualLabels(projectName);
-	//Output in the .c and .oil file
-	utils::OutFile outC(projectDir + "/" + projectName + ".c");
-	outC() << mResultString;
-
-	utils::OutFile outOil(projectDir + "/" + projectName + ".oil");
-	outOil() << mResultOil;
-
-	generateFilesForBalancer(projectDir);
-	generateMakeFile(toGenerate.isEmpty(), projectName, projectDir);
+	outputInCAndOilFile(projectName, projectDir, toGenerate);
 }
 
 QList<SmartLine> &NxtOSEKRobotGenerator::variables()
@@ -309,4 +279,45 @@ QStack<qReal::Id> &NxtOSEKRobotGenerator::previousLoopElements()
 qReal::Id NxtOSEKRobotGenerator::previousLoopElementsPop()
 {
 	return mPreviousLoopElements.pop();
+}
+
+void NxtOSEKRobotGenerator::addResultCodeInCFile(int curInitialNodeNumber)
+{
+	QString resultCode;
+	mCurTabNumber = 0;
+	foreach (QList<SmartLine> const &lineList, mGeneratedStringSet) {
+		 resultCode = addTabAndEndOfLine(lineList, resultCode);
+	}
+
+	QString resultInitCode;
+	resultInitCode = addTabAndEndOfLine(mInitCode, resultInitCode);
+	QString resultTerminateCode;
+	resultTerminateCode = addTabAndEndOfLine(mTerminateCode, resultTerminateCode);
+	resultCode = "TASK(OSEK_Task_Number_" + QString::number(curInitialNodeNumber) +")\n{\n" + resultCode + "}";
+	insertCode(resultCode, resultInitCode, resultTerminateCode, QString::number(curInitialNodeNumber));
+}
+
+void NxtOSEKRobotGenerator::outputInCAndOilFile(QString const projectName, QString const projectDir
+		,IdList toGenerate)
+{
+	deleteResidualLabels(projectName);
+	//Output in the .c and .oil file
+	utils::OutFile outC(projectDir + "/" + projectName + ".c");
+	outC() << mResultString;
+	utils::OutFile outOil(projectDir + "/" + projectName + ".oil");
+	outOil() << mResultOil;
+	generateFilesForBalancer(projectDir);
+	generateMakeFile(toGenerate.isEmpty(), projectName, projectDir);
+}
+
+void NxtOSEKRobotGenerator::initializeFields(QString resultTaskTemplate, Id const curInitialNode)
+{
+	mTaskTemplate = resultTaskTemplate;
+	mGeneratedStringSet.clear();
+	mGeneratedStringSet.append(QList<SmartLine>()); //first list for variable initialization
+	mVariablePlaceInGenStrSet = 0;
+	mElementToStringListNumbers.clear();
+	mVariables.clear();
+	mPreviousElement = curInitialNode;
+	mBalancerIsActivated = false;
 }
