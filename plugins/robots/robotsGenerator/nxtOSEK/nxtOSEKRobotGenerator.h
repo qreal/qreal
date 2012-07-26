@@ -1,9 +1,9 @@
 #pragma once
 
-#include <QtCore/QString>
-#include <QtCore/QPair>
-#include <QtCore/QMap>
-#include <QtCore/QStack>
+#include <QString>
+#include <QPair>
+#include <QMap>
+#include <QStack>
 
 #include "../../../../qrkernel/ids.h"
 #include "../../../../qrrepo/repoApi.h"
@@ -25,9 +25,9 @@ public:
 
 	/// main method that starts a code generation.
 	void generate();
-
 	QList<SmartLine> &variables();
 	QList<SmartLine> &initCode();
+	QList<SmartLine> &terminateCode();
 	qrRepo::RepoApi const * const api() const;
 
 	QByteArray portValue1() const;
@@ -35,7 +35,6 @@ public:
 	QByteArray portValue3() const;
 	QByteArray portValue4() const;
 
-	bool mBalancerIsActivated;
 	qReal::ErrorReporterInterface &errorReporter();
 	qReal::Id &previousElement();
 	QList<QList<SmartLine> > &generatedStringSet();
@@ -44,9 +43,9 @@ public:
 	qReal::Id previousLoopElementsPop();
 	int elementToStringListNumbersPop(QString const &key);
 	void setGeneratedStringSet(int key, QList<SmartLine> const &list);
+	bool mBalancerIsActivated;
 
 private:
-	void addToGeneratedStringSetVariableInit();
 	void createProjectDir(QString const &projectDir);
 	void insertCode(
 			QString const &resultCode,
