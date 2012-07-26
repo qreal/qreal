@@ -17,6 +17,22 @@ QList<SmartLine> InitialBlockGenerator::convertElementIntoDirectCommand(NxtOSEKR
 	for (int i = 1; i <= numberOfPorts; i++) {
 		QString const curPort = "port_" + QString::number(i);
 		QByteArray portValue = nxtGen->api()->stringProperty(logicElementId, curPort).toUtf8();
+
+		switch (i) {
+		case 1:
+			nxtGen->setPortValue1(portValue);
+			break;
+		case 2:
+			nxtGen->setPortValue2(portValue);
+			break;
+		case 3:
+			nxtGen->setPortValue3(portValue);
+			break;
+		case 4:
+			nxtGen->setPortValue4(portValue);
+			break;
+		}
+
 		QString const initEcrobotColorSensorPortS = "ecrobot_init_nxtcolorsensor(NXT_PORT_S";
 		if (portValue == "Ультразвуковой сенсор") {
 			initCode.append(SmartLine("ecrobot_init_sonar_sensor(NXT_PORT_S" + QString::number(i) + ");"

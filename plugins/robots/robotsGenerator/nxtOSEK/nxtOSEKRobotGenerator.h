@@ -35,6 +35,11 @@ public:
 	QByteArray portValue3() const;
 	QByteArray portValue4() const;
 
+	void setPortValue1(QByteArray portValue);
+	void setPortValue2(QByteArray portValue);
+	void setPortValue3(QByteArray portValue);
+	void setPortValue4(QByteArray portValue);
+
 	qReal::ErrorReporterInterface &errorReporter();
 	qReal::Id &previousElement();
 	QList<QList<SmartLine> > &generatedStringSet();

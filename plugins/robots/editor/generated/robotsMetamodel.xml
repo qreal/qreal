@@ -1229,6 +1229,7 @@
 				<element name="Ждать цвет"/>
 				<element name="Ждать энкодер"/>
 				<element name="Ждать интенсивность цвета"/>
+				<element name="Ждать свет"/>
 			</group>
 			<group name="Алгоритмы">
 				<element name="Породить поток"/>
@@ -1237,17 +1238,13 @@
 				<element name="Подпрограмма"/>
 				<element name="Линия соединения"/>
 				<element name="Диаграмма поведения робота"/>
+				<element name="Параллельные задачи"/>
 			</group>
 			<group name="Инициализация">
 				<element name="Начало"/>
 				<element name="Конец"/>
 				<element name="Блок инициализации"/>
 				<element name="Сбросить показания энкодера"/>
-			</group>
-			<group name="Сегвей">
-				<element name="Инициализация балансировки"/>
-				<element name="Инициализация переменной"/>
-				<element name="Балансировка"/>
 			</group>
 		</palette>
 	</diagram>

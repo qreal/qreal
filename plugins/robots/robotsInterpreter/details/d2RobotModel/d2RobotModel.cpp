@@ -1,8 +1,5 @@
-#include <QtCore/QDebug>
-
 #include "d2RobotModel.h"
 #include "../tracer.h"
-#include "../interpreter.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details;
@@ -23,7 +20,7 @@ D2RobotModel::D2RobotModel(QObject *parent)
 {
 	mAngle = 0;
 	mTimer = new QTimer(this);
-	QObject::connect(mTimer, SIGNAL(timeout()), this, SLOT(nextFragment()));
+	connect(mTimer, SIGNAL(timeout()), this, SLOT(nextFragment()));
 	initPosition();
 }
 
@@ -78,7 +75,8 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 	mMotors[port]->degrees = degrees;
 	if (degrees == 0) {
 		mMotors[port]->activeTime = QPair<ATime, qreal>(DoInf , 0);
-	} else {
+	}
+	else {
 		qreal activeTime = degrees * 1.0 / 1.0 * speed ;
 		mMotors[port]->activeTime = QPair<ATime, qreal>(Do , activeTime);
 	}
@@ -112,12 +110,12 @@ void D2RobotModel::countMotorTurnover()
 	}
 }
 
-int D2RobotModel::readEncoder(int const port) const
+int D2RobotModel::readEncoder(int/*inputPort::InputPortEnum*/ const port) const
 {
 	return mTurnoverMotors[port] / 360;  // divide the number of degrees by complete revolutions count
 }
 
-void D2RobotModel::resetEncoder(int const port)
+void D2RobotModel::resetEncoder(int/*inputPort::InputPortEnum*/ const port)
 {
 	mTurnoverMotors[port] = 0;
 }
@@ -150,12 +148,17 @@ QPair<QPoint, qreal> D2RobotModel::countPositionAndDirection(inputPort::InputPor
 	return countPositionAndDirection(mSensorsConfiguration.position(port), mSensorsConfiguration.direction(port));
 }
 
-bool D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
+int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 {
 	QPair<QPoint, qreal> neededPosDir = countPositionAndDirection(port);
 	bool res = mWorldModel.touchSensorReading(neededPosDir.first, neededPosDir.second, port);
 	// TODO: Add checks of sensor type.
-	return res;
+
+	if (res) {
+		return 1;
+	}
+
+	return 0;
 }
 
 int D2RobotModel::readSonarSensor(inputPort::InputPortEnum const port) const
@@ -173,7 +176,7 @@ int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 	int n = image.numBytes() / 4;
 	for (int i = 0; i < n; ++i) {
 		unsigned long color = data[i];
-		countsColor[color]++;
+		countsColor[color] ++;
 	}
 
 	switch (mSensorsConfiguration.type(port)) {
@@ -264,7 +267,7 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> countsColor, int
 	double allWhite = static_cast<double>(countsColor[white]);
 
 	QHashIterator<unsigned long, int> i(countsColor);
-	while (i.hasNext()) {
+	while(i.hasNext()) {
 		i.next();
 		unsigned long color = i.key();
 		if (color != white) {
@@ -288,15 +291,13 @@ int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 void D2RobotModel::startInit()
 {
 	initPosition();
+	mTimer->start(timeInterval);
 }
-
 
 void D2RobotModel::stopRobot()
 {
-	mMotorA->speed = 0;
 	mMotorB->speed = 0;
 	mMotorC->speed = 0;
-	mTimer->stop();
 }
 
 void D2RobotModel::countBeep()
@@ -304,28 +305,14 @@ void D2RobotModel::countBeep()
 	if (mBeep.time > 0) {
 		mD2ModelWidget->drawBeep(QColor(Qt::red));
 		mBeep.time -= timeInterval;
-	} else {
+	} else
 		mD2ModelWidget->drawBeep(QColor(Qt::green));
-	}
 }
 
 void D2RobotModel::countNewCoord()
 {
-	Motor *motor1 = mMotorA;
-	Motor *motor2 = mMotorB;
-
-	if (mMotorB->speed != 0 && mMotorC->speed != 0) {
-		motor1 = mMotorB;
-		motor2 = mMotorC;
-	} else if (mMotorA->speed != 0 && mMotorC->speed != 0) {
-		motor2 = mMotorC;
-	} else if (mMotorC->speed != 0) {
-		motor1 = mMotorC;
-	}
-
-	qreal const vSpeed = motor1->speed * 2 * M_PI * motor1->radius * 1.0 / 44000;
-	qreal const uSpeed = motor2->speed * 2 * M_PI * motor2->radius * 1.0 / 44000;
-
+	qreal const vSpeed = mMotorB->speed * 2 * M_PI * mMotorA->radius * 1.0 / 12000;
+	qreal const uSpeed = mMotorC->speed * 2 * M_PI * mMotorB->radius * 1.0 / 12000;
 	qreal deltaY = 0;
 	qreal deltaX = 0;
 	qreal const averageSpeed = (vSpeed + uSpeed) / 2;
@@ -371,7 +358,7 @@ void D2RobotModel::countNewCoord()
 	mPos.setX(mPos.x() + deltaX);
 	mPos.setY(mPos.y() + deltaY);
 
-	if (mAngle > 360) {
+	if(mAngle > 360) {
 		mAngle -= 360;
 	}
 
@@ -380,16 +367,6 @@ void D2RobotModel::countNewCoord()
 		mPos = oldPosition;
 		mAngle = oldAngle;
 	}
-}
-
-void D2RobotModel::stop()
-{
-	mTimer->stop();
-}
-
-void D2RobotModel::start()
-{
-	mTimer->start(timeInterval);
 }
 
 void D2RobotModel::nextFragment()

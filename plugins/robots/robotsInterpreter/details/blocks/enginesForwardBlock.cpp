@@ -17,12 +17,15 @@ void EnginesForwardBlock::run()
 	int const power = evaluate("Power").toInt();
 	int const tachoLimit = evaluate("TachoLimit").toInt();
 	QVector<bool> ports = parsePorts();
-	if (ports[0])
+	if (ports[0]) {
 		mMotor1.on(power, tachoLimit);
-	if (ports[1])
+	}
+	if (ports[1]) {
 		mMotor2.on(power, tachoLimit);
-	if (ports[2])
+	}
+	if (ports[2]) {
 		mMotor3.on(power, tachoLimit);
+	}
 
 	emit done(mNextBlock);
 }

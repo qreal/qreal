@@ -241,6 +241,25 @@ QByteArray NxtOSEKRobotGenerator::portValue4() const
 	return mPortValue4;
 }
 
+void NxtOSEKRobotGenerator::setPortValue1(QByteArray portValue)
+{
+	mPortValue1 = portValue;
+}
+
+void NxtOSEKRobotGenerator::setPortValue2(QByteArray portValue)
+{
+	mPortValue2 = portValue;
+}
+
+void NxtOSEKRobotGenerator::setPortValue3(QByteArray portValue)
+{
+	mPortValue3 = portValue;
+}
+
+void NxtOSEKRobotGenerator::setPortValue4(QByteArray portValue)
+{
+	mPortValue4 = portValue;
+}
 ErrorReporterInterface &NxtOSEKRobotGenerator::errorReporter()
 {
 	return mErrorReporter;

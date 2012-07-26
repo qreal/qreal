@@ -13,9 +13,8 @@ public:
 	explicit LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id const &elementId);
 
 protected:
-	virtual QList<SmartLine> loopPrefixCode();
-
-	virtual QList<SmartLine> loopPostfixCode();
+	virtual QList<SmartLine> addLoopCodeInPrefixForm();
+	virtual QList<SmartLine> addLoopCodeInPostfixForm();
 
 	virtual bool preGenerationCheck();
 	virtual bool nextElementsGeneration();

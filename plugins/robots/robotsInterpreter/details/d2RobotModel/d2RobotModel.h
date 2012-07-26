@@ -29,12 +29,11 @@ public:
 	void setNewMotor(int speed, long unsigned int degrees, int const port);
 	virtual SensorsConfiguration &configuration();
 	D2ModelWidget *createModelWidget();
-	void stop();
-	void start();
+
 	int readEncoder(int const port) const;
 	void resetEncoder(int const port);
 
-	bool readTouchSensor(inputPort::InputPortEnum const port);
+	int readTouchSensor(inputPort::InputPortEnum const port);
 	int readSonarSensor(inputPort::InputPortEnum const port) const;
 	int readColorSensor(inputPort::InputPortEnum const port) const;
 	int readLightSensor(inputPort::InputPortEnum const port) const;
@@ -51,6 +50,7 @@ public:
 		Do,
 		End
 	};
+
 
 private slots:
 	void nextFragment();
@@ -93,6 +93,7 @@ private:
 
 	void countOneMotorTime(Motor &motor);
 	void countMotorTime();
+
 	void countMotorTurnover();
 
 	QImage printColorSensor(inputPort::InputPortEnum const port) const;

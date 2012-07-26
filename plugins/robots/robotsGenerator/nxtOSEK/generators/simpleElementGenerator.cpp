@@ -53,14 +53,14 @@ bool SimpleElementGenerator::nextElementsGeneration()
 	return true;
 }
 
-QList<SmartLine> SimpleElementGenerator::loopPrefixCode()
+QList<SmartLine> SimpleElementGenerator::addLoopCodeInPrefixForm()
 {
 	QList<SmartLine> result;
 	result << SmartLine("while (true) {", mElementId, SmartLine::increase);
 	return result;
 }
 
-QList<SmartLine> SimpleElementGenerator::loopPostfixCode()
+QList<SmartLine> SimpleElementGenerator::addLoopCodeInPostfixForm()
 {
 	QList<SmartLine> result;
 	result << SmartLine("}", mElementId, SmartLine::decrease);

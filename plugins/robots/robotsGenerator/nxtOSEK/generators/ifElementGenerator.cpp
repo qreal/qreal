@@ -11,7 +11,7 @@ IfElementGenerator::IfElementGenerator(NxtOSEKRobotGenerator *emboxGen
 {
 }
 
-QList<SmartLine> IfElementGenerator::loopPrefixCode()
+QList<SmartLine> IfElementGenerator::addLoopCodeInPrefixForm()
 {
 	QList<SmartLine> result;
 
@@ -22,7 +22,7 @@ QList<SmartLine> IfElementGenerator::loopPrefixCode()
 	return result;
 }
 
-QList<SmartLine> IfElementGenerator::loopPostfixCode()
+QList<SmartLine> IfElementGenerator::addLoopCodeInPostfixForm()
 {
 	QList<SmartLine> result;
 	result << SmartLine("}", mElementId, SmartLine::decrease);
