@@ -1,3 +1,4 @@
+#include <QtGui/QAction>
 #include "interpreter.h"
 
 #include "details/autoconfigurer.h"
@@ -6,7 +7,6 @@
 #include "details/robotCommunication/usbRobotCommunicationThread.h"
 #include "details/tracer.h"
 #include "details/debugHelper.h"
-#include <QtGui/QAction>
 
 using namespace qReal;
 using namespace interpreters::robots;
@@ -82,7 +82,6 @@ void Interpreter::interpret()
 	}
 
 	mState = waitingForSensorsConfiguredToLaunch;
-
 	mBlocksTable->setIdleForBlocks();
 
 	Id const startingElement = findStartingElement(currentDiagramId);

@@ -1,7 +1,6 @@
+#include <QtGui/QApplication>
 #include "robotsPlugin.h"
 #include "details/tracer.h"
-
-#include <QtGui/QApplication>
 
 Q_EXPORT_PLUGIN2(robotsPlugin, qReal::interpreters::robots::RobotsPlugin)
 

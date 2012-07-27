@@ -29,7 +29,6 @@ public:
 	void setNewMotor(int speed, long unsigned int degrees, int const port);
 	virtual SensorsConfiguration &configuration();
 	D2ModelWidget *createModelWidget();
-
 	int readEncoder(int const port) const;
 	void resetEncoder(int const port);
 
@@ -50,7 +49,6 @@ public:
 		Do,
 		End
 	};
-
 
 private slots:
 	void nextFragment();
