@@ -17,7 +17,7 @@ DESTDIR += ../bin
 	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)/../bin"
 }
 
-UNIT_TEST = TRUE
+#UNIT_TEST = TRUE
 !isEmpty(UNIT_TEST) {
 	OBJECTS_DIR = .unittestobj
 	MOC_DIR = .unittestmoc

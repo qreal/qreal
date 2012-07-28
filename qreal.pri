@@ -35,7 +35,7 @@ plugins.depends = \
 	qrkernel \
 	qrmc \
 
-UNIT_TEST = TRUE
+#UNIT_TEST = TRUE
 !isEmpty(UNIT_TEST) {
 	SUBDIRS += qrtest
 
