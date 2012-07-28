@@ -20,11 +20,6 @@ TRANSLATIONS = qrgui_ru.ts
 	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)/../bin/"
 }
 
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
-
 if (equals(QMAKE_CXX, "g++") : !macx) {
 	QMAKE_LFLAGS += -Wl,-E
 }
@@ -34,21 +29,18 @@ LIBS += -L../bin -lqrrepo -lqrkernel -lqrutils #-lqrmc
 unix:DEFINES   = _TTY_POSIX_
 win32:DEFINES  = _TTY_WIN_
 
-UNIT_TEST = TRUE
-!isEmpty(UNIT_TEST) {
-	OBJECTS_DIR = .unittestobj
-	UI_DIR = .unittestui
-	MOC_DIR = .unittestmoc
-	RCC_DIR = .unittestmoc
+OBJECTS_DIR = .unittestobj
+UI_DIR = .unittestui
+MOC_DIR = .unittestmoc
+RCC_DIR = .unittestmoc
 
-	INCLUDEPATH += ../thirdparty/gmock-1.6.0/include
-	INCLUDEPATH += ../thirdparty/gmock-1.6.0/gtest/include
-	LIBS += -L../thirdparty/ -lgmock_main -lpthread
+INCLUDEPATH += ../thirdparty/gmock-1.6.0/include
+INCLUDEPATH += ../thirdparty/gmock-1.6.0/gtest/include
+LIBS += -L../thirdparty/ -lgmock_main -lpthread
 
-	TARGET = qrgui_unittests
-	DESTDIR = ../bin/unittests
-	DEFINES += UNITTEST
-}
+TARGET = qrgui_unittests
+DESTDIR = ../bin/unittests
+DEFINES += UNITTEST
 
 
 # Graphical elements

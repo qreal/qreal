@@ -1,6 +1,10 @@
 #include "mainwindow/mainWindow.h"
 #include "thirdparty/windowsmodernstyle.h"
 
+#ifdef UNITTEST
+	#include "gtest/gtest.h"
+#endif
+
 #include <QtCore/QtPlugin>
 #include <QtGui/QApplication>
 
@@ -8,6 +12,8 @@ using namespace qReal;
 
 int main(int argc, char *argv[])
 {
+#ifndef UNITTEST
+	
 	QApplication app(argc, argv);
 
 	QTranslator appTranslator;
@@ -25,4 +31,8 @@ int main(int argc, char *argv[])
 		return app.exec();
 	else  // The window decided to not show itself, exiting now.
 		return 0;
+#else
+	::testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
+#endif
 }

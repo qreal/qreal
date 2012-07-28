@@ -6,9 +6,6 @@ macx {
 	CONFIG -= app_bundle
 }
 
-MOC_DIR = .moc
-OBJECTS_DIR = .obj
-
 LIBS += -L../bin -lqrutils
 
 DESTDIR += ../bin
@@ -17,19 +14,16 @@ DESTDIR += ../bin
 	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)/../bin"
 }
 
-UNIT_TEST = TRUE
-!isEmpty(UNIT_TEST) {
-	OBJECTS_DIR = .unittestobj
-	MOC_DIR = .unittestmoc
+OBJECTS_DIR = .unittestobj
+MOC_DIR = .unittestmoc
 
-	INCLUDEPATH += ../thirdparty/gmock-1.6.0/include
-	INCLUDEPATH += ../thirdparty/gmock-1.6.0/gtest/include
-	LIBS += -L../thirdparty/ -lgmock_main -lpthread
+INCLUDEPATH += ../thirdparty/gmock-1.6.0/include
+INCLUDEPATH += ../thirdparty/gmock-1.6.0/gtest/include
+LIBS += -L../thirdparty/ -lgmock_main -lpthread
 
-	TARGET = qrxc_unittests
-	DESTDIR = ../bin/unittests
-	DEFINES += UNITTEST
-}
+TARGET = qrxc_unittests
+DESTDIR = ../bin/unittests
+DEFINES += UNITTEST
 
 HEADERS += association.h \
 	diagram.h \

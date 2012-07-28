@@ -13,12 +13,16 @@ SUBDIRS = \
 	plugins \
 	qrkernel \
 	qrutils \
+	qrtest \
 
 qrutils.depends = qrkernel
 qrrepo.depends = qrkernel qrutils
 qrxc.depends = qrutils
 qrmc.depends = qrrepo
 qrmc.file = qrmc/qrmc-lib.pro
+
+qrgui.file = qrgui/qrguiTest.pro
+qrxc.file = qrxc/qrxcTest.pro
 
 qrgui.depends = \
 #	doc \
@@ -35,15 +39,10 @@ plugins.depends = \
 	qrkernel \
 	qrmc \
 
-UNIT_TEST = TRUE
-!isEmpty(UNIT_TEST) {
-	SUBDIRS += qrtest
-
-	qrtest.depends = \
-		qrxc \
-		qrrepo \
-		qrutils \
-		qrkernel \
-		qrmc \
-		qrgui \
-}
+qrtest.depends = \
+	qrxc \
+	qrrepo \
+	qrutils \
+	qrkernel \
+	qrmc \
+	qrgui \
