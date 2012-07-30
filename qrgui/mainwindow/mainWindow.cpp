@@ -312,6 +312,8 @@ void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool bl, bool isS
 
 	if (numTab != -1) {
 		mUi->tabs->setCurrentIndex(numTab);
+		Id const currentTabId = getCurrentTab()->mvIface()->rootId();
+		mToolManager.activeTabChanged(currentTabId);
 	} else {
 		openNewTab(idx);
 	}
@@ -1493,7 +1495,10 @@ void MainWindow::showInTextEditor(QString const &title, QString const &text)
 			mUi->tabs->addTab(area, title);
 			mUi->tabs->setCurrentWidget(area);
 		} else {
-			mUi->tabs->setCurrentWidget(mCodeTabManager->value(getCurrentTab()));
+			CodeArea * const area = mCodeTabManager->value(getCurrentTab());
+			area->document()->setPlainText(text);
+			area->show();
+			mUi->tabs->setCurrentWidget(area);
 		}
 	}
 }
