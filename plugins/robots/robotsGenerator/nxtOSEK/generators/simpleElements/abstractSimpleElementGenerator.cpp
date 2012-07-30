@@ -6,25 +6,25 @@
 
 using namespace robots::generator;
 
-abstractSimpleElementGenerator::abstractSimpleElementGenerator()
+AbstractSimpleElementGenerator::AbstractSimpleElementGenerator()
 {
 }
 
-abstractSimpleElementGenerator::~abstractSimpleElementGenerator()
+AbstractSimpleElementGenerator::~AbstractSimpleElementGenerator()
 {
 }
 
-QList<SmartLine> abstractSimpleElementGenerator::convertedCode(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> AbstractSimpleElementGenerator::convertedCode(NxtOSEKRobotGenerator *nxtGen
 		, const qReal::Id elementId, const qReal::Id logicElementId)
 {
 	QString const elementType = elementId.element();
-	abstractSimpleElementGenerator *currentSimpleElement = SimpleElementFactory::generator(elementType);
+	AbstractSimpleElementGenerator *currentSimpleElement = SimpleElementFactory::generator(elementType);
 
 	QList<SmartLine> result = currentSimpleElement->convertElementIntoDirectCommand(nxtGen, elementId, logicElementId);
 	return result;
 }
 
-QList<QString> abstractSimpleElementGenerator::portsToEngineNames(QString const &portsProperty) const
+QList<QString> AbstractSimpleElementGenerator::portsToEngineNames(QString const &portsProperty) const
 {
 	QList<QString> result;
 
@@ -41,7 +41,7 @@ QList<QString> abstractSimpleElementGenerator::portsToEngineNames(QString const 
 	return result;
 }
 
-QString abstractSimpleElementGenerator::transformSign(QString const &sign) const
+QString AbstractSimpleElementGenerator::transformSign(QString const &sign) const
 {
 	if (sign == "меньше") {
 		return "<";

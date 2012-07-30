@@ -17,7 +17,6 @@ public:
 
 //signals:
 //	void showErrors(gui::ErrorReporter * const errorReporter);
-
 public slots:
 	void flashRobot();
 	void uploadProgram();

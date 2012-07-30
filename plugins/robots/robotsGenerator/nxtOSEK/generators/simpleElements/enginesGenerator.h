@@ -6,7 +6,7 @@ namespace robots {
 namespace generator {
 class NxtOSEKRobotGenerator;
 
-class EnginesGenerator: public abstractSimpleElementGenerator {
+class EnginesGenerator: public AbstractSimpleElementGenerator {
 public:
 	EnginesGenerator(QString const &engineType);
 

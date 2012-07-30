@@ -18,7 +18,7 @@ QList<SmartLine> SimpleElementGenerator::convertBlockIntoCode()
 
 	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 
-	result = abstractSimpleElementGenerator::convertedCode(mNxtGen, mElementId, logicElementId);
+	result = AbstractSimpleElementGenerator::convertedCode(mNxtGen, mElementId, logicElementId);
 	return result;
 }
 

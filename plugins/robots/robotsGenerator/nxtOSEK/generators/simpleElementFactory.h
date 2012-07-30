@@ -10,7 +10,7 @@ namespace generator {
 /// Element generator factory that returns generator for diagram element Id.
 class SimpleElementFactory {
 public:
-	static abstractSimpleElementGenerator* generator(QString const elementType);
+	static AbstractSimpleElementGenerator* generator(QString const elementType);
 };
 
 }

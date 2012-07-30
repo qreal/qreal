@@ -48,7 +48,7 @@ void RobotsBlockParser::functionBlockParseProcess(const QString &stream, int &po
 	QStringList exprs = stream.split(";", QString::SkipEmptyParts);
 	for (int i = 0; i < exprs.length(); ++i) {
 		if (mHasParseErrors) {
-			mHasParseErrors = false; /*С‡С‚� ѕ� ±С‹ � Ѕ� µ � ї� ѕ� »СѓС‡� ёС‚СЊ � »� ёС€� Ѕ� ёС… � ѕС€� ё� ±� ѕ� є, � ±Сѓ� ґ� µ� ј � Ѕ� µ� ·� °� І� ёСЃ� ё� ј� ѕ � ѕ� ±СЂ� °� ±� °С‚С‹� І� °С‚СЊ � ї� µСЂ� µ� ј� µ� Ѕ� ЅС‹� µ*/
+			mHasParseErrors = false; /*С‡С‚РѕР±С‹ РЅРµ РїРѕР»СѓС‡РёС‚СЊ Р»РёС€РЅРёС… РѕС€РёР±РѕРє, Р±СѓРґРµРј РЅРµР·Р°РІРёСЃРёРјРѕ РѕР±СЂР°Р±Р°С‚С‹РІР°С‚СЊ РїРµСЂРµРјРµРЅРЅС‹Рµ*/
 			hasParseErrorsFlag = true;
 		}
 		int position = 0;
@@ -81,7 +81,7 @@ bool RobotsBlockParser::checkForUsingReservedVariables(const QString &nameOfVari
 
 bool RobotsBlockParser::isLetter(const QChar &symbol)
 {
-	QString rus = QString::fromUtf8("� ђ� °� ‘� ±� ’� І� “� і� ”� ґ� •� µ� ЃС‘� –� ¶� —� ·� � ё� ™� №� љ� є� ›� »� њ� ј� ќ� Ѕ� ћ� ѕ� џ� ї�  СЂ� ЎСЃ� ўС‚� ЈСѓ� ¤С„� ҐС…� ¦С� � §С‡� ЁС€� ©С‰� ¬СЊ� «С‹� ™� №� ­СЌ� ®СЋ� ЇСЏ");
+	QString rus = QString::fromUtf8("РђР°Р‘Р±Р’РІР“РіР”РґР•РµРЃС‘Р–Р¶Р—Р·РРёР™Р№РљРєР›Р»РњРјРќРЅРћРѕРџРїР СЂРЎСЃРўС‚РЈСѓР¤С„РҐС…Р¦С†Р§С‡РЁС€Р©С‰Р¬СЊР«С‹Р™Р№Р­СЌР®СЋРЇСЏ");
 	char symbolChar = symbol.toAscii();
 	return (('A'<=symbolChar && symbolChar<='Z') || ('a'<=symbolChar && symbolChar<='z') || (rus.contains(symbol)));
 }
@@ -92,7 +92,7 @@ void RobotsBlockParser::setReservedVariables()
 	Number value = Number(3.14, Number::doubleType);
 	mVariables.insert(pi, value);
 	for (int i = 1; i <= 4; ++i) {
-		QString variable = "Sensor" + QString::number(i);
+		QString variable = QObject::tr("Sensor") + QString::number(i);
 		mVariables.insert(variable, Number(0, Number::intType));
 		mReservedVariables.append(variable);
 	}

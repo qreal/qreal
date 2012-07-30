@@ -6,7 +6,7 @@ namespace robots {
 namespace generator {
 class NxtOSEKRobotGenerator;
 
-class WaitForTouchSensorBlockGenerator: public abstractSimpleElementGenerator {
+class WaitForTouchSensorBlockGenerator: public AbstractSimpleElementGenerator {
 public:
 	WaitForTouchSensorBlockGenerator();
 

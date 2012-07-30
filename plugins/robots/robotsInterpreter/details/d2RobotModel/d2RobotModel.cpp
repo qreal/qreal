@@ -75,8 +75,7 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 	mMotors[port]->degrees = degrees;
 	if (degrees == 0) {
 		mMotors[port]->activeTime = QPair<ATime, qreal>(DoInf , 0);
-	}
-	else {
+	} else {
 		qreal activeTime = degrees * 1.0 / 1.0 * speed ;
 		mMotors[port]->activeTime = QPair<ATime, qreal>(Do , activeTime);
 	}
@@ -296,6 +295,7 @@ void D2RobotModel::startInit()
 
 void D2RobotModel::stopRobot()
 {
+	mMotorA->speed = 0;
 	mMotorB->speed = 0;
 	mMotorC->speed = 0;
 }
@@ -305,14 +305,28 @@ void D2RobotModel::countBeep()
 	if (mBeep.time > 0) {
 		mD2ModelWidget->drawBeep(QColor(Qt::red));
 		mBeep.time -= timeInterval;
-	} else
+	} else {
 		mD2ModelWidget->drawBeep(QColor(Qt::green));
+	}
 }
 
 void D2RobotModel::countNewCoord()
 {
-	qreal const vSpeed = mMotorB->speed * 2 * M_PI * mMotorB->radius * 1.0 / 44000;
-	qreal const uSpeed = mMotorC->speed * 2 * M_PI * mMotorC->radius * 1.0 / 44000;
+	Motor *motor1 = mMotorA;
+	Motor *motor2 = mMotorB;
+
+	if (mMotorB->speed != 0 && mMotorC->speed != 0) {
+		motor1 = mMotorB;
+		motor2 = mMotorC;
+	} else if (mMotorA->speed != 0 && mMotorC->speed != 0) {
+		motor2 = mMotorC;
+	} else if (mMotorC->speed != 0) {
+		motor1 = mMotorC;
+	}
+
+	qreal const vSpeed = motor1->speed * 2 * M_PI * motor1->radius * 1.0 / 44000;
+	qreal const uSpeed = motor2->speed * 2 * M_PI * motor2->radius * 1.0 / 44000;
+
 	qreal deltaY = 0;
 	qreal deltaX = 0;
 	qreal const averageSpeed = (vSpeed + uSpeed) / 2;

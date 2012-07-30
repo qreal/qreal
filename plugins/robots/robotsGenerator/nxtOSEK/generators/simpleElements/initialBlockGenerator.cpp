@@ -20,16 +20,16 @@ QList<SmartLine> InitialBlockGenerator::convertElementIntoDirectCommand(NxtOSEKR
 
 		switch (i) {
 		case 1:
-			nxtGen->setPortValue1(portValue);
+			nxtGen->portValue1() = portValue;
 			break;
 		case 2:
-			nxtGen->setPortValue2(portValue);
+			nxtGen->portValue2() = portValue;
 			break;
 		case 3:
-			nxtGen->setPortValue3(portValue);
+			nxtGen->portValue3() = portValue;
 			break;
 		case 4:
-			nxtGen->setPortValue4(portValue);
+			nxtGen->portValue4() = portValue;
 			break;
 		}
 

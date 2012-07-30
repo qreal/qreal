@@ -40,6 +40,7 @@ NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo
 	mApi = new qrRepo::RepoApi(pathToRepo);
 }
 
+
 NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator()
 {
 	if (mApi && mIsNeedToDeleteMApi) {
@@ -221,22 +222,22 @@ qrRepo::RepoApi const * const NxtOSEKRobotGenerator::api() const
 	return mApi;
 }
 
-QByteArray NxtOSEKRobotGenerator::portValue1() const
+QByteArray &NxtOSEKRobotGenerator::portValue1()
 {
 	return mPortValue1;
 }
 
-QByteArray NxtOSEKRobotGenerator::portValue2() const
+QByteArray &NxtOSEKRobotGenerator::portValue2()
 {
 	return mPortValue2;
 }
 
-QByteArray NxtOSEKRobotGenerator::portValue3() const
+QByteArray &NxtOSEKRobotGenerator::portValue3()
 {
 	return mPortValue3;
 }
 
-QByteArray NxtOSEKRobotGenerator::portValue4() const
+QByteArray &NxtOSEKRobotGenerator::portValue4()
 {
 	return mPortValue4;
 }

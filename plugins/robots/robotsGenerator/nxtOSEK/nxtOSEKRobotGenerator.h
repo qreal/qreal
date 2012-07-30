@@ -30,10 +30,10 @@ public:
 	QList<SmartLine> &terminateCode();
 	qrRepo::RepoApi const * const api() const;
 
-	QByteArray portValue1() const;
-	QByteArray portValue2() const;
-	QByteArray portValue3() const;
-	QByteArray portValue4() const;
+	QByteArray &portValue1();
+	QByteArray &portValue2();
+	QByteArray &portValue3();
+	QByteArray &portValue4();
 
 	qReal::ErrorReporterInterface &errorReporter();
 	qReal::Id &previousElement();

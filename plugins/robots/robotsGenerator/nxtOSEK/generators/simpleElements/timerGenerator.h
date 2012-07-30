@@ -6,7 +6,7 @@ namespace robots {
 namespace generator {
 class NxtOSEKRobotGenerator;
 
-class TimerGenerator: public abstractSimpleElementGenerator {
+class TimerGenerator: public AbstractSimpleElementGenerator {
 public:
 	TimerGenerator();
 
