@@ -27,15 +27,14 @@ void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
 	newContents.moveTo(newPos);
 
 	mResizingNode->setGeometry(newContents);
-	mResizingNode->storeGeometry();
 
-	parentResizeCall();
-
-	/*
 	if (SettingsManager::value("ActivateGrid").toBool()) {
 		mResizingNode->alignToGrid();
 	}
-	*/
+
+	mResizingNode->storeGeometry();
+
+	parentResizeCall();
 }
 
 qreal ResizeHandler::maxChildWidth() const
