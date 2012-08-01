@@ -4,8 +4,8 @@
 using namespace qReal;
 
 SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *mainWindow, QDialog *parent)
-	: ListWidget(parent)
-	, mMainWindow(mainWindow)
+		: ListWidget(parent)
+		, mMainWindow(mainWindow)
 {
 	foreach(Id const &editor, mMainWindow->manager()->editors()) {
 		Id editorTmpId = Id::loadFromString("qrm:/" + editor.editor());
@@ -14,7 +14,6 @@ SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *mainWindo
 		}
 	}
 	highlightFirstItem();
-	connect(this, SIGNAL(userDataSelected(QString)), parent, SLOT(close()));
 }
 
 void SuggestToCreateDiagramWidget::addItem(Id const &editor, Id const &diagram)

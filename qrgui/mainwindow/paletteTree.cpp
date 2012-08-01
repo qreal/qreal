@@ -156,7 +156,7 @@ void PaletteTree::collapse()
 
 void PaletteTree::setActiveEditor(int index)
 {
-    if (0 <= index && index < mEditorsTrees.count()) {
+	if (0 <= index && index < mEditorsTrees.count()) {
 		mCurrentEditor = index;
 		mTree->hide();
 		mTree = mEditorsTrees[index];
@@ -245,7 +245,7 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 
 			foreach (const QString &elementName, mEditorManager->paletteGroupList(editor, diagram, group)) {
 				foreach (const Id &element, list) {
-					if (mEditorManager->friendlyName(element) == elementName) {
+					if (element.element() == elementName) {
 						tmpIdList.append (element);
 						break;
 					}

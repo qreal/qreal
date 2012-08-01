@@ -491,6 +491,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 		newPos += (event->scenePos() - scenePos()) - mDragPosition;
 		mGrid->mouseMoveEvent(event);
+		alignToGrid();
 
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
@@ -775,14 +776,14 @@ void NodeElement::updateData()
 	Element::updateData();
 	if (!mMoving) {
 		QPointF newpos = mGraphicalAssistApi->position(id());
-		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
+		QPolygon newpoly = mGraphicalAssistApi->configuration(id()); // why is it empty?
 		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
 		if (!newpoly.isEmpty()) {
 			int minx = newpoly[0].x();
 			int miny = newpoly[0].y();
 			int maxx = newpoly[0].x();
-			int maxy = newpoly[0].y();;
+			int maxy = newpoly[0].y();
 			for (int i = 1; i < newpoly.size(); ++i) {
 				if (minx > newpoly[i].x()) {
 					minx = newpoly[i].x();
@@ -801,7 +802,6 @@ void NodeElement::updateData()
 		}
 		setGeometry(newRect.translated(newpos));
 	}
-
 	mElementImpl->updateData(this);
 	update();
 }
