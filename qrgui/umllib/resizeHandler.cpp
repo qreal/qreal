@@ -13,7 +13,6 @@ ResizeHandler::ResizeHandler(
 
 void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
 {
-	qDebug() << mResizingNode->mId;
 	newContents.moveTo(0, 0);
 
 	sortChildrenIfNeeded();
@@ -23,10 +22,6 @@ void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
 	if (!mResizingNode->isFolded()) {
 		resizeAccordingToChildren(newContents, newPos);
 	}
-	qDebug() << (con == newContents);
-	qDebug() << con;
-	qDebug() << newContents;
-
 	normalizeSize(newContents);
 
 	newContents.moveTo(newPos);
@@ -110,7 +105,7 @@ void ResizeHandler::parentResizeCall() const
 {
 	NodeElement* const parItem = dynamic_cast<NodeElement* const>(mResizingNode->parentItem());
 	if (parItem) {
-		ResizeHandler handler(parItem, parItem->elementImpl());
+		ResizeHandler const handler(parItem, parItem->elementImpl());
 		handler.resize(parItem->contentsRect(), parItem->pos());
 	}
 }
@@ -128,8 +123,6 @@ void ResizeHandler::normalizeSize(QRectF& newContents) const
 
 void ResizeHandler::resizeAccordingToChildren(QRectF& newContents, QPointF& newPos) const
 {
-	//Q_UNUSED(newPos);
-
 	/*
 	* AAAA!!! Who knows why is this code existed????!!!
 	*
@@ -143,8 +136,6 @@ void ResizeHandler::resizeAccordingToChildren(QRectF& newContents, QPointF& newP
 
 	/// Vector of minimum negative XY child deflection from top left corner.
 	QPointF const childDeflectionVector = childDeflection();
-
-	qDebug() << "childDeflection: " << childDeflectionVector;
 
 	moveChildren(-childDeflectionVector);
 	newPos += childDeflectionVector;

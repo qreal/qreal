@@ -28,9 +28,6 @@ class NodeElement : public Element
 {
 	Q_OBJECT
 
-	/// Added for debug purposes
-	friend class ResizeHandler;
-
 public:
 	NodeElement(ElementImpl *impl);
 	virtual ~NodeElement();

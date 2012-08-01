@@ -342,12 +342,12 @@ void NodeElement::arrangeLinks() {
 void NodeElement::storeGeometry()
 {
 	QRectF contents = mContents; // saving correct current contents
-
+	
 	if ((pos() != mGraphicalAssistApi->position(id()))) { // check if it's been changed
 		mGraphicalAssistApi->setPosition(id(), pos());
 	}
 
-	if (QPolygon(mContents.toAlignedRect()) != mGraphicalAssistApi->configuration(id())) { // check if it's been changed
+	if (QPolygon(contents.toAlignedRect()) != mGraphicalAssistApi->configuration(id())) { // check if it's been changed
 		mGraphicalAssistApi->setConfiguration(id(), QPolygon(contents.toAlignedRect()));
 	}
 }
@@ -577,17 +577,6 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 	delUnusedLines();
-
-	/*
-	 * This code may become necessary.
-	 * Now it exists for experiments.
-	 *
-	if (mElementImpl->minimizesToChildren()) {
-		resize();
-	}
-
-	mContents = mContents.normalized();
-	*/
 
 	storeGeometry();
 
