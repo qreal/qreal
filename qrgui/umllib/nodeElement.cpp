@@ -405,10 +405,11 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			Element::mousePressEvent(event);
 		}
 
-		mDragPosition = event->scenePos() - scenePos();
 	} else {
 		Element::mousePressEvent(event);
 	}
+
+	mDragPosition = event->scenePos() - scenePos();
 
 	mLeftPressed = true;
 	setZValue(1);
