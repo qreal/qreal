@@ -27,7 +27,7 @@
 class NodeElement : public Element
 {
 	Q_OBJECT
-	
+
 	/// Added for debug purposes
 	friend class ResizeHandler;
 
@@ -46,7 +46,10 @@ public:
 	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w);
 
 	QRectF boundingRect() const;
+	/// Current value of mContents
 	QRectF contentsRect() const;
+	/// Folded contents of node
+	QRectF foldedContentsRect() const;
 
 	virtual void updateData();
 	void setGeometry(QRectF const &geom);
@@ -122,11 +125,6 @@ public:
 	bool isFolded() const;
 	QGraphicsRectItem* placeholder() const;
 
-	/// Current value of mContents
-	QRectF contents() const;
-
-	/// Folded contents of node
-	QRectF foldedContents() const;
 	virtual void deleteFromScene();
 
 public slots:
@@ -148,7 +146,7 @@ private:
 		BottomRight
 	};
 
-	/** 
+	/**
 	 * Resizes node trying to use newContents as new shape
 	 * of node (ignoring newContents position) and to move
 	 * node to newPos.
