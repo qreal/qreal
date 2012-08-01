@@ -578,6 +578,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 	delUnusedLines();
 
+	if (SettingsManager::value("ActivateGrid").toBool()) {
+		alignToGrid();
+	}
 	storeGeometry();
 
 	setVisibleEmbeddedLinkers(true);
