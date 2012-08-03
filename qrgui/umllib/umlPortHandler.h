@@ -7,16 +7,18 @@ class NodeElement;
 class UmlPortHandler
 {
 public:
-	UmlPortHandler(NodeElement *node);
+	UmlPortHandler(NodeElement* const node);
 
-	void handleMoveEvent(bool const leftPressed, QPointF &pos, QPointF const scenePos
-						 , NodeElement *&parentNode);
+	void handleMoveEvent(bool const leftPressed
+			, QPointF &pos, QPointF const &scenePos
+			, NodeElement *&parentNode);
 
 private:
-	void handleHorizontalBorders(NodeElement *tmpNode, NodeElement *parentNode, QPointF &pos, QPointF &posInItem) const;
+	void handleHorizontalBorders(const NodeElement* const tmpNode, const NodeElement* const parentNode
+			, QPointF const &pos, QPointF const &posInItem) const;
 	// whatever it means
 	// TODO: rename
 
-	NodeElement *mNode;
+	NodeElement* const mNode;
 	bool mBelongsToHorizontalBorders;
 };

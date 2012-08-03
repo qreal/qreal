@@ -1358,7 +1358,7 @@ void NodeElement::updateByNewParent()
 	}
 }
 
-QList<double> NodeElement::borderValues()
+QList<double> NodeElement::borderValues() const
 {
 	return mElementImpl->border();
 }

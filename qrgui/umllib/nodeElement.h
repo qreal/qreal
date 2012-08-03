@@ -81,7 +81,7 @@ public:
 	bool isPort() const;
 	bool canHavePorts();
 
-	QList<double> borderValues();
+	QList<double> borderValues() const;
 
 	bool checkLowerBorder(QPointF const &point, double x, double y) const;
 	bool checkUpperBorder(QPointF const &point, double x, double y) const;

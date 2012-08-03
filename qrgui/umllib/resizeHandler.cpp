@@ -34,13 +34,11 @@ void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
 qreal ResizeHandler::maxChildWidth() const
 {
 	qreal maxChildWidthValue = 0;
-
 	foreach (const QGraphicsItem* const childItem, mResizingNode->childItems()) {
 		const NodeElement* const curItem = dynamic_cast<const NodeElement* const>(childItem);
 		if (!curItem) {
 			continue;
 		}
-
 		maxChildWidthValue = qMax(maxChildWidthValue, curItem->contentsRect().width());
 	}
 	if (maxChildWidthValue == 0) {
