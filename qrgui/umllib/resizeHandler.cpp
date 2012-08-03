@@ -18,7 +18,6 @@ void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
 	sortChildrenIfNeeded();
 	gripeIfMinimizesToChildrenContainer(newContents);
 
-	QRectF con = newContents;
 	if (!mResizingNode->isFolded()) {
 		resizeAccordingToChildren(newContents, newPos);
 	}
