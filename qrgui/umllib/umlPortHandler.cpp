@@ -1,5 +1,6 @@
 #include "umlPortHandler.h"
 #include "nodeElement.h"
+#include "borderChecker.h"
 
 UmlPortHandler::UmlPortHandler(NodeElement* const node)
 	: mNode(node), mBelongsToHorizontalBorders(true)
@@ -20,7 +21,7 @@ void UmlPortHandler::handleMoveEvent(bool const leftPressed
 
 	QGraphicsItem* const item = mNode->scene()->items(scenePos).value(1);
 	NodeElement* const actionItem = dynamic_cast<NodeElement* const>(item);
-	UmlPortHandler const actionItemPortHandler(actionItem);
+	BorderChecker const actionItemBorderChecker(actionItem);
 	QPointF posInItem = QPointF(0, 0);
 	if (actionItem && ((actionItem == parentNode) || (!parentNode))) {
 		if (actionItem->canHavePorts()) {
@@ -31,10 +32,10 @@ void UmlPortHandler::handleMoveEvent(bool const leftPressed
 			double const xVert = list[2];
 			double const yVert = list[3];
 
-			bool const checkLowerBorder = actionItemPortHandler.checkLowerBorder(posInItem, xHor, yHor);
-			bool const checkUpperBorder = actionItemPortHandler.checkUpperBorder(posInItem, xHor, yHor);
-			bool const checkRightBorder = actionItemPortHandler.checkRightBorder(posInItem, xVert, yVert);
-			bool const checkLeftBorder = actionItemPortHandler.checkLeftBorder(posInItem, xVert, yVert);
+			bool const checkLowerBorder = actionItemBorderChecker.checkLowerBorder(posInItem, xHor, yHor);
+			bool const checkUpperBorder = actionItemBorderChecker.checkUpperBorder(posInItem, xHor, yHor);
+			bool const checkRightBorder = actionItemBorderChecker.checkRightBorder(posInItem, xVert, yVert);
+			bool const checkLeftBorder = actionItemBorderChecker.checkLeftBorder(posInItem, xVert, yVert);
 			bool const checkBorders = checkLowerBorder || checkUpperBorder
 				|| checkRightBorder || checkLeftBorder;
 
@@ -62,69 +63,20 @@ void UmlPortHandler::handleHorizontalBorders(
 {
 	QList<double> const list = tmpNode->borderValues();
 	
-	QPointF newPos = pos; 
+	QPointF newPos = pos;
+	BorderChecker const parentNodeBorderChecker(parentNode);
 	if (mBelongsToHorizontalBorders) {
 		double const xHor = list[0];
 
-		if (parentNode->checkNoBorderY(posInItem, xHor)) {
+		if (parentNodeBorderChecker.checkNoBorderY(posInItem, xHor)) {
 			newPos.setX(posInItem.x());
 		}
 	} else {
 		double const yVert = list[3];
 
-		if (parentNode->checkNoBorderX(posInItem, yVert)) {
+		if (parentNodeBorderChecker.checkNoBorderX(posInItem, yVert)) {
 			newPos.setY(posInItem.y());
 		}
 	}
 	mNode->setPos(newPos);
-}
-
-bool UmlPortHandler::checkLowerBorder(QPointF const &point, double const x, double const y) const
-{
-	double currentX = point.x();
-	double currentY = point.y();
-	QRectF rc = mNode->boundingRect();
-	return (currentX >= rc.x() + x) && (currentX <= rc.x() + rc.width() - x) && (currentY >= rc.y() + rc.height() - y)
-			&& (currentY <= rc.y() + rc.height() + y);
-}
-
-bool UmlPortHandler::checkUpperBorder(QPointF const &point, double const x, double const y) const
-{
-	double currentX = point.x();
-	double currentY = point.y();
-	QRectF rc = mNode->boundingRect();
-	return (currentX >= rc.x() + x) && (currentX <= rc.x() + rc.width() - x) && (currentY >= rc.y() - y)
-			&& (currentY <= rc.y() + y);
-}
-
-bool UmlPortHandler::checkLeftBorder(QPointF const &point, double const x, double const y) const
-{
-	double currentX = point.x();
-	double currentY = point.y();
-	QRectF rc = mNode->boundingRect();
-	return (currentX >= rc.x() - x) && (currentX <= rc.x() + x) && (currentY >= rc.y() + y)
-			&& (currentY <= rc.y() + rc.height() - y);
-}
-
-bool UmlPortHandler::checkRightBorder(QPointF const &point, double const x, double const y) const
-{
-	double currentX = point.x();
-	double currentY = point.y();
-	QRectF rc = mNode->boundingRect();
-	return (currentX >= rc.x() + rc.width() - x) && (currentX <= rc.x() + rc.width() + x) && (currentY >= rc.y() + y)
-			&& (currentY <= rc.y() + rc.height() - y);
-}
-
-bool UmlPortHandler::checkNoBorderX(QPointF const &point, double const y) const
-{
-	double currentY = point.y();
-	QRectF rc = mNode->boundingRect();
-	return (currentY >= rc.y() + y) && (currentY <= rc.y() + rc.height() - y);
-}
-
-bool UmlPortHandler::checkNoBorderY(QPointF const &point, double const x) const
-{
-	double currentX = point.x();
-	QRectF rc = mNode->boundingRect();
-	return (currentX >= rc.x() + x) && (currentX <= rc.x() + rc.width() - x);
 }
