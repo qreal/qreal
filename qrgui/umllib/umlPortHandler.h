@@ -19,6 +19,13 @@ private:
 	// whatever it means
 	// TODO: rename
 
+	bool checkLowerBorder(QPointF const &point, double const x, double const y) const;
+	bool checkUpperBorder(QPointF const &point, double const x, double const y) const;
+	bool checkLeftBorder(QPointF const &point, double const x, double const y) const;
+	bool checkRightBorder(QPointF const &point, double const x, double const y) const;
+	bool checkNoBorderX(QPointF const &point, double const y) const; // TODO: rename
+	bool checkNoBorderY(QPointF const &point, double const x) const;
+
 	NodeElement* const mNode;
 	bool mBelongsToHorizontalBorders;
 };
