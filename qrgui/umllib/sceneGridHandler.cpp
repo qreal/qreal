@@ -208,16 +208,16 @@ QList<QGraphicsItem *> SceneGridHandler::getAdjancedNodes() const
 
 void SceneGridHandler::alignToGrid()
 {
-	if (!mSwitchGrid || mNode->parentItem()) {
+	if (!mSwitchGrid) {
 		return;
 	}
 	int const indexGrid = SettingsManager::value("IndexGrid").toInt();
 
-	QPointF const nodeScenePos = mNode->scenePos();
+	QPointF const nodePos = mNode->pos();
 	QRectF const contentsRect = mNode->contentsRect();
 
-	qreal myX1 = nodeScenePos.x() + contentsRect.x();
-	qreal myY1 = nodeScenePos.y() + contentsRect.y();
+	qreal myX1 = nodePos.x() + contentsRect.x();
+	qreal myY1 = nodePos.y() + contentsRect.y();
 
 	int coefX = static_cast<int>(myX1) / indexGrid;
 	int coefY = static_cast<int>(myY1) / indexGrid;
@@ -225,8 +225,8 @@ void SceneGridHandler::alignToGrid()
 	makeGridMovingX(myX1, coefX, indexGrid);
 	makeGridMovingY(myY1, coefY, indexGrid);
 
-	myX1 = nodeScenePos.x() + contentsRect.x();
-	myY1 = nodeScenePos.y() + contentsRect.y();
+	myX1 = nodePos.x() + contentsRect.x();
+	myY1 = nodePos.y() + contentsRect.y();
 }
 
 void SceneGridHandler::drawGuides()

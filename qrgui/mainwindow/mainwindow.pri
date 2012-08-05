@@ -12,9 +12,11 @@ HEADERS += \
 	mainwindow/findManager.h \
 	mainwindow/dotRunner.h \
 	mainwindow/splashScreen.h \
+	mainwindow/projectManager/projectManagementInterface.h \
 	mainwindow/projectManager/projectManager.h \
 	mainwindow/projectManager/autosaver.h \
-	mainwindow/tabWidget.h
+	mainwindow/tabWidget.h \
+	mainwindow/miniMap.h \
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -29,7 +31,8 @@ SOURCES += \
 	mainwindow/splashScreen.cpp \
 	mainwindow/projectManager/projectManager.cpp \
 	mainwindow/projectManager/autosaver.cpp \
-	mainwindow/tabWidget.cpp
+	mainwindow/tabWidget.cpp \
+	mainwindow/miniMap.cpp \
 
 FORMS += \
 	mainwindow/mainWindow.ui \
