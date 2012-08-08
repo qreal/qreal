@@ -19,6 +19,10 @@ public:
 	 */
 	BorderChecker(const NodeElement* const node);
 
+	/*
+	 * TODO: Actually comments have some sort of lie.
+	 * There is idea to remove all these stuff from project.
+	 */
 	/**
 	 * Checks is point belongs to NodeElement lower border.
 	 * @param point Point that is checked to belong to lower border. 
@@ -53,12 +57,12 @@ private:
 	 */
 	QList<double> const mBorderValues;
 
-	/// Abscissa of top left border corner.
+	/**
+	 * Some kind of tabulation for ports.
+	 * TODO: understand that it actually is.
+	 */
 	double const mXHor;
-	/// Ordinata of top left border corner.
 	double const mYHor;
-	/// Abscissa of bottom right border corner.
 	double const mXVert;
-	/// Ordinata of bottom right border corner.
 	double const mYVert;
 };

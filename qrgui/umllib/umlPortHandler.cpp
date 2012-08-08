@@ -56,8 +56,6 @@ void UmlPortHandler::handleHorizontalBorders(
 		const NodeElement* const tmpNode, const NodeElement* const parentNode
 		, QPointF const &pos, QPointF const &posInItem) const
 {
-	QList<double> const list = tmpNode->borderValues();
-	
 	QPointF newPos = pos;
 	BorderChecker const parentNodeBorderChecker(parentNode);
 	if (mBelongsToHorizontalBorders) {
