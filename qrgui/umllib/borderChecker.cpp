@@ -1,7 +1,12 @@
 #include "borderChecker.h"
 #include "nodeElement.h"
 
-BorderChecker::BorderChecker(const NodeElement* const node): mNode(node)
+BorderChecker::BorderChecker(const NodeElement* const node)
+	: mNode(node), mBorderValues(node->borderValues())
+	, mXHor(mBorderValues[0])
+	, mYHor(mBorderValues[1])
+	, mXVert(mBorderValues[2])
+	, mYVert(mBorderValues[3])
 {
 }
 

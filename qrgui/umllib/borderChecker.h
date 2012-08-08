@@ -18,4 +18,10 @@ public:
 
 private:
 	const NodeElement* const mNode;
+	QList<double const> const mBorderValues;
+
+	double const mXHor;
+	double const mYHor;
+	double const mXVert;
+	double const mYVert;
 };
