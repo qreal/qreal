@@ -27,3 +27,15 @@ SOURCES += \
 	exampleTests/sampleTest.cpp \
 	exampleTests/sampleFixtureTest.cpp \
 	exampleTests/mockTest.cpp \
+
+# Mocked classes
+include(mocks/mocks.pri)
+
+# Unit tests for kernel
+include(qrkernelTests/qrkernelTests.pri)
+
+# Unit tests for repo
+include(qrrepoTests/qrrepoTests.pri)
+
+# Unit tests for utils
+include(qrutilsTests/qrutilsTests.pri)

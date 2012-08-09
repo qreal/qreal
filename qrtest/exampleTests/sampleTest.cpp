@@ -5,16 +5,16 @@
 
 using namespace utils;
 
-TEST(NumberTest, sum) {
+TEST(NumberExampleTest, sum) {
 	Number n1(2, Number::intType);
 	Number n2(3, Number::intType);
 	n1 += n2;
-	EXPECT_EQ(5, n1.property("Number").toInt());
+	EXPECT_EQ(n1.property("Number").toInt(), 5);
 }
 
-TEST(ParserTest, expressionCalculation) {
+TEST(ParserExampleTest, expressionCalculation) {
 	qReal::BlockParser *parser = new qReal::BlockParser(NULL);
 	QString const stream = "1+1";
 	int pos = 0;
-	EXPECT_EQ(2, parser->parseExpression(stream, pos).property("Number").toInt());
+	EXPECT_EQ(parser->parseExpression(stream, pos).property("Number").toInt(), 2);
 }
