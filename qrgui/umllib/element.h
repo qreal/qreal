@@ -1,4 +1,4 @@
-  #pragma once
+#pragma once
 
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QAction>
@@ -27,8 +27,8 @@ class Element : public QObject, public QGraphicsItem, public ElementRepoInterfac
 	Q_INTERFACES(QGraphicsItem)
 
 public:
-
-	Element();
+	Element(ElementImpl* elementImpl);
+	
 	virtual ~Element() {}
 
 	void setId(qReal::Id &id);
@@ -57,6 +57,7 @@ public:
 	void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
 			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
+	ElementImpl* elementImpl() const;
 	/// Perform element-specific actions before being deleted
 	virtual void deleteFromScene() = 0;
 
@@ -68,14 +69,13 @@ signals:
 	void switchFolding(bool);
 
 protected:
+	void initTitlesBy(QRectF const& contents);
 
 	bool mMoving;
 	qReal::Id mId;
-	ElementImpl *mElementImpl;
+	ElementImpl* const mElementImpl;
 	QList<ElementTitle *> mTitles;
 
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
 	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
-
-	void initTitlesBy(QRectF const &contents);
 };
