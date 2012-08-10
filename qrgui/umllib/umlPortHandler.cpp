@@ -1,80 +1,71 @@
 #include "umlPortHandler.h"
 #include "nodeElement.h"
+#include "borderChecker.h"
 
-UmlPortHandler::UmlPortHandler(NodeElement *node) : mNode(node), mBelongsToHorizontalBorders(true)
+UmlPortHandler::UmlPortHandler(NodeElement* const node)
+	: mNode(node), mBelongsToHorizontalBorders(true)
 {
 }
 
-void UmlPortHandler::handleMoveEvent(bool const leftPressed, QPointF &pos, QPointF const scenePos
+void UmlPortHandler::handleMoveEvent(bool const leftPressed
+		, QPointF &pos, QPointF const &scenePos
 		, NodeElement *&parentNode)
 {
-	if (!mNode)
+	if (!mNode || !leftPressed) {
 		return;
+	}
 
-	if (leftPressed) {
-		if (pos == QPointF(0,0))
-			pos = mNode->pos();
-		QGraphicsItem* item = NULL;
-		QGraphicsScene* sc = mNode->scene();
-		item = sc->items(scenePos).value(1);
-		NodeElement* actionItem = dynamic_cast<NodeElement*>(item);
-		QPointF posInItem = QPointF(0,0);
-		if (actionItem && ((actionItem == parentNode) || (!parentNode))) {
-			if (actionItem->canHavePorts()) {
-				posInItem = actionItem->mapFromScene(scenePos);
-				QList<double> list = actionItem->borderValues();
-				double xHor = list[0];
-				double yHor = list[1];
-				double xVert = list[2];
-				double yVert = list[3];
+	if (pos == QPointF(0,0)) {
+		pos = mNode->pos();
+	}
 
-				if (actionItem->checkLowerBorder(posInItem, xHor, yHor)
-					|| actionItem->checkUpperBorder(posInItem, xHor, yHor)
-					|| actionItem->checkRightBorder(posInItem, xVert, yVert)
-					|| actionItem->checkLeftBorder(posInItem, xVert, yVert))
-				{
-					mNode->setParentItem(actionItem);
-					parentNode = actionItem;
-					pos = mNode->pos();
-					mBelongsToHorizontalBorders = (actionItem->checkLowerBorder(posInItem, xHor, yHor)
-							|| actionItem->checkUpperBorder(posInItem, xHor, yHor));
-				}
-				else
-					handleHorizontalBorders(actionItem, parentNode, pos, posInItem);
+	QGraphicsItem* const item = mNode->scene()->items(scenePos).value(1);
+	NodeElement* const actionItem = dynamic_cast<NodeElement* const>(item);
+	BorderChecker const actionItemBorderChecker(actionItem);
+	QPointF posInItem = QPointF(0, 0);
+	if (actionItem && ((actionItem == parentNode) || (!parentNode))) {
+		if (actionItem->canHavePorts()) {
+			posInItem = actionItem->mapFromScene(scenePos);
+
+			bool const checkLowerBorder = actionItemBorderChecker.checkLowerBorder(posInItem);
+			bool const checkUpperBorder = actionItemBorderChecker.checkUpperBorder(posInItem);
+			bool const checkRightBorder = actionItemBorderChecker.checkRightBorder(posInItem);
+			bool const checkLeftBorder = actionItemBorderChecker.checkLeftBorder(posInItem);
+			bool const checkBorders = checkLowerBorder || checkUpperBorder
+				|| checkRightBorder || checkLeftBorder;
+
+			if (checkBorders) {
+				mNode->setParentItem(actionItem);
+				parentNode = actionItem;
+				pos = mNode->pos();
+				mBelongsToHorizontalBorders = checkLowerBorder || checkUpperBorder;
+			} else {
+				handleHorizontalBorders(actionItem, parentNode, pos, posInItem);
 			}
 		}
-		else
-		{
-			if ((parentNode) && (parentNode->canHavePorts()))
-			{
-				mNode->setPos(pos);
-				if (parentNode)
-				{
-					posInItem = parentNode->mapFromScene(scenePos);
-					handleHorizontalBorders(parentNode, parentNode, pos, posInItem);
-				}
+	} else if ((parentNode) && (parentNode->canHavePorts())) {
+			mNode->setPos(pos);
+			if (parentNode) {
+				posInItem = parentNode->mapFromScene(scenePos);
+				handleHorizontalBorders(parentNode, parentNode, pos, posInItem);
 			}
-		}
 	}
 }
 
-void UmlPortHandler::handleHorizontalBorders(NodeElement *tmpNode, NodeElement *parentNode, QPointF &pos, QPointF &posInItem) const
+void UmlPortHandler::handleHorizontalBorders(
+		const NodeElement* const tmpNode, const NodeElement* const parentNode
+		, QPointF const &pos, QPointF const &posInItem) const
 {
-	QList<double> list = tmpNode->borderValues();
-
-	double xHor = list[0];
-	double yHor = list[1];
-	double xVert = list[2];
-	double yVert = list[3];
-	if (mBelongsToHorizontalBorders)
-	{
-		if (parentNode->checkNoBorderY(posInItem, xHor, yHor))
-			pos = QPointF(posInItem.x(), pos.y());
+	QPointF newPos = pos;
+	BorderChecker const parentNodeBorderChecker(parentNode);
+	if (mBelongsToHorizontalBorders) {
+		if (parentNodeBorderChecker.checkNoBorderY(posInItem)) {
+			newPos.setX(posInItem.x());
+		}
+	} else {
+		if (parentNodeBorderChecker.checkNoBorderX(posInItem)) {
+			newPos.setY(posInItem.y());
+		}
 	}
-	else
-	{
-		if (parentNode->checkNoBorderX(posInItem, xVert, yVert))
-			pos = QPointF(pos.x(), posInItem.y());
-	}
-	mNode->setPos(pos);
+	mNode->setPos(newPos);
 }
