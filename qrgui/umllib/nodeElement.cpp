@@ -39,7 +39,12 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mRenderer = new SdfRenderer();
 	ElementTitleFactory factory;
 	QList<ElementTitleInterface*> titles;
-	mElementImpl->init(mContents, mPointPorts, mLinePorts, factory, titles, mRenderer, mPortRenderer);
+
+	QList<StatPoint> pointPorts;
+	QList<StatLine> linePorts;
+	mElementImpl->init(mContents, pointPorts, linePorts, factory, titles, mRenderer, mPortRenderer);
+	mPortHandler = new PortHandler(this, mGraphicalAssistApi, pointPorts, linePorts);
+
 	foreach (ElementTitleInterface *titleIface, titles) {
 		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
 		if (!title) {
@@ -84,6 +89,7 @@ NodeElement::~NodeElement()
 
 	delete mGrid;
 	delete mUmlPortHandler;
+	delete mPortHandler;
 }
 
 NodeElement *NodeElement::clone(bool toCursorPos, bool searchForParents)
@@ -799,210 +805,24 @@ void NodeElement::updateData()
 	update();
 }
 
+QPointF const NodeElement::getPortPos(qreal id) const
+{
+	return mPortHandler.getPortPos(id);
+}
+
+QPointF const NodeElement::getNearestPort(QPointF const &location) const
+{
+	return mPortHandler.getNearestPort(location);
+}
+
 int NodeElement::portId(qreal id)
 {
-	int iid = qRound(id);
-	if (id < 1.0 * iid) {
-		return iid - 1;
-	} else {
-		return iid;
-	}
+	return PortHandler::portId(id);
 }
 
-const QPointF NodeElement::getPortPos(qreal id) const
+qreal NodeElement::getPortId(QPointF const &location) const
 {
-	int iid = portId(id);
-
-	if (id < 0.0) {
-		return QPointF(0, 0);
-	}
-
-	if (id < mPointPorts.size()) {
-		return newTransform(mPointPorts[iid]);
-	}
-
-	if (id < mPointPorts.size() + mLinePorts.size()) {
-		return newTransform(mLinePorts.at(iid - mPointPorts.size())).pointAt(id - 1.0 * iid);
-	} else {
-		return QPointF(0, 0);
-	}
-}
-
-const QPointF NodeElement::getNearestPort(QPointF const &location) const
-{
-	QPointF min;
-
-	if (mPointPorts.size() > 0) {
-		QPointF const pointPort = newTransform(mPointPorts[0]);
-		min.setX(pointPort.x() + boundingRect().left());
-		min.setY(pointPort.y() + boundingRect().top());
-
-		foreach (StatPoint port, mPointPorts) {
-			QPointF const pointPort = newTransform(port);
-			port.point.setX(pointPort.x() + boundingRect().left());
-			port.point.setY(pointPort.y() + boundingRect().top());
-			if (QLineF(port.point, location).length() < QLineF(min, location).length()) {
-				min = port.point;
-			}
-		}
-		return min;
-	}
-
-	if (mLinePorts.size() > 0) {
-		int num = 0;
-		foreach (StatLine line, mLinePorts) {
-			qreal k = qMin(qMax(0., getNearestPointOfLinePort(num, location)), 0.9999);
-			QLineF const &sceneLine = newTransform(line);
-			QPointF const &port = sceneLine.pointAt(k);
-
-			if (QLineF(port, location).length() < QLineF(min, location).length() || num == 0) {
-				min = port;
-			}
-			num++;
-		}
-
-		return min;
-	}
-
-	return location;
-}
-
-QLineF NodeElement::newTransform(StatLine const &port) const
-{
-	qreal const x1 = port.line.x1() * (port.prop_x1 ? port.initWidth : contentsRect().width());	
-	qreal const y1 = port.line.y1() * (port.prop_y1 ? port.initHeight : contentsRect().height());
-
-	qreal const x2 = port.line.x2() * (port.prop_x2 ? port.initWidth : contentsRect().width());	
-	qreal const y2 = port.line.y2() * (port.prop_y2 ? port.initHeight : contentsRect().height());
-
-	return QLineF(x1, y1, x2, y2);
-}
-
-QPointF NodeElement::newTransform(StatPoint const &port) const
-{
-	qreal const x = port.point.x() * (port.prop_x ? port.initWidth : contentsRect().width());
-	qreal const y = port.point.y() * (port.prop_y ? port.initHeight : contentsRect().height());
-
-	return QPointF(x, y);
-}
-
-qreal NodeElement::minDistanceFromLinePort(int linePortNumber, QPointF const &location) const
-{
-	QLineF const linePort = newTransform(mLinePorts[linePortNumber]);
-	qreal const a = linePort.length();
-	qreal const b = QLineF(linePort.p1(), location).length();
-	qreal const c = QLineF(linePort.p2(), location).length();
-
-	qreal const nearestPointOfLinePort = getNearestPointOfLinePort(linePortNumber, location);
-	if ((nearestPointOfLinePort < 0) || (nearestPointOfLinePort > 0.9999)) {
-		return qMin(b, c);
-	} else {
-		qreal const p = (a + b + c) / 2;
-		qreal const triangleSquare = sqrt(p * (p - a) * (p - b) * (p - c));
-		qreal const minDistance = 2 * triangleSquare / a;
-		return minDistance;
-	}
-}
-
-qreal NodeElement::distanceFromPointPort(int pointPortNumber, QPointF const &location) const
-{
-	return QLineF(newTransform(mPointPorts[pointPortNumber]), location).length();
-}
-
-qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, QPointF const &location) const
-{
-	qreal nearestPointOfLinePort = 0;
-	QLineF nearestLinePort = newTransform(mLinePorts[linePortNumber]);
-	qreal y1 = nearestLinePort.y1(),
-		y2 = nearestLinePort.y2(),
-		x1 = nearestLinePort.x1(),
-		x2 = nearestLinePort.x2();
-
-	if (x1 == x2) {
-		nearestPointOfLinePort = (location.y() - y1) / (y2 - y1);
-	} else if (y1 == y2) {
-		nearestPointOfLinePort = (location.x() - x1) / (x2 - x1);
-	} else {
-		qreal k = (y2 - y1) / (x2 - x1),
-			b2 = location.y() + 1 / k * location.x(),
-			b = y1 - k * x1,
-			x3 = k / (1 + k * k) * (b2 - b);
-		nearestPointOfLinePort = (x3 - x1) / (x2 - x1);
-	}
-	return nearestPointOfLinePort;
-}
-
-qreal NodeElement::getPortId(QPointF const&location) const
-{
-	for (int i = 0; i < mPointPorts.size(); ++i) {
-		if (QRectF(newTransform(mPointPorts[i]) - QPointF(kvadratik, kvadratik),
-				   QSizeF(kvadratik * 2, kvadratik * 2)).contains(location))
-		{
-			return 1.0 * i;
-		}
-	}
-
-	for (int i = 0; i < mLinePorts.size(); i++) {
-		QPainterPathStroker ps;
-				ps.setWidth(kvadratik - 5);
-
-		QPainterPath path;
-		path.moveTo(newTransform(mLinePorts[i]).p1());
-		path.lineTo(newTransform(mLinePorts[i]).p2());
-
-		path = ps.createStroke(path);
-		if (path.contains(location)) {
-			return (1.0 * (i + mPointPorts.size()) + qMin(0.9999,
-				QLineF(QLineF(newTransform(mLinePorts[i])).p1(), location).length()
-				 / newTransform(mLinePorts[i]).length()));
-		}
-	}
-
-	qreal minDistance = 0;
-	int numMinDistance = -1;
-	if (mPointPorts.size() != 0) {
-		numMinDistance = 0;
-		minDistance = distanceFromPointPort(0, location);
-		for (int i = 1; i < mPointPorts.size(); i++) {
-			qreal currentDistance = distanceFromPointPort(i, location);
-			if (currentDistance < minDistance) {
-				numMinDistance = i;
-				minDistance = currentDistance;
-			}
-		}
-	}
-
-	if (mLinePorts.size() != 0) {
-		bool linePort = false;
-		if (numMinDistance == -1) {
-			numMinDistance = 0;
-			minDistance = minDistanceFromLinePort(0, location);
-			linePort = true;
-		}
-		for (int i = 0; i < mLinePorts.size(); i++) {
-			qreal currentDistance = minDistanceFromLinePort(i, location);
-			if (currentDistance < minDistance) {
-				numMinDistance = i;
-				minDistance = currentDistance;
-				linePort = true;
-			}
-		}
-		if (linePort) {
-			qreal nearestPointOfLinePort = getNearestPointOfLinePort(numMinDistance, location);
-			if (nearestPointOfLinePort < 0) {
-				nearestPointOfLinePort = 0;
-			} else if (nearestPointOfLinePort > 0.9999) {
-				nearestPointOfLinePort = 0.9999;
-			}
-			return 1.0 * (numMinDistance + nearestPointOfLinePort + mPointPorts.size());
-		} else {
-			return 1.0 * numMinDistance;
-		}
-	} else if (numMinDistance >= 0) {
-		return 1.0 * numMinDistance;
-	}
-
-	return -1.0;
+	return mPortHandler.getPortId(location);
 }
 
 void NodeElement::setPortsVisible(bool value)
@@ -1334,48 +1154,14 @@ void NodeElement::setColorRect(bool value)
 	mSelectionNeeded = value;
 }
 
-void NodeElement::connectTemporaryRemovedLinksToPort(IdList const &temporaryRemovedLinks, QString const &direction)
-{
-	foreach (Id edgeId, temporaryRemovedLinks) {
-		EdgeElement *edge = dynamic_cast<EdgeElement *>(static_cast<EditorViewScene *>(scene())->getElem(edgeId));
-		if (edge != NULL) {
-			if (direction == "from") {
-				QPointF startPos = edge->mapFromItem(this, this->getNearestPort(edge->line().first()));
-				edge->placeStartTo(startPos);
-			}
-			else {
-				QPointF endPos = edge->mapFromItem(this, this->getNearestPort(edge->line().last()));
-				edge->placeEndTo(endPos);
-			}
-			edge->connectToPort();
-		}
-	}
-}
-
 void NodeElement::checkConnectionsToPort()
 {
-	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksFrom(id()), "from");
-	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksTo(id()), "to");
-	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksNone(id()), QString());
-	mGraphicalAssistApi->removeTemporaryRemovedLinks(id());
-
-	// i have no idea what this method does, but it is called when the element
-	// is dropped on scene. so i'll just leave this code here for now.
-	connectLinksToPorts();
-
+	mPortHandler->checkConnectionsToPort();
 }
 
 void NodeElement::connectLinksToPorts()
 {
-	QList<QGraphicsItem *>  items = scene()->items(scenePos());
-	EdgeElement *edge = NULL;
-	foreach (QGraphicsItem *item, items) {
-		edge = dynamic_cast<EdgeElement *>(item);
-		if (edge) {
-			edge->connectToPort();
-			return;
-		}
-	}
+	mPortHandler->connectLinksToPorts();
 }
 
 void NodeElement::singleSelectionState(bool const singleSelected)

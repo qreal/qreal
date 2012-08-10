@@ -21,6 +21,7 @@
 
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"
+#include "portHandler.h"
 
 #include "serializationData.h"
 
@@ -59,10 +60,9 @@ public:
 	void storeGeometry();
 	virtual void setName(QString name);
 
-	const QPointF getPortPos(qreal id) const;
+	QPointF const getPortPos(qreal id) const;
+	QPointF const getNearestPort(QPointF const &location) const;
 	static int portId(qreal id);
-	const QPointF getNearestPort(QPointF const &location) const;
-
 	qreal getPortId(QPointF const &location) const;
 
 	QList<EdgeElement*> getEdges();
@@ -95,7 +95,9 @@ public:
 	void setConnectingState(bool arg);
 
 	void adjustLinks();
+	/*
 	void arrangeLinearPorts();
+	*/
 	void arrangeLinks();
 
 	virtual void checkConnectionsToPort();
@@ -177,25 +179,16 @@ private:
 
 	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
-	void changeFoldState();
+	void changeFold();
 	void setLinksVisible(bool);
 
 	NodeElement *getNodeAt(QPointF const &position);
 
-	QLineF newTransform(StatLine const &port) const;
-	QPointF newTransform(StatPoint const &port) const;
-
 	void updateByChild(NodeElement *item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
 
-	qreal minDistanceFromLinePort(int const linePortNumber, QPointF const &location) const;
-	qreal distanceFromPointPort(int const pointPortNumber, QPointF const &location) const;
-	qreal getNearestPointOfLinePort(int const linePortNumber, QPointF const &location) const;
-
 	void initEmbeddedLinkers();
 	void setVisibleEmbeddedLinkers(bool const show);
-
-	void connectTemporaryRemovedLinksToPort(qReal::IdList const &rtemporaryRemovedLinks, QString const &direction);
 
 	ContextMenuAction mSwitchGridAction;
 
@@ -203,10 +196,7 @@ private:
 
 	QList<NodeElement *> childs;
 
-	QList<StatPoint> mPointPorts;
-	QList<StatLine> mLinePorts;
 	QRectF mContents;
-
 	QList<EdgeElement *> mEdgeList;
 
 	DragState mDragState;
@@ -239,6 +229,7 @@ private:
 
 	SceneGridHandler *mGrid;
 	UmlPortHandler *mUmlPortHandler;
+	PortHandler *mPortHandler;
 
 	QGraphicsRectItem *mPlaceholder;
 	NodeElement *mHighlightedNode;
