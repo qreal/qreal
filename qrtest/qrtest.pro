@@ -1,3 +1,5 @@
+QT += xml
+
 DESTDIR = ../bin/unittests
 TARGET = qrlibs_unittests
 

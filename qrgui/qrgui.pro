@@ -34,23 +34,6 @@ LIBS += -L../bin -lqrrepo -lqrkernel -lqrutils #-lqrmc
 unix:DEFINES   = _TTY_POSIX_
 win32:DEFINES  = _TTY_WIN_
 
-#UNIT_TEST = TRUE
-!isEmpty(UNIT_TEST) {
-	OBJECTS_DIR = .unittestobj
-	UI_DIR = .unittestui
-	MOC_DIR = .unittestmoc
-	RCC_DIR = .unittestmoc
-
-	INCLUDEPATH += ../thirdparty/gmock-1.6.0/include
-	INCLUDEPATH += ../thirdparty/gmock-1.6.0/gtest/include
-	LIBS += -L../thirdparty/ -lgmock_main -lpthread
-
-	TARGET = qrgui_unittests
-	DESTDIR = ../bin/unittests
-	DEFINES += UNITTEST
-}
-
-
 # Graphical elements
 include (umllib/umllib.pri)
 
@@ -83,6 +66,3 @@ include (toolPluginInterface/toolPluginInterface.pri)
 
 # Text Editor
 include (textEditor/textEditor.pri)
-
-# Unit tests for qrgui code
-include (unitTests/unitTests.pri)
