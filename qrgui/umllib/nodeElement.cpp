@@ -272,43 +272,7 @@ void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<No
 */
 
 void NodeElement::arrangeLinearPorts() {
-	//qDebug() << "linear ports on" << uuid().toString();
-	int lpId = mPointPorts.size(); //point ports before linear
-	foreach (StatLine line, mLinePorts) {
-		//sort first by slope, then by current portId
-		QMap<QPair<qreal, qreal>, EdgeElement*> sortedEdges;
-		QLineF portLine = line;
-		qreal dx = portLine.dx();
-		qreal dy = portLine.dy();
-		foreach (EdgeElement* edge, mEdgeList) {
-			if (portId(edge->portIdOn(this)) == lpId) {
-				QPointF conn = edge->connectionPoint(this);
-				QPointF next = edge->nextFrom(this);
-				qreal x1 = conn.x();
-				qreal y1 = conn.y();
-				qreal x2 = next.x();
-				qreal y2 = next.y();
-				qreal len = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-				qreal scalarProduct = ((x2 - x1) * dx + (y2 - y1) * dy) / len;
-				sortedEdges.insertMulti(qMakePair(edge->portIdOn(this), scalarProduct), edge);
-				//qDebug() << "+" << edge->uuid().toString() <<"pr=" <<scalarProduct << "; p=" << edge->portIdOn(this);
-				//qDebug("'--> vector: (%g, %g)", (x2-x1)/len, (y2-y1)/len);
-				//qDebug() << "'------> because " << (QVariant)conn << "->" << (QVariant)next;
-			}
-		}
-
-		//by now, edges of this port are sorted by their optimal slope.
-		int const n = sortedEdges.size();
-		int i = 0;
-		foreach (EdgeElement* edge, sortedEdges) {
-			qreal newId = lpId + (1.0 + i++) / (n + 1);
-			//qDebug() << "-" << edge->uuid().toString() << newId;
-			edge->moveConnection(this, newId);
-		}
-
-		lpId++; //next linear port.
-
-	}
+	mPortHandler->arrangeLinearPorts();
 }
 
 void NodeElement::arrangeLinks() {
@@ -807,12 +771,12 @@ void NodeElement::updateData()
 
 QPointF const NodeElement::getPortPos(qreal id) const
 {
-	return mPortHandler.getPortPos(id);
+	return mPortHandler->getPortPos(id);
 }
 
 QPointF const NodeElement::getNearestPort(QPointF const &location) const
 {
-	return mPortHandler.getNearestPort(location);
+	return mPortHandler->getNearestPort(location);
 }
 
 int NodeElement::portId(qreal id)
@@ -822,7 +786,7 @@ int NodeElement::portId(qreal id)
 
 qreal NodeElement::getPortId(QPointF const &location) const
 {
-	return mPortHandler.getPortId(location);
+	return mPortHandler->getPortId(location);
 }
 
 void NodeElement::setPortsVisible(bool value)
@@ -1256,4 +1220,16 @@ QGraphicsRectItem* NodeElement::placeholder() const
 QRectF NodeElement::foldedContentsRect() const
 {
 	return mFoldedContents;
+}
+
+
+QList<EdgeElement *> const NodeElement::edgeList() const
+{
+	return mEdgeList;
+}
+
+void NodeElement::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi)
+{
+	Element::setAssistApi(graphicalAssistApi, logicalAssistApi);
+	mPortHandler->setGraphicalAssistApi(graphicalAssistApi);
 }

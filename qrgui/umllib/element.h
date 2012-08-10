@@ -54,7 +54,7 @@ public:
 
 	virtual void setColorRect(bool bl) = 0;
 
-	void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
+	virtual void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
 			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
 	ElementImpl* elementImpl() const;

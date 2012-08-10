@@ -26,4 +26,4 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/embedded/linkers/embeddedLinkers.cpp \
 	umllib/serializationData.cpp \
 	umllib/borderChecker.cpp \
-	umllib/portHandler.h
+	umllib/portHandler.cpp

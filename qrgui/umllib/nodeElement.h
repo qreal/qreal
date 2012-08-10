@@ -95,9 +95,7 @@ public:
 	void setConnectingState(bool arg);
 
 	void adjustLinks();
-	/*
 	void arrangeLinearPorts();
-	*/
 	void arrangeLinks();
 
 	virtual void checkConnectionsToPort();
@@ -118,6 +116,11 @@ public:
 	QGraphicsRectItem* placeholder() const;
 
 	virtual void deleteFromScene();
+
+	QList<EdgeElement *> const edgeList() const;
+
+	virtual void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
+			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
@@ -179,7 +182,7 @@ private:
 
 	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
-	void changeFold();
+	void changeFoldState();
 	void setLinksVisible(bool);
 
 	NodeElement *getNodeAt(QPointF const &position);
