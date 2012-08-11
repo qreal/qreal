@@ -59,11 +59,13 @@ void UmlPortHandler::handleHorizontalBorders(
 	QPointF newPos = pos;
 	BorderChecker const parentNodeBorderChecker(parentNode);
 	if (mBelongsToHorizontalBorders) {
-		if (parentNodeBorderChecker.checkNoBorderY(posInItem)) {
+		// tmpNode->borderValues()[0] == xHor of tmpNode. (mXHor field of BorderChecker(tmpNode))
+		if (parentNodeBorderChecker.checkNoBorderY(posInItem, tmpNode->borderValues()[0])) {
 			newPos.setX(posInItem.x());
 		}
 	} else {
-		if (parentNodeBorderChecker.checkNoBorderX(posInItem)) {
+		// tmpNode->borderValues()[3] == yVert of tmpNode. (mYVert field of BorderChecker(tmpNode))
+		if (parentNodeBorderChecker.checkNoBorderX(posInItem, tmpNode->borderValues()[3])) {
 			newPos.setY(posInItem.y());
 		}
 	}
