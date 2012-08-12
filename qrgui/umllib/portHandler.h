@@ -11,11 +11,10 @@
 
 /**
  * Useful information:
- * 	In this class port ID represents by 2 types: int, qreal.
- * 	int ID means number of port considering that point ports begin numeration,
+ * 	In this class port ID represents by qreal type.
+ * 	Integral part of ID means number of port considering that point ports begin numeration,
  * 	and line ports go after them.
- * 	qreal ID means also number of port (integral part of ID), and in case of line port
- * 	ID means position at line port (fractional part of ID).
+ * 	In case of line port fractional part ID means position at line port.
  */
 
 class NodeElement;
@@ -35,21 +34,33 @@ public:
 			);
 
 	/**
-	 * Returns position of 
+	 * Returns port position relative to the top left corner of NodeElement
+	 * (position of NodeElement). 
 	 * @param id Id that position is returned by this method.
-	 * @return
+	 * @return Port position relative to the top left corner of NodeElement.
 	 */
 	QPointF const getPortPos(qreal id) const;
 
 	/**
-	 * Calculates port number. Just floor of id.
+	 * Calculates port number.
+	 * Number of port considering that point ports begin numeration,
+	 * and line ports go after them.
 	 * @param id qreal Id that will be truncated.
-	 * @return Port id in int.
+	 * @return Port number.
 	 */
-	static int portId(qreal id);
+	static int portNumber(qreal id);
 
+	/**
+	 * Calculates nearest point of NodeElement ports to parameter point. 
+	 * @param location To this point nearest port is calculated.
+	 * @return Nearest point of NodeElement ports to parameter point.
+	 */
 	QPointF const getNearestPort(QPointF const &location) const;
 
+	/**
+	 * Returns port ID in terms described below *'Useful information' before class* 
+	 * @return Port ID in terms described below *'Useful information' before class*.
+	 */
 	qreal getPortId(QPointF const &location) const;
 
 	qreal minDistanceFromLinePort(int const linePortNumber, QPointF const &location) const;
@@ -66,6 +77,10 @@ public:
 	QLineF newTransform(StatLine const &port) const;
 	QPointF newTransform(StatPoint const &port) const;
 
+	/**
+	 * Sets GraphicalModelAssistApi.
+	 * @param graphicalAssistApi New value for GraphicalModelAssistApi.
+	 */
 	void setGraphicalAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi);
 
 private:

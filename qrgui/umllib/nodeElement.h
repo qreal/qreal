@@ -62,6 +62,7 @@ public:
 
 	QPointF const getPortPos(qreal id) const;
 	QPointF const getNearestPort(QPointF const &location) const;
+	//TODO: rename method to portNumber
 	static int portId(qreal id);
 	qreal getPortId(QPointF const &location) const;
 

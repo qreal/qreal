@@ -101,58 +101,56 @@ QPointF const PortHandler::getPortPos(qreal id) const
 		return QPointF(0, 0);
 	}
 
-	int iid = portId(id);
-	if (id < mPointPorts.size()) {
+	int iid = portNumber(id);
+	if (iid < mPointPorts.size()) {
 		return newTransform(mPointPorts[iid]);
 	}
 
-	if (id < mPointPorts.size() + mLinePorts.size()) {
-		return newTransform(mLinePorts.at(iid - mPointPorts.size())).pointAt(id - 1.0 * iid);
+	if (iid < mPointPorts.size() + mLinePorts.size()) {
+		return newTransform(mLinePorts.at(iid - mPointPorts.size())).pointAt(id - qFloor(id));
 	} else {
 		return QPointF(0, 0);
 	}
 }
 
-int PortHandler::portId(qreal id)
+int PortHandler::portNumber(qreal id)
 {
 	return qFloor(id);
 }
 
 QPointF const PortHandler::getNearestPort(QPointF const &location) const
 {
-	QPointF min;
+	QPointF nearestPortPoint;
+	qreal minDistance = -1.0; // just smth negative 
 
-	if (mPointPorts.size() > 0) {
-		QPointF const pointPort = newTransform(mPointPorts[0]);
-		min.setX(pointPort.x() + mNode->boundingRect().left());
-		min.setY(pointPort.y() + mNode->boundingRect().top());
+	// Not const reference because port value is used for calculation.
+	foreach (StatPoint port, mPointPorts) {
+		QPointF const pointPort = newTransform(port);
+		QPointF const translatedPort = pointPort + mNode->boundingRect().topLeft();
+		qreal const currentDistance = QLineF(translatedPort, location).length();
 
-		// Not const reference because port value is used for calculation.
-		foreach (StatPoint port, mPointPorts) {
-			QPointF const pointPort = newTransform(port);
-			port.point.setX(pointPort.x() + mNode->boundingRect().left());
-			port.point.setY(pointPort.y() + mNode->boundingRect().top());
-			if (QLineF(port.point, location).length() < QLineF(min, location).length()) {
-				min = port.point;
-			}
+		if (currentDistance < minDistance || minDistance < 0) {
+			nearestPortPoint = translatedPort;
+			minDistance = currentDistance;
 		}
-		return min;
 	}
 
-	if (mLinePorts.size() > 0) {
-		int num = 0;
-		foreach (StatLine const &line, mLinePorts) {
-			qreal k = qMin(qMax(0., getNearestPointOfLinePort(num, location)), 0.9999);
-			QLineF const sceneLine = newTransform(line);
-			QPointF const port = sceneLine.pointAt(k);
+	int num = 0;
+	foreach (StatLine const &linePort, mLinePorts) {
+		qreal positionAtLineCoef = qMin(qMax(0., getNearestPointOfLinePort(num, location)), 0.9999);
+		QLineF const sceneLine = newTransform(linePort);
+		QPointF const port = sceneLine.pointAt(positionAtLineCoef);
+		qreal const currentDistance = QLineF(port, location).length();
 
-			if (QLineF(port, location).length() < QLineF(min, location).length() || num == 0) {
-				min = port;
-			}
-			num++;
+		if (currentDistance < minDistance || minDistance < 0) {
+			nearestPortPoint = port;
+			minDistance = currentDistance;
 		}
+		num++;
+	}
 
-		return min;
+	if (minDistance > 0) {
+		return nearestPortPoint;
 	}
 
 	return location;
@@ -266,14 +264,14 @@ void PortHandler::checkConnectionsToPort()
 void PortHandler::arrangeLinearPorts() {
 	//qDebug() << "linear ports on" << uuid().toString();
 	int lpId = mPointPorts.size(); //point ports before linear
-	foreach (StatLine const &line, mLinePorts) {
-		//sort first by slope, then by current portId
+	foreach (StatLine const &linePort, mLinePorts) {
+		//sort first by slope, then by current portNumber
 		QMap<QPair<qreal, qreal>, EdgeElement*> sortedEdges;
-		QLineF portLine = line;
+		QLineF portLine = linePort;
 		qreal dx = portLine.dx();
 		qreal dy = portLine.dy();
 		foreach (EdgeElement* edge, mNode->edgeList()) {
-			if (portId(edge->portIdOn(mNode)) == lpId) {
+			if (portNumber(edge->portIdOn(mNode)) == lpId) {
 				QPointF conn = edge->connectionPoint(mNode);
 				QPointF next = edge->nextFrom(mNode);
 				qreal x1 = conn.x();

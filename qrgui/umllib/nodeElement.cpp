@@ -234,13 +234,13 @@ void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<No
 	//make equal space on all linear ports.
 	int lpId = 0;
 	foreach (StatLine line, mLinePorts) {
-		//sort first by slope, then by current portId
+		//sort first by slope, then by current portNumber
 		QMap<QPair<qreal, qreal>, EdgeElement*> sortedEdges;
 		QLineF portLine = line;
 		qreal dx = portLine.dx();
 		qreal dy = portLine.dy();
 		foreach (EdgeElement* edge, mEdgeList) {
-			if (portId(edge->portIdOn(this)) == lpId) {
+			if (portNumber(edge->portIdOn(this)) == lpId) {
 				QPointF conn = edge->connectionPoint(this);
 				QPointF next = edge->nextFrom(this);
 				qreal x1 = conn.x();
@@ -781,7 +781,7 @@ QPointF const NodeElement::getNearestPort(QPointF const &location) const
 
 int NodeElement::portId(qreal id)
 {
-	return PortHandler::portId(id);
+	return PortHandler::portNumber(id);
 }
 
 qreal NodeElement::getPortId(QPointF const &location) const
