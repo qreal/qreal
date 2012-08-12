@@ -52,7 +52,7 @@ public:
 
 	/**
 	 * Calculates nearest point of NodeElement ports to parameter point. 
-	 * @param location To this point nearest port is calculated.
+	 * @param location To this point nearest port will be calculated.
 	 * @return Nearest point of NodeElement ports to parameter point.
 	 */
 	QPointF const getNearestPort(QPointF const &location) const;
@@ -63,13 +63,29 @@ public:
 	 */
 	qreal getPortId(QPointF const &location) const;
 
+	/**
+	 * Returns minimum distance from line port to point.
+	 * @param linePortNumber Number of line port at line port list.
+	 * @param location To this point distance will be calculated.
+	 * @return Minimum distance from line port to point.
+	 */
 	qreal minDistanceFromLinePort(int const linePortNumber, QPointF const &location) const;
+
+
 	qreal distanceFromPointPort(int const pointPortNumber, QPointF const &location) const;
 	qreal getNearestPointOfLinePort(int const linePortNumber, QPointF const &location) const;
 	
 	void connectTemporaryRemovedLinksToPort(qReal::IdList const &temporaryRemovedLinks, QString const &direction);
 
+	/**
+	 * Connects all temporary removed from working NodeElement edges.
+	 */
 	void checkConnectionsToPort();
+
+	/**
+	 *  Connects edge at working NodeElement position to a port.
+	 *  (Calls edge->connectToPort().)
+	 */
 	void connectLinksToPorts();
 	
 	void arrangeLinearPorts();
@@ -84,7 +100,18 @@ public:
 	void setGraphicalAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi);
 
 private:
+	/// Value for determing ID of nonexistent port.
 	static qreal const mNonexistentPortId = -1; // just smth negative
+	
+	/**
+	 * Maximum fraction part value of line port ID.
+	 * They use it for avoiding confusion with next port in our model of port IDs.
+	 * Example:
+	 * 	N - port Id
+	 * 	N + 1 - next port!
+	 * 0.9999 is a number that is really close to 1.
+	 */
+	static qreal const mMaximumFractionPartValue = 0.9999;
 
 	/**
 	 * Returns point port ID that locality contains parameter point. If there is no such locality, it returns mNonexistentPortId.
@@ -100,7 +127,18 @@ private:
 	 */
 	qreal getLinePortId(QPointF const &location) const;
 
+	/**
+	 * Returns distance from location to closest point port of NodeElement and this port number in list of point ports.
+	 * @param location Result will be calculated for this point. 
+	 * @return distance from location to closest point port of NodeElement and this port number in list of point ports.
+	 */
 	QPair<qreal, int> nearestPointPortNumberAndDistance(QPointF const &location) const;
+	
+	/**
+	 * Returns distance from location to closest line port of NodeElement and this port number in list of line ports.
+	 * @param location Result will be calculated for this point. 
+	 * @return distance from location to closest line port of NodeElement and this port number in list of line ports.
+	 */
 	QPair<qreal, int> nearestLinePortNumberAndDistance(QPointF const &location) const;
 
 	/// Node that ports are actually dealt with.

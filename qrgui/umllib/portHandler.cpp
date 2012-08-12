@@ -14,12 +14,14 @@ PortHandler::PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistA
 qreal PortHandler::minDistanceFromLinePort(int linePortNumber, QPointF const &location) const
 {
 	QLineF const linePort = newTransform(mLinePorts[linePortNumber]);
+
+	// Triangle side values. 
 	qreal const a = linePort.length();
 	qreal const b = QLineF(linePort.p1(), location).length();
 	qreal const c = QLineF(linePort.p2(), location).length();
 
 	qreal const nearestPointOfLinePort = getNearestPointOfLinePort(linePortNumber, location);
-	if ((nearestPointOfLinePort < 0) || (nearestPointOfLinePort > 0.9999)) {
+	if ((nearestPointOfLinePort < 0) || (nearestPointOfLinePort > mMaximumFractionPartValue)) {
 		return qMin(b, c);
 	} else {
 		qreal const p = (a + b + c) / 2;
@@ -137,9 +139,7 @@ QPointF const PortHandler::getNearestPort(QPointF const &location) const
 
 	int num = 0;
 	foreach (StatLine const &linePort, mLinePorts) {
-		// 0.9999 is a number that is really close to 1.
-		// By this qMin we choose a point close to end but isn't end.
-		qreal positionAtLineCoef = qMin(qMax(0., getNearestPointOfLinePort(num, location)), 0.9999);
+		qreal positionAtLineCoef = qMin(qMax(0., getNearestPointOfLinePort(num, location)), mMaximumFractionPartValue);
 		QLineF const sceneLine = newTransform(linePort);
 		QPointF const port = sceneLine.pointAt(positionAtLineCoef);
 		qreal const currentDistance = QLineF(port, location).length();
@@ -190,9 +190,7 @@ qreal PortHandler::getLinePortId(QPointF const &location) const
 		if (path.contains(location)) {
 			return linePortNumber + mPointPorts.size()
 				+ qMin(QLineF(line.p1(), location).length() / line.length()
-					, 0.9999);
-			// 0.9999 is a number that is really close to 1.
-			// By this qMin we choose a point close to end but isn't end.
+					, mMaximumFractionPartValue);
 		}
 		linePortNumber++;
 	}
@@ -242,13 +240,13 @@ qreal PortHandler::getPortId(QPointF const &location) const
 		return mNonexistentPortId;
 	}
 
-	// In point port locality
+	// Finding in point port locality
 	qreal pointPortId = getPointPortId(location);
 	if (pointPortId != mNonexistentPortId) {
 		return pointPortId; 
 	}
 
-	// In line port locality
+	// Finding in line port locality
 	qreal linePortId = getLinePortId(location);
 	if (linePortId != mNonexistentPortId) {
 		return linePortId;
@@ -269,8 +267,10 @@ qreal PortHandler::getPortId(QPointF const &location) const
 		// There is only line ports.
 		// And they exist, because of first method if.
 		qreal nearestPointOfLinePort = getNearestPointOfLinePort(linePortRes.second, location);
+
+		// Moving nearestPointOfLinePort value to [0, 1).
 		nearestPointOfLinePort = qMin(0., nearestPointOfLinePort);
-		nearestPointOfLinePort = qMax(0.9999, nearestPointOfLinePort);
+		nearestPointOfLinePort = qMax(mMaximumFractionPartValue, nearestPointOfLinePort);
 
 		return (linePortRes.second + mPointPorts.size()) // Integral part of ID.
 			+ nearestPointOfLinePort; // Fractional part of ID.
