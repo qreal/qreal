@@ -67,7 +67,7 @@ public:
 	qreal distanceFromPointPort(int const pointPortNumber, QPointF const &location) const;
 	qreal getNearestPointOfLinePort(int const linePortNumber, QPointF const &location) const;
 	
-	void connectTemporaryRemovedLinksToPort(qReal::IdList const &rtemporaryRemovedLinks, QString const &direction);
+	void connectTemporaryRemovedLinksToPort(qReal::IdList const &temporaryRemovedLinks, QString const &direction);
 
 	void checkConnectionsToPort();
 	void connectLinksToPorts();
@@ -84,6 +84,25 @@ public:
 	void setGraphicalAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi);
 
 private:
+	static qreal const mNonexistentPortId = -1; // just smth negative
+
+	/**
+	 * Returns point port ID that locality contains parameter point. If there is no such locality, it returns mNonexistentPortId.
+	 * @param location Point that is considered for locate in locality (kvadratik, kvadratik) of point ports.
+	 * @return Point port ID that locality contains parameter point. If there is no such locality, it returns mNonexistentPortId.
+	 */
+	qreal getPointPortId(QPointF const &location) const;
+
+	/**
+	 * Returns line port point ID that locality contains parameter point. If there is no such locality, it returns mNonexistentPortId.
+	 * @param location Point that is considered for locate in locality (kvadratik - 5, kvadratik - 5) of line port points.
+	 * @return line port point ID that locality contains parameter point. If there is no such locality, it returns mNonexistentPortId.
+	 */
+	qreal getLinePortId(QPointF const &location) const;
+
+	QPair<qreal, int> nearestPointPortNumberAndDistance(QPointF const &location) const;
+	QPair<qreal, int> nearestLinePortNumberAndDistance(QPointF const &location) const;
+
 	/// Node that ports are actually dealt with.
 	NodeElement *mNode;
 

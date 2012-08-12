@@ -121,7 +121,7 @@ int PortHandler::portNumber(qreal id)
 QPointF const PortHandler::getNearestPort(QPointF const &location) const
 {
 	QPointF nearestPortPoint;
-	qreal minDistance = -1.0; // just smth negative 
+	qreal minDistance = -1; // just smth negative 
 
 	// Not const reference because port value is used for calculation.
 	foreach (StatPoint port, mPointPorts) {
@@ -137,6 +137,8 @@ QPointF const PortHandler::getNearestPort(QPointF const &location) const
 
 	int num = 0;
 	foreach (StatLine const &linePort, mLinePorts) {
+		// 0.9999 is a number that is really close to 1.
+		// By this qMin we choose a point close to end but isn't end.
 		qreal positionAtLineCoef = qMin(qMax(0., getNearestPointOfLinePort(num, location)), 0.9999);
 		QLineF const sceneLine = newTransform(linePort);
 		QPointF const port = sceneLine.pointAt(positionAtLineCoef);
@@ -156,85 +158,124 @@ QPointF const PortHandler::getNearestPort(QPointF const &location) const
 	return location;
 }
 
-qreal PortHandler::getPortId(QPointF const &location) const
+qreal PortHandler::getPointPortId(QPointF const &location) const
 {
 	int pointPortNumber = 0;
 	foreach (StatPoint const &pointPort, mPointPorts) {
 		if (QRectF(newTransform(pointPort) - QPointF(kvadratik, kvadratik),
-					QSizeF(kvadratik * 2, kvadratik * 2)).contains(location))
+					QSizeF(kvadratik * 2, kvadratik * 2)
+			).contains(location))
 		{
-			return 1.0 * pointPortNumber;
+			return pointPortNumber;
 		}
 		pointPortNumber++;
 	}
 
+	return mNonexistentPortId;
+}
+
+qreal PortHandler::getLinePortId(QPointF const &location) const
+{
 	int linePortNumber = 0;
 	foreach (StatLine const &linePort, mLinePorts) {
 		QPainterPathStroker ps;
 		ps.setWidth(kvadratik - 5);
 
 		QPainterPath path;
-		path.moveTo(newTransform(linePort).p1());
-		path.lineTo(newTransform(linePort).p2());
+		QLineF const line = newTransform(linePort);
+		path.moveTo(line.p1());
+		path.lineTo(line.p2());
 
 		path = ps.createStroke(path);
 		if (path.contains(location)) {
-			return 1.0 * (linePortNumber + mPointPorts.size())
-				+ qMin(0.9999
-						, QLineF(QLineF(newTransform(linePort)).p1(), location).length()
-							/ newTransform(linePort).length()
-				);
+			return linePortNumber + mPointPorts.size()
+				+ qMin(QLineF(line.p1(), location).length() / line.length()
+					, 0.9999);
+			// 0.9999 is a number that is really close to 1.
+			// By this qMin we choose a point close to end but isn't end.
 		}
 		linePortNumber++;
 	}
 
-	qreal minDistance = 0;
-	int numMinDistance = -1;
-	if (mPointPorts.size() != 0) {
-		numMinDistance = 0;
-		minDistance = distanceFromPointPort(0, location);
-		for (int i = 1; i < mPointPorts.size(); i++) {
-			qreal currentDistance = distanceFromPointPort(i, location);
-			if (currentDistance < minDistance) {
-				numMinDistance = i;
-				minDistance = currentDistance;
-			}
+	return mNonexistentPortId;
+}
+
+QPair<qreal, int> PortHandler::nearestPointPortNumberAndDistance(QPointF const &location) const
+{
+	qreal minDistance = -1; // just smth negative
+	
+	int pointPortNumber = 0;
+	int minDistancePointPortNumber = -1; // just smth negative
+	foreach (StatPoint const &pointPort, mPointPorts) {
+		qreal const currentDistance = distanceFromPointPort(pointPortNumber, location);
+		if (currentDistance < minDistance || minDistance < 0) {
+			minDistancePointPortNumber = pointPortNumber;
+			minDistance = currentDistance;
 		}
+		pointPortNumber++;
 	}
 
-	if (mLinePorts.size() == 0) {
-		if (numMinDistance >= 0) {
-			return 1.0 * numMinDistance;
-		}
-	}
-	
-	bool linePort = false;
-	if (numMinDistance == -1) {
-		numMinDistance = 0;
-		minDistance = minDistanceFromLinePort(0, location);
-		linePort = true;
-	}
-	for (int i = 0; i < mLinePorts.size(); i++) {
-		qreal currentDistance = minDistanceFromLinePort(i, location);
-		if (currentDistance < minDistance) {
-			numMinDistance = i;
+	return qMakePair(minDistance, minDistancePointPortNumber);
+}
+
+QPair<qreal, int> PortHandler::nearestLinePortNumberAndDistance(QPointF const &location) const
+{
+	qreal minDistance = -1; // just smth negative
+
+	int linePortNumber = 0;
+	int minDistanceLinePortNumber = -1; // just smth negative
+	foreach (StatLine const &linePort, mLinePorts) {
+		qreal const currentDistance = minDistanceFromLinePort(linePortNumber, location);
+		if (currentDistance < minDistance || minDistance < 0) {
+			minDistanceLinePortNumber = linePortNumber;
 			minDistance = currentDistance;
-			linePort = true;
 		}
+		linePortNumber++;
 	}
-	if (linePort) {
-		qreal nearestPointOfLinePort = getNearestPointOfLinePort(numMinDistance, location);
-		if (nearestPointOfLinePort < 0) {
-			nearestPointOfLinePort = 0;
-		} else if (nearestPointOfLinePort > 0.9999) {
-			nearestPointOfLinePort = 0.9999;
+
+	return qMakePair(minDistance, minDistanceLinePortNumber);
+}
+
+qreal PortHandler::getPortId(QPointF const &location) const
+{
+	if (mPointPorts.empty() && mLinePorts.empty()) {
+		return mNonexistentPortId;
+	}
+
+	// In point port locality
+	qreal pointPortId = getPointPortId(location);
+	if (pointPortId != mNonexistentPortId) {
+		return pointPortId; 
+	}
+
+	// In line port locality
+	qreal linePortId = getLinePortId(location);
+	if (linePortId != mNonexistentPortId) {
+		return linePortId;
+	}
+
+	// Nearest ports
+	QPair<qreal, int> const pointPortRes = nearestPointPortNumberAndDistance(location);
+	QPair<qreal, int> const linePortRes = nearestLinePortNumberAndDistance(location);
+
+	// First field is distance.
+	// In case it is less than 0 there is no ports of appropriate kind.
+	// Second field is number of port in port list of appropriate kind.
+	if (!(pointPortRes.first < 0)) {
+		if (pointPortRes.first < linePortRes.first || linePortRes.first < 0) {
+			return pointPortRes.second;
 		}
-		return 1.0 * (numMinDistance + nearestPointOfLinePort + mPointPorts.size());
 	} else {
-		return 1.0 * numMinDistance;
+		// There is only line ports.
+		// And they exist, because of first method if.
+		qreal nearestPointOfLinePort = getNearestPointOfLinePort(linePortRes.second, location);
+		nearestPointOfLinePort = qMin(0., nearestPointOfLinePort);
+		nearestPointOfLinePort = qMax(0.9999, nearestPointOfLinePort);
+
+		return (linePortRes.second + mPointPorts.size()) // Integral part of ID.
+			+ nearestPointOfLinePort; // Fractional part of ID.
+		// More information about ID parts in *Useful information* before class declaration.
 	}
-	
-	return -1.0;
 }
 
 void PortHandler::connectLinksToPorts()
@@ -291,9 +332,10 @@ void PortHandler::arrangeLinearPorts() {
 		int const n = sortedEdges.size();
 		int i = 0;
 		foreach (EdgeElement* edge, sortedEdges) {
-			qreal newId = lpId + (1.0 + i++) / (n + 1);
+			qreal newId = lpId + (i + 1.0) / (n + 1);
 			//qDebug() << "-" << edge->uuid().toString() << newId;
 			edge->moveConnection(mNode, newId);
+			i++;
 		}
 
 		lpId++; //next linear port.
