@@ -28,6 +28,7 @@ void RobotsGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
     mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
     mRepoControlApi = &configurator.repoControlInterface();
+	mProjectManager = &configurator.projectManager();
 
     mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
 }
@@ -67,6 +68,8 @@ void RobotsGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool 
 
 void RobotsGeneratorPlugin::generateRobotSourceCode()
 {
+	mProjectManager->save();
+
     robots::generator::NxtOSEKRobotGenerator gen(mMainWindowInterface->activeDiagram(),
              *mRepoControlApi,
              *mMainWindowInterface->errorReporter());

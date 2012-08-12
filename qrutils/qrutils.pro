@@ -39,3 +39,6 @@ include(graphicsUtils/graphicsUtils.pri)
 
 # Stuff connected with graph transformation
 include(graphTransformation/graphTransformation.pri)
+
+# Stuff for running long operations in different modes
+include(invocationUtils/invocationUtils.pri)

@@ -26,7 +26,7 @@
      <number>0</number>
     </property>
     <item row="0" column="0">
-     <widget class="QTabWidget" name="tabs"/>
+     <widget class="qReal::gui::TabWidget" name="tabs"/>
     </item>
    </layout>
   </widget>
@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>843</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -83,6 +83,7 @@
     <property name="title">
      <string>Tools</string>
     </property>
+    <addaction name="actionShow"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -139,24 +140,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QGraphicsView" name="minimapView">
-       <property name="dragMode">
-        <enum>QGraphicsView::ScrollHandDrag</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QSlider" name="minimapZoomSlider">
-       <property name="maximum">
-        <number>50</number>
-       </property>
-       <property name="value">
-        <number>25</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
+      <widget class="MiniMap" name="minimapView"/>
      </item>
     </layout>
    </widget>
@@ -492,6 +476,9 @@
    <property name="text">
     <string>Save as...</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
   </action>
   <action name="actionOpen">
    <property name="text">
@@ -522,7 +509,7 @@
   </action>
   <action name="actionShow">
    <property name="text">
-    <string>Show</string>
+    <string>Mouse gestures</string>
    </property>
   </action>
   <action name="actionPreferences">
@@ -706,6 +693,17 @@
    <extends>QWidget</extends>
    <header>../view/propertyEditorView.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>../mainwindow/tabWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MiniMap</class>
+   <extends>QGraphicsView</extends>
+   <header>../mainwindow/miniMap.h</header>
   </customwidget>
  </customwidgets>
  <resources>

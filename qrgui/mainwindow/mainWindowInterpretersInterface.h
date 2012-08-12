@@ -2,6 +2,7 @@
 
 #include "../../qrkernel/ids.h"
 #include "../toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "../../qrutils/invocationUtils/longOperation.h"
 
 namespace qReal {
 namespace gui {
@@ -71,6 +72,11 @@ public:
 	virtual void updateActiveDiagram() = 0;
 
 	virtual void deleteElementFromDiagram(Id const &id) = 0;
+
+	/// Must be called before some long operation start.
+	/// Shows progress bar on operation start
+	/// @param operation Operation that going to be invoced
+	virtual void reportOperation(invocation::LongOperation *operation) = 0;
 };
 
 }

@@ -139,6 +139,7 @@ void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorLi
 	item->setTextAlignment(Qt::AlignVCenter);
 	item->setToolTip(error.position().toString());
 	errorListWidget->addItem(item);
+	errorListWidget->setCurrentItem(item);
 }
 
 QString ErrorReporter::severityMessage(Error const &error)

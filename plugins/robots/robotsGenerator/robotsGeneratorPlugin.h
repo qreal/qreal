@@ -60,6 +60,9 @@ private:
 	/// Interface of MainWindow
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership
 
+	/// Interface of project manager (allows to perform open/save activities)
+	qReal::ProjectManagementInterface *mProjectManager; // Does not have ownership
+
 	/// Control interface of the repository
 	qrRepo::RepoControlInterface *mRepoControlApi;  // Does not have ownership
 
