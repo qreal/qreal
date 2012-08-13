@@ -4,7 +4,7 @@
 #include <QtCore/QMap>
 #include <QtGui/QIcon>
 #include <QPair>
-#include "../../../qrgui/pluginInterface/editorInterface.h"
+#include "../../../qrgui/editorPluginInterface/editorInterface.h"
 
 class @@MetamodelName@@Plugin : public QObject, public qReal::EditorInterface
 {
@@ -25,6 +25,14 @@ public:
 
 	virtual QStringList diagrams() const;
 	virtual QStringList elements(QString const &diagram) const;
+	virtual QString elementDescription(QString const &diagram, QString const &element) const;
+	virtual QString propertyDescription(QString const &diagram, QString const &element, QString const &property) const;
+	virtual QString propertyDisplayedName(QString const &diagram, QString const &element, QString const &property) const;
+	virtual bool isParentOf(QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const;
+	virtual QList<QPair<QString, QString> > getParentsOf(QString const &diagram, QString const &element) const;
+	virtual QStringList diagramPaletteGroups(QString const &diagram) const;
+	virtual QStringList diagramPaletteGroupList(QString const &diagram, QString const &group) const;
+	virtual QString diagramPaletteGroupDescription(QString const &diagram, QString const &group) const;
 	virtual QStringList getPropertiesWithDefaultValues(QString const &element) const;
 
 	virtual QStringList getTypesContainedBy(QString const &element) const;
@@ -57,5 +65,11 @@ private:
 	QMap<QString, QMap<QString, QString> > propertyDefault;
 	QMap<QString, QMap<QString, QString> > elementsNameMap;
 	QMap<QString, QMap<QString, QString> > elementMouseGesturesMap;
+	QMap<QString, QMap<QString, QString> > elementsDescriptionMap;
+	QMap<QString, QMap<QString, QMap<QString, QString> > > propertiesDescriptionMap;
+	QMap<QString, QMap<QString, QMap<QString, QString> > > propertiesDisplayedNamesMap;
+	QMap<QString, QMap<QString, QList<QPair<QString, QString> > > > parentsMap;
+	QMap<QString, QMap<QString, QStringList > > paletteGroupsMap;
+	QMap<QString, QMap<QString, QString > > paletteGroupsDescriptionMap;
 };
 

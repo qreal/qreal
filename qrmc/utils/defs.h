@@ -110,6 +110,7 @@ QString const isPortTag = "@@IsPort@@";
 QString const hasPinTag = "@@HasPin@@";
 QString const lineSdfTag = "@@LineSdf@@";
 QString const lineTypeTag = "@@LineType@@";
+QString const isResizeable = "@@IsResizeable@@";
 
 QString const nodesListTag = "@@NodesList@@";
 QString const edgesListTag = "@@EdgesList@@";

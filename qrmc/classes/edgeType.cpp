@@ -9,7 +9,7 @@
 using namespace qrmc;
 using namespace qReal;
 
-EdgeType::EdgeType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id) : GraphicType(diagram, api, id)
+EdgeType::EdgeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id) : GraphicType(diagram, api, id)
 {
 	mLineType = mApi->stringProperty(id, "lineType");
 	initLabels();

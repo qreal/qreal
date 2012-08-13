@@ -50,9 +50,57 @@ QStringList @@MetamodelName@@Plugin::elements(QString const &diagram) const
 	return elementsNameMap[diagram].keys();
 }
 
+QString @@MetamodelName@@Plugin::elementDescription(QString const &diagram, QString const &element) const
+{
+	return elementsDescriptionMap[diagram][element];
+}
+
+QString @@MetamodelName@@Plugin::propertyDescription(QString const &diagram, QString const &element, QString const &property) const
+{
+	return propertiesDescriptionMap[diagram][element][property];
+}
+
+QString @@MetamodelName@@Plugin::propertyDisplayedName(QString const &diagram, QString const &element, QString const &property) const
+{
+	return propertiesDisplayedNamesMap[diagram][element][property];
+}
+
+bool @@MetamodelName@@Plugin::isParentOf(QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const
+{
+	if (childDiagram == parentDiagram && childElement == parentElement)
+		return true;
+	if (parentsMap[childDiagram][childElement].contains(qMakePair(parentDiagram, parentElement)))
+		return true;
+	typedef QPair<QString, QString> StringPair;
+	foreach (StringPair const &pair, parentsMap[childDiagram][childElement])
+		if (isParentOf(parentDiagram, parentElement, pair.first, pair.second))
+			return true;
+	return false;
+}
+
+QList<QPair<QString, QString> > @@MetamodelName@@Plugin::getParentsOf(QString const &diagram, QString const &element) const
+{
+	return parentsMap[diagram][element];
+}
+
+QStringList @@MetamodelName@@Plugin::diagramPaletteGroups(QString const &diagram) const
+{
+	return paletteGroupsMap[diagram].keys();
+}
+
+QStringList @@MetamodelName@@Plugin::diagramPaletteGroupList(QString const &diagram, QString const &group) const
+{
+	return paletteGroupsMap[diagram][group];
+} 
+
 QStringList @@MetamodelName@@Plugin::getPropertiesWithDefaultValues(QString const &element) const
 {
 	return propertyDefault[element].keys();
+}
+
+QString @@MetamodelName@@Plugin::diagramPaletteGroupDescription(QString const &diagram, QString const &group) const
+{
+	return paletteGroupsDescriptionMap[diagram][group];
 }
 
 QIcon @@MetamodelName@@Plugin::getIcon(SdfIconEngineV2Interface *engine) const

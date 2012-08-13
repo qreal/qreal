@@ -3,9 +3,9 @@
 #include <QBrush>
 #include <QPainter>
 
-#include "../../../qrgui/pluginInterface/elementImpl.h"
-#include "../../../qrgui/pluginInterface/elementTitleHelpers.h"
-#include "../../../qrgui/pluginInterface/elementRepoInterface.h"
+#include "../../../qrgui/editorPluginInterface/elementImpl.h"
+#include "../../../qrgui/editorPluginInterface/elementTitleHelpers.h"
+#include "../../../qrgui/editorPluginInterface/elementRepoInterface.h"
 #include "../../../qrgui/umllib/element.h"
 
 @@NodesList@@

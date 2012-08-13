@@ -8,7 +8,7 @@ namespace qrmc {
 	class Property
 	{
 	public:
-		Property(qrRepo::RepoApi *api, qReal::Id const &id);
+		Property(qrRepo::LogicalRepoApi *api, qReal::Id const &id);
 
 		bool init();
 		QString name();
@@ -23,7 +23,7 @@ namespace qrmc {
 		QString generateDefaultsLine(QString const &lineTemplate) const;
 
 	private:
-		qrRepo::RepoApi *mApi;
+		qrRepo::LogicalRepoApi *mApi;
 		qReal::Id mId;
 		QString mName;
 		QString mType;

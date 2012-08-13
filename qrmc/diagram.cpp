@@ -10,7 +10,7 @@
 using namespace qReal;
 using namespace qrmc;
 
-Diagram::Diagram(qReal::Id const &id,  qrRepo::RepoApi *api, Editor *editor)
+Diagram::Diagram(qReal::Id const &id,  qrRepo::LogicalRepoApi *api, Editor *editor)
 	: mId(id), mApi(api), mEditor(editor)
 {
 	mDiagramName = mApi->name(id);

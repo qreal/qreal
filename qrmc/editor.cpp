@@ -10,7 +10,7 @@
 using namespace qReal;
 using namespace qrmc;
 
-Editor::Editor(MetaCompiler *metaCompiler, qrRepo::RepoApi *api, const qReal::Id &id)
+Editor::Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, const qReal::Id &id)
 	: mMetaCompiler(metaCompiler), mApi(api), mId(id), mLoadingComplete(false)
 {
 	mName = mApi->property(mId, nameOfTheDirectory).toString().section("/", -1);
@@ -362,7 +362,7 @@ void Editor::generateDiagramsMap()
 	foreach(Diagram *diagram, mDiagrams) {
 		QString newline = line;
 		initNameMapBody += newline.replace(diagramDisplayedNameTag, diagram->displayedName())
-								.replace(diagramNameTag, diagram->name()) + endline;
+				.replace(diagramNameTag, diagram->name()) + endline;
 	}
 	// inserting generated lines into main template
 	mSourceTemplate.replace(initDiagramNameMapLineTag, initNameMapBody);
@@ -373,7 +373,7 @@ void Editor::generateDiagramNodeNamesMap()
 	// preparing template for diagramNodeNameMap inits
 	QString initNodeNameMapBody = "";
 	QString const line = mUtilsTemplate[initDiagramNodeNameMapLineTag];
-	foreach(Diagram *diagram, mDiagrams)	{
+	foreach(Diagram *diagram, mDiagrams) {
 		QString newline = line;
 		initNodeNameMapBody += newline.replace(diagramNodeNameTag, diagram->nodeName())
 								.replace(diagramNameTag, diagram->name()) + endline;

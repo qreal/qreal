@@ -1,5 +1,6 @@
 QT += xml
 
+CONFIG += console
 TARGET = qrmc
 
 DEPENDPATH += . \

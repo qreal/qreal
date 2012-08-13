@@ -10,8 +10,8 @@
 using namespace qrmc;
 using namespace qReal;
 
-NodeType::NodeType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id id) : GraphicType(diagram, api, id), mIsPin(false),
-mIsHavePin(false)
+NodeType::NodeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id id) : GraphicType(diagram, api, id), mIsPin(false),
+	mIsHavePin(false)
 {
 }
 
@@ -77,6 +77,7 @@ QString NodeType::generateNodeClass(const QString &classTemplate)
 			.replace(nodeBorderTag, border)
 			.replace(isNodeTag, "true")
 			.replace(elementNameTag, name())
+			.replace(isResizeable, loadBoolProperty(mId, "isResizeable"))
 			.replace("\\n", "\n");
 	nodeClass += endline;
 	return nodeClass;

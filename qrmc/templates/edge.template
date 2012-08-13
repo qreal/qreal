@@ -1,6 +1,6 @@
 	class @@ElementName@@ : public ElementImpl {
 	public:
-		void init(QRectF &, QList<QPointF> &, QList<StatLine> &,
+		void init(QRectF &, QList<StatPoint> &, QList<StatLine> &,
 				ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &,
 				SdfRendererInterface *, SdfRendererInterface *) {}
 
@@ -23,6 +23,10 @@
 		bool maximizesChildren() { return false; }
 		bool isPort() { return false; }
 		bool hasPin() { return false; }
+		bool isResizeable() { return true; }
+		int getPenWidth() { return 1; }
+		QColor getPenColor() { return QColor(); }
+		bool isDividable() { return false; }
 		QList<double> border()
 		{
 			QList<double> list;

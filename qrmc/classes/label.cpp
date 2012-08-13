@@ -8,7 +8,13 @@ using namespace qrmc;
 bool Label::init(QDomElement const &element, int index, bool nodeLabel)
 {
 	mX = element.attribute("x", "0");
+	if (mX.contains("a")) {
+		mX.chop(1);
+	}
 	mY = element.attribute("y", "0");
+	if (mY.contains("a")) {
+		mY.chop(1);
+	}
 	mCenter = element.attribute("center", "false");
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");

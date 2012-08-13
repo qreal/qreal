@@ -16,7 +16,7 @@ namespace qrmc {
 	class MetaCompiler
 	{
 	public:
-		MetaCompiler(QString const &qrmcDir, QString const &workingCopyDir);
+		MetaCompiler(QString const &qrmcDir, qrRepo::LogicalRepoApi *mLogicalRepoApi);
 		~MetaCompiler();
 		bool compile(QString const &metamodel = "");
 		Editor *loadMetaModel(qReal::Id const &id);
@@ -26,7 +26,7 @@ namespace qrmc {
 		QString getTemplateUtils(QString const &tmpl) const;
 
 	private:
-		qrRepo::RepoApi mApi;
+		qrRepo::LogicalRepoApi *mApi;
 		QMap<QString, Editor*> mEditors;
 
 		QString mLocalDir;

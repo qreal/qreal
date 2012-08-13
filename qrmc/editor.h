@@ -21,7 +21,7 @@ namespace qrmc {
 	class Editor
 	{
 	public:
-		Editor(MetaCompiler *metaCompiler, qrRepo::RepoApi *api, qReal::Id const &id);
+		Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
 		~Editor();
 		MetaCompiler *metaCompiler();
 		qReal::Id id();
@@ -62,7 +62,7 @@ namespace qrmc {
 		void generatePossibleEdges();
 
 		MetaCompiler *mMetaCompiler;
-		qrRepo::RepoApi *mApi;
+		qrRepo::LogicalRepoApi *mApi;
 		qReal::Id mId;
 		QString mName;
 		bool mLoadingComplete;

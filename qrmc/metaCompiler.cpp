@@ -16,10 +16,10 @@
 using namespace qReal;
 using namespace qrmc;
 
-MetaCompiler::MetaCompiler(QString const &qrmcDir, QString const &workingCopyDir) : mApi(workingCopyDir)
+MetaCompiler::MetaCompiler(QString const &qrmcDir, qrRepo::LogicalRepoApi *mLogicalRepoApi) : mApi(mLogicalRepoApi)
 {
 	mLocalDir = qrmcDir;
-	mApi.setName(Id::rootId(), Id::rootId().toString());
+	mApi->setName(Id::rootId(), Id::rootId().toString());
 	loadTemplateFromFile(pluginHeaderTemplate, mPluginHeaderTemplate);
 	loadTemplateFromFile(pluginSourceTemplate, mPluginSourceTemplate);
 	loadTemplateFromFile(nodeClassTemplate, mNodeTemplate);
@@ -41,18 +41,19 @@ MetaCompiler::~MetaCompiler()
 bool MetaCompiler::compile(QString const &targetMetamodel)
 {
 	mTargetMetamodel = targetMetamodel;
-	IdList rootItems = mApi.children(Id::rootId());
+	IdList rootItems = mApi->children(Id::rootId());
+	//mApi.printDebug();
 	qDebug() << "root diagrams:" << rootItems.size();
 	if (rootItems.isEmpty())
 		qDebug() << "couldn't load any root diagrams";
 	foreach(qReal::Id editorId, rootItems) {
-		if (!mApi.isLogicalElement(editorId))
+		if (!mApi->isLogicalElement(editorId))
 			continue;
 
 		if (editorId.element() == metamodelDiagram) {
-			if (!mTargetMetamodel.isEmpty() && mApi.name(editorId) != mTargetMetamodel )
+			if (!mTargetMetamodel.isEmpty() && mApi->name(editorId) != mTargetMetamodel )
 				continue;
-			mPluginName = NameNormalizer::normalize(mApi.property(editorId, nameOfTheDirectory)
+			mPluginName = NameNormalizer::normalize(mApi->property(editorId, nameOfTheDirectory)
 											.toString().section("/", -1));
 			if (!loadMetaModel(editorId))
 				return false;
@@ -121,8 +122,8 @@ bool MetaCompiler::loadTemplateUtils()
 
 Editor* MetaCompiler::loadMetaModel(Id const &metamodelId)
 {
-	qDebug() << "Loading metamodel started: " << mApi.name(metamodelId);
-	QString metamodelName = mApi.name(metamodelId);
+	qDebug() << "Loading metamodel started: " << mApi->name(metamodelId);
+	QString metamodelName = mApi->name(metamodelId);
 
 	if (mEditors.contains(metamodelName)) {
 		Editor *editor = mEditors[metamodelName];
@@ -134,7 +135,7 @@ Editor* MetaCompiler::loadMetaModel(Id const &metamodelId)
 			return NULL;
 		}
 	} else {
-		Editor *editor = new Editor(this, &mApi, metamodelId);
+		Editor *editor = new Editor(this, mApi, metamodelId);
 		if (!editor->load()) {
 			qDebug() << "ERROR: Failed to load file";
 			delete editor;
@@ -162,7 +163,7 @@ void MetaCompiler::generateCode()
 
 	QString pluginNames;
 	foreach (Editor *editor, mEditors) {
-		if (!mTargetMetamodel.isEmpty() && mApi.name(editor->id()) != mTargetMetamodel )
+		if (!mTargetMetamodel.isEmpty() && mApi->name(editor->id()) != mTargetMetamodel )
 			continue;
 		pluginNames += nodeIndent + editor->name() + "\\" + endline;
 		editor->generate(mPluginHeaderTemplate, mPluginSourceTemplate,

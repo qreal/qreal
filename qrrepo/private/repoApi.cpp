@@ -27,6 +27,11 @@ IdList RepoApi::children(Id const &id) const
 	return mClient.children(id);
 }
 
+void RepoApi::printDebug()
+{
+	mClient.printDebug();
+}
+
 IdList RepoApi::findElementsByName(QString const &name, bool sensitivity) const
 {
 	return mClient.findElementsByName(name, sensitivity);

@@ -9,7 +9,7 @@ namespace qrmc {
 	class EnumType : public NonGraphicType
 	{
 	public:
-		EnumType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const &id);
+		EnumType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
 
 		virtual bool init(QString const &context);
 		virtual Type* clone() const;

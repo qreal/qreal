@@ -6,7 +6,7 @@
 
 using namespace qrmc;
 
-Type::Type(bool isResolved, Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id)
+Type::Type(bool isResolved, Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id)
 	: mResolvingFinished(isResolved), mDiagram(diagram), mId(id), mApi(api)
 {
 }

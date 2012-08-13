@@ -25,6 +25,6 @@ namespace qrmc {
 		virtual QString generateResourceLine(QString const &resourceTemplate) const;
 
 	protected:
-		NonGraphicType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const &id);
+		NonGraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
 	};
 }

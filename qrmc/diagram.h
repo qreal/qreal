@@ -14,7 +14,7 @@ namespace qrmc {
 	class Diagram
 	{
 	public:
-		Diagram(qReal::Id const &id, qrRepo::RepoApi *api, Editor *editor);
+		Diagram(qReal::Id const &id, qrRepo::LogicalRepoApi *api, Editor *editor);
 		~Diagram();
 		bool init();
 		bool resolve();
@@ -51,7 +51,7 @@ namespace qrmc {
 			QString displayedName;
 		};
 		qReal::Id mId;
-		qrRepo::RepoApi *mApi;
+		qrRepo::LogicalRepoApi *mApi;
 		QMap<QString, Type*> mTypes;
 		QString mDiagramName;
 		QString mDiagramNodeName; // TODO: replace with QStringList for multiple nodeNames

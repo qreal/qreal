@@ -47,6 +47,8 @@ namespace qrRepo {
 		void removeChild(qReal::Id const &id, qReal::Id const &child);
 		void removeChildren(qReal::Id const &id);
 
+		void printDebug();
+
 		void removeElement(qReal::Id const &id);
 
 		qReal::Id parent(qReal::Id const &id) const;
