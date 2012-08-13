@@ -19,7 +19,7 @@ public slots:
 	bool suggestToOpenExisting();
 	bool openNewWithDiagram();
 	void suggestToCreateDiagram(bool isClosable = true);
-	bool suggestToimport();
+	bool suggestToImport();
 
 	void close();
 

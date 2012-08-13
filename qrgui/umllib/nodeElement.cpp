@@ -295,7 +295,7 @@ void NodeElement::arrangeLinearPorts() {
 		int const n = sortedEdges.size();
 		int i = 0;
 		foreach (EdgeElement* edge, sortedEdges) {
-			qreal newId = lpId + (1.0 + i++) / (N + 1);
+			qreal newId = lpId + (1.0 + i++) / (n + 1);
 			//qDebug() << "-" << edge->uuid().toString() << newId;
 			edge->moveConnection(this, newId);
 		}
@@ -870,10 +870,10 @@ const QPointF NodeElement::getNearestPort(QPointF const &location) const
 
 QLineF NodeElement::newTransform(StatLine const &port) const
 {
-	qreal const x1 = port.line.x1() * (port.prop_x1 ? port.initWidth : contentsRect().width());	
+	qreal const x1 = port.line.x1() * (port.prop_x1 ? port.initWidth : contentsRect().width());
 	qreal const y1 = port.line.y1() * (port.prop_y1 ? port.initHeight : contentsRect().height());
 
-	qreal const x2 = port.line.x2() * (port.prop_x2 ? port.initWidth : contentsRect().width());	
+	qreal const x2 = port.line.x2() * (port.prop_x2 ? port.initWidth : contentsRect().width());
 	qreal const y2 = port.line.y2() * (port.prop_y2 ? port.initHeight : contentsRect().height());
 
 	return QLineF(x1, y1, x2, y2);
