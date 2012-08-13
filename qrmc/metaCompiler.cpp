@@ -185,6 +185,7 @@ void MetaCompiler::generateCode()
 	}
 
 	QTextStream out(&file);
+	out.setCodec("UTF-8");
 	QString projectTemplate = mPluginsProjectTemplate;
 	out << projectTemplate.replace(subdirsTag, pluginNames);
 	file.close();

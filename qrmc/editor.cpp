@@ -204,6 +204,7 @@ bool Editor::generatePluginHeader(QString const &hdrTemplate)
 
 	headerTemplate.replace(metamodelNameTag, NameNormalizer::normalize(mName)); // header requires just plugin name customization
 	QTextStream out(&pluginHeaderFile);
+	out.setCodec("UTF-8");
 	out << headerTemplate;
 	pluginHeaderFile.close();
 
@@ -247,6 +248,7 @@ bool Editor::generatePluginSource()
 
 	// template is ready, writing it into a file
 	QTextStream out(&pluginSourceFile);
+	out.setCodec("UTF-8");
 	out << mSourceTemplate;
 	pluginSourceFile.close();
 	return true;
@@ -283,6 +285,7 @@ bool Editor::generateElementsClasses()
 						.replace(edgesListTag, generatedEdges);
 	// template is ready, writing it into a file
 	QTextStream out(&file);
+	out.setCodec("UTF-8");
 	out << mElementsHeaderTemplate;
 	file.close();
 	return true;
@@ -321,6 +324,7 @@ bool Editor::generateResourceFile(QString const &resourceTemplate)
 
 	// template is ready, writing it into a file
 	QTextStream out(&file);
+	out.setCodec("UTF-8");
 	out << resourceGenerated;
 	file.close();
 	return true;
@@ -348,6 +352,7 @@ bool Editor::generateProjectFile(const QString &proTemplate)
 
 	projectTemplate.replace(metamodelNameTag, mName); // .pro-file requires just plugin name customization
 	QTextStream out(&file);
+	out.setCodec("UTF-8");
 	out << projectTemplate;
 	file.close();
 
