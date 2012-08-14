@@ -5,10 +5,12 @@ HEADERS += umllib/edgeElement.h \
 	umllib/elementTitle.h \
 	umllib/contextMenuAction.h \
 	umllib/sceneGridHandler.h \
+	umllib/resizeHandler.h \
 	umllib/umlPortHandler.h \
 	umllib/embedded/linkers/embeddedLinker.h \
 	umllib/embedded/linkers/embeddedLinkers.h \
-	umllib/serializationData.h
+	umllib/serializationData.h \
+	umllib/borderChecker.h
 
 SOURCES += umllib/edgeElement.cpp \
 	umllib/element.cpp \
@@ -17,7 +19,9 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/elementTitle.cpp \
 	umllib/contextMenuAction.cpp \
 	umllib/sceneGridHandler.cpp \
+	umllib/resizeHandler.cpp \
 	umllib/umlPortHandler.cpp \
 	umllib/embedded/linkers/embeddedLinker.cpp \
 	umllib/embedded/linkers/embeddedLinkers.cpp \
-	umllib/serializationData.cpp
+	umllib/serializationData.cpp \
+	umllib/borderChecker.cpp

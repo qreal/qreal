@@ -29,6 +29,7 @@ void RobotsGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
 	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
 	mRepoControlApi = &configurator.repoControlInterface();
+	mProjectManager = &configurator.projectManager();
 
 	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
 }
@@ -55,7 +56,7 @@ QList<ActionInfo> RobotsGeneratorPlugin::actions()
 
 void RobotsGeneratorPlugin::generateRobotSourceCode()
 {
-	mMainWindowInterface->saveAll();
+	mProjectManager->save();
 
 	robots::generator::NxtOSEKRobotGenerator gen(*mRepoControlApi, *mMainWindowInterface->errorReporter());
 	gen.generate();

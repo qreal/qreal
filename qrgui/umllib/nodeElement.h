@@ -1,8 +1,7 @@
 
-/**
- * @file uml_nodeelement.h
- * @brief class for an element object on a diagram
- */
+/** @file nodeElement.h
+ *  @brief class for an element object on a diagram
+ * */
 
 #pragma once
 
@@ -44,7 +43,10 @@ public:
 	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w);
 
 	QRectF boundingRect() const;
+	/// Current value of mContents
 	QRectF contentsRect() const;
+	/// Folded contents of node
+	QRectF foldedContentsRect() const;
 
 	virtual void updateData();
 	void setGeometry(QRectF const &geom);
@@ -76,19 +78,12 @@ public:
 
 	void hideEmbeddedLinkers();
 
-	bool isPort();
+	bool isPort() const;
 	bool canHavePorts();
 
-	QList<double> borderValues();
+	QList<double> borderValues() const;
 
-	bool checkLowerBorder(QPointF &point, double x, double y) const;
-	bool checkUpperBorder(QPointF &point, double x, double y) const;
-	bool checkLeftBorder(QPointF &point, double x, double y) const;
-	bool checkRightBorder(QPointF &point, double x, double y) const;
-	bool checkNoBorderX(QPointF &point, double x, double y) const; // TODO: rename
-	bool checkNoBorderY(QPointF &point, double x, double y) const;
-
-	void resizeChild(QRectF newContents, QRectF oldContents);
+	//void resizeChild(QRectF const &newContents, QRectF const &oldContents);
 
 	virtual QList<ContextMenuAction *> contextMenuActions();
 	void switchAlignment(bool isSwitchedOn);
@@ -117,11 +112,14 @@ public:
 	Element *getPlaceholderNextElement();
 	void highlightEdges();
 
+	bool isFolded() const;
+	QGraphicsRectItem* placeholder() const;
+
 	virtual void deleteFromScene();
 
 public slots:
-	virtual void singleSelectionState(const bool singleSelected);
-	virtual void selectionState(const bool selected);
+	virtual void singleSelectionState(bool const singleSelected);
+	virtual void selectionState(bool const selected);
 	void switchGrid(bool isChecked);
 	NodeElement *copyAndPlaceOnDiagram(QPointF const &offset);
 
@@ -138,16 +136,35 @@ private:
 		BottomRight
 	};
 
+	/**
+	 * Resizes node trying to use newContents as new shape
+	 * of node (ignoring newContents position) and to move
+	 * node to newPos.
+	 * These parameters are corrected by child configuration
+	 * in most cases.
+	 * @param newContents Recommendation for new shape of node.
+	 * @param newPos Recommendation for new position of node.
+	 */
+	void resize(QRectF newContents, QPointF newPos);
 
-	/** @brief Padding that reserves space for title */
-	static int const titlePadding = 25;
-	/** @brief Space between children inside sorting containers */
-	static int const childSpacing = 10;
+	/**
+	 * Calls resize(QRectF newContents, QPointF newPos) with
+	 * newPos equals to current position of node.
+	 * @param newContents Recommendation for new shape of node.
+	 */
+	void resize(QRectF newContents);
+
+	/**
+	 * Calls resize(QRectF newContents, QPointF newPos) with
+	 * newPos equals to current position of node and
+	 * newContents equals to current shape (mContents).
+	 */
+	void resize();
 
 	void disconnectEdges();
 
 	void delUnusedLines();
-	PossibleEdge toPossibleEdge(const StringPossibleEdge & strPossibleEdge);
+	PossibleEdge toPossibleEdge(StringPossibleEdge const &strPossibleEdge);
 
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -168,23 +185,12 @@ private:
 	QLineF newTransform(StatLine const &port) const;
 	QPointF newTransform(StatPoint const &port) const;
 
-	void resize(QRectF newContents, QPointF newPos);
-	// newPos = mPos
-	void resize(QRectF newContents);
-	// newContents = mContents
-	void resize();
-
 	void updateByChild(NodeElement *item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
 
-	void moveChildren(qreal dx, qreal dy);
-	void moveChildren(QPointF const &moving);
-
-	void sortChildren();
-
-	qreal minDistanceFromLinePort(int linePortNumber, QPointF const &location) const;
-	qreal distanceFromPointPort(int pointPortNumber, QPointF const &location) const;
-	qreal getNearestPointOfLinePort(int linePortNumber, QPointF const &location) const;
+	qreal minDistanceFromLinePort(int const linePortNumber, QPointF const &location) const;
+	qreal distanceFromPointPort(int const pointPortNumber, QPointF const &location) const;
+	qreal getNearestPointOfLinePort(int const linePortNumber, QPointF const &location) const;
 
 	void initEmbeddedLinkers();
 	void setVisibleEmbeddedLinkers(bool const show);
@@ -192,8 +198,6 @@ private:
 	void connectTemporaryRemovedLinksToPort(qReal::IdList const &rtemporaryRemovedLinks, QString const &direction);
 
 	ContextMenuAction mSwitchGridAction;
-	static int const objectMinSize = 10;
-	//static int const sizeOfForestalling = 25; //TODO: must be used mElementImpl->sizeOfForestalling
 
 	bool mPortsVisible;
 
@@ -206,6 +210,7 @@ private:
 	QList<EdgeElement *> mEdgeList;
 
 	DragState mDragState;
+	QPointF mDragPosition;
 
 	QList<EmbeddedLinker *> mEmbeddedLinkers;
 
@@ -213,8 +218,6 @@ private:
 	QSet<PossibleEdgeType> mPossibleEdgeTypes;
 
 	QTransform mTransform;
-
-	ElementImpl *mElementImpl;
 
 	SdfRenderer *mPortRenderer;
 	SdfRenderer *mRenderer;

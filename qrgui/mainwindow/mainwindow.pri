@@ -15,6 +15,7 @@ HEADERS += \
 	mainwindow/projectManager/projectManagementInterface.h \
 	mainwindow/projectManager/projectManager.h \
 	mainwindow/projectManager/autosaver.h \
+	mainwindow/tabWidget.h \
 	mainwindow/miniMap.h \
 
 SOURCES += \
@@ -30,6 +31,7 @@ SOURCES += \
 	mainwindow/splashScreen.cpp \
 	mainwindow/projectManager/projectManager.cpp \
 	mainwindow/projectManager/autosaver.cpp \
+	mainwindow/tabWidget.cpp \
 	mainwindow/miniMap.cpp \
 
 FORMS += \
