@@ -87,10 +87,10 @@ void PortHandler::connectTemporaryRemovedLinksToPort(IdList const &temporaryRemo
 		}
 
 		if (direction == "from") {
-			QPointF startPos = edge->mapFromItem(mNode, getNearestPort(edge->line().first()));
+			QPointF const startPos = edge->mapFromItem(mNode, getNearestPort(edge->line().first()));
 			edge->placeStartTo(startPos);
 		} else {
-			QPointF endPos = edge->mapFromItem(mNode, getNearestPort(edge->line().last()));
+			QPointF const endPos = edge->mapFromItem(mNode, getNearestPort(edge->line().last()));
 			edge->placeEndTo(endPos);
 		}
 		edge->connectToPort();
@@ -263,6 +263,8 @@ qreal PortHandler::getPortId(QPointF const &location) const
 		if (pointPortRes.first < linePortRes.first || linePortRes.first < 0) {
 			return pointPortRes.second;
 		}
+
+		return mNonexistentPortId;
 	} else {
 		// There is only line ports.
 		// And they exist, because of first method if.
@@ -302,29 +304,26 @@ void PortHandler::checkConnectionsToPort()
 	connectLinksToPorts();
 }
 
-void PortHandler::arrangeLinearPorts() {
-	//qDebug() << "linear ports on" << uuid().toString();
+void PortHandler::arrangeLinearPorts()
+{
 	int lpId = mPointPorts.size(); //point ports before linear
 	foreach (StatLine const &linePort, mLinePorts) {
 		//sort first by slope, then by current portNumber
 		QMap<QPair<qreal, qreal>, EdgeElement*> sortedEdges;
-		QLineF portLine = linePort;
-		qreal dx = portLine.dx();
-		qreal dy = portLine.dy();
+		QLineF const portLine = linePort;
+		qreal const dx = portLine.dx();
+		qreal const dy = portLine.dy();
 		foreach (EdgeElement* edge, mNode->edgeList()) {
 			if (portNumber(edge->portIdOn(mNode)) == lpId) {
-				QPointF conn = edge->connectionPoint(mNode);
-				QPointF next = edge->nextFrom(mNode);
-				qreal x1 = conn.x();
-				qreal y1 = conn.y();
-				qreal x2 = next.x();
-				qreal y2 = next.y();
-				qreal len = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-				qreal scalarProduct = ((x2 - x1) * dx + (y2 - y1) * dy) / len;
+				QPointF const conn = edge->connectionPoint(mNode);
+				QPointF const next = edge->nextFrom(mNode);
+				qreal const x1 = conn.x();
+				qreal const y1 = conn.y();
+				qreal const x2 = next.x();
+				qreal const y2 = next.y();
+				qreal const len = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+				qreal const scalarProduct = ((x2 - x1) * dx + (y2 - y1) * dy) / len;
 				sortedEdges.insertMulti(qMakePair(edge->portIdOn(mNode), scalarProduct), edge);
-				//qDebug() << "+" << edge->uuid().toString() <<"pr=" <<scalarProduct << "; p=" << edge->portIdOn(mNode);
-				//qDebug("'--> vector: (%g, %g)", (x2-x1)/len, (y2-y1)/len);
-				//qDebug() << "'------> because " << (QVariant)conn << "->" << (QVariant)next;
 			}
 		}
 
@@ -332,14 +331,11 @@ void PortHandler::arrangeLinearPorts() {
 		int const n = sortedEdges.size();
 		int i = 0;
 		foreach (EdgeElement* edge, sortedEdges) {
-			qreal newId = lpId + (i + 1.0) / (n + 1);
-			//qDebug() << "-" << edge->uuid().toString() << newId;
+			qreal const newId = lpId + (i + 1.0) / (n + 1);
 			edge->moveConnection(mNode, newId);
 			i++;
 		}
-
 		lpId++; //next linear port.
-
 	}
 }
 

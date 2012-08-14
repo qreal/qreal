@@ -34,12 +34,10 @@ public:
 			);
 
 	/**
-	 * Returns port position relative to the top left corner of NodeElement
-	 * (position of NodeElement). 
-	 * @param id Id that position is returned by this method.
-	 * @return Port position relative to the top left corner of NodeElement.
+	 * Returns port ID in terms described below *'Useful information' before class* 
+	 * @return Port ID in terms described below *'Useful information' before class*.
 	 */
-	QPointF const getPortPos(qreal id) const;
+	qreal getPortId(QPointF const &location) const;
 
 	/**
 	 * Calculates port number.
@@ -51,6 +49,14 @@ public:
 	static int portNumber(qreal id);
 
 	/**
+	 * Returns port position relative to the top left corner of NodeElement
+	 * (position of NodeElement). 
+	 * @param id Id that position is returned by this method.
+	 * @return Port position relative to the top left corner of NodeElement.
+	 */
+	QPointF const getPortPos(qreal id) const;
+
+	/**
 	 * Calculates nearest point of NodeElement ports to parameter point. 
 	 * @param location To this point nearest port will be calculated.
 	 * @return Nearest point of NodeElement ports to parameter point.
@@ -58,35 +64,10 @@ public:
 	QPointF const getNearestPort(QPointF const &location) const;
 
 	/**
-	 * Returns port ID in terms described below *'Useful information' before class* 
-	 * @return Port ID in terms described below *'Useful information' before class*.
-	 */
-	qreal getPortId(QPointF const &location) const;
-
-	/**
-	 * Returns minimum distance from line port to point.
-	 * @param linePortNumber Number of line port at line port list.
-	 * @param location To this point distance will be calculated.
-	 * @return Minimum distance from line port to point.
-	 */
-	qreal minDistanceFromLinePort(int const linePortNumber, QPointF const &location) const;
-
-	/**
-	 * Returns distance between point port and point.
-	 * @param pointPortNumber Number of point port at point port list.
-	 * @param location To this point distance will be calculated.
-	 * @return Distance between point port and point.
-	 */
-	qreal distanceFromPointPort(int const pointPortNumber, QPointF const &location) const;
-
-	/**
-	 * Returns nearest point parameter at line port to point.
-	 * @param linePortNumber Number of line port at line port list.
-	 * @param location To this point nearest point parameter will be calculated.
-	 * @return Nearest point parameter at line port to point.
-	 */
-	qreal getNearestPointOfLinePort(int const linePortNumber, QPointF const &location) const;
-	
+	 * Connects temporary removed links.
+	 * @param temporaryRemovedLinks List of temporary removed links.
+	 * @param direction "from" or "to" direction of links.
+	 */	
 	void connectTemporaryRemovedLinksToPort(qReal::IdList const &temporaryRemovedLinks, QString const &direction);
 
 	/**
@@ -99,11 +80,11 @@ public:
 	 *  (Calls edge->connectToPort().)
 	 */
 	void connectLinksToPorts();
-	
-	void arrangeLinearPorts();
 
-	QLineF newTransform(StatLine const &port) const;
-	QPointF newTransform(StatPoint const &port) const;
+	/**
+	 * Arranges edges at line ports.
+	 */	
+	void arrangeLinearPorts();
 
 	/**
 	 * Sets GraphicalModelAssistApi.
@@ -152,6 +133,33 @@ private:
 	 * @return distance from location to closest line port of NodeElement and this port number in list of line ports.
 	 */
 	QPair<qreal, int> nearestLinePortNumberAndDistance(QPointF const &location) const;
+
+	/**
+	 * Returns nearest point parameter at line port to point.
+	 * @param linePortNumber Number of line port at line port list.
+	 * @param location To this point nearest point parameter will be calculated.
+	 * @return Nearest point parameter at line port to point.
+	 */
+	qreal getNearestPointOfLinePort(int const linePortNumber, QPointF const &location) const;
+
+	/**
+	 * Returns minimum distance from line port to point.
+	 * @param linePortNumber Number of line port at line port list.
+	 * @param location To this point distance will be calculated.
+	 * @return Minimum distance from line port to point.
+	 */
+	qreal minDistanceFromLinePort(int const linePortNumber, QPointF const &location) const;
+
+	/**
+	 * Returns distance between point port and point.
+	 * @param pointPortNumber Number of point port at point port list.
+	 * @param location To this point distance will be calculated.
+	 * @return Distance between point port and point.
+	 */
+	qreal distanceFromPointPort(int const pointPortNumber, QPointF const &location) const;
+
+	QLineF newTransform(StatLine const &port) const;
+	QPointF newTransform(StatPoint const &port) const;
 
 	/// Node that ports are actually dealt with.
 	NodeElement *mNode;
