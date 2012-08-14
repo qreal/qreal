@@ -71,8 +71,20 @@ public:
 	 */
 	qreal minDistanceFromLinePort(int const linePortNumber, QPointF const &location) const;
 
-
+	/**
+	 * Returns distance between point port and point.
+	 * @param pointPortNumber Number of point port at point port list.
+	 * @param location To this point distance will be calculated.
+	 * @return Distance between point port and point.
+	 */
 	qreal distanceFromPointPort(int const pointPortNumber, QPointF const &location) const;
+
+	/**
+	 * Returns nearest point parameter at line port to point.
+	 * @param linePortNumber Number of line port at line port list.
+	 * @param location To this point nearest point parameter will be calculated.
+	 * @return Nearest point parameter at line port to point.
+	 */
 	qreal getNearestPointOfLinePort(int const linePortNumber, QPointF const &location) const;
 	
 	void connectTemporaryRemovedLinksToPort(qReal::IdList const &temporaryRemovedLinks, QString const &direction);

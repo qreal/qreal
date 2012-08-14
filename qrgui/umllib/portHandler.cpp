@@ -39,21 +39,21 @@ qreal PortHandler::distanceFromPointPort(int pointPortNumber, QPointF const &loc
 qreal PortHandler::getNearestPointOfLinePort(int linePortNumber, QPointF const &location) const
 {
 	qreal nearestPointOfLinePort = 0;
-	QLineF nearestLinePort = newTransform(mLinePorts[linePortNumber]);
-	qreal y1 = nearestLinePort.y1();
-	qreal y2 = nearestLinePort.y2();
-	qreal x1 = nearestLinePort.x1();
-	qreal x2 = nearestLinePort.x2();
+	QLineF linePort = newTransform(mLinePorts[linePortNumber]);
+	qreal const y1 = linePort.y1();
+	qreal const y2 = linePort.y2();
+	qreal const x1 = linePort.x1();
+	qreal const x2 = linePort.x2();
 
 	if (x1 == x2) {
 		nearestPointOfLinePort = (location.y() - y1) / (y2 - y1);
 	} else if (y1 == y2) {
 		nearestPointOfLinePort = (location.x() - x1) / (x2 - x1);
 	} else {
-		qreal k = (y2 - y1) / (x2 - x1),
-			b2 = location.y() + 1 / k * location.x(),
-			b = y1 - k * x1,
-			x3 = k / (1 + k * k) * (b2 - b);
+		qreal const k = (y2 - y1) / (x2 - x1);
+		qreal const b2 = location.y() + 1 / k * location.x();
+		qreal const b = y1 - k * x1;
+		qreal const x3 = k / (1 + k * k) * (b2 - b);
 		nearestPointOfLinePort = (x3 - x1) / (x2 - x1);
 	}
 	return nearestPointOfLinePort;
