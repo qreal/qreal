@@ -37,7 +37,9 @@ plugins.depends = \
 
 #UNIT_TEST = TRUE
 !isEmpty(UNIT_TEST) {
-	SUBDIRS += qrtest
+	SUBDIRS += \
+		qrtest \
+		thirdparty \
 
 	qrtest.depends = \
 		qrxc \
@@ -46,4 +48,5 @@ plugins.depends = \
 		qrkernel \
 		qrmc \
 		qrgui \
+		thirdparty \
 }

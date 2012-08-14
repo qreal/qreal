@@ -4,8 +4,9 @@ DESTDIR = ../bin/unittests
 TARGET = qrlibs_unittests
 
 !macx {
-	QMAKE_LFLAGS += -Wl,-rpath,$(PWD)/../bin
-	QMAKE_LFLAGS += -Wl,-rpath,$(PWD)/../bin/plugins
+	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../bin
+	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../bin/plugins
+	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../bin/thirdparty
 }
 
 OBJECTS_DIR = .obj
@@ -18,7 +19,7 @@ INCLUDEPATH += ../thirdparty/gmock-1.6.0/gtest/include
 
 LIBS += -L../bin/ -lqrkernel -lqrutils -lqrmc -lqrrepo
 LIBS += -L../bin/plugins/ -lvisualDebugSupport
-LIBS += -L../thirdparty/ -lgmock_main -lpthread
+LIBS += -L../bin/thirdparty/ -lgmock -lpthread
 
 HEADERS += \
 	exampleTests/sampleFixtureTest.h \
