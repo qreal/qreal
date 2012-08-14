@@ -9,7 +9,8 @@ HEADERS += umllib/edgeElement.h \
 	umllib/umlPortHandler.h \
 	umllib/embedded/linkers/embeddedLinker.h \
 	umllib/embedded/linkers/embeddedLinkers.h \
-	umllib/serializationData.h
+	umllib/serializationData.h \
+	umllib/borderChecker.h
 
 SOURCES += umllib/edgeElement.cpp \
 	umllib/element.cpp \
@@ -22,4 +23,5 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/umlPortHandler.cpp \
 	umllib/embedded/linkers/embeddedLinker.cpp \
 	umllib/embedded/linkers/embeddedLinkers.cpp \
-	umllib/serializationData.cpp
+	umllib/serializationData.cpp \
+	umllib/borderChecker.cpp

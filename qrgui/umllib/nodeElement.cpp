@@ -1225,58 +1225,7 @@ bool NodeElement::canHavePorts()
 	return mElementImpl->hasPin();
 }
 
-bool NodeElement::checkLowerBorder(QPointF const &point, double x, double y) const
-{
-	double currentX = point.x();
-	double currentY = point.y();
-	QRectF rc = boundingRect();
-	return (currentX >= rc.x() + x) && (currentX <= rc.x() + rc.width() - x) && (currentY >= rc.y() + rc.height() - y)
-			&& (currentY <= rc.y() + rc.height() + y);
-}
-
-bool NodeElement::checkUpperBorder(QPointF const &point, double x, double y) const
-{
-	double currentX = point.x();
-	double currentY = point.y();
-	QRectF rc = boundingRect();
-	return (currentX >= rc.x() + x) && (currentX <= rc.x() + rc.width() - x) && (currentY >= rc.y() - y)
-			&& (currentY <= rc.y() + y);
-}
-
-bool NodeElement::checkLeftBorder(QPointF const &point, double x, double y) const
-{
-	double currentX = point.x();
-	double currentY = point.y();
-	QRectF rc = boundingRect();
-	return (currentX >= rc.x() - x) && (currentX <= rc.x() + x) && (currentY >= rc.y() + y)
-			&& (currentY <= rc.y() + rc.height() - y);
-}
-
-bool NodeElement::checkRightBorder(QPointF const &point, double x, double y) const
-{
-	double currentX = point.x();
-	double currentY = point.y();
-	QRectF rc = boundingRect();
-	return (currentX >= rc.x() + rc.width() - x) && (currentX <= rc.x() + rc.width() + x) && (currentY >= rc.y() + y)
-			&& (currentY <= rc.y() + rc.height() - y);
-}
-
-bool NodeElement::checkNoBorderX(QPointF const &point, double x, double y) const
-{
-	Q_UNUSED(x);
-	double currentY = point.y();
-	QRectF rc = boundingRect();
-	return (currentY >= rc.y() + y) && (currentY <= rc.y() + rc.height() - y);
-}
-
-bool NodeElement::checkNoBorderY(QPointF const &point, double x, double y) const
-{
-	Q_UNUSED(y);
-	double currentX = point.x();
-	QRectF rc = boundingRect();
-	return (currentX >= rc.x() + x) && (currentX <= rc.x() + rc.width() - x);
-}
-
+/*
 void NodeElement::resizeChild(QRectF const &newContents, QRectF const &oldContents)
 {
 	if (!mParentNodeElement) {
@@ -1329,6 +1278,7 @@ void NodeElement::resizeChild(QRectF const &newContents, QRectF const &oldConten
 	storeGeometry();
 	return;
 }
+*/
 
 void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 {
@@ -1358,7 +1308,7 @@ void NodeElement::updateByNewParent()
 	}
 }
 
-QList<double> NodeElement::borderValues()
+QList<double> NodeElement::borderValues() const
 {
 	return mElementImpl->border();
 }

@@ -81,16 +81,9 @@ public:
 	bool isPort() const;
 	bool canHavePorts();
 
-	QList<double> borderValues();
+	QList<double> borderValues() const;
 
-	bool checkLowerBorder(QPointF const &point, double x, double y) const;
-	bool checkUpperBorder(QPointF const &point, double x, double y) const;
-	bool checkLeftBorder(QPointF const &point, double x, double y) const;
-	bool checkRightBorder(QPointF const &point, double x, double y) const;
-	bool checkNoBorderX(QPointF const &point, double x, double y) const; // TODO: rename
-	bool checkNoBorderY(QPointF const &point, double x, double y) const;
-
-	void resizeChild(QRectF const &newContents, QRectF const &oldContents);
+	//void resizeChild(QRectF const &newContents, QRectF const &oldContents);
 
 	virtual QList<ContextMenuAction *> contextMenuActions();
 	void switchAlignment(bool isSwitchedOn);
