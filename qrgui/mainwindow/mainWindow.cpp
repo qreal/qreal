@@ -1449,8 +1449,8 @@ void MainWindow::initToolPlugins()
 	foreach (PageDescriptor const page, preferencesPages)
 		mPreferencesDialog.registerPage(page.first, page.second);
 
-	mVersioningManager = new versioning::VersioningPluginsManager(mToolManager
-				, &(mModels->repoControlApi()), mErrorReporter);
+	mVersioningManager = new VersioningPluginsManager(mToolManager
+				, &(mModels->repoControlApi()), mErrorReporter, this);
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)

@@ -1,32 +1,59 @@
 #include "versioningPluginsManager.h"
+#include "diffPluginBase.h"
+#include "../mainwindow/mainWindow.h"
+#include "visualDiff/diffPluginWrapper.h"
 
-using namespace qReal::versioning;
+using namespace qReal;
 
-VersioningPluginsManager::VersioningPluginsManager(
-		qReal::ToolPluginManager const &pluginManager,
-		qrRepo::RepoControlInterface *repoApi,
-		qReal::ErrorReporterInterface *errorReporter)
+QString const tempFolderName = "tempVCS";
+
+VersioningPluginsManager::VersioningPluginsManager(ToolPluginManager const &pluginManager
+		, qrRepo::RepoControlInterface *repoApi
+		, ErrorReporterInterface *errorReporter
+		, MainWindow *mainWindow)
 	: mRepoApi(repoApi), mErrorReporter(errorReporter)
+	, mDiffPlugin(NULL)
+	, mTempDir(qApp->applicationDirPath() + "/" + tempFolderName)
 {
-	initFromToolPlugins(pluginManager.pluginsIterator());
+	SettingsManager::instance()->setValue("versioningManagerTempDir", mTempDir);
+	initFromToolPlugins(pluginManager.pluginsIterator(), mainWindow);
 	mRepoApi->setWorkingCopyInspector(this);
 }
 
-void VersioningPluginsManager::initFromToolPlugins(QListIterator<qReal::ToolPluginInterface *> iterator)
+QString VersioningPluginsManager::tempFolder() const
+{
+	return SettingsManager::value("versioningManagerTempDir", mTempDir).toString();
+}
+
+void VersioningPluginsManager::prepareWorkingCopy()
+{
+	mRepoApi->prepareWorkingCopy(tempFolder());
+}
+
+void VersioningPluginsManager::initFromToolPlugins(
+		QListIterator<ToolPluginInterface *> iterator
+		, MainWindow *mainWindow)
 {
 	while (iterator.hasNext()) {
-		qReal::ToolPluginInterface *toolPlugin = iterator.next();
+		ToolPluginInterface *toolPlugin = iterator.next();
 		VersioningPluginInterface *versioningPlugin =
 				dynamic_cast<VersioningPluginInterface *>(toolPlugin);
 		if (versioningPlugin) {
 			mPlugins.append(versioningPlugin);
 			versioningPlugin->setWorkingCopyManager(mRepoApi);
-			connect(versioningPlugin, SIGNAL(workingCopyDownloaded(bool const))
-					, this, SLOT(onWorkingCopyDownloaded(bool const)));
+			connect(versioningPlugin, SIGNAL(workingCopyDownloaded(bool const, QString const &))
+					, this, SLOT(onWorkingCopyDownloaded(bool const, QString const &)));
 			connect(versioningPlugin, SIGNAL(workingCopyUpdated(bool const))
 					, this, SLOT(onWorkingCopyUpdated(bool const)));
 			connect(versioningPlugin, SIGNAL(changesSubmitted(bool const))
 					, this, SLOT(onChangesSubmitted(bool const)));
+		}
+		DiffPluginBase *diffPlugin =
+				dynamic_cast<DiffPluginBase *>(toolPlugin);
+		if (diffPlugin) {
+			mDiffPlugin = diffPlugin;
+			mDiffPlugin->setHandler(new versioning::DiffPluginWrapper(mDiffPlugin, mRepoApi,
+					this, mainWindow, mainWindow->manager()));
 		}
 	}
 }
@@ -41,7 +68,7 @@ VersioningPluginInterface *VersioningPluginsManager::activePlugin(QString const 
 	return NULL;
 }
 
-qrRepo::versioning::WorkingCopyInspectionInterface *VersioningPluginsManager::activeWorkingCopyInspector(QString const &workingDir)
+qrRepo::WorkingCopyInspectionInterface *VersioningPluginsManager::activeWorkingCopyInspector(QString const &workingDir)
 {
 	WorkingCopyInspectionInterface *activeInspector =
 			dynamic_cast<WorkingCopyInspectionInterface *>(activeClient(workingDir));
@@ -83,65 +110,81 @@ bool VersioningPluginsManager::onFileChanged(const QString &filePath, const QStr
 void VersioningPluginsManager::beginWorkingCopyDownloading(
 		  QString const &repoAddress
 		, QString const &targetProject
-		, int revisionNumber)
+		, int revisionNumber
+		, bool quiet)
 {
-	BriefVersioningInterface *activeVcs = activePlugin();
+	prepareWorkingCopy();
+	BriefVersioningInterface *activeVcs = activePlugin(tempFolder());
 	if (!activeVcs) {
 		return;
 	}
-	return activeVcs->beginWorkingCopyDownloading(repoAddress, targetProject, revisionNumber);
+	return activeVcs->beginWorkingCopyDownloading(repoAddress, targetProject, revisionNumber, quiet);
 }
 
-void VersioningPluginsManager::beginWorkingCopyUpdating()
+void VersioningPluginsManager::beginWorkingCopyUpdating(QString const &targetProject)
 {
-	BriefVersioningInterface *activeVcs = activePlugin();
+	prepareWorkingCopy();
+	BriefVersioningInterface *activeVcs = activePlugin(tempFolder());
 	if (!activeVcs) {
 		return;
 	}
-	return activeVcs->beginWorkingCopyUpdating();
+	return activeVcs->beginWorkingCopyUpdating(targetProject);
 }
 
-void VersioningPluginsManager::beginChangesSubmitting(QString const &description)
+void VersioningPluginsManager::beginChangesSubmitting(QString const &description, QString const &targetProject)
 {
-	BriefVersioningInterface *activeVcs = activePlugin();
+	prepareWorkingCopy();
+	BriefVersioningInterface *activeVcs = activePlugin(tempFolder());
 	if (!activeVcs) {
 		return;
 	}
-	return activeVcs->beginChangesSubmitting(description);
+	return activeVcs->beginChangesSubmitting(description, targetProject);
 }
 
-bool VersioningPluginsManager::reinitWorkingCopy()
+bool VersioningPluginsManager::reinitWorkingCopy(QString const &targetProject)
 {
-	BriefVersioningInterface *activeVcs = activePlugin();
+	prepareWorkingCopy();
+	BriefVersioningInterface *activeVcs = activePlugin(tempFolder());
 	if (!activeVcs) {
 		return true;
 	}
-	return activeVcs->reinitWorkingCopy();
+	return activeVcs->reinitWorkingCopy(targetProject);
 }
 
-QString VersioningPluginsManager::information()
+QString VersioningPluginsManager::information(QString const &targetProject)
 {
-	BriefVersioningInterface *activeVcs = activePlugin();
+	prepareWorkingCopy();
+	BriefVersioningInterface *activeVcs = activePlugin(tempFolder());
 	if (!activeVcs) {
 		return QString();
 	}
-	return activeVcs->information();
+	return activeVcs->information(targetProject);
 }
 
-int VersioningPluginsManager::revisionNumber()
+int VersioningPluginsManager::revisionNumber(QString const &targetProject)
 {
-	BriefVersioningInterface *activeVcs = activePlugin();
+	prepareWorkingCopy();
+	BriefVersioningInterface *activeVcs = activePlugin(tempFolder());
 	if (!activeVcs) {
 		return -1;
 	}
-	return activeVcs->revisionNumber();
+	return activeVcs->revisionNumber(targetProject);
+}
+
+QString VersioningPluginsManager::remoteRepositoryUrl(QString const &targetProject)
+{
+	prepareWorkingCopy();
+	BriefVersioningInterface *activeVcs = activePlugin(tempFolder());
+	if (!activeVcs) {
+		return QString();
+	}
+	return activeVcs->remoteRepositoryUrl(targetProject);
 }
 
 bool VersioningPluginsManager::isMyWorkingCopy(QString const &directory)
 {
 	return activePlugin(directory) != NULL;
 }
-
 
 void VersioningPluginsManager::reportError(const QString &message)
 {
@@ -167,9 +210,10 @@ void VersioningPluginsManager::reportWarnings(const QStringList &messages)
 	}
 }
 
-void VersioningPluginsManager::onWorkingCopyDownloaded(const bool success)
+void VersioningPluginsManager::onWorkingCopyDownloaded(const bool success
+		, QString const &targetProject)
 {
-	emit workingCopyDownloaded(success);
+	emit workingCopyDownloaded(success, targetProject);
 }
 
 void VersioningPluginsManager::onWorkingCopyUpdated(const bool success)

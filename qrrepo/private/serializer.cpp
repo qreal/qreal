@@ -38,7 +38,7 @@ void Serializer::setWorkingFile(QString const &workingFile)
 	mWorkingFile = workingFile;
 }
 
-void Serializer::setWorkingCopyInspector(versioning::WorkingCopyInspectionInterface *inspector)
+void Serializer::setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector)
 {
 	mWorkingCopyInspector = inspector;
 }
@@ -153,11 +153,12 @@ void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, Objec
 	}
 }
 
-void Serializer::prepareWorkingCopy(const QString &workingCopyPath)
+void Serializer::prepareWorkingCopy(const QString &targetFolder, QString const &sourceProject)
 {
-	clearDir(workingCopyPath);
-	if (QFileInfo(mWorkingFile).exists()) {
-		FolderCompressor().decompressFolder(mWorkingFile, workingCopyPath);
+	clearDir(targetFolder);
+	QString const workingFile = sourceProject.isEmpty() ? mWorkingFile : sourceProject;
+	if (QFileInfo(workingFile).exists()) {
+		FolderCompressor().decompressFolder(workingFile, targetFolder);
 	}
 }
 
@@ -168,6 +169,7 @@ void Serializer::processWorkingCopy(const QString &workingCopyPath, QString cons
 		FolderCompressor().compressFolder(workingCopyPath, targetProjectPath);
 	}
 	clearDir(workingCopyPath);
+	QDir().rmdir(workingCopyPath);
 }
 
 void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHash)

@@ -1,15 +1,13 @@
 #pragma once
 
-#include <QGraphicsScene>
-#include <QGraphicsLineItem>
-#include <QSignalMapper>
+#include <QtGui/QGraphicsScene>
+#include <QtGui/QGraphicsLineItem>
+#include <QtCore/QSignalMapper>
+
 #include "../../qrkernel/roles.h"
 #include "../umllib/nodeElement.h"
 #include "gestures/mouseMovementManager.h"
-
 #include "editorViewMVIface.h"
-//#include "editorView.h"
-//#include "../mainwindow/mainWindow.h"
 
 
 //const int indexGrid = 30; // distance between two lines in the grid
@@ -27,7 +25,7 @@ class EditorViewScene : public QGraphicsScene
 
 public:
 	explicit EditorViewScene(QObject *parent);
-	~EditorViewScene();
+	virtual ~EditorViewScene();
 
 	void clearScene();
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos);

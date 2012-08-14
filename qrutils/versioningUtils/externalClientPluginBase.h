@@ -18,7 +18,7 @@ class QRUTILS_EXPORT ExternalClientPluginBase : public VersioningPluginInterface
 	Q_OBJECT
 
 public:
-	void setWorkingCopyManager(qrRepo::versioning::WorkingCopyManagementInterface *workingCopyManager);
+	void setWorkingCopyManager(qrRepo::WorkingCopyManagementInterface *workingCopyManager);
 
 	virtual void init(PluginConfigurator const &configurator);
 
@@ -30,17 +30,19 @@ public:
 	/// @param needProcessing Specifies if changes in working copy must be registered in current project
 	/// @param targetProject A path to project whicth will recieve chages in working copy after processing.
 	///                      If empty value speified, target project will be working one
+	/// @param sourceProject A path to source project. If empty working one used
 	/// @param reportErrors Specifies if all occured errors are reported to GUI
 	bool invokeOperation(QStringList const &args, bool needPreparation = true
 			, QString const &workingDir = QString(), bool const checkWorkingDir = true
 			, bool const needProcessing = true, QString const &targetProject = QString()
-			, bool const reportErrors = true);
+			, QString const &sourceProject = QString(), bool const reportErrors = true);
 
 	/// Starts process which executable`s path specified by setPathToClient() method in separate thread.
 	/// @param args Startup arguments
 	/// @param needPreparation Specifies if working copy must be fetchced from current project
 	/// @param callback A callback that will be called when operation complete with result specification.
 	/// @param workingDir A path to working directory. If empty, tempFolder() used
+	/// @param sourceProject A path to source project. If empty, working one used
 	/// @param checkWorkingDir Specifies if before operation will be checked if specified directory is under version control
 	/// @param reportErrors Specifies if all occured errors are reported to GUI
 	/// @returns Pointer to started operaton
@@ -48,6 +50,7 @@ public:
 		, invocation::BoolCallback *callback = 0
 		, bool needPreparation = true
 		, QString const &workingDir = QString()
+		, QString const &sourceProject = QString()
 		, bool const checkWorkingDir = true
 		, bool reportErrors = true);
 
@@ -63,7 +66,7 @@ protected:
 
 	/// Guarantees the working copy existance in temp folder
 	/// after this method is invoked
-	void prepareWorkingCopy(QString const &workingDir);
+	void prepareWorkingCopy(QString const &workingDir, QString const &sourceProject);
 
 	/// Notifies system about changes in working copy. Must be called after correcpoding VCS operations
 	/// @param targetProject A path to project whicth will recieve chages in working copy after processing.
@@ -100,7 +103,7 @@ private:
 	bool processErrors(bool reportErrors = true);
 	bool waitForClient(bool reportErrors = true);
 
-	qrRepo::versioning::WorkingCopyManagementInterface *mWorkingCopyManager;
+	qrRepo::WorkingCopyManagementInterface *mWorkingCopyManager;
 	gui::MainWindowInterpretersInterface *mMainWindow;
 	ErrorReporterInterface *mErrorReporter;
 	QString mPathToClient;

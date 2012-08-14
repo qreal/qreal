@@ -7,8 +7,6 @@
 
 namespace qReal
 {
-namespace versioning
-{
 
 /// Base class for all VCS cliens. Consists of 3 parts: view part,
 /// repo part and brief interface. View part customizes UI with
@@ -19,14 +17,13 @@ namespace versioning
 class VersioningPluginInterface
 		: public BriefVersioningInterface
 		, public ToolPluginInterface
-		, public qrRepo::versioning::WorkingCopyInspectionInterface
+		, public qrRepo::WorkingCopyInspectionInterface
 {
 public:
 	virtual ~VersioningPluginInterface() {}
 
 	virtual void setWorkingCopyManager(
-			qrRepo::versioning::WorkingCopyManagementInterface *workingCopyManager) = 0;
+			qrRepo::WorkingCopyManagementInterface *workingCopyManager) = 0;
 };
 
-}
 }

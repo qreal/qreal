@@ -23,7 +23,8 @@ public:
 		, mLogicalModelApi(logicalModelApi)
 		, mMainWindowInterpretersInterface(mainWindowInterpretersInterface)
 		, mProjectManager(projectManager)
-	{}
+	{
+	}
 
 	qrRepo::RepoControlInterface &repoControlInterface() const {
 		return mRepoControlInterface;

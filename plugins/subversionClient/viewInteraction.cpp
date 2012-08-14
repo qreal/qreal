@@ -11,8 +11,8 @@ ViewInteraction::ViewInteraction(SubversionPlugin *pluginInstance)
 	, mPreferencesPage(new PreferencesVersioningPage())
 {
 	initActions();
-	connect(mPlugin, SIGNAL(checkoutComplete(bool,QString))
-			, this, SLOT(onCheckoutComplete(bool,QString)));
+	connect(mPlugin, SIGNAL(checkoutComplete(bool,QString,bool))
+			, this, SLOT(onCheckoutComplete(bool,QString,bool)));
 	connect(mPlugin, SIGNAL(updateComplete(bool))
 			, this, SLOT(onUpdateComplete(bool)));
 	connect(mPlugin, SIGNAL(commitComplete(bool))
@@ -124,9 +124,10 @@ void ViewInteraction::showMessage(const QString &message)
 	mMainWindowIface->errorReporter()->addInformation(message);
 }
 
-void ViewInteraction::onCheckoutComplete(const bool success, const QString &targetProject)
+void ViewInteraction::onCheckoutComplete(const bool success
+		, const QString &targetProject, bool quiet)
 {
-	if (success) {
+	if (success && !quiet) {
 		mProjectManager->openExisting(targetProject);
 		showMessage(tr("Checkout succeeded. Working project was set to ") + targetProject);
 	}

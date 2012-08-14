@@ -20,13 +20,13 @@ public:
 	void clearWorkingDir();
 	void setWorkingFile(QString const& workingDir);
 
-	void setWorkingCopyInspector(versioning::WorkingCopyInspectionInterface *inspector);
+	void setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector);
 
 	void removeFromDisk(qReal::Id id) const;
 	void saveToDisk(QList<Object*> const &objects);
 	void loadFromDisk(QHash<qReal::Id, Object*> &objectsHash);
 
-	void prepareWorkingCopy(const QString &workingCopyPath);
+	void prepareWorkingCopy(const QString &workingCopyPath, QString const &sourceProject = QString());
 	void processWorkingCopy(const QString &workingCopyPath, QString const &targetProject = QString());
 
 	void decompressFile(QString const &fileName);
@@ -65,7 +65,7 @@ private:
 	QString mWorkingDir;
 	QString mWorkingFile;
 
-	versioning::WorkingCopyInspectionInterface *mWorkingCopyInspector;
+	WorkingCopyInspectionInterface *mWorkingCopyInspector;
 	QSet<QString> mSavedFiles;
 	QSet<QString> mSavedDirectories;
 	QMap<QString, QFile*> mFiles;

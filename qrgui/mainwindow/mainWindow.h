@@ -288,7 +288,7 @@ private:
 	models::Models *mModels;
 	EditorManager mEditorManager;
 	ToolPluginManager mToolManager;
-	versioning::VersioningPluginsManager *mVersioningManager;
+	VersioningPluginsManager *mVersioningManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
 	GesturesWidget *mGesturesWidget;

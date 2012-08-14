@@ -7,7 +7,7 @@
 
 namespace qrRepo {
 
-class RepoControlInterface : public versioning::WorkingCopyManagementInterface
+class RepoControlInterface : public WorkingCopyManagementInterface
 {
 public:
 	virtual ~RepoControlInterface() {}
@@ -39,7 +39,7 @@ public:
 
 	virtual void open(QString const &workingFile) = 0;
 
-	virtual void setWorkingCopyInspector(versioning::WorkingCopyInspectionInterface *inspector) = 0;
+	virtual void setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector) = 0;
 
 	/// Returns current working file name, to which model is saved
 	virtual QString workingFile() const = 0;

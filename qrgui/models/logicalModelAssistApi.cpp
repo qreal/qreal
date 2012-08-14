@@ -180,7 +180,7 @@ QPersistentModelIndex LogicalModelAssistApi::rootIndex() const
 
 Id LogicalModelAssistApi::rootId() const
 {
-	return mModelsAssistApi.rootId();
+	return mLogicalModel.rootId();
 }
 
 bool LogicalModelAssistApi::hasRootDiagrams() const

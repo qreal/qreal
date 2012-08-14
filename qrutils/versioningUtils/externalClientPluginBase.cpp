@@ -14,7 +14,7 @@ ExternalClientPluginBase::ExternalClientPluginBase()
 	connect(this, SIGNAL(errorOccured(QString)), this, SLOT(onErrorOccured(QString)));
 }
 
-void ExternalClientPluginBase::setWorkingCopyManager(qrRepo::versioning::WorkingCopyManagementInterface *workingCopyManager)
+void ExternalClientPluginBase::setWorkingCopyManager(qrRepo::WorkingCopyManagementInterface *workingCopyManager)
 {
 	mWorkingCopyManager = workingCopyManager;
 }
@@ -53,10 +53,11 @@ bool ExternalClientPluginBase::invokeOperation(const QStringList &args
 		, bool const checkWorkingDir
 		, bool needProcessing
 		, QString const &targetProject
+		, QString const &sourceProject
 		, bool reportErrors)
 {
 	if (needPreparation) {
-		prepareWorkingCopy(workingDir);
+		prepareWorkingCopy(workingDir, sourceProject);
 	}
 	bool const result = startAndWait(args, reportErrors, workingDir, checkWorkingDir);
 	if (needProcessing) {
@@ -70,11 +71,12 @@ invocation::LongOperation* ExternalClientPluginBase::invokeOperationAsync(
 		, invocation::BoolCallback *callback
 		, bool needPreparation
 		, QString const &workingDir
+		, QString const &sourceProject
 		, bool const checkWorkingDir
 		, bool reportErrors)
 {
 	if (needPreparation) {
-		prepareWorkingCopy(workingDir);
+		prepareWorkingCopy(workingDir, sourceProject);
 	}
 	invocation::FunctorOperation<bool> *operation = new invocation::FunctorOperation<bool>;
 	// TODO: make it with progress
@@ -89,10 +91,10 @@ invocation::LongOperation* ExternalClientPluginBase::invokeOperationAsync(
 	return operation;
 }
 
-void ExternalClientPluginBase::prepareWorkingCopy(const QString &workingDir)
+void ExternalClientPluginBase::prepareWorkingCopy(const QString &workingDir, QString const &sourceProject)
 {
 	if (mWorkingCopyManager) {
-		mWorkingCopyManager->prepareWorkingCopy(workingDir.isEmpty() ? tempFolder() : workingDir);
+		mWorkingCopyManager->prepareWorkingCopy(workingDir.isEmpty() ? tempFolder() : workingDir, sourceProject);
 	}
 }
 

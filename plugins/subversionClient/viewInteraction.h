@@ -36,7 +36,7 @@ public slots:
 	void infoClicked();
 
 private slots:
-	void onCheckoutComplete(bool const success, QString const &targetProject);
+	void onCheckoutComplete(bool const success, QString const &targetProject, bool quiet);
 	void onUpdateComplete(bool const success);
 	void onCommitComplete(bool const success);
 	void onRevertComplete(bool const success);

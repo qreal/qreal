@@ -124,9 +124,9 @@ namespace qrRepo {
 
 		virtual QString workingFile() const;
 
-		void setWorkingCopyInspector(versioning::WorkingCopyInspectionInterface *inspector);
+		void setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector);
 
-		void prepareWorkingCopy(const QString &workingCopyPath);
+		void prepareWorkingCopy(const QString &targetFolder, QString const &sourceProject = QString());
 		void processWorkingCopy(const QString &workingCopyPath, QString const &targetProject = QString());
 
 		// "Глобальные" методы, позволяющие делать запросы к модели в целом.

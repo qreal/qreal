@@ -458,14 +458,14 @@ QString Client::workingFile() const
 	return mWorkingFile;
 }
 
-void Client::setWorkingCopyInspector(versioning::WorkingCopyInspectionInterface *inspector)
+void Client::setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector)
 {
 	mSerializer.setWorkingCopyInspector(inspector);
 }
 
-void Client::prepareWorkingCopy(const QString &workingCopyPath)
+void Client::prepareWorkingCopy(const QString &targetFolder, const QString &sourceProject)
 {
-	mSerializer.prepareWorkingCopy(workingCopyPath);
+	mSerializer.prepareWorkingCopy(targetFolder, sourceProject);
 }
 
 void Client::processWorkingCopy(const QString &workingCopyPath, QString const &targetProject)

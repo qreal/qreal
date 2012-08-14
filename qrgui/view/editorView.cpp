@@ -9,11 +9,22 @@
 using namespace qReal;
 
 EditorView::EditorView(QWidget *parent)
-	: QGraphicsView(parent), mMouseOldPosition(), mWheelPressed(false), mZoom(0)
+	: QGraphicsView(parent), mScene(new EditorViewScene(this))
+	, mMouseOldPosition(), mWheelPressed(false), mZoom(0)
+{
+	init();
+}
+
+EditorView::EditorView(EditorViewScene *scene, QWidget *parent)
+	: QGraphicsView(parent), mScene(scene)
+	, mMouseOldPosition(), mWheelPressed(false), mZoom(0)
+{
+	init();
+}
+
+void EditorView::init()
 {
 	setRenderHint(QPainter::Antialiasing, true);
-
-	mScene = new EditorViewScene(this);
 
 	connect(mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
 	connect(mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
@@ -88,9 +99,9 @@ void EditorView::checkGrid()
 	if (SettingsManager::value("ShowGrid").toBool()) {
 		if(mScene->realIndexGrid() < 2 || mScene->realIndexGrid() > 380) {
 			mScene->setNeedDrawGrid(false);
-		}
-		else
+		} else {
 			mScene->setNeedDrawGrid(true);
+		}
 	}
 }
 

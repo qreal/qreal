@@ -4,8 +4,6 @@
 
 namespace qrRepo
 {
-namespace versioning
-{
 
 /// Used for notification about working copy modification.
 class WorkingCopyInspectionInterface
@@ -25,5 +23,4 @@ public:
 	virtual bool onFileChanged(QString const &filePath, QString const &workingDir) = 0;
 };
 
-}
 }

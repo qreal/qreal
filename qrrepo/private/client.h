@@ -72,9 +72,9 @@ public:
 	bool isLogicalId(qReal::Id const &elem) const;
 	qReal::Id logicalId(qReal::Id const &elem) const;
 
-	void setWorkingCopyInspector(versioning::WorkingCopyInspectionInterface *inspector);
+	void setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector);
 
-	void prepareWorkingCopy(const QString &workingCopyPath);
+	void prepareWorkingCopy(const QString &workingCopyPath, QString const &sourceProject = QString());
 	void processWorkingCopy(const QString &workingCopyPath, QString const &targetProject = QString());
 
 	void printDebug() const;

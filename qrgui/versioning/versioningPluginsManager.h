@@ -7,19 +7,23 @@
 
 namespace qReal
 {
-namespace versioning
-{
+
+class MainWindow;
+
+class DiffPluginBase;
 
 class VersioningPluginsManager
 		: public BriefVersioningInterface
-		, public qrRepo::versioning::WorkingCopyInspectionInterface
+		, public qrRepo::WorkingCopyInspectionInterface
 {
 	Q_OBJECT
 
 public:
 	/// Inits plugin list using loaded by plugin manager ones
-	VersioningPluginsManager(ToolPluginManager const &pluginManager,
-		qrRepo::RepoControlInterface *repoApi, ErrorReporterInterface *errorReporter);
+	VersioningPluginsManager(ToolPluginManager const &pluginManager
+		, qrRepo::RepoControlInterface *repoApi
+		, ErrorReporterInterface *errorReporter
+		, MainWindow *mainWindow); // MainWindow used till refactoring
 
 	BriefVersioningInterface *activeClient(const QString &workingDir) const;
 
@@ -31,21 +35,26 @@ public slots:
 	void beginWorkingCopyDownloading(
 			  QString const &repoAddress
 			, QString const &targetProject
-			, int revisionNumber = -1);
-	void beginWorkingCopyUpdating();
-	void beginChangesSubmitting(QString const &description);
-	bool reinitWorkingCopy();
-	QString information();
-	int revisionNumber();
+			, int revisionNumber = -1
+			, bool quiet = false);
+	void beginWorkingCopyUpdating(QString const &targetProject = QString());
+	void beginChangesSubmitting(QString const &description, QString const &targetProject = QString());
+	bool reinitWorkingCopy(QString const &targetProject = QString());
+	QString information(QString const &targetProject = QString());
+	int revisionNumber(QString const &targetProject = QString());
+	QString remoteRepositoryUrl(QString const &targetProject = QString());
 	bool isMyWorkingCopy(QString const &directory = "");
 
 private slots:
-	void onWorkingCopyDownloaded(bool const success);
+	void onWorkingCopyDownloaded(bool const success, QString const &targetProject);
 	void onWorkingCopyUpdated(bool const success);
 	void onChangesSubmitted(bool const success);
 
 private:
-	void initFromToolPlugins(QListIterator<ToolPluginInterface *> iterator);
+	QString tempFolder() const;
+	void prepareWorkingCopy();
+	void initFromToolPlugins(QListIterator<ToolPluginInterface *> iterator
+			, MainWindow *mainWindow);
 	VersioningPluginInterface *activePlugin(QString const &workingDir = "") const;
 	WorkingCopyInspectionInterface *activeWorkingCopyInspector(QString const &workingDir = "");
 
@@ -57,7 +66,8 @@ private:
 	qrRepo::RepoControlInterface *mRepoApi;
 	QList<VersioningPluginInterface *> mPlugins;
 	ErrorReporterInterface *mErrorReporter;
+	DiffPluginBase *mDiffPlugin;
+	QString mTempDir;
 };
 
-}
 }

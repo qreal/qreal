@@ -420,14 +420,14 @@ QString RepoApi::workingFile() const
 	return mClient.workingFile();
 }
 
-void RepoApi::setWorkingCopyInspector(versioning::WorkingCopyInspectionInterface *inspector)
+void RepoApi::setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector)
 {
 	mClient.setWorkingCopyInspector(inspector);
 }
 
-void RepoApi::prepareWorkingCopy(const QString &workingCopyPath)
+void RepoApi::prepareWorkingCopy(const QString &targetFolder, const QString &sourceProject)
 {
-	mClient.prepareWorkingCopy(workingCopyPath);
+	mClient.prepareWorkingCopy(targetFolder, sourceProject);
 }
 
 void RepoApi::processWorkingCopy(const QString &workingCopyPath, QString const &targetProject)
