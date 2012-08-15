@@ -1,10 +1,10 @@
 # Visual debugger
 HEADERS += \
-	interpreter/visualDebugger.h \
-	interpreter/blockParser.h \
-	interpreter/debuggerConnector.h \
+	$$PWD/visualDebugger.h \
+	$$PWD/blockParser.h \
+	$$PWD/debuggerConnector.h \
 
 SOURCES += \
-	interpreter/visualDebugger.cpp \
-	interpreter/blockParser.cpp \
-	interpreter/debuggerConnector.cpp \
+	$$PWD/visualDebugger.cpp \
+	$$PWD/blockParser.cpp \
+	$$PWD/debuggerConnector.cpp \

@@ -15,13 +15,11 @@ UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
-INCLUDEPATH += ../../thirdparty/gmock-1.6.0/include
-INCLUDEPATH += ../../thirdparty/gmock-1.6.0/gtest/include
+INCLUDEPATH += \
+	../../thirdparty/gmock-1.6.0/include \
+	../../thirdparty/gmock-1.6.0/gtest/include \
 
-LIBS += -L../../bin/ -lqrkernel -lqrutils -lqrmc -lqrrepo
-LIBS += -L../../bin/plugins/ -lvisualDebugSupport
-
-#LIBS += -L../../bin/unittests/ -lqrealSources
+LIBS += -L../../bin/unittests/ -lqrealSources
 LIBS += -L../../bin/thirdparty/ -lgmock -lpthread
 
 # Mocked classes
