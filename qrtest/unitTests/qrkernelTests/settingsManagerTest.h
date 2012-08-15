@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../qrkernel/settingsManager.h"
+#include "../../../qrkernel/settingsManager.h"
 
 #include "gtest/gtest.h"
 

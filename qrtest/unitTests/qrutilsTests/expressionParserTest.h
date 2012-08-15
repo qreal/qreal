@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../qrutils/expressionsParser/expressionsParser.h"
+#include "../../../qrutils/expressionsParser/expressionsParser.h"
 #include "../mocks/grgui/toolPluginInterface/usedInterface/errorReporterMock.h"
 
 #include "gtest/gtest.h"

@@ -2,7 +2,7 @@
 
 #include <QtCore/QString>
 
-#include "../../../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "../../../../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 #include "gmock/gmock.h"
 

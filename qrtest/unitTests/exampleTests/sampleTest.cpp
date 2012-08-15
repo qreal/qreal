@@ -1,5 +1,5 @@
-#include "../../qrutils/expressionsParser/number.h"
-#include "../../plugins/blockDiagram/visualDebugSupport/interpreter/blockParser.h"
+#include "../../../qrutils/expressionsParser/number.h"
+#include "../../../plugins/blockDiagram/visualDebugSupport/interpreter/blockParser.h"
 
 #include "gtest/gtest.h"
 

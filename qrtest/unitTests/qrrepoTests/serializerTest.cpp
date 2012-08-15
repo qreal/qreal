@@ -2,7 +2,7 @@
 #include <QtCore/QDir>
 
 #include "serializerTest.h"
-#include "../../qrrepo/private/classes/object.h"
+#include "../../../qrrepo/private/classes/object.h"
 
 using namespace qrRepo;
 using namespace details;

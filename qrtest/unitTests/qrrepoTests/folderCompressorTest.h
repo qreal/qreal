@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../qrrepo/private/folderCompressor.h"
+#include "../../../qrrepo/private/folderCompressor.h"
 
 #include "gtest/gtest.h"
 

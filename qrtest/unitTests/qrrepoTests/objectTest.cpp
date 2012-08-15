@@ -1,4 +1,4 @@
-#include "../../qrrepo/private/classes/object.h"
+#include "../../../qrrepo/private/classes/object.h"
 
 #include "gtest/gtest.h"
 

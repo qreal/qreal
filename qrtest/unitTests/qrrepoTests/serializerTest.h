@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../qrrepo/private/serializer.h"
+#include "../../../qrrepo/private/serializer.h"
 
 #include "gtest/gtest.h"
 

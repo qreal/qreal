@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../qrutils/metamodelGeneratorSupport.h"
+#include "../../../qrutils/metamodelGeneratorSupport.h"
 
 #include "gtest/gtest.h"
 
