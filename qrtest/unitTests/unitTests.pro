@@ -1,6 +1,9 @@
-TEMPLATE = app
+DEFINES += UNITTEST
 
-QT += xml
+TEMPLATE = app
+CONFIG += console
+
+QT += xml gui
 
 DESTDIR = ../../bin/unittests
 TARGET = qrlibs_unittests

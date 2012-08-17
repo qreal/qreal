@@ -3,14 +3,13 @@ DEFINES += UNITTEST
 include(../../plugins/blockDiagram/visualDebugSupport/visualDebugSupport.pro)
 
 include(../../qrkernel/qrkernel.pro)
+
 include(../../qrutils/qrutils.pro)
 include(../../qrrepo/qrrepo.pro)
 include(../../qrmc/qrmc-lib.pro)
 
 TEMPLATE = lib
 CONFIG += staticlib
-
-QT += xml svg
 
 DESTDIR = ../../bin/unittests
 TARGET = qrealSources

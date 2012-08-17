@@ -13,6 +13,7 @@ SUBDIRS = \
 	plugins \
 	qrkernel \
 	qrutils \
+	thirdparty \
 
 qrutils.depends = qrkernel
 qrrepo.depends = qrkernel qrutils
@@ -39,14 +40,7 @@ plugins.depends = \
 !isEmpty(UNIT_TEST) {
 	SUBDIRS += \
 		qrtest \
-		thirdparty \
 
 	qrtest.depends = \
-		qrxc \
-		qrrepo \
-		qrutils \
-		qrkernel \
-		qrmc \
-		qrgui \
 		thirdparty \
 }
