@@ -61,17 +61,11 @@ public:
 	 * @param location To this point nearest port will be calculated.
 	 * @return Nearest point of NodeElement ports to parameter point.
 	 */
-	QPointF const nearestPort(QPointF const &location) const;
-
-	/**
-	 * Connects temporary removed links.
-	 * @param temporaryRemovedLinks List of temporary removed links.
-	 * @param direction "from" or "to" direction of links.
-	 */	
-	void connectTemporaryRemovedLinksToPort(qReal::IdList const &temporaryRemovedLinks, QString const &direction);
+	QPointF const nearestPort(QPointF const &location) const;	
 
 	/**
 	 * Connects all temporary removed from working NodeElement edges.
+	 * Used in model manipulating.
 	 */
 	void checkConnectionsToPort();
 
@@ -105,6 +99,14 @@ private:
 	 * 0.9999 is a number that is really close to 1.
 	 */
 	static qreal const mMaximumFractionPartValue = 0.9999;
+
+	/**
+	 * Connects temporary removed links.
+	 * Used in model manipulating.
+	 * @param temporaryRemovedLinks List of temporary removed links.
+	 * @param direction "from" or "to" direction of links.
+	 */
+	void connectTemporaryRemovedLinksToPort(qReal::IdList const &temporaryRemovedLinks, QString const &direction);
 
 	/**
 	 * Returns point port ID that locality contains parameter point. If there is no such locality, it returns mNonexistentPortId.

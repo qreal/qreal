@@ -204,7 +204,7 @@ QPair<qreal, int> PortHandler::nearestPointPortNumberAndDistance(QPointF const &
 	qreal minDistance = -1; // just smth negative
 	
 	int minDistancePointPortNumber = -1; // just smth negative
-	for (int pointPortNumber = 0; pointPortNumber<  mPointPorts.size(); pointPortNumber++) {
+	for (int pointPortNumber = 0; pointPortNumber < mPointPorts.size(); pointPortNumber++) {
 		qreal const currentDistance = distanceFromPointPort(pointPortNumber, location);
 		if (currentDistance < minDistance || minDistance < 0) {
 			minDistancePointPortNumber = pointPortNumber;
@@ -291,6 +291,8 @@ void PortHandler::connectLinksToPorts()
 
 void PortHandler::checkConnectionsToPort()
 {
+	//FIXME
+
 	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksFrom(mNode->id()), "from");
 	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksTo(mNode->id()), "to");
 	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksNone(mNode->id()), QString());
