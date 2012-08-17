@@ -1,7 +1,7 @@
 #pragma once
 
 #include "diffPluginInterface.h"
-#include "briefVersioningInterface.h"
+#include "../../qrutils/versioningUtils/briefVersioningInterface.h"
 #include "../mainwindow/mainWindow.h"
 
 namespace qReal

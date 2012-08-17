@@ -1,4 +1,5 @@
 HEADERS += \
+	versioningUtils/briefVersioningInterface.h \
 	versioningUtils/externalClientPluginBase.h \
 	versioningUtils/authenticationSettingsWidget.h \
 	versioningUtils/networkSettingsWidget.h \

@@ -28,10 +28,10 @@ private slots:
 	void onModelLoaded(DiffModel *model);
 
 private:
+	qrRepo::WorkingCopyManagementInterface *mWorkingCopyManager;
 	qReal::BriefVersioningInterface *mVcs;
 	qReal::MainWindow *mMainWindow;
 	qReal::EditorManager *mEditorManager;
-	qrRepo::WorkingCopyManagementInterface *mWorkingCopyManager;
 	qReal::ErrorReporterInterface *mErrorReporter;
 	qReal::ProjectManagementInterface *mProjectManager;
 	details::ModelLoader *mLoader;

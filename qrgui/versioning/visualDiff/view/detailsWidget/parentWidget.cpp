@@ -33,38 +33,38 @@ void ParentWidget::setId(const qReal::Id &graphicalId, const qReal::Id &logicalI
 	mGraphicalId = graphicalId;
 	mLogicalId = logicalId;
 	Difference *difference = mDiffProvider->difference(mLogicalId);
-	if (!difference)
+	if (!difference) {
 		return;
-	DiffState state = difference->graphicalDifference()->parentState();
-	switch(state)
-	{
+	}
+	DiffState const state = difference->graphicalDifference()->parentState();
+	switch(state) {
 	case Same:
-		mOldParentLabel->setText("Parents of this element in the old and new models are the same:");
+		mOldParentLabel->setText(tr("Parents of this element in the old and new models are the same:"));
 		mNewParentLabel->setText("");
-		mOldIdWidget->setId(difference->graphicalDifference()->oldParent(),
-				    difference->logicalDifference()->oldParent());
+		mOldIdWidget->setId(difference->graphicalDifference()->oldParent()
+				, difference->logicalDifference()->oldParent());
 		mNewIdWidget->reset();
 		break;
 	case Modified:
-		mOldParentLabel->setText("Parent in the old model:");
-		mNewParentLabel->setText("Parent in the new model:");
-		mOldIdWidget->setId(difference->graphicalDifference()->oldParent(),
-				    difference->logicalDifference()->oldParent());
-		mNewIdWidget->setId(difference->graphicalDifference()->newParent(),
-				    difference->logicalDifference()->newParent());
+		mOldParentLabel->setText(tr("Parent in the old model:"));
+		mNewParentLabel->setText(tr("Parent in the new model:"));
+		mOldIdWidget->setId(difference->graphicalDifference()->oldParent()
+				, difference->logicalDifference()->oldParent());
+		mNewIdWidget->setId(difference->graphicalDifference()->newParent()
+				, difference->logicalDifference()->newParent());
 		break;
 	case Added:
-		mOldParentLabel->setText("The element doesnt`t exist in the old model");
-		mNewParentLabel->setText("Parent in the new model:");
+		mOldParentLabel->setText(tr("The element doesnt`t exist in the old model"));
+		mNewParentLabel->setText(tr("Parent in the new model:"));
 		mOldIdWidget->reset();
-		mNewIdWidget->setId(difference->graphicalDifference()->newParent(),
-				    difference->logicalDifference()->newParent());
+		mNewIdWidget->setId(difference->graphicalDifference()->newParent()
+				, difference->logicalDifference()->newParent());
 		break;
 	case Removed:
-		mOldParentLabel->setText("Parent in the old model:");
-		mNewParentLabel->setText("The element doesnt`t exist in the new model");
-		mOldIdWidget->setId(difference->graphicalDifference()->oldParent(),
-				    difference->logicalDifference()->oldParent());
+		mOldParentLabel->setText(tr("Parent in the old model:"));
+		mNewParentLabel->setText(tr("The element doesnt`t exist in the new model"));
+		mOldIdWidget->setId(difference->graphicalDifference()->oldParent()
+				, difference->logicalDifference()->oldParent());
 		mNewIdWidget->reset();
 		break;
 	default:

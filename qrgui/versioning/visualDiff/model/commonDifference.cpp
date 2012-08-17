@@ -79,6 +79,10 @@ QListIterator<QString> CommonDifference::propertyNamesIterator() const
 
 DiffState CommonDifference::propertyState(const QString &name) const
 {
+	DiffState const generalState = propertiesState();
+	if (Added == generalState || Removed == generalState) {
+		return generalState;
+	}
 	return mProperties[name].state();
 }
 
@@ -173,7 +177,7 @@ void CommonDifference::findPropertyDifference(bool old)
 		Modification modification;
 		modification.setOldValue(value);
 		modification.setNewValue(value);
-		DiffState state = (old) ? Removed : Added;
+		DiffState const state = (old) ? Removed : Added;
 		modification.setState(state);
 		mProperties.insert(key, modification);
 	}
@@ -191,7 +195,7 @@ bool CommonDifference::compareProperties(QVariant const &property1, QVariant con
 		if (property1.userType() == QMetaType::type("qReal::IdList")) {
 			return property1.value<qReal::IdList>() == property2.value<qReal::IdList>();
 		}
-		qDebug() << "Unsupported QVariant type.";
+		qDebug() << "Unsupported QVariant type while comparing properties.";
 		qDebug() << property1;
 	}
 	return property1 == property2;

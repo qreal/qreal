@@ -17,7 +17,7 @@ DiffModel::DiffModel(qReal::models::Models *oldModel
 
 Difference *DiffModel::difference(const qReal::Id &id) const
 {
-	qReal::Id logicalId = this->logicalId(id);
+	qReal::Id const logicalId = this->logicalId(id);
 	if (mDifferences.keys().contains(logicalId)) {
 		return mDifferences[logicalId];
 	} else {

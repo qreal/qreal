@@ -1,8 +1,8 @@
 #pragma once
 
+#include "../../qrutils/versioningUtils/briefVersioningInterface.h"
 #include "../pluginManager/toolPluginManager.h"
 #include "versioningPluginInterface.h"
-#include "briefVersioningInterface.h"
 #include "../models/models.h"
 
 namespace qReal
@@ -25,7 +25,7 @@ public:
 		, ErrorReporterInterface *errorReporter
 		, MainWindow *mainWindow); // MainWindow used till refactoring
 
-	BriefVersioningInterface *activeClient(const QString &workingDir) const;
+	BriefVersioningInterface *activeClient(const QString &workingDir);
 
 	bool onFileAdded(QString const &filePath, QString const &workingDir);
 	bool onFileRemoved(QString const &filePath, QString const &workingDir);
@@ -43,7 +43,7 @@ public slots:
 	QString information(QString const &targetProject = QString());
 	int revisionNumber(QString const &targetProject = QString());
 	QString remoteRepositoryUrl(QString const &targetProject = QString());
-	bool isMyWorkingCopy(QString const &directory = "");
+	bool isMyWorkingCopy(QString const &directory = QString());
 
 private slots:
 	void onWorkingCopyDownloaded(bool const success, QString const &targetProject);
@@ -55,7 +55,7 @@ private:
 	void prepareWorkingCopy();
 	void initFromToolPlugins(QListIterator<ToolPluginInterface *> iterator
 			, MainWindow *mainWindow);
-	VersioningPluginInterface *activePlugin(QString const &workingDir = "") const;
+	VersioningPluginInterface *activePlugin(bool needPreparation = true, QString const &workingDir = "");
 	WorkingCopyInspectionInterface *activeWorkingCopyInspector(QString const &workingDir = "");
 
 	void reportError(QString const &message);

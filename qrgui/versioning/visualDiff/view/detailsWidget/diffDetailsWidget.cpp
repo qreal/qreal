@@ -19,8 +19,7 @@ DiffDetailsWidget::DiffDetailsWidget(DiffModel *diffModel, QWidget *parent)
 
 void DiffDetailsWidget::setId(const qReal::Id &graphicalId)
 {
-	if (graphicalId == mGraphicalId)
-	{
+	if (graphicalId == mGraphicalId) {
 		return;
 	}
 	closeSessionTabs();
@@ -31,14 +30,12 @@ void DiffDetailsWidget::setId(const qReal::Id &graphicalId)
 	mChildrenWidget->setId(mGraphicalId, mLogicalId);
 	mGraphicalPropertiesWidget->setId(mGraphicalId, mLogicalId);
 	mLogicalPropertiesWidget->setId(mGraphicalId, mLogicalId);	
-//	mTabWidget->setVisible(true);
 }
 
 void DiffDetailsWidget::reset()
 {
 	mGraphicalId = qReal::Id();
 	mIdWidget->reset();
-//	mTabWidget->setVisible(false);
 	mParentWidget->reset();
 	mChildrenWidget->reset();
 	mGraphicalPropertiesWidget->reset();
@@ -58,7 +55,7 @@ void DiffDetailsWidget::initLayout()
 
 void DiffDetailsWidget::initIdWidget()
 {
-	mIdWidget = new IdWidget("<Click item to see details>", this);
+	mIdWidget = new IdWidget(tr("<Click item to see details>"), this);
 	mLayout->addWidget(mIdWidget, 0, 0, Qt::AlignCenter);
 	connect(mIdWidget, SIGNAL(mouseEntered(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
 	connect(mIdWidget, SIGNAL(mouseLeaved(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
@@ -67,7 +64,6 @@ void DiffDetailsWidget::initIdWidget()
 void DiffDetailsWidget::initTabWidget()
 {
 	mTabWidget = new QTabWidget(this);
-//	mTabWidget->setVisible(false);
 	mLayout->addWidget(mTabWidget, 1, 0);
 }
 
@@ -76,7 +72,7 @@ void DiffDetailsWidget::initParentWidget()
 	mParentWidget = new ParentWidget(mDiffProvider, mTabWidget);
 	connect(mParentWidget, SIGNAL(mouseEnteredIdWidget(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
 	connect(mParentWidget, SIGNAL(mouseLeavedIdWidget(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
-	openTab(mParentWidget, "Parents");
+	openTab(mParentWidget, tr("Parents"));
 }
 
 void DiffDetailsWidget::initChildrenWidget()
@@ -84,7 +80,7 @@ void DiffDetailsWidget::initChildrenWidget()
 	mChildrenWidget = new ChildrenWidget(mDiffProvider, mTabWidget);
 	connect(mChildrenWidget, SIGNAL(mouseEnteredIdWidget(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
 	connect(mChildrenWidget, SIGNAL(mouseLeavedIdWidget(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
-	openTab(mChildrenWidget, "Children");
+	openTab(mChildrenWidget, tr("Children"));
 }
 
 void DiffDetailsWidget::initPropertiesWidgets()
@@ -97,8 +93,8 @@ void DiffDetailsWidget::initPropertiesWidgets()
 	connect(mLogicalPropertiesWidget, SIGNAL(mouseEnteredIdWidget(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
 	connect(mLogicalPropertiesWidget, SIGNAL(mouseLeavedIdWidget(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
 	connect(mLogicalPropertiesWidget, SIGNAL(idListButtonClicked(bool,QString)), this, SLOT(onIdListButtonClicked(bool,QString)));
-	openTab(mGraphicalPropertiesWidget, "Graphical Properties");
-	openTab(mLogicalPropertiesWidget, "Logical Properties");
+	openTab(mGraphicalPropertiesWidget, tr("Graphical Properties"));
+	openTab(mLogicalPropertiesWidget, tr("Logical Properties"));
 }
 
 int DiffDetailsWidget::openTab(QWidget *widget, const QString &caption)
@@ -121,7 +117,11 @@ void DiffDetailsWidget::openNewIdListDiffTab(bool isGraphical, const QString &pr
 	IdListDiffWidget *widget = new IdListDiffWidget(mDiffProvider, this);
 	connect(widget, SIGNAL(mouseEnteredIdWidget(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
 	connect(widget, SIGNAL(mouseLeavedIdWidget(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
-	QString const caption = propertyName + "(" + ((isGraphical) ? "graphical" : "logical") + ")";
+	QString const caption = propertyName + "(" + (isGraphical ? tr("graphical") : tr("logical")) + ")";
+
+	qReal::IdList same;
+	qReal::IdList added;
+	qReal::IdList removed;
 
 	CommonDifference *difference;
 	if (isGraphical) {
@@ -129,54 +129,38 @@ void DiffDetailsWidget::openNewIdListDiffTab(bool isGraphical, const QString &pr
 	} else {
 		difference = mDiffProvider->difference(mLogicalId)->logicalDifference();
 	}
-	if (Added == difference->propertiesState())
+
+	DiffState const state = difference->propertyState(propertyName);
+	switch(state)
 	{
-		qReal::IdList added = difference->newProperty(propertyName).value<qReal::IdList>();
-		widget->setIdLists(qReal::IdList(), added, qReal::IdList());
-		mListDiffWidgets.append(widget);
-		int const index = openTab(widget, caption);
-		mTabWidget->setCurrentIndex(index);
-		return;
-	}
-	else
-	{
-		if (Removed == difference->propertiesState())
-		{
-			qReal::IdList removed = difference->oldProperty(propertyName).value<qReal::IdList>();
-			widget->setIdLists(qReal::IdList(), qReal::IdList(), removed);
-			mListDiffWidgets.append(widget);
-			int const index = openTab(widget, caption);
-			mTabWidget->setCurrentIndex(index);
-			return;
+	case Added:
+		added = difference->newProperty(propertyName).value<qReal::IdList>();
+		break;
+	case Removed:
+		removed = difference->oldProperty(propertyName).value<qReal::IdList>();
+		break;
+	case Same:
+		same = difference->oldProperty(propertyName).value<qReal::IdList>();
+		break;
+	case Modified:
+		qReal::IdList oldList = difference->oldProperty(propertyName).value<qReal::IdList>();
+		qReal::IdList newList = difference->newProperty(propertyName).value<qReal::IdList>();
+		foreach (qReal::Id const &id, oldList) {
+			if (newList.contains(id)) {
+				same.append(id);
+			}
+			else {
+				removed.append(id);
+			}
 		}
-	}
-	if (Same == difference->propertyState(propertyName))
-	{
-		qReal::IdList same = difference->oldProperty(propertyName).value<qReal::IdList>();
-		widget->setIdLists(same, qReal::IdList(), qReal::IdList());
-		mListDiffWidgets.append(widget);
-		int index = openTab(widget, caption);
-		mTabWidget->setCurrentIndex(index);
-		return;
-	}
-	qReal::IdList oldList = difference->oldProperty(propertyName).value<qReal::IdList>();
-	qReal::IdList newList = difference->newProperty(propertyName).value<qReal::IdList>();
-	qReal::IdList same;
-	qReal::IdList added;
-	qReal::IdList removed;
-	foreach (qReal::Id const &id, oldList) {
-		if (newList.contains(id)) {
-			same.append(id);
+		foreach (qReal::Id const &id, newList) {
+			if (!oldList.contains(id)) {
+				added.append(id);
+			}
 		}
-		else {
-			removed.append(id);
-		}
+		break;
 	}
-	foreach (qReal::Id const &id, newList) {
-		if (!oldList.contains(id)) {
-			added.append(id);
-		}
-	}
+
 	widget->setIdLists(same, added, removed);
 	mListDiffWidgets.append(widget);
 	int const index = openTab(widget, caption);

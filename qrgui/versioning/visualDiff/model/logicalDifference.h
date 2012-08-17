@@ -15,7 +15,7 @@ public:
 	virtual ~LogicalDifference() {}
 
 protected:
-	qrRepo::CommonRepoApi const &repoApi(bool old) const;
+	qrRepo::CommonRepoApi const &repoApi(bool const old) const;
 };
 
 }

@@ -22,30 +22,27 @@ void PropertyWidget::setProperty(const qReal::Id &graphicalId, const qReal::Id &
 	mPropertyName = propertyName;
 	mPropertyNameLabel->setText(propertyName + ": ");
 
-	DiffState state = difference()->propertiesState();
-	if (Added == state) {
+	DiffState const state = difference()->propertyState(propertyName);
+	switch(state) {
+	case Added:
 		stretchLayout(1);
 		setPropertyValue(mNewValueLabel, mNewIdWidget, difference()->newProperty(mPropertyName), 1);
-		return;
-	} else {
-		if (Removed == state) {
-			stretchLayout(1);
-			setPropertyValue(mOldValueLabel, mOldIdWidget, difference()->oldProperty(mPropertyName), 1);
-			return;
-		}
-	}
-	state = difference()->propertyState(propertyName);
-	if (Same == state) {
+		break;
+	case Removed:
+	case Same:
 		stretchLayout(1);
 		setPropertyValue(mOldValueLabel, mOldIdWidget, difference()->oldProperty(mPropertyName), 1);
-	} else {
-		QColor const color = SettingsManager::value("diffModifiedColor", ui::DiffColorPreferencesDialog::defaultModifiedColor()).value<QColor>();
+		break;
+	case Modified:
+		QColor const color = SettingsManager::value("diffModifiedColor"
+			, ui::DiffColorPreferencesDialog::defaultModifiedColor()).value<QColor>();
 		QPalette palette = mPropertyNameLabel->palette();
 		palette.setColor(QPalette::Foreground, color);
 		mPropertyNameLabel->setPalette(palette);
 		stretchLayout(2);
 		setPropertyValue(mOldValueLabel, mOldIdWidget, difference()->oldProperty(mPropertyName), 1);
 		setPropertyValue(mNewValueLabel, mNewIdWidget, difference()->newProperty(mPropertyName), 2);
+		break;
 	}
 }
 
@@ -56,18 +53,14 @@ void PropertyWidget::reset()
 
 CommonDifference *PropertyWidget::difference() const
 {
-	CommonDifference *result;
-	if (mIsGraphical) {
-		result = mDiffModel->difference(mGraphicalId)->graphicalDifference();
-	} else {
-		result = mDiffModel->difference(mLogicalId)->logicalDifference();
-	}
-	return result;
+	return mIsGraphical
+		? static_cast<CommonDifference *>(mDiffModel->difference(mGraphicalId)->graphicalDifference())
+		: static_cast<CommonDifference *>(mDiffModel->difference(mLogicalId)->logicalDifference());
 }
 
 qReal::Id PropertyWidget::id() const
 {
-	return (mIsGraphical) ? mGraphicalId : mLogicalId;
+	return mIsGraphical? mGraphicalId : mLogicalId;
 }
 
 void PropertyWidget::stretchLayout(int columnCount)

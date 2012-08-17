@@ -465,7 +465,7 @@ void MainWindow::makeSvg()
 
 void MainWindow::settingsPlugins()
 {
-	PluginDialog dialog(mEditorManager , this);
+	PluginDialog dialog(mEditorManager, this);
 	dialog.exec();
 }
 

@@ -2,6 +2,7 @@
 
 #include "subversionPlugin.h"
 #include "../../qrkernel/settingsManager.h"
+#include "../../qrutils/fileSystemUtils.h"
 
 Q_EXPORT_PLUGIN2(subversion, versioning::SubversionPlugin)
 
@@ -135,6 +136,7 @@ void SubversionPlugin::startCheckout(QString const &from
 		, int revision, bool quiet)
 {
 	QString checkoutDist = targetFolder.isEmpty() ? tempFolder() : targetFolder;
+	utils::FileSystemUtils::removeDir(checkoutDist);
 	QStringList arguments;
 	arguments << "checkout" << from << checkoutDist;
 	if (revision > 0) {

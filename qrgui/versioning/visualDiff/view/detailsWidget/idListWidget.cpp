@@ -14,12 +14,10 @@ void IdListWidget::setIdList(const qReal::IdList &graphicalIdList)
 {
 	reset();
 	mGraphicalIdList = graphicalIdList;
-	foreach (qReal::Id id, mGraphicalIdList)
-	{
+	foreach (qReal::Id const &id, mGraphicalIdList) {
 		mLogicalIdList.append(mDiffProvider->logicalId(id));
 	}
-	for (int i = 0; i<mGraphicalIdList.count(); ++i)
-	{
+	for (int i = 0; i < mGraphicalIdList.count(); ++i) {
 		addIdWidget(i);
 	}
 }
@@ -31,8 +29,7 @@ void IdListWidget::reset()
 
 void IdListWidget::clearIdWidgets()
 {
-	foreach (IdWidget *idWidget, mIdWidgets)
-	{
+	foreach (IdWidget *idWidget, mIdWidgets) {
 		mLayout->removeWidget(idWidget);
 		delete idWidget;
 	}
@@ -41,7 +38,7 @@ void IdListWidget::clearIdWidgets()
 	mLogicalIdList.clear();
 }
 
-void IdListWidget::addIdWidget(int index)
+void IdListWidget::addIdWidget(int const index)
 {
 	IdWidget *widget = new IdWidget("", this);
 	widget->setId(mGraphicalIdList[index], mLogicalIdList[index]);

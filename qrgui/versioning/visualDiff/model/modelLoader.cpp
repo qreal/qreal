@@ -1,6 +1,8 @@
 #include <QtGui/QApplication>
+#include <QtGui/QMessageBox>
 
 #include "modelLoader.h"
+#include "../../../../qrutils/fileSystemUtils.h"
 
 using namespace versioning;
 using namespace versioning::details;
@@ -17,7 +19,7 @@ ModelLoader::ModelLoader(qReal::BriefVersioningInterface *vcs
 	, mWorkingCopyManager(workingCopyManager)
 	, mTempProject(qApp->applicationDirPath() + "/" + tempProjectName)
 {
-	SettingsManager::instance()->setValue("diffTempProject", mTempProject);
+	SettingsManager::setValue("diffTempProject", mTempProject);
 
 	connect(mVcs, SIGNAL(workingCopyDownloaded(bool, QString))
 			, this, SLOT(onDownloadingComplete(bool, QString)));
@@ -98,6 +100,7 @@ void ModelLoader::onOldModelLoaded(qReal::models::Models *model)
 	if (!mOldModel) {
 		emit modelLoaded(NULL);
 	}
+	utils::FileSystemUtils::removeFile(tempProject());
 	connect(this, SIGNAL(internalModelLoaded(qReal::models::Models*))
 			, this, SLOT(onNewModelLoaded(qReal::models::Models*)));
 	mVcs->beginWorkingCopyDownloading(mRepoUrl, tempProject(), mNewRevision, true);
@@ -116,15 +119,16 @@ void ModelLoader::finishModelLoading()
 	if (mOldModel && mNewModel) {
 		result = new DiffModel(mOldModel, mNewModel);
 	}
+	utils::FileSystemUtils::removeFile(tempProject());
 	emit modelLoaded(result);
 }
 
-void ModelLoader::reportError(const QString &message)
+void ModelLoader::reportError(QString const &message)
 {
 	mErrorReporter->addError(message);
 }
 
-void ModelLoader::reportWarning(const QString &message)
+void ModelLoader::reportWarning(QString const &message)
 {
 	mErrorReporter->addWarning(message);
 }

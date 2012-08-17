@@ -75,17 +75,16 @@ QColor DiffColorPreferencesDialog::defaultHintColor()
 
 void DiffColorPreferencesDialog::setButtonColor(QPushButton *button, const QColor &color)
 {
-	QPalette p = button->palette();
-	p.setColor(QPalette::Button, color);
+	QPalette palette = button->palette();
+	palette.setColor(QPalette::Button, color);
 	button->setAutoFillBackground(true);
-	button->setPalette(p);
+	button->setPalette(palette);
 }
 
 QColor DiffColorPreferencesDialog::selectColor(const QColor &defaultColor)
 {
 	QColorDialog dialog(defaultColor, this);
-	if (QDialog::Accepted == dialog.exec())
-	{
+	if (QDialog::Accepted == dialog.exec()) {
 		return dialog.currentColor();
 	}
 	return defaultColor;

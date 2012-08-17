@@ -60,8 +60,8 @@ void DiffWindow::initViews()
 
 	mOldView = new details::DiffView(mMainWindow, mDiffModel, true, this);
 	mNewView = new details::DiffView(mMainWindow, mDiffModel, false, this);
-	QFrame *oldFrame = new QFrame(this);
-	QFrame *newFrame = new QFrame(this);
+	QFrame *oldFrame = new QFrame;
+	QFrame *newFrame = new QFrame;
 	oldFrame->setLayout(initView(mOldView));
 	newFrame->setLayout(initView(mNewView));
 
@@ -76,7 +76,7 @@ void DiffWindow::initViews()
 
 QGridLayout *DiffWindow::initView(details::DiffView *view)
 {
-	QGridLayout *result = new QGridLayout(this);
+	QGridLayout *result = new QGridLayout;
 	result->setColumnStretch(0, 10);
 	result->setColumnStretch(1, 0);
 	result->addWidget(view, 0, 0);

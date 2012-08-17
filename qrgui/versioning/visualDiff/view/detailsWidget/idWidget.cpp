@@ -35,28 +35,28 @@ void IdWidget::enterEvent(QEvent *event)
 {
 	QWidget::enterEvent(event);
 	event->accept();
-	if (mIdSetted)
+	if (mIdSetted) {
 		emit mouseEntered(mGraphicalId);
+	}
 }
 
 void IdWidget::leaveEvent(QEvent *event)
 {
 	QWidget::leaveEvent(event);
 	event->accept();
-	if (mIdSetted)
+	if (mIdSetted) {
 		emit mouseLeaved(mGraphicalId);
+	}
 }
 
 QString IdWidget::labelText() const
 {
 	QString result = "";
-	if (mLogicalId != qReal::Id())
-	{
-		result += "Logical Id: " + mLogicalId.toString() + "\n";
+	if (mLogicalId != qReal::Id()) {
+		result += tr("Logical Id: ") + mLogicalId.toString() + "\n";
 	}
-	if (mGraphicalId != qReal::Id())
-	{
-		result += "Graphical Id: " + mGraphicalId.toString();
+	if (mGraphicalId != qReal::Id()) {
+		result += tr("Graphical Id: ") + mGraphicalId.toString();
 	}
 	return result;
 }

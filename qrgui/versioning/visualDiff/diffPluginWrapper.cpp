@@ -26,11 +26,13 @@ void DiffPluginWrapper::showDiff(const QString &targetProject)
 
 void DiffPluginWrapper::showDiff(int repoRevision, const QString &targetProject)
 {
+	mLoader->startModelLoading(repoRevision, targetProject);
 }
 
 void DiffPluginWrapper::showDiff(int oldRepoRevision, int newRepoRevision
 		, const QString &targetProject)
 {
+	mLoader->startModelLoading(oldRepoRevision, newRepoRevision, targetProject);
 }
 
 void DiffPluginWrapper::onModelLoaded(DiffModel *model)

@@ -23,8 +23,8 @@ public:
 	/// This method will be called on pressing "Apply" or "Ok"
 	virtual void save() = 0;
 
-	/// This method will be called when need to get icon on label in form
-	virtual QIcon getIcon() const
+	/// This method will be called when need to get icon for label in form
+	virtual QIcon icon() const
 	{
 		return mIcon;
 	}

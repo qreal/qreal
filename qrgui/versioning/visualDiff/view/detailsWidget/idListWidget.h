@@ -34,7 +34,7 @@ private slots:
 
 private:
 	void clearIdWidgets();
-	void addIdWidget(int index);
+	void addIdWidget(int const index);
 
 	DiffModel *mDiffProvider;
 	qReal::IdList mGraphicalIdList;

@@ -3,12 +3,14 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
+#include "../utilsDeclSpec.h"
+
 namespace qReal
 {
 
 /// Provides a number of actions that each VCS should be
 /// able to invoke by definition.
-class BriefVersioningInterface : public QObject
+class QRUTILS_EXPORT BriefVersioningInterface : public QObject
 {
 	Q_OBJECT
 
@@ -58,7 +60,7 @@ public slots:
 	/// Implementation must determine if specified working copy
 	/// is versioned with this VCS.
 	/// @param directory Path to interested directory
-	virtual bool isMyWorkingCopy(QString const &directory = "") = 0;
+	virtual bool isMyWorkingCopy(QString const &directory = QString()) = 0;
 
 signals:
 	/// Emitted when working copy downloading started by

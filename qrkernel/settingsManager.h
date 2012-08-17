@@ -1,10 +1,10 @@
 #pragma once
 
 #include <QtCore/QSettings>
-#include <QString>
-#include <QHash>
-#include <QVariant>
-#include <QMutex>
+#include <QtCore/QString>
+#include <QtCore/QHash>
+#include <QtCore/QVariant>
+#include <QtCore/QMutex>
 
 #include "kernelDeclSpec.h"
 

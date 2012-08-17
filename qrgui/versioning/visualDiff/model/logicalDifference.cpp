@@ -9,7 +9,7 @@ LogicalDifference::LogicalDifference(qReal::models::Models *oldModel
 	findCommonDifference();
 }
 
-qrRepo::CommonRepoApi const &LogicalDifference::repoApi(bool old) const
+qrRepo::CommonRepoApi const &LogicalDifference::repoApi(bool const old) const
 {
-	return (old) ? mOldModel->logicalRepoApi() : mNewModel->logicalRepoApi();
+	return old ? mOldModel->logicalRepoApi() : mNewModel->logicalRepoApi();
 }

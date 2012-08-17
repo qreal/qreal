@@ -9,7 +9,7 @@ using namespace qReal::versioning;
 ExternalClientPluginBase::ExternalClientPluginBase()
 	: mWorkingCopyManager(NULL)
 	, mPathToClient(QString())
-	, mClientProcess(new QProcess(NULL))
+	, mClientProcess(NULL)
 {
 	connect(this, SIGNAL(errorOccured(QString)), this, SLOT(onErrorOccured(QString)));
 }
@@ -149,6 +149,7 @@ bool ExternalClientPluginBase::startProcess(const QStringList &args, bool report
 	if (!checkClientPath(reportErrors)) {
 		return false;
 	}
+	mClientProcess = new QProcess;
 	mClientProcess->start(mPathToClient, args);
 	if (!mClientProcess->waitForStarted()) {
 		if (reportErrors) {

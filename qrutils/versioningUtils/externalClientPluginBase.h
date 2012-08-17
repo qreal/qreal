@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QtCore/QObject>
 #include <QtCore/QProcess>
 
 #include "../utilsDeclSpec.h"
@@ -53,6 +54,16 @@ public:
 		, QString const &sourceProject = QString()
 		, bool const checkWorkingDir = true
 		, bool reportErrors = true);
+
+//	/// Starts process which executable`s path specified by setPathToClient() method in new thread.
+//	/// When process is finished singal invokeComplete is emited.
+//	/// @param args Startup arguments
+//	/// @param needPreparation Specifies if working copy must be fetchced from current project
+//	/// @param needPreparation Specifies if changes in working copy must be registered in current project
+//	/// @param targetProject A path to project whicth will recieve chages in working copy after processing.
+//	///                      If empty value speified, target project will be working one
+//	bool invokeOperationAsync(QStringList const &args, bool needPreparation = true,
+//							  bool needProcessing = true, QString const &targetProject = QString());
 
 protected:
 	ExternalClientPluginBase();

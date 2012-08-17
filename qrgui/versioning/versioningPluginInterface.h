@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../pluginManager/toolPluginManager.h"
-#include "briefVersioningInterface.h"
+#include "../../qrutils/versioningUtils/briefVersioningInterface.h"
 #include "../../qrrepo/workingCopyInspectionInterface.h"
 #include "../../qrrepo/workingCopyManagementInterface.h"
 

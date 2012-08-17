@@ -109,9 +109,9 @@ void Serializer::saveToDisk(QList<Object*> const &objects)
 		doc.save(out(), 2);
 		mSavedFiles << filePath;
 		if (!fileExists) {
-			reportAdded(filePath);
-		} else {
 			reportChanged(filePath);
+		} else {
+			reportAdded(filePath);
 		}
 	}
 
@@ -325,7 +325,7 @@ void Serializer::clearDir(QString const &path)
 	if (!dir.exists()) {
 		return;
 	}
-	foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::Hidden | QDir::NoDotAndDotDot)) {
+	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::Hidden | QDir::NoDotAndDotDot)) {
 		if (fileInfo.isDir()) {
 			clearDir(fileInfo.filePath());
 			dir.rmdir(fileInfo.fileName());

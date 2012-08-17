@@ -21,8 +21,10 @@ public:
 
 private:
 	qReal::IdList graphicalElements(qReal::models::Models *model);
-	void graphicalElements(qReal::models::Models *model, qReal::IdList &result, qReal::Id const &parent);
-	qReal::IdList uniteIdLists(qReal::IdList const &list1, qReal::IdList const &list2);
+	void graphicalElements(qReal::models::Models *model
+		, qReal::IdList &result, qReal::Id const &parent);
+	qReal::IdList uniteIdLists(qReal::IdList const &list1
+		, qReal::IdList const &list2);
 	void findDifferences();
 
 	qReal::models::Models *mOldModel;

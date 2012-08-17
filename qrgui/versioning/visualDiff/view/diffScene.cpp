@@ -36,12 +36,12 @@ void DiffScene::highlight(const qReal::Id &graphicalId, DiffState const state)
 	}
 	QColor const color = Modified == state
 			? mModifiedColor : mAddedRemovedColor;
-	EditorViewScene::highlight(graphicalId, true, color);
+	EditorViewScene::highlight(graphicalId, false, color);
 }
 
 void DiffScene::hint(const qReal::Id &graphicalId)
 {
-	EditorViewScene::highlight(graphicalId, true, mHintColor);
+	EditorViewScene::highlight(graphicalId, false, mHintColor);
 }
 
 void DiffScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)

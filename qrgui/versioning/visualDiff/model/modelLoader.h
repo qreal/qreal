@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 
 #include "../../../toolPluginInterface/usedInterfaces/errorReporterInterface.h"
-#include "../../briefVersioningInterface.h"
+#include "../../../../qrutils/versioningUtils/briefVersioningInterface.h"
 #include "diffModel.h"
 
 namespace versioning

@@ -1,7 +1,6 @@
 HEADERS += \
 	versioning/versioningPluginsManager.h \
 	versioning/versioningPluginInterface.h \
-	versioning/briefVersioningInterface.h \
 	versioning/diffPluginBase.h \
 	versioning/diffPluginInterface.h \
 

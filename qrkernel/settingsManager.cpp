@@ -1,9 +1,9 @@
-#include "settingsManager.h"
-#include <QHash>
-#include <QStringList>
+#include <QtCore/QHash>
+#include <QtCore/QStringList>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
 
-#include <QFile>
-#include <QTextStream>
+#include "settingsManager.h"
 
 SettingsManager* SettingsManager::mInstance = NULL;
 
@@ -59,7 +59,6 @@ void SettingsManager::saveData()
 		mSettings.setValue(name, mData[name]);
 	}
 	mSettings.sync();
-
 }
 
 void SettingsManager::load()

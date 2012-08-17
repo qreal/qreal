@@ -9,7 +9,7 @@ GraphicalDifference::GraphicalDifference(qReal::models::Models *oldModel
 	findCommonDifference();
 }
 
-qrRepo::CommonRepoApi const &GraphicalDifference::repoApi(bool old) const
+qrRepo::CommonRepoApi const &GraphicalDifference::repoApi(bool const old) const
 {
-	return (old) ? mOldModel->graphicalRepoApi() : mNewModel->graphicalRepoApi();
+	return old ? mOldModel->graphicalRepoApi() : mNewModel->graphicalRepoApi();
 }

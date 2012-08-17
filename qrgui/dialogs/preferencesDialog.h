@@ -4,7 +4,6 @@
 #include <QModelIndex>
 
 #include "preferencesPages/preferencesPage.h"
-
 #include "../../qrkernel/settingsManager.h"
 
 namespace Ui {
@@ -15,8 +14,7 @@ class PreferencesDialog : public QDialog {
 	Q_OBJECT
 
 public:
-
-	PreferencesDialog(QWidget *parent = 0);
+	explicit  PreferencesDialog(QWidget *parent = 0);
 	~PreferencesDialog();
 
 	void init(QAction * const showGridAction, QAction * const showAlignmentAction
@@ -37,6 +35,7 @@ signals:
 
 public slots:
 	void changePaletteParameters();
+
 private slots:
 	void cancel();
 	void applyChanges();
@@ -44,6 +43,6 @@ private slots:
 	void chooseTab(const QModelIndex &);
 
 private:
-	Ui::PreferencesDialog *ui;
+	Ui::PreferencesDialog *mUi;
 	QMap<QString, PreferencesPage *> mCustomPages;
 };

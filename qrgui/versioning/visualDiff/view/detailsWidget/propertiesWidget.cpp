@@ -17,13 +17,11 @@ void PropertiesWidget::setId(const qReal::Id &graphicalId, const qReal::Id &logi
 	reset();
 	mGraphicalId = graphicalId;
 	mLogicalId = logicalId;
-	QListIterator<QString> i = difference()->propertyNamesIterator();
+	QListIterator<QString> iter = difference()->propertyNamesIterator();
 	int index = -1;
-	while (i.hasNext())
-	{
+	while (iter.hasNext()) {
 		++index;
-		QString propertyName = i.next();
-		addPropertyWidget(propertyName, index);
+		addPropertyWidget(iter.next(), index);
 	}
 }
 
@@ -35,17 +33,17 @@ void PropertiesWidget::reset()
 CommonDifference *PropertiesWidget::difference() const
 {
 	CommonDifference *result;
-	if (mIsGraphical)
+	if (mIsGraphical) {
 		result = mDiffModel->difference(mGraphicalId)->graphicalDifference();
-	else
+	} else {
 		result = mDiffModel->difference(mLogicalId)->logicalDifference();
+	}
 	return result;
 }
 
 void PropertiesWidget::clearPropertyWidgets()
 {
-	foreach (PropertyWidget *widget, mPropertyWidgets)
-	{
+	foreach (PropertyWidget *widget, mPropertyWidgets) {
 		mLayout->removeWidget(widget);
 		delete widget;
 	}
@@ -57,8 +55,8 @@ void PropertiesWidget::addPropertyWidget(QString const &propertyName, int index)
 	PropertyWidget *widget = new PropertyWidget(mDiffModel, mIsGraphical, this);
 	widget->setProperty(mGraphicalId, mLogicalId, propertyName);
 	mPropertyWidgets.append(widget);
-	connect(widget, SIGNAL(mouseEntered(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
-	connect(widget, SIGNAL(mouseLeaved(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
+	connect(widget, SIGNAL(mouseEnteredIdWidget(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
+	connect(widget, SIGNAL(mouseLeavedIdWidget(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
 	connect(widget, SIGNAL(idListButtonClicked(QString)), this, SLOT(onIdListButtonClicked(QString)));
 	mLayout->addWidget(widget, index, 0);
 }
