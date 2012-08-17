@@ -13,7 +13,7 @@ public:
 	 * @param resizingNode Node that is actually dealt with.
 	 * @param elementImpl ElementImpl of resizingNode.
 	 */
-	ResizeHandler(NodeElement* const resizingNode, ElementImpl* const elementImpl);
+	ResizeHandler(NodeElement * const resizingNode, ElementImpl * const elementImpl);
 
 	/**
 	 * Resizes node trying to use newContents as new shape
@@ -52,7 +52,7 @@ private:
 	 * @param contents It would be gripped to QRectF() in case
 	 * node has minimizesToChildren container property.
 	 */
-	void gripeIfMinimizesToChildrenContainer(QRectF& contents) const;
+	void gripeIfMinimizesToChildrenContainer(QRectF &contents) const;
 
 	/// Calls resize() method for parent item.
 	void parentResizeCall() const;
@@ -61,14 +61,14 @@ private:
 	 * Changes contents to size that not smaller than folded contents.
 	 * @param contents It will be not smaller than folded contents.
 	 */
-	void normalizeSize(QRectF& contents) const;
+	void normalizeSize(QRectF &contents) const;
 
 	/**
 	 * Resizes newContents and moves newPos according to child configuration.
 	 * @param newContents It will be modified according to children.
 	 * @param newPos It will be modified according to children.
 	 */
-	void resizeAccordingToChildren(QRectF& newContents, QPointF& newPos) const;
+	void resizeAccordingToChildren(QRectF &newContents, QPointF &newPos) const;
 
 	/**
 	 * Returns vector of minimum negative XY child deflection from top left corner.
@@ -90,7 +90,7 @@ private:
 	 * @param contents It will be used for place holder bounding calculating.
 	 * @return Bounding rectangle for childItem.
 	 */
-	QRectF childBoundingRect(const QGraphicsItem* const childItem, QRectF const &contents) const;
+	QRectF childBoundingRect(const QGraphicsItem * const childItem, QRectF const &contents) const;
 
 	/**
 	 * Expands contents according to child configuration.
@@ -105,9 +105,9 @@ private:
 	void printChildPos() const;
 
 	/// Node that is actually dealt with.
-	NodeElement* const mResizingNode;
+	NodeElement * const mResizingNode;
 
 	/// ElementImpl of node that is actually dealt with.
-	ElementImpl* const mElementImpl;
+	ElementImpl * const mElementImpl;
 };
 

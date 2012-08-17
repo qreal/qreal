@@ -37,7 +37,7 @@ public:
 	 * Returns port ID in terms described below *'Useful information' before class* 
 	 * @return Port ID in terms described below *'Useful information' before class*.
 	 */
-	qreal getPortId(QPointF const &location) const;
+	qreal portId(QPointF const &location) const;
 
 	/**
 	 * Calculates port number.
@@ -54,14 +54,14 @@ public:
 	 * @param id Id that position is returned by this method.
 	 * @return Port position relative to the top left corner of NodeElement.
 	 */
-	QPointF const getPortPos(qreal id) const;
+	QPointF const portPos(qreal id) const;
 
 	/**
 	 * Calculates nearest point of NodeElement ports to parameter point. 
 	 * @param location To this point nearest port will be calculated.
 	 * @return Nearest point of NodeElement ports to parameter point.
 	 */
-	QPointF const getNearestPort(QPointF const &location) const;
+	QPointF const nearestPort(QPointF const &location) const;
 
 	/**
 	 * Connects temporary removed links.
@@ -111,14 +111,14 @@ private:
 	 * @param location Point that is considered for locate in locality (kvadratik, kvadratik) of point ports.
 	 * @return Point port ID that locality contains parameter point. If there is no such locality, it returns mNonexistentPortId.
 	 */
-	qreal getPointPortId(QPointF const &location) const;
+	qreal pointPortId(QPointF const &location) const;
 
 	/**
 	 * Returns line port point ID that locality contains parameter point. If there is no such locality, it returns mNonexistentPortId.
 	 * @param location Point that is considered for locate in locality (kvadratik - 5, kvadratik - 5) of line port points.
 	 * @return line port point ID that locality contains parameter point. If there is no such locality, it returns mNonexistentPortId.
 	 */
-	qreal getLinePortId(QPointF const &location) const;
+	qreal linePortId(QPointF const &location) const;
 
 	/**
 	 * Returns distance from location to closest point port of NodeElement and this port number in list of point ports.
@@ -140,7 +140,7 @@ private:
 	 * @param location To this point nearest point parameter will be calculated.
 	 * @return Nearest point parameter at line port to point.
 	 */
-	qreal getNearestPointOfLinePort(int const linePortNumber, QPointF const &location) const;
+	qreal nearestPointOfLinePort(int const linePortNumber, QPointF const &location) const;
 
 	/**
 	 * Returns minimum distance from line port to point.

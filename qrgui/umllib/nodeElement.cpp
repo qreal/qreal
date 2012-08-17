@@ -769,14 +769,14 @@ void NodeElement::updateData()
 	update();
 }
 
-QPointF const NodeElement::getPortPos(qreal id) const
+QPointF const NodeElement::portPos(qreal id) const
 {
-	return mPortHandler->getPortPos(id);
+	return mPortHandler->portPos(id);
 }
 
-QPointF const NodeElement::getNearestPort(QPointF const &location) const
+QPointF const NodeElement::nearestPort(QPointF const &location) const
 {
-	return mPortHandler->getNearestPort(location);
+	return mPortHandler->nearestPort(location);
 }
 
 int NodeElement::portId(qreal id)
@@ -784,9 +784,9 @@ int NodeElement::portId(qreal id)
 	return PortHandler::portNumber(id);
 }
 
-qreal NodeElement::getPortId(QPointF const &location) const
+qreal NodeElement::portId(QPointF const &location) const
 {
-	return mPortHandler->getPortId(location);
+	return mPortHandler->portId(location);
 }
 
 void NodeElement::setPortsVisible(bool value)

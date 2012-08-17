@@ -60,13 +60,13 @@ public:
 	void storeGeometry();
 	virtual void setName(QString name);
 
-	QPointF const getPortPos(qreal id) const;
-	QPointF const getNearestPort(QPointF const &location) const;
+	QPointF const portPos(qreal id) const;
+	QPointF const nearestPort(QPointF const &location) const;
 	//TODO: rename method to portNumber
 	static int portId(qreal id);
-	qreal getPortId(QPointF const &location) const;
+	qreal portId(QPointF const &location) const;
 
-	QList<EdgeElement*> getEdges();
+	QList<EdgeElement *> getEdges();
 	void addEdge(EdgeElement *edge);
 	void delEdge(EdgeElement *edge);
 
