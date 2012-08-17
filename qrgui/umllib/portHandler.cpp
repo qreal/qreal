@@ -103,13 +103,14 @@ QPointF const PortHandler::getPortPos(qreal id) const
 		return QPointF(0, 0);
 	}
 
-	int iid = portNumber(id);
-	if (iid < mPointPorts.size()) {
-		return newTransform(mPointPorts[iid]);
+	// portNumber - integral id part, number of port
+	int portNumber = portNumber(id);
+	if (portNumber < mPointPorts.size()) {
+		return newTransform(mPointPorts[portNumber]);
 	}
 
-	if (iid < mPointPorts.size() + mLinePorts.size()) {
-		return newTransform(mLinePorts.at(iid - mPointPorts.size())).pointAt(id - qFloor(id));
+	if (portNumber < mPointPorts.size() + mLinePorts.size()) {
+		return newTransform(mLinePorts.at(portNumber - mPointPorts.size())).pointAt(id - qFloor(id));
 	} else {
 		return QPointF(0, 0);
 	}
@@ -202,15 +203,13 @@ QPair<qreal, int> PortHandler::nearestPointPortNumberAndDistance(QPointF const &
 {
 	qreal minDistance = -1; // just smth negative
 	
-	int pointPortNumber = 0;
 	int minDistancePointPortNumber = -1; // just smth negative
-	foreach (StatPoint const &pointPort, mPointPorts) {
+	for (int pointPortNumber = 0; pointPortNumber<  mPointPorts.size(); pointPortNumber++) {
 		qreal const currentDistance = distanceFromPointPort(pointPortNumber, location);
 		if (currentDistance < minDistance || minDistance < 0) {
 			minDistancePointPortNumber = pointPortNumber;
 			minDistance = currentDistance;
 		}
-		pointPortNumber++;
 	}
 
 	return qMakePair(minDistance, minDistancePointPortNumber);
@@ -220,15 +219,13 @@ QPair<qreal, int> PortHandler::nearestLinePortNumberAndDistance(QPointF const &l
 {
 	qreal minDistance = -1; // just smth negative
 
-	int linePortNumber = 0;
 	int minDistanceLinePortNumber = -1; // just smth negative
-	foreach (StatLine const &linePort, mLinePorts) {
+	for (int linePortNumber = 0; linePortNumber < mLinePorts.size(); linePortNumber++) {
 		qreal const currentDistance = minDistanceFromLinePort(linePortNumber, location);
 		if (currentDistance < minDistance || minDistance < 0) {
 			minDistanceLinePortNumber = linePortNumber;
 			minDistance = currentDistance;
 		}
-		linePortNumber++;
 	}
 
 	return qMakePair(minDistance, minDistanceLinePortNumber);
