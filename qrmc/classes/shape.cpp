@@ -59,7 +59,7 @@ void Shape::initLabels(QDomElement const &graphics)
 		element = element.nextSiblingElement("label"))
 	{
 		Label *label = new Label();
-		if (!label->init(element, count, true))
+		if (!label->init(element, count, true, mWidth, mHeight))
 			delete label;
 		else {
 			mLabels.append(label);
@@ -123,6 +123,9 @@ void Shape::changeDir(QDir &dir) const
 	if (!dir.exists(editorName))
 		dir.mkdir(editorName);
 	dir.cd(editorName);
+	if (!dir.exists(generatedShapesDir))
+		dir.mkdir(generatedShapesDir);
+	dir.cd(generatedShapesDir);
 	if (!dir.exists(shapesDir))
 		dir.mkdir(shapesDir);
 	dir.cd(shapesDir);
@@ -224,8 +227,6 @@ void Shape::generatePortsSdf() const
 	QString portsSdf;
 	foreach(Port *port, mPorts)
 		portsSdf += port->generateSdf(compiler) + endline;
-
-
 
 	portsTemplate.replace(portsTag, portsSdf)
 				.replace(nodeWidthTag, QString::number(mWidth))

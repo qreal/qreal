@@ -6,6 +6,7 @@ QString const nodeIndent = "\t\t\t";
 
 QString const generatedDir = "../qrmc/plugins";
 QString const shapesDir = "shapes";
+QString const generatedShapesDir = "generated";
 QString const pluginHeaderName = "pluginInterface.h";
 QString const pluginSourceName = "pluginInterface.cpp";
 QString const elementsFileName = "elements.h";

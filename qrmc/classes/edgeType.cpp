@@ -144,6 +144,9 @@ void EdgeType::generateSdf() const
 	if (!dir.exists(editorName))
 		dir.mkdir(editorName);
 	dir.cd(editorName);
+	if (!dir.exists(generatedShapesDir))
+		dir.mkdir(generatedShapesDir);
+	dir.cd(generatedShapesDir);
 	if (!dir.exists(shapesDir))
 		dir.mkdir(shapesDir);
 	dir.cd(shapesDir);
@@ -182,7 +185,7 @@ void EdgeType::initLabels()
 		element = element.nextSiblingElement("label"))
 	{
 		Label *label = new Label();
-		if (!label->init(element, count, true))
+		if (!label->init(element, count, true, mWidth, mHeight))
 			delete label;
 		else {
 			mLabels.append(label);

@@ -302,9 +302,6 @@ bool Editor::generateResourceFile(QString const &resourceTemplate)
 	if (!dir.exists(mName))
 		dir.mkdir(mName);
 	dir.cd(mName);
-	if (!dir.exists(shapesDir))
-		dir.mkdir(shapesDir);
-	dir.cd(shapesDir);
 
 	QString fileName = dir.absoluteFilePath(resourceFileName);
 	QFile file(fileName);

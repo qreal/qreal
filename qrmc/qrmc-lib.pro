@@ -27,7 +27,7 @@ HEADERS += \
 	../qrkernel/ids.h \
 	../qrrepo/repoApi.h \
 	diagram.h \
-	editor.h
+	editor.h \              
 
 SOURCES += \
 	metaCompiler.cpp \
