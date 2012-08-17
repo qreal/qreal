@@ -2,8 +2,12 @@
 
 #include <QtCore/qglobal.h>
 
-#if defined(QRUTILS_LIBRARY)
-#  define QRUTILS_EXPORT Q_DECL_EXPORT
+#ifdef UNITTEST
+	#define QRUTILS_EXPORT
 #else
-#  define QRUTILS_EXPORT Q_DECL_IMPORT
+	#ifdef QRUTILS_LIBRARY
+		#define QRUTILS_EXPORT Q_DECL_EXPORT
+	#else
+		#define QRUTILS_EXPORT Q_DECL_IMPORT
+	#endif
 #endif

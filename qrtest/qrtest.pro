@@ -1,5 +1,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-	qrSources/qrSources.pro \
-	unitTests/unitTests.pro \
+	qrSources \
+	unitTests \
+
+unitTests.depends = qrSources

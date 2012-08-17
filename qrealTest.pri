@@ -1,6 +1,8 @@
 include (qreal.pri)
 
-SUBDIRS += qrtest
+SUBDIRS += \
+	qrtest \
+	thirdparty \
 
 qrgui.file = qrgui/qrguiTest.pro
 qrxc.file = qrxc/qrxcTest.pro
@@ -12,3 +14,4 @@ qrtest.depends = \
 	qrkernel \
 	qrmc \
 	qrgui \
+	thirdparty \

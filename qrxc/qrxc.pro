@@ -14,7 +14,25 @@ LIBS += -L../bin -lqrutils
 DESTDIR += ../bin
 
 !macx {
-	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)/../bin"
+	QMAKE_LFLAGS="-Wl,-O1,-rpath,$$PWD/../bin"
+}
+
+#UNIT_TEST = TRUE
+!isEmpty(UNIT_TEST) {
+	OBJECTS_DIR = .unittestobj
+	UI_DIR = .unittestui
+	MOC_DIR = .unittestmoc
+	RCC_DIR = .unittestmoc
+
+	INCLUDEPATH += \
+		../thirdparty/gmock-1.6.0/include \
+		../thirdparty/gmock-1.6.0/gtest/include \
+
+	LIBS += -L../bin/thirdparty/ -lgmock -lpthread
+
+	TARGET = qrxc_unittests
+	DESTDIR = ../bin/unittests
+	DEFINES += UNITTEST
 }
 
 HEADERS += association.h \
@@ -61,3 +79,6 @@ SOURCES += association.cpp \
 	type.cpp \
 	xmlCompiler.cpp \
 	scalableItem.cpp
+
+# Unit tests
+include (unitTests/unitTests.pri)

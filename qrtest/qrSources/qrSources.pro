@@ -1,3 +1,5 @@
+DEFINES += UNITTEST
+
 include(../../plugins/blockDiagram/visualDebugSupport/visualDebugSupport.pro)
 
 include(../../qrkernel/qrkernel.pro)
