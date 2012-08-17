@@ -13,7 +13,7 @@ PortHandler::PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistA
 
 qreal PortHandler::minDistanceFromLinePort(int linePortNumber, QPointF const &location) const
 {
-	QLineF const linePort = newTransform(mLinePorts[linePortNumber]);
+	QLineF const linePort = transformPortForNodeSize(mLinePorts[linePortNumber]);
 
 	// Triangle side values. 
 	qreal const a = linePort.length();
@@ -33,13 +33,13 @@ qreal PortHandler::minDistanceFromLinePort(int linePortNumber, QPointF const &lo
 
 qreal PortHandler::distanceFromPointPort(int pointPortNumber, QPointF const &location) const
 {
-	return QLineF(newTransform(mPointPorts[pointPortNumber]), location).length();
+	return QLineF(transformPortForNodeSize(mPointPorts[pointPortNumber]), location).length();
 }
 
 qreal PortHandler::nearestPointOfLinePort(int linePortNumber, QPointF const &location) const
 {
 	qreal nearestPointOfLinePort = 0;
-	QLineF linePort = newTransform(mLinePorts[linePortNumber]);
+	QLineF linePort = transformPortForNodeSize(mLinePorts[linePortNumber]);
 	qreal const y1 = linePort.y1();
 	qreal const y2 = linePort.y2();
 	qreal const x1 = linePort.x1();
@@ -59,7 +59,7 @@ qreal PortHandler::nearestPointOfLinePort(int linePortNumber, QPointF const &loc
 	return nearestPointOfLinePort;
 }
 
-QLineF PortHandler::newTransform(StatLine const &port) const
+QLineF PortHandler::transformPortForNodeSize(StatLine const &port) const
 {
 	qreal const x1 = port.line.x1() * (port.prop_x1 ? port.initWidth : mNode->contentsRect().width());	
 	qreal const y1 = port.line.y1() * (port.prop_y1 ? port.initHeight : mNode->contentsRect().height());
@@ -70,7 +70,7 @@ QLineF PortHandler::newTransform(StatLine const &port) const
 	return QLineF(x1, y1, x2, y2);
 }
 
-QPointF PortHandler::newTransform(StatPoint const &port) const
+QPointF PortHandler::transformPortForNodeSize(StatPoint const &port) const
 {
 	qreal const x = port.point.x() * (port.prop_x ? port.initWidth : mNode->contentsRect().width());
 	qreal const y = port.point.y() * (port.prop_y ? port.initHeight : mNode->contentsRect().height());
@@ -106,11 +106,11 @@ QPointF const PortHandler::portPos(qreal id) const
 	// portNum - integral id part, number of port
 	int portNum = portNumber(id);
 	if (portNum < mPointPorts.size()) {
-		return newTransform(mPointPorts[portNum]);
+		return transformPortForNodeSize(mPointPorts[portNum]);
 	}
 
 	if (portNum < mPointPorts.size() + mLinePorts.size()) {
-		return newTransform(mLinePorts.at(portNum - mPointPorts.size())).pointAt(id - qFloor(id));
+		return transformPortForNodeSize(mLinePorts.at(portNum - mPointPorts.size())).pointAt(id - qFloor(id));
 	} else {
 		return QPointF(0, 0);
 	}
@@ -128,7 +128,7 @@ QPointF const PortHandler::nearestPort(QPointF const &location) const
 
 	// Not const reference because port value is used for calculation.
 	foreach (StatPoint port, mPointPorts) {
-		QPointF const pointPort = newTransform(port);
+		QPointF const pointPort = transformPortForNodeSize(port);
 		QPointF const translatedPort = pointPort + mNode->boundingRect().topLeft();
 		qreal const currentDistance = QLineF(translatedPort, location).length();
 
@@ -141,7 +141,7 @@ QPointF const PortHandler::nearestPort(QPointF const &location) const
 	int num = 0;
 	foreach (StatLine const &linePort, mLinePorts) {
 		qreal positionAtLineCoef = qMin(qMax(0., nearestPointOfLinePort(num, location)), mMaximumFractionPartValue);
-		QLineF const sceneLine = newTransform(linePort);
+		QLineF const sceneLine = transformPortForNodeSize(linePort);
 		QPointF const port = sceneLine.pointAt(positionAtLineCoef);
 		qreal const currentDistance = QLineF(port, location).length();
 
@@ -163,7 +163,7 @@ qreal PortHandler::pointPortId(QPointF const &location) const
 {
 	int pointPortNumber = 0;
 	foreach (StatPoint const &pointPort, mPointPorts) {
-		if (QRectF(newTransform(pointPort) - QPointF(kvadratik, kvadratik),
+		if (QRectF(transformPortForNodeSize(pointPort) - QPointF(kvadratik, kvadratik),
 					QSizeF(kvadratik * 2, kvadratik * 2)
 			).contains(location))
 		{
@@ -183,7 +183,7 @@ qreal PortHandler::linePortId(QPointF const &location) const
 		ps.setWidth(kvadratik - 5);
 
 		QPainterPath path;
-		QLineF const line = newTransform(linePort);
+		QLineF const line = transformPortForNodeSize(linePort);
 		path.moveTo(line.p1());
 		path.lineTo(line.p2());
 
