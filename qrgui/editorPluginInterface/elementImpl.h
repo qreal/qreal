@@ -18,8 +18,17 @@ typedef QPair<bool, qReal::Id> PossibleEdgeType;
 struct StatPoint
 {
 	QPointF point;
+
+	/// Denote is the port need to be scaled on X dimension or not.
+	/// 'true' - means that the port isn't need to be scaled.
+	/// 'false' - means that the port is need to be scaled.
 	bool prop_x;
+
+	/// Denote is the port need to be scaled on Y dimension or not.
+	/// 'true' - means that the port isn't need to be scaled.
+	/// 'false' - means that the port is need to be scaled.
 	bool prop_y;
+
 	int initWidth;
 	int initHeight;
 
