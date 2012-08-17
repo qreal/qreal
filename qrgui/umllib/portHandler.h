@@ -126,16 +126,16 @@ private:
 	/**
 	 * Returns distance from location to closest point port of NodeElement and this port number in list of point ports.
 	 * @param location Result will be calculated for this point. location is assumed to be in LOCAL NodeElement coordinates!
-	 * @return distance from location to closest point port of NodeElement and this port number in list of point ports.
+	 * @return The closest point port number in list of line ports and distance from location to it.
 	 */
-	QPair<qreal, int> nearestPointPortNumberAndDistance(QPointF const &location) const;
+	QPair<int, qreal> nearestPointPortNumberAndDistance(QPointF const &location) const;
 	
 	/**
 	 * Returns distance from location to closest line port of NodeElement and this port number in list of line ports.
 	 * @param location Result will be calculated for this point. location is assumed to be in LOCAL NodeElement coordinates!
-	 * @return distance from location to closest line port of NodeElement and this port number in list of line ports.
+	 * @return The closest line port number in list of line ports and distance from location to it.
 	 */
-	QPair<qreal, int> nearestLinePortNumberAndDistance(QPointF const &location) const;
+	QPair<int, qreal> nearestLinePortNumberAndDistance(QPointF const &location) const;
 
 	/**
 	 * Returns nearest point parameter at line port to point.
