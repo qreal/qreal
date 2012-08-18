@@ -880,7 +880,7 @@
 			<node displayedName="Ждать свет" name="WaitForLight">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/waitForLight.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="33" y="60" textBinded="Port"/>
@@ -1214,37 +1214,33 @@
 		</graphicTypes>
 		<palette>
 			<group name="Действия">
-				<element name="Гудок"/>
-				<element name="Играть звук"/>
-				<element name="Моторы вперёд"/>
-				<element name="Моторы назад"/>
-				<element name="Моторы стоп"/>
-				<element name="Функция"/>
-				<element name="Поток управления"/>
+				<element name="Beep"/>
+				<element name="PlayTone"/>
+				<element name="EnginesForward"/>
+				<element name="EnginesBackward"/>
+				<element name="EnginesStop"/>
+				<element name="Function"/>
 			</group>
 			<group name="Ожидания">
-				<element name="Таймер"/>
-				<element name="Ждать сенсор касания"/>
-				<element name="Ждать сонар"/>
-				<element name="Ждать цвет"/>
-				<element name="Ждать энкодер"/>
-				<element name="Ждать интенсивность цвета"/>
-				<element name="Ждать свет"/>
+				<element name="Timer"/>
+				<element name="WaitForTouchSensor"/>
+				<element name="WaitForSonarDistance"/>
+				<element name="WaitForColor"/>
+				<element name="WaitForEncoder"/>
+				<element name="WaitForColorIntensity"/>
+				<element name="WaitForLight"/>
 			</group>
 			<group name="Алгоритмы">
-				<element name="Породить поток"/>
-				<element name="Условие"/>
-				<element name="Цикл"/>
-				<element name="Подпрограмма"/>
-				<element name="Линия соединения"/>
-				<element name="Диаграмма поведения робота"/>
-				<element name="Параллельные задачи"/>
+				<element name="Fork"/>
+				<element name="IfBlock"/>
+				<element name="ControlFlow"/>
+				<element name="RobotsDiagramNode"/>
 			</group>
 			<group name="Инициализация">
-				<element name="Начало"/>
-				<element name="Конец"/>
-				<element name="Блок инициализации"/>
-				<element name="Сбросить показания энкодера"/>
+				<element name="InitialNode"/>
+				<element name="FinalNode"/>
+				<element name="InitialBlock"/>
+				<element name="NullificationEncoder"/>
 			</group>
 		</palette>
 	</diagram>
