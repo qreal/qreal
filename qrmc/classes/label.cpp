@@ -10,6 +10,9 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel, int widt
 	initCoordinate(mX, element.attribute("x", "0"), width);
 	initCoordinate(mY, element.attribute("y", "0"), height);
 
+	scalingX = mX.isScalable() ? "true" : "false";
+	scalingY = mY.isScalable() ? "true" : "false";
+
 	mCenter = element.attribute("center", "false");
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
@@ -48,6 +51,8 @@ QString Label::generateInit(MetaCompiler *compiler, bool isNode) const
 
 	result.replace(labelXTag, mX.toString(false))
 			.replace(labelYTag, mY.toString(false))
+			.replace(xCoordIsScalable, scalingX)
+			.replace(yCoordIsScalable, scalingY)
 			.replace(labelReadonlyTag, mReadOnly)
 			.replace(labelIndexTag, QString::number(mIndex))
 			.replace(labelNameTag, "\"" + name + "\"");

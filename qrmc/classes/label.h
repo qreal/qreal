@@ -29,5 +29,7 @@ namespace qrmc {
 		QString mReadOnly;
 		QString mBackground;
 		QString mCenter;
+		QString scalingX;
+		QString scalingY;
 	};
 }
