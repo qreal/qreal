@@ -7,6 +7,7 @@
 #include "sensorImplementations/bluetoothTouchSensorImplementation.h"
 #include "sensorImplementations/bluetoothSonarSensorImplementation.h"
 #include "sensorImplementations/bluetoothColorSensorImplementation.h"
+#include "sensorImplementations/bluetoothLightSensorImplementation.h"
 #include "sensorImplementations/bluetoothEncoderImplementation.h"
 
 namespace qReal {
@@ -29,6 +30,7 @@ public:
 	virtual sensorImplementations::BluetoothTouchSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::BluetoothSonarSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::BluetoothColorSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const;
+	virtual sensorImplementations::BluetoothLightSensorImplementation *lightSensor(inputPort::InputPortEnum const &port) const;
 
 	virtual motorImplementations::RealMotorImplementation &motorA();
 	virtual motorImplementations::RealMotorImplementation &motorB();
@@ -59,6 +61,7 @@ private:
 	virtual void addTouchSensor(inputPort::InputPortEnum const &port);
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port);
 	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType);
+	virtual void addLightSensor(inputPort::InputPortEnum const &port);
 
 	void configureSensorImpl(inputPort::InputPortEnum const &port);
 };

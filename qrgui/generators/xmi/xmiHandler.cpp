@@ -86,8 +86,8 @@ void XmiHandler::serializeObject(QDomElement &parent, Id const &id, Id const &pa
 	QString typeOfTag = "";
 	QList<StringPair> additionalParams;
 
-	QString const objectType = mApi.typeName(id);
-	QString const parentType = mApi.typeName(parentId);
+	QString const objectType = id.element();
+	QString const parentType = parentId.element();
 
 	if (objectType == "krnnDiagram") {
 		typeOfTag = "ownedMember";
@@ -185,7 +185,7 @@ void XmiHandler::serializeObject(QDomElement &parent, Id const &id, Id const &pa
 
 QDomElement XmiHandler::serializeOutcomingLink(Id const &id)
 {
-	QString linkType = mApi.typeName(id);
+	QString linkType = id.element();
 	QDomElement result;
 
 	// kernel diagram
@@ -230,7 +230,7 @@ QDomElement XmiHandler::serializeOutcomingLink(Id const &id)
 QDomElement XmiHandler::serializeIncomingLink(Id const &id)
 {
 	QDomElement result;
-	if (mApi.typeName(id) == "ceDependency")
+	if (id.element() == "ceDependency")
 		result = createDomElementWithIdRef("supplierDependency", id.toString());
 	return result;
 }
@@ -257,7 +257,7 @@ QDomElement XmiHandler::createOwnedEnd(QString const &direction, Id const &id, I
 QDomElement XmiHandler::serializeLink(Id const &id)
 {
 	QString visibility = "";
-	QString linkType = mApi.typeName(id);
+	QString linkType = id.element();
 
 	QDomElement result = createDomElement("ownedMember", id.toString());
 

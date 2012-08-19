@@ -1,19 +1,26 @@
 #pragma once
 
-#include <QString>
+#include <QtCore/QString>
 
 #include "../kernelDeclSpec.h"
 
 namespace qReal {
 
-	class QRKERNEL_EXPORT Exception
-	{
-	public:
-		explicit Exception(QString const &message);
-		QString message() const;
+/// Base class for all QReal exceptions. Thrown when "something is wrong"
+/// in QReal code.
+class QRKERNEL_EXPORT Exception
+{
+public:
+	/// Constructor.
+	/// @param message Error message.
+	explicit Exception(QString const &message);
 
-	private:
-		const QString mMessage;
-	};
+	/// Get error message.
+	QString message() const;
+
+private:
+	/// Error message.
+	const QString mMessage;
+};
 
 }

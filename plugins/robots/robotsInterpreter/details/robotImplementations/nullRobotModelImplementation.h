@@ -6,6 +6,7 @@
 #include "sensorImplementations/nullTouchSensorImplementation.h"
 #include "sensorImplementations/nullSonarSensorImplementation.h"
 #include "sensorImplementations/nullColorSensorImplementation.h"
+#include "sensorImplementations/nullLightSensorImplementation.h"
 #include "sensorImplementations/nullEncoderImplementation.h"
 
 namespace qReal {
@@ -27,6 +28,7 @@ public:
 	virtual sensorImplementations::NullTouchSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::NullSonarSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::NullColorSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const;
+	virtual sensorImplementations::NullLightSensorImplementation *lightSensor(inputPort::InputPortEnum const &port) const;
 
 	virtual motorImplementations::NullMotorImplementation &motorA();
 	virtual motorImplementations::NullMotorImplementation &motorB();
@@ -53,6 +55,7 @@ private:
 
 	virtual void addTouchSensor(inputPort::InputPortEnum const &port);
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port);
+	virtual void addLightSensor(inputPort::InputPortEnum const &port);
 	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType);
 };
 
