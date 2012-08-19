@@ -38,7 +38,7 @@ bool GraphicType::init(QString const &context)
 	if (mApi->hasProperty(mId, "RequestBody"))
 		mIsVisible = !mApi->stringProperty(mId, "RequestBody").isEmpty();
 
-	IdList inLinks = mApi->outgoingLinks(mId);
+	IdList const inLinks = mApi->outgoingLinks(mId);
 	foreach (Id const inLink, inLinks) {
 		if (inLink.element() == "Container") {
 			Id const elementId = mApi->to(inLink);
