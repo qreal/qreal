@@ -1,6 +1,5 @@
 #include "bluetoothSensorImplementation.h"
 #include "../../robotParts/robotModel.h"
-
 #include "../../tracer.h"
 
 using namespace qReal::interpreters::robots;

@@ -23,7 +23,7 @@ public:
 	virtual QList<SensorPortPair> sensorToPair(QString const port1Sensor, inputPort::InputPortEnum const &port) const;
 
 private slots:
-	void connected(bool success);
+	void goToNextBlockSlot(bool success);
 
 private:
 	RobotModel &mRobotModel;

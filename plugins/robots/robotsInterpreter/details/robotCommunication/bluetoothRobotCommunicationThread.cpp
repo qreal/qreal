@@ -3,7 +3,7 @@
 #include <QtCore/QMetaType>
 #include <time.h>
 
-#include "../../thirdparty/qextserialport/src/qextserialport.h"
+#include "../../../thirdparty/qextserialport/src/qextserialport.h"
 #include "../tracer.h"
 
 unsigned const keepAliveResponseSize = 9;
@@ -75,7 +75,7 @@ void BluetoothRobotCommunicationThread::connect(QString const &portName)
 
 	emit connected(response != QByteArray());
 
-	mKeepAliveTimer->start(1000);
+	mKeepAliveTimer->start(500);
 }
 
 void BluetoothRobotCommunicationThread::reconnect(QString const &portName)
