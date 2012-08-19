@@ -20,8 +20,6 @@ RobotsPlugin::RobotsPlugin()
 		, mWatchListAction(NULL)
 		, mAppTranslator(new QTranslator())
 {
-	//details::Tracer::enableCategory(details::tracer::robotCommunication);
-	//details::Tracer::enableAll();
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
 	mAppTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(mAppTranslator);

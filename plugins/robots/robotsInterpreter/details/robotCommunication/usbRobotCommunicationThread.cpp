@@ -104,7 +104,6 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const 
 			command[4] = port;
 
 			mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, command, 2, outputBufferPtr2, 2, status);
-
 		}
 
 		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, newBuffer, newBuffer.length(), outputBufferPtr2, responseSize - 3, status);
