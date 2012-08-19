@@ -63,7 +63,7 @@ void UsbRobotCommunicationThread::send(QObject *addressee
 	QByteArray outputBuffer;
 	outputBuffer.resize(responseSize);
 	send(buffer, responseSize, outputBuffer);
-	if (buffer[2] != 0) {
+	if (!isResponseNeeded(buffer)) {
 		emit response(addressee, QByteArray());
 	} else {
 		emit response(addressee, outputBuffer);
@@ -80,7 +80,7 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const 
 		newBuffer[i - 3] = buffer[i];
 	}
 
-	if (buffer[2] != 0) {
+	if (!isResponseNeeded(buffer)) {
 		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, false, newBuffer, newBuffer.length(), NULL, 0, status);
 	} else {
 		char *outputBufferPtr2 = new char[200];
@@ -167,4 +167,9 @@ void UsbRobotCommunicationThread::checkForConnection()
 	if (response[3] == '\0') {
 		emit disconnected();
 	}
+}
+
+bool UsbRobotCommunicationThread::isResponseNeeded(QByteArray const &buffer)
+{
+	return buffer[2] == 0;
 }

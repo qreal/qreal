@@ -56,8 +56,9 @@ void WaitForLightSensorBlock::responseSlot(int reading)
 		stop();
 	}
 
-	if (targetPercents < reading)
+	if (targetPercents < reading) {
 		stop();
+	}
 }
 
 void WaitForLightSensorBlock::stop()
