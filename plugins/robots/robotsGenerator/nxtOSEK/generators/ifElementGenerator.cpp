@@ -133,29 +133,15 @@ bool IfElementGenerator::nextElementsGeneration()
 	QString condition = "(" + mNxtGen->api()->property(logicElementId, "Condition").toString() + ")";
 	addNeededCondition(condition, outgoingLinks, conditionArrowNum);
 
-	//check for back arrows
-	Id const positiveBranchElement = mNxtGen->api()->to(mNxtGen->api()->logicalId(outgoingLinks.at(conditionArrowNum)));
-	if (positiveBranchElement == Id::rootId()) {
-		mNxtGen->errorReporter().addError("If block " + mElementId.toString() + " has no 2 correct branches!"\
-				" May be you need to connect one of them to some diagram element.", mElementId);
-		return false;
-	}
+	bool isPositiveBranchReturnsToBackElems = false;
+	bool isNegativeBranchReturnsToBackElems = false;
 
-	QPair<bool, qReal::Id> const positiveBranchCheck = checkBranchForBackArrows(positiveBranchElement);
-	bool const isPositiveBranchReturnsToBackElems = positiveBranchCheck.first;
-
-	Id const negativeBranchElement = mNxtGen->api()->to(outgoingLinks.at(1 - conditionArrowNum));
-	if (negativeBranchElement == Id::rootId()) {
-		mNxtGen->errorReporter().addError("If block " + mElementId.toString() + " has no 2 correct branches!"\
-				" May be you need to connect one of them to some diagram element.", mElementId);
-		return false;
-	}
-
-	QPair<bool, qReal::Id> const negativeBranchCheck = checkBranchForBackArrows(negativeBranchElement);
-	bool const isNegativeBranchReturnsToBackElems = negativeBranchCheck.first;
-
-	if (isPositiveBranchReturnsToBackElems && isNegativeBranchReturnsToBackElems) {
-		displaysSuitableError(positiveBranchCheck, negativeBranchCheck);
+	if (!areOutgoingLinksCorrect(
+			outgoingLinks.at(conditionArrowNum)
+			, outgoingLinks.at(1 - conditionArrowNum)
+			, isPositiveBranchReturnsToBackElems
+			, isNegativeBranchReturnsToBackElems))
+	{
 		return false;
 	}
 
@@ -166,6 +152,41 @@ bool IfElementGenerator::nextElementsGeneration()
 
 	if (!isPositiveBranchReturnsToBackElems && !isNegativeBranchReturnsToBackElems) {
 		generateBlockIfElseIs(condition, conditionArrowNum);
+	}
+
+	return true;
+}
+
+bool IfElementGenerator::areOutgoingLinksCorrect(
+		qReal::Id const positiveBranchGraphicalId
+		, qReal::Id const negativeBranchGraphicalId
+		, bool &isPositiveBranchReturnsToBackElems
+		, bool &isNegativeBranchReturnsToBackElems
+		)
+{
+	Id const positiveBranchElement = mNxtGen->api()->to(mNxtGen->api()->logicalId(positiveBranchGraphicalId));
+	if (positiveBranchElement == Id::rootId()) {
+		mNxtGen->errorReporter().addError("If block " + mElementId.toString() + " has no 2 correct branches!"\
+				" May be you need to connect one of them to some diagram element.", mElementId);
+		return false;
+	}
+
+	Id const negativeBranchElement = mNxtGen->api()->to(negativeBranchGraphicalId);
+	if (negativeBranchElement == Id::rootId()) {
+		mNxtGen->errorReporter().addError("If block " + mElementId.toString() + " has no 2 correct branches!"\
+				" May be you need to connect one of them to some diagram element.", mElementId);
+		return false;
+	}
+
+	QPair<bool, qReal::Id> const positiveBranchCheck = checkBranchForBackArrows(positiveBranchElement);
+	isPositiveBranchReturnsToBackElems = positiveBranchCheck.first;
+
+	QPair<bool, qReal::Id> const negativeBranchCheck = checkBranchForBackArrows(negativeBranchElement);
+	isNegativeBranchReturnsToBackElems = negativeBranchCheck.first;
+
+	if (isPositiveBranchReturnsToBackElems && isNegativeBranchReturnsToBackElems) {
+		displaysSuitableError(positiveBranchCheck, negativeBranchCheck);
+		return false;
 	}
 
 	return true;

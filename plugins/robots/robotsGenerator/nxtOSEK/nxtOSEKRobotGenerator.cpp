@@ -170,13 +170,10 @@ void NxtOSEKRobotGenerator::generate()
 	toGenerate << mApi->elementsByType("InitialBlock");
 
 	int curInitialNodeNumber = 0;
-	//QDir projectsDir; //TODO: use user path to projects
 	QString const projectName = "example" + QString::number(curInitialNodeNumber);
 	QString const projectDir = "nxt-tools/" + projectName;
-	createProjectDir(projectDir);
 
-	mResultString = utils::InFile::readAll(":/nxtOSEK/templates/template.c");
-	mResultOil = utils::InFile::readAll(":/nxtOSEK/templates/template.oil");
+	initializeGeneration(projectDir);
 
 	QString resultTaskTemplate = utils::InFile::readAll(":/nxtOSEK/templates/taskTemplate.oil");
 
@@ -200,6 +197,14 @@ void NxtOSEKRobotGenerator::generate()
 	}
 
 	outputInCAndOilFile(projectName, projectDir, toGenerate);
+}
+
+void NxtOSEKRobotGenerator::initializeGeneration(QString const projectDir)
+{
+	createProjectDir(projectDir);
+
+	mResultString = utils::InFile::readAll(":/nxtOSEK/templates/template.c");
+	mResultOil = utils::InFile::readAll(":/nxtOSEK/templates/template.oil");
 }
 
 QList<SmartLine> &NxtOSEKRobotGenerator::variables()

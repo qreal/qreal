@@ -5,14 +5,17 @@ using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace d2Model;
 
-const unsigned long black   = 0xFF000000;
-const unsigned long white   = 0xFFFFFFFF;
-const unsigned long red     = 0xFFFF0000;
-const unsigned long green   = 0xFF008000;
-const unsigned long blue    = 0xFF0000FF;
-const unsigned long yellow  = 0xFFFFFF00;
-const unsigned long cyan    = 0xFF00FFFF;
-const unsigned long magenta = 0xFFFF00FF;
+unsigned long const black   = 0xFF000000;
+unsigned long const white   = 0xFFFFFFFF;
+unsigned long const red     = 0xFFFF0000;
+unsigned long const green   = 0xFF008000;
+unsigned long const blue    = 0xFF0000FF;
+unsigned long const yellow  = 0xFFFFFF00;
+unsigned long const cyan    = 0xFF00FFFF;
+unsigned long const magenta = 0xFFFF00FF;
+
+unsigned const touchSensorPressedSignal = 1;
+unsigned const touchSensorNotPressedSignal = 0;
 
 D2RobotModel::D2RobotModel(QObject *parent)
 		: QObject(parent)
@@ -154,10 +157,10 @@ int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 	// TODO: Add checks of sensor type.
 
 	if (res) {
-		return 1;
+		return touchSensorPressedSignal;
 	}
 
-	return 0;
+	return touchSensorNotPressedSignal;
 }
 
 int D2RobotModel::readSonarSensor(inputPort::InputPortEnum const port) const

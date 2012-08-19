@@ -31,6 +31,15 @@ private:
 	virtual void generateIfBlock(bool isPositiveBranchReturnsToBackElems, int const conditionArrowNum, QString condition);
 	virtual void generateBlockIfElseIs(QString condition, int conditionArrowNum);
 	virtual void addNeededCondition(QString &condition, qReal::IdList outgoingLinks, int conditionArrowNum);
+
+	/// Checks that positive and negative branches are correct and adds error if not.
+	/// @returns true, if everything is ok
+	bool areOutgoingLinksCorrect(
+			qReal::Id const positiveBranchGraphicalId
+			, qReal::Id const negativeBranchGraphicalId
+			, bool &isPositiveBranchReturnsToBackElems
+			, bool &isNegativeBranchReturnsToBackElems
+			);
 };
 
 }
