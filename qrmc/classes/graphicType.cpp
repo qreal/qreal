@@ -38,9 +38,14 @@ bool GraphicType::init(QString const &context)
 	if (mApi->hasProperty(mId, "RequestBody"))
 		mIsVisible = !mApi->stringProperty(mId, "RequestBody").isEmpty();
 
-	mContains << (mApi->hasProperty(mId, "container")
-					  ? mApi->stringProperty(mId, "container").split(",", QString::SkipEmptyParts)
-					  : QStringList());
+	IdList inLinks = mApi->outgoingLinks(mId);
+	foreach (Id const inLink, inLinks) {
+		if (inLink.element() == "Container") {
+			Id const elementId = mApi->to(inLink);
+			QString const typeName = mApi->name(elementId);
+			mContains << typeName.split(",", QString::SkipEmptyParts);
+		}
+	}
 
 	foreach(Id id, mApi->children(mId)) {
 		if (!mApi->isLogicalElement(id))
@@ -247,6 +252,7 @@ QString GraphicType::generateContainers(const QString &lineTemplate) const
 {
 	if (!isGraphicalType() || mContains.isEmpty())
 		return "";
+
 	QString containersList;
 	QString line = lineTemplate;
 	foreach(QString contains, mContains) {
