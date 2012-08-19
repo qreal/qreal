@@ -28,18 +28,13 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel, int widt
 
 void Label::initCoordinate(ScalableCoordinate &field, QString coordinate, int maxValue)
 {
-	if (coordinate.endsWith("a"))
-	{
+	if (coordinate.endsWith("a")) {
 		coordinate.remove(coordinate.length() - 1, 1);
 		field = ScalableCoordinate(((qreal) coordinate.toInt()) / maxValue, maxValue, true);
-	}
-	else if (coordinate.endsWith("%"))
-	{
+	} else if (coordinate.endsWith("%")) {
 		coordinate.remove(coordinate.length() - 1, 1);
 		field = ScalableCoordinate(((qreal) coordinate.toInt()) / 100, 100, false);
-	}
-	else
-	{
+	} else {
 		field = ScalableCoordinate(((qreal) coordinate.toInt()) / maxValue, maxValue, false);
 	}
 }
