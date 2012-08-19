@@ -66,11 +66,48 @@ QString Label::generateUpdate(MetaCompiler *compiler) const
 		return (nodeIndent + "Q_UNUSED(repo)" + endline);
 
 	QString result = compiler->getTemplateUtils(updateDataTag);
-	QString name = (mTextBinded == "name") ? compiler->getTemplateUtils(nameRoleTag)
-						: compiler->getTemplateUtils(customRoleTag).replace(labelNameTag, mTextBinded);
+	QString name = generateCodeForUpdateData();
 
 	return result.replace(updateRoleTag, name)
 			.replace(labelIndexTag, QString::number(mIndex));
+}
+
+QStringList Label::getListOfStr(QString const &strToParse) const
+{
+	return strToParse.split("##");
+}
+
+QString Label::generateCodeForUpdateData() const
+{
+	QStringList list = getListOfStr(mTextBinded);
+
+	QString resultStr;
+	if (list.count() == 1) {
+		if (list.first() == "name") {
+			resultStr = "repo->name()";
+		} else {
+			resultStr = "repo->logicalProperty(\"" + list.first() + "\")";
+		}
+	} else {
+		int counter = 1;
+		foreach (QString const &listElement, list) {
+			QString field;
+			if (counter % 2 == 0) {
+				if (listElement == "name") {
+					field = "repo->name()";
+				} else {
+					field = "repo->logicalProperty(\"" + listElement + "\")";
+				}
+			} else {
+				field = "QString::fromUtf8(\"" + listElement + "\")";
+			}
+
+			resultStr += " + " +  field;
+			counter++;
+		}
+		resultStr = resultStr.mid(3);
+	}
+	return resultStr;
 }
 
 QString Label::generateDefinition(MetaCompiler *compiler) const

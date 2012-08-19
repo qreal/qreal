@@ -42,7 +42,6 @@ bool MetaCompiler::compile(QString const &targetMetamodel)
 {
 	mTargetMetamodel = targetMetamodel;
 	IdList rootItems = mApi->children(Id::rootId());
-	//mApi.printDebug();
 	qDebug() << "root diagrams:" << rootItems.size();
 	if (rootItems.isEmpty())
 		qDebug() << "couldn't load any root diagrams";
@@ -55,8 +54,9 @@ bool MetaCompiler::compile(QString const &targetMetamodel)
 				continue;
 			mPluginName = NameNormalizer::normalize(mApi->property(editorId, nameOfTheDirectory)
 											.toString().section("/", -1));
-			if (!loadMetaModel(editorId))
+			if (!loadMetaModel(editorId)) {
 				return false;
+			}
 		}
 	}
 	generateCode();
