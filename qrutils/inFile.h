@@ -8,12 +8,14 @@
 
 namespace utils {
 
+/// Helper class for reading data from a file.
 class QRUTILS_EXPORT InFile
 {
 public:
-	explicit InFile();
-	static QString readAll(QString const &nameFile);
-	~InFile();
+	/// Read all data from given file.
+	/// @param fileName Name of the file to be read.
+	/// @returns All contents of a file.
+	static QString readAll(QString const &fileName);
 };
 
 }

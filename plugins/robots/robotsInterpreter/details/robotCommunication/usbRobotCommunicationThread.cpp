@@ -7,6 +7,8 @@
 using namespace qReal::interpreters::robots;
 using namespace details;
 
+unsigned const packetHeaderSize = 3;
+
 UsbRobotCommunicationThread::UsbRobotCommunicationThread():
 	mActive(false), mNXTHandle(0)
 	, mKeepAliveTimer(new QTimer(this))
@@ -76,15 +78,16 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const 
 
 	int status = 0;
 	QByteArray newBuffer;
-	for (int i = 3; i < buffer.length(); i++) {
-		newBuffer[i - 3] = buffer[i];
+	for (int i = packetHeaderSize; i < buffer.length(); i++) {
+		newBuffer[i - packetHeaderSize] = buffer[i];
 	}
 
 	if (!isResponseNeeded(buffer)) {
 		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, false, newBuffer, newBuffer.length(), NULL, 0, status);
 	} else {
-		char *outputBufferPtr2 = new char[200];
-		for (int i = 0; i < 200; i++) {
+		unsigned const temporaryOutputBufferSize = 200;
+		char *outputBufferPtr2 = new char[temporaryOutputBufferSize];
+		for (unsigned i = 0; i < temporaryOutputBufferSize; i++) {
 			outputBufferPtr2[i] = 0;
 		}
 
@@ -109,8 +112,8 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const 
 		outputBuffer[0] = responseSize - 2;
 		outputBuffer[1] = 0;
 		outputBuffer[2] = 2;
-		for (unsigned  i = 0; i < responseSize - 3; i++) {
-			outputBuffer[i + 3] = outputBufferPtr2[i];
+		for (unsigned  i = 0; i < responseSize - packetHeaderSize; i++) {
+			outputBuffer[i + packetHeaderSize] = outputBufferPtr2[i];
 		}
 		delete outputBufferPtr2;
 		debugPrint(outputBuffer, false);

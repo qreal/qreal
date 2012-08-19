@@ -3,10 +3,6 @@
 
 using namespace utils;
 
-InFile::InFile()
-{
-}
-
 QString InFile::readAll(QString const &fileName) {
 	QFile file(fileName);
 	file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -19,8 +15,4 @@ QString InFile::readAll(QString const &fileName) {
 	QString text = input.readAll();
 	file.close();
 	return text;
-}
-
-InFile::~InFile()
-{
 }
