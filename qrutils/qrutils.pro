@@ -19,12 +19,14 @@ HEADERS += \
 	$$PWD/ui_watchListWindow.h \
 	$$PWD/watchListWindow.h \
 	$$PWD/metamodelGeneratorSupport.h \
+	$$PWD/inFile.h \
 
 SOURCES += \
 	$$PWD/outFile.cpp \
 	$$PWD/xmlUtils.cpp \
 	$$PWD/watchListWindow.cpp\
 	$$PWD/metamodelGeneratorSupport.cpp \
+	$$PWD/inFile.cpp \
 
 FORMS += \
 	$$PWD/watchListWindow.ui

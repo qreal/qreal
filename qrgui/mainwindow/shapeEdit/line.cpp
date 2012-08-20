@@ -7,8 +7,7 @@ const int step = 3;
 
 using namespace graphicsUtils;
 
-Line::Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
-	:Item(parent), mLineImpl()
+Line::Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent):Item(parent), mLineImpl()
 {
 	mNeedScalingRect = false;
 	mPen.setColor(Qt::green);
@@ -19,8 +18,7 @@ Line::Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 	mY2 = y2;
 }
 
-Line::Line(Line const &other)
-	:Item(), mLineImpl()
+Line::Line(Line const &other):Item(), mLineImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
 	mPen = other.mPen;
@@ -72,7 +70,7 @@ void Line::drawExtractionForItem(QPainter* painter)
 void Line::drawScalingRects(QPainter* painter)
 {
 	QBrush brush(Qt::SolidPattern);
-	if(mX2 > mX1) {
+	if (mX2 > mX1) {
 		if (mY2 > mY1) {
 			brush.setColor(mListScalePoint.at(4).second);
 			painter->setBrush(brush);
@@ -89,8 +87,7 @@ void Line::drawScalingRects(QPainter* painter)
 			brush.setColor(mListScalePoint.at(7).second);
 			painter->setBrush(brush);
 			painter->drawRect(mX2 + step, mY2 - scalingRect + step, scalingRect, scalingRect);
-		}
-		else {
+		} else {
 			brush.setColor(mListScalePoint.at(2).second);
 			painter->setBrush(brush);
 			painter->drawRect(mX1 - step, mY1 + step, scalingRect, scalingRect);
@@ -115,7 +112,7 @@ void Line::drawScalingRects(QPainter* painter)
 
 			brush.setColor(mListScalePoint.at(1).second);
 			painter->setBrush(brush);
-			painter->drawRect(mX1  - scalingRect + step, mY1 - scalingRect - step, scalingRect, scalingRect);
+			painter->drawRect(mX1 - scalingRect + step, mY1 - scalingRect - step, scalingRect, scalingRect);
 
 			brush.setColor(mListScalePoint.at(6).second);
 			painter->setBrush(brush);
@@ -124,8 +121,7 @@ void Line::drawScalingRects(QPainter* painter)
 			brush.setColor(mListScalePoint.at(2).second);
 			painter->setBrush(brush);
 			painter->drawRect(mX2 - step, mY2 + step, scalingRect, scalingRect);
-		}
-		else {
+		} else {
 			brush.setColor(mListScalePoint.at(4).second);
 			painter->setBrush(brush);
 			painter->drawRect(mX2 - scalingRect - step, mY2 - step, scalingRect, scalingRect);

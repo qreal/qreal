@@ -2,6 +2,8 @@
 #include "behaviourPage.h"
 #include "ui_behaviourPage.h"
 
+using namespace qReal;
+
 PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
 		: PreferencesPage(parent)
 		, mUi(new Ui::PreferencesBehaviourPage)

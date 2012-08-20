@@ -24,8 +24,9 @@ RobotModel::RobotModel()
 RobotModel::~RobotModel()
 {
 	delete mRobotImpl;
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < 4; ++i) {
 		delete mSensors[i];
+	}
 }
 
 robotParts::Brick &RobotModel::brick()
@@ -48,6 +49,10 @@ robotParts::ColorSensor *RobotModel::colorSensor(inputPort::InputPortEnum const 
 	return dynamic_cast<robotParts::ColorSensor *>(mSensors[port]);
 }
 
+robotParts::LightSensor *RobotModel::lightSensor(inputPort::InputPortEnum const &port) const
+{
+	return dynamic_cast<robotParts::LightSensor *>(mSensors[port]);
+}
 
 robotParts::Sensor *RobotModel::sensor(const inputPort::InputPortEnum &port) const
 {
@@ -116,6 +121,9 @@ void RobotModel::sensorsConfiguredSlot()
 		case sensorType::colorBlue:
 		case sensorType::colorNone:
 			mSensors[port] = new robotParts::ColorSensor(mRobotImpl->sensor(port), port);
+			break;
+		case sensorType::light:
+			mSensors[port] = new robotParts::LightSensor(mRobotImpl->sensor(port), port);
 			break;
 		default:
 			// TODO: Throw an exception
@@ -225,4 +233,9 @@ void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModel
 			}
 		}
 	}
+}
+
+void RobotModel::nextBlockAfterInitial(bool success)
+{
+	emit goToNextBlock(success);
 }

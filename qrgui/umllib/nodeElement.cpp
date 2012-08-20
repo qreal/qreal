@@ -342,7 +342,7 @@ void NodeElement::arrangeLinks() {
 void NodeElement::storeGeometry()
 {
 	QRectF contents = mContents; // saving correct current contents
-	
+
 	if ((pos() != mGraphicalAssistApi->position(id()))) { // check if it's been changed
 		mGraphicalAssistApi->setPosition(id(), pos());
 	}
@@ -633,7 +633,7 @@ void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 	if (mElementImpl->isContainer()) {
 		changeFoldState();
-	}
+}
 }
 
 void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
@@ -768,6 +768,7 @@ void NodeElement::updateData()
 {
 	Element::updateData();
 	if (!mMoving) {
+		storeGeometry();
 		QPointF newpos = mGraphicalAssistApi->position(id());
 		QPolygon newpoly = mGraphicalAssistApi->configuration(id()); // why is it empty?
 		QRectF newRect; // Use default ((0,0)-(0,0))
@@ -869,10 +870,10 @@ const QPointF NodeElement::getNearestPort(QPointF const &location) const
 
 QLineF NodeElement::newTransform(StatLine const &port) const
 {
-	qreal const x1 = port.line.x1() * (port.prop_x1 ? port.initWidth : contentsRect().width());	
+	qreal const x1 = port.line.x1() * (port.prop_x1 ? port.initWidth : contentsRect().width());
 	qreal const y1 = port.line.y1() * (port.prop_y1 ? port.initHeight : contentsRect().height());
 
-	qreal const x2 = port.line.x2() * (port.prop_x2 ? port.initWidth : contentsRect().width());	
+	qreal const x2 = port.line.x2() * (port.prop_x2 ? port.initWidth : contentsRect().width());
 	qreal const y2 = port.line.y2() * (port.prop_y2 ? port.initHeight : contentsRect().height());
 
 	return QLineF(x1, y1, x2, y2);
