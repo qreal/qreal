@@ -5,9 +5,12 @@
 
 #include "settingsManager.h"
 
+using namespace qReal;
+
 SettingsManager* SettingsManager::mInstance = NULL;
 
-SettingsManager::SettingsManager() : mSettings("SPbSU", "QReal")
+SettingsManager::SettingsManager()
+		: mSettings("SPbSU", "QReal")
 {
 	initDefaultValues();
 	load();

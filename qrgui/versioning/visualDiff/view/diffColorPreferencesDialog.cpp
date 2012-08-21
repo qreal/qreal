@@ -12,11 +12,11 @@ DiffColorPreferencesDialog::DiffColorPreferencesDialog(QWidget *parent)
 {
 	mUi->setupUi(this);
 
-	mAddedRemovedColor = mAddedRemovedColorBefore = SettingsManager::value("diffAddedRemovedColor"
+	mAddedRemovedColor = mAddedRemovedColorBefore = qReal::SettingsManager::value("diffAddedRemovedColor"
 		, QVariant(defaultAddedRemovedColor())).value<QColor>();
-	mModifiedColor = mModifiedColorBefore = SettingsManager::value("diffModifiedColor"
+	mModifiedColor = mModifiedColorBefore = qReal::SettingsManager::value("diffModifiedColor"
 		, QVariant(defaultModifiedColor())).value<QColor>();
-	mHintColor = mHintColorBefore = SettingsManager::value("diffHintColor"
+	mHintColor = mHintColorBefore = qReal::SettingsManager::value("diffHintColor"
 		, QVariant(defaultHintColor())).value<QColor>();
 
 	setButtonColor(mUi->addedRemovedColorButton, mAddedRemovedColor);

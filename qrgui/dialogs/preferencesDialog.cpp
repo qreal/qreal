@@ -6,6 +6,8 @@
 #include "preferencesPages/miscellaniousPage.h"
 #include "preferencesPages/featuresPage.h"
 
+using namespace qReal;
+
 PreferencesDialog::PreferencesDialog(QWidget *parent)
 		: QDialog(parent)
 		, mUi(new Ui::PreferencesDialog)

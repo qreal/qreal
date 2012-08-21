@@ -21,14 +21,16 @@ HEADERS += \
 	ui_watchListWindow.h \
 	watchListWindow.h \
 	metamodelGeneratorSupport.h \
-    fileSystemUtils.h
+	inFile.h \
+    fileSystemUtils.h \
 
 SOURCES += \
 	outFile.cpp \
 	xmlUtils.cpp \
 	watchListWindow.cpp\
 	metamodelGeneratorSupport.cpp \
-    fileSystemUtils.cpp
+	inFile.cpp \
+    fileSystemUtils.cpp \
 
 FORMS += \
 	watchListWindow.ui

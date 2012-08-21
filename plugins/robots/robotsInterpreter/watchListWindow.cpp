@@ -1,4 +1,4 @@
-#include <QLayout>
+#include <QtGui/QLayout>
 
 #include "watchListWindow.h"
 #include "ui_watchListWindow.h"

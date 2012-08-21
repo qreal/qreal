@@ -19,7 +19,7 @@ ModelLoader::ModelLoader(qReal::BriefVersioningInterface *vcs
 	, mWorkingCopyManager(workingCopyManager)
 	, mTempProject(qApp->applicationDirPath() + "/" + tempProjectName)
 {
-	SettingsManager::setValue("diffTempProject", mTempProject);
+	qReal::SettingsManager::setValue("diffTempProject", mTempProject);
 
 	connect(mVcs, SIGNAL(workingCopyDownloaded(bool, QString))
 			, this, SLOT(onDownloadingComplete(bool, QString)));
@@ -27,7 +27,7 @@ ModelLoader::ModelLoader(qReal::BriefVersioningInterface *vcs
 
 QString ModelLoader::tempProject() const
 {
-	return SettingsManager::value("diffTempProject", mTempProject).toString();
+	return qReal::SettingsManager::value("diffTempProject", mTempProject).toString();
 }
 
 void ModelLoader::startModelLoading(QString const &targetProject)

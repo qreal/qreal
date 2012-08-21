@@ -9,8 +9,8 @@ CheckoutDialog::CheckoutDialog(QWidget *parent)
 	mBrowseButton = createButton(tr("&Browse..."), SLOT(browse()));
 	mUrlLabel = new QLabel(tr("Subversion place"));
 	mPathLabel = new QLabel(tr("Checkout to project:"));
-	mPathComboBox = createComboBox(SettingsManager::value("checkoutTarget", "").toString());
-	mUrlComboBox = createComboBox(SettingsManager::value("checkoutUrl", "").toString());
+	mPathComboBox = createComboBox(qReal::SettingsManager::value("checkoutTarget", "").toString());
+	mUrlComboBox = createComboBox(qReal::SettingsManager::value("checkoutUrl", "").toString());
 	QPushButton *ok = new QPushButton(tr("OK"), this);
 	QPushButton *cancel = new QPushButton(tr("Cancel"), this);
 

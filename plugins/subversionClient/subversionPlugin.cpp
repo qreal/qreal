@@ -16,7 +16,7 @@ SubversionPlugin::SubversionPlugin()
 	: mViewInteraction(new details::ViewInteraction(this))
 	, mTempDir(qApp->applicationDirPath() + "/" + tempFolderName)
 {
-	SettingsManager::instance()->setValue("svnTempDir", mTempDir);
+	qReal::SettingsManager::instance()->setValue("svnTempDir", mTempDir);
 	setPathToClient(pathToSvn());
 }
 
@@ -26,7 +26,7 @@ SubversionPlugin::~SubversionPlugin()
 
 QString SubversionPlugin::pathToSvn() const
 {
-	return SettingsManager::value("pathToSvnClient", "").toString();
+	return qReal::SettingsManager::value("pathToSvnClient", "").toString();
 }
 
 qReal::Customizer *SubversionPlugin::customizationInterface()
@@ -122,12 +122,12 @@ bool SubversionPlugin::isMyWorkingCopy(QString const &directory)
 
 int SubversionPlugin::timeout() const
 {
-	return SettingsManager::value("svnClientTimeout", defaultTimeout).toInt();
+	return qReal::SettingsManager::value("svnClientTimeout", defaultTimeout).toInt();
 }
 
 QString SubversionPlugin::tempFolder() const
 {
-	return SettingsManager::value("svnTempDir", mTempDir).toString();
+	return qReal::SettingsManager::value("svnTempDir", mTempDir).toString();
 }
 
 void SubversionPlugin::startCheckout(QString const &from
@@ -335,12 +335,12 @@ QStringList SubversionPlugin::authenticationArgs() const
 	QString const usernameKey = ui::AuthenticationSettingsWidget::usernameSettingsName("svn");
 	QString const passwordKey = ui::AuthenticationSettingsWidget::passwordSettingsName("svn");
 
-	bool const authenticationEnabled = SettingsManager::value(enabledKey, false).toBool();
+	bool const authenticationEnabled = qReal::SettingsManager::value(enabledKey, false).toBool();
 	if (!authenticationEnabled) {
 		return result;
 	}
-	QString const username = SettingsManager::value(usernameKey, false).toString();
-	QString const password = SettingsManager::value(passwordKey, false).toString();
+	QString const username = qReal::SettingsManager::value(usernameKey, false).toString();
+	QString const password = qReal::SettingsManager::value(passwordKey, false).toString();
 	if (username.isEmpty()) {
 		return result;
 	}

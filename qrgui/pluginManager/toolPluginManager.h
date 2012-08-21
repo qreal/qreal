@@ -32,7 +32,7 @@ public:
 	/// @param rootElementId Id of the tab which became active after change, if applicable. If not, Id().
 	void activeTabChanged(Id const & rootElementId);
 
-	QListIterator<ToolPluginInterface *> pluginsIterator() const;
+	QList<ToolPluginInterface *> plugins() const;
 private:
 	QDir mPluginsDir;
 

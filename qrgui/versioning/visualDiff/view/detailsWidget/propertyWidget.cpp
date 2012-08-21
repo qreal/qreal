@@ -34,7 +34,7 @@ void PropertyWidget::setProperty(const qReal::Id &graphicalId, const qReal::Id &
 		setPropertyValue(mOldValueLabel, mOldIdWidget, difference()->oldProperty(mPropertyName), 1);
 		break;
 	case Modified:
-		QColor const color = SettingsManager::value("diffModifiedColor"
+		QColor const color = qReal::SettingsManager::value("diffModifiedColor"
 			, ui::DiffColorPreferencesDialog::defaultModifiedColor()).value<QColor>();
 		QPalette palette = mPropertyNameLabel->palette();
 		palette.setColor(QPalette::Foreground, color);

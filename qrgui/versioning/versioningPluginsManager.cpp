@@ -17,7 +17,7 @@ VersioningPluginsManager::VersioningPluginsManager(ToolPluginManager const &plug
 	, mTempDir(qApp->applicationDirPath() + "/" + tempFolderName)
 {
 	SettingsManager::setValue("versioningManagerTempDir", mTempDir);
-	initFromToolPlugins(pluginManager.pluginsIterator(), mainWindow);
+	initFromToolPlugins(QListIterator<ToolPluginInterface *>(pluginManager.plugins()), mainWindow);
 	mRepoApi->setWorkingCopyInspector(this);
 }
 

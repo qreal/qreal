@@ -34,24 +34,24 @@ void NetworkSettingsWidget::retranslate()
 
 void NetworkSettingsWidget::reinit()
 {
-	mUi->enabledCheckBox->setChecked(SettingsManager::value(enabledSettingsName(), false).toBool());
-	mUi->addressEditor->setText(SettingsManager::value(addressSettingsName()).toString());
-	mUi->portEditor->setValue(SettingsManager::value(portSettingsName(), 0).toInt());
-	mUi->userEditor->setText(SettingsManager::value(usernameSettingsName()).toString());
-	mUi->passwordEditor->setText(SettingsManager::value(passwordSettingsName()).toString());
-	mUi->timeoutEditor->setValue(SettingsManager::value(timeoutSettingsName(), 0).toInt());
+	mUi->enabledCheckBox->setChecked(qReal::SettingsManager::value(enabledSettingsName(), false).toBool());
+	mUi->addressEditor->setText(qReal::SettingsManager::value(addressSettingsName()).toString());
+	mUi->portEditor->setValue(qReal::SettingsManager::value(portSettingsName(), 0).toInt());
+	mUi->userEditor->setText(qReal::SettingsManager::value(usernameSettingsName()).toString());
+	mUi->passwordEditor->setText(qReal::SettingsManager::value(passwordSettingsName()).toString());
+	mUi->timeoutEditor->setValue(qReal::SettingsManager::value(timeoutSettingsName(), 0).toInt());
 
 	onEnableChecked();
 }
 
 void NetworkSettingsWidget::save()
 {
-	SettingsManager::setValue(enabledSettingsName(), mUi->enabledCheckBox->isChecked());
-	SettingsManager::setValue(addressSettingsName(), mUi->addressEditor->text());
-	SettingsManager::setValue(portSettingsName(), mUi->portEditor->value());
-	SettingsManager::setValue(usernameSettingsName(), mUi->userEditor->text());
-	SettingsManager::setValue(passwordSettingsName(), mUi->passwordEditor->text());
-	SettingsManager::setValue(timeoutSettingsName(), mUi->timeoutEditor->value());
+	qReal::SettingsManager::setValue(enabledSettingsName(), mUi->enabledCheckBox->isChecked());
+	qReal::SettingsManager::setValue(addressSettingsName(), mUi->addressEditor->text());
+	qReal::SettingsManager::setValue(portSettingsName(), mUi->portEditor->value());
+	qReal::SettingsManager::setValue(usernameSettingsName(), mUi->userEditor->text());
+	qReal::SettingsManager::setValue(passwordSettingsName(), mUi->passwordEditor->text());
+	qReal::SettingsManager::setValue(timeoutSettingsName(), mUi->timeoutEditor->value());
 }
 
 void NetworkSettingsWidget::onEnableChecked()

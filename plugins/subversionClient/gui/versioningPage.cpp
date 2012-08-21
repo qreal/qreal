@@ -17,8 +17,8 @@ PreferencesVersioningPage::PreferencesVersioningPage(QWidget *parent)
 	// The last widget in layout must remain spacer
 	mUi->verticalLayout->insertWidget(mUi->verticalLayout->count() - 1, mAuthenticationSettings);
 
-	mUi->pathToSvnClientLineEdit->setText(SettingsManager::value("pathToSvnClient", "").toString());
-	mUi->svnTimeoutSpinBox->setValue(SettingsManager::value("svnClientTimeout", 30000).toInt());
+	mUi->pathToSvnClientLineEdit->setText(qReal::SettingsManager::value("pathToSvnClient", "").toString());
+	mUi->svnTimeoutSpinBox->setValue(qReal::SettingsManager::value("svnClientTimeout", 30000).toInt());
 }
 
 PreferencesVersioningPage::~PreferencesVersioningPage()
@@ -40,8 +40,8 @@ void PreferencesVersioningPage::changeEvent(QEvent *e)
 
 void PreferencesVersioningPage::save()
 {
-	SettingsManager::setValue("pathToSvnClient", mUi->pathToSvnClientLineEdit->text());
-	SettingsManager::setValue("svnClientTimeout", mUi->svnTimeoutSpinBox->value());
+	qReal::SettingsManager::setValue("pathToSvnClient", mUi->pathToSvnClientLineEdit->text());
+	qReal::SettingsManager::setValue("svnClientTimeout", mUi->svnTimeoutSpinBox->value());
 	mAuthenticationSettings->save();
 }
 

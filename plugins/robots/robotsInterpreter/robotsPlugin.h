@@ -41,6 +41,9 @@ private:
 	/// Initializes and connects actions, fills action info list
 	void initActions();
 
+	/// Disable/enable tab in QList<ActionInfo> info
+	void changeActiveTab(QList<ActionInfo> const &info, bool const &trigger);
+
 	/// Tells whether we need to disable or enable particular action on tab change.
 	/// For example, we shall be able to access robot settings regardless of currently
 	/// open diagram type, but we can't run UML Class diagram as robot program.

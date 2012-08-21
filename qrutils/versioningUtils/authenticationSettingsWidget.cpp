@@ -34,18 +34,18 @@ void AuthenticationSettingsWidget::retranslate()
 
 void AuthenticationSettingsWidget::reinit()
 {
-	mUi->enabledCheckBox->setChecked(SettingsManager::value(enabledSettingsName(), false).toBool());
-	mUi->userEditor->setText(SettingsManager::value(usernameSettingsName()).toString());
-	mUi->passwordEditor->setText(SettingsManager::value(passwordSettingsName()).toString());
+	mUi->enabledCheckBox->setChecked(qReal::SettingsManager::value(enabledSettingsName(), false).toBool());
+	mUi->userEditor->setText(qReal::SettingsManager::value(usernameSettingsName()).toString());
+	mUi->passwordEditor->setText(qReal::SettingsManager::value(passwordSettingsName()).toString());
 
 	onEnableChecked();
 }
 
 void AuthenticationSettingsWidget::save()
 {
-	SettingsManager::setValue(enabledSettingsName(), mUi->enabledCheckBox->isChecked());
-	SettingsManager::setValue(usernameSettingsName(), mUi->userEditor->text());
-	SettingsManager::setValue(passwordSettingsName(), mUi->passwordEditor->text());
+	qReal::SettingsManager::setValue(enabledSettingsName(), mUi->enabledCheckBox->isChecked());
+	qReal::SettingsManager::setValue(usernameSettingsName(), mUi->userEditor->text());
+	qReal::SettingsManager::setValue(passwordSettingsName(), mUi->passwordEditor->text());
 }
 
 void AuthenticationSettingsWidget::onEnableChecked()

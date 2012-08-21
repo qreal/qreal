@@ -74,8 +74,8 @@ void ViewInteraction::checkoutClicked()
 	QString const target = dialog->target();
 	QString const url = dialog->url();
 
-	SettingsManager::setValue("checkoutTarget", target);
-	SettingsManager::setValue("checkoutUrl", url);
+	qReal::SettingsManager::setValue("checkoutTarget", target);
+	qReal::SettingsManager::setValue("checkoutUrl", url);
 
 	mPlugin->startCheckout(url, target);
 }
