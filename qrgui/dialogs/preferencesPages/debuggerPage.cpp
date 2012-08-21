@@ -2,6 +2,8 @@
 #include "debuggerPage.h"
 #include "ui_debuggerPage.h"
 
+using namespace qReal;
+
 PreferencesDebuggerPage::PreferencesDebuggerPage(QWidget *parent)
 		: PreferencesPage(parent)
 		, mUi(new Ui::PreferencesDebuggerPage)

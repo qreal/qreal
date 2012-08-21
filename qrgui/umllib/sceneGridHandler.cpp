@@ -2,6 +2,8 @@
 #include "nodeElement.h"
 #include "../view/editorViewScene.h"
 
+using namespace qReal;
+
 namespace {
 // TODO: find a way to remove it
 // magic constants

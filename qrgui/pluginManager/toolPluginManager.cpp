@@ -1,6 +1,6 @@
-#include "toolPluginManager.h"
-
 #include <QtGui/QApplication>
+
+#include "toolPluginManager.h"
 
 using namespace qReal;
 
@@ -94,4 +94,9 @@ void ToolPluginManager::activeTabChanged(Id const & rootElementId)
 	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
 		toolPlugin->activeTabChanged(rootElementId);
 	}
+}
+
+QList<ToolPluginInterface *> ToolPluginManager::getPlugins()
+{
+	return mPlugins;
 }

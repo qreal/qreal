@@ -72,3 +72,9 @@ void Fantom::nFANTOM100_iNXT_findDeviceInFirmwareDownloadMode(char resString[], 
 	Q_UNUSED(resString);
 	Q_UNUSED(status);
 }
+
+void Fantom::nFANTOM100_destroyNXT(unsigned long nxtHandle, int &status)
+{
+	Q_UNUSED(nxtHandle);
+	Q_UNUSED(status);
+}

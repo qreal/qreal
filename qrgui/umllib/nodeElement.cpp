@@ -312,7 +312,7 @@ void NodeElement::arrangeLinks() {
 void NodeElement::storeGeometry()
 {
 	QRectF contents = mContents; // saving correct current contents
-	
+
 	if ((pos() != mGraphicalAssistApi->position(id()))) { // check if it's been changed
 		mGraphicalAssistApi->setPosition(id(), pos());
 	}
@@ -738,6 +738,7 @@ void NodeElement::updateData()
 {
 	Element::updateData();
 	if (!mMoving) {
+		storeGeometry();
 		QPointF newpos = mGraphicalAssistApi->position(id());
 		QPolygon newpoly = mGraphicalAssistApi->configuration(id()); // why is it empty?
 		QRectF newRect; // Use default ((0,0)-(0,0))
@@ -1221,7 +1222,6 @@ QRectF NodeElement::foldedContentsRect() const
 {
 	return mFoldedContents;
 }
-
 
 QList<EdgeElement *> const NodeElement::edgeList() const
 {
