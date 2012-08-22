@@ -13,7 +13,7 @@ protected:
 
 	virtual void TearDown();
 
-	SettingsManager *mSettingsManager;
+	qReal::SettingsManager *mSettingsManager;
 	QString mDebugColor;
 };
 

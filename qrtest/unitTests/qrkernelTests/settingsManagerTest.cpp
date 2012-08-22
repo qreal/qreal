@@ -3,7 +3,7 @@
 using namespace qrTest;
 
 void SettingsManagerTest::SetUp() {
-	mSettingsManager = SettingsManager::instance();
+	mSettingsManager = qReal::SettingsManager::instance();
 	mDebugColor = mSettingsManager->value("debugColor").toString();
 }
 

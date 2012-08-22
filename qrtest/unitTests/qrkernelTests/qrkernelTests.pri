@@ -1,6 +1,7 @@
 SOURCES += \
 	qrkernelTests/idsTest.cpp \
-	qrkernelTests/settingsManagerTest.cpp
+	qrkernelTests/exception/exceptionTest.cpp \
+	qrkernelTests/settingsManagerTest.cpp \
 
 HEADERS += \
-	qrkernelTests/settingsManagerTest.h
+	qrkernelTests/settingsManagerTest.h \
