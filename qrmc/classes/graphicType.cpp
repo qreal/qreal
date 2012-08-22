@@ -44,11 +44,7 @@ bool GraphicType::init(QString const &context)
 			Id const elementId = mApi->to(outLink);
 			QString const typeName = mApi->name(elementId);
 			mContains << typeName.split(",", QString::SkipEmptyParts);
-		}
-	}
-
-	foreach (Id const outLink, outLinks) {
-		if (outLink.element() == "Inheritance") {
+		} else if (outLink.element() == "Inheritance") {
 			Id const elementId = mApi->to(outLink);
 			QString const childName = mApi->name(elementId);
 			if (!mChildren.contains(childName)) {
@@ -72,15 +68,6 @@ bool GraphicType::init(QString const &context)
 		if (!mApi->isLogicalElement(id))
 			continue;
 
-		/*if (id.element() == metaEntityParent) {
-			QString parentName = mApi->name(id);
-			if (!mParents.contains(parentName))
-				mParents.append(parentName);
-			else {
-				qDebug() << "ERROR: parent of node" << qualifiedName() << "duplicated";
-				return false;
-			}
-		} else */
 		if (id.element() == metaEntityAttribute) {
 			Property *property = new Property(mApi, id);
 			if (!property->init()) {
@@ -283,12 +270,12 @@ QString GraphicType::generatePropertyDisplayedNames(const QString &lineTemplate)
 	return displayedNamesString;
 }
 
-QString GraphicType::generateParents(const QString &lineTemplate) const
+QString GraphicType::generateParents(QString const &lineTemplate) const
 {
 	QString parentsMapString;
-	QString diagramName = mContext + "::";
+	QString const diagramName = mContext + "::";
 	QString parentName = qualifiedName().remove(diagramName);
-	foreach (QString child, mChildren) {
+	foreach (QString const child, mChildren) {
 		QString tmp = lineTemplate;
 		parentsMapString += tmp.replace(parentNameTag, parentName).replace(childNameTag, child).replace(diagramNameTag, mContext) + endline;
 	}

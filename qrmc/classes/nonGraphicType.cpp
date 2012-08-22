@@ -35,13 +35,13 @@ QString NonGraphicType::generatePropertyDefaults(QString const &lineTemplate) co
 	return "";
 }
 
-QString NonGraphicType::generatePropertyDisplayedNames(const QString &lineTemplate) const
+QString NonGraphicType::generatePropertyDisplayedNames(QString const &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate)
 	return "";
 }
 
-QString NonGraphicType::generateParents(const QString &lineTemplate) const
+QString NonGraphicType::generateParents(QString const &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate);
 	return "";
