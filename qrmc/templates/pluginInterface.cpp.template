@@ -23,6 +23,7 @@ void @@MetamodelName@@Plugin::initNameMap()
 @@InitDiagramNameMapLine@@
 @@InitDiagramNodeNameMapLine@@
 @@InitElementNameMapLine@@
+@@InitPropertyNamesMapLine@@
 }
 
 void @@MetamodelName@@Plugin::initMouseGestureMap()

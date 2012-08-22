@@ -52,6 +52,7 @@ namespace qrmc {
 		void generateNamesMap();
 		void generateMouseGesturesMap();
 		void generatePropertiesMap();
+		void generatePropertyDisplayedNamesMap();
 		void generatePropertyDefaultsMap();
 		void generateElementsFactory();
 		void generateContainers();
@@ -85,6 +86,7 @@ namespace qrmc {
 		class MouseGesturesGenerator;
 		class PropertiesGenerator;
 		class PropertyDefaultsGenerator;
+		class PropertyDisplayedNamesGenerator;
 		class PossibleEdgesGenerator;
 		void generatePluginMethod(QString const &tag, MethodGenerator const &generator);
 	};

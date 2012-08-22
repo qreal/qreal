@@ -169,6 +169,13 @@ public:
 	}
 };
 
+class Diagram::PropertyDisplayedNamesGenerator: public Diagram::MapMethodGenerator {
+public:
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
+		return type->generatePropertyDisplayedNames(lineTemplate);
+	}
+};
+
 class Diagram::NodesGenerator: public Diagram::MapMethodGenerator {
 public:
 	virtual QString generate(Type *type, QString const &lineTemplate) const {
@@ -219,6 +226,11 @@ QString Diagram::generatePropertiesMap(const QString &lineTemplate) const
 QString Diagram::generatePropertyDefaultsMap(const QString &lineTemplate) const
 {
 	return generateMapMethod(lineTemplate, PropertyDefaultsGenerator());
+}
+
+QString Diagram::generatePropertyDisplayedNamesMap(const QString &lineTemplate) const
+{
+	return generateMapMethod(lineTemplate, PropertyDisplayedNamesGenerator());
 }
 
 class Diagram::ListMethodGenerator {

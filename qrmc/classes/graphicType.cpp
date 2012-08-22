@@ -248,6 +248,19 @@ QString GraphicType::generatePropertyDefaults(const QString &lineTemplate) const
 	return defaultsString;
 }
 
+QString GraphicType::generatePropertyDisplayedNames(const QString &lineTemplate) const
+{
+	if (!mIsVisible)
+		return "";
+	QString displayedNamesString;
+	foreach (Property *property, mProperties) {
+		QString tmp = property->generateDisplayedNameLine(lineTemplate);
+		if (!tmp.isEmpty())
+			displayedNamesString += tmp.replace(elementNameTag, name()).replace(diagramNameTag, mContext) + endline;
+	}
+	return displayedNamesString;
+}
+
 QString GraphicType::generateContainers(const QString &lineTemplate) const
 {
 	if (!isGraphicalType() || mContains.isEmpty())

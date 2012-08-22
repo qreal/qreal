@@ -2,6 +2,7 @@
 @@InitDiagramNodeNameMapLine@@=	diagramNodeNameMap["@@DiagramName@@"] = "@@DiagramNodeName@@";
 @@InitElementNameMapLine@@=	elementsNameMap["@@DiagramName@@"]["@@ElementName@@"] = QString::fromUtf8("@@ElementDisplayedName@@");
 @@InitMouseGesturesMapLine@@=	elementMouseGesturesMap["@@DiagramName@@"]["@@ElementName@@"] = "@@GesturePath@@";
+@@InitPropertyNamesMapLine@@=	propertiesDisplayedNamesMap["@@DiagramName@@"]["@@ElementName@@"]["@@PropertyName@@"] = QString::fromUtf8("@@PropertyDisplayedName@@");
 @@InitPropertyTypesMapLine@@=	propertyTypes["@@ElementName@@"]["@@PropertyName@@"] = "@@PropertyType@@";
 @@InitPropertyDefaultMapLine@@=	propertyDefault["@@ElementName@@"]["@@PropertyName@@"] = "@@PropertyDefaultValue@@";
 @@GetGraphicalObjectLine@@=	if (element == "@@ElementName@@")\n		return new @@ElementName@@();

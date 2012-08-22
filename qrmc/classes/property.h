@@ -21,6 +21,7 @@ namespace qrmc {
 
 		QString generatePropertyLine(QString const &lineTemplate) const;
 		QString generateDefaultsLine(QString const &lineTemplate) const;
+		QString generateDisplayedNameLine(QString const &lineTemplate) const;
 
 	private:
 		qrRepo::LogicalRepoApi *mApi;
@@ -31,5 +32,6 @@ namespace qrmc {
 		bool mIsReference;
 		QString mDescription;
 		QString mDefaultValue;
+		QString mDisplayedName;
 	};
 }

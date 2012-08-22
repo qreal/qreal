@@ -25,6 +25,7 @@ bool Property::init()
 		return false;
 	}
 
+	mDisplayedName = mApi->stringProperty(mId, "displayedName");
 	mDefaultValue = mApi->stringProperty(mId, "defaultValue");
 	return true;
 }
@@ -54,6 +55,7 @@ Property * Property::clone()
 	result->mIsReference = mIsReference;
 	result->mDescription = mDescription;
 	result->mDefaultValue = mDefaultValue;
+	result->mDisplayedName = mDisplayedName;
 	return result;
 }
 
@@ -81,7 +83,8 @@ void Property::print() const
 			<< "\t" << mIsEnum
 			<< "\t" << mIsReference
 			<< "\t" << mDescription
-			<< "\t" << mDefaultValue;
+			<< "\t" << mDefaultValue
+			<< "\t" << mDisplayedName;
 }
 
 QString Property::generatePropertyLine(const QString &lineTemplate) const
@@ -97,5 +100,12 @@ QString Property::generateDefaultsLine(const QString &lineTemplate) const
 		return "";
 	QString result = lineTemplate;
 	result.replace(propertyNameTag, mName).replace(propertyDefaultTag, mDefaultValue);
+	return result;
+}
+
+QString Property::generateDisplayedNameLine(const QString &lineTemplate) const
+{
+	QString result = lineTemplate;
+	result.replace(propertyNameTag, mName).replace(propertyDisplayedNameTag, mDisplayedName);
 	return result;
 }
