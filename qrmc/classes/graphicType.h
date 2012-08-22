@@ -25,6 +25,7 @@ namespace qrmc {
 		virtual QString generateProperties(const QString &lineTemplate) const;
 		virtual QString generatePropertyDefaults(QString const &namesTemplate) const;
 		virtual QString generatePropertyDisplayedNames(QString const &lineTemplate) const;
+		virtual QString generateParents(const QString &lineTemplate) const;
 		virtual QString generateContainers(QString const &lineTemplate) const;
 		virtual QString generateConnections(QString const &lineTemplate) const;
 		virtual QString generateUsages(QString const &lineTemplate) const;
@@ -49,6 +50,7 @@ namespace qrmc {
 		};
 
 		QStringList mParents;
+		QStringList mChildren;
 		bool mIsVisible;
 		int mWidth;
 		int mHeight;

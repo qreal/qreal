@@ -5,6 +5,7 @@
 @@InitPropertyNamesMapLine@@=	propertiesDisplayedNamesMap["@@DiagramName@@"]["@@ElementName@@"]["@@PropertyName@@"] = QString::fromUtf8("@@PropertyDisplayedName@@");
 @@InitPropertyTypesMapLine@@=	propertyTypes["@@ElementName@@"]["@@PropertyName@@"] = "@@PropertyType@@";
 @@InitPropertyDefaultMapLine@@=	propertyDefault["@@ElementName@@"]["@@PropertyName@@"] = "@@PropertyDefaultValue@@";
+@@InitParentsMapLine@@=	parentsMap["@@DiagramName@@"]["@@ChildElementName@@"] << qMakePair(QString("@@DiagramName@@"), QString("@@ParentElementName@@")); 	
 @@GetGraphicalObjectLine@@=	if (element == "@@ElementName@@")\n		return new @@ElementName@@();
 @@GetPropertyNamesLine@@=	if (element == "@@ElementName@@")\n		result  << @@PropertiesList@@;
 @@GetContainedByLine@@=	if (element == "@@ElementName@@")\n		result @@ContainedByList@@;

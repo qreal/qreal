@@ -41,6 +41,11 @@ void @@MetamodelName@@Plugin::initPropertyDefaultsMap()
 @@InitPropertyDefaultMapLine@@
 }
 
+void @@MetamodelName@@Plugin::initParentsMap()
+{
+@@InitParentsMapLine@@
+}
+
 QStringList @@MetamodelName@@Plugin::diagrams() const
 {
 	return diagramNameMap.keys();

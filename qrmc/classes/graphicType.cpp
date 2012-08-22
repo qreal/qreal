@@ -38,12 +38,33 @@ bool GraphicType::init(QString const &context)
 	if (mApi->hasProperty(mId, "RequestBody"))
 		mIsVisible = !mApi->stringProperty(mId, "RequestBody").isEmpty();
 
-	IdList const inLinks = mApi->outgoingLinks(mId);
-	foreach (Id const inLink, inLinks) {
-		if (inLink.element() == "Container") {
-			Id const elementId = mApi->to(inLink);
+	IdList const outLinks = mApi->outgoingLinks(mId);
+	foreach (Id const outLink, outLinks) {
+		if (outLink.element() == "Container") {
+			Id const elementId = mApi->to(outLink);
 			QString const typeName = mApi->name(elementId);
 			mContains << typeName.split(",", QString::SkipEmptyParts);
+		}
+	}
+
+	foreach (Id const outLink, outLinks) {
+		if (outLink.element() == "Inheritance") {
+			Id const elementId = mApi->to(outLink);
+			QString const childName = mApi->name(elementId);
+			if (!mChildren.contains(childName)) {
+				mChildren << childName.split(",", QString::SkipEmptyParts);
+			}
+		}
+	}
+
+	IdList const inLinks = mApi->incomingLinks(mId);
+	foreach (Id const inLink, inLinks) {
+		if (inLink.element() == "Inheritance") {
+			Id const elementId = mApi->from(inLink);
+			QString const parentName = mApi->name(elementId);
+			if (!mParents.contains(parentName)) {
+				mParents << parentName.split(",", QString::SkipEmptyParts);
+			}
 		}
 	}
 
@@ -51,7 +72,7 @@ bool GraphicType::init(QString const &context)
 		if (!mApi->isLogicalElement(id))
 			continue;
 
-		if (id.element() == metaEntityParent) {
+		/*if (id.element() == metaEntityParent) {
 			QString parentName = mApi->name(id);
 			if (!mParents.contains(parentName))
 				mParents.append(parentName);
@@ -59,7 +80,8 @@ bool GraphicType::init(QString const &context)
 				qDebug() << "ERROR: parent of node" << qualifiedName() << "duplicated";
 				return false;
 			}
-		} else if (id.element() == metaEntityAttribute) {
+		} else */
+		if (id.element() == metaEntityAttribute) {
 			Property *property = new Property(mApi, id);
 			if (!property->init()) {
 				delete property;
@@ -259,6 +281,18 @@ QString GraphicType::generatePropertyDisplayedNames(const QString &lineTemplate)
 			displayedNamesString += tmp.replace(elementNameTag, name()).replace(diagramNameTag, mContext) + endline;
 	}
 	return displayedNamesString;
+}
+
+QString GraphicType::generateParents(const QString &lineTemplate) const
+{
+	QString parentsMapString;
+	QString diagramName = mContext + "::";
+	QString parentName = qualifiedName().remove(diagramName);
+	foreach (QString child, mChildren) {
+		QString tmp = lineTemplate;
+		parentsMapString += tmp.replace(parentNameTag, parentName).replace(childNameTag, child).replace(diagramNameTag, mContext) + endline;
+	}
+	return parentsMapString;
 }
 
 QString GraphicType::generateContainers(const QString &lineTemplate) const

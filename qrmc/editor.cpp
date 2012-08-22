@@ -243,6 +243,7 @@ bool Editor::generatePluginSource()
 	generateIsNodeOrEdge();
 	generateEnums();
 	generatePossibleEdges();
+	generateParentsMap();
 
 	// inserting plugin name all over the template
 	mSourceTemplate.replace(metamodelNameTag,  NameNormalizer::normalize(mName));
@@ -426,6 +427,13 @@ public:
 	}
 };
 
+class Editor::ParentsMapGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
+		return diagram->generateParentsMap(lineTemplate);
+	}
+};
+
 class Editor::ContainersGenerator: public Editor::MethodGenerator {
 public:
 	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
@@ -488,6 +496,11 @@ void Editor::generateNamesMap()
 void Editor::generatePropertyDisplayedNamesMap()
 {
 	generatePluginMethod(initPropertyDisplayedNamesTag, PropertyDisplayedNamesGenerator());
+}
+
+void Editor::generateParentsMap()
+{
+	generatePluginMethod(initParentsMapLineTag, ParentsMapGenerator());
 }
 
 void Editor::generateMouseGesturesMap()
