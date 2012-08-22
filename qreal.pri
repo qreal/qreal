@@ -36,8 +36,7 @@ plugins.depends = \
 	qrkernel \
 	qrmc \
 
-#UNIT_TEST = TRUE
-!isEmpty(UNIT_TEST) {
+infile(qrtest/unitTests/unittestDeclaration.cfg, UNIT_TEST, TRUE) {
 	SUBDIRS += \
 		qrtest \
 

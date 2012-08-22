@@ -39,3 +39,6 @@ include(qrutilsTests/qrutilsTests.pri)
 
 # Example tests
 include(exampleTests/exampleTests.pri)
+
+OTHER_FILES += \
+	unittestDeclaration.cfg \

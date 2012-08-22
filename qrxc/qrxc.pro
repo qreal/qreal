@@ -17,8 +17,7 @@ DESTDIR += ../bin
 	QMAKE_LFLAGS="-Wl,-O1,-rpath,$$PWD/../bin"
 }
 
-#UNIT_TEST = TRUE
-!isEmpty(UNIT_TEST) {
+infile(../qrtest/unitTests/unittestDeclaration.cfg, UNIT_TEST, TRUE) {
 	OBJECTS_DIR = .unittestobj
 	UI_DIR = .unittestui
 	MOC_DIR = .unittestmoc
