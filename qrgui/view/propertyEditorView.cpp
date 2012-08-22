@@ -88,14 +88,12 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			type = QVariant::Int;
 		} else if (typeName == "bool") {
 			type = QVariant::Bool;
-		} else if (typeName == "string") {
-			type = QVariant::String;
 		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
-		} else {
-			if (name == "shape" || name == QString::fromUtf8("Код запроса")/*"RequestBody"*/) { // hack
+		} else if (name == "shape" || name == QString::fromUtf8("Код запроса")/*"RequestBody"*/) { // hack
 				isButton = true;
-			}
+		} else if (typeName == "string") {
+			type = QVariant::String;
 		}
 
 		QtProperty *item = NULL;
