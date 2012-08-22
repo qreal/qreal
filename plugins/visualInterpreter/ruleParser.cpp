@@ -3,8 +3,8 @@
 using namespace qReal;
 using namespace utils;
 
-RuleParser::RuleParser(LogicalModelAssistInterface const &logicalModelApi
-		, GraphicalModelAssistInterface const &graphicalModelApi
+RuleParser::RuleParser(LogicalModelAssistInterface &logicalModelApi
+		, GraphicalModelAssistInterface &graphicalModelApi
 		, ErrorReporterInterface* errorReporter)
 		: ExpressionsParser(errorReporter)
 		, mLogicalModelApi(logicalModelApi)
@@ -325,14 +325,14 @@ void RuleParser::setProperty(Id const &id, QString const &propertyName, QVariant
 {
 	if (mLogicalModelApi.isLogicalId(id)) {
 		if (mLogicalModelApi.logicalRepoApi().hasProperty(id, propertyName)) {
-			mLogicalModelApi.logicalRepoApi().setProperty(id, propertyName, value);
+			mLogicalModelApi.mutableLogicalRepoApi().setProperty(id, propertyName, value);
 		} else {
 			error(unknownElementProperty);
 		}
 	} else {
 		Id const logId = mGraphicalModelApi.logicalId(id);
 		if (mLogicalModelApi.logicalRepoApi().hasProperty(logId, propertyName)) {
-			mLogicalModelApi.logicalRepoApi().setProperty(logId, propertyName, value);
+			mLogicalModelApi.mutableLogicalRepoApi().setProperty(logId, propertyName, value);
 		} else {
 			error(unknownElementProperty);
 		}
