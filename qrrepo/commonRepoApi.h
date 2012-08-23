@@ -68,7 +68,7 @@ public:
 
 	/// Set property with given name to given value, creates new property if
 	/// there wasn't such property before.
-	virtual void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value) = 0;
+	virtual void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value) const = 0;
 
 	/// Remove property with given name from given element.
 	virtual void removeProperty(qReal::Id const &id, QString const &propertyName) = 0;
