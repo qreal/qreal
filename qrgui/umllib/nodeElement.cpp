@@ -473,8 +473,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			parentPos = parItem->scenePos();
 		}
 
-		qreal const newX = mGrid->makeGridAlignment(event->pos().x());
-		qreal const newY = mGrid->makeGridAlignment(event->pos().y());
+		qreal const newX = event->pos().x();
+		qreal const newY = event->pos().y();
 
 		switch (mDragState) {
 		case TopLeft: {
