@@ -1,5 +1,5 @@
 #include "umlPortHandler.h"
-#include "nodeElement.h"
+#include "../nodeElement.h"
 #include "borderChecker.h"
 
 UmlPortHandler::UmlPortHandler(NodeElement * const node)

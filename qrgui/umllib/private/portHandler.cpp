@@ -1,7 +1,7 @@
-#include "../view/editorViewScene.h"
+#include "../../view/editorViewScene.h"
 
 #include <QtCore/qmath.h>
-#include "nodeElement.h"
+#include "../nodeElement.h"
 #include "portHandler.h"
 
 PortHandler::PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistApi *graphicalAssistApi,

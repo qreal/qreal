@@ -20,8 +20,8 @@
 #include "embedded/linkers/embeddedLinker.h"
 
 #include "sceneGridHandler.h"
-#include "umlPortHandler.h"
-#include "portHandler.h"
+#include "private/umlPortHandler.h"
+#include "private/portHandler.h"
 
 #include "serializationData.h"
 

@@ -13,7 +13,7 @@
 #include <QtGui/QGraphicsDropShadowEffect>
 
 #include <math.h>
-#include "resizeHandler.h"
+#include "private/resizeHandler.h"
 
 using namespace qReal;
 

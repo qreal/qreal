@@ -1,5 +1,5 @@
 #include "borderChecker.h"
-#include "nodeElement.h"
+#include "../nodeElement.h"
 
 BorderChecker::BorderChecker(const NodeElement* const node)
 	: mNode(node), mBorderValues(node->borderValues())
