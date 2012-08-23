@@ -44,8 +44,8 @@ public:
 	 */
 	bool checkRightBorder(QPointF const &point) const;
 
-	bool checkNoBorderX(QPointF const &point) const; // TODO: rename
-	bool checkNoBorderY(QPointF const &point) const;
+	bool checkNoBorderX(QPointF const &point, qreal y) const; // TODO: rename
+	bool checkNoBorderY(QPointF const &point, qreal x) const;
 
 private:
 	/// Node that is actually dealt with.
