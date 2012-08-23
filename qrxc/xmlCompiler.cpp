@@ -529,14 +529,14 @@ public:
 class XmlCompiler::PropertiesGenerator: public XmlCompiler::ListMethodGenerator {
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
-		return type->generateProperties(out, isNotFirst);
+		return type->generateProperties(out, isNotFirst, false);
 	}
 };
 
 class XmlCompiler::ReferencePropertiesGenerator: public XmlCompiler::ListMethodGenerator {
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
-		return type->generateReferenceProperties(out, isNotFirst);
+		return type->generateProperties(out, isNotFirst, true);
 	}
 };
 

@@ -73,7 +73,7 @@ void ReferenceList::valueChanged()
 
 QString ReferenceList::getNewValue()
 {
-	QString newValue = "";
+	QString newValue;
 	if (!mUi->listWidget->selectedItems().isEmpty()) {
 		newValue = mUi->listWidget->selectedItems()[0]->data(Qt::UserRole).toString();
 	}

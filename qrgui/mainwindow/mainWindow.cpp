@@ -436,7 +436,7 @@ void MainWindow::setReference(QString const &data, QPersistentModelIndex const &
 {
 	removeOldBackReference(index, role);
 	setData(data, index, role);
-	if (data != "") {
+	if (!data.isEmpty()) {
 		setBackReference(index, data);
 	}
 }
@@ -1391,7 +1391,7 @@ void MainWindow::setBackReference(QPersistentModelIndex const &index, QString co
 void MainWindow::removeOldBackReference(QPersistentModelIndex const &index, int const role)
 {
 	QString data = index.data(role).toString();
-	if (data == "") {
+	if (data.isEmpty()) {
 		return;
 	}
 
