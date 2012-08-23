@@ -34,9 +34,6 @@ public:
 	virtual ~NodeElement();
 
 	NodeElement *clone(bool toCursorPos = false, bool searchForParents = true);
-	void copyChildren(NodeElement *source);
-	void copyEdges(NodeElement *source);
-	void copyProperties(NodeElement *source);
 
 	QMap<QString, QVariant> properties();
 

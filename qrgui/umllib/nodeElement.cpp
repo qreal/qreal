@@ -14,6 +14,7 @@
 
 #include <math.h>
 #include "private/resizeHandler.h"
+#include "private/copyHandler.h"
 
 using namespace qReal;
 
@@ -94,25 +95,8 @@ NodeElement::~NodeElement()
 
 NodeElement *NodeElement::clone(bool toCursorPos, bool searchForParents)
 {
-	EditorViewScene *evscene = dynamic_cast<EditorViewScene*>(scene());
-
-	qReal::Id typeId = id().type();
-	qReal::Id resultId = evscene->createElement(typeId.toString(), QPointF(), searchForParents);
-
-	NodeElement *result = dynamic_cast<NodeElement*>(evscene->getElem(resultId));
-
-	result->copyProperties(this);
-	result->copyChildren(this);
-	result->mContents = mContents;
-	if (toCursorPos) {
-		result->setPos(evscene->getMousePos());
-		result->storeGeometry();
-	}
-	else {
-		result->setPos(mPos);
-	}
-
-	return result;
+	CopyHandler copyHandler(this, mGraphicalAssistApi);
+	return copyHandler.clone(toCursorPos, searchForParents);
 }
 
 NodeElement* NodeElement::copyAndPlaceOnDiagram(QPointF const &offset)
@@ -124,30 +108,9 @@ NodeElement* NodeElement::copyAndPlaceOnDiagram(QPointF const &offset)
 	return copy;
 }
 
-void NodeElement::copyChildren(NodeElement *source)
-{
-	foreach (QGraphicsItem *child, source->childItems()) {
-		NodeElement *element = dynamic_cast<NodeElement*>(child);
-		if (element) {
-			NodeElement *copyOfChild = element->clone();
-			mGraphicalAssistApi->changeParent(copyOfChild->id(), id(), element->pos());
-		}
-	}
-}
-
-void NodeElement::copyProperties(NodeElement *source)
-{
-	mGraphicalAssistApi->copyProperties(id(), source->id());
-}
-
 QMap<QString, QVariant> NodeElement::properties()
 {
 	return mGraphicalAssistApi->properties(id());
-}
-
-void NodeElement::copyEdges(NodeElement *source)
-{
-	Q_UNUSED(source);
 }
 
 void NodeElement::setName(QString value)
