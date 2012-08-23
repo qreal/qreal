@@ -7,7 +7,7 @@
 using namespace qReal;
 
 TEST(IdsTest, loadFromStringTest) {
-	EXPECT_DEATH(Id::loadFromString("qrm:/editor/diagram/element/id/test")
+	EXPECT_DEATH_IF_SUPPORTED(Id::loadFromString("qrm:/editor/diagram/element/id/test")
 			, ".*path\\.count\\(\\) > 0 && path\\.count\\(\\) <= 5.*");
 
 	Id id = Id::loadFromString("qrm:/editor/diagram/element/id");
@@ -37,7 +37,7 @@ TEST(IdsTest, rootIdTest) {
 }
 
 TEST(IdsTest, additonalConstructorTest) {
-	EXPECT_DEATH(Id id(Id::loadFromString("qrm:/editor/diagram/element/id"), "test")
+	EXPECT_DEATH_IF_SUPPORTED(Id id(Id::loadFromString("qrm:/editor/diagram/element/id"), "test")
 			, ".*Can not add a part to Id, it will be too long.*");
 
 	Id id1(Id::loadFromString("qrm:/editor/diagram/element"), "id");
