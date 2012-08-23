@@ -19,7 +19,7 @@
 #include "../editorPluginInterface/elementImpl.h"
 #include "embedded/linkers/embeddedLinker.h"
 
-#include "sceneGridHandler.h"
+#include "private/sceneGridHandler.h"
 #include "private/umlPortHandler.h"
 #include "private/portHandler.h"
 
