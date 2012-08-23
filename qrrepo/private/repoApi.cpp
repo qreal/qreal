@@ -246,11 +246,6 @@ qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
 	return result;
 }
 
-QString RepoApi::typeName(Id const &id) const
-{
-	return id.element();
-}
-
 QVariant RepoApi::property(Id const &id, QString const &propertyName) const
 {
 	return mClient.property(id, propertyName);
@@ -262,7 +257,7 @@ QString RepoApi::stringProperty(Id const &id, QString const &propertyName) const
 	return mClient.property(id, propertyName).toString();
 }
 
-void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value) const
+void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value)
 {
 	mClient.setProperty(id, propertyName, value);
 }

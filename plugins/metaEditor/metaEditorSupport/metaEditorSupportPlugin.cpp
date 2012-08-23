@@ -118,7 +118,7 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 	int forEditor = 60 / metamodels.size();
 
 	foreach (Id const &key, metamodels) {
-		QString const objectType = mLogicalRepoApi->typeName(key);
+		QString const objectType = key.element();
 		if (objectType == "MetamodelDiagram") {
 			QString name = mLogicalRepoApi->stringProperty(key, "name of the directory");
 			if (QMessageBox::question(mMainWindowInterface->windowWidget()

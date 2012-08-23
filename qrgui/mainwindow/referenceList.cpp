@@ -25,9 +25,11 @@ ReferenceList::~ReferenceList()
 void ReferenceList::loadList(QString const &refType)
 {
 	const qrRepo::LogicalRepoApi *repoApi = &(mWindow->models()->logicalRepoApi());
+	// there will be no need in this when models are synchronized
+	qReal::models::GraphicalModelAssistApi &assistApi = mWindow->models()->graphicalModelAssistApi();
 
 	foreach (qReal::Id element, repoApi->elementsByType(refType)) {
-		if (repoApi->isLogicalElement(element)) {
+		if (repoApi->isLogicalElement(element) && !assistApi.graphicalIdsByLogicalId(element).isEmpty()) {
 			addItem(element);
 		}
 	}

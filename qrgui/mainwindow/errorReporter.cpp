@@ -1,8 +1,7 @@
-#include "errorReporter.h"
-
 #include <QtGui/QMessageBox>
 #include <QtGui/QDockWidget>
 
+#include "errorReporter.h"
 #include "errorListWidget.h"
 #include "../../qrkernel/exception/exception.h"
 
@@ -25,15 +24,17 @@ ErrorReporter::ErrorReporter(ErrorListWidget* const errorListWidget, QDockWidget
 
 void ErrorReporter::updateVisibility(bool isVisible)
 {
-	if (mIsVisible == isVisible)
+	if (mIsVisible == isVisible) {
 		return;
+	}
 
 	mIsVisible = isVisible;
 
-	if (!mIsVisible)
+	if (!mIsVisible) {
 		mErrorList->hide();
-	else if (mErrorListWidget->count() > 0)
+	} else if (mErrorListWidget->count() > 0) {
 		mErrorList->show();
+	}
 }
 
 void ErrorReporter::addInformation(QString const &message, Id const &position)
@@ -74,17 +75,20 @@ bool ErrorReporter::showErrors(ErrorListWidget* const errorListWidget, QDockWidg
 	}
 
 	errorList->setVisible(true);
-	foreach (Error error, mErrors)
+	foreach (Error error, mErrors) {
 		showError(error, errorListWidget);
+	}
 	return false;
 }
 
 void ErrorReporter::clear()
 {
-	if (mErrorListWidget)
+	if (mErrorListWidget) {
 		mErrorListWidget->clear();
-	if (mErrorList)
+	}
+	if (mErrorList) {
 		mErrorList->setVisible(false);
+	}
 }
 
 void ErrorReporter::clearErrors()
@@ -104,11 +108,13 @@ bool ErrorReporter::wereErrors()
 
 void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorListWidget) const
 {
-	if (!errorListWidget)
+	if (!errorListWidget) {
 		return;
+	}
 
-	if (mErrorList && !mErrorList->isVisible() &&  mIsVisible)
+	if (mErrorList && !mErrorList->isVisible() &&  mIsVisible) {
 		mErrorList->setVisible(true);
+	}
 
 	QListWidgetItem* item = new QListWidgetItem(errorListWidget);
 	QString message = error.timestamp() + " " + severityMessage(error) + " ";
@@ -133,6 +139,7 @@ void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorLi
 	item->setTextAlignment(Qt::AlignVCenter);
 	item->setToolTip(error.position().toString());
 	errorListWidget->addItem(item);
+	errorListWidget->setCurrentItem(item);
 }
 
 QString ErrorReporter::severityMessage(Error const &error)

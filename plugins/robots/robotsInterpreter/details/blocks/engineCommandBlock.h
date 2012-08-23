@@ -21,9 +21,7 @@ public:
 	virtual void run() = 0;
 
 protected:
-	robotParts::Motor &mMotor1;
-	robotParts::Motor &mMotor2;
-	robotParts::Motor &mMotor3;
+	QVector<robotParts::Motor *> mMotors;  // Doesn't have ownership.
 
 	QVector<bool> parsePorts();
 };

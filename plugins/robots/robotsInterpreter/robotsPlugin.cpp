@@ -1,7 +1,6 @@
+#include <QtGui/QApplication>
 #include "robotsPlugin.h"
 #include "details/tracer.h"
-
-#include <QtGui/QApplication>
 
 Q_EXPORT_PLUGIN2(robotsPlugin, qReal::interpreters::robots::RobotsPlugin)
 
@@ -9,6 +8,7 @@ using namespace qReal;
 using namespace interpreters::robots;
 
 const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
+const Id oldRobotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "DiagramNode");
 
 RobotsPlugin::RobotsPlugin()
 		: mMainWindowInterpretersInterface(NULL)
@@ -20,7 +20,6 @@ RobotsPlugin::RobotsPlugin()
 		, mWatchListAction(NULL)
 		, mAppTranslator(new QTranslator())
 {
-//	details::Tracer::enableAll();
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
 	mAppTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(mAppTranslator);
@@ -28,7 +27,6 @@ RobotsPlugin::RobotsPlugin()
 	mRobotSettingsPage = new PreferencesRobotSettingsPage();
 
 	initActions();
-
 }
 
 RobotsPlugin::~RobotsPlugin()
@@ -71,6 +69,12 @@ void RobotsPlugin::initActions()
 	mActionInfos << d2ModelActionInfo << runActionInfo << stopRobotActionInfo
 			<< connectToRobotActionInfo << separatorActionInfo << robotSettingsActionInfo
 			<< separatorActionInfo << watchListActionInfo;
+
+	//Set tabs, unused at the opening, enabled
+	QList<ActionInfo> unusedTab;
+	unusedTab << d2ModelActionInfo << runActionInfo << stopRobotActionInfo << connectToRobotActionInfo << watchListActionInfo;
+	bool isTabEnable = false;
+	changeActiveTab(unusedTab, isTabEnable);
 }
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
@@ -114,6 +118,9 @@ void RobotsPlugin::updateSettings()
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Updating settings, model and sensors are going to be reinitialized...");
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
 	mInterpreter.setRobotModelType(typeOfRobotModel);
+	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication", "bluetooth").toString();
+	QString const portName = SettingsManager::value("bluetoothPortName", "").toString();
+	mInterpreter.setCommunicator(typeOfCommunication, portName);
 	mInterpreter.configureSensors(
 			static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
 			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
@@ -121,35 +128,37 @@ void RobotsPlugin::updateSettings()
 			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt())
 	);
 	m2dModelAction->setVisible(typeOfRobotModel == robotModelType::unreal);
+	mConnectToRobotAction->setVisible(typeOfRobotModel == robotModelType::real);
 	if (typeOfRobotModel == robotModelType::unreal) {
 		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopRobotAction);
 	} else {
 		mInterpreter.showD2ModelWidget(false);
 	}
 
-	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication", "bluetooth").toString();
-	QString const portName = SettingsManager::value("bluetoothPortName", "").toString();
-	mInterpreter.setCommunicator(typeOfCommunication, portName);
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Done updating settings");
 }
 
 void RobotsPlugin::closeNeededWidget()
 {
 	mInterpreter.closeD2ModelWidget();
+	mInterpreter.closeWatchList();
 }
 
 void RobotsPlugin::activeTabChanged(Id const & rootElementId)
 {
-	bool const enabled = rootElementId.type() == robotDiagramType;
-	foreach (ActionInfo const &actionInfo, mActionInfos) {
-		if (needToDisableWhenNotRobotsDiagram(actionInfo.action())) {
-			actionInfo.action()->setEnabled(enabled);
-		}
-	}
+	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
+	changeActiveTab(mActionInfos, enabled);
 	if (enabled) {
 		mInterpreter.enableD2ModelWidgetRunStopButtons();
 	} else {
 		mInterpreter.disableD2ModelWidgetRunStopButtons();
+	}
+}
+
+void RobotsPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)
+{
+	foreach (ActionInfo const &actionInfo, info) {
+			actionInfo.action()->setEnabled(trigger);
 	}
 }
 

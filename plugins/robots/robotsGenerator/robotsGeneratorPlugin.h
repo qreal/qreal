@@ -6,6 +6,7 @@
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
 #include "nxtOSEK/nxtFlashTool.h"
 
+
 namespace robots {
 namespace generator {
 
@@ -41,6 +42,9 @@ private:
 	/// subfolder of QReal installation), and sets mNxtToolsPresent flag.
 	void checkNxtTools();
 
+	/// Disable/enable tab in QList<ActionInfo> info
+	void changeActiveTab(QList<qReal::ActionInfo> const &info, bool const &trigger);
+
 	/// Action that launches code generator
 	QAction mGenerateCodeAction;
 
@@ -55,6 +59,9 @@ private:
 
 	/// Interface of MainWindow
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership
+
+	/// Interface of project manager (allows to perform open/save activities)
+	qReal::ProjectManagementInterface *mProjectManager; // Does not have ownership
 
 	/// Control interface of the repository
 	qrRepo::RepoControlInterface *mRepoControlApi;  // Does not have ownership

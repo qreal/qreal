@@ -93,7 +93,6 @@ public:
 	bool showConnectionRelatedMenus() const;
 
 	virtual void showInTextEditor(QString const &title, QString const &text);
-
 	virtual void reinitModels();
 
 	virtual QWidget *windowWidget();

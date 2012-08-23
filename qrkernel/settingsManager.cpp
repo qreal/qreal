@@ -1,13 +1,15 @@
 #include "settingsManager.h"
-#include <QHash>
-#include <QStringList>
 
-#include <QFile>
-#include <QTextStream>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
+#include <QtCore/QStringList>
+
+using namespace qReal;
 
 SettingsManager* SettingsManager::mInstance = NULL;
 
-SettingsManager::SettingsManager() : mSettings("SPbSU", "QReal")
+SettingsManager::SettingsManager()
+		: mSettings("SPbSU", "QReal")
 {
 	initDefaultValues();
 	load();
