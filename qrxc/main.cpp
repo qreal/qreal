@@ -1,10 +1,5 @@
 #include "xmlCompiler.h"
 
-#ifdef UNITTEST
-	#include "gtest/gtest.h"
-#endif
-
-
 #include <QCoreApplication>
 #include <QStringList>
 #include <QDebug>
@@ -29,7 +24,6 @@ void myMessageOutput(QtMsgType type, const char *msg)
 
 int main(int argc, char *argv[])
 {
-#ifndef UNITTEST
 	qInstallMsgHandler(myMessageOutput);
 	QCoreApplication app(argc, argv);
 	QStringList args = app.arguments();
@@ -49,9 +43,4 @@ int main(int argc, char *argv[])
 		return 1;
 
 	return 0;
-	
-#else
-	::testing::InitGoogleTest(&argc, argv);
-	return RUN_ALL_TESTS();
-#endif
 }
