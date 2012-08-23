@@ -1064,7 +1064,7 @@ void EditorViewScene::createEdge(const QString & idStr)
 	Id id = createElement(idStr, start);
 	Element *edgeElement = getElem(id);
 	EdgeElement *edge = dynamic_cast <EdgeElement *> (edgeElement);
-	QPointF endPos = edge->mapFromItem(child, child->getNearestPort(end));
+	QPointF endPos = edge->mapFromItem(child, child->nearestPort(end));
 	edge->placeEndTo(endPos);
 	edge->connectToPort();
 }

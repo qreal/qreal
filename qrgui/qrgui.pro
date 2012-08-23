@@ -34,24 +34,6 @@ LIBS += -L../bin -lqrrepo -lqrkernel -lqrutils #-lqrmc
 unix:DEFINES   = _TTY_POSIX_
 win32:DEFINES  = _TTY_WIN_
 
-#UNIT_TEST = TRUE
-!isEmpty(UNIT_TEST) {
-	OBJECTS_DIR = .unittestobj
-	UI_DIR = .unittestui
-	MOC_DIR = .unittestmoc
-	RCC_DIR = .unittestmoc
-
-	INCLUDEPATH += \
-		../thirdparty/gmock-1.6.0/include \
-		../thirdparty/gmock-1.6.0/gtest/include \
-
-	LIBS += -L../bin/thirdparty/ -lgmock -lpthread
-
-	TARGET = qrgui_unittests
-	DESTDIR = ../bin/unittests
-	DEFINES += UNITTEST
-}
-
 # Graphical elements
 include (umllib/umllib.pri)
 
