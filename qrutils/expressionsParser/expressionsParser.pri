@@ -1,7 +1,7 @@
 HEADERS += \
-        expressionsParser/expressionsParser.h \
-        expressionsParser/number.h \
+	$$PWD/expressionsParser.h \
+	$$PWD/number.h \
 
 SOURCES += \
-        expressionsParser/expressionsParser.cpp \
-        expressionsParser/number.cpp \
+	$$PWD/expressionsParser.cpp \
+	$$PWD/number.cpp \

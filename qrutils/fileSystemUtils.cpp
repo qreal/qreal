@@ -23,7 +23,7 @@ bool FileSystemUtils::clearDir(QString const &dirPath)
 	if (!dir.exists()) {
 		return true;
 	}
-	clearDir(dir);
+	return clearDir(dir);
 }
 
 bool FileSystemUtils::removeFile(const QString &filePath)
@@ -32,7 +32,7 @@ bool FileSystemUtils::removeFile(const QString &filePath)
 	if (!file.exists()) {
 		return true;
 	}
-	file.remove();
+	return file.remove();
 }
 
 bool FileSystemUtils::clearDir(QDir dir)

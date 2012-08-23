@@ -16,27 +16,27 @@ LIBS += -L../bin -lqrkernel -lqrutils
 DEFINES += QRREPO_LIBRARY
 
 HEADERS += \
-	private/client.h \
-	private/qrRepoGlobal.h \
-	private/serializer.h \
-	private/classes/object.h \
-	private/folderCompressor.h \
+	$$PWD/private/client.h \
+	$$PWD/private/qrRepoGlobal.h \
+	$$PWD/private/serializer.h \
+	$$PWD/private/classes/object.h \
+	$$PWD/private/folderCompressor.h \
 
 SOURCES += \
-	private/client.cpp \
-	private/serializer.cpp \
-	private/classes/object.cpp \
-	private/folderCompressor.cpp \
+	$$PWD/private/client.cpp \
+	$$PWD/private/serializer.cpp \
+	$$PWD/private/classes/object.cpp \
+	$$PWD/private/folderCompressor.cpp \
 
 # API репозитория
 HEADERS += \
-	repoApi.h \
-	graphicalRepoApi.h \
-	logicalRepoApi.h \
-	repoControlInterface.h \
-	commonRepoApi.h \
-	workingCopyInspectionInterface.h \
-	workingCopyManagementInterface.h
+	$$PWD/repoApi.h \
+	$$PWD/graphicalRepoApi.h \
+	$$PWD/logicalRepoApi.h \
+	$$PWD/repoControlInterface.h \
+	$$PWD/commonRepoApi.h \
+	$$PWD/workingCopyInspectionInterface.h \
+	$$PWD/workingCopyManagementInterface.h \
 
 SOURCES += \
-	private/repoApi.cpp \
+	$$PWD/private/repoApi.cpp \
