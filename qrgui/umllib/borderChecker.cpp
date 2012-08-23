@@ -46,16 +46,16 @@ bool BorderChecker::checkRightBorder(QPointF const &point) const
 			&& (checkingPointY <= rc.y() + rc.height() - mYVert);
 }
 
-bool BorderChecker::checkNoBorderX(QPointF const &point) const
+bool BorderChecker::checkNoBorderX(QPointF const &point, qreal y) const
 {
 	double const checkingPointY = point.y();
 	QRectF const rc = mNode->boundingRect();
-	return (checkingPointY >= rc.y() + mYVert) && (checkingPointY <= rc.y() + rc.height() - mYVert);
+	return (checkingPointY >= rc.y() + y) && (checkingPointY <= rc.y() + rc.height() - y);
 }
 
-bool BorderChecker::checkNoBorderY(QPointF const &point) const
+bool BorderChecker::checkNoBorderY(QPointF const &point, qreal x) const
 {
 	double const checkingPointX = point.x();
 	QRectF const rc = mNode->boundingRect();
-	return (checkingPointX >= rc.x() + mXHor) && (checkingPointX <= rc.x() + rc.width() - mXHor);
+	return (checkingPointX >= rc.x() + x) && (checkingPointX <= rc.x() + rc.width() - x);
 }
