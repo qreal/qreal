@@ -16,6 +16,7 @@ HEADERS += \
 	mainwindow/projectManager/projectManager.h \
 	mainwindow/tabWidget.h \
 	mainwindow/miniMap.h \
+	mainwindow/referenceList.h \
 	mainwindow/projectManager/autosaver.h \
 	mainwindow/externBrowser.h \
 
@@ -33,6 +34,7 @@ SOURCES += \
 	mainwindow/projectManager/projectManager.cpp \
 	mainwindow/tabWidget.cpp \
 	mainwindow/miniMap.cpp \
+	mainwindow/referenceList.cpp \
 	mainwindow/projectManager/autosaver.cpp \
 	mainwindow/macExternBrowser.cpp \
 
@@ -62,6 +64,7 @@ macx {
 
 FORMS += \
 	mainwindow/mainWindow.ui \
+	mainwindow/referenceList.ui
 
 # Shape editor
 HEADERS += \

@@ -448,7 +448,7 @@ bool GraphicType::generateObjectRequestString(OutFile &out, bool isNotFirst)
 	return false;
 }
 
-bool GraphicType::generateProperties(OutFile &out, bool isNotFirst)
+bool GraphicType::generateProperties(OutFile &out, bool isNotFirst, bool isReference)
 {
 	if (mVisible) {
 		generateOneCase(out, isNotFirst);
@@ -468,15 +468,17 @@ bool GraphicType::generateProperties(OutFile &out, bool isNotFirst)
 				continue;
 			}
 
-			if (isFirstProperty) {
-				out() << "\t\tresult ";
-				isFirstProperty = false;
-			}
+			if (!isReference || property->isReferenceProperty()) {
+				if (isFirstProperty) {
+					out() << "\t\tresult ";
+					isFirstProperty = false;
+				}
 
-			propertiesString += QString(" << \"" + property->name() + "\"");
-			if (propertiesString.length() >= maxLineLength) {
-				out() << propertiesString;
-				propertiesString = "\n\t\t";
+				propertiesString += QString(" << \"" + property->name() + "\"");
+				if (propertiesString.length() >= maxLineLength) {
+					out() << propertiesString;
+					propertiesString = "\n\t\t";
+				}
 			}
 		}
 

@@ -39,10 +39,11 @@ bool NonGraphicType::generateObjectRequestString(OutFile &out, bool isNotFirst)
 	return false;
 }
 
-bool NonGraphicType::generateProperties(OutFile &out, bool isNotFirst)
+bool NonGraphicType::generateProperties(OutFile &out, bool isNotFirst, bool isReference)
 {
 	Q_UNUSED(out)
 	Q_UNUSED(isNotFirst)
+	Q_UNUSED(isReference)
 	return false;
 }
 
