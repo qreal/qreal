@@ -16,7 +16,7 @@ public:
 	 * Constructs a UmlPortHandler.
 	 * @param node Node that is actually dealt with.
 	 */
-	UmlPortHandler(NodeElement* const node);
+	UmlPortHandler(NodeElement * const node);
 
 	/**
 	 * Handles NodeElement behaviour (sets its position and parent).
@@ -27,11 +27,11 @@ public:
 			, NodeElement *&parentNode);
 
 private:
-	void handleHorizontalBorders(const NodeElement* const tmpNode, const NodeElement* const parentNode
+	void handleHorizontalBorders(const NodeElement * const tmpNode, const NodeElement * const parentNode
 			, QPointF const &pos, QPointF const &posInItem) const;
 	// whatever it means
 	// TODO: rename
 
-	NodeElement* const mNode;
+	NodeElement * const mNode;
 	bool mBelongsToHorizontalBorders;
 };
