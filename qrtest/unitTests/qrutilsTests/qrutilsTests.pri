@@ -1,8 +1,8 @@
 SOURCES += \
-	qrutilsTests/expressionParserTest.cpp \
-	qrutilsTests/numberTest.cpp \
-	qrutilsTests/metamodelGeneratorSupportTest.cpp
+	qrutilsTests/expressionsParser/expressionParserTest.cpp \
+	qrutilsTests/expressionsParser/numberTest.cpp \
+	qrutilsTests/metamodelGeneratorSupportTest.cpp \
 
 HEADERS += \
-	qrutilsTests/expressionParserTest.h \
-	qrutilsTests/metamodelGeneratorSupportTest.h
+	qrutilsTests/expressionsParser/expressionParserTest.h \
+	qrutilsTests/metamodelGeneratorSupportTest.h \

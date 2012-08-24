@@ -7,8 +7,16 @@
 using namespace qReal;
 
 TEST(IdsTest, loadFromStringTest) {
+	::testing::FLAGS_gtest_death_test_style = "threadsafe";
+
 	EXPECT_DEATH_IF_SUPPORTED(Id::loadFromString("qrm:/editor/diagram/element/id/test")
 			, ".*path\\.count\\(\\) > 0 && path\\.count\\(\\) <= 5.*");
+
+	EXPECT_DEATH_IF_SUPPORTED(Id::loadFromString("qm:/editor/diagram/element/id")
+			, ".*path\\[0\\] == \"qrm:\".*");
+
+	EXPECT_DEATH_IF_SUPPORTED(Id::loadFromString("qrm:/editor//diagram")
+			, ".*string == result\\.toString\\(\\).*");
 
 	Id id = Id::loadFromString("qrm:/editor/diagram/element/id");
 	EXPECT_EQ(id, Id("editor", "diagram", "element", "id"));
@@ -26,6 +34,22 @@ TEST(IdsTest, loadFromStringTest) {
 	EXPECT_EQ(id, Id("", "", "", ""));
 }
 
+TEST(IdsTest, checkIntegrityTest) {
+	::testing::FLAGS_gtest_death_test_style = "threadsafe";
+
+	EXPECT_DEATH_IF_SUPPORTED(Id id("editor", "diagram", "", "id")
+			, ".*checkIntegrity\\(\\).*");
+
+	EXPECT_DEATH_IF_SUPPORTED(Id id("editor", "", "element", "id")
+			, ".*checkIntegrity\\(\\).*");
+
+	EXPECT_DEATH_IF_SUPPORTED(Id id("", "diagram", "element", "id")
+			, ".*checkIntegrity\\(\\).*");
+
+	EXPECT_DEATH_IF_SUPPORTED(Id id("editor", "", "", "id")
+			, ".*checkIntegrity\\(\\).*");
+}
+
 TEST(IdsTest, createElementIdTest) {
 	Id id = Id::createElementId("diagram", "editor", "element");
 	EXPECT_TRUE(id.id() != "");
@@ -37,6 +61,8 @@ TEST(IdsTest, rootIdTest) {
 }
 
 TEST(IdsTest, additonalConstructorTest) {
+	::testing::FLAGS_gtest_death_test_style = "threadsafe";
+
 	EXPECT_DEATH_IF_SUPPORTED(Id id(Id::loadFromString("qrm:/editor/diagram/element/id"), "test")
 			, ".*Can not add a part to Id, it will be too long.*");
 

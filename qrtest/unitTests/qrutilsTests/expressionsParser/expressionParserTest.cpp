@@ -6,7 +6,7 @@ using namespace utils;
 using namespace qrTest;
 
 using ::testing::Exactly;
-using ::testing::_; 
+using ::testing::_;
 
 void ExpressionParserTest::SetUp() {
 	mParser = new ExpressionsParser(&mErrorReporter);
