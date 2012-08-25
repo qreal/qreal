@@ -33,6 +33,12 @@ public:
 	NodeElement(ElementImpl *impl);
 	virtual ~NodeElement();
 
+	/**
+	 * Makes copy of current NodeElement.
+	 * @param toCursorPos Indicates if need to place new element at cursor position.
+	 * @param searchForParents Parameter of createElement method in EditorViewScene.
+	 * @return Copy of current NodeElement.
+	 */
 	NodeElement *clone(bool toCursorPos = false, bool searchForParents = true);
 
 	QMap<QString, QVariant> properties();
@@ -59,8 +65,7 @@ public:
 
 	QPointF const portPos(qreal id) const;
 	QPointF const nearestPort(QPointF const &location) const;
-	//TODO: rename method to portNumber
-	static int portId(qreal id);
+	static int portNumber(qreal id);
 	qreal portId(QPointF const &location) const;
 
 	QList<EdgeElement *> getEdges();

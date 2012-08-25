@@ -743,7 +743,7 @@ QPointF const NodeElement::nearestPort(QPointF const &location) const
 	return mPortHandler->nearestPort(location);
 }
 
-int NodeElement::portId(qreal id)
+int NodeElement::portNumber(qreal id)
 {
 	return PortHandler::portNumber(id);
 }
