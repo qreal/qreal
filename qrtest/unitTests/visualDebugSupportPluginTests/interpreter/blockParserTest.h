@@ -1,20 +1,20 @@
 #pragma once
 
-#include "../../../../qrutils/expressionsParser/expressionsParser.h"
+#include "../../../../plugins/blockDiagram/visualDebugSupport/interpreter/blockParser.h"
 #include "../../mocks/grgui/toolPluginInterface/usedInterface/errorReporterMock.h"
 
 #include "gtest/gtest.h"
 
 namespace qrTest {
 
-class ExpressionParserTest : public testing::Test {
+class BlockParserTest : public testing::Test {
 
 protected:
 	virtual void SetUp();
 
 	virtual void TearDown();
 
-	utils::ExpressionsParser *mParser;
+	qReal::BlockParser *mParser;
 	ErrorReporterMock mErrorReporter;
 };
 
