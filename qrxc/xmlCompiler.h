@@ -44,6 +44,7 @@ private:
 	void generateIsParentOfRequest(utils::OutFile &out);
 	void generateGetParentsOfRequest(utils::OutFile &out);
 	void generateProperties(utils::OutFile &out);
+	void generateReferenceProperties(utils::OutFile &out);
 	void generateContainedTypes(utils::OutFile &out);
 	void generateConnections(utils::OutFile &out);
 	void generateUsages(utils::OutFile &out);
@@ -57,6 +58,7 @@ private:
 
 	class ListMethodGenerator;
 	class PropertiesGenerator;
+	class ReferencePropertiesGenerator;
 	class ContainedTypesGenerator;
 	class ConnectionsGenerator;
 	class UsagesGenerator;

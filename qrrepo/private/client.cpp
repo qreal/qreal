@@ -290,6 +290,34 @@ QMapIterator<QString, QVariant> Client::propertiesIterator(const Id &id) const
 	}
 }
 
+void Client::setBackReference(Id const &id, Id const &reference) const
+{
+	if (mObjects.contains(id)) {
+		if (mObjects.contains(reference)) {
+			mObjects[id]->setBackReference(reference);
+		} else {
+			throw Exception("Client: setting nonexistent back reference " + reference.toString()
+							+ " to object " + id.toString());
+		}
+	} else {
+		throw Exception("Client: setting back reference of nonexistent object " + id.toString());
+	}
+}
+
+void Client::removeBackReference(Id const &id, Id const &reference) const
+{
+	if (mObjects.contains(id)) {
+		if (mObjects.contains(reference)) {
+			mObjects[id]->removeBackReference(reference);
+		} else {
+			throw Exception("Client: removing nonexistent back reference " + reference.toString()
+							+ " of object " + id.toString());
+		}
+	} else {
+		throw Exception("Client: removing back reference of nonexistent object " + id.toString());
+	}
+}
+
 void Client::setTemporaryRemovedLinks(Id const &id, QString const &direction, qReal::IdList const &linkIdList)
 {
 	if (mObjects.contains(id)) {

@@ -33,6 +33,8 @@
 #include "../dialogs/startDialog/startDialog.h"
 #include "projectManager/projectManager.h"
 
+#include "referenceList.h"
+
 namespace Ui {
 class MainWindowUi;
 }
@@ -82,6 +84,8 @@ public:
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram();
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
+	void openReferenceList(QPersistentModelIndex const &index
+			, QString const &referenceType, QString const &propertyValue, int role);
 	virtual void openSettingsDialog(QString const &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);
@@ -201,8 +205,9 @@ private slots:
 	void showAlignment(bool isChecked);
 	void switchGrid(bool isChecked);
 	void switchAlignment(bool isChecked);
-	void setShape(QString const &data, QPersistentModelIndex const &index, int const &role);
 
+	void setData(QString const &data, QPersistentModelIndex const &index, int const &role);
+	void setReference(QString const &data, QPersistentModelIndex const &index, int const &role);
 	void openShapeEditor();
 
 	void updatePaletteIcons();
@@ -251,6 +256,11 @@ private:
 	void setSwitchAlignment(bool isChecked);
 
 	void setIndexesOfPropertyEditor(Id const &id);
+
+	void setBackReference(QPersistentModelIndex const &index, QString const &data);
+	void removeOldBackReference(QPersistentModelIndex const &index, int const role);
+
+	void removeReferences(Id const &id);
 
 	/// Check if we need to hide widget in fullscreen mode or not. If we do, hide it
 	/// @param dockWidget QDockWidget to hide

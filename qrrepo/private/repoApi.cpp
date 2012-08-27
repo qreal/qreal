@@ -255,7 +255,7 @@ QString RepoApi::stringProperty(Id const &id, QString const &propertyName) const
 	return mClient.property(id, propertyName).toString();
 }
 
-void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value)
+void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value) const
 {
 	mClient.setProperty(id, propertyName, value);
 }
@@ -283,6 +283,16 @@ void RepoApi::setProperties(Id const &id, QMap<QString, QVariant> const &propert
 bool RepoApi::hasProperty(Id const &id, QString const &propertyName) const
 {
 	return mClient.hasProperty(id, propertyName);
+}
+
+void RepoApi::setBackReference(Id const &id, Id const &reference) const
+{
+	mClient.setBackReference(id, reference);
+}
+
+void RepoApi::removeBackReference(Id const &id, Id const &reference) const
+{
+	mClient.removeBackReference(id, reference);
 }
 
 Id RepoApi::from(Id const &id) const
