@@ -51,18 +51,18 @@ public:
 
 	/**
 	 * Returns port position relative to the top left corner of NodeElement
-	 * (position of NodeElement). 
+	 * (position of NodeElement).
 	 * @param id Id that position is returned by this method.
 	 * @return Port position relative to the top left corner of NodeElement.
 	 */
 	QPointF const portPos(qreal id) const;
 
 	/**
-	 * Calculates nearest point of NodeElement ports to parameter point. 
+	 * Calculates nearest point of NodeElement ports to parameter point.
 	 * @param location To this point nearest port will be calculated. location is assumed to be in SCENE coordinates!
 	 * @return Nearest point of NodeElement ports to parameter point.
 	 */
-	QPointF const nearestPort(QPointF const &location) const;	
+	QPointF const nearestPort(QPointF const &location) const;
 
 	/**
 	 * Connects all temporary removed from working NodeElement edges.
@@ -78,7 +78,7 @@ public:
 
 	/**
 	 * Arranges edges at line ports.
-	 */	
+	 */
 	void arrangeLinearPorts();
 
 	/**
@@ -90,7 +90,7 @@ public:
 private:
 	/// Value for determing ID of nonexistent port.
 	static qreal const mNonexistentPortId = -1; // just smth negative
-	
+
 	/**
 	 * Maximum fraction part value of line port ID.
 	 * They use it for avoiding confusion with next port in our model of port IDs.
@@ -99,7 +99,7 @@ private:
 	 * 	N + 1 - next port!
 	 * 0.9999 is a number that is really close to 1.
 	 */
-	static qreal const mMaximumFractionPartValue = 0.9999;
+	static qreal const mMaximumFractionPartValue;
 
 	/**
 	 * Connects temporary removed links.
@@ -129,7 +129,7 @@ private:
 	 * @return The closest point port number in list of line ports and distance from location to it.
 	 */
 	QPair<int, qreal> nearestPointPortNumberAndDistance(QPointF const &location) const;
-	
+
 	/**
 	 * Returns distance from location to closest line port of NodeElement and this port number in list of line ports.
 	 * @param location Result will be calculated for this point. location is assumed to be in LOCAL NodeElement coordinates!
