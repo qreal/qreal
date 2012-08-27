@@ -35,6 +35,8 @@ public:
 	bool hasProperty(const QString &name, bool sensitivity = false, bool regExpression = false) const;
 	void setProperty(const QString &name, const QVariant &value);
 	void setProperties(QMap<QString, QVariant> const &properties);
+	void setBackReference(qReal::Id const &reference);
+	void removeBackReference(qReal::Id const &reference);
 	void removeProperty(const QString &name);
 	QMap<QString, QVariant> properties();
 	qReal::Id id() const;

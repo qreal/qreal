@@ -35,6 +35,8 @@
 #include "../pluginManager/listenerManager.h"
 #include "../../qrkernel/settingsManager.h"
 
+#include "referenceList.h"
+
 #include "splashScreen.h"
 #include "../dialogs/startDialog/startDialog.h"
 #include "../dialogs/progressDialog/progressDialog.h"
@@ -446,9 +448,18 @@ void MainWindow::closeAllTabs()
 	disconnectWindowTitle();
 }
 
-void MainWindow::setShape(QString const &data, QPersistentModelIndex const &index, int const &role)
+void MainWindow::setReference(QString const &data, QPersistentModelIndex const &index, int const &role)
 {
-	// const_cast here is ok, since we need to set a shape in a correct model, and
+	removeOldBackReference(index, role);
+	setData(data, index, role);
+	if (!data.isEmpty()) {
+		setBackReference(index, data);
+	}
+}
+
+void MainWindow::setData(QString const &data, QPersistentModelIndex const &index, int const &role)
+{
+	// const_cast here is ok, since we need to set data in a correct model, and
 	// not going to use this index anymore.
 	QAbstractItemModel * const model = const_cast<QAbstractItemModel *>(index.model());
 	model->setData(index, data, role);
@@ -513,6 +524,7 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 		qDebug() << "Index in deleteFromExplorer(); isn't valid";
 		return;
 	}
+
 	EditorView const * const view = getCurrentTab();
 	EditorViewScene* scene = NULL;
 	if (view) {
@@ -523,6 +535,7 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	if (isLogicalModel) {
 		Id const logicalId = mModels->logicalModelAssistApi().idByIndex(index);
 		graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
+		removeReferences(logicalId);
 	} else {
 		Id const graphicalId = mModels->graphicalModelAssistApi().idByIndex(index);
 		graphicalIdList.append(graphicalId);
@@ -558,6 +571,12 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 			item->arrangeLinks();
 		}
 	}
+}
+
+void MainWindow::removeReferences(Id const &id)
+{
+	mModels->logicalModelAssistApi().removeReferencesTo(id);
+	mModels->logicalModelAssistApi().removeReferencesFrom(id);
 }
 
 void MainWindow::deleteFromScene()
@@ -874,7 +893,7 @@ void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, Q
 	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
 	model->setData(index, propertyValue, role);
 	connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)),
-			this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
+			this, SLOT(setData(QString, QPersistentModelIndex const &, int const &)));
 
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
@@ -887,6 +906,15 @@ void MainWindow::openShapeEditor()
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
 	setConnectActionZoomTo(shapeEdit);
+}
+
+void MainWindow::openReferenceList(QPersistentModelIndex const &index
+		, QString const &referenceType,	QString const &propertyValue, int role)
+{
+	ReferenceList referenceList(this, index, referenceType, propertyValue, role);
+	connect(&referenceList, SIGNAL(referenceSet(QString, QPersistentModelIndex, int))
+			, this, SLOT(setReference(QString, QPersistentModelIndex, int)));
+	referenceList.exec();
 }
 
 void MainWindow::disconnectZoom(QGraphicsView* view)
@@ -1394,6 +1422,25 @@ void MainWindow::applySettings()
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
 }
 
+void MainWindow::setBackReference(QPersistentModelIndex const &index, QString const &data)
+{
+	Id id = Id::loadFromString(data);
+	Id indexId = mModels->logicalModelAssistApi().idByIndex(index);
+	mModels->logicalRepoApi().setBackReference(id, indexId);
+}
+
+void MainWindow::removeOldBackReference(QPersistentModelIndex const &index, int const role)
+{
+	QString data = index.data(role).toString();
+	if (data.isEmpty()) {
+		return;
+	}
+
+	Id id = Id::loadFromString(data);
+	Id indexId = mModels->logicalModelAssistApi().idByIndex(index);
+	mModels->logicalRepoApi().removeBackReference(id, indexId);
+}
+
 void MainWindow::hideDockWidget(QDockWidget *dockWidget, const QString &name)
 {
 	mDocksVisibility[name] = !dockWidget->isHidden();
@@ -1555,9 +1602,6 @@ void MainWindow::initToolManager()
 
 void MainWindow::initMiniMap()
 {
-//	connect(mUi->minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));
-//	mUi->minimapView->setRenderHint(QPainter::Antialiasing, true);
-//	adjustMinimapZoom(mUi->minimapZoomSlider->value());
 	mUi->minimapView->init(this);
 }
 

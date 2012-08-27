@@ -68,7 +68,7 @@ public:
 
 	/// Set property with given name to given value, creates new property if
 	/// there wasn't such property before.
-	virtual void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value) = 0;
+	virtual void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value) const = 0;
 
 	/// Remove property with given name from given element.
 	virtual void removeProperty(qReal::Id const &id, QString const &propertyName) = 0;
@@ -76,6 +76,9 @@ public:
 	/// Check that property with given name exists in a given element.
 	virtual bool hasProperty(qReal::Id const &id, QString const &propertyName) const = 0;
 	virtual QMapIterator<QString, QVariant> propertiesIterator(qReal::Id const &id) const = 0;
+
+	virtual void setBackReference(qReal::Id const &id, qReal::Id const &reference) const = 0;
+	virtual void removeBackReference(qReal::Id const &id, qReal::Id const &reference) const = 0;
 
 	/// Check that given element exists in a repository.
 	virtual bool exist(qReal::Id const &id) const = 0;
