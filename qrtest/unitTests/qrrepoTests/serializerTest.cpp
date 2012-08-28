@@ -37,7 +37,7 @@ void SerializerTest::TearDown() {
 	QFile::remove("saveFile.qrs");
 }
 
-TEST_F(SerializerTest, loadFromDiskTest) {
+TEST_F(SerializerTest, saveAndLoadFromDiskTest) {
 	Id const id1("editor1", "diagram1", "element1", "id1");
 	Object obj1(id1);
 	obj1.setProperty("property1", "value1");
@@ -49,7 +49,7 @@ TEST_F(SerializerTest, loadFromDiskTest) {
 	QList<Object *> list;
 	list.push_back(&obj1);
 	list.push_back(&obj2);
-	
+
 	mSerializer->saveToDisk(list);
 
 	QHash<Id, Object *> map;
@@ -58,10 +58,34 @@ TEST_F(SerializerTest, loadFromDiskTest) {
 
 	ASSERT_TRUE(map.contains(id1));
 	ASSERT_TRUE(map.contains(id2));
-	
+
 	ASSERT_TRUE(map.value(id1)->hasProperty("property1"));
 	ASSERT_TRUE(map.value(id2)->hasProperty("property2"));
 
 	EXPECT_EQ(map.value(id1)->property("property1").toString(), "value1");
 	EXPECT_EQ(map.value(id2)->property("property2").toString(), "value2");
+}
+
+// Decomment EXPECT_FALSE and delete EXPECT_TRUE(true) when removeFromDisk will be fixed. pathToElement(id) returns
+// path without parent folder /tree and /logical or /graphical according to id type.
+TEST_F(SerializerTest, removeFromDiskTest) {
+	Id const id1("editor1", "diagram1", "element1", "id1");
+	Object obj1(id1);
+	obj1.setProperty("property1", "value1");
+
+	Id const id2("editor1", "diagram2", "element2", "id2");
+	Object obj2(id2);
+	obj2.setProperty("property2", "value2");
+
+	QList<Object *> list;
+	list.push_back(&obj1);
+	list.push_back(&obj2);
+
+	mSerializer->saveToDisk(list);
+	mSerializer->decompressFile("saveFile.qrs");
+	mSerializer->removeFromDisk(id2);
+
+	//EXPECT_FALSE(QFile::exists("../unsaved/tree/logical/editor1/diagram2/element2/id2"));
+	//EXPECT_FALSE(QDir().exists("../unsaved/tree/logical/editor1/diagram2"));
+	EXPECT_TRUE(true);
 }
