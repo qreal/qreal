@@ -4,6 +4,8 @@
 #include "../nodeElement.h"
 #include "portHandler.h"
 
+qreal const PortHandler::mMaximumFractionPartValue = 0.9999;
+
 PortHandler::PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistApi *graphicalAssistApi,
 	QList<StatPoint> const &pointPorts, QList<StatLine> const &linePorts)
 	: mNode(node), mGraphicalAssistApi(graphicalAssistApi)
@@ -15,7 +17,7 @@ qreal PortHandler::minDistanceFromLinePort(int linePortNumber, QPointF const &lo
 {
 	QLineF const linePort = transformPortForNodeSize(mLinePorts[linePortNumber]);
 
-	// Triangle side values. 
+	// Triangle side values.
 	qreal const a = linePort.length();
 	qreal const b = QLineF(linePort.p1(), location).length();
 	qreal const c = QLineF(linePort.p2(), location).length();
@@ -61,10 +63,10 @@ qreal PortHandler::nearestPointOfLinePort(int linePortNumber, QPointF const &loc
 
 QLineF PortHandler::transformPortForNodeSize(StatLine const &port) const
 {
-	qreal const x1 = port.line.x1() * (port.prop_x1 ? port.initWidth : mNode->contentsRect().width());	
+	qreal const x1 = port.line.x1() * (port.prop_x1 ? port.initWidth : mNode->contentsRect().width());
 	qreal const y1 = port.line.y1() * (port.prop_y1 ? port.initHeight : mNode->contentsRect().height());
 
-	qreal const x2 = port.line.x2() * (port.prop_x2 ? port.initWidth : mNode->contentsRect().width());	
+	qreal const x2 = port.line.x2() * (port.prop_x2 ? port.initWidth : mNode->contentsRect().width());
 	qreal const y2 = port.line.y2() * (port.prop_y2 ? port.initHeight : mNode->contentsRect().height());
 
 	return QLineF(x1, y1, x2, y2);
@@ -129,14 +131,14 @@ QPointF const PortHandler::nearestPort(QPointF const &location) const
 	QPointF nearestPortPoint;
 	qreal minDistance = -1; // just smth negative
 
-	// Point port observing.	
+	// Point port observing.
 	QPair<int, qreal> const pointPortRes = nearestPointPortNumberAndDistance(locationInLocalCoords);
 	if (pointPortRes.second >= 0) {
 		minDistance = pointPortRes.second;
 		nearestPortPoint = transformPortForNodeSize(mPointPorts[pointPortRes.first]);
 	}
 
-	// Line port observing.	
+	// Line port observing.
 	QPair<int, qreal> const linePortRes = nearestLinePortNumberAndDistance(locationInLocalCoords);
 	if (linePortRes.second >= 0 &&
 		(linePortRes.second < minDistance || minDistance < 0)
@@ -198,7 +200,7 @@ qreal PortHandler::linePortId(QPointF const &location) const
 QPair<int, qreal> PortHandler::nearestPointPortNumberAndDistance(QPointF const &location) const
 {
 	qreal minDistance = -1; // just smth negative
-	
+
 	int minDistancePointPortNumber = -1; // just smth negative
 	for (int pointPortNumber = 0; pointPortNumber < mPointPorts.size(); pointPortNumber++) {
 		qreal const currentDistance = distanceFromPointPort(pointPortNumber, location);
@@ -236,7 +238,7 @@ qreal PortHandler::portId(QPointF const &location) const
 	// Finding in point port locality
 	qreal locationPointPortId = pointPortId(location);
 	if (locationPointPortId != mNonexistentPortId) {
-		return locationPointPortId; 
+		return locationPointPortId;
 	}
 
 	// Finding in line port locality

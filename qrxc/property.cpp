@@ -58,6 +58,11 @@ QString Property::type() const
 	return mType;
 }
 
+bool Property::isReferenceProperty() const
+{
+	return mIsReference;
+}
+
 QString Property::defaultValue() const
 {
 	return mDefaultValue;

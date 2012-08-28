@@ -173,6 +173,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QString getPropertyType(QString const &element, QString const &property) const;\n"
 		<< "\tvirtual QString getPropertyDefaultValue(QString const &element, QString const &property) const;\n"
 		<< "\tvirtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;\n"
+		<< "\tvirtual QStringList getReferenceProperties(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QStringList getEnumValues(QString name) const;\n"
 		<< "\tvirtual QList<QPair<QString, QString> > getParentsOf(QString const &diagram, QString const &element) const;\n"
 		<< "\n"
@@ -223,6 +224,7 @@ void XmlCompiler::generatePluginSource()
 	generateIsParentOfRequest(out);
 	generateGetParentsOfRequest(out);
 	generateProperties(out);
+	generateReferenceProperties(out);
 	generateContainedTypes(out);
 	generateConnections(out);
 	generateUsages(out);
@@ -527,7 +529,14 @@ public:
 class XmlCompiler::PropertiesGenerator: public XmlCompiler::ListMethodGenerator {
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
-		return type->generateProperties(out, isNotFirst);
+		return type->generateProperties(out, isNotFirst, false);
+	}
+};
+
+class XmlCompiler::ReferencePropertiesGenerator: public XmlCompiler::ListMethodGenerator {
+public:
+	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
+		return type->generateProperties(out, isNotFirst, true);
 	}
 };
 
@@ -635,6 +644,11 @@ void XmlCompiler::generateNodesAndEdges(utils::OutFile &out)
 void XmlCompiler::generateProperties(OutFile &out)
 {
 	generateListMethod(out, "getPropertyNames(QString const &/*diagram*/, QString const &element)", PropertiesGenerator());
+}
+
+void XmlCompiler::generateReferenceProperties(OutFile &out)
+{
+	generateListMethod(out, "getReferenceProperties(QString const &/*diagram*/, QString const &element)", ReferencePropertiesGenerator());
 }
 
 void XmlCompiler::generateContainedTypes(OutFile &out)
