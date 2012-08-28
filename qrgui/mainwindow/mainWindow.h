@@ -82,7 +82,7 @@ public:
 	virtual void dehighlight();
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram();
-	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
+	void openElementEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
 	void openReferenceList(QPersistentModelIndex const &index
 			, QString const &referenceType, QString const &propertyValue, int role);
 	virtual void openSettingsDialog(QString const &tab);
@@ -205,9 +205,10 @@ private slots:
 	void switchGrid(bool isChecked);
 	void switchAlignment(bool isChecked);
 
+	void setWidget(QString const &data, QPersistentModelIndex const &index, int const &role);
 	void setData(QString const &data, QPersistentModelIndex const &index, int const &role);
 	void setReference(QString const &data, QPersistentModelIndex const &index, int const &role);
-	void openShapeEditor();
+	void openElementEditor();
 
 	void updatePaletteIcons();
 

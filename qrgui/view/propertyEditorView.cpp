@@ -153,9 +153,9 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 
 	// there are only two type of buttons: shape and reference
 	if (name == "shape") {
-		mMainWindow->openShapeEditor(actualIndex, role, propertyValue);
+		mMainWindow->openElementEditor(actualIndex, role, propertyValue);
 	} else {
-		QString typeName = mModel->typeName(index);
+		QString const typeName = mModel->typeName(index);
 		mMainWindow->openReferenceList(actualIndex, typeName, propertyValue, role);
 	}
 }

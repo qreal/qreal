@@ -21,7 +21,7 @@
 #include "errorReporter.h"
 
 #include "../editorPluginInterface/editorInterface.h"
-#include "../elementEditor/shapeEdit/shapeEdit.h"
+#include "../elementEditor/elementEditor.h"
 #include "propertyEditorProxyModel.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
 
@@ -457,6 +457,13 @@ void MainWindow::setReference(QString const &data, QPersistentModelIndex const &
 	}
 }
 
+void MainWindow::setWidget(const QString &widget,
+						   const QPersistentModelIndex &index,
+						   const int &role)
+{
+	QMessageBox::information(this, "qReal", "Widget saved!");
+}
+
 void MainWindow::setData(QString const &data, QPersistentModelIndex const &index, int const &role)
 {
 	// const_cast here is ok, since we need to set data in a correct model, and
@@ -882,30 +889,33 @@ void MainWindow::setSceneFont()
 	}
 }
 
-void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue)
+void MainWindow::openElementEditor(QPersistentModelIndex const &index
+		, int role, QString const &propertyValue)
 {
-	ShapeEdit *shapeEdit = new ShapeEdit(index, role);
+	ElementEditor *elementEditor = new ElementEditor(index, role);
 	if (!propertyValue.isEmpty()) {
-		shapeEdit->load(propertyValue);
+		elementEditor->load(propertyValue);
 	}
 
 	// Here we are going to actually modify model to set a value of a shape.
 	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
 	model->setData(index, propertyValue, role);
-	connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)),
-			this, SLOT(setData(QString, QPersistentModelIndex const &, int const &)));
+	connect(elementEditor, SIGNAL(widgetSaved(QString, QPersistentModelIndex const &, int const &))
+		, this, SLOT(setWidget(QString, QPersistentModelIndex const &, int const &)));
+	connect(elementEditor, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &))
+		,this, SLOT(setData(QString, QPersistentModelIndex const &, int const &)));
 
-	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
-	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
+	mUi->tabs->addTab(elementEditor, "Element Editor");
+	mUi->tabs->setCurrentWidget(elementEditor);
+	setConnectActionZoomTo(elementEditor);
 }
 
-void MainWindow::openShapeEditor()
+void MainWindow::openElementEditor()
 {
-	ShapeEdit * const shapeEdit = new ShapeEdit;
-	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
-	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
+	ElementEditor *elementEditor = new ElementEditor(this);
+	mUi->tabs->addTab(elementEditor, "Element Editor");
+	mUi->tabs->setCurrentWidget(elementEditor);
+	setConnectActionZoomTo(elementEditor);
 }
 
 void MainWindow::openReferenceList(QPersistentModelIndex const &index
