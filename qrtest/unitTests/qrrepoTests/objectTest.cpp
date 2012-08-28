@@ -261,6 +261,9 @@ TEST(ObjectTest, cloneTest) {
 	qrRepo::details::Object child2_childObj(child2_child);
 	qrRepo::details::Object child3_childObj(child3_child);
 
+	rootObj.setProperty("testProperty1", "value1");
+	child3_childObj.setProperty("testProperty2", "value2");
+
 	QHash<Id, qrRepo::details::Object *> objHash;
 	objHash.insert(parent, &parentObj);
 	objHash.insert(root, &rootObj);
@@ -322,6 +325,12 @@ TEST(ObjectTest, cloneTest) {
 	EXPECT_TRUE(objHash[clonedChildChildId1] != &child1_childObj);
 	EXPECT_TRUE(objHash[clonedChildChildId2] != &child2_childObj);
 	EXPECT_TRUE(objHash[clonedChildChildId3] != &child3_childObj);
+
+	ASSERT_TRUE(cloned->hasProperty("testProperty1"));
+	ASSERT_TRUE(objHash[clonedChildChildId3]->hasProperty("testProperty2"));
+
+	EXPECT_EQ(cloned->property("testProperty1").toString(), "value1");
+	EXPECT_EQ(objHash[clonedChildChildId3]->property("testProperty2").toString(), "value2");
 }
 
 TEST(ObjectTest, replacePropertiesTest) {
