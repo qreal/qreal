@@ -10,7 +10,7 @@
 using namespace qReal;
 
 Scene::Scene(graphicsUtils::AbstractView *view, QObject * parent)
-	:  AbstractScene(view, parent)
+	: AbstractScene(view, parent)
 	, mItemType(none)
 	, mWaitMove(false)
 	, mCount(0)
@@ -31,8 +31,9 @@ QRectF Scene::selectedItemsBoundingRect() const
 {
 	QRectF resBoundRect;
 	QList<Item *> list = mListSelectedItemsForPaste;
-	foreach (Item *graphicsItem, list)
+	foreach (Item *graphicsItem, list) {
 		resBoundRect |= graphicsItem->sceneBoundingRect();
+	}
 	return resBoundRect;
 }
 
@@ -43,8 +44,8 @@ QPoint Scene::centerEmpty()
 
 QPointF Scene::setCXandCY(QGraphicsSceneMouseEvent *event)
 {
-	qreal x = event->scenePos().x();
-	qreal y = event->scenePos().y();
+	qreal const x = event->scenePos().x();
+	qreal const y = event->scenePos().y();
 	return QPointF(x, y);
 }
 
@@ -52,32 +53,36 @@ void Scene::reshapeLine(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
 	mLine->setX2andY2(mX2, mY2);
-	if (event->modifiers() & Qt::ShiftModifier)
+	if (event->modifiers() & Qt::ShiftModifier) {
 		mLine->reshapeRectWithShift();
+	}
 }
 
 void Scene::reshapeLinePort(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
 	mLinePort->setX2andY2(mX2, mY2);
-	if (event->modifiers() & Qt::ShiftModifier)
+	if (event->modifiers() & Qt::ShiftModifier) {
 		mLinePort->reshapeRectWithShift();
+	}
 }
 
 void Scene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
 	mEllipse->setX2andY2(mX2, mY2);
-	if (event->modifiers() & Qt::ShiftModifier)
+	if (event->modifiers() & Qt::ShiftModifier) {
 		mEllipse->reshapeRectWithShift();
+	}
 }
 
 void Scene::reshapeRectangle(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
 	mRectangle->setX2andY2(mX2, mY2);
-	if (event->modifiers() & Qt::ShiftModifier)
+	if (event->modifiers() & Qt::ShiftModifier) {
 		mRectangle->reshapeRectWithShift();
+	}
 }
 
 void Scene::reshapeStylus(QGraphicsSceneMouseEvent *event)
@@ -125,7 +130,7 @@ void Scene::setNullZValueItems()
 
 QPair<bool, Item *> Scene::checkOnResize(qreal x, qreal y)
 {
-	QList<Item *> list = selectedSceneItems();
+	QList<Item *> const list = selectedSceneItems();
 	foreach (Item *item, list) {
 		item->changeDragState(x, y);
 		item->changeScalingPointState(x, y);
@@ -143,12 +148,13 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	setDragMode(mItemType);
 	switch (mItemType) {
 	case curve:
-		if (mCount == 1)
+		if (mCount == 1) {
 			setX1andY1(event);
-		else if (mCount == 2)
+		} else if (mCount == 2) {
 			reshapeCurveFirst(event);
-		else if (mCount == 3)
+		} else if (mCount == 3) {
 			reshapeCurveSecond(event);
+		}
 		removeMoveFlag(event, NULL);
 		mCount++;
 		break;
@@ -229,7 +235,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	default:  // if we wait some resize
 		setX1andY1(event);
 		mGraphicsItem = dynamic_cast<graphicsUtils::AbstractItem *>(itemAt(event->scenePos()));
-		if (mGraphicsItem != NULL) {
+		if (mGraphicsItem) {
 			mGraphicsItem->changeDragState(mX1, mY1);
 			Item *graphicsItem = dynamic_cast<Item *>(mGraphicsItem);
 			graphicsItem->changeScalingPointState(mX1, mY1);
@@ -250,31 +256,38 @@ void Scene::mouseMoveEvent( QGraphicsSceneMouseEvent *event)
 	setDragMode(mItemType);
 	switch (mItemType) {
 	case stylus :
-		if (mWaitMove)
+		if (mWaitMove) {
 			reshapeStylus(event);
+		}
 		break;
 	case line :
-		if (mWaitMove)
+		if (mWaitMove) {
 			reshapeLine(event);
+		}
 		break;
 	case ellipse :
-		if (mWaitMove)
+		if (mWaitMove) {
 			reshapeEllipse(event);
+		}
 		break;
 	case rectangle :
-		if (mWaitMove)
+		if (mWaitMove) {
 			reshapeRectangle(event);
+		}
 		break;
 	case curve:
 		if (mCount == 2) {
-			if (mCurve != NULL)
+			if (mCurve) {
 				reshapeCurveFirst(event);
-		} else if (mCount == 3)
+			}
+		} else if (mCount == 3) {
 			reshapeCurveSecond(event);
+		}
 		break;
 	case linePort :
-		if (mWaitMove)
+		if (mWaitMove) {
 			reshapeLinePort(event);
+		}
 		break;
 	default:  // if we wait some resize
 		forMoveResize(event);
@@ -295,8 +308,9 @@ void Scene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			mCurve->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
 			addItem(mCurve);
 			setZValue(mCurve);
-		} else if (mCount == 3)
+		} else if (mCount == 3) {
 			reshapeCurveSecond(event);
+		}
 		break;
 	case stylus :
 		reshapeStylus(event);
@@ -343,8 +357,7 @@ void Scene::keyPressEvent(QKeyEvent *keyEvent)
 	} else if (keyEvent->matches(QKeySequence::Copy)) {
 		initListSelectedItemsForPaste();
 		mCopyPaste = copy;
-	}
-	else if (keyEvent->matches(QKeySequence::Paste)) {
+	} else if (keyEvent->matches(QKeySequence::Paste)) {
 		QPointF posCursor(mView->mapFromGlobal(QCursor::pos()));
 		posCursor = mView->mapToScene(posCursor.toPoint());
 		QPointF topLeftSelection(selectedItemsBoundingRect().topLeft());
@@ -372,14 +385,16 @@ void Scene::keyPressEvent(QKeyEvent *keyEvent)
 
 void Scene::drawLine(bool checked)
 {
-	if (checked)
+	if (checked) {
 		mItemType = line;
+	}
 }
 
 void Scene::drawEllipse(bool checked)
 {
-	if (checked)
+	if (checked) {
 		mItemType = ellipse;
+	}
 }
 
 void Scene::drawCurve(bool checked)
@@ -393,44 +408,51 @@ void Scene::drawCurve(bool checked)
 
 void Scene::drawRectangle(bool checked)
 {
-	if (checked)
+	if (checked) {
 		mItemType = rectangle;
+	}
 }
 
 void Scene::addText(bool checked)
 {
-	if (checked)
+	if (checked) {
 		mItemType = text;
+	}
 }
 
 void Scene::addDynamicText(bool checked)
 {
-	if (checked)
+	if (checked) {
 		mItemType = dynamicText;
+	}
 }
 
 void Scene::addTextPicture(bool checked)
 {
-	if (checked)
+	if (checked) {
 		mItemType = textPicture;
+	}
 }
 
 void Scene::addPointPort(bool checked)
 {
-	if (checked)
+	if (checked) {
 		mItemType = pointPort;
+	}
 }
 
 void Scene::addLinePort(bool checked)
 {
-	if (checked)
+	if (checked) {
 		mItemType = linePort;
+	}
 }
 
 void Scene::addStylus(bool checked)
 {
-	if (checked)
+	if (checked) {
 		mItemType = stylus;
+	}
 }
 
 void Scene::addNone(bool checked)
@@ -475,8 +497,9 @@ QList<Item *> Scene::selectedSceneItems()
 	mListSelectedItems = selectedItems();
 	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
 		Item* item = dynamic_cast<Item*>(graphicsItem);
-		if (item != NULL)
+		if (item) {
 			resList.push_back(item);
+		}
 	}
 	qSort(resList.begin(), resList.end(), compareItems);
 	return resList;
@@ -488,8 +511,9 @@ QList<TextPicture *> Scene::selectedTextPictureItems()
 	mListSelectedItems = selectedItems();
 	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
 		TextPicture* item = dynamic_cast<TextPicture*>(graphicsItem);
-		if (item != NULL)
+		if (item) {
 			resList.push_back(item);
+		}
 	}
 	return resList;
 }
@@ -497,40 +521,45 @@ QList<TextPicture *> Scene::selectedTextPictureItems()
 void Scene::changePenStyle(const QString &text)
 {
 	mPenStyleItems = text;
-	foreach (Item *item, selectedSceneItems())
+	foreach (Item *item, selectedSceneItems()) {
 		item->setPenStyle(text);
+	}
 	update();
 }
 
 void Scene::changePenWidth(int width)
 {
 	mPenWidthItems = width;
-	foreach (Item *item, selectedSceneItems())
+	foreach (Item *item, selectedSceneItems()) {
 		item->setPenWidth(width);
+	}
 	update();
 }
 
 void Scene::changePenColor(const QString &text)
 {
 	mPenColorItems = text;
-	foreach (Item *item, selectedSceneItems())
+	foreach (Item *item, selectedSceneItems()) {
 		item->setPenColor(text);
+	}
 	update();
 }
 
 void Scene::changeBrushStyle(const QString &text)
 {
 	mBrushStyleItems = text;
-	foreach (Item *item, selectedSceneItems())
+	foreach (Item *item, selectedSceneItems()) {
 		item->setBrushStyle(text);
+	}
 	update();
 }
 
 void Scene::changeBrushColor(const QString &text)
 {
 	mBrushColorItems = text;
-	foreach (Item *item, selectedSceneItems())
+	foreach (Item *item, selectedSceneItems()) {
 		item->setBrushColor(text);
+	}
 	update();
 }
 
@@ -541,10 +570,9 @@ void Scene::changePalette()
 		if (mListSelectedItems.isEmpty()) {
 			emit noSelectedItems();
 			setEmptyPenBrushItems();
-		}
-		else {
+		} else {
 			Item* item = dynamic_cast<Item*>(mListSelectedItems.back());
-			if (item != NULL) {
+			if (item) {
 				QPen penItem = item->pen();
 				QBrush brushItem = item->brush();
 				emit existSelectedItems(penItem, brushItem);
@@ -557,11 +585,11 @@ void Scene::changePalette()
 void Scene::changeFontPalette()
 {
 	mListSelectedTextPictureItems = selectedTextPictureItems();
-	if (mListSelectedTextPictureItems.isEmpty())
+	if (mListSelectedTextPictureItems.isEmpty()) {
 		emit noSelectedTextPictureItems();
-	else {
+	} else {
 		TextPicture* item = dynamic_cast<TextPicture*>(mListSelectedTextPictureItems.back());
-		if (item != NULL) {
+		if (item) {
 			QPen penItem = item->pen();
 			QFont fontItem = item->font();
 			emit existSelectedTextPictureItems(penItem, fontItem, item->name());
@@ -571,49 +599,56 @@ void Scene::changeFontPalette()
 
 void Scene::changeFontFamily(const QFont& font)
 {
-	foreach (TextPicture *item, selectedTextPictureItems())
+	foreach (TextPicture *item, selectedTextPictureItems()) {
 		item->setFontFamily(font);
+	}
 	update();
 }
 
 void Scene::changeFontPixelSize(int size)
 {
-	foreach (TextPicture *item, selectedTextPictureItems())
+	foreach (TextPicture *item, selectedTextPictureItems()) {
 		item->setFontPixelSize(size);
+	}
 	update();
 }
 
 void Scene::changeFontColor(const QString & text)
 {
-	foreach (TextPicture *item, selectedTextPictureItems())
+	foreach (TextPicture *item, selectedTextPictureItems()) {
 		item->setFontColor(text);
+	}
 	update();
 }
 
 void Scene::changeFontItalic(bool isChecked)
 {
-	foreach (TextPicture *item, selectedTextPictureItems())
+	foreach (TextPicture *item, selectedTextPictureItems()) {
 		item->setFontItalic(isChecked);
+	}
 	update();
 }
 
 void Scene::changeFontBold(bool isChecked)
 {
-	foreach (TextPicture *item, selectedTextPictureItems())
+	foreach (TextPicture *item, selectedTextPictureItems()) {
 		item->setFontBold(isChecked);
+	}
 	update();
 }
 
 void Scene::changeFontUnderline(bool isChecked)
 {
-	foreach (TextPicture *item, selectedTextPictureItems())
+	foreach (TextPicture *item, selectedTextPictureItems()) {
 		item->setFontUnderline(isChecked);
+	}
 	update();
 }
 
 void Scene::changeTextName(const QString &name)
 {
-	foreach (TextPicture *item, selectedTextPictureItems())
+	foreach (TextPicture *item, selectedTextPictureItems()) {
 		item->setTextName(name);
+	}
 	update();
 }

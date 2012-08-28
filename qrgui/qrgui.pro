@@ -66,3 +66,6 @@ include (toolPluginInterface/toolPluginInterface.pri)
 
 # Text Editor
 include (textEditor/textEditor.pri)
+
+# Shape & widget editors
+include (elementEditor/elementEditor.pri)

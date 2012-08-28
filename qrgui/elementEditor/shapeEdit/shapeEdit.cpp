@@ -1,10 +1,3 @@
-#include "shapeEdit.h"
-#include "ui_shapeEdit.h"
-#include "../../../qrutils/outFile.h"
-#include "../../../qrutils/xmlUtils.h"
-#include "xmlLoader.h"
-#include "../../../qrutils/graphicsUtils/colorlisteditor.h"
-
 #include <QtGui/QFileDialog>
 #include <QtGui/QGraphicsItem>
 #include <QtCore/QList>
@@ -13,24 +6,36 @@
 #include <QtGui/QImage>
 #include <QtGui/QMessageBox>
 
-#include <QDebug>
+#include "shapeEdit.h"
+#include "ui_shapeEdit.h"
+#include "../../../qrutils/outFile.h"
+#include "../../../qrutils/xmlUtils.h"
+#include "xmlLoader.h"
+#include "../../../qrutils/graphicsUtils/colorlisteditor.h"
 
 using namespace utils;
 
-ShapeEdit::ShapeEdit(QWidget *parent)
-	: QWidget(parent), mUi(new Ui::ShapeEdit), mRole(0)
-
+ShapeEdit::ShapeEdit(bool widgetBased, QWidget *parent)
+		: QWidget(parent), mUi(new Ui::ShapeEdit)
+		, mRole(0), mWidgetBased(widgetBased)
 {
 	init();
 	connect(this, SIGNAL(saveSignal()), this, SLOT(saveToXml()));
 }
 
-ShapeEdit::ShapeEdit(const QPersistentModelIndex &index, const int &role)
-	: QWidget(NULL), mUi(new Ui::ShapeEdit),mIndex(index), mRole(role)
+ShapeEdit::ShapeEdit(const QPersistentModelIndex &index, const int &role
+		, bool widgetBased, QWidget *parent)
+	: QWidget(parent), mUi(new Ui::ShapeEdit)
+	, mIndex(index), mRole(role), mWidgetBased(widgetBased)
 {
 	init();
 	mUi->saveButton->setEnabled(true);
 	connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
+}
+
+ShapeEdit::~ShapeEdit()
+{
+	delete mUi;
 }
 
 void ShapeEdit::init()
@@ -110,8 +115,9 @@ void ShapeEdit::resetHighlightAllButtons()
 void ShapeEdit::setHighlightOneButton(QAbstractButton *oneButton)
 {
 	foreach (QAbstractButton *button, mButtonGroup) {
-		if (button != oneButton)
+		if (button != oneButton) {
 			button->setChecked(false);
+		}
 	}
 }
 
@@ -154,11 +160,6 @@ void ShapeEdit::initFontPalette()
 	mUi->underlineCheckBox->setChecked(false);
 }
 
-ShapeEdit::~ShapeEdit()
-{
-	delete mUi;
-}
-
 graphicsUtils::AbstractView* ShapeEdit::getView()
 {
 	return mUi->graphicsView;
@@ -179,12 +180,14 @@ void ShapeEdit::changeEvent(QEvent *e)
 void ShapeEdit::keyPressEvent(QKeyEvent *event)
 {
 	QWidget::keyPressEvent(event);
-	if (event->matches(QKeySequence::Save))
+	if (event->matches(QKeySequence::Save)) {
 		emit saveToXmlSignal();
-	else if (event->key() == Qt::Key_F2)
+	} else if (event->key() == Qt::Key_F2) {
 		emit saveSignal();
-	if (event->matches(QKeySequence::Open))
+	}
+	if (event->matches(QKeySequence::Open)) {
 		emit openSignal();
+	}
 }
 
 QList<QDomElement> ShapeEdit::generateGraphics()
@@ -193,17 +196,17 @@ QList<QDomElement> ShapeEdit::generateGraphics()
 	QDomElement label = mDocument.createElement("labels");
 	QDomElement ports = mDocument.createElement("ports");
 
-	QRect sceneBoundingRect = mScene->realItemsBoundingRect();
+	QRect const sceneBoundingRect = mScene->realItemsBoundingRect();
 	mTopLeftPicture = sceneBoundingRect.topLeft();
 
-	QList<QGraphicsItem *> list = mScene->items();
+	QList<QGraphicsItem *> const list = mScene->items();
 	foreach (QGraphicsItem *graphicsItem, list) {
 
 		Item* item = dynamic_cast<Item*>(graphicsItem);
 		if (item != NULL) {
 			QPair<QDomElement, Item::DomElementTypes> genItem = item->generateItem(mDocument, mTopLeftPicture);
 			QDomElement domItem = genItem.first;
-			Item::DomElementTypes domType = genItem.second;
+			Item::DomElementTypes const domType = genItem.second;
 			switch (domType) {
 			case Item::pictureType:
 				picture.appendChild(domItem);
@@ -232,12 +235,14 @@ QList<QDomElement> ShapeEdit::generateGraphics()
 
 void ShapeEdit::generateDom()
 {
+	mDocument.clear();
 	QDomElement graphics = mDocument.createElement("graphics");
 	mDocument.appendChild(graphics);
 
-	QList<QDomElement> list = generateGraphics();
-	foreach (QDomElement domItem, list)
+	QList<QDomElement> const list = generateGraphics();
+	foreach (QDomElement const &domItem, list) {
 		graphics.appendChild(domItem);
+	}
 }
 
 void ShapeEdit::exportToXml(QString const &fileName)
@@ -252,9 +257,10 @@ void ShapeEdit::exportToXml(QString const &fileName)
 void ShapeEdit::saveToXml()
 {
 	mDocument.clear();
-	QString fileName = QFileDialog::getSaveFileName(this);
-	if (fileName.isEmpty())
+	QString const fileName = QFileDialog::getSaveFileName(this);
+	if (fileName.isEmpty()) {
 		return;
+	}
 	exportToXml(fileName);
 }
 
@@ -262,14 +268,19 @@ void ShapeEdit::save()
 {
 	generateDom();
 	QMessageBox::information(this, tr("Saving"), "Saved successfully");
-	emit shapeSaved(mDocument.toString(4), mIndex, mRole);
+	if (mWidgetBased) {
+		emit shapeSaved(mDocument);
+	} else {
+		emit shapeSaved(mDocument.toString(4), mIndex, mRole);
+	}
 }
 
 void ShapeEdit::savePicture()
 {
-	QString fileName = QFileDialog::getSaveFileName(this);
-	if (fileName.isEmpty())
+	QString const fileName = QFileDialog::getSaveFileName(this);
+	if (fileName.isEmpty()) {
 		return;
+	}
 	QRectF sceneRect = mScene->itemsBoundingRect();
 	QImage image(sceneRect.size().toSize(), QImage::Format_RGB32);
 	QPainter painter(&image);
@@ -287,17 +298,19 @@ void ShapeEdit::savePicture()
 void ShapeEdit::open()
 {
 	mDocument.clear();
-	QString fileName = QFileDialog::getOpenFileName(this);
-	if (fileName.isEmpty())
+	QString const fileName = QFileDialog::getOpenFileName(this);
+	if (fileName.isEmpty()) {
 		return;
+	}
 	XmlLoader loader(mScene);
 	loader.readFile(fileName);
 }
 
 void ShapeEdit::load(const QString &text)
 {
-	if (text.isEmpty())
+	if (text.isEmpty()) {
 		return;
+	}
 	XmlLoader loader(mScene);
 	loader.readString(text);
 }
@@ -306,27 +319,29 @@ void ShapeEdit::addImage(bool checked)
 {
 	if (checked) {
 		setHighlightOneButton(mUi->addImageButton);
-		QString fileName = QFileDialog::getOpenFileName(this);
-		if (fileName.isEmpty())
+		QString const fileName = QFileDialog::getOpenFileName(this);
+		if (fileName.isEmpty()) {
 			return;
+		}
 		mScene->addImage(fileName);
 	}
 }
 
 void ShapeEdit::setValuePenStyleComboBox(Qt::PenStyle penStyle)
 {
-	if (penStyle == Qt::SolidLine)
+	if (penStyle == Qt::SolidLine) {
 		mUi->penStyleComboBox->setCurrentIndex(0);
-	else if (penStyle == Qt::DotLine)
+	} else if (penStyle == Qt::DotLine) {
 		mUi->penStyleComboBox->setCurrentIndex(1);
-	else if (penStyle == Qt::DashLine)
+	} else if (penStyle == Qt::DashLine) {
 		mUi->penStyleComboBox->setCurrentIndex(2);
-	else if (penStyle == Qt::DashDotLine)
+	} else if (penStyle == Qt::DashDotLine) {
 		mUi->penStyleComboBox->setCurrentIndex(3);
-	else if (penStyle == Qt::DashDotDotLine)
+	} else if (penStyle == Qt::DashDotDotLine) {
 		mUi->penStyleComboBox->setCurrentIndex(4);
-	else if (penStyle == Qt::NoPen)
+	} else if (penStyle == Qt::NoPen) {
 		mUi->penStyleComboBox->setCurrentIndex(5);
+	}
 }
 
 void ShapeEdit::setValuePenColorComboBox(QColor penColor)
@@ -336,10 +351,11 @@ void ShapeEdit::setValuePenColorComboBox(QColor penColor)
 
 void ShapeEdit::setValueBrushStyleComboBox(Qt::BrushStyle brushStyle)
 {
-	if (brushStyle == Qt::SolidPattern)
+	if (brushStyle == Qt::SolidPattern) {
 		mUi->brushStyleComboBox->setCurrentIndex(1);
-	else if (brushStyle == Qt::NoBrush)
+	} else if (brushStyle == Qt::NoBrush) {
 		mUi->brushStyleComboBox->setCurrentIndex(0);
+	}
 }
 
 void ShapeEdit::setValuePenWidthSpinBox(int width)
@@ -422,7 +438,7 @@ void ShapeEdit::setNoFontPalette()
 
 void ShapeEdit::changeTextName()
 {
-	QString newName = mUi->textEditField->toPlainText();
+	QString const newName = mUi->textEditField->toPlainText();
 	mScene->changeTextName(newName);
 }
 
@@ -430,69 +446,79 @@ void ShapeEdit::changeTextName()
 void ShapeEdit::drawLine(bool checked)
 {
 	mScene->drawLine(checked);
-	if (checked)
+	if (checked) {
 		setHighlightOneButton(mUi->drawLineButton);
+	}
 }
 
 void ShapeEdit::drawEllipse(bool checked)
 {
 	mScene->drawEllipse(checked);
-	if (checked)
+	if (checked) {
 		setHighlightOneButton(mUi->drawEllipseButton);
+	}
 }
 
 void ShapeEdit::drawCurve(bool checked)
 {
 	mScene->drawCurve(checked);
-	if (checked)
+	if (checked) {
 		setHighlightOneButton(mUi->drawCurveButton);
+	}
 }
 
 void ShapeEdit::drawRectangle(bool checked)
 {
 	mScene->drawRectangle(checked);
-	if (checked)
+	if (checked) {
 		setHighlightOneButton(mUi->drawRectButton);
+	}
 }
 
 void ShapeEdit::addText(bool checked)
 {
 	mScene->addText(checked);
-	if (checked)
+	if (checked) {
 		setHighlightOneButton(mUi->addTextButton);
+	}
 }
 
 void ShapeEdit::addDynamicText(bool checked)
 {
 	mScene->addDynamicText(checked);
-	if (checked)
+	if (checked) {
 		setHighlightOneButton(mUi->addDynamicTextButton);
+	}
 }
 
 void ShapeEdit::addTextPicture(bool checked)
 {
 	mScene->addTextPicture(checked);
-	if (checked)
+	if (checked) {
 		setHighlightOneButton(mUi->addTextPictureButton);
+	}
 }
 
 void ShapeEdit::addPointPort(bool checked)
 {
 	mScene->addPointPort(checked);
-	if (checked)
+	if (checked) {
 		setHighlightOneButton(mUi->addPointPortButton);
+	}
 }
 
 void ShapeEdit::addLinePort(bool checked)
 {
 	mScene->addLinePort(checked);
-	if (checked)
+	if (checked) {
 		setHighlightOneButton(mUi->addLinePortButton);
+	}
 }
 
 void ShapeEdit::addStylus(bool checked)
 {
 	mScene->addStylus(checked);
-	if (checked)
+	if (checked) {
 		setHighlightOneButton(mUi->stylusButton);
+	}
 }

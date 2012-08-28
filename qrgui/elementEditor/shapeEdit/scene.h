@@ -24,8 +24,8 @@
 #include "../../../qrkernel/settingsManager.h"
 #include "../../../qrutils/graphicsUtils/abstractScene.h"
 
-const int sizeEmptyRectX = 680;
-const int sizeEmptyRectY = 580;
+int const sizeEmptyRectX = 680;
+int const sizeEmptyRectY = 580;
 
 class Scene : public graphicsUtils::AbstractScene
 {
@@ -77,24 +77,47 @@ private slots:
 
 private:
 	enum ItemTypes {
-		none,
-		line,
-		ellipse,
-		rectangle,
-		text,
-		dynamicText,
-		textPicture,
-		pointPort,
-		linePort,
-		stylus,
-		curve,
-		image
+		none = 0
+		, line
+		, ellipse
+		, rectangle
+		, text
+		, dynamicText
+		, textPicture
+		, pointPort
+		, linePort
+		, stylus
+		, curve
+		, image
 	};
 	enum CopyPasteType {
-		nonePaste,
-		copy,
-		cut
+		nonePaste = 0
+		, copy
+		, cut
 	};
+
+	void initListSelectedItemsForPaste();
+	QRectF selectedItemsBoundingRect() const;
+	QList<Item *> selectedSceneItems();
+	QList<TextPicture *> selectedTextPictureItems();
+	QPointF setCXandCY(QGraphicsSceneMouseEvent *event);
+	void reshapeLine(QGraphicsSceneMouseEvent *event);
+	void reshapeLinePort(QGraphicsSceneMouseEvent *event);
+	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
+	void reshapeRectangle(QGraphicsSceneMouseEvent *event);
+	void reshapeStylus(QGraphicsSceneMouseEvent *event);
+	void reshapeCurveFirst(QGraphicsSceneMouseEvent *event);
+	void reshapeCurveSecond(QGraphicsSceneMouseEvent *event);
+
+	void setZValueSelectedItems();
+	void setNullZValueItems();
+	QPair<bool, Item *> checkOnResize(qreal x, qreal y);
+
+	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
+	virtual void keyPressEvent(QKeyEvent *keyEvent);
 
 	int mZValue;
 	ItemTypes mItemType;
@@ -119,26 +142,4 @@ private:
 	TextPicture *mSelectedTextPicture;
 	QPair<bool, Item *> mNeedResize;
 
-	void initListSelectedItemsForPaste();
-	QRectF selectedItemsBoundingRect() const;
-	QList<Item *> selectedSceneItems();
-	QList<TextPicture *> selectedTextPictureItems();
-	QPointF setCXandCY(QGraphicsSceneMouseEvent *event);
-	void reshapeLine(QGraphicsSceneMouseEvent *event);
-	void reshapeLinePort(QGraphicsSceneMouseEvent *event);
-	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
-	void reshapeRectangle(QGraphicsSceneMouseEvent *event);
-	void reshapeStylus(QGraphicsSceneMouseEvent *event);
-	void reshapeCurveFirst(QGraphicsSceneMouseEvent *event);
-	void reshapeCurveSecond(QGraphicsSceneMouseEvent *event);
-
-	void setZValueSelectedItems();
-	void setNullZValueItems();
-	QPair<bool, Item *> checkOnResize(qreal x, qreal y);
-
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-
-	virtual void keyPressEvent(QKeyEvent *keyEvent);
 };

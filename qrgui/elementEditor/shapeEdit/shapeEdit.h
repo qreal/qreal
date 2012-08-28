@@ -16,13 +16,17 @@ namespace Ui {
 class ShapeEdit : public QWidget {
 	Q_OBJECT
 public:
-	explicit ShapeEdit(QWidget *parent = NULL);
-	ShapeEdit(QPersistentModelIndex const &index, int const &role);
-	graphicsUtils::AbstractView* getView();
-	void load(const QString &text);
+	ShapeEdit(bool widgetBased = false, QWidget *parent = NULL);
+	ShapeEdit(QPersistentModelIndex const &index
+			, int const &role, bool widgetBased = false, QWidget *parent = NULL);
 	~ShapeEdit();
+
+	graphicsUtils::AbstractView *getView();
+	void load(QString const &text);
+
 signals:
 	void shapeSaved(QString const &shape, QPersistentModelIndex const &index, int const &role);
+	void shapeSaved(QDomDocument const &document);
 	void saveSignal();
 	void saveToXmlSignal();
 	void openSignal();
@@ -56,14 +60,6 @@ private slots:
 	void resetHighlightAllButtons();
 
 private:
-	Scene *mScene;
-	QGraphicsItemGroup mItemGroup;
-	QList<QAbstractButton *> mButtonGroup;
-	QDomDocument mDocument;
-	QPoint mTopLeftPicture;
-	Ui::ShapeEdit *mUi;
-	QPersistentModelIndex const mIndex;
-	int const mRole;
 	void initButtonGroup();
 	void initFontPalette();
 	void initPalette();
@@ -88,4 +84,15 @@ private:
 	void generateDom();
 	void exportToXml(QString const &fileName);
 	QList<QDomElement> generateGraphics();
+
+	Scene *mScene;
+	QGraphicsItemGroup mItemGroup;
+	QList<QAbstractButton *> mButtonGroup;
+	QDomDocument mDocument;
+	QPoint mTopLeftPicture;
+	Ui::ShapeEdit *mUi;
+	QPersistentModelIndex const mIndex;
+	int const mRole;
+	bool mWidgetBased;
+
 };

@@ -21,7 +21,7 @@
 #include "errorReporter.h"
 
 #include "../editorPluginInterface/editorInterface.h"
-#include "shapeEdit/shapeEdit.h"
+#include "../elementEditor/shapeEdit/shapeEdit.h"
 #include "propertyEditorProxyModel.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
 
