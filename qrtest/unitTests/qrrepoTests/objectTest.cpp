@@ -195,15 +195,15 @@ TEST(ObjectTest, temporaryRemovedLinksTest) {
 	EXPECT_TRUE(obj.temporaryRemovedLinks().contains(link));
 
 	ASSERT_EQ(obj.temporaryRemovedLinksAt("to").size(), 2);
-	EXPECT_TRUE(obj.temporaryRemovedLinks().contains(linkTo1));
-	EXPECT_TRUE(obj.temporaryRemovedLinks().contains(linkTo2));
+	EXPECT_TRUE(obj.temporaryRemovedLinksAt("to").contains(linkTo1));
+	EXPECT_TRUE(obj.temporaryRemovedLinksAt("to").contains(linkTo2));
 
 	ASSERT_EQ(obj.temporaryRemovedLinksAt("from").size(), 2);
-	EXPECT_TRUE(obj.temporaryRemovedLinks().contains(linkFrom1));
-	EXPECT_TRUE(obj.temporaryRemovedLinks().contains(linkFrom2));
+	EXPECT_TRUE(obj.temporaryRemovedLinksAt("from").contains(linkFrom1));
+	EXPECT_TRUE(obj.temporaryRemovedLinksAt("from").contains(linkFrom2));
 
 	ASSERT_EQ(obj.temporaryRemovedLinksAt(QString()).size(), 1);
-	EXPECT_TRUE(obj.temporaryRemovedLinks().contains(link));
+	EXPECT_TRUE(obj.temporaryRemovedLinksAt(QString()).contains(link));
 
 	obj.removeTemporaryRemovedLinksAt("to");
 	ASSERT_FALSE(obj.hasProperty("to"));
