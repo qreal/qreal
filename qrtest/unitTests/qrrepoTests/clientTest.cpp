@@ -21,10 +21,10 @@ Id const child1_child("editor2", "diagram3", "element5", "child1_child");
 Id const child2_child("editor2", "diagram4", "element6", "child2_child");
 Id const child3_child("editor2", "diagram4", "element7", "child3_child");
 
-Id const rootLogicalId("editor1", "diagram1", "element2", "rootLogicalId");
-Id const child1LogicalId("editor1", "diagram2", "element3", "child1LogicalId");
-Id const child1_childLogicalId("editor2", "diagram3", "element5", "child1_childLogicalId");
-Id const child2_childLogicalId("editor2", "diagram4", "element6", "child2_childLogicalId");
+Id const rootLogicalId("editor2", "diagram3", "element5", "child1_child");
+Id const child1LogicalId("editor2", "diagram3", "element5", "child1_child");
+Id const child1_childLogicalId("editor2", "diagram4", "element6", "child2_child");
+Id const child2_childLogicalId("editor2", "diagram4", "element6", "child2_child");
 
 Id const fakeParent("fake", "fake", "fake", "fake");
 Id const notExistingId("1", "1", "1", "1");
@@ -559,4 +559,67 @@ TEST_F(ClientTest, temporaryRemovedLinksTest) {
 	ASSERT_FALSE(mClient->hasProperty(root, "to"));
 	ASSERT_FALSE(mClient->hasProperty(root, "from"));
 	ASSERT_FALSE(mClient->hasProperty(root, QString()));
+}
+
+TEST_F(ClientTest, saveAllTest) {
+	mClient->remove(root);
+	mClient->saveAll();
+	mClient->open("saveFile.qrs");
+
+	EXPECT_FALSE(mClient->exist(root));
+	EXPECT_TRUE(mClient->exist(parent));
+	EXPECT_TRUE(mClient->exist(child1));
+	EXPECT_TRUE(mClient->exist(child2));
+	EXPECT_TRUE(mClient->exist(child3));
+	EXPECT_TRUE(mClient->exist(child1_child));
+	EXPECT_TRUE(mClient->exist(child2_child));
+	EXPECT_TRUE(mClient->exist(child3_child));
+}
+
+TEST_F(ClientTest, saveTest) {
+	IdList toSave;
+	toSave << child1 << child2 << child3;
+	mClient->save(toSave);
+	mClient->open("saveFile.qrs");
+
+	EXPECT_EQ(mClient->elements().size(), 7);
+	EXPECT_TRUE(mClient->exist(child1));
+	EXPECT_TRUE(mClient->exist(child2));
+	EXPECT_TRUE(mClient->exist(child3));
+	EXPECT_TRUE(mClient->exist(child1_child));
+	EXPECT_TRUE(mClient->exist(child2_child));
+	EXPECT_TRUE(mClient->exist(child3_child));
+}
+
+TEST_F(ClientTest, saveWithLogicalIdTest) {
+	IdList toSave;
+	toSave << child1 << child3_child;
+	mClient->saveWithLogicalId(toSave);
+	mClient->open("saveFile.qrs");
+
+	EXPECT_EQ(mClient->elements().size(), 5);
+	EXPECT_TRUE(mClient->exist(child1));
+	EXPECT_TRUE(mClient->exist(child1_child));
+	EXPECT_TRUE(mClient->exist(child2_child));
+	EXPECT_TRUE(mClient->exist(child3_child));
+}
+
+TEST_F(ClientTest, saveDiagramsByIdTest) {
+	IdList toSave;
+	toSave << child1;
+
+	QHash<QString, IdList> diagramIds;
+	diagramIds.insert("diagram1", toSave);
+
+	mClient->saveDiagramsById(diagramIds);
+
+	mSerializer->decompressFile("diagram1.qrs");
+
+	EXPECT_TRUE(QFile::exists("../unsaved/tree/graphical/editor1/diagram2/element3/child1"));
+	EXPECT_TRUE(QFile::exists("../unsaved/tree/graphical/editor2/diagram3/element5/child1_child"));
+	EXPECT_TRUE(QFile::exists("../unsaved/tree/graphical/editor2/diagram4/element6/child2_child"));
+	EXPECT_FALSE(QFile::exists("../unsaved/tree/graphical/editor1/diagram1/element2/root"));
+	EXPECT_FALSE(QDir().exists("../unsaved/tree/logical"));
+
+	QFile::remove("diagram1.qrs");
 }
