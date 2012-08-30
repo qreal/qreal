@@ -32,6 +32,24 @@
         <file>icons/collapseAll.png</file>
         <file>icons/expandAll.png</file>
         <file>icons/changeRepresentation.png</file>
+        <file>icons/widgetsEditor/breakLayout.png</file>
+        <file>icons/widgetsEditor/checkBox.png</file>
+        <file>icons/widgetsEditor/comboBox.png</file>
+        <file>icons/widgetsEditor/doubleSpinBox.png</file>
+        <file>icons/widgetsEditor/frame.png</file>
+        <file>icons/widgetsEditor/groupBox.png</file>
+        <file>icons/widgetsEditor/label.png</file>
+        <file>icons/widgetsEditor/layOutHorizontally.png</file>
+        <file>icons/widgetsEditor/layOutInAGrid.png</file>
+        <file>icons/widgetsEditor/layOutVertically.png</file>
+        <file>icons/widgetsEditor/lineEdit.png</file>
+        <file>icons/widgetsEditor/listWidget.png</file>
+        <file>icons/widgetsEditor/plainTextEdit.png</file>
+        <file>icons/widgetsEditor/pushButton.png</file>
+        <file>icons/widgetsEditor/radioButton.png</file>
+        <file>icons/widgetsEditor/scrollArea.png</file>
+        <file>icons/widgetsEditor/spinBox.png</file>
+        <file>icons/widgetsEditor/widget.png</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>
