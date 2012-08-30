@@ -29,25 +29,26 @@ public:
 	void setNewMotor(int speed, long unsigned int degrees, int const port);
 	virtual SensorsConfiguration &configuration();
 	D2ModelWidget *createModelWidget();
+	int readEncoder(int const port) const;
+	void resetEncoder(int const port);
 
-	int readEncoder(int/*inputPort::InputPortEnum*/  const port) const;
-	void resetEncoder(int/*inputPort::InputPortEnum*/  const port);
-
-	bool readTouchSensor(inputPort::InputPortEnum const port);
+	int readTouchSensor(inputPort::InputPortEnum const port);
 	int readSonarSensor(inputPort::InputPortEnum const port) const;
 	int readColorSensor(inputPort::InputPortEnum const port) const;
+	int readLightSensor(inputPort::InputPortEnum const port) const;
 
 	void showModelWidget();
 
 	virtual void rotateOn(double angle);
 	virtual double rotateAngle() const;
 
+	QPointF robotPos();
+
 	enum ATime {
 		DoInf,
 		Do,
 		End
 	};
-
 
 private slots:
 	void nextFragment();
@@ -78,7 +79,9 @@ private:
 	QHash<int, qreal> mTurnoverMotors;  // stores how many degrees the motor rotated on
 	SensorsConfiguration mSensorsConfiguration;
 	WorldModel mWorldModel;
+	qreal mSpeed;
 
+	void speed(qreal speedMul);
 	void initPosition();
 	Motor* initMotor(int radius, int speed, long unsigned int degrees, int port);
 	void countNewCoord();

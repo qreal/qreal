@@ -40,6 +40,8 @@ public:
 	virtual brickImplementations::AbstractBrickImplementation &brick() = 0;
 	virtual sensorImplementations::AbstractSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const = 0;
 	virtual sensorImplementations::AbstractSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const = 0;
+	virtual sensorImplementations::AbstractSensorImplementation *lightSensor(inputPort::InputPortEnum const &port) const = 0;
+	virtual sensorImplementations::AbstractSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const = 0;
 
 	virtual motorImplementations::AbstractMotorImplementation &motorA() = 0;
 	virtual motorImplementations::AbstractMotorImplementation &motorB() = 0;
@@ -73,6 +75,7 @@ protected:
 	virtual void addTouchSensor(inputPort::InputPortEnum const &port) = 0;
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port) = 0;
 	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType) = 0;
+	virtual void addLightSensor(inputPort::InputPortEnum const &port) = 0;
 
 	/// Connect to robot if connection doesn't established
 	virtual void connectRobot();

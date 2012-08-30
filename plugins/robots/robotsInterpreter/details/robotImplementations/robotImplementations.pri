@@ -29,6 +29,9 @@ HEADERS += \
 	details/robotImplementations/nullRobotModelImplementation.h \
 	details/robotImplementations/unrealRobotModelImplementation.h \
 	details/robotImplementations/sensorsConfigurer.h \
+	details/robotImplementations/sensorImplementations/bluetoothLightSensorImplementation.h \
+	details/robotImplementations/sensorImplementations/nullLightSensorImplementation.h \
+	details/robotImplementations/sensorImplementations/unrealLightSensorImplementation.h
 
 SOURCES += \
 	details/robotImplementations/sensorImplementations/abstractSensorImplementation.cpp \
@@ -61,3 +64,6 @@ SOURCES += \
 	details/robotImplementations/nullRobotModelImplementation.cpp \
 	details/robotImplementations/unrealRobotModelImplementation.cpp \
 	details/robotImplementations/sensorsConfigurer.cpp \
+	details/robotImplementations/sensorImplementations/bluetoothLightSensorImolementation.cpp \
+	details/robotImplementations/sensorImplementations/nullLightSensorImplementation.cpp \
+	details/robotImplementations/sensorImplementations/unrealLightSensorImplementation.cpp

@@ -136,9 +136,33 @@ QVariant Object::property(const QString &name) const
 {
 	if (mProperties.contains(name)) {
 		return mProperties[name];
+	} else if (name == "backReferences") {
+		return QVariant();
 	} else {
 		throw Exception("Object " + mId.toString() + ": requesting nonexistent property " + name);
 	}
+}
+
+void Object::setBackReference(qReal::Id const &reference)
+{
+	IdList references = mProperties["backReferences"].value<IdList>();
+	references << reference;
+	mProperties.insert("backReferences", qReal::IdListHelper::toVariant(references));
+}
+
+void Object::removeBackReference(qReal::Id const &reference)
+{
+	if (!mProperties.contains("backReferences")) {
+		throw Exception("Object " + mId.toString() + ": removing nonexsistent reference " + reference.toString());
+	}
+
+	IdList references = mProperties["backReferences"].value<IdList>();
+	if (!references.contains(reference)) {
+		throw Exception("Object " + mId.toString() + ": removing nonexsistent reference " + reference.toString());
+	}
+
+	references.removeAll(reference);
+	mProperties.insert("backReferences", qReal::IdListHelper::toVariant(references));
 }
 
 void Object::setTemporaryRemovedLinks(QString const &direction, qReal::IdList const &listValue)

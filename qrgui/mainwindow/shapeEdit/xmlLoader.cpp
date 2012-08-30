@@ -3,6 +3,8 @@
 
 #include <QtCore/QDebug>
 
+using namespace qReal;
+
 XmlLoader::XmlLoader(Scene *scene)
 {
 	mScene = scene;

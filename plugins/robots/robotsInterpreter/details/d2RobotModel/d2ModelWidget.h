@@ -66,6 +66,8 @@ public:
 	D2ModelScene* scene();
 	void setSensorVisible(inputPort::InputPortEnum port, bool isVisible);
 
+	void closeEvent(QCloseEvent *event);
+
 public slots:
 	void update();
 
@@ -95,6 +97,11 @@ private slots:
 	void changePenWidth(int width);
 	void changePenColor(const QString &text);
 	void changePalette();
+
+	void changeSpeed(int curIndex);
+
+signals:
+	void d2WasClosed();
 
 private:
 	void connectUiButtons();
@@ -190,6 +197,8 @@ private:
 
 	Rotater *mRotater;
 	QVector<Rotater *> mSensorRotaters;
+
+	int mWidth;
 
 };
 

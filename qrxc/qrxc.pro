@@ -14,7 +14,7 @@ LIBS += -L../bin -lqrutils
 DESTDIR += ../bin
 
 !macx {
-	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)/../bin"
+	QMAKE_LFLAGS="-Wl,-O1,-rpath,$$PWD/../bin"
 }
 
 HEADERS += association.h \
@@ -37,7 +37,7 @@ HEADERS += association.h \
 	stringType.h \
 	type.h \
 	xmlCompiler.h \
-	scalableItem.h
+	scalableItem.h \
 
 SOURCES += association.cpp \
 	diagram.cpp \
@@ -60,4 +60,4 @@ SOURCES += association.cpp \
 	stringType.cpp \
 	type.cpp \
 	xmlCompiler.cpp \
-	scalableItem.cpp
+	scalableItem.cpp \

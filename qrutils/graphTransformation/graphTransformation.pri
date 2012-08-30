@@ -1,5 +1,5 @@
 HEADERS += \
-	graphTransformation/baseGraphTransformationUnit.h \
+	$$PWD/baseGraphTransformationUnit.h \
 
 SOURCES += \
-	graphTransformation/baseGraphTransformationUnit.cpp \
+	$$PWD/baseGraphTransformationUnit.cpp \

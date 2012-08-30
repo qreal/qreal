@@ -2,7 +2,9 @@
 #include "editorPage.h"
 #include "ui_editorPage.h"
 #include <QMessageBox>
-#include "../mainwindow/mainWindow.h"
+#include "../../mainwindow/mainWindow.h"
+
+using namespace qReal;
 
 PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAction * const showAlignmentAction
 		, QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)

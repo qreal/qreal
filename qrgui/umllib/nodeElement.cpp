@@ -13,15 +13,23 @@
 #include <QtGui/QGraphicsDropShadowEffect>
 
 #include <math.h>
+#include "resizeHandler.h"
 
 using namespace qReal;
 
 NodeElement::NodeElement(ElementImpl* impl)
-	: mSwitchGridAction(tr("Switch on grid"), this),
-	mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
-	mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)),
-	mSelectionNeeded(false), mConnectionInProgress(false),
-	mPlaceholder(NULL), mHighlightedNode(NULL)
+	: Element(impl)
+	, mSwitchGridAction(tr("Switch on grid"), this)
+	, mPortsVisible(false)
+	, mDragState(None)
+	, mIsFolded(false)
+	, mLeftPressed(false)
+	, mParentNodeElement(NULL)
+	, mPos(QPointF(0,0))
+	, mSelectionNeeded(false)
+	, mConnectionInProgress(false)
+	, mPlaceholder(NULL)
+	, mHighlightedNode(NULL)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -31,7 +39,12 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mRenderer = new SdfRenderer();
 	ElementTitleFactory factory;
 	QList<ElementTitleInterface*> titles;
-	mElementImpl->init(mContents, mPointPorts, mLinePorts, factory, titles, mRenderer, mPortRenderer);
+
+	QList<StatPoint> pointPorts;
+	QList<StatLine> linePorts;
+	mElementImpl->init(mContents, pointPorts, linePorts, factory, titles, mRenderer, mPortRenderer);
+	mPortHandler = new PortHandler(this, mGraphicalAssistApi, pointPorts, linePorts);
+
 	foreach (ElementTitleInterface *titleIface, titles) {
 		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
 		if (!title) {
@@ -76,6 +89,7 @@ NodeElement::~NodeElement()
 
 	delete mGrid;
 	delete mUmlPortHandler;
+	delete mPortHandler;
 }
 
 NodeElement *NodeElement::clone(bool toCursorPos, bool searchForParents)
@@ -220,13 +234,13 @@ void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<No
 	//make equal space on all linear ports.
 	int lpId = 0;
 	foreach (StatLine line, mLinePorts) {
-		//sort first by slope, then by current portId
+		//sort first by slope, then by current portNumber
 		QMap<QPair<qreal, qreal>, EdgeElement*> sortedEdges;
 		QLineF portLine = line;
 		qreal dx = portLine.dx();
 		qreal dy = portLine.dy();
 		foreach (EdgeElement* edge, mEdgeList) {
-			if (portId(edge->portIdOn(this)) == lpId) {
+			if (portNumber(edge->portIdOn(this)) == lpId) {
 				QPointF conn = edge->connectionPoint(this);
 				QPointF next = edge->nextFrom(this);
 				qreal x1 = conn.x();
@@ -258,43 +272,7 @@ void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<No
 */
 
 void NodeElement::arrangeLinearPorts() {
-	//qDebug() << "linear ports on" << uuid().toString();
-	int lpId = mPointPorts.size(); //point ports before linear
-	foreach (StatLine line, mLinePorts) {
-		//sort first by slope, then by current portId
-		QMap<QPair<qreal, qreal>, EdgeElement*> sortedEdges;
-		QLineF portLine = line;
-		qreal dx = portLine.dx();
-		qreal dy = portLine.dy();
-		foreach (EdgeElement* edge, mEdgeList) {
-			if (portId(edge->portIdOn(this)) == lpId) {
-				QPointF conn = edge->connectionPoint(this);
-				QPointF next = edge->nextFrom(this);
-				qreal x1 = conn.x();
-				qreal y1 = conn.y();
-				qreal x2 = next.x();
-				qreal y2 = next.y();
-				qreal len = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-				qreal scalarProduct = ((x2 - x1) * dx + (y2 - y1) * dy) / len;
-				sortedEdges.insertMulti(qMakePair(edge->portIdOn(this), scalarProduct), edge);
-				//qDebug() << "+" << edge->uuid().toString() <<"pr=" <<scalarProduct << "; p=" << edge->portIdOn(this);
-				//qDebug("'--> vector: (%g, %g)", (x2-x1)/len, (y2-y1)/len);
-				//qDebug() << "'------> because " << (QVariant)conn << "->" << (QVariant)next;
-			}
-		}
-
-		//by now, edges of this port are sorted by their optimal slope.
-		int N = sortedEdges.size();
-		int i = 0;
-		foreach (EdgeElement* edge, sortedEdges) {
-			qreal newId = lpId + (1.0 + i++) / (N + 1);
-			//qDebug() << "-" << edge->uuid().toString() << newId;
-			edge->moveConnection(this, newId);
-		}
-
-		lpId++; //next linear port.
-
-	}
+	mPortHandler->arrangeLinearPorts();
 }
 
 void NodeElement::arrangeLinks() {
@@ -339,136 +317,8 @@ void NodeElement::storeGeometry()
 		mGraphicalAssistApi->setPosition(id(), pos());
 	}
 
-	if (QPolygon(mContents.toAlignedRect()) != mGraphicalAssistApi->configuration(id())) { // check if it's been changed
+	if (QPolygon(contents.toAlignedRect()) != mGraphicalAssistApi->configuration(id())) { // check if it's been changed
 		mGraphicalAssistApi->setConfiguration(id(), QPolygon(contents.toAlignedRect()));
-	}
-}
-
-void NodeElement::moveChildren(qreal dx, qreal dy)
-{
-	foreach (QGraphicsItem* childItem, childItems()) {
-		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem && !curItem->isPort()) {
-			curItem->moveBy(dx, dy);
-			///returns object to the parent area
-			if (curItem->pos().x() < mElementImpl->sizeOfForestalling()) {
-				curItem->setPos(mElementImpl->sizeOfForestalling(), curItem->pos().y());
-			}
-			if (curItem->pos().y() < mElementImpl->sizeOfForestalling()) {
-				curItem->setPos(curItem->pos().x(), mElementImpl->sizeOfForestalling());
-			}
-		}
-	}
-}
-
-void NodeElement::moveChildren(QPointF const &moving)
-{
-	moveChildren(moving.x(), moving.y());
-}
-
-void NodeElement::resize()
-{
-	resize(mContents, mPos);
-}
-
-void NodeElement::resize(QRectF newContents)
-{
-	resize(newContents, mPos);
-}
-
-void NodeElement::resize(QRectF newContents, QPointF newPos)
-{
-	newContents.moveTo(0, 0);
-	if (mElementImpl->isSortingContainer()) {
-		sortChildren();
-	}
-
-	if (mElementImpl->minimizesToChildren()) {
-		newContents = QRectF();
-	}
-
-	//childrenMoving - negative shift of children from the point (SIZE_OF_FORESTALLING, SIZE_OF_FORESTALLING)
-	//whatever it means :)
-	QPointF childrenMoving = QPointF(0, 0);
-
-	if (!mIsFolded) {
-		foreach (QGraphicsItem *childItem, childItems()) {
-			NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-			if (curItem && curItem->isPort() && newContents != mContents) {
-				curItem->resizeChild(newContents, mContents);
-			}
-
-			if (!curItem || curItem->isPort()) {
-				continue;
-			}
-
-			QPointF curItemPos = childItem->pos();
-
-			if (curItemPos.x() < childrenMoving.x() + mElementImpl->sizeOfForestalling()) {
-				childrenMoving.setX(curItemPos.x() - mElementImpl->sizeOfForestalling());
-			}
-
-			if (curItemPos.y() < childrenMoving.y() + mElementImpl->sizeOfForestalling()) {
-				childrenMoving.setY(curItemPos.y() - mElementImpl->sizeOfForestalling());
-			}
-		}
-	}
-
-//	setPos(pos() + childrenMoving);
-	moveChildren(-childrenMoving);
-
-	if (!mIsFolded) {
-		foreach (QGraphicsItem* childItem, childItems()) {
-			QRectF curChildItemBoundingRect;
-			if(childItem == mPlaceholder) {
-				curChildItemBoundingRect = childItem->boundingRect();
-				curChildItemBoundingRect.setLeft(newContents.left() + mElementImpl->sizeOfForestalling());
-				curChildItemBoundingRect.setRight(newContents.right() - mElementImpl->sizeOfForestalling());
-			} else {
-				NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-				if (!curItem || curItem->isPort()) {
-					continue;
-				}
-				curChildItemBoundingRect = curItem->mContents;
-			}
-
-			// it seems to be more appropriate to use childItem->pos() but it causes
-			// bad behaviour when dropping one element to another
-			curChildItemBoundingRect.translate(childItem->scenePos() - scenePos());
-
-			if (curChildItemBoundingRect.left() < newContents.left() + mElementImpl->sizeOfForestalling()) {
-				newContents.setLeft(curChildItemBoundingRect.left() - mElementImpl->sizeOfForestalling());
-			}
-
-			if (curChildItemBoundingRect.right() > newContents.right() - mElementImpl->sizeOfForestalling()) {
-				newContents.setRight(curChildItemBoundingRect.right() + mElementImpl->sizeOfForestalling());
-			}
-
-			if (curChildItemBoundingRect.top() < newContents.top() + mElementImpl->sizeOfForestalling()) {
-				newContents.setTop(curChildItemBoundingRect.top() - mElementImpl->sizeOfForestalling());
-			}
-
-			if (curChildItemBoundingRect.bottom() > newContents.bottom() - mElementImpl->sizeOfForestalling()) {
-				newContents.setBottom(curChildItemBoundingRect.bottom() + mElementImpl->sizeOfForestalling());
-			}
-		}
-	}
-
-	if ((newContents.width() < objectMinSize) || (newContents.height() < objectMinSize)) {
-		newContents = mFoldedContents;
-	}
-
-	newContents.moveTo(newPos);
-	setGeometry(newContents);
-	storeGeometry();
-
-	NodeElement *parItem = dynamic_cast<NodeElement*>(parentItem());
-	if (parItem) {
-		parItem->resize(); // recursive expansion of parents
-	}
-
-	if (SettingsManager::value("ActivateGrid").toBool()) {
-		alignToGrid();
 	}
 }
 
@@ -524,9 +374,12 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		} else {
 			Element::mousePressEvent(event);
 		}
+
 	} else {
 		Element::mousePressEvent(event);
 	}
+
+	mDragPosition = event->scenePos() - scenePos();
 
 	mLeftPressed = true;
 	setZValue(1);
@@ -549,6 +402,9 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	if (mIsFolded) {
 		mDragState = None;
 	}
+
+	QRectF newContents = mContents;
+	QPointF newPos = mPos;
 
 	scene()->invalidate();
 	if (mDragState == None) {
@@ -604,24 +460,22 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			}
 		}
 
-		Element::mouseMoveEvent(event);
+		newPos += (event->scenePos() - scenePos()) - mDragPosition;
 		mGrid->mouseMoveEvent(event);
 		alignToGrid();
 
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
 
-		QRectF newContents = mContents;
 		QPointF parentPos = QPointF(0, 0);
 		QGraphicsItem *parItem = parentItem();
 		if (parItem) {
 			parentPos = parItem->scenePos();
 		}
 
-		qreal const newX = mGrid->makeGridAlignment(event->pos().x());
-		qreal const newY = mGrid->makeGridAlignment(event->pos().y());
+		qreal const newX = event->pos().x();
+		qreal const newY = event->pos().y();
 
-		QPointF newPos = mPos;
 		switch (mDragState) {
 		case TopLeft: {
 			newContents.setTopLeft(QPoint(newX, newY));
@@ -665,14 +519,14 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 
 		if (event->modifiers() & Qt::ShiftModifier) {
-			qreal size = std::max(newContents.width(), newContents.height());
+			qreal const size = qMax(newContents.width(), newContents.height());
 			newContents.setWidth(size);
 			newContents.setHeight(size);
 		}
 
-		resize(newContents, newPos);
-
 	}
+
+	resize(newContents, newPos);
 
 	if (isPort()) {
 		mUmlPortHandler->handleMoveEvent(
@@ -694,17 +548,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 	delUnusedLines();
 
-	/*
-	 * This code may become necessary.
-	 * Now it exists for experiments.
-	 *
-	if (mElementImpl->minimizesToChildren()) {
-		resize();
+	if (SettingsManager::value("ActivateGrid").toBool()) {
+		alignToGrid();
 	}
-
-	mContents = mContents.normalized();
-	*/
-
 	storeGeometry();
 
 	setVisibleEmbeddedLinkers(true);
@@ -753,7 +599,11 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-	Q_UNUSED(event)
+	Q_UNUSED(event);
+
+	if (mElementImpl->isContainer()) {
+		changeFoldState();
+	}
 }
 
 void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
@@ -887,16 +737,17 @@ QRectF NodeElement::boundingRect() const
 void NodeElement::updateData()
 {
 	Element::updateData();
-	if (mMoving == 0) {
+	if (!mMoving) {
+		storeGeometry();
 		QPointF newpos = mGraphicalAssistApi->position(id());
-		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
+		QPolygon newpoly = mGraphicalAssistApi->configuration(id()); // why is it empty?
 		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
 		if (!newpoly.isEmpty()) {
 			int minx = newpoly[0].x();
 			int miny = newpoly[0].y();
 			int maxx = newpoly[0].x();
-			int maxy = newpoly[0].y();;
+			int maxy = newpoly[0].y();
 			for (int i = 1; i < newpoly.size(); ++i) {
 				if (minx > newpoly[i].x()) {
 					minx = newpoly[i].x();
@@ -915,250 +766,28 @@ void NodeElement::updateData()
 		}
 		setGeometry(newRect.translated(newpos));
 	}
-
 	mElementImpl->updateData(this);
 	update();
 }
 
+QPointF const NodeElement::portPos(qreal id) const
+{
+	return mPortHandler->portPos(id);
+}
+
+QPointF const NodeElement::nearestPort(QPointF const &location) const
+{
+	return mPortHandler->nearestPort(location);
+}
+
 int NodeElement::portId(qreal id)
 {
-	int iid = qRound(id);
-	if (id < 1.0 * iid) {
-		return iid - 1;
-	} else {
-		return iid;
-	}
+	return PortHandler::portNumber(id);
 }
 
-const QPointF NodeElement::getPortPos(qreal id) const
+qreal NodeElement::portId(QPointF const &location) const
 {
-	int iid = portId(id);
-
-	if (id < 0.0) {
-		return QPointF(0, 0);
-	}
-
-	if (id < mPointPorts.size()) {
-		return newTransform(mPointPorts[iid]);
-	}
-
-	if (id < mPointPorts.size() + mLinePorts.size()) {
-		return newTransform(mLinePorts.at(iid - mPointPorts.size())).pointAt(id - 1.0 * iid);
-	} else {
-		return QPointF(0, 0);
-	}
-}
-
-const QPointF NodeElement::getNearestPort(QPointF const &location) const
-{
-	QPointF min;
-
-	if (mPointPorts.size() > 0) {
-		QPointF const pointPort = newTransform(mPointPorts[0]);
-		min.setX(pointPort.x() + boundingRect().left());
-		min.setY(pointPort.y() + boundingRect().top());
-
-		foreach (StatPoint port, mPointPorts) {
-			QPointF const pointPort = newTransform(port);
-			port.point.setX(pointPort.x() + boundingRect().left());
-			port.point.setY(pointPort.y() + boundingRect().top());
-			if (QLineF(port.point, location).length() < QLineF(min, location).length()) {
-				min = port.point;
-			}
-		}
-		return min;
-	}
-
-	if (mLinePorts.size() > 0) {
-		int num = 0;
-		foreach (StatLine line, mLinePorts) {
-			qreal k = qMin(qMax(0., getNearestPointOfLinePort(num, location)), 0.9999);
-			QLineF const &sceneLine = newTransform(line);
-			QPointF const &port = sceneLine.pointAt(k);
-
-			if (QLineF(port, location).length() < QLineF(min, location).length() || num == 0) {
-				min = port;
-			}
-			num++;
-		}
-
-		return min;
-	}
-
-	return location;
-}
-
-QLineF NodeElement::newTransform(StatLine const &port) const
-{
-	float x1 = 0.0;
-	float x2 = 0.0;
-	float y1 = 0.0;
-	float y2 = 0.0;
-
-	if (port.prop_x1) {
-		x1 = port.line.x1() * port.initWidth;
-	} else {
-		x1 = port.line.x1() * contentsRect().width();
-	}
-
-	if (port.prop_y1) {
-		y1 = port.line.y1() * port.initHeight;
-	} else {
-		y1 = port.line.y1() * contentsRect().height();
-	}
-
-	if (port.prop_x2) {
-		x2 = port.line.x2() * port.initWidth;
-	} else {
-		x2 = port.line.x2() * contentsRect().width();
-	}
-
-	if (port.prop_y2) {
-		y2 = port.line.y2() * port.initHeight;
-	} else {
-		y2 = port.line.y2() * contentsRect().height();
-	}
-
-	return QLineF(x1, y1, x2, y2);
-}
-
-QPointF NodeElement::newTransform(StatPoint const &port) const
-{
-	qreal x = 0;
-	qreal y = 0;
-
-	if (port.prop_x) {
-		x = port.point.x() * port.initWidth;
-	} else {
-		x = port.point.x() * contentsRect().width();
-	}
-
-	if (port.prop_y) {
-		y = port.point.y() * port.initHeight;
-	} else {
-		y = port.point.y() * contentsRect().height();
-	}
-
-	return QPointF(x, y);
-}
-
-qreal NodeElement::minDistanceFromLinePort(int linePortNumber, QPointF const &location) const
-{
-	QLineF linePort = newTransform(mLinePorts[linePortNumber]);
-	qreal a = linePort.length();
-	qreal b = QLineF(linePort.p1(), location).length();
-	qreal c = QLineF(linePort.p2(), location).length();
-
-	qreal nearestPointOfLinePort = getNearestPointOfLinePort(linePortNumber, location);
-	if ((nearestPointOfLinePort < 0) || (nearestPointOfLinePort > 0.9999)) {
-		return qMin(b, c);
-	} else {
-		qreal p = (a + b + c) / 2;
-		qreal triangleSquare = sqrt(p * (p - a) * (p - b) * (p - c));
-		qreal minDistance = 2 * triangleSquare / a;
-		return minDistance;
-	}
-}
-
-qreal NodeElement::distanceFromPointPort(int pointPortNumber, QPointF const &location) const
-{
-	return QLineF(newTransform(mPointPorts[pointPortNumber]), location).length();
-}
-
-qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, QPointF const &location) const
-{
-	qreal nearestPointOfLinePort = 0;
-	QLineF nearestLinePort = newTransform(mLinePorts[linePortNumber]);
-	qreal y1 = nearestLinePort.y1(),
-		y2 = nearestLinePort.y2(),
-		x1 = nearestLinePort.x1(),
-		x2 = nearestLinePort.x2();
-
-	if (x1 == x2) {
-		nearestPointOfLinePort = (location.y() - y1) / (y2 - y1);
-	} else if (y1 == y2) {
-		nearestPointOfLinePort = (location.x() - x1) / (x2 - x1);
-	} else {
-		qreal k = (y2 - y1) / (x2 - x1),
-			b2 = location.y() + 1 / k * location.x(),
-			b = y1 - k * x1,
-			x3 = k / (1 + k * k) * (b2 - b);
-		nearestPointOfLinePort = (x3 - x1) / (x2 - x1);
-	}
-	return nearestPointOfLinePort;
-}
-
-qreal NodeElement::getPortId(QPointF const&location) const
-{
-	for (int i = 0; i < mPointPorts.size(); ++i) {
-		if (QRectF(newTransform(mPointPorts[i]) - QPointF(kvadratik, kvadratik),
-				   QSizeF(kvadratik * 2, kvadratik * 2)).contains(location))
-		{
-			return 1.0 * i;
-		}
-	}
-
-	for (int i = 0; i < mLinePorts.size(); i++) {
-		QPainterPathStroker ps;
-				ps.setWidth(kvadratik - 5);
-
-		QPainterPath path;
-		path.moveTo(newTransform(mLinePorts[i]).p1());
-		path.lineTo(newTransform(mLinePorts[i]).p2());
-
-		path = ps.createStroke(path);
-		if (path.contains(location)) {
-			return (1.0 * (i + mPointPorts.size()) + qMin(0.9999,
-				QLineF(QLineF(newTransform(mLinePorts[i])).p1(), location).length()
-				 / newTransform(mLinePorts[i]).length()));
-		}
-	}
-
-	qreal minDistance = 0;
-	int numMinDistance = -1;
-	if (mPointPorts.size() != 0) {
-		numMinDistance = 0;
-		minDistance = distanceFromPointPort(0, location);
-		for (int i = 1; i < mPointPorts.size(); i++) {
-			qreal currentDistance = distanceFromPointPort(i, location);
-			if (currentDistance < minDistance) {
-				numMinDistance = i;
-				minDistance = currentDistance;
-			}
-		}
-	}
-
-	if (mLinePorts.size() != 0) {
-		bool linePort = false;
-		if (numMinDistance == -1) {
-			numMinDistance = 0;
-			minDistance = minDistanceFromLinePort(0, location);
-			linePort = true;
-		}
-		for (int i = 0; i < mLinePorts.size(); i++) {
-			qreal currentDistance = minDistanceFromLinePort(i, location);
-			if (currentDistance < minDistance) {
-				numMinDistance = i;
-				minDistance = currentDistance;
-				linePort = true;
-			}
-		}
-		if (linePort) {
-			qreal nearestPointOfLinePort = getNearestPointOfLinePort(numMinDistance, location);
-			if (nearestPointOfLinePort < 0) {
-				nearestPointOfLinePort = 0;
-			} else if (nearestPointOfLinePort > 0.9999) {
-				nearestPointOfLinePort = 0.9999;
-			}
-			return 1.0 * (numMinDistance + nearestPointOfLinePort + mPointPorts.size());
-		} else {
-			return 1.0 * numMinDistance;
-		}
-	} else if (numMinDistance >= 0) {
-		return 1.0 * numMinDistance;
-	}
-
-	return -1.0;
+	return mPortHandler->portId(location);
 }
 
 void NodeElement::setPortsVisible(bool value)
@@ -1309,46 +938,6 @@ void NodeElement::setLinksVisible(bool isVisible)
 	}
 }
 
-void NodeElement::sortChildren()
-{
-	qreal curChildY = mElementImpl->sizeOfForestalling() + titlePadding;
-	qreal maxChildrenWidth = 0;
-
-	foreach (QGraphicsItem* childItem, childItems()) {
-		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem) {
-			if (curItem->mContents.width() > maxChildrenWidth) {
-				maxChildrenWidth = curItem->mContents.width();
-			}
-		}
-	}
-	if (maxChildrenWidth == 0) {
-		maxChildrenWidth = childrenBoundingRect().width();
-	}
-
-	foreach (QGraphicsItem* childItem, childItems()) {
-		if(mPlaceholder != NULL && childItem == mPlaceholder){
-			QRectF rect(mElementImpl->sizeOfForestalling(), curChildY,
-				maxChildrenWidth, mPlaceholder->rect().height());
-			mPlaceholder->setRect(rect);
-			curChildY += mPlaceholder->rect().height() + childSpacing;
-		}
-
-		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem) {
-			QRectF rect(mElementImpl->sizeOfForestalling(), curChildY, 0, curItem->mContents.height());
-			if (mElementImpl->maximizesChildren()) {
-				rect.setWidth(maxChildrenWidth);
-			} else {
-				rect.setWidth(curItem->mContents.width());
-			}
-			curItem->setGeometry(rect);
-			curItem->storeGeometry();
-			curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling() + childSpacing;
-		}
-	}
-}
-
 void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 {
 	// for non-sorting containers no need for drawing placeholder so just make them marked
@@ -1411,7 +1000,7 @@ void NodeElement::erasePlaceholder(bool redraw)
 	}
 }
 
-bool NodeElement::isPort()
+bool NodeElement::isPort() const
 {
 	return mElementImpl->isPort();
 }
@@ -1421,59 +1010,8 @@ bool NodeElement::canHavePorts()
 	return mElementImpl->hasPin();
 }
 
-bool NodeElement::checkLowerBorder(QPointF& point, double x, double y) const
-{
-	double currentX = point.x();
-	double currentY = point.y();
-	QRectF rc = boundingRect();
-	return (currentX >= rc.x() + x) && (currentX <= rc.x() + rc.width() - x) && (currentY >= rc.y() + rc.height() - y)
-			&& (currentY <= rc.y() + rc.height() + y);
-}
-
-bool NodeElement::checkUpperBorder(QPointF& point, double x, double y) const
-{
-	double currentX = point.x();
-	double currentY = point.y();
-	QRectF rc = boundingRect();
-	return (currentX >= rc.x() + x) && (currentX <= rc.x() + rc.width() - x) && (currentY >= rc.y() - y)
-			&& (currentY <= rc.y() + y);
-}
-
-bool NodeElement::checkLeftBorder(QPointF& point, double x, double y) const
-{
-	double currentX = point.x();
-	double currentY = point.y();
-	QRectF rc = boundingRect();
-	return (currentX >= rc.x() - x) && (currentX <= rc.x() + x) && (currentY >= rc.y() + y)
-			&& (currentY <= rc.y() + rc.height() - y);
-}
-
-bool NodeElement::checkRightBorder(QPointF& point, double x, double y) const
-{
-	double currentX = point.x();
-	double currentY = point.y();
-	QRectF rc = boundingRect();
-	return (currentX >= rc.x() + rc.width() - x) && (currentX <= rc.x() + rc.width() + x) && (currentY >= rc.y() + y)
-			&& (currentY <= rc.y() + rc.height() - y);
-}
-
-bool NodeElement::checkNoBorderX(QPointF& point, double x, double y) const
-{
-	Q_UNUSED(x);
-	double currentY = point.ry();
-	QRectF rc = boundingRect();
-	return (currentY >= rc.y() + y) && (currentY <= rc.y() + rc.height() - y);
-}
-
-bool NodeElement::checkNoBorderY(QPointF& point, double x, double y) const
-{
-	Q_UNUSED(y);
-	double currentX = point.rx();
-	QRectF rc = boundingRect();
-	return (currentX >= rc.x() + x) && (currentX <= rc.x() + rc.width() - x);
-}
-
-void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
+/*
+void NodeElement::resizeChild(QRectF const &newContents, QRectF const &oldContents)
 {
 	if (!mParentNodeElement) {
 		QGraphicsItem* item = parentItem();
@@ -1484,49 +1022,48 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 		mPos = pos();
 	}
 	QList<double> list = mParentNodeElement->borderValues();
-	double xHor = list[0];
-	double yHor = list[1];
-	double xVert = list[2];
-	double yVert = list[3];
-	QPointF posi = pos();
+	double const xHor = list[0];
+	double const yHor = list[1];
+	double const xVert = list[2];
+	double const yVert = list[3];
+	QPointF const posi = pos();
+
+	double const x = mPos.x() - oldContents.x();
+	double const y = mPos.y() - oldContents.y();
+
 	if (mParentNodeElement->checkLowerBorder(posi, xHor, yHor+5)) {
-		double x = mPos.x() - oldContents.x();
-		double a = oldContents.x() + oldContents.width();
-		double b = newContents.x() + newContents.width();
-		double dy = newContents.height() - oldContents.height();
+		double const a = oldContents.x() + oldContents.width();
+		double const b = newContents.x() + newContents.width();
+		double const dy = newContents.height() - oldContents.height();
 		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
-		setPos(mPos);
 	}
 
 	if (mParentNodeElement->checkUpperBorder(posi, xHor, yHor)) {
-		double x = mPos.x() - oldContents.x();
-		double a = oldContents.x() + oldContents.width();
-		double b = newContents.x() + newContents.width();
-		double dy = 0;
+		double const a = oldContents.x() + oldContents.width();
+		double const b = newContents.x() + newContents.width();
+		double const dy = 0;
 		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
-		setPos(mPos);
 	}
 
 	if (mParentNodeElement->checkRightBorder(posi, xVert+5, yVert)) {
-		double y = mPos.y() - oldContents.y();
-		double a = oldContents.y() + oldContents.height();
-		double b = newContents.y() + newContents.height();
-		double dx = newContents.width() - oldContents.width();
+		double const a = oldContents.y() + oldContents.height();
+		double const b = newContents.y() + newContents.height();
+		double const dx = newContents.width() - oldContents.width();
 		mPos = QPointF(mPos.x()+dx, newContents.y() + y*b/a);
-		setPos(mPos);
 	}
 	if (mParentNodeElement->checkLeftBorder(posi, xVert, yVert))
 	{
-		double y = mPos.y() - oldContents.y();
-		double a = oldContents.y() + oldContents.height();
-		double b = newContents.y() + newContents.height();
-		double dx = 0;
+		double const a = oldContents.y() + oldContents.height();
+		double const b = newContents.y() + newContents.height();
+		double const dx = 0;
 		mPos = QPointF(mPos.x()+dx, newContents.y() + y*b/a);
-		setPos(mPos);
 	}
+
+	setPos(mPos);
 	storeGeometry();
 	return;
 }
+*/
 
 void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 {
@@ -1556,7 +1093,7 @@ void NodeElement::updateByNewParent()
 	}
 }
 
-QList<double> NodeElement::borderValues()
+QList<double> NodeElement::borderValues() const
 {
 	return mElementImpl->border();
 }
@@ -1582,48 +1119,14 @@ void NodeElement::setColorRect(bool value)
 	mSelectionNeeded = value;
 }
 
-void NodeElement::connectTemporaryRemovedLinksToPort(IdList const &temporaryRemovedLinks, QString const &direction)
-{
-	foreach (Id edgeId, temporaryRemovedLinks) {
-		EdgeElement *edge = dynamic_cast<EdgeElement *>(static_cast<EditorViewScene *>(scene())->getElem(edgeId));
-		if (edge != NULL) {
-			if (direction == "from") {
-				QPointF startPos = edge->mapFromItem(this, this->getNearestPort(edge->line().first()));
-				edge->placeStartTo(startPos);
-			}
-			else {
-				QPointF endPos = edge->mapFromItem(this, this->getNearestPort(edge->line().last()));
-				edge->placeEndTo(endPos);
-			}
-			edge->connectToPort();
-		}
-	}
-}
-
 void NodeElement::checkConnectionsToPort()
 {
-	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksFrom(id()), "from");
-	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksTo(id()), "to");
-	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksNone(id()), QString());
-	mGraphicalAssistApi->removeTemporaryRemovedLinks(id());
-
-	// i have no idea what this method does, but it is called when the element
-	// is dropped on scene. so i'll just leave this code here for now.
-	connectLinksToPorts();
-
+	mPortHandler->checkConnectionsToPort();
 }
 
 void NodeElement::connectLinksToPorts()
 {
-	QList<QGraphicsItem *>  items = scene()->items(scenePos());
-	EdgeElement *edge = NULL;
-	foreach (QGraphicsItem *item, items) {
-		edge = dynamic_cast<EdgeElement *>(item);
-		if (edge) {
-			edge->connectToPort();
-			return;
-		}
-	}
+	mPortHandler->connectLinksToPorts();
 }
 
 void NodeElement::singleSelectionState(bool const singleSelected)
@@ -1687,4 +1190,46 @@ NodeData& NodeElement::data()
 	}
 
 	return mData;
+}
+
+void NodeElement::resize()
+{
+	resize(mContents, pos());
+}
+
+void NodeElement::resize(QRectF newContents)
+{
+	resize(newContents, pos());
+}
+
+void NodeElement::resize(QRectF newContents, QPointF newPos)
+{
+	ResizeHandler handler(this, mElementImpl);
+	handler.resize(newContents, newPos);
+}
+
+bool NodeElement::isFolded() const
+{
+	return mIsFolded;
+}
+
+QGraphicsRectItem* NodeElement::placeholder() const
+{
+	return mPlaceholder;
+}
+
+QRectF NodeElement::foldedContentsRect() const
+{
+	return mFoldedContents;
+}
+
+QList<EdgeElement *> const NodeElement::edgeList() const
+{
+	return mEdgeList;
+}
+
+void NodeElement::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi)
+{
+	Element::setAssistApi(graphicalAssistApi, logicalAssistApi);
+	mPortHandler->setGraphicalAssistApi(graphicalAssistApi);
 }

@@ -33,6 +33,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mCurrentPort(inputPort::none)
 		, mCurrentSensorType(sensorType::unused)
 		, mButtonsCount(8) // magic numbers are baaad, mkay?
+		, mWidth(15)
 {
 	setWindowIcon(QIcon(":/icons/kcron.png"));
 
@@ -66,7 +67,7 @@ void D2ModelWidget::initWidget()
 	mUi->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
 	move(0, 0);
 
-	mUi->penWidthSpinBox->setRange(6, 13);
+	mUi->penWidthSpinBox->setRange(1, 30);
 
 	QStringList colorNames;
 	colorNames.push_back("Black");
@@ -89,25 +90,41 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changePenWidth(int)));
 	connect(mUi->penColorComboBox, SIGNAL(activated(const QString &)), this, SLOT(changePenColor(const QString &)));
 
-	connect(mUi->port1AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
-	mPortsMapper.setMapping(mUi->port1AddButton, inputPort::port1);
-	connect(mUi->port2AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
-	mPortsMapper.setMapping(mUi->port2AddButton, inputPort::port2);
-	connect(mUi->port3AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
-	mPortsMapper.setMapping(mUi->port3AddButton, inputPort::port3);
-	connect(mUi->port4AddButton, SIGNAL(clicked()), &mPortsMapper, SLOT(map()));
-	mPortsMapper.setMapping(mUi->port4AddButton, inputPort::port4);
-
 	connect(mUi->saveWorldModelPushButton, SIGNAL(clicked()), this, SLOT(saveWorldModel()));
 	connect(mUi->loadWorldModelPushButton, SIGNAL(clicked()), this, SLOT(loadWorldModel()));
 
 	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(addPort(int)));
 
-	connect(mUi->port1Box, SIGNAL(activated(int)), mUi->port1AddButton, SLOT(click()));
-	connect(mUi->port2Box, SIGNAL(activated(int)), mUi->port2AddButton, SLOT(click()));
-	connect(mUi->port3Box, SIGNAL(activated(int)), mUi->port3AddButton, SLOT(click()));
-	connect(mUi->port4Box, SIGNAL(activated(int)), mUi->port4AddButton, SLOT(click()));
+	connect(mUi->port1Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
+	mPortsMapper.setMapping(mUi->port1Box, inputPort::port1);
+	connect(mUi->port2Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
+	mPortsMapper.setMapping(mUi->port2Box, inputPort::port2);
+	connect(mUi->port3Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
+	mPortsMapper.setMapping(mUi->port3Box, inputPort::port3);
+	connect(mUi->port4Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
+	mPortsMapper.setMapping(mUi->port4Box, inputPort::port4);
+
+	connect(mUi->speedComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeSpeed(int)));
 }
+
+void D2ModelWidget::changeSpeed(int curIndex)
+{
+	switch(curIndex){
+	case 0:
+		mRobotModel->speed(1);
+		break;
+	case 1:
+		mRobotModel->speed(2);
+		break;
+	case 2:
+		mRobotModel->speed(4);
+		break;
+	default:
+		mRobotModel->speed(1);
+	}
+}
+
+
 
 void D2ModelWidget::init(bool isActive)
 {
@@ -116,12 +133,14 @@ void D2ModelWidget::init(bool isActive)
 		return;
 	}
 
-	if (!mRobot)
+	if (!mRobot) {
 		drawInitialRobot();
+	}
 
 	mUi->graphicsView->show();
-	if (isHidden())
+	if (isHidden()) {
 		show();
+	}
 	update();
 }
 
@@ -157,7 +176,7 @@ QPointF D2ModelWidget::robotPos() const
 
 void D2ModelWidget::close()
 {
-	if (mRobot != NULL) {
+	if (mRobot) {
 		mRobot->resetTransform();
 		mRobotPath.clear();
 		mScene->clear();
@@ -258,7 +277,6 @@ void D2ModelWidget::addWall(bool on)
 		return;
 	}
 
-	setActiveButton(4);
 	mDrawingAction = drawingAction::wall;
 }
 
@@ -269,7 +287,7 @@ void D2ModelWidget::addLine(bool on)
 		mMouseClicksCount = 0;
 		return;
 	}
-	setActiveButton(5);
+
 	mDrawingAction = drawingAction::line;
 }
 
@@ -280,32 +298,22 @@ void D2ModelWidget::addStylus(bool on)
 		mMouseClicksCount = 0;
 		return;
 	}
-	setActiveButton(6);
+
 	mDrawingAction = drawingAction::stylus;
-}
-
-void D2ModelWidget::setActiveButton(int active)
-{
-	mButtonFlags.clear();
-	for (int i = 0; i < mButtonsCount; i++)
-		mButtonFlags.append(false);
-
-	mButtonFlags.replace(active, true);
-
-	mUi->port1AddButton->setChecked(mButtonFlags.at(0));
-	mUi->port2AddButton->setChecked(mButtonFlags.at(1));
-	mUi->port3AddButton->setChecked(mButtonFlags.at(2));
-	mUi->port4AddButton->setChecked(mButtonFlags.at(3));
-	mUi->wallButton->setChecked(mButtonFlags.at(4));
-	mUi->lineButton->setChecked(mButtonFlags.at(5));
-	mUi->stylusButton->setChecked(mButtonFlags.at(6));
-
 }
 
 void D2ModelWidget::clearScene()
 {
 	mWorldModel->clearScene();
-	mRobot->clearSensors();
+	removeSensor(inputPort::port1);
+	removeSensor(inputPort::port2);
+	removeSensor(inputPort::port3);
+	removeSensor(inputPort::port4);
+	int const noneSensorIndex = 0;
+	mUi->port1Box->setCurrentIndex(noneSensorIndex);
+	mUi->port2Box->setCurrentIndex(noneSensorIndex);
+	mUi->port3Box->setCurrentIndex(noneSensorIndex);
+	mUi->port4Box->setCurrentIndex(noneSensorIndex);
 	mRobotModel->clear();
 	mScene->clear();
 	mRobotPath.clear();
@@ -319,7 +327,6 @@ void D2ModelWidget::resetButtons()
 	mCurrentStylus = NULL;
 	mMouseClicksCount = 0;
 	mDrawingAction = drawingAction::none;
-	setActiveButton(mButtonsCount - 1);
 }
 
 QComboBox *D2ModelWidget::currentComboBox()
@@ -339,45 +346,31 @@ QComboBox *D2ModelWidget::currentComboBox()
 	return NULL;
 }
 
-QPushButton *D2ModelWidget::currentPortButton()
-{
-	switch (mCurrentPort){
-	case inputPort::port1:
-		return mUi->port1AddButton;
-	case inputPort::port2:
-		return mUi->port2AddButton;
-	case inputPort::port3:
-		return mUi->port3AddButton;
-	case inputPort::port4:
-		return mUi->port4AddButton;
-	case inputPort::none:
-		break;
-	}
-	return NULL;
-}
-
 void D2ModelWidget::addPort(int const port)
 {
 	mCurrentPort = static_cast<inputPort::InputPortEnum>(port);
 
-	setActiveButton(port);
-
-	mDrawingAction = drawingAction::port;
-
 	switch (currentComboBox()->currentIndex()){
 	case 0:
-		mCurrentSensorType = sensorType::touchBoolean;
-		break;
-	case 1:
-		mCurrentSensorType = sensorType::colorFull;
-		break;
-	case 2:
-		mCurrentSensorType = sensorType::sonar;
-		break;
-	default:
 		mCurrentSensorType = sensorType::unused;
 		break;
+	case 1:
+		mCurrentSensorType = sensorType::touchBoolean;
+		break;
+	case 2:
+		mCurrentSensorType = sensorType::colorFull;
+		break;
+	case 3:
+		mCurrentSensorType = sensorType::sonar;
+		break;
+
 	}
+	QPointF newpos = mRobot->mapFromScene(mRobot->boundingRect().center());
+	mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0);
+	reinitSensor(mCurrentPort);
+
+	resetButtons();
+
 }
 
 void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
@@ -412,8 +405,9 @@ void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	mRobot->checkSelection();
 	foreach (SensorItem *sensor, mSensors) {
-		if (sensor != NULL)
+		if (sensor != NULL) {
 			sensor->checkSelection();
+		}
 	}
 
 	QPointF const position = mouseEvent->scenePos();
@@ -444,15 +438,7 @@ void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 		mMouseClicksCount++;
 	}
 		break;
-	case drawingAction::port: {
-		QPointF newpos = mRobot->mapFromScene(mouseEvent->scenePos());
-		mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0);
 
-		reinitSensor(mCurrentPort);
-
-		resetButtons();
-	}
-		break;
 	case drawingAction::none: {
 		mMouseClicksCount = 0;
 		mScene->forPressResize(mouseEvent);
@@ -469,8 +455,9 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	mRobot->checkSelection();
 	foreach (SensorItem *sensor, mSensors) {
-		if (sensor != NULL)
+		if (sensor != NULL) {
 			sensor->checkSelection();
+		}
 	}
 
 	mScene->setDragMode(mDrawingAction);
@@ -495,8 +482,9 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	mRobot->checkSelection();
 	foreach (SensorItem *sensor, mSensors) {
-		if (sensor != NULL)
+		if (sensor != NULL) {
 			sensor->checkSelection();
+		}
 	}
 
 	mScene->setDragMode(mDrawingAction);
@@ -556,8 +544,9 @@ void D2ModelWidget::loadWorldModel()
 {
 	// Loads world and robot models simultaneously.
 	QString const saveFileName = QFileDialog::getOpenFileName(this, tr("Saving world and robot model"), ".", tr("2D model saves (*.xml)"));
-	if (saveFileName.isEmpty())
+	if (saveFileName.isEmpty()) {
 		return;
+	}
 
 	QDomDocument const save = utils::xmlUtils::loadDocument(saveFileName);
 
@@ -670,6 +659,7 @@ QList<AbstractItem *> D2ModelWidget::selectedColorItems()
 void D2ModelWidget::changePenWidth(int width)
 {
 	mScene->setPenWidthItems(width);
+	mWidth = width;
 	foreach (AbstractItem *item, selectedColorItems()) {
 		item->setPenWidth(width);
 	}
@@ -724,7 +714,7 @@ void D2ModelWidget::setItemPalette(QPen const &penItem, QBrush const &brushItem)
 
 void D2ModelWidget::setNoPalette()
 {
-	mUi->penWidthSpinBox->setValue(6);
+	mUi->penWidthSpinBox->setValue(mWidth);
 	mUi->penColorComboBox->setColor(QColor("black"));
 }
 
@@ -748,4 +738,10 @@ void D2ModelWidget::enableRunStopButtons()
 void D2ModelWidget::disableRunStopButtons()
 {
 	mUi->runButton->setEnabled(false);
+}
+
+void D2ModelWidget::closeEvent(QCloseEvent *event)
+{
+	Q_UNUSED(event)
+	emit d2WasClosed();
 }

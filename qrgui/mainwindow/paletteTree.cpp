@@ -156,7 +156,7 @@ void PaletteTree::collapse()
 
 void PaletteTree::setActiveEditor(int index)
 {
-    if (0 <= index && index < mEditorsTrees.count()) {
+	if (0 <= index && index < mEditorsTrees.count()) {
 		mCurrentEditor = index;
 		mTree->hide();
 		mTree = mEditorsTrees[index];

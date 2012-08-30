@@ -5,6 +5,7 @@ HEADERS += umllib/edgeElement.h \
 	umllib/elementTitle.h \
 	umllib/contextMenuAction.h \
 	umllib/sceneGridHandler.h \
+	umllib/resizeHandler.h \
 	umllib/umlPortHandler.h \
 	umllib/embedded/linkers/embeddedLinker.h \
 	umllib/embedded/linkers/embeddedLinkers.h \
@@ -13,6 +14,8 @@ HEADERS += umllib/edgeElement.h \
 	umllib/layout/graph.h \
 	umllib/layout/gvizNeatoLayoutHelper.h \
 	umllib/layout/gvizDotLayoutHelper.h \
+	umllib/borderChecker.h \
+	umllib/portHandler.h
 
 SOURCES += umllib/edgeElement.cpp \
 	umllib/element.cpp \
@@ -21,6 +24,7 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/elementTitle.cpp \
 	umllib/contextMenuAction.cpp \
 	umllib/sceneGridHandler.cpp \
+	umllib/resizeHandler.cpp \
 	umllib/umlPortHandler.cpp \
 	umllib/embedded/linkers/embeddedLinker.cpp \
 	umllib/embedded/linkers/embeddedLinkers.cpp \
@@ -28,6 +32,8 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/layout/graph.cpp \
 	umllib/layout/gvizNeatoLayoutHelper.cpp \
 	umllib/layout/gvizDotLayoutHelper.cpp \
+	umllib/borderChecker.cpp \
+	umllib/portHandler.cpp \
 
 FORMS += \
 	umllib/layout/gvizDotLayoutHelperSettings.ui \

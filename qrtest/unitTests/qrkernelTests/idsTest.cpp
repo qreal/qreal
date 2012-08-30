@@ -1,0 +1,122 @@
+#include <QtCore/QFile>
+
+#include "../../../qrkernel/ids.h"
+
+#include "gtest/gtest.h"
+
+using namespace qReal;
+
+TEST(IdsTest, loadFromStringTest) {
+	EXPECT_DEATH_IF_SUPPORTED(Id::loadFromString("qrm:/editor/diagram/element/id/test")
+			, ".*path\\.count\\(\\) > 0 && path\\.count\\(\\) <= 5.*");
+
+	Id id = Id::loadFromString("qrm:/editor/diagram/element/id");
+	EXPECT_EQ(id, Id("editor", "diagram", "element", "id"));
+
+	id = Id::loadFromString("qrm:/editor/diagram/element");
+	EXPECT_EQ(id, Id("editor", "diagram", "element", ""));
+
+	id = Id::loadFromString("qrm:/editor/diagram");
+	EXPECT_EQ(id, Id("editor", "diagram", "", ""));
+
+	id = Id::loadFromString("qrm:/editor");
+	EXPECT_EQ(id, Id("editor", "", "", ""));
+
+	id = Id::loadFromString("qrm:/");
+	EXPECT_EQ(id, Id("", "", "", ""));
+}
+
+TEST(IdsTest, createElementIdTest) {
+	Id id = Id::createElementId("diagram", "editor", "element");
+	EXPECT_TRUE(id.id() != "");
+}
+
+TEST(IdsTest, rootIdTest) {
+	Id id = Id::rootId();
+	EXPECT_EQ(id, Id("ROOT_ID", "ROOT_ID", "ROOT_ID", "ROOT_ID"));
+}
+
+TEST(IdsTest, additonalConstructorTest) {
+	EXPECT_DEATH_IF_SUPPORTED(Id id(Id::loadFromString("qrm:/editor/diagram/element/id"), "test")
+			, ".*Can not add a part to Id, it will be too long.*");
+
+	Id id1(Id::loadFromString("qrm:/editor/diagram/element"), "id");
+	EXPECT_EQ(id1.id(), "id");
+
+	Id id2(Id::loadFromString("qrm:/editor/diagram"), "element");
+	EXPECT_EQ(id2.element(), "element");
+
+	Id id3(Id::loadFromString("qrm:/editor"), "diagram");
+	EXPECT_EQ(id3.diagram(), "diagram");
+
+	Id id4(Id::loadFromString("qrm:/"), "editor");
+	EXPECT_EQ(id4.editor(), "editor");
+}
+
+TEST(IdsTest, gettersTest) {
+	Id id = Id::loadFromString("qrm:/editor/diagram/element/id");
+
+	EXPECT_EQ(id.editor(), "editor");
+	EXPECT_EQ(id.diagram(), "diagram");
+	EXPECT_EQ(id.element(), "element");
+	EXPECT_EQ(id.id(), "id");
+	EXPECT_EQ(id.type() ,Id("editor", "diagram", "element"));
+}
+
+TEST(IdsTest, idSizeTest) {
+	Id id = Id::loadFromString("qrm:/editor/diagram/element/id");
+	EXPECT_EQ(id.idSize(), (uint) 4);
+
+	id = Id::loadFromString("qrm:/editor/diagram/element");
+	EXPECT_EQ(id.idSize(), (uint) 3);
+
+	id = Id::loadFromString("qrm:/editor/diagram");
+	EXPECT_EQ(id.idSize(), (uint) 2);
+
+	id = Id::loadFromString("qrm:/editor");
+	EXPECT_EQ(id.idSize(), (uint) 1);
+
+	id = Id::loadFromString("qrm:/");
+	EXPECT_EQ(id.idSize(), (uint) 0);
+}
+
+TEST(IdsTest, sameTypeIdTest) {
+	Id const id = Id::loadFromString("qrm:/editor/diagram/element/id");
+	EXPECT_EQ(id.sameTypeId().type(), id.type());
+}
+
+
+TEST(IdsTest, toUrlToStringToVariantTest) {
+	QString const idString = "qrm:/editor/diagram/element/id";
+	Id const id = Id::loadFromString(idString);
+
+	EXPECT_EQ(id.toString(), idString);
+	EXPECT_EQ(id.toUrl(), QUrl(idString));
+
+	QVariant toVariant = id.toVariant();
+	EXPECT_EQ(toVariant.value<Id>(), id);
+}
+
+TEST(IdsTest, idInputOutputStreamTest) {
+	QString const idString = "qrm:/editor/diagram/element/id";
+	Id const out = Id::loadFromString(idString);
+
+	QFile fileOut("test");
+	fileOut.open(QIODevice::WriteOnly);
+	QDataStream outputStream(&fileOut);
+
+	outputStream << out;
+	fileOut.close();
+
+	QFile fileIn("test");
+	fileIn.open(QIODevice::ReadOnly);
+	QDataStream inputStream(&fileIn);
+
+	Id in;
+	inputStream >> in;
+
+	fileIn.close();
+	QFile::remove("test");
+
+	EXPECT_EQ(in, out);
+}
