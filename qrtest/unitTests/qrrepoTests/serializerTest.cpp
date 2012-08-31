@@ -3,6 +3,7 @@
 
 #include "serializerTest.h"
 #include "../../../qrrepo/private/classes/object.h"
+#include "../../../qrkernel/settingsManager.h"
 
 using namespace qrRepo;
 using namespace details;
@@ -27,6 +28,10 @@ void SerializerTest::removeDirectory(QString const &dirName)
 }
 
 void SerializerTest::SetUp() {
+	mOldTempFolder = SettingsManager::value("temp").toString();
+	mNewTempFolder = QDir::currentPath() + "/unsaved";
+	SettingsManager::setValue("temp", mNewTempFolder);
+
 	mSerializer = new Serializer("saveFile");
 }
 
@@ -35,6 +40,9 @@ void SerializerTest::TearDown() {
 	delete mSerializer;
 
 	QFile::remove("saveFile.qrs");
+	QDir().rmdir(mNewTempFolder);
+
+	SettingsManager::setValue("temp", mOldTempFolder);
 }
 
 TEST_F(SerializerTest, saveAndLoadFromDiskTest) {
@@ -85,7 +93,7 @@ TEST_F(SerializerTest, removeFromDiskTest) {
 	mSerializer->decompressFile("saveFile.qrs");
 	mSerializer->removeFromDisk(id2);
 
-	//EXPECT_FALSE(QFile::exists("../unsaved/tree/logical/editor1/diagram2/element2/id2"));
-	//EXPECT_FALSE(QDir().exists("../unsaved/tree/logical/editor1/diagram2"));
+	//EXPECT_FALSE(QFile::exists("unsaved/tree/logical/editor1/diagram2/element2/id2"));
+	//EXPECT_FALSE(QDir().exists("unsaved/tree/logical/editor1/diagram2"));
 	EXPECT_TRUE(true);
 }

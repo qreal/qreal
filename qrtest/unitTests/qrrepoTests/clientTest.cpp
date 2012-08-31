@@ -4,6 +4,7 @@
 #include "clientTest.h"
 #include "../../../qrrepo/private/classes/object.h"
 #include "../../../qrkernel/exception/exception.h"
+#include "../../../qrkernel/settingsManager.h"
 
 using namespace qrRepo;
 using namespace details;
@@ -51,6 +52,10 @@ void ClientTest::removeDirectory(QString const &dirName)
 }
 
 void ClientTest::SetUp() {
+	mOldTempFolder = SettingsManager::value("temp").toString();
+	mNewTempFolder = QDir::currentPath() + "/unsaved";
+	SettingsManager::setValue("temp", mNewTempFolder);
+
 	mSerializer = new Serializer("saveFile");
 
 	Object parentObj(parent, fakeParent);
@@ -123,6 +128,9 @@ void ClientTest::TearDown() {
 
 	QFile::remove("saveFile.qrs");
 	QFile::remove("newSaveFile.qrs");
+	QDir().rmdir(mNewTempFolder);
+
+	SettingsManager::setValue("temp", mOldTempFolder);
 }
 
 TEST_F(ClientTest, replacePropertiesTest) {
@@ -326,12 +334,12 @@ TEST_F(ClientTest, removeIdListTest) {
 	toRemove << child3 << child1_child << child2_child << child3_child;
 	mClient->remove(toRemove);
 
-	//EXPECT_FALSE(QFile::exists("../unsaved/tree/logical/editor2/diagram4/element7/child3_child"));
-	//EXPECT_FALSE(QFile::exists("../unsaved/tree/logical/editor2/diagram3/element4/child3"));
-	//EXPECT_FALSE(QDir().exists("../unsaved/tree/logical/editor2"));
-	//EXPECT_FALSE(QFile::exists("../unsaved/tree/graphical/editor2/diagram3/element5/child1_child"));
-	//EXPECT_FALSE(QFile::exists("../unsaved/tree/graphical/editor2/diagram4/element6/child2_child"));
-	//EXPECT_FALSE(QDir().exists("../unsaved/tree/graphical/editor2"));
+	//EXPECT_FALSE(QFile::exists("unsaved/tree/logical/editor2/diagram4/element7/child3_child"));
+	//EXPECT_FALSE(QFile::exists("unsaved/tree/logical/editor2/diagram3/element4/child3"));
+	//EXPECT_FALSE(QDir().exists("unsaved/tree/logical/editor2"));
+	//EXPECT_FALSE(QFile::exists("unsaved/tree/graphical/editor2/diagram3/element5/child1_child"));
+	//EXPECT_FALSE(QFile::exists("unsaved/tree/graphical/editor2/diagram4/element6/child2_child"));
+	//EXPECT_FALSE(QDir().exists("unsaved/tree/graphical/editor2"));
 	EXPECT_TRUE(true);
 }
 
@@ -615,11 +623,11 @@ TEST_F(ClientTest, saveDiagramsByIdTest) {
 
 	mSerializer->decompressFile("diagram1.qrs");
 
-	EXPECT_TRUE(QFile::exists("../unsaved/tree/graphical/editor1/diagram2/element3/child1"));
-	EXPECT_TRUE(QFile::exists("../unsaved/tree/graphical/editor2/diagram3/element5/child1_child"));
-	EXPECT_TRUE(QFile::exists("../unsaved/tree/graphical/editor2/diagram4/element6/child2_child"));
-	EXPECT_FALSE(QFile::exists("../unsaved/tree/graphical/editor1/diagram1/element2/root"));
-	EXPECT_FALSE(QDir().exists("../unsaved/tree/logical"));
+	EXPECT_TRUE(QFile::exists("unsaved/tree/graphical/editor1/diagram2/element3/child1"));
+	EXPECT_TRUE(QFile::exists("unsaved/tree/graphical/editor2/diagram3/element5/child1_child"));
+	EXPECT_TRUE(QFile::exists("unsaved/tree/graphical/editor2/diagram4/element6/child2_child"));
+	EXPECT_FALSE(QFile::exists("unsaved/tree/graphical/editor1/diagram1/element2/root"));
+	EXPECT_FALSE(QDir().exists("unsaved/tree/logical"));
 
 	QFile::remove("diagram1.qrs");
 }
