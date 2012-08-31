@@ -19,6 +19,9 @@ protected:
 
 	qrRepo::details::Client *mClient;
 	qrRepo::details::Serializer *mSerializer;
+
+	QString mOldTempFolder;
+	QString mNewTempFolder;
 };
 
 }

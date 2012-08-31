@@ -31,3 +31,8 @@ TEST_F(SettingsManagerTest, saveDataTest) {
 	
 	EXPECT_EQ(mSettingsManager->value("debugColor").toString(), "test color");
 }
+
+TEST_F(SettingsManagerTest, defaultValueTest) {
+	QString const val = mSettingsManager->value("aabbccTestProperty", "default value").toString();
+	EXPECT_EQ(val, "default value");
+}

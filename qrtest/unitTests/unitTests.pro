@@ -37,6 +37,9 @@ include(qrrepoTests/qrrepoTests.pri)
 # Unit tests for utils
 include(qrutilsTests/qrutilsTests.pri)
 
+# Unit tests for visual debug support plugin
+include(visualDebugSupportPluginTests/visualDebugSupportPluginTests.pri)
+
 # Example tests
 include(exampleTests/exampleTests.pri)
 
