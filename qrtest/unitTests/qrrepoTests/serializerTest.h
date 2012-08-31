@@ -16,6 +16,9 @@ protected:
 	void removeDirectory(QString const &dirName);
 
 	qrRepo::details::Serializer *mSerializer;
+
+	QString mOldTempFolder;
+	QString mNewTempFolder;
 };
 
 }

@@ -31,8 +31,11 @@ QDomDocument MetamodelGeneratorSupport::loadMetamodelFromFile(QString const &met
 void MetamodelGeneratorSupport::saveMetamodelInFile(QDomDocument const &metamodel,
 		QString const &metamodelPath)
 {
-	QString const dirPath = metamodelPath.mid(0, metamodelPath.lastIndexOf("/"));
-	QDir().mkpath(dirPath);
+	int const slashIndex = metamodelPath.lastIndexOf("/");
+	if (slashIndex > -1) {
+		QString const dirPath = metamodelPath.mid(0, slashIndex);
+		QDir().mkpath(dirPath);
+	}
 
 	OutFile out(metamodelPath);
 	out() << metamodel.toString();

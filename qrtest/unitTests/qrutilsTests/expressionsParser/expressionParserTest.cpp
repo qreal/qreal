@@ -6,7 +6,7 @@ using namespace utils;
 using namespace qrTest;
 
 using ::testing::Exactly;
-using ::testing::_; 
+using ::testing::_;
 
 void ExpressionParserTest::SetUp() {
 	mParser = new ExpressionsParser(&mErrorReporter);
@@ -106,6 +106,15 @@ TEST_F(ExpressionParserTest, parseErrorTest2) {
 	EXPECT_CALL(mErrorReporter, addCritical(_, _)).Times(Exactly(1));
 
 	QString const stream = "2**2";
+	int pos = 0;
+
+	mParser->parseExpression(stream, pos);
+}
+
+TEST_F(ExpressionParserTest, parseErrorTest3) {
+	EXPECT_CALL(mErrorReporter, addCritical(_, _)).Times(Exactly(1));
+
+	QString const stream = "abc + 2";
 	int pos = 0;
 
 	mParser->parseExpression(stream, pos);

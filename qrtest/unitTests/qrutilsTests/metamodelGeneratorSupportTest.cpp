@@ -1,4 +1,7 @@
+#include <QtCore/QFile>
+
 #include "metamodelGeneratorSupportTest.h"
+#include "../../../qrutils/inFile.h"
 
 #include "gtest/gtest.h"
 
@@ -105,7 +108,7 @@ TEST_F(MetamodelGeneratorSupportTest, appendTypesToElementTest) {
 
 	mGenerator->appendTypesToElement(mDocument, container, "contains", "TestDiagram", elementNames);
 
-	QDomNodeList containsElems = mDocument.elementsByTagName("container").at(0).childNodes();
+	QDomNodeList const containsElems = mDocument.elementsByTagName("container").at(0).childNodes();
 	ASSERT_EQ(containsElems.size(), 5);
 
 	QStringList containsElemNames;
@@ -120,9 +123,79 @@ TEST_F(MetamodelGeneratorSupportTest, appendTypesToElementTest) {
 }
 
 TEST_F(MetamodelGeneratorSupportTest, insertElementInDiagramSublevelTest) {
-	QDomElement elem = mDocument.createElement("TestElement");
+	QDomElement const elem = mDocument.createElement("TestElement");
 	mGenerator->insertElementInDiagramSublevel(mDocument ,"nonGraphicTypes", elem);
 
 	ASSERT_EQ(mGenerator->diagramElement(mDocument).childNodes().size(), 2);
 	ASSERT_EQ(mDocument.elementsByTagName("TestElement").size(), 1);
+}
+
+TEST_F(MetamodelGeneratorSupportTest, insertElementsInDiagramSublevelTest) {
+	QDomDocument doc = mGenerator->loadElementsFromString("<diagram><testElem1/><testElem2/><testElem3/><></diagram>");
+
+	mGenerator->insertElementsInDiagramSublevel(mDocument ,"nonGraphicTypes"
+			, mGenerator->diagramElement(doc).childNodes());
+
+	ASSERT_EQ(mGenerator->diagramElement(mDocument).childNodes().size(), 2);
+	ASSERT_EQ(mDocument.elementsByTagName("nonGraphicTypes").size(), 1);
+
+	ASSERT_EQ(mDocument.elementsByTagName("nonGraphicTypes").at(0).childNodes().size(), 3);
+	ASSERT_EQ(mDocument.elementsByTagName("testElem1").size(), 1);
+	ASSERT_EQ(mDocument.elementsByTagName("testElem2").size(), 1);
+	ASSERT_EQ(mDocument.elementsByTagName("testElem3").size(), 1);
+}
+
+TEST_F(MetamodelGeneratorSupportTest, appendElementsTest) {
+	QDomDocument doc = mGenerator->loadElementsFromString("<diagram><testElem1/><testElem2/><testElem3/><></diagram>");
+
+	mGenerator->appendElements(mGenerator->diagramElement(mDocument), mGenerator->diagramElement(doc).childNodes());
+
+	ASSERT_EQ(mGenerator->diagramElement(mDocument).childNodes().size(), 4);
+	ASSERT_EQ(mDocument.elementsByTagName("testElem1").size(), 1);
+	ASSERT_EQ(mDocument.elementsByTagName("testElem2").size(), 1);
+	ASSERT_EQ(mDocument.elementsByTagName("testElem3").size(), 1);
+}
+
+TEST_F(MetamodelGeneratorSupportTest, diagramElementTest) {
+	QDomElement const elem = mGenerator->diagramElement(mDocument);
+
+	ASSERT_EQ(elem.nodeName(), "diagram");
+}
+
+TEST_F(MetamodelGeneratorSupportTest, loadElementsFromStringTest) {
+	ASSERT_EQ(mDocument.elementsByTagName("diagram").size(), 1);
+	ASSERT_EQ(mDocument.elementsByTagName("graphicTypes").size(), 1);
+	ASSERT_EQ(mDocument.elementsByTagName("node").size(), 3);
+	ASSERT_EQ(mDocument.elementsByTagName("edge").size(), 2);
+	ASSERT_EQ(mDocument.elementsByTagName("labels").size(), 2);
+	ASSERT_EQ(mDocument.elementsByTagName("container").size(), 1);
+	ASSERT_EQ(mDocument.elementsByTagName("property").size(), 3);
+}
+
+TEST_F(MetamodelGeneratorSupportTest, loadAndSaveMetamodelInFileTest) {
+	QFile file("testMetamodelFile");
+	file.open(QIODevice::ReadWrite);
+
+	file.write("<diagram>");
+	file.write("<graphicTypes>");
+	file.write("</graphicTypes>");
+	file.write("<logicTypes>");
+	file.write("</logicTypes>");
+	file.write("</diagram>");
+	file.close();
+
+	QDomDocument metamodel = mGenerator->loadMetamodelFromFile("testMetamodelFile");
+	QFile::remove("testMetamodelFile");
+
+	ASSERT_EQ(metamodel.elementsByTagName("diagram").size(), 1);
+	ASSERT_EQ(metamodel.elementsByTagName("graphicTypes").size(), 1);
+	ASSERT_EQ(metamodel.elementsByTagName("logicTypes").size(), 1);
+	ASSERT_EQ(metamodel.elementsByTagName("diagram").at(0).childNodes().size(), 2);
+
+	mGenerator->saveMetamodelInFile(metamodel, "savedTestMetamodel");
+	QString const savedData = InFile::readAll("savedTestMetamodel");
+
+	QFile::remove("savedTestMetamodel");
+
+	ASSERT_EQ(savedData, "<diagram>\n <graphicTypes/>\n <logicTypes/>\n</diagram>\n");
 }
