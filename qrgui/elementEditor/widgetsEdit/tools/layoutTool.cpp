@@ -180,10 +180,11 @@ void LayoutTool::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 void LayoutTool::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
 	if (event->mimeData()->hasFormat("application/x-qreal/widgetEditor")) {
-		event->acceptProposedAction();
 		if (mHelper) {
 			mHelper->setDragPos(event->pos());
+			update();
 		}
+		event->acceptProposedAction();
 	} else {
 		event->ignore();
 	}

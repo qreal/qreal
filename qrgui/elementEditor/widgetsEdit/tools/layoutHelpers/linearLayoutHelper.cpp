@@ -63,6 +63,8 @@ void LinearLayoutHelper::dropItem(Tool *item)
 
 void LinearLayoutHelper::resetLayout(QGraphicsLayout *layout)
 {
+	LayoutHelperBase::resetLayout(layout);
+
 	mTool->setLayout(NULL);
 	mLayout = dynamic_cast<QGraphicsLinearLayout *>(layout);
 	if (!mLayout || mLayout->orientation() != mOrientation) {
@@ -105,9 +107,9 @@ void LinearLayoutHelper::generateAttachedProperty(QDomElement &element, Tool *to
 	element.setAttribute("index", index);
 }
 
-void LinearLayoutHelper::onToolResized(const QRectF &newGeometrry)
+void LinearLayoutHelper::onToolResized(const QRectF &newGeometry)
 {
-	Q_UNUSED(newGeometrry);
+	Q_UNUSED(newGeometry);
 }
 
 void LinearLayoutHelper::insertItem(int index, Tool *item)

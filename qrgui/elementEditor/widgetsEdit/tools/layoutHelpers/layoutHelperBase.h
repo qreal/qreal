@@ -20,11 +20,12 @@ public:
 	virtual ~LayoutHelperBase() {}
 
 	void setDragPos(QPointF const &pos);
+	void disconnectHelper();
 
 	virtual void drawCurrentDropPosition(QPainter *painter) = 0;
 	virtual void dropItem(Tool *item) = 0;
 
-	virtual void resetLayout(QGraphicsLayout *layout) = 0;
+	virtual void resetLayout(QGraphicsLayout *layout);
 
 	virtual void startChildDrag(Tool *item) = 0;
 	virtual void finishChildDrag(bool success) = 0;

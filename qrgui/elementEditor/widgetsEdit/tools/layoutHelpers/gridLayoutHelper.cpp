@@ -1,7 +1,8 @@
-#include "gridLayoutHelper.h"
+#include <QtCore/QDebug>
+#include <QtGui/QPainter>
+#include <QtGui/QWidget>
 
-#include <QPainter>
-#include <QWidget>
+#include "gridLayoutHelper.h"
 
 using namespace Ui::WidgetsEdit;
 
@@ -34,6 +35,8 @@ void GridLayoutHelper::dropItem(Tool *item)
 
 void GridLayoutHelper::resetLayout(QGraphicsLayout *layout)
 {
+	LayoutHelperBase::resetLayout(layout);
+
 	mTool->setLayout(NULL);
 	mLayout = dynamic_cast<QGraphicsGridLayout *>(layout);
 	if (!mLayout) {
@@ -89,9 +92,9 @@ void GridLayoutHelper::generateAttachedProperty(QDomElement &element, Tool *tool
 	element.setAttribute("column", index.second);
 }
 
-void GridLayoutHelper::onToolResized(const QRectF &newGeometrry)
+void GridLayoutHelper::onToolResized(const QRectF &newGeometry)
 {
-	Q_UNUSED(newGeometrry)
+	Q_UNUSED(newGeometry)
 	updateGrid();
 }
 
@@ -166,23 +169,29 @@ void GridLayoutHelper::insertItem(Tool *item, int row, int column)
 			columnShift = 1;
 		}
 		newLayout->addItem(item, row, column);
-		newLayout->setAlignment(item, Qt::AlignHCenter | Qt::AlignVCenter);
+		newLayout->setAlignment(item, Qt::AlignVCenter);
 
-		for (int row = 0; row < mLayout->rowCount(); ++row) {
-			for (int column = 0; column < mLayout->columnCount(); ++column) {
-				QGraphicsLayoutItem *item = mLayout->itemAt(row, column);
-				if (item) {
-					newLayout->addItem(item, row + rowShift, column + columnShift);
+		for (int r = 0; r < mLayout->rowCount(); ++r) {
+			for (int c = 0; c < mLayout->columnCount(); ++c) {
+				QGraphicsLayoutItem *copiedItem = mLayout->itemAt(r, c);
+				if (copiedItem) {
+					newLayout->addItem(copiedItem, r + rowShift
+						, c + columnShift, Qt::AlignVCenter);
 				}
 			}
+			newLayout->setRowAlignment(r, Qt::AlignVCenter);
 		}
 
+		mLayout = newLayout;
 		mTool->setLayout(newLayout);
 		mTool->setMinimumSize(newLayout->minimumSize());
-		mLayout = newLayout;
 	} else {
 		mLayout->addItem(item, row, column);
-		mLayout->setAlignment(item, Qt::AlignHCenter | Qt::AlignVCenter);
+		mLayout->setRowAlignment(row, Qt::AlignVCenter);
+		mLayout->setAlignment(item, Qt::AlignVCenter);
+	}
+	for (int r = 0; r < mLayout->rowCount(); ++r) {
+		mLayout->setRowAlignment(r, Qt::AlignVCenter);
 	}
 }
 

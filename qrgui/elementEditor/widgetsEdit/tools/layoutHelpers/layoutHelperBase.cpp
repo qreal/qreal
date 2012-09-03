@@ -5,7 +5,11 @@ using namespace Ui::WidgetsEdit;
 LayoutHelperBase::LayoutHelperBase(LayoutTool *tool)
 	: mTool(tool)
 {
-	connect(mTool, SIGNAL(geometryChanged()), this, SLOT(onGeometryChanged()));
+}
+
+void LayoutHelperBase::disconnectHelper()
+{
+	disconnect(mTool, SIGNAL(geometryChanged()), this, SLOT(onGeometryChanged()));
 }
 
 void LayoutHelperBase::setDragPos(const QPointF &pos)
@@ -16,4 +20,10 @@ void LayoutHelperBase::setDragPos(const QPointF &pos)
 void LayoutHelperBase::onGeometryChanged()
 {
 	onToolResized(mTool->geometry());
+}
+
+void LayoutHelperBase::resetLayout(QGraphicsLayout *layout)
+{
+	Q_UNUSED(layout);
+	connect(mTool, SIGNAL(geometryChanged()), this, SLOT(onGeometryChanged()));
 }

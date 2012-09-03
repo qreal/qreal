@@ -55,6 +55,10 @@ void LayoutHelperFactory::setLayout(LayoutType const type)
 		break;
 	}
 
+	// TODO: call only needed disconnection
+	mGridHelper->disconnectHelper();
+	mVerticalHelper->disconnectHelper();
+	mHorizontalHelper->disconnectHelper();
 	if (helper) {
 		helper->resetLayout(layout);
 	} else {

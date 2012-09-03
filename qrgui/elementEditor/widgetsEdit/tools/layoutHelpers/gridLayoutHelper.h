@@ -30,7 +30,7 @@ public:
 	virtual void generateAttachedProperty(QDomElement &element, Tool *tool);
 
 protected:
-	virtual void onToolResized(const QRectF &newGeometrry);
+	virtual void onToolResized(const QRectF &newGeometry);
 
 private:
 	QRectF determineCell();
