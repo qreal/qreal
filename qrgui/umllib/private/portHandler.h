@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "../models/graphicalModelAssistApi.h"
+#include "../../models/graphicalModelAssistApi.h"
 #include <QPointF>
 
 /**
