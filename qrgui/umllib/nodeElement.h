@@ -19,9 +19,9 @@
 #include "../editorPluginInterface/elementImpl.h"
 #include "embedded/linkers/embeddedLinker.h"
 
-#include "sceneGridHandler.h"
-#include "umlPortHandler.h"
-#include "portHandler.h"
+#include "private/sceneGridHandler.h"
+#include "private/umlPortHandler.h"
+#include "private/portHandler.h"
 
 #include "serializationData.h"
 
@@ -33,10 +33,13 @@ public:
 	NodeElement(ElementImpl *impl);
 	virtual ~NodeElement();
 
+	/**
+	 * Makes copy of current NodeElement.
+	 * @param toCursorPos Indicates if need to place new element at cursor position.
+	 * @param searchForParents Parameter of createElement method in EditorViewScene.
+	 * @return Copy of current NodeElement.
+	 */
 	NodeElement *clone(bool toCursorPos = false, bool searchForParents = true);
-	void copyChildren(NodeElement *source);
-	void copyEdges(NodeElement *source);
-	void copyProperties(NodeElement *source);
 
 	QMap<QString, QVariant> properties();
 
@@ -62,8 +65,7 @@ public:
 
 	QPointF const portPos(qreal id) const;
 	QPointF const nearestPort(QPointF const &location) const;
-	//TODO: rename method to portNumber
-	static int portId(qreal id);
+	static int portNumber(qreal id);
 	qreal portId(QPointF const &location) const;
 
 	QList<EdgeElement *> getEdges();

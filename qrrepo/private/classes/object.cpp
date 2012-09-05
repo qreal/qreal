@@ -189,9 +189,9 @@ void Object::removeTemporaryRemovedLinksAt(QString const &direction)
 
 void Object::removeTemporaryRemovedLinks()
 {
-	temporaryRemovedLinksAt("from");
-	temporaryRemovedLinksAt("to");
-	temporaryRemovedLinksAt(QString());
+	removeTemporaryRemovedLinksAt("from");
+	removeTemporaryRemovedLinksAt("to");
+	removeTemporaryRemovedLinksAt(QString());
 }
 
 bool Object::hasProperty(const QString &name, bool sensitivity, bool regExpression) const
