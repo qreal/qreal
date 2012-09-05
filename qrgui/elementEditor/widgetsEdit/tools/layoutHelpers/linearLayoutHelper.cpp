@@ -1,7 +1,7 @@
-#include "linearLayoutHelper.h"
+#include <QtGui/QWidget>
+#include <QtGui/QPainter>
 
-#include <QWidget>
-#include <QPainter>
+#include "linearLayoutHelper.h"
 
 using namespace Ui::WidgetsEdit;
 
@@ -78,6 +78,7 @@ void LinearLayoutHelper::resetLayout(QGraphicsLayout *layout)
 		insertItem(-1, tool);
 	}
 	mTool->setLayout(mLayout);
+	mLayout->setPreferredSize(mTool->geometry().width(), mTool->geometry().height());
 	mTool->setMinimumSize(mLayout->minimumSize());
 }
 
@@ -109,13 +110,13 @@ void LinearLayoutHelper::generateAttachedProperty(QDomElement &element, Tool *to
 
 void LinearLayoutHelper::onToolResized(const QRectF &newGeometry)
 {
-	Q_UNUSED(newGeometry);
+	mLayout->setPreferredSize(newGeometry.width(), newGeometry.height());
 }
 
 void LinearLayoutHelper::insertItem(int index, Tool *item)
 {
 	mLayout->insertItem(index, item);
-	mLayout->setAlignment(item, Qt::AlignHCenter | Qt::AlignVCenter);
+	mLayout->setAlignment(item, Qt::AlignCenter);
 }
 
 int LinearLayoutHelper::findTool(Tool *tool) const

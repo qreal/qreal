@@ -51,6 +51,7 @@ void GridLayoutHelper::resetLayout(QGraphicsLayout *layout)
 		insertItem(tool, row++, 0);
 	}
 	mTool->setLayout(mLayout);
+	mLayout->setPreferredSize(mTool->geometry().width(), mTool->geometry().height());
 	mTool->setMinimumSize(mLayout->minimumSize());
 
 	updateGrid();
@@ -71,6 +72,7 @@ void GridLayoutHelper::startChildDrag(Tool *item)
 					index++;
 				}
 				mLayout->removeAt(index);
+				updateGrid();
 
 				return;
 			}
@@ -94,7 +96,7 @@ void GridLayoutHelper::generateAttachedProperty(QDomElement &element, Tool *tool
 
 void GridLayoutHelper::onToolResized(const QRectF &newGeometry)
 {
-	Q_UNUSED(newGeometry)
+	mLayout->setPreferredSize(newGeometry.width(), newGeometry.height());
 	updateGrid();
 }
 
@@ -117,8 +119,9 @@ QRectF GridLayoutHelper::determineCell()
 		return QRectF(left, top, right - left, bottom - top);
 	}
 
-	//moving forward by columns while
-	// the cell is occupied
+	// Moving forward by columns while the cell is occupied.
+	// This behaviour is hardcoded, it is incorrect.
+	// TODO: think about correct behaviour
 	while (mCurrentColumn < mColumns.count() &&
 			mLayout->itemAt(mCurrentRow - 1, mCurrentColumn - 1)) {
 		++mCurrentColumn;
@@ -169,29 +172,27 @@ void GridLayoutHelper::insertItem(Tool *item, int row, int column)
 			columnShift = 1;
 		}
 		newLayout->addItem(item, row, column);
-		newLayout->setAlignment(item, Qt::AlignVCenter);
+		newLayout->setAlignment(item, Qt::AlignCenter);
 
 		for (int r = 0; r < mLayout->rowCount(); ++r) {
 			for (int c = 0; c < mLayout->columnCount(); ++c) {
 				QGraphicsLayoutItem *copiedItem = mLayout->itemAt(r, c);
 				if (copiedItem) {
 					newLayout->addItem(copiedItem, r + rowShift
-						, c + columnShift, Qt::AlignVCenter);
+						, c + columnShift, Qt::AlignCenter);
 				}
 			}
-			newLayout->setRowAlignment(r, Qt::AlignVCenter);
+			newLayout->setRowAlignment(r, Qt::AlignCenter);
 		}
 
 		mLayout = newLayout;
 		mTool->setLayout(newLayout);
+		mLayout->setPreferredSize(mTool->geometry().width(), mTool->geometry().height());
 		mTool->setMinimumSize(newLayout->minimumSize());
 	} else {
 		mLayout->addItem(item, row, column);
-		mLayout->setRowAlignment(row, Qt::AlignVCenter);
-		mLayout->setAlignment(item, Qt::AlignVCenter);
-	}
-	for (int r = 0; r < mLayout->rowCount(); ++r) {
-		mLayout->setRowAlignment(r, Qt::AlignVCenter);
+		mLayout->setRowAlignment(row, Qt::AlignCenter);
+		mLayout->setAlignment(item, Qt::AlignCenter);
 	}
 }
 
