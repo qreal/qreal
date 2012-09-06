@@ -3,9 +3,9 @@
 #include "../pushButton.h"
 #include "buttonPropertyManagerBase.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class PushButtonPropertyManager : public ButtonPropertyManagerBase

@@ -1,6 +1,6 @@
 #include "label.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 Label::Label(ToolController *controller)
 	: Frame(new QLabel("label"), controller)

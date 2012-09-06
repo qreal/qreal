@@ -50,6 +50,8 @@
         <file>icons/widgetsEditor/scrollArea.png</file>
         <file>icons/widgetsEditor/spinBox.png</file>
         <file>icons/widgetsEditor/widget.png</file>
+        <file>icons/widgetsEditor/horizontalSpacer.png</file>
+        <file>icons/widgetsEditor/verticalSpacer.png</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>

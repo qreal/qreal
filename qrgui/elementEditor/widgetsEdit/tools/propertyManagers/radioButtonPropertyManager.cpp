@@ -1,6 +1,6 @@
 #include "radioButtonPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 RadioButtonPropertyManager::RadioButtonPropertyManager(RadioButton *radioButton)
 	: ButtonPropertyManagerBase(radioButton)

@@ -3,6 +3,8 @@
 #include "elementEditor.h"
 #include "../../qrutils/outFile.h"
 
+using namespace qReal;
+
 ElementEditor::ElementEditor(const QPersistentModelIndex &index
 		, const int &role, QWidget *parent)
 	: QWidget(parent), mIndex(index), mRole(role)
@@ -27,7 +29,7 @@ ShapeEdit *ElementEditor::shapeEditor() const
 	return mShapeEditor;
 }
 
-WidgetsEditor *ElementEditor::widgetEditor() const
+widgetsEdit::WidgetsEditor *ElementEditor::widgetEditor() const
 {
 	return mWidgetsEditor;
 }
@@ -96,10 +98,10 @@ void ElementEditor::onWidgetBasedButtonClicked()
 {
 	mWidgetBased = true;
 	if (mOpenedFromMetaEditor) {
-		mWidgetsEditor = new WidgetsEditor(mIndex, mRole);
+		mWidgetsEditor = new widgetsEdit::WidgetsEditor(mIndex, mRole);
 		mShapeEditor = new ShapeEdit(mIndex, mRole, true);
 	} else {
-		mWidgetsEditor = new WidgetsEditor;
+		mWidgetsEditor = new widgetsEdit::WidgetsEditor;
 		mShapeEditor = new ShapeEdit(true);
 	}
 	connect(mShapeEditor, SIGNAL(shapeSaved(QString,QPersistentModelIndex,int))

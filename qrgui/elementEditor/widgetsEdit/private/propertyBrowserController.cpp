@@ -1,7 +1,7 @@
 #include "propertyBrowserController.h"
 #include "../tools/propertyManagers/property.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 PropertyBrowserController::PropertyBrowserController(QtTreePropertyBrowser *browser)
 	: mBrowser(browser)

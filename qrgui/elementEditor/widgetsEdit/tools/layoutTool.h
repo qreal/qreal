@@ -6,9 +6,9 @@
 
 #include "tool.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 int const gridSize = 10;

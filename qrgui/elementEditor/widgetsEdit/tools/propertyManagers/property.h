@@ -5,9 +5,9 @@
 #include <QObject>
 #include <QString>
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class Property

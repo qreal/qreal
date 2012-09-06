@@ -1,6 +1,6 @@
 #include "property.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 Property::Property(const QString &name, int type, QtVariantProperty *qtProperty)
 	: mName(name), mType(type), mQtProperty(qtProperty)

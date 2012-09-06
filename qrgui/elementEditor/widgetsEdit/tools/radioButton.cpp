@@ -1,6 +1,6 @@
 #include "radioButton.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 RadioButton::RadioButton(ToolController *controller)
 	: Tool(new QRadioButton("radioButton"), controller)

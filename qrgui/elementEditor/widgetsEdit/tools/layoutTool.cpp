@@ -7,7 +7,7 @@
 #include "../private/toolFactory.h"
 #include "layoutHelpers/layoutHelperFactory.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 LayoutTool::LayoutTool(QWidget *widget, ToolController *controller
 		, QGraphicsItem *parent)

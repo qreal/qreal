@@ -3,9 +3,9 @@
 #include "../frame.h"
 #include "layoutToolPropertyManager.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class FramePropertyManager : public LayoutToolPropertyManager

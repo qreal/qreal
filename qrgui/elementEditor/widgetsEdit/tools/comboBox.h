@@ -4,9 +4,9 @@
 
 #include "tool.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class ComboBox : public Tool

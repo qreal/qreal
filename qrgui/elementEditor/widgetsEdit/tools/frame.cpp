@@ -1,6 +1,6 @@
 #include "frame.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 Frame::Frame(ToolController *controller)
 	: LayoutTool(new QFrame, controller)

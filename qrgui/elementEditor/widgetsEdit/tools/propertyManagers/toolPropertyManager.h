@@ -6,9 +6,9 @@
 #include <QPair>
 #include <QVariant>
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class PropertyManagerBase;

@@ -5,9 +5,9 @@
 
 #include "../umllib/sdfRenderer.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class RootWidget :public QWidget

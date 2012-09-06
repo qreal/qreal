@@ -4,7 +4,7 @@
 #include "toolFactory.h"
 #include "../tools/tool.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 ToolList::ToolList(QWidget *parent)
 	: QListWidget(parent)

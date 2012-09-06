@@ -1,6 +1,6 @@
 #include "comboBox.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 ComboBox::ComboBox(ToolController *controller)
 	: Tool(new QComboBox, controller)

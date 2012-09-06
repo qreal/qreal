@@ -15,6 +15,8 @@
 #include "../../../../qrutils/outFile.h"
 #include "../../../../qrutils/xmlUtils.h"
 
+using namespace qReal::widgetsEdit;
+
 WidgetsEditor::WidgetsEditor(const QPersistentModelIndex &index
 		, const int &role, QWidget *parent)
 	: QWidget(parent), mUi(new Ui::WidgetsEditor), mIndex(index), mRole(role)
@@ -44,8 +46,8 @@ QWidget *WidgetsEditor::deserializeWidget(QDomDocument const &document)
 	QDomElement rootElement = widgetTemplateElement.firstChild().toElement();
 	QDomElement shapeElement = rootElement.nextSiblingElement();
 	return shapeElement.isNull()
-			? Ui::WidgetsEdit::ToolFactory::instance()->deserializeWidget(rootElement)
-			: Ui::WidgetsEdit::ToolFactory::instance()->deserializeWidget(rootElement, shapeElement);
+			? ToolFactory::instance()->deserializeWidget(rootElement)
+			: ToolFactory::instance()->deserializeWidget(rootElement, shapeElement);
 }
 
 void WidgetsEditor::keyPressEvent(QKeyEvent *event)

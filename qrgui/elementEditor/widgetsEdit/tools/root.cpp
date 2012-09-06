@@ -2,7 +2,7 @@
 
 #include <QGroupBox>
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 Root::Root(ToolController *controller)
 	: LayoutTool(new RootWidget, controller)

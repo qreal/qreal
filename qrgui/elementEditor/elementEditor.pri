@@ -71,6 +71,8 @@ HEADERS += \
 	elementEditor/widgetsEdit/tools/propertyManagers/spinBoxPropertyManager.h \
 	elementEditor/widgetsEdit/tools/propertyManagers/doubleSpinBoxPropertyManager.h \
 	elementEditor/widgetsEdit/tools/propertyManagers/labelPropertyManager.h \
+    elementEditor/widgetsEdit/tools/spacer.h \
+    elementEditor/widgetsEdit/tools/propertyManagers/spacerPropertyManager.h
 
 SOURCES += \
 	elementEditor/elementEditor.cpp \
@@ -144,6 +146,8 @@ SOURCES += \
 	elementEditor/widgetsEdit/tools/propertyManagers/spinBoxPropertyManager.cpp \
 	elementEditor/widgetsEdit/tools/propertyManagers/doubleSpinBoxPropertyManager.cpp \
 	elementEditor/widgetsEdit/tools/propertyManagers/labelPropertyManager.cpp \
+    elementEditor/widgetsEdit/tools/spacer.cpp \
+    elementEditor/widgetsEdit/tools/propertyManagers/spacerPropertyManager.cpp
 
 
 FORMS += \

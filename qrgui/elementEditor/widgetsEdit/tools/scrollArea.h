@@ -4,9 +4,9 @@
 
 #include "abstractScrollArea.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 int const SCROLL_AREA_DEFAULT_WIDTH = 150;

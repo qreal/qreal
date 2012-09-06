@@ -5,9 +5,9 @@
 #include "abstractScrollArea.h"
 #include "../private/toolController.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class PlainTextEdit : public AbstractScrollArea

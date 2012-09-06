@@ -1,6 +1,6 @@
 #include "rootPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 RootPropertyManager::RootPropertyManager(Root *root)
 	: LayoutToolPropertyManager(root)

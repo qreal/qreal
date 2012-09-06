@@ -1,6 +1,6 @@
 #include "scrollArea.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 ScrollArea::ScrollArea(ToolController *controller)
 	: AbstractScrollArea(new QScrollArea, controller)

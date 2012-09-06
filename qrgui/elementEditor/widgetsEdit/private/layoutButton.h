@@ -5,9 +5,9 @@
 
 #include "../tools/layoutHelpers/layoutTypes.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class LayoutButton : public QPushButton

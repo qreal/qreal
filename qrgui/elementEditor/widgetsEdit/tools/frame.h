@@ -4,9 +4,9 @@
 
 #include "layoutTool.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 int const FRAME_DEFAULT_WIDTH = 150;

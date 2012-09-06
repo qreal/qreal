@@ -1,6 +1,6 @@
 #include "pushButton.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 PushButton::PushButton(ToolController *controller)
 	: Tool(new QPushButton("pushButton"), controller)

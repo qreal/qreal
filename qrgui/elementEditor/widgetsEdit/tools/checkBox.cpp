@@ -1,6 +1,6 @@
 #include "checkBox.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 CheckBox::CheckBox(ToolController *controller)
 	: Tool(new QCheckBox("checkBox"), controller)

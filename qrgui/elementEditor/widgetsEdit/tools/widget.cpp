@@ -1,6 +1,6 @@
 #include "widget.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 Widget::Widget(ToolController *controller)
 	: LayoutTool(new QWidget, controller)

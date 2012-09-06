@@ -4,9 +4,9 @@
 
 #include "../layoutTool.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class LayoutTool;

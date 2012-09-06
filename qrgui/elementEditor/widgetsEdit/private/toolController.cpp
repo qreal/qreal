@@ -4,7 +4,7 @@
 #include "../tools/layoutHelpers/layoutHelperFactory.h"
 #include "../tools/propertyManagers/toolPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 ToolController::ToolController()
 	: mDraggedChild(NULL)

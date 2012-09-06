@@ -6,6 +6,9 @@
 #include "shapeEdit/shapeEdit.h"
 #include "widgetsEdit/widgetsEditor.h"
 
+namespace qReal
+{
+
 class ElementEditor : public QWidget
 {
 	Q_OBJECT
@@ -16,7 +19,7 @@ public:
 	ElementEditor(QWidget *parent = 0);
 
 	ShapeEdit *shapeEditor() const;
-	WidgetsEditor *widgetEditor() const;
+	widgetsEdit::WidgetsEditor *widgetEditor() const;
 	bool widgetBased() const;
 	void load(QString const &data);
 
@@ -52,9 +55,10 @@ private:
 	bool mWidgetBased;
 	QStackedLayout *mLayout;
 	QWidget *mStartWidget;
-	WidgetsEditor *mWidgetsEditor;
+	widgetsEdit::WidgetsEditor *mWidgetsEditor;
 	ShapeEdit *mShapeEditor;
 	bool mOpenedFromMetaEditor;
 
 };
 
+}

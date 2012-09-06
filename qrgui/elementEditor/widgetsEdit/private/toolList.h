@@ -2,9 +2,9 @@
 
 #include <QtGui/QListWidget>
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class ToolList : public QListWidget

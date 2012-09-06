@@ -3,9 +3,9 @@
 #include "../doubleSpinBox.h"
 #include "abstractSpinBoxPropertyManager.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class DoubleSpinBoxPropertyManager : public AbstractSpinBoxPropertyManager

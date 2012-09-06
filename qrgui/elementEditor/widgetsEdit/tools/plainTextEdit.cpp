@@ -1,6 +1,6 @@
 #include "plainTextEdit.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 PlainTextEdit::PlainTextEdit(ToolController *controller)
 	: AbstractScrollArea(new QPlainTextEdit, controller)

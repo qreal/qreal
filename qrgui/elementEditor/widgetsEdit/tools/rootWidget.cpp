@@ -3,7 +3,7 @@
 
 #include "rootWidget.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 RootWidget::RootWidget()
 	: QWidget(), mRenderer(NULL)

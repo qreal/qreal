@@ -1,6 +1,6 @@
 #include "doubleSpinBoxPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 DoubleSpinBoxPropertyManager::DoubleSpinBoxPropertyManager(DoubleSpinBox *doubleSpinBox)
 	: AbstractSpinBoxPropertyManager(doubleSpinBox)

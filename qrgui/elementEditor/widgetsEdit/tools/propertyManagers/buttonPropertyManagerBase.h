@@ -5,9 +5,9 @@
 
 #include <QAbstractButton>
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class ButtonPropertyManagerBase : public ToolPropertyManager

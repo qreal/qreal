@@ -1,6 +1,6 @@
 #include "layoutHelperFactory.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 LayoutHelperFactory::LayoutHelperFactory(LayoutTool *tool)
 	: mTool(tool), mType(NoLayout)

@@ -1,6 +1,6 @@
 #include "buttonPropertyManagerBase.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 ButtonPropertyManagerBase::ButtonPropertyManagerBase(Tool *buttonTool)
 	: ToolPropertyManager(buttonTool)

@@ -1,6 +1,6 @@
 #include "labelPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 LabelPropertyManager::LabelPropertyManager(Label *label)
 	: FramePropertyManager(label)

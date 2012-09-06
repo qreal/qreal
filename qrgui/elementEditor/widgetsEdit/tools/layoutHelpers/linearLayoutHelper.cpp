@@ -3,7 +3,7 @@
 
 #include "linearLayoutHelper.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 LinearLayoutHelper::LinearLayoutHelper(LayoutTool *tool
 		, Qt::Orientation const orientation)

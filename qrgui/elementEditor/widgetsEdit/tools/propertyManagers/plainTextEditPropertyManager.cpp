@@ -1,6 +1,6 @@
 #include "plainTextEditPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 PlainTextEditPropertyManager::PlainTextEditPropertyManager(PlainTextEdit *plainTextEdit)
 	: AbstractScrollAreaPropertyManager(plainTextEdit)

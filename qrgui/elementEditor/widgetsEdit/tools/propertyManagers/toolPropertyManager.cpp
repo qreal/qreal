@@ -1,6 +1,6 @@
 #include "toolPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 ToolPropertyManager::ToolPropertyManager(Tool *tool)
 	: PropertyManagerBase(tool)

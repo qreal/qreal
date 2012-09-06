@@ -1,6 +1,6 @@
 #include "layoutToolPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 LayoutToolPropertyManager::LayoutToolPropertyManager(LayoutTool *LayoutTool)
 	: ToolPropertyManager(LayoutTool)

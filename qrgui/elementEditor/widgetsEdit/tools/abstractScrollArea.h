@@ -4,9 +4,9 @@
 
 #include "frame.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class AbstractScrollArea : public Frame

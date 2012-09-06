@@ -1,6 +1,6 @@
 #include "widgetPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 WidgetPropertyManager::WidgetPropertyManager(Widget *widget)
 	: LayoutToolPropertyManager(widget)

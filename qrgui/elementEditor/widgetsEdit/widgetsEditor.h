@@ -16,7 +16,10 @@ namespace Ui
 	class WidgetsEditor;
 }
 
-using namespace Ui::WidgetsEdit;
+namespace qReal
+{
+namespace widgetsEdit
+{
 
 class WidgetsEditor : public QWidget
 {
@@ -65,8 +68,11 @@ private:
 	ToolController *mController;
 	LayoutButtons *mLayoutButtons;
 	QPushButton *mShapeButton;
-	Ui::WidgetsEdit::Root *mRoot;
+	Root *mRoot;
 	QPersistentModelIndex const mIndex;
 	int const mRole;
 
 };
+
+}
+}

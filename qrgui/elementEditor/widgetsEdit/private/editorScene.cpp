@@ -2,7 +2,7 @@
 
 #include "editorScene.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 EditorScene::EditorScene(ToolController *controller, QObject *parent)
 	: QGraphicsScene(QRectF(0, 0, SCENE_WIDTH, SCENE_HEIGHT), parent)

@@ -3,9 +3,9 @@
 #include "../root.h"
 #include "layoutToolPropertyManager.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class RootPropertyManager : public LayoutToolPropertyManager

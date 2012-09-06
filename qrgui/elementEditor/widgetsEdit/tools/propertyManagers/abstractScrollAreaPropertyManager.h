@@ -3,9 +3,9 @@
 #include "../abstractScrollArea.h"
 #include "framePropertyManager.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class AbstractScrollAreaPropertyManager : public FramePropertyManager

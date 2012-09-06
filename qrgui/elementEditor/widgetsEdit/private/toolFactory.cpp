@@ -13,6 +13,7 @@
 #include "../tools/spinBox.h"
 #include "../tools/doubleSpinBox.h"
 #include "../tools/label.h"
+#include "../tools/spacer.h"
 #include "../tools/propertyManagers/rootPropertyManager.h"
 #include "../tools/propertyManagers/pushButtonPropertyManager.h"
 #include "../tools/propertyManagers/radioButtonPropertyManager.h"
@@ -27,8 +28,9 @@
 #include "../tools/propertyManagers/spinBoxPropertyManager.h"
 #include "../tools/propertyManagers/doubleSpinBoxPropertyManager.h"
 #include "../tools/propertyManagers/labelPropertyManager.h"
+#include "../tools/propertyManagers/spacerPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 ToolFactory::ToolFactory()
 {
@@ -140,6 +142,20 @@ Tool *ToolFactory::makeItem(const QString &title, ToolController *controller)
 		label->setPropertyManager(manager);
 		return label;
 	}
+	if (title == "Horizontal Spacer") {
+		Spacer *spacer = new Spacer(Qt::Horizontal, controller);
+		SpacerPropertyManager *manager
+				= new SpacerPropertyManager(spacer);
+		spacer->setPropertyManager(manager);
+		return spacer;
+	}
+	if (title == "Vertical Spacer") {
+		Spacer *spacer = new Spacer(Qt::Vertical, controller);
+		SpacerPropertyManager *manager
+				= new SpacerPropertyManager(spacer);
+		spacer->setPropertyManager(manager);
+		return spacer;
+	}
 	if (title == "Root") {
 		return makeRoot(controller);
 	}
@@ -226,6 +242,8 @@ void ToolFactory::initTitles()
 	mTitles << TitleTagPair("Spin Box", "SpinBox");
 	mTitles << TitleTagPair("Double Spin Box", "DoubleSpinBox");
 	mTitles << TitleTagPair("Label", "Label");
+	mTitles << TitleTagPair("Horizontal Spacer", "HorizontalSpacer");
+	mTitles << TitleTagPair("Vertical Spacer", "VerticalSpacer");
 }
 
 void ToolFactory::initItems()

@@ -4,9 +4,9 @@
 
 #include "toolController.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 int const SCENE_WIDTH = 2000;

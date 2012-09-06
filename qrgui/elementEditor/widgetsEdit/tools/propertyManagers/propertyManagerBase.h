@@ -10,9 +10,9 @@
 #include "../tool.h"
 #include "../../qtpropertybrowser/src/QtVariantPropertyManager"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class Tool;

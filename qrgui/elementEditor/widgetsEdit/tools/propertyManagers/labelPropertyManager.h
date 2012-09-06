@@ -3,9 +3,9 @@
 #include "../label.h"
 #include "framePropertyManager.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class LabelPropertyManager : public FramePropertyManager

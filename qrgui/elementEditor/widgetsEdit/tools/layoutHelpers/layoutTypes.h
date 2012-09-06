@@ -1,8 +1,8 @@
 #pragma once
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 enum LayoutType

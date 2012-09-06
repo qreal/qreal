@@ -10,9 +10,9 @@
 #include "../tools/root.h"
 #include "toolController.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 struct TitleTagPair

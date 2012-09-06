@@ -1,6 +1,6 @@
 #include "abstractSpinBoxPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 AbstractSpinBoxPropertyManager::AbstractSpinBoxPropertyManager(
 		AbstractSpinBox *abstractSpinBox)

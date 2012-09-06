@@ -8,7 +8,7 @@
 #include "propertyManagers/toolPropertyManager.h"
 #include "../private/toolFactory.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 Tool::Tool(QWidget *widget, ToolController *controller
 		, QGraphicsItem *parent)

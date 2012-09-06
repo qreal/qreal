@@ -3,9 +3,9 @@
 #include "../plainTextEdit.h"
 #include "abstractScrollAreaPropertyManager.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class PlainTextEditPropertyManager : public AbstractScrollAreaPropertyManager

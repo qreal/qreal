@@ -7,9 +7,9 @@
 
 #include "../private/toolController.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 int const resizeDrift = 5;

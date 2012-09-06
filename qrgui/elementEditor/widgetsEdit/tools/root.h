@@ -7,9 +7,9 @@
 #include "layoutTool.h"
 #include "../../../umllib/sdfRenderer.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 int const ROOT_WIDGET_DEFAULT_WIDTH = 200;

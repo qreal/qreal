@@ -5,9 +5,9 @@
 #include "tool.h"
 #include "../private/toolController.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class CheckBox : public Tool

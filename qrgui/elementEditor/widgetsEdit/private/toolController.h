@@ -7,9 +7,9 @@
 #include "../tools/layoutHelpers/layoutTypes.h"
 #include "propertyBrowserController.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class Tool;

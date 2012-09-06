@@ -1,6 +1,6 @@
 #include "spinBox.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 SpinBox::SpinBox(ToolController *controller)
 	: AbstractSpinBox(new QSpinBox, controller)

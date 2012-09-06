@@ -8,9 +8,9 @@
 #include "../../qtpropertybrowser/src/QtVariantProperty"
 #include "../../qtpropertybrowser/src/QtVariantEditorFactory"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class PropertyManagerBase;

@@ -1,6 +1,6 @@
 #include "layoutHelperBase.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 LayoutHelperBase::LayoutHelperBase(LayoutTool *tool)
 	: mTool(tool)

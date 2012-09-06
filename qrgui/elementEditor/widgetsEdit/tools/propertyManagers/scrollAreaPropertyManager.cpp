@@ -1,6 +1,6 @@
 #include "scrollAreaPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 ScrollAreaPropertyManager::ScrollAreaPropertyManager(ScrollArea *scrollArea)
 	: AbstractScrollAreaPropertyManager(scrollArea)

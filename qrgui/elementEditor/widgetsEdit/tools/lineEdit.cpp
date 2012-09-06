@@ -1,6 +1,6 @@
 #include "lineEdit.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 LineEdit::LineEdit(ToolController *controller)
 	: Tool(new QLineEdit, controller)

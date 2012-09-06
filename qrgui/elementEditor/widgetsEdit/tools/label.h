@@ -5,9 +5,9 @@
 #include "frame.h"
 #include "../private/toolController.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 int const LABEL_DEFAULT_WIDTH = 50;

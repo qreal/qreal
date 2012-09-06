@@ -1,6 +1,6 @@
 #include "layoutButton.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 LayoutButton::LayoutButton(const QString &text, const QIcon &icon
 		, const LayoutType type, QWidget *parent)

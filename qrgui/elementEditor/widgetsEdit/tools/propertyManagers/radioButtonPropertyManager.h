@@ -3,9 +3,9 @@
 #include "../radioButton.h"
 #include "buttonPropertyManagerBase.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class RadioButtonPropertyManager : public ButtonPropertyManagerBase

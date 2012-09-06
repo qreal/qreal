@@ -4,9 +4,9 @@
 
 #include "layoutButton.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class LayoutButtons : public QObject

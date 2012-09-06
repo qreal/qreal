@@ -3,9 +3,9 @@
 #include "../checkBox.h"
 #include "buttonPropertyManagerBase.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class CheckBoxPropertyManager : public ButtonPropertyManagerBase

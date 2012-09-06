@@ -6,9 +6,9 @@
 #include "../layoutTool.h"
 #include "layoutHelperBase.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class LayoutHelperBase;

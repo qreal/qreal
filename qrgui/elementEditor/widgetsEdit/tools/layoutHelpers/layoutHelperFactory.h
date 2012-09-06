@@ -8,9 +8,9 @@
 #include "gridLayoutHelper.h"
 #include "linearLayoutHelper.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class LayoutTool;

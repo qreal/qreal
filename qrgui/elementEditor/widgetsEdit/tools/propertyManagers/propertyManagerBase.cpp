@@ -1,7 +1,8 @@
+
 #include "propertyManagerBase.h"
 #include "../../../../../qrutils/xmlUtils.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 PropertyManagerBase::PropertyManagerBase(Tool *tool)
 	: mTool(tool), mManager(new QtVariantPropertyManager)

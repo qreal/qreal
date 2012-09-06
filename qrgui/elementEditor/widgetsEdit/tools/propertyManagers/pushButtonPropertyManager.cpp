@@ -1,6 +1,6 @@
 #include "pushButtonPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 PushButtonPropertyManager::PushButtonPropertyManager(PushButton *pushButton)
 	: ButtonPropertyManagerBase(pushButton)

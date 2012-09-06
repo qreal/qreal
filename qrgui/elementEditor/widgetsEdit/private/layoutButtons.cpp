@@ -1,6 +1,6 @@
 #include "layoutButtons.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 LayoutButtons::LayoutButtons()
 {

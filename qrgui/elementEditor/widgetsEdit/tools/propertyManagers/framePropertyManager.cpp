@@ -1,6 +1,6 @@
 #include "framePropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 FramePropertyManager::FramePropertyManager(Frame *frame)
 	: LayoutToolPropertyManager(frame)

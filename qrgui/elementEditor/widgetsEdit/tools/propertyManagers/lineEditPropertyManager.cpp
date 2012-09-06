@@ -1,6 +1,6 @@
 #include "lineEditPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 LineEditPropertyManager::LineEditPropertyManager(LineEdit *lineEdit)
 	: ToolPropertyManager(lineEdit)

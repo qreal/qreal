@@ -1,6 +1,6 @@
 #include "checkBoxPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 CheckBoxPropertyManager::CheckBoxPropertyManager(CheckBox *checkBox)
 	: ButtonPropertyManagerBase(checkBox)

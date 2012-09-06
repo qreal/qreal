@@ -3,9 +3,9 @@
 #include "../groupBox.h"
 #include "layoutToolPropertyManager.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class GroupBoxPropertyManager : public LayoutToolPropertyManager

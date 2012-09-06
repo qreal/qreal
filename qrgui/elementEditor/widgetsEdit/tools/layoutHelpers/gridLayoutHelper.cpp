@@ -4,7 +4,7 @@
 
 #include "gridLayoutHelper.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 GridLayoutHelper::GridLayoutHelper(LayoutTool *tool)
 	: LayoutHelperBase(tool), mTool(tool), mLayout(NULL)

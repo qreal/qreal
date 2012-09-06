@@ -1,6 +1,6 @@
 #include "groupBoxPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 GroupBoxPropertyManager::GroupBoxPropertyManager(GroupBox *groupBox)
 	: LayoutToolPropertyManager(groupBox)

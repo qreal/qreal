@@ -5,9 +5,9 @@
 #include "abstractSpinBox.h"
 #include "../private/toolController.h"
 
-namespace Ui
+namespace qReal
 {
-namespace WidgetsEdit
+namespace widgetsEdit
 {
 
 class DoubleSpinBox : public AbstractSpinBox

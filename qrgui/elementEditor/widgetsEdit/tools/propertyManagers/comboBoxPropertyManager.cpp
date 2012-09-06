@@ -1,6 +1,6 @@
 #include "comboBoxPropertyManager.h"
 
-using namespace Ui::WidgetsEdit;
+using namespace qReal::widgetsEdit;
 
 ComboBoxPropertyManager::ComboBoxPropertyManager(ComboBox *comboBox)
 	: ToolPropertyManager(comboBox)
