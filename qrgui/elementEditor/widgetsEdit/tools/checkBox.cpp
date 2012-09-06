@@ -3,7 +3,7 @@
 using namespace qReal::widgetsEdit;
 
 CheckBox::CheckBox(ToolController *controller)
-	: Tool(new QCheckBox("checkBox"), controller)
+	: AbstractButton(new QCheckBox("checkBox"), controller)
 {
 	mCheckBox = dynamic_cast<QCheckBox *>(widget());
 	mIcon = QIcon(":/icons/widgetsEditor/checkBox.png");

@@ -2,7 +2,7 @@
 
 #include <QtGui/QCheckBox>
 
-#include "tool.h"
+#include "abstractButton.h"
 #include "../private/toolController.h"
 
 namespace qReal
@@ -10,7 +10,7 @@ namespace qReal
 namespace widgetsEdit
 {
 
-class CheckBox : public Tool
+class CheckBox : public AbstractButton
 {
 	Q_OBJECT
 

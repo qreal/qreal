@@ -3,9 +3,19 @@
 using namespace qReal::widgetsEdit;
 
 PushButton::PushButton(ToolController *controller)
-	: Tool(new QPushButton("pushButton"), controller)
+	: AbstractButton(new QPushButton("pushButton"), controller)
 {
 	mPushButton = dynamic_cast<QPushButton *>(widget());
 	mIcon = QIcon(":/icons/widgetsEditor/pushButton.png");
 	mTitle = "Push Button";
+}
+
+bool PushButton::isFlat() const
+{
+	return mPushButton->isFlat();
+}
+
+void PushButton::setFlat(bool flat)
+{
+	mPushButton->setFlat(flat);
 }

@@ -3,7 +3,7 @@
 using namespace qReal::widgetsEdit;
 
 RadioButton::RadioButton(ToolController *controller)
-	: Tool(new QRadioButton("radioButton"), controller)
+	: AbstractButton(new QRadioButton("radioButton"), controller)
 {
 	mRadioButton = dynamic_cast<QRadioButton *>(widget());
 	mIcon = QIcon(":/icons/widgetsEditor/radioButton.png");

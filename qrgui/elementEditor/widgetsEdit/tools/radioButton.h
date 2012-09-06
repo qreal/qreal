@@ -2,7 +2,7 @@
 
 #include <QtGui/QRadioButton>
 
-#include "tool.h"
+#include "abstractButton.h"
 #include "../private/toolController.h"
 
 namespace qReal
@@ -10,7 +10,7 @@ namespace qReal
 namespace widgetsEdit
 {
 
-class RadioButton : public Tool
+class RadioButton : public AbstractButton
 {
 	Q_OBJECT
 

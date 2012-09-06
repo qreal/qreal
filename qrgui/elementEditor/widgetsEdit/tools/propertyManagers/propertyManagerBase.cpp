@@ -1,4 +1,3 @@
-
 #include "propertyManagerBase.h"
 #include "../../../../../qrutils/xmlUtils.h"
 

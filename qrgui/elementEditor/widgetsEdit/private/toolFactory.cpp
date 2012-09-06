@@ -14,21 +14,6 @@
 #include "../tools/doubleSpinBox.h"
 #include "../tools/label.h"
 #include "../tools/spacer.h"
-#include "../tools/propertyManagers/rootPropertyManager.h"
-#include "../tools/propertyManagers/pushButtonPropertyManager.h"
-#include "../tools/propertyManagers/radioButtonPropertyManager.h"
-#include "../tools/propertyManagers/checkBoxPropertyManager.h"
-#include "../tools/propertyManagers/groupBoxPropertyManager.h"
-#include "../tools/propertyManagers/scrollAreaPropertyManager.h"
-#include "../tools/propertyManagers/framePropertyManager.h"
-#include "../tools/propertyManagers/widgetPropertyManager.h"
-#include "../tools/propertyManagers/comboBoxPropertyManager.h"
-#include "../tools/propertyManagers/lineEditPropertyManager.h"
-#include "../tools/propertyManagers/plainTextEditPropertyManager.h"
-#include "../tools/propertyManagers/spinBoxPropertyManager.h"
-#include "../tools/propertyManagers/doubleSpinBoxPropertyManager.h"
-#include "../tools/propertyManagers/labelPropertyManager.h"
-#include "../tools/propertyManagers/spacerPropertyManager.h"
 
 using namespace qReal::widgetsEdit;
 
@@ -51,122 +36,66 @@ QListIterator<Tool *> ToolFactory::itemsIterator()
 
 Tool *ToolFactory::makeItem(const QString &title, ToolController *controller)
 {
+	Tool *result = NULL;
 	if (title == "Push Button") {
-		PushButton *pushButton = new PushButton(controller);
-		PushButtonPropertyManager *manager
-				= new PushButtonPropertyManager(pushButton);
-		pushButton->setPropertyManager(manager);
-		return pushButton;
+		result =  new PushButton(controller);
 	}
 	if (title == "Radio Button") {
-		RadioButton *radioButton = new RadioButton(controller);
-		RadioButtonPropertyManager *manager
-				= new RadioButtonPropertyManager(radioButton);
-		radioButton->setPropertyManager(manager);
-		return radioButton;
+		result =  new RadioButton(controller);
 	}
 	if (title == "Check Box") {
-		CheckBox *checkBox = new CheckBox(controller);
-		CheckBoxPropertyManager *manager
-				= new CheckBoxPropertyManager(checkBox);
-		checkBox->setPropertyManager(manager);
-		return checkBox;
+		result =  new CheckBox(controller);
 	}
 	if (title == "Group Box") {
-		GroupBox *groupBox = new GroupBox(controller);
-		GroupBoxPropertyManager *manager
-				= new GroupBoxPropertyManager(groupBox);
-		groupBox->setPropertyManager(manager);
-		return groupBox;
+		result =  new GroupBox(controller);
 	}
 	if (title == "Scroll Area") {
-		ScrollArea *scrollArea = new ScrollArea(controller);
-		ScrollAreaPropertyManager *manager
-				= new ScrollAreaPropertyManager(scrollArea);
-		scrollArea->setPropertyManager(manager);
-		return scrollArea;
+		result =  new ScrollArea(controller);
 	}
 	if (title == "Frame") {
-		Frame *frame = new Frame(controller);
-		FramePropertyManager *manager
-				= new FramePropertyManager(frame);
-		frame->setPropertyManager(manager);
-		return frame;
+		result =  new Frame(controller);
 	}
 	if (title == "Widget") {
-		Widget *widget = new Widget(controller);
-		WidgetPropertyManager *manager
-				= new WidgetPropertyManager(widget);
-		widget->setPropertyManager(manager);
-		return widget;
+		result =  new Widget(controller);
 	}
 	if (title == "Combo Box") {
-		ComboBox *comboBox = new ComboBox(controller);
-		ComboBoxPropertyManager *manager
-				= new ComboBoxPropertyManager(comboBox);
-		comboBox->setPropertyManager(manager);
-		return comboBox;
+		result =  new ComboBox(controller);
 	}
 	if (title == "Line Edit") {
-		LineEdit *lineEdit = new LineEdit(controller);
-		LineEditPropertyManager *manager
-				= new LineEditPropertyManager(lineEdit);
-		lineEdit->setPropertyManager(manager);
-		return lineEdit;
+		result =  new LineEdit(controller);
 	}
 	if (title == "Plain Text Edit") {
-		PlainTextEdit *plainTextEdit = new PlainTextEdit(controller);
-		PlainTextEditPropertyManager *manager
-				= new PlainTextEditPropertyManager(plainTextEdit);
-		plainTextEdit->setPropertyManager(manager);
-		return plainTextEdit;
+		result =  new PlainTextEdit(controller);
 	}
 	if (title == "Spin Box") {
-		SpinBox *spinBox = new SpinBox(controller);
-		SpinBoxPropertyManager *manager
-				= new SpinBoxPropertyManager(spinBox);
-		spinBox->setPropertyManager(manager);
-		return spinBox;
+		result =  new SpinBox(controller);
 	}
 	if (title == "Double Spin Box") {
-		DoubleSpinBox *doubleSpinBox = new DoubleSpinBox(controller);
-		DoubleSpinBoxPropertyManager *manager
-				= new DoubleSpinBoxPropertyManager(doubleSpinBox);
-		doubleSpinBox->setPropertyManager(manager);
-		return doubleSpinBox;
+		result =  new DoubleSpinBox(controller);
 	}
 	if (title == "Label") {
-		Label *label = new Label(controller);
-		LabelPropertyManager *manager
-				= new LabelPropertyManager(label);
-		label->setPropertyManager(manager);
-		return label;
+		result =  new Label(controller);
 	}
 	if (title == "Horizontal Spacer") {
-		Spacer *spacer = new Spacer(Qt::Horizontal, controller);
-		SpacerPropertyManager *manager
-				= new SpacerPropertyManager(spacer);
-		spacer->setPropertyManager(manager);
-		return spacer;
+		result =  new Spacer(Qt::Horizontal, controller);
 	}
 	if (title == "Vertical Spacer") {
-		Spacer *spacer = new Spacer(Qt::Vertical, controller);
-		SpacerPropertyManager *manager
-				= new SpacerPropertyManager(spacer);
-		spacer->setPropertyManager(manager);
-		return spacer;
+		result =  new Spacer(Qt::Vertical, controller);
 	}
+	if (result) {
+		result->raiseLoaded();
+	}
+
 	if (title == "Root") {
-		return makeRoot(controller);
+		result = makeRoot(controller);
 	}
-	return NULL;
+	return result;
 }
 
 Root *ToolFactory::makeRoot(ToolController *controller) const
 {
 	Root *root = new Root(controller);
-	RootPropertyManager *manager = new RootPropertyManager(root);
-	root->setPropertyManager(manager);
+	root->raiseLoaded();
 	return root;
 }
 
@@ -204,7 +133,7 @@ QWidget *ToolFactory::deserializeWidget(const QDomElement &element
 
 QWidget *ToolFactory::deserializeWidget(QWidget *parent, const QDomElement &element)
 {
-	QString title = tagNameToToolTitle(element.tagName());
+	QString const title = tagNameToToolTitle(element.tagName());
 	if (title.isEmpty()) {
 		return NULL;
 	}

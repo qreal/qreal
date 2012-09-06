@@ -1,5 +1,6 @@
 #include "propertyBrowserController.h"
 #include "../tools/propertyManagers/property.h"
+#include "../tools/propertyManagers/propertyManager.h"
 
 using namespace qReal::widgetsEdit;
 
@@ -10,9 +11,9 @@ PropertyBrowserController::PropertyBrowserController(QtTreePropertyBrowser *brow
 {
 }
 
-void PropertyBrowserController::setController(PropertyManagerBase *manager)
+void PropertyBrowserController::setController(PropertyManager *manager)
 {
-	clearExstingManager();
+	clearExistingManager();
 	mCurrentManager = manager;
 	mCurrentManager->onSelect();
 	mBrowser->setFactoryForManager(mCurrentManager->qtPropertyManager(), mFactory);
@@ -22,7 +23,7 @@ void PropertyBrowserController::setController(PropertyManagerBase *manager)
 	}
 }
 
-void PropertyBrowserController::clearExstingManager()
+void PropertyBrowserController::clearExistingManager()
 {
 	mBrowser->clear();
 	if (mCurrentManager) {

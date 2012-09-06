@@ -50,7 +50,6 @@ private:
 
 	QtVariantPropertyManager *mManager;
 	QList<Property *> mProperties;
-
 };
 
 }

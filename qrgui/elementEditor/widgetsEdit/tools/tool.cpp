@@ -5,13 +5,12 @@
 
 #include "tool.h"
 #include "root.h"
-#include "propertyManagers/toolPropertyManager.h"
+#include "propertyManagers/propertyManager.h"
 #include "../private/toolFactory.h"
 
 using namespace qReal::widgetsEdit;
 
-Tool::Tool(QWidget *widget, ToolController *controller
-		, QGraphicsItem *parent)
+Tool::Tool(QWidget *widget, ToolController *controller, QGraphicsItem *parent)
 	: QGraphicsProxyWidget(parent)
 	, mMovable(true), mResizable(true)
 	, mController(controller)
@@ -19,6 +18,14 @@ Tool::Tool(QWidget *widget, ToolController *controller
 	, mPropertyManager(NULL)
 {
 	setWidget(widget);
+}
+
+void Tool::raiseLoaded()
+{
+	emit loaded();
+	mPropertyManager = new PropertyManager(this);
+	connect(this, SIGNAL(propertyChanged(QString,QVariant))
+		, mPropertyManager, SLOT(changeProperty(QString,QVariant)));
 }
 
 QIcon Tool::icon() const
@@ -63,16 +70,9 @@ bool Tool::selected() const
 	return mSelected;
 }
 
-ToolPropertyManager *Tool::propertyManager() const
+PropertyManager *Tool::propertyManager() const
 {
 	return mPropertyManager;
-}
-
-void Tool::setPropertyManager(ToolPropertyManager *manager)
-{
-	mPropertyManager = manager;
-	connect(this, SIGNAL(propertyChanged(QString,QVariant))
-		, mPropertyManager, SLOT(changeProperty(QString,QVariant)));
 }
 
 void Tool::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
@@ -373,4 +373,110 @@ void Tool::resizeTool(QGraphicsSceneMouseEvent *event)
 	}
 
 	resize(QSizeF(newContents.width(), newContents.height()));
+}
+
+QSize Tool::baseSize() const
+{
+	return widget()->baseSize();
+}
+
+QRect Tool::widgetGeometry() const
+{
+	return widget()->geometry();
+}
+
+int Tool::widgetMaximumHeight() const
+{
+	return widget()->maximumHeight();
+}
+
+QSize Tool::widgetMaximumSize() const
+{
+	return widget()->maximumSize();
+}
+
+int Tool::widgetMaximumWidth() const
+{
+	return widget()->maximumWidth();
+}
+
+int Tool::widgetMinimumHeight() const
+{
+	return widget()->minimumHeight();
+}
+
+QSize Tool::widgetMinimumSize() const
+{
+	return widget()->minimumSize();
+}
+
+int Tool::widgetMinimumWidth() const
+{
+	return widget()->minimumWidth();
+}
+
+QSize Tool::sizeIncrement() const
+{
+	return widget()->sizeIncrement();
+}
+
+QString Tool::toolTip() const
+{
+	return widget()->toolTip();
+}
+
+void Tool::setBaseSize(QSize const &size)
+{
+	widget()->setBaseSize(size);
+}
+
+void Tool::setWidgetGeometry(const QRect &rect)
+{
+	widget()->setGeometry(rect);
+}
+
+void Tool::setWidgetMaximumHeight(int height)
+{
+	QGraphicsProxyWidget::setMaximumHeight(height);
+	widget()->setMaximumHeight(height);
+}
+
+void Tool::setWidgetMaximumSize(QSize const &size)
+{
+	QGraphicsProxyWidget::setMaximumSize(size);
+	widget()->setMaximumSize(size);
+}
+
+void Tool::setWidgetMaximumWidth(int width)
+{
+	QGraphicsProxyWidget::setMaximumWidth(width);
+	widget()->setMaximumWidth(width);
+}
+
+void Tool::setWidgetMinimumHeight(int height)
+{
+	QGraphicsProxyWidget::setMinimumHeight(height);
+	widget()->setMinimumHeight(height);
+}
+
+void Tool::setWidgetMinimumSize(QSize const &size)
+{
+	QGraphicsProxyWidget::setMinimumSize(size);
+	widget()->setMinimumSize(size);
+}
+
+void Tool::setWidgetMinimumWidth(int width)
+{
+	QGraphicsProxyWidget::setMinimumWidth(width);
+	widget()->setMinimumWidth(width);
+}
+
+void Tool::setSizeIncrement(QSize const &size)
+{
+	widget()->setSizeIncrement(size);
+}
+
+void Tool::setToolTip(QString const &toolTip)
+{
+	widget()->setToolTip(toolTip);
 }

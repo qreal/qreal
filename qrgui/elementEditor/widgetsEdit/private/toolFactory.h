@@ -39,8 +39,8 @@ public:
 	Root *makeRoot(ToolController *controller) const;
 	QPixmap widgetPixmap(QString const &title);
 	QWidget *deserializeWidget(QDomElement const &element);
-	QWidget *deserializeWidget(const QDomElement &element,
-							   const QDomElement &shape);
+	QWidget *deserializeWidget(const QDomElement &element
+		, const QDomElement &shape);
 
 	QString toolTitleToTagName(QString const &title) const;
 	QString tagNameToToolTitle(QString const &tagName) const;
