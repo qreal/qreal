@@ -28,3 +28,43 @@ void Frame::initialize()
 	// but every other property does (for every property manager)
 	mFrame->setFrameShape(QFrame::Box);
 }
+
+QFrame::Shape Frame::frameShape() const
+{
+	return mFrame->frameShape();
+}
+
+QFrame::Shadow Frame::frameShadow() const
+{
+	return mFrame->frameShadow();
+}
+
+int Frame::lineWidth() const
+{
+	return mFrame->lineWidth();
+}
+
+int Frame::midLineWidth() const
+{
+	return mFrame->midLineWidth();
+}
+
+void Frame::setShape(QFrame::Shape shape)
+{
+	mFrame->setFrameShape(shape);
+}
+
+void Frame::setShadow(QFrame::Shadow shadow)
+{
+	mFrame->setFrameShadow(shadow);
+}
+
+void Frame::setLineWidth(int width)
+{
+	mFrame->setLineWidth(width);
+}
+
+void Frame::setMidLineWidth(int width)
+{
+	mFrame->setMidLineWidth(width);
+}

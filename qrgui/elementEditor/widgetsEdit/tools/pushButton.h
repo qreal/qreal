@@ -12,6 +12,8 @@ namespace widgetsEdit
 
 class PushButton : public AbstractButton
 {
+	Q_OBJECT
+
 	Q_PROPERTY(bool flat READ isFlat WRITE setFlat USER true)
 
 public:

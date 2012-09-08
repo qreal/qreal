@@ -15,3 +15,13 @@ void CheckBox::toggled(bool checked)
 {
 	emit propertyChanged("checked", QVariant(checked));
 }
+
+bool CheckBox::checked() const
+{
+	return mCheckBox->checkState() == Qt::Checked;
+}
+
+void CheckBox::setChecked(bool checked)
+{
+	mCheckBox->setChecked(checked);
+}

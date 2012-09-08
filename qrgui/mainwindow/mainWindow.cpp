@@ -457,9 +457,9 @@ void MainWindow::setReference(QString const &data, QPersistentModelIndex const &
 	}
 }
 
-void MainWindow::setWidget(const QString &widget,
-						   const QPersistentModelIndex &index,
-						   const int &role)
+void MainWindow::setWidget(const QString &widget
+		, const QPersistentModelIndex &index
+		, const int &role)
 {
 	QMessageBox::information(this, "qReal", "Widget saved!");
 }
