@@ -517,7 +517,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	delUnusedLines();
 
 	if (SettingsManager::value("ActivateGrid").toBool()) {
-		alignToGrid();
+		if (isParentSortingContainer()) {
+			alignToGrid();
+		}
 	}
 	storeGeometry();
 
@@ -1200,4 +1202,8 @@ void NodeElement::setAssistApi(qReal::models::GraphicalModelAssistApi *graphical
 {
 	Element::setAssistApi(graphicalAssistApi, logicalAssistApi);
 	mPortHandler->setGraphicalAssistApi(graphicalAssistApi);
+}
+
+bool NodeElement::isParentSortingContainer() const {
+	return (mParentNodeElement != NULL) && mParentNodeElement->mElementImpl->isSortingContainer();
 }
