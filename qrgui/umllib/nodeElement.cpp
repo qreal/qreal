@@ -348,10 +348,8 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	setZValue(1);
 
 	if (!isPort() && (flags() & ItemIsMovable)) {
-		recalculateHighlightedNode(event);
+		recalculateHighlightedNode(event->scenePos());
 	}
-
-	qDebug() << "mousePressEvent" << id();
 }
 
 void NodeElement::alignToGrid()
@@ -359,12 +357,12 @@ void NodeElement::alignToGrid()
 	mGrid->alignToGrid();
 }
 
-void NodeElement::recalculateHighlightedNode(QGraphicsSceneMouseEvent *event) {
+void NodeElement::recalculateHighlightedNode(QPointF const &mouseScenePos) {
 	// in case of unresizable item use switch
 	// Determing parent using corner position, not mouse coordinates
-	QPointF newParentInnerPoint = event->scenePos();
+	QPointF newParentInnerPoint = mouseScenePos;
 			/*
-			 * AAAA!!! Who knows why is this code here????!!!
+			 * Meaning of this code is described above.
 			 *
 			switch (mDragState) {
 			case TopLeft:
@@ -404,7 +402,7 @@ void NodeElement::recalculateHighlightedNode(QGraphicsSceneMouseEvent *event) {
 
 	if (newParent != NULL) {
 		mHighlightedNode = newParent;
-		mHighlightedNode->drawPlaceholder(EditorViewScene::getPlaceholder(), event->scenePos());
+		mHighlightedNode->drawPlaceholder(EditorViewScene::getPlaceholder(), mouseScenePos);
 	} else if (mHighlightedNode != NULL) {
 		mHighlightedNode->erasePlaceholder(true);
 		mHighlightedNode = NULL;
@@ -430,7 +428,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	scene()->invalidate();
 	if (mDragState == None) {
 		if (!isPort() && (flags() & ItemIsMovable)) {
-			recalculateHighlightedNode(event);
+			recalculateHighlightedNode(event->scenePos());
 		}
 
 		newPos += (event->scenePos() - scenePos()) - mDragPosition;
@@ -511,8 +509,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	arrangeLinks();
-
-	qDebug() << "mouseMoveEvent" << id();
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -570,8 +566,6 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	mDragState = None;
 	setZValue(0);
-
-	qDebug() << "mouseReleaseEvent" << id();
 }
 
 void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
