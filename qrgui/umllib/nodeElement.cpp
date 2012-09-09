@@ -544,8 +544,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			// commented because of bug with double event sending (see #204)
 	//		mHighlightedNode = NULL;
 
-			mGraphicalAssistApi->changeParent(id(), newParent->id(),
-				mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
+			QPointF newPos = mapToItem(newParent, mapFromScene(scenePos()));
+			mGraphicalAssistApi->changeParent(id(), newParent->id(), newPos);
+			setPos(newPos);
 
 			if (insertBefore != NULL) {
 				mGraphicalAssistApi->stackBefore(id(), insertBefore->id());
