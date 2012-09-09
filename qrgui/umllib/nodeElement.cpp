@@ -346,6 +346,12 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	mLeftPressed = true;
 	setZValue(1);
+
+	if (!isPort() && (flags() & ItemIsMovable)) {
+		recalculateHighlightedNode(event);
+	}
+
+	qDebug() << "mousePressEvent" << id();
 }
 
 void NodeElement::alignToGrid()
@@ -353,28 +359,10 @@ void NodeElement::alignToGrid()
 	mGrid->alignToGrid();
 }
 
-void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-	if (event->button() == Qt::RightButton) {
-		event->accept();
-		return;
-	}
-
-	// Folded elements can't be resized.
-	// So drag state isn't important.
-	if (mIsFolded) {
-		mDragState = None;
-	}
-
-	QRectF newContents = mContents;
-	QPointF newPos = mPos;
-
-	scene()->invalidate();
-	if (mDragState == None) {
-		if (!isPort() && (flags() & ItemIsMovable)) {
-			// in case of unresizable item use switch
-			// Determing parent using corner position, not mouse coordinates
-			QPointF newParentInnerPoint = event->scenePos();
+void NodeElement::recalculateHighlightedNode(QGraphicsSceneMouseEvent *event) {
+	// in case of unresizable item use switch
+	// Determing parent using corner position, not mouse coordinates
+	QPointF newParentInnerPoint = event->scenePos();
 			/*
 			 * AAAA!!! Who knows why is this code here????!!!
 			 *
@@ -407,20 +395,42 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 				break;
 			}
 			*/
-			EditorViewScene *evScene = dynamic_cast<EditorViewScene*>(scene());
-			NodeElement *newParent = evScene->findNewParent(newParentInnerPoint, this);
+	EditorViewScene *evScene = dynamic_cast<EditorViewScene*>(scene());
+	NodeElement *newParent = evScene->findNewParent(newParentInnerPoint, this);
 
-			// it would be nice optimization to do nothing in case of
-			// mHighlightedNode == newParent, but it's unapplicable here because
-			// of element could be moved inside his parent
+	// it would be nice optimization to do nothing in case of
+	// mHighlightedNode == newParent, but it's unapplicable here because
+	// of element could be moved inside his parent
 
-			if (newParent != NULL) {
-				mHighlightedNode = newParent;
-				mHighlightedNode->drawPlaceholder(EditorViewScene::getPlaceholder(), event->scenePos());
-			} else if (mHighlightedNode != NULL) {
-				mHighlightedNode->erasePlaceholder(true);
-				mHighlightedNode = NULL;
-			}
+	if (newParent != NULL) {
+		mHighlightedNode = newParent;
+		mHighlightedNode->drawPlaceholder(EditorViewScene::getPlaceholder(), event->scenePos());
+	} else if (mHighlightedNode != NULL) {
+		mHighlightedNode->erasePlaceholder(true);
+		mHighlightedNode = NULL;
+	}
+}
+
+void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+	if (event->button() == Qt::RightButton) {
+		event->accept();
+		return;
+	}
+
+	// Folded elements can't be resized.
+	// So drag state isn't important.
+	if (mIsFolded) {
+		mDragState = None;
+	}
+
+	QRectF newContents = mContents;
+	QPointF newPos = mPos;
+
+	scene()->invalidate();
+	if (mDragState == None) {
+		if (!isPort() && (flags() & ItemIsMovable)) {
+			recalculateHighlightedNode(event);
 		}
 
 		newPos += (event->scenePos() - scenePos()) - mDragPosition;
@@ -501,6 +511,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	arrangeLinks();
+
+	qDebug() << "mouseMoveEvent" << id();
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -558,6 +570,8 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	mDragState = None;
 	setZValue(0);
+
+	qDebug() << "mouseReleaseEvent" << id();
 }
 
 void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)

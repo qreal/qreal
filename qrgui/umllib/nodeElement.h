@@ -68,14 +68,18 @@ public:
 	static int portNumber(qreal id);
 	qreal portId(QPointF const &location) const;
 
+	//
 	QList<EdgeElement *> getEdges();
 	void addEdge(EdgeElement *edge);
 	void delEdge(EdgeElement *edge);
+	//
 
 	NodeData& data();
 
+	//
 	virtual bool initPossibleEdges();
 	QList<PossibleEdge> getPossibleEdges();
+	//
 
 	void setPortsVisible(bool value);
 
@@ -113,11 +117,14 @@ public:
 	* @return element or NULL
 	*/
 	Element *getPlaceholderNextElement();
+
+	//
 	void highlightEdges();
 
 	bool isFolded() const;
 	QGraphicsRectItem* placeholder() const;
 
+	//
 	virtual void deleteFromScene();
 
 	QList<EdgeElement *> const edgeList() const;
@@ -169,9 +176,11 @@ private:
 	 */
 	void resize();
 
+	//
 	void disconnectEdges();
 
 	void delUnusedLines();
+	//
 	PossibleEdge toPossibleEdge(StringPossibleEdge const &strPossibleEdge);
 
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -183,6 +192,7 @@ private:
 	virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 	virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
+	void recalculateHighlightedNode(QGraphicsSceneMouseEvent *event);
 	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
 	void changeFoldState();
