@@ -170,11 +170,9 @@ private:
 	 */
 	void resize();
 
-	//
 	void disconnectEdges();
 
 	void delUnusedLines();
-	//
 	PossibleEdge toPossibleEdge(StringPossibleEdge const &strPossibleEdge);
 
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
