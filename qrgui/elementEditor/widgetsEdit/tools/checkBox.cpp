@@ -16,7 +16,7 @@ void CheckBox::toggled(bool checked)
 	emit propertyChanged("checked", QVariant(checked));
 }
 
-bool CheckBox::checked() const
+bool CheckBox::isChecked() const
 {
 	return mCheckBox->checkState() == Qt::Checked;
 }

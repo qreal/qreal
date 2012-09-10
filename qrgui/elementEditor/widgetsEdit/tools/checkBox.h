@@ -20,10 +20,10 @@ public:
 	CheckBox(ToolController *controller);
 
 private slots:
-	void toggled(bool checked);
+	void toggled(bool isChecked);
 
 private:
-	bool checked() const;
+	bool isChecked() const;
 	void setChecked(bool checked);
 
 	QCheckBox *mCheckBox;

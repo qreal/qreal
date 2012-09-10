@@ -14,10 +14,17 @@ int const SCROLL_AREA_DEFAULT_HEIGHT = 150;
 
 class ScrollArea : public AbstractScrollArea
 {
+	Q_OBJECT
+
+	Q_PROPERTY(bool widgetResizable READ widgetResizable WRITE setWidgetResizable USER true)
+
 public:
 	ScrollArea(ToolController *controller);
 
 private:
+	bool widgetResizable() const;
+	void setWidgetResizable(bool resizable);
+
 	QScrollArea *mScrollArea;
 };
 

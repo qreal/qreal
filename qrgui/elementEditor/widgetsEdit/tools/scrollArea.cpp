@@ -15,3 +15,13 @@ ScrollArea::ScrollArea(ToolController *controller)
 	mScrollArea->setFrameShadow(QFrame::Sunken);
 	mScrollArea->setLineWidth(1);
 }
+
+bool ScrollArea::widgetResizable() const
+{
+	return mScrollArea->widgetResizable();
+}
+
+void ScrollArea::setWidgetResizable(bool resizable)
+{
+	mScrollArea->setWidgetResizable(resizable);
+}

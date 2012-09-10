@@ -14,3 +14,33 @@ GroupBox::GroupBox(ToolController *controller)
 		, GROUP_BOX_DEFAULT_WIDTH
 		, GROUP_BOX_DEFAULT_HEIGHT);
 }
+
+Qt::Alignment GroupBox::titleAlignment() const
+{
+	return mGroupBox->alignment();
+}
+
+bool GroupBox::isFlat() const
+{
+	return mGroupBox->isFlat();
+}
+
+QString GroupBox::title() const
+{
+	return mGroupBox->title();
+}
+
+void GroupBox::setTitleAlignment(Qt::Alignment alignment)
+{
+	mGroupBox->setAlignment(alignment);
+}
+
+void GroupBox::setFlat(bool flat)
+{
+	mGroupBox->setFlat(flat);
+}
+
+void GroupBox::setTitle(const QString &title)
+{
+	mGroupBox->setTitle(title);
+}

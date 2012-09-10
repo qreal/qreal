@@ -26,6 +26,8 @@ HEADERS += \
 	elementEditor/widgetsEdit/private/layoutButtons.h \
 	elementEditor/widgetsEdit/private/editorScene.h \
 	elementEditor/widgetsEdit/private/propertyBrowserController.h \
+	elementEditor/widgetsEdit/tools/propertyManager.h \
+	elementEditor/widgetsEdit/tools/property.h \
 	elementEditor/widgetsEdit/tools/tool.h \
 	elementEditor/widgetsEdit/tools/layoutTool.h \
 	elementEditor/widgetsEdit/tools/root.h \
@@ -43,38 +45,15 @@ HEADERS += \
 	elementEditor/widgetsEdit/tools/spinBox.h \
 	elementEditor/widgetsEdit/tools/doubleSpinBox.h \
 	elementEditor/widgetsEdit/tools/label.h \
+	elementEditor/widgetsEdit/tools/abstractScrollArea.h \
+	elementEditor/widgetsEdit/tools/abstractSpinBox.h \
+	elementEditor/widgetsEdit/tools/abstractButton.h \
+	elementEditor/widgetsEdit/tools/spacer.h \
 	elementEditor/widgetsEdit/tools/layoutHelpers/layoutHelperBase.h \
 	elementEditor/widgetsEdit/tools/layoutHelpers/gridLayoutHelper.h \
 	elementEditor/widgetsEdit/tools/layoutHelpers/linearLayoutHelper.h \
 	elementEditor/widgetsEdit/tools/layoutHelpers/layoutTypes.h \
 	elementEditor/widgetsEdit/tools/layoutHelpers/layoutHelperFactory.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/property.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/propertyManagerBase.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/toolPropertyManager.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/rootPropertyManager.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/checkBoxPropertyManager.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/buttonPropertyManagerBase.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/pushButtonPropertyManager.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/radioButtonPropertyManager.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/layoutToolPropertyManager.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/groupBoxPropertyManager.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/framePropertyManager.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/scrollAreaPropertyManager.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/widgetPropertyManager.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/comboBoxPropertyManager.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/lineEditPropertyManager.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/plainTextEditPropertyManager.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/abstractScrollAreaPropertyManager.h \
-	elementEditor/widgetsEdit/tools/abstractScrollArea.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/abstractSpinBoxPropertyManager.h \
-	elementEditor/widgetsEdit/tools/abstractSpinBox.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/spinBoxPropertyManager.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/doubleSpinBoxPropertyManager.h \
-	elementEditor/widgetsEdit/tools/propertyManagers/labelPropertyManager.h \
-    elementEditor/widgetsEdit/tools/spacer.h \
-    elementEditor/widgetsEdit/tools/propertyManagers/spacerPropertyManager.h \
-    elementEditor/widgetsEdit/tools/propertyManagers/propertyManager.h \
-    elementEditor/widgetsEdit/tools/abstractButton.h
 
 SOURCES += \
 	elementEditor/elementEditor.cpp \
@@ -104,6 +83,8 @@ SOURCES += \
 	elementEditor/widgetsEdit/private/layoutButtons.cpp \
 	elementEditor/widgetsEdit/private/editorScene.cpp \
 	elementEditor/widgetsEdit/private/propertyBrowserController.cpp \
+	elementEditor/widgetsEdit/tools/propertyManager.cpp \
+	elementEditor/widgetsEdit/tools/property.cpp \
 	elementEditor/widgetsEdit/tools/tool.cpp \
 	elementEditor/widgetsEdit/tools/layoutTool.cpp \
 	elementEditor/widgetsEdit/tools/root.cpp \
@@ -121,38 +102,14 @@ SOURCES += \
 	elementEditor/widgetsEdit/tools/spinBox.cpp \
 	elementEditor/widgetsEdit/tools/doubleSpinBox.cpp \
 	elementEditor/widgetsEdit/tools/label.cpp \
+	elementEditor/widgetsEdit/tools/abstractScrollArea.cpp \
+	elementEditor/widgetsEdit/tools/abstractSpinBox.cpp \
+	elementEditor/widgetsEdit/tools/abstractButton.cpp \
+	elementEditor/widgetsEdit/tools/spacer.cpp \
 	elementEditor/widgetsEdit/tools/layoutHelpers/layoutHelperBase.cpp \
 	elementEditor/widgetsEdit/tools/layoutHelpers/gridLayoutHelper.cpp \
 	elementEditor/widgetsEdit/tools/layoutHelpers/linearLayoutHelper.cpp \
 	elementEditor/widgetsEdit/tools/layoutHelpers/layoutHelperFactory.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/property.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/propertyManagerBase.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/toolPropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/rootPropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/checkBoxPropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/buttonPropertyManagerBase.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/pushButtonPropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/radioButtonPropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/layoutToolPropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/groupBoxPropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/framePropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/scrollAreaPropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/widgetPropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/comboBoxPropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/lineEditPropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/plainTextEditPropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/abstractScrollAreaPropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/abstractScrollArea.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/abstractSpinBoxPropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/abstractSpinBox.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/spinBoxPropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/doubleSpinBoxPropertyManager.cpp \
-	elementEditor/widgetsEdit/tools/propertyManagers/labelPropertyManager.cpp \
-    elementEditor/widgetsEdit/tools/spacer.cpp \
-    elementEditor/widgetsEdit/tools/propertyManagers/spacerPropertyManager.cpp \
-    elementEditor/widgetsEdit/tools/propertyManagers/propertyManager.cpp \
-    elementEditor/widgetsEdit/tools/abstractButton.cpp
-
 
 FORMS += \
 	elementEditor/shapeEdit/shapeEdit.ui \

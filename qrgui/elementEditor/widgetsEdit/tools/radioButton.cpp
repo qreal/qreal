@@ -15,3 +15,13 @@ void RadioButton::toggled(bool checked)
 {
 	emit propertyChanged("checked", QVariant(checked));
 }
+
+bool RadioButton::isChecked() const
+{
+	return mRadioButton->isChecked();
+}
+
+void RadioButton::setChecked(bool checked)
+{
+	mRadioButton->setChecked(checked);
+}

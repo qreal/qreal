@@ -16,3 +16,63 @@ void SpinBox::valueChanged(int i)
 {
 	emit propertyChanged("value", QVariant(i));
 }
+
+int SpinBox::maximum() const
+{
+	return mSpinBox->maximum();
+}
+
+int SpinBox::minimum() const
+{
+	return mSpinBox->minimum();
+}
+
+QString SpinBox::prefix() const
+{
+	return mSpinBox->prefix();
+}
+
+QString SpinBox::suffix() const
+{
+	return mSpinBox->suffix();
+}
+
+int SpinBox::singleStep() const
+{
+	return mSpinBox->singleStep();
+}
+
+int SpinBox::value() const
+{
+	return mSpinBox->value();
+}
+
+void SpinBox::setMaximum(int maximum)
+{
+	mSpinBox->setMaximum(maximum);
+}
+
+void SpinBox::setMinimum(int minimum)
+{
+	mSpinBox->setMinimum(minimum);
+}
+
+void SpinBox::setPrefix(QString const &prefix)
+{
+	mSpinBox->setPrefix(prefix);
+}
+
+void SpinBox::setSuffix(QString const &suffix)
+{
+	mSpinBox->setSuffix(suffix);
+}
+
+void SpinBox::setSingleStep(int step)
+{
+	mSpinBox->setSingleStep(step);
+}
+
+void SpinBox::setValue(int value)
+{
+	mSpinBox->setValue(value);
+}

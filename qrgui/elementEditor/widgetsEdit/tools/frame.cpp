@@ -26,7 +26,8 @@ void Frame::initialize()
 	mFrame->setMinimumHeight(FRAME_MINIMAL_HEIGHT);
 	//TODO: Understand why setting enum value here doesn`t work
 	// but every other property does (for every property manager)
-	mFrame->setFrameShape(QFrame::Box);
+	mFrame->setFrameShape(QFrame::Panel);
+	mFrame->setFrameShadow(QFrame::Raised);
 }
 
 QFrame::Shape Frame::frameShape() const
@@ -49,12 +50,12 @@ int Frame::midLineWidth() const
 	return mFrame->midLineWidth();
 }
 
-void Frame::setShape(QFrame::Shape shape)
+void Frame::setFrameShape(QFrame::Shape shape)
 {
 	mFrame->setFrameShape(shape);
 }
 
-void Frame::setShadow(QFrame::Shadow shadow)
+void Frame::setFrameShadow(QFrame::Shadow shadow)
 {
 	mFrame->setFrameShadow(shadow);
 }
