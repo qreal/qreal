@@ -5,10 +5,14 @@ install:
   - sudo apt-get install libqt4-dev qt4-qmake
 
 script:
+  - qmake qrealRobots.pro
+  - make 
+  - make distclean
   - qmake qrealTest.pro CONFIG+=debug
-  - make -j3
+  - make 
   - ./bin/unittests/qrlibs_unittests
 
 notifications:
   email:
-    - qreal-build-reports@googlegroups.com
+    recipients:
+      - qreal-build-reports@googlegroups.com
