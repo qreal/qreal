@@ -6,6 +6,15 @@ install:
 
 script:
   - cat /proc/cpuinfo
+  - cat /proc/meminfo
+  - qmake qrealRobots.pro
+  - make -j2 
+  - make distclean
+  - qmake qrealTest.pro CONFIG+=debug
+  - make -j2
+  - ./bin/unittests/qrlibs_unittests
+  - ./bin/unittests/qrgui_unittests
+  - ./bin/unittests/qrxc_unittests
 
 notifications:
   email:
