@@ -19,8 +19,9 @@
 #include "../editorPluginInterface/elementImpl.h"
 #include "embedded/linkers/embeddedLinker.h"
 
-#include "sceneGridHandler.h"
-#include "umlPortHandler.h"
+#include "private/sceneGridHandler.h"
+#include "private/umlPortHandler.h"
+#include "private/portHandler.h"
 
 #include "serializationData.h"
 
@@ -32,10 +33,13 @@ public:
 	NodeElement(ElementImpl *impl);
 	virtual ~NodeElement();
 
+	/**
+	 * Makes copy of current NodeElement.
+	 * @param toCursorPos Indicates if need to place new element at cursor position.
+	 * @param searchForParents Parameter of createElement method in EditorViewScene.
+	 * @return Copy of current NodeElement.
+	 */
 	NodeElement *clone(bool toCursorPos = false, bool searchForParents = true);
-	void copyChildren(NodeElement *source);
-	void copyEdges(NodeElement *source);
-	void copyProperties(NodeElement *source);
 
 	QMap<QString, QVariant> properties();
 
@@ -59,13 +63,12 @@ public:
 	void storeGeometry();
 	virtual void setName(QString name);
 
-	const QPointF getPortPos(qreal id) const;
-	static int portId(qreal id);
-	const QPointF getNearestPort(QPointF const &location) const;
+	QPointF const portPos(qreal id) const;
+	QPointF const nearestPort(QPointF const &location) const;
+	static int portNumber(qreal id);
+	qreal portId(QPointF const &location) const;
 
-	qreal getPortId(QPointF const &location) const;
-
-	QList<EdgeElement*> getEdges();
+	QList<EdgeElement *> getEdges();
 	void addEdge(EdgeElement *edge);
 	void delEdge(EdgeElement *edge);
 
@@ -116,6 +119,11 @@ public:
 	QGraphicsRectItem* placeholder() const;
 
 	virtual void deleteFromScene();
+
+	QList<EdgeElement *> const edgeList() const;
+
+	virtual void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
+			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
@@ -182,20 +190,11 @@ private:
 
 	NodeElement *getNodeAt(QPointF const &position);
 
-	QLineF newTransform(StatLine const &port) const;
-	QPointF newTransform(StatPoint const &port) const;
-
 	void updateByChild(NodeElement *item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
 
-	qreal minDistanceFromLinePort(int const linePortNumber, QPointF const &location) const;
-	qreal distanceFromPointPort(int const pointPortNumber, QPointF const &location) const;
-	qreal getNearestPointOfLinePort(int const linePortNumber, QPointF const &location) const;
-
 	void initEmbeddedLinkers();
 	void setVisibleEmbeddedLinkers(bool const show);
-
-	void connectTemporaryRemovedLinksToPort(qReal::IdList const &rtemporaryRemovedLinks, QString const &direction);
 
 	ContextMenuAction mSwitchGridAction;
 
@@ -203,10 +202,7 @@ private:
 
 	QList<NodeElement *> childs;
 
-	QList<StatPoint> mPointPorts;
-	QList<StatLine> mLinePorts;
 	QRectF mContents;
-
 	QList<EdgeElement *> mEdgeList;
 
 	DragState mDragState;
@@ -239,6 +235,7 @@ private:
 
 	SceneGridHandler *mGrid;
 	UmlPortHandler *mUmlPortHandler;
+	PortHandler *mPortHandler;
 
 	QGraphicsRectItem *mPlaceholder;
 	NodeElement *mHighlightedNode;

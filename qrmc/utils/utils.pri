@@ -1,5 +1,6 @@
 HEADERS += \
-	utils/nameNormalizer.h \
-	utils/defs.h
+	$$PWD/nameNormalizer.h \
+	$$PWD/defs.h \
+
 SOURCES += \
-	utils/nameNormalizer.cpp
+	$$PWD/nameNormalizer.cpp \

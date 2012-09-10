@@ -1,10 +1,10 @@
 HEADERS += \
-	invocationUtils/progress.h \
-	invocationUtils/longOperation.h \
-	invocationUtils/functorOperation.h \
-	invocationUtils/private/functors.h \
+	$$PWD/progress.h \
+	$$PWD/longOperation.h \
+	$$PWD/functorOperation.h \
+	$$PWD/private/functors.h \
 
 SOURCES += \
-	invocationUtils/progress.cpp \
-	invocationUtils/longOperation.cpp \
-	invocationUtils/private/functorOperation.cpp \
+	$$PWD/progress.cpp \
+	$$PWD/longOperation.cpp \
+	$$PWD/private/functorOperation.cpp \
