@@ -346,11 +346,64 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	mLeftPressed = true;
 	setZValue(1);
+
+	if (!isPort() && (flags() & ItemIsMovable)) {
+		recalculateHighlightedNode(event->scenePos());
+	}
 }
 
 void NodeElement::alignToGrid()
 {
 	mGrid->alignToGrid();
+}
+
+void NodeElement::recalculateHighlightedNode(QPointF const &mouseScenePos) {
+	// in case of unresizable item use switch
+	// Determing parent using corner position, not mouse coordinates
+	QPointF newParentInnerPoint = mouseScenePos;
+	switch (mDragState) {
+		case TopLeft:
+			newParentInnerPoint = scenePos();
+			break;
+		case Top:
+			newParentInnerPoint = scenePos() + QPointF(mContents.width() / 2, 0);
+			break;
+		case TopRight:
+			newParentInnerPoint = scenePos() + QPointF(mContents.width(), 0);
+			break;
+		case Left:
+			newParentInnerPoint = scenePos() + QPointF(0, mContents.height() / 2);
+			break;
+		case Right:
+			newParentInnerPoint = scenePos() + QPointF(mContents.width(), mContents.height() / 2);
+			break;
+		case BottomLeft:
+			newParentInnerPoint = scenePos() + QPointF(0, mContents.height());
+			break;
+		case Bottom:
+			newParentInnerPoint = scenePos() + QPointF(mContents.width() / 2, mContents.height());
+			break;
+		case BottomRight:
+			newParentInnerPoint = scenePos() + QPointF(mContents.width(), mContents.height());
+			break;
+		case None:
+			break;
+	}
+
+	EditorViewScene *evScene = dynamic_cast<EditorViewScene*>(scene());
+	NodeElement *newParent = evScene->findNewParent(newParentInnerPoint, this);
+
+	// it would be nice optimization to do nothing in case of
+	// mHighlightedNode == newParent, but it's unapplicable here because
+	// of element could be moved inside his parent
+
+	if (newParent != NULL) {
+		mHighlightedNode = newParent;
+		mHighlightedNode->drawPlaceholder(EditorViewScene::getPlaceholder(), mouseScenePos);
+	} else if (mHighlightedNode != NULL) {
+		mHighlightedNode->erasePlaceholder(true);
+		mHighlightedNode = NULL;
+	}
 }
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -372,55 +425,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	scene()->invalidate();
 	if (mDragState == None) {
 		if (!isPort() && (flags() & ItemIsMovable)) {
-			// in case of unresizable item use switch
-			// Determing parent using corner position, not mouse coordinates
-			QPointF newParentInnerPoint = event->scenePos();
-			/*
-			 * AAAA!!! Who knows why is this code here????!!!
-			 *
-			switch (mDragState) {
-			case TopLeft:
-				newParentInnerPoint = scenePos();
-				break;
-			case Top:
-				newParentInnerPoint = scenePos() + QPointF(mContents.width() / 2, 0);
-				break;
-			case TopRight:
-				newParentInnerPoint = scenePos() + QPointF(mContents.width(), 0);
-				break;
-			case Left:
-				newParentInnerPoint = scenePos() + QPointF(0, mContents.height()/2);
-				break;
-			case Right:
-				newParentInnerPoint = scenePos() + QPointF(mContents.width(), mContents.height() / 2);
-				break;
-			case BottomLeft:
-				newParentInnerPoint = scenePos() + QPointF(0, mContents.height());
-				break;
-			case Bottom:
-				newParentInnerPoint = scenePos() + QPointF(mContents.width() / 2, mContents.height());
-				break;
-			case BottomRight:
-				newParentInnerPoint = scenePos() + QPointF(mContents.width(), mContents.height());
-				break;
-			case None:
-				break;
-			}
-			*/
-			EditorViewScene *evScene = dynamic_cast<EditorViewScene*>(scene());
-			NodeElement *newParent = evScene->findNewParent(newParentInnerPoint, this);
-
-			// it would be nice optimization to do nothing in case of
-			// mHighlightedNode == newParent, but it's unapplicable here because
-			// of element could be moved inside his parent
-
-			if (newParent != NULL) {
-				mHighlightedNode = newParent;
-				mHighlightedNode->drawPlaceholder(EditorViewScene::getPlaceholder(), event->scenePos());
-			} else if (mHighlightedNode != NULL) {
-				mHighlightedNode->erasePlaceholder(true);
-				mHighlightedNode = NULL;
-			}
+			recalculateHighlightedNode(event->scenePos());
 		}
 
 		newPos += (event->scenePos() - scenePos()) - mDragPosition;
@@ -512,7 +517,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	delUnusedLines();
 
 	if (SettingsManager::value("ActivateGrid").toBool()) {
-		alignToGrid();
+		if (isParentSortingContainer()) {
+			alignToGrid();
+		}
 	}
 	storeGeometry();
 
@@ -537,8 +544,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			// commented because of bug with double event sending (see #204)
 	//		mHighlightedNode = NULL;
 
-			mGraphicalAssistApi->changeParent(id(), newParent->id(),
-				mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
+			QPointF newPos = mapToItem(newParent, mapFromScene(scenePos()));
+			mGraphicalAssistApi->changeParent(id(), newParent->id(), newPos);
+			setPos(newPos);
 
 			if (insertBefore != NULL) {
 				mGraphicalAssistApi->stackBefore(id(), insertBefore->id());
@@ -1195,4 +1203,8 @@ void NodeElement::setAssistApi(qReal::models::GraphicalModelAssistApi *graphical
 {
 	Element::setAssistApi(graphicalAssistApi, logicalAssistApi);
 	mPortHandler->setGraphicalAssistApi(graphicalAssistApi);
+}
+
+bool NodeElement::isParentSortingContainer() const {
+	return (mParentNodeElement != NULL) && mParentNodeElement->mElementImpl->isSortingContainer();
 }
