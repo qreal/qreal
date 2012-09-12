@@ -113,6 +113,7 @@ public:
 	* @return element or NULL
 	*/
 	Element *getPlaceholderNextElement();
+
 	void highlightEdges();
 
 	bool isFolded() const;
@@ -183,6 +184,11 @@ private:
 	virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 	virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
+	/**
+	 * Recalculates mHighlightedNode according to current mouse scene position.
+	 * @param mouseScenePos Current mouse scene position.
+	 */
+	void recalculateHighlightedNode(QPointF const &mouseScenePos);
 	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
 	void changeFoldState();
@@ -195,6 +201,12 @@ private:
 
 	void initEmbeddedLinkers();
 	void setVisibleEmbeddedLinkers(bool const show);
+
+	/**
+	 * Returns true if parent node is sorting container; otherwise returns false.
+	 * @return True if parent node is sorting container; otherwise returns false.
+	 */
+	bool isParentSortingContainer() const;
 
 	ContextMenuAction mSwitchGridAction;
 
