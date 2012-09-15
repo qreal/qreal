@@ -1,6 +1,8 @@
 #include "settingsManager.h"
 
 #include <QtCore/QHash>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
 #include <QtCore/QStringList>
 
 using namespace qReal;
@@ -14,16 +16,15 @@ SettingsManager::SettingsManager()
 	load();
 }
 
-QVariant SettingsManager::value(QString const &key, QVariant defaultValue)
-{
-	return instance()->get(key, defaultValue);
-}
-
 void SettingsManager::setValue(QString const &name, QVariant const &value)
 {
 	instance()->set(name, value);
 }
 
+QVariant SettingsManager::value(QString const &key)
+{
+	return instance()->get(key);
+}
 
 SettingsManager* SettingsManager::instance()
 {
@@ -43,7 +44,6 @@ QVariant SettingsManager::get(QString const &name, QVariant const &defaultValue)
 	if (mData.contains(name)) {
 		return mData[name];
 	}
-
 	if (mDefaultValues.contains(name) && defaultValue == QVariant()) {
 		return mDefaultValues[name];
 	}
@@ -56,6 +56,7 @@ void SettingsManager::saveData()
 		mSettings.setValue(name, mData[name]);
 	}
 	mSettings.sync();
+
 }
 
 void SettingsManager::load()

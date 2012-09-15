@@ -1,6 +1,7 @@
 #include "propertyEditorView.h"
 #include "../mainwindow/mainWindow.h"
 
+
 PropertyEditorView::PropertyEditorView(QWidget *parent)
 		: QWidget(parent), mChangingPropertyValue(false)
 		, mModel(NULL), mPropertyEditor(new QtTreePropertyBrowser(this))
@@ -78,7 +79,6 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 		QModelIndex const &valueCell = mModel->index(i, 1);
 		QString name = mModel->data(mModel->index(i, 0)).toString();
 		QVariant const &value = mModel->data(valueCell);
-		QString toolTip = mModel->data(mModel->index(i, 0), Qt::ToolTipRole).toString();
 
 		int type = QVariant::String;
 		QString typeName = mModel->typeName(valueCell).toLower();
@@ -88,12 +88,14 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			type = QVariant::Int;
 		} else if (typeName == "bool") {
 			type = QVariant::Bool;
-		} else if (!values.isEmpty()) {
-			type = QtVariantPropertyManager::enumTypeId();
-		} else if (name == "shape" || name == QString::fromUtf8("Код запроса")/*"RequestBody"*/) { // hack
-				isButton = true;
 		} else if (typeName == "string") {
 			type = QVariant::String;
+		} else if (!values.isEmpty()) {
+			type = QtVariantPropertyManager::enumTypeId();
+		} else {
+			if (name == "shape" || mModel->isReference(valueCell, name)) { // hack
+				isButton = true;
+			}
 		}
 
 		QtProperty *item = NULL;
@@ -103,7 +105,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			QtVariantProperty *vItem = mVariantManager->addProperty(type, name);
 
 			vItem->setValue(value);
-			vItem->setToolTip(toolTip);
+			vItem->setToolTip(value.toString());
 			if (!values.isEmpty()) {
 				vItem->setAttribute("enumNames", values);
 				QVariant idx(enumPropertyIndexOf(valueCell, value.toString()));
@@ -128,14 +130,13 @@ void PropertyEditorView::dataChanged(const QModelIndex &, const QModelIndex &)
 		QModelIndex const &valueIndex = mModel->index(i, 1);
 		QtVariantProperty *property = dynamic_cast<QtVariantProperty*>(mPropertyEditor->properties().at(i));
 		QVariant value = valueIndex.data();
-		QString toolTip = mModel->data(mModel->index(i, 0), Qt::ToolTipRole).toString();
 		if (property) {
 			if (property->propertyType() == QtVariantPropertyManager::enumTypeId()) {
 				value = enumPropertyIndexOf(valueIndex, value.toString());
 			}
 
 			setPropertyValue(property, value);
-			property->setToolTip(toolTip);
+			property->setToolTip(value.toString());
 		}
 	}
 }
@@ -144,16 +145,19 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 {
 	int row = mPropertyEditor->properties().indexOf(property);
 	QModelIndex const &index = mModel->index(row, 1);
-
+	QString name = mModel->data(mModel->index(row, 0)).toString();
 	QString propertyValue = index.data(Qt::DisplayRole).toString();
-	QPersistentModelIndex const actualIndex = mModel->modelIndex(index.row());
 	int role = mModel->roleByIndex(index.row());
 
-	QString const name = property->propertyName();
-	if (name == "shape")
+	QPersistentModelIndex const actualIndex = mModel->modelIndex(index.row());
+
+	// there are only two type of buttons: shape and reference
+	if (name == "shape") {
 		mMainWindow->openShapeEditor(actualIndex, role, propertyValue);
-	else if (name == QString::fromUtf8("Код запроса")/*"RequestBody"*/)
-		mMainWindow->showAndEditPropertyInTextEditor(name, propertyValue, actualIndex, role);
+	} else {
+		QString typeName = mModel->typeName(index);
+		mMainWindow->openReferenceList(actualIndex, typeName, propertyValue, role);
+	}
 }
 
 void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)

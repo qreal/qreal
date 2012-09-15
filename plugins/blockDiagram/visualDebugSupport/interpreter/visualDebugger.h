@@ -69,6 +69,7 @@ private:
 		missingValidLink,
 		someDiagramIsRunning,
 		codeGenerationError,
+		incorrectUseOfLink,
 		noErrors
 	};
 	
@@ -93,6 +94,8 @@ private:
 	
 	/// Interpret action in one block
 	void processAction();
+	
+	bool checkForIncorrectUseOfLink(Id const &link, QString const &type);
 	
 	void setTimeout(int timeout);
 	void generateCode(Id const &id, QFile &codeFile);

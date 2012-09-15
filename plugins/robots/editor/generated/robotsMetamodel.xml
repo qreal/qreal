@@ -13,13 +13,13 @@
 				<value>4</value>
 			</enum>
 			<enum name="GuardType">
-				<value>повторение</value>
-				<value></value>
+				<value>итерация</value>
 				<value>меньше 0</value>
 				<value>больше 0</value>
 				<value>равно 0</value>
 			</enum>
 			<enum name="Color">
+				<value></value>
 				<value>Чёрный</value>
 				<value>Синий</value>
 				<value>Зелёный</value>
@@ -34,12 +34,16 @@
 				<value>не меньше</value>
 				<value>не больше</value>
 			</enum>
+			<enum name="BreakEngineMode">
+				<value>тормозить</value>
+				<value>скользить</value>
+			</enum>
 			<enum name="Sensors">
 				<value>Не используется</value>
-				<value>Сенсор нажатия (булево значение)</value>
-				<value>Сенсор нажатия (сырое значение)</value>
 				<value>Ультразвуковой сенсор</value>
-				<value>Сенсор цвета (полные цвета)</value>
+				<value>Сенсор касания (булево значение)</value>
+				<value>Сенсор касания (сырое значение)</value>
+				<value>Сенсор цвета (все цвета)</value>
 				<value>Сенсор цвета (красный)</value>
 				<value>Сенсор цвета (зеленый)</value>
 				<value>Сенсор цвета (синий)</value>
@@ -108,7 +112,7 @@
 					</generalizations>
 				</logic>
 			</node>
-						<node displayedName="Инициализация балансировки" name="BalanceInit">
+			<node displayedName="Инициализация балансировки" name="BalanceInit">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
@@ -135,9 +139,12 @@
 				</graphics>
 				<logic>
 					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
 				</logic>
 			</node>
-						<node displayedName="Инициализация переменной" name="VariableInit">
+			<node displayedName="Инициализация переменной" name="VariableInit">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
@@ -177,40 +184,10 @@
 							<default>0</default>
 						</property>
 					</properties>
-					<container/>
-				</logic>
-			</node>
-			<node displayedName="Неведомая хрень" name="unknown something">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels/>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
+					<container/>
 				</logic>
 			</node>
 			<node displayedName="Моторы назад" name="EnginesBackward">
@@ -220,11 +197,13 @@
 					</picture>
 					<labels>
 						<label x="33" y="60" textBinded="Ports"/>
-						<label x="-5" y="60" text="Порты:"/>
+						<label x="-8" y="60" text="Порты:"/>
 						<label x="33" y="80" textBinded="Power"/>
 						<label x="-50" y="80" text="Мощность (%):"/>
 						<label x="33" y="100" textBinded="TachoLimit"/>
 						<label x="-100" y="100" text="Предел оборотов (град):"/>
+						<label x="-66" y="120" text="Режим торможения:"/>
+						<label x="33" y="120" textBinded="BrakeMode"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -250,6 +229,80 @@
 					<container/>
 					<generalizations>
 						<parent parentName="EngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Моторы вперёд" name="EnginesForward">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="Ports"/>
+						<label x="-8" y="60" text="Порты:"/>
+						<label x="33" y="80" textBinded="Power"/>
+						<label x="-50" y="80" text="Мощность (%):"/>
+						<label x="33" y="100" textBinded="TachoLimit"/>
+						<label x="-100" y="100" text="Предел оборотов (град):"/>
+						<label x="33" y="120" textBinded="BrakeMode"/>
+						<label x="-63" y="120" text="Режим торможения:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="EngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node name="EngineMovementCommand">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Мощность (%)" type="string" name="Power">
+							<default>100</default>
+						</property>
+						<property displayedName="Предел оборотов (гр.)" type="string" name="TachoLimit">
+							<default>0</default>
+						</property>
+						<property displayedName="Режим торможения" type="BreakEngineMode" name="BrakeMode">
+							<default>тормозить</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="EngineCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node name="EngineCommand">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Порты" type="string" name="Ports">
+							<default>B, C</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -305,59 +358,6 @@
 					</properties>
 				</logic>
 			</edge>
-			<node name="EngineCommand">
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="Порты" type="string" name="Ports">
-							<default>A, B</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Моторы вперёд" name="EnginesForward">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="33" y="60" textBinded="Ports"/>
-						<label x="-5" y="60" text="Порты:"/>
-						<label x="33" y="80" textBinded="Power"/>
-						<label x="-50" y="80" text="Мощность (%):"/>
-						<label x="33" y="100" textBinded="TachoLimit"/>
-						<label x="-100" y="100" text="Предел оборотов (град):"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="EngineMovementCommand"/>
-					</generalizations>
-				</logic>
-			</node>
 			<node displayedName="Балансировка" name="Balance">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -365,21 +365,21 @@
 					</picture>
 					<labels>
 						<label x="33" y="60" textBinded="port"/>
-						<label x="-60" y="60" text="Порт гироскопа:"/>
+						<label x="-57" y="60" text="Порт гироскопа:"/>
 						<label x="33" y="80" textBinded="forward"/>
 						<label x="-65" y="80" text="Значение forward:"/>
 						<label x="33" y="100" textBinded="turn"/>
-						<label x="-50" y="100" text="Значение turn:"/>
+						<label x="-47" y="100" text="Значение turn:"/>
 						<label x="33" y="120" textBinded="gyroOffset"/>
-						<label x="-105" y="120" text="Значение для калибровки:"/>
+						<label x="-108" y="120" text="Значение для калибровки:"/>
 						<label x="33" y="140" textBinded="port1"/>
-						<label x="-80" y="140" text="Порт первого мотора:"/>
+						<label x="-84" y="140" text="Порт первого мотора:"/>
 						<label x="33" y="160" textBinded="port2"/>
-						<label x="-80" y="160" text="Порт второго мотора:"/>
+						<label x="-84" y="160" text="Порт второго мотора:"/>
 						<label x="33" y="180" textBinded="pwm1"/>
-						<label x="-210" y="180" text="Выходное значение мощности первого мотора:"/>
+						<label x="-213" y="180" text="Выходное значение мощности первого мотора:"/>
 						<label x="33" y="200" textBinded="pwm2"/>
-						<label x="-210" y="200" text="Выходное значение мощности второго мотора:"/>
+						<label x="-213" y="200" text="Выходное значение мощности второго мотора:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -423,8 +423,12 @@
 						</property>
 						<property displayedName="Выходное значение мощности первого мотора" type="string" name="pwm1">
 						</property>
-						<property displayedName="Выходное значение мощности второго мотора" type="string" name="pwm2">						</property>
+						<property displayedName="Выходное значение мощности второго мотора" type="string" name="pwm2">
+						</property>
 					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
 					<container/>
 				</logic>
 			</node>
@@ -548,8 +552,10 @@
 						<image y1="0" name="images/beepBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-90" y="60" text="Ждать завершения:"/>
-						<label x="30" y="60" textBinded="WaitForCompletion"/>
+						<label x="-90" y="60" text="Громкость (%):"/>
+						<label x="-90" y="80" text="Ждать завершения:"/>
+						<label x="30" y="60" textBinded="Volume"/>
+						<label x="30" y="80" textBinded="WaitForCompletion"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -577,6 +583,9 @@
 						<property displayedName="Ждать завершения" type="bool" name="WaitForCompletion">
 							<default>true</default>
 						</property>
+						<property displayedName="Громкость" type="string" name="Volume">
+							<default>50</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -590,7 +599,7 @@
 					</picture>
 					<labels>
 						<label x="33" y="60" textBinded="Iterations"/>
-						<label x="-37" y="60" text="Повторений:"/>
+						<label x="-37" y="60" text="Итераций:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -615,7 +624,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Повторения" type="string" name="Iterations">
+						<property displayedName="Итерации" type="string" name="Iterations">
 							<default>10</default>
 						</property>
 					</properties>
@@ -664,11 +673,13 @@
 					</picture>
 					<labels>
 						<label x="-67" y="60" text="Частота (Гц):"/>
-						<label x="-68" y="80" text="Длительность (мс):"/>
-						<label x="45" y="61" textBinded="Frequency"/>
-						<label x="45" y="84" textBinded="Duration"/>
-						<label x="-68" y="100" text="Ждать завершения:"/>
-						<label x="45" y="100" textBinded="WaitForCompletion"/>
+						<label x="-67" y="80" text="Громкость (%):"/>
+						<label x="-68" y="100" text="Длительность (мс):"/>
+						<label x="-68" y="120" text="Ждать завершения:"/>
+						<label x="45" y="60" textBinded="Frequency"/>
+						<label x="45" y="80" textBinded="Volume"/>
+						<label x="45" y="100" textBinded="Duration"/>
+						<label x="45" y="120" textBinded="WaitForCompletion"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -693,14 +704,17 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Ждать завершения" type="bool" name="WaitForCompletion">
-							<default>true</default>
-						</property>
 						<property displayedName="Частота" type="string" name="Frequency">
 							<default>1000</default>
 						</property>
+						<property displayedName="Громкость" type="string" name="Volume">
+							<default>50</default>
+						</property>
 						<property displayedName="Длительность" type="string" name="Duration">
 							<default>1000</default>
+						</property>
+						<property displayedName="Ждать завершения" type="bool" name="WaitForCompletion">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -772,22 +786,6 @@
 			<node name="AbstractNode">
 				<logic>
 					<container/>
-				</logic>
-			</node>
-			<node name="EngineMovementCommand">
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="Мощность (%)" type="string" name="Power">
-							<default>100</default>
-						</property>
-						<property displayedName="Предел оборотов (гр.)" type="string" name="TachoLimit">
-							<default>0</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="EngineCommand"/>
-					</generalizations>
 				</logic>
 			</node>
 			<node displayedName="Ждать интенсивность цвета" name="WaitForColorIntensity">
@@ -882,7 +880,7 @@
 			<node displayedName="Ждать свет" name="WaitForLight">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/waitForLight.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="33" y="60" textBinded="Port"/>
@@ -1145,37 +1143,104 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Подпрограмма" name="SubprogramRobots">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/subprogramRobots.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="5" y="60" textBinded="name"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Неведомая хрень" name="unknown something">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels/>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 		</graphicTypes>
 		<palette>
 			<group name="Действия">
-				<element name="Гудок"/>
-				<element name="Играть звук"/>
-				<element name="Моторы вперёд"/>
-				<element name="Моторы назад"/>
-				<element name="Моторы стоп"/>
-				<element name="Функция"/>
-				<element name="Поток управления"/>
+				<element name="Beep"/>
+				<element name="PlayTone"/>
+				<element name="EnginesForward"/>
+				<element name="EnginesBackward"/>
+				<element name="EnginesStop"/>
+				<element name="Function"/>
 			</group>
 			<group name="Ожидания">
-				<element name="Таймер"/>
-				<element name="Ждать сенсор касания"/>
-				<element name="Ждать сонар"/>
-				<element name="Ждать цвет"/>
-				<element name="Ждать энкодер"/>
-				<element name="Ждать интенсивность цвета"/>
-				<element name="Ждать свет"/>
+				<element name="Timer"/>
+				<element name="WaitForTouchSensor"/>
+				<element name="WaitForSonarDistance"/>
+				<element name="WaitForColor"/>
+				<element name="WaitForEncoder"/>
+				<element name="WaitForColorIntensity"/>
+				<element name="WaitForLight"/>
 			</group>
 			<group name="Алгоритмы">
-				<element name="Породить поток"/>
-				<element name="Условие"/>
-				<element name="Цикл"/>
-				<element name="Диаграмма поведения робота"/>
+				<element name="Fork"/>
+				<element name="IfBlock"/>
+				<element name="ControlFlow"/>
+				<element name="RobotsDiagramNode"/>
 			</group>
 			<group name="Инициализация">
-				<element name="Начало"/>
-				<element name="Конец"/>
-				<element name="Блок инициализации"/>
-				<element name="Сбросить показания энкодера"/>
+				<element name="InitialNode"/>
+				<element name="FinalNode"/>
+				<element name="InitialBlock"/>
+				<element name="NullificationEncoder"/>
 			</group>
 		</palette>
 	</diagram>

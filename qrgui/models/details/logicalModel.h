@@ -21,7 +21,7 @@ class GraphicalModel;
 
 class LogicalModel : public modelsImplementation::AbstractModel
 {
-	Q_OBJECT;
+	Q_OBJECT
 
 public:
 	LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const &editorManager);

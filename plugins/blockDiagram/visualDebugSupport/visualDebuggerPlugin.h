@@ -84,7 +84,7 @@ private slots:
 	/// set breakpoint at start and run it in debugger in automatic way
 	void startDebugging();
 	
-	/// Show watch list with all decalred variables and its values. List updates
+	/// Show watch list with all declared variables and its values. List updates
 	/// dynamically
 	void showWatchList();
 

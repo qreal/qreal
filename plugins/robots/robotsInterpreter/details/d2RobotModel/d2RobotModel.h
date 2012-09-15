@@ -29,13 +29,13 @@ public:
 	void setNewMotor(int speed, long unsigned int degrees, int const port);
 	virtual SensorsConfiguration &configuration();
 	D2ModelWidget *createModelWidget();
+	int readEncoder(int const port) const;
+	void resetEncoder(int const port);
 
-	int readEncoder(int/*inputPort::InputPortEnum*/  const port) const;
-	void resetEncoder(int/*inputPort::InputPortEnum*/  const port);
-
-	bool readTouchSensor(inputPort::InputPortEnum const port);
+	int readTouchSensor(inputPort::InputPortEnum const port);
 	int readSonarSensor(inputPort::InputPortEnum const port) const;
 	int readColorSensor(inputPort::InputPortEnum const port) const;
+	int readLightSensor(inputPort::InputPortEnum const port) const;
 
 	void showModelWidget();
 
@@ -49,7 +49,6 @@ public:
 		Do,
 		End
 	};
-
 
 private slots:
 	void nextFragment();

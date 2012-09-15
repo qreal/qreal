@@ -1,7 +1,7 @@
-#include "d2ModelScene.h"
-
 #include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtGui/QKeyEvent>
+
+#include "d2ModelScene.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;

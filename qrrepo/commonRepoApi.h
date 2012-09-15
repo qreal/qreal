@@ -77,6 +77,11 @@ public:
 	/// Check that property with given name exists in a given element.
 	virtual bool hasProperty(qReal::Id const &id, QString const &propertyName) const = 0;
 
+	virtual QMapIterator<QString, QVariant> propertiesIterator(qReal::Id const &id) const = 0;
+
+	virtual void setBackReference(qReal::Id const &id, qReal::Id const &reference) const = 0;
+	virtual void removeBackReference(qReal::Id const &id, qReal::Id const &reference) const = 0;
+
 	/// Check that given element exists in a repository.
 	virtual bool exist(qReal::Id const &id) const = 0;
 

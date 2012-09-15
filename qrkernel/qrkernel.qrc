@@ -1,5 +1,5 @@
 <RCC>
-	<qresource>
-		<file>settingsDefaultValues</file>
-	</qresource>
+    <qresource prefix="/">
+        <file>settingsDefaultValues</file>
+    </qresource>
 </RCC>

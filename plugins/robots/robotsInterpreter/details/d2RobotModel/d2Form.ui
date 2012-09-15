@@ -110,9 +110,9 @@
       <widget class="QSpinBox" name="penWidthSpinBox">
        <property name="geometry">
         <rect>
-         <x>40</x>
+         <x>57</x>
          <y>0</y>
-         <width>98</width>
+         <width>81</width>
          <height>21</height>
         </rect>
        </property>
@@ -122,7 +122,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>31</width>
+         <width>51</width>
          <height>16</height>
         </rect>
        </property>
@@ -152,9 +152,9 @@
       <widget class="graphicsUtils::ColorListEditor" name="penColorComboBox">
        <property name="geometry">
         <rect>
-         <x>40</x>
+         <x>57</x>
          <y>0</y>
-         <width>98</width>
+         <width>81</width>
          <height>20</height>
         </rect>
        </property>
@@ -163,9 +163,9 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>-60</y>
-         <width>29</width>
-         <height>142</height>
+         <y>0</y>
+         <width>51</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="maximumSize">
@@ -377,14 +377,14 @@ p, li { white-space: pre-wrap; }
      <widget class="QComboBox" name="speedComboBox">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>70</x>
         <y>20</y>
-        <width>61</width>
+        <width>81</width>
         <height>22</height>
        </rect>
       </property>
       <property name="editable">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="currentIndex">
        <number>-1</number>

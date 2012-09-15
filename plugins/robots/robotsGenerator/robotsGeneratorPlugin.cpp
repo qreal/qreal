@@ -1,7 +1,6 @@
-#include "robotsGeneratorPlugin.h"
-
 #include <QtGui/QApplication>
 
+#include "robotsGeneratorPlugin.h"
 #include "nxtOSEK/nxtOSEKRobotGenerator.h"
 
 Q_EXPORT_PLUGIN2(robotsGeneratorPlugin, robots::generator::RobotsGeneratorPlugin)
@@ -29,6 +28,7 @@ void RobotsGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
 	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
 	mRepoControlApi = &configurator.repoControlInterface();
+	mProjectManager = &configurator.projectManager();
 
 	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
 }
@@ -49,16 +49,35 @@ QList<ActionInfo> RobotsGeneratorPlugin::actions()
 
 	checkNxtTools();
 
+	/*
+	/// Set tabs, unused at the opening, enabled
+	QList<ActionInfo> unusedAtTheOpeningTab;
+	unusedAtTheOpeningTab << generateCodeActionInfo;
+	changeActiveTab(unusedAtTheOpeningTab, false);
+	*/
 	return QList<ActionInfo>() << generateCodeActionInfo << flashRobotActionInfo
 			<< uploadProgramActionInfo;
 }
 
+void RobotsGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)
+{
+	foreach (ActionInfo const &actionInfo, info) {
+			actionInfo.action()->setEnabled(trigger);
+	}
+}
+
 void RobotsGeneratorPlugin::generateRobotSourceCode()
 {
-	mMainWindowInterface->saveAll();
+	mProjectManager->save();
 
-	robots::generator::NxtOSEKRobotGenerator gen(mMainWindowInterface->activeDiagram(), *mRepoControlApi, *mMainWindowInterface->errorReporter());
+	robots::generator::NxtOSEKRobotGenerator gen(mMainWindowInterface->activeDiagram(),
+			 *mRepoControlApi,
+			 *mMainWindowInterface->errorReporter());
+	mMainWindowInterface->errorReporter()->clearErrors();
 	gen.generate();
+	if (mMainWindowInterface->errorReporter()->wereErrors()) {
+		return;
+	}
 
 	QFile file("nxt-tools/example0/example0.c");
 	QTextStream *inStream = NULL;

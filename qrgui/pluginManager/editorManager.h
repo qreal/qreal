@@ -55,6 +55,7 @@ namespace qReal {
 		bool isElement(Id const &id) const;
 
 		virtual QStringList getPropertyNames(Id const &id) const;
+		virtual QStringList getReferenceProperties(Id const &id) const;
 		virtual QString getDefaultPropertyValue(Id const &id, QString name) const;
 		virtual QStringList getPropertiesWithDefaultValues(Id const &id) const;
 
@@ -70,6 +71,7 @@ namespace qReal {
 		bool isDiagramNode(Id const &id) const;
 
 		bool isParentOf(Id const &child, Id const &parent) const;
+		bool isGraphicalElementNode(const Id &id) const;
 	private:
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;

@@ -9,7 +9,7 @@ using namespace robots::generator;
 
 AbstractElementGenerator* ElementGeneratorFactory::generator(
 		NxtOSEKRobotGenerator *generator
-		, qReal::Id elementId
+		, qReal::Id const &elementId
 		, qrRepo::RepoApi const &api)
 {
 	if (elementId.element() == "IfBlock") {

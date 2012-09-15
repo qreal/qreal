@@ -250,6 +250,13 @@ QStringList EditorManager::getPropertyNames(const Id &id) const
 	return mPluginIface[id.editor()]->getPropertyNames(id.diagram(), id.element());
 }
 
+QStringList EditorManager::getReferenceProperties(const Id &id) const
+{
+	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return mPluginIface[id.editor()]->getReferenceProperties(id.diagram(), id.element());
+}
+
 IdList EditorManager::getContainedTypes(const Id &id) const
 {
 	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
@@ -442,4 +449,15 @@ QStringList EditorManager::getAllChildrenTypesOf(Id const &parent) const
 	}
 	return result;
 }
+
+bool EditorManager::isGraphicalElementNode(const Id &id) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	ElementImpl *impl = mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
+	if( !impl ){
+		return false;
+	}
+	return impl->isNode();
+}
+
 
