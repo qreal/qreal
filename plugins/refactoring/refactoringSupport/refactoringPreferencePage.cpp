@@ -29,7 +29,6 @@ RefactoringPreferencesPage::RefactoringPreferencesPage(QWidget *parent)
 	int curColorIndex = mUi->colorComboBox->findText(curColor);
 	mUi->colorComboBox->setCurrentIndex(curColorIndex);
 
-
 	mUi->windowsRadioButton->setChecked(SettingsManager::value("dotWindowsChecked").toBool());
 	mUi->linuxRadioButton->setChecked(SettingsManager::value("dotLinuxChecked").toBool());
 	mUi->otherRadioButton->setChecked(SettingsManager::value("dotOtherChecked").toBool());
