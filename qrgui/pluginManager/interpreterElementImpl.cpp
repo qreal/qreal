@@ -4,18 +4,16 @@
 using namespace qReal;
 using namespace utils;
 
-InterpreterElementImpl::InterpreterElementImpl(qrRepo::RepoApi *repo, Id id)
-	: mEditorRepoApi(repo), mId(id)
-{
-	qDebug() << "InterpreterElementImpl::InterpreterElementImpl: " << mId;
-}
+InterpreterElementImpl::InterpreterElementImpl(qrRepo::RepoApi *repo, Id metaId, Id id)
+	: mEditorRepoApi(repo), mId(metaId)
+{}
 //TODO:
 void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts,
 								  QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
 								  QList<ElementTitleInterface*> &titles,
 								  SdfRendererInterface *renderer, SdfRendererInterface *portRenderer)
 {
-	if (mEditorRepoApi->typeName(mId) == "MetaEntityNode") {
+	if (mId.element() == "MetaEntityNode") {
 		mGraphics.setContent(mEditorRepoApi->stringProperty(mId, "shape"));
 		QDomNodeList pointPortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("pointPort");
 		QDomNodeList linePortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("linePort");
@@ -162,7 +160,7 @@ void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
 void InterpreterElementImpl:: init(ElementTitleFactoryInterface &factory,
 				  QList<ElementTitleInterface*> &titles)
 {
-		if (mEditorRepoApi->typeName(mId) == "MetaEntityEdge") {
+		if (mId.element() == "MetaEntityEdge") {
 			if (!(mEditorRepoApi->stringProperty(mId, "labelText")).isEmpty()) {
 				//mLabels[0]->generateCodeForConstructor(out);
 			} else {
@@ -174,7 +172,7 @@ void InterpreterElementImpl:: init(ElementTitleFactoryInterface &factory,
 
 void InterpreterElementImpl::paint(QPainter *painter, QRectF &contents)
 {
-	if (mEditorRepoApi->typeName(mId) == "MetaEntityNode") {
+	if (mId.element() == "MetaEntityNode") {
 		if(!mGraphics.childNodes().isEmpty()) {
 			mRenderer->render(painter, contents);
 		}
@@ -183,7 +181,7 @@ void InterpreterElementImpl::paint(QPainter *painter, QRectF &contents)
 //TODO:
 void InterpreterElementImpl::updateData(ElementRepoInterface *repo) const
 {
-	if (mEditorRepoApi->typeName(mId) == "MetaEntityEdge") {
+	if (mId.element() == "MetaEntityEdge") {
 		if ((mEditorRepoApi->stringProperty(mId, "labelText")).isEmpty()) {
 			Q_UNUSED(repo);
 		} else {
@@ -191,19 +189,19 @@ void InterpreterElementImpl::updateData(ElementRepoInterface *repo) const
 		}
 	}
 
-	if (mEditorRepoApi->typeName(mId) == "MetaEntityNode") {
+	if (mId.element() == "MetaEntityNode") {
 
 	}
 }
 
 bool InterpreterElementImpl::isNode() const
 {
-	return mEditorRepoApi->typeName(mId) == "MetaEntityNode";
+	return mId.element() == "MetaEntityNode";
 }
 
 bool InterpreterElementImpl::hasPorts() const
 {
-	if (mEditorRepoApi->typeName(mId) == "MetaEntityNode") {
+	if (mId.element() == "MetaEntityNode") {
 		QDomDocument portsDoc;
 		portsDoc.setContent(mEditorRepoApi->stringProperty(mId, "shape"));
 		QDomNodeList pointPorts = portsDoc.elementsByTagName("pointPort");
@@ -218,7 +216,7 @@ bool InterpreterElementImpl::hasPorts() const
 
 bool InterpreterElementImpl::isResizeable() const
 {
-	if (mEditorRepoApi->typeName(mId) == "MetaEntityNode") {
+	if (mId.element() == "MetaEntityNode") {
 		if (mEditorRepoApi->stringProperty(mId, "isResizeable") == "false")
 			return false;
 		else
@@ -229,7 +227,7 @@ bool InterpreterElementImpl::isResizeable() const
 
 Qt::PenStyle InterpreterElementImpl::getPenStyle() const
 {
-	if (mEditorRepoApi->typeName(mId) == "MetaEntityEdge") {
+	if (mId.element() == "MetaEntityEdge") {
 		QString QtStyle = "Qt::" + mEditorRepoApi->stringProperty(mId, "lineType").replace(0, 1, mEditorRepoApi->stringProperty(mId, "lineType").at(0).toUpper());
 		if (QtStyle != "") {
 			if (QtStyle == "Qt::NoPen")
@@ -253,7 +251,7 @@ Qt::PenStyle InterpreterElementImpl::getPenStyle() const
 
 int InterpreterElementImpl::getPenWidth() const
 {
-	if (mEditorRepoApi->typeName(mId) == "MetaEntityEdge") {
+	if (mId.element() == "MetaEntityEdge") {
 		QDomElement lineWidthElement = mGraphics.firstChildElement("lineWidth");
 		if (lineWidthElement.isNull()) {
 			return 1;
@@ -287,17 +285,17 @@ int InterpreterElementImpl::getPenWidth() const
 QColor InterpreterElementImpl::getPenColor() const
 {
 	QColor lineColor;
-	if (mEditorRepoApi->typeName(mId) == "MetaEntityEdge")
+	if (mId.element() == "MetaEntityEdge")
 		return QColor(lineColor.red(), lineColor.green(), lineColor.blue());
 	return QColor();
 }
 
 void InterpreterElementImpl::drawStartArrow(QPainter *painter) const
 {
-	if (mEditorRepoApi->typeName(mId) == "MetaEntityEdge") {
+	if (mId.element() == "MetaEntityEdge") {
 		QString style = "";
 		foreach (Id edgeChild, mEditorRepoApi->children(mId)) {
-			if(mEditorRepoApi->typeName(edgeChild) == "MetaEntityAssociation") {
+			if(edgeChild.element() == "MetaEntityAssociation") {
 				 style = mEditorRepoApi->stringProperty(edgeChild, "beginType");
 			}
 		}
@@ -339,10 +337,10 @@ void InterpreterElementImpl::drawStartArrow(QPainter *painter) const
 
 void InterpreterElementImpl::drawEndArrow(QPainter *painter) const
 {
-	if (mEditorRepoApi->typeName(mId) == "MetaEntityEdge") {
+	if (mId.element() == "MetaEntityEdge") {
 		QString style = "";
 		foreach (Id edgeChild, mEditorRepoApi->children(mId)) {
-			if(mEditorRepoApi->typeName(edgeChild) == "MetaEntityAssociation") {
+			if(edgeChild.element() == "MetaEntityAssociation") {
 				 style = mEditorRepoApi->stringProperty(edgeChild, "endType");
 			}
 		}

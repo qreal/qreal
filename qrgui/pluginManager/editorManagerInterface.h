@@ -73,6 +73,7 @@ public:
 	//unsupported methods:
 	virtual QStringList paletteGroups(Id const &editor, Id const &diagram) const = 0;
 	virtual QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const = 0;
+	virtual QStringList getReferenceProperties(Id const &id) const = 0;
 };
 
 }

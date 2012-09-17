@@ -24,7 +24,7 @@ class LogicalModel : public modelsImplementation::AbstractModel
 	Q_OBJECT
 
 public:
-	LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManagerInterface const *editorManagerInter);
+	LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManagerInterface *editorManagerInter);
 	virtual ~LogicalModel();
 
 	void connectToGraphicalModel(GraphicalModel * const graphicalModel);

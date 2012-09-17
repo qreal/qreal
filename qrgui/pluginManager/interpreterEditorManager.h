@@ -5,6 +5,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QPluginLoader>
 #include <QtCore/QStringList>
+#include <QtCore/QPair>
 #include <QtGui/QIcon>
 
 #include "listenerManager.h"
@@ -26,6 +27,7 @@ namespace qReal {
 	public:
 		explicit InterpreterEditorManager(QString fileName, QObject *parent = NULL);
 
+		QPair<qrRepo::RepoApi*, Id> getRepoAndMetaId(Id const &id) const;
 		IdList editors() const;
 		IdList diagrams(Id const &editor) const;
 		IdList elements(Id const &diagram) const;
@@ -79,6 +81,7 @@ namespace qReal {
 		//unsupported methods:
 		QStringList paletteGroups(Id const &editor, Id const &diagram) const;
 		QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
+		virtual QStringList getReferenceProperties(Id const &id) const;
 
 	private:
 		QMap<QString, qrRepo::RepoApi*> mEditorRepoApi;

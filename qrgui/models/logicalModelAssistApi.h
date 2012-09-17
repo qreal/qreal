@@ -3,6 +3,7 @@
 #include "details/logicalModel.h"
 #include "details/modelsAssistApi.h"
 #include "../toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+#include "../pluginManager/proxyEditorManager.h"
 
 namespace qReal {
 
@@ -18,7 +19,7 @@ class LogicalModel;
 class LogicalModelAssistApi : public qReal::LogicalModelAssistInterface
 {
 public:
-	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManagerInterface const *editorManagerInter);
+	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManagerInterface *editorManagerInter);
 	virtual ~LogicalModelAssistApi() {}
 	EditorManagerInterface const *editorManagerInter() const;
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const;
@@ -44,6 +45,10 @@ public:
 
 	bool isLogicalId(Id const &id) const;
 
+	void removeReferencesTo(Id const &id) const;
+	void removeReferencesFrom(Id const &id) const;
+	void removeReference(Id const &id, Id const &reference) const;
+
 	void setTo(Id const &elem, Id const &newValue);
 	Id to(Id const &elem) const;
 
@@ -62,6 +67,7 @@ public:
 private:
 	details::ModelsAssistApi mModelsAssistApi;
 	details::LogicalModel &mLogicalModel;
+	EditorManagerInterface *mEditorManagerProxy;
 
 	LogicalModelAssistApi(LogicalModelAssistApi const &);  // Copying is forbidden
 	LogicalModelAssistApi& operator =(LogicalModelAssistApi const &); // Assignment is forbidden also

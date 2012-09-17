@@ -77,6 +77,7 @@ public:
 	//unsupported methods:
 	QStringList paletteGroups(Id const &editor, Id const &diagram) const;
 	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
+	virtual QStringList getReferenceProperties(Id const &id) const;
 private:
 	EditorManagerInterface *mProxyManager;
 };

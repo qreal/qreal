@@ -352,9 +352,9 @@ void BaseGraphTransformationUnit::setProperty(Id const &id, QString const &prope
 		, QVariant const &value) const
 {
 	if (mLogicalModelApi.isLogicalId(id)) {
-		return mLogicalModelApi.logicalRepoApi().setProperty(id, propertyName, value);
+		mLogicalModelApi.mutableLogicalRepoApi().setProperty(id, propertyName, value);
 	}
-	return mLogicalModelApi.logicalRepoApi().setProperty(
+	mLogicalModelApi.mutableLogicalRepoApi().setProperty(
 				mGraphicalModelApi.logicalId(id), propertyName, value);
 }
 

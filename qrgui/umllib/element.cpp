@@ -4,9 +4,9 @@
 
 using namespace qReal;
 
-Element::Element()
+Element::Element(ElementImpl* elementImpl)
 	: mMoving(false)
-	, mElementImpl(NULL)
+	, mElementImpl(elementImpl)
 	, mLogicalAssistApi(NULL)
 	, mGraphicalAssistApi(NULL)
 {
@@ -90,4 +90,9 @@ void Element::selectionState(const bool selected) {
 	if (!selected) {
 		singleSelectionState(false);
 	}
+}
+
+ElementImpl* Element::elementImpl() const
+{
+	return mElementImpl;
 }

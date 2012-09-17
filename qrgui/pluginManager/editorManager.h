@@ -55,6 +55,7 @@ namespace qReal {
 		bool isElement(Id const &id) const;
 
 		virtual QStringList getPropertyNames(Id const &id) const;
+		virtual QStringList getReferenceProperties(Id const &id) const;
 		virtual QString getDefaultPropertyValue(Id const &id, QString name) const;
 		virtual QStringList getPropertiesWithDefaultValues(Id const &id) const;
 

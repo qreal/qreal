@@ -1,3 +1,4 @@
+#include <QtGui/QAction>
 #include "interpreter.h"
 
 #include "details/autoconfigurer.h"
@@ -6,8 +7,6 @@
 #include "details/robotCommunication/usbRobotCommunicationThread.h"
 #include "details/tracer.h"
 #include "details/debugHelper.h"
-
-#include <QtGui/QAction>
 
 using namespace qReal;
 using namespace interpreters::robots;
@@ -38,6 +37,7 @@ Interpreter::Interpreter()
 	connect(mRobotModel, SIGNAL(disconnected()), this, SLOT(disconnectSlot()));
 	connect(mRobotModel, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
 	connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
+	connect(mD2ModelWidget, SIGNAL(d2WasClosed()), this, SLOT(stopRobot()));
 }
 
 void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
@@ -58,8 +58,9 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 
 Interpreter::~Interpreter()
 {
-	foreach (Thread * const thread, mThreads)
+	foreach (Thread * const thread, mThreads) {
 		delete thread;
+	}
 	delete mBlocksTable;
 }
 
@@ -81,7 +82,6 @@ void Interpreter::interpret()
 	}
 
 	mState = waitingForSensorsConfiguredToLaunch;
-
 	mBlocksTable->setIdleForBlocks();
 
 	Id const startingElement = findStartingElement(currentDiagramId);
@@ -92,12 +92,16 @@ void Interpreter::interpret()
 	}
 
 	Autoconfigurer configurer(*mGraphicalModelApi, mBlocksTable, mInterpretersInterface->errorReporter(), mRobotModel);
-	if (!configurer.configure(currentDiagramId))
+	if (!configurer.configure(currentDiagramId)) {
 		return;
+	}
+
+	runTimer();
 }
 
 void Interpreter::stopRobot()
 {
+	mTimer->stop();
 	mRobotModel->stopRobot();
 	mState = idle;
 	foreach (Thread *thread, mThreads) {
@@ -105,28 +109,35 @@ void Interpreter::stopRobot()
 		mThreads.removeAll(thread);
 	}
 	mBlocksTable->setFailure();
-	/*mBlocksTable->clear();
-	mThreads.clear();
-	mTimer->stop();*/
 }
 
-void Interpreter::showWatchList() {
-	if (mWatchListWindow != NULL) {
-		mWatchListWindow->close();
-	}
+void Interpreter::showWatchList()
+{
 	mWatchListWindow = new watchListWindow(mParser);
 	mWatchListWindow->show();
 }
 
+void Interpreter::closeWatchList()
+{
+	if (mWatchListWindow) {
+		mWatchListWindow->setVisible(false);
+	}
+}
+
 void Interpreter::closeD2ModelWidget()
 {
-	if (mD2ModelWidget)
+	if (mD2ModelWidget) {
 		mD2ModelWidget->close();
+	}
 }
 
 void Interpreter::showD2ModelWidget(bool isVisible)
 {
 	mD2ModelWidget->init(isVisible);
+	if (isVisible) {
+		mD2ModelWidget->activateWindow();
+		mD2ModelWidget->showNormal();
+	}
 }
 
 void Interpreter::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
@@ -151,8 +162,9 @@ void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum impl
 			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, mRobotCommunication, mD2RobotModel);
 	setRobotImplementation(robotImpl);
 	mImplementationType = implementationType;
-	if (mImplementationType != robotModelType::real)
+	if (mImplementationType != robotModelType::real) {
 		mRobotModel->init();
+	}
 }
 
 void Interpreter::connectedSlot(bool success)
@@ -176,6 +188,10 @@ void Interpreter::sensorsConfiguredSlot()
 	mConnected = true;
 	mActionConnectToRobot->setChecked(mConnected);
 
+	resetVariables();
+
+	mRobotModel->nextBlockAfterInitial(mConnected);
+
 	if (mState == waitingForSensorsConfiguredToLaunch) {
 		mState = interpreting;
 
@@ -194,8 +210,9 @@ Id const Interpreter::findStartingElement(Id const &diagram) const
 	IdList const children = mGraphicalModelApi->graphicalRepoApi().children(diagram);
 
 	foreach (Id const child, children) {
-		if (child.type() == startingElementType || child.type() == startingElementType1)
+		if (child.type() == startingElementType || child.type() == startingElementType1) {
 			return child;
+		}
 	}
 
 	return Id();
@@ -224,7 +241,9 @@ void Interpreter::configureSensors(sensorType::SensorTypeEnum const &port1
 		, sensorType::SensorTypeEnum const &port3
 		, sensorType::SensorTypeEnum const &port4)
 {
-	mRobotModel->configureSensors(port1, port2, port3, port4);
+	if (mConnected) {
+		mRobotModel->configureSensors(port1, port2, port3, port4);
+	}
 }
 
 void Interpreter::addThread(details::Thread * const thread)
@@ -249,8 +268,9 @@ void Interpreter::setRobotModel(details::RobotModel * const robotModel)
 void Interpreter::setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl)
 {
 	mRobotModel->setRobotImplementation(robotImpl);
-	if (robotImpl)
+	if (robotImpl) {
 		connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(runTimer()));
+	}
 }
 
 void Interpreter::runTimer()
@@ -277,17 +297,22 @@ void Interpreter::runTimer()
 
 void Interpreter::readSensorValues()
 {
-	if (mState == idle)
+	if (mState == idle) {
 		return;
+	}
 
-	if (mRobotModel->sensor(inputPort::port1))
+	if (mRobotModel->sensor(inputPort::port1)) {
 		mRobotModel->sensor(inputPort::port1)->read();
-	if (mRobotModel->sensor(inputPort::port2))
+	}
+	if (mRobotModel->sensor(inputPort::port2)) {
 		mRobotModel->sensor(inputPort::port2)->read();
-	if (mRobotModel->sensor(inputPort::port3))
+	}
+	if (mRobotModel->sensor(inputPort::port3)) {
 		mRobotModel->sensor(inputPort::port3)->read();
-	if (mRobotModel->sensor(inputPort::port4))
+	}
+	if (mRobotModel->sensor(inputPort::port4)) {
 		mRobotModel->sensor(inputPort::port4)->read();
+	}
 }
 
 void Interpreter::slotFailure()
@@ -297,28 +322,37 @@ void Interpreter::slotFailure()
 
 void Interpreter::responseSlot1(int sensorValue)
 {
-	updateSensorValues(QObject::tr("Sensor1"), sensorValue);
+	updateSensorValues("Sensor1", sensorValue);
 }
 
 void Interpreter::responseSlot2(int sensorValue)
 {
-	updateSensorValues(QObject::tr("Sensor2"), sensorValue);
+	updateSensorValues("Sensor2", sensorValue);
 }
 
 void Interpreter::responseSlot3(int sensorValue)
 {
-	updateSensorValues(QObject::tr("Sensor3"), sensorValue);
+	updateSensorValues("Sensor3", sensorValue);
 }
 
 void Interpreter::responseSlot4(int sensorValue)
 {
-	updateSensorValues(QObject::tr("Sensor4"), sensorValue);
+	updateSensorValues("Sensor4", sensorValue);
 }
 
 void Interpreter::updateSensorValues(QString const &sensorVariableName, int sensorValue)
 {
 	(*(mParser->getVariables()))[sensorVariableName] = utils::Number(sensorValue, utils::Number::intType);
 	Tracer::debug(tracer::autoupdatedSensorValues, "Interpreter::updateSensorValues", sensorVariableName + QString::number(sensorValue));
+}
+
+void Interpreter::resetVariables()
+{
+	int const resetValue = 0;
+	responseSlot1(resetValue);
+	responseSlot2(resetValue);
+	responseSlot3(resetValue);
+	responseSlot4(resetValue);
 }
 
 void Interpreter::connectToRobot()
@@ -328,6 +362,10 @@ void Interpreter::connectToRobot()
 		mRobotModel->disconnectFromRobot();
 	} else {
 		mRobotModel->init();
+		configureSensors(static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
+						 , static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
+						 , static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
+						 , static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt()));
 	}
 	mActionConnectToRobot->setChecked(mConnected);
 }
@@ -346,15 +384,15 @@ void Interpreter::setRobotModelType(robotModelType::robotModelTypeEnum robotMode
 void Interpreter::setCommunicator(QString const &valueOfCommunication, QString const &portName)
 {
 	RobotCommunicationThreadInterface *communicator = NULL;
-	if (valueOfCommunication == "bluetooth")
+	if (valueOfCommunication == "bluetooth") {
 		communicator = new BluetoothRobotCommunicationThread();
-	else
+	} else {
 		communicator = new UsbRobotCommunicationThread();
+	}
 
 	mRobotCommunication->setRobotCommunicationThreadObject(communicator);
 	mRobotCommunication->setPortName(portName);
-
-	disconnectSlot();
+	connectToRobot();
 }
 
 void Interpreter::setConnectRobotAction(QAction *actionConnect)

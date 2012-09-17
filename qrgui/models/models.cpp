@@ -3,7 +3,7 @@
 using namespace qReal;
 using namespace models;
 
-Models::Models(QString const &workingCopy, EditorManagerInterface const *editorManagerProxy)
+Models::Models(QString const &workingCopy, EditorManagerInterface *editorManagerProxy)
 {
 	qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(workingCopy);
 	mGraphicalModel = new models::details::GraphicalModel(repoApi, editorManagerProxy);

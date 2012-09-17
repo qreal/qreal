@@ -246,11 +246,6 @@ qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
 	return result;
 }
 
-QString RepoApi::typeName(Id const &id) const
-{
-	return id.element();
-}
-
 QVariant RepoApi::property(Id const &id, QString const &propertyName) const
 {
 	return mClient.property(id, propertyName);
@@ -290,6 +285,16 @@ void RepoApi::setProperties(Id const &id, QMap<QString, QVariant> const &propert
 bool RepoApi::hasProperty(Id const &id, QString const &propertyName) const
 {
 	return mClient.hasProperty(id, propertyName);
+}
+
+void RepoApi::setBackReference(Id const &id, Id const &reference) const
+{
+	mClient.setBackReference(id, reference);
+}
+
+void RepoApi::removeBackReference(Id const &id, Id const &reference) const
+{
+	mClient.removeBackReference(id, reference);
 }
 
 Id RepoApi::from(Id const &id) const

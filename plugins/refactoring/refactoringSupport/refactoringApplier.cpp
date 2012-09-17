@@ -234,9 +234,9 @@ void RefactoringApplier::setProperty(Id const &id, QString const &propertyName
 		, QVariant const &value) const
 {
 	if (mLogicalModelApi.isLogicalId(id)) {
-		return mLogicalModelApi.logicalRepoApi().setProperty(id, propertyName, value);
+		return mLogicalModelApi.mutableLogicalRepoApi().setProperty(id, propertyName, value);
 	} else {
-		return mLogicalModelApi.logicalRepoApi().setProperty(
+		return mLogicalModelApi.mutableLogicalRepoApi().setProperty(
 				mGraphicalModelApi.logicalId(id), propertyName, value);
 	}
 }

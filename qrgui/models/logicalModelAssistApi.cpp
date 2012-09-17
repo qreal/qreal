@@ -5,8 +5,8 @@ using namespace qReal;
 using namespace models;
 using namespace models::details;
 
-LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel, EditorManagerInterface const *editorManagerInter)
-	: mModelsAssistApi(logicalModel, editorManagerInter), mLogicalModel(logicalModel)
+LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel, EditorManagerInterface *editorManagerInter)
+	: mModelsAssistApi(logicalModel, editorManagerInter), mLogicalModel(logicalModel), mEditorManagerProxy(editorManagerInter)
 {
 }
 
@@ -196,4 +196,39 @@ int LogicalModelAssistApi::childrenOfRootDiagram() const
 int LogicalModelAssistApi::childrenOfDiagram(const Id &parent) const
 {
 	return mModelsAssistApi.childrenOfDiagram(parent);
+}
+
+void LogicalModelAssistApi::removeReferencesTo(Id const &id) const
+{
+	IdList backReferences = mLogicalModel.api().property(id, "backReferences").value<IdList>();
+
+	foreach (Id const &reference, backReferences) {
+		mLogicalModel.api().removeBackReference(id, reference);
+		removeReference(reference, id);
+	}
+}
+
+void LogicalModelAssistApi::removeReferencesFrom(Id const &id) const
+{
+	QStringList referenceProperties = mEditorManagerProxy->getReferenceProperties(id.type());
+
+	foreach (QString const &property, referenceProperties) {
+		QString propertyString = mLogicalModel.api().property(id, property).toString();
+		if (!propertyString.isEmpty()) {
+			Id propertyValue = Id::loadFromString(propertyString);
+			mLogicalModel.api().removeBackReference(propertyValue, id);
+		}
+	}
+}
+
+void LogicalModelAssistApi::removeReference(Id const &id, Id const &reference) const
+{
+	QStringList referenceProperties = mEditorManagerProxy->getReferenceProperties(id.type());
+
+	foreach (QString const &propertyName, referenceProperties) {
+		QString stringData = mLogicalModel.api().property(id, propertyName).toString();
+		if (stringData == reference.toString()) {
+			mLogicalModel.api().setProperty(id, propertyName, "");
+		}
+	}
 }

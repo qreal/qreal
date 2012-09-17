@@ -21,7 +21,7 @@ namespace qReal {
 	class InterpreterElementImpl : public ElementImpl
 	{
 	public:
-		InterpreterElementImpl(qrRepo::RepoApi *repo, Id id);
+		InterpreterElementImpl(qrRepo::RepoApi *repo, Id metaId, Id id);
 		void init(QRectF &contents, QList<StatPoint> &pointPorts,
 						  QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
 						  QList<ElementTitleInterface*> &titles,

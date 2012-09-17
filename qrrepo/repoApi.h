@@ -72,8 +72,6 @@ namespace qrRepo {
 		qReal::IdList outgoingConnectedElements(qReal::Id const &id) const;
 		qReal::IdList incomingConnectedElements(qReal::Id const &id) const;
 
-		QString typeName(qReal::Id const &id) const;
-
 		QVariant property(qReal::Id const &id, QString const &propertyName) const;
 		QString stringProperty(qReal::Id const &id, QString const &propertyName) const;
 		void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value) const;
@@ -83,6 +81,9 @@ namespace qrRepo {
 		void setProperties(qReal::Id const &id, QMap<QString, QVariant> const &properties);
 		bool hasProperty(qReal::Id const &id, QString const &propertyName) const;
 		QMapIterator<QString, QVariant> propertiesIterator(qReal::Id const &id) const;
+
+		void setBackReference(qReal::Id const &id, qReal::Id const &reference) const;
+		void removeBackReference(qReal::Id const &id, qReal::Id const &reference) const;
 
 		qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const;
 		void setTemporaryRemovedLinks(qReal::Id const &id, qReal::IdList const &value, QString const &direction);

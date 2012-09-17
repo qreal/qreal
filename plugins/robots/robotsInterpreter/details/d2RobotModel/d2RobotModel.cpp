@@ -5,14 +5,17 @@ using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace d2Model;
 
-const unsigned long black   = 0xFF000000;
-const unsigned long white   = 0xFFFFFFFF;
-const unsigned long red     = 0xFFFF0000;
-const unsigned long green   = 0xFF008000;
-const unsigned long blue    = 0xFF0000FF;
-const unsigned long yellow  = 0xFFFFFF00;
-const unsigned long cyan    = 0xFF00FFFF;
-const unsigned long magenta = 0xFFFF00FF;
+unsigned long const black   = 0xFF000000;
+unsigned long const white   = 0xFFFFFFFF;
+unsigned long const red     = 0xFFFF0000;
+unsigned long const green   = 0xFF008000;
+unsigned long const blue    = 0xFF0000FF;
+unsigned long const yellow  = 0xFFFFFF00;
+unsigned long const cyan    = 0xFF00FFFF;
+unsigned long const magenta = 0xFFFF00FF;
+
+unsigned const touchSensorPressedSignal = 1;
+unsigned const touchSensorNotPressedSignal = 0;
 
 D2RobotModel::D2RobotModel(QObject *parent)
 		: QObject(parent)
@@ -75,8 +78,7 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 	mMotors[port]->degrees = degrees;
 	if (degrees == 0) {
 		mMotors[port]->activeTime = QPair<ATime, qreal>(DoInf , 0);
-	}
-	else {
+	} else {
 		qreal activeTime = degrees * 1.0 / 1.0 * speed ;
 		mMotors[port]->activeTime = QPair<ATime, qreal>(Do , activeTime);
 	}
@@ -148,12 +150,17 @@ QPair<QPoint, qreal> D2RobotModel::countPositionAndDirection(inputPort::InputPor
 	return countPositionAndDirection(mSensorsConfiguration.position(port), mSensorsConfiguration.direction(port));
 }
 
-bool D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
+int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 {
 	QPair<QPoint, qreal> neededPosDir = countPositionAndDirection(port);
 	bool res = mWorldModel.touchSensorReading(neededPosDir.first, neededPosDir.second, port);
 	// TODO: Add checks of sensor type.
-	return res;
+
+	if (res) {
+		return touchSensorPressedSignal;
+	}
+
+	return touchSensorNotPressedSignal;
 }
 
 int D2RobotModel::readSonarSensor(inputPort::InputPortEnum const port) const
@@ -277,6 +284,12 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> countsColor, int
 	return (allWhite / static_cast<qreal>(n)) * 100.0;
 }
 
+int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
+{
+	Q_UNUSED(port)
+	return 0;
+}
+
 void D2RobotModel::startInit()
 {
 	initPosition();
@@ -287,6 +300,7 @@ void D2RobotModel::stopRobot()
 {
 	mMotorA->speed = 0;
 	mMotorB->speed = 0;
+	mMotorC->speed = 0;
 }
 
 void D2RobotModel::countBeep()
@@ -294,14 +308,28 @@ void D2RobotModel::countBeep()
 	if (mBeep.time > 0) {
 		mD2ModelWidget->drawBeep(QColor(Qt::red));
 		mBeep.time -= timeInterval;
-	} else
+	} else {
 		mD2ModelWidget->drawBeep(QColor(Qt::green));
+	}
 }
 
 void D2RobotModel::countNewCoord()
 {
-	qreal const vSpeed = mMotorA->speed * 2 * M_PI * mMotorA->radius * 1.0 / 120000;
-	qreal const uSpeed = mMotorB->speed * 2 * M_PI * mMotorB->radius * 1.0 / 120000;
+	Motor *motor1 = mMotorA;
+	Motor *motor2 = mMotorB;
+
+	if (mMotorB->speed != 0 && mMotorC->speed != 0) {
+		motor1 = mMotorB;
+		motor2 = mMotorC;
+	} else if (mMotorA->speed != 0 && mMotorC->speed != 0) {
+		motor2 = mMotorC;
+	} else if (mMotorC->speed != 0) {
+		motor1 = mMotorC;
+	}
+
+	qreal const vSpeed = motor1->speed * 2 * M_PI * motor1->radius * 1.0 / 44000;
+	qreal const uSpeed = motor2->speed * 2 * M_PI * motor2->radius * 1.0 / 44000;
+
 	qreal deltaY = 0;
 	qreal deltaX = 0;
 	qreal const averageSpeed = (vSpeed + uSpeed) / 2;
@@ -340,6 +368,8 @@ void D2RobotModel::countNewCoord()
 	} else {
 		deltaY = averageSpeed * timeInterval * sin(mAngle * M_PI / 180);
 		deltaX = averageSpeed * timeInterval * cos(mAngle * M_PI / 180);
+		deltaY *= mSpeed;
+		deltaX *= mSpeed;
 	}
 
 	mPos.setX(mPos.x() + deltaX);
@@ -389,4 +419,14 @@ void D2RobotModel::rotateOn(double angle)
 double D2RobotModel::rotateAngle() const
 {
 	return mAngle;
+}
+
+void D2RobotModel::speed(qreal speedMul)
+{
+	mSpeed = speedMul;
+}
+
+QPointF D2RobotModel::robotPos()
+{
+	return this->mPos;
 }

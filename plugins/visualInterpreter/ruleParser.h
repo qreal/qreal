@@ -10,8 +10,8 @@ class RuleParser : public QObject, public utils::ExpressionsParser
 {
 
 public:
-	RuleParser(LogicalModelAssistInterface const &logicalModelApi
-			, GraphicalModelAssistInterface const &graphicalModelApi
+	RuleParser(LogicalModelAssistInterface &logicalModelApi
+			, GraphicalModelAssistInterface &graphicalModelApi
 			, ErrorReporterInterface* errorReporter);
 
 	/// Parse and interpret textual part of rule and perform changes
@@ -54,8 +54,8 @@ private:
 	void setProperty(Id const &id, QString const &propertyName, QVariant const &value);
 	QVariant property(Id const &id, QString const &propertyName);
 
-	LogicalModelAssistInterface const &mLogicalModelApi;
-	GraphicalModelAssistInterface const &mGraphicalModelApi;
+	LogicalModelAssistInterface &mLogicalModelApi;
+	GraphicalModelAssistInterface &mGraphicalModelApi;
 
 	/// Matched rule id for showing if its textual part has errors
 	Id mRuleId;

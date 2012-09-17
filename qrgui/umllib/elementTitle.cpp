@@ -5,6 +5,9 @@
 
 #include "nodeElement.h"
 #include "edgeElement.h"
+
+using namespace qReal;
+
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &text)
 	: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mPoint(x, y), mBinding(""), mBackground(Qt::transparent)
 {

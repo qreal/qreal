@@ -9,7 +9,7 @@ CodeArea::CodeArea(QWidget *parent): QPlainTextEdit(parent)
 	mHighlighter = new TextHighlighter(document());
 
 	highlightCurrentLine();
-	setReadOnly(true);
+	setReadOnly(false);
 }
 
 CodeArea::~CodeArea()

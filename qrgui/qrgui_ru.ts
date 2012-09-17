@@ -230,22 +230,22 @@
 <context>
     <name>EdgeElement</name>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="27"/>
+        <location filename="umllib/edgeElement.cpp" line="28"/>
         <source>Add point</source>
         <translation>Добавить точку</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="28"/>
+        <location filename="umllib/edgeElement.cpp" line="29"/>
         <source>Delete point</source>
         <translation>Удалить точку</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="29"/>
+        <location filename="umllib/edgeElement.cpp" line="30"/>
         <source>Squarize</source>
         <translation>Сделать квадратным</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="30"/>
+        <location filename="umllib/edgeElement.cpp" line="31"/>
         <source>Remove all points</source>
         <translation>Удалить все точки</translation>
     </message>
@@ -594,7 +594,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="480"/>
         <source>Ctrl+Shift+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+S</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="556"/>
@@ -1104,7 +1104,7 @@
 <context>
     <name>NodeElement</name>
     <message>
-        <location filename="umllib/nodeElement.cpp" line="19"/>
+        <location filename="umllib/nodeElement.cpp" line="22"/>
         <source>Switch on grid</source>
         <translation>Включить сетку</translation>
     </message>
@@ -1279,8 +1279,8 @@
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="46"/>
-        <location filename="dialogs/preferencesDialog.cpp" line="109"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="48"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="111"/>
         <source>Editor</source>
         <translation>Редактор</translation>
     </message>
@@ -1341,7 +1341,7 @@
         <translation type="obsolete">Увеличение</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="45"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="47"/>
         <source>Miscellanious</source>
         <translation>Разное</translation>
     </message>
@@ -1371,7 +1371,7 @@
         <translation type="obsolete">Режим, угодный богам Хаоса</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="43"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="45"/>
         <source>Behaviour</source>
         <translation>Поведение</translation>
     </message>
@@ -1436,7 +1436,7 @@
         <translation type="obsolete">Префикс</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="44"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="46"/>
         <source>Debugger</source>
         <translation>Отладчик</translation>
     </message>
@@ -1522,6 +1522,31 @@
         <translation>Размер ячейки</translation>
     </message>
     <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="325"/>
+        <source>Palette</source>
+        <translation>Палитра</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="341"/>
+        <source>   Representation   </source>
+        <translation>Представление</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="378"/>
+        <source>Icons  and names</source>
+        <translation>Иконки и названия</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="383"/>
+        <source>Icons</source>
+        <translation>Иконки</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="348"/>
+        <source>   Count of items in a row </source>
+        <translation>Количество иконок в строке</translation>
+    </message>
+    <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="122"/>
         <source>Activate alignment</source>
         <translation>Выравнивание по направляющим</translation>
@@ -1547,31 +1572,6 @@
         <translation>Коэффициент масштабирования</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="325"/>
-        <source>Palette</source>
-        <translation>Палитра</translation>
-    </message>
-    <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="341"/>
-        <source>   Representation   </source>
-        <translation>Представление</translation>
-    </message>
-    <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="348"/>
-        <source>   Count of items in a row </source>
-        <translation>Количество иконок в строке</translation>
-    </message>
-    <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="378"/>
-        <source>Icons  and names</source>
-        <translation>Иконки и названия</translation>
-    </message>
-    <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="383"/>
-        <source>Icons</source>
-        <translation>Иконки</translation>
-    </message>
-    <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="220"/>
         <source>Zoom</source>
         <translation>Увеличение</translation>
@@ -1592,17 +1592,17 @@
         <translation>Выбрать шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="140"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="142"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="140"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="142"/>
         <source>You should restart QReal:Robots to apply changes</source>
         <translation>Перезапустите программу, чтобы применить изменения</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="140"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="142"/>
         <source>Ok</source>
         <translation>ОК</translation>
     </message>
@@ -2389,6 +2389,14 @@
     </message>
 </context>
 <context>
+    <name>ReferenceList</name>
+    <message>
+        <location filename="mainwindow/referenceList.ui" line="14"/>
+        <source>Choose a reference value</source>
+        <translation>Выберите значение</translation>
+    </message>
+</context>
+<context>
     <name>RobotSettingsDialog</name>
     <message>
         <source>Dialog</source>
@@ -2985,7 +2993,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="656"/>
+        <location filename="mainwindow/mainWindow.cpp" line="692"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3010,16 +3018,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="701"/>
-        <location filename="mainwindow/mainWindow.cpp" line="718"/>
-        <location filename="mainwindow/mainWindow.cpp" line="736"/>
+        <location filename="mainwindow/mainWindow.cpp" line="738"/>
+        <location filename="mainwindow/mainWindow.cpp" line="756"/>
+        <location filename="mainwindow/mainWindow.cpp" line="774"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="703"/>
-        <location filename="mainwindow/mainWindow.cpp" line="720"/>
-        <location filename="mainwindow/mainWindow.cpp" line="738"/>
+        <location filename="mainwindow/mainWindow.cpp" line="740"/>
+        <location filename="mainwindow/mainWindow.cpp" line="758"/>
+        <location filename="mainwindow/mainWindow.cpp" line="776"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3124,23 +3132,23 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="657"/>
+        <location filename="mainwindow/mainWindow.cpp" line="693"/>
         <source>&lt;b&gt;QReal&lt;b&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;http://qreal.ru/&quot;&gt;http://qreal.ru/&lt;/a&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="736"/>
+        <location filename="mainwindow/mainWindow.cpp" line="774"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="738"/>
+        <location filename="mainwindow/mainWindow.cpp" line="776"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="863"/>
-        <location filename="mainwindow/mainWindow.cpp" line="871"/>
+        <location filename="mainwindow/mainWindow.cpp" line="906"/>
+        <location filename="mainwindow/mainWindow.cpp" line="914"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3149,17 +3157,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1583"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1675"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1612"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1704"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1612"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1704"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3180,7 +3188,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1242"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1306"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -3244,83 +3252,83 @@
 <context>
     <name>qReal::ProjectManager</name>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="51"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="52"/>
         <source>Open existing project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="76"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="77"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="77"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="78"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="78"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="79"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Отмена</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="79"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="80"/>
         <source>&amp;Discard</source>
         <translation>&amp;Не сохранять</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="80"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="81"/>
         <source>Do you want to save current project?</source>
         <translation>Сохранить текущий проект?</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="118"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="119"/>
         <source>Select file with a save to import</source>
         <translation>Выберите файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="141"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="281"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="142"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="288"/>
         <source>File not found</source>
         <translation>Файл не найден</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="142"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="282"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="143"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="289"/>
         <source>File </source>
         <translation>Файл </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="142"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="282"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="143"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="289"/>
         <source> not found. Try again</source>
         <translation> не найден. Укажите существующий файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="152"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="153"/>
         <source>There are missing plugins</source>
         <translation>Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="153"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="154"/>
         <source>These plugins are not present, but needed to load the save:
 </source>
         <translation>Эти плагины отсутствуют, но нужны для загрузки сохранения:
 </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="260"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="267"/>
         <source>Select file to save current model to</source>
         <translation>Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="278"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="293"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="285"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="300"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="196"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="197"/>
         <source> [modified]</source>
         <translation> [изменён]</translation>
     </message>
@@ -3367,7 +3375,7 @@
         <translation>Открыть интерпретируемую диаграмму</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="86"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="87"/>
         <source>Select file with metamodel to open</source>
         <translation>Выберите файл метамодели для интерпретации</translation>
     </message>
@@ -3408,22 +3416,22 @@
 <context>
     <name>qReal::gui::ErrorReporter</name>
     <message>
-        <location filename="mainwindow/errorReporter.cpp" line="142"/>
+        <location filename="mainwindow/errorReporter.cpp" line="149"/>
         <source>INFORMATION:</source>
         <translation>ИНФОРМАЦИЯ:</translation>
     </message>
     <message>
-        <location filename="mainwindow/errorReporter.cpp" line="144"/>
+        <location filename="mainwindow/errorReporter.cpp" line="151"/>
         <source>WARNING:</source>
         <translation>ПРЕДУПРЕЖДЕНИЕ:</translation>
     </message>
     <message>
-        <location filename="mainwindow/errorReporter.cpp" line="146"/>
+        <location filename="mainwindow/errorReporter.cpp" line="153"/>
         <source>ERROR:</source>
         <translation>ОШИБКА:</translation>
     </message>
     <message>
-        <location filename="mainwindow/errorReporter.cpp" line="148"/>
+        <location filename="mainwindow/errorReporter.cpp" line="155"/>
         <source>CRITICAL:</source>
         <translation>КРИТИЧЕСКАЯ ОШИБКА:</translation>
     </message>

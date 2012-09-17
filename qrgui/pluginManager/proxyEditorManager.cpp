@@ -208,3 +208,8 @@ QStringList ProxyEditorManager::paletteGroupList(Id const &editor,Id const &diag
 {
 	return mProxyManager->paletteGroupList(editor, diagram, group);
 }
+
+QStringList ProxyEditorManager::getReferenceProperties(const Id &id) const
+{
+	return mProxyManager->getReferenceProperties(id);
+}

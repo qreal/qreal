@@ -4,6 +4,8 @@
 #include "miscellaniousPage.h"
 #include "ui_miscellaniousPage.h"
 
+using namespace qReal;
+
 PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
 		: PreferencesPage(parent)
 		, mUi(new Ui::PreferencesMiscellaniousPage)

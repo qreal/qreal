@@ -1062,7 +1062,7 @@ void EditorViewScene::createEdge(const QString & idStr)
 	Id id = createElement(idStr, start);
 	Element *edgeElement = getElem(id);
 	EdgeElement *edge = dynamic_cast <EdgeElement *> (edgeElement);
-	QPointF endPos = edge->mapFromItem(child, child->getNearestPort(end));
+	QPointF endPos = edge->mapFromItem(child, child->nearestPort(end));
 	edge->placeEndTo(endPos);
 	edge->connectToPort();
 }
@@ -1166,11 +1166,6 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 					mMVIface->logicalAssistApi()->createConnected(element->logicalId(), diagramType);
 				}
 			}
-
-			// Now scene is changed from outside. Being a mere mortal I do not
-			// know whether it is good or not, but what is the destiny of
-			// workflow after this return?
-			return;
 		}
 	}
 

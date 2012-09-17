@@ -8,7 +8,7 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManagerInterface const *editorManagerInter)
+LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManagerInterface *editorManagerInter)
 	: AbstractModel(editorManagerInter), mGraphicalModelView(this), mApi(*repoApi)
 {
 	mRootItem = new LogicalModelItem(Id::rootId(), NULL);
