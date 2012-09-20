@@ -101,22 +101,22 @@
 			return @@ItemsList@@;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return @@IsResizeable@@;
 		}
 
-		int getPenWidth() 
+		int getPenWidth() const
 		{ 
 			return 0; 
 		}
 
-		QColor getPenColor() 
+		QColor getPenColor() const 
 		{ 
 			return QColor(); 
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}

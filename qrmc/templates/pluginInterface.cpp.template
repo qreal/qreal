@@ -152,6 +152,12 @@ QStringList @@MetamodelName@@Plugin::getPropertyNames(QString const &/*diagram*/
 	return propertyTypes[element].keys();
 }
 
+QStringList @@MetamodelName@@Plugin::getReferenceProperties(QString const &/*diagram*/, QString const &element) const
+{
+	QStringList result;
+	return result;
+}
+
 QStringList @@MetamodelName@@Plugin::getTypesContainedBy(QString const &element) const
 {
 	QStringList result;
