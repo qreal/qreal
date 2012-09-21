@@ -8,8 +8,8 @@ using namespace utils;
 ProjectGenerator::ProjectGenerator(QString const &templateDirPath
 		, QString const &outputDirPath
 		, LogicalModelAssistInterface const &logicalModel
-		, ErrorReporterInterface &errorReporter) :
-		utils::AbstractGenerator(templateDirPath, outputDirPath, logicalModel, errorReporter)
+		, ErrorReporterInterface &errorReporter)
+		: utils::AbstractGenerator(templateDirPath, outputDirPath, logicalModel, errorReporter)
 {
 }
 

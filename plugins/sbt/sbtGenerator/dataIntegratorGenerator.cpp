@@ -9,8 +9,8 @@ using namespace utils;
 DataIntegratorGenerator::DataIntegratorGenerator(QString const &templateDirPath
 		 , QString const &outputDirPath
 		 , LogicalModelAssistInterface const &logicalModel
-		 , ErrorReporterInterface &errorReporter) :
-	utils::AbstractGenerator(templateDirPath, outputDirPath, logicalModel, errorReporter)
+		 , ErrorReporterInterface &errorReporter)
+		: utils::AbstractGenerator(templateDirPath, outputDirPath, logicalModel, errorReporter)
 {
 }
 
@@ -19,7 +19,6 @@ void DataIntegratorGenerator::generate()
 	QString result;
 
 	loadTemplateFromFile(fileName + ".cs", result);
-	//loadUtilsTemplates();
 
 	foreach (Id const &diagram, mApi.elementsByType(sbtDiagram)) {
 		if (!mApi.isLogicalElement(diagram)) {
