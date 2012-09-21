@@ -3,6 +3,8 @@
 #include "dataIntegratorGenerator.h"
 #include "projectGenerator.h"
 
+using namespace sbt;
+
 SbtGenerator::SbtGenerator()
 {
 }

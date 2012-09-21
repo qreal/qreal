@@ -4,6 +4,8 @@ QString const ProjecttName = "DataObject";
 QString const fileName = "ProjectFile.csproj";
 
 using namespace utils;
+using namespace qReal;
+using namespace sbt;
 
 ProjectGenerator::ProjectGenerator(QString const &templateDirPath
 		, QString const &outputDirPath
@@ -25,8 +27,7 @@ void ProjectGenerator::generate()
 
 void ProjectGenerator::setFilesName(QList<QString> const &files)
 {
-	foreach (QString fileName, files)
-	{
-	  mFiles.append("<Compile Include=\"" + fileName + "\" />\n");
+	foreach (QString const &fileName, files) {
+		mFiles.append("<Compile Include=\"" + fileName + "\" />\n");
 	}
 }

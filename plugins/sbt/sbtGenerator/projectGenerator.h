@@ -6,21 +6,26 @@
 #include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 #include "../../../qrutils/generator/abstractGenerator.h"
 
-using namespace qReal;
-using namespace utils;
+namespace sbt {
 
-class ProjectGenerator : public AbstractGenerator
+class ProjectGenerator : public utils::AbstractGenerator
 {
 public:
-  ProjectGenerator(QString const &templateDirPath
+	ProjectGenerator(QString const &templateDirPath
 					, QString const &outputDirPath
 					, qReal::LogicalModelAssistInterface const &logicalModel
 					, qReal::ErrorReporterInterface &errorReporter
 					);
-  void generate();
-  void setFilesName(QList<QString> const & files);
+
+	/// Starts generation process.
+	void generate();
+
+	/// Adds files to project.
+	void setFilesName(QList<QString> const & files);
 
 private:
 	QString mFiles;
 };
+
+}
 

@@ -4,7 +4,9 @@ QString const sbtDiagram = "SbtReportsDiagramNode";
 QString const dataObjectName = "DataObject";
 QString const fileName = "DataObject";
 
+using namespace qReal;
 using namespace utils;
+using namespace sbt;
 
 DataObjectGenerator::DataObjectGenerator(QString const &templateDirPath
 		, QString const &outputDirPath
@@ -42,5 +44,5 @@ void DataObjectGenerator::generate()
 
 QList<QString> DataObjectGenerator::getFiles()
 {
-  return mFiles;
+	return mFiles;
 }

@@ -2,6 +2,8 @@
 
 #include "sbtGeneratorPlugin.h"
 
+using namespace sbt;
+
 Q_EXPORT_PLUGIN2(sbtGeneratorPlugin, SbtGeneratorPlugin)
 
 using namespace qReal;

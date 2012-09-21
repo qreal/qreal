@@ -4,7 +4,9 @@ QString const sbtDiagram = "SbtReportsDiagramNode";
 QString const dataIntegratorName = "ORMDataIntegrator";
 QString const fileName = "DataIntegrator";
 
+using namespace qReal;
 using namespace utils;
+using namespace sbt;
 
 DataIntegratorGenerator::DataIntegratorGenerator(QString const &templateDirPath
 		 , QString const &outputDirPath
@@ -58,5 +60,5 @@ void DataIntegratorGenerator::generate()
 
 QList<QString> DataIntegratorGenerator::getFiles()
 {
-  return mFiles;
+	return mFiles;
 }
