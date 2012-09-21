@@ -1,6 +1,6 @@
 #pragma once
-#include "QString"
-#include "QList"
+#include "QtCore/QString"
+#include "QtCore/QList"
 
 #include "../../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
 #include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
@@ -12,14 +12,15 @@ using namespace utils;
 class DataIntegratorGenerator : public AbstractGenerator
 {
 public:
-  DataIntegratorGenerator(QString const &templateDirPath
+	DataIntegratorGenerator(QString const &templateDirPath
 					, QString const &outputDirPath
 					, qReal::LogicalModelAssistInterface const &logicalModel
 					, qReal::ErrorReporterInterface &errorReporter
 					);
 	QList<QString> getFiles();
 	void generate();
+
 private:
-QList<QString> mFiles;
+	QList<QString> mFiles;
 };
 

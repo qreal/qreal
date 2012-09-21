@@ -1,6 +1,6 @@
 #pragma once
-#include "QString"
-#include "QList"
+#include "QtCore/QString"
+#include "QtCore/QList"
 
 #include "../../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
 #include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"

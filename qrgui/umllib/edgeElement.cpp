@@ -7,7 +7,6 @@
 #include <QtGui/QMenu>
 #include <QDebug>
 #include <math.h>
-#include <limits>
 
 #include "edgeElement.h"
 #include "nodeElement.h"

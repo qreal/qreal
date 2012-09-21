@@ -5,10 +5,10 @@ QString const fileName = "ProjectFile.csproj";
 
 using namespace utils;
 
-ProjectGenerator::ProjectGenerator(const QString &templateDirPath,
-		const QString &outputDirPath,
-		const LogicalModelAssistInterface &logicalModel,
-		ErrorReporterInterface &errorReporter) :
+ProjectGenerator::ProjectGenerator(QString const &templateDirPath
+		, QString const &outputDirPath
+		, LogicalModelAssistInterface const &logicalModel
+		, ErrorReporterInterface &errorReporter) :
 		utils::AbstractGenerator(templateDirPath, outputDirPath, logicalModel, errorReporter)
 {
 }
@@ -18,13 +18,12 @@ void ProjectGenerator::generate()
 	QString result;
 
 	loadTemplateFromFile(fileName, result);
-	//loadUtilsTemplates();
 
 	result.replace("@@Files@@", mFiles);
 	saveOutputFile("GeneratedProjectFile.csproj", result);
 }
 
-void ProjectGenerator::setFilesName(const QList<QString> &files)
+void ProjectGenerator::setFilesName(QList<QString> const &files)
 {
 	foreach (QString fileName, files)
 	{

@@ -6,10 +6,10 @@ QString const fileName = "DataObject";
 
 using namespace utils;
 
-DataObjectGenerator::DataObjectGenerator(const QString &templateDirPath,
-		const QString &outputDirPath,
-		const LogicalModelAssistInterface &logicalModel,
-		ErrorReporterInterface &errorReporter) :
+DataObjectGenerator::DataObjectGenerator(QString const &templateDirPath
+		, QString const &outputDirPath
+		, LogicalModelAssistInterface const &logicalModel
+		, ErrorReporterInterface &errorReporter) :
 		utils::AbstractGenerator(templateDirPath, outputDirPath, logicalModel, errorReporter)
 {
 }
@@ -18,7 +18,6 @@ void DataObjectGenerator::generate()
 {
 	QString result;
 
-	qDebug() << fileName;
 	loadTemplateFromFile(fileName + ".cs", result);
 
 	foreach (Id const &diagram, mApi.elementsByType(sbtDiagram)) {

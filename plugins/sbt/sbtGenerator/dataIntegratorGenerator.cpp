@@ -6,10 +6,10 @@ QString const fileName = "DataIntegrator";
 
 using namespace utils;
 
-DataIntegratorGenerator::DataIntegratorGenerator(const QString &templateDirPath,
-		 const QString &outputDirPath,
-		 const LogicalModelAssistInterface &logicalModel,
-		 ErrorReporterInterface &errorReporter) :
+DataIntegratorGenerator::DataIntegratorGenerator(QString const &templateDirPath
+		 , QString const &outputDirPath
+		 , LogicalModelAssistInterface const &logicalModel
+		 , ErrorReporterInterface &errorReporter) :
 	utils::AbstractGenerator(templateDirPath, outputDirPath, logicalModel, errorReporter)
 {
 }
@@ -34,10 +34,8 @@ void DataIntegratorGenerator::generate()
 				QString res = result;
 				qReal::IdList outgoingLinks = mApi.outgoingLinks(element);
 				if (outgoingLinks.empty()) {
-				  qDebug() << "no outgoung links";
-				}
-				else
-				{
+					qDebug() << "no outgoung links";
+				} else {
 					qReal::Id outgoingLink = outgoingLinks.at(0);
 					qReal::Id returnDO = mApi.otherEntityFromLink(outgoingLink, element);
 					res.replace("@@ReturnDataObject@@", mApi.name(returnDO));
@@ -45,11 +43,9 @@ void DataIntegratorGenerator::generate()
 				qReal::IdList incomingLinks = mApi.incomingLinks(element);
 				if (incomingLinks.empty()) {
 					qDebug() << "no incoming links";
-				}
-				else
-				{
-				qReal::Id incomingLink = incomingLinks.at(0);
-				qReal::Id parameterDO = mApi.otherEntityFromLink(incomingLink, element);
+				} else {
+					qReal::Id incomingLink = incomingLinks.at(0);
+					qReal::Id parameterDO = mApi.otherEntityFromLink(incomingLink, element);
 					res.replace("@@ParameterDataObject@@", mApi.name(parameterDO));
 				}
 				res.replace("@@DataIntegrator@@", mApi.name(element) + "DI")
