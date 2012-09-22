@@ -22,7 +22,7 @@ public:
 	LayoutHelperFactory *layoutFactory() const;
 	void setLayoutHelper(LayoutHelperBase *helper);
 
-	void removeChild(Tool *child);
+	virtual void removeChild(Tool *child);
 
 	void startChildDrag(Tool *child);
 	void finishChildDrag(bool success);

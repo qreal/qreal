@@ -7,7 +7,7 @@
 #include <QtXml/QDomElement>
 
 #include "property.h"
-#include "../tool.h"
+#include "tool.h"
 #include "../../qtpropertybrowser/src/QtVariantPropertyManager"
 
 namespace qReal

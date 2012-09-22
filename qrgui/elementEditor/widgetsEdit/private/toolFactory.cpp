@@ -14,6 +14,7 @@
 #include "../tools/doubleSpinBox.h"
 #include "../tools/label.h"
 #include "../tools/spacer.h"
+#include "../tools/trigger.h"
 
 using namespace qReal::widgetsEdit;
 
@@ -38,52 +39,56 @@ Tool *ToolFactory::makeItem(const QString &title, ToolController *controller)
 {
 	Tool *result = NULL;
 	if (title == "Push Button") {
-		result =  new PushButton(controller);
+		result = new PushButton(controller);
 	}
 	if (title == "Radio Button") {
-		result =  new RadioButton(controller);
+		result = new RadioButton(controller);
 	}
 	if (title == "Check Box") {
-		result =  new CheckBox(controller);
+		result = new CheckBox(controller);
 	}
 	if (title == "Group Box") {
-		result =  new GroupBox(controller);
+		result = new GroupBox(controller);
 	}
 	if (title == "Scroll Area") {
-		result =  new ScrollArea(controller);
+		result = new ScrollArea(controller);
 	}
 	if (title == "Frame") {
-		result =  new Frame(controller);
+		result = new Frame(controller);
 	}
 	if (title == "Widget") {
-		result =  new Widget(controller);
+		result = new Widget(controller);
 	}
 	if (title == "Combo Box") {
-		result =  new ComboBox(controller);
+		result = new ComboBox(controller);
 	}
 	if (title == "Line Edit") {
-		result =  new LineEdit(controller);
+		result = new LineEdit(controller);
 	}
 	if (title == "Plain Text Edit") {
-		result =  new PlainTextEdit(controller);
+		result = new PlainTextEdit(controller);
 	}
 	if (title == "Spin Box") {
-		result =  new SpinBox(controller);
+		result = new SpinBox(controller);
 	}
 	if (title == "Double Spin Box") {
-		result =  new DoubleSpinBox(controller);
+		result = new DoubleSpinBox(controller);
 	}
 	if (title == "Label") {
-		result =  new Label(controller);
+		result = new Label(controller);
 	}
 	if (title == "Horizontal Spacer") {
-		result =  new Spacer(Qt::Horizontal, controller);
+		result = new Spacer(Qt::Horizontal, controller);
 	}
 	if (title == "Vertical Spacer") {
-		result =  new Spacer(Qt::Vertical, controller);
+		result = new Spacer(Qt::Vertical, controller);
 	}
+	if (title == "Trigger") {
+		result = new Trigger(controller);
+	}
+
 	if (result) {
-		result->raiseLoaded();
+		result->onLoaded();
 	}
 
 	if (title == "Root") {
@@ -95,7 +100,7 @@ Tool *ToolFactory::makeItem(const QString &title, ToolController *controller)
 Root *ToolFactory::makeRoot(ToolController *controller) const
 {
 	Root *root = new Root(controller);
-	root->raiseLoaded();
+	root->onLoaded();
 	return root;
 }
 
@@ -173,6 +178,7 @@ void ToolFactory::initTitles()
 	mTitles << TitleTagPair("Label", "Label");
 	mTitles << TitleTagPair("Horizontal Spacer", "HorizontalSpacer");
 	mTitles << TitleTagPair("Vertical Spacer", "VerticalSpacer");
+	mTitles << TitleTagPair("Trigger", "Trigger");
 }
 
 void ToolFactory::initItems()

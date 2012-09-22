@@ -2,7 +2,6 @@
 #include "../tools/tool.h"
 #include "../tools/layoutTool.h"
 #include "../tools/layoutHelpers/layoutHelperFactory.h"
-#include "../tools/propertyManagers/toolPropertyManager.h"
 
 using namespace qReal::widgetsEdit;
 
@@ -30,10 +29,15 @@ void ToolController::removeChild(Tool *child)
 
 	foreach (QGraphicsItem *item, child->childItems()) {
 		Tool *tool = dynamic_cast<Tool *>(item);
-		removeChild(tool);
+		if (tool) {
+			removeChild(tool);
+		} else {
+			child->childItems().removeOne(tool);
+			delete tool;
+		}
 	}
 
-	LayoutTool *parent = dynamic_cast<LayoutTool *>(child->parentItem());
+	Tool *parent = dynamic_cast<Tool *>(child->parentItem());
 	if (!parent) {
 		return;
 	}

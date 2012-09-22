@@ -10,7 +10,7 @@ namespace qReal
 namespace widgetsEdit
 {
 
-class RootWidget :public QWidget
+class RootWidget : public QWidget
 {
 	Q_OBJECT
 

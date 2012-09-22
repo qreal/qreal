@@ -38,7 +38,7 @@ void LayoutTool::setLayoutHelper(LayoutHelperBase *helper)
 
 void LayoutTool::removeChild(Tool *child)
 {
-	childItems().removeOne(child);
+	Tool::removeChild(child);
 	if (layout()) {
 		setMinimumSize(layout()->minimumSize());
 	}

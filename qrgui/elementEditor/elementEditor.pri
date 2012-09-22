@@ -54,6 +54,8 @@ HEADERS += \
 	elementEditor/widgetsEdit/tools/layoutHelpers/linearLayoutHelper.h \
 	elementEditor/widgetsEdit/tools/layoutHelpers/layoutTypes.h \
 	elementEditor/widgetsEdit/tools/layoutHelpers/layoutHelperFactory.h \
+	elementEditor/widgetsEdit/tools/trigger.h \
+	elementEditor/widgetsEdit/tools/triggerWidget.h \
 
 SOURCES += \
 	elementEditor/elementEditor.cpp \
@@ -110,6 +112,8 @@ SOURCES += \
 	elementEditor/widgetsEdit/tools/layoutHelpers/gridLayoutHelper.cpp \
 	elementEditor/widgetsEdit/tools/layoutHelpers/linearLayoutHelper.cpp \
 	elementEditor/widgetsEdit/tools/layoutHelpers/layoutHelperFactory.cpp \
+	elementEditor/widgetsEdit/tools/trigger.cpp \
+	elementEditor/widgetsEdit/tools/triggerWidget.cpp \
 
 FORMS += \
 	elementEditor/shapeEdit/shapeEdit.ui \

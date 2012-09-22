@@ -40,7 +40,7 @@ public:
 	QIcon icon() const;
 	QString title() const;
 
-	void raiseLoaded();
+	void onLoaded();
 
 	bool movable() const;
 	void setMovable(bool movable = true);
@@ -53,6 +53,8 @@ public:
 
 	virtual void generateXml(QDomElement &element, QDomDocument &document);
 	virtual void deserializeWidget(QWidget *parent, QDomElement const &element);
+
+	virtual void removeChild(Tool *child);
 
 signals:
 	void loaded();

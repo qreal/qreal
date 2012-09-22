@@ -104,7 +104,7 @@ void LinearLayoutHelper::finishChildDrag(bool const success)
 
 void LinearLayoutHelper::generateAttachedProperty(QDomElement &element, Tool *tool)
 {
-	int index = findTool(tool);
+	int const index = findTool(tool);
 	element.setAttribute("index", index);
 }
 

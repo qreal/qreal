@@ -5,7 +5,7 @@
 
 #include "tool.h"
 #include "root.h"
-#include "propertyManagers/propertyManager.h"
+#include "propertyManager.h"
 #include "../private/toolFactory.h"
 
 using namespace qReal::widgetsEdit;
@@ -20,12 +20,12 @@ Tool::Tool(QWidget *widget, ToolController *controller, QGraphicsItem *parent)
 	setWidget(widget);
 }
 
-void Tool::raiseLoaded()
+void Tool::onLoaded()
 {
-	emit loaded();
 	mPropertyManager = new PropertyManager(this);
 	connect(this, SIGNAL(propertyChanged(QString,QVariant))
 		, mPropertyManager, SLOT(changeProperty(QString,QVariant)));
+	emit loaded();
 }
 
 QIcon Tool::icon() const
@@ -479,4 +479,9 @@ void Tool::setSizeIncrement(QSize const &size)
 void Tool::setToolTip(QString const &toolTip)
 {
 	widget()->setToolTip(toolTip);
+}
+
+void Tool::removeChild(Tool *child)
+{
+	childItems().removeOne(child);
 }
