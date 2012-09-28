@@ -52,7 +52,7 @@ void ElementTitle::setScaling(bool scalingX, bool scalingY)
 	mScalingY = scalingY;
 }
 
-void ElementTitle::setBackground(Qt::GlobalColor const &background)
+void ElementTitle::setBackground(QColor const &background)
 {
 	mBackground = background;
 }

@@ -2,13 +2,13 @@
 
 #include <QDomElement>
 #include <QtCore/QStringList>
-#include "scalableItem.h"
+#include "../qrutils/scalableItem.h"
 
 namespace utils {
 	class OutFile;
 }
 
-class Label : public ScalableItem
+class Label : public utils::ScalableItem
 {
 public:
 	bool init(QDomElement const &element, int index, bool nodeLabel, int width, int height);
@@ -25,8 +25,8 @@ private:
 	/// reform the list of strings: add "" to odd list items
 	QStringList getReformedList(QStringList const &list) const;
 
-	ScalableCoordinate mX;
-	ScalableCoordinate mY;
+	utils::ScalableCoordinate mX;
+	utils::ScalableCoordinate mY;
 	int mIndex;
 	QString mText;
 	QString mTextBinded;

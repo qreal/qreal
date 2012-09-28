@@ -20,6 +20,8 @@ HEADERS += \
 	$$PWD/watchListWindow.h \
 	$$PWD/metamodelGeneratorSupport.h \
 	$$PWD/inFile.h \
+	$$PWD/scalableItem.h \
+	$$PWD/scalableCoordinate.h
 
 SOURCES += \
 	$$PWD/outFile.cpp \
@@ -27,6 +29,8 @@ SOURCES += \
 	$$PWD/watchListWindow.cpp\
 	$$PWD/metamodelGeneratorSupport.cpp \
 	$$PWD/inFile.cpp \
+	$$PWD/scalableItem.cpp \
+	$$PWD/scalableCoordinate.cpp
 
 FORMS += \
 	$$PWD/watchListWindow.ui
@@ -42,3 +46,7 @@ include(graphTransformation/graphTransformation.pri)
 
 # Stuff for running long operations in different modes
 include(invocationUtils/invocationUtils.pri)
+
+
+
+

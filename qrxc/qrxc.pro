@@ -32,12 +32,11 @@ HEADERS += association.h \
 	pointPort.h \
 	port.h \
 	property.h \
-	scalableCoordinate.h \
 	sdftocpp.h \
 	stringType.h \
 	type.h \
 	xmlCompiler.h \
-	scalableItem.h \
+
 
 SOURCES += association.cpp \
 	diagram.cpp \
@@ -55,9 +54,8 @@ SOURCES += association.cpp \
 	pointPort.cpp \
 	port.cpp \
 	property.cpp \
-	scalableCoordinate.cpp \
 	sdftocpp.cpp \
 	stringType.cpp \
 	type.cpp \
 	xmlCompiler.cpp \
-	scalableItem.cpp \
+

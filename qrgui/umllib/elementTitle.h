@@ -19,7 +19,7 @@ public:
 	ElementTitle(qreal x, qreal y, QString const &text);
 	ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly);
 	void init(QRectF const& contents);
-	void setBackground(Qt::GlobalColor const &background);
+	void setBackground(QColor const &background);
 	void setScaling(bool scalingX, bool scalingY);
 	~ElementTitle() {}
 	void startTextInteraction();
@@ -40,5 +40,5 @@ private:
 	QPointF mPoint;
 	QString mOldText;
 	QString mBinding;
-	Qt::GlobalColor mBackground;
+	QColor mBackground;
 };

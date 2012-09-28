@@ -1,5 +1,7 @@
 #include "scalableCoordinate.h"
 
+using namespace utils;
+
 ScalableCoordinate::ScalableCoordinate()
 	: mValue(0), mIsScalable(false)
 {}

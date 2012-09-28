@@ -1,5 +1,6 @@
 #include "interpreterElementImpl.h"
 #include "../../qrutils/outFile.h"
+#include "../../qrutils/scalableItem.h"
 
 using namespace qReal;
 using namespace utils;
@@ -7,7 +8,7 @@ using namespace utils;
 InterpreterElementImpl::InterpreterElementImpl(qrRepo::RepoApi *repo, Id metaId, Id id)
 	: mEditorRepoApi(repo), mId(metaId)
 {}
-//TODO:
+
 void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts,
 								  QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
 								  QList<ElementTitleInterface*> &titles,
@@ -17,12 +18,6 @@ void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
 		mGraphics.setContent(mEditorRepoApi->stringProperty(mId, "shape"));
 		QDomNodeList pointPortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("pointPort");
 		QDomNodeList linePortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("linePort");
-
-//		QString const labelText = (mEditorRepoApi->stringProperty(mId, "labelText"));
-//		if (labelText.isEmpty()) {
-//			Q_UNUSED(titles);
-//			Q_UNUSED(factory);
-//		}
 
 		QDomDocument classDoc;
 		QDomElement sdfElement = mGraphics.firstChildElement("graphics").firstChildElement("picture");
@@ -141,33 +136,66 @@ void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
 		contents.setWidth(width);
 		contents.setHeight(height);
 
-//		for (QDomElement label = mGraphics.firstChildElement("labels").firstChildElement("label");
-//			!label.isNull();
-//			label = label.nextSiblingElement("label"))
-//		{
-//			QString const labelType = mEditorRepoApi->stringProperty(mId, "labelType");
-//			if (labelType == "Static text")
-//				label.setAttribute("text", labelText);
-//			else if (labelType == "Dynamic text")
-//				label.setAttribute("textBinded", labelText);
-
-//		}
-//		foreach (Label *label, mLabels)
-//			label->generateCodeForConstructor(out);   !!!
-	}
-}
-//TODO:
-void InterpreterElementImpl:: init(ElementTitleFactoryInterface &factory,
-				  QList<ElementTitleInterface*> &titles)
-{
-		if (mId.element() == "MetaEntityEdge") {
-			if (!(mEditorRepoApi->stringProperty(mId, "labelText")).isEmpty()) {
-				//mLabels[0]->generateCodeForConstructor(out);
+		//Labels:
+		for (QDomElement element = mGraphics.firstChildElement("graphics").firstChildElement("labels").firstChildElement("label");
+			!element.isNull();
+			element = element.nextSiblingElement("label"))
+		{
+			ScalableCoordinate x = utils::ScalableItem::initCoordinate(element.attribute("x"), width);
+			ScalableCoordinate y = utils::ScalableItem::initCoordinate(element.attribute("y"), height);
+			QString center = element.attribute("center", "false");
+			QString text = element.attribute("text");
+			QString textBinded = element.attribute("textBinded");
+			QString readOnly = element.attribute("readOnly", "false");
+			QString background = element.attribute("background", "transparent");
+			if ((text.isEmpty() && textBinded.isEmpty())) {
+				qDebug() << "ERROR: can't parse label";
 			} else {
-				Q_UNUSED(titles);
-				Q_UNUSED(factory);
+				ElementTitleInterface* title;
+				if (text.isEmpty()) {
+					// Это бинденный лейбл, текст для него будет браться из репозитория
+					title = factory.createTitle(x.value(), y.value(), textBinded, readOnly == "true");
+				} else {
+					// Это статический лейбл, репозиторий ему не нужен
+					title = factory.createTitle(x.value(), y.value(), text);
+				}
+				title->setBackground(QColor(background));
+				title->setScaling(x.isScalable(), y.isScalable());
+				title->setFlags(0);
+				title->setTextInteractionFlags(Qt::NoTextInteraction);
+				titles.append(title);
+				mNodeLabels.append(NodeLabel(textBinded, center, title));
 			}
 		}
+	}
+}
+
+void InterpreterElementImpl:: init(ElementTitleFactoryInterface &factory,
+								   QList<ElementTitleInterface*> &titles)
+{
+	if (mId.element() == "MetaEntityEdge") {
+		QString labelText = mEditorRepoApi->stringProperty(mId, "labelText");
+		if (!(labelText.isEmpty())) {
+			QString labelType = mEditorRepoApi->stringProperty(mId, "labelType");
+			ElementTitleInterface* title;
+			if (labelType == "Static text") {
+				// Это статический лейбл, репозиторий ему не нужен
+				title = factory.createTitle(0, 0, labelText);
+			} else {
+				// Это бинденный лейбл, текст для него будет браться из репозитория
+				title = factory.createTitle(0, 0, labelText, false);
+			}
+			title->setBackground(QColor(Qt::white));
+			title->setScaling(false, false);
+			title->setFlags(0);
+			title->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title);
+			mEdgeLabels.append(EdgeLabel(labelText, labelType, title));
+		} else {
+			Q_UNUSED(titles);
+			Q_UNUSED(factory);
+		}
+	}
 }
 
 void InterpreterElementImpl::paint(QPainter *painter, QRectF &contents)
@@ -178,19 +206,74 @@ void InterpreterElementImpl::paint(QPainter *painter, QRectF &contents)
 		}
 	}
 }
-//TODO:
+
+QStringList InterpreterElementImpl::getListOfStr(QString const &labelText) const
+{
+	QStringList reformedList = labelText.split("##");
+	QStringList list;
+	int counter = 1;
+	foreach (QString const &str, reformedList){
+		list.append(str);
+		counter++;
+	}
+	return list;
+}
+
+QString InterpreterElementImpl::getResultStr(QStringList const &list, ElementRepoInterface *repo) const
+{
+	QString resultStr;
+	if (list.count() == 1) {
+		if (list.first() == "name") {
+			resultStr = repo->name();
+		} else {
+			resultStr = repo->logicalProperty(list.first());
+		}
+	} else {
+		int counter = 1;
+		foreach (QString const &listElement, list) {
+			QString field;
+			if (counter % 2 == 0) {
+				if (listElement == "name") {
+					field = repo->name();
+				} else {
+					field = repo->logicalProperty(listElement);
+				}
+			} else {
+				field = listElement;
+			}
+			resultStr += field;
+			counter++;
+		}
+	}
+	return resultStr;
+}
+
 void InterpreterElementImpl::updateData(ElementRepoInterface *repo) const
 {
 	if (mId.element() == "MetaEntityEdge") {
-		if ((mEditorRepoApi->stringProperty(mId, "labelText")).isEmpty()) {
-			Q_UNUSED(repo);
-		} else {
-			//mLabels[0]->generateCodeForUpdateData(out);
+		foreach (EdgeLabel edgeLabel, mEdgeLabels) {
+			if (edgeLabel.labelType == "Static text") {
+				// Static label
+				Q_UNUSED(repo);
+				return;
+			}
+			QStringList list = getListOfStr(edgeLabel.labelText);
+			QString resultStr = getResultStr(list, repo);
+			edgeLabel.title->setHtml(QString("<center>%1</center>").arg(resultStr).replace("\n", "<br>"));
 		}
 	}
 
 	if (mId.element() == "MetaEntityNode") {
-
+		foreach (NodeLabel nodeLabel, mNodeLabels) {
+			if (nodeLabel.textBinded.isEmpty()) {
+				// Static label
+				Q_UNUSED(repo);
+				return;
+			}
+			QStringList list = getListOfStr(nodeLabel.textBinded);
+			QString resultStr = getResultStr(list, repo);
+			nodeLabel.title->setHtml(QString(nodeLabel.center == "true" ? "<center>%1</center>" : "<b>%1</b>").arg(resultStr).replace("\n", "<br>"));
+		}
 	}
 }
 

@@ -1,7 +1,9 @@
 #pragma once
 
+#include <QtCore/QMap>
 #include <QWidget>
 #include <QList>
+#include <QtCore/QMap>
 #include <QRectF>
 #include <QPointF>
 #include <QPainter>
@@ -18,51 +20,74 @@ typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge
 typedef QPair<bool, qReal::Id> PossibleEdgeType;
 
 namespace qReal {
-	class InterpreterElementImpl : public ElementImpl
-	{
-	public:
-		InterpreterElementImpl(qrRepo::RepoApi *repo, Id metaId, Id id);
-		void init(QRectF &contents, QList<StatPoint> &pointPorts,
-						  QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
-						  QList<ElementTitleInterface*> &titles,
-						  SdfRendererInterface *renderer, SdfRendererInterface *portRenderer);
-		void init(ElementTitleFactoryInterface &factory,
-						  QList<ElementTitleInterface*> &titles);
-		void paint(QPainter *painter, QRectF &contents);
-		void updateData(ElementRepoInterface *repo) const;
-		bool isNode() const;
-		bool hasPorts() const;
-		bool isResizeable() const;
-		Qt::PenStyle getPenStyle() const;
-		int getPenWidth() const;
-		QColor getPenColor() const;
-		void drawStartArrow(QPainter *painter) const;
-		void drawEndArrow(QPainter *painter) const;
+struct EdgeLabel {
+	QString labelText;
+	QString labelType;
+	ElementTitleInterface* title;
 
-		//unsupported methods:
-		bool isDividable() const;
+	EdgeLabel(QString const &labelText_, QString const &labelType_, ElementTitleInterface* title_)
+		: labelText(labelText_), labelType(labelType_), title(title_)
+	{}
+};
 
-		/*Container properties*/
-		bool isContainer() const;
-		bool isSortingContainer() const;
-		int sizeOfForestalling() const;
-		int sizeOfChildrenForestalling() const;
-		bool hasMovableChildren() const;
-		bool minimizesToChildren() const;
-		bool maximizesChildren() const;
+struct NodeLabel {
+	QString textBinded;
+	QString center;
+	ElementTitleInterface* title;
 
-		bool isPort() const;
-		bool hasPin() const;
+	NodeLabel(QString const &textBinded_, QString const &center_, ElementTitleInterface* title_)
+		: textBinded(textBinded_), center(center_), title(title_)
+	{}
+};
 
-		QList<double> border() const;
+class InterpreterElementImpl : public ElementImpl
+{
+public:
+	InterpreterElementImpl(qrRepo::RepoApi *repo, Id metaId, Id id);
+	void init(QRectF &contents, QList<StatPoint> &pointPorts,
+			  QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
+			  QList<ElementTitleInterface*> &titles,
+			  SdfRendererInterface *renderer, SdfRendererInterface *portRenderer);
+	void init(ElementTitleFactoryInterface &factory,
+			  QList<ElementTitleInterface*> &titles);
+	void paint(QPainter *painter, QRectF &contents);
+	QStringList getListOfStr(QString const &labelText) const;
+	QString getResultStr(QStringList const &list, ElementRepoInterface *repo) const;
+	void updateData(ElementRepoInterface *repo) const;
+	bool isNode() const;
+	bool hasPorts() const;
+	bool isResizeable() const;
+	Qt::PenStyle getPenStyle() const;
+	int getPenWidth() const;
+	QColor getPenColor() const;
+	void drawStartArrow(QPainter *painter) const;
+	void drawEndArrow(QPainter *painter) const;
 
-		QStringList bonusContextMenuFields() const;
-	private:
-		qrRepo::RepoApi* mEditorRepoApi;
-		Id mId;
-		SdfRendererInterface* mRenderer;
-		QList<Label*> mLabels;
-		QDomDocument mGraphics;
-	};
+	//unsupported methods:
+	bool isDividable() const;
+
+	/*Container properties*/
+	bool isContainer() const;
+	bool isSortingContainer() const;
+	int sizeOfForestalling() const;
+	int sizeOfChildrenForestalling() const;
+	bool hasMovableChildren() const;
+	bool minimizesToChildren() const;
+	bool maximizesChildren() const;
+
+	bool isPort() const;
+	bool hasPin() const;
+
+	QList<double> border() const;
+
+	QStringList bonusContextMenuFields() const;
+private:
+	qrRepo::RepoApi* mEditorRepoApi;
+	Id mId;
+	SdfRendererInterface* mRenderer;
+	QDomDocument mGraphics;
+	QList<NodeLabel> mNodeLabels;
+	QList<EdgeLabel> mEdgeLabels;
+};
 }
 
