@@ -46,17 +46,17 @@ bool Property::init()
 }
 
 
-QString Property::name()
+QString Property::name() const
 {
 	return mName;
 }
 
-QString Property::type()
+QString Property::type() const
 {
 	return mType;
 }
 
-QString Property::defaultValue()
+QString Property::defaultValue() const
 {
 	return mDefaultValue;
 }

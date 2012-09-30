@@ -11,9 +11,9 @@ namespace qrmc {
 		Property(qrRepo::LogicalRepoApi *api, qReal::Id const &id);
 
 		bool init();
-		QString name();
-		QString type();
-		QString defaultValue();
+		QString name() const;
+		QString type() const;
+		QString defaultValue() const;
 		Property *clone();
 		bool operator == (Property const &other) const;
 		bool operator != (Property const &other) const;
