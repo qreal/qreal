@@ -1,9 +1,9 @@
 #pragma once
 
+#include <QtCore/QDir>
+
 #include "../../qrgui/mainwindow/errorReporter.h"
 #include "../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
-
-#include <QtCore/QDir>
 
 namespace qReal {
 

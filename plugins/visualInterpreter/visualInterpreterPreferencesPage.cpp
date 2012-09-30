@@ -1,4 +1,5 @@
 #include <QtGui/QFileDialog>
+
 #include "../../../qrkernel/settingsManager.h"
 
 #include "visualInterpreterPreferencesPage.h"

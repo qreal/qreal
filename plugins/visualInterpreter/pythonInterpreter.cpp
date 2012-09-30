@@ -1,7 +1,7 @@
+#include <QtCore/QFile>
+
 #include "pythonInterpreter.h"
 #include "pythonGenerator.h"
-
-#include <QtCore/QFile>
 
 using namespace qReal;
 
