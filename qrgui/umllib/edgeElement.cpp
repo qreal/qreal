@@ -448,6 +448,8 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	adjustLink();
 	arrangeSrcAndDst();
+	if (SettingsManager::value("SquareLine").toBool())
+		squarizeHandler(QPointF());
 
 	updateLongestPart();
 
@@ -1150,7 +1152,7 @@ void EdgeElement::deleteLoops()
 {
 	prepareGeometryChange();
 	deleteLoop(0);
-	//setGraphicApi(QPointF());
+	setGraphicApi(QPointF());
 }
 
 void EdgeElement::deleteSegment(QPointF const &pos)
@@ -1165,9 +1167,10 @@ void EdgeElement::deleteSegment(QPointF const &pos)
 		if (ps.createStroke(path).contains(pos) && i != 0 && (i + 1 != mLine.size() - 1)) { // вот тут разобраться, будет ли "лишнее вхождение" одной точки в 2 сегмента
 			delPointHandler(mLine[i]);
 			delPointHandler(mLine[i]);
+			delCloseLinePoints();
 			if (SettingsManager::value("SquareLine").toBool())
 				squarizeHandler(QPointF());
-			delCloseLinePoints();
+			//delCloseLinePoints();
 			updateLongestPart();
 			break;
 		}
