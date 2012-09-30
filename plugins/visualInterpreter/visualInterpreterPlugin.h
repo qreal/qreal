@@ -43,7 +43,7 @@ private slots:
 	
 	/// Stops interpretation
 	void stopInterpretation();
-	
+
 	/// Show watch list with all declared variables and its values. List updates
 	/// dynamically
 	void showWatchList();

@@ -16,12 +16,16 @@ HEADERS = \
 	visualInterpreterPreferencesPage.h \
 	ruleParser.h \
 	visualInterpreterUnit.h \
+	pythonInterpreter.h \
+	pythonGenerator.h
 
 SOURCES = \
 	visualInterpreterPlugin.cpp \
 	visualInterpreterPreferencesPage.cpp \
 	ruleParser.cpp \
 	visualInterpreterUnit.cpp \
+	pythonInterpreter.cpp \
+	pythonGenerator.cpp
 
 FORMS += \
 	visualInterpreterPreferencePage.ui \

@@ -4,6 +4,8 @@
 #include "../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
 #include "../../qrutils/graphTransformation/baseGraphTransformationUnit.h"
 #include "ruleParser.h"
+#include "pythonGenerator.h"
+#include "pythonInterpreter.h"
 
 namespace qReal {
 
@@ -28,12 +30,16 @@ public:
 
 	/// Stops interpretation
 	void stopInterpretation();
-	
+
 	/// True if match was found
 	bool findMatch();
-	
+
 	/// Get rule parser for watch list
 	utils::ExpressionsParser* ruleParser();
+
+private slots:
+	void processPythonInterpreterStdOutput(QHash<QPair<QString, QString>, QString> const &output);
+	void processPythonInterpreterErrOutput(QString const &output);
 
 protected:
 	/// For debug uses only
@@ -44,7 +50,7 @@ protected:
 
 	/// Fields initialization before interpretation
 	void initBeforeInterpretation();
-	
+
 	/// Clear memory from current semantics
 	void deinit();
 
@@ -53,35 +59,37 @@ protected:
 
 	/// Perform all transformations
 	bool makeStep();
-	
+
 	/// Delete elements according to rule. True if at least one element was deleted
 	bool deleteElements();
-	
+
 	/// Create elements according to rule. True if at least one element was created
 	bool createElements();
-	
+
 	/// Create elements to replace with according to rule. True if at least
 	/// one element was created
 	bool createElementsToReplace();
-	
+
 	/// Replace elements according to rule
 	void replaceElements();
-	
+
 	/// Performs control flow changes
 	void moveControlFlow();
-	
+
 	/// Interpret rule reaction
 	bool interpretReaction();
-	
+
+	bool interpretPythonReaction();
+
 	/// Arranges connections between newly created elements
 	void arrangeConnections();
-	
+
 	/// Copy properties from element in rule to element in model
 	void copyProperties(Id const &elemInModel, Id const &elemInRule);
-	
+
 	/// Generates position for new element
 	QPointF position();
-	
+
 	/// Fill rules information with this
 	void putIdIntoMap(QHash<QString ,IdList*> *map, QString const &ruleName,
 			Id const &id);
@@ -107,9 +115,9 @@ protected:
 
 	/// Is semantics loaded successfully
 	bool mIsSemanticsLoaded;
-	
+
 	bool mNeedToStopInterpretation;
-	
+
 	/// Metamodel name which loaded semantics is for
 	QString mMetamodelName;
 
@@ -125,7 +133,7 @@ protected:
 	QHash<QString, IdList*> *mNodesWithControlMark;
 	QHash<Id, Id> *mReplacedElementsPairs;
 	QHash<Id, Id> *mCreatedElementsPairs;
-	
+
 	QString mMatchedRuleName;
 	QString mCurrentRuleName;
 
@@ -134,6 +142,9 @@ protected:
 
 	/// Rule parser and interpreter to deal with textual part of rules
 	RuleParser *mRuleParser;
+
+	PythonGenerator *mPythonGenerator;
+	PythonInterpreter *mPythonInterpreter;
 };
 
 }

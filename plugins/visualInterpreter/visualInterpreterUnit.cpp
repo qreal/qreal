@@ -11,8 +11,14 @@ VisualInterpreterUnit::VisualInterpreterUnit(
 		, mNeedToStopInterpretation(false)
 		, mRules(NULL)
 		, mRuleParser(new RuleParser(logicalModelApi, graphicalModelApi, interpretersInterface.errorReporter()))
+		, mPythonGenerator(new PythonGenerator(logicalModelApi, graphicalModelApi, interpretersInterface))
+		, mPythonInterpreter(new PythonInterpreter(this))
 {
 	mDefaultProperties.insert("semanticsStatus");
+	connect(mPythonInterpreter, SIGNAL(readyReadStdOutput(QHash<QPair<QString, QString>, QString>))
+			, this, SLOT(processPythonInterpreterStdOutput(QHash<QPair<QString, QString>, QString>)));
+	connect(mPythonInterpreter, SIGNAL(readyReadErrOutput(QString))
+			, this, SLOT(processPythonInterpreterErrOutput(QString)));
 }
 
 IdList VisualInterpreterUnit::allRules() const
@@ -45,7 +51,7 @@ void VisualInterpreterUnit::initBeforeSemanticsLoading()
 	if (mRules != NULL) {
 		deinit();
 	}
-	
+
 	mRules = new QHash<QString, Id>();
 	mDeletedElements = new QHash<QString, IdList*>();
 	mReplacedElements = new QHash<QString, QHash<Id, Id>* >();
@@ -161,7 +167,7 @@ void VisualInterpreterUnit::loadSemantics()
 void VisualInterpreterUnit::interpret()
 {
 	mInterpretersInterface.errorReporter()->clear();
-	
+
 	if (!mIsSemanticsLoaded) {
 		report(tr("Semantics not loaded"), true);
 		return;
@@ -245,7 +251,7 @@ Id VisualInterpreterUnit::startElement() const
 bool VisualInterpreterUnit::deleteElements()
 {
 	QHash<Id, Id> firstMatch = mMatches.at(0);
-	
+
 	if (mDeletedElements->contains(mMatchedRuleName)) {
 		foreach (Id const &id, *(mDeletedElements->value(mMatchedRuleName))) {
 			Id const node = firstMatch.value(id);
@@ -263,7 +269,7 @@ bool VisualInterpreterUnit::deleteElements()
 bool VisualInterpreterUnit::createElements()
 {
 	QHash<Id, Id> *firstMatch = &mMatches.first();
-	
+
 	if (mCreatedElements->contains(mMatchedRuleName)) {
 		mCreatedElementsPairs = new QHash<Id, Id>();
 		foreach (Id const &id, *(mCreatedElements->value(mMatchedRuleName))) {
@@ -281,9 +287,9 @@ bool VisualInterpreterUnit::createElements()
 			mCreatedElementsPairs->insert(id, createdElem);
 			firstMatch->insert(id, createdElem);
 		}
-		
+
 		arrangeConnections();
-		
+
 		return true;
 	}
 	return false;
@@ -295,18 +301,18 @@ void VisualInterpreterUnit::arrangeConnections()
 	
 	foreach (Id const &idInRule, mCreatedElementsPairs->keys()) {
 		Id const idInModel = mCreatedElementsPairs->value(idInRule);
-		
+
 		Id const toInRul = toInRule(idInRule);
 		if (toInRul != Id::rootId()) {
 			mGraphicalModelApi.setTo(idInModel, firstMatch.value(toInRul));
 		}
-		
+
 		Id const fromInRul = fromInRule(idInRule);
 		if (fromInRul != Id::rootId()) {
 			mGraphicalModelApi.setFrom(idInModel, firstMatch.value(fromInRul));
 		}
 	}
-	
+
 	delete mCreatedElementsPairs;
 }
 
@@ -326,13 +332,13 @@ QPointF VisualInterpreterUnit::position()
 bool VisualInterpreterUnit::createElementsToReplace()
 {
 	QHash<Id, Id> *firstMatch = &mMatches.first();
-	
+
 	if (mReplacedElements->contains(mMatchedRuleName)) {
 		mReplacedElementsPairs = new QHash<Id, Id>();
 		foreach (Id const &fromId, mReplacedElements->value(mMatchedRuleName)->keys()) {
 			Id const toInRule = mReplacedElements->value(mMatchedRuleName)->value(fromId);
 			Id const fromInModel = firstMatch->value(fromId);
-			
+
 			Id const toInModelId = Id(mInterpretersInterface.activeDiagram().editor()
 					, mInterpretersInterface.activeDiagram().diagram()
 					, toInRule.element()
@@ -343,10 +349,10 @@ bool VisualInterpreterUnit::createElementsToReplace()
 					, false
 					, toInRule.element()
 					, mGraphicalModelApi.position(fromInModel));
-			
+
 			mReplacedElementsPairs->insert(fromInModel, toInModel);
 			firstMatch->insert(toInRule, toInModel);
-			
+
 			copyProperties(mGraphicalModelApi.logicalId(toInModel), toInRule);
 		}
 		return true;
@@ -359,18 +365,18 @@ void VisualInterpreterUnit::replaceElements()
 	if (mReplacedElements->contains(mMatchedRuleName)) {
 		foreach (Id const &fromInModel, mReplacedElementsPairs->keys()) {
 			Id const toInModel = mReplacedElementsPairs->value(fromInModel);
-			
+
 			foreach (Id const &link, outgoingLinks(fromInModel)) {
 				mGraphicalModelApi.setFrom(link, toInModel);
 			}
 			foreach (Id const &link, incomingLinks(fromInModel)) {
 				mGraphicalModelApi.setTo(link, toInModel);
 			}
-			
+
 			mInterpretersInterface.deleteElementFromDiagram(
 					mGraphicalModelApi.logicalId(fromInModel));
 		}
-		
+
 		delete mReplacedElementsPairs;
 	}
 }
@@ -399,7 +405,7 @@ void VisualInterpreterUnit::moveControlFlow()
 bool VisualInterpreterUnit::interpretReaction()
 {
 	QHash<Id, Id> firstMatch = mMatches.at(0);
-	
+
 	Id const rule = mRules->value(mMatchedRuleName);
 	QString const ruleProcess = property(rule, "procedure").toString();
 	bool result = true;
@@ -408,6 +414,18 @@ bool VisualInterpreterUnit::interpretReaction()
 		result = mRuleParser->parseRule(ruleProcess, &firstMatch);
 	}
 	return result;
+}
+
+bool VisualInterpreterUnit::interpretPythonReaction()
+{
+	mPythonGenerator->setRule(mRules->value(mMatchedRuleName));
+	mPythonGenerator->setMatch(mMatches.first());
+
+	mPythonGenerator->generateScript();
+
+	mPythonInterpreter->interpret();
+
+	return true;
 }
 
 void VisualInterpreterUnit::copyProperties(Id const &elemInModel, Id const &elemInRule)
@@ -429,18 +447,19 @@ bool VisualInterpreterUnit::makeStep()
 {
 	bool needToUpdate = createElements();
 	needToUpdate |= createElementsToReplace();
-	
-	bool result = interpretReaction();
-	
+
+	//bool result = interpretReaction();
+	bool result = interpretPythonReaction();
+
 	needToUpdate |= deleteElements();
 	replaceElements();
-	
+
 	if (needToUpdate) {
 		mInterpretersInterface.updateActiveDiagram();
 	}
-	
+
 	moveControlFlow();
-	
+
 	mMatches.clear();
 	return result;
 }
@@ -504,8 +523,21 @@ void VisualInterpreterUnit::semanticsLoadingError(QString const &message)
 	deinit();
 }
 
-
 utils::ExpressionsParser* VisualInterpreterUnit::ruleParser()
 {
 	return mRuleParser;
+}
+
+void VisualInterpreterUnit::processPythonInterpreterStdOutput(QHash<QPair<QString, QString>, QString> const &output)
+{
+	QPair<QString, QString> p;
+	foreach (p, output.keys()) {
+		mInterpretersInterface.errorReporter()->addCritical(
+				p.first + " " + p.second + " " + output.value(p));
+	}
+}
+
+void VisualInterpreterUnit::processPythonInterpreterErrOutput(QString const &output)
+{
+	mInterpretersInterface.errorReporter()->addCritical(output);
 }

@@ -1,12 +1,12 @@
 #include "visualInterpreterPlugin.h"
 
-#include <QtCore/QProcess>
-#include <QtGui/QApplication>
-#include <QtGui/QFileDialog>
-
 #include "../../../qrutils/xmlUtils.h"
 #include "../../../qrutils/outFile.h"
 #include "../../../qrkernel/settingsManager.h"
+
+#include <QtCore/QProcess>
+#include <QtGui/QApplication>
+#include <QtGui/QFileDialog>
 
 Q_EXPORT_PLUGIN2(visualInterpreter, qReal::visualInterpreter::VisualInterpreterPlugin)
 
@@ -60,15 +60,15 @@ QList<qReal::ActionInfo> VisualInterpreterPlugin::actions()
 	mInterpretAction = new QAction(tr("Interpret"), NULL);
 	connect(mInterpretAction, SIGNAL(triggered()), this, SLOT(interpret()));
 	mVisualInterpreterMenu->addAction(mInterpretAction);
-	
+
 	mStopInterpretationAction = new QAction(tr("Stop interpretation"), NULL);
 	connect(mStopInterpretationAction, SIGNAL(triggered()), this, SLOT(stopInterpretation()));
 	mVisualInterpreterMenu->addAction(mStopInterpretationAction);
-	
+
 	mWatchListAction = new QAction(tr("Show watch list"), NULL);
 	connect(mWatchListAction, SIGNAL(triggered()), this, SLOT(showWatchList()));
 	mVisualInterpreterMenu->addAction(mWatchListAction);
-	
+
 	mActionInfos << visualInterpreterMenu;
 
 	return mActionInfos;
@@ -292,18 +292,18 @@ void VisualInterpreterPlugin::insertPaletteGroups(QDomDocument metamodel, QStrin
 {
 	QString const elementsXml =
 	"<palette>"
-		"<group name=\"Semantics Elements\">"
-			"<element name=\"Semantics Rule\"/>"
+		"<group name=\"SemanticsElements\">"
+			"<element name=\"SemanticsRule\"/>"
 			"<element name=\"Wildcard\"/>"
-			"<element name=\"Control Flow Mark\"/>"
+			"<element name=\"ControlFlowMark\"/>"
 			"<element name=\"Replacement\"/>"
-			"<element name=\"Control Flow Location\"/>"
+			"<element name=\"ControlFlowLocation\"/>"
 		"</group>"
 	"</palette>";
 
 	QDomDocument elements = mMetamodelGeneratorSupport->loadElementsFromString(elementsXml);
 	QStringList const elementNames =
-			mMetamodelGeneratorSupport->collectAllGraphicTypesInMetamodel(metamodel, true);
+			mMetamodelGeneratorSupport->collectAllGraphicTypesInMetamodel(metamodel, false);
 
 	QDomElement editorGroup = metamodel.createElement("group");
 	editorGroup.setAttribute("name", diagramDisplayedName);

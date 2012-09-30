@@ -1,8 +1,8 @@
 #pragma once
 
-#include <QtGui/QLineEdit>
-
 #include "../../qrgui/dialogs/preferencesPages/preferencesPage.h"
+
+#include <QtGui/QLineEdit>
 
 namespace Ui {
 	class visualInterpreterPreferencesPage;
@@ -14,16 +14,16 @@ namespace qReal {
 class VisualInterpreterPreferencesPage : public PreferencesPage
 {
 	Q_OBJECT
-	
+
 public:
 	explicit VisualInterpreterPreferencesPage(QWidget *parent = 0);
 	~VisualInterpreterPreferencesPage();
-	
+
 	void save();
-	
+
 private slots:
 	void setQRealSourcesLocation();
-	
+
 private:
 	Ui::visualInterpreterPreferencesPage *mUi;
 };
