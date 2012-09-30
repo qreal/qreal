@@ -264,10 +264,30 @@ QString GraphicType::generatePropertyDisplayedNames(const QString &lineTemplate)
 	QString displayedNamesString;
 	foreach (Property *property, mProperties) {
 		QString tmp = property->generateDisplayedNameLine(lineTemplate);
-		if (!tmp.isEmpty())
+		if (!tmp.isEmpty()) {
 			displayedNamesString += tmp.replace(elementNameTag, name()).replace(diagramNameTag, mContext) + endline;
+		}
 	}
 	return displayedNamesString;
+}
+
+QString GraphicType::generateReferenceProperties(const QString &lineTemplate) const
+{
+	if (!mIsVisible)
+		return "";
+	QString referencePropertiesString = lineTemplate;
+	QString referencePropertiesList = "";
+	foreach (Property *property, mProperties) {
+		if (property->isReferenceProperty()) {
+			referencePropertiesList = referencePropertiesList + " << "  + "\"" + property->name() + "\"";
+		}
+	}
+	if (referencePropertiesList.isEmpty()) {
+		return "";
+	} else {
+		referencePropertiesString.replace(referencePropertiesListTag, referencePropertiesList).replace(elementNameTag, name());
+		return referencePropertiesString;
+	}
 }
 
 QString GraphicType::generateParents(QString const &lineTemplate) const

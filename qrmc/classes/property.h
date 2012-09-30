@@ -17,6 +17,7 @@ namespace qrmc {
 		Property *clone();
 		bool operator == (Property const &other) const;
 		bool operator != (Property const &other) const;
+		bool isReferenceProperty() const;
 		void print() const;
 
 		QString generatePropertyLine(QString const &lineTemplate) const;

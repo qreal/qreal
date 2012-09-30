@@ -11,6 +11,7 @@
 @@GetContainedByLine@@=	if (element == "@@ElementName@@")\n		result @@ContainedByList@@;
 @@GetConnectedTypesLine@@=	if (element == "@@ElementName@@")\n		result @@ConnectedToList@@;
 @@GetUsedTypesLine@@=	if (element == "@@ElementName@@")\n		result @@UsedTypesList@@ ;
+@@GetReferencePropertiesLine@@=	if (element == "@@ElementName@@")\n 		result @@ReferencePropertiesList@@;
 @@IsNodeOrEdgeLine@@=	if (element == "@@ElementName@@")\n		return @@IsNodeOrEdgeValue@@;
 @@GetEnumValuesLine@@=	if (name == "@@ElementName@@")\n		result @@EnumValuesList@@;
 @@GetPossibleEdgesLine@@=	if (element == "@@ElementName@@")\n		result @@PossibleEdgesList@@;

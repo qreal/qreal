@@ -238,6 +238,7 @@ bool Editor::generatePluginSource()
 	generatePropertyDefaultsMap();
 	generateElementsFactory();
 	generateContainers();
+	generateReferenceProperties();
 	generateConnections();
 	generateUsages();
 	generateIsNodeOrEdge();
@@ -441,6 +442,13 @@ public:
 	}
 };
 
+class Editor::ReferencePropertiesGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
+		return diagram->generateReferenceProperties(lineTemplate);
+	}
+};
+
 class Editor::ConnectionsGenerator: public Editor::MethodGenerator {
 public:
 	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
@@ -521,6 +529,11 @@ void Editor::generatePropertyDefaultsMap()
 void Editor::generateContainers()
 {
 	generatePluginMethod(getContainersLineTag, ContainersGenerator());
+}
+
+void Editor::generateReferenceProperties()
+{
+	generatePluginMethod(getReferencePropertiesLineTag, ReferencePropertiesGenerator());
 }
 
 void Editor::generateConnections()

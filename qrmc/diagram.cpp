@@ -264,6 +264,13 @@ public:
 	}
 };
 
+class Diagram::ReferencePropertiesGenerator: public Diagram::ListMethodGenerator {
+public:
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
+		return type->generateReferenceProperties(lineTemplate);
+	}
+};
+
 class Diagram::ConnectionsGenerator: public Diagram::ListMethodGenerator {
 public:
 	virtual QString generate(Type *type, QString const &lineTemplate) const {
@@ -307,6 +314,11 @@ QString Diagram::generateUsages(const QString &lineTemplate) const
 QString Diagram::generateConnections(const QString &lineTemplate) const
 {
 	return generateListMethod(lineTemplate, ConnectionsGenerator());
+}
+
+QString Diagram::generateReferenceProperties(const QString &lineTemplate) const
+{
+	return generateListMethod(lineTemplate, ReferencePropertiesGenerator());
 }
 
 QString Diagram::generateContainers(const QString &lineTemplate) const

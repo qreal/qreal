@@ -23,6 +23,21 @@ bool Property::init()
 	if (mType.isEmpty()) {
 		qDebug() << "ERROR: empty type of property found";
 		return false;
+	} else {
+		qReal::IdList const listOfEnums = mApi->elementsByType("MetaEntityEnum");
+		foreach (qReal::Id const enumElement, listOfEnums) {
+			QString const nameOfEnumElement = mApi->name(enumElement);
+			if (nameOfEnumElement == mType) {
+				mIsEnum = true;
+			}
+		}
+		qReal::IdList const listOfNodes = mApi->elementsByType("MetaEntityNode");
+		foreach (qReal::Id const nodeElement, listOfNodes) {
+			QString const nameOfNodeElement = mApi->name(nodeElement);
+			if (nameOfNodeElement == mType) {
+				mIsReference = true;
+			}
+		}
 	}
 
 	mDisplayedName = mApi->stringProperty(mId, "displayedName");
@@ -73,6 +88,11 @@ bool Property::operator == (Property const &other) const
 bool Property::operator != (Property const &other) const
 {
 	return !(other == *this);
+}
+
+bool Property::isReferenceProperty() const
+{
+	return mIsReference;
 }
 
 void Property::print() const

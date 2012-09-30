@@ -32,6 +32,7 @@ namespace qrmc {
 		QString generatePropertyDisplayedNamesMap(QString const &lineTemplate) const;
 		QString generateParentsMap(QString const &lineTemplate) const;
 		QString generateContainers(QString const &lineTemplate) const;
+		QString generateReferenceProperties(QString const &lineTemplate) const;
 		QString generateConnections(QString const &lineTemplate) const;
 		QString generateUsages(QString const &lineTemplate) const;
 		QString generateFactory(QString const &lineTemplate) const;
@@ -65,6 +66,7 @@ namespace qrmc {
 		class UsagesGenerator;
 		class ConnectionsGenerator;
 		class ContainersGenerator;
+		class ReferencePropertiesGenerator;
 		class FactoryGenerator;
 		class IsNodeOrEdgeGenerator;
 		class EnumsGenerator;

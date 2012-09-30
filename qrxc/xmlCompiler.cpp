@@ -318,7 +318,7 @@ void XmlCompiler::generatePaletteGroupsLists(utils::OutFile &out)
 				out() << "\tpaletteGroupsMap[QString::fromUtf8(\""
 					<< diagramName << "\")][QString::fromUtf8(\""
 					<< groupName << "\")].append(QString::fromUtf8(\""
-					<< name << "\"));\n";
+					<< NameNormalizer::normalize(name) << "\"));\n";
 			}
 		}
 	}

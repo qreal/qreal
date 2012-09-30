@@ -155,6 +155,7 @@ QStringList @@MetamodelName@@Plugin::getPropertyNames(QString const &/*diagram*/
 QStringList @@MetamodelName@@Plugin::getReferenceProperties(QString const &/*diagram*/, QString const &element) const
 {
 	QStringList result;
+@@GetReferencePropertiesLine@@
 	return result;
 }
 

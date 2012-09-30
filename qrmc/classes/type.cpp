@@ -89,8 +89,9 @@ void Type::copyFields(Type *type) const
 	type->mContext = mContext;
 	type->mNativeContext = mNativeContext;
 	type->mDisplayedName = mDisplayedName;
-	foreach (QString propertyName, mProperties.keys())
+	foreach (QString propertyName, mProperties.keys()) {
 		type->mProperties.insert(propertyName, mProperties[propertyName]->clone());
+	}
 	type->mResolvingFinished = mResolvingFinished;
 	type->mDiagram = mDiagram;
 }
