@@ -5,7 +5,7 @@
 using namespace qReal;
 
 Element::Element(ElementImpl* elementImpl)
-	: mMoving(false)
+	: QGraphicsProxyWidget(), mMoving(false)
 	, mElementImpl(elementImpl)
 	, mLogicalAssistApi(NULL)
 	, mGraphicalAssistApi(NULL)
@@ -95,4 +95,23 @@ void Element::selectionState(const bool selected) {
 ElementImpl* Element::elementImpl() const
 {
 	return mElementImpl;
+}
+
+void Element::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	QGraphicsProxyWidget::mousePressEvent(event);
+	event->accept();
+	QGraphicsItem::mousePressEvent(event);
+}
+
+void Element::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+	QGraphicsProxyWidget::mouseMoveEvent(event);
+	QGraphicsItem::mouseMoveEvent(event);
+}
+
+void Element::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+	QGraphicsProxyWidget::mouseReleaseEvent(event);
+	QGraphicsItem::mouseReleaseEvent(event);
 }

@@ -12,7 +12,8 @@ HEADERS += umllib/edgeElement.h \
 	umllib/private/umlPortHandler.h \
 	umllib/private/borderChecker.h \
 	umllib/private/portHandler.h \
-	umllib/private/copyHandler.h
+	umllib/private/copyHandler.h \
+	umllib/private/nodeElementWidgetsHelper.h \
 
 SOURCES += umllib/edgeElement.cpp \
 	umllib/element.cpp \
@@ -28,4 +29,5 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/private/umlPortHandler.cpp \
 	umllib/private/borderChecker.cpp \
 	umllib/private/portHandler.cpp \
-	umllib/private/copyHandler.cpp
+	umllib/private/copyHandler.cpp \
+	umllib/private/nodeElementWidgetsHelper.cpp \

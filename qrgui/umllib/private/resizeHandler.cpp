@@ -25,7 +25,7 @@ void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
 
 	newContents.moveTo(newPos);
 
-	mResizingNode->setGeometry(newContents);
+	mResizingNode->setGeom(newContents);
 	mResizingNode->storeGeometry();
 
 	parentResizeCall();
@@ -79,7 +79,7 @@ void ResizeHandler::sortChildrenIfNeeded() const
 				: curItem->contentsRect().width();
 		QRectF const rect(sizeOfForestalling, curChildY, necessaryWidth, curItem->contentsRect().height());
 
-		curItem->setGeometry(rect);
+		curItem->setGeom(rect);
 		curItem->storeGeometry();
 		curChildY += curItem->contentsRect().height() + mElementImpl->sizeOfChildrenForestalling() + mChildSpacing;
 	}

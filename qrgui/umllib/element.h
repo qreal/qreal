@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QtGui/QGraphicsProxyWidget>
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QAction>
 
@@ -21,7 +22,7 @@ const int kvadratik = 10;
 /**
  * @brief base class for an element on a diagram
  */
-class Element : public QObject, public QGraphicsItem, public ElementRepoInterface
+class Element : public QGraphicsProxyWidget, public ElementRepoInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(QGraphicsItem)
@@ -69,6 +70,9 @@ signals:
 	void switchFolding(bool);
 
 protected:
+	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 	void initTitlesBy(QRectF const& contents);
 
 	bool mMoving;

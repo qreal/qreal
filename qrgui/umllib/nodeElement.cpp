@@ -1,7 +1,3 @@
-#include "nodeElement.h"
-#include "../view/editorViewScene.h"
-#include "../editorPluginInterface/editorInterface.h"
-
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtGui/QMessageBox>
@@ -9,10 +5,14 @@
 #include <QtGui/QToolTip>
 #include <QtCore/QDebug>
 #include <QtCore/QUuid>
-
 #include <QtGui/QGraphicsDropShadowEffect>
 
 #include <math.h>
+
+#include "nodeElement.h"
+#include "../view/editorViewScene.h"
+#include "../editorPluginInterface/editorInterface.h"
+#include "private/nodeElementWidgetsHelper.h"
 #include "private/resizeHandler.h"
 #include "private/copyHandler.h"
 
@@ -68,6 +68,11 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mGrid = new SceneGridHandler(this);
 	mUmlPortHandler = new UmlPortHandler(this);
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
+
+	setGeom(mContents);
+
+	mWidgetsHelper = new umlLib::details::NodeElementWidgetsHelper;
+	mWidgetsHelper->setNodeElement(this);
 }
 
 NodeElement::~NodeElement()
@@ -113,12 +118,12 @@ QMap<QString, QVariant> NodeElement::properties()
 	return mGraphicalAssistApi->properties(id());
 }
 
-void NodeElement::setName(QString value)
+void NodeElement::setName(const QString &value)
 {
 	mGraphicalAssistApi->setName(id(), value);
 }
 
-void NodeElement::setGeometry(QRectF const &geom)
+void NodeElement::setGeom(QRectF const &geom)
 {
 	prepareGeometryChange();
 	setPos(geom.topLeft());
@@ -132,6 +137,8 @@ void NodeElement::setGeometry(QRectF const &geom)
 	foreach (ElementTitle * const title, mTitles) {
 		title->transform(geom);
 	}
+
+	QGraphicsProxyWidget::setGeometry(geom);
 }
 
 void NodeElement::setPos(QPointF const &pos)
@@ -337,7 +344,6 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		} else {
 			Element::mousePressEvent(event);
 		}
-
 	} else {
 		Element::mousePressEvent(event);
 	}
@@ -429,6 +435,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 
 		newPos += (event->scenePos() - scenePos()) - mDragPosition;
+		Element::mouseMoveEvent(event);
 		mGrid->mouseMoveEvent(event);
 		alignToGrid();
 
@@ -735,7 +742,7 @@ void NodeElement::updateData()
 			}
 			newRect = QRectF(QPoint(minx, miny), QSize(maxx - minx, maxy - miny));
 		}
-		setGeometry(newRect.translated(newpos));
+		setGeom(newRect.translated(newpos));
 	}
 	mElementImpl->updateData(this);
 	update();
@@ -780,6 +787,7 @@ NodeElement *NodeElement::getNodeAt(QPointF const &position)
 
 void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *w)
 {
+	QGraphicsProxyWidget::paint(painter, style, w);
 	mElementImpl->paint(painter, mContents);
 	if (mElementImpl->hasPorts()) {
 		paint(painter, style, w, mPortRenderer);
@@ -790,7 +798,7 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style
 	if (mSelectionNeeded) {
 		painter->save();
 		painter->setPen(QPen(Qt::blue));
-		QRectF rect = boundingRect();
+		QRectF const rect = boundingRect();
 		double x1 = rect.x() + 9;
 		double y1 = rect.y() + 9;
 		double x2 = rect.x() + rect.width() - 9;
@@ -800,8 +808,8 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style
 	}
 }
 
-void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *option,
-						QWidget*, SdfRenderer* portRenderer)
+void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *option
+		, QWidget *, SdfRenderer* portRenderer)
 {
 	if (option->levelOfDetail >= 0.5) {
 		if (option->state & QStyle::State_Selected) {
@@ -882,11 +890,11 @@ void NodeElement::changeFoldState()
 	if (mIsFolded) {
 		mCurUnfoldedContents = mContents;
 		mFoldedContents.moveTo(pos());
-		setGeometry(mFoldedContents);
+		setGeom(mFoldedContents);
 	}
 	else {
 		mCurUnfoldedContents.moveTo(pos());
-		setGeometry(mCurUnfoldedContents);
+		setGeom(mCurUnfoldedContents);
 	}
 
 	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
@@ -909,7 +917,7 @@ void NodeElement::setLinksVisible(bool isVisible)
 	}
 }
 
-void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
+void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, const QPointF &pos)
 {
 	// for non-sorting containers no need for drawing placeholder so just make them marked
 	if (!mElementImpl->isSortingContainer()) {
@@ -1073,10 +1081,10 @@ PossibleEdge NodeElement::toPossibleEdge(StringPossibleEdge const &strPossibleEd
 {
 	QString editor = id().editor();
 	QString diagram = id().diagram();
-	QPair<qReal::Id, qReal::Id> nodes(qReal::Id(editor, diagram, strPossibleEdge.first.first),
-									  qReal::Id(editor, diagram, strPossibleEdge.first.second));
-	QPair<bool, qReal::Id> link(strPossibleEdge.second.first,
-								qReal::Id(editor, diagram, strPossibleEdge.second.second));
+	QPair<qReal::Id, qReal::Id> nodes(qReal::Id(editor, diagram, strPossibleEdge.first.first)
+		, qReal::Id(editor, diagram, strPossibleEdge.first.second));
+	QPair<bool, qReal::Id> link(strPossibleEdge.second.first
+		, qReal::Id(editor, diagram, strPossibleEdge.second.second));
 	return QPair<QPair<qReal::Id, qReal::Id>, PossibleEdgeType>(nodes, link);
 }
 
@@ -1168,12 +1176,12 @@ void NodeElement::resize()
 	resize(mContents, pos());
 }
 
-void NodeElement::resize(QRectF newContents)
+void NodeElement::resize(const QRectF &newContents)
 {
 	resize(newContents, pos());
 }
 
-void NodeElement::resize(QRectF newContents, QPointF newPos)
+void NodeElement::resize(const QRectF &newContents, const QPointF &newPos)
 {
 	ResizeHandler handler(this, mElementImpl);
 	handler.resize(newContents, newPos);

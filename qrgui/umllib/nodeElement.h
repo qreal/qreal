@@ -5,12 +5,12 @@
 
 #pragma once
 
-#include <QKeyEvent>
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsSceneHoverEvent>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QGraphicsScene>
+#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtGui/QGraphicsSceneHoverEvent>
 #include <QtGui/QWidget>
-#include <QList>
+#include <QtCore/QList>
 
 #include "sdfRenderer.h"
 #include "element.h"
@@ -25,12 +25,20 @@
 
 #include "serializationData.h"
 
+namespace umlLib
+{
+namespace details
+{
+	class NodeElementWidgetsHelper;
+}
+}
+
 class NodeElement : public Element
 {
 	Q_OBJECT
 
 public:
-	NodeElement(ElementImpl *impl);
+	explicit NodeElement(ElementImpl *impl);
 	virtual ~NodeElement();
 
 	/**
@@ -53,7 +61,7 @@ public:
 	QRectF foldedContentsRect() const;
 
 	virtual void updateData();
-	void setGeometry(QRectF const &geom);
+	virtual void setGeom(QRectF const &geom);
 	void setPos(QPointF const &pos);
 	void setPos(qreal x, qreal y);
 
@@ -61,7 +69,7 @@ public:
 	void alignToGrid();
 
 	void storeGeometry();
-	virtual void setName(QString name);
+	virtual void setName(QString const &name);
 
 	QPointF const portPos(qreal id) const;
 	QPointF const nearestPort(QPointF const &location) const;
@@ -105,7 +113,7 @@ public:
 	virtual void connectLinksToPorts();
 
 	/** @brief Drawing placeholder at the appropriate position (calculated using event data) */
-	void drawPlaceholder(QGraphicsRectItem *placeholder, QPointF scenePos);
+	void drawPlaceholder(QGraphicsRectItem *placeholder, QPointF const &scenePos);
 	void erasePlaceholder(bool);
 
 	/**
@@ -154,14 +162,14 @@ private:
 	 * @param newContents Recommendation for new shape of node.
 	 * @param newPos Recommendation for new position of node.
 	 */
-	void resize(QRectF newContents, QPointF newPos);
+	void resize(QRectF const &newContents, QPointF const &newPos);
 
 	/**
 	 * Calls resize(QRectF newContents, QPointF newPos) with
 	 * newPos equals to current position of node.
 	 * @param newContents Recommendation for new shape of node.
 	 */
-	void resize(QRectF newContents);
+	void resize(QRectF const &newContents);
 
 	/**
 	 * Calls resize(QRectF newContents, QPointF newPos) with
@@ -253,4 +261,6 @@ private:
 	NodeElement *mHighlightedNode;
 
 	NodeData mData;
+
+	umlLib::details::NodeElementWidgetsHelper *mWidgetsHelper;
 };
