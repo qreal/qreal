@@ -379,7 +379,7 @@ void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
 	if (mCurrentWall != NULL) {
 		QPointF oldPos = mCurrentWall->end();
 		mCurrentWall->setX2andY2(pos.x(), pos.y());
-		if (mRobot->shape().intersects(mCurrentWall->shape())) {
+		if (mRobot->realBoundingRect().intersects(mCurrentWall->realBoundingRect())) {
 			mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
 		}
 			if (event->modifiers() & Qt::ShiftModifier) {
@@ -419,7 +419,7 @@ void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 	mScene->setDragMode(mDrawingAction);
 	switch (mDrawingAction){
 	case drawingAction::wall: {
-		if (!mRobot->shape().intersects(QRectF(position, position))) {
+		if (!mRobot->realBoundingRect().intersects(QRectF(position, position))) {
 			mCurrentWall = new WallItem(position, position);
 			mScene->removeMoveFlag(mouseEvent, mCurrentWall);
 			mWorldModel->addWall(mCurrentWall);
