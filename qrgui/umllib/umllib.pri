@@ -12,7 +12,11 @@ HEADERS += umllib/edgeElement.h \
 	umllib/private/umlPortHandler.h \
 	umllib/private/borderChecker.h \
 	umllib/private/portHandler.h \
-	umllib/private/copyHandler.h
+	umllib/private/copyHandler.h \
+	umllib/layout/abstractLayoutHelper.h \
+	umllib/layout/graph.h \
+	umllib/layout/gvizNeatoLayoutHelper.h \
+	umllib/layout/gvizDotLayoutHelper.h \
 
 SOURCES += umllib/edgeElement.cpp \
 	umllib/element.cpp \
@@ -28,4 +32,11 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/private/umlPortHandler.cpp \
 	umllib/private/borderChecker.cpp \
 	umllib/private/portHandler.cpp \
-	umllib/private/copyHandler.cpp
+	umllib/private/copyHandler.cpp \
+	umllib/layout/graph.cpp \
+	umllib/layout/gvizNeatoLayoutHelper.cpp \
+	umllib/layout/gvizDotLayoutHelper.cpp \
+
+FORMS += \
+	umllib/layout/gvizDotLayoutHelperSettings.ui \
+	umllib/layout/gvizNeatoLayoutHelperSettings.ui \

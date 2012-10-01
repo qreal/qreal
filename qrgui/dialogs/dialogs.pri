@@ -15,6 +15,7 @@ HEADERS += \
 	dialogs/startDialog/recentProjectsListWidget.h \
 	dialogs/startDialog/listWidget.h \
 	dialogs/suggestToCreateDiagramDialog.h \
+	dialogs/autoLayoutDialog.h \
 	dialogs/managedClosableDialog.h \
 	dialogs/progressDialog/progressBar.h \
 	dialogs/progressDialog/progressDialog.h
@@ -35,6 +36,7 @@ SOURCES += \
 	dialogs/startDialog/recentProjectsListWidget.cpp \
 	dialogs/startDialog/listWidget.cpp \
 	dialogs/suggestToCreateDiagramDialog.cpp \
+	dialogs/autoLayoutDialog.cpp \
 	dialogs/managedClosableDialog.cpp \
 	dialogs/progressDialog/progressBar.cpp \
 	dialogs/progressDialog/progressDialog.cpp
@@ -48,4 +50,5 @@ FORMS += \
 	dialogs/preferencesPages/debuggerPage.ui \
 	dialogs/preferencesPages/behaviourPage.ui \
 	dialogs/preferencesPages/featuresPage.ui \
-	dialogs/findReplaceDialog.ui
+	dialogs/findReplaceDialog.ui \
+	dialogs/autoLayoutDialog.ui \

@@ -65,6 +65,7 @@ MainWindow::MainWindow()
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this))
 		, mStartDialog(new StartDialog(this, mProjectManager))
+		, mAutoLayoutDialog(new AutoLayoutDialog(this))
 {
 	mUi->setupUi(this);
 	setWindowTitle("QReal");
@@ -250,6 +251,7 @@ MainWindow::~MainWindow()
 	delete mFindHelper;
 	delete mProjectManager;
 	delete mStartDialog;
+	delete mAutoLayoutDialog;
 }
 
 EditorManager *MainWindow::manager()
@@ -1780,4 +1782,15 @@ void MainWindow::updateActiveDiagram()
 	reinitModels();
 	activateItemOrDiagram(diagramId);
 	mUi->graphicalModelExplorer->setRootIndex(QModelIndex());
+}
+	
+void MainWindow::openAutoLayoutWindow()
+{
+	EditorView *curEditorView = getCurrentTab();
+	if (curEditorView == NULL) {
+		return;
+	}
+	EditorViewMViface *mvIface = getCurrentTab()->mvIface();
+	mAutoLayoutDialog->setMvIface(mvIface);
+	mAutoLayoutDialog->show();
 }

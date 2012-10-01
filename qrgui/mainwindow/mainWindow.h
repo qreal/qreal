@@ -32,6 +32,8 @@
 #include "../dialogs/startDialog/startDialog.h"
 #include "projectManager/projectManager.h"
 
+#include "../dialogs/autoLayoutDialog.h"
+
 #include "referenceList.h"
 
 namespace Ui {
@@ -106,6 +108,7 @@ public:
 	virtual IdList selectedElementsOnActiveDiagram();
 	virtual void updateActiveDiagram();
 	virtual void deleteElementFromDiagram(Id const &id);
+	virtual void openAutoLayoutWindow();
 
 	virtual void reportOperation(invocation::LongOperation *operation);
 
@@ -325,6 +328,8 @@ private:
 	FindManager *mFindHelper;
 	ProjectManager *mProjectManager;
 	StartDialog *mStartDialog;
+
+	AutoLayoutDialog *mAutoLayoutDialog;
 };
 
 }

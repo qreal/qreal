@@ -122,109 +122,7 @@ gvplugin_dot_layout.dll dot_layout {
 		dot 0
 	}
 }
-gvplugin_gd.dll gd {
-	render {
-		gd 1
-	}
-	render {
-		vrml 1
-	}
-	textlayout {
-		textlayout 2
-	}
-	loadimage {
-		gd:gd 1
-		gd2:gd 1
-		gif:gd 1
-		jpeg:gd 1
-		jpe:gd 1
-		jpg:gd 1
-		png:gd 1
-		gd:ps 1
-#FAILS		gd:lasi 1
-		gd2:ps 1
-#FAILS		gd2:lasi 1
-		gif:ps 1
-#FAILS		gif:lasi 1
-		jpeg:ps 1
-		jpg:ps 1
-		jpe:ps 1
-#FAILS		jpeg:lasi 1
-#FAILS		jpg:lasi 1
-#FAILS		jpe:lasi 1
-		png:ps 1
-#FAILS		png:lasi 1
-		gd:cairo 1
-		gd2:cairo 1
-		gif:cairo 1
-		jpeg:cairo 1
-		jpg:cairo 1
-		jpe:cairo 1
-		png:cairo -1
-	}
-	device {
-		gif:cairo 10
-		wbmp:cairo 5
-		jpe:cairo 5
-		jpeg:cairo 5
-		jpg:cairo 5
-		png:cairo 5
-		gd:cairo 5
-		gd2:cairo 5
-	}
-	device {
-		gif:gd 1
-		wbmp:gd 1
-		jpe:gd 1
-		jpeg:gd 1
-		jpg:gd 1
-		png:gd 1
-		gd:gd 1
-		gd2:gd 1
-	}
-	device {
-		vrml:vrml 1
-	}
-}
-gvplugin_gdiplus.dll gdiplus {
-	render {
-		gdiplus 1
-	}
-	textlayout {
-		textlayout 8
-	}
-	loadimage {
-		bmp:gdiplus 8
-		gif:gdiplus 8
-		jpe:gdiplus 8
-		jpeg:gdiplus 8
-		jpg:gdiplus 8
-		png:gdiplus 8
-	}
-	device {
-		metafile:gdiplus 8
-		bmp:gdiplus 8
-		emf:gdiplus 8
-		emfplus:gdiplus 8
-		gif:gdiplus 8
-		jpe:gdiplus 8
-		jpeg:gdiplus 8
-		jpg:gdiplus 8
-		png:gdiplus 8
-		tif:gdiplus 8
-		tiff:gdiplus 8
-	}
-	device {
-		bmp:cairo 8
-		gif:cairo 8
-		jpe:cairo 8
-		jpeg:cairo 8
-		jpg:cairo 8
-		png:cairo 8
-		tif:cairo 8
-		tiff:cairo 8
-	}
-}
+
 gvplugin_neato_layout.dll neato_layout {
 	layout {
 		neato 0
@@ -237,24 +135,5 @@ gvplugin_neato_layout.dll neato_layout {
 		nop 0
 		nop1 0
 		nop2 0
-	}
-}
-gvplugin_pango.dll cairo {
-	render {
-		cairo 10
-	}
-	textlayout {
-		textlayout 10
-	}
-	loadimage {
-		png:cairo 1
-#FAILS		png:lasi 2
-		png:ps 2
-	}
-	device {
-		png:cairo 10
-		ps:cairo -10
-		pdf:cairo 10
-		svg:cairo -10
 	}
 }

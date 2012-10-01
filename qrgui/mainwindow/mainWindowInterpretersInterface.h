@@ -73,6 +73,8 @@ public:
 
 	virtual void deleteElementFromDiagram(Id const &id) = 0;
 
+	virtual void openAutoLayoutWindow() = 0;
+
 	/// Must be called before some long operation start.
 	/// Shows progress bar on operation start
 	/// @param operation Operation that going to be invoced

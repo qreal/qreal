@@ -82,6 +82,9 @@ private slots:
 	/// apply refactoring rule on the highlighted place after it has been found
 	void applyRefactoring();
 
+	/// opens auto layout dialog that allows to work with different auto layout algorithms
+	void openAutoLayoutDialog();
+
 private:
 	/// insert property "ID" in chosen by user metamodel in the chosen elements
 	/// @param metamodel metamodel for integranion with refactoring language
@@ -129,6 +132,7 @@ private:
 	QAction *mPlaceTBAction;
 	QAction *mPlaceRLAction;
 	QAction *mPlaceBTAction;
+	QAction *mOpenAutoLayoutDialogAction;
 
 	LogicalModelAssistInterface *mLogicalModelApi;
 	GraphicalModelAssistInterface *mGraphicalModelApi;
