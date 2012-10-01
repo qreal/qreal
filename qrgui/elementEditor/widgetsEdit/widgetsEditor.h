@@ -28,7 +28,7 @@ class WidgetsEditor : public QWidget
 public:
 	WidgetsEditor(QPersistentModelIndex const &index
 		, int const &role, QWidget *parent = 0);
-	WidgetsEditor(QWidget *parent = 0);
+	explicit WidgetsEditor(QWidget *parent = 0);
 	~WidgetsEditor();
 
 	void setShape(QDomDocument const &shape);
@@ -44,11 +44,12 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *);
 
 private slots:
-	void onLayoutButtonClicked(LayoutType type);
+	void onLayoutButtonClicked(LayoutType const type);
 	void onShapeButtonClicked();
 	void onSelectionChanged(Tool *tool);
 
 	void save();
+	void preview();
 
 private:
 	void initComponents();
@@ -56,10 +57,15 @@ private:
 	void initLayoutButtons();
 	void initShapeButton();
 	void initSaveButton();
+	void initPreviewButton();
 	void initScene();
 	void loadTools();
 	void initPropertyBrowser();
 	void initRoot();
+
+	void serializeWidget(QDomDocument &target);
+
+	void preview(QWidget *widget);
 
 	void switchLayoutButtonsActiveState(Tool *tool);
 

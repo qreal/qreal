@@ -53,6 +53,8 @@
         <file>icons/widgetsEditor/horizontalSpacer.png</file>
         <file>icons/widgetsEditor/verticalSpacer.png</file>
         <file>icons/widgetsEditor/trigger.png</file>
+        <file>icons/preview.png</file>
+        <file>icons/widgetsEditor/save.png</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>

@@ -69,6 +69,7 @@ void WidgetsEditor::initComponents()
 	initLayoutButtons();
 	initShapeButton();
 	initSaveButton();
+	initPreviewButton();
 	initScene();
 	loadTools();
 	initPropertyBrowser();
@@ -105,7 +106,7 @@ void WidgetsEditor::initLayoutButtons()
 
 void WidgetsEditor::initShapeButton()
 {
-	mShapeButton = new QPushButton("Shape");
+	mShapeButton = new QPushButton(tr("Shape"));
 	connect(mShapeButton, SIGNAL(clicked()),
 			this, SLOT(onShapeButtonClicked()));
 	mUi->layoutFrame->layout()->addWidget(mShapeButton);
@@ -113,9 +114,20 @@ void WidgetsEditor::initShapeButton()
 
 void WidgetsEditor::initSaveButton()
 {
-	QPushButton *saveButton = new QPushButton("Save");
+	QPushButton *saveButton = new QPushButton(QIcon(":icons/widgetsEditor/save.png"), "");
+	saveButton->setToolTip(tr("Save as XML"));
+	saveButton->setContentsMargins(0,0,0,0);
 	connect(saveButton, SIGNAL(clicked()), this, SLOT(save()));
 	mUi->layoutFrame->layout()->addWidget(saveButton);
+}
+
+void WidgetsEditor::initPreviewButton()
+{
+	QPushButton *previewButton = new QPushButton(QIcon(":icons/preview.png"), "");
+	previewButton->setToolTip(tr("Preview widget"));
+	previewButton->setContentsMargins(0,0,0,0);
+	connect(previewButton, SIGNAL(clicked()), this, SLOT(preview()));
+	mUi->layoutFrame->layout()->addWidget(previewButton);
 }
 
 void WidgetsEditor::initScene()
@@ -157,7 +169,7 @@ void WidgetsEditor::switchLayoutButtonsActiveState(Tool *tool)
 	mLayoutButtons->enableAllButtonsExcept(type);
 }
 
-void WidgetsEditor::onLayoutButtonClicked(LayoutType type)
+void WidgetsEditor::onLayoutButtonClicked(const LayoutType type)
 {
 	mController->setLayout(mController->selectedItem(), type);
 	mLayoutButtons->enableAllButtonsExcept(type);
@@ -174,58 +186,57 @@ void WidgetsEditor::onSelectionChanged(Tool *tool)
 	mShapeButton->setEnabled(tool == mRoot);
 }
 
-void WidgetsEditor::save()
+void WidgetsEditor::serializeWidget(QDomDocument &target)
 {
-	QString loadPath = "/home/dvvrd/dev/qreal/widgets/test.wtf";
-
-	QDomDocument document1 = utils::xmlUtils::loadDocument(loadPath);
-	if (document1.isNull()) {
-		return;
-	}
-	QWidget *widget = WidgetsEditor::deserializeWidget(document1);
-
-/*	QDialog dialog;
-	QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight);
-	layout->addWidget(widget);
-	dialog.setLayout(layout);
-	widget->show();
-	widget->setVisible(true);
-	dialog.exec();*/
-
-	QGraphicsScene *scene =  mUi->editorArea->scene();
-	scene->clear();
-	QGraphicsProxyWidget *grWidget = scene->addWidget(widget);
-	return;
-
-/*	QString path = QFileDialog::getSaveFileName(this,
-							tr("Save as"), QString(),
-							"Widget template format files (*.wtf)"
-							+ QString(";;AllFiles (*.*)"));
-	if (path == "")
-		return;*/
-	QDomDocument document;
-	QDomElement widgetTemplateElement = document.createElement("widget-template");
-	QDomElement rootElement = document.createElement(mRoot->title());
-	mRoot->generateXml(rootElement, document);
+	QDomElement widgetTemplateElement = target.createElement("widget-template");
+	QDomElement rootElement = target.createElement(mRoot->title());
+	mRoot->generateXml(rootElement, target);
 	widgetTemplateElement.appendChild(rootElement);
-	document.appendChild(widgetTemplateElement);
+	target.appendChild(widgetTemplateElement);
 	QDomDocument shapeDocument = mRoot->shapeDocument();
 	QDomElement shapeElement = shapeDocument.documentElement();
 	if (!shapeElement.isNull()) {
 		widgetTemplateElement.appendChild(shapeElement);
 	}
+}
 
-//	utils::OutFile file(path);
-//	file() << document.toString(4);
+void WidgetsEditor::save()
+{
+	QString const path = QFileDialog::getSaveFileName(this
+			, tr("Save as"), QString()
+			, tr("Widget template format files (*.wtf);;AllFiles (*.*)"));
+	if (path.isEmpty()) {
+		return;
+	}
 
-	emit widgetSaved(document.toString(4), mIndex, mRole);
+	QDomDocument document;
+	serializeWidget(document);
 
-/*	QWidget *widget = deserializeWidget(document);
-	QDialog dialog;
+	QString const xml = document.toString(4);
+	utils::OutFile file(path);
+	file() << xml;
+	emit widgetSaved(xml, mIndex, mRole);
+}
+
+void WidgetsEditor::preview()
+{
+	QDomDocument document;
+	serializeWidget(document);
+	if (document.isNull()) {
+		return;
+	}
+	QWidget *widget = WidgetsEditor::deserializeWidget(document);
+	if (widget) {
+		preview(widget);
+	}
+}
+
+void WidgetsEditor::preview(QWidget *widget)
+{
+	QDialog *dialog = new QDialog(this);
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight);
 	layout->addWidget(widget);
-	dialog.setLayout(layout);
-	widget->show();
-	widget->setVisible(true);
-	dialog.exec();*/
+	dialog->setLayout(layout);
+	dialog->exec();
+	delete dialog;
 }
