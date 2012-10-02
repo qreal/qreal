@@ -124,8 +124,7 @@ bool BaseGraphTransformationUnit::checkRuleMatchingRecursively()
 	}
 }
 
-bool BaseGraphTransformationUnit::checkNodeForAddingToMatch(Id const &nodeInModel,
-		Id const &nodeInRule)
+bool BaseGraphTransformationUnit::checkNodeForAddingToMatch(Id const &nodeInModel, Id const &nodeInRule)
 {
 	if (nodeInModel == Id::rootId()) {
 		return false;
@@ -354,8 +353,7 @@ void BaseGraphTransformationUnit::setProperty(Id const &id, QString const &prope
 	if (mLogicalModelApi.isLogicalId(id)) {
 		mLogicalModelApi.mutableLogicalRepoApi().setProperty(id, propertyName, value);
 	}
-	mLogicalModelApi.mutableLogicalRepoApi().setProperty(
-				mGraphicalModelApi.logicalId(id), propertyName, value);
+	mLogicalModelApi.mutableLogicalRepoApi().setProperty(mGraphicalModelApi.logicalId(id), propertyName, value);
 }
 
 bool BaseGraphTransformationUnit::isEdgeInModel(Id const &element) const

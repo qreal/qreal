@@ -24,9 +24,9 @@ public:
 	void setScriptPath(QString const &path);
 
 	void generateScript();
-
-private:
 	Id idByName(QString const &name) const;
+	
+private:
 	bool hasElementName(QString const &name) const;
 	bool hasProperty(Id const &element, QString const &propertyName) const;
 	QString property(Id const &element, QString const &propertyName) const;

@@ -80,6 +80,7 @@ void VisualInterpreterUnit::initBeforeInterpretation()
 	mRuleParser->clear();
 	mRuleParser->setErrorReporter(mInterpretersInterface.errorReporter());
 	resetRuleSyntaxCheck();
+	mNeedToStopInterpretation = false;
 }
 
 void VisualInterpreterUnit::loadSemantics()
@@ -181,7 +182,7 @@ void VisualInterpreterUnit::interpret()
 			report(tr("Interpretation stopped manually"), false);
 			return;
 		}
-		
+
 		if (hasRuleSyntaxError()) {
 			report(tr("Rule '") + mMatchedRuleName
 					+ tr("' cannot be applied because semantics has syntax errors"), true);
@@ -530,10 +531,13 @@ utils::ExpressionsParser* VisualInterpreterUnit::ruleParser()
 
 void VisualInterpreterUnit::processPythonInterpreterStdOutput(QHash<QPair<QString, QString>, QString> const &output)
 {
-	QPair<QString, QString> p;
-	foreach (p, output.keys()) {
-		mInterpretersInterface.errorReporter()->addCritical(
-				p.first + " " + p.second + " " + output.value(p));
+	QPair<QString, QString> pair;
+	foreach (pair, output.keys()) {
+		QString const elemName = pair.first;
+		QString const propName = pair.second;
+		QString const value = output.value(pair);
+
+		setProperty(mMatches.first().value(mPythonGenerator->idByName(elemName)), propName, value);
 	}
 }
 
