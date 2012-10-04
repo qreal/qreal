@@ -244,9 +244,34 @@ bool InterpreterEditorManager::unloadPlugin(QString const &pluginName)
 	return true;
 }
 
-//TODO:
 QString InterpreterEditorManager::description(Id const &id) const
 {
+	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
+		foreach (Id editor,  repo->elementsByType("MetamodelDiagram")) {
+			if (id.editor() == repo->name(editor) && repo->isLogicalElement(editor)) {
+				if (id.diagram() != "") {
+					foreach (Id editorChild, repo->children(editor)) {
+						if (editorChild.element() == "MetaEditorDiagramNode") {
+							if(id.diagram() == repo->name(editorChild)) {
+								if (id.element() != "") {
+									foreach (Id diagramChild, repo->children(editorChild)) {
+										if(id.element() == repo->name(diagramChild) && repo->hasProperty(diagramChild, "description"))
+											return repo->stringProperty(diagramChild, "description");
+									}
+								} else {
+									if(repo->hasProperty(editorChild, "description"))
+										return repo->stringProperty(editorChild, "description");
+								}
+							}
+						}
+					}
+				} else {
+					if(repo->hasProperty(editor, "description"))
+						return repo->stringProperty(editor, "description");
+				}
+			}
+		}
+	}
 	return "";
 }
 
