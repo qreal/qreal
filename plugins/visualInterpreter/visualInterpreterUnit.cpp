@@ -535,7 +535,10 @@ void VisualInterpreterUnit::processPythonInterpreterStdOutput(QHash<QPair<QStrin
 	foreach (pair, output.keys()) {
 		QString const elemName = pair.first;
 		QString const propName = pair.second;
-		QString const value = output.value(pair);
+		QString value = output.value(pair);
+		if (value == "True" || value == "False") {
+			value = value.toLower();
+		}
 
 		setProperty(mMatches.first().value(mPythonGenerator->idByName(elemName)), propName, value);
 	}
