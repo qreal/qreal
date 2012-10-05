@@ -33,9 +33,11 @@ MetaCompiler::MetaCompiler(QString const &qrmcDir, qrRepo::LogicalRepoApi *mLogi
 
 MetaCompiler::~MetaCompiler()
 {
-	foreach(Editor *editor, mEditors.values())
-		if (editor)
+	foreach(Editor *editor, mEditors.values()) {
+		if (editor) {
 			delete editor;
+		}
+	}
 }
 
 bool MetaCompiler::compile(QString const &targetMetamodel)
@@ -50,7 +52,7 @@ bool MetaCompiler::compile(QString const &targetMetamodel)
 			continue;
 
 		if (editorId.element() == metamodelDiagram) {
-			if (!mTargetMetamodel.isEmpty() && mApi->name(editorId) != mTargetMetamodel )
+			if (!mTargetMetamodel.isEmpty() && mApi->name(editorId) != mTargetMetamodel)
 				continue;
 			mPluginName = NameNormalizer::normalize(mApi->property(editorId, nameOfTheDirectory)
 											.toString().section("/", -1));
@@ -173,8 +175,9 @@ void MetaCompiler::generateCode()
 
 	QDir dir;
 
-	if (!dir.exists(generatedDir))
+	if (!dir.exists(generatedDir)) {
 		dir.mkdir(generatedDir);
+	}
 	dir.cd(generatedDir);
 
 	QString const fileName = dir.absoluteFilePath(pluginsProjectFileName);
