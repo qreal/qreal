@@ -110,6 +110,11 @@ void AbstractScene::setDragMode(int itemsType)
 		mView->setDragMode(QGraphicsView::RubberBandDrag);
 }
 
+void AbstractScene::setDragMode(QGraphicsView::DragMode mode)
+{
+	mView->setDragMode(mode);
+}
+
 void AbstractScene::forPressResize(QGraphicsSceneMouseEvent *event)
 {
 	setX1andY1(event);

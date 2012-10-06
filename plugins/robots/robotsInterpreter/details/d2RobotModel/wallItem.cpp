@@ -1,6 +1,7 @@
 #include "wallItem.h"
 #include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtGui/QStyleOptionGraphicsItem>
+#include <QDebug>
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -64,7 +65,13 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 	if (mDragged) {
 //		mConfiguration.setPosition(mPort, (event->scenePos() - mBasePos).toPoint());
 //		setPos(mBasePos + mConfiguration.position(mPort));
+		emit wallDragged(this->realBoundingRect()); //asd
 	}
+}
+
+bool WallItem::isDragged()
+{
+	return mDragged;
 }
 
 void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)

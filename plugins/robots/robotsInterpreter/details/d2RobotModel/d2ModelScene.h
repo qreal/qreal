@@ -19,8 +19,12 @@ public:
 
 	void keyPressEvent(QKeyEvent *event);
 
+	virtual void forPressResize(QGraphicsSceneMouseEvent *event);
+	virtual void forMoveResize(QGraphicsSceneMouseEvent *event);
+	virtual void forReleaseResize(QGraphicsSceneMouseEvent *event);
+
 signals:
-	void mouseClicked(QGraphicsSceneMouseEvent *mouseEvent);
+	void mousePressed(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseReleased(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseMoved(QGraphicsSceneMouseEvent *mouseEvent);
 	void itemDeleted(QGraphicsItem *);

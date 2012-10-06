@@ -25,7 +25,7 @@ D2ModelScene::~D2ModelScene()
 void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	QGraphicsScene::mousePressEvent(mouseEvent);
-	emit mouseClicked(mouseEvent);
+	emit mousePressed(mouseEvent);
 }
 
 void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
@@ -38,6 +38,31 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	QGraphicsScene::mouseMoveEvent(mouseEvent);
 	emit mouseMoved(mouseEvent);
+}
+
+void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event) //asd
+{
+	setX1andY1(event);
+	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos()));
+	if (mGraphicsItem != NULL) {
+		mGraphicsItem->changeDragState(mX1, mY1);
+		if (mGraphicsItem->getDragState() != AbstractItem::None)
+			mView->setDragMode(QGraphicsView::NoDrag);
+	}
+	update();
+}
+
+void D2ModelScene::forMoveResize(QGraphicsSceneMouseEvent *event) //asd
+{
+	reshapeItem(event);
+	update();
+}
+
+void D2ModelScene::forReleaseResize(QGraphicsSceneMouseEvent * event ) //asd
+{
+	reshapeItem(event);
+	mGraphicsItem = NULL;
+	update();
 }
 
 void D2ModelScene::keyPressEvent(QKeyEvent *event)

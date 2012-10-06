@@ -70,6 +70,7 @@ public:
 
 public slots:
 	void update();
+	void worldWallDragged(QRectF const &bounding);//asd
 
 protected:
 	void changeEvent(QEvent *e);
@@ -81,7 +82,7 @@ private slots:
 	void clearScene();
 	void resetButtons();
 
-	void mouseClicked(QGraphicsSceneMouseEvent *mouseEvent);
+	void mousePressed(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseReleased(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseMoved(QGraphicsSceneMouseEvent *mouseEvent);
 
