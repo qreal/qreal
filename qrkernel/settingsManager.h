@@ -19,9 +19,14 @@ class QRKERNEL_EXPORT SettingsManager
 public:
 	/// Get value associated with given key from settings.
 	/// @param key Parameter name.
-	/// @param defaultValue Default value, used when parameter not found.
 	/// @returns Variant with parameter value.
 	static QVariant value(QString const &key);
+
+	/// Get value associated with given key from settings with given default value.
+	/// @param key Parameter name.
+	/// @param defaultValue Default value, used when parameter not found.
+	/// @returns Variant with parameter value.
+	static QVariant value(QString const &key, QVariant const &defaultValue);
 
 	/// Set value associated with given key.
 	/// @param key Parameter name.

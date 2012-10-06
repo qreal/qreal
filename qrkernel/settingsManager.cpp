@@ -26,6 +26,11 @@ QVariant SettingsManager::value(QString const &key)
 	return instance()->get(key);
 }
 
+QVariant SettingsManager::value(QString const &key, QVariant const &defaultValue)
+{
+	return instance()->get(key, defaultValue);
+}
+
 SettingsManager* SettingsManager::instance()
 {
 	if (mInstance == NULL) {

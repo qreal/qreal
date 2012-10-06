@@ -33,6 +33,6 @@ TEST_F(SettingsManagerTest, saveDataTest) {
 }
 
 TEST_F(SettingsManagerTest, defaultValueTest) {
-	QString const val = mSettingsManager->value("aabbccTestProperty").toString();
+	QString const val = mSettingsManager->value("aabbccTestProperty", "default value").toString();
 	EXPECT_EQ(val, "default value");
 }
