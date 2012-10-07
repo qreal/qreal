@@ -388,9 +388,9 @@ void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
 		if (mRobot->realBoundingRect().intersects(mCurrentWall->realBoundingRect())) {
 			mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
 		}
-			if (event->modifiers() & Qt::ShiftModifier) {
-				mCurrentWall->reshapeRectWithShift();
-			}
+		if (event->modifiers() & Qt::ShiftModifier) {
+			mCurrentWall->reshapeRectWithShift();
+		}
 	}
 }
 

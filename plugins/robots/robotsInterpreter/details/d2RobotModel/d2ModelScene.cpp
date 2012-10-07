@@ -42,18 +42,11 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event, QRectF const &rect) //asd
 {
-	QPointF oldPos = QPointF(mX1, mY1);
 	setX1andY1(event);
 	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos()));
 	if (mGraphicsItem != NULL) {
-		if (mGraphicsItem->boundingRect().intersects(rect)) {
-			mView->setDragMode(QGraphicsView::NoDrag);
-			mX1 = oldPos.x();
-			mY1 = oldPos.y();
-			mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(oldPos));
-		} else {
+		if (!mGraphicsItem->realBoundingRect().intersects(rect)) {
 			mGraphicsItem->changeDragState(mX1, mY1);
-			mView->setDragMode(QGraphicsView::RubberBandDrag);
 			if (mGraphicsItem->getDragState() != AbstractItem::None) {
 				mView->setDragMode(QGraphicsView::NoDrag);
 			}
@@ -77,16 +70,9 @@ void D2ModelScene::forReleaseResize(QGraphicsSceneMouseEvent * event, QRectF con
 
 void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &rect)
 {
-	QPointF oldPos = QPointF(mX1, mY1);
 	setX2andY2(event);
 	if (mGraphicsItem != NULL) {
-		if (mGraphicsItem->boundingRect().intersects(rect)) {
-			mView->setDragMode(QGraphicsView::NoDrag);
-			mX1 = oldPos.x();
-			mY1 = oldPos.y();
-			mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(oldPos));
-		} else {
-			mView->setDragMode(QGraphicsView::RubberBandDrag);
+		if (!mGraphicsItem->realBoundingRect().intersects(rect)) {
 			if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None) {
 				mView->setDragMode(QGraphicsView::NoDrag);
 			}
