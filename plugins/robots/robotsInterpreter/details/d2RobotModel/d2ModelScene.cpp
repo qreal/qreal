@@ -72,11 +72,15 @@ void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &re
 {
 	setX2andY2(event);
 	if (mGraphicsItem != NULL) {
-		if (!mGraphicsItem->realBoundingRect().intersects(rect)) {
-			if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None) {
-				mView->setDragMode(QGraphicsView::NoDrag);
-			}
-			mGraphicsItem->resizeItem(event);
+		QPointF oldEnd = mGraphicsItem->getX2andY2();
+		QPointF oldBegin = mGraphicsItem->getX1andY1();
+		if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None) {
+			mView->setDragMode(QGraphicsView::NoDrag);
+		}
+		mGraphicsItem->resizeItem(event);
+
+		if (mGraphicsItem->realBoundingRect().intersects(rect)) {
+			mGraphicsItem->reverseOldResizingItem(oldBegin, oldEnd);
 		}
 	}
 }

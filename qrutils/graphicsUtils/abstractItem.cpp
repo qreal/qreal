@@ -106,6 +106,16 @@ void AbstractItem::setPen(QPen const &pen)
 	mPen = pen;
 }
 
+QPointF AbstractItem::getX1andY1()
+{
+	return QPointF(mX1, mY1);
+}
+
+QPointF AbstractItem::getX2andY2()
+{
+	return QPointF(mX2, mY2);
+}
+
 void AbstractItem::setX1andY1(qreal x, qreal y)
 {
 	mX1 = x;
@@ -192,6 +202,18 @@ void AbstractItem::resizeItem(QGraphicsSceneMouseEvent *event)
 	else {
 		setFlag(QGraphicsItem::ItemIsMovable, true);
 	}
+}
+
+void AbstractItem::reverseOldResizingItem(QPointF begin, QPointF end)
+{
+	if (mDragState == TopLeft)
+		setX1andY1(begin.x(), begin.y());
+	else if (mDragState == TopRight)
+		setX2andY1(end.x(), begin.y());
+	else if (mDragState == BottomLeft)
+		setX1andY2(begin.x(), end.y());
+	else if (mDragState == BottomRight)
+		setX2andY2(end.x(), end.y());
 }
 
 void AbstractItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
