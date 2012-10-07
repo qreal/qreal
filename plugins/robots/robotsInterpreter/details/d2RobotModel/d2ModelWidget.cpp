@@ -189,8 +189,7 @@ void D2ModelWidget::close()
 
 void D2ModelWidget::update()
 {
-	//QWidget::update();
-	mScene->update();
+	QWidget::update();
 	drawWalls();
 	drawColorFields();
 }
@@ -456,7 +455,7 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 
 	case drawingAction::none: {
 		mMouseClicksCount = 0;
-		mScene->forPressResize(mouseEvent);
+		mScene->forPressResize(mouseEvent, mRobot->realBoundingRect());
 	}
 		break;
 	default:
@@ -487,7 +486,7 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 		reshapeStylus(mouseEvent);
 		break;
 	default:
-		mScene->forMoveResize(mouseEvent);
+		mScene->forMoveResize(mouseEvent, mRobot->realBoundingRect());
 		break;
 	}
 	mScene->update();
@@ -527,7 +526,7 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 	}
 		break;
 	default:
-		mScene->forReleaseResize(mouseEvent);
+		mScene->forReleaseResize(mouseEvent, mRobot->realBoundingRect());
 		break;
 	}
 	mUi->wallButton->setChecked(false);

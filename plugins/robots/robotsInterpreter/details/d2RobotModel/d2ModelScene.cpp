@@ -40,29 +40,59 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	emit mouseMoved(mouseEvent);
 }
 
-void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event) //asd
+void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event, QRectF const &rect) //asd
 {
+	QPointF oldPos = QPointF(mX1, mY1);
 	setX1andY1(event);
 	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos()));
 	if (mGraphicsItem != NULL) {
-		mGraphicsItem->changeDragState(mX1, mY1);
-		if (mGraphicsItem->getDragState() != AbstractItem::None)
+		if (mGraphicsItem->boundingRect().intersects(rect)) {
 			mView->setDragMode(QGraphicsView::NoDrag);
+			mX1 = oldPos.x();
+			mY1 = oldPos.y();
+			mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(oldPos));
+		} else {
+			mGraphicsItem->changeDragState(mX1, mY1);
+			mView->setDragMode(QGraphicsView::RubberBandDrag);
+			if (mGraphicsItem->getDragState() != AbstractItem::None) {
+				mView->setDragMode(QGraphicsView::NoDrag);
+			}
+		}
 	}
 	update();
 }
 
-void D2ModelScene::forMoveResize(QGraphicsSceneMouseEvent *event) //asd
+void D2ModelScene::forMoveResize(QGraphicsSceneMouseEvent *event, QRectF const &rect) //asd
 {
-	reshapeItem(event);
+	reshapeItem(event, rect);
 	update();
 }
 
-void D2ModelScene::forReleaseResize(QGraphicsSceneMouseEvent * event ) //asd
+void D2ModelScene::forReleaseResize(QGraphicsSceneMouseEvent * event, QRectF const &rect) //asd
 {
-	reshapeItem(event);
+	reshapeItem(event, rect);
 	mGraphicsItem = NULL;
 	update();
+}
+
+void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &rect)
+{
+	QPointF oldPos = QPointF(mX1, mY1);
+	setX2andY2(event);
+	if (mGraphicsItem != NULL) {
+		if (mGraphicsItem->boundingRect().intersects(rect)) {
+			mView->setDragMode(QGraphicsView::NoDrag);
+			mX1 = oldPos.x();
+			mY1 = oldPos.y();
+			mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(oldPos));
+		} else {
+			mView->setDragMode(QGraphicsView::RubberBandDrag);
+			if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None) {
+				mView->setDragMode(QGraphicsView::NoDrag);
+			}
+			mGraphicsItem->resizeItem(event);
+		}
+	}
 }
 
 void D2ModelScene::keyPressEvent(QKeyEvent *event)
