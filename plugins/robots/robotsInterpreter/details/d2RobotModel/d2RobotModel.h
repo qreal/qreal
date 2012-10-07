@@ -59,6 +59,7 @@ private:
 		int speed;
 		int degrees;
 		QPair<ATime, qreal> activeTime;
+		bool isUsed;
 	};
 
 	struct Beep {
@@ -83,7 +84,7 @@ private:
 
 	void speed(qreal speedMul);
 	void initPosition();
-	Motor* initMotor(int radius, int speed, long unsigned int degrees, int port);
+	Motor* initMotor(int radius, int speed, long unsigned int degrees, int port, bool isUsed);
 	void countNewCoord();
 	void countBeep();
 	QPair<QPoint, qreal> countPositionAndDirection(inputPort::InputPortEnum const port) const;

@@ -33,9 +33,9 @@ D2RobotModel::~D2RobotModel()
 
 void D2RobotModel::initPosition()
 {
-	mMotorA = initMotor(5, 0, 0, 0);
-	mMotorB = initMotor(5, 0, 0, 1);
-	mMotorC = initMotor(5, 0, 0, 2);
+	mMotorA = initMotor(5, 0, 0, 0, false);
+	mMotorB = initMotor(5, 0, 0, 1, false);
+	mMotorC = initMotor(5, 0, 0, 2, false);
 	setBeep(0, 0);
 	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);
 	mRotatePoint = QPointF(0, 0);  // TODO: not rotatePoint? why?
@@ -48,12 +48,13 @@ void D2RobotModel::clear()
 	mPos = QPointF(0,0);
 }
 
-D2RobotModel::Motor* D2RobotModel::initMotor(int radius, int speed, long unsigned int degrees, int port)
+D2RobotModel::Motor* D2RobotModel::initMotor(int radius, int speed, long unsigned int degrees, int port, bool isUsed)
 {
 	Motor *motor = new Motor();
 	motor->radius = radius;
 	motor->speed = speed;
 	motor->degrees = degrees;
+	motor->isUsed = isUsed;
 	if (degrees == 0) {
 		motor->activeTime = QPair<ATime, qreal>(DoInf , 0);
 	}
@@ -76,6 +77,7 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 {
 	mMotors[port]->speed = speed;
 	mMotors[port]->degrees = degrees;
+	mMotors[port]->isUsed = true;
 	if (degrees == 0) {
 		mMotors[port]->activeTime = QPair<ATime, qreal>(DoInf , 0);
 	} else {
@@ -318,14 +320,22 @@ void D2RobotModel::countNewCoord()
 	Motor *motor1 = mMotorA;
 	Motor *motor2 = mMotorB;
 
-	if (mMotorB->speed != 0 && mMotorC->speed != 0) {
+	if (mMotorC->isUsed) {
+		if (!mMotorA->isUsed) {
+			motor1 = mMotorC;
+		} else if (!mMotorB->isUsed) {
+			motor2 = mMotorC;
+		}
+	}
+
+/*	if (mMotorB->speed != 0 && mMotorC->speed != 0) {
 		motor1 = mMotorB;
 		motor2 = mMotorC;
 	} else if (mMotorA->speed != 0 && mMotorC->speed != 0) {
 		motor2 = mMotorC;
 	} else if (mMotorC->speed != 0) {
 		motor1 = mMotorC;
-	}
+	}*/
 
 	qreal const vSpeed = motor1->speed * 2 * M_PI * motor1->radius * 1.0 / 44000;
 	qreal const uSpeed = motor2->speed * 2 * M_PI * motor2->radius * 1.0 / 44000;
