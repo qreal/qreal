@@ -2,14 +2,14 @@ language: cpp
 compiler: gcc
 install:
   - sudo apt-get update
-  - sudo apt-get install libqt4-dev qt4-qmake qt4-dev-tools
+  - sudo apt-get install libqt4-dev qt4-qmake qt4-dev-tools gdb
 
 script:
   - cat /proc/cpuinfo
   - cat /proc/meminfo
   - qmake qrealRobots.pro
   - make -j2 
-  - make distclean
+  - git clean -dfx
   - qmake qrealTest.pro CONFIG+=debug
   - make -j2
   - ./bin/unittests/qrlibs_unittests

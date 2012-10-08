@@ -28,10 +28,3 @@ RESOURCES += \
 
 OTHER_FILES +=
 
-RESOURCES += \
-    qrkernel.qrc
-
-
-
-
-
