@@ -4,7 +4,7 @@ SUBDIRS	= \
 #	additionsEditor/additionsEditor.pro \
 #	android/android.pro \
 #	dragonDiagram/dragonDiagram.pro \
-#	blockDiagram/blockDiagram.pro \
+	blockDiagram/blockDiagram.pro \
 #	bpel/bpel.pro \
 	exterminatus/exterminatus.pro \
 #	hascol/hascol.pro \
@@ -17,7 +17,7 @@ SUBDIRS	= \
 	sbt/sbt.pro \
 #	testEditor/testEditor.pro \
 #	testInvocation/testInvocation.pro \
-#	ubiq/ubiq.pro \
+	ubiq/ubiq.pro \
 #	umlActivityDiagram/umlActivityDiagram.pro \
 #	umlClassDiagram/umlClassDiagram.pro \
 #	umlCommunicationDiagram/umlCommunicationDiagram.pro \

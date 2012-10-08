@@ -51,7 +51,7 @@ QList<ActionInfo> MetaEditorSupportPlugin::actions()
 	connect(&mGenerateEditorWithQrmcAction, SIGNAL(triggered()), this, SLOT(generateEditorWithQrmc()));
 
 	/*
-	mParseEditorXmlAction.setText(tr("Parse editor xml"));
+	mParseEditorXmlAction.setText(tr("Parse editor xml")); // button for parsing xml, doesn't work
 	ActionInfo parseEditorXmlActionInfo(&mParseEditorXmlAction, "generators", "tools");
 	connect(&mParseEditorXmlAction, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
 	*/

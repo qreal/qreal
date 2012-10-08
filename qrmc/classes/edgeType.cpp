@@ -114,41 +114,46 @@ void EdgeType::generateArrowEnd(QString &edgeClass, QString const &arrowEnd,
 		edgeClass.replace(customTag, "").replace(brushTag, "");
 		return;
 	}
-	if (arrowEnd == "empty_arrow")
+	if (arrowEnd == "empty_arrow") {
 		edgeClass.replace(customTag, compiler->getTemplateUtils(arrowTemplateTag))
 				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
-	else if (arrowEnd == "filled_arrow")
+	} else if (arrowEnd == "filled_arrow") {
 		edgeClass.replace(customTag, compiler->getTemplateUtils(arrowTemplateTag))
 				.replace(brushTag, compiler->getTemplateUtils(filledArrowColorTag));
-	else if (arrowEnd == "open_arrow")
+	} else if (arrowEnd == "open_arrow") {
 		edgeClass.replace(customTag, compiler->getTemplateUtils(openArrowTemplateTag))
 				.replace(brushTag, "");
-	else if (arrowEnd == "complex_arrow")
+	} else if (arrowEnd == "complex_arrow") {
 		edgeClass.replace(customTag, compiler->getTemplateUtils(complexArrowTemplateTag))
 				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
-	else if (arrowEnd == "empty_rhomb")
+	} else if (arrowEnd == "empty_rhomb") {
 		edgeClass.replace(customTag, compiler->getTemplateUtils(rhombTemplateTag))
 				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
-	else if (arrowEnd == "filled_rhomb")
+	} else if (arrowEnd == "filled_rhomb") {
 		edgeClass.replace(customTag, compiler->getTemplateUtils(rhombTemplateTag))
 				.replace(brushTag, compiler->getTemplateUtils(filledArrowColorTag));
+	}
 }
 
 void EdgeType::generateSdf() const
 {
 	QDir dir;
-	if (!dir.exists(generatedDir))
+	if (!dir.exists(generatedDir)) {
 		dir.mkdir(generatedDir);
+	}
 	dir.cd(generatedDir);
 	QString editorName = diagram()->editor()->name();
-	if (!dir.exists(editorName))
+	if (!dir.exists(editorName)) {
 		dir.mkdir(editorName);
+	}
 	dir.cd(editorName);
-	if (!dir.exists(generatedShapesDir))
+	if (!dir.exists(generatedShapesDir)) {
 		dir.mkdir(generatedShapesDir);
+	}
 	dir.cd(generatedShapesDir);
-	if (!dir.exists(shapesDir))
+	if (!dir.exists(shapesDir)) {
 		dir.mkdir(shapesDir);
+	}
 	dir.cd(shapesDir);
 
 	QString const fileName = dir.absoluteFilePath(name() + "Class.sdf");
@@ -176,8 +181,9 @@ void EdgeType::initLabels()
 	int errorLine = 0;
 	int errorCol = 0;
 	QDomDocument graphics;
-	if (!graphics.setContent(xml, false, &error, &errorLine, &errorCol))
+	if (!graphics.setContent(xml, false, &error, &errorLine, &errorCol)) {
 		return;
+	}
 
 	int count = 1;
 	for (QDomElement element = graphics.firstChildElement("labels").firstChildElement("label");

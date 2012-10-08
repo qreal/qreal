@@ -835,7 +835,7 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 		, IdList const &connectableDiagrams, const char *slot) const
 {
 	bool hasAnyActions = false;
-	QMenu *addConnectionMenu = new QMenu(menuName);//contextMenu.addMenu(menuName);
+	QMenu *addConnectionMenu = new QMenu(menuName);
 
 	foreach (Id type, connectableTypes) {
 		foreach (Id elementId, mMVIface->logicalAssistApi()->logicalRepoApi().logicalElements(type)) {
