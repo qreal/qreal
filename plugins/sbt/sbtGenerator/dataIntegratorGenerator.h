@@ -12,10 +12,10 @@ class DataIntegratorGenerator : public utils::AbstractGenerator
 {
 public:
 	DataIntegratorGenerator(QString const &templateDirPath
-					, QString const &outputDirPath
-					, qReal::LogicalModelAssistInterface const &logicalModel
-					, qReal::ErrorReporterInterface &errorReporter
-					);
+			, QString const &outputDirPath
+			, qReal::LogicalModelAssistInterface const &logicalModel
+			, qReal::ErrorReporterInterface &errorReporter
+			);
 
 	/// Returns list of generated files for all ORMDataIntegrator elements.
 	QList<QString> getFiles();

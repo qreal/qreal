@@ -9,9 +9,9 @@ using namespace utils;
 using namespace sbt;
 
 DataIntegratorGenerator::DataIntegratorGenerator(QString const &templateDirPath
-		 , QString const &outputDirPath
-		 , LogicalModelAssistInterface const &logicalModel
-		 , ErrorReporterInterface &errorReporter)
+		, QString const &outputDirPath
+		, LogicalModelAssistInterface const &logicalModel
+		, ErrorReporterInterface &errorReporter)
 		: utils::AbstractGenerator(templateDirPath, outputDirPath, logicalModel, errorReporter)
 {
 }

@@ -12,10 +12,10 @@ class ProjectGenerator : public utils::AbstractGenerator
 {
 public:
 	ProjectGenerator(QString const &templateDirPath
-					, QString const &outputDirPath
-					, qReal::LogicalModelAssistInterface const &logicalModel
-					, qReal::ErrorReporterInterface &errorReporter
-					);
+			, QString const &outputDirPath
+			, qReal::LogicalModelAssistInterface const &logicalModel
+			, qReal::ErrorReporterInterface &errorReporter
+			);
 
 	/// Starts generation process.
 	void generate();
