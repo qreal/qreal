@@ -2,6 +2,7 @@
 #include <QtGui/QPainter>
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
+#include <QDebug>
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -25,6 +26,11 @@ void EjectedItem::setPrivateData()
 	mBrush.setColor(Qt::blue);
 	mBrush.setStyle(Qt::SolidPattern);
 	mSerializeName = "ejectedItem";
+}
+
+QRectF EjectedItem::calcNecessaryBoundingRect() const
+{
+	return QRectF(qMin(mX1, mX2), qMin(mY1, mY2), abs(mX2 - mX1), abs(mY2 - mY1));
 }
 
 QRectF EjectedItem::boundingRect() const
@@ -66,4 +72,9 @@ void EjectedItem::deserialize(QDomElement const &element)
 	mX2 = end.x();
 	mY2 = end.y();
 	readPenBrush(element);
+}
+
+void EjectedItem::robotChangedPosition(QPointF const &newPos)
+{
+	qDebug() << "qwerty" << newPos;
 }

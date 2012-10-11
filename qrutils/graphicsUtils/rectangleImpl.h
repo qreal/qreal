@@ -14,7 +14,6 @@ public:
 	void drawEllipseItem(QPainter* painter, qreal x1, qreal y1, qreal x2, qreal y2);
 	void drawImageItem(QPainter* painter, qreal x1, qreal y1, qreal x2, qreal y2, QImage image);
 	void drawImageItemWithMirrored(QPainter* painter, qreal x1, qreal y1, qreal x2, qreal y2, QImage myImage);
-private:
 	QRectF calcRect(qreal x1, qreal y1, qreal x2, qreal y2);
 };
 }

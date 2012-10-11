@@ -110,6 +110,7 @@ private:
 	void connectUiButtons();
 	void drawWalls();
 	void drawColorFields();
+	void drawEjectedItems();
 	void drawInitialRobot();
 
 	/** @brief Set active panel toggle button and deactivate all others */
@@ -135,8 +136,8 @@ private:
 	void reshapeStylus(QGraphicsSceneMouseEvent *event);
 	void reshapeEjectedItem(QGraphicsSceneMouseEvent *event);
 
-		void setValuePenColorComboBox(QColor penColor);
-		void setValuePenWidthSpinBox(int width);
+	void setValuePenColorComboBox(QColor penColor);
+	void setValuePenWidthSpinBox(int width);
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
 	void setNoPalette();
 

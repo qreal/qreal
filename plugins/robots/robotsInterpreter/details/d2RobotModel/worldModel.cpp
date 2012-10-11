@@ -55,8 +55,8 @@ QPainterPath WorldModel::sonarScanningRegion(QPoint const &position, qreal direc
 
 	QPainterPath rayPath;
 	rayPath.arcTo(QRect(-rangeInPixels, -rangeInPixels
-			, 2 * rangeInPixels, 2 * rangeInPixels)
-			, -rayWidthDegrees, 2 * rayWidthDegrees);
+						, 2 * rangeInPixels, 2 * rangeInPixels)
+				  , -rayWidthDegrees, 2 * rayWidthDegrees);
 	rayPath.closeSubpath();
 	QTransform sensorPositionTransform = QTransform().rotate(direction)
 			.translate(position.x(), position.y());
@@ -77,7 +77,7 @@ bool WorldModel::checkCollision(QPolygonF const &robotRegion) const
 
 QList<WallItem *> const &WorldModel::walls() const
 {
-		return mWalls;
+	return mWalls;
 }
 
 void WorldModel::addWall(WallItem* wall)
@@ -87,18 +87,29 @@ void WorldModel::addWall(WallItem* wall)
 
 QList<ColorFieldItem *> const &WorldModel::colorFields() const
 {
-		return mColorFields;
+	return mColorFields;
 }
 
 void WorldModel::addColorField(ColorFieldItem* colorField)
 {
-		mColorFields.append(colorField);
+	mColorFields.append(colorField);
+}
+
+QList<EjectedItem *> const &WorldModel::ejectedItems() const
+{
+	return mEjectedItems;
+}
+
+void WorldModel::addEjectedItem(EjectedItem* ejectedItem)
+{
+	mEjectedItems.append(ejectedItem);
 }
 
 void WorldModel::clearScene()
 {
 	mWalls.clear();
-		mColorFields.clear();
+	mColorFields.clear();
+	mEjectedItems.clear();
 }
 
 QPainterPath WorldModel::buildWallPath() const
@@ -122,16 +133,23 @@ QDomElement WorldModel::serialize(QDomDocument &document, QPoint const &topLeftP
 	QDomElement walls = document.createElement("walls");
 	result.appendChild(walls);
 	foreach (WallItem *wall, mWalls) {
-				QDomElement wallNode = wall->serialize(document, topLeftPicture);
+		QDomElement wallNode = wall->serialize(document, topLeftPicture);
 		walls.appendChild(wallNode);
 	}
 
-		QDomElement colorFields = document.createElement("colorFields");
-		result.appendChild(colorFields);
-		foreach (ColorFieldItem *colorField, mColorFields) {
-				QDomElement colorFiedlNode = colorField->serialize(document, topLeftPicture);
-				colorFields.appendChild(colorFiedlNode);
-		}
+	QDomElement colorFields = document.createElement("colorFields");
+	result.appendChild(colorFields);
+	foreach (ColorFieldItem *colorField, mColorFields) {
+		QDomElement colorFiedlNode = colorField->serialize(document, topLeftPicture);
+		colorFields.appendChild(colorFiedlNode);
+	}
+
+	QDomElement ejectedItems = document.createElement("ejectedItems");
+	result.appendChild(ejectedItems);
+	foreach (EjectedItem *ejectedItem, mEjectedItems) {
+		QDomElement ejectedItemNode = ejectedItem->serialize(document, topLeftPicture);
+		ejectedItems.appendChild(ejectedItemNode);
+	}
 
 	return result;
 }
@@ -152,24 +170,37 @@ void WorldModel::deserialize(QDomElement const &element)
 		mWalls.append(wall);
 	}
 
-		QDomNodeList colorFields = element.elementsByTagName("colorFields");
-		for (int i = 0; i < colorFields.count(); ++i) {
-				QDomElement const colorFieldNode = colorFields.at(i).toElement();
+	QDomNodeList colorFields = element.elementsByTagName("colorFields");
+	for (int i = 0; i < colorFields.count(); ++i) {
+		QDomElement const colorFieldNode = colorFields.at(i).toElement();
 
-				QDomNodeList lines = colorFieldNode.elementsByTagName("line");
-				for (int i = 0; i < lines.count(); ++i) {
-						QDomElement const lineNode = lines.at(i).toElement();
-						LineItem* lineItem = new LineItem(QPointF(0, 0), QPointF(0, 0));
-						lineItem->deserialize(lineNode);
-						mColorFields.append(lineItem);
-				}
-
-				QDomNodeList styluses = colorFieldNode.elementsByTagName("stylus");
-				for (int i = 0; i < styluses.count(); ++i) {
-						QDomElement const stylusNode = styluses.at(i).toElement();
-						StylusItem *stylusItem = new StylusItem(0, 0);
-						stylusItem->deserialize(stylusNode);
-						mColorFields.append(stylusItem);
-				}
+		QDomNodeList lines = colorFieldNode.elementsByTagName("line");
+		for (int i = 0; i < lines.count(); ++i) {
+			QDomElement const lineNode = lines.at(i).toElement();
+			LineItem* lineItem = new LineItem(QPointF(0, 0), QPointF(0, 0));
+			lineItem->deserialize(lineNode);
+			mColorFields.append(lineItem);
 		}
+
+		QDomNodeList styluses = colorFieldNode.elementsByTagName("stylus");
+		for (int i = 0; i < styluses.count(); ++i) {
+			QDomElement const stylusNode = styluses.at(i).toElement();
+			StylusItem *stylusItem = new StylusItem(0, 0);
+			stylusItem->deserialize(stylusNode);
+			mColorFields.append(stylusItem);
+		}
+	}
+
+	QDomNodeList allEjectedItems = element.elementsByTagName("ejectedItems");
+	for (int i = 0; i < allEjectedItems.count(); ++i) {
+		QDomElement const ejectedItemNode = allEjectedItems.at(i).toElement();
+
+		QDomNodeList ejectedItems = ejectedItemNode.elementsByTagName("ejectedItem");
+		for (int i = 0; i < ejectedItems.count(); ++i) {
+			QDomElement const ejectedItemNode = ejectedItems.at(i).toElement();
+			EjectedItem* ejectedItem = new EjectedItem(QPointF(0, 0), QPointF(0, 0));
+			ejectedItem->deserialize(ejectedItemNode);
+			mEjectedItems.append(ejectedItem);
+		}
+	}
 }

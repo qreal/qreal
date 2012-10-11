@@ -10,6 +10,7 @@
 #include "../../sensorConstants.h"
 #include "wallItem.h"
 #include "colorFieldItem.h"
+#include "ejectedItem.h"
 
 const int colorSensorWidth = 10;
 
@@ -29,9 +30,11 @@ public:
 	bool checkCollision(QPolygonF const &robotRegion) const;
 	QList<WallItem *> const &walls() const;
 	QList<ColorFieldItem *> const &colorFields() const;
+	QList<EjectedItem *> const &ejectedItems() const;
 
 	void addWall(WallItem* wall);
 	void addColorField(ColorFieldItem* colorField);
+	void addEjectedItem(EjectedItem* ejectedItem);
 	void clearScene();
 
 	QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture) const;
@@ -40,6 +43,7 @@ public:
 private:
 	QList<WallItem *> mWalls;
 	QList<ColorFieldItem *> mColorFields;
+	QList<EjectedItem *> mEjectedItems;
 	QMap<inputPort::InputPortEnum, QPointF> mTouchSensorPositionOld;
 	QMap<inputPort::InputPortEnum, qreal> mTouchSensorDirectionOld;
 

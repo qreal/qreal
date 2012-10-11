@@ -194,6 +194,7 @@ void D2ModelWidget::update()
 	QWidget::update();
 	drawWalls();
 	drawColorFields();
+	drawEjectedItems();
 }
 
 void D2ModelWidget::changeEvent(QEvent *e)
@@ -256,6 +257,14 @@ void D2ModelWidget::drawColorFields()
 {
 	foreach (ColorFieldItem *colorField, mWorldModel->colorFields()) {
 		mScene->addItem(colorField);
+	}
+}
+
+void D2ModelWidget::drawEjectedItems()
+{
+	foreach (EjectedItem *ejectedItem, mWorldModel->ejectedItems()) {
+		mScene->addItem(ejectedItem);
+		connect(mRobot, SIGNAL(robotMoved(QPointF const&)), ejectedItem, SLOT(robotChangedPosition(QPointF const&)));
 	}
 }
 
@@ -468,7 +477,7 @@ void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 		mCurrentEjectedItem = new EjectedItem(position, position);
 		mCurrentEjectedItem->setPen(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems());
 		mScene->removeMoveFlag(mouseEvent, mCurrentEjectedItem);
-		mWorldModel->addColorField(mCurrentEjectedItem);
+		mWorldModel->addEjectedItem(mCurrentEjectedItem);
 		mMouseClicksCount++;
 	}
 		break;
