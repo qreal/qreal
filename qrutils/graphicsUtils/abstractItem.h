@@ -54,6 +54,8 @@ public:
 	virtual void setPenColor(const QString& text);
 	virtual void setBrushStyle(const QString& text);
 	virtual void setBrushColor(const QString& text);
+	virtual void setBrush(const QString& brushStyle, const QString& brushColor);
+	virtual void setPen(const QString& penStyle, int width, const QString& penColor);
 	virtual void setPenBrush(const QString& penStyle, int width, const QString& penColor, const QString& brushStyle, const QString& brushColor);
 
 	void setX1andY1(qreal x, qreal y);

@@ -30,6 +30,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mCurrentWall(NULL)
 		, mCurrentLine(NULL)
 		, mCurrentStylus(NULL)
+		, mCurrentEjectedItem(NULL)
 		, mCurrentPort(inputPort::none)
 		, mCurrentSensorType(sensorType::unused)
 		, mButtonsCount(8) // magic numbers are baaad, mkay?
@@ -68,6 +69,7 @@ void D2ModelWidget::initWidget()
 	move(0, 0);
 
 	mUi->penWidthSpinBox->setRange(1, 30);
+	mUi->penWidthSpinBox->setValue(mScene->firstPenWidthItems());
 
 	QStringList colorNames;
 	colorNames.push_back("Black");
@@ -85,6 +87,7 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->stylusButton, SIGNAL(toggled(bool)), this, SLOT(addStylus(bool)));
 	connect(mUi->lineButton, SIGNAL(toggled(bool)), this, SLOT(addLine(bool)));
 	connect(mUi->wallButton, SIGNAL(toggled(bool)), this, SLOT(addWall(bool)));
+	connect(mUi->ejectedItemButton, SIGNAL(toggled(bool)), this, SLOT(addEjectedItem(bool)));
 	connect(mUi->clearButton, SIGNAL(clicked()), this, SLOT(clearScene()));
 
 	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changePenWidth(int)));
@@ -302,6 +305,17 @@ void D2ModelWidget::addStylus(bool on)
 	mDrawingAction = drawingAction::stylus;
 }
 
+void D2ModelWidget::addEjectedItem(bool on)
+{
+	if (!on) {
+		mDrawingAction = drawingAction::none;
+		mMouseClicksCount = 0;
+		return;
+	}
+
+	mDrawingAction = drawingAction::ejectedItem;
+}
+
 void D2ModelWidget::clearScene()
 {
 	mWorldModel->clearScene();
@@ -325,6 +339,7 @@ void D2ModelWidget::resetButtons()
 	mCurrentWall = NULL;
 	mCurrentLine = NULL;
 	mCurrentStylus = NULL;
+	mCurrentEjectedItem = NULL;
 	mMouseClicksCount = 0;
 	mDrawingAction = drawingAction::none;
 }
@@ -401,6 +416,16 @@ void D2ModelWidget::reshapeStylus(QGraphicsSceneMouseEvent *event)
 	}
 }
 
+void D2ModelWidget::reshapeEjectedItem(QGraphicsSceneMouseEvent *event)
+{
+	QPointF const pos = event->scenePos();
+	if (mCurrentEjectedItem != NULL) {
+		mCurrentEjectedItem->setX2andY2(pos.x(), pos.y());
+		if (event->modifiers() & Qt::ShiftModifier)
+			mCurrentEjectedItem->reshapeRectWithShift();
+	}
+}
+
 void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	mRobot->checkSelection();
@@ -439,6 +464,15 @@ void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 	}
 		break;
 
+	case drawingAction::ejectedItem: {
+		mCurrentEjectedItem = new EjectedItem(position, position);
+		mCurrentEjectedItem->setPen(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems());
+		mScene->removeMoveFlag(mouseEvent, mCurrentEjectedItem);
+		mWorldModel->addColorField(mCurrentEjectedItem);
+		mMouseClicksCount++;
+	}
+		break;
+
 	case drawingAction::none: {
 		mMouseClicksCount = 0;
 		mScene->forPressResize(mouseEvent);
@@ -470,6 +504,9 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 		break;
 	case drawingAction::stylus:
 		reshapeStylus(mouseEvent);
+		break;
+	case drawingAction::ejectedItem:
+		reshapeEjectedItem(mouseEvent);
 		break;
 	default:
 		mScene->forMoveResize(mouseEvent);
@@ -511,6 +548,13 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 		mDrawingAction = drawingAction::none;
 	}
 		break;
+	case drawingAction::ejectedItem: {
+		reshapeEjectedItem(mouseEvent);
+		mCurrentEjectedItem = NULL;
+		mMouseClicksCount = 0;
+		mDrawingAction = drawingAction::none;
+	}
+		break;
 	default:
 		mScene->forReleaseResize(mouseEvent);
 		break;
@@ -518,6 +562,7 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 	mUi->wallButton->setChecked(false);
 	mUi->lineButton->setChecked(false);
 	mUi->stylusButton->setChecked(false);
+	mUi->ejectedItemButton->setChecked(false);
 	mScene->setMoveFlag(mouseEvent);
 	mScene->update();
 }

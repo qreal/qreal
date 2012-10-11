@@ -10,6 +10,7 @@
 
 #include "lineItem.h"
 #include "stylusItem.h"
+#include "ejectedItem.h"
 #include "worldModel.h"
 #include "robotModelInterface.h"
 #include "d2ModelScene.h"
@@ -33,7 +34,8 @@ enum DrawingAction {
 	wall,
 	line,
 	stylus,
-	port
+	port,
+	ejectedItem
 };
 }
 
@@ -78,6 +80,7 @@ private slots:
 	void addWall(bool on);
 	void addLine(bool on);
 	void addStylus(bool on);
+	void addEjectedItem(bool on);
 	void clearScene();
 	void resetButtons();
 
@@ -130,6 +133,7 @@ private:
 	void reshapeWall(QGraphicsSceneMouseEvent *event);
 	void reshapeLine(QGraphicsSceneMouseEvent *event);
 	void reshapeStylus(QGraphicsSceneMouseEvent *event);
+	void reshapeEjectedItem(QGraphicsSceneMouseEvent *event);
 
 		void setValuePenColorComboBox(QColor penColor);
 		void setValuePenWidthSpinBox(int width);
@@ -170,6 +174,7 @@ private:
 	WallItem* mCurrentWall;
 	LineItem* mCurrentLine;
 	StylusItem* mCurrentStylus;
+	EjectedItem* mCurrentEjectedItem;
 
 	/** @brief Latest value of angle for drawing robot image */
 	qreal mAngleOld;

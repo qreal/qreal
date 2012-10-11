@@ -206,6 +206,11 @@ int AbstractScene::penWidthItems()
 	return mPenWidthItems;
 }
 
+int AbstractScene::firstPenWidthItems()
+{
+	return mFirstPenWidth;
+}
+
 QString AbstractScene::penColorItems()
 {
 	return mPenColorItems;

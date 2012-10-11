@@ -33,6 +33,7 @@ public:
 
 	QString penStyleItems();
 	int penWidthItems();
+	int firstPenWidthItems();
 	QString penColorItems();
 	QString brushStyleItems();
 	QString brushColorItems();
