@@ -120,16 +120,17 @@ void RobotItem::resizeItem(QGraphicsSceneMouseEvent *event)
 
 void RobotItem::setPos(QPointF const &newPos)// for moving
 {
+	QPointF diffPos = newPos - pos();
 	foreach (SensorItem *sensor, mSensors) {
-		sensor->setDeltaBasePosition(newPos - pos(), rotateAngle());
+		sensor->setDeltaBasePosition(diffPos, rotateAngle());
 	}
 
-	mRotater->reshapeWithMasterItem(newPos - pos());
+	mRotater->reshapeWithMasterItem(diffPos);
 
 	mPreviousAngle = rotateAngle();
 
 	QGraphicsItem::setPos(newPos);
-	emit robotMoved(realBoundingRect());
+	emit robotMoved(realBoundingRect(), diffPos);
 }
 
 void RobotItem::addSensor(SensorItem *sensor)

@@ -22,7 +22,7 @@ public:
 	virtual void deserialize(QDomElement const &element);
 
 public slots:
-	void robotChangedPosition(QRectF const &newRect);
+	void robotChangedPosition(QRectF const &newRect, QPointF const& diffPos);
 
 protected:
 	graphicsUtils::RectangleImpl mRectImpl;

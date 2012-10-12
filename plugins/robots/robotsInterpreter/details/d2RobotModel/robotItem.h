@@ -59,7 +59,7 @@ public:
 
 signals:
 	void changedPosition();
-	void robotMoved(QRectF const &newRect);
+	void robotMoved(QRectF const &newRect, QPointF const& diffPos);
 
 private:
 	/** @brief Image of a robot drawn on scene */
