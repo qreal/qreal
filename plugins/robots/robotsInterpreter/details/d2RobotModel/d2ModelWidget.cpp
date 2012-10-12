@@ -264,7 +264,7 @@ void D2ModelWidget::drawEjectedItems()
 {
 	foreach (EjectedItem *ejectedItem, mWorldModel->ejectedItems()) {
 		mScene->addItem(ejectedItem);
-		connect(mRobot, SIGNAL(robotMoved(QPointF const&)), ejectedItem, SLOT(robotChangedPosition(QPointF const&)));
+		connect(mRobot, SIGNAL(robotMoved(QRectF const&)), ejectedItem, SLOT(robotChangedPosition(QRectF const&)));
 	}
 }
 

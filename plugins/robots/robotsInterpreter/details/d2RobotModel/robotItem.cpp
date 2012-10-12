@@ -129,7 +129,7 @@ void RobotItem::setPos(QPointF const &newPos)// for moving
 	mPreviousAngle = rotateAngle();
 
 	QGraphicsItem::setPos(newPos);
-	emit robotMoved(newPos);
+	emit robotMoved(realBoundingRect());
 }
 
 void RobotItem::addSensor(SensorItem *sensor)

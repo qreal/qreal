@@ -74,7 +74,11 @@ void EjectedItem::deserialize(QDomElement const &element)
 	readPenBrush(element);
 }
 
-void EjectedItem::robotChangedPosition(QPointF const &newPos)
+void EjectedItem::robotChangedPosition(QRectF const &newRect)
 {
-	qDebug() << "qwerty" << newPos;
+	if (realBoundingRect().intersects(newRect)) {
+		QRectF temp = realBoundingRect().intersect(newRect);
+		//qDebug() << "qwerty" << temp;
+		setPos(pos().x() + temp.width(), pos().y());
+	}
 }
