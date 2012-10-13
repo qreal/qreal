@@ -245,17 +245,18 @@ void D2ModelWidget::draw(QPointF newCoord, qreal angle, QPointF dPoint)
 
 void D2ModelWidget::drawWalls()
 {
-	if (mDrawingAction == drawingAction::wall) { //asd
+	if (mDrawingAction == drawingAction::wall) {
 		foreach (WallItem *wall, mWorldModel->walls()) {
 			mScene->addItem(wall);
-			connect(wall, SIGNAL(wallDragged(QRectF const &)), this, SLOT(worldWallDragged(QRectF const &))); //asd
+			connect(wall, SIGNAL(wallDragged(QRectF const &, QPointF const&)), this, SLOT(worldWallDragged(QRectF const &, QPointF const&)));
+			connect(this, SIGNAL(robotWasIntersectedByWall(bool, QPointF const&)), wall, SLOT(toStopWall(bool, QPointF const&)));
 		}
 	}
 }
 
 void D2ModelWidget::drawColorFields()
 {
-	if (mDrawingAction == drawingAction::line || mDrawingAction == drawingAction::stylus) { //asd
+	if (mDrawingAction == drawingAction::line || mDrawingAction == drawingAction::stylus) {
 		foreach (ColorFieldItem *colorField, mWorldModel->colorFields()) {
 			mScene->addItem(colorField);
 		}
@@ -760,10 +761,11 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 	emit d2WasClosed();
 }
 
-void D2ModelWidget::worldWallDragged(QRectF const &bounding)//asd
+void D2ModelWidget::worldWallDragged(QRectF const &bounding, QPointF const& oldPos)
 {
-	//qDebug() << "ASD : " << pos;
 	if (mRobot->realBoundingRect().intersects(bounding)) {
-		mScene->setDragMode(QGraphicsView::NoDrag);
+		emit robotWasIntersectedByWall(true, oldPos);
+	} else {
+		emit robotWasIntersectedByWall(false, oldPos);
 	}
 }

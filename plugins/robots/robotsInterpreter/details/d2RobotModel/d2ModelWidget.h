@@ -70,7 +70,10 @@ public:
 
 public slots:
 	void update();
-	void worldWallDragged(QRectF const &bounding);//asd
+	void worldWallDragged(QRectF const &bounding, QPointF const& oldPos);
+
+signals:
+	void robotWasIntersectedByWall(bool isNeedStop, QPointF const& oldPos);
 
 protected:
 	void changeEvent(QEvent *e);

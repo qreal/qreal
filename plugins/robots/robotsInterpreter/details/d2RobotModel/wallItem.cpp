@@ -61,17 +61,26 @@ void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
+	QPointF oldPos = pos();
 	QGraphicsItem::mouseMoveEvent(event);
 	if (mDragged) {
-//		mConfiguration.setPosition(mPort, (event->scenePos() - mBasePos).toPoint());
-//		setPos(mBasePos + mConfiguration.position(mPort));
-		emit wallDragged(this->realBoundingRect()); //asd
+		emit wallDragged(this->realBoundingRect(), oldPos);
 	}
 }
 
 bool WallItem::isDragged()
 {
 	return mDragged;
+}
+
+void WallItem::toStopWall(bool isNeedStop, QPointF const& oldPos)
+{
+	if (isNeedStop) {
+		setPos(oldPos);
+		setFlag(ItemIsMovable, false);
+	} else {
+		setFlag(ItemIsMovable, true);
+	}
 }
 
 void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)

@@ -18,7 +18,7 @@ public:
 	QRect realItemsBoundingRect() const;
 
 	void setDragMode(int itemsType);
-	void setDragMode(QGraphicsView::DragMode mode);//asd
+	void setDragMode(QGraphicsView::DragMode mode);
 	virtual void forPressResize(QGraphicsSceneMouseEvent *event);
 	virtual void forMoveResize(QGraphicsSceneMouseEvent *event);
 	virtual void forReleaseResize(QGraphicsSceneMouseEvent *event);

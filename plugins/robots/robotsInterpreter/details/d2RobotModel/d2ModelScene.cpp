@@ -40,7 +40,7 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	emit mouseMoved(mouseEvent);
 }
 
-void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event, QRectF const &rect) //asd
+void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event, QRectF const &rect)
 {
 	setX1andY1(event);
 	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos()));
@@ -55,13 +55,13 @@ void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event, QRectF const 
 	update();
 }
 
-void D2ModelScene::forMoveResize(QGraphicsSceneMouseEvent *event, QRectF const &rect) //asd
+void D2ModelScene::forMoveResize(QGraphicsSceneMouseEvent *event, QRectF const &rect)
 {
 	reshapeItem(event, rect);
 	update();
 }
 
-void D2ModelScene::forReleaseResize(QGraphicsSceneMouseEvent * event, QRectF const &rect) //asd
+void D2ModelScene::forReleaseResize(QGraphicsSceneMouseEvent * event, QRectF const &rect)
 {
 	reshapeItem(event, rect);
 	mGraphicsItem = NULL;

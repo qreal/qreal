@@ -35,6 +35,7 @@ public:
 	virtual void checkSelection();
 	QPointF basePoint();
 
+	//QPainterPath shape() const;
 	virtual QRectF boundingRect() const;
 	virtual QRectF calcNecessaryBoundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);

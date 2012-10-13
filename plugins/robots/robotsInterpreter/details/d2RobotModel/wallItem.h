@@ -28,8 +28,12 @@ public:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+
+public slots:
+	void toStopWall(bool isNeedStop, QPointF const& oldPos);
+
 signals:
-	void wallDragged(QRectF const &bounding); //asd
+	void wallDragged(QRectF const &bounding, QPointF const& oldPos);
 
 protected:
 	virtual void setPrivateData();
