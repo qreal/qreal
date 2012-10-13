@@ -79,6 +79,7 @@ protected:
 	/// Interpret rule reaction
 	bool interpretReaction();
 
+	/// Interpret rule reaction written on python
 	bool interpretPythonReaction();
 
 	/// Arranges connections between newly created elements

@@ -444,6 +444,8 @@ void VisualInterpreterUnit::copyProperties(Id const &elemInModel, Id const &elem
 	}
 }
 
+// TODO: Create some flag (mb as "Rule" element attribute) which indicates whether
+// or not rule reaction is written on python
 bool VisualInterpreterUnit::makeStep()
 {
 	bool needToUpdate = createElements();
