@@ -256,9 +256,9 @@ void D2ModelWidget::drawColorFields()
 	}
 }
 
-void D2ModelWidget::drawBeep(QColor const &color)
+void D2ModelWidget::drawBeep(bool isNeededBeep)
 {
-	Q_UNUSED(color)
+	mRobot->setNeededBeep(isNeededBeep);
 }
 
 QPolygonF const D2ModelWidget::robotBoundingPolygon(QPointF const &coord, qreal const &angle) const

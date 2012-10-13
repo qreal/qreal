@@ -46,7 +46,7 @@ public:
 	void init(bool isActive = true);
 	void close();
 	void draw(QPointF newCoord, qreal angle, QPointF dPoint);
-	void drawBeep(QColor const &color);
+	void drawBeep(bool isNeededBeep);
 	QPolygonF const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
 
 	/// Get current scene position of mRobot

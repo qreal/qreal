@@ -306,10 +306,10 @@ void D2RobotModel::stopRobot()
 void D2RobotModel::countBeep()
 {
 	if (mBeep.time > 0) {
-		mD2ModelWidget->drawBeep(QColor(Qt::red));
+		mD2ModelWidget->drawBeep(true);
 		mBeep.time -= timeInterval;
 	} else {
-		mD2ModelWidget->drawBeep(QColor(Qt::green));
+		mD2ModelWidget->drawBeep(false);
 	}
 }
 
