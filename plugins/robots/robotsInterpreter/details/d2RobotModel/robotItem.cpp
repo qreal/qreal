@@ -52,9 +52,10 @@ QRectF RobotItem::boundingRect() const
 	return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, border);
 }
 
-/*QPainterPath RobotItem::shape() const
+QPainterPath RobotItem::boundingShape() const
 {
-}*/
+	return mRectangleImpl.shape(mX1, mY1, mX2, mY2, 0);
+}
 
 QRectF RobotItem::calcNecessaryBoundingRect() const
 {
