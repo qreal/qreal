@@ -16,9 +16,9 @@ class GroupBox : public LayoutTool
 {
 	Q_OBJECT
 
-	Q_PROPERTY(Qt::Alignment alignment READ titleAlignment WRITE setTitleAlignment USER true)
-	Q_PROPERTY(bool flat READ isFlat WRITE setFlat USER true)
-	Q_PROPERTY(QString title READ title WRITE setTitle USER true)
+	Q_PROPERTY(Qt::Alignment alignment READ titleAlignment WRITE setTitleAlignment USER true DESIGNABLE true)
+	Q_PROPERTY(bool flat READ isFlat WRITE setFlat USER true DESIGNABLE true)
+	Q_PROPERTY(QString title READ title WRITE setTitle USER true DESIGNABLE true)
 
 public:
 	GroupBox(ToolController *controller);

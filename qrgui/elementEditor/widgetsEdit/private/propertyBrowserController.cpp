@@ -1,6 +1,6 @@
 #include "propertyBrowserController.h"
-#include "../tools/propertyManagers/property.h"
-#include "../tools/propertyManagers/propertyManager.h"
+#include "../tools/property.h"
+#include "../tools/propertyManager.h"
 
 using namespace qReal::widgetsEdit;
 
@@ -17,7 +17,7 @@ void PropertyBrowserController::setController(PropertyManager *manager)
 	mCurrentManager = manager;
 	mCurrentManager->onSelect();
 	mBrowser->setFactoryForManager(mCurrentManager->qtPropertyManager(), mFactory);
-	QListIterator<Property *> it = mCurrentManager->propertiesIterator();
+	QListIterator<Property *> it = mCurrentManager->userPropertiesIterator();
 	while (it.hasNext()) {
 		mBrowser->addProperty(it.next()->qtProperty());
 	}

@@ -79,3 +79,13 @@ void ComboBox::setSizeAdjustPolicy(QComboBox::SizeAdjustPolicy policy)
 {
 	mComboBox->setSizeAdjustPolicy(policy);
 }
+
+QString ComboBox::bindedPropertyName() const
+{
+	return mBindedPropertyName;
+}
+
+void ComboBox::setBindedPropertyName(QString const &name)
+{
+	mBindedPropertyName = name;
+}

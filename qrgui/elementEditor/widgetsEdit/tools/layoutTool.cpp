@@ -80,7 +80,8 @@ void LayoutTool::generateXml(QDomElement &element, QDomDocument &document)
 
 void LayoutTool::deserializeWidget(QWidget *parent, const QDomElement &element)
 {
-	QString layoutType = element.attribute("layout", "invalid");
+	Tool::deserializeWidget(parent, element);
+	QString const layoutType = element.attribute("layout", "invalid");
 	QLayout *widgetLayout;
 	if (layoutType == "Grid") {
 		widgetLayout = new QGridLayout;
@@ -94,7 +95,6 @@ void LayoutTool::deserializeWidget(QWidget *parent, const QDomElement &element)
 	if (widgetLayout) {
 		widget()->setLayout(widgetLayout);
 	}
-	Tool::deserializeWidget(parent, element);
 }
 
 void LayoutTool::deserializeAttachedProperty(QWidget *parent, QWidget *widget
@@ -117,14 +117,22 @@ void LayoutTool::deserializeAttachedProperty(QWidget *parent, QWidget *widget
 			return;
 		}
 		QGridLayout *gridLayout = dynamic_cast<QGridLayout *>(parent->layout());
-		gridLayout->addWidget(widget, row, col);
+		if (gridLayout) {
+			gridLayout->addWidget(widget, row, col);
+		} else {
+			qDebug() << "WARNING: expected grid layout after deserializetion, got something else";
+		}
 	} else {
 		int const index = indexS.toInt(&ok);
 		if (!ok) {
 			return;
 		}
 		QBoxLayout *boxLayout = dynamic_cast<QBoxLayout *>(parent->layout());
-		boxLayout->insertWidget(index, widget);
+		if (boxLayout) {
+			boxLayout->insertWidget(index, widget);
+		} else {
+			qDebug() << "WARNING: expected linear layout after deserializetion, got something else";
+		}
 	}
 }
 

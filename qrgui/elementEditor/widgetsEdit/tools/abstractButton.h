@@ -14,10 +14,10 @@ class AbstractButton : public Tool
 {
 	Q_OBJECT
 
-	Q_PROPERTY(bool autoRepeat READ hasAutoRepeat WRITE setAutoRepeat USER true)
-	Q_PROPERTY(int autoRepeatDelay READ autoRepeatDelay WRITE setAutoRepeatDelay USER true)
-	Q_PROPERTY(int autoRepeatInterval READ autoRepeatInterval WRITE setAutoRepeatInterval USER true)
-	Q_PROPERTY(QString text READ text WRITE setText USER true)
+	Q_PROPERTY(bool autoRepeat READ hasAutoRepeat WRITE setAutoRepeat USER true DESIGNABLE true)
+	Q_PROPERTY(int autoRepeatDelay READ autoRepeatDelay WRITE setAutoRepeatDelay USER true DESIGNABLE true)
+	Q_PROPERTY(int autoRepeatInterval READ autoRepeatInterval WRITE setAutoRepeatInterval USER true DESIGNABLE true)
+	Q_PROPERTY(QString text READ text WRITE setText USER true DESIGNABLE true)
 
 protected:
 	AbstractButton(QAbstractButton *button, ToolController *controller);

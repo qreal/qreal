@@ -76,3 +76,13 @@ void DoubleSpinBox::setValue(double value)
 {
 	mDoubleSpinBox->setValue(value);
 }
+
+QString DoubleSpinBox::bindedPropertyName() const
+{
+	return mBindedPropertyName;
+}
+
+void DoubleSpinBox::setBindedPropertyName(QString const &name)
+{
+	mBindedPropertyName = name;
+}

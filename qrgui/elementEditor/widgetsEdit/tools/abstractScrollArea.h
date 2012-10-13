@@ -16,11 +16,11 @@ class AbstractScrollArea : public Frame
 	Q_PROPERTY(Qt::ScrollBarPolicy verticalScrollBarPolicy
 		READ verticalScrollBarPolicy
 		WRITE setVerticalScrollBarPolicy
-		USER true)
+		USER true DESIGNABLE true)
 	Q_PROPERTY(Qt::ScrollBarPolicy horizontalScrollBarPolicy
 		READ horizontalScrollBarPolicy
 		WRITE setHorizontalScrollBarPolicy
-		USER true)
+		USER true DESIGNABLE true)
 
 protected:
 	AbstractScrollArea(QAbstractScrollArea *area, ToolController *controller);

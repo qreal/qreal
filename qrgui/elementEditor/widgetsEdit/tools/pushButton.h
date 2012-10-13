@@ -14,7 +14,7 @@ class PushButton : public AbstractButton
 {
 	Q_OBJECT
 
-	Q_PROPERTY(bool flat READ isFlat WRITE setFlat USER true)
+	Q_PROPERTY(bool flat READ isFlat WRITE setFlat USER true DESIGNABLE true)
 
 public:
 	PushButton(ToolController *controller);

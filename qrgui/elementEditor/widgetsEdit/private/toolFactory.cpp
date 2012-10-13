@@ -15,6 +15,7 @@
 #include "../tools/label.h"
 #include "../tools/spacer.h"
 #include "../tools/trigger.h"
+#include "../tools/triggerWidget.h"
 
 using namespace qReal::widgetsEdit;
 
@@ -149,11 +150,16 @@ QWidget *ToolFactory::deserializeWidget(QWidget *parent, const QDomElement &elem
 	tool->deserializeWidget(parent, element);
 	for (int i = 0; i < element.childNodes().count(); ++i) {
 		QDomNode node = element.childNodes().at(i);
-		QDomElement childElement = node.toElement();
-		deserializeWidget(tool->widget(), childElement);
+		if (!node.isNull()) {
+			QDomElement childElement = node.toElement();
+			deserializeWidget(tool->widget(), childElement);
+		}
 	}
 	QWidget *result = tool->widget();
-	result->setAttribute(Qt::WA_PaintOnScreen, false);
+	if (parent) {
+		result->setParent(parent);
+	}
+	result->setVisible(true);
 	// because result mustn`t be destroyed
 	tool->setWidget(NULL);
 	delete tool;

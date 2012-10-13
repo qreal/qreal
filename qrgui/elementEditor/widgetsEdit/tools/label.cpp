@@ -92,3 +92,13 @@ void Label::setWordWrap(bool hasWrapping)
 {
 	mLabel->setWordWrap(hasWrapping);
 }
+
+QString Label::bindedPropertyName() const
+{
+	return mBindedPropertyName;
+}
+
+void Label::setBindedPropertyName(QString const &name)
+{
+	mBindedPropertyName = name;
+}

@@ -14,7 +14,7 @@ class RadioButton : public AbstractButton
 {
 	Q_OBJECT
 
-	Q_PROPERTY(bool checked READ isChecked WRITE setChecked USER true)
+	Q_PROPERTY(bool checked READ isChecked WRITE setChecked USER true DESIGNABLE true)
 
 public:
 	RadioButton(ToolController *controller);

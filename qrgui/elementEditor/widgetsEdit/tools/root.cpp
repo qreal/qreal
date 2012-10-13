@@ -1,6 +1,6 @@
-#include "root.h"
+#include <QtGui/QGroupBox>
 
-#include <QGroupBox>
+#include "root.h"
 
 using namespace qReal::widgetsEdit;
 

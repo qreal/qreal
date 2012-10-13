@@ -14,13 +14,13 @@ class PlainTextEdit : public AbstractScrollArea
 {
 	Q_OBJECT
 
-	Q_PROPERTY(bool backgroundVisible READ backgroundVisible WRITE setBackgroundVisible USER true)
-	Q_PROPERTY(bool centerOnScroll READ centerOnScroll WRITE setCenterOnScroll USER true)
-	Q_PROPERTY(int cursorWidth READ cursorWidth WRITE setCursorWidth USER true)
-	Q_PROPERTY(bool overwriteMode READ overwriteMode WRITE setOverwriteMode USER true)
-	Q_PROPERTY(QString plainText READ plainText WRITE setPlainText USER true)
-	Q_PROPERTY(bool readOnly READ readOnly WRITE setReadOnly USER true)
-	Q_PROPERTY(bool undoRedoEnabled READ undoRedoEnabled WRITE setUndoRedoEnabled USER true)
+	Q_PROPERTY(bool backgroundVisible READ backgroundVisible WRITE setBackgroundVisible USER true DESIGNABLE true)
+	Q_PROPERTY(bool centerOnScroll READ centerOnScroll WRITE setCenterOnScroll USER true DESIGNABLE true)
+	Q_PROPERTY(int cursorWidth READ cursorWidth WRITE setCursorWidth USER true DESIGNABLE true)
+	Q_PROPERTY(bool overwriteMode READ overwriteMode WRITE setOverwriteMode USER true DESIGNABLE true)
+	Q_PROPERTY(QString plainText READ plainText WRITE setPlainText USER true DESIGNABLE true)
+	Q_PROPERTY(bool readOnly READ readOnly WRITE setReadOnly USER true DESIGNABLE true)
+	Q_PROPERTY(bool undoRedoEnabled READ undoRedoEnabled WRITE setUndoRedoEnabled USER true DESIGNABLE true)
 
 public:
 	PlainTextEdit(ToolController *controller);

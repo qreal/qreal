@@ -25,3 +25,13 @@ void CheckBox::setChecked(bool checked)
 {
 	mCheckBox->setChecked(checked);
 }
+
+QString CheckBox::bindedPropertyName() const
+{
+	return mBindedPropertyName;
+}
+
+void CheckBox::setBindedPropertyName(QString const &name)
+{
+	mBindedPropertyName = name;
+}

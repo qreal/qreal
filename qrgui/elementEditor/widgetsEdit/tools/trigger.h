@@ -22,7 +22,11 @@ class Trigger : public Tool
 	Q_OBJECT
 
 	Q_ENUMS(Action)
-	Q_PROPERTY(Action action READ action WRITE setAction USER true)
+	Q_ENUMS(State)
+	Q_PROPERTY(Action action READ action WRITE setAction USER true DESIGNABLE true)
+	Q_PROPERTY(State initialState READ initialState WRITE setInitialState USER true DESIGNABLE true)
+	Q_PROPERTY(QString widget1 READ widget1Xml WRITE setWidget1Xml USER true DESIGNABLE false)
+	Q_PROPERTY(QString widget2 READ widget2Xml WRITE setWidget2Xml USER true DESIGNABLE false)
 
 public:
 	Trigger(ToolController *controller);
@@ -30,12 +34,21 @@ public:
 
 	bool isUnderConstruction() const;
 
+	virtual void generateXml(QDomElement &element, QDomDocument &document);
 	virtual void deserializeWidget(QWidget *parent, QDomElement const &element);
 
 	enum Action {
 		OnFocused = 0// States switched when corresponding widget is focused
 		, OnMouseOver // States switched on mouse over
-		// TODO: Add action here
+		, OnF2Pressed // States switched in rename-style
+		, OnMouseClick // State switched to active when mouse pressed
+		// TODO: Add actions here
+	};
+
+	// TODO: use it in TriggerWidget
+	enum State {
+		Inactive = 0
+		, Active
 	};
 
 private slots:
@@ -45,21 +58,28 @@ private slots:
 private:
 	Widget *produceSubtool() const;
 
-	Action action() const;
-	void setAction(Action action);
-
 	void onConstructionEnabled();
 	void onConstructionDisabled();
 
+	Action action() const;
+	QString widget1Xml() const;
+	QString widget2Xml() const;
+	State initialState() const;
+
+	void setAction(Action const action);
+	void setWidget1Xml(QString const &xml);
+	void setWidget2Xml(QString const &xml);
+	void setInitialState(State const state);
+
 	int mCurrentState;
 	Action mAction;
-	TriggerWidget *mWidget;
 	Widget *mState1Tool;
 	Widget *mState2Tool;
-	QWidget *mState1Widget;
-	QWidget *mState2Widget;
 	QGraphicsProxyWidget *mStateBoxTool;
 	QGraphicsLinearLayout *mLayout;
+	QString mWidget1Xml;
+	QString mWidget2Xml;
+	State mInitialState;
 };
 
 }

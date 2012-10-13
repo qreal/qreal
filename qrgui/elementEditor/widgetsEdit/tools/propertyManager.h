@@ -24,7 +24,8 @@ class PropertyManager : public QObject
 public:
 	explicit PropertyManager(Tool *tool);
 
-	QListIterator<Property *> propertiesIterator() const;
+	QListIterator<Property *> userPropertiesIterator() const;
+	QListIterator<Property *> allPropertiesIterator() const;
 	QtVariantPropertyManager *qtPropertyManager() const;
 	void onSelect();
 
@@ -47,10 +48,12 @@ private:
 
 	Tool *mTool;
 	QtVariantPropertyManager *mManager;
-	QMap<Property *, int> mProperties;
+	QList<Property *> mDesignableProperties;
+	QMap<Property *, int> mUserProperties;
 
 	QMap<QString, QList<int> > mEnumProperties;
 	QSet<QString> mFlagProperties;
+	bool mDeserializing;
 };
 
 }

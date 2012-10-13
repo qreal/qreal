@@ -13,13 +13,14 @@ class ComboBox : public Tool
 {
 	Q_OBJECT
 
-	Q_PROPERTY(bool duplicatesEnabled READ duplicatesEnabled WRITE setDuplicatesEnabled USER true)
-	Q_PROPERTY(bool editable READ isEditable WRITE setEditable USER true)
-	Q_PROPERTY(bool frame READ hasFrame WRITE setFrame USER true)
-	Q_PROPERTY(int maxCount READ maxCount WRITE setMaxCount USER true)
-	Q_PROPERTY(int maxVisibleItems READ maxVisibleItems WRITE setMaxVisibleItems USER true)
-	Q_PROPERTY(int minimumContentsLength READ minimumContentsLength WRITE setMinimumContentsLength USER true)
-	Q_PROPERTY(QComboBox::SizeAdjustPolicy sizeAdjustPolicy READ sizeAdjustPolicy WRITE setSizeAdjustPolicy USER true)
+	Q_PROPERTY(bool duplicatesEnabled READ duplicatesEnabled WRITE setDuplicatesEnabled USER true DESIGNABLE true)
+	Q_PROPERTY(bool editable READ isEditable WRITE setEditable USER true DESIGNABLE true)
+	Q_PROPERTY(bool frame READ hasFrame WRITE setFrame USER true DESIGNABLE true)
+	Q_PROPERTY(int maxCount READ maxCount WRITE setMaxCount USER true DESIGNABLE true)
+	Q_PROPERTY(int maxVisibleItems READ maxVisibleItems WRITE setMaxVisibleItems USER true DESIGNABLE true)
+	Q_PROPERTY(int minimumContentsLength READ minimumContentsLength WRITE setMinimumContentsLength USER true DESIGNABLE true)
+	Q_PROPERTY(QComboBox::SizeAdjustPolicy sizeAdjustPolicy READ sizeAdjustPolicy WRITE setSizeAdjustPolicy USER true DESIGNABLE true)
+	Q_PROPERTY(QString bindedPropertyName READ bindedPropertyName WRITE setBindedPropertyName USER true DESIGNABLE true)
 
 public:
 	ComboBox(ToolController *controller);
@@ -33,6 +34,7 @@ private:
 	int maxVisibleItems() const;
 	int minimumContentsLength() const;
 	QComboBox::SizeAdjustPolicy sizeAdjustPolicy() const;
+	QString bindedPropertyName() const;
 
 	void setDuplicatesEnabled(bool enabled);
 	void setEditable(bool editable);
@@ -41,8 +43,10 @@ private:
 	void setMaxVisibleItems(int maxVisibleItems);
 	void setMinimumContentsLength(int length);
 	void setSizeAdjustPolicy(QComboBox::SizeAdjustPolicy policy);
+	void setBindedPropertyName(QString const &name);
 
 	QComboBox *mComboBox;
+	QString mBindedPropertyName;
 };
 
 }

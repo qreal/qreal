@@ -18,10 +18,10 @@ class Frame : public LayoutTool
 {
 	Q_OBJECT
 
-	Q_PROPERTY(QFrame::Shape frameShape READ frameShape WRITE setFrameShape USER true)
-	Q_PROPERTY(QFrame::Shadow frameShadow READ frameShadow WRITE setFrameShadow USER true)
-	Q_PROPERTY(int lineWidth READ lineWidth WRITE setLineWidth USER true)
-	Q_PROPERTY(int midLineWidth READ midLineWidth WRITE setMidLineWidth USER true)
+	Q_PROPERTY(QFrame::Shape frameShape READ frameShape WRITE setFrameShape USER true DESIGNABLE true)
+	Q_PROPERTY(QFrame::Shadow frameShadow READ frameShadow WRITE setFrameShadow USER true DESIGNABLE true)
+	Q_PROPERTY(int lineWidth READ lineWidth WRITE setLineWidth USER true DESIGNABLE true)
+	Q_PROPERTY(int midLineWidth READ midLineWidth WRITE setMidLineWidth USER true DESIGNABLE true)
 
 public:
 	Frame(ToolController *controller);

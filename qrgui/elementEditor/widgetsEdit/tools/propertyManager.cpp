@@ -7,6 +7,7 @@ using namespace qReal::widgetsEdit;
 
 PropertyManager::PropertyManager(Tool *tool)
 	: mTool(tool), mManager(new QtVariantPropertyManager)
+	, mDeserializing(false)
 {
 	initProperties();
 	connect(mManager, SIGNAL(valueChanged(QtProperty*,QVariant))
@@ -17,10 +18,13 @@ void PropertyManager::initProperties()
 {
 	QMetaObject const *metaObject = mTool->metaObject();
 	for (int i = 0; i < metaObject->propertyCount(); ++i) {
-		QMetaProperty metaProperty = metaObject->property(i);
+		QMetaProperty const metaProperty = metaObject->property(i);
+		Property *property = propertyFromMetaProperty(metaProperty);
 		if (metaProperty.isUser()) {
-			Property *property = propertyFromMetaProperty(metaProperty);
-			mProperties.insert(property, i);
+			mUserProperties.insert(property, i);
+			if (metaProperty.isDesignable()) {
+				mDesignableProperties.append(property);
+			}
 		}
 	}
 }
@@ -62,9 +66,14 @@ Property *PropertyManager::propertyFromMetaProperty(const QMetaProperty &metaPro
 	return new Property(name, type, qtProperty);
 }
 
-QListIterator<Property *> PropertyManager::propertiesIterator() const
+QListIterator<Property *> PropertyManager::userPropertiesIterator() const
 {
-	return QListIterator<Property *>(mProperties.keys());
+	return QListIterator<Property *>(mDesignableProperties);
+}
+
+QListIterator<Property *> PropertyManager::allPropertiesIterator() const
+{
+	return QListIterator<Property *>(mUserProperties.keys());
 }
 
 QtVariantPropertyManager *PropertyManager::qtPropertyManager() const
@@ -87,7 +96,7 @@ void PropertyManager::changeProperty(const QString &name, const QVariant &value)
 
 void PropertyManager::onSelect()
 {
-	foreach(Property *property, mProperties.keys()) {
+	foreach(Property *property, mDesignableProperties) {
 		QVariant const value = propertyValue(property->name());
 		if (!value.isNull() && value.isValid()) {
 			property->qtProperty()->setValue(value);
@@ -97,7 +106,7 @@ void PropertyManager::onSelect()
 
 void PropertyManager::generateXml(QDomElement &element, QDomDocument &document)
 {
-	QListIterator<Property *> it = propertiesIterator();
+	QListIterator<Property *> it = allPropertiesIterator();
 	while (it.hasNext()) {
 		Property *property = it.next();
 		QDomElement propertyElement = document.createElement("property");
@@ -115,8 +124,9 @@ void PropertyManager::generateXml(QDomElement &element, QDomDocument &document)
 
 void PropertyManager::deserializeProperty(QDomElement const &element)
 {
-	QString const name = element.attribute("propertyName", "invalid");
-	if (name == "invalid") {
+	mDeserializing = true;
+	QString const name = element.attribute("propertyName", "!!%%invalid%%!!");
+	if (name == "!!%%invalid%%!!") {
 		return;
 	}
 	QVariant value = utils::xmlUtils::xmlToVariant(element);
@@ -128,6 +138,7 @@ void PropertyManager::deserializeProperty(QDomElement const &element)
 		value = QVariant(enumValue);
 	}
 	onPropertyChanged(name, value);
+	mDeserializing = false;
 }
 
 QVariant PropertyManager::propertyValue(const QString &name)
@@ -162,7 +173,11 @@ void PropertyManager::onPropertyChanged(const QString &name, const QVariant &val
 		// TODO: Add QtDesigner Alignment-like handling
 		metaProperty.write(mTool, value);
 	} else if (mEnumProperties.contains(name)) {
-		metaProperty.write(mTool, mEnumProperties[name][value.value<int>()]);
+		if (mDeserializing) {
+			metaProperty.write(mTool, value.value<int>());
+		} else {
+			metaProperty.write(mTool, mEnumProperties[name][value.value<int>()]);
+		}
 	} else {
 		metaProperty.write(mTool, value);
 	}
@@ -170,7 +185,7 @@ void PropertyManager::onPropertyChanged(const QString &name, const QVariant &val
 
 Property *PropertyManager::findProperty(const QString &name)
 {
-	foreach (Property *property, mProperties.keys()) {
+	foreach (Property *property, mUserProperties.keys()) {
 		if (property->name() == name) {
 			return property;
 		}
@@ -184,5 +199,5 @@ int PropertyManager::metaPropertyIndex(QString const &name)
 	if (!property) {
 		return -1;
 	}
-	return mProperties[property];
+	return mUserProperties[property];
 }

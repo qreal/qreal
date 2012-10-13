@@ -21,17 +21,17 @@ class Tool : public QGraphicsProxyWidget
 {
 	Q_OBJECT
 
-	Q_PROPERTY(QSize baseSize READ baseSize WRITE setBaseSize USER true)
-	Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled USER true)
-	Q_PROPERTY(QRect geometry READ widgetGeometry WRITE setWidgetGeometry USER true)
-	Q_PROPERTY(int maximumHeight READ widgetMaximumHeight WRITE setWidgetMaximumHeight USER true)
-	Q_PROPERTY(QSize maximumSize READ widgetMaximumSize WRITE setWidgetMaximumSize USER true)
-	Q_PROPERTY(int maximumWidth READ widgetMaximumWidth WRITE setWidgetMaximumWidth USER true)
-	Q_PROPERTY(int minimumHeight READ widgetMinimumHeight WRITE setWidgetMinimumHeight USER true)
-	Q_PROPERTY(QSize minimumSize READ widgetMinimumSize WRITE setWidgetMinimumSize USER true)
-	Q_PROPERTY(int minimumWidth READ widgetMinimumWidth WRITE setWidgetMinimumWidth USER true)
-	Q_PROPERTY(QSize sizeIncrement READ sizeIncrement WRITE setSizeIncrement USER true)
-	Q_PROPERTY(QString toolTip READ toolTip WRITE setToolTip USER true)
+	Q_PROPERTY(QSize baseSize READ baseSize WRITE setBaseSize USER true DESIGNABLE true)
+	Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled USER true DESIGNABLE true)
+	Q_PROPERTY(QRect geometry READ widgetGeometry WRITE setWidgetGeometry USER true DESIGNABLE true)
+	Q_PROPERTY(int maximumHeight READ widgetMaximumHeight WRITE setWidgetMaximumHeight USER true DESIGNABLE true)
+	Q_PROPERTY(QSize maximumSize READ widgetMaximumSize WRITE setWidgetMaximumSize USER true DESIGNABLE true)
+	Q_PROPERTY(int maximumWidth READ widgetMaximumWidth WRITE setWidgetMaximumWidth USER true DESIGNABLE true)
+	Q_PROPERTY(int minimumHeight READ widgetMinimumHeight WRITE setWidgetMinimumHeight USER true DESIGNABLE true)
+	Q_PROPERTY(QSize minimumSize READ widgetMinimumSize WRITE setWidgetMinimumSize USER true DESIGNABLE true)
+	Q_PROPERTY(int minimumWidth READ widgetMinimumWidth WRITE setWidgetMinimumWidth USER true DESIGNABLE true)
+	Q_PROPERTY(QSize sizeIncrement READ sizeIncrement WRITE setSizeIncrement USER true DESIGNABLE true)
+	Q_PROPERTY(QString toolTip READ toolTip WRITE setToolTip USER true DESIGNABLE true)
 
 public:
 	virtual ~Tool() {}

@@ -1,4 +1,5 @@
 #include <QtCore/QDebug>
+#include <QtXml/QDomDocument>
 #include <QtGui/QComboBox>
 #include <QtGui/QPushButton>
 
@@ -18,14 +19,14 @@ Trigger::Trigger(ToolController *controller)
 		, TRIGGER_DEFAULT_WIDTH
 		, TRIGGER_DEFAULT_HEIGHT);
 
-	// Qt, WHF??? Without this line it DOES NOT WORK!!!! AHTUNGGG!!
+	// Qt WTF??? Without this line it DOES NOT WORK!!!! AHTUNGGG!!
 	widget()->setMinimumSize(2, 2);
 
 	connect(this, SIGNAL(loaded()), this, SLOT(produceSubtools()));
 
 	QComboBox *stateBox = new QComboBox;
-	stateBox->addItem(tr("State1"));
-	stateBox->addItem(tr("State2"));
+	stateBox->addItem(tr("Active State"));
+	stateBox->addItem(tr("Inactive State"));
 	connect(stateBox, SIGNAL(activated(int)), this, SLOT(stateChanged(int)));
 	mStateBoxTool = new QGraphicsProxyWidget;
 	mStateBoxTool->setWidget(stateBox);
@@ -39,9 +40,6 @@ void Trigger::produceSubtools()
 {
 	mState1Tool = produceSubtool();
 	mState2Tool = produceSubtool();
-	mState1Widget = mState1Tool->widget();
-	mState2Widget = mState2Tool->widget();
-
 	stateChanged(0);
 }
 
@@ -65,7 +63,7 @@ Trigger::Action Trigger::action() const
 	return mAction;
 }
 
-void Trigger::setAction(Action action)
+void Trigger::setAction(Action const action)
 {
 	mAction = action;
 }
@@ -91,8 +89,82 @@ void Trigger::stateChanged(int const state)
 	currentWidget->show();
 }
 
+QString Trigger::widget1Xml() const
+{
+	return mWidget1Xml;
+}
+
+QString Trigger::widget2Xml() const
+{
+	return mWidget2Xml;
+}
+
+Trigger::State Trigger::initialState() const
+{
+	return mInitialState;
+}
+
+void Trigger::setWidget1Xml(QString const &xml)
+{
+	mWidget1Xml = xml;
+}
+
+void Trigger::setWidget2Xml(QString const &xml)
+{
+	mWidget2Xml = xml;
+}
+
+void Trigger::setInitialState(State const state)
+{
+	mInitialState = state;
+}
+
+void Trigger::generateXml(QDomElement &element, QDomDocument &document)
+{
+	QDomDocument widget1Doc;
+	QDomDocument widget2Doc;
+	QDomElement widget1Element = widget1Doc.createElement(mState1Tool->title());
+	QDomElement widget2Element = widget2Doc.createElement(mState2Tool->title());
+	mState1Tool->generateXml(widget1Element, widget1Doc);
+	mState2Tool->generateXml(widget2Element, widget2Doc);
+	widget1Doc.appendChild(widget1Element);
+	widget2Doc.appendChild(widget2Element);
+	setWidget1Xml(widget1Doc.toString(4));
+	setWidget2Xml(widget2Doc.toString(4));
+	// Temporary removing children (else they will be serialized)
+	childItems().removeOne(mState1Tool);
+	childItems().removeOne(mState2Tool);
+	childItems().removeOne(mStateBoxTool);
+	mState1Tool->setParentItem(NULL);
+	mState2Tool->setParentItem(NULL);
+	mStateBoxTool->setParentItem(NULL);
+	Tool::generateXml(element, document);
+	// Restoring childen
+	mState1Tool->setParentItem(this);
+	mState2Tool->setParentItem(this);
+	mStateBoxTool->setParentItem(this);
+	mLayout->insertItem(0, mStateBoxTool);
+	stateChanged(mCurrentState);
+	// TODO: Implement hierarchical children ignoring
+}
+
 void Trigger::deserializeWidget(QWidget *parent, QDomElement const &element)
 {
-	setWidget(new TriggerWidget);
+	TriggerWidget *triggerWidget = new TriggerWidget;
+	setWidget(triggerWidget);
+
 	Tool::deserializeWidget(parent, element);
+	triggerWidget->setAction(mAction);
+	triggerWidget->changeState(Inactive);
+	QString const xml1 = widget1Xml();
+	QString const xml2 = widget2Xml();
+	QDomDocument widget1Doc;
+	QDomDocument widget2Doc;
+	widget1Doc.setContent(xml1);
+	widget2Doc.setContent(xml2);
+	QDomElement element1 = widget1Doc.childNodes().at(0).toElement();
+	QDomElement element2 = widget2Doc.childNodes().at(0).toElement();
+	QWidget *widget1 = ToolFactory::instance()->deserializeWidget(element1);
+	QWidget *widget2 = ToolFactory::instance()->deserializeWidget(element2);
+	triggerWidget->setWidgets(widget1, widget2);
 }

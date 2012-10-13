@@ -14,14 +14,14 @@ class LineEdit : public Tool
 {
 	Q_OBJECT
 
-	Q_PROPERTY(Qt::Alignment alignment READ alignment WRITE setAlignment USER true)
-	Q_PROPERTY(QLineEdit::EchoMode echoMode READ echoMode WRITE setEchoMode USER true)
-	Q_PROPERTY(bool frame READ frame WRITE setFrame USER true)
-	Q_PROPERTY(QString inputMask READ inputMask WRITE setInputMask USER true)
-	Q_PROPERTY(int maxLength READ maxLength WRITE setMaxLength USER true)
-	Q_PROPERTY(QString placeholderText READ placeholderText WRITE setPlaceholderText USER true)
-	Q_PROPERTY(bool readonly READ readonly WRITE setReadonly USER true)
-	Q_PROPERTY(QString text READ text WRITE setText USER true)
+	Q_PROPERTY(Qt::Alignment alignment READ alignment WRITE setAlignment USER true DESIGNABLE true)
+	Q_PROPERTY(QLineEdit::EchoMode echoMode READ echoMode WRITE setEchoMode USER true DESIGNABLE true)
+	Q_PROPERTY(bool frame READ frame WRITE setFrame USER true DESIGNABLE true)
+	Q_PROPERTY(QString inputMask READ inputMask WRITE setInputMask USER true DESIGNABLE true)
+	Q_PROPERTY(int maxLength READ maxLength WRITE setMaxLength USER true DESIGNABLE true)
+	Q_PROPERTY(QString placeholderText READ placeholderText WRITE setPlaceholderText USER true DESIGNABLE true)
+	Q_PROPERTY(bool readonly READ readonly WRITE setReadonly USER true DESIGNABLE true)
+	Q_PROPERTY(QString text READ text WRITE setText USER true DESIGNABLE true)
 
 public:
 	LineEdit(ToolController *controller);

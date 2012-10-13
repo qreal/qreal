@@ -6,12 +6,16 @@ Frame::Frame(ToolController *controller)
 	: LayoutTool(new QFrame, controller)
 {
 	initialize();
+	mFrame->setFrameShape(QFrame::Panel);
+	mFrame->setFrameShadow(QFrame::Raised);
 }
 
 Frame::Frame(QFrame *frame, ToolController *controller)
 	: LayoutTool(frame, controller)
 {
 	initialize();
+	mFrame->setFrameShape(QFrame::NoFrame);
+	mFrame->setFrameShadow(QFrame::Plain);
 }
 
 void Frame::initialize()
@@ -26,8 +30,6 @@ void Frame::initialize()
 	mFrame->setMinimumHeight(FRAME_MINIMAL_HEIGHT);
 	//TODO: Understand why setting enum value here doesn`t work
 	// but every other property does (for every property manager)
-	mFrame->setFrameShape(QFrame::Panel);
-	mFrame->setFrameShadow(QFrame::Raised);
 }
 
 QFrame::Shape Frame::frameShape() const
