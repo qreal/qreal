@@ -85,6 +85,7 @@ public:
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
 	void openReferenceList(QPersistentModelIndex const &index
 			, QString const &referenceType, QString const &propertyValue, int role);
+	virtual void openTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
 	virtual void openSettingsDialog(QString const &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);

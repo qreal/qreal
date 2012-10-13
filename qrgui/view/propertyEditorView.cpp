@@ -90,6 +90,8 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			type = QVariant::Bool;
 		} else if (typeName == "string") {
 			type = QVariant::String;
+		} else if (typeName == "code") {
+			isButton = true;
 		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
 		} else {
@@ -151,12 +153,16 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 
 	QPersistentModelIndex const actualIndex = mModel->modelIndex(index.row());
 
-	// there are only two type of buttons: shape and reference
+	// there are only three type of buttons: shape, reference and text
 	if (name == "shape") {
 		mMainWindow->openShapeEditor(actualIndex, role, propertyValue);
 	} else {
-		QString typeName = mModel->typeName(index);
-		mMainWindow->openReferenceList(actualIndex, typeName, propertyValue, role);
+		QString const typeName = mModel->typeName(index).toLower();
+		if (typeName == "code") {
+			mMainWindow->openTextEditor(actualIndex, role, propertyValue);
+		} else {
+			mMainWindow->openReferenceList(actualIndex, typeName, propertyValue, role);
+		}
 	}
 }
 

@@ -5,6 +5,14 @@
 using namespace qReal;
 using namespace gui;
 
+TextEdit::TextEdit(QPersistentModelIndex const &index, int const &role) : mIndex(index), mRole(role)
+{}
+
+TextEdit::~TextEdit()
+{
+	emit textSaved(text(), mIndex, mRole);
+}
+
 void TextEdit::setPythonLexer()
 {
 	QsciLexerPython *lexer = new QsciLexerPython();
@@ -44,4 +52,16 @@ void TextEdit::setPythonEditorProperties()
 	setBraceMatching(QsciScintilla::SloppyBraceMatch);
 	setMatchedBraceBackgroundColor(Qt::yellow);
 	setUnmatchedBraceForegroundColor(Qt::blue);
+
+	// EOL symbol
+#if defined Q_WS_X11
+	setEolMode(QsciScintilla::EolUnix);
+#elif defined Q_WS_WIN
+	setEolMode(QsciScintilla::EolWindows);
+#elif defined Q_WS_MAC
+	setEolMode(QsciScintilla::EolMac);
+#endif
+
+	// Input encoding
+	setUtf8(true);
 }

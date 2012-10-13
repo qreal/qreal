@@ -43,6 +43,8 @@
 
 #include "dotRunner.h"
 
+#include "textEdit.h"
+
 using namespace qReal;
 
 QString const unsavedDir = "unsaved";
@@ -880,6 +882,24 @@ void MainWindow::setSceneFont()
 				QFontDatabase::addApplicationFont(QDir::currentPath() + "/times.ttf")).at(0), 9));
 		getCurrentTab()->scene()->update();
 	}
+}
+
+void MainWindow::openTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue)
+{
+	gui::TextEdit *textEdit = new gui::TextEdit(index, role);
+	if (!propertyValue.isEmpty()) {
+		textEdit->setText(propertyValue);
+	}
+
+	textEdit->setPythonLexer();
+	textEdit->setPythonEditorProperties();
+
+	connect(textEdit, SIGNAL(textSaved(QString const &, QPersistentModelIndex const &, int const &)),
+			this, SLOT(setData(QString const &, QPersistentModelIndex const &, int const &)));
+
+	mUi->tabs->addTab(textEdit, tr("Text Editor"));
+	mUi->tabs->setCurrentWidget(textEdit);
+	setConnectActionZoomTo(textEdit);
 }
 
 void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue)
