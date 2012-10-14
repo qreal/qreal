@@ -2,6 +2,7 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QFileDialog>
+#include <QtGui/QMessageBox>
 #include <QtXml/QDomDocument>
 
 #include "widgetsEditor.h"
@@ -216,6 +217,15 @@ void WidgetsEditor::serializeWidget(QDomDocument &target)
 
 void WidgetsEditor::save()
 {
+	QDomDocument document;
+	serializeWidget(document);
+
+	QString const xml = document.toString(4);
+	emit widgetSaved(xml, mIndex, mRole);
+}
+
+void WidgetsEditor::saveToDisk()
+{
 	QString const path = QFileDialog::getSaveFileName(this
 			, tr("Save as"), QString()
 			, tr("Widget template format files") + "(*.wtf);;" + tr("All Files") + "(*.*)");
@@ -229,7 +239,8 @@ void WidgetsEditor::save()
 	QString const xml = document.toString(4);
 	utils::OutFile file(path);
 	file() << xml;
-	emit widgetSaved(xml, mIndex, mRole);
+	QMessageBox::information(this, tr("Widgets Editor")
+		, tr("Saved successfully!"), QMessageBox::Ok);
 }
 
 void WidgetsEditor::preview()

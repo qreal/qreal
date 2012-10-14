@@ -64,6 +64,7 @@ private slots:
 	void onSelectionChanged(Tool *tool);
 
 	void save();
+	void saveToDisk();
 	void preview();
 
 private:
