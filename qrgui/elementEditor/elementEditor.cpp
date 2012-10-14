@@ -34,15 +34,31 @@ widgetsEdit::WidgetsEditor *ElementEditor::widgetEditor() const
 	return mWidgetsEditor;
 }
 
-bool ElementEditor::widgetBased() const
+bool ElementEditor::isWidgetBased() const
 {
 	return mWidgetBased;
 }
 
 void ElementEditor::load(const QString &data)
 {
-	//TODO: implement it
-	Q_UNUSED(data)
+	QDomDocument document;
+	document.setContent(data);
+	if (document.isNull()) {
+		return;
+	}
+	if (isWidgetBasedDocument(document)) {
+		onWidgetBasedButtonClicked();
+		mWidgetsEditor->load(document);
+	} else {
+		onShapeBasedButtonClicked();
+		mShapeEditor->load(document);
+	}
+}
+
+bool ElementEditor::isWidgetBasedDocument(QDomDocument const &document)
+{
+	QDomElement const elem = document.firstChild().toElement();
+	return !elem.isNull() && elem.tagName() == "widget-template";
 }
 
 void ElementEditor::initComponents()
@@ -172,7 +188,7 @@ void ElementEditor::onShapeEditorSavedShape(const QString &shape
 
 void ElementEditor::onShapeEditorSavedShape(const QDomDocument &document)
 {
-	if (widgetBased()) {
+	if (isWidgetBased()) {
 		giveShapeToWidgetsEditor(document);
 	}
 }

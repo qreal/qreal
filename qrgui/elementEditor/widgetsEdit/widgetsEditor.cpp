@@ -45,10 +45,12 @@ QWidget *WidgetsEditor::deserializeWidget(QDomDocument const &document)
 	QDomElement widgetTemplateElement = document.documentElement();
 	QDomElement rootElement = widgetTemplateElement.firstChild().toElement();
 	return ToolFactory::instance()->deserializeWidget(rootElement);
-//	QDomElement shapeElement = rootElement.nextSiblingElement();
-//	return shapeElement.isNull()
-//			? ToolFactory::instance()->deserializeWidget(rootElement)
-//			: ToolFactory::instance()->deserializeWidget(rootElement, shapeElement);
+}
+
+void WidgetsEditor::load(QDomDocument const &widgetTemplate)
+{
+	Q_UNUSED(widgetTemplate)
+	// TODO: IMPLEMENT IT!!!
 }
 
 void WidgetsEditor::keyPressEvent(QKeyEvent *event)
@@ -194,11 +196,6 @@ void WidgetsEditor::serializeWidget(QDomDocument &target)
 	mRoot->generateXml(rootElement, target);
 	widgetTemplateElement.appendChild(rootElement);
 	target.appendChild(widgetTemplateElement);
-//	QDomDocument shapeDocument = mRoot->shapeDocument();
-//	QDomElement shapeElement = shapeDocument.documentElement();
-//	if (!shapeElement.isNull()) {
-//		widgetTemplateElement.appendChild(shapeElement);
-//	}
 }
 
 void WidgetsEditor::save()

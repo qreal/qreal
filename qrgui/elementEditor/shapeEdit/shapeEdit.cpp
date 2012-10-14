@@ -315,6 +315,15 @@ void ShapeEdit::load(const QString &text)
 	loader.readString(text);
 }
 
+void ShapeEdit::load(QDomDocument const &document)
+{
+	if (document.isNull()) {
+		return;
+	}
+	XmlLoader loader(mScene);
+	loader.readDocument(document);
+}
+
 void ShapeEdit::addImage(bool checked)
 {
 	if (checked) {

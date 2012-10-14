@@ -29,6 +29,13 @@ void XmlLoader::initListScalePoint()
 	mListScalePoint.push_back(QPair<Item::ScalingPointState, QColor>(Item::bottomRightY, QColor(Qt::black)));
 }
 
+void XmlLoader::readDocument(const QDomDocument &document)
+{
+	mReadFile = false;
+	mDocument = document;
+	readDocument();
+}
+
 void XmlLoader::readString(const QString &text)
 {
 	mReadFile = false;

@@ -26,10 +26,9 @@ public:
 	ShapeEdit *shapeEditor() const;
 	/// Returns widgets editor instance
 	widgetsEdit::WidgetsEditor *widgetEditor() const;
-	bool widgetBased() const;
+	bool isWidgetBased() const;
 	/// Forces current editor to load specified data
-	/// @param data String representation of data saved by
-	/// requered editor in past
+	/// @param data String representation of data saved by required editor in past
 	void load(QString const &data);
 
 signals:
@@ -57,6 +56,8 @@ private slots:
 	void onShapeEditorSavedShape(QDomDocument const &document);
 
 private:
+	static bool isWidgetBasedDocument(QDomDocument const &document);
+
 	void initComponents();
 	void initStartWidget();
 

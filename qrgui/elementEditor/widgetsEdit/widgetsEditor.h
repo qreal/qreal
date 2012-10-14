@@ -33,12 +33,16 @@ public:
 
 	/// Forces widget template root element to have
 	/// custom backround described with SDF format
-	/// @param shape XML Doucment with background description
+	/// @param shape XML Document with background description
 	void setShape(QDomDocument const &shape);
 
 	/// Returns new instance of widget described in WTF format
-	/// @param document XML Doucment with widget template description
+	/// @param document XML Document with widget template description
 	static QWidget *deserializeWidget(QDomDocument const &document);
+
+	/// Forces current editor instance to load specified widget template
+	/// @param widgetTemplate XML document in WTF format
+	void load(QDomDocument const &widgetTemplate);
 
 signals:
 	/// Emitted when user saves current widget template created with editor

@@ -23,6 +23,7 @@ public:
 
 	graphicsUtils::AbstractView *getView();
 	void load(QString const &text);
+	void load(QDomDocument const &document);
 
 signals:
 	void shapeSaved(QString const &shape, QPersistentModelIndex const &index, int const &role);
