@@ -19,13 +19,14 @@ using namespace qReal::widgetsEdit;
 
 WidgetsEditor::WidgetsEditor(const QPersistentModelIndex &index
 		, const int &role, QWidget *parent)
-	: QWidget(parent), mUi(new Ui::WidgetsEditor), mIndex(index), mRole(role)
+	: QWidget(parent), mUi(new Ui::WidgetsEditor), mController(NULL)
+	, mIndex(index), mRole(role)
 {
 	initComponents();
 }
 
 WidgetsEditor::WidgetsEditor(QWidget *parent)
-	: QWidget(parent), mUi(new Ui::WidgetsEditor), mRole(0)
+	: QWidget(parent), mUi(new Ui::WidgetsEditor), mController(NULL), mRole(0)
 {
 	initComponents();
 }
@@ -50,7 +51,13 @@ QWidget *WidgetsEditor::deserializeWidget(QDomDocument const &document)
 void WidgetsEditor::load(QDomDocument const &widgetTemplate)
 {
 	Q_UNUSED(widgetTemplate)
-	// TODO: IMPLEMENT IT!!!
+	if (mRoot) {
+		mScene->removeItem(mRoot);
+		delete mRoot;
+		mRoot = NULL;
+	}
+	initController();
+	initRoot(ToolFactory::instance()->loadDocument(mController, widgetTemplate));
 }
 
 void WidgetsEditor::keyPressEvent(QKeyEvent *event)
@@ -81,6 +88,9 @@ void WidgetsEditor::initComponents()
 
 void WidgetsEditor::initController()
 {
+	if (mController) {
+		delete mController;
+	}
 	mController = new ToolController;
 	connect(mController, SIGNAL(selectionChanged(Tool*)),
 			this, SLOT(onSelectionChanged(Tool*)));
@@ -154,12 +164,18 @@ void WidgetsEditor::initPropertyBrowser()
 
 void WidgetsEditor::initRoot()
 {
+	initRoot(ToolFactory::instance()->makeRoot(mController));
+}
+
+void WidgetsEditor::initRoot(Root *root)
+{
 	mScene = new QGraphicsScene;
 	mUi->editorArea->setScene(mScene);
-	mRoot = ToolFactory::instance()->makeRoot(mController);
+	mRoot = root;
 	mController->addChild(mRoot);
 	mScene->addItem(mRoot);
 }
+
 
 void WidgetsEditor::switchLayoutButtonsActiveState(Tool *tool)
 {

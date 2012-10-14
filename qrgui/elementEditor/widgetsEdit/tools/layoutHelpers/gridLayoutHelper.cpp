@@ -26,11 +26,16 @@ void GridLayoutHelper::drawCurrentDropPosition(QPainter *painter)
 	painter->restore();
 }
 
-void GridLayoutHelper::dropItem(Tool *item)
+void GridLayoutHelper::insertTool(int row, int column, Tool *child)
 {
-	insertItem(item, mCurrentRow - 1, mCurrentColumn - 1);
+	insertItem(child, row, column);
 	mLayout->activate();
 	updateGrid();
+}
+
+void GridLayoutHelper::dropItem(Tool *item)
+{
+	insertTool(mCurrentRow - 1, mCurrentColumn - 1, item);
 }
 
 void GridLayoutHelper::resetLayout(QGraphicsLayout *layout)

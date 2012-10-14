@@ -95,6 +95,9 @@ Tool *ToolFactory::makeItem(const QString &title, ToolController *controller)
 	if (title == "Root") {
 		result = makeRoot(controller);
 	}
+	if (controller != NULL && result != NULL) {
+		controller->addChild(result);
+	}
 	return result;
 }
 
@@ -120,22 +123,6 @@ QWidget *ToolFactory::deserializeWidget(const QDomElement &element)
 {
 	return deserializeWidget(NULL, element);
 }
-
-//QWidget *ToolFactory::deserializeWidget(const QDomElement &element
-//		, const QDomElement &shape)
-//{
-//	QWidget *result = deserializeWidget(NULL, element);
-//	RootWidget *root = dynamic_cast<RootWidget *>(result);
-
-//	QDomDocument shapeDocument;
-//	// to make newDocument non-null
-//	shapeDocument.createElement("");
-//	QDomElement newShape = shape.cloneNode(true).toElement();
-//	shapeDocument.appendChild(newShape);
-//	root->setShape(shapeDocument);
-
-//	return root;
-//}
 
 QWidget *ToolFactory::deserializeWidget(QWidget *parent, const QDomElement &element)
 {
@@ -164,6 +151,40 @@ QWidget *ToolFactory::deserializeWidget(QWidget *parent, const QDomElement &elem
 	tool->setWidget(NULL);
 	delete tool;
 	return result;
+}
+
+Root *ToolFactory::loadDocument(ToolController *controller
+		, const QDomDocument &document)
+{
+	QDomElement const templateElement = document.firstChild().toElement();
+	QDomElement const rootElement = templateElement.firstChild().toElement();
+	return dynamic_cast<Root *>(loadElement(NULL, rootElement, controller));
+}
+
+Tool *ToolFactory::loadElement(LayoutTool *parent, const QDomElement &element
+		, ToolController *controller)
+{
+	// TODO: reuse deserializeWidget() mechanism
+	QString const title = tagNameToToolTitle(element.tagName());
+	if (title.isEmpty()) {
+		return NULL;
+	}
+	Tool *tool = makeItem(title, controller);
+	if (!tool) {
+		return NULL;
+	}
+	tool->load(parent, element);
+	LayoutTool *nextParent = dynamic_cast<LayoutTool *>(tool);
+	if (nextParent) {
+		for (int i = 0; i < element.childNodes().count(); ++i) {
+			QDomNode node = element.childNodes().at(i);
+			if (!node.isNull()) {
+				QDomElement childElement = node.toElement();
+				loadElement(nextParent, childElement, controller);
+			}
+		}
+	}
+	return tool;
 }
 
 void ToolFactory::initTitles()

@@ -28,6 +28,8 @@ public:
 
 	virtual void generateAttachedProperty(QDomElement &element, Tool *tool);
 
+	void insertTool(int index, Tool *child);
+
 protected:
 	virtual void onToolResized(const QRectF &newGeometry);
 

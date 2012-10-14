@@ -55,10 +55,15 @@ void LinearLayoutHelper::drawCurrentDropPosition(QPainter *painter)
 	painter->restore();
 }
 
+void LinearLayoutHelper::insertTool(int index, Tool *child)
+{
+	insertItem(index, child);
+	mLayout->activate();
+}
+
 void LinearLayoutHelper::dropItem(Tool *item)
 {
-	insertItem(mCurrentSell, item);
-	mLayout->activate();
+	insertTool(mCurrentSell, item);
 }
 
 void LinearLayoutHelper::resetLayout(QGraphicsLayout *layout)

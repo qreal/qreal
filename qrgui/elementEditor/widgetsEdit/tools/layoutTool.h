@@ -29,8 +29,10 @@ public:
 
 	virtual void generateXml(QDomElement &element, QDomDocument &document);
 	virtual void deserializeWidget(QWidget *parent, const QDomElement &element);
-	static void deserializeAttachedProperty(QWidget *parent, QWidget *widget,
-											const QDomElement &element);
+	virtual void load(LayoutTool *parent, QDomElement const &element);
+	static void deserializeAttachedProperty(QWidget *parent, QWidget *widget
+		, QDomElement const &element);
+	void loadAttachedProperty(Tool *child, QDomElement const &element);
 
 protected:
 	LayoutTool(QWidget *widget, ToolController *controller

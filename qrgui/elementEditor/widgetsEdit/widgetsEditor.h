@@ -77,6 +77,7 @@ private:
 	void loadTools();
 	void initPropertyBrowser();
 	void initRoot();
+	void initRoot(Root *root);
 
 	void serializeWidget(QDomDocument &target);
 

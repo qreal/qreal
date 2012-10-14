@@ -43,19 +43,24 @@ void Trigger::produceSubtools()
 	stateChanged(0);
 }
 
-Widget *Trigger::produceSubtool() const
+Tool *Trigger::produceSubtool() const
 {
 	// TODO: Understand why calling ToolFactory::instance() causes an infinite loop.
 	// Use ToolFactory::instance()->makeItem(...) instead of next two lines
-	Widget *result = new Widget(mController);
-	result->onLoaded();
-	result->setMovable(false);
-	result->setResizable(false);
-	if (mController) {
-		mController->addChild(result);
-	}
+	Tool *result = new Widget(mController);
+	setUpSubtool(result);
 
 	return result;
+}
+
+void Trigger::setUpSubtool(Tool *tool) const
+{
+	tool->onLoaded();
+	tool->setMovable(false);
+	tool->setResizable(false);
+	if (mController) {
+		mController->addChild(tool);
+	}
 }
 
 Trigger::Action Trigger::action() const
@@ -73,9 +78,9 @@ void Trigger::stateChanged(int const state)
 	if (mCurrentState == state) {
 		return;
 	}
-	Widget *oldWidget = (mCurrentState == 0) ? mState1Tool : mState2Tool;
+	Tool *oldWidget = (mCurrentState == 0) ? mState1Tool : mState2Tool;
 	mCurrentState = state;
-	Widget *currentWidget = (mCurrentState == 0) ? mState1Tool : mState2Tool;
+	Tool *currentWidget = (mCurrentState == 0) ? mState1Tool : mState2Tool;
 	if (mLayout->count() > 1) {
 		mLayout->removeAt(1);
 	}
@@ -162,9 +167,38 @@ void Trigger::deserializeWidget(QWidget *parent, QDomElement const &element)
 	QDomDocument widget2Doc;
 	widget1Doc.setContent(xml1);
 	widget2Doc.setContent(xml2);
-	QDomElement element1 = widget1Doc.childNodes().at(0).toElement();
-	QDomElement element2 = widget2Doc.childNodes().at(0).toElement();
+	QDomElement const element1 = widget1Doc.childNodes().at(0).toElement();
+	QDomElement const element2 = widget2Doc.childNodes().at(0).toElement();
 	QWidget *widget1 = ToolFactory::instance()->deserializeWidget(element1);
 	QWidget *widget2 = ToolFactory::instance()->deserializeWidget(element2);
 	triggerWidget->setWidgets(widget1, widget2);
+}
+
+void Trigger::load(LayoutTool *parent, const QDomElement &element)
+{
+	if (mState1Tool) {
+		mController->removeChild(mState1Tool);
+		mState1Tool = NULL;
+	}
+	if (mState2Tool) {
+		mController->removeChild(mState2Tool);
+		mState2Tool = NULL;
+	}
+	Tool::load(parent, element);
+	QString const xml1 = widget1Xml();
+	QString const xml2 = widget2Xml();
+	QDomDocument widget1Doc;
+	QDomDocument widget2Doc;
+	widget1Doc.setContent(xml1);
+	widget2Doc.setContent(xml2);
+	QDomElement const element1 = widget1Doc.childNodes().at(0).toElement();
+	QDomElement const element2 = widget2Doc.childNodes().at(0).toElement();
+	mState1Tool = ToolFactory::instance()->loadElement(NULL, element1, mController);
+	mState2Tool = ToolFactory::instance()->loadElement(NULL, element2, mController);
+	mCurrentState = -1;
+	int const numericalState = mInitialState == Active ? 0 : 1;
+	dynamic_cast<QComboBox *>(mStateBoxTool->widget())->setCurrentIndex(numericalState);
+	stateChanged(numericalState);
+	setUpSubtool(mState1Tool);
+	setUpSubtool(mState2Tool);
 }

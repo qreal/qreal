@@ -97,6 +97,21 @@ void LayoutTool::deserializeWidget(QWidget *parent, const QDomElement &element)
 	}
 }
 
+void LayoutTool::load(LayoutTool *parent, QDomElement const &element)
+{
+	Tool::load(parent, element);
+	QString const layoutType = element.attribute("layout", "invalid");
+	if (layoutType == "Grid") {
+		mFactory->setLayout(Grid);
+	} else if (layoutType == "Horizontal") {
+		mFactory->setLayout(Horizontal);
+	} else if (layoutType == "Vertical") {
+		mFactory->setLayout(Vertical);
+	} else if (layoutType == "NoLayout") {
+		mFactory->setLayout(NoLayout);
+	}
+}
+
 void LayoutTool::deserializeAttachedProperty(QWidget *parent, QWidget *widget
 		, const QDomElement &element)
 {
@@ -136,7 +151,47 @@ void LayoutTool::deserializeAttachedProperty(QWidget *parent, QWidget *widget
 	}
 }
 
-void LayoutTool::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void LayoutTool::loadAttachedProperty(Tool *tool, const QDomElement &element)
+{
+	// TODO: reuse  deserialization mechanism
+	QString indexS = element.attribute("index", "invalid");
+	bool ok;
+	if (indexS == "invalid") {
+		QString rowS = element.attribute("row", "invalid");
+		QString colS = element.attribute("column", "invalid");
+		if (rowS == "invalid" || colS == "invalid") {
+			return;
+		}
+		int const row = rowS.toInt(&ok);
+		if (!ok) {
+			return;
+		}
+		int const col = colS.toInt(&ok);
+		if (!ok) {
+			return;
+		}
+		GridLayoutHelper *helper = dynamic_cast<GridLayoutHelper *>(mHelper);
+		if (helper) {
+			helper->insertTool(row, col, tool);
+		} else {
+			qDebug() << "WARNING: expected grid layout after deserializetion, got something else";
+		}
+	} else {
+		int const index = indexS.toInt(&ok);
+		if (!ok) {
+			return;
+		}
+		LinearLayoutHelper *helper = dynamic_cast<LinearLayoutHelper *>(mHelper);
+		if (helper) {
+			helper->insertTool(index, tool);
+		} else {
+			qDebug() << "WARNING: expected linear layout after deserializetion, got something else";
+		}
+	}
+}
+
+void LayoutTool::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
+		, QWidget *widget)
 {
 	Tool::paint(painter, option, widget);
 

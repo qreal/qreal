@@ -201,6 +201,21 @@ void Tool::deserializeWidget(QWidget *parent, const QDomElement &element)
 	}
 }
 
+void Tool::load(LayoutTool *parent, QDomElement const &element)
+{
+	for (int i = 0; i < element.childNodes().count(); ++i) {
+		QDomNode const node = element.childNodes().at(i);
+		QDomElement const childElem = node.toElement();
+		QString const type = childElem.tagName();
+		if (type == "property") {
+			mPropertyManager->deserializeProperty(childElem);
+		}
+		if (type == "layoutAttachedProperty" && parent) {
+			parent->loadAttachedProperty(this, childElem);
+		}
+	}
+}
+
 QRectF Tool::resizeRect(DragState state)
 {
 	QRectF itemBoundingRect = boundingRect();

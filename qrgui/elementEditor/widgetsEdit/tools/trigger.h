@@ -36,6 +36,7 @@ public:
 
 	virtual void generateXml(QDomElement &element, QDomDocument &document);
 	virtual void deserializeWidget(QWidget *parent, QDomElement const &element);
+	virtual void load(LayoutTool *parent, const QDomElement &element);
 
 	enum Action {
 		OnFocused = 0// States switched when corresponding widget is focused
@@ -56,7 +57,8 @@ private slots:
 	void produceSubtools();
 
 private:
-	Widget *produceSubtool() const;
+	Tool *produceSubtool() const;
+	void setUpSubtool(Tool *tool) const;
 
 	void onConstructionEnabled();
 	void onConstructionDisabled();
@@ -73,8 +75,8 @@ private:
 
 	int mCurrentState;
 	Action mAction;
-	Widget *mState1Tool;
-	Widget *mState2Tool;
+	Tool *mState1Tool;
+	Tool *mState2Tool;
 	QGraphicsProxyWidget *mStateBoxTool;
 	QGraphicsLinearLayout *mLayout;
 	QString mWidget1Xml;

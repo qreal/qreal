@@ -39,8 +39,9 @@ public:
 	Root *makeRoot(ToolController *controller) const;
 	QPixmap widgetPixmap(QString const &title);
 	QWidget *deserializeWidget(QDomElement const &element);
-//	QWidget *deserializeWidget(const QDomElement &element
-//		, const QDomElement &shape);
+	Root *loadDocument(ToolController *controller, QDomDocument const &document);
+	Tool *loadElement(LayoutTool *parent, QDomElement const &element
+		, ToolController *controller);
 
 	QString toolTitleToTagName(QString const &title) const;
 	QString tagNameToToolTitle(QString const &tagName) const;
@@ -49,7 +50,7 @@ private:
 	ToolFactory();
 	ToolFactory(ToolFactory const&) {}
 
-	//hard-coded tool enumeration
+	// Hard-coded tool enumeration; TODO: "pluginize" it
 	void initTitles();
 	void initItems();
 	QWidget *deserializeWidget(QWidget *parent, QDomElement const &element);

@@ -53,6 +53,7 @@ public:
 
 	virtual void generateXml(QDomElement &element, QDomDocument &document);
 	virtual void deserializeWidget(QWidget *parent, QDomElement const &element);
+	virtual void load(LayoutTool *parent, QDomElement const &element);
 
 	virtual void removeChild(Tool *child);
 
