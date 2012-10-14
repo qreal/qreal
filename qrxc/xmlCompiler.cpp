@@ -21,19 +21,23 @@ XmlCompiler::XmlCompiler()
 {
 	mResources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
 	QDir dir;
-	if(!dir.exists("generated"))
+	if (!dir.exists("generated")) {
 		dir.mkdir("generated");
+	}
 	dir.cd("generated");
-	if(!dir.exists("shapes"))
+	if (!dir.exists("shapes")) {
 		dir.mkdir("shapes");
+	}
 	dir.cd("..");
 }
 
 XmlCompiler::~XmlCompiler()
 {
-	foreach(Editor *editor, mEditors.values())
-		if (editor)
+	foreach(Editor *editor, mEditors.values()) {
+		if (editor) {
 			delete editor;
+		}
+	}
 }
 
 bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &sourcesRootFolder)
@@ -43,8 +47,9 @@ bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &source
 	mCurrentEditor = inputXmlFileInfo.absoluteFilePath();
 	mSourcesRootFolder = sourcesRootFolder;
 	QDir const startingDir = inputXmlFileInfo.dir();
-	if (!loadXmlFile(startingDir, inputXmlFileInfo.fileName()))
+	if (!loadXmlFile(startingDir, inputXmlFileInfo.fileName())) {
 		return false;
+	}
 	generateCode();
 	return true;
 }
@@ -52,7 +57,7 @@ bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &source
 Editor* XmlCompiler::loadXmlFile(QDir const &currentDir, QString const &inputXmlFileName)
 {
 	QFileInfo fileInfo(inputXmlFileName);
-	Q_ASSERT(fileInfo.fileName() == inputXmlFileName);  // Проверяем, что нам передали только имя файла, без пути.
+	Q_ASSERT(fileInfo.fileName() == inputXmlFileName);
 
 	QString fullFileName = currentDir.absolutePath() + "/" + inputXmlFileName;
 	qDebug() << "Loading file started: " << fullFileName;
@@ -83,8 +88,9 @@ Diagram * XmlCompiler::getDiagram(QString const &diagramName)
 {
 	foreach (Editor *editor, mEditors) {
 		Diagram *diagram = editor->findDiagram(diagramName);
-		if (diagram)
+		if (diagram) {
 			return diagram;
+		}
 	}
 	return NULL;
 }
@@ -119,9 +125,11 @@ void XmlCompiler::generateElementClasses()
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementTitleHelpers.h\"\n\n"
 		;
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+		foreach (Type *type, diagram->types().values()) {
 			type->generateCode(out);
+		}
+	}
 }
 
 void XmlCompiler::generatePluginHeader()
