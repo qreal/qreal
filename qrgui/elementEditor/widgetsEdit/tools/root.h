@@ -17,6 +17,9 @@ int const ROOT_WIDGET_DEFAULT_HEIGHT = 200;
 
 class Root : public LayoutTool
 {
+	Q_OBJECT
+
+	Q_PROPERTY(QString shapeXml READ shapeXml WRITE setShapeXml USER true DESIGNABLE false)
 
 public:
 	Root(ToolController *controller);
@@ -25,6 +28,9 @@ public:
 	QDomDocument shapeDocument() const;
 
 private:
+	QString shapeXml() const;
+	void setShapeXml(QString const &shape);
+
 	RootWidget *mWidget;
 	QList<Tool *> mItems;
 };

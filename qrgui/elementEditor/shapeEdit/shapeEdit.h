@@ -67,15 +67,15 @@ private:
 
 	void setHighlightOneButton(QAbstractButton *oneButton);
 
-	void setValuePenStyleComboBox(Qt::PenStyle penStyle);
-	void setValuePenColorComboBox(QColor penColor);
+	void setValuePenStyleComboBox(Qt::PenStyle const penStyle);
+	void setValuePenColorComboBox(QColor const &penColor);
 	void setValuePenWidthSpinBox(int width);
 	void setValueBrushStyleComboBox(Qt::BrushStyle brushStyle);
-	void setValueBrushColorComboBox(QColor brushColor);
+	void setValueBrushColorComboBox(QColor const &brushColor);
 
 	void setValueTextFamilyFontComboBox(QFont const &fontItem);
 	void setValueTextPixelSizeSpinBox(int size);
-	void setValueTextColorComboBox(QColor penColor);
+	void setValueTextColorComboBox(QColor const &penColor);
 	void setValueItalicCheckBox(bool check);
 	void setValueBoldCheckBox(bool check);
 	void setValueUnderlineCheckBox(bool check);

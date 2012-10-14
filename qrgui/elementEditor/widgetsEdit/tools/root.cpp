@@ -28,3 +28,18 @@ QDomDocument Root::shapeDocument() const
 {
 	return mWidget->shapeDocument();
 }
+
+QString Root::shapeXml() const
+{
+	return mWidget->shapeDocument().toString(4);
+}
+
+void Root::setShapeXml(QString const &shape)
+{
+	QDomDocument shapeDoc;
+	if (!shapeDoc.setContent(shape)) {
+		qDebug() << "Could not load shape property for root";
+		return;
+	}
+	setShape(shapeDoc);
+}

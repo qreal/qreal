@@ -461,7 +461,8 @@ void MainWindow::setWidget(const QString &widget
 		, const QPersistentModelIndex &index
 		, const int &role)
 {
-	QMessageBox::information(this, "qReal", "Widget saved!");
+	QMessageBox::information(this, tr("QReal"), tr("Widget saved!"));
+	setData(widget, index, role);
 }
 
 void MainWindow::setData(QString const &data, QPersistentModelIndex const &index, int const &role)
@@ -905,7 +906,7 @@ void MainWindow::openElementEditor(QPersistentModelIndex const &index
 	connect(elementEditor, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &))
 		,this, SLOT(setData(QString, QPersistentModelIndex const &, int const &)));
 
-	mUi->tabs->addTab(elementEditor, "Element Editor");
+	mUi->tabs->addTab(elementEditor, tr("Element Editor"));
 	mUi->tabs->setCurrentWidget(elementEditor);
 	setConnectActionZoomTo(elementEditor);
 }

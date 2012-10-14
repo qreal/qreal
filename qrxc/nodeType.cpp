@@ -1,3 +1,5 @@
+#include <QtCore/QDebug>
+
 #include "nodeType.h"
 #include "diagram.h"
 #include "xmlCompiler.h"
@@ -8,29 +10,30 @@
 #include "nameNormalizer.h"
 #include "label.h"
 
-#include <QDebug>
-
 using namespace utils;
 
 NodeType::NodeType(Diagram *diagram)
-: GraphicType(diagram)
-, mIsPin(false)
-, mIsHavePin(false)
-, mIsResizeable(true)
-{}
+	: GraphicType(diagram)
+	, mIsPin(false)
+	, mIsHavePin(false)
+	, mIsResizeable(true)
+{
+}
 
 NodeType::~NodeType()
 {
-	foreach (Port *port, mPorts)
+	foreach (Port *port, mPorts) {
 		delete port;
+	}
 }
 
 Type* NodeType::clone() const
 {
 	NodeType *result = new NodeType(mDiagram);
 	GraphicType::copyFields(result);
-	foreach (Port *port, mPorts)
+	foreach (Port *port, mPorts) {
 		result->mPorts.append(port->clone());
+	}
 	result->mSdfDomElement = mSdfDomElement;
 	result->mPortsDomElement = mPortsDomElement;
 	result->mIsPin = mIsPin;
@@ -62,14 +65,16 @@ bool NodeType::initSdf()
 		mHeight = sdfElement.attribute("sizey").toInt();
 		mSdfDomElement = sdfElement;
 		mVisible = true;
-	} else
+	} else {
 		mVisible = false;
+	}
 	return true;
 }
 
 void NodeType::generateSdf() const
 {
-	mDiagram->editor()->xmlCompiler()->addResource("\t<file>generated/shapes/" + resourceName("Class") + "</file>\n");
+	mDiagram->editor()->xmlCompiler()->addResource(
+		"\t<file>generated/shapes/" + resourceName("Class") + "</file>\n");
 
 	OutFile out("generated/shapes/" + resourceName("Class"));
 	mSdfDomElement.save(out(), 1);
@@ -83,11 +88,18 @@ void NodeType::generateSdf() const
  */
 }
 
+bool NodeType::isWidget(QDomElement const &element) const
+{
+	// TODO: move to global constant
+	return element.tagName() == "widget-template";
+}
+
 bool NodeType::initPorts()
 {
 	QDomElement portsElement = mGraphics.firstChildElement("ports");
-	if (portsElement.isNull())
+	if (portsElement.isNull()) {
 		return true;
+	}
 	mPortsDomElement = portsElement;
 	initPointPorts(portsElement);
 	initLinePorts(portsElement);
@@ -98,9 +110,9 @@ bool NodeType::initPorts()
 bool NodeType::initPointPorts(QDomElement const &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("pointPort");
-	!portElement.isNull();
-	portElement = portElement.nextSiblingElement("pointPort"))
-	{
+			!portElement.isNull();
+			portElement = portElement.nextSiblingElement("pointPort")) {
+
 		Port *pointPort = new PointPort();
 		if (!pointPort->init(portElement, mWidth, mHeight)) {
 			delete pointPort;
@@ -114,9 +126,9 @@ bool NodeType::initPointPorts(QDomElement const &portsElement)
 bool NodeType::initLinePorts(QDomElement const &portsElement)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("linePort");
-	!portElement.isNull();
-	portElement = portElement.nextSiblingElement("linePort"))
-	{
+			!portElement.isNull();
+			portElement = portElement.nextSiblingElement("linePort")) {
+
 		Port *linePort = new LinePort();
 		if (!linePort->init(portElement, mWidth, mHeight))
 		{
@@ -139,14 +151,17 @@ bool NodeType::initBooleanProperties()
 	mIsHavePin = false;
 	mIsResizeable = true;
 	QDomElement const element = mLogic.firstChildElement("pin");
-	if (!element.isNull())
+	if (!element.isNull()) {
 		mIsPin = true;
+	}
 	QDomElement const element1 = mLogic.firstChildElement("action");
-	if (!element1.isNull())
+	if (!element1.isNull()) {
 		mIsHavePin = true;
+	}
 	QDomElement const element2 = mGraphics.firstChildElement("nonResizeable");
-	if (!element2.isNull())
+	if (!element2.isNull()) {
 		mIsResizeable = false;
+	}
 	return true;
 }
 
@@ -168,9 +183,10 @@ void NodeType::generatePorts() const
 
 void NodeType::generatePointPorts(QDomElement const &portsElement, OutFile &out) const
 {
-	for (QDomElement portElement = portsElement.firstChildElement("pointPort"); !portElement.isNull();
-	portElement = portElement.nextSiblingElement("pointPort"))
-	{
+	for (QDomElement portElement = portsElement.firstChildElement("pointPort");
+			!portElement.isNull();
+			portElement = portElement.nextSiblingElement("pointPort")) {
+
 		out() << "\t<point stroke-width=\"11\" stroke-style=\"solid\" stroke=\"#c3dcc4\" ";
 		out() << "x1=\""<<portElement.attribute("x") << "\" y1=\""<<portElement.attribute("y") << "\" ";
 		out() << "/>\n";
@@ -182,9 +198,10 @@ void NodeType::generatePointPorts(QDomElement const &portsElement, OutFile &out)
 
 void NodeType::generateLinePorts(QDomElement const &portsElement, OutFile &out) const
 {
-	for (QDomElement portElement = portsElement.firstChildElement("linePort"); !portElement.isNull();
-	portElement = portElement.nextSiblingElement("linePort"))
-	{
+	for (QDomElement portElement = portsElement.firstChildElement("linePort");
+			!portElement.isNull();
+			portElement = portElement.nextSiblingElement("linePort")) {
+
 		QDomElement portStartElement = portElement.firstChildElement("start");
 		QDomElement portEndElement = portElement.firstChildElement("end");
 
@@ -202,18 +219,20 @@ void NodeType::generateLinePorts(QDomElement const &portsElement, OutFile &out) 
 
 bool NodeType::hasPointPorts()
 {
-	foreach (Port *port, mPorts){
-		if (dynamic_cast<PointPort*>(port))
+	foreach (Port *port, mPorts) {
+		if (dynamic_cast<PointPort*>(port)) {
 			return true;
+		}
 	}
 	return false;
 }
 
 bool NodeType::hasLinePorts()
 {
-	foreach (Port *port, mPorts){
-		if (dynamic_cast<LinePort*>(port))
+	foreach (Port *port, mPorts) {
+		if (dynamic_cast<LinePort*>(port)) {
 			return true;
+		}
 	}
 	return false;
 }
@@ -233,7 +252,7 @@ void NodeType::generateCode(OutFile &out)
 	if (!mBonusContextMenuFields.empty()) {
 		out() << "\t\t" << className << "()\n\t\t{\n";
 		out() << "\t\t\tmBonusContextMenuFields";
-		foreach (QString elem, mBonusContextMenuFields) {
+		foreach (QString const &elem, mBonusContextMenuFields) {
 			out() << " << " << "\"" << elem << "\"";
 		}
 		out() << ";\n";
@@ -246,13 +265,16 @@ void NodeType::generateCode(OutFile &out)
 	<< "\t\t\t\t\t\t\tQList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,\n"
 	<< "\t\t\t\t\t\t\tSdfRendererInterface *portRenderer)\n\t\t{\n";
 
-	if (!hasPointPorts())
+	if (!hasPointPorts()) {
 		out() << "\t\t\tQ_UNUSED(pointPorts);\n";
-	if (!hasLinePorts())
+	}
+	if (!hasLinePorts()) {
 		out() << "\t\t\tQ_UNUSED(linePorts);\n";
-	if (mLabels.size() == 0)
+	}
+	if (mLabels.size() == 0) {
 		out() << "\t\t\tQ_UNUSED(titles);\n"
 		<<"\t\t\tQ_UNUSED(factory);\n";
+	}
 
 	QFile sdfFile("generated/shapes/" + className + "Class.sdf");
 	if (sdfFile.exists()) {
@@ -271,11 +293,13 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\t\t\tcontents.setWidth(" << mWidth << ");\n"
 	<< "\t\t\tcontents.setHeight(" << mHeight << ");\n";
 
-	foreach (Port *port, mPorts)
+	foreach (Port *port, mPorts) {
 		port->generateCode(out);
+	}
 
-	foreach (Label *label, mLabels)
+	foreach (Label *label, mLabels) {
 		label->generateCodeForConstructor(out);
+	}
 
 	out() << "\t\t}\n\n";
 
@@ -284,8 +308,9 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\t\t~" << className << "() {}\n\n"
 	<< "\t\tvoid paint(QPainter *painter, QRectF &contents)\n\t\t{\n";
 
-	if (hasSdf)
+	if (hasSdf) {
 		out() << "\t\t\tmRenderer->render(painter, contents);\n";
+	}
 
 	out() << "\t\t}\n\n";
 
@@ -300,11 +325,13 @@ void NodeType::generateCode(OutFile &out)
 	<< "\t\t}\n\n"
 	<< "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n";
 
-	if (mLabels.isEmpty())
+	if (mLabels.isEmpty()) {
 		out() << "\t\t\tQ_UNUSED(repo);\n";
-	else
-		foreach (Label *label, mLabels)
+	} else {
+		foreach (Label *label, mLabels) {
 			label->generateCodeForUpdateData(out);
+		}
+	}
 
 	out() << "\t\t}\n\n"
 	<< "\t\tbool isNode() const\n\t\t{\n"
@@ -355,27 +382,32 @@ void NodeType::generateCode(OutFile &out)
 
 	out() << "\t\tQList<double> border() const\n\t\t{\n"
 	<< "\t\t\tQList<double> list;\n";
-	if (mIsHavePin)
+	if (mIsHavePin) {
 		out() << "\t\t\tlist << 30 << 15 << 15 << 25;\n";
-	else
+	} else {
 		out() << "\t\t\tlist << 0 << 0 << 0 << 0;\n";
+	}
 	out() << "\t\t\treturn list;\n"
 	<< "\t\t}\n\n";
 
 	out() << "\t\tQStringList bonusContextMenuFields() const\n\t\t{\n" << "\t\t\treturn ";
-	if (!mBonusContextMenuFields.empty())
+	if (!mBonusContextMenuFields.empty()) {
 		out() << "mBonusContextMenuFields;";
-	else
+	} else {
 		out() << "QStringList();";
+	}
 	out() << "\n\t\t}\n\n";
 
 	out() << "\tprivate:\n";
-	if (!mBonusContextMenuFields.empty())
+	if (!mBonusContextMenuFields.empty()) {
 		out() << "\t\tQStringList mBonusContextMenuFields;\n";
-	if (hasSdf)
+	}
+	if (hasSdf) {
 		out() << "\t\tSdfRendererInterface *mRenderer;\n";
-	foreach (Label *label, mLabels)
+	}
+	foreach (Label *label, mLabels) {
 		label->generateCodeForFields(out);
+	}
 	out() << "\t};";
 	out() << "\n\n";
 }

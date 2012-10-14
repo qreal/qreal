@@ -1,5 +1,7 @@
 #pragma once
+
 #include <QtGui/QComboBox>
+
 #include "../utilsDeclSpec.h"
 
 class QColor;
@@ -14,13 +16,13 @@ public:
 	ColorListEditor(QWidget *widget = 0);
 
 public:
-        void setColorList(QStringList const &ColorList);
+	void setColorList(QStringList const &ColorList);
 	QColor color() const;
-	void setColor(QColor c);
+	void setColor(QColor const &c);
 
 private:
 	QColor mColor;
-        QStringList mColorList;
+	QStringList mColorList;
 	void populateList();
 };
 }

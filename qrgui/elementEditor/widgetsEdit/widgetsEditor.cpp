@@ -44,10 +44,11 @@ QWidget *WidgetsEditor::deserializeWidget(QDomDocument const &document)
 {
 	QDomElement widgetTemplateElement = document.documentElement();
 	QDomElement rootElement = widgetTemplateElement.firstChild().toElement();
-	QDomElement shapeElement = rootElement.nextSiblingElement();
-	return shapeElement.isNull()
-			? ToolFactory::instance()->deserializeWidget(rootElement)
-			: ToolFactory::instance()->deserializeWidget(rootElement, shapeElement);
+	return ToolFactory::instance()->deserializeWidget(rootElement);
+//	QDomElement shapeElement = rootElement.nextSiblingElement();
+//	return shapeElement.isNull()
+//			? ToolFactory::instance()->deserializeWidget(rootElement)
+//			: ToolFactory::instance()->deserializeWidget(rootElement, shapeElement);
 }
 
 void WidgetsEditor::keyPressEvent(QKeyEvent *event)
@@ -193,18 +194,18 @@ void WidgetsEditor::serializeWidget(QDomDocument &target)
 	mRoot->generateXml(rootElement, target);
 	widgetTemplateElement.appendChild(rootElement);
 	target.appendChild(widgetTemplateElement);
-	QDomDocument shapeDocument = mRoot->shapeDocument();
-	QDomElement shapeElement = shapeDocument.documentElement();
-	if (!shapeElement.isNull()) {
-		widgetTemplateElement.appendChild(shapeElement);
-	}
+//	QDomDocument shapeDocument = mRoot->shapeDocument();
+//	QDomElement shapeElement = shapeDocument.documentElement();
+//	if (!shapeElement.isNull()) {
+//		widgetTemplateElement.appendChild(shapeElement);
+//	}
 }
 
 void WidgetsEditor::save()
 {
 	QString const path = QFileDialog::getSaveFileName(this
 			, tr("Save as"), QString()
-			, tr("Widget template format files (*.wtf);;AllFiles (*.*)"));
+			, tr("Widget template format files") + "(*.wtf);;" + tr("All Files") + "(*.*)");
 	if (path.isEmpty()) {
 		return;
 	}

@@ -267,7 +267,7 @@ void ShapeEdit::saveToXml()
 void ShapeEdit::save()
 {
 	generateDom();
-	QMessageBox::information(this, tr("Saving"), "Saved successfully");
+	QMessageBox::information(this, tr("Saving"), tr("Saved successfully"));
 	if (mWidgetBased) {
 		emit shapeSaved(mDocument);
 	} else {
@@ -327,7 +327,7 @@ void ShapeEdit::addImage(bool checked)
 	}
 }
 
-void ShapeEdit::setValuePenStyleComboBox(Qt::PenStyle penStyle)
+void ShapeEdit::setValuePenStyleComboBox(const Qt::PenStyle penStyle)
 {
 	if (penStyle == Qt::SolidLine) {
 		mUi->penStyleComboBox->setCurrentIndex(0);
@@ -344,7 +344,7 @@ void ShapeEdit::setValuePenStyleComboBox(Qt::PenStyle penStyle)
 	}
 }
 
-void ShapeEdit::setValuePenColorComboBox(QColor penColor)
+void ShapeEdit::setValuePenColorComboBox(const QColor &penColor)
 {
 	mUi->penColorComboBox->setColor(penColor);
 }
@@ -363,7 +363,7 @@ void ShapeEdit::setValuePenWidthSpinBox(int width)
 	mUi->penWidthSpinBox->setValue(width);
 }
 
-void ShapeEdit::setValueBrushColorComboBox(QColor brushColor)
+void ShapeEdit::setValueBrushColorComboBox(const QColor &brushColor)
 {
 	mUi->brushColorComboBox->setColor(brushColor);
 }
@@ -393,7 +393,7 @@ void ShapeEdit::setValueTextPixelSizeSpinBox(int size)
 	mUi->textPixelSizeSpinBox->setValue(size);
 }
 
-void ShapeEdit::setValueTextColorComboBox(QColor penColor)
+void ShapeEdit::setValueTextColorComboBox(QColor const &penColor)
 {
 	mUi->textColorComboBox->setColor(penColor);
 }

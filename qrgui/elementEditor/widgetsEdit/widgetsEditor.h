@@ -31,13 +31,24 @@ public:
 	explicit WidgetsEditor(QWidget *parent = 0);
 	~WidgetsEditor();
 
+	/// Forces widget template root element to have
+	/// custom backround described with SDF format
+	/// @param shape XML Doucment with background description
 	void setShape(QDomDocument const &shape);
 
+	/// Returns new instance of widget described in WTF format
+	/// @param document XML Doucment with widget template description
 	static QWidget *deserializeWidget(QDomDocument const &document);
 
 signals:
+	/// Emitted when user saves current widget template created with editor
+	/// @param widget WTF format string representation
+	/// @param index Metamodel elements`s template property index
+	/// @param role Internal system`s role value. @see qrkernel/roles.h
 	void widgetSaved(QString const &widget, QPersistentModelIndex const &index
 		, int const &role);
+	/// Emitted when user wants to desribe custom root backround with
+	/// shape editor
 	void shapeRequested();
 
 protected:

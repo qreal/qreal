@@ -1,3 +1,8 @@
+#include <QtCore/QFile>
+#include <QtCore/QDir>
+#include <QtCore/QFileInfo>
+#include <QtCore/QDebug>
+
 #include "xmlCompiler.h"
 #include "editor.h"
 #include "nameNormalizer.h"
@@ -10,30 +15,29 @@
 #include "nodeType.h"
 #include "enumType.h"
 
-#include <QFile>
-#include <QDir>
-#include <QFileInfo>
-#include <QDebug>
-
 using namespace utils;
 
 XmlCompiler::XmlCompiler()
 {
 	mResources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
 	QDir dir;
-	if(!dir.exists("generated"))
+	if (!dir.exists("generated")) {
 		dir.mkdir("generated");
+	}
 	dir.cd("generated");
-	if(!dir.exists("shapes"))
+	if (!dir.exists("shapes")) {
 		dir.mkdir("shapes");
+	}
 	dir.cd("..");
 }
 
 XmlCompiler::~XmlCompiler()
 {
-	foreach(Editor *editor, mEditors.values())
-		if (editor)
+	foreach(Editor *editor, mEditors.values()) {
+		if (editor) {
 			delete editor;
+		}
+	}
 }
 
 bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &sourcesRootFolder)
@@ -43,16 +47,18 @@ bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &source
 	mCurrentEditor = inputXmlFileInfo.absoluteFilePath();
 	mSourcesRootFolder = sourcesRootFolder;
 	QDir const startingDir = inputXmlFileInfo.dir();
-	if (!loadXmlFile(startingDir, inputXmlFileInfo.fileName()))
+	if (!loadXmlFile(startingDir, inputXmlFileInfo.fileName())) {
 		return false;
+	}
 	generateCode();
 	return true;
 }
 
 Editor* XmlCompiler::loadXmlFile(QDir const &currentDir, QString const &inputXmlFileName)
 {
-	QFileInfo fileInfo(inputXmlFileName);
-	Q_ASSERT(fileInfo.fileName() == inputXmlFileName);  // Проверяем, что нам передали только имя файла, без пути.
+	QFileInfo const fileInfo(inputXmlFileName);
+	// Checking that pure file name without path was given
+	Q_ASSERT(fileInfo.fileName() == inputXmlFileName);
 
 	QString fullFileName = currentDir.absolutePath() + "/" + inputXmlFileName;
 	qDebug() << "Loading file started: " << fullFileName;
@@ -83,8 +89,9 @@ Diagram * XmlCompiler::getDiagram(QString const &diagramName)
 {
 	foreach (Editor *editor, mEditors) {
 		Diagram *diagram = editor->findDiagram(diagramName);
-		if (diagram)
+		if (diagram) {
 			return diagram;
+		}
 	}
 	return NULL;
 }
@@ -104,8 +111,9 @@ void XmlCompiler::generateCode()
 
 void XmlCompiler::addResource(QString const &resourceName)
 {
-	if (!mResources.contains(resourceName))
+	if (!mResources.contains(resourceName)) {
 		mResources += resourceName;
+	}
 }
 
 void XmlCompiler::generateElementClasses()
@@ -119,14 +127,16 @@ void XmlCompiler::generateElementClasses()
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementTitleHelpers.h\"\n\n"
 		;
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+		foreach (Type *type, diagram->types().values()) {
 			type->generateCode(out);
+		}
+	}
 }
 
 void XmlCompiler::generatePluginHeader()
 {
-	QString fileName = "generated/pluginInterface.h";// mPluginName
+	QString const fileName = "generated/pluginInterface.h";// mPluginName
 
 	OutFile out(fileName);
 
@@ -213,7 +223,7 @@ void XmlCompiler::generatePluginHeader()
 
 void XmlCompiler::generatePluginSource()
 {
-	QString fileName = "generated/pluginInterface.cpp"; //mPluginName
+	QString const fileName = "generated/pluginInterface.cpp"; //mPluginName
 
 	OutFile out(fileName);
 
@@ -280,21 +290,24 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 	out() << "void " << mPluginName << "Plugin::initNameMap()\n{\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
-		QString diagramName = NameNormalizer::normalize(diagram->name());
+		QString const diagramName = NameNormalizer::normalize(diagram->name());
 		out() << "\tdiagramNameMap[\"" << diagramName << "\"] = QString::fromUtf8(\"" << diagram->displayedName() << "\");\n";
 		out() << "\tdiagramNodeNameMap[\"" << diagramName << "\"] = \"" << diagram->nodeName() << "\"" << ";\n";
 		out() << "\n";
 	}
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+		foreach (Type *type, diagram->types().values()) {
 			type->generateNameMapping(out);
+		}
+	}
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values()) {
 			GraphicType *obj = dynamic_cast<GraphicType *>(type);
-			if (obj)
+			if (obj) {
 				obj->generatePropertyDisplayedNamesMapping(out);
+			}
 		}
 
 	out() << "}\n\n";
@@ -305,11 +318,11 @@ void XmlCompiler::generatePaletteGroupsLists(utils::OutFile &out)
 	out() << "void " << mPluginName << "Plugin::initPaletteGroupsMap()\n{\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
-		QString diagramName = NameNormalizer::normalize(diagram->name());
+		QString const diagramName = NameNormalizer::normalize(diagram->name());
 		QMap<QString, QStringList > paletteGroups = diagram->paletteGroups();
-		foreach (QList<QString> list , paletteGroups) {
+		foreach (QList<QString> const &list , paletteGroups) {
 			QString groupName = paletteGroups.key(list);
-			foreach (QString name, list) {
+			foreach (QString const &name, list) {
 				out() << "\tpaletteGroupsMap[QString::fromUtf8(\""
 					<< diagramName << "\")][QString::fromUtf8(\""
 					<< groupName << "\")].append(QString::fromUtf8(\""
@@ -325,19 +338,23 @@ void XmlCompiler::generateDescriptionMappings(OutFile &out)
 {
 	out() << "void " << mPluginName << "Plugin::initDescriptionMap()\n{\n";
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		foreach (Type *type, diagram->types().values()) {
 			GraphicType *obj = dynamic_cast<GraphicType *>(type);
-			if (obj)
+			if (obj) {
 				obj->generateDescriptionMapping(out);
+			}
 		}
+	}
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		foreach (Type *type, diagram->types().values()) {
 			GraphicType *obj = dynamic_cast<GraphicType *>(type);
-			if (obj)
+			if (obj) {
 				obj->generatePropertyDescriptionMapping(out);
+			}
 		}
+	}
 
 	out() << "}\n\n";
 }
@@ -347,12 +364,14 @@ void XmlCompiler::generateParentsMappings(OutFile &out)
 	out() << "void " << mPluginName << "Plugin::initParentsMap()\n"
 		<< "{\n";
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		foreach (Type *type, diagram->types().values()) {
 			GraphicType *obj = dynamic_cast<GraphicType *>(type);
-			if (obj)
+			if (obj) {
 				obj->generateParentsMapping(out);
+			}
 		}
+	}
 
 	out() << "}\n\n";
 }
@@ -360,27 +379,33 @@ void XmlCompiler::generateParentsMappings(OutFile &out)
 void XmlCompiler::generateMouseGestureMap(OutFile &out)
 {
 	out() << "void " << mPluginName << "Plugin::initMouseGestureMap()\n{\n";
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+		foreach (Type *type, diagram->types().values()) {
 			type->generateMouseGesturesMap(out);
+		}
+	}
 	out() << "}\n\n";
 }
 
 void XmlCompiler::generatePropertyMap(OutFile &out)
 {
 	out() << "void " << mPluginName << "Plugin::initPropertyMap()\n{\n";
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+		foreach (Type *type, diagram->types().values()) {
 			type->generatePropertyTypes(out);
+		}
+	}
 	out() << "}\n\n";
 }
 
 void XmlCompiler::generatePropertyDefaultsMap(OutFile &out)
 {
 	out() << "void " << mPluginName << "Plugin::initPropertyDefaultsMap()\n{\n";
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+		foreach (Type *type, diagram->types().values()) {
 			type->generatePropertyDefaults(out);
+		}
+	}
 	out() << "}\n\n";
 }
 
@@ -464,9 +489,11 @@ void XmlCompiler::generateGraphicalObjectRequest(OutFile &out)
 
 	bool isNotFirst = false;
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+		foreach (Type *type, diagram->types().values()) {
 			isNotFirst |= type->generateObjectRequestString(out, isNotFirst);
+		}
+	}
 
 	if (isNotFirst) {
 		out() << "	else {\n"
@@ -583,12 +610,15 @@ void XmlCompiler::generateListMethod(OutFile &out, QString const &signature, Lis
 
 	bool isNotFirst = false;
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+		foreach (Type *type, diagram->types().values()) {
 			isNotFirst |= generator.generate(type, out, isNotFirst);
+		}
+	}
 
-	if (!isNotFirst)
+	if (!isNotFirst) {
 		out() << "\tQ_UNUSED(element);\n";
+	}
 	out() << "\treturn result;\n"
 		<< "}\n\n";
 }
@@ -601,13 +631,16 @@ void XmlCompiler::generatePossibleEdges(utils::OutFile &out)
 			<< "\tQList<QPair<QPair<QString,QString>,QPair<bool,QString> > > result;\n";
 	bool isNotFirst = false;
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+		foreach (Type *type, diagram->types().values()) {
 			isNotFirst |= generator.generate(type, out, isNotFirst);
+		}
+	}
 
-	if (!isNotFirst)
+	if (!isNotFirst) {
 		out() << "\tQ_UNUSED(element);\n";
-		out() << "\treturn result;\n"
+	}
+	out() << "\treturn result;\n"
 		<< "}\n\n";
 }
 
@@ -617,19 +650,20 @@ void XmlCompiler::generateNodesAndEdges(utils::OutFile &out)
 	out() << "int " << mPluginName << "Plugin::isNodeOrEdge(QString const &element) const\n"
 		<< "{\n";
 	bool isFirst = true;
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		foreach (Type* type, diagram->types().values()) {
 			int result = 0;
 			EdgeType* edge = dynamic_cast<EdgeType*>(type);
 			NodeType* node = dynamic_cast<NodeType*>(type);
-			if (edge)
+			if (edge) {
 				result = (-1);
-			else if (node)
+			} else if (node) {
 				result = 1;
+			}
 
-			if (!isFirst)
+			if (!isFirst) {
 				out() << "\telse ";
-			else {
+			} else {
 				isFirst = false;
 				out() << "\t";
 			}
@@ -638,6 +672,7 @@ void XmlCompiler::generateNodesAndEdges(utils::OutFile &out)
 				<< "\")\n"
 				<< "\t\treturn " << result << ";\n";
 		}
+	}
 	out() << "\treturn 0;\n}\n";
 }
 
@@ -682,11 +717,13 @@ void XmlCompiler::generateEnumValues(OutFile &out)
 	EnumValuesGenerator generator;
 	bool isNotFirst = false;
 
-	foreach (EnumType *type, mEditors[mCurrentEditor]->getAllEnumTypes())
+	foreach (EnumType *type, mEditors[mCurrentEditor]->getAllEnumTypes()) {
 		isNotFirst |= generator.generate(type, out, isNotFirst);
+	}
 
-	if (!isNotFirst)
+	if (!isNotFirst) {
 		out() << "\tQ_UNUSED(name);\n";
+	}
 	out() << "\treturn result;\n"
 		<< "}\n\n";
 }

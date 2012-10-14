@@ -121,21 +121,21 @@ QWidget *ToolFactory::deserializeWidget(const QDomElement &element)
 	return deserializeWidget(NULL, element);
 }
 
-QWidget *ToolFactory::deserializeWidget(const QDomElement &element
-		, const QDomElement &shape)
-{
-	QWidget *result = deserializeWidget(NULL, element);
-	RootWidget *root = dynamic_cast<RootWidget *>(result);
+//QWidget *ToolFactory::deserializeWidget(const QDomElement &element
+//		, const QDomElement &shape)
+//{
+//	QWidget *result = deserializeWidget(NULL, element);
+//	RootWidget *root = dynamic_cast<RootWidget *>(result);
 
-	QDomDocument shapeDocument;
-	// to make newDocument non-null
-	shapeDocument.createElement("");
-	QDomElement newShape = shape.cloneNode(true).toElement();
-	shapeDocument.appendChild(newShape);
-	root->setShape(shapeDocument);
+//	QDomDocument shapeDocument;
+//	// to make newDocument non-null
+//	shapeDocument.createElement("");
+//	QDomElement newShape = shape.cloneNode(true).toElement();
+//	shapeDocument.appendChild(newShape);
+//	root->setShape(shapeDocument);
 
-	return root;
-}
+//	return root;
+//}
 
 QWidget *ToolFactory::deserializeWidget(QWidget *parent, const QDomElement &element)
 {
