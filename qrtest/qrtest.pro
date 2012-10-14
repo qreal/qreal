@@ -3,6 +3,6 @@ TEMPLATE = subdirs
 SUBDIRS = \
 	qrSources \
 	unitTests \
-	editorPluginTestingFramework \
+#	editorPluginTestingFramework \
 
 unitTests.depends = qrSources
