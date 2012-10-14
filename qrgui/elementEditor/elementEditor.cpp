@@ -57,8 +57,11 @@ void ElementEditor::load(const QString &data)
 
 bool ElementEditor::isWidgetBasedDocument(QDomDocument const &document)
 {
-	QDomElement const elem = document.firstChild().toElement();
-	return !elem.isNull() && elem.tagName() == "widget-template";
+	QDomElement const graphicsElement = document.firstChild().toElement();
+	if (graphicsElement.isNull()) {
+		return false;
+	}
+	return !graphicsElement.firstChildElement("widget-template").isNull();
 }
 
 void ElementEditor::initComponents()
@@ -148,30 +151,8 @@ void ElementEditor::onShapeBasedButtonClicked()
 
 void ElementEditor::giveShapeToWidgetsEditor(QDomDocument const &document)
 {
-	QDomDocument newDocument = makeSdfShape(document);
-	mWidgetsEditor->setShape(newDocument);
+	mWidgetsEditor->setShape(document);
 	showWidgetsEditor();
-}
-
-QDomDocument ElementEditor::makeSdfShape(QDomDocument const &document)
-{
-	// Getting element if correct form for sdf renderer
-	// TODO: move it to shape editor
-	QDomElement graphics = document.documentElement();
-	QDomNode node = graphics.firstChild();
-	while (!node.isNull()) {
-		QDomElement element = node.toElement();
-		if (element.tagName() == "picture") {
-			QDomDocument newDocument;
-			// to make newDocument non-null
-			newDocument.createElement("");
-			QDomElement newPicture = element.cloneNode(true).toElement();
-			newDocument.appendChild(newPicture);
-			return newDocument;
-		}
-		node = node.nextSibling();
-	}
-	return QDomDocument();
 }
 
 void ElementEditor::onWidgetEditorSavedShape(const QString &widget

@@ -37,28 +37,49 @@ WidgetsEditor::~WidgetsEditor()
 	delete mUi;
 }
 
-void WidgetsEditor::setShape(QDomDocument const &shape)
+void WidgetsEditor::setShape(QDomDocument const &shapeDocument)
 {
-	mRoot->setShape(shape);
+	// Getting element if correct form for sdf renderer
+	// TODO: move it to shape editor
+	QDomElement graphics = shapeDocument.documentElement();
+	QDomNode node = graphics.firstChild();
+	mOtherGraphics = QDomDocument();
+	mOtherGraphics.createElement("");
+	QDomDocument shape;
+	while (!node.isNull()) {
+		QDomElement element = node.toElement();
+		if (element.tagName() == "picture") {
+			// to make newDocument non-null
+			shape.createElement("");
+			QDomElement newPicture = element.cloneNode(true).toElement();
+			shape.appendChild(newPicture);
+		} else {
+			mOtherGraphics.appendChild(node.cloneNode(true).toElement());
+		}
+		node = node.nextSibling();
+	}
+
+	if (!shape.isNull()) {
+		mRoot->setShape(shape);
+	}
 }
 
 QWidget *WidgetsEditor::deserializeWidget(QDomDocument const &document)
 {
-	QDomElement widgetTemplateElement = document.documentElement();
+	QDomElement widgetTemplateElement = document.documentElement().firstChildElement("widget-template");
 	QDomElement rootElement = widgetTemplateElement.firstChild().toElement();
 	return ToolFactory::instance()->deserializeWidget(rootElement);
 }
 
-void WidgetsEditor::load(QDomDocument const &widgetTemplate)
+void WidgetsEditor::load(QDomDocument const &graphics)
 {
-	Q_UNUSED(widgetTemplate)
 	if (mRoot) {
 		mScene->removeItem(mRoot);
 		delete mRoot;
 		mRoot = NULL;
 	}
 	initController();
-	initRoot(ToolFactory::instance()->loadDocument(mController, widgetTemplate));
+	initRoot(ToolFactory::instance()->loadDocument(mController, graphics));
 }
 
 void WidgetsEditor::keyPressEvent(QKeyEvent *event)
@@ -79,7 +100,7 @@ void WidgetsEditor::initComponents()
 	initController();
 	initLayoutButtons();
 	initShapeButton();
-	initSaveButton();
+	initSaveButtons();
 	initPreviewButton();
 	initScene();
 	loadTools();
@@ -126,13 +147,19 @@ void WidgetsEditor::initShapeButton()
 	mUi->layoutFrame->layout()->addWidget(mShapeButton);
 }
 
-void WidgetsEditor::initSaveButton()
+void WidgetsEditor::initSaveButtons()
 {
 	QPushButton *saveButton = new QPushButton(QIcon(":icons/widgetsEditor/save.png"), "");
-	saveButton->setToolTip(tr("Save as XML"));
+	saveButton->setToolTip(tr("Save template"));
 	saveButton->setContentsMargins(0,0,0,0);
 	connect(saveButton, SIGNAL(clicked()), this, SLOT(save()));
 	mUi->layoutFrame->layout()->addWidget(saveButton);
+
+	QPushButton *saveToDiskButton = new QPushButton(QIcon(":icons/widgetsEditor/saveToDisk.png"), "");
+	saveToDiskButton->setToolTip(tr("Save to disk as XML"));
+	saveToDiskButton->setContentsMargins(0,0,0,0);
+	connect(saveToDiskButton, SIGNAL(clicked()), this, SLOT(saveToDisk()));
+	mUi->layoutFrame->layout()->addWidget(saveToDiskButton);
 }
 
 void WidgetsEditor::initPreviewButton()
@@ -208,11 +235,22 @@ void WidgetsEditor::onSelectionChanged(Tool *tool)
 
 void WidgetsEditor::serializeWidget(QDomDocument &target)
 {
+	QDomElement graphicsElement = target.createElement("graphics");
 	QDomElement widgetTemplateElement = target.createElement("widget-template");
 	QDomElement rootElement = target.createElement(mRoot->title());
 	mRoot->generateXml(rootElement, target);
 	widgetTemplateElement.appendChild(rootElement);
-	target.appendChild(widgetTemplateElement);
+	graphicsElement.appendChild(widgetTemplateElement);
+	if (!mOtherGraphics.isNull()) {
+		QDomNode node = mOtherGraphics.firstChild();
+		while (!node.isNull()) {
+			QDomElement element = node.toElement();
+			QDomElement newElement = element.cloneNode(true).toElement();
+			graphicsElement.appendChild(newElement);
+			node = node.nextSibling();
+		}
+	}
+	target.appendChild(graphicsElement);
 }
 
 void WidgetsEditor::save()

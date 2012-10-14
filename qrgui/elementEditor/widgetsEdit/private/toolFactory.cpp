@@ -156,8 +156,8 @@ QWidget *ToolFactory::deserializeWidget(QWidget *parent, const QDomElement &elem
 Root *ToolFactory::loadDocument(ToolController *controller
 		, const QDomDocument &document)
 {
-	QDomElement const templateElement = document.firstChild().toElement();
-	QDomElement const rootElement = templateElement.firstChild().toElement();
+	QDomElement const templateElement = document.firstChild().firstChildElement("widget-template").toElement();
+	QDomElement const rootElement = templateElement.firstChildElement("Root").toElement();
 	return dynamic_cast<Root *>(loadElement(NULL, rootElement, controller));
 }
 

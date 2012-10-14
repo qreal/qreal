@@ -90,8 +90,11 @@ void NodeType::generateSdf() const
 
 bool NodeType::isWidget(QDomElement const &element) const
 {
-	// TODO: move to global constant
-	return element.tagName() == "widget-template";
+	if (element.isNull()) {
+		return false;
+	}
+	// TODO: move tag name to global constant
+	return !element.firstChildElement("widget-template").isNull();
 }
 
 bool NodeType::initPorts()

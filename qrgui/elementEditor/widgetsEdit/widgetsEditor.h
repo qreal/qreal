@@ -34,7 +34,7 @@ public:
 	/// Forces widget template root element to have
 	/// custom backround described with SDF format
 	/// @param shape XML Document with background description
-	void setShape(QDomDocument const &shape);
+	void setShape(QDomDocument const &shapeDocument);
 
 	/// Returns new instance of widget described in WTF format
 	/// @param document XML Document with widget template description
@@ -42,7 +42,7 @@ public:
 
 	/// Forces current editor instance to load specified widget template
 	/// @param widgetTemplate XML document in WTF format
-	void load(QDomDocument const &widgetTemplate);
+	void load(QDomDocument const &graphics);
 
 signals:
 	/// Emitted when user saves current widget template created with editor
@@ -72,7 +72,7 @@ private:
 	void initController();
 	void initLayoutButtons();
 	void initShapeButton();
-	void initSaveButton();
+	void initSaveButtons();
 	void initPreviewButton();
 	void initScene();
 	void loadTools();
@@ -81,7 +81,6 @@ private:
 	void initRoot(Root *root);
 
 	void serializeWidget(QDomDocument &target);
-
 	void preview(QWidget *widget);
 
 	void switchLayoutButtonsActiveState(Tool *tool);
@@ -94,7 +93,7 @@ private:
 	Root *mRoot;
 	QPersistentModelIndex const mIndex;
 	int const mRole;
-
+	QDomDocument mOtherGraphics;
 };
 
 }

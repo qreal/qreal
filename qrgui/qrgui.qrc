@@ -55,6 +55,7 @@
         <file>icons/widgetsEditor/trigger.png</file>
         <file>icons/preview.png</file>
         <file>icons/widgetsEditor/save.png</file>
+        <file>icons/widgetsEditor/saveToDisk.png</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>

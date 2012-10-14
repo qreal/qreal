@@ -66,7 +66,6 @@ private:
 	void showWidget(QWidget *widget);
 
 	void giveShapeToWidgetsEditor(QDomDocument const &document);
-	QDomDocument makeSdfShape(QDomDocument const &document);
 
 	QPersistentModelIndex mIndex;
 	int mRole;
