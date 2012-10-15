@@ -1,11 +1,11 @@
-#include "metaEditorSupportPlugin.h"
-
 #include <QtCore/QProcess>
 #include <QtGui/QApplication>
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
 #include <QtGui/QProgressBar>
 #include <QtGui/QDesktopWidget>
+
+#include "metaEditorSupportPlugin.h"
 
 #include "../../../qrkernel/settingsManager.h"
 #include "../../../qrmc/metaCompiler.h"
@@ -115,7 +115,7 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 	progress->setFixedHeight(progressBarHeight);
 	progress->setRange(0, 100);
 
-	int forEditor = 60 / metamodels.size();
+	int const forEditor = 60 / metamodels.size();
 
 	foreach (Id const &key, metamodels) {
 		QString const objectType = key.element();
@@ -149,8 +149,8 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 
 				builder.start(SettingsManager::value("pathToMake").toString());
 
-				bool finished = builder.waitForFinished(100000);
-				qDebug()  << "make";
+				bool const finished = builder.waitForFinished(100000);
+				qDebug() << "make";
 				if (finished && (builder.exitCode() == 0)) {
 					qDebug()  << "make ok";
 
@@ -205,13 +205,15 @@ void MetaEditorSupportPlugin::parseEditorXml()
 			}
 		}
 	}
-	QString const fileName = QFileDialog::getOpenFileName(mMainWindowInterface->windowWidget()
+	QString const fileName = QFileDialog::getOpenFileName(
+			mMainWindowInterface->windowWidget()
 			, tr("Select xml file to parse")
 			, directoryName
 			, "XML files (*.xml)");
 
-	if (fileName.isEmpty())
+	if (fileName.isEmpty()) {
 		return;
+	}
 
 	XmlParser parser(*mLogicalRepoApi);
 
@@ -251,7 +253,7 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 	progress->setRange(0, 100);
 	progress->setValue(5);
 
-	if (mMainWindowInterface->unloadPlugin(normalizeDirName)) {
+	if (!mMainWindowInterface->unloadPlugin(normalizeDirName)) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot unload plugin"));
 		progress->close();
 		delete progress;

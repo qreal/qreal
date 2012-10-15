@@ -1,9 +1,9 @@
 #pragma once
 
-#include <QDomElement>
-#include <QStringList>
-#include <QList>
-#include <QPair>
+#include <QtXml/QDomElement>
+#include <QtCore/QStringList>
+#include <QtCore/QList>
+#include <QtCore/QPair>
 
 #include "type.h"
 
@@ -15,7 +15,7 @@ const int maxLineLength = 80;
 class GraphicType : public Type
 {
 public:
-	GraphicType(Diagram *diagram);
+	explicit GraphicType(Diagram *diagram);
 	virtual ~GraphicType();
 	virtual bool init(QDomElement const &element, QString const &context);
 	virtual bool resolve();
@@ -50,6 +50,10 @@ protected:
 		bool maximizesChildren;
 	};
 
+	void copyFields(GraphicType *type) const;
+	QString resourceName(QString const &resourceType) const;
+	virtual bool isResolving() const;
+
 	QDomElement mLogic;
 	QDomElement mGraphics;
 	QStringList mParents;
@@ -65,10 +69,6 @@ protected:
 	QList<PossibleEdge> mPossibleEdges;
 	QStringList mBonusContextMenuFields;
 
-	void copyFields(GraphicType *type) const;
-	QString resourceName(QString const &resourceType) const;
-	virtual bool isResolving() const;
-
 private:
 	class ResolvingHelper {
 	public:
@@ -77,8 +77,6 @@ private:
 	private:
 		bool &mResolvingFlag;
 	};
-
-	bool mResolving;
 
 	bool initLabels();
 	bool initUsages();
@@ -104,5 +102,6 @@ private:
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
 
+	bool mResolving;
 	QString mDescription;
 };
