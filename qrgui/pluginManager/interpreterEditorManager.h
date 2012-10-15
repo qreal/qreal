@@ -25,11 +25,11 @@ namespace qReal {
 		Q_OBJECT
 
 	public:
-		explicit InterpreterEditorManager(QString fileName, QObject *parent = NULL);
+		explicit InterpreterEditorManager(QString const fileName, QObject *parent = NULL);
 
-		QPair<qrRepo::RepoApi*, Id> *getElementAndRepo(Id const &id, qrRepo::RepoApi *repo, Id const &diagram) const;
-		QPair<qrRepo::RepoApi*, Id> *getDiagramAndRepo(Id const &id, qrRepo::RepoApi *repo, Id const &editor) const;
-		QPair<qrRepo::RepoApi*, Id> *getRepoAndMetaId(Id const &id) const;
+		Id getElement(Id const &id, qrRepo::RepoApi const * const repo, Id const &diagram) const;
+		Id getDiagramOrElement(Id const &id, qrRepo::RepoApi const * const repo, Id const &editor) const;
+		QPair<qrRepo::RepoApi*, Id> getRepoAndMetaId(Id const &id) const;
 		IdList editors() const;
 		IdList diagrams(Id const &editor) const;
 		IdList elements(Id const &diagram) const;
@@ -72,9 +72,8 @@ namespace qReal {
 		bool isParentOf(Id const &child, Id const &parent) const;
 		bool isGraphicalElementNode(const Id &id) const;
 
-		QPair<qrRepo::RepoApi*, Id> *getRepoAndElement(QString const &editor, QString const &element) const;
-		QPair<qrRepo::RepoApi*, Id> *getRepoAndDiagram(QString const &editor, QString const &diagram) const;
-
+		QPair<qrRepo::RepoApi*, Id> getRepoAndElement(QString const &editor, QString const &element) const;
+		QPair<qrRepo::RepoApi*, Id> getRepoAndDiagram(QString const &editor, QString const &diagram) const;
 		QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &editor, QString const &element) const;
 		QStringList elements(QString const &editor, QString const &diagram) const;
 		int isNodeOrEdge(QString const &editor, QString const &element) const;

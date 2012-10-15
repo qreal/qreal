@@ -44,6 +44,9 @@ class InterpreterElementImpl : public ElementImpl
 {
 public:
 	InterpreterElementImpl(qrRepo::RepoApi *repo, Id metaId, Id id);
+	void initPointPorts(QList<StatPoint> &pointPorts, QDomDocument &portsDoc, QDomNode &portsPicture, int &width, int &height);
+	void initLinePorts(QList<StatLine> &linePorts, QDomDocument &portsDoc, QDomNode &portsPicture, int &width, int &height);
+	void initLabels(int width, int height, ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles);
 	void init(QRectF &contents, QList<StatPoint> &pointPorts,
 			  QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
 			  QList<ElementTitleInterface*> &titles,
@@ -67,8 +70,10 @@ public:
 	bool isDividable() const;
 
 	/*Container properties*/
+	bool hasContainerProperty(QString const &property) const;
 	bool isContainer() const;
 	bool isSortingContainer() const;
+	int getSizeOfContainerProperty(QString const &property) const;
 	int sizeOfForestalling() const;
 	int sizeOfChildrenForestalling() const;
 	bool hasMovableChildren() const;
