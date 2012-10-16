@@ -66,7 +66,7 @@ void WidgetsEditor::setShape(QDomDocument const &shapeDocument)
 
 QWidget *WidgetsEditor::deserializeWidget(QDomDocument const &document)
 {
-	QDomElement widgetTemplateElement = document.documentElement().firstChildElement("widget-template");
+	QDomElement widgetTemplateElement = document.firstChildElement("widget-template");
 	QDomElement rootElement = widgetTemplateElement.firstChild().toElement();
 	return ToolFactory::instance()->deserializeWidget(rootElement);
 }

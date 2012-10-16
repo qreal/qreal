@@ -29,7 +29,6 @@ private:
 	bool initSdf();
 	void generateSdf() const;
 
-	bool isWidget(QDomElement const &element) const;
 	bool initPorts();
 	bool initPointPorts(QDomElement const &portsElement);
 	bool initLinePorts(QDomElement const &portsElement);
@@ -39,6 +38,8 @@ private:
 	void generatePorts() const;
 	void generateLinePorts(QDomElement const &portsElement, utils::OutFile &out) const;
 	void generatePointPorts(QDomElement const &portsElement, utils::OutFile &out) const;
+
+	virtual bool isWidgetBased(QDomElement const &graphics) const;
 
 	QList<Port*> mPorts;
 	QDomElement mSdfDomElement;

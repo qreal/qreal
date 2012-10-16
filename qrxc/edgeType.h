@@ -1,9 +1,9 @@
 #pragma once
 
-#include "graphicType.h"
+#include <QtCore/QList>
+#include <QtGui/QColor>
 
-#include <QList>
-#include <QColor>
+#include "graphicType.h"
 
 class Association;
 namespace utils {
@@ -20,6 +20,14 @@ public:
 	virtual bool generateEnumValues(utils::OutFile &/*out*/, bool /*isNotFirst*/) { return false; }
 
 private:
+	virtual bool initAssociations();
+	virtual bool initGraphics();
+	virtual bool initDividability();
+	void generateGraphics() const;
+	void generateEdgeStyle(QString const &styleString, utils::OutFile &out);
+	virtual bool initLabel(Label *label, QDomElement const &element, int const &count);
+	virtual bool isWidgetBased(QDomElement const &graphics) const;
+
 	QList<Association*> mAssociations;
 	QString mBeginType;
 	QString mEndType;
@@ -27,11 +35,4 @@ private:
 	QColor mLineColor;
 	int mLineWidth;
 	QString mIsDividable;
-
-	virtual bool initAssociations();
-	virtual bool initGraphics();
-	virtual bool initDividability();
-	void generateGraphics() const;
-	void generateEdgeStyle(QString const &styleString, utils::OutFile &out);
-	virtual bool initLabel(Label *label, QDomElement const &element, int const &count);
 };

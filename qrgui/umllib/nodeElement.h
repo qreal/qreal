@@ -25,13 +25,7 @@
 
 #include "serializationData.h"
 
-namespace umlLib
-{
-namespace details
-{
-	class NodeElementWidgetsHelper;
-}
-}
+class WidgetsHelper;
 
 class NodeElement : public Element
 {
@@ -262,5 +256,5 @@ private:
 
 	NodeData mData;
 
-	umlLib::details::NodeElementWidgetsHelper *mWidgetsHelper;
+	WidgetsHelper *mWidgetsHelper;
 };

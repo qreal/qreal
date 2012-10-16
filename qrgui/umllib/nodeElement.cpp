@@ -12,9 +12,9 @@
 #include "nodeElement.h"
 #include "../view/editorViewScene.h"
 #include "../editorPluginInterface/editorInterface.h"
-#include "private/nodeElementWidgetsHelper.h"
 #include "private/resizeHandler.h"
 #include "private/copyHandler.h"
+#include "private/widgetsHelper.h"
 
 using namespace qReal;
 
@@ -38,12 +38,14 @@ NodeElement::NodeElement(ElementImpl* impl)
 
 	mPortRenderer = new SdfRenderer();
 	mRenderer = new SdfRenderer();
+	mWidgetsHelper = new WidgetsHelper(this);
 	ElementTitleFactory factory;
 	QList<ElementTitleInterface*> titles;
 
 	QList<StatPoint> pointPorts;
 	QList<StatLine> linePorts;
-	mElementImpl->init(mContents, pointPorts, linePorts, factory, titles, mRenderer, mPortRenderer);
+	mElementImpl->init(mContents, pointPorts, linePorts, factory
+		, titles, mRenderer, mPortRenderer, mWidgetsHelper);
 	mPortHandler = new PortHandler(this, mGraphicalAssistApi, pointPorts, linePorts);
 
 	foreach (ElementTitleInterface *titleIface, titles) {
@@ -70,9 +72,6 @@ NodeElement::NodeElement(ElementImpl* impl)
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
 
 	setGeom(mContents);
-
-	mWidgetsHelper = new umlLib::details::NodeElementWidgetsHelper;
-	mWidgetsHelper->setNodeElement(this);
 }
 
 NodeElement::~NodeElement()

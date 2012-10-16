@@ -53,6 +53,7 @@ protected:
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
 	virtual bool isResolving() const;
+	virtual bool isWidgetBased(QDomElement const &graphics) const = 0;
 
 	QDomElement mLogic;
 	QDomElement mGraphics;
@@ -61,6 +62,7 @@ protected:
 	bool mVisible;
 	int mWidth;
 	int mHeight;
+	bool mIsWidgetBased;
 	QList<Label*> mLabels;
 	QStringList mContains;
 	ContainerProperties mContainerProperties;

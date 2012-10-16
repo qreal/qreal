@@ -1,3 +1,5 @@
+#include <QtCore/QDebug>
+
 #include "edgeType.h"
 #include "association.h"
 #include "../qrutils/outFile.h"
@@ -7,25 +9,26 @@
 #include "nameNormalizer.h"
 #include "label.h"
 
-#include <QDebug>
-
 using namespace utils;
 
 EdgeType::EdgeType(Diagram *diagram) : GraphicType(diagram)
-{}
+{
+}
 
 EdgeType::~EdgeType()
 {
-	foreach (Association *association, mAssociations)
+	foreach (Association *association, mAssociations) {
 		delete association;
+	}
 }
 
 Type* EdgeType::clone() const
 {
 	EdgeType *result = new EdgeType(mDiagram);
 	GraphicType::copyFields(result);
-	foreach (Association *association, mAssociations)
+	foreach (Association *association, mAssociations) {
 		result->mAssociations.append(new Association(*association));
+	}
 	result->mBeginType = mBeginType;
 	result->mEndType = mEndType;
 	result->mLineType = mLineType;
@@ -35,24 +38,21 @@ Type* EdgeType::clone() const
 bool EdgeType::initAssociations()
 {
 	QDomElement associationsElement = mLogic.firstChildElement("associations");
-	if (associationsElement.isNull())
-	{
+	if (associationsElement.isNull()) {
 		return true;
 	}
 	mBeginType = associationsElement.attribute("beginType");
 	mEndType = associationsElement.attribute("endType");
-	if (mBeginType.isEmpty() || mEndType.isEmpty())
-	{
+	if (mBeginType.isEmpty() || mEndType.isEmpty()) {
 		qDebug() << "ERROR: can't parse associations";
 		return false;
 	}
 	for (QDomElement element = associationsElement.firstChildElement("association");
 		!element.isNull();
-		element = element.nextSiblingElement("association"))
-	{
+		element = element.nextSiblingElement("association")) {
+
 		Association *association = new Association();
-		if (!association->init(element))
-		{
+		if (!association->init(element)) {
 			delete association;
 			return false;
 		}
@@ -65,8 +65,7 @@ bool EdgeType::initGraphics()
 {
 	mVisible = true;
 	QDomElement lineTypeElement = mGraphics.firstChildElement("lineType");
-	if (lineTypeElement.isNull())
-	{
+	if (lineTypeElement.isNull()) {
 		mVisible = false;
 		return true;
 	}
@@ -74,49 +73,42 @@ bool EdgeType::initGraphics()
 	QDomElement lineWidthElement = mGraphics.firstChildElement("lineWidth");
 	if (lineWidthElement.isNull()) {
 		mLineWidth = 1;
-	}
-	else {
-		QString lineWidth = lineWidthElement.attribute("width");
-		if (lineWidth.isEmpty())
-		{
+	} else {
+		QString const lineWidth = lineWidthElement.attribute("width");
+		if (lineWidth.isEmpty()) {
 			qDebug() << "ERROR: no width of line";
 			return false;
-		}
-		else {
+		} else {
 			bool success = true;
 			int lineWidthInt = lineWidth.toInt(&success);
 			if (!success) {
 				qDebug() << "ERROR: line width is not a number";
 				return false;
-			}
-			else if (lineWidthInt <= 0) {
+			} else if (lineWidthInt <= 0) {
 				qDebug() << "ERROR: line width is negative number";
 				return false;
-			}
-			else
+			} else {
 				mLineWidth = lineWidthInt;
+			}
 		}
 	}
 	/* code for setting the width of the edges */
 
 	/* code for setting the color of the edges */
-	QDomElement lineColorElement = mGraphics.firstChildElement("lineColor");
+	QDomElement const lineColorElement = mGraphics.firstChildElement("lineColor");
 	if (lineColorElement.isNull()) {
 		mLineColor = Qt::black;
-	}
-	else {
-		QString lineColor = lineColorElement.attribute("color");
+	} else {
+		QString const lineColor = lineColorElement.attribute("color");
 		if (lineColor.isEmpty()) {
 			qDebug() << "ERROR: no color of line";
 			return false;
-		}
-		else {
-			QColor color = QColor(lineColor);
+		} else {
+			QColor const color = QColor(lineColor);
 			if (!color.isValid()) {
 				qDebug() << "ERROR: invalid color name of line";
 				return false;
-			}
-			else {
+			} else {
 				mLineColor = color;
 			}
 		}
@@ -124,29 +116,26 @@ bool EdgeType::initGraphics()
 	/* code for setting the color of the edges */
 
 	QString lineType = lineTypeElement.attribute("type");
-	if (lineType.isEmpty())
-	{
+	if (lineType.isEmpty()) {
 		qDebug() << "ERROR: no line type";
 		return false;
-	}
-	else if (lineType == "noPan")
+	} else if (lineType == "noPan") {
 		lineType = "solidLine";
+	}
 	mLineType = "Qt::" + lineType.replace(0, 1, lineType.at(0).toUpper());
 	return true;
 }
 
 bool EdgeType::initDividability()
 {
-	QDomElement dividabilityElement = mLogic.firstChildElement("dividability");
+	QDomElement const dividabilityElement = mLogic.firstChildElement("dividability");
 
 	mIsDividable = "false";
-	if (dividabilityElement.isNull())
-	{
+	if (dividabilityElement.isNull()) {
 		return true;
 	}
-	QString isDividable = dividabilityElement.attribute("isDividable");
-	if (isDividable != "true" && isDividable != "false")
-	{
+	QString const isDividable = dividabilityElement.attribute("isDividable");
+	if (isDividable != "true" && isDividable != "false") {
 		qDebug() << "ERROR: can't parse dividability";
 		return false;
 	}
@@ -185,7 +174,7 @@ void EdgeType::generateCode(OutFile &out)
 	if (!mBonusContextMenuFields.empty()) {
 		out() << "\t\t" << className << "() {\n";
 		out() << "\t\t\tmBonusContextMenuFields";
-		foreach (QString elem, mBonusContextMenuFields) {
+		foreach (QString const &elem, mBonusContextMenuFields) {
 			out() << " << " << "\"" << elem << "\"";
 		}
 		out() << ";\n";
@@ -194,14 +183,15 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\t\tvoid init(QRectF &, QList<StatPoint> &, QList<StatLine> &,\n"
 	<< "\t\t\t\t\t\t\t\t\t\t\tElementTitleFactoryInterface &, QList<ElementTitleInterface*> &,\n"
-	<< "\t\t\t\t\t\t\t\t\t\t\tSdfRendererInterface *, SdfRendererInterface *) {}\n\n"
+	<< "\t\t\t\t\t\t\t\t\t\t\tSdfRendererInterface *, SdfRendererInterface *, WidgetsHelperInterface *) {}\n\n"
 	<< "\t\tvoid init(ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles)\n\t\t{\n";
 
-	if (!mLabels.isEmpty())
+	if (!mLabels.isEmpty()) {
 		mLabels[0]->generateCodeForConstructor(out);
-	else
+	} else {
 		out() << "\t\t\tQ_UNUSED(titles);\n"
 		<< "\t\t\tQ_UNUSED(factory);\n";
+	}
 
 	out() << "\t\t}\n\n"
 	<< "\t\tvirtual ~" << className << "() {}\n\n"
@@ -232,19 +222,21 @@ void EdgeType::generateCode(OutFile &out)
 	<< mLineColor.blue()
 	<< "); }\n"
 	<< "\t\tQt::PenStyle getPenStyle() const { ";
-	if (mLineType != "")
+	if (mLineType != "") {
 		out() << "return " << mLineType << "; }\n";
-	else
+	} else {
 		out() << "return Qt::SolidLine; }\n";
+	}
 	out() << "\t\tQStringList bonusContextMenuFields() const\n\t\t{\n" << "\t\t\treturn ";
-	if (!mBonusContextMenuFields.empty())
+	if (!mBonusContextMenuFields.empty()) {
 		out() << "mBonusContextMenuFields;";
-	else
+	} else {
 		out() << "QStringList();";
+	}
 	out() << "\n\t\t}\n\n";
 
 	out() << "\tprotected:\n"
-	<< "\t\tvirtual void drawStartArrow(QPainter * painter) const\n\t\t{\n";
+		<< "\t\tvirtual void drawStartArrow(QPainter * painter) const\n\t\t{\n";
 
 	generateEdgeStyle(mBeginType, out);
 
@@ -254,18 +246,21 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n";
 
-	if (mLabels.isEmpty())
+	if (mLabels.isEmpty()) {
 		out() << "\t\t\tQ_UNUSED(repo);\n";
-	else
+	} else {
 		mLabels[0]->generateCodeForUpdateData(out);
+	}
 
 	out() << "\t\t}\n\n";
 	out() << "\tprivate:\n";
-	if (!mBonusContextMenuFields.empty())
+	if (!mBonusContextMenuFields.empty()) {
 		out() << "\t\tQStringList mBonusContextMenuFields;\n";
+	}
 
-	if (!mLabels.isEmpty())
+	if (!mLabels.isEmpty()) {
 		mLabels[0]->generateCodeForFields(out);
+	}
 
 	out() << "\t};\n\n";
 }
@@ -274,41 +269,55 @@ void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
 {
 	QString style = styleString;
 
-	if (style.isEmpty())
+	if (style.isEmpty()) {
 		style = "filled_arrow";
+	}
 
 	out() << "\t\t\tQBrush old = painter->brush();\n"
 	"\t\t\tQBrush brush;\n"
 	"\t\t\tbrush.setStyle(Qt::SolidPattern);\n";
 
-	if (style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow")
+	if (style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow") {
 		out() << "\t\t\tbrush.setColor(Qt::white);\n";
+	}
 
-	if (style == "filled_arrow" || style == "filled_rhomb")
+	if (style == "filled_arrow" || style == "filled_rhomb") {
 		out() << "\t\t\tbrush.setColor(Qt::black);\n";
+	}
 	out() << "\t\t\tpainter->setBrush(brush);\n";
 
-	if (style == "empty_arrow" || style == "filled_arrow")
+	if (style == "empty_arrow" || style == "filled_arrow") {
 		out() << "\t\t\tstatic const QPointF points[] = {\n"
 		"\t\t\t\tQPointF(0,0),\n\t\t\t\tQPointF(-5,10),\n\t\t\t\tQPointF(5,10)\n\t\t\t};\n"
 		"\t\t\tpainter->drawPolygon(points, 3);\n";
+	}
 
-	if (style == "empty_rhomb" || style == "filled_rhomb")
+	if (style == "empty_rhomb" || style == "filled_rhomb") {
 		out() << "\t\t\tstatic const QPointF points[] = {\n"
 		"\t\t\t\tQPointF(0,0),\n\t\t\t\tQPointF(-5,10),\n\t\t\t\tQPointF(0,20),\n\t\t\t\tQPointF(5,10)\n\t\t\t"
 		"};\n"
 		"\t\t\tpainter->drawPolygon(points, 4);\n";
+	}
 
-	if (style == "open_arrow")
+	if (style == "open_arrow") {
 		out() << "\t\t\tstatic const QPointF points[] = {\n"
 		"\t\t\t\tQPointF(-5,10),\n\t\t\t\tQPointF(0,0),\n\t\t\t\tQPointF(5,10)\n\t\t\t};\n"
 		"\t\t\tpainter->drawPolyline(points, 3);\n";
+	}
 
-	if (style == "complex_arrow")
+	if (style == "complex_arrow") {
 		out() << "\t\t\tstatic const QPointF points[] = {"
 		"\n\t\t\t\tQPointF(-15,30),\n\t\t\t\tQPointF(-10,10),"
 		"\n\t\t\t\tQPointF(0,0),\n\t\t\t\tQPointF(10,10),"
 		"\n\t\t\t\tQPointF(15,30),\n\t\t\t\tQPointF(0,23),\n\t\t\t\tQPointF(-15,30)\n\t\t\t};\n"
 		"\t\t\tpainter->drawPolyline(points, 7);\n";
+	}
 	out() << "\t\t\tpainter->setBrush(old);\n\t\t}\n\n";
+}
+
+bool EdgeType::isWidgetBased(const QDomElement &graphics) const
+{
+	Q_UNUSED(graphics)
+	// TODO: Add logic if widget-based edges appear
+	return false;
 }

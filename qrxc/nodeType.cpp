@@ -59,14 +59,27 @@ bool NodeType::initGraphics()
 
 bool NodeType::initSdf()
 {
-	QDomElement sdfElement = mGraphics.firstChildElement("picture");
-	if (!sdfElement.isNull()) {
-		mWidth = sdfElement.attribute("sizex").toInt();
-		mHeight = sdfElement.attribute("sizey").toInt();
-		mSdfDomElement = sdfElement;
-		mVisible = true;
+	if (isWidgetBased(mGraphics)) {
+		QDomElement wtfElement = mGraphics.firstChildElement("widget-template");
+		if (!wtfElement.isNull()) {
+			// TODO: recieve size!!!
+//			mWidth = wtfElement.attribute("sizex").toInt();
+//			mHeight = wtfElement.attribute("sizey").toInt();
+			mSdfDomElement = wtfElement;
+			mVisible = true;
+		} else {
+			mVisible = false;
+		}
 	} else {
-		mVisible = false;
+		QDomElement sdfElement = mGraphics.firstChildElement("picture");
+		if (!sdfElement.isNull()) {
+			mWidth = sdfElement.attribute("sizex").toInt();
+			mHeight = sdfElement.attribute("sizey").toInt();
+			mSdfDomElement = sdfElement;
+			mVisible = true;
+		} else {
+			mVisible = false;
+		}
 	}
 	return true;
 }
@@ -78,23 +91,15 @@ void NodeType::generateSdf() const
 
 	OutFile out("generated/shapes/" + resourceName("Class"));
 	mSdfDomElement.save(out(), 1);
-
-	//	QDomNodeList images = mSdfDomElement.elementsByTagName("image");
-
-	/*	for (int i = 0; i < images.size(); ++i) {
-  QString const name = images.at(i).toElement().attribute("name");
-  mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + name + "</file>\n");
- }
- */
 }
 
-bool NodeType::isWidget(QDomElement const &element) const
+bool NodeType::isWidgetBased(QDomElement const &graphics) const
 {
-	if (element.isNull()) {
+	if (graphics.isNull()) {
 		return false;
 	}
 	// TODO: move tag name to global constant
-	return !element.firstChildElement("widget-template").isNull();
+	return !graphics.firstChildElement("widget-template").isNull();
 }
 
 bool NodeType::initPorts()
@@ -247,6 +252,7 @@ void NodeType::generateCode(OutFile &out)
 
 	QString const className = NameNormalizer::normalize(qualifiedName());
 	bool hasSdf = false;
+	bool hasWtf = false;
 	bool hasPorts = false;
 
 	out() << "\tclass " << className << " : public ElementImpl\n\t{\n"
@@ -266,7 +272,7 @@ void NodeType::generateCode(OutFile &out)
 	<< "\t\tvoid init(QRectF &contents, QList<StatPoint> &pointPorts,\n"
 	<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,\n"
 	<< "\t\t\t\t\t\t\tQList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,\n"
-	<< "\t\t\t\t\t\t\tSdfRendererInterface *portRenderer)\n\t\t{\n";
+	<< "\t\t\t\t\t\t\tSdfRendererInterface *portRenderer, WidgetsHelperInterface *widgetsHelper)\n\t\t{\n";
 
 	if (!hasPointPorts()) {
 		out() << "\t\t\tQ_UNUSED(pointPorts);\n";
@@ -284,13 +290,23 @@ void NodeType::generateCode(OutFile &out)
 		out() << "\t\t\tmRenderer = renderer;\n"
 		"\t\t\tmRenderer->load(QString(\":/generated/shapes/" << className << "Class.sdf\"));\n";
 		hasSdf = true;
-	} else
+	} else {
 		out() << "\t\t\tQ_UNUSED(portRenderer);\n";
+	}
 
 	sdfFile.setFileName("generated/shapes/" + className + "Ports.sdf");
 	if (sdfFile.exists()) {
 		out() << "\t\t\tportRenderer->load(QString(\":/generated/shapes/" << className << "Ports.sdf\"));\n";
 		hasPorts = true;
+	}
+
+	QFile wtfFile("generated/shapes/" + className + "Class.wtf");
+	if (wtfFile.exists()) {
+		out() << "\t\t\tmWidgetsHelper = widgetsHelper;\n"
+		"\t\t\tmWidgetsHelper->initWidget(QString(\":/generated/shapes/" << className << "Class.wtf\"));\n";
+		hasWtf = true;
+	} else {
+		out() << "\t\t\tQ_UNUSED(widgetsHelper);\n";
 	}
 
 	out() << "\t\t\tcontents.setWidth(" << mWidth << ");\n"
@@ -407,6 +423,9 @@ void NodeType::generateCode(OutFile &out)
 	}
 	if (hasSdf) {
 		out() << "\t\tSdfRendererInterface *mRenderer;\n";
+	}
+	if (hasWtf) {
+		out() << "\t\tWidgetsHelperInterface *mWidgetsHelper;\n";
 	}
 	foreach (Label *label, mLabels) {
 		label->generateCodeForFields(out);

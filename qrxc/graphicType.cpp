@@ -71,6 +71,7 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 			return false;
 		}
 		mGraphics = element.firstChildElement("graphics");
+		mIsWidgetBased = isWidgetBased(mGraphics);
 		return initParents() && initProperties() && initDividability() && initContainers() && initAssociations()
 			&& initGraphics() && initLabels() && initConnections() && initUsages() && initPossibleEdges()
 			&& initContainerProperties() && initBonusContextMenuFields();
@@ -559,7 +560,8 @@ void GraphicType::generateOneCase(OutFile &out, bool isNotFirst) const
 QString GraphicType::resourceName(QString const &resourceType) const
 {
 	QString const name = NameNormalizer::normalize(qualifiedName());
-	return name + resourceType + ".sdf";
+	QString const extension = mIsWidgetBased && resourceType == "Class" ? ".wtf" : ".sdf";
+	return name + resourceType + extension;
 }
 
 bool GraphicType::generateContainedTypes(OutFile &out, bool isNotFirst)

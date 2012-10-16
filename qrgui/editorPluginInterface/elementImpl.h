@@ -8,6 +8,7 @@
 #include "elementTitleHelpers.h"
 #include "elementRepoInterface.h"
 #include "sdfRendererInterface.h"
+#include "widgetsHelperInterface.h"
 #include "../../qrkernel/ids.h"
 
 typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
@@ -92,7 +93,8 @@ public:
 	virtual void init(QRectF &contents, QList<StatPoint> &pointPorts,
 					  QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
 					  QList<ElementTitleInterface*> &titles,
-					  SdfRendererInterface *renderer, SdfRendererInterface *portRenderer) = 0;
+					  SdfRendererInterface *renderer, SdfRendererInterface *portRenderer,
+					  WidgetsHelperInterface *widgetsHelper) = 0;
 	virtual void init(ElementTitleFactoryInterface &factory,
 					  QList<ElementTitleInterface*> &titles) = 0;
 	virtual void paint(QPainter *painter, QRectF &contents) = 0;
