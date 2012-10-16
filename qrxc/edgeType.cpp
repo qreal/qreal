@@ -12,7 +12,9 @@
 using namespace utils;
 
 EdgeType::EdgeType(Diagram *diagram) : GraphicType(diagram)
-{}
+{
+	mIsDividable = "false";
+}
 
 EdgeType::~EdgeType()
 {

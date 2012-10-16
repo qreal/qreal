@@ -1,10 +1,11 @@
 #include <QtCore/QFile>
 
 #include "customClassGenerator.h"
-#include "nameNormalizer.h"
+#include "../../../qrutils/nameNormalizer.h"
 
 using namespace ubiq::generator;
 using namespace qReal;
+using namespace utils;
 
 CustomClassGenerator::CustomClassGenerator(QString const &templateDirPath
 		, QString const &outputDirPath

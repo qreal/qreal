@@ -54,24 +54,9 @@ void Label::generateCodeForConstructor(OutFile &out)
 		<< "			titles.append(" + titleName() + ");\n";
 }
 
-QStringList Label::getReformedList(QStringList const &list) const
-{
-	QStringList result;
-	int counter = 1;
-	foreach (QString const &str, list){
-		if (counter % 2 == 0) {
-			result.append(str);
-		} else {
-			result.append("\"" + str + "\"");
-		}
-		counter++;
-	}
-	return result;
-}
-
 QStringList Label::getListOfStr(QString const &strToParse) const
 {
-	return getReformedList(strToParse.split("##"));
+	return strToParse.split("##");
 }
 
 void Label::generateCodeForUpdateData(OutFile &out)
@@ -86,23 +71,23 @@ void Label::generateCodeForUpdateData(OutFile &out)
 
 	QString resultStr;
 	if (list.count() == 1) {
-		if (list.first() == "\"name\"") {
+		if (list.first() == "name") {
 			resultStr = "repo->name()";
 		} else {
-			resultStr = "repo->logicalProperty(" + list.first() + ")";
+			resultStr = "repo->logicalProperty(\"" + list.first() + "\")";
 		}
 	} else {
 		int counter = 1;
 		foreach (QString const &listElement, list) {
 			QString field;
 			if (counter % 2 == 0) {
-				if (listElement == "\"name\"") {
+				if (listElement == "name") {
 					field = "repo->name()";
 				} else {
 					field = "repo->logicalProperty(\"" + listElement + "\")";
 				}
 			} else {
-				field = "QString::fromUtf8(" + listElement + ")";
+				field = "QString::fromUtf8(\"" + listElement + "\")";
 			}
 
 			resultStr += " + " +  field;
