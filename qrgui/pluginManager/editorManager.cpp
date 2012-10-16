@@ -36,7 +36,12 @@ EditorManager::EditorManager(QObject *parent)
 				mPluginIface[iEditor->id()] = iEditor;
 				mLoaders.insert(fileName, loader);
 			} else {
-				loader->unload();
+				// TODO: Just does not work under Linux. Seems to be memory corruption when
+				// loading, unloading, and then loading .so file again.
+				// To reproduce, uncomment this, build VisualInterpreter, and try to launch QReal.
+				// With some tool plugins, like MetaEditorSupport or Exterminatus, works fine,
+				// also works fine on Windows. Investigation required.
+				// loader->unload();
 				delete loader;
 			}
 		} else {
