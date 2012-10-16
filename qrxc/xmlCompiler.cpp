@@ -57,7 +57,6 @@ bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &source
 Editor* XmlCompiler::loadXmlFile(QDir const &currentDir, QString const &inputXmlFileName)
 {
 	QFileInfo const fileInfo(inputXmlFileName);
-	// Checking that pure file name without path was given
 	Q_ASSERT(fileInfo.fileName() == inputXmlFileName);
 
 	QString fullFileName = currentDir.absolutePath() + "/" + inputXmlFileName;
@@ -164,6 +163,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual void initDescriptionMap();\n"
 		<< "\tvirtual void initParentsMap();\n"
 		<< "\tvirtual void initPaletteGroupsMap();\n"
+		<< "\tvirtual void initPaletteGroupsDescriptionMap();\n"
 		<< "\n"
 		<< "\tvirtual QString id() const { return \"" << mPluginName << "\"; }\n"
 		<< "\n"
@@ -202,6 +202,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tvirtual QStringList diagramPaletteGroups(QString const &diagram) const;\n"
 		<< "\tvirtual QStringList diagramPaletteGroupList(QString const &diagram, QString const &group) const;\n"
+		<< "\tvirtual QString diagramPaletteGroupDescription(QString const &diagram, QString const &group) const;\n"
 		<< "\n"
 		<< "private:\n"
 		<< "\tQMap<QString, QIcon> iconMap;\n"
@@ -217,6 +218,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQMap<QString, QMap<QString, QString> > elementMouseGesturesMap;\n"
 		<< "\tQMap<QString, QMap<QString, QList<QPair<QString, QString> > > > parentsMap;  // Maps diagram and element to a list of diagram-element pairs of parents (generalization relation).\n"
 		<< "\tQMap<QString, QMap<QString, QStringList > > paletteGroupsMap;  // Maps element`s lists of all palette groups.\n"
+		<< "\tQMap<QString, QMap<QString, QString > > paletteGroupsDescriptionMap; \n"
 		<< "};\n"
 		<< "\n";
 }
@@ -274,10 +276,12 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 		<< "\tinitDescriptionMap();\n"
 		<< "\tinitParentsMap();\n"
 		<< "\tinitPaletteGroupsMap();\n"
+		<< "\tinitPaletteGroupsDescriptionMap();\n"
 		<< "}\n\n";
 
 	generateNameMappings(out);
 	generatePaletteGroupsLists(out);
+	generatePaletteGroupsDescriptions(out);
 	generateMouseGestureMap(out);
 	generatePropertyMap(out);
 	generatePropertyDefaultsMap(out);
@@ -327,6 +331,26 @@ void XmlCompiler::generatePaletteGroupsLists(utils::OutFile &out)
 					<< diagramName << "\")][QString::fromUtf8(\""
 					<< groupName << "\")].append(QString::fromUtf8(\""
 					<< NameNormalizer::normalize(name) << "\"));\n";
+			}
+		}
+	}
+	out() << "}\n\n";
+}
+
+void XmlCompiler::generatePaletteGroupsDescriptions(utils::OutFile &out)
+{
+	out() << "void " << mPluginName << "Plugin::initPaletteGroupsDescriptionMap()\n{\n";
+
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+		QString diagramName = NameNormalizer::normalize(diagram->name());
+		QMap<QString, QString > paletteGroupsDescriptions = diagram->paletteGroupsDescriptions();
+		foreach (QString groupName, paletteGroupsDescriptions.keys()) {
+			QString descriptionName = paletteGroupsDescriptions[groupName];
+			if (!descriptionName.isEmpty()) {
+				out() << "\tpaletteGroupsDescriptionMap[QString::fromUtf8(\""
+					<< diagramName << "\")][QString::fromUtf8(\""
+					<< groupName << "\")] = QString::fromUtf8(\""
+					<< descriptionName << "\");\n";
 			}
 		}
 	}
@@ -437,6 +461,10 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 		<< "\treturn paletteGroupsMap[diagram][group];\n"
 		<< "}\n\n"
 
+		<< "QString " << mPluginName << "Plugin::diagramPaletteGroupDescription(QString const &diagram, QString const &group) const\n{\n"
+		<< "\treturn paletteGroupsDescriptionMap[diagram][group];\n"
+		<< "}\n\n"
+
 		<< "QStringList " << mPluginName << "Plugin::elements(QString const &diagram) const\n{\n"
 		<< "\treturn elementsNameMap[diagram].keys();\n"
 		<< "}\n\n"
@@ -540,7 +568,7 @@ void XmlCompiler::generateGetParentsOfRequest(OutFile &out)
 // принимающим функцию, вызываемую при посещении каждого элемента. В C++ так тоже
 // можно, но невежливо, поэтому делается так: тоже есть метод, реализующий
 // хитрый обход, ему вместо функции передаётся объект-действие, реализующий некий
-// интерфейс. Интерфейс содержит только один метод, который принимает в качестве параметров
+// интерфейс. �?нтерфейс содержит только один метод, который принимает в качестве параметров
 // элемент структуры, который мы хотим посетить, некоторые дополнительные параметры,
 // говорящии о состоянии обхода, и некоторые параметры из внешнего контекста
 // (для которых в нормальных языках вообще есть замыкания).

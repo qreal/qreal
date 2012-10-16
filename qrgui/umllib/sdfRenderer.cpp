@@ -227,7 +227,7 @@ void SdfRenderer::image_draw(QDomElement &element)
 	qreal const y1 = y1_def(element);
 	qreal const x2 = x2_def(element);
 	qreal const y2 = y2_def(element);
-	QString const fileName = SettingsManager::value("pathToImages", ".").toString() + "/" + element.attribute("name", "error");
+	QString const fileName = SettingsManager::value("pathToImages").toString() + "/" + element.attribute("name", "error");
 
 	QPixmap pixmap;
 

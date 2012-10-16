@@ -22,7 +22,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mScene(NULL)
 		, mRobot(NULL)
 		, mDrawCyclesCount(0)
-		, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements", 500).toInt())
+		, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements").toInt())
 		, mRobotModel(robotModel)
 		, mWorldModel(worldModel)
 		, mDrawingAction(drawingAction::none)
