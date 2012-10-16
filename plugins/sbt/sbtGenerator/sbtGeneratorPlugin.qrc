@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>sbtGeneratorPlugin_ru.qm</file>
+  </qresource>
+</RCC>

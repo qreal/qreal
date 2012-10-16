@@ -26,4 +26,5 @@ SOURCES += \
 RESOURCES += \
 	$$PWD/qrkernel.qrc
 
+OTHER_FILES +=
 

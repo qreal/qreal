@@ -34,6 +34,7 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
 	virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
+	void changeParent(Id const &parentId, Id const &childId);
 	qrRepo::LogicalRepoApi const &api() const;
 	qrRepo::LogicalRepoApi &mutableApi() const;
 	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());

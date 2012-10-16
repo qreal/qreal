@@ -16,9 +16,15 @@ GraphicalModelView::GraphicalModelView(LogicalModel * const model)
 
 void GraphicalModelView::rowsInserted(QModelIndex const &parent, int start, int end)
 {
+	QPersistentModelIndex const parentIndex = parent.sibling(parent.row(), 0);
+	Id parentLogicalId = parentIndex.data(roles::logicalIdRole).value<Id>();
+
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex const current = model()->index(row, 0, parent);
 		Id const logicalId = current.data(roles::logicalIdRole).value<Id>();
+		if (parentLogicalId == Id() || parentLogicalId.editor() != "MetaEditor" || logicalId.editor() != "MetaEditor") {
+			parentLogicalId = Id::rootId();
+		}
 		QString const name = current.data(Qt::DisplayRole).toString();
 		if (logicalId == Id())
 			// No logical Id for this item, so logical model shouldn't care
@@ -31,7 +37,7 @@ void GraphicalModelView::rowsInserted(QModelIndex const &parent, int start, int 
 		// some elements have no correspondences in another model, and tree
 		// structures may be very different by themselves.
 		LogicalModel * const mLogicalModel = static_cast<LogicalModel *>(mModel);
-		mLogicalModel->addElementToModel(Id::rootId(), logicalId, logicalId, name, QPoint(0, 0));
+		mLogicalModel->addElementToModel(parentLogicalId, logicalId, logicalId, name, QPoint(0, 0));
 	}
 }
 
@@ -42,6 +48,11 @@ void GraphicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex con
 
 		Id const logicalId = current.data(roles::logicalIdRole).value<Id>();
 		static_cast<LogicalModel *>(mModel)->updateElements(logicalId, current.data(Qt::DisplayRole).toString());
+	}
+	Id const parentLogicalId = topLeft.sibling(topLeft.row(), 0).data(roles::logicalIdRole).value<Id>();
+	Id const childLogicalId = bottomRight.sibling(bottomRight.row(), 0).data(roles::logicalIdRole).value<Id>();
+	if (parentLogicalId.editor() == "MetaEditor" && childLogicalId.editor() == "MetaEditor" && parentLogicalId != childLogicalId) {
+		static_cast<LogicalModel *>(mModel)->changeParent(parentLogicalId, childLogicalId);
 	}
 }
 
