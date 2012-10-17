@@ -21,7 +21,7 @@ namespace qrmc {
 	class Editor
 	{
 	public:
-		Editor(MetaCompiler *metaCompiler, qrRepo::RepoApi *api, qReal::Id const &id);
+		Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
 		~Editor();
 		MetaCompiler *metaCompiler();
 		qReal::Id id();
@@ -52,9 +52,12 @@ namespace qrmc {
 		void generateNamesMap();
 		void generateMouseGesturesMap();
 		void generatePropertiesMap();
+		void generatePropertyDisplayedNamesMap();
+		void generateParentsMap();
 		void generatePropertyDefaultsMap();
 		void generateElementsFactory();
 		void generateContainers();
+		void generateReferenceProperties();
 		void generateConnections();
 		void generateUsages();
 		void generateIsNodeOrEdge();
@@ -62,7 +65,7 @@ namespace qrmc {
 		void generatePossibleEdges();
 
 		MetaCompiler *mMetaCompiler;
-		qrRepo::RepoApi *mApi;
+		qrRepo::LogicalRepoApi *mApi;
 		qReal::Id mId;
 		QString mName;
 		bool mLoadingComplete;
@@ -77,6 +80,7 @@ namespace qrmc {
 
 		class MethodGenerator;
 		class ContainersGenerator;
+		class ReferencePropertiesGenerator;
 		class ConnectionsGenerator;
 		class UsagesGenerator;
 		class FactoryGenerator;
@@ -85,6 +89,8 @@ namespace qrmc {
 		class MouseGesturesGenerator;
 		class PropertiesGenerator;
 		class PropertyDefaultsGenerator;
+		class PropertyDisplayedNamesGenerator;
+		class ParentsMapGenerator;
 		class PossibleEdgesGenerator;
 		void generatePluginMethod(QString const &tag, MethodGenerator const &generator);
 	};

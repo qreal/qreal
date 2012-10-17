@@ -43,9 +43,9 @@ public:
 
 	bool isLogicalId(Id const &id) const;
 
-	void removeReferencesTo(Id const &id) const;
-	void removeReferencesFrom(Id const &id) const;
-	void removeReference(Id const &id, Id const &reference) const;
+	void removeReferencesTo(Id const &id);
+	void removeReferencesFrom(Id const &id);
+	void removeReference(Id const &id, Id const &reference);
 
 	void setTo(Id const &elem, Id const &newValue);
 	Id to(Id const &elem) const;
