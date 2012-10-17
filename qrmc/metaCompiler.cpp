@@ -33,9 +33,11 @@ MetaCompiler::MetaCompiler(QString const &qrmcDir, QString const &workingCopyDir
 
 MetaCompiler::~MetaCompiler()
 {
-	foreach(Editor *editor, mEditors.values())
-		if (editor)
+	foreach(Editor *editor, mEditors.values()) {
+		if (editor) {
 			delete editor;
+		}
+	}
 }
 
 bool MetaCompiler::compile(QString const &targetMetamodel)
@@ -43,8 +45,9 @@ bool MetaCompiler::compile(QString const &targetMetamodel)
 	mTargetMetamodel = targetMetamodel;
 	IdList rootItems = mApi.children(Id::rootId());
 	qDebug() << "root diagrams:" << rootItems.size();
-	if (rootItems.isEmpty())
+	if (rootItems.isEmpty()) {
 		qDebug() << "couldn't load any root diagrams";
+	}
 	foreach(qReal::Id editorId, rootItems) {
 		if (!mApi.isLogicalElement(editorId))
 			continue;
@@ -54,8 +57,9 @@ bool MetaCompiler::compile(QString const &targetMetamodel)
 				continue;
 			mPluginName = NameNormalizer::normalize(mApi.property(editorId, nameOfTheDirectory)
 											.toString().section("/", -1));
-			if (!loadMetaModel(editorId))
+			if (!loadMetaModel(editorId)) {
 				return false;
+			}
 		}
 	}
 	generateCode();
@@ -74,8 +78,9 @@ bool MetaCompiler::changeDir(const QString &path)
 
 bool MetaCompiler::loadTemplateFromFile(QString const &templateFileName, QString &loadedTemplate)
 {
-	if (!changeDir(mLocalDir + "/" + templatesDir))
+	if (!changeDir(mLocalDir + "/" + templatesDir)) {
 		return false;
+	}
 
 	QString fileName = mDirectory.absoluteFilePath(templateFileName);
 	QFile file(fileName);
@@ -94,8 +99,9 @@ bool MetaCompiler::loadTemplateFromFile(QString const &templateFileName, QString
 
 bool MetaCompiler::loadTemplateUtils()
 {
-	if (!changeDir(mLocalDir + "/" + templatesDir))
+	if (!changeDir(mLocalDir + "/" + templatesDir)) {
 		return false;
+	}
 
 	QString fileName = mDirectory.absoluteFilePath(utilsTemplate);
 	QFile utilsFile(fileName);
@@ -149,8 +155,9 @@ Diagram *MetaCompiler::getDiagram(QString const &diagramName)
 {
 	foreach (Editor *editor, mEditors) {
 		Diagram *diagram = editor->findDiagram(diagramName);
-		if (diagram)
+		if (diagram) {
 			return diagram;
+		}
 	}
 	return NULL;
 }
@@ -172,8 +179,9 @@ void MetaCompiler::generateCode()
 
 	QDir dir;
 
-	if (!dir.exists(generatedDir))
+	if (!dir.exists(generatedDir)) {
 		dir.mkdir(generatedDir);
+	}
 	dir.cd(generatedDir);
 
 	QString const fileName = dir.absoluteFilePath(pluginsProjectFileName);
