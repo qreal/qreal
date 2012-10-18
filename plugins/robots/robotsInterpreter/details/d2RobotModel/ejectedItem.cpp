@@ -47,10 +47,12 @@ void EjectedItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* op
 
 QDomElement EjectedItem::serialize(QDomDocument &document, QPoint const &topLeftPicture)
 {
-		QDomElement rectNode = setPenBrushToDoc(document, mSerializeName);
-		rectNode.setAttribute("begin", QString::number(mX1 + scenePos().x() - topLeftPicture.x()) + ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
-		rectNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x()) + ":" + QString::number(mY2 + scenePos().y() - topLeftPicture.y()));
-		return rectNode;
+	QDomElement rectNode = setPenBrushToDoc(document, mSerializeName);
+	rectNode.setAttribute("begin", QString::number(mX1 + scenePos().x() - topLeftPicture.x())
+						 + ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
+	rectNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x())
+						 + ":" + QString::number(mY2 + scenePos().y() - topLeftPicture.y()));
+	return rectNode;
 }
 
 void EjectedItem::deserialize(QDomElement const &element)

@@ -264,7 +264,8 @@ void D2ModelWidget::drawEjectedItems()
 {
 	foreach (EjectedItem *ejectedItem, mWorldModel->ejectedItems()) {
 		mScene->addItem(ejectedItem);
-		connect(mRobot, SIGNAL(robotMoved(QRectF const&, QPointF const&)), ejectedItem, SLOT(robotChangedPosition(QRectF const&, QPointF const&)));
+		connect(mRobot, SIGNAL(robotMoved(QRectF const&, QPointF const&))
+				, ejectedItem, SLOT(robotChangedPosition(QRectF const&, QPointF const&)));
 	}
 }
 
@@ -430,8 +431,9 @@ void D2ModelWidget::reshapeEjectedItem(QGraphicsSceneMouseEvent *event)
 	QPointF const pos = event->scenePos();
 	if (mCurrentEjectedItem != NULL) {
 		mCurrentEjectedItem->setX2andY2(pos.x(), pos.y());
-		if (event->modifiers() & Qt::ShiftModifier)
+		if (event->modifiers() & Qt::ShiftModifier) {
 			mCurrentEjectedItem->reshapeRectWithShift();
+		}
 	}
 }
 

@@ -251,7 +251,8 @@ void AbstractItem::setBrush(const QString& brushStyle, const QString& brushColor
 	setBrushColor(brushColor);
 }
 
-void AbstractItem::setPenBrush(const QString& penStyle, int width, const QString& penColor, const QString& brushStyle, const QString& brushColor)
+void AbstractItem::setPenBrush(const QString& penStyle, int width, const QString& penColor
+							 , const QString& brushStyle, const QString& brushColor)
 {
 	setPen(penStyle, width, penColor);
 	setBrush(brushStyle, brushColor);
