@@ -100,7 +100,9 @@ IdList InterpreterEditorManager::elements(const Id &diagram) const
 			foreach (Id editorChild, repo->children(editor)) {
 				if (diagram.diagram() == repo->name(editorChild) && repo->isLogicalElement(editorChild)) {
 					foreach (Id diagramChild, repo->children(editorChild)) {
-						result << Id(repo->name(editor), repo->name(editorChild), repo->name(diagramChild));
+						if (diagramChild.element() == "MetaEntityEdge" || !repo->stringProperty(diagramChild, "shape").isEmpty()) {
+							result << Id(repo->name(editor), repo->name(editorChild), repo->name(diagramChild));
+						}
 					}
 				}
 			}
@@ -112,10 +114,12 @@ IdList InterpreterEditorManager::elements(const Id &diagram) const
 QString InterpreterEditorManager::friendlyName(const Id &id) const
 {
 	QPair<qrRepo::RepoApi*, Id> repoAndMetaId = getRepoAndMetaId(id);
-	if (repoAndMetaId.first->hasProperty(repoAndMetaId.second, "displayedName")) {
+	if (repoAndMetaId.first->hasProperty(repoAndMetaId.second, "displayedName")
+			&& !repoAndMetaId.first->stringProperty(repoAndMetaId.second, "displayedName").isEmpty())
+	{
 		return repoAndMetaId.first->stringProperty(repoAndMetaId.second, "displayedName");
 	}
-	return "";
+	return repoAndMetaId.first->name(repoAndMetaId.second);
 }
 
 bool InterpreterEditorManager::hasElement(Id const &elementId) const
@@ -152,7 +156,7 @@ bool InterpreterEditorManager::isParentOf(Id const &child, Id const &parent) con
 	}
 
 	foreach (Id const link ,repoMetaModelParent->links(parent)) {
-		if (link.element() == "Container") {
+		if (link.element() == "Inheritance") {
 			if((repoMetaModelChild->from(repoParent) == repoMetaModelChild->to(repoChild)
 				|| repoMetaModelChild->from(repoChild) == repoMetaModelChild->to(repoParent)))
 			{
