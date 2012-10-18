@@ -75,11 +75,13 @@ bool WallItem::isDragged()
 
 void WallItem::toStopWall(bool isNeedStop, QPointF const& oldPos)
 {
-	if (isNeedStop) {
-		setPos(oldPos);
-		setFlag(ItemIsMovable, false);
-	} else {
-		setFlag(ItemIsMovable, true);
+	if (mDragged) {
+		if (isNeedStop) {
+			setPos(oldPos);
+			setFlag(ItemIsMovable, false);
+		} else {
+			setFlag(ItemIsMovable, true);
+		}
 	}
 }
 
