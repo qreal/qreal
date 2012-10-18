@@ -328,15 +328,6 @@ void D2RobotModel::countNewCoord()
 		}
 	}
 
-/*	if (mMotorB->speed != 0 && mMotorC->speed != 0) {
-		motor1 = mMotorB;
-		motor2 = mMotorC;
-	} else if (mMotorA->speed != 0 && mMotorC->speed != 0) {
-		motor2 = mMotorC;
-	} else if (mMotorC->speed != 0) {
-		motor1 = mMotorC;
-	}*/
-
 	qreal const vSpeed = motor1->speed * 2 * M_PI * motor1->radius * 1.0 / 44000;
 	qreal const uSpeed = motor2->speed * 2 * M_PI * motor2->radius * 1.0 / 44000;
 
