@@ -49,7 +49,12 @@ void RobotItem::drawExtractionForItem(QPainter* painter)
 
 QRectF RobotItem::boundingRect() const
 {
-		return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, border);
+	return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, border);
+}
+
+QPainterPath RobotItem::boundingShape() const
+{
+	return mRectangleImpl.shape(mX1, mY1, mX2, mY2, 0);
 }
 
 QRectF RobotItem::calcNecessaryBoundingRect() const

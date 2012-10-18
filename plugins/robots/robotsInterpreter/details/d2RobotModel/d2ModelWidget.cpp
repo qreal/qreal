@@ -11,6 +11,7 @@
 #include "../../../../../qrutils/outFile.h"
 #include "../../../../../qrutils/xmlUtils.h"
 #include "../../../../../qrkernel/settingsManager.h"
+#include <QDebug>
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -41,7 +42,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 
 	connectUiButtons();
 
-	connect(mScene, SIGNAL(mouseClicked(QGraphicsSceneMouseEvent *)), this, SLOT(mouseClicked(QGraphicsSceneMouseEvent *)));
+	connect(mScene, SIGNAL(mousePressed(QGraphicsSceneMouseEvent *)), this, SLOT(mousePressed(QGraphicsSceneMouseEvent*)));
 	connect(mScene, SIGNAL(mouseMoved(QGraphicsSceneMouseEvent*)), this, SLOT(mouseMoved(QGraphicsSceneMouseEvent*)));
 	connect(mScene, SIGNAL(mouseReleased(QGraphicsSceneMouseEvent*)), this, SLOT(mouseReleased(QGraphicsSceneMouseEvent*)));
 	connect(mScene, SIGNAL(itemDeleted(QGraphicsItem*)), this, SLOT(deleteItem(QGraphicsItem*)));
@@ -244,15 +245,21 @@ void D2ModelWidget::draw(QPointF newCoord, qreal angle, QPointF dPoint)
 
 void D2ModelWidget::drawWalls()
 {
-	foreach (WallItem *wall, mWorldModel->walls()) {
-		mScene->addItem(wall);
+	if (mDrawingAction == drawingAction::wall) {
+		foreach (WallItem *wall, mWorldModel->walls()) {
+			mScene->addItem(wall);
+			connect(wall, SIGNAL(wallDragged(QRectF const &, QPointF const&)), this, SLOT(worldWallDragged(QRectF const &, QPointF const&)));
+			connect(this, SIGNAL(robotWasIntersectedByWall(bool, QPointF const&)), wall, SLOT(toStopWall(bool, QPointF const&)));
+		}
 	}
 }
 
 void D2ModelWidget::drawColorFields()
 {
-	foreach (ColorFieldItem *colorField, mWorldModel->colorFields()) {
-		mScene->addItem(colorField);
+	if (mDrawingAction == drawingAction::line || mDrawingAction == drawingAction::stylus) {
+		foreach (ColorFieldItem *colorField, mWorldModel->colorFields()) {
+			mScene->addItem(colorField);
+		}
 	}
 }
 
@@ -377,9 +384,14 @@ void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
 {
 	QPointF const pos = event->scenePos();
 	if (mCurrentWall != NULL) {
+		QPointF oldPos = mCurrentWall->end();
 		mCurrentWall->setX2andY2(pos.x(), pos.y());
-		if (event->modifiers() & Qt::ShiftModifier)
+		if (mRobot->realBoundingRect().intersects(mCurrentWall->realBoundingRect())) {
+			mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
+		}
+		if (event->modifiers() & Qt::ShiftModifier) {
 			mCurrentWall->reshapeRectWithShift();
+		}
 	}
 }
 
@@ -401,8 +413,9 @@ void D2ModelWidget::reshapeStylus(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
+void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 {
+	//QWidget::mousePressEvent(mouseEvent);
 	mRobot->checkSelection();
 	foreach (SensorItem *sensor, mSensors) {
 		if (sensor != NULL) {
@@ -414,10 +427,12 @@ void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 	mScene->setDragMode(mDrawingAction);
 	switch (mDrawingAction){
 	case drawingAction::wall: {
-		mCurrentWall = new WallItem(position, position);
-		mScene->removeMoveFlag(mouseEvent, mCurrentWall);
-		mWorldModel->addWall(mCurrentWall);
-		mMouseClicksCount++;
+		if (!mRobot->realBoundingRect().intersects(QRectF(position, position))) {
+			mCurrentWall = new WallItem(position, position);
+			mScene->removeMoveFlag(mouseEvent, mCurrentWall);
+			mWorldModel->addWall(mCurrentWall);
+			mMouseClicksCount++;
+		}
 	}
 		break;
 	case drawingAction::line: {
@@ -441,7 +456,7 @@ void D2ModelWidget::mouseClicked(QGraphicsSceneMouseEvent *mouseEvent)
 
 	case drawingAction::none: {
 		mMouseClicksCount = 0;
-		mScene->forPressResize(mouseEvent);
+		mScene->forPressResize(mouseEvent, mRobot->realBoundingRect());
 	}
 		break;
 	default:
@@ -472,7 +487,7 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 		reshapeStylus(mouseEvent);
 		break;
 	default:
-		mScene->forMoveResize(mouseEvent);
+		mScene->forMoveResize(mouseEvent, mRobot->realBoundingRect());
 		break;
 	}
 	mScene->update();
@@ -512,7 +527,7 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 	}
 		break;
 	default:
-		mScene->forReleaseResize(mouseEvent);
+		mScene->forReleaseResize(mouseEvent, mRobot->realBoundingRect());
 		break;
 	}
 	mUi->wallButton->setChecked(false);
@@ -744,4 +759,13 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 {
 	Q_UNUSED(event)
 	emit d2WasClosed();
+}
+
+void D2ModelWidget::worldWallDragged(QRectF const &bounding, QPointF const& oldPos)
+{
+	if (mRobot->realBoundingRect().intersects(bounding)) {
+		emit robotWasIntersectedByWall(true, oldPos);
+	} else {
+		emit robotWasIntersectedByWall(false, oldPos);
+	}
 }
