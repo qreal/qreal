@@ -140,6 +140,16 @@ void AbstractItem::setX2andY2(qreal x, qreal y)
 	update();
 }
 
+QPointF AbstractItem::getX1andY1()
+{
+	return QPointF(mX1, mY1);
+}
+
+QPointF AbstractItem::getX2andY2()
+{
+	return QPointF(mX2, mY2);
+}
+
 void AbstractItem::reshapeRectWithShift()
 {
 	qreal size = qMax(abs(mX2 - mX1), abs(mY2 - mY1));

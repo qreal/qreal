@@ -86,6 +86,61 @@ void EjectedItem::deserialize(QDomElement const &element)
 void EjectedItem::robotChangedPosition(QRectF const &newRect, QPointF const& diffPos)
 {
 	if (realBoundingRect().intersects(newRect)) {
+		mMoved = true;
+		QPointF oldPos = pos();
 		setPos(pos() + diffPos);
+		emit ejectedItemMoved(realBoundingRect(), oldPos, diffPos);
+	} else {
+		mMoved = false;
+	}
+}
+
+void EjectedItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+	AbstractItem::mousePressEvent(event);
+	mDragged = true;
+}
+
+void EjectedItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
+{
+	QPointF oldPos = pos();
+	QGraphicsItem::mouseMoveEvent(event);
+	if (mDragged) {
+		emit ejectedItemDragged(realBoundingRect(), oldPos);
+	}
+}
+
+void EjectedItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+{
+	QGraphicsItem::mouseReleaseEvent(event);
+	mDragged = false;
+}
+
+bool EjectedItem::isDragged()
+{
+	return mDragged;
+}
+
+void EjectedItem::toStopDraggedEjectedItem(bool isNeedStop, QPointF const& oldPos)
+{
+	if (mDragged) {
+		toStopEjectedItem(isNeedStop, oldPos);
+	}
+}
+
+void EjectedItem::toStopMovedEjectedItem(bool isNeedStop, QPointF const& oldPos)
+{
+	if (mMoved) {
+		toStopEjectedItem(isNeedStop, oldPos);
+	}
+}
+
+void EjectedItem::toStopEjectedItem(bool isNeedStop, QPointF const& oldPos)
+{
+	if (isNeedStop) {
+		setPos(oldPos);
+		setFlag(ItemIsMovable, false);
+	} else {
+		setFlag(ItemIsMovable, true);
 	}
 }

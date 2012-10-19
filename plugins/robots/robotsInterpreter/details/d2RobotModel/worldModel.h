@@ -37,6 +37,8 @@ public:
 	void addEjectedItem(EjectedItem* ejectedItem);
 	void clearScene();
 
+	bool intersectsByWall(QRectF const &rect);
+
 	QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture) const;
 	void deserialize(QDomElement const &element);
 

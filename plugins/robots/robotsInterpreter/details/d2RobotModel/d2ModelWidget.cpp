@@ -266,6 +266,16 @@ void D2ModelWidget::drawEjectedItems()
 		mScene->addItem(ejectedItem);
 		connect(mRobot, SIGNAL(robotMoved(QRectF const&, QPointF const&))
 				, ejectedItem, SLOT(robotChangedPosition(QRectF const&, QPointF const&)));
+
+		connect(ejectedItem, SIGNAL(ejectedItemMoved(QRectF const&, QPointF const&, QPointF const&))
+				, this, SLOT(ejectedItemMoved(QRectF const&, QPointF const&, QPointF const&)));
+		connect(this, SIGNAL(needToStopMovedEjectedItem(bool, QPointF const&))
+				, ejectedItem, SLOT(toStopMovedEjectedItem(bool, QPointF const&)));
+
+		connect(ejectedItem, SIGNAL(ejectedItemDragged(QRectF const&, QPointF const&))
+				, this, SLOT(ejectedItemDragged(QRectF const&, QPointF const&)));
+		connect(this, SIGNAL(needToStopDraggedEjectedItem(bool, QPointF const&))
+				, ejectedItem, SLOT(toStopDraggedEjectedItem(bool, QPointF const&)));
 	}
 }
 
@@ -430,7 +440,13 @@ void D2ModelWidget::reshapeEjectedItem(QGraphicsSceneMouseEvent *event)
 {
 	QPointF const pos = event->scenePos();
 	if (mCurrentEjectedItem != NULL) {
+		QPointF oldPos = mCurrentEjectedItem->getX2andY2();
+		QRectF ejectedRect = mCurrentEjectedItem->realBoundingRect();
 		mCurrentEjectedItem->setX2andY2(pos.x(), pos.y());
+		if (mWorldModel->intersectsByWall(ejectedRect)
+			|| mRobot->realBoundingRect().intersects(ejectedRect)) {
+			mCurrentEjectedItem->setX2andY2(oldPos.x(), oldPos.y());
+		}
 		if (event->modifiers() & Qt::ShiftModifier) {
 			mCurrentEjectedItem->reshapeRectWithShift();
 		}
@@ -800,4 +816,27 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 {
 	Q_UNUSED(event)
 	emit d2WasClosed();
+}
+
+void D2ModelWidget::ejectedItemMoved(QRectF const& itemRect, QPointF const& oldPos, QPointF const& diffRobotPos)
+{
+	if (mWorldModel->intersectsByWall(itemRect)) {
+		emit needToStopMovedEjectedItem(true, oldPos);
+
+		if (mRobot->realBoundingRect().intersects(itemRect)) {
+			mRobot->setPos(mRobot->pos() - diffRobotPos);
+		}
+	} else {
+		emit needToStopMovedEjectedItem(false, oldPos);
+	}
+}
+
+void D2ModelWidget::ejectedItemDragged(QRectF const& itemRect, QPointF const& oldPos)
+{
+	if (mWorldModel->intersectsByWall(itemRect)
+		|| mRobot->realBoundingRect().intersects(itemRect)) {
+		emit needToStopDraggedEjectedItem(true, oldPos);
+	} else {
+		emit needToStopDraggedEjectedItem(false, oldPos);
+	}
 }

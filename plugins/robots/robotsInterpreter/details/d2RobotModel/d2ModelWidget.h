@@ -72,6 +72,8 @@ public:
 
 public slots:
 	void update();
+	void ejectedItemMoved(QRectF const& itemRect, QPointF const& oldPos, QPointF const& diffRobotPos);
+	void ejectedItemDragged(QRectF const& itemRect, QPointF const& oldPos);
 
 protected:
 	void changeEvent(QEvent *e);
@@ -105,6 +107,8 @@ private slots:
 
 signals:
 	void d2WasClosed();
+	void needToStopDraggedEjectedItem(bool isNeedStop, QPointF const& oldPos);
+	void needToStopMovedEjectedItem(bool isNeedStop, QPointF const& oldPos);
 
 private:
 	void connectUiButtons();

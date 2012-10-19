@@ -64,6 +64,9 @@ public:
 	void setX2andY1(qreal x, qreal y);
 	void setX2andY2(qreal x, qreal y);
 
+	QPointF getX1andY1();
+	QPointF getX2andY2();
+
 	virtual void reshapeRectWithShift();
 	virtual void changeDragState(qreal x, qreal y);
 	DragState getDragState() const;
