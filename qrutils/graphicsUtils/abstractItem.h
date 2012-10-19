@@ -38,6 +38,7 @@ public:
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawFieldForResizeItem(QPainter* painter);
+	void drawFieldForResizeItem(QPainter* painter, int curResizeDrirt);
 	virtual void setPenBrushForExtraxtion(QPainter* painter, const QStyleOptionGraphicsItem* option);
 	virtual void setPenBrushDriftRect(QPainter* painter);
 
@@ -88,6 +89,7 @@ protected:
 	qreal mX2;
 	qreal mY2;
 	QGraphicsView *mView;
+	int mResizeDrift;
 };
 
 }

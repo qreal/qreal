@@ -17,6 +17,7 @@ public:
 	virtual QRectF calcNecessaryBoundingRect() const;
 	virtual QRectF boundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+	virtual void drawFieldForResizeItem(QPainter* painter);
 
 	virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
 	virtual void deserialize(QDomElement const &element);

@@ -2,11 +2,13 @@
 #include <QtGui/QPainter>
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
-#include <QDebug>
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
+
+int const currentResizeDrift = resizeDrift / 2;
+int const currentDrift = drift / 2;
 
 EjectedItem::EjectedItem(QPointF begin, QPointF end)
 	: mRectImpl()
@@ -35,7 +37,7 @@ QRectF EjectedItem::calcNecessaryBoundingRect() const
 
 QRectF EjectedItem::boundingRect() const
 {
-	return mRectImpl.boundingRect(mX1, mY1, mX2, mY2, drift);
+	return mRectImpl.boundingRect(mX1, mY1, mX2, mY2, currentDrift);
 }
 
 void EjectedItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -43,6 +45,11 @@ void EjectedItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* op
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 	mRectImpl.drawRectItem(painter, mX1, mY1, mX2, mY2);
+}
+
+void EjectedItem::drawFieldForResizeItem(QPainter* painter)
+{
+	AbstractItem::drawFieldForResizeItem(painter, currentResizeDrift);
 }
 
 QDomElement EjectedItem::serialize(QDomDocument &document, QPoint const &topLeftPicture)
