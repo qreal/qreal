@@ -27,15 +27,16 @@ public:
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
 
 	bool isDragged();
+	bool isMoved();
 
 public slots:
-	void robotChangedPosition(QRectF const &newRect, QPointF const& diffPos);
+	void robotOrEjectedItemChangedPosition(QRectF const &newRect, QPointF const& diffPos);
 	void toStopMovedEjectedItem(bool isNeedStop, QPointF const& oldPos);
 	void toStopDraggedEjectedItem(bool isNeedStop, QPointF const& oldPos);
 
 signals:
 	void ejectedItemMoved(QRectF const &itemRect, QPointF const &oldPos, QPointF const& diffRobotPos);
-	void ejectedItemDragged(QRectF const &itemRect, QPointF const &oldPos);
+	void ejectedItemDragged(QRectF const &itemRect, QPointF const &oldPos, QPointF const& diffItemPos);
 
 protected:
 	graphicsUtils::RectangleImpl mRectImpl;

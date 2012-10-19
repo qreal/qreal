@@ -265,15 +265,15 @@ void D2ModelWidget::drawEjectedItems()
 	foreach (EjectedItem *ejectedItem, mWorldModel->ejectedItems()) {
 		mScene->addItem(ejectedItem);
 		connect(mRobot, SIGNAL(robotMoved(QRectF const&, QPointF const&))
-				, ejectedItem, SLOT(robotChangedPosition(QRectF const&, QPointF const&)));
+				, ejectedItem, SLOT(robotOrEjectedItemChangedPosition(QRectF const&, QPointF const&)));
 
 		connect(ejectedItem, SIGNAL(ejectedItemMoved(QRectF const&, QPointF const&, QPointF const&))
 				, this, SLOT(ejectedItemMoved(QRectF const&, QPointF const&, QPointF const&)));
 		connect(this, SIGNAL(needToStopMovedEjectedItem(bool, QPointF const&))
 				, ejectedItem, SLOT(toStopMovedEjectedItem(bool, QPointF const&)));
 
-		connect(ejectedItem, SIGNAL(ejectedItemDragged(QRectF const&, QPointF const&))
-				, this, SLOT(ejectedItemDragged(QRectF const&, QPointF const&)));
+		connect(ejectedItem, SIGNAL(ejectedItemDragged(QRectF const&, QPointF const&, QPointF const&))
+				, this, SLOT(ejectedItemDragged(QRectF const&, QPointF const&, QPointF const&)));
 		connect(this, SIGNAL(needToStopDraggedEjectedItem(bool, QPointF const&))
 				, ejectedItem, SLOT(toStopDraggedEjectedItem(bool, QPointF const&)));
 	}
@@ -829,9 +829,11 @@ void D2ModelWidget::ejectedItemMoved(QRectF const& itemRect, QPointF const& oldP
 	} else {
 		emit needToStopMovedEjectedItem(false, oldPos);
 	}
+
+	mWorldModel->checkEjectedItemsIntersects(itemRect, diffRobotPos);
 }
 
-void D2ModelWidget::ejectedItemDragged(QRectF const& itemRect, QPointF const& oldPos)
+void D2ModelWidget::ejectedItemDragged(QRectF const& itemRect, QPointF const& oldPos, QPointF const& diffItemPos)
 {
 	if (mWorldModel->intersectsByWall(itemRect)
 		|| mRobot->realBoundingRect().intersects(itemRect)) {
@@ -839,4 +841,6 @@ void D2ModelWidget::ejectedItemDragged(QRectF const& itemRect, QPointF const& ol
 	} else {
 		emit needToStopDraggedEjectedItem(false, oldPos);
 	}
+
+	mWorldModel->checkEjectedItemsIntersects(itemRect, diffItemPos);
 }

@@ -83,7 +83,7 @@ void EjectedItem::deserialize(QDomElement const &element)
 	readPenBrush(element);
 }
 
-void EjectedItem::robotChangedPosition(QRectF const &newRect, QPointF const& diffPos)
+void EjectedItem::robotOrEjectedItemChangedPosition(QRectF const &newRect, QPointF const& diffPos)
 {
 	if (realBoundingRect().intersects(newRect)) {
 		mMoved = true;
@@ -106,7 +106,7 @@ void EjectedItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 	QPointF oldPos = pos();
 	QGraphicsItem::mouseMoveEvent(event);
 	if (mDragged) {
-		emit ejectedItemDragged(realBoundingRect(), oldPos);
+		emit ejectedItemDragged(realBoundingRect(), oldPos, pos() - oldPos);
 	}
 }
 
@@ -119,6 +119,11 @@ void EjectedItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 bool EjectedItem::isDragged()
 {
 	return mDragged;
+}
+
+bool EjectedItem::isMoved()
+{
+	return mMoved;
 }
 
 void EjectedItem::toStopDraggedEjectedItem(bool isNeedStop, QPointF const& oldPos)

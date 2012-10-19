@@ -73,7 +73,7 @@ public:
 public slots:
 	void update();
 	void ejectedItemMoved(QRectF const& itemRect, QPointF const& oldPos, QPointF const& diffRobotPos);
-	void ejectedItemDragged(QRectF const& itemRect, QPointF const& oldPos);
+	void ejectedItemDragged(QRectF const& itemRect, QPointF const& oldPos, QPointF const& diffItemPos);
 
 protected:
 	void changeEvent(QEvent *e);
