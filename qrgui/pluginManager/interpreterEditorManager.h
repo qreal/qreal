@@ -74,6 +74,7 @@ namespace qReal {
 
 		QPair<qrRepo::RepoApi*, Id> getRepoAndElement(QString const &editor, QString const &element) const;
 		QPair<qrRepo::RepoApi*, Id> getRepoAndDiagram(QString const &editor, QString const &diagram) const;
+		QPair<Id, Id> getEditorAndDiagram(qrRepo::RepoApi const * const repo, Id const &element) const;
 		QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &editor, QString const &element) const;
 		QStringList elements(QString const &editor, QString const &diagram) const;
 		int isNodeOrEdge(QString const &editor, QString const &element) const;

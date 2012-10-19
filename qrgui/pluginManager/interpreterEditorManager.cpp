@@ -151,16 +151,21 @@ bool InterpreterEditorManager::isParentOf(Id const &child, Id const &parent) con
 	qrRepo::RepoApi const * const repoMetaModelParent = getRepoAndMetaId(parent).first;
 	Id const repoParent = getRepoAndMetaId(parent).second;
 
+	if (repoChild == repoParent && repoMetaModelChild == repoMetaModelParent)
+		return true;
+
 	if (repoMetaModelChild != repoMetaModelParent) {
 		return false;
 	}
 
-	foreach (Id const link ,repoMetaModelParent->links(parent)) {
+	foreach (Id const link , repoMetaModelChild->incomingLinks(repoChild)) {
 		if (link.element() == "Inheritance") {
-			if((repoMetaModelChild->from(repoParent) == repoMetaModelChild->to(repoChild)
-				|| repoMetaModelChild->from(repoChild) == repoMetaModelChild->to(repoParent)))
-			{
+			if (repoMetaModelChild->otherEntityFromLink(link, repoChild) == repoParent) {
 				return true;
+			} else {
+				Id metaChildParent = repoMetaModelChild->otherEntityFromLink(link, repoChild);
+				QPair<Id, Id> editorAndDiagram = getEditorAndDiagram(repoMetaModelChild, metaChildParent);
+				return isParentOf(Id(repoMetaModelChild->name(editorAndDiagram.first), repoMetaModelChild->name(editorAndDiagram.second), repoMetaModelChild->name(metaChildParent)), parent);
 			}
 		}
 	}
@@ -324,17 +329,14 @@ Element* InterpreterEditorManager::graphicalObject(Id const &id) const
 IdList InterpreterEditorManager::getContainedTypes(const Id &id) const
 {
 	IdList containedTypes;
-	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
-		foreach (Id editor, repo->elementsByType("MetamodelDiagram")) {
-			foreach (Id diagram, repo->children(editor)) {
-				foreach (Id element, repo->children(diagram)) {
-					if (repo->name(element) == "Container" && repo->isLogicalElement(element)) {
-						if (repo->from(element) == id) {
-							containedTypes << repo->to(element);
-						}
-					}
-				}
-			}
+	QPair<qrRepo::RepoApi*, Id> repoAndMetaId = getRepoAndMetaId(id);
+	qrRepo::RepoApi const * const repo = repoAndMetaId.first;
+	Id const metaId = repoAndMetaId.second;
+	foreach (Id const link, repo->outgoingLinks(metaId)) {
+		if (link.element() == "Container") {
+			Id metaIdTo = repo->otherEntityFromLink(link, metaId);
+			QPair<Id, Id> editorAndDiagram = getEditorAndDiagram(repo, metaIdTo);
+			containedTypes << Id(repo->name(editorAndDiagram.first), repo->name(editorAndDiagram.second), repo->name(metaIdTo));
 		}
 	}
 	return containedTypes;
@@ -458,6 +460,20 @@ QPair<qrRepo::RepoApi*, Id> InterpreterEditorManager::getRepoAndDiagram(QString 
 		}
 	}
 	return QPair<qrRepo::RepoApi*, Id>();
+}
+
+QPair<Id, Id> InterpreterEditorManager::getEditorAndDiagram(qrRepo::RepoApi const * const repo, Id const &element) const
+{
+	foreach (Id edit,  repo->elementsByType("MetamodelDiagram")) {
+		foreach (Id diagram, repo->children(edit)) {
+			foreach (Id elem, repo->children(diagram)) {
+				if (element == elem) {
+					return qMakePair(edit, diagram);
+				}
+			}
+		}
+	}
+	return QPair<Id, Id>();
 }
 
 QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > InterpreterEditorManager::getPossibleEdges(QString const &editor, QString const &element) const
