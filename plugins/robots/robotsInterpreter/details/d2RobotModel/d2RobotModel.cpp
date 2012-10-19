@@ -94,6 +94,7 @@ void D2RobotModel::countOneMotorTime(D2RobotModel::Motor &motor)
 		if (motor.activeTime.second <= 0) {
 			motor.activeTime.first = End;
 			motor.speed = 0;
+			emit d2MotorTimeout();
 		}
 	}
 }

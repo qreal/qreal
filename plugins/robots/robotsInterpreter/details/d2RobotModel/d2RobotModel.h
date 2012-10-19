@@ -50,6 +50,9 @@ public:
 		End
 	};
 
+signals:
+	void d2MotorTimeout();
+
 private slots:
 	void nextFragment();
 
