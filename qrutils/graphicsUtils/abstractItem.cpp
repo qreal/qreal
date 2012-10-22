@@ -185,14 +185,15 @@ void AbstractItem::calcResizeItem(QGraphicsSceneMouseEvent *event)
 	qreal y = mapFromScene(event->scenePos()).y();
 	if (mDragState != None)
 		setFlag(QGraphicsItem::ItemIsMovable, false);
-	if (mDragState == TopLeft)
+	if (mDragState == TopLeft) {
 		setX1andY1(x, y);
-	else if (mDragState == TopRight)
+	} else if (mDragState == TopRight) {
 		setX2andY1(x, y);
-	else if (mDragState == BottomLeft)
+	} else if (mDragState == BottomLeft) {
 		setX1andY2(x, y);
-	else if (mDragState == BottomRight)
+	} else if (mDragState == BottomRight) {
 		setX2andY2(x, y);
+	}
 }
 
 void AbstractItem::resizeItem(QGraphicsSceneMouseEvent *event)
@@ -206,14 +207,15 @@ void AbstractItem::resizeItem(QGraphicsSceneMouseEvent *event)
 
 void AbstractItem::reverseOldResizingItem(QPointF begin, QPointF end)
 {
-	if (mDragState == TopLeft)
+	if (mDragState == TopLeft) {
 		setX1andY1(begin.x(), begin.y());
-	else if (mDragState == TopRight)
+	} else if (mDragState == TopRight) {
 		setX2andY1(end.x(), begin.y());
-	else if (mDragState == BottomLeft)
+	} else if (mDragState == BottomLeft) {
 		setX1andY2(begin.x(), end.y());
-	else if (mDragState == BottomRight)
+	} else if (mDragState == BottomRight) {
 		setX2andY2(end.x(), end.y());
+	}
 }
 
 void AbstractItem::mousePressEvent(QGraphicsSceneMouseEvent *event)

@@ -11,7 +11,6 @@
 #include "../../../../../qrutils/outFile.h"
 #include "../../../../../qrutils/xmlUtils.h"
 #include "../../../../../qrkernel/settingsManager.h"
-#include <QDebug>
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -248,8 +247,10 @@ void D2ModelWidget::drawWalls()
 	if (mDrawingAction == drawingAction::wall) {
 		foreach (WallItem *wall, mWorldModel->walls()) {
 			mScene->addItem(wall);
-			connect(wall, SIGNAL(wallDragged(QRectF const &, QPointF const&)), this, SLOT(worldWallDragged(QRectF const &, QPointF const&)));
-			connect(this, SIGNAL(robotWasIntersectedByWall(bool, QPointF const&)), wall, SLOT(toStopWall(bool, QPointF const&)));
+			connect(wall, SIGNAL(wallDragged(QRectF const &, QPointF const&))
+					, this, SLOT(worldWallDragged(QRectF const &, QPointF const&)));
+			connect(this, SIGNAL(robotWasIntersectedByWall(bool, QPointF const&))
+					, wall, SLOT(toStopWall(bool, QPointF const&)));
 		}
 	}
 }
@@ -415,7 +416,6 @@ void D2ModelWidget::reshapeStylus(QGraphicsSceneMouseEvent *event)
 
 void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	//QWidget::mousePressEvent(mouseEvent);
 	mRobot->checkSelection();
 	foreach (SensorItem *sensor, mSensors) {
 		if (sensor != NULL) {

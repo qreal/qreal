@@ -1,7 +1,6 @@
 #include "wallItem.h"
 #include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtGui/QStyleOptionGraphicsItem>
-#include <QDebug>
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
