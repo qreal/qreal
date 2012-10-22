@@ -830,7 +830,7 @@ void D2ModelWidget::ejectedItemMoved(QRectF const& itemRect, QPointF const& oldP
 		emit needToStopMovedEjectedItem(false, oldPos);
 	}
 
-	mWorldModel->checkEjectedItemsIntersects(itemRect, diffRobotPos);
+	//mWorldModel->checkEjectedItemsIntersects(itemRect, diffRobotPos);
 }
 
 void D2ModelWidget::ejectedItemDragged(QRectF const& itemRect, QPointF const& oldPos, QPointF const& diffItemPos)
@@ -842,5 +842,5 @@ void D2ModelWidget::ejectedItemDragged(QRectF const& itemRect, QPointF const& ol
 		emit needToStopDraggedEjectedItem(false, oldPos);
 	}
 
-	mWorldModel->checkEjectedItemsIntersects(itemRect, diffItemPos);
+	//mWorldModel->checkEjectedItemsIntersects(itemRect, diffItemPos);
 }

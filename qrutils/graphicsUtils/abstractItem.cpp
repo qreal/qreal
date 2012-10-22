@@ -168,16 +168,25 @@ void AbstractItem::reshapeRectWithShift()
 
 void AbstractItem::changeDragState(qreal x, qreal y)
 {
-	if (QRectF(QPointF(mX1 + scenePos().x(), mY1 + scenePos().y()), QSizeF(0, 0)).adjusted(-mResizeDrift, -mResizeDrift, mResizeDrift, mResizeDrift).contains(QPointF(x, y)))
+	if (QRectF(QPointF(mX1 + scenePos().x(), mY1 + scenePos().y()), QSizeF(0, 0))
+			.adjusted(-mResizeDrift, -mResizeDrift, mResizeDrift, mResizeDrift)
+			.contains(QPointF(x, y))) {
 		mDragState = TopLeft;
-	else if (QRectF(QPointF(mX2 + scenePos().x(), mY2 + scenePos().y()), QSizeF(0, 0)).adjusted(-mResizeDrift, -mResizeDrift, mResizeDrift, mResizeDrift).contains(QPointF(x, y)))
+	} else if (QRectF(QPointF(mX2 + scenePos().x(), mY2 + scenePos().y()), QSizeF(0, 0))
+			.adjusted(-mResizeDrift, -mResizeDrift, mResizeDrift, mResizeDrift)
+			.contains(QPointF(x, y))) {
 		mDragState = BottomRight;
-	else if (QRectF(QPointF(mX2 + scenePos().x(), mY1 + scenePos().y()), QSizeF(0, 0)).adjusted(-mResizeDrift, -mResizeDrift, mResizeDrift, mResizeDrift).contains(QPointF(x, y)))
+	} else if (QRectF(QPointF(mX2 + scenePos().x(), mY1 + scenePos().y()), QSizeF(0, 0))
+			.adjusted(-mResizeDrift, -mResizeDrift, mResizeDrift, mResizeDrift)
+			.contains(QPointF(x, y))) {
 		mDragState = TopRight;
-	else if (QRectF(QPointF(mX1 + scenePos().x(), mY2 + scenePos().y()), QSizeF(0, 0)).adjusted(-mResizeDrift, -mResizeDrift, mResizeDrift, mResizeDrift).contains(QPointF(x, y)))
+	} else if (QRectF(QPointF(mX1 + scenePos().x(), mY2 + scenePos().y()), QSizeF(0, 0))
+			.adjusted(-mResizeDrift, -mResizeDrift, mResizeDrift, mResizeDrift)
+			.contains(QPointF(x, y))) {
 		mDragState = BottomLeft;
-	else
+	} else {
 		mDragState = None;
+	}
 }
 
 AbstractItem::DragState AbstractItem::getDragState() const
@@ -268,7 +277,7 @@ void AbstractItem::setBrush(const QString& brushStyle, const QString& brushColor
 }
 
 void AbstractItem::setPenBrush(const QString& penStyle, int width, const QString& penColor
-							 , const QString& brushStyle, const QString& brushColor)
+		 , const QString& brushStyle, const QString& brushColor)
 {
 	setPen(penStyle, width, penColor);
 	setBrush(brushStyle, brushColor);
