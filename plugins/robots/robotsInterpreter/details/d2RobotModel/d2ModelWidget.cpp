@@ -110,16 +110,16 @@ void D2ModelWidget::changeSpeed(int curIndex)
 {
 	switch(curIndex){
 	case 0:
-		mRobotModel->speed(1);
+		mRobotModel->setSpeedFactor(1);
 		break;
 	case 1:
-		mRobotModel->speed(2);
+		mRobotModel->setSpeedFactor(2);
 		break;
 	case 2:
-		mRobotModel->speed(4);
+		mRobotModel->setSpeedFactor(4);
 		break;
 	default:
-		mRobotModel->speed(1);
+		mRobotModel->setSpeedFactor(1);
 	}
 }
 
