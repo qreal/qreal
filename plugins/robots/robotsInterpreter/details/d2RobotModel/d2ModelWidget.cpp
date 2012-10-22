@@ -21,7 +21,6 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mUi(new Ui::D2Form)
 		, mScene(NULL)
 		, mRobot(NULL)
-		, mDrawCyclesCount(0)
 		, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements").toInt())
 		, mRobotModel(robotModel)
 		, mWorldModel(worldModel)
@@ -217,23 +216,6 @@ void D2ModelWidget::draw(QPointF newCoord, qreal angle, QPointF dPoint)
 	mRobot->setPos(newCoord);
 	mRobot->setTransform(QTransform().translate(dPoint.x(), dPoint.y()).rotate(angle).translate(-dPoint.x(), -dPoint.y()));
 
-	++mDrawCyclesCount;
-
-	if (mDrawCyclesCount > mMaxDrawCyclesBetweenPathElements) {
-		// Here we place a green circle in a center of a robot
-
-		QPointF const robotCenterPos = mRobot->sceneBoundingRect().center();
-
-		// This is a rectangle where the circle will be located, first placing its top-left corner in robot center, then moving it
-		// so that its center becomes robot center
-		QRectF const pathElementRect = QRectF(robotCenterPos, robotCenterPos + QPointF(4, 4)).translated(QPointF(-2, -2));
-		QGraphicsItem * const pathElement = mScene->addEllipse(pathElementRect, QPen(Qt::green), QBrush(Qt::green));
-
-		// Adding resulting element to a path
-		mRobotPath << pathElement;
-		mDrawCyclesCount = 0;
-	}
-
 	QRectF const viewPortRect = mUi->graphicsView->mapToScene(mUi->graphicsView->viewport()->rect()).boundingRect();
 	if (!viewPortRect.contains(mRobot->sceneBoundingRect().toRect())) {
 		QRectF const requiredViewPort = viewPortRect.translated(mRobot->scenePos() - viewPortRect.center());
@@ -256,9 +238,9 @@ void D2ModelWidget::drawColorFields()
 	}
 }
 
-void D2ModelWidget::drawBeep(QColor const &color)
+void D2ModelWidget::drawBeep(bool isNeededBeep)
 {
-	Q_UNUSED(color)
+	mRobot->setNeededBeep(isNeededBeep);
 }
 
 QPolygonF const D2ModelWidget::robotBoundingPolygon(QPointF const &coord, qreal const &angle) const
