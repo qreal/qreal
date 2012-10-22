@@ -1,6 +1,6 @@
 TEMPLATE =  lib
 CONFIG += plugin
-DESTDIR = ../../../qrgui/plugins/
+DESTDIR = ../../../bin/plugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj

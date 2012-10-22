@@ -132,8 +132,9 @@ void Diagram::initPaletteGroups(const QDomElement &paletteGroupsElement)
 		element = element.nextSiblingElement("group"))
 	{
 		QString name = element.attribute("name");
-		FILE *f = fopen("1.txt", "wt");
-		fprintf(f, "%s\n", element.attribute("name").toStdString().c_str());
+		QString description = element.attribute("description", "");
+		mPaletteGroupsDescriptions[name] = description;
+
 		for (QDomElement groupElement = element.firstChildElement("element");
 			!groupElement.isNull();
 			groupElement = groupElement.nextSiblingElement("element"))
@@ -205,4 +206,9 @@ QString Diagram::displayedName() const
 QMap<QString, QStringList> Diagram::paletteGroups() const
 {
 	return mPaletteGroups;
+}
+
+QMap<QString, QString> Diagram::paletteGroupsDescriptions() const
+{
+	return mPaletteGroupsDescriptions;
 }

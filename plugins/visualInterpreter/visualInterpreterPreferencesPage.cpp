@@ -16,8 +16,7 @@ VisualInterpreterPreferencesPage::VisualInterpreterPreferencesPage(QWidget *pare
 
 	QString const binFolder = qApp->applicationDirPath();
 
-	mUi->qrealSourcesLineEdit->setText(SettingsManager::value("qrealSourcesLocation"
-			, binFolder.mid(0, binFolder.lastIndexOf("/"))).toString());
+	mUi->qrealSourcesLineEdit->setText(SettingsManager::value("qrealSourcesLocation").toString());
 
 	connect(mUi->qrealSourcesPushButton, SIGNAL(clicked()), this, SLOT(setQRealSourcesLocation()));
 }
