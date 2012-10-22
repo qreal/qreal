@@ -56,11 +56,9 @@ D2RobotModel::Motor* D2RobotModel::initMotor(int radius, int speed, long unsigne
 	motor->degrees = degrees;
 	motor->isUsed = isUsed;
 	if (degrees == 0) {
-		motor->activeTime = QPair<ATime, qreal>(DoInf , 0);
-	}
-	else {
-		qreal activeTime = degrees / speed ;
-		motor->activeTime = QPair<ATime, qreal>(Do , activeTime);
+		motor->activeTimeType = DoInf;
+	} else {
+		motor->activeTimeType = DoByLimit;
 	}
 	mMotors[port] = motor;
 	mTurnoverMotors[port] = 0;
@@ -79,45 +77,30 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 	mMotors[port]->degrees = degrees;
 	mMotors[port]->isUsed = true;
 	if (degrees == 0) {
-		mMotors[port]->activeTime = QPair<ATime, qreal>(DoInf , 0);
+		mMotors[port]->activeTimeType = DoInf;
 	} else {
-		qreal activeTime = degrees * 1.0 / 1.0 * speed ;
-		mMotors[port]->activeTime = QPair<ATime, qreal>(Do , activeTime);
+		mMotors[port]->activeTimeType = DoByLimit;
 	}
 	mTurnoverMotors[port] = 0;
-}
-
-void D2RobotModel::countOneMotorTime(D2RobotModel::Motor &motor)
-{
-	if (motor.activeTime.first == Do) {
-		motor.activeTime.second -= timeInterval;
-		if (motor.activeTime.second <= 0) {
-			motor.activeTime.first = End;
-			motor.speed = 0;
-			emit d2MotorTimeout();
-		}
-	}
-}
-
-void D2RobotModel::countMotorTime()
-{
-	countOneMotorTime(*mMotorA);
-	countOneMotorTime(*mMotorB);
-	countOneMotorTime(*mMotorC);
 }
 
 void D2RobotModel::countMotorTurnover()
 {
 	foreach (Motor *motor, mMotors) {
 		int port = mMotors.key(motor);
-		qreal degrees = timeInterval * 1.0 * motor->speed ;
+		qreal degrees = timeInterval * 1.0 * motor->speed / oneReciprocalTime;
 		mTurnoverMotors[port] += degrees;
+		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverMotors[port] >= motor->degrees)) {
+			motor->speed = 0;
+			motor->activeTimeType = End;
+			emit d2MotorTimeout();
+		}
 	}
 }
 
 int D2RobotModel::readEncoder(int/*inputPort::InputPortEnum*/ const port) const
 {
-	return mTurnoverMotors[port] / 360;  // divide the number of degrees by complete revolutions count
+	return mTurnoverMotors[port];
 }
 
 void D2RobotModel::resetEncoder(int/*inputPort::InputPortEnum*/ const port)
@@ -329,8 +312,8 @@ void D2RobotModel::countNewCoord()
 		}
 	}
 
-	qreal const vSpeed = motor1->speed * 2 * M_PI * motor1->radius * 1.0 / 44000;
-	qreal const uSpeed = motor2->speed * 2 * M_PI * motor2->radius * 1.0 / 44000;
+	qreal const vSpeed = motor1->speed * 2 * M_PI * motor1->radius * 1.0 / onePercentReciprocalSpeed;
+	qreal const uSpeed = motor2->speed * 2 * M_PI * motor2->radius * 1.0 / onePercentReciprocalSpeed;
 
 	qreal deltaY = 0;
 	qreal deltaX = 0;
@@ -370,12 +353,10 @@ void D2RobotModel::countNewCoord()
 	} else {
 		deltaY = averageSpeed * timeInterval * sin(mAngle * M_PI / 180);
 		deltaX = averageSpeed * timeInterval * cos(mAngle * M_PI / 180);
-		deltaY *= mSpeed;
-		deltaX *= mSpeed;
 	}
 
-	mPos.setX(mPos.x() + deltaX);
-	mPos.setY(mPos.y() + deltaY);
+	mPos.setX(mPos.x() + deltaX * mSpeedFactor);
+	mPos.setY(mPos.y() + deltaY * mSpeedFactor);
 
 	if(mAngle > 360) {
 		mAngle -= 360;
@@ -399,7 +380,6 @@ void D2RobotModel::nextFragment()
 	mRotatePoint = rotatePoint;
 	mD2ModelWidget->draw(mPos, mAngle, mRotatePoint);
 	countBeep();
-	countMotorTime();
 	countMotorTurnover();
 }
 
@@ -423,9 +403,9 @@ double D2RobotModel::rotateAngle() const
 	return mAngle;
 }
 
-void D2RobotModel::speed(qreal speedMul)
+void D2RobotModel::setSpeedFactor(qreal speedMul)
 {
-	mSpeed = speedMul;
+	mSpeedFactor = speedMul;
 }
 
 QPointF D2RobotModel::robotPos()
