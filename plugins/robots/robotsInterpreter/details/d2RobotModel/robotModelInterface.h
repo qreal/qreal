@@ -16,7 +16,7 @@ public:
 	virtual void clear() = 0;
 	virtual void rotateOn(double angle) = 0;
 	virtual double rotateAngle() const = 0;
-	virtual void speed(qreal speedMul) = 0;
+	virtual void setSpeedFactor(qreal speedMul) = 0;
 	virtual QPointF robotPos() = 0;
 };
 
