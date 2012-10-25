@@ -47,6 +47,8 @@ namespace qrRepo {
 		void removeChild(qReal::Id const &id, qReal::Id const &child);
 		void removeChildren(qReal::Id const &id);
 
+		void printDebug();
+
 		void removeElement(qReal::Id const &id);
 
 		qReal::Id parent(qReal::Id const &id) const;
@@ -74,7 +76,7 @@ namespace qrRepo {
 
 		QVariant property(qReal::Id const &id, QString const &propertyName) const;
 		QString stringProperty(qReal::Id const &id, QString const &propertyName) const;
-		void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value) const;
+		void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value);
 		void removeProperty(qReal::Id const &id, QString const &propertyName);
 		void copyProperties(const qReal::Id &dest, const qReal::Id &src);
 		QMap<QString, QVariant> properties(qReal::Id const &id);

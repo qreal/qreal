@@ -4,7 +4,7 @@
 
 using namespace qrmc;
 
-NonGraphicType::NonGraphicType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const &id)
+NonGraphicType::NonGraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id)
 	: Type(true, diagram, api, id)
 {}
 
@@ -32,6 +32,24 @@ QString NonGraphicType::generateProperties(QString const &lineTemplate) const
 QString NonGraphicType::generatePropertyDefaults(QString const &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate)
+	return "";
+}
+
+QString NonGraphicType::generatePropertyDisplayedNames(QString const &lineTemplate) const
+{
+	Q_UNUSED(lineTemplate)
+	return "";
+}
+
+QString NonGraphicType::generateReferenceProperties(const QString &lineTemplate) const
+{
+	Q_UNUSED(lineTemplate);
+	return "";
+}
+
+QString NonGraphicType::generateParents(QString const &lineTemplate) const
+{
+	Q_UNUSED(lineTemplate);
 	return "";
 }
 

@@ -198,7 +198,7 @@ int LogicalModelAssistApi::childrenOfDiagram(const Id &parent) const
 	return mModelsAssistApi.childrenOfDiagram(parent);
 }
 
-void LogicalModelAssistApi::removeReferencesTo(Id const &id) const
+void LogicalModelAssistApi::removeReferencesTo(Id const &id)
 {
 	IdList backReferences = mLogicalModel.api().property(id, "backReferences").value<IdList>();
 
@@ -208,7 +208,7 @@ void LogicalModelAssistApi::removeReferencesTo(Id const &id) const
 	}
 }
 
-void LogicalModelAssistApi::removeReferencesFrom(Id const &id) const
+void LogicalModelAssistApi::removeReferencesFrom(Id const &id)
 {
 	QStringList referenceProperties = mEditorManagerProxy->getReferenceProperties(id.type());
 
@@ -221,14 +221,14 @@ void LogicalModelAssistApi::removeReferencesFrom(Id const &id) const
 	}
 }
 
-void LogicalModelAssistApi::removeReference(Id const &id, Id const &reference) const
+void LogicalModelAssistApi::removeReference(Id const &id, Id const &reference)
 {
 	QStringList referenceProperties = mEditorManagerProxy->getReferenceProperties(id.type());
 
 	foreach (QString const &propertyName, referenceProperties) {
 		QString stringData = mLogicalModel.api().property(id, propertyName).toString();
 		if (stringData == reference.toString()) {
-			mLogicalModel.api().setProperty(id, propertyName, "");
+			mLogicalModel.mutableApi().setProperty(id, propertyName, "");
 		}
 	}
 }

@@ -21,7 +21,9 @@ HEADERS += \
 	$$PWD/metamodelGeneratorSupport.h \
 	$$PWD/inFile.h \
 	$$PWD/scalableItem.h \
-	$$PWD/scalableCoordinate.h
+	$$PWD/scalableCoordinate.h \
+	$$PWD/nameNormalizer.h \
+	$$PWD/generator/abstractGenerator.h \
 
 SOURCES += \
 	$$PWD/outFile.cpp \
@@ -30,7 +32,9 @@ SOURCES += \
 	$$PWD/metamodelGeneratorSupport.cpp \
 	$$PWD/inFile.cpp \
 	$$PWD/scalableItem.cpp \
-	$$PWD/scalableCoordinate.cpp
+	$$PWD/scalableCoordinate.cpp \
+	$$PWD/nameNormalizer.cpp \
+	$$PWD/generator/abstractGenerator.cpp \
 
 FORMS += \
 	$$PWD/watchListWindow.ui
@@ -46,7 +50,4 @@ include(graphTransformation/graphTransformation.pri)
 
 # Stuff for running long operations in different modes
 include(invocationUtils/invocationUtils.pri)
-
-
-
 

@@ -31,6 +31,7 @@ namespace qReal {
 		IdList diagrams(Id const &editor) const;
 		QStringList paletteGroups(Id const &editor, Id const &diagram) const;
 		QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
+		QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const;
 		IdList elements(Id const &diagram) const;
 		bool loadPlugin(QString const &pluginName);
 		bool unloadPlugin(QString const &pluginName);
@@ -70,6 +71,7 @@ namespace qReal {
 
 		bool isParentOf(Id const &child, Id const &parent) const;
 		bool isGraphicalElementNode(const Id &id) const;
+
 
 		//new methods:
 		QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &editor, QString const &element) const;

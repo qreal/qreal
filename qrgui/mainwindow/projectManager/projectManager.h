@@ -30,7 +30,7 @@ public slots:
 
 public:
 	bool openEmptyWithSuggestToSaveChanges();
-	bool open(QString const &fileName = "");
+	bool open(QString const &fileName = "autosave.qrs");
 	bool suggestToSaveChangesOrCancel();
 	void setUnsavedIndicator(bool isUnsaved);
 	void reinitAutosaver();

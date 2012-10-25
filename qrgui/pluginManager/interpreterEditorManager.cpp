@@ -605,3 +605,8 @@ QStringList InterpreterEditorManager::getReferenceProperties(const Id &id) const
 {
 	return QStringList();
 }
+
+QString InterpreterEditorManager::paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const
+{
+	return "";
+}

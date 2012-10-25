@@ -17,7 +17,7 @@ using namespace qReal;
 EmbeddedLinker::EmbeddedLinker()
 {
 	size = SettingsManager::value("EmbeddedLinkerSize").toFloat();
-	indent = SettingsManager::value("EmbeddedLinkerIndent", 5).toFloat();
+	indent = SettingsManager::value("EmbeddedLinkerIndent").toFloat();
 
 	mEdge = NULL;
 	master = NULL;
