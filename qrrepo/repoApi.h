@@ -139,6 +139,7 @@ namespace qrRepo {
 		int elementsCount() const;
 
 		bool exist(qReal::Id const &id) const;
+
 	private:
 		RepoApi(RepoApi const &other);  // Копировать нельзя.
 		RepoApi& operator =(RepoApi const &);  // Присваивать тоже.

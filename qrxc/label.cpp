@@ -1,5 +1,6 @@
 #include "label.h"
 #include "../qrutils/outFile.h"
+
 #include <QDebug>
 
 using namespace utils;

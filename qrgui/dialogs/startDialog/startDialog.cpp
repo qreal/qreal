@@ -95,15 +95,16 @@ void StartDialog::openInterpretedDiagram()
 	if (!fileName.isEmpty() && mProjectManager->open(fileName)) {
 		editorManagerProxy->setProxyManager(new InterpreterEditorManager(fileName));
 		QStringList interpreterDiagramsList;
-		foreach(Id editor, editorManagerProxy->editors()) {
-			foreach(Id diagram, editorManagerProxy->diagrams(editor)) {
+		foreach (Id editor, editorManagerProxy->editors()) {
+			foreach (Id diagram, editorManagerProxy->diagrams(editor)) {
 				QString const diagramNodeName = editorManagerProxy->diagramNodeName(editor.editor(), diagram.diagram());
-				if (diagramNodeName.isEmpty())
+				if (diagramNodeName.isEmpty()) {
 					continue;
+				}
 				interpreterDiagramsList.append("qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
 			}
 		}
-		foreach(QString interpreterIdString, interpreterDiagramsList) {
+		foreach (QString interpreterIdString, interpreterDiagramsList) {
 			mMainWindow->models()->repoControlApi().exterminate();
 			mMainWindow->models()->reinit();
 			mMainWindow->loadMetamodel();

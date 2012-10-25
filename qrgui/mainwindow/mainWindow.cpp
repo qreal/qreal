@@ -285,8 +285,6 @@ void MainWindow::loadPlugins()
 
 void MainWindow::loadMetamodel()
 {
-	//mUi->paletteToolbox->deleteDiagramType();
-	//mUi->paletteToolbox->createPalette();
 	loadPlugins();
 }
 
