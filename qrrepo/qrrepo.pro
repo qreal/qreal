@@ -22,13 +22,11 @@ HEADERS += \
 	$$PWD/private/classes/object.h \
 	$$PWD/private/folderCompressor.h \
 
-
 SOURCES += \
 	$$PWD/private/client.cpp \
 	$$PWD/private/serializer.cpp \
 	$$PWD/private/classes/object.cpp \
 	$$PWD/private/folderCompressor.cpp \
-
 
 # API репозитория
 HEADERS += \
