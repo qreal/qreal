@@ -129,6 +129,7 @@ MainWindow::MainWindow()
 	connectActions();
 	initExplorers();
 
+	mStartDialog->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
 	mStartDialog->exec();
 }
 

@@ -15,6 +15,12 @@ public:
 		return true;
 	}
 
+	/// Tells if we should show the button of opening the interpreted diagram or not
+	virtual bool showInterpeterButton() const
+	{
+		return false;
+	}
+
 	/// Allows to customize main window's title from plugin
 	virtual QString windowTitle() const
 	{

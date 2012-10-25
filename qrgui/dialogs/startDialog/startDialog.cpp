@@ -34,6 +34,7 @@ StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
 
 	QHBoxLayout *openIDLinkLayout = new QHBoxLayout;
 	openIDLinkLayout->addWidget(openIDLink);
+	mInterpreterButton = openIDLink;
 
 	QHBoxLayout *commandLinksLayout = new QHBoxLayout;
 	commandLinksLayout->addWidget(openLink);
@@ -52,6 +53,11 @@ StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
 	connect(openIDLink, SIGNAL(clicked()), this, SLOT(openInterpretedDiagram()));
 	connect(recentProjects, SIGNAL(userDataSelected(QString)), this, SLOT(openRecentProject(QString)));
 	connect(diagrams, SIGNAL(userDataSelected(QString)), this, SLOT(createProjectWithDiagram(QString)));
+}
+
+void StartDialog::setVisibleForInterpreterButton(bool const value)
+{
+	mInterpreterButton->setVisible(value);
 }
 
 void StartDialog::openRecentProject(QString const &fileName)
