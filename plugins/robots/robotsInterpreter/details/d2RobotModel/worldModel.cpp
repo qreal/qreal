@@ -214,11 +214,11 @@ bool WorldModel::intersectsByWall(QRectF const &rect)
 	return false;
 }
 
-void WorldModel::checkEjectedItemsIntersects(QRectF const& itemRect, QPointF const& diffPos)
+/*void WorldModel::checkEjectedItemsIntersects(QRectF const& itemRect, QPointF const& diffPos)
 {
 	foreach (EjectedItem *ejected, mEjectedItems) {
 		if (!ejected->isMoved()) {
 			ejected->robotOrEjectedItemChangedPosition(itemRect, diffPos);
 		}
 	}
-}
+}*/
