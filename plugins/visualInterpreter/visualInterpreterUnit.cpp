@@ -451,8 +451,12 @@ bool VisualInterpreterUnit::makeStep()
 	bool needToUpdate = createElements();
 	needToUpdate |= createElementsToReplace();
 
-	//bool result = interpretReaction();
-	bool result = interpretPythonReaction();
+	bool result;
+	if (property(mRules->value(mMatchedRuleName), "type").toString() == "Python") {
+		result = interpretPythonReaction();
+	} else {
+		result = interpretReaction();
+	}
 
 	needToUpdate |= deleteElements();
 	replaceElements();

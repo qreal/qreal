@@ -94,7 +94,8 @@ void VisualInterpreterPlugin::generateSemanticsMetamodel() const
 
 	diagram.setAttribute("displayedName", displayedName + " Semantics");
 
-	insertSemanticsStatesEnum(metamodel);
+	insertSemanticsEnums(metamodel, "SemanticsStatus", QStringList() << "@new@" << "@deleted@");
+	insertSemanticsEnums(metamodel, "LanguageType", QStringList() << "Block Scheme (C-like)" << "Python");
 	insertSematicsStateProperty(metamodel);
 	insertPaletteGroups(metamodel, displayedName);
 	insertSpecialSemanticsElements(metamodel, diagramName);
@@ -117,24 +118,19 @@ void VisualInterpreterPlugin::generateSemanticsMetamodel() const
 			, SettingsManager::value("prefix").toString());
 }
 
-void VisualInterpreterPlugin::insertSemanticsStatesEnum(QDomDocument metamodel) const
+void VisualInterpreterPlugin::insertSemanticsEnums(QDomDocument metamodel, QString const &name, QStringList const &values) const
 {
 	QDomElement semanticsEnum = metamodel.createElement("enum");
-	semanticsEnum.setAttribute("name", "SemanticsStatus");
+	semanticsEnum.setAttribute("name", name);
 
-	QDomElement semanticsStatusNew = metamodel.createElement("value");
-	QDomText newText = metamodel.createTextNode("@new@");
-	semanticsStatusNew.appendChild(newText);
+	foreach (QString const &value, values) {
+		QDomElement elem = metamodel.createElement("value");
+		QDomText text = metamodel.createTextNode(value);
+		elem.appendChild(text);
+		semanticsEnum.appendChild(elem);
+	}
 
-	QDomElement semanticsStatusDeleted = metamodel.createElement("value");
-	QDomText deletedText = metamodel.createTextNode("@deleted@");
-	semanticsStatusDeleted.appendChild(deletedText);
-
-	semanticsEnum.appendChild(semanticsStatusNew);
-	semanticsEnum.appendChild(semanticsStatusDeleted);
-
-	mMetamodelGeneratorSupport->insertElementInDiagramSublevel(metamodel
-			, "nonGraphicTypes", semanticsEnum);
+	mMetamodelGeneratorSupport->insertElementInDiagramSublevel(metamodel, "nonGraphicTypes", semanticsEnum);
 }
 
 void VisualInterpreterPlugin::insertSematicsStateProperty(QDomDocument metamodel) const
@@ -205,6 +201,9 @@ void VisualInterpreterPlugin::insertSpecialSemanticsElements(QDomDocument metamo
 			"<properties>"
 				"<property type=\"string\" name=\"ruleName\" />"
 				"<property type=\"code\" name=\"procedure\" />"
+				"<property type=\"LanguageType\" name=\"type\">"
+					"<default>Block Scheme (C-like)</default>"
+				"</property>"
 			"</properties>"
 			"<container>"
 			"</container>"

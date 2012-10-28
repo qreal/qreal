@@ -49,8 +49,8 @@ private slots:
 	void showWatchList();
 
 private:
-	/// Insert possible semantics state of elements into semantics metamodel
-	void insertSemanticsStatesEnum(QDomDocument metamodel) const;
+	/// Insert some semantics enums into semantics metamodel
+	void insertSemanticsEnums(QDomDocument metamodel, QString const &name, QStringList const &values) const;
 
 	/// Add special semantics state property to all existing elements
 	void insertSematicsStateProperty(QDomDocument metamodel) const;
