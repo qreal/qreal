@@ -37,6 +37,7 @@ pathToMake=
 pluginExtension=
 pos=@Point(0 0)
 prefix=
+pythonPath=python
 ShowAlignment=true
 ShowGrid=true
 size=@Size(1024 800)

@@ -419,6 +419,13 @@ bool VisualInterpreterUnit::interpretReaction()
 
 bool VisualInterpreterUnit::interpretPythonReaction()
 {
+	QString const scriptPath = SettingsManager::value("reactionPath").toString();
+	QString const pythonPath = SettingsManager::value("pythonPath").toString();
+
+	mPythonGenerator->setScriptPath(scriptPath);
+	mPythonInterpreter->setScriptPath(scriptPath);
+	mPythonInterpreter->setPythonPath(pythonPath);
+
 	mPythonGenerator->setRule(mRules->value(mMatchedRuleName));
 	mPythonGenerator->setMatch(mMatches.first());
 
@@ -444,8 +451,6 @@ void VisualInterpreterUnit::copyProperties(Id const &elemInModel, Id const &elem
 	}
 }
 
-// TODO: Create some flag (mb as "Rule" element attribute) which indicates whether
-// or not rule reaction is written on python
 bool VisualInterpreterUnit::makeStep()
 {
 	bool needToUpdate = createElements();
