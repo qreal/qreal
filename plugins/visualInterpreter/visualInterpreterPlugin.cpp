@@ -77,7 +77,7 @@ QList<qReal::ActionInfo> VisualInterpreterPlugin::actions()
 void VisualInterpreterPlugin::generateSemanticsMetamodel() const
 {
 	QString editorMetamodelFilePath =
-			QFileDialog::getOpenFileName(NULL, tr("Specify editor metamodel:"));
+			QFileDialog::getOpenFileName(NULL, tr("Specify editor metamodel:"), QString(), "xml (*.xml)");
 	QString qrealSourceFilesPath = SettingsManager::value("qrealSourcesLocation").toString();
 
 	if (editorMetamodelFilePath.isEmpty() || qrealSourceFilesPath.isEmpty()) {
