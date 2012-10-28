@@ -14,16 +14,16 @@ void BlockParser::parseVarPart(QString const &stream, int &pos)
 	if (stream.mid(pos, 4).compare("var ") == 0) {
 		pos += 4;
 		skip(stream, pos);
-		if (!isEndOfStream(stream, pos) &&
-				stream.mid(pos, 4).compare("int ") != 0 && stream.mid(pos, 7).compare("double ") != 0)
+		if (!isEndOfStream(stream, pos)
+				&& stream.mid(pos, 4).compare("int ") != 0 && stream.mid(pos, 7).compare("double ") != 0)
 		{
 			error(unexpectedSymbol, QString::number(pos + 1), tr("int\' or \'double"), stream.at(pos));
 			return;
 		}
 
-		while (pos < stream.length() &&
-				(stream.mid(pos, 4).compare("int ") == 0 ||
-				stream.mid(pos, 7).compare("double ") == 0) )
+		while (pos < stream.length()
+				&& (stream.mid(pos, 4).compare("int ") == 0
+				|| stream.mid(pos, 7).compare("double ") == 0))
 		{
 			Number::Type curType;
 			if (stream.mid(pos, 4).compare("int ") == 0) {

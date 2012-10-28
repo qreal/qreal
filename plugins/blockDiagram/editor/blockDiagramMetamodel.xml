@@ -69,9 +69,6 @@
 		  </graphics>
 		  <logic>
 			<properties>
-			  <property type="reference" name="condition">
-			   <reference nameReference="ConditionNode"/>
-			  </property>
 			  <property type="string" name="process" />
 			  <property type="bool" name="finished">
 				<default>false</default>
