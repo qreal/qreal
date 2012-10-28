@@ -45,7 +45,7 @@ void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event, QRectF const 
 	setX1andY1(event);
 	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos()));
 	if (mGraphicsItem != NULL) {
-		if (!mGraphicsItem->realBoundingRect().intersects(rect)) {
+		if (!mGraphicsItem->realShape().intersects(rect)) {
 			mGraphicsItem->changeDragState(mX1, mY1);
 			if (mGraphicsItem->getDragState() != AbstractItem::None) {
 				mView->setDragMode(QGraphicsView::NoDrag);
@@ -72,14 +72,14 @@ void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &re
 {
 	setX2andY2(event);
 	if (mGraphicsItem != NULL) {
-		QPointF oldEnd = mGraphicsItem->getX2andY2();
 		QPointF oldBegin = mGraphicsItem->getX1andY1();
+		QPointF oldEnd = mGraphicsItem->getX2andY2();
 		if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None) {
 			mView->setDragMode(QGraphicsView::NoDrag);
 		}
 		mGraphicsItem->resizeItem(event);
 
-		if (mGraphicsItem->realBoundingRect().intersects(rect)) {
+		if (mGraphicsItem->realShape().intersects(rect)) {
 			mGraphicsItem->reverseOldResizingItem(oldBegin, oldEnd);
 		}
 	}

@@ -28,6 +28,11 @@ QRectF AbstractItem::realBoundingRect() const
 	return mapToScene(calcNecessaryBoundingRect()).boundingRect();
 }
 
+QPainterPath AbstractItem::realShape() const
+{
+	return mapToScene(shape());
+}
+
 void AbstractItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
 	Q_UNUSED(widget);

@@ -247,8 +247,8 @@ void D2ModelWidget::drawWalls()
 	if (mDrawingAction == drawingAction::wall) {
 		foreach (WallItem *wall, mWorldModel->walls()) {
 			mScene->addItem(wall);
-			connect(wall, SIGNAL(wallDragged(QRectF const &, QPointF const&))
-					, this, SLOT(worldWallDragged(QRectF const &, QPointF const&)));
+			connect(wall, SIGNAL(wallDragged(QPainterPath const &, QPointF const&))
+					, this, SLOT(worldWallDragged(QPainterPath const &, QPointF const&)));
 			connect(this, SIGNAL(robotWasIntersectedByWall(bool, QPointF const&))
 					, wall, SLOT(toStopWall(bool, QPointF const&)));
 		}
@@ -387,7 +387,7 @@ void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
 	if (mCurrentWall != NULL) {
 		QPointF oldPos = mCurrentWall->end();
 		mCurrentWall->setX2andY2(pos.x(), pos.y());
-		if (mRobot->realBoundingRect().intersects(mCurrentWall->realBoundingRect())) {
+		if (mCurrentWall->realShape().intersects(mRobot->realBoundingRect())) {
 			mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
 		}
 		if (event->modifiers() & Qt::ShiftModifier) {
@@ -761,9 +761,9 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 	emit d2WasClosed();
 }
 
-void D2ModelWidget::worldWallDragged(QRectF const &bounding, QPointF const& oldPos)
+void D2ModelWidget::worldWallDragged(QPainterPath const &shape, QPointF const& oldPos)
 {
-	if (mRobot->realBoundingRect().intersects(bounding)) {
+	if (shape.intersects(mRobot->realBoundingRect())) {
 		emit robotWasIntersectedByWall(true, oldPos);
 	} else {
 		emit robotWasIntersectedByWall(false, oldPos);

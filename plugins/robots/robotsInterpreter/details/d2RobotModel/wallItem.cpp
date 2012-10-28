@@ -63,7 +63,7 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 	QPointF oldPos = pos();
 	QGraphicsItem::mouseMoveEvent(event);
 	if (mDragged) {
-		emit wallDragged(this->realBoundingRect(), oldPos);
+		emit wallDragged(realShape(), oldPos);
 	}
 }
 

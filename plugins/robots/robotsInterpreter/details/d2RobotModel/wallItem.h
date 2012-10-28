@@ -33,7 +33,7 @@ public slots:
 	void toStopWall(bool isNeedStop, QPointF const& oldPos);
 
 signals:
-	void wallDragged(QRectF const &bounding, QPointF const& oldPos);
+	void wallDragged(QPainterPath const &shape, QPointF const& oldPos);
 
 protected:
 	virtual void setPrivateData();
