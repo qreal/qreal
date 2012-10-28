@@ -78,7 +78,7 @@ void VisualInterpreterPlugin::generateSemanticsMetamodel() const
 {
 	QString editorMetamodelFilePath =
 			QFileDialog::getOpenFileName(NULL, tr("Specify editor metamodel:"));
-	QString qrealSourceFilesPath = SettingsManager::value("qrealSourcesLocation", "").toString();
+	QString qrealSourceFilesPath = SettingsManager::value("qrealSourcesLocation").toString();
 
 	if (editorMetamodelFilePath.isEmpty() || qrealSourceFilesPath.isEmpty()) {
 		return;
@@ -111,10 +111,10 @@ void VisualInterpreterPlugin::generateSemanticsMetamodel() const
 			+ "/" + metamodelName + ".xml");
 
 	mMetamodelGeneratorSupport->loadPlugin(editorPath, metamodelName
-			, SettingsManager::value("pathToQmake", "").toString()
-			, SettingsManager::value("pathToMake", "").toString()
-			, SettingsManager::value("pluginExtension", "").toString()
-			, SettingsManager::value("prefix", "").toString());
+			, SettingsManager::value("pathToQmake").toString()
+			, SettingsManager::value("pathToMake").toString()
+			, SettingsManager::value("pluginExtension").toString()
+			, SettingsManager::value("prefix").toString());
 }
 
 void VisualInterpreterPlugin::insertSemanticsStatesEnum(QDomDocument metamodel) const

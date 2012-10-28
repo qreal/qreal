@@ -17,7 +17,7 @@ using namespace qReal;
 EmbeddedLinker::EmbeddedLinker()
 {
 	size = SettingsManager::value("EmbeddedLinkerSize").toFloat();
-	indent = SettingsManager::value("EmbeddedLinkerIndent", 5).toFloat();
+	indent = SettingsManager::value("EmbeddedLinkerIndent").toFloat();
 
 	mEdge = NULL;
 	master = NULL;
@@ -87,7 +87,7 @@ void EmbeddedLinker::setDirected(const bool directed)
 void EmbeddedLinker::initTitle()
 {
 	EditorManager* editorManager = dynamic_cast<EditorViewScene*>(scene())->mainWindow()->manager();
-	QString edgeTypeFriendly = editorManager->friendlyName(Id::loadFromString("qrm:/"+master->id().editor()+"/"+master->id().diagram()+"/"+edgeType.element()));
+	QString edgeTypeFriendly = editorManager->friendlyName(Id::loadFromString("qrm:/" + master->id().editor() + "/" + master->id().diagram() + "/" + edgeType.element()));
 
 	float textWidth = edgeTypeFriendly.size()*10;
 	float rectWidth = master->boundingRect().right() - master->boundingRect().left();

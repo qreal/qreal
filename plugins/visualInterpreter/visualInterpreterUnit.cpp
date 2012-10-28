@@ -117,13 +117,13 @@ void VisualInterpreterUnit::loadSemantics()
 			if (ruleElement.element() == "Replacement"){
 				Id const fromId = fromInRule(ruleElement);
 				Id const toId = toInRule(ruleElement);
-				
+
 				if (fromId == Id::rootId() || toId == Id::rootId()) {
 					semanticsLoadingError(tr("Incorrect replacement in rule '")
 							+ ruleName + "'");
 					return;
 				}
-				
+
 				if (!mReplacedElements->contains(ruleName)) {
 					mReplacedElements->insert(ruleName, new QHash<Id, Id>());
 				}
@@ -175,7 +175,7 @@ void VisualInterpreterUnit::interpret()
 	}
 
 	initBeforeInterpretation();
-	int const timeout = SettingsManager::value("debuggerTimeout", 750).toInt();
+	int const timeout = SettingsManager::value("debuggerTimeout").toInt();
 
 	while (findMatch()) {
 		if (mNeedToStopInterpretation) {
@@ -258,7 +258,7 @@ bool VisualInterpreterUnit::deleteElements()
 			Id const node = firstMatch.value(id);
 			mInterpretersInterface.dehighlight(node);
 			mCurrentNodesWithControlMark.removeOne(node);
-			
+
 			mInterpretersInterface.deleteElementFromDiagram(
 					mGraphicalModelApi.logicalId(firstMatch.value(id)));
 		}
@@ -299,7 +299,7 @@ bool VisualInterpreterUnit::createElements()
 void VisualInterpreterUnit::arrangeConnections()
 {
 	QHash<Id, Id> firstMatch = mMatches.at(0);
-	
+
 	foreach (Id const &idInRule, mCreatedElementsPairs->keys()) {
 		Id const idInModel = mCreatedElementsPairs->value(idInRule);
 

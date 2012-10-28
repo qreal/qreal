@@ -10,7 +10,7 @@
 using namespace qReal;
 using namespace qrmc;
 
-Diagram::Diagram(qReal::Id const &id,  qrRepo::RepoApi *api, Editor *editor)
+Diagram::Diagram(qReal::Id const &id,  qrRepo::LogicalRepoApi *api, Editor *editor)
 	: mId(id), mApi(api), mEditor(editor)
 {
 	mDiagramName = mApi->name(id);
@@ -169,6 +169,20 @@ public:
 	}
 };
 
+class Diagram::PropertyDisplayedNamesGenerator: public Diagram::MapMethodGenerator {
+public:
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
+		return type->generatePropertyDisplayedNames(lineTemplate);
+	}
+};
+
+class Diagram::ParentsMapGenerator: public Diagram::MapMethodGenerator {
+public:
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
+		return type->generateParents(lineTemplate);
+	}
+};
+
 class Diagram::NodesGenerator: public Diagram::MapMethodGenerator {
 public:
 	virtual QString generate(Type *type, QString const &lineTemplate) const {
@@ -221,6 +235,16 @@ QString Diagram::generatePropertyDefaultsMap(const QString &lineTemplate) const
 	return generateMapMethod(lineTemplate, PropertyDefaultsGenerator());
 }
 
+QString Diagram::generatePropertyDisplayedNamesMap(const QString &lineTemplate) const
+{
+	return generateMapMethod(lineTemplate, PropertyDisplayedNamesGenerator());
+}
+
+QString Diagram::generateParentsMap(const QString &lineTemplate) const
+{
+	return generateMapMethod(lineTemplate, ParentsMapGenerator());
+}
+
 class Diagram::ListMethodGenerator {
 public:
 	virtual QString generate(Type *type, QString const &lineTemplate) const = 0;
@@ -237,6 +261,13 @@ class Diagram::ContainersGenerator: public Diagram::ListMethodGenerator {
 public:
 	virtual QString generate(Type *type, QString const &lineTemplate) const {
 		return type->generateContainers(lineTemplate);
+	}
+};
+
+class Diagram::ReferencePropertiesGenerator: public Diagram::ListMethodGenerator {
+public:
+	virtual QString generate(Type *type, const QString &lineTemplate) const {
+		return type->generateReferenceProperties(lineTemplate);
 	}
 };
 
@@ -283,6 +314,11 @@ QString Diagram::generateUsages(const QString &lineTemplate) const
 QString Diagram::generateConnections(const QString &lineTemplate) const
 {
 	return generateListMethod(lineTemplate, ConnectionsGenerator());
+}
+
+QString Diagram::generateReferenceProperties(const QString &lineTemplate) const
+{
+	return generateListMethod(lineTemplate, ReferencePropertiesGenerator());
 }
 
 QString Diagram::generateContainers(const QString &lineTemplate) const

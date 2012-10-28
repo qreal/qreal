@@ -4,7 +4,7 @@
 using namespace qReal;
 using namespace qrmc;
 
-EnumType::EnumType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id) : NonGraphicType(diagram, api, id)
+EnumType::EnumType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id) : NonGraphicType(diagram, api, id)
 {
 }
 
