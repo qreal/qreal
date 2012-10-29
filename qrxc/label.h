@@ -22,9 +22,6 @@ private:
 	/// split the string into substrings wherever "##" occurs and return the list of those strings
 	QStringList getListOfStr(QString const &strToParse) const;
 
-	/// reform the list of strings: add "" to odd list items
-	QStringList getReformedList(QStringList const &list) const;
-
 	ScalableCoordinate mX;
 	ScalableCoordinate mY;
 	int mIndex;

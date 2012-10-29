@@ -57,13 +57,17 @@ public:
 	bool isOnTheGround() const;
 
 	void setRobotModel(RobotModelInterface *robotModel);
+	void setNeededBeep(bool isNeededBeep);
 
 signals:
 	void changedPosition();
 
 private:
+	void drawBeep(QPainter* painter);
 	/** @brief Image of a robot drawn on scene */
 	QImage mImage;
+	QImage mBeepImage;
+	bool mNeededBeep;
 
 	/** @brief List of sensors added to robot */
 	QList<SensorItem *> mSensors;  // Does not have ownership

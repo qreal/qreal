@@ -32,7 +32,7 @@ NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo
 		, qReal::ErrorReporterInterface &errorReporter
 		, QString const &destinationPath
 		)
-		: mDestinationPath(SettingsManager::value("temp", "").toString())
+		: mDestinationPath(SettingsManager::value("temp").toString())
 		, mErrorReporter(errorReporter)
 {
 	Q_UNUSED(destinationPath)
