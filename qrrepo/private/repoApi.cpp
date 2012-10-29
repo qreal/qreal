@@ -6,8 +6,9 @@ using namespace qrRepo;
 using namespace qrRepo::details;
 using namespace qReal;
 
-RepoApi::RepoApi(QString const &workingDirectory)
+RepoApi::RepoApi(QString const &workingDirectory, bool ignoreAutosave)
 		: mClient(workingDirectory)
+		, mIgnoreAutosave(ignoreAutosave)
 {
 }
 
@@ -403,8 +404,10 @@ void RepoApi::saveAll() const
 
 void RepoApi::saveTo(QString const &workingFile)
 {
-	mClient.setWorkingFile(workingFile);
-	mClient.saveAll();
+	if (!mIgnoreAutosave) {
+		mClient.setWorkingFile(workingFile);
+		mClient.saveAll();
+	}
 }
 
 void RepoApi::saveDiagramsById(QHash<QString, IdList> const &diagramIds)
