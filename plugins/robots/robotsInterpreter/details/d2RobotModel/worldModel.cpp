@@ -207,7 +207,7 @@ void WorldModel::deserialize(QDomElement const &element)
 bool WorldModel::intersectsByWall(QRectF const &rect)
 {
 	foreach (WallItem *wall, mWalls) {
-		if (wall->realBoundingRect().intersects(rect)) {
+		if (wall->realShape().intersects(rect)) {
 			return true;
 		}
 	}

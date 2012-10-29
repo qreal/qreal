@@ -34,6 +34,7 @@ public:
 	virtual QRectF boundingRect() const = 0;
 	virtual QRectF realBoundingRect() const;
 	virtual QRectF calcNecessaryBoundingRect() const;
+	virtual QPainterPath realShape() const;
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
 	virtual void drawExtractionForItem(QPainter* painter);

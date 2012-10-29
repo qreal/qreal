@@ -443,7 +443,7 @@ void D2ModelWidget::reshapeEjectedItem(QGraphicsSceneMouseEvent *event)
 		QRectF ejectedRect = mCurrentEjectedItem->realBoundingRect();
 		mCurrentEjectedItem->setX2andY2(pos.x(), pos.y());
 		if (mWorldModel->intersectsByWall(ejectedRect)
-			|| mRobot->realBoundingRect().intersects(ejectedRect)) {
+			|| mRobot->realShape().intersects(ejectedRect)) {
 			mCurrentEjectedItem->setX2andY2(oldPos.x(), oldPos.y());
 		}
 		if (event->modifiers() & Qt::ShiftModifier) {
@@ -824,7 +824,7 @@ void D2ModelWidget::ejectedItemMoved(QRectF const& itemRect, QPointF const& oldP
 	if (mWorldModel->intersectsByWall(itemRect)) {
 		emit needToStopMovedEjectedItem(true, oldPos);
 
-		if (mRobot->realBoundingRect().intersects(itemRect)) {
+		if (mRobot->realShape().intersects(itemRect)) {
 			mRobot->setPos(mRobot->pos() - diffRobotPos);
 		}
 	} else {
@@ -837,7 +837,7 @@ void D2ModelWidget::ejectedItemMoved(QRectF const& itemRect, QPointF const& oldP
 void D2ModelWidget::ejectedItemDragged(QRectF const& itemRect, QPointF const& oldPos, QPointF const& diffItemPos)
 {
 	if (mWorldModel->intersectsByWall(itemRect)
-		|| mRobot->realBoundingRect().intersects(itemRect)) {
+		|| mRobot->realShape().intersects(itemRect)) {
 		emit needToStopDraggedEjectedItem(true, oldPos);
 	} else {
 		emit needToStopDraggedEjectedItem(false, oldPos);
