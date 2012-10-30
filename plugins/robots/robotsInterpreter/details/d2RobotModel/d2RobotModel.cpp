@@ -33,9 +33,9 @@ D2RobotModel::~D2RobotModel()
 
 void D2RobotModel::initPosition()
 {
-	mMotorA = initMotor(5, 0, 0, 0);
-	mMotorB = initMotor(5, 0, 0, 1);
-	mMotorC = initMotor(5, 0, 0, 2);
+	mMotorA = initMotor(5, 0, 0, 0, false);
+	mMotorB = initMotor(5, 0, 0, 1, false);
+	mMotorC = initMotor(5, 0, 0, 2, false);
 	setBeep(0, 0);
 	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);
 	mRotatePoint = QPointF(0, 0);  // TODO: not rotatePoint? why?
@@ -48,18 +48,17 @@ void D2RobotModel::clear()
 	mPos = QPointF(0,0);
 }
 
-D2RobotModel::Motor* D2RobotModel::initMotor(int radius, int speed, long unsigned int degrees, int port)
+D2RobotModel::Motor* D2RobotModel::initMotor(int radius, int speed, long unsigned int degrees, int port, bool isUsed)
 {
 	Motor *motor = new Motor();
 	motor->radius = radius;
 	motor->speed = speed;
 	motor->degrees = degrees;
+	motor->isUsed = isUsed;
 	if (degrees == 0) {
-		motor->activeTime = QPair<ATime, qreal>(DoInf , 0);
-	}
-	else {
-		qreal activeTime = degrees / speed ;
-		motor->activeTime = QPair<ATime, qreal>(Do , activeTime);
+		motor->activeTimeType = DoInf;
+	} else {
+		motor->activeTimeType = DoByLimit;
 	}
 	mMotors[port] = motor;
 	mTurnoverMotors[port] = 0;
@@ -76,45 +75,32 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 {
 	mMotors[port]->speed = speed;
 	mMotors[port]->degrees = degrees;
+	mMotors[port]->isUsed = true;
 	if (degrees == 0) {
-		mMotors[port]->activeTime = QPair<ATime, qreal>(DoInf , 0);
+		mMotors[port]->activeTimeType = DoInf;
 	} else {
-		qreal activeTime = degrees * 1.0 / 1.0 * speed ;
-		mMotors[port]->activeTime = QPair<ATime, qreal>(Do , activeTime);
+		mMotors[port]->activeTimeType = DoByLimit;
 	}
 	mTurnoverMotors[port] = 0;
-}
-
-void D2RobotModel::countOneMotorTime(D2RobotModel::Motor &motor)
-{
-	if (motor.activeTime.first == Do) {
-		motor.activeTime.second -= timeInterval;
-		if (motor.activeTime.second <= 0) {
-			motor.activeTime.first = End;
-			motor.speed = 0;
-		}
-	}
-}
-
-void D2RobotModel::countMotorTime()
-{
-	countOneMotorTime(*mMotorA);
-	countOneMotorTime(*mMotorB);
-	countOneMotorTime(*mMotorC);
 }
 
 void D2RobotModel::countMotorTurnover()
 {
 	foreach (Motor *motor, mMotors) {
 		int port = mMotors.key(motor);
-		qreal degrees = timeInterval * 1.0 * motor->speed ;
+		qreal degrees = timeInterval * 1.0 * motor->speed / oneReciprocalTime;
 		mTurnoverMotors[port] += degrees;
+		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverMotors[port] >= motor->degrees)) {
+			motor->speed = 0;
+			motor->activeTimeType = End;
+			emit d2MotorTimeout();
+		}
 	}
 }
 
 int D2RobotModel::readEncoder(int/*inputPort::InputPortEnum*/ const port) const
 {
-	return mTurnoverMotors[port] / 360;  // divide the number of degrees by complete revolutions count
+	return mTurnoverMotors[port];
 }
 
 void D2RobotModel::resetEncoder(int/*inputPort::InputPortEnum*/ const port)
@@ -306,10 +292,10 @@ void D2RobotModel::stopRobot()
 void D2RobotModel::countBeep()
 {
 	if (mBeep.time > 0) {
-		mD2ModelWidget->drawBeep(QColor(Qt::red));
+		mD2ModelWidget->drawBeep(true);
 		mBeep.time -= timeInterval;
 	} else {
-		mD2ModelWidget->drawBeep(QColor(Qt::green));
+		mD2ModelWidget->drawBeep(false);
 	}
 }
 
@@ -318,17 +304,16 @@ void D2RobotModel::countNewCoord()
 	Motor *motor1 = mMotorA;
 	Motor *motor2 = mMotorB;
 
-	if (mMotorB->speed != 0 && mMotorC->speed != 0) {
-		motor1 = mMotorB;
-		motor2 = mMotorC;
-	} else if (mMotorA->speed != 0 && mMotorC->speed != 0) {
-		motor2 = mMotorC;
-	} else if (mMotorC->speed != 0) {
-		motor1 = mMotorC;
+	if (mMotorC->isUsed) {
+		if (!mMotorA->isUsed) {
+			motor1 = mMotorC;
+		} else if (!mMotorB->isUsed) {
+			motor2 = mMotorC;
+		}
 	}
 
-	qreal const vSpeed = motor1->speed * 2 * M_PI * motor1->radius * 1.0 / 44000;
-	qreal const uSpeed = motor2->speed * 2 * M_PI * motor2->radius * 1.0 / 44000;
+	qreal const vSpeed = motor1->speed * 2 * M_PI * motor1->radius * 1.0 / onePercentReciprocalSpeed;
+	qreal const uSpeed = motor2->speed * 2 * M_PI * motor2->radius * 1.0 / onePercentReciprocalSpeed;
 
 	qreal deltaY = 0;
 	qreal deltaX = 0;
@@ -368,12 +353,10 @@ void D2RobotModel::countNewCoord()
 	} else {
 		deltaY = averageSpeed * timeInterval * sin(mAngle * M_PI / 180);
 		deltaX = averageSpeed * timeInterval * cos(mAngle * M_PI / 180);
-		deltaY *= mSpeed;
-		deltaX *= mSpeed;
 	}
 
-	mPos.setX(mPos.x() + deltaX);
-	mPos.setY(mPos.y() + deltaY);
+	mPos.setX(mPos.x() + deltaX * mSpeedFactor);
+	mPos.setY(mPos.y() + deltaY * mSpeedFactor);
 
 	if(mAngle > 360) {
 		mAngle -= 360;
@@ -397,7 +380,6 @@ void D2RobotModel::nextFragment()
 	mRotatePoint = rotatePoint;
 	mD2ModelWidget->draw(mPos, mAngle, mRotatePoint);
 	countBeep();
-	countMotorTime();
 	countMotorTurnover();
 }
 
@@ -421,9 +403,9 @@ double D2RobotModel::rotateAngle() const
 	return mAngle;
 }
 
-void D2RobotModel::speed(qreal speedMul)
+void D2RobotModel::setSpeedFactor(qreal speedMul)
 {
-	mSpeed = speedMul;
+	mSpeedFactor = speedMul;
 }
 
 QPointF D2RobotModel::robotPos()
