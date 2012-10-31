@@ -89,20 +89,31 @@ void ElementTitle::focusOutEvent(QFocusEvent *event)
 
 void ElementTitle::keyPressEvent(QKeyEvent *event)
 {
-	/*if (event->key() == Qt::Key_Escape)
+	int keyEvent = event->key();
+	if (keyEvent == Qt::Key_Escape)
 	{
 		// Restore previous text and loose focus
 		setPlainText(mOldText);
 		clearFocus();
 		return;
 	}
-	if (event->key() == Qt::Key_Enter ||
-		event->key() == Qt::Key_Return)
+	if (event->modifiers() & Qt::ShiftModifier
+		&& event->key() == Qt::Key_Return)
+	{
+		// Line feed
+		QTextCursor cursor = textCursor();
+		QString currentText = toPlainText();
+		setPlainText(currentText + "\n");
+		setTextCursor(cursor);
+		return;
+	}
+	if (keyEvent == Qt::Key_Enter ||
+		keyEvent == Qt::Key_Return)
 	{
 		// Loose focus: new name will be applied in focusOutEvent
 		clearFocus();
 		return;
-	}*/
+	}
 	QGraphicsTextItem::keyPressEvent(event);
 }
 
