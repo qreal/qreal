@@ -46,7 +46,7 @@ public:
 	void init(bool isActive = true);
 	void close();
 	void draw(QPointF newCoord, qreal angle, QPointF dPoint);
-	void drawBeep(QColor const &color);
+	void drawBeep(bool isNeededBeep);
 	QPolygonF const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
 
 	/// Get current scene position of mRobot
@@ -70,6 +70,10 @@ public:
 
 public slots:
 	void update();
+	void worldWallDragged(QPainterPath const &shape, QPointF const& oldPos);
+
+signals:
+	void robotWasIntersectedByWall(bool isNeedStop, QPointF const& oldPos);
 
 protected:
 	void changeEvent(QEvent *e);
@@ -81,7 +85,7 @@ private slots:
 	void clearScene();
 	void resetButtons();
 
-	void mouseClicked(QGraphicsSceneMouseEvent *mouseEvent);
+	void mousePressed(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseReleased(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseMoved(QGraphicsSceneMouseEvent *mouseEvent);
 
@@ -146,10 +150,6 @@ private:
 
 	/// Holds graphic items that represent path of a robot, to be able to manipulate them
 	QList<QGraphicsItem *> mRobotPath;
-
-	/// Counter of calls to draw() method which recalculates scene position of the robot,
-	/// to support robot path drawing
-	int mDrawCyclesCount;
 
 	/// Maximum number of calls to draw() when adding robot path element is skipped.
 	/// So, new path element is added every mMaxDrawCyclesBetweenPathElements times

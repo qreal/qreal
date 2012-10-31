@@ -29,7 +29,7 @@ let autodetectQt =
         
     pathes |> List.ofArray |> findQt
 
-let modifiedInstallerScript = installerScript.Replace("%1", "..").Replace("%2", autodetectQt).Replace("<version>1.5</version>", "<version>" + version + "</version>")
+let modifiedInstallerScript = installerScript.Replace("%1", "..").Replace("%2", autodetectQt).Replace("<version>%version%</version>", "<version>" + version + "</version>")
 System.IO.File.WriteAllText (modifiedScriptName, modifiedInstallerScript)
 
 let exec processName args =

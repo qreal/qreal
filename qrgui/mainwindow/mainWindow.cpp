@@ -151,7 +151,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), mProjectManager, SLOT(openNewWithDiagram()));
 
-    connect(mUi->actionImport, SIGNAL(triggered()), mProjectManager, SLOT(suggestToImport()));
+	connect(mUi->actionImport, SIGNAL(triggered()), mProjectManager, SLOT(suggestToImport()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 	connect(mUi->actionCopyElementsOnDiagram, SIGNAL(triggered()), this, SLOT(copyElementsOnDiagram()));
 	connect(mUi->actionPasteOnDiagram, SIGNAL(triggered()), this, SLOT(pasteOnDiagram()));
@@ -840,7 +840,7 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::initSettingsManager()
 {
-	QDir imagesDir(SettingsManager::value("pathToImages", "/someWeirdDirectoryName").toString());
+	QDir imagesDir(SettingsManager::value("pathToImages").toString());
 	if (!imagesDir.exists()) {
 		SettingsManager::setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
 	}
@@ -870,9 +870,9 @@ void MainWindow::openSettingsDialog(QString const &tab)
 
 void MainWindow::setSceneFont()
 {
-	if (SettingsManager::value("CustomFont", true).toBool()) {
+	if (SettingsManager::value("CustomFont").toBool()) {
 		QFont font;
-		font.fromString(SettingsManager::value("CurrentFont", "ololo").toString());
+		font.fromString(SettingsManager::value("CurrentFont").toString());
 		getCurrentTab()->scene()->setFont(font);
 		getCurrentTab()->scene()->update();
 	} else {
@@ -1366,7 +1366,7 @@ QAction *MainWindow::actionPasteCopyOfLogical() const
 	return mUi->actionPasteReference;
 }
 
-void MainWindow::highlight(Id const &graphicalId, bool exclusive)
+void MainWindow::highlight(Id const &graphicalId, bool exclusive, QColor const &color)
 {
 	EditorView* const view = getCurrentTab();
 	if (!view) {
@@ -1375,7 +1375,7 @@ void MainWindow::highlight(Id const &graphicalId, bool exclusive)
 
 	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
 	Element* const element = scene->getElem(graphicalId);
-	scene->highlight(graphicalId, exclusive);
+	scene->highlight(graphicalId, exclusive, color);
 	view->ensureElementVisible(element);
 }
 

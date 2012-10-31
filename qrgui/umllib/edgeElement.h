@@ -67,7 +67,7 @@ public:
 	bool isBreakPointPressed();
 	void breakPointUnpressed();
 
-	void highlight(QColor const color = Qt::red);
+	void highlight(const QColor &color = Qt::red);
 
 	EdgeData& data();
 

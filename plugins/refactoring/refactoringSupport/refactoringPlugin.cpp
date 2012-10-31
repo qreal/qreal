@@ -40,6 +40,7 @@ void RefactoringPlugin::init(PluginConfigurator const &configurator)
 	mRepoControlIFace = &configurator.repoControlInterface();
 	mMainWindowIFace = &configurator.mainWindowInterpretersInterface();
 	mQRealSourceFilesPath = SettingsManager::value("qrealSourcesLocation", "").toString();
+	mQRealSourceFilesPath = SettingsManager::value("qrealSourcesLocation").toString();
 	mPathToRefactoringExamples = mQRealSourceFilesPath + "/plugins/refactoring/refactoringExamples/";
 
 	mRefactoringWindow = new RefactoringWindow(mMainWindowIFace->windowWidget());
@@ -160,10 +161,11 @@ void RefactoringPlugin::generateRefactoringMetamodel()
 	mMetamodelGeneratorSupport->saveMetamodelInFile(metamodel, editorPath + "/" + metamodelName + ".xml");
 
 	mMetamodelGeneratorSupport->loadPlugin(editorPath, metamodelName
-			, SettingsManager::value("pathToQmake", "").toString()
-			, SettingsManager::value("pathToMake", "").toString()
-			, SettingsManager::value("pluginExtension", "").toString()
-			, SettingsManager::value("prefix", "").toString());
+			, SettingsManager::value("pathToQmake").toString()
+			, SettingsManager::value("pathToMake").toString()
+			, SettingsManager::value("pluginExtension").toString()
+			, SettingsManager::value("prefix").toString()
+	);
 }
 
 void RefactoringPlugin::insertRefactoringID(QDomDocument metamodel, QDomNodeList const &list, bool isNode)
@@ -367,7 +369,10 @@ void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 	if (mRefactoringFinder->refactoringRuleContainsSelectedSegment()) {
 		mSelectedElementsOnActiveDiagram = mMainWindowIFace->selectedElementsOnActiveDiagram();
 		foreach (Id const &selectedElement, mSelectedElementsOnActiveDiagram) {
-			mMainWindowIFace->highlight(selectedElement, false);
+			QColor const color = QColor(SettingsManager::value("refactoringColor"
+					, "cyan").toString());
+			bool isExclusive = false;
+			mMainWindowIFace->highlight(selectedElement, isExclusive, color);
 		}
 	}
 	else if (mRefactoringFinder->findMatch()) {
@@ -388,7 +393,10 @@ void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 		}
 		foreach (Id const &id, mCurrentMatch.keys()) {
 			Id valueId = mCurrentMatch.value(id);
-			mMainWindowIFace->highlight(valueId, false);
+			QColor const color = QColor(SettingsManager::value("refactoringColor"
+					, "cyan").toString());
+			bool isExclusive = false;
+			mMainWindowIFace->highlight(valueId, isExclusive, color);
 		}
 	}
 	else {
@@ -408,7 +416,10 @@ void RefactoringPlugin::findNextRefactoring()
 	} else {
 		mCurrentMatch = mMatches.takeFirst();
 		foreach (Id const &id, mCurrentMatch.keys()) {
-			mMainWindowIFace->highlight(mCurrentMatch.value(id), false);
+			QColor const color = QColor(SettingsManager::value("refactoringColor"
+					, "cyan").toString());
+			bool isExclusive = false;
+			mMainWindowIFace->highlight(mCurrentMatch.value(id), isExclusive, color);
 		}
 	}
 }

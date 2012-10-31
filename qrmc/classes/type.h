@@ -15,7 +15,7 @@ namespace qrmc {
 	class Type
 	{
 	public:
-		Type(bool isResolved, Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const &id);
+		Type(bool isResolved, Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
 		virtual ~Type();
 		virtual Type* clone() const = 0;
 		virtual bool resolve() = 0;
@@ -45,6 +45,9 @@ namespace qrmc {
 		virtual QString generateMouseGestures(QString const &lineTemplate) const;
 		virtual QString generateProperties(QString const &lineTemplate) const = 0;
 		virtual QString generatePropertyDefaults(QString const &lineTemplate) const = 0;
+		virtual QString generatePropertyDisplayedNames(QString const &lineTemplate) const = 0;
+		virtual QString generateReferenceProperties(QString const &lineTemplate) const = 0;
+		virtual QString generateParents(QString const &lineTemplate) const = 0;
 		virtual QString generateContainers(QString const &lineTemplate) const = 0;
 		virtual QString generateConnections(QString const &lineTemplate) const = 0;
 		virtual QString generateUsages(QString const &lineTemplate) const = 0;
@@ -64,7 +67,7 @@ namespace qrmc {
 		bool mResolvingFinished;
 		Diagram *mDiagram;
 		qReal::Id mId;
-		qrRepo::RepoApi *mApi;
+		qrRepo::LogicalRepoApi *mApi;
 		QString mName;  // metatype name
 		QString mContext;  // context if metatype. e.g. Kernel::Node: Node - name, Kernel - context.
 		QString mNativeContext;  // native context, doesn't change on import and is used for element resolving

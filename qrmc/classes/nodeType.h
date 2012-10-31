@@ -10,7 +10,7 @@ namespace qrmc {
 	class NodeType : public GraphicType
 	{
 	public:
-		NodeType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const id);
+		NodeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const id);
 		virtual Type* clone() const;
 		virtual ~NodeType();
 

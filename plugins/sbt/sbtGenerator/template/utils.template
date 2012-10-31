@@ -1,0 +1,2 @@
+@@Property@@
+public @@Type@@ @@Name@@ { get; set; }

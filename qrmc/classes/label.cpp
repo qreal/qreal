@@ -5,10 +5,14 @@
 
 using namespace qrmc;
 
-bool Label::init(QDomElement const &element, int index, bool nodeLabel)
+bool Label::init(QDomElement const &element, int index, bool nodeLabel, int width, int height)
 {
-	mX = element.attribute("x", "0");
-	mY = element.attribute("y", "0");
+	initCoordinate(mX, element.attribute("x", "0"), width);
+	initCoordinate(mY, element.attribute("y", "0"), height);
+
+	scalingX = mX.isScalable() ? "true" : "false";
+	scalingY = mY.isScalable() ? "true" : "false";
+
 	mCenter = element.attribute("center", "false");
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
@@ -22,13 +26,28 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel)
 	return true;
 }
 
+void Label::initCoordinate(ScalableCoordinate &field, QString coordinate, int maxValue)
+{
+	if (coordinate.endsWith("a")) {
+		coordinate.remove(coordinate.length() - 1, 1);
+		field = ScalableCoordinate(((qreal) coordinate.toInt()) / maxValue, maxValue, true);
+	} else if (coordinate.endsWith("%")) {
+		coordinate.remove(coordinate.length() - 1, 1);
+		field = ScalableCoordinate(((qreal) coordinate.toInt()) / 100, 100, false);
+	} else {
+		field = ScalableCoordinate(((qreal) coordinate.toInt()) / maxValue, maxValue, false);
+	}
+}
+
 QString Label::generateInit(MetaCompiler *compiler, bool isNode) const
 {
 	QString result = isNode ? compiler->getTemplateUtils(nodeInitTag) : compiler->getTemplateUtils(edgeInitTag);
 	QString name = mText.isEmpty() ? mTextBinded : mText;
 
-	result.replace(labelXTag, mX)
-			.replace(labelYTag, mY)
+	result.replace(labelXTag, mX.toString(false))
+			.replace(labelYTag, mY.toString(false))
+			.replace(xCoordIsScalable, scalingX)
+			.replace(yCoordIsScalable, scalingY)
 			.replace(labelReadonlyTag, mReadOnly)
 			.replace(labelIndexTag, QString::number(mIndex))
 			.replace(labelNameTag, "\"" + name + "\"");
@@ -42,11 +61,48 @@ QString Label::generateUpdate(MetaCompiler *compiler) const
 		return (nodeIndent + "Q_UNUSED(repo)" + endline);
 
 	QString result = compiler->getTemplateUtils(updateDataTag);
-	QString name = (mTextBinded == "name") ? compiler->getTemplateUtils(nameRoleTag)
-						: compiler->getTemplateUtils(customRoleTag).replace(labelNameTag, mTextBinded);
+	QString name = generateCodeForUpdateData();
 
 	return result.replace(updateRoleTag, name)
 			.replace(labelIndexTag, QString::number(mIndex));
+}
+
+QStringList Label::getListOfStr(QString const &strToParse) const
+{
+	return strToParse.split("##");
+}
+
+QString Label::generateCodeForUpdateData() const
+{
+	QStringList list = getListOfStr(mTextBinded);
+
+	QString resultStr;
+	if (list.count() == 1) {
+		if (list.first() == "name") {
+			resultStr = "repo->name()";
+		} else {
+			resultStr = "repo->logicalProperty(\"" + list.first() + "\")";
+		}
+	} else {
+		int counter = 1;
+		foreach (QString const &listElement, list) {
+			QString field;
+			if (counter % 2 == 0) {
+				if (listElement == "name") {
+					field = "repo->name()";
+				} else {
+					field = "repo->logicalProperty(\"" + listElement + "\")";
+				}
+			} else {
+				field = "QString::fromUtf8(\"" + listElement + "\")";
+			}
+
+			resultStr += " + " +  field;
+			counter++;
+		}
+		resultStr = resultStr.mid(3);
+	}
+	return resultStr;
 }
 
 QString Label::generateDefinition(MetaCompiler *compiler) const

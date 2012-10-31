@@ -28,6 +28,11 @@ IdList RepoApi::children(Id const &id) const
 	return mClient.children(id);
 }
 
+void RepoApi::printDebug()
+{
+	mClient.printDebug();
+}
+
 IdList RepoApi::findElementsByName(QString const &name, bool sensitivity, bool regExpression) const
 {
 	return mClient.findElementsByName(name, sensitivity, regExpression);
@@ -258,7 +263,7 @@ QString RepoApi::stringProperty(Id const &id, QString const &propertyName) const
 	return mClient.property(id, propertyName).toString();
 }
 
-void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value) const
+void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value)
 {
 	mClient.setProperty(id, propertyName, value);
 }
@@ -503,7 +508,6 @@ IdList RepoApi::graphicalElements(Id const &type) const
 IdList RepoApi::elementsByType(QString const &type, bool sensitivity, bool regExpression) const
 {
 	Qt::CaseSensitivity caseSensitivity;
-
 
 	if (sensitivity) {
 		caseSensitivity = Qt::CaseSensitive;

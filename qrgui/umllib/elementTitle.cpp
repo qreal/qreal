@@ -25,9 +25,9 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOn
 }
 
 void ElementTitle::setTitleFont() {
-	if (SettingsManager::value("CustomFont", true).toBool()) {
+	if (SettingsManager::value("CustomFont").toBool()) {
 		QFont font;
-		font.fromString(SettingsManager::value("CurrentFont", "ololo").toString());
+		font.fromString(SettingsManager::value("CurrentFont").toString());
 		setFont(font);
 	} else {
 		int const fontId = QFontDatabase::addApplicationFont(QDir::currentPath() + "/DejaVuSansCondensed.ttf");
