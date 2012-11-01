@@ -90,15 +90,13 @@ void ElementTitle::focusOutEvent(QFocusEvent *event)
 void ElementTitle::keyPressEvent(QKeyEvent *event)
 {
 	int const keyEvent = event->key();
-	if (keyEvent == Qt::Key_Escape)
-	{
+	if (keyEvent == Qt::Key_Escape) {
 		// Restore previous text and loose focus
 		setPlainText(mOldText);
 		clearFocus();
 		return;
 	}
-	if ((event->modifiers() & Qt::ShiftModifier) && (event->key() == Qt::Key_Return))
-	{
+	if ((event->modifiers() & Qt::ShiftModifier) && (event->key() == Qt::Key_Return)) {
 		// Line feed
 		QTextCursor const cursor = textCursor();
 		QString const currentText = toPlainText();
@@ -106,8 +104,7 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 		setTextCursor(cursor);
 		return;
 	}
-	if (keyEvent == Qt::Key_Enter || keyEvent == Qt::Key_Return)
-	{
+	if (keyEvent == Qt::Key_Enter || keyEvent == Qt::Key_Return) {
 		// Loose focus: new name will be applied in focusOutEvent
 		clearFocus();
 		return;
