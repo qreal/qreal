@@ -80,6 +80,8 @@ public slots:
 	/// selects all elements on the current scene
 	void selectAll();
 
+	void cropToItems();
+
 signals:
 	void elementCreated(qReal::Id const &id);
 	void zoomIn();
@@ -117,12 +119,16 @@ private slots:
 	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
 	void getObjectByGesture();
 
-
 private:
 	void getLinkByGesture(NodeElement *parent, NodeElement const &child);
 	void drawGesture();
 	void deleteGesture();
 	void createEdgeMenu(QList<QString> const &ids);
+
+	/// sets sceneRect to (0, 0, 1000, 1000) by adding its corners to the scene
+	/// (to keep ability of scene rect to grow automatically)
+	void initCorners();
+	void setCorners(QPointF const &topLeft, QPointF const &bottomRight);
 
 	void drawGrid(QPainter *painter, const QRectF &rect);
 	void redraw();
@@ -216,6 +222,9 @@ private:
 
 	/** @brief Is "true" when we just select items on scene, and "false" when we drag selected items */
 	bool mShouldReparentItems;
+
+	QGraphicsRectItem *mTopLeftCorner;
+	QGraphicsRectItem *mBottomRightCorner;
 
 	friend class qReal::EditorViewMViface;
 };

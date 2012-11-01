@@ -34,6 +34,7 @@ public:
 	virtual QRectF boundingRect() const = 0;
 	virtual QRectF realBoundingRect() const;
 	virtual QRectF calcNecessaryBoundingRect() const;
+	virtual QPainterPath realShape() const;
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
 	virtual void drawExtractionForItem(QPainter* painter);
@@ -56,6 +57,9 @@ public:
 	virtual void setBrushColor(const QString& text);
 	virtual void setPenBrush(const QString& penStyle, int width, const QString& penColor, const QString& brushStyle, const QString& brushColor);
 
+	QPointF getX1andY1(void);
+	QPointF getX2andY2(void);
+
 	void setX1andY1(qreal x, qreal y);
 	void setX1andY2(qreal x, qreal y);
 	void setX2andY1(qreal x, qreal y);
@@ -67,6 +71,7 @@ public:
 
 	virtual void calcResizeItem(QGraphicsSceneMouseEvent *event);
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
+	void reverseOldResizingItem(QPointF begin, QPointF end);
 
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
 

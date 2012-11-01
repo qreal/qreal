@@ -1,4 +1,3 @@
-#include <QtCore/QDebug>
 #include <QtGui/QVBoxLayout>
 
 #include "listWidget.h"
@@ -6,10 +5,11 @@
 using namespace qReal;
 
 ListWidget::ListWidget(QWidget *parent)
-	: QWidget(parent)
-	, mListWidget(new QListWidget())
-	, mOkButton(new QPushButton(tr("&OK")))
+		: QWidget(parent)
+		, mListWidget(new QListWidget())
+		, mOkButton(new QPushButton(tr("&OK")))
 {
+	mOkButton->setMinimumHeight(mOkButtonMinimumHeight);
 	mOkButton->setDisabled(true);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;

@@ -93,7 +93,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
 		} else {
-			if (name == "shape") { // hack
+			if (name == "shape" || mModel->isReference(valueCell, name)) { // hack
 				isButton = true;
 			}
 		}
@@ -145,12 +145,19 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 {
 	int row = mPropertyEditor->properties().indexOf(property);
 	QModelIndex const &index = mModel->index(row, 1);
-
+	QString name = mModel->data(mModel->index(row, 0)).toString();
 	QString propertyValue = index.data(Qt::DisplayRole).toString();
-	QPersistentModelIndex const actualIndex = mModel->modelIndex(index.row());
 	int role = mModel->roleByIndex(index.row());
 
-	mMainWindow->openShapeEditor(actualIndex, role, propertyValue);
+	QPersistentModelIndex const actualIndex = mModel->modelIndex(index.row());
+
+	// there are only two type of buttons: shape and reference
+	if (name == "shape") {
+		mMainWindow->openShapeEditor(actualIndex, role, propertyValue);
+	} else {
+		QString typeName = mModel->typeName(index);
+		mMainWindow->openReferenceList(actualIndex, typeName, propertyValue, role);
+	}
 }
 
 void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)

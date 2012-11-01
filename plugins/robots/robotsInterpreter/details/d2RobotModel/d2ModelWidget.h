@@ -46,7 +46,7 @@ public:
 	void init(bool isActive = true);
 	void close();
 	void draw(QPointF newCoord, qreal angle, QPointF dPoint);
-	void drawBeep(QColor const &color);
+	void drawBeep(bool isNeededBeep);
 	QPolygonF const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
 
 	/// Get current scene position of mRobot
@@ -66,8 +66,14 @@ public:
 	D2ModelScene* scene();
 	void setSensorVisible(inputPort::InputPortEnum port, bool isVisible);
 
+	void closeEvent(QCloseEvent *event);
+
 public slots:
 	void update();
+	void worldWallDragged(QPainterPath const &shape, QPointF const& oldPos);
+
+signals:
+	void robotWasIntersectedByWall(bool isNeedStop, QPointF const& oldPos);
 
 protected:
 	void changeEvent(QEvent *e);
@@ -79,7 +85,7 @@ private slots:
 	void clearScene();
 	void resetButtons();
 
-	void mouseClicked(QGraphicsSceneMouseEvent *mouseEvent);
+	void mousePressed(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseReleased(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseMoved(QGraphicsSceneMouseEvent *mouseEvent);
 
@@ -95,6 +101,11 @@ private slots:
 	void changePenWidth(int width);
 	void changePenColor(const QString &text);
 	void changePalette();
+
+	void changeSpeed(int curIndex);
+
+signals:
+	void d2WasClosed();
 
 private:
 	void connectUiButtons();
@@ -139,10 +150,6 @@ private:
 
 	/// Holds graphic items that represent path of a robot, to be able to manipulate them
 	QList<QGraphicsItem *> mRobotPath;
-
-	/// Counter of calls to draw() method which recalculates scene position of the robot,
-	/// to support robot path drawing
-	int mDrawCyclesCount;
 
 	/// Maximum number of calls to draw() when adding robot path element is skipped.
 	/// So, new path element is added every mMaxDrawCyclesBetweenPathElements times
@@ -190,6 +197,8 @@ private:
 
 	Rotater *mRotater;
 	QVector<Rotater *> mSensorRotaters;
+
+	int mWidth;
 
 };
 

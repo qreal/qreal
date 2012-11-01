@@ -9,15 +9,17 @@
 using namespace qReal;
 
 EditorView::EditorView(QWidget *parent)
-	: QGraphicsView(parent), mMouseOldPosition(), mWheelPressed(false)
+	: QGraphicsView(parent), mMouseOldPosition(), mWheelPressed(false), mZoom(0)
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
 	mScene = new EditorViewScene(this);
+
 	connect(mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
 	connect(mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
 
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+	setResizeAnchor(QGraphicsView::AnchorUnderMouse);
 
 	mMVIface = new EditorViewMViface(this, mScene);
 	setScene(mScene);
@@ -53,10 +55,13 @@ void EditorView::toggleOpenGL(bool checked)
 
 void EditorView::zoomIn()
 {
-	if (mWheelPressed)
+	if (mWheelPressed || mZoom >= SettingsManager::value("maxZoom").toInt()){
 		return;
+	}
+	setSceneRect(mScene->sceneRect());
 	double zoomFactor = static_cast<double>(SettingsManager::value("zoomFactor").toInt()) / 10 + 1;
 	scale(zoomFactor, zoomFactor);
+	mZoom++;
 	if (SettingsManager::value("ShowGrid").toBool()) {
 		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
 	}
@@ -65,10 +70,13 @@ void EditorView::zoomIn()
 
 void EditorView::zoomOut()
 {
-	if (mWheelPressed)
+	if (mWheelPressed || mZoom <= SettingsManager::value("minZoom").toInt()){
 		return;
+	}
+	setSceneRect(mScene->sceneRect());
 	double zoomFactor = 1 / (static_cast<double>(SettingsManager::value("zoomFactor").toInt()) / 10 + 1);
 	scale(zoomFactor, zoomFactor);
+	mZoom--;
 	if (SettingsManager::value("ShowGrid").toBool()) {
 		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
 	}

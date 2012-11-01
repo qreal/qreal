@@ -5,6 +5,9 @@
 
 #include "nodeElement.h"
 #include "edgeElement.h"
+
+using namespace qReal;
+
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &text)
 	: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mPoint(x, y), mBinding(""), mBackground(Qt::transparent)
 {
@@ -22,9 +25,9 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOn
 }
 
 void ElementTitle::setTitleFont() {
-	if (SettingsManager::value("CustomFont", true).toBool()) {
+	if (SettingsManager::value("CustomFont").toBool()) {
 		QFont font;
-		font.fromString(SettingsManager::value("CurrentFont", "ololo").toString());
+		font.fromString(SettingsManager::value("CurrentFont").toString());
 		setFont(font);
 	} else {
 		int const fontId = QFontDatabase::addApplicationFont(QDir::currentPath() + "/DejaVuSansCondensed.ttf");

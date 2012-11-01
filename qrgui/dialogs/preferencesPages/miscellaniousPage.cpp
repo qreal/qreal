@@ -4,6 +4,8 @@
 #include "miscellaniousPage.h"
 #include "ui_miscellaniousPage.h"
 
+using namespace qReal;
+
 PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
 		: PreferencesPage(parent)
 		, mUi(new Ui::PreferencesMiscellaniousPage)
@@ -19,7 +21,7 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
 	mUi->openGLCheckBox->setChecked(SettingsManager::value("OpenGL").toBool());
 	mUi->squareLineModeCheckBox->setChecked(SettingsManager::value("SquareLine").toBool());
 
-	mLastIconsetPath = SettingsManager::value("pathToImages", qApp->applicationDirPath() + "/images/iconset1").toString();
+	mLastIconsetPath = SettingsManager::value("pathToImages").toString();
 	mUi->imagesPathEdit->setText(mLastIconsetPath);
 }
 

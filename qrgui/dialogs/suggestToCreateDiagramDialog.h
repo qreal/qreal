@@ -1,6 +1,5 @@
 #pragma once
-#include <QDialog>
-#include <QKeyEvent>
+#include "managedClosableDialog.h"
 
 #include "startDialog/suggestToCreateDiagramWidget.h"
 
@@ -8,21 +7,14 @@ namespace qReal {
 
 class MainWindow;
 
-/**
- * @brief Dialog for create a diagram
- *
- * This dialog prompts the user to create one of the available diagrams
- */
-class SuggestToCreateDiagramDialog : public QDialog
+/// @brief Dialog for create a diagram
+/// This dialog prompts the user to create one of the available diagrams
+class SuggestToCreateDiagramDialog : public ManagedClosableDialog
 {
 	Q_OBJECT
 
 public:
-	explicit SuggestToCreateDiagramDialog(MainWindow *mainWindow, bool isNonClosable = false);
-	void keyPressEvent(QKeyEvent *event);
-
-private:
-	bool mIsNonClosable;
+	explicit SuggestToCreateDiagramDialog(MainWindow *mainWindow, bool isClosable = true);
 };
 
 }

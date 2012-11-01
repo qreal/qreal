@@ -5,6 +5,8 @@
 #include "featuresPage.h"
 #include "ui_featuresPage.h"
 
+using namespace qReal;
+
 PreferencesFeaturesPage::PreferencesFeaturesPage(QWidget *parent)
 		: PreferencesPage(parent)
 		, mUi(new Ui::PreferencesFeaturesPage)

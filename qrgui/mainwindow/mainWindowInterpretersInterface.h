@@ -2,6 +2,7 @@
 
 #include "../../qrkernel/ids.h"
 #include "../toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "../../qrutils/invocationUtils/longOperation.h"
 
 namespace qReal {
 namespace gui {
@@ -18,7 +19,11 @@ public:
 	virtual void dehighlight(Id const &graphicalId) = 0;
 	virtual void dehighlight() = 0;
 	virtual ErrorReporterInterface *errorReporter() = 0;
+
+	/// Gets graphical Id of diagram currently opened in editor.
+	/// @returns Id of opened diagram, empty Id if there is none.
 	virtual Id activeDiagram() = 0;
+
 	virtual void openSettingsDialog(QString const &tab) = 0;
 
 	/// Opens new tab with text editor and shows a text in it
@@ -65,8 +70,13 @@ public:
 	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true) = 0;
 
 	virtual void updateActiveDiagram() = 0;
-	
+
 	virtual void deleteElementFromDiagram(Id const &id) = 0;
+
+	/// Must be called before some long operation start.
+	/// Shows progress bar on operation start
+	/// @param operation Operation that going to be invoced
+	virtual void reportOperation(invocation::LongOperation *operation) = 0;
 };
 
 }

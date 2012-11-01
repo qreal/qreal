@@ -11,8 +11,11 @@ enum DragFrom {
 
 namespace qReal {
 
-	const char ID_PATH_DIVIDER = '#';
+/// Separator used in situations where there is need to form path consisting of
+/// multiple Ids.
+const char ID_PATH_DIVIDER = '#';
 
-	const QString DEFAULT_MIME_TYPE = "application/x-real-uml-data";
+/// MIME type for drag-and-drop operations inside QReal
+const QString DEFAULT_MIME_TYPE = "application/x-real-uml-data";
 
 }
