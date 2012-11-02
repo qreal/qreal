@@ -174,7 +174,15 @@ bool InterpreterEditorManager::isParentOf(Id const &child, Id const &parent) con
 
 IdList InterpreterEditorManager::getConnectedTypes(const Id &id) const
 {
-	return getRepoAndMetaId(id).first->connectedElements(getRepoAndMetaId(id).second);
+	IdList result;
+	QPair<qrRepo::RepoApi*, Id> repoAndMetaId = getRepoAndMetaId(id);
+	qrRepo::RepoApi const * const repo = repoAndMetaId.first;
+	Id const metaId = repoAndMetaId.second;
+	foreach (Id connectId, repo->connectedElements(metaId)) {
+		QPair<Id, Id> editorAndDiagram = getEditorAndDiagram(repo, connectId);
+		result << Id(repo->name(editorAndDiagram.first), repo->name(editorAndDiagram.second), repo->name(connectId));
+	}
+	return result;
 }
 
 bool InterpreterEditorManager::isEditor(const Id &id) const

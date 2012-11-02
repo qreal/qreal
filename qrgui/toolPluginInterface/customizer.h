@@ -18,7 +18,7 @@ public:
 	/// Tells if we should show the button of opening the interpreted diagram or not
 	virtual bool showInterpeterButton() const
 	{
-		return false;
+		return true;
 	}
 
 	/// Allows to customize main window's title from plugin
