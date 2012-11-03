@@ -32,6 +32,7 @@ class Scene : public graphicsUtils::AbstractScene
 	Q_OBJECT
 public:
 	Scene(graphicsUtils::AbstractView *view, QObject *parent = 0);
+	graphicsUtils::AbstractView *getMainView();
 	QPoint centerEmpty();
 	void changeTextName(const QString &name);
 	void setZValue(Item* item);
