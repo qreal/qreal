@@ -168,6 +168,16 @@ void D2ModelWidget::drawInitialRobot()
 	mUi->graphicsView->centerOn(mRobot);
 }
 
+void D2ModelWidget::keyPressEvent(QKeyEvent *event)
+{
+	QWidget::keyPressEvent(event);
+	if (event->matches(QKeySequence::ZoomIn)) {
+		mScene->getMainView()->zoomIn();
+	} else if (event->matches(QKeySequence::ZoomOut)) {
+		mScene->getMainView()->zoomOut();
+	}
+}
+
 QPointF D2ModelWidget::robotPos() const
 {
 	return mRobot ? mRobot->pos() : QPointF(0,0);

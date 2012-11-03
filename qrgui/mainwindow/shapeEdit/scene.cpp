@@ -28,11 +28,6 @@ Scene::Scene(graphicsUtils::AbstractView *view, QObject * parent)
 	mZValue = 0;
 }
 
-graphicsUtils::AbstractView* Scene::getMainView()
-{
-	return mView;
-}
-
 QRectF Scene::selectedItemsBoundingRect() const
 {
 	QRectF resBoundRect;
