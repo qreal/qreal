@@ -19,6 +19,7 @@ public:
 	WallItem(QPointF const &begin, QPointF const &end);
 	QPointF begin();
 	QPointF end();
+	bool isDragged();
 
 	/// Draws selection rect around sensorBoundingBox
 	virtual void drawExtractionForItem(QPainter *painter);
@@ -27,6 +28,12 @@ public:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+
+public slots:
+	void toStopWall(bool isNeedStop, QPointF const& oldPos);
+
+signals:
+	void wallDragged(QPainterPath const &shape, QPointF const& oldPos);
 
 protected:
 	virtual void setPrivateData();
