@@ -267,13 +267,24 @@ void AbstractItem::setBrushColor(const QString& text)
 	mBrush.setColor(QColor(text));
 }
 
-void AbstractItem::setPenBrush(const QString& penStyle, int width, const QString& penColor, const QString& brushStyle, const QString& brushColor)
+void AbstractItem::setPen(const QString& penStyle, int width, const QString& penColor)
 {
 	setPenStyle(penStyle);
 	setPenWidth(width);
 	setPenColor(penColor);
+}
+
+void AbstractItem::setBrush(const QString& brushStyle, const QString& brushColor)
+{
 	setBrushStyle(brushStyle);
 	setBrushColor(brushColor);
+}
+
+void AbstractItem::setPenBrush(const QString& penStyle, int width, const QString& penColor
+		 , const QString& brushStyle, const QString& brushColor)
+{
+	setPen(penStyle, width, penColor);
+	setBrush(brushStyle, brushColor);
 }
 
 void AbstractItem::setXandY(QDomElement& dom, QRectF const &rect)

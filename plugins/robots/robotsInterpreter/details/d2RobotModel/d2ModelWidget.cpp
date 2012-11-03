@@ -29,6 +29,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mCurrentWall(NULL)
 		, mCurrentLine(NULL)
 		, mCurrentStylus(NULL)
+		, mCurrentEllipse(NULL)
 		, mCurrentPort(inputPort::none)
 		, mCurrentSensorType(sensorType::unused)
 		, mButtonsCount(8) // magic numbers are baaad, mkay?
@@ -81,6 +82,7 @@ void D2ModelWidget::initWidget()
 
 void D2ModelWidget::connectUiButtons()
 {
+	connect(mUi->ellipseButton, SIGNAL(toggled(bool)), this, SLOT(addEllipse(bool)));
 	connect(mUi->stylusButton, SIGNAL(toggled(bool)), this, SLOT(addStylus(bool)));
 	connect(mUi->lineButton, SIGNAL(toggled(bool)), this, SLOT(addLine(bool)));
 	connect(mUi->wallButton, SIGNAL(toggled(bool)), this, SLOT(addWall(bool)));
@@ -122,8 +124,6 @@ void D2ModelWidget::changeSpeed(int curIndex)
 		mRobotModel->setSpeedFactor(1);
 	}
 }
-
-
 
 void D2ModelWidget::init(bool isActive)
 {
@@ -226,7 +226,7 @@ void D2ModelWidget::draw(QPointF newCoord, qreal angle, QPointF dPoint)
 
 void D2ModelWidget::drawWalls()
 {
-	if (mDrawingAction == drawingAction::wall) {
+	if (mDrawingAction == drawingAction::wall || mDrawingAction == drawingAction::noneWordLoad) {
 		foreach (WallItem *wall, mWorldModel->walls()) {
 			mScene->addItem(wall);
 			connect(wall, SIGNAL(wallDragged(QPainterPath const &, QPointF const&))
@@ -239,7 +239,10 @@ void D2ModelWidget::drawWalls()
 
 void D2ModelWidget::drawColorFields()
 {
-	if (mDrawingAction == drawingAction::line || mDrawingAction == drawingAction::stylus) {
+	if (mDrawingAction == drawingAction::line
+			|| mDrawingAction == drawingAction::stylus
+			|| mDrawingAction == drawingAction::ellipse
+			|| mDrawingAction == drawingAction::noneWordLoad) {
 		foreach (ColorFieldItem *colorField, mWorldModel->colorFields()) {
 			mScene->addItem(colorField);
 		}
@@ -290,6 +293,17 @@ void D2ModelWidget::addStylus(bool on)
 	}
 
 	mDrawingAction = drawingAction::stylus;
+}
+
+void D2ModelWidget::addEllipse(bool on)
+{
+	if (!on) {
+		mDrawingAction = drawingAction::none;
+		mMouseClicksCount = 0;
+		return;
+	}
+
+	mDrawingAction = drawingAction::ellipse;
 }
 
 void D2ModelWidget::clearScene()
@@ -396,6 +410,16 @@ void D2ModelWidget::reshapeStylus(QGraphicsSceneMouseEvent *event)
 	}
 }
 
+void D2ModelWidget::reshapeEllipse(QGraphicsSceneMouseEvent *event)
+{
+	QPointF const pos = event->scenePos();
+	if (mCurrentEllipse != NULL) {
+		mCurrentEllipse->setX2andY2(pos.x(), pos.y());
+		if (event->modifiers() & Qt::ShiftModifier)
+			mCurrentEllipse->reshapeRectWithShift();
+	}
+}
+
 void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	mRobot->checkSelection();
@@ -435,6 +459,14 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 		mMouseClicksCount++;
 	}
 		break;
+	case drawingAction::ellipse: {
+		mCurrentEllipse= new EllipseItem(position, position);
+		mCurrentEllipse->setPen(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems());
+		mScene->removeMoveFlag(mouseEvent, mCurrentEllipse);
+		mWorldModel->addColorField(mCurrentEllipse);
+		mMouseClicksCount++;
+	}
+		break;
 
 	case drawingAction::none: {
 		mMouseClicksCount = 0;
@@ -467,6 +499,9 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 		break;
 	case drawingAction::stylus:
 		reshapeStylus(mouseEvent);
+		break;
+	case drawingAction::ellipse:
+		reshapeEllipse(mouseEvent);
 		break;
 	default:
 		mScene->forMoveResize(mouseEvent, mRobot->realBoundingRect());
@@ -508,6 +543,13 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 		mDrawingAction = drawingAction::none;
 	}
 		break;
+	case drawingAction::ellipse: {
+		reshapeEllipse(mouseEvent);
+		mCurrentEllipse = NULL;
+		mMouseClicksCount = 0;
+		mDrawingAction = drawingAction::none;
+	}
+		break;
 	default:
 		mScene->forReleaseResize(mouseEvent, mRobot->realBoundingRect());
 		break;
@@ -515,6 +557,7 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 	mUi->wallButton->setChecked(false);
 	mUi->lineButton->setChecked(false);
 	mUi->stylusButton->setChecked(false);
+	mUi->ellipseButton->setChecked(false);
 	mScene->setMoveFlag(mouseEvent);
 	mScene->update();
 }
@@ -561,7 +604,9 @@ void D2ModelWidget::loadWorldModel()
 		reinitSensor(static_cast<inputPort::InputPortEnum>(i));
 	}
 
+	mDrawingAction = drawingAction::noneWordLoad;
 	update();
+	mDrawingAction = drawingAction::none;
 }
 
 void D2ModelWidget::handleNewRobotPosition()
