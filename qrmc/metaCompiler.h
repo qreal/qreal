@@ -18,8 +18,9 @@ namespace qrmc {
 	public:
 		MetaCompiler(QString const &qrmcDir, qrRepo::LogicalRepoApi *mLogicalRepoApi);
 		~MetaCompiler();
-		bool compile(QString const &metamodel = "");
-		Editor *loadMetaModel(qReal::Id const &id);
+		bool compile(QString const &metamodel = "", QString const pathToQrealRoot = "../../../"
+					 , QString const generatedCodeDir = "../qrmc/plugins");
+		Editor *loadMetaModel(qReal::Id const &id, QString const generatedCodeDir);
 		Diagram *getDiagram(QString const &diagramName);
 		void addResource(QString const &resourceName);
 
@@ -55,7 +56,7 @@ namespace qrmc {
 		bool loadTemplateUtils();
 		bool loadNodeTemplate();
 
-		void generateCode();
+		void generateCode(QString const generatedCodeDir = "../qrmc/plugins", QString const pathToQrealRoot = "../../../");
 		void generateElementClasses();
 		void generatePluginHeader();
 		void generatePluginSource();

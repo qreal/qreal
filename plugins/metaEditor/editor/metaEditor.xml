@@ -77,11 +77,7 @@
 						<property type="string" name="include">
 						<description>xml-файлы, которые следует подключить к создаваемой метамодели</description>
 						</property>
-						<property type="string" name="name of the directory" displayedName="directory to generated code"/>
-						<property type="string" name="relative path to QReal Source Files">
-						<description>путь до исходных файлов QReal относительно пути до сгенерированного кода</description>
-						</property>
-					</properties>
+						<property type="string" name="name of the directory" displayedName="directory to generated code"/> 					</properties>
 					<containers/>
 					<connections>
 						<connection type="MetaEditor::MetamodelDiagram"/>

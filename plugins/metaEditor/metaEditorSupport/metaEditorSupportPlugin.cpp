@@ -104,6 +104,13 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 
 	IdList const metamodels = mLogicalRepoApi->children(Id::rootId());
 
+	QString const pathToQrealRoot = SettingsManager::value("pathToQRealSourceFiles").toString();
+	if (pathToQrealRoot.isEmpty()) {
+		QMessageBox::information(NULL, tr("Path to source files is emtpy")
+				, "Path to Qreal source files is empty. Please fill it in compiler settings.", tr("Ok"));
+		return;
+	}
+
 	QProgressBar *progress = new QProgressBar(mMainWindowInterface->windowWidget());
 	progress->show();
 	int const progressBarWidth = 240;
@@ -136,7 +143,7 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 
 			progress->setValue(5);
 
-			if (!metaCompiler.compile(nameOfMetamodel)) { // generating source code for all metamodels
+			if (!metaCompiler.compile(nameOfMetamodel, pathToQrealRoot)) { // generating source code for all metamodels
 				QMessageBox::warning(mMainWindowInterface->windowWidget()
 						, tr("error")
 						, tr("Cannot generate source code for editor ") + nameOfPlugin);

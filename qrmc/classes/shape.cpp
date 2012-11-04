@@ -12,7 +12,9 @@
 
 using namespace qrmc;
 
-Shape::Shape(const QString &shape) : mNode(NULL)
+Shape::Shape(QString const generatedCodeDir, QString const &shape)
+		: mNode(NULL)
+		, mGeneratedCodeDir(generatedCodeDir)
 {
 	init(shape)	;
 }
@@ -26,10 +28,11 @@ void Shape::setNode(GraphicType *node)
 	mNode = node;
 }
 
-void Shape::init(const QString &shape)
+void Shape::init(QString const &shape)
 {
-	if (shape.isEmpty())
+	if (shape.isEmpty()) {
 		return;
+	}
 
 	QString error = "";
 	int errorLine = 0;
@@ -118,10 +121,10 @@ void Shape::initLinePorts(QDomElement const &portsElement)
 
 void Shape::changeDir(QDir &dir) const
 {
-	if (!dir.exists(generatedDir)) {
-		dir.mkdir(generatedDir);
+	if (!dir.exists(mGeneratedCodeDir)) {
+		dir.mkdir(mGeneratedCodeDir);
 	}
-	dir.cd(generatedDir);
+	dir.cd(mGeneratedCodeDir);
 	QString editorName = mNode->diagram()->editor()->name()	;
 	if (!dir.exists(editorName)) {
 		dir.mkdir(editorName);

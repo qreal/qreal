@@ -29,4 +29,4 @@ SUBDIRS	= \
 #	umlTimingDiagram/umlTimingDiagram.pro \
 #	umlUseCaseDiagram/umlUseCaseDiagram.pro \
 	visualInterpreter/visualInterpreter.pro \
-	refactoring/refactoring.pro \
+#	refactoring/refactoring.pro \

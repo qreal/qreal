@@ -9,7 +9,7 @@ namespace qrmc {
 	class EdgeType : public GraphicType
 	{
 	public:
-		EdgeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
+		EdgeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id, QString const generatedCodeDir);
 		virtual Type* clone() const;
 		virtual ~EdgeType();
 
@@ -33,6 +33,7 @@ namespace qrmc {
 		QString mBeginType;
 		QString mEndType;
 		QString mLineType;
+		QString mGeneratedCodeDir;
 		QList<Label*> mLabels; // refactor after #349 is closed
 	};
 }

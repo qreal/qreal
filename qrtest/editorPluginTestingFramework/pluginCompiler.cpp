@@ -1,0 +1,30 @@
+#include "pluginCompiler.h"
+
+#include <QtCore/QProcess>
+#include <QtCore/QDebug>
+
+#include "../../qrkernel/settingsManager.h"
+
+using namespace qReal;
+PluginCompiler::PluginCompiler()
+{
+}
+
+void PluginCompiler::compilePlugin(const QString directoryToCodeToCompile)
+{
+	QProcess builder;
+	//builder.setWorkingDirectory("../qrmc/plugins");
+	builder.setWorkingDirectory(directoryToCodeToCompile);
+	builder.start(SettingsManager::value("pathToQmake").toString());
+	qDebug()  << "qmake";
+	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
+
+		builder.start(SettingsManager::value("pathToMake").toString());
+
+		bool finished = builder.waitForFinished(100000);
+		qDebug()  << "make";
+		if (finished && (builder.exitCode() == 0)) {
+			qDebug()  << "make ok";
+		}
+	}
+}

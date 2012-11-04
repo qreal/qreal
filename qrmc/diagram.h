@@ -14,7 +14,7 @@ namespace qrmc {
 	class Diagram
 	{
 	public:
-		Diagram(qReal::Id const &id, qrRepo::LogicalRepoApi *api, Editor *editor);
+		Diagram(qReal::Id const &id, qrRepo::LogicalRepoApi *api, Editor *editor, QString const generatedCodeDir);
 		~Diagram();
 		bool init();
 		bool resolve();
@@ -60,6 +60,7 @@ namespace qrmc {
 		QString mDiagramNodeName; // TODO: replace with QStringList for multiple nodeNames
 		QString mDiagramDisplayedName;
 		Editor *mEditor;
+		QString mGeneratedCodeDir;
 		QList<ImportSpecification> mImports;
 
 		class ListMethodGenerator;

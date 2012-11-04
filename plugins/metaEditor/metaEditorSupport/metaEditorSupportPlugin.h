@@ -4,6 +4,7 @@
 
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
+#include "../../../qrgui/dialogs/preferencesDialog.h"
 
 #include "compilerPage.h"
 

@@ -49,7 +49,7 @@ QHash<Id, QPair<QString,QString> > EditorGenerator::getMetamodelList()
 	return metamodelList;
 }
 
-QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource)
+QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource, QString const &destDir)
 {
 	mErrorReporter.clear();
 	mErrorReporter.clearErrors();
@@ -95,7 +95,10 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId, Q
 		outpro() << QString ("QREAL_EDITOR_PATH = %1\n").arg(editorPath);
 		outpro() << QString ("ROOT = %1\n").arg(pathToQRealSource);
 		outpro() << "\n";
-		outpro() << QString("include (%1)").arg(pathToQRealSource + "/plugins/editorsSdk/editorsCommon.pri");
+		outpro() << QString("include (%1)\n").arg(pathToQRealSource + "/plugins/editorsSdk/editorsCommon.pri");
+		if (!destDir.isEmpty()) {
+			outpro() << QString("DESTDIR += %1\n").arg(destDir);
+		}
 	}
 	catch (char* e) {
 		mErrorReporter.addCritical(QObject::tr("incorrect file name"));

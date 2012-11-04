@@ -23,6 +23,7 @@ PreferencesCompilerPage::PreferencesCompilerPage(QWidget *parent)
 	mUi->pathToMake->setText(SettingsManager::value("pathToMake").toString());
 	mUi->pluginExtension->setText(SettingsManager::value("pluginExtension").toString());
 	mUi->prefix->setText(SettingsManager::value("prefix").toString());
+	mUi->pathToQRealSourceFiles->setText(SettingsManager::value("pathToQRealSourceFiles").toString());
 }
 
 PreferencesCompilerPage::~PreferencesCompilerPage()
@@ -73,4 +74,5 @@ void PreferencesCompilerPage::save()
 	SettingsManager::setValue("pathToMake", mUi->pathToMake->text());
 	SettingsManager::setValue("pluginExtension", mUi->pluginExtension->text());
 	SettingsManager::setValue("prefix", mUi->prefix->text());
+	SettingsManager::setValue("pathToQRealSourceFiles", mUi->pathToQRealSourceFiles->text());
 }

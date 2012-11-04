@@ -4,7 +4,7 @@
 #include <QtCore/QMap>
 #include <QtGui/QIcon>
 #include <QPair>
-#include "../../../qrgui/editorPluginInterface/editorInterface.h"
+#include "@@PathToSources@@qrgui/editorPluginInterface/editorInterface.h"
 
 class @@MetamodelName@@Plugin : public QObject, public qReal::EditorInterface
 {

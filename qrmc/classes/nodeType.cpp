@@ -10,8 +10,11 @@
 using namespace qrmc;
 using namespace qReal;
 
-NodeType::NodeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id id) : GraphicType(diagram, api, id), mIsPin(false),
-	mIsHavePin(false)
+NodeType::NodeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id id, QString const generatedCodeDir)
+		: GraphicType(diagram, api, id, generatedCodeDir)
+		, mIsPin(false)
+		, mIsHavePin(false)
+		, mGeneratedCodeDir(generatedCodeDir)
 {
 }
 
@@ -21,7 +24,7 @@ NodeType::~NodeType()
 
 Type* NodeType::clone() const
 {
-	NodeType *result = new NodeType(mDiagram, mApi, mId);
+	NodeType *result = new NodeType(mDiagram, mApi, mId, mGeneratedCodeDir);
 	GraphicType::copyFields(result);
 	return result;
 }

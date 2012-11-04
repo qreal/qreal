@@ -40,7 +40,7 @@ MetaCompiler::~MetaCompiler()
 	}
 }
 
-bool MetaCompiler::compile(QString const &targetMetamodel)
+bool MetaCompiler::compile(QString const &targetMetamodel, QString const pathToQrealRoot, QString const generatedCodeDir)
 {
 	mTargetMetamodel = targetMetamodel;
 	IdList rootItems = mApi->children(Id::rootId());
@@ -57,12 +57,12 @@ bool MetaCompiler::compile(QString const &targetMetamodel)
 				continue;
 			mPluginName = NameNormalizer::normalize(mApi->property(editorId, nameOfTheDirectory)
 											.toString().section("/", -1));
-			if (!loadMetaModel(editorId)) {
+			if (!loadMetaModel(editorId, generatedCodeDir)) {
 				return false;
 			}
 		}
 	}
-	generateCode();
+	generateCode(generatedCodeDir, pathToQrealRoot);
 	return true;
 }
 
@@ -125,7 +125,7 @@ bool MetaCompiler::loadTemplateUtils()
 }
 
 
-Editor* MetaCompiler::loadMetaModel(Id const &metamodelId)
+Editor* MetaCompiler::loadMetaModel(Id const &metamodelId, QString const generatedCodeDir)
 {
 	qDebug() << "Loading metamodel started: " << mApi->name(metamodelId);
 	QString metamodelName = mApi->name(metamodelId);
@@ -140,7 +140,7 @@ Editor* MetaCompiler::loadMetaModel(Id const &metamodelId)
 			return NULL;
 		}
 	} else {
-		Editor *editor = new Editor(this, mApi, metamodelId);
+		Editor *editor = new Editor(this, mApi, metamodelId, generatedCodeDir);
 		if (!editor->load()) {
 			qDebug() << "ERROR: Failed to load file";
 			delete editor;
@@ -162,7 +162,7 @@ Diagram *MetaCompiler::getDiagram(QString const &diagramName)
 	return NULL;
 }
 
-void MetaCompiler::generateCode()
+void MetaCompiler::generateCode(QString const generatedCodeDir, QString const pathToQrealRoot)
 {
 	qDebug() << "loaded metamodels: " << mEditors.keys();
 	qDebug() << "===";
@@ -174,15 +174,15 @@ void MetaCompiler::generateCode()
 		pluginNames += nodeIndent + editor->name() + "\\" + endline;
 		editor->generate(mPluginHeaderTemplate, mPluginSourceTemplate,
 					mNodeTemplate, mEdgeTemplate, mElementsHeaderTemplate,
-					mResourceTemplate, mProjectTemplate, mTemplateUtils);
+					mResourceTemplate, mProjectTemplate, mTemplateUtils, pathToQrealRoot);
 	}
 
 	QDir dir;
 
-	if (!dir.exists(generatedDir)) {
-		dir.mkdir(generatedDir);
+	if (!dir.exists(generatedCodeDir)) {
+		dir.mkdir(generatedCodeDir);
 	}
-	dir.cd(generatedDir);
+	dir.cd(generatedCodeDir);
 
 	QString const fileName = dir.absoluteFilePath(pluginsProjectFileName);
 	QFile file(fileName);

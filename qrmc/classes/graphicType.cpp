@@ -18,8 +18,8 @@ GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
 	mResolvingFlag = true;
 }
 
-GraphicType::GraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id)
-	: Type(false, diagram, api, id), mResolving(false)
+GraphicType::GraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id, QString const generatedCodeDir)
+	: Type(false, diagram, api, id), mShape(generatedCodeDir), mResolving(false)
 {
 }
 
