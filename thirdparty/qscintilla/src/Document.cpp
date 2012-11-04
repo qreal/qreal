@@ -833,7 +833,7 @@ int Document::Undo() {
 			//Platform::DebugPrintf("Steps=%d\n", steps);
 			for (int step = 0; step < steps; step++) {
 				const int prevLinesTotal = LinesTotal();
-				const Action &action = cb.GetUndoStep();
+				const UserAction &action = cb.GetUndoStep();
 				if (action.at == removeAction) {
 					NotifyModified(DocModification(
 									SC_MOD_BEFOREINSERT | SC_PERFORMED_UNDO, action));
@@ -894,7 +894,7 @@ int Document::Redo() {
 			int steps = cb.StartRedo();
 			for (int step = 0; step < steps; step++) {
 				const int prevLinesTotal = LinesTotal();
-				const Action &action = cb.GetRedoStep();
+				const UserAction &action = cb.GetRedoStep();
 				if (action.at == insertAction) {
 					NotifyModified(DocModification(
 									SC_MOD_BEFOREINSERT | SC_PERFORMED_REDO, action));

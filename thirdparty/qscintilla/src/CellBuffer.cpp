@@ -68,7 +68,7 @@ int LineVector::LineFromPosition(int pos) const {
 	return starts.PartitionFromPosition(pos);
 }
 
-Action::Action() {
+UserAction::UserAction() {
 	at = startAction;
 	position = 0;
 	data = 0;
@@ -76,11 +76,11 @@ Action::Action() {
 	mayCoalesce = false;
 }
 
-Action::~Action() {
+UserAction::~UserAction() {
 	Destroy();
 }
 
-void Action::Create(actionType at_, int position_, char *data_, int lenData_, bool mayCoalesce_) {
+void UserAction::Create(actionType at_, int position_, char *data_, int lenData_, bool mayCoalesce_) {
 	delete []data;
 	position = position_;
 	at = at_;
@@ -89,12 +89,12 @@ void Action::Create(actionType at_, int position_, char *data_, int lenData_, bo
 	mayCoalesce = mayCoalesce_;
 }
 
-void Action::Destroy() {
+void UserAction::Destroy() {
 	delete []data;
 	data = 0;
 }
 
-void Action::Grab(Action *source) {
+void UserAction::Grab(UserAction *source) {
 	delete []data;
 
 	position = source->position;
@@ -132,7 +132,7 @@ void Action::Grab(Action *source) {
 UndoHistory::UndoHistory() {
 
 	lenActions = 100;
-	actions = new Action[lenActions];
+	actions = new UserAction[lenActions];
 	maxAction = 0;
 	currentAction = 0;
 	undoSequenceDepth = 0;
@@ -152,7 +152,7 @@ void UndoHistory::EnsureUndoRoom() {
 	if (currentAction >= (lenActions - 2)) {
 		// Run out of undo nodes so extend the array
 		int lenActionsNew = lenActions * 2;
-		Action *actionsNew = new Action[lenActionsNew];
+		UserAction *actionsNew = new UserAction[lenActionsNew];
 		for (int act = 0; act <= currentAction; act++)
 			actionsNew[act].Grab(&actions[act]);
 		delete []actions;
@@ -175,7 +175,7 @@ void UndoHistory::AppendAction(actionType at, int position, char *data, int leng
 		if (0 == undoSequenceDepth) {
 			// Top level actions may not always be coalesced
 			int targetAct = -1;
-			const Action *actPrevious = &(actions[currentAction + targetAct]);
+			const UserAction *actPrevious = &(actions[currentAction + targetAct]);
 			// Container actions may forward the coalesce state of Scintilla Actions.
 			while ((actPrevious->at == containerAction) && actPrevious->mayCoalesce) {
 				targetAct--;
@@ -296,7 +296,7 @@ int UndoHistory::StartUndo() {
 	return currentAction - act;
 }
 
-const Action &UndoHistory::GetUndoStep() const {
+const UserAction &UndoHistory::GetUndoStep() const {
 	return actions[currentAction];
 }
 
@@ -321,7 +321,7 @@ int UndoHistory::StartRedo() {
 	return act - currentAction;
 }
 
-const Action &UndoHistory::GetRedoStep() const {
+const UserAction &UndoHistory::GetRedoStep() const {
 	return actions[currentAction];
 }
 
@@ -628,12 +628,12 @@ int CellBuffer::StartUndo() {
 	return uh.StartUndo();
 }
 
-const Action &CellBuffer::GetUndoStep() const {
+const UserAction &CellBuffer::GetUndoStep() const {
 	return uh.GetUndoStep();
 }
 
 void CellBuffer::PerformUndoStep() {
-	const Action &actionStep = uh.GetUndoStep();
+	const UserAction &actionStep = uh.GetUndoStep();
 	if (actionStep.at == insertAction) {
 		BasicDeleteChars(actionStep.position, actionStep.lenData);
 	} else if (actionStep.at == removeAction) {
@@ -650,12 +650,12 @@ int CellBuffer::StartRedo() {
 	return uh.StartRedo();
 }
 
-const Action &CellBuffer::GetRedoStep() const {
+const UserAction &CellBuffer::GetRedoStep() const {
 	return uh.GetRedoStep();
 }
 
 void CellBuffer::PerformRedoStep() {
-	const Action &actionStep = uh.GetRedoStep();
+	const UserAction &actionStep = uh.GetRedoStep();
 	if (actionStep.at == insertAction) {
 		BasicInsertString(actionStep.position, actionStep.data, actionStep.lenData);
 	} else if (actionStep.at == removeAction) {

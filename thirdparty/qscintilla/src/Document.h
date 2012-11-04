@@ -472,7 +472,7 @@ public:
 		annotationLinesAdded(0),
 		token(0) {}
 
-	DocModification(int modificationType_, const Action &act, int linesAdded_=0) :
+	DocModification(int modificationType_, const UserAction &act, int linesAdded_=0) :
 		modificationType(modificationType_),
 		position(act.position),
 		length(act.lenData),

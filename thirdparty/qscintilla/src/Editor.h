@@ -25,14 +25,14 @@ public:
 
 /**
  */
-class Timer {
+class TickTimer {
 public:
 	bool ticking;
 	int ticksToWait;
 	enum {tickSize = 100};
 	TickerID tickerID;
 
-	Timer();
+	TickTimer();
 };
 
 /**
@@ -185,8 +185,8 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	KeyMap kmap;
 
 	Caret caret;
-	Timer timer;
-	Timer autoScrollTimer;
+	TickTimer timer;
+	TickTimer autoScrollTimer;
 	enum { autoScrollDelay = 200 };
 
 	Idler idler;

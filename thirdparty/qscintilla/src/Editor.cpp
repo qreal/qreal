@@ -78,7 +78,7 @@ static bool IsLastStep(const DocModification &mh) {
 Caret::Caret() :
 		active(false), on(false), period(500) {}
 
-Timer::Timer() :
+TickTimer::TickTimer() :
 		ticking(false), ticksToWait(0), tickerID(0) {}
 
 Idler::Idler() :
