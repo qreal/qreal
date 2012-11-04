@@ -29,6 +29,9 @@ public:
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
 
+	virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
+	virtual void deserializePenBrush(QDomElement const &element);
+
 public slots:
 	void toStopWall(bool isNeedStop, QPointF const& oldPos);
 
