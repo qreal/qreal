@@ -20,6 +20,11 @@ AbstractScene::AbstractScene(AbstractView *view, QObject *parent)
 {
 }
 
+graphicsUtils::AbstractView* AbstractScene::getMainView()
+{
+	return mView;
+}
+
 void AbstractScene::setEmptyRect(int x, int y, int w, int h)
 {
 	mEmptyRect = addRect(x, y, w, h, QPen(Qt::white));
