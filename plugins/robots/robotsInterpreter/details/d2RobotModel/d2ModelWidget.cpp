@@ -415,8 +415,9 @@ void D2ModelWidget::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 	QPointF const pos = event->scenePos();
 	if (mCurrentEllipse != NULL) {
 		mCurrentEllipse->setX2andY2(pos.x(), pos.y());
-		if (event->modifiers() & Qt::ShiftModifier)
+		if (event->modifiers() & Qt::ShiftModifier) {
 			mCurrentEllipse->reshapeRectWithShift();
+		}
 	}
 }
 
@@ -460,7 +461,7 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 	}
 		break;
 	case drawingAction::ellipse: {
-		mCurrentEllipse= new EllipseItem(position, position);
+		mCurrentEllipse = new EllipseItem(position, position);
 		mCurrentEllipse->setPen(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems());
 		mScene->removeMoveFlag(mouseEvent, mCurrentEllipse);
 		mWorldModel->addColorField(mCurrentEllipse);

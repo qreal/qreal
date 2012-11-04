@@ -24,7 +24,7 @@ void EllipseItem::setPrivateData()
 {
 	mPen.setColor(Qt::blue);
 	mPen.setStyle(Qt::SolidLine);
-	mBrush.setColor(Qt::green);
+	mBrush.setColor(Qt::white);
 	mBrush.setStyle(Qt::SolidPattern);
 }
 
@@ -49,9 +49,9 @@ QDomElement EllipseItem::serialize(QDomDocument &document, QPoint const &topLeft
 {
 	QDomElement ellipseNode = setPenBrushToDoc(document, "ellipse");
 	ellipseNode.setAttribute("begin", QString::number(mX1 + scenePos().x() - topLeftPicture.x())
-						 + ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
+			 + ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
 	ellipseNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x())
-						 + ":" + QString::number(mY2 + scenePos().y() - topLeftPicture.y()));
+			 + ":" + QString::number(mY2 + scenePos().y() - topLeftPicture.y()));
 	return ellipseNode;
 }
 

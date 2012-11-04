@@ -56,8 +56,8 @@ QPainterPath WorldModel::sonarScanningRegion(QPoint const &position, qreal direc
 
 	QPainterPath rayPath;
 	rayPath.arcTo(QRect(-rangeInPixels, -rangeInPixels
-						, 2 * rangeInPixels, 2 * rangeInPixels)
-				  , -rayWidthDegrees, 2 * rayWidthDegrees);
+			, 2 * rangeInPixels, 2 * rangeInPixels)
+			, -rayWidthDegrees, 2 * rayWidthDegrees);
 	rayPath.closeSubpath();
 	QTransform sensorPositionTransform = QTransform().rotate(direction)
 			.translate(position.x(), position.y());
