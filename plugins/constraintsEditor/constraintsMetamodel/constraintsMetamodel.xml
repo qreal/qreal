@@ -88,7 +88,7 @@
                 <logic>
                     <container>
                         <contains type="propertyNode"/>
-                        <contains type="abstractExistsNode"/>
+                        <contains type="abstractExistsNodeForEdge"/>
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
@@ -167,7 +167,7 @@
                 <logic>
                     <container>
                         <contains type="propertyNode"/>
-                        <contains type="abstractExistsNode"/>
+                        <contains type="abstractExistsNodeForEdge"/>
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
@@ -211,7 +211,7 @@
                 <logic>
                     <container>
                         <contains type="propertyNode"/>
-                        <contains type="abstractExistsNode"/>
+                        <contains type="abstractExistsNodeForEdge"/>
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
@@ -274,7 +274,7 @@
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractExistsNode"/>
+                        <parent parentName="abstractExistsNodeForEdge"/>
                     </generalizations>
                 </logic>
             </node>
@@ -307,12 +307,12 @@
                 </graphics>
                 <logic>
                     <container>
-                        <contains type="propertyNode"/>
-                        <contains type="abstractNodeForNodeConstraint"/>
                         <contains type="MultiOrNode"/>
+                        <contains type="abstractNodeForNodeConstraint"/>
+                        <contains type="propertyNode"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractExistsNode"/>
+                        <parent parentName="abstractExistsNodeForEdge"/>
                     </generalizations>
                 </logic>
             </node>
@@ -439,8 +439,8 @@
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
+                        <parent parentName="abstractExistNode"/>
                         <parent parentName="abstractNodeForNodeConstraint"/>
-                        <parent parentName="abstractExistsNode"/>
                     </generalizations>
                 </logic>
             </node>
@@ -501,13 +501,13 @@
                 </graphics>
                 <logic>
                     <container>
-                        <contains type="abstractNodeForNodeConstraint"/>
                         <contains type="MultiOrNode"/>
                         <contains type="propertyNode"/>
+                        <contains type="abstractNodeForNodeConstraint"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractSelectionNode"/>
                         <parent parentName="abstractErrorTypeNode"/>
+                        <parent parentName="abstractSelectionNode"/>
                     </generalizations>
                 </logic>
             </node>
@@ -527,12 +527,12 @@
                 <logic>
                     <container>
                         <contains type="propertyNode"/>
-                        <contains type="abstractExistsNode"/>
+                        <contains type="abstractExistsNodeForEdge"/>
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractSelectionNode"/>
                         <parent parentName="abstractErrorTypeNode"/>
+                        <parent parentName="abstractSelectionNode"/>
                     </generalizations>
                 </logic>
             </node>
@@ -549,14 +549,12 @@
                     </properties>
                 </logic>
             </node>
-            <node name="abstractExistsNode">
+            <node name="abstractExistsNodeForEdge">
                 <logic>
                     <container/>
-                    <properties>
-                        <property displayedName="Exists" type="existsType" name="exists">
-                            <default>true</default>
-                        </property>
-                    </properties>
+                    <generalizations>
+                        <parent parentName="abstractExistNode"/>
+                    </generalizations>
                 </logic>
             </node>
             <node name="abstractNodeForNodeConstraint">
@@ -604,7 +602,7 @@
                     </associations>
                 </logic>
             </edge>
-            <node displayedName="Multi Or Node" name="MultiOrNode" description="Элемент, позволяющий задавать логическое ИЛИ между группой элементарных ограничений при помощи связи 'Multi Or Edge'. Должен вкладываться в элементы задания ограничений на узлы или связи">
+            <node displayedName="Multi Or Node" description="Элемент, позволяющий задавать логическое ИЛИ между группой элементарных ограничений при помощи связи 'Multi Or Edge'. Должен вкладываться в элементы задания ограничений на узлы или связи" name="MultiOrNode">
                 <graphics>
                     <picture sizex="42" sizey="44">
                         <ellipse fill="#faebd7" stroke-style="solid" stroke="#faebd7" y1="2" stroke-width="0" x1="1" y2="41" fill-style="solid" x2="40"/>
@@ -621,36 +619,46 @@
                     <container/>
                 </logic>
             </node>
+            <node name="abstractExistNode">
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Exists" type="existsType" name="exists">
+                            <default>true</default>
+                        </property>
+                    </properties>
+                </logic>
+            </node>
         </graphicTypes>
-		<palette>
+        <palette>
           <group name="Root Diagrams" description="Корневые элементы">
-            <element name="Metamodel Constraints"/>
-            <element name="Constraints Diagram"/>
+            <element name="metamodelConstraints"/>
+            <element name="constraintsDiagram"/>
           </group>
           <group name="DSL Constraints Elements" description="Базовые элементы задания ограничений на узлы и связи рассматриваемого языка">
-            <element name="Node Constraint"/>
-            <element name="Edge Constraint"/>
-            <element name="Nodes Constraint"/>
-            <element name="Edges Constraint"/>
+            <element name="nodeConstraint"/>
+            <element name="edgeConstraint"/>
+            <element name="nodesConstraint"/>
+            <element name="edgesConstraint"/>
           </group>
           <group name="Node Constraints Properties" description="Сущности для задания элементарных ограничений на узлы рассматриваемого языка">
-            <element name="Property"/>
-            <element name="Parent"/>
-            <element name="Childrens"/>
-            <element name="Incoming Nodes"/>
-            <element name="Outgoing Nodes"/>
-            <element name="Incoming Links"/>
-            <element name="Outgoing Links"/>
+            <element name="propertyNode"/>
+            <element name="parent"/>
+            <element name="childrens"/>
+            <element name="incomingNodes"/>
+            <element name="outgoingNodes"/>
+            <element name="incomingLinks"/>
+            <element name="outgoingLinks"/>
           </group>
           <group name="Edge Constraints Properties" description="Сущности для задания элементарных ограничений на связи рассматриваемого языка">
-            <element name="Property"/>
-            <element name="Begin Node"/>
-            <element name="End Node"/>
+            <element name="propertyNode"/>
+            <element name="BeginNode"/>
+            <element name="EndNode"/>
           </group>
           <group name="Relationship" description="Связи для описания взаимоотношений между элементарными ограничениями">
-            <element name="Or"/>
-			<element name="Multi Or Edge"/>
-			<element name="Multi Or Node"/>
+            <element name="or"/>
+            <element name="multiOrEdge"/>
+            <element name="multiOrNode"/>
           </group>
         </palette>
     </diagram>
