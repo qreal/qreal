@@ -25,9 +25,9 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOn
 }
 
 void ElementTitle::setTitleFont() {
-	if (SettingsManager::value("CustomFont", true).toBool()) {
+	if (SettingsManager::value("CustomFont").toBool()) {
 		QFont font;
-		font.fromString(SettingsManager::value("CurrentFont", "ololo").toString());
+		font.fromString(SettingsManager::value("CurrentFont").toString());
 		setFont(font);
 	} else {
 		int const fontId = QFontDatabase::addApplicationFont(QDir::currentPath() + "/DejaVuSansCondensed.ttf");
@@ -89,20 +89,26 @@ void ElementTitle::focusOutEvent(QFocusEvent *event)
 
 void ElementTitle::keyPressEvent(QKeyEvent *event)
 {
-	/*if (event->key() == Qt::Key_Escape)
-	{
+	int const keyEvent = event->key();
+	if (keyEvent == Qt::Key_Escape) {
 		// Restore previous text and loose focus
 		setPlainText(mOldText);
 		clearFocus();
 		return;
 	}
-	if (event->key() == Qt::Key_Enter ||
-		event->key() == Qt::Key_Return)
-	{
+	if ((event->modifiers() & Qt::ShiftModifier) && (event->key() == Qt::Key_Return)) {
+		// Line feed
+		QTextCursor const cursor = textCursor();
+		QString const currentText = toPlainText();
+		setPlainText(currentText + "\n");
+		setTextCursor(cursor);
+		return;
+	}
+	if (keyEvent == Qt::Key_Enter || keyEvent == Qt::Key_Return) {
 		// Loose focus: new name will be applied in focusOutEvent
 		clearFocus();
 		return;
-	}*/
+	}
 	QGraphicsTextItem::keyPressEvent(event);
 }
 

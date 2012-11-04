@@ -2,6 +2,8 @@
 
 #include "sbtGeneratorPlugin.h"
 
+using namespace sbt;
+
 Q_EXPORT_PLUGIN2(sbtGeneratorPlugin, SbtGeneratorPlugin)
 
 using namespace qReal;
@@ -20,11 +22,6 @@ void SbtGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
 	mGenerator.init(configurator.logicalModelApi(), *configurator.mainWindowInterpretersInterface().errorReporter());
 }
-
-//qReal::Customizer* SbtGeneratorPlugin::customizationInterface()
-//{
-//    //return &mCustomizer;
-//}
 
 QList<ActionInfo> SbtGeneratorPlugin::actions()
 {

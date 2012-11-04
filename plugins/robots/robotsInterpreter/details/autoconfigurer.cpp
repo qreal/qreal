@@ -25,10 +25,10 @@ bool Autoconfigurer::configure(Id const &diagram)
 {
 	bool result = true;
 
-	mUsedSensors[0] = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType", "0").toInt());
-	mUsedSensors[1] = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType", "0").toInt());
-	mUsedSensors[2] = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType", "0").toInt());
-	mUsedSensors[3] = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType", "0").toInt());
+	mUsedSensors[0] = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt());
+	mUsedSensors[1] = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt());
+	mUsedSensors[2] = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt());
+	mUsedSensors[3] = static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt());
 
 	IdList const children = mGraphicalModelApi->graphicalRepoApi().children(diagram);
 

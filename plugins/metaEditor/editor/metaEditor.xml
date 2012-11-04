@@ -74,10 +74,12 @@
 					<generalizations/>
 					<properties>
 						<property type="string" name="displayedName"/>
-						<property type="string" name="include"/>
+						<property type="string" name="include">
+						<description>xml-файлы, которые следует подключить к создаваемой метамодели</description>
+						</property>
 						<property type="string" name="name of the directory" displayedName="directory to generated code"/>
 						<property type="string" name="relative path to QReal Source Files">
-						<description>path to QReal Source Files relatively to directory to generated code</description>
+						<description>путь до исходных файлов QReal относительно пути до сгенерированного кода</description>
 						</property>
 					</properties>
 					<containers/>
@@ -116,7 +118,9 @@
 					</generalizations>
 					<properties>
 						<property type="string" name="displayedName"/>
-						<property type="string" name="nodeName"/>
+						<property type="string" name="nodeName">
+						<description>имя элемента, который будет корневым для диаграмм на создаваемом языке</description>
+						</property>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntityNode"/>
@@ -231,10 +235,12 @@
 						<property type="string" name="displayedName"/>
 						<property type="labelTypes" name="labelType">
 							<default>Dynamic text</default>
+							<description>тип текста(статический, динамический)</description>
 						</property>
 						<property type="string" name="labelText"/>
 						<property type="lineTypes" name="lineType">
 							<default>solidLine</default>
+							<description>тип линии (прямая, пунктирная и т.д.)</description>
 						</property>	
 					</properties>
 					<container>
@@ -533,27 +539,27 @@
 		</graphicTypes>
 				<palette>
 			<group name="DSL Elements" description="Элементы метаязыка для описания узлов и связей создаваемого языка">
-				<element name="Node"/>
-				<element name="Edge"/>
-				<element name="Enum"/>
-				<element name="Import"/>
+				<element name="MetaEntityNode"/>
+				<element name="MetaEntityEdge"/>
+				<element name="MetaEntityEnum"/>
+				<element name="MetaEntityImport"/>
 			</group>
 			<group name="Root Diagrams" description="Корневые элементы">
-				<element name="Metamodel Diagram"/>
-				<element name="Meta Editor Diagram"/>
-				<element name="Package Diagram"/>
+				<element name="MetamodelDiagram"/>
+				<element name="MetaEditorDiagramNode"/>
+				<element name="PackageDiagram"/>
 			</group>
 			<group name="Node Properties" description="Элементы метаязыка для указания свойств узлов создаваемого языка">
-				<element name="Property"/>
-				<element name="Properties as Container"/>
-				<element name="Possible Edge"/>
+				<element name="MetaEntity Attribute"/>
+				<element name="MetaEntityPropertiesAsContainer"/>
+				<element name="MetaEntityPossibleEdge"/>
 			</group>
 			<group name="Enum Properties" description="Элементы метаязыка для указания свойств перечисляемого типа создаваемого языка">
-				<element name="Value"/>
+				<element name="MetaEntityValue"/>
 			</group>
 			<group name="Edge Properties" description="Элементы метаязыка для указания свойств связей создаваемого языка">
-				<element name="Property"/>
-				<element name="Assotiation"/>
+				<element name="MetaEntity Attribute"/>
+				<element name="MetaEntityAssociation"/>
 			</group>
 			<group name="Relationship" description="Связи метаязыка для описания вызимоотношений между элементами создаваемого языка">
 				<element name="Inheritance"/>

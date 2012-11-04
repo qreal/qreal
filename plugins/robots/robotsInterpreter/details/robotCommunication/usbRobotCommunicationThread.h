@@ -48,6 +48,10 @@ private:
 private slots:
 	/// Checks if robot is connected
 	void checkForConnection();
+
+	/// Checks that message requires response or not.
+	/// @returns true, if there shall be a response.
+	static bool isResponseNeeded(QByteArray const &buffer);
 };
 
 }

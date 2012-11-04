@@ -5,6 +5,8 @@
 #include "../../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
 #include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
+namespace sbt {
+
 class SbtGenerator : public QObject
 {
 	Q_OBJECT
@@ -29,3 +31,5 @@ private:
 	/// Error reporter object, used to show generation errors in output window.
 	qReal::ErrorReporterInterface *mErrorReporter;
 };
+
+}

@@ -12,7 +12,7 @@ class ElementGeneratorFactory {
 public:
 	static AbstractElementGenerator* generator(
 			NxtOSEKRobotGenerator *generator
-			, qReal::Id elementId
+			, qReal::Id const &elementId
 			, qrRepo::RepoApi const &api
 		);
 };

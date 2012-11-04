@@ -39,6 +39,10 @@ void Serializer::setWorkingFile(QString const &workingFile)
 
 void Serializer::saveToDisk(QList<Object*> const &objects) const
 {
+	Q_ASSERT_X(!mWorkingFile.isEmpty()
+			, "Serializer::saveToDisk(...)"
+			, "may be Client of RepoApi (see Models constructor also) has been initialised with empty filename?");
+
 	foreach (Object *object, objects) {
 		QString filePath = createDirectory(object->id(), object->logicalId());
 
@@ -46,11 +50,11 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 		QDomElement root = doc.createElement("object");
 		doc.appendChild(root);
 		root.setAttribute("id", object->id().toString());
-		if (object->logicalId() != Id())
+		if (object->logicalId() != Id()) {
 			root.setAttribute("logicalId", object->logicalId().toString());
+		}
 
 		root.setAttribute("parent", object->parent().toString());
-
 		root.appendChild(idListToXml("children", object->children(), doc));
 		root.appendChild(propertiesToXml(object, doc));
 
@@ -76,8 +80,9 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash)
 {
 	clearWorkingDir();
-	if (!mWorkingFile.isEmpty())
+	if (!mWorkingFile.isEmpty()) {
 		decompressFile(mWorkingFile);
+	}
 	loadFromDisk(SettingsManager::value("temp").toString(), objectsHash);
 }
 
@@ -242,14 +247,15 @@ QPointF Serializer::parsePointF(QString const &str)
 void Serializer::clearDir(QString const &path)
 {
 	QDir dir(path);
-	if (dir.exists()) {
-		foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
-			if (fileInfo.isDir()) {
-				clearDir(fileInfo.filePath());
-				dir.rmdir(fileInfo.fileName());
-			}
-			else
-				dir.remove(fileInfo.fileName());
+	if (!dir.exists()) {
+		return;
+	}
+	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+		if (fileInfo.isDir()) {
+			clearDir(fileInfo.filePath());
+			dir.rmdir(fileInfo.fileName());
+		} else {
+			dir.remove(fileInfo.fileName());
 		}
 	}
 }
@@ -274,9 +280,10 @@ QString Serializer::serializeQVariant(QVariant const &v)
 	case QVariant::Polygon:
 		return serializeQPolygon(v.value<QPolygon>());
 	case QVariant::UserType:
-		if (v.userType() == QMetaType::type("qReal::Id"))
+		if (v.userType() == QMetaType::type("qReal::Id")) {
 			return v.value<qReal::Id>().toString();
-		// Если нет, идём в default и там ругаемся.
+		}
+		// something bad
 	default:
 		qDebug() << v;
 		Q_ASSERT(!"Unsupported QVariant type.");
@@ -343,7 +350,7 @@ QDomElement Serializer::idListToXml(QString const &attributeName, IdList const &
 	return result;
 }
 
-QDomElement Serializer::propertiesToXml(Object* const object, QDomDocument &doc)
+QDomElement Serializer::propertiesToXml(Object const *object, QDomDocument &doc)
 {
 	QDomElement result = doc.createElement("properties");
 	QMapIterator<QString, QVariant> i = object->propertiesIterator();
@@ -365,7 +372,7 @@ QDomElement Serializer::propertiesToXml(Object* const object, QDomDocument &doc)
 	return result;
 }
 
-void Serializer::decompressFile(QString fileName)
+void Serializer::decompressFile(QString const &fileName)
 {
 	FolderCompressor().decompressFolder(fileName, mWorkingDir);
 }

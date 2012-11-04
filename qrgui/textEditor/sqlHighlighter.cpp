@@ -67,8 +67,9 @@ void SQLHighlighter::highlightBlock(const QString& text)
 	setCurrentBlockState(0);
 
 	int startIndex = 0;
-	if (previousBlockState() != 1)
+	if (previousBlockState() != 1) {
 		startIndex = mCommentStartExpression.indexIn(text);
+	}
 
 	while (startIndex >= 0) {
 		int endIndex = mCommentEndExpression.indexIn(text, startIndex);

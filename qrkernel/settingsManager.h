@@ -19,9 +19,14 @@ class QRKERNEL_EXPORT SettingsManager
 public:
 	/// Get value associated with given key from settings.
 	/// @param key Parameter name.
+	/// @returns Variant with parameter value.
+	static QVariant value(QString const &key);
+
+	/// Get value associated with given key from settings with given default value.
+	/// @param key Parameter name.
 	/// @param defaultValue Default value, used when parameter not found.
 	/// @returns Variant with parameter value.
-	static QVariant value(QString const &key, QVariant defaultValue = QVariant());
+	static QVariant value(QString const &key, QVariant const &defaultValue);
 
 	/// Set value associated with given key.
 	/// @param key Parameter name.
@@ -41,23 +46,19 @@ public:
 private:
 	/// Private constructor.
 	SettingsManager();
-
-	/// Sets parameter value.
 	void set(QString const &name, QVariant const &value);
-
-	/// Gets parameter value or specified default value if parameter is not set.
 	QVariant get(QString const &key, QVariant const &defaultValue = QVariant()) const;
 
 	void initDefaultValues();
 
-	QMap<QString, QVariant> mDefaultValues;
+	//QMap<QString, QVariant> mDefaultValues;
 
 	/// Singleton sole instance.
 	static SettingsManager* mInstance;
 
 	/// In-memory settings storage.
 	QHash<QString, QVariant> mData;
-
+	QHash<QString, QVariant> mDefaultValues;
 	/// Persistent settings storage.
 	QSettings mSettings;
 };

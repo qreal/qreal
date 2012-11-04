@@ -1,6 +1,6 @@
-#include "toolPluginManager.h"
-
 #include <QtGui/QApplication>
+
+#include "toolPluginManager.h"
 
 using namespace qReal;
 
@@ -28,7 +28,8 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 				mLoaders << loader;
 			}
 			else {
-				loader->unload();
+				// TODO: Does not work on linux. See editorManager.cpp for more details.
+				// loader->unload();
 				delete loader;
 			}
 		} else {
@@ -96,4 +97,9 @@ void ToolPluginManager::activeTabChanged(Id const & rootElementId)
 	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
 		toolPlugin->activeTabChanged(rootElementId);
 	}
+}
+
+QList<ToolPluginInterface *> ToolPluginManager::getPlugins()
+{
+	return mPlugins;
 }

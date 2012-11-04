@@ -10,23 +10,16 @@ namespace generator {
 /// Realization of AbstractElementGenerator for Beep, Engines etc.
 class SimpleElementGenerator: public AbstractElementGenerator {
 public:
-	explicit SimpleElementGenerator(NxtOSEKRobotGenerator *mainGenerator, qReal::Id elementId);
+	explicit SimpleElementGenerator(NxtOSEKRobotGenerator *mainGenerator, qReal::Id const &elementId);
 
 protected:
-	virtual QList<SmartLine> loopPrefixCode();
-
-	virtual QList<SmartLine> loopPostfixCode();
+	virtual QList<SmartLine> addLoopCodeInPrefixForm();
+	virtual QList<SmartLine> addLoopCodeInPostfixForm();
 
 	virtual bool preGenerationCheck();
 	virtual bool nextElementsGeneration();
 
-	virtual QList<SmartLine> simpleCode();
-
-	QList<QString> portsToEngineNames(QString const &portsProperty);
-
-private:
-	QString transformSign(QString const &inequalitySign);
-	QList<SmartLine> mInitCode;
+	virtual QList<SmartLine> convertBlockIntoCode();
 };
 
 }

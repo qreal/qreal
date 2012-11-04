@@ -4,13 +4,15 @@ QString const sbtDiagram = "SbtReportsDiagramNode";
 QString const dataObjectName = "DataObject";
 QString const fileName = "DataObject";
 
-using namespace utils;
+using namespace qReal;
+using namespace generatorsUtils;
+using namespace sbt;
 
-DataObjectGenerator::DataObjectGenerator(const QString &templateDirPath,
-		const QString &outputDirPath,
-		const LogicalModelAssistInterface &logicalModel,
-		ErrorReporterInterface &errorReporter) :
-		utils::AbstractGenerator(templateDirPath, outputDirPath, logicalModel, errorReporter)
+DataObjectGenerator::DataObjectGenerator(QString const &templateDirPath
+		, QString const &outputDirPath
+		, LogicalModelAssistInterface const &logicalModel
+		, ErrorReporterInterface &errorReporter)
+		: AbstractGenerator(templateDirPath, outputDirPath, logicalModel, errorReporter)
 {
 }
 
@@ -18,7 +20,6 @@ void DataObjectGenerator::generate()
 {
 	QString result;
 
-	qDebug() << fileName;
 	loadTemplateFromFile(fileName + ".cs", result);
 
 	foreach (Id const &diagram, mApi.elementsByType(sbtDiagram)) {
@@ -43,5 +44,5 @@ void DataObjectGenerator::generate()
 
 QList<QString> DataObjectGenerator::getFiles()
 {
-  return mFiles;
+	return mFiles;
 }

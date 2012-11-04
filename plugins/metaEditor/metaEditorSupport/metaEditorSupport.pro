@@ -13,19 +13,18 @@ TRANSLATIONS = metaEditorSupport_ru.ts
 RESOURCES = metaEditorSupport.qrc
 
 HEADERS += \
-	metaEditorSupportPlugin.h \
-	editorGenerator.h \
-	xmlParser.h \
-	compilerPage.h \
-	../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
+        metaEditorSupportPlugin.h \
+        editorGenerator.h \
+        xmlParser.h \
+        compilerPage.h \
+        ../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
 
 SOURCES += \
-	metaEditorSupportPlugin.cpp \
-	editorGenerator.cpp \
-	xmlParser.cpp \
-	compilerPage.cpp \
-	../../../qrutils/generatorsUtils/nameNormalizer.cpp \
+        metaEditorSupportPlugin.cpp \
+        editorGenerator.cpp \
+        xmlParser.cpp \
+        compilerPage.cpp \
 
 FORMS += \
-	compilerPage.ui \
+        compilerPage.ui \
 

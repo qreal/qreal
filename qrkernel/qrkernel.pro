@@ -9,26 +9,22 @@ RCC_DIR = .moc
 DEFINES += QRKERNEL_LIBRARY
 
 HEADERS += \
-	ids.h \
-	definitions.h \
-	exception/exception.h \
-	roles.h \
-	settingsManager.h \
-	kernelDeclSpec.h \
-	timeMeasurer.h \
+	$$PWD/ids.h \
+	$$PWD/definitions.h \
+	$$PWD/exception/exception.h \
+	$$PWD/roles.h \
+	$$PWD/settingsManager.h \
+	$$PWD/kernelDeclSpec.h \
+	$$PWD/timeMeasurer.h \
 
 SOURCES += \
-	ids.cpp \
-	exception/exception.cpp \
-	settingsManager.cpp \
-	timeMeasurer.cpp \
-
-OTHER_FILES +=
+	$$PWD/ids.cpp \
+	$$PWD/exception/exception.cpp \
+	$$PWD/settingsManager.cpp \
+	$$PWD/timeMeasurer.cpp \
 
 RESOURCES += \
-    qrkernel.qrc
+	$$PWD/qrkernel.qrc
 
-
-
-
+OTHER_FILES +=
 

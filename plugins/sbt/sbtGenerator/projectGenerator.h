@@ -1,26 +1,31 @@
 #pragma once
-#include "QString"
-#include "QList"
+#include "QtCore/QString"
+#include "QtCore/QList"
 
 #include "../../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
 #include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
-#include "../../../qrutils/generator/abstractGenerator.h"
+#include "../../../qrutils/generatorsUtils/abstractGenerator.h"
 
-using namespace qReal;
-using namespace utils;
+namespace sbt {
 
-class ProjectGenerator : public AbstractGenerator
+class ProjectGenerator : public generatorsUtils::AbstractGenerator
 {
 public:
-  ProjectGenerator(QString const &templateDirPath
-					, QString const &outputDirPath
-					, qReal::LogicalModelAssistInterface const &logicalModel
-					, qReal::ErrorReporterInterface &errorReporter
-					);
-  void generate();
-  void setFilesName(QList<QString> const & files);
+	ProjectGenerator(QString const &templateDirPath
+			, QString const &outputDirPath
+			, qReal::LogicalModelAssistInterface const &logicalModel
+			, qReal::ErrorReporterInterface &errorReporter
+			);
+
+	/// Starts generation process.
+	void generate();
+
+	/// Adds files to project.
+	void setFilesName(QList<QString> const & files);
 
 private:
 	QString mFiles;
 };
+
+}
 

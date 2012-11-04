@@ -19,10 +19,10 @@ void WallItem::setPrivateData()
 	setZValue(1);
 
 	mPen.setWidth(10);
-
+	mPen.setStyle(Qt::NoPen);
 	mBrush.setStyle(Qt::SolidPattern);
 	mBrush.setTextureImage(mImage);
-	mPen.setStyle(Qt::NoPen);
+	mSerializeName = "wall";
 }
 
 QPointF WallItem::begin()
@@ -60,10 +60,27 @@ void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
+	QPointF oldPos = pos();
 	QGraphicsItem::mouseMoveEvent(event);
 	if (mDragged) {
-//		mConfiguration.setPosition(mPort, (event->scenePos() - mBasePos).toPoint());
-//		setPos(mBasePos + mConfiguration.position(mPort));
+		emit wallDragged(realShape(), oldPos);
+	}
+}
+
+bool WallItem::isDragged()
+{
+	return mDragged;
+}
+
+void WallItem::toStopWall(bool isNeedStop, QPointF const& oldPos)
+{
+	if (mDragged) {
+		if (isNeedStop) {
+			setPos(oldPos);
+			setFlag(ItemIsMovable, false);
+		} else {
+			setFlag(ItemIsMovable, true);
+		}
 	}
 }
 
@@ -71,4 +88,20 @@ void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	QGraphicsItem::mouseReleaseEvent(event);
 	mDragged = false;
+}
+
+QDomElement WallItem::serialize(QDomDocument &document, QPoint const &topLeftPicture)
+{
+	QDomElement wallNode = document.createElement(mSerializeName);
+	wallNode.setAttribute("begin", QString::number(mX1 + scenePos().x() - topLeftPicture.x())
+			+ ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
+	wallNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x())
+			+ ":" + QString::number(mY2 + scenePos().y() - topLeftPicture.y()));
+	return wallNode;
+}
+
+void WallItem::deserializePenBrush(QDomElement const &element)
+{
+	Q_UNUSED(element)
+	setPrivateData();
 }

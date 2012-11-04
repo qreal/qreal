@@ -6,6 +6,8 @@
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
 #include "sbtGenerator.h"
 
+namespace sbt {
+
 class SbtGeneratorPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
@@ -36,3 +38,4 @@ private:
 
 };
 
+}

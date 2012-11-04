@@ -15,6 +15,8 @@ namespace details {
 namespace d2Model {
 
 const int timeInterval = 5;
+const int oneReciprocalTime = 500;
+const int onePercentReciprocalSpeed = 44000;
 
 class D2RobotModel : public QObject, public RobotModelInterface {
 	Q_OBJECT
@@ -29,13 +31,13 @@ public:
 	void setNewMotor(int speed, long unsigned int degrees, int const port);
 	virtual SensorsConfiguration &configuration();
 	D2ModelWidget *createModelWidget();
+	int readEncoder(int const port) const;
+	void resetEncoder(int const port);
 
-	int readEncoder(int/*inputPort::InputPortEnum*/  const port) const;
-	void resetEncoder(int/*inputPort::InputPortEnum*/  const port);
-
-	bool readTouchSensor(inputPort::InputPortEnum const port);
+	int readTouchSensor(inputPort::InputPortEnum const port);
 	int readSonarSensor(inputPort::InputPortEnum const port) const;
 	int readColorSensor(inputPort::InputPortEnum const port) const;
+	int readLightSensor(inputPort::InputPortEnum const port) const;
 
 	void showModelWidget();
 
@@ -46,10 +48,12 @@ public:
 
 	enum ATime {
 		DoInf,
-		Do,
+		DoByLimit,
 		End
 	};
 
+signals:
+	void d2MotorTimeout();
 
 private slots:
 	void nextFragment();
@@ -59,7 +63,8 @@ private:
 		int radius;
 		int speed;
 		int degrees;
-		QPair<ATime, qreal> activeTime;
+		ATime activeTimeType;
+		bool isUsed;
 	};
 
 	struct Beep {
@@ -80,19 +85,15 @@ private:
 	QHash<int, qreal> mTurnoverMotors;  // stores how many degrees the motor rotated on
 	SensorsConfiguration mSensorsConfiguration;
 	WorldModel mWorldModel;
-	qreal mSpeed;
+	qreal mSpeedFactor;
 
-	void speed(qreal speedMul);
+	void setSpeedFactor(qreal speedMul);
 	void initPosition();
-	Motor* initMotor(int radius, int speed, long unsigned int degrees, int port);
+	Motor* initMotor(int radius, int speed, long unsigned int degrees, int port, bool isUsed);
 	void countNewCoord();
 	void countBeep();
 	QPair<QPoint, qreal> countPositionAndDirection(inputPort::InputPortEnum const port) const;
 	QPair<QPoint, qreal> countPositionAndDirection(QPointF localPosition, qreal localDirection) const;
-
-	void countOneMotorTime(Motor &motor);
-	void countMotorTime();
-
 	void countMotorTurnover();
 
 	QImage printColorSensor(inputPort::InputPortEnum const port) const;

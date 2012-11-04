@@ -4,6 +4,7 @@
 
 #include "../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
 #include "../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "../utilsDeclSpec.h"
 
 namespace generatorsUtils {
 
@@ -16,7 +17,7 @@ QString const utilsSeparator = "==========";
 /** Base class for all generators, contains common methods and infrastructure to
   generate one file.
   */
-class AbstractGenerator
+class QRUTILS_EXPORT AbstractGenerator
 {
 public:
 	/** Constructor.

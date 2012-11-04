@@ -1,25 +1,31 @@
 #pragma once
-#include "QString"
-#include "QList"
+#include "QtCore/QString"
+#include "QtCore/QList"
 
 #include "../../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
 #include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
-#include "../../../qrutils/generator/abstractGenerator.h"
+#include "../../../qrutils/generatorsUtils/abstractGenerator.h"
 
-using namespace qReal;
-using namespace utils;
+namespace sbt {
 
-class DataIntegratorGenerator : public AbstractGenerator
+class DataIntegratorGenerator : public generatorsUtils::AbstractGenerator
 {
 public:
-  DataIntegratorGenerator(QString const &templateDirPath
-					, QString const &outputDirPath
-					, qReal::LogicalModelAssistInterface const &logicalModel
-					, qReal::ErrorReporterInterface &errorReporter
-					);
+	DataIntegratorGenerator(QString const &templateDirPath
+			, QString const &outputDirPath
+			, qReal::LogicalModelAssistInterface const &logicalModel
+			, qReal::ErrorReporterInterface &errorReporter
+			);
+
+	/// Returns list of generated files for all ORMDataIntegrator elements.
 	QList<QString> getFiles();
+
+	/// Starts generation process.
 	void generate();
+
 private:
-QList<QString> mFiles;
+	QList<QString> mFiles;
 };
+
+}
 

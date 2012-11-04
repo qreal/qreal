@@ -9,17 +9,17 @@
         <translation type="unfinished">Настройки визуального отладчика</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPreferencesPage.ui" line="26"/>
+        <location filename="visualDebuggerPreferencesPage.ui" line="58"/>
         <source>Builder path:</source>
         <translation type="unfinished">Путь к компилятору:</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPreferencesPage.ui" line="48"/>
+        <location filename="visualDebuggerPreferencesPage.ui" line="84"/>
         <source>Debugger path:</source>
         <translation type="unfinished">Путь к отладчику:</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPreferencesPage.ui" line="61"/>
+        <location filename="visualDebuggerPreferencesPage.ui" line="30"/>
         <source>Visual debugger working
 directory:</source>
         <oldsource>Visual debugger
@@ -28,7 +28,7 @@ working directory:</oldsource>
 визуального отладчика:</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPreferencesPage.ui" line="75"/>
+        <location filename="visualDebuggerPreferencesPage.ui" line="51"/>
         <source>Generated code file name:</source>
         <oldsource>Generated
 code file name:</oldsource>
@@ -36,15 +36,15 @@ code file name:</oldsource>
 файла с исходниками:</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPreferencesPage.ui" line="88"/>
+        <location filename="visualDebuggerPreferencesPage.ui" line="94"/>
         <source>Builded file name:</source>
         <translation type="unfinished">Название скомпилирован-
 ного исполняемого файла:</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPreferencesPage.ui" line="151"/>
-        <location filename="visualDebuggerPreferencesPage.ui" line="164"/>
-        <location filename="visualDebuggerPreferencesPage.ui" line="177"/>
+        <location filename="visualDebuggerPreferencesPage.ui" line="23"/>
+        <location filename="visualDebuggerPreferencesPage.ui" line="44"/>
+        <location filename="visualDebuggerPreferencesPage.ui" line="71"/>
         <source>...</source>
         <translation type="unfinished">...</translation>
     </message>
@@ -112,49 +112,54 @@ code file name:</oldsource>
 <context>
     <name>qReal::VisualDebugger</name>
     <message>
-        <location filename="interpreter/visualDebugger.cpp" line="110"/>
+        <location filename="interpreter/visualDebugger.cpp" line="111"/>
         <source>The diagram doesn&apos;t have Initial Node</source>
         <translation type="unfinished">Диаграмма не имеет начального элемента</translation>
     </message>
     <message>
-        <location filename="interpreter/visualDebugger.cpp" line="114"/>
+        <location filename="interpreter/visualDebugger.cpp" line="115"/>
         <source>The diagram doesn&apos;t end with Final Node</source>
         <translation type="unfinished">Диаграмма закончилась не на конечном элементе</translation>
     </message>
     <message>
-        <location filename="interpreter/visualDebugger.cpp" line="118"/>
+        <location filename="interpreter/visualDebugger.cpp" line="119"/>
         <source>The diagram cann&apos;t end with edge</source>
         <translation type="unfinished">Диаграмма не может закончиться на ребре</translation>
     </message>
     <message>
-        <location filename="interpreter/visualDebugger.cpp" line="122"/>
+        <location filename="interpreter/visualDebugger.cpp" line="123"/>
         <source>There are no links from this node and it mismatches Final Node</source>
         <translation type="unfinished">У этого элемента нет рёбер, и он не совпадает с конечным элементом</translation>
     </message>
     <message>
-        <location filename="interpreter/visualDebugger.cpp" line="127"/>
+        <location filename="interpreter/visualDebugger.cpp" line="128"/>
         <source>The condition doesn&apos;t have valid link</source>
         <translation type="unfinished">Условие не имеет корректного ребра</translation>
     </message>
     <message>
-        <location filename="interpreter/visualDebugger.cpp" line="131"/>
+        <location filename="interpreter/visualDebugger.cpp" line="132"/>
         <source>Some diagram is already under debug</source>
         <translation type="unfinished">Некоторая диаграмма уже отлаживается</translation>
     </message>
     <message>
-        <location filename="interpreter/visualDebugger.cpp" line="137"/>
+        <location filename="interpreter/visualDebugger.cpp" line="138"/>
         <source>Code generation failed</source>
         <translation type="unfinished">Ошибка генерации исходного кода</translation>
     </message>
     <message>
-        <location filename="interpreter/visualDebugger.cpp" line="299"/>
+        <location filename="interpreter/visualDebugger.cpp" line="143"/>
+        <source>Incorrect type of link used</source>
+        <translation type="unfinished">Используется некорректый тип связи элементов</translation>
+    </message>
+    <message>
+        <location filename="interpreter/visualDebugger.cpp" line="314"/>
         <source>Debug finished successfully</source>
         <translation type="unfinished">Отладка завершена успешно</translation>
     </message>
     <message>
-        <location filename="interpreter/visualDebugger.cpp" line="336"/>
-        <location filename="interpreter/visualDebugger.cpp" line="362"/>
-        <location filename="interpreter/visualDebugger.cpp" line="367"/>
+        <location filename="interpreter/visualDebugger.cpp" line="353"/>
+        <location filename="interpreter/visualDebugger.cpp" line="384"/>
+        <location filename="interpreter/visualDebugger.cpp" line="389"/>
         <source>Debug (single step) finished successfully</source>
         <translation type="unfinished">Один шаг отладки завершён успешно</translation>
     </message>
@@ -190,77 +195,77 @@ code file name:</oldsource>
         <translation type="unfinished">Интерпретировать (автоматический режим)</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="58"/>
+        <location filename="visualDebuggerPlugin.cpp" line="59"/>
         <source>Interpret (one step)</source>
         <translation type="unfinished">Интерпретировать (один шаг)</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="62"/>
+        <location filename="visualDebuggerPlugin.cpp" line="64"/>
         <source>Show watch list</source>
         <translation type="unfinished">Показать список переменных</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="67"/>
+        <location filename="visualDebuggerPlugin.cpp" line="70"/>
         <source>Visual debug (with gdb)</source>
         <translation type="unfinished">Визуальная отладка (при помощи gdb)</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="70"/>
+        <location filename="visualDebuggerPlugin.cpp" line="73"/>
         <source>Generate and build</source>
         <translation type="unfinished">Сгенерировать и скомпилировать</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="74"/>
+        <location filename="visualDebuggerPlugin.cpp" line="78"/>
         <source>Start debugger (gdb)</source>
         <translation type="unfinished">Запустить отладчик (gdb)</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="90"/>
+        <location filename="visualDebuggerPlugin.cpp" line="98"/>
         <source>run</source>
         <translation type="unfinished">Запустить отладку в gdb</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="102"/>
+        <location filename="visualDebuggerPlugin.cpp" line="113"/>
         <source>kill</source>
         <translation type="unfinished">Остановить отладку в gdb</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="110"/>
+        <location filename="visualDebuggerPlugin.cpp" line="123"/>
         <source>Cancel debug</source>
         <translation type="unfinished">Закончить отладку</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="98"/>
+        <location filename="visualDebuggerPlugin.cpp" line="108"/>
         <source>cont</source>
         <translation type="unfinished">Перейти к следующей точки останова</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="94"/>
+        <location filename="visualDebuggerPlugin.cpp" line="103"/>
         <source>next</source>
         <translation type="unfinished">Перейти к следующей строчке</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="82"/>
+        <location filename="visualDebuggerPlugin.cpp" line="93"/>
         <source>Set breakpoints on each element</source>
         <translation type="unfinished">Поставить точки останова на каждом элементе диаграммы</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="78"/>
+        <location filename="visualDebuggerPlugin.cpp" line="83"/>
         <source>Configure</source>
         <translation type="unfinished">Настроить gdb</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="86"/>
+        <location filename="visualDebuggerPlugin.cpp" line="88"/>
         <source>Set breakpoint at start</source>
         <translation type="unfinished">Поставить точку останова в начале программы</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="106"/>
+        <location filename="visualDebuggerPlugin.cpp" line="118"/>
         <source>Start debug (automatic)</source>
         <translation type="unfinished">Начать отладку (автоматический режим)</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPlugin.cpp" line="176"/>
+        <location filename="visualDebuggerPlugin.cpp" line="190"/>
         <source>Code generated and builded successfully</source>
         <translation type="unfinished">Исходный код сгенерирован и скомпилирован успешно</translation>
     </message>

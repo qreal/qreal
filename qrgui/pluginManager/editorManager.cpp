@@ -36,7 +36,12 @@ EditorManager::EditorManager(QObject *parent)
 				mPluginIface[iEditor->id()] = iEditor;
 				mLoaders.insert(fileName, loader);
 			} else {
-				loader->unload();
+				// TODO: Just does not work under Linux. Seems to be memory corruption when
+				// loading, unloading, and then loading .so file again.
+				// To reproduce, uncomment this, build VisualInterpreter, and try to launch QReal.
+				// With some tool plugins, like MetaEditorSupport or Exterminatus, works fine,
+				// also works fine on Windows. Investigation required.
+				// loader->unload();
 				delete loader;
 			}
 		} else {
@@ -252,6 +257,13 @@ QStringList EditorManager::getPropertyNames(const Id &id) const
 	return mPluginIface[id.editor()]->getPropertyNames(id.diagram(), id.element());
 }
 
+QStringList EditorManager::getReferenceProperties(const Id &id) const
+{
+	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return mPluginIface[id.editor()]->getReferenceProperties(id.diagram(), id.element());
+}
+
 IdList EditorManager::getContainedTypes(const Id &id) const
 {
 	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
@@ -444,6 +456,17 @@ QStringList EditorManager::getAllChildrenTypesOf(Id const &parent) const
 	}
 	return result;
 }
+
+bool EditorManager::isGraphicalElementNode(const Id &id) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	ElementImpl *impl = mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
+	if( !impl ){
+		return false;
+	}
+	return impl->isNode();
+}
+
 
 EditorManagerInterface::MetaType EditorManager::metaTypeOfElement(Id const& element) const
 {

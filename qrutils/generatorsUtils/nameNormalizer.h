@@ -1,11 +1,12 @@
 #pragma once
 
 #include <QtCore/QString>
+#include "../utilsDeclSpec.h"
 
 namespace generatorsUtils {
 
 /// Helper class that is meant to transform arbitrary string to a correct C++/C# identifier.
-class NameNormalizer
+class QRUTILS_EXPORT NameNormalizer
 {
 public:
 	/** Makes from given name correct C++/C# identifier.

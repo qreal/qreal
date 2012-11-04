@@ -1,8 +1,8 @@
 #pragma once
 
-#include <QSyntaxHighlighter>
-#include <QPlainTextEdit>
-#include <QObject>
+#include <QtGui/QSyntaxHighlighter>
+#include <QtGui/QPlainTextEdit>
+#include <QtCore/QObject>
 
 enum highlighterType {
 	text,

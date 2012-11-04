@@ -17,7 +17,7 @@ TRANSLATIONS = qrgui_ru.ts
 # workaround для http://bugreports.qt.nokia.com/browse/QTBUG-8110
 # как только поправят, можно будет юзать QMAKE_LFLAGS_RPATH
 !macx {
-	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)/../bin/"
+	QMAKE_LFLAGS="-Wl,-O1,-rpath,$$PWD/../bin/"
 }
 
 OBJECTS_DIR = .obj
@@ -33,7 +33,6 @@ LIBS += -L../bin -lqrrepo -lqrkernel -lqrutils #-lqrmc
 
 unix:DEFINES   = _TTY_POSIX_
 win32:DEFINES  = _TTY_WIN_
-
 
 # Graphical elements
 include (umllib/umllib.pri)
