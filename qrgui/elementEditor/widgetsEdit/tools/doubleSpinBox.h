@@ -23,7 +23,7 @@ class DoubleSpinBox : public AbstractSpinBox
 	Q_PROPERTY(QString bindedPropertyName READ bindedPropertyName WRITE setBindedPropertyName USER true DESIGNABLE true)
 
 public:
-	DoubleSpinBox(ToolController *controller);
+	explicit DoubleSpinBox(ToolController *controller);
 
 private slots:
 	void valueChanged(double d);

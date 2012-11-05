@@ -6,5 +6,8 @@ HEADERS += \
 	editorPluginInterface/sdfRendererInterface.h \
 	editorPluginInterface/listenerInterface.h \
 	editorPluginInterface/listenerApiInterface.h \
-    editorPluginInterface/widgetsHelperInterface.h
+    editorPluginInterface/widgetsHelperInterface.h \
+    editorPluginInterface/propertyEditorInterface.h
+
+SOURCES +=
 

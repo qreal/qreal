@@ -29,7 +29,7 @@ class Trigger : public Tool
 	Q_PROPERTY(QString widget2 READ widget2Xml WRITE setWidget2Xml USER true DESIGNABLE false)
 
 public:
-	Trigger(ToolController *controller);
+	explicit Trigger(ToolController *controller);
 	virtual ~Trigger() {}
 
 	bool isUnderConstruction() const;

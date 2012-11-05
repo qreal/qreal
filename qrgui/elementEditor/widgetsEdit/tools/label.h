@@ -28,7 +28,7 @@ class Label : public Frame
 	Q_PROPERTY(QString bindedPropertyName READ bindedPropertyName WRITE setBindedPropertyName USER true DESIGNABLE true)
 
 public:
-	Label(ToolController *controller);
+	explicit Label(ToolController *controller);
 
 private:
 	Qt::Alignment alignment() const;

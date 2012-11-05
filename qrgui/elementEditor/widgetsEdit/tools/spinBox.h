@@ -23,7 +23,7 @@ class SpinBox : public AbstractSpinBox
 	Q_PROPERTY(QString bindedPropertyName READ bindedPropertyName WRITE setBindedPropertyName USER true DESIGNABLE true)
 
 public:
-	SpinBox(ToolController *controller);
+	explicit SpinBox(ToolController *controller);
 
 private slots:
 	int maximum() const;

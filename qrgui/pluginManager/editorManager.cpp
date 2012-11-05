@@ -10,6 +10,7 @@
 #include "../umllib/nodeElement.h"
 #include "../umllib/edgeElement.h"
 #include "../../qrkernel/exception/exception.h"
+#include "../umllib/private/widgetsHelper.h"
 
 using namespace qReal;
 
@@ -228,7 +229,17 @@ QString EditorManager::mouseGesture(const Id &id) const
 QIcon EditorManager::icon(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	SdfIconEngineV2 *engine = new SdfIconEngineV2(":/generated/shapes/" + id.element() + "Class.sdf");
+	QString const fileWithoutExtension = ":/generated/shapes/" + id.element() + "Class.";
+	QString const sdfFile = fileWithoutExtension + "sdf";
+	QString const wtfFile = fileWithoutExtension + "wtf";
+	QFileInfo fileInfo(sdfFile);
+	SdfIconEngineV2Interface *engine;
+	if (fileInfo.exists()) {
+		engine = new SdfIconEngineV2(sdfFile);
+	} else {
+		engine = new WtfIconEngineV2(wtfFile);
+	}
+
 	// QIcon will take ownership of engine, no need for us to delete
 	return mPluginIface[id.editor()]->getIcon(engine);
 }
@@ -464,5 +475,3 @@ bool EditorManager::isGraphicalElementNode(const Id &id) const
 	}
 	return impl->isNode();
 }
-
-

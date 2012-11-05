@@ -17,7 +17,7 @@ class RadioButton : public AbstractButton
 	Q_PROPERTY(bool checked READ isChecked WRITE setChecked USER true DESIGNABLE true)
 
 public:
-	RadioButton(ToolController *controller);
+	explicit RadioButton(ToolController *controller);
 
 private slots:
 	void toggled(bool checked);

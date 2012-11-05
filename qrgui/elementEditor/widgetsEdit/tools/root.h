@@ -22,7 +22,7 @@ class Root : public LayoutTool
 	Q_PROPERTY(QString shapeXml READ shapeXml WRITE setShapeXml USER true DESIGNABLE false)
 
 public:
-	Root(ToolController *controller);
+	explicit Root(ToolController *controller);
 
 	void setShape(QDomDocument const &shape);
 	QDomDocument shapeDocument() const;

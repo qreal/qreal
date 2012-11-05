@@ -461,7 +461,7 @@ void GraphicType::generateMouseGesturesMap(OutFile &out)
 bool GraphicType::generateObjectRequestString(OutFile &out, bool isNotFirst)
 {
 	if (mVisible) {
-		QString name = NameNormalizer::normalize(qualifiedName());
+		QString const name = NameNormalizer::normalize(qualifiedName());
 		generateOneCase(out, isNotFirst);
 		out() << "\t\treturn new " << name << "();\n";
 		return true;

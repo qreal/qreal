@@ -56,6 +56,7 @@ HEADERS += \
 	elementEditor/widgetsEdit/tools/layoutHelpers/layoutHelperFactory.h \
 	elementEditor/widgetsEdit/tools/trigger.h \
 	elementEditor/widgetsEdit/tools/triggerWidget.h \
+    elementEditor/widgetsEdit/tools/propertyEditor.h
 
 SOURCES += \
 	elementEditor/elementEditor.cpp \
@@ -114,6 +115,7 @@ SOURCES += \
 	elementEditor/widgetsEdit/tools/layoutHelpers/layoutHelperFactory.cpp \
 	elementEditor/widgetsEdit/tools/trigger.cpp \
 	elementEditor/widgetsEdit/tools/triggerWidget.cpp \
+    elementEditor/widgetsEdit/tools/propertyEditor.cpp
 
 FORMS += \
 	elementEditor/shapeEdit/shapeEdit.ui \

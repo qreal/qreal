@@ -18,6 +18,7 @@ Tool::Tool(QWidget *widget, ToolController *controller, QGraphicsItem *parent)
 	, mPropertyManager(NULL)
 {
 	setWidget(widget);
+	setTransparent(true);
 }
 
 void Tool::onLoaded()
@@ -78,7 +79,6 @@ PropertyManager *Tool::propertyManager() const
 void Tool::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 		, QWidget *widget)
 {
-	Q_UNUSED(widget);
 	QGraphicsProxyWidget::paint(painter, option, widget);
 	if (mSelected) {
 		drawFieldForResizeItem(painter);
@@ -440,6 +440,11 @@ QString Tool::toolTip() const
 	return widget()->toolTip();
 }
 
+bool Tool::isTransparent() const
+{
+	return widget()->testAttribute(Qt::WA_NoSystemBackground);
+}
+
 void Tool::setBaseSize(QSize const &size)
 {
 	widget()->setBaseSize(size);
@@ -494,6 +499,11 @@ void Tool::setSizeIncrement(QSize const &size)
 void Tool::setToolTip(QString const &toolTip)
 {
 	widget()->setToolTip(toolTip);
+}
+
+void Tool::setTransparent(const bool transparent)
+{
+	widget()->setAttribute(Qt::WA_NoSystemBackground, transparent);
 }
 
 void Tool::removeChild(Tool *child)

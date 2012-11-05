@@ -24,7 +24,7 @@ class Frame : public LayoutTool
 	Q_PROPERTY(int midLineWidth READ midLineWidth WRITE setMidLineWidth USER true DESIGNABLE true)
 
 public:
-	Frame(ToolController *controller);
+	explicit Frame(ToolController *controller);
 
 protected:
 	Frame(QFrame *frame, ToolController *controller);

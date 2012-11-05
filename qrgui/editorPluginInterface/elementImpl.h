@@ -9,6 +9,7 @@
 #include "elementRepoInterface.h"
 #include "sdfRendererInterface.h"
 #include "widgetsHelperInterface.h"
+#include "propertyEditorInterface.h"
 #include "../../qrkernel/ids.h"
 
 typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;

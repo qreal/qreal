@@ -27,6 +27,7 @@ private:
 	bool hasLinePorts();
 	bool hasPointPorts();
 	bool initSdf();
+	void initSizeFromRoot(QDomElement const &root);
 	void generateSdf() const;
 
 	bool initPorts();

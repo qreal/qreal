@@ -661,13 +661,11 @@ void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
 	}
 	// Take picture aspect into account
 	QRect resRect = rect;
-	if (rh * pw < ph * rw)
-	{
+	if (rh * pw < ph * rw) {
 		resRect.setLeft(rect.left() + (rw-rh*pw/ph)/2);
 		resRect.setRight(rect.right() - (rw-rh*pw/ph)/2);
 	}
-	if (rh * pw > ph * rw)
-	{
+	if (rh * pw > ph * rw) {
 		resRect.setTop(rect.top() + (rh-rw*ph/pw)/2);
 		resRect.setBottom(rect.bottom() - (rh-rw*ph/pw)/2);
 	}

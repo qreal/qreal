@@ -32,6 +32,7 @@ class Tool : public QGraphicsProxyWidget
 	Q_PROPERTY(int minimumWidth READ widgetMinimumWidth WRITE setWidgetMinimumWidth USER true DESIGNABLE true)
 	Q_PROPERTY(QSize sizeIncrement READ sizeIncrement WRITE setSizeIncrement USER true DESIGNABLE true)
 	Q_PROPERTY(QString toolTip READ toolTip WRITE setToolTip USER true DESIGNABLE true)
+	Q_PROPERTY(bool transparent READ isTransparent WRITE setTransparent USER true DESIGNABLE true)
 
 public:
 	virtual ~Tool() {}
@@ -114,6 +115,7 @@ private:
 	int widgetMinimumWidth() const;
 	QSize sizeIncrement() const;
 	QString toolTip() const;
+	bool isTransparent() const;
 
 	void setBaseSize(QSize const &size);
 	void setWidgetGeometry(const QRect &rect);
@@ -125,6 +127,7 @@ private:
 	void setWidgetMinimumWidth(int width);
 	void setSizeIncrement(QSize const &size);
 	void setToolTip(QString const &toolTip);
+	void setTransparent(bool const transparent);
 
 	bool mSelected;
 	QPointF mClickPos;

@@ -19,7 +19,7 @@ class ScrollArea : public AbstractScrollArea
 	Q_PROPERTY(bool widgetResizable READ widgetResizable WRITE setWidgetResizable USER true DESIGNABLE true)
 
 public:
-	ScrollArea(ToolController *controller);
+	explicit ScrollArea(ToolController *controller);
 
 private:
 	bool widgetResizable() const;

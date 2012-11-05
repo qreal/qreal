@@ -62,16 +62,15 @@ bool NodeType::initSdf()
 	if (isWidgetBased(mGraphics)) {
 		QDomElement wtfElement = mGraphics.firstChildElement("widget-template");
 		if (!wtfElement.isNull()) {
-			// TODO: recieve size!!!
-//			mWidth = wtfElement.attribute("sizex").toInt();
-//			mHeight = wtfElement.attribute("sizey").toInt();
 			mSdfDomElement = wtfElement;
+			QDomElement const rootElement = wtfElement.firstChildElement("Root");
+			initSizeFromRoot(rootElement);
 			mVisible = true;
 		} else {
 			mVisible = false;
 		}
 	} else {
-		QDomElement sdfElement = mGraphics.firstChildElement("picture");
+		QDomElement const sdfElement = mGraphics.firstChildElement("picture");
 		if (!sdfElement.isNull()) {
 			mWidth = sdfElement.attribute("sizex").toInt();
 			mHeight = sdfElement.attribute("sizey").toInt();
@@ -82,6 +81,34 @@ bool NodeType::initSdf()
 		}
 	}
 	return true;
+}
+
+void NodeType::initSizeFromRoot(QDomElement const &root)
+{
+	if (root.isNull()) {
+		return;
+	}
+	QDomElement rootSubproperty = root.firstChild().toElement();
+	while (!rootSubproperty.isNull()) {
+		if (rootSubproperty.tagName() == "property" &&
+			rootSubproperty.hasAttribute("propertyName") &&
+			rootSubproperty.attribute("propertyName") == "geometry") {
+
+			QString const ws = rootSubproperty.attribute("width");
+			QString const hs = rootSubproperty.attribute("height");
+			bool ok;
+			int w = ws.toInt(&ok);
+			if (ok) {
+				mWidth = w;
+			}
+			int h = hs.toInt(&ok);
+			if (ok) {
+				mHeight = h;
+			}
+			return;
+		}
+		rootSubproperty = rootSubproperty.nextSibling().toElement();
+	}
 }
 
 void NodeType::generateSdf() const
@@ -302,8 +329,10 @@ void NodeType::generateCode(OutFile &out)
 
 	QFile wtfFile("generated/shapes/" + className + "Class.wtf");
 	if (wtfFile.exists()) {
+		out() << "\t\t\tQ_UNUSED(renderer)\n";
 		out() << "\t\t\tmWidgetsHelper = widgetsHelper;\n"
 		"\t\t\tmWidgetsHelper->initWidget(QString(\":/generated/shapes/" << className << "Class.wtf\"));\n";
+		out() << "\t\t\tmPropertyEditors = mWidgetsHelper->propertyEditors();\n";
 		hasWtf = true;
 	} else {
 		out() << "\t\t\tQ_UNUSED(widgetsHelper);\n";
@@ -329,6 +358,9 @@ void NodeType::generateCode(OutFile &out)
 
 	if (hasSdf) {
 		out() << "\t\t\tmRenderer->render(painter, contents);\n";
+	} else {
+		out() << "\t\t\tQ_UNUSED(painter);\n";
+		out() << "\t\t\tQ_UNUSED(contents);\n";
 	}
 
 	out() << "\t\t}\n\n";
@@ -344,12 +376,20 @@ void NodeType::generateCode(OutFile &out)
 	<< "\t\t}\n\n"
 	<< "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n";
 
-	if (mLabels.isEmpty()) {
+	if (mLabels.isEmpty() && !hasWtf) {
 		out() << "\t\t\tQ_UNUSED(repo);\n";
-	} else {
+	}
+	if (!mLabels.isEmpty()) {
 		foreach (Label *label, mLabels) {
 			label->generateCodeForUpdateData(out);
 		}
+	}
+	if (hasWtf) {
+		out() << "\t\t\tforeach (QString const &propertyName, mPropertyEditors.keys()) {\n";
+		out() << "\t\t\t\tforeach (PropertyEditorInterface *propertyEditor, mPropertyEditors.values(propertyName)) {\n";
+		out() << "\t\t\t\t\tpropertyEditor->setValue(repo->logicalProperty(propertyName));\n";
+		out() << "\t\t\t\t}\n";
+		out() << "\t\t\t}\n";
 	}
 
 	out() << "\t\t}\n\n"
@@ -426,6 +466,7 @@ void NodeType::generateCode(OutFile &out)
 	}
 	if (hasWtf) {
 		out() << "\t\tWidgetsHelperInterface *mWidgetsHelper;\n";
+		out() << "\t\tQMap<QString, PropertyEditorInterface *> mPropertyEditors;\n	";
 	}
 	foreach (Label *label, mLabels) {
 		label->generateCodeForFields(out);

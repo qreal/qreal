@@ -21,7 +21,7 @@ class GroupBox : public LayoutTool
 	Q_PROPERTY(QString title READ title WRITE setTitle USER true DESIGNABLE true)
 
 public:
-	GroupBox(ToolController *controller);
+	explicit GroupBox(ToolController *controller);
 
 private:
 	Qt::Alignment titleAlignment() const;

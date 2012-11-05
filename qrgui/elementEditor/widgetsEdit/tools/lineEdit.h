@@ -24,7 +24,7 @@ class LineEdit : public Tool
 	Q_PROPERTY(QString text READ text WRITE setText USER true DESIGNABLE true)
 
 public:
-	LineEdit(ToolController *controller);
+	explicit LineEdit(ToolController *controller);
 
 private slots:
 	void textChanged(QString const &text);

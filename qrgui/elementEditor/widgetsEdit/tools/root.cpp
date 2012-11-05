@@ -17,6 +17,10 @@ Root::Root(ToolController *controller)
 
 void Root::setShape(const QDomDocument &shape)
 {
+	if (shape.isNull()) {
+		mWidget->setShape(shape);
+		return;
+	}
 	QDomElement const docElem = shape.documentElement();
 	int const width = docElem.attribute("sizex").toInt();
 	int const height = docElem.attribute("sizey").toInt();
@@ -37,7 +41,7 @@ QString Root::shapeXml() const
 void Root::setShapeXml(QString const &shape)
 {
 	QDomDocument shapeDoc;
-	if (!shapeDoc.setContent(shape)) {
+	if (!shape.isEmpty() && !shapeDoc.setContent(shape)) {
 		qDebug() << "Could not load shape property for root";
 		return;
 	}

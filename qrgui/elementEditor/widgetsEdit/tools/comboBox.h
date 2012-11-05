@@ -23,7 +23,7 @@ class ComboBox : public Tool
 	Q_PROPERTY(QString bindedPropertyName READ bindedPropertyName WRITE setBindedPropertyName USER true DESIGNABLE true)
 
 public:
-	ComboBox(ToolController *controller);
+	explicit ComboBox(ToolController *controller);
 
 private:
 

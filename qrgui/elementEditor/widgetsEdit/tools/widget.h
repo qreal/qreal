@@ -17,7 +17,7 @@ int const WIDGET_DEFAULT_MIN_HEIGHT = 20;
 class Widget : public LayoutTool
 {
 public:
-	Widget(ToolController *controller);
+	explicit Widget(ToolController *controller);
 
 private:
 	QWidget *mWidget;

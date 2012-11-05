@@ -4,11 +4,29 @@
 
 #include "abstractButton.h"
 #include "../private/toolController.h"
+#include "propertyEditor.h"
 
 namespace qReal
 {
 namespace widgetsEdit
 {
+
+class CheckBoxWidget : public QCheckBox, public PropertyEditor
+{
+	Q_OBJECT
+
+public:
+	explicit CheckBoxWidget(QString const &title);
+	virtual ~CheckBoxWidget() {}
+
+	bool isChecked() const;
+	void setCheckedState(bool checked);
+	virtual void setValue(QString const &value);
+
+private slots:
+	void onStateChanged(int state);
+
+};
 
 class CheckBox : public AbstractButton
 {
@@ -18,7 +36,7 @@ class CheckBox : public AbstractButton
 	Q_PROPERTY(QString bindedPropertyName READ bindedPropertyName WRITE setBindedPropertyName USER true DESIGNABLE true)
 
 public:
-	CheckBox(ToolController *controller);
+	explicit CheckBox(ToolController *controller);
 
 private slots:
 	void toggled(bool isChecked);
@@ -30,7 +48,7 @@ private:
 	void setChecked(bool checked);
 	void setBindedPropertyName(QString const &name);
 
-	QCheckBox *mCheckBox;
+	CheckBoxWidget *mCheckBox;
 	QString mBindedPropertyName;
 };
 

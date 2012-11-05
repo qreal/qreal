@@ -23,7 +23,7 @@ class PlainTextEdit : public AbstractScrollArea
 	Q_PROPERTY(bool undoRedoEnabled READ undoRedoEnabled WRITE setUndoRedoEnabled USER true DESIGNABLE true)
 
 public:
-	PlainTextEdit(ToolController *controller);
+	explicit PlainTextEdit(ToolController *controller);
 
 private slots:
 	bool backgroundVisible() const;
