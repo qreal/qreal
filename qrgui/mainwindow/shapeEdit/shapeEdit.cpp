@@ -186,9 +186,9 @@ void ShapeEdit::keyPressEvent(QKeyEvent *event)
 	if (event->matches(QKeySequence::Open))
 		emit openSignal();
 	if (event->matches(QKeySequence::ZoomIn)) {
-		mScene->getMainView()->zoomIn();
+		mScene->mainView()->zoomIn();
 	} else if (event->matches(QKeySequence::ZoomOut)) {
-		mScene->getMainView()->zoomOut();
+		mScene->mainView()->zoomOut();
 	}
 }
 

@@ -20,7 +20,7 @@ AbstractScene::AbstractScene(AbstractView *view, QObject *parent)
 {
 }
 
-graphicsUtils::AbstractView* AbstractScene::getMainView()
+graphicsUtils::AbstractView* AbstractScene::mainView()
 {
 	return mView;
 }

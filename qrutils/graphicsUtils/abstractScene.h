@@ -15,7 +15,7 @@ class QRUTILS_EXPORT AbstractScene : public QGraphicsScene
 
 public:
 	explicit AbstractScene(AbstractView *view, QObject *parent = 0);
-	graphicsUtils::AbstractView *getMainView();
+	graphicsUtils::AbstractView *mainView();
 	QRect realItemsBoundingRect() const;
 
 	void setDragMode(int itemsType);

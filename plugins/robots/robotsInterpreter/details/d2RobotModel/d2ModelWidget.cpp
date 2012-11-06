@@ -172,9 +172,9 @@ void D2ModelWidget::keyPressEvent(QKeyEvent *event)
 {
 	QWidget::keyPressEvent(event);
 	if (event->matches(QKeySequence::ZoomIn)) {
-		mScene->getMainView()->zoomIn();
+		mScene->mainView()->zoomIn();
 	} else if (event->matches(QKeySequence::ZoomOut)) {
-		mScene->getMainView()->zoomOut();
+		mScene->mainView()->zoomOut();
 	}
 }
 
