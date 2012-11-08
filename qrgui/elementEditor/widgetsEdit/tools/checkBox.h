@@ -20,8 +20,7 @@ public:
 	virtual ~CheckBoxWidget() {}
 
 	bool isChecked() const;
-	void setCheckedState(bool checked);
-	virtual void setValue(QString const &value);
+	virtual void setPropertyValue(QString const &value);
 
 private slots:
 	void onStateChanged(int state);
@@ -33,7 +32,8 @@ class CheckBox : public AbstractButton
 	Q_OBJECT
 
 	Q_PROPERTY(bool checked READ isChecked WRITE setChecked USER true DESIGNABLE true)
-	Q_PROPERTY(QString bindedPropertyName READ bindedPropertyName WRITE setBindedPropertyName USER true DESIGNABLE true)
+	Q_PROPERTY(QString binding READ propertyName WRITE setPropertyName USER true DESIGNABLE true)
+	BINDING_TOOL(mCheckBox)
 
 public:
 	explicit CheckBox(ToolController *controller);
@@ -43,13 +43,9 @@ private slots:
 
 private:
 	bool isChecked() const;
-	QString bindedPropertyName() const;
-
 	void setChecked(bool checked);
-	void setBindedPropertyName(QString const &name);
 
 	CheckBoxWidget *mCheckBox;
-	QString mBindedPropertyName;
 };
 
 }

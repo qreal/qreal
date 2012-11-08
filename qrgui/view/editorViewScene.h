@@ -181,6 +181,7 @@ private:
 			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
 
 	inline bool isArrow(int key);
+	bool isInputWidgetFocused() const;
 
 	void moveSelectedItems(int direction);
 	QPointF offsetByDirection(int direction);

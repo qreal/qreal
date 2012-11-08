@@ -3,9 +3,9 @@
 using namespace qReal::widgetsEdit;
 
 ComboBox::ComboBox(ToolController *controller)
-	: Tool(new QComboBox, controller)
+	: Tool(new ComboBoxWidget, controller)
 {
-	mComboBox = dynamic_cast<QComboBox *>(widget());
+	mComboBox = dynamic_cast<ComboBoxWidget *>(widget());
 	mIcon = QIcon(":/icons/widgetsEditor/comboBox.png");
 	mTitle = "Combo Box";
 }
@@ -80,12 +80,29 @@ void ComboBox::setSizeAdjustPolicy(QComboBox::SizeAdjustPolicy policy)
 	mComboBox->setSizeAdjustPolicy(policy);
 }
 
-QString ComboBox::bindedPropertyName() const
+ComboBoxWidget::ComboBoxWidget()
+	: QComboBox(), PropertyEditor(this)
 {
-	return mBindedPropertyName;
+	connect(this, SIGNAL(activated(int)), this, SLOT(onSelectionChanged(int)));
 }
 
-void ComboBox::setBindedPropertyName(QString const &name)
+void ComboBoxWidget::onSelectionChanged(int index)
 {
-	mBindedPropertyName = name;
+//	if (index < enumValues().length()) {
+//		setValueInRepo(enumValues()[index]);
+//	}
 }
+
+void ComboBoxWidget::setPropertyValue(const QString &value)
+{
+//	if (enumValues().contains(value)) {
+//		setCurrentIndex(enumValues().indexOf(value));
+//	}
+}
+
+//void ComboBoxWidget::setEnumValues(QStringList const &values)
+//{
+//	PropertyEditor::setEnumValues(values);
+//	clear();
+//	addItems(values);
+//}

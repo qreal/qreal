@@ -3,13 +3,14 @@
 using namespace qReal::widgetsEdit;
 
 LineEdit::LineEdit(ToolController *controller)
-	: Tool(new QLineEdit, controller)
+	: Tool(new LineEditWidget, controller)
 {
-	mLineEdit = dynamic_cast<QLineEdit *>(widget());
+	mLineEdit = dynamic_cast<LineEditWidget *>(widget());
 	mIcon = QIcon(":/icons/widgetsEditor/lineEdit.png");
 	mTitle = "Line Edit";
 	connect(mLineEdit, SIGNAL(textChanged(QString))
 		, this, SLOT(textChanged(QString)));
+	setFocusPolicy(Qt::StrongFocus);
 }
 
 void LineEdit::textChanged(const QString &text)
@@ -95,4 +96,20 @@ void LineEdit::setReadonly(bool isReadonly)
 void LineEdit::setText(QString const &text)
 {
 	mLineEdit->setText(text);
+}
+
+LineEditWidget::LineEditWidget()
+	: QLineEdit(), PropertyEditor(this)
+{
+	connect(this, SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
+}
+
+void LineEditWidget::setPropertyValue(const QString &value)
+{
+	setText(value);
+}
+
+void LineEditWidget::onTextChanged(const QString &text)
+{
+	setValueInRepo(text);
 }

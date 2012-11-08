@@ -85,6 +85,8 @@ private:
 
 	void switchLayoutButtonsActiveState(Tool *tool);
 
+	static QWidget *deserializeWidget(QDomElement const &widgetTemplate);
+
 	Ui::WidgetsEditor *mUi;
 	QGraphicsScene *mScene;
 	ToolController *mController;

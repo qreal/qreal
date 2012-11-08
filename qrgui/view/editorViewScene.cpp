@@ -751,7 +751,8 @@ Element *EditorViewScene::getLastCreated()
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)
 {
-	if (dynamic_cast<QGraphicsTextItem*>(focusItem())) {
+	if (dynamic_cast<QGraphicsTextItem*>(focusItem())
+			|| isInputWidgetFocused()) {
 		// Forward event to text editor
 		QGraphicsScene::keyPressEvent(event);
 	} else if (event->key() == Qt::Key_Delete) {
@@ -772,6 +773,13 @@ inline bool EditorViewScene::isArrow(int key)
 {
 	return key == Qt::Key_Left || key == Qt::Key_Right
 			|| key == Qt::Key_Down || key == Qt::Key_Up;
+}
+
+bool EditorViewScene::isInputWidgetFocused() const
+{
+	QGraphicsProxyWidget *proxy = dynamic_cast<QGraphicsProxyWidget *>(focusItem());
+	return proxy && proxy->widget() && QApplication::focusWidget()
+		&& QApplication::focusWidget()->testAttribute(Qt::WA_InputMethodEnabled);
 }
 
 void EditorViewScene::moveSelectedItems(int direction)

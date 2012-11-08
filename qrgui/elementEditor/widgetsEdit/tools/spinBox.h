@@ -4,11 +4,26 @@
 
 #include "abstractSpinBox.h"
 #include "../private/toolController.h"
+#include "propertyEditor.h"
 
 namespace qReal
 {
 namespace widgetsEdit
 {
+
+class SpinBoxWidget : public QSpinBox, public PropertyEditor
+{
+	Q_OBJECT
+
+public:
+	SpinBoxWidget();
+	virtual ~SpinBoxWidget() {}
+
+	virtual void setPropertyValue(QString const &value);
+
+private slots:
+	void onValueChanged1(int value);
+};
 
 class SpinBox : public AbstractSpinBox
 {
@@ -20,7 +35,8 @@ class SpinBox : public AbstractSpinBox
 	Q_PROPERTY(QString suffix READ suffix WRITE setSuffix USER true DESIGNABLE true)
 	Q_PROPERTY(int singleStep READ singleStep WRITE setSingleStep USER true DESIGNABLE true)
 	Q_PROPERTY(int value READ value WRITE setValue USER true DESIGNABLE true)
-	Q_PROPERTY(QString bindedPropertyName READ bindedPropertyName WRITE setBindedPropertyName USER true DESIGNABLE true)
+	Q_PROPERTY(QString binding READ propertyName WRITE setPropertyName USER true DESIGNABLE true)
+	BINDING_TOOL(mSpinBox)
 
 public:
 	explicit SpinBox(ToolController *controller);
@@ -32,7 +48,6 @@ private slots:
 	QString suffix() const;
 	int singleStep() const;
 	int value() const;
-	QString bindedPropertyName() const;
 
 	void setMaximum(int maximum);
 	void setMinimum(int minimum);
@@ -40,13 +55,11 @@ private slots:
 	void setSuffix(QString const &suffix);
 	void setSingleStep(int step);
 	void setValue(int value);
-	void setBindedPropertyName(QString const &name);
 
 	void valueChanged(int i);
 
 private:
-	QSpinBox *mSpinBox;
-	QString mBindedPropertyName;
+	SpinBoxWidget *mSpinBox;
 
 };
 

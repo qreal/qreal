@@ -173,6 +173,7 @@ void LayoutTool::loadAttachedProperty(Tool *tool, const QDomElement &element)
 		GridLayoutHelper *helper = dynamic_cast<GridLayoutHelper *>(mHelper);
 		if (helper) {
 			helper->insertTool(row, col, tool);
+			tool->setResizable(false);
 		} else {
 			qDebug() << "WARNING: expected grid layout after deserializetion, got something else";
 		}
@@ -184,6 +185,7 @@ void LayoutTool::loadAttachedProperty(Tool *tool, const QDomElement &element)
 		LinearLayoutHelper *helper = dynamic_cast<LinearLayoutHelper *>(mHelper);
 		if (helper) {
 			helper->insertTool(index, tool);
+			tool->setResizable(false);
 		} else {
 			qDebug() << "WARNING: expected linear layout after deserializetion, got something else";
 		}
@@ -280,7 +282,6 @@ void LayoutTool::dropEvent(QGraphicsSceneDragDropEvent *event)
 			event->ignore();
 			return;
 		}
-		mController->addChild(tool);
 	}
 	tool->setParentItem(this);
 	tool->setPos(event->pos() - hotSpot);

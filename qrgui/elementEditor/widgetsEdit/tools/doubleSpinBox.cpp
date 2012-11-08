@@ -3,9 +3,9 @@
 using namespace qReal::widgetsEdit;
 
 DoubleSpinBox::DoubleSpinBox(ToolController *controller)
-	: AbstractSpinBox(new QDoubleSpinBox, controller)
+	: AbstractSpinBox(new DoubleSpinBoxWidget, controller)
 {
-	mDoubleSpinBox = dynamic_cast<QDoubleSpinBox *>(widget());
+	mDoubleSpinBox = dynamic_cast<DoubleSpinBoxWidget *>(widget());
 	mIcon = QIcon(":/icons/widgetsEditor/doubleSpinBox.png");
 	mTitle = "Double Spin Box";
 	connect(mDoubleSpinBox, SIGNAL(valueChanged(double))
@@ -77,12 +77,22 @@ void DoubleSpinBox::setValue(double value)
 	mDoubleSpinBox->setValue(value);
 }
 
-QString DoubleSpinBox::bindedPropertyName() const
+DoubleSpinBoxWidget::DoubleSpinBoxWidget()
+	: QDoubleSpinBox(), PropertyEditor(this)
 {
-	return mBindedPropertyName;
+	connect(this, SIGNAL(valueChanged(QString)), this, SLOT(onValueChanged(QString)));
 }
 
-void DoubleSpinBox::setBindedPropertyName(QString const &name)
+void DoubleSpinBoxWidget::setPropertyValue(const QString &value)
 {
-	mBindedPropertyName = name;
+	bool ok = false;
+	double val = value.toDouble(&ok);
+	if (ok) {
+		setValue(val);
+	}
+}
+
+void DoubleSpinBoxWidget::onValueChanged(const QString &text)
+{
+	setValueInRepo(text);
 }

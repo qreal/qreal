@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtCore/QVariant>
+#include <QtCore/QString>
 
 class PropertyEditorInterface
 {
@@ -8,7 +8,7 @@ public:
 	virtual ~PropertyEditorInterface() {}
 
 	virtual QString binding() const = 0;
-	virtual QString value() const = 0;
-	virtual void setValue(QString const &value) = 0;
+	virtual void setPropertyValue(QString const &value) = 0;
+	virtual void setEnumValues(QStringList const &values) = 0;
 
 };

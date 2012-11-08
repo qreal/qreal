@@ -48,7 +48,7 @@ void WidgetsHelper::initPropertyEditors(QWidget *widget)
 			dynamic_cast<PropertyEditorInterface *>(widget);
 
 	if (iface && !iface->binding().isEmpty()) {
-		mPropertyEditors.insert(iface->binding(), iface);
+		mPropertyEditors.insertMulti(iface->binding(), iface);
 	}
 	foreach (QObject *object, widget->children()) {
 		QWidget *child = dynamic_cast<QWidget *>(object);

@@ -4,11 +4,29 @@
 
 #include "abstractScrollArea.h"
 #include "../private/toolController.h"
+#include "propertyEditor.h"
 
 namespace qReal
 {
 namespace widgetsEdit
 {
+
+class PlainTextEditWidget : public QPlainTextEdit, public PropertyEditor
+{
+	Q_OBJECT
+
+public:
+	PlainTextEditWidget();
+	virtual ~PlainTextEditWidget() {}
+
+	virtual void setPropertyValue(QString const &value);
+
+private slots:
+	void onTextChanged();
+
+private:
+	bool mIgnoreNextSignal;
+};
 
 class PlainTextEdit : public AbstractScrollArea
 {
@@ -21,6 +39,8 @@ class PlainTextEdit : public AbstractScrollArea
 	Q_PROPERTY(QString plainText READ plainText WRITE setPlainText USER true DESIGNABLE true)
 	Q_PROPERTY(bool readOnly READ readOnly WRITE setReadOnly USER true DESIGNABLE true)
 	Q_PROPERTY(bool undoRedoEnabled READ undoRedoEnabled WRITE setUndoRedoEnabled USER true DESIGNABLE true)
+	Q_PROPERTY(QString binding READ propertyName WRITE setPropertyName USER true DESIGNABLE true)
+	BINDING_TOOL(mPlainTextEdit)
 
 public:
 	explicit PlainTextEdit(ToolController *controller);
@@ -45,7 +65,7 @@ private slots:
 	void textChanged();
 
 private:
-	QPlainTextEdit *mPlainTextEdit;
+	PlainTextEditWidget *mPlainTextEdit;
 
 };
 

@@ -16,6 +16,11 @@ NodeElement *PropertyEditor::getNode() const
 	return root ? dynamic_cast<NodeElement *>(root->graphicsProxyWidget()) : NULL;
 }
 
+void PropertyEditor::setPropertyValue(const QString &value)
+{
+	mValue = value;
+}
+
 QString PropertyEditor::binding() const
 {
 	return mPropertyName;
@@ -31,12 +36,25 @@ void PropertyEditor::setPropertyName(QString const &propertyName)
 	mPropertyName = propertyName;
 }
 
-QString PropertyEditor::value() const
+void PropertyEditor::setValueInRepo(QString const &value)
 {
-	return mValue;
+	NodeElement *node = getNode();
+	if (node && !propertyName().isEmpty()) {
+		node->setLogicalProperty(propertyName(), value);
+	}
 }
 
-void PropertyEditor::setValue(const QString &value)
+void PropertyEditor::setEnumValues(const QStringList &values)
 {
-	mValue = value;
+	mEnumValues = values;
+}
+
+QStringList PropertyEditor::enumValues() const
+{
+	return mEnumValues;
+}
+
+bool PropertyEditor::isEnumEditor() const
+{
+	return !mEnumValues.isEmpty();
 }

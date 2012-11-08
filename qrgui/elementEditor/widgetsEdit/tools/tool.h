@@ -41,7 +41,7 @@ public:
 	QIcon icon() const;
 	QString title() const;
 
-	void onLoaded();
+	virtual void onLoaded();
 
 	bool movable() const;
 	void setMovable(bool movable = true);

@@ -3,9 +3,9 @@
 using namespace qReal::widgetsEdit;
 
 Label::Label(ToolController *controller)
-	: Frame(new QLabel("label"), controller)
+	: Frame(new LabelWidget("label"), controller)
 {
-	mLabel = dynamic_cast<QLabel *>(widget());
+	mLabel = dynamic_cast<LabelWidget *>(widget());
 	mIcon = QIcon(":/icons/widgetsEditor/label.png");
 	mTitle = "Label";
 	mLabel->setGeometry(0, 0
@@ -93,12 +93,12 @@ void Label::setWordWrap(bool hasWrapping)
 	mLabel->setWordWrap(hasWrapping);
 }
 
-QString Label::bindedPropertyName() const
+LabelWidget::LabelWidget(const QString &text)
+	: QLabel(text), PropertyEditor(this)
 {
-	return mBindedPropertyName;
 }
 
-void Label::setBindedPropertyName(QString const &name)
+void LabelWidget::setPropertyValue(const QString &value)
 {
-	mBindedPropertyName = name;
+	setText(value);
 }

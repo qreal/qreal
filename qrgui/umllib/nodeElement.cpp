@@ -34,7 +34,8 @@ NodeElement::NodeElement(ElementImpl* impl)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
-	setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
+	setFlag(ItemDoesntPropagateOpacityToChildren);
+	setFlag(ItemIsFocusable);
 
 	mPortRenderer = new SdfRenderer();
 	mRenderer = new SdfRenderer();

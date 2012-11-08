@@ -3,11 +3,27 @@
 #include <QtGui/QComboBox>
 
 #include "tool.h"
+#include "propertyEditor.h"
 
 namespace qReal
 {
 namespace widgetsEdit
 {
+
+class ComboBoxWidget : public QComboBox, public PropertyEditor
+{
+	Q_OBJECT
+
+public:
+	explicit ComboBoxWidget();
+	virtual ~ComboBoxWidget() {}
+
+	virtual void setPropertyValue(QString const &value);
+//	virtual void setEnumValues(QStringList const &values);
+
+private slots:
+	void onSelectionChanged(int index);
+};
 
 class ComboBox : public Tool
 {
@@ -20,7 +36,8 @@ class ComboBox : public Tool
 	Q_PROPERTY(int maxVisibleItems READ maxVisibleItems WRITE setMaxVisibleItems USER true DESIGNABLE true)
 	Q_PROPERTY(int minimumContentsLength READ minimumContentsLength WRITE setMinimumContentsLength USER true DESIGNABLE true)
 	Q_PROPERTY(QComboBox::SizeAdjustPolicy sizeAdjustPolicy READ sizeAdjustPolicy WRITE setSizeAdjustPolicy USER true DESIGNABLE true)
-	Q_PROPERTY(QString bindedPropertyName READ bindedPropertyName WRITE setBindedPropertyName USER true DESIGNABLE true)
+	Q_PROPERTY(QString binding READ propertyName WRITE setPropertyName USER true DESIGNABLE true)
+	BINDING_TOOL(mComboBox)
 
 public:
 	explicit ComboBox(ToolController *controller);
@@ -34,7 +51,6 @@ private:
 	int maxVisibleItems() const;
 	int minimumContentsLength() const;
 	QComboBox::SizeAdjustPolicy sizeAdjustPolicy() const;
-	QString bindedPropertyName() const;
 
 	void setDuplicatesEnabled(bool enabled);
 	void setEditable(bool editable);
@@ -43,10 +59,8 @@ private:
 	void setMaxVisibleItems(int maxVisibleItems);
 	void setMinimumContentsLength(int length);
 	void setSizeAdjustPolicy(QComboBox::SizeAdjustPolicy policy);
-	void setBindedPropertyName(QString const &name);
 
-	QComboBox *mComboBox;
-	QString mBindedPropertyName;
+	ComboBoxWidget *mComboBox;
 };
 
 }

@@ -26,16 +26,6 @@ void CheckBox::setChecked(bool checked)
 	mCheckBox->setChecked(checked);
 }
 
-QString CheckBox::bindedPropertyName() const
-{
-	return mCheckBox->propertyName();
-}
-
-void CheckBox::setBindedPropertyName(QString const &name)
-{
-	mCheckBox->setPropertyName(name);
-}
-
 CheckBoxWidget::CheckBoxWidget(QString const &title)
 	: QCheckBox(title), PropertyEditor(this)
 {
@@ -44,7 +34,7 @@ CheckBoxWidget::CheckBoxWidget(QString const &title)
 
 void CheckBoxWidget::onStateChanged(int state)
 {
-	setCheckedState(state == Qt::Checked);
+	setValueInRepo(state == Qt::Checked ? "true" : "false");
 }
 
 bool CheckBoxWidget::isChecked() const
@@ -52,15 +42,7 @@ bool CheckBoxWidget::isChecked() const
 	return checkState() == Qt::Checked;
 }
 
-void CheckBoxWidget::setCheckedState(bool checked)
-{
-	NodeElement *node = getNode();
-	if (node && !propertyName().isEmpty()) {
-		node->setLogicalProperty(propertyName(), checked ? "true" : "false");
-	}
-}
-
-void CheckBoxWidget::setValue(const QString &value)
+void CheckBoxWidget::setPropertyValue(const QString &value)
 {
 	setChecked(value.toLower() == "true" || value == "1");
 }

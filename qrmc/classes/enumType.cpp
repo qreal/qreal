@@ -12,7 +12,7 @@ bool EnumType::init(QString const &context)
 {
 	Type::init(context);
 	IdList children = mApi->children(mId);
-	foreach(Id child, children) {
+	foreach(Id const &child, children) {
 		if (!mApi->isLogicalElement(child))
 			continue;
 		if (child.element() == metaEntityValue) {
@@ -40,7 +40,7 @@ QString EnumType::generateEnums(const QString &lineTemplate) const
 {
 	QString enums;
 	QString line = lineTemplate;
-	foreach(QString value, mValues) {
+	foreach(QString const &value, mValues) {
 		enums += "<< \"" + value + "\" ";
 	}
 	line.replace(enumsListTag, enums).replace(elementNameTag, name());

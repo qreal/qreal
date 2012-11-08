@@ -3,9 +3,9 @@
 using namespace qReal::widgetsEdit;
 
 PlainTextEdit::PlainTextEdit(ToolController *controller)
-	: AbstractScrollArea(new QPlainTextEdit, controller)
+	: AbstractScrollArea(new PlainTextEditWidget, controller)
 {
-	mPlainTextEdit = dynamic_cast<QPlainTextEdit *>(widget());
+	mPlainTextEdit = dynamic_cast<PlainTextEditWidget *>(widget());
 	mIcon = QIcon(":/icons/widgetsEditor/plainTextEdit.png");
 	mTitle = "Plain Text Edit";
 	connect(mPlainTextEdit, SIGNAL(textChanged())
@@ -85,4 +85,28 @@ void PlainTextEdit::setReadOnly(bool isReadOnly)
 void PlainTextEdit::setUndoRedoEnabled(bool undoRedoEnabled)
 {
 	mPlainTextEdit->setUndoRedoEnabled(undoRedoEnabled);
+}
+
+PlainTextEditWidget::PlainTextEditWidget()
+	: QPlainTextEdit(), PropertyEditor(this), mIgnoreNextSignal(false)
+{
+	connect(this, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
+}
+
+void PlainTextEditWidget::setPropertyValue(const QString &value)
+{
+	mIgnoreNextSignal = true;
+	setPlainText(value);
+}
+
+void PlainTextEditWidget::onTextChanged()
+{
+	// Without this segfault happens (maybe signal cicling). But maybe it may
+	// happen that the next signal would be suddenly user edit or smth
+	// and cicling would happen anyway. But honest text versions comparison
+	// would work too long. So be careful
+	if (!mIgnoreNextSignal) {
+		setValueInRepo(toPlainText());
+	}
+	mIgnoreNextSignal = false;
 }

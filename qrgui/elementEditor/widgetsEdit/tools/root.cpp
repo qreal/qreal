@@ -8,11 +8,16 @@ Root::Root(ToolController *controller)
 	: LayoutTool(new RootWidget, controller)
 {
 	mWidget = dynamic_cast<RootWidget *>(widget());
+	setMovable(false);
+	mTitle = "Root";
+}
+
+void Root::onLoaded()
+{
+	LayoutTool::onLoaded();
 	setGeometry(QRectF(0, 0
 		, ROOT_WIDGET_DEFAULT_WIDTH
 		, ROOT_WIDGET_DEFAULT_HEIGHT));
-	setMovable(false);
-	mTitle = "Root";
 }
 
 void Root::setShape(const QDomDocument &shape)

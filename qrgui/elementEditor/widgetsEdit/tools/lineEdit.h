@@ -4,11 +4,26 @@
 
 #include "tool.h"
 #include "../private/toolController.h"
+#include "propertyEditor.h"
 
 namespace qReal
 {
 namespace widgetsEdit
 {
+
+class LineEditWidget : public QLineEdit, public PropertyEditor
+{
+	Q_OBJECT
+
+public:
+	LineEditWidget();
+	virtual ~LineEditWidget() {}
+
+	virtual void setPropertyValue(QString const &value);
+
+private slots:
+	void onTextChanged(QString const &text);
+};
 
 class LineEdit : public Tool
 {
@@ -22,6 +37,8 @@ class LineEdit : public Tool
 	Q_PROPERTY(QString placeholderText READ placeholderText WRITE setPlaceholderText USER true DESIGNABLE true)
 	Q_PROPERTY(bool readonly READ readonly WRITE setReadonly USER true DESIGNABLE true)
 	Q_PROPERTY(QString text READ text WRITE setText USER true DESIGNABLE true)
+	Q_PROPERTY(QString binding READ propertyName WRITE setPropertyName USER true DESIGNABLE true)
+	BINDING_TOOL(mLineEdit)
 
 public:
 	explicit LineEdit(ToolController *controller);
@@ -48,7 +65,7 @@ private:
 	void setReadonly(bool isReadonly);
 	void setText(QString const &text);
 
-	QLineEdit *mLineEdit;
+	LineEditWidget *mLineEdit;
 
 };
 

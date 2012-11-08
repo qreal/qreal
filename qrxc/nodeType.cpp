@@ -387,7 +387,7 @@ void NodeType::generateCode(OutFile &out)
 	if (hasWtf) {
 		out() << "\t\t\tforeach (QString const &propertyName, mPropertyEditors.keys()) {\n";
 		out() << "\t\t\t\tforeach (PropertyEditorInterface *propertyEditor, mPropertyEditors.values(propertyName)) {\n";
-		out() << "\t\t\t\t\tpropertyEditor->setValue(repo->logicalProperty(propertyName));\n";
+		out() << "\t\t\t\t\tpropertyEditor->setPropertyValue(repo->logicalProperty(propertyName));\n";
 		out() << "\t\t\t\t}\n";
 		out() << "\t\t\t}\n";
 	}

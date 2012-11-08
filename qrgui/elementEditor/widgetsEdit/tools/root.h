@@ -24,6 +24,7 @@ class Root : public LayoutTool
 public:
 	explicit Root(ToolController *controller);
 
+	virtual void onLoaded();
 	void setShape(QDomDocument const &shape);
 	QDomDocument shapeDocument() const;
 

@@ -66,8 +66,13 @@ void WidgetsEditor::setShape(QDomDocument const &shapeDocument)
 
 QWidget *WidgetsEditor::deserializeWidget(QDomDocument const &document)
 {
-	QDomElement widgetTemplateElement = document.firstChildElement("widget-template");
-	QDomElement rootElement = widgetTemplateElement.firstChild().toElement();
+	QDomElement widgetTemplate = document.firstChildElement("widget-template");
+	return deserializeWidget(widgetTemplate);
+}
+
+QWidget *WidgetsEditor::deserializeWidget(QDomElement const &widgetTemplate)
+{
+	QDomElement rootElement = widgetTemplate.firstChild().toElement();
 	return ToolFactory::instance()->deserializeWidget(rootElement);
 }
 
@@ -288,7 +293,9 @@ void WidgetsEditor::preview()
 	if (document.isNull()) {
 		return;
 	}
-	QWidget *widget = WidgetsEditor::deserializeWidget(document);
+	QDomElement graphics = document.firstChildElement("graphics");
+	QDomElement widgetTemplate = graphics.firstChildElement("widget-template");
+	QWidget *widget = WidgetsEditor::deserializeWidget(widgetTemplate);
 	if (widget) {
 		preview(widget);
 	}
