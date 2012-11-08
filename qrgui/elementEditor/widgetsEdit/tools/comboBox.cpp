@@ -88,21 +88,21 @@ ComboBoxWidget::ComboBoxWidget()
 
 void ComboBoxWidget::onSelectionChanged(int index)
 {
-//	if (index < enumValues().length()) {
-//		setValueInRepo(enumValues()[index]);
-//	}
+	if (index < enumValues().length()) {
+		setValueInRepo(enumValues()[index]);
+	}
 }
 
 void ComboBoxWidget::setPropertyValue(const QString &value)
 {
-//	if (enumValues().contains(value)) {
-//		setCurrentIndex(enumValues().indexOf(value));
-//	}
+	if (enumValues().contains(value)) {
+		setCurrentIndex(enumValues().indexOf(value));
+	}
 }
 
-//void ComboBoxWidget::setEnumValues(QStringList const &values)
-//{
-//	PropertyEditor::setEnumValues(values);
-//	clear();
-//	addItems(values);
-//}
+void ComboBoxWidget::setEnumValues(QStringList const &values)
+{
+	PropertyEditor::setEnumValues(values);
+	clear();
+	addItems(values);
+}

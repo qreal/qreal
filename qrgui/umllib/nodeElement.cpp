@@ -104,6 +104,12 @@ NodeElement *NodeElement::clone(bool toCursorPos, bool searchForParents)
 	return copyHandler.clone(toCursorPos, searchForParents);
 }
 
+void NodeElement::setId(Id &id)
+{
+	Element::setId(id);
+	mWidgetsHelper->onIdChanged();
+}
+
 NodeElement* NodeElement::copyAndPlaceOnDiagram(QPointF const &offset)
 {
 	NodeElement* copy = clone(false, false);
@@ -1211,6 +1217,9 @@ void NodeElement::setAssistApi(qReal::models::GraphicalModelAssistApi *graphical
 {
 	Element::setAssistApi(graphicalAssistApi, logicalAssistApi);
 	mPortHandler->setGraphicalAssistApi(graphicalAssistApi);
+	if (logicalAssistApi) {
+		mWidgetsHelper->setEditorManager(&logicalAssistApi->editorManager());
+	}
 }
 
 bool NodeElement::isParentSortingContainer() const {

@@ -4,7 +4,7 @@
 #include "../../../qrutils/xmlUtils.h"
 
 WidgetsHelper::WidgetsHelper(NodeElement *element)
-	: mElement(element), mWidget(NULL)
+	: mElement(element), mEditorManager(NULL), mWidget(NULL)
 {
 }
 
@@ -34,6 +34,16 @@ QMap<QString, PropertyEditorInterface *> WidgetsHelper::propertyEditors() const
 	return mPropertyEditors;
 }
 
+void WidgetsHelper::setEditorManager(EditorManager const *editorManager)
+{
+	mEditorManager = editorManager;
+	initEnumEditors();
+}
+
+void WidgetsHelper::onIdChanged() {
+	initEnumEditors();
+}
+
 void WidgetsHelper::initPropertyEditors()
 {
 	mPropertyEditors.clear();
@@ -54,6 +64,21 @@ void WidgetsHelper::initPropertyEditors(QWidget *widget)
 		QWidget *child = dynamic_cast<QWidget *>(object);
 		if (child) {
 			initPropertyEditors(child);
+		}
+	}
+}
+
+void WidgetsHelper::initEnumEditors()
+{
+	if (!mElement || mElement->id() == Id() || !mEditorManager) {
+		return;
+	}
+	foreach (QString const &propertyName, mPropertyEditors.keys()) {
+		QStringList const values = mEditorManager->getEnumValues(mElement->id(), propertyName);
+		foreach (PropertyEditorInterface *editor, mPropertyEditors.values(propertyName)) {
+			// If property is not enum empty list would be given and
+			// will be ignored by property editor
+			editor->setEnumValues(values);
 		}
 	}
 }

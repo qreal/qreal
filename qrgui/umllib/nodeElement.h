@@ -43,6 +43,8 @@ public:
 	 */
 	NodeElement *clone(bool toCursorPos = false, bool searchForParents = true);
 
+	virtual void setId(Id &id);
+
 	QMap<QString, QVariant> properties();
 
 	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w, SdfRenderer *portrenderer);

@@ -19,11 +19,16 @@ public:
 	virtual bool initWidget(QString const &filename);
 	QMap<QString, PropertyEditorInterface *> propertyEditors() const;
 
+	void setEditorManager(EditorManager const *editorManager);
+	void onIdChanged();
+
 private:
 	void initPropertyEditors();
 	void initPropertyEditors(QWidget *widget);
+	void initEnumEditors();
 
 	NodeElement *mElement;
+	EditorManager const *mEditorManager;
 	QWidget *mWidget;
 	QMap<QString, PropertyEditorInterface *> mPropertyEditors;
 };

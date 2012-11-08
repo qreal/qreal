@@ -19,7 +19,7 @@ public:
 	virtual ~ComboBoxWidget() {}
 
 	virtual void setPropertyValue(QString const &value);
-//	virtual void setEnumValues(QStringList const &values);
+	virtual void setEnumValues(QStringList const &values);
 
 private slots:
 	void onSelectionChanged(int index);

@@ -32,7 +32,7 @@ public:
 	
 	virtual ~Element() {}
 
-	void setId(qReal::Id &id);
+	virtual void setId(qReal::Id &id);
 
 	void initEmbeddedControls();
 
