@@ -122,13 +122,16 @@ protected:
 
 	/// Match map: key - id in rule diagram, value - id in diagram
 	/// which will be transformed
-	QHash<Id, Id> *mMatch;
+	QHash<Id, Id> mMatch;
 
 	/// List contains all matches of rule
 	QList<QHash<Id, Id> > mMatches;
 
 	/// Nodes of rule subgraph which matched model subgraph at current step
 	IdList mCurrentMatchedGraphInRule;
+
+	/// Nodes of model subgraph which matched model subgraph at current step
+	IdList mCurrentMatchedGraphInModel;
 
 	/// Nodes which have links
 	IdList mNodesHavingOutsideLinks;

@@ -209,8 +209,8 @@ void VisualInterpreterUnit::stopInterpretation()
 
 void VisualInterpreterUnit::highlightMatch()
 {
-	foreach (Id const &id, mMatch->keys()) {
-		mInterpretersInterface.highlight(mMatch->value(id), false);
+	foreach (Id const &id, mMatch.keys()) {
+		mInterpretersInterface.highlight(mMatch.value(id), false);
 	}
 
 	pause(2000);
