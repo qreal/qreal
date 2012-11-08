@@ -598,6 +598,11 @@ QString InterpreterEditorManager::diagramNodeName(QString const &editor, QString
 	return repoAndDiagram.first->stringProperty(repoAndDiagram.second, "nodeName");
 }
 
+bool InterpreterEditorManager::isInterpretationMode() const
+{
+	return true;
+}
+
 //unsupported method
 QStringList InterpreterEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {

@@ -501,3 +501,8 @@ QString EditorManager::diagramNodeName(QString const &editor, QString const &dia
 	EditorInterface * editorInter = editorInterface(editor);
 	return editorInter->diagramNodeName(diagram);
 }
+
+bool EditorManager::isInterpretationMode() const
+{
+	return false;
+}

@@ -73,7 +73,7 @@ public:
 	QString diagramNodeName(QString const &editor, QString const &diagram) const;
 
 	void setProxyManager(EditorManagerInterface *editorManagerInter);
-
+	bool isInterpretationMode() const;
 	//unsupported methods:
 	QStringList paletteGroups(Id const &editor, Id const &diagram) const;
 	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;

@@ -17,7 +17,8 @@ HEADERS += \
 	dialogs/suggestToCreateDiagramDialog.h \
 	dialogs/managedClosableDialog.h \
 	dialogs/progressDialog/progressBar.h \
-	dialogs/progressDialog/progressDialog.h
+	dialogs/progressDialog/progressDialog.h \
+    dialogs/propertiesDialog.h
 
 SOURCES += \
 	dialogs/plugindialog.cpp \
@@ -37,7 +38,8 @@ SOURCES += \
 	dialogs/suggestToCreateDiagramDialog.cpp \
 	dialogs/managedClosableDialog.cpp \
 	dialogs/progressDialog/progressBar.cpp \
-	dialogs/progressDialog/progressDialog.cpp
+	dialogs/progressDialog/progressDialog.cpp \
+    dialogs/propertiesDialog.cpp
 
 FORMS += \
 	dialogs/editorGeneratorDialog.ui \
@@ -48,4 +50,22 @@ FORMS += \
 	dialogs/preferencesPages/debuggerPage.ui \
 	dialogs/preferencesPages/behaviourPage.ui \
 	dialogs/preferencesPages/featuresPage.ui \
-	dialogs/findReplaceDialog.ui
+	dialogs/findReplaceDialog.ui \
+    dialogs/propertiesDialog.ui
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

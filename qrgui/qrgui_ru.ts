@@ -325,60 +325,65 @@
 <context>
     <name>EditorViewScene</name>
     <message>
-        <location filename="view/editorViewScene.cpp" line="317"/>
-        <location filename="view/editorViewScene.cpp" line="360"/>
+        <location filename="view/editorViewScene.cpp" line="318"/>
+        <location filename="view/editorViewScene.cpp" line="361"/>
         <source>Discard</source>
         <translation>Убрать меню</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="320"/>
+        <location filename="view/editorViewScene.cpp" line="321"/>
         <source>Create new element</source>
         <translation>Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="887"/>
+        <location filename="view/editorViewScene.cpp" line="899"/>
         <source>Add connection</source>
         <translation>Добавить провязку</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="894"/>
+        <location filename="view/editorViewScene.cpp" line="906"/>
         <source>Disconnect</source>
         <translation>Убрать провязку</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="900"/>
+        <location filename="view/editorViewScene.cpp" line="912"/>
         <source>Add usage</source>
         <translation>Добавить использование</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="907"/>
+        <location filename="view/editorViewScene.cpp" line="919"/>
         <source>Delete usage</source>
         <translation>Убрать использование</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="913"/>
+        <location filename="view/editorViewScene.cpp" line="925"/>
         <source>Go to</source>
         <translation>Перейти</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="915"/>
+        <location filename="view/editorViewScene.cpp" line="927"/>
         <source>Forward connection</source>
         <translation>По провязке вперёд</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="916"/>
+        <location filename="view/editorViewScene.cpp" line="928"/>
         <source>Backward connection</source>
         <translation>По провязке назад</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="917"/>
+        <location filename="view/editorViewScene.cpp" line="929"/>
         <source>Uses</source>
         <translation>Использует</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="918"/>
+        <location filename="view/editorViewScene.cpp" line="930"/>
         <source>Used in</source>
         <translation>Используется в</translation>
+    </message>
+    <message>
+        <location filename="view/editorViewScene.cpp" line="934"/>
+        <source>Change Properties</source>
+        <translation>Изменить свойства</translation>
     </message>
 </context>
 <context>
@@ -1780,6 +1785,19 @@
     </message>
 </context>
 <context>
+    <name>PropertiesDialog</name>
+    <message>
+        <location filename="dialogs/propertiesDialog.ui" line="14"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/propertiesDialog.ui" line="26"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+</context>
+<context>
     <name>PropertyEditorModel</name>
     <message>
         <source>Debugger path:</source>
@@ -1814,7 +1832,7 @@
         <translation type="obsolete">имя</translation>
     </message>
     <message>
-        <location filename="mainwindow/propertyEditorProxyModel.cpp" line="200"/>
+        <location filename="mainwindow/propertyEditorProxyModel.cpp" line="204"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
@@ -2993,7 +3011,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="692"/>
+        <location filename="mainwindow/mainWindow.cpp" line="691"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3018,16 +3036,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="738"/>
-        <location filename="mainwindow/mainWindow.cpp" line="756"/>
-        <location filename="mainwindow/mainWindow.cpp" line="774"/>
+        <location filename="mainwindow/mainWindow.cpp" line="737"/>
+        <location filename="mainwindow/mainWindow.cpp" line="755"/>
+        <location filename="mainwindow/mainWindow.cpp" line="773"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="740"/>
-        <location filename="mainwindow/mainWindow.cpp" line="758"/>
-        <location filename="mainwindow/mainWindow.cpp" line="776"/>
+        <location filename="mainwindow/mainWindow.cpp" line="739"/>
+        <location filename="mainwindow/mainWindow.cpp" line="757"/>
+        <location filename="mainwindow/mainWindow.cpp" line="775"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3132,23 +3150,23 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="693"/>
+        <location filename="mainwindow/mainWindow.cpp" line="692"/>
         <source>&lt;b&gt;QReal&lt;b&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;http://qreal.ru/&quot;&gt;http://qreal.ru/&lt;/a&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="774"/>
+        <location filename="mainwindow/mainWindow.cpp" line="773"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="776"/>
+        <location filename="mainwindow/mainWindow.cpp" line="775"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="906"/>
-        <location filename="mainwindow/mainWindow.cpp" line="914"/>
+        <location filename="mainwindow/mainWindow.cpp" line="905"/>
+        <location filename="mainwindow/mainWindow.cpp" line="913"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3157,17 +3175,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1675"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1674"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1704"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1703"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1704"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1703"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3188,7 +3206,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1306"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1305"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -3334,9 +3352,17 @@
     </message>
 </context>
 <context>
+    <name>qReal::PropertiesDialog</name>
+    <message>
+        <location filename="dialogs/propertiesDialog.cpp" line="11"/>
+        <source>Properties</source>
+        <translation>Свойства</translation>
+    </message>
+</context>
+<context>
     <name>qReal::StartDialog</name>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="48"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="49"/>
         <source>Start page</source>
         <oldsource>Start Page</oldsource>
         <translation>Начальная страница</translation>
@@ -3375,7 +3401,7 @@
         <translation>Открыть интерпретируемую диаграмму</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="87"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="93"/>
         <source>Select file with metamodel to open</source>
         <translation>Выберите файл метамодели для интерпретации</translation>
     </message>
@@ -3439,17 +3465,17 @@
 <context>
     <name>qReal::gui::PaletteTree</name>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="340"/>
+        <location filename="mainwindow/paletteTree.cpp" line="347"/>
         <source>Expand all</source>
         <translation>Развернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="348"/>
+        <location filename="mainwindow/paletteTree.cpp" line="355"/>
         <source>Collapse all</source>
         <translation>Свернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="356"/>
+        <location filename="mainwindow/paletteTree.cpp" line="363"/>
         <source>Change representation</source>
         <translation>Изменить представление</translation>
     </message>

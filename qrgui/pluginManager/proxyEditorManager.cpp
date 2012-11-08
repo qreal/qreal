@@ -198,6 +198,11 @@ void ProxyEditorManager::setProxyManager(EditorManagerInterface *editorManagerIn
 	mProxyManager = editorManagerInter;
 }
 
+bool ProxyEditorManager::isInterpretationMode() const
+{
+	return mProxyManager->isInterpretationMode();
+}
+
 //unsupported methods:
 QStringList ProxyEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {

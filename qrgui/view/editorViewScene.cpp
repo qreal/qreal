@@ -10,6 +10,7 @@
 #include "editorViewMVIface.h"
 #include "editorView.h"
 #include "../mainwindow/mainWindow.h"
+#include "../dialogs/propertiesDialog.h"
 
 using namespace qReal;
 
@@ -927,6 +928,13 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 		createGoToSubmenu(goToMenu, tr("Backward connection"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId()));
 		createGoToSubmenu(goToMenu, tr("Uses"), mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId()));
 		createGoToSubmenu(goToMenu, tr("Used in"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId()));
+
+		if (mWindow->manager()->isInterpretationMode()) {
+			contextMenu.addSeparator();
+			QAction * const changePropertiesAction = contextMenu.addAction(tr("Change Properties"));
+			connect(changePropertiesAction, SIGNAL(triggered()), SLOT(changePropertiesActionTriggered()));
+			changePropertiesAction->setData(element->id().toVariant());
+		}
 	}
 }
 
@@ -1266,6 +1274,16 @@ void EditorViewScene::deleteUsageActionTriggered()
 	Id source = connection[0].value<Id>();
 	Id destination = connection[1].value<Id>();
 	mMVIface->logicalAssistApi()->deleteUsage(source, destination);
+}
+
+void EditorViewScene::changePropertiesActionTriggered()
+{
+	QAction *action = static_cast<QAction *>(sender());
+	Id id = action->data().value<Id>();
+	PropertiesDialog *propDialog = new PropertiesDialog();
+	propDialog->init(mWindow->manager(), id);
+	propDialog->setModal(true);
+	propDialog->show();
 }
 
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
