@@ -27,7 +27,8 @@ Object::Object(const Id &id, const Id &parent, const qReal::Id &logicalId)
 	setParent(parent);
 }
 
-Object::Object(const Id &id) : mId(id)
+Object::Object(const Id &id)
+	: mId(id)
 {
 }
 

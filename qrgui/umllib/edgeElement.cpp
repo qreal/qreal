@@ -963,7 +963,7 @@ QPointF EdgeElement::to() const
 	return mLine.last() + pos();
 }
 
-void EdgeElement::highlight(QColor const color)
+void EdgeElement::highlight(QColor const &color)
 {
 	mColor = color;
 	update();
