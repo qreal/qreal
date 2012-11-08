@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtGui/QColor>
+
 #include "../../qrkernel/ids.h"
 #include "../toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 #include "../../qrutils/invocationUtils/longOperation.h"
