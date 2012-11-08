@@ -1,10 +1,11 @@
 #pragma once
-
+#include <QtCore/QList>
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QPainter>
 #include <QtXml/QDomDocument>
-#include "../../../../../qrutils/graphicsUtils/lineImpl.h"
 #include "colorFieldItem.h"
+#include "../../../../../qrutils/graphicsUtils/abstractItem.h"
+#include "../../../../../qrutils/graphicsUtils/rectangleImpl.h"
 
 namespace qReal {
 namespace interpreters {
@@ -12,29 +13,21 @@ namespace robots {
 namespace details {
 namespace d2Model {
 
-class LineItem : public QObject, public ColorFieldItem
+class EllipseItem : public QObject, public ColorFieldItem
 {
 	Q_OBJECT
-
 public:
-	LineItem(QPointF begin, QPointF end);
-	QPainterPath shape() const;
+	EllipseItem(QPointF begin, QPointF end);
+
 	virtual QRectF boundingRect() const;
+	virtual QRectF calcNecessaryBoundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
-	virtual void drawExtractionForItem(QPainter* painter);
-
-	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
-	virtual void reshapeRectWithShift();
-
 	virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
 	virtual void deserialize(QDomElement const &element);
-	virtual void deserializePenBrush(QDomElement const &element);
-	void setSerializeName(QString name);
 
-protected:
+private:
+	graphicsUtils::RectangleImpl mEllipseImpl;
 	void setPrivateData();
-	graphicsUtils::LineImpl mLineImpl;
-	QString mSerializeName;
 };
 }
 }
