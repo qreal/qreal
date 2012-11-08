@@ -18,7 +18,7 @@ TRANSLATIONS = qrgui_ru.ts
 # как только поправят, можно будет юзать QMAKE_LFLAGS_RPATH
 !macx {
 	QMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../bin/
-	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../bin/thirdpartyy/
+	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../bin/thirdparty/
 }
 
 OBJECTS_DIR = .obj
