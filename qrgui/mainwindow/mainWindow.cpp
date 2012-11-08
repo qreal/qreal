@@ -888,7 +888,7 @@ void MainWindow::openTextEditor(QPersistentModelIndex const &index, int const ro
 {
 	gui::TextEdit *textEdit = new gui::TextEdit(index, role);
 	if (!propertyValue.isEmpty()) {
-		textEdit->setText(propertyValue);
+		textEdit->setText(propertyValue.toUtf8());
 	}
 
 	textEdit->setPythonLexer();
