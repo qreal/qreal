@@ -43,7 +43,8 @@ void PythonGenerator::generateScript()
 
 	collectPropertiesUsageAndMethodsInvocation(reaction);
 
-	QString const script = createProperInitAndOutput(replacePropertiesUsage(reaction));
+	QString const script = "#!/usr/bin/python\n# -*- coding: utf-8 -*-\n"
+			+ createProperInitAndOutput(replacePropertiesUsage(reaction));
 	createScriptFile(script);
 
 	mPropertiesUsage.clear();
@@ -261,7 +262,7 @@ QString PythonGenerator::parseIdentifier(QString const &stream, int pos, bool le
 
 bool PythonGenerator::isCorrectIdentifierSymbol(QChar const c) const
 {
-	return ('0' <= c && c <= '9') || ('A' <= c && c <= 'Z') || ('a'<= c && c <= 'z');
+	return ('0' <= c && c <= '9') || ('A' <= c && c <= 'Z') || ('a'<= c && c <= 'z') || c == '_';
 }
 
 QString PythonGenerator::escape(QString const &string) const

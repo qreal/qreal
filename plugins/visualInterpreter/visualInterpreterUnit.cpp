@@ -119,8 +119,7 @@ void VisualInterpreterUnit::loadSemantics()
 				Id const toId = toInRule(ruleElement);
 
 				if (fromId == Id::rootId() || toId == Id::rootId()) {
-					semanticsLoadingError(tr("Incorrect replacement in rule '")
-							+ ruleName + "'");
+					semanticsLoadingError(tr("Incorrect replacement in rule '") + ruleName + "'");
 					return;
 				}
 
