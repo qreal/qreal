@@ -826,14 +826,11 @@ void D2ModelWidget::ejectedItemMoved(QRectF const& itemRect, QPointF const& oldP
 		|| mWorldModel->intersectsByStopedEjectedItems(itemRect)) {
 		emit needToStopMovedEjectedItem(true, oldPos);
 
-//		if (mRobot->realShape().intersects(itemRect)) {
-//			mRobot->setPos(mRobot->pos() - diffRobotPos);
-//		}
 	} else {
 		emit needToStopMovedEjectedItem(false, oldPos);
 	}
 
-//	mWorldModel->checkEjectedItemsIntersects(itemRect, diffRobotPos);
+	mWorldModel->checkEjectedItemsIntersects(itemRect, diffRobotPos);
 }
 
 void D2ModelWidget::ejectedItemDragged(QRectF const& itemRect, QPointF const& oldPos, QPointF const& diffItemPos)

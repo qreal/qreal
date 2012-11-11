@@ -134,7 +134,7 @@ QPainterPath WorldModel::buildEjectedItemPath() const
 	QPainterPath ejectedItemPath;
 
 	foreach (EjectedItem* ejectedItem, mEjectedItems) {
-		if (ejectedItem->isMoved()) {
+		if (ejectedItem->isStoped()) {
 			ejectedItemPath.addRect(ejectedItem->realBoundingRect());
 		}
 	}
@@ -242,25 +242,15 @@ bool WorldModel::intersectsByStopedEjectedItems(QRectF const &rect)
 	return false;
 }
 
-bool WorldModel::intersectsByNotStopedEjectedItems(QRectF const &rect)
-{
-//	foreach (EjectedItem *ejectedItem, mEjectedItems) {
-//		if (ejectedItem->realBoundingRect() != rect
-//			&& !ejectedItem->isStoped()
-//			&& ejectedItem->realShape().intersects(rect)) {
-//			return true;
-//		}
-//	}
-//	return false;
-}
-
 void WorldModel::checkEjectedItemsIntersects(QRectF const& itemRect, QPointF const& diffPos)
 {
 	foreach (EjectedItem *ejected, mEjectedItems) {
 		if (ejected->realBoundingRect() != itemRect
 			&& !ejected->isStoped()
 			&& ejected->realShape().intersects(itemRect)) {
-			ejected->robotOrEjectedItemChangedPosition(itemRect, diffPos);
+			ejected->robotOrEjectedItemChangedPosition(true, diffPos);
+		} else {
+			ejected->robotOrEjectedItemChangedPosition(false, diffPos);
 		}
 	}
 }

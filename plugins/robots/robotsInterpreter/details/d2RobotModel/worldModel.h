@@ -39,7 +39,6 @@ public:
 
 	bool intersectsByWall(QRectF const &rect);
 	bool intersectsByStopedEjectedItems(QRectF const &rect);
-	bool intersectsByNotStopedEjectedItems(QRectF const &rect);
 	void checkEjectedItemsIntersects(QRectF const& itemRect, QPointF const& diffPos);
 
 	QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture) const;

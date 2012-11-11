@@ -90,12 +90,19 @@ void EjectedItem::deserialize(QDomElement const &element)
 void EjectedItem::robotOrEjectedItemChangedPosition(QRectF const &newRect, QPointF const& diffPos)
 {
 	if (realBoundingRect().intersects(newRect)) {
-		mMoved = true;
+		robotOrEjectedItemChangedPosition(true, diffPos);
+	} else {
+		robotOrEjectedItemChangedPosition(false, diffPos);
+	}
+}
+
+void EjectedItem::robotOrEjectedItemChangedPosition(bool isMoved, QPointF const& diffPos)
+{
+	mMoved = isMoved;
+	if (isMoved) {
 		QPointF oldPos = pos();
 		setPos(pos() + diffPos);
 		emit ejectedItemMoved(realBoundingRect(), oldPos, diffPos);
-	} else {
-		mMoved = false;
 	}
 }
 

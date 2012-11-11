@@ -32,6 +32,7 @@ public:
 
 public slots:
 	void robotOrEjectedItemChangedPosition(QRectF const &newRect, QPointF const& diffPos);
+	void robotOrEjectedItemChangedPosition(bool isMoved, QPointF const& diffPos);
 	void toStopMovedEjectedItem(bool isNeedStop, QPointF const& oldPos);
 	void toStopDraggedEjectedItem(bool isNeedStop, QPointF const& oldPos);
 
