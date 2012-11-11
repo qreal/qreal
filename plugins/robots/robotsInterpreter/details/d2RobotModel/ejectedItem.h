@@ -28,6 +28,7 @@ public:
 
 	bool isDragged();
 	bool isMoved();
+	bool isStoped();
 
 public slots:
 	void robotOrEjectedItemChangedPosition(QRectF const &newRect, QPointF const& diffPos);
@@ -46,6 +47,7 @@ protected:
 private:
 	bool mDragged;
 	bool mMoved;
+	bool mStoped;
 	QString mSerializeName;
 };
 }

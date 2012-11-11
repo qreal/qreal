@@ -28,6 +28,10 @@ void EjectedItem::setPrivateData()
 	mBrush.setColor(Qt::blue);
 	mBrush.setStyle(Qt::SolidPattern);
 	mSerializeName = "ejectedItem";
+
+	mDragged = false;
+	mMoved = false;
+	mStoped = false;
 }
 
 QRectF EjectedItem::calcNecessaryBoundingRect() const
@@ -126,6 +130,11 @@ bool EjectedItem::isMoved()
 	return mMoved;
 }
 
+bool EjectedItem::isStoped()
+{
+	return mStoped;
+}
+
 void EjectedItem::toStopDraggedEjectedItem(bool isNeedStop, QPointF const& oldPos)
 {
 	if (mDragged) {
@@ -148,4 +157,5 @@ void EjectedItem::toStopEjectedItem(bool isNeedStop, QPointF const& oldPos)
 	} else {
 		setFlag(ItemIsMovable, true);
 	}
+	mStoped = isNeedStop;
 }

@@ -71,7 +71,9 @@ bool WorldModel::checkCollision(QPolygonF const &robotRegion) const
 	robotPath = pathStroker.createStroke(robotPath);
 
 	QPainterPath wallPath = buildWallPath();
-	return wallPath.intersects(robotPath);
+	QPainterPath ejectedPath = buildEjectedItemPath();
+	return wallPath.intersects(robotPath)
+		|| ejectedPath.intersects(robotPath);
 }
 
 QList<WallItem *> const &WorldModel::walls() const
@@ -123,6 +125,20 @@ QPainterPath WorldModel::buildWallPath() const
 		wallPath.lineTo(wall->end());
 	}
 	return wallPath;
+}
+
+QPainterPath WorldModel::buildEjectedItemPath() const
+{
+	QPainterPathStroker pathStroker;
+	pathStroker.setWidth(3);
+	QPainterPath ejectedItemPath;
+
+	foreach (EjectedItem* ejectedItem, mEjectedItems) {
+		if (ejectedItem->isMoved()) {
+			ejectedItemPath.addRect(ejectedItem->realBoundingRect());
+		}
+	}
+	return ejectedItemPath;
 }
 
 QDomElement WorldModel::serialize(QDomDocument &document, QPoint const &topLeftPicture) const
@@ -214,11 +230,37 @@ bool WorldModel::intersectsByWall(QRectF const &rect)
 	return false;
 }
 
-/*void WorldModel::checkEjectedItemsIntersects(QRectF const& itemRect, QPointF const& diffPos)
+bool WorldModel::intersectsByStopedEjectedItems(QRectF const &rect)
+{
+	foreach (EjectedItem *ejectedItem, mEjectedItems) {
+		if (ejectedItem->realBoundingRect() != rect
+			&& ejectedItem->isStoped()
+			&& ejectedItem->realShape().intersects(rect)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool WorldModel::intersectsByNotStopedEjectedItems(QRectF const &rect)
+{
+//	foreach (EjectedItem *ejectedItem, mEjectedItems) {
+//		if (ejectedItem->realBoundingRect() != rect
+//			&& !ejectedItem->isStoped()
+//			&& ejectedItem->realShape().intersects(rect)) {
+//			return true;
+//		}
+//	}
+//	return false;
+}
+
+void WorldModel::checkEjectedItemsIntersects(QRectF const& itemRect, QPointF const& diffPos)
 {
 	foreach (EjectedItem *ejected, mEjectedItems) {
-		if (!ejected->isMoved()) {
+		if (ejected->realBoundingRect() != itemRect
+			&& !ejected->isStoped()
+			&& ejected->realShape().intersects(itemRect)) {
 			ejected->robotOrEjectedItemChangedPosition(itemRect, diffPos);
 		}
 	}
-}*/
+}
