@@ -38,7 +38,9 @@ public:
 	void clearScene();
 
 	bool intersectsByWall(QRectF const &rect);
-//	void checkEjectedItemsIntersects(QRectF const& itemRect, QPointF const& diffPos);
+	bool intersectsByStopedEjectedItems(QRectF const &rect);
+	bool intersectsByNotStopedEjectedItems(QRectF const &rect);
+	void checkEjectedItemsIntersects(QRectF const& itemRect, QPointF const& diffPos);
 
 	QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture) const;
 	void deserialize(QDomElement const &element);
@@ -51,6 +53,7 @@ private:
 	QMap<inputPort::InputPortEnum, qreal> mTouchSensorDirectionOld;
 
 	QPainterPath buildWallPath() const;
+	QPainterPath buildEjectedItemPath() const;
 };
 
 }
