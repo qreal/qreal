@@ -14,7 +14,12 @@
         <translation>Не указано languageName для диаграммы ограничений</translation>
     </message>
     <message>
-        <location filename="concreateGenerator.cpp" line="604"/>
+        <location filename="concreateGenerator.cpp" line="475"/>
+        <source>Value &quot;%1&quot; is not correct for property &apos;Count&apos;.</source>
+        <translation>Значение &quot;%1&quot; свойства &apos;Count&apos; не корректно.</translation>
+    </message>
+    <message>
+        <location filename="concreateGenerator.cpp" line="621"/>
         <source>Metatype &quot;%1&quot; is not exist. Select &quot;node&quot; or &quot;edge&quot;.</source>
         <translation>Не существует метатипа &quot;%1&quot;. Выберете &quot;node&quot; или &quot;edge&quot;</translation>
     </message>
@@ -24,21 +29,16 @@
         <translation>Генерировать плагин ограничений</translation>
     </message>
     <message>
-        <location filename="../../../qrutils/generatorsUtils/abstractGenerator.cpp" line="47"/>
-        <location filename="../../../qrutils/generatorsUtils/abstractGenerator.cpp" line="67"/>
-        <location filename="../../../qrutils/generatorsUtils/abstractGenerator.cpp" line="110"/>
         <source>Cannot load file &quot;%1&quot;</source>
-        <translation>Невозможно загрузить файл &quot;%1&quot;</translation>
+        <translation type="obsolete">Невозможно загрузить файл &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../../qrutils/generatorsUtils/abstractGenerator.cpp" line="146"/>
         <source>Cannot create directory %1</source>
-        <translation>Невозможно создать директорию %1 </translation>
+        <translation type="obsolete">Невозможно создать директорию %1 </translation>
     </message>
     <message>
-        <location filename="../../../qrutils/generatorsUtils/abstractGenerator.cpp" line="158"/>
         <source>Cannot open &quot;%1&quot;</source>
-        <translation>Невозможно открыть &quot;%1&quot; </translation>
+        <translation type="obsolete">Невозможно открыть &quot;%1&quot; </translation>
     </message>
 </context>
 <context>

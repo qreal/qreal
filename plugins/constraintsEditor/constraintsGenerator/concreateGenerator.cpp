@@ -469,10 +469,11 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForListOfElem
 	bool neededCount  = (!count.isEmpty());
 
 	if (neededCount) {
-		if (QRegExp("([<>=&rlt;]+)\\s*(\\d+)").exactMatch(count)) {
+		if (QRegExp("(([<>=]|&lt;|&rt;)=?)\\s*(\\d+)").exactMatch(count)) {
 			count.replace(QRegExp("([<>=&rlt;]+)(\\d+)"), "\\1 \\2");
 		} else {
-			mErrorReporter.addCritical(QObject::tr("Property \"%1\" is not correct.").arg(count), constraint);
+			mErrorReporter.addCritical(QObject::tr("Value \"%1\" is not correct for property 'Count'.").arg(count), constraint);
+			neededCount = false;
 		}
 	}
 
