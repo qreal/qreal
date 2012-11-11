@@ -27,7 +27,7 @@ ConcreateGenerator::ConcreateGenerator(QString const &templateDirPath
 		, QString const &constraintsMetamodelName
 		)
 	: AbstractGenerator(templateDirPath, outputDirPath + QString("/constraints" + metamodelLanguageName + "/"), logicalModel, errorReporter)
-	, mPathToQReal(pathToQReal + "/.."), mMetamodelName(metamodelLanguageName), mConstraintsName(constraintsMetamodelName)
+	, mPathToQReal("/.." + pathToQReal), mMetamodelName(metamodelLanguageName), mConstraintsName(constraintsMetamodelName)
 {
 	mPathToQReal.replace("\\", "/");
 }
@@ -467,6 +467,14 @@ QPair<QString, QList<QString> > ConcreateGenerator::countConstraintForListOfElem
 
 	QString count = mApi.property(constraint, "count").toString();
 	bool neededCount  = (!count.isEmpty());
+
+	if (neededCount) {
+		if (QRegExp("([<>=&rlt;]+)\\s*(\\d+)").exactMatch(count)) {
+			count.replace(QRegExp("([<>=&rlt;]+)(\\d+)"), "\\1 \\2");
+		} else {
+			mErrorReporter.addCritical(QObject::tr("Property \"%1\" is not correct.").arg(count), constraint);
+		}
+	}
 
 	QString selection = mApi.property(constraint, "selection").toString();
 	bool neededSelection  = (!selection.isEmpty()) && (selection.compare("all", Qt::CaseInsensitive) != 0);
