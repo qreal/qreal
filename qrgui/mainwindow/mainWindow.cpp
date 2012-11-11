@@ -461,7 +461,6 @@ void MainWindow::setWidget(const QString &widget
 		, const QPersistentModelIndex &index
 		, const int &role)
 {
-	QMessageBox::information(this, tr("QReal"), tr("Widget saved!"));
 	setData(widget, index, role);
 }
 

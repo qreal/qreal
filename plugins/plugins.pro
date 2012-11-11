@@ -14,7 +14,7 @@ SUBDIRS	= \
 #	parallel/parallel.pro \
 #	requirements/requirements.pro \
 	refactoring/refactoring.pro \
-	robots/robots.pro \
+#	robots/robots.pro \
 #	sbt/sbt.pro \
 #	testEditor/testEditor.pro \
 #	testInvocation/testInvocation.pro \
