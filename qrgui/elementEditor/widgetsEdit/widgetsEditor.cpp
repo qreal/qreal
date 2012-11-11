@@ -209,7 +209,6 @@ void WidgetsEditor::initRoot(Root *root)
 	mScene->addItem(mRoot);
 }
 
-
 void WidgetsEditor::switchLayoutButtonsActiveState(Tool *tool)
 {
 	LayoutTool *layoutTool = dynamic_cast<LayoutTool *>(tool);
@@ -296,14 +295,16 @@ void WidgetsEditor::preview()
 	QDomElement graphics = document.firstChildElement("graphics");
 	QDomElement widgetTemplate = graphics.firstChildElement("widget-template");
 	QWidget *widget = WidgetsEditor::deserializeWidget(widgetTemplate);
-	if (widget) {
-		preview(widget);
-	}
+	preview(widget);
 }
 
 void WidgetsEditor::preview(QWidget *widget)
 {
+	if (!widget) {
+		return;
+	}
 	QDialog *dialog = new QDialog(this);
+	dialog->setGeometry(widget->geometry());
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight);
 	layout->addWidget(widget);
 	dialog->setLayout(layout);
