@@ -16,22 +16,21 @@ namespace Ui {
 class ShapeEdit : public QWidget {
 	Q_OBJECT
 public:
-	ShapeEdit(bool widgetBased = false, QWidget *parent = NULL);
+	explicit ShapeEdit(QWidget *parent = NULL);
 	ShapeEdit(QPersistentModelIndex const &index
-			, int const &role, bool widgetBased = false, QWidget *parent = NULL);
+			, int const &role, QWidget *parent = NULL);
 	~ShapeEdit();
 
 	graphicsUtils::AbstractView *getView();
 	void load(QString const &text);
 	void load(QDomDocument const &document);
+	void setWidgetBased(bool widgetBased);
 
 signals:
 	void shapeSaved(QString const &shape, QPersistentModelIndex const &index, int const &role);
-	void shapeSaved(QDomDocument const &document);
 	void saveSignal();
 	void saveToXmlSignal();
 	void openSignal();
-	void switchToWidgetsEditor();
 	void switchToWidgetsEditor(QDomDocument const &document);
 
 protected:
@@ -54,6 +53,7 @@ private slots:
 	void saveToXml();
 	void save();
 	void open();
+	void switchToWidgets();
 	void addImage(bool checked);
 	void setNoPalette();
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);

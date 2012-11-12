@@ -15,18 +15,18 @@
 
 using namespace utils;
 
-ShapeEdit::ShapeEdit(bool widgetBased, QWidget *parent)
-		: QWidget(parent), mUi(new Ui::ShapeEdit)
-		, mRole(0), mWidgetBased(widgetBased)
+ShapeEdit::ShapeEdit(QWidget *parent)
+	: QWidget(parent), mUi(new Ui::ShapeEdit)
+	, mRole(0), mWidgetBased(false)
 {
 	init();
 	connect(this, SIGNAL(saveSignal()), this, SLOT(saveToXml()));
 }
 
 ShapeEdit::ShapeEdit(const QPersistentModelIndex &index, const int &role
-		, bool widgetBased, QWidget *parent)
+		, QWidget *parent)
 	: QWidget(parent), mUi(new Ui::ShapeEdit)
-	, mIndex(index), mRole(role), mWidgetBased(widgetBased)
+	, mIndex(index), mRole(role), mWidgetBased(false)
 {
 	init();
 	mUi->saveButton->setEnabled(true);
@@ -101,6 +101,8 @@ void ShapeEdit::init()
 	connect(this, SIGNAL(saveToXmlSignal()), this, SLOT(saveToXml()));
 	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(save()));
 	connect(mUi->openButton, SIGNAL(clicked()), this, SLOT(open()));
+	connect(mUi->switchToWidgetsButton, SIGNAL(clicked())
+			, this, SLOT(switchToWidgets()));
 	connect(this, SIGNAL(openSignal()), this, SLOT(open()));
 
 	connect(mScene, SIGNAL(noSelectedItems()), this, SLOT(setNoPalette()));
@@ -108,6 +110,11 @@ void ShapeEdit::init()
 	connect(mScene, SIGNAL(resetHighlightAllButtons()), this, SLOT(resetHighlightAllButtons()));
 	connect(mScene, SIGNAL(noSelectedTextPictureItems()), this, SLOT(setNoFontPalette()));
 	connect(mScene, SIGNAL(existSelectedTextPictureItems(QPen const &, QFont const &, QString const &)), this, SLOT(setItemFontPalette(QPen const&, QFont const&, QString const &)));
+}
+
+void ShapeEdit::setWidgetBased(bool widgetBased)
+{
+	mWidgetBased = widgetBased;
 }
 
 void ShapeEdit::resetHighlightAllButtons()
@@ -277,12 +284,8 @@ void ShapeEdit::saveToXml()
 void ShapeEdit::save()
 {
 	generateDom();
+	emit shapeSaved(mDocument.toString(4), mIndex, mRole);
 	QMessageBox::information(this, tr("Saving"), tr("Saved successfully"));
-	if (mWidgetBased) {
-		emit shapeSaved(mDocument);
-	} else {
-		emit shapeSaved(mDocument.toString(4), mIndex, mRole);
-	}
 }
 
 void ShapeEdit::savePicture()
@@ -540,4 +543,10 @@ void ShapeEdit::addStylus(bool checked)
 	if (checked) {
 		setHighlightOneButton(mUi->stylusButton);
 	}
+}
+
+void ShapeEdit::switchToWidgets()
+{
+	generateDom();
+	emit switchToWidgetsEditor(mDocument);
 }

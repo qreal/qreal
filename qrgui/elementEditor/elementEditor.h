@@ -53,19 +53,20 @@ private slots:
 		, QPersistentModelIndex const &index, int const &role);
 	void onShapeEditorSavedShape(QString const &shape
 		, QPersistentModelIndex const &index, int const &role);
-	void onShapeEditorSavedShape(QDomDocument const &document);
+	void onSwitchedToShape(QDomDocument const &document);
+	void onSwitchedToWidget(QDomDocument const &document);
 
 private:
 	static bool isWidgetBasedDocument(QDomDocument const &document);
 
 	void initComponents();
 	void initStartWidget();
+	void initWidgetEditor();
+	void initShapeEditor();
 
 	void showShapeEditor();
 	void showWidgetsEditor();
 	void showWidget(QWidget *widget);
-
-	void giveShapeToWidgetsEditor(QDomDocument const &document);
 
 	QPersistentModelIndex mIndex;
 	int mRole;

@@ -14,6 +14,7 @@
 #include "tools/layoutHelpers/layoutHelperFactory.h"
 
 #include "../../../../qrutils/outFile.h"
+#include "../../../../qrutils/inFile.h"
 #include "../../../../qrutils/xmlUtils.h"
 
 using namespace qReal::widgetsEdit;
@@ -158,6 +159,12 @@ void WidgetsEditor::initControlButtons()
 	connect(saveToDiskButton, SIGNAL(clicked()), this, SLOT(saveToDisk()));
 	mUi->layoutFrame->layout()->addWidget(saveToDiskButton);
 
+	QPushButton *loadFromDiskButton = new QPushButton(QIcon(":icons/widgetsEditor/loadFromDisk.png"), "");
+	loadFromDiskButton->setToolTip(tr("Load XML from disk"));
+	loadFromDiskButton->setContentsMargins(0,0,0,0);
+	connect(loadFromDiskButton, SIGNAL(clicked()), this, SLOT(loadFromDisk()));
+	mUi->layoutFrame->layout()->addWidget(loadFromDiskButton);
+
 	QPushButton *previewButton = new QPushButton(QIcon(":icons/preview.png"), "");
 	previewButton->setToolTip(tr("Preview widget"));
 	previewButton->setContentsMargins(0,0,0,0);
@@ -257,18 +264,20 @@ void WidgetsEditor::save()
 	QDomDocument document;
 	serializeWidget(document);
 
-	qDebug() << "Saved!!!";
 	QString const xml = document.toString(4);
 	emit widgetSaved(xml, mIndex, mRole);
 }
 
 void WidgetsEditor::saveToDisk()
 {
-	QString const path = QFileDialog::getSaveFileName(this
+	QString path = QFileDialog::getSaveFileName(this
 			, tr("Save as"), QString()
 			, tr("Widget template format files") + "(*.wtf);;" + tr("All Files") + "(*.*)");
 	if (path.isEmpty()) {
 		return;
+	}
+	if (!path.endsWith(".wtf", Qt::CaseInsensitive)) {
+		path.append(".wtf");
 	}
 
 	QDomDocument document;
@@ -283,7 +292,18 @@ void WidgetsEditor::saveToDisk()
 
 void WidgetsEditor::loadFromDisk()
 {
-	// TODO
+	QString const path = QFileDialog::getOpenFileName(this
+			, tr("Open"), QString()
+			, tr("Widget template format files") + "(*.wtf);;" + tr("All Files") + "(*.*)");
+	if (path.isEmpty()) {
+		return;
+	}
+
+	QDomDocument document;
+	document.setContent(utils::InFile::readAll(path));
+	if (!document.isNull()) {
+		load(document);
+	}
 }
 
 void WidgetsEditor::preview()
@@ -315,4 +335,11 @@ void WidgetsEditor::preview(QWidget *widget)
 
 void WidgetsEditor::switchToShapeType()
 {
+	QDomDocument graphicsDoc;
+	QDomElement graphics = graphicsDoc.createElement("graphics");
+	QDomDocument pictureDoc = mRoot->shapeDocument();
+	QDomElement picture = pictureDoc.documentElement().cloneNode().toElement();
+	graphics.appendChild(picture);
+	graphicsDoc.appendChild(graphics);
+	emit changeToShapeType(graphicsDoc);
 }

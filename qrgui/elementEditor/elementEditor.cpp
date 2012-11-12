@@ -114,11 +114,18 @@ void ElementEditor::showWidget(QWidget *widget)
 
 void ElementEditor::showShapeEditor()
 {
+	if (!mShapeEditor) {
+		initShapeEditor();
+	}
+	mShapeEditor->setWidgetBased(mWidgetBased);
 	showWidget(mShapeEditor);
 }
 
 void ElementEditor::showWidgetsEditor()
 {
+	if (!mWidgetsEditor) {
+		initWidgetEditor();
+	}
 	showWidget(mWidgetsEditor);
 }
 
@@ -127,28 +134,23 @@ void ElementEditor::onWidgetEditorRequestedShape()
 	showShapeEditor();
 }
 
-void ElementEditor::onWidgetBasedButtonClicked()
+void ElementEditor::initWidgetEditor()
 {
 	mWidgetBased = true;
 	if (mOpenedFromMetaEditor) {
 		mWidgetsEditor = new widgetsEdit::WidgetsEditor(mIndex, mRole);
-		mShapeEditor = new ShapeEdit(mIndex, mRole, true);
 	} else {
 		mWidgetsEditor = new widgetsEdit::WidgetsEditor;
-		mShapeEditor = new ShapeEdit(true);
 	}
-	connect(mShapeEditor, SIGNAL(shapeSaved(QString,QPersistentModelIndex,int))
-			, this, SLOT(onShapeEditorSavedShape(QString,QPersistentModelIndex,int)));
-	connect(mShapeEditor, SIGNAL(shapeSaved(QDomDocument))
-			, this, SLOT(onShapeEditorSavedShape(QDomDocument)));
 	connect(mWidgetsEditor, SIGNAL(shapeRequested())
 			, this, SLOT(onWidgetEditorRequestedShape()));
 	connect(mWidgetsEditor, SIGNAL(widgetSaved(QString,QPersistentModelIndex,int))
 			, this, SLOT(onWidgetEditorSavedShape(QString,QPersistentModelIndex,int)));
-	showWidgetsEditor();
+	connect(mWidgetsEditor, SIGNAL(changeToShapeType(QDomDocument))
+			, this, SLOT(onSwitchedToShape(QDomDocument)));
 }
 
-void ElementEditor::onShapeBasedButtonClicked()
+void ElementEditor::initShapeEditor()
 {
 	mWidgetBased = false;
 	if (mOpenedFromMetaEditor) {
@@ -158,15 +160,18 @@ void ElementEditor::onShapeBasedButtonClicked()
 	}
 	connect(mShapeEditor, SIGNAL(shapeSaved(QString,QPersistentModelIndex,int))
 			, this, SLOT(onShapeEditorSavedShape(QString,QPersistentModelIndex,int)));
-	connect(mShapeEditor, SIGNAL(shapeSaved(QDomDocument))
-			, this, SLOT(onShapeEditorSavedShape(QDomDocument)));
-	showShapeEditor();
+	connect(mShapeEditor, SIGNAL(switchToWidgetsEditor(QDomDocument))
+			, this, SLOT(onSwitchedToWidget(QDomDocument)));
 }
 
-void ElementEditor::giveShapeToWidgetsEditor(QDomDocument const &document)
+void ElementEditor::onWidgetBasedButtonClicked()
 {
-	mWidgetsEditor->setShape(document);
 	showWidgetsEditor();
+}
+
+void ElementEditor::onShapeBasedButtonClicked()
+{
+	showShapeEditor();
 }
 
 void ElementEditor::onWidgetEditorSavedShape(const QString &widget
@@ -181,9 +186,16 @@ void ElementEditor::onShapeEditorSavedShape(const QString &shape
 	emit shapeSaved(shape, index, role);
 }
 
-void ElementEditor::onShapeEditorSavedShape(const QDomDocument &document)
+void ElementEditor::onSwitchedToWidget(const QDomDocument &document)
 {
-	if (isWidgetBased()) {
-		giveShapeToWidgetsEditor(document);
-	}
+	mWidgetBased = true;
+	showWidgetsEditor();
+	mWidgetsEditor->setShape(document);
+}
+
+void ElementEditor::onSwitchedToShape(const QDomDocument &document)
+{
+	mWidgetBased = false;
+	showShapeEditor();
+	mShapeEditor->load(document);
 }

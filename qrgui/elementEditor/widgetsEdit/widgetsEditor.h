@@ -56,7 +56,7 @@ signals:
 	void shapeRequested();
 	/// Emitted when user changes his choise to create widget-based element
 	/// with a choise to create shape-based one
-	void changeToShapeType();
+	void changeToShapeType(QDomDocument const &shape);
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *);
