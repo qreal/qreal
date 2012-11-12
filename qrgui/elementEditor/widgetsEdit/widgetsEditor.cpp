@@ -234,7 +234,6 @@ void WidgetsEditor::onShapeButtonClicked()
 void WidgetsEditor::onSelectionChanged(Tool *tool)
 {
 	switchLayoutButtonsActiveState(tool);
-	mShapeButton->setEnabled(tool == mRoot);
 }
 
 void WidgetsEditor::serializeWidget(QDomDocument &target)
