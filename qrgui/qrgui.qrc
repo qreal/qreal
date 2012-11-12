@@ -59,6 +59,11 @@
         <file>qt_ru.qm</file>
         <file>icons/widgetsEditor/shapeEditor.png</file>
         <file>icons/widgetsEditor/widgetEditor.png</file>
+        <file>icons/widgetsEditor/loadFromDisk.png</file>
+        <file>icons/widgetsEditor/saveAsImage.png</file>
+        <file>icons/widgetsEditor/paintWidget.png</file>
+        <file>icons/widgetsEditor/shapeIcon.png</file>
+        <file>icons/widgetsEditor/widgetIcon.png</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>

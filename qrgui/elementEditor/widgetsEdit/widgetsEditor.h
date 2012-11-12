@@ -54,6 +54,9 @@ signals:
 	/// Emitted when user wants to desribe custom root backround with
 	/// shape editor
 	void shapeRequested();
+	/// Emitted when user changes his choise to create widget-based element
+	/// with a choise to create shape-based one
+	void changeToShapeType();
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *);
@@ -65,15 +68,15 @@ private slots:
 
 	void save();
 	void saveToDisk();
+	void loadFromDisk();
 	void preview();
+	void switchToShapeType();
 
 private:
 	void initComponents();
 	void initController();
 	void initLayoutButtons();
-	void initShapeButton();
-	void initSaveButtons();
-	void initPreviewButton();
+	void initControlButtons();
 	void initScene();
 	void loadTools();
 	void initPropertyBrowser();
@@ -91,7 +94,6 @@ private:
 	QGraphicsScene *mScene;
 	ToolController *mController;
 	LayoutButtons *mLayoutButtons;
-	QPushButton *mShapeButton;
 	Root *mRoot;
 	QPersistentModelIndex const mIndex;
 	int const mRole;

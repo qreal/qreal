@@ -39,8 +39,14 @@ public:
 
 	void setPropertyBrowserController(PropertyBrowserController *controller);
 
+public slots:
+	void processKeyEvent(QKeyEvent *event);
+
 signals:
 	void selectionChanged(Tool *newTool);
+	void savePressed();
+	void saveAsPressed();
+	void openPressed();
 
 private:
 	void unselectAll();

@@ -14,8 +14,12 @@ class ToolList : public QListWidget
 public:
 	ToolList(QWidget *parent = 0);
 
+signals:
+	void keyPressed(QKeyEvent *event);
+
 protected:
 	virtual void mousePressEvent(QMouseEvent *event);
+	virtual void keyPressEvent(QKeyEvent *event);
 
 private:
 	void loadItems();

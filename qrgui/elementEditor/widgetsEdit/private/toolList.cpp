@@ -40,6 +40,14 @@ void ToolList::mousePressEvent(QMouseEvent *event)
 	drag->exec(Qt::CopyAction | Qt::MoveAction);
 }
 
+void ToolList::keyPressEvent(QKeyEvent *event)
+{
+	QListWidget::keyPressEvent(event);
+	if (!event->isAccepted()) {
+		emit keyPressed(event);
+	}
+}
+
 void ToolList::loadItems()
 {
 	QListIterator<Tool *> iterator = ToolFactory::instance()->itemsIterator();

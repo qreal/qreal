@@ -123,3 +123,46 @@ void ToolController::unselectAll()
 		child->unselect();
 	}
 }
+
+void ToolController::processKeyEvent(QKeyEvent *event)
+{
+	if (event->matches(QKeySequence::Delete)) {
+		removeChild(selectedItem());
+
+		event->accept();
+		return;
+	}
+
+	if (event->key() == Qt::Key_Right || event->key() == Qt::Key_Left ||
+			event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
+		int const delta = event->modifiers() == Qt::ControlModifier ? 1 : 5;
+		int dx = 0;
+		int dy = 0;
+		switch(event->key()) {
+		case Qt::Key_Right:
+			dx = delta;
+			break;
+		case Qt::Key_Left:
+			dx = -delta;
+			break;
+		case Qt::Key_Up:
+			dy = -delta;
+			break;
+		case Qt::Key_Down:
+			dy = delta;
+			break;
+		}
+		move(dx, dy);
+
+		event->accept();
+		return;
+	}
+
+	if (event->matches(QKeySequence::Save)) {
+		emit savePressed();
+	} else if (event->matches(QKeySequence::SaveAs)) {
+		emit saveAsPressed();
+	} else if (event->matches(QKeySequence::Open)) {
+		emit openPressed();
+	}
+}

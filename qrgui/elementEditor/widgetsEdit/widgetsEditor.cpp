@@ -89,14 +89,7 @@ void WidgetsEditor::load(QDomDocument const &graphics)
 
 void WidgetsEditor::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() != Qt::Key_Delete || event->modifiers() != Qt::NoModifier) {
-		event->ignore();
-		return;
-	}
-	event->accept();
-	if (mController->selectedItem() != mRoot) {
-		mController->removeChild(mController->selectedItem());
-	}
+	mController->processKeyEvent(event);
 }
 
 void WidgetsEditor::initComponents()
@@ -104,9 +97,7 @@ void WidgetsEditor::initComponents()
 	mUi->setupUi(this);
 	initController();
 	initLayoutButtons();
-	initShapeButton();
-	initSaveButtons();
-	initPreviewButton();
+	initControlButtons();
 	initScene();
 	loadTools();
 	initPropertyBrowser();
@@ -121,6 +112,9 @@ void WidgetsEditor::initController()
 	mController = new ToolController;
 	connect(mController, SIGNAL(selectionChanged(Tool*)),
 			this, SLOT(onSelectionChanged(Tool*)));
+	connect(mController, SIGNAL(savePressed()), this, SLOT(save()));
+	connect(mController, SIGNAL(saveAsPressed()), this, SLOT(saveToDisk()));
+	connect(mController, SIGNAL(openPressed()), this, SLOT(loadFromDisk()));
 }
 
 void WidgetsEditor::initLayoutButtons()
@@ -144,16 +138,14 @@ void WidgetsEditor::initLayoutButtons()
 	mUi->layoutFrame->setLayout(layoutFrameLayout);
 }
 
-void WidgetsEditor::initShapeButton()
+void WidgetsEditor::initControlButtons()
 {
-	mShapeButton = new QPushButton(tr("Shape"));
-	connect(mShapeButton, SIGNAL(clicked()),
+	QPushButton *shapeButton = new QPushButton(QIcon(":icons/widgetsEditor/paintWidget.png"), "");
+	shapeButton->setToolTip(tr("Paint shape for root"));
+	connect(shapeButton, SIGNAL(clicked()),
 			this, SLOT(onShapeButtonClicked()));
-	mUi->layoutFrame->layout()->addWidget(mShapeButton);
-}
+	mUi->layoutFrame->layout()->addWidget(shapeButton);
 
-void WidgetsEditor::initSaveButtons()
-{
 	QPushButton *saveButton = new QPushButton(QIcon(":icons/widgetsEditor/save.png"), "");
 	saveButton->setToolTip(tr("Save template"));
 	saveButton->setContentsMargins(0,0,0,0);
@@ -165,15 +157,18 @@ void WidgetsEditor::initSaveButtons()
 	saveToDiskButton->setContentsMargins(0,0,0,0);
 	connect(saveToDiskButton, SIGNAL(clicked()), this, SLOT(saveToDisk()));
 	mUi->layoutFrame->layout()->addWidget(saveToDiskButton);
-}
 
-void WidgetsEditor::initPreviewButton()
-{
 	QPushButton *previewButton = new QPushButton(QIcon(":icons/preview.png"), "");
 	previewButton->setToolTip(tr("Preview widget"));
 	previewButton->setContentsMargins(0,0,0,0);
 	connect(previewButton, SIGNAL(clicked()), this, SLOT(preview()));
 	mUi->layoutFrame->layout()->addWidget(previewButton);
+
+	QPushButton *switchToShapeButton = new QPushButton(QIcon(":icons/widgetsEditor/shapeIcon.png"), "");
+	switchToShapeButton->setToolTip(tr("Switch to shape-based type"));
+	switchToShapeButton->setContentsMargins(0,0,0,0);
+	connect(switchToShapeButton, SIGNAL(clicked()), this, SLOT(switchToShapeType()));
+	mUi->layoutFrame->layout()->addWidget(switchToShapeButton);
 }
 
 void WidgetsEditor::initScene()
@@ -184,6 +179,7 @@ void WidgetsEditor::initScene()
 void WidgetsEditor::loadTools()
 {
 	ToolList *toolList = new ToolList(this);
+	connect(toolList, SIGNAL(keyPressed(QKeyEvent*)), mController, SLOT(processKeyEvent(QKeyEvent*)));
 	mUi->toolDock->setWidget(toolList);	
 }
 
@@ -261,6 +257,7 @@ void WidgetsEditor::save()
 	QDomDocument document;
 	serializeWidget(document);
 
+	qDebug() << "Saved!!!";
 	QString const xml = document.toString(4);
 	emit widgetSaved(xml, mIndex, mRole);
 }
@@ -282,6 +279,11 @@ void WidgetsEditor::saveToDisk()
 	file() << xml;
 	QMessageBox::information(this, tr("Widgets Editor")
 		, tr("Saved successfully!"), QMessageBox::Ok);
+}
+
+void WidgetsEditor::loadFromDisk()
+{
+	// TODO
 }
 
 void WidgetsEditor::preview()
@@ -309,4 +311,8 @@ void WidgetsEditor::preview(QWidget *widget)
 	dialog->setLayout(layout);
 	dialog->exec();
 	delete dialog;
+}
+
+void WidgetsEditor::switchToShapeType()
+{
 }

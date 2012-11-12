@@ -31,6 +31,8 @@ signals:
 	void saveSignal();
 	void saveToXmlSignal();
 	void openSignal();
+	void switchToWidgetsEditor();
+	void switchToWidgetsEditor(QDomDocument const &document);
 
 protected:
 	void changeEvent(QEvent *e);

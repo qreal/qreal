@@ -58,6 +58,11 @@ void ShapeEdit::init()
 	mUi->brushColorComboBox->setColorList(QColor::colorNames());
 	mUi->brushColorComboBox->setColor(QColor("white"));
 
+	mUi->saveButton->setContentsMargins(0,0,0,0);
+	mUi->saveToXmlButton->setContentsMargins(0,0,0,0);
+	mUi->saveAsPictureButton->setContentsMargins(0,0,0,0);
+	mUi->openButton->setContentsMargins(0,0,0,0);
+
 	mUi->textPixelSizeSpinBox->setRange(5, 72);
 	initFontPalette();
 
