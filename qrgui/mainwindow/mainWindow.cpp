@@ -1350,10 +1350,11 @@ void MainWindow::updatePaletteIcons()
 void MainWindow::applySettings()
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
-		EditorView * const tab = (static_cast<EditorView *>(mUi->tabs->widget(i)));
+		EditorView * const tab = static_cast<EditorView *>(mUi->tabs->widget(i));
 		EditorViewScene *scene = dynamic_cast <EditorViewScene *> (tab->scene());
-		if (SettingsManager::value("SquareLine", false).toBool() || (!SettingsManager::value("ToPermitLoops", false).toBool()))
+		if (SettingsManager::value("SquareLine", false).toBool()) {
 			scene->updateEdgeElements();
+		}
 		scene->invalidate();
 	}
 		mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());

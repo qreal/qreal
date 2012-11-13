@@ -79,6 +79,7 @@ public slots:
 
 	/// selects all elements on the current scene
 	void selectAll();
+
 	/// update all links
 	void updateEdgeElements();
 
@@ -190,6 +191,7 @@ private:
 	Element *mLastCreatedWithEdge;
 
 	bool mRightButtonPressed;
+	bool mLeftButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
 
 	qreal mWidthOfGrid;

@@ -42,7 +42,6 @@ ShowGrid=true
 size=@Size(1024 800)
 Splashscreen=true
 SquareLine=false
-ToPermitLoops=false
 temp=
 warningWindow=true
 windowsButton=false

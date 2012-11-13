@@ -32,7 +32,10 @@ public:
 	virtual void initTitles();
 
 	bool isDividable();
-	void adjustLink();
+	void adjustLink(bool isDragging = false);
+
+	// use adjustLink() to all links that have with this general master
+	void adjustNeighborLinks();
 	bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true, bool jumpsOnly = false);
 	bool shouldReconnect() const;
 	void arrangeSrcAndDst();
@@ -58,7 +61,7 @@ public:
 
 	virtual void connectToPort();
 
-	virtual QList<ContextMenuAction*> contextMenuActions();
+	virtual QList<ContextMenuAction*> contextMenuActions(const QPointF &pos);
 
 	QList<PossibleEdge> getPossibleEdges();
 
@@ -80,6 +83,8 @@ protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
 	virtual void drawStartArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
 	virtual void drawEndArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
@@ -94,23 +99,34 @@ protected:
 
 public slots:
 	void setGraphicApi(QPointF const &pos);
+	// redraw a new mLine after delPointHandler or deleteSegmentHandler using contextMenu
+	void arrangeAndAdjustHandler(QPointF const &pos);
 
 private slots:
 	void addPointHandler(QPointF const &pos);
+	// add the closest point on edge to the parameter`s point
+	void addClosestPointHandler(QPointF const &pos);
 	void delPointHandler(QPointF const &pos);
-	void squarizeHandler(QPointF const &pos);
+	void squarizeHandler(QPointF const &pos, bool xIsChanged = true);
 	void minimizeHandler(QPointF const &pos);
 	// delete Segment with nearest with pos ends
-	void deleteSegment(QPointF const &pos);
+	void deleteSegmentHandler(QPointF const &pos);
+	// redraw in rectangular good link
+	void squarizeAndAdjustHandler(QPointF const &pos);
+	// change link's direction
+	void reverseHandler(QPointF const &pos);
 
 private:
+	// redraw in rectangular good segment by the second squarize method.
+	void specialSquarizeSegment(int const /**< The interval's start position in the mLine */);
+	// redraw in rectangular good link by the second squarize method
+	void specialSquarizeLink();
 
 	QList<PossibleEdge> possibleEdges;
 
-
 	bool mIsDissectable;
 	int getPoint(const QPointF &location);
-	NodeElement *getNodeAt(const QPointF &position);
+	NodeElement *getNodeAt(const QPointF &position, bool isStart);
 	void updateLongestPart();
 	static QRectF getPortRect(QPointF const &point);
 
@@ -131,6 +147,14 @@ private:
 	void deleteLoop(int startPos);
 	QPointF* haveIntersection(QPointF const &pos1, QPointF const &pos2, QPointF const &pos3, QPointF const &pos4);
 
+	// these methods are called before the push action in the context menu
+	bool delPointActionIsPossible(const QPointF &pos);
+	bool squarizeActionIsPossible();
+	bool addPointActionIsPossible(const QPointF &pos);
+	bool delSegmentActionIsPossible(const QPointF &pos);
+	bool minimizeActionIsPossible();
+	bool reverseActionIsPossible();
+
 	NodeElement *mSrc;
 	NodeElement *mDst;
 
@@ -149,6 +173,7 @@ private:
 	ContextMenuAction mSquarizeAction;
 	ContextMenuAction mMinimizeAction;
 	ContextMenuAction mDelSegmentAction;
+	ContextMenuAction mReverseAction;
 
 	bool mChaoticEdition;
 

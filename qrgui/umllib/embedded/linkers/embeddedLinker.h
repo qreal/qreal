@@ -51,4 +51,6 @@ class EmbeddedLinker : public QObject, public QGraphicsItem
 		bool directed;
 		bool mPressed;
 		qReal::Id edgeType;
+
+		int mTimeOfUpdate;
 };

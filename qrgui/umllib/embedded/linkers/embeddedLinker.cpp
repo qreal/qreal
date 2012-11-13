@@ -25,7 +25,8 @@ EmbeddedLinker::EmbeddedLinker()
 	mRectangle = QRectF(-size,-size,size*2,size*2);
 	mInnerRectangle = QRectF(-size/2,-size/2,size,size);
 	setAcceptsHoverEvents(true);
-	color = Qt::blue;
+	mTimeOfUpdate = 0;
+	mPressed = false;
 }
 
 EmbeddedLinker::~EmbeddedLinker()
@@ -46,20 +47,8 @@ void EmbeddedLinker::setMaster(NodeElement *element)
 void EmbeddedLinker::generateColor()
 {
 	int result = 0;
-//	QChar *data = edgeType.element().data();
-//	while (!data->isNull()) {
-//		result += data->unicode();
-//		++data;
-//	}
-//	result *= 666;
 	color = QColor(result % 192 + 64, result % 128 + 128, result % 64 + 192).darker(0);
 }
-
-//void EmbeddedLinker::setColor(QColor arg)
-//{
-//	color = arg;
-//}
-
 void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
 	Q_UNUSED(option);
@@ -222,13 +211,19 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 		if (mEdge){
 			QPointF point = mapToItem(master, event->pos());
-			mEdge->placeStartTo(mEdge->mapFromItem(master, master->getNearestPort(point)));
+			mEdge->placeStartTo(mEdge->mapFromItem(master, master->getNearestPort(point))); // FIXME: I am terrible
 			mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
 		}
 	}
 
-	if (mEdge != NULL) {
-		mEdge->arrangeSrcAndDst();
+	if (mEdge) {
+		if (mTimeOfUpdate == 14) {
+			mTimeOfUpdate = 0;
+			mEdge->adjustNeighborLinks();
+			mEdge->arrangeSrcAndDst();
+		} else {
+			mTimeOfUpdate++;
+		}
 		mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
 	}
 }
@@ -256,11 +251,12 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				mEdge->placeEndTo(mapFromItem(target, target->getNearestPort(posRelativeToTheTarget)));
 				mEdge->connectToPort();	//it provokes to move target somehow, so it needs to place edge end and connect to port again
 				mEdge->placeEndTo(mapFromItem(target, target->getNearestPort(posRelativeToTheTarget)));
-				mEdge->adjustLink();
+				mEdge->adjustNeighborLinks();
 			}
 		}
 		if (result != -1) {
 			mEdge->connectToPort();
+			mEdge->adjustNeighborLinks();
 		}
 	}
 }

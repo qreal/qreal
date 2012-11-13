@@ -91,7 +91,7 @@ public:
 
 	void resizeChild(QRectF newContents, QRectF oldContents);
 
-	virtual QList<ContextMenuAction *> contextMenuActions();
+	virtual QList<ContextMenuAction *> contextMenuActions(const QPointF &pos);
 	void switchAlignment(bool isSwitchedOn);
 	void showAlignment(bool isChecked);
 
@@ -100,7 +100,7 @@ public:
 	bool connectionInProgress();
 	void setConnectingState(bool arg);
 
-	void adjustLinks();
+	void adjustLinks(bool isDragging = false);
 	void arrangeLinearPorts();
 	void arrangeLinks();
 
@@ -119,6 +119,8 @@ public:
 	void highlightEdges();
 
 	virtual void deleteFromScene();
+
+	void setVisibleEmbeddedLinkers(bool const show);
 
 public slots:
 	virtual void singleSelectionState(const bool singleSelected);
@@ -188,7 +190,6 @@ private:
 	qreal getNearestPointOfLinePort(int linePortNumber, QPointF const &location) const;
 
 	void initEmbeddedLinkers();
-	void setVisibleEmbeddedLinkers(bool const show);
 
 	void connectTemporaryRemovedLinksToPort(qReal::IdList const &rtemporaryRemovedLinks, QString const &direction);
 
@@ -242,4 +243,6 @@ private:
 	NodeElement *mHighlightedNode;
 
 	NodeData mData;
+
+	int mTimeOfUpdate;
 };

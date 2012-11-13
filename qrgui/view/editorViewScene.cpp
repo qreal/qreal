@@ -17,6 +17,7 @@ EditorViewScene::EditorViewScene(QObject *parent)
 		: QGraphicsScene(parent)
 		, mLastCreatedWithEdge(NULL)
 		, mRightButtonPressed(false)
+		, mLeftButtonPressed(false)
 		, mHighlightNode(NULL)
 		, mWindow(NULL)
 		, mPrevParent(0)
@@ -722,6 +723,7 @@ EdgeElement *EditorViewScene::pasteNewEdge(EdgeData const &edgeData)
 
 	EdgeElement *newEdge = dynamic_cast<EdgeElement *>(getElem(newId));
 	newEdge->connectToPort();
+	//newEdge->adjustNeighborLinks();
 
 	return newEdge;
 }
@@ -921,10 +923,14 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (mLeftButtonPressed) {
+		return;
+	}
 	// Let scene update selection and perform other operations
 	QGraphicsScene::mousePressEvent(event);
 
 	if (event->button() == Qt::LeftButton) {
+		mLeftButtonPressed = true;
 		QGraphicsItem *item = itemAt(event->scenePos());
 		ElementTitle *title = dynamic_cast < ElementTitle *>(item);
 
@@ -958,7 +964,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	menu.addActions(mContextMenuActions);
 
 	if (e) {
-		QList<ContextMenuAction*> elementActions = e->contextMenuActions();
+		QList<ContextMenuAction*> elementActions = e->contextMenuActions(e->mapFromScene(pos));
 
 		if (!elementActions.isEmpty()) {
 			menu.addSeparator();
@@ -1067,10 +1073,19 @@ void EditorViewScene::createEdge(const QString & idStr)
 	QPointF endPos = edge->mapFromItem(child, child->getNearestPort(end));
 	edge->placeEndTo(endPos);
 	edge->connectToPort();
+	edge->adjustNeighborLinks();
 }
 
 void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (event->button() == Qt::LeftButton) {
+		mLeftButtonPressed = false;
+	}
+
+	if (mLeftButtonPressed) {
+		return;
+	}
+
 	QGraphicsScene::mouseReleaseEvent(event);
 
 	Element *element = getElemAt(event->scenePos());
@@ -1078,9 +1093,22 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (mShouldReparentItems) {
 		QList<QGraphicsItem *> const list = selectedItems();
 		foreach(QGraphicsItem *item, list) {
-			sendEvent(item, event);
+			EdgeElement* edgeItem = dynamic_cast<EdgeElement*>(item);
+			if (edgeItem) {
+				if (!list.contains(edgeItem->src()) && !list.contains(edgeItem->dst()) && (edgeItem->src() || edgeItem->dst())) {
+					edgeItem->arrangeAndAdjustHandler(QPointF());
+				}
+			} else {
+				NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
+				sendEvent(item, event);
+				if (list.size() > 1 && nodeItem) {
+					nodeItem->setVisibleEmbeddedLinkers(false);
+					nodeItem->setPortsVisible(false);
+				}
+			}
 		}
-		mShouldReparentItems = false; // in case there'll be 2 consecutive release events
+		// in case there'll be 2 consecutive release events
+		mShouldReparentItems = false;
 	}
 
 	if (event->button() == Qt::RightButton && !(mMouseMovementManager->pathIsEmpty())) {
@@ -1108,7 +1136,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		QPointF const end = mMouseMovementManager->lastPoint();
 		NodeElement *parent = dynamic_cast<NodeElement *>(getElemAt(start));
 		NodeElement *child = dynamic_cast<NodeElement *>(getElemAt(end));
-		if (parent && child && mMouseMovementManager->isEdgeCandidate()) {
+		if (parent && child && mMouseMovementManager->isEdgeCandidate() && parent->id() != child->id()) {
 			getLinkByGesture(parent, *child);
 			deleteGesture();
 		} else {
@@ -1127,13 +1155,16 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	mCurrentMousePos = event->scenePos();
-
-	// button isn't recognized while mouse moves
-	if (mRightButtonPressed) {
-		mMouseMovementManager->mouseMove(event->scenePos());
-		drawGesture();
-	} else {
+	if (mLeftButtonPressed && !(event->buttons() & Qt::RightButton)) {
 		QGraphicsScene::mouseMoveEvent(event);
+	} else {
+		// button isn't recognized while mouse moves
+		if (mRightButtonPressed) {
+			mMouseMovementManager->mouseMove(event->scenePos());
+			drawGesture();
+		} else {
+			QGraphicsScene::mouseMoveEvent(event);
+		}
 	}
 }
 
@@ -1364,8 +1395,10 @@ void EditorViewScene::dehighlight()
 
 void EditorViewScene::selectAll()
 {
-	foreach (QGraphicsItem *element, items()) {
-		element->setSelected(true);
+	if (!mLeftButtonPressed) {
+		foreach (QGraphicsItem *element, items()) {
+			element->setSelected(true);
+		}
 	}
 }
 
@@ -1403,7 +1436,8 @@ void EditorViewScene::updateEdgeElements()
 {
 	foreach (QGraphicsItem *item, items()) {
 		EdgeElement* element = dynamic_cast<EdgeElement*>(item);
-		if (element)
+		if (element) {
 			element->redrawing(QPoint());
+		}
 	}
 }

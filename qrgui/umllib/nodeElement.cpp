@@ -21,7 +21,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
 	mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)),
 	mSelectionNeeded(false), mConnectionInProgress(false),
-	mPlaceholder(NULL), mHighlightedNode(NULL)
+	mPlaceholder(NULL), mHighlightedNode(NULL), mTimeOfUpdate(0)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -168,16 +168,16 @@ void NodeElement::setPos(qreal x, qreal y)
 	setPos(QPointF(x, y));
 }
 
-void NodeElement::adjustLinks()
+void NodeElement::adjustLinks(bool isDragging)
 {
 	foreach (EdgeElement *edge, mEdgeList) {
-		edge->adjustLink();
+		edge->adjustLink(isDragging);
 	}
 
 	foreach (QGraphicsItem *child, childItems()) {
 		NodeElement *element = dynamic_cast<NodeElement*>(child);
 		if (element) {
-			element->adjustLinks();
+			element->adjustLinks(isDragging);
 		}
 	}
 }
@@ -297,7 +297,7 @@ void NodeElement::arrangeLinearPorts() {
 	}
 }
 
-void NodeElement::arrangeLinks() {
+void NodeElement::	arrangeLinks() { // FIXME: I am expensive
 	//Episode I: Home Jumps
 	//qDebug() << "I";
 	foreach (EdgeElement* edge, mEdgeList) {
@@ -472,8 +472,9 @@ void NodeElement::resize(QRectF newContents, QPointF newPos)
 	}
 }
 
-QList<ContextMenuAction*> NodeElement::contextMenuActions()
+QList<ContextMenuAction*> NodeElement::contextMenuActions(const QPointF &pos)
 {
+	Q_UNUSED(pos);
 	QList<ContextMenuAction*> result;
 	result.push_back(&mSwitchGridAction);
 	foreach (ContextMenuAction* action, mBonusContextMenuActions) {
@@ -532,7 +533,6 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	setZValue(1);
 }
 
-
 void NodeElement::alignToGrid()
 {
 	mGrid->alignToGrid();
@@ -540,7 +540,6 @@ void NodeElement::alignToGrid()
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
@@ -685,24 +684,23 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			);
 	}
 
-	arrangeLinks();
-}
-/*
-void NodeElement::shift(QPointF const &pos, EdgeElement* called) {
-	foreach (EdgeElement *edge, mEdgeList) {
-		if (edge->isSelected() && (edge != called))
-		{
-			if ((edge->dst() == NULL) || (edge->src() == NULL))
-			{
-				edge->shift(pos);
-			} else if ((edge->dst()->isSelected()) && (edge->src()->isSelected()))
-			{
-				edge->shift(pos);
-			}
+	//arrangeLinks(); // if link's count of this master is over 5 then this function generate lagggs
+	//foreach (EdgeElement* edge, mEdgeList) { // and this too
+	//	edge->adjustNeighborLinks(); // Thus, beauty requires lags
+	//}
+
+	if (mTimeOfUpdate == 14) {
+		mTimeOfUpdate = 0;
+		foreach (EdgeElement* edge, mEdgeList) {
+			edge->adjustNeighborLinks();
 		}
+		arrangeLinks();
+	} else {
+		mTimeOfUpdate++;
 	}
+
 }
-*/
+
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (event->button() == Qt::RightButton) {
@@ -764,8 +762,8 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		}
 	}
 
-	foreach (EdgeElement *edge, mEdgeList) {
-		edge->setGraphicApi(QPointF());
+	foreach (EdgeElement* edge, mEdgeList) {
+		edge->arrangeAndAdjustHandler(QPointF());
 	}
 
 	mDragState = None;
@@ -873,10 +871,9 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 {
 	bool isItemAddedOrDeleted = false;
 	NodeElement *item = dynamic_cast<NodeElement*>(value.value<QGraphicsItem*>());
-
 	switch (change) {
 	case ItemPositionHasChanged:
-		adjustLinks();
+		adjustLinks(true);
 		return value;
 
 	case ItemChildAddedChange:
@@ -1286,6 +1283,7 @@ void NodeElement::addEdge(EdgeElement *edge)
 void NodeElement::delEdge(EdgeElement *edge)
 {
 	mEdgeList.removeAll(edge);
+	adjustLinks();
 }
 
 void NodeElement::changeFoldState()
@@ -1621,28 +1619,32 @@ void NodeElement::connectTemporaryRemovedLinksToPort(IdList const &temporaryRemo
 	}
 }
 
-void NodeElement::checkConnectionsToPort()
+void NodeElement::checkConnectionsToPort() // it is strange method
 {
 	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksFrom(id()), "from");
 	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksTo(id()), "to");
 	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksNone(id()), QString());
 	mGraphicalAssistApi->removeTemporaryRemovedLinks(id());
 
-	// i have no idea what this method does, but it is called when the element
-	// is dropped on scene. so i'll just leave this code here for now.
+	// I don't know why this code is need now (it works when loading the save). If I will add connectLinksToPorts();
+	// in mouseRelease(), then nearest (that have intersection with this node) free links will be connecting with this node
+
 	connectLinksToPorts();
 
 }
 
 void NodeElement::connectLinksToPorts()
 {
-	QList<QGraphicsItem *>  items = scene()->items(scenePos());
-	EdgeElement *edge = NULL;
-	foreach (QGraphicsItem *item, items) {
-		edge = dynamic_cast<EdgeElement *>(item);
-		if (edge) {
-			edge->connectToPort();
-			return;
+	EditorViewScene *evScene = dynamic_cast<EditorViewScene*>(scene());
+	if (evScene) {
+		QList<QGraphicsItem *> items = evScene->items(scenePos());
+		EdgeElement *edge = NULL;
+		foreach (QGraphicsItem *item, items) {
+			edge = dynamic_cast<EdgeElement *>(item);
+			if (edge) {
+				edge->connectToPort();
+				return;
+			}
 		}
 	}
 }
