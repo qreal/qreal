@@ -347,11 +347,11 @@ QDomDocument WidgetsEditor::shapeDocument()
 	QDomDocument pictureDoc = mRoot->shapeDocument();
 	QDomElement picture = pictureDoc.documentElement().cloneNode().toElement();
 	graphics.appendChild(picture);
-	graphicsDoc.appendChild(graphics);
-	QDomNode node = mOtherGraphics.firstChild().firstChild();
+	QDomNode node = mOtherGraphics.firstChild();
 	while (!node.isNull()) {
-		graphicsDoc.appendChild(node.cloneNode());
+		graphics.appendChild(node.cloneNode());
 		node = node.nextSibling();
 	}
+	graphicsDoc.appendChild(graphics);
 	return graphicsDoc;
 }
