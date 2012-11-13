@@ -2,7 +2,9 @@
 #include "editorPage.h"
 #include "ui_editorPage.h"
 #include <QMessageBox>
-#include "../mainwindow/mainWindow.h"
+#include "../../mainwindow/mainWindow.h"
+
+using namespace qReal;
 
 PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAction * const showAlignmentAction
 		, QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
@@ -39,19 +41,19 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	mUi->showAlignmentCheckBox->setChecked(SettingsManager::value("ShowAlignment").toBool());
 	mUi->activateGridCheckBox->setChecked(SettingsManager::value("ActivateGrid").toBool());
 	mUi->activateAlignmentCheckBox->setChecked(SettingsManager::value("ActivateAlignment").toBool());
-	mUi->embeddedLinkerIndentSlider->setValue(SettingsManager::value("EmbeddedLinkerIndent", 8).toInt());
+	mUi->embeddedLinkerIndentSlider->setValue(SettingsManager::value("EmbeddedLinkerIndent").toInt());
 	mUi->embeddedLinkerSizeSlider->setValue(SettingsManager::value("EmbeddedLinkerSize").toInt());
-	mUi->zoomFactorSlider->setValue(SettingsManager::value("zoomFactor", 2).toInt());
+	mUi->zoomFactorSlider->setValue(SettingsManager::value("zoomFactor").toInt());
 
 	mUi->gridWidthSlider->setValue(mWidthGrid);
 	mUi->indexGridSlider->setValue(mIndexGrid);
-	mUi->fontCheckBox->setChecked(SettingsManager::value("CustomFont", false).toBool());
-	mUi->fontSelectionButton->setVisible(SettingsManager::value("CustomFont", false).toBool());
+	mUi->fontCheckBox->setChecked(SettingsManager::value("CustomFont").toBool());
+	mUi->fontSelectionButton->setVisible(SettingsManager::value("CustomFont").toBool());
 
 	mUi->paletteComboBox->setCurrentIndex(SettingsManager::value("PaletteRepresentation").toInt());
 	paletteComboBoxClicked(mUi->paletteComboBox->currentIndex());
 	mUi->paletteSpinBox->setValue(SettingsManager::value("PaletteIconsInARowCount").toInt());
-	mFont = SettingsManager::value("CurrentFont", "").toString();
+	mFont = SettingsManager::value("CurrentFont").toString();
 }
 
 PreferencesEditorPage::~PreferencesEditorPage()

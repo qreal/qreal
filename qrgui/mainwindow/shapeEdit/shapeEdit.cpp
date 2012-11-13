@@ -45,12 +45,12 @@ void ShapeEdit::init()
 	QStringList penStyleList = Item::getPenStyleList();
 	mUi->penStyleComboBox->addItems(penStyleList);
 	mUi->penWidthSpinBox->setRange(0, 13);
-        mUi->penColorComboBox->setColorList(QColor::colorNames());
+	mUi->penColorComboBox->setColorList(QColor::colorNames());
 	mUi->penColorComboBox->setColor(QColor("black"));
 
 	QStringList brushStyleList = Item::getBrushStyleList();
 	mUi->brushStyleComboBox->addItems(brushStyleList);
-        mUi->brushColorComboBox->setColorList(QColor::colorNames());
+	mUi->brushColorComboBox->setColorList(QColor::colorNames());
 	mUi->brushColorComboBox->setColor(QColor("white"));
 
 	mUi->textPixelSizeSpinBox->setRange(5, 72);
@@ -145,7 +145,7 @@ void ShapeEdit::initFontPalette()
 	mUi->textFamilyFontComboBox->setCurrentFont(QFont("MS Shell Dlg 2"));
 	mUi->textPixelSizeSpinBox->setValue(15);
 
-        mUi->textColorComboBox->setColorList(QColor::colorNames());
+	mUi->textColorComboBox->setColorList(QColor::colorNames());
 	mUi->textColorComboBox->setColor(QColor("black"));
 
 	mUi->textEditField->setPlainText("text");
@@ -185,6 +185,11 @@ void ShapeEdit::keyPressEvent(QKeyEvent *event)
 		emit saveSignal();
 	if (event->matches(QKeySequence::Open))
 		emit openSignal();
+	if (event->matches(QKeySequence::ZoomIn)) {
+		mScene->mainView()->zoomIn();
+	} else if (event->matches(QKeySequence::ZoomOut)) {
+		mScene->mainView()->zoomOut();
+	}
 }
 
 QList<QDomElement> ShapeEdit::generateGraphics()

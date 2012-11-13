@@ -13,21 +13,27 @@ LIBS += -L../bin -lqrkernel
 DEFINES += QRUTILS_LIBRARY
 
 HEADERS += \
-	outFile.h \
-	utilsDeclSpec.h \
-	xmlUtils.h \
-	ui_watchListWindow.h \
-	watchListWindow.h \
-	metamodelGeneratorSupport.h \
+	$$PWD/outFile.h \
+	$$PWD/utilsDeclSpec.h \
+	$$PWD/xmlUtils.h \
+	$$PWD/ui_watchListWindow.h \
+	$$PWD/watchListWindow.h \
+	$$PWD/metamodelGeneratorSupport.h \
+	$$PWD/inFile.h \
+	$$PWD/nameNormalizer.h \
+	$$PWD/generator/abstractGenerator.h
 
 SOURCES += \
-	outFile.cpp \
-	xmlUtils.cpp \
-	watchListWindow.cpp\
-	metamodelGeneratorSupport.cpp \
+	$$PWD/outFile.cpp \
+	$$PWD/xmlUtils.cpp \
+	$$PWD/watchListWindow.cpp\
+	$$PWD/metamodelGeneratorSupport.cpp \
+	$$PWD/inFile.cpp \
+	$$PWD/nameNormalizer.cpp \
+	$$PWD/generator/abstractGenerator.cpp
 
 FORMS += \
-	watchListWindow.ui
+	$$PWD/watchListWindow.ui
 
 # Files for parsing of expressions on diagrams
 include(expressionsParser/expressionsParser.pri)
@@ -40,3 +46,4 @@ include(graphTransformation/graphTransformation.pri)
 
 # Stuff for running long operations in different modes
 include(invocationUtils/invocationUtils.pri)
+

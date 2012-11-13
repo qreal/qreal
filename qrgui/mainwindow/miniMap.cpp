@@ -121,7 +121,9 @@ void MiniMap::drawForeground(QPainter *painter, QRectF const &rect)
 	QGraphicsView::drawForeground(painter, rect);
 	painter->setPen(Qt::yellow);
 
-	mEditorViewRect = getNewRect();
+	if (mEditorView != NULL) {
+		mEditorViewRect = getNewRect();
+	}
 	drawNonExistentAreas(painter, rect);
 	painter->drawRect(mEditorViewRect);
 }

@@ -15,8 +15,8 @@ void UnrealMotorImplementation::on(int speed)
 
 void UnrealMotorImplementation::on(int speed, long unsigned int degrees)
 {
-
 	mD2Model->setNewMotor(speed, degrees, mPort);
+	connect(mD2Model, SIGNAL(d2MotorTimeout()), this, SIGNAL(motorImplTimeout()));
 }
 
 void UnrealMotorImplementation::stop()

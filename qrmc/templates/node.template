@@ -4,12 +4,13 @@
 @@NodeConstructor@@
 		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
 
-		void init(QRectF &contents, QList<QPointF> &pointPorts,
+		void init(QRectF &contents, QList<StatPoint> &pointPorts,
 				QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
 				QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
 				SdfRendererInterface *portRenderer)
 		{
 @@NodeUnusedArgs@@
+			mRenderer = renderer;
 @@NodeLoadShapeRenderer@@
 @@NodeLoadPortsRenderer@@
 @@NodeSetContents@@
@@ -56,7 +57,7 @@
 		int sizeOfForestalling() const
 		{
 			return @@SizeOfForestalling@@;
-		}
+		}       
 
 		int sizeOfChildrenForestalling() const
 		{
@@ -98,6 +99,26 @@
 		QStringList bonusContextMenuFields() const
 		{
 			return @@ItemsList@@;
+		}
+
+		bool isResizeable() const
+		{
+			return @@IsResizeable@@;
+		}
+
+		int getPenWidth() const
+		{ 
+			return 0; 
+		}
+
+		QColor getPenColor() const 
+		{ 
+			return QColor(); 
+		}
+
+		bool isDividable() const
+		{
+			return false;
 		}
 
 	private:

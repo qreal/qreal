@@ -18,16 +18,6 @@ CPU ATMEL_AT91SAM7S256
 	/* Definition of application mode */
 	APPMODE appmode1{};
 
-	/* Definition of OSEK_Task_Background */
-	TASK OSEK_Task_Background
-	{
-		AUTOSTART = TRUE
-		{
-			APPMODE = appmode1;
-		};
-		PRIORITY = 1; /* lowest priority */
-		ACTIVATION = 1;
-		SCHEDULE = FULL;
-		STACKSIZE = 512;
-	};
+	/* Definition of OSEK_Task*/
+@@TASK@@
 };

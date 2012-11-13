@@ -30,12 +30,13 @@ public slots:
 
 public:
 	bool openEmptyWithSuggestToSaveChanges();
-	bool open(QString const &fileName = "");
+	bool open(QString const &fileName = "autosave.qrs");
 	bool suggestToSaveChangesOrCancel();
 	void setUnsavedIndicator(bool isUnsaved);
 	void reinitAutosaver();
 	QString saveFilePath() const;
 	void setSaveFilePath(QString const &filePath = "");
+	void saveGenCode(QString const &text);
 
 private:
 	bool import(const QString &fileName);

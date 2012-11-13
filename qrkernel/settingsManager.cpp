@@ -1,13 +1,16 @@
 #include "settingsManager.h"
-#include <QHash>
-#include <QStringList>
 
-#include <QFile>
-#include <QTextStream>
+#include <QtCore/QHash>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
+#include <QtCore/QStringList>
+
+using namespace qReal;
 
 SettingsManager* SettingsManager::mInstance = NULL;
 
-SettingsManager::SettingsManager() : mSettings("SPbSU", "QReal")
+SettingsManager::SettingsManager()
+		: mSettings("SPbSU", "QReal")
 {
 	initDefaultValues();
 	load();
@@ -18,16 +21,15 @@ void SettingsManager::setValue(QString const &name, QVariant const &value)
 	instance()->set(name, value);
 }
 
-QVariant SettingsManager::value(QString const &key, QVariant const &defaultValue)
-{
-	return instance()->get(key, defaultValue);
-}
-
 QVariant SettingsManager::value(QString const &key)
 {
 	return instance()->get(key);
 }
 
+QVariant SettingsManager::value(QString const &key, QVariant const &defaultValue)
+{
+	return instance()->get(key, defaultValue);
+}
 
 SettingsManager* SettingsManager::instance()
 {
@@ -55,7 +57,7 @@ QVariant SettingsManager::get(QString const &name, QVariant const &defaultValue)
 
 void SettingsManager::saveData()
 {
-	foreach (QString name, mData.keys()) {
+	foreach (QString const &name, mData.keys()) {
 		mSettings.setValue(name, mData[name]);
 	}
 	mSettings.sync();
@@ -64,7 +66,7 @@ void SettingsManager::saveData()
 
 void SettingsManager::load()
 {
-	foreach (QString name, mSettings.allKeys()) {
+	foreach (QString const &name, mSettings.allKeys()) {
 		mData[name] = mSettings.value(name);
 	}
 }

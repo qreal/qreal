@@ -5,6 +5,7 @@
 #include "../view/editorView.h"
 #include "../dialogs/suggestToCreateDiagramDialog.h"
 #include "projectManager.h"
+#include "../../../../qrutils/outFile.h"
 
 using namespace qReal;
 
@@ -244,6 +245,12 @@ void ProjectManager::save()
 	// name = "" Attempt to save the project in this case result in trash
 	mMainWindow->models()->repoControlApi().saveTo(mSaveFilePath);
 	refreshApplicationStateAfterSave();
+}
+
+void ProjectManager::saveGenCode(QString const &text)
+{
+	utils::OutFile out("nxt-tools/example0/example0.c");
+	out() << text;
 }
 
 bool ProjectManager::saveOrSuggestToSaveAs()

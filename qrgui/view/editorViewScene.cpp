@@ -836,7 +836,8 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 		, IdList const &connectableTypes, IdList const &alreadyConnectedElements
 		, IdList const &connectableDiagrams, const char *slot) const
 {
-	QMenu *addConnectionMenu = contextMenu.addMenu(menuName);
+	bool hasAnyActions = false;
+	QMenu *addConnectionMenu = new QMenu(menuName);
 
 	foreach (Id type, connectableTypes) {
 		foreach (Id elementId, mMVIface->logicalAssistApi()->logicalRepoApi().logicalElements(type)) {
@@ -844,6 +845,7 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 				continue;
 			}
 			QAction *action = addConnectionMenu->addAction(mMVIface->logicalAssistApi()->logicalRepoApi().name(elementId));
+			hasAnyActions = true;
 			connect(action, SIGNAL(triggered()), slot);
 			QList<QVariant> tag;
 			tag << element->logicalId().toVariant() << elementId.toVariant();
@@ -856,10 +858,15 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 		QString name = mMVIface->logicalAssistApi()->editorManager().friendlyName(diagramType);
 		QString editorName = mMVIface->logicalAssistApi()->editorManager().friendlyName(Id(diagramType.editor()));
 		QAction *action = addConnectionMenu->addAction("New " + editorName + "/" + name);
+		hasAnyActions = true;
 		connect(action, SIGNAL(triggered()), slot);
 		QList<QVariant> tag;
 		tag << element->logicalId().toVariant() << diagramType.toVariant();
 		action->setData(tag);
+	}
+	if (hasAnyActions || !connectableDiagrams.empty())
+	{
+		contextMenu.addMenu(addConnectionMenu);
 	}
 }
 
@@ -868,7 +875,7 @@ void EditorViewScene::createDisconnectMenu(Element const * const element
 		, IdList const &outgoingConnections, IdList const &incomingConnections
 		, const char *slot) const
 {
-	QMenu *disconnectMenu = contextMenu.addMenu(menuName);
+	QMenu *disconnectMenu = new QMenu(menuName);//contextMenu.addMenu(menuName);
 	IdList list = outgoingConnections;
 	list.append(incomingConnections);
 
@@ -878,6 +885,10 @@ void EditorViewScene::createDisconnectMenu(Element const * const element
 		QList<QVariant> tag;
 		tag << element->logicalId().toVariant() << elementId.toVariant();
 		action->setData(tag);
+	}
+	if (!list.empty())
+	{
+		contextMenu.addMenu(disconnectMenu);
 	}
 }
 
@@ -1070,7 +1081,7 @@ void EditorViewScene::createEdge(const QString & idStr)
 	Id id = createElement(idStr, start);
 	Element *edgeElement = getElem(id);
 	EdgeElement *edge = dynamic_cast <EdgeElement *> (edgeElement);
-	QPointF endPos = edge->mapFromItem(child, child->getNearestPort(end));
+	QPointF endPos = edge->mapFromItem(child, child->nearestPort(end));
 	edge->placeEndTo(endPos);
 	edge->connectToPort();
 	edge->adjustNeighborLinks();
@@ -1136,7 +1147,8 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		QPointF const end = mMouseMovementManager->lastPoint();
 		NodeElement *parent = dynamic_cast<NodeElement *>(getElemAt(start));
 		NodeElement *child = dynamic_cast<NodeElement *>(getElemAt(end));
-		if (parent && child && mMouseMovementManager->isEdgeCandidate() && parent->id() != child->id()) {
+		if (parent && child && mMouseMovementManager->isEdgeCandidate()
+				&& parent->id() != child->id()) {
 			getLinkByGesture(parent, *child);
 			deleteGesture();
 		} else {
@@ -1199,11 +1211,6 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 					mMVIface->logicalAssistApi()->createConnected(element->logicalId(), diagramType);
 				}
 			}
-
-			// Now scene is changed from outside. Being a mere mortal I do not
-			// know whether it is good or not, but what is the destiny of
-			// workflow after this return?
-			return;
 		}
 	}
 

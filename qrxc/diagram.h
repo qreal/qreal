@@ -22,6 +22,7 @@ public:
 	QString nodeName() const;
 	QString displayedName() const;
 	QMap<QString, QStringList> paletteGroups() const;
+	QMap<QString, QString> paletteGroupsDescriptions() const;
 
 private:
 	struct ImportSpecification {
@@ -36,6 +37,7 @@ private:
 	QString mDiagramDisplayedName;
 	Editor *mEditor;
 	QMap<QString, QStringList> mPaletteGroups;
+	QMap<QString, QString> mPaletteGroupsDescriptions;
 	QList<ImportSpecification> mImports;
 
 	bool initGraphicTypes(QDomElement const &graphicTypesElement);

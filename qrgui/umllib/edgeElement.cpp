@@ -20,7 +20,8 @@ const double pi = 3.14159265358979;
 /** @brief indicator of edges' movement */
 
 EdgeElement::EdgeElement(ElementImpl *impl)
-		: mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
+		: Element(impl)
+		, mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
 		, mSrc(NULL), mDst(NULL)
 		, mPortFrom(0), mPortTo(0)
 		, mDragPoint(-1), mLongPart(0)
@@ -30,7 +31,6 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 		, mMinimizeAction(tr("Remove all points"), this)
 		, mDelSegmentAction(tr("Remove segment"), this)
 		, mReverseAction(tr("Reverse"), this)
-		, mElementImpl(impl)
 		, mLastDragPoint(-1)
 		, mModelUpdateIsCalled(false)
 {
@@ -303,8 +303,8 @@ void EdgeElement::connectToPort()
 		return;
 	}
 
-	mPortFrom = newSrc ? newSrc->getPortId(mapToItem(newSrc, mLine.first())) : -1.0;
-	mPortTo = newDst ? newDst->getPortId(mapToItem(newDst, mLine.last())) : -1.0;
+	mPortFrom = newSrc ? newSrc->portId(mapToItem(newSrc, mLine.first())) : -1.0;
+	mPortTo = newDst ? newDst->portId(mapToItem(newDst, mLine.last())) : -1.0;
 
 	if (mSrc) {
 		mSrc->delEdge(this);
@@ -899,11 +899,11 @@ void EdgeElement::adjustLink(bool isDragging)
 	if (!isDragging) {
 		if (mSrc) {
 			prepareGeometryChange();
-			mLine.first() = mapFromItem(mSrc, mSrc->getPortPos(mPortFrom));
+			mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
 		}
 		if (mDst) {
 			prepareGeometryChange();
-			mLine.last() = mapFromItem(mDst, mDst->getPortPos(mPortTo));
+			mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
 		}
 		for (int i = 0; i < mLine.size() - 2; i++) { // more advanced method exists: delCloseLinePoints
 			if (removeOneLinePoints(i)) {
@@ -920,21 +920,21 @@ void EdgeElement::adjustLink(bool isDragging)
 	} else if (isSelected()) {
 		if (mSrc && !mSrc->isSelected()) {
 			prepareGeometryChange();
-			mLine.first() = mapFromItem(mSrc, mSrc->getPortPos(mPortFrom));
+			mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
 		}
 		if (mDst && !mDst->isSelected()) {
 			prepareGeometryChange();
-			mLine.last() = mapFromItem(mDst, mDst->getPortPos(mPortTo));
+			mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
 		}
 		updateLongestPart();
 	} else {
 		if (mSrc && mSrc->isSelected()) {
 			prepareGeometryChange();
-			mLine.first() = mapFromItem(mSrc, mSrc->getPortPos(mPortFrom));
+			mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
 		}
 		if (mDst && mDst->isSelected()) {
 			prepareGeometryChange();
-			mLine.last() = mapFromItem(mDst, mDst->getPortPos(mPortTo));
+			mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
 		}
 		updateLongestPart();
 	}
@@ -943,12 +943,12 @@ void EdgeElement::adjustLink(bool isDragging)
 bool EdgeElement::shouldReconnect() const
 {
 	if (mSrc) {
-		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
+		qreal newFrom = mSrc->portId(mapToItem(mSrc, mLine[1]));
 		if (floor(newFrom) != floor(mPortFrom))
 			return true;
 	}
 	if (mDst) {
-		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
+		qreal newTo = mDst->portId(mapToItem(mDst, mLine[mLine.count() - 2]));
 		if (floor(newTo) != floor(mPortTo))
 			return true;
 	}
@@ -1026,8 +1026,8 @@ bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst, 
 	bool reconnectedSrc = false;
 	bool reconnectedDst = false;
 	if (mSrc && reconnectSrc) {
-		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
-		reconnectedSrc = (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
+		qreal newFrom = mSrc->portId(mapToItem(mSrc, mLine[1]));
+		reconnectedSrc = (NodeElement::portNumber(newFrom) != NodeElement::portNumber(mPortFrom));
 		if (!jumpsOnly || reconnectedSrc) {
 			mPortFrom = newFrom;
 			mModelUpdateIsCalled = true;
@@ -1036,8 +1036,8 @@ bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst, 
 
 	}
 	if (mDst && reconnectDst) {
-		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
-		reconnectedDst = (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
+		qreal newTo = mDst->portId(mapToItem(mDst, mLine[mLine.count() - 2]));
+		reconnectedDst = (NodeElement::portNumber(newTo) != NodeElement::portNumber(mPortTo));
 		if (!jumpsOnly || reconnectedDst) {
 			mPortTo = newTo;
 			mModelUpdateIsCalled = true;
@@ -1050,14 +1050,15 @@ bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst, 
 
 void EdgeElement::updateData()
 {
-	if (mModelUpdateIsCalled) {
-		//Element::updateData();
-		mElementImpl->updateData(this);
-		mModelUpdateIsCalled = false;
+	if (mMoving) {
 		return;
 	}
 
-	if (mMoving) {
+	if (mModelUpdateIsCalled) {
+		Element::updateData();
+		mElementImpl->updateData(this);
+		update();
+		mModelUpdateIsCalled = false;
 		return;
 	}
 
@@ -1373,12 +1374,12 @@ QVariant EdgeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 		if (isSelected() && (mSrc || mDst) && !mMoving) {
 			if (mSrc && !mSrc->isSelected()) {
 				prepareGeometryChange();
-				mLine.first() = mapFromItem(mSrc, mSrc->getPortPos(mPortFrom));
+				mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
 				updateLongestPart();
 			}
 			if (mDst && !mDst->isSelected()) {
 				prepareGeometryChange();
-				mLine.last() = mapFromItem(mDst, mDst->getPortPos(mPortTo));
+				mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
 				updateLongestPart();
 			}
 		}

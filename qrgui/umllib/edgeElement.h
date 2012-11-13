@@ -177,8 +177,6 @@ private:
 
 	bool mChaoticEdition;
 
-	ElementImpl *mElementImpl;
-
 	QPointF mLastPos;
 	QPolygonF mLastLine;
 	QPolygonF mSavedLineForMove;
