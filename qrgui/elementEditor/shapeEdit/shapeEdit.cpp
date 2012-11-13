@@ -321,6 +321,7 @@ void ShapeEdit::open()
 
 void ShapeEdit::load(const QString &text)
 {
+	mScene->clearScene();
 	if (text.isEmpty()) {
 		return;
 	}
@@ -330,6 +331,7 @@ void ShapeEdit::load(const QString &text)
 
 void ShapeEdit::load(QDomDocument const &document)
 {
+	mScene->clearScene();
 	if (document.isNull()) {
 		return;
 	}

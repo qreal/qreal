@@ -53,7 +53,7 @@ signals:
 		, int const &role);
 	/// Emitted when user wants to desribe custom root backround with
 	/// shape editor
-	void shapeRequested();
+	void shapeRequested(QDomDocument const &shape);
 	/// Emitted when user changes his choise to create widget-based element
 	/// with a choise to create shape-based one
 	void changeToShapeType(QDomDocument const &shape);
@@ -87,6 +87,8 @@ private:
 	void preview(QWidget *widget);
 
 	void switchLayoutButtonsActiveState(Tool *tool);
+
+	QDomDocument shapeDocument();
 
 	static QWidget *deserializeWidget(QDomElement const &widgetTemplate);
 

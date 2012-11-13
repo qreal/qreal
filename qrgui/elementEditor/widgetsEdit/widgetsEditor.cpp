@@ -85,7 +85,9 @@ void WidgetsEditor::load(QDomDocument const &graphics)
 		mRoot = NULL;
 	}
 	initController();
-	initRoot(ToolFactory::instance()->loadDocument(mController, graphics));
+	// To make it not-null
+	mOtherGraphics.createElement("");
+	initRoot(ToolFactory::instance()->loadDocument(mController, graphics, mOtherGraphics));
 }
 
 void WidgetsEditor::keyPressEvent(QKeyEvent *event)
@@ -231,7 +233,7 @@ void WidgetsEditor::onLayoutButtonClicked(const LayoutType type)
 
 void WidgetsEditor::onShapeButtonClicked()
 {
-	emit shapeRequested();
+	emit shapeRequested(shapeDocument());
 }
 
 void WidgetsEditor::onSelectionChanged(Tool *tool)
@@ -335,11 +337,21 @@ void WidgetsEditor::preview(QWidget *widget)
 
 void WidgetsEditor::switchToShapeType()
 {
+	emit changeToShapeType(shapeDocument());
+}
+
+QDomDocument WidgetsEditor::shapeDocument()
+{
 	QDomDocument graphicsDoc;
 	QDomElement graphics = graphicsDoc.createElement("graphics");
 	QDomDocument pictureDoc = mRoot->shapeDocument();
 	QDomElement picture = pictureDoc.documentElement().cloneNode().toElement();
 	graphics.appendChild(picture);
 	graphicsDoc.appendChild(graphics);
-	emit changeToShapeType(graphicsDoc);
+	QDomNode node = mOtherGraphics.firstChild().firstChild();
+	while (!node.isNull()) {
+		graphicsDoc.appendChild(node.cloneNode());
+		node = node.nextSibling();
+	}
+	return graphicsDoc;
 }

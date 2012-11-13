@@ -49,6 +49,9 @@ public:
 	void addStylus(bool checked);
 	void addNone(bool checked);
 
+public slots:
+	void clearScene();
+
 signals:
 	void noSelectedItems();
 	void existSelectedItems(QPen const &penItem, QBrush const &brushItem);
@@ -73,7 +76,6 @@ private slots:
 	void changeFontUnderline(bool isChecked);
 
 	void deleteItem();
-	void clearScene();
 
 private:
 	enum ItemTypes {

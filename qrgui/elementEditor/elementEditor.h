@@ -48,7 +48,7 @@ signals:
 private slots:
 	void onWidgetBasedButtonClicked();
 	void onShapeBasedButtonClicked();
-	void onWidgetEditorRequestedShape();
+	void onWidgetEditorRequestedShape(QDomDocument const &shape);
 	void onWidgetEditorSavedShape(QString const &widget
 		, QPersistentModelIndex const &index, int const &role);
 	void onShapeEditorSavedShape(QString const &shape

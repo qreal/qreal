@@ -129,9 +129,10 @@ void ElementEditor::showWidgetsEditor()
 	showWidget(mWidgetsEditor);
 }
 
-void ElementEditor::onWidgetEditorRequestedShape()
+void ElementEditor::onWidgetEditorRequestedShape(QDomDocument const &shape)
 {
 	showShapeEditor();
+	mShapeEditor->load(shape);
 }
 
 void ElementEditor::initWidgetEditor()
@@ -142,8 +143,8 @@ void ElementEditor::initWidgetEditor()
 	} else {
 		mWidgetsEditor = new widgetsEdit::WidgetsEditor;
 	}
-	connect(mWidgetsEditor, SIGNAL(shapeRequested())
-			, this, SLOT(onWidgetEditorRequestedShape()));
+	connect(mWidgetsEditor, SIGNAL(shapeRequested(QDomDocument))
+			, this, SLOT(onWidgetEditorRequestedShape(QDomDocument)));
 	connect(mWidgetsEditor, SIGNAL(widgetSaved(QString,QPersistentModelIndex,int))
 			, this, SLOT(onWidgetEditorSavedShape(QString,QPersistentModelIndex,int)));
 	connect(mWidgetsEditor, SIGNAL(changeToShapeType(QDomDocument))
