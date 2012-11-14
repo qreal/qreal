@@ -17,8 +17,12 @@ class EditorGenerator
 public:
 	explicit EditorGenerator(qrRepo::LogicalRepoApi const &api, qReal::ErrorReporterInterface &errorReporter);
 
-	QHash<qReal::Id, QPair<QString, QString> > getMetamodelList();
-	QPair<QString, QString> generateEditor(qReal::Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource, QString const &destDir = "");
+	QHash<qReal::Id, QString> getMetamodelList();
+	QPair<QString, QString> generateEditor(qReal::Id const &metamodelId
+			, QString const &pathToFile
+			, QString const &pathToQRealSource
+			, QString const &destDir = ""
+			, QString const &nameOfXmlToGenerate = "");
 
 private:
 	void serializeObjects(QDomElement &parent, qReal::Id const &idParent);

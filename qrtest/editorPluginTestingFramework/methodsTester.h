@@ -5,7 +5,7 @@ using namespace qReal;
 class MethodsTester
 {
 public:
-	MethodsTester(EditorInterface* qrmcGeneratedPlugin);
+	MethodsTester(EditorInterface* qrmcGeneratedPlugin, EditorInterface* qrxcGeneratedPlugin);
 
 	void testMethods();
 
@@ -21,5 +21,6 @@ private:
 	void testElements();
 
 	EditorInterface* mQrmcGeneratedPlugin;
+	EditorInterface* mQrxcGeneratedPlugin;
 };
 

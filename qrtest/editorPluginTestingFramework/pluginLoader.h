@@ -8,6 +8,6 @@ class PluginLoader
 public:
 	PluginLoader();
 
-	EditorInterface* loadedPlugin(QString const &pluginName, QString const &pathToApp);
+	EditorInterface* loadedPlugin(QString const &pluginName, QString const &pathToApp, QString const &pathToFile);
 };
 

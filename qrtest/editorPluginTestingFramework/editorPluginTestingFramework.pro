@@ -27,6 +27,7 @@ HEADERS += \
 	../../qrgui/mainwindow/errorReporter.h \
 	../../qrgui/mainwindow/error.h \
 	../../plugins/metaEditor/metaEditorSupport/editorGenerator.h \
+    defs.h
 
 SOURCES += \
 	mainClass.cpp \
@@ -38,7 +39,7 @@ SOURCES += \
 	qrxcLauncher.cpp \
 	../../qrgui/mainwindow/errorReporter.cpp \
 	../../qrgui/mainwindow/error.cpp \
-	../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp \
+	../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp
 
 
 

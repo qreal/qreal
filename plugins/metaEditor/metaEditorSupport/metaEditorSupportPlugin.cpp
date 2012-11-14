@@ -72,12 +72,18 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 
 	QDir dir(".");
 
-	QHash<Id, QPair<QString, QString> > metamodelList = editorGenerator.getMetamodelList();
+	QString const pathToQrealRoot = SettingsManager::value("pathToQRealSourceFiles").toString();
+	if (pathToQrealRoot.isEmpty()) {
+		QMessageBox::information(NULL, tr("Path to source files is emtpy")
+				, "Path to Qreal source files is empty. Please fill it in compiler settings.", tr("Ok"));
+		return;
+	}
+
+	QHash<Id, QString > metamodelList = editorGenerator.getMetamodelList();
 	foreach (Id const &key, metamodelList.keys()) {
-		QString const nameOfTheDirectory = metamodelList[key].first;
-		QString const pathToQRealRoot = metamodelList[key].second;
+		QString const nameOfTheDirectory = metamodelList[key];
 		dir.mkpath(nameOfTheDirectory);
-		QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key, nameOfTheDirectory, pathToQRealRoot);
+		QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key, nameOfTheDirectory, pathToQrealRoot);
 
 		if (!mMainWindowInterface->errorReporter()->wereErrors()) {
 			if (QMessageBox::question(mMainWindowInterface->windowWidget()

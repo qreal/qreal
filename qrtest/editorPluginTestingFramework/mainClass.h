@@ -9,14 +9,14 @@
 class MainClass
 {
 public:
-	MainClass(QString fileName, QString const pathToQrmc, QString const pathToApp);
+	MainClass(QString &fileName, QString const &pathToQrmc, QString const &pathToApp);
 
 private:
-	void launchQrmc(QString fileName, QString const pathToQrmc);
-	void compilePlugin(QString const directoryToCodeToCompile);
-	void launchQrxc(QString const &fileName);
+	void launchQrmc(QString &fileName, QString const &pathToQrmc);
+	void compilePlugin(QString const &directoryToCodeToCompile);
+	void launchQrxc(QString &fileName);
 
-	EditorInterface* loadedPlugin(QString const &fileName, QString const &pathToApp);
+	EditorInterface* loadedPlugin(QString const &fileName, QString const &pathToApp, QString const &pathToFile);
 
 	QrmcLauncher mQrmcLauncher;
 	PluginCompiler mPluginCompiler;

@@ -24,32 +24,34 @@ EditorGenerator::EditorGenerator(qrRepo::LogicalRepoApi const &api, ErrorReporte
 {
 }
 
-QHash<Id, QPair<QString,QString> > EditorGenerator::getMetamodelList()
+QHash<Id, QString > EditorGenerator::getMetamodelList()
 {
 	IdList const metamodels = mApi.children(Id::rootId());
-	QHash<Id, QPair<QString, QString> > metamodelList;
+	QHash<Id, QString > metamodelList;
 
 	foreach (Id const key, metamodels) {
 		QString const objectType = key.element();
 		if (objectType == "MetamodelDiagram" && mApi.isLogicalElement(key)) {
-			// Now the user must specify the full path to the directory and the relative path to source files of QReal
+			// Now the user must specify the full path to the directory
 			QString const directoryName = mApi.stringProperty(key, "name of the directory");
-			QString const pathToQRealRoot = mApi.stringProperty(key, "relative path to QReal Source Files");
-			if (!directoryName.isEmpty() && !pathToQRealRoot.isEmpty()) {
-				QPair<QString, QString> savingData;
-				savingData.first = directoryName;
-				savingData.second = pathToQRealRoot;
+
+			if (!directoryName.isEmpty()) {
+				QString savingData = directoryName;
 				metamodelList.insert(key, savingData);
 			}
 			else {
-				mErrorReporter.addError(QObject::tr("no directory to generated code or relative path to QReal Source Files"), key);
+				mErrorReporter.addError(QObject::tr("no directory to generated code"), key);
 			}
 		}
 	}
 	return metamodelList;
 }
 
-QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource, QString const &destDir)
+QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
+		, QString const &pathToFile
+		, QString const &pathToQRealSource
+		, QString const &destDir
+		, QString const &nameOfXmlToGenerate)
 {
 	mErrorReporter.clear();
 	mErrorReporter.clearErrors();
@@ -77,7 +79,12 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId, Q
 
 	createDiagrams(metamodel, metamodelId);
 
-	QString const fileBaseName = NameNormalizer::normalize(mApi.name(metamodelId), false);
+	QString fileBaseName = "";
+	if (nameOfXmlToGenerate.isEmpty()) {
+		fileBaseName = NameNormalizer::normalize(mApi.name(metamodelId), false);
+	} else {
+		fileBaseName = nameOfXmlToGenerate;
+	} // very sad
 
 	QRegExp patten;
 	patten.setPattern("[A-Za-z]+([A-Za-z0-9]*)");
@@ -97,7 +104,7 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId, Q
 		outpro() << "\n";
 		outpro() << QString("include (%1)\n").arg(pathToQRealSource + "/plugins/editorsSdk/editorsCommon.pri");
 		if (!destDir.isEmpty()) {
-			outpro() << QString("DESTDIR += %1\n").arg(destDir);
+			outpro() << QString("DESTDIR = %1\n").arg(destDir);
 		}
 	}
 	catch (char* e) {

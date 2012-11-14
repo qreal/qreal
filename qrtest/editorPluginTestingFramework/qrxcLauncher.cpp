@@ -17,7 +17,7 @@ QrxcLauncher::QrxcLauncher()
 {
 }
 
-void QrxcLauncher::launchQrxc(QString fileName)
+void QrxcLauncher::launchQrxc(QString &fileName)
 {
 	QString normalizedFileName = fileName;
 	if (!fileName.contains(".qrs")) {
@@ -29,19 +29,34 @@ void QrxcLauncher::launchQrxc(QString fileName)
 
 	QDir dir(".");
 
-	QHash<Id, QPair<QString, QString> > metamodelList = editorGenerator.getMetamodelList();
+	QHash<Id, QString > metamodelList = editorGenerator.getMetamodelList();
 	bool isEmpty = metamodelList.isEmpty();
 	qDebug() << "List is empty" << isEmpty;
 
+	QString nameOfTheDirectory = "../qrtest/bin/qrxc"; // sleeeeeeeeeep
 	QString const pathToQRealRoot = "../../.."; // i want to sleep
 	foreach (Id const &key, metamodelList.keys()) {
-		//QString const nameOfTheDirectory = metamodelList[key].first;
-		//QString const pathToQRealRoot = metamodelList[key].second;
-		QString nameOfTheDirectory = "../qrtest/bin/qrxc"; // sleeeeeeeeeep
-
 		dir.mkpath(nameOfTheDirectory);
-		QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key, nameOfTheDirectory, pathToQRealRoot, nameOfTheDirectory);
+		QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key
+				, nameOfTheDirectory
+				, pathToQRealRoot
+				, nameOfTheDirectory
+				, fileName);
 	}
 
+	QProcess builder;
+	builder.setWorkingDirectory(nameOfTheDirectory);
 
+	builder.start(SettingsManager::value("pathToQmake").toString());
+	qDebug()  << "qmake";
+	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
+
+		builder.start(SettingsManager::value("pathToMake").toString());
+
+		bool finished = builder.waitForFinished(100000);
+		qDebug()  << "make";
+		if (finished && (builder.exitCode() == 0)) {
+			qDebug()  << "make ok";
+		}
+	}
 }
