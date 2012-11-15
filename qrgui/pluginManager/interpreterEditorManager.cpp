@@ -202,6 +202,10 @@ bool InterpreterEditorManager::isElement(const Id &id) const
 
 QString InterpreterEditorManager::mouseGesture(Id const &id) const
 {
+	QPair<qrRepo::RepoApi*, Id> repoAndMetaId = getRepoAndMetaId(id);
+	if (repoAndMetaId.first->hasProperty(repoAndMetaId.second, "path")) {
+		return repoAndMetaId.first->stringProperty(repoAndMetaId.second, "path");
+	}
 	return "";
 }
 

@@ -1789,10 +1789,10 @@
     <message>
         <location filename="dialogs/propertiesDialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Настройки робота</translation>
     </message>
     <message>
-        <location filename="dialogs/propertiesDialog.ui" line="26"/>
+        <location filename="dialogs/propertiesDialog.ui" line="23"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -2701,7 +2701,7 @@
         <translation>Картинка</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.cpp" line="264"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.cpp" line="269"/>
         <source>Saving</source>
         <translation>Сохранение</translation>
     </message>
@@ -3354,7 +3354,7 @@
 <context>
     <name>qReal::PropertiesDialog</name>
     <message>
-        <location filename="dialogs/propertiesDialog.cpp" line="11"/>
+        <location filename="dialogs/propertiesDialog.cpp" line="12"/>
         <source>Properties</source>
         <translation>Свойства</translation>
     </message>
@@ -3465,17 +3465,22 @@
 <context>
     <name>qReal::gui::PaletteTree</name>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="347"/>
+        <location filename="mainwindow/paletteTree.cpp" line="89"/>
+        <source>Change Properties</source>
+        <translation>Изменить свойства</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/paletteTree.cpp" line="368"/>
         <source>Expand all</source>
         <translation>Развернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="355"/>
+        <location filename="mainwindow/paletteTree.cpp" line="376"/>
         <source>Collapse all</source>
         <translation>Свернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="363"/>
+        <location filename="mainwindow/paletteTree.cpp" line="384"/>
         <source>Change representation</source>
         <translation>Изменить представление</translation>
     </message>

@@ -19,6 +19,7 @@ HEADERS += \
 	mainwindow/referenceList.h \
 	mainwindow/projectManager/autosaver.h \
 	mainwindow/externBrowser.h \
+    mainwindow/draggableElement.h
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -37,6 +38,7 @@ SOURCES += \
 	mainwindow/referenceList.cpp \
 	mainwindow/projectManager/autosaver.cpp \
 	mainwindow/macExternBrowser.cpp \
+    mainwindow/draggableElement.cpp
 
 win32 {
 	HEADERS += \
@@ -109,3 +111,5 @@ SOURCES += \
 
 FORMS += \
 	mainwindow/shapeEdit/shapeEdit.ui \
+
+

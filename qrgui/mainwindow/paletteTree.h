@@ -14,7 +14,6 @@
 
 namespace  qReal{
 namespace gui{
-
 /// Class for representing tree with editors elements.
 class PaletteTree: public QWidget
 {
@@ -98,42 +97,6 @@ public slots:
 	/// Changes widget representation.
 	void changeRepresentation();
 private:
-
-	/// Class for representing editor elements.
-	class DraggableElement : public QWidget
-	{
-	public:
-			DraggableElement(Id const &id, QString const &name
-					, QString const &description
-					, QIcon const &icon, bool iconsOnly, QWidget *parent = NULL);
-
-			QIcon icon() const
-			{
-				return mIcon;
-			}
-
-			QString text() const
-			{
-				return mText;
-			}
-
-			Id id() const
-			{
-				return mId;
-			}
-
-			void setIconSize(int size);
-
-	private:
-			Id mId;
-			QIcon mIcon;
-			QString mText;
-			QLabel *mLabel;
-			virtual void dragEnterEvent(QDragEnterEvent *event);
-			virtual void dropEvent(QDropEvent *event);
-			virtual void mousePressEvent(QMouseEvent *event);
-	};
-
 	/// Returns maximum count of items in all rows of widget
 	int maxItemsCountInARow() const;
 
