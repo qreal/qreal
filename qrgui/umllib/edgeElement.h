@@ -15,10 +15,15 @@ class NodeElement;
 /** @class EdgeElement
   * 	@brief class for an edge on a diagram
   * 	*/
+
+class EmbeddedLinker;
+
 class EdgeElement : public Element
 {
 	Q_OBJECT
 public:
+	friend class EmbeddedLinker;
+
 	EdgeElement(ElementImpl *impl);
 	virtual ~EdgeElement();
 
@@ -117,6 +122,10 @@ private slots:
 	void reverseHandler(QPointF const &pos);
 
 private:
+	// when (mSrc == mDst && mDst && mLine <= 3)
+	void createCircleLink();
+	// connectToPort for self-closing line (mSrc == mDst && mDst)
+	void connectCircleEdge(NodeElement *newMaster);
 	// redraw in rectangular good segment by the second squarize method.
 	void specialSquarizeSegment(int const /**< The interval's start position in the mLine */);
 	// redraw in rectangular good link by the second squarize method
@@ -139,9 +148,6 @@ private:
 	void delClosePoints();
 
 	bool removeOneLinePoints(int startingPoint);
-
-	// after mouseRealise
-	void deleteUnneededPoints();
 
 	void deleteLoops();
 	void deleteLoop(int startPos);
@@ -177,15 +183,15 @@ private:
 
 	bool mChaoticEdition;
 
-	QPointF mLastPos;
 	QPolygonF mLastLine;
 	QPolygonF mSavedLineForMove;
-	int mLastDragPoint;
 
 	bool mBreakPointPressed;
 
 	EdgeData mData;
 
 	bool mModelUpdateIsCalled;
+
+	bool isCircle; // if line is self-closing (mSrc == mDst && mDst)
 };
 

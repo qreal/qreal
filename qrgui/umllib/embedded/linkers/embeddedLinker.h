@@ -7,6 +7,7 @@
 #include "../../edgeElement.h"
 
 class NodeElement;
+
 class EmbeddedLinker : public QObject, public QGraphicsItem
 {
 	Q_OBJECT

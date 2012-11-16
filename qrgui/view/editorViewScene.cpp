@@ -487,6 +487,7 @@ void EditorViewScene::insertNodeIntoEdge(qReal::Id const &insertedNodeId, qReal:
 			NodeElement *previouslyConnectedTo = edge->dst();
 			if (previouslyConnectedTo) {//check has edge dst
 				edge->removeLink(previouslyConnectedTo);
+				edge->highlight();
 				previouslyConnectedTo->delEdge(edge);
 
 				mMVIface->graphicalAssistApi()->setTo(edge->id(), insertedNodeId);
@@ -1111,10 +1112,12 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				}
 			} else {
 				NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
-				sendEvent(item, event);
-				if (list.size() > 1 && nodeItem) {
-					nodeItem->setVisibleEmbeddedLinkers(false);
-					nodeItem->setPortsVisible(false);
+				if (nodeItem) {
+					sendEvent(item, event);
+					if (list.size() > 1 && nodeItem) {
+						nodeItem->setVisibleEmbeddedLinkers(false);
+						nodeItem->setPortsVisible(false);
+					}
 				}
 			}
 		}

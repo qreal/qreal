@@ -205,13 +205,23 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 							 master->id().diagram() + "/" + edgeType.element();
 		if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type))) {
 			master->setConnectingState(true);
-			Id edgeId = scene->createElement(type, event->scenePos());
+			Id edgeId = scene->createElement(type, event->scenePos()); // FIXME: I am raw
 			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
 		}
 
 		if (mEdge){
+			if (mEdge->mSrc) {
+				mEdge->mSrc->delEdge(mEdge);
+			}
+			if (mEdge->mDst) {
+				mEdge->mDst->delEdge(mEdge);
+			}
+			mEdge->mSrc = master;
+			mEdge->mDst = NULL;
+			master->addEdge(mEdge);
+			mEdge->highlight();
 			QPointF point = mapToItem(master, event->pos());
-			mEdge->placeStartTo(mEdge->mapFromItem(master, master->nearestPort(point)));  // FIXME: I am terrible
+			mEdge->placeStartTo(mEdge->mapFromItem(master, master->nearestPort(point)));
 			mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
 		}
 	}
@@ -226,6 +236,10 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 		mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
 	}
+	/*if (mEdge != NULL) {
+		mEdge->arrangeSrcAndDst();
+		mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
+	}*/
 }
 
 void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -250,7 +264,6 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				QPointF const &posRelativeToTheTarget = target->mapFromScene(eScenePos);
 				mEdge->placeEndTo(mapFromItem(target, target->nearestPort(posRelativeToTheTarget)));
 				mEdge->connectToPort();	//it provokes to move target somehow, so it needs to place edge end and connect to port again
-				mEdge->placeEndTo(mapFromItem(target, target->nearestPort(posRelativeToTheTarget)));
 				mEdge->adjustNeighborLinks();
 			}
 		}

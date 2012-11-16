@@ -73,6 +73,8 @@ NodeElement::NodeElement(ElementImpl* impl)
 
 NodeElement::~NodeElement()
 {
+	highlightEdges();
+
 	foreach (EdgeElement *edge, mEdgeList) {
 		edge->removeLink(this);
 	}
@@ -239,7 +241,7 @@ void NodeElement::arrangeLinearPorts() {
 	mPortHandler->arrangeLinearPorts();
 }
 
-void NodeElement::	arrangeLinks() { // FIXME: I am expensive
+void NodeElement::	arrangeLinks() {
 	//Episode I: Home Jumps
 	//qDebug() << "I";
 	foreach (EdgeElement* edge, mEdgeList) {
@@ -430,7 +432,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			recalculateHighlightedNode(event->scenePos());
 		}
 
-		newPos += (event->scenePos() - scenePos()) - mDragPosition; // why?
+		newPos += (event->scenePos() - scenePos()) - mDragPosition;
 		Element::mouseMoveEvent(event); // it is need for sendEvent() to every isSelected element thro scene
 		mGrid->mouseMoveEvent(event);
 		alignToGrid();
@@ -885,7 +887,6 @@ void NodeElement::addEdge(EdgeElement *edge)
 void NodeElement::delEdge(EdgeElement *edge)
 {
 	mEdgeList.removeAll(edge);
-	adjustLinks();
 }
 
 void NodeElement::changeFoldState()

@@ -15,12 +15,12 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
 
 	connect(mUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
 
-//	mUi->chaoticEditionCheckBox->setChecked(SettingsManager::value("ChaoticEdition", false).toBool());
+//	mUi->chaoticEditionCheckBox->setChecked(SettingsManager::value("ChaoticEdition").toBool());
 
-	mUi->antialiasingCheckBox->setChecked(SettingsManager::value("Antialiasing", true).toBool());
-	mUi->splashScreenCheckBox->setChecked(SettingsManager::value("Splashscreen", true).toBool());
-	mUi->openGLCheckBox->setChecked(SettingsManager::value("OpenGL", true).toBool());
-	mUi->squareLineModeCheckBox->setChecked(SettingsManager::value("SquareLine", false).toBool());
+	mUi->antialiasingCheckBox->setChecked(SettingsManager::value("Antialiasing").toBool());
+	mUi->splashScreenCheckBox->setChecked(SettingsManager::value("Splashscreen").toBool());
+	mUi->openGLCheckBox->setChecked(SettingsManager::value("OpenGL").toBool());
+	mUi->squareLineModeCheckBox->setChecked(SettingsManager::value("SquareLine").toBool());
 
 	mLastIconsetPath = SettingsManager::value("pathToImages").toString();
 	mUi->imagesPathEdit->setText(mLastIconsetPath);
