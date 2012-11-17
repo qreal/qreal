@@ -82,7 +82,7 @@ void LayoutTool::deserializeWidget(QWidget *parent, const QDomElement &element)
 {
 	Tool::deserializeWidget(parent, element);
 	QString const layoutType = element.attribute("layout", "invalid");
-	QLayout *widgetLayout;
+	QLayout *widgetLayout = NULL;
 	if (layoutType == "Grid") {
 		widgetLayout = new QGridLayout;
 	} else if (layoutType == "Horizontal") {

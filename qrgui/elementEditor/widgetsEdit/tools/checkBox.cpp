@@ -28,13 +28,21 @@ void CheckBox::setChecked(bool checked)
 
 CheckBoxWidget::CheckBoxWidget(QString const &title)
 	: QCheckBox(title), PropertyEditor(this)
+	, mFormat(Boolean), mLastTrueInt(1)
 {
-	connect(this, SIGNAL(stateChanged(int)), this, SLOT(onStateChanged(int)));
+	connect(this, SIGNAL(stateChanged(int)), this, SLOT(onStateChanged()));
 }
 
-void CheckBoxWidget::onStateChanged(int state)
+void CheckBoxWidget::onStateChanged()
 {
-	setValueInRepo(state == Qt::Checked ? "true" : "false");
+	switch(mFormat) {
+	case Boolean:
+		setValueInRepo(isChecked() ? "true" : "false");
+		break;
+	case Numeric:
+		setValueInRepo(isChecked() ? QString::number(mLastTrueInt) : "0");
+		break;
+	}
 }
 
 bool CheckBoxWidget::isChecked() const
@@ -44,5 +52,17 @@ bool CheckBoxWidget::isChecked() const
 
 void CheckBoxWidget::setPropertyValue(const QString &value)
 {
-	setChecked(value.toLower() == "true" || value == "1");
+	QString const lowerValue = value.toLower();
+	if (lowerValue == "true" || lowerValue == "false") {
+		mFormat = Boolean;
+		setChecked(lowerValue == "true");
+	} else {
+		bool ok;
+		int intValue = value.toInt(&ok);
+		if (ok) {
+			mFormat = Numeric;
+			mLastTrueInt = intValue != 0 ? intValue : mLastTrueInt;
+			setChecked(intValue != 0);
+		}
+	}
 }

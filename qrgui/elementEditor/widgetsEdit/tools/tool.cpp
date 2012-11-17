@@ -119,8 +119,6 @@ void Tool::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void Tool::keyPressEvent(QKeyEvent *event)
 {
 	mController->processKeyEvent(event);
-
-	QGraphicsProxyWidget::keyPressEvent(event);
 	event->accept();
 }
 
@@ -363,19 +361,9 @@ void Tool::resizeTool(QGraphicsSceneMouseEvent *event)
 	resize(QSizeF(newContents.width(), newContents.height()));
 }
 
-QSize Tool::baseSize() const
-{
-	return widget()->baseSize();
-}
-
 QRect Tool::widgetGeometry() const
 {
 	return widget()->geometry();
-}
-
-int Tool::widgetMaximumHeight() const
-{
-	return widget()->maximumHeight();
 }
 
 QSize Tool::widgetMaximumSize() const
@@ -383,24 +371,9 @@ QSize Tool::widgetMaximumSize() const
 	return widget()->maximumSize();
 }
 
-int Tool::widgetMaximumWidth() const
-{
-	return widget()->maximumWidth();
-}
-
-int Tool::widgetMinimumHeight() const
-{
-	return widget()->minimumHeight();
-}
-
 QSize Tool::widgetMinimumSize() const
 {
 	return widget()->minimumSize();
-}
-
-int Tool::widgetMinimumWidth() const
-{
-	return widget()->minimumWidth();
 }
 
 QSize Tool::sizeIncrement() const
@@ -418,20 +391,9 @@ bool Tool::isTransparent() const
 	return widget()->testAttribute(Qt::WA_NoSystemBackground);
 }
 
-void Tool::setBaseSize(QSize const &size)
-{
-	widget()->setBaseSize(size);
-}
-
 void Tool::setWidgetGeometry(const QRect &rect)
 {
 	widget()->setGeometry(rect);
-}
-
-void Tool::setWidgetMaximumHeight(int height)
-{
-	QGraphicsProxyWidget::setMaximumHeight(height);
-	widget()->setMaximumHeight(height);
 }
 
 void Tool::setWidgetMaximumSize(QSize const &size)
@@ -440,28 +402,10 @@ void Tool::setWidgetMaximumSize(QSize const &size)
 	widget()->setMaximumSize(size);
 }
 
-void Tool::setWidgetMaximumWidth(int width)
-{
-	QGraphicsProxyWidget::setMaximumWidth(width);
-	widget()->setMaximumWidth(width);
-}
-
-void Tool::setWidgetMinimumHeight(int height)
-{
-	QGraphicsProxyWidget::setMinimumHeight(height);
-	widget()->setMinimumHeight(height);
-}
-
 void Tool::setWidgetMinimumSize(QSize const &size)
 {
 	QGraphicsProxyWidget::setMinimumSize(size);
 	widget()->setMinimumSize(size);
-}
-
-void Tool::setWidgetMinimumWidth(int width)
-{
-	QGraphicsProxyWidget::setMinimumWidth(width);
-	widget()->setMinimumWidth(width);
 }
 
 void Tool::setSizeIncrement(QSize const &size)

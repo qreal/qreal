@@ -23,8 +23,16 @@ public:
 	virtual void setPropertyValue(QString const &value);
 
 private slots:
-	void onStateChanged(int state);
+	void onStateChanged();
 
+private:
+	enum Format
+	{
+		Boolean = 0
+		, Numeric
+	};
+	Format mFormat;
+	int mLastTrueInt;
 };
 
 class CheckBox : public AbstractButton
