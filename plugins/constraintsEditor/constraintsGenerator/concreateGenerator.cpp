@@ -26,8 +26,8 @@ ConcreateGenerator::ConcreateGenerator(QString const &templateDirPath
 		, QString const &metamodelLanguageName
 		, QString const &constraintsMetamodelName
 		)
-	: AbstractGenerator(templateDirPath, outputDirPath + QString("/constraints" + metamodelLanguageName + "/"), logicalModel, errorReporter)
-	, mPathToQReal("/.." + pathToQReal), mMetamodelName(metamodelLanguageName), mConstraintsName(constraintsMetamodelName)
+	: AbstractGenerator(templateDirPath, outputDirPath + QString("/constraints" + constraintsMetamodelName + "/"), logicalModel, errorReporter)
+	, mPathToQReal("../" + pathToQReal), mMetamodelName(metamodelLanguageName), mConstraintsName(constraintsMetamodelName)
 {
 	mPathToQReal.replace("\\", "/");
 }
@@ -41,14 +41,24 @@ QString ConcreateGenerator::constraintModelFullName()
 	return mOutputDirPath;// + "constraints" + mMetamodelName + ".pro";
 }
 
-QString ConcreateGenerator::constraintModelName() //i.e. pliginName
+QString ConcreateGenerator::constraintModelName()
 {
 	return "constraints" + mMetamodelName;
+}
+
+QString ConcreateGenerator::constraintConstraintsModelName() //i.e. pliginName
+{
+	return "constraints" + mConstraintsName;
 }
 
 QString ConcreateGenerator::constraintNormalizerModelName()
 {
 	return NameNormalizer::normalize(constraintModelName(), false);
+}
+
+QString ConcreateGenerator::constraintNormalizerConstraintsModelName() //i.e. normalizerPluginName
+{
+	return NameNormalizer::normalize(constraintConstraintsModelName(), false);
 }
 
 QString ConcreateGenerator::constraintModelId() //i.e. pliginId
@@ -291,7 +301,7 @@ void ConcreateGenerator::generate()
 	resultPluginCPP.replace("@@constraintsPluginId@@", mConstraintsName);
 
 	QString fileBaseName = constraintNormalizerModelName();
-	saveOutputFile(QString(fileBaseName + ".pro"), resultPRO);
+	saveOutputFile(QString(constraintNormalizerConstraintsModelName() + ".pro"), resultPRO);
 	saveOutputFile(QString(fileBaseName+ "Plugin.h"), resultPluginH);
 	saveOutputFile(QString(fileBaseName + "Plugin.cpp"), resultPluginCPP);
 }
@@ -605,7 +615,7 @@ QPair<QString, QString > ConcreateGenerator::countPropertyCharacteristicForConst
 
 	resString += addStr + "bool " + characteristicName + "Res_" + QString::number(depth) + " = " + defaultValue + ";\n";
 
-	if (property.compare("TYPE", Qt::CaseInsensitive) == 0) {
+	if (property.compare("TYPE", Qt::CaseSensitive) == 0) {
 		resString += addStr + "if (" + elementName + " != qReal::Id::rootId()) {\n";
 		resString += addStr + "	" + characteristicName + "Res_" + QString::number(depth) + " = (" + elementName + ".element() " + sign + " \"" + value + "\");\n";
 		resString += addStr + "}\n";

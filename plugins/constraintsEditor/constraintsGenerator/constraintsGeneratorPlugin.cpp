@@ -48,8 +48,8 @@ void ConstraintsGeneratorPlugin::generate()
 		mGenerator.generate(metamodel);
 
 		QString const constraintModelFullName =  mGenerator.constraintModelFullName();
-		QString const constraintModelName = mGenerator.constraintModelName();
-		QString const constraintNormalizerModelName = mGenerator.constraintNormalizerModelName();
+		QString const constraintModelName = mGenerator.constraintConstraintsModelName();
+		QString const constraintNormalizerModelName = mGenerator.constraintNormalizerConstraintsModelName();
 		QString const constraintModelId = mGenerator.constraintModelId();
 
 		QPair<QString, QString> const constraintModelNames = QPair<QString, QString>(constraintModelName, constraintNormalizerModelName);

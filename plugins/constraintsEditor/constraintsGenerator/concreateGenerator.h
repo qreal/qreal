@@ -29,8 +29,10 @@ public:
 	void generate();
 
 	QString constraintModelFullName();
-	QString constraintModelName();//i.e. pluginName
-	QString constraintNormalizerModelName();//i.e. normalizerPluginName
+	QString constraintModelName();
+	QString constraintConstraintsModelName();//i.e. pluginName
+	QString constraintNormalizerModelName(); //i.e. fileBase
+	QString constraintNormalizerConstraintsModelName();//i.e. normalizerPluginName
 	QString constraintModelId();//i.e. pluginId
 
 private :

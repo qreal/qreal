@@ -25,8 +25,8 @@ public:
 	void generate(qReal::Id const &metamodel);
 
 	QString constraintModelFullName();
-	QString constraintModelName();
-	QString constraintNormalizerModelName();
+	QString constraintConstraintsModelName();
+	QString constraintNormalizerConstraintsModelName();
 	QString constraintModelId();
 
 private:
@@ -39,8 +39,8 @@ private:
 	qReal::ErrorReporterInterface *mErrorReporter;
 
 	QString mConstraintModelFullName;
-	QString mConstraintModelName;
-	QString mConstraintNormalizerModelName;
+	QString mConstraintConstraintsModelName;
+	QString mConstraintNormalizerConstraintsModelName;
 	QString mConstraintModelId;
 };
 
