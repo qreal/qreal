@@ -203,6 +203,11 @@ bool ProxyEditorManager::isInterpretationMode() const
 	return mProxyManager->isInterpretationMode();
 }
 
+bool ProxyEditorManager::isParentProperty(Id const &id, QString const &propertyName) const
+{
+	return mProxyManager->isParentProperty(id, propertyName);
+}
+
 //unsupported methods:
 QStringList ProxyEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {

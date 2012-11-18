@@ -24,7 +24,15 @@ void PropertiesDialog::init(EditorManagerInterface* interperterEditorManager, Id
 	foreach (QString propertyName, propertiesNames) {
 		propertiesDisplayedNames << interperterEditorManager->propertyDisplayedName(id, propertyName);
 	}
-	mUi->PropertiesNamesList->setModel(new QStringListModel(propertiesDisplayedNames));
+	mUi->PropertiesNamesList->addItems(propertiesDisplayedNames);
+	mUi->PropertiesNamesList->setWrapping(true);
+	int size = propertiesNames.length();
+	for (int i = 0; i < size; i++) {
+		if (interperterEditorManager->isParentProperty(id, propertiesNames[i])) {
+			mUi->PropertiesNamesList->findItems(propertiesDisplayedNames[i], Qt::MatchFixedString).first()->setFlags(Qt::NoItemFlags);
+		}
+	}
+
 	connect(mUi->cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
 }
 

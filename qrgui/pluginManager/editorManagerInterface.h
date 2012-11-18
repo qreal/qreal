@@ -70,6 +70,7 @@ public:
 	virtual QString diagramName(QString const &editor, QString const &diagram) const = 0;
 	virtual QString diagramNodeName(QString const &editor, QString const &diagram) const = 0;
 	virtual bool isInterpretationMode() const = 0;
+	virtual bool isParentProperty(Id const &id, QString const &propertyName) const = 0;
 	//unsupported methods:
 	virtual QStringList paletteGroups(Id const &editor, Id const &diagram) const = 0;
 	virtual QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const = 0;

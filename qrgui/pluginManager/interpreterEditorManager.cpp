@@ -607,6 +607,12 @@ bool InterpreterEditorManager::isInterpretationMode() const
 	return true;
 }
 
+bool InterpreterEditorManager::isParentProperty(Id const &id, QString const &propertyName) const
+{
+	QStringList propertiesFromParents = getPropertiesFromParents(id, "MetaEntity_Attribute", GetProperty());
+	return propertiesFromParents.contains(propertyName);
+}
+
 //unsupported method
 QStringList InterpreterEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {

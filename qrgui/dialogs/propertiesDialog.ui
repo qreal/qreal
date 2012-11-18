@@ -14,15 +14,15 @@
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QListView" name="PropertiesNamesList"/>
-   </item>
    <item row="1" column="0">
     <widget class="QPushButton" name="cancelButton">
      <property name="text">
       <string>Cancel</string>
      </property>
     </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QListWidget" name="PropertiesNamesList"/>
    </item>
   </layout>
  </widget>

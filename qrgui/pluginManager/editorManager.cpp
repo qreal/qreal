@@ -506,3 +506,8 @@ bool EditorManager::isInterpretationMode() const
 {
 	return false;
 }
+
+bool EditorManager::isParentProperty(Id const &id, QString const &propertyName) const
+{
+	return false;
+}
