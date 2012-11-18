@@ -75,8 +75,8 @@ void Generator::generate(qReal::Id const &metamodel)
 								 , metamodelName, constraintMetamodelName);
 	generator.generate();
 	mConstraintModelFullName = generator.constraintModelFullName();
-	mConstraintModelName = generator.constraintModelName();
-	mConstraintNormalizerModelName = generator.constraintNormalizerModelName();
+	mConstraintConstraintsModelName = generator.constraintConstraintsModelName();
+	mConstraintNormalizerConstraintsModelName = generator.constraintNormalizerConstraintsModelName();
 	mConstraintModelId = generator.constraintModelId();
 }
 
@@ -85,14 +85,14 @@ QString Generator::constraintModelFullName()
 	return mConstraintModelFullName;
 }
 
-QString Generator::constraintModelName()
+QString Generator::constraintConstraintsModelName()
 {
-	return mConstraintModelName;
+	return mConstraintConstraintsModelName;
 }
 
-QString Generator::constraintNormalizerModelName()
+QString Generator::constraintNormalizerConstraintsModelName()
 {
-	return mConstraintNormalizerModelName;
+	return mConstraintNormalizerConstraintsModelName;
 }
 
 QString Generator::constraintModelId()
