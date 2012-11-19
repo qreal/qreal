@@ -10,6 +10,7 @@
 #include "../qrutils/xmlUtils.h"
 #include "diagram.h"
 #include "type.h"
+#include "documentLoader.h"
 
 #include "edgeType.h"
 #include "nodeType.h"
@@ -59,7 +60,7 @@ Editor* XmlCompiler::loadXmlFile(QDir const &currentDir, QString const &inputXml
 	QFileInfo const fileInfo(inputXmlFileName);
 	Q_ASSERT(fileInfo.fileName() == inputXmlFileName);
 
-	QString fullFileName = currentDir.absolutePath() + "/" + inputXmlFileName;
+	QString const fullFileName = currentDir.absolutePath() + "/" + inputXmlFileName;
 	qDebug() << "Loading file started: " << fullFileName;
 
 	if (mEditors.contains(fullFileName)) {
@@ -72,7 +73,10 @@ Editor* XmlCompiler::loadXmlFile(QDir const &currentDir, QString const &inputXml
 			return NULL;
 		}
 	} else {
-		QDomDocument inputXmlDomDocument = xmlUtils::loadDocument(fullFileName);
+		DocumentLoader *loader = new DocumentLoader;
+		QDomDocument inputXmlDomDocument = loader->load(QFileInfo(fullFileName));
+		delete loader;
+
 		Editor *editor = new Editor(inputXmlDomDocument, this);
 		if (!editor->load(currentDir)) {
 			qDebug() << "ERROR: Failed to load file";

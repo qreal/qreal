@@ -1,0 +1,91 @@
+    <widget-template>
+	<Root layout="NoLayout">
+	    <Label layout="NoLayout">
+		<property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+		<property propertyName="enabled" type="Bool" value="true"/>
+		<property width="39" propertyName="geometry" x="4" y="52" height="20" type="Rect"/>
+		<property width="10" propertyName="minimumSize" height="10" type="Size"/>
+		<property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+		<property propertyName="transparent" type="Bool" value="true"/>
+		<property propertyName="frameShape" type="enum" value="0"/>
+		<property propertyName="toolTip" type="String" value=""/>
+		<property propertyName="frameShadow" type="enum" value="16"/>
+		<property propertyName="lineWidth" type="Int" value="1"/>
+		<property propertyName="indent" type="Int" value="-1"/>
+		<property propertyName="midLineWidth" type="Int" value="0"/>
+		<property propertyName="text" type="String" value="Порт:"/>
+		<property propertyName="textFormat" type="enum" value="2"/>
+		<property propertyName="alignment" type="Int" value="129"/>
+		<property propertyName="margin" type="Int" value="0"/>
+		<property propertyName="openExternalLinks" type="Bool" value="false"/>
+		<property propertyName="scaledContents" type="Bool" value="false"/>
+		<property propertyName="binding" type="String" value=""/>
+		<property propertyName="wordWrap" type="Bool" value="false"/>
+	    </Label>
+	    <Label layout="NoLayout">
+		<property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+		<property propertyName="enabled" type="Bool" value="true"/>
+		<property width="40" propertyName="geometry" x="4" y="80" height="20" type="Rect"/>
+		<property width="10" propertyName="minimumSize" height="10" type="Size"/>
+		<property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+		<property propertyName="transparent" type="Bool" value="true"/>
+		<property propertyName="frameShape" type="enum" value="0"/>
+		<property propertyName="toolTip" type="String" value=""/>
+		<property propertyName="frameShadow" type="enum" value="16"/>
+		<property propertyName="lineWidth" type="Int" value="1"/>
+		<property propertyName="indent" type="Int" value="-1"/>
+		<property propertyName="midLineWidth" type="Int" value="0"/>
+		<property propertyName="text" type="String" value="Цвет:"/>
+		<property propertyName="textFormat" type="enum" value="2"/>
+		<property propertyName="alignment" type="Int" value="129"/>
+		<property propertyName="margin" type="Int" value="0"/>
+		<property propertyName="openExternalLinks" type="Bool" value="false"/>
+		<property propertyName="scaledContents" type="Bool" value="false"/>
+		<property propertyName="binding" type="String" value=""/>
+		<property propertyName="wordWrap" type="Bool" value="false"/>
+	    </Label>
+	    <ComboBox>
+		<property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+		<property propertyName="enabled" type="Bool" value="true"/>
+		<property width="97" propertyName="geometry" x="51" y="77" height="27" type="Rect"/>
+		<property width="0" propertyName="minimumSize" height="0" type="Size"/>
+		<property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+		<property propertyName="transparent" type="Bool" value="true"/>
+		<property propertyName="duplicatesEnabled" type="Bool" value="false"/>
+		<property propertyName="editable" type="Bool" value="false"/>
+		<property propertyName="frame" type="Bool" value="true"/>
+		<property propertyName="toolTip" type="String" value=""/>
+		<property propertyName="maxCount" type="Int" value="2147483647"/>
+		<property propertyName="maxVisibleItems" type="Int" value="10"/>
+		<property propertyName="minimumContentsLength" type="Int" value="0"/>
+		<property propertyName="sizeAdjustPolicy" type="enum" value="1"/>
+		<property propertyName="binding" type="String" value="Color"/>
+	    </ComboBox>
+	    <ComboBox>
+		<property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+		<property propertyName="enabled" type="Bool" value="true"/>
+		<property width="97" propertyName="geometry" x="51" y="48" height="27" type="Rect"/>
+		<property width="0" propertyName="minimumSize" height="0" type="Size"/>
+		<property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+		<property propertyName="transparent" type="Bool" value="true"/>
+		<property propertyName="duplicatesEnabled" type="Bool" value="false"/>
+		<property propertyName="editable" type="Bool" value="false"/>
+		<property propertyName="frame" type="Bool" value="true"/>
+		<property propertyName="toolTip" type="String" value=""/>
+		<property propertyName="maxCount" type="Int" value="2147483647"/>
+		<property propertyName="maxVisibleItems" type="Int" value="10"/>
+		<property propertyName="minimumContentsLength" type="Int" value="0"/>
+		<property propertyName="sizeAdjustPolicy" type="enum" value="1"/>
+		<property propertyName="binding" type="String" value="Port"/>
+	    </ComboBox>
+	    <property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+	    <property propertyName="enabled" type="Bool" value="true"/>
+	    <property width="165" propertyName="geometry" x="0" y="0" height="110" type="Rect"/>
+	    <property width="0" propertyName="minimumSize" height="0" type="Size"/>
+	    <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+	    <property propertyName="transparent" type="Bool" value="true"/>
+	    <property propertyName="shapeXml" type="String" value="&lt;picture sizex=&quot;165&quot; sizey=&quot;110&quot;>&#xa;    &lt;rectangle fill=&quot;#ffffff&quot; stroke-style=&quot;none&quot; stroke=&quot;#000000&quot; y1=&quot;0&quot; stroke-width=&quot;0&quot; x1=&quot;0&quot; y2=&quot;109&quot; fill-style=&quot;none&quot; x2=&quot;164&quot;/>&#xa;    &lt;image y1=&quot;0&quot; name=&quot;images/waitForColorBlock.png&quot; x1=&quot;57&quot; y2=&quot;50&quot; x2=&quot;107&quot;/>&#xa;&lt;/picture>&#xa;"/>
+	    <property propertyName="toolTip" type="String" value=""/>
+	</Root>
+    </widget-template>
+

@@ -1,0 +1,142 @@
+    <widget-template>
+	<Root layout="NoLayout">
+	    <Label layout="NoLayout">
+		<property propertyName="lineWidth" type="Int" value="1"/>
+		<property propertyName="midLineWidth" type="Int" value="0"/>
+		<property propertyName="alignment" type="Int" value="129"/>
+		<property propertyName="text" type="String" value="Мощность:"/>
+		<property propertyName="indent" type="Int" value="-1"/>
+		<property propertyName="margin" type="Int" value="0"/>
+		<property propertyName="openExternalLinks" type="Bool" value="false"/>
+		<property propertyName="scaledContents" type="Bool" value="false"/>
+		<property propertyName="textFormat" type="enum" value="2"/>
+		<property propertyName="frameShape" type="enum" value="0"/>
+		<property propertyName="frameShadow" type="enum" value="16"/>
+		<property width="10" propertyName="minimumSize" height="10" type="Size"/>
+		<property width="82" propertyName="geometry" x="4" y="87" height="20" type="Rect"/>
+		<property propertyName="wordWrap" type="Bool" value="false"/>
+		<property propertyName="binding" type="String" value=""/>
+		<property propertyName="transparent" type="Bool" value="true"/>
+		<property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+		<property propertyName="toolTip" type="String" value=""/>
+		<property propertyName="enabled" type="Bool" value="true"/>
+		<property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+	    </Label>
+	    <SpinBox>
+		<property width="82" propertyName="geometry" x="134" y="81" height="27" type="Rect"/>
+		<property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+		<property width="0" propertyName="minimumSize" height="0" type="Size"/>
+		<property propertyName="specialValueText" type="String" value=""/>
+		<property propertyName="suffix" type="String" value="%"/>
+		<property propertyName="prefix" type="String" value=""/>
+		<property propertyName="singleStep" type="Int" value="1"/>
+		<property propertyName="value" type="Int" value="100"/>
+		<property propertyName="binding" type="String" value="Power"/>
+		<property propertyName="enabled" type="Bool" value="true"/>
+		<property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+		<property propertyName="transparent" type="Bool" value="true"/>
+		<property propertyName="accelerated" type="Bool" value="false"/>
+		<property propertyName="correctionMode" type="enum" value="0"/>
+		<property propertyName="toolTip" type="String" value=""/>
+		<property propertyName="hasButtons" type="Bool" value="true"/>
+		<property propertyName="accelerated" type="Bool" value="false"/>
+		<property propertyName="readonly" type="Bool" value="false"/>
+		<property propertyName="wrapping" type="Bool" value="false"/>
+		<property propertyName="maximum" type="Int" value="100"/>
+		<property propertyName="minimum" type="Int" value="0"/>
+	    </SpinBox>
+	    <Label layout="NoLayout">
+		<property width="10" propertyName="minimumSize" height="10" type="Size"/>
+		<property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+		<property propertyName="transparent" type="Bool" value="true"/>
+		<property propertyName="frameShape" type="enum" value="0"/>
+		<property propertyName="alignment" type="Int" value="129"/>
+		<property propertyName="margin" type="Int" value="0"/>
+		<property propertyName="openExternalLinks" type="Bool" value="false"/>
+		<property propertyName="scaledContents" type="Bool" value="false"/>
+		<property propertyName="midLineWidth" type="Int" value="0"/>
+		<property propertyName="indent" type="Int" value="-1"/>
+		<property propertyName="text" type="String" value="Предел оборотов:"/>
+		<property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+		<property propertyName="wordWrap" type="Bool" value="false"/>
+		<property propertyName="textFormat" type="enum" value="2"/>
+		<property propertyName="binding" type="String" value=""/>
+		<property propertyName="enabled" type="Bool" value="true"/>
+		<property propertyName="toolTip" type="String" value=""/>
+		<property propertyName="frameShadow" type="enum" value="16"/>
+		<property propertyName="lineWidth" type="Int" value="1"/>
+		<property width="117" propertyName="geometry" x="4" y="115" height="20" type="Rect"/>
+	    </Label>
+	    <SpinBox>
+		<property propertyName="enabled" type="Bool" value="true"/>
+		<property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+		<property width="0" propertyName="minimumSize" height="0" type="Size"/>
+		<property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+		<property propertyName="transparent" type="Bool" value="true"/>
+		<property propertyName="accelerated" type="Bool" value="false"/>
+		<property propertyName="correctionMode" type="enum" value="0"/>
+		<property propertyName="toolTip" type="String" value=""/>
+		<property propertyName="hasButtons" type="Bool" value="true"/>
+		<property propertyName="accelerated" type="Bool" value="false"/>
+		<property propertyName="readonly" type="Bool" value="false"/>
+		<property propertyName="wrapping" type="Bool" value="false"/>
+		<property propertyName="maximum" type="Int" value="2147483647"/>
+		<property propertyName="specialValueText" type="String" value=""/>
+		<property propertyName="minimum" type="Int" value="0"/>
+		<property propertyName="singleStep" type="Int" value="1"/>
+		<property propertyName="prefix" type="String" value=""/>
+		<property propertyName="value" type="Int" value="0"/>
+		<property propertyName="suffix" type="String" value=" град"/>
+		<property propertyName="binding" type="String" value="TachoLimit"/>
+		<property width="82" propertyName="geometry" x="134" y="110" height="27" type="Rect"/>
+	    </SpinBox>
+	    <Label layout="NoLayout">
+		<property propertyName="frameShape" type="enum" value="0"/>
+		<property propertyName="toolTip" type="String" value=""/>
+		<property propertyName="frameShadow" type="enum" value="16"/>
+		<property propertyName="lineWidth" type="Int" value="1"/>
+		<property propertyName="midLineWidth" type="Int" value="0"/>
+		<property propertyName="indent" type="Int" value="-1"/>
+		<property propertyName="text" type="String" value="Режим торможения:"/>
+		<property propertyName="binding" type="String" value=""/>
+		<property propertyName="enabled" type="Bool" value="true"/>
+		<property propertyName="alignment" type="Int" value="129"/>
+		<property propertyName="margin" type="Int" value="0"/>
+		<property propertyName="openExternalLinks" type="Bool" value="false"/>
+		<property propertyName="scaledContents" type="Bool" value="false"/>
+		<property propertyName="wordWrap" type="Bool" value="false"/>
+		<property propertyName="textFormat" type="enum" value="2"/>
+		<property width="131" propertyName="geometry" x="4" y="142" height="20" type="Rect"/>
+		<property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+		<property width="10" propertyName="minimumSize" height="10" type="Size"/>
+		<property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+		<property propertyName="transparent" type="Bool" value="true"/>
+	    </Label>
+	    <ComboBox>
+		<property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+		<property propertyName="toolTip" type="String" value=""/>
+		<property width="0" propertyName="minimumSize" height="0" type="Size"/>
+		<property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+		<property propertyName="transparent" type="Bool" value="true"/>
+		<property propertyName="duplicatesEnabled" type="Bool" value="false"/>
+		<property propertyName="editable" type="Bool" value="true"/>
+		<property propertyName="frame" type="Bool" value="true"/>
+		<property propertyName="maxCount" type="Int" value="2147483647"/>
+		<property propertyName="maxVisibleItems" type="Int" value="10"/>
+		<property propertyName="minimumContentsLength" type="Int" value="0"/>
+		<property propertyName="sizeAdjustPolicy" type="enum" value="1"/>
+		<property width="82" propertyName="geometry" x="134" y="137" height="27" type="Rect"/>
+		<property propertyName="enabled" type="Bool" value="true"/>
+		<property propertyName="binding" type="String" value="BrakeMode"/>
+	    </ComboBox>
+	    <property width="225" propertyName="geometry" x="0" y="0" height="170" type="Rect"/>
+	    <property propertyName="enabled" type="Bool" value="true"/>
+	    <property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+	    <property width="0" propertyName="minimumSize" height="0" type="Size"/>
+	    <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+	    <property propertyName="transparent" type="Bool" value="true"/>
+	    <property propertyName="shapeXml" type="String" value="&lt;picture sizex=&quot;226&quot; sizey=&quot;169&quot;>&#xa;    &lt;rectangle fill=&quot;#ffffff&quot; stroke-style=&quot;none&quot; stroke=&quot;#000000&quot; y1=&quot;1&quot; stroke-width=&quot;0&quot; x1=&quot;0&quot; y2=&quot;169&quot; fill-style=&quot;none&quot; x2=&quot;224&quot;/>&#xa;    &lt;image y1=&quot;0&quot; name=&quot;images/enginesBackwardBlock.png&quot; x1=&quot;87&quot; y2=&quot;50&quot; x2=&quot;137&quot;/>&#xa;&lt;/picture>&#xa;"/>
+	    <property propertyName="toolTip" type="String" value=""/>
+	</Root>
+    </widget-template>
+
