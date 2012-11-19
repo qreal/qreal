@@ -1789,12 +1789,21 @@
     <message>
         <location filename="dialogs/propertiesDialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished">Настройки робота</translation>
+        <translation>Свойства </translation>
     </message>
     <message>
         <location filename="dialogs/propertiesDialog.ui" line="23"/>
+        <source>Delete</source>
+        <translation>Удалить</translation>
+    </message>
+    <message>
+        <location filename="dialogs/propertiesDialog.ui" line="30"/>
+        <source>Close</source>
+        <translation>Закрыть</translation>
+    </message>
+    <message>
         <source>Cancel</source>
-        <translation>Отмена</translation>
+        <translation type="obsolete">Отмена</translation>
     </message>
 </context>
 <context>
@@ -3440,6 +3449,14 @@
     </message>
 </context>
 <context>
+    <name>qReal::gui::DraggableElement</name>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="98"/>
+        <source>Change Properties</source>
+        <translation>Изменить свойства</translation>
+    </message>
+</context>
+<context>
     <name>qReal::gui::ErrorReporter</name>
     <message>
         <location filename="mainwindow/errorReporter.cpp" line="149"/>
@@ -3465,22 +3482,21 @@
 <context>
     <name>qReal::gui::PaletteTree</name>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="89"/>
         <source>Change Properties</source>
-        <translation>Изменить свойства</translation>
+        <translation type="obsolete">Изменить свойства</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="368"/>
+        <location filename="mainwindow/paletteTree.cpp" line="257"/>
         <source>Expand all</source>
         <translation>Развернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="376"/>
+        <location filename="mainwindow/paletteTree.cpp" line="265"/>
         <source>Collapse all</source>
         <translation>Свернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="384"/>
+        <location filename="mainwindow/paletteTree.cpp" line="273"/>
         <source>Change representation</source>
         <translation>Изменить представление</translation>
     </message>

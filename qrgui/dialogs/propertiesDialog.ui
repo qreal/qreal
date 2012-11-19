@@ -6,23 +6,30 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>371</width>
+    <height>317</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QListWidget" name="PropertiesNamesList"/>
+   </item>
    <item row="1" column="0">
-    <widget class="QPushButton" name="cancelButton">
+    <widget class="QPushButton" name="deleteButton">
      <property name="text">
-      <string>Cancel</string>
+      <string>Delete</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="0">
-    <widget class="QListWidget" name="PropertiesNamesList"/>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="closeButton">
+     <property name="text">
+      <string>Close</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

@@ -511,3 +511,7 @@ bool EditorManager::isParentProperty(Id const &id, QString const &propertyName) 
 {
 	return false;
 }
+void EditorManager::deleteProperty(QString const &propDisplayedName) const
+{
+	return;
+}

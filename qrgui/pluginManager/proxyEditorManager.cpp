@@ -208,6 +208,10 @@ bool ProxyEditorManager::isParentProperty(Id const &id, QString const &propertyN
 	return mProxyManager->isParentProperty(id, propertyName);
 }
 
+void ProxyEditorManager::deleteProperty(QString const &propDisplayedName) const
+{
+	mProxyManager->deleteProperty(propDisplayedName);
+}
 //unsupported methods:
 QStringList ProxyEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {

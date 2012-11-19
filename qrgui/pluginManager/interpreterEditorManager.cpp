@@ -613,6 +613,27 @@ bool InterpreterEditorManager::isParentProperty(Id const &id, QString const &pro
 	return propertiesFromParents.contains(propertyName);
 }
 
+void InterpreterEditorManager::deleteProperty(QString const &propDisplayedName) const
+{
+	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
+		foreach (Id editor, repo->elementsByType("MetamodelDiagram")) {
+			foreach (Id diagram, repo->children(editor)) {
+				if (repo->isLogicalElement(diagram)) {
+					foreach (Id element, repo->children(diagram)) {
+						foreach (Id property, repo->children(element)) {
+							if (property.element() == "MetaEntity_Attribute") {
+								Id const &elementModel = Id(repo->name(editor), repo->name(diagram), repo->name(element));
+								if (propertyDisplayedName(elementModel, repo->name(property)) == propDisplayedName) {
+									repo->removeChild(element, property);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
 //unsupported method
 QStringList InterpreterEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {

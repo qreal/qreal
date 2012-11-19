@@ -82,6 +82,7 @@ namespace qReal {
 		QString diagramNodeName(QString const &editor, QString const &diagram) const;
 		bool isInterpretationMode() const;
 		bool isParentProperty(Id const &id, QString const &propertyName) const;
+		void deleteProperty(QString const &propDisplayedName) const;
 	private:
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;

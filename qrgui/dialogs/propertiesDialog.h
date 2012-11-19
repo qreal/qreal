@@ -18,9 +18,11 @@ public:
 	~PropertiesDialog();
 	void init(EditorManagerInterface* interperterEditorManager, Id const &id);
 private slots:
-	void cancel();
+	void closeDialog();
+	void deleteProperty();
 
 private:
 	Ui::PropertiesDialog *mUi;
+	EditorManagerInterface *mInterperterEditorManager;
 };
 }
