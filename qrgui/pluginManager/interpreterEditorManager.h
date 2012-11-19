@@ -77,6 +77,7 @@ public:
 	bool isInterpretationMode() const;
 
 	bool isParentProperty(Id const &id, QString const &propertyName) const;
+	void deletePropertyInElement(qrRepo::RepoApi *repo, Id const &editor, Id const &diagram, QString const &propDisplayedName) const;
 	void deleteProperty(QString const &propDisplayedName) const;
 	//unsupported methods:
 	QStringList paletteGroups(Id const &editor, Id const &diagram) const;

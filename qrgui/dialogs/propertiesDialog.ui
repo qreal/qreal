@@ -14,20 +14,27 @@
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+   <item row="0" column="0" colspan="2">
     <widget class="QListWidget" name="PropertiesNamesList"/>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="2">
+    <widget class="QPushButton" name="closeButton">
+     <property name="text">
+      <string>Close</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
     <widget class="QPushButton" name="deleteButton">
      <property name="text">
       <string>Delete</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QPushButton" name="closeButton">
+   <item row="2" column="0">
+    <widget class="QPushButton" name="addButton">
      <property name="text">
-      <string>Close</string>
+      <string>Add</string>
      </property>
     </widget>
    </item>
