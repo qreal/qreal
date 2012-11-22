@@ -72,6 +72,7 @@ public:
 	virtual bool isInterpretationMode() const = 0;
 	virtual bool isParentProperty(Id const &id, QString const &propertyName) const = 0;
 	virtual void deleteProperty(QString const &propDisplayedName) const = 0;
+	virtual void addProperty(Id const &id, QString const &propDisplayedName) const = 0;
 	//unsupported methods:
 	virtual QStringList paletteGroups(Id const &editor, Id const &diagram) const = 0;
 	virtual QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const = 0;

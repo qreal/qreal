@@ -20,9 +20,10 @@ public:
 private slots:
 	void closeDialog();
 	void deleteProperty();
-
+	void addProperty();
 private:
 	Ui::PropertiesDialog *mUi;
 	EditorManagerInterface *mInterperterEditorManager;
+	Id mId;
 };
 }

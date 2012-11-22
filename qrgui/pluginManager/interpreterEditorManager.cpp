@@ -639,6 +639,15 @@ void InterpreterEditorManager::deleteProperty(QString const &propDisplayedName) 
 		}
 	}
 }
+
+void InterpreterEditorManager::addProperty(Id const &id, QString const &propDisplayedName) const
+{
+	QPair<qrRepo::RepoApi*, Id> repoAndMetaId = getRepoAndMetaId(id);
+	Id newId = Id(repoAndMetaId.second.editor(), repoAndMetaId.second.diagram(), "MetaEntity_Attribute", QUuid::createUuid().toString());
+	repoAndMetaId.first->addChild(repoAndMetaId.second, newId);
+	repoAndMetaId.first->setProperty(newId, "name", propDisplayedName);
+	repoAndMetaId.first->setProperty(newId, "displayedName", propDisplayedName);
+}
 //unsupported method
 QStringList InterpreterEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {

@@ -1792,12 +1792,17 @@
         <translation>Свойства </translation>
     </message>
     <message>
-        <location filename="dialogs/propertiesDialog.ui" line="23"/>
+        <location filename="dialogs/propertiesDialog.ui" line="30"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="dialogs/propertiesDialog.ui" line="30"/>
+        <location filename="dialogs/propertiesDialog.ui" line="37"/>
+        <source>Add</source>
+        <translation>Добавить</translation>
+    </message>
+    <message>
+        <location filename="dialogs/propertiesDialog.ui" line="23"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
@@ -3363,9 +3368,30 @@
 <context>
     <name>qReal::PropertiesDialog</name>
     <message>
-        <location filename="dialogs/propertiesDialog.cpp" line="12"/>
+        <location filename="dialogs/propertiesDialog.cpp" line="24"/>
         <source>Properties</source>
         <translation>Свойства</translation>
+    </message>
+    <message>
+        <location filename="dialogs/propertiesDialog.cpp" line="62"/>
+        <source>New property</source>
+        <oldsource>New property:</oldsource>
+        <translation>Новое свойство</translation>
+    </message>
+    <message>
+        <location filename="dialogs/propertiesDialog.cpp" line="62"/>
+        <source>Enter the property name:</source>
+        <translation>Введите имя свойства:</translation>
+    </message>
+    <message>
+        <location filename="dialogs/propertiesDialog.cpp" line="67"/>
+        <source>Error</source>
+        <translation>Ошибка</translation>
+    </message>
+    <message>
+        <location filename="dialogs/propertiesDialog.cpp" line="67"/>
+        <source>The property name can not be empty!</source>
+        <translation>Имя свойства не может быть пустым!</translation>
     </message>
 </context>
 <context>

@@ -212,6 +212,11 @@ void ProxyEditorManager::deleteProperty(QString const &propDisplayedName) const
 {
 	mProxyManager->deleteProperty(propDisplayedName);
 }
+
+void ProxyEditorManager::addProperty(Id const &id, QString const &propDisplayedName) const
+{
+	mProxyManager->addProperty(id, propDisplayedName);
+}
 //unsupported methods:
 QStringList ProxyEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {
