@@ -13,6 +13,7 @@ HEADERS += \
 	details/d2RobotModel/stylusItem.h \
 	details/d2RobotModel/lineItem.h \
 	details/d2RobotModel/colorFieldItem.h \
+	details/d2RobotModel/ellipseItem.h \
 
 SOURCES += \
 	details/d2RobotModel/d2ModelWidget.cpp \
@@ -28,3 +29,4 @@ SOURCES += \
 	details/d2RobotModel/stylusItem.cpp \
 	details/d2RobotModel/lineItem.cpp \
 	details/d2RobotModel/colorFieldItem.cpp \
+	details/d2RobotModel/ellipseItem.cpp \
