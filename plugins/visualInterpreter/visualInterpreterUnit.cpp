@@ -198,6 +198,7 @@ void VisualInterpreterUnit::interpret()
 	}
 	if (!hasRuleSyntaxError()) {
 		report(tr("No rule cannot be applied"), false);
+		mInterpretersInterface.dehighlight();
 	}
 }
 
@@ -550,7 +551,8 @@ void VisualInterpreterUnit::processPythonInterpreterStdOutput(QHash<QPair<QStrin
 			value = value.toLower();
 		}
 
-		setProperty(mMatches.first().value(mPythonGenerator->idByName(elemName)), propName, value);
+		setProperty(mMatches.first().value(mPythonGenerator->idByName(elemName))
+				, propName, QString::fromUtf8(value.toAscii()));
 	}
 }
 

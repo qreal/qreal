@@ -32,8 +32,8 @@ codeFile = open(absPath, 'r')
 code = codeFile.read()
 
 if code.find(partInitCode) == -1:
-  code.replace("@@INITHOOKS@@", initCode + "@@INITHOOKS@@")
-  code.replace("@@TERMINATEHOOKS@@", terminateCode + "@@TERMINATEHOOKS@@")
+  code = code.replace("@@INITHOOKS@@", initCode + "@@INITHOOKS@@")
+  code = code.replace("@@TERMINATEHOOKS@@", terminateCode + "@@TERMINATEHOOKS@@")
 
 code = code.replace("@@CODE@@", waitForColorBlockCode + "@@CODE@@")
 
