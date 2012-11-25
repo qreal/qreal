@@ -21,7 +21,9 @@ private slots:
 	void closeDialog();
 	void deleteProperty();
 	void addProperty();
+	void changeProperty();
 private:
+	void change(QString const &text);
 	Ui::PropertiesDialog *mUi;
 	EditorManagerInterface *mInterperterEditorManager;
 	Id mId;

@@ -18,7 +18,8 @@ HEADERS += \
 	dialogs/managedClosableDialog.h \
 	dialogs/progressDialog/progressBar.h \
 	dialogs/progressDialog/progressDialog.h \
-	dialogs/propertiesDialog.h
+	dialogs/propertiesDialog.h \
+    dialogs/editPropertiesDialog.h
 
 SOURCES += \
 	dialogs/plugindialog.cpp \
@@ -39,7 +40,8 @@ SOURCES += \
 	dialogs/managedClosableDialog.cpp \
 	dialogs/progressDialog/progressBar.cpp \
 	dialogs/progressDialog/progressDialog.cpp \
-	dialogs/propertiesDialog.cpp
+	dialogs/propertiesDialog.cpp \
+    dialogs/editPropertiesDialog.cpp
 
 FORMS += \
 	dialogs/editorGeneratorDialog.ui \
@@ -51,4 +53,8 @@ FORMS += \
 	dialogs/preferencesPages/behaviourPage.ui \
 	dialogs/preferencesPages/featuresPage.ui \
 	dialogs/findReplaceDialog.ui \
-	dialogs/propertiesDialog.ui
+	dialogs/propertiesDialog.ui \
+    dialogs/editPropertiesDialog.ui
+
+
+

@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include "propertiesDialog.h"
 #include "ui_propertiesDialog.h"
+#include "editPropertiesDialog.h"
 
 using namespace qReal;
 
@@ -40,6 +41,7 @@ void PropertiesDialog::init(EditorManagerInterface* interperterEditorManager, Id
 	connect(mUi->closeButton, SIGNAL(clicked()), this, SLOT(closeDialog()));
 	connect(mUi->deleteButton, SIGNAL(clicked()), this, SLOT(deleteProperty()));
 	connect(mUi->addButton, SIGNAL(clicked()), this, SLOT(addProperty()));
+	connect(mUi->changeButton, SIGNAL(clicked()), this, SLOT(changeProperty()));
 }
 
 void PropertiesDialog::closeDialog()
@@ -57,17 +59,36 @@ void PropertiesDialog::deleteProperty()
 	mInterperterEditorManager->deleteProperty(propDisplayedName);
 }
 
+void PropertiesDialog::change(QString const &text)
+{
+	EditPropertiesDialog *editPropertiesDialog = new EditPropertiesDialog();
+	editPropertiesDialog->init(mUi->PropertiesNamesList->item(mUi->PropertiesNamesList->currentRow()), mInterperterEditorManager, mId, text);
+	editPropertiesDialog->setModal(true);
+	editPropertiesDialog->show();
+}
+
 void PropertiesDialog::addProperty()
 {
 	bool ok;
-	QString text = QInputDialog::getText(this, tr("New property"), tr("Enter the property name:"), QLineEdit::Normal, QString::null, &ok);
+	mUi->PropertiesNamesList->setCurrentItem(NULL);
+	QString const text = QInputDialog::getText(this, tr("New property"), tr("Enter the property name:"), QLineEdit::Normal, QString::null, &ok);
 	if (ok) {
 		if (!text.isEmpty()) {
 			mUi->PropertiesNamesList->addItem(text);
+			mInterperterEditorManager->addProperty(mId, text);
+			change(text);
 		} else {
 			QMessageBox::critical(this, tr("Error"), tr("The property name can not be empty!"));
 			addProperty();
 		}
 	}
-	mInterperterEditorManager->addProperty(mId, text);
+}
+
+void PropertiesDialog::changeProperty()
+{
+	if (mUi->PropertiesNamesList->selectedItems().isEmpty()) {
+		return;
+	}
+	QString const &propDisplayedName = mUi->PropertiesNamesList->item(mUi->PropertiesNamesList->currentRow())->text();
+	change(propDisplayedName);
 }

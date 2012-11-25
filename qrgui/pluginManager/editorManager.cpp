@@ -513,11 +513,15 @@ bool EditorManager::isParentProperty(Id const &id, QString const &propertyName) 
 }
 
 void EditorManager::deleteProperty(QString const &propDisplayedName) const
-{
-	return;
-}
+{}
 
 void EditorManager::addProperty(Id const &id, QString const &propDisplayedName) const
+{}
+
+void EditorManager::updateProperties(Id const &id, QString const &property, QString const &propertyType, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const
+{}
+
+QString EditorManager::getPropertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const
 {
-	return;
+	return "";
 }

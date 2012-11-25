@@ -255,6 +255,42 @@
     </message>
 </context>
 <context>
+    <name>EditPropertiesDialog</name>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.ui" line="14"/>
+        <source>Dialog</source>
+        <translation>Редактирование свойств</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.ui" line="20"/>
+        <source>name: *</source>
+        <oldsource>name: </oldsource>
+        <translation>Имя: *</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.ui" line="30"/>
+        <source>attributeType: *</source>
+        <oldsource>attributeType:</oldsource>
+        <translation>Тип: *</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.ui" line="40"/>
+        <source>defaultValue: </source>
+        <oldsource>defaultValue:</oldsource>
+        <translation>Значение:</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.ui" line="57"/>
+        <source>* Need to be filled</source>
+        <translation>* Обязательно для заполнения</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.ui" line="50"/>
+        <source>OK</source>
+        <translation>ОК</translation>
+    </message>
+</context>
+<context>
     <name>EditorForm</name>
     <message>
         <source>Form</source>
@@ -1802,6 +1838,11 @@
         <translation>Добавить</translation>
     </message>
     <message>
+        <location filename="dialogs/propertiesDialog.ui" line="44"/>
+        <source>Change</source>
+        <translation>Изменить</translation>
+    </message>
+    <message>
         <location filename="dialogs/propertiesDialog.ui" line="23"/>
         <source>Close</source>
         <translation>Закрыть</translation>
@@ -2997,6 +3038,28 @@
     </message>
 </context>
 <context>
+    <name>qReal::EditPropertiesDialog</name>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="29"/>
+        <source>Error</source>
+        <translation>Ошибка</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="29"/>
+        <source>All required properties should be filled!</source>
+        <translation>Все обязательные свойства должны быть заполнены!</translation>
+    </message>
+    <message>
+        <source>All properties should be filled!</source>
+        <translation type="obsolete">Необходимо заполнить все свойства!</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="45"/>
+        <source>Properties editor</source>
+        <translation>Редактирование свойств</translation>
+    </message>
+</context>
+<context>
     <name>qReal::ListWidget</name>
     <message>
         <location filename="dialogs/startDialog/listWidget.cpp" line="10"/>
@@ -3368,28 +3431,28 @@
 <context>
     <name>qReal::PropertiesDialog</name>
     <message>
-        <location filename="dialogs/propertiesDialog.cpp" line="24"/>
+        <location filename="dialogs/propertiesDialog.cpp" line="26"/>
         <source>Properties</source>
         <translation>Свойства</translation>
     </message>
     <message>
-        <location filename="dialogs/propertiesDialog.cpp" line="62"/>
+        <location filename="dialogs/propertiesDialog.cpp" line="73"/>
         <source>New property</source>
         <oldsource>New property:</oldsource>
         <translation>Новое свойство</translation>
     </message>
     <message>
-        <location filename="dialogs/propertiesDialog.cpp" line="62"/>
+        <location filename="dialogs/propertiesDialog.cpp" line="73"/>
         <source>Enter the property name:</source>
         <translation>Введите имя свойства:</translation>
     </message>
     <message>
-        <location filename="dialogs/propertiesDialog.cpp" line="67"/>
+        <location filename="dialogs/propertiesDialog.cpp" line="80"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="dialogs/propertiesDialog.cpp" line="67"/>
+        <location filename="dialogs/propertiesDialog.cpp" line="80"/>
         <source>The property name can not be empty!</source>
         <translation>Имя свойства не может быть пустым!</translation>
     </message>

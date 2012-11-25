@@ -84,6 +84,8 @@ namespace qReal {
 		bool isParentProperty(Id const &id, QString const &propertyName) const;
 		void deleteProperty(QString const &propDisplayedName) const;
 		void addProperty(Id const &id, QString const &propDisplayedName) const;
+		void updateProperties(Id const &id, QString const &property, QString const &propertyType, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const;
+		QString getPropertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const;
 	private:
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;

@@ -217,6 +217,16 @@ void ProxyEditorManager::addProperty(Id const &id, QString const &propDisplayedN
 {
 	mProxyManager->addProperty(id, propDisplayedName);
 }
+
+void ProxyEditorManager::updateProperties(Id const &id, QString const &property, QString const &propertyType, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const
+{
+	mProxyManager->updateProperties(id, property, propertyType, propertyDefaultValue, propertyDisplayedName);
+}
+
+QString ProxyEditorManager::getPropertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const
+{
+	return mProxyManager->getPropertyNameByDisplayedName(id, displayedPropertyName);
+}
 //unsupported methods:
 QStringList ProxyEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {

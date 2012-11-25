@@ -281,7 +281,9 @@ QString InterpreterEditorManager::getValueOfProperty(Id const &id, QString const
 	}
 	foreach (Id property, repo->children(metaId)) {
 		if (repo->name(property) == propertyName) {
-			valueOfProperty = repo->stringProperty(property, value);
+			if (repo->hasProperty(property, value)) {
+				valueOfProperty = repo->stringProperty(property, value);
+			}
 		}
 	}
 	return valueOfProperty;
@@ -647,6 +649,37 @@ void InterpreterEditorManager::addProperty(Id const &id, QString const &propDisp
 	repoAndMetaId.first->addChild(repoAndMetaId.second, newId);
 	repoAndMetaId.first->setProperty(newId, "name", propDisplayedName);
 	repoAndMetaId.first->setProperty(newId, "displayedName", propDisplayedName);
+}
+
+void InterpreterEditorManager::setProperty(qrRepo::RepoApi* repo, Id const &id, QString const &property, QVariant const &propertyValue) const
+{
+	repo->setProperty(id, property, propertyValue);
+}
+
+void InterpreterEditorManager::updateProperties(Id const &id, QString const &property, QString const &propertyType, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const
+{
+	QPair<qrRepo::RepoApi*, Id> repoAndMetaId = getRepoAndMetaId(id);
+	Id propertyMetaId;
+	foreach (Id prop, repoAndMetaId.first->children(repoAndMetaId.second)) {
+		if (prop.element() == "MetaEntity_Attribute" && repoAndMetaId.first->name(prop) == property) {
+			propertyMetaId = prop;
+		}
+	}
+	setProperty(repoAndMetaId.first, propertyMetaId, "attributeType", propertyType);
+	setProperty(repoAndMetaId.first, propertyMetaId, "defaultValue", propertyDefaultValue);
+	setProperty(repoAndMetaId.first, propertyMetaId, "displayedName", propertyDisplayedName);
+}
+
+QString InterpreterEditorManager::getPropertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const
+{
+	QString propertyName = "";
+	QPair<qrRepo::RepoApi*, Id> repoAndMetaId = getRepoAndMetaId(id);
+	foreach (Id property, repoAndMetaId.first->children(repoAndMetaId.second)) {
+		if (property.element() == "MetaEntity_Attribute" && repoAndMetaId.first->stringProperty(property, "displayedName") == displayedPropertyName) {
+			propertyName = repoAndMetaId.first->name(property);
+		}
+	}
+	return propertyName;
 }
 //unsupported method
 QStringList InterpreterEditorManager::paletteGroups(Id const &editor, Id const &diagram) const

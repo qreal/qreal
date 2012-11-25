@@ -80,6 +80,8 @@ public:
 	void deletePropertyInElement(qrRepo::RepoApi *repo, Id const &editor, Id const &diagram, QString const &propDisplayedName) const;
 	void deleteProperty(QString const &propDisplayedName) const;
 	void addProperty(Id const &id, QString const &propDisplayedName) const;
+	void updateProperties(Id const &id, QString const &property, QString const &propertyType, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const;
+	QString getPropertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const;
 	//unsupported methods:
 	QStringList paletteGroups(Id const &editor, Id const &diagram) const;
 	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
@@ -87,6 +89,7 @@ public:
 	virtual QStringList getReferenceProperties(Id const &id) const;
 
 private:
+	void setProperty(qrRepo::RepoApi* repo, Id const &id, QString const &property, QVariant const &propertyValue) const;
 	Id getElement(Id const &id, qrRepo::RepoApi const * const repo, Id const &diagram) const;
 	Id getDiagramOrElement(Id const &id, qrRepo::RepoApi const * const repo, Id const &editor) const;
 	QPair<qrRepo::RepoApi*, Id> getRepoAndMetaId(Id const &id) const;
