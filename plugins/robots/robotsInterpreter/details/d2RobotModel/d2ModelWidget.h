@@ -74,6 +74,7 @@ public slots:
 	void update();
 	void ejectedItemMoved(QRectF const& itemRect, QPointF const& oldPos, QPointF const& diffRobotPos);
 	void ejectedItemDragged(QRectF const& itemRect, QPointF const& oldPos, QPointF const& diffItemPos);
+	void checkEjectedItemsIntersectsSlot(QRectF const& itemRect, QPointF const& diffRobotPos);
 
 protected:
 	void changeEvent(QEvent *e);
@@ -109,6 +110,7 @@ signals:
 	void d2WasClosed();
 	void needToStopDraggedEjectedItem(bool isNeedStop, QPointF const& oldPos);
 	void needToStopMovedEjectedItem(bool isNeedStop, QPointF const& oldPos);
+	void checkEjectedItemsIntersectsSignal(QRectF const& itemRect, QPointF const& diffRobotPos);
 
 private:
 	void connectUiButtons();

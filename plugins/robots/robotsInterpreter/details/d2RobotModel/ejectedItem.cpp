@@ -101,7 +101,7 @@ void EjectedItem::robotOrEjectedItemChangedPosition(bool isMoved, QPointF const&
 	mMoved = isMoved;
 	if (isMoved) {
 		QPointF oldPos = pos();
-		setPos(pos() + diffPos);
+		setPos(oldPos + diffPos);
 		emit ejectedItemMoved(realBoundingRect(), oldPos, diffPos);
 	}
 }

@@ -48,6 +48,9 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	connect(mScene, SIGNAL(itemDeleted(QGraphicsItem*)), this, SLOT(deleteItem(QGraphicsItem*)));
 
 	connect(mScene, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
+
+	connect(this, SIGNAL(checkEjectedItemsIntersectsSignal(QRectF const &,QPointF const &))
+			, this, SLOT(checkEjectedItemsIntersectsSlot(QRectF const &,QPointF const &)));
 }
 
 D2ModelWidget::~D2ModelWidget()
@@ -830,7 +833,8 @@ void D2ModelWidget::ejectedItemMoved(QRectF const& itemRect, QPointF const& oldP
 		emit needToStopMovedEjectedItem(false, oldPos);
 	}
 
-	mWorldModel->checkEjectedItemsIntersects(itemRect, diffRobotPos);
+	emit checkEjectedItemsIntersectsSignal(itemRect, diffRobotPos);
+	//mWorldModel->checkEjectedItemsIntersects(itemRect, diffRobotPos);
 }
 
 void D2ModelWidget::ejectedItemDragged(QRectF const& itemRect, QPointF const& oldPos, QPointF const& diffItemPos)
@@ -843,5 +847,11 @@ void D2ModelWidget::ejectedItemDragged(QRectF const& itemRect, QPointF const& ol
 		emit needToStopDraggedEjectedItem(false, oldPos);
 	}
 
-	mWorldModel->checkEjectedItemsIntersects(itemRect, diffItemPos);
+	emit checkEjectedItemsIntersectsSignal(itemRect, diffItemPos);
+	//mWorldModel->checkEjectedItemsIntersects(itemRect, diffItemPos);
+}
+
+void D2ModelWidget::checkEjectedItemsIntersectsSlot(QRectF const& itemRect, QPointF const& diffPos)
+{
+	mWorldModel->checkEjectedItemsIntersects(itemRect, diffPos);
 }
