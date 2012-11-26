@@ -8,5 +8,6 @@ HEADERS += pluginInterface.h \
 RESOURCES += plugin.qrc
 
 ROOT = @@PathToSources@@
+DESTINATION = @@Destination@@
 include (@@PathToSources@@plugins/editorsSdk/pluginsCommon.pri)
                         

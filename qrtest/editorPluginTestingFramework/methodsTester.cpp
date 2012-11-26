@@ -8,66 +8,60 @@ MethodsTester::MethodsTester(EditorInterface *qrmcGeneratedPlugin, EditorInterfa
 	mQrxcGeneratedPlugin = qrxcGeneratedPlugin;
 }
 
+class MethodsTester::ListGenerator {
+public:
+	virtual QString generateList(EditorInterface *editorInterface) const = 0;
+	virtual QString methodName() const = 0;
+};
+
+class MethodsTester::EditorNameListGenerator : public MethodsTester::ListGenerator {
+public:
+	virtual QString generateList(EditorInterface *editorInterface) const {
+		return editorInterface->editorName();
+	}
+
+	virtual QString methodName() const {
+		QString methodName = "Editor Name";
+		return methodName;
+	}
+};
+
+class MethodsTester::DiagramsListGenerator : public MethodsTester::ListGenerator {
+public:
+	virtual QString generateList(EditorInterface *editorInterface) const {
+		QString resultStr = "";
+		foreach(QString diagram, editorInterface->diagrams()) {
+			resultStr += diagram + "\n";
+		}
+		return resultStr;
+	}
+
+	virtual QString methodName() const {
+		QString methodName = "Diagrams";
+		return methodName;
+	}
+};
+
+void MethodsTester::testMethod(ListGenerator const &listGenerator) // основная штука, которая берет метод и по нему сравнивает
+{
+	qDebug() << "Testing: " << listGenerator.methodName();
+
+	QString qrmcResult = listGenerator.generateList(mQrmcGeneratedPlugin);
+	QString qrxcResult = listGenerator.generateList(mQrxcGeneratedPlugin);
+
+	if (qrmcResult == qrxcResult) {
+		qDebug() << "Method is OK";
+	} else {
+		qDebug() << "Method is not OK";
+		qDebug() << "For qrmc: " << qrmcResult;
+		qDebug() << "For qrxc: " << qrxcResult;
+	}
+
+	qDebug() << "\n";
+}
+
 void MethodsTester::testMethods()
 {
-	testEditorName();
-	testDiagrams();
-	testElements();
-}
-
-void MethodsTester::testEditorName()
-{
-	if (mQrmcGeneratedPlugin->editorName() == mQrxcGeneratedPlugin->editorName()) {
-		qDebug() << "editorName: OK";
-	} else {
-		qDebug() << "editorName: FAILED;";
-		qDebug() << "QRMC: " << mQrmcGeneratedPlugin->editorName();
-		qDebug() << "QRXC: " << mQrxcGeneratedPlugin->editorName();
-	}
-}
-
-void MethodsTester::testDiagrams()
-{
-	QString qrmcDiagrams = "";
-	foreach (QString const &diagramName, mQrmcGeneratedPlugin->diagrams()) {
-		qrmcDiagrams += diagramName + "\n";
-	}
-
-	QString qrxcDiagrams = "";
-	foreach (QString const &diagramName, mQrxcGeneratedPlugin->diagrams()) {
-		qrxcDiagrams += diagramName + "\n";
-	}
-
-	if (qrmcDiagrams == qrxcDiagrams) {
-		qDebug() << "diagrams: OK";
-	} else {
-		qDebug() << "diagrams: FAILED;";
-		qDebug() << "QRMC: " << qrmcDiagrams;
-		qDebug() << "QRXC: " << qrxcDiagrams;
-	}
-}
-
-void MethodsTester::testElements()
-{
-	QString qrmcElements = "";
-	foreach (QString const &diagramName, mQrmcGeneratedPlugin->diagrams()) {
-		foreach (QString const &elementName, mQrmcGeneratedPlugin->elements(diagramName)) {
-			qrmcElements += elementName + "\n";
-		}
-	}
-
-	QString qrxcElements = "";
-	foreach (QString const &diagramName, mQrxcGeneratedPlugin->diagrams()) {
-		foreach (QString const &elementName, mQrxcGeneratedPlugin->elements(diagramName)) {
-			qrxcElements += elementName + "\n";
-		}
-	}
-
-	if (qrmcElements == qrxcElements) {
-		qDebug() << "elements: OK";
-	} else {
-		qDebug() << "elements: FAILED;";
-		qDebug() << "QRMC: " << qrmcElements;
-		qDebug() << "QRXC:" << qrxcElements;
-	}
+	testMethod(EditorNameListGenerator());
+	testMethod(DiagramsListGenerator());
 }

@@ -1,25 +1,58 @@
 #include "mainClass.h"
 #include "methodsTester.h"
+#include <QtCore/QDir>
 
 MainClass::MainClass(QString &fileName, QString const &pathToQrmc, QString const &pathToApp)
 {
 	// launching and compiling qrmc
+	createNewFolders();
+	QString normalizedFileName = normalizedName(fileName);
 	launchQrmc(fileName, pathToQrmc);
-	compilePlugin("../qrtest/editorPluginTestingFramework/plugins"); // from launchqrmc
-	QString const &pathToQrmcGenerated = "../qrtest/bin/plugins/";
-	EditorInterface* qrmcGeneratedPlugin = loadedPlugin(fileName, pathToApp, pathToQrmcGenerated);
+	compilePlugin("../qrtest/binaries/sources/qrmc"); // from launchqrmc
+	QString const &pathToQrmcGenerated = "../qrtest/binaries/plugins/qrmc";
+	EditorInterface* qrmcGeneratedPlugin = loadedPlugin(normalizedFileName, pathToApp, pathToQrmcGenerated);
 
-	launchQrxc(fileName);
-	QString const &pathToQrxcGenerated = "../qrtest/bin/qrtest/bin/qrxc";
-	EditorInterface* qrxcGeneratedPlugin = loadedPlugin(fileName, pathToApp, pathToQrxcGenerated);
+	launchQrxc(normalizedFileName);
+	QString const &pathToQrxcGenerated = "../qrtest/binaries/plugins/qrxc";
+	EditorInterface* qrxcGeneratedPlugin = loadedPlugin(normalizedFileName, pathToApp, pathToQrxcGenerated);
 
 	MethodsTester* methodsTester = new MethodsTester(qrmcGeneratedPlugin, qrxcGeneratedPlugin);
+
 	methodsTester->testMethods();
+}
+
+void MainClass::createNewFolders()
+{
+	QDir dir;
+	if (!dir.exists("../qrtest/binaries")) {
+		dir.mkdir("../qrtest/binaries");
+	}
+
+	if (!dir.exists("../qrtest/binaries/sources")) {
+		dir.mkdir("../qrtest/binaries/sources");
+	}
+
+	if (!dir.exists("../qrtest/binaries/plugins")) {
+		dir.mkdir("../qrtest/binaries/plugins");
+	}
+}
+
+QString const MainClass::normalizedName(QString const &fileName)
+{
+	QString normalizedName = fileName;
+	if (fileName.contains("/")) {
+		QStringList splittedName = normalizedName.split("/");
+		normalizedName = splittedName.last();
+	}
+	if (normalizedName.contains(".qrs")) {
+		normalizedName.chop(4);
+	}
+	return normalizedName;
 }
 
 void MainClass::launchQrmc(QString &fileName, QString const &pathToQrmc)
 {
-	mQrmcLauncher.launchQrmc(fileName, "../qrtest/editorPluginTestingFramework/plugins", pathToQrmc);
+	mQrmcLauncher.launchQrmc(fileName, "../qrtest/binaries/sources/qrmc", pathToQrmc);
 }
 
 void MainClass::compilePlugin(QString const &directoryToCodeToCompile)

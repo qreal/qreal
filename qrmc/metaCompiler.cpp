@@ -40,7 +40,10 @@ MetaCompiler::~MetaCompiler()
 	}
 }
 
-bool MetaCompiler::compile(QString const &targetMetamodel, QString const pathToQrealRoot, QString const generatedCodeDir)
+bool MetaCompiler::compile(QString const &targetMetamodel
+			, QString const pathToQrealRoot
+			, QString const generatedCodeDir
+			, QString const destinationDir)
 {
 	mTargetMetamodel = targetMetamodel;
 	IdList rootItems = mApi->children(Id::rootId());
@@ -62,7 +65,7 @@ bool MetaCompiler::compile(QString const &targetMetamodel, QString const pathToQ
 			}
 		}
 	}
-	generateCode(generatedCodeDir, pathToQrealRoot);
+	generateCode(generatedCodeDir, pathToQrealRoot, destinationDir);
 	return true;
 }
 
@@ -162,7 +165,9 @@ Diagram *MetaCompiler::getDiagram(QString const &diagramName)
 	return NULL;
 }
 
-void MetaCompiler::generateCode(QString const generatedCodeDir, QString const pathToQrealRoot)
+void MetaCompiler::generateCode(QString const &generatedCodeDir
+			, QString const &pathToQrealRoot
+			, QString const &destinationDir)
 {
 	qDebug() << "loaded metamodels: " << mEditors.keys();
 	qDebug() << "===";
@@ -174,7 +179,7 @@ void MetaCompiler::generateCode(QString const generatedCodeDir, QString const pa
 		pluginNames += nodeIndent + editor->name() + "\\" + endline;
 		editor->generate(mPluginHeaderTemplate, mPluginSourceTemplate,
 					mNodeTemplate, mEdgeTemplate, mElementsHeaderTemplate,
-					mResourceTemplate, mProjectTemplate, mTemplateUtils, pathToQrealRoot);
+					mResourceTemplate, mProjectTemplate, mTemplateUtils, pathToQrealRoot, destinationDir);
 	}
 
 	QDir dir;

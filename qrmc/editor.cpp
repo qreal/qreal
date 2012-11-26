@@ -174,7 +174,8 @@ void Editor::generate(QString const &headerTemplate, QString const &sourceTempla
 					, QString const &resourceTemplate
 					, QString const &projectTemplate
 					, QMap<QString, QString> const &utils
-					, QString const pathToQrealRoot)
+					, QString const pathToQrealRoot
+					, QString const destinationDir)
 {
 	qDebug() << "generating plugin " << mName;
 
@@ -184,6 +185,7 @@ void Editor::generate(QString const &headerTemplate, QString const &sourceTempla
 	mEdgeTemplate = edgeTemplate;
 	mElementsHeaderTemplate = elementsHeaderTemplate;
 	mPathToQrealRoot = pathToQrealRoot;
+	mDestinationDir = destinationDir;
 
 	generatePluginHeader(headerTemplate);
 	generatePluginSource();
@@ -371,7 +373,8 @@ bool Editor::generateProjectFile(QString const &proTemplate)
 	}
 
 	projectTemplate.replace(metamodelNameTag, mName)
-			.replace(pathToSources, mPathToQrealRoot);
+			.replace(pathToSources, mPathToQrealRoot)
+			.replace(destinationDir, mDestinationDir);
 	// .pro-file requires just plugin name customization and customization of path to qreal sources
 	QTextStream out(&file);
 	out.setCodec("UTF-8");

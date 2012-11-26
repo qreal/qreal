@@ -36,7 +36,8 @@ namespace qrmc {
 					, QString const &resourceTemplate
 					, QString const &projectTemplate
 					, QMap<QString, QString> const &utils
-					, QString const pathToQrealRoot);
+					, QString const pathToQrealRoot
+					, QString const destinationDir);
 
 		Type *findType(QString const &name);
 		QSet<EnumType*> getAllEnumTypes();
@@ -84,6 +85,7 @@ namespace qrmc {
 		QString mElementsHeaderTemplate;
 		QString mGeneratedCodeDir;
 		QString mPathToQrealRoot;
+		QString mDestinationDir;
 
 		class MethodGenerator;
 		class ContainersGenerator;

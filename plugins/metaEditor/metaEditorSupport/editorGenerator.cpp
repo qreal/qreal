@@ -88,6 +88,7 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
 
 	QRegExp patten;
 	patten.setPattern("[A-Za-z]+([A-Za-z0-9]*)");
+
 	if (!patten.exactMatch(fileBaseName) || fileBaseName.isEmpty()) {
 		mErrorReporter.addError(QObject::tr("wrong name\n"), metamodelId);
 		return QPair<QString, QString>("", "");

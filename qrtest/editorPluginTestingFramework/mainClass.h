@@ -12,6 +12,9 @@ public:
 	MainClass(QString &fileName, QString const &pathToQrmc, QString const &pathToApp);
 
 private:
+	void createNewFolders();
+	QString const normalizedName(QString const &FileName);
+
 	void launchQrmc(QString &fileName, QString const &pathToQrmc);
 	void compilePlugin(QString const &directoryToCodeToCompile);
 	void launchQrxc(QString &fileName);

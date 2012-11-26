@@ -7,19 +7,18 @@ class MethodsTester
 public:
 	MethodsTester(EditorInterface* qrmcGeneratedPlugin, EditorInterface* qrxcGeneratedPlugin);
 
+	// хотим метод, который берет название метода у EditorInterface, генерит 2 листа и сравнивает
+	// и метод, который выводит что-то...
+
 	void testMethods();
 
-	/*
-	virtual QString editorName() const = 0;
-	virtual QString diagramName(QString const &diagram) const = 0;
-	virtual QStringList diagrams() const = 0;
-	*/
-
 private:
-	void testEditorName();
-	void testDiagrams();
-	void testElements();
+	class ListGenerator;
 
+	class EditorNameListGenerator;
+	class DiagramsListGenerator;
+
+	void testMethod(ListGenerator const &listGenerator);
 	EditorInterface* mQrmcGeneratedPlugin;
 	EditorInterface* mQrxcGeneratedPlugin;
 };

@@ -24,6 +24,7 @@ QString const resourceTemplate = "plugin.qrc.template";
 QString const projectTemplate = "pro.template";
 QString const pluginsProjectTemplate = "plugins.pro.template";
 
+QString const destinationDir = "@@Destination@@";
 QString const pathToSources = "@@PathToSources@@";
 QString const subdirsTag = "@@Subdirs@@";
 QString const metamodelNameTag = "@@MetamodelName@@";

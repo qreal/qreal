@@ -33,14 +33,20 @@ void QrxcLauncher::launchQrxc(QString &fileName)
 	bool isEmpty = metamodelList.isEmpty();
 	qDebug() << "List is empty" << isEmpty;
 
-	QString nameOfTheDirectory = "../qrtest/bin/qrxc"; // sleeeeeeeeeep
-	QString const pathToQRealRoot = "../../.."; // i want to sleep
+	QString const pathToQRealRoot = "../../../../";
+	QString nameOfTheDirectory = "../qrtest/binaries/sources/qrxc";
+	QString directoryToGeneratedCode = pathToQRealRoot + "qrtest/binaries/plugins/qrxc";
+
+	if (!dir.exists(directoryToGeneratedCode)) {
+		dir.mkdir(directoryToGeneratedCode);
+	}
+
+	dir.mkpath(nameOfTheDirectory);
 	foreach (Id const &key, metamodelList.keys()) {
-		dir.mkpath(nameOfTheDirectory);
 		QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key
 				, nameOfTheDirectory
 				, pathToQRealRoot
-				, nameOfTheDirectory
+				, directoryToGeneratedCode
 				, fileName);
 	}
 
