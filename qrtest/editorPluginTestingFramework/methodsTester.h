@@ -7,9 +7,6 @@ class MethodsTester
 public:
 	MethodsTester(EditorInterface* qrmcGeneratedPlugin, EditorInterface* qrxcGeneratedPlugin);
 
-	// хотим метод, который берет название метода у EditorInterface, генерит 2 листа и сравнивает
-	// и метод, который выводит что-то...
-
 	void testMethods();
 
 private:
@@ -17,8 +14,14 @@ private:
 
 	class EditorNameListGenerator;
 	class DiagramsListGenerator;
+	class ElementsListGenerator;
+	class PropertiesWithDefaultValuesListGenerator;
+	class TypesContainedByListGenerator;
+	class ConnectedTypesListGenerator;
+	class UsedTypesListGenerator;
 
 	void testMethod(ListGenerator const &listGenerator);
+
 	EditorInterface* mQrmcGeneratedPlugin;
 	EditorInterface* mQrxcGeneratedPlugin;
 };

@@ -1,6 +1,5 @@
 #include <QtCore/QString>
 #include "../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
-//#include "pluginCompiler.h"
 
 using namespace qReal;
 using namespace gui;
@@ -14,6 +13,4 @@ public:
 
 private:
 	MainWindowInterpretersInterface *mMainWindowInterface;
-	//PluginCompiler mPluginCompiler;
 };
-

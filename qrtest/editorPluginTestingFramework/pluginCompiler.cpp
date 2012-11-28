@@ -13,7 +13,6 @@ PluginCompiler::PluginCompiler()
 void PluginCompiler::compilePlugin(const QString directoryToCodeToCompile)
 {
 	QProcess builder;
-	//builder.setWorkingDirectory("../qrmc/plugins");
 	builder.setWorkingDirectory(directoryToCodeToCompile);
 	builder.start(SettingsManager::value("pathToQmake").toString());
 	qDebug()  << "qmake";
