@@ -16,14 +16,11 @@ class NodeElement;
   * 	@brief class for an edge on a diagram
   * 	*/
 
-class EmbeddedLinker;
-
 class EdgeElement : public Element
 {
 	Q_OBJECT
-public:
-	friend class EmbeddedLinker;
 
+public:
 	EdgeElement(ElementImpl *impl);
 	virtual ~EdgeElement();
 
@@ -48,6 +45,9 @@ public:
 	NodeElement *dst() const;
 	bool isSrc(NodeElement const *node) const;
 	bool isDst(NodeElement const *node) const;
+	void setSrc(NodeElement *node);
+	void setDst(NodeElement *node);
+	void tuneForLinker();
 	qreal portIdOn(NodeElement const *node) const;
 	QPointF nextFrom(NodeElement const *node) const;
 	QPointF connectionPoint(NodeElement const *node) const;
@@ -83,12 +83,18 @@ public:
 
 	// redrawing of this edgeElement in squarize
 	void redrawing(QPointF const &pos);
+	// correct end of mLine for beauty link's drawing
+	void correctArrow();
+	// correct begin of mLine for beauty link's drawing
+	void correctInception();
+
+	void setGraphicApiPos();
 
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+	// virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
 	virtual void drawStartArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
@@ -112,7 +118,7 @@ private slots:
 	// add the closest point on edge to the parameter`s point
 	void addClosestPointHandler(QPointF const &pos);
 	void delPointHandler(QPointF const &pos);
-	void squarizeHandler(QPointF const &pos, bool xIsChanged = true);
+	void squarizeHandler(QPointF const &pos);
 	void minimizeHandler(QPointF const &pos);
 	// delete Segment with nearest with pos ends
 	void deleteSegmentHandler(QPointF const &pos);
@@ -120,16 +126,20 @@ private slots:
 	void squarizeAndAdjustHandler(QPointF const &pos);
 	// change link's direction
 	void reverseHandler(QPointF const &pos);
+	void changeSquarizeType(QPointF const &pos); // isVerticalChanging = !isVerticalChanging and adjustLink()
 
 private:
 	// when (mSrc == mDst && mDst && mLine <= 3)
 	void createCircleLink();
 	// connectToPort for self-closing line (mSrc == mDst && mDst)
 	void connectCircleEdge(NodeElement *newMaster);
+	// need for correcting links at square drawing
+	int defineDirection(bool from);
+
 	// redraw in rectangular good segment by the second squarize method.
-	void specialSquarizeSegment(int const /**< The interval's start position in the mLine */);
+	// void specialSquarizeSegment(int /**< The interval's start position in the mLine */, bool /**< change on horizontal-vertical-horizontal */ = true);
 	// redraw in rectangular good link by the second squarize method
-	void specialSquarizeLink();
+	// void specialSquarizeLink();
 
 	QList<PossibleEdge> possibleEdges;
 
@@ -160,6 +170,9 @@ private:
 	bool delSegmentActionIsPossible(const QPointF &pos);
 	bool minimizeActionIsPossible();
 	bool reverseActionIsPossible();
+	bool changeSquarizeTypeActionIsPossible();
+
+	void reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst);
 
 	NodeElement *mSrc;
 	NodeElement *mDst;
@@ -180,18 +193,25 @@ private:
 	ContextMenuAction mMinimizeAction;
 	ContextMenuAction mDelSegmentAction;
 	ContextMenuAction mReverseAction;
+	ContextMenuAction mChangeSquarizeTypeAction;
 
 	bool mChaoticEdition;
 
 	QPolygonF mLastLine;
-	QPolygonF mSavedLineForMove;
+	bool mLastLineIsCircle;
+	QPolygonF mSavedLineForChanges;
+	bool mLeftButtonIsPressed;
+	QPolygonF mSavedLineForSquarize;
+	int mSavesDragPointForSquarize;
 
 	bool mBreakPointPressed;
 
 	EdgeData mData;
 
-	bool mModelUpdateIsCalled;
+	bool mModelUpdateIsCalled;  // flag for the infinite updateData()-s liquidating
 
 	bool isCircle; // if line is self-closing (mSrc == mDst && mDst)
+
+	bool isVerticalChanging; // for squarize drawing
 };
 

@@ -15,18 +15,27 @@
 using namespace qReal;
 
 EmbeddedLinker::EmbeddedLinker()
+		: mEdge(NULL)
+		, master(NULL)
+		, color(Qt::blue)
+		, mPressed(false)
+		, mTimeOfUpdate(0)
 {
 	size = SettingsManager::value("EmbeddedLinkerSize").toFloat();
+	if (size > 10) {
+		size *= 0.75;
+	}
 	indent = SettingsManager::value("EmbeddedLinkerIndent").toFloat();
+	indent *= 0.8;
+	if (indent > 17) {
+		indent *= 0.7;
+	}
+	mRectangle = QRectF(-size, -size, size * 2, size * 2);
+	mInnerRectangle = QRectF(-size / 2, -size / 2, size, size);
+	setZValue(300);
+	setFlag(ItemStacksBehindParent, false);
 
-	mEdge = NULL;
-	master = NULL;
-	color = Qt::blue;
-	mRectangle = QRectF(-size,-size,size*2,size*2);
-	mInnerRectangle = QRectF(-size/2,-size/2,size,size);
 	setAcceptsHoverEvents(true);
-	mTimeOfUpdate = 0;
-	mPressed = false;
 }
 
 EmbeddedLinker::~EmbeddedLinker()
@@ -58,11 +67,18 @@ void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 	brush.setColor(color);
 	brush.setStyle(Qt::SolidPattern);
 	painter->setBrush(brush);
-	painter->setOpacity(0.5);
+	painter->setOpacity(0.75);
 	painter->setPen(color);
 
+	size = SettingsManager::value("EmbeddedLinkerSize").toFloat();
+	if (size > 10) {
+		size *= 0.75;
+	}
+	mRectangle = QRectF(-size, -size, size * 2, size * 2);
+	mInnerRectangle = QRectF(-size / 2, -size / 2, size, size);
+
 	painter->drawEllipse(mRectangle);
-	painter->setOpacity(0.7);
+	painter->setOpacity(0.9);
 	painter->drawEllipse(mInnerRectangle);
 
 	painter->restore();
@@ -156,6 +172,11 @@ void EmbeddedLinker::takePosition(int index, int maxIndex)
 
 	float fx;
 	float fy;
+	indent = SettingsManager::value("EmbeddedLinkerIndent").toFloat();
+	indent *= 0.8;
+	if (indent > 17) {
+		indent *= 0.7;
+	}
 
 	//obviously, top != left != right != bottom
 	if ((bottom - py == min) || (py - top == min))
@@ -190,6 +211,9 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	Q_UNUSED(event)
 	mPressed = true;
+	if (event->button() == Qt::LeftButton) {
+		mEdge = NULL;
+	}
 }
 
 void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -210,19 +234,14 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 
 		if (mEdge){
-			if (mEdge->mSrc) {
-				mEdge->mSrc->delEdge(mEdge);
-			}
-			if (mEdge->mDst) {
-				mEdge->mDst->delEdge(mEdge);
-			}
-			mEdge->mSrc = master;
-			mEdge->mDst = NULL;
-			master->addEdge(mEdge);
+			master->setZValue(1);
+			mEdge->setSrc(master);
+			mEdge->setDst(NULL);
 			mEdge->highlight();
-			QPointF point = mapToItem(master, event->pos());
-			mEdge->placeStartTo(mEdge->mapFromItem(master, master->nearestPort(point)));
+			mEdge->tuneForLinker();
 			mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
+			master->arrangeLinks();
+			master->adjustLinks();
 		}
 	}
 
@@ -236,10 +255,6 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 		mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
 	}
-	/*if (mEdge != NULL) {
-		mEdge->arrangeSrcAndDst();
-		mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
-	}*/
 }
 
 void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -251,7 +266,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (!mPressed && scene && mEdge) {
 		mEdge->hide();
 		QPointF const &eScenePos = event->scenePos();
-		NodeElement *under = dynamic_cast<NodeElement*>(scene->itemAt(eScenePos));
+		NodeElement* under = dynamic_cast<NodeElement*>(scene->itemAt(eScenePos));
 		mEdge->show();
 		int result = 0;
 
@@ -260,17 +275,20 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			NodeElement *target = dynamic_cast<NodeElement*>(scene->getLastCreated());
 			if (result == -1) {
 				mEdge = NULL;
-			} else if ((result == +1) && target) {
-				QPointF const &posRelativeToTheTarget = target->mapFromScene(eScenePos);
-				mEdge->placeEndTo(mapFromItem(target, target->nearestPort(posRelativeToTheTarget)));
-				mEdge->connectToPort();	//it provokes to move target somehow, so it needs to place edge end and connect to port again
-				mEdge->adjustNeighborLinks();
+			} else if ((result == 1) && target) {
+				mEdge->setDst(target);
+				target->storeGeometry();
 			}
 		}
 		if (result != -1) {
 			mEdge->connectToPort();
 			mEdge->adjustNeighborLinks();
+			mEdge->correctArrow();
+			mEdge->correctInception();
 		}
 	}
+	mTimeOfUpdate = 0;
+	mPressed = false;
+	mEdge = NULL;
 }
 

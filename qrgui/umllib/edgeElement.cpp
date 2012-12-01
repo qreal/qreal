@@ -17,7 +17,7 @@ using namespace qReal;
 
 const double pi = 3.14159265358979;
 
-const qreal epsilon = -0.00000000001;
+const qreal epsilon = 0.00000000001;
 
 /** @brief indicator of edges' movement */
 
@@ -33,8 +33,10 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 		, mMinimizeAction(tr("Remove all points"), this)
 		, mDelSegmentAction(tr("Remove segment"), this)
 		, mReverseAction(tr("Reverse"), this)
+		, mChangeSquarizeTypeAction(tr("Change drawing type"), this)
 		, mModelUpdateIsCalled(false)
 		, isCircle(false)
+		, isVerticalChanging(false)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
@@ -46,8 +48,11 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	setFlag(ItemClipsChildrenToShape, false);
 
 	mLine << QPointF(0, 0) << QPointF(200, 60);
+	mLastLineIsCircle = false;
 
-	mSavedLineForMove = mLine;
+	mLeftButtonIsPressed = false;
+	mSavedLineForChanges = mLine;
+	mSavesDragPointForSquarize = -1;
 
 	setAcceptHoverEvents(true);
 
@@ -57,6 +62,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	connect(&mSquarizeAction, SIGNAL(triggered(QPointF const &)), SLOT(squarizeAndAdjustHandler(QPointF const &)));
 	// The following line is necessary because squarizeAndAdjustHandler() is used in adjustLink()
 	connect(&mSquarizeAction, SIGNAL(triggered(QPointF const &)), SLOT(setGraphicApi(QPointF)));
+	connect(&mChangeSquarizeTypeAction, SIGNAL(triggered(QPointF const &)), SLOT(changeSquarizeType(QPointF const &)));
 	connect(&mReverseAction, SIGNAL(triggered(QPointF const)), SLOT(reverseHandler(QPointF const &)));
 	connect(&mMinimizeAction, SIGNAL(triggered(QPointF const &)), SLOT(minimizeHandler(QPointF const &)));
 	connect(&mDelSegmentAction, SIGNAL(triggered(QPointF const &)), SLOT(deleteSegmentHandler(QPointF const &)));
@@ -163,6 +169,50 @@ void EdgeElement::drawPort(QPainter *painter) const
 
 void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
+	if (!(mSavedLineForSquarize.size() < 2 || !SettingsManager::value("SquareLine").toBool() || mSavesDragPointForSquarize == -1)) {
+		painter->save();
+		QPen pen1 = painter->pen();
+		pen1.setColor(QColor(Qt::magenta));
+		pen1.setBrush(QColor(Qt::magenta));
+		pen1.setStyle(Qt::DashDotLine);
+		pen1.setWidth(mPenWidth);
+		painter->setPen(pen1);
+		painter->setOpacity(0.5);
+		painter->setRenderHint(QPainter::Antialiasing);
+		painter->drawPolyline(mSavedLineForSquarize);
+		painter->restore();
+
+		painter->save();
+		painter->translate(mSavedLineForSquarize[0]);
+		painter->rotate(90 - lineAngle(QLineF(mSavedLineForSquarize[1], mSavedLineForSquarize[0])));
+		pen1 = painter->pen();
+		pen1.setColor(QColor(Qt::magenta));
+		pen1.setBrush(QColor(Qt::magenta));
+		pen1.setStyle(mPenStyle);
+		pen1.setWidth(3);
+		painter->setPen(pen1);
+		painter->setOpacity(0.5);
+		painter->setRenderHint(QPainter::Antialiasing);
+		drawStartArrow(painter);
+		painter->restore();
+
+		painter->save();
+		pen1 = painter->pen();
+		pen1.setColor(QColor(Qt::magenta));
+		pen1.setBrush(QColor(Qt::magenta));
+		pen1.setStyle(mPenStyle);
+		pen1.setWidth(3);
+		painter->setPen(pen1);
+		painter->setOpacity(0.5);
+		painter->setRenderHint(QPainter::Antialiasing);
+		painter->translate(mSavedLineForSquarize[mSavedLineForSquarize.size() - 1]);
+		painter->rotate(90 - lineAngle(QLineF(mSavedLineForSquarize[mSavedLineForSquarize.size() - 2], mSavedLineForSquarize[mSavedLineForSquarize.size() - 1])));
+		painter->setPen(pen1);
+		drawEndArrow(painter);
+		painter->restore();
+	}
+
+	// painting mLine itself
 	painter->save();
 	QPen pen = painter->pen();
 	pen.setColor(mColor);
@@ -246,7 +296,7 @@ int EdgeElement::getPoint(const QPointF &location)
 	return -1;
 }
 
-void EdgeElement::updateLongestPart() // NOTE: don`t forget this when change mLine
+void EdgeElement::updateLongestPart()
 {
 	qreal maxLen = 0.0;
 	int maxIdx = 0;
@@ -278,7 +328,6 @@ void EdgeElement::connectToPort()
 {
 	mMoving = true;
 
-	// Now we check whether start or end have been connected
 	NodeElement *newSrc = getNodeAt(mLine.first(), true);
 	NodeElement *newDst = getNodeAt(mLine.last(), false);
 
@@ -288,26 +337,21 @@ void EdgeElement::connectToPort()
 		isCircle = false;
 	}
 
-	// fix for #4. otherwise we have 2 annoying situations when
-	// connecting both ends of an edge to the same node:
-	// if mLine.size() is 2, then an edge will become a point
-	// if mLine.size() is 3, then two parts of an edge will overlap
 	if (newSrc == newDst && newSrc && mLine.size() <= 3) {
 		if (!mLastLine.isEmpty()) {
-			isCircle = false;
+			if (mLastLine.size() > 2 && !mLastLineIsCircle) {
+				isCircle = false;
+				//highlight(Qt::gray);
+			} else {
+				//highlight(Qt::blue);
+			}
 			mLine = mLastLine;
 			mMoving = false;
-			//highlight(Qt::blue);
 			return;
 		} else {
+			// FIXME: need createCircleLink()'s implementation. linker's edges, for example, transforms to point now (see #602)
 			createCircleLink();
 			//highlight(Qt::yellow);
-			//mModelUpdateIsCalled = true;
-			//mGraphicalAssistApi->setPosition(id(), mLastPos);
-			//setGraphicApi(QPointF());
-			//mMoving = false;
-			//updateData();;
-			return;
 		}
 	}
 
@@ -332,24 +376,20 @@ void EdgeElement::connectToPort()
 		mDst = NULL;
 	}
 
-	if (mPortFrom >= epsilon) {
+	if (mPortFrom >= -epsilon) {
 		mSrc = newSrc;
 		mSrc->addEdge(this);
 	}
 
-	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi->setFrom(id(), (mSrc ? mSrc->id() : Id::rootId()));
-	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi->setFromPort(id(), mPortFrom);
 
-	if (mPortTo >= epsilon) {
+	if (mPortTo >= -epsilon) {
 		mDst = newDst;
 		mDst->addEdge(this);
 	}
 
-	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi->setTo(id(), (mDst ? mDst->id() : Id::rootId()));
-	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi->setToPort(id(), mPortTo);
 
 	mLogicalAssistApi->setFrom(logicalId(), (mSrc ? mSrc->logicalId() : Id::rootId()));
@@ -358,7 +398,6 @@ void EdgeElement::connectToPort()
 	adjustLink();
 	arrangeSrcAndDst();
 
-	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi->setPosition(id(), pos());
 	setGraphicApi(QPointF());
 
@@ -374,50 +413,66 @@ void EdgeElement::connectToPort()
 void EdgeElement::connectCircleEdge(NodeElement *newMaster)
 {
 	mPortFrom = newMaster ? newMaster->portId(mapToItem(newMaster, mLine.first())) : -1.0;
-	mPortTo = mPortFrom;
+	mPortTo = mPortFrom;//1.999;
 
-	if (mPortFrom >= epsilon) {
+	if (mPortFrom >= -epsilon) {
 		newMaster->delEdge(this);
 		mSrc = newMaster;
 		mDst = newMaster;
 		mSrc->addEdge(this);
 	}
 
-	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi->setFrom(id(), (mSrc ? mSrc->id() : Id::rootId()));
-	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi->setFromPort(id(), mPortFrom);
 
-	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi->setTo(id(), (mDst ? mDst->id() : Id::rootId()));
-	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi->setToPort(id(), mPortTo);
 
 	mLogicalAssistApi->setFrom(logicalId(), (mSrc ? mSrc->logicalId() : Id::rootId()));
 	mLogicalAssistApi->setTo(logicalId(), (mDst ? mDst->logicalId() : Id::rootId()));
 
-	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi->setPosition(id(), pos());
 	setGraphicApi(QPointF());
 
 	mMoving = false;
 
-	highlight();
+	highlight(mPenColor);
 	//highlight(Qt::green);
 }
 
-void EdgeElement::createCircleLink()
+void EdgeElement::createCircleLink() // nice implementation makes sense after #602 fixed!
 {
-
-	/*QPointF x0y0 = mSrc->boundingRect().topLeft();
-
-	QPolygonF newMLine;
-	prepareGeometryChange();
-	newMLine << mLine.first() << mLine.last();
-	mLine = newMLine;
-	updateLongestPart();*/
-	isCircle = false;
-	mMoving = false;
+	int direct = defineDirection(true);
+	mLine.remove(1, mLine.size() - 1);
+	bool isVertical = direct & 1;
+	if (direct > 0) {
+		direct = 1;
+	} else {
+		direct = -1;
+	}
+	if (SettingsManager::value("SquareLine").toBool()) {
+		// creating square
+		qreal newY = direct * 3 * kvadratik + mLine.first().y();
+		qreal newX = direct * 3 * kvadratik + mLine.first().x();
+		mLine.insert(1, QPointF(mLine.first().x(), newY));
+		mLine.insert(2, QPointF(newX, newY));
+		mLine.insert(3, QPointF(newX, mLine.first().y()));
+		mLine.insert(4, QPointF(mLine.first()));
+	} else {
+		// creating equilateral triangle
+		if (isVertical) {
+			qreal newY = direct * 3 * kvadratik + mLine.first().y();
+			mLine.insert(1, QPointF(mLine.first().x() - 1.5 * kvadratik, newY));
+			mLine.insert(2, QPointF(mLine.first().x() + 1.5 * kvadratik, newY));
+			mLine.insert(3, QPointF(mLine.first()));
+		} else {
+			qreal newX = direct * 3 * kvadratik + mLine.first().x();
+			mLine.insert(1, QPointF(newX, mLine.first().y() + 1.5 * kvadratik));
+			mLine.insert(2, QPointF(newX, mLine.first().y() - 1.5 * kvadratik));
+			mLine.insert(3, QPointF(mLine.first()));
+		}
+	}
+	isCircle = true;
 }
 
 bool EdgeElement::initPossibleEdges()
@@ -442,33 +497,59 @@ bool EdgeElement::initPossibleEdges()
 
 void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (mSavedLineForSquarize.size() >= 2 && SettingsManager::value("SquareLine").toBool()) {
+		scene()->update();
+	}
+	if (event->button() == Qt::RightButton) {
+		event->accept();
+		if (mDragPoint == -3) {
+			return;
+		}
+	}
 	if (!SettingsManager::value("SquareLine").toBool() && (event->modifiers() & Qt::AltModifier)
 		&& (getPoint(event->pos()) != -1) && (event->button() == Qt::LeftButton) && delPointActionIsPossible(event->pos()))
 	{
 		delPointHandler(event->pos());
 		return;
 	}
+	if (event->button() == Qt::RightButton && mLeftButtonIsPressed) {
+		prepareGeometryChange();
+		mLine = mSavedLineForChanges;
+		mDragPoint = -3;
+		mLeftButtonIsPressed = false;
+		return;
+	}
+	if (event->button() == Qt::LeftButton) {
+		mLeftButtonIsPressed = true;
+	}
 
 	mDragPoint = getPoint(event->pos());
 
 	if ((mSrc && mDst && mSrc->isSelected() && mDst->isSelected() && isSelected())
-		|| (mSrc && (mDst == NULL) && mSrc->isSelected() && isSelected())
-		|| (mDst && (mSrc == NULL) && mDst->isSelected() && isSelected()))
+		|| (mSrc && !mDst && mSrc->isSelected() && isSelected())
+		|| (mDst && !mSrc && mDst->isSelected() && isSelected()))
 	{
+		mLeftButtonIsPressed = false;
 		mDragPoint = -1;
 		Element::mousePressEvent(event);
 	}
 	else if (mDragPoint == -1) {
 			Element::mousePressEvent(event);
-			if ((mSrc != NULL) || (mDst != NULL)) {
-				if (event->buttons() != Qt::RightButton) {
+			if ((mSrc) || (mDst)) {
+				if ((event->button() != Qt::RightButton) && !event->modifiers()) {
+					mSavedLineForChanges = mLine;
 					addPointHandler(event->pos());
+					mSavedLineForSquarize = mLine;
+					mSavesDragPointForSquarize = mDragPoint;
 				}
 			}
-		} else {
-			// saving info in case we need to rollback (see #4)
-			mLastLine = mLine;
-		}
+	} else if (mDragPoint != -1 && (event->button() != Qt::RightButton)) {
+		mSavesDragPointForSquarize = mDragPoint;
+		mLastLineIsCircle = isCircle;
+		mLastLine = mLine;	// saving info in case we need to rollback (see #4)
+		mSavedLineForChanges = mLine;
+		mSavedLineForSquarize = mLine;
+	}
 }
 
 void EdgeElement::addClosestPointHandler(QPointF const &pos)
@@ -517,21 +598,40 @@ bool EdgeElement::isDividable()
 
 void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (event->button() == Qt::RightButton) {
+		event->accept();
+		return;
+	}
 	if (mSrc) {
 		mSrc->setPortsVisible(true);
 	}
 	if (mDst) {
 		mDst->setPortsVisible(true);
 	}
+	if (!mLeftButtonIsPressed && mDragPoint == -3) {
+		return;
+	}
 
 	if (mDragPoint == -1) {
 		Element::mouseMoveEvent(event);
 	} else {
+		//qDebug() << "DragPoint: " << mDragPoint << "and MaxPoint: "<< mLine.size() - 1;
+		mDragPoint = mSavesDragPointForSquarize;
+		if (mDragPoint > mLine.size() - 1) {
+			mDragPoint = -2;
+			prepareGeometryChange();
+			mLine = mSavedLineForChanges;
+			return;
+		}
+		if (mDragPoint < 0) {
+			return;
+		}
+		mLine = mSavedLineForSquarize;
 		prepareGeometryChange();
-		//mSavedLineForMove = mLine;
 		mLine[mDragPoint] = event->pos();
-		//if (SettingsManager::value("SquareLine").toBool())
-		//	squarizeHandler(QPointF());
+		if (SettingsManager::value("SquareLine").toBool()) {
+			squarizeAndAdjustHandler(QPointF());
+		}
 		updateLongestPart();
 	}
 }
@@ -539,6 +639,16 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	mDragPoint = -1;
+	mSavesDragPointForSquarize = -1;
+	scene()->update();
+	if (event->button() == Qt::RightButton) {
+		event->accept();
+		return;
+	}
+	if (mLeftButtonIsPressed && event->button() == Qt::LeftButton) {
+		mLeftButtonIsPressed = false;
+	}
+
 	Element::mouseReleaseEvent(event);
 
 	connectToPort();
@@ -556,8 +666,11 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	adjustNeighborLinks();
 	arrangeSrcAndDst();
 
-	updateLongestPart();
+	correctArrow();
+	prepareGeometryChange();
+	correctInception();
 
+	setGraphicApiPos();
 	setGraphicApi(QPointF());
 }
 
@@ -569,7 +682,7 @@ qreal EdgeElement::lengthOfSegment(QPointF const &pos1, QPointF const &pos2) con
 
 void EdgeElement::delClosePoints()
 {
-	int const rad = kvadratik * 3;
+	int const rad = kvadratik * 2;
 	for (int i = 0; i < mLine.size() - 1; i++) {
 		if (lengthOfSegment(mLine[i], mLine[i + 1]) < rad) {
 			if (i != mLine.size() - 2) {
@@ -591,7 +704,7 @@ void EdgeElement::delCloseLinePoints()
 
 	prepareGeometryChange();
 
-	int const width = kvadratik * 5;
+	int const width = kvadratik * 4;
 
 	delClosePoints();
 
@@ -693,10 +806,14 @@ QList<ContextMenuAction*> EdgeElement::contextMenuActions(const QPointF &pos)
 	if (reverseActionIsPossible()) {
 		result.push_back(&mReverseAction);
 	}
+	if (changeSquarizeTypeActionIsPossible()) {
+		result.push_back(&mChangeSquarizeTypeAction);
+	}
 	return result;
 }
 
-bool EdgeElement::delPointActionIsPossible(const QPointF &pos) {
+bool EdgeElement::delPointActionIsPossible(const QPointF &pos)
+{
 	if (isCircle && mLine.size() <= 4) {
 		return false;
 	}
@@ -709,18 +826,20 @@ bool EdgeElement::delPointActionIsPossible(const QPointF &pos) {
 	}
 }
 
-bool EdgeElement::squarizeActionIsPossible() {
+bool EdgeElement::squarizeActionIsPossible()
+{
 	//return (!SettingsManager::value("SquareLine").toBool());
 	return false; // squarize action is unneeded because it's poorly now (need change conception of this action)
 }
 
-bool EdgeElement::addPointActionIsPossible(const QPointF &pos) {
-	//int pointIndex = getPoint(pos);
-	//return (pointIndex == -1);
-	return !(mSrc || mDst); // point's adding is unneeded now besides alone link's event
+bool EdgeElement::addPointActionIsPossible(const QPointF &pos)
+{
+	int pointIndex = getPoint(pos);
+	return !(mSrc || mDst) && (pointIndex == -1); // point's adding is unneeded now besides alone link's event
 }
 
-bool EdgeElement::delSegmentActionIsPossible(const QPointF &pos) {
+bool EdgeElement::delSegmentActionIsPossible(const QPointF &pos)
+{
 	if (isCircle) {
 		return false;
 	}
@@ -737,15 +856,34 @@ bool EdgeElement::delSegmentActionIsPossible(const QPointF &pos) {
 	return false;
 }
 
-bool EdgeElement::minimizeActionIsPossible() {
+bool EdgeElement::minimizeActionIsPossible()
+{
 	if (isCircle) {
 		return false;
 	}
 	return !(mLine.size() == 2) && !(mSrc == mDst) && !(SettingsManager::value("SquareLine").toBool() && mLine.size() == 3);
 }
 
-bool EdgeElement::reverseActionIsPossible() {
+bool EdgeElement::reverseActionIsPossible()
+{
 	return true;
+}
+
+bool EdgeElement::changeSquarizeTypeActionIsPossible()
+{
+	return !isCircle && SettingsManager::value("SquareLine").toBool();
+}
+
+void EdgeElement::changeSquarizeType(QPointF const &pos)
+{
+	Q_UNUSED(pos);
+	isVerticalChanging = !isVerticalChanging;
+	arrangeSrcAndDst();
+	adjustNeighborLinks();
+	//correctArrow();
+	//prepareGeometryChange();
+	//correctInception();
+	setGraphicApi(QPointF());
 }
 
 QList<PossibleEdge> EdgeElement::getPossibleEdges()
@@ -763,16 +901,23 @@ void EdgeElement::delPointHandler(QPointF const &pos)
 	}
 }
 
-void EdgeElement::arrangeAndAdjustHandler(QPointF const &pos) {
+void EdgeElement::arrangeAndAdjustHandler(QPointF const &pos)
+{
 	Q_UNUSED(pos);
 	adjustNeighborLinks();
 	arrangeSrcAndDst();
 	mMoving = true;
-	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi->setPosition(id(), this->pos());
 	mMoving = false;
 	update();
 	setGraphicApi(QPointF());
+}
+
+void EdgeElement::setGraphicApiPos()
+{
+	mMoving = true;
+	mGraphicalAssistApi->setPosition(id(), this->pos());
+	mMoving = false;
 }
 
 void EdgeElement::addPointHandler(QPointF const &pos)
@@ -817,7 +962,7 @@ void EdgeElement::breakPointHandler(QPointF const &pos)
 	}
 }
 
-void EdgeElement::squarizeHandler(QPointF const &pos, bool xIsChanged)
+void EdgeElement::squarizeHandler(QPointF const &pos)
 {
 	Q_UNUSED(pos);
 	prepareGeometryChange();
@@ -871,7 +1016,7 @@ void EdgeElement::squarizeHandler(QPointF const &pos, bool xIsChanged)
 			i++;
 			continue;
 		}
-		if (xIsChanged) {
+		if (!isVerticalChanging) {
 			insPoint.setX(mLine[i + 1].x()); // maybe shold be added potential of choose of x or y?
 		} else {
 			insPoint.setY(mLine[i + 1].y());
@@ -880,6 +1025,8 @@ void EdgeElement::squarizeHandler(QPointF const &pos, bool xIsChanged)
 		mLine.insert(i + 1, insPoint); //insert new point to make right angle
 		i += 2;
 	}
+
+	//correctArrow();
 
 	update();
 }
@@ -891,9 +1038,9 @@ void EdgeElement::squarizeAndAdjustHandler(QPointF const &pos)
 	deleteLoops(); // this
 	delCloseLinePoints(); // this
 	squarizeHandler(pos); // and this need for correct drawing links when many edgeElements exist on the side (line)
-	for (int i = 0; i < mLine.size() - 2; i++) {
+	for (int i = 0; i < mLine.size() - 2; ++i) {
 		if (removeOneLinePoints(i))
-			i--;
+			--i;
 	}
 	updateLongestPart();
 }
@@ -929,26 +1076,34 @@ void EdgeElement::adjustLink(bool isDragging)
 		} else {
 			updateLongestPart();
 		}
-	} else if (isSelected()) {
-		if (mSrc && !mSrc->isSelected()) {
-			prepareGeometryChange();
-			mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
-		}
-		if (mDst && !mDst->isSelected()) {
-			prepareGeometryChange();
-			mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
-		}
-		updateLongestPart();
 	} else {
-		if (mSrc && mSrc->isSelected()) {
-			prepareGeometryChange();
-			mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
+		if (isSelected()) {
+			if (mSrc && !mSrc->isSelected()) {
+				prepareGeometryChange();
+				mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
+			}
+			if (mDst && !mDst->isSelected()) {
+				prepareGeometryChange();
+				mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
+			}
+			updateLongestPart();
+		} else {
+			if (mSrc && mSrc->isSelected()) {
+				prepareGeometryChange();
+				mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
+			}
+			if (mDst && mDst->isSelected()) {
+				prepareGeometryChange();
+				mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
+			}
+			updateLongestPart();
 		}
-		if (mDst && mDst->isSelected()) {
-			prepareGeometryChange();
-			mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
+		if (((mSrc && mDst && !(mDst->isSelected() && mSrc->isSelected()))
+				|| ((!isSelected() && (mSrc ? mSrc->isSelected() : true) && (mDst ? mDst->isSelected() : true))))
+//				|| (isSelected() && !(mSrc && mDst) && (mSrc || mDst) && (mSrc ? !mSrc->isSelected() : true) && (mDst ? !mDst->isSelected() : true)))
+				&& SettingsManager::value("SquareLine").toBool()) {
+			squarizeAndAdjustHandler(QPointF());
 		}
-		updateLongestPart();
 	}
 }
 
@@ -1050,7 +1205,7 @@ bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst, 
 	if (mDst && reconnectDst) {
 		qreal newTo = mDst->portId(mapToItem(mDst, mLine[mLine.count() - 2]));
 		reconnectedDst = (NodeElement::portNumber(newTo) != NodeElement::portNumber(mPortTo));
-		if (!jumpsOnly || reconnectedDst) {
+		if (!jumpsOnly || reconnectedDst) { //&& !isCircle) {
 			mPortTo = newTo;
 			mModelUpdateIsCalled = true;
 			mGraphicalAssistApi->setToPort(id(), mPortTo);
@@ -1089,7 +1244,7 @@ void EdgeElement::updateData()
 	if (mSrc) {
 		mSrc->delEdge(this);
 	}
-	if (mDst) {
+	if (mDst && mDst != mSrc) {
 		mDst->delEdge(this);
 	}
 
@@ -1099,7 +1254,7 @@ void EdgeElement::updateData()
 	if (mSrc) {
 		mSrc->addEdge(this);
 	}
-	if (mDst) {
+	if (mDst && mDst != mSrc) {
 		mDst->addEdge(this);
 	}
 
@@ -1107,8 +1262,11 @@ void EdgeElement::updateData()
 	mPortTo = mGraphicalAssistApi->toPort(id());
 
 	adjustLink();
-	arrangeSrcAndDst();
-
+	if (mSrc != mDst) {
+		correctArrow();
+		prepareGeometryChange();
+		correctInception();
+	}
 	mElementImpl->updateData(this);
 
 	update();
@@ -1158,7 +1316,7 @@ void EdgeElement::moveConnection(NodeElement *node, qreal const portId) {
 		mModelUpdateIsCalled = true;
 		mGraphicalAssistApi->setFromPort(id(), mPortFrom);
 	}
-	if (node == mDst) {
+	if (node == mDst) {//&& !isCircle) {
 		mPortTo = portId;
 		mModelUpdateIsCalled = true;
 		mGraphicalAssistApi->setToPort(id(), mPortTo);
@@ -1188,13 +1346,237 @@ void EdgeElement::highlight(QColor const color)
 	update();
 }
 
+int EdgeElement::defineDirection(bool from)
+{
+	qreal port = from ? mPortFrom : mPortTo;
+	int direct = 0;
+	if (port < 2 && port > 1) {
+		direct = -1;
+		if ((!from && (mLine[mLine.size() - 2].y() > mLine.last().y()))
+				|| (from && (mLine[1].y() < mLine[0].y()))) {
+			direct = -3;
+		}
+	}
+	if (port < 1 && port > 0) {
+		direct = -2;
+		if ((!from && (mLine[mLine.size() - 2].x() > mLine.last().x()))
+				|| (from && (mLine[1].x() < mLine[0].x()))) {
+			direct = -4;
+		}
+	}
+	if (port < 3 && port > 2) {
+		direct = 2;
+		if ((!from && (mLine[mLine.size() - 2].x() < mLine.last().x()))
+				|| (from && (mLine[1].x() > mLine[0].x()))) {
+			direct = 4;
+		}
+	}
+	if (port < 4 && port > 3) {
+		direct = 1;
+		if ((!from && (mLine[mLine.size() - 2].y() < mLine.last().y()))
+				|| (from && (mLine[1].y() > mLine[0].y()))) {
+			direct = 3;
+		}
+	}
+	return direct;
+}
+
+void EdgeElement::correctInception()
+{
+	if (!SettingsManager::value("SquareLine").toBool() || mLine.size() < 3 || isCircle || !mSrc || !mDst
+			|| mSrc->isContainer() || mDst->isContainer() || ((lengthOfSegment(mLine.first(), mLine.last()) < 4.5 * kvadratik) && (mLine.size() <= 3))) {
+		return;
+	}
+
+	qreal const rad = kvadratik * 2.5;
+
+	int direct = defineDirection(true);
+
+	if ((lengthOfSegment(mLine[0], mLine[1]) < rad) && (direct & 1) && isVerticalChanging) {
+		if (lengthOfSegment(mLine[0], mLine[1]) > 5 && abs(direct) == 3) {
+			return;
+		}
+
+		QPointF middle = (mLine[1] + mLine[2]) / 2;
+		int dirLocation = 1;
+		if (middle.x() < mLine.first().x()) {
+			dirLocation = -1;
+		}
+		if (abs(middle.x() - mLine.first().x()) > 2 * rad) {
+			middle.setX(dirLocation * 2 * rad + mLine.first().x());
+		}
+
+		qreal shiftY = (abs(direct) == 3) ? rad + abs(mLine[1].y() - mLine.first().y()) : rad;
+		if (direct > 0) {
+			direct = 1;
+		} else {
+			direct = -1;
+		}
+		qreal shiftX = (mPortFrom < 2) ? (-mPortFrom + 1.5) * mSrc->contentsRect().width() : (-mPortFrom + 3.5) * mSrc->contentsRect().width();
+		mLine[1].setY(mLine.first().y() + direct * shiftY);
+		middle.setX(middle.x() + shiftX);
+		QPointF tmp = middle;
+		tmp.setY(mLine.first().y() + direct * shiftY);
+		mLine.insert(2, middle);
+		mLine.insert(2, tmp);
+	} else if ((lengthOfSegment(mLine[0], mLine[1]) < rad) && !(direct & 1) && !isVerticalChanging) {
+		if (lengthOfSegment(mLine[0], mLine[1]) > 5 && abs(direct) == 4) {
+			return;
+		}
+
+		QPointF middle = (mLine[1] + mLine[2]) / 2;
+		int dirLocation = 1;
+		if (middle.y() < mLine.first().y()) {
+			dirLocation = -1;
+		}
+		if (abs(middle.y() - mLine.first().y()) > 2 * rad) {
+			middle.setY(dirLocation * 2 * rad + mLine.first().y());
+		}
+
+		qreal shiftX = (abs(direct) == 4) ? rad + abs(mLine[1].y() - mLine.first().y()) : rad;
+		if (direct > 0) {
+			direct = 1;
+		} else {
+			direct = -1;
+		}
+		qreal shiftY = (mPortFrom < 1) ? (-mPortFrom + 0.5) * mSrc->contentsRect().width() : (-mPortFrom + 2.5) * mSrc->contentsRect().width();
+
+		mLine[1].setX(mLine.first().x() + direct * shiftX);
+		middle.setY(middle.y() + shiftY);
+		QPointF tmp = middle;
+		tmp.setX(mLine.first().x() + direct * shiftX);
+		mLine.insert(2, middle);
+		mLine.insert(2, tmp);
+	} else if (isVerticalChanging && !(direct & 1) && ((direct < 0 && mLine.first().x() < mLine[2].x())
+			|| ((direct > 0 && mLine.first().x() > mLine[2].x())))) {
+		if (direct > 0) {
+			direct = -1;
+		} else {
+			direct = 1;
+		}
+		mLine.first().setX(mLine[0].x() + direct * mSrc->contentsRect().width());
+		mLine.first().setY(mLine[1].y());
+		mLine.remove(1);
+
+		mMoving = true;
+		setPos(pos() + mLine.first());
+		mLine.translate(-mLine.first());
+		mPortFrom = mSrc ? mSrc->portId(mapToItem(mSrc, mLine.first())) : -1.0;
+		mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+		adjustNeighborLinks();
+		arrangeSrcAndDst();
+		mGraphicalAssistApi->setPosition(id(), pos());
+		mMoving = false;
+	}
+	updateLongestPart();
+}
+
+void EdgeElement::correctArrow()
+{
+	if (!SettingsManager::value("SquareLine").toBool() || mLine.size() < 3 || isCircle || !mSrc || !mDst
+			|| mSrc->isContainer() || mDst->isContainer() || ((lengthOfSegment(mLine.last(), mLine.first()) < 4.5 * kvadratik) && (mLine.size() <= 3))) {
+		return;
+	}
+
+	qreal const rad = kvadratik * 2.5;
+
+	int direct = defineDirection(false);
+
+	if (!(direct & 1) && !isVerticalChanging) {
+		mLine[mLine.size() - 2].setY(mLine.last().y());
+		mLine[mLine.size() - 2].setX(mLine[mLine.size() - 3].x());
+		isVerticalChanging = true;
+		return;
+	}
+	if ((direct & 1) && isVerticalChanging) {
+		mLine[mLine.size() - 2].setX(mLine.last().x());
+		mLine[mLine.size() - 2].setY(mLine[mLine.size() - 3].y());
+		isVerticalChanging = false;
+		return;
+	}
+
+	if ((lengthOfSegment(mLine[mLine.size() - 1], mLine[mLine.size() - 2]) < rad) && (direct & 1)) {
+		QPointF middle = (mLine[mLine.size() - 3] + mLine[mLine.size() - 2]) / 2;
+		int dirLocation = 1;
+		if (middle.x() < mLine.last().x()) {
+			dirLocation = -1;
+		}
+		if (abs(middle.x() - mLine.last().x()) > 4 * rad) {
+			middle.setX(dirLocation * 2 * rad + mLine.last().x());
+		}
+		if ((abs(direct) == 1) && lengthOfSegment(mLine[mLine.size() - 1], mLine[mLine.size() - 2]) > kvadratik * 1.5) {
+			return;
+		}
+		qreal shiftY = (abs(direct) == 1) ? rad + abs(mLine[mLine.size() - 2].y() - mLine.last().y()) : rad;
+		if (direct > 0) {
+			direct = 1;
+		} else {
+			direct = -1;
+		}
+		qreal shiftX = (mPortTo < 2) ? (-mPortTo + 1.5) * mDst->contentsRect().width() : (-mPortTo + 3.5) * mDst->contentsRect().width();
+		mLine[mLine.size() - 2].setY(mLine.last().y() + direct * shiftY);
+		middle.setX(middle.x() + shiftX);
+		QPointF tmp = middle;
+		tmp.setY(mLine.last().y() + direct * shiftY);
+		mLine.insert(mLine.size() - 2, middle);
+		mLine.insert(mLine.size() - 2, tmp);
+		isVerticalChanging = false;
+	} else if ((lengthOfSegment(mLine[mLine.size() - 1], mLine[mLine.size() - 2]) < rad) && !(direct & 1)) {
+		QPointF middle = (mLine[mLine.size() - 3] + mLine[mLine.size() - 2]) / 2;
+		int dirLocation = 1;
+		if (middle.y() < mLine.last().y()) {
+			dirLocation = -1;
+		}
+		if (abs(middle.y() - mLine.last().y()) > 4 * rad) {
+			middle.setY(dirLocation * 2 * rad + mLine.last().y());
+		}
+		if ((abs(direct) == 2) && lengthOfSegment(mLine[mLine.size() - 1], mLine[mLine.size() - 2]) > kvadratik * 1.5) {
+			return;
+		}
+		qreal shiftX = (abs(direct) == 2) ? rad + abs(mLine[mLine.size() - 2].x() - mLine.last().x()) : rad;
+		if (direct > 0) {
+			direct = 1;
+		} else {
+			direct = -1;
+		}
+		qreal shiftY = (mPortTo < 1) ? (-mPortTo + 0.5) * mDst->contentsRect().width() : (-mPortTo + 2.5) * mDst->contentsRect().width();
+		mLine[mLine.size() - 2].setX(mLine.last().x() + direct * shiftX);
+		middle.setY(middle.y() + shiftY);
+		QPointF tmp = middle;
+		tmp.setX(mLine.last().x() + direct * shiftX);
+		mLine.insert(mLine.size() - 2, middle);
+		mLine.insert(mLine.size() - 2, tmp);
+		isVerticalChanging = true;
+	} else if (isVerticalChanging && !(direct & 1) && ((direct < 0 && mLine.last().x() < mLine[mLine.size() - 2].x())
+			|| ((direct > 0 && mLine.last().x() > mLine[mLine.size() - 2].x())))) {
+		if (direct > 0) {
+			direct = -1;
+		} else {
+			direct = 1;
+		}
+		mLine.last().setX(mLine.last().x() + direct * mDst->contentsRect().width());
+
+		mMoving = true;
+		setPos(pos() + mLine.first());
+		mLine.translate(-mLine.first());
+		mPortTo = mDst ? mDst->portId(mapToItem(mDst, mLine.last())) : -1.0;
+		mGraphicalAssistApi->setToPort(id(), mPortFrom);
+		adjustNeighborLinks();
+		arrangeSrcAndDst();
+		mGraphicalAssistApi->setPosition(id(), pos());
+		mMoving = false;
+	}
+}
+
 void EdgeElement::redrawing(QPointF const &pos)
 {
 	Q_UNUSED(pos);
 	adjustNeighborLinks();
 	arrangeSrcAndDst();
+	correctArrow();
+	prepareGeometryChange();
+	correctInception();
 	mMoving = true;
-	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi->setPosition(id(), this->pos());
 	mMoving = false;
 	setGraphicApi(QPointF());
@@ -1220,27 +1602,32 @@ QPointF* EdgeElement::haveIntersection(QPointF const &pos1, QPointF const &pos2,
 	qreal a2 = pos3.y() - pos4.y();
 	qreal b2 = pos4.x() - pos3.x();
 	qreal c2 = pos3.x() * pos4.y() - pos4.x() * pos3.y();
-	if (a2 * b1 == a1 * b2) {
+	if (abs(a2 * b1 - a1 * b2) < epsilon) {
 		return NULL;
 	}
-	qreal y = (-c1 + a1 * c2 / a2)/(-(a1 / a2) * b2 + b1);
-	qreal x = (b2 * y + c2) / (-a2);
-	QPointF* cut = new QPointF(x,y);
-	// use class QPainterPath for determine of the accessory
+	qreal y = 0;
+	qreal x = 0;
+	if (abs(a2) > epsilon) {
+		y = (-c1 + a1 * c2 / a2)/(-(a1 / a2) * b2 + b1);
+		x = (b2 * y + c2) / (-a2);
+	} else {
+		y = pos3.y();
+		x = (b1 * y + c1) / a1;
+	}
+	QPointF* cut = new QPointF(x, y);
+
 	QPainterPath path;
 	QPainterPathStroker ps;
 	ps.setWidth(1);
 	path.moveTo(pos1);
 	path.lineTo(pos2);
-	if (ps.createStroke(path).contains(QPointF(cut->x(), cut->y())))
-	{
+	if (ps.createStroke(path).contains(QPointF(cut->x(), cut->y()))) {
 		QPainterPath path1;
 		QPainterPathStroker ps1;
 		ps1.setWidth(1);
 		path1.moveTo(pos3);
 		path1.lineTo(pos4);
-		if (ps1.createStroke(path1).contains(QPointF(cut->x(), cut->y())))
-		{
+		if (ps1.createStroke(path1).contains(QPointF(cut->x(), cut->y()))) {
 			return cut;
 		}
 	}
@@ -1292,7 +1679,7 @@ void EdgeElement::deleteLoop(int startPos)
 		for (int j = i + 2; j < mLine.size() - 1; ++j)
 		{
 			QPointF* cut = haveIntersection(mLine[i], mLine[i + 1], mLine[j], mLine[j + 1]);
-			if (cut != NULL)
+			if (cut)
 			{
 				if ((i != 0) || !((j == mLine.size() - 2) && (lengthOfSegment(mLine.first(), mLine.last()) < (kvadratik * 2))))
 				{
@@ -1323,6 +1710,12 @@ void EdgeElement::deleteLoop(int startPos)
 
 void EdgeElement::deleteLoops()
 {
+	// It's very rough prevention of transforming in the point now
+	// should be adjusted deleteLoop and delCloseLinePoints to a good drawing considering isCircle
+	// It's need to drawing without point's links and "QTransform::rotate with NaN called" accordingly
+	if (isCircle && ((SettingsManager::value("SquareLine").toBool() && mLine.size() <= 6) || mLine.size() <= 5)) {
+		return;
+	}
 	prepareGeometryChange();
 	deleteLoop(0);
 }
@@ -1357,13 +1750,18 @@ void EdgeElement::deleteSegmentHandler(QPointF const &pos)
 void EdgeElement::setGraphicApi(QPointF const &pos)
 {
 	Q_UNUSED(pos);
-	mModelUpdateIsCalled = true; // flag for the infinite updateData()-s liquidating
+	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
 }
 
-void EdgeElement::reverseHandler(QPointF const &pos)
+void EdgeElement::reverseHandler(QPointF const &pos1)
 {
-	Q_UNUSED(pos);
+	Q_UNUSED(pos1);
+
+	int direct = defineDirection(true);
+
+	bool isCrooked = !isCircle && SettingsManager::value("SquareLine").toBool() && lengthOfSegment(mLine[1], mLine[0]) < 3 * kvadratik
+			&& (((direct & 1) && isVerticalChanging) || (!(direct & 1) && !isVerticalChanging));
 
 	int length = mLine.size();
 	for (int i = 0; i < (length >> 1); ++i) {
@@ -1372,8 +1770,60 @@ void EdgeElement::reverseHandler(QPointF const &pos)
 		mLine[length - 1 - i] = tmp;
 	}
 
-	connectToPort();
+	reversingReconnectToPorts(mDst, mSrc);
+
 	arrangeAndAdjustHandler(QPointF());
+
+	if (isCrooked) {
+		arrangeSrcAndDst(); // this
+		adjustNeighborLinks(); // this
+		arrangeSrcAndDst(); // this
+		adjustNeighborLinks(); // and this - all are needed!
+
+		correctArrow();
+		prepareGeometryChange();
+		correctInception();
+
+		setGraphicApiPos();
+		setGraphicApi(QPointF());
+	}
+	updateLongestPart();
+}
+
+void EdgeElement::reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst)
+{
+	mMoving = true;
+
+	if (isCircle) {
+		connectCircleEdge(newSrc);
+		return;
+	}
+
+	setPos(pos() + mLine.first());
+	mLine.translate(-mLine.first());
+
+	mPortFrom = newSrc ? newSrc->portId(mapToItem(newSrc, mLine.first())) : -1.0;
+	mPortTo = newDst ? newDst->portId(mapToItem(newDst, mLine.last())) : -1.0;
+
+	setSrc(NULL);
+	setDst(NULL);
+
+	if (mPortFrom >= -epsilon) {
+		mSrc = newSrc;
+		mSrc->addEdge(this);
+	}
+	if (mPortTo >= -epsilon) {
+		mDst = newDst;
+		mDst->addEdge(this);
+	}
+	mGraphicalAssistApi->setFrom(id(), (mSrc ? mSrc->id() : Id::rootId()));
+	mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+	mGraphicalAssistApi->setTo(id(), (mDst ? mDst->id() : Id::rootId()));
+	mGraphicalAssistApi->setToPort(id(), mPortTo);
+	mLogicalAssistApi->setFrom(logicalId(), (mSrc ? mSrc->logicalId() : Id::rootId()));
+	mLogicalAssistApi->setTo(logicalId(), (mDst ? mDst->logicalId() : Id::rootId()));
+
+	mMoving = false;
 }
 
 QVariant EdgeElement::itemChange(GraphicsItemChange change, QVariant const &value)
@@ -1391,6 +1841,10 @@ QVariant EdgeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 				mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
 				updateLongestPart();
 			}
+			if (!(mSrc && mDst) && (mSrc || mDst) && (mSrc ? !mSrc->isSelected() : true) && (mDst ? !mDst->isSelected() : true)
+					&& SettingsManager::value("SquareLine").toBool()) {
+				squarizeAndAdjustHandler(QPointF());
+			}
 		}
 		return value;
 	default:
@@ -1398,10 +1852,46 @@ QVariant EdgeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 	}
 }
 
+void EdgeElement::setSrc(NodeElement *node)
+{
+	if (mSrc) {
+		mSrc->delEdge(this);
+	}
+	mSrc = node;
+	if (node) {
+		mSrc->addEdge(this);
+	}
+}
+
+void EdgeElement::setDst(NodeElement *node)
+{
+	if (mDst) {
+		mDst->delEdge(this);
+	}
+	mDst = node;
+	if (node) {
+		mDst->addEdge(this);
+	}
+}
+
+void EdgeElement::tuneForLinker()
+{
+	mMoving = true;
+	setPos(pos() + mLine.first());
+	mLine.translate(-mLine.first());
+	mPortFrom = mSrc ? mSrc->portId(mapToItem(mSrc, mLine.first())) : -1.0;
+	mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+	adjustNeighborLinks();
+	arrangeSrcAndDst();
+	mGraphicalAssistApi->setPosition(id(), pos());
+	mMoving = false;
+}
+
+/* TODO: It's alternative squarize methos
 void EdgeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (SettingsManager::value("SquareLine").toBool() && (event->modifiers() & Qt::AltModifier)
-		&& (getPoint(event->pos()) == -1))
+		&& (getPoint(event->pos()) == -1) && !isCircle)
 	{
 		int start;
 		QPainterPath path;
@@ -1417,16 +1907,35 @@ void EdgeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 		}
 
 		if ((start == 0 || start == 1) && mLine.size() == 3) {
+			mLine.remove(1);
+			QPolygonF newMLine;
+			newMLine << mLine.first() << mLine.last();
+			mLine = newMLine;
+			if (mSrc) {
+				prepareGeometryChange();
+				mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
+			}
+			if (mDst) {
+				prepareGeometryChange();
+				mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
+			}
+			arrangeSrcAndDst();
 			prepareGeometryChange();
-			specialSquarizeSegment(start);
-		}
-		if ((start == 0 || start == 1) && mLine.size() > 3) {
+			specialSquarizeSegment(0);
+		} else if ((start == 0 || start == 1) && mLine.size() > 3) {
+			mLine.remove(1);
+			if (mSrc) {
+				mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
+			}
 			prepareGeometryChange();
-			specialSquarizeSegment(start);
-		}
-		if ((start == mLine.size() - 3 || start == mLine.size() - 2) && mLine.size() > 3) {
+			specialSquarizeSegment(0);
+		} else if ((start == mLine.size() - 3 || start == mLine.size() - 2) && mLine.size() > 3) {
+			mLine.remove(mLine.size() - 2);
+			if (mDst) {
+				mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
+			}
 			prepareGeometryChange();
-			specialSquarizeSegment(start);
+			specialSquarizeSegment(mLine.size() - 3);
 		}
 	}
 	updateLongestPart();
@@ -1444,12 +1953,15 @@ void EdgeElement::specialSquarizeLink()
 	update();
 }
 
-void EdgeElement::specialSquarizeSegment(int const start)
+void EdgeElement::specialSquarizeSegment(int start, bool xYx)
 {
-
+	QPointF middle = (mLine[start] + mLine[start + 1]) / 2;
+	if (xYx) {
+		mLine.insert(start + 1, QPointF(middle.x(), mLine[start].y()));
+		mLine.insert(start + 2, QPointF(middle.x(), mLine[start + 2].y()));
+	} else { // yXy
+		mLine.insert(start + 1, QPointF(mLine[start].x(), middle.y()));
+		mLine.insert(start + 2, QPointF(mLine[start + 2].x(), middle.y()));
+	}
 }
-// надо добавить поле или для того, что 2 метод перерисовки в квадр, либо что близкие точки
-// к концам mLine не удалять.
-// и подумать, как это сохранить
-// и подумать насчёт обновления позиции
-// а также может быть при включенной сетке сделать так, чтоб немного по другому arrange выбирался...
+*/

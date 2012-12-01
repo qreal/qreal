@@ -24,14 +24,13 @@ EditorViewScene::EditorViewScene(QObject *parent)
 		, mMouseMovementManager(NULL)
 		, mActionSignalMapper(new QSignalMapper(this))
 		, mTimer(new QTimer(this))
+		, mTimerForArrowButtons(new QTimer(this))
+		, mOffset(QPointF(0, 0))
 		, mShouldReparentItems(false)
 		, mTopLeftCorner(new QGraphicsRectItem(0, 0, 1, 1))
 		, mBottomRightCorner(new QGraphicsRectItem(0, 0, 1, 1))
+		, mIsSelectEvent(false)
 {
-	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
-	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth").toInt()) / 100;
-	mRealIndexGrid = SettingsManager::value("IndexGrid").toInt();
-
 	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
 	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth").toInt()) / 100;
 	mRealIndexGrid = SettingsManager::value("IndexGrid").toInt();
@@ -42,6 +41,9 @@ EditorViewScene::EditorViewScene(QObject *parent)
 	initCorners();
 
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
+	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
+
+	mSelectList = new QList<QGraphicsItem *>();
 }
 
 void EditorViewScene::drawForeground(QPainter *painter, QRectF const &rect)
@@ -63,13 +65,13 @@ void EditorViewScene::putOnForeground(QPixmap *pixmap)
 void EditorViewScene::deleteFromForeground(QPixmap *pixmap)
 {
 	mForegroundPixmaps.removeAll(pixmap);
-	update();
 }
 
 EditorViewScene::~EditorViewScene()
 {
 	delete mActionSignalMapper;
 	delete mMouseMovementManager;
+	delete mSelectList;
 }
 
 void EditorViewScene::drawIdealGesture()
@@ -158,6 +160,12 @@ void EditorViewScene::clearScene()
 	}
 }
 
+void EditorViewScene::itemSelectUpdate()
+{
+	foreach (QGraphicsItem* item, *mSelectList) {
+		item->setSelected(true);
+	}
+}
 Element *EditorViewScene::getElem(qReal::Id const &id)
 {
 	if (id == Id::rootId()) {
@@ -349,6 +357,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node, QPoint
 	}
 
 	mCreatePoint = scenePos;
+	mLastCreatedWithEdge = NULL;
 	QObject::connect(menuSignalMapper, SIGNAL(mapped(const QString &)), this, SLOT(createElement(const QString &)));
 
 	QPoint cursorPos = QCursor::pos();
@@ -766,6 +775,8 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 		copy();
 	} else if (isArrow(event->key())) {
 		moveSelectedItems(event->key());
+	} else if (event->key() == Qt::Key_Menu) {
+		initContextMenu(NULL, QPointF()); //!11!!
 	} else {
 		QGraphicsScene::keyPressEvent(event);
 	}
@@ -779,26 +790,35 @@ inline bool EditorViewScene::isArrow(int key)
 
 void EditorViewScene::moveSelectedItems(int direction)
 {
-	QPointF offset = offsetByDirection(direction);
-	if (offset == QPointF(0, 0)) {
+	mOffset = offsetByDirection(direction);
+	if (mOffset == QPointF(0, 0)) {
 		return;
 	}
 
 	foreach (QGraphicsItem* item, selectedItems()) {
 		QPointF newPos = item->pos();
-		newPos += offset;
+		newPos += mOffset;
 
 		Element* element = dynamic_cast<Element*>(item);
 		if (element) {
-			mMVIface->graphicalAssistApi()->setPosition(element->id(), newPos);
+			element->setPos(newPos);
 		}
-		element->setPos(newPos);
 
 		NodeElement* node = dynamic_cast<NodeElement*>(item);
 		if (node) {
 			node->alignToGrid();
+			node->adjustLinks(true);
+		} else {
+			EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
+			if (edge && !(edge->src() && edge->dst()) && (edge->src() || edge->dst())
+					&& (edge->src() ? !edge->src()->isSelected() : true)
+					&& (edge->dst() ? !edge->dst()->isSelected() : true)) {
+				edge->adjustLink();
+			}
 		}
 	}
+
+	mTimerForArrowButtons->start(700);
 }
 
 QPointF EditorViewScene::offsetByDirection(int direction)
@@ -935,11 +955,47 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (mLeftButtonPressed) {
+	mCurrentMousePos = event->scenePos();
+	if (mLeftButtonPressed && !mIsSelectEvent && selectedItems().size() == 1) {
+		if (event->button() == Qt::RightButton) {
+			QGraphicsItem *item = mouseGrabberItem();
+			EdgeElement *edge = dynamic_cast <EdgeElement *> (item);
+			if (edge) {
+				sendEvent(edge, event);
+			}
+		}
 		return;
 	}
+
 	// Let scene update selection and perform other operations
-	QGraphicsScene::mousePressEvent(event);
+	QGraphicsItem* item = itemAt(mCurrentMousePos);
+	if (event->modifiers() & Qt::ControlModifier) {
+		if (item) {
+			QGraphicsScene::mousePressEvent(event);
+		}
+	} else {
+		QGraphicsScene::mousePressEvent(event);
+	}
+
+	if ((event->modifiers() & Qt::ControlModifier) && (event->buttons() & Qt::LeftButton) && !(event->buttons() & Qt::RightButton)) {
+		mIsSelectEvent = true;
+		mSelectList->append(selectedItems());
+		foreach (QGraphicsItem* item, items()) {
+			item->setAcceptedMouseButtons(0);
+		}
+		foreach (QGraphicsItem* item, *mSelectList) {
+			item->setSelected(true);
+		}
+		QGraphicsItem* item = itemAt(mCurrentMousePos);
+		if (item) {
+			item->setSelected(!mSelectList->contains(item));
+			if (item->isSelected()) {
+				mSelectList->append(item);
+			} else {
+				mSelectList->removeAll(item);
+			}
+		}
+	}
 
 	if (event->button() == Qt::LeftButton) {
 		mLeftButtonPressed = true;
@@ -956,7 +1012,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		}
 
 	} else {
-		if (event->button() == Qt::RightButton) {
+		if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton)) {
 			mTimer->stop();
 			mMouseMovementManager->mousePress(event->scenePos());
 			mRightButtonPressed = true;
@@ -965,7 +1021,6 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	redraw();
 
 	mShouldReparentItems = (selectedItems().size() > 0);
-	mCurrentMousePos = event->scenePos();
 }
 
 void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
@@ -1035,6 +1090,24 @@ void EditorViewScene::getObjectByGesture()
 	deleteGesture();
 }
 
+void EditorViewScene::updateMovedElements() // see #605
+{
+	mTimerForArrowButtons->stop();
+
+	if (mOffset == QPointF(0, 0)) {
+		return;
+	}
+
+	foreach (QGraphicsItem* item, selectedItems()) {
+		QPointF newPos = item->pos();
+
+		Element* element = dynamic_cast<Element*>(item);
+		if (element) {
+			mMVIface->graphicalAssistApi()->setPosition(element->id(), newPos);
+		}
+	}
+}
+
 void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &child)
 {
 	EditorInterface const *const editorInterface = mainWindow()->manager()->editorInterface(child.id().editor());
@@ -1078,27 +1151,53 @@ void EditorViewScene::createEdge(const QString & idStr)
 {
 	QPointF start = mMouseMovementManager->firstPoint();
 	QPointF end = mMouseMovementManager->lastPoint();
-	NodeElement *child = dynamic_cast <NodeElement *> (getElemAt(end));
 	Id id = createElement(idStr, start);
 	Element *edgeElement = getElem(id);
 	EdgeElement *edge = dynamic_cast <EdgeElement *> (edgeElement);
-	QPointF endPos = edge->mapFromItem(child, child->nearestPort(end));
-	edge->placeEndTo(endPos);
+	edge->setSrc(NULL);
+	edge->setDst(NULL);
+
+	edge->placeEndTo(edge->mapFromScene(end));
 	edge->connectToPort();
-	edge->adjustNeighborLinks();
+	if (edge->dst()) {
+		edge->dst()->arrangeLinks();
+		foreach (EdgeElement* nodeEdge, edge->dst()->edgeList()) {
+			nodeEdge->adjustNeighborLinks();
+			nodeEdge->correctArrow();
+			nodeEdge->correctInception();
+			nodeEdge->setGraphicApiPos();
+			nodeEdge->setGraphicApi(QPointF());
+		}
+		edge->dst()->arrangeLinks();
+		edge->dst()->adjustLinks();
+	}
 }
 
 void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (event->button() == Qt::LeftButton) {
+	if ((event->button() == Qt::LeftButton) && !(event->buttons() & Qt::RightButton)) {
 		mLeftButtonPressed = false;
 	}
 
-	if (mLeftButtonPressed) {
+	if (mIsSelectEvent && (event->button() == Qt::LeftButton)) {
+		foreach (QGraphicsItem* item, items()) {
+			item->setAcceptedMouseButtons(Qt::MouseButtons(0x00000003));
+		}
+		mIsSelectEvent = false;
+		foreach (QGraphicsItem* item, *mSelectList) {
+			item->setSelected(true);
+		}
+		mSelectList->clear();
 		return;
 	}
 
-	QGraphicsScene::mouseReleaseEvent(event);
+	if (mLeftButtonPressed && !mIsSelectEvent) {
+		return;
+	}
+
+	if (!(mLeftButtonPressed && event->button() == Qt::RightButton)) {
+		QGraphicsScene::mouseReleaseEvent(event);
+	}
 
 	Element *element = getElemAt(event->scenePos());
 
@@ -1113,7 +1212,10 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			} else {
 				NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
 				if (nodeItem) {
-					sendEvent(item, event);
+					Element *e = dynamic_cast<Element *>(itemAt(event->scenePos()));
+					if ((e && (nodeItem->id() != e->id())) || !e) {
+						sendEvent(item, event);
+					}
 					if (list.size() > 1 && nodeItem) {
 						nodeItem->setVisibleEmbeddedLinkers(false);
 						nodeItem->setPortsVisible(false);
@@ -1130,7 +1232,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mRightButtonPressed = false;
 		drawGesture();
 		EdgeElement * const edgeElement = dynamic_cast<EdgeElement *>(element);
-		if (edgeElement != NULL) {
+		if (edgeElement) {
 			if (event->buttons() & Qt::LeftButton ) {
 				edgeElement->breakPointHandler(element->mapFromScene(event->scenePos()));
 				return;
@@ -1170,7 +1272,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	mCurrentMousePos = event->scenePos();
-	if (mLeftButtonPressed && !(event->buttons() & Qt::RightButton)) {
+	if ((mLeftButtonPressed && !(event->buttons() & Qt::RightButton))) {
 		QGraphicsScene::mouseMoveEvent(event);
 	} else {
 		// button isn't recognized while mouse moves
@@ -1190,7 +1292,7 @@ QPointF EditorViewScene::getMousePos()
 
 void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (event->button() == Qt::LeftButton) {
+	if (event->button() == Qt::LeftButton && !event->modifiers()) {
 		// Double click on a title activates it
 		if (ElementTitle *title = dynamic_cast<ElementTitle*>(itemAt(event->scenePos()))) {
 			if (!title->hasFocus()) {  // Do not activate already activated item
@@ -1215,6 +1317,12 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 				}
 			}
 		}
+	}
+
+	Element *e = dynamic_cast<Element *>(itemAt(event->scenePos()));
+	if (e && e->isSelected() && !event->modifiers()) {
+		mainWindow()->graphicalModelExplorer()->setFocus();
+		mView->ensureElementVisible(e);
 	}
 
 	QGraphicsScene::mouseDoubleClickEvent(event);
@@ -1243,6 +1351,7 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 	mContextMenuActions << mWindow->actionDeleteFromDiagram()
 			<< mWindow->actionCopyElementsOnDiagram()
 			<< mWindow->actionPasteOnDiagram() << mWindow->actionPasteCopyOfLogical();
+	// TODO: what is it?
 	//	connect(this, SIGNAL(elementCreated(qReal::Id)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::Id)));
 	//	connect(mActionSignalMapper, SIGNAL(mapped(QString)), mainWindow->listenerManager(), SIGNAL(contextMenuActionTriggered(QString)));
 }

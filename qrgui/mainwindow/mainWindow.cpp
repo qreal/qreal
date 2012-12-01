@@ -368,6 +368,16 @@ void MainWindow::sceneSelectionChanged()
 	QList<Element*> selected;
 	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
 
+	/*{
+		int i = 0;
+		foreach (QGraphicsItem* e, items) {
+			if (e->isSelected()) {
+				++i;
+			}
+		}
+		qDebug("Selected items:, %d", i);
+	}*/
+
 	foreach (QGraphicsItem* item, items) {
 		Element* element = dynamic_cast<Element*>(item);
 		if (element) {
@@ -397,7 +407,7 @@ void MainWindow::sceneSelectionChanged()
 		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(singleSelected->id());
 		if (index.isValid()) {
 			mUi->graphicalModelExplorer->setCurrentIndex(index);
-			mUi->graphicalModelExplorer->setFocus();
+			//mUi->graphicalModelExplorer->setFocus(); see #589
 		}
 	}
 }
@@ -569,6 +579,7 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	foreach (NodeElement *item, itemsToArrangeLinks) {
 		if (item) {
 			item->arrangeLinks();
+			// item->adjustLinks();
 		}
 	}
 }
@@ -582,6 +593,7 @@ void MainWindow::removeReferences(Id const &id)
 void MainWindow::deleteFromScene()
 {
 	QList<QGraphicsItem *> itemsToDelete = getCurrentTab()->scene()->selectedItems();
+	QList<QGraphicsItem *> itemsToUpdate;
 	// QGraphicsScene::selectedItems() returns items in no particular order,
 	// so we should handle parent-child relationships manually
 
@@ -595,8 +607,24 @@ void MainWindow::deleteFromScene()
 		}
 
 		// delete the item itself
+		EdgeElement* edge = dynamic_cast <EdgeElement*> (currentItem);
+		if (edge) {
+			if (edge->src() && !itemsToUpdate.contains(edge->src())) {
+				itemsToUpdate.append(edge->src());
+			}
+			if (edge->dst() && !itemsToUpdate.contains(edge->dst())) {
+				itemsToUpdate.append(edge->dst());
+			}
+		}
 		itemsToDelete.removeAll(currentItem);
 		deleteFromScene(currentItem);
+	}
+	foreach (QGraphicsItem* item, itemsToUpdate) {
+		NodeElement* node = dynamic_cast <NodeElement*> (item);
+		if (node) {
+			node->arrangeLinks();
+			node->adjustLinks();
+		}
 	}
 }
 
@@ -1088,6 +1116,24 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 			, tab->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 
 	setShortcuts(tab);
+
+	updateEdgesViaNodes(tab);
+}
+
+void MainWindow::updateEdgesViaNodes(EditorView *const tab)
+{
+	EditorViewScene *scene = dynamic_cast<EditorViewScene *>(tab->scene());
+	if (scene) {
+		foreach (QGraphicsItem *item, scene->items()) {
+			NodeElement* node = dynamic_cast<NodeElement*>(item);
+			if (node) {
+				foreach (EdgeElement* edge, node->edgeList()) {
+					edge->correctArrow();
+					edge->correctInception();
+				}
+			}
+		}
+	}
 }
 
 void MainWindow::setShortcuts(EditorView * const tab)
@@ -1421,12 +1467,14 @@ void MainWindow::applySettings()
 	for (int i = 0; i < mUi->tabs->count(); i++) {
 		EditorView * const tab = static_cast<EditorView *>(mUi->tabs->widget(i));
 		EditorViewScene *scene = dynamic_cast <EditorViewScene *> (tab->scene());
-		if (SettingsManager::value("SquareLine", false).toBool()) {
-			scene->updateEdgeElements();
+		if (scene) {
+			if (SettingsManager::value("SquareLine", false).toBool()) {
+				scene->updateEdgeElements();
+			}
+			scene->invalidate();
 		}
-		scene->invalidate();
 	}
-		mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
+	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 }
 
 void MainWindow::setBackReference(QPersistentModelIndex const &index, QString const &data)

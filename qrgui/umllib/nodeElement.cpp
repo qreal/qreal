@@ -135,6 +135,7 @@ void NodeElement::setGeometry(QRectF const &geom)
 	foreach (ElementTitle * const title, mTitles) {
 		title->transform(geom);
 	}
+
 }
 
 void NodeElement::setPos(QPointF const &pos)
@@ -426,14 +427,13 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	QRectF newContents = mContents;
 	QPointF newPos = mPos;
 
-	scene()->invalidate();
 	if (mDragState == None) {
 		if (!isPort() && (flags() & ItemIsMovable)) {
 			recalculateHighlightedNode(event->scenePos());
 		}
 
 		newPos += (event->scenePos() - scenePos()) - mDragPosition;
-		Element::mouseMoveEvent(event); // it is need for sendEvent() to every isSelected element thro scene
+		Element::mouseMoveEvent(event); // it is needed for sendEvent() to every isSelected element thro scene
 		mGrid->mouseMoveEvent(event);
 		alignToGrid();
 
@@ -542,7 +542,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 	storeGeometry();
 
-	setVisibleEmbeddedLinkers(true);
+	if (scene() && scene()->selectedItems().size() == 1 && isSelected()) {
+		setVisibleEmbeddedLinkers(true);
+	}
 
 	if (mDragState == None) {
 		Element::mouseReleaseEvent(event);
@@ -556,7 +558,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	// but because of mouseRelease twice triggering we can't do it
 	// This may cause more bugs
 	if (!isPort() && (flags() & ItemIsMovable)) {
-		if (mHighlightedNode != NULL) {
+		if (mHighlightedNode) {
 			NodeElement *newParent = mHighlightedNode;
 			Element *insertBefore = mHighlightedNode->getPlaceholderNextElement();
 			mHighlightedNode->erasePlaceholder(false);
@@ -583,12 +585,16 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		}
 	}
 
+	arrangeLinks();
 	foreach (EdgeElement* edge, mEdgeList) {
-		edge->arrangeAndAdjustHandler(QPointF());
+		edge->adjustNeighborLinks();
+		edge->correctArrow();
+		edge->correctInception();
+		edge->setGraphicApiPos();
+		edge->setGraphicApi(QPointF());
 	}
 
 	mDragState = None;
-	setZValue(0);
 }
 
 void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
@@ -678,6 +684,7 @@ void NodeElement::initEmbeddedLinkers()
 void NodeElement::setVisibleEmbeddedLinkers(bool const show)
 {
 	if (show) {
+		setZValue(250);
 		int index = 0;
 		int maxIndex = mEmbeddedLinkers.size();
 		foreach (EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
@@ -686,6 +693,7 @@ void NodeElement::setVisibleEmbeddedLinkers(bool const show)
 			index++;
 		}
 	} else {
+		setZValue(0);
 		foreach (EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
 			embeddedLinker->hide();
 		}
@@ -731,9 +739,11 @@ void NodeElement::updateData()
 {
 	Element::updateData();
 	if (!mMoving) {
+		mMoving = true;
 		storeGeometry();
+		mMoving = false;
 		QPointF newpos = mGraphicalAssistApi->position(id());
-		QPolygon newpoly = mGraphicalAssistApi->configuration(id()); // why is it empty?
+		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
 		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
 		if (!newpoly.isEmpty()) {
@@ -771,6 +781,11 @@ QPointF const NodeElement::portPos(qreal id) const
 QPointF const NodeElement::nearestPort(QPointF const &location) const
 {
 	return mPortHandler->nearestPort(location);
+}
+
+bool NodeElement::isContainer() const
+{
+	return mElementImpl->isContainer();
 }
 
 int NodeElement::portNumber(qreal id)
@@ -860,7 +875,7 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 				painter->drawLine(QLineF(-8, 0, 0, -8));
 				painter->drawLine(QLineF(-12, 0, 0, -12));
 			} else {
-				painter->drawRect(QRectF(mContents.bottomRight(), QSizeF(4, 4)));
+				painter->drawRect(QRectF(mContents.bottomRight(), QSizeF(-4, -4)));
 			}
 
 			painter->restore();
@@ -935,7 +950,7 @@ void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 {
 	// for non-sorting containers no need for drawing placeholder so just make them marked
 	if (!mElementImpl->isSortingContainer()) {
-		setOpacity(.2);
+		setOpacity(0.2);
 		return;
 	}
 

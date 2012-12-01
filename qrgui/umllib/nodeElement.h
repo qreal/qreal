@@ -60,6 +60,8 @@ public:
 	/// Aligning the element to grid
 	void alignToGrid();
 
+	bool isContainer() const;
+
 	void storeGeometry();
 	virtual void setName(QString name);
 	//void shift(QPointF const &pos, EdgeElement* called);
