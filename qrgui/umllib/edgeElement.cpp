@@ -1612,7 +1612,7 @@ QPointF* EdgeElement::haveIntersection(QPointF const &pos1, QPointF const &pos2,
 		x = (b2 * y + c2) / (-a2);
 	} else {
 		y = pos3.y();
-		x = (b1 * y + c1) / a1;
+		x = -(b1 * y + c1) / a1;
 	}
 	QPointF* cut = new QPointF(x, y);
 
