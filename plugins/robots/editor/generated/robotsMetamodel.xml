@@ -115,7 +115,7 @@
 			<node displayedName="Инициализация балансировки" name="BalanceInit">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/balanceInit.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<ports>
 						<linePort>
@@ -361,7 +361,7 @@
 			<node displayedName="Балансировка" name="Balance">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/balance.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="33" y="60" textBinded="port"/>
@@ -1214,6 +1214,7 @@
 		</graphicTypes>
 		<palette>
 			<group name="Действия">
+				<element name="Fork"/>
 				<element name="Beep"/>
 				<element name="PlayTone"/>
 				<element name="EnginesForward"/>
@@ -1231,16 +1232,20 @@
 				<element name="WaitForLight"/>
 			</group>
 			<group name="Алгоритмы">
-				<element name="Fork"/>
 				<element name="IfBlock"/>
 				<element name="ControlFlow"/>
 				<element name="RobotsDiagramNode"/>
+				<element name="Loop"/>
 			</group>
 			<group name="Инициализация">
 				<element name="InitialNode"/>
-				<element name="FinalNode"/>
 				<element name="InitialBlock"/>
+				<element name="FinalNode"/>
 				<element name="NullificationEncoder"/>
+			</group>
+			<group name="Сегвей">
+				<element name="Balance"/>
+				<element name="BalanceInit"/>
 			</group>
 		</palette>
 	</diagram>
