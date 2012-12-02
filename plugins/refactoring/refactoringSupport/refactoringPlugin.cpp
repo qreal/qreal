@@ -404,7 +404,8 @@ void RefactoringPlugin::createRefactoring()
 	if (mMainWindowIFace->pluginLoaded("RefactoringEditor")) {
 		Id diagramId = Id("RefactoringEditor", "RefactoringDiagram"
 				, "RefactoringDiagramNode", QUuid::createUuid().toString());
-		mGraphicalModelApi->createElement(Id::rootId(), diagramId, false, "NewRefactoringRule", QPointF());
+		DragFrom const dragFrom = fromLogicalModel;
+		mGraphicalModelApi->createElement(Id::rootId(), diagramId, dragFrom, "NewRefactoringRule", QPointF());
 
 		QHash<QString, QPointF> elementTypesAndPositions;
 		elementTypesAndPositions.insert("BeforeBlock", QPointF(300, 140));
@@ -413,7 +414,8 @@ void RefactoringPlugin::createRefactoring()
 
 		foreach(QString const name, elementTypesAndPositions.keys()) {
 			Id elementId = Id("RefactoringEditor", "RefactoringDiagram", name, QUuid::createUuid().toString());
-			mGraphicalModelApi->createElement(diagramId, elementId, false, name
+		DragFrom const dragFrom = fromLogicalModel;
+			mGraphicalModelApi->createElement(diagramId, elementId, dragFrom, name
 					, elementTypesAndPositions[name]);
 		}
 		mMainWindowIFace->activateItemOrDiagram(diagramId);
@@ -443,7 +445,8 @@ void RefactoringPlugin::makeSubprogramHARDCODE() // FIXME
 	}
 	QString const newDiagramName = mGraphicalModelApi->name(activeDiagramId)
 			+ "_Subprogram_" + mRefactoringRepoApi->name(subprogramElementInRuleId);
-	mGraphicalModelApi->createElement(Id::rootId(), newDiagramId, false, newDiagramName, QPointF());
+	DragFrom const dragFrom = fromLogicalModel;
+	mGraphicalModelApi->createElement(Id::rootId(), newDiagramId, dragFrom, newDiagramName, QPointF());
 	foreach (Id const &id, mSelectedElementsOnActiveDiagram) {
 		mGraphicalModelApi->changeParent(id, newDiagramId, mGraphicalModelApi->position(id));
 	}
@@ -453,8 +456,7 @@ void RefactoringPlugin::makeSubprogramHARDCODE() // FIXME
 			, subprogramElementInRuleId.diagram()
 			, subprogramElementInRuleId.element()
 			, QUuid::createUuid().toString());
-
-	mGraphicalModelApi->createElement(activeDiagramId, subprogramId, false
+	mGraphicalModelApi->createElement(activeDiagramId, subprogramId, dragFrom
 			, mRefactoringRepoApi->name(subprogramElementInRuleId)
 			, mGraphicalModelApi->position(outsideLinks.first().second.first));
 

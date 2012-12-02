@@ -96,7 +96,7 @@ void LogicalModel::updateElements(Id const &logicalId, QString const &name)
 QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
 {
 	QByteArray data;
-	bool isFromLogicalModel = true;
+	DragFrom dragFrom = fromLogicalModel;
 	QDataStream stream(&data, QIODevice::WriteOnly);
 	foreach (QModelIndex index, indexes) {
 		if (index.isValid()) {
@@ -105,13 +105,13 @@ QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
 			stream << pathToItem(item);
 			stream << mApi.property(item->id(), "name").toString();
 			stream << QPointF();
-			stream << isFromLogicalModel;
+			stream << dragFrom;
 		} else {
 			stream << Id::rootId().toString();
 			stream << QString();
 			stream << QString();
 			stream << QPointF();
-			stream << isFromLogicalModel;
+			stream << dragFrom;
 		}
 	}
 

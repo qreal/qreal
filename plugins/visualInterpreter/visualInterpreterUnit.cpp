@@ -271,10 +271,11 @@ bool VisualInterpreterUnit::createElements()
 					, mInterpretersInterface.activeDiagram().diagram()
 					, id.element()
 					, QUuid::createUuid().toString());
+			DragFrom const dragFrom = fromLogicalModel;
 			Id const createdElem = mGraphicalModelApi.createElement(
 					mInterpretersInterface.activeDiagram()
 					, createdId
-					, false
+					, dragFrom
 					, id.element()
 					, position());
 
@@ -337,10 +338,11 @@ bool VisualInterpreterUnit::createElementsToReplace()
 					, mInterpretersInterface.activeDiagram().diagram()
 					, toInRule.element()
 					, QUuid::createUuid().toString());
+			DragFrom const dragFrom = fromLogicalModel;
 			Id const toInModel = mGraphicalModelApi.createElement(
 					mInterpretersInterface.activeDiagram()
 					, toInModelId
-					, false
+					, dragFrom
 					, toInRule.element()
 					, mGraphicalModelApi.position(fromInModel));
 

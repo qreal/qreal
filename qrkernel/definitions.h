@@ -3,6 +3,12 @@
 #include "ids.h"
 #include "roles.h"
 
+enum DragFrom {
+	fromLogicalModel = 1,
+	fromGraphicalModel = 2,
+	fromPalette = 3
+};
+
 namespace qReal {
 
 /// Separator used in situations where there is need to form path consisting of
