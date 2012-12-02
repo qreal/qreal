@@ -1,4 +1,3 @@
-
 /** @file nodeElement.h
  *  @brief class for an element object on a diagram
  * */

@@ -590,6 +590,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		edge->adjustNeighborLinks();
 		edge->correctArrow();
 		edge->correctInception();
+	}
+	adjustLinks();
+	foreach (EdgeElement* edge, mEdgeList) {
 		edge->setGraphicApiPos();
 		edge->setGraphicApi(QPointF());
 	}

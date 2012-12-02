@@ -350,7 +350,10 @@ void EdgeElement::connectToPort()
 			return;
 		} else {
 			// FIXME: need createCircleLink()'s implementation. linker's edges, for example, transforms to point now (see #602)
+			isCircle = true;
+			connectCircleEdge(newSrc);
 			createCircleLink();
+			return;
 			//highlight(Qt::yellow);
 		}
 	}
@@ -412,6 +415,9 @@ void EdgeElement::connectToPort()
 
 void EdgeElement::connectCircleEdge(NodeElement *newMaster)
 {
+	setPos(pos() + mLine.first());
+	mLine.translate(-mLine.first());
+
 	mPortFrom = newMaster ? newMaster->portId(mapToItem(newMaster, mLine.first())) : -1.0;
 	mPortTo = mPortFrom;//1.999;
 
@@ -669,6 +675,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	correctArrow();
 	prepareGeometryChange();
 	correctInception();
+	adjustNeighborLinks();
 
 	setGraphicApiPos();
 	setGraphicApi(QPointF());
@@ -698,7 +705,7 @@ void EdgeElement::delClosePoints()
 
 void EdgeElement::delCloseLinePoints()
 {
-	if (isCircle) { // rough prevention of transforming in the point
+	if (isCircle) { // rough prevention of transforming in the point (because #602)
 		return;
 	}
 
@@ -1034,7 +1041,6 @@ void EdgeElement::squarizeHandler(QPointF const &pos)
 void EdgeElement::squarizeAndAdjustHandler(QPointF const &pos)
 {
 	squarizeHandler(pos);
-	//squarizeHandler(pos, false);
 	deleteLoops(); // this
 	delCloseLinePoints(); // this
 	squarizeHandler(pos); // and this need for correct drawing links when many edgeElements exist on the side (line)
@@ -1384,7 +1390,7 @@ int EdgeElement::defineDirection(bool from)
 void EdgeElement::correctInception()
 {
 	if (!SettingsManager::value("SquareLine").toBool() || mLine.size() < 3 || isCircle || !mSrc || !mDst
-			|| mSrc->isContainer() || mDst->isContainer() || ((lengthOfSegment(mLine.first(), mLine.last()) < 4.5 * kvadratik) && (mLine.size() <= 3))) {
+			|| mSrc->isContainer() || mDst->isContainer() || ((lengthOfSegment(mLine.first(), mLine.last()) < 2.5 * kvadratik) && (mLine.size() <= 3))) {
 		return;
 	}
 
@@ -1447,34 +1453,71 @@ void EdgeElement::correctInception()
 		tmp.setX(mLine.first().x() + direct * shiftX);
 		mLine.insert(2, middle);
 		mLine.insert(2, tmp);
-	} else if (isVerticalChanging && !(direct & 1) && ((direct < 0 && mLine.first().x() < mLine[2].x())
-			|| ((direct > 0 && mLine.first().x() > mLine[2].x())))) {
-		if (direct > 0) {
-			direct = -1;
-		} else {
-			direct = 1;
-		}
-		mLine.first().setX(mLine[0].x() + direct * mSrc->contentsRect().width());
-		mLine.first().setY(mLine[1].y());
-		mLine.remove(1);
-
-		mMoving = true;
-		setPos(pos() + mLine.first());
-		mLine.translate(-mLine.first());
-		mPortFrom = mSrc ? mSrc->portId(mapToItem(mSrc, mLine.first())) : -1.0;
-		mGraphicalAssistApi->setFromPort(id(), mPortFrom);
-		adjustNeighborLinks();
-		arrangeSrcAndDst();
-		mGraphicalAssistApi->setPosition(id(), pos());
-		mMoving = false;
 	}
+	edgeInceptionOverlapsNode(direct);
 	updateLongestPart();
 }
+
+void EdgeElement::edgeInceptionOverlapsNode(int direct)
+{
+	if (isVerticalChanging && !(direct & 1) && ((direct < 0 && mLine.first().x() < mLine[2].x())
+			|| ((direct > 0 && mLine.first().x() > mLine[2].x())))) {
+		edgeInceptionOverlapsNodeHorizontally(direct);
+	} else if (!isVerticalChanging && (direct & 1) && ((direct < 0 && mLine.first().y() < mLine[2].y())
+			|| ((direct > 0 && mLine.first().y() > mLine[2].y())))) {
+		edgeInceptionOverlapsNodeUpright(direct);
+	}
+}
+
+void EdgeElement::edgeInceptionOverlapsNodeUpright(int direct)
+{
+	if (direct > 0) {
+		direct = -1;
+	} else {
+		direct = 1;
+	}
+	mLine.first().setY(mLine[0].y() + direct * mSrc->contentsRect().height());
+	mLine.first().setX(mLine[1].x());
+	mLine.remove(1);
+
+	mMoving = true;
+	setPos(pos() + mLine.first());
+	mLine.translate(-mLine.first());
+	mPortFrom = mSrc ? mSrc->portId(mapToItem(mSrc, mLine.first())) : -1.0;
+	mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+	adjustNeighborLinks();
+	arrangeSrcAndDst();
+	mGraphicalAssistApi->setPosition(id(), pos());
+	mMoving = false;
+}
+
+void EdgeElement::edgeInceptionOverlapsNodeHorizontally(int direct)
+{
+	if (direct > 0) {
+		direct = -1;
+	} else {
+		direct = 1;
+	}
+	mLine.first().setX(mLine[0].x() + direct * mSrc->contentsRect().width());
+	mLine.first().setY(mLine[1].y());
+	mLine.remove(1);
+
+	mMoving = true;
+	setPos(pos() + mLine.first());
+	mLine.translate(-mLine.first());
+	mPortFrom = mSrc ? mSrc->portId(mapToItem(mSrc, mLine.first())) : -1.0;
+	mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+	adjustNeighborLinks();
+	arrangeSrcAndDst();
+	mGraphicalAssistApi->setPosition(id(), pos());
+	mMoving = false;
+}
+
 
 void EdgeElement::correctArrow()
 {
 	if (!SettingsManager::value("SquareLine").toBool() || mLine.size() < 3 || isCircle || !mSrc || !mDst
-			|| mSrc->isContainer() || mDst->isContainer() || ((lengthOfSegment(mLine.last(), mLine.first()) < 4.5 * kvadratik) && (mLine.size() <= 3))) {
+			|| mSrc->isContainer() || mDst->isContainer() || ((lengthOfSegment(mLine.last(), mLine.first()) < 2.5 * kvadratik) && (mLine.size() <= 3))) {
 		return;
 	}
 
@@ -1486,12 +1529,13 @@ void EdgeElement::correctArrow()
 		mLine[mLine.size() - 2].setY(mLine.last().y());
 		mLine[mLine.size() - 2].setX(mLine[mLine.size() - 3].x());
 		isVerticalChanging = true;
+		edgeArrowOverlapsNodeHorizontally(direct);
 		return;
-	}
-	if ((direct & 1) && isVerticalChanging) {
+	} else if ((direct & 1) && isVerticalChanging) {
 		mLine[mLine.size() - 2].setX(mLine.last().x());
 		mLine[mLine.size() - 2].setY(mLine[mLine.size() - 3].y());
 		isVerticalChanging = false;
+		edgeArrowOverlapsNodeUpright(direct);
 		return;
 	}
 
@@ -1547,30 +1591,67 @@ void EdgeElement::correctArrow()
 		mLine.insert(mLine.size() - 2, middle);
 		mLine.insert(mLine.size() - 2, tmp);
 		isVerticalChanging = true;
-	} else if (isVerticalChanging && !(direct & 1) && ((direct < 0 && mLine.last().x() < mLine[mLine.size() - 2].x())
-			|| ((direct > 0 && mLine.last().x() > mLine[mLine.size() - 2].x())))) {
-		if (direct > 0) {
-			direct = -1;
-		} else {
-			direct = 1;
-		}
-		mLine.last().setX(mLine.last().x() + direct * mDst->contentsRect().width());
-
-		mMoving = true;
-		setPos(pos() + mLine.first());
-		mLine.translate(-mLine.first());
-		mPortTo = mDst ? mDst->portId(mapToItem(mDst, mLine.last())) : -1.0;
-		mGraphicalAssistApi->setToPort(id(), mPortFrom);
-		adjustNeighborLinks();
-		arrangeSrcAndDst();
-		mGraphicalAssistApi->setPosition(id(), pos());
-		mMoving = false;
 	}
+	edgeArrowOverlapsNode(direct);
+}
+
+void EdgeElement::edgeArrowOverlapsNode(int direct)
+{
+	if (!isVerticalChanging && (direct & 1) && ((direct < 0 && mLine.last().y() < mLine[mLine.size() - 2].y())
+			|| ((direct > 0 && mLine.last().y() > mLine[mLine.size() - 2].y())))) {
+		edgeArrowOverlapsNodeUpright(direct);
+	} else if (isVerticalChanging && !(direct & 1) && ((direct < 0 && mLine.last().x() < mLine[mLine.size() - 2].x())
+				|| ((direct > 0 && mLine.last().x() > mLine[mLine.size() - 2].x())))) {
+		edgeArrowOverlapsNodeHorizontally(direct);
+	}
+}
+
+void EdgeElement::edgeArrowOverlapsNodeUpright(int direct)
+{
+	if (direct > 0) {
+		direct = -1;
+	} else {
+		direct = 1;
+	}
+	mLine.last().setY(mLine.last().y() + direct * mDst->contentsRect().height());
+
+	mMoving = true;
+	setPos(pos() + mLine.first());
+	mLine.translate(-mLine.first());
+	mPortTo = mDst ? mDst->portId(mapToItem(mDst, mLine.last())) : -1.0;
+	mGraphicalAssistApi->setToPort(id(), mPortFrom);
+	adjustNeighborLinks();
+	arrangeSrcAndDst();
+	mGraphicalAssistApi->setPosition(id(), pos());
+	mMoving = false;
+}
+
+void EdgeElement::edgeArrowOverlapsNodeHorizontally(int direct)
+{
+	if (direct > 0) {
+		direct = -1;
+	} else {
+		direct = 1;
+	}
+	mLine.last().setX(mLine.last().x() + direct * mDst->contentsRect().width());
+
+	mMoving = true;
+	setPos(pos() + mLine.first());
+	mLine.translate(-mLine.first());
+	mPortTo = mDst ? mDst->portId(mapToItem(mDst, mLine.last())) : -1.0;
+	mGraphicalAssistApi->setToPort(id(), mPortFrom);
+	adjustNeighborLinks();
+	arrangeSrcAndDst();
+	mGraphicalAssistApi->setPosition(id(), pos());
+	mMoving = false;
 }
 
 void EdgeElement::redrawing(QPointF const &pos)
 {
 	Q_UNUSED(pos);
+	if (isCircle) { // it's row prevention of transform to the point before fix #602
+		createCircleLink();
+	}
 	adjustNeighborLinks();
 	arrangeSrcAndDst();
 	correctArrow();
@@ -1711,7 +1792,7 @@ void EdgeElement::deleteLoop(int startPos)
 void EdgeElement::deleteLoops()
 {
 	// It's very rough prevention of transforming in the point now
-	// should be adjusted deleteLoop and delCloseLinePoints to a good drawing considering isCircle
+	// should be adjusted deleteLoop and delCloseLinePoints to a good drawing considering isCircle (after fix #602)
 	// It's need to drawing without point's links and "QTransform::rotate with NaN called" accordingly
 	if (isCircle && ((SettingsManager::value("SquareLine").toBool() && mLine.size() <= 6) || mLine.size() <= 5)) {
 		return;
@@ -1885,6 +1966,11 @@ void EdgeElement::tuneForLinker()
 	arrangeSrcAndDst();
 	mGraphicalAssistApi->setPosition(id(), pos());
 	mMoving = false;
+}
+
+bool EdgeElement::isLoop()
+{
+	return isCircle;
 }
 
 /* TODO: It's alternative squarize methos

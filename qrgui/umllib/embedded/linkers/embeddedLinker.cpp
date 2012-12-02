@@ -197,10 +197,6 @@ void EmbeddedLinker::takePosition(int index, int maxIndex)
 	}
 
 	setPos(fx,fy);
-
-	//useful for debug:
-	//scene()->addPolygon(master->mapToScene(master->boundingRect().left(),master->boundingRect().top(),
-	//									master->boundingRect().width(),master->boundingRect().height()));
 }
 
 QRectF EmbeddedLinker::boundingRect() const {
@@ -285,6 +281,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			mEdge->adjustNeighborLinks();
 			mEdge->correctArrow();
 			mEdge->correctInception();
+			mEdge->adjustNeighborLinks();
 		}
 	}
 	mTimeOfUpdate = 0;

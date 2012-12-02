@@ -90,6 +90,8 @@ public:
 
 	void setGraphicApiPos();
 
+	bool isLoop();
+
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -194,6 +196,14 @@ private:
 	ContextMenuAction mDelSegmentAction;
 	ContextMenuAction mReverseAction;
 	ContextMenuAction mChangeSquarizeTypeAction;
+
+	void edgeArrowOverlapsNode(int direct);
+	void edgeArrowOverlapsNodeUpright(int direct);
+	void edgeArrowOverlapsNodeHorizontally(int direct);
+
+	void edgeInceptionOverlapsNode(int direct);
+	void edgeInceptionOverlapsNodeUpright(int direct);
+	void edgeInceptionOverlapsNodeHorizontally(int direct);
 
 	bool mChaoticEdition;
 

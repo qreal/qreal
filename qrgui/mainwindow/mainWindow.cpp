@@ -594,6 +594,7 @@ void MainWindow::deleteFromScene()
 {
 	QList<QGraphicsItem *> itemsToDelete = getCurrentTab()->scene()->selectedItems();
 	QList<QGraphicsItem *> itemsToUpdate;
+	QList<QGraphicsItem *> itemsToDeleteNoUpdate;
 	// QGraphicsScene::selectedItems() returns items in no particular order,
 	// so we should handle parent-child relationships manually
 
@@ -602,11 +603,14 @@ void MainWindow::deleteFromScene()
 
 		// delete possible children
 		foreach (QGraphicsItem *child, currentItem->childItems()) {
+			NodeElement* node = dynamic_cast <NodeElement*> (child);
+			if (node) {
+				itemsToDeleteNoUpdate.append(node);
+			}
 			itemsToDelete.removeAll(child);
 			deleteFromScene(child);
 		}
 
-		// delete the item itself
 		EdgeElement* edge = dynamic_cast <EdgeElement*> (currentItem);
 		if (edge) {
 			if (edge->src() && !itemsToUpdate.contains(edge->src())) {
@@ -615,15 +619,26 @@ void MainWindow::deleteFromScene()
 			if (edge->dst() && !itemsToUpdate.contains(edge->dst())) {
 				itemsToUpdate.append(edge->dst());
 			}
+		} else {
+			NodeElement* node = dynamic_cast <NodeElement*> (currentItem);
+			if (node) {
+				itemsToDeleteNoUpdate.append(currentItem);
+			}
 		}
+
+		// delete the item itself
 		itemsToDelete.removeAll(currentItem);
 		deleteFromScene(currentItem);
 	}
+
+	// correcting unremoved edges
 	foreach (QGraphicsItem* item, itemsToUpdate) {
-		NodeElement* node = dynamic_cast <NodeElement*> (item);
-		if (node) {
-			node->arrangeLinks();
-			node->adjustLinks();
+		if (!itemsToDeleteNoUpdate.contains(item)) {
+			NodeElement* node = dynamic_cast <NodeElement*> (item);
+			if (node) {
+				node->arrangeLinks();
+				node->adjustLinks();
+			}
 		}
 	}
 }
