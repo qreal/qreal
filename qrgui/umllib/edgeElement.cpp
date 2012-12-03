@@ -510,7 +510,7 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		mLeftButtonIsPressed = false;
 		return;
 	}
-	if (event->button() == Qt::LeftButton && !event->modifiers()) {
+	if (event->button() == Qt::LeftButton && !(event->modifiers())) {
 		mLeftButtonIsPressed = true;
 	}
 
