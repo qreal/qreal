@@ -19,16 +19,31 @@ PropertiesDialog::~PropertiesDialog()
 	delete mUi;
 }
 
+QStringList PropertiesDialog::getPropertiesDisplayedNamesList(QStringList propertiesNames)
+{
+	QStringList propertiesDisplayedNames;
+	foreach (QString propertyName, propertiesNames) {
+		propertiesDisplayedNames << mInterperterEditorManager->propertyDisplayedName(mId, propertyName);
+	}
+	return propertiesDisplayedNames;
+}
+
+void PropertiesDialog::updatePropertiesNamesList()
+{
+	QStringList propertiesNames = mInterperterEditorManager->getPropertyNames(mId);
+	QStringList propertiesDisplayedNames = getPropertiesDisplayedNamesList(propertiesNames);
+	if (mUi->PropertiesNamesList->count() < propertiesDisplayedNames.length()) {
+		mUi->PropertiesNamesList->addItem(propertiesDisplayedNames.last());
+	}
+}
+
 void PropertiesDialog::init(EditorManagerInterface* interperterEditorManager, Id const &id)
 {
 	mInterperterEditorManager = interperterEditorManager;
 	mId = id;
 	setWindowTitle(tr("Properties") + ": " + mInterperterEditorManager->friendlyName(mId));
 	QStringList propertiesNames = mInterperterEditorManager->getPropertyNames(mId);
-	QStringList propertiesDisplayedNames;
-	foreach (QString propertyName, propertiesNames) {
-		propertiesDisplayedNames << mInterperterEditorManager->propertyDisplayedName(mId, propertyName);
-	}
+	QStringList propertiesDisplayedNames = getPropertiesDisplayedNamesList(propertiesNames);
 	mUi->PropertiesNamesList->addItems(propertiesDisplayedNames);
 	mUi->PropertiesNamesList->setWrapping(true);
 	int size = propertiesNames.length();
@@ -65,23 +80,13 @@ void PropertiesDialog::change(QString const &text)
 	editPropertiesDialog->init(mUi->PropertiesNamesList->item(mUi->PropertiesNamesList->currentRow()), mInterperterEditorManager, mId, text);
 	editPropertiesDialog->setModal(true);
 	editPropertiesDialog->show();
+	connect(editPropertiesDialog, SIGNAL(finished(int)), SLOT(updatePropertiesNamesList()));
 }
 
 void PropertiesDialog::addProperty()
 {
-	bool ok;
 	mUi->PropertiesNamesList->setCurrentItem(NULL);
-	QString const text = QInputDialog::getText(this, tr("New property"), tr("Enter the property name:"), QLineEdit::Normal, QString::null, &ok);
-	if (ok) {
-		if (!text.isEmpty()) {
-			mUi->PropertiesNamesList->addItem(text);
-			mInterperterEditorManager->addProperty(mId, text);
-			change(text);
-		} else {
-			QMessageBox::critical(this, tr("Error"), tr("The property name can not be empty!"));
-			addProperty();
-		}
-	}
+	change("");
 }
 
 void PropertiesDialog::changeProperty()

@@ -1828,17 +1828,17 @@
         <translation>Свойства </translation>
     </message>
     <message>
-        <location filename="dialogs/propertiesDialog.ui" line="30"/>
+        <location filename="dialogs/propertiesDialog.ui" line="44"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="dialogs/propertiesDialog.ui" line="37"/>
+        <location filename="dialogs/propertiesDialog.ui" line="30"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="dialogs/propertiesDialog.ui" line="44"/>
+        <location filename="dialogs/propertiesDialog.ui" line="37"/>
         <source>Change</source>
         <translation>Изменить</translation>
     </message>
@@ -3050,13 +3050,18 @@
         <translation>Все обязательные свойства должны быть заполнены!</translation>
     </message>
     <message>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="46"/>
+        <source>Adding of new property:</source>
+        <translation>Добавление нового свойства:</translation>
+    </message>
+    <message>
         <source>All properties should be filled!</source>
         <translation type="obsolete">Необходимо заполнить все свойства!</translation>
     </message>
     <message>
-        <location filename="dialogs/editPropertiesDialog.cpp" line="45"/>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="48"/>
         <source>Properties editor</source>
-        <translation>Редактирование свойств</translation>
+        <translation>Редактирование свойства</translation>
     </message>
 </context>
 <context>
@@ -3436,25 +3441,21 @@
         <translation>Свойства</translation>
     </message>
     <message>
-        <location filename="dialogs/propertiesDialog.cpp" line="73"/>
         <source>New property</source>
         <oldsource>New property:</oldsource>
-        <translation>Новое свойство</translation>
+        <translation type="obsolete">Новое свойство</translation>
     </message>
     <message>
-        <location filename="dialogs/propertiesDialog.cpp" line="73"/>
         <source>Enter the property name:</source>
-        <translation>Введите имя свойства:</translation>
+        <translation type="obsolete">Введите имя свойства:</translation>
     </message>
     <message>
-        <location filename="dialogs/propertiesDialog.cpp" line="80"/>
         <source>Error</source>
-        <translation>Ошибка</translation>
+        <translation type="obsolete">Ошибка</translation>
     </message>
     <message>
-        <location filename="dialogs/propertiesDialog.cpp" line="80"/>
         <source>The property name can not be empty!</source>
-        <translation>Имя свойства не может быть пустым!</translation>
+        <translation type="obsolete">Имя свойства не может быть пустым!</translation>
     </message>
 </context>
 <context>

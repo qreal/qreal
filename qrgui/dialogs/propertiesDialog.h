@@ -22,7 +22,9 @@ private slots:
 	void deleteProperty();
 	void addProperty();
 	void changeProperty();
+	void updatePropertiesNamesList();
 private:
+	QStringList getPropertiesDisplayedNamesList(QStringList propertiesNames);
 	void change(QString const &text);
 	Ui::PropertiesDialog *mUi;
 	EditorManagerInterface *mInterperterEditorManager;

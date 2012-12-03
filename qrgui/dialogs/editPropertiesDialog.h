@@ -3,7 +3,6 @@
 #include <QDialog>
 #include <QListWidgetItem>
 #include "../pluginManager/interpreterEditorManager.h"
-#include "managedClosableDialog.h"
 
 namespace Ui {
 class EditPropertiesDialog;
@@ -11,7 +10,7 @@ class EditPropertiesDialog;
 
 namespace qReal {
 
-class EditPropertiesDialog : public ManagedClosableDialog
+class EditPropertiesDialog : public QDialog
 {
 	Q_OBJECT
 
