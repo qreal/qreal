@@ -503,14 +503,14 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		delPointHandler(event->pos());
 		return;
 	}
-	if (event->button() == Qt::RightButton && mLeftButtonIsPressed) {
+	if (event->button() == Qt::RightButton && mLeftButtonIsPressed && event->buttons() & Qt::LeftButton) {
 		prepareGeometryChange();
 		mLine = mSavedLineForChanges;
 		mDragPoint = noDrag;
 		mLeftButtonIsPressed = false;
 		return;
 	}
-	if (event->button() == Qt::LeftButton) {
+	if (event->button() == Qt::LeftButton && !event->modifiers()) {
 		mLeftButtonIsPressed = true;
 	}
 
