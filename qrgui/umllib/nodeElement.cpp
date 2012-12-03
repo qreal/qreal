@@ -32,6 +32,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 	, mPlaceholder(NULL)
 	, mHighlightedNode(NULL)
 	, mTimeOfUpdate(0)
+	, mTimer(new QTimer(this))
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -69,6 +70,8 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mGrid = new SceneGridHandler(this);
 	mUmlPortHandler = new UmlPortHandler(this);
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
+
+	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateNodeEdges()));
 }
 
 NodeElement::~NodeElement()
@@ -510,11 +513,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			);
 	}
 
-	//arrangeLinks(); // if link's count of this master is over 5 then this function generate lagggs
-	//foreach (EdgeElement* edge, mEdgeList) { // and this too
-	//	edge->adjustNeighborLinks(); // Thus, beauty requires lags
-	//}
-
 	if (mTimeOfUpdate == 14) {
 		mTimeOfUpdate = 0;
 		foreach (EdgeElement* edge, mEdgeList) {
@@ -524,11 +522,13 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	} else {
 		mTimeOfUpdate++;
 	}
-
+	mTimer->start(400);
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+	mTimer->stop();
+	mTimeOfUpdate = 0;
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
@@ -594,7 +594,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	adjustLinks();
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->setGraphicApiPos();
-		edge->setGraphicApi(QPointF());
+		edge->saveConfiguration(QPointF());
 	}
 
 	mDragState = None;
@@ -1247,4 +1247,14 @@ void NodeElement::setAssistApi(qReal::models::GraphicalModelAssistApi *graphical
 
 bool NodeElement::isParentSortingContainer() const {
 	return (mParentNodeElement != NULL) && mParentNodeElement->mElementImpl->isSortingContainer();
+}
+
+void NodeElement::updateNodeEdges()
+{
+	mTimer->stop();
+	mTimeOfUpdate = 0;
+	arrangeLinks();
+	foreach (EdgeElement* edge, mEdgeList) {
+		edge->adjustNeighborLinks();
+	}
 }

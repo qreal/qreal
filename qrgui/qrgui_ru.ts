@@ -3010,7 +3010,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="712"/>
+        <location filename="mainwindow/mainWindow.cpp" line="715"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3035,16 +3035,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="758"/>
-        <location filename="mainwindow/mainWindow.cpp" line="776"/>
-        <location filename="mainwindow/mainWindow.cpp" line="794"/>
+        <location filename="mainwindow/mainWindow.cpp" line="761"/>
+        <location filename="mainwindow/mainWindow.cpp" line="779"/>
+        <location filename="mainwindow/mainWindow.cpp" line="797"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="760"/>
-        <location filename="mainwindow/mainWindow.cpp" line="778"/>
-        <location filename="mainwindow/mainWindow.cpp" line="796"/>
+        <location filename="mainwindow/mainWindow.cpp" line="763"/>
+        <location filename="mainwindow/mainWindow.cpp" line="781"/>
+        <location filename="mainwindow/mainWindow.cpp" line="799"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3149,23 +3149,23 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="713"/>
+        <location filename="mainwindow/mainWindow.cpp" line="716"/>
         <source>&lt;b&gt;QReal&lt;b&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;http://qreal.ru/&quot;&gt;http://qreal.ru/&lt;/a&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="794"/>
+        <location filename="mainwindow/mainWindow.cpp" line="797"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="796"/>
+        <location filename="mainwindow/mainWindow.cpp" line="799"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="926"/>
-        <location filename="mainwindow/mainWindow.cpp" line="934"/>
+        <location filename="mainwindow/mainWindow.cpp" line="929"/>
+        <location filename="mainwindow/mainWindow.cpp" line="937"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3174,17 +3174,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1717"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1723"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1746"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1752"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1746"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1752"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3205,7 +3205,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1344"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1350"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>

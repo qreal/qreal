@@ -733,7 +733,6 @@ EdgeElement *EditorViewScene::pasteNewEdge(EdgeData const &edgeData)
 
 	EdgeElement *newEdge = dynamic_cast<EdgeElement *>(getElem(newId));
 	newEdge->connectToPort();
-	//newEdge->adjustNeighborLinks();
 
 	return newEdge;
 }
@@ -776,7 +775,7 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 	} else if (isArrow(event->key())) {
 		moveSelectedItems(event->key());
 	} else if (event->key() == Qt::Key_Menu) {
-		initContextMenu(NULL, QPointF()); //!11!!
+		initContextMenu(NULL, QPointF()); // see #593
 	} else {
 		QGraphicsScene::keyPressEvent(event);
 	}
@@ -1090,7 +1089,7 @@ void EditorViewScene::getObjectByGesture()
 	deleteGesture();
 }
 
-void EditorViewScene::updateMovedElements() // see #605
+void EditorViewScene::updateMovedElements()
 {
 	mTimerForArrowButtons->stop();
 
@@ -1166,7 +1165,7 @@ void EditorViewScene::createEdge(const QString & idStr)
 			nodeEdge->correctArrow();
 			nodeEdge->correctInception();
 			nodeEdge->setGraphicApiPos();
-			nodeEdge->setGraphicApi(QPointF());
+			nodeEdge->saveConfiguration(QPointF());
 		}
 		edge->dst()->arrangeLinks();
 		edge->dst()->adjustLinks();
@@ -1181,7 +1180,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	if (mIsSelectEvent && (event->button() == Qt::LeftButton)) {
 		foreach (QGraphicsItem* item, items()) {
-			item->setAcceptedMouseButtons(Qt::MouseButtons(0x00000003));
+			item->setAcceptedMouseButtons(Qt::MouseButtons(Qt::RightButton | Qt::LeftButton));
 		}
 		mIsSelectEvent = false;
 		foreach (QGraphicsItem* item, *mSelectList) {
@@ -1557,6 +1556,20 @@ void EditorViewScene::updateEdgeElements()
 		EdgeElement* element = dynamic_cast<EdgeElement*>(item);
 		if (element) {
 			element->redrawing(QPoint());
+		}
+	}
+}
+
+void EditorViewScene::updateEdgesViaNodes()
+{
+	foreach (QGraphicsItem *item, items()) {
+		NodeElement* node = dynamic_cast<NodeElement*>(item);
+		if (node) {
+			foreach (EdgeElement* edge, node->edgeList()) {
+				edge->correctArrow();
+				edge->correctInception();
+			}
+			node->adjustLinks();
 		}
 	}
 }

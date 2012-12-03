@@ -136,6 +136,9 @@ public slots:
 	void switchGrid(bool isChecked);
 	NodeElement *copyAndPlaceOnDiagram(QPointF const &offset);
 
+private slots:
+	void updateNodeEdges();
+
 private:
 	enum DragState {
 		None,
@@ -258,4 +261,5 @@ private:
 	NodeData mData;
 
 	int mTimeOfUpdate;
+	QTimer *mTimer;
 };

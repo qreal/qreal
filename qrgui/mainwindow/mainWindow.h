@@ -226,8 +226,6 @@ private:
 	/// @param tab Tab to be initialized with shortcuts
 	void setShortcuts(EditorView * const tab);
 
-	void updateEdgesViaNodes(EditorView *const tab);
-
 	void loadPlugins();
 
 	void registerMetaTypes();

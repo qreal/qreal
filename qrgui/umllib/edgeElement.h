@@ -36,7 +36,7 @@ public:
 	bool isDividable();
 	void adjustLink(bool isDragging = false);
 
-	// use adjustLink() to all links that have with this general master
+	/// use adjustLink() to all links that have with this general master
 	void adjustNeighborLinks();
 	bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true, bool jumpsOnly = false);
 	bool shouldReconnect() const;
@@ -47,6 +47,7 @@ public:
 	bool isDst(NodeElement const *node) const;
 	void setSrc(NodeElement *node);
 	void setDst(NodeElement *node);
+	/// prepare edge to moving from the linker
 	void tuneForLinker();
 	qreal portIdOn(NodeElement const *node) const;
 	QPointF nextFrom(NodeElement const *node) const;
@@ -83,9 +84,10 @@ public:
 
 	// redrawing of this edgeElement in squarize
 	void redrawing(QPointF const &pos);
-	// correct end of mLine for beauty link's drawing
+
+	/// correct end of mLine for beauty link's drawing, creating the beauty link without node's intersections
 	void correctArrow();
-	// correct begin of mLine for beauty link's drawing
+	/// correct begin of mLine for beauty link's drawing, creating the beauty link without node's intersections
 	void correctInception();
 
 	void setGraphicApiPos();
@@ -96,7 +98,6 @@ protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-	// virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
 	virtual void drawStartArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
@@ -111,37 +112,55 @@ protected:
 	ArrowType mEndArrowStyle;
 
 public slots:
-	void setGraphicApi(QPointF const &pos);
-	// redraw a new mLine after delPointHandler or deleteSegmentHandler using contextMenu
+	void saveConfiguration(QPointF const &pos);
+	/// redraw a new mLine after delPointHandler or deleteSegmentHandler using contextMenu
 	void arrangeAndAdjustHandler(QPointF const &pos);
 
 private slots:
 	void addPointHandler(QPointF const &pos);
-	// add the closest point on edge to the parameter`s point
+	/// add the closest point on edge to the parameter`s point
 	void addClosestPointHandler(QPointF const &pos);
 	void delPointHandler(QPointF const &pos);
 	void squarizeHandler(QPointF const &pos);
 	void minimizeHandler(QPointF const &pos);
-	// delete Segment with nearest with pos ends
+	/// delete Segment with nearest with pos ends
 	void deleteSegmentHandler(QPointF const &pos);
 	// redraw in rectangular good link
 	void squarizeAndAdjustHandler(QPointF const &pos);
-	// change link's direction
+	/// change link's direction
 	void reverseHandler(QPointF const &pos);
-	void changeSquarizeType(QPointF const &pos); // isVerticalChanging = !isVerticalChanging and adjustLink()
+	/// mIsVerticalChanging = !mIsVerticalChanging
+	void changeSquarizeType(QPointF const &pos);
 
 private:
+	enum DragPointType {
+		noDrag = -3,
+		overPointMax = -2,
+		noPort = -1
+	};
+
+	enum LineDirection {
+		top = -1,
+		bottom = 1,
+		left = -2,
+		right = 2,
+		topInsideNode = -3,
+		bottomInsideNode = 3,
+		leftInsideNode = -4,
+		rightInsideNode = 4
+	};
+
 	// when (mSrc == mDst && mDst && mLine <= 3)
-	void createCircleLink();
+	void createLoopEdge();
 	// connectToPort for self-closing line (mSrc == mDst && mDst)
-	void connectCircleEdge(NodeElement *newMaster);
+	void connectLoopEdge(NodeElement *newMaster);
 	// need for correcting links at square drawing
 	int defineDirection(bool from);
 
-	// redraw in rectangular good segment by the second squarize method.
-	// void specialSquarizeSegment(int /**< The interval's start position in the mLine */, bool /**< change on horizontal-vertical-horizontal */ = true);
-	// redraw in rectangular good link by the second squarize method
-	// void specialSquarizeLink();
+	void paintSavedEdge(QPainter *painter) const;
+	void paintChangedEdge(QPainter *painter, const QStyleOptionGraphicsItem *option) const;
+	QPen edgePen(QPainter *painter, QColor color, Qt::PenStyle style, int width) const;
+	void setEdgePainter(QPainter *painter, QPen pen, qreal opacity) const;
 
 	QList<PossibleEdge> possibleEdges;
 
@@ -152,6 +171,7 @@ private:
 	static QRectF getPortRect(QPointF const &point);
 
 	void drawPort(QPainter *painter) const;
+	void drawPorts(QPainter *painter, const QStyleOptionGraphicsItem *option) const;
 
 	qreal lengthOfSegment(QPointF const &pos1, QPointF const &pos2) const;
 
@@ -197,18 +217,18 @@ private:
 	ContextMenuAction mReverseAction;
 	ContextMenuAction mChangeSquarizeTypeAction;
 
-	void edgeArrowOverlapsNode(int direct);
-	void edgeArrowOverlapsNodeUpright(int direct);
-	void edgeArrowOverlapsNodeHorizontally(int direct);
+	void edgeArrowOverlapsNodeCase(int direct);
+	void edgeArrowOverlapsNodeUprightCase(int direct);
+	void edgeArrowOverlapsNodeHorizontallyCase(int direct);
 
-	void edgeInceptionOverlapsNode(int direct);
-	void edgeInceptionOverlapsNodeUpright(int direct);
-	void edgeInceptionOverlapsNodeHorizontally(int direct);
+	void edgeInceptionOverlapsNodeCase(int direct);
+	void edgeInceptionOverlapsNodeUprightCase(int direct);
+	void edgeInceptionOverlapsNodeHorizontallyCase(int direct);
 
 	bool mChaoticEdition;
 
 	QPolygonF mLastLine;
-	bool mLastLineIsCircle;
+	bool mLastLineIsLoop;
 	QPolygonF mSavedLineForChanges;
 	bool mLeftButtonIsPressed;
 	QPolygonF mSavedLineForSquarize;
@@ -220,8 +240,8 @@ private:
 
 	bool mModelUpdateIsCalled;  // flag for the infinite updateData()-s liquidating
 
-	bool isCircle; // if line is self-closing (mSrc == mDst && mDst)
+	bool mIsLoop; // if line is self-closing (mSrc == mDst && mDst)
 
-	bool isVerticalChanging; // for squarize drawing
+	bool mIsVerticalChanging; // for squarize drawing
 };
 

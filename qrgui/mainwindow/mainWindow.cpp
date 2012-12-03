@@ -368,16 +368,6 @@ void MainWindow::sceneSelectionChanged()
 	QList<Element*> selected;
 	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
 
-	/*{
-		int i = 0;
-		foreach (QGraphicsItem* e, items) {
-			if (e->isSelected()) {
-				++i;
-			}
-		}
-		qDebug("Selected items:, %d", i);
-	}*/
-
 	foreach (QGraphicsItem* item, items) {
 		Element* element = dynamic_cast<Element*>(item);
 		if (element) {
@@ -407,7 +397,6 @@ void MainWindow::sceneSelectionChanged()
 		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(singleSelected->id());
 		if (index.isValid()) {
 			mUi->graphicalModelExplorer->setCurrentIndex(index);
-			//mUi->graphicalModelExplorer->setFocus(); see #589
 		}
 	}
 }
@@ -579,7 +568,6 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	foreach (NodeElement *item, itemsToArrangeLinks) {
 		if (item) {
 			item->arrangeLinks();
-			// item->adjustLinks();
 		}
 	}
 }
@@ -1132,22 +1120,9 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 
 	setShortcuts(tab);
 
-	updateEdgesViaNodes(tab);
-}
-
-void MainWindow::updateEdgesViaNodes(EditorView *const tab)
-{
 	EditorViewScene *scene = dynamic_cast<EditorViewScene *>(tab->scene());
 	if (scene) {
-		foreach (QGraphicsItem *item, scene->items()) {
-			NodeElement* node = dynamic_cast<NodeElement*>(item);
-			if (node) {
-				foreach (EdgeElement* edge, node->edgeList()) {
-					edge->correctArrow();
-					edge->correctInception();
-				}
-			}
-		}
+		scene->updateEdgesViaNodes();
 	}
 }
 

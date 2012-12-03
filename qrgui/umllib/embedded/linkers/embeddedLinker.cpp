@@ -16,26 +16,29 @@ using namespace qReal;
 
 EmbeddedLinker::EmbeddedLinker()
 		: mEdge(NULL)
-		, master(NULL)
-		, color(Qt::blue)
+		, mMaster(NULL)
+		, mColor(Qt::blue)
 		, mPressed(false)
 		, mTimeOfUpdate(0)
+		, mTimer(new QTimer(this))
 {
-	size = SettingsManager::value("EmbeddedLinkerSize").toFloat();
-	if (size > 10) {
-		size *= 0.75;
+	mSize = SettingsManager::value("EmbeddedLinkerSize").toFloat();
+	if (mSize > 10) {
+		mSize *= 0.75;
 	}
-	indent = SettingsManager::value("EmbeddedLinkerIndent").toFloat();
-	indent *= 0.8;
-	if (indent > 17) {
-		indent *= 0.7;
+	mIndent = SettingsManager::value("EmbeddedLinkerIndent").toFloat();
+	mIndent *= 0.8;
+	if (mIndent > 17) {
+		mIndent *= 0.7;
 	}
-	mRectangle = QRectF(-size, -size, size * 2, size * 2);
-	mInnerRectangle = QRectF(-size / 2, -size / 2, size, size);
+	mRectangle = QRectF(-mSize, -mSize, mSize * 2, mSize * 2);
+	mInnerRectangle = QRectF(-mSize / 2, -mSize / 2, mSize, mSize);
 	setZValue(300);
 	setFlag(ItemStacksBehindParent, false);
 
 	setAcceptsHoverEvents(true);
+
+	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateMasterEdges()));
 }
 
 EmbeddedLinker::~EmbeddedLinker()
@@ -44,19 +47,19 @@ EmbeddedLinker::~EmbeddedLinker()
 
 NodeElement* EmbeddedLinker::getMaster()
 {
-	return master;
+	return mMaster;
 }
 
 void EmbeddedLinker::setMaster(NodeElement *element)
 {
-	master = element;
+	mMaster = element;
 	setParentItem(element);
 }
 
 void EmbeddedLinker::generateColor()
 {
 	int result = 0;
-	color = QColor(result % 192 + 64, result % 128 + 128, result % 64 + 192).darker(0);
+	mColor = QColor(result % 192 + 64, result % 128 + 128, result % 64 + 192).darker(0);
 }
 void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
@@ -64,18 +67,18 @@ void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 	painter->save();
 
 	QBrush brush;
-	brush.setColor(color);
+	brush.setColor(mColor);
 	brush.setStyle(Qt::SolidPattern);
 	painter->setBrush(brush);
 	painter->setOpacity(0.75);
-	painter->setPen(color);
+	painter->setPen(mColor);
 
-	size = SettingsManager::value("EmbeddedLinkerSize").toFloat();
-	if (size > 10) {
-		size *= 0.75;
+	mSize = SettingsManager::value("EmbeddedLinkerSize").toFloat();
+	if (mSize > 10) {
+		mSize *= 0.75;
 	}
-	mRectangle = QRectF(-size, -size, size * 2, size * 2);
-	mInnerRectangle = QRectF(-size / 2, -size / 2, size, size);
+	mRectangle = QRectF(-mSize, -mSize, mSize * 2, mSize * 2);
+	mInnerRectangle = QRectF(-mSize / 2, -mSize / 2, mSize, mSize);
 
 	painter->drawEllipse(mRectangle);
 	painter->setOpacity(0.9);
@@ -86,56 +89,56 @@ void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 
 void EmbeddedLinker::setDirected(const bool directed)
 {
-	this->directed = directed;
+	this->mDirected = directed;
 }
 
 void EmbeddedLinker::initTitle()
 {
 	EditorManager* editorManager = dynamic_cast<EditorViewScene*>(scene())->mainWindow()->manager();
-	QString edgeTypeFriendly = editorManager->friendlyName(Id::loadFromString("qrm:/" + master->id().editor() + "/" + master->id().diagram() + "/" + edgeType.element()));
+	QString edgeTypeFriendly = editorManager->friendlyName(Id::loadFromString("qrm:/" + mMaster->id().editor() + "/" + mMaster->id().diagram() + "/" + mEdgeType.element()));
 
 	float textWidth = edgeTypeFriendly.size()*10;
-	float rectWidth = master->boundingRect().right() - master->boundingRect().left();
-	float rectHeight = master->boundingRect().bottom() - master->boundingRect().top();
+	float rectWidth = mMaster->boundingRect().right() - mMaster->boundingRect().left();
+	float rectHeight = mMaster->boundingRect().bottom() - mMaster->boundingRect().top();
 
 	int x = 0;
 	int y = 0;
-	if (scenePos().y() < master->scenePos().y() + rectHeight/3)
+	if (scenePos().y() < mMaster->scenePos().y() + rectHeight/3)
 		y = -boundingRect().height() - 10;
-	else if (scenePos().y() > master->scenePos().y() + 2*rectHeight/3)
+	else if (scenePos().y() > mMaster->scenePos().y() + 2*rectHeight/3)
 		y = +boundingRect().height() - 10;
 
-	if (scenePos().x() < master->scenePos().x() + rectWidth/3)
+	if (scenePos().x() < mMaster->scenePos().x() + rectWidth/3)
 		x = -boundingRect().width() - textWidth + 20;
-	else if (scenePos().x() > master->scenePos().x() + 2*rectWidth/3)
+	else if (scenePos().x() > mMaster->scenePos().x() + 2*rectWidth/3)
 		x = +boundingRect().width() - 10;
 
-	title = new ElementTitle(static_cast<qreal>(x) / boundingRect().width(), static_cast<qreal>(y) / boundingRect().height(), edgeTypeFriendly);
-	title->init(boundingRect());
-	title->setTextWidth(textWidth);
-	title->setParentItem(this);
+	mTitle = new ElementTitle(static_cast<qreal>(x) / boundingRect().width(), static_cast<qreal>(y) / boundingRect().height(), edgeTypeFriendly);
+	mTitle->init(boundingRect());
+	mTitle->setTextWidth(textWidth);
+	mTitle->setParentItem(this);
 }
 
 void EmbeddedLinker::setEdgeType(const qReal::Id &edgeType)
 {
-	this->edgeType = edgeType;
+	this->mEdgeType = edgeType;
 	generateColor();
 }
 
 qReal::Id EmbeddedLinker::getEdgeType()
 {
-	return edgeType;
+	return mEdgeType;
 }
 
 bool EmbeddedLinker::isDirected()
 {
-	return directed;
+	return mDirected;
 }
 
 void EmbeddedLinker::takePosition(int index, int maxIndex)
 {
 	const float Pi = 3.141592;
-	QRectF bounding = master->boundingRect();
+	QRectF bounding = mMaster->boundingRect();
 
 	float top = bounding.topLeft().y();
 	float left = bounding.topLeft().x();
@@ -172,10 +175,10 @@ void EmbeddedLinker::takePosition(int index, int maxIndex)
 
 	float fx;
 	float fy;
-	indent = SettingsManager::value("EmbeddedLinkerIndent").toFloat();
-	indent *= 0.8;
-	if (indent > 17) {
-		indent *= 0.7;
+	mIndent = SettingsManager::value("EmbeddedLinkerIndent").toFloat();
+	mIndent *= 0.8;
+	if (mIndent > 17) {
+		mIndent *= 0.7;
 	}
 
 	//obviously, top != left != right != bottom
@@ -183,17 +186,17 @@ void EmbeddedLinker::takePosition(int index, int maxIndex)
 	{
 		fx = px;
 		if (bottom - py == min)
-			fy = bottom + indent;
+			fy = bottom + mIndent;
 		else
-			fy = top - indent;
+			fy = top - mIndent;
 	}
 	else
 	{
 		fy = py;
 		if (right - px == min)
-			fx = right + indent;
+			fx = right + mIndent;
 		else
-			fx = left - indent;
+			fx = left - mIndent;
 	}
 
 	setPos(fx,fy);
@@ -214,30 +217,32 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+	mTimer->start(400);
+
 	if (mPressed) {
 		mPressed = false;
-		EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
+		EditorViewScene *scene = dynamic_cast<EditorViewScene*>(mMaster->scene());
 
 		if (!scene) {
 			return;
 		}
-		const QString type = "qrm:/" + master->id().editor() + "/" +
-							 master->id().diagram() + "/" + edgeType.element();
+		const QString type = "qrm:/" + mMaster->id().editor() + "/" +
+							 mMaster->id().diagram() + "/" + mEdgeType.element();
 		if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type))) {
-			master->setConnectingState(true);
-			Id edgeId = scene->createElement(type, event->scenePos()); // FIXME: I am raw
+			mMaster->setConnectingState(true);
+			Id edgeId = scene->createElement(type, event->scenePos()); // FIXME: I am raw. return strange pos() and inside me a small trash
 			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
 		}
 
 		if (mEdge){
-			master->setZValue(1);
-			mEdge->setSrc(master);
+			mMaster->setZValue(1);
+			mEdge->setSrc(mMaster);
 			mEdge->setDst(NULL);
 			mEdge->highlight();
 			mEdge->tuneForLinker();
 			mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
-			master->arrangeLinks();
-			master->adjustLinks();
+			mMaster->arrangeLinks();
+			mMaster->adjustLinks();
 		}
 	}
 
@@ -253,21 +258,33 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 
+void EmbeddedLinker::updateMasterEdges()
+{
+	mTimer->stop();
+	mTimeOfUpdate = 0;
+
+	if (mEdge) {
+		mEdge->adjustNeighborLinks();
+		mEdge->arrangeSrcAndDst();
+	}
+}
+
 void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+	updateMasterEdges();
 	hide();
-	master->selectionState(false);
-	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(master->scene());
+	mMaster->selectionState(false);
+	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(mMaster->scene());
 
 	if (!mPressed && scene && mEdge) {
 		mEdge->hide();
 		QPointF const &eScenePos = event->scenePos();
-		NodeElement* under = dynamic_cast<NodeElement*>(scene->itemAt(eScenePos));
+		NodeElement *under = dynamic_cast<NodeElement*>(scene->itemAt(eScenePos));
 		mEdge->show();
 		int result = 0;
 
 		if (!under) {
-			result = scene->launchEdgeMenu(mEdge, master, eScenePos);
+			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos);
 			NodeElement *target = dynamic_cast<NodeElement*>(scene->getLastCreated());
 			if (result == -1) {
 				mEdge = NULL;
@@ -284,7 +301,6 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			mEdge->adjustNeighborLinks();
 		}
 	}
-	mTimeOfUpdate = 0;
 	mPressed = false;
 	mEdge = NULL;
 }

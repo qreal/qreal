@@ -69,6 +69,9 @@ public:
 	void insertNodeIntoEdge(const qReal::Id &insertedNodeId, const qReal::Id &newParent, bool isFromLogicalModel,QPointF const &scenePos);
 	void itemSelectUpdate();
 
+	/// update (for a beauty) all edges when tab is opening
+	void updateEdgesViaNodes();
+
 public slots:
 	qReal::Id createElement(const QString &type);
 	// TODO: get rid of it here
