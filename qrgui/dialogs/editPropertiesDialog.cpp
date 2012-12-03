@@ -24,6 +24,21 @@ void EditPropertiesDialog::setupDefaultValues()
 	mUi->displayedNameEdit->setText(mInterperterEditorManager->propertyDisplayedName(mId, mPropertyName));
 }
 
+void EditPropertiesDialog::mbCancel()
+{
+	mUi->attributeTypeEdit->setText(mInterperterEditorManager->getTypeName(mId, mPropertyName));
+	mUi->defaultValueEdit->setText(mInterperterEditorManager->getDefaultPropertyValue(mId, mPropertyName));
+}
+
+void EditPropertiesDialog::updateProperties()
+{
+	mInterperterEditorManager->updateProperties(mId, mPropertyName, mUi->attributeTypeEdit->text(), mUi->defaultValueEdit->text(), mUi->displayedNameEdit->text());
+	if (mSelectedItem != NULL) {
+		mSelectedItem->setText(mInterperterEditorManager->propertyDisplayedName(mId, mPropertyName));
+	}
+	done(1);
+}
+
 void EditPropertiesDialog::ok()
 {
 	if (mUi->attributeTypeEdit->text().isEmpty() || mUi->displayedNameEdit->text().isEmpty()) {
@@ -33,11 +48,16 @@ void EditPropertiesDialog::ok()
 			mPropertyName = mUi->displayedNameEdit->text();
 			mInterperterEditorManager->addProperty(mId, mPropertyName);
 		}
-		mInterperterEditorManager->updateProperties(mId, mPropertyName, mUi->attributeTypeEdit->text(), mUi->defaultValueEdit->text(), mUi->displayedNameEdit->text());
-		if (mSelectedItem != NULL) {
-			mSelectedItem->setText(mInterperterEditorManager->propertyDisplayedName(mId, mPropertyName));
+		if (windowTitle() != tr("Adding of new property:") && mInterperterEditorManager->getTypeName(mId, mPropertyName) != mUi->attributeTypeEdit->text()) {
+			QMessageBox *mb = new QMessageBox(tr("Warning:"), tr("You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value."), QMessageBox::Warning, QMessageBox::Ok, QMessageBox::Cancel, QMessageBox::NoButton);
+			mb->button(QMessageBox::Ok)->setText(tr("Proceed anyway"));
+			mb->button(QMessageBox::Cancel)->setText(tr("Cancel the type conversion"));
+			mb->show();
+			connect(mb->button(QMessageBox::Cancel), SIGNAL(clicked()), this, SLOT(mbCancel()));
+			connect(mb->button(QMessageBox::Ok), SIGNAL(clicked()), this, SLOT(updateProperties()));
+		} else {
+			updateProperties();
 		}
-		done(1);
 	}
 }
 

@@ -20,6 +20,8 @@ public:
 	void init(QListWidgetItem *selectedItem, EditorManagerInterface* interperterEditorManager, Id const &id, QString const &propertyName);
 private slots:
 	void ok();
+	void mbCancel();
+	void updateProperties();
 private:
 	void setupDefaultValues();
 	Ui::EditPropertiesDialog *mUi;

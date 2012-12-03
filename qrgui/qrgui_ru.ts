@@ -3040,26 +3040,53 @@
 <context>
     <name>qReal::EditPropertiesDialog</name>
     <message>
-        <location filename="dialogs/editPropertiesDialog.cpp" line="29"/>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="45"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="dialogs/editPropertiesDialog.cpp" line="29"/>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="45"/>
         <source>All required properties should be filled!</source>
         <translation>Все обязательные свойства должны быть заполнены!</translation>
     </message>
     <message>
-        <location filename="dialogs/editPropertiesDialog.cpp" line="46"/>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="51"/>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="71"/>
         <source>Adding of new property:</source>
         <translation>Добавление нового свойства:</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="52"/>
+        <source>Warning:</source>
+        <oldsource>Warning</oldsource>
+        <translation>Внимание:</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="52"/>
+        <source>You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value.</source>
+        <translation>Вы изменили тип свойства. В случае  некорректного преобразования это может привести к обнулению существующего значения свойства.</translation>
+    </message>
+    <message>
+        <source>You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value</source>
+        <translation type="obsolete">Вы изменили тип свойства. В случае  некорректного преобразования это может привести к обнулению существующего значения свойства</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="53"/>
+        <source>Proceed anyway</source>
+        <translation>Продолжить все равно</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="54"/>
+        <source>Cancel the type conversion</source>
+        <oldsource>Cancel the type cinversion</oldsource>
+        <translation>Отменить преобразование типа</translation>
     </message>
     <message>
         <source>All properties should be filled!</source>
         <translation type="obsolete">Необходимо заполнить все свойства!</translation>
     </message>
     <message>
-        <location filename="dialogs/editPropertiesDialog.cpp" line="48"/>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="73"/>
         <source>Properties editor</source>
         <translation>Редактирование свойства</translation>
     </message>
@@ -3436,7 +3463,7 @@
 <context>
     <name>qReal::PropertiesDialog</name>
     <message>
-        <location filename="dialogs/propertiesDialog.cpp" line="26"/>
+        <location filename="dialogs/propertiesDialog.cpp" line="44"/>
         <source>Properties</source>
         <translation>Свойства</translation>
     </message>
