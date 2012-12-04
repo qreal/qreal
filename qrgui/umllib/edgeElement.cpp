@@ -947,7 +947,7 @@ void EdgeElement::breakPointHandler(QPointF const &pos)
 	}
 }
 
-// more square mode info at wiki ссылка
+// more square mode info at wiki
 void EdgeElement::squarizeHandler(QPointF const &pos)
 {
 	Q_UNUSED(pos);
@@ -1365,7 +1365,7 @@ int EdgeElement::defineDirection(bool from)
 	return direct;
 }
 
-// more case's info at wiki ссылка
+// more case's info at wiki
 void EdgeElement::correctInception()
 {
 	bool squarizeModeOff = !SettingsManager::value("SquareLine").toBool();
@@ -1501,7 +1501,7 @@ void EdgeElement::edgeInceptionOverlapsNodeHorizontallyCase(int direct)
 	mMoving = false;
 }
 
-// more case's info at wiki ссылка
+// more case's info at wiki
 void EdgeElement::correctArrow()
 {
 	bool squarizeModeOff = !SettingsManager::value("SquareLine").toBool();
