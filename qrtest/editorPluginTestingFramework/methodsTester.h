@@ -1,11 +1,14 @@
+#pragma once
+
 #include <QtCore/QString>
 #include "../../qrgui/editorPluginInterface/editorInterface.h"
 
-using namespace qReal;
+namespace editorPluginTestingFramework {
+
 class MethodsTester
 {
 public:
-	MethodsTester(EditorInterface* qrmcGeneratedPlugin, EditorInterface* qrxcGeneratedPlugin);
+	MethodsTester(qReal::EditorInterface* qrmcGeneratedPlugin, qReal::EditorInterface* qrxcGeneratedPlugin);
 
 	void testMethods();
 
@@ -48,7 +51,9 @@ private:
 
 	void testMethod(StringGenerator const &stringGenerator);
 
-	EditorInterface* mQrmcGeneratedPlugin;
-	EditorInterface* mQrxcGeneratedPlugin;
+	qReal::EditorInterface* mQrmcGeneratedPlugin;
+	qReal::EditorInterface* mQrxcGeneratedPlugin;
 };
+
+}
 

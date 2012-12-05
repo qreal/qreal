@@ -11,12 +11,9 @@ using namespace qReal;
 using namespace qrRepo;
 using namespace metaEditor;
 using namespace gui;
+using namespace editorPluginTestingFramework;
 
-QrxcLauncher::QrxcLauncher()
-{
-}
-
-void QrxcLauncher::launchQrxc(QString &fileName)
+void QrxcLauncher::launchQrxc(QString const &fileName)
 {
 	QString normalizedFileName = fileName;
 

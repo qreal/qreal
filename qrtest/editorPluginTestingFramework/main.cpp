@@ -4,6 +4,8 @@
 
 #include "mainClass.h"
 
+using namespace editorPluginTestingFramework;
+
 void myMessageOutput(QtMsgType type, const char *msg)
 {
 	switch (type) {
@@ -28,11 +30,11 @@ int main(int argc, char *argv[])
 	QCoreApplication app(argc, argv);
 
 	if (argc != 2) {
-		qDebug() << "Usage: editorPluginTestFramework PATH_TO_WORKING_COPY";
+		qDebug() << "Usage: editorPluginTestFramework fileName.qrs";
 		return 1;
 	}
 
-	QString workingCopyDir = argv[1];
+	QString const workingCopyDir = argv[1];
 
 	MainClass newMainClass(workingCopyDir, qApp->applicationDirPath() + "/../qrmc/", qApp->applicationDirPath());
 

@@ -1,11 +1,15 @@
+#pragma once
+
 #include <QtCore/QString>
 #include "../../qrkernel/settingsManager.h"
+
+namespace editorPluginTestingFramework {
 
 class PluginCompiler
 {
 public:
-	PluginCompiler();
-
-	void compilePlugin(QString const directoryToCodeToCompile);
+	void compilePlugin(QString const &directoryToCodeToCompile);
 };
+
+}
 

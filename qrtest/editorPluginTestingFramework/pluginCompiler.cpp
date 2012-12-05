@@ -6,11 +6,9 @@
 #include "../../qrkernel/settingsManager.h"
 
 using namespace qReal;
-PluginCompiler::PluginCompiler()
-{
-}
+using namespace editorPluginTestingFramework;
 
-void PluginCompiler::compilePlugin(const QString directoryToCodeToCompile)
+void PluginCompiler::compilePlugin(QString const &directoryToCodeToCompile)
 {
 	QProcess builder;
 	builder.setWorkingDirectory(directoryToCodeToCompile);

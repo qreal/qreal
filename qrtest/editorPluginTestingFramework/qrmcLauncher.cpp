@@ -5,21 +5,19 @@
 using namespace qReal;
 using namespace qrmc;
 using namespace qrRepo;
+using namespace editorPluginTestingFramework;
 
-QrmcLauncher::QrmcLauncher()
+void QrmcLauncher::launchQrmc(QString const &fileName, QString const &pathToQrmc)
 {
-}
-
-void QrmcLauncher::launchQrmc(QString &fileName, QString const &pathToQrmc)
-{
+	QString normalizedFileName = fileName;
 	if (!fileName.contains(".qrs")) {
-		fileName += ".qrs";
+		normalizedFileName += ".qrs";
 	}
 
 	QString const &destDir = "qrtest/binaries/plugins/qrmc";
 	// DESTDIR = pathToQRealRoot + destDir
 
-	qrRepo::RepoApi *mRepoApi = new qrRepo::RepoApi(fileName);
+	qrRepo::RepoApi *mRepoApi = new qrRepo::RepoApi(normalizedFileName);
 	MetaCompiler metaCompiler(pathToQrmc, mRepoApi);
 	IdList const metamodels = mRepoApi->children(Id::rootId());
 

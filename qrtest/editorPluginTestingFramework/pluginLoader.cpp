@@ -2,15 +2,14 @@
 #include <QtCore/QPluginLoader>
 #include <QtCore/QDir>
 
-PluginLoader::PluginLoader()
-{
-}
+using namespace qReal;
+using namespace editorPluginTestingFramework;
 
 EditorInterface* PluginLoader::loadedPlugin(QString const &pluginName, QString const &pathToFile)
 {
 	QDir mPluginDir = QDir(pathToFile);
 
-	QString formattedPluginName = pluginName + ".dll";
+	QString const formattedPluginName = pluginName + ".dll";
 	QPluginLoader *loader = new QPluginLoader(mPluginDir.absoluteFilePath(formattedPluginName));
 	qDebug() << mPluginDir.absoluteFilePath(formattedPluginName);
 	loader->load();
@@ -21,6 +20,6 @@ EditorInterface* PluginLoader::loadedPlugin(QString const &pluginName, QString c
 		EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
 		return iEditor;
 	}
-	qDebug() << "plugin is NOT loaded, Ffffffuuu";
+	qDebug() << "plugin is NOT loaded";
 	return NULL;
 }

@@ -2,6 +2,9 @@
 
 #include "methodsTester.h"
 
+using namespace qReal;
+using namespace editorPluginTestingFramework;
+
 MethodsTester::MethodsTester(EditorInterface *qrmcGeneratedPlugin, EditorInterface *qrxcGeneratedPlugin)
 {
 	mQrmcGeneratedPlugin = qrmcGeneratedPlugin;

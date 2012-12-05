@@ -3,7 +3,10 @@
 #include "defs.h"
 #include <QtCore/QDir>
 
-MainClass::MainClass(QString &fileName, QString const &pathToQrmc, QString const &pathToApp)
+using namespace qReal;
+using namespace editorPluginTestingFramework;
+
+MainClass::MainClass(QString const &fileName, QString const &pathToQrmc, QString const &pathToApp)
 {
 	createNewFolders();
 	QString normalizedFileName = normalizedName(fileName);
@@ -38,7 +41,7 @@ void MainClass::createNewFolders()
 	createFolder(pathToQrxcGeneratedPlugin);
 }
 
-QString const MainClass::normalizedName(QString const &fileName)
+QString const MainClass::normalizedName(QString const &fileName) const
 {
 	QString normalizedName = fileName;
 	if (fileName.contains("/")) {
@@ -51,7 +54,7 @@ QString const MainClass::normalizedName(QString const &fileName)
 	return normalizedName;
 }
 
-void MainClass::launchQrmc(QString &fileName, QString const &pathToQrmc)
+void MainClass::launchQrmc(QString const &fileName, QString const &pathToQrmc)
 {
 	mQrmcLauncher.launchQrmc(fileName, pathToQrmc);
 }
@@ -61,7 +64,7 @@ void MainClass::compilePlugin(QString const &directoryToCodeToCompile)
 	mPluginCompiler.compilePlugin(directoryToCodeToCompile);
 }
 
-void MainClass::launchQrxc(QString &fileName)
+void MainClass::launchQrxc(QString const &fileName)
 {
 	mQrxcLauncher.launchQrxc(fileName);
 }
