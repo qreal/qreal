@@ -41,6 +41,8 @@ private:
 	class PropertyDescriptionStringGenerator;
 	class PropertyDisplayedNameStringGenerator;
 
+	class IsParentOfStringGenerator;
+
 	class DiagramPaletteGroupListStringGenerator;
 	class DiagramPaletteGroupDescriptionStringGenerator;
 

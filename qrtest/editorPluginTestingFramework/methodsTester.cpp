@@ -413,6 +413,32 @@ class MethodsTester::PropertyDisplayedNameStringGenerator : public MethodsTester
 	}
 };
 
+class MethodsTester::IsParentOfStringGenerator : public MethodsTester::StringGeneratorForElements {
+	virtual QString methodName() const {
+		return "Is parent of";
+	}
+
+	virtual QStringList callMethod(EditorInterface *editorInterface
+			, const QString &diagram
+			, const QString &element
+			, const QString &property) const
+	{
+		Q_UNUSED(property);
+		QStringList result;
+
+		foreach (QString const &parentDiagram, editorInterface->diagrams()) {
+			foreach (QString const &parentElement, editorInterface->elements(diagram)) {
+				bool isParent = editorInterface->isParentOf(parentDiagram, parentElement, diagram, element);
+				if (isParent) {
+					result << parentElement << " is parent of " << element << "\n";
+				}
+			}
+		}
+
+		return result;
+	}
+};
+
 class MethodsTester::DiagramPaletteGroupListStringGenerator : public MethodsTester::StringGeneratorForGroups {
 	virtual QString methodName() const {
 		return "Diagram palette group list";
@@ -450,14 +476,12 @@ void MethodsTester::testMethod(StringGenerator const &stringGenerator)
 	qDebug() << "Testing: " << stringGenerator.methodName();
 
 	QString const &qrmcResult = stringGenerator.generateString(mQrmcGeneratedPlugin);
-	qDebug() << qrmcResult;
 	QString const &qrxcResult = stringGenerator.generateString(mQrxcGeneratedPlugin);
-	qDebug() << qrxcResult;
 
 	if (qrmcResult == qrxcResult) {
-		qDebug() << "Method is OK";
+		qDebug() << "Results are the same";
 	} else {
-		qDebug() << "Method is not OK";
+		qDebug() << "Results are not the same";
 		qDebug() << "For qrmc: " << qrmcResult;
 		qDebug() << "For qrxc: " << qrxcResult;
 	}
@@ -490,6 +514,8 @@ void MethodsTester::testMethods()
 
 	testMethod(PropertyDisplayedNameStringGenerator());
 	testMethod(PropertyDescriptionStringGenerator());
+
+	testMethod(IsParentOfStringGenerator());
 
 	testMethod(DiagramPaletteGroupListStringGenerator());
 	testMethod(DiagramPaletteGroupDescriptionStringGenerator());
