@@ -10,17 +10,41 @@ public:
 	void testMethods();
 
 private:
-	class ListGenerator;
+	class StringGenerator;
 
-	class EditorNameListGenerator;
-	class DiagramsListGenerator;
-	class ElementsListGenerator;
-	class PropertiesWithDefaultValuesListGenerator;
-	class TypesContainedByListGenerator;
-	class ConnectedTypesListGenerator;
-	class UsedTypesListGenerator;
+	class StringGeneratorForDiagrams;
+	class StringGeneratorForElements;
+	class StringGeneratorForProperties;
+	class StringGeneratorForGroups;
 
-	void testMethod(ListGenerator const &listGenerator);
+	class PropertiesWithDefaultValuesStringGenerator;
+	class TypesContainedByStringGenerator;
+	class ConnectedTypesStringGenerator;
+	class UsedTypesStringGenerator;
+	class GetPossibleEdgesStringGenerator;
+	class IsNodeOrEdgeStringGenerator;
+
+	class GetPropertyNamesStringGenerator;
+	class GetReferencePropertiesStringGenerator;
+	class GetParentsOfStringGenerator;
+
+	class GetPropertyTypesStringGenerator;
+	class GetPropertyDefaultValueStringGenerator;
+
+	class DiagramNameStringGenerator;
+	class DiagramNodeNameStringGenerator;
+
+	class ElementNameStringGenerator;
+	class ElementMouseGestureStringGenerator;
+	class ElementDescriptionStringGenerator;
+
+	class PropertyDescriptionStringGenerator;
+	class PropertyDisplayedNameStringGenerator;
+
+	class DiagramPaletteGroupListStringGenerator;
+	class DiagramPaletteGroupDescriptionStringGenerator;
+
+	void testMethod(StringGenerator const &stringGenerator);
 
 	EditorInterface* mQrmcGeneratedPlugin;
 	EditorInterface* mQrxcGeneratedPlugin;

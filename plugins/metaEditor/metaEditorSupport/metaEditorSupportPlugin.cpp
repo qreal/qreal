@@ -157,15 +157,20 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 			}
 			progress->setValue(20);
 
-			QProcess builder;
-			builder.setWorkingDirectory("../qrmc/plugins");
-			builder.start(SettingsManager::value("pathToQmake").toString());
-			qDebug()  << "qmake";
+			QPair<QString, QString> metamodelNames = qMakePair(nameOfMetamodel, nameOfPlugin);
+			loadNewEditor(nameOfTheDirectory, metamodelNames
+					, SettingsManager::value("pathToQmake").toString()
+					, SettingsManager::value("pathToMake").toString()
+					, SettingsManager::value("pluginExtension").toString()
+					, SettingsManager::value("prefix").toString());
+			/*QProcess builder;
+			qDebug()  << "qmake: " << builder.workingDirectory();
 			if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
 				progress->setValue(40);
 
 				builder.start(SettingsManager::value("pathToMake").toString());
 
+				qDebug() << "make: " << SettingsManager::value("pathToMake").toString();
 				bool finished = builder.waitForFinished(100000);
 				qDebug()  << "make";
 				if (finished && (builder.exitCode() == 0)) {
@@ -202,7 +207,10 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 	if (progress->value() != 100) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot load new editor"));
 	}
-	progress->setValue(100);
+	progress->setValue(100);*/
+		}
+	}
+
 	progress->close();
 	delete progress;
 }
