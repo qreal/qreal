@@ -10,14 +10,14 @@ EditorInterface* PluginLoader::loadedPlugin(QString const &pluginName, QString c
 	QDir mPluginDir = QDir(pathToFile);
 
 	QString const formattedPluginName = pluginName + ".dll";
-	QPluginLoader *loader = new QPluginLoader(mPluginDir.absoluteFilePath(formattedPluginName));
+	QPluginLoader * const loader = new QPluginLoader(mPluginDir.absoluteFilePath(formattedPluginName));
 	qDebug() << mPluginDir.absoluteFilePath(formattedPluginName);
 	loader->load();
 	QObject *plugin = loader->instance();
 
 	if (plugin) {
 		qDebug() << "plugin is loaded";
-		EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
+		EditorInterface * const iEditor = qobject_cast<EditorInterface *>(plugin);
 		return iEditor;
 	}
 	qDebug() << "plugin is NOT loaded";

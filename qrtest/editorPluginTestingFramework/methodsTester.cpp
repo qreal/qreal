@@ -5,7 +5,7 @@
 using namespace qReal;
 using namespace editorPluginTestingFramework;
 
-MethodsTester::MethodsTester(EditorInterface *qrmcGeneratedPlugin, EditorInterface *qrxcGeneratedPlugin)
+MethodsTester::MethodsTester(EditorInterface * const qrmcGeneratedPlugin, EditorInterface * const qrxcGeneratedPlugin)
 {
 	mQrmcGeneratedPlugin = qrmcGeneratedPlugin;
 	mQrxcGeneratedPlugin = qrxcGeneratedPlugin;
@@ -39,7 +39,7 @@ class MethodsTester::StringGeneratorForDiagrams : public MethodsTester::StringGe
 		QStringList resultList;
 
 		foreach (QString const &diagram, editorInterface->diagrams()) {
-			QStringList additionalList = callMethod(editorInterface, diagram);
+			QStringList const additionalList = callMethod(editorInterface, diagram);
 			resultList += additionalList;
 		}
 
@@ -53,7 +53,7 @@ class MethodsTester::StringGeneratorForElements : public MethodsTester::StringGe
 
 		foreach (QString const &diagram, editorInterface->diagrams()) {
 			foreach (QString const &element, editorInterface->elements(diagram)) {
-				QStringList additionalList = callMethod(editorInterface, diagram, element);
+				QStringList const additionalList = callMethod(editorInterface, diagram, element);
 				resultList += additionalList;
 			}
 		}
@@ -69,7 +69,7 @@ class MethodsTester::StringGeneratorForProperties : public MethodsTester::String
 		foreach (QString const &diagram, editorInterface->diagrams()) {
 			foreach (QString const &element, editorInterface->elements(diagram)) {
 				foreach (QString const &property, editorInterface->getPropertyNames(diagram, element)) {
-					QStringList additionalList = callMethod(editorInterface, diagram, element, property);
+					QStringList const additionalList = callMethod(editorInterface, diagram, element, property);
 					resultList += additionalList;
 				}
 			}
@@ -85,7 +85,7 @@ class MethodsTester::StringGeneratorForGroups : public MethodsTester::StringGene
 
 		foreach (QString const &diagram, editorInterface->diagrams()) {
 			foreach (QString const &group, editorInterface->diagramPaletteGroups(diagram)) {
-				QStringList additionalList = callMethod(editorInterface, diagram, group);
+				QStringList const additionalList = callMethod(editorInterface, diagram, group);
 				resultList += additionalList;
 			}
 		}
@@ -179,7 +179,7 @@ class MethodsTester::GetPossibleEdgesStringGenerator : public MethodsTester::Str
 			QString const &firstElement = pair.first.first;
 			QString const &secondElement = pair.first.second;
 
-			QString const &thirdElement = QString(pair.second.first);
+			QString const &thirdElement = QString("%1").arg(pair.second.first);
 			QString const &fourthElement = pair.second.second;
 
 			result << firstElement << secondElement << thirdElement << fourthElement;

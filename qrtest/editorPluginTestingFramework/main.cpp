@@ -27,7 +27,6 @@ void myMessageOutput(QtMsgType type, const char *msg)
 int main(int argc, char *argv[])
 {
 	qInstallMsgHandler(myMessageOutput);
-	QCoreApplication app(argc, argv);
 
 	if (argc != 2) {
 		qDebug() << "Usage: editorPluginTestFramework fileName.qrs";
@@ -36,7 +35,7 @@ int main(int argc, char *argv[])
 
 	QString const workingCopyDir = argv[1];
 
-	MainClass newMainClass(workingCopyDir, qApp->applicationDirPath() + "/../qrmc/", qApp->applicationDirPath());
+	MainClass newMainClass(workingCopyDir, qApp->applicationDirPath() + "/../qrmc/");
 
 	return 0;
 }

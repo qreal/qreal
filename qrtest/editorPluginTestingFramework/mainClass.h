@@ -14,17 +14,16 @@ namespace editorPluginTestingFramework {
 class MainClass
 {
 public:
-	MainClass(QString const &fileName, QString const &pathToQrmc, QString const &pathToApp);
+	MainClass(QString const &fileName, QString const &pathToQrmc);
 
 private:
-	void createNewFolders();
-	QString const normalizedName(QString const &fileName) const;
+	static void createNewFolders();
+	static QString normalizedName(QString const &fileName);
+	static void createFolder(QString const &path);
 
 	void launchQrmc(QString const &fileName, QString const &pathToQrmc);
 	void compilePlugin(QString const &directoryToCodeToCompile);
 	void launchQrxc(QString const &fileName);
-
-	void createFolder(QString const &path);
 
 	qReal::EditorInterface* loadedPlugin(QString const &fileName, QString const &pathToFile);
 

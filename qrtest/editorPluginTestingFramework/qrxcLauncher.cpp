@@ -22,14 +22,14 @@ void QrxcLauncher::launchQrxc(QString const &fileName)
 	}
 
 	RepoApi const *mRepoApi = new RepoApi(normalizedFileName);
-	ErrorReporter *reporter = new ErrorReporter();
+	ErrorReporter * const reporter = new ErrorReporter();
 	EditorGenerator editorGenerator(*mRepoApi, *reporter);
 
 	QDir dir(".");
 
-	QHash<Id, QString > metamodelList = editorGenerator.getMetamodelList();
+	QHash<Id, QString> metamodelList = editorGenerator.getMetamodelList();
 
-	QString const &directoryToGeneratedCode = pathToQRealRootFromQrxc + "qrtest/binaries/plugins/qrxc";
+	QString const &directoryToGeneratedCode = pathToQRealRootFromQrxc + destDirForQrxc;
 
 	if (!dir.exists(directoryToGeneratedCode)) {
 		dir.mkdir(directoryToGeneratedCode);

@@ -14,10 +14,7 @@ void QrmcLauncher::launchQrmc(QString const &fileName, QString const &pathToQrmc
 		normalizedFileName += ".qrs";
 	}
 
-	QString const &destDir = "qrtest/binaries/plugins/qrmc";
-	// DESTDIR = pathToQRealRoot + destDir
-
-	qrRepo::RepoApi *mRepoApi = new qrRepo::RepoApi(normalizedFileName);
+	qrRepo::RepoApi *const mRepoApi = new qrRepo::RepoApi(normalizedFileName);
 	MetaCompiler metaCompiler(pathToQrmc, mRepoApi);
 	IdList const metamodels = mRepoApi->children(Id::rootId());
 
@@ -26,7 +23,7 @@ void QrmcLauncher::launchQrmc(QString const &fileName, QString const &pathToQrmc
 		if (objectType == "MetamodelDiagram" && mRepoApi->isLogicalElement(key)) {
 			QString const &nameOfMetamodel = mRepoApi->stringProperty(key, "name");
 
-			if (!metaCompiler.compile(nameOfMetamodel, pathToQRealRootFromQrmc, pathToQrmcGeneratedCode, destDir)) {
+			if (!metaCompiler.compile(nameOfMetamodel, pathToQRealRootFromQrmc, pathToQrmcGeneratedCode, destDirForQrmc)) {
 				qDebug() << "compilation failed";
 			}
 		}

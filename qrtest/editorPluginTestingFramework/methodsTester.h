@@ -8,7 +8,7 @@ namespace editorPluginTestingFramework {
 class MethodsTester
 {
 public:
-	MethodsTester(qReal::EditorInterface* qrmcGeneratedPlugin, qReal::EditorInterface* qrxcGeneratedPlugin);
+	MethodsTester(qReal::EditorInterface * const qrmcGeneratedPlugin, qReal::EditorInterface * const qrxcGeneratedPlugin);
 
 	void testMethods();
 

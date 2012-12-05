@@ -309,6 +309,7 @@ QString GraphicType::generateContainers(const QString &lineTemplate) const
 
 	QString containersList;
 	QString line = lineTemplate;
+
 	foreach(QString contains, mContains) {
 		containersList += "<< \"" + contains + "\" ";
 	}

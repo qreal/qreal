@@ -1,25 +1,26 @@
 #include "mainClass.h"
 #include "methodsTester.h"
 #include "defs.h"
+
 #include <QtCore/QDir>
 
 using namespace qReal;
 using namespace editorPluginTestingFramework;
 
-MainClass::MainClass(QString const &fileName, QString const &pathToQrmc, QString const &pathToApp)
+MainClass::MainClass(QString const &fileName, QString const &pathToQrmc)
 {
 	createNewFolders();
-	QString normalizedFileName = normalizedName(fileName);
+	QString const normalizedFileName = normalizedName(fileName);
 
 	launchQrmc(fileName, pathToQrmc);
 	compilePlugin(pathToQrmcGeneratedCode);
-	EditorInterface* qrmcGeneratedPlugin = loadedPlugin(normalizedFileName, pathToQrmcGeneratedPlugin);
+	EditorInterface* const qrmcGeneratedPlugin = loadedPlugin(normalizedFileName, pathToQrmcGeneratedPlugin);
 
 	launchQrxc(normalizedFileName);
 	compilePlugin(pathToQrxcGeneratedCode);
-	EditorInterface* qrxcGeneratedPlugin = loadedPlugin(normalizedFileName, pathToQrxcGeneratedPlugin);
+	EditorInterface* const qrxcGeneratedPlugin = loadedPlugin(normalizedFileName, pathToQrxcGeneratedPlugin);
 
-	MethodsTester* methodsTester = new MethodsTester(qrmcGeneratedPlugin, qrxcGeneratedPlugin);
+	MethodsTester* const methodsTester = new MethodsTester(qrmcGeneratedPlugin, qrxcGeneratedPlugin);
 
 	methodsTester->testMethods();
 }
@@ -41,7 +42,7 @@ void MainClass::createNewFolders()
 	createFolder(pathToQrxcGeneratedPlugin);
 }
 
-QString const MainClass::normalizedName(QString const &fileName) const
+QString MainClass::normalizedName(QString const &fileName)
 {
 	QString normalizedName = fileName;
 	if (fileName.contains("/")) {
