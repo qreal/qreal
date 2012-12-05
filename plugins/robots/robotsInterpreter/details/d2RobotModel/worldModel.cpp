@@ -230,7 +230,7 @@ bool WorldModel::intersectsByWall(QRectF const &rect)
 	return false;
 }
 
-bool WorldModel::intersectsByStopedEjectedItems(QRectF const &rect)
+bool WorldModel::intersectsByStopedEjectedItems(QRectF const &rect) //qwerty_unused temp
 {
 	foreach (EjectedItem *ejectedItem, mEjectedItems) {
 		if (ejectedItem->realBoundingRect() != rect
@@ -242,7 +242,7 @@ bool WorldModel::intersectsByStopedEjectedItems(QRectF const &rect)
 	return false;
 }
 
-void WorldModel::checkEjectedItemsIntersects(QRectF const& itemRect, QPointF const& diffPos)
+void WorldModel::checkEjectedItemsIntersects(QRectF const& itemRect, QPointF const& diffPos)//qwerty_unused temp
 {
 	foreach (EjectedItem *ejected, mEjectedItems) {
 		if (ejected->realBoundingRect() != itemRect

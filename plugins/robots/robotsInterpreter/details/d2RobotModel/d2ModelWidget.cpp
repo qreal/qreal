@@ -446,7 +446,7 @@ void D2ModelWidget::reshapeEjectedItem(QGraphicsSceneMouseEvent *event)
 		mCurrentEjectedItem->setX2andY2(pos.x(), pos.y());
 		QRectF ejectedRect = mCurrentEjectedItem->realBoundingRect();
 		if (mWorldModel->intersectsByWall(ejectedRect)
-			|| mWorldModel->intersectsByStopedEjectedItems(ejectedRect)
+			//|| mWorldModel->intersectsByStopedEjectedItems(ejectedRect) //qwerty_unused temp
 			|| mRobot->realShape().intersects(ejectedRect)) {
 			mCurrentEjectedItem->setX2andY2(oldPos.x(), oldPos.y());
 		}
@@ -826,29 +826,31 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 void D2ModelWidget::ejectedItemMoved(QRectF const& itemRect, QPointF const& oldPos, QPointF const& diffRobotPos)
 {
 	if (mWorldModel->intersectsByWall(itemRect)
-		|| mWorldModel->intersectsByStopedEjectedItems(itemRect)) {
+		/*|| mWorldModel->intersectsByStopedEjectedItems(itemRect)*/) { //qwerty_unused temp
 		emit needToStopMovedEjectedItem(true, oldPos);
+
+		if (mRobot->realBoundingRect().intersects(itemRect)) {
+			mRobot->setPos(mRobot->pos() - diffRobotPos);
+		}
 
 	} else {
 		emit needToStopMovedEjectedItem(false, oldPos);
 	}
 
-	emit checkEjectedItemsIntersectsSignal(itemRect, diffRobotPos);
-	//mWorldModel->checkEjectedItemsIntersects(itemRect, diffRobotPos);
+//	emit checkEjectedItemsIntersectsSignal(itemRect, diffRobotPos); //qwerty_unused temp
 }
 
 void D2ModelWidget::ejectedItemDragged(QRectF const& itemRect, QPointF const& oldPos, QPointF const& diffItemPos)
 {
 	if (mWorldModel->intersectsByWall(itemRect)
-		|| mWorldModel->intersectsByStopedEjectedItems(itemRect)
+//		|| mWorldModel->intersectsByStopedEjectedItems(itemRect) //qwerty_unused temp
 		|| mRobot->realShape().intersects(itemRect)) {
 		emit needToStopDraggedEjectedItem(true, oldPos);
 	} else {
 		emit needToStopDraggedEjectedItem(false, oldPos);
 	}
 
-	emit checkEjectedItemsIntersectsSignal(itemRect, diffItemPos);
-	//mWorldModel->checkEjectedItemsIntersects(itemRect, diffItemPos);
+//	emit checkEjectedItemsIntersectsSignal(itemRect, diffItemPos); //qwerty_unused temp
 }
 
 void D2ModelWidget::checkEjectedItemsIntersectsSlot(QRectF const& itemRect, QPointF const& diffPos)
