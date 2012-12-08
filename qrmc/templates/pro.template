@@ -5,7 +5,7 @@ SOURCES += pluginInterface.cpp
 HEADERS += pluginInterface.h \
 	elements.h
 
-RESOURCES += plugin.qrc
+RESOURCES += shapes/plugin.qrc
 
 include (../../../qrmc/plugins/pluginsCommon.pri)
 

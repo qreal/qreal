@@ -15,11 +15,9 @@ class QRUTILS_EXPORT AbstractScene : public QGraphicsScene
 
 public:
 	explicit AbstractScene(AbstractView *view, QObject *parent = 0);
-	graphicsUtils::AbstractView *mainView();
 	QRect realItemsBoundingRect() const;
 
 	void setDragMode(int itemsType);
-	void setDragMode(QGraphicsView::DragMode mode);
 	virtual void forPressResize(QGraphicsSceneMouseEvent *event);
 	virtual void forMoveResize(QGraphicsSceneMouseEvent *event);
 	virtual void forReleaseResize(QGraphicsSceneMouseEvent *event);
@@ -35,6 +33,7 @@ public:
 
 	QString penStyleItems();
 	int penWidthItems();
+	int firstPenWidthItems();
 	QString penColorItems();
 	QString brushStyleItems();
 	QString brushColorItems();

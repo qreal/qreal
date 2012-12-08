@@ -67,8 +67,9 @@ void Rotater::setPenBrushForExtraxtion(QPainter* painter, const QStyleOptionGrap
 void Rotater::drawExtractionForItem(QPainter* painter)
 {
 	int driftForRotater = drift;
-	if(drift > mMaster->horizontalRadius())
-			driftForRotater = drift / 2;
+	if(drift > mMaster->horizontalRadius()) {
+		driftForRotater = drift / 2;
+	}
 	mLineImpl.drawExtractionForItem(painter, mX1, mY1, mX2, mY2, driftForRotater);
 	drawFieldForResizeItem(painter);
 }
@@ -76,8 +77,9 @@ void Rotater::drawExtractionForItem(QPainter* painter)
 void Rotater::drawFieldForResizeItem(QPainter* painter)
 {
 	int resizeDriftForRotater = resizeDrift;
-	if(drift > mMaster->horizontalRadius())
-			resizeDriftForRotater = resizeDrift / 2;
+	if(drift > mMaster->horizontalRadius()) {
+		resizeDriftForRotater = resizeDrift / 2;
+	}
 	painter->drawEllipse(QPointF(mX2, mY2), resizeDriftForRotater, resizeDriftForRotater);
 }
 

@@ -1,6 +1,5 @@
 QT += xml
 
-CONFIG += console
 TARGET = qrmc
 
 DEPENDPATH += . \
@@ -20,13 +19,13 @@ HEADERS += \
 	../qrkernel/ids.h \
 	../qrrepo/repoApi.h \
 	diagram.h \
-	editor.h \
+	editor.h
 
 SOURCES += \
 	metaCompiler.cpp \
 	diagram.cpp \
 	editor.cpp \
-	main.cpp \
+	main.cpp
 
 LIBS += -L../bin -lqrrepo -lqrkernel -lqrutils
 

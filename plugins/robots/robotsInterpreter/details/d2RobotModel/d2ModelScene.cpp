@@ -25,7 +25,7 @@ D2ModelScene::~D2ModelScene()
 void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	QGraphicsScene::mousePressEvent(mouseEvent);
-	emit mousePressed(mouseEvent);
+	emit mouseClicked(mouseEvent);
 }
 
 void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
@@ -38,51 +38,6 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	QGraphicsScene::mouseMoveEvent(mouseEvent);
 	emit mouseMoved(mouseEvent);
-}
-
-void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event, QRectF const &rect)
-{
-	setX1andY1(event);
-	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos()));
-	if (mGraphicsItem != NULL) {
-		if (!mGraphicsItem->realShape().intersects(rect)) {
-			mGraphicsItem->changeDragState(mX1, mY1);
-			if (mGraphicsItem->getDragState() != AbstractItem::None) {
-				mView->setDragMode(QGraphicsView::NoDrag);
-			}
-		}
-	}
-	update();
-}
-
-void D2ModelScene::forMoveResize(QGraphicsSceneMouseEvent *event, QRectF const &rect)
-{
-	reshapeItem(event, rect);
-	update();
-}
-
-void D2ModelScene::forReleaseResize(QGraphicsSceneMouseEvent * event, QRectF const &rect)
-{
-	reshapeItem(event, rect);
-	mGraphicsItem = NULL;
-	update();
-}
-
-void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &rect)
-{
-	setX2andY2(event);
-	if (mGraphicsItem != NULL) {
-		QPointF oldBegin = mGraphicsItem->getX1andY1();
-		QPointF oldEnd = mGraphicsItem->getX2andY2();
-		if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None) {
-			mView->setDragMode(QGraphicsView::NoDrag);
-		}
-		mGraphicsItem->resizeItem(event);
-
-		if (mGraphicsItem->realShape().intersects(rect)) {
-			mGraphicsItem->reverseOldResizingItem(oldBegin, oldEnd);
-		}
-	}
 }
 
 void D2ModelScene::keyPressEvent(QKeyEvent *event)

@@ -2,7 +2,7 @@
 
 #include <QSyntaxHighlighter>
 
-class TextHighlighter : public QSyntaxHighlighter {
+class TextHighlighter : QSyntaxHighlighter {
 	public:
 		TextHighlighter(QTextDocument *document);
 		void highlightBlock(const QString& text);

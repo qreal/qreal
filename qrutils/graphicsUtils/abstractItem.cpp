@@ -11,7 +11,7 @@ using namespace graphicsUtils;
 
 AbstractItem::AbstractItem(QGraphicsItem* parent)
 	: QGraphicsItem(parent), mDragState(None)
-	, mX1(0), mY1(0), mX2(0), mY2(0), mView(NULL)
+	, mX1(0), mY1(0), mX2(0), mY2(0), mView(NULL), mResizeDrift(resizeDrift)
 {
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
 	setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -58,6 +58,12 @@ void AbstractItem::drawExtractionForItem(QPainter* painter)
 
 void AbstractItem::drawFieldForResizeItem(QPainter* painter)
 {
+	drawFieldForResizeItem(painter, resizeDrift);
+}
+
+void AbstractItem::drawFieldForResizeItem(QPainter* painter, int curResizeDrirt)
+{
+	mResizeDrift = curResizeDrirt;
 	QRectF itemBoundingRect = calcNecessaryBoundingRect();
 	qreal x1 = itemBoundingRect.left();
 	qreal x2 = itemBoundingRect.right();
@@ -65,10 +71,10 @@ void AbstractItem::drawFieldForResizeItem(QPainter* painter)
 	qreal y2 = itemBoundingRect.bottom();
 
 	setPenBrushDriftRect(painter);
-	painter->drawRect(x1, y1, resizeDrift, resizeDrift);
-	painter->drawRect(x2 - resizeDrift, y2 - resizeDrift, resizeDrift, resizeDrift);
-	painter->drawRect(x1, y2 - resizeDrift, resizeDrift, resizeDrift);
-	painter->drawRect(x2 - resizeDrift, y1, resizeDrift, resizeDrift);
+	painter->drawRect(x1, y1, curResizeDrirt, curResizeDrirt);
+	painter->drawRect(x2 - curResizeDrirt, y2 - curResizeDrirt, curResizeDrirt, curResizeDrirt);
+	painter->drawRect(x1, y2 - curResizeDrirt, curResizeDrirt, curResizeDrirt);
+	painter->drawRect(x2 - curResizeDrirt, y1, curResizeDrirt, curResizeDrirt);
 }
 
 void AbstractItem::setPenBrushForExtraxtion(QPainter* painter, const QStyleOptionGraphicsItem* option)
@@ -111,16 +117,6 @@ void AbstractItem::setPen(QPen const &pen)
 	mPen = pen;
 }
 
-QPointF AbstractItem::getX1andY1()
-{
-	return QPointF(mX1, mY1);
-}
-
-QPointF AbstractItem::getX2andY2()
-{
-	return QPointF(mX2, mY2);
-}
-
 void AbstractItem::setX1andY1(qreal x, qreal y)
 {
 	mX1 = x;
@@ -149,6 +145,16 @@ void AbstractItem::setX2andY2(qreal x, qreal y)
 	update();
 }
 
+QPointF AbstractItem::getX1andY1()
+{
+	return QPointF(mX1, mY1);
+}
+
+QPointF AbstractItem::getX2andY2()
+{
+	return QPointF(mX2, mY2);
+}
+
 void AbstractItem::reshapeRectWithShift()
 {
 	qreal size = qMax(abs(mX2 - mX1), abs(mY2 - mY1));
@@ -167,16 +173,25 @@ void AbstractItem::reshapeRectWithShift()
 
 void AbstractItem::changeDragState(qreal x, qreal y)
 {
-	if (QRectF(QPointF(mX1 + scenePos().x(), mY1 + scenePos().y()), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y)))
+	if (QRectF(QPointF(mX1 + scenePos().x(), mY1 + scenePos().y()), QSizeF(0, 0))
+			.adjusted(-mResizeDrift, -mResizeDrift, mResizeDrift, mResizeDrift)
+			.contains(QPointF(x, y))) {
 		mDragState = TopLeft;
-	else if (QRectF(QPointF(mX2 + scenePos().x(), mY2 + scenePos().y()), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y)))
+	} else if (QRectF(QPointF(mX2 + scenePos().x(), mY2 + scenePos().y()), QSizeF(0, 0))
+			.adjusted(-mResizeDrift, -mResizeDrift, mResizeDrift, mResizeDrift)
+			.contains(QPointF(x, y))) {
 		mDragState = BottomRight;
-	else if (QRectF(QPointF(mX2 + scenePos().x(), mY1 + scenePos().y()), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y)))
+	} else if (QRectF(QPointF(mX2 + scenePos().x(), mY1 + scenePos().y()), QSizeF(0, 0))
+			.adjusted(-mResizeDrift, -mResizeDrift, mResizeDrift, mResizeDrift)
+			.contains(QPointF(x, y))) {
 		mDragState = TopRight;
-	else if (QRectF(QPointF(mX1 + scenePos().x(), mY2 + scenePos().y()), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y)))
+	} else if (QRectF(QPointF(mX1 + scenePos().x(), mY2 + scenePos().y()), QSizeF(0, 0))
+			.adjusted(-mResizeDrift, -mResizeDrift, mResizeDrift, mResizeDrift)
+			.contains(QPointF(x, y))) {
 		mDragState = BottomLeft;
-	else
+	} else {
 		mDragState = None;
+	}
 }
 
 AbstractItem::DragState AbstractItem::getDragState() const
@@ -190,15 +205,14 @@ void AbstractItem::calcResizeItem(QGraphicsSceneMouseEvent *event)
 	qreal y = mapFromScene(event->scenePos()).y();
 	if (mDragState != None)
 		setFlag(QGraphicsItem::ItemIsMovable, false);
-	if (mDragState == TopLeft) {
+	if (mDragState == TopLeft)
 		setX1andY1(x, y);
-	} else if (mDragState == TopRight) {
+	else if (mDragState == TopRight)
 		setX2andY1(x, y);
-	} else if (mDragState == BottomLeft) {
+	else if (mDragState == BottomLeft)
 		setX1andY2(x, y);
-	} else if (mDragState == BottomRight) {
+	else if (mDragState == BottomRight)
 		setX2andY2(x, y);
-	}
 }
 
 void AbstractItem::resizeItem(QGraphicsSceneMouseEvent *event)
@@ -207,19 +221,6 @@ void AbstractItem::resizeItem(QGraphicsSceneMouseEvent *event)
 		calcResizeItem(event);
 	else {
 		setFlag(QGraphicsItem::ItemIsMovable, true);
-	}
-}
-
-void AbstractItem::reverseOldResizingItem(QPointF begin, QPointF end)
-{
-	if (mDragState == TopLeft) {
-		setX1andY1(begin.x(), begin.y());
-	} else if (mDragState == TopRight) {
-		setX2andY1(end.x(), begin.y());
-	} else if (mDragState == BottomLeft) {
-		setX1andY2(begin.x(), end.y());
-	} else if (mDragState == BottomRight) {
-		setX2andY2(end.x(), end.y());
 	}
 }
 

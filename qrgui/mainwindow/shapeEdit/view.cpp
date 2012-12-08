@@ -18,18 +18,16 @@ void View::wheelEvent(QWheelEvent *event)
 {
 	QGraphicsView::wheelEvent(event);
 	if (event->buttons() == Qt::MidButton) {
-		if (event->delta() >= 0) {
+		if (event->delta() >= 0)
 			 zoomOut();
-		} else {
+		else
 			zoomIn();
-		}
 	}
 }
 
 void View::keyPressEvent(QKeyEvent *event)
 {
 	QGraphicsView::keyPressEvent(event);
-	if (event->matches(QKeySequence::Delete)) {
+	if (event->matches(QKeySequence::Delete))
 		emit deleteItem();
-	}
 }

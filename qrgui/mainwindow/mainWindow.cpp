@@ -151,7 +151,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), mProjectManager, SLOT(openNewWithDiagram()));
 
-	connect(mUi->actionImport, SIGNAL(triggered()), mProjectManager, SLOT(suggestToImport()));
+	connect(mUi->actionImport, SIGNAL(triggered()), mProjectManager, SLOT(suggestToimport()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 	connect(mUi->actionCopyElementsOnDiagram, SIGNAL(triggered()), this, SLOT(copyElementsOnDiagram()));
 	connect(mUi->actionPasteOnDiagram, SIGNAL(triggered()), this, SLOT(pasteOnDiagram()));
@@ -840,7 +840,7 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::initSettingsManager()
 {
-	QDir imagesDir(SettingsManager::value("pathToImages").toString());
+	QDir imagesDir(SettingsManager::value("pathToImages", "/someWeirdDirectoryName").toString());
 	if (!imagesDir.exists()) {
 		SettingsManager::setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
 	}
@@ -870,9 +870,9 @@ void MainWindow::openSettingsDialog(QString const &tab)
 
 void MainWindow::setSceneFont()
 {
-	if (SettingsManager::value("CustomFont").toBool()) {
+	if (SettingsManager::value("CustomFont", true).toBool()) {
 		QFont font;
-		font.fromString(SettingsManager::value("CurrentFont").toString());
+		font.fromString(SettingsManager::value("CurrentFont", "ololo").toString());
 		getCurrentTab()->scene()->setFont(font);
 		getCurrentTab()->scene()->update();
 	} else {

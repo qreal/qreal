@@ -25,8 +25,3 @@ QVector<bool> EngineCommandBlock::parsePorts()
 	}
 	return result;
 }
-
-void EngineCommandBlock::timeout()
-{
-	emit done(mNextBlock);
-}

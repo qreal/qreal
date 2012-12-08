@@ -2,20 +2,22 @@
 
 #include <QtCore/QDir>
 
-#include "../utilsDeclSpec.h"
-#include "../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
-#include "../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "../../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+#include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
-namespace utils {
+namespace ubiq {
+namespace generator {
+
 /// File name for generation utility templates. Searched in templates folder.
 QString const utilsFileName = "utils.template";
 
 /// Separator used in utility templates file to separate templates.
 QString const utilsSeparator = "==========";
 
-/// Base class for all generators, contains common methods and infrastructure to
-/// generate one file.
-class QRUTILS_EXPORT AbstractGenerator
+/** Base class for all generators, contains common methods and infrastructure to
+  generate one file.
+  */
+class AbstractGenerator
 {
 public:
 	/** Constructor.
@@ -77,4 +79,6 @@ private:
 	/// Path to a directory with templates.
 	QString const mTemplateDirPath;
 };
+
+}
 }

@@ -26,6 +26,7 @@ EditorManager::EditorManager(QObject *parent)
 
 	foreach (QString fileName, mPluginsDir.entryList(QDir::Files)) {
 		QPluginLoader *loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
+		mLoaders.insert(fileName, loader);
 		QObject *plugin = loader->instance();
 
 		if (plugin) {
@@ -34,20 +35,11 @@ EditorManager::EditorManager(QObject *parent)
 				mPluginsLoaded += iEditor->id();
 				mPluginFileName.insert(iEditor->id(), fileName);
 				mPluginIface[iEditor->id()] = iEditor;
-				mLoaders.insert(fileName, loader);
-			} else {
-				// TODO: Just does not work under Linux. Seems to be memory corruption when
-				// loading, unloading, and then loading .so file again.
-				// To reproduce, uncomment this, build VisualInterpreter, and try to launch QReal.
-				// With some tool plugins, like MetaEditorSupport or Exterminatus, works fine,
-				// also works fine on Windows. Investigation required.
-				// loader->unload();
-				delete loader;
 			}
 		} else {
 			qDebug() << "Plugin loading failed: " << loader->errorString();
-			loader->unload();
-			delete loader;
+			// Keep silent.
+			// QMessageBox::warning(0, "QReal Plugin", loader->errorString() );
 		}
 	}
 }
@@ -69,7 +61,7 @@ EditorManager::~EditorManager()
 bool EditorManager::loadPlugin(const QString &pluginName)
 {
 	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
-	loader->load();
+	mLoaders.insert(pluginName, loader);
 	QObject *plugin = loader->instance();
 
 	if (plugin) {
@@ -78,14 +70,10 @@ bool EditorManager::loadPlugin(const QString &pluginName)
 			mPluginsLoaded += iEditor->id();
 			mPluginFileName.insert(iEditor->id(), pluginName);
 			mPluginIface[iEditor->id()] = iEditor;
-			mLoaders.insert(pluginName, loader);
 			return true;
 		}
 	}
-
-	qDebug() << "Plugin loading failed: " << loader->errorString();
-	loader->unload();
-	delete loader;
+	QMessageBox::warning(0, "QReal Plugin", loader->errorString());
 	return false;
 }
 
@@ -93,15 +81,11 @@ bool EditorManager::unloadPlugin(const QString &pluginName)
 {
 	QPluginLoader *loader = mLoaders[mPluginFileName[pluginName]];
 	if (loader != NULL) {
-		mLoaders.remove(mPluginFileName[pluginName]);
-		mPluginIface.remove(pluginName);
-		mPluginFileName.remove(pluginName);
-		mPluginsLoaded.removeAll(pluginName);
-		if (!loader->unload()) {
-			delete loader;
+		if (!(loader->unload())) {
 			return false;
 		}
-		delete loader;
+		mPluginsLoaded.removeAll(pluginName);
+		mPluginFileName.remove(pluginName);
 		return true;
 	}
 	return false;
@@ -136,11 +120,6 @@ QStringList EditorManager::paletteGroups(Id const &editor, const Id &diagram) co
 QStringList EditorManager::paletteGroupList(Id const &editor, const Id &diagram, const QString &group) const
 {
 	return mPluginIface[editor.editor()]->diagramPaletteGroupList(diagram.diagram(), group);
-}
-
-QString EditorManager::paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const
-{
-	return mPluginIface[editor.editor()]->diagramPaletteGroupDescription(diagram.diagram(), group);
 }
 
 IdList EditorManager::elements(Id const &diagram) const

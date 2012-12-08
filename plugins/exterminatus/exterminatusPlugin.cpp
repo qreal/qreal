@@ -5,32 +5,21 @@ Q_EXPORT_PLUGIN2(exterminatus, exterminatus::ExterminatusPlugin)
 using namespace exterminatus;
 
 ExterminatusPlugin::ExterminatusPlugin()
-	: mRepo(NULL)
-	, mAction(tr("exterminate"), NULL)
 {
-	connect(&mAction, SIGNAL(triggered()), this, SLOT(exterminate()));
 }
 
 ExterminatusPlugin::~ExterminatusPlugin()
 {
 }
 
-QList<qReal::ActionInfo> ExterminatusPlugin::actions()
+void ExterminatusPlugin::initPlugin(qrRepo::RepoControlInterface *repo)
 {
-	qReal::ActionInfo info(&mAction, "file", "tools");
-	QList<qReal::ActionInfo> result;
-	result << info;
+	mExterminatusTool.init(repo);
+}
+
+QList<qReal::CustomToolInterface *> ExterminatusPlugin::toolInterfaces()
+{
+	QList<qReal::CustomToolInterface *> result;
+	result << &mExterminatusTool;
 	return result;
-}
-
-void ExterminatusPlugin::init(qReal::PluginConfigurator const &configurator)
-{
-	mRepo = &configurator.repoControlInterface();
-	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
-}
-
-void ExterminatusPlugin::exterminate()
-{
-	mRepo->exterminate();
-	mMainWindowInterpretersInterface->reinitModels();
 }

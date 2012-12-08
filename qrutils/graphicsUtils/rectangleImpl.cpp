@@ -11,20 +11,6 @@ QRectF RectangleImpl::boundingRect(qreal x1, qreal y1, qreal x2, qreal y2, const
 	return QRectF(qMin(x1, x2), qMin(y1, y2), abs(x2 - x1), abs(y2 - y1)).adjusted(-scalingDrift, -scalingDrift, scalingDrift, scalingDrift);
 }
 
-QPainterPath RectangleImpl::shape(qreal x1, qreal y1, qreal x2, qreal y2, const int drift) const
-{
-	QPainterPath path;
-	path.setFillRule(Qt::WindingFill);
-
-	QPainterPathStroker ps;
-	ps.setWidth(drift);
-
-	path.addRect(boundingRect(x1, y1, x2, y2, drift));
-	path = ps.createStroke(path);
-
-	return path;
-}
-
 QRectF RectangleImpl::calcRect(qreal x1, qreal y1, qreal x2, qreal y2)
 {
 	if(x2 > x1) {

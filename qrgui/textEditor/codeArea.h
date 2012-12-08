@@ -1,19 +1,14 @@
 #pragma once
 
-#include <QtGui/QSyntaxHighlighter>
-#include <QtGui/QPlainTextEdit>
-#include <QtCore/QObject>
-
-enum highlighterType {
-	text,
-	sql
-};
+#include <QPlainTextEdit>
+#include <QObject>
+#include "textHighlighter.h"
 
 class CodeArea : public QPlainTextEdit {
 	Q_OBJECT
 
 	public:
-		CodeArea(QWidget *parent = 0, highlighterType type = text);
+		CodeArea(QWidget *parent = 0);
 		~CodeArea();
 
 		void setHighlightedLineNumbers(const QList<int>&);
@@ -24,6 +19,6 @@ class CodeArea : public QPlainTextEdit {
 	private:
 		QList<QTextEdit::ExtraSelection> highlightedLinesSelectionList();
 
-		QSyntaxHighlighter *mHighlighter;
+		TextHighlighter *mHighlighter;
 		QList<int> mHighlightedLineNumbers;
 };

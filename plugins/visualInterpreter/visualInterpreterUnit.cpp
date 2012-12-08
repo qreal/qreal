@@ -45,7 +45,7 @@ void VisualInterpreterUnit::initBeforeSemanticsLoading()
 	if (mRules != NULL) {
 		deinit();
 	}
-
+	
 	mRules = new QHash<QString, Id>();
 	mDeletedElements = new QHash<QString, IdList*>();
 	mReplacedElements = new QHash<QString, QHash<Id, Id>* >();
@@ -110,13 +110,13 @@ void VisualInterpreterUnit::loadSemantics()
 			if (ruleElement.element() == "Replacement"){
 				Id const fromId = fromInRule(ruleElement);
 				Id const toId = toInRule(ruleElement);
-
+				
 				if (fromId == Id::rootId() || toId == Id::rootId()) {
 					semanticsLoadingError(tr("Incorrect replacement in rule '")
 							+ ruleName + "'");
 					return;
 				}
-
+				
 				if (!mReplacedElements->contains(ruleName)) {
 					mReplacedElements->insert(ruleName, new QHash<Id, Id>());
 				}
@@ -161,21 +161,21 @@ void VisualInterpreterUnit::loadSemantics()
 void VisualInterpreterUnit::interpret()
 {
 	mInterpretersInterface.errorReporter()->clear();
-
+	
 	if (!mIsSemanticsLoaded) {
 		report(tr("Semantics not loaded"), true);
 		return;
 	}
 
 	initBeforeInterpretation();
-	int const timeout = SettingsManager::value("debuggerTimeout").toInt();
+	int const timeout = SettingsManager::value("debuggerTimeout", 750).toInt();
 
 	while (findMatch()) {
 		if (mNeedToStopInterpretation) {
 			report(tr("Interpretation stopped manually"), false);
 			return;
 		}
-
+		
 		if (hasRuleSyntaxError()) {
 			report(tr("Rule '") + mMatchedRuleName
 					+ tr("' cannot be applied because semantics has syntax errors"), true);
@@ -245,13 +245,13 @@ Id VisualInterpreterUnit::startElement() const
 bool VisualInterpreterUnit::deleteElements()
 {
 	QHash<Id, Id> firstMatch = mMatches.at(0);
-
+	
 	if (mDeletedElements->contains(mMatchedRuleName)) {
 		foreach (Id const &id, *(mDeletedElements->value(mMatchedRuleName))) {
 			Id const node = firstMatch.value(id);
 			mInterpretersInterface.dehighlight(node);
 			mCurrentNodesWithControlMark.removeOne(node);
-
+			
 			mInterpretersInterface.deleteElementFromDiagram(
 					mGraphicalModelApi.logicalId(firstMatch.value(id)));
 		}
@@ -263,7 +263,7 @@ bool VisualInterpreterUnit::deleteElements()
 bool VisualInterpreterUnit::createElements()
 {
 	QHash<Id, Id> *firstMatch = &mMatches.first();
-
+	
 	if (mCreatedElements->contains(mMatchedRuleName)) {
 		mCreatedElementsPairs = new QHash<Id, Id>();
 		foreach (Id const &id, *(mCreatedElements->value(mMatchedRuleName))) {
@@ -281,9 +281,9 @@ bool VisualInterpreterUnit::createElements()
 			mCreatedElementsPairs->insert(id, createdElem);
 			firstMatch->insert(id, createdElem);
 		}
-
+		
 		arrangeConnections();
-
+		
 		return true;
 	}
 	return false;
@@ -292,21 +292,21 @@ bool VisualInterpreterUnit::createElements()
 void VisualInterpreterUnit::arrangeConnections()
 {
 	QHash<Id, Id> firstMatch = mMatches.at(0);
-
+	
 	foreach (Id const &idInRule, mCreatedElementsPairs->keys()) {
 		Id const idInModel = mCreatedElementsPairs->value(idInRule);
-
+		
 		Id const toInRul = toInRule(idInRule);
 		if (toInRul != Id::rootId()) {
 			mGraphicalModelApi.setTo(idInModel, firstMatch.value(toInRul));
 		}
-
+		
 		Id const fromInRul = fromInRule(idInRule);
 		if (fromInRul != Id::rootId()) {
 			mGraphicalModelApi.setFrom(idInModel, firstMatch.value(fromInRul));
 		}
 	}
-
+	
 	delete mCreatedElementsPairs;
 }
 
@@ -326,13 +326,13 @@ QPointF VisualInterpreterUnit::position()
 bool VisualInterpreterUnit::createElementsToReplace()
 {
 	QHash<Id, Id> *firstMatch = &mMatches.first();
-
+	
 	if (mReplacedElements->contains(mMatchedRuleName)) {
 		mReplacedElementsPairs = new QHash<Id, Id>();
 		foreach (Id const &fromId, mReplacedElements->value(mMatchedRuleName)->keys()) {
 			Id const toInRule = mReplacedElements->value(mMatchedRuleName)->value(fromId);
 			Id const fromInModel = firstMatch->value(fromId);
-
+			
 			Id const toInModelId = Id(mInterpretersInterface.activeDiagram().editor()
 					, mInterpretersInterface.activeDiagram().diagram()
 					, toInRule.element()
@@ -343,10 +343,10 @@ bool VisualInterpreterUnit::createElementsToReplace()
 					, false
 					, toInRule.element()
 					, mGraphicalModelApi.position(fromInModel));
-
+			
 			mReplacedElementsPairs->insert(fromInModel, toInModel);
 			firstMatch->insert(toInRule, toInModel);
-
+			
 			copyProperties(mGraphicalModelApi.logicalId(toInModel), toInRule);
 		}
 		return true;
@@ -359,18 +359,18 @@ void VisualInterpreterUnit::replaceElements()
 	if (mReplacedElements->contains(mMatchedRuleName)) {
 		foreach (Id const &fromInModel, mReplacedElementsPairs->keys()) {
 			Id const toInModel = mReplacedElementsPairs->value(fromInModel);
-
+			
 			foreach (Id const &link, outgoingLinks(fromInModel)) {
 				mGraphicalModelApi.setFrom(link, toInModel);
 			}
 			foreach (Id const &link, incomingLinks(fromInModel)) {
 				mGraphicalModelApi.setTo(link, toInModel);
 			}
-
+			
 			mInterpretersInterface.deleteElementFromDiagram(
 					mGraphicalModelApi.logicalId(fromInModel));
 		}
-
+		
 		delete mReplacedElementsPairs;
 	}
 }
@@ -399,7 +399,7 @@ void VisualInterpreterUnit::moveControlFlow()
 bool VisualInterpreterUnit::interpretReaction()
 {
 	QHash<Id, Id> firstMatch = mMatches.at(0);
-
+	
 	Id const rule = mRules->value(mMatchedRuleName);
 	QString const ruleProcess = property(rule, "procedure").toString();
 	bool result = true;
@@ -429,18 +429,18 @@ bool VisualInterpreterUnit::makeStep()
 {
 	bool needToUpdate = createElements();
 	needToUpdate |= createElementsToReplace();
-
+	
 	bool result = interpretReaction();
-
+	
 	needToUpdate |= deleteElements();
 	replaceElements();
-
+	
 	if (needToUpdate) {
 		mInterpretersInterface.updateActiveDiagram();
 	}
-
+	
 	moveControlFlow();
-
+	
 	mMatches.clear();
 	return result;
 }

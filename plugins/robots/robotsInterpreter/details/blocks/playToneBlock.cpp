@@ -14,7 +14,7 @@ void PlayToneBlock::run()
 	if (!boolProperty("WaitForCompletion"))
 		emit done(mNextBlock);
 	else {
-		mTimer.setInterval(evaluate("Duration").toInt());
+		mTimer.setInterval(evaluate("Frequency").toInt());
 		mTimer.setSingleShot(true);
 		connect(&mTimer, SIGNAL(timeout()), this, SLOT(timeout()));
 		mTimer.start();

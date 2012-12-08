@@ -19,16 +19,16 @@ TEST_F(SettingsManagerTest, getSetTest) {
 
 TEST_F(SettingsManagerTest, saveDataTest) {
 	mSettingsManager->setValue("debugColor", "test color");
-
+	
 	mSettingsManager->load();
-
+	
 	EXPECT_EQ(mSettingsManager->value("debugColor").toString(), mDebugColor);
-
+	
 	mSettingsManager->setValue("debugColor", "test color");
 	mSettingsManager->saveData();
-
+	
 	mSettingsManager->load();
-
+	
 	EXPECT_EQ(mSettingsManager->value("debugColor").toString(), "test color");
 }
 

@@ -76,7 +76,7 @@ void GraphicalModel::updateElements(Id const &logicalId, QString const &name)
 	foreach (AbstractModelItem *item,  mModelItems.values()) {
 		GraphicalModelItem *graphicalItem = static_cast<GraphicalModelItem *>(item);
 		if (graphicalItem->logicalId() == logicalId) {
-			setNewName(graphicalItem->id(), name);
+			mApi.setName(graphicalItem->id(), name);
 			emit dataChanged(index(graphicalItem), index(graphicalItem));
 		}
 	}
@@ -166,7 +166,8 @@ bool GraphicalModel::setData(const QModelIndex &index, const QVariant &value, in
 		switch (role) {
 		case Qt::DisplayRole:
 		case Qt::EditRole:
-			setNewName(item->id(), value.toString());
+			mApi.setName(item->id(), value.toString());
+			emit nameChanged(item->id());
 			break;
 		case roles::positionRole:
 			mApi.setPosition(item->id(), value);
@@ -201,12 +202,6 @@ bool GraphicalModel::setData(const QModelIndex &index, const QVariant &value, in
 	return false;
 }
 
-void GraphicalModel::setNewName(Id const &id, QString const newValue)
-{
-	mApi.setName(id, newValue);
-	emit nameChanged(id);
-}
-
 void GraphicalModel::changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position)
 {
 	if (!parent.isValid() || element.parent() == parent) {
@@ -230,10 +225,6 @@ void GraphicalModel::changeParent(QModelIndex const &element, QModelIndex const 
 		mApi.setPosition(elementItem->id(), position);
 		mApi.setConfiguration(elementItem->id(), configuration);
 		endMoveRows();
-
-		if (parent.row() != element.row()) {
-			emit dataChanged(parent, element);
-		}
 	}
 }
 

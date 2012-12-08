@@ -83,7 +83,6 @@ public:
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram();
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
-	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index, int const &role);
 	void openReferenceList(QPersistentModelIndex const &index
 			, QString const &referenceType, QString const &propertyValue, int role);
 	virtual void openSettingsDialog(QString const &tab);
@@ -214,8 +213,6 @@ private slots:
 
 private:
 	void deleteElementFromScene(QPersistentModelIndex const &index);
-	QHash<EditorView*, QPair<CodeArea *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
-
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on
 	/// @param tab Tab to be initialized
@@ -241,7 +238,6 @@ private:
 	QString getOpenFileName(const QString &dialogWindowTitle);
 	QString getWorkingFile(QString const &dialogWindowTitle, bool save);
 
-	void selectItemInLogicalModel(Id const &id);
 	void switchToTab(int index);
 	int getTabIndex(const QModelIndex &index);
 

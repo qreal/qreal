@@ -10,7 +10,7 @@
 
 #include "lineItem.h"
 #include "stylusItem.h"
-#include "ellipseItem.h"
+#include "ejectedItem.h"
 #include "worldModel.h"
 #include "robotModelInterface.h"
 #include "d2ModelScene.h"
@@ -35,8 +35,7 @@ enum DrawingAction {
 	line,
 	stylus,
 	port,
-	ellipse,
-	noneWordLoad
+	ejectedItem
 };
 }
 
@@ -49,7 +48,7 @@ public:
 	void init(bool isActive = true);
 	void close();
 	void draw(QPointF newCoord, qreal angle, QPointF dPoint);
-	void drawBeep(bool isNeededBeep);
+	void drawBeep(QColor const &color);
 	QPolygonF const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
 
 	/// Get current scene position of mRobot
@@ -73,10 +72,9 @@ public:
 
 public slots:
 	void update();
-	void worldWallDragged(QPainterPath const &shape, QPointF const& oldPos);
-
-signals:
-	void robotWasIntersectedByWall(bool isNeedStop, QPointF const& oldPos);
+	void ejectedItemMoved(QRectF const& itemRect, QPointF const& oldPos, QPointF const& diffRobotPos);
+	void ejectedItemDragged(QRectF const& itemRect, QPointF const& oldPos, QPointF const& diffItemPos);
+	void checkEjectedItemsIntersectsSlot(QRectF const& itemRect, QPointF const& diffRobotPos);
 
 protected:
 	void changeEvent(QEvent *e);
@@ -85,11 +83,11 @@ private slots:
 	void addWall(bool on);
 	void addLine(bool on);
 	void addStylus(bool on);
-	void addEllipse(bool on);
+	void addEjectedItem(bool on);
 	void clearScene();
 	void resetButtons();
 
-	void mousePressed(QGraphicsSceneMouseEvent *mouseEvent);
+	void mouseClicked(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseReleased(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseMoved(QGraphicsSceneMouseEvent *mouseEvent);
 
@@ -110,14 +108,15 @@ private slots:
 
 signals:
 	void d2WasClosed();
-
-protected:
-	virtual void keyPressEvent(QKeyEvent *event);
+	void needToStopDraggedEjectedItem(bool isNeedStop, QPointF const& oldPos);
+	void needToStopMovedEjectedItem(bool isNeedStop, QPointF const& oldPos);
+	void checkEjectedItemsIntersectsSignal(QRectF const& itemRect, QPointF const& diffRobotPos);
 
 private:
 	void connectUiButtons();
 	void drawWalls();
 	void drawColorFields();
+	void drawEjectedItems();
 	void drawInitialRobot();
 
 	/** @brief Set active panel toggle button and deactivate all others */
@@ -141,7 +140,7 @@ private:
 	void reshapeWall(QGraphicsSceneMouseEvent *event);
 	void reshapeLine(QGraphicsSceneMouseEvent *event);
 	void reshapeStylus(QGraphicsSceneMouseEvent *event);
-	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
+	void reshapeEjectedItem(QGraphicsSceneMouseEvent *event);
 
 	void setValuePenColorComboBox(QColor penColor);
 	void setValuePenWidthSpinBox(int width);
@@ -159,6 +158,10 @@ private:
 	/// Holds graphic items that represent path of a robot, to be able to manipulate them
 	QList<QGraphicsItem *> mRobotPath;
 
+	/// Counter of calls to draw() method which recalculates scene position of the robot,
+	/// to support robot path drawing
+	int mDrawCyclesCount;
+
 	/// Maximum number of calls to draw() when adding robot path element is skipped.
 	/// So, new path element is added every mMaxDrawCyclesBetweenPathElements times
 	/// draw() is called. We can't do that every time due to performance issues ---
@@ -175,10 +178,10 @@ private:
 	int mMouseClicksCount;
 
 	/** @brief Temporary wall that's being created. When it's complete, it's added to world model */
-	WallItem *mCurrentWall;
-	LineItem *mCurrentLine;
-	StylusItem *mCurrentStylus;
-	EllipseItem *mCurrentEllipse;
+	WallItem* mCurrentWall;
+	LineItem* mCurrentLine;
+	StylusItem* mCurrentStylus;
+	EjectedItem* mCurrentEjectedItem;
 
 	/** @brief Latest value of angle for drawing robot image */
 	qreal mAngleOld;

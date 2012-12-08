@@ -28,7 +28,6 @@ void Motor::on(int speed)
 void Motor::on(int speed, long unsigned int degrees)
 {
 	mMotorImpl->on(speed, degrees);
-	connect(mMotorImpl, SIGNAL(motorImplTimeout()), this, SIGNAL(motorTimeout()));
 }
 
 void Motor::stop()

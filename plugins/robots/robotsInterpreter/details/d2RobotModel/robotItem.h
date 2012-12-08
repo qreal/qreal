@@ -35,7 +35,6 @@ public:
 	virtual void checkSelection();
 	QPointF basePoint();
 
-	QPainterPath boundingShape() const;
 	virtual QRectF boundingRect() const;
 	virtual QRectF calcNecessaryBoundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
@@ -57,17 +56,14 @@ public:
 	bool isOnTheGround() const;
 
 	void setRobotModel(RobotModelInterface *robotModel);
-	void setNeededBeep(bool isNeededBeep);
 
 signals:
 	void changedPosition();
+	void robotMoved(QRectF const &newRect, QPointF const& diffPos);
 
 private:
-	void drawBeep(QPainter* painter);
 	/** @brief Image of a robot drawn on scene */
 	QImage mImage;
-	QImage mBeepImage;
-	bool mNeededBeep;
 
 	/** @brief List of sensors added to robot */
 	QList<SensorItem *> mSensors;  // Does not have ownership

@@ -20,10 +20,6 @@ public:
 	virtual void off() = 0;
 	virtual void resetMotorPosition(bool relative) = 0;
 	void setPort(int const port);
-
-signals:
-	void motorImplTimeout();
-
 protected:
 	outputPort::OutputPortEnum mPort;
 };

@@ -26,14 +26,16 @@ public:
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 	virtual void reshapeRectWithShift();
 
-	virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
+
+        virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
 	virtual void deserialize(QDomElement const &element);
-	virtual void deserializePenBrush(QDomElement const &element);
-	void setSerializeName(QString name);
+        void setSerializeName(QString name);
 
 protected:
 	void setPrivateData();
 	graphicsUtils::LineImpl mLineImpl;
+
+private:
 	QString mSerializeName;
 };
 }

@@ -185,11 +185,6 @@ void ShapeEdit::keyPressEvent(QKeyEvent *event)
 		emit saveSignal();
 	if (event->matches(QKeySequence::Open))
 		emit openSignal();
-	if (event->matches(QKeySequence::ZoomIn)) {
-		mScene->mainView()->zoomIn();
-	} else if (event->matches(QKeySequence::ZoomOut)) {
-		mScene->mainView()->zoomOut();
-	}
 }
 
 QList<QDomElement> ShapeEdit::generateGraphics()

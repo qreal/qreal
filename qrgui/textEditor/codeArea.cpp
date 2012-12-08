@@ -1,18 +1,12 @@
 #include <QDebug>
 #include <QtAlgorithms>
 #include "codeArea.h"
-#include "textHighlighter.h"
-#include "sqlHighlighter.h"
 
-CodeArea::CodeArea(QWidget *parent, highlighterType type): QPlainTextEdit(parent)
+CodeArea::CodeArea(QWidget *parent): QPlainTextEdit(parent)
 {
 	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
 
-	if (type == text) {
-		mHighlighter = dynamic_cast<QSyntaxHighlighter *>(new TextHighlighter(document()));
-	} else if (type == sql) {
-		mHighlighter = dynamic_cast<QSyntaxHighlighter *>(new SQLHighlighter(document()));
-	}
+	mHighlighter = new TextHighlighter(document());
 
 	highlightCurrentLine();
 	setReadOnly(false);
@@ -31,11 +25,10 @@ void CodeArea::highlightCurrentLine()
 	if (!isReadOnly()) {
 		QTextEdit::ExtraSelection selection;
 
-		QColor lineColor = QColor(Qt::yellow).lighter(175);
+		QColor lineColor = QColor(Qt::blue).lighter(160);
 
 		selection.format.setBackground(lineColor);
 		selection.format.setProperty(QTextFormat::FullWidthSelection, true);
-
 		selection.cursor = textCursor();
 		selection.cursor.clearSelection();
 		extraSelections.append(selection);

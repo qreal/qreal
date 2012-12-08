@@ -15,8 +15,6 @@ namespace details {
 namespace d2Model {
 
 const int timeInterval = 5;
-const int oneReciprocalTime = 500;
-const int onePercentReciprocalSpeed = 44000;
 
 class D2RobotModel : public QObject, public RobotModelInterface {
 	Q_OBJECT
@@ -48,12 +46,9 @@ public:
 
 	enum ATime {
 		DoInf,
-		DoByLimit,
+		Do,
 		End
 	};
-
-signals:
-	void d2MotorTimeout();
 
 private slots:
 	void nextFragment();
@@ -63,8 +58,7 @@ private:
 		int radius;
 		int speed;
 		int degrees;
-		ATime activeTimeType;
-		bool isUsed;
+		QPair<ATime, qreal> activeTime;
 	};
 
 	struct Beep {
@@ -85,15 +79,19 @@ private:
 	QHash<int, qreal> mTurnoverMotors;  // stores how many degrees the motor rotated on
 	SensorsConfiguration mSensorsConfiguration;
 	WorldModel mWorldModel;
-	qreal mSpeedFactor;
+	qreal mSpeed;
 
-	void setSpeedFactor(qreal speedMul);
+	void speed(qreal speedMul);
 	void initPosition();
-	Motor* initMotor(int radius, int speed, long unsigned int degrees, int port, bool isUsed);
+	Motor* initMotor(int radius, int speed, long unsigned int degrees, int port);
 	void countNewCoord();
 	void countBeep();
 	QPair<QPoint, qreal> countPositionAndDirection(inputPort::InputPortEnum const port) const;
 	QPair<QPoint, qreal> countPositionAndDirection(QPointF localPosition, qreal localDirection) const;
+
+	void countOneMotorTime(Motor &motor);
+	void countMotorTime();
+
 	void countMotorTurnover();
 
 	QImage printColorSensor(inputPort::InputPortEnum const port) const;

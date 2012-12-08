@@ -14,8 +14,6 @@ int const border = 5;
 RobotItem::RobotItem()
 	: AbstractItem()
 	, mImage(QImage(":/icons/robot.png"))
-	, mBeepImage(QImage(":/icons/beepRobot.png"))
-	, mNeededBeep(false)
 	, mIsOnTheGround(true)
 	, mRotater(NULL)
 	, mRectangleImpl()
@@ -40,16 +38,7 @@ void RobotItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* opti
 {
 	Q_UNUSED(option)
 	Q_UNUSED(widget)
-	if (mNeededBeep) {
-		drawBeep(painter);
-	} else {
-		mRectangleImpl.drawImageItem(painter, mX1, mY1, mX2, mY2, mImage);
-	}
-}
-
-void RobotItem::drawBeep(QPainter* painter)
-{
-	mRectangleImpl.drawImageItem(painter, mX1, mY1, mX2, mY2, mBeepImage);
+	mRectangleImpl.drawImageItem(painter, mX1, mY1, mX2, mY2, mImage);
 }
 
 void RobotItem::drawExtractionForItem(QPainter* painter)
@@ -60,12 +49,7 @@ void RobotItem::drawExtractionForItem(QPainter* painter)
 
 QRectF RobotItem::boundingRect() const
 {
-	return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, border);
-}
-
-QPainterPath RobotItem::boundingShape() const
-{
-	return mRectangleImpl.shape(mX1, mY1, mX2, mY2, 0);
+		return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, border);
 }
 
 QRectF RobotItem::calcNecessaryBoundingRect() const
@@ -136,15 +120,17 @@ void RobotItem::resizeItem(QGraphicsSceneMouseEvent *event)
 
 void RobotItem::setPos(QPointF const &newPos)// for moving
 {
+	QPointF diffPos = newPos - pos();
 	foreach (SensorItem *sensor, mSensors) {
-		sensor->setDeltaBasePosition(newPos - pos(), rotateAngle());
+		sensor->setDeltaBasePosition(diffPos, rotateAngle());
 	}
 
-	mRotater->reshapeWithMasterItem(newPos - pos());
+	mRotater->reshapeWithMasterItem(diffPos);
 
 	mPreviousAngle = rotateAngle();
 
 	QGraphicsItem::setPos(newPos);
+	emit robotMoved(realBoundingRect(), diffPos);
 }
 
 void RobotItem::addSensor(SensorItem *sensor)
@@ -203,9 +189,4 @@ void RobotItem::checkSelection()
 		mRotater->setVisible(true);
 	else
 		mRotater->setVisible(false);
-}
-
-void RobotItem::setNeededBeep(bool isNeededBeep)
-{
-	mNeededBeep = isNeededBeep;
 }

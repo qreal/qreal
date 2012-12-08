@@ -35,9 +35,8 @@ void Shape::init(const QString &shape)
 	int errorLine = 0;
 	int errorCol = 0;
 	QDomDocument doc;
-	if (!doc.setContent(shape, false, &error, &errorLine, &errorCol)) {
+	if (!doc.setContent(shape, false, &error, &errorLine, &errorCol))
 		return;
-	}
 
 	QDomElement graphics = doc.firstChildElement("graphics");
 
@@ -60,7 +59,7 @@ void Shape::initLabels(QDomElement const &graphics)
 		element = element.nextSiblingElement("label"))
 	{
 		Label *label = new Label();
-		if (!label->init(element, count, true, mWidth, mHeight))
+		if (!label->init(element, count, true))
 			delete label;
 		else {
 			mLabels.append(label);
@@ -74,9 +73,8 @@ void Shape::initLabels(QDomElement const &graphics)
 void Shape::initPorts(QDomElement const &graphics)
 {
 	QDomElement portsElement = graphics.firstChildElement("ports");
-	if (portsElement.isNull()) {
+	if (portsElement.isNull())
 		return;
-	}
 	initPointPorts(portsElement);
 	initLinePorts(portsElement);
 
@@ -118,22 +116,15 @@ void Shape::initLinePorts(QDomElement const &portsElement)
 
 void Shape::changeDir(QDir &dir) const
 {
-	if (!dir.exists(generatedDir)) {
+	if (!dir.exists(generatedDir))
 		dir.mkdir(generatedDir);
-	}
 	dir.cd(generatedDir);
 	QString editorName = mNode->diagram()->editor()->name()	;
-	if (!dir.exists(editorName)) {
+	if (!dir.exists(editorName))
 		dir.mkdir(editorName);
-	}
 	dir.cd(editorName);
-	if (!dir.exists(generatedShapesDir)) {
-		dir.mkdir(generatedShapesDir);
-	}
-	dir.cd(generatedShapesDir);
-	if (!dir.exists(shapesDir)) {
+	if (!dir.exists(shapesDir))
 		dir.mkdir(shapesDir);
-	}
 	dir.cd(shapesDir);
 }
 
@@ -147,15 +138,12 @@ void Shape::generate(QString &classTemplate) const
 
 	MetaCompiler *compiler = mNode->diagram()->editor()->metaCompiler();
 	QString unused;
-	if (!hasPointPorts()) {
+	if (!hasPointPorts())
 		unused += nodeIndent + "Q_UNUSED(pointPorts)" + endline;
-	}
-	if (!hasLinePorts()) {
+	if (!hasLinePorts())
 		unused += nodeIndent + "Q_UNUSED(linePorts)" + endline;
-	}
-	if (!hasLabels()) {
+	if (!hasLabels())
 		unused += nodeIndent + "Q_UNUSED(titles);" + endline + nodeIndent + "Q_UNUSED(factory)" + endline;
-	}
 
 	QString shapeRendererLine = hasPicture()
 								? compiler->getTemplateUtils(nodeLoadShapeRendererTag)
@@ -179,9 +167,8 @@ void Shape::generate(QString &classTemplate) const
 		labelsUpdateLine += label->generateUpdate(compiler) + endline;
 		labelsDefinitionLine += label->generateDefinition(compiler) + endline;
 	}
-	if (mLabels.isEmpty()) { // no labels
+	if (mLabels.isEmpty()) // no labels
 		labelsUpdateLine = nodeIndent + "Q_UNUSED(repo)" + endline;
-	}
 
 	QString hasPorts = mPorts.isEmpty() ? "false" : "true";
 
@@ -198,9 +185,8 @@ void Shape::generate(QString &classTemplate) const
 
 void Shape::generateSdf() const
 {
-	if (!hasPicture()) {
+	if (!hasPicture())
 		return;
-	}
 
 	QDir dir;
 	changeDir(dir);
@@ -219,9 +205,8 @@ void Shape::generateSdf() const
 
 void Shape::generatePortsSdf() const
 {
-	if (!hasPorts()) {
+	if (!hasPorts())
 		return;
-	}
 
 	QDir dir;
 	changeDir(dir);
@@ -237,9 +222,10 @@ void Shape::generatePortsSdf() const
 	QString portsTemplate = compiler->getTemplateUtils(sdfPortsTag);
 
 	QString portsSdf;
-	foreach(Port *port, mPorts) {
+	foreach(Port *port, mPorts)
 		portsSdf += port->generateSdf(compiler) + endline;
-	}
+
+
 
 	portsTemplate.replace(portsTag, portsSdf)
 				.replace(nodeWidthTag, QString::number(mWidth))
@@ -258,9 +244,8 @@ bool Shape::hasLabels() const
 bool Shape::hasPointPorts() const
 {
 	foreach (Port *port, mPorts){
-		if (dynamic_cast<PointPort*>(port)) {
+		if (dynamic_cast<PointPort*>(port))
 			return true;
-		}
 	}
 	return false;
 }
@@ -268,9 +253,8 @@ bool Shape::hasPointPorts() const
 bool Shape::hasLinePorts() const
 {
 	foreach (Port *port, mPorts){
-		if (dynamic_cast<LinePort*>(port)) {
+		if (dynamic_cast<LinePort*>(port))
 			return true;
-		}
 	}
 	return false;
 }
@@ -289,9 +273,8 @@ QString Shape::generateResourceLine(const QString &resourceTemplate) const
 {
 	QString result;
 
-	if (!hasPicture()) {
+	if (!hasPicture())
 		return result;
-	}
 
 	QString line = resourceTemplate;
 	result += line.replace(fileNameTag, mNode->name() + "Class.sdf") + endline;

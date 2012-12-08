@@ -36,9 +36,9 @@ public:
 
 	virtual bool isLogicalId(Id const &id) const = 0;
 
-	virtual void removeReferencesTo(Id const &id) = 0;
-	virtual void removeReferencesFrom(Id const &id) = 0;
-	virtual void removeReference(Id const &id, Id const &reference) = 0;
+	virtual void removeReferencesTo(Id const &id) const = 0;
+	virtual void removeReferencesFrom(Id const &id) const = 0;
+	virtual void removeReference(Id const &id, Id const &reference) const = 0;
 };
 
 }

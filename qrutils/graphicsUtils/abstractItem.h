@@ -39,6 +39,7 @@ public:
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawFieldForResizeItem(QPainter* painter);
+	void drawFieldForResizeItem(QPainter* painter, int curResizeDrirt);
 	virtual void setPenBrushForExtraxtion(QPainter* painter, const QStyleOptionGraphicsItem* option);
 	virtual void setPenBrushDriftRect(QPainter* painter);
 
@@ -59,13 +60,13 @@ public:
 	virtual void setPen(const QString& penStyle, int width, const QString& penColor);
 	virtual void setPenBrush(const QString& penStyle, int width, const QString& penColor, const QString& brushStyle, const QString& brushColor);
 
-	QPointF getX1andY1(void);
-	QPointF getX2andY2(void);
-
 	void setX1andY1(qreal x, qreal y);
 	void setX1andY2(qreal x, qreal y);
 	void setX2andY1(qreal x, qreal y);
 	void setX2andY2(qreal x, qreal y);
+
+	QPointF getX1andY1();
+	QPointF getX2andY2();
 
 	virtual void reshapeRectWithShift();
 	virtual void changeDragState(qreal x, qreal y);
@@ -73,7 +74,6 @@ public:
 
 	virtual void calcResizeItem(QGraphicsSceneMouseEvent *event);
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
-	void reverseOldResizingItem(QPointF begin, QPointF end);
 
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
@@ -93,6 +93,7 @@ protected:
 	qreal mX2;
 	qreal mY2;
 	QGraphicsView *mView;
+	int mResizeDrift;
 };
 
 }

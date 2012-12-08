@@ -2,10 +2,10 @@
 #include <QtCore/QDebug>
 
 #include "abstractGenerator.h"
-#include "../nameNormalizer.h"
+#include "nameNormalizer.h"
 
+using namespace ubiq::generator;
 using namespace qReal;
-using namespace utils;
 
 AbstractGenerator::AbstractGenerator(QString const &templateDirPath
 		, QString const &outputDirPath
@@ -17,7 +17,6 @@ AbstractGenerator::AbstractGenerator(QString const &templateDirPath
 		, mOutputDirPath(outputDirPath)
 		, mTemplateDirPath(templateDirPath)
 {
-	loadUtilsTemplates();
 }
 
 AbstractGenerator::~AbstractGenerator()
@@ -43,7 +42,6 @@ bool AbstractGenerator::loadTemplateFromFile(QString const &templateFileName, QS
 	}
 
 	QString const fileName = dir.absoluteFilePath(templateFileName);
-	qDebug() << fileName;
 	QFile file(fileName);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		qDebug() << "cannot load file \"" << fileName << "\"";
@@ -183,7 +181,7 @@ QString AbstractGenerator::generatePropertiesCode(Id const &element)
 		QString propertyTemplate = mTemplateUtils["@@Property@@"];
 		QString const name = mApi.name(property);
 		propertyTemplate.replace("@@Name@@", NameNormalizer::normalize(name))
-				.replace("@@Type@@", mApi.stringProperty(property, "Type"));
+				.replace("@@Type@@", mApi.stringProperty(property, "type"));
 
 		properties += propertyTemplate;
 	}

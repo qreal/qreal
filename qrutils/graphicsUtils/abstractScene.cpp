@@ -20,11 +20,6 @@ AbstractScene::AbstractScene(AbstractView *view, QObject *parent)
 {
 }
 
-graphicsUtils::AbstractView* AbstractScene::mainView()
-{
-	return mView;
-}
-
 void AbstractScene::setEmptyRect(int x, int y, int w, int h)
 {
 	mEmptyRect = addRect(x, y, w, h, QPen(Qt::white));
@@ -113,11 +108,6 @@ void AbstractScene::setDragMode(int itemsType)
 	}
 	else
 		mView->setDragMode(QGraphicsView::RubberBandDrag);
-}
-
-void AbstractScene::setDragMode(QGraphicsView::DragMode mode)
-{
-	mView->setDragMode(mode);
 }
 
 void AbstractScene::forPressResize(QGraphicsSceneMouseEvent *event)
@@ -214,6 +204,11 @@ QString AbstractScene::penStyleItems()
 int AbstractScene::penWidthItems()
 {
 	return mPenWidthItems;
+}
+
+int AbstractScene::firstPenWidthItems()
+{
+	return mFirstPenWidth;
 }
 
 QString AbstractScene::penColorItems()

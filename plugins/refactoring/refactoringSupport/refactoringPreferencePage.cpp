@@ -16,7 +16,8 @@ RefactoringPreferencesPage::RefactoringPreferencesPage(QWidget *parent)
 
 	QString binFolder = qApp->applicationDirPath();
 
-	mUi->qrealSourcesLineEdit->setText(SettingsManager::value("qrealSourcesLocation").toString());
+	mUi->qrealSourcesLineEdit->setText(SettingsManager::value("qrealSourcesLocation"
+			, binFolder.mid(0, binFolder.lastIndexOf("/"))).toString());
 
 	connect(mUi->qrealSourcesPushButton, SIGNAL(clicked()), this, SLOT(setQRealSourcesLocation()));
 	connect(mUi->linuxRadioButton, SIGNAL(clicked()), this, SLOT(changeDefaultDotPath()));
@@ -25,15 +26,16 @@ RefactoringPreferencesPage::RefactoringPreferencesPage(QWidget *parent)
 	connect(mUi->browseDotPathPushButton, SIGNAL(clicked()), this, SLOT(setDotPathManually()));
 
 	mUi->colorComboBox->addItems(QColor::colorNames());
-	QString curColor = SettingsManager::value("refactoringColor").toString();
+	QString curColor = SettingsManager::value("refactoringColor", "cyan").toString();
 	int curColorIndex = mUi->colorComboBox->findText(curColor);
 	mUi->colorComboBox->setCurrentIndex(curColorIndex);
+
 
 	mUi->windowsRadioButton->setChecked(SettingsManager::value("dotWindowsChecked").toBool());
 	mUi->linuxRadioButton->setChecked(SettingsManager::value("dotLinuxChecked").toBool());
 	mUi->otherRadioButton->setChecked(SettingsManager::value("dotOtherChecked").toBool());
 	mUi->dotPathLineEdit->setText(SettingsManager::value("pathToDot").toString());
-
+	
 	if (SettingsManager::value("dotOtherChecked").toBool()) {
 		mUi->dotPathLineEdit->setEnabled(true);
 		mUi->browseDotPathPushButton->setEnabled(true);
@@ -76,7 +78,7 @@ void RefactoringPreferencesPage::changeDefaultDotPath()
 {
 	mUi->dotPathLineEdit->setEnabled(mUi->otherRadioButton->isChecked());
 	mUi->browseDotPathPushButton->setEnabled(mUi->otherRadioButton->isChecked());
-
+	
 	if (mUi->windowsRadioButton->isChecked()) {
 		mUi->dotPathLineEdit->setText("dot.exe");
 	}

@@ -14,7 +14,7 @@ namespace qrmc {
 	class Diagram
 	{
 	public:
-		Diagram(qReal::Id const &id, qrRepo::LogicalRepoApi *api, Editor *editor);
+		Diagram(qReal::Id const &id, qrRepo::RepoApi *api, Editor *editor);
 		~Diagram();
 		bool init();
 		bool resolve();
@@ -29,10 +29,7 @@ namespace qrmc {
 		QString generateMouseGesturesMap(QString const &lineTemplate) const;
 		QString generatePropertiesMap(QString const &lineTemplate) const;
 		QString generatePropertyDefaultsMap(QString const &lineTemplate) const;
-		QString generatePropertyDisplayedNamesMap(QString const &lineTemplate) const;
-		QString generateParentsMap(QString const &lineTemplate) const;
 		QString generateContainers(QString const &lineTemplate) const;
-		QString generateReferenceProperties(QString const &lineTemplate) const;
 		QString generateConnections(QString const &lineTemplate) const;
 		QString generateUsages(QString const &lineTemplate) const;
 		QString generateFactory(QString const &lineTemplate) const;
@@ -54,7 +51,7 @@ namespace qrmc {
 			QString displayedName;
 		};
 		qReal::Id mId;
-		qrRepo::LogicalRepoApi *mApi;
+		qrRepo::RepoApi *mApi;
 		QMap<QString, Type*> mTypes;
 		QString mDiagramName;
 		QString mDiagramNodeName; // TODO: replace with QStringList for multiple nodeNames
@@ -66,7 +63,6 @@ namespace qrmc {
 		class UsagesGenerator;
 		class ConnectionsGenerator;
 		class ContainersGenerator;
-		class ReferencePropertiesGenerator;
 		class FactoryGenerator;
 		class IsNodeOrEdgeGenerator;
 		class EnumsGenerator;
@@ -78,8 +74,6 @@ namespace qrmc {
 		class MouseGesturesGenerator;
 		class PropertyNamesGenerator;
 		class PropertyDefaultsGenerator;
-		class PropertyDisplayedNamesGenerator;
-		class ParentsMapGenerator;
 		class NodesGenerator;
 		class EdgesGenerator;
 		class ResourceGenerator;

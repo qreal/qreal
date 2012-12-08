@@ -21,11 +21,10 @@ bool Property::init(QDomElement const &element)
 		else
 			return false;
 	} else if (mType == "reference") {
-		if (initReferenceType("reference", element)) {
+		if (initReferenceType("reference", element))
 			mIsReference = true;  // TODO: Lookup reference
-		} else {
+		else
 			return false;
-		}
 	}
 
 	mDisplayedName = element.attribute("displayedName");

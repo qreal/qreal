@@ -66,7 +66,7 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="QPushButton" name="ellipseButton">
+    <widget class="QPushButton" name="ejectedItemButton">
      <property name="maximumSize">
       <size>
        <width>75</width>
@@ -74,7 +74,7 @@
       </size>
      </property>
      <property name="text">
-      <string>Ellipse</string>
+      <string>EjectedItem</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -342,6 +342,12 @@
    </item>
    <item row="5" column="0" colspan="2">
     <widget class="QGroupBox" name="speedBox">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="title">
       <string>Set speed</string>
      </property>

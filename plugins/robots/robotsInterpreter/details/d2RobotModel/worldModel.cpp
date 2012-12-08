@@ -5,7 +5,6 @@
 
 #include "../tracer.h"
 #include "stylusItem.h"
-#include "ellipseItem.h"
 
 using namespace qReal::interpreters::robots::details::d2Model;
 
@@ -55,9 +54,8 @@ QPainterPath WorldModel::sonarScanningRegion(QPoint const &position, qreal direc
 	double const rangeInPixels = range * pixelsInCm;
 
 	QPainterPath rayPath;
-	rayPath.arcTo(QRect(-rangeInPixels, -rangeInPixels
-			, 2 * rangeInPixels, 2 * rangeInPixels)
-			, -rayWidthDegrees, 2 * rayWidthDegrees);
+	rayPath.arcTo(QRect(-rangeInPixels, -rangeInPixels, 2 * rangeInPixels, 2 * rangeInPixels)
+					, -rayWidthDegrees, 2 * rayWidthDegrees);
 	rayPath.closeSubpath();
 	QTransform sensorPositionTransform = QTransform().rotate(direction)
 			.translate(position.x(), position.y());
@@ -73,7 +71,9 @@ bool WorldModel::checkCollision(QPolygonF const &robotRegion) const
 	robotPath = pathStroker.createStroke(robotPath);
 
 	QPainterPath wallPath = buildWallPath();
-	return wallPath.intersects(robotPath);
+	QPainterPath ejectedPath = buildEjectedItemPath();
+	return wallPath.intersects(robotPath)
+		|| ejectedPath.intersects(robotPath);
 }
 
 QList<WallItem *> const &WorldModel::walls() const
@@ -96,10 +96,21 @@ void WorldModel::addColorField(ColorFieldItem* colorField)
 	mColorFields.append(colorField);
 }
 
+QList<EjectedItem *> const &WorldModel::ejectedItems() const
+{
+	return mEjectedItems;
+}
+
+void WorldModel::addEjectedItem(EjectedItem* ejectedItem)
+{
+	mEjectedItems.append(ejectedItem);
+}
+
 void WorldModel::clearScene()
 {
 	mWalls.clear();
 	mColorFields.clear();
+	mEjectedItems.clear();
 }
 
 QPainterPath WorldModel::buildWallPath() const
@@ -114,6 +125,20 @@ QPainterPath WorldModel::buildWallPath() const
 		wallPath.lineTo(wall->end());
 	}
 	return wallPath;
+}
+
+QPainterPath WorldModel::buildEjectedItemPath() const
+{
+	QPainterPathStroker pathStroker;
+	pathStroker.setWidth(3);
+	QPainterPath ejectedItemPath;
+
+	foreach (EjectedItem* ejectedItem, mEjectedItems) {
+		if (ejectedItem->isStoped()) {
+			ejectedItemPath.addRect(ejectedItem->realBoundingRect());
+		}
+	}
+	return ejectedItemPath;
 }
 
 QDomElement WorldModel::serialize(QDomDocument &document, QPoint const &topLeftPicture) const
@@ -134,6 +159,13 @@ QDomElement WorldModel::serialize(QDomDocument &document, QPoint const &topLeftP
 		colorFields.appendChild(colorFiedlNode);
 	}
 
+	QDomElement ejectedItems = document.createElement("ejectedItems");
+	result.appendChild(ejectedItems);
+	foreach (EjectedItem *ejectedItem, mEjectedItems) {
+		QDomElement ejectedItemNode = ejectedItem->serialize(document, topLeftPicture);
+		ejectedItems.appendChild(ejectedItemNode);
+	}
+
 	return result;
 }
 
@@ -144,30 +176,18 @@ void WorldModel::deserialize(QDomElement const &element)
 		return;
 	}
 
-	QDomNodeList allWalls = element.elementsByTagName("walls");
-	for (int i = 0; i < allWalls.count(); ++i) {
-		QDomElement const wallsNode = allWalls.at(i).toElement();
+	QDomNodeList walls = element.elementsByTagName("wall");
+	for (int i = 0; i < walls.count(); ++i) {
+		QDomElement const wallNode = walls.at(i).toElement();
 
-		QDomNodeList walls = wallsNode.elementsByTagName("wall");
-		for (int i = 0; i < walls.count(); ++i) {
-			QDomElement const wallNode = walls.at(i).toElement();
-			WallItem *wall = new WallItem(QPointF(0, 0), QPointF(0, 0));
-			wall->deserialize(wallNode);
-			mWalls.append(wall);
-		}
+		WallItem *wall = new WallItem(QPointF(0, 0), QPointF(0, 0));
+		wall->deserialize(wallNode);
+		mWalls.append(wall);
 	}
 
 	QDomNodeList colorFields = element.elementsByTagName("colorFields");
 	for (int i = 0; i < colorFields.count(); ++i) {
 		QDomElement const colorFieldNode = colorFields.at(i).toElement();
-
-		QDomNodeList ellipses = colorFieldNode.elementsByTagName("ellipse");
-		for (int i = 0; i < ellipses.count(); ++i) {
-			QDomElement const ellipseNode = ellipses.at(i).toElement();
-			EllipseItem* ellipseItem = new EllipseItem(QPointF(0, 0), QPointF(0, 0));
-			ellipseItem->deserialize(ellipseNode);
-			mColorFields.append(ellipseItem);
-		}
 
 		QDomNodeList lines = colorFieldNode.elementsByTagName("line");
 		for (int i = 0; i < lines.count(); ++i) {
@@ -183,6 +203,54 @@ void WorldModel::deserialize(QDomElement const &element)
 			StylusItem *stylusItem = new StylusItem(0, 0);
 			stylusItem->deserialize(stylusNode);
 			mColorFields.append(stylusItem);
+		}
+	}
+
+	QDomNodeList allEjectedItems = element.elementsByTagName("ejectedItems");
+	for (int i = 0; i < allEjectedItems.count(); ++i) {
+		QDomElement const ejectedItemNode = allEjectedItems.at(i).toElement();
+
+		QDomNodeList ejectedItems = ejectedItemNode.elementsByTagName("ejectedItem");
+		for (int i = 0; i < ejectedItems.count(); ++i) {
+			QDomElement const ejectedItemNode = ejectedItems.at(i).toElement();
+			EjectedItem* ejectedItem = new EjectedItem(QPointF(0, 0), QPointF(0, 0));
+			ejectedItem->deserialize(ejectedItemNode);
+			mEjectedItems.append(ejectedItem);
+		}
+	}
+}
+
+bool WorldModel::intersectsByWall(QRectF const &rect)
+{
+	foreach (WallItem *wall, mWalls) {
+		if (wall->realShape().intersects(rect)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool WorldModel::intersectsByStopedEjectedItems(QRectF const &rect) //qwerty_unused temp
+{
+	foreach (EjectedItem *ejectedItem, mEjectedItems) {
+		if (ejectedItem->realBoundingRect() != rect
+			&& ejectedItem->isStoped()
+			&& ejectedItem->realShape().intersects(rect)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void WorldModel::checkEjectedItemsIntersects(QRectF const& itemRect, QPointF const& diffPos)//qwerty_unused temp
+{
+	foreach (EjectedItem *ejected, mEjectedItems) {
+		if (ejected->realBoundingRect() != itemRect
+			&& !ejected->isStoped()
+			&& ejected->realShape().intersects(itemRect)) {
+			ejected->robotOrEjectedItemChangedPosition(true, diffPos);
+		} else {
+			ejected->robotOrEjectedItemChangedPosition(false, diffPos);
 		}
 	}
 }

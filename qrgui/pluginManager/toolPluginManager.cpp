@@ -28,12 +28,9 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 				mLoaders << loader;
 			}
 			else {
-				// TODO: Does not work on linux. See editorManager.cpp for more details.
-				// loader->unload();
 				delete loader;
 			}
 		} else {
-			loader->unload();
 			delete loader;
 		}
 	}
