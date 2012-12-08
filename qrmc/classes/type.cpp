@@ -13,9 +13,11 @@ Type::Type(bool isResolved, Diagram *diagram, qrRepo::LogicalRepoApi *api, const
 
 Type::~Type()
 {
-	foreach (Property *property, mProperties.values())
-		if (property)
+	foreach (Property *property, mProperties.values()) {
+		if (property) {
 			delete property;
+		}
+	}
 }
 
 bool Type::isResolved() const

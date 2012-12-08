@@ -27,6 +27,7 @@ void myMessageOutput(QtMsgType type, const char *msg)
 int main(int argc, char *argv[])
 {
 	qInstallMsgHandler(myMessageOutput);
+	QCoreApplication app(argc, argv);
 
 	if (argc != 2) {
 		qDebug() << "Usage: editorPluginTestFramework fileName.qrs";
