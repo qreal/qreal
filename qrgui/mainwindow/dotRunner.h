@@ -18,7 +18,7 @@ public:
 	explicit DotRunner(Id const &diagramId
 			, models::GraphicalModelAssistApi const &graphicalModelApi
 			, models::LogicalModelAssistApi const &logicalModelApi
-			, EditorManager const &editorManager, QString const &absolutePathToDotFiles);
+			, EditorManagerInterface const *editorManagerProxy, QString const &absolutePathToDotFiles);
 
 	bool run(QString const &algorithm);
 
@@ -36,7 +36,7 @@ private:
 	Id mDiagramId;
 	models::GraphicalModelAssistApi const &mGraphicalModelApi;
 	models::LogicalModelAssistApi const &mLogicalModelApi;
-	EditorManager const &mEditorManager;
+	qReal::EditorManagerInterface const *mEditorManagerInter;
 	QHash <QString, Id> mElementNamesForDOT;
 	QHash <Id, QPair<QPointF, QPair<qreal, qreal> > > mDOTCoordinatesOfElements;
 	QString mAlgorithm;

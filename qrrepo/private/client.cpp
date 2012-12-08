@@ -24,7 +24,6 @@ void Client::init()
 
 Client::~Client()
 {
-	serializer.saveToDisk(mObjects.values());
 	serializer.clearWorkingDir();
 
 	foreach (Id id, mObjects.keys()) {

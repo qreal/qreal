@@ -23,6 +23,7 @@ public:
 	~SdfRenderer();
 
 	bool load (const QString &filename);
+	bool load(QDomDocument &document);
 	void render(QPainter *painter, const QRectF &bounds);
 	void noScale();
 
@@ -87,6 +88,7 @@ class SdfIconEngineV2: public SdfIconEngineV2Interface
 {
 public:
 	SdfIconEngineV2(QString const &file);
+	SdfIconEngineV2(QDomDocument &document);
 	virtual void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state);
 private:
 	SdfRenderer mRenderer;

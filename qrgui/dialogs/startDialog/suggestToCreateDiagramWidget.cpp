@@ -18,10 +18,10 @@ SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *mainWindo
 
 void SuggestToCreateDiagramWidget::addItem(Id const &editor, Id const &diagram)
 {
-	EditorInterface *editorInterface = mMainWindow->manager()->editorInterface(editor.editor());
+	EditorManagerInterface *editorManagerInterface = mMainWindow->manager();
 
-	QString const diagramName = editorInterface->diagramName(diagram.diagram());
-	QString const diagramNodeName = editorInterface->diagramNodeName(diagram.diagram());
+	QString const diagramName = editorManagerInterface->diagramName(editor.editor(), diagram.diagram());
+	QString const diagramNodeName = editorManagerInterface->diagramNodeName(editor.editor(), diagram.diagram());
 
 	if (diagramNodeName.isEmpty()) {
 		return;

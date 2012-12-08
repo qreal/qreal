@@ -1,6 +1,5 @@
 #include "nodeElement.h"
 #include "../view/editorViewScene.h"
-#include "../editorPluginInterface/editorInterface.h"
 
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
@@ -608,14 +607,13 @@ bool NodeElement::initPossibleEdges()
 		return true;
 	}
 
-	EditorInterface const * const editorInterface = mGraphicalAssistApi->editorManager().editorInterface(id().editor());
-	foreach (QString elementName, editorInterface->elements(id().diagram())) {
-		int ne = editorInterface->isNodeOrEdge(elementName);
+	foreach (QString elementName, mGraphicalAssistApi->editorManagerInter()->elements(id().editor(),id().diagram())) {
+		int ne = mGraphicalAssistApi->editorManagerInter()->isNodeOrEdge(id().editor(), elementName);
 		if (ne == -1) {
-			QList<StringPossibleEdge> list = editorInterface->getPossibleEdges(elementName);
+			QList<StringPossibleEdge> list =  mGraphicalAssistApi->editorManagerInter()->getPossibleEdges(id().editor(), elementName);
 			foreach(StringPossibleEdge pEdge, list) {
-				if (editorInterface->isParentOf(id().diagram(), pEdge.first.first, id().diagram(), id().element())
-						|| (editorInterface->isParentOf(id().diagram(), pEdge.first.second, id().diagram(), id().element()) && !pEdge.second.first))
+				if (mGraphicalAssistApi->editorManagerInter()->isParentOf(id().editor(), id().diagram(), pEdge.first.first, id().diagram(), id().element())
+						|| (mGraphicalAssistApi->editorManagerInter()->isParentOf(id().editor(), id().diagram(), pEdge.first.second, id().diagram(), id().element()) && !pEdge.second.first))
 				{
 					PossibleEdge possibleEdge = toPossibleEdge(pEdge);
 					mPossibleEdges.insert(possibleEdge);

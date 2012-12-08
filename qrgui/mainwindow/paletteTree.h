@@ -8,13 +8,12 @@
 #include <QtGui/QToolButton>
 #include <QtGui/QComboBox>
 #include <QtGui/QVBoxLayout>
-#include "../pluginManager/editorManager.h"
+#include "../pluginManager/proxyEditorManager.h"
 #include "../../qrkernel/ids.h"
 #include <QtGui/QLabel>
 
 namespace  qReal{
 namespace gui{
-
 /// Class for representing tree with editors elements.
 class PaletteTree: public QWidget
 {
@@ -48,7 +47,7 @@ public:
 	  @param editor Editor
 	  @param diagram Diagram that corresponds to chosen editor.
 	*/
-	void addEditorElements(EditorManager &editorManager, const Id &editor, const Id &diagram);
+	void addEditorElements(EditorManagerInterface *editorManagerProxy, const Id &editor, const Id &diagram);
 
 	/// Initialize connection editor's combobox with slot that sets active editor.
 	void initDone();
@@ -79,7 +78,7 @@ public:
 	  @param itemsCount Items count in a row.
 	  @param editorManager Editor manager which all editors with elements are taken from.
 	*/
-	void loadPalette(bool isIconsView, int itemsCount, EditorManager &editorManager);
+	void loadPalette(bool isIconsView, int itemsCount, EditorManagerInterface *editorManagerProxy);
 	~PaletteTree();
 signals:
 	void paletteParametersChanged();
@@ -98,42 +97,6 @@ public slots:
 	/// Changes widget representation.
 	void changeRepresentation();
 private:
-
-	/// Class for representing editor elements.
-	class DraggableElement : public QWidget
-	{
-	public:
-			DraggableElement(Id const &id, QString const &name
-					, QString const &description
-					, QIcon const &icon, bool iconsOnly, QWidget *parent = NULL);
-
-			QIcon icon() const
-			{
-				return mIcon;
-			}
-
-			QString text() const
-			{
-				return mText;
-			}
-
-			Id id() const
-			{
-				return mId;
-			}
-
-			void setIconSize(int size);
-
-	private:
-			Id mId;
-			QIcon mIcon;
-			QString mText;
-			QLabel *mLabel;
-			virtual void dragEnterEvent(QDragEnterEvent *event);
-			virtual void dropEvent(QDropEvent *event);
-			virtual void mousePressEvent(QMouseEvent *event);
-	};
-
 	/// Returns maximum count of items in all rows of widget
 	int maxItemsCountInARow() const;
 
@@ -144,7 +107,7 @@ private:
 
 	/// EditorManager instance used to sort palette's content.
 	/// Made static to be used inside idLessThan()
-	static EditorManager *mEditorManager;
+	static EditorManagerInterface *mEditorManagerProxy;
 
 	/// Forbids to make copies of the object.
 	explicit PaletteTree(const PaletteTree &paletteTree);
@@ -182,7 +145,7 @@ private:
 	/** Fills palette tree by editors.
 	  @param editorManager Editor manager which all editors with elements are taken from.
 	*/
-	void loadEditors(EditorManager &editorManager);
+	void loadEditors(EditorManagerInterface *editorManagerProxy);
 
 	/// Hash table with editor ids.
 	QHash<Id, int> mCategories;

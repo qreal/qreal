@@ -10,6 +10,7 @@
 #include "editorViewMVIface.h"
 #include "editorView.h"
 #include "../mainwindow/mainWindow.h"
+#include "../dialogs/propertiesDialog.h"
 
 using namespace qReal;
 
@@ -852,9 +853,9 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 	}
 
 	foreach (Id diagram, connectableDiagrams) {
-		Id diagramType = mMVIface->logicalAssistApi()->editorManager().findElementByType(diagram.element());
-		QString name = mMVIface->logicalAssistApi()->editorManager().friendlyName(diagramType);
-		QString editorName = mMVIface->logicalAssistApi()->editorManager().friendlyName(Id(diagramType.editor()));
+		Id diagramType = mMVIface->logicalAssistApi()->editorManagerInter()->findElementByType(diagram.element());
+		QString name = mMVIface->logicalAssistApi()->editorManagerInter()->friendlyName(diagramType);
+		QString editorName = mMVIface->logicalAssistApi()->editorManagerInter()->friendlyName(Id(diagramType.editor()));
 		QAction *action = addConnectionMenu->addAction("New " + editorName + "/" + name);
 		hasAnyActions = true;
 		connect(action, SIGNAL(triggered()), slot);
@@ -927,6 +928,13 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 		createGoToSubmenu(goToMenu, tr("Backward connection"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId()));
 		createGoToSubmenu(goToMenu, tr("Uses"), mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId()));
 		createGoToSubmenu(goToMenu, tr("Used in"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId()));
+
+		if (mWindow->manager()->isInterpretationMode()) {
+			contextMenu.addSeparator();
+			QAction * const changePropertiesAction = contextMenu.addAction(tr("Change Properties"));
+			connect(changePropertiesAction, SIGNAL(triggered()), SLOT(changePropertiesActionTriggered()));
+			changePropertiesAction->setData(element->id().toVariant());
+		}
 	}
 }
 
@@ -1030,14 +1038,12 @@ void EditorViewScene::getObjectByGesture()
 
 void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &child)
 {
-	EditorInterface const *const editorInterface = mainWindow()->manager()->editorInterface(child.id().editor());
-
 	QList<PossibleEdge> edges = parent->getPossibleEdges();
 	QList<QString> allLinks;
 	foreach (PossibleEdge const &possibleEdge, edges) {
 		if (possibleEdge.first.second.editor() == child.id().editor()
-				&& possibleEdge.first.second.diagram() == child.id().diagram()
-				&& editorInterface->isParentOf(child.id().diagram(), possibleEdge.first.second.element(), child.id().diagram(), child.id().element()))
+			&& possibleEdge.first.second.diagram() == child.id().diagram()
+			&& mainWindow()->manager()->isParentOf(child.id().editor(), child.id().diagram(), possibleEdge.first.second.element(), child.id().diagram(), child.id().element()))
 		{
 			allLinks.push_back(possibleEdge.second.second.toString());
 		}
@@ -1176,7 +1182,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 			} else {
 				IdList diagrams = mMVIface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId());
 				if (!diagrams.isEmpty()) {
-					Id diagramType = mMVIface->logicalAssistApi()->editorManager().findElementByType(diagrams[0].element());
+					Id diagramType = mMVIface->logicalAssistApi()->editorManagerInter()->findElementByType(diagrams[0].element());
 					mMVIface->logicalAssistApi()->createConnected(element->logicalId(), diagramType);
 				}
 			}
@@ -1268,6 +1274,16 @@ void EditorViewScene::deleteUsageActionTriggered()
 	Id source = connection[0].value<Id>();
 	Id destination = connection[1].value<Id>();
 	mMVIface->logicalAssistApi()->deleteUsage(source, destination);
+}
+
+void EditorViewScene::changePropertiesActionTriggered()
+{
+	QAction *action = static_cast<QAction *>(sender());
+	Id id = action->data().value<Id>();
+	PropertiesDialog *propDialog = new PropertiesDialog();
+	propDialog->init(mWindow->manager(), id);
+	propDialog->setModal(true);
+	propDialog->show();
 }
 
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)

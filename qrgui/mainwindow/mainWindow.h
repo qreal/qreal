@@ -9,7 +9,10 @@
 #include <QtGui/QListWidget>
 #include <QtSql/QSqlDatabase>
 
+#include "../pluginManager/editorManagerInterface.h"
 #include "../pluginManager/editorManager.h"
+#include "../pluginManager/interpreterEditorManager.h"
+#include "../pluginManager/proxyEditorManager.h"
 #include "../pluginManager/toolPluginManager.h"
 #include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
@@ -23,6 +26,7 @@
 #include "helpBrowser.h"
 
 #include "../models/logicalModelAssistApi.h"
+#include "../dialogs/suggestToCreateDiagramDialog.h"
 
 #include "../../qrgui/dialogs/findReplaceDialog.h"
 #include "findManager.h"
@@ -59,7 +63,7 @@ public:
 	MainWindow();
 	~MainWindow();
 
-	EditorManager *manager();
+	EditorManagerInterface* manager();
 	EditorView *getCurrentTab();
 	ListenerManager *listenerManager();
 	models::Models *models();
@@ -110,6 +114,8 @@ public:
 
 	virtual void reportOperation(invocation::LongOperation *operation);
 
+	ProxyEditorManager *proxyManager();
+	void loadMetamodel();
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -298,7 +304,7 @@ private:
 	QMap<EditorView*, CodeArea*> *mCodeTabManager;
 
 	models::Models *mModels;
-	EditorManager mEditorManager;
+	ProxyEditorManager *mEditorManagerProxy;
 	ToolPluginManager mToolManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;

@@ -20,7 +20,6 @@
 
 #include "errorReporter.h"
 
-#include "../editorPluginInterface/editorInterface.h"
 #include "shapeEdit/shapeEdit.h"
 #include "propertyEditorProxyModel.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
@@ -51,9 +50,9 @@ MainWindow::MainWindow()
 		: mUi(new Ui::MainWindowUi)
 		, mCodeTabManager(new QMap<EditorView*, CodeArea*>())
 		, mModels(NULL)
-		, mEditorManager()
+		, mEditorManagerProxy(new ProxyEditorManager(new EditorManager()))
 		, mListenerManager(NULL)
-		, mPropertyModel(mEditorManager)
+		, mPropertyModel(mEditorManagerProxy)
 		, mGesturesWidget(NULL)
 		, mRootIndex(QModelIndex())
 		, mErrorReporter(NULL)
@@ -72,6 +71,7 @@ MainWindow::MainWindow()
 	registerMetaTypes();
 
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
+	splashScreen.setVisible(false);
 	splashScreen.setProgress(5);
 
 	initRecentProjectsMenu();
@@ -86,6 +86,7 @@ MainWindow::MainWindow()
 	splashScreen.setProgress(40);
 
 	initDocks();
+	mModels = new models::Models("", mEditorManagerProxy);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
@@ -119,7 +120,7 @@ MainWindow::MainWindow()
 	}
 	splashScreen.close();
 
-	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManager);
+	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy);
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi()
 			, this, mFindReplaceDialog);
@@ -128,6 +129,7 @@ MainWindow::MainWindow()
 	connectActions();
 	initExplorers();
 
+	mStartDialog->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
 	mStartDialog->exec();
 }
 
@@ -252,9 +254,9 @@ MainWindow::~MainWindow()
 	delete mStartDialog;
 }
 
-EditorManager *MainWindow::manager()
+EditorManagerInterface* MainWindow::manager()
 {
-	return &mEditorManager;
+	return mEditorManagerProxy;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -278,7 +280,12 @@ void MainWindow::loadPlugins()
 {
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
 			, SettingsManager::value("PaletteIconsInARowCount").toInt()
-			, mEditorManager);
+			, mEditorManagerProxy);
+}
+
+void MainWindow::loadMetamodel()
+{
+	loadPlugins();
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -493,7 +500,7 @@ void MainWindow::makeSvg()
 
 void MainWindow::settingsPlugins()
 {
-	PluginDialog dialog(mEditorManager , this);
+	PluginDialog dialog(mEditorManagerProxy, this);
 	dialog.exec();
 }
 
@@ -771,10 +778,10 @@ void MainWindow::parseJavaLibraries()
 
 bool MainWindow::unloadPlugin(QString const &pluginName)
 {
-	if (mEditorManager.editors().contains(Id(pluginName))) {
-		IdList const diagrams = mEditorManager.diagrams(Id(pluginName));
+	if (mEditorManagerProxy->editors().contains(Id(pluginName))) {
+		IdList const diagrams = mEditorManagerProxy->diagrams(Id(pluginName));
 
-		if (!mEditorManager.unloadPlugin(pluginName)) {
+		if (!mEditorManagerProxy->unloadPlugin(pluginName)) {
 			return false;
 		}
 		foreach (Id const &diagram, diagrams) {
@@ -786,12 +793,12 @@ bool MainWindow::unloadPlugin(QString const &pluginName)
 
 bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 {
-	if (!mEditorManager.loadPlugin(fileName)) {
+	if (!mEditorManagerProxy->loadPlugin(fileName)) {
 		return false;
 	}
 
-	foreach (Id const &diagram, mEditorManager.diagrams(Id(pluginName))) {
-		mUi->paletteTree->addEditorElements(mEditorManager, Id(pluginName), diagram);
+	foreach (Id const &diagram, mEditorManagerProxy->diagrams(Id(pluginName))) {
+		mUi->paletteTree->addEditorElements(mEditorManagerProxy, Id(pluginName), diagram);
 	}
 	mUi->paletteTree->initDone();
 	return true;
@@ -799,7 +806,7 @@ bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 
 bool MainWindow::pluginLoaded(QString const &pluginName)
 {
-	return mEditorManager.editors().contains(Id(pluginName));
+	return mEditorManagerProxy->editors().contains(Id(pluginName));
 }
 
 EditorView * MainWindow::getCurrentTab()
@@ -966,7 +973,7 @@ void MainWindow::setConnectActionZoomTo(QWidget* widget)
 
 void MainWindow::centerOn(Id const &id)
 {
-	if (mEditorManager.isDiagramNode(id)) {
+	if (mEditorManagerProxy->isDiagramNode(id)) {
 		return;
 	}
 
@@ -1049,7 +1056,7 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 		foreach (const QString &name, mUi->paletteTree->editorsNames()) {
 			Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
 			Id const diagramId = Id(id.editor(), id.diagram());
-			QString const diagramName = mEditorManager.friendlyName(diagramId);
+			QString const diagramName = mEditorManagerProxy->friendlyName(diagramId);
 			if (diagramName == name) {
 				mUi->paletteTree->setComboBoxIndex(i);
 				break;
@@ -1304,6 +1311,11 @@ void MainWindow::showGestures()
 GesturesPainterInterface * MainWindow::gesturesPainter()
 {
 	return mGesturesWidget;
+}
+
+ProxyEditorManager *MainWindow::proxyManager()
+{
+	return mEditorManagerProxy;
 }
 
 void MainWindow::createDiagram(QString const &idString)
@@ -1749,7 +1761,7 @@ void MainWindow::arrangeElementsByDotRunner(const QString &algorithm, const QStr
 	Id const diagramId = activeDiagram();
 	DotRunner *runner = new DotRunner(diagramId
 			, mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi()
-			, mEditorManager, absolutePathToDotFiles);
+			, mEditorManagerProxy, absolutePathToDotFiles);
 	if (runner->run(algorithm)) {
 		updateActiveDiagram();
 	}

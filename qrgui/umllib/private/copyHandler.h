@@ -5,7 +5,12 @@
 #pragma once
 
 class NodeElement;
-class qReal::models::GraphicalModelAssistApi;
+
+namespace qReal {
+namespace models {
+class GraphicalModelAssistApi;
+}
+}
 
 class CopyHandler {
 public:
@@ -49,7 +54,7 @@ private:
 
 	/// Node that is actually dealt with.
 	NodeElement * const mNode;
-	
+
 	/// GraphicalModelAssistApi that used to creating new NodeElement.
 	qReal::models::GraphicalModelAssistApi * const mGraphicalAssistApi;
 };

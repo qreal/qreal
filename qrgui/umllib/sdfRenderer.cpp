@@ -32,6 +32,7 @@ SdfRenderer::~SdfRenderer()
 bool SdfRenderer::load(const QString &filename)
 {
 	QFile file(filename);
+
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 		return false;
 
@@ -43,6 +44,16 @@ bool SdfRenderer::load(const QString &filename)
 	file.close();
 
 	QDomElement docElem = doc.documentElement();
+	first_size_x = docElem.attribute("sizex").toInt();
+	first_size_y = docElem.attribute("sizey").toInt();
+
+	return true;
+}
+
+bool SdfRenderer::load(QDomDocument &document)
+{
+	doc = document;
+	QDomElement docElem = doc.firstChildElement("picture");
 	first_size_x = docElem.attribute("sizex").toInt();
 	first_size_y = docElem.attribute("sizey").toInt();
 
@@ -702,6 +713,12 @@ void SdfRenderer::noScale()
 SdfIconEngineV2::SdfIconEngineV2(QString const &file)
 {
 	mRenderer.load(file);
+	mRenderer.noScale();
+}
+
+SdfIconEngineV2::SdfIconEngineV2(QDomDocument &document)
+{
+	mRenderer.load(document);
 	mRenderer.noScale();
 }
 

@@ -13,11 +13,12 @@
 #include "../../qrrepo/graphicalRepoApi.h"
 #include "../../qrrepo/logicalRepoApi.h"
 #include "../../qrkernel/settingsManager.h"
+#include "editorManagerInterface.h"
 
 class Element;
 
 namespace qReal {
-	class EditorManager : public QObject
+	class EditorManager : public QObject, public EditorManagerInterface
 	{
 		Q_OBJECT
 
@@ -66,13 +67,25 @@ namespace qReal {
 		Id findElementByType(QString const &type) const;
 		QList<ListenerInterface *> listeners() const;
 
-		EditorInterface* editorInterface(QString const &editor) const;
-
 		bool isDiagramNode(Id const &id) const;
 
 		bool isParentOf(Id const &child, Id const &parent) const;
 		bool isGraphicalElementNode(const Id &id) const;
 
+
+		//new methods:
+		QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &editor, QString const &element) const;
+		QStringList elements(QString const &editor, QString const &diagram) const;
+		int isNodeOrEdge(QString const &editor, QString const &element) const;
+		bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const;
+		QString diagramName(QString const &editor, QString const &diagram) const;
+		QString diagramNodeName(QString const &editor, QString const &diagram) const;
+		bool isInterpretationMode() const;
+		bool isParentProperty(Id const &id, QString const &propertyName) const;
+		void deleteProperty(QString const &propDisplayedName) const;
+		void addProperty(Id const &id, QString const &propDisplayedName) const;
+		void updateProperties(Id const &id, QString const &property, QString const &propertyType, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const;
+		QString getPropertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const;
 	private:
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;
@@ -82,6 +95,7 @@ namespace qReal {
 		QDir mPluginsDir;
 		QStringList mPluginFileNames;
 
+		EditorInterface* editorInterface(QString const &editor) const;
 		void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
 
 		bool isParentOf(EditorInterface const *plugin, QString const &childDiagram, QString const &child, QString const &parentDiagram, QString const &parent) const;
