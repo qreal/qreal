@@ -20,6 +20,7 @@ private:
 	static void createNewFolders();
 	static QString normalizedName(QString const &fileName);
 	static void createFolder(QString const &path);
+	static void deleteOldBinaries(QString const &directory);
 
 	void launchQrmc(QString const &fileName, QString const &pathToQrmc);
 	void compilePlugin(QString const &directoryToCodeToCompile);

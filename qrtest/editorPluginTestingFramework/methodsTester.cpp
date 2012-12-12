@@ -483,6 +483,9 @@ void MethodsTester::testMethod(StringGenerator const &stringGenerator)
 
 	if (qrmcResult == qrxcResult) {
 		qDebug() << "Results are the same";
+		if (containsOnly(qrmcResult, ' ') || (qrmcResult.isEmpty())) {
+			qDebug() << "THIS METHOD HAS TO BE VERIFIED SOMEHOW!";
+		}
 	} else {
 		qDebug() << "Results are not the same";
 		qDebug() << "For qrmc: " << qrmcResult;
@@ -491,6 +494,20 @@ void MethodsTester::testMethod(StringGenerator const &stringGenerator)
 
 	qDebug() << "\n";
 }
+
+bool MethodsTester::containsOnly(QString const &string, QChar const &symbol)
+{
+	bool containsOnlyThisSymbol = true;
+
+	for (int i = 0; i < string.length(); i++) {
+		if (string[i] != symbol) {
+				containsOnlyThisSymbol = false;
+		}
+	}
+
+	return containsOnlyThisSymbol;
+}
+
 
 void MethodsTester::testMethods()
 {

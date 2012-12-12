@@ -27,7 +27,7 @@ HEADERS += \
 	../../qrgui/mainwindow/errorReporter.h \
 	../../qrgui/mainwindow/error.h \
 	../../plugins/metaEditor/metaEditorSupport/editorGenerator.h \
-    defs.h
+	defs.h
 
 SOURCES += \
 	mainClass.cpp \

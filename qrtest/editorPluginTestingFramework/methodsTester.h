@@ -51,6 +51,8 @@ private:
 
 	void testMethod(StringGenerator const &stringGenerator);
 
+	static bool containsOnly(QString const &string, QChar const &symbol);
+
 	qReal::EditorInterface* mQrmcGeneratedPlugin;
 	qReal::EditorInterface* mQrxcGeneratedPlugin;
 };

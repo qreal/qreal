@@ -55,6 +55,25 @@ QString MainClass::normalizedName(QString const &fileName)
 	return normalizedName;
 }
 
+void MainClass::deleteOldBinaries(QString const &directory)
+{
+	qDebug() << directory;
+	QDir dir(directory);
+	if (!dir.exists()) {
+		return;
+	}
+
+	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+		if (fileInfo.isDir()) {
+			deleteOldBinaries(fileInfo.filePath());
+			dir.rmdir(fileInfo.fileName());
+		} else {
+			dir.remove(fileInfo.fileName());
+		}
+	}
+}
+
+
 void MainClass::launchQrmc(QString const &fileName, QString const &pathToQrmc)
 {
 	mQrmcLauncher.launchQrmc(fileName, pathToQrmc);
