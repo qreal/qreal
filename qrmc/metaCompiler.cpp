@@ -58,8 +58,10 @@ bool MetaCompiler::compile(QString const &targetMetamodel
 		if (editorId.element() == metamodelDiagram) {
 			if (!mTargetMetamodel.isEmpty() && mApi->name(editorId) != mTargetMetamodel)
 				continue;
-			mPluginName = NameNormalizer::normalize(mApi->property(editorId, nameOfTheDirectory)
-											.toString().section("/", -1));
+			//mPluginName = NameNormalizer::normalize(mApi->property(editorId, nameOfTheDirectory)
+			//								.toString().section("/", -1));
+			mPluginName = NameNormalizer::normalize(mApi->property(editorId, "name")
+					.toString().section("/", -1));
 			if (!loadMetaModel(editorId, generatedCodeDir)) {
 				return false;
 			}

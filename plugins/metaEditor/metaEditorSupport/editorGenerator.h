@@ -21,8 +21,7 @@ public:
 	QPair<QString, QString> generateEditor(qReal::Id const &metamodelId
 			, QString const &pathToFile
 			, QString const &pathToQRealSource
-			, QString const &destDir = ""
-			, QString const &nameOfXmlToGenerate = "");
+			, QString const &destDir = "");
 
 private:
 	void serializeObjects(QDomElement &parent, qReal::Id const &idParent);

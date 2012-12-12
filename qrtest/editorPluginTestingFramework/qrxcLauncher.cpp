@@ -40,7 +40,6 @@ void QrxcLauncher::launchQrxc(QString const &fileName)
 		QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key
 				, pathToQrxcGeneratedCode
 				, pathToQRealRootFromQrxc
-				, directoryToGeneratedCode
-				, fileName);
+				, directoryToGeneratedCode);
 	}
 }

@@ -9,6 +9,7 @@ using namespace editorPluginTestingFramework;
 
 MainClass::MainClass(QString const &fileName, QString const &pathToQrmc)
 {
+	deleteOldBinaries(binariesDir);
 	createNewFolders();
 	QString const normalizedFileName = normalizedName(fileName);
 
@@ -57,7 +58,6 @@ QString MainClass::normalizedName(QString const &fileName)
 
 void MainClass::deleteOldBinaries(QString const &directory)
 {
-	qDebug() << directory;
 	QDir dir(directory);
 	if (!dir.exists()) {
 		return;

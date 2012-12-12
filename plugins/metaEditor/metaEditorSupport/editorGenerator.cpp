@@ -50,8 +50,7 @@ QHash<Id, QString > EditorGenerator::getMetamodelList()
 QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
 		, QString const &pathToFile
 		, QString const &pathToQRealSource
-		, QString const &destDir
-		, QString const &nameOfXmlToGenerate)
+		, QString const &destDir)
 {
 	mErrorReporter.clear();
 	mErrorReporter.clearErrors();
@@ -79,12 +78,7 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
 
 	createDiagrams(metamodel, metamodelId);
 
-	QString fileBaseName = "";
-	if (nameOfXmlToGenerate.isEmpty()) {
-		fileBaseName = NameNormalizer::normalize(mApi.name(metamodelId), false);
-	} else {
-		fileBaseName = nameOfXmlToGenerate;
-	} // very sad
+	QString const fileBaseName = NameNormalizer::normalize(mApi.name(metamodelId), false);
 
 	QRegExp patten;
 	patten.setPattern("[A-Za-z]+([A-Za-z0-9]*)");

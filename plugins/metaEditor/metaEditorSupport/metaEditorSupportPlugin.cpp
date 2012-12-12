@@ -134,7 +134,7 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 		if (objectType == "MetamodelDiagram" && mLogicalRepoApi->isLogicalElement(key)) {
 			QString nameOfTheDirectory = mLogicalRepoApi->stringProperty(key, "name of the directory");
 			QString nameOfMetamodel = mLogicalRepoApi->stringProperty(key, "name");
-			QString nameOfPlugin = nameOfTheDirectory.split("/").last();
+			QString nameOfPlugin = nameOfMetamodel.split("/").last();
 
 			if (QMessageBox::question(mMainWindowInterface->windowWidget()
 					, tr("loading..")

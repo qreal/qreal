@@ -17,7 +17,7 @@ Editor::Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, qReal::I
 		, mLoadingComplete(false)
 		, mGeneratedCodeDir(generatedCodeDir)
 {
-	mName = mApi->property(mId, nameOfTheDirectory).toString().section("/", -1);
+	mName = mApi->property(mId, "name").toString().section("/", -1);
 	//mName = mName.section("_", 0, 0) + "Plugin";
 }
 
