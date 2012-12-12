@@ -41,6 +41,12 @@ QString NonGraphicType::generatePropertyDisplayedNames(QString const &lineTempla
 	return "";
 }
 
+QString NonGraphicType::generateDescriptions(QString const &lineTemplate) const
+{
+	Q_UNUSED(lineTemplate)
+	return "";
+}
+
 QString NonGraphicType::generateReferenceProperties(const QString &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate);

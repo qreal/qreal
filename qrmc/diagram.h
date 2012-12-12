@@ -28,6 +28,7 @@ namespace qrmc {
 		QString generateNamesMap(QString const &lineTemplate) const;
 		QString generateMouseGesturesMap(QString const &lineTemplate) const;
 		QString generatePropertiesMap(QString const &lineTemplate) const;
+		QString generateDescriptionsMap(QString const &lineTemplate) const;
 		QString generatePropertyDefaultsMap(QString const &lineTemplate) const;
 		QString generatePropertyDisplayedNamesMap(QString const &lineTemplate) const;
 		QString generateParentsMap(QString const &lineTemplate) const;
@@ -78,6 +79,7 @@ namespace qrmc {
 		class NamesGenerator;
 		class MouseGesturesGenerator;
 		class PropertyNamesGenerator;
+		class DescriptionsGenerator;
 		class PropertyDefaultsGenerator;
 		class PropertyDisplayedNamesGenerator;
 		class ParentsMapGenerator;

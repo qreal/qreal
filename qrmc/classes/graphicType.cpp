@@ -192,9 +192,6 @@ bool GraphicType::resolve()
 
 	mResolvingFinished = true;
 	return true;
-
-
-	return true;
 }
 
 bool GraphicType::isResolving() const
@@ -269,6 +266,21 @@ QString GraphicType::generatePropertyDisplayedNames(const QString &lineTemplate)
 		}
 	}
 	return displayedNamesString;
+}
+
+QString GraphicType::generateDescriptions(QString const &lineTemplate) const
+{
+
+	if (mApi->hasProperty(mId, "description")) {
+		QString descriptionLine = lineTemplate;
+		QString const description = mApi->stringProperty(mId, "description");
+
+		descriptionLine.replace(elementNameTag, name())
+				.replace(diagramNameTag, mContext)
+				.replace(descriptionTag, description);
+		return descriptionLine;
+	}
+	return "";
 }
 
 QString GraphicType::generateReferenceProperties(const QString &lineTemplate) const

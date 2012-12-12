@@ -17,7 +17,7 @@ SUBDIRS	= \
 	sbt/sbt.pro \
 #	testEditor/testEditor.pro \
 #	testInvocation/testInvocation.pro \
-#	ubiq/ubiq.pro \
+	ubiq/ubiq.pro \
 #	umlActivityDiagram/umlActivityDiagram.pro \
 #	umlClassDiagram/umlClassDiagram.pro \
 #	umlCommunicationDiagram/umlCommunicationDiagram.pro \

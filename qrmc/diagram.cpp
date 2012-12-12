@@ -165,6 +165,13 @@ public:
 	}
 };
 
+class Diagram::DescriptionsGenerator: public Diagram::MapMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const {
+		return type->generateDescriptions(lineTemplate);
+	}
+};
+
 class Diagram::PropertyDefaultsGenerator: public Diagram::MapMethodGenerator {
 public:
 	virtual QString generate(Type *type, QString const &lineTemplate) const {
@@ -231,6 +238,11 @@ QString Diagram::generateMouseGesturesMap(const QString &lineTemplate) const
 QString Diagram::generatePropertiesMap(const QString &lineTemplate) const
 {
 	return generateMapMethod(lineTemplate, PropertyNamesGenerator());
+}
+
+QString Diagram::generateDescriptionsMap(QString const &lineTemplate) const
+{
+	return generateMapMethod(lineTemplate, DescriptionsGenerator());
 }
 
 QString Diagram::generatePropertyDefaultsMap(const QString &lineTemplate) const

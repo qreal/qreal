@@ -17,6 +17,7 @@ void @@MetamodelName@@Plugin::initPlugin()
 	initPropertyMap();
 	initPropertyDefaultsMap();
 	initParentsMap();
+	initDescriptionMap();
 }
 
 void @@MetamodelName@@Plugin::initNameMap()
@@ -45,6 +46,11 @@ void @@MetamodelName@@Plugin::initPropertyDefaultsMap()
 void @@MetamodelName@@Plugin::initParentsMap()
 {
 @@InitParentsMapLine@@
+}
+
+void @@MetamodelName@@Plugin::initDescriptionMap()
+{
+@@InitDescriptionMapLine@@
 }
 
 QStringList @@MetamodelName@@Plugin::diagrams() const

@@ -21,6 +21,7 @@ public:
 	virtual void initPropertyMap();
 	virtual void initPropertyDefaultsMap();
 	virtual void initParentsMap();
+	virtual void initDescriptionMap();
 
 	virtual QString id() const { return "@@MetamodelName@@"; }
 

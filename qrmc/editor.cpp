@@ -251,6 +251,7 @@ bool Editor::generatePluginSource()
 	generatePropertyDisplayedNamesMap();
 	generateMouseGesturesMap();
 	generatePropertiesMap();
+	generateDescriptionsMap();
 	generatePropertyDefaultsMap();
 	generateElementsFactory();
 	generateContainers();
@@ -439,6 +440,13 @@ public:
 	}
 };
 
+class Editor::DescriptionsGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+		return diagram->generateDescriptionsMap(lineTemplate);
+	}
+};
+
 class Editor::PropertyDefaultsGenerator: public Editor::MethodGenerator {
 public:
 	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
@@ -544,6 +552,11 @@ void Editor::generateMouseGesturesMap()
 void Editor::generatePropertiesMap()
 {
 	generatePluginMethod(initPropertyTypesMapLineTag, PropertiesGenerator());
+}
+
+void Editor::generateDescriptionsMap()
+{
+	generatePluginMethod(initDescriptionsMapLineTag, DescriptionsGenerator());
 }
 
 void Editor::generatePropertyDefaultsMap()
