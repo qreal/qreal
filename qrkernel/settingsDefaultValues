@@ -47,3 +47,5 @@ warningWindow=true
 windowsButton=false
 workingDir=./save
 zoomFactor=2
+oldLineColor=magenta
+PaintOldEdgeMode=true

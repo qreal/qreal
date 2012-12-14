@@ -353,47 +353,47 @@
         <translation>Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="921"/>
+        <location filename="view/editorViewScene.cpp" line="920"/>
         <source>Add connection</source>
         <translation>Добавить провязку</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="928"/>
+        <location filename="view/editorViewScene.cpp" line="927"/>
         <source>Disconnect</source>
         <translation>Убрать провязку</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="934"/>
+        <location filename="view/editorViewScene.cpp" line="933"/>
         <source>Add usage</source>
         <translation>Добавить использование</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="941"/>
+        <location filename="view/editorViewScene.cpp" line="940"/>
         <source>Delete usage</source>
         <translation>Убрать использование</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="947"/>
+        <location filename="view/editorViewScene.cpp" line="946"/>
         <source>Go to</source>
         <translation>Перейти</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="949"/>
+        <location filename="view/editorViewScene.cpp" line="948"/>
         <source>Forward connection</source>
         <translation>По провязке вперёд</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="950"/>
+        <location filename="view/editorViewScene.cpp" line="949"/>
         <source>Backward connection</source>
         <translation>По провязке назад</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="951"/>
+        <location filename="view/editorViewScene.cpp" line="950"/>
         <source>Uses</source>
         <translation>Использует</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="952"/>
+        <location filename="view/editorViewScene.cpp" line="951"/>
         <source>Used in</source>
         <translation>Используется в</translation>
     </message>
@@ -1661,12 +1661,12 @@
 <context>
     <name>PreferencesMiscellaniousPage</name>
     <message>
-        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="111"/>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="154"/>
         <source>Browse</source>
         <translation>Выбрать</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="92"/>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="138"/>
         <source>Images</source>
         <translation>Изображения</translation>
     </message>
@@ -1674,6 +1674,17 @@
         <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="82"/>
         <source>Show splashscreen</source>
         <translation>Показывать сплешскрин</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="92"/>
+        <source>Paint the old line</source>
+        <oldsource>Paint the old line mode</oldsource>
+        <translation>Рисовать старую линию</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="112"/>
+        <source>Color of old line:</source>
+        <translation>Цвет старой линии:</translation>
     </message>
     <message>
         <source>Chaotic Edition</source>
@@ -3174,17 +3185,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1723"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1707"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1752"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1736"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1752"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1736"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3205,7 +3216,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1350"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1334"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>

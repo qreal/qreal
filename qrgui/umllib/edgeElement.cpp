@@ -202,23 +202,27 @@ void EdgeElement::setEdgePainter(QPainter *painter, QPen pen, qreal opacity) con
 
 void EdgeElement::paintSavedEdge(QPainter *painter) const
 {
-	if (!(mSavedLineForSquarize.size() < 2 || !SettingsManager::value("SquareLine").toBool() || mSavesDragPointForSquarize == -1)) {
+	if (!SettingsManager::value("PaintOldEdgeMode").toBool()) {
+		return;
+	}
+	QColor color = QColor(SettingsManager::value("oldLineColor").toString());
+	if (!(mSavedLineForChanges.size() < 2) && mLeftButtonIsPressed) {
 		painter->save();
-		setEdgePainter(painter, edgePen(painter, QColor(Qt::magenta), Qt::DashDotLine, mPenWidth), 0.5);
-		painter->drawPolyline(mSavedLineForSquarize);
+		setEdgePainter(painter, edgePen(painter, color, Qt::DashDotLine, mPenWidth), 0.5);
+		painter->drawPolyline(mSavedLineForChanges);
 		painter->restore();
 
 		painter->save();
-		painter->translate(mSavedLineForSquarize[0]);
-		painter->rotate(90 - lineAngle(QLineF(mSavedLineForSquarize[1], mSavedLineForSquarize[0])));
-		setEdgePainter(painter, edgePen(painter, QColor(Qt::magenta), Qt::DashDotLine, 3), 0.5);
+		painter->translate(mSavedLineForChanges[0]);
+		painter->rotate(90 - lineAngle(QLineF(mSavedLineForChanges[1], mSavedLineForChanges[0])));
+		setEdgePainter(painter, edgePen(painter, color, Qt::SolidLine, 3), 0.5);
 		drawStartArrow(painter);
 		painter->restore();
 
 		painter->save();
-		painter->translate(mSavedLineForSquarize[mSavedLineForSquarize.size() - 1]);
-		painter->rotate(90 - lineAngle(QLineF(mSavedLineForSquarize[mSavedLineForSquarize.size() - 2], mSavedLineForSquarize[mSavedLineForSquarize.size() - 1])));
-		setEdgePainter(painter, edgePen(painter, QColor(Qt::magenta), Qt::DashDotLine, 3), 0.5);
+		painter->translate(mSavedLineForChanges[mSavedLineForChanges.size() - 1]);
+		painter->rotate(90 - lineAngle(QLineF(mSavedLineForChanges[mSavedLineForChanges.size() - 2], mSavedLineForChanges[mSavedLineForChanges.size() - 1])));
+		setEdgePainter(painter, edgePen(painter, color, Qt::SolidLine, 3), 0.5);
 		drawEndArrow(painter);
 		painter->restore();
 	}
@@ -488,9 +492,6 @@ bool EdgeElement::initPossibleEdges()
 
 void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (mSavedLineForSquarize.size() >= 2 && SettingsManager::value("SquareLine").toBool()) {
-		scene()->update();
-	}
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		if (mDragPoint == noDrag) {
@@ -798,6 +799,12 @@ QList<ContextMenuAction*> EdgeElement::contextMenuActions(const QPointF &pos)
 		result.push_back(&mReverseAction);
 	}
 	if (changeSquarizeTypeActionIsPossible()) {
+		if (!mIsVerticalChanging) {
+			mChangeSquarizeTypeAction.setIcon(QIcon(":/top-bottom"));
+		} else {
+			mChangeSquarizeTypeAction.setIcon(QIcon(":/left-right"));
+		}
+		mChangeSquarizeTypeAction.setIconVisibleInMenu(true);
 		result.push_back(&mChangeSquarizeTypeAction);
 	}
 	return result;
@@ -1395,8 +1402,8 @@ void EdgeElement::correctInception()
 		if (middle.x() < mLine.first().x()) {
 			dirLocation = -1;
 		}
-		if (abs(middle.x() - mLine.first().x()) > 2 * rad) {
-			middle.setX(dirLocation * 2 * rad + mLine.first().x());
+		if (abs(middle.x() - mLine.first().x()) > (rad + mSrc->contentsRect().width() / 2)) {
+			middle.setX(dirLocation * (rad + mSrc->contentsRect().width() / 2) + mLine.first().x());
 		}
 
 		qreal shiftY = (abs(direct) == 3) ? rad + abs(mLine[1].y() - mLine.first().y()) : rad;
@@ -1423,8 +1430,8 @@ void EdgeElement::correctInception()
 		if (middle.y() < mLine.first().y()) {
 			dirLocation = -1;
 		}
-		if (abs(middle.y() - mLine.first().y()) > 2 * rad) {
-			middle.setY(dirLocation * 2 * rad + mLine.first().y());
+		if (abs(middle.y() - mLine.first().y()) > (rad + mSrc->contentsRect().height() / 2)) {
+			middle.setY(dirLocation * (rad + mSrc->contentsRect().height() / 2) + mLine.first().y());
 		}
 
 		qreal shiftX = (abs(direct) == 4) ? rad + abs(mLine[1].y() - mLine.first().y()) : rad;
@@ -1541,8 +1548,8 @@ void EdgeElement::correctArrow()
 		if (middle.x() < mLine.last().x()) {
 			dirLocation = -1;
 		}
-		if (abs(middle.x() - mLine.last().x()) > 4 * rad) {
-			middle.setX(dirLocation * 2 * rad + mLine.last().x());
+		if (abs(middle.x() - mLine.last().x()) > (rad + mDst->contentsRect().width() / 2)) {
+			middle.setX(dirLocation * (rad + mDst->contentsRect().width() / 2) + mLine.last().x());
 		}
 		if ((abs(direct) == 1) && lengthOfSegment(mLine[mLine.size() - 1], mLine[mLine.size() - 2]) > kvadratik * 1.5) {
 			return;
@@ -1568,8 +1575,8 @@ void EdgeElement::correctArrow()
 		if (middle.y() < mLine.last().y()) {
 			dirLocation = -1;
 		}
-		if (abs(middle.y() - mLine.last().y()) > 4 * rad) {
-			middle.setY(dirLocation * 2 * rad + mLine.last().y());
+		if (abs(middle.y() - mLine.last().y()) > (rad + mDst->contentsRect().height() / 2)) {
+			middle.setY(dirLocation * (rad + mDst->contentsRect().height() / 2) + mLine.last().y());
 		}
 		if ((abs(direct) == 2) && lengthOfSegment(mLine[mLine.size() - 1], mLine[mLine.size() - 2]) > kvadratik * 1.5) {
 			return;
