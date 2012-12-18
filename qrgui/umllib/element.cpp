@@ -42,7 +42,7 @@ void Element::updateData()
 	setToolTip(mGraphicalAssistApi->toolTip(id()));
 }
 
-QList<ContextMenuAction*> Element::contextMenuActions()
+QList<ContextMenuAction*> Element::contextMenuActions(const QPointF &pos)
 {
 	return QList<ContextMenuAction*>();
 }

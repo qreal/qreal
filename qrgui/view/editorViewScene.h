@@ -8,9 +8,6 @@
 #include "gestures/mouseMovementManager.h"
 
 #include "editorViewMVIface.h"
-//#include "editorView.h"
-//#include "../mainwindow/mainWindow.h"
-
 
 //const int indexGrid = 30; // distance between two lines in the grid
 const int arrowMoveOffset = 5;
@@ -70,6 +67,10 @@ public:
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
 	void insertNodeIntoEdge(const qReal::Id &insertedNodeId, const qReal::Id &newParent, bool isFromLogicalModel,QPointF const &scenePos);
+	void itemSelectUpdate();
+
+	/// update (for a beauty) all edges when tab is opening
+	void updateEdgesViaNodes();
 
 public slots:
 	qReal::Id createElement(const QString &type);
@@ -79,6 +80,9 @@ public slots:
 
 	/// selects all elements on the current scene
 	void selectAll();
+
+	/// update all links
+	void updateEdgeElements();
 
 	void cropToItems();
 
@@ -118,6 +122,8 @@ private slots:
 
 	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
 	void getObjectByGesture();
+	/// Updates repository after the move. Controled by the timer.
+	void updateMovedElements();
 
 private:
 	void getLinkByGesture(NodeElement *parent, NodeElement const &child);
@@ -188,6 +194,7 @@ private:
 	Element *mLastCreatedWithEdge;
 
 	bool mRightButtonPressed;
+	bool mLeftButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
 
 	qreal mWidthOfGrid;
@@ -220,6 +227,11 @@ private:
 	QSet<Element *> mHighlightedElements;
 	QTimer *mTimer;
 
+	/** @brief timer for update moved elements without lags */
+	QTimer *mTimerForArrowButtons;
+	/** @brief shift of the move */
+	QPointF mOffset;
+
 	/** @brief Is "true" when we just select items on scene, and "false" when we drag selected items */
 	bool mShouldReparentItems;
 
@@ -227,4 +239,9 @@ private:
 	QGraphicsRectItem *mBottomRightCorner;
 
 	friend class qReal::EditorViewMViface;
+
+	/** @brief list of selected items for additional selection */
+	QList<QGraphicsItem* >* mSelectList;
+
+	bool mIsSelectEvent;
 };
