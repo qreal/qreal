@@ -4,7 +4,7 @@ SUBDIRS = \
 	editor \
 	robotsInterpreter \
 	robotsGenerator \
-	qextSerialPort \
+	qextserialport \
 
-qextSerialPort.file = thirdparty/qextserialport/qextserialport.pro
-robotsInterpreter.depends = qextSerialPort
+qextserialport.file = thirdparty/qextserialport/qextserialport.pro
+robotsInterpreter.depends = qextserialport

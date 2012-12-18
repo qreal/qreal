@@ -4,12 +4,12 @@
 <context>
     <name>qReal::RefactoringPreferencesPage</name>
     <message>
-        <location filename="refactoringPreferencePage.cpp" line="52"/>
+        <location filename="refactoringPreferencePage.cpp" line="50"/>
         <source>Specify directory:</source>
         <translation>Определите директорию:</translation>
     </message>
     <message>
-        <location filename="refactoringPreferencePage.cpp" line="95"/>
+        <location filename="refactoringPreferencePage.cpp" line="93"/>
         <source>Specify file:</source>
         <translation>Выберите файл:</translation>
     </message>
