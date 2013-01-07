@@ -10,6 +10,7 @@ public:
 	QDomDocument load(QFileInfo const &fileInfo);
 
 private:
+	/// True means that we just processed an external reference
 	void processElement(QDomElement &element, QDomElement &parent
 		, QString const &currentDir);
 

@@ -1,0 +1,7 @@
+<icon>
+	<graphics>
+		<picture sizex="49" sizey="49">
+			<image y1="0" name="images/beepBlock.png" x1="0" y2="48" x2="48"/>
+		</picture>
+	</graphics>
+</icon>

@@ -193,6 +193,7 @@
 			<node displayedName="Моторы назад" name="EnginesBackward">
 				<graphics>
 					<external file="wtf/EnginesBackward.wtf" />
+					<external file="wtf/icons/EnginesBackward.sdf" />
 					<labels>
 						<label x="134" y="55" textBinded="Ports"/>
 						<label x="1" y="55" text="Порты:"/>
@@ -227,6 +228,7 @@
 			<node displayedName="Моторы вперёд" name="EnginesForward">
 				<graphics>
 					<external file="wtf/EnginesForward.wtf" />
+					<external file="wtf/icons/EnginesForward.sdf" />
 					<labels>
 						<label x="134" y="55" textBinded="Ports"/>
 						<label x="1" y="55" text="Порты:"/>
@@ -456,6 +458,7 @@
 			<node displayedName="Таймер" name="Timer">
 				<graphics>
 					<external file="wtf/Timer.wtf" />
+					<external file="wtf/icons/Timer.sdf" />
 					<labels />
 					<ports>
 						<linePort>
@@ -492,6 +495,7 @@
 			<node displayedName="Ждать сенсор касания" name="WaitForTouchSensor">
 				<graphics>
 					<external file="wtf/WaitForTouchSensor.wtf" />
+					<external file="wtf/icons/WaitForTouchSensor.sdf" />
 					<ports>
 						<linePort>
 							<start startx="37" starty="5"/>
@@ -522,6 +526,7 @@
 			<node displayedName="Гудок" name="Beep">
 				<graphics>
 					<external file="wtf/Beep.wtf" />
+					<external file="wtf/icons/Beep.sdf" />
 					<labels />
 					<ports>
 						<linePort>
@@ -635,6 +640,7 @@
 			<node displayedName="Играть звук" name="PlayTone">
 				<graphics>
 					<external file="wtf/PlayTone.wtf" />
+					<external file="wtf/icons/PlayTone.sdf" />
 					<labels/>
 					<ports>
 						<linePort>
@@ -680,6 +686,7 @@
 			<node displayedName="Ждать сонар" name="WaitForSonarDistance">
 				<graphics>
 					<external file="wtf/WaitForSonarDistance.wtf" />
+					<external file="wtf/icons/WaitForSonarDistance.sdf" />
 					<labels />
 					<ports>
 						<linePort>
@@ -737,6 +744,7 @@
 			<node displayedName="Ждать интенсивность цвета" name="WaitForColorIntensity">
 				<graphics>
 					<external file="wtf/WaitForColorIntensity.wtf" />
+					<external file="wtf/icons/WaitForColorIntensity.sdf" />
 					<labels />
 					<ports>
 						<linePort>
@@ -776,6 +784,7 @@
 			<node displayedName="Ждать цвет" name="WaitForColor">
 				<graphics>
 					<external file="wtf/WaitForColor.wtf" />
+					<external file="wtf/icons/WaitForColor.sdf" />
 					<labels />
 					<ports>
 						<linePort>
@@ -810,6 +819,7 @@
 			<node displayedName="Ждать свет" name="WaitForLight">
 				<graphics>
 					<external file="wtf/WaitForLight.wtf" />
+					<external file="wtf/icons/WaitForLight.sdf" />
 					<labels />
 					<ports>
 						<linePort>
@@ -849,6 +859,7 @@
 			<node displayedName="Ждать энкодер" name="WaitForEncoder">
 				<graphics>
 					<external file="wtf/WaitForEncoder.wtf" />
+					<external file="wtf/icons/WaitForEncoder.sdf" />
 					<labels />
 					<ports>
 						<linePort>
@@ -964,6 +975,7 @@
 			<node displayedName="Условие" name="IfBlock">
 				<graphics>
 					<external file="wtf/IfBlock.wtf" />
+					<external file="wtf/icons/IfBlock.sdf" />
 					<ports>
 						<linePort>
 							<start startx="25" starty="5"/>

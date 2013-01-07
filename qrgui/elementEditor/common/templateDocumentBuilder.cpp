@@ -184,9 +184,7 @@ void TemplateDocumentBuilder::processWtf(const QDomElement &wtf)
 {
 	mWidgetTemplate = wtf;
 	QDomElement const currentWtfShape = wtfShape(wtf);
-	if (mShapeTemplate.isNull() && !currentWtfShape.isNull()) {
-		mShapeTemplate = currentWtfShape;
-	}
+	mShapeTemplate = currentWtfShape;
 	if (!mShapeTemplate.isNull() && currentWtfShape.isNull()) {
 		setWtfShape(mWidgetTemplate, mShapeTemplate);
 	}

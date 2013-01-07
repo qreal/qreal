@@ -33,8 +33,8 @@ void DocumentLoader::processElement(QDomElement &element, QDomElement &parent
 {
 	if (element.tagName().toLower() == "external") {
 		QString const externalFileName = element.attribute("file");
-		parent.removeChild(element);
 		if (externalFileName.isEmpty()) {
+			parent.removeChild(element);
 			return;
 		}
 		qDebug() << "Processing exernal link to " + externalFileName;
@@ -42,10 +42,11 @@ void DocumentLoader::processElement(QDomElement &element, QDomElement &parent
 		QFileInfo info(dir, externalFileName);
 		QDomDocument const externalDoc = load(info);
 		if (externalDoc.isNull()) {
+			parent.removeChild(element);
 			return;
 		}
 		QDomElement const newElement = externalDoc.documentElement().cloneNode().toElement();
-		parent.appendChild(newElement);
+		parent.replaceChild(newElement, element);
 		element = newElement;
 	}
 	QDomElement child = element.firstChildElement();
@@ -53,4 +54,5 @@ void DocumentLoader::processElement(QDomElement &element, QDomElement &parent
 		processElement(child, element, currentDir);
 		child = child.nextSiblingElement();
 	}
+	return;
 }
