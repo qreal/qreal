@@ -206,10 +206,8 @@ private slots:
 	void switchGrid(bool isChecked);
 	void switchAlignment(bool isChecked);
 
-	void setWidget(QString const &data, QPersistentModelIndex const &index, int const &role);
 	void setData(QString const &data, QPersistentModelIndex const &index, int const &role);
 	void setReference(QString const &data, QPersistentModelIndex const &index, int const &role);
-	void openElementEditor();
 
 	void updatePaletteIcons();
 

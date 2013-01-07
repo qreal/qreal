@@ -39,8 +39,7 @@ public:
 	Root *makeRoot(ToolController *controller) const;
 	QPixmap widgetPixmap(QString const &title);
 	QWidget *deserializeWidget(QDomElement const &element);
-	Root *loadDocument(ToolController *controller, QDomDocument const &document
-		, QDomDocument &otherGraphics);
+	Root *loadDocument(ToolController *controller, QDomDocument const &document);
 	Tool *loadElement(LayoutTool *parent, QDomElement const &element
 		, ToolController *controller);
 

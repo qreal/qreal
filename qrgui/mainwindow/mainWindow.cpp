@@ -457,14 +457,8 @@ void MainWindow::setReference(QString const &data, QPersistentModelIndex const &
 	}
 }
 
-void MainWindow::setWidget(const QString &widget
-		, const QPersistentModelIndex &index
-		, const int &role)
-{
-	setData(widget, index, role);
-}
-
-void MainWindow::setData(QString const &data, QPersistentModelIndex const &index, int const &role)
+void MainWindow::setData(QString const &data, QPersistentModelIndex const &index
+		, int const &role)
 {
 	// const_cast here is ok, since we need to set data in a correct model, and
 	// not going to use this index anymore.
@@ -901,19 +895,11 @@ void MainWindow::openElementEditor(QPersistentModelIndex const &index
 	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
 	model->setData(index, propertyValue, role);
 	connect(elementEditor, SIGNAL(widgetSaved(QString, QPersistentModelIndex const &, int const &))
-		, this, SLOT(setWidget(QString, QPersistentModelIndex const &, int const &)));
+		, this, SLOT(setData(QString, QPersistentModelIndex const &, int const &)));
 	connect(elementEditor, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &))
 		,this, SLOT(setData(QString, QPersistentModelIndex const &, int const &)));
 
 	mUi->tabs->addTab(elementEditor, tr("Element Editor"));
-	mUi->tabs->setCurrentWidget(elementEditor);
-	setConnectActionZoomTo(elementEditor);
-}
-
-void MainWindow::openElementEditor()
-{
-	ElementEditor *elementEditor = new ElementEditor(this);
-	mUi->tabs->addTab(elementEditor, "Element Editor");
 	mUi->tabs->setCurrentWidget(elementEditor);
 	setConnectActionZoomTo(elementEditor);
 }

@@ -9,7 +9,10 @@
 #include "tools/layoutHelpers/layoutTypes.h"
 #include "private/toolController.h"
 #include "private/layoutButtons.h"
-#include "../../../umllib/sdfRenderer.h"
+#include "../../../qrutils/navigationUtils/navigationPageWithMenu.h"
+#include "../../umllib/sdfRenderer.h"
+#include "../common/controlButtons.h"
+#include "../common/templateDocumentBuilder.h"
 
 namespace Ui
 {
@@ -21,20 +24,18 @@ namespace qReal
 namespace widgetsEdit
 {
 
-class WidgetsEditor : public QWidget
+class WidgetsEditor : public QWidget, public navigation::NavigationPageWithMenu
 {
 	Q_OBJECT
 
 public:
-	WidgetsEditor(QPersistentModelIndex const &index
-		, int const &role, QWidget *parent = 0);
-	explicit WidgetsEditor(QWidget *parent = 0);
+	WidgetsEditor(bool isIconEditor, QWidget *parent = 0);
 	~WidgetsEditor();
 
 	/// Forces widget template root element to have
 	/// custom backround described with SDF format
 	/// @param shape XML Document with background description
-	void setShape(QDomDocument const &shapeDocument);
+//	void setShape(QDomDocument const &shapeDocument);
 
 	/// Returns new instance of widget described in WTF format
 	/// @param document XML Document with widget template description
@@ -44,33 +45,29 @@ public:
 	/// @param widgetTemplate XML document in WTF format
 	void load(QDomDocument const &graphics);
 
+	/// Returns WTF document with current model (even unsaved)
+	QDomDocument currentTemplate();
+
+	qReal::elementEdit::ControlButtons *controlButtons() const;
+
 signals:
 	/// Emitted when user saves current widget template created with editor
 	/// @param widget WTF format string representation
-	/// @param index Metamodel elements`s template property index
-	/// @param role Internal system`s role value. @see qrkernel/roles.h
-	void widgetSaved(QString const &widget, QPersistentModelIndex const &index
-		, int const &role);
-	/// Emitted when user wants to desribe custom root backround with
-	/// shape editor
-	void shapeRequested(QDomDocument const &shape);
-	/// Emitted when user changes his choise to create widget-based element
-	/// with a choise to create shape-based one
-	void changeToShapeType(QDomDocument const &shape);
+	void widgetSaved();
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *);
 
+	virtual void onShown(navigation::NavigationState *state);
+
 private slots:
 	void onLayoutButtonClicked(LayoutType const type);
-	void onShapeButtonClicked();
 	void onSelectionChanged(Tool *tool);
 
 	void save();
 	void saveToDisk();
 	void loadFromDisk();
 	void preview();
-	void switchToShapeType();
 
 private:
 	void initComponents();
@@ -82,24 +79,24 @@ private:
 	void initPropertyBrowser();
 	void initRoot();
 	void initRoot(Root *root);
+	void initEmptyCase();
 
 	void serializeWidget(QDomDocument &target);
 	void preview(QWidget *widget);
 
 	void switchLayoutButtonsActiveState(Tool *tool);
 
-	QDomDocument shapeDocument();
-
 	static QWidget *deserializeWidget(QDomElement const &widgetTemplate);
 
+	bool mIsIconEditor;
 	Ui::WidgetsEditor *mUi;
 	QGraphicsScene *mScene;
 	ToolController *mController;
 	LayoutButtons *mLayoutButtons;
+	qReal::elementEdit::ControlButtons *mControlButtons;
 	Root *mRoot;
-	QPersistentModelIndex const mIndex;
-	int const mRole;
-	QDomDocument mOtherGraphics;
+	qReal::elementEdit::TemplateDocumentBuilder *mDocumentBuilder;
+	QDomDocument mEmptyCaseWtf;
 };
 
 }

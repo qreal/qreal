@@ -47,3 +47,5 @@ include(graphTransformation/graphTransformation.pri)
 # Stuff for running long operations in different modes
 include(invocationUtils/invocationUtils.pri)
 
+# Small framework for creating widgets with navigation
+include(navigationUtils/navigationUtils.pri)

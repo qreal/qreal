@@ -154,24 +154,12 @@ QWidget *ToolFactory::deserializeWidget(QWidget *parent, const QDomElement &elem
 }
 
 Root *ToolFactory::loadDocument(ToolController *controller
-		, QDomDocument const &document, QDomDocument &otherGraphics)
+		, QDomDocument const &document)
 {
-	Root *result = NULL;
-	QDomNode graphics = document.firstChild();
-	QDomNode node = graphics.firstChild();
-	while (!node.isNull()) {
-		QDomElement element = node.toElement();
-		if (!element.isNull()) {
-			if (element.tagName() == "widget-template") {
-				QDomElement const rootElement = element.firstChildElement("Root").toElement();
-				result = dynamic_cast<Root *>(loadElement(NULL, rootElement, controller));
-			} else {
-				otherGraphics.appendChild(element.cloneNode());
-			}
-		}
-		node = node.nextSibling();
-	}
-	return result;
+	QDomElement graphics = document.firstChildElement("graphics");
+	QDomElement widgetTemplate = graphics.firstChildElement("widget-template");
+	QDomElement const rootElement = widgetTemplate.firstChildElement("Root");
+	return dynamic_cast<Root *>(loadElement(NULL, rootElement, controller));
 }
 
 Tool *ToolFactory::loadElement(LayoutTool *parent, const QDomElement &element

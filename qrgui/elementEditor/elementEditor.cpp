@@ -1,27 +1,23 @@
-#include <QtGui/QGridLayout>
-
 #include "elementEditor.h"
-#include "../../qrutils/outFile.h"
+#include "common/startPage.h"
 
 using namespace qReal;
+using namespace qReal::elementEdit;
+using namespace navigation;
 
 ElementEditor::ElementEditor(const QPersistentModelIndex &index
 		, const int &role, QWidget *parent)
-	: QWidget(parent), mIndex(index), mRole(role)
-	, mWidgetBased(false), mLayout(new QStackedLayout)
-	, mStartWidget(new QWidget), mWidgetsEditor(NULL)
-	, mShapeEditor(NULL), mOpenedFromMetaEditor(true)
+	: NavigationView(QMap<NavigationPageInterface*, QWidget *>()
+			, new NavigationController(new NavigationState), parent)
+	, mIndex(index), mRole(role), mWidgetsEditor(NULL), mShapeEditor(NULL)
+	, mIconWidgetsEditor(NULL), mIconShapeEditor(NULL), mDocumentBuilder(NULL)
 {
-	initComponents();
-}
-
-ElementEditor::ElementEditor(QWidget *parent)
-	: QWidget(parent), mRole(0), mWidgetBased(false)
-	, mLayout(new QStackedLayout), mStartWidget(new QWidget)
-	, mWidgetsEditor(NULL), mShapeEditor(NULL)
-	, mOpenedFromMetaEditor(false)
-{
-	initComponents();
+	enableMenuSupport();
+	StartPage *startPage = new StartPage;
+	initStartPageInteraction(startPage);
+	mPages.insert(startPage, startPage);
+	mController->switchTo(startPage);
+	load(QDomDocument());
 }
 
 ShapeEdit *ElementEditor::shapeEditor() const
@@ -34,169 +30,154 @@ widgetsEdit::WidgetsEditor *ElementEditor::widgetEditor() const
 	return mWidgetsEditor;
 }
 
-bool ElementEditor::isWidgetBased() const
+void ElementEditor::initStartPageInteraction(StartPage *startPage)
 {
-	return mWidgetBased;
+	connect(startPage, SIGNAL(widgetSelected()), this, SLOT(switchToWidgetsEditor()));
+	connect(startPage, SIGNAL(shapeSelected()), this, SLOT(switchToShapeEditor()));
 }
 
-void ElementEditor::load(const QString &data)
+void ElementEditor::initControlButtonsInteraction(ControlButtons *buttons)
+{
+	connect(buttons, SIGNAL(iconAccepted()), this, SLOT(switchToRegularEditor()));
+	connect(buttons, SIGNAL(iconRejected()), this, SLOT(switchToRegularEditor()));
+	connect(buttons, SIGNAL(iconClicked()), this, SLOT(switchToIconEditor()));
+	connect(buttons, SIGNAL(shapeClicked()), this, SLOT(switchToShapeEditor()));
+	connect(buttons, SIGNAL(widgetClicked()), this, SLOT(switchToWidgetsEditor()));
+}
+
+void ElementEditor::initRegularWidgetsEditor()
+{
+	mWidgetsEditor = new widgetsEdit::WidgetsEditor(false);
+	mPages.insert(mWidgetsEditor, mWidgetsEditor);
+	initControlButtonsInteraction(mWidgetsEditor->controlButtons());
+	connect(mWidgetsEditor, SIGNAL(widgetSaved()), this, SLOT(onWidgetSaved()));
+}
+
+void ElementEditor::initRegularShapeEditor()
+{
+	mShapeEditor = new ShapeEdit(false);
+	mPages.insert(mShapeEditor, mShapeEditor);
+	initControlButtonsInteraction(mShapeEditor->controlButtons());
+	connect(mShapeEditor, SIGNAL(shapeSaved()), this, SLOT(onShapeSaved()));
+}
+
+void ElementEditor::initIconWidgetsEditor()
+{
+	mIconWidgetsEditor = new widgetsEdit::WidgetsEditor(true);
+	mPages.insert(mIconWidgetsEditor, mIconWidgetsEditor);
+	initControlButtonsInteraction(mIconWidgetsEditor->controlButtons());
+}
+
+void ElementEditor::initIconShapeEditor()
+{
+	mIconShapeEditor = new ShapeEdit(true);
+	mPages.insert(mIconShapeEditor, mIconShapeEditor);
+	initControlButtonsInteraction(mIconShapeEditor->controlButtons());
+}
+
+void ElementEditor::switchToRegularWidgetsEditor()
+{
+	if (!mWidgetsEditor) {
+		initRegularWidgetsEditor();
+	}
+	mController->switchTo(mWidgetsEditor);
+	mDocumentBuilder->setWidgetBased(true);
+}
+
+void ElementEditor::switchToRegularShapeEditor()
+{
+	if (!mShapeEditor) {
+		initRegularShapeEditor();
+	}
+	mController->switchTo(mShapeEditor);
+	mDocumentBuilder->setWidgetBased(false);
+}
+
+void ElementEditor::switchToIconWidgetsEditor()
+{
+	if (!mIconWidgetsEditor) {
+		initIconWidgetsEditor();
+	}
+	mController->switchTo(mIconWidgetsEditor);
+	mDocumentBuilder->setIconWidgetBased(true);
+}
+
+void ElementEditor::switchToIconShapeEditor()
+{
+	if (!mIconShapeEditor) {
+		initIconShapeEditor();
+	}
+	mController->switchTo(mIconShapeEditor);
+	mDocumentBuilder->setIconWidgetBased(false);
+}
+
+void ElementEditor::switchToIconEditor()
+{
+	if (mDocumentBuilder->isIconWidgetBased()) {
+		switchToIconWidgetsEditor();
+	} else {
+		switchToIconShapeEditor();
+	}
+}
+
+void ElementEditor::switchToWidgetsEditor()
+{
+	if (isEditingIcon()) {
+		switchToIconWidgetsEditor();
+	} else {
+		switchToRegularWidgetsEditor();
+	}
+}
+
+void ElementEditor::switchToShapeEditor()
+{
+	if (isEditingIcon()) {
+		switchToIconShapeEditor();
+	} else {
+		switchToRegularShapeEditor();
+	}
+}
+
+void ElementEditor::switchToRegularEditor()
+{
+	if (mDocumentBuilder->isWidgetBased()) {
+		switchToRegularWidgetsEditor();
+	} else {
+		switchToRegularShapeEditor();
+	}
+}
+
+bool ElementEditor::isEditingIcon() const
+{
+	NavigationPageInterface *current = currentPage();
+	return current == mIconWidgetsEditor || current == mIconShapeEditor;
+}
+
+void ElementEditor::load(QString const &data)
 {
 	QDomDocument document;
 	document.setContent(data);
-	if (document.isNull()) {
-		return;
+	load(document);
+}
+
+void ElementEditor::load(QDomDocument const &data)
+{
+	if (mDocumentBuilder) {
+		delete mDocumentBuilder;
 	}
-	if (isWidgetBasedDocument(document)) {
-		onWidgetBasedButtonClicked();
-		mWidgetsEditor->load(document);
-	} else {
-		onShapeBasedButtonClicked();
-		mShapeEditor->load(document);
+	mDocumentBuilder = TemplateDocumentBuilder::fromDocument(data);
+	mController->state()->setState(mDocumentBuilder);
+	if (!data.isNull()) {
+		switchToRegularEditor();
 	}
 }
 
-bool ElementEditor::isWidgetBasedDocument(QDomDocument const &document)
+void ElementEditor::onWidgetSaved()
 {
-	QDomElement const graphicsElement = document.firstChild().toElement();
-	if (graphicsElement.isNull()) {
-		return false;
-	}
-	return !graphicsElement.firstChildElement("widget-template").isNull();
+	emit widgetSaved(mDocumentBuilder->buildTemplate().toString(4), mIndex, mRole);
 }
 
-void ElementEditor::initComponents()
+void ElementEditor::onShapeSaved()
 {
-	setLayout(mLayout);
-	initStartWidget();
-}
-
-void ElementEditor::initStartWidget()
-{
-	QIcon const shapeIcon(":/icons/widgetsEditor/shapeEditor.png");
-	QIcon const widgetsIcon(":/icons/widgetsEditor/widgetEditor.png");
-	QString const shapeToolTip = tr("Create shape-based element");
-	QString const widgetsToolTip = tr("Create widget-based element");
-
-	QPushButton *shapeEditorButton = new QPushButton;
-	QPushButton *widgetsEditorButton = new QPushButton;
-	connect(shapeEditorButton, SIGNAL(clicked()),
-			this, SLOT(onShapeBasedButtonClicked()));
-	connect(widgetsEditorButton, SIGNAL(clicked())
-		, this, SLOT(onWidgetBasedButtonClicked()));
-	shapeEditorButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
-	widgetsEditorButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
-	shapeEditorButton->setToolTip(shapeToolTip);
-	widgetsEditorButton->setToolTip(widgetsToolTip);
-	shapeEditorButton->setIcon(shapeIcon);
-	widgetsEditorButton->setIcon(widgetsIcon);
-	// TODO: Draw with non-constant size
-	QSize const iconSize(300, 500);
-	shapeEditorButton->setIconSize(iconSize);
-	widgetsEditorButton->setIconSize(iconSize);
-
-	QGridLayout *startLayout = new QGridLayout;
-	startLayout->setMargin(3);
-	startLayout->addWidget(shapeEditorButton, 0, 0);
-	startLayout->addWidget(widgetsEditorButton, 0, 1);
-	mStartWidget->setLayout(startLayout);
-
-	mLayout->addWidget(mStartWidget);
-}
-
-void ElementEditor::showWidget(QWidget *widget)
-{
-	if (mLayout->count() > 1) {
-		mLayout->removeWidget(mLayout->widget(mLayout->count()-1));
-	}
-	mLayout->addWidget(widget);
-	mLayout->setCurrentIndex(mLayout->count()-1);
-}
-
-void ElementEditor::showShapeEditor()
-{
-	if (!mShapeEditor) {
-		initShapeEditor();
-	}
-	mShapeEditor->setWidgetBased(mWidgetBased);
-	showWidget(mShapeEditor);
-}
-
-void ElementEditor::showWidgetsEditor()
-{
-	if (!mWidgetsEditor) {
-		initWidgetEditor();
-	}
-	showWidget(mWidgetsEditor);
-}
-
-void ElementEditor::onWidgetEditorRequestedShape(QDomDocument const &shape)
-{
-	showShapeEditor();
-	mShapeEditor->load(shape);
-}
-
-void ElementEditor::initWidgetEditor()
-{
-	mWidgetBased = true;
-	if (mOpenedFromMetaEditor) {
-		mWidgetsEditor = new widgetsEdit::WidgetsEditor(mIndex, mRole);
-	} else {
-		mWidgetsEditor = new widgetsEdit::WidgetsEditor;
-	}
-	connect(mWidgetsEditor, SIGNAL(shapeRequested(QDomDocument))
-			, this, SLOT(onWidgetEditorRequestedShape(QDomDocument)));
-	connect(mWidgetsEditor, SIGNAL(widgetSaved(QString,QPersistentModelIndex,int))
-			, this, SLOT(onWidgetEditorSavedShape(QString,QPersistentModelIndex,int)));
-	connect(mWidgetsEditor, SIGNAL(changeToShapeType(QDomDocument))
-			, this, SLOT(onSwitchedToShape(QDomDocument)));
-}
-
-void ElementEditor::initShapeEditor()
-{
-	mWidgetBased = false;
-	if (mOpenedFromMetaEditor) {
-		mShapeEditor = new ShapeEdit(mIndex, mRole);
-	} else {
-		mShapeEditor = new ShapeEdit;
-	}
-	connect(mShapeEditor, SIGNAL(shapeSaved(QString,QPersistentModelIndex,int))
-			, this, SLOT(onShapeEditorSavedShape(QString,QPersistentModelIndex,int)));
-	connect(mShapeEditor, SIGNAL(switchToWidgetsEditor(QDomDocument))
-			, this, SLOT(onSwitchedToWidget(QDomDocument)));
-}
-
-void ElementEditor::onWidgetBasedButtonClicked()
-{
-	showWidgetsEditor();
-}
-
-void ElementEditor::onShapeBasedButtonClicked()
-{
-	showShapeEditor();
-}
-
-void ElementEditor::onWidgetEditorSavedShape(const QString &widget
-		, const QPersistentModelIndex &index, const int &role)
-{
-	emit widgetSaved(widget, index, role);
-}
-
-void ElementEditor::onShapeEditorSavedShape(const QString &shape
-		, const QPersistentModelIndex &index, const int &role)
-{
-	emit shapeSaved(shape, index, role);
-}
-
-void ElementEditor::onSwitchedToWidget(const QDomDocument &document)
-{
-	mWidgetBased = true;
-	showWidgetsEditor();
-	mWidgetsEditor->setShape(document);
-}
-
-void ElementEditor::onSwitchedToShape(const QDomDocument &document)
-{
-	mWidgetBased = false;
-	showShapeEditor();
-	mShapeEditor->load(document);
+	emit shapeSaved(mDocumentBuilder->shape().toString(4), mIndex, mRole);
 }

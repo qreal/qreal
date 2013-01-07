@@ -1,15 +1,17 @@
 #pragma once
 
 #include <QtGui/QWidget>
-#include <QtGui/QStackedLayout>
 
+#include "../../qrutils/navigationUtils/navigationView.h"
+#include "common/templateDocumentBuilder.h"
+#include "common/startPage.h"
 #include "shapeEdit/shapeEdit.h"
 #include "widgetsEdit/widgetsEditor.h"
 
 namespace qReal
 {
 
-class ElementEditor : public QWidget
+class ElementEditor : public navigation::NavigationView
 {
 	Q_OBJECT
 
@@ -19,64 +21,63 @@ public:
 	/// @param role Internal system`s role value. @see qrkernel/roles.h
 	ElementEditor(QPersistentModelIndex const &index
 		, int const &role, QWidget *parent = 0);
-	/// Creates new element editor instance binded to nothing
-	ElementEditor(QWidget *parent = 0);
 
 	/// Returns shape editor instance
 	ShapeEdit *shapeEditor() const;
 	/// Returns widgets editor instance
 	widgetsEdit::WidgetsEditor *widgetEditor() const;
-	bool isWidgetBased() const;
 	/// Forces current editor to load specified data
 	/// @param data String representation of data saved by required editor in past
 	void load(QString const &data);
+	/// Forces current editor to load specified data
+	/// @param data Data saved by required editor in past
+	void load(QDomDocument const &data);
 
 signals:
 	/// Emitted when user saves current widget template created with widget editor
-	/// @param widget WTF format string representation
+	/// @param widget WTF document string representation
 	/// @param index Metamodel elements`s template property index
 	/// @param role Internal system`s role value. @see qrkernel/roles.h
 	void widgetSaved(QString const &widget, QPersistentModelIndex const &index
 			, int const &role);
 	/// Emitted when user saves current shape created with shape editor
-	/// @param shape SDF format string representation
+	/// @param shape SDF document string respesentation
 	/// @param index Metamodel elements`s template property index
 	/// @param role Internal system`s role value. @see qrkernel/roles.h
 	void shapeSaved(QString const &shape, QPersistentModelIndex const &index
 			, int const &role);
 
 private slots:
-	void onWidgetBasedButtonClicked();
-	void onShapeBasedButtonClicked();
-	void onWidgetEditorRequestedShape(QDomDocument const &shape);
-	void onWidgetEditorSavedShape(QString const &widget
-		, QPersistentModelIndex const &index, int const &role);
-	void onShapeEditorSavedShape(QString const &shape
-		, QPersistentModelIndex const &index, int const &role);
-	void onSwitchedToShape(QDomDocument const &document);
-	void onSwitchedToWidget(QDomDocument const &document);
+	void switchToRegularWidgetsEditor();
+	void switchToRegularShapeEditor();
+	void switchToIconWidgetsEditor();
+	void switchToIconShapeEditor();
+	void switchToIconEditor();
+	void switchToRegularEditor();
+	void switchToWidgetsEditor();
+	void switchToShapeEditor();
+
+	void onWidgetSaved();
+	void onShapeSaved();
 
 private:
-	static bool isWidgetBasedDocument(QDomDocument const &document);
+	void initRegularWidgetsEditor();
+	void initRegularShapeEditor();
+	void initIconWidgetsEditor();
+	void initIconShapeEditor();
 
-	void initComponents();
-	void initStartWidget();
-	void initWidgetEditor();
-	void initShapeEditor();
+	void initStartPageInteraction(qReal::elementEdit::StartPage *startPage);
+	void initControlButtonsInteraction(qReal::elementEdit::ControlButtons *buttons);
 
-	void showShapeEditor();
-	void showWidgetsEditor();
-	void showWidget(QWidget *widget);
+	bool isEditingIcon() const;
 
 	QPersistentModelIndex mIndex;
 	int mRole;
-	bool mWidgetBased;
-	QStackedLayout *mLayout;
-	QWidget *mStartWidget;
 	widgetsEdit::WidgetsEditor *mWidgetsEditor;
 	ShapeEdit *mShapeEditor;
-	bool mOpenedFromMetaEditor;
-
+	widgetsEdit::WidgetsEditor *mIconWidgetsEditor;
+	ShapeEdit *mIconShapeEditor;
+	elementEdit::TemplateDocumentBuilder *mDocumentBuilder;
 };
 
 }

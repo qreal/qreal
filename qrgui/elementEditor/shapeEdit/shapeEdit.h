@@ -7,33 +7,37 @@
 
 #include "scene.h"
 #include "item.h"
+#include "../common/controlButtons.h"
+#include "../common/templateDocumentBuilder.h"
 #include "../../../qrutils/graphicsUtils/abstractItemView.h"
+#include "../../../qrutils/navigationUtils/navigationPageWithMenu.h"
 
 namespace Ui {
 	class ShapeEdit;
 }
 
-class ShapeEdit : public QWidget {
+class ShapeEdit : public QWidget, public navigation::NavigationPageWithMenu
+{
 	Q_OBJECT
 public:
-	explicit ShapeEdit(QWidget *parent = NULL);
-	ShapeEdit(QPersistentModelIndex const &index
-			, int const &role, QWidget *parent = NULL);
+	ShapeEdit(bool isIconEditor, QWidget *parent = NULL);
 	~ShapeEdit();
 
 	graphicsUtils::AbstractView *getView();
 	void load(QString const &text);
 	void load(QDomDocument const &document);
-	void setWidgetBased(bool widgetBased);
+	QDomDocument currentShape();
+	qReal::elementEdit::ControlButtons *controlButtons() const;
 
 signals:
-	void shapeSaved(QString const &shape, QPersistentModelIndex const &index, int const &role);
+	void shapeSaved();
 	void saveSignal();
 	void saveToXmlSignal();
 	void openSignal();
 	void switchToWidgetsEditor(QDomDocument const &document);
 
 protected:
+	void onShown(navigation::NavigationState *state);
 	void changeEvent(QEvent *e);
 	virtual void keyPressEvent(QKeyEvent *event);
 
@@ -54,6 +58,7 @@ private slots:
 	void save();
 	void open();
 	void switchToWidgets();
+
 	void addImage(bool checked);
 	void setNoPalette();
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
@@ -66,6 +71,7 @@ private:
 	void initButtonGroup();
 	void initFontPalette();
 	void initPalette();
+	void initControlButtons();
 	void init();
 
 	void setHighlightOneButton(QAbstractButton *oneButton);
@@ -88,14 +94,13 @@ private:
 	void exportToXml(QString const &fileName);
 	QList<QDomElement> generateGraphics();
 
+	bool mIsIconEditor;
 	Scene *mScene;
 	QGraphicsItemGroup mItemGroup;
 	QList<QAbstractButton *> mButtonGroup;
 	QDomDocument mDocument;
 	QPoint mTopLeftPicture;
 	Ui::ShapeEdit *mUi;
-	QPersistentModelIndex const mIndex;
-	int const mRole;
-	bool mWidgetBased;
-
+	qReal::elementEdit::ControlButtons *mControlButtons;
+	qReal::elementEdit::TemplateDocumentBuilder *mDocumentBuilder;
 };

@@ -38,7 +38,7 @@ HEADERS += association.h \
 	type.h \
 	xmlCompiler.h \
 	scalableItem.h \
-    documentLoader.h
+	documentLoader.h \
 
 SOURCES += association.cpp \
 	diagram.cpp \
@@ -62,4 +62,4 @@ SOURCES += association.cpp \
 	type.cpp \
 	xmlCompiler.cpp \
 	scalableItem.cpp \
-    documentLoader.cpp
+	documentLoader.cpp \

@@ -1,5 +1,5 @@
 HEADERS += \
-	elementEditor/elementEditor.h \
+	elementEditor/common/controlButtons.h \
 	elementEditor/shapeEdit/shapeEdit.h \
 	elementEditor/shapeEdit/scene.h \
 	elementEditor/shapeEdit/arch.h \
@@ -56,10 +56,13 @@ HEADERS += \
 	elementEditor/widgetsEdit/tools/layoutHelpers/layoutHelperFactory.h \
 	elementEditor/widgetsEdit/tools/trigger.h \
 	elementEditor/widgetsEdit/tools/triggerWidget.h \
-    elementEditor/widgetsEdit/tools/propertyEditor.h
+	elementEditor/widgetsEdit/tools/propertyEditor.h \
+    elementEditor/common/templateDocumentBuilder.h \
+    elementEditor/elementEditor.h \
+    elementEditor/common/startPage.h
 
 SOURCES += \
-	elementEditor/elementEditor.cpp \
+	elementEditor/common/controlButtons.cpp \
 	elementEditor/shapeEdit/shapeEdit.cpp \
 	elementEditor/shapeEdit/scene.cpp \
 	elementEditor/shapeEdit/arch.cpp \
@@ -115,7 +118,10 @@ SOURCES += \
 	elementEditor/widgetsEdit/tools/layoutHelpers/layoutHelperFactory.cpp \
 	elementEditor/widgetsEdit/tools/trigger.cpp \
 	elementEditor/widgetsEdit/tools/triggerWidget.cpp \
-    elementEditor/widgetsEdit/tools/propertyEditor.cpp
+	elementEditor/widgetsEdit/tools/propertyEditor.cpp \
+    elementEditor/common/templateDocumentBuilder.cpp \
+    elementEditor/elementEditor.cpp \
+    elementEditor/common/startPage.cpp
 
 FORMS += \
 	elementEditor/shapeEdit/shapeEdit.ui \
