@@ -21,8 +21,9 @@ Frame::Frame(QFrame *frame, ToolController *controller)
 void Frame::initialize()
 {
 	mFrame = dynamic_cast<QFrame *>(widget());
+	mTitle = tr("Frame");
+	mTag = "Frame";
 	mIcon = QIcon(":/icons/widgetsEditor/frame.png");
-	mTitle = "Frame";
 	mFrame->setGeometry(0, 0
 		, FRAME_DEFAULT_WIDTH
 		, FRAME_DEFAULT_HEIGHT);

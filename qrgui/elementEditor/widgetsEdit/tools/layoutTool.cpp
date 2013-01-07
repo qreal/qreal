@@ -269,15 +269,15 @@ void LayoutTool::dropEvent(QGraphicsSceneDragDropEvent *event)
 		event->ignore();
 		return;
 	}
-	QString title;
+	QString tag;
 	QPointF hotSpot;
 	QByteArray data = event->mimeData()->data("application/x-qreal/widgetEditor");
 	QDataStream dataStream(&data, QIODevice::ReadOnly);
-	dataStream >> title >> hotSpot;
+	dataStream >> tag >> hotSpot;
 
 	Tool *tool = mController->draggedChild();
 	if (!tool) {
-		tool = ToolFactory::instance()->makeItem(title, mController);
+		tool = ToolFactory::instance()->makeItem(tag, mController);
 		if (!tool) {
 			event->ignore();
 			return;

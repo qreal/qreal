@@ -6,8 +6,9 @@ DoubleSpinBox::DoubleSpinBox(ToolController *controller)
 	: AbstractSpinBox(new DoubleSpinBoxWidget, controller)
 {
 	mDoubleSpinBox = dynamic_cast<DoubleSpinBoxWidget *>(widget());
+	mTitle = tr("Double Spin Box");
+	mTag = "DoubleSpinBox";
 	mIcon = QIcon(":/icons/widgetsEditor/doubleSpinBox.png");
-	mTitle = "Double Spin Box";
 	connect(mDoubleSpinBox, SIGNAL(valueChanged(double))
 		, this, SLOT(valueChanged(double)));
 }

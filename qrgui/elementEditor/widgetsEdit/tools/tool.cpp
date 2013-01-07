@@ -39,6 +39,11 @@ QString Tool::title() const
 	return mTitle;
 }
 
+QString Tool::tag() const
+{
+	return mTag;
+}
+
 bool Tool::movable() const
 {
 	return mMovable;
@@ -142,7 +147,7 @@ void Tool::generateXml(QDomElement &element, QDomDocument &document)
 	foreach(QGraphicsItem *item, childItems()) {
 		Tool *child = dynamic_cast<Tool *>(item);
 		if (child) {
-			QString tagName = ToolFactory::instance()->toolTitleToTagName(child->title());
+			QString const tagName = child->tag();
 			QDomElement childElement = document.createElement(tagName);
 			element.appendChild(childElement);
 			child->generateXml(childElement, document);
@@ -287,7 +292,7 @@ void Tool::moveTool(QGraphicsSceneMouseEvent *event)
 
 	QByteArray data;
 	QDataStream dataStream(&data, QIODevice::WriteOnly);
-	dataStream << title() << hotSpot;
+	dataStream << tag() << hotSpot;
 
 	QMimeData *mimeData = new QMimeData;
 	mimeData->setData("application/x-qreal/widgetEditor", data);

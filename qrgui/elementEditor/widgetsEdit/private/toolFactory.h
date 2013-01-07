@@ -15,19 +15,6 @@ namespace qReal
 namespace widgetsEdit
 {
 
-struct TitleTagPair
-{
-public:
-	TitleTagPair(QString const &title, QString const &tagName)
-	{
-		this->title = title;
-		this->tagName = tagName;
-	}
-
-	QString title;
-	QString tagName;
-};
-
 class ToolFactory
 {
 
@@ -35,27 +22,24 @@ public:
 	static ToolFactory *instance();
 
 	QListIterator<Tool *> itemsIterator();
-	Tool *makeItem(QString const &title, ToolController *controller);
+	Tool *makeItem(QString const &tag, ToolController *controller);
 	Root *makeRoot(ToolController *controller) const;
-	QPixmap widgetPixmap(QString const &title);
+	QPixmap widgetPixmap(QString const &tag);
 	QWidget *deserializeWidget(QDomElement const &element);
 	Root *loadDocument(ToolController *controller, QDomDocument const &document);
 	Tool *loadElement(LayoutTool *parent, QDomElement const &element
 		, ToolController *controller);
-
-	QString toolTitleToTagName(QString const &title) const;
-	QString tagNameToToolTitle(QString const &tagName) const;
 
 private:
 	ToolFactory();
 	ToolFactory(ToolFactory const&) {}
 
 	// Hard-coded tool enumeration; TODO: "pluginize" it
-	void initTitles();
+	void initTags();
 	void initItems();
 	QWidget *deserializeWidget(QWidget *parent, QDomElement const &element);
 
-	QList<TitleTagPair > mTitles;
+	QList<QString> mTags;
 	QList<Tool *> mItems;
 };
 

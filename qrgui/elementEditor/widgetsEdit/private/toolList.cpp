@@ -2,7 +2,6 @@
 
 #include "toolList.h"
 #include "toolFactory.h"
-#include "../tools/tool.h"
 
 using namespace qReal::widgetsEdit;
 
@@ -18,13 +17,14 @@ ToolList::ToolList(QWidget *parent)
 void ToolList::mousePressEvent(QMouseEvent *event)
 {
 	QListWidgetItem *item = itemAt(event->pos());
-	if (!item) {
+	if (!item || !mItemToolMap.contains(item)) {
 		return;
 	}
+	Tool *tool = mItemToolMap[item];
 
 	QByteArray data;
 	QDataStream dataStream(&data, QIODevice::WriteOnly);
-	dataStream << item->text() << QPointF(0, 0);
+	dataStream << tool->tag() << QPointF(0, 0);
 
 	QMimeData *mimeData = new QMimeData;
 	mimeData->setData("application/x-qreal/widgetEditor", data);
@@ -32,7 +32,7 @@ void ToolList::mousePressEvent(QMouseEvent *event)
 	QDrag *drag = new QDrag(this);
 	drag->setMimeData(mimeData);
 
-	QPixmap const pixmap = ToolFactory::instance()->widgetPixmap(item->text());
+	QPixmap const pixmap = ToolFactory::instance()->widgetPixmap(tool->tag());
 	if (!pixmap.isNull()) {
 		drag->setPixmap(pixmap);
 	}
@@ -54,6 +54,7 @@ void ToolList::loadItems()
 	while (iterator.hasNext()) {
 		Tool *tool = iterator.next();
 		QListWidgetItem *item = new QListWidgetItem(tool->icon(), tool->title());
+		mItemToolMap.insert(item, tool);
 		addItem(item);
 	}
 }

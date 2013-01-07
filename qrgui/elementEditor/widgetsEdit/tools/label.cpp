@@ -6,8 +6,9 @@ Label::Label(ToolController *controller)
 	: Frame(new LabelWidget("label"), controller)
 {
 	mLabel = dynamic_cast<LabelWidget *>(widget());
+	mTitle = tr("Label");
+	mTag = "Label";
 	mIcon = QIcon(":/icons/widgetsEditor/label.png");
-	mTitle = "Label";
 	mLabel->setGeometry(0, 0
 		, LABEL_DEFAULT_WIDTH
 		, LABEL_DEFAULT_HEIGHT);

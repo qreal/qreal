@@ -9,7 +9,8 @@ Root::Root(ToolController *controller)
 {
 	mWidget = dynamic_cast<RootWidget *>(widget());
 	setMovable(false);
-	mTitle = "Root";
+	mTitle = tr("Root");
+	mTag = "Root";
 }
 
 void Root::onLoaded()

@@ -1,6 +1,6 @@
-#include "groupBox.h"
+#include <QtGui/QGroupBox>
 
-#include <QGroupBox>
+#include "groupBox.h"
 
 using namespace qReal::widgetsEdit;
 
@@ -8,8 +8,9 @@ GroupBox::GroupBox(ToolController *controller)
 	: LayoutTool(new QGroupBox("groupBox"), controller)
 {
 	mGroupBox = dynamic_cast<QGroupBox *>(widget());
+	mTitle = tr("Group Box");
+	mTag = "GroupBox";
 	mIcon = QIcon(":/icons/widgetsEditor/groupBox.png");
-	mTitle = "Group Box";
 	mGroupBox->setGeometry(0, 0
 		, GROUP_BOX_DEFAULT_WIDTH
 		, GROUP_BOX_DEFAULT_HEIGHT);

@@ -18,8 +18,9 @@ Spacer::Spacer(Qt::Orientation orientation, ToolController *controller)
 		, vPolicyFromOrientation(orientation));
 	mSpacer->setMinimumHeight(10.0);
 	mSpacer->setMaximumWidth(10.0);
-	mIcon = QIcon(iconPathFromOrientation(mOrientation));
 	mTitle = titleFromOrientation(mOrientation);
+	mTag = tagFromOrientation(mOrientation);
+	mIcon = QIcon(iconPathFromOrientation(mOrientation));
 }
 
 void Spacer::paint(QPainter *painter
@@ -75,11 +76,18 @@ QString Spacer::titleFromOrientation(Qt::Orientation orientation)
 			: tr("Vertical Spacer");
 }
 
+QString Spacer::tagFromOrientation(Qt::Orientation orientation)
+{
+	return (Qt::Horizontal == orientation)
+			? "HorizontalSpacer"
+			: "VerticalSpacer";
+}
+
 QString Spacer::iconPathFromOrientation(Qt::Orientation orientation)
 {
 	return (Qt::Horizontal == orientation)
-			? tr(":/icons/widgetsEditor/horizontalSpacer.png")
-			: tr(":/icons/widgetsEditor/verticalSpacer.png");
+			? ":/icons/widgetsEditor/horizontalSpacer.png"
+			: ":/icons/widgetsEditor/verticalSpacer.png";
 }
 
 int Spacer::widthFromOrientation(Qt::Orientation orientation)

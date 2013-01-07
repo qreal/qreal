@@ -6,8 +6,9 @@ ComboBox::ComboBox(ToolController *controller)
 	: Tool(new ComboBoxWidget, controller)
 {
 	mComboBox = dynamic_cast<ComboBoxWidget *>(widget());
+	mTitle = tr("Combo Box");
+	mTag = "ComboBox";
 	mIcon = QIcon(":/icons/widgetsEditor/comboBox.png");
-	mTitle = "Combo Box";
 }
 
 bool ComboBox::duplicatesEnabled() const

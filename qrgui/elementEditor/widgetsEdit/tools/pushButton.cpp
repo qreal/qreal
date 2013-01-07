@@ -6,8 +6,9 @@ PushButton::PushButton(ToolController *controller)
 	: AbstractButton(new QPushButton("pushButton"), controller)
 {
 	mPushButton = dynamic_cast<QPushButton *>(widget());
+	mTitle = tr("Push Button");
+	mTag = "PushButton";
 	mIcon = QIcon(":/icons/widgetsEditor/pushButton.png");
-	mTitle = "Push Button";
 }
 
 bool PushButton::isFlat() const

@@ -6,8 +6,9 @@ LineEdit::LineEdit(ToolController *controller)
 	: Tool(new LineEditWidget, controller)
 {
 	mLineEdit = dynamic_cast<LineEditWidget *>(widget());
+	mTitle = tr("Line Edit");
+	mTag = "LineEdit";
 	mIcon = QIcon(":/icons/widgetsEditor/lineEdit.png");
-	mTitle = "Line Edit";
 	connect(mLineEdit, SIGNAL(textChanged(QString))
 		, this, SLOT(textChanged(QString)));
 	setFocusPolicy(Qt::StrongFocus);

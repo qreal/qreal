@@ -35,6 +35,7 @@ public:
 	//getters for showing in tool list
 	QIcon icon() const;
 	QString title() const;
+	QString tag() const;
 
 	virtual void onLoaded();
 
@@ -58,19 +59,6 @@ signals:
 	void propertyChanged(QString const &name, QVariant const &value);
 
 protected:
-	enum DragState {
-		None = 0
-		, Moving
-		, TopLeft
-		, Top
-		, TopRight
-		, Left
-		, Right
-		, BottomLeft
-		, Bottom
-		, BottomRight
-	};
-
 	Tool(QWidget *widget, ToolController *controller
 		, QGraphicsItem *parent = 0);
 
@@ -85,12 +73,26 @@ protected:
 	virtual void resizeEvent(QGraphicsSceneResizeEvent *event);
 
 	QString mTitle;
+	QString mTag;
 	QIcon mIcon;
 	bool mMovable;
 	bool mResizable;
 	ToolController *mController;
 
 private:
+	enum DragState {
+		None = 0
+		, Moving
+		, TopLeft
+		, Top
+		, TopRight
+		, Left
+		, Right
+		, BottomLeft
+		, Bottom
+		, BottomRight
+	};
+
 	QRectF resizeRect(DragState state);
 	void drawFieldForResizeItem(QPainter* painter);
 	DragState getDragState(QPointF pos);

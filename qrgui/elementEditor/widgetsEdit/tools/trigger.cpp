@@ -12,8 +12,9 @@ using namespace qReal::widgetsEdit;
 Trigger::Trigger(ToolController *controller)
 	: Tool(new QFrame, controller)
 {
-	mIcon = QIcon(":/icons/widgetsEditor/trigger.png");
 	mTitle = tr("Trigger");
+	mTag = "Trigger";
+	mIcon = QIcon(":/icons/widgetsEditor/trigger.png");
 
 	widget()->setGeometry(0, 0
 		, TRIGGER_DEFAULT_WIDTH

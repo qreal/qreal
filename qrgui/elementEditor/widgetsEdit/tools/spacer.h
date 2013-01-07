@@ -26,6 +26,7 @@ protected:
 
 private:
 	static QString titleFromOrientation(Qt::Orientation orientation);
+	static QString tagFromOrientation(Qt::Orientation orientation);
 	static QString iconPathFromOrientation(Qt::Orientation orientation);
 	static int widthFromOrientation(Qt::Orientation orientation);
 	static int heightFromOrientation(Qt::Orientation orientation);

@@ -6,8 +6,9 @@ CheckBox::CheckBox(ToolController *controller)
 	: AbstractButton(new CheckBoxWidget("checkBox"), controller)
 {
 	mCheckBox = dynamic_cast<CheckBoxWidget *>(widget());
+	mTitle = tr("Check Box");
+	mTag = "CheckBox";
 	mIcon = QIcon(":/icons/widgetsEditor/checkBox.png");
-	mTitle = "Check Box";
 	connect(mCheckBox, SIGNAL(toggled(bool)), this, SLOT(toggled(bool)));
 }
 

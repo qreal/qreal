@@ -6,8 +6,9 @@ PlainTextEdit::PlainTextEdit(ToolController *controller)
 	: AbstractScrollArea(new PlainTextEditWidget, controller)
 {
 	mPlainTextEdit = dynamic_cast<PlainTextEditWidget *>(widget());
+	mTitle = tr("Plain Text Edit");
+	mTag = "PlainTextEdit";
 	mIcon = QIcon(":/icons/widgetsEditor/plainTextEdit.png");
-	mTitle = "Plain Text Edit";
 	connect(mPlainTextEdit, SIGNAL(textChanged())
 		, this, SLOT(textChanged()));
 }

@@ -6,8 +6,9 @@ SpinBox::SpinBox(ToolController *controller)
 	: AbstractSpinBox(new SpinBoxWidget, controller)
 {
 	mSpinBox = dynamic_cast<SpinBoxWidget *>(widget());
+	mTitle = tr("Spin Box");
+	mTag = "SpinBox";
 	mIcon = QIcon(":/icons/widgetsEditor/spinBox.png");
-	mTitle = "Spin Box";
 	connect(mSpinBox, SIGNAL(valueChanged(int))
 		, this, SLOT(valueChanged(int)));
 }

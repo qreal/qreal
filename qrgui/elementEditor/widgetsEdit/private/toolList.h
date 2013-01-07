@@ -1,6 +1,9 @@
 #pragma once
 
 #include <QtGui/QListWidget>
+#include <QtGui/QListWidgetItem>
+
+#include "../tools/tool.h"
 
 namespace qReal
 {
@@ -24,6 +27,7 @@ protected:
 private:
 	void loadItems();
 
+	QMap<QListWidgetItem *, Tool *> mItemToolMap;
 };
 
 }
