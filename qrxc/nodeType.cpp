@@ -54,7 +54,7 @@ bool NodeType::initDividability()
 
 bool NodeType::initGraphics()
 {
-	return initSdf() && initPorts() && initBooleanProperties();
+	return initSdf() && initPorts() && initBooleanProperties() && initIcon();
 }
 
 bool NodeType::initSdf()
@@ -252,6 +252,28 @@ void NodeType::generateLinePorts(QDomElement const &portsElement, OutFile &out) 
 	}
 }
 
+bool NodeType::initIcon()
+{
+	QDomElement iconElement = mGraphics.firstChildElement("icon").firstChildElement("graphics");
+	if (iconElement.isNull()) {
+		iconElement = mGraphics;
+	}
+	mIsIconWidgetBased = isWidgetBased(iconElement);
+	mIconDomElement = mIsIconWidgetBased
+			? mGraphics.firstChildElement("widget-template")
+			: iconElement.firstChildElement("picture");
+	return true;
+}
+
+void NodeType::generateIcon()
+{
+	mDiagram->editor()->xmlCompiler()->addResource(
+		"\t<file>generated/shapes/" + resourceName("Icon") + "</file>\n");
+
+	OutFile out("generated/shapes/" + resourceName("Icon"));
+	mIconDomElement.save(out(), 1);
+}
+
 bool NodeType::hasPointPorts()
 {
 	foreach (Port *port, mPorts) {
@@ -276,6 +298,7 @@ void NodeType::generateCode(OutFile &out)
 {
 	generateSdf();
 	generatePorts();
+	generateIcon();
 
 	QString const className = NameNormalizer::normalize(qualifiedName());
 	bool hasSdf = false;

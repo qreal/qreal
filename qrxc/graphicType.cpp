@@ -560,7 +560,12 @@ void GraphicType::generateOneCase(OutFile &out, bool isNotFirst) const
 QString GraphicType::resourceName(QString const &resourceType) const
 {
 	QString const name = NameNormalizer::normalize(qualifiedName());
-	QString const extension = mIsWidgetBased && resourceType == "Class" ? ".wtf" : ".sdf";
+	QString extension = ".sdf";
+	if (resourceType == "Class") {
+		extension = "." + exensionByBase(mIsWidgetBased);
+	} else if (resourceType == "Icon") {
+		extension = "." + exensionByBase(mIsIconWidgetBased);
+	}
 	return name + resourceType + extension;
 }
 
@@ -629,4 +634,9 @@ void GraphicType::generateParentsMapping(utils::OutFile &out)
 		out() << "\t\t<< qMakePair(QString(\"" << diagramName << "\"), QString(\"" << NameNormalizer::normalize(parent) << "\"))\n";
 	}
 	out() << "\t;\n";
+}
+
+QString GraphicType::exensionByBase(bool widgetBased) const
+{
+	return widgetBased ? "wtf" : "sdf";
 }

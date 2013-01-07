@@ -40,11 +40,15 @@ private:
 	void generateLinePorts(QDomElement const &portsElement, utils::OutFile &out) const;
 	void generatePointPorts(QDomElement const &portsElement, utils::OutFile &out) const;
 
+	bool initIcon();
+	void generateIcon();
+
 	virtual bool isWidgetBased(QDomElement const &graphics) const;
 
 	QList<Port*> mPorts;
 	QDomElement mSdfDomElement;
 	QDomElement mPortsDomElement;
+	QDomElement mIconDomElement;
 	bool mIsPin;
 	bool mIsHavePin;
 	bool mIsResizeable;

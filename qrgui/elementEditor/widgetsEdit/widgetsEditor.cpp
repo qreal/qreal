@@ -52,7 +52,7 @@ void WidgetsEditor::onShown(navigation::NavigationState *state)
 
 QWidget *WidgetsEditor::deserializeWidget(QDomDocument const &document)
 {
-	QDomElement widgetTemplate = document.firstChildElement("widget-template");
+	QDomElement const widgetTemplate = document.firstChildElement("widget-template");
 	return deserializeWidget(widgetTemplate);
 }
 

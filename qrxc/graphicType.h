@@ -63,6 +63,7 @@ protected:
 	int mWidth;
 	int mHeight;
 	bool mIsWidgetBased;
+	bool mIsIconWidgetBased;
 	QList<Label*> mLabels;
 	QStringList mContains;
 	ContainerProperties mContainerProperties;
@@ -103,6 +104,8 @@ private:
 	bool addProperty(Property *property);
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
+
+	inline QString exensionByBase(bool widgetBased) const;
 
 	bool mResolving;
 	QString mDescription;
