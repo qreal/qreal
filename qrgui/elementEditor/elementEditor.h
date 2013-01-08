@@ -21,6 +21,7 @@ public:
 	/// @param role Internal system`s role value. @see qrkernel/roles.h
 	ElementEditor(QPersistentModelIndex const &index
 		, int const &role, QWidget *parent = 0);
+	virtual ~ElementEditor();
 
 	/// Returns shape editor instance
 	ShapeEdit *shapeEditor() const;

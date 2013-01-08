@@ -1,5 +1,3 @@
-#include <QtGui/QGroupBox>
-
 #include "groupBox.h"
 
 using namespace qReal::widgetsEdit;

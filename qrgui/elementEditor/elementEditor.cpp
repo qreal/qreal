@@ -20,6 +20,10 @@ ElementEditor::ElementEditor(const QPersistentModelIndex &index
 	load(QDomDocument());
 }
 
+ElementEditor::~ElementEditor()
+{
+}
+
 ShapeEdit *ElementEditor::shapeEditor() const
 {
 	return mShapeEditor;

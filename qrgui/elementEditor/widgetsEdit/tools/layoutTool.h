@@ -18,6 +18,13 @@ class LayoutHelperFactory;
 
 class LayoutTool : public Tool
 {
+	Q_OBJECT
+
+	Q_PROPERTY(int layoutLeftMargin READ layoutLeftMargin WRITE setLayoutLeftMargin USER true DESIGNABLE true)
+	Q_PROPERTY(int layoutRightMargin READ layoutRightMargin WRITE setLayoutRightMargin USER true DESIGNABLE true)
+	Q_PROPERTY(int layoutTopMargin READ layoutTopMargin WRITE setLayoutTopMargin USER true DESIGNABLE true)
+	Q_PROPERTY(int layoutBottomMargin READ layoutBottomMargin WRITE setLayoutBottomMargin USER true DESIGNABLE true)
+
 public:
 	LayoutHelperFactory *layoutFactory() const;
 	void setLayoutHelper(LayoutHelperBase *helper);
@@ -54,11 +61,27 @@ private:
 	void dehighlightDrag();
 	void makeChildrenResizable(bool const resizable = true);
 
+	int layoutLeftMargin() const;
+	int layoutRightMargin() const;
+	int layoutTopMargin() const;
+	int layoutBottomMargin() const;
+
+	void setLayoutLeftMargin(int margin);
+	void setLayoutRightMargin(int margin);
+	void setLayoutTopMargin(int margin);
+	void setLayoutBottomMargin(int margin);
+
+	void invalidateLayoutMargin();
+
 	bool mDraggingOver;
 	QGraphicsColorizeEffect *mEffect;
 	LayoutHelperFactory *mFactory;
 	LayoutHelperBase *mHelper;
 
+	int mLayoutLeftMargin;
+	int mLayoutRightMargin;
+	int mLayoutTopMargin;
+	int mLayoutBottomMargin;
 };
 
 }

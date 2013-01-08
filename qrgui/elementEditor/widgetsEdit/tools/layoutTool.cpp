@@ -34,6 +34,7 @@ void LayoutTool::setLayoutHelper(LayoutHelperBase *helper)
 {
 	mHelper = helper;
 	makeChildrenResizable(helper == NULL);
+	invalidateLayoutMargin();
 }
 
 void LayoutTool::removeChild(Tool *child)
@@ -93,6 +94,10 @@ void LayoutTool::deserializeWidget(QWidget *parent, const QDomElement &element)
 		widgetLayout = NULL;
 	}
 	if (widgetLayout) {
+		widgetLayout->setContentsMargins(mLayoutLeftMargin
+				, mLayoutTopMargin
+				, mLayoutRightMargin
+				, mLayoutBottomMargin);
 		widget()->setLayout(widgetLayout);
 	}
 }
@@ -313,5 +318,59 @@ void LayoutTool::makeChildrenResizable(const bool resizable)
 		if (tool) {
 			tool->setResizable(resizable);
 		}
+	}
+}
+
+int LayoutTool::layoutLeftMargin() const
+{
+	return mLayoutLeftMargin;
+}
+
+int LayoutTool::layoutRightMargin() const
+{
+	return mLayoutRightMargin;
+}
+
+int LayoutTool::layoutTopMargin() const
+{
+	return mLayoutTopMargin;
+}
+
+int LayoutTool::layoutBottomMargin() const
+{
+	return mLayoutBottomMargin;
+}
+
+void LayoutTool::setLayoutLeftMargin(int margin)
+{
+	mLayoutLeftMargin = margin;
+	invalidateLayoutMargin();
+}
+
+void LayoutTool::setLayoutRightMargin(int margin)
+{
+	mLayoutRightMargin = margin;
+	invalidateLayoutMargin();
+}
+
+void LayoutTool::setLayoutTopMargin(int margin)
+{
+	mLayoutTopMargin = margin;
+	invalidateLayoutMargin();
+}
+
+void LayoutTool::setLayoutBottomMargin(int margin)
+{
+	mLayoutBottomMargin = margin;
+	invalidateLayoutMargin();
+}
+
+void LayoutTool::invalidateLayoutMargin()
+{
+	if (layout()) {
+		layout()->setContentsMargins(mLayoutLeftMargin
+				, mLayoutTopMargin
+				, mLayoutRightMargin
+				, mLayoutBottomMargin);
 	}
 }

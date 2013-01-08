@@ -21,6 +21,7 @@ class QRUTILS_EXPORT NavigationView : public QWidget
 public:
 	NavigationView(QMap<NavigationPageInterface*, QWidget *> const &pages
 			, NavigationController *controller = NULL, QWidget *parent = NULL);
+	virtual ~NavigationView();
 
 	NavigationController *controller() const;
 	void setController(NavigationController *controller);

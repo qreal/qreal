@@ -11,6 +11,10 @@ NavigationView::NavigationView(
 	initialize();
 }
 
+NavigationView::~NavigationView()
+{
+}
+
 QWidget *NavigationView::initNavigationArea()
 {
 	mMenuLayout = new QBoxLayout(QBoxLayout::TopToBottom);
