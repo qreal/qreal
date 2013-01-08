@@ -202,8 +202,6 @@
 						<label x="-50" y="80" text="Мощность (%):"/>
 						<label x="33" y="100" textBinded="TachoLimit"/>
 						<label x="-100" y="100" text="Предел оборотов (град):"/>
-						<label x="-66" y="120" text="Режим торможения:"/>
-						<label x="33" y="120" textBinded="BrakeMode"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -244,8 +242,6 @@
 						<label x="-50" y="80" text="Мощность (%):"/>
 						<label x="33" y="100" textBinded="TachoLimit"/>
 						<label x="-100" y="100" text="Предел оборотов (град):"/>
-						<label x="33" y="120" textBinded="BrakeMode"/>
-						<label x="-63" y="120" text="Режим торможения:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -283,9 +279,6 @@
 						</property>
 						<property displayedName="Предел оборотов (гр.)" type="string" name="TachoLimit">
 							<default>0</default>
-						</property>
-						<property displayedName="Режим торможения" type="BreakEngineMode" name="BrakeMode">
-							<default>тормозить</default>
 						</property>
 					</properties>
 					<generalizations>
