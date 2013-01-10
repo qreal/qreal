@@ -64,15 +64,15 @@ void PythonInterpreter::parseOutput(QHash<QPair<QString, QString>, QString> &res
 		return;
 	}
 
-	int const semicolumnIndex = output.indexOf(";", pos);
-	int const equalsIndex = output.indexOf("=", pos);
+	int const semicolumnIndex = output.indexOf("';", pos);
+	int const equalsIndex = output.indexOf("='", pos);
 	QString const elemName = output.mid(pos, delimeterIndex - pos);
 	QString const attrName = output.mid(delimeterIndex + PythonGenerator::delimeter.length()
 			, equalsIndex -delimeterIndex - PythonGenerator::delimeter.length());
-	QString const value = output.mid(equalsIndex + 1, semicolumnIndex - equalsIndex - 1);
+	QString const value = output.mid(equalsIndex + 2, semicolumnIndex - equalsIndex - 2);
 
 	res.insert(QPair<QString, QString>(elemName, attrName), value);
-	pos = semicolumnIndex + 1;
+	pos = semicolumnIndex + 2;
 	parseOutput(res, output, pos);
 }
 

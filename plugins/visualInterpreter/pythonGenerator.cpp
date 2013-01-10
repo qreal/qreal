@@ -210,7 +210,7 @@ QString PythonGenerator::createProperInitAndOutput(QString const &reaction) cons
 
 			bool isStringProp = isStringProperty(idByName(elemName), propertyName);
 			QString const propertyValue = isStringProp ? "'" + escape(curPropertyValue) + "'" : curPropertyValue;
-			QString const representationOfProperty = "str(" + variable + ")";
+			QString const representationOfProperty = "'\\'' + str(" + variable + ") + '\\''";
 
 			init += variable + "=" + propertyValue + "; ";
 			output += " + '" + variable + "=' + " + representationOfProperty + " + ';'";
