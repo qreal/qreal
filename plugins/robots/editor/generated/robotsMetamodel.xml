@@ -115,7 +115,7 @@
 			<node displayedName="Инициализация балансировки" name="BalanceInit">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/balanceInit.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<ports>
 						<linePort>
@@ -202,8 +202,6 @@
 						<label x="-50" y="80" text="Мощность (%):"/>
 						<label x="33" y="100" textBinded="TachoLimit"/>
 						<label x="-100" y="100" text="Предел оборотов (град):"/>
-						<label x="-66" y="120" text="Режим торможения:"/>
-						<label x="33" y="120" textBinded="BrakeMode"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -244,8 +242,6 @@
 						<label x="-50" y="80" text="Мощность (%):"/>
 						<label x="33" y="100" textBinded="TachoLimit"/>
 						<label x="-100" y="100" text="Предел оборотов (град):"/>
-						<label x="33" y="120" textBinded="BrakeMode"/>
-						<label x="-63" y="120" text="Режим торможения:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -283,9 +279,6 @@
 						</property>
 						<property displayedName="Предел оборотов (гр.)" type="string" name="TachoLimit">
 							<default>0</default>
-						</property>
-						<property displayedName="Режим торможения" type="BreakEngineMode" name="BrakeMode">
-							<default>тормозить</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -361,7 +354,7 @@
 			<node displayedName="Балансировка" name="Balance">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/balance.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="33" y="60" textBinded="port"/>
@@ -1214,6 +1207,7 @@
 		</graphicTypes>
 		<palette>
 			<group name="Действия">
+				<element name="Fork"/>
 				<element name="Beep"/>
 				<element name="PlayTone"/>
 				<element name="EnginesForward"/>
@@ -1231,16 +1225,20 @@
 				<element name="WaitForLight"/>
 			</group>
 			<group name="Алгоритмы">
-				<element name="Fork"/>
 				<element name="IfBlock"/>
 				<element name="ControlFlow"/>
 				<element name="RobotsDiagramNode"/>
+				<element name="Loop"/>
 			</group>
 			<group name="Инициализация">
 				<element name="InitialNode"/>
-				<element name="FinalNode"/>
 				<element name="InitialBlock"/>
+				<element name="FinalNode"/>
 				<element name="NullificationEncoder"/>
+			</group>
+			<group name="Сегвей">
+				<element name="Balance"/>
+				<element name="BalanceInit"/>
 			</group>
 		</palette>
 	</diagram>
