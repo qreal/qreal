@@ -35,7 +35,6 @@ for i in xrange(numberOfPorts):
 template = template.replace("@@INITHOOKS@@", ''.join(initCode) + "@@INITHOOKS@@")
 template = template.replace("@@TERMINATEHOOKS@@", ''.join(terminateCode) + "@@TERMINATEHOOKS@@")
 
-scriptDir = os.path.dirname(__file__)
 dirPath = os.path.join(scriptDir, "nxt-tools")
 if not os.path.exists(dirPath):
   os.mkdir(dirPath)

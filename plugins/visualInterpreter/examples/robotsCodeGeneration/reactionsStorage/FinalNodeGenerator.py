@@ -2,7 +2,6 @@ import os
 
 terminateCode = "TerminateTask();\n"
 
-scriptDir = os.path.dirname(__file__)
 relPath = "nxt-tools/program0.c"
 absPath = os.path.join(scriptDir, relPath)
 

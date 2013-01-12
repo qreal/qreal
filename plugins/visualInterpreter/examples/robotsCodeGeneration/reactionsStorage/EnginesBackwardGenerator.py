@@ -22,7 +22,6 @@ if ports.find("B") != -1:
 if ports.find("C") != -1:
   portNames.append("NXT_PORT_C")
 
-scriptDir = os.path.dirname(__file__)
 relPath = "nxt-tools/program0.c"
 absPath = os.path.join(scriptDir, relPath)
 

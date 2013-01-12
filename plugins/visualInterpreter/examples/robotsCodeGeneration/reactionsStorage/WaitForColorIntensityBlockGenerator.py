@@ -20,7 +20,6 @@ partInitCode = "ecrobot_init_nxtcolorsensor(" + port
 initCode = "ecrobot_init_nxtcolorsensor(" + port + ", NXT_COLORSENSOR));\n"
 terminateCode = "ecrobot_term_nxtcolorsensor(" + port + ");\n"
 
-scriptDir = os.path.dirname(__file__)
 relPath = "nxt-tools/program0.c"
 absPath = os.path.join(scriptDir, relPath)
 

@@ -19,7 +19,6 @@ waitForLightCode = "while (!(ecrobot_get_light_sensor(" + port + ") " + conditio
 initCode = "ecrobot_set_light_sensor_active(" + port + ");\n"
 terminateCode = "ecrobot_set_light_sensor_inactive(" + port + ");\n"
 
-scriptDir = os.path.dirname(__file__)
 relPath = "nxt-tools/program0.c"
 absPath = os.path.join(scriptDir, relPath)
 

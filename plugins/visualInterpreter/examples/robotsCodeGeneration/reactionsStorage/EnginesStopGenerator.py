@@ -17,7 +17,6 @@ enginesStopCode = ""
 for port in portNames:
   enginesStopCode = enginesStopCode + "nxt_motor_set_speed(" + port + ", 0, 1);\n"
 
-scriptDir = os.path.dirname(__file__)
 relPath = "nxt-tools/program0.c"
 absPath = os.path.join(scriptDir, relPath)
 

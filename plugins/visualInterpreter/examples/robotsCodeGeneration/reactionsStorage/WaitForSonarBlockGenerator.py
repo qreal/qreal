@@ -19,7 +19,6 @@ waitForSonarCode = "while (!(ecrobot_get_sonar_sensor(" + port + ") " + conditio
 initCode = "ecrobot_init_sonar_sensor(" + port + ");\n"
 terminateCode = "ecrobot_term_sonar_sensor(" + port + ");\n"
 
-scriptDir = os.path.dirname(__file__)
 relPath = "nxt-tools/program0.c"
 absPath = os.path.join(scriptDir, relPath)
 

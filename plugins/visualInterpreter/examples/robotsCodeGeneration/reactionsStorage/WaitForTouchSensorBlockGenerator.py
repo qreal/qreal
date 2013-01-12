@@ -2,7 +2,6 @@ import os
 
 waitForTouchSensorCode = "while (!ecrobot_get_touch_sensor(NXT_PORT_S" + waitFor.Port + "))\n{}\n"
 
-scriptDir = os.path.dirname(__file__)
 relPath = "nxt-tools/program0.c"
 absPath = os.path.join(scriptDir, relPath)
 

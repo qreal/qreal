@@ -10,7 +10,7 @@ PythonInterpreter::PythonInterpreter(QObject *parent
 		, QString const scriptPath)
 		: QObject(parent)
 		, mThread(new QThread())
-		, mInterpreterProcess(new QProcess(this))
+		, mInterpreterProcess(new QProcess(NULL))
 		, mPythonPath(pythonPath)
 		, mScriptPath(scriptPath)
 {
@@ -28,15 +28,29 @@ PythonInterpreter::~PythonInterpreter()
 	delete mThread;
 }
 
-void PythonInterpreter::interpret()
+bool PythonInterpreter::interpret()
 {
-	QStringList args;
-	args.append(mScriptPath);
-	if (QFile::exists(mScriptPath)) {
-		mInterpreterProcess->start(mPythonPath, args);
-		mInterpreterProcess->waitForStarted();
-		mInterpreterProcess->waitForReadyRead();
+	if (mInterpreterProcess->pid() == 0) {
+		mInterpreterProcess->start(mPythonPath, QStringList() << "-i");
+		if (!mInterpreterProcess->waitForStarted()) {
+			emit readyReadErrOutput(tr("Python path was set incorrectly"));
+			return false;
+		}
 	}
+
+	QString const scriptPath = "scriptDir = '" + mScriptPath.mid(0, mScriptPath.lastIndexOf("/")) + "'\n";
+	mInterpreterProcess->write(scriptPath.toAscii());
+
+	if (QFile::exists(mScriptPath)) {
+		QString const execfile = "execfile('" + mScriptPath + "')\n";
+		mInterpreterProcess->write(execfile.toAscii());
+		int const timeout = SettingsManager::value("debuggerTimeout").toInt();
+
+		mInterpreterProcess->waitForReadyRead(timeout);
+		return true;
+	}
+
+	return false;
 }
 
 void PythonInterpreter::setPythonPath(QString const &path)
@@ -80,6 +94,9 @@ void PythonInterpreter::readOutput()
 {
 	QByteArray const out = mInterpreterProcess->readAllStandardOutput();
 	QString const outputString = QString(out);
+	if (outputString.isEmpty()) {
+		return;
+	}
 
 	QHash<QPair<QString, QString>, QString> output = parseOutput(outputString);
 	emit readyReadStdOutput(output);

@@ -21,7 +21,7 @@ public:
 	~PythonInterpreter();
 
 	/// Interpret reaction python script
-	void interpret();
+	bool interpret();
 
 	void setPythonPath(QString const &path);
 	void setScriptPath(QString const &path);

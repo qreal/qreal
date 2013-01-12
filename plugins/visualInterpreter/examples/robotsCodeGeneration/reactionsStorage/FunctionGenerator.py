@@ -15,7 +15,6 @@ for leftPart in functionCode.split(';'):
     leftPart = leftPart.strip()
     variables.add(leftPart)
 
-scriptDir = os.path.dirname(__file__)
 relPath = "nxt-tools/program0.c"
 absPath = os.path.join(scriptDir, relPath)
 

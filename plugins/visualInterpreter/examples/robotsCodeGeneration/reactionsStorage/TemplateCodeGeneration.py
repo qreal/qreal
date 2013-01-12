@@ -5,7 +5,6 @@ template = "#include \"kernel.h\"\n#include \"ecrobot_interface.h\"\n@@BALANCER@
 taskTemplate = "TASK(OSEK_Task_Number_0)\n{\n@@CODE@@\n}"
 template = template.replace("@@CODE@@", taskTemplate)
 
-scriptDir = os.path.dirname(__file__)
 dirPath = os.path.join(scriptDir, "nxt-tools")
 if not os.path.exists(dirPath):
   os.mkdir(dirPath)

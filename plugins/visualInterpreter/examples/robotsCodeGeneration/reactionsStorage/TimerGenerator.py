@@ -2,7 +2,6 @@ import os
 
 timerCode = "systick_wait_ms(" + timer.Delay + ");\n"
 
-scriptDir = os.path.dirname(__file__)
 relPath = "nxt-tools/program0.c"
 absPath = os.path.join(scriptDir, relPath)
 

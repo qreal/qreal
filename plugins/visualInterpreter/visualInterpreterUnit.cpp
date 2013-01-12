@@ -431,9 +431,7 @@ bool VisualInterpreterUnit::interpretPythonReaction()
 
 	mPythonGenerator->generateScript();
 
-	mPythonInterpreter->interpret();
-
-	return true;
+	return mPythonInterpreter->interpret();
 }
 
 void VisualInterpreterUnit::copyProperties(Id const &elemInModel, Id const &elemInRule)
