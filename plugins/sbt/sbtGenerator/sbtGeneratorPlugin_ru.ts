@@ -4,7 +4,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="sbtGeneratorPlugin.cpp" line="31"/>
+        <location filename="sbtGeneratorPlugin.cpp" line="28"/>
         <source>generate for sbt</source>
         <translation>Сгенерировать генератор отчётов</translation>
     </message>

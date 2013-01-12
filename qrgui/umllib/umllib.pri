@@ -31,3 +31,6 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/private/portHandler.cpp \
 	umllib/private/copyHandler.cpp \
     umllib/private/widgetsHelper.cpp
+
+RESOURCES += \
+    umllib/contextIcons.qrc

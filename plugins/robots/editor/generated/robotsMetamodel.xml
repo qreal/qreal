@@ -115,7 +115,7 @@
 			<node displayedName="Инициализация балансировки" name="BalanceInit">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/balanceInit.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<ports>
 						<linePort>
@@ -192,28 +192,29 @@
 			</node>
 			<node displayedName="Моторы назад" name="EnginesBackward">
 				<graphics>
-					<external file="wtf/EnginesBackward.wtf" />
-					<external file="wtf/icons/EnginesBackward.sdf" />
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
 					<labels>
 						<label x="134" y="55" textBinded="Ports"/>
 						<label x="1" y="55" text="Порты:"/>
 					</labels>
 					<ports>
 						<linePort>
-							<start startx="87" starty="5"/>
-							<end endx="87" endy="45"/>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="92" starty="0"/>
-							<end endx="132" endy="0"/>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
 						</linePort>
 						<linePort>
-							<start startx="137" starty="5"/>
-							<end endx="137" endy="45"/>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="92" starty="50"/>
-							<end endx="132" endy="50"/>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
 						</linePort>
 					</ports>
 					<nonResizeable/>
@@ -227,28 +228,29 @@
 			</node>
 			<node displayedName="Моторы вперёд" name="EnginesForward">
 				<graphics>
-					<external file="wtf/EnginesForward.wtf" />
-					<external file="wtf/icons/EnginesForward.sdf" />
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
 					<labels>
 						<label x="134" y="55" textBinded="Ports"/>
 						<label x="1" y="55" text="Порты:"/>
 					</labels>
 					<ports>
 						<linePort>
-							<start startx="87" starty="5"/>
-							<end endx="87" endy="45"/>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="92" starty="0"/>
-							<end endx="132" endy="0"/>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
 						</linePort>
 						<linePort>
-							<start startx="137" starty="5"/>
-							<end endx="137" endy="45"/>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="92" starty="50"/>
-							<end endx="132" endy="50"/>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
 						</linePort>
 					</ports>
 					<nonResizeable/>
@@ -457,25 +459,29 @@
 			</node>
 			<node displayedName="Таймер" name="Timer">
 				<graphics>
-					<external file="wtf/Timer.wtf" />
-					<external file="wtf/icons/Timer.sdf" />
-					<labels />
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/timerBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="Delay"/>
+						<label x="-47" y="60" text="Задержка (мс):"/>
+					</labels>
 					<ports>
 						<linePort>
-							<start startx="45" starty="5"/>
-							<end endx="45" endy="45"/>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="50" starty="0"/>
-							<end endx="90" endy="0"/>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
 						</linePort>
 						<linePort>
-							<start startx="95" starty="5"/>
-							<end endx="95" endy="45"/>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="50" starty="50"/>
-							<end endx="90" endy="50"/>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
 						</linePort>
 					</ports>
 					<nonResizeable/>
@@ -494,24 +500,29 @@
 			</node>
 			<node displayedName="Ждать сенсор касания" name="WaitForTouchSensor">
 				<graphics>
-					<external file="wtf/WaitForTouchSensor.wtf" />
-					<external file="wtf/icons/WaitForTouchSensor.sdf" />
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="Port"/>
+						<label x="0" y="60" text="Порт:"/>
+					</labels>
 					<ports>
 						<linePort>
-							<start startx="37" starty="5"/>
-							<end endx="37" endy="45"/>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="42" starty="0"/>
-							<end endx="82" endy="0"/>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
 						</linePort>
 						<linePort>
-							<start startx="87" starty="5"/>
-							<end endx="87" endy="45"/>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="42" starty="50"/>
-							<end endx="82" endy="50"/>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
 						</linePort>
 					</ports>
 					<nonResizeable/>
@@ -525,25 +536,31 @@
 			</node>
 			<node displayedName="Гудок" name="Beep">
 				<graphics>
-					<external file="wtf/Beep.wtf" />
-					<external file="wtf/icons/Beep.sdf" />
-					<labels />
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/beepBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-90" y="60" text="Громкость (%):"/>
+						<label x="-90" y="80" text="Ждать завершения:"/>
+						<label x="30" y="60" textBinded="Volume"/>
+						<label x="30" y="80" textBinded="WaitForCompletion"/>
+					</labels>
 					<ports>
 						<linePort>
-							<start startx="55" starty="5"/>
-							<end endx="55" endy="45"/>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="60" starty="0"/>
-							<end endx="100" endy="0"/>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
 						</linePort>
 						<linePort>
-							<start startx="105" starty="5"/>
-							<end endx="105" endy="45"/>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="60" starty="50"/>
-							<end endx="100" endy="50"/>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
 						</linePort>
 					</ports>
 					<nonResizeable/>
@@ -639,25 +656,35 @@
 			</node>
 			<node displayedName="Играть звук" name="PlayTone">
 				<graphics>
-					<external file="wtf/PlayTone.wtf" />
-					<external file="wtf/icons/PlayTone.sdf" />
-					<labels/>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-67" y="60" text="Частота (Гц):"/>
+						<label x="-67" y="80" text="Громкость (%):"/>
+						<label x="-68" y="100" text="Длительность (мс):"/>
+						<label x="-68" y="120" text="Ждать завершения:"/>
+						<label x="45" y="60" textBinded="Frequency"/>
+						<label x="45" y="80" textBinded="Volume"/>
+						<label x="45" y="100" textBinded="Duration"/>
+						<label x="45" y="120" textBinded="WaitForCompletion"/>
+					</labels>
 					<ports>
 						<linePort>
-							<start startx="70" starty="5"/>
-							<end endx="70" endy="45"/>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="75" starty="0"/>
-							<end endx="115" endy="0"/>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
 						</linePort>
 						<linePort>
-							<start startx="120" starty="5"/>
-							<end endx="120" endy="45"/>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="75" starty="50"/>
-							<end endx="115" endy="50"/>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
 						</linePort>
 					</ports>
 					<nonResizeable/>
@@ -685,25 +712,33 @@
 			</node>
 			<node displayedName="Ждать сонар" name="WaitForSonarDistance">
 				<graphics>
-					<external file="wtf/WaitForSonarDistance.wtf" />
-					<external file="wtf/icons/WaitForSonarDistance.sdf" />
-					<labels />
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="Port"/>
+						<label x="0" y="60" text="Порт:"/>
+						<label x="33" y="80" textBinded="Distance"/>
+						<label x="-55" y="80" text="Расстояние (см):"/>
+						<label x="33" y="100" textBinded="Sign"/>
+						<label x="-80" y="100" text="Считанное значение:"/>
+					</labels>
 					<ports>
 						<linePort>
-							<start startx="105" starty="5"/>
-							<end endx="105" endy="45"/>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="110" starty="0"/>
-							<end endx="150" endy="0"/>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
 						</linePort>
 						<linePort>
-							<start startx="155" starty="5"/>
-							<end endx="155" endy="45"/>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="110" starty="50"/>
-							<end endx="150" endy="50"/>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
 						</linePort>
 					</ports>
 					<nonResizeable/>
@@ -743,25 +778,33 @@
 			</node>
 			<node displayedName="Ждать интенсивность цвета" name="WaitForColorIntensity">
 				<graphics>
-					<external file="wtf/WaitForColorIntensity.wtf" />
-					<external file="wtf/icons/WaitForColorIntensity.sdf" />
-					<labels />
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForColorIntensityBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="Port"/>
+						<label x="0" y="60" text="Порт:"/>
+						<label x="33" y="80" textBinded="Intensity"/>
+						<label x="-50" y="80" text="Интенсивность:"/>
+						<label x="33" y="100" textBinded="Sign"/>
+						<label x="-80" y="100" text="Считанное значение:"/>
+					</labels>
 					<ports>
 						<linePort>
-							<start startx="105" starty="5"/>
-							<end endx="105" endy="45"/>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="110" starty="0"/>
-							<end endx="150" endy="0"/>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
 						</linePort>
 						<linePort>
-							<start startx="155" starty="5"/>
-							<end endx="155" endy="45"/>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="110" starty="50"/>
-							<end endx="150" endy="50"/>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
 						</linePort>
 					</ports>
 					<nonResizeable/>
@@ -783,25 +826,31 @@
 			</node>
 			<node displayedName="Ждать цвет" name="WaitForColor">
 				<graphics>
-					<external file="wtf/WaitForColor.wtf" />
-					<external file="wtf/icons/WaitForColor.sdf" />
-					<labels />
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForColorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="Port"/>
+						<label x="0" y="60" text="Порт:"/>
+						<label x="33" y="80" textBinded="Color"/>
+						<label x="0" y="80" text="Цвет:"/>
+					</labels>
 					<ports>
 						<linePort>
-							<start startx="57" starty="5"/>
-							<end endx="57" endy="45"/>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="62" starty="0"/>
-							<end endx="102" endy="0"/>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
 						</linePort>
 						<linePort>
-							<start startx="107" starty="5"/>
-							<end endx="107" endy="45"/>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="62" starty="50"/>
-							<end endx="102" endy="50"/>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
 						</linePort>
 					</ports>
 					<nonResizeable/>
@@ -818,25 +867,33 @@
 			</node>
 			<node displayedName="Ждать свет" name="WaitForLight">
 				<graphics>
-					<external file="wtf/WaitForLight.wtf" />
-					<external file="wtf/icons/WaitForLight.sdf" />
-					<labels />
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForLight.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="Port"/>
+						<label x="0" y="60" text="Порт:"/>
+						<label x="33" y="80" textBinded="Percents"/>
+						<label x="-26" y="80" text="Проценты:"/>
+						<label x="33" y="100" textBinded="Sign"/>
+						<label x="-80" y="100" text="Считанное значение:"/>
+					</labels>
 					<ports>
 						<linePort>
-							<start startx="105" starty="5"/>
-							<end endx="105" endy="45"/>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="110" starty="0"/>
-							<end endx="150" endy="0"/>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
 						</linePort>
 						<linePort>
-							<start startx="155" starty="5"/>
-							<end endx="155" endy="45"/>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="110" starty="50"/>
-							<end endx="150" endy="50"/>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
 						</linePort>
 					</ports>
 					<nonResizeable/>
@@ -858,25 +915,31 @@
 			</node>
 			<node displayedName="Ждать энкодер" name="WaitForEncoder">
 				<graphics>
-					<external file="wtf/WaitForEncoder.wtf" />
-					<external file="wtf/icons/WaitForEncoder.sdf" />
-					<labels />
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="Port"/>
+						<label x="0" y="60" text="Порт:"/>
+						<label x="33" y="80" textBinded="TachoLimit"/>
+						<label x="-60" y="80" text="Предел оборотов:"/>
+					</labels>
 					<ports>
 						<linePort>
-							<start startx="85" starty="5"/>
-							<end endx="85" endy="45"/>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="90" starty="0"/>
-							<end endx="130" endy="0"/>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
 						</linePort>
 						<linePort>
-							<start startx="135" starty="5"/>
-							<end endx="135" endy="45"/>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="90" starty="50"/>
-							<end endx="130" endy="50"/>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
 						</linePort>
 					</ports>
 					<nonResizeable/>
@@ -884,12 +947,11 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Предел оборотов (гр.)" type="string" name="TachoLimit">
-							<default>0</default>
-						</property>
+						<property displayedName="Порт" type="string" name="Port"/>
+						<property displayedName="Предел оборотов" type="string" name="TachoLimit"/>
 					</properties>
 					<generalizations>
-						<parent parentName="SensorBlock"/>
+						<parent parentName="AbstractNode"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -974,24 +1036,29 @@
 			</node>
 			<node displayedName="Условие" name="IfBlock">
 				<graphics>
-					<external file="wtf/IfBlock.wtf" />
-					<external file="wtf/icons/IfBlock.sdf" />
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/ifBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="Condition"/>
+						<label x="-25" y="60" text="Условие:"/>
+					</labels>
 					<ports>
 						<linePort>
-							<start startx="25" starty="5"/>
-							<end endx="25" endy="45"/>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="30" starty="0"/>
-							<end endx="70" endy="0"/>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
 						</linePort>
 						<linePort>
-							<start startx="75" starty="5"/>
-							<end endx="75" endy="45"/>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
 						</linePort>
 						<linePort>
-							<start startx="30" starty="50"/>
-							<end endx="70" endy="50"/>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
 						</linePort>
 					</ports>
 					<nonResizeable/>
