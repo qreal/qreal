@@ -4,11 +4,27 @@
 
 #include "tool.h"
 #include "propertyEditor.h"
+#include "../propertyBinding/propertyProxyBase.h"
 
 namespace qReal
 {
 namespace widgetsEdit
 {
+
+class ComboBoxProxy : public PropertyProxyBase
+{
+	Q_OBJECT
+
+//	Q_PROPERTY(bool duplicatesEnabled READ duplicatesEnabled WRITE setDuplicatesEnabled USER true DESIGNABLE true)
+//	Q_PROPERTY(bool editable READ isEditable WRITE setEditable USER true DESIGNABLE true)
+//	Q_PROPERTY(bool frame READ hasFrame WRITE setFrame USER true DESIGNABLE true)
+//	Q_PROPERTY(int maxCount READ maxCount WRITE setMaxCount USER true DESIGNABLE true)
+//	Q_PROPERTY(int maxVisibleItems READ maxVisibleItems WRITE setMaxVisibleItems USER true DESIGNABLE true)
+//	Q_PROPERTY(int minimumContentsLength READ minimumContentsLength WRITE setMinimumContentsLength USER true DESIGNABLE true)
+//	Q_PROPERTY(QComboBox::SizeAdjustPolicy sizeAdjustPolicy READ sizeAdjustPolicy WRITE setSizeAdjustPolicy USER true DESIGNABLE true)
+//	Q_PROPERTY(QString binding READ propertyName WRITE setPropertyName USER true DESIGNABLE true)
+//	BINDING_TOOL(mComboBox)
+};
 
 class ComboBoxWidget : public QComboBox, public PropertyEditor
 {

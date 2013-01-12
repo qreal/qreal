@@ -1,4 +1,6 @@
 HEADERS += \
+	elementEditor/common/startPage.h \
+	elementEditor/common/templateDocumentBuilder.h \
 	elementEditor/common/controlButtons.h \
 	elementEditor/shapeEdit/shapeEdit.h \
 	elementEditor/shapeEdit/scene.h \
@@ -57,11 +59,13 @@ HEADERS += \
 	elementEditor/widgetsEdit/tools/trigger.h \
 	elementEditor/widgetsEdit/tools/triggerWidget.h \
 	elementEditor/widgetsEdit/tools/propertyEditor.h \
-    elementEditor/common/templateDocumentBuilder.h \
-    elementEditor/elementEditor.h \
-    elementEditor/common/startPage.h
+	elementEditor/widgetsEdit/propertyBinding/propertyBinder.h \
+	elementEditor/elementEditor.h \
+    elementEditor/widgetsEdit/propertyBinding/propertyProxyBase.h
 
 SOURCES += \
+	elementEditor/common/startPage.cpp \
+	elementEditor/common/templateDocumentBuilder.cpp \
 	elementEditor/common/controlButtons.cpp \
 	elementEditor/shapeEdit/shapeEdit.cpp \
 	elementEditor/shapeEdit/scene.cpp \
@@ -119,9 +123,9 @@ SOURCES += \
 	elementEditor/widgetsEdit/tools/trigger.cpp \
 	elementEditor/widgetsEdit/tools/triggerWidget.cpp \
 	elementEditor/widgetsEdit/tools/propertyEditor.cpp \
-    elementEditor/common/templateDocumentBuilder.cpp \
-    elementEditor/elementEditor.cpp \
-    elementEditor/common/startPage.cpp
+	elementEditor/widgetsEdit/propertyBinding/propertyBinder.cpp \
+	elementEditor/elementEditor.cpp \
+    elementEditor/widgetsEdit/propertyBinding/propertyProxyBase.cpp
 
 FORMS += \
 	elementEditor/shapeEdit/shapeEdit.ui \
