@@ -49,3 +49,4 @@ workingDir=./save
 zoomFactor=2
 oldLineColor=magenta
 PaintOldEdgeMode=true
+pathToImages=./images/iconset1
