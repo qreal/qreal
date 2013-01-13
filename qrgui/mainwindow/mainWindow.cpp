@@ -871,10 +871,6 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::initSettingsManager()
 {
-	QDir imagesDir(SettingsManager::value("pathToImages").toString());
-	if (!imagesDir.exists() || SettingsManager::value("pathToImages").toString().isEmpty()) {
-		SettingsManager::setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
-	}
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
 	if (!dir.cd(mTempDir)) {
