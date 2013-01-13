@@ -2,6 +2,7 @@
 
 #include "../../thirdparty/qextserialport/src/qextserialenumerator.h"
 #include "../../thirdparty/qextserialport/src/qextserialport.h"
+
 using namespace qReal::interpreters::robots;
 
 RobotCommunicator::RobotCommunicator(QString const &portName)
@@ -63,6 +64,9 @@ void RobotCommunicator::responseSlot(QObject *addressee, QByteArray const &buffe
 
 void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication)
 {
+	if (mRobotCommunicationThreadObject) {
+		mRobotCommunicationThreadObject->stop();
+	}
 	mRobotCommunicationThread.quit();
 	mRobotCommunicationThread.wait();
 	delete mRobotCommunicationThreadObject;

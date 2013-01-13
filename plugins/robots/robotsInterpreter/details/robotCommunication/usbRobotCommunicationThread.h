@@ -29,6 +29,15 @@ public slots:
 	void disconnect();
 	void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize
 			, inputPort::InputPortEnum const &port);
+	void stop();
+
+private slots:
+	/// Checks if robot is connected
+	void checkForConnection();
+
+	/// Checks that message requires response or not.
+	/// @returns true, if there shall be a response.
+	static bool isResponseNeeded(QByteArray const &buffer);
 
 private:
 	static const int kStatusNoError = 0;
@@ -45,13 +54,7 @@ private:
 	/// Timer that sends messages to robot to check that connection is still alive
 	QTimer *mKeepAliveTimer;
 
-private slots:
-	/// Checks if robot is connected
-	void checkForConnection();
-
-	/// Checks that message requires response or not.
-	/// @returns true, if there shall be a response.
-	static bool isResponseNeeded(QByteArray const &buffer);
+	bool mStopped;
 };
 
 }

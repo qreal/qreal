@@ -23,6 +23,8 @@ public slots:
 	virtual void connect(QString const &portName) = 0;
 	virtual void disconnect() = 0;
 	virtual void reconnect(QString const &portName) = 0;
+	/// The implementation must stop all active long jobs
+	virtual void stop() = 0;
 
 signals:
 	void connected(bool success);
