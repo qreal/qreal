@@ -435,10 +435,11 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			recalculateHighlightedNode(event->scenePos());
 		}
 
-		newPos += (event->scenePos() - scenePos()) - mDragPosition;
+//		newPos += (event->scenePos() - scenePos()) - mDragPosition;
 		Element::mouseMoveEvent(event); // it is needed for sendEvent() to every isSelected element thro scene
 		mGrid->mouseMoveEvent(event);
 		alignToGrid();
+		newPos = pos();
 
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
@@ -503,6 +504,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	resize(newContents, newPos);
+	qDebug() << newPos;
 
 	if (isPort()) {
 		mUmlPortHandler->handleMoveEvent(
@@ -523,6 +525,10 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		mTimeOfUpdate++;
 	}
 	mTimer->start(400);
+
+//	if (mDragState == None) {
+//		alignToGrid();
+//	}
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
