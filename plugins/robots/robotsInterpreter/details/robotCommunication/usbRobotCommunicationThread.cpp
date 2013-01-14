@@ -32,8 +32,6 @@ void UsbRobotCommunicationThread::connect(QString const &portName)
 {
 	Q_UNUSED(portName);
 
-	mStopped = false;
-
 	char resNamePC[10000];
 	unsigned long nxtIterator;
 
@@ -65,7 +63,6 @@ void UsbRobotCommunicationThread::connect(QString const &portName)
 void UsbRobotCommunicationThread::send(QObject *addressee
 		, QByteArray const &buffer, unsigned const responseSize)
 {
-	mStopped = false;
 	QByteArray outputBuffer;
 	outputBuffer.resize(responseSize);
 	send(buffer, responseSize, outputBuffer);
@@ -131,7 +128,6 @@ void UsbRobotCommunicationThread::reconnect(QString const &portName)
 
 void UsbRobotCommunicationThread::disconnect()
 {
-	mStopped = false;
 	mKeepAliveTimer->stop();
 	int status = 0;
 	mFantom.nFANTOM100_destroyNXT(mNXTHandle, status);
@@ -147,12 +143,11 @@ void UsbRobotCommunicationThread::sendI2C(QObject *addressee
 	Q_UNUSED(buffer)
 	Q_UNUSED(responseSize)
 	Q_UNUSED(port)
-	mStopped = false;
 }
 
-void UsbRobotCommunicationThread::stop()
+void UsbRobotCommunicationThread::allowLongJobs(bool allow)
 {
-	mStopped = true;
+	mStopped = !allow;
 }
 
 void UsbRobotCommunicationThread::debugPrint(QByteArray const &buffer, bool out)

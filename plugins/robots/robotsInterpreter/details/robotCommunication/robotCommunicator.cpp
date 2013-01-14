@@ -13,8 +13,10 @@ RobotCommunicator::RobotCommunicator(QString const &portName)
 
 RobotCommunicator::~RobotCommunicator()
 {
+	mRobotCommunicationThreadObject->allowLongJobs(false);
 	mRobotCommunicationThread.quit();
 	mRobotCommunicationThread.wait();
+	delete mRobotCommunicationThreadObject;
 }
 
 void RobotCommunicator::send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize)
@@ -65,13 +67,14 @@ void RobotCommunicator::responseSlot(QObject *addressee, QByteArray const &buffe
 void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication)
 {
 	if (mRobotCommunicationThreadObject) {
-		mRobotCommunicationThreadObject->stop();
+		mRobotCommunicationThreadObject->allowLongJobs(false);
 	}
 	mRobotCommunicationThread.quit();
 	mRobotCommunicationThread.wait();
 	delete mRobotCommunicationThreadObject;
 	mRobotCommunicationThreadObject = robotCommunication;
 	mRobotCommunicationThreadObject->moveToThread(&mRobotCommunicationThread);
+	mRobotCommunicationThreadObject->allowLongJobs();
 	mRobotCommunicationThread.start();
 
 	QObject::connect(this, SIGNAL(threadConnect(QString)), mRobotCommunicationThreadObject, SLOT(connect(QString)));

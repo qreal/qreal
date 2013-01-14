@@ -145,8 +145,9 @@ void BluetoothRobotCommunicationThread::sendI2C(QObject *addressee
 	}
 }
 
-void BluetoothRobotCommunicationThread::stop()
+void BluetoothRobotCommunicationThread::allowLongJobs(bool allow)
 {
+	Q_UNUSED(allow)
 }
 
 bool BluetoothRobotCommunicationThread::waitForBytes(int bytes, inputPort::InputPortEnum const &port) const
