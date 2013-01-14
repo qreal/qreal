@@ -43,8 +43,11 @@ void UsbRobotCommunicationThread::connect(QString const &portName)
 			int status2 = 0;
 			mFantom.nFANTOM100_iNXTIterator_getName(nxtIterator, resNamePC, status2);
 			QString resName = QString(resNamePC);
-			if (resName.toUpper().contains("USB") || mStopped) {
+			if (resName.toUpper().contains("USB")) {
 				break;
+			}
+			if (mStopped) {
+				return;
 			}
 		}
 		if (status == kStatusNoError) {
