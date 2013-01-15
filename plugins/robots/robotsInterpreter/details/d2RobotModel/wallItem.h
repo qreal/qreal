@@ -3,6 +3,7 @@
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QPainter>
 #include <QtXml/QDomDocument>
+
 #include "lineItem.h"
 
 namespace qReal {
@@ -32,14 +33,12 @@ public:
 	virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
 	virtual void deserializePenBrush(QDomElement const &element);
 
-public slots:
-	void toStopWall(bool isNeedStop, QPointF const& oldPos);
-
 signals:
-	void wallDragged(QPainterPath const &shape, QPointF const& oldPos);
+	void wallDragged(WallItem *item, QPainterPath const &shape, QPointF const& oldPos);
 
 protected:
 	virtual void setPrivateData();
+
 private:
 	bool mDragged;
 	QImage mImage;
@@ -50,4 +49,3 @@ private:
 }
 }
 }
-

@@ -1,11 +1,11 @@
-#include "abstractItem.h"
-
 #include <QtGui/QPainter>
 #include <QtGui/QStyle>
 #include <QtGui/QGraphicsScene>
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtGui/QGraphicsSceneMouseEvent>
-#include <QDebug>
+#include <QtCore/QDebug>
+
+#include "abstractItem.h"
 
 using namespace graphicsUtils;
 
