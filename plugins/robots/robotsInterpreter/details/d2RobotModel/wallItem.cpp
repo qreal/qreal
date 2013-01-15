@@ -58,14 +58,17 @@ void WallItem::drawExtractionForItem(QPainter *painter)
 void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
-	mDragged = flags() & ItemIsMovable;
+	mDragged = (flags() & ItemIsMovable) || mOverlappedWithRobot;
 }
 
 void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
 	QPointF const oldPos = pos();
 	QGraphicsItem::mouseMoveEvent(event);
-	if (mDragged && (flags() & ItemIsMovable)) {
+	// Items under cursor cannot be dragged when adding new item,
+	// but it mustn`t confuse the case when item is unmovable
+	// because overapped with robot
+	if (mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
 		emit wallDragged(this, realShape(), oldPos);
 	}
 	event->accept();
@@ -96,4 +99,9 @@ void WallItem::deserializePenBrush(QDomElement const &element)
 {
 	Q_UNUSED(element)
 	setPrivateData();
+}
+
+void WallItem::onOverlappedWithRobot(bool overlapped)
+{
+	mOverlappedWithRobot = overlapped;
 }

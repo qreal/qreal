@@ -810,6 +810,7 @@ void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape
 		, const QPointF &oldPos)
 {
 	bool const isNeedStop = shape.intersects(mRobot->realBoundingRect());
+	wall->onOverlappedWithRobot(isNeedStop);
 	if (wall->isDragged()) {
 		if (isNeedStop) {
 			wall->setPos(oldPos);

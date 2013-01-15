@@ -33,6 +33,8 @@ public:
 	virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
 	virtual void deserializePenBrush(QDomElement const &element);
 
+	void onOverlappedWithRobot(bool overlapped = true);
+
 signals:
 	void wallDragged(WallItem *item, QPainterPath const &shape, QPointF const& oldPos);
 
@@ -42,6 +44,7 @@ protected:
 private:
 	bool mDragged;
 	QImage mImage;
+	bool mOverlappedWithRobot;
 };
 
 }
