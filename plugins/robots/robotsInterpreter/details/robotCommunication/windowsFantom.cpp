@@ -1,8 +1,12 @@
+#include <QtCore/QDebug>
+
 #include "windowsFantom.h"
 #include "robotCommunicationException.h"
 #include "fantomMethods.h"
 
 using namespace robotsInterpreter::robotCommunication;
+
+unsigned long const fantomDriverUnavailableResult = 100500;
 
 Fantom::Fantom()
 {
@@ -21,7 +25,7 @@ unsigned long Fantom::nFANTOM100_createNXT(char resString[], int status, unsigne
 	if (nFANTOM100_createNXTHandle) {
 		return nFANTOM100_createNXTHandle(resString, status, checkFVersion);
 	} else {
-		throw RobotCommunicationException("Fantom driver is not available");
+		return onDriverUnavailable();
 	}
 }
 
@@ -37,7 +41,7 @@ unsigned Fantom::nFANTOM100_iNXT_sendDirectCommand(unsigned long nxtHandle
 	if (nFANTOM100_iNXT_sendDirectCommandHandle) {
 		return nFANTOM100_iNXT_sendDirectCommandHandle(nxtHandle, requireResponse, inputBufferPtr, inputBufferSize, outputBufferPtr, outputBufferSize, status);
 	} else {
-		throw RobotCommunicationException("Fantom driver is not available");
+		return onDriverUnavailable();
 	}
 }
 
@@ -47,7 +51,7 @@ unsigned long Fantom::nFANTOM100_createNXTIterator(unsigned char searchBluetooth
 	if (nFANTOM100_createNXTIteratorHandle) {
 		return nFANTOM100_createNXTIteratorHandle(searchBluetooth, bluetoothSearchTimeout, status);
 	} else {
-		throw RobotCommunicationException("Fantom driver is not available");
+		return onDriverUnavailable();
 	}
 }
 
@@ -57,7 +61,7 @@ void Fantom::nFANTOM100_iNXTIterator_getName(unsigned long NXTIterHandle, char r
 	if (nFANTOM100_iNXTIterator_getNameHandle) {
 		nFANTOM100_iNXTIterator_getNameHandle(NXTIterHandle, resString, status);
 	} else {
-		throw RobotCommunicationException("Fantom driver is not available");
+		onDriverUnavailable();
 	}
 }
 
@@ -67,7 +71,7 @@ unsigned long Fantom::nFANTOM100_iNXTIterator_getNXT(unsigned long nxtIterHandle
 	if (nFANTOM100_iNXTIterator_getNXTHandle) {
 		return nFANTOM100_iNXTIterator_getNXTHandle(nxtIterHandle, status);
 	} else {
-		throw RobotCommunicationException("Fantom driver is not available");
+		return onDriverUnavailable();
 	}
 }
 
@@ -77,7 +81,7 @@ void Fantom::nFANTOM100_destroyNXTIterator(unsigned long nxtIteratorHandle, int 
 	if (nFANTOM100_destroyNXTIteratorHandle) {
 		nFANTOM100_destroyNXTIteratorHandle(nxtIteratorHandle, status);
 	} else {
-		throw RobotCommunicationException("Fantom driver is not available");
+		onDriverUnavailable();
 	}
 }
 
@@ -87,7 +91,7 @@ void Fantom::nFANTOM100_iNXTIterator_advance(unsigned long NXTIterHandle, int &s
 	if (nFANTOM100_iNXTIterator_advanceHandle) {
 		nFANTOM100_iNXTIterator_advanceHandle(NXTIterHandle, status);
 	} else {
-		throw RobotCommunicationException("Fantom driver is not available");
+		onDriverUnavailable();
 	}
 }
 
@@ -98,7 +102,7 @@ void Fantom::nFANTOM100_iNXT_findDeviceInFirmwareDownloadMode(char resString[], 
 	if (nFANTOM100_iNXT_findDeviceInFirmwareDownloadModeHandle) {
 		nFANTOM100_iNXT_findDeviceInFirmwareDownloadModeHandle(resString, status);
 	} else {
-		throw RobotCommunicationException("Fantom driver is not available");
+		onDriverUnavailable();
 	}
 }
 
@@ -109,6 +113,12 @@ void Fantom::nFANTOM100_destroyNXT(unsigned long nxtHandle, int &status)
 	if (nFANTOM100_destroyNXT) {
 		nFANTOM100_destroyNXT(nxtHandle,status);
 	} else {
-		throw RobotCommunicationException("Fantom driver is not available");
+		onDriverUnavailable();
 	}
+}
+
+unsigned long Fantom::onDriverUnavailable()
+{	// Too loud
+	// throw RobotCommunicationException("Fantom driver is not available");
+	return fantomDriverUnavailableResult;
 }

@@ -30,6 +30,7 @@ public slots:
 	void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize
 			, inputPort::InputPortEnum const &port);
 	void allowLongJobs(bool allow = true);
+	void checkConsistency();
 
 private slots:
 	/// Checks if robot is connected

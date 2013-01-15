@@ -1,8 +1,11 @@
+#include <QtCore/QDebug>
+
 #include "usbRobotCommunicationThread.h"
 
 #include "../../thirdparty/qextserialport/src/qextserialenumerator.h"
 #include "../../thirdparty/qextserialport/src/qextserialport.h"
 #include "../tracer.h"
+#include "../../../../qrkernel/settingsManager.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details;
@@ -31,6 +34,10 @@ bool UsbRobotCommunicationThread::isOpen()
 void UsbRobotCommunicationThread::connect(QString const &portName)
 {
 	Q_UNUSED(portName);
+
+	if (!mFantom.isAvailable()) {
+		return;
+	}
 
 	char resNamePC[10000];
 	unsigned long nxtIterator;
@@ -125,12 +132,14 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const 
 
 void UsbRobotCommunicationThread::reconnect(QString const &portName)
 {
-	mStopped = false;
 	connect(portName);
 }
 
 void UsbRobotCommunicationThread::disconnect()
 {
+	if (!mFantom.isAvailable()) {
+		return;
+	}
 	mKeepAliveTimer->stop();
 	int status = 0;
 	mFantom.nFANTOM100_destroyNXT(mNXTHandle, status);
@@ -184,4 +193,17 @@ void UsbRobotCommunicationThread::checkForConnection()
 bool UsbRobotCommunicationThread::isResponseNeeded(QByteArray const &buffer)
 {
 	return buffer[2] == 0;
+}
+
+void UsbRobotCommunicationThread::checkConsistency()
+{
+	if (!mFantom.isAvailable()) {
+		QString const fantomDownloadLink = qReal::SettingsManager::value("fantomDownloadLink").toString();
+		QString errorMessage = tr("Fantom Driver is unavailable. Usb connection to robot is impossible.");
+		if (!fantomDownloadLink.isEmpty()) {
+			// TODO: make link clickable
+			errorMessage += tr(" You can download Fantom Driver on ") + fantomDownloadLink;
+		}
+		emit errorOccured(errorMessage);
+	}
 }

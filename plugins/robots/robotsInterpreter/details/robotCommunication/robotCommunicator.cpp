@@ -64,6 +64,11 @@ void RobotCommunicator::responseSlot(QObject *addressee, QByteArray const &buffe
 	emit response(addressee, buffer);
 }
 
+void RobotCommunicator::onErrorOccured(const QString &message)
+{
+	emit errorOccured(message);
+}
+
 void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication)
 {
 	if (mRobotCommunicationThreadObject) {
@@ -87,4 +92,7 @@ void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThre
 	QObject::connect(mRobotCommunicationThreadObject, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 	QObject::connect(mRobotCommunicationThreadObject, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
 	QObject::connect(mRobotCommunicationThreadObject, SIGNAL(response(QObject*, QByteArray)), this, SLOT(responseSlot(QObject*, QByteArray)));
+	QObject::connect(mRobotCommunicationThreadObject, SIGNAL(errorOccured(QString)), this, SLOT(onErrorOccured(QString)));
+
+	mRobotCommunicationThreadObject->checkConsistency();
 }

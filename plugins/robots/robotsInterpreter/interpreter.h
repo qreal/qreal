@@ -80,6 +80,8 @@ private slots:
 	/// actions when robot disconnect
 	void disconnectSlot();
 
+	void reportError(QString const &message);
+
 private:
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	Id const findStartingElement(Id const &diagram) const;
@@ -115,6 +117,8 @@ private:
 
 	/// Action responsible for the connection to the robot
 	QAction *mActionConnectToRobot;
+
+	QString mLastCommunicationValue;
 };
 
 }

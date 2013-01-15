@@ -38,6 +38,7 @@ Interpreter::Interpreter()
 	connect(mRobotModel, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
 	connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 	connect(mD2ModelWidget, SIGNAL(d2WasClosed()), this, SLOT(stopRobot()));
+	connect(mRobotCommunication, SIGNAL(errorOccured(QString)), this, SLOT(reportError(QString)));
 }
 
 void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
@@ -383,12 +384,16 @@ void Interpreter::setRobotModelType(robotModelType::robotModelTypeEnum robotMode
 
 void Interpreter::setCommunicator(QString const &valueOfCommunication, QString const &portName)
 {
+	if (valueOfCommunication == mLastCommunicationValue) {
+		return;
+	}
 	RobotCommunicationThreadInterface *communicator = NULL;
 	if (valueOfCommunication == "bluetooth") {
 		communicator = new BluetoothRobotCommunicationThread();
 	} else {
 		communicator = new UsbRobotCommunicationThread();
 	}
+	mLastCommunicationValue = valueOfCommunication;
 
 	mRobotCommunication->setRobotCommunicationThreadObject(communicator);
 	mRobotCommunication->setPortName(portName);
@@ -398,4 +403,9 @@ void Interpreter::setCommunicator(QString const &valueOfCommunication, QString c
 void Interpreter::setConnectRobotAction(QAction *actionConnect)
 {
 	mActionConnectToRobot = actionConnect;
+}
+
+void Interpreter::reportError(QString const &message)
+{
+	mInterpretersInterface->errorReporter()->addError(message);
 }

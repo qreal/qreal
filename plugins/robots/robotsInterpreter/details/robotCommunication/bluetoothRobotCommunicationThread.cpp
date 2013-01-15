@@ -227,3 +227,7 @@ void BluetoothRobotCommunicationThread::checkForConnection()
 		emit disconnected();
 	}
 }
+
+void BluetoothRobotCommunicationThread::checkConsistency()
+{
+}
