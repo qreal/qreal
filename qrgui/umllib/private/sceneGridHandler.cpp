@@ -227,8 +227,8 @@ void SceneGridHandler::alignToGrid()
 	makeGridMovingX(myX1, coefX, indexGrid);
 	makeGridMovingY(myY1, coefY, indexGrid);
 
-	myX1 = nodePos.x() + contentsRect.x();
-	myY1 = nodePos.y() + contentsRect.y();
+//	myX1 = nodePos.x() + contentsRect.x();
+//	myY1 = nodePos.y() + contentsRect.y();
 }
 
 void SceneGridHandler::drawGuides()
@@ -298,7 +298,7 @@ void SceneGridHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	Q_UNUSED(event)
 	NodeElement *parItem = dynamic_cast<NodeElement*>(mNode->parentItem());
-	if (parItem != NULL) {
+	if (parItem) {
 		return;
 	}
 

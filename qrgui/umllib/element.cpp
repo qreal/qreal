@@ -44,6 +44,7 @@ void Element::updateData()
 
 QList<ContextMenuAction*> Element::contextMenuActions(const QPointF &pos)
 {
+	Q_UNUSED(pos)
 	return QList<ContextMenuAction*>();
 }
 

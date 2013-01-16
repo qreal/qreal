@@ -44,11 +44,11 @@ class D2ModelWidget : public QWidget {
 	Q_OBJECT
 
 public:
-	explicit D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel, QWidget *parent = 0);
+	D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel, QWidget *parent = 0);
 	~D2ModelWidget();
 	void init(bool isActive = true);
 	void close();
-	void draw(QPointF newCoord, qreal angle, QPointF dPoint);
+	void draw(QPointF const &newCoord, qreal angle, QPointF const &dPoint);
 	void drawBeep(bool isNeededBeep);
 	QPolygonF const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
 
@@ -73,7 +73,7 @@ public:
 
 public slots:
 	void update();
-	void worldWallDragged(QPainterPath const &shape, QPointF const& oldPos);
+	void worldWallDragged(WallItem *wall, QPainterPath const &shape, QPointF const& oldPos);
 
 signals:
 	void robotWasIntersectedByWall(bool isNeedStop, QPointF const& oldPos);

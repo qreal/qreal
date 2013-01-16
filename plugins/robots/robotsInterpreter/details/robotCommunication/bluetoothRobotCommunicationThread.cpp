@@ -1,8 +1,7 @@
-#include "bluetoothRobotCommunicationThread.h"
-
 #include <QtCore/QMetaType>
 #include <time.h>
 
+#include "bluetoothRobotCommunicationThread.h"
 #include "../../../thirdparty/qextserialport/src/qextserialport.h"
 #include "../tracer.h"
 
@@ -146,6 +145,11 @@ void BluetoothRobotCommunicationThread::sendI2C(QObject *addressee
 	}
 }
 
+void BluetoothRobotCommunicationThread::allowLongJobs(bool allow)
+{
+	Q_UNUSED(allow)
+}
+
 bool BluetoothRobotCommunicationThread::waitForBytes(int bytes, inputPort::InputPortEnum const &port) const
 {
 	time_t const startTime = clock();
@@ -222,4 +226,8 @@ void BluetoothRobotCommunicationThread::checkForConnection()
 	if (response == QByteArray()) {
 		emit disconnected();
 	}
+}
+
+void BluetoothRobotCommunicationThread::checkConsistency()
+{
 }
