@@ -1,18 +1,18 @@
-#include "nodeElement.h"
-#include "../view/editorViewScene.h"
-#include "../editorPluginInterface/editorInterface.h"
-
+#include <QtCore/QDebug>
+#include <QtCore/QUuid>
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtGui/QMessageBox>
 #include <QtGui/QTextCursor>
 #include <QtGui/QToolTip>
-#include <QtCore/QDebug>
-#include <QtCore/QUuid>
-
 #include <QtGui/QGraphicsDropShadowEffect>
 
 #include <math.h>
+
+#include "nodeElement.h"
+#include "../view/editorViewScene.h"
+#include "../editorPluginInterface/editorInterface.h"
+
 #include "private/resizeHandler.h"
 #include "private/copyHandler.h"
 
@@ -435,10 +435,11 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			recalculateHighlightedNode(event->scenePos());
 		}
 
-		newPos += (event->scenePos() - scenePos()) - mDragPosition;
-		Element::mouseMoveEvent(event); // it is needed for sendEvent() to every isSelected element thro scene
+		// it is needed for sendEvent() to every isSelected element thro scene
+		Element::mouseMoveEvent(event);
 		mGrid->mouseMoveEvent(event);
 		alignToGrid();
+		newPos = pos();
 
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
@@ -503,6 +504,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	resize(newContents, newPos);
+	qDebug() << newPos;
 
 	if (isPort()) {
 		mUmlPortHandler->handleMoveEvent(
@@ -523,6 +525,10 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		mTimeOfUpdate++;
 	}
 	mTimer->start(400);
+
+//	if (mDragState == None) {
+//		alignToGrid();
+//	}
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

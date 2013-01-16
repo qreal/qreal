@@ -68,6 +68,7 @@ void RealRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const
 
 void RealRobotModelImplementation::addLightSensor(inputPort::InputPortEnum const &port)
 {
+	Q_UNUSED(port)
 //	sensorImplementations::BluetoothLightSensorImplementation *sensor = new sensorImplementations::BluetoothLightSensorImplementation(mRobotCommunicator, port);
 	//mSensorsConfigurer.configureSensor(sensor, port);
 }
