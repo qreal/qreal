@@ -45,12 +45,12 @@ void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event, QRectF const 
 	setX1andY1(event);
 	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos()));
 	if (mGraphicsItem) {
-		if (!mGraphicsItem->realShape().intersects(rect)) {
+//		if (!mGraphicsItem->realShape().intersects(rect)) {
 			mGraphicsItem->changeDragState(mX1, mY1);
 			if (mGraphicsItem->getDragState() != AbstractItem::None) {
 				mView->setDragMode(QGraphicsView::NoDrag);
 			}
-		}
+//		}
 	}
 	update();
 }

@@ -525,10 +525,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		mTimeOfUpdate++;
 	}
 	mTimer->start(400);
-
-//	if (mDragState == None) {
-//		alignToGrid();
-//	}
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

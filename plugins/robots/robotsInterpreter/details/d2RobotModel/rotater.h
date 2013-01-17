@@ -13,7 +13,7 @@ namespace details {
 namespace d2Model {
 
 const int length = 30;
-const int addAngle = 30; //в градусах; для отрисовки наконечника стрелки
+const int addAngle = 30; // Degrees; for arror pike drawing
 
 /// Class that represents line that allows to rotate QGraphicItems
 class Rotater : public QObject, public graphicsUtils::AbstractItem
@@ -36,8 +36,9 @@ public:
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
 
 	void setMasterItem(graphicsUtils::RotateInterface *masterItem);
-	void reshapeWithMasterItem(QPointF pos);
-	void rotateWithMasterItem(QPointF delta, QPointF rotatePoint, QPointF basePos, qreal baseDir, qreal localDir);
+	void reshapeWithMasterItem(QPointF const &pos);
+	void rotateWithMasterItem(QPointF delta, QPointF const &rotatePoint
+		, QPointF const &basePos, qreal baseDir, qreal localDir);
 
 
 private:

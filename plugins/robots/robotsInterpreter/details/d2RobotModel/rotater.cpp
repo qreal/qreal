@@ -1,8 +1,8 @@
-#include "rotater.h"
-
 #include <QtGui/QCursor>
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <qmath.h>
+
+#include "rotater.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -31,7 +31,8 @@ void Rotater::setMasterItem(RotateInterface *masterItem)
 
 	QRectF rect = mMaster->rect();
 	mX1 = rect.topRight().x();
-	mY1 = rect.topRight().y() + rect.height() / 2;//asd плохо, если делать другую точку поворота
+	// asd is bad if doing another rotation point
+	mY1 = rect.topRight().y() + rect.height() / 2;
 
 	mX2 = mX1 + mLength;
 	mY2 = mY1;
@@ -45,7 +46,8 @@ void Rotater::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *style,
 	painter->setOpacity(0.5);
 	const int addLength = mLength / 3;
 	qreal angle = addAngle;
-	qreal checkLength = sqrt((mX2 - mX1) * (mX2 - mX1) + (mY2 - mY1) * (mY2 - mY1));// должен быть равен mLength
+	// must be equal mLength
+	qreal checkLength = sqrt((mX2 - mX1) * (mX2 - mX1) + (mY2 - mY1) * (mY2 - mY1));
 	qreal x0 = ((checkLength - addLength) * mX2 + addLength * mX1) / checkLength;
 	qreal y0 = ((checkLength - addLength) * mY2 + addLength * mY1) / checkLength;
 	QPointF first = QTransform().translate(mX2 - x0, mY2 - y0).rotate(- angle).translate(- mX2 + x0, - mY2 + y0).rotate(angle).map(QPointF(x0, y0));
@@ -155,18 +157,20 @@ void Rotater::resizeItem(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void Rotater::reshapeWithMasterItem(QPointF delta)
+void Rotater::reshapeWithMasterItem(QPointF const &delta)
 {
-//	if (!isSelected())//надо бы уточнить...
+//	if (!isSelected()) // Need to be clarified
 		setPos(pos() + delta);
 }
 
-void Rotater::rotateWithMasterItem(QPointF delta, QPointF rotatePoint, QPointF basePos, qreal baseDir, qreal localDir)
+void Rotater::rotateWithMasterItem(QPointF delta, QPointF const &rotatePoint
+		, QPointF const &basePos, qreal baseDir, qreal localDir)
 {
 	delta = QPointF(0, 0);
 	QRectF rect = mMaster->rect();
 	qreal x1 = rect.topRight().x() + delta.x();
-	qreal y1 = rect.topRight().y() + rect.height() / 2 + delta.y();//asd плохо, если делать другую точку поворота
+	// asd is bad if doing another rotation point
+	qreal y1 = rect.topRight().y() + rect.height() / 2 + delta.y();
 	qreal x2 = x1 + mLength;
 	qreal y2 = y1;
 

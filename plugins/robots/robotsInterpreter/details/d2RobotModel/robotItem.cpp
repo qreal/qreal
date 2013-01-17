@@ -1,9 +1,4 @@
 #include "robotItem.h"
-#include <QtGui/QCursor>
-#include <QtGui/QApplication>
-#include <QtGui/QGraphicsSceneMouseEvent>
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QStyleOptionGraphicsItem>
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -14,7 +9,6 @@ int const border = 5;
 RobotItem::RobotItem()
 	: AbstractItem()
 	, mImage(QImage(":/icons/robot.png"))
-	, mBeepImage(QImage(":/icons/beepRobot.png"))
 	, mNeededBeep(false)
 	, mIsOnTheGround(true)
 	, mRotater(NULL)
@@ -41,15 +35,39 @@ void RobotItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* opti
 	Q_UNUSED(option)
 	Q_UNUSED(widget)
 	if (mNeededBeep) {
+		playBeep();
 		drawBeep(painter);
-	} else {
-		mRectangleImpl.drawImageItem(painter, mX1, mY1, mX2, mY2, mImage);
 	}
+	mRectangleImpl.drawImageItem(painter, mX1, mY1, mX2, mY2, mImage);
 }
 
 void RobotItem::drawBeep(QPainter* painter)
 {
-	mRectangleImpl.drawImageItem(painter, mX1, mY1, mX2, mY2, mBeepImage);
+	qreal centerX = (mX1 + mX2) / 2;
+	qreal centerY = (mY1 + mY2) / 2;
+	QPointF const center(centerX, centerY);
+
+	drawBeepArcs(painter, center, 40);
+	drawBeepArcs(painter, center, 50);
+	drawBeepArcs(painter, center, 60);
+}
+
+void RobotItem::drawBeepArcs(QPainter* painter, QPointF const &center, qreal radius)
+{
+	painter->save();
+	QPen pen;
+	pen.setColor(Qt::red);
+	pen.setWidth(3);
+	painter->setPen(pen);
+	QRectF rect(center.x()-radius, center.y()-radius, radius+radius, radius+radius);
+	painter->drawArc(rect, -45*16, 90*16);
+	painter->drawArc(rect, 135*16, 90*16);
+	painter->restore();
+}
+
+void RobotItem::playBeep()
+{
+	// TODO
 }
 
 void RobotItem::drawExtractionForItem(QPainter* painter)
@@ -61,11 +79,6 @@ void RobotItem::drawExtractionForItem(QPainter* painter)
 QRectF RobotItem::boundingRect() const
 {
 	return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, border);
-}
-
-QPainterPath RobotItem::boundingShape() const
-{
-	return mRectangleImpl.shape(mX1, mY1, mX2, mY2, 0);
 }
 
 QRectF RobotItem::calcNecessaryBoundingRect() const

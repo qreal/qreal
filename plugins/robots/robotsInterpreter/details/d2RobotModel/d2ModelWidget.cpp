@@ -1,4 +1,3 @@
-#include <QtCore/QDebug>
 #include <QtCore/qmath.h>
 #include <QtGui/QFileDialog>
 #include <QtGui/QRegion>

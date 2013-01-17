@@ -35,7 +35,6 @@ public:
 	virtual void checkSelection();
 	QPointF basePoint();
 
-	QPainterPath boundingShape() const;
 	virtual QRectF boundingRect() const;
 	virtual QRectF calcNecessaryBoundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
@@ -64,6 +63,9 @@ signals:
 
 private:
 	void drawBeep(QPainter* painter);
+	void playBeep();
+	void drawBeepArcs(QPainter* painter, QPointF const &center, qreal radius);
+
 	/** @brief Image of a robot drawn on scene */
 	QImage mImage;
 	QImage mBeepImage;
