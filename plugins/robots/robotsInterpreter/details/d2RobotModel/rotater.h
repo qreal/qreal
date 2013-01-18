@@ -4,7 +4,7 @@
 #include <QtGui/QPainter>
 #include "../../../../../qrutils/graphicsUtils/abstractItem.h"
 #include "../../../../../qrutils/graphicsUtils/lineImpl.h"
-#include "../../../../../qrutils/graphicsUtils/rotateInterface.h"
+#include "../../../../../qrutils/graphicsUtils/rotateItem.h"
 
 namespace qReal {
 namespace interpreters {
@@ -35,10 +35,7 @@ public:
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
 
-	void setMasterItem(graphicsUtils::RotateInterface *masterItem);
-	void reshapeWithMasterItem(QPointF const &pos);
-	void rotateWithMasterItem(QPointF delta, QPointF const &rotatePoint
-		, QPointF const &basePos, qreal baseDir, qreal localDir);
+	void setMasterItem(graphicsUtils::RotateItem *masterItem);
 
 
 private:
@@ -47,7 +44,7 @@ private:
 	QPointF mMasterRotatePoint;
 	QPointF mFrom;
 	QPointF mTo;
-	graphicsUtils::RotateInterface *mMaster;
+	graphicsUtils::RotateItem *mMaster;
 	QGraphicsLineItem mLine;
 	graphicsUtils::LineImpl mLineImpl;
 };

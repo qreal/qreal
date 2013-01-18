@@ -41,7 +41,7 @@ public:
 
 	void showModelWidget();
 
-	virtual void rotateOn(double angle);
+	virtual void setRotation(qreal angle);
 	virtual double rotateAngle() const;
 
 	QPointF robotPos();

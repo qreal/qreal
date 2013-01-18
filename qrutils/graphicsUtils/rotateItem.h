@@ -1,11 +1,14 @@
 #pragma once
+
 #include <QtGui/QGraphicsItem>
+
 #include "../utilsDeclSpec.h"
+#include "abstractItem.h"
 
 namespace graphicsUtils
 {
 
-class QRUTILS_EXPORT RotateInterface
+class QRUTILS_EXPORT RotateItem : public AbstractItem
 {
 public:
 	virtual void rotate(double angle) = 0;

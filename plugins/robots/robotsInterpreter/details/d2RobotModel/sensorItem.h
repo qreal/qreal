@@ -7,7 +7,7 @@
 #include "rotater.h"
 #include "../../../../../qrutils/graphicsUtils/abstractItem.h"
 #include "../../../../../qrutils/graphicsUtils/pointImpl.h"
-#include "../../../../../qrutils/graphicsUtils/rotateInterface.h"
+#include "../../../../../qrutils/graphicsUtils/rotateItem.h"
 
 namespace qReal {
 namespace interpreters {
@@ -16,7 +16,7 @@ namespace details {
 namespace d2Model {
 
 /** @brief Class that represents robot port in 2D model */
-class SensorItem : public QObject, public graphicsUtils::AbstractItem, public graphicsUtils::RotateInterface
+class SensorItem : public QObject, public graphicsUtils::RotateItem
 {
 	Q_OBJECT
 public:

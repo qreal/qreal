@@ -7,7 +7,7 @@
 #include "rotater.h"
 #include "../../../../../qrutils/graphicsUtils/abstractItem.h"
 #include "../../../../../qrutils/graphicsUtils/rectangleImpl.h"
-#include "../../../../../qrutils/graphicsUtils/rotateInterface.h"
+#include "../../../../../qrutils/graphicsUtils/rotateItem.h"
 #include "robotModelInterface.h"
 
 namespace qReal {
@@ -21,7 +21,7 @@ const qreal robotHeight = 50;
 const QPointF rotatePoint = QPointF(robotWidth / 2, robotHeight / 2);
 
 /** @brief Class that represents a robot in 2D model */
-class RobotItem : public QObject, public graphicsUtils::AbstractItem, public graphicsUtils::RotateInterface
+class RobotItem : public QObject, public graphicsUtils::RotateItem
 {
 	Q_OBJECT
 public:

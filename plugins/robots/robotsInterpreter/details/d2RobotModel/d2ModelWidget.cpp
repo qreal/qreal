@@ -51,8 +51,6 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 
 D2ModelWidget::~D2ModelWidget()
 {
-	delete mRobot;
-	delete mScene;
 	delete mUi;
 }
 
@@ -157,9 +155,6 @@ void D2ModelWidget::drawInitialRobot()
 
 	mRotater = new Rotater();
 	mRotater->setMasterItem(mRobot);
-	mRotater->setVisible(true);
-	mScene->addItem(mRotater);
-
 	mRotater->setVisible(false);
 
 	mRobot->setRotater(mRotater);
@@ -219,12 +214,10 @@ bool D2ModelWidget::isRobotOnTheGround()
 	return mRobot && mRobot->isOnTheGround();
 }
 
-void D2ModelWidget::draw(QPointF const &newCoord, qreal angle, QPointF const &dPoint)
+void D2ModelWidget::draw(QPointF const &newCoord, qreal angle)
 {
-	mAngleOld = angle;
-	mRotatePointOld = dPoint;
 	mRobot->setPos(newCoord);
-	mRobot->setTransform(QTransform().translate(dPoint.x(), dPoint.y()).rotate(angle).translate(-dPoint.x(), -dPoint.y()));
+	mRobot->setRotation(angle);
 
 	QRectF const viewPortRect = mUi->graphicsView->mapToScene(mUi->graphicsView->viewport()->rect()).boundingRect();
 	if (!viewPortRect.contains(mRobot->sceneBoundingRect().toRect())) {
@@ -484,7 +477,7 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 
 	case drawingAction::none: {
 		mMouseClicksCount = 0;
-		mScene->forPressResize(mouseEvent, mRobot->realBoundingRect());
+		mScene->forPressResize(mouseEvent);
 	}
 		break;
 	default:

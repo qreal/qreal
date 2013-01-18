@@ -7,7 +7,7 @@ using namespace graphicsUtils;
 int const border = 5;
 
 RobotItem::RobotItem()
-	: AbstractItem()
+	: RotateItem()
 	, mImage(QImage(":/icons/robot.png"))
 	, mNeededBeep(false)
 	, mIsOnTheGround(true)
@@ -15,8 +15,7 @@ RobotItem::RobotItem()
 	, mRectangleImpl()
 	, mRobotModel()
 {
-	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
-			/* ItemClipsToShape |*/ ItemSendsGeometryChanges);
+	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
 
 	setAcceptHoverEvents(true);
 	setAcceptDrops(true);
@@ -28,6 +27,8 @@ RobotItem::RobotItem()
 	mPreviousScenePos = QPointF(0, 0);
 
 	mBasePoint = scenePos();
+
+	setTransformOriginPoint(rotatePoint);
 }
 
 void RobotItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -94,9 +95,6 @@ void RobotItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	mIsOnTheGround = false;
 
 	mPreviousScenePos = scenePos();
-	if (isSelected()) {
-		mRotater->reshapeWithMasterItem(scenePos()- mPreviousScenePos);
-	}
 }
 
 void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
@@ -113,10 +111,6 @@ void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		sensor->setDeltaBasePosition(scenePos()- mPreviousScenePos, rotateAngle());
 	}
 
-	if (isSelected()) {
-		mRotater->reshapeWithMasterItem(scenePos()- mPreviousScenePos);
-	}
-
 	mPreviousPos = event->scenePos();
 	mPreviousScenePos = scenePos();
 	mPreviousAngle = rotateAngle();
@@ -129,9 +123,6 @@ void RobotItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 	mPreviousAngle = rotateAngle();
 	mIsOnTheGround = true;
 
-	if (isSelected()) {
-		mRotater->reshapeWithMasterItem(scenePos() - mPreviousScenePos);
-	}
 	mPreviousScenePos = scenePos();
 
 	emit changedPosition();
@@ -152,8 +143,6 @@ void RobotItem::setPos(QPointF const &newPos)// for moving
 	foreach (SensorItem *sensor, mSensors) {
 		sensor->setDeltaBasePosition(newPos - pos(), rotateAngle());
 	}
-
-	mRotater->reshapeWithMasterItem(newPos - pos());
 
 	mPreviousAngle = rotateAngle();
 
@@ -192,7 +181,7 @@ void RobotItem::setRobotModel(RobotModelInterface *robotModel)
 
 void RobotItem::rotate(qreal angle)
 {
-	mRobotModel->rotateOn(angle);
+	mRobotModel->setRotation(angle);
 }
 
 QRectF RobotItem::rect() const
@@ -212,10 +201,7 @@ void RobotItem::setSelected(bool isSelected)
 
 void RobotItem::checkSelection()
 {
-	if(isSelected())
-		mRotater->setVisible(true);
-	else
-		mRotater->setVisible(false);
+	mRotater->setVisible(isSelected());
 }
 
 void RobotItem::setNeededBeep(bool isNeededBeep)

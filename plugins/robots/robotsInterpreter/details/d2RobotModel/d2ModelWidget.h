@@ -48,7 +48,7 @@ public:
 	~D2ModelWidget();
 	void init(bool isActive = true);
 	void close();
-	void draw(QPointF const &newCoord, qreal angle, QPointF const &dPoint);
+	void draw(QPointF const &newCoord, qreal angle);
 	void drawBeep(bool isNeededBeep);
 	QPolygonF const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
 
@@ -179,12 +179,6 @@ private:
 	LineItem *mCurrentLine;
 	StylusItem *mCurrentStylus;
 	EllipseItem *mCurrentEllipse;
-
-	/** @brief Latest value of angle for drawing robot image */
-	qreal mAngleOld;
-
-	/** @brief Latest value of rotate point for drawing robot image */
-	QPointF mRotatePointOld;
 
 	/** @brief Signal mapper for handling addPortButtons' clicks */
 	QSignalMapper mPortsMapper;

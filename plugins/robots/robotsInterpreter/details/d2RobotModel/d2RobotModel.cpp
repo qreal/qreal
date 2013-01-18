@@ -38,7 +38,6 @@ void D2RobotModel::initPosition()
 	mMotorC = initMotor(5, 0, 0, 2, false);
 	setBeep(0, 0);
 	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);
-	mRotatePoint = QPointF(0, 0);  // TODO: not rotatePoint? why?
 }
 
 void D2RobotModel::clear()
@@ -377,8 +376,7 @@ void D2RobotModel::nextFragment()
 
 	mPos = mD2ModelWidget->robotPos();
 	countNewCoord();
-	mRotatePoint = rotatePoint;
-	mD2ModelWidget->draw(mPos, mAngle, mRotatePoint);
+	mD2ModelWidget->draw(mPos, mAngle);
 	countBeep();
 	countMotorTurnover();
 }
@@ -388,14 +386,11 @@ void D2RobotModel::showModelWidget()
 	mD2ModelWidget->init(true);
 }
 
-void D2RobotModel::rotateOn(double angle)
+void D2RobotModel::setRotation(qreal angle)
 {
 	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);
-	mRotatePoint = rotatePoint;
-	if(angle > 360)
-		angle -= 360;
-	mAngle += angle;
-	mD2ModelWidget->draw(mPos, mAngle, mRotatePoint);
+	mAngle = angle;
+	mD2ModelWidget->draw(mPos, mAngle);
 }
 
 double D2RobotModel::rotateAngle() const

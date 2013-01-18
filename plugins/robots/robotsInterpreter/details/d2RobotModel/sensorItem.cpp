@@ -6,16 +6,16 @@ using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
 
-SensorItem::SensorItem(SensorsConfiguration &configuration, inputPort::InputPortEnum port)
-	: AbstractItem()
+SensorItem::SensorItem(SensorsConfiguration &configuration
+		, inputPort::InputPortEnum port)
+	: RotateItem()
 	, mConfiguration(configuration)
 	, mPort(port)
 	, mDragged(false)
 	, mPointImpl()
 	, mRotater(NULL)
 {
-	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
-						 /*ItemClipsToShape |*/ ItemSendsGeometryChanges);
+	setFlags(ItemIsSelectable | ItemIsMovable);
 
 	setAcceptHoverEvents(true);
 	setAcceptDrops(true);
@@ -47,8 +47,9 @@ void SensorItem::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *sty
 
 void SensorItem::drawExtractionForItem(QPainter *painter)
 {
-	if (!isSelected())
+	if (!isSelected()) {
 		return;
+	}
 	QPen pen = QPen(Qt::black);
 	painter->setPen(pen);
 	painter->drawEllipse(boundingRect());
@@ -64,9 +65,6 @@ void SensorItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	AbstractItem::mousePressEvent(event);
 	mDragged = true;
 	mPreviousScenePos = scenePos();
-	if (isSelected()) {
-		mRotater->rotateWithMasterItem(scenePos()- mPreviousScenePos, mRotatePoint, mBasePos, mBaseDir, mConfiguration.direction(mPort));
-	}
 }
 
 void SensorItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
@@ -80,9 +78,6 @@ void SensorItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		mConfiguration.setPosition(mPort, localPoint.toPoint());
 		setNewPosition(mRotatePoint);
 
-		if (isSelected()) {
-			mRotater->rotateWithMasterItem(scenePos()- mPreviousScenePos, mRotatePoint, mBasePos, mBaseDir, mConfiguration.direction(mPort));
-		}
 		mPreviousScenePos = scenePos();
 	}
 }
@@ -91,9 +86,6 @@ void SensorItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseReleaseEvent(event);
 	mDragged = false;
-	if (isSelected()) {
-		mRotater->rotateWithMasterItem(scenePos()- mPreviousScenePos, mRotatePoint, mBasePos, mBaseDir, mConfiguration.direction(mPort));
-	}
 	mPreviousScenePos = scenePos();
 }
 
@@ -104,7 +96,6 @@ void SensorItem::setNewPosition(QPointF rotatePoint)
 						.translate(point.x(), point.y()).rotate(-mBaseDir)
 						.map(mConfiguration.position(mPort));
 	setPos(mBasePos + localPoint);
-	mRotater->rotateWithMasterItem(scenePos()- mPreviousScenePos, rotatePoint, mBasePos, mBaseDir, mConfiguration.direction(mPort));
 	mPreviousScenePos = scenePos();
 }
 
@@ -177,8 +168,5 @@ void SensorItem::setRotater(Rotater *rotater)
 
 void SensorItem::checkSelection()
 {
-	if(isSelected())
-		mRotater->setVisible(true);
-	else
-		mRotater->setVisible(false);
+	mRotater->setVisible(isSelected());
 }
