@@ -36,7 +36,6 @@ void Rotater::setMasterItem(RotateItem *masterItem)
 	// TODO: Dispose of hardcoding
 	mX1 = rect.width();
 	mY1 = rect.height()/2;
-
 	mX2 = mX1 + mLength;
 	mY2 = mY1;
 }
@@ -108,7 +107,7 @@ void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 
 	qreal eps = 10e-8;
 	qreal dalpha = len < eps ? 0 : acos((x1*x2+y1*y2)/len);
-	mMaster->rotate(parentItem()->rotation() - sign*dalpha*180/M_PI);
+	mMaster->rotate(mMaster->rotation() - sign*dalpha*180/M_PI);
 }
 
 void Rotater::resizeItem(QGraphicsSceneMouseEvent *event)
@@ -137,4 +136,3 @@ void Rotater::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 	AbstractItem::mouseReleaseEvent(event);
 	setFlag(ItemIsMovable, false);
 }
-

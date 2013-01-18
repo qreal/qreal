@@ -389,7 +389,7 @@ void D2RobotModel::showModelWidget()
 void D2RobotModel::setRotation(qreal angle)
 {
 	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);
-	mAngle = angle;
+	mAngle = fmod(angle, 360);
 	mD2ModelWidget->draw(mPos, mAngle);
 }
 

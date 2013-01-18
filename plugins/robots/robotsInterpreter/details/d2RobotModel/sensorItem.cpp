@@ -1,6 +1,7 @@
-#include "sensorItem.h"
 #include <QtGui/QCursor>
 #include <QtGui/QGraphicsSceneMouseEvent>
+
+#include "sensorItem.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -64,19 +65,17 @@ void SensorItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
 	mDragged = true;
-	mPreviousScenePos = scenePos();
+	mPreviousScenePos = event->pos();
 }
 
 void SensorItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseMoveEvent(event);
 	if (mDragged) {
-		QPointF point = event->scenePos() - mBasePos - mRotatePoint;
-		QPointF localPoint = QTransform().translate(-point.x(), -point.y()).rotate(-mBaseDir)
-							.translate(point.x(), point.y()).rotate(mBaseDir)
-							.map(event->scenePos() - mBasePos);
-		mConfiguration.setPosition(mPort, localPoint.toPoint());
-		setNewPosition(mRotatePoint);
+		mConfiguration.setPosition(mPort, event->scenePos().toPoint());
+//		setNewPosition(mRotatePoint);
+		QPointF const offset = event->lastPos() - event->pos();
+		moveBy(offset.x(), offset.y());
 
 		mPreviousScenePos = scenePos();
 	}
@@ -86,31 +85,29 @@ void SensorItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseReleaseEvent(event);
 	mDragged = false;
-	mPreviousScenePos = scenePos();
-}
 
-void SensorItem::setNewPosition(QPointF rotatePoint)
-{
-	QPoint point = mConfiguration.position(mPort) - rotatePoint.toPoint();
-	QPointF localPoint = QTransform().translate(-point.x(), -point.y()).rotate(mBaseDir)
-						.translate(point.x(), point.y()).rotate(-mBaseDir)
-						.map(mConfiguration.position(mPort));
-	setPos(mBasePos + localPoint);
-	mPreviousScenePos = scenePos();
+	QList<QGraphicsItem *> itemsUnderCursor = scene()->items(event->scenePos()
+			, Qt::IntersectsItemShape, Qt::DescendingOrder);
+	foreach (QGraphicsItem *itemUnderCursor, itemsUnderCursor) {
+		if (mStickyItems.contains(itemUnderCursor)) {
+			setParentItem(itemUnderCursor);
+			setPos(mapToItem(itemUnderCursor, event->pos()));
+			return;
+		}
+	}
+	setParentItem(NULL);
 }
 
 void SensorItem::setBasePosition(QPointF const &pos, qreal dir)
 {
 	mBasePos = pos;
 	mBaseDir = dir;
-	setNewPosition(mRotatePoint);
 }
 
 void SensorItem::setDeltaBasePosition(QPointF const &delta, qreal dir)
 {
 	mBasePos = mBasePos + delta;
 	mBaseDir = dir;
-	setNewPosition(mRotatePoint);
 }
 
 QColor SensorItem::color() const
@@ -143,6 +140,7 @@ void SensorItem::rotate(qreal angle)
 {
 	qreal oldDir = mConfiguration.direction(mPort);
 	mConfiguration.setDirection(mPort, oldDir + angle);
+	setRotation(angle);
 }
 
 QRectF SensorItem::rect() const
@@ -169,4 +167,14 @@ void SensorItem::setRotater(Rotater *rotater)
 void SensorItem::checkSelection()
 {
 	mRotater->setVisible(isSelected());
+}
+
+void SensorItem::addStickyItem(QGraphicsItem *item)
+{
+	mStickyItems << item;
+}
+
+void SensorItem::removeStickyItem(QGraphicsItem *item)
+{
+	mStickyItems.remove(item);
 }

@@ -203,6 +203,7 @@ private:
 
 	int mWidth;
 
+	bool mClosed;
 };
 
 }

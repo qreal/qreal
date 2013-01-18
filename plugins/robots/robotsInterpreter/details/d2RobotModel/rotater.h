@@ -19,6 +19,7 @@ const int addAngle = 30; // Degrees; for arror pike drawing
 class Rotater : public QObject, public graphicsUtils::AbstractItem
 {
 	Q_OBJECT
+
 public:
 	Rotater();
 
@@ -37,15 +38,9 @@ public:
 
 	void setMasterItem(graphicsUtils::RotateItem *masterItem);
 
-
 private:
 	int mLength;
-	qreal mMasterSize;
-	QPointF mMasterRotatePoint;
-	QPointF mFrom;
-	QPointF mTo;
 	graphicsUtils::RotateItem *mMaster;
-	QGraphicsLineItem mLine;
 	graphicsUtils::LineImpl mLineImpl;
 };
 

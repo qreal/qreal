@@ -34,6 +34,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mCurrentSensorType(sensorType::unused)
 		, mButtonsCount(8) // magic numbers are baaad, mkay?
 		, mWidth(15)
+		, mClosed(false)
 {
 	setWindowIcon(QIcon(":/icons/kcron.png"));
 
@@ -51,6 +52,8 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 
 D2ModelWidget::~D2ModelWidget()
 {
+	delete mRobot;
+	delete mScene;
 	delete mUi;
 }
 
@@ -180,7 +183,9 @@ QPointF D2ModelWidget::robotPos() const
 
 void D2ModelWidget::close()
 {
+	mClosed = true;
 	if (mRobot) {
+		disconnect(this, SLOT(changePalette()));
 		mRobot->resetTransform();
 		mRobotPath.clear();
 		mScene->clear();
@@ -654,10 +659,11 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 	SensorItem *sensor = mRobotModel->configuration().type(port) == sensorType::sonar
 			? new SonarSensorItem(*mWorldModel, mRobotModel->configuration(), port)
 			: new SensorItem(mRobotModel->configuration(), port);
-	sensor->setRotatePoint(rotatePoint);
 
 	mRobot->addSensor(sensor);
 	mScene->addItem(sensor);
+
+	sensor->addStickyItem(mRobot);
 
 	// Setting sensor rotaters
 	mSensorRotaters[port] = new Rotater();
@@ -667,6 +673,9 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 
 	sensor->setBasePosition(mRobot->basePoint(), mRobot->rotateAngle()/*, rotatePoint*/);
 	mScene->addItem(mSensorRotaters[port]);
+	if (sensor->boundingRect().intersects(mRobot->boundingRect())) {
+		sensor->setParentItem(mRobot);
+	}
 
 	mSensors[port] = sensor;
 }
@@ -729,6 +738,9 @@ void D2ModelWidget::changePenColor(const QString &text)
 
 void D2ModelWidget::changePalette()
 {
+	if (mClosed) {
+		return;
+	}
 	if(mDrawingAction == drawingAction::none) {
 		QList<QGraphicsItem *> listSelectedItems = mScene->selectedItems();
 		if (listSelectedItems.isEmpty()) {

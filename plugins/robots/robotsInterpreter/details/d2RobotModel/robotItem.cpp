@@ -107,10 +107,6 @@ void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 	}
 	mBasePoint += scenePos()- mPreviousScenePos;
 
-	foreach (SensorItem *sensor, mSensors) {
-		sensor->setDeltaBasePosition(scenePos()- mPreviousScenePos, rotateAngle());
-	}
-
 	mPreviousPos = event->scenePos();
 	mPreviousScenePos = scenePos();
 	mPreviousAngle = rotateAngle();
@@ -140,12 +136,7 @@ void RobotItem::resizeItem(QGraphicsSceneMouseEvent *event)
 
 void RobotItem::setPos(QPointF const &newPos)// for moving
 {
-	foreach (SensorItem *sensor, mSensors) {
-		sensor->setDeltaBasePosition(newPos - pos(), rotateAngle());
-	}
-
 	mPreviousAngle = rotateAngle();
-
 	QGraphicsItem::setPos(newPos);
 }
 

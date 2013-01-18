@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QtCore/QSet>
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QPainter>
 
@@ -46,8 +47,13 @@ public:
 	void setDeltaBasePosition(QPointF const &delta, qreal dir);
 	void setBasePosition(QPointF const &pos, qreal dir);
 
+	void addStickyItem(QGraphicsItem *item);
+	void removeStickyItem(QGraphicsItem *item);
+
 protected:
 	static int const size = 6;
+
+	QColor color() const;
 
 	SensorsConfiguration &mConfiguration;
 	inputPort::InputPortEnum const mPort;
@@ -57,9 +63,7 @@ protected:
 	bool mDragged;
 	graphicsUtils::PointImpl mPointImpl;
 	Rotater *mRotater;
-
-	QColor color() const;
-	void setNewPosition(QPointF rotatePoint);
+	QSet<QGraphicsItem *> mStickyItems;
 };
 
 }
