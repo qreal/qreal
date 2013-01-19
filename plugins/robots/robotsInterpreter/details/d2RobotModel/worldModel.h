@@ -31,7 +31,9 @@ public:
 	QList<ColorFieldItem *> const &colorFields() const;
 
 	void addWall(WallItem* wall);
+	void removeWall(WallItem* wall);
 	void addColorField(ColorFieldItem* colorField);
+	void removeColorField(ColorFieldItem* colorField);
 	void clearScene();
 
 	QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture) const;

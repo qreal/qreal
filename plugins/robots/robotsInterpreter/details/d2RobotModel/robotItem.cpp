@@ -15,7 +15,7 @@ RobotItem::RobotItem()
 	, mRectangleImpl()
 	, mRobotModel()
 {
-	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
+	setFlags(ItemIsSelectable | ItemIsMovable);
 
 	setAcceptHoverEvents(true);
 	setAcceptDrops(true);
@@ -90,8 +90,6 @@ QRectF RobotItem::calcNecessaryBoundingRect() const
 void RobotItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
-	mPreviousPos = QPointF();
-	mPreviousAngle = rotateAngle();
 	mIsOnTheGround = false;
 
 	mPreviousScenePos = scenePos();
@@ -101,22 +99,13 @@ void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseMoveEvent(event);
 
-	if (mPreviousPos.isNull()) {
-		mPreviousPos = event->scenePos();
-		return;
-	}
-	mBasePoint += scenePos()- mPreviousScenePos;
-
-	mPreviousPos = event->scenePos();
+	mBasePoint += scenePos() - mPreviousScenePos;
 	mPreviousScenePos = scenePos();
-	mPreviousAngle = rotateAngle();
 }
 
 void RobotItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseReleaseEvent(event);
-	mPreviousPos = QPointF();
-	mPreviousAngle = rotateAngle();
 	mIsOnTheGround = true;
 
 	mPreviousScenePos = scenePos();
@@ -136,7 +125,6 @@ void RobotItem::resizeItem(QGraphicsSceneMouseEvent *event)
 
 void RobotItem::setPos(QPointF const &newPos)// for moving
 {
-	mPreviousAngle = rotateAngle();
 	QGraphicsItem::setPos(newPos);
 }
 

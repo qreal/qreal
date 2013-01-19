@@ -86,14 +86,24 @@ void WorldModel::addWall(WallItem* wall)
 	mWalls.append(wall);
 }
 
+void WorldModel::removeWall(WallItem* wall)
+{
+	mWalls.removeOne(wall);
+}
+
 QList<ColorFieldItem *> const &WorldModel::colorFields() const
 {
 	return mColorFields;
 }
 
-void WorldModel::addColorField(ColorFieldItem* colorField)
+void WorldModel::addColorField(ColorFieldItem *colorField)
 {
 	mColorFields.append(colorField);
+}
+
+void WorldModel::removeColorField(ColorFieldItem *colorField)
+{
+	mColorFields.removeOne(colorField);
 }
 
 void WorldModel::clearScene()

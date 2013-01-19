@@ -73,7 +73,6 @@ void SensorItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 	AbstractItem::mouseMoveEvent(event);
 	if (mDragged) {
 		mConfiguration.setPosition(mPort, event->scenePos().toPoint());
-//		setNewPosition(mRotatePoint);
 		QPointF const offset = event->lastPos() - event->pos();
 		moveBy(offset.x(), offset.y());
 
@@ -90,12 +89,15 @@ void SensorItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 			, Qt::IntersectsItemShape, Qt::DescendingOrder);
 	foreach (QGraphicsItem *itemUnderCursor, itemsUnderCursor) {
 		if (mStickyItems.contains(itemUnderCursor)) {
+			QPointF const newPos = mapToItem(itemUnderCursor, mapFromScene(scenePos()));
 			setParentItem(itemUnderCursor);
-			setPos(mapToItem(itemUnderCursor, event->pos()));
+			setPos(newPos);
 			return;
 		}
 	}
+	QPointF const scenePosition = scenePos();
 	setParentItem(NULL);
+	setPos(scenePosition);
 }
 
 void SensorItem::setBasePosition(QPointF const &pos, qreal dir)

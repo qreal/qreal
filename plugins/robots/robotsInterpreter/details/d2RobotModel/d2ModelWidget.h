@@ -156,9 +156,6 @@ private:
 	D2ModelScene *mScene;
 	RobotItem *mRobot;
 
-	/// Holds graphic items that represent path of a robot, to be able to manipulate them
-	QList<QGraphicsItem *> mRobotPath;
-
 	/// Maximum number of calls to draw() when adding robot path element is skipped.
 	/// So, new path element is added every mMaxDrawCyclesBetweenPathElements times
 	/// draw() is called. We can't do that every time due to performance issues ---
@@ -197,9 +194,6 @@ private:
 
 	/** @brief List of sensors, index is port of sensor */
 	QVector<SensorItem *> mSensors;
-
-	Rotater *mRotater;
-	QVector<Rotater *> mSensorRotaters;
 
 	int mWidth;
 

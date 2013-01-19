@@ -61,7 +61,6 @@ void D2ModelWidget::initWidget()
 {
 	mUi->setupUi(this);
 	mSensors.resize(4);
-	mSensorRotaters.resize(4);
 
 	mScene = new D2ModelScene(mUi->graphicsView);
 	mUi->graphicsView->setScene(mScene);
@@ -107,6 +106,7 @@ void D2ModelWidget::connectUiButtons()
 	mPortsMapper.setMapping(mUi->port4Box, inputPort::port4);
 
 	connect(mUi->speedComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeSpeed(int)));
+	mUi->speedComboBox->setCurrentIndex(1);
 }
 
 void D2ModelWidget::changeSpeed(int curIndex)
@@ -156,11 +156,11 @@ void D2ModelWidget::drawInitialRobot()
 	connect(mRobot, SIGNAL(changedPosition()), this, SLOT(handleNewRobotPosition()));
 	mScene->addItem(mRobot);
 
-	mRotater = new Rotater();
-	mRotater->setMasterItem(mRobot);
-	mRotater->setVisible(false);
+	Rotater *rotater = new Rotater();
+	rotater->setMasterItem(mRobot);
+	rotater->setVisible(false);
 
-	mRobot->setRotater(mRotater);
+	mRobot->setRotater(rotater);
 	mRobot->setRobotModel(mRobotModel);
 
 	mUi->graphicsView->centerOn(mRobot);
@@ -187,7 +187,6 @@ void D2ModelWidget::close()
 	if (mRobot) {
 		disconnect(this, SLOT(changePalette()));
 		mRobot->resetTransform();
-		mRobotPath.clear();
 		mScene->clear();
 		mRobot = NULL;
 	}
@@ -330,7 +329,6 @@ void D2ModelWidget::clearScene()
 	mUi->port4Box->setCurrentIndex(noneSensorIndex);
 	mRobotModel->clear();
 	mScene->clear();
-	mRobotPath.clear();
 	drawInitialRobot();
 }
 
@@ -627,8 +625,11 @@ void D2ModelWidget::loadWorldModel()
 
 void D2ModelWidget::handleNewRobotPosition()
 {
-	foreach (QGraphicsItem * const item, mRobotPath) {
-		mScene->removeItem(item);
+	foreach (WallItem *wall, mWorldModel->walls()) {
+		if (wall->realShape().intersects(mRobot->realBoundingRect())) {
+			// TODO: Find out behaviour in this case
+			deleteItem(wall);
+		}
 	}
 }
 
@@ -640,11 +641,8 @@ void D2ModelWidget::removeSensor(inputPort::InputPortEnum port)
 	if (mSensors[port]) {
 		mRobot->removeSensor(mSensors[port]);
 		mScene->removeItem(mSensors[port]);
-		mScene->removeItem(mSensorRotaters[port]);
 		delete mSensors[port];
-		delete mSensorRotaters[port];
 		mSensors[port] = NULL;
-		mSensorRotaters[port] = NULL;
 	}
 }
 
@@ -666,13 +664,12 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 	sensor->addStickyItem(mRobot);
 
 	// Setting sensor rotaters
-	mSensorRotaters[port] = new Rotater();
-	mSensorRotaters[port]->setMasterItem(sensor);
-	mSensorRotaters[port]->setVisible(false);
-	sensor->setRotater(mSensorRotaters[port]);
+	Rotater *rotater = new Rotater();
+	rotater->setMasterItem(sensor);
+	rotater->setVisible(false);
+	sensor->setRotater(rotater);
 
 	sensor->setBasePosition(mRobot->basePoint(), mRobot->rotateAngle()/*, rotatePoint*/);
-	mScene->addItem(mSensorRotaters[port]);
 	if (sensor->boundingRect().intersects(mRobot->boundingRect())) {
 		sensor->setParentItem(mRobot);
 	}
@@ -682,14 +679,26 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 
 void D2ModelWidget::deleteItem(QGraphicsItem *item)
 {
+	// TODO: Handle all cases equally
 	SensorItem * const sensor = dynamic_cast<SensorItem *>(item);
-	if (!sensor) {
+	if (sensor) {
+		int const port = mSensors.indexOf(sensor);
+		if (port != -1) {
+			removeSensor(static_cast<inputPort::InputPortEnum>(port));
+		}
 		return;
 	}
-
-	int const port = mSensors.indexOf(sensor);
-	if (port != -1) {
-		removeSensor(static_cast<inputPort::InputPortEnum>(port));
+	WallItem *wall = dynamic_cast<WallItem *>(item);
+	if (wall) {
+		mScene->removeItem(wall);
+		mWorldModel->removeWall(wall);
+		delete wall;
+	}
+	ColorFieldItem *colorField = dynamic_cast<ColorFieldItem *>(item);
+	if (colorField) {
+		mScene->removeItem(colorField);
+		mWorldModel->removeColorField(colorField);
+		delete colorField;
 	}
 }
 

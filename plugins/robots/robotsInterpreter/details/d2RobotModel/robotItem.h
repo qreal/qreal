@@ -74,10 +74,6 @@ private:
 	/** @brief List of sensors added to robot */
 	QList<SensorItem *> mSensors;  // Does not have ownership
 
-	/** @brief Previous position of robot (used while dragging to update sensors positions)*/
-	qreal mPreviousAngle;
-	QPointF mPreviousPos;
-
 	QPointF mBasePoint;
 
 	bool mIsOnTheGround;

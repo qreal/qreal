@@ -371,8 +371,9 @@ void D2RobotModel::countNewCoord()
 void D2RobotModel::nextFragment()
 {
 	// do nothing until robot gets back on the ground
-	if (!mD2ModelWidget->isRobotOnTheGround())
+	if (!mD2ModelWidget->isRobotOnTheGround()) {
 		return;
+	}
 
 	mPos = mD2ModelWidget->robotPos();
 	countNewCoord();
