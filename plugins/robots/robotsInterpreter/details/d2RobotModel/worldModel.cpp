@@ -153,6 +153,7 @@ void WorldModel::deserialize(QDomElement const &element)
 		// TODO: Report error
 		return;
 	}
+	clearScene();
 
 	QDomNodeList allWalls = element.elementsByTagName("walls");
 	for (int i = 0; i < allWalls.count(); ++i) {

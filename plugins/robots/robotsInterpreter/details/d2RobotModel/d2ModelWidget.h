@@ -108,6 +108,8 @@ private slots:
 	void changePalette();
 
 	void changeSpeed(int curIndex);
+	void changeSensorType(inputPort::InputPortEnum const port
+			, sensorType::SensorTypeEnum const type);
 
 signals:
 	void d2WasClosed();
@@ -144,7 +146,7 @@ private:
 	void reshapeStylus(QGraphicsSceneMouseEvent *event);
 	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
 
-	void setValuePenColorComboBox(QColor penColor);
+	void setValuePenColorComboBox(QColor const &penColor);
 	void setValuePenWidthSpinBox(int width);
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
 	void setNoPalette();
@@ -152,6 +154,8 @@ private:
 	void initWidget();
 	QList<graphicsUtils::AbstractItem *> selectedColorItems();
 	bool isColorItem(graphicsUtils::AbstractItem *item);
+
+	int sensorTypeToComboBoxIndex(sensorType::SensorTypeEnum const type);
 
 	Ui::D2Form *mUi;
 	D2ModelScene *mScene;
@@ -198,7 +202,7 @@ private:
 
 	int mWidth;
 
-	bool mClosed;
+	bool mClearing;
 	bool mRobotWasSelected;
 };
 

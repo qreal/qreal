@@ -18,7 +18,8 @@ const int timeInterval = 5;
 const int oneReciprocalTime = 500;
 const int onePercentReciprocalSpeed = 44000;
 
-class D2RobotModel : public QObject, public RobotModelInterface {
+class D2RobotModel : public QObject, public RobotModelInterface
+{
 	Q_OBJECT
 
 public:
@@ -45,6 +46,9 @@ public:
 	virtual double rotateAngle() const;
 
 	QPointF robotPos();
+
+	virtual void serialize(QDomDocument &target);
+	virtual void deserialize(const QDomElement &robotElement);
 
 	enum ATime {
 		DoInf,

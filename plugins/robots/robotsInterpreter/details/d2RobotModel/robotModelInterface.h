@@ -18,6 +18,8 @@ public:
 	virtual double rotateAngle() const = 0;
 	virtual void setSpeedFactor(qreal speedMul) = 0;
 	virtual QPointF robotPos() = 0;
+	virtual void serialize(QDomDocument &target) = 0;
+	virtual void deserialize(const QDomElement &robotElement) = 0;
 };
 
 }

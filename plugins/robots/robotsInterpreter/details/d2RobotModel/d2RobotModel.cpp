@@ -405,3 +405,27 @@ QPointF D2RobotModel::robotPos()
 {
 	return this->mPos;
 }
+
+void D2RobotModel::serialize(QDomDocument &target)
+{
+	QDomElement robot = target.createElement("robot");
+	robot.setAttribute("position", QString::number(mPos.x()) + ":" + QString::number(mPos.y()));
+	robot.setAttribute("direction", mAngle);
+	configuration().serialize(robot, target);
+	target.firstChildElement("root").appendChild(robot);
+}
+
+void D2RobotModel::deserialize(QDomElement const &robotElement)
+{
+	QString const positionStr = robotElement.attribute("position", "0:0");
+	QStringList const splittedStr = positionStr.split(":");
+	int const x = splittedStr[0].toInt();
+	int const y = splittedStr[1].toInt();
+	mPos = QPoint(x, y);
+
+	mAngle = robotElement.attribute("direction", "0").toDouble();
+
+	configuration().deserialize(robotElement);
+
+	mD2ModelWidget->draw(mPos, mAngle);
+}

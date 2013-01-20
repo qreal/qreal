@@ -34,7 +34,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mCurrentSensorType(sensorType::unused)
 		, mButtonsCount(8) // magic numbers are baaad, mkay?
 		, mWidth(15)
-		, mClosed(false)
+		, mClearing(false)
 {
 	setWindowIcon(QIcon(":/icons/kcron.png"));
 
@@ -183,7 +183,7 @@ QPointF D2ModelWidget::robotPos() const
 
 void D2ModelWidget::close()
 {
-	mClosed = true;
+	mClearing = true;
 	if (mRobot) {
 		disconnect(this, SLOT(changePalette()));
 		mRobot->resetTransform();
@@ -317,6 +317,7 @@ void D2ModelWidget::addEllipse(bool on)
 
 void D2ModelWidget::clearScene()
 {
+	mClearing = true;
 	mWorldModel->clearScene();
 	removeSensor(inputPort::port1);
 	removeSensor(inputPort::port2);
@@ -330,6 +331,7 @@ void D2ModelWidget::clearScene()
 	mRobotModel->clear();
 	mScene->clear();
 	drawInitialRobot();
+	mClearing = false;
 }
 
 void D2ModelWidget::resetButtons()
@@ -378,7 +380,7 @@ void D2ModelWidget::addPort(int const port)
 
 	}
 	QPointF newpos = mRobot->mapFromScene(mRobot->boundingRect().center());
-	mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0);
+	mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0, true);
 	reinitSensor(mCurrentPort);
 
 	resetButtons();
@@ -587,7 +589,7 @@ void D2ModelWidget::saveWorldModel()
 	QDomElement root = save.createElement("root");
 	save.appendChild(root);
 	root.appendChild(mWorldModel->serialize(save, QPoint(0, 0)));
-	root.appendChild(mRobotModel->configuration().serialize(save));
+	mRobotModel->serialize(save);
 
 	utils::OutFile saveFile(saveFileName);
 	saveFile() << "<?xml version='1.0' encoding='utf-8'?>\n";
@@ -602,6 +604,8 @@ void D2ModelWidget::loadWorldModel()
 		return;
 	}
 
+	clearScene();
+
 	QDomDocument const save = utils::xmlUtils::loadDocument(loadFileName);
 
 	QDomNodeList const worldList = save.elementsByTagName("world");
@@ -612,7 +616,7 @@ void D2ModelWidget::loadWorldModel()
 	}
 
 	mWorldModel->deserialize(worldList.at(0).toElement());
-	mRobotModel->configuration().deserialize(robotList.at(0).toElement());
+	mRobotModel->deserialize(robotList.at(0).toElement());
 
 	for (int i = 0; i < 4; ++i) {
 		reinitSensor(static_cast<inputPort::InputPortEnum>(i));
@@ -638,11 +642,78 @@ void D2ModelWidget::removeSensor(inputPort::InputPortEnum port)
 	// Here's the point where all interested entities are notified about sensor deletion,
 	// so if this code gets broken or worked around, we'll have some almost undebuggable
 	// dangling pointers in scene and in robot item. But what could possibly go wrong?
-	if (mSensors[port]) {
-		mRobot->removeSensor(mSensors[port]);
-		mScene->removeItem(mSensors[port]);
-		delete mSensors[port];
-		mSensors[port] = NULL;
+	if (!mSensors[port]) {
+		return;
+	}
+
+	mRobot->removeSensor(mSensors[port]);
+	mScene->removeItem(mSensors[port]);
+	delete mSensors[port];
+	mSensors[port] = NULL;
+
+	int const noneSensorIndex = 0;
+	switch (port) {
+	case inputPort::port1:
+		mUi->port1Box->setCurrentIndex(noneSensorIndex);
+		break;
+	case inputPort::port2:
+		mUi->port2Box->setCurrentIndex(noneSensorIndex);
+		break;
+	case inputPort::port3:
+		mUi->port3Box->setCurrentIndex(noneSensorIndex);
+		break;
+	case inputPort::port4:
+		mUi->port4Box->setCurrentIndex(noneSensorIndex);
+		break;
+	default:
+		break;
+	}
+}
+
+void D2ModelWidget::changeSensorType(inputPort::InputPortEnum const port
+		, sensorType::SensorTypeEnum const type)
+{
+	switch (port) {
+	case inputPort::port1:
+		mUi->port1Box->setCurrentIndex(sensorTypeToComboBoxIndex(type));
+		break;
+	case inputPort::port2:
+		mUi->port2Box->setCurrentIndex(sensorTypeToComboBoxIndex(type));
+		break;
+	case inputPort::port3:
+		mUi->port3Box->setCurrentIndex(sensorTypeToComboBoxIndex(type));
+		break;
+	case inputPort::port4:
+		mUi->port4Box->setCurrentIndex(sensorTypeToComboBoxIndex(type));
+		break;
+	default:
+		break;
+	}
+}
+
+int D2ModelWidget::sensorTypeToComboBoxIndex(sensorType::SensorTypeEnum const type)
+{
+	switch(type) {
+	case sensorType::unused:
+		return 0;
+	case sensorType::touchBoolean:
+		return 1;
+	case sensorType::touchRaw:
+		return 1;
+	case sensorType::sonar:
+		return 3;
+	case sensorType::colorFull:
+		return 2;
+	case sensorType::colorRed:
+		return 2;
+	case sensorType::colorGreen:
+		return 2;
+	case sensorType::colorBlue:
+		return 2;
+	case sensorType::colorNone:
+		return 2;
+	default:
+		return 0;
 	}
 }
 
@@ -668,11 +739,16 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 	rotater->setMasterItem(sensor);
 	rotater->setVisible(false);
 	sensor->setRotater(rotater);
+	sensor->setRotation(mRobotModel->configuration().direction(port));
 
-	if (sensor->boundingRect().intersects(mRobot->boundingRect())) {
+	if (mRobotModel->configuration().stickedToItem(port)) {
 		sensor->setParentItem(mRobot);
+		sensor->setPos(mRobot->mapFromScene(mRobotModel->configuration().position(port)));
+	} else {
+		sensor->setPos(mRobotModel->configuration().position(port));
 	}
 
+	changeSensorType(port, mRobotModel->configuration().type(port));
 	mSensors[port] = sensor;
 }
 
@@ -746,7 +822,7 @@ void D2ModelWidget::changePenColor(const QString &text)
 
 void D2ModelWidget::changePalette()
 {
-	if (mClosed) {
+	if (mClearing) {
 		return;
 	}
 	if(mDrawingAction == drawingAction::none) {
@@ -767,7 +843,7 @@ void D2ModelWidget::changePalette()
 	}
 }
 
-void D2ModelWidget::setValuePenColorComboBox(QColor penColor)
+void D2ModelWidget::setValuePenColorComboBox(QColor const &penColor)
 {
 	mUi->penColorComboBox->setColor(penColor);
 }
