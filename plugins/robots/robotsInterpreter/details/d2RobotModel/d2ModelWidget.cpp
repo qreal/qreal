@@ -669,7 +669,6 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 	rotater->setVisible(false);
 	sensor->setRotater(rotater);
 
-	sensor->setBasePosition(mRobot->basePoint(), mRobot->rotateAngle()/*, rotatePoint*/);
 	if (sensor->boundingRect().intersects(mRobot->boundingRect())) {
 		sensor->setParentItem(mRobot);
 	}
@@ -794,6 +793,17 @@ void D2ModelWidget::setNoPalette()
 D2ModelScene* D2ModelWidget::scene()
 {
 	return mScene;
+}
+
+void D2ModelWidget::setRobotVisible(bool isVisible)
+{
+	if (!isVisible) {
+		mRobotWasSelected = mRobot->isSelected();
+	}
+	mRobot->setVisible(isVisible);
+	if (isVisible) {
+		mRobot->setSelected(mRobotWasSelected);
+	}
 }
 
 void D2ModelWidget::setSensorVisible(inputPort::InputPortEnum port, bool isVisible)

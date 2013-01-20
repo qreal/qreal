@@ -118,27 +118,22 @@ D2ModelWidget *D2RobotModel::createModelWidget()
 	return mD2ModelWidget;
 }
 
-QPair<QPoint, qreal> D2RobotModel::countPositionAndDirection(QPointF localPosition, qreal localDirection) const
-{
-	QPointF point = localPosition - rotatePoint;
-	QPointF localPoint = QTransform().translate(-point.x(), -point.y()).rotate(mAngle)
-			.translate(point.x(), point.y()).rotate(-mAngle)
-			.map(localPosition);
-
-	QPoint resPoint = localPoint.toPoint() + mPos.toPoint();
-	qreal direction = localDirection + mAngle;
-	return QPair<QPoint, qreal>(resPoint, direction);
-}
-
 QPair<QPoint, qreal> D2RobotModel::countPositionAndDirection(inputPort::InputPortEnum const port) const
 {
-	return countPositionAndDirection(mSensorsConfiguration.position(port), mSensorsConfiguration.direction(port));
+	QPoint const position = mSensorsConfiguration.position(port);
+	qreal direction = mSensorsConfiguration.direction(port);
+	if (mSensorsConfiguration.stickedToItem(port)) {
+		direction += mAngle;
+	}
+	return QPair<QPoint, qreal>(position, direction);
 }
 
 int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 {
 	QPair<QPoint, qreal> neededPosDir = countPositionAndDirection(port);
-	bool res = mWorldModel.touchSensorReading(neededPosDir.first, neededPosDir.second, port);
+	QPointF sensorPosition(neededPosDir.first);
+	QRectF sensorRegion(sensorPosition.x(), sensorPosition.y(), sensorWidth, sensorWidth);
+	bool res = mWorldModel.checkCollision(sensorRegion);
 	// TODO: Add checks of sensor type.
 
 	if (res) {
@@ -186,7 +181,7 @@ QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
 {
 	QPair<QPoint, qreal> neededPosDir = countPositionAndDirection(port);
 	QPointF position = neededPosDir.first;
-	qreal width = colorSensorWidth / 2.0;
+	qreal width = sensorWidth / 2.0;
 	QRectF scanningRect = QRectF(position.x() -  width, position.y() - width
 			, 2 * width, 2 * width);
 
@@ -200,7 +195,9 @@ QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
 	painter.drawRect(mD2ModelWidget->scene()->itemsBoundingRect().adjusted(-width, -width, width, width));
 
 	mD2ModelWidget->setSensorVisible(port, false);
+	mD2ModelWidget->setRobotVisible(false);
 	mD2ModelWidget->scene()->render(&painter, QRectF(), scanningRect);
+	mD2ModelWidget->setRobotVisible(true);
 	mD2ModelWidget->setSensorVisible(port, true);
 
 	return image;

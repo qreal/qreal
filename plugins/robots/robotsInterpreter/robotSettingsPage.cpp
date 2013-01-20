@@ -58,11 +58,13 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 			<< tr("Touch sensor (boolean value)")
 			<< tr("Touch sensor (raw value)")
 			<< tr("Sonar sensor")
+			<< tr("Light sensor")
 			<< tr("Color sensor (full colors)")
 			<< tr("Color sensor (red)")
 			<< tr("Color sensor (green)")
 			<< tr("Color sensor (blue)")
 			<< tr("Color sensor (passive)")
+			<< tr("Encoder")
 	;
 
 	mUi->port1ComboBox->addItems(sensorNames);

@@ -20,6 +20,20 @@ const qreal robotWidth = 50;
 const qreal robotHeight = 50;
 const QPointF rotatePoint = QPointF(robotWidth / 2, robotHeight / 2);
 
+const qreal beepWavesSize = 120;
+
+class BeepItem : public QGraphicsItem
+{
+protected:
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+	QRectF boundingRect () const;
+
+private:
+	void drawBeep(QPainter* painter);
+	void drawBeepArcs(QPainter* painter, QPointF const &center, qreal radius);
+
+};
+
 /** @brief Class that represents a robot in 2D model */
 class RobotItem : public QObject, public graphicsUtils::RotateItem
 {
@@ -33,7 +47,6 @@ public:
 	virtual void setSelected(bool isSelected);
 	void setRotater(Rotater *rotater);
 	virtual void checkSelection();
-	QPointF basePoint();
 
 	virtual QRectF boundingRect() const;
 	virtual QRectF calcNecessaryBoundingRect() const;
@@ -58,23 +71,20 @@ public:
 	void setRobotModel(RobotModelInterface *robotModel);
 	void setNeededBeep(bool isNeededBeep);
 
+protected:
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
 signals:
 	void changedPosition();
 
 private:
-	void drawBeep(QPainter* painter);
-	void playBeep();
-	void drawBeepArcs(QPainter* painter, QPointF const &center, qreal radius);
-
 	/** @brief Image of a robot drawn on scene */
 	QImage mImage;
 	QImage mBeepImage;
-	bool mNeededBeep;
+	BeepItem *mBeepItem;
 
 	/** @brief List of sensors added to robot */
 	QList<SensorItem *> mSensors;  // Does not have ownership
-
-	QPointF mBasePoint;
 
 	bool mIsOnTheGround;
 	Rotater *mRotater;

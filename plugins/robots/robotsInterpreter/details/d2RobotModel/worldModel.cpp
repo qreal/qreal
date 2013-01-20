@@ -1,7 +1,7 @@
-#include "worldModel.h"
-
 #include <QtGui/QTransform>
 #include <QtCore/QStringList>
+
+#include "worldModel.h"
 
 #include "../tracer.h"
 #include "stylusItem.h"

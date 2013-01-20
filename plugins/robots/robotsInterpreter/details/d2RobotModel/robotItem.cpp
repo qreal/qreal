@@ -9,13 +9,13 @@ int const border = 5;
 RobotItem::RobotItem()
 	: RotateItem()
 	, mImage(QImage(":/icons/robot.png"))
-	, mNeededBeep(false)
+	, mBeepItem(new BeepItem)
 	, mIsOnTheGround(true)
 	, mRotater(NULL)
 	, mRectangleImpl()
 	, mRobotModel()
 {
-	setFlags(ItemIsSelectable | ItemIsMovable);
+	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
 
 	setAcceptHoverEvents(true);
 	setAcceptDrops(true);
@@ -24,51 +24,17 @@ RobotItem::RobotItem()
 	mX2 = mX1 + robotWidth;
 	mY2 = mY1 + robotHeight;
 
-	mPreviousScenePos = QPointF(0, 0);
-
-	mBasePoint = scenePos();
-
 	setTransformOriginPoint(rotatePoint);
+	mBeepItem->setParentItem(this);
+	mBeepItem->setPos((robotWidth - beepWavesSize)/2, (robotHeight - beepWavesSize)/2);
+	mBeepItem->setVisible(false);
 }
 
 void RobotItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
 	Q_UNUSED(option)
 	Q_UNUSED(widget)
-	if (mNeededBeep) {
-		playBeep();
-		drawBeep(painter);
-	}
 	mRectangleImpl.drawImageItem(painter, mX1, mY1, mX2, mY2, mImage);
-}
-
-void RobotItem::drawBeep(QPainter* painter)
-{
-	qreal centerX = (mX1 + mX2) / 2;
-	qreal centerY = (mY1 + mY2) / 2;
-	QPointF const center(centerX, centerY);
-
-	drawBeepArcs(painter, center, 40);
-	drawBeepArcs(painter, center, 50);
-	drawBeepArcs(painter, center, 60);
-}
-
-void RobotItem::drawBeepArcs(QPainter* painter, QPointF const &center, qreal radius)
-{
-	painter->save();
-	QPen pen;
-	pen.setColor(Qt::red);
-	pen.setWidth(3);
-	painter->setPen(pen);
-	QRectF rect(center.x()-radius, center.y()-radius, radius+radius, radius+radius);
-	painter->drawArc(rect, -45*16, 90*16);
-	painter->drawArc(rect, 135*16, 90*16);
-	painter->restore();
-}
-
-void RobotItem::playBeep()
-{
-	// TODO
 }
 
 void RobotItem::drawExtractionForItem(QPainter* painter)
@@ -91,16 +57,11 @@ void RobotItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
 	mIsOnTheGround = false;
-
-	mPreviousScenePos = scenePos();
 }
 
 void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseMoveEvent(event);
-
-	mBasePoint += scenePos() - mPreviousScenePos;
-	mPreviousScenePos = scenePos();
 }
 
 void RobotItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
@@ -108,14 +69,7 @@ void RobotItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 	AbstractItem::mouseReleaseEvent(event);
 	mIsOnTheGround = true;
 
-	mPreviousScenePos = scenePos();
-
 	emit changedPosition();
-}
-
-QPointF RobotItem::basePoint()
-{
-	return mBasePoint;
 }
 
 void RobotItem::resizeItem(QGraphicsSceneMouseEvent *event)
@@ -185,5 +139,58 @@ void RobotItem::checkSelection()
 
 void RobotItem::setNeededBeep(bool isNeededBeep)
 {
-	mNeededBeep = isNeededBeep;
+	mBeepItem->setVisible(isNeededBeep);
+}
+
+QVariant RobotItem::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+	if (change == ItemPositionChange) {
+		foreach (SensorItem *sensor, mSensors) {
+			sensor->onPositionChanged();
+		}
+	}
+	if (change == ItemTransformChange) {
+		foreach (SensorItem *sensor, mSensors) {
+			sensor->onPositionChanged();
+			sensor->onDirectionChanged();
+		}
+	}
+
+	return AbstractItem::itemChange(change, value);
+}
+
+void BeepItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
+		, QWidget *widget)
+{
+	Q_UNUSED(option)
+	Q_UNUSED(widget)
+
+	drawBeep(painter);
+}
+
+QRectF BeepItem::boundingRect () const
+{
+	return QRectF(0, 0, beepWavesSize, beepWavesSize);
+}
+
+void BeepItem::drawBeep(QPainter* painter)
+{
+	QPointF const center(beepWavesSize/2, beepWavesSize/2);
+
+	drawBeepArcs(painter, center, 40);
+	drawBeepArcs(painter, center, 50);
+	drawBeepArcs(painter, center, 60);
+}
+
+void BeepItem::drawBeepArcs(QPainter* painter, QPointF const &center, qreal radius)
+{
+	painter->save();
+	QPen pen;
+	pen.setColor(Qt::red);
+	pen.setWidth(3);
+	painter->setPen(pen);
+	QRectF rect(center.x()-radius, center.y()-radius, radius+radius, radius+radius);
+	painter->drawArc(rect, 45*16, 90*16);
+	painter->drawArc(rect, 225*16, 90*16);
+	painter->restore();
 }

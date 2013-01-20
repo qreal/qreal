@@ -33,6 +33,9 @@ public:
 	QDomElement serialize(QDomDocument &document) const;
 	void deserialize(QDomElement const &element);
 
+	bool stickedToItem(inputPort::InputPortEnum const port) const;
+	void onStickedToItem(inputPort::InputPortEnum const port, bool sticked);
+
 private:
 	class SensorInfo
 	{
@@ -46,12 +49,16 @@ private:
 		qreal direction() const;
 		void setDirection(qreal direction);
 
+		bool stickedToRobot() const;
+		void setStickedToRobot(bool sticked);
+
 		sensorType::SensorTypeEnum type() const;
 
 	private:
 		QPoint mPosition;
 		qreal mDirection;
 		sensorType::SensorTypeEnum mSensorType;
+		bool mStickedToRobot;
 	};
 
 	QVector<SensorInfo> mSensors;

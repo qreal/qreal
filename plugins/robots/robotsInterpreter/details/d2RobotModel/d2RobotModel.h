@@ -72,6 +72,19 @@ private:
 		unsigned time;
 	};
 
+	void setSpeedFactor(qreal speedMul);
+	void initPosition();
+	Motor* initMotor(int radius, int speed, long unsigned int degrees, int port, bool isUsed);
+	void countNewCoord();
+	void countBeep();
+	QPair<QPoint, qreal> countPositionAndDirection(inputPort::InputPortEnum const port) const;
+	void countMotorTurnover();
+
+	QImage printColorSensor(inputPort::InputPortEnum const port) const;
+	int readColorFullSensor(QHash<unsigned long, int> countsColor) const;
+	int readColorNoneSensor(QHash<unsigned long, int> countsColor, int n) const;
+	int readSingleColorSensor(unsigned long color, QHash<unsigned long, int> countsColor, int n) const;
+
 	D2ModelWidget *mD2ModelWidget;
 	QTimer *mTimer;
 	Motor *mMotorA;
@@ -86,20 +99,6 @@ private:
 	SensorsConfiguration mSensorsConfiguration;
 	WorldModel mWorldModel;
 	qreal mSpeedFactor;
-
-	void setSpeedFactor(qreal speedMul);
-	void initPosition();
-	Motor* initMotor(int radius, int speed, long unsigned int degrees, int port, bool isUsed);
-	void countNewCoord();
-	void countBeep();
-	QPair<QPoint, qreal> countPositionAndDirection(inputPort::InputPortEnum const port) const;
-	QPair<QPoint, qreal> countPositionAndDirection(QPointF localPosition, qreal localDirection) const;
-	void countMotorTurnover();
-
-	QImage printColorSensor(inputPort::InputPortEnum const port) const;
-	int readColorFullSensor(QHash<unsigned long, int> countsColor) const;
-	int readColorNoneSensor(QHash<unsigned long, int> countsColor, int n) const;
-	int readSingleColorSensor(unsigned long color, QHash<unsigned long, int> countsColor, int n) const;
 };
 
 }

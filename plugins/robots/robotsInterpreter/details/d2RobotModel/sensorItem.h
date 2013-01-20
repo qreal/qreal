@@ -44,22 +44,22 @@ public:
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
 	void setRotatePoint(QPointF rotatePoint);
-	void setDeltaBasePosition(QPointF const &delta, qreal dir);
-	void setBasePosition(QPointF const &pos, qreal dir);
 
 	void addStickyItem(QGraphicsItem *item);
 	void removeStickyItem(QGraphicsItem *item);
+
+	void onPositionChanged();
+	void onDirectionChanged();
 
 protected:
 	static int const size = 6;
 
 	QColor color() const;
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 	SensorsConfiguration &mConfiguration;
 	inputPort::InputPortEnum const mPort;
-	QPointF mBasePos;
 	QPointF mRotatePoint;
-	qreal mBaseDir;
 	bool mDragged;
 	graphicsUtils::PointImpl mPointImpl;
 	Rotater *mRotater;

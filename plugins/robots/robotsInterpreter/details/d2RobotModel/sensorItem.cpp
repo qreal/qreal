@@ -16,13 +16,12 @@ SensorItem::SensorItem(SensorsConfiguration &configuration
 	, mPointImpl()
 	, mRotater(NULL)
 {
-	setFlags(ItemIsSelectable | ItemIsMovable);
+	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
 
 	setAcceptHoverEvents(true);
 	setAcceptDrops(true);
 	setCursor(QCursor(Qt::PointingHandCursor));
 	setZValue(1);
-	mPreviousScenePos = QPointF(0, 0);
 }
 
 void SensorItem::setRotatePoint(QPointF rotatePoint)
@@ -65,18 +64,14 @@ void SensorItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
 	mDragged = true;
-	mPreviousScenePos = event->pos();
 }
 
 void SensorItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseMoveEvent(event);
 	if (mDragged) {
-		mConfiguration.setPosition(mPort, event->scenePos().toPoint());
 		QPointF const offset = event->lastPos() - event->pos();
 		moveBy(offset.x(), offset.y());
-
-		mPreviousScenePos = scenePos();
 	}
 }
 
@@ -92,24 +87,14 @@ void SensorItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 			QPointF const newPos = mapToItem(itemUnderCursor, mapFromScene(scenePos()));
 			setParentItem(itemUnderCursor);
 			setPos(newPos);
+			mConfiguration.onStickedToItem(mPort, true);
 			return;
 		}
 	}
 	QPointF const scenePosition = scenePos();
 	setParentItem(NULL);
 	setPos(scenePosition);
-}
-
-void SensorItem::setBasePosition(QPointF const &pos, qreal dir)
-{
-	mBasePos = pos;
-	mBaseDir = dir;
-}
-
-void SensorItem::setDeltaBasePosition(QPointF const &delta, qreal dir)
-{
-	mBasePos = mBasePos + delta;
-	mBaseDir = dir;
+	mConfiguration.onStickedToItem(mPort, false);
 }
 
 QColor SensorItem::color() const
@@ -140,14 +125,13 @@ void SensorItem::resizeItem(QGraphicsSceneMouseEvent *event)
 
 void SensorItem::rotate(qreal angle)
 {
-	qreal oldDir = mConfiguration.direction(mPort);
-	mConfiguration.setDirection(mPort, oldDir + angle);
+	mConfiguration.setDirection(mPort, angle);
 	setRotation(angle);
 }
 
 QRectF SensorItem::rect() const
 {
-	QPointF pos = mBasePos + mConfiguration.position(mPort);
+	QPointF pos = mConfiguration.position(mPort);
 	return  mPointImpl.boundingRect(pos.x(), pos.y(), size, 0);
 }
 
@@ -179,4 +163,25 @@ void SensorItem::addStickyItem(QGraphicsItem *item)
 void SensorItem::removeStickyItem(QGraphicsItem *item)
 {
 	mStickyItems.remove(item);
+}
+
+QVariant SensorItem::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+	if (change == ItemPositionChange) {
+		onPositionChanged();
+	}
+	if (change == ItemTransformChange) {
+		onDirectionChanged();
+	}
+	return AbstractItem::itemChange(change, value);
+}
+
+void SensorItem::onPositionChanged()
+{
+	mConfiguration.setPosition(mPort, scenePos().toPoint());
+}
+
+void SensorItem::onDirectionChanged()
+{
+	mConfiguration.setDirection(mPort, rotation());
 }

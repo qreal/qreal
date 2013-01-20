@@ -17,8 +17,6 @@ public:
 	virtual double rotateAngle() const = 0;
 	virtual void setSelected(bool isSelected) = 0;
 	virtual void checkSelection() = 0;
-protected:
-	QPointF mPreviousScenePos;
 };
 
 }

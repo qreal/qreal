@@ -1,6 +1,6 @@
-#include "sensorsConfiguration.h"
-
 #include <QtCore/QStringList>
+
+#include "sensorsConfiguration.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -46,6 +46,17 @@ sensorType::SensorTypeEnum SensorsConfiguration::type(inputPort::InputPortEnum c
 void SensorsConfiguration::clearSensor(inputPort::InputPortEnum const &port)
 {
 	mSensors[port] = SensorInfo();
+}
+
+bool SensorsConfiguration::stickedToItem(inputPort::InputPortEnum const port) const
+{
+	return mSensors[port].stickedToRobot();
+}
+
+void SensorsConfiguration::onStickedToItem(inputPort::InputPortEnum const port, bool sticked)
+{
+	// In current logic sensors can be sticked to the only item (robot)
+	mSensors[port].setStickedToRobot(sticked);
 }
 
 QDomElement SensorsConfiguration::serialize(QDomDocument &document) const
@@ -124,6 +135,16 @@ void SensorsConfiguration::SensorInfo::setPosition(QPoint const &position)
 qreal SensorsConfiguration::SensorInfo::direction() const
 {
 	return mDirection;
+}
+
+bool SensorsConfiguration::SensorInfo::stickedToRobot() const
+{
+	return mStickedToRobot;
+}
+
+void SensorsConfiguration::SensorInfo::setStickedToRobot(bool sticked)
+{
+	mStickedToRobot = sticked;
 }
 
 void SensorsConfiguration::SensorInfo::setDirection(qreal direction)

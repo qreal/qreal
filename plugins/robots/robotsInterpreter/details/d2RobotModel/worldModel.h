@@ -11,7 +11,7 @@
 #include "wallItem.h"
 #include "colorFieldItem.h"
 
-const int colorSensorWidth = 10;
+const int sensorWidth = 10;
 
 namespace qReal {
 namespace interpreters {
