@@ -537,11 +537,10 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 	delUnusedLines();
 
-	if (SettingsManager::value("ActivateGrid").toBool()) {
-		if (isParentSortingContainer()) {
-			alignToGrid();
-		}
+	if (SettingsManager::value("ActivateGrid").toBool() || mSwitchGridAction.isChecked()) {
+		alignToGrid();
 	}
+
 	storeGeometry();
 
 	if (scene() && scene()->selectedItems().size() == 1 && isSelected()) {
@@ -1247,9 +1246,6 @@ void NodeElement::setAssistApi(qReal::models::GraphicalModelAssistApi *graphical
 	mPortHandler->setGraphicalAssistApi(graphicalAssistApi);
 }
 
-bool NodeElement::isParentSortingContainer() const {
-	return (mParentNodeElement != NULL) && mParentNodeElement->mElementImpl->isSortingContainer();
-}
 
 void NodeElement::updateNodeEdges()
 {
