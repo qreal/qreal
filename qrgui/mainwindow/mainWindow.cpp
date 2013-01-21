@@ -1067,6 +1067,8 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 		initCurrentTab(view, index);
 		mUi->tabs->addTab(view, index.data().toString());
 		mUi->tabs->setCurrentWidget(view);
+		// Focusing on scene top left corner
+		view->centerOn(view->scene()->sceneRect().topLeft());
 	}
 
 	// changing of palette active editor

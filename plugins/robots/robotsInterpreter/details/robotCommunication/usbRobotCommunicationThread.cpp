@@ -197,6 +197,12 @@ bool UsbRobotCommunicationThread::isResponseNeeded(QByteArray const &buffer)
 
 void UsbRobotCommunicationThread::checkConsistency()
 {
+	robotModelType::robotModelTypeEnum const typeOfRobotModel =
+			static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel").toInt());
+	if (typeOfRobotModel != robotModelType::real) {
+		return;
+	}
+
 	if (!mFantom.isAvailable()) {
 		QString const fantomDownloadLink = qReal::SettingsManager::value("fantomDownloadLink").toString();
 		QString errorMessage = tr("Fantom Driver is unavailable. Usb connection to robot is impossible.");
