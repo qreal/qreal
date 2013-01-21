@@ -72,6 +72,10 @@ void WaitForSonarDistanceBlock::failureSlot()
 
 void WaitForSonarDistanceBlock::timerTimeout()
 {
+	// Without the next two lines it fails with segfault with some great probability
+	inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
+	mSonarSensor = mRobotModel->sonarSensor(port);
+
 	mSonarSensor->read();
 }
 

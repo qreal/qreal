@@ -40,6 +40,8 @@ public:
 	void deserialize(QDomElement const &element);
 
 private:
+	QPainterPath sonarScanningRegion(QTransform const &transform, int range) const;
+
 	QList<WallItem *> mWalls;
 	QList<ColorFieldItem *> mColorFields;
 	QMap<inputPort::InputPortEnum, QPointF> mTouchSensorPositionOld;
