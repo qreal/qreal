@@ -26,6 +26,7 @@ public:
 	int sonarReading(QPoint const &position, qreal direction) const;
 	bool touchSensorReading(QPoint const &position, qreal direction, inputPort::InputPortEnum const port);
 	QPainterPath sonarScanningRegion(QPoint const &position, qreal direction, int range = 255) const;
+	QPainterPath sonarScanningRegion(QPoint const &position, int range = 255) const;
 	bool checkCollision(QPolygonF const &robotRegion) const;
 	QList<WallItem *> const &walls() const;
 	QList<ColorFieldItem *> const &colorFields() const;
@@ -40,8 +41,6 @@ public:
 	void deserialize(QDomElement const &element);
 
 private:
-	QPainterPath sonarScanningRegion(QTransform const &transform, int range) const;
-
 	QList<WallItem *> mWalls;
 	QList<ColorFieldItem *> mColorFields;
 	QMap<inputPort::InputPortEnum, QPointF> mTouchSensorPositionOld;

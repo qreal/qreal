@@ -1,4 +1,3 @@
-#include <QDebug>
 #include "d2RobotModel.h"
 #include "../tracer.h"
 
@@ -147,8 +146,6 @@ int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 int D2RobotModel::readSonarSensor(inputPort::InputPortEnum const port) const
 {
 	QPair<QPoint, qreal> neededPosDir = countPositionAndDirection(port);
-	qDebug() << neededPosDir.first;
-	qDebug() << neededPosDir.second;
 	return mWorldModel.sonarReading(neededPosDir.first, neededPosDir.second);
 }
 
