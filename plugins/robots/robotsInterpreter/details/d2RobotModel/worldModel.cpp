@@ -1,3 +1,4 @@
+#include<QDebug>
 #include <QtGui/QTransform>
 #include <QtCore/QStringList>
 
@@ -19,9 +20,14 @@ int WorldModel::sonarReading(QPoint const &position, qreal direction) const
 
 	QPainterPath const wallPath = buildWallPath();
 
+	// TODO: rewrite it with binary search
 	for (int currentRangeInCm = 1; currentRangeInCm <= maxSonarRangeCms; ++currentRangeInCm) {
-		QPainterPath rayPath = sonarScanningRegion(position, direction, currentRangeInCm);
+		QTransform const sensorPositionTransform = QTransform().rotate(direction)
+				.translate(position.x(), position.y());
+		QPainterPath const rayPath = sonarScanningRegion(sensorPositionTransform, currentRangeInCm);
 		if (rayPath.intersects(wallPath)) {
+			qDebug() << rayPath;
+			qDebug() << wallPath;
 			Tracer::debug(tracer::d2Model, "WorldModel::sonarReading", "Sonar sensor. Reading: " + QString(currentRangeInCm));
 			return currentRangeInCm;
 		}
@@ -50,6 +56,14 @@ bool WorldModel::touchSensorReading(QPoint const &position, qreal direction, inp
 
 QPainterPath WorldModel::sonarScanningRegion(QPoint const &position, qreal direction, int range) const
 {
+	Q_UNUSED(direction)
+
+	QTransform sensorPositionTransform = QTransform().translate(position.x(), position.y());
+	return sonarScanningRegion(sensorPositionTransform, range);
+}
+
+QPainterPath WorldModel::sonarScanningRegion(QTransform const &transform, int range) const
+{
 	double const pixelsInCm = 1;
 	double const rayWidthDegrees = 10.0;
 	double const rangeInPixels = range * pixelsInCm;
@@ -59,9 +73,7 @@ QPainterPath WorldModel::sonarScanningRegion(QPoint const &position, qreal direc
 			, 2 * rangeInPixels, 2 * rangeInPixels)
 			, -rayWidthDegrees, 2 * rayWidthDegrees);
 	rayPath.closeSubpath();
-	QTransform sensorPositionTransform = QTransform().rotate(direction)
-			.translate(position.x(), position.y());
-	return sensorPositionTransform.map(rayPath);
+	return transform.map(rayPath);
 }
 
 bool WorldModel::checkCollision(QPolygonF const &robotRegion) const
