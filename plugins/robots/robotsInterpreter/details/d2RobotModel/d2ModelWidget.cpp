@@ -767,7 +767,6 @@ void D2ModelWidget::deleteItem(QGraphicsItem *item)
 	if (wall) {
 		mScene->removeItem(wall);
 		mWorldModel->removeWall(wall);
-		delete wall;
 	}
 	ColorFieldItem *colorField = dynamic_cast<ColorFieldItem *>(item);
 	if (colorField) {
