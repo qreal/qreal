@@ -79,22 +79,7 @@ void SensorItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseReleaseEvent(event);
 	mDragged = false;
-
-	QList<QGraphicsItem *> itemsUnderCursor = scene()->items(event->scenePos()
-			, Qt::IntersectsItemShape, Qt::DescendingOrder);
-	foreach (QGraphicsItem *itemUnderCursor, itemsUnderCursor) {
-		if (mStickyItems.contains(itemUnderCursor)) {
-			QPointF const newPos = mapToItem(itemUnderCursor, mapFromScene(scenePos()));
-			setParentItem(itemUnderCursor);
-			setPos(newPos);
-			mConfiguration.onStickedToItem(mPort, true);
-			return;
-		}
-	}
-	QPointF const scenePosition = scenePos();
-	setParentItem(NULL);
-	setPos(scenePosition);
-	mConfiguration.onStickedToItem(mPort, false);
+	setPos(scenePos());
 }
 
 QColor SensorItem::color() const

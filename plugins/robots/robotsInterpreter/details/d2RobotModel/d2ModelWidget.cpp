@@ -746,12 +746,8 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 	sensor->setRotater(rotater);
 	sensor->setRotation(mRobotModel->configuration().direction(port));
 
-	if (mRobotModel->configuration().stickedToItem(port)) {
-		sensor->setParentItem(mRobot);
-		sensor->setPos(mRobot->mapFromScene(mRobotModel->configuration().position(port)));
-	} else {
-		sensor->setPos(mRobotModel->configuration().position(port));
-	}
+	sensor->setParentItem(mRobot);
+	sensor->setPos(mRobot->mapFromScene(mRobotModel->configuration().position(port)));
 
 	changeSensorType(port, mRobotModel->configuration().type(port));
 	mSensors[port] = sensor;
