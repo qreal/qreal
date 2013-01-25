@@ -322,27 +322,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::Interpreter</name>
     <message>
-        <location filename="interpreter.cpp" line="76"/>
+        <location filename="interpreter.cpp" line="77"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="80"/>
+        <location filename="interpreter.cpp" line="81"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="89"/>
+        <location filename="interpreter.cpp" line="90"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="174"/>
+        <location filename="interpreter.cpp" line="175"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="178"/>
+        <location filename="interpreter.cpp" line="179"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
@@ -358,57 +358,67 @@ p, li { white-space: pre-wrap; }
     <name>qReal::interpreters::robots::PreferencesRobotSettingsPage</name>
     <message>
         <location filename="robotSettingsPage.cpp" line="57"/>
-        <location filename="robotSettingsPage.cpp" line="102"/>
+        <location filename="robotSettingsPage.cpp" line="104"/>
         <source>Unused</source>
         <translation>Не используется</translation>
     </message>
     <message>
         <location filename="robotSettingsPage.cpp" line="58"/>
-        <location filename="robotSettingsPage.cpp" line="103"/>
+        <location filename="robotSettingsPage.cpp" line="105"/>
         <source>Touch sensor (boolean value)</source>
         <translation>Сенсор касания</translation>
     </message>
     <message>
         <location filename="robotSettingsPage.cpp" line="59"/>
-        <location filename="robotSettingsPage.cpp" line="104"/>
+        <location filename="robotSettingsPage.cpp" line="106"/>
         <source>Touch sensor (raw value)</source>
         <translation>Сенсор касания (сырое значение)</translation>
     </message>
     <message>
         <location filename="robotSettingsPage.cpp" line="60"/>
-        <location filename="robotSettingsPage.cpp" line="105"/>
+        <location filename="robotSettingsPage.cpp" line="107"/>
         <source>Sonar sensor</source>
         <translation>Сенсор расстояния</translation>
     </message>
     <message>
         <location filename="robotSettingsPage.cpp" line="61"/>
-        <location filename="robotSettingsPage.cpp" line="106"/>
+        <source>Light sensor</source>
+        <translation>Сенсор света</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.cpp" line="62"/>
+        <location filename="robotSettingsPage.cpp" line="108"/>
         <source>Color sensor (full colors)</source>
         <translation>Сенсор цвета (распознавание цветов)</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.cpp" line="62"/>
-        <location filename="robotSettingsPage.cpp" line="107"/>
+        <location filename="robotSettingsPage.cpp" line="63"/>
+        <location filename="robotSettingsPage.cpp" line="109"/>
         <source>Color sensor (red)</source>
         <translation>Сенсор цвета (красный)</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.cpp" line="63"/>
-        <location filename="robotSettingsPage.cpp" line="108"/>
+        <location filename="robotSettingsPage.cpp" line="64"/>
+        <location filename="robotSettingsPage.cpp" line="110"/>
         <source>Color sensor (green)</source>
         <translation>Сенсор цвета (зелёный)</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.cpp" line="64"/>
-        <location filename="robotSettingsPage.cpp" line="109"/>
+        <location filename="robotSettingsPage.cpp" line="65"/>
+        <location filename="robotSettingsPage.cpp" line="111"/>
         <source>Color sensor (blue)</source>
         <translation>Сенсор цвета (синий)</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.cpp" line="65"/>
-        <location filename="robotSettingsPage.cpp" line="110"/>
+        <location filename="robotSettingsPage.cpp" line="66"/>
+        <location filename="robotSettingsPage.cpp" line="112"/>
         <source>Color sensor (passive)</source>
         <translation>Сенсор цвета (пассивный)</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.cpp" line="67"/>
+        <source>Encoder</source>
+        <translation>Энкодер</translation>
     </message>
 </context>
 <context>
@@ -417,6 +427,19 @@ p, li { white-space: pre-wrap; }
         <location filename="robotsPlugin.cpp" line="108"/>
         <source>Robots</source>
         <translation>Роботы</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::interpreters::robots::UsbRobotCommunicationThread</name>
+    <message>
+        <location filename="details/robotCommunication/usbRobotCommunicationThread.cpp" line="208"/>
+        <source>Fantom Driver is unavailable. Usb connection to robot is impossible.</source>
+        <translation>Драйвер Fantom недоступен. Usb-соединение с роботом невозможно.</translation>
+    </message>
+    <message>
+        <location filename="details/robotCommunication/usbRobotCommunicationThread.cpp" line="211"/>
+        <source> You can download Fantom Driver on </source>
+        <translation>Вы можете скачать драйвер Fantom по адресу </translation>
     </message>
 </context>
 <context>
@@ -609,7 +632,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="details/blocks/waitForLightSensorBlock.cpp" line="27"/>
         <source>Light sensor is not configured on this port</source>
-        <translation type="unfinished"></translation>
+        <translation>Сенсор цвета не сконфигурирован на этом порту</translation>
     </message>
 </context>
 <context>
@@ -631,16 +654,20 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="568"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="586"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="585"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="568"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="586"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="585"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="607"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="607"/>
+        <source>Loading world and robot model</source>
+        <translation>Загрузка модели робота и модели мира</translation>
     </message>
 </context>
 <context>
