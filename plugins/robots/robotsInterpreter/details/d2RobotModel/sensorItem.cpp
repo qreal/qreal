@@ -79,7 +79,6 @@ void SensorItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseReleaseEvent(event);
 	mDragged = false;
-	setPos(scenePos());
 }
 
 QColor SensorItem::color() const
