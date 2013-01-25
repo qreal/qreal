@@ -113,6 +113,7 @@ void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 void Rotater::resizeItem(QGraphicsSceneMouseEvent *event)
 {
 	if (mDragState == BottomRight) {
+		setFlag(ItemIsMovable, false);
 		AbstractItem::resizeItem(event);
 	}
 }
@@ -121,18 +122,15 @@ void Rotater::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
 	mMaster->setSelected(true);
-	setFlag(ItemIsMovable, false);
 }
 
 void Rotater::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseMoveEvent(event);
 	mMaster->setSelected(true);
-	setFlag(ItemIsMovable, false);
 }
 
 void Rotater::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseReleaseEvent(event);
-	setFlag(ItemIsMovable, false);
 }
