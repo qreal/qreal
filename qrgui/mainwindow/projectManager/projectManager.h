@@ -37,6 +37,7 @@ public:
 	QString saveFilePath() const;
 	void setSaveFilePath(QString const &filePath = "");
 	void saveGenCode(QString const &text);
+	void clearAutosaveFile();
 
 private:
 	bool import(const QString &fileName);
