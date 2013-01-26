@@ -202,6 +202,7 @@ void ProjectManager::refreshTitleModifiedSuffix()
 
 bool ProjectManager::openNewWithDiagram()
 {
+	clearAutosaveFile();
 	if(!openEmptyWithSuggestToSaveChanges()) {
 		return false;
 	}
@@ -255,7 +256,7 @@ void ProjectManager::saveGenCode(QString const &text)
 
 bool ProjectManager::saveOrSuggestToSaveAs()
 {
-	if (mSaveFilePath == mAutosaver->filePath()) {
+	if (mSaveFilePath == SettingsManager::value("AutosaveFileName").toString()) {
 		return suggestToSaveAs();
 	}
 	save();
@@ -309,4 +310,12 @@ void ProjectManager::setUnsavedIndicator(bool isUnsaved)
 {
 	mUnsavedIndicator = isUnsaved;
 	refreshTitleModifiedSuffix();
+}
+
+void ProjectManager::clearAutosaveFile()
+{
+	QFile tempFile(SettingsManager::value("AutosaveFileName").toString());
+	if (tempFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+		tempFile.close();
+	}
 }
