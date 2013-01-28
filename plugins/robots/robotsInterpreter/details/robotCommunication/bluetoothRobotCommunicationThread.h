@@ -29,6 +29,8 @@ public slots:
 	void disconnect();
 	void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize
 			, inputPort::InputPortEnum const &port);
+	void allowLongJobs(bool allow = true);
+	void checkConsistency();
 
 private:
 	class SleeperThread : public QThread

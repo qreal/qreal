@@ -2,6 +2,7 @@
 
 #include "../../thirdparty/qextserialport/src/qextserialenumerator.h"
 #include "../../thirdparty/qextserialport/src/qextserialport.h"
+
 using namespace qReal::interpreters::robots;
 
 RobotCommunicator::RobotCommunicator(QString const &portName)
@@ -12,8 +13,10 @@ RobotCommunicator::RobotCommunicator(QString const &portName)
 
 RobotCommunicator::~RobotCommunicator()
 {
+	mRobotCommunicationThreadObject->allowLongJobs(false);
 	mRobotCommunicationThread.quit();
 	mRobotCommunicationThread.wait();
+	delete mRobotCommunicationThreadObject;
 }
 
 void RobotCommunicator::send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize)
@@ -61,13 +64,22 @@ void RobotCommunicator::responseSlot(QObject *addressee, QByteArray const &buffe
 	emit response(addressee, buffer);
 }
 
+void RobotCommunicator::onErrorOccured(const QString &message)
+{
+	emit errorOccured(message);
+}
+
 void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication)
 {
+	if (mRobotCommunicationThreadObject) {
+		mRobotCommunicationThreadObject->allowLongJobs(false);
+	}
 	mRobotCommunicationThread.quit();
 	mRobotCommunicationThread.wait();
 	delete mRobotCommunicationThreadObject;
 	mRobotCommunicationThreadObject = robotCommunication;
 	mRobotCommunicationThreadObject->moveToThread(&mRobotCommunicationThread);
+	mRobotCommunicationThreadObject->allowLongJobs();
 	mRobotCommunicationThread.start();
 
 	QObject::connect(this, SIGNAL(threadConnect(QString)), mRobotCommunicationThreadObject, SLOT(connect(QString)));
@@ -80,4 +92,7 @@ void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThre
 	QObject::connect(mRobotCommunicationThreadObject, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 	QObject::connect(mRobotCommunicationThreadObject, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
 	QObject::connect(mRobotCommunicationThreadObject, SIGNAL(response(QObject*, QByteArray)), this, SLOT(responseSlot(QObject*, QByteArray)));
+	QObject::connect(mRobotCommunicationThreadObject, SIGNAL(errorOccured(QString)), this, SLOT(onErrorOccured(QString)));
+
+	mRobotCommunicationThreadObject->checkConsistency();
 }

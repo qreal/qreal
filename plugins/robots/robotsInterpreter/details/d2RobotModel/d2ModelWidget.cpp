@@ -1,9 +1,10 @@
-#include "d2ModelWidget.h"
-#include "ui_d2Form.h"
-
+#include <QtCore/QDebug>
+#include <QtCore/qmath.h>
 #include <QtGui/QFileDialog>
 #include <QtGui/QRegion>
-#include <QtCore/qmath.h>
+
+#include "d2ModelWidget.h"
+#include "ui_d2Form.h"
 
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
@@ -216,10 +217,10 @@ void D2ModelWidget::changeEvent(QEvent *e)
 
 bool D2ModelWidget::isRobotOnTheGround()
 {
-	return mRobot ? mRobot->isOnTheGround() : false;
+	return mRobot && mRobot->isOnTheGround();
 }
 
-void D2ModelWidget::draw(QPointF newCoord, qreal angle, QPointF dPoint)
+void D2ModelWidget::draw(QPointF const &newCoord, qreal angle, QPointF const &dPoint)
 {
 	mAngleOld = angle;
 	mRotatePointOld = dPoint;
@@ -238,11 +239,11 @@ void D2ModelWidget::drawWalls()
 {
 	if (mDrawingAction == drawingAction::wall || mDrawingAction == drawingAction::noneWordLoad) {
 		foreach (WallItem *wall, mWorldModel->walls()) {
-			mScene->addItem(wall);
-			connect(wall, SIGNAL(wallDragged(QPainterPath const &, QPointF const&))
-					, this, SLOT(worldWallDragged(QPainterPath const &, QPointF const&)));
-			connect(this, SIGNAL(robotWasIntersectedByWall(bool, QPointF const&))
-					, wall, SLOT(toStopWall(bool, QPointF const&)));
+			if (!mScene->items().contains(wall)) {
+				mScene->addItem(wall);
+				connect(wall, SIGNAL(wallDragged(WallItem*,QPainterPath,QPointF))
+						, this, SLOT(worldWallDragged(WallItem*,QPainterPath,QPointF)));
+			}
 		}
 	}
 }
@@ -254,7 +255,9 @@ void D2ModelWidget::drawColorFields()
 			|| mDrawingAction == drawingAction::ellipse
 			|| mDrawingAction == drawingAction::noneWordLoad) {
 		foreach (ColorFieldItem *colorField, mWorldModel->colorFields()) {
-			mScene->addItem(colorField);
+			if (!mScene->items().contains(colorField)) {
+				mScene->addItem(colorField);
+			}
 		}
 	}
 }
@@ -390,7 +393,7 @@ void D2ModelWidget::addPort(int const port)
 void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
 {
 	QPointF const pos = event->scenePos();
-	if (mCurrentWall != NULL) {
+	if (mCurrentWall) {
 		QPointF oldPos = mCurrentWall->end();
 		mCurrentWall->setX2andY2(pos.x(), pos.y());
 		if (mCurrentWall->realShape().intersects(mRobot->realBoundingRect())) {
@@ -405,17 +408,18 @@ void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
 void D2ModelWidget::reshapeLine(QGraphicsSceneMouseEvent *event)
 {
 	QPointF const pos = event->scenePos();
-	if (mCurrentLine != NULL) {
+	if (mCurrentLine) {
 		mCurrentLine->setX2andY2(pos.x(), pos.y());
-		if (event->modifiers() & Qt::ShiftModifier)
+		if (event->modifiers() & Qt::ShiftModifier) {
 			mCurrentLine->reshapeRectWithShift();
+		}
 	}
 }
 
 void D2ModelWidget::reshapeStylus(QGraphicsSceneMouseEvent *event)
 {
 	QPointF const pos = event->scenePos();
-	if (mCurrentStylus != NULL) {
+	if (mCurrentStylus) {
 		mCurrentStylus->addLine(pos.x(), pos.y());
 	}
 }
@@ -423,7 +427,7 @@ void D2ModelWidget::reshapeStylus(QGraphicsSceneMouseEvent *event)
 void D2ModelWidget::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 {
 	QPointF const pos = event->scenePos();
-	if (mCurrentEllipse != NULL) {
+	if (mCurrentEllipse) {
 		mCurrentEllipse->setX2andY2(pos.x(), pos.y());
 		if (event->modifiers() & Qt::ShiftModifier) {
 			mCurrentEllipse->reshapeRectWithShift();
@@ -435,7 +439,7 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	mRobot->checkSelection();
 	foreach (SensorItem *sensor, mSensors) {
-		if (sensor != NULL) {
+		if (sensor) {
 			sensor->checkSelection();
 		}
 	}
@@ -455,7 +459,7 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 	case drawingAction::line: {
 		mCurrentLine = new LineItem(position, position);
 		mCurrentLine->setPenBrush(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems()
-								  , mScene->brushStyleItems(), mScene->brushColorItems());
+				, mScene->brushStyleItems(), mScene->brushColorItems());
 		mScene->removeMoveFlag(mouseEvent, mCurrentLine);
 		mWorldModel->addColorField(mCurrentLine);
 		mMouseClicksCount++;
@@ -464,7 +468,7 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 	case drawingAction::stylus: {
 		mCurrentStylus = new StylusItem(position.x(), position.y());
 		mCurrentStylus->setPenBrush(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems()
-									, mScene->brushStyleItems(), mScene->brushColorItems());
+				, mScene->brushStyleItems(), mScene->brushColorItems());
 		mScene->removeMoveFlag(mouseEvent, mCurrentStylus);
 		mWorldModel->addColorField(mCurrentStylus);
 		mMouseClicksCount++;
@@ -495,7 +499,7 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	mRobot->checkSelection();
 	foreach (SensorItem *sensor, mSensors) {
-		if (sensor != NULL) {
+		if (sensor) {
 			sensor->checkSelection();
 		}
 	}
@@ -525,7 +529,7 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	mRobot->checkSelection();
 	foreach (SensorItem *sensor, mSensors) {
-		if (sensor != NULL) {
+		if (sensor) {
 			sensor->checkSelection();
 		}
 	}
@@ -576,9 +580,13 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 void D2ModelWidget::saveWorldModel()
 {
 	// Saves world and robot models simultaneously, for now.
-	QString const saveFileName = QFileDialog::getSaveFileName(this, tr("Saving world and robot model"), ".", tr("2D model saves (*.xml)"));
-	if (saveFileName.isEmpty())
+	QString saveFileName = QFileDialog::getSaveFileName(this, tr("Saving world and robot model"), ".", tr("2D model saves (*.xml)"));
+	if (saveFileName.isEmpty()) {
 		return;
+	}
+	if (!saveFileName.toLower().endsWith(".xml")) {
+		saveFileName += ".xml";
+	}
 
 	QDomDocument save;
 	QDomElement root = save.createElement("root");
@@ -594,12 +602,12 @@ void D2ModelWidget::saveWorldModel()
 void D2ModelWidget::loadWorldModel()
 {
 	// Loads world and robot models simultaneously.
-	QString const saveFileName = QFileDialog::getOpenFileName(this, tr("Saving world and robot model"), ".", tr("2D model saves (*.xml)"));
-	if (saveFileName.isEmpty()) {
+	QString const loadFileName = QFileDialog::getOpenFileName(this, tr("Loading world and robot model"), ".", tr("2D model saves (*.xml)"));
+	if (loadFileName.isEmpty()) {
 		return;
 	}
 
-	QDomDocument const save = utils::xmlUtils::loadDocument(saveFileName);
+	QDomDocument const save = utils::xmlUtils::loadDocument(loadFileName);
 
 	QDomNodeList const worldList = save.elementsByTagName("world");
 	QDomNodeList const robotList = save.elementsByTagName("robot");
@@ -699,10 +707,9 @@ QList<AbstractItem *> D2ModelWidget::selectedColorItems()
 	QList<QGraphicsItem *> listSelectedItems = mScene->selectedItems();
 	foreach (QGraphicsItem *graphicsItem, listSelectedItems) {
 		AbstractItem* item = dynamic_cast<AbstractItem*>(graphicsItem);
-		if (item != NULL) {
-			//теперь надо исключить еще те объекты, которым не надо менять цвет и т.д., а т.е. робота, сенсоры, стены и ротатеры
-			if (isColorItem(item))
-				resList.push_back(item);
+		// excluding objects  with immutable color (robot, sensors, walls and rotators)
+		if (item && isColorItem(item)) {
+			resList.push_back(item);
 		}
 	}
 	qSort(resList.begin(), resList.end(), mScene->compareItems);
@@ -799,11 +806,15 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 	emit d2WasClosed();
 }
 
-void D2ModelWidget::worldWallDragged(QPainterPath const &shape, QPointF const& oldPos)
+void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape
+		, const QPointF &oldPos)
 {
-	if (shape.intersects(mRobot->realBoundingRect())) {
-		emit robotWasIntersectedByWall(true, oldPos);
-	} else {
-		emit robotWasIntersectedByWall(false, oldPos);
+	bool const isNeedStop = shape.intersects(mRobot->realBoundingRect());
+	wall->onOverlappedWithRobot(isNeedStop);
+	if (wall->isDragged()) {
+		if (isNeedStop) {
+			wall->setPos(oldPos);
+		}
+		wall->setFlag(QGraphicsItem::ItemIsMovable, !isNeedStop);
 	}
 }
