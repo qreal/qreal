@@ -11,7 +11,8 @@
 #include "wallItem.h"
 #include "colorFieldItem.h"
 
-const int sensorWidth = 10;
+int const sensorWidth = 10;
+qreal const pixelsInCm = 50 / 14; // robot item height in px / robot real height
 
 namespace qReal {
 namespace interpreters {
@@ -41,6 +42,9 @@ public:
 	void deserialize(QDomElement const &element);
 
 private:
+	bool checkSonarDistance(int const distance, QPoint const &position
+			, qreal const direction, QPainterPath const &wallPath) const;
+
 	QList<WallItem *> mWalls;
 	QList<ColorFieldItem *> mColorFields;
 	QMap<inputPort::InputPortEnum, QPointF> mTouchSensorPositionOld;

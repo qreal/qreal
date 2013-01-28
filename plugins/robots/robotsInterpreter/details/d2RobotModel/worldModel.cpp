@@ -15,21 +15,35 @@ WorldModel::WorldModel()
 
 int WorldModel::sonarReading(QPoint const &position, qreal direction) const
 {
-	int const maxSonarRangeCms = 255;
+	int maxSonarRangeCms = 255;
+	int minSonarRangeCms = 0;
+	int currentRangeInCm = (minSonarRangeCms + maxSonarRangeCms)/2;
 
 	QPainterPath const wallPath = buildWallPath();
+	if (!checkSonarDistance(maxSonarRangeCms, position, direction, wallPath)) {
+		Tracer::debug(tracer::d2Model, "WorldModel::sonarReading", "Sonar sensor. Reading: max (" + QString(maxSonarRangeCms) + ")");
+		return maxSonarRangeCms;
+	}
 
-	// TODO: rewrite it with binary search
-	for (int currentRangeInCm = 1; currentRangeInCm <= maxSonarRangeCms; ++currentRangeInCm) {
-		QPainterPath const rayPath = sonarScanningRegion(position, direction, currentRangeInCm);
-		if (rayPath.intersects(wallPath)) {
-			Tracer::debug(tracer::d2Model, "WorldModel::sonarReading", "Sonar sensor. Reading: " + QString(currentRangeInCm));
-			return currentRangeInCm;
+	for ( ; minSonarRangeCms < maxSonarRangeCms;
+			currentRangeInCm = (minSonarRangeCms + maxSonarRangeCms) / 2) {
+		if (checkSonarDistance(currentRangeInCm, position, direction, wallPath)) {
+			maxSonarRangeCms = currentRangeInCm;
+		} else {
+			minSonarRangeCms = currentRangeInCm + 1;
 		}
 	}
 
-	Tracer::debug(tracer::d2Model, "WorldModel::sonarReading", "Sonar sensor. Reading: max (" + QString(maxSonarRangeCms) + ")");
-	return maxSonarRangeCms;
+	Tracer::debug(tracer::d2Model, "WorldModel::sonarReading", "Sonar sensor. Reading: " + QString(currentRangeInCm));
+	return currentRangeInCm;
+}
+
+
+bool WorldModel::checkSonarDistance(int const distance, QPoint const &position
+		, qreal const direction, QPainterPath const &wallPath) const
+{
+	QPainterPath const rayPath = sonarScanningRegion(position, direction, distance);
+	return rayPath.intersects(wallPath);
 }
 
 bool WorldModel::touchSensorReading(QPoint const &position, qreal direction, inputPort::InputPortEnum const port)
@@ -56,9 +70,8 @@ QPainterPath WorldModel::sonarScanningRegion(QPoint const &position, int range) 
 
 QPainterPath WorldModel::sonarScanningRegion(QPoint const &position, qreal direction, int range) const
 {
-	double const pixelsInCm = 1;
-	double const rayWidthDegrees = 10.0;
-	double const rangeInPixels = range * pixelsInCm;
+	qreal const rayWidthDegrees = 10.0;
+	qreal const rangeInPixels = range * pixelsInCm;
 
 	QPainterPath rayPath;
 	rayPath.arcTo(QRect(-rangeInPixels, -rangeInPixels

@@ -35,7 +35,7 @@ void Rotater::setMasterItem(RotateItem *masterItem)
 
 	// TODO: Dispose of hardcoding
 	mX1 = rect.width();
-	mY1 = rect.height()/2;
+	mY1 = rect.height()/2 - 5;
 	mX2 = mX1 + mLength;
 	mY2 = mY1;
 }
