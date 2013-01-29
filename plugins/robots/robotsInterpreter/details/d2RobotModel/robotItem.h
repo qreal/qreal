@@ -71,6 +71,8 @@ public:
 	void setRobotModel(RobotModelInterface *robotModel);
 	void setNeededBeep(bool isNeededBeep);
 
+	void addSensorsShapes(QPainterPath &target);
+
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 

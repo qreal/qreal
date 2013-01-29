@@ -159,6 +159,15 @@ QVariant RobotItem::itemChange(GraphicsItemChange change, const QVariant &value)
 	return AbstractItem::itemChange(change, value);
 }
 
+
+void RobotItem::addSensorsShapes(QPainterPath &target)
+{
+	foreach (SensorItem *sensor, mSensors) {
+		target.addEllipse(QRectF(sensor->pos() - QPointF(sensorWidth/2, sensorWidth/2)
+				, QSizeF(sensorWidth, sensorWidth)));
+	}
+}
+
 void BeepItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 		, QWidget *widget)
 {

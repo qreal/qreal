@@ -50,7 +50,7 @@ public:
 	void close();
 	void draw(QPointF const &newCoord, qreal angle);
 	void drawBeep(bool isNeededBeep);
-	QPolygonF const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
+	QPainterPath const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
 
 	/// Get current scene position of mRobot
 	QPointF robotPos() const;

@@ -132,15 +132,12 @@ int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 {
 	QPair<QPoint, qreal> neededPosDir = countPositionAndDirection(port);
 	QPointF sensorPosition(neededPosDir.first);
-	QRectF sensorRegion(sensorPosition.x(), sensorPosition.y(), sensorWidth, sensorWidth);
-	bool res = mWorldModel.checkCollision(sensorRegion);
+	QPainterPath sensorPath;
+	sensorPath.addRect(sensorPosition.x(), sensorPosition.y(), sensorWidth, sensorWidth);
+	bool const res = mWorldModel.checkCollision(sensorPath);
 	// TODO: Add checks of sensor type.
 
-	if (res) {
-		return touchSensorPressedSignal;
-	}
-
-	return touchSensorNotPressedSignal;
+	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
 }
 
 int D2RobotModel::readSonarSensor(inputPort::InputPortEnum const port) const
@@ -358,7 +355,7 @@ void D2RobotModel::countNewCoord()
 		mAngle -= 360;
 	}
 
-	QPolygonF const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
+	QPainterPath const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
 	if (mWorldModel.checkCollision(boundingRegion)) {
 		mPos = oldPosition;
 		mAngle = oldAngle;

@@ -263,17 +263,18 @@ void D2ModelWidget::drawBeep(bool isNeededBeep)
 	mRobot->setNeededBeep(isNeededBeep);
 }
 
-QPolygonF const D2ModelWidget::robotBoundingPolygon(QPointF const &coord, qreal const &angle) const
+QPainterPath const D2ModelWidget::robotBoundingPolygon(QPointF const &coord
+		, qreal const &angle) const
 {
-	// TODO: implement it without setting new values to real robot item
-	QPointF const oldPos = mRobot->pos();
-	qreal const oldAngle = mRobot->rotation();
-	mRobot->setPos(coord);
-	mRobot->setRotation(angle);
-	QPolygonF const result = QPolygonF(mRobot->mapToScene(mRobot->boundingRect()));
-	mRobot->setPos(oldPos);
-	mRobot->setRotation(oldAngle);
-	return result;
+	QPainterPath path;
+	path.addRect(mRobot->boundingRect());
+	mRobot->addSensorsShapes(path);
+	QPointF const realRotatePoint = QPointF(mRobot->boundingRect().width()/2, mRobot->boundingRect().height()/2);
+	QPointF const translationToZero = -realRotatePoint - mRobot->boundingRect().topLeft();
+	QPointF const finalTranslation = coord + realRotatePoint + mRobot->boundingRect().topLeft();
+	QTransform const transform = QTransform().translate(finalTranslation.x(), finalTranslation.y())
+			.rotate(angle).translate(translationToZero.x(), translationToZero.y());
+	return transform.map(path);
 }
 
 void D2ModelWidget::addWall(bool on)

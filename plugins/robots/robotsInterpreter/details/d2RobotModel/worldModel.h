@@ -11,7 +11,6 @@
 #include "wallItem.h"
 #include "colorFieldItem.h"
 
-int const sensorWidth = 10;
 qreal const pixelsInCm = 50 / 14; // robot item height in px / robot real height
 
 namespace qReal {
@@ -28,7 +27,7 @@ public:
 	bool touchSensorReading(QPoint const &position, qreal direction, inputPort::InputPortEnum const port);
 	QPainterPath sonarScanningRegion(QPoint const &position, qreal direction, int range = 255) const;
 	QPainterPath sonarScanningRegion(QPoint const &position, int range = 255) const;
-	bool checkCollision(QPolygonF const &robotRegion) const;
+	bool checkCollision(QPainterPath const &robotPath) const;
 	QList<WallItem *> const &walls() const;
 	QList<ColorFieldItem *> const &colorFields() const;
 

@@ -38,7 +38,6 @@ int WorldModel::sonarReading(QPoint const &position, qreal direction) const
 	return currentRangeInCm;
 }
 
-
 bool WorldModel::checkSonarDistance(int const distance, QPoint const &position
 		, qreal const direction, QPainterPath const &wallPath) const
 {
@@ -82,16 +81,14 @@ QPainterPath WorldModel::sonarScanningRegion(QPoint const &position, qreal direc
 	return sensorPositionTransform.map(rayPath);
 }
 
-bool WorldModel::checkCollision(QPolygonF const &robotRegion) const
+bool WorldModel::checkCollision(QPainterPath const &robotPath) const
 {
-	QPainterPath robotPath;
-	robotPath.addPolygon(robotRegion);
 	QPainterPathStroker pathStroker;
 	pathStroker.setWidth(3);
-	robotPath = pathStroker.createStroke(robotPath);
+	QPainterPath const strokedPath = pathStroker.createStroke(robotPath);
 
 	QPainterPath wallPath = buildWallPath();
-	return wallPath.intersects(robotPath);
+	return wallPath.intersects(strokedPath);
 }
 
 QList<WallItem *> const &WorldModel::walls() const
