@@ -16,15 +16,17 @@ class PythonInterpreter : public QObject
 
 public:
 	explicit PythonInterpreter(QObject *parent
-			, QString const pythonPath = "python"
-			, QString const scriptPath = QDir().currentPath() + "/reaction.py");
+			, QString const &pythonPath = "python"
+			, QString const &reactionScriptPath = QDir().currentPath() + "/reaction.py"
+			, QString const &applicationConditionScriptPath = QDir().currentPath() + "/appcond.py");
 	~PythonInterpreter();
 
-	/// Interpret reaction python script
-	bool interpret();
+	/// Interpret reaction or application condition python script
+	bool interpret(bool const isApplicationCondition);
 
 	void setPythonPath(QString const &path);
-	void setScriptPath(QString const &path);
+	void setReactionScriptPath(QString const &path);
+	void setApplicationConditionScriptPath(QString const &path);
 
 signals:
 	/// Emitted after parsing std output and has all properties changes
@@ -51,7 +53,10 @@ private:
 	QProcess *mInterpreterProcess;
 
 	QString mPythonPath;
-	QString mScriptPath;
+	QString mReactionScriptPath;
+	QString mApplicationConditionScriptPath;
+	
+	bool mApplicationConditionResult;
 };
 
 }

@@ -223,13 +223,62 @@ bool VisualInterpreterUnit::findMatch()
 	foreach (QString const &ruleName, mRules->keys()) {
 		mCurrentRuleName = ruleName;
 		mRuleToFind = mRules->value(ruleName);
-		if (checkRuleMatching()) {
+		if (checkRuleMatching() && checkApplicationCondition(ruleName)) {
 			mMatchedRuleName = ruleName;
 			return true;
 		}
 	}
 
 	return false;
+}
+
+bool VisualInterpreterUnit::checkApplicationCondition(QString const &ruleName)
+{
+	if (!property(mRules->value(ruleName), "applicationCondition").toString().isEmpty()) {
+		bool result = false;
+		QList<QHash<Id, Id> > filteredMatches;
+		for (int i = 0; i < mMatches.size(); i++) {
+			if (checkApplicationCondition(mMatches.at(i), ruleName)) {
+				result = true;
+				filteredMatches.append(mMatches.at(i));
+			}
+		}
+		mMatches = filteredMatches;
+		return result;
+	}
+	return true;
+}
+
+bool VisualInterpreterUnit::checkApplicationCondition(QHash<Id, Id> const &match, QString const &ruleName) const
+{
+	QString const appCond = property(mRules->value(ruleName), "applicationCondition").toString();
+	if (property(mRules->value(ruleName), "type").toString() == "Python") {
+		return checkApplicationConditionPython(match, ruleName);
+	} else {
+		return checkApplicationConditionCStyle(match, appCond);
+	}
+}
+
+bool VisualInterpreterUnit::checkApplicationConditionCStyle(QHash<Id, Id> const &match, QString const &appCond) const
+{
+	return mRuleParser->parseApplicationCondition(appCond, match);
+}
+
+bool VisualInterpreterUnit::checkApplicationConditionPython(QHash<Id, Id> const &match, QString const &ruleName) const
+{
+	QString const scriptPath = SettingsManager::value("applicationConditionPath").toString();
+	QString const pythonPath = SettingsManager::value("pythonPath").toString();
+
+	mPythonGenerator->setApplicationConditionScriptPath(scriptPath);
+	mPythonInterpreter->setApplicationConditionScriptPath(scriptPath);
+	mPythonInterpreter->setPythonPath(pythonPath);
+
+	mPythonGenerator->setRule(mRules->value(ruleName));
+	mPythonGenerator->setMatch(match);
+
+	mPythonGenerator->generateScript(true);
+
+	return mPythonInterpreter->interpret(true);
 }
 
 Id VisualInterpreterUnit::startElement() const
@@ -405,14 +454,14 @@ void VisualInterpreterUnit::moveControlFlow()
 
 bool VisualInterpreterUnit::interpretReaction()
 {
-	QHash<Id, Id> firstMatch = mMatches.at(0);
+	QHash<Id, Id> const firstMatch = mMatches.at(0);
 
 	Id const rule = mRules->value(mMatchedRuleName);
 	QString const ruleProcess = property(rule, "procedure").toString();
 	bool result = true;
 	if (!ruleProcess.isEmpty()) {
 		mRuleParser->setRuleId(rule);
-		result = mRuleParser->parseRule(ruleProcess, &firstMatch);
+		result = mRuleParser->parseRule(ruleProcess, firstMatch);
 	}
 	return result;
 }
@@ -422,16 +471,16 @@ bool VisualInterpreterUnit::interpretPythonReaction()
 	QString const scriptPath = SettingsManager::value("reactionPath").toString();
 	QString const pythonPath = SettingsManager::value("pythonPath").toString();
 
-	mPythonGenerator->setScriptPath(scriptPath);
-	mPythonInterpreter->setScriptPath(scriptPath);
+	mPythonGenerator->setReactionScriptPath(scriptPath);
+	mPythonInterpreter->setReactionScriptPath(scriptPath);
 	mPythonInterpreter->setPythonPath(pythonPath);
 
 	mPythonGenerator->setRule(mRules->value(mMatchedRuleName));
 	mPythonGenerator->setMatch(mMatches.first());
 
-	mPythonGenerator->generateScript();
+	mPythonGenerator->generateScript(false);
 
-	return mPythonInterpreter->interpret();
+	return mPythonInterpreter->interpret(false);
 }
 
 void VisualInterpreterUnit::copyProperties(Id const &elemInModel, Id const &elemInRule)

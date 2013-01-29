@@ -17,11 +17,13 @@ public:
 	static QString const delimeter;
 
 	/// Constructor
-	/// @param scriptPath Where save reaction on python
+	/// @param reactionScriptPath Where save reaction on python
+	/// @param applicationConditionScriptPath Where save application condition on python
 	PythonGenerator(LogicalModelAssistInterface &logicalModelApi
 			, GraphicalModelAssistInterface &graphicalModelApi
 			, gui::MainWindowInterpretersInterface &interpretersInterface
-			, QString const &scriptPath = QDir().currentPath() + "/reaction.py");
+			, QString const &reactionScriptPath = QDir().currentPath() + "/reaction.py"
+			, QString const &applicationConditionScriptPath = QDir().currentPath() + "/appcond.py");
 
 	/// Matched rule id
 	void setRule(Id const &rule);
@@ -30,10 +32,13 @@ public:
 	void setMatch(QHash<Id, Id> const &match);
 
 	/// Sets path where will be saved reaction on python
-	void setScriptPath(QString const &path);
+	void setReactionScriptPath(QString const &path);
 
-	/// Generate and save reaction script on python
-	void generateScript();
+	/// Sets path where will be saved application condition on python
+	void setApplicationConditionScriptPath(QString const &path);
+
+	/// Generate and save reaction script or application condition script on python
+	void generateScript(bool const isApplicationCondition);
 
 	/// Returns element id by it's name (from single rule)
 	Id idByName(QString const &name) const;
@@ -58,13 +63,13 @@ private:
 
 	/// Replaces all methods invocation with appropriate function name with delimeter and add definition of this
 	/// function on top of the code
-	QString replaceMethodsInvocation(QString const &reaction) const;
+	QString replaceMethodsInvocation(QString const &code) const;
 
 	/// Substitute all occurrences of elemName@propertyName with content of this property
-	QString substituteElementProperties(QString const &reaction) const;
+	QString substituteElementProperties(QString const &code) const;
 
 	/// Add to code correct initialization of new variables and create proper output for model update
-	QString createProperInitAndOutput(QString const &reaction) const;
+	QString createProperInitAndOutput(QString const &code, bool const isApplicationCondition) const;
 
 	/// Create function definition from element property
 	QString createBehaviourFunction(QString const &elementName, QString const &propertyName) const;
@@ -76,7 +81,7 @@ private:
 	bool isCorrectIdentifierSymbol(QChar const c) const;
 
 	/// Writes script in file
-	void createScriptFile(QString const &script) const;
+	void createScriptFile(QString const &script, bool const isApplicationCondition) const;
 
 	/// Escapes string (',",\,\t,\r,\n)
 	QString escape(QString const &string) const;
@@ -92,7 +97,8 @@ private:
 	QHash<QString, QSet<QString>* > mPropertiesUsage;
 	QHash<QString, QSet<QString>* > mMethodsInvocation;
 
-	QString mScriptPath;
+	QString mReactionScriptPath;
+	QString mApplicationConditionScriptPath;
 };
 
 }

@@ -53,7 +53,7 @@ void RuleParser::checkForClosingBracketAndColon(QString const &stream, int &pos)
 	pos++;
 }
 
-void RuleParser::parseRunFunction(QString const &stream, int &pos, QHash<Id, Id> *mMatch)
+void RuleParser::parseRunFunction(QString const &stream, int &pos, QHash<Id, Id> const &mMatch)
 {
 	pos += 4;
 
@@ -83,7 +83,7 @@ void RuleParser::parseRunFunction(QString const &stream, int &pos, QHash<Id, Id>
 
 // TODO: refactor this!
 void RuleParser::parsePropertyChange(QString const &stream, int &pos,
-		QHash<Id, Id> *mMatch)
+		QHash<Id, Id> const &mMatch)
 {
 	QString const name = parseElemName(stream, pos);
 	if (hasErrors()) {
@@ -276,7 +276,7 @@ bool RuleParser::checkForLogicalConst(QString const &stream, int &pos)
 	return (stream.mid(pos, 4) == "true" || stream.mid(pos, 5) == "false");
 }
 
-void RuleParser::parseRuleCommand(QString const &stream, int &pos, QHash<Id, Id> *mMatch)
+void RuleParser::parseRuleCommand(QString const &stream, int &pos, QHash<Id, Id> const &mMatch)
 {
 	if (stream.mid(pos, 4) == "run(") {
 		parseRunFunction(stream, pos, mMatch);
@@ -292,7 +292,7 @@ void RuleParser::parseRuleCommand(QString const &stream, int &pos, QHash<Id, Id>
 	}
 }
 
-bool RuleParser::parseRule(QString const &stream, QHash<Id, Id> *mMatch)
+bool RuleParser::parseRule(QString const &stream, QHash<Id, Id> const &mMatch)
 {
 	mCurrentId = mRuleId;
 	int pos = 0;
@@ -310,11 +310,32 @@ bool RuleParser::parseRule(QString const &stream, QHash<Id, Id> *mMatch)
 	return !hasErrors();
 }
 
-Id RuleParser::elementByName(QString const &name, QHash<Id, Id> *mMatch)
+bool RuleParser::parseApplicationCondition(QString const &stream, QHash<Id, Id> const &mMatch)
 {
-	foreach (Id const &elem, mMatch->keys()) {
+	QString appCond = stream;
+	int pos = appCond.indexOf("cond(");
+	while (pos > -1) {
+		int posBackup = pos;
+		pos = pos + 5;
+		QString const name = parseElemName(appCond, pos);
+		QString const prop = parseElemProperty(appCond, pos);
+
+		Id const elem = elementByName(name, mMatch);
+		QString const cond = property(elem, prop).toString();
+
+		appCond = appCond.mid(0, posBackup) + "(" + cond + appCond.mid(pos);
+
+		pos = appCond.indexOf("cond(");
+	}
+	pos = 0;
+	return parseConditionHelper(appCond, pos);
+}
+
+Id RuleParser::elementByName(QString const &name, QHash<Id, Id> const &mMatch)
+{
+	foreach (Id const &elem, mMatch.keys()) {
 		if (mLogicalModelApi.logicalRepoApi().name(elem) == name) {
-			return mMatch->value(elem);
+			return mMatch.value(elem);
 		}
 	}
 

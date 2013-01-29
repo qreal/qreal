@@ -8,12 +8,14 @@ QString const PythonGenerator::delimeter = "_visint_";
 PythonGenerator::PythonGenerator(LogicalModelAssistInterface &logicalModelApi
 		, GraphicalModelAssistInterface &graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
-		, QString const &scriptPath)
+		, QString const &reactionScriptPath
+		, QString const &applicationConditionScriptPath)
 		: mInterpretersInterface(interpretersInterface)
 		, mLogicalModelApi(logicalModelApi)
 		, mGraphicalModelApi(graphicalModelApi)
 		, mRule(Id::rootId())
-		, mScriptPath(scriptPath)
+		, mReactionScriptPath(reactionScriptPath)
+		, mApplicationConditionScriptPath(applicationConditionScriptPath)
 {
 }
 
@@ -28,32 +30,37 @@ void PythonGenerator::setMatch(QHash<Id, Id> const &match)
 	mMatch = match;
 }
 
-void PythonGenerator::setScriptPath(QString const &path)
+void PythonGenerator::setReactionScriptPath(QString const &path)
 {
-	mScriptPath = path;
+	mReactionScriptPath = path;
 }
 
-void PythonGenerator::generateScript()
+void PythonGenerator::setApplicationConditionScriptPath(QString const &path)
 {
-	QString reaction = property(mRule, "procedure");
-	collectPropertiesUsageAndMethodsInvocation(reaction);
+	mApplicationConditionScriptPath = path;
+}
 
-	reaction = replacePropertiesUsage(reaction);
-	reaction = substituteElementProperties(replaceMethodsInvocation(reaction));
+void PythonGenerator::generateScript(bool const isApplicationCondition)
+{
+	QString code = property(mRule, isApplicationCondition ? "applicationCondition" : "procedure");
+	collectPropertiesUsageAndMethodsInvocation(code);
 
-	collectPropertiesUsageAndMethodsInvocation(reaction);
+	code = replacePropertiesUsage(code);
+	code = substituteElementProperties(replaceMethodsInvocation(code));
+
+	collectPropertiesUsageAndMethodsInvocation(code);
 
 	QString const script = "#!/usr/bin/python\n# -*- coding: utf-8 -*-\n"
-			+ createProperInitAndOutput(replacePropertiesUsage(reaction));
-	createScriptFile(script);
+			+ createProperInitAndOutput(replacePropertiesUsage(code), isApplicationCondition);
+	createScriptFile(script, isApplicationCondition);
 
 	mPropertiesUsage.clear();
 	mMethodsInvocation.clear();
 }
 
-void PythonGenerator::createScriptFile(QString const &script) const
+void PythonGenerator::createScriptFile(QString const &script, bool const isApplicationCondition) const
 {
-	utils::OutFile out(mScriptPath);
+	utils::OutFile out(isApplicationCondition ? mApplicationConditionScriptPath : mReactionScriptPath);
 	out() << script;
 	out().flush();
 }
@@ -165,9 +172,9 @@ QString PythonGenerator::replacePropertiesUsage(QString const &code) const
 	return res;
 }
 
-QString PythonGenerator::replaceMethodsInvocation(QString const &reaction) const
+QString PythonGenerator::replaceMethodsInvocation(QString const &code) const
 {
-	QString result = reaction;
+	QString result = code;
 	QString funcDefs = "";
 	foreach (QString const &elemName, mMethodsInvocation.keys()) {
 		foreach (QString const &propertyName, *mMethodsInvocation.value(elemName)) {
@@ -180,9 +187,9 @@ QString PythonGenerator::replaceMethodsInvocation(QString const &reaction) const
 }
 
 
-QString PythonGenerator::substituteElementProperties(QString const &reaction) const
+QString PythonGenerator::substituteElementProperties(QString const &code) const
 {
-	QString result = reaction;
+	QString result = code;
 
 	int pos = result.indexOf("@");
 	while (pos != -1) {
@@ -199,7 +206,7 @@ QString PythonGenerator::substituteElementProperties(QString const &reaction) co
 	return result;
 }
 
-QString PythonGenerator::createProperInitAndOutput(QString const &reaction) const
+QString PythonGenerator::createProperInitAndOutput(QString const &code, bool const isApplicationCondition) const
 {
 	QString init = "";
 	QString output = "print ''";
@@ -216,7 +223,11 @@ QString PythonGenerator::createProperInitAndOutput(QString const &reaction) cons
 			output += " + '" + variable + "=' + " + representationOfProperty + " + ';'";
 		}
 	}
-	return init + "\n\n" + reaction + "\n\n" + output;
+	if (!isApplicationCondition) {
+		return init + "\n\n" + code + "\n\n" + output;
+	} else {
+		return init + "\n\nprint " + code;
+	}
 }
 
 QString PythonGenerator::createBehaviourFunction(QString const &elementName, QString const &propertyName) const

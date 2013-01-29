@@ -25,6 +25,7 @@ private slots:
 	void setQRealSourcesLocation();
 	void setPythonPath();
 	void setReactionPath();
+	void setApplicationConditionPath();
 
 private:
 	Ui::visualInterpreterPreferencesPage *mUi;

@@ -54,14 +54,17 @@ QList<qReal::ActionInfo> VisualInterpreterPlugin::actions()
 	mVisualInterpreterMenu->addAction(mGenerateAndLoadSemanticsEditorAction);
 
 	mLoadSemanticsAction = new QAction(tr("Load semantics model"), NULL);
+	mLoadSemanticsAction->setShortcut(QKeySequence(Qt::Key_Q));
 	connect(mLoadSemanticsAction, SIGNAL(triggered()), this, SLOT(loadSemantics()));
 	mVisualInterpreterMenu->addAction(mLoadSemanticsAction);
 
 	mInterpretAction = new QAction(tr("Interpret"), NULL);
+	mInterpretAction->setShortcut(QKeySequence(Qt::Key_W));
 	connect(mInterpretAction, SIGNAL(triggered()), this, SLOT(interpret()));
 	mVisualInterpreterMenu->addAction(mInterpretAction);
 
 	mStopInterpretationAction = new QAction(tr("Stop interpretation"), NULL);
+	mStopInterpretationAction->setShortcut(QKeySequence(Qt::Key_E));
 	connect(mStopInterpretationAction, SIGNAL(triggered()), this, SLOT(stopInterpretation()));
 	mVisualInterpreterMenu->addAction(mStopInterpretationAction);
 
@@ -204,6 +207,7 @@ void VisualInterpreterPlugin::insertSpecialSemanticsElements(QDomDocument metamo
 				"<property type=\"LanguageType\" name=\"type\">"
 					"<default>Block Scheme (C-like)</default>"
 				"</property>"
+				"<property type=\"code\" name=\"applicationCondition\" />"
 			"</properties>"
 			"<container>"
 			"</container>"

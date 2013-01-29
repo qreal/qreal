@@ -57,6 +57,18 @@ protected:
 	/// Checks current diagram for being semantics model
 	bool isSemanticsEditor() const;
 
+	/// Checks rule application conditions on the found matches
+	bool checkApplicationCondition(QString const &ruleName);
+
+	/// Checks rule application conditions on concrete match
+	bool checkApplicationCondition(QHash<Id, Id> const &match, QString const &ruleName) const;
+
+	/// Checks rule application conditions on concrete match based on C-like language
+	bool checkApplicationConditionCStyle(QHash<Id, Id> const &match, QString const &appCond) const;
+
+	/// Checks rule application conditions on concrete match based on Python
+	bool checkApplicationConditionPython(QHash<Id, Id> const &match, QString const &ruleName) const;
+
 	/// Perform all transformations
 	bool makeStep();
 

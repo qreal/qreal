@@ -25,10 +25,13 @@ VisualInterpreterPreferencesPage::VisualInterpreterPreferencesPage(QWidget *pare
 	mUi->pythonPathLineEdit->setText(SettingsManager::value("pythonPath").toString());
 	mUi->reactionPathLineEdit->setText(SettingsManager::value("reactionPath"
 			, binFolder + "/reaction.py").toString());
+	mUi->appCondLineEdit->setText(SettingsManager::value("applicationConditionPath"
+			, binFolder + "/appcond.py").toString());
 
 	connect(mUi->qrealSourcesPushButton, SIGNAL(clicked()), this, SLOT(setQRealSourcesLocation()));
 	connect(mUi->pythonPathPushButton, SIGNAL(clicked()), this, SLOT(setPythonPath()));
 	connect(mUi->reactionPathPushButton, SIGNAL(clicked()), this, SLOT(setReactionPath()));
+	connect(mUi->appCondPushButton, SIGNAL(clicked()), this, SLOT(setApplicationConditionPath()));
 }
 
 VisualInterpreterPreferencesPage::~VisualInterpreterPreferencesPage()
@@ -54,10 +57,17 @@ void VisualInterpreterPreferencesPage::setReactionPath()
 	mUi->reactionPathLineEdit->setText(path);
 }
 
+void VisualInterpreterPreferencesPage::setApplicationConditionPath()
+{
+	QString const path = QFileDialog::getOpenFileName(this, tr("Specify application condition file:"));
+	mUi->appCondLineEdit->setText(path);
+}
+
 void VisualInterpreterPreferencesPage::save()
 {
 	SettingsManager::setValue("qrealSourcesLocation", mUi->qrealSourcesLineEdit->text());
 	SettingsManager::setValue("pythonPath", mUi->pythonPathLineEdit->text());
 	SettingsManager::setValue("reactionPath", mUi->reactionPathLineEdit->text());
+	SettingsManager::setValue("applicationConditionPath", mUi->appCondLineEdit->text());
 }
 
