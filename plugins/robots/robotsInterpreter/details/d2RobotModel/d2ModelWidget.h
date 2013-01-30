@@ -7,6 +7,7 @@
 #include <QtCore/QSignalMapper>
 #include <QtGui/QComboBox>
 #include <QtGui/QPushButton>
+#include <QtGui/QButtonGroup>
 
 #include "lineItem.h"
 #include "stylusItem.h"
@@ -119,6 +120,9 @@ protected:
 
 private:
 	void connectUiButtons();
+	void initButtonGroup();
+	void setHighlightOneButton(QAbstractButton *oneButton);
+
 	void drawWalls();
 	void drawColorFields();
 	void drawInitialRobot();
@@ -204,6 +208,8 @@ private:
 
 	bool mClearing;
 	bool mRobotWasSelected;
+
+	QButtonGroup mButtonGroup;
 };
 
 }

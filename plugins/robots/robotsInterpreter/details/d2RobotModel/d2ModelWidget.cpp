@@ -78,6 +78,8 @@ void D2ModelWidget::initWidget()
 
 	mUi->penColorComboBox->setColorList(colorNames);
 	mUi->penColorComboBox->setColor(QColor("black"));
+
+	initButtonGroup();
 }
 
 void D2ModelWidget::connectUiButtons()
@@ -107,6 +109,24 @@ void D2ModelWidget::connectUiButtons()
 
 	connect(mUi->speedComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeSpeed(int)));
 	mUi->speedComboBox->setCurrentIndex(1);
+}
+
+void D2ModelWidget::initButtonGroup()
+{
+	mButtonGroup.setExclusive(false);
+	mButtonGroup.addButton(mUi->lineButton);
+	mButtonGroup.addButton(mUi->wallButton);
+	mButtonGroup.addButton(mUi->stylusButton);
+	mButtonGroup.addButton(mUi->ellipseButton);
+}
+
+void D2ModelWidget::setHighlightOneButton(QAbstractButton *oneButton)
+{
+	foreach (QAbstractButton *button, mButtonGroup.buttons()) {
+		if (button != oneButton) {
+			button->setChecked(false);
+		}
+	}
 }
 
 void D2ModelWidget::changeSpeed(int curIndex)
@@ -286,6 +306,7 @@ void D2ModelWidget::addWall(bool on)
 	}
 
 	mDrawingAction = drawingAction::wall;
+	setHighlightOneButton(mUi->wallButton);
 }
 
 void D2ModelWidget::addLine(bool on)
@@ -297,6 +318,7 @@ void D2ModelWidget::addLine(bool on)
 	}
 
 	mDrawingAction = drawingAction::line;
+	setHighlightOneButton(mUi->lineButton);
 }
 
 void D2ModelWidget::addStylus(bool on)
@@ -308,6 +330,7 @@ void D2ModelWidget::addStylus(bool on)
 	}
 
 	mDrawingAction = drawingAction::stylus;
+	setHighlightOneButton(mUi->stylusButton);
 }
 
 void D2ModelWidget::addEllipse(bool on)
@@ -319,6 +342,7 @@ void D2ModelWidget::addEllipse(bool on)
 	}
 
 	mDrawingAction = drawingAction::ellipse;
+	setHighlightOneButton(mUi->ellipseButton);
 }
 
 void D2ModelWidget::clearScene()
