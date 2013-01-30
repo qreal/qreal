@@ -86,8 +86,8 @@ private:
 
 	QImage printColorSensor(inputPort::InputPortEnum const port) const;
 	int readColorFullSensor(QHash<unsigned long, int> countsColor) const;
-	int readColorNoneSensor(QHash<unsigned long, int> countsColor, int n) const;
-	int readSingleColorSensor(unsigned long color, QHash<unsigned long, int> countsColor, int n) const;
+	int readColorNoneSensor(QHash<unsigned long, int> const &countsColor, int n) const;
+	int readSingleColorSensor(unsigned long color, QHash<unsigned long, int> const &countsColor, int n) const;
 
 	D2ModelWidget *mD2ModelWidget;
 	QTimer *mTimer;

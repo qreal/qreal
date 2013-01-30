@@ -152,7 +152,7 @@ int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 	QHash<unsigned long, int> countsColor;
 
 	unsigned long* data = (unsigned long*) image.bits();
-	int n = image.numBytes() / 4;
+	int const n = image.byteCount() / 4;
 	for (int i = 0; i < n; ++i) {
 		unsigned long color = data[i];
 		countsColor[color] ++;
@@ -176,9 +176,9 @@ int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 
 QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
 {
-	QPair<QPoint, qreal> neededPosDir = countPositionAndDirection(port);
-	QPointF position = neededPosDir.first;
-	qreal width = sensorWidth / 2.0;
+	QPair<QPoint, qreal> const neededPosDir = countPositionAndDirection(port);
+	QPointF const position = neededPosDir.first;
+	qreal const width = sensorWidth / 2.0;
 	QRectF scanningRect = QRectF(position.x() -  width, position.y() - width
 			, 2 * width, 2 * width);
 
@@ -238,12 +238,12 @@ int D2RobotModel::readColorFullSensor(QHash<unsigned long, int> countsColor) con
 	}
 }
 
-int D2RobotModel::readSingleColorSensor(unsigned long color, QHash<unsigned long, int> countsColor, int n) const
+int D2RobotModel::readSingleColorSensor(unsigned long color, QHash<unsigned long, int> const &countsColor, int n) const
 {
 	return (static_cast<double>(countsColor[color]) / static_cast<double>(n)) * 100.0;
 }
 
-int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> countsColor, int n) const
+int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> const &countsColor, int n) const
 {
 	double allWhite = static_cast<double>(countsColor[white]);
 
@@ -265,8 +265,18 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> countsColor, int
 
 int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 {
-	Q_UNUSED(port)
-	return 0;
+	QImage image = printColorSensor(port);
+	QHash<unsigned long, int> countsColor;
+
+	unsigned long* data = (unsigned long*) image.bits();
+	int n = image.numBytes() / 4;
+	for (int i = 0; i < n; ++i) {
+		unsigned long color = data[i];
+		countsColor[color] ++;
+	}
+
+	// TODO: find out what color should be here
+	return readSingleColorSensor(red, countsColor, n);
 }
 
 void D2RobotModel::startInit()

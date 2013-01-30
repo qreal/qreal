@@ -377,20 +377,22 @@ void D2ModelWidget::addPort(int const port)
 	case 1:
 		mCurrentSensorType = sensorType::touchBoolean;
 		break;
-	case 2:
-		mCurrentSensorType = sensorType::colorFull;
+	case 2: {
+		QString const settingsKey = "port" + QString::number(port+1) + "SensorType";
+		mCurrentSensorType = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value(settingsKey).toInt());
+	}
 		break;
 	case 3:
 		mCurrentSensorType = sensorType::sonar;
 		break;
-
+	case 4:
+		mCurrentSensorType = sensorType::light;
 	}
-	QPointF newpos = mRobot->mapFromScene(mRobot->boundingRect().center());
+	QPointF const newpos = mRobot->boundingRect().center();
 	mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0, true);
 	reinitSensor(mCurrentPort);
 
 	resetButtons();
-
 }
 
 void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
@@ -693,15 +695,13 @@ int D2ModelWidget::sensorTypeToComboBoxIndex(sensorType::SensorTypeEnum const ty
 	case sensorType::sonar:
 		return 3;
 	case sensorType::colorFull:
-		return 2;
 	case sensorType::colorRed:
-		return 2;
 	case sensorType::colorGreen:
-		return 2;
 	case sensorType::colorBlue:
-		return 2;
 	case sensorType::colorNone:
 		return 2;
+	case sensorType::light:
+		return 4;
 	default:
 		return 0;
 	}

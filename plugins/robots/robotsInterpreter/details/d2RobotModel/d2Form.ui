@@ -46,9 +46,6 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="2" rowspan="10">
-    <widget class="graphicsUtils::AbstractView" name="graphicsView"/>
-   </item>
    <item row="1" column="0">
     <widget class="QPushButton" name="stylusButton">
      <property name="maximumSize">
@@ -251,6 +248,11 @@
          <string>sonar</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>light</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item row="2" column="1">
@@ -278,6 +280,11 @@
          <string>sonar</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>light</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item row="1" column="1">
@@ -303,6 +310,11 @@
        <item>
         <property name="text">
          <string>sonar</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>light</string>
         </property>
        </item>
       </widget>
@@ -334,6 +346,11 @@
        <item>
         <property name="text">
          <string>sonar</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>light</string>
         </property>
        </item>
       </widget>
@@ -422,6 +439,9 @@ p, li { white-space: pre-wrap; }
       <string>Stop program</string>
      </property>
     </widget>
+   </item>
+   <item row="0" column="2" rowspan="10">
+    <widget class="graphicsUtils::AbstractView" name="graphicsView"/>
    </item>
   </layout>
  </widget>

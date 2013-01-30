@@ -87,9 +87,15 @@ QColor SensorItem::color() const
 	case sensorType::touchBoolean:
 		return Qt::green;
 	case sensorType::colorFull:
+	case sensorType::colorNone:
+	case sensorType::colorBlue:
+	case sensorType::colorGreen:
+	case sensorType::colorRed:
 		return Qt::blue;
 	case sensorType::sonar:
 		return Qt::red;
+	case sensorType::light:
+		return Qt::darkYellow;
 	default:
 		Q_ASSERT(!"Unknown sensor type");
 		return Qt::black;
