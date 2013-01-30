@@ -114,7 +114,7 @@ void Interpreter::stopRobot()
 
 void Interpreter::showWatchList()
 {
-	mWatchListWindow = new watchListWindow(mParser);
+	mWatchListWindow = new WatchListWindow(mParser, mInterpretersInterface->windowWidget());
 	mWatchListWindow->show();
 }
 

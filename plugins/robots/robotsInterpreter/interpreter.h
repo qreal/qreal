@@ -113,7 +113,7 @@ private:
 
 	robotModelType::robotModelTypeEnum mImplementationType;
 
-	watchListWindow *mWatchListWindow;
+	WatchListWindow *mWatchListWindow;
 
 	/// Action responsible for the connection to the robot
 	QAction *mActionConnectToRobot;
