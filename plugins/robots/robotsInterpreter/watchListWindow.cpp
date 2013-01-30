@@ -23,7 +23,7 @@ WatchListWindow::~WatchListWindow()
 
 void WatchListWindow::updateVariables()
 {
-	for (int i = mUi->watchListTableWidget->rowCount() - 1; i >= 0; i--) {
+	for (int i = mUi->watchListTableWidget->rowCount() - 1; i >= 0; --i) {
 		mUi->watchListTableWidget->removeRow(i);
 	}
 

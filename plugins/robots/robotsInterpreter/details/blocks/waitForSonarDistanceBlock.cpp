@@ -7,8 +7,7 @@ using namespace interpreters::robots;
 using namespace interpreters::robots::details::blocks;
 
 WaitForSonarDistanceBlock::WaitForSonarDistanceBlock(details::RobotModel const * const robotModel)
-	: mSonarSensor(NULL)
-	, mRobotModel(robotModel)
+	: mRobotModel(robotModel)
 {
 	// There is about 30 ms latency within robot bluetooth chip, so it is useless to
 	// read sensor too frequently.
@@ -20,18 +19,18 @@ WaitForSonarDistanceBlock::WaitForSonarDistanceBlock(details::RobotModel const *
 void WaitForSonarDistanceBlock::run()
 {
 	inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
-	mSonarSensor = mRobotModel->sonarSensor(port);
+	robotParts::SonarSensor *sonarSensor = mRobotModel->sonarSensor(port);
 
-	if (!mSonarSensor) {
+	if (!sonarSensor) {
 		mActiveWaitingTimer.stop();
 		error(tr("Sonar sensor is not configured on this port"));
 		return;
 	}
 
-	connect(mSonarSensor->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot(int)));
-	connect(mSonarSensor->sensorImpl(), SIGNAL(failure()), this, SLOT(failureSlot()));
+	connect(sonarSensor->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot(int)));
+	connect(sonarSensor->sensorImpl(), SIGNAL(failure()), this, SLOT(failureSlot()));
 
-	mSonarSensor->read();
+	sonarSensor->read();
 	mActiveWaitingTimer.start();
 }
 
@@ -74,9 +73,11 @@ void WaitForSonarDistanceBlock::timerTimeout()
 {
 	// Without the next two lines it fails with segfault with some great probability
 	inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
-	mSonarSensor = mRobotModel->sonarSensor(port);
+	robotParts::SonarSensor *sonarSensor = mRobotModel->sonarSensor(port);
 
-	mSonarSensor->read();
+	if (sonarSensor) {
+		sonarSensor->read();
+	}
 }
 
 QList<Block::SensorPortPair> WaitForSonarDistanceBlock::usedSensors() const

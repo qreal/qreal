@@ -657,23 +657,7 @@ void D2ModelWidget::removeSensor(inputPort::InputPortEnum port)
 	delete mSensors[port];
 	mSensors[port] = NULL;
 
-	int const noneSensorIndex = 0;
-	switch (port) {
-	case inputPort::port1:
-		mUi->port1Box->setCurrentIndex(noneSensorIndex);
-		break;
-	case inputPort::port2:
-		mUi->port2Box->setCurrentIndex(noneSensorIndex);
-		break;
-	case inputPort::port3:
-		mUi->port3Box->setCurrentIndex(noneSensorIndex);
-		break;
-	case inputPort::port4:
-		mUi->port4Box->setCurrentIndex(noneSensorIndex);
-		break;
-	default:
-		break;
-	}
+	changeSensorType(port, sensorType::unused);
 }
 
 void D2ModelWidget::changeSensorType(inputPort::InputPortEnum const port
