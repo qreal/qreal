@@ -68,7 +68,7 @@ void PythonInterpreter::setPythonPath(QString const &path)
 	mPythonPath = path;
 }
 
-void PythonInterpreter::setReactionScriptPath(const QString &path)
+void PythonInterpreter::setReactionScriptPath(QString const &path)
 {
 	mReactionScriptPath = path;
 }
