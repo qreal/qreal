@@ -98,8 +98,8 @@ void SensorsConfiguration::deserialize(QDomElement const &element)
 
 		QString const positionStr = sensorNode.attribute("position", "0:0");
 		QStringList const splittedStr = positionStr.split(":");
-		int const x = splittedStr[0].toInt();
-		int const y = splittedStr[1].toInt();
+		int const x = static_cast<int>(splittedStr[0].toDouble());
+		int const y = static_cast<int>(splittedStr[1].toDouble());
 		QPoint const position = QPoint(x, y);
 
 		qreal const direction = sensorNode.attribute("direction", "0").toDouble();

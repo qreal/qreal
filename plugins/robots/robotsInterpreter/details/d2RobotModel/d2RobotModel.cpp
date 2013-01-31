@@ -428,8 +428,8 @@ void D2RobotModel::deserialize(QDomElement const &robotElement)
 {
 	QString const positionStr = robotElement.attribute("position", "0:0");
 	QStringList const splittedStr = positionStr.split(":");
-	int const x = splittedStr[0].toInt();
-	int const y = splittedStr[1].toInt();
+	int const x = static_cast<int>(splittedStr[0].toDouble());
+	int const y = static_cast<int>(splittedStr[1].toDouble());
 	mPos = QPoint(x, y);
 
 	mAngle = robotElement.attribute("direction", "0").toDouble();
