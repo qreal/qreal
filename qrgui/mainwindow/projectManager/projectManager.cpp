@@ -90,7 +90,14 @@ bool ProjectManager::open(QString const &fileName)
 	Autosaver::Pauser autosavePauser = mAutosaver->pauser();
 
 	if (!fileName.isEmpty() && !saveFileExists(fileName)) {
-		return false;
+		if (fileName == "autosave.qrs") {
+			// Creating empty autosave.qrs file
+			QFile autosaveFile(mAutosaver->filePath());
+			autosaveFile.open(QIODevice::WriteOnly);
+			autosaveFile.close();
+		} else {
+			return false;
+		}
 	}
 	// There is no way to verify sufficiency plugins without initializing repository
 	// that is stored in the save file. Initializing is impossible without closing current project.
