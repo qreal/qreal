@@ -663,8 +663,8 @@ void D2ModelWidget::handleNewRobotPosition()
 {
 	foreach (WallItem *wall, mWorldModel->walls()) {
 		if (wall->realShape().intersects(mRobot->realBoundingRect())) {
-			// TODO: Find out behaviour in this case
-			deleteItem(wall);
+			mRobot->recoverDragStartPosition();
+			return;
 		}
 	}
 }
@@ -839,12 +839,11 @@ void D2ModelWidget::changePalette()
 		if (listSelectedItems.isEmpty()) {
 			setNoPalette();
 			mScene->setEmptyPenBrushItems();
-		}
-		else {
+		} else {
 			AbstractItem* item = dynamic_cast<AbstractItem*>(listSelectedItems.back());
 			if (isColorItem(item)) {
-				QPen penItem = item->pen();
-				QBrush brushItem = item->brush();
+				QPen const penItem = item->pen();
+				QBrush const brushItem = item->brush();
 				setItemPalette(penItem, brushItem);
 				mScene->setPenBrushItems(penItem, brushItem);
 			}

@@ -73,6 +73,8 @@ public:
 
 	void addSensorsShapes(QPainterPath &target);
 
+	void recoverDragStartPosition();
+
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
@@ -80,6 +82,8 @@ signals:
 	void changedPosition();
 
 private:
+	void onLanded();
+
 	/** @brief Image of a robot drawn on scene */
 	QImage mImage;
 	QImage mBeepImage;
@@ -89,6 +93,7 @@ private:
 	QList<SensorItem *> mSensors;  // Does not have ownership
 
 	bool mIsOnTheGround;
+	QPointF mDragStart;
 	Rotater *mRotater;
 	graphicsUtils::RectangleImpl mRectangleImpl;
 

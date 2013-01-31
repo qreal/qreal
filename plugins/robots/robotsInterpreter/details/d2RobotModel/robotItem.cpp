@@ -57,6 +57,7 @@ void RobotItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
 	mIsOnTheGround = false;
+	mDragStart = scenePos();
 }
 
 void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
@@ -67,8 +68,12 @@ void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 void RobotItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseReleaseEvent(event);
-	mIsOnTheGround = true;
+	onLanded();
+}
 
+void RobotItem::onLanded()
+{
+	mIsOnTheGround = true;
 	emit changedPosition();
 }
 
@@ -159,6 +164,13 @@ QVariant RobotItem::itemChange(GraphicsItemChange change, const QVariant &value)
 	return AbstractItem::itemChange(change, value);
 }
 
+void RobotItem::recoverDragStartPosition()
+{
+	setPos(mDragStart);
+	if (!mIsOnTheGround) {
+		onLanded();
+	}
+}
 
 void RobotItem::addSensorsShapes(QPainterPath &target)
 {
