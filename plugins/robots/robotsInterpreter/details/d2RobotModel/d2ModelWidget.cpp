@@ -403,7 +403,15 @@ void D2ModelWidget::addPort(int const port)
 		break;
 	case 2: {
 		QString const settingsKey = "port" + QString::number(port+1) + "SensorType";
-		mCurrentSensorType = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value(settingsKey).toInt());
+		sensorType::SensorTypeEnum const defaultValue = sensorType::colorFull;
+		mCurrentSensorType = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value(settingsKey, defaultValue).toInt());
+		if (mCurrentSensorType != sensorType::colorFull
+					&& mCurrentSensorType != sensorType::colorBlue
+					&& mCurrentSensorType != sensorType::colorGreen
+					&& mCurrentSensorType != sensorType::colorRed
+					&& mCurrentSensorType != sensorType::colorNone) {
+			mCurrentSensorType = defaultValue;
+		}
 	}
 		break;
 	case 3:
@@ -756,7 +764,7 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 	sensor->setRotation(mRobotModel->configuration().direction(port));
 
 	sensor->setParentItem(mRobot);
-	sensor->setPos(mRobot->mapFromScene(mRobotModel->configuration().position(port)));
+	sensor->setPos(mRobotModel->configuration().position(port));
 
 	changeSensorType(port, mRobotModel->configuration().type(port));
 	mSensors[port] = sensor;
