@@ -265,18 +265,20 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> const &countsCol
 
 int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 {
-	QImage image = printColorSensor(port);
-	QHash<unsigned long, int> countsColor;
+	// Must return 1024 on white and 0 on black
 
+	QImage const image = printColorSensor(port);
+
+	unsigned long sum = 0;
 	unsigned long* data = (unsigned long*) image.bits();
 	int n = image.numBytes() / 4;
-	for (int i = 0; i < n; ++i) {
-		unsigned long color = data[i];
-		countsColor[color] ++;
-	}
+	qreal maxValue = 16777215.0; // 0xFFFFFF
 
-	// TODO: find out what color should be here
-	return readSingleColorSensor(red, countsColor, n);
+	for (int i = 0; i < n; ++i) {
+		int normalizedColorWithoutAlpha = static_cast<int>((data[i] % 0x01000000)/maxValue * 1024);
+		sum += normalizedColorWithoutAlpha;
+	}
+	return sum / n; // Average by whole region
 }
 
 void D2RobotModel::startInit()
