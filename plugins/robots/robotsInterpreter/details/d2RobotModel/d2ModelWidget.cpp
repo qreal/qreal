@@ -420,7 +420,7 @@ void D2ModelWidget::addPort(int const port)
 	case 4:
 		mCurrentSensorType = sensorType::light;
 	}
-	QPointF const newpos = mRobot->boundingRect().center();
+	QPointF const newpos = mRobot->mapToScene(mRobot->boundingRect().center());
 	mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0, true);
 	reinitSensor(mCurrentPort);
 
@@ -764,7 +764,7 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 	sensor->setRotation(mRobotModel->configuration().direction(port));
 
 	sensor->setParentItem(mRobot);
-	sensor->setPos(mRobotModel->configuration().position(port));
+	sensor->setPos(mRobot->mapFromScene(mRobotModel->configuration().position(port)));
 
 	changeSensorType(port, mRobotModel->configuration().type(port));
 	mSensors[port] = sensor;
