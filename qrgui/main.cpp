@@ -1,8 +1,8 @@
-#include "mainwindow/mainWindow.h"
-#include "thirdparty/windowsmodernstyle.h"
-
 #include <QtCore/QtPlugin>
 #include <QtGui/QApplication>
+
+#include "mainwindow/mainWindow.h"
+#include "thirdparty/windowsmodernstyle.h"
 
 using namespace qReal;
 
@@ -19,13 +19,20 @@ int main(int argc, char *argv[])
 		app.installTranslator(&qtTranslator);
 	}
 
+	if (app.arguments().contains("--clear-conf")) {
+		SettingsManager::clearSettings();
+		SettingsManager::instance()->saveData();
+		return 0;
+	}
+
 #ifndef NO_STYLE_WINDOWSMODERN
 	app.setStyle(new WindowsModernStyle());
 #endif
 
 	MainWindow window;
-	if (window.isVisible())
+	if (window.isVisible()) {
 		return app.exec();
-	else  // The window decided to not show itself, exiting now.
+	} else {  // The window decided to not show itself, exiting now.
 		return 0;
+	}
 }
