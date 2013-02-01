@@ -89,10 +89,11 @@ bool RobotsBlockParser::isLetter(const QChar &symbol)
 void RobotsBlockParser::setReservedVariables()
 {
 	QString const pi = "pi";
-	Number const value = Number(3.14, Number::doubleType);
+	Number value = Number(3.14, Number::doubleType);
 	mVariables.insert(pi, value);
 	for (int i = 1; i <= 4; ++i) {
-		QString const variable = QObject::tr("Sensor") + QString::number(i);
+		// TODO: restore QObject::tr("Sensor") when russian variable names would be supported
+		QString const variable = "Sensor" + QString::number(i);
 		mVariables.insert(variable, Number(0, Number::intType));
 		mReservedVariables.append(variable);
 	}
