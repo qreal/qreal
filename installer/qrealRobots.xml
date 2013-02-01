@@ -158,6 +158,9 @@
                         <distributionFile>
                             <origin>%1/plugins/robots/examples/touchObstacle.qrs</origin>
                         </distributionFile>
+                        <distributionFile>
+                            <origin>%1/plugins/robots/examples/movingAlongTheLine.qrs</origin>
+                        </distributionFile>
                     </distributionFileList>
                 </folder>
             </folderList>
