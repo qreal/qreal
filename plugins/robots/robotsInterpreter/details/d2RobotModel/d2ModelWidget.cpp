@@ -662,6 +662,7 @@ void D2ModelWidget::loadWorldModel()
 		reinitSensor(static_cast<inputPort::InputPortEnum>(i));
 	}
 
+	mRobot->processPositionAndAngleChange();
 	mDrawingAction = drawingAction::noneWordLoad;
 	update();
 	mDrawingAction = drawingAction::none;

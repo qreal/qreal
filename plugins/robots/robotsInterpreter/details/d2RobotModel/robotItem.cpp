@@ -28,6 +28,7 @@ RobotItem::RobotItem()
 	mBeepItem->setParentItem(this);
 	mBeepItem->setPos((robotWidth - beepWavesSize)/2, (robotHeight - beepWavesSize)/2);
 	mBeepItem->setVisible(false);
+	mBeepItem->setZValue(-5);
 }
 
 void RobotItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -150,18 +151,28 @@ void RobotItem::setNeededBeep(bool isNeededBeep)
 QVariant RobotItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	if (change == ItemPositionChange) {
-		foreach (SensorItem *sensor, mSensors) {
-			sensor->onPositionChanged();
-		}
+		processPositionChange();
 	}
 	if (change == ItemTransformChange) {
-		foreach (SensorItem *sensor, mSensors) {
-			sensor->onPositionChanged();
-			sensor->onDirectionChanged();
-		}
+		processPositionAndAngleChange();
 	}
 
 	return AbstractItem::itemChange(change, value);
+}
+
+void RobotItem::processPositionChange()
+{
+	foreach (SensorItem *sensor, mSensors) {
+		sensor->onPositionChanged();
+	}
+}
+
+void RobotItem::processPositionAndAngleChange()
+{
+	foreach (SensorItem *sensor, mSensors) {
+		sensor->onPositionChanged();
+		sensor->onDirectionChanged();
+	}
 }
 
 void RobotItem::recoverDragStartPosition()

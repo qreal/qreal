@@ -179,7 +179,7 @@ QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
 	QPair<QPoint, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position = neededPosDir.first;
 	qreal const width = sensorWidth / 2.0;
-	QRectF scanningRect = QRectF(position.x() -  width, position.y() - width
+	QRectF const scanningRect = QRectF(position.x() -  width, position.y() - width
 			, 2 * width, 2 * width);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
@@ -266,17 +266,22 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> const &countsCol
 int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 {
 	// Must return 1024 on white and 0 on black
+	// http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
 
 	QImage const image = printColorSensor(port);
 
 	unsigned long sum = 0;
 	unsigned long* data = (unsigned long*) image.bits();
-	int n = image.numBytes() / 4;
-	qreal maxValue = 16777215.0; // 0xFFFFFF
+	int const n = image.numBytes() / 4;
 
 	for (int i = 0; i < n; ++i) {
-		int normalizedColorWithoutAlpha = static_cast<int>((data[i] % 0x01000000)/maxValue * 1024);
-		sum += normalizedColorWithoutAlpha;
+		int const b = (data[i] >> 0) & 0xFF;
+		int const g = (data[i] >> 8) & 0xFF;
+		int const r = (data[i] >> 16) & 0xFF;
+		// brightness in [0..256]
+		int const brightness = 0.2126*r + 0.7152*g + 0.0722*b;
+
+		sum += 4*brightness;
 	}
 	return sum / n; // Average by whole region
 }

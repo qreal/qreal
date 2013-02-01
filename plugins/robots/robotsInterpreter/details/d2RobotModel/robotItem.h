@@ -75,6 +75,9 @@ public:
 
 	void recoverDragStartPosition();
 
+	void processPositionChange();
+	void processPositionAndAngleChange();
+
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
