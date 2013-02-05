@@ -61,6 +61,9 @@ public:
 	void startInterpretation();
 
 	void nextBlockAfterInitial(bool success);
+
+	AbstractTimer *produceTimer();
+
 signals:
 	void sensorsConfigured();
 	void connected(bool success);

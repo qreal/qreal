@@ -7,6 +7,7 @@
 #include "d2ModelWidget.h"
 #include "robotModelInterface.h"
 #include "worldModel.h"
+#include "timeline.h"
 
 namespace qReal {
 namespace interpreters {
@@ -14,9 +15,9 @@ namespace robots {
 namespace details {
 namespace d2Model {
 
-const int timeInterval = 5;
-const int oneReciprocalTime = 500;
-const int onePercentReciprocalSpeed = 44000;
+int const oneReciprocalTime = 500;
+int const onePercentReciprocalSpeed = 44000;
+int const multiplicator = 4;
 
 class D2RobotModel : public QObject, public RobotModelInterface
 {
@@ -50,6 +51,8 @@ public:
 	virtual void serialize(QDomDocument &target);
 	virtual void deserialize(const QDomElement &robotElement);
 
+	Timeline *timeline() const;
+
 	enum ATime {
 		DoInf,
 		DoByLimit,
@@ -60,6 +63,7 @@ signals:
 	void d2MotorTimeout();
 
 private slots:
+	void recalculateParams();
 	void nextFragment();
 
 private:
@@ -73,7 +77,7 @@ private:
 
 	struct Beep {
 		unsigned freq;
-		unsigned time;
+		int time;
 	};
 
 	void setSpeedFactor(qreal speedMul);
@@ -89,8 +93,9 @@ private:
 	int readColorNoneSensor(QHash<unsigned long, int> const &countsColor, int n) const;
 	int readSingleColorSensor(unsigned long color, QHash<unsigned long, int> const &countsColor, int n) const;
 
+	void synchronizePositions();
+
 	D2ModelWidget *mD2ModelWidget;
-	QTimer *mTimer;
 	Motor *mMotorA;
 	Motor *mMotorB;
 	Motor *mMotorC;
@@ -102,7 +107,9 @@ private:
 	QHash<int, qreal> mTurnoverMotors;  // stores how many degrees the motor rotated on
 	SensorsConfiguration mSensorsConfiguration;
 	WorldModel mWorldModel;
+	Timeline *mTimeline;
 	qreal mSpeedFactor;
+	bool mNeedSync;
 };
 
 }
