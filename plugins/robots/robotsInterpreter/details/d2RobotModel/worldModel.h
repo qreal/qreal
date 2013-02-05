@@ -11,7 +11,7 @@
 #include "wallItem.h"
 #include "colorFieldItem.h"
 
-qreal const pixelsInCm = 50 / 14; // robot item height in px / robot real height
+qreal const pixelsInCm = 16 / 5.6; // robot`s wheel length in px / its real length
 
 namespace qReal {
 namespace interpreters {
