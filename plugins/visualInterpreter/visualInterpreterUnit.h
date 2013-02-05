@@ -48,6 +48,9 @@ protected:
 	/// Fields initialization before loading semantics
 	void initBeforeSemanticsLoading();
 
+	/// Read initialization code at load semantics step
+	void readInitializationCode();
+
 	/// Fields initialization before interpretation
 	void initBeforeInterpretation();
 
@@ -88,6 +91,9 @@ protected:
 	/// Performs control flow changes
 	void moveControlFlow();
 
+	/// Interpret initialization code before interpretation will be started
+	void interpretInitializationCode();
+
 	/// Interpret rule reaction
 	bool interpretReaction();
 
@@ -104,8 +110,7 @@ protected:
 	QPointF position();
 
 	/// Fill rules information with this
-	void putIdIntoMap(QHash<QString ,IdList*> *map, QString const &ruleName,
-			Id const &id);
+	void putIdIntoMap(QHash<QString ,IdList*> *map, QString const &ruleName, Id const &id);
 
 	/// Obtain an element id with the corresponding control flow mark
 	Id nodeIdWithControlMark(Id const &controlMarkId) const;
@@ -136,6 +141,9 @@ protected:
 
 	/// All rules in map with key - rule name and value - rule id on diagram
 	QHash<QString, Id> *mRules;
+
+	/// Pair with initialization code and its type
+	QPair<QString, QString> mInitializationCode;
 
 	/// All maps below has the format: key - rule name, value - list of ids
 	QHash<QString, IdList*> *mDeletedElements;

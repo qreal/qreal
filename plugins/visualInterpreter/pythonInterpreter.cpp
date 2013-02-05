@@ -31,7 +31,7 @@ PythonInterpreter::~PythonInterpreter()
 	delete mThread;
 }
 
-bool PythonInterpreter::interpret(bool const isApplicationCondition)
+bool PythonInterpreter::startPythonInterpreterProcess()
 {
 	if (mInterpreterProcess->pid() == 0) {
 		mInterpreterProcess->start(mPythonPath, QStringList() << "-i");
@@ -39,6 +39,15 @@ bool PythonInterpreter::interpret(bool const isApplicationCondition)
 			emit readyReadErrOutput(tr("Python path was set incorrectly"));
 			return false;
 		}
+	}
+	return true;
+}
+
+
+bool PythonInterpreter::interpret(bool const isApplicationCondition)
+{
+	if (!startPythonInterpreterProcess()) {
+		return false;
 	}
 
 	QString const scriptPath = isApplicationCondition ? mApplicationConditionScriptPath : mReactionScriptPath;
@@ -49,7 +58,7 @@ bool PythonInterpreter::interpret(bool const isApplicationCondition)
 	if (QFile::exists(scriptPath)) {
 		QString const execfile = "execfile('" + scriptPath + "')\n";
 		mInterpreterProcess->write(execfile.toAscii());
-		
+
 		if (!isApplicationCondition) {
 			int const timeout = SettingsManager::value("debuggerTimeout").toInt();
 			mInterpreterProcess->waitForReadyRead(timeout);
@@ -61,6 +70,16 @@ bool PythonInterpreter::interpret(bool const isApplicationCondition)
 	}
 
 	return false;
+}
+
+void PythonInterpreter::interpretCode(QString const code)
+{
+	startPythonInterpreterProcess();
+
+	QString const finalCode = "#!/usr/bin/python\n# -*- coding: utf-8 -*-\n" + code + "\n";
+
+	mInterpreterProcess->write(finalCode.toAscii());
+	mInterpreterProcess->waitForReadyRead();
 }
 
 void PythonInterpreter::setPythonPath(QString const &path)

@@ -32,15 +32,20 @@ public:
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 
 private slots:
+	void generateMetamodels() const;
+	
 	/// Generate, compile and load semantics editor for specified metamodel
-	void generateSemanticsMetamodel() const;
+	void generateSemanticsMetamodel(QString const &editorMetamodelFilePath, QString const &qrealSourceFilesPath) const;
+
+	/// Generate, compile and load editor for specified metamodel with new 'id' attribute
+	void generateEditorMetamodel(QString const &editorMetamodelFilePath, QString const &qrealSourceFilesPath) const;
 
 	/// Load semantics model from current opened diagram
 	void loadSemantics();
 
 	/// Make one step according to semantics (find match, delete, create and replace elements)
 	void interpret();
-	
+
 	/// Stops interpretation
 	void stopInterpretation();
 
@@ -56,7 +61,7 @@ private:
 	void insertSematicsStateProperty(QDomDocument metamodel) const;
 
 	/// Add to specific elements semantics state property (different approach for nodes and edges)
-	void insertSematicsStatePropertyInSpecificElemType(QDomDocument metamodel
+	void insertSemanticsStatePropertiesInSpecificElemType(QDomDocument metamodel
 			, QDomNodeList const &nodes, bool isNode) const;
 
 	/// Insert in graphic types of semantics metamodel specific elements
@@ -64,6 +69,12 @@ private:
 
 	/// Groups elements in semantics editor
 	void insertPaletteGroups(QDomDocument metamodel, QString const &diagramDisplayedName) const;
+
+	/// Add 'id' property to all elements in metamodel
+	void insertIdPropertyToBasicElements(QDomDocument metamodel) const;
+
+	/// Add to specific elements 'id' property
+	void insertIdPropertyInSpecificElemType(QDomDocument metamodel, QDomNodeList const &nodes) const;
 
 	/// Delete directory (which was used for generate and compile semantics editor)
 	void removeDirectory(QString const &dirName);

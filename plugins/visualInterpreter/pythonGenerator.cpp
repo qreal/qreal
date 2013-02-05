@@ -121,7 +121,7 @@ QVariant PythonGenerator::propertyVariant(Id const &element, QString const &prop
 bool PythonGenerator::isStringProperty(Id const &element, QString const &propertyName) const
 {
 	QVariant result = propertyVariant(element, propertyName);
-	return result.type() == QVariant::String && result.toString() != "false" && result.toString() != "true";
+	return !result.canConvert(QVariant::Bool) && !result.canConvert(QVariant::Int);
 }
 
 void PythonGenerator::collectPropertiesUsageAndMethodsInvocation(QString const &code)

@@ -50,7 +50,7 @@ QList<qReal::ActionInfo> VisualInterpreterPlugin::actions()
 	ActionInfo visualInterpreterMenu(mVisualInterpreterMenu, "tools");
 
 	mGenerateAndLoadSemanticsEditorAction = new QAction(tr("Generate and load semantics editor"), NULL);
-	connect(mGenerateAndLoadSemanticsEditorAction, SIGNAL(triggered()), this, SLOT(generateSemanticsMetamodel()));
+	connect(mGenerateAndLoadSemanticsEditorAction, SIGNAL(triggered()), this, SLOT(generateMetamodels()));
 	mVisualInterpreterMenu->addAction(mGenerateAndLoadSemanticsEditorAction);
 
 	mLoadSemanticsAction = new QAction(tr("Load semantics model"), NULL);
@@ -77,7 +77,7 @@ QList<qReal::ActionInfo> VisualInterpreterPlugin::actions()
 	return mActionInfos;
 }
 
-void VisualInterpreterPlugin::generateSemanticsMetamodel() const
+void VisualInterpreterPlugin::generateMetamodels() const
 {
 	QString editorMetamodelFilePath =
 			QFileDialog::getOpenFileName(NULL, tr("Specify editor metamodel:"), QString(), "xml (*.xml)");
@@ -87,6 +87,13 @@ void VisualInterpreterPlugin::generateSemanticsMetamodel() const
 		return;
 	}
 
+	generateSemanticsMetamodel(editorMetamodelFilePath, qrealSourceFilesPath);
+	generateEditorMetamodel(editorMetamodelFilePath, qrealSourceFilesPath);
+}
+
+void VisualInterpreterPlugin::generateSemanticsMetamodel(QString const &editorMetamodelFilePath
+		, QString const &qrealSourceFilesPath) const
+{
 	QDomDocument const metamodel = mMetamodelGeneratorSupport->loadMetamodelFromFile(editorMetamodelFilePath);
 
 	QDomElement diagram = mMetamodelGeneratorSupport->diagramElement(metamodel);
@@ -121,6 +128,39 @@ void VisualInterpreterPlugin::generateSemanticsMetamodel() const
 			, SettingsManager::value("prefix").toString());
 }
 
+void VisualInterpreterPlugin::generateEditorMetamodel(QString const &editorMetamodelFilePath
+		, QString const &qrealSourceFilesPath) const
+{
+	QDomDocument const metamodel = mMetamodelGeneratorSupport->loadMetamodelFromFile(editorMetamodelFilePath);
+
+	QDomElement diagram = mMetamodelGeneratorSupport->diagramElement(metamodel);
+	QString const diagramName = diagram.attribute("name");
+	QString const displayedName = diagram.attribute("displayedName").isEmpty()
+			? diagramName
+			: diagram.attribute("displayedName");
+
+	diagram.setAttribute("displayedName", displayedName + " With Semantics Properties");
+
+	insertIdPropertyToBasicElements(metamodel);
+
+	QString const metamodelName = diagramName + "WithSemanticsMetamodel";
+	QString const relativeEditorPath = diagramName + "WithSemanticsEditor";
+	QString const editorPath = qrealSourceFilesPath + "/plugins/" + relativeEditorPath;
+
+	mMetamodelGeneratorSupport->generateProFile(metamodel
+			, editorMetamodelFilePath, qrealSourceFilesPath, metamodelName
+			, editorPath, relativeEditorPath);
+
+	mMetamodelGeneratorSupport->saveMetamodelInFile(metamodel, editorPath
+			+ "/" + metamodelName + ".xml");
+
+	mMetamodelGeneratorSupport->loadPlugin(editorPath, metamodelName
+			, SettingsManager::value("pathToQmake").toString()
+			, SettingsManager::value("pathToMake").toString()
+			, SettingsManager::value("pluginExtension").toString()
+			, SettingsManager::value("prefix").toString());
+}
+
 void VisualInterpreterPlugin::insertSemanticsEnums(QDomDocument metamodel, QString const &name, QStringList const &values) const
 {
 	QDomElement semanticsEnum = metamodel.createElement("enum");
@@ -138,11 +178,11 @@ void VisualInterpreterPlugin::insertSemanticsEnums(QDomDocument metamodel, QStri
 
 void VisualInterpreterPlugin::insertSematicsStateProperty(QDomDocument metamodel) const
 {
-	insertSematicsStatePropertyInSpecificElemType(metamodel, metamodel.elementsByTagName("node"), true);
-	insertSematicsStatePropertyInSpecificElemType(metamodel, metamodel.elementsByTagName("edge"), false);
+	insertSemanticsStatePropertiesInSpecificElemType(metamodel, metamodel.elementsByTagName("node"), true);
+	insertSemanticsStatePropertiesInSpecificElemType(metamodel, metamodel.elementsByTagName("edge"), false);
 }
 
-void VisualInterpreterPlugin::insertSematicsStatePropertyInSpecificElemType(QDomDocument metamodel
+void VisualInterpreterPlugin::insertSemanticsStatePropertiesInSpecificElemType(QDomDocument metamodel
 		, QDomNodeList const &nodes, bool isNode) const
 {
 	for (unsigned i = 0; i < nodes.length(); i++) {
@@ -169,14 +209,46 @@ void VisualInterpreterPlugin::insertSematicsStatePropertyInSpecificElemType(QDom
 		QDomElement logic = elem.elementsByTagName("logic").at(0).toElement();
 		QDomNodeList properties = logic.elementsByTagName("properties");
 
-		QDomElement property = metamodel.createElement("property");
-		property.setAttribute("type", "SemanticsStatus");
-		property.setAttribute("name", "semanticsStatus");
+		QDomElement semStatusProperty = metamodel.createElement("property");
+		semStatusProperty.setAttribute("type", "SemanticsStatus");
+		semStatusProperty.setAttribute("name", "semanticsStatus");
 		if (properties.length() > 0) {
-			properties.at(0).appendChild(property);
+			properties.at(0).appendChild(semStatusProperty);
 		} else {
 			QDomElement propertiesElem = metamodel.createElement("properties");
-			propertiesElem.appendChild(property);
+			propertiesElem.appendChild(semStatusProperty);
+			logic.appendChild(propertiesElem);
+		}
+
+		QDomElement idProperty = metamodel.createElement("property");
+		idProperty.setAttribute("type", "int");
+		idProperty.setAttribute("name", "id");
+		logic.elementsByTagName("properties").at(0).appendChild(idProperty);
+	}
+}
+
+void VisualInterpreterPlugin::insertIdPropertyToBasicElements(QDomDocument metamodel) const
+{
+	insertIdPropertyInSpecificElemType(metamodel, metamodel.elementsByTagName("node"));
+	insertIdPropertyInSpecificElemType(metamodel, metamodel.elementsByTagName("edge"));
+}
+
+void VisualInterpreterPlugin::insertIdPropertyInSpecificElemType(QDomDocument metamodel, QDomNodeList const &nodes) const
+{
+	for (unsigned i = 0; i < nodes.length(); i++) {
+		QDomElement const elem = nodes.at(i).toElement();
+
+		QDomElement logic = elem.elementsByTagName("logic").at(0).toElement();
+		QDomNodeList properties = logic.elementsByTagName("properties");
+
+		QDomElement idProperty = metamodel.createElement("property");
+		idProperty.setAttribute("type", "int");
+		idProperty.setAttribute("name", "id");
+		if (properties.length() > 0) {
+			properties.at(0).appendChild(idProperty);
+		} else {
+			QDomElement propertiesElem = metamodel.createElement("properties");
+			propertiesElem.appendChild(idProperty);
 			logic.appendChild(propertiesElem);
 		}
 	}
@@ -233,6 +305,30 @@ void VisualInterpreterPlugin::insertSpecialSemanticsElements(QDomDocument metamo
 			"</ports>"
 		"</graphics>"
 		"<logic>"
+			"<properties>"
+				"<property type=\"int\" name=\"id\" />"
+			"</properties>"
+		"</logic>"
+	"</node>"
+	"<node displayedName=\"Initialization\" name=\"Initialization\">"
+		"<graphics>"
+			"<picture sizex=\"50\" sizey=\"50\">"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"0\" x1=\"0\" y2=\"40\" stroke-width=\"2\" x2=\"0\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"0\" x1=\"0\" y2=\"0\" stroke-width=\"2\" x2=\"40\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"40\" x1=\"0\" y2=\"40\" stroke-width=\"2\" x2=\"40\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"0\" x1=\"40\" y2=\"40\" stroke-width=\"2\" x2=\"40\" fill-style=\"solid\" />"
+			"</picture>"
+			"<labels>"
+				"<label x=\"0\" y=\"10\" textBinded=\"initializationCode\"/>"
+			"</labels>"
+		"</graphics>"
+		"<logic>"
+			"<properties>"
+				"<property type=\"code\" name=\"initializationCode\" />"
+				"<property type=\"LanguageType\" name=\"languageType\">"
+					"<default>Block Scheme (C-like)</default>"
+				"</property>"
+			"</properties>"
 		"</logic>"
 	"</node>"
 	"<node displayedName=\"Control Flow Mark\" name=\"ControlFlowMark\">"
@@ -294,12 +390,13 @@ void VisualInterpreterPlugin::insertPaletteGroups(QDomDocument metamodel, QStrin
 {
 	QString const elementsXml =
 	"<palette>"
-		"<group name=\"SemanticsElements\">"
+		"<group name=\"Semantics Elements\">"
 			"<element name=\"SemanticsRule\"/>"
 			"<element name=\"Wildcard\"/>"
 			"<element name=\"ControlFlowMark\"/>"
 			"<element name=\"Replacement\"/>"
 			"<element name=\"ControlFlowLocation\"/>"
+			"<element name=\"Initialization\"/>"
 		"</group>"
 	"</palette>";
 

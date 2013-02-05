@@ -15,6 +15,7 @@ VisualInterpreterUnit::VisualInterpreterUnit(
 		, mPythonInterpreter(new PythonInterpreter(this))
 {
 	mDefaultProperties.insert("semanticsStatus");
+	mDefaultProperties.insert("id");
 	connect(mPythonInterpreter, SIGNAL(readyReadStdOutput(QHash<QPair<QString, QString>, QString>))
 			, this, SLOT(processPythonInterpreterStdOutput(QHash<QPair<QString, QString>, QString>)));
 	connect(mPythonInterpreter, SIGNAL(readyReadErrOutput(QString))
@@ -60,6 +61,18 @@ void VisualInterpreterUnit::initBeforeSemanticsLoading()
 	mNodesWithDeletedControlMark = new QHash<QString, IdList*>();
 	mNodesWithControlMark = new QHash<QString, IdList*>();
 	mNeedToStopInterpretation = false;
+	mInitializationCode = QPair<QString, QString>();
+}
+
+void VisualInterpreterUnit::readInitializationCode()
+{
+	IdList const elements = elementsFromActiveDiagram();
+	foreach (Id const &element, elements) {
+		if (element.element() == "Initialization") {
+			mInitializationCode.first = property(element, "languageType").toString();
+			mInitializationCode.second = property(element, "initializationCode").toString();
+		}
+	}
 }
 
 void VisualInterpreterUnit::deinit()
@@ -93,6 +106,7 @@ void VisualInterpreterUnit::loadSemantics()
 	IdList const rules = allRules();
 	initBeforeSemanticsLoading();
 	mInterpretersInterface.dehighlight();
+	readInitializationCode();
 
 	foreach (Id const &rule, rules) {
 		QString const ruleName = property(rule, "ruleName").toString();
@@ -174,6 +188,7 @@ void VisualInterpreterUnit::interpret()
 	}
 
 	initBeforeInterpretation();
+	interpretInitializationCode();
 	int const timeout = SettingsManager::value("debuggerTimeout").toInt();
 
 	while (findMatch()) {
@@ -449,6 +464,18 @@ void VisualInterpreterUnit::moveControlFlow()
 			mInterpretersInterface.highlight(node, false);
 			mCurrentNodesWithControlMark.append(node);
 		}
+	}
+}
+
+void VisualInterpreterUnit::interpretInitializationCode()
+{
+	if (mInitializationCode.first.isEmpty()) {
+		return;
+	}
+	if (mInitializationCode.first == "Block Scheme (C-like)") {
+		mRuleParser->parseStringCode(mInitializationCode.second);
+	} else {
+		mPythonInterpreter->interpretCode(mInitializationCode.second);
 	}
 }
 

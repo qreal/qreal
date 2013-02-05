@@ -18,7 +18,11 @@ public:
 	/// on model elements by using match hash map
 	bool parseRule(QString const &stream, QHash<Id, Id> const &mMatch);
 
+	/// Parse and interpret application condition of the rule
 	bool parseApplicationCondition(QString const &stream, QHash<Id, Id> const &mMatch);
+
+	/// Interpret code, represented as string (can't contain attributes of model elements)
+	void parseStringCode(QString const &stream);
 
 	/// Set matched rule id for showing if its textual part has errors
 	void setRuleId(Id const &id);

@@ -331,6 +331,18 @@ bool RuleParser::parseApplicationCondition(QString const &stream, QHash<Id, Id> 
 	return parseConditionHelper(appCond, pos);
 }
 
+void RuleParser::parseStringCode(QString const &stream)
+{
+	int pos = 0;
+
+	parseVarPart(stream, pos);
+
+	while (pos < stream.length() && !hasErrors()) {
+		parseCommand(stream, pos);
+		skip(stream, pos);
+	}
+}
+
 Id RuleParser::elementByName(QString const &name, QHash<Id, Id> const &mMatch)
 {
 	foreach (Id const &elem, mMatch.keys()) {

@@ -24,6 +24,9 @@ public:
 	/// Interpret reaction or application condition python script
 	bool interpret(bool const isApplicationCondition);
 
+	/// Interpret specific code, represented as string
+	void interpretCode(QString const code);
+
 	void setPythonPath(QString const &path);
 	void setReactionScriptPath(QString const &path);
 	void setApplicationConditionScriptPath(QString const &path);
@@ -43,6 +46,8 @@ private slots:
 	void readErrOutput();
 
 private:
+	bool startPythonInterpreterProcess();
+
 	/// Parses interpreter std output and returns new values for element properties
 	QHash<QPair<QString, QString>, QString> &parseOutput(QString const &output) const;
 
@@ -55,7 +60,7 @@ private:
 	QString mPythonPath;
 	QString mReactionScriptPath;
 	QString mApplicationConditionScriptPath;
-	
+
 	bool mApplicationConditionResult;
 };
 
