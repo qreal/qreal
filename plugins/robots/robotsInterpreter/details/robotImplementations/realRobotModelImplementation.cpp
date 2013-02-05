@@ -1,6 +1,6 @@
 #include "realRobotModelImplementation.h"
-
 #include "../tracer.h"
+#include "../realTimer.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details;
@@ -154,4 +154,9 @@ void RealRobotModelImplementation::disconnectedSlot()
 	mSensorsConfigurer.lockConfiguring();
 	mIsConnected = false;
 	emit disconnected();
+}
+
+AbstractTimer *RealRobotModelImplementation::produceTimer()
+{
+	return new RealTimer;
 }

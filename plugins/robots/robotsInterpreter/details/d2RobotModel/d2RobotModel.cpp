@@ -20,10 +20,12 @@ unsigned const touchSensorNotPressedSignal = 0;
 D2RobotModel::D2RobotModel(QObject *parent)
 		: QObject(parent)
 		, mD2ModelWidget(NULL)
+		, mTimeline(new Timeline(this))
+		, mNeedSync(false)
 {
 	mAngle = 0;
-	mTimer = new QTimer(this);
-	connect(mTimer, SIGNAL(timeout()), this, SLOT(nextFragment()));
+	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()));
+	connect(mTimeline, SIGNAL(nextFrame()), this, SLOT(nextFragment()));
 	initPosition();
 }
 
@@ -87,7 +89,7 @@ void D2RobotModel::countMotorTurnover()
 {
 	foreach (Motor *motor, mMotors) {
 		int port = mMotors.key(motor);
-		qreal degrees = timeInterval * 1.0 * motor->speed / oneReciprocalTime;
+		qreal degrees = Timeline::timeInterval * 1.0 * motor->speed / oneReciprocalTime;
 		mTurnoverMotors[port] += degrees;
 		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverMotors[port] >= motor->degrees)) {
 			motor->speed = 0;
@@ -289,7 +291,7 @@ int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 void D2RobotModel::startInit()
 {
 	initPosition();
-	mTimer->start(timeInterval);
+	mTimeline->start();
 }
 
 void D2RobotModel::stopRobot()
@@ -303,7 +305,7 @@ void D2RobotModel::countBeep()
 {
 	if (mBeep.time > 0) {
 		mD2ModelWidget->drawBeep(true);
-		mBeep.time -= timeInterval;
+		mBeep.time -= Timeline::frameLength;
 	} else {
 		mD2ModelWidget->drawBeep(false);
 	}
@@ -322,8 +324,8 @@ void D2RobotModel::countNewCoord()
 		}
 	}
 
-	qreal const vSpeed = motor1->speed * 2 * M_PI * motor1->radius * 1.0 / onePercentReciprocalSpeed;
-	qreal const uSpeed = motor2->speed * 2 * M_PI * motor2->radius * 1.0 / onePercentReciprocalSpeed;
+	qreal const vSpeed = motor1->speed * 2 * M_PI * motor1->radius * 1.0 / onePercentReciprocalSpeed * multiplicator;
+	qreal const uSpeed = motor2->speed * 2 * M_PI * motor2->radius * 1.0 / onePercentReciprocalSpeed * multiplicator;
 
 	qreal deltaY = 0;
 	qreal deltaX = 0;
@@ -344,7 +346,7 @@ void D2RobotModel::countNewCoord()
 			angularSpeed = averageSpeed / averageRadius;
 			actualRadius = averageRadius;
 		}
-		qreal const gammaRadians = timeInterval * angularSpeed * mSpeedFactor;
+		qreal const gammaRadians = Timeline::timeInterval * angularSpeed;
 		qreal const gammaDegrees = gammaRadians * 180 / M_PI;
 
 		QTransform map;
@@ -361,8 +363,8 @@ void D2RobotModel::countNewCoord()
 
 		mAngle += gammaDegrees;
 	} else {
-		deltaY = averageSpeed * timeInterval * sin(mAngle * M_PI / 180) * mSpeedFactor;
-		deltaX = averageSpeed * timeInterval * cos(mAngle * M_PI / 180) * mSpeedFactor;
+		deltaY = averageSpeed * Timeline::timeInterval * sin(mAngle * M_PI / 180);
+		deltaX = averageSpeed * Timeline::timeInterval * cos(mAngle * M_PI / 180);
 	}
 
 	mPos.setX(mPos.x() + deltaX);
@@ -379,18 +381,35 @@ void D2RobotModel::countNewCoord()
 	}
 }
 
-void D2RobotModel::nextFragment()
+void D2RobotModel::recalculateParams()
 {
 	// do nothing until robot gets back on the ground
 	if (!mD2ModelWidget->isRobotOnTheGround()) {
+		mNeedSync = true;
 		return;
 	}
-
-	mPos = mD2ModelWidget->robotPos();
+	synchronizePositions();
 	countNewCoord();
-	mD2ModelWidget->draw(mPos, mAngle);
-	countBeep();
 	countMotorTurnover();
+}
+
+void D2RobotModel::nextFragment()
+{
+	if (!mD2ModelWidget->isRobotOnTheGround()) {
+		return;
+	}
+	synchronizePositions();
+	countBeep();
+	mD2ModelWidget->draw(mPos, mAngle);
+	mNeedSync = true;
+}
+
+void D2RobotModel::synchronizePositions()
+{
+	if (mNeedSync) {
+		mPos = mD2ModelWidget->robotPos();
+		mNeedSync = false;
+	}
 }
 
 void D2RobotModel::showModelWidget()
@@ -413,6 +432,7 @@ double D2RobotModel::rotateAngle() const
 void D2RobotModel::setSpeedFactor(qreal speedMul)
 {
 	mSpeedFactor = speedMul;
+	mTimeline->setSpeedFactor(speedMul);
 }
 
 QPointF D2RobotModel::robotPos()
@@ -441,5 +461,10 @@ void D2RobotModel::deserialize(QDomElement const &robotElement)
 
 	configuration().deserialize(robotElement);
 
-	mD2ModelWidget->draw(mPos, mAngle);
+	nextFragment();
+}
+
+Timeline *D2RobotModel::timeline() const
+{
+	return mTimeline;
 }
