@@ -183,11 +183,17 @@ void EditorView::invalidateScene()
 
 void EditorView::ensureElementVisible(Element const * const element)
 {
-	if (element != NULL) {
-		float const widgetWidth = size().width();
-		float const widgetHeight = size().height();
-		float const elementWidth = element->boundingRect().width();
-		float const elementHeight = element->boundingRect().height();
-		ensureVisible(element, (widgetWidth - elementWidth) / 2, (widgetHeight - elementHeight) / 2);
+	float const widgetWidth = size().width();
+	float const widgetHeight = size().height();
+	float const elementWidth = element->boundingRect().width();
+	float const elementHeight = element->boundingRect().height();
+	ensureElementVisible(element, (widgetWidth - elementWidth) / 2, (widgetHeight - elementHeight) / 2);
+}
+
+void EditorView::ensureElementVisible(Element const * const element
+		, int xMargin, int yMargin)
+{
+	if (element) {
+		ensureVisible(element, xMargin, yMargin);
 	}
 }

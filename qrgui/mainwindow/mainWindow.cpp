@@ -1419,7 +1419,7 @@ void MainWindow::highlight(Id const &graphicalId, bool exclusive)
 	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
 	Element* const element = scene->getElem(graphicalId);
 	scene->highlight(graphicalId, exclusive);
-	view->ensureElementVisible(element);
+	view->ensureElementVisible(element, 0, 0);
 }
 
 void MainWindow::dehighlight(Id const &graphicalId)
