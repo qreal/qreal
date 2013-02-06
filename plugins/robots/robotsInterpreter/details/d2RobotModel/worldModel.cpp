@@ -81,10 +81,10 @@ QPainterPath WorldModel::sonarScanningRegion(QPoint const &position, qreal direc
 	return sensorPositionTransform.map(rayPath);
 }
 
-bool WorldModel::checkCollision(QPainterPath const &robotPath) const
+bool WorldModel::checkCollision(QPainterPath const &robotPath, int stroke) const
 {
 	QPainterPathStroker pathStroker;
-	pathStroker.setWidth(3);
+	pathStroker.setWidth(stroke);
 	QPainterPath const strokedPath = pathStroker.createStroke(robotPath);
 
 	QPainterPath wallPath = buildWallPath();

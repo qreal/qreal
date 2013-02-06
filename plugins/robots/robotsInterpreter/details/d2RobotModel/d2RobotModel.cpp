@@ -136,7 +136,7 @@ int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 	QPointF sensorPosition(neededPosDir.first);
 	QPainterPath sensorPath;
 	sensorPath.addRect(sensorPosition.x(), sensorPosition.y(), sensorWidth, sensorWidth);
-	bool const res = mWorldModel.checkCollision(sensorPath);
+	bool const res = mWorldModel.checkCollision(sensorPath, 6);
 	// TODO: Add checks of sensor type.
 
 	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
