@@ -1087,6 +1087,16 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 	}
 }
 
+void MainWindow::openFirstDiagram()
+{
+	Id const rootId = mModels->graphicalModelAssistApi().rootId();
+	IdList const diagrams = mModels->graphicalModelAssistApi().children(rootId);
+	if (diagrams.count() == 0) {
+		return;
+	}
+	openNewTab(mModels->graphicalModelAssistApi().indexById(diagrams[0]));
+}
+
 void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIndex)
 {
 	if (!tab) {

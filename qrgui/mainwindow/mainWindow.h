@@ -135,6 +135,8 @@ public slots:
 	void disconnectWindowTitle();
 	void createDiagram(QString const &idString);
 
+	void openFirstDiagram();
+
 private slots:
 
 	/// handler for menu 'button find' pressed
