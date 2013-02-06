@@ -19,25 +19,43 @@
 #include "rotater.h"
 #include "../../../../../qrutils/graphicsUtils/lineImpl.h"
 
-namespace Ui {
-class D2Form;
+namespace Ui
+{
+	class D2Form;
 }
 
-namespace qReal {
-namespace interpreters {
-namespace robots {
-namespace details {
-namespace d2Model {
+namespace qReal
+{
+namespace interpreters
+{
+namespace robots
+{
+namespace details
+{
+namespace d2Model
+{
 
-namespace drawingAction {
-enum DrawingAction {
-	none,
-	wall,
-	line,
-	stylus,
-	port,
-	ellipse,
-	noneWordLoad
+namespace drawingAction
+{
+enum DrawingAction
+{
+	None = 0
+	, Wall
+	, Line
+	, Stylus
+	, Port
+	, Ellipse
+	, NoneWordLoad
+};
+}
+
+namespace cursorType
+{
+enum CursorType
+{
+	NoDrag = 0
+	, Hand
+	, Multiselection
 };
 }
 
@@ -112,6 +130,10 @@ private slots:
 	void changeSensorType(inputPort::InputPortEnum const port
 			, sensorType::SensorTypeEnum const type);
 
+
+	void enableRobotFolowing(bool on);
+	void setCursorType(cursorType::CursorType cursor);
+
 signals:
 	void d2WasClosed();
 
@@ -160,6 +182,10 @@ private:
 	bool isColorItem(graphicsUtils::AbstractItem *item);
 
 	int sensorTypeToComboBoxIndex(sensorType::SensorTypeEnum const type);
+
+	void centerOnRobot();
+	QGraphicsView::DragMode cursorTypeToDragType(cursorType::CursorType type) const;
+	void processDragMode(int mode);
 
 	Ui::D2Form *mUi;
 	D2ModelScene *mScene;
@@ -210,6 +236,9 @@ private:
 	bool mRobotWasSelected;
 
 	QButtonGroup mButtonGroup;
+
+	cursorType::CursorType mCursorType;
+	bool mFolowingRobot;
 };
 
 }
