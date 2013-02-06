@@ -7,5 +7,8 @@
         <file>icons/kcron.png</file>
         <file>icons/robot.png</file>
         <file>icons/beepRobot.png</file>
+        <file>icons/target.png</file>
+        <file>icons/hand.png</file>
+        <file>icons/multiselection.png</file>
     </qresource>
 </RCC>
