@@ -131,7 +131,7 @@ private slots:
 			, sensorType::SensorTypeEnum const type);
 
 
-	void enableRobotFolowing(bool on);
+	void enableRobotFollowing(bool on);
 	void setCursorType(cursorType::CursorType cursor);
 
 signals:
@@ -238,7 +238,7 @@ private:
 	QButtonGroup mButtonGroup;
 
 	cursorType::CursorType mCursorType;
-	bool mFolowingRobot;
+	bool mFollowRobot;
 };
 
 }

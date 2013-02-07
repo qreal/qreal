@@ -50,7 +50,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	connect(mScene, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
 
 	setCursorType(static_cast<cursorType::CursorType>(SettingsManager::value("2dCursorType").toInt()));
-	enableRobotFolowing(SettingsManager::value("2dFolowingRobot").toBool());
+	enableRobotFollowing(SettingsManager::value("2dFolowingRobot").toBool());
 }
 
 D2ModelWidget::~D2ModelWidget()
@@ -250,7 +250,7 @@ void D2ModelWidget::draw(QPointF const &newCoord, qreal angle)
 
 void D2ModelWidget::centerOnRobot()
 {
-	if (mFolowingRobot) {
+	if (mFollowRobot) {
 		QRectF const viewPortRect = mUi->graphicsView->mapToScene(mUi->graphicsView->viewport()->rect()).boundingRect();
 		if (!viewPortRect.contains(mRobot->sceneBoundingRect().toRect())) {
 			QRectF const requiredViewPort = viewPortRect.translated(mRobot->scenePos() - viewPortRect.center());
@@ -950,9 +950,9 @@ void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape
 	}
 }
 
-void D2ModelWidget::enableRobotFolowing(bool on)
+void D2ModelWidget::enableRobotFollowing(bool on)
 {
-	mFolowingRobot = on;
+	mFollowRobot = on;
 	centerOnRobot();
 }
 

@@ -10,6 +10,7 @@ StylusItem::StylusItem(qreal x1, qreal y1)
 	: mStylusImpl()
 {
 	mPen.setColor(Qt::black);
+	mPen.setCapStyle(Qt::RoundCap);
 	mX1 = x1;
 	mY1 = y1;
 	mTmpX1 = x1;
@@ -23,7 +24,7 @@ void StylusItem::addLine(qreal x2, qreal y2)
 	LineItem *line = new LineItem(QPointF(mTmpX1, mTmpY1), QPointF(mX2, mY2));
 	line->setPen(mPen);
 	line->setBrush(mBrush);
-		line->setSerializeName(QString("stylusLine"));
+	line->setSerializeName(QString("stylusLine"));
 	mAbstractListLine.push_back(line);
 	mTmpX1 = mX2;
 	mTmpY1 = mY2;
