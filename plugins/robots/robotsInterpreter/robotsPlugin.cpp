@@ -174,5 +174,6 @@ interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produce
 			new interpreters::robots::details::SensorsConfigurationWidget;
 	connect(mRobotSettingsPage, SIGNAL(saved()), result, SLOT(refresh()));
 	connect(result, SIGNAL(saved()), mRobotSettingsPage, SLOT(refreshPorts()));
+	mInterpreter.connectSensorConfigurer(result);
 	return result;
 }

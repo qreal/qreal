@@ -415,3 +415,8 @@ WatchListWindow *Interpreter::watchWindow() const
 {
 	return mWatchListWindow;
 }
+
+void Interpreter::connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const
+{
+	connect(configurer, SIGNAL(saved()), mD2ModelWidget, SLOT(syncronizeSensors()));
+}

@@ -1,3 +1,4 @@
+#include<QDebug>
 #include <QtCore/qmath.h>
 #include <QtGui/QFileDialog>
 #include <QtGui/QRegion>
@@ -35,6 +36,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mButtonsCount(8) // magic numbers are baaad, mkay?
 		, mWidth(15)
 		, mClearing(false)
+		, mFirstShow(true)
 {
 	setWindowIcon(QIcon(":/icons/kcron.png"));
 
@@ -53,6 +55,9 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	syncCursorButtons();
 	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
 	mUi->autoCenteringButton->setChecked(mFollowRobot);
+
+	syncronizeSensors();
+
 	setFocus();
 }
 
@@ -113,7 +118,6 @@ void D2ModelWidget::connectUiButtons()
 	mPortsMapper.setMapping(mUi->port4Box, inputPort::port4);
 
 	connect(mUi->speedComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeSpeed(int)));
-	mUi->speedComboBox->setCurrentIndex(1);
 
 	connect(mUi->autoCenteringButton, SIGNAL(toggled(bool)), this, SLOT(enableRobotFollowing(bool)));
 	connect(mUi->handCursorButton, SIGNAL(toggled(bool)), this, SLOT(onHandCursorButtonToggled(bool)));
@@ -255,6 +259,22 @@ void D2ModelWidget::changeEvent(QEvent *e)
 	default:
 		break;
 	}
+}
+
+void D2ModelWidget::showEvent(QShowEvent *e)
+{
+	e->accept();
+	if (mFirstShow) {
+		onFirstShow();
+	}
+	mFirstShow = false;
+}
+
+
+void D2ModelWidget::onFirstShow()
+{
+	syncronizeSensors();
+	mUi->speedComboBox->setCurrentIndex(1);
 }
 
 bool D2ModelWidget::isRobotOnTheGround()
@@ -423,6 +443,9 @@ QComboBox *D2ModelWidget::currentComboBox()
 
 void D2ModelWidget::addPort(int const port)
 {
+	if (!isVisible() && mFirstShow) {
+		return;
+	}
 	mCurrentPort = static_cast<inputPort::InputPortEnum>(port);
 
 	switch (currentComboBox()->currentIndex()){
@@ -1052,4 +1075,20 @@ void D2ModelWidget::syncCursorButtons()
 bool D2ModelWidget::isRunning()
 {
 	return *mInterpretationState != mIdleState;
+}
+
+void D2ModelWidget::syncronizeSensors()
+{
+	sensorType::SensorTypeEnum const port1 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port1SensorType").toInt());
+	sensorType::SensorTypeEnum const port2 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port2SensorType").toInt());
+	sensorType::SensorTypeEnum const port3 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port3SensorType").toInt());
+	sensorType::SensorTypeEnum const port4 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port4SensorType").toInt());
+	changeSensorType(inputPort::port1, port1);
+	addPort(0);
+	changeSensorType(inputPort::port2, port2);
+	addPort(1);
+	changeSensorType(inputPort::port3, port3);
+	addPort(2);
+	changeSensorType(inputPort::port4, port4);
+	addPort(3);
 }

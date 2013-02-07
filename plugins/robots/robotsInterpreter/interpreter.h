@@ -15,6 +15,7 @@
 
 #include "details/robotsBlockParser.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
+#include "details/sensorsConfigurationWidget.h"
 
 namespace qReal {
 namespace interpreters {
@@ -57,6 +58,7 @@ public:
 	void disableD2ModelWidgetRunStopButtons();
 
 	WatchListWindow *watchWindow() const;
+	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
 
 public slots:
 	void connectToRobot();

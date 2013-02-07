@@ -94,12 +94,14 @@ public:
 public slots:
 	void update();
 	void worldWallDragged(WallItem *wall, QPainterPath const &shape, QPointF const& oldPos);
+	void syncronizeSensors();
 
 signals:
 	void robotWasIntersectedByWall(bool isNeedStop, QPointF const& oldPos);
 
 protected:
 	void changeEvent(QEvent *e);
+	void showEvent(QShowEvent *e);
 
 private slots:
 	void addWall(bool on);
@@ -193,6 +195,8 @@ private:
 
 	bool isRunning();
 
+	void onFirstShow();
+
 	Ui::D2Form *mUi;
 	D2ModelScene *mScene;
 	RobotItem *mRobot;
@@ -249,6 +253,7 @@ private:
 
 	int *mInterpretationState;
 	int mIdleState;
+	bool mFirstShow;
 };
 
 }
