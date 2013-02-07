@@ -8,6 +8,7 @@
 #include "interpreter.h"
 #include "robotSettingsPage.h"
 #include "customizer.h"
+#include "details/sensorsConfigurationWidget.h"
 
 namespace qReal {
 namespace interpreters {
@@ -50,6 +51,8 @@ private:
 	/// @param action Action to be checked
 	/// @returns True, if action shall be disabled when current diagram is not robots
 	bool needToDisableWhenNotRobotsDiagram(QAction const * const action) const;
+
+	details::SensorsConfigurationWidget *produceSensorsConfigurer() const;
 
 	/// Customizer object for this plugin
 	Customizer mCustomizer;

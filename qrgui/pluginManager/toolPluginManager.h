@@ -25,7 +25,7 @@ public:
 	/// Returns GUI customizer object. In each QReal's instance there should be only one plugin with
 	/// valid customizationInterface(): robots plugin for QReal:Robots, ubiq plugin for QReal:Ubiq etc.
 	/// If there're more than one plugin of that kind, it is not specified which one will be used.
-	Customizer const *customizer() const;
+	Customizer *customizer() const;
 
 	/// Notifies plugins about change of currently open tab. If last tab is closed or current
 	/// tab is not diagram at all (text editor, for example), rootElementId is Id()
@@ -41,7 +41,7 @@ private:
 	QList<QPluginLoader *> mLoaders;
 
 	/// An object and that is used to customize GUI with values from plugins
-	Customizer const mCustomizer;  // Has ownership
+	Customizer mCustomizer;  // Has ownership
 };
 
 }

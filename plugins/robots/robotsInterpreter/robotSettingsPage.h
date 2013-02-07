@@ -3,6 +3,7 @@
 #include "../../../../qrgui/dialogs/preferencesPages/preferencesPage.h"
 
 #include "sensorConstants.h"
+#include "details/sensorsConfigurationWidget.h"
 
 namespace Ui {
 	class PreferencesRobotSettingsPage;
@@ -26,12 +27,16 @@ public:
 	QString selectedPortName() const;
 	QString selectedCommunication() const;
 
+signals:
+	void saved();
+
 protected:
 	void changeEvent(QEvent *e);
 
 private slots:
 	void activatedUnrealModel(bool checked);
 	void manualComPortCheckboxChecked(bool state);
+	void refreshPorts();
 
 private:
 	void initRobotModelType(robotModelType::robotModelTypeEnum type);
@@ -44,6 +49,7 @@ private:
 	robotModelType::robotModelTypeEnum selectedRobotModel() const;
 
 	Ui::PreferencesRobotSettingsPage *mUi;
+	details::SensorsConfigurationWidget *mSensorsWidget;
 };
 
 }

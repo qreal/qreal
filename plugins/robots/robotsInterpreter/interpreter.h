@@ -56,6 +56,8 @@ public:
 	/// Disable Run and Stop buttons on 2d model widget, when running current diagram is impossible
 	void disableD2ModelWidgetRunStopButtons();
 
+	WatchListWindow *watchWindow() const;
+
 public slots:
 	void connectToRobot();
 	void interpret();

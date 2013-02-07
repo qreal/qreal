@@ -55,6 +55,8 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 	robotModelType::robotModelTypeEnum const modelType = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
 	Tracer::debug(tracer::initialization, "Interpreter::init", "Going to set robot implementation, model type is " + DebugHelper::toString(modelType));
 	setRobotImplementation(modelType);
+
+	mWatchListWindow = new WatchListWindow(mParser, mInterpretersInterface->windowWidget());
 }
 
 Interpreter::~Interpreter()
@@ -114,7 +116,6 @@ void Interpreter::stopRobot()
 
 void Interpreter::showWatchList()
 {
-	mWatchListWindow = new WatchListWindow(mParser, mInterpretersInterface->windowWidget());
 	mWatchListWindow->show();
 }
 
@@ -408,4 +409,9 @@ void Interpreter::setConnectRobotAction(QAction *actionConnect)
 void Interpreter::reportError(QString const &message)
 {
 	mInterpretersInterface->errorReporter()->addError(message);
+}
+
+WatchListWindow *Interpreter::watchWindow() const
+{
+	return mWatchListWindow;
 }

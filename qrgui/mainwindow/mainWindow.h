@@ -16,6 +16,7 @@
 #include "../view/propertyEditorView.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
 #include "mainWindowInterpretersInterface.h"
+#include "mainWindowDockInterface.h"
 #include "../../qrkernel/settingsManager.h"
 #include "../../qrgui/dialogs/preferencesDialog.h"
 
@@ -52,6 +53,7 @@ class ErrorReporter;
 }
 
 class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpretersInterface
+		, public qReal::gui::MainWindowDockInterface
 {
 	Q_OBJECT
 
@@ -109,6 +111,16 @@ public:
 	virtual void deleteElementFromDiagram(Id const &id);
 
 	virtual void reportOperation(invocation::LongOperation *operation);
+
+
+	virtual QDockWidget *logicalModelDock() const;
+	virtual QDockWidget *graphicalModelDock() const;
+	virtual QDockWidget *propertyEditorDock() const;
+	virtual QDockWidget *errorReporterDock() const;
+	virtual QDockWidget *paletteDock() const;
+
+	virtual void tabifyDockWidget(QDockWidget *first, QDockWidget *second);
+	virtual void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget);
 
 signals:
 	void gesturesShowed();

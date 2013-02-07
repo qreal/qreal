@@ -1645,10 +1645,11 @@ QWidget *MainWindow::windowWidget()
 
 void MainWindow::initToolManager()
 {
-	if (mToolManager.customizer()) {
-		setWindowTitle(mToolManager.customizer()->windowTitle());
-		mUi->logicalModelDock->setVisible(mToolManager.customizer()->showLogicalModelExplorer());
-		setWindowIcon(mToolManager.customizer()->applicationIcon());
+	Customizer *customizer = mToolManager.customizer();
+	if (customizer) {
+		setWindowTitle(customizer->windowTitle());
+		setWindowIcon(customizer->applicationIcon());
+		customizer->customizeDocks(this);
 	}
 }
 
@@ -1832,4 +1833,39 @@ void MainWindow::updateActiveDiagram()
 	reinitModels();
 	activateItemOrDiagram(diagramId);
 	mUi->graphicalModelExplorer->setRootIndex(QModelIndex());
+}
+
+QDockWidget *MainWindow::logicalModelDock() const
+{
+	return mUi->logicalModelDock;
+}
+
+QDockWidget *MainWindow::graphicalModelDock() const
+{
+	return mUi->graphicalModelDock;
+}
+
+QDockWidget *MainWindow::propertyEditorDock() const
+{
+	return mUi->propertyDock;
+}
+
+QDockWidget *MainWindow::errorReporterDock() const
+{
+	return mUi->errorDock;
+}
+
+QDockWidget *MainWindow::paletteDock() const
+{
+	return mUi->paletteDock;
+}
+
+void MainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
+{
+	QMainWindow::tabifyDockWidget(first, second);
+}
+
+void MainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget)
+{
+	QMainWindow::addDockWidget(area, dockWidget);
 }

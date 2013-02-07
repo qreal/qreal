@@ -84,6 +84,7 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 			, configurator.logicalModelApi()
 			, configurator.mainWindowInterpretersInterface());
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
+	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer());
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing done");
 }
 
@@ -165,4 +166,13 @@ void RobotsPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &tr
 bool RobotsPlugin::needToDisableWhenNotRobotsDiagram(QAction const * const action) const
 {
 	return action != mRobotSettingsAction && action != mConnectToRobotAction && action != m2dModelAction;
+}
+
+interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produceSensorsConfigurer() const
+{
+	interpreters::robots::details::SensorsConfigurationWidget *result =
+			new interpreters::robots::details::SensorsConfigurationWidget;
+	connect(mRobotSettingsPage, SIGNAL(saved()), result, SLOT(refresh()));
+	connect(result, SIGNAL(saved()), mRobotSettingsPage, SLOT(refreshPorts()));
+	return result;
 }

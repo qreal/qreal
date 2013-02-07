@@ -19,6 +19,7 @@ HEADERS += \
 	mainwindow/referenceList.h \
 	mainwindow/projectManager/autosaver.h \
 	mainwindow/externBrowser.h \
+	mainwindow/mainWindowDockInterface.h \
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
