@@ -40,13 +40,14 @@ private slots:
 
 private:
 	void initRobotModelType(robotModelType::robotModelTypeEnum type);
-	void initTypeOfCommunication(QString type);
+	void initTypeOfCommunication(QString const &type);
 
 	sensorType::SensorTypeEnum selectedPort1Sensor() const;
 	sensorType::SensorTypeEnum selectedPort2Sensor() const;
 	sensorType::SensorTypeEnum selectedPort3Sensor() const;
 	sensorType::SensorTypeEnum selectedPort4Sensor() const;
 	robotModelType::robotModelTypeEnum selectedRobotModel() const;
+	bool textVisible() const;
 
 	Ui::PreferencesRobotSettingsPage *mUi;
 	details::SensorsConfigurationWidget *mSensorsWidget;

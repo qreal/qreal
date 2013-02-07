@@ -54,3 +54,4 @@ pathToImages=./images/iconset1
 robotModel=2
 2dFollowingRobot=false
 2dCursorType=1
+showTitlesForRobots=false

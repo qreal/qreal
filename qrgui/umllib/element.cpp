@@ -76,7 +76,6 @@ void Element::initTitles()
 	initTitlesBy(boundingRect().adjusted(kvadratik, kvadratik, -kvadratik, -kvadratik));
 }
 
-
 void Element::singleSelectionState(const bool singleSelected) {
 	if (singleSelected) {
 		selectionState(true);
@@ -96,4 +95,11 @@ void Element::selectionState(const bool selected) {
 ElementImpl* Element::elementImpl() const
 {
 	return mElementImpl;
+}
+
+void Element::setTitlesVisible(bool visible)
+{
+	foreach (ElementTitle *title, mTitles) {
+		title->setVisible(visible);
+	}
 }

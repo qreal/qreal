@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>400</height>
+    <height>409</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -122,7 +122,7 @@
      </layout>
     </widget>
    </item>
-   <item row="3" column="0" colspan="2">
+   <item row="4" column="0" colspan="2">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -140,6 +140,22 @@
      <property name="title">
       <string>Sensors Settings</string>
      </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QGroupBox" name="elementsGroupBox">
+     <property name="title">
+      <string>Elements</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QCheckBox" name="textVisibleCheckBox">
+        <property name="text">
+         <string>Text visible</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

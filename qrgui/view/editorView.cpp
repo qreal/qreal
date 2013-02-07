@@ -197,3 +197,8 @@ void EditorView::ensureElementVisible(Element const * const element
 		ensureVisible(element, xMargin, yMargin);
 	}
 }
+
+void EditorView::setTitlesVisible(bool visible)
+{
+	mScene->setTitlesVisible(visible);
+}

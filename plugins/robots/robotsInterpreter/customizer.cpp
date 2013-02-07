@@ -1,4 +1,5 @@
 #include "customizer.h"
+#include "../../../qrkernel/settingsManager.h"
 
 using namespace qReal::interpreters::robots;
 
@@ -32,4 +33,21 @@ QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *conten
 	QDockWidget *dock = new QDockWidget(title);
 	dock->setWidget(content);
 	return dock;
+}
+
+void Customizer::customizeScene(SceneCustomizationInterface *sceneCustomizer)
+{
+	mSceneCustomizer = sceneCustomizer;
+	resetTitlesVisibility();
+}
+
+void Customizer::rereadSettings()
+{
+	resetTitlesVisibility();
+}
+
+void Customizer::resetTitlesVisibility()
+{
+	bool const titlesVisible = qReal::SettingsManager::value("showTitlesForRobots").toBool();
+	mSceneCustomizer->setTitlesVisible(titlesVisible);
 }

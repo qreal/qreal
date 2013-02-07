@@ -27,6 +27,7 @@
 
 #include "../models/models.h"
 #include "../view/editorView.h"
+#include "../view/sceneCustomizer.h"
 #include "../umllib/element.h"
 #include "../dialogs/pluginDialog.h"
 #include "../dialogs/checkoutDialog.h"
@@ -65,6 +66,7 @@ MainWindow::MainWindow()
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this))
 		, mStartDialog(new StartDialog(this, mProjectManager))
+		, mSceneCustomizer(new SceneCustomizer(this))
 {
 	mUi->setupUi(this);
 	setWindowTitle("QReal");
@@ -250,6 +252,7 @@ MainWindow::~MainWindow()
 	delete mFindHelper;
 	delete mProjectManager;
 	delete mStartDialog;
+	delete mSceneCustomizer;
 }
 
 EditorManager *MainWindow::manager()
@@ -1064,6 +1067,7 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 		mUi->tabs->setCurrentIndex(tabNumber);
 	} else {
 		EditorView * const view = new EditorView(this);
+		mSceneCustomizer->customizeView(view);
 		initCurrentTab(view, index);
 		mUi->tabs->addTab(view, index.data().toString());
 		mUi->tabs->setCurrentWidget(view);
@@ -1650,6 +1654,7 @@ void MainWindow::initToolManager()
 		setWindowTitle(customizer->windowTitle());
 		setWindowIcon(customizer->applicationIcon());
 		customizer->customizeDocks(this);
+		customizer->customizeScene(mSceneCustomizer);
 	}
 }
 
@@ -1868,4 +1873,16 @@ void MainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
 void MainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget)
 {
 	QMainWindow::addDockWidget(area, dockWidget);
+}
+
+QListIterator<EditorView *> MainWindow::openedEditorViews() const
+{
+	QList<EditorView *> views;
+	for (int i = 0; i < mUi->tabs->count(); ++i) {
+		EditorView *view = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+		if (view) {
+			views << view;
+		}
+	}
+	return QListIterator<EditorView *>(views);
 }

@@ -324,16 +324,26 @@ p, li { white-space: pre-wrap; }
         <source>USB</source>
         <translation></translation>
     </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="148"/>
+        <source>Elements</source>
+        <translation>Элементы</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="154"/>
+        <source>Text visible</source>
+        <translation>Показывать текст под пиктограммой</translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="customizer.cpp" line="7"/>
+        <location filename="customizer.cpp" line="8"/>
         <source>QReal:Robots</source>
         <translation>QReal:Robots</translation>
     </message>
     <message>
-        <location filename="customizer.cpp" line="26"/>
+        <location filename="customizer.cpp" line="27"/>
         <source>Configure sensors</source>
         <translation>Настройки сенсоров</translation>
     </message>
@@ -397,7 +407,7 @@ p, li { white-space: pre-wrap; }
         <translation>Список переменных</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="104"/>
+        <location filename="robotsPlugin.cpp" line="105"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -515,7 +525,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::RobotsPlugin</name>
     <message>
-        <location filename="robotsPlugin.cpp" line="109"/>
+        <location filename="robotsPlugin.cpp" line="110"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>

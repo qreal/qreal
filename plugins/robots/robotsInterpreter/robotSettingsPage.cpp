@@ -50,9 +50,7 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 		}
 	}
 
-	if (SettingsManager::value("manualComPortCheckboxChecked").toBool()) {
-		mUi->manualComPortCheckbox->setChecked(true);
-	}
+	mUi->manualComPortCheckbox->setChecked(SettingsManager::value("manualComPortCheckboxChecked").toBool());
 
 	QVBoxLayout *sensorsLayout = new QVBoxLayout;
 	sensorsLayout->addWidget(mSensorsWidget);
@@ -63,6 +61,8 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 
 	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
 	initTypeOfCommunication(typeOfCommunication);
+
+	mUi->textVisibleCheckBox->setChecked(SettingsManager::value("showTitlesForRobots").toBool());
 }
 
 PreferencesRobotSettingsPage::~PreferencesRobotSettingsPage()
@@ -96,12 +96,13 @@ void PreferencesRobotSettingsPage::initRobotModelType(robotModelType::robotModel
 	}
 }
 
-void PreferencesRobotSettingsPage::initTypeOfCommunication(QString type)
+void PreferencesRobotSettingsPage::initTypeOfCommunication(QString const &type)
 {
-	if (type == "bluetooth")
+	if (type == "bluetooth") {
 		mUi->bluetoothRadioButton->setChecked(true);
-	else
+	} else {
 		mUi->usbRadioButton->setChecked(true);
+	}
 }
 
 robotModelType::robotModelTypeEnum PreferencesRobotSettingsPage::selectedRobotModel() const
@@ -113,6 +114,11 @@ robotModelType::robotModelTypeEnum PreferencesRobotSettingsPage::selectedRobotMo
 	} else {
 		return robotModelType::real;
 	}
+}
+
+bool PreferencesRobotSettingsPage::textVisible() const
+{
+	return mUi->textVisibleCheckBox->checkState() == Qt::Checked;
 }
 
 QString PreferencesRobotSettingsPage::selectedCommunication() const
@@ -163,6 +169,7 @@ void PreferencesRobotSettingsPage::save()
 	SettingsManager::setValue("robotModel", selectedRobotModel());
 	SettingsManager::setValue("bluetoothPortName", selectedPortName());
 	SettingsManager::setValue("valueOfCommunication", selectedCommunication());
+	SettingsManager::setValue("showTitlesForRobots", textVisible());
 	mSensorsWidget->save();
 	emit saved();
 }
