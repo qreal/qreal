@@ -132,6 +132,8 @@ private slots:
 
 
 	void enableRobotFollowing(bool on);
+	void onHandCursorButtonToggled(bool on);
+	void onMultiselectionCursorButtonToggled(bool on);
 	void setCursorType(cursorType::CursorType cursor);
 
 signals:
@@ -142,7 +144,7 @@ protected:
 
 private:
 	void connectUiButtons();
-	void initButtonGroup();
+	void initButtonGroups();
 	void setHighlightOneButton(QAbstractButton *oneButton);
 
 	void drawWalls();
@@ -185,7 +187,9 @@ private:
 
 	void centerOnRobot();
 	QGraphicsView::DragMode cursorTypeToDragType(cursorType::CursorType type) const;
+	Qt::CursorShape cursorTypeToShape(cursorType::CursorType type) const;
 	void processDragMode(int mode);
+	void syncCursorButtons();
 
 	Ui::D2Form *mUi;
 	D2ModelScene *mScene;
@@ -236,6 +240,7 @@ private:
 	bool mRobotWasSelected;
 
 	QButtonGroup mButtonGroup;
+	QButtonGroup mCursorButtonGroup;
 
 	cursorType::CursorType mCursorType;
 	bool mFollowRobot;

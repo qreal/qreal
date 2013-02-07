@@ -453,7 +453,10 @@ p, li { white-space: pre-wrap; }
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="multiSelectionCursorButton">
+       <widget class="QPushButton" name="handCursorButton">
+        <property name="toolTip">
+         <string>Hand dragging mode</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -461,16 +464,31 @@ p, li { white-space: pre-wrap; }
          <iconset resource="../../robotsInterpreter.qrc">
           <normaloff>:/icons/hand.png</normaloff>:/icons/hand.png</iconset>
         </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="handCursorButton">
+       <widget class="QPushButton" name="multiselectionCursorButton">
+        <property name="toolTip">
+         <string>Multiselection mode</string>
+        </property>
         <property name="text">
          <string/>
         </property>
         <property name="icon">
          <iconset resource="../../robotsInterpreter.qrc">
           <normaloff>:/icons/multiselection.png</normaloff>:/icons/multiselection.png</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -483,12 +501,21 @@ p, li { white-space: pre-wrap; }
       </item>
       <item>
        <widget class="QPushButton" name="autoCenteringButton">
+        <property name="toolTip">
+         <string>Camera following robot</string>
+        </property>
         <property name="text">
          <string/>
         </property>
         <property name="icon">
          <iconset resource="../../robotsInterpreter.qrc">
           <normaloff>:/icons/target.png</normaloff>:/icons/target.png</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

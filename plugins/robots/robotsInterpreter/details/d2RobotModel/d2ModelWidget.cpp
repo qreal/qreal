@@ -50,7 +50,9 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	connect(mScene, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
 
 	setCursorType(static_cast<cursorType::CursorType>(SettingsManager::value("2dCursorType").toInt()));
-	enableRobotFollowing(SettingsManager::value("2dFolowingRobot").toBool());
+	syncCursorButtons();
+	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
+	mUi->autoCenteringButton->setChecked(mFollowRobot);
 }
 
 D2ModelWidget::~D2ModelWidget()
@@ -81,7 +83,7 @@ void D2ModelWidget::initWidget()
 	mUi->penColorComboBox->setColorList(colorNames);
 	mUi->penColorComboBox->setColor(QColor("black"));
 
-	initButtonGroup();
+	initButtonGroups();
 }
 
 void D2ModelWidget::connectUiButtons()
@@ -111,15 +113,23 @@ void D2ModelWidget::connectUiButtons()
 
 	connect(mUi->speedComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeSpeed(int)));
 	mUi->speedComboBox->setCurrentIndex(1);
+
+	connect(mUi->autoCenteringButton, SIGNAL(toggled(bool)), this, SLOT(enableRobotFollowing(bool)));
+	connect(mUi->handCursorButton, SIGNAL(toggled(bool)), this, SLOT(onHandCursorButtonToggled(bool)));
+	connect(mUi->multiselectionCursorButton, SIGNAL(toggled(bool)), this, SLOT(onMultiselectionCursorButtonToggled(bool)));
 }
 
-void D2ModelWidget::initButtonGroup()
+void D2ModelWidget::initButtonGroups()
 {
 	mButtonGroup.setExclusive(false);
 	mButtonGroup.addButton(mUi->lineButton);
 	mButtonGroup.addButton(mUi->wallButton);
 	mButtonGroup.addButton(mUi->stylusButton);
 	mButtonGroup.addButton(mUi->ellipseButton);
+
+	mCursorButtonGroup.setExclusive(true);
+	mCursorButtonGroup.addButton(mUi->handCursorButton);
+	mCursorButtonGroup.addButton(mUi->multiselectionCursorButton);
 }
 
 void D2ModelWidget::setHighlightOneButton(QAbstractButton *oneButton)
@@ -953,13 +963,15 @@ void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape
 void D2ModelWidget::enableRobotFollowing(bool on)
 {
 	mFollowRobot = on;
-	centerOnRobot();
+	qReal::SettingsManager::setValue("2dFollowingRobot", on);
 }
 
 void D2ModelWidget::setCursorType(cursorType::CursorType cursor)
 {
 	mCursorType = cursor;
+	qReal::SettingsManager::setValue("2dCursorType", cursor);
 	mUi->graphicsView->setDragMode(cursorTypeToDragType(cursor));
+	mUi->graphicsView->setCursor(cursorTypeToShape(cursor));
 }
 
 QGraphicsView::DragMode D2ModelWidget::cursorTypeToDragType(cursorType::CursorType type) const
@@ -976,9 +988,51 @@ QGraphicsView::DragMode D2ModelWidget::cursorTypeToDragType(cursorType::CursorTy
 	}
 }
 
+Qt::CursorShape D2ModelWidget::cursorTypeToShape(cursorType::CursorType type) const
+{
+	switch(type) {
+	case cursorType::NoDrag:
+		return Qt::ArrowCursor;
+	case cursorType::Hand:
+		return Qt::OpenHandCursor;
+	case cursorType::Multiselection:
+		return Qt::ArrowCursor;
+	default:
+		return Qt::ArrowCursor;
+	}
+}
+
 void D2ModelWidget::processDragMode(int mode)
 {
 	mUi->graphicsView->setDragMode(mode
 			? QGraphicsView::NoDrag
 			: cursorTypeToDragType(mCursorType));
+}
+
+void D2ModelWidget::onHandCursorButtonToggled(bool on)
+{
+	if (on) {
+		setCursorType(cursorType::Hand);
+	}
+}
+
+void D2ModelWidget::onMultiselectionCursorButtonToggled(bool on)
+{
+	if (on) {
+		setCursorType(cursorType::Multiselection);
+	}
+}
+
+void D2ModelWidget::syncCursorButtons()
+{
+	switch(mCursorType) {
+	case cursorType::Hand:
+		mUi->handCursorButton->setChecked(true);
+		break;
+	case cursorType::Multiselection:
+		mUi->multiselectionCursorButton->setChecked(true);
+		break;
+	default:
+		break;
+	}
 }
