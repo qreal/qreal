@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>741</width>
-    <height>581</height>
+    <height>630</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>2D Robot Model</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+  <layout class="QGridLayout" name="gridLayout" rowstretch="0,1,1,1,1,1,1,1,1,1,1">
+   <item row="1" column="0">
     <widget class="QPushButton" name="lineButton">
      <property name="maximumSize">
       <size>
@@ -30,7 +30,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="1" column="1">
     <widget class="QPushButton" name="wallButton">
      <property name="maximumSize">
       <size>
@@ -46,7 +46,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <widget class="QPushButton" name="stylusButton">
      <property name="maximumSize">
       <size>
@@ -62,7 +62,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
+   <item row="2" column="1">
     <widget class="QPushButton" name="ellipseButton">
      <property name="maximumSize">
       <size>
@@ -78,7 +78,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="QPushButton" name="clearButton">
      <property name="maximumSize">
       <size>
@@ -94,7 +94,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0" colspan="2">
+   <item row="4" column="0" colspan="2">
     <widget class="QGroupBox" name="penBrushToolBox">
      <property name="minimumSize">
       <size>
@@ -203,7 +203,7 @@
      </widget>
     </widget>
    </item>
-   <item row="4" column="0" colspan="2">
+   <item row="5" column="0" colspan="2">
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
       <widget class="QLabel" name="label">
@@ -357,7 +357,7 @@
      </item>
     </layout>
    </item>
-   <item row="5" column="0" colspan="2">
+   <item row="6" column="0" colspan="2">
     <widget class="QGroupBox" name="speedBox">
      <property name="title">
       <string>Set speed</string>
@@ -412,36 +412,101 @@ p, li { white-space: pre-wrap; }
      </widget>
     </widget>
    </item>
-   <item row="6" column="0" colspan="2">
+   <item row="7" column="0" colspan="2">
     <widget class="QPushButton" name="saveWorldModelPushButton">
      <property name="text">
       <string>Save World Model</string>
      </property>
     </widget>
    </item>
-   <item row="7" column="0" colspan="2">
+   <item row="8" column="0" colspan="2">
     <widget class="QPushButton" name="loadWorldModelPushButton">
      <property name="text">
       <string>Load World Model</string>
      </property>
     </widget>
    </item>
-   <item row="8" column="0" colspan="2">
+   <item row="9" column="0" colspan="2">
     <widget class="QPushButton" name="runButton">
      <property name="text">
       <string>Run program</string>
      </property>
     </widget>
    </item>
-   <item row="9" column="0" colspan="2">
+   <item row="10" column="0" colspan="2">
     <widget class="QPushButton" name="stopButton">
      <property name="text">
       <string>Stop program</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="2" rowspan="10">
+   <item row="1" column="2" rowspan="10">
     <widget class="graphicsUtils::AbstractView" name="graphicsView"/>
+   </item>
+   <item row="0" column="0" colspan="3">
+    <widget class="QFrame" name="menuFrame">
+     <property name="frameShape">
+      <enum>QFrame::Panel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="multiSelectionCursorButton">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../robotsInterpreter.qrc">
+          <normaloff>:/icons/hand.png</normaloff>:/icons/hand.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="handCursorButton">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../robotsInterpreter.qrc">
+          <normaloff>:/icons/multiselection.png</normaloff>:/icons/multiselection.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="autoCenteringButton">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../robotsInterpreter.qrc">
+          <normaloff>:/icons/target.png</normaloff>:/icons/target.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -457,6 +522,8 @@ p, li { white-space: pre-wrap; }
    <header>../../../qrutils/graphicsUtils/colorlisteditor.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../robotsInterpreter.qrc"/>
+ </resources>
  <connections/>
 </ui>
