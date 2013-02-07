@@ -77,7 +77,7 @@ public:
 	/// Returns false if we click on robot and move it somewhere
 	bool isRobotOnTheGround();
 
-	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
+	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction, int *interpretationState, int idleState);
 
 	/// Enables Run and Stop buttons
 	void enableRunStopButtons();
@@ -191,6 +191,8 @@ private:
 	void processDragMode(int mode);
 	void syncCursorButtons();
 
+	bool isRunning();
+
 	Ui::D2Form *mUi;
 	D2ModelScene *mScene;
 	RobotItem *mRobot;
@@ -244,6 +246,9 @@ private:
 
 	cursorType::CursorType mCursorType;
 	bool mFollowRobot;
+
+	int *mInterpretationState;
+	int mIdleState;
 };
 
 }

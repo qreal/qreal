@@ -53,6 +53,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	syncCursorButtons();
 	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
 	mUi->autoCenteringButton->setChecked(mFollowRobot);
+	setFocus();
 }
 
 D2ModelWidget::~D2ModelWidget()
@@ -176,10 +177,13 @@ void D2ModelWidget::init(bool isActive)
 	update();
 }
 
-void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
+void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction
+		, int *interpretationState, int idleState)
 {
 	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()));
 	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()));
+	mInterpretationState = interpretationState;
+	mIdleState = idleState;
 }
 
 void D2ModelWidget::drawInitialRobot()
@@ -205,6 +209,14 @@ void D2ModelWidget::keyPressEvent(QKeyEvent *event)
 		mScene->mainView()->zoomIn();
 	} else if (event->matches(QKeySequence::ZoomOut)) {
 		mScene->mainView()->zoomOut();
+	} else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Space) {
+		if (isRunning()) {
+			mUi->stopButton->animateClick();
+		} else {
+			mUi->runButton->animateClick();
+		}
+	} else if (event->key() == Qt::Key_Escape) {
+		mUi->stopButton->animateClick();
 	}
 }
 
@@ -1035,4 +1047,9 @@ void D2ModelWidget::syncCursorButtons()
 	default:
 		break;
 	}
+}
+
+bool D2ModelWidget::isRunning()
+{
+	return *mInterpretationState != mIdleState;
 }
