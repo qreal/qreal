@@ -6,6 +6,12 @@
 
 using namespace qReal;
 
+void clearConfig()
+{
+	SettingsManager::clearSettings();
+	SettingsManager::instance()->saveData();
+}
+
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
@@ -19,17 +25,21 @@ int main(int argc, char *argv[])
 		app.installTranslator(&qtTranslator);
 	}
 
-	if (app.arguments().contains("--clear-conf")) {
-		SettingsManager::clearSettings();
-		SettingsManager::instance()->saveData();
-		return 0;
+	QString fileToOpen;
+	if (app.arguments().count() > 1) {
+		if (app.arguments().contains("--clear-conf")) {
+			clearConfig();
+			return 0;
+		} else {
+			fileToOpen = app.arguments().at(1);
+		}
 	}
 
 #ifndef NO_STYLE_WINDOWSMODERN
 	app.setStyle(new WindowsModernStyle());
 #endif
 
-	MainWindow window;
+	MainWindow window(fileToOpen);
 	if (window.isVisible()) {
 		return app.exec();
 	} else {  // The window decided to not show itself, exiting now.

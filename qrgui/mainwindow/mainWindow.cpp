@@ -48,7 +48,7 @@ using namespace qReal;
 
 QString const unsavedDir = "unsaved";
 
-MainWindow::MainWindow()
+MainWindow::MainWindow(const QString &fileToOpen)
 		: mUi(new Ui::MainWindowUi)
 		, mCodeTabManager(new QMap<EditorView*, CodeArea*>())
 		, mModels(NULL)
@@ -130,7 +130,9 @@ MainWindow::MainWindow()
 	connectActions();
 	initExplorers();
 
-	mStartDialog->exec();
+	if (fileToOpen.isEmpty() || !mProjectManager->open(fileToOpen)) {
+		mStartDialog->exec();
+	}
 }
 
 void MainWindow::connectActions()

@@ -59,7 +59,7 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	MainWindow();
+	MainWindow(QString const &fileToOpen = QString());
 	~MainWindow();
 
 	EditorManager *manager();
