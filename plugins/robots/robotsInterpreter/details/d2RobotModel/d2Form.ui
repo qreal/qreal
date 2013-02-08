@@ -32,6 +32,12 @@
       <iconset resource="../../robotsInterpreter.qrc">
        <normaloff>:/icons/ruler.png</normaloff>:/icons/ruler.png</iconset>
      </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
      <property name="shortcut">
       <string>L</string>
      </property>
@@ -61,6 +67,12 @@
       <iconset resource="../../robotsInterpreter.qrc">
        <normaloff>:/icons/wall.png</normaloff>:/icons/wall.png</iconset>
      </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
      <property name="shortcut">
       <string>W</string>
      </property>
@@ -86,6 +98,12 @@
      <property name="icon">
       <iconset resource="../../robotsInterpreter.qrc">
        <normaloff>:/icons/2d_pencil.png</normaloff>:/icons/2d_pencil.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
      </property>
      <property name="shortcut">
       <string>P</string>
@@ -113,6 +131,12 @@
       <iconset resource="../../robotsInterpreter.qrc">
        <normaloff>:/icons/2d_ellipse.png</normaloff>:/icons/2d_ellipse.png</iconset>
      </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
      <property name="shortcut">
       <string>E</string>
      </property>
@@ -138,6 +162,12 @@
      <property name="icon">
       <iconset resource="../../robotsInterpreter.qrc">
        <normaloff>:/icons/2d_clear.png</normaloff>:/icons/2d_clear.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
      </property>
      <property name="checkable">
       <bool>false</bool>
@@ -407,61 +437,6 @@
      </item>
     </layout>
    </item>
-   <item row="6" column="0" colspan="2">
-    <widget class="QGroupBox" name="speedBox">
-     <property name="title">
-      <string>Set speed</string>
-     </property>
-     <widget class="QLabel" name="label_5">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>61</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Speed&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="speedComboBox">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>20</y>
-        <width>81</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="editable">
-       <bool>false</bool>
-      </property>
-      <property name="currentIndex">
-       <number>-1</number>
-      </property>
-      <item>
-       <property name="text">
-        <string>Low</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Medium</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>High</string>
-       </property>
-      </item>
-     </widget>
-    </widget>
-   </item>
    <item row="8" column="0">
     <widget class="QPushButton" name="saveWorldModelPushButton">
      <property name="toolTip">
@@ -473,6 +448,12 @@ p, li { white-space: pre-wrap; }
      <property name="icon">
       <iconset resource="../../robotsInterpreter.qrc">
        <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
      </property>
      <property name="shortcut">
       <string>Ctrl+S</string>
@@ -494,6 +475,12 @@ p, li { white-space: pre-wrap; }
       <iconset resource="../../robotsInterpreter.qrc">
        <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
      </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
      <property name="shortcut">
       <string>Ctrl+O</string>
      </property>
@@ -501,6 +488,12 @@ p, li { white-space: pre-wrap; }
    </item>
    <item row="10" column="0">
     <widget class="QPushButton" name="handCursorButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="toolTip">
       <string>Hand dragging mode</string>
      </property>
@@ -510,6 +503,12 @@ p, li { white-space: pre-wrap; }
      <property name="icon">
       <iconset resource="../../robotsInterpreter.qrc">
        <normaloff>:/icons/hand.png</normaloff>:/icons/hand.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -531,6 +530,12 @@ p, li { white-space: pre-wrap; }
       <iconset resource="../../robotsInterpreter.qrc">
        <normaloff>:/icons/multiselection.png</normaloff>:/icons/multiselection.png</iconset>
      </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
      <property name="checkable">
       <bool>true</bool>
      </property>
@@ -550,6 +555,12 @@ p, li { white-space: pre-wrap; }
      <property name="icon">
       <iconset resource="../../robotsInterpreter.qrc">
        <normaloff>:/icons/target.png</normaloff>:/icons/target.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -638,6 +649,51 @@ p, li { white-space: pre-wrap; }
           <height>44</height>
          </size>
         </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="2">
+    <widget class="QGroupBox" name="speedBox">
+     <property name="title">
+      <string>Set speed</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1">
+      <item>
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Speed&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="speedComboBox">
+        <property name="editable">
+         <bool>false</bool>
+        </property>
+        <property name="currentIndex">
+         <number>-1</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>Low</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Medium</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>High</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>
