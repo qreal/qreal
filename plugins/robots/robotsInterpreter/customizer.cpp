@@ -5,12 +5,23 @@ using namespace qReal::interpreters::robots;
 
 QString Customizer::windowTitle() const
 {
-	return QObject::tr("QReal:Robots");
+	return QObject::tr("QReal:Robots") + " " + productVersion();
 }
 
 QIcon Customizer::applicationIcon() const
 {
 	return QIcon(":/icons/kroki.png");
+}
+
+QString Customizer::productVersion() const
+{
+	// TODO: other storage for it?
+	return "2.0.0-RC2";
+}
+
+QString Customizer::aboutText() const
+{
+	return "<b>" + windowTitle() + "<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>";
 }
 
 void Customizer::customizeDocks(gui::MainWindowDockInterface *dockInterface)
@@ -35,7 +46,7 @@ QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *conten
 	return dock;
 }
 
-void Customizer::customizeScene(SceneCustomizationInterface *sceneCustomizer)
+void Customizer::customizeScene(qReal::SceneCustomizationInterface *sceneCustomizer)
 {
 	mSceneCustomizer = sceneCustomizer;
 	resetTitlesVisibility();

@@ -24,6 +24,18 @@ public:
 		return QIcon();
 	}
 
+	/// Customizes product version
+	virtual QString productVersion() const
+	{
+		return "1.0.0";
+	}
+
+	/// Customizes text in about dialog
+	virtual QString aboutText() const
+	{
+		return "<b>QReal<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>";
+	}
+
 	/// Tells if we should show trace connections menu or not
 	virtual bool showConnectionRelatedMenus() const
 	{

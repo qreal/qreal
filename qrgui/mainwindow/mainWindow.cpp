@@ -717,8 +717,7 @@ void MainWindow::modelsAreChanged()
 
 void MainWindow::showAbout()
 {
-	QMessageBox::about(this, tr("About QReal"),
-			tr("<b>QReal<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>"));
+	QMessageBox::about(this, tr("About QReal"), mToolManager.customizer()->aboutText());
 }
 
 void MainWindow::showHelp()
@@ -1655,6 +1654,7 @@ void MainWindow::initToolManager()
 	if (customizer) {
 		setWindowTitle(customizer->windowTitle());
 		setWindowIcon(customizer->applicationIcon());
+		setVersion(customizer->productVersion());
 		customizer->customizeDocks(this);
 		customizer->customizeScene(mSceneCustomizer);
 	}
@@ -1887,4 +1887,10 @@ QListIterator<EditorView *> MainWindow::openedEditorViews() const
 		}
 	}
 	return QListIterator<EditorView *>(views);
+}
+
+void MainWindow::setVersion(QString const &version)
+{
+	// TODO: update title
+	SettingsManager::setValue("version", version);
 }

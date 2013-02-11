@@ -302,6 +302,8 @@ private:
 	void initExplorers();
 	void initRecentProjectsMenu();
 
+	void setVersion(QString const &version);
+
 	Ui::MainWindowUi *mUi;
 
 	/// elements & theirs ids

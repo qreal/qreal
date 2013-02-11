@@ -18,6 +18,8 @@ class Customizer : public QObject, public qReal::Customizer
 public:
 	virtual QString windowTitle() const;
 	virtual QIcon applicationIcon() const;
+	virtual QString productVersion() const;
+	virtual QString aboutText() const;
 	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface);
 	virtual void customizeScene(SceneCustomizationInterface *sceneCustomizer);
 
