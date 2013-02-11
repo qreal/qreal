@@ -2,6 +2,7 @@
 
 #include <QDialog>
 #include "../pluginManager/interpreterEditorManager.h"
+#include "../mainwindow/mainWindow.h"
 
 namespace Ui {
 	class PropertiesDialog;
@@ -14,7 +15,7 @@ class PropertiesDialog : public QDialog
 	Q_OBJECT
 
 public:
-	PropertiesDialog(QWidget *parent = 0);
+	PropertiesDialog(MainWindow *mainWindow, QWidget *parent = 0);
 	~PropertiesDialog();
 	void init(EditorManagerInterface* interperterEditorManager, Id const &id);
 private slots:
@@ -26,8 +27,10 @@ private slots:
 private:
 	QStringList getPropertiesDisplayedNamesList(QStringList propertiesNames);
 	void change(QString const &text);
+	bool checkElementOnDiagram(qrRepo::LogicalRepoApi const &api, Id &id);
 	Ui::PropertiesDialog *mUi;
 	EditorManagerInterface *mInterperterEditorManager;
 	Id mId;
+	MainWindow *mMainWindow;
 };
 }

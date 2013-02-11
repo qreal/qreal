@@ -31,11 +31,9 @@
 #include "../../qrgui/dialogs/findReplaceDialog.h"
 #include "findManager.h"
 
-#include  "paletteTree.h"
-
 #include "../dialogs/startDialog/startDialog.h"
 #include "projectManager/projectManager.h"
-
+#include "tabWidget.h"
 #include "referenceList.h"
 
 namespace Ui {
@@ -53,6 +51,7 @@ class Models;
 
 namespace gui {
 class ErrorReporter;
+class PaletteTree;
 }
 
 class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpretersInterface
@@ -330,7 +329,6 @@ private:
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;
-	qReal::gui::PaletteTree *mPaletteTree;
 
 	FindManager *mFindHelper;
 	ProjectManager *mProjectManager;

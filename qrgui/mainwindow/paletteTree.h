@@ -8,9 +8,10 @@
 #include <QtGui/QToolButton>
 #include <QtGui/QComboBox>
 #include <QtGui/QVBoxLayout>
+#include <QtGui/QLabel>
+#include "mainWindow.h"
 #include "../pluginManager/proxyEditorManager.h"
 #include "../../qrkernel/ids.h"
-#include <QtGui/QLabel>
 
 namespace  qReal{
 namespace gui{
@@ -80,6 +81,7 @@ public:
 	*/
 	void loadPalette(bool isIconsView, int itemsCount, EditorManagerInterface *editorManagerProxy);
 	~PaletteTree();
+	void initMainWindow(MainWindow *mainWindow);
 signals:
 	void paletteParametersChanged();
 public slots:
@@ -108,6 +110,7 @@ private:
 	/// EditorManager instance used to sort palette's content.
 	/// Made static to be used inside idLessThan()
 	static EditorManagerInterface *mEditorManagerProxy;
+	MainWindow *mMainWindow;
 
 	/// Forbids to make copies of the object.
 	explicit PaletteTree(const PaletteTree &paletteTree);

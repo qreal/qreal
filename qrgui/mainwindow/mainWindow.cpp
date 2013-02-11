@@ -66,6 +66,7 @@ MainWindow::MainWindow()
 		, mStartDialog(new StartDialog(this, mProjectManager))
 {
 	mUi->setupUi(this);
+	mUi->paletteTree->initMainWindow(this);
 	setWindowTitle("QReal");
 	initSettingsManager();
 	registerMetaTypes();
@@ -800,6 +801,7 @@ bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 	foreach (Id const &diagram, mEditorManagerProxy->diagrams(Id(pluginName))) {
 		mUi->paletteTree->addEditorElements(mEditorManagerProxy, Id(pluginName), diagram);
 	}
+
 	mUi->paletteTree->initDone();
 	return true;
 }

@@ -24,7 +24,7 @@ void PaletteTree::addItemType(const Id &id, const QString &name, const QString &
 		, const QIcon &icon, QTreeWidget *tree, QTreeWidgetItem *parent)
 {
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(id, name, description, icon, mIconsView);
+	DraggableElement *element = new DraggableElement(mMainWindow, id, name, description, icon, mIconsView);
 	element->setEditorManagerProxy(mEditorManagerProxy);
 	parent->addChild(leaf);
 	tree->setItemWidget(leaf, 0, element);
@@ -34,7 +34,7 @@ void PaletteTree::addTopItemType(const Id &id, const QString &name
 		, const QString &description, const QIcon &icon, QTreeWidget *tree)
 {
 	QTreeWidgetItem *item = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(id, name, description, icon, mIconsView);
+	DraggableElement *element = new DraggableElement(mMainWindow, id, name, description, icon, mIconsView);
 	element->setEditorManagerProxy(mEditorManagerProxy);
 	tree->addTopLevelItem(item);
 	tree->setItemWidget(item, 0, element);
@@ -117,7 +117,7 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 		QHBoxLayout *layout = new QHBoxLayout;
 		int count = mItemsCountInARow;
 		for (; it != tmpIdList.end() && count-- > 0; ++it) {
-			DraggableElement *element = new DraggableElement(*it
+			DraggableElement *element = new DraggableElement(mMainWindow, *it
 					, mEditorManagerProxy->friendlyName(*it)
 					, mEditorManagerProxy->description(*it)
 					, mEditorManagerProxy->icon(*it)
@@ -426,4 +426,9 @@ void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManagerInt
 	loadEditors(editorManagerProxy);
 	initDone();
 	setComboBoxIndex();
+}
+
+void PaletteTree::initMainWindow(MainWindow *mainWindow)
+{
+	mMainWindow = mainWindow;
 }

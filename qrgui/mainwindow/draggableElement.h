@@ -8,9 +8,10 @@
 #include <QtGui/QToolButton>
 #include <QtGui/QComboBox>
 #include <QtGui/QVBoxLayout>
+#include <QtGui/QLabel>
+#include "mainWindow.h"
 #include "../pluginManager/proxyEditorManager.h"
 #include "../../qrkernel/ids.h"
-#include <QtGui/QLabel>
 
 namespace  qReal{
 namespace gui{
@@ -19,7 +20,7 @@ class DraggableElement : public QWidget
 {
 	Q_OBJECT
 public:
-	DraggableElement(Id const &id, QString const &name
+	DraggableElement(MainWindow *mainWindow, Id const &id, QString const &name
 					 , QString const &description
 					 , QIcon const &icon, bool iconsOnly, QWidget *parent = NULL);
 
@@ -48,6 +49,7 @@ private:
 	QString mText;
 	QLabel *mLabel;
 	EditorManagerInterface *mEditorManagerProxy;
+	MainWindow *mMainWindow;
 	virtual void dragEnterEvent(QDragEnterEvent *event);
 	virtual void dropEvent(QDropEvent *event);
 	virtual void mousePressEvent(QMouseEvent *event);

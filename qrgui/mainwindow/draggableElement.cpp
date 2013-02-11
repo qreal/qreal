@@ -12,12 +12,13 @@
 using namespace qReal;
 using namespace gui;
 
-DraggableElement::DraggableElement(const Id &id, const QString &name
+DraggableElement::DraggableElement(MainWindow *mainWindow, const Id &id, const QString &name
 		, const QString &description, const QIcon &icon, bool iconsOnly, QWidget *parent)
 	: QWidget(parent)
 	, mId(id)
 	, mIcon(icon)
 	, mText(name)
+	, mMainWindow(mainWindow)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(0, 4, 0, 4);
@@ -56,7 +57,7 @@ void DraggableElement::changePropertiesPaletteActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	Id id = action->data().value<Id>();
-	PropertiesDialog *propDialog = new PropertiesDialog();
+	PropertiesDialog *propDialog = new PropertiesDialog(mMainWindow);
 	propDialog->init(mEditorManagerProxy, id);
 	propDialog->setModal(true);
 	propDialog->show();
@@ -97,7 +98,6 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 			QMenu menu;
 			QAction * const changePropertiesPaletteAction = menu.addAction(tr("Change Properties"));
 			connect(changePropertiesPaletteAction, SIGNAL(triggered()), SLOT(changePropertiesPaletteActionTriggered()));
-			QList<QVariant> tag;
 			changePropertiesPaletteAction->setData(elementId.toVariant());
 			menu.exec(QCursor::pos());
 		}

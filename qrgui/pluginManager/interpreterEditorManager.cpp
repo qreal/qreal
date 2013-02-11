@@ -681,6 +681,22 @@ QString InterpreterEditorManager::getPropertyNameByDisplayedName(Id const &id, Q
 	}
 	return propertyName;
 }
+
+IdList InterpreterEditorManager::getChildren(Id const &parent) const {
+	IdList result;
+	QPair<qrRepo::RepoApi*, Id> repoAndMetaId = getRepoAndMetaId(parent);
+	qrRepo::RepoApi const * const repo = repoAndMetaId.first;
+	Id const metaId = repoAndMetaId.second;
+	foreach (Id const link , repo->outgoingLinks(metaId)) {
+		if (link.element() == "Inheritance") {
+			Id metaChild = repo->otherEntityFromLink(link, metaId);
+			QPair<Id, Id> editorAndDiagram = getEditorAndDiagram(repo, metaChild);
+			result << Id(repo->name(editorAndDiagram.first), repo->name(editorAndDiagram.second), repo->name(metaChild));
+		}
+	}
+	return result;
+}
+
 //unsupported method
 QStringList InterpreterEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {

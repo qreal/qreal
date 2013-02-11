@@ -227,6 +227,12 @@ QString ProxyEditorManager::getPropertyNameByDisplayedName(Id const &id, QString
 {
 	return mProxyManager->getPropertyNameByDisplayedName(id, displayedPropertyName);
 }
+
+IdList ProxyEditorManager::getChildren(Id const &parent) const
+{
+	return mProxyManager->getChildren(parent);
+}
+
 //unsupported methods:
 QStringList ProxyEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {

@@ -1280,7 +1280,7 @@ void EditorViewScene::changePropertiesActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	Id id = action->data().value<Id>();
-	PropertiesDialog *propDialog = new PropertiesDialog();
+	PropertiesDialog *propDialog = new PropertiesDialog(mWindow);
 	propDialog->init(mWindow->manager(), id);
 	propDialog->setModal(true);
 	propDialog->show();

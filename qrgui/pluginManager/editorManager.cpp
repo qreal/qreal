@@ -525,3 +525,8 @@ QString EditorManager::getPropertyNameByDisplayedName(Id const &id, QString cons
 {
 	return "";
 }
+
+IdList EditorManager::getChildren(Id const &parent) const
+{
+	return IdList();
+}

@@ -4,12 +4,15 @@
 #include "propertiesDialog.h"
 #include "ui_propertiesDialog.h"
 #include "editPropertiesDialog.h"
+#include "../view/editorView.h"
+#include "../view/editorViewScene.h"
 
 using namespace qReal;
 
-PropertiesDialog::PropertiesDialog(QWidget *parent)
+PropertiesDialog::PropertiesDialog(MainWindow *mainWindow, QWidget *parent)
 	: QDialog(parent)
 	, mUi(new Ui::PropertiesDialog)
+	, mMainWindow(mainWindow)
 {
 	mUi->setupUi(this);
 }
@@ -83,10 +86,29 @@ void PropertiesDialog::change(QString const &text)
 	connect(editPropertiesDialog, SIGNAL(finished(int)), SLOT(updatePropertiesNamesList()));
 }
 
+bool PropertiesDialog::checkElementOnDiagram(qrRepo::LogicalRepoApi const &api, Id &id)
+{
+	if (id.idSize() != 3) {
+		id = Id(id.editor(), id.diagram(), id.element());
+	}
+	bool sign = !api.logicalElements(id).isEmpty();
+
+	foreach (Id nodeChild, mInterperterEditorManager->getChildren(id)) {
+		sign |= checkElementOnDiagram(api, nodeChild);
+	}
+
+	return sign;
+}
+
 void PropertiesDialog::addProperty()
 {
-	mUi->PropertiesNamesList->setCurrentItem(NULL);
-	change("");
+	qrRepo::LogicalRepoApi const &logicalRepoApi = mMainWindow->models()->logicalRepoApi();
+	if (checkElementOnDiagram(logicalRepoApi, mId)) {
+		QMessageBox::warning(this, tr("Warning"), tr("For adding a new property from the scene and from the explorer of logical model should be removed all the elements of the object and its inheritors!"));
+	} else {
+		mUi->PropertiesNamesList->setCurrentItem(NULL);
+		change("");
+	}
 }
 
 void PropertiesDialog::changeProperty()

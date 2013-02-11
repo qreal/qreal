@@ -3120,7 +3120,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="691"/>
+        <location filename="mainwindow/mainWindow.cpp" line="692"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3145,16 +3145,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="737"/>
-        <location filename="mainwindow/mainWindow.cpp" line="755"/>
-        <location filename="mainwindow/mainWindow.cpp" line="773"/>
+        <location filename="mainwindow/mainWindow.cpp" line="738"/>
+        <location filename="mainwindow/mainWindow.cpp" line="756"/>
+        <location filename="mainwindow/mainWindow.cpp" line="774"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="739"/>
-        <location filename="mainwindow/mainWindow.cpp" line="757"/>
-        <location filename="mainwindow/mainWindow.cpp" line="775"/>
+        <location filename="mainwindow/mainWindow.cpp" line="740"/>
+        <location filename="mainwindow/mainWindow.cpp" line="758"/>
+        <location filename="mainwindow/mainWindow.cpp" line="776"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3259,23 +3259,23 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="692"/>
+        <location filename="mainwindow/mainWindow.cpp" line="693"/>
         <source>&lt;b&gt;QReal&lt;b&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;http://qreal.ru/&quot;&gt;http://qreal.ru/&lt;/a&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="773"/>
+        <location filename="mainwindow/mainWindow.cpp" line="774"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="775"/>
+        <location filename="mainwindow/mainWindow.cpp" line="776"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="905"/>
-        <location filename="mainwindow/mainWindow.cpp" line="913"/>
+        <location filename="mainwindow/mainWindow.cpp" line="907"/>
+        <location filename="mainwindow/mainWindow.cpp" line="915"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3284,17 +3284,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1674"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1676"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1703"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1705"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1703"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1705"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3315,7 +3315,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1305"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1307"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -3463,9 +3463,27 @@
 <context>
     <name>qReal::PropertiesDialog</name>
     <message>
-        <location filename="dialogs/propertiesDialog.cpp" line="44"/>
+        <location filename="dialogs/propertiesDialog.cpp" line="47"/>
         <source>Properties</source>
         <translation>Свойства</translation>
+    </message>
+    <message>
+        <location filename="dialogs/propertiesDialog.cpp" line="107"/>
+        <source>Warning</source>
+        <translation>Внимание</translation>
+    </message>
+    <message>
+        <location filename="dialogs/propertiesDialog.cpp" line="107"/>
+        <source>For adding a new property from the scene and from the explorer of logical model should be removed all the elements of the object and its inheritors!</source>
+        <translation>Для добавления нового свойства со сцены и обозревателя логической модели должны быть удалены все элементы данного объекта и его наследников!</translation>
+    </message>
+    <message>
+        <source>For adding a new property, from the scene should be removed all the elements of the object and its inheritors!</source>
+        <translation type="obsolete">Для добавления нового свойства, со сцены должны быть удалены все элементы данного объекта и его наследников!</translation>
+    </message>
+    <message>
+        <source>For adding a new property from the scene should be removed all the elements of the object and its inheritors!</source>
+        <translation type="obsolete">Для добавления нового свойства со сцены должны быть удалены все элементы данного объекта и его наследников!</translation>
     </message>
     <message>
         <source>New property</source>
@@ -3568,7 +3586,7 @@
 <context>
     <name>qReal::gui::DraggableElement</name>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="98"/>
+        <location filename="mainwindow/draggableElement.cpp" line="99"/>
         <source>Change Properties</source>
         <translation>Изменить свойства</translation>
     </message>
