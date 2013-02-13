@@ -50,3 +50,4 @@ zoomFactor=2
 oldLineColor=magenta
 PaintOldEdgeMode=true
 pathToImages=./images/iconset1
+AutosaveTempFile=tempFile

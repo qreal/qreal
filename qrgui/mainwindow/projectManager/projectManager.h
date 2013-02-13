@@ -24,6 +24,7 @@ public slots:
 	void close();
 
 	void save();
+	void saveTemp();
 	bool saveAs(const QString &fileName);
 	bool suggestToSaveAs();
 	bool saveOrSuggestToSaveAs();
@@ -57,6 +58,7 @@ private:
 	Autosaver *mAutosaver;
 	bool mUnsavedIndicator;
 	QString mSaveFilePath;
+	QString mSaveFilePathTemp;
 };
 
 }

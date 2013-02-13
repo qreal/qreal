@@ -97,6 +97,7 @@ bool ProjectManager::open(QString const &fileName)
 	close();
 	mMainWindow->models()->repoControlApi().open(fileName);
 	mMainWindow->models()->reinit();
+	saveTemp();
 
 	if (!pluginsEnough()) {
 		// restoring the session
@@ -246,6 +247,12 @@ void ProjectManager::save()
 	// name = "" Attempt to save the project in this case result in trash
 	mMainWindow->models()->repoControlApi().saveTo(mSaveFilePath);
 	refreshApplicationStateAfterSave();
+}
+
+void ProjectManager::saveTemp()
+{
+	mSaveFilePathTemp=SettingsManager::value("AutosaveTempFile").toString();
+	mMainWindow->models()->repoControlApi().saveTo(mSaveFilePathTemp);
 }
 
 void ProjectManager::saveGenCode(QString const &text)
