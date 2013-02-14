@@ -108,7 +108,7 @@
                             <origin>%1/installer/icon.ico</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%1/installer/changelog.txt</origin>
+                            <origin>%1/bin/changelog.txt</origin>
                         </distributionFile>
                         <distributionDirectory>
                             <origin>%1/plugins/robots/editor/images</origin>
