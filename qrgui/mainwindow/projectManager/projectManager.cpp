@@ -88,6 +88,7 @@ bool ProjectManager::open(QString const &fileName)
 	// the project, the autosave file may become incompatible with the application. This will lead to a fail on the
 	// next start. 2. autosavePauser was first starts a timer of Autosaver
 	Autosaver::Pauser autosavePauser = mAutosaver->pauser();
+	Q_UNUSED(autosavePauser)
 
 	if (!fileName.isEmpty() && !saveFileExists(fileName)) {
 		if (fileName == "autosave.qrs") {

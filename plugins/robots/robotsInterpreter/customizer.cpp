@@ -16,7 +16,7 @@ QIcon Customizer::applicationIcon() const
 QString Customizer::productVersion() const
 {
 	// TODO: other storage for it?
-	return "2.0.0-RC2";
+	return "2.0.0-RC3";
 }
 
 QString Customizer::aboutText() const
