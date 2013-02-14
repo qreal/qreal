@@ -37,6 +37,10 @@ void Customizer::placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWi
 	watchWindow->setFloating(false);
 	QDockWidget *sensorsDock = produceDockWidget(QObject::tr("Configure sensors"), sensorsWidget);
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, sensorsDock);
+	QList<QDockWidget *> additionalDocks;
+	additionalDocks << watchWindow;
+	additionalDocks << sensorsDock;
+	mDockInterface->setAdditionalDockWidgets(additionalDocks);
 }
 
 QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *content) const

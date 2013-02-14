@@ -28,6 +28,9 @@ public:
 	virtual void tabifyDockWidget(QDockWidget *first, QDockWidget *second) = 0;
 	/// Adds the given @param dockWidget into the specified @param area
 	virtual void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget) = 0;
+	/// Tells to dock manager about docks added by plugin. Theese docks will be hidden when
+	/// switching into full screen mode
+	virtual void setAdditionalDockWidgets(QList<QDockWidget *> dockWidgets) = 0;
 };
 
 }
