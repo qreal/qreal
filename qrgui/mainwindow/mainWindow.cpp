@@ -1530,6 +1530,13 @@ void MainWindow::fullscreen()
 		showDockWidget(mUi->propertyDock, "propertyEditor");
 		showDockWidget(mUi->errorDock, "errorReporter");
 	}
+	foreach (QDockWidget *dock, mAdditionalDocks) {
+		if (mIsFullscreen) {
+			hideDockWidget(dock, dock->windowTitle());
+		} else {
+			showDockWidget(dock, dock->windowTitle());
+		}
+	}
 }
 
 QString MainWindow::getNextDirName(QString const &name)
@@ -1875,6 +1882,11 @@ void MainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
 void MainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget)
 {
 	QMainWindow::addDockWidget(area, dockWidget);
+}
+
+void MainWindow::setAdditionalDockWidgets(QList<QDockWidget *> dockWidgets)
+{
+	mAdditionalDocks = dockWidgets;
 }
 
 QListIterator<EditorView *> MainWindow::openedEditorViews() const

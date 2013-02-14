@@ -58,21 +58,16 @@ void RobotsPlugin::initActions()
 	ActionInfo robotSettingsActionInfo(mRobotSettingsAction, "interpreters", "tools");
 	QObject::connect(mRobotSettingsAction, SIGNAL(triggered()), this, SLOT(showRobotSettings()));
 
-	mWatchListAction = new QAction(QObject::tr("Show watch list"), NULL);
-	ActionInfo watchListActionInfo(mWatchListAction, "interpreters", "tools");
-	QObject::connect(mWatchListAction, SIGNAL(triggered()), &mInterpreter, SLOT(showWatchList()));
-
 	QAction *separator = new QAction(NULL);
 	ActionInfo separatorActionInfo(separator, "interpreters", "tools");
 	separator->setSeparator(true);
 
 	mActionInfos << d2ModelActionInfo << runActionInfo << stopRobotActionInfo
-			<< connectToRobotActionInfo << separatorActionInfo << robotSettingsActionInfo
-			<< separatorActionInfo << watchListActionInfo;
+			<< connectToRobotActionInfo << separatorActionInfo << robotSettingsActionInfo;
 
 	//Set tabs, unused at the opening, enabled
 	QList<ActionInfo> unusedTab;
-	unusedTab << d2ModelActionInfo << runActionInfo << stopRobotActionInfo << connectToRobotActionInfo << watchListActionInfo;
+	unusedTab << d2ModelActionInfo << runActionInfo << stopRobotActionInfo << connectToRobotActionInfo ;
 	bool isTabEnable = false;
 	changeActiveTab(unusedTab, isTabEnable);
 }
