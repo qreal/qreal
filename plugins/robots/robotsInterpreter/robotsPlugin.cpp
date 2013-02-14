@@ -67,7 +67,7 @@ void RobotsPlugin::initActions()
 
 	//Set tabs, unused at the opening, enabled
 	QList<ActionInfo> unusedTab;
-	unusedTab << d2ModelActionInfo << runActionInfo << stopRobotActionInfo << connectToRobotActionInfo ;
+	unusedTab << d2ModelActionInfo << runActionInfo << stopRobotActionInfo << connectToRobotActionInfo;
 	bool isTabEnable = false;
 	changeActiveTab(unusedTab, isTabEnable);
 }
