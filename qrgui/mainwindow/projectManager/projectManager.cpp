@@ -97,6 +97,7 @@ bool ProjectManager::open(QString const &fileName)
 	close();
 	mMainWindow->models()->repoControlApi().open(fileName);
 	mMainWindow->models()->reinit();
+	saveTemp();
 
 	if (!pluginsEnough()) {
 		// restoring the session
@@ -202,6 +203,7 @@ void ProjectManager::refreshTitleModifiedSuffix()
 
 bool ProjectManager::openNewWithDiagram()
 {
+	clearAutosaveFile();
 	if(!openEmptyWithSuggestToSaveChanges()) {
 		return false;
 	}
@@ -247,6 +249,12 @@ void ProjectManager::save()
 	refreshApplicationStateAfterSave();
 }
 
+void ProjectManager::saveTemp()
+{
+	mSaveFilePathTemp=SettingsManager::value("AutosaveTempFile").toString();
+	mMainWindow->models()->repoControlApi().saveTo(mSaveFilePathTemp);
+}
+
 void ProjectManager::saveGenCode(QString const &text)
 {
 	utils::OutFile out("nxt-tools/example0/example0.c");
@@ -255,7 +263,7 @@ void ProjectManager::saveGenCode(QString const &text)
 
 bool ProjectManager::saveOrSuggestToSaveAs()
 {
-	if (mSaveFilePath == mAutosaver->filePath()) {
+	if (mSaveFilePath == SettingsManager::value("AutosaveFileName").toString()) {
 		return suggestToSaveAs();
 	}
 	save();
@@ -309,4 +317,12 @@ void ProjectManager::setUnsavedIndicator(bool isUnsaved)
 {
 	mUnsavedIndicator = isUnsaved;
 	refreshTitleModifiedSuffix();
+}
+
+void ProjectManager::clearAutosaveFile()
+{
+	QFile tempFile(SettingsManager::value("AutosaveFileName").toString());
+	if (tempFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+		tempFile.close();
+	}
 }
