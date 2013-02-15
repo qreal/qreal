@@ -25,7 +25,8 @@ public:
 	Tool *makeItem(QString const &tag, ToolController *controller);
 	Root *makeRoot(ToolController *controller) const;
 	QPixmap widgetPixmap(QString const &tag);
-	QWidget *deserializeWidget(QDomElement const &element);
+	QWidget *deserializeWidget(QDomElement const &element
+			, QList<PropertyEditorInterface *> &editors);
 	Root *loadDocument(ToolController *controller, QDomDocument const &document);
 	Tool *loadElement(LayoutTool *parent, QDomElement const &element
 		, ToolController *controller);
@@ -37,7 +38,8 @@ private:
 	// Hard-coded tool enumeration; TODO: "pluginize" it
 	void initTags();
 	void initItems();
-	QWidget *deserializeWidget(QWidget *parent, QDomElement const &element);
+	QWidget *deserializeWidget(QWidget *parent, QDomElement const &element
+			, QList<PropertyEditorInterface *> &editors);
 
 	QList<QString> mTags;
 	QList<Tool *> mItems;

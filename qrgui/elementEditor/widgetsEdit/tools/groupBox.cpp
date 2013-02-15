@@ -9,37 +9,43 @@ GroupBox::GroupBox(ToolController *controller)
 	mTitle = tr("Group Box");
 	mTag = "GroupBox";
 	mIcon = QIcon(":/icons/widgetsEditor/groupBox.png");
+	mProxy = new GroupBoxProxy(mGroupBox);
+}
+
+GroupBoxProxy::GroupBoxProxy(QGroupBox *groupBox)
+	: LayoutToolProxy(groupBox), mGroupBox(groupBox)
+{
 	mGroupBox->setGeometry(0, 0
 		, GROUP_BOX_DEFAULT_WIDTH
 		, GROUP_BOX_DEFAULT_HEIGHT);
 }
 
-Qt::Alignment GroupBox::titleAlignment() const
+Qt::Alignment GroupBoxProxy::titleAlignment() const
 {
 	return mGroupBox->alignment();
 }
 
-bool GroupBox::isFlat() const
+bool GroupBoxProxy::isFlat() const
 {
 	return mGroupBox->isFlat();
 }
 
-QString GroupBox::title() const
+QString GroupBoxProxy::title() const
 {
 	return mGroupBox->title();
 }
 
-void GroupBox::setTitleAlignment(Qt::Alignment alignment)
+void GroupBoxProxy::setTitleAlignment(Qt::Alignment alignment)
 {
 	mGroupBox->setAlignment(alignment);
 }
 
-void GroupBox::setFlat(bool flat)
+void GroupBoxProxy::setFlat(bool flat)
 {
 	mGroupBox->setFlat(flat);
 }
 
-void GroupBox::setTitle(const QString &title)
+void GroupBoxProxy::setTitle(const QString &title)
 {
 	mGroupBox->setTitle(title);
 }

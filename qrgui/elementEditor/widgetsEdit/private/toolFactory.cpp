@@ -119,12 +119,14 @@ QPixmap ToolFactory::widgetPixmap(QString const &tag)
 	return QPixmap();
 }
 
-QWidget *ToolFactory::deserializeWidget(const QDomElement &element)
+QWidget *ToolFactory::deserializeWidget(QDomElement const &element
+		, QList<PropertyEditorInterface *> &editors)
 {
-	return deserializeWidget(NULL, element);
+	return deserializeWidget(NULL, element, editors);
 }
 
-QWidget *ToolFactory::deserializeWidget(QWidget *parent, const QDomElement &element)
+QWidget *ToolFactory::deserializeWidget(QWidget *parent, const QDomElement &element
+		, QList<PropertyEditorInterface *> &editors)
 {
 	QString const tag = element.tagName();
 	if (tag.isEmpty()) {
@@ -134,18 +136,23 @@ QWidget *ToolFactory::deserializeWidget(QWidget *parent, const QDomElement &elem
 	if (!tool) {
 		return NULL;
 	}
-	tool->deserializeWidget(parent, element);
+	tool->deserializeWidget(parent, element, editors);
 	QDomElement childElement = element.firstChildElement();
 	while (!childElement.isNull()) {
-		deserializeWidget(tool->widget(), childElement);
+		deserializeWidget(tool->widget(), childElement, editors);
 		childElement = childElement.nextSiblingElement();
 	}
 	QWidget *result = tool->widget();
 	if (parent) {
 		result->setParent(parent);
 	}
-	result->setVisible(true);
-	// because result mustn`t be destroyed
+
+	PropertyEditorInterface *iface = dynamic_cast<PropertyEditorInterface *>(result);
+	if (iface && !iface->binding().isEmpty()) {
+		editors << iface;
+	}
+
+	// Returning ownership to us
 	tool->setWidget(NULL);
 	delete tool;
 	return result;

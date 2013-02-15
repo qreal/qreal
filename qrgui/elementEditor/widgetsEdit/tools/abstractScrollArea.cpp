@@ -9,22 +9,27 @@ AbstractScrollArea::AbstractScrollArea(QAbstractScrollArea *area
 	mAbstractScrollArea = dynamic_cast<QAbstractScrollArea *>(widget());
 }
 
-Qt::ScrollBarPolicy AbstractScrollArea::verticalScrollBarPolicy() const
+AbstractScrollAreaProxy::AbstractScrollAreaProxy(QAbstractScrollArea *area)
+	: FrameProxy(area), mAbstractScrollArea(area)
+{
+}
+
+Qt::ScrollBarPolicy AbstractScrollAreaProxy::verticalScrollBarPolicy() const
 {
 	return mAbstractScrollArea->verticalScrollBarPolicy();
 }
 
-Qt::ScrollBarPolicy AbstractScrollArea::horizontalScrollBarPolicy() const
+Qt::ScrollBarPolicy AbstractScrollAreaProxy::horizontalScrollBarPolicy() const
 {
 	return mAbstractScrollArea->horizontalScrollBarPolicy();
 }
 
-void AbstractScrollArea::setVerticalScrollBarPolicy(Qt::ScrollBarPolicy policy)
+void AbstractScrollAreaProxy::setVerticalScrollBarPolicy(Qt::ScrollBarPolicy policy)
 {
 	mAbstractScrollArea->setVerticalScrollBarPolicy(policy);
 }
 
-void AbstractScrollArea::setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy policy)
+void AbstractScrollAreaProxy::setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy policy)
 {
 	mAbstractScrollArea->setHorizontalScrollBarPolicy(policy);
 }

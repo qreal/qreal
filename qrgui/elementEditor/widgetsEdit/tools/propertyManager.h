@@ -22,15 +22,17 @@ class PropertyManager : public QObject
 	Q_OBJECT
 
 public:
-	explicit PropertyManager(Tool *tool);
+	explicit PropertyManager(QObject *tool);
 
 	QListIterator<Property *> userPropertiesIterator() const;
 	QListIterator<Property *> allPropertiesIterator() const;
 	QtVariantPropertyManager *qtPropertyManager() const;
 	void onSelect();
 
-	void generateXml(QDomElement &element, QDomDocument &document);
-	void deserializeProperty(QDomElement const &element);
+	void generateXml(QDomElement &element, QDomDocument &document
+			, QMap<QString, QString> const &outerBindings);
+	void deserializeProperty(QDomElement const &element
+			, QMap<QString, QString> &outerBindings);
 
 public slots:
 	void changeProperty(QString const &name, QVariant const &value);
@@ -46,7 +48,7 @@ private:
 	Property *findProperty(QString const &name);
 	int metaPropertyIndex(QString const &name);
 
-	Tool *mTool;
+	QObject *mTool;
 	QtVariantPropertyManager *mManager;
 	QList<Property *> mDesignableProperties;
 	QMap<Property *, int> mUserProperties;

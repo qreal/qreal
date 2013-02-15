@@ -12,7 +12,7 @@ namespace widgetsEdit
 int const GROUP_BOX_DEFAULT_WIDTH = 150;
 int const GROUP_BOX_DEFAULT_HEIGHT = 150;
 
-class GroupBox : public LayoutTool
+class GroupBoxProxy : public LayoutToolProxy
 {
 	Q_OBJECT
 
@@ -21,7 +21,7 @@ class GroupBox : public LayoutTool
 	Q_PROPERTY(QString title READ title WRITE setTitle USER true DESIGNABLE true)
 
 public:
-	explicit GroupBox(ToolController *controller);
+	explicit GroupBoxProxy(QGroupBox *groupBox);
 
 private:
 	Qt::Alignment titleAlignment() const;
@@ -34,6 +34,17 @@ private:
 
 	QGroupBox *mGroupBox;
 
+};
+
+class GroupBox : public LayoutTool
+{
+	Q_OBJECT
+
+public:
+	explicit GroupBox(ToolController *controller);
+
+private:
+	QGroupBox *mGroupBox;
 };
 
 }

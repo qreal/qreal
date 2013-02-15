@@ -14,4 +14,10 @@ Widget::Widget(ToolController *controller)
 		, WIDGET_DEFAULT_HEIGHT);
 	mWidget->setMinimumWidth(WIDGET_DEFAULT_MIN_WIDTH);
 	mWidget->setMinimumHeight(WIDGET_DEFAULT_MIN_HEIGHT);
+	mProxy = new WidgetProxy(mWidget);
+}
+
+WidgetProxy::WidgetProxy(QWidget *widget)
+	: LayoutToolProxy(widget), mWidget(widget)
+{
 }

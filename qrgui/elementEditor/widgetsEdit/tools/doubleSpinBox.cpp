@@ -9,71 +9,77 @@ DoubleSpinBox::DoubleSpinBox(ToolController *controller)
 	mTitle = tr("Double Spin Box");
 	mTag = "DoubleSpinBox";
 	mIcon = QIcon(":/icons/widgetsEditor/doubleSpinBox.png");
+	mProxy = new DoubleSpinBoxProxy(mDoubleSpinBox);
+}
+
+DoubleSpinBoxProxy::DoubleSpinBoxProxy(DoubleSpinBoxWidget *doubleSpinBox)
+	: AbstractSpinBoxProxy(doubleSpinBox), mDoubleSpinBox(doubleSpinBox)
+{
 	connect(mDoubleSpinBox, SIGNAL(valueChanged(double))
 		, this, SLOT(valueChanged(double)));
 }
 
-void DoubleSpinBox::valueChanged(double d)
+void DoubleSpinBoxProxy::valueChanged(double d)
 {
-	emit propertyChanged("value", QVariant(d));
+	onPropertyChanged("value", QVariant(d));
 }
 
-double DoubleSpinBox::maximum() const
+double DoubleSpinBoxProxy::maximum() const
 {
 	return mDoubleSpinBox->maximum();
 }
 
-double DoubleSpinBox::minimum() const
+double DoubleSpinBoxProxy::minimum() const
 {
 	return mDoubleSpinBox->minimum();
 }
 
-QString DoubleSpinBox::prefix() const
+QString DoubleSpinBoxProxy::prefix() const
 {
 	return mDoubleSpinBox->prefix();
 }
 
-QString DoubleSpinBox::suffix() const
+QString DoubleSpinBoxProxy::suffix() const
 {
 	return mDoubleSpinBox->suffix();
 }
 
-double DoubleSpinBox::singleStep() const
+double DoubleSpinBoxProxy::singleStep() const
 {
 	return mDoubleSpinBox->singleStep();
 }
 
-double DoubleSpinBox::value() const
+double DoubleSpinBoxProxy::value() const
 {
 	return mDoubleSpinBox->value();
 }
 
-void DoubleSpinBox::setMaximum(double maximum)
+void DoubleSpinBoxProxy::setMaximum(double maximum)
 {
 	mDoubleSpinBox->setMaximum(maximum);
 }
 
-void DoubleSpinBox::setMinimum(double minimum)
+void DoubleSpinBoxProxy::setMinimum(double minimum)
 {
 	mDoubleSpinBox->setMinimum(minimum);
 }
 
-void DoubleSpinBox::setPrefix(QString const &prefix)
+void DoubleSpinBoxProxy::setPrefix(QString const &prefix)
 {
 	mDoubleSpinBox->setPrefix(prefix);
 }
 
-void DoubleSpinBox::setSuffix(QString const &suffix)
+void DoubleSpinBoxProxy::setSuffix(QString const &suffix)
 {
 	mDoubleSpinBox->setSuffix(suffix);
 }
 
-void DoubleSpinBox::setSingleStep(double step)
+void DoubleSpinBoxProxy::setSingleStep(double step)
 {
 	mDoubleSpinBox->setSingleStep(step);
 }
 
-void DoubleSpinBox::setValue(double value)
+void DoubleSpinBoxProxy::setValue(double value)
 {
 	mDoubleSpinBox->setValue(value);
 }
@@ -84,7 +90,7 @@ DoubleSpinBoxWidget::DoubleSpinBoxWidget()
 	connect(this, SIGNAL(valueChanged(QString)), this, SLOT(onValueChanged(QString)));
 }
 
-void DoubleSpinBoxWidget::setPropertyValue(const QString &value)
+void DoubleSpinBoxWidget::setPropertyValue(const QVariant &value)
 {
 	bool ok = false;
 	double val = value.toDouble(&ok);

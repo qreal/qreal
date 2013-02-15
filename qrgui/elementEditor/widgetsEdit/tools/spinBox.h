@@ -19,13 +19,13 @@ public:
 	SpinBoxWidget();
 	virtual ~SpinBoxWidget() {}
 
-	virtual void setPropertyValue(QString const &value);
+	virtual void setPropertyValue(QVariant const &value);
 
 private slots:
-	void onValueChanged1(int value);
+	void onThisValueChanged(int value);
 };
 
-class SpinBox : public AbstractSpinBox
+class SpinBoxProxy : public AbstractSpinBoxProxy
 {
 	Q_OBJECT
 
@@ -39,7 +39,7 @@ class SpinBox : public AbstractSpinBox
 	BINDING_TOOL(mSpinBox)
 
 public:
-	explicit SpinBox(ToolController *controller);
+	explicit SpinBoxProxy(SpinBoxWidget *spinBox);
 
 private slots:
 	int maximum() const;
@@ -60,7 +60,17 @@ private slots:
 
 private:
 	SpinBoxWidget *mSpinBox;
+};
 
+class SpinBox : public AbstractSpinBox
+{
+	Q_OBJECT
+
+public:
+	explicit SpinBox(ToolController *controller);
+
+private:
+	SpinBoxWidget *mSpinBox;
 };
 
 }

@@ -30,7 +30,7 @@ class PropertyEditor : public PropertyEditorInterface
 public:
 	virtual ~PropertyEditor() {}
 
-	virtual void setPropertyValue(QString const &value);
+	virtual void setPropertyValue(QVariant const &value);
 	virtual QString binding() const;
 	virtual void setEnumValues(QStringList const &values);
 	QString propertyName() const;

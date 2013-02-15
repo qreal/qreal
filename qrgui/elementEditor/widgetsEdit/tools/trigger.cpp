@@ -154,12 +154,13 @@ void Trigger::generateXml(QDomElement &element, QDomDocument &document)
 	// TODO: Implement hierarchical children ignoring
 }
 
-void Trigger::deserializeWidget(QWidget *parent, QDomElement const &element)
+void Trigger::deserializeWidget(QWidget *parent, QDomElement const &element
+		, QList<PropertyEditorInterface *> &editors)
 {
 	TriggerWidget *triggerWidget = new TriggerWidget;
 	setWidget(triggerWidget);
 
-	Tool::deserializeWidget(parent, element);
+	Tool::deserializeWidget(parent, element, editors);
 	triggerWidget->setAction(mAction);
 	triggerWidget->changeState(Inactive);
 	QString const xml1 = widget1Xml();
@@ -170,8 +171,8 @@ void Trigger::deserializeWidget(QWidget *parent, QDomElement const &element)
 	widget2Doc.setContent(xml2);
 	QDomElement const element1 = widget1Doc.childNodes().at(0).toElement();
 	QDomElement const element2 = widget2Doc.childNodes().at(0).toElement();
-	QWidget *widget1 = ToolFactory::instance()->deserializeWidget(element1);
-	QWidget *widget2 = ToolFactory::instance()->deserializeWidget(element2);
+	QWidget *widget1 = ToolFactory::instance()->deserializeWidget(element1, editors);
+	QWidget *widget2 = ToolFactory::instance()->deserializeWidget(element2, editors);
 	triggerWidget->setWidgets(widget1, widget2);
 }
 

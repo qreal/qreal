@@ -16,9 +16,9 @@ NodeElement *PropertyEditor::getNode() const
 	return root ? dynamic_cast<NodeElement *>(root->graphicsProxyWidget()) : NULL;
 }
 
-void PropertyEditor::setPropertyValue(const QString &value)
+void PropertyEditor::setPropertyValue(QVariant const &value)
 {
-	mValue = value;
+	mValue = value.toString();
 }
 
 QString PropertyEditor::binding() const

@@ -84,12 +84,22 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 		QString typeName = mModel->typeName(valueCell).toLower();
 		QStringList values = mModel->enumValues(valueCell);
 		bool isButton = false;
-		if (typeName == "int") {
+		if (typeName == "int" || typeName == "integer") {
 			type = QVariant::Int;
-		} else if (typeName == "bool") {
+		} else if (typeName == "double" || typeName == "float") {
+			type = QVariant::Double;
+		} else if (typeName == "bool" || typeName == "boolean") {
 			type = QVariant::Bool;
 		} else if (typeName == "string") {
 			type = QVariant::String;
+		} else if (typeName == "rect" || typeName == "rectangle") {
+			type = QVariant::Rect;
+		} else if (typeName == "rectf" || typeName == "rectanglef") {
+			type = QVariant::RectF;
+		} else if (typeName == "size") {
+			type = QVariant::Size;
+		}  else if (typeName == "sizef") {
+			type = QVariant::SizeF;
 		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
 		} else {
@@ -176,7 +186,7 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 			value = values.at(intValue);
 		}
 	}
-	value = QVariant(value.toString());
+//	value = QVariant(value.toString());
 	mModel->setData(index, value);
 }
 

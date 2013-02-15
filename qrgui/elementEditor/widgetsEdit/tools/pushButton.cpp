@@ -9,14 +9,20 @@ PushButton::PushButton(ToolController *controller)
 	mTitle = tr("Push Button");
 	mTag = "PushButton";
 	mIcon = QIcon(":/icons/widgetsEditor/pushButton.png");
+	mProxy = new PushButtonProxy(mPushButton);
 }
 
-bool PushButton::isFlat() const
+PushButtonProxy::PushButtonProxy(QPushButton *pushButton)
+	: AbstractButtonProxy(pushButton), mPushButton(pushButton)
+{
+}
+
+bool PushButtonProxy::isFlat() const
 {
 	return mPushButton->isFlat();
 }
 
-void PushButton::setFlat(bool flat)
+void PushButtonProxy::setFlat(bool flat)
 {
 	mPushButton->setFlat(flat);
 }

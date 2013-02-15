@@ -11,6 +11,7 @@
 #include "private/layoutButtons.h"
 #include "../../../qrutils/navigationUtils/navigationPageWithMenu.h"
 #include "../../umllib/sdfRenderer.h"
+#include "../../editorPluginInterface/propertyEditorInterface.h"
 #include "../common/controlButtons.h"
 #include "../common/templateDocumentBuilder.h"
 
@@ -39,7 +40,9 @@ public:
 
 	/// Returns new instance of widget described in WTF format
 	/// @param document XML Document with widget template description
-	static QWidget *deserializeWidget(QDomDocument const &document);
+	/// @param editors All property editors will be added here
+	static QWidget *deserializeWidget(QDomDocument const &document
+			, QList<PropertyEditorInterface *> &editors);
 
 	/// Forces current editor instance to load specified widget template
 	/// @param widgetTemplate XML document in WTF format
@@ -68,6 +71,7 @@ private slots:
 	void saveToDisk();
 	void loadFromDisk();
 	void preview();
+	void editOuterBindings();
 
 private:
 	void initComponents();
@@ -86,7 +90,8 @@ private:
 
 	void switchLayoutButtonsActiveState(Tool *tool);
 
-	static QWidget *deserializeWidget(QDomElement const &widgetTemplate);
+	static QWidget *deserializeWidget(QDomElement const &widgetTemplate
+			, QList<PropertyEditorInterface *> &editors);
 
 	bool mIsIconEditor;
 	Ui::WidgetsEditor *mUi;

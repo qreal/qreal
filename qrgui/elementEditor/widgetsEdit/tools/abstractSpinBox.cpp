@@ -9,66 +9,70 @@ AbstractSpinBox::AbstractSpinBox(QAbstractSpinBox *spinBox
 	mAbstractSpinBox = spinBox;
 }
 
-bool AbstractSpinBox::isAccelerated() const
+AbstractSpinBoxProxy::AbstractSpinBoxProxy(QAbstractSpinBox *spinBox)
+	: ToolProxy(spinBox), mAbstractSpinBox(spinBox)
+{
+}
+
+bool AbstractSpinBoxProxy::isAccelerated() const
 {
 	return mAbstractSpinBox->isAccelerated();
 }
 
-QAbstractSpinBox::CorrectionMode AbstractSpinBox::correctionMode() const
+QAbstractSpinBox::CorrectionMode AbstractSpinBoxProxy::correctionMode() const
 {
 	return mAbstractSpinBox->correctionMode();
 }
 
-bool AbstractSpinBox::hasButtons() const
+bool AbstractSpinBoxProxy::hasButtons() const
 {
 	return mAbstractSpinBox->buttonSymbols() != QAbstractSpinBox::NoButtons;
 }
 
-bool AbstractSpinBox::isReadonly() const
+bool AbstractSpinBoxProxy::isReadonly() const
 {
 	return mAbstractSpinBox->isReadOnly();
 }
 
-QString AbstractSpinBox::specialValueText() const
+QString AbstractSpinBoxProxy::specialValueText() const
 {
 	return mAbstractSpinBox->specialValueText();
 }
 
-bool AbstractSpinBox::hasWrapping() const
+bool AbstractSpinBoxProxy::hasWrapping() const
 {
 	return mAbstractSpinBox->wrapping();
 }
 
-void AbstractSpinBox::setAccelerated(bool accelerated)
+void AbstractSpinBoxProxy::setAccelerated(bool accelerated)
 {
 	mAbstractSpinBox->setAccelerated(accelerated);
 }
 
-void AbstractSpinBox::setCorrectionMode(QAbstractSpinBox::CorrectionMode mode)
+void AbstractSpinBoxProxy::setCorrectionMode(QAbstractSpinBox::CorrectionMode mode)
 {
 	mAbstractSpinBox->setCorrectionMode(mode);
 }
 
-void AbstractSpinBox::setHasButtons(bool hasButtons)
+void AbstractSpinBoxProxy::setHasButtons(bool hasButtons)
 {
 	QAbstractSpinBox::ButtonSymbols const symbols = hasButtons
 			? QAbstractSpinBox::UpDownArrows
 			: QAbstractSpinBox::NoButtons;
 	mAbstractSpinBox->setButtonSymbols(symbols);
-
 }
 
-void AbstractSpinBox::setReadonly(bool readonly)
+void AbstractSpinBoxProxy::setReadonly(bool readonly)
 {
 	mAbstractSpinBox->setReadOnly(readonly);
 }
 
-void AbstractSpinBox::setSpecialValueText(QString const &text)
+void AbstractSpinBoxProxy::setSpecialValueText(QString const &text)
 {
 	mAbstractSpinBox->setSpecialValueText(text);
 }
 
-void AbstractSpinBox::setWrapping(bool wrapping)
+void AbstractSpinBoxProxy::setWrapping(bool wrapping)
 {
 	mAbstractSpinBox->setWrapping(wrapping);
 }

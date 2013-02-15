@@ -9,87 +9,91 @@ Label::Label(ToolController *controller)
 	mTitle = tr("Label");
 	mTag = "Label";
 	mIcon = QIcon(":/icons/widgetsEditor/label.png");
-	mLabel->setGeometry(0, 0
-		, LABEL_DEFAULT_WIDTH
-		, LABEL_DEFAULT_HEIGHT);
+	mProxy = new LabelProxy(mLabel);
 }
 
-Qt::Alignment Label::alignment() const
+LabelProxy::LabelProxy(LabelWidget *label)
+	: FrameProxy(label), mLabel(label)
+{
+	mLabel->setGeometry(0, 0, LABEL_DEFAULT_WIDTH, LABEL_DEFAULT_HEIGHT);
+}
+
+Qt::Alignment LabelProxy::alignment() const
 {
 	return mLabel->alignment();
 }
 
-int Label::indent() const
+int LabelProxy::indent() const
 {
 	return mLabel->indent();
 }
 
-int Label::margin() const
+int LabelProxy::margin() const
 {
 	return mLabel->margin();
 }
 
-bool Label::openExternalLinks() const
+bool LabelProxy::openExternalLinks() const
 {
 	return mLabel->openExternalLinks();
 }
 
-bool Label::scaledContents() const
+bool LabelProxy::scaledContents() const
 {
 	return mLabel->hasScaledContents();
 }
 
-QString Label::text() const
+QString LabelProxy::text() const
 {
 	return mLabel->text();
 }
 
-Qt::TextFormat Label::textFormat() const
+Qt::TextFormat LabelProxy::textFormat() const
 {
 	return mLabel->textFormat();
 }
 
-bool Label::wordWrap() const
+bool LabelProxy::wordWrap() const
 {
 	return mLabel->wordWrap();
 }
 
-void Label::setAlignment(Qt::Alignment alignment)
+void LabelProxy::setAlignment(Qt::Alignment alignment)
 {
 	mLabel->setAlignment(alignment);
 }
 
-void Label::setIndent(int indent)
+void LabelProxy::setIndent(int indent)
 {
 	mLabel->setIndent(indent);
 }
 
-void Label::setMargin(int margin)
+void LabelProxy::setMargin(int margin)
 {
 	mLabel->setMargin(margin);
 }
 
-void Label::setOpenExternalLinks(bool open)
+void LabelProxy::setOpenExternalLinks(bool open)
 {
 	mLabel->setOpenExternalLinks(open);
 }
 
-void Label::setScaledContents(bool isScaled)
+void LabelProxy::setScaledContents(bool isScaled)
 {
 	mLabel->setScaledContents(isScaled);
 }
 
-void Label::setText(QString const &text)
+void LabelProxy::setText(QString const &text)
 {
 	mLabel->setText(text);
 }
 
-void Label::setTextFormat(Qt::TextFormat format)
+void LabelProxy::setTextFormat(Qt::TextFormat format)
 {
 	mLabel->setTextFormat(format);
 }
 
-void Label::setWordWrap(bool hasWrapping)
+void LabelProxy::setWordWrap(bool hasWrapping)
 {
 	mLabel->setWordWrap(hasWrapping);
 }
@@ -99,7 +103,7 @@ LabelWidget::LabelWidget(const QString &text)
 {
 }
 
-void LabelWidget::setPropertyValue(const QString &value)
+void LabelWidget::setPropertyValue(const QVariant &value)
 {
-	setText(value);
+	setText(value.toString());
 }

@@ -9,81 +9,88 @@ PlainTextEdit::PlainTextEdit(ToolController *controller)
 	mTitle = tr("Plain Text Edit");
 	mTag = "PlainTextEdit";
 	mIcon = QIcon(":/icons/widgetsEditor/plainTextEdit.png");
+	mProxy = new PlainTextEditProxy(mPlainTextEdit);
+}
+
+PlainTextEditProxy::PlainTextEditProxy(PlainTextEditWidget *plainTextEdit)
+	: AbstractScrollAreaProxy(plainTextEdit)
+	, mPlainTextEdit(plainTextEdit)
+{
 	connect(mPlainTextEdit, SIGNAL(textChanged())
 		, this, SLOT(textChanged()));
 }
 
-void PlainTextEdit::textChanged()
+void PlainTextEditProxy::textChanged()
 {
-	emit propertyChanged("plainText", QVariant(mPlainTextEdit->toPlainText()));
+	onPropertyChanged("plainText", QVariant(mPlainTextEdit->toPlainText()));
 }
 
-bool PlainTextEdit::backgroundVisible() const
+bool PlainTextEditProxy::backgroundVisible() const
 {
 	return mPlainTextEdit->backgroundVisible();
 }
 
-bool PlainTextEdit::centerOnScroll() const
+bool PlainTextEditProxy::centerOnScroll() const
 {
 	return mPlainTextEdit->centerOnScroll();
 }
 
-int PlainTextEdit::cursorWidth() const
+int PlainTextEditProxy::cursorWidth() const
 {
 	return mPlainTextEdit->cursorWidth();
 }
 
-bool PlainTextEdit::overwriteMode() const
+bool PlainTextEditProxy::overwriteMode() const
 {
 	return mPlainTextEdit->overwriteMode();
 }
 
-QString PlainTextEdit::plainText() const
+QString PlainTextEditProxy::plainText() const
 {
 	return mPlainTextEdit->toPlainText();
 }
 
-bool PlainTextEdit::readOnly() const
+bool PlainTextEditProxy::readOnly() const
 {
 	return mPlainTextEdit->isReadOnly();
 }
 
-bool PlainTextEdit::undoRedoEnabled() const
+bool PlainTextEditProxy::undoRedoEnabled() const
 {
 	return mPlainTextEdit->isUndoRedoEnabled();
 }
 
-void PlainTextEdit::setBackgroundVisible(bool visible)
+void PlainTextEditProxy::setBackgroundVisible(bool visible)
 {
 	mPlainTextEdit->setBackgroundVisible(visible);
 }
 
-void PlainTextEdit::setCenterOnScroll(bool center)
+void PlainTextEditProxy::setCenterOnScroll(bool center)
 {
 	mPlainTextEdit->setCenterOnScroll(center);
 }
 
-void PlainTextEdit::setCursorWidth(int width)
+void PlainTextEditProxy::setCursorWidth(int width)
 {
 	mPlainTextEdit->setCursorWidth(width);
 }
 
-void PlainTextEdit::setOverwriteMode(bool needOverwrite)
+void PlainTextEditProxy::setOverwriteMode(bool needOverwrite)
 {
 	mPlainTextEdit->setOverwriteMode(needOverwrite);
 }
 
-void PlainTextEdit::setPlainText(QString const &plainText)
+void PlainTextEditProxy::setPlainText(QString const &plainText)
 {
 	mPlainTextEdit->setPlainText(plainText);
 }
 
-void PlainTextEdit::setReadOnly(bool isReadOnly)
+void PlainTextEditProxy::setReadOnly(bool isReadOnly)
 {
 	mPlainTextEdit->setReadOnly(isReadOnly);
 }
 
-void PlainTextEdit::setUndoRedoEnabled(bool undoRedoEnabled)
+void PlainTextEditProxy::setUndoRedoEnabled(bool undoRedoEnabled)
 {
 	mPlainTextEdit->setUndoRedoEnabled(undoRedoEnabled);
 }
@@ -94,10 +101,10 @@ PlainTextEditWidget::PlainTextEditWidget()
 	connect(this, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
 }
 
-void PlainTextEditWidget::setPropertyValue(const QString &value)
+void PlainTextEditWidget::setPropertyValue(const QVariant &value)
 {
 	mIgnoreNextSignal = true;
-	setPlainText(value);
+	setPlainText(value.toString());
 }
 
 void PlainTextEditWidget::onTextChanged()

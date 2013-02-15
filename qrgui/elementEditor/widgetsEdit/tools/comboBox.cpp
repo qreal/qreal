@@ -9,74 +9,80 @@ ComboBox::ComboBox(ToolController *controller)
 	mTitle = tr("Combo Box");
 	mTag = "ComboBox";
 	mIcon = QIcon(":/icons/widgetsEditor/comboBox.png");
+	mProxy = new ComboBoxProxy(mComboBox);
 }
 
-bool ComboBox::duplicatesEnabled() const
+ComboBoxProxy::ComboBoxProxy(ComboBoxWidget *comboBox)
+	: ToolProxy(comboBox), mComboBox(comboBox)
+{
+}
+
+bool ComboBoxProxy::duplicatesEnabled() const
 {
 	return mComboBox->duplicatesEnabled();
 }
 
-bool ComboBox::isEditable() const
+bool ComboBoxProxy::isEditable() const
 {
 	return mComboBox->isEditable();
 }
 
-bool ComboBox::hasFrame() const
+bool ComboBoxProxy::hasFrame() const
 {
 	return mComboBox->hasFrame();
 }
 
-int ComboBox::maxCount() const
+int ComboBoxProxy::maxCount() const
 {
 	return mComboBox->maxCount();
 }
 
-int ComboBox::maxVisibleItems() const
+int ComboBoxProxy::maxVisibleItems() const
 {
 	return mComboBox->maxVisibleItems();
 }
 
-int ComboBox::minimumContentsLength() const
+int ComboBoxProxy::minimumContentsLength() const
 {
 	return mComboBox->minimumContentsLength();
 }
 
-QComboBox::SizeAdjustPolicy ComboBox::sizeAdjustPolicy() const
+QComboBox::SizeAdjustPolicy ComboBoxProxy::sizeAdjustPolicy() const
 {
 	return mComboBox->sizeAdjustPolicy();
 }
 
-void ComboBox::setDuplicatesEnabled(bool enabled)
+void ComboBoxProxy::setDuplicatesEnabled(bool enabled)
 {
 	mComboBox->setDuplicatesEnabled(enabled);
 }
 
-void ComboBox::setEditable(bool editable)
+void ComboBoxProxy::setEditable(bool editable)
 {
 	mComboBox->setEditable(editable);
 }
 
-void ComboBox::setFrame(bool hasFrame)
+void ComboBoxProxy::setFrame(bool hasFrame)
 {
 	mComboBox->setFrame(hasFrame);
 }
 
-void ComboBox::setMaxCount(int maxCount)
+void ComboBoxProxy::setMaxCount(int maxCount)
 {
 	mComboBox->setMaxCount(maxCount);
 }
 
-void ComboBox::setMaxVisibleItems(int maxVisibleItems)
+void ComboBoxProxy::setMaxVisibleItems(int maxVisibleItems)
 {
 	mComboBox->setMaxVisibleItems(maxVisibleItems);
 }
 
-void ComboBox::setMinimumContentsLength(int length)
+void ComboBoxProxy::setMinimumContentsLength(int length)
 {
 	mComboBox->setMinimumContentsLength(length);
 }
 
-void ComboBox::setSizeAdjustPolicy(QComboBox::SizeAdjustPolicy policy)
+void ComboBoxProxy::setSizeAdjustPolicy(QComboBox::SizeAdjustPolicy policy)
 {
 	mComboBox->setSizeAdjustPolicy(policy);
 }
@@ -94,10 +100,10 @@ void ComboBoxWidget::onSelectionChanged(int index)
 	}
 }
 
-void ComboBoxWidget::setPropertyValue(const QString &value)
+void ComboBoxWidget::setPropertyValue(const QVariant &value)
 {
-	if (enumValues().contains(value)) {
-		setCurrentIndex(enumValues().indexOf(value));
+	if (enumValues().contains(value.toString())) {
+		setCurrentIndex(enumValues().indexOf(value.toString()));
 	}
 }
 

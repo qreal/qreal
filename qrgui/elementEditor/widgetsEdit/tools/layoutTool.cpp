@@ -25,6 +25,21 @@ LayoutTool::LayoutTool(QWidget *widget, ToolController *controller
 	mFactory = new LayoutHelperFactory(this);
 }
 
+void LayoutTool::onLoaded()
+{
+	Tool::onLoaded();
+	mLayoutToolProxy = dynamic_cast<LayoutToolProxy *>(mProxy);
+	connect(mLayoutToolProxy, SIGNAL(leftMarginChanged(int))
+			, this, SLOT(invalidateLayoutMargin()));
+	connect(mLayoutToolProxy, SIGNAL(rightMarginChanged(int))
+			, this, SLOT(invalidateLayoutMargin()));
+	connect(mLayoutToolProxy, SIGNAL(topMarginChanged(int))
+			, this, SLOT(invalidateLayoutMargin()));
+	connect(mLayoutToolProxy, SIGNAL(bottomMarginChanged(int))
+			, this, SLOT(invalidateLayoutMargin()));
+	invalidateLayoutMargin();
+}
+
 LayoutHelperFactory *LayoutTool::layoutFactory() const
 {
 	return mFactory;
@@ -79,9 +94,10 @@ void LayoutTool::generateXml(QDomElement &element, QDomDocument &document)
 	}
 }
 
-void LayoutTool::deserializeWidget(QWidget *parent, const QDomElement &element)
+void LayoutTool::deserializeWidget(QWidget *parent, QDomElement const &element
+		, QList<PropertyEditorInterface *> &editors)
 {
-	Tool::deserializeWidget(parent, element);
+	Tool::deserializeWidget(parent, element, editors);
 	QString const layoutType = element.attribute("layout", "invalid");
 	QLayout *widgetLayout = NULL;
 	if (layoutType == "Grid") {
@@ -93,13 +109,8 @@ void LayoutTool::deserializeWidget(QWidget *parent, const QDomElement &element)
 	} else if (layoutType == "NoLayout") {
 		widgetLayout = NULL;
 	}
-	if (widgetLayout) {
-		widgetLayout->setContentsMargins(mLayoutLeftMargin
-				, mLayoutTopMargin
-				, mLayoutRightMargin
-				, mLayoutBottomMargin);
-		widget()->setLayout(widgetLayout);
-	}
+	widget()->setLayout(widgetLayout);
+	mLayoutToolProxy->invalidateLayoutMargin();
 }
 
 void LayoutTool::load(LayoutTool *parent, QDomElement const &element)
@@ -321,54 +332,77 @@ void LayoutTool::makeChildrenResizable(const bool resizable)
 	}
 }
 
-int LayoutTool::layoutLeftMargin() const
+void LayoutTool::invalidateLayoutMargin()
+{
+	if (layout()) {
+		layout()->setContentsMargins(mLayoutToolProxy->layoutLeftMargin()
+				, mLayoutToolProxy->layoutTopMargin()
+				, mLayoutToolProxy->layoutRightMargin()
+				, mLayoutToolProxy->layoutBottomMargin());
+	}
+}
+
+LayoutToolProxy::LayoutToolProxy(QWidget *widget)
+	: ToolProxy(widget), mWidget(widget)
+{
+	setLayoutLeftMargin(3);
+	setLayoutRightMargin(3);
+	setLayoutTopMargin(3);
+	setLayoutBottomMargin(3);
+}
+
+int LayoutToolProxy::layoutLeftMargin() const
 {
 	return mLayoutLeftMargin;
 }
 
-int LayoutTool::layoutRightMargin() const
+int LayoutToolProxy::layoutRightMargin() const
 {
 	return mLayoutRightMargin;
 }
 
-int LayoutTool::layoutTopMargin() const
+int LayoutToolProxy::layoutTopMargin() const
 {
 	return mLayoutTopMargin;
 }
 
-int LayoutTool::layoutBottomMargin() const
+int LayoutToolProxy::layoutBottomMargin() const
 {
 	return mLayoutBottomMargin;
 }
 
-void LayoutTool::setLayoutLeftMargin(int margin)
+void LayoutToolProxy::setLayoutLeftMargin(int margin)
 {
 	mLayoutLeftMargin = margin;
 	invalidateLayoutMargin();
+	emit leftMarginChanged(margin);
 }
 
-void LayoutTool::setLayoutRightMargin(int margin)
+void LayoutToolProxy::setLayoutRightMargin(int margin)
 {
 	mLayoutRightMargin = margin;
 	invalidateLayoutMargin();
+	emit rightMarginChanged(margin);
 }
 
-void LayoutTool::setLayoutTopMargin(int margin)
+void LayoutToolProxy::setLayoutTopMargin(int margin)
 {
 	mLayoutTopMargin = margin;
 	invalidateLayoutMargin();
+	emit topMarginChanged(margin);
 }
 
-void LayoutTool::setLayoutBottomMargin(int margin)
+void LayoutToolProxy::setLayoutBottomMargin(int margin)
 {
 	mLayoutBottomMargin = margin;
 	invalidateLayoutMargin();
+	emit bottomMarginChanged(margin);
 }
 
-void LayoutTool::invalidateLayoutMargin()
+void LayoutToolProxy::invalidateLayoutMargin()
 {
-	if (layout()) {
-		layout()->setContentsMargins(mLayoutLeftMargin
+	if (mWidget->layout()) {
+		mWidget->layout()->setContentsMargins(mLayoutLeftMargin
 				, mLayoutTopMargin
 				, mLayoutRightMargin
 				, mLayoutBottomMargin);

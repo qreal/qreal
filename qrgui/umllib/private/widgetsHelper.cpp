@@ -1,6 +1,7 @@
 #include "widgetsHelper.h"
 #include "../nodeElement.h"
 #include "../../elementEditor/widgetsEdit/widgetsEditor.h"
+#include "../../elementEditor/widgetsEdit/propertyBinding/metaPropertyBinding.h"
 #include "../../../qrutils/xmlUtils.h"
 
 WidgetsHelper::WidgetsHelper(NodeElement *element)
@@ -18,15 +19,39 @@ bool WidgetsHelper::initWidget(QString const &filename)
 	if (document.isNull()) {
 		return false;
 	}
-	mWidget = qReal::widgetsEdit::WidgetsEditor::deserializeWidget(document);
+	mPropertyEditors.clear();
+	QList<PropertyEditorInterface *> editors;
+	mWidget = qReal::widgetsEdit::WidgetsEditor::deserializeWidget(document, editors);
 	if (!mWidget) {
 		return false;
 	}
 	if (mElement) {
-		initPropertyEditors();
 		mElement->setWidget(mWidget);
+		connect(mElement,SIGNAL(geometryChanged()),this,SLOT(onGeometryChangedDebug()));
 	}
+
+	foreach (PropertyEditorInterface *iface, editors) {
+		mPropertyEditors.insertMulti(iface->binding(), iface);
+		// Ugly spike. Workarround for problem that
+		// stupid Qt doesn`t generate widget`s geometry changed signal
+		MetaPropertyBinding *metaBinding = dynamic_cast<MetaPropertyBinding *>(iface);
+		if (metaBinding && metaBinding->source() == "geometry") {
+			mGeometryEditors << iface;
+		}
+	}
+
 	return true;
+}
+
+void WidgetsHelper::onElementGeometryChanged()
+{
+	if (mElement->geometry() == mOldGeometry) {
+		return;
+	}
+	mOldGeometry = mElement->geometry();
+	foreach (PropertyEditorInterface *iface, mGeometryEditors) {
+		iface->setPropertyValue(mOldGeometry);
+	}
 }
 
 QMap<QString, PropertyEditorInterface *> WidgetsHelper::propertyEditors() const
@@ -41,31 +66,8 @@ void WidgetsHelper::setEditorManager(EditorManager const *editorManager)
 }
 
 void WidgetsHelper::onIdChanged() {
+	mElement->updateData();
 	initEnumEditors();
-}
-
-void WidgetsHelper::initPropertyEditors()
-{
-	mPropertyEditors.clear();
-	if (mWidget) {
-		initPropertyEditors(mWidget);
-	}
-}
-
-void WidgetsHelper::initPropertyEditors(QWidget *widget)
-{
-	PropertyEditorInterface *iface =
-			dynamic_cast<PropertyEditorInterface *>(widget);
-
-	if (iface && !iface->binding().isEmpty()) {
-		mPropertyEditors.insertMulti(iface->binding(), iface);
-	}
-	foreach (QObject *object, widget->children()) {
-		QWidget *child = dynamic_cast<QWidget *>(object);
-		if (child) {
-			initPropertyEditors(child);
-		}
-	}
 }
 
 void WidgetsHelper::initEnumEditors()

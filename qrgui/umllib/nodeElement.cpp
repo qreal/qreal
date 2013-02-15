@@ -1,3 +1,5 @@
+#include <QtCore/QDebug>
+#include <QtCore/QUuid>
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtGui/QMessageBox>
@@ -13,6 +15,7 @@
 #include "nodeElement.h"
 #include "../view/editorViewScene.h"
 #include "../editorPluginInterface/editorInterface.h"
+
 #include "private/resizeHandler.h"
 #include "private/copyHandler.h"
 #include "private/widgetsHelper.h"
@@ -293,7 +296,7 @@ void NodeElement::arrangeLinks() {
 
 void NodeElement::storeGeometry()
 {
-	QRectF contents = mContents; // saving correct current contents
+	QRectF contents = geometry().translated(-geometry().topLeft()); // saving correct current contents
 
 	if ((pos() != mGraphicalAssistApi->position(id()))) { // check if it's been changed
 		mGraphicalAssistApi->setPosition(id(), pos());
@@ -357,6 +360,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		} else {
 			Element::mousePressEvent(event);
 		}
+
 	} else {
 		Element::mousePressEvent(event);
 	}
@@ -446,10 +450,11 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			recalculateHighlightedNode(event->scenePos());
 		}
 
-		newPos += (event->scenePos() - scenePos()) - mDragPosition;
+		// it is needed for sendEvent() to every isSelected element thro scene
 		Element::mouseMoveEvent(event);
 		mGrid->mouseMoveEvent(event);
 		alignToGrid();
+		newPos = pos();
 
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
@@ -546,11 +551,10 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 	delUnusedLines();
 
-	if (SettingsManager::value("ActivateGrid").toBool()) {
-		if (isParentSortingContainer()) {
-			alignToGrid();
-		}
+	if (SettingsManager::value("ActivateGrid").toBool() || mSwitchGridAction.isChecked()) {
+		alignToGrid();
 	}
+
 	storeGeometry();
 
 	if (scene() && scene()->selectedItems().size() == 1 && isSelected()) {
@@ -609,7 +613,6 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	mDragState = None;
-	setZValue(0);
 }
 
 void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
@@ -936,11 +939,11 @@ void NodeElement::changeFoldState()
 	if (mIsFolded) {
 		mCurUnfoldedContents = mContents;
 		mFoldedContents.moveTo(pos());
-		setGeom(mFoldedContents);
+		setGeometry(mFoldedContents);
 	}
 	else {
 		mCurUnfoldedContents.moveTo(pos());
-		setGeom(mCurUnfoldedContents);
+		setGeometry(mCurUnfoldedContents);
 	}
 
 	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
@@ -1222,7 +1225,7 @@ void NodeElement::resize()
 	resize(mContents, pos());
 }
 
-void NodeElement::resize(const QRectF &newContents)
+void NodeElement::resize(QRectF const &newContents)
 {
 	resize(newContents, pos());
 }
@@ -1231,6 +1234,8 @@ void NodeElement::resize(const QRectF &newContents, const QPointF &newPos)
 {
 	ResizeHandler handler(this, mElementImpl);
 	handler.resize(newContents, newPos);
+	// It must be called here to avoid ifinite update loop
+	mWidgetsHelper->onElementGeometryChanged();
 }
 
 bool NodeElement::isFolded() const
@@ -1260,10 +1265,6 @@ void NodeElement::setAssistApi(qReal::models::GraphicalModelAssistApi *graphical
 	if (logicalAssistApi) {
 		mWidgetsHelper->setEditorManager(&logicalAssistApi->editorManager());
 	}
-}
-
-bool NodeElement::isParentSortingContainer() const {
-	return (mParentNodeElement != NULL) && mParentNodeElement->mElementImpl->isSortingContainer();
 }
 
 void NodeElement::updateNodeEdges()

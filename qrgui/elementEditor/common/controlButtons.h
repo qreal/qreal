@@ -28,19 +28,8 @@ signals:
 	void loadFromDiskClicked();
 	void widgetClicked();
 	void previewClicked();
+	void outerBindingsClicked();
 	void shapeClicked();
-
-private slots:
-	void onIconClicked();
-	void onIconAccepted();
-	void onIconRejected();
-	void onSaveClicked();
-	void onSaveAsImageClicked();
-	void onSaveToDiskClicked();
-	void onLoadFromDiskClicked();
-	void onWidgetClicked();
-	void onPreviewClicked();
-	void onShapeClicked();
 
 private:
 	QPushButton *createButton(QString const &toolTip

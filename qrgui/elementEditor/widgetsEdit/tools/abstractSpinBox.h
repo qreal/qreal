@@ -10,7 +10,7 @@ namespace qReal
 namespace widgetsEdit
 {
 
-class AbstractSpinBox : public Tool
+class AbstractSpinBoxProxy : public ToolProxy
 {
 	Q_OBJECT
 
@@ -23,7 +23,7 @@ class AbstractSpinBox : public Tool
 	Q_PROPERTY(bool wrapping READ hasWrapping WRITE setWrapping USER true DESIGNABLE true)
 
 protected:
-	AbstractSpinBox(QAbstractSpinBox *spinBox, ToolController *controller);
+	explicit AbstractSpinBoxProxy(QAbstractSpinBox *spinBox);
 
 private:
 	bool isAccelerated() const;
@@ -40,6 +40,17 @@ private:
 	void setSpecialValueText(QString const &text);
 	void setWrapping(bool wrapping);
 
+	QAbstractSpinBox *mAbstractSpinBox;
+};
+
+class AbstractSpinBox : public Tool
+{
+	Q_OBJECT
+
+protected:
+	AbstractSpinBox(QAbstractSpinBox *spinBox, ToolController *controller);
+
+private:
 	QAbstractSpinBox *mAbstractSpinBox;
 };
 

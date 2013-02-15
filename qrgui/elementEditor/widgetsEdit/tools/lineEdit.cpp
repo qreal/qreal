@@ -9,92 +9,98 @@ LineEdit::LineEdit(ToolController *controller)
 	mTitle = tr("Line Edit");
 	mTag = "LineEdit";
 	mIcon = QIcon(":/icons/widgetsEditor/lineEdit.png");
-	connect(mLineEdit, SIGNAL(textChanged(QString))
-		, this, SLOT(textChanged(QString)));
+	mProxy = new LineEditProxy(mLineEdit);
 	setFocusPolicy(Qt::StrongFocus);
 }
 
-void LineEdit::textChanged(const QString &text)
+LineEditProxy::LineEditProxy(LineEditWidget *lineEdit)
+	: ToolProxy(lineEdit), mLineEdit(lineEdit)
 {
-	emit propertyChanged("text", QVariant(text));
+	connect(mLineEdit, SIGNAL(textChanged(QString))
+		, this, SLOT(textChanged(QString)));
 }
 
-Qt::Alignment LineEdit::alignment() const
+void LineEditProxy::textChanged(const QString &text)
+{
+	onPropertyChanged("text", QVariant(text));
+}
+
+Qt::Alignment LineEditProxy::alignment() const
 {
 	return mLineEdit->alignment();
 }
 
-QLineEdit::EchoMode LineEdit::echoMode() const
+QLineEdit::EchoMode LineEditProxy::echoMode() const
 {
 	return mLineEdit->echoMode();
 }
 
-bool LineEdit::frame() const
+bool LineEditProxy::frame() const
 {
 	return mLineEdit->hasFrame();
 }
 
-QString LineEdit::inputMask() const
+QString LineEditProxy::inputMask() const
 {
 	return mLineEdit->inputMask();
 }
 
-int LineEdit::maxLength() const
+int LineEditProxy::maxLength() const
 {
 	return mLineEdit->maxLength();
 }
 
-QString LineEdit::placeholderText() const
+QString LineEditProxy::placeholderText() const
 {
 	return mLineEdit->placeholderText();
 }
 
-bool LineEdit::readonly() const
+bool LineEditProxy::readonly() const
 {
 	return mLineEdit->isReadOnly();
 }
 
-QString LineEdit::text() const
+QString LineEditProxy::text() const
 {
 	return mLineEdit->text();
 }
 
-void LineEdit::setAlignment(Qt::Alignment alignment)
+void LineEditProxy::setAlignment(Qt::Alignment alignment)
 {
 	mLineEdit->setAlignment(alignment);
 }
 
-void LineEdit::setEchoMode(QLineEdit::EchoMode echoMode)
+void LineEditProxy::setEchoMode(QLineEdit::EchoMode echoMode)
 {
 	mLineEdit->setEchoMode(echoMode);
 }
 
-void LineEdit::setFrame(bool isFrame)
+void LineEditProxy::setFrame(bool isFrame)
 {
 	mLineEdit->setFrame(isFrame);
 }
 
-void LineEdit::setInputMask(QString const &inputMask)
+void LineEditProxy::setInputMask(QString const &inputMask)
 {
 	mLineEdit->setInputMask(inputMask);
 }
 
-void LineEdit::setMaxLength(int maxLength)
+void LineEditProxy::setMaxLength(int maxLength)
 {
 	mLineEdit->setMaxLength(maxLength);
 }
 
-void LineEdit::setPlaceholderText(QString const &placeholderText)
+void LineEditProxy::setPlaceholderText(QString const &placeholderText)
 {
 	mLineEdit->setPlaceholderText(placeholderText);
 }
 
-void LineEdit::setReadonly(bool isReadonly)
+void LineEditProxy::setReadonly(bool isReadonly)
 {
 	mLineEdit->setReadOnly(isReadonly);
 }
 
-void LineEdit::setText(QString const &text)
+void LineEditProxy::setText(QString const &text)
 {
 	mLineEdit->setText(text);
 }
@@ -105,9 +111,9 @@ LineEditWidget::LineEditWidget()
 	connect(this, SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
 }
 
-void LineEditWidget::setPropertyValue(const QString &value)
+void LineEditWidget::setPropertyValue(const QVariant &value)
 {
-	setText(value);
+	setText(value.toString());
 }
 
 void LineEditWidget::onTextChanged(const QString &text)

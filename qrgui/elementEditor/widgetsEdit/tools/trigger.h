@@ -35,7 +35,8 @@ public:
 	bool isUnderConstruction() const;
 
 	virtual void generateXml(QDomElement &element, QDomDocument &document);
-	virtual void deserializeWidget(QWidget *parent, QDomElement const &element);
+	virtual void deserializeWidget(QWidget *parent, QDomElement const &element
+			, QList<PropertyEditorInterface *> &editors);
 	virtual void load(LayoutTool *parent, const QDomElement &element);
 
 	enum Action {

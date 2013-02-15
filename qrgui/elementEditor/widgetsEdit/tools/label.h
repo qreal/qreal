@@ -22,10 +22,10 @@ public:
 	LabelWidget(QString const &text);
 	virtual ~LabelWidget() {}
 
-	virtual void setPropertyValue(QString const &value);
+	virtual void setPropertyValue(QVariant const &value);
 };
 
-class Label : public Frame
+class LabelProxy : public FrameProxy
 {
 	Q_OBJECT
 
@@ -41,7 +41,7 @@ class Label : public Frame
 	BINDING_TOOL(mLabel)
 
 public:
-	explicit Label(ToolController *controller);
+	explicit LabelProxy(LabelWidget *label);
 
 private:
 	Qt::Alignment alignment() const;
@@ -62,6 +62,17 @@ private:
 	void setTextFormat(Qt::TextFormat format);
 	void setWordWrap(bool hasWrapping);
 
+	LabelWidget *mLabel;
+};
+
+class Label : public Frame
+{
+	Q_OBJECT
+
+public:
+	explicit Label(ToolController *controller);
+
+private:
 	LabelWidget *mLabel;
 };
 

@@ -20,25 +20,26 @@ public:
 	static void flagsToXml(QDomElement &element, QString const &values);
 
 private:
-	static QVariant boolXmlToVariant(const QDomElement &element);
-	static QVariant charXmlToVariant(const QDomElement &element);
-	static QVariant dateXmlToVariant(const QDomElement &element);
-	static QVariant dateTimeXmlToVariant(const QDomElement &element);
-	static QVariant doubleXmlToVariant(const QDomElement &element);
-	static QVariant intXmlToVariant(const QDomElement &element);
-	static QVariant lineXmlToVariant(const QDomElement &element);
-	static QVariant lineFXmlToVariant(const QDomElement &element);
-	static QVariant longLongXmlToVariant(const QDomElement &element);
-	static QVariant pointXmlToVariant(const QDomElement &element);
-	static QVariant pointFXmlToVariant(const QDomElement &element);
-	static QVariant rectXmlToVariant(const QDomElement &element);
-	static QVariant rectFXmlToVariant(const QDomElement &element);
-	static QVariant sizeXmlToVariant(const QDomElement &element);
-	static QVariant sizeFXmlToVariant(const QDomElement &element);
-	static QVariant stringXmlToVariant(const QDomElement &element);
-	static QVariant timeXmlToVariant(const QDomElement &element);
-	static QVariant uIntXmlToVariant(const QDomElement &element);
-	static QVariant uLongLongXmlToVariant(const QDomElement &element);
+	static QVariant boolXmlToVariant(QDomElement const &element);
+	static QVariant charXmlToVariant(QDomElement const &element);
+	static QVariant dateXmlToVariant(QDomElement const &element);
+	static QVariant dateTimeXmlToVariant(QDomElement const &element);
+	static QVariant doubleXmlToVariant(QDomElement const &element);
+	static QVariant intXmlToVariant(QDomElement const &element);
+	static QVariant lineXmlToVariant(QDomElement const &element);
+	static QVariant lineFXmlToVariant(QDomElement const &element);
+	static QVariant longLongXmlToVariant(QDomElement const &element);
+	static QVariant pointXmlToVariant(QDomElement const &element);
+	static QVariant pointFXmlToVariant(QDomElement const &element);
+	static QVariant rectXmlToVariant(QDomElement const &element);
+	static QVariant rectFXmlToVariant(QDomElement const &element);
+	static QVariant sizeXmlToVariant(QDomElement const &element);
+	static QVariant sizeFXmlToVariant(QDomElement const &element);
+	static QVariant sizePolicyToVariant(QDomElement const &element);
+	static QVariant stringXmlToVariant(QDomElement const &element);
+	static QVariant timeXmlToVariant(QDomElement const &element);
+	static QVariant uIntXmlToVariant(QDomElement const &element);
+	static QVariant uLongLongXmlToVariant(QDomElement const &element);
 };
 
 }

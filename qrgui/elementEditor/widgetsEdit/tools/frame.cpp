@@ -8,6 +8,7 @@ Frame::Frame(ToolController *controller)
 	initialize();
 	mFrame->setFrameShape(QFrame::Panel);
 	mFrame->setFrameShadow(QFrame::Raised);
+	mProxy = new FrameProxy(mFrame);
 }
 
 Frame::Frame(QFrame *frame, ToolController *controller)
@@ -24,51 +25,54 @@ void Frame::initialize()
 	mTitle = tr("Frame");
 	mTag = "Frame";
 	mIcon = QIcon(":/icons/widgetsEditor/frame.png");
+}
+
+FrameProxy::FrameProxy(QFrame *frame)
+	: LayoutToolProxy(frame), mFrame(frame)
+{
 	mFrame->setGeometry(0, 0
 		, FRAME_DEFAULT_WIDTH
 		, FRAME_DEFAULT_HEIGHT);
 	mFrame->setMinimumWidth(FRAME_MINIMAL_WIDTH);
 	mFrame->setMinimumHeight(FRAME_MINIMAL_HEIGHT);
-	//TODO: Understand why setting enum value here doesn`t work
-	// but every other property does (for every property manager)
 }
 
-QFrame::Shape Frame::frameShape() const
+QFrame::Shape FrameProxy::frameShape() const
 {
 	return mFrame->frameShape();
 }
 
-QFrame::Shadow Frame::frameShadow() const
+QFrame::Shadow FrameProxy::frameShadow() const
 {
 	return mFrame->frameShadow();
 }
 
-int Frame::lineWidth() const
+int FrameProxy::lineWidth() const
 {
 	return mFrame->lineWidth();
 }
 
-int Frame::midLineWidth() const
+int FrameProxy::midLineWidth() const
 {
 	return mFrame->midLineWidth();
 }
 
-void Frame::setFrameShape(QFrame::Shape shape)
+void FrameProxy::setFrameShape(QFrame::Shape shape)
 {
 	mFrame->setFrameShape(shape);
 }
 
-void Frame::setFrameShadow(QFrame::Shadow shadow)
+void FrameProxy::setFrameShadow(QFrame::Shadow shadow)
 {
 	mFrame->setFrameShadow(shadow);
 }
 
-void Frame::setLineWidth(int width)
+void FrameProxy::setLineWidth(int width)
 {
 	mFrame->setLineWidth(width);
 }
 
-void Frame::setMidLineWidth(int width)
+void FrameProxy::setMidLineWidth(int width)
 {
 	mFrame->setMidLineWidth(width);
 }

@@ -9,20 +9,26 @@ RadioButton::RadioButton(ToolController *controller)
 	mTitle = tr("Radio Button");
 	mTag = "RadioButton";
 	mIcon = QIcon(":/icons/widgetsEditor/radioButton.png");
+	mProxy = new RadioButtonProxy(mRadioButton);
+}
+
+RadioButtonProxy::RadioButtonProxy(QRadioButton *radioButton)
+	: AbstractButtonProxy(radioButton), mRadioButton(radioButton)
+{
 	connect(mRadioButton, SIGNAL(toggled(bool)), this, SLOT(toggled(bool)));
 }
 
-void RadioButton::toggled(bool checked)
+void RadioButtonProxy::toggled(bool checked)
 {
-	emit propertyChanged("checked", QVariant(checked));
+	onPropertyChanged("checked", QVariant(checked));
 }
 
-bool RadioButton::isChecked() const
+bool RadioButtonProxy::isChecked() const
 {
 	return mRadioButton->isChecked();
 }
 
-void RadioButton::setChecked(bool checked)
+void RadioButtonProxy::setChecked(bool checked)
 {
 	mRadioButton->setChecked(checked);
 }

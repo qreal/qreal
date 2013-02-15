@@ -21,6 +21,7 @@ Spacer::Spacer(Qt::Orientation orientation, ToolController *controller)
 	mTitle = titleFromOrientation(mOrientation);
 	mTag = tagFromOrientation(mOrientation);
 	mIcon = QIcon(iconPathFromOrientation(mOrientation));
+	mProxy = new ToolProxy(mSpacer);
 }
 
 void Spacer::paint(QPainter *painter

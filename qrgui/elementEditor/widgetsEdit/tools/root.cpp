@@ -11,6 +11,7 @@ Root::Root(ToolController *controller)
 	setMovable(false);
 	mTitle = tr("Root");
 	mTag = "Root";
+	mProxy = new RootProxy(mWidget);
 }
 
 void Root::onLoaded()
@@ -21,35 +22,35 @@ void Root::onLoaded()
 		, ROOT_WIDGET_DEFAULT_HEIGHT));
 }
 
-void Root::setShape(const QDomDocument &shape)
-{
-	if (shape.isNull()) {
-		mWidget->setShape(shape);
-		return;
-	}
-	QDomElement const docElem = shape.documentElement();
-	int const width = docElem.attribute("sizex").toInt();
-	int const height = docElem.attribute("sizey").toInt();
-	resize(width, height);
-	mWidget->setShape(shape);
-}
-
 QDomDocument Root::shapeDocument() const
 {
 	return mWidget->shapeDocument();
 }
 
-QString Root::shapeXml() const
+RootProxy::RootProxy(RootWidget *widget)
+	: LayoutToolProxy(widget), mWidget(widget)
+{
+}
+
+QString RootProxy::shapeXml() const
 {
 	return mWidget->shapeDocument().toString(4);
 }
 
-void Root::setShapeXml(QString const &shape)
+void RootProxy::setShapeXml(QString const &shape)
 {
 	QDomDocument shapeDoc;
 	if (!shape.isEmpty() && !shapeDoc.setContent(shape)) {
 		qDebug() << "Could not load shape property for root";
 		return;
 	}
-	setShape(shapeDoc);
+	if (shapeDoc.isNull()) {
+		mWidget->setShape(shapeDoc);
+		return;
+	}
+	QDomElement const docElem = shapeDoc.documentElement();
+	int const width = docElem.attribute("sizex").toInt();
+	int const height = docElem.attribute("sizey").toInt();
+	mWidget->resize(width, height);
+	mWidget->setShape(shapeDoc);
 }

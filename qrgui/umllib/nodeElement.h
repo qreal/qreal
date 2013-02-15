@@ -211,12 +211,6 @@ private:
 
 	void initEmbeddedLinkers();
 
-	/**
-	 * Returns true if parent node is sorting container; otherwise returns false.
-	 * @return True if parent node is sorting container; otherwise returns false.
-	 */
-	bool isParentSortingContainer() const;
-
 	ContextMenuAction mSwitchGridAction;
 
 	bool mPortsVisible;

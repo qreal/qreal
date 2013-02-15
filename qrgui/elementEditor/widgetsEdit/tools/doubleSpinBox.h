@@ -19,14 +19,14 @@ public:
 	DoubleSpinBoxWidget();
 	virtual ~DoubleSpinBoxWidget() {}
 
-	virtual void setPropertyValue(QString const &value);
+	virtual void setPropertyValue(QVariant const &value);
 
 private slots:
 	void onValueChanged(QString const &value);
 
 };
 
-class DoubleSpinBox : public AbstractSpinBox
+class DoubleSpinBoxProxy : public AbstractSpinBoxProxy
 {
 	Q_OBJECT
 
@@ -40,7 +40,7 @@ class DoubleSpinBox : public AbstractSpinBox
 	BINDING_TOOL(mDoubleSpinBox)
 
 public:
-	explicit DoubleSpinBox(ToolController *controller);
+	explicit DoubleSpinBoxProxy(DoubleSpinBoxWidget *doubleSpinBox);
 
 private slots:
 	void valueChanged(double d);
@@ -60,6 +60,17 @@ private:
 	void setSingleStep(double step);
 	void setValue(double value);
 
+	DoubleSpinBoxWidget *mDoubleSpinBox;
+};
+
+class DoubleSpinBox : public AbstractSpinBox
+{
+	Q_OBJECT
+
+public:
+	explicit DoubleSpinBox(ToolController *controller);
+
+private:
 	DoubleSpinBoxWidget *mDoubleSpinBox;
 };
 

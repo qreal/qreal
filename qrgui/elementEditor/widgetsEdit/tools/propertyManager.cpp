@@ -5,7 +5,7 @@
 
 using namespace qReal::widgetsEdit;
 
-PropertyManager::PropertyManager(Tool *tool)
+PropertyManager::PropertyManager(QObject *tool)
 	: mTool(tool), mManager(new QtVariantPropertyManager)
 	, mDeserializing(false)
 {
@@ -96,7 +96,7 @@ void PropertyManager::changeProperty(const QString &name, const QVariant &value)
 
 void PropertyManager::onSelect()
 {
-	foreach(Property *property, mDesignableProperties) {
+	foreach (Property *property, mDesignableProperties) {
 		QVariant const value = propertyValue(property->name());
 		if (!value.isNull() && value.isValid()) {
 			property->qtProperty()->setValue(value);
@@ -104,13 +104,20 @@ void PropertyManager::onSelect()
 	}
 }
 
-void PropertyManager::generateXml(QDomElement &element, QDomDocument &document)
+void PropertyManager::generateXml(QDomElement &element, QDomDocument &document
+		, QMap<QString, QString> const &outerBindings)
 {
 	QListIterator<Property *> it = allPropertiesIterator();
 	while (it.hasNext()) {
 		Property *property = it.next();
 		QDomElement propertyElement = document.createElement("property");
 		propertyElement.setAttribute("propertyName", property->name());
+		QStringList const propertyBindings = outerBindings.values(property->name());
+		foreach (QString const &binding, propertyBindings) {
+			QDomElement bindingElement = document.createElement("outerBinding");
+			bindingElement.setAttribute("target", binding);
+			propertyElement.appendChild(bindingElement);
+		}
 		if (property->type() != QtVariantPropertyManager::enumTypeId()) {
 			QVariant const value = propertyValue(property->name());
 			utils::xmlUtils::qVariantToXml(propertyElement, value);
@@ -122,7 +129,8 @@ void PropertyManager::generateXml(QDomElement &element, QDomDocument &document)
 	}
 }
 
-void PropertyManager::deserializeProperty(QDomElement const &element)
+void PropertyManager::deserializeProperty(QDomElement const &element
+		, QMap<QString, QString> &outerBindings)
 {
 	mDeserializing = true;
 	QString const name = element.attribute("propertyName", "!!%%invalid%%!!");
@@ -136,6 +144,11 @@ void PropertyManager::deserializeProperty(QDomElement const &element)
 			return;
 		}
 		value = QVariant(enumValue);
+	}
+	QDomElement child = element.firstChildElement("outerBinding");
+	while (!child.isNull()) {
+		outerBindings.insertMulti(name, child.attribute("target"));
+		child = child.nextSiblingElement("outerBinding");
 	}
 	onPropertyChanged(name, value);
 	mDeserializing = false;

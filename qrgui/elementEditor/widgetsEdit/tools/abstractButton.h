@@ -10,7 +10,7 @@ namespace qReal
 namespace widgetsEdit
 {
 
-class AbstractButton : public Tool
+class AbstractButtonProxy : public ToolProxy
 {
 	Q_OBJECT
 
@@ -20,7 +20,7 @@ class AbstractButton : public Tool
 	Q_PROPERTY(QString text READ text WRITE setText USER true DESIGNABLE true)
 
 protected:
-	AbstractButton(QAbstractButton *button, ToolController *controller);
+	explicit AbstractButtonProxy(QAbstractButton *button);
 
 private:
 	bool hasAutoRepeat() const;
@@ -33,6 +33,17 @@ private:
 	void setAutoRepeatInterval(int autoRepeatInterval);
 	void setText(QString const &text);
 
+	QAbstractButton *mAbstractButton;
+};
+
+class AbstractButton : public Tool
+{
+	Q_OBJECT
+
+protected:
+	AbstractButton(QAbstractButton *button, ToolController *controller);
+
+private:
 	QAbstractButton *mAbstractButton;
 };
 

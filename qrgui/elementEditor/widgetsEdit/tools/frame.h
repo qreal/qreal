@@ -14,7 +14,7 @@ int const FRAME_DEFAULT_HEIGHT = 150;
 int const FRAME_MINIMAL_WIDTH = 10;
 int const FRAME_MINIMAL_HEIGHT = 10;
 
-class Frame : public LayoutTool
+class FrameProxy : public LayoutToolProxy
 {
 	Q_OBJECT
 
@@ -24,14 +24,9 @@ class Frame : public LayoutTool
 	Q_PROPERTY(int midLineWidth READ midLineWidth WRITE setMidLineWidth USER true DESIGNABLE true)
 
 public:
-	explicit Frame(ToolController *controller);
-
-protected:
-	Frame(QFrame *frame, ToolController *controller);
+	explicit FrameProxy(QFrame *frame);
 
 private:
-	void initialize();
-
 	QFrame::Shape frameShape() const;
 	QFrame::Shadow frameShadow() const;
 	int lineWidth() const;
@@ -43,7 +38,22 @@ private:
 	void setMidLineWidth(int width);
 
 	QFrame *mFrame;
+};
 
+class Frame : public LayoutTool
+{
+	Q_OBJECT
+
+public:
+	explicit Frame(ToolController *controller);
+
+protected:
+	Frame(QFrame *frame, ToolController *controller);
+
+private:
+	void initialize();
+
+	QFrame *mFrame;
 };
 
 }

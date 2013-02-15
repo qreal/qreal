@@ -9,7 +9,7 @@ namespace qReal
 namespace widgetsEdit
 {
 
-class AbstractScrollArea : public Frame
+class AbstractScrollAreaProxy : public FrameProxy
 {
 	Q_OBJECT
 
@@ -23,7 +23,7 @@ class AbstractScrollArea : public Frame
 		USER true DESIGNABLE true)
 
 protected:
-	AbstractScrollArea(QAbstractScrollArea *area, ToolController *controller);
+	explicit AbstractScrollAreaProxy(QAbstractScrollArea *area);
 
 private:
 	Qt::ScrollBarPolicy verticalScrollBarPolicy() const;
@@ -31,6 +31,17 @@ private:
 	void setVerticalScrollBarPolicy(Qt::ScrollBarPolicy policy);
 	void setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy policy);
 
+	QAbstractScrollArea *mAbstractScrollArea;
+};
+
+class AbstractScrollArea : public Frame
+{
+	Q_OBJECT
+
+protected:
+	AbstractScrollArea(QAbstractScrollArea *area, ToolController *controller);
+
+private:
 	QAbstractScrollArea *mAbstractScrollArea;
 };
 

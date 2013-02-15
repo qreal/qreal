@@ -19,7 +19,7 @@ public:
 	PlainTextEditWidget();
 	virtual ~PlainTextEditWidget() {}
 
-	virtual void setPropertyValue(QString const &value);
+	virtual void setPropertyValue(QVariant const &value);
 
 private slots:
 	void onTextChanged();
@@ -28,7 +28,7 @@ private:
 	bool mIgnoreNextSignal;
 };
 
-class PlainTextEdit : public AbstractScrollArea
+class PlainTextEditProxy : public AbstractScrollAreaProxy
 {
 	Q_OBJECT
 
@@ -43,7 +43,7 @@ class PlainTextEdit : public AbstractScrollArea
 	BINDING_TOOL(mPlainTextEdit)
 
 public:
-	explicit PlainTextEdit(ToolController *controller);
+	explicit PlainTextEditProxy(PlainTextEditWidget *plainTextEdit);
 
 private slots:
 	bool backgroundVisible() const;
@@ -66,7 +66,17 @@ private slots:
 
 private:
 	PlainTextEditWidget *mPlainTextEdit;
+};
 
+class PlainTextEdit : public AbstractScrollArea
+{
+	Q_OBJECT
+
+public:
+	explicit PlainTextEdit(ToolController *controller);
+
+private:
+	PlainTextEditWidget *mPlainTextEdit;
 };
 
 }

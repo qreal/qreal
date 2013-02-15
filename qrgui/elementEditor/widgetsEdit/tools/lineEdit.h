@@ -19,13 +19,13 @@ public:
 	LineEditWidget();
 	virtual ~LineEditWidget() {}
 
-	virtual void setPropertyValue(QString const &value);
+	virtual void setPropertyValue(QVariant const &value);
 
 private slots:
 	void onTextChanged(QString const &text);
 };
 
-class LineEdit : public Tool
+class LineEditProxy : public ToolProxy
 {
 	Q_OBJECT
 
@@ -41,7 +41,7 @@ class LineEdit : public Tool
 	BINDING_TOOL(mLineEdit)
 
 public:
-	explicit LineEdit(ToolController *controller);
+	explicit LineEditProxy(LineEditWidget *lineEdit);
 
 private slots:
 	void textChanged(QString const &text);
@@ -66,7 +66,16 @@ private:
 	void setText(QString const &text);
 
 	LineEditWidget *mLineEdit;
+};
 
+class LineEdit : public Tool
+{
+	Q_OBJECT
+
+public:
+	explicit LineEdit(ToolController *controller);
+
+	LineEditWidget *mLineEdit;
 };
 
 }

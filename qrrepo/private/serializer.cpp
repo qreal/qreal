@@ -1,11 +1,12 @@
-#include "serializer.h"
-#include "folderCompressor.h"
 #include <QtCore/QDir>
 #include <QtCore/QDebug>
 #include <QtCore/QPointF>
 #include <QtGui/QPolygon>
-#include "../../qrkernel/settingsManager.h"
 
+#include "serializer.h"
+#include "folderCompressor.h"
+
+#include "../../qrkernel/settingsManager.h"
 #include "../../qrutils/outFile.h"
 #include "../../qrutils/xmlUtils.h"
 
@@ -222,13 +223,15 @@ QVariant Serializer::parseValue(QString const &typeName, QString const &valueStr
 	} else if (typeName == "QPointF") {
 		return QVariant(parsePointF(valueStr));
 	} else if (typeName == "QPolygon") {
-		QStringList const points = valueStr.split(" : ", QString::SkipEmptyParts);
-		QPolygon result;
-		foreach (QString str, points) {
-			QPointF point = parsePointF(str);
-			result << point.toPoint();
-		}
-		return QVariant(result);
+		return QVariant(deserializeQPolygon(valueStr));
+	} else if (typeName == "QRect") {
+		return QVariant(deserializeQRect(valueStr));
+	} else if (typeName == "QRectF") {
+		return QVariant(deserializeQRectF(valueStr));
+	} else if (typeName == "QSize") {
+		return QVariant(deserializeQSize(valueStr));
+	} else if (typeName == "QSizeF") {
+		return QVariant(deserializeQSizeF(valueStr));
 	} else if (typeName == "qReal::Id") {
 		return Id::loadFromString(valueStr).toVariant();
 	} else {
@@ -279,6 +282,14 @@ QString Serializer::serializeQVariant(QVariant const &v)
 		return serializeQPointF(v.toPointF());
 	case QVariant::Polygon:
 		return serializeQPolygon(v.value<QPolygon>());
+	case QVariant::Rect:
+		return serializeQRect(v.toRect());
+	case QVariant::RectF:
+		return serializeQRectF(v.toRectF());
+	case QVariant::Size:
+		return serializeQSize(v.toSize());
+	case QVariant::SizeF:
+		return serializeQSizeF(v.toSizeF());
 	case QVariant::UserType:
 		if (v.userType() == QMetaType::type("qReal::Id")) {
 			return v.value<qReal::Id>().toString();
@@ -303,6 +314,87 @@ QString Serializer::serializeQPolygon(QPolygon const &p)
 		result += serializeQPointF(point) + " : ";
 	}
 	return result;
+}
+
+QString Serializer::serializeQRect(QRect const &rect)
+{
+	return QString::number(rect.width()) + "x" + QString::number(rect.height())
+			+ "+" + QString::number(rect.x()) + "+" + QString::number(rect.y());
+}
+
+QString Serializer::serializeQRectF(QRectF const &rect)
+{
+	return QString::number(rect.width()) + "x" + QString::number(rect.height())
+			+ "+" + QString::number(rect.x()) + "+" + QString::number(rect.y());
+}
+
+QString Serializer::serializeQSize(QSize const &size)
+{
+	return QString::number(size.width()) + "x" + QString::number(size.height());
+}
+
+QString Serializer::serializeQSizeF(QSizeF const &size)
+{
+	return QString::number(size.width()) + "x" + QString::number(size.height());
+}
+
+QPolygon Serializer::deserializeQPolygon(QString const &polygon)
+{
+	QStringList const points = polygon.split(" : ", QString::SkipEmptyParts);
+	QPolygon result;
+	foreach (QString const &str, points) {
+		QPointF point = parsePointF(str);
+		result << point.toPoint();
+	}
+	return result;
+}
+
+QRect Serializer::deserializeQRect(QString const &rect)
+{
+	QStringList const whAndXAndY = rect.split("+");
+	if (whAndXAndY.isEmpty()) {
+		return QRect();
+	}
+	QSize const size = deserializeQSize(whAndXAndY[0]);
+	QPoint topleft;
+	if (whAndXAndY.count() >= 3) {
+		topleft.setX(whAndXAndY[1].toInt());
+		topleft.setY(whAndXAndY[2].toInt());
+	}
+	return QRect(topleft, size);
+}
+
+QRectF Serializer::deserializeQRectF(QString const &rect)
+{
+	QStringList const whAndXAndY = rect.split("+");
+	if (whAndXAndY.isEmpty()) {
+		return QRectF();
+	}
+	QSizeF const size = deserializeQSizeF(whAndXAndY[0]);
+	QPointF topleft;
+	if (whAndXAndY.count() >= 3) {
+		topleft.setX(whAndXAndY[1].toDouble());
+		topleft.setY(whAndXAndY[2].toDouble());
+	}
+	return QRectF(topleft, size);
+}
+
+QSize Serializer::deserializeQSize(QString const &size)
+{
+	QStringList const parts = size.split("x");
+	if (parts.count() < 2) {
+		return QSize();
+	}
+	return QSize(parts[0].toInt(), parts[1].toInt());
+}
+
+QSizeF Serializer::deserializeQSizeF(QString const &size)
+{
+	QStringList const parts = size.split("x");
+	if (parts.count() < 2) {
+		return QSizeF();
+	}
+	return QSizeF(parts[0].toDouble(), parts[1].toDouble());
 }
 
 QString Serializer::pathToElement(Id const &id) const

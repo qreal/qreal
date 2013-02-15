@@ -14,18 +14,25 @@ Tool::Tool(QWidget *widget, ToolController *controller, QGraphicsItem *parent)
 	: QGraphicsProxyWidget(parent)
 	, mMovable(true), mResizable(true)
 	, mController(controller)
+	, mProxy(new ToolProxy(new QWidget))
 	, mSelected(false)
 	, mPropertyManager(NULL)
 {
 	setWidget(widget);
-	setTransparent(true);
 }
 
 void Tool::onLoaded()
 {
-	mPropertyManager = new PropertyManager(this);
+	mPropertyManager = new PropertyManager(mProxy);
+	connect(mProxy, SIGNAL(maximumSizeChanged(QSize))
+			, this, SLOT(syncMaximumSize(QSize)));
+	connect(mProxy, SIGNAL(minimumSizeChanged(QSize))
+			, this, SLOT(syncMinimumSize(QSize)));
 	connect(this, SIGNAL(propertyChanged(QString,QVariant))
-		, mPropertyManager, SLOT(changeProperty(QString,QVariant)));
+			, mPropertyManager, SLOT(changeProperty(QString,QVariant)));
+	connect(mProxy, SIGNAL(propertyChanged(QString,QVariant))
+			, mPropertyManager, SLOT(changeProperty(QString,QVariant)));
+	mProxy->setTransparent(true);
 	emit loaded();
 }
 
@@ -79,6 +86,11 @@ bool Tool::selected() const
 PropertyManager *Tool::propertyManager() const
 {
 	return mPropertyManager;
+}
+
+qReal::PropertyProxyBase *Tool::propertyProxy() const
+{
+	return mProxy;
 }
 
 void Tool::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
@@ -153,25 +165,29 @@ void Tool::generateXml(QDomElement &element, QDomDocument &document)
 			child->generateXml(childElement, document);
 		}
 	}
-	//important to invoke it here because children must be generated before
+	// It is important to invoke it here because children must be generated before
 	if (mPropertyManager) {
-		mPropertyManager->generateXml(element, document);
+		mPropertyManager->generateXml(element, document, mProxy->outerBindings());
 	}
 }
 
-void Tool::deserializeWidget(QWidget *parent, const QDomElement &element)
+void Tool::deserializeWidget(QWidget *parent, const QDomElement &element
+		 , QList<PropertyEditorInterface *> &editors)
 {
+	QMap<QString, QString> outerBindings;
 	for (int i = 0; i < element.childNodes().count(); ++i) {
 		QDomNode const node = element.childNodes().at(i);
 		QDomElement const childElem = node.toElement();
 		QString const type = childElem.tagName();
 		if (type == "property") {
-			mPropertyManager->deserializeProperty(childElem);
+			mPropertyManager->deserializeProperty(childElem, outerBindings);
 		}
 		if (type == "layoutAttachedProperty") {
 			LayoutTool::deserializeAttachedProperty(parent, widget(), childElem);
 		}
 	}
+	mProxy->setOuterBindings(outerBindings);
+	mProxy->generateBinders(editors);
 }
 
 void Tool::load(LayoutTool *parent, QDomElement const &element)
@@ -179,22 +195,24 @@ void Tool::load(LayoutTool *parent, QDomElement const &element)
 	if (parent) {
 		setParentItem(parent);
 	}
+	QMap<QString, QString> outerBindings;
 	for (int i = 0; i < element.childNodes().count(); ++i) {
 		QDomNode const node = element.childNodes().at(i);
 		QDomElement const childElem = node.toElement();
 		QString const type = childElem.tagName();
 		if (type == "property") {
-			mPropertyManager->deserializeProperty(childElem);
+			mPropertyManager->deserializeProperty(childElem, outerBindings);
 		}
 		if (type == "layoutAttachedProperty" && parent) {
 			parent->loadAttachedProperty(this, childElem);
 		}
 	}
+	mProxy->setOuterBindings(outerBindings);
 }
 
 QRectF Tool::resizeRect(DragState state)
 {
-	QRectF itemBoundingRect = boundingRect();
+	QRectF const itemBoundingRect = boundingRect();
 	qreal const x1 = itemBoundingRect.left();
 	qreal const x2 = itemBoundingRect.right();
 	qreal const y1 = itemBoundingRect.top();
@@ -366,69 +384,111 @@ void Tool::resizeTool(QGraphicsSceneMouseEvent *event)
 	resize(QSizeF(newContents.width(), newContents.height()));
 }
 
-QRect Tool::widgetGeometry() const
-{
-	return widget()->geometry();
-}
-
-QSize Tool::widgetMaximumSize() const
-{
-	return widget()->maximumSize();
-}
-
-QSize Tool::widgetMinimumSize() const
-{
-	return widget()->minimumSize();
-}
-
-QSize Tool::sizeIncrement() const
-{
-	return widget()->sizeIncrement();
-}
-
-QString Tool::toolTip() const
-{
-	return widget()->toolTip();
-}
-
-bool Tool::isTransparent() const
-{
-	return widget()->testAttribute(Qt::WA_NoSystemBackground);
-}
-
-void Tool::setWidgetGeometry(const QRect &rect)
-{
-	widget()->setGeometry(rect);
-}
-
-void Tool::setWidgetMaximumSize(QSize const &size)
-{
-	QGraphicsProxyWidget::setMaximumSize(size);
-	widget()->setMaximumSize(size);
-}
-
-void Tool::setWidgetMinimumSize(QSize const &size)
-{
-	QGraphicsProxyWidget::setMinimumSize(size);
-	widget()->setMinimumSize(size);
-}
-
-void Tool::setSizeIncrement(QSize const &size)
-{
-	widget()->setSizeIncrement(size);
-}
-
-void Tool::setToolTip(QString const &toolTip)
-{
-	widget()->setToolTip(toolTip);
-}
-
-void Tool::setTransparent(const bool transparent)
-{
-	widget()->setAttribute(Qt::WA_NoSystemBackground, transparent);
-}
-
 void Tool::removeChild(Tool *child)
 {
 	childItems().removeOne(child);
+}
+
+void Tool::syncMaximumSize(QSize const &size)
+{
+	setMaximumSize(size);
+}
+
+void Tool::syncMinimumSize(QSize const &size)
+{
+	setMinimumSize(size);
+}
+
+ToolProxy::ToolProxy(QWidget *widget)
+	: qReal::PropertyProxyBase(widget), mWidget(widget)
+{
+}
+
+bool ToolProxy::isEnabled() const
+{
+	return mWidget->isEnabled();
+}
+
+QRect ToolProxy::widgetGeometry() const
+{
+	return mWidget->geometry();
+}
+
+QSize ToolProxy::widgetMaximumSize() const
+{
+	return mWidget->maximumSize();
+}
+
+QSize ToolProxy::widgetMinimumSize() const
+{
+	return mWidget->minimumSize();
+}
+
+QSize ToolProxy::sizeIncrement() const
+{
+	return mWidget->sizeIncrement();
+}
+
+QString ToolProxy::toolTip() const
+{
+	return mWidget->toolTip();
+}
+
+bool ToolProxy::isTransparent() const
+{
+	return mWidget->testAttribute(Qt::WA_NoSystemBackground);
+}
+
+QSizePolicy ToolProxy::sizePolicy() const
+{
+	return mWidget->sizePolicy();
+}
+
+void ToolProxy::setEnabled(bool const enabled)
+{
+	mWidget->setEnabled(enabled);
+}
+
+void ToolProxy::setWidgetGeometry(const QRect &rect)
+{
+	// To avoid infinite loop in outer bindings
+	if (mOldGeometry != rect) {
+		mOldGeometry = rect;
+//		// One more hack. Else outer bindings do not work
+//		if (NodeElement *node = getNode()) {
+//			node->storeGeometry();
+//		}
+		onPropertyChanged("geometry", rect);
+		mWidget->setGeometry(rect);
+	}
+}
+
+void ToolProxy::setWidgetMaximumSize(QSize const &size)
+{
+	mWidget->setMaximumSize(size);
+}
+
+void ToolProxy::setWidgetMinimumSize(QSize const &size)
+{
+	mWidget->setMinimumSize(size);
+}
+
+void ToolProxy::setSizeIncrement(QSize const &size)
+{
+	mWidget->setSizeIncrement(size);
+}
+
+void ToolProxy::setToolTip(QString const &toolTip)
+{
+	mWidget->setToolTip(toolTip);
+}
+
+void ToolProxy::setTransparent(const bool transparent)
+{
+	mWidget->setAttribute(Qt::WA_NoSystemBackground, transparent);
+}
+
+void ToolProxy::setSizePolicy(QSizePolicy const &policy)
+{
+	mWidget->setSizePolicy(policy);
 }

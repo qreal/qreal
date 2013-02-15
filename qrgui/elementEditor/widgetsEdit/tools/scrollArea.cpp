@@ -12,17 +12,23 @@ ScrollArea::ScrollArea(ToolController *controller)
 	mScrollArea->setGeometry(0, 0
 		, SCROLL_AREA_DEFAULT_WIDTH
 		, SCROLL_AREA_DEFAULT_WIDTH);
+	mProxy = new ScrollAreaProxy(mScrollArea);
+}
+
+ScrollAreaProxy::ScrollAreaProxy(QScrollArea *scrollArea)
+	: AbstractScrollAreaProxy(scrollArea), mScrollArea(scrollArea)
+{
 	mScrollArea->setFrameShape(QFrame::StyledPanel);
 	mScrollArea->setFrameShadow(QFrame::Sunken);
 	mScrollArea->setLineWidth(1);
 }
 
-bool ScrollArea::widgetResizable() const
+bool ScrollAreaProxy::widgetResizable() const
 {
 	return mScrollArea->widgetResizable();
 }
 
-void ScrollArea::setWidgetResizable(bool resizable)
+void ScrollAreaProxy::setWidgetResizable(bool resizable)
 {
 	mScrollArea->setWidgetResizable(resizable);
 }

@@ -15,25 +15,37 @@ namespace widgetsEdit
 int const ROOT_WIDGET_DEFAULT_WIDTH = 200;
 int const ROOT_WIDGET_DEFAULT_HEIGHT = 200;
 
-class Root : public LayoutTool
+class RootProxy : public LayoutToolProxy
 {
 	Q_OBJECT
 
 	Q_PROPERTY(QString shapeXml READ shapeXml WRITE setShapeXml USER true DESIGNABLE false)
 
 public:
-	explicit Root(ToolController *controller);
+	explicit RootProxy(RootWidget *widget);
 
-	virtual void onLoaded();
-	void setShape(QDomDocument const &shape);
-	QDomDocument shapeDocument() const;
-
-private:
 	QString shapeXml() const;
 	void setShapeXml(QString const &shape);
 
+signals:
+	void shapeXmlChanged(QString const &shape);
+
+private:
 	RootWidget *mWidget;
-	QList<Tool *> mItems;
+};
+
+class Root : public LayoutTool
+{
+	Q_OBJECT
+
+public:
+	explicit Root(ToolController *controller);
+
+	virtual void onLoaded();
+	QDomDocument shapeDocument() const;
+
+private:
+	RootWidget *mWidget;
 };
 
 }

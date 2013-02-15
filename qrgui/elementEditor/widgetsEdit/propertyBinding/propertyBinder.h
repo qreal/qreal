@@ -12,7 +12,7 @@ public:
 	PropertyBinder();
 
 	virtual QString binding() const;
-	virtual void setPropertyValue(QString const &value);
+	virtual void setPropertyValue(QVariant const &value);
 	virtual void setEnumValues(QStringList const &values);
 };
 

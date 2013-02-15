@@ -9,20 +9,26 @@ CheckBox::CheckBox(ToolController *controller)
 	mTitle = tr("Check Box");
 	mTag = "CheckBox";
 	mIcon = QIcon(":/icons/widgetsEditor/checkBox.png");
+	mProxy = new CheckBoxProxy(mCheckBox);
+}
+
+CheckBoxProxy::CheckBoxProxy(CheckBoxWidget *checkBox)
+	: AbstractButtonProxy(checkBox), mCheckBox(checkBox)
+{
 	connect(mCheckBox, SIGNAL(toggled(bool)), this, SLOT(toggled(bool)));
 }
 
-void CheckBox::toggled(bool checked)
+void CheckBoxProxy::toggled(bool checked)
 {
-	emit propertyChanged("checked", QVariant(checked));
+	onPropertyChanged("checked", QVariant(checked));
 }
 
-bool CheckBox::isChecked() const
+bool CheckBoxProxy::isChecked() const
 {
 	return mCheckBox->isChecked();
 }
 
-void CheckBox::setChecked(bool checked)
+void CheckBoxProxy::setChecked(bool checked)
 {
 	mCheckBox->setChecked(checked);
 }
@@ -51,19 +57,15 @@ bool CheckBoxWidget::isChecked() const
 	return checkState() == Qt::Checked;
 }
 
-void CheckBoxWidget::setPropertyValue(const QString &value)
+void CheckBoxWidget::setPropertyValue(const QVariant &value)
 {
-	QString const lowerValue = value.toLower();
-	if (lowerValue == "true" || lowerValue == "false") {
+	if (value.type() == QVariant::Bool) {
 		mFormat = Boolean;
-		setChecked(lowerValue == "true");
-	} else {
-		bool ok;
-		int intValue = value.toInt(&ok);
-		if (ok) {
-			mFormat = Numeric;
-			mLastTrueInt = intValue != 0 ? intValue : mLastTrueInt;
-			setChecked(intValue != 0);
-		}
+		setChecked(value.toBool());
+	} else if (value.type() == QVariant::Int) {
+		mFormat = Numeric;
+		int intValue = value.toInt();
+		mLastTrueInt = intValue != 0 ? intValue : mLastTrueInt;
+		setChecked(intValue != 0);
 	}
 }

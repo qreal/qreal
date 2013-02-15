@@ -9,71 +9,76 @@ SpinBox::SpinBox(ToolController *controller)
 	mTitle = tr("Spin Box");
 	mTag = "SpinBox";
 	mIcon = QIcon(":/icons/widgetsEditor/spinBox.png");
-	connect(mSpinBox, SIGNAL(valueChanged(int))
-		, this, SLOT(valueChanged(int)));
+	mProxy = new SpinBoxProxy(mSpinBox);
 }
 
-void SpinBox::valueChanged(int i)
+SpinBoxProxy::SpinBoxProxy(SpinBoxWidget *spinBox)
+	: AbstractSpinBoxProxy(spinBox), mSpinBox(spinBox)
 {
-	emit propertyChanged("value", QVariant(i));
+	connect(mSpinBox, SIGNAL(valueChanged(int)), this, SLOT(valueChanged(int)));
 }
 
-int SpinBox::maximum() const
+void SpinBoxProxy::valueChanged(int i)
+{
+	onPropertyChanged("value", QVariant(i));
+}
+
+int SpinBoxProxy::maximum() const
 {
 	return mSpinBox->maximum();
 }
 
-int SpinBox::minimum() const
+int SpinBoxProxy::minimum() const
 {
 	return mSpinBox->minimum();
 }
 
-QString SpinBox::prefix() const
+QString SpinBoxProxy::prefix() const
 {
 	return mSpinBox->prefix();
 }
 
-QString SpinBox::suffix() const
+QString SpinBoxProxy::suffix() const
 {
 	return mSpinBox->suffix();
 }
 
-int SpinBox::singleStep() const
+int SpinBoxProxy::singleStep() const
 {
 	return mSpinBox->singleStep();
 }
 
-int SpinBox::value() const
+int SpinBoxProxy::value() const
 {
 	return mSpinBox->value();
 }
 
-void SpinBox::setMaximum(int maximum)
+void SpinBoxProxy::setMaximum(int maximum)
 {
 	mSpinBox->setMaximum(maximum);
 }
 
-void SpinBox::setMinimum(int minimum)
+void SpinBoxProxy::setMinimum(int minimum)
 {
 	mSpinBox->setMinimum(minimum);
 }
 
-void SpinBox::setPrefix(QString const &prefix)
+void SpinBoxProxy::setPrefix(QString const &prefix)
 {
 	mSpinBox->setPrefix(prefix);
 }
 
-void SpinBox::setSuffix(QString const &suffix)
+void SpinBoxProxy::setSuffix(QString const &suffix)
 {
 	mSpinBox->setSuffix(suffix);
 }
 
-void SpinBox::setSingleStep(int step)
+void SpinBoxProxy::setSingleStep(int step)
 {
 	mSpinBox->setSingleStep(step);
 }
 
-void SpinBox::setValue(int value)
+void SpinBoxProxy::setValue(int value)
 {
 	mSpinBox->setValue(value);
 }
@@ -81,10 +86,10 @@ void SpinBox::setValue(int value)
 SpinBoxWidget::SpinBoxWidget()
 	: QSpinBox(), PropertyEditor(this)
 {
-	connect(this, SIGNAL(valueChanged(int)), this, SLOT(onValueChanged1(int)));
+	connect(this, SIGNAL(valueChanged(int)), this, SLOT(onThisValueChanged(int)));
 }
 
-void SpinBoxWidget::setPropertyValue(const QString &value)
+void SpinBoxWidget::setPropertyValue(const QVariant &value)
 {
 	bool ok = false;
 	int val = value.toInt(&ok);
@@ -93,7 +98,7 @@ void SpinBoxWidget::setPropertyValue(const QString &value)
 	}
 }
 
-void SpinBoxWidget::onValueChanged1(int value)
+void SpinBoxWidget::onThisValueChanged(int value)
 {
 	setValueInRepo(QString::number(value));
 }

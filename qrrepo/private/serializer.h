@@ -38,11 +38,22 @@ private:
 	static qReal::IdList loadIdList(QDomElement const &elem, QString const &name);
 	static qReal::Id loadId(QString const &elementStr);
 	static bool loadProperties(QDomElement const &elem, Object &object);
-	static QPointF parsePointF(QString const &str);
 
 	static QString serializeQVariant(QVariant const &v);
 	static QString serializeQPointF(QPointF const &p);
 	static QString serializeQPolygon(QPolygon const &p);
+	static QString serializeQRect(QRect const &rect);
+	static QString serializeQRectF(QRectF const &rect);
+	static QString serializeQSize(QSize const &size);
+	static QString serializeQSizeF(QSizeF const &size);
+
+	static QPointF parsePointF(QString const &str);
+	static QPolygon deserializeQPolygon(QString const &polygon);
+	static QRect deserializeQRect(QString const &rect);
+	static QRectF deserializeQRectF(QString const &rect);
+	static QSize deserializeQSize(QString const &size);
+	static QSizeF deserializeQSizeF(QString const &size);
+
 	static QDomElement idListToXml(QString const &attributeName, qReal::IdList const &idList, QDomDocument &doc);
 	static QDomElement propertiesToXml(Object const *object, QDomDocument &doc);
 

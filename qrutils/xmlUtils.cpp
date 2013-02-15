@@ -4,6 +4,7 @@
 #include <QtCore/QRect>
 #include <QtCore/QSize>
 #include <QtCore/QDate>
+#include <QtGui/QSizePolicy>
 
 #include "xmlUtils.h"
 
@@ -177,8 +178,14 @@ void xmlUtils::qVariantToXml(QDomElement &element, const QVariant &variant)
 		element.setAttribute("width", variant.toSizeF().width());
 		element.setAttribute("height", variant.toSizeF().height());
 		break;
-	case QVariant::SizePolicy:
-		//not supported yet
+	case QVariant::SizePolicy: {
+		element.setAttribute("type", "SizePolicy");
+		QSizePolicy const policy = variant.value<QSizePolicy>();
+		element.setAttribute("verticalPolicy", policy.verticalPolicy());
+		element.setAttribute("horizontalPolicy", policy.horizontalPolicy());
+		element.setAttribute("verticalStretch", policy.verticalStretch());
+		element.setAttribute("horizontalStretch", policy.horizontalStretch());
+	}
 		break;
 	case QVariant::String:
 		element.setAttribute("type", "String");
@@ -269,6 +276,9 @@ QVariant xmlUtils::xmlToVariant(const QDomElement &element)
 	}
 	if (type == "SizeF") {
 		return sizeFXmlToVariant(element);
+	}
+	if (type == "SizePolicy") {
+		return sizePolicyToVariant(element);
 	}
 	if (type == "String") {
 		return stringXmlToVariant(element);
@@ -648,6 +658,20 @@ QVariant xmlUtils::sizeFXmlToVariant(const QDomElement &element)
 		return QVariant();
 	}
 	return QVariant(QSizeF(width, height));
+}
+
+QVariant xmlUtils::sizePolicyToVariant(QDomElement const &element)
+{
+	QString const verticalPolicyS = element.attribute("verticalPolicy");
+	QString const horizontalPolicyS = element.attribute("horizontalPolicy");
+	QString const verticalStretchS = element.attribute("verticalStretch");
+	QString const horizontalStretchS = element.attribute("horizontalStretch");
+	QSizePolicy result;
+	result.setVerticalPolicy(static_cast<QSizePolicy::Policy>(verticalPolicyS.toInt()));
+	result.setHorizontalPolicy(static_cast<QSizePolicy::Policy>(horizontalPolicyS.toInt()));
+	result.setVerticalStretch(verticalStretchS.toInt());
+	result.setHorizontalStretch(horizontalStretchS.toInt());
+	return QVariant(result);
 }
 
 QVariant xmlUtils::stringXmlToVariant(const QDomElement &element)

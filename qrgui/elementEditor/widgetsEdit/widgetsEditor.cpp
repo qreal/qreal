@@ -10,6 +10,7 @@
 #include "private/toolFactory.h"
 #include "private/editorScene.h"
 #include "private/toolList.h"
+#include "private/outerBindingsDialog.h"
 #include "tools/root.h"
 #include "tools/layoutHelpers/layoutHelperFactory.h"
 
@@ -50,16 +51,18 @@ void WidgetsEditor::onShown(navigation::NavigationState *state)
 	load(wtf);
 }
 
-QWidget *WidgetsEditor::deserializeWidget(QDomDocument const &document)
+QWidget *WidgetsEditor::deserializeWidget(QDomDocument const &document
+		, QList<PropertyEditorInterface *> &editors)
 {
 	QDomElement const widgetTemplate = document.firstChildElement("widget-template");
-	return deserializeWidget(widgetTemplate);
+	return deserializeWidget(widgetTemplate, editors);
 }
 
-QWidget *WidgetsEditor::deserializeWidget(QDomElement const &widgetTemplate)
+QWidget *WidgetsEditor::deserializeWidget(const QDomElement &widgetTemplate
+		, QList<PropertyEditorInterface *> &editors)
 {
 	QDomElement rootElement = widgetTemplate.firstChild().toElement();
-	return ToolFactory::instance()->deserializeWidget(rootElement);
+	return ToolFactory::instance()->deserializeWidget(rootElement, editors);
 }
 
 void WidgetsEditor::load(QDomDocument const &graphics)
@@ -128,6 +131,7 @@ void WidgetsEditor::initControlButtons()
 	connect(mControlButtons, SIGNAL(previewClicked()), this, SLOT(preview()));
 	connect(mControlButtons, SIGNAL(shapeClicked()), this, SLOT(save()));
 	connect(mControlButtons, SIGNAL(iconAccepted()), this, SLOT(save()));
+	connect(mControlButtons, SIGNAL(outerBindingsClicked()), this, SLOT(editOuterBindings()));
 
 	QListIterator<QPushButton *> buttonsIterator =
 			mLayoutButtons->buttonsIterator();
@@ -153,6 +157,7 @@ void WidgetsEditor::loadTools()
 void WidgetsEditor::initPropertyBrowser()
 {
 	QtTreePropertyBrowser *browser = new QtTreePropertyBrowser;
+	browser->setAlternatingRowColors(true);
 	mUi->toolFrame->layout()->addWidget(browser);
 	PropertyBrowserController *controller = new PropertyBrowserController(browser);
 	mController->setPropertyBrowserController(controller);
@@ -264,7 +269,8 @@ void WidgetsEditor::preview()
 	}
 	QDomElement graphics = document.firstChildElement("graphics");
 	QDomElement widgetTemplate = graphics.firstChildElement("widget-template");
-	QWidget *widget = WidgetsEditor::deserializeWidget(widgetTemplate);
+	QList<PropertyEditorInterface *> dumbList;
+	QWidget *widget = WidgetsEditor::deserializeWidget(widgetTemplate, dumbList);
 	preview(widget);
 }
 
@@ -297,4 +303,12 @@ qReal::elementEdit::ControlButtons *WidgetsEditor::controlButtons() const
 void WidgetsEditor::initEmptyCase()
 {
 	serializeWidget(mEmptyCaseWtf);
+}
+
+void WidgetsEditor::editOuterBindings()
+{
+	OuterBindingsDialog *dialog =
+			new OuterBindingsDialog(mController->selectedItem()->propertyProxy(), this);
+	dialog->exec();
+	delete dialog;
 }

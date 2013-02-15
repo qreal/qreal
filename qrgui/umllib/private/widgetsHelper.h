@@ -8,9 +8,10 @@
 #include "../../editorPluginInterface/sdfRendererInterface.h"
 #include "../../editorPluginInterface/propertyEditorInterface.h"
 
-
 class WidgetsHelper : public WidgetsHelperInterface
 {
+	Q_OBJECT
+
 public:
 	explicit WidgetsHelper(NodeElement *element = 0);
 	virtual ~WidgetsHelper();
@@ -22,15 +23,21 @@ public:
 	void setEditorManager(EditorManager const *editorManager);
 	void onIdChanged();
 
+	void onElementGeometryChanged();
+
+private slots:
+#include<QDebug>
+	void onGeometryChangedDebug() {qDebug() << mElement->geometry();}
+
 private:
-	void initPropertyEditors();
-	void initPropertyEditors(QWidget *widget);
 	void initEnumEditors();
 
 	NodeElement *mElement;
 	EditorManager const *mEditorManager;
 	QWidget *mWidget;
 	QMap<QString, PropertyEditorInterface *> mPropertyEditors;
+	QList<PropertyEditorInterface *> mGeometryEditors;
+	QRectF mOldGeometry;
 };
 
 class WtfIconEngineV2: public SdfIconEngineV2Interface

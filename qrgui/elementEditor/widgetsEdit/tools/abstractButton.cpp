@@ -9,42 +9,47 @@ AbstractButton::AbstractButton(QAbstractButton *button
 	mAbstractButton = button;
 }
 
-bool AbstractButton::hasAutoRepeat() const
+AbstractButtonProxy::AbstractButtonProxy(QAbstractButton *button)
+	: ToolProxy(button), mAbstractButton(button)
+{
+}
+
+bool AbstractButtonProxy::hasAutoRepeat() const
 {
 	return mAbstractButton->autoRepeat();
 }
 
-int AbstractButton::autoRepeatDelay() const
+int AbstractButtonProxy::autoRepeatDelay() const
 {
 	return mAbstractButton->autoRepeatDelay();
 }
 
-int AbstractButton::autoRepeatInterval() const
+int AbstractButtonProxy::autoRepeatInterval() const
 {
 	return mAbstractButton->autoRepeatInterval();
 }
 
-QString AbstractButton::text() const
+QString AbstractButtonProxy::text() const
 {
 	return mAbstractButton->text();
 }
 
-void AbstractButton::setAutoRepeat(bool autoRepeat)
+void AbstractButtonProxy::setAutoRepeat(bool autoRepeat)
 {
 	mAbstractButton->setAutoRepeat(autoRepeat);
 }
 
-void AbstractButton::setAutoRepeatDelay(int autoRepeatDelay)
+void AbstractButtonProxy::setAutoRepeatDelay(int autoRepeatDelay)
 {
 	mAbstractButton->setAutoRepeatDelay(autoRepeatDelay);
 }
 
-void AbstractButton::setAutoRepeatInterval(int autoRepeatInterval)
+void AbstractButtonProxy::setAutoRepeatInterval(int autoRepeatInterval)
 {
 	mAbstractButton->setAutoRepeatInterval(autoRepeatInterval);
 }
 
-void AbstractButton::setText(QString const &text)
+void AbstractButtonProxy::setText(QString const &text)
 {
 	mAbstractButton->setText(text);
 }
