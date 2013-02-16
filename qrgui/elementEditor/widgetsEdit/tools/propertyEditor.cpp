@@ -36,7 +36,7 @@ void PropertyEditor::setPropertyName(QString const &propertyName)
 	mPropertyName = propertyName;
 }
 
-void PropertyEditor::setValueInRepo(QString const &value)
+void PropertyEditor::setValueInRepo(QVariant const &value)
 {
 	NodeElement *node = getNode();
 	if (node && !propertyName().isEmpty()) {

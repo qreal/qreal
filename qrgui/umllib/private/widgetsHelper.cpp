@@ -27,7 +27,6 @@ bool WidgetsHelper::initWidget(QString const &filename)
 	}
 	if (mElement) {
 		mElement->setWidget(mWidget);
-		connect(mElement,SIGNAL(geometryChanged()),this,SLOT(onGeometryChangedDebug()));
 	}
 
 	foreach (PropertyEditorInterface *iface, editors) {

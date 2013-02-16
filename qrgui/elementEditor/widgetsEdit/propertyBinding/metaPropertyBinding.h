@@ -28,6 +28,8 @@ private:
 	QString mSource;
 	QString mTarget;
 	QMetaProperty mMetaProperty;
+	bool mEnumEditor;
+	QMap<QString, int> mQRealWtfEnumValuesMap;
 };
 
 }

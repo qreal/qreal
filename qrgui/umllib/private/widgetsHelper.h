@@ -25,10 +25,6 @@ public:
 
 	void onElementGeometryChanged();
 
-private slots:
-#include<QDebug>
-	void onGeometryChangedDebug() {qDebug() << mElement->geometry();}
-
 private:
 	void initEnumEditors();
 

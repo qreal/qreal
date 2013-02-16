@@ -35,7 +35,7 @@ public:
 	virtual void setEnumValues(QStringList const &values);
 	QString propertyName() const;
 	void setPropertyName(QString const &propertyName);
-	void setValueInRepo(QString const &value);
+	void setValueInRepo(QVariant const &value);
 
 protected:
 	explicit PropertyEditor(QWidget *editor);

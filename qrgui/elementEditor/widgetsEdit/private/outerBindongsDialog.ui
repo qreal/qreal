@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>411</width>
     <height>300</height>
    </rect>
   </property>
@@ -70,6 +70,48 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="saveButton">
+        <property name="toolTip">
+         <string>Save</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../qrgui.qrc">
+          <normaloff>:/icons/widgetsEditor/saveToDisk.png</normaloff>:/icons/widgetsEditor/saveToDisk.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="loadButton">
+        <property name="toolTip">
+         <string>Load</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../qrgui.qrc">
+          <normaloff>:/icons/widgetsEditor/loadFromDisk.png</normaloff>:/icons/widgetsEditor/loadFromDisk.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="mergeButton">
+        <property name="text">
+         <string>Merge</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -85,7 +127,10 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../qrgui.qrc"/>
+  <include location="../../../qrgui.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

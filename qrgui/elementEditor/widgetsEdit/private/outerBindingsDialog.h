@@ -29,10 +29,24 @@ private slots:
 	void removeButtonClicked();
 	void commit();
 
+	void saveClicked();
+	void loadClicked();
+	void mergeClicked();
+
+	QMap<QString, QString> buildBindingMap() const;
+
+	QDomDocument serializeData(QMap<QString, QString> const &bindings);
+	QMap<QString, QString> deserializeData(QDomDocument const &document);
+
 private:
 	void initialize();
 	void initializeProperties();
 	void initializeView();
+
+	QDomDocument askUserDocument();
+
+	void load(QMap<QString, QString> const &bindings);
+	void merge(QMap<QString, QString> const &newBindings);
 
 	void addItem(QString const &source, QString const &target);
 

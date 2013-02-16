@@ -296,7 +296,7 @@ void NodeElement::arrangeLinks() {
 
 void NodeElement::storeGeometry()
 {
-	QRectF contents = geometry().translated(-geometry().topLeft()); // saving correct current contents
+	QRectF const contents = geometry().translated(-geometry().topLeft()); // saving correct current contents
 
 	if ((pos() != mGraphicalAssistApi->position(id()))) { // check if it's been changed
 		mGraphicalAssistApi->setPosition(id(), pos());
