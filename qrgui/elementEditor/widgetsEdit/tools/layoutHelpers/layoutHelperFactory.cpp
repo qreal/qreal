@@ -62,8 +62,10 @@ void LayoutHelperFactory::setLayout(LayoutType const type)
 	if (helper) {
 		helper->resetLayout(layout);
 	} else {
-		mTool->setLayout(NULL);
-		mTool->setMinimumSize(0, 0);
+		if (mTool->layout()) {
+			mTool->setLayout(NULL);
+			mTool->setMinimumSize(0, 0);
+		}
 	}
 	mTool->setLayoutHelper(helper);
 }

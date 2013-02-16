@@ -126,6 +126,7 @@ void LayoutTool::load(LayoutTool *parent, QDomElement const &element)
 	} else if (layoutType == "NoLayout") {
 		mFactory->setLayout(NoLayout);
 	}
+	invalidateLayoutMargin();
 }
 
 void LayoutTool::deserializeAttachedProperty(QWidget *parent, QWidget *widget
