@@ -61,7 +61,6 @@ MainWindow::MainWindow(const QString &fileToOpen)
 		, mIsFullscreen(false)
 		, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
 		, mPreferencesDialog(this)
-		, mHelpBrowser(NULL)
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this))
@@ -243,7 +242,6 @@ MainWindow::~MainWindow()
 	QDir().rmdir(mTempDir);
 	delete mListenerManager;
 	delete mErrorReporter;
-	delete mHelpBrowser;
 	SettingsManager::instance()->saveData();
 	delete mRecentProjectsMenu;
 	delete mRecentProjectsMapper;
@@ -723,26 +721,7 @@ void MainWindow::showAbout()
 void MainWindow::showHelp()
 {
 	// FIXME: ":/qreal-robots.qhc" doesn't work for some reason
-	QHelpEngine * const helpEngine = new QHelpEngine("./qreal-robots.qhc");
-	helpEngine->setupData();
-
-	helpEngine->setCurrentFilter("QReal:Robots");
-
-	mHelpBrowser = new HelpBrowser(helpEngine);
-	mHelpBrowser->setSource(helpEngine->linksForIdentifier("QReal")["QReal:Robots"]);
-
-	QSplitter * const helpPanel = new QSplitter(Qt::Horizontal);
-	helpPanel->setGeometry(QRect(50, 50, 1000, 800));
-	helpPanel->setWindowTitle("QReal:Robots Help Center");
-	QIcon icon;
-	icon.addFile(QString::fromUtf8(":/icons/qreal.png"), QSize(), QIcon::Normal, QIcon::Off);
-	helpPanel->setWindowIcon(icon);
-	helpPanel->insertWidget(0, helpEngine->contentWidget());
-	helpPanel->insertWidget(1, mHelpBrowser);
-	helpPanel->setStretchFactor(1, 1);
-	helpPanel->show();
-
-	connect(helpEngine->contentWidget(), SIGNAL(linkActivated(const QUrl &)), mHelpBrowser, SLOT(setSource(const QUrl &)));
+	QDesktopServices::openUrl(QUrl("./help/index.html"));
 }
 
 void MainWindow::toggleShowSplash(bool show)

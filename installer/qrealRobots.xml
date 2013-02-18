@@ -1,7 +1,7 @@
 <project>
     <shortName>QRealRobots</shortName>
     <fullName>QReal Robots</fullName>
-    <version>2.0.0</version>
+    <version>%version%</version>
     <licenseFile>%1/installer/gpl-3.0.txt</licenseFile>
     <leftImage>%1/installer/left.png</leftImage>
     <logoImage>%1/installer/logo.png</logoImage>
@@ -65,14 +65,11 @@
                         <distributionFile>
                             <origin>%1/bin/qrutils.dll</origin>
                         </distributionFile>
-                        <distributionFile>
-                            <origin>%1/plugins/robots/editor/doc/qreal-robots.qhc</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%1/plugins/robots/editor/doc/qreal-robots.qch</origin>
-                        </distributionFile>
                         <distributionDirectory>
                             <origin>%1/bin/plugins</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>%1/bin/help</origin>
                         </distributionDirectory>
                         <distributionFile>
                             <origin>%2/QtNetwork4.dll</origin>
@@ -202,22 +199,22 @@
             <type>REG_SZ</type>
             <value>${installdir}</value>
         </registrySet>
-		<associateWindowsFileExtension>
-			<extensions>.qrs</extensions>
-			<progID>QReal.Project.2</progID>
-			<friendlyName>QReal project</friendlyName>
-			<icon>${installdir}\icon.ico</icon>
-			<mimeType>application/octet-stream</mimeType>
-			<commandList>
-				<!-- Defining the 'Open' command -->
-				<command>
-					<makeDefault>1</makeDefault>
-					<verb>Open</verb>
-					<runProgram>${installdir}\qrgui.exe</runProgram>
-					<runProgramArguments>"%L"</runProgramArguments>
-				</command>
-			</commandList>
-		</associateWindowsFileExtension>
+        <associateWindowsFileExtension>
+            <extensions>.qrs</extensions>
+            <progID>QReal.Project.2</progID>
+            <friendlyName>QReal project</friendlyName>
+            <icon>${installdir}\icon.ico</icon>
+            <mimeType>application/octet-stream</mimeType>
+            <commandList>
+                <!-- Defining the 'Open' command -->
+                <command>
+                    <makeDefault>1</makeDefault>
+                    <verb>Open</verb>
+                    <runProgram>${installdir}\qrgui.exe</runProgram>
+                    <runProgramArguments>"%L"</runProgramArguments>
+                </command>
+            </commandList>
+        </associateWindowsFileExtension>
         <runProgram>
             <program>${installdir}/qrgui.exe</program>
             <programArguments>--clear-conf</programArguments>

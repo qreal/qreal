@@ -16,7 +16,6 @@
 #include "paletteTree.h"
 #include "findManager.h"
 #include "referenceList.h"
-#include "helpBrowser.h"
 
 #include "projectManager/projectManager.h"
 
@@ -339,7 +338,6 @@ private:
 	QString mTempDir;
 	PreferencesDialog mPreferencesDialog;
 
-	HelpBrowser *mHelpBrowser;
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;
