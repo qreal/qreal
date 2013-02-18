@@ -39,13 +39,13 @@ namespace drawingAction
 {
 enum DrawingAction
 {
-	None = 0
-	, Wall
-	, Line
-	, Stylus
+	none = 0
+	, wall
+	, line
+	, stylus
 	, Port
-	, Ellipse
-	, NoneWordLoad
+	, ellipse
+	, noneWordLoad
 };
 }
 
@@ -54,8 +54,8 @@ namespace cursorType
 enum CursorType
 {
 	NoDrag = 0
-	, Hand
-	, Multiselection
+	, hand
+	, multiselection
 };
 }
 
@@ -94,6 +94,7 @@ public:
 public slots:
 	void update();
 	void worldWallDragged(WallItem *wall, QPainterPath const &shape, QPointF const& oldPos);
+	/// Places in 2D model same sensors as selected in QReal settings
 	void syncronizeSensors();
 
 signals:
@@ -132,7 +133,6 @@ private slots:
 	void changeSensorType(inputPort::InputPortEnum const port
 			, sensorType::SensorTypeEnum const type);
 
-
 	void enableRobotFollowing(bool on);
 	void onHandCursorButtonToggled(bool on);
 	void onMultiselectionCursorButtonToggled(bool on);
@@ -147,7 +147,7 @@ protected:
 private:
 	void connectUiButtons();
 	void initButtonGroups();
-	void setHighlightOneButton(QAbstractButton *oneButton);
+	void setHighlightOneButton(QAbstractButton const *oneButton);
 
 	void drawWalls();
 	void drawColorFields();

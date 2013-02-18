@@ -7,7 +7,7 @@ using namespace qReal::interpreters::robots::details::d2Model;
 Timeline::Timeline(QObject *parent)
 	: QObject(parent)
 	, mSpeedFactor(10) // Normal speed
-	, mCiclesCount(0)
+	, mCyclesCount(0)
 {
 	connect(&mTimer, SIGNAL(timeout()), this, SLOT(onTimer()));
 
@@ -22,15 +22,15 @@ void Timeline::start()
 void Timeline::onTimer()
 {
 	emit tick();
-	++mCiclesCount;
-	if (mCiclesCount >= mSpeedFactor) {
+	++mCyclesCount;
+	if (mCyclesCount >= mSpeedFactor) {
 		mTimer.stop();
-		mCiclesCount = 0;
-		int const msFromFrameStart = (int) (QDateTime::currentMSecsSinceEpoch()
+		mCyclesCount = 0;
+		int const msFromFrameStart = static_cast<int>(QDateTime::currentMSecsSinceEpoch()
 				- mFrameStartTimestamp);
 		int const pauseBeforeFrameEnd = frameLength - msFromFrameStart;
 		if (pauseBeforeFrameEnd > 0) {
-			QTimer::singleShot(pauseBeforeFrameEnd-1, this, SLOT(onFrameFinished()));
+			QTimer::singleShot(pauseBeforeFrameEnd - 1, this, SLOT(onFrameFinished()));
 		} else {
 			onFrameFinished();
 		}

@@ -720,7 +720,6 @@ void MainWindow::showAbout()
 
 void MainWindow::showHelp()
 {
-	// FIXME: ":/qreal-robots.qhc" doesn't work for some reason
 	QDesktopServices::openUrl(QUrl("./help/index.html"));
 }
 
@@ -1636,7 +1635,7 @@ QWidget *MainWindow::windowWidget()
 
 void MainWindow::initToolManager()
 {
-	Customizer *customizer = mToolManager.customizer();
+	Customizer * const customizer = mToolManager.customizer();
 	if (customizer) {
 		setWindowTitle(customizer->windowTitle());
 		setWindowIcon(customizer->applicationIcon());

@@ -13,7 +13,7 @@ namespace details {
 namespace d2Model {
 
 const int length = 30;
-const int addAngle = 30; // Degrees; for arror pike drawing
+const int addAngle = 30; // Degrees; for arrow pike drawing
 
 /// Class that represents line that allows to rotate QGraphicItems
 class Rotater : public QObject, public graphicsUtils::AbstractItem

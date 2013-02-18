@@ -99,7 +99,7 @@ ElementImpl* Element::elementImpl() const
 
 void Element::setTitlesVisible(bool visible)
 {
-	foreach (ElementTitle *title, mTitles) {
+	foreach (ElementTitle * const title, mTitles) {
 		title->setVisible(visible);
 	}
 }

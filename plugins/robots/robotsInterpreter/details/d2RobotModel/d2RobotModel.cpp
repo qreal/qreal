@@ -281,9 +281,9 @@ int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 		int const g = (data[i] >> 8) & 0xFF;
 		int const r = (data[i] >> 16) & 0xFF;
 		// brightness in [0..256]
-		int const brightness = 0.2126*r + 0.7152*g + 0.0722*b;
+		int const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
-		sum += 4*brightness;
+		sum += 4 * brightness;
 	}
 	return sum / n; // Average by whole region
 }

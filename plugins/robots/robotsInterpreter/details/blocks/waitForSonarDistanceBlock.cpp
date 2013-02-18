@@ -19,7 +19,7 @@ WaitForSonarDistanceBlock::WaitForSonarDistanceBlock(details::RobotModel const *
 void WaitForSonarDistanceBlock::run()
 {
 	inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
-	robotParts::SonarSensor *sonarSensor = mRobotModel->sonarSensor(port);
+	robotParts::SonarSensor * const sonarSensor = mRobotModel->sonarSensor(port);
 
 	if (!sonarSensor) {
 		mActiveWaitingTimer.stop();

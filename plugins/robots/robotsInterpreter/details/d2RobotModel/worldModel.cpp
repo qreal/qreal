@@ -17,7 +17,7 @@ int WorldModel::sonarReading(QPoint const &position, qreal direction) const
 {
 	int maxSonarRangeCms = 255;
 	int minSonarRangeCms = 0;
-	int currentRangeInCm = (minSonarRangeCms + maxSonarRangeCms)/2;
+	int currentRangeInCm = (minSonarRangeCms + maxSonarRangeCms) / 2;
 
 	QPainterPath const wallPath = buildWallPath();
 	if (!checkSonarDistance(maxSonarRangeCms, position, direction, wallPath)) {
@@ -26,7 +26,8 @@ int WorldModel::sonarReading(QPoint const &position, qreal direction) const
 	}
 
 	for ( ; minSonarRangeCms < maxSonarRangeCms;
-			currentRangeInCm = (minSonarRangeCms + maxSonarRangeCms) / 2) {
+			currentRangeInCm = (minSonarRangeCms + maxSonarRangeCms) / 2)
+	{
 		if (checkSonarDistance(currentRangeInCm, position, direction, wallPath)) {
 			maxSonarRangeCms = currentRangeInCm;
 		} else {
@@ -75,7 +76,7 @@ QPainterPath WorldModel::sonarScanningRegion(QPoint const &position, qreal direc
 	QPainterPath rayPath;
 	rayPath.arcTo(QRect(-rangeInPixels, -rangeInPixels
 			, 2 * rangeInPixels, 2 * rangeInPixels)
-			, -direction-rayWidthDegrees, 2 * rayWidthDegrees);
+			, -direction - rayWidthDegrees, 2 * rayWidthDegrees);
 	rayPath.closeSubpath();
 	QTransform const sensorPositionTransform = QTransform().translate(position.x(), position.y());
 	return sensorPositionTransform.map(rayPath);

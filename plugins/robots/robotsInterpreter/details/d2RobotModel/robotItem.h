@@ -26,7 +26,7 @@ class BeepItem : public QGraphicsItem
 {
 protected:
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-	QRectF boundingRect () const;
+	QRectF boundingRect() const;
 
 private:
 	void drawBeep(QPainter* painter);
@@ -90,6 +90,7 @@ private:
 	/** @brief Image of a robot drawn on scene */
 	QImage mImage;
 	QImage mBeepImage;
+	// Takes ownership
 	BeepItem *mBeepItem;
 
 	/** @brief List of sensors added to robot */

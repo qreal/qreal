@@ -42,7 +42,7 @@ private slots:
 private:
 	QTimer mTimer;
 	int mSpeedFactor;
-	int mCiclesCount;
+	int mCyclesCount;
 	qint64 mFrameStartTimestamp;
 };
 

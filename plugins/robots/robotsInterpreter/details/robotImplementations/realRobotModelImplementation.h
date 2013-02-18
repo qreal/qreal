@@ -40,7 +40,7 @@ public:
 	virtual sensorImplementations::BluetoothEncoderImplementation &encoderB();
 	virtual sensorImplementations::BluetoothEncoderImplementation &encoderC();
 
-	virtual AbstractTimer *produceTimer();
+	virtual AbstractTimer * const produceTimer();
 
 	bool needsConnection() const;
 

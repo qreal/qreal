@@ -7,6 +7,7 @@
 namespace qReal
 {
 
+/// Implements some QReal scene customizations
 class SceneCustomizer : public SceneCustomizationInterface
 {
 public:

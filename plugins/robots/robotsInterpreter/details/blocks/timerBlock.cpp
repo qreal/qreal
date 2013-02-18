@@ -6,15 +6,11 @@ using namespace qReal;
 using namespace interpreters::robots::details;
 using namespace blocks;
 
-TimerBlock::TimerBlock(AbstractTimer *timer)
+TimerBlock::TimerBlock(AbstractTimer * const timer)
 	: mTimer(timer)
 {
+	mTimer->setParent(this);
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(timeout()));
-}
-
-TimerBlock::~TimerBlock()
-{
-	delete mTimer;
 }
 
 void TimerBlock::run()

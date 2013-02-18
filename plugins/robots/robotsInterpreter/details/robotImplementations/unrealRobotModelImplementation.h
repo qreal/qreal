@@ -39,7 +39,7 @@ public:
 	virtual sensorImplementations::UnrealEncoderImplementation &encoderB();
 	virtual sensorImplementations::UnrealEncoderImplementation &encoderC();
 
-	virtual AbstractTimer *produceTimer();
+	virtual AbstractTimer * const produceTimer();
 
 	virtual void startInterpretation();
 

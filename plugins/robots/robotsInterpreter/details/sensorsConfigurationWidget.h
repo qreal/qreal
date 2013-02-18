@@ -18,11 +18,14 @@ namespace robots
 namespace details
 {
 
+/// A number of combo boxes for sensors selection
 class SensorsConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
+	/// @param autosaveMode Should save happed on each modification or would
+	/// be called manually
 	SensorsConfigurationWidget(bool autosaveMode = true, QWidget *parent = 0);
 	~SensorsConfigurationWidget();
 

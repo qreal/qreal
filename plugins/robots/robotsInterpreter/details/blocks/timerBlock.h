@@ -17,8 +17,8 @@ class TimerBlock : public Block
 	Q_OBJECT
 
 public:
-	explicit TimerBlock(AbstractTimer *timer);
-	virtual ~TimerBlock();
+	explicit TimerBlock(AbstractTimer * const timer /* Takes ownership */);
+	virtual ~TimerBlock() {}
 
 	virtual void run();
 
@@ -26,7 +26,7 @@ private slots:
 	void timeout();
 
 private:
-	AbstractTimer *mTimer;
+	AbstractTimer * const mTimer;
 };
 
 }

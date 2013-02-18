@@ -156,7 +156,7 @@ void RealRobotModelImplementation::disconnectedSlot()
 	emit disconnected();
 }
 
-AbstractTimer *RealRobotModelImplementation::produceTimer()
+AbstractTimer * const RealRobotModelImplementation::produceTimer()
 {
 	return new RealTimer;
 }

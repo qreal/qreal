@@ -19,7 +19,7 @@ WaitForTouchSensorBlock::WaitForTouchSensorBlock(details::RobotModel const * con
 void WaitForTouchSensorBlock::run()
 {
 	mPort = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
-	robotParts::TouchSensor *touchSensor = mRobotModel->touchSensor(mPort);
+	robotParts::TouchSensor * const touchSensor = mRobotModel->touchSensor(mPort);
 
 	if (!touchSensor) {
 		mActiveWaitingTimer.stop();

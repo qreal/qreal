@@ -35,7 +35,7 @@ void Rotater::setMasterItem(RotateItem *masterItem)
 
 	// TODO: Dispose of hardcoding
 	mX1 = rect.width();
-	mY1 = rect.height()/2 - 5;
+	mY1 = rect.height() / 2 - 5;
 	mX2 = mX1 + mLength;
 	mY2 = mY1;
 }
@@ -48,7 +48,7 @@ void Rotater::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *style,
 	painter->setOpacity(0.5);
 	const int addLength = mLength / 3;
 	qreal angle = addAngle;
-	// must be equal mLength
+	// Must be equal to mLength
 	qreal checkLength = sqrt((mX2 - mX1) * (mX2 - mX1) + (mY2 - mY1) * (mY2 - mY1));
 	qreal x0 = ((checkLength - addLength) * mX2 + addLength * mX1) / checkLength;
 	qreal y0 = ((checkLength - addLength) * mY2 + addLength * mY1) / checkLength;
@@ -99,15 +99,15 @@ void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 	qreal const y1 = event->pos().y();
 	qreal const x2 = event->lastPos().x();
 	qreal const y2 = event->lastPos().y();
-	qreal len = sqrt((x1*x1+y1*y1)*(x2*x2+y2*y2));
+	qreal len = sqrt((x1 * x1 + y1 * y1) * (x2 * x2 + y2 * y2));
 
 	// Rotation sign is the sign of the vector product
-	qreal const vectorProduct = x1*y2-x2*y1;
+	qreal const vectorProduct = x1 * y2 - x2 * y1;
 	int const sign = vectorProduct < 0 ? -1 : 1;
 
 	qreal const eps = 10e-8;
-	qreal const dalpha = len < eps ? 0 : acos((x1*x2+y1*y2)/len);
-	mMaster->rotate(mMaster->rotation() - sign*dalpha*180/M_PI);
+	qreal const dalpha = len < eps ? 0 : acos((x1 * x2 + y1 * y2) / len);
+	mMaster->rotate(mMaster->rotation() - sign * dalpha * 180 / M_PI);
 }
 
 void Rotater::resizeItem(QGraphicsSceneMouseEvent *event)

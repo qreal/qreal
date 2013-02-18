@@ -26,7 +26,7 @@ RobotItem::RobotItem()
 
 	setTransformOriginPoint(rotatePoint);
 	mBeepItem->setParentItem(this);
-	mBeepItem->setPos((robotWidth - beepWavesSize)/2, (robotHeight - beepWavesSize)/2);
+	mBeepItem->setPos((robotWidth - beepWavesSize) / 2, (robotHeight - beepWavesSize) / 2);
 	mBeepItem->setVisible(false);
 	mBeepItem->setZValue(-5);
 }
@@ -162,14 +162,14 @@ QVariant RobotItem::itemChange(GraphicsItemChange change, const QVariant &value)
 
 void RobotItem::processPositionChange()
 {
-	foreach (SensorItem *sensor, mSensors) {
+	foreach (SensorItem * const sensor, mSensors) {
 		sensor->onPositionChanged();
 	}
 }
 
 void RobotItem::processPositionAndAngleChange()
 {
-	foreach (SensorItem *sensor, mSensors) {
+	foreach (SensorItem * const sensor, mSensors) {
 		sensor->onPositionChanged();
 		sensor->onDirectionChanged();
 	}
@@ -185,8 +185,8 @@ void RobotItem::recoverDragStartPosition()
 
 void RobotItem::addSensorsShapes(QPainterPath &target)
 {
-	foreach (SensorItem *sensor, mSensors) {
-		target.addEllipse(QRectF(sensor->pos() - QPointF(sensorWidth/2, sensorWidth/2)
+	foreach (SensorItem *const sensor, mSensors) {
+		target.addEllipse(QRectF(sensor->pos() - QPointF(sensorWidth / 2, sensorWidth / 2)
 				, QSizeF(sensorWidth, sensorWidth)));
 	}
 }
@@ -200,14 +200,14 @@ void BeepItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 	drawBeep(painter);
 }
 
-QRectF BeepItem::boundingRect () const
+QRectF BeepItem::boundingRect() const
 {
 	return QRectF(0, 0, beepWavesSize, beepWavesSize);
 }
 
 void BeepItem::drawBeep(QPainter* painter)
 {
-	QPointF const center(beepWavesSize/2, beepWavesSize/2);
+	QPointF const center(beepWavesSize / 2, beepWavesSize / 2);
 
 	drawBeepArcs(painter, center, 40);
 	drawBeepArcs(painter, center, 50);
@@ -221,8 +221,8 @@ void BeepItem::drawBeepArcs(QPainter* painter, QPointF const &center, qreal radi
 	pen.setColor(Qt::red);
 	pen.setWidth(3);
 	painter->setPen(pen);
-	QRectF rect(center.x()-radius, center.y()-radius, radius+radius, radius+radius);
-	painter->drawArc(rect, 45*16, 90*16);
-	painter->drawArc(rect, 225*16, 90*16);
+	QRectF rect(center.x() - radius, center.y() - radius, radius+radius, radius+radius);
+	painter->drawArc(rect, 45 * 16, 90 * 16);
+	painter->drawArc(rect, 225 * 16, 90 * 16);
 	painter->restore();
 }

@@ -13,15 +13,10 @@ namespace robots
 namespace details
 {
 
-class RealTimer : public AbstractTimer
+class NullTimer : public AbstractTimer
 {
 public:
-	RealTimer();
-
 	virtual void start(int ms);
-
-private:
-	QTimer mTimer;
 };
 
 }

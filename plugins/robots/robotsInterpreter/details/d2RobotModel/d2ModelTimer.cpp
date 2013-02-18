@@ -21,7 +21,7 @@ void D2ModelTimer::onTick()
 	if (!mListening) {
 		return;
 	}
-	mTimePast += Timeline::timeInterval;// * mTimeline->speedFactor();
+	mTimePast += Timeline::timeInterval;
 	if (mTimePast >= mTimeToWait) {
 		mListening = false;
 		onTimeout();
