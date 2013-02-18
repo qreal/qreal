@@ -421,6 +421,11 @@
         <source>Change Properties</source>
         <translation>Изменить свойства</translation>
     </message>
+    <message>
+        <location filename="view/editorViewScene.cpp" line="937"/>
+        <source>Change Appearance</source>
+        <translation>Изменить внешний вид</translation>
+    </message>
 </context>
 <context>
     <name>FindManager</name>
@@ -3589,6 +3594,11 @@
         <location filename="mainwindow/draggableElement.cpp" line="99"/>
         <source>Change Properties</source>
         <translation>Изменить свойства</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="102"/>
+        <source>Change Appearance</source>
+        <translation>Изменить внешний вид</translation>
     </message>
 </context>
 <context>

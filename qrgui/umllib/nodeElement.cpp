@@ -1206,3 +1206,8 @@ void NodeElement::setAssistApi(qReal::models::GraphicalModelAssistApi *graphical
 bool NodeElement::isParentSortingContainer() const {
 	return (mParentNodeElement != NULL) && mParentNodeElement->mElementImpl->isSortingContainer();
 }
+
+void NodeElement::updateShape(QString const &shape) const
+{
+	mElementImpl->updateRendererContent(shape);
+}

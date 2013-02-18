@@ -63,6 +63,14 @@ void DraggableElement::changePropertiesPaletteActionTriggered()
 	propDialog->show();
 }
 
+void DraggableElement::changeAppearancePaletteActionTriggered()
+{
+	QAction *action = static_cast<QAction *>(sender());
+	Id id = action->data().value<Id>();
+	QString propertyValue = mEditorManagerProxy->getShape(id);
+	mMainWindow->openShapeEditor(id, propertyValue, mEditorManagerProxy);
+}
+
 void DraggableElement::dragEnterEvent(QDragEnterEvent * /*event*/)
 {
 }
@@ -99,6 +107,9 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 			QAction * const changePropertiesPaletteAction = menu.addAction(tr("Change Properties"));
 			connect(changePropertiesPaletteAction, SIGNAL(triggered()), SLOT(changePropertiesPaletteActionTriggered()));
 			changePropertiesPaletteAction->setData(elementId.toVariant());
+			QAction * const changeAppearancePaletteAction = menu.addAction(tr("Change Appearance"));
+			connect(changeAppearancePaletteAction, SIGNAL(triggered()), SLOT(changeAppearancePaletteActionTriggered()));
+			changeAppearancePaletteAction->setData(elementId.toVariant());
 			menu.exec(QCursor::pos());
 		}
 	} else {

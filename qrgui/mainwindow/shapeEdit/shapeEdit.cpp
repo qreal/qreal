@@ -15,6 +15,7 @@
 
 #include <QDebug>
 
+using namespace qReal;
 using namespace utils;
 
 ShapeEdit::ShapeEdit(QWidget *parent)
@@ -28,6 +29,15 @@ ShapeEdit::ShapeEdit(QWidget *parent)
 ShapeEdit::ShapeEdit(const QPersistentModelIndex &index, const int &role)
 	: QWidget(NULL), mUi(new Ui::ShapeEdit),mIndex(index), mRole(role)
 {
+	init();
+	mUi->saveButton->setEnabled(true);
+	connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
+}
+
+ShapeEdit::ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy, qrRepo::GraphicalRepoApi const &graphicalRepoApi, Ui::MainWindowUi *mainWindowUi, EditorView *editorView)
+	: QWidget(NULL), mUi(new Ui::ShapeEdit), mRole(0), mId(id), mEditorManagerProxy(editorManagerProxy), mMainWindowUi(mainWindowUi), mEditorView(editorView)
+{
+	mGraphicalElements = graphicalRepoApi.graphicalElements(Id(mId.editor(), mId.diagram(), mId.element()));
 	init();
 	mUi->saveButton->setEnabled(true);
 	connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
@@ -266,8 +276,27 @@ void ShapeEdit::saveToXml()
 void ShapeEdit::save()
 {
 	generateDom();
+	if (mIndex.isValid()) {
+		emit shapeSaved(mDocument.toString(4), mIndex, mRole);
+	} else {
+		mEditorManagerProxy->updateShape(mId, mDocument.toString(4));
+		foreach (Id grElement, mGraphicalElements) {
+			mEditorManagerProxy->updateShape(grElement, mDocument.toString(4));
+			mMainWindowUi->paletteTree->changeRepresentation();
+			EditorViewScene * editorViewScene = mEditorView->getEditorViewScene();
+			QList < QGraphicsItem *> list = editorViewScene->items();
+			for (QList < QGraphicsItem *>::Iterator it = list.begin(); it != list.end(); it++) {
+				if (NodeElement *elem = dynamic_cast < NodeElement *>(*it)) {
+					if (elem->id().type() == mId.type()) {
+						elem->updateShape(mDocument.toString(4));
+					}
+				}
+			}
+
+		}
+	}
 	QMessageBox::information(this, tr("Saving"), "Saved successfully");
-	emit shapeSaved(mDocument.toString(4), mIndex, mRole);
+	mDocument.clear();
 }
 
 void ShapeEdit::savePicture()

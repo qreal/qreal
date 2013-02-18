@@ -26,6 +26,7 @@ namespace qReal {
 		void setMainWindow(qReal::MainWindow *mainWindow);
 		void setDrawSceneGrid(bool show);
 		void ensureElementVisible(Element const * const element);
+		EditorViewScene *getEditorViewScene();
 
 	public slots:
 		void toggleAntialiasing(bool);

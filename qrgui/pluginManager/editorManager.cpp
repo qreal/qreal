@@ -530,3 +530,11 @@ IdList EditorManager::getChildren(Id const &parent) const
 {
 	return IdList();
 }
+
+QString EditorManager::getShape(Id const &id) const
+{
+	return "";
+}
+
+void EditorManager::updateShape(Id const &id, QString const &graphics) const
+{}

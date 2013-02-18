@@ -76,6 +76,8 @@ public:
 	virtual void updateProperties(Id const &id, QString const &property, QString const &propertyType, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const = 0;
 	virtual QString getPropertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const = 0;
 	virtual IdList getChildren(Id const &parent) const = 0;
+	virtual QString getShape(Id const &id) const = 0;
+	virtual void updateShape(Id const &id, QString const &graphics) const = 0;
 	//unsupported methods:
 	virtual QStringList paletteGroups(Id const &editor, Id const &diagram) const = 0;
 	virtual QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const = 0;

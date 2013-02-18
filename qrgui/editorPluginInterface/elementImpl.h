@@ -122,4 +122,5 @@ public:
 	virtual QList<double> border() const = 0;
 
 	virtual QStringList bonusContextMenuFields() const = 0;
+	virtual void updateRendererContent(QString const &shape) = 0;
 };

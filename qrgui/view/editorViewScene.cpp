@@ -934,6 +934,9 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 			QAction * const changePropertiesAction = contextMenu.addAction(tr("Change Properties"));
 			connect(changePropertiesAction, SIGNAL(triggered()), SLOT(changePropertiesActionTriggered()));
 			changePropertiesAction->setData(element->id().toVariant());
+			QAction * const changeAppearancePaletteAction = contextMenu.addAction(tr("Change Appearance"));
+			connect(changeAppearancePaletteAction, SIGNAL(triggered()), SLOT(changeAppearanceActionTriggered()));
+			changeAppearancePaletteAction->setData(element->id().toVariant());
 		}
 	}
 }
@@ -1284,6 +1287,14 @@ void EditorViewScene::changePropertiesActionTriggered()
 	propDialog->init(mWindow->manager(), id);
 	propDialog->setModal(true);
 	propDialog->show();
+}
+
+void EditorViewScene::changeAppearanceActionTriggered()
+{
+	QAction *action = static_cast<QAction *>(sender());
+	Id id = action->data().value<Id>();
+	QString propertyValue = mWindow->manager()->getShape(id);
+	mWindow->openShapeEditor(id, propertyValue, mWindow->manager());
 }
 
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)

@@ -560,6 +560,18 @@ QList<double> InterpreterElementImpl::border() const
 	}
 	return list;
 }
+
+void InterpreterElementImpl::updateRendererContent(QString const &shape)
+{
+	QDomDocument classDoc;
+	mGraphics.setContent(shape);
+	QDomElement sdfElement = mGraphics.firstChildElement("graphics").firstChildElement("picture");
+	classDoc.appendChild(classDoc.importNode(sdfElement, true));
+	if (!classDoc.childNodes().isEmpty()) {
+		mRenderer->load(classDoc);
+	}
+}
+
 //TODO:
 QStringList InterpreterElementImpl::bonusContextMenuFields() const
 {

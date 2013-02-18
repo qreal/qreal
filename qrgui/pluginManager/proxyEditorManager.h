@@ -80,6 +80,8 @@ public:
 	void updateProperties(Id const &id, QString const &property, QString const &propertyType, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const;
 	QString getPropertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const;
 	IdList getChildren(Id const &parent) const;
+	QString getShape(Id const &id) const;
+	void updateShape(Id const &id, QString const &graphics) const;
 	//unsupported methods:
 	QStringList paletteGroups(Id const &editor, Id const &diagram) const;
 	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;

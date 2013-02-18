@@ -697,6 +697,25 @@ IdList InterpreterEditorManager::getChildren(Id const &parent) const {
 	return result;
 }
 
+QString InterpreterEditorManager::getShape(Id const &id) const
+{
+	QPair<qrRepo::RepoApi*, Id> repoAndMetaId = getRepoAndMetaId(id);
+	qrRepo::RepoApi const * const repo = repoAndMetaId.first;
+	Id const metaId = repoAndMetaId.second;
+	if (metaId.element() == "MetaEntityNode") {
+		return repo->stringProperty(metaId, "shape");
+	}
+	return "";
+}
+
+void InterpreterEditorManager::updateShape(Id const &id, QString const &graphics) const
+{
+	QPair<qrRepo::RepoApi*, Id> repoAndMetaId = getRepoAndMetaId(id);
+	if (repoAndMetaId.second.element() == "MetaEntityNode") {
+		repoAndMetaId.first->setProperty(repoAndMetaId.second, "shape", graphics);
+	}
+}
+
 //unsupported method
 QStringList InterpreterEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {

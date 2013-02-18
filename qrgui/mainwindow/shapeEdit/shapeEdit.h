@@ -8,16 +8,22 @@
 #include "scene.h"
 #include "item.h"
 #include "../../../qrutils/graphicsUtils/abstractItemView.h"
+#include "../../qrkernel/ids.h"
+#include "../pluginManager/editorManagerInterface.h"
+#include "ui_mainWindow.h"
 
 namespace Ui {
 	class ShapeEdit;
 }
+
+namespace qReal {
 
 class ShapeEdit : public QWidget {
 	Q_OBJECT
 public:
 	explicit ShapeEdit(QWidget *parent = NULL);
 	ShapeEdit(QPersistentModelIndex const &index, int const &role);
+	ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy, qrRepo::GraphicalRepoApi const &graphicalRepoApi, Ui::MainWindowUi *mainWindowUi, EditorView *editorView);
 	graphicsUtils::AbstractView* getView();
 	void load(const QString &text);
 	~ShapeEdit();
@@ -64,6 +70,11 @@ private:
 	Ui::ShapeEdit *mUi;
 	QPersistentModelIndex const mIndex;
 	int const mRole;
+	Id mId;
+	EditorManagerInterface *mEditorManagerProxy;
+	IdList mGraphicalElements;
+	Ui::MainWindowUi *mMainWindowUi;
+	EditorView *mEditorView;
 	void initButtonGroup();
 	void initFontPalette();
 	void initPalette();
@@ -89,3 +100,4 @@ private:
 	void exportToXml(QString const &fileName);
 	QList<QDomElement> generateGraphics();
 };
+}

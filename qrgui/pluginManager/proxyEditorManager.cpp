@@ -233,6 +233,16 @@ IdList ProxyEditorManager::getChildren(Id const &parent) const
 	return mProxyManager->getChildren(parent);
 }
 
+QString ProxyEditorManager::getShape(Id const &id) const
+{
+	return mProxyManager->getShape(id);
+}
+
+void ProxyEditorManager::updateShape(Id const &id, QString const &graphics) const
+{
+	mProxyManager->updateShape(id, graphics);
+}
+
 //unsupported methods:
 QStringList ProxyEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {

@@ -86,6 +86,7 @@ public:
 	QList<double> border() const;
 
 	QStringList bonusContextMenuFields() const;
+	void updateRendererContent(QString const &shape);
 private:
 	qrRepo::RepoApi* mEditorRepoApi;
 	Id mId;

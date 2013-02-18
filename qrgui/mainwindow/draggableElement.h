@@ -43,6 +43,7 @@ public:
 	void setEditorManagerProxy(EditorManagerInterface *editorManagerProxy);
 private slots:
 	void changePropertiesPaletteActionTriggered();
+	void changeAppearancePaletteActionTriggered();
 private:
 	Id mId;
 	QIcon mIcon;
