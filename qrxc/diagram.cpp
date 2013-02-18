@@ -85,7 +85,16 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 		!element.isNull();
 		element = element.nextSiblingElement())
 	{
-		if (element.nodeName() == "enum")
+        mGroupsXML = "";
+        if (element.nodeName() == "groups"){
+            QString xml;
+            QTextStream stream(&xml);
+            element.save(stream, 1);
+            xml.replace("\"", "\\\"");
+            xml.replace("\n", "\\n");
+            mGroupsXML = xml;
+        }
+        else if (element.nodeName() == "enum")
 		{
 			Type *enumType = new EnumType();
 			if (!enumType->init(element, mDiagramName))
@@ -211,4 +220,9 @@ QMap<QString, QStringList> Diagram::paletteGroups() const
 QMap<QString, QString> Diagram::paletteGroupsDescriptions() const
 {
 	return mPaletteGroupsDescriptions;
+}
+
+QString Diagram::getGroupsXML()
+{
+    return mGroupsXML;
 }
