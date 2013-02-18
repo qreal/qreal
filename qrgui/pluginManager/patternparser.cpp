@@ -17,7 +17,6 @@ void PatternParser::loadXml(QString xml){
         }
 
 void PatternParser::parseGroups(QString ed, QString diag){
-     //       mPatterns.removeAll();
             QDomDocument doc;
             if (mXml.isNull()){
                 qDebug() << "ERROR: no xml-file to parse";
@@ -48,12 +47,12 @@ void PatternParser::parseGroup(QDomElement group){
             pattern.setInNode(group.attribute("inNode"));
             pattern.setOutNode(group.attribute("outNode"));
 
-            for (QDomElement node = group.firstChildElement("node"); !node.isNull();
-                node = node.nextSiblingElement("node"))
+            for (QDomElement node = group.firstChildElement("groupNode"); !node.isNull();
+                node = node.nextSiblingElement("groupNode"))
                 parseNode(node, pattern);
 
-            for (QDomElement edge = group.firstChildElement("edge"); !edge.isNull();
-                edge = edge.nextSiblingElement("edge"))
+            for (QDomElement edge = group.firstChildElement("groupEdge"); !edge.isNull();
+                edge = edge.nextSiblingElement("groupEdge"))
                 parseEdge(edge, pattern);
 
            pattern.setEditor(mEditor);

@@ -5,12 +5,12 @@
     <nonGraphicTypes>
         <groups>
 		<group name = "atom1" inNode = "start" outNode = "end">
-			<node type = "DragonActionNode" name = "start" xPosition = "0" yPosition = "0"> </node>
-			<node type = "DragonActionNode" name = "end" xPosition = "0" yPosition = "100"> </node>
-			<edge type = "DragonFlow" from = "start" to = "end"> </edge>
+			<groupNode type = "DragonActionNode" name = "start" xPosition = "0" yPosition = "0"> </groupNode>
+			<groupNode type = "DragonActionNode" name = "end" xPosition = "0" yPosition = "100"> </groupNode>
+			<groupEdge type = "DragonFlow" from = "start" to = "end"> </groupEdge>
 		</group>
 		<group name = "atom2">
-			<node type = "DragonActionNode" name = "all" xPosition = "100" yPosition = "100"> </node>
+			<groupNode type = "DragonActionNode" name = "all" xPosition = "0" yPosition = "0"> </groupNode>
 		</group>
         </groups>	 
 	</nonGraphicTypes>
@@ -109,7 +109,7 @@
 	    <lineType type="solidLine"/>
 	  </graphics>
 	  <logic>
-	    <dissectability isDividable="false" />
+	    <dividability isDividable="true" />
 	    <properties>
 	      <property type="string" name="type_number" />
 	      <property type="bool" name="type" />
