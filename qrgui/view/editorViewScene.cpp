@@ -411,107 +411,145 @@ qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scen
 
 	return objectId;
 }
-
 void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &scenePos, bool searchForParents)
 {
-	QByteArray itemData = mimeData->data("application/x-real-uml-data");
-	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
+    QByteArray itemData = mimeData->data("application/x-real-uml-data");
+    QDataStream in_stream(&itemData, QIODevice::ReadOnly);
 
-	QString uuid = "";
-	QString pathToItem = "";
-	QString name = "";
-	QPointF pos;
-	bool isFromLogicalModel = false;
-	in_stream >> uuid;
-	in_stream >> pathToItem;
-	in_stream >> name;
-	in_stream >> pos;
-	in_stream >> isFromLogicalModel;
+    QString uuid = "";
+    QString pathToItem = "";
+    QString name = "";
+    QPointF pos;
+    bool isFromLogicalModel = false;
+    in_stream >> uuid;
+    in_stream >> pathToItem;
+    in_stream >> name;
+    in_stream >> pos;
+    in_stream >> isFromLogicalModel;
 
-	Element *newParent = NULL;
-	Element *e = NULL;
+    Element *newParent = NULL;
+    Element *e = NULL;
 
-	// TODO: make it simpler
-	Id id = Id::loadFromString(uuid);
+    // TODO: make it simpler
+    Id id = Id::loadFromString(uuid);
 
-	if (searchForParents) {
-		// if element is node then we should look for parent for him
-		e = mWindow->manager()->graphicalObject(id);
-		if (dynamic_cast<NodeElement*>(e)) { // check if e is node
-			foreach (QGraphicsItem *item, items(scenePos)) {
-				NodeElement *el = dynamic_cast<NodeElement*>(item);
-				if (el && canBeContainedBy(el->id(), id)) {
-					newParent = el;
-					break;
-				}
-			}
-		}
+    if (searchForParents) {
+        // if element is node then we should look for parent for him
+        e = mWindow->manager()->graphicalObject(id);
+        if (dynamic_cast<NodeElement*>(e)) { // check if e is node
+            foreach (QGraphicsItem *item, items(scenePos)) {
+                NodeElement *el = dynamic_cast<NodeElement*>(item);
+                if (el && canBeContainedBy(el->id(), id)) {
+                    newParent = el;
+                    break;
+                }
+            }
+        }
 
-		if(newParent && dynamic_cast<NodeElement*>(newParent)){
-			if (!canBeContainedBy(newParent->id(), id)) {
-				QString text;
-				text += "Element of type \"" + id.element() + "\" can not be a child of \"" + newParent->id().element() + "\"";
-				QMessageBox::critical(0, "Error!", text);
-				return;
-			}
+        if(newParent && dynamic_cast<NodeElement*>(newParent)){
+            if (!canBeContainedBy(newParent->id(), id)) {
+                QString text;
+                text += "Element of type \"" + id.element() + "\" can not be a child of \"" + newParent->id().element() + "\"";
+                QMessageBox::critical(0, "Error!", text);
+                return;
+            }
 
-			//temporary solution for chaotic changes of coordinates of created elements with edge menu
-			if (dynamic_cast<EdgeElement*>(newParent)) {
-				newParent = NULL;
-			}
-		}
+            //temporary solution for chaotic changes of coordinates of created elements with edge menu
+            if (dynamic_cast<EdgeElement*>(newParent)) {
+                newParent = NULL;
+            }
+        }
 
-	}
+    }
 
-	QPointF const position = !newParent ? scenePos : newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
+    QPointF const position = !newParent ? scenePos : newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
 
-	Id parentId = newParent ? newParent->id() : mMVIface->rootId();
+    Id parentId = newParent ? newParent->id() : mMVIface->rootId();
 
-	//inserting new node into edge
-	Id insertedNodeId = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
-	if (dynamic_cast<NodeElement*>(e)) {
-		insertNodeIntoEdge(insertedNodeId, parentId, isFromLogicalModel, scenePos);
-	}
+    EditorManager const &editor = mMVIface->graphicalAssistApi()->editorManager();
+    if(editor.getPatternNames().contains(id.element())){
+        Pattern const pattern = editor.getPatternByName(id.element());
+        QMap<QString, Id> nodes;
 
-	NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
-	if (parentNode != NULL) {
-		Element *nextNode = parentNode->getPlaceholderNextElement();
-		if (nextNode != NULL) {
-			mMVIface->graphicalAssistApi()->stackBefore(id, nextNode->id());
-		}
-	}
+        foreach (groupNode node, pattern.getNodes()){
+            Id const element(id.editor(), id.diagram(), node.type, QUuid::createUuid().toString());
+            QPointF newPosition = QPointF(position.x() + node.position.x(), position.y() + node.position.y());
+            Id newElemId = mMVIface->graphicalAssistApi()->createElement(parentId, element, isFromLogicalModel, "(" + node.type + ")", newPosition);
+            nodes.insert(node.id, newElemId);
+        }
+        foreach (groupEdge edge, pattern.getEdges()){
+            Id const element(id.editor(), id.diagram(), edge.type, QUuid::createUuid().toString());
+            mMVIface->graphicalAssistApi()-> createElement(parentId, element, isFromLogicalModel, "(" + edge.type + ")", QPointF(0,0));
+            mMVIface->graphicalAssistApi()-> setFrom(element, nodes.value(edge.from));
+            mMVIface->graphicalAssistApi()-> setTo(element, nodes.value(edge.to));
 
-	if (e) {
-		delete e;
-	}
+            // if element is node then we should look for parent for him
+            Element *e = mWindow->manager()->graphicalObject(nodes.value(edge.to));
+            if (dynamic_cast<NodeElement*>(e)) { // check if e is node
+                    NodeElement *el = dynamic_cast<NodeElement*>(e);
+                    if (el){
+//                    el->connectLinksToPorts();
+                    }
+        }
+        }
 
-	emit elementCreated(id);
+        insertElementIntoEdge(nodes.value(pattern.getInNode()), nodes.value(pattern.getOutNode()), parentId, isFromLogicalModel, scenePos);
+
+    }
+    else{
+        Id newElemId = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
+        //inserting new node into edge
+        if (dynamic_cast<NodeElement*>(e)) {
+            insertElementIntoEdge(newElemId, newElemId, parentId, isFromLogicalModel, scenePos);
+        }
+    }
+
+
+    NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
+    if (parentNode != NULL) {
+        Element *nextNode = parentNode->getPlaceholderNextElement();
+        if (nextNode != NULL) {
+            mMVIface->graphicalAssistApi()->stackBefore(id, nextNode->id());
+        }
+    }
+
+    if (e) {
+        delete e;
+    }
+
+    emit elementCreated(id);
 }
 
-void EditorViewScene::insertNodeIntoEdge(qReal::Id const &insertedNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos)
+void EditorViewScene::insertElementIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos)
 {
-	foreach (QGraphicsItem *item, items(scenePos)) {
-		EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
-		if(edge && edge->isDividable()){// check if item is an edge and the edge is dissectable
-			NodeElement *previouslyConnectedTo = edge->dst();
-			if (previouslyConnectedTo) {//check has edge dst
-				edge->removeLink(previouslyConnectedTo);
-				edge->highlight();
-				previouslyConnectedTo->delEdge(edge);
+    foreach (QGraphicsItem *item, items(scenePos)) {
+        EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
+        if(edge && edge->isDividable()){// check if item is an edge and the edge is dissectable
+            NodeElement *previouslyConnectedFrom = edge->src();
+            NodeElement *previouslyConnectedTo = edge->dst();
+            if (previouslyConnectedTo) {//check has edge dst
+               // edge->removeLink(previouslyConnectedTo);
+                //edge->highlight();
+                //previouslyConnectedTo->delEdge(edge);
+                Id realParentId = (parentId == Id::rootId()) ? mMVIface->rootId() : parentId;
 
-				mMVIface->graphicalAssistApi()->setTo(edge->id(), insertedNodeId);
-				Id const newEdge(edge->id().editor(), edge->id().diagram(), edge->id().element(), QUuid::createUuid().toString());
-				Id realParentId = (parentId == Id::rootId()) ? mMVIface->rootId() : parentId;
+                Id const newEdge1(edge->id().editor(), edge->id().diagram(), edge->id().element(), QUuid::createUuid().toString());
+                mMVIface->graphicalAssistApi()->createElement(realParentId, newEdge1, isFromLogicalModel, "flow1", scenePos);
+                mMVIface->graphicalAssistApi()->setFrom(newEdge1, previouslyConnectedFrom->id());
+                mMVIface->graphicalAssistApi()->setTo(newEdge1, insertedFirstNodeId);
 
-				mMVIface->graphicalAssistApi()->createElement(realParentId, newEdge, isFromLogicalModel, "flow", scenePos);
-				mMVIface->graphicalAssistApi()->setFrom(newEdge, insertedNodeId);
-				mMVIface->graphicalAssistApi()->setTo(newEdge, previouslyConnectedTo->id());
+                Id const newEdge2(edge->id().editor(), edge->id().diagram(), edge->id().element(), QUuid::createUuid().toString());
+                mMVIface->graphicalAssistApi()->createElement(realParentId, newEdge2, isFromLogicalModel, "flow2", scenePos);
+                mMVIface->graphicalAssistApi()->setFrom(newEdge2, insertedLastNodeId);
+                mMVIface->graphicalAssistApi()->setTo(newEdge2, previouslyConnectedTo->id());
 
-				previouslyConnectedTo->connectLinksToPorts();
-				break;
-			}
-		}
-	}
+                mainWindow()->deleteElementFromDiagram(edge->id());
+                previouslyConnectedFrom->connectLinksToPorts();
+                previouslyConnectedTo->connectLinksToPorts();
+                break;
+            }
+        }
+    }
 }
 
 void EditorViewScene::copy()
@@ -584,7 +622,7 @@ void EditorViewScene::pushDataToClipboard(QList<NodeData> const &nodesData, QLis
 	stream << edgesData;
 
 	QMimeData *mimeData = new QMimeData();
-	mimeData->setData("application/x-real-uml-model-data", data);
+    mimeData->setData("application/x-real-uml-model-data", data);
 
 	QClipboard *clipboard = QApplication::clipboard();
 	clipboard->setMimeData(mimeData);
