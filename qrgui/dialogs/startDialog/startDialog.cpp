@@ -76,6 +76,7 @@ void StartDialog::openExistingProject()
 
 void StartDialog::createProjectWithDiagram(const QString &idString)
 {
+	mProjectManager->clearAutosaveFile();
 	mProjectManager->openEmptyWithSuggestToSaveChanges();
 	mMainWindow->createDiagram(idString);
 	forceClose();

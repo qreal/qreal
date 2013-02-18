@@ -182,9 +182,9 @@ private:
 	 */
 	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
 
-	/// List of point ports that belons to mNode.
+	/// List of point ports that belongs to mNode.
 	QList<StatPoint> const mPointPorts;
 
-	/// List of line ports that belons to mNode.
+	/// List of line ports that belongs to mNode.
 	QList<StatLine> const mLinePorts;
 };

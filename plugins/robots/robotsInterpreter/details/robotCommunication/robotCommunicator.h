@@ -32,9 +32,10 @@ signals:
 	void threadSend(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
 	void threadSendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize
 					, inputPort::InputPortEnum const &port);
-	void threadConnect(QString portName);
-	void threadReconnect(QString portName);
+	void threadConnect(QString const &portName);
+	void threadReconnect(QString const &portName);
 	void threadDisconnect();
+	void errorOccured(QString const &message);
 
 	void connected(bool success);
 	void disconnected();
@@ -44,6 +45,7 @@ private slots:
 	void connectedSlot(bool success);
 	void disconnectedSlot();
 	void responseSlot(QObject* addressee, QByteArray const &buffer);
+	void onErrorOccured(QString const &message);
 
 private:
 	QString mPortName;

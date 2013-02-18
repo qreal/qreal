@@ -206,6 +206,14 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		if (nodeElement)
 			nodeElement->alignToGrid();
 	}
+
+	foreach (QGraphicsItem *item, mScene->items()) {
+		NodeElement* node = dynamic_cast<NodeElement*>(item);
+		if (node) {
+			node->adjustLinks();
+		}
+	}
+
 	QAbstractItemView::rowsInserted(parent, start, end);
 }
 

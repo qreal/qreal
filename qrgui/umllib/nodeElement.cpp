@@ -1,17 +1,20 @@
 #include "nodeElement.h"
 #include "../view/editorViewScene.h"
-
+#include <QtCore/QDebug>
+#include <QtCore/QUuid>
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtGui/QMessageBox>
 #include <QtGui/QTextCursor>
 #include <QtGui/QToolTip>
-#include <QtCore/QDebug>
-#include <QtCore/QUuid>
-
 #include <QtGui/QGraphicsDropShadowEffect>
 
 #include <math.h>
+
+#include "nodeElement.h"
+#include "../view/editorViewScene.h"
+#include "../editorPluginInterface/editorInterface.h"
+
 #include "private/resizeHandler.h"
 #include "private/copyHandler.h"
 
@@ -30,6 +33,8 @@ NodeElement::NodeElement(ElementImpl* impl)
 	, mConnectionInProgress(false)
 	, mPlaceholder(NULL)
 	, mHighlightedNode(NULL)
+	, mTimeOfUpdate(0)
+	, mTimer(new QTimer(this))
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -67,10 +72,14 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mGrid = new SceneGridHandler(this);
 	mUmlPortHandler = new UmlPortHandler(this);
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
+
+	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateNodeEdges()));
 }
 
 NodeElement::~NodeElement()
 {
+	highlightEdges();
+
 	foreach (EdgeElement *edge, mEdgeList) {
 		edge->removeLink(this);
 	}
@@ -131,6 +140,7 @@ void NodeElement::setGeometry(QRectF const &geom)
 	foreach (ElementTitle * const title, mTitles) {
 		title->transform(geom);
 	}
+
 }
 
 void NodeElement::setPos(QPointF const &pos)
@@ -144,16 +154,16 @@ void NodeElement::setPos(qreal x, qreal y)
 	setPos(QPointF(x, y));
 }
 
-void NodeElement::adjustLinks()
+void NodeElement::adjustLinks(bool isDragging)
 {
 	foreach (EdgeElement *edge, mEdgeList) {
-		edge->adjustLink();
+		edge->adjustLink(isDragging);
 	}
 
 	foreach (QGraphicsItem *child, childItems()) {
 		NodeElement *element = dynamic_cast<NodeElement*>(child);
 		if (element) {
-			element->adjustLinks();
+			element->adjustLinks(isDragging);
 		}
 	}
 }
@@ -237,7 +247,7 @@ void NodeElement::arrangeLinearPorts() {
 	mPortHandler->arrangeLinearPorts();
 }
 
-void NodeElement::arrangeLinks() {
+void NodeElement::	arrangeLinks() {
 	//Episode I: Home Jumps
 	//qDebug() << "I";
 	foreach (EdgeElement* edge, mEdgeList) {
@@ -284,8 +294,9 @@ void NodeElement::storeGeometry()
 	}
 }
 
-QList<ContextMenuAction*> NodeElement::contextMenuActions()
+QList<ContextMenuAction*> NodeElement::contextMenuActions(const QPointF &pos)
 {
+	Q_UNUSED(pos);
 	QList<ContextMenuAction*> result;
 	result.push_back(&mSwitchGridAction);
 	foreach (ContextMenuAction* action, mBonusContextMenuActions) {
@@ -421,15 +432,16 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	QRectF newContents = mContents;
 	QPointF newPos = mPos;
 
-	scene()->invalidate();
 	if (mDragState == None) {
 		if (!isPort() && (flags() & ItemIsMovable)) {
 			recalculateHighlightedNode(event->scenePos());
 		}
 
-		newPos += (event->scenePos() - scenePos()) - mDragPosition;
+		// it is needed for sendEvent() to every isSelected element thro scene
+		Element::mouseMoveEvent(event);
 		mGrid->mouseMoveEvent(event);
 		alignToGrid();
+		newPos = pos();
 
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
@@ -494,6 +506,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	resize(newContents, newPos);
+	qDebug() << newPos;
 
 	if (isPort()) {
 		mUmlPortHandler->handleMoveEvent(
@@ -504,25 +517,41 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			);
 	}
 
-	arrangeLinks();
+	if (mTimeOfUpdate == 14) {
+		mTimeOfUpdate = 0;
+		foreach (EdgeElement* edge, mEdgeList) {
+			edge->adjustNeighborLinks();
+		}
+		arrangeLinks();
+	} else {
+		mTimeOfUpdate++;
+	}
+	mTimer->start(400);
+
+//	if (mDragState == None) {
+//		alignToGrid();
+//	}
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+	mTimer->stop();
+	mTimeOfUpdate = 0;
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
 	}
 	delUnusedLines();
 
-	if (SettingsManager::value("ActivateGrid").toBool()) {
-		if (isParentSortingContainer()) {
-			alignToGrid();
-		}
+	if (SettingsManager::value("ActivateGrid").toBool() || mSwitchGridAction.isChecked()) {
+		alignToGrid();
 	}
+
 	storeGeometry();
 
-	setVisibleEmbeddedLinkers(true);
+	if (scene() && scene()->selectedItems().size() == 1 && isSelected()) {
+		setVisibleEmbeddedLinkers(true);
+	}
 
 	if (mDragState == None) {
 		Element::mouseReleaseEvent(event);
@@ -536,7 +565,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	// but because of mouseRelease twice triggering we can't do it
 	// This may cause more bugs
 	if (!isPort() && (flags() & ItemIsMovable)) {
-		if (mHighlightedNode != NULL) {
+		if (mHighlightedNode) {
 			NodeElement *newParent = mHighlightedNode;
 			Element *insertBefore = mHighlightedNode->getPlaceholderNextElement();
 			mHighlightedNode->erasePlaceholder(false);
@@ -563,8 +592,19 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		}
 	}
 
+	arrangeLinks();
+	foreach (EdgeElement* edge, mEdgeList) {
+		edge->adjustNeighborLinks();
+		edge->correctArrow();
+		edge->correctInception();
+	}
+	adjustLinks();
+	foreach (EdgeElement* edge, mEdgeList) {
+		edge->setGraphicApiPos();
+		edge->saveConfiguration(QPointF());
+	}
+
 	mDragState = None;
-	setZValue(0);
 }
 
 void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
@@ -653,6 +693,7 @@ void NodeElement::initEmbeddedLinkers()
 void NodeElement::setVisibleEmbeddedLinkers(bool const show)
 {
 	if (show) {
+		setZValue(250);
 		int index = 0;
 		int maxIndex = mEmbeddedLinkers.size();
 		foreach (EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
@@ -661,6 +702,7 @@ void NodeElement::setVisibleEmbeddedLinkers(bool const show)
 			index++;
 		}
 	} else {
+		setZValue(0);
 		foreach (EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
 			embeddedLinker->hide();
 		}
@@ -671,10 +713,9 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 {
 	bool isItemAddedOrDeleted = false;
 	NodeElement *item = dynamic_cast<NodeElement*>(value.value<QGraphicsItem*>());
-
 	switch (change) {
 	case ItemPositionHasChanged:
-		adjustLinks();
+		adjustLinks(true);
 		return value;
 
 	case ItemChildAddedChange:
@@ -707,9 +748,11 @@ void NodeElement::updateData()
 {
 	Element::updateData();
 	if (!mMoving) {
+		mMoving = true;
 		storeGeometry();
+		mMoving = false;
 		QPointF newpos = mGraphicalAssistApi->position(id());
-		QPolygon newpoly = mGraphicalAssistApi->configuration(id()); // why is it empty?
+		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
 		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
 		if (!newpoly.isEmpty()) {
@@ -747,6 +790,11 @@ QPointF const NodeElement::portPos(qreal id) const
 QPointF const NodeElement::nearestPort(QPointF const &location) const
 {
 	return mPortHandler->nearestPort(location);
+}
+
+bool NodeElement::isContainer() const
+{
+	return mElementImpl->isContainer();
 }
 
 int NodeElement::portNumber(qreal id)
@@ -836,7 +884,7 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 				painter->drawLine(QLineF(-8, 0, 0, -8));
 				painter->drawLine(QLineF(-12, 0, 0, -12));
 			} else {
-				painter->drawRect(QRectF(mContents.bottomRight(), QSizeF(4, 4)));
+				painter->drawRect(QRectF(mContents.bottomRight(), QSizeF(-4, -4)));
 			}
 
 			painter->restore();
@@ -911,7 +959,7 @@ void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 {
 	// for non-sorting containers no need for drawing placeholder so just make them marked
 	if (!mElementImpl->isSortingContainer()) {
-		setOpacity(.2);
+		setOpacity(0.2);
 		return;
 	}
 
@@ -1088,7 +1136,7 @@ void NodeElement::setColorRect(bool value)
 	mSelectionNeeded = value;
 }
 
-void NodeElement::checkConnectionsToPort()
+void NodeElement::checkConnectionsToPort() // it is strange method
 {
 	mPortHandler->checkConnectionsToPort();
 }
@@ -1203,8 +1251,15 @@ void NodeElement::setAssistApi(qReal::models::GraphicalModelAssistApi *graphical
 	mPortHandler->setGraphicalAssistApi(graphicalAssistApi);
 }
 
-bool NodeElement::isParentSortingContainer() const {
-	return (mParentNodeElement != NULL) && mParentNodeElement->mElementImpl->isSortingContainer();
+
+void NodeElement::updateNodeEdges()
+{
+	mTimer->stop();
+	mTimeOfUpdate = 0;
+	arrangeLinks();
+	foreach (EdgeElement* edge, mEdgeList) {
+		edge->adjustNeighborLinks();
+	}
 }
 
 void NodeElement::updateShape(QString const &shape) const

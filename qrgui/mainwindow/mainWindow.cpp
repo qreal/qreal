@@ -152,7 +152,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
 	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
-	connect(mUi->actionNewProject, SIGNAL(triggered()), mProjectManager, SLOT(openNewWithDiagram()));
+	connect(mUi->actionNewProject, SIGNAL(triggered()), mStartDialog, SLOT(exec()));
 
 	connect(mUi->actionImport, SIGNAL(triggered()), mProjectManager, SLOT(suggestToImport()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
@@ -405,7 +405,6 @@ void MainWindow::sceneSelectionChanged()
 		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(singleSelected->id());
 		if (index.isValid()) {
 			mUi->graphicalModelExplorer->setCurrentIndex(index);
-			mUi->graphicalModelExplorer->setFocus();
 		}
 	}
 }
@@ -590,6 +589,8 @@ void MainWindow::removeReferences(Id const &id)
 void MainWindow::deleteFromScene()
 {
 	QList<QGraphicsItem *> itemsToDelete = getCurrentTab()->scene()->selectedItems();
+	QList<QGraphicsItem *> itemsToUpdate;
+	QList<QGraphicsItem *> itemsToDeleteNoUpdate;
 	// QGraphicsScene::selectedItems() returns items in no particular order,
 	// so we should handle parent-child relationships manually
 
@@ -598,13 +599,43 @@ void MainWindow::deleteFromScene()
 
 		// delete possible children
 		foreach (QGraphicsItem *child, currentItem->childItems()) {
+			NodeElement* node = dynamic_cast <NodeElement*> (child);
+			if (node) {
+				itemsToDeleteNoUpdate.append(node);
+			}
 			itemsToDelete.removeAll(child);
 			deleteFromScene(child);
+		}
+
+		EdgeElement* edge = dynamic_cast <EdgeElement*> (currentItem);
+		if (edge) {
+			if (edge->src() && !itemsToUpdate.contains(edge->src())) {
+				itemsToUpdate.append(edge->src());
+			}
+			if (edge->dst() && !itemsToUpdate.contains(edge->dst())) {
+				itemsToUpdate.append(edge->dst());
+			}
+		} else {
+			NodeElement* node = dynamic_cast <NodeElement*> (currentItem);
+			if (node) {
+				itemsToDeleteNoUpdate.append(currentItem);
+			}
 		}
 
 		// delete the item itself
 		itemsToDelete.removeAll(currentItem);
 		deleteFromScene(currentItem);
+	}
+
+	// correcting unremoved edges
+	foreach (QGraphicsItem* item, itemsToUpdate) {
+		if (!itemsToDeleteNoUpdate.contains(item)) {
+			NodeElement* node = dynamic_cast <NodeElement*> (item);
+			if (node) {
+				node->arrangeLinks();
+				node->adjustLinks();
+			}
+		}
 	}
 }
 
@@ -849,11 +880,6 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::initSettingsManager()
 {
-	QDir imagesDir(SettingsManager::value("pathToImages").toString());
-	if (!imagesDir.exists()) {
-		SettingsManager::setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
-	}
-
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
 	if (!dir.cd(mTempDir)) {
@@ -1111,6 +1137,11 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 			, tab->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 
 	setShortcuts(tab);
+
+	EditorViewScene *scene = dynamic_cast<EditorViewScene *>(tab->scene());
+	if (scene) {
+		scene->updateEdgesViaNodes();
+	}
 }
 
 void MainWindow::setShortcuts(EditorView * const tab)
@@ -1446,8 +1477,17 @@ void MainWindow::updatePaletteIcons()
 
 void MainWindow::applySettings()
 {
-	getCurrentTab()->invalidateScene();
-	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
+	for (int i = 0; i < mUi->tabs->count(); i++) {
+		EditorView * const tab = static_cast<EditorView *>(mUi->tabs->widget(i));
+		EditorViewScene *scene = dynamic_cast <EditorViewScene *> (tab->scene());
+		if (scene) {
+			if (SettingsManager::value("SquareLine", false).toBool()) {
+				scene->updateEdgeElements();
+			}
+			scene->invalidate();
+		}
+	}
+	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 }
 
 void MainWindow::setBackReference(QPersistentModelIndex const &index, QString const &data)

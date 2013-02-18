@@ -129,7 +129,7 @@ bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &valu
 		modelChanged = false;
 
 	if (modelChanged)
-		dataChanged(index, index);
+		emit dataChanged(index, index);
 
 	return modelChanged;
 }

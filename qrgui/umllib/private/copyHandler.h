@@ -5,6 +5,7 @@
 #pragma once
 
 class NodeElement;
+// class qReal::models::GraphicalModelAssistApi; because warning
 
 namespace qReal {
 namespace models {

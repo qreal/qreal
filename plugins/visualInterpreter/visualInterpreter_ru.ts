@@ -40,7 +40,7 @@
 <context>
     <name>qReal::VisualInterpreterPreferencesPage</name>
     <message>
-        <location filename="visualInterpreterPreferencesPage.cpp" line="32"/>
+        <location filename="visualInterpreterPreferencesPage.cpp" line="31"/>
         <source>Specify directory:</source>
         <translation>Выберите каталог:</translation>
     </message>

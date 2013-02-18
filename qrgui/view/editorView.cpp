@@ -123,7 +123,13 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 	if (event->buttons() & Qt::RightButton) {
 		setDragMode(NoDrag);
 	} else {
-		if (event->buttons() & Qt::LeftButton ) {
+		if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ControlModifier)) {
+			setDragMode(RubberBandDrag);
+			mScene->itemSelectUpdate();
+		/*} else 	if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ShiftModifier)) {
+			setDragMode(ScrollHandDrag); //  (see #615)
+			mScene->itemSelectUpdate();*/
+		} else if (event->buttons() & Qt::LeftButton ) {
 			EdgeElement *newEdgeEl = dynamic_cast<EdgeElement *>(itemAt(event->pos()));
 			if (newEdgeEl == NULL) {
 				setDragMode(RubberBandDrag);
@@ -154,8 +160,13 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 {
 	mWheelPressed  = (event->buttons() & Qt::MidButton);
 	mMouseOldPosition = QPointF();
-	if (!mWheelPressed)
+	if (!mWheelPressed) {
 		QGraphicsView::mousePressEvent(event);
+	}
+	if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ControlModifier)) {
+		setDragMode(RubberBandDrag);
+		mScene->itemSelectUpdate();
+	}
 }
 
 void EditorView::scrollContentsBy(int dx, int dy)
