@@ -67,7 +67,8 @@ public:
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
 	void insertNodeIntoEdge(const qReal::Id &insertedNodeId, const qReal::Id &newParent, bool isFromLogicalModel,QPointF const &scenePos);
-	void itemSelectUpdate();
+    void insertPatternIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos);
+    void itemSelectUpdate();
 
 	/// update (for a beauty) all edges when tab is opening
 	void updateEdgesViaNodes();

@@ -20,7 +20,8 @@ public:
 	QMap<QString, Type*> types() const;
 	QString name() const;
 	QString nodeName() const;
-	QString displayedName() const;
+    QString displayedName() const;
+    QString getGroupsXML();
 	QMap<QString, QStringList> paletteGroups() const;
 	QMap<QString, QString> paletteGroupsDescriptions() const;
 
@@ -36,6 +37,7 @@ private:
 	QString mDiagramNodeName;
 	QString mDiagramDisplayedName;
 	Editor *mEditor;
+    QString mGroupsXML;
 	QMap<QString, QStringList> mPaletteGroups;
 	QMap<QString, QString> mPaletteGroupsDescriptions;
 	QList<ImportSpecification> mImports;

@@ -465,13 +465,45 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 
 	QPointF const position = !newParent ? scenePos : newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
 
-	Id parentId = newParent ? newParent->id() : mMVIface->rootId();
+    Id parentId = newParent ? newParent->id() : mMVIface->rootId();
 
-	//inserting new node into edge
-	Id insertedNodeId = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
-	if (dynamic_cast<NodeElement*>(e)) {
-		insertNodeIntoEdge(insertedNodeId, parentId, isFromLogicalModel, scenePos);
-	}
+    EditorManager const &editor = mMVIface->graphicalAssistApi()->editorManager();
+    if(editor.getPatternNames().contains(id.element())){
+        Pattern const pattern = editor.getPatternByName(id.element());
+        QMap<QString, Id> nodes;
+
+        foreach (groupNode node, pattern.getNodes()){
+            Id const element(id.editor(), id.diagram(), node.type, QUuid::createUuid().toString());
+            QPointF newPosition = QPointF(position.x() + node.position.x(), position.y() + node.position.y());
+            Id newElemId = mMVIface->graphicalAssistApi()->createElement(parentId, element, isFromLogicalModel, "(" + node.type + ")", newPosition);
+            nodes.insert(node.id, newElemId);
+        }
+        foreach (groupEdge edge, pattern.getEdges()){
+            Id const element(id.editor(), id.diagram(), edge.type, QUuid::createUuid().toString());
+            mMVIface->graphicalAssistApi()-> createElement(parentId, element, isFromLogicalModel, "(" + edge.type + ")", QPointF(0,0));
+            mMVIface->graphicalAssistApi()-> setFrom(element, nodes.value(edge.from));
+            mMVIface->graphicalAssistApi()-> setTo(element, nodes.value(edge.to));
+
+            // if element is node then we should look for parent for him
+            Element *e = mWindow->manager()->graphicalObject(nodes.value(edge.to));
+            if (dynamic_cast<NodeElement*>(e)) { // check if e is node
+                    NodeElement *el = dynamic_cast<NodeElement*>(e);
+                    if (el){
+//                    el->connectLinksToPorts();
+                    }
+        }
+        }
+
+        insertPatternIntoEdge(nodes.value(pattern.getInNode()), nodes.value(pattern.getOutNode()), parentId, isFromLogicalModel, scenePos);
+
+    }
+    else{
+        Id newElemId = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
+        //inserting new node into edge
+        if (dynamic_cast<NodeElement*>(e)) {
+            insertNodeIntoEdge(newElemId, parentId, isFromLogicalModel, scenePos);
+        }
+    }
 
 	NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
 	if (parentNode != NULL) {
@@ -512,6 +544,31 @@ void EditorViewScene::insertNodeIntoEdge(qReal::Id const &insertedNodeId, qReal:
 			}
 		}
 	}
+}
+
+void EditorViewScene::insertPatternIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos)
+{
+    foreach (QGraphicsItem *item, items(scenePos)) {
+        EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
+        if(edge && edge->isDividable()){// check if item is an edge and the edge is dissectable
+            NodeElement *previouslyConnectedTo = edge->dst();
+            if (previouslyConnectedTo) {//check has edge dst
+                edge->removeLink(previouslyConnectedTo);
+                previouslyConnectedTo->delEdge(edge);
+
+                mMVIface->graphicalAssistApi()->setTo(edge->id(), insertedFirstNodeId);
+                Id const newEdge(edge->id().editor(), edge->id().diagram(), edge->id().element(), QUuid::createUuid().toString());
+                Id realParentId = (parentId == Id::rootId()) ? mMVIface->rootId() : parentId;
+
+                mMVIface->graphicalAssistApi()->createElement(realParentId, newEdge, isFromLogicalModel, "flow", scenePos);
+                mMVIface->graphicalAssistApi()->setFrom(newEdge, insertedLastNodeId);
+                mMVIface->graphicalAssistApi()->setTo(newEdge, previouslyConnectedTo->id());
+
+                previouslyConnectedTo->connectLinksToPorts();
+                break;
+            }
+        }
+    }
 }
 
 void EditorViewScene::copy()
