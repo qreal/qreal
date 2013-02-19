@@ -365,6 +365,8 @@ bool GraphicType::resolve()
 			foreach (PossibleEdge pEdge,gParent->mPossibleEdges) {
 				mPossibleEdges.append(qMakePair(pEdge.first,qMakePair(pEdge.second.first,name())));
 			}
+			mContains.append(gParent->mContains);
+			mContains.removeDuplicates();
 		}
 	}
 

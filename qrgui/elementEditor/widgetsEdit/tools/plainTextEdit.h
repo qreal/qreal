@@ -66,6 +66,7 @@ private slots:
 
 private:
 	PlainTextEditWidget *mPlainTextEdit;
+	bool mIgnoreNextSignal;
 };
 
 class PlainTextEdit : public AbstractScrollArea

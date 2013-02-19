@@ -51,6 +51,8 @@ void RootProxy::setShapeXml(QString const &shape)
 	QDomElement const docElem = shapeDoc.documentElement();
 	int const width = docElem.attribute("sizex").toInt();
 	int const height = docElem.attribute("sizey").toInt();
-	mWidget->resize(width, height);
+	if (width > 0 && height > 0) {
+		mWidget->resize(width, height);
+	}
 	mWidget->setShape(shapeDoc);
 }

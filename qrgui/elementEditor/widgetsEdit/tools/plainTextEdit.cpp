@@ -22,7 +22,11 @@ PlainTextEditProxy::PlainTextEditProxy(PlainTextEditWidget *plainTextEdit)
 
 void PlainTextEditProxy::textChanged()
 {
-	onPropertyChanged("plainText", QVariant(mPlainTextEdit->toPlainText()));
+	// Same reason as in property editing mechanism
+	if (!mIgnoreNextSignal) {
+		onPropertyChanged("plainText", QVariant(mPlainTextEdit->toPlainText()));
+	}
+	mIgnoreNextSignal = false;
 }
 
 bool PlainTextEditProxy::backgroundVisible() const
@@ -82,6 +86,7 @@ void PlainTextEditProxy::setOverwriteMode(bool needOverwrite)
 
 void PlainTextEditProxy::setPlainText(QString const &plainText)
 {
+	mIgnoreNextSignal = true;
 	mPlainTextEdit->setPlainText(plainText);
 }
 
