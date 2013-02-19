@@ -85,7 +85,7 @@ private:
 	Motor* initMotor(int radius, int speed, long unsigned int degrees, int port, bool isUsed);
 	void countNewCoord();
 	void countBeep();
-	QPair<QPoint, qreal> countPositionAndDirection(inputPort::InputPortEnum const port) const;
+	QPair<QPointF, qreal> countPositionAndDirection(inputPort::InputPortEnum const port) const;
 	void countMotorTurnover();
 
 	QImage printColorSensor(inputPort::InputPortEnum const port) const;

@@ -123,7 +123,7 @@ sensorImplementations::NullEncoderImplementation &NullRobotModelImplementation::
 	return mEncoderC;
 }
 
-details::AbstractTimer * const NullRobotModelImplementation::produceTimer()
+details::AbstractTimer *NullRobotModelImplementation::produceTimer()
 {
 	return new details::NullTimer;
 }

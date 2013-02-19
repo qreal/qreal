@@ -120,19 +120,19 @@ D2ModelWidget *D2RobotModel::createModelWidget()
 	return mD2ModelWidget;
 }
 
-QPair<QPoint, qreal> D2RobotModel::countPositionAndDirection(inputPort::InputPortEnum const port) const
+QPair<QPointF, qreal> D2RobotModel::countPositionAndDirection(inputPort::InputPortEnum const port) const
 {
-	QPoint const position = mSensorsConfiguration.position(port);
+	QPointF const position = mSensorsConfiguration.position(port);
 	qreal direction = mSensorsConfiguration.direction(port);
 	if (mSensorsConfiguration.stickedToItem(port)) {
 		direction += mAngle;
 	}
-	return QPair<QPoint, qreal>(position, direction);
+	return QPair<QPointF, qreal>(position, direction);
 }
 
 int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 {
-	QPair<QPoint, qreal> neededPosDir = countPositionAndDirection(port);
+	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	QPointF sensorPosition(neededPosDir.first);
 	QPainterPath sensorPath;
 	sensorPath.addRect(sensorPosition.x(), sensorPosition.y(), sensorWidth, sensorWidth);
@@ -144,7 +144,7 @@ int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 
 int D2RobotModel::readSonarSensor(inputPort::InputPortEnum const port) const
 {
-	QPair<QPoint, qreal> neededPosDir = countPositionAndDirection(port);
+	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	return mWorldModel.sonarReading(neededPosDir.first, neededPosDir.second);
 }
 
@@ -178,7 +178,7 @@ int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 
 QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
 {
-	QPair<QPoint, qreal> const neededPosDir = countPositionAndDirection(port);
+	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position = neededPosDir.first;
 	qreal const width = sensorWidth / 2.0;
 	QRectF const scanningRect = QRectF(position.x() -  width, position.y() - width
@@ -367,8 +367,12 @@ void D2RobotModel::countNewCoord()
 		deltaX = averageSpeed * Timeline::timeInterval * cos(mAngle * M_PI / 180);
 	}
 
-	mPos.setX(mPos.x() + deltaX);
-	mPos.setY(mPos.y() + deltaY);
+	QPointF const delta(deltaX, deltaY);
+	mPos += delta;
+	mSensorsConfiguration.setPosition(inputPort::port1, mSensorsConfiguration.position(inputPort::port1) + delta);
+	mSensorsConfiguration.setPosition(inputPort::port2, mSensorsConfiguration.position(inputPort::port2) + delta);
+	mSensorsConfiguration.setPosition(inputPort::port3, mSensorsConfiguration.position(inputPort::port3) + delta);
+	mSensorsConfiguration.setPosition(inputPort::port4, mSensorsConfiguration.position(inputPort::port4) + delta);
 
 	if(mAngle > 360) {
 		mAngle -= 360;
@@ -453,9 +457,9 @@ void D2RobotModel::deserialize(QDomElement const &robotElement)
 {
 	QString const positionStr = robotElement.attribute("position", "0:0");
 	QStringList const splittedStr = positionStr.split(":");
-	int const x = static_cast<int>(splittedStr[0].toDouble());
-	int const y = static_cast<int>(splittedStr[1].toDouble());
-	mPos = QPoint(x, y);
+	qreal const x = static_cast<qreal>(splittedStr[0].toDouble());
+	qreal const y = static_cast<qreal>(splittedStr[1].toDouble());
+	mPos = QPointF(x, y);
 
 	mAngle = robotElement.attribute("direction", "0").toDouble();
 

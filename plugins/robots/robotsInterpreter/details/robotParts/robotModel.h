@@ -62,7 +62,7 @@ public:
 
 	void nextBlockAfterInitial(bool success);
 
-	AbstractTimer * const produceTimer();
+	AbstractTimer *produceTimer();
 
 signals:
 	void sensorsConfigured();

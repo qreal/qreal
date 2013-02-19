@@ -47,7 +47,7 @@ QRectF SonarSensorItem::boundingRect() const
 
 QPainterPath SonarSensorItem::scanningRegion() const
 {
-	return mWorldModel.sonarScanningRegion(QPoint());
+	return mWorldModel.sonarScanningRegion(QPointF());
 }
 
 QPainterPath SonarSensorItem::shape() const

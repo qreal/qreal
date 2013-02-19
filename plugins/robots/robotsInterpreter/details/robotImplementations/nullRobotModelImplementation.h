@@ -38,7 +38,7 @@ public:
 	virtual sensorImplementations::NullEncoderImplementation &encoderB();
 	virtual sensorImplementations::NullEncoderImplementation &encoderC();
 
-	virtual AbstractTimer * const produceTimer();
+	virtual AbstractTimer *produceTimer();
 
 private slots:
 	void timerTimeout();

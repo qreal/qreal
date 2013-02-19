@@ -23,10 +23,10 @@ class WorldModel
 {
 public:
 	WorldModel();
-	int sonarReading(QPoint const &position, qreal direction) const;
-	bool touchSensorReading(QPoint const &position, qreal direction, inputPort::InputPortEnum const port);
-	QPainterPath sonarScanningRegion(QPoint const &position, qreal direction, int range = 255) const;
-	QPainterPath sonarScanningRegion(QPoint const &position, int range = 255) const;
+	int sonarReading(QPointF const &position, qreal direction) const;
+	bool touchSensorReading(QPointF const &position, qreal direction, inputPort::InputPortEnum const port);
+	QPainterPath sonarScanningRegion(QPointF const &position, qreal direction, int range = 255) const;
+	QPainterPath sonarScanningRegion(QPointF const &position, int range = 255) const;
 	bool checkCollision(QPainterPath const &robotPath, int stroke = 3) const;
 	QList<WallItem *> const &walls() const;
 	QList<ColorFieldItem *> const &colorFields() const;
@@ -37,11 +37,11 @@ public:
 	void removeColorField(ColorFieldItem* colorField);
 	void clearScene();
 
-	QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture) const;
+	QDomElement serialize(QDomDocument &document, QPointF const &topLeftPicture) const;
 	void deserialize(QDomElement const &element);
 
 private:
-	bool checkSonarDistance(int const distance, QPoint const &position
+	bool checkSonarDistance(int const distance, QPointF const &position
 			, qreal const direction, QPainterPath const &wallPath) const;
 
 	QList<WallItem *> mWalls;

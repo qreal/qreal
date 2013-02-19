@@ -12,19 +12,19 @@ SensorsConfiguration::SensorsConfiguration()
 
 void SensorsConfiguration::setSensor(inputPort::InputPortEnum const &port
 		, sensorType::SensorTypeEnum const &type
-		, QPoint const &position
+		, QPointF const &position
 		, qreal const &direction
 		, bool const sticked)
 {
 	mSensors[port] = SensorInfo(position, direction, type, sticked);
 }
 
-void SensorsConfiguration::setPosition(inputPort::InputPortEnum const &port, QPoint const &position)
+void SensorsConfiguration::setPosition(inputPort::InputPortEnum const &port, QPointF const &position)
 {
 	mSensors[port].setPosition(position);
 }
 
-QPoint SensorsConfiguration::position(inputPort::InputPortEnum const &port) const
+QPointF SensorsConfiguration::position(inputPort::InputPortEnum const &port) const
 {
 	return mSensors[port].position();
 }
@@ -98,9 +98,9 @@ void SensorsConfiguration::deserialize(QDomElement const &element)
 
 		QString const positionStr = sensorNode.attribute("position", "0:0");
 		QStringList const splittedStr = positionStr.split(":");
-		int const x = static_cast<int>(splittedStr[0].toDouble());
-		int const y = static_cast<int>(splittedStr[1].toDouble());
-		QPoint const position = QPoint(x, y);
+		qreal const x = static_cast<qreal>(splittedStr[0].toDouble());
+		qreal const y = static_cast<qreal>(splittedStr[1].toDouble());
+		QPointF const position = QPoint(x, y);
 
 		qreal const direction = sensorNode.attribute("direction", "0").toDouble();
 		bool const sticked = sensorNode.attribute("sticked", "1").toInt() != 0;
@@ -115,7 +115,7 @@ SensorsConfiguration::SensorInfo::SensorInfo()
 {
 }
 
-SensorsConfiguration::SensorInfo::SensorInfo(QPoint const &position
+SensorsConfiguration::SensorInfo::SensorInfo(QPointF const &position
 		, qreal direction
 		, sensorType::SensorTypeEnum const &sensorType
 		, bool const sticked)
@@ -124,12 +124,12 @@ SensorsConfiguration::SensorInfo::SensorInfo(QPoint const &position
 {
 }
 
-QPoint SensorsConfiguration::SensorInfo::position() const
+QPointF SensorsConfiguration::SensorInfo::position() const
 {
 	return mPosition;
 }
 
-void SensorsConfiguration::SensorInfo::setPosition(QPoint const &position)
+void SensorsConfiguration::SensorInfo::setPosition(QPointF const &position)
 {
 	mPosition = position;
 }

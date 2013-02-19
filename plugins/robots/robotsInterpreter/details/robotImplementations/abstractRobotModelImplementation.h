@@ -52,7 +52,7 @@ public:
 	virtual sensorImplementations::AbstractEncoderImplementation &encoderB() = 0;
 	virtual sensorImplementations::AbstractEncoderImplementation &encoderC() = 0;
 
-	virtual AbstractTimer * const produceTimer() = 0;
+	virtual AbstractTimer *produceTimer() = 0;
 
 	virtual void configureSensor(sensorType::SensorTypeEnum const &sensorType
 			, inputPort::InputPortEnum const &port);

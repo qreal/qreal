@@ -41,7 +41,9 @@ void Timeline::onFrameFinished()
 {
 	emit nextFrame();
 	mFrameStartTimestamp = QDateTime::currentMSecsSinceEpoch();
-	mTimer.start();
+	if (!mTimer.isActive()) {
+		mTimer.start();
+	}
 }
 
 int Timeline::speedFactor() const
@@ -51,5 +53,6 @@ int Timeline::speedFactor() const
 
 void Timeline::setSpeedFactor(int factor)
 {
+	onFrameFinished();
 	mSpeedFactor = factor;
 }

@@ -13,7 +13,7 @@ WorldModel::WorldModel()
 {
 }
 
-int WorldModel::sonarReading(QPoint const &position, qreal direction) const
+int WorldModel::sonarReading(QPointF const &position, qreal direction) const
 {
 	int maxSonarRangeCms = 255;
 	int minSonarRangeCms = 0;
@@ -39,14 +39,14 @@ int WorldModel::sonarReading(QPoint const &position, qreal direction) const
 	return currentRangeInCm;
 }
 
-bool WorldModel::checkSonarDistance(int const distance, QPoint const &position
+bool WorldModel::checkSonarDistance(int const distance, QPointF const &position
 		, qreal const direction, QPainterPath const &wallPath) const
 {
 	QPainterPath const rayPath = sonarScanningRegion(position, direction, distance);
 	return rayPath.intersects(wallPath);
 }
 
-bool WorldModel::touchSensorReading(QPoint const &position, qreal direction, inputPort::InputPortEnum const port)
+bool WorldModel::touchSensorReading(QPointF const &position, qreal direction, inputPort::InputPortEnum const port)
 {
 	Q_UNUSED(direction)
 
@@ -63,12 +63,12 @@ bool WorldModel::touchSensorReading(QPoint const &position, qreal direction, inp
 	return wallPath.intersects(robotPath);
 }
 
-QPainterPath WorldModel::sonarScanningRegion(QPoint const &position, int range) const
+QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, int range) const
 {
 	return sonarScanningRegion(position, 0, range);
 }
 
-QPainterPath WorldModel::sonarScanningRegion(QPoint const &position, qreal direction, int range) const
+QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, qreal direction, int range) const
 {
 	qreal const rayWidthDegrees = 10.0;
 	qreal const rangeInPixels = range * pixelsInCm;
@@ -142,21 +142,21 @@ QPainterPath WorldModel::buildWallPath() const
 	return wallPath;
 }
 
-QDomElement WorldModel::serialize(QDomDocument &document, QPoint const &topLeftPicture) const
+QDomElement WorldModel::serialize(QDomDocument &document, QPointF const &topLeftPicture) const
 {
 	QDomElement result = document.createElement("world");
 
 	QDomElement walls = document.createElement("walls");
 	result.appendChild(walls);
 	foreach (WallItem *wall, mWalls) {
-		QDomElement wallNode = wall->serialize(document, topLeftPicture);
+		QDomElement wallNode = wall->serialize(document, topLeftPicture.toPoint());
 		walls.appendChild(wallNode);
 	}
 
 	QDomElement colorFields = document.createElement("colorFields");
 	result.appendChild(colorFields);
 	foreach (ColorFieldItem *colorField, mColorFields) {
-		QDomElement colorFiedlNode = colorField->serialize(document, topLeftPicture);
+		QDomElement colorFiedlNode = colorField->serialize(document, topLeftPicture.toPoint());
 		colorFields.appendChild(colorFiedlNode);
 	}
 

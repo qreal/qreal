@@ -240,7 +240,7 @@ void RobotModel::nextBlockAfterInitial(bool success)
 	emit goToNextBlock(success);
 }
 
-AbstractTimer * const RobotModel::produceTimer()
+AbstractTimer *RobotModel::produceTimer()
 {
 	return mRobotImpl->produceTimer();
 }
