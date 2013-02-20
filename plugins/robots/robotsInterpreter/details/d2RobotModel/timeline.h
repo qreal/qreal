@@ -37,7 +37,7 @@ signals:
 
 private slots:
 	void onTimer();
-	void onFrameFinished();
+	void gotoNextFrame();
 
 private:
 	QTimer mTimer;

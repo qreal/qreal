@@ -10,13 +10,12 @@ Timeline::Timeline(QObject *parent)
 	, mCyclesCount(0)
 {
 	connect(&mTimer, SIGNAL(timeout()), this, SLOT(onTimer()));
-
 	mTimer.setInterval(timeInterval);
 }
 
 void Timeline::start()
 {
-	onFrameFinished();
+	gotoNextFrame();
 }
 
 void Timeline::onTimer()
@@ -30,14 +29,14 @@ void Timeline::onTimer()
 				- mFrameStartTimestamp);
 		int const pauseBeforeFrameEnd = frameLength - msFromFrameStart;
 		if (pauseBeforeFrameEnd > 0) {
-			QTimer::singleShot(pauseBeforeFrameEnd - 1, this, SLOT(onFrameFinished()));
+			QTimer::singleShot(pauseBeforeFrameEnd - 1, this, SLOT(gotoNextFrame()));
 		} else {
-			onFrameFinished();
+			gotoNextFrame();
 		}
 	}
 }
 
-void Timeline::onFrameFinished()
+void Timeline::gotoNextFrame()
 {
 	emit nextFrame();
 	mFrameStartTimestamp = QDateTime::currentMSecsSinceEpoch();
@@ -53,6 +52,6 @@ int Timeline::speedFactor() const
 
 void Timeline::setSpeedFactor(int factor)
 {
-	onFrameFinished();
+	gotoNextFrame();
 	mSpeedFactor = factor;
 }

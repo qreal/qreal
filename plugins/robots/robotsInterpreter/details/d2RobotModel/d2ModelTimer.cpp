@@ -2,7 +2,7 @@
 
 using namespace qReal::interpreters::robots::details::d2Model;
 
-D2ModelTimer::D2ModelTimer(Timeline *timeline)
+D2ModelTimer::D2ModelTimer(Timeline const *timeline)
 	: mTimeline(timeline), mTimeToWait(0)
 	, mListening(false), mTimePast(0)
 {

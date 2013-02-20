@@ -24,8 +24,8 @@ D2RobotModel::D2RobotModel(QObject *parent)
 		, mNeedSync(false)
 {
 	mAngle = 0;
-	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()));
-	connect(mTimeline, SIGNAL(nextFrame()), this, SLOT(nextFragment()));
+	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()), Qt::UniqueConnection);
+	connect(mTimeline, SIGNAL(nextFrame()), this, SLOT(nextFragment()), Qt::UniqueConnection);
 	initPosition();
 }
 
@@ -313,6 +313,7 @@ void D2RobotModel::countBeep()
 
 void D2RobotModel::countNewCoord()
 {
+
 	Motor *motor1 = mMotorA;
 	Motor *motor2 = mMotorB;
 
@@ -441,7 +442,7 @@ void D2RobotModel::setSpeedFactor(qreal speedMul)
 
 QPointF D2RobotModel::robotPos()
 {
-	return this->mPos;
+	return mPos;
 }
 
 void D2RobotModel::serialize(QDomDocument &target)
