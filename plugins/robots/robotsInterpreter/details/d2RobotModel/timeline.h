@@ -18,8 +18,8 @@ class Timeline : public QObject
 	Q_OBJECT
 
 public:
-	static const int timeInterval = 2; // one cicle length
-	static const int fps = 25; // frames per second
+	static const int timeInterval = 2; // one cycle length
+	static const int fps = 28; // frames per second
 	static const int frameLength = 1000 / fps;
 
 	explicit Timeline(QObject *parent = 0);
@@ -28,7 +28,7 @@ public:
 
 public slots:
 	void start();
-	// Speed factor is also cicles per frame count
+	// Speed factor is also cycles per frame count
 	void setSpeedFactor(int factor);
 
 signals:
@@ -40,6 +40,9 @@ private slots:
 	void gotoNextFrame();
 
 private:
+	static const int realTimeInterval = 6;
+	static const int ticksPerCycle = 3;
+
 	QTimer mTimer;
 	int mSpeedFactor;
 	int mCyclesCount;
