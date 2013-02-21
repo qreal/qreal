@@ -1,4 +1,6 @@
+#include <QCoreApplication>
 #include <QtGui/QAction>
+
 #include "interpreter.h"
 
 #include "details/autoconfigurer.h"
@@ -254,6 +256,7 @@ void Interpreter::addThread(details::Thread * const thread)
 	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 	connect(thread, SIGNAL(newThread(details::blocks::Block*const)), this, SLOT(newThread(details::blocks::Block*const)));
 
+	QCoreApplication::processEvents();
 	thread->interpret();
 }
 

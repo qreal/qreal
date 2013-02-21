@@ -26,6 +26,7 @@ void StylusItem::addLine(qreal x2, qreal y2)
 	line->setBrush(mBrush);
 	line->setSerializeName(QString("stylusLine"));
 	mAbstractListLine.push_back(line);
+	recalculateProperties();
 	mTmpX1 = mX2;
 	mTmpY1 = mY2;
 }
@@ -37,7 +38,7 @@ QPainterPath StylusItem::shape() const
 
 QRectF StylusItem::boundingRect() const
 {
-	return mStylusImpl.boundingRect(mAbstractListLine);
+	return mBoundingRect;
 }
 
 void StylusItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -105,6 +106,7 @@ QDomElement StylusItem::serialize(QDomDocument &document, QPoint const &topLeftP
 void StylusItem::deserialize(QDomElement const &element)
 {
 	mAbstractListLine.clear();
+	recalculateProperties();
 
 	readPenBrush(element);
 	QDomNodeList stylusAttributes = element.childNodes();
@@ -114,6 +116,7 @@ void StylusItem::deserialize(QDomElement const &element)
 					LineItem* line = new LineItem(QPointF(0, 0), QPointF(0, 0));
 					line->deserialize(type);
 					mAbstractListLine.append(line);
+					recalculateProperties();
 			}
 			else
 				Tracer::debug(tracer::d2Model, "StylusItem::deserialize", "Incorrect stylus tag");
@@ -123,4 +126,9 @@ void StylusItem::deserialize(QDomElement const &element)
 void StylusItem::resizeItem(QGraphicsSceneMouseEvent *event)
 {
 	mStylusImpl.resizeItem(event);
+}
+
+void StylusItem::recalculateProperties()
+{
+	mBoundingRect = mStylusImpl.boundingRect(mAbstractListLine);
 }

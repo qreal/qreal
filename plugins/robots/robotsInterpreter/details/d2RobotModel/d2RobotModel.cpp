@@ -132,12 +132,16 @@ QPair<QPointF, qreal> D2RobotModel::countPositionAndDirection(inputPort::InputPo
 
 int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 {
+	if (mSensorsConfiguration.type(port) != sensorType::touchBoolean
+			&& mSensorsConfiguration.type(port) != sensorType::touchRaw)
+	{
+		return touchSensorNotPressedSignal;
+	}
 	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	QPointF sensorPosition(neededPosDir.first);
 	QPainterPath sensorPath;
 	sensorPath.addRect(sensorPosition.x(), sensorPosition.y(), sensorWidth, sensorWidth);
 	bool const res = mWorldModel.checkCollision(sensorPath, 6);
-	// TODO: Add checks of sensor type.
 
 	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
 }
@@ -150,7 +154,7 @@ int D2RobotModel::readSonarSensor(inputPort::InputPortEnum const port) const
 
 int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 {
-	QImage image = printColorSensor(port);
+	QImage const image = printColorSensor(port);
 	QHash<unsigned long, int> countsColor;
 
 	unsigned long* data = (unsigned long*) image.bits();
@@ -178,6 +182,9 @@ int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 
 QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
 {
+	if (mSensorsConfiguration.type(port) == sensorType::unused) {
+		return QImage();
+	}
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position = neededPosDir.first;
 	qreal const width = sensorWidth / 2.0;
@@ -187,16 +194,16 @@ QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
 	QPainter painter(&image);
 
-	QBrush brush(Qt::SolidPattern);
-	brush.setColor(Qt::white);
-	painter.setBrush(brush);
-	painter.setPen(QPen(Qt::black));
-	painter.drawRect(mD2ModelWidget->scene()->itemsBoundingRect().adjusted(-width, -width, width, width));
+//	QBrush brush(Qt::SolidPattern);
+//	brush.setColor(Qt::white);
+//	painter.setBrush(brush);
+//	painter.setPen(QPen(Qt::black));
+//	painter.drawRect(mD2ModelWidget->scene()->itemsBoundingRect().adjusted(-width, -width, width, width));
 
 	mD2ModelWidget->setSensorVisible(port, false);
-	mD2ModelWidget->setRobotVisible(false);
+//	mD2ModelWidget->setRobotVisible(false);
 	mD2ModelWidget->scene()->render(&painter, QRectF(), scanningRect);
-	mD2ModelWidget->setRobotVisible(true);
+//	mD2ModelWidget->setRobotVisible(true);
 	mD2ModelWidget->setSensorVisible(port, true);
 
 	return image;
