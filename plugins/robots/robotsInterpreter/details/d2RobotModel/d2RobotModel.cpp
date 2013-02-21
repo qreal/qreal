@@ -194,16 +194,14 @@ QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
 	QPainter painter(&image);
 
-//	QBrush brush(Qt::SolidPattern);
-//	brush.setColor(Qt::white);
-//	painter.setBrush(brush);
-//	painter.setPen(QPen(Qt::black));
-//	painter.drawRect(mD2ModelWidget->scene()->itemsBoundingRect().adjusted(-width, -width, width, width));
+	QBrush brush(Qt::SolidPattern);
+	brush.setColor(Qt::white);
+	painter.setBrush(brush);
+	painter.setPen(QPen(Qt::black));
+	painter.drawRect(mD2ModelWidget->scene()->itemsBoundingRect().adjusted(-width, -width, width, width));
 
 	mD2ModelWidget->setSensorVisible(port, false);
-//	mD2ModelWidget->setRobotVisible(false);
 	mD2ModelWidget->scene()->render(&painter, QRectF(), scanningRect);
-//	mD2ModelWidget->setRobotVisible(true);
 	mD2ModelWidget->setSensorVisible(port, true);
 
 	return image;
@@ -377,10 +375,6 @@ void D2RobotModel::countNewCoord()
 
 	QPointF const delta(deltaX, deltaY);
 	mPos += delta;
-	mSensorsConfiguration.setPosition(inputPort::port1, mSensorsConfiguration.position(inputPort::port1) + delta);
-	mSensorsConfiguration.setPosition(inputPort::port2, mSensorsConfiguration.position(inputPort::port2) + delta);
-	mSensorsConfiguration.setPosition(inputPort::port3, mSensorsConfiguration.position(inputPort::port3) + delta);
-	mSensorsConfiguration.setPosition(inputPort::port4, mSensorsConfiguration.position(inputPort::port4) + delta);
 
 	if(mAngle > 360) {
 		mAngle -= 360;
