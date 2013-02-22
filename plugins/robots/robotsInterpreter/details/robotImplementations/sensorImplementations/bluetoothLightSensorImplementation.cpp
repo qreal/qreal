@@ -36,12 +36,10 @@ void BluetoothLightSensorImplementation::read()
 	mRobotCommunicationInterface->send(this, command, 18);
 }
 
-#include<QDebug>
 void BluetoothLightSensorImplementation::sensorSpecificProcessResponse(QByteArray const &reading)
 {
 	mState = idle;
 	int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
 	Tracer::debug(tracer::sensors, "BluetoothLightSensorImplementation::sensorSpecificProcessResponse", QString::number(sensorValue));
-	qDebug() << sensorValue;
 	emit response(sensorValue);
 }
