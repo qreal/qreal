@@ -142,7 +142,9 @@ void SensorItem::setRotater(Rotater *rotater)
 
 void SensorItem::checkSelection()
 {
-	mRotater->setVisible(isSelected());
+	if (mRotater) {
+		mRotater->setVisible(isSelected());
+	}
 }
 
 void SensorItem::addStickyItem(QGraphicsItem *item)
