@@ -520,16 +520,6 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
     emit elementCreated(id);
 }
 
-NodeElement* EditorViewScene::getNodeById(qReal::Id const &itemId){
-    foreach (QGraphicsItem *item, items()) {
-        NodeElement *node = dynamic_cast<NodeElement*>(item);
-        if (node && node->id() == itemId){
-            return node;
-        }
-    }
-    return NULL;
-}//*/
-
 void EditorViewScene::insertElementIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos)
 {
     foreach (QGraphicsItem *item, items(scenePos)) {
@@ -555,7 +545,12 @@ void EditorViewScene::insertElementIntoEdge(qReal::Id const &insertedFirstNodeId
 
 
               previouslyConnectedTo->setPos(getNodeById(insertedLastNodeId)->pos().rx(), getNodeById(insertedLastNodeId)->pos().ry() + 100);
-//              NodeElement *insertedLastNode = newEdg;
+              moveDownFromElem(previouslyConnectedTo);
+              //                QList<NodeElement*> list= getDest(previouslyConnectedTo);
+//                list.at(0)->setPos(previouslyConnectedTo->pos().rx(), previouslyConnectedTo->pos().ry() + 100);
+//                list.at(1)->setPos(previouslyConnectedTo->pos().rx(), previouslyConnectedTo->pos().ry() + 100);
+
+              //              NodeElement *insertedLastNode = newEdg;
 
 //              NodeElement *previouslyConnectedFrom = edge->src();
 //              NodeElement *previouslyConnectedTo = edge->dst();
@@ -572,25 +567,37 @@ void EditorViewScene::insertElementIntoEdge(qReal::Id const &insertedFirstNodeId
 }
 
 
-/*
-void EditorViewScene::moveDownFromElem(QPoint position, NodeElement node, QList<NodeElement> moved){
-    QList<NodeElement> destinations = getDest(node);
-    for (int i = 0; i < destinations.length(); i++){
-        if (!moved.contains(destinations.at(i))){// and about position
-            QPoint newposition = new QPoint(position.x(), position.y + 100);
-            destinations.at(i).setPos(newposition);
-            previouslyConnectedTo->setPos(getNodeById(newEdge2)->pos().rx() + 100, getNodeById(newEdge2)->pos().ry() + 100);
 
-            moved.append(destinations.at(i));
-            moveDownFromElem(newposition, destinations.at(i), moved);
-        }
+void EditorViewScene::moveDownFromElem(NodeElement* node){ //QList<NodeElement*> moved){
+    QList<NodeElement*> destinations = getDest(node);
+    for (int i = 0; i < destinations.length(); i++){
+ //       if (!moved.contains(destinations.at(i))){// and about position
+ //           QPointF* newposition = new QPointF(position.x(), position.y() + 100);
+
+            destinations.at(i)->setPos(node->pos().x(), node->pos().y() + 100);
+//            moved.append(destinations.at(i));
+            moveDownFromElem(destinations.at(i));//, moved);
+ //       }
     }
 }
+//*/
 
-QList<NodeElement> EditorViewScene::getDest(NodeElement node){
-    QList<NodeElement> list;
-    foreach (EdgeElement *edge, node.getEdges()) {
-        if (edge->src() == node){
+
+
+NodeElement* EditorViewScene::getNodeById(qReal::Id const &itemId){
+    foreach (QGraphicsItem *item, items()) {
+        NodeElement *node = dynamic_cast<NodeElement*>(item);
+        if (node && node->id() == itemId){
+            return node;
+        }
+    }
+    return NULL;
+}//*/
+
+QList<NodeElement*> EditorViewScene::getDest(NodeElement *node){
+    QList<NodeElement*> list;
+    foreach (EdgeElement *edge, node->getEdges()) {
+        if (edge->src()->id() == node->id()){
             list.append(edge->dst());
         }
     }

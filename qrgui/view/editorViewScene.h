@@ -68,8 +68,8 @@ public:
 
     void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos);
 
-//    QList<NodeElement> getDest(NodeElement node);
-//    void moveDownFromElem(QPoint position, NodeElement node, QList<NodeElement> moved);
+    QList<NodeElement*> getDest(NodeElement* node);
+    void moveDownFromElem(NodeElement* node); //QList<NodeElement*> moved);
     NodeElement* getNodeById(qReal::Id const &itemId);
     void itemSelectUpdate();
 
