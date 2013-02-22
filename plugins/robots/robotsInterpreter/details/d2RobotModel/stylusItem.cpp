@@ -109,12 +109,14 @@ void StylusItem::deserialize(QDomElement const &element)
 	recalculateProperties();
 
 	readPenBrush(element);
+	mPen.setCapStyle(Qt::RoundCap);
 	QDomNodeList stylusAttributes = element.childNodes();
 	for (unsigned i = 0; i < stylusAttributes.length(); ++i) {
 			QDomElement type = stylusAttributes.at(i).toElement();
 			if (type.tagName() == "stylusLine") {
 					LineItem* line = new LineItem(QPointF(0, 0), QPointF(0, 0));
 					line->deserialize(type);
+					line->setPen(mPen);
 					mAbstractListLine.append(line);
 					recalculateProperties();
 			}
