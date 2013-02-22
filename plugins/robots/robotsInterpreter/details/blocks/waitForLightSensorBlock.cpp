@@ -37,25 +37,22 @@ void WaitForLightSensorBlock::run()
 void WaitForLightSensorBlock::responseSlot(int reading)
 {
 	int const targetPercents = evaluate("Percents").toInt();
+	reading = reading * 100 / 1023;
 
 	QString const sign = stringProperty("Sign");
-	if ((sign == "равно") && (reading != targetPercents)) {
+	if ((sign == QString::fromUtf8("равно")) && (reading != targetPercents)) {
 		stop();
 	}
-	if ((sign == "больше") && (reading <= targetPercents)) {
+	if ((sign == QString::fromUtf8("больше")) && (reading <= targetPercents)) {
 		stop();
 	}
-	if ((sign == "меньше") && (reading >= targetPercents)) {
+	if ((sign == QString::fromUtf8("меньше")) && (reading >= targetPercents)) {
 		stop();
 	}
-	if ((sign == "не меньше") && (reading < targetPercents)) {
+	if ((sign == QString::fromUtf8("не меньше")) && (reading < targetPercents)) {
 		stop();
 	}
-	if ((sign == "не больше") && (reading > targetPercents)) {
-		stop();
-	}
-
-	if (targetPercents < reading) {
+	if ((sign == QString::fromUtf8("не больше")) && (reading > targetPercents)) {
 		stop();
 	}
 }
