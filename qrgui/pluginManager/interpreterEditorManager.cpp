@@ -11,6 +11,7 @@
 #include "../../qrkernel/exception/exception.h"
 #include "interpreterElementImpl.h"
 #include "../../qrutils/outFile.h"
+#include "../mainwindow/mainWindow.h"
 
 using namespace qReal;
 using namespace utils;
@@ -714,6 +715,23 @@ void InterpreterEditorManager::updateShape(Id const &id, QString const &graphics
 	if (repoAndMetaId.second.element() == "MetaEntityNode") {
 		repoAndMetaId.first->setProperty(repoAndMetaId.second, "shape", graphics);
 	}
+}
+
+void InterpreterEditorManager::deleteElement(MainWindow *mainWindow, Id const &id) const
+{
+	QPair<qrRepo::RepoApi*, Id> repoAndMetaId = getRepoAndMetaId(id);
+	qrRepo::RepoApi * const repo = repoAndMetaId.first;
+	Id const metaId = repoAndMetaId.second;
+	IdList logicalIdList = mainWindow->models()->logicalRepoApi().logicalElements(id.type());
+	foreach (Id logicalId, logicalIdList) {
+		QModelIndex index = mainWindow->models()->logicalModelAssistApi().indexById(logicalId);
+			mainWindow->models()->logicalModel()->removeRow(index.row(), index.parent());
+	}
+	foreach (Id link, repo->links(metaId)) {
+		repo->removeElement(link);
+	}
+	repo->removeChild(repo->parent(metaId), metaId);
+	repo->removeElement(metaId);
 }
 
 //unsupported method

@@ -89,6 +89,7 @@ namespace qReal {
 		IdList getChildren(Id const &parent) const;
 		QString getShape(Id const &id) const;
 		void updateShape(Id const &id, QString const &graphics) const;
+		void deleteElement(MainWindow *mainWindow, Id const &id) const;
 	private:
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;

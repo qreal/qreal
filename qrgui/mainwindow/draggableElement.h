@@ -44,6 +44,8 @@ public:
 private slots:
 	void changePropertiesPaletteActionTriggered();
 	void changeAppearancePaletteActionTriggered();
+	void deleteElementPaletteActionTriggered();
+	void deleteElement();
 private:
 	Id mId;
 	QIcon mIcon;
@@ -54,6 +56,7 @@ private:
 	virtual void dragEnterEvent(QDragEnterEvent *event);
 	virtual void dropEvent(QDropEvent *event);
 	virtual void mousePressEvent(QMouseEvent *event);
+	Id mDeletedElementId;
 };
 }
 }

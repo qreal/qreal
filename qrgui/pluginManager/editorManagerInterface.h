@@ -17,6 +17,7 @@
 class Element;
 
 namespace qReal {
+class MainWindow;
 class EditorManagerInterface
 {
 public:
@@ -78,6 +79,7 @@ public:
 	virtual IdList getChildren(Id const &parent) const = 0;
 	virtual QString getShape(Id const &id) const = 0;
 	virtual void updateShape(Id const &id, QString const &graphics) const = 0;
+	virtual void deleteElement(MainWindow *mainWindow, Id const &id) const = 0;
 	//unsupported methods:
 	virtual QStringList paletteGroups(Id const &editor, Id const &diagram) const = 0;
 	virtual QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const = 0;

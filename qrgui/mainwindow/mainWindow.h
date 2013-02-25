@@ -116,6 +116,7 @@ public:
 
 	ProxyEditorManager *proxyManager();
 	void loadMetamodel();
+	void loadPlugins();
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -232,7 +233,7 @@ private:
 	/// @param tab Tab to be initialized with shortcuts
 	void setShortcuts(EditorView * const tab);
 
-	void loadPlugins();
+
 
 	void registerMetaTypes();
 

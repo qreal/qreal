@@ -243,6 +243,11 @@ void ProxyEditorManager::updateShape(Id const &id, QString const &graphics) cons
 	mProxyManager->updateShape(id, graphics);
 }
 
+void ProxyEditorManager::deleteElement(MainWindow *mainWindow, Id const &id) const
+{
+	mProxyManager->deleteElement(mainWindow, id);
+}
+
 //unsupported methods:
 QStringList ProxyEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {
