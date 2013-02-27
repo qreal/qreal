@@ -30,7 +30,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../robotsInterpreter.qrc">
-       <normaloff>:/icons/ruler.png</normaloff>:/icons/ruler.png</iconset>
+       <normaloff>:/icons/2d_ruler.png</normaloff>:/icons/2d_ruler.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -65,7 +65,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../robotsInterpreter.qrc">
-       <normaloff>:/icons/wall.png</normaloff>:/icons/wall.png</iconset>
+       <normaloff>:/icons/2d_wall.png</normaloff>:/icons/2d_wall.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -447,7 +447,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../robotsInterpreter.qrc">
-       <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
+       <normaloff>:/icons/2d_save.png</normaloff>:/icons/2d_save.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -473,7 +473,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../robotsInterpreter.qrc">
-       <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
+       <normaloff>:/icons/2d_open.png</normaloff>:/icons/2d_open.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -502,7 +502,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../robotsInterpreter.qrc">
-       <normaloff>:/icons/hand.png</normaloff>:/icons/hand.png</iconset>
+       <normaloff>:/icons/2d_hand.png</normaloff>:/icons/2d_hand.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -528,7 +528,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../robotsInterpreter.qrc">
-       <normaloff>:/icons/multiselection.png</normaloff>:/icons/multiselection.png</iconset>
+       <normaloff>:/icons/2d_multiselection.png</normaloff>:/icons/2d_multiselection.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -554,7 +554,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../robotsInterpreter.qrc">
-       <normaloff>:/icons/target.png</normaloff>:/icons/target.png</iconset>
+       <normaloff>:/icons/2d_target.png</normaloff>:/icons/2d_target.png</iconset>
      </property>
      <property name="iconSize">
       <size>

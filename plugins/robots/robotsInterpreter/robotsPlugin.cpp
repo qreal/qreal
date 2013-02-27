@@ -36,25 +36,25 @@ RobotsPlugin::~RobotsPlugin()
 
 void RobotsPlugin::initActions()
 {
-	m2dModelAction = new QAction(QObject::tr("2d model"), NULL);
+	m2dModelAction = new QAction(QIcon(":/icons/kcron.png"), QObject::tr("2d model"), NULL);
 	ActionInfo d2ModelActionInfo(m2dModelAction, "interpreters", "tools");
 	QObject::connect(m2dModelAction, SIGNAL(triggered()), this, SLOT(show2dModel()));
 
-	mRunAction = new QAction(QObject::tr("Run"), NULL);
+	mRunAction = new QAction(QIcon(":/icons/robots_run.png"), QObject::tr("Run"), NULL);
 	ActionInfo runActionInfo(mRunAction, "interpreters", "tools");
 	QObject::connect(mRunAction, SIGNAL(triggered()), &mInterpreter, SLOT(interpret()));
 
-	mStopRobotAction = new QAction(QObject::tr("Stop robot"), NULL);
+	mStopRobotAction = new QAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), NULL);
 	ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
 	QObject::connect(mStopRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(stopRobot()));
 
-	mConnectToRobotAction = new QAction(QObject::tr("Connect to robot"), NULL);
+	mConnectToRobotAction = new QAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), NULL);
 	mConnectToRobotAction->setCheckable(true);
 	ActionInfo connectToRobotActionInfo(mConnectToRobotAction, "interpreters", "tools");
 	mInterpreter.setConnectRobotAction(mConnectToRobotAction);
 	QObject::connect(mConnectToRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(connectToRobot()));
 
-	mRobotSettingsAction = new QAction(QObject::tr("Robot settings"), NULL);
+	mRobotSettingsAction = new QAction(QIcon(":/icons/robots_settings.png"), QObject::tr("Robot settings"), NULL);
 	ActionInfo robotSettingsActionInfo(mRobotSettingsAction, "interpreters", "tools");
 	QObject::connect(mRobotSettingsAction, SIGNAL(triggered()), this, SLOT(showRobotSettings()));
 
