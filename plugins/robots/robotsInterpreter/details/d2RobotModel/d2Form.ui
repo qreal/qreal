@@ -634,7 +634,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Stop program (Enter)</string>
+         <string>Stop program (Esc)</string>
         </property>
         <property name="text">
          <string/>
