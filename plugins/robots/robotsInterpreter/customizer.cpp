@@ -45,20 +45,3 @@ QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *conten
 	dock->setWidget(content);
 	return dock;
 }
-
-void Customizer::customizeScene(qReal::SceneCustomizationInterface *sceneCustomizer)
-{
-	mSceneCustomizer = sceneCustomizer;
-	resetTitlesVisibility();
-}
-
-void Customizer::rereadSettings()
-{
-	resetTitlesVisibility();
-}
-
-void Customizer::resetTitlesVisibility()
-{
-	bool const titlesVisible = qReal::SettingsManager::value("showTitlesForRobots").toBool();
-	mSceneCustomizer->setTitlesVisible(titlesVisible);
-}

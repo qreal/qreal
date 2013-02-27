@@ -79,8 +79,10 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 			, configurator.logicalModelApi()
 			, configurator.mainWindowInterpretersInterface());
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
+	mSceneCustomizer = &configurator.sceneCustomizer();
 	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer());
-	connect(mRobotSettingsPage, SIGNAL(saved()), &mCustomizer, SLOT(rereadSettings()));
+	rereadSettings();
+	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing done");
 }
 
@@ -172,4 +174,15 @@ interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produce
 	connect(result, SIGNAL(saved()), mRobotSettingsPage, SLOT(refreshPorts()));
 	mInterpreter.connectSensorConfigurer(result);
 	return result;
+}
+
+void RobotsPlugin::rereadSettings()
+{
+	setTitlesVisibility();
+}
+
+void RobotsPlugin::setTitlesVisibility()
+{
+	bool const titlesVisible = qReal::SettingsManager::value("showTitlesForRobots").toBool();
+	mSceneCustomizer->setTitlesVisible(titlesVisible);
 }

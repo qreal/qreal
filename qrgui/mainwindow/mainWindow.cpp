@@ -1543,6 +1543,7 @@ void MainWindow::initToolPlugins()
 			, mModels->logicalModelAssistApi()
 			, *this
 			, *mProjectManager
+			, *mSceneCustomizer
 			));
 
 	QList<ActionInfo> const actions = mToolManager.actions();
@@ -1641,7 +1642,6 @@ void MainWindow::initToolManager()
 		setWindowIcon(customizer->applicationIcon());
 		setVersion(customizer->productVersion());
 		customizer->customizeDocks(this);
-		customizer->customizeScene(mSceneCustomizer);
 	}
 }
 
