@@ -1859,12 +1859,8 @@ void MainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
 
 void MainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget)
 {
+	mAdditionalDocks << dockWidget;
 	QMainWindow::addDockWidget(area, dockWidget);
-}
-
-void MainWindow::setAdditionalDockWidgets(QList<QDockWidget *> dockWidgets)
-{
-	mAdditionalDocks = dockWidgets;
 }
 
 QListIterator<EditorView *> MainWindow::openedEditorViews() const

@@ -121,7 +121,6 @@ public:
 
 	virtual void tabifyDockWidget(QDockWidget *first, QDockWidget *second);
 	virtual void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget);
-	virtual void setAdditionalDockWidgets(QList<QDockWidget *> dockWidgets);
 
 	QListIterator<EditorView *> openedEditorViews() const;
 
