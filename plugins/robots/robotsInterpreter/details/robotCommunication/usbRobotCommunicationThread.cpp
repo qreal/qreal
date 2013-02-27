@@ -1,4 +1,5 @@
 #include <QtCore/QDebug>
+#include <time.h>
 
 #include "usbRobotCommunicationThread.h"
 
@@ -83,7 +84,8 @@ void UsbRobotCommunicationThread::send(QObject *addressee
 	}
 }
 
-void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const responseSize, QByteArray &outputBuffer)
+void UsbRobotCommunicationThread::send(QByteArray const &buffer
+		, unsigned const responseSize, QByteArray &outputBuffer)
 {
 	Tracer::debug(tracer::robotCommunication, "UsbRobotCommunicationThread::send", "Sending:");
 
@@ -147,16 +149,6 @@ void UsbRobotCommunicationThread::disconnect()
 	emit disconnected();
 }
 
-void UsbRobotCommunicationThread::sendI2C(QObject *addressee
-		, QByteArray const &buffer, unsigned const responseSize
-		, inputPort::InputPortEnum const &port)
-{
-	Q_UNUSED(addressee)
-	Q_UNUSED(buffer)
-	Q_UNUSED(responseSize)
-	Q_UNUSED(port)
-}
-
 void UsbRobotCommunicationThread::allowLongJobs(bool allow)
 {
 	mStopped = !allow;
@@ -192,7 +184,7 @@ void UsbRobotCommunicationThread::checkForConnection()
 
 bool UsbRobotCommunicationThread::isResponseNeeded(QByteArray const &buffer)
 {
-	return buffer[2] == 0;
+	return buffer.size() >= 3 && buffer[2] == 0;
 }
 
 void UsbRobotCommunicationThread::checkConsistency()

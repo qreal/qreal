@@ -152,7 +152,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
 	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
-	connect(mUi->actionNewProject, SIGNAL(triggered()), mProjectManager, SLOT(openNewWithDiagram()));
+	connect(mUi->actionNewProject, SIGNAL(triggered()), mStartDialog, SLOT(exec()));
 
 	connect(mUi->actionImport, SIGNAL(triggered()), mProjectManager, SLOT(suggestToImport()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
@@ -1543,6 +1543,7 @@ void MainWindow::initToolPlugins()
 			, mModels->logicalModelAssistApi()
 			, *this
 			, *mProjectManager
+			, *mSceneCustomizer
 			));
 
 	QList<ActionInfo> const actions = mToolManager.actions();
@@ -1641,7 +1642,6 @@ void MainWindow::initToolManager()
 		setWindowIcon(customizer->applicationIcon());
 		setVersion(customizer->productVersion());
 		customizer->customizeDocks(this);
-		customizer->customizeScene(mSceneCustomizer);
 	}
 }
 
@@ -1859,12 +1859,8 @@ void MainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
 
 void MainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget)
 {
+	mAdditionalDocks << dockWidget;
 	QMainWindow::addDockWidget(area, dockWidget);
-}
-
-void MainWindow::setAdditionalDockWidgets(QList<QDockWidget *> dockWidgets)
-{
-	mAdditionalDocks = dockWidgets;
 }
 
 QListIterator<EditorView *> MainWindow::openedEditorViews() const

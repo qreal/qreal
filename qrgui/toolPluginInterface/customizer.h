@@ -4,7 +4,6 @@
 #include <QtGui/QIcon>
 
 #include "../mainwindow/mainWindowDockInterface.h"
-#include "../view/sceneCustomizationInterface.h"
 
 namespace qReal {
 
@@ -46,12 +45,6 @@ public:
 	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface)
 	{
 		Q_UNUSED(dockInterface)
-	}
-
-	/// Customizes QReal scene. Default implementation does nothing
-	virtual void customizeScene(SceneCustomizationInterface *sceneCustomizer)
-	{
-		Q_UNUSED(sceneCustomizer)
 	}
 };
 

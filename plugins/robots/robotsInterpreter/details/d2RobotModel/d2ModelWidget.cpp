@@ -180,13 +180,10 @@ void D2ModelWidget::init(bool isActive)
 	update();
 }
 
-void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction
-		, int *interpretationState, int idleState)
+void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
 {
 	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()));
 	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()));
-	mInterpretationState = interpretationState;
-	mIdleState = idleState;
 }
 
 void D2ModelWidget::drawInitialRobot()
@@ -213,11 +210,7 @@ void D2ModelWidget::keyPressEvent(QKeyEvent *event)
 	} else if (event->matches(QKeySequence::ZoomOut)) {
 		mScene->mainView()->zoomOut();
 	} else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Space) {
-		if (isRunning()) {
-			mUi->stopButton->animateClick();
-		} else {
-			mUi->runButton->animateClick();
-		}
+		mUi->runButton->animateClick();
 	} else if (event->key() == Qt::Key_Escape) {
 		mUi->stopButton->animateClick();
 	}
@@ -1071,11 +1064,6 @@ void D2ModelWidget::syncCursorButtons()
 	default:
 		break;
 	}
-}
-
-bool D2ModelWidget::isRunning()
-{
-	return *mInterpretationState != mIdleState;
 }
 
 void D2ModelWidget::syncronizeSensors()

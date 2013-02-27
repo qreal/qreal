@@ -146,7 +146,7 @@ void Interpreter::showD2ModelWidget(bool isVisible)
 
 void Interpreter::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
 {
-	mD2ModelWidget->setD2ModelWidgetActions(runAction, stopAction, (int *)(&mState), idle);
+	mD2ModelWidget->setD2ModelWidgetActions(runAction, stopAction);
 }
 
 void Interpreter::enableD2ModelWidgetRunStopButtons()

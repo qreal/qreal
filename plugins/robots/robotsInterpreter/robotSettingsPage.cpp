@@ -16,7 +16,12 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 
 	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedUnrealModel(bool)));
 	connect(mUi->d2ModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedUnrealModel(bool)));
+	connect(mUi->bluetoothRadioButton, SIGNAL(toggled(bool)), this, SLOT(bluetoothCommunucationToggled()));
 	connect(mUi->manualComPortCheckbox, SIGNAL(toggled(bool)), this, SLOT(manualComPortCheckboxChecked(bool)));
+
+	connect(mUi->d2ModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
+	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
+	connect(mUi->realModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
 
 	QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
 	QString const defaultPortName = SettingsManager::value("bluetoothPortName").toString();
@@ -130,7 +135,12 @@ QString PreferencesRobotSettingsPage::selectedCommunication() const
 
 void PreferencesRobotSettingsPage::activatedUnrealModel(bool checked)
 {
-	mUi->bluetoothSettingsGroupBox->setEnabled(!checked);
+	mUi->bluetoothSettingsGroupBox->setEnabled(!checked && mUi->bluetoothRadioButton->isChecked());
+}
+
+void PreferencesRobotSettingsPage::bluetoothCommunucationToggled()
+{
+	activatedUnrealModel(!mUi->realModelRadioButton->isChecked());
 }
 
 void PreferencesRobotSettingsPage::manualComPortCheckboxChecked(bool state)
@@ -177,4 +187,10 @@ void PreferencesRobotSettingsPage::save()
 void PreferencesRobotSettingsPage::refreshPorts()
 {
 	mSensorsWidget->refresh();
+}
+
+void PreferencesRobotSettingsPage::refreshCommunicationGroup()
+{
+	bool const communicationEnabled = mUi->realModelRadioButton->isChecked();
+	mUi->communicationTypeGroupBox->setEnabled(communicationEnabled);
 }
