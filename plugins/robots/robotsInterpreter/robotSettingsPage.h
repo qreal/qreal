@@ -35,8 +35,10 @@ protected:
 
 private slots:
 	void activatedUnrealModel(bool checked);
+	void bluetoothCommunucationToggled();
 	void manualComPortCheckboxChecked(bool state);
 	void refreshPorts();
+	void refreshCommunicationGroup();
 
 private:
 	void initRobotModelType(robotModelType::robotModelTypeEnum type);
