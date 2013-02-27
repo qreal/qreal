@@ -147,7 +147,7 @@ bool ProjectManager::import(QString const &fileName)
 
 bool ProjectManager::saveFileExists(QString const &fileName)
 {
-	if (!QFile::exists(fileName)) {
+	if (!QFile::exists(fileName) && fileName != "autosave.qrs") {
 		QMessageBox fileNotFoundMessage(QMessageBox::Information, tr("File not found")
 				, tr("File ") + fileName + tr(" not found. Try again"), QMessageBox::Ok, mMainWindow);
 		fileNotFoundMessage.exec();
