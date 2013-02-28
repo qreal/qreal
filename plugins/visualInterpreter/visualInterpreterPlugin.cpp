@@ -104,6 +104,7 @@ void VisualInterpreterPlugin::generateSemanticsMetamodel(QString const &editorMe
 
 	diagram.setAttribute("displayedName", displayedName + " Semantics");
 
+	removePropertyDefaultValues(metamodel);
 	insertSemanticsEnums(metamodel, "SemanticsStatus", QStringList() << "@new@" << "@deleted@");
 	insertSemanticsEnums(metamodel, "LanguageType", QStringList() << "Block Scheme (C-like)" << "Python");
 	insertSematicsStateProperty(metamodel);
@@ -221,8 +222,12 @@ void VisualInterpreterPlugin::insertSemanticsStatePropertiesInSpecificElemType(Q
 		}
 
 		QDomElement idProperty = metamodel.createElement("property");
+		QDomElement defaultValue = metamodel.createElement("default");
+		QDomText val = metamodel.createTextNode(QString("-1"));
+		defaultValue.appendChild(val);
 		idProperty.setAttribute("type", "int");
 		idProperty.setAttribute("name", "id");
+		idProperty.appendChild(defaultValue);
 		logic.elementsByTagName("properties").at(0).appendChild(idProperty);
 	}
 }
@@ -242,8 +247,12 @@ void VisualInterpreterPlugin::insertIdPropertyInSpecificElemType(QDomDocument me
 		QDomNodeList properties = logic.elementsByTagName("properties");
 
 		QDomElement idProperty = metamodel.createElement("property");
+		QDomElement defaultValue = metamodel.createElement("default");
+		QDomText val = metamodel.createTextNode(QString("-1"));
+		defaultValue.appendChild(val);
 		idProperty.setAttribute("type", "int");
 		idProperty.setAttribute("name", "id");
+		idProperty.appendChild(defaultValue);
 		if (properties.length() > 0) {
 			properties.at(0).appendChild(idProperty);
 		} else {
@@ -251,6 +260,14 @@ void VisualInterpreterPlugin::insertIdPropertyInSpecificElemType(QDomDocument me
 			propertiesElem.appendChild(idProperty);
 			logic.appendChild(propertiesElem);
 		}
+	}
+}
+
+void VisualInterpreterPlugin::removePropertyDefaultValues(QDomDocument metamodel) const
+{
+	QDomNodeList properties = metamodel.elementsByTagName("property");
+	for (unsigned i = 0; i < properties.length(); i++) {
+		properties.at(i).removeChild(properties.at(i).toElement().elementsByTagName("default").at(0));
 	}
 }
 
@@ -280,6 +297,9 @@ void VisualInterpreterPlugin::insertSpecialSemanticsElements(QDomDocument metamo
 					"<default>Block Scheme (C-like)</default>"
 				"</property>"
 				"<property type=\"code\" name=\"applicationCondition\" />"
+				"<property type=\"int\" name=\"priority\">"
+					"<default>0</default>"
+				"</property>"
 			"</properties>"
 			"<container>"
 			"</container>"
@@ -306,7 +326,9 @@ void VisualInterpreterPlugin::insertSpecialSemanticsElements(QDomDocument metamo
 		"</graphics>"
 		"<logic>"
 			"<properties>"
-				"<property type=\"int\" name=\"id\" />"
+				"<property type=\"int\" name=\"id\">"
+					"<default>-1</default>"
+				"</property>"
 			"</properties>"
 		"</logic>"
 	"</node>"
@@ -318,9 +340,6 @@ void VisualInterpreterPlugin::insertSpecialSemanticsElements(QDomDocument metamo
 				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"40\" x1=\"0\" y2=\"40\" stroke-width=\"2\" x2=\"40\" fill-style=\"solid\" />"
 				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"0\" x1=\"40\" y2=\"40\" stroke-width=\"2\" x2=\"40\" fill-style=\"solid\" />"
 			"</picture>"
-			"<labels>"
-				"<label x=\"0\" y=\"10\" textBinded=\"initializationCode\"/>"
-			"</labels>"
 		"</graphics>"
 		"<logic>"
 			"<properties>"

@@ -1,16 +1,10 @@
-import os
+# Application condition
+playTone.id == max_used_id and not cur_node_is_processed
 
-playToneCode = "ecrobot_sound_tone(" + playTone.Frequency + ", " + playTone.Duration + ", " + playTone.Volume + ");\n"
+# Reaction
+play_tone_code = "ecrobot_sound_tone(" + playTone.Frequency + ", " + playTone.Duration + ", " + playTone.Volume + ");\n"
 
-relPath = "nxt-tools/program0.c"
-absPath = os.path.join(scriptDir, relPath)
+code.append([play_tone_code])
+id_to_pos_in_code[playTone.id] = len(code) - 1
 
-codeFile = open(absPath, 'r')
-code = codeFile.read()
-
-code = code.replace("@@CODE@@", playToneCode + "@@CODE@@")
-
-codeFile.close()
-codeFile = open(absPath, 'w')
-codeFile.write(code)
-codeFile.close()
+cur_node_is_processed = True

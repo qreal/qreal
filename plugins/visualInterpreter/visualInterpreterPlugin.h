@@ -76,6 +76,9 @@ private:
 	/// Add to specific elements 'id' property
 	void insertIdPropertyInSpecificElemType(QDomDocument metamodel, QDomNodeList const &nodes) const;
 
+	/// Remove default values of all properties
+	void removePropertyDefaultValues(QDomDocument metamodel) const;
+
 	/// Delete directory (which was used for generate and compile semantics editor)
 	void removeDirectory(QString const &dirName);
 

@@ -62,6 +62,37 @@ void VisualInterpreterUnit::initBeforeSemanticsLoading()
 	mNodesWithControlMark = new QHash<QString, IdList*>();
 	mNeedToStopInterpretation = false;
 	mInitializationCode = QPair<QString, QString>();
+	mOrderedRules.clear();
+}
+
+void VisualInterpreterUnit::orderRulesByPriority()
+{
+	IdList rules = allRules();
+	QList<int> priorities;
+	foreach (Id const &rule, rules) {
+		mOrderedRules.append(property(rule, "ruleName").toString());
+		priorities.append(property(rule, "priority").toInt());
+	}
+	int n = mOrderedRules.length();
+	for (int i = 1; i < n; i++) {
+		bool flag = false;
+		for (int j = 0; j < n - i; j++) {
+			if (priorities.at(j) < priorities.at(j + 1)) {
+				int const temp1 = priorities.at(j);
+				priorities.removeAt(j);
+				priorities.insert(j + 1, temp1);
+
+				QString const temp2 = mOrderedRules.at(j);
+				mOrderedRules.removeAt(j);
+				mOrderedRules.insert(j + 1, temp2);
+
+				flag = true;
+			}
+		}
+		if (!flag) {
+			break;
+		}
+	}
 }
 
 void VisualInterpreterUnit::readInitializationCode()
@@ -173,6 +204,8 @@ void VisualInterpreterUnit::loadSemantics()
 		}
 	}
 
+	orderRulesByPriority();
+
 	mIsSemanticsLoaded = true;
 	mInterpretersInterface.errorReporter()->clear();
 	report(tr("Semantics loaded successfully"), false);
@@ -215,11 +248,13 @@ void VisualInterpreterUnit::interpret()
 		report(tr("No rule cannot be applied"), false);
 		mInterpretersInterface.dehighlight();
 	}
+	mPythonInterpreter->terminateProcess();
 }
 
 void VisualInterpreterUnit::stopInterpretation()
 {
 	mNeedToStopInterpretation = true;
+	mPythonInterpreter->terminateProcess();
 }
 
 void VisualInterpreterUnit::highlightMatch()
@@ -235,7 +270,7 @@ void VisualInterpreterUnit::highlightMatch()
 
 bool VisualInterpreterUnit::findMatch()
 {
-	foreach (QString const &ruleName, mRules->keys()) {
+	foreach (QString const &ruleName, mOrderedRules) {
 		mCurrentRuleName = ruleName;
 		mRuleToFind = mRules->value(ruleName);
 		if (checkRuleMatching() && checkApplicationCondition(ruleName)) {
@@ -311,6 +346,14 @@ Id VisualInterpreterUnit::startElement() const
 	}
 
 	return Id::rootId();
+}
+
+void VisualInterpreterUnit::report(const QString &message, bool isError) const
+{
+	BaseGraphTransformationUnit::report(message, isError);
+	if (isError) {
+		mPythonInterpreter->terminateProcess();
+	}
 }
 
 bool VisualInterpreterUnit::deleteElements()

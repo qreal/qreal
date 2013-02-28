@@ -1,16 +1,12 @@
-import os
+# Application condition
+balance.id == max_used_id and not cur_node_is_processed
 
-balanceInitCode = "balance_init();"
+# Reaction
+balance_init_code = "balance_init();\n"
 
-relPath = "nxt-tools/program0.c"
-absPath = os.path.join(scriptDir, relPath)
+code.append([balance_init_code])
+id_to_pos_in_code[balancer.id] = len(code) - 1
 
-codeFile = open(absPath, 'r')
-code = codeFile.read()
+balancer_code = "#include \"balancer.h\"\n"
 
-code = code.replace("@@CODE@@", balanceInitCode + "@@CODE@@")
-
-codeFile.close()
-codeFile = open(absPath, 'w')
-codeFile.write(code)
-codeFile.close()
+cur_node_is_processed = True

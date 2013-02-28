@@ -52,19 +52,18 @@ bool PythonInterpreter::interpret(bool const isApplicationCondition)
 
 	QString const scriptPath = isApplicationCondition ? mApplicationConditionScriptPath : mReactionScriptPath;
 	QString const scriptDir = scriptPath.mid(0, scriptPath.lastIndexOf("/"));
-	QString const scriptDirStr = "scriptDir = '" + scriptDir + "'\n";
+	QString const scriptDirStr = "script_dir = '" + scriptDir + "'\n";
 	mInterpreterProcess->write(scriptDirStr.toAscii());
 
 	if (QFile::exists(scriptPath)) {
 		QString const execfile = "execfile('" + scriptPath + "')\n";
 		mInterpreterProcess->write(execfile.toAscii());
 
+		int const timeout = SettingsManager::value("debuggerTimeout").toInt()/2;
+		mInterpreterProcess->waitForReadyRead(timeout);
 		if (!isApplicationCondition) {
-			int const timeout = SettingsManager::value("debuggerTimeout").toInt();
-			mInterpreterProcess->waitForReadyRead(timeout);
 			return true;
 		} else {
-			mInterpreterProcess->waitForReadyRead();
 			return mApplicationConditionResult;
 		}
 	}
@@ -76,10 +75,17 @@ void PythonInterpreter::interpretCode(QString const code)
 {
 	startPythonInterpreterProcess();
 
-	QString const finalCode = "#!/usr/bin/python\n# -*- coding: utf-8 -*-\n" + code + "\n";
+	QString const finalCode = "#!/usr/bin/python\n# -*- coding: utf-8 -*-\n" + code + "\n\n";
 
 	mInterpreterProcess->write(finalCode.toAscii());
-	mInterpreterProcess->waitForReadyRead();
+	mInterpreterProcess->waitForBytesWritten();
+}
+
+void PythonInterpreter::terminateProcess()
+{
+	if (mInterpreterProcess->pid() > 0) {
+		mInterpreterProcess->terminate();
+	}
 }
 
 void PythonInterpreter::setPythonPath(QString const &path)
@@ -145,8 +151,10 @@ void PythonInterpreter::readOutput()
 void PythonInterpreter::readErrOutput()
 {
 	QByteArray const out = mInterpreterProcess->readAllStandardError();
-	QString const output = QString(out);
-	if (output.indexOf(">>>") == -1) {
+	QString output = QString(out);
+	output = output.replace(">>>", "").trimmed();
+	output = output.replace("...", "").trimmed();
+	if (!output.isEmpty() && output.indexOf("Python") == -1) {
 		emit readyReadErrOutput(output);
 	}
 }

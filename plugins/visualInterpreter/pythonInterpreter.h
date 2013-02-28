@@ -27,6 +27,8 @@ public:
 	/// Interpret specific code, represented as string
 	void interpretCode(QString const code);
 
+	void terminateProcess();
+
 	void setPythonPath(QString const &path);
 	void setReactionScriptPath(QString const &path);
 	void setApplicationConditionScriptPath(QString const &path);

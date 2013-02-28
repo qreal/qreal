@@ -1,42 +1,34 @@
-import os
+# Application condition
+waitFor.id == max_used_id and not cur_node_is_processed
 
+# Reaction
 port = "NXT_PORT_S" + waitFor.Port
 
-colorNxtType = ""
-colorStr = waitFor.Color
+color_nxt_type = ""
+color_str = waitFor.Color
 
-if colorStr == "Красный":
-  colorNxtType = "NXT_COLOR_RED"
-elif colorStr == "Зелёный":
-  colorNxtType = "NXT_COLOR_GREEN"
-elif colorStr == "Синий":
-  colorNxtType = "NXT_COLOR_BLUE"
-elif colorStr == "Чёрный":
-  colorNxtType = "NXT_COLOR_BLACK"
-elif colorStr == "Жёлтый":
-  colorNxtType = "NXT_COLOR_YELLOW"
-elif colorStr == "Белый":
-  colorNxtType = "NXT_COLOR_WHITE"
+if color_str == "Красный":
+  color_nxt_type = "NXT_COLOR_RED"
+elif color_str == "Зелёный":
+  color_nxt_type = "NXT_COLOR_GREEN"
+elif color_str == "Синий":
+  color_nxt_type = "NXT_COLOR_BLUE"
+elif color_str == "Чёрный":
+  color_nxt_type = "NXT_COLOR_BLACK"
+elif color_str == "Жёлтый":
+  color_nxt_type = "NXT_COLOR_YELLOW"
+elif color_str == "Белый":
+  color_nxt_type = "NXT_COLOR_WHITE"
 
+wait_for_color_block_code = "while (ecrobot_get_nxtcolorsensor_id(" + port + ") != " + color_nxt_type + ") {}\n"
+wait_init_code = "ecrobot_init_nxtcolorsensor(" + port + ", " + color_nxt_type + ");\n"
+wait_terminate_code = "ecrobot_init_nxtcolorsensor(" + port + ", " + color_nxt_type + ");\n"
 
-waitForColorBlockCode = "while (ecrobot_get_nxtcolorsensor_id(" + port + ") != " + colorNxtType + ")\n{}\n"
-partInitCode = "ecrobot_init_nxtcolorsensor(" + port
-initCode = "ecrobot_init_nxtcolorsensor(" + port + ", " + colorNxtType + ");\n"
-terminateCode = "ecrobot_init_nxtcolorsensor(" + port + ", " + colorNxtType + ");\n"
+if wait_init_code not in init_code:
+  init_code.append(wait_init_code)
+  terminate_code.append(wait_terminate_code)
 
-relPath = "nxt-tools/program0.c"
-absPath = os.path.join(scriptDir, relPath)
+code.append([wait_for_color_block_code])
+id_to_pos_in_code[waitFor.id] = len(code) - 1
 
-codeFile = open(absPath, 'r')
-code = codeFile.read()
-
-if code.find(partInitCode) == -1:
-  code = code.replace("@@INITHOOKS@@", initCode + "@@INITHOOKS@@")
-  code = code.replace("@@TERMINATEHOOKS@@", terminateCode + "@@TERMINATEHOOKS@@")
-
-code = code.replace("@@CODE@@", waitForColorBlockCode + "@@CODE@@")
-
-codeFile.close()
-codeFile = open(absPath, 'w')
-codeFile.write(code)
-codeFile.close()
+cur_node_is_processed = True

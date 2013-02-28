@@ -1,16 +1,10 @@
-import os
+# Application condition
+timer.id == max_used_id and not cur_node_is_processed
 
-timerCode = "systick_wait_ms(" + timer.Delay + ");\n"
+# Reaction
+timer_code = "systick_wait_ms(" + timer.Delay + ");\n"
 
-relPath = "nxt-tools/program0.c"
-absPath = os.path.join(scriptDir, relPath)
+code.append([timer_code])
+id_to_pos_in_code[timer.id] = len(code) - 1
 
-codeFile = open(absPath, 'r')
-code = codeFile.read()
-
-code = code.replace("@@CODE@@", timerCode + "@@CODE@@")
-
-codeFile.close()
-codeFile = open(absPath, 'w')
-codeFile.write(code)
-codeFile.close()
+cur_node_is_processed = True

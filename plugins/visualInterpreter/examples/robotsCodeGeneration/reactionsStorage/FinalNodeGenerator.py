@@ -1,20 +1,14 @@
-import os
+# Apllication condition
+end.id not in processed_ends
 
-terminateCode = "TerminateTask();\n"
+# Reaction
+end_code = "TerminateTask();\n"
 
-relPath = "nxt-tools/program0.c"
-absPath = os.path.join(scriptDir, relPath)
+processed_ends.append(end.id)
 
-codeFile = open(absPath, 'r')
-code = codeFile.read()
+code.append([end_code])
+id_to_pos_in_code[end.id] = len(code) - 1
 
-code = code.replace("@@CODE@@", terminateCode)
-code = code.replace("@@BALANCER@@", "")
-code = code.replace("@@VARIABLES@@", "")
-code = code.replace("@@INITHOOKS@@", "")
-code = code.replace("@@TERMINATEHOOKS@@", "")
+ifGeneration()
 
-codeFile.close()
-codeFile = open(absPath, 'w')
-codeFile.write(code)
-codeFile.close()
+save()

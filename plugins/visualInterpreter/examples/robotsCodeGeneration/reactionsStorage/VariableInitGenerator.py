@@ -1,16 +1,10 @@
-import os
+# Application condition
+var.id == max_used_id and not cur_node_is_processed
 
-varCode = var.variable + " = " + var.value + ";\n"
+# Reaction
+var_code = var.variable + " = " + var.value + ";\n"
 
-relPath = "nxt-tools/program0.c"
-absPath = os.path.join(scriptDir, relPath)
+code.append([var_code])
+id_to_pos_in_code[var.id] = len(code) - 1
 
-codeFile = open(absPath, 'r')
-code = codeFile.read()
-
-code = code.replace("@@CODE@@", varCode + "@@CODE@@")
-
-codeFile.close()
-codeFile = open(absPath, 'w')
-codeFile.write(code)
-codeFile.close()
+cur_node_is_processed = True

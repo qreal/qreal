@@ -107,7 +107,7 @@ protected:
 	IdList children(Id const &id) const;
 
 	/// Reports message to the main system
-	void report(QString const &message, bool isError) const;
+	virtual void report(QString const &message, bool isError) const;
 
 	/// Hold highlight for some time in ms
 	void pause(int const &time);

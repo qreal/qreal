@@ -1,48 +1,26 @@
-import os
+# Application condition
+engine.id == max_used_id and not cur_node_is_processed
 
+# Reaction
 power = engine.Power
-brakeMode = engine.BrakeMode
-
-if brakeMode == "скользить":
-  brakeMode = "0"
-elif brakeMode == "тормозить":
-  brakeMode = "1"
-else:
-  brakeMode = "1"
-
+brake_mode = "1"
 ports = engine.Ports
-portNames = []
+port_names = []
 
-if ports.find("A") != -1:
-  portNames.append("NXT_PORT_A")
+collectPortNames(ports, port_names)
 
-if ports.find("B") != -1:
-  portNames.append("NXT_PORT_B")
+init_terminate_velocity = "0"
+init_terminate_brake_mode = "1"
+engines_forward_code = ""
 
-if ports.find("C") != -1:
-  portNames.append("NXT_PORT_C")
+for port in port_names:
+  code.append(["nxt_motor_set_speed(" + port + ", " + power + ", " + brake_mode + ");\n"])
+  if engine.id not in id_to_pos_in_code:
+    id_to_pos_in_code[engine.id] = len(code) - 1
+  init_code_engines = "nxt_motor_set_speed(" + port + ", " + init_terminate_velocity + ", " + init_terminate_brake_mode + ");\n"
+  terminate_code_engines = "nxt_motor_set_speed(" + port + ", " + init_terminate_velocity + ", " + init_terminate_brake_mode + ");\n"
+  if init_code_engines not in init_code:
+    init_code.append(init_code_engines)
+    terminate_code.append(terminate_code_engines)
 
-relPath = "nxt-tools/program0.c"
-absPath = os.path.join(scriptDir, relPath)
-
-codeFile = open(absPath, 'r')
-code = codeFile.read()
-
-initTerminateVelocity = "0"
-initTerminateBrakeMode = "1"
-enginesForwardCode = ""
-
-for port in portNames:
-  enginesForwardCode = enginesForwardCode + "nxt_motor_set_speed(" + port + ", " + power + ", " + brakeMode + ");\n"
-  initCodeEngines = "nxt_motor_set_speed(" + port + ", " + initTerminateVelocity + ", " + initTerminateBrakeMode + ");\n"
-  terminateCodeEngines = "nxt_motor_set_speed(" + port + ", " + initTerminateVelocity + ", " + initTerminateBrakeMode + ");\n"
-  if code.find(initCodeEngines) == -1:
-    code = code.replace("@@INITHOOKS@@", initCodeEngines + "@@INITHOOKS@@")
-    code = code.replace("@@TERMINATEHOOKS@@", terminateCodeEngines + "@@TERMINATEHOOKS@@")
-
-code = code.replace("@@CODE@@", enginesForwardCode + "@@CODE@@")
-
-codeFile.close()
-codeFile = open(absPath, 'w')
-codeFile.write(code)
-codeFile.close()
+cur_node_is_processed = True

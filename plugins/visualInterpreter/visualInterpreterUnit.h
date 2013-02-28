@@ -48,6 +48,9 @@ protected:
 	/// Fields initialization before loading semantics
 	void initBeforeSemanticsLoading();
 
+	/// Orders rules by value of priority property
+	void orderRulesByPriority();
+
 	/// Read initialization code at load semantics step
 	void readInitializationCode();
 
@@ -121,6 +124,9 @@ protected:
 	/// Get first node from rule to start the algo
 	Id startElement() const;
 
+	/// Reports message to the main system
+	void report(QString const &message, bool isError) const;
+
 	/// Functions for test elements for equality
 	bool compareElements(Id const &first, Id const &second) const;
 	bool compareElementTypesAndProperties(Id const &first, Id const &second) const;
@@ -141,6 +147,8 @@ protected:
 
 	/// All rules in map with key - rule name and value - rule id on diagram
 	QHash<QString, Id> *mRules;
+
+	QStringList mOrderedRules;
 
 	/// Pair with initialization code and its type
 	QPair<QString, QString> mInitializationCode;

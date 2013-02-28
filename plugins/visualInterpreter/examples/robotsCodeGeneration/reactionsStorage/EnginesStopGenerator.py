@@ -1,31 +1,17 @@
-import os
+# Application condition
+engine.id == max_used_id and not cur_node_is_processed
 
+# Reaction
 ports = engine.Ports
-portNames = []
+port_names = []
 
-if ports.find("A") != -1:
-  portNames.append("NXT_PORT_A")
+collectPortNames(ports, port_names)
 
-if ports.find("B") != -1:
-  portNames.append("NXT_PORT_B")
+engines_stop_code = ""
 
-if ports.find("C") != -1:
-  portNames.append("NXT_PORT_C")
+for port in port_names:
+  code.append(["nxt_motor_set_speed(" + port + ", 0, 1);\n"])
+  if engine.id not in id_to_pos_in_code:
+    id_to_pos_in_code[engine.id] = len(code) - 1
 
-enginesStopCode = ""
-
-for port in portNames:
-  enginesStopCode = enginesStopCode + "nxt_motor_set_speed(" + port + ", 0, 1);\n"
-
-relPath = "nxt-tools/program0.c"
-absPath = os.path.join(scriptDir, relPath)
-
-codeFile = open(absPath, 'r')
-code = codeFile.read()
-
-code = code.replace("@@CODE@@", enginesStopCode + "@@CODE@@")
-
-codeFile.close()
-codeFile = open(absPath, 'w')
-codeFile.write(code)
-codeFile.close()
+cur_node_is_processed = True

@@ -1,37 +1,19 @@
-import os
+# Application condition
+waitFor.id == max_used_id and not cur_node_is_processed
 
+# Reaction
 port = "NXT_PORT_S" + waitFor.Port
-sign = waitFor.Sign
-if sign == "меньше":
-  sign = "<"
-elif sign == "больше":
-  sign = ">"
-elif sign == "не меньше":
-  sign = ">="
-elif sign == "не больше":
-  sign = "<="
-elif sign == "равно":
-  sign = "=="
+condition = convertCondition(waitFor.Sign) + " " + waitFor.Percents
 
-condition = sign + " " + waitFor.Percents
+wait_for_light_code = "while (!(ecrobot_get_light_sensor(" + port + ") " + condition + ")) {}\n"
+wait_init_code = "ecrobot_set_light_sensor_active(" + port + ");\n"
+wait_terminate_code = "ecrobot_set_light_sensor_inactive(" + port + ");\n"
 
-waitForLightCode = "while (!(ecrobot_get_light_sensor(" + port + ") " + condition + "))\n{}\n"
-initCode = "ecrobot_set_light_sensor_active(" + port + ");\n"
-terminateCode = "ecrobot_set_light_sensor_inactive(" + port + ");\n"
+if wait_init_code not in init_code:
+  init_code.append(wait_init_code)
+  terminate_code.append(wait_terminate_code)
 
-relPath = "nxt-tools/program0.c"
-absPath = os.path.join(scriptDir, relPath)
+code.append([wait_for_light_code])
+id_to_pos_in_code[waitFor.id] = len(code) - 1
 
-codeFile = open(absPath, 'r')
-code = codeFile.read()
-
-if code.find(initCode) == -1:
-  code = code.replace("@@INITHOOKS@@", initCode + "@@INITHOOKS@@")
-  code = code.replace("@@TERMINATEHOOKS@@", terminateCode + "@@TERMINATEHOOKS@@")
-
-code = code.replace("@@CODE@@", waitForLightCode + "@@CODE@@")
-
-codeFile.close()
-codeFile = open(absPath, 'w')
-codeFile.write(code)
-codeFile.close()
+cur_node_is_processed = True
