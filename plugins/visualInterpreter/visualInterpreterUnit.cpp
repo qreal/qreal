@@ -121,6 +121,7 @@ void VisualInterpreterUnit::initBeforeInterpretation()
 {
 	mCurrentNodesWithControlMark.clear();
 	mInterpretersInterface.dehighlight();
+	mMatches.clear();
 	mRuleParser->clear();
 	mRuleParser->setErrorReporter(mInterpretersInterface.errorReporter());
 	resetRuleSyntaxCheck();
@@ -226,6 +227,7 @@ void VisualInterpreterUnit::interpret()
 
 	while (findMatch()) {
 		if (mNeedToStopInterpretation) {
+			mPythonInterpreter->terminateProcess();
 			report(tr("Interpretation stopped manually"), false);
 			return;
 		}
@@ -254,7 +256,6 @@ void VisualInterpreterUnit::interpret()
 void VisualInterpreterUnit::stopInterpretation()
 {
 	mNeedToStopInterpretation = true;
-	mPythonInterpreter->terminateProcess();
 }
 
 void VisualInterpreterUnit::highlightMatch()
@@ -671,6 +672,8 @@ void VisualInterpreterUnit::processPythonInterpreterStdOutput(QHash<QPair<QStrin
 		setProperty(mMatches.first().value(mPythonGenerator->idByName(elemName))
 				, propName, QString::fromUtf8(value.toAscii()));
 	}
+
+	mPythonInterpreter->continueStep();
 }
 
 void VisualInterpreterUnit::processPythonInterpreterErrOutput(QString const &output)

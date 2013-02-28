@@ -28,6 +28,7 @@ public:
 	void interpretCode(QString const code);
 
 	void terminateProcess();
+	void continueStep();
 
 	void setPythonPath(QString const &path);
 	void setReactionScriptPath(QString const &path);
@@ -59,6 +60,8 @@ private:
 	QThread *mThread;
 	QProcess *mInterpreterProcess;
 
+	bool mPythonCodeProcessed;
+	
 	QString mPythonPath;
 	QString mReactionScriptPath;
 	QString mApplicationConditionScriptPath;

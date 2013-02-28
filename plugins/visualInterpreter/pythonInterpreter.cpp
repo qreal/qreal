@@ -15,6 +15,7 @@ PythonInterpreter::PythonInterpreter(QObject *parent
 		, mPythonPath(pythonPath)
 		, mReactionScriptPath(reactionScriptPath)
 		, mApplicationConditionScriptPath(applicationConditionScriptPath)
+		, mPythonCodeProcessed(false)
 		, mApplicationConditionResult(false)
 {
 	moveToThread(mThread);
@@ -55,12 +56,17 @@ bool PythonInterpreter::interpret(bool const isApplicationCondition)
 	QString const scriptDirStr = "script_dir = '" + scriptDir + "'\n";
 	mInterpreterProcess->write(scriptDirStr.toAscii());
 
+	mPythonCodeProcessed = false;
 	if (QFile::exists(scriptPath)) {
 		QString const execfile = "execfile('" + scriptPath + "')\n";
 		mInterpreterProcess->write(execfile.toAscii());
-
-		int const timeout = SettingsManager::value("debuggerTimeout").toInt()/2;
-		mInterpreterProcess->waitForReadyRead(timeout);
+		while (!mPythonCodeProcessed) {
+			mInterpreterProcess->waitForReadyRead(-1);
+		}
+		
+		
+		//int const timeout = SettingsManager::value("debuggerTimeout").toInt()/2;
+		//mInterpreterProcess->waitForReadyRead(timeout);
 		if (!isApplicationCondition) {
 			return true;
 		} else {
@@ -86,6 +92,11 @@ void PythonInterpreter::terminateProcess()
 	if (mInterpreterProcess->pid() > 0) {
 		mInterpreterProcess->terminate();
 	}
+}
+
+void PythonInterpreter::continueStep()
+{
+	mPythonCodeProcessed = true;
 }
 
 void PythonInterpreter::setPythonPath(QString const &path)
@@ -140,8 +151,10 @@ void PythonInterpreter::readOutput()
 
 	if (outputString == "True\n") {
 		mApplicationConditionResult = true;
+		continueStep();
 	} else if (outputString == "False\n") {
 		mApplicationConditionResult = false;
+		continueStep();
 	} else {
 		QHash<QPair<QString, QString>, QString> output = parseOutput(outputString);
 		emit readyReadStdOutput(output);
