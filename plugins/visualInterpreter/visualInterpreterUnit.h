@@ -20,6 +20,7 @@ public:
 	VisualInterpreterUnit(LogicalModelAssistInterface &logicalModelApi
 			, GraphicalModelAssistInterface &graphicalModelApi
 			, gui::MainWindowInterpretersInterface &interpretersInterface);
+	~VisualInterpreterUnit();
 
 	/// Load semantics model from current open diagram
 	void loadSemantics();
@@ -52,13 +53,10 @@ protected:
 	void orderRulesByPriority();
 
 	/// Read initialization code at load semantics step
-	void readInitializationCode();
+	void readInitialization();
 
 	/// Fields initialization before interpretation
 	void initBeforeInterpretation();
-
-	/// Clear memory from current semantics
-	void deinit();
 
 	/// Checks current diagram for being semantics model
 	bool isSemanticsEditor() const;
@@ -142,11 +140,14 @@ protected:
 
 	bool mNeedToStopInterpretation;
 
+	/// True if interpretational semantics, false if generational semantics
+	bool mIsInterpretationalSemantics;
+
 	/// Metamodel name which loaded semantics is for
 	QString mMetamodelName;
 
 	/// All rules in map with key - rule name and value - rule id on diagram
-	QHash<QString, Id> *mRules;
+	QHash<QString, Id> mRules;
 
 	QStringList mOrderedRules;
 
@@ -154,14 +155,14 @@ protected:
 	QPair<QString, QString> mInitializationCode;
 
 	/// All maps below has the format: key - rule name, value - list of ids
-	QHash<QString, IdList*> *mDeletedElements;
-	QHash<QString, QHash<Id, Id>* > *mReplacedElements;
-	QHash<QString, IdList*> *mCreatedElements;
-	QHash<QString, IdList*> *mNodesWithNewControlMark;
-	QHash<QString, IdList*> *mNodesWithDeletedControlMark;
-	QHash<QString, IdList*> *mNodesWithControlMark;
-	QHash<Id, Id> *mReplacedElementsPairs;
-	QHash<Id, Id> *mCreatedElementsPairs;
+	QHash<QString, IdList*> mDeletedElements;
+	QHash<QString, QHash<Id, Id>* > mReplacedElements;
+	QHash<QString, IdList*> mCreatedElements;
+	QHash<QString, IdList*> mNodesWithNewControlMark;
+	QHash<QString, IdList*> mNodesWithDeletedControlMark;
+	QHash<QString, IdList*> mNodesWithControlMark;
+	QHash<Id, Id> mReplacedElementsPairs;
+	QHash<Id, Id> mCreatedElementsPairs;
 
 	QString mMatchedRuleName;
 	QString mCurrentRuleName;

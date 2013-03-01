@@ -15,24 +15,28 @@ class PythonInterpreter : public QObject
 	Q_OBJECT
 
 public:
-	explicit PythonInterpreter(QObject *parent
-			, QString const &pythonPath = "python"
-			, QString const &reactionScriptPath = QDir().currentPath() + "/reaction.py"
-			, QString const &applicationConditionScriptPath = QDir().currentPath() + "/appcond.py");
+	enum CodeType {
+		initialization,
+		applicationCondition,
+		reaction
+	};
+
+public:
+	explicit PythonInterpreter(QObject *parent, QString const &pythonPath = "python"
+			, QString const &tempScriptPath = QDir().currentPath() + "/temp.py");
 	~PythonInterpreter();
 
-	/// Interpret reaction or application condition python script
-	bool interpret(bool const isApplicationCondition);
-
-	/// Interpret specific code, represented as string
-	void interpretCode(QString const code);
+	/// Interpret python script
+	bool interpret(QString const &code, CodeType const codeType);
 
 	void terminateProcess();
 	void continueStep();
 
+	/// Delete generated python script file
+	void deleteTempFile();
+
 	void setPythonPath(QString const &path);
-	void setReactionScriptPath(QString const &path);
-	void setApplicationConditionScriptPath(QString const &path);
+	void setTempScriptPath(QString const &path);
 
 signals:
 	/// Emitted after parsing std output and has all properties changes
@@ -60,13 +64,12 @@ private:
 	QThread *mThread;
 	QProcess *mInterpreterProcess;
 
-	bool mPythonCodeProcessed;
-	
 	QString mPythonPath;
-	QString mReactionScriptPath;
-	QString mApplicationConditionScriptPath;
+	QString mTempScriptPath;
 
+	bool mPythonCodeProcessed;
 	bool mApplicationConditionResult;
+	bool mErrorOccured;
 };
 
 }

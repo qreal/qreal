@@ -53,3 +53,4 @@ fantomDownloadLink=http://mindstorms.lego.com/en-us/support/files/Driver.aspx
 pathToImages=./images/iconset1
 AutosaveTempFile=tempFile
 pythonPath=python
+generationTimeout=100

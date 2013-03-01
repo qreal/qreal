@@ -23,15 +23,12 @@ VisualInterpreterPreferencesPage::VisualInterpreterPreferencesPage(QWidget *pare
 	mUi->qrealSourcesLineEdit->setText(SettingsManager::value("qrealSourcesLocation"
 			, binFolder.mid(0, binFolder.lastIndexOf("/"))).toString());
 	mUi->pythonPathLineEdit->setText(SettingsManager::value("pythonPath").toString());
-	mUi->reactionPathLineEdit->setText(SettingsManager::value("reactionPath"
-			, binFolder + "/reaction.py").toString());
-	mUi->appCondLineEdit->setText(SettingsManager::value("applicationConditionPath"
-			, binFolder + "/appcond.py").toString());
+	mUi->tempPathLineEdit->setText(SettingsManager::value("tempScriptPath", binFolder + "/temp.py").toString());
+	mUi->genTimeoutSpinBox->setValue(SettingsManager::value("generationTimeout").toInt());
 
 	connect(mUi->qrealSourcesPushButton, SIGNAL(clicked()), this, SLOT(setQRealSourcesLocation()));
 	connect(mUi->pythonPathPushButton, SIGNAL(clicked()), this, SLOT(setPythonPath()));
-	connect(mUi->reactionPathPushButton, SIGNAL(clicked()), this, SLOT(setReactionPath()));
-	connect(mUi->appCondPushButton, SIGNAL(clicked()), this, SLOT(setApplicationConditionPath()));
+	connect(mUi->tempPathPushButton, SIGNAL(clicked()), this, SLOT(setTempScriptPath()));
 }
 
 VisualInterpreterPreferencesPage::~VisualInterpreterPreferencesPage()
@@ -51,23 +48,17 @@ void VisualInterpreterPreferencesPage::setPythonPath()
 	mUi->pythonPathLineEdit->setText(path);
 }
 
-void VisualInterpreterPreferencesPage::setReactionPath()
+void VisualInterpreterPreferencesPage::setTempScriptPath()
 {
-	QString const path = QFileDialog::getOpenFileName(this, tr("Specify reaction file:"));
-	mUi->reactionPathLineEdit->setText(path);
-}
-
-void VisualInterpreterPreferencesPage::setApplicationConditionPath()
-{
-	QString const path = QFileDialog::getOpenFileName(this, tr("Specify application condition file:"));
-	mUi->appCondLineEdit->setText(path);
+	QString const path = QFileDialog::getOpenFileName(this, tr("Specify temp script file:"));
+	mUi->tempPathLineEdit->setText(path);
 }
 
 void VisualInterpreterPreferencesPage::save()
 {
 	SettingsManager::setValue("qrealSourcesLocation", mUi->qrealSourcesLineEdit->text());
 	SettingsManager::setValue("pythonPath", mUi->pythonPathLineEdit->text());
-	SettingsManager::setValue("reactionPath", mUi->reactionPathLineEdit->text());
-	SettingsManager::setValue("applicationConditionPath", mUi->appCondLineEdit->text());
+	SettingsManager::setValue("tempScriptPath", mUi->tempPathLineEdit->text());
+	SettingsManager::setValue("generationTimeout", mUi->genTimeoutSpinBox->value());
 }
 

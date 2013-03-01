@@ -107,6 +107,7 @@ void VisualInterpreterPlugin::generateSemanticsMetamodel(QString const &editorMe
 	removePropertyDefaultValues(metamodel);
 	insertSemanticsEnums(metamodel, "SemanticsStatus", QStringList() << "@new@" << "@deleted@");
 	insertSemanticsEnums(metamodel, "LanguageType", QStringList() << "Block Scheme (C-like)" << "Python");
+	insertSemanticsEnums(metamodel, "SemanticsType", QStringList() << "Interpretation" << "Generation");
 	insertSematicsStateProperty(metamodel);
 	insertPaletteGroups(metamodel, displayedName);
 	insertSpecialSemanticsElements(metamodel, diagramName);
@@ -346,6 +347,9 @@ void VisualInterpreterPlugin::insertSpecialSemanticsElements(QDomDocument metamo
 				"<property type=\"code\" name=\"initializationCode\" />"
 				"<property type=\"LanguageType\" name=\"languageType\">"
 					"<default>Block Scheme (C-like)</default>"
+				"</property>"
+				"<property type=\"SemanticsType\" name=\"semanticsType\">"
+					"<default>Interpretation</default>"
 				"</property>"
 			"</properties>"
 		"</logic>"

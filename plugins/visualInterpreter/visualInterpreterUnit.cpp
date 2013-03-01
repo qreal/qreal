@@ -9,7 +9,8 @@ VisualInterpreterUnit::VisualInterpreterUnit(
 		: BaseGraphTransformationUnit(logicalModelApi, graphicalModelApi, interpretersInterface)
 		, mIsSemanticsLoaded(false)
 		, mNeedToStopInterpretation(false)
-		, mRules(NULL)
+		, mIsInterpretationalSemantics(true)
+		, mRules()
 		, mRuleParser(new RuleParser(logicalModelApi, graphicalModelApi, interpretersInterface.errorReporter()))
 		, mPythonGenerator(new PythonGenerator(logicalModelApi, graphicalModelApi, interpretersInterface))
 		, mPythonInterpreter(new PythonInterpreter(this))
@@ -20,6 +21,12 @@ VisualInterpreterUnit::VisualInterpreterUnit(
 			, this, SLOT(processPythonInterpreterStdOutput(QHash<QPair<QString, QString>, QString>)));
 	connect(mPythonInterpreter, SIGNAL(readyReadErrOutput(QString))
 			, this, SLOT(processPythonInterpreterErrOutput(QString)));
+}
+
+VisualInterpreterUnit::~VisualInterpreterUnit()
+{
+	delete mPythonGenerator;
+	delete mPythonInterpreter;
 }
 
 IdList VisualInterpreterUnit::allRules() const
@@ -49,17 +56,13 @@ bool VisualInterpreterUnit::isSemanticsEditor() const
 
 void VisualInterpreterUnit::initBeforeSemanticsLoading()
 {
-	if (mRules != NULL) {
-		deinit();
-	}
-
-	mRules = new QHash<QString, Id>();
-	mDeletedElements = new QHash<QString, IdList*>();
-	mReplacedElements = new QHash<QString, QHash<Id, Id>* >();
-	mCreatedElements = new QHash<QString, IdList*>();
-	mNodesWithNewControlMark = new QHash<QString, IdList*>();
-	mNodesWithDeletedControlMark = new QHash<QString, IdList*>();
-	mNodesWithControlMark = new QHash<QString, IdList*>();
+	mRules.clear();
+	mDeletedElements.clear();
+	mReplacedElements.clear();
+	mCreatedElements.clear();
+	mNodesWithNewControlMark.clear();
+	mNodesWithDeletedControlMark.clear();
+	mNodesWithControlMark.clear();
 	mNeedToStopInterpretation = false;
 	mInitializationCode = QPair<QString, QString>();
 	mOrderedRules.clear();
@@ -95,26 +98,16 @@ void VisualInterpreterUnit::orderRulesByPriority()
 	}
 }
 
-void VisualInterpreterUnit::readInitializationCode()
+void VisualInterpreterUnit::readInitialization()
 {
 	IdList const elements = elementsFromActiveDiagram();
 	foreach (Id const &element, elements) {
 		if (element.element() == "Initialization") {
 			mInitializationCode.first = property(element, "languageType").toString();
 			mInitializationCode.second = property(element, "initializationCode").toString();
+			mIsInterpretationalSemantics = property(element, "semanticsType").toString() == "Interpretation";
 		}
 	}
-}
-
-void VisualInterpreterUnit::deinit()
-{
-	delete mRules;
-	delete mDeletedElements;
-	delete mReplacedElements;
-	delete mCreatedElements;
-	delete mNodesWithNewControlMark;
-	delete mNodesWithDeletedControlMark;
-	delete mNodesWithControlMark;
 }
 
 void VisualInterpreterUnit::initBeforeInterpretation()
@@ -138,7 +131,7 @@ void VisualInterpreterUnit::loadSemantics()
 	IdList const rules = allRules();
 	initBeforeSemanticsLoading();
 	mInterpretersInterface.dehighlight();
-	readInitializationCode();
+	readInitialization();
 
 	foreach (Id const &rule, rules) {
 		QString const ruleName = property(rule, "ruleName").toString();
@@ -154,7 +147,7 @@ void VisualInterpreterUnit::loadSemantics()
 			return;
 		}
 
-		mRules->insert(ruleName, rule);
+		mRules.insert(ruleName, rule);
 		foreach (Id const &ruleElement, ruleElements) {
 			if (ruleElement.element() == "ControlFlowLocation" || ruleElement.element() == "Wildcard") {
 				continue;
@@ -169,10 +162,10 @@ void VisualInterpreterUnit::loadSemantics()
 					return;
 				}
 
-				if (!mReplacedElements->contains(ruleName)) {
-					mReplacedElements->insert(ruleName, new QHash<Id, Id>());
+				if (!mReplacedElements.contains(ruleName)) {
+					mReplacedElements.insert(ruleName, new QHash<Id, Id>());
 				}
-				mReplacedElements->value(ruleName)->insert(fromId, toId);
+				mReplacedElements.value(ruleName)->insert(fromId, toId);
 				continue;
 			}
 
@@ -187,20 +180,20 @@ void VisualInterpreterUnit::loadSemantics()
 				}
 
 				if (semanticsStatus.isEmpty() || semanticsStatus == "@deleted@") {
-					putIdIntoMap(mNodesWithControlMark, ruleName, nodeWithControl);
+					putIdIntoMap(&mNodesWithControlMark, ruleName, nodeWithControl);
 					if (semanticsStatus == "@deleted@") {
-						putIdIntoMap(mNodesWithDeletedControlMark, ruleName, nodeWithControl);
+						putIdIntoMap(&mNodesWithDeletedControlMark, ruleName, nodeWithControl);
 					}
 				} else {
-					putIdIntoMap(mNodesWithNewControlMark, ruleName, nodeWithControl);
+					putIdIntoMap(&mNodesWithNewControlMark, ruleName, nodeWithControl);
 				}
 				continue;
 			}
 
 			if (semanticsStatus == "@new@") {
-				putIdIntoMap(mCreatedElements, ruleName, ruleElement);
+				putIdIntoMap(&mCreatedElements, ruleName, ruleElement);
 			} else if (semanticsStatus == "@deleted@") {
-				putIdIntoMap(mDeletedElements, ruleName, ruleElement);
+				putIdIntoMap(&mDeletedElements, ruleName, ruleElement);
 			}
 		}
 	}
@@ -223,7 +216,9 @@ void VisualInterpreterUnit::interpret()
 
 	initBeforeInterpretation();
 	interpretInitializationCode();
-	int const timeout = SettingsManager::value("debuggerTimeout").toInt();
+
+	int const timeout = mIsInterpretationalSemantics ?
+			SettingsManager::value("debuggerTimeout").toInt() : SettingsManager::value("generationTimeout").toInt();
 
 	while (findMatch()) {
 		if (mNeedToStopInterpretation) {
@@ -249,6 +244,7 @@ void VisualInterpreterUnit::interpret()
 	if (!hasRuleSyntaxError()) {
 		report(tr("No rule cannot be applied"), false);
 		mInterpretersInterface.dehighlight();
+		mPythonInterpreter->deleteTempFile();
 	}
 	mPythonInterpreter->terminateProcess();
 }
@@ -273,7 +269,7 @@ bool VisualInterpreterUnit::findMatch()
 {
 	foreach (QString const &ruleName, mOrderedRules) {
 		mCurrentRuleName = ruleName;
-		mRuleToFind = mRules->value(ruleName);
+		mRuleToFind = mRules.value(ruleName);
 		if (checkRuleMatching() && checkApplicationCondition(ruleName)) {
 			mMatchedRuleName = ruleName;
 			return true;
@@ -285,7 +281,7 @@ bool VisualInterpreterUnit::findMatch()
 
 bool VisualInterpreterUnit::checkApplicationCondition(QString const &ruleName)
 {
-	if (!property(mRules->value(ruleName), "applicationCondition").toString().isEmpty()) {
+	if (!property(mRules.value(ruleName), "applicationCondition").toString().isEmpty()) {
 		bool result = false;
 		QList<QHash<Id, Id> > filteredMatches;
 		for (int i = 0; i < mMatches.size(); i++) {
@@ -302,8 +298,8 @@ bool VisualInterpreterUnit::checkApplicationCondition(QString const &ruleName)
 
 bool VisualInterpreterUnit::checkApplicationCondition(QHash<Id, Id> const &match, QString const &ruleName) const
 {
-	QString const appCond = property(mRules->value(ruleName), "applicationCondition").toString();
-	if (property(mRules->value(ruleName), "type").toString() == "Python") {
+	QString const appCond = property(mRules.value(ruleName), "applicationCondition").toString();
+	if (property(mRules.value(ruleName), "type").toString() == "Python") {
 		return checkApplicationConditionPython(match, ruleName);
 	} else {
 		return checkApplicationConditionCStyle(match, appCond);
@@ -317,19 +313,14 @@ bool VisualInterpreterUnit::checkApplicationConditionCStyle(QHash<Id, Id> const 
 
 bool VisualInterpreterUnit::checkApplicationConditionPython(QHash<Id, Id> const &match, QString const &ruleName) const
 {
-	QString const scriptPath = SettingsManager::value("applicationConditionPath").toString();
 	QString const pythonPath = SettingsManager::value("pythonPath").toString();
 
-	mPythonGenerator->setApplicationConditionScriptPath(scriptPath);
-	mPythonInterpreter->setApplicationConditionScriptPath(scriptPath);
 	mPythonInterpreter->setPythonPath(pythonPath);
 
-	mPythonGenerator->setRule(mRules->value(ruleName));
+	mPythonGenerator->setRule(mRules.value(ruleName));
 	mPythonGenerator->setMatch(match);
 
-	mPythonGenerator->generateScript(true);
-
-	return mPythonInterpreter->interpret(true);
+	return mPythonInterpreter->interpret(mPythonGenerator->generateScript(true), PythonInterpreter::applicationCondition);
 }
 
 Id VisualInterpreterUnit::startElement() const
@@ -361,8 +352,8 @@ bool VisualInterpreterUnit::deleteElements()
 {
 	QHash<Id, Id> firstMatch = mMatches.at(0);
 
-	if (mDeletedElements->contains(mMatchedRuleName)) {
-		foreach (Id const &id, *(mDeletedElements->value(mMatchedRuleName))) {
+	if (mDeletedElements.contains(mMatchedRuleName)) {
+		foreach (Id const &id, *(mDeletedElements.value(mMatchedRuleName))) {
 			Id const node = firstMatch.value(id);
 			mInterpretersInterface.dehighlight(node);
 			mCurrentNodesWithControlMark.removeOne(node);
@@ -379,9 +370,9 @@ bool VisualInterpreterUnit::createElements()
 {
 	QHash<Id, Id> *firstMatch = &mMatches.first();
 
-	if (mCreatedElements->contains(mMatchedRuleName)) {
-		mCreatedElementsPairs = new QHash<Id, Id>();
-		foreach (Id const &id, *(mCreatedElements->value(mMatchedRuleName))) {
+	if (mCreatedElements.contains(mMatchedRuleName)) {
+		mCreatedElementsPairs.clear();
+		foreach (Id const &id, *(mCreatedElements.value(mMatchedRuleName))) {
 			Id const createdId = Id(mInterpretersInterface.activeDiagram().editor()
 					, mInterpretersInterface.activeDiagram().diagram()
 					, id.element()
@@ -393,7 +384,7 @@ bool VisualInterpreterUnit::createElements()
 					, id.element()
 					, position());
 
-			mCreatedElementsPairs->insert(id, createdElem);
+			mCreatedElementsPairs.insert(id, createdElem);
 			firstMatch->insert(id, createdElem);
 		}
 
@@ -408,8 +399,8 @@ void VisualInterpreterUnit::arrangeConnections()
 {
 	QHash<Id, Id> firstMatch = mMatches.at(0);
 
-	foreach (Id const &idInRule, mCreatedElementsPairs->keys()) {
-		Id const idInModel = mCreatedElementsPairs->value(idInRule);
+	foreach (Id const &idInRule, mCreatedElementsPairs.keys()) {
+		Id const idInModel = mCreatedElementsPairs.value(idInRule);
 
 		Id const toInRul = toInRule(idInRule);
 		if (toInRul != Id::rootId()) {
@@ -421,8 +412,6 @@ void VisualInterpreterUnit::arrangeConnections()
 			mGraphicalModelApi.setFrom(idInModel, firstMatch.value(fromInRul));
 		}
 	}
-
-	delete mCreatedElementsPairs;
 }
 
 QPointF VisualInterpreterUnit::position()
@@ -442,10 +431,10 @@ bool VisualInterpreterUnit::createElementsToReplace()
 {
 	QHash<Id, Id> *firstMatch = &mMatches.first();
 
-	if (mReplacedElements->contains(mMatchedRuleName)) {
-		mReplacedElementsPairs = new QHash<Id, Id>();
-		foreach (Id const &fromId, mReplacedElements->value(mMatchedRuleName)->keys()) {
-			Id const toInRule = mReplacedElements->value(mMatchedRuleName)->value(fromId);
+	if (mReplacedElements.contains(mMatchedRuleName)) {
+		mReplacedElementsPairs.clear();
+		foreach (Id const &fromId, mReplacedElements.value(mMatchedRuleName)->keys()) {
+			Id const toInRule = mReplacedElements.value(mMatchedRuleName)->value(fromId);
 			Id const fromInModel = firstMatch->value(fromId);
 
 			Id const toInModelId = Id(mInterpretersInterface.activeDiagram().editor()
@@ -459,7 +448,7 @@ bool VisualInterpreterUnit::createElementsToReplace()
 					, toInRule.element()
 					, mGraphicalModelApi.position(fromInModel));
 
-			mReplacedElementsPairs->insert(fromInModel, toInModel);
+			mReplacedElementsPairs.insert(fromInModel, toInModel);
 			firstMatch->insert(toInRule, toInModel);
 
 			copyProperties(mGraphicalModelApi.logicalId(toInModel), toInRule);
@@ -471,9 +460,9 @@ bool VisualInterpreterUnit::createElementsToReplace()
 
 void VisualInterpreterUnit::replaceElements()
 {
-	if (mReplacedElements->contains(mMatchedRuleName)) {
-		foreach (Id const &fromInModel, mReplacedElementsPairs->keys()) {
-			Id const toInModel = mReplacedElementsPairs->value(fromInModel);
+	if (mReplacedElements.contains(mMatchedRuleName)) {
+		foreach (Id const &fromInModel, mReplacedElementsPairs.keys()) {
+			Id const toInModel = mReplacedElementsPairs.value(fromInModel);
 
 			foreach (Id const &link, outgoingLinks(fromInModel)) {
 				mGraphicalModelApi.setFrom(link, toInModel);
@@ -485,8 +474,6 @@ void VisualInterpreterUnit::replaceElements()
 			mInterpretersInterface.deleteElementFromDiagram(
 					mGraphicalModelApi.logicalId(fromInModel));
 		}
-
-		delete mReplacedElementsPairs;
 	}
 }
 
@@ -494,16 +481,16 @@ void VisualInterpreterUnit::moveControlFlow()
 {
 	QHash<Id, Id> firstMatch = mMatches.at(0);
 
-	if (mNodesWithDeletedControlMark->contains(mMatchedRuleName)) {
-		foreach (Id const &id, *(mNodesWithDeletedControlMark->value(mMatchedRuleName))) {
+	if (mNodesWithDeletedControlMark.contains(mMatchedRuleName)) {
+		foreach (Id const &id, *(mNodesWithDeletedControlMark.value(mMatchedRuleName))) {
 			Id const node = firstMatch.value(id);
 			mInterpretersInterface.dehighlight(node);
 			mCurrentNodesWithControlMark.removeOne(node);
 		}
 	}
 
-	if (mNodesWithNewControlMark->contains(mMatchedRuleName)) {
-		foreach (Id const &id, *(mNodesWithNewControlMark->value(mMatchedRuleName))) {
+	if (mNodesWithNewControlMark.contains(mMatchedRuleName)) {
+		foreach (Id const &id, *(mNodesWithNewControlMark.value(mMatchedRuleName))) {
 			Id const node = firstMatch.value(id);
 			mInterpretersInterface.highlight(node, false);
 			mCurrentNodesWithControlMark.append(node);
@@ -519,7 +506,7 @@ void VisualInterpreterUnit::interpretInitializationCode()
 	if (mInitializationCode.first == "Block Scheme (C-like)") {
 		mRuleParser->parseStringCode(mInitializationCode.second);
 	} else {
-		mPythonInterpreter->interpretCode(mInitializationCode.second);
+		mPythonInterpreter->interpret(mInitializationCode.second, PythonInterpreter::initialization);
 	}
 }
 
@@ -527,7 +514,7 @@ bool VisualInterpreterUnit::interpretReaction()
 {
 	QHash<Id, Id> const firstMatch = mMatches.at(0);
 
-	Id const rule = mRules->value(mMatchedRuleName);
+	Id const rule = mRules.value(mMatchedRuleName);
 	QString const ruleProcess = property(rule, "procedure").toString();
 	bool result = true;
 	if (!ruleProcess.isEmpty()) {
@@ -539,19 +526,14 @@ bool VisualInterpreterUnit::interpretReaction()
 
 bool VisualInterpreterUnit::interpretPythonReaction()
 {
-	QString const scriptPath = SettingsManager::value("reactionPath").toString();
 	QString const pythonPath = SettingsManager::value("pythonPath").toString();
 
-	mPythonGenerator->setReactionScriptPath(scriptPath);
-	mPythonInterpreter->setReactionScriptPath(scriptPath);
 	mPythonInterpreter->setPythonPath(pythonPath);
 
-	mPythonGenerator->setRule(mRules->value(mMatchedRuleName));
+	mPythonGenerator->setRule(mRules.value(mMatchedRuleName));
 	mPythonGenerator->setMatch(mMatches.first());
 
-	mPythonGenerator->generateScript(false);
-
-	return mPythonInterpreter->interpret(false);
+	return mPythonInterpreter->interpret(mPythonGenerator->generateScript(false), PythonInterpreter::reaction);
 }
 
 void VisualInterpreterUnit::copyProperties(Id const &elemInModel, Id const &elemInRule)
@@ -575,7 +557,7 @@ bool VisualInterpreterUnit::makeStep()
 	needToUpdate |= createElementsToReplace();
 
 	bool result;
-	if (property(mRules->value(mMatchedRuleName), "type").toString() == "Python") {
+	if (property(mRules.value(mMatchedRuleName), "type").toString() == "Python") {
 		result = interpretPythonReaction();
 	} else {
 		result = interpretReaction();
@@ -598,12 +580,12 @@ bool VisualInterpreterUnit::compareElements(Id const &first, Id const &second) c
 {
 	bool result = BaseGraphTransformationUnit::compareElements(first, second);
 
-	if (mNodesWithControlMark->contains(mCurrentRuleName)) {
-		if (mNodesWithControlMark->value(mCurrentRuleName)->contains(second)) {
+	if (mNodesWithControlMark.contains(mCurrentRuleName)) {
+		if (mNodesWithControlMark.value(mCurrentRuleName)->contains(second)) {
 			result = result && mCurrentNodesWithControlMark.contains(first);
 		}
 		if (mCurrentNodesWithControlMark.contains(first)) {
-			result = result && mNodesWithControlMark->value(mCurrentRuleName)->contains(second);
+			result = result && mNodesWithControlMark.value(mCurrentRuleName)->contains(second);
 		}
 	} else if (result && mCurrentNodesWithControlMark.contains(first)) {
 		return false;
@@ -615,7 +597,7 @@ bool VisualInterpreterUnit::compareElements(Id const &first, Id const &second) c
 bool VisualInterpreterUnit::compareElementTypesAndProperties(Id const &first, Id const &second) const
 {
 	if (second.element() == "Wildcard") {
-		return true;
+		return !isEdgeInModel(first);
 	}
 
 	return BaseGraphTransformationUnit::compareElementTypesAndProperties(first, second);
@@ -650,7 +632,6 @@ void VisualInterpreterUnit::semanticsLoadingError(QString const &message)
 {
 	report(message + tr(" Semantics loading failed."), true);
 	mIsSemanticsLoaded = false;
-	deinit();
 }
 
 utils::ExpressionsParser* VisualInterpreterUnit::ruleParser()
@@ -679,4 +660,5 @@ void VisualInterpreterUnit::processPythonInterpreterStdOutput(QHash<QPair<QStrin
 void VisualInterpreterUnit::processPythonInterpreterErrOutput(QString const &output)
 {
 	mInterpretersInterface.errorReporter()->addCritical(output);
+	mPythonInterpreter->continueStep();
 }

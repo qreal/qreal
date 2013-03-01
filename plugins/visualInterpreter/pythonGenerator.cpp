@@ -7,15 +7,11 @@ QString const PythonGenerator::delimeter = "_visint_";
 
 PythonGenerator::PythonGenerator(LogicalModelAssistInterface &logicalModelApi
 		, GraphicalModelAssistInterface &graphicalModelApi
-		, gui::MainWindowInterpretersInterface &interpretersInterface
-		, QString const &reactionScriptPath
-		, QString const &applicationConditionScriptPath)
+		, gui::MainWindowInterpretersInterface &interpretersInterface)
 		: mInterpretersInterface(interpretersInterface)
 		, mLogicalModelApi(logicalModelApi)
 		, mGraphicalModelApi(graphicalModelApi)
 		, mRule(Id::rootId())
-		, mReactionScriptPath(reactionScriptPath)
-		, mApplicationConditionScriptPath(applicationConditionScriptPath)
 {
 }
 
@@ -30,17 +26,7 @@ void PythonGenerator::setMatch(QHash<Id, Id> const &match)
 	mMatch = match;
 }
 
-void PythonGenerator::setReactionScriptPath(QString const &path)
-{
-	mReactionScriptPath = path;
-}
-
-void PythonGenerator::setApplicationConditionScriptPath(QString const &path)
-{
-	mApplicationConditionScriptPath = path;
-}
-
-void PythonGenerator::generateScript(bool const isApplicationCondition)
+QString PythonGenerator::generateScript(bool const isApplicationCondition)
 {
 	QString code = property(mRule, isApplicationCondition ? "applicationCondition" : "procedure");
 	collectPropertiesUsageAndMethodsInvocation(code);
@@ -50,19 +36,13 @@ void PythonGenerator::generateScript(bool const isApplicationCondition)
 
 	collectPropertiesUsageAndMethodsInvocation(code);
 
-	QString const script = "#!/usr/bin/python\n# -*- coding: utf-8 -*-\n"
+	QString const script = "#!/usr/bin/python\n# -*- coding: utf-8 -*-\n\n"
 			+ createProperInitAndOutput(replacePropertiesUsage(code), isApplicationCondition);
-	createScriptFile(script, isApplicationCondition);
 
 	mPropertiesUsage.clear();
 	mMethodsInvocation.clear();
-}
 
-void PythonGenerator::createScriptFile(QString const &script, bool const isApplicationCondition) const
-{
-	utils::OutFile out(isApplicationCondition ? mApplicationConditionScriptPath : mReactionScriptPath);
-	out() << script;
-	out().flush();
+	return script;
 }
 
 bool PythonGenerator::hasElementName(QString const &name) const
@@ -192,7 +172,6 @@ QString PythonGenerator::replaceMethodsInvocation(QString const &code) const
 
 	return funcDefs + result;
 }
-
 
 QString PythonGenerator::substituteElementProperties(QString const &code) const
 {

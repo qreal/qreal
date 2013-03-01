@@ -1,22 +1,20 @@
-#include <QtCore/QFile>
-
 #include "pythonInterpreter.h"
 #include "pythonGenerator.h"
+#include "../../qrutils/outFile.h"
 
 using namespace qReal;
 
 PythonInterpreter::PythonInterpreter(QObject *parent
 		, QString const &pythonPath
-		 , QString const &reactionScriptPath
-		 , QString const &applicationConditionScriptPath)
+		, QString const &tempScriptPath)
 		: QObject(parent)
 		, mThread(new QThread())
 		, mInterpreterProcess(new QProcess(NULL))
 		, mPythonPath(pythonPath)
-		, mReactionScriptPath(reactionScriptPath)
-		, mApplicationConditionScriptPath(applicationConditionScriptPath)
+		, mTempScriptPath(tempScriptPath)
 		, mPythonCodeProcessed(false)
 		, mApplicationConditionResult(false)
+		, mErrorOccured(false)
 {
 	moveToThread(mThread);
 	connect(mInterpreterProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(readOutput()));
@@ -28,6 +26,7 @@ PythonInterpreter::~PythonInterpreter()
 	mInterpreterProcess->closeWriteChannel();
 	mInterpreterProcess->terminate();
 	mThread->terminate();
+
 	delete mInterpreterProcess;
 	delete mThread;
 }
@@ -40,57 +39,63 @@ bool PythonInterpreter::startPythonInterpreterProcess()
 			emit readyReadErrOutput(tr("Python path was set incorrectly"));
 			return false;
 		}
+
+		QString const scriptDir = mTempScriptPath.mid(0, mTempScriptPath.lastIndexOf("/"));
+		QString const scriptDirStr = "__script_dir__ = '" + scriptDir + "'\n";
+		mInterpreterProcess->write(scriptDirStr.toAscii());
+		mInterpreterProcess->waitForBytesWritten();
 	}
 	return true;
 }
 
+void PythonInterpreter::deleteTempFile()
+{
+	QFile(mTempScriptPath).remove();
+}
 
-bool PythonInterpreter::interpret(bool const isApplicationCondition)
+bool PythonInterpreter::interpret(QString const &code, CodeType const codeType)
 {
 	if (!startPythonInterpreterProcess()) {
 		return false;
 	}
 
-	QString const scriptPath = isApplicationCondition ? mApplicationConditionScriptPath : mReactionScriptPath;
-	QString const scriptDir = scriptPath.mid(0, scriptPath.lastIndexOf("/"));
-	QString const scriptDirStr = "script_dir = '" + scriptDir + "'\n";
-	mInterpreterProcess->write(scriptDirStr.toAscii());
-
 	mPythonCodeProcessed = false;
-	if (QFile::exists(scriptPath)) {
-		QString const execfile = "execfile('" + scriptPath + "')\n";
-		mInterpreterProcess->write(execfile.toAscii());
+
+	QString actualCode = code + "\n\n";
+	if (codeType == initialization) {
+		actualCode = "#!/usr/bin/python\n# -*- coding: utf-8 -*-\n\n" + actualCode;
+	}
+
+	if (codeType != applicationCondition) {
+		utils::OutFile out(mTempScriptPath);
+		out() << actualCode;
+		out().flush();
+		QString const command = "execfile('" + mTempScriptPath + "')\n";
+		mInterpreterProcess->write(command.toAscii());
+	} else {
+		mInterpreterProcess->write(actualCode.toAscii());
+	}
+
+	mInterpreterProcess->waitForBytesWritten();
+
+	if (codeType != initialization) {
 		while (!mPythonCodeProcessed) {
 			mInterpreterProcess->waitForReadyRead(-1);
 		}
-		
-		
-		//int const timeout = SettingsManager::value("debuggerTimeout").toInt()/2;
-		//mInterpreterProcess->waitForReadyRead(timeout);
-		if (!isApplicationCondition) {
-			return true;
-		} else {
-			return mApplicationConditionResult;
-		}
 	}
 
-	return false;
-}
-
-void PythonInterpreter::interpretCode(QString const code)
-{
-	startPythonInterpreterProcess();
-
-	QString const finalCode = "#!/usr/bin/python\n# -*- coding: utf-8 -*-\n" + code + "\n\n";
-
-	mInterpreterProcess->write(finalCode.toAscii());
-	mInterpreterProcess->waitForBytesWritten();
+	if (codeType == applicationCondition) {
+		return mApplicationConditionResult && !mErrorOccured;
+	} else {
+		return !mErrorOccured;
+	}
 }
 
 void PythonInterpreter::terminateProcess()
 {
 	if (mInterpreterProcess->pid() > 0) {
 		mInterpreterProcess->terminate();
+		deleteTempFile();
 	}
 }
 
@@ -104,14 +109,9 @@ void PythonInterpreter::setPythonPath(QString const &path)
 	mPythonPath = path;
 }
 
-void PythonInterpreter::setReactionScriptPath(QString const &path)
+void PythonInterpreter::setTempScriptPath(const QString &path)
 {
-	mReactionScriptPath = path;
-}
-
-void PythonInterpreter::setApplicationConditionScriptPath(const QString &path)
-{
-	mApplicationConditionScriptPath = path;
+	mTempScriptPath = path;
 }
 
 QHash<QPair<QString, QString>, QString> &PythonInterpreter::parseOutput(QString const &output) const
@@ -149,6 +149,7 @@ void PythonInterpreter::readOutput()
 		return;
 	}
 
+	mErrorOccured = false;
 	if (outputString == "True\n") {
 		mApplicationConditionResult = true;
 		continueStep();
@@ -168,6 +169,7 @@ void PythonInterpreter::readErrOutput()
 	output = output.replace(">>>", "").trimmed();
 	output = output.replace("...", "").trimmed();
 	if (!output.isEmpty() && output.indexOf("Python") == -1) {
+		mErrorOccured = true;
 		emit readyReadErrOutput(output);
 	}
 }

@@ -131,9 +131,11 @@ def save():
   s = s.replace("@@INITHOOKS@@", final_init_code)
   s = s.replace("@@TERMINATEHOOKS@@", final_terminate_code)
   
-  rel_path = "nxt-tools/program0.c"
-  abs_path = os.path.join(script_dir, rel_path)
+  dir_path = os.path.join(__script_dir__, "nxt-tools")
+  if not os.path.exists(dir_path):
+    os.mkdir(dir_path)
+  file_path = os.path.join(dir_path, "program0.c")
   
-  code_file = open(abs_path, 'w')
+  code_file = open(file_path, 'w')
   code_file.write(s)
   code_file.close()

@@ -21,9 +21,7 @@ public:
 	/// @param applicationConditionScriptPath Where save application condition on python
 	PythonGenerator(LogicalModelAssistInterface &logicalModelApi
 			, GraphicalModelAssistInterface &graphicalModelApi
-			, gui::MainWindowInterpretersInterface &interpretersInterface
-			, QString const &reactionScriptPath = QDir().currentPath() + "/reaction.py"
-			, QString const &applicationConditionScriptPath = QDir().currentPath() + "/appcond.py");
+			, gui::MainWindowInterpretersInterface &interpretersInterface);
 
 	/// Matched rule id
 	void setRule(Id const &rule);
@@ -31,14 +29,8 @@ public:
 	/// Matched rule match
 	void setMatch(QHash<Id, Id> const &match);
 
-	/// Sets path where will be saved reaction on python
-	void setReactionScriptPath(QString const &path);
-
-	/// Sets path where will be saved application condition on python
-	void setApplicationConditionScriptPath(QString const &path);
-
-	/// Generate and save reaction script or application condition script on python
-	void generateScript(bool const isApplicationCondition);
+	/// Generate and return reaction script or application condition script on python
+	QString generateScript(bool const isApplicationCondition);
 
 	/// Returns element id by it's name (from single rule)
 	Id idByName(QString const &name) const;
@@ -80,9 +72,6 @@ private:
 	QString parseIdentifier(QString const &stream, int pos, bool leftToRight) const;
 	bool isCorrectIdentifierSymbol(QChar const c) const;
 
-	/// Writes script in file
-	void createScriptFile(QString const &script, bool const isApplicationCondition) const;
-
 	/// Escapes string (',",\,\t,\r,\n)
 	QString escape(QString const &string) const;
 
@@ -96,9 +85,6 @@ private:
 
 	QHash<QString, QSet<QString>* > mPropertiesUsage;
 	QHash<QString, QSet<QString>* > mMethodsInvocation;
-
-	QString mReactionScriptPath;
-	QString mApplicationConditionScriptPath;
 };
 
 }
