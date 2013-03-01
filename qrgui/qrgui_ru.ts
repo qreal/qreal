@@ -3069,29 +3069,29 @@
 <context>
     <name>qReal::EditPropertiesDialog</name>
     <message>
-        <location filename="dialogs/editPropertiesDialog.cpp" line="45"/>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="46"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="dialogs/editPropertiesDialog.cpp" line="45"/>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="46"/>
         <source>All required properties should be filled!</source>
         <translation>Все обязательные свойства должны быть заполнены!</translation>
     </message>
     <message>
-        <location filename="dialogs/editPropertiesDialog.cpp" line="51"/>
-        <location filename="dialogs/editPropertiesDialog.cpp" line="71"/>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="52"/>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="72"/>
         <source>Adding of new property:</source>
         <translation>Добавление нового свойства:</translation>
     </message>
     <message>
-        <location filename="dialogs/editPropertiesDialog.cpp" line="52"/>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="53"/>
         <source>Warning:</source>
         <oldsource>Warning</oldsource>
         <translation>Внимание:</translation>
     </message>
     <message>
-        <location filename="dialogs/editPropertiesDialog.cpp" line="52"/>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="53"/>
         <source>You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value.</source>
         <translation>Вы изменили тип свойства. В случае  некорректного преобразования это может привести к обнулению существующего значения свойства.</translation>
     </message>
@@ -3100,12 +3100,12 @@
         <translation type="obsolete">Вы изменили тип свойства. В случае  некорректного преобразования это может привести к обнулению существующего значения свойства</translation>
     </message>
     <message>
-        <location filename="dialogs/editPropertiesDialog.cpp" line="53"/>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="54"/>
         <source>Proceed anyway</source>
         <translation>Продолжить все равно</translation>
     </message>
     <message>
-        <location filename="dialogs/editPropertiesDialog.cpp" line="54"/>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="55"/>
         <source>Cancel the type conversion</source>
         <oldsource>Cancel the type cinversion</oldsource>
         <translation>Отменить преобразование типа</translation>
@@ -3115,7 +3115,7 @@
         <translation type="obsolete">Необходимо заполнить все свойства!</translation>
     </message>
     <message>
-        <location filename="dialogs/editPropertiesDialog.cpp" line="73"/>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="74"/>
         <source>Properties editor</source>
         <translation>Редактирование свойства</translation>
     </message>
@@ -3149,7 +3149,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="738"/>
+        <location filename="mainwindow/mainWindow.cpp" line="746"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3174,16 +3174,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="784"/>
-        <location filename="mainwindow/mainWindow.cpp" line="802"/>
-        <location filename="mainwindow/mainWindow.cpp" line="820"/>
+        <location filename="mainwindow/mainWindow.cpp" line="792"/>
+        <location filename="mainwindow/mainWindow.cpp" line="810"/>
+        <location filename="mainwindow/mainWindow.cpp" line="828"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="786"/>
-        <location filename="mainwindow/mainWindow.cpp" line="804"/>
-        <location filename="mainwindow/mainWindow.cpp" line="822"/>
+        <location filename="mainwindow/mainWindow.cpp" line="794"/>
+        <location filename="mainwindow/mainWindow.cpp" line="812"/>
+        <location filename="mainwindow/mainWindow.cpp" line="830"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3288,24 +3288,24 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="739"/>
+        <location filename="mainwindow/mainWindow.cpp" line="747"/>
         <source>&lt;b&gt;QReal&lt;b&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;http://qreal.ru/&quot;&gt;http://qreal.ru/&lt;/a&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="820"/>
+        <location filename="mainwindow/mainWindow.cpp" line="828"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="822"/>
+        <location filename="mainwindow/mainWindow.cpp" line="830"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="949"/>
-        <location filename="mainwindow/mainWindow.cpp" line="962"/>
+        <location filename="mainwindow/mainWindow.cpp" line="957"/>
         <location filename="mainwindow/mainWindow.cpp" line="970"/>
+        <location filename="mainwindow/mainWindow.cpp" line="978"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3314,17 +3314,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1745"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1753"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1774"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1782"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1774"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1782"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3345,7 +3345,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1367"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1375"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -3370,6 +3370,14 @@
     <message>
         <source>Select directory to save current model to</source>
         <translation type="obsolete">Выберите папку, в которую сохранить текущую модель</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::PaletteTreeWidget</name>
+    <message>
+        <location filename="mainwindow/paletteTreeWidget.cpp" line="15"/>
+        <source>Add Element</source>
+        <translation>Добавить элемент</translation>
     </message>
 </context>
 <context>
@@ -3493,17 +3501,17 @@
 <context>
     <name>qReal::PropertiesDialog</name>
     <message>
-        <location filename="dialogs/propertiesDialog.cpp" line="47"/>
+        <location filename="dialogs/propertiesDialog.cpp" line="48"/>
         <source>Properties</source>
         <translation>Свойства</translation>
     </message>
     <message>
-        <location filename="dialogs/propertiesDialog.cpp" line="107"/>
+        <location filename="dialogs/propertiesDialog.cpp" line="108"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="dialogs/propertiesDialog.cpp" line="107"/>
+        <location filename="dialogs/propertiesDialog.cpp" line="108"/>
         <source>For adding a new property from the scene and from the explorer of logical model should be removed all the elements of the object and its inheritors!</source>
         <translation>Для добавления нового свойства со сцены и обозревателя логической модели должны быть удалены все элементы данного объекта и его наследников!</translation>
     </message>
@@ -3536,7 +3544,7 @@
 <context>
     <name>qReal::ShapeEdit</name>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.cpp" line="298"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.cpp" line="297"/>
         <source>Saving</source>
         <translation type="unfinished">Сохранение</translation>
     </message>
@@ -3635,57 +3643,57 @@
     </message>
     <message>
         <location filename="mainwindow/draggableElement.cpp" line="81"/>
-        <location filename="mainwindow/draggableElement.cpp" line="113"/>
-        <location filename="mainwindow/draggableElement.cpp" line="121"/>
+        <location filename="mainwindow/draggableElement.cpp" line="102"/>
+        <location filename="mainwindow/draggableElement.cpp" line="125"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
         <location filename="mainwindow/draggableElement.cpp" line="82"/>
-        <location filename="mainwindow/draggableElement.cpp" line="114"/>
-        <location filename="mainwindow/draggableElement.cpp" line="122"/>
+        <location filename="mainwindow/draggableElement.cpp" line="103"/>
+        <location filename="mainwindow/draggableElement.cpp" line="126"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="112"/>
-        <location filename="mainwindow/draggableElement.cpp" line="120"/>
+        <location filename="mainwindow/draggableElement.cpp" line="101"/>
+        <location filename="mainwindow/draggableElement.cpp" line="124"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="112"/>
-        <location filename="mainwindow/draggableElement.cpp" line="120"/>
+        <location filename="mainwindow/draggableElement.cpp" line="101"/>
+        <location filename="mainwindow/draggableElement.cpp" line="124"/>
         <source>The deleted element </source>
         <translation>Удаляемый элемент </translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="112"/>
+        <location filename="mainwindow/draggableElement.cpp" line="124"/>
         <source> has inheritors:</source>
         <translation> имеет наследников:</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="112"/>
+        <location filename="mainwindow/draggableElement.cpp" line="124"/>
         <source>If you delete it, its properties will be removed from the elements-inheritors. Continue to delete?</source>
         <translation>Если вы удалите его, то все унаследованные свойства будут удалены у его потомков. Продолжить удаление?</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="120"/>
+        <location filename="mainwindow/draggableElement.cpp" line="101"/>
         <source> is the element of root digram. Continue to delete?</source>
         <translation> является элементом корневой диаграммы. Продолжить удаление?</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="163"/>
+        <location filename="mainwindow/draggableElement.cpp" line="167"/>
         <source>Change Properties</source>
         <translation>Изменить свойства</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="166"/>
+        <location filename="mainwindow/draggableElement.cpp" line="170"/>
         <source>Change Appearance</source>
         <translation>Изменить внешний вид</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="169"/>
+        <location filename="mainwindow/draggableElement.cpp" line="173"/>
         <source>Delete Element</source>
         <translation>Удалить элемент</translation>
     </message>
@@ -3720,17 +3728,17 @@
         <translation type="obsolete">Изменить свойства</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="257"/>
+        <location filename="mainwindow/paletteTree.cpp" line="258"/>
         <source>Expand all</source>
         <translation>Развернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="265"/>
+        <location filename="mainwindow/paletteTree.cpp" line="266"/>
         <source>Collapse all</source>
         <translation>Свернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="273"/>
+        <location filename="mainwindow/paletteTree.cpp" line="274"/>
         <source>Change representation</source>
         <translation>Изменить представление</translation>
     </message>
