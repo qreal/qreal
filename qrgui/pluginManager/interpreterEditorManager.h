@@ -86,6 +86,7 @@ public:
 	QString getShape(Id const &id) const;
 	void updateShape(Id const &id, QString const &graphics) const;
 	void deleteElement(qReal::MainWindow *mainWindow, Id const &id) const;
+	bool isRootDiagramNode(Id const &id) const;
 	//unsupported methods:
 	QStringList paletteGroups(Id const &editor, Id const &diagram) const;
 	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;

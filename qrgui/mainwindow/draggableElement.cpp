@@ -81,14 +81,54 @@ void DraggableElement::deleteElementPaletteActionTriggered()
 	mb->button(QMessageBox::Ok)->setText(tr("Yes"));
 	mb->button(QMessageBox::Cancel)->setText(tr("No"));
 	mb->show();
-	connect(mb->button(QMessageBox::Ok), SIGNAL(clicked()), this, SLOT(deleteElement()));
+	connect(mb->button(QMessageBox::Ok), SIGNAL(clicked()), this, SLOT(checkElementForChildren()));
 }
 
 void DraggableElement::deleteElement()
 {
-	static_cast<EditorViewScene *>(mMainWindow->getCurrentTab()->scene())->clearSelection();
+	mMainWindow->clearSelectionOnTab(mDeletedElementId);
+	if (mIsRootDiagramNode) {
+		mMainWindow->closeDiagramTab(mDeletedElementId);
+	}
 	mEditorManagerProxy->deleteElement(mMainWindow, mDeletedElementId);
 	mMainWindow->loadPlugins();
+}
+
+void DraggableElement::checkElementForRootDiagramNode()
+{
+	if (mEditorManagerProxy->isRootDiagramNode(mDeletedElementId)) {
+		mIsRootDiagramNode = true;
+		QMessageBox *mb = new QMessageBox(tr("Warning"), tr("The deleted element ") + mEditorManagerProxy->friendlyName(mDeletedElementId) + tr(" is the element of root digram. Continue to delete?"), QMessageBox::Warning, QMessageBox::Ok, QMessageBox::Cancel, QMessageBox::NoButton);
+		mb->button(QMessageBox::Ok)->setText(tr("Yes"));
+		mb->button(QMessageBox::Cancel)->setText(tr("No"));
+		mb->show();
+		connect(mb->button(QMessageBox::Ok), SIGNAL(clicked()), this, SLOT(deleteElement()));
+	} else {
+		deleteElement();
+	}
+}
+
+void DraggableElement::checkElementForChildren()
+{
+	mIsRootDiagramNode = false;
+	IdList const children = mEditorManagerProxy->getChildren(mDeletedElementId);
+	if (!children.isEmpty()) {
+		QString childrenNames;
+		foreach (Id const child, children) {
+			childrenNames += " " + mEditorManagerProxy->friendlyName(child) + ",";
+		}
+		if (!childrenNames.isEmpty()) {
+			childrenNames.replace(childrenNames.length() - 1, 1, ".");
+		}
+
+		QMessageBox *mb = new QMessageBox(tr("Warning"), tr("The deleted element ") + mEditorManagerProxy->friendlyName(mDeletedElementId) + tr(" has inheritors:") + childrenNames + "\n" + tr("If you delete it, its properties will be removed from the elements-inheritors. Continue to delete?"), QMessageBox::Warning, QMessageBox::Ok, QMessageBox::Cancel, QMessageBox::NoButton);
+		mb->button(QMessageBox::Ok)->setText(tr("Yes"));
+		mb->button(QMessageBox::Cancel)->setText(tr("No"));
+		mb->show();
+		connect(mb->button(QMessageBox::Ok), SIGNAL(clicked()), this, SLOT(checkElementForRootDiagramNode()));
+	} else {
+		checkElementForRootDiagramNode();
+	}
 }
 
 void DraggableElement::dragEnterEvent(QDragEnterEvent * /*event*/)

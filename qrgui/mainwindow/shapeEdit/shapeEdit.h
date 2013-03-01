@@ -23,7 +23,7 @@ class ShapeEdit : public QWidget {
 public:
 	explicit ShapeEdit(QWidget *parent = NULL);
 	ShapeEdit(QPersistentModelIndex const &index, int const &role);
-	ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy, qrRepo::GraphicalRepoApi const &graphicalRepoApi, Ui::MainWindowUi *mainWindowUi, EditorView *editorView);
+	ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow, EditorView *editorView);
 	graphicsUtils::AbstractView* getView();
 	void load(const QString &text);
 	~ShapeEdit();
@@ -73,7 +73,7 @@ private:
 	Id mId;
 	EditorManagerInterface *mEditorManagerProxy;
 	IdList mGraphicalElements;
-	Ui::MainWindowUi *mMainWindowUi;
+	MainWindow *mMainWindow;
 	EditorView *mEditorView;
 	void initButtonGroup();
 	void initFontPalette();

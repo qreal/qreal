@@ -90,6 +90,7 @@ namespace qReal {
 		QString getShape(Id const &id) const;
 		void updateShape(Id const &id, QString const &graphics) const;
 		void deleteElement(MainWindow *mainWindow, Id const &id) const;
+		bool isRootDiagramNode(Id const &id) const;
 	private:
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;

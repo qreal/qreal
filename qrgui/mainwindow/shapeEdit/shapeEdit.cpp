@@ -34,8 +34,8 @@ ShapeEdit::ShapeEdit(const QPersistentModelIndex &index, const int &role)
 	connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
 }
 
-ShapeEdit::ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy, qrRepo::GraphicalRepoApi const &graphicalRepoApi, Ui::MainWindowUi *mainWindowUi, EditorView *editorView)
-	: QWidget(NULL), mUi(new Ui::ShapeEdit), mRole(0), mId(id), mEditorManagerProxy(editorManagerProxy), mMainWindowUi(mainWindowUi), mEditorView(editorView)
+ShapeEdit::ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow, EditorView *editorView)
+	: QWidget(NULL), mUi(new Ui::ShapeEdit), mRole(0), mId(id), mEditorManagerProxy(editorManagerProxy), mMainWindow(mainWindow), mEditorView(editorView)
 {
 	mGraphicalElements = graphicalRepoApi.graphicalElements(Id(mId.editor(), mId.diagram(), mId.element()));
 	init();
@@ -282,7 +282,6 @@ void ShapeEdit::save()
 		mEditorManagerProxy->updateShape(mId, mDocument.toString(4));
 		foreach (Id grElement, mGraphicalElements) {
 			mEditorManagerProxy->updateShape(grElement, mDocument.toString(4));
-			mMainWindowUi->paletteTree->changeRepresentation();
 			EditorViewScene * editorViewScene = mEditorView->getEditorViewScene();
 			QList < QGraphicsItem *> list = editorViewScene->items();
 			for (QList < QGraphicsItem *>::Iterator it = list.begin(); it != list.end(); it++) {
@@ -292,8 +291,8 @@ void ShapeEdit::save()
 					}
 				}
 			}
-
 		}
+		mMainWindow->loadPlugins();
 	}
 	QMessageBox::information(this, tr("Saving"), "Saved successfully");
 	mDocument.clear();

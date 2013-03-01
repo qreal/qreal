@@ -3149,7 +3149,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="723"/>
+        <location filename="mainwindow/mainWindow.cpp" line="738"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3174,16 +3174,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="769"/>
-        <location filename="mainwindow/mainWindow.cpp" line="787"/>
-        <location filename="mainwindow/mainWindow.cpp" line="805"/>
+        <location filename="mainwindow/mainWindow.cpp" line="784"/>
+        <location filename="mainwindow/mainWindow.cpp" line="802"/>
+        <location filename="mainwindow/mainWindow.cpp" line="820"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="771"/>
-        <location filename="mainwindow/mainWindow.cpp" line="789"/>
-        <location filename="mainwindow/mainWindow.cpp" line="807"/>
+        <location filename="mainwindow/mainWindow.cpp" line="786"/>
+        <location filename="mainwindow/mainWindow.cpp" line="804"/>
+        <location filename="mainwindow/mainWindow.cpp" line="822"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3288,24 +3288,24 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="724"/>
+        <location filename="mainwindow/mainWindow.cpp" line="739"/>
         <source>&lt;b&gt;QReal&lt;b&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;http://qreal.ru/&quot;&gt;http://qreal.ru/&lt;/a&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="805"/>
+        <location filename="mainwindow/mainWindow.cpp" line="820"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="807"/>
+        <location filename="mainwindow/mainWindow.cpp" line="822"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="934"/>
-        <location filename="mainwindow/mainWindow.cpp" line="947"/>
-        <location filename="mainwindow/mainWindow.cpp" line="955"/>
+        <location filename="mainwindow/mainWindow.cpp" line="949"/>
+        <location filename="mainwindow/mainWindow.cpp" line="962"/>
+        <location filename="mainwindow/mainWindow.cpp" line="970"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3314,17 +3314,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1730"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1745"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1759"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1774"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1759"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1774"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3345,7 +3345,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1352"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1367"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -3624,37 +3624,68 @@
 <context>
     <name>qReal::gui::DraggableElement</name>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="78"/>
+        <location filename="mainwindow/draggableElement.cpp" line="80"/>
         <source>Deleting an element: </source>
         <translation>Удаление элемента: </translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="78"/>
+        <location filename="mainwindow/draggableElement.cpp" line="80"/>
         <source>Do you really want to delete this item and all its graphical representation from the scene and from the palette?</source>
         <translation>Вы действительно хотите удалить данный элемент  и все его графические представления со сцены и из палитры?</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="79"/>
+        <location filename="mainwindow/draggableElement.cpp" line="81"/>
+        <location filename="mainwindow/draggableElement.cpp" line="113"/>
+        <location filename="mainwindow/draggableElement.cpp" line="121"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="80"/>
+        <location filename="mainwindow/draggableElement.cpp" line="82"/>
+        <location filename="mainwindow/draggableElement.cpp" line="114"/>
+        <location filename="mainwindow/draggableElement.cpp" line="122"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="118"/>
+        <location filename="mainwindow/draggableElement.cpp" line="112"/>
+        <location filename="mainwindow/draggableElement.cpp" line="120"/>
+        <source>Warning</source>
+        <translation>Внимание</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="112"/>
+        <location filename="mainwindow/draggableElement.cpp" line="120"/>
+        <source>The deleted element </source>
+        <translation>Удаляемый элемент </translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="112"/>
+        <source> has inheritors:</source>
+        <translation> имеет наследников:</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="112"/>
+        <source>If you delete it, its properties will be removed from the elements-inheritors. Continue to delete?</source>
+        <translation>Если вы удалите его, то все унаследованные свойства будут удалены у его потомков. Продолжить удаление?</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="120"/>
+        <source> is the element of root digram. Continue to delete?</source>
+        <translation> является элементом корневой диаграммы. Продолжить удаление?</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="163"/>
         <source>Change Properties</source>
         <translation>Изменить свойства</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="121"/>
+        <location filename="mainwindow/draggableElement.cpp" line="166"/>
         <source>Change Appearance</source>
         <translation>Изменить внешний вид</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="124"/>
+        <location filename="mainwindow/draggableElement.cpp" line="169"/>
         <source>Delete Element</source>
         <translation>Удалить элемент</translation>
     </message>

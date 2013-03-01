@@ -46,6 +46,8 @@ private slots:
 	void changeAppearancePaletteActionTriggered();
 	void deleteElementPaletteActionTriggered();
 	void deleteElement();
+	void checkElementForRootDiagramNode();
+	void checkElementForChildren();
 private:
 	Id mId;
 	QIcon mIcon;
@@ -53,10 +55,11 @@ private:
 	QLabel *mLabel;
 	EditorManagerInterface *mEditorManagerProxy;
 	MainWindow *mMainWindow;
+	Id mDeletedElementId;
+	bool mIsRootDiagramNode;
 	virtual void dragEnterEvent(QDragEnterEvent *event);
 	virtual void dropEvent(QDropEvent *event);
 	virtual void mousePressEvent(QMouseEvent *event);
-	Id mDeletedElementId;
 };
 }
 }

@@ -541,3 +541,8 @@ void EditorManager::updateShape(Id const &id, QString const &graphics) const
 
 void EditorManager::deleteElement(MainWindow *mainWindow, Id const &id) const
 {}
+
+bool EditorManager::isRootDiagramNode(Id const &id) const
+{
+	return false;
+}

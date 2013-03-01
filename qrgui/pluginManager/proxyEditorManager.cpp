@@ -248,6 +248,11 @@ void ProxyEditorManager::deleteElement(MainWindow *mainWindow, Id const &id) con
 	mProxyManager->deleteElement(mainWindow, id);
 }
 
+bool ProxyEditorManager::isRootDiagramNode(Id const &id) const
+{
+	return mProxyManager->isRootDiagramNode(id);
+}
+
 //unsupported methods:
 QStringList ProxyEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {

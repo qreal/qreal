@@ -7,6 +7,7 @@
 #include "../../qrkernel/settingsManager.h"
 #include "../dialogs/propertiesDialog.h"
 #include "draggableElement.h"
+#include "paletteTreeWidget.h"
 
 using namespace qReal;
 using namespace gui;
@@ -277,7 +278,7 @@ void PaletteTree::createPaletteTree()
 
 	mLayout->addLayout(hLayout);
 
-	mTree = new QTreeWidget(this);
+	mTree = new PaletteTreeWidget(this, mEditorManagerProxy);
 	mTree->setHeaderHidden(true);
 	mLayout->addWidget(mTree);
 	mSettings = new QSettings("QReal", "PaletteItems");

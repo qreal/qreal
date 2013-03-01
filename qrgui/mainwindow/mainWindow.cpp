@@ -289,6 +289,29 @@ void MainWindow::loadMetamodel()
 	loadPlugins();
 }
 
+void MainWindow::closeDiagramTab(Id const &id)
+{
+	IdList const grIds = mModels->graphicalRepoApi().graphicalElements(id.type());
+	QModelIndex index = mModels->graphicalModelAssistApi().indexById(grIds[0]);
+	for (int i = 0; i < mUi->tabs->count(); i++) {
+		EditorView *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+		if (tab != NULL && tab->mvIface()->rootIndex() == index) {
+			mUi->tabs->removeTab(i);
+		}
+	}
+}
+
+void MainWindow::clearSelectionOnTab(Id const &id)
+{
+	IdList const grIds = mModels->graphicalRepoApi().graphicalElements(id.type());
+	for (int i = 0; i < mUi->tabs->count(); i++) {
+		EditorView *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+		if (tab != NULL && static_cast<EditorViewScene *>(tab->mvIface()->scene())->getElem(grIds[0]) != NULL) {
+			tab->scene()->clearSelection();
+		}
+	}
+}
+
 void MainWindow::adjustMinimapZoom(int zoom)
 {
 	mUi->minimapView->resetMatrix();
@@ -939,7 +962,7 @@ void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, Q
 // This method is for Interpreter
 void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy)
 {
-	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), mUi, getCurrentTab());
+	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab());
 	if (!propertyValue.isEmpty()) {
 		shapeEdit->load(propertyValue);
 	}

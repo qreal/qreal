@@ -117,6 +117,8 @@ public:
 	ProxyEditorManager *proxyManager();
 	void loadMetamodel();
 	void loadPlugins();
+	void closeDiagramTab(Id const &id);
+	void clearSelectionOnTab(Id const &id);
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();

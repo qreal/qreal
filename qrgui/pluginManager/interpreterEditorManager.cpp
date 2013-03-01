@@ -152,8 +152,9 @@ bool InterpreterEditorManager::isParentOf(Id const &child, Id const &parent) con
 	qrRepo::RepoApi const * const repoMetaModelParent = getRepoAndMetaId(parent).first;
 	Id const repoParent = getRepoAndMetaId(parent).second;
 
-	if (repoChild == repoParent && repoMetaModelChild == repoMetaModelParent)
+	if (repoChild == repoParent && repoMetaModelChild == repoMetaModelParent) {
 		return true;
+	}
 
 	if (repoMetaModelChild != repoMetaModelParent) {
 		return false;
@@ -692,7 +693,9 @@ IdList InterpreterEditorManager::getChildren(Id const &parent) const {
 		if (link.element() == "Inheritance") {
 			Id metaChild = repo->otherEntityFromLink(link, metaId);
 			QPair<Id, Id> editorAndDiagram = getEditorAndDiagram(repo, metaChild);
-			result << Id(repo->name(editorAndDiagram.first), repo->name(editorAndDiagram.second), repo->name(metaChild));
+			Id child = Id(repo->name(editorAndDiagram.first), repo->name(editorAndDiagram.second), repo->name(metaChild));
+			result << child;
+			result << getChildren(child);
 		}
 	}
 	return result;
@@ -732,6 +735,15 @@ void InterpreterEditorManager::deleteElement(MainWindow *mainWindow, Id const &i
 	}
 	repo->removeChild(repo->parent(metaId), metaId);
 	repo->removeElement(metaId);
+}
+
+bool InterpreterEditorManager::isRootDiagramNode(Id const &id) const
+{
+	QPair<qrRepo::RepoApi*, Id> repoAndMetaId = getRepoAndMetaId(id);
+	qrRepo::RepoApi const * const repo = repoAndMetaId.first;
+	Id const metaId = repoAndMetaId.second;
+	QPair<Id, Id> editorAndDiagram = getEditorAndDiagram(repo, metaId);
+	return repo->stringProperty(editorAndDiagram.second, "nodeName") == repo->name(metaId);
 }
 
 //unsupported method
