@@ -66,11 +66,17 @@ public:
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
-    void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos);
+    void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos, qreal shift, QList<NodeElement*> elements);
 
-    QList<NodeElement*> getDest(NodeElement* node);
-    void moveDownFromElem(NodeElement* node); //QList<NodeElement*> moved);
+    QList<NodeElement*> getNeibors(NodeElement* node);
+    void moveDownFromElem(NodeElement* node, QPointF const &scenePos, qreal shift, QList<NodeElement*> elements); //QList<NodeElement*> moved){
+
     NodeElement* getNodeById(qReal::Id const &itemId);
+
+    void deleteElementFromEdge(qReal::Id const &nodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos);
+    QList<EdgeElement*> getInEdges(NodeElement* node);
+    QList<EdgeElement*> getOutEdges(NodeElement* node);
+
     void itemSelectUpdate();
 
 	/// update (for a beauty) all edges when tab is opening
