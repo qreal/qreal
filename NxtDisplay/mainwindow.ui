@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="CentralButton">
+   <widget class="QPushButton" name="centralButton">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -27,7 +27,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="LeftButton">
+   <widget class="QPushButton" name="leftButton">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -40,7 +40,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="RightButton">
+   <widget class="QPushButton" name="rightButton">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -53,7 +53,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="LowerButton">
+   <widget class="QPushButton" name="lowerButton">
     <property name="geometry">
      <rect>
       <x>80</x>

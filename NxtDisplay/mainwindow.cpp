@@ -8,27 +8,22 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow(){
     delete ui;
 }
 
-void MainWindow::on_LeftButton_clicked()
-{
-    emit Left();
+void MainWindow::on_LeftButton_clicked(){
+    emit leftButtonClicked();
 }
 
-void MainWindow::on_CentralButton_clicked()
-{
-    emit Central();
+void MainWindow::on_CentralButton_clicked(){
+    emit centralButtonClicked();
 }
 
-void MainWindow::on_RightButton_clicked()
-{
-    emit Right();
+void MainWindow::on_RightButton_clicked(){
+    emit rightButtonClicked();
 }
 
-void MainWindow::on_LowerButton_clicked()
-{
-    emit Lower();
+void MainWindow::on_LowerButton_clicked(){
+    emit lowerButtonClicked();
 }
