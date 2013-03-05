@@ -780,7 +780,7 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
 	return NULL;
 }
 
-NodeElement *EdgeElement::innermostChild(QList<QGraphicsItem *> items, NodeElement *element)
+NodeElement *EdgeElement::innermostChild(QList<QGraphicsItem *> const &items, NodeElement *element) const
 {
 	foreach (NodeElement *child, element->childNodes()) {
 		if (items.contains(child)) {
