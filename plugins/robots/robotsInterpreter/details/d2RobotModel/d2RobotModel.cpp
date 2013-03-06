@@ -290,7 +290,7 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> const &countsCol
 	QHashIterator<unsigned long, int> i(countsColor);
 	while(i.hasNext()) {
 		i.next();
-        unsigned long color = i.key();
+        	unsigned long color = i.key();
 		if (color != white) {
 			int b = (color >> 0) & 0xFF;
 			int g = (color >> 8) & 0xFF;
@@ -315,10 +315,10 @@ int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 	int const n = image.numBytes() / 4;
 
 	for (int i = 0; i < n; ++i) {
-        int const color = spoilLight(data[i]);
-        int const b = (color >> 0) & 0xFF;
-        int const g = (color >> 8) & 0xFF;
-        int const r = (color >> 16) & 0xFF;
+	        int const color = spoilLight(data[i]);
+	        int const b = (color >> 0) & 0xFF;
+	        int const g = (color >> 8) & 0xFF;
+	        int const r = (color >> 16) & 0xFF;
 		// brightness in [0..256]
 		int const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
