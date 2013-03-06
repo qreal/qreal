@@ -29,9 +29,8 @@ protected:
 	QRectF boundingRect() const;
 
 private:
-	void drawBeep(QPainter* painter);
-	void drawBeepArcs(QPainter* painter, QPointF const &center, qreal radius);
-
+	void drawBeep(QPainter *painter);
+	void drawBeepArcs(QPainter *painter, QPointF const &center, qreal radius);
 };
 
 /** @brief Class that represents a robot in 2D model */
@@ -89,7 +88,6 @@ private:
 
 	/** @brief Image of a robot drawn on scene */
 	QImage mImage;
-	QImage mBeepImage;
 	// Takes ownership
 	BeepItem *mBeepItem;
 

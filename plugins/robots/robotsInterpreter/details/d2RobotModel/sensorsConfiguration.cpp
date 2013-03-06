@@ -13,10 +13,9 @@ SensorsConfiguration::SensorsConfiguration()
 void SensorsConfiguration::setSensor(inputPort::InputPortEnum const &port
 		, sensorType::SensorTypeEnum const &type
 		, QPointF const &position
-		, qreal const &direction
-		, bool const sticked)
+		, qreal const &direction)
 {
-	mSensors[port] = SensorInfo(position, direction, type, sticked);
+	mSensors[port] = SensorInfo(position, direction, type);
 }
 
 void SensorsConfiguration::setPosition(inputPort::InputPortEnum const &port, QPointF const &position)
@@ -49,17 +48,6 @@ void SensorsConfiguration::clearSensor(inputPort::InputPortEnum const &port)
 	mSensors[port] = SensorInfo();
 }
 
-bool SensorsConfiguration::stickedToItem(inputPort::InputPortEnum const port) const
-{
-	return mSensors[port].stickedToRobot();
-}
-
-void SensorsConfiguration::onStickedToItem(inputPort::InputPortEnum const port, bool sticked)
-{
-	// In current logic sensors can be sticked to the only item (robot)
-	mSensors[port].setStickedToRobot(sticked);
-}
-
 void SensorsConfiguration::serialize(QDomElement &robot, QDomDocument &document) const
 {
 	QDomElement sensorsElem = document.createElement("sensors");
@@ -73,7 +61,6 @@ void SensorsConfiguration::serialize(QDomElement &robot, QDomDocument &document)
 		sensorElem.setAttribute("type", sensor.type());
 		sensorElem.setAttribute("position", QString::number(sensor.position().x()) + ":" + QString::number(sensor.position().y()));
 		sensorElem.setAttribute("direction", sensor.direction());
-		sensorElem.setAttribute("sticked", sensor.stickedToRobot());
 		++port;
 	}
 	robot.appendChild(sensorsElem);
@@ -103,9 +90,8 @@ void SensorsConfiguration::deserialize(QDomElement const &element)
 		QPointF const position = QPoint(x, y);
 
 		qreal const direction = sensorNode.attribute("direction", "0").toDouble();
-		bool const sticked = sensorNode.attribute("sticked", "1").toInt() != 0;
 
-		setSensor(port, type, position, direction, sticked);
+		setSensor(port, type, position, direction);
 	}
 }
 
@@ -117,10 +103,10 @@ SensorsConfiguration::SensorInfo::SensorInfo()
 
 SensorsConfiguration::SensorInfo::SensorInfo(QPointF const &position
 		, qreal direction
-		, sensorType::SensorTypeEnum const &sensorType
-		, bool const sticked)
-	: mPosition(position), mDirection(direction)
-	, mSensorType(sensorType), mStickedToRobot(sticked)
+		, sensorType::SensorTypeEnum const &sensorType)
+	: mPosition(position)
+	, mDirection(direction)
+	, mSensorType(sensorType)
 {
 }
 
@@ -137,16 +123,6 @@ void SensorsConfiguration::SensorInfo::setPosition(QPointF const &position)
 qreal SensorsConfiguration::SensorInfo::direction() const
 {
 	return mDirection;
-}
-
-bool SensorsConfiguration::SensorInfo::stickedToRobot() const
-{
-	return mStickedToRobot;
-}
-
-void SensorsConfiguration::SensorInfo::setStickedToRobot(bool sticked)
-{
-	mStickedToRobot = sticked;
 }
 
 void SensorsConfiguration::SensorInfo::setDirection(qreal direction)

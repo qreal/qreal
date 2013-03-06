@@ -8,6 +8,7 @@
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
 #include "rotater.h"
+#include "timeline.h"
 #include "../../../../../qrutils/outFile.h"
 #include "../../../../../qrutils/xmlUtils.h"
 #include "../../../../../qrkernel/settingsManager.h"
@@ -32,8 +33,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mCurrentEllipse(NULL)
 		, mCurrentPort(inputPort::none)
 		, mCurrentSensorType(sensorType::unused)
-		, mButtonsCount(8) // magic numbers are baaad, mkay?
-		, mWidth(15)
+		, mWidth(defaultPenWidth)
 		, mClearing(false)
 		, mFirstShow(true)
 {
@@ -149,16 +149,16 @@ void D2ModelWidget::changeSpeed(int curIndex)
 {
 	switch(curIndex){
 	case 0:
-		mRobotModel->setSpeedFactor(2);
+		mRobotModel->setSpeedFactor(Timeline::slowSpeedFactor);
 		break;
 	case 1:
-		mRobotModel->setSpeedFactor(5);
+		mRobotModel->setSpeedFactor(Timeline::normalSpeedFactor);
 		break;
 	case 2:
-		mRobotModel->setSpeedFactor(10);
+		mRobotModel->setSpeedFactor(Timeline::fastSpeedFactor);
 		break;
 	default:
-		mRobotModel->setSpeedFactor(5);
+		mRobotModel->setSpeedFactor(Timeline::normalSpeedFactor);
 	}
 }
 
@@ -262,11 +262,10 @@ void D2ModelWidget::showEvent(QShowEvent *e)
 	mFirstShow = false;
 }
 
-
 void D2ModelWidget::onFirstShow()
 {
 	syncronizeSensors();
-	mUi->speedComboBox->setCurrentIndex(1);
+	mUi->speedComboBox->setCurrentIndex(1); // Normal speed
 }
 
 bool D2ModelWidget::isRobotOnTheGround()
@@ -467,7 +466,7 @@ void D2ModelWidget::addPort(int const port)
 		mCurrentSensorType = sensorType::light;
 	}
 	QPointF const newpos = mRobot->mapToScene(mRobot->boundingRect().center());
-	mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0, true);
+	mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0);
 	reinitSensor(mCurrentPort);
 
 	resetButtons();
@@ -772,23 +771,22 @@ int D2ModelWidget::sensorTypeToComboBoxIndex(sensorType::SensorTypeEnum const ty
 {
 	switch(type) {
 	case sensorType::unused:
-		return 0;
+		return indexOfNoneSensor;
 	case sensorType::touchBoolean:
-		return 1;
 	case sensorType::touchRaw:
-		return 1;
-	case sensorType::sonar:
-		return 3;
+		return indexOfTouchSensor;
 	case sensorType::colorFull:
 	case sensorType::colorRed:
 	case sensorType::colorGreen:
 	case sensorType::colorBlue:
 	case sensorType::colorNone:
-		return 2;
+		return indexOfColorSensor;
+	case sensorType::sonar:
+		return indexOfSonarSensor;
 	case sensorType::light:
-		return 4;
+		return indexOfLightSensor;
 	default:
-		return 0;
+		return indexOfNoneSensor;
 	}
 }
 

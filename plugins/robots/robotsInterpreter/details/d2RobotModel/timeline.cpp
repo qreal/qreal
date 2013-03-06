@@ -6,7 +6,7 @@ using namespace qReal::interpreters::robots::details::d2Model;
 
 Timeline::Timeline(QObject *parent)
 	: QObject(parent)
-	, mSpeedFactor(5) // Normal speed
+	, mSpeedFactor(normalSpeedFactor)
 	, mCyclesCount(0)
 {
 	connect(&mTimer, SIGNAL(timeout()), this, SLOT(onTimer()));

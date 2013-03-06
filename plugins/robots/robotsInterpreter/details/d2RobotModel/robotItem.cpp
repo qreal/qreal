@@ -28,7 +28,6 @@ RobotItem::RobotItem()
 	mBeepItem->setParentItem(this);
 	mBeepItem->setPos((robotWidth - beepWavesSize) / 2, (robotHeight - beepWavesSize) / 2);
 	mBeepItem->setVisible(false);
-	mBeepItem->setZValue(-5);
 }
 
 void RobotItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -205,7 +204,7 @@ QRectF BeepItem::boundingRect() const
 	return QRectF(0, 0, beepWavesSize, beepWavesSize);
 }
 
-void BeepItem::drawBeep(QPainter* painter)
+void BeepItem::drawBeep(QPainter *painter)
 {
 	QPointF const center(beepWavesSize / 2, beepWavesSize / 2);
 
@@ -214,14 +213,15 @@ void BeepItem::drawBeep(QPainter* painter)
 	drawBeepArcs(painter, center, 60);
 }
 
-void BeepItem::drawBeepArcs(QPainter* painter, QPointF const &center, qreal radius)
+void BeepItem::drawBeepArcs(QPainter *painter, QPointF const &center, qreal radius)
 {
 	painter->save();
 	QPen pen;
 	pen.setColor(Qt::red);
 	pen.setWidth(3);
 	painter->setPen(pen);
-	QRectF rect(center.x() - radius, center.y() - radius, radius+radius, radius+radius);
+	qreal const diameter = radius + radius;
+	QRectF rect(center.x() - radius, center.y() - radius, diameter, diameter);
 	painter->drawArc(rect, 45 * 16, 90 * 16);
 	painter->drawArc(rect, 225 * 16, 90 * 16);
 	painter->restore();
