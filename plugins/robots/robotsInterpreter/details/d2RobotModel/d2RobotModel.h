@@ -8,6 +8,7 @@
 #include "robotModelInterface.h"
 #include "worldModel.h"
 #include "timeline.h"
+#include "../../../../../qrutils/mathUtils/gaussNoise.h"
 
 namespace qReal {
 namespace interpreters {
@@ -94,6 +95,8 @@ private:
 	int readSingleColorSensor(unsigned long color, QHash<unsigned long, int> const &countsColor, int n) const;
 
 	void synchronizePositions();
+    unsigned long spoilColor(unsigned long const color) const;
+    unsigned long spoilLight(unsigned long const color) const;
 
 	D2ModelWidget *mD2ModelWidget;
 	Motor *mMotorA;
@@ -109,6 +112,7 @@ private:
 	WorldModel mWorldModel;
 	Timeline *mTimeline;
 	qreal mSpeedFactor;
+    mathUtils::GaussNoise mNoiseGen;
 	bool mNeedSync;
 };
 

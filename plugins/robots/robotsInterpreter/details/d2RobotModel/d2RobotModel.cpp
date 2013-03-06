@@ -1,9 +1,11 @@
 #include "d2RobotModel.h"
 #include "../tracer.h"
+#include "../../../../../qrutils/mathUtils/gaussNoise.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace d2Model;
+using namespace mathUtils;
 
 unsigned long const black   = 0xFF000000;
 unsigned long const white   = 0xFFFFFFFF;
@@ -21,7 +23,8 @@ D2RobotModel::D2RobotModel(QObject *parent)
 		: QObject(parent)
 		, mD2ModelWidget(NULL)
 		, mTimeline(new Timeline(this))
-		, mNeedSync(false)
+        , mNoiseGen()
+        , mNeedSync(false)
 {
 	mAngle = 0;
 	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()), Qt::UniqueConnection);
@@ -160,7 +163,7 @@ int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 	unsigned long* data = (unsigned long*) image.bits();
 	int const n = image.byteCount() / 4;
 	for (int i = 0; i < n; ++i) {
-		unsigned long color = data[i];
+        unsigned long color = spoilColor(data[i]);
 		countsColor[color] ++;
 	}
 
@@ -178,6 +181,36 @@ int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 	default:
 		return 0;
 	}
+}
+
+unsigned long D2RobotModel::spoilColor(unsigned long const color) const
+{
+    qreal const ran = static_cast<qreal>(mNoiseGen.generate(12, 1.0));
+    int r = round(((color >> 16) & 0xFF) + ran);
+    int g = round(((color >> 8) & 0xFF) + ran);
+    int b = round(((color >> 0) & 0xFF) + ran);
+    int a = (color >> 24) & 0xFF;
+
+    if(r < 0) {
+        r = 0;
+    }
+    if(g < 0) {
+        g = 0;
+    }
+    if(b < 0) {
+        b = 0;
+    }
+    if(r > 255) {
+        r = 255;
+    }
+    if(g > 255) {
+        g = 255;
+    }
+    if(b > 255) {
+        b = 255;
+    }
+
+    return ((r & 0xFF) << 16) + ((g & 0xFF) << 8) + (b & 0xFF) + ((a & 0xFF) << 24);
 }
 
 QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
@@ -257,7 +290,7 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> const &countsCol
 	QHashIterator<unsigned long, int> i(countsColor);
 	while(i.hasNext()) {
 		i.next();
-		unsigned long color = i.key();
+        unsigned long color = i.key();
 		if (color != white) {
 			int b = (color >> 0) & 0xFF;
 			int g = (color >> 8) & 0xFF;
@@ -282,9 +315,10 @@ int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 	int const n = image.numBytes() / 4;
 
 	for (int i = 0; i < n; ++i) {
-		int const b = (data[i] >> 0) & 0xFF;
-		int const g = (data[i] >> 8) & 0xFF;
-		int const r = (data[i] >> 16) & 0xFF;
+        int const color = spoilLight(data[i]);
+        int const b = (color >> 0) & 0xFF;
+        int const g = (color >> 8) & 0xFF;
+        int const r = (color >> 16) & 0xFF;
 		// brightness in [0..256]
 		int const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
@@ -292,6 +326,20 @@ int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 	}
 	return sum / n; // Average by whole region
 }
+
+unsigned long D2RobotModel::spoilLight(unsigned long const color) const
+{
+    qreal const ran = static_cast<qreal>(qrand()) / (RAND_MAX + 1) * mNoiseGen.generate(12, 1.0);
+
+    if (ran > (1.0 - 20.0 / 100.0)) {
+        return white;
+    } else if (ran < (-1.0 + 20.0 / 100.0)) {
+        return black;
+    }
+
+    return color;
+}
+
 
 void D2RobotModel::startInit()
 {
