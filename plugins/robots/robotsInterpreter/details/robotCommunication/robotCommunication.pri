@@ -6,12 +6,14 @@ HEADERS += \
 	details/robotCommunication/fantom.h \
 	details/robotCommunication/fantomMethods.h \
 	details/robotCommunication/robotCommunicationException.h \
+	details/robotCommunication/robotCommunicationThreadBase.h \
 
 SOURCES += \
 	details/robotCommunication/bluetoothRobotCommunicationThread.cpp \
 	details/robotCommunication/usbRobotCommunicationThread.cpp \
 	details/robotCommunication/robotCommunicator.cpp \
 	details/robotCommunication/robotCommunicationException.cpp \
+	details/robotCommunication/robotCommunicationThreadBase.cpp \
 
 win32 {
 	HEADERS += \

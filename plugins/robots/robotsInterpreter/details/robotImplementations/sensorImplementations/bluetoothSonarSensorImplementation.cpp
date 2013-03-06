@@ -22,8 +22,9 @@ void BluetoothSonarSensorImplementation::read()
 		return;
 	}
 
-	if (mState == pending)
+	if (mState == pending) {
 		return;
+	}
 	mState = pending;
 	setMode(sonarMode::SINGLE_SHOT);
 }

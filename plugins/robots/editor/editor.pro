@@ -7,10 +7,5 @@ TEMPLATE = subdirs
 SUBDIRS = \
 	generated \
 
-!win32 {
-	SUBDIRS += \
-		doc \
-}
-
 generated.file = generated/robotsMetamodel.pro
 

@@ -91,7 +91,7 @@ void SensorsConfigurer::reconfigureSensors()
 		Tracer::debug(tracer::initialization, "SensorsConfigurer::reconfigureSensors", "No need to wait for a response, sending allSensorsReconfigured signal now.");
 		emit allSensorsConfigured();
 	} else {
-		foreach (int const &i, sensorsToConfigure) {
+		foreach (int i, sensorsToConfigure) {
 			mConfiguredSensors[i]->configure();
 		}
 	}

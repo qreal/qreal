@@ -33,6 +33,9 @@ public:
 	/// @param value Parameter value.
 	static void setValue(QString const &key, QVariant const &value);
 
+	/// Removes all entries in persistent external storage
+	static void clearSettings();
+
 	/// Returns an instance of a singleton.
 	static SettingsManager* instance();
 

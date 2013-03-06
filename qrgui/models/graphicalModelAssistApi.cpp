@@ -218,7 +218,7 @@ QPersistentModelIndex GraphicalModelAssistApi::rootIndex() const
 
 Id GraphicalModelAssistApi::rootId() const
 {
-	return mModelsAssistApi.rootId();
+	return mGraphicalModel.rootId();
 }
 
 bool GraphicalModelAssistApi::hasRootDiagrams() const

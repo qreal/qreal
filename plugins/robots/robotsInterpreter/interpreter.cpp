@@ -1,4 +1,6 @@
+#include <QCoreApplication>
 #include <QtGui/QAction>
+
 #include "interpreter.h"
 
 #include "details/autoconfigurer.h"
@@ -55,6 +57,8 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 	robotModelType::robotModelTypeEnum const modelType = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
 	Tracer::debug(tracer::initialization, "Interpreter::init", "Going to set robot implementation, model type is " + DebugHelper::toString(modelType));
 	setRobotImplementation(modelType);
+
+	mWatchListWindow = new WatchListWindow(mParser, mInterpretersInterface->windowWidget());
 }
 
 Interpreter::~Interpreter()
@@ -114,7 +118,6 @@ void Interpreter::stopRobot()
 
 void Interpreter::showWatchList()
 {
-	mWatchListWindow = new watchListWindow(mParser);
 	mWatchListWindow->show();
 }
 
@@ -253,6 +256,7 @@ void Interpreter::addThread(details::Thread * const thread)
 	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 	connect(thread, SIGNAL(newThread(details::blocks::Block*const)), this, SLOT(newThread(details::blocks::Block*const)));
 
+	QCoreApplication::processEvents();
 	thread->interpret();
 }
 
@@ -276,7 +280,7 @@ void Interpreter::setRobotImplementation(details::robotImplementations::Abstract
 
 void Interpreter::runTimer()
 {
-	mTimer->start(1000);
+	mTimer->start(200);
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()));
 	if (mRobotModel->sensor(inputPort::port1)) {
 		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot1(int)));
@@ -408,4 +412,14 @@ void Interpreter::setConnectRobotAction(QAction *actionConnect)
 void Interpreter::reportError(QString const &message)
 {
 	mInterpretersInterface->errorReporter()->addError(message);
+}
+
+WatchListWindow *Interpreter::watchWindow() const
+{
+	return mWatchListWindow;
+}
+
+void Interpreter::connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const
+{
+	connect(configurer, SIGNAL(saved()), mD2ModelWidget, SLOT(syncronizeSensors()));
 }

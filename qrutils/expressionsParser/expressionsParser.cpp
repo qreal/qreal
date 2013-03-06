@@ -18,7 +18,7 @@ QMap<QString, Number>* ExpressionsParser::getVariables()
 QMap<QString, QString>* ExpressionsParser::getVariablesForWatch() const
 {
 	QMap<QString, QString>* result = new QMap<QString, QString>();
-	foreach (QString variable, mVariables.keys()) {
+	foreach (QString const &variable, mVariables.keys()) {
 		result->insert(variable, mVariables.value(variable).toString());
 	}
 

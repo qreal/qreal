@@ -30,7 +30,9 @@ private slots:
 	void timerTimeout();
 
 private:
-	robotParts::LightSensor *mLightSensor;  // Doesn't have ownership
+	static const int maxValue = 1023;
+
+	inputPort::InputPortEnum mPort;
 	RobotModel const * const mRobotModel;
 	QTimer mActiveWaitingTimer;
 
