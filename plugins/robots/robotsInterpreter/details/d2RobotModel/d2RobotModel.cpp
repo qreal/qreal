@@ -136,9 +136,12 @@ int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 	}
 	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	QPointF sensorPosition(neededPosDir.first);
+	qreal const width = sensorWidth / 2.0;
+	QRectF const scanningRect = QRectF(sensorPosition.x() - width
+			, sensorPosition.y() - width, 2 * width, 2 * width);
 	QPainterPath sensorPath;
-	sensorPath.addRect(sensorPosition.x(), sensorPosition.y(), sensorWidth, sensorWidth);
-	bool const res = mWorldModel.checkCollision(sensorPath, 6);
+	sensorPath.addRect(scanningRect);
+	bool const res = mWorldModel.checkCollision(sensorPath, touchSensorStrokeIncrement);
 
 	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
 }
